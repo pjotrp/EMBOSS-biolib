@@ -6,7 +6,7 @@ dnl Process this file with autoconf to produce a configure script.
 #CC=cc
 
 AC_INIT(ajax/ajacd.c)
-AM_INIT_AUTOMAKE(EMBOSS, 2.3.1)
+AM_INIT_AUTOMAKE(EMBOSS, 2.4.0)
 
 
 dnl Use libtool to make a shared library.
@@ -228,6 +228,14 @@ esac
 fi
 AM_CONDITIONAL(NEEDAJAX,test "$needajax" = "yes")
 AC_SUBST(NEEDAJAX)
+
+
+dnl HP-UX needs -lsec for shadow passwords
+if test "`uname`" = "HP-UX"; then
+LDFLAGS="$LDFLAGS -lsec"
+fi
+
+
 
 AC_OUTPUT(plplot/Makefile plplot/lib/Makefile nucleus/Makefile ajax/Makefile
 emboss/Makefile emboss/acd/Makefile test/Makefile test/data/Makefile
