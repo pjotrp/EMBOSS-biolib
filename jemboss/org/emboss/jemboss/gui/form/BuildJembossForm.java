@@ -24,14 +24,12 @@ package org.emboss.jemboss.gui.form;
 
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
 import java.net.URL;
 
-import java.util.*;
+import java.util.Hashtable;
 import java.awt.event.*;
 import java.io.*;
-import org.emboss.jemboss.parser.*;
+import org.emboss.jemboss.parser.ParseAcd;
 import org.emboss.jemboss.programs.*;
 import org.emboss.jemboss.*;
 import org.emboss.jemboss.gui.*;
@@ -549,7 +547,7 @@ public class BuildJembossForm implements ActionListener
               JLabel picture = new JLabel(icon);
               pscroll.add(picture);
               fresults.add(pngFiles[i],presults);
-              hashRes.put(pngFiles[i],getPNGByte(pngFiles[i]));
+              hashRes.put(pngFiles[i],getLocalFile(new File(pngFiles[i])));
             }
             else
             {
@@ -564,47 +562,7 @@ public class BuildJembossForm implements ActionListener
   }
 
 
-  public byte[] getPNGByte(String pngFiles)
-  {
-    byte data[] = new byte[1];
-    int nby = 0;
-    DataInputStream dis;
-    FileInputStream fis;
-
-    try
-    {
-      fis = new FileInputStream(pngFiles);
-      dis = new DataInputStream(fis);
-      while(true)
-      {
-        dis.readByte();
-        nby++;
-      }
-    }
-    catch (EOFException eof){}
-    catch (IOException ioe){}
-
-    if(nby >0)
-    {
-      try
-      {
-        data = new byte[nby];
-        fis = new FileInputStream(pngFiles);
-        dis = new DataInputStream(fis);
-        nby=0;
-        while(true)
-        {
-          data[nby]=dis.readByte();
-          nby++;
-        }
-      }
-      catch (EOFException eof){}
-      catch (IOException ioe){}
-    }
-    return data;
-  }
-
-  public String checkParameters(ParseAcd parseAcd, int numofFields, 
+  private String checkParameters(ParseAcd parseAcd, int numofFields, 
                                 Hashtable filesToMove)
   {
 
@@ -863,7 +821,7 @@ public class BuildJembossForm implements ActionListener
   }
 
 
-  public String filesForSoap(String fn, String options, String val,
+  private String filesForSoap(String fn, String options, String val,
                              Hashtable filesToMove)
   {
 
@@ -924,7 +882,7 @@ public class BuildJembossForm implements ActionListener
   }
 
 
-  public byte[] getLocalFile(File name)
+  private byte[] getLocalFile(File name)
   {
     byte[] b = null;
     try
@@ -950,7 +908,7 @@ public class BuildJembossForm implements ActionListener
 * @return String command line to use
 *
 */
-  public String getCommand()
+  private String getCommand()
   {
 
     String command = embossBin.concat(applName);
@@ -974,7 +932,7 @@ public class BuildJembossForm implements ActionListener
 * @return String command line to use
 *
 */
-  public String getCommand(Hashtable filesToMove)
+  private String getCommand(Hashtable filesToMove)
   {
 
     String command = applName;
@@ -991,12 +949,12 @@ public class BuildJembossForm implements ActionListener
   }
 
 
-  /**
-  *
-  * Ensures garbaged collected when there are
-  * no more pointers to this.
-  * 
-  */
+/**
+*
+* Ensures garbaged collected when there are
+* no more pointers to this.
+* 
+*/
   public void finalize() throws Throwable
   {
     super.finalize();
