@@ -20,7 +20,7 @@ section: input
   dirlist: goldseqsdirlist
   [
     parameter: "Y"
-    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_substituted_sequences/gold"
+    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_substituted_sequences/gold/55_60"
     information: "first directory containing paired traces"
     extension: "sbs"
   ]
@@ -28,8 +28,8 @@ section: input
   dirlist: testseqsdirlist
   [
     parameter: "Y"
-#    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_substituted_sequences/needle"
-    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_substituted_sequences/nawalign"
+    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_substituted_sequences/needle/55_60"
+#    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_substituted_sequences/nawalign"
     information: "second directory containing paired traces"
     extension: "sbs"
   ]
