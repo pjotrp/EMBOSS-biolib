@@ -1,4 +1,29 @@
+/******************************************************************************
+** @source AJAX sort functions
+**
+** @author Copyright (C) 2001 Alan Bleasby
+** @version 1.0
+** @@
+**
+** This library is free software; you can redistribute it and/or
+** modify it under the terms of the GNU Library General Public
+** License as published by the Free Software Foundation; either
+** version 2 of the License, or (at your option) any later version.
+**
+** This library is distributed in the hope that it will be useful,
+** but WITHOUT ANY WARRANTY; without even the implied warranty of
+** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+** Library General Public License for more details.
+**
+** You should have received a copy of the GNU Library General Public
+** License along with this library; if not, write to the
+** Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+** Boston, MA  02111-1307, USA.
+******************************************************************************/
+
 #include "ajax.h"
+
+
 
 
 /* @func ajSortFloatDecI ******************************************************
@@ -12,6 +37,7 @@
 ** @return [void]
 ** @@
 ******************************************************************************/
+
 void ajSortFloatDecI(float *a, ajint *p, ajint n)
 {
     ajint s;
@@ -27,7 +53,11 @@ void ajSortFloatDecI(float *a, ajint *p, ajint n)
 		p[j] = p[j+s];
 		p[j+s] = t;
 	    }
+
+    return;
 }
+
+
 
 
 /* @func ajSortIntDecI ********************************************************
@@ -41,6 +71,7 @@ void ajSortFloatDecI(float *a, ajint *p, ajint n)
 ** @return [void]
 ** @@
 ******************************************************************************/
+
 void ajSortIntDecI(ajint *a, ajint *p, ajint n)
 {
     ajint s;
@@ -56,7 +87,11 @@ void ajSortIntDecI(ajint *a, ajint *p, ajint n)
 		p[j] = p[j+s];
 		p[j+s] = t;
 	    }
+
+    return;
 }
+
+
 
 
 /* @func ajSortFloatIncI ******************************************************
@@ -70,6 +105,7 @@ void ajSortIntDecI(ajint *a, ajint *p, ajint n)
 ** @return [void]
 ** @@
 ******************************************************************************/
+
 void ajSortFloatIncI(float *a, ajint *p, ajint n)
 {
     ajint s;
@@ -85,7 +121,11 @@ void ajSortFloatIncI(float *a, ajint *p, ajint n)
 		p[j] = p[j+s];
 		p[j+s] = t;
 	    }
+
+    return;
 }
+
+
 
 
 /* @func ajSortIntIncI ********************************************************
@@ -99,6 +139,7 @@ void ajSortFloatIncI(float *a, ajint *p, ajint n)
 ** @return [void]
 ** @@
 ******************************************************************************/
+
 void ajSortIntIncI(ajint *a, ajint *p, ajint n)
 {
     ajint s;
@@ -114,7 +155,11 @@ void ajSortIntIncI(ajint *a, ajint *p, ajint n)
 		p[j] = p[j+s];
 		p[j+s] = t;
 	    }
+
+    return;
 }
+
+
 
 
 /* @func ajSortTwoIntIncI *****************************************************
@@ -128,6 +173,7 @@ void ajSortIntIncI(ajint *a, ajint *p, ajint n)
 ** @return [void]
 ** @@
 ******************************************************************************/
+
 void ajSortTwoIntIncI(ajint *a, ajint *p, ajint n)
 {
     ajint s;
@@ -147,7 +193,11 @@ void ajSortTwoIntIncI(ajint *a, ajint *p, ajint n)
 		p[j] = p[j+s];
 		p[j+s] = t;
 	    }
+
+    return;
 }
+
+
 
 
 
@@ -161,6 +211,7 @@ void ajSortTwoIntIncI(ajint *a, ajint *p, ajint n)
 ** @return [void]
 ** @@
 ******************************************************************************/
+
 void ajSortFloatDec(float *a, ajint n)
 {
     ajint s;
@@ -176,7 +227,11 @@ void ajSortFloatDec(float *a, ajint n)
 		a[j] = a[j+s];
 		a[j+s] = t;
 	    }
+
+    return;
 }
+
+
 
 
 /* @func ajSortIntDec  ********************************************************
@@ -189,6 +244,7 @@ void ajSortFloatDec(float *a, ajint n)
 ** @return [void]
 ** @@
 ******************************************************************************/
+
 void ajSortIntDec(ajint *a, ajint n)
 {
     ajint s;
@@ -204,7 +260,12 @@ void ajSortIntDec(ajint *a, ajint n)
 		a[j] = a[j+s];
 		a[j+s] = t;
 	    }
+
+    return;
 }
+
+
+
 
 /* @func ajSortFloatInc *******************************************************
 **
@@ -216,6 +277,7 @@ void ajSortIntDec(ajint *a, ajint n)
 ** @return [void]
 ** @@
 ******************************************************************************/
+
 void ajSortFloatInc(float *a, ajint n)
 {
     ajint s;
@@ -231,7 +293,11 @@ void ajSortFloatInc(float *a, ajint n)
 		a[j] = a[j+s];
 		a[j+s] = t;
 	    }
+
+    return;
 }
+
+
 
 
 /* @func ajSortIntInc  ********************************************************
@@ -244,6 +310,7 @@ void ajSortFloatInc(float *a, ajint n)
 ** @return [void]
 ** @@
 ******************************************************************************/
+
 void ajSortIntInc(ajint *a, ajint n)
 {
     ajint s;
@@ -259,4 +326,6 @@ void ajSortIntInc(ajint *a, ajint n)
 		a[j] = a[j+s];
 		a[j+s] = t;
 	    }
+
+    return;
 }
