@@ -2085,21 +2085,32 @@ static void estPairFree(void)
 static ajint estDoNotForget( ajint col, ajint row )
 {
 
+/*
     if(rpairs >= limit_rpair_size)
     {
 	ajErr("rpairs %d beyond maximum %d", rpairs+1, limit_rpair_size);
 	ajErr("increase space threshold to repeat this search");
-	return 0;		     /* failure - ran out of memory */
+	return 0;		     /# failure - ran out of memory #/
     }
-
+*/
     if( rpairs >= rpair_size )
     {
 	rpair_size = (rpairs == 0 ? 10000 : 2*rpairs);
 
-	if(rpair_size > limit_rpair_size) /* enforce the limit */
+/*
+	if(rpair_size > limit_rpair_size) /# enforce the limit #/
 	    rpair_size = limit_rpair_size;
+*/
 
+	ajDebug("Rpair resize: %d to %d\n", rpairs, rpair_size);
 	AJCRESIZE(rpair, rpair_size);
+
+	if (!rpair)
+	{
+	    ajDie("Memory limit exceeded in allocating space for rpairs");
+	    return 0;		     /* failure - ran out of memory */
+	}
+
 	if(verbose)
 	{
 	    ajDebug("rpairs %d allocated rpair_size %d rpair: %x\n",
