@@ -1455,6 +1455,8 @@ void ajSelexdataDel(AjPSelexdata *thys)
 
 void ajSeqClear (AjPSeq thys)
 {
+    AjPStr ptr=NULL;
+
     (void) ajStrClear (&thys->Name);
     (void) ajStrClear (&thys->Acc);
     (void) ajStrClear (&thys->Type);
@@ -1471,6 +1473,8 @@ void ajSeqClear (AjPSeq thys)
     (void) ajStrClear (&thys->Entryname);
     (void) ajStrClear (&thys->TextPtr);
     (void) ajStrClear (&thys->Seq);
+    while(ajListstrPop(thys->Acclist,&ptr))
+	ajStrDel(&ptr);
 
     ajFeattableDel(&thys->Fttable);
 
@@ -3439,4 +3443,35 @@ AjBool ajSeqTrim(AjPSeq thys)
     ajDebug("After Triming len = %d\n",thys->Seq->Len);
 
     return okay;
+}
+
+/* @func ajSeqGapStandard *****************************************************
+**
+** Makes all gaps in a sequence use a standard gap character
+**
+** @param [w] thys [AjPSeq] Sequence object
+** @param [r] gapch [char] Gap character (or '-' if zero)
+** @return [void]
+******************************************************************************/
+
+void ajSeqGapStandard (AjPSeq thys, char gapch) {
+
+  char newgap = '-';
+  static char testchars[] = "-~."; /* all known gap characters */
+  char *testgap = testchars;
+
+  if (gapch)
+    newgap = gapch;
+
+  ajDebug("ajSeqGapStandard '%c'=>'%c' '%S'\n", gapch, newgap, thys->Seq);
+
+  while (*testgap) {
+    if (newgap != *testgap) {
+      ajStrSubstituteKK (&thys->Seq, *testgap, newgap);
+      ajDebug(" replaced         '%c'=>'%c' '%S'\n", *testgap, newgap, thys->Seq);
+    }
+    testgap++;
+  }
+
+  return;
 }
