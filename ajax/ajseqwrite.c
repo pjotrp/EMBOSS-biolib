@@ -251,7 +251,7 @@ void ajSeqAllWrite (AjPSeqout outseq, AjPSeq seq) {
       /* ajWarn ("ajSeqAllWrite features cloned from ajSeqWrite\n"); */
 
     if (!ajFeattabOutOpen (outseq->Ftquery, outseq->Ufo)) {
-      ajWarn ("seqAllWrite features output failed to open file: '%S%S'",
+      ajWarn ("seqAllWrite features output failed to open file '%S%S'",
 	      outseq->Ftquery->Directory, outseq->Ftquery->Filename);
       return;
     }
@@ -450,7 +450,7 @@ void ajSeqWrite (AjPSeqout outseq, AjPSeq seq) {
   if (outseq->Features && !ajFeattabOutIsOpen(outseq->Ftquery)) {
     ajDebug("seqWrite features output needed\n");
     if (!ajFeattabOutOpen (outseq->Ftquery, outseq->Ufo)) {
-      ajWarn ("seqWrite features output failed to open UFO: '%S'",
+      ajWarn ("seqWrite features output failed to open UFO '%S'",
 	      outseq->Ufo);
       return;
     }
@@ -2867,10 +2867,10 @@ static AjBool seqoutUsaProcess (AjPSeqout thys) {
 	thys->File = ajFileNewOutD (thys->Directory, thys->Filename);
       if (!thys->File) {
 	if (ajStrLen(thys->Directory))
-	  ajErr ("failed to open filename %S in directory %S",
+	  ajErr ("failed to open filename '%S' in directory '%S'",
 		 thys->Filename, thys->Directory);
 	else
-	  ajErr ("failed to open filename %S", thys->Filename);
+	  ajErr ("failed to open filename '%S'", thys->Filename);
 	return ajFalse;
       }
     }
