@@ -1075,8 +1075,10 @@ AjStatus ajAcdInitP (char *pgm, int argc, char *argv[], char *package)
     }
     else if (*package)
     {					/* separate package */
-	ajFmtPrintS (&acdFName, "%Sshare/%S/acd/%s.acd",
-		     acdRootInst, acdPack, pgm);
+/*	ajFmtPrintS (&acdFName, "%Sshare/%S/acd/%s.acd",
+		     acdRootInst, acdPack, pgm);*/
+	ajFmtPrintS (&acdFName, "%Sshare/EMBOSS/acd/%s.acd",
+		     acdRootInst, pgm);
 	acdFile = ajFileNewIn (acdFName);
 	if (!acdFile)
 	{
