@@ -435,7 +435,8 @@ public class GraphicSequenceCollection extends JPanel
       Sequence seq = (Sequence)(enum.nextElement());
       if(!seqName.equals(seq.getName()))
       {
-        if(pos < seq.getLength())
+        SequenceJPanel seqPanel = (SequenceJPanel)graphicSequence.get(nseqs);
+        if(pos < seq.getLength() && seqPanel.isPrettyPlot())
           if(seq.getResidue(pos).equalsIgnoreCase(s))
             identical++;
       }
@@ -450,14 +451,17 @@ public class GraphicSequenceCollection extends JPanel
       int m1 = mat.getMatrixIndex(s);
       int matrix[][] = mat.getMatrix();
       float matching = 0.f;
+      nseqs = 0;
 
       enum = seqs.elements();
       while(enum.hasMoreElements())
       {
+        nseqs++;
         Sequence seq = (Sequence)(enum.nextElement());
+        SequenceJPanel seqPanel = (SequenceJPanel)graphicSequence.get(nseqs);
 //      if(!seqName.equals(seq.getName()))
 //      {
-          if(pos < seq.getLength())
+          if(pos < seq.getLength() && seqPanel.isPrettyPlot())
           {
             int m2 = mat.getMatrixIndex(seq.getResidue(pos));
             if(m1 >= 0 && m2 >= 0 && matrix[m1][m2]>0)
