@@ -744,6 +744,9 @@ AjBool ajSeqAllRead(AjPSeq thys, AjPSeqin seqin)
       return ajFalse;
     }
 
+    if (seqin->List) {
+	ajSeqinClearPos(seqin);
+    }
     return ret;
 }
 
@@ -840,6 +843,24 @@ AjBool ajSeqallNext(AjPSeqall seqall, AjPSeq* retseq)
 
 
 
+/* @func ajSeqinClearPos ******************************************************
+**
+** Clears a Sequence input object position information as possibly read from
+** a USA that included the begni, end and direction
+**
+** @param [u] thys [AjPSeqin] Sequence input
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajSeqinClearPos(AjPSeqin thys)
+{
+    thys->Rev    = ajFalse;
+    thys->Begin = 0;
+    thys->End = 0;
+    return;
+}
+
 /* @func ajSeqinClear *********************************************************
 **
 ** Clears a Sequence input object back to "as new" condition, except
@@ -913,6 +934,8 @@ void ajSeqinClear(AjPSeqin thys)
     thys->Count     = 0;
     thys->Filecount = 0;
 
+    thys->Begin = 0;
+    thys->End = 0;
     return;
 }
 
@@ -1155,6 +1178,8 @@ AjBool ajSeqsetRead(AjPSeqset thys, AjPSeqin seqin)
 
     while(ajSeqRead(seq, seqin))
     {
+	if (seqin->List)
+	    ajSeqinClearPos(seqin);
 	/*ajDebug("read name '%S' length %d format '%S' '%S' seqindata: %x\n",
 	  seq->Entryname, ajSeqLen(seq),
 	  seqin->Formatstr, seq->Formatstr, seqin->Data);*/
@@ -1167,6 +1192,7 @@ AjBool ajSeqsetRead(AjPSeqset thys, AjPSeqin seqin)
 	/*ajSeqTrace(seq);*/
 	iseq++;
 
+	ajSeqTrim(seq);
 	ajListPushApp(setlist, seq);
 
 	/*ajDebug("appended to list\n");*/
@@ -6775,7 +6801,6 @@ static AjBool seqUsaProcess(AjPSeq thys, AjPSeqin seqin)
     AjBool rangestat = ajFalse;
 
     qry = seqin->Query;
-
 
     ajStrDel(&qry->Field);    /* clear it. we test this for regstat */
 
