@@ -17,6 +17,7 @@ dnl   #include <zlib.h>
 dnl   #endif /* PLD_png */
 dnl
 dnl @author Ian Longden <il@sanger.ac.uk>
+dnl Modified: Alan Bleasby. Corrected library order
 dnl
 
 AC_DEFUN(CHECK_PNGDRIVER,
