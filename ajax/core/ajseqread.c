@@ -1720,6 +1720,14 @@ static AjBool seqReadNbrf (AjPSeq thys, AjPSeqin seqin)
 		    seqAccSave (thys, token2);
 	    }
 
+	    if (ajStrPrefixC(rdline, "C;Species:"))
+	    {
+		ajStrAssC(&rdline2,ajStrStr(rdline)+13);
+		ajStrTokenAss (&handle2,rdline2, " ;\n\r");
+		while (ajStrToken (&token2, &handle2, NULL))
+		    seqTaxSave (thys, token2);
+	    }
+
 	    if (ajStrChar(rdline,0) == 'R')
 	    {			/* skip reference lines with no prefix */
 		while((ok=ajFileBuffGetStore(buff,&rdline,
