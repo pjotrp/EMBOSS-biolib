@@ -117,11 +117,11 @@ public class DNADraw extends ScrollPanel
                     current_dna.repaint(); 
                     f.setVisible(false);
                     f.dispose();       
-                    Enumeration enum = block.elements();
+                    Enumeration enumBk = block.elements();
                     int nelement = 0;
-                    while(enum.hasMoreElements())
+                    while(enumBk.hasMoreElements())
                     {
-                      Vector v = (Vector)enum.nextElement();
+                      Vector v = (Vector)enumBk.nextElement();
                       if(v.contains(drawBlock))
                         block.removeElementAt(nelement);   
                       nelement++;
@@ -288,19 +288,19 @@ public class DNADraw extends ScrollPanel
     if(majorTicks == null || minorTicks == null)
       calculateTickPosistions();
 
-    Enumeration enum = minorTicks.elements();
-    while(enum.hasMoreElements())
+    Enumeration enumTk = minorTicks.elements();
+    while(enumTk.hasMoreElements())
     {
-      int tick = ((Integer)enum.nextElement()).intValue();
+      int tick = ((Integer)enumTk.nextElement()).intValue();
       int x = ((diameter-location.x)*(tick-start)/(end-start))+location.x;
       int y = ymid+(int)((lineSize+widDash)/2);
       g2.drawLine(x,ymid,x,y);
     }
 
-    enum = majorTicks.elements();
-    while(enum.hasMoreElements())
+    enumTk = majorTicks.elements();
+    while(enumTk.hasMoreElements())
     {
-      int tick = ((Integer)enum.nextElement()).intValue();
+      int tick = ((Integer)enumTk.nextElement()).intValue();
       int x = ((diameter-location.x)*(tick-start)/(end-start))+location.x;
       int y = ymid+(lineSize/2)+(int)widDash;
       g2.drawLine(x,ymid,x,y);
@@ -312,10 +312,10 @@ public class DNADraw extends ScrollPanel
 
     if(restrictionEnzyme != null)
     {
-      enum = restrictionEnzyme.elements();
-      while(enum.hasMoreElements())
+      enumTk = restrictionEnzyme.elements();
+      while(enumTk.hasMoreElements())
       {
-        Vector re = (Vector)enum.nextElement();
+        Vector re = (Vector)enumTk.nextElement();
         String reLabel = (String)re.elementAt(0);
         int pos = ((Integer)re.elementAt(1)).intValue();
         g2.setColor((Color)re.elementAt(2));
@@ -372,10 +372,10 @@ public class DNADraw extends ScrollPanel
         reXPositions = new int[nsize];
         reYPositions = new int[nsize];
       }
-      Enumeration enum = restrictionEnzyme.elements();
-      while(enum.hasMoreElements())
+      Enumeration enumRes = restrictionEnzyme.elements();
+      while(enumRes.hasMoreElements())
       {
-        Vector re = (Vector)enum.nextElement();
+        Vector re = (Vector)enumRes.nextElement();
         String reLabel = (String)re.elementAt(0);
         int pos = ((Integer)re.elementAt(1)).intValue();
         g2.setColor((Color)re.elementAt(2));
@@ -462,10 +462,10 @@ public class DNADraw extends ScrollPanel
     }
 
     AffineTransform newOrig;
-    Enumeration enum = ticks.elements();
-    while(enum.hasMoreElements())
+    Enumeration enumTk = ticks.elements();
+    while(enumTk.hasMoreElements())
     {
-      int tick = ((Integer)enum.nextElement()).intValue();
+      int tick = ((Integer)enumTk.nextElement()).intValue();
       double theta = Math.toRadians(-getAngleFromPosition(tick,rad));
       if(theta > pi)
         theta = theta - pi*2.d;
