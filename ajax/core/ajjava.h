@@ -1,7 +1,7 @@
 #ifndef ajjava_h
 #define ajjava_h
 
-#ifdef HAVE_JAVAE
+#ifdef HAVE_JAVA
 
 #include <jni.h>
 
