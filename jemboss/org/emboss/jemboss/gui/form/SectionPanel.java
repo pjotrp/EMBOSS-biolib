@@ -947,7 +947,7 @@ public class SectionPanel
     else
       ajaxProtein = false;
 
-    Integer.parseInt(stok.nextToken().trim());
+    ajaxLength = Integer.parseInt(stok.nextToken().trim());
 
     if(att.startsWith("seqset"))
     {
