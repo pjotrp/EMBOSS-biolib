@@ -29,9 +29,10 @@ section: output [
     goutfile: "tmap"
   ]
 
-  outfile: outfile  [
-    optional: "Y"
-    default: "tmap.res"
-  ]
+ report: outfile  [
+   optional: "Y"
+   rformat: "seqtable"
+   taglist: "int:TM=TransMem"
+ ]
 
 endsection: output

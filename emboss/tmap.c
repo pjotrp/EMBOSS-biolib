@@ -44,6 +44,7 @@
  +--------------------------------------------------------------+
 
  Converted for EMBOSS by Ian longden il@sanger.ac.uk (18/6/99)
+ Report output by Henrikki Almusa and Peter Rice (July 2003)
 
 */
 
@@ -194,7 +195,7 @@ static ajint ali_ok[LENGTH];
 static void tmap_profile2(ajint prof, ajint antal, ajint poss, ajint span);
 static float tmap_length1(ajint nr, ajint start, ajint stopp);
 static void tmap_present3p(ajint antal, ajint *npos, ajint *cpos, ajint poss,
-			   ajint nr, AjPSeqset seqset, AjPFile outfile);
+			   ajint nr, AjPSeqset seqset, AjPReport outfile);
 static ajint tmap_peak1(ajint start, ajint stopp, float *parameter);
 static ajint tmap_vec_to_stst(ajint *vec, ajint *start, ajint *stopp,
 			      ajint length);
@@ -223,7 +224,8 @@ int main(int argc, char **argv)
 {
     AjPSeqset seqset;
     AjPGraph mult;
-    AjPFile outfile;
+    AjPReport report;
+
     ajint i;
     ajint j;
     float m_limit;
@@ -234,21 +236,22 @@ int main(int argc, char **argv)
 
     seqset = ajAcdGetSeqset("msf");
     mult = ajAcdGetGraphxy ("graph");
-    outfile = ajAcdGetOutfile("outfile");
+/*    outfile = ajAcdGetOutfile("outfile");*/
+     report = ajAcdGetReport("outfile");
 
     if(!ajSeqsetLen(seqset))
 	ajFatal("No useable sequences were specified");
 
-
-    ajFmtPrintF( outfile, "Program TMAP, version %s, to predict "
-		"transmembrane segments from .msf file.\n",UTGAVA);
-    ajFmtPrintF( outfile, "The program reads a multiple alignment file of "
-		"the GCG multiple sequence format\n");
-    ajFmtPrintF( outfile, "and predicts membrane-spanning regions "
-		"according to the algorithm in\n");
-    ajFmtPrintF( outfile, "Persson & Argos (1994), J. Mol. Biol. 237, "
-		"182-192.\n\n");
-
+/*
+//    ajFmtPrintF( outfile, "Program TMAP, version %s, to predict "
+//		"transmembrane segments from .msf file.\n",UTGAVA);
+//    ajFmtPrintF( outfile, "The program reads a multiple alignment file of "
+//		"the GCG multiple sequence format\n");
+//    ajFmtPrintF( outfile, "and predicts membrane-spanning regions "
+//		"according to the algorithm in\n");
+//    ajFmtPrintF( outfile, "Persson & Argos (1994), J. Mol. Biol. 237, "
+//		"182-192.\n\n");
+*/
 
     e_spann_min=E_SPANN_MIN;
     e_spann_max=E_SPANN_MAX;
@@ -292,7 +295,7 @@ int main(int argc, char **argv)
 
     tm_number=tmap_pred1(m_limit,ml_limit,e_limit,nr);
 
-    tmap_present3p(tm_number, npos, cpos, poss, nr, seqset, outfile);
+    tmap_present3p(tm_number, npos, cpos, poss, nr, seqset, report);
 
     for (j=1; j<=tm_number; j++)
     {
@@ -300,10 +303,10 @@ int main(int argc, char **argv)
 	tm_segment[j][1]=cpos[j]-C_SPANN;
     }
 
-
     tmap_plot2(mult);
 
-    ajFileOutClose(&outfile);
+    ajReportClose(report);
+    ajReportDel(&report);
 
     ajExit();
 
@@ -456,44 +459,82 @@ static float tmap_length1(ajint nr, ajint start, ajint stopp)
 ** @param [r] poss [ajint] Undocumented
 ** @param [r] nr [ajint] Undocumented
 ** @param [r] seqset [AjPSeqset] Undocumented
-** @param [w] outfile [AjPFile] Undocumented
+** @param [w] report [AjPReport] Undocumented
 ** @@
 ******************************************************************************/
 
 static void tmap_present3p(ajint antal, ajint *npos, ajint *cpos,
 			   ajint poss, ajint nr, AjPSeqset seqset,
-			   AjPFile outfile)
+			   AjPReport report)
 
 {
     ajint i;
     ajint j;
+    AjPFeattable feat;
+    AjPFeature seqf;
+    AjPStr tmp = NULL;
+    AjPStr hdr = NULL;
+    AjPSeq seq;
+    AjPAlign align;
+    AjPStr cons = NULL;
+    ajint calcid;
+    ajint calcsim;
+    ajint calcgap;
+    ajint calclen;
 
-    ajFmtPrintF( outfile,"RESULTS from program TMAP, edition %s'\n\n",UTGAVA);
+    align = ajAlignNew();
+    ajAlignDefine(align, seqset);
+    ajSeqsetConsStats(seqset, NULL, &cons,
+		      &calcid, &calcsim, &calcgap, &calclen);
 
-    ajFmtPrintF( outfile,"Numbers give: a) number of transmembrane segment\n");
-    ajFmtPrintF( outfile,"              b) start of TM segment (alignment"
+    ajStrAssC(&hdr, "");
+/*
+    ajFmtPrintS( &hdr,"RESULTS from program TMAP, edition %s'\n\n",UTGAVA);
+
+    ajFmtPrintAppS( &hdr,"Numbers give: a) number of transmembrane segment\n");
+    ajFmtPrintAppS( &hdr,"              b) start of TM segment (alignment"
 		" position / residue number)\n");
-    ajFmtPrintF( outfile,"              c) end of TM segment (alignment "
+    ajFmtPrintAppS( &hdr,"              c) end of TM segment (alignment "
 		"position / residue number)\n");
-    ajFmtPrintF( outfile,"              d) length of TM segment within "
+    ajFmtPrintAppS( &hdr,"              d) length of TM segment within "
 		"parentheses\n\n");
+*/
 
-    ajFmtPrintF( outfile,"PREDICTED TRANSMEMBRANE SEGMENTS FOR "
-		"ALIGNMENT \n\n");
+    ajReportSetHeader(report, hdr);
+
+    seq = ajSeqNewL(ajSeqsetSize(seqset));
+    ajSeqSetProt(seq);
+    ajSeqAssNameC(seq, "Consensus");
+    ajSeqAssSeq(seq, cons);
+    feat = ajFeattableNewSeq(seq);
+
     for (i=1; i<=antal; i++)
-	ajFmtPrintF( outfile,"  TM %2d: %4d - %4d  (%4.1f)\n",  i,npos[i],
-		    cpos[i],tmap_length1(nr,npos[i],cpos[i]));
-    ajFmtPrintF( outfile,"\n\n");
+    {
+        seqf=ajFeatNewII (feat,npos[i],cpos[i]);
+	ajFmtPrintS( &tmp,"*TM %2d",  i);
+	ajFeatTagAdd (seqf,NULL,tmp);
+    }
+    /*ajFmtPrintF( outfile,"\n\n");*/
+
+    ajReportWrite(report, feat, seq);
+    ajFeattableDel(&feat);
+    ajSeqDel(&seq);
 
     for (j=0; j<=nr; j++)
     {
+	seq = ajSeqsetGetSeq(seqset, j);
+	feat = ajFeattableNewSeq(seq);
 	tmap_refpos2(j, poss);
-	ajFmtPrintF( outfile,"PREDICTED TRANSMEMBRANE SEGMENTS FOR "
-		    "PROTEIN %s\n\n",ajStrStr(ajSeqsetName(seqset, j)));
+	ajStrAssC(&hdr, "");
+	ajReportSetHeader(report, hdr);
 	for (i=1; i<=antal; i++)
-	    ajFmtPrintF( outfile,"  TM %2d: %4d - %4d (%d)\n",i,reln[npos[i]],
-			relc[cpos[i]],relc[cpos[i]]-reln[npos[i]]+1);
-	ajFmtPrintF( outfile,"\n\n");
+	{
+	    seqf=ajFeatNewII (feat,npos[i],cpos[i]);
+	    ajFmtPrintS( &tmp,"*TM %2d",i);
+	    ajFeatTagAdd (seqf,NULL,tmp);
+	}
+	ajReportWrite(report, feat, seq);
+	ajFeattableDel(&feat);
     }
 
     return;
