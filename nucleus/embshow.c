@@ -419,7 +419,8 @@ static void showDelTran(EmbPShowTran* pinfo)
 
     info = *pinfo;
 
-    /*ajSeqDel(&info->transeq); */
+    /* AJB: Why was the seqdel commented out? Memory leak without it */
+    ajSeqDel(&info->transeq);
     AJFREE(*pinfo);
 
     return;
