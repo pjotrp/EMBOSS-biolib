@@ -472,9 +472,21 @@ void ajAlignWriteHeader (AjPAlign thys, AjPSeqset seqset) {
   AjPFile outf = thys->File;
   AjPStr tmpstr=NULL;
 
-  ajFmtPrintF (outf, "########################################\n");
-  ajFmtPrintF (outf, "# Program:  %s\n", ajAcdProgram());
-  ajFmtPrintF (outf, "# Rundate:  %D\n", ajTimeTodayF("log"));
+  if (!thys->Count) {
+    ajFmtPrintF (outf, "########################################\n");
+    ajFmtPrintF (outf, "# Program:  %s\n", ajAcdProgram());
+    ajFmtPrintF (outf, "# Rundate:  %D\n", ajTimeTodayF("log"));
+    if (thys->Multi) {
+      ajFmtPrintF (outf, "########################################\n\n");
+    }
+    else {
+      ajFmtPrintF (outf, "#\n");
+    }
+  }
+
+  if (thys->Multi) {
+    ajFmtPrintF (outf, "#=======================================\n\n");
+  }
 
   ajFmtPrintF (outf, "# Sequence: %S     from: %d   to: %d\n",
 	       alignSeqsetName(thys, seqset),
@@ -488,7 +500,15 @@ void ajAlignWriteHeader (AjPAlign thys, AjPSeqset seqset) {
     ajFmtPrintF (outf, "# %S\n", tmpstr);
     ajFmtPrintF (outf, "#\n");
   }
-  ajFmtPrintF (outf, "########################################\n\n");
+
+  if (thys->Multi) {
+    ajFmtPrintF (outf, "#=======================================\n\n");
+    }
+  else {
+    ajFmtPrintF (outf, "########################################\n\n");
+  }
+
+  ++thys->Count;
 
   return;
 }

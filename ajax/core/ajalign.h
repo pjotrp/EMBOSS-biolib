@@ -23,7 +23,6 @@ extern "C"
 ******************************************************************************/
 
 typedef struct AjSAlign {
-  ajint Count;
   AjPStr Name;
   AjPStr Type;
   AjPStr Formatstr;
@@ -33,9 +32,11 @@ typedef struct AjSAlign {
   AjPFile File;
   AjPStr Header;
   AjBool Showusa;
+  AjBool Multi;
   AjPList Data;
   ajint Nseqs;
   ajint Width;
+  ajint Count;
 } AjOAlign, *AjPAlign;
 
 AjBool       ajAlignDefine (AjPAlign pthys, AjPSeqset seqset);
