@@ -85,10 +85,11 @@ public class BuildProgramMenu
 *
 */
   public BuildProgramMenu(final JPanel p1, final JPanel p2, 
-           final JScrollPane scrollProgForm, final String embossBin,
-           final String envp[], final EmbreoParams mysettings, 
-           final boolean withSoap, final String cwd,
-           final String acdDirToParse, JFrame frame, final AuthPopup splashing)
+           final JPanel pform, final JScrollPane scrollProgForm,
+           final String embossBin, final String envp[],
+           final EmbreoParams mysettings, final boolean withSoap,
+           final String cwd, final String acdDirToParse,
+           JFrame frame, final AuthPopup splashing)
   {
   
     f = frame;
@@ -167,8 +168,6 @@ public class BuildProgramMenu
 
         final String allAcd[] = progs.getProgsList();
         final String allDes[] = progs.getProgDescription();
-//      Component c = p1.getComponent(0);
-//      p1.remove(c);
 
         p1.add(menuBar, BorderLayout.NORTH);
         f.setVisible(true);
@@ -265,6 +264,22 @@ public class BuildProgramMenu
         p1.setPreferredSize(dp1);
         p1.setMaximumSize(dp1);
         p1.setMinimumSize(dp1);
+
+// put on the logo
+        ClassLoader cl = this.getClass().getClassLoader();
+        ImageIcon jlo = new ImageIcon(cl.getResource("images/Jemboss_logo_large.gif"));
+        JLabel jlablogo = new JLabel(jlo); 
+        jlablogo.setPreferredSize(new Dimension(300,300));  //centre's logo
+        JPanel pFront = new JPanel();
+        pFront.setBackground(Color.white);
+        pFront.add(jlablogo);
+
+// ensure fill the screen here as pform is BorderLayout.WEST
+        int pwidth = (int)(f.getSize().getWidth()-p1.getSize().getWidth())-14;
+        Dimension d = new Dimension(pwidth,100);
+        pform.setPreferredSize(d);
+        pform.setMinimumSize(d);
+        p2.add(pFront);
 
         progList.setSelectionBackground(Color.cyan);
 

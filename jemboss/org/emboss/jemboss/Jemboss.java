@@ -129,8 +129,8 @@ public class Jemboss implements ActionListener
     JPanel pform = new JPanel(new BorderLayout());
 
     pform.add(scrollProgForm, BorderLayout.CENTER);
-    pwork.add(pform, BorderLayout.CENTER);
-    pwork.add(p3, BorderLayout.EAST);
+    pwork.add(pform, BorderLayout.WEST);
+    pwork.add(p3, BorderLayout.CENTER);
 
     JMenuBar btmMenu = new JMenuBar();
 
@@ -179,25 +179,12 @@ public class Jemboss implements ActionListener
 // setup the top menu bar
     new SetUpMenuBar(mysettings, f, envp, cwd, withSoap);
 
-// add Jemboss Logo
-
-//  JembossLogo jlogo = new JembossLogo(120,145,55);
-    JLabel jlablogo = new JLabel(new ImageIcon
-                          (cl.getResource("images/Jemboss_logo_large.gif")));
-    JPanel pFront = new JPanel(new BorderLayout());
-    p2.add(pFront);
-    pFront.setBackground(Color.white);
-    Box bacross = new Box(BoxLayout.Y_AXIS);
-    bacross.add(Box.createRigidArea(new Dimension(150,150)));
-    bacross.add(jlablogo);
-    pFront.add(bacross,BorderLayout.CENTER);
-
 // add to Jemboss main frame and locate it center left of screen
     f.getContentPane().add(pmain);
     f.pack();
     f.setLocation(0,((int)d.getHeight()-f.getHeight())/2);
 
-    new BuildProgramMenu(p1,p2,scrollProgForm,embossBin,envp,mysettings,
+    new BuildProgramMenu(p1,p2,pform,scrollProgForm,embossBin,envp,mysettings,
                          withSoap,cwd,acdDirToParse,f,splashing);
 
     f.addWindowListener(new winExit());

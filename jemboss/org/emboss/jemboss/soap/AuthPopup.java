@@ -165,7 +165,7 @@ public class AuthPopup
       promptPanel.add(buttonPanel, BorderLayout.SOUTH);
       splashp.add(promptPanel);
       splashf.getContentPane().add(splashp);
-      splashf.setSize(380,150);
+      splashf.setSize(380,170);
 
       // all added, display the frame
       splashf.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
@@ -173,6 +173,7 @@ public class AuthPopup
     }
     else
     {
+      splashf = new JFrame("Jemboss Launch");
       exitOnDone = true;
     }
 
