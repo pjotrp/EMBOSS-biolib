@@ -177,7 +177,7 @@ section: advanced [
   ]
 
   float: setcase  [
-    default: "0"
+    default: "@( $(sequence.totweight) / 2)"
     information: "Threshold above which the consensus is given
                   in uppercase"
     help: "Sets the threshold for the scores of the positive matches
