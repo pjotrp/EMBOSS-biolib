@@ -2,10 +2,10 @@
 
 SUBDIRS =
 
-bin_PROGRAMS = contacts domainer fraggle hetparse hmmgen interface \
-	pdbparse pdbtosp profgen scopalign scopnr scopparse scoprep \
-	scopreso scopseqs seqalign seqnr seqsearch seqsort seqwords \
-	siggen sigplot sigscan
+bin_PROGRAMS = contacts domainer fraggle hetparse hmmgen interface  \
+	libscan pdbparse pdbtosp profgen scopalign scopnr scopparse \ 
+	scoprep scopreso scopseqs seqalign seqnr seqsearch seqsort  \ 
+	seqwords siggen sigplot sigscan
 
 INCLUDES = -I../../../plplot -I../../../ajax -I../../../nucleus
 
@@ -23,6 +23,7 @@ fraggle_SOURCES = fraggle.c
 hetparse_SOURCES = hetparse.c
 hmmgen_SOURCES = hmmgen.c
 interface_SOURCES = interface.c
+libscan_SOURCES = libscan.c
 pdbparse_SOURCES = pdbparse.c
 pdbtosp_SOURCES = pdbtosp.c
 profgen_SOURCES = profgen.c
