@@ -32,6 +32,13 @@ float: evalue
 	def: "0.001"
 ]
 
+int: maxhits
+[
+	param: Y
+	prompt: "Maximum number of hits"
+	def: 1000
+]
+
 string: submatrix
 [
 	param: Y

@@ -168,7 +168,8 @@
 AjPHitlist psiblasts_ajXyzHitlistPsiblast(AjPScopalg scopalg, AjPFile psif);
 AjPFile psiblasts_ajXyzScopalgPsiblast(AjPScopalg scopalg, AjPFile alignf, 
 				       AjPStr *psiname, ajint niter, 
-				       float evalue, AjPStr database);
+				       ajint maxhits, float evalue, 
+				       AjPStr database);
 
 
 
@@ -197,6 +198,7 @@ int main(int argc, char **argv)
     AjPFile    psif      = NULL;   /* Pointer to psiblast output file*/
     AjPFile    alignf    = NULL;   /* Alignment file pointer */
 
+    ajint      maxhits   = 0;	   /* Maximum number of hits reported by PSIBLAST */          
     ajint      niter     = 0;	   /* Number of PSIBLAST iterations */          
     float      evalue    = 0.0;	   /* Threshold E-value for inclusion in family */
 
@@ -227,6 +229,7 @@ int main(int argc, char **argv)
     align      = ajAcdGetString("align");
     alignextn  = ajAcdGetString("alignextn");
     submatrix  = ajAcdGetString("submatrix");
+    maxhits    = ajAcdGetInt("maxhits");
     niter      = ajAcdGetInt("niter");
     evalue     = ajAcdGetFloat("evalue");
     families   = ajAcdGetOutfile("families");
@@ -288,7 +291,7 @@ int main(int argc, char **argv)
 
 	/* Generate input files for psiblast and callpsiblast */
 	if(!(psif = psiblasts_ajXyzScopalgPsiblast(scopalg, alignf, &psiname, niter, 
-					 evalue, database)))
+						   maxhits, evalue, database)))
 	    ajFatal("Error creating psiblast file");
 	
 		
@@ -350,6 +353,7 @@ int main(int argc, char **argv)
 ** @param [r] alignf     [AjPFile]     Alignment file
 ** @param [r] psiname    [AjPStr *]    Name of psiblast output file created
 ** @param [r] niter      [ajint]       No. psiblast iterations
+** @param [r] maxhits    [ajint]       Maximum number of hits to generate
 ** @param [r] evalue     [float]       Threshold E-value for psiblast
 ** @param [r] database   [AjPStr]      Database name
 **
@@ -362,8 +366,8 @@ int main(int argc, char **argv)
 ** and modify this function accordingly - not urgent.
 ******************************************************************************/
 AjPFile psiblasts_ajXyzScopalgPsiblast(AjPScopalg scopalg, AjPFile alignf, 
-				       AjPStr *psiname, ajint niter, float evalue, 
-				       AjPStr database)
+				       AjPStr *psiname, ajint niter, ajint maxhits, 
+				       float evalue,  AjPStr database)
 {
     AjPStr    line      = NULL;	 /* Temp string for reading alignment file */
     AjPStr    name      = NULL;	 /* Base name of STAMP temp files */
@@ -470,8 +474,8 @@ AjPFile psiblasts_ajXyzScopalgPsiblast(AjPScopalg scopalg, AjPFile alignf,
 
     
     /* Run PSI-BLAST */
-    ajFmtPrintS(&temp,"blastpgp -i %S -B %S -j %d -e %f -d %S > %S\n",
-		seqin, seqsin, niter,evalue, database, *psiname);
+    ajFmtPrintS(&temp,"blastpgp -i %S -B %S -j %d -e %f -b %d -v %d -d %S > %S\n",
+		seqin, seqsin, niter,evalue, maxhits, maxhits, database, *psiname);
     ajFmtPrint("%S\n", temp);
     system(ajStrStr(temp));
     
