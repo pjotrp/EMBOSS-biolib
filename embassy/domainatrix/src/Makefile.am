@@ -15,7 +15,11 @@ endif
 
 if ISSHARED
 if ISAIXIA64
+if LOCALLINK
 AM_CFLAGS = -Wl,-bdynamic -Wl,-brtl -L../../../plplot/.libs -L../../../ajax/.libs -L../../../nucleus/.libs -lajax -lnucleus
+else
+AM_CFLAGS = -Wl,-bdynamic -Wl,-brtl -L${embprefix}/lib -lajax -lnucleus
+endif
 else
 AM_CFLAGS =
 endif

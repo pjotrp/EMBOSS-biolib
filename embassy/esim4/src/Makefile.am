@@ -9,6 +9,18 @@ else
 INCLUDES = -I${embprefix}/include
 endif
 
+if ISSHARED
+if ISAIXIA64
+if LOCALLINK
+AM_CFLAGS = -Wl,-bdynamic -Wl,-brtl -L../../../ajax/.libs -lajax
+else
+AM_CFLAGS = -Wl,-bdynamic -Wl,-brtl -L${embprefix}/lib -lajax
+endif
+else
+AM_CFLAGS =
+endif
+endif
+
 noinst_HEADERS = align.h args.h charvec.h discrim.h dna.h encoding.h \
 	libc.h misc.h poly.h prnt.h psublast.h seq.h sim4b1.h \
 	sim4.h splice.h types.h Xtend1.h

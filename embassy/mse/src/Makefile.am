@@ -11,7 +11,11 @@ endif
 
 if ISSHARED
 if ISAIXIA64
+if LOCALLINK
 AM_CFLAGS = -Wl,-bdynamic -Wl,-brtl -L../../../ajax/.libs -lajax
+else
+AM_CFLAGS = -Wl,-bdynamic -Wl,-brtl -L${embprefix}/lib -lajax
+endif
 else
 AM_CFLAGS =
 endif
