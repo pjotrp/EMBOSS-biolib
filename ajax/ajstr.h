@@ -448,6 +448,7 @@ AjBool     ajStrToLong (const AjPStr thys, ajlong* result);
 AjBool     ajStrToLower (AjPStr* pthis);
 AjBool     ajStrToUpper (AjPStr* pthis);
 void       ajStrTrace (const AjPStr thys);
+void       ajStrTraceChars (const AjPStr thys);
 void       ajStrTraceT (const AjPStr thys, char* title);
 AjBool     ajStrTrim  (AjPStr* pthis, ajint num);
 AjBool     ajStrTrimC (AjPStr* pthis, const char* chars);

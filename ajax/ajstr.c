@@ -3769,6 +3769,49 @@ void ajStrTrace (const AjPStr thys)
     return;
 }
 
+/* @func ajStrTraceChars ******************************************************
+**
+** Checks a string object and reports its contents character by character.
+**
+** @param [r] thys [const AjPStr] String
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajStrTraceChars (const AjPStr thys)
+{
+
+    int i;
+
+    if (!thys)
+    {
+	ajDebug("String tracechars NULL\n");
+	return;
+    }
+  
+    (void) ajStrCheck (thys);
+
+    ajDebug("String tracechars use: %d size: %d len: %d string: ",
+	    thys->Use, thys->Res, thys->Len);
+  
+    if (thys->Len)
+    {
+        ajDebug ("\n");
+        for (i=0; i < thys->Len; i++)
+	{
+	    ajDebug (" '%c' %20x [%d]\n",
+		     thys->Ptr[i], (ajint) thys->Ptr[i], i);
+	}
+    }
+    else
+	ajDebug("<NULL>\n");
+
+    ajDebug("             ptr: %x    charptr: %x\n",
+	    thys, thys->Ptr);
+
+    return;
+}
+
 /* @func ajStrStat ************************************************************
 **
 ** Prints a summary of string usage with debug calls
