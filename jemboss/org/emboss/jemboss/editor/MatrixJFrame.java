@@ -26,6 +26,11 @@ import java.awt.event.*;
 
 import org.emboss.jemboss.gui.filetree.FileEditorDisplay;
 
+/**
+*
+* Display a matrix and list of available scoring matrix files
+*
+*/
 public class MatrixJFrame extends JFrame
 {
   private JScrollPane mScroll =  new JScrollPane();
@@ -33,6 +38,13 @@ public class MatrixJFrame extends JFrame
   private Cursor cdone = new Cursor(Cursor.DEFAULT_CURSOR);
   private Matrix mat;
 
+  /**
+  *
+  * @param m		matrix object
+  * @param statusField	status field for sequence editor
+  * @param alignFrame	associated alignment editor
+  *
+  */
   public MatrixJFrame(Matrix m, final JTextField statusField, 
                       final AlignJFrame alignFrame)
   {
@@ -92,6 +104,12 @@ public class MatrixJFrame extends JFrame
     setSize(500,400);
   }
 
+  /**
+  *
+  * Set the matrix to display 
+  * @param mat	matrix to display
+  *
+  */
   public void setMatrix(Matrix mat)
   {
     FileEditorDisplay fed = new FileEditorDisplay(this,"Matrix",
