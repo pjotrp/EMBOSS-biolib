@@ -147,6 +147,7 @@ static void       alignWriteScore(AjPAlign thys);
 static void       alignWriteSrs(AjPAlign thys);
 static void       alignWriteSrsAny(AjPAlign thys, ajint imax, AjBool mark);
 static void       alignWriteSrsPair(AjPAlign thys);
+static void       alignWriteTCoffee(AjPAlign thys);
 
 static void       alignWriteTrace(AjPAlign thys);
 static void       alignWriteSimple(AjPAlign thys);
@@ -181,6 +182,7 @@ static AlignOFormat alignFormat[] = {
   {"score",     AJTRUE,  AJTRUE,  0, 0, alignWriteScore},
   {"srs",       AJTRUE,  AJTRUE,  0, 0, alignWriteSrs},
   {"srspair",   AJTRUE,  AJTRUE,  2, 2, alignWriteSrsPair},
+  {"tcoffee",   AJTRUE,  AJTRUE,  0, 0, alignWriteTCoffee},
   {NULL, 0, 0, 0, 0, NULL}
 };
 
@@ -1354,7 +1356,106 @@ static void alignWriteSrsAny(AjPAlign thys, ajint imax, AjBool mark)
 }
 
 
+/* @funcstatic alignWriteTCoffee **********************************************
+**
+** Writes an alignment as a T-COFFEE library
+**
+** @param [R] thys [AjPAlign] Alignment object
+** @return [void]
+** @@
+******************************************************************************/
 
+static void alignWriteTCoffee (AjPAlign thys)
+{
+    AjPFile outf = thys->File;
+    int nseq;
+    int nali;
+    AlignPData* pdata;
+    AlignPData data;
+    ajint iali;
+    ajint iseq;
+    ajint i;
+    ajint s1,s2;
+    ajint n1,n2;
+    ajint ilen;
+    AjPStr sseq= NULL;
+    AjPStr sseq1= NULL;
+    AjPStr sseq2= NULL;
+    ajint pidentity=0;
+
+    ajDebug("alignWriteTCoffee\n");
+
+    nseq = thys->Nseqs;
+    nali = ajListToArray (thys->Data, (void***) &pdata);
+    thys->SeqOnly = ajTrue; /* suppress output of tail */
+
+    /* print header */
+    ajFmtPrintF (outf, "%d\n", nseq); /* number of sequences */
+    for (iseq=0; iseq < nseq; iseq++) {
+	ajStrAss (&sseq,ajSeqStr(pdata[0]->Seq[iseq]));
+	ajStrCleanWhite (&sseq);
+	ajStrSubstituteCC (&sseq, "-","");
+	/* <seqname> <seqlen> <sequence> */
+	ajFmtPrintF (outf, "%S %d %S\n",
+		     alignSeqName(thys, iseq),
+		     ajStrLen(sseq),
+		     sseq);
+	ajStrDel(&sseq);
+    }
+
+
+    for (iali = 0; iali<nali; iali++)
+    {
+	data = pdata[iali];
+	ilen = data->Len;
+	pidentity = (int)(0.5 + 100.0 *
+			  (float) data->NumId / (float) data->Len);
+	ajFmtPrintF (outf, "! score=%S\n",data->Score);
+	ajFmtPrintF (outf, "! matrix=%S\n",thys->Matrix);
+	ajFmtPrintF (outf, "! gapopen=%S gapext=%S\n",
+		     thys->GapPen,thys->ExtPen);
+	/* go through all pairwise alignments */
+	for (s1=0; s1<nseq-1; s1++)
+	{
+	    sseq1 = ajSeqStr(pdata[0]->Seq[s1]);
+	    for (s2=s1+1; s2<nseq; s2++) 
+	    {
+		ajFmtPrintF (outf, "#%d %d\n", s1+1, s2+1);
+		n1 = 1; n2 = 1;
+		sseq2 = ajSeqStr(pdata[0]->Seq[s2]);
+
+		for (i=0; i<ilen; i++)
+		{
+		    /* check if position is ungapped */
+		    if (ajStrChar(sseq1,i)>='A' && ajStrChar(sseq2,i)>='A')
+		    {
+			/* output aligned pair,
+			   sequence weight,
+			   residue weight,
+			   match weight
+			   (format as guessed from the T-coffee docs) */
+			ajFmtPrintF (outf, "%d %d %d %d %d\n", 
+				     n1, n2, pidentity, 1, 0);
+		    }
+		    if (ajStrChar(sseq1,i)>='A')
+		    {
+			n1++;
+		    }
+		    if (ajStrChar(sseq2,i)>='A')
+		    {
+			n2++;
+		    }
+		}
+	    }
+	}
+    }
+    /* write footer */
+    ajFmtPrintF (outf, "! SEQ_1_TO_N\n");
+
+    AJFREE (pdata);
+
+    return;
+}
 
 /* @func ajAlignDefine ********************************************************
 **
