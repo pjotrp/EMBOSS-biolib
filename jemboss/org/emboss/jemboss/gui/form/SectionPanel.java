@@ -542,7 +542,7 @@ public class SectionPanel
     Box bxlabP = new Box(BoxLayout.X_AXIS);
 
     final ApplicationNamePanel namePanel = new ApplicationNamePanel(
-                                              appName,10,18,19);
+                                              appName,10,18,18);
     bxlabP.add(namePanel);
     bxlabP.add(Box.createHorizontalGlue());
     bylabP.add(bxlabP);
