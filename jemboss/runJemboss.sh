@@ -10,9 +10,6 @@ export LIB
 CLASSPATH=${JEMBOSS_HOME}:$LIB/JembossPrintAlignment.jar
 CLASSPATH=${CLASSPATH}:$LIB/jakarta-regexp-1.2.jar
 CLASSPATH=${CLASSPATH}:$LIB/jalview.jar
-CLASSPATH=${CLASSPATH}:$LIB/jnet.jar
-CLASSPATH=${CLASSPATH}:$LIB/jcert.jar
-CLASSPATH=${CLASSPATH}:$LIB/jsse.jar
 CLASSPATH=${CLASSPATH}:$LIB/xerces.jar
 CLASSPATH=${CLASSPATH}:$LIB/mail.jar
 CLASSPATH=${CLASSPATH}:$LIB/activation.jar
