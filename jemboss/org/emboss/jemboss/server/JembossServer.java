@@ -632,14 +632,18 @@ public class JembossServer
   {
     Vector dsr = new Vector();
 
-    project = tmproot.concat(project);
-    File projectDir = new File(project);
-    File resFiles[] = projectDir.listFiles();
-
-    for(int i=0;i<resFiles.length;i++)
-      resFiles[i].delete();
+    StringTokenizer st = new StringTokenizer(project,"\n");
+    while(st.hasMoreTokens()) 
+    {
+      String proj = tmproot.concat(fs+st.nextToken());
+    
+      File projectDir = new File(proj);
+      File resFiles[] = projectDir.listFiles();
+      for(int i=0;i<resFiles.length;i++)
+        resFiles[i].delete();
       
-    projectDir.delete();
+      projectDir.delete();
+    }
 
     dsr.add("status");
     dsr.add("0");
