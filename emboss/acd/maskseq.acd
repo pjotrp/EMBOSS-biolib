@@ -12,6 +12,7 @@ sequence: sequence  [
 endsection: input
 
 section: required [ info: "required Section" type: page ]
+
 range: regions  [
   required: "Y"
   default: ""
@@ -20,19 +21,27 @@ range: regions  [
   expected: "None"
 ]
 
-endsection: required
-
-section: output [ info: "output Section" type: page ]
-seqout: outseq  [
-  parameter: "Y"
+boolean: tolower [
+  optional: "Y"
+  default: "N"
+  information: "Change masked region to lower-case"
+  help: "The region can be 'masked' by converting the sequence characters to lower-case, some non-EMBOSS programs e.g. fasta can interpret this as a masked region. The sequence is unchanged apart from the case change. You might like to ensure that the whole sequence is in upper-case before masking the specified regions to lower-case by using the '-supper' flag."
 ]
 
 string: maskchar  [
-  optional: "Y"
+  optional: "@($(tolower)?N:Y)""
   default: "@($(sequence.protein)?X:N)"
   information: "Character to mask with"
-  help: "Character to use when masking. \ Default is 'X' for protein sequences, 'N' for nucleic sequences."
+  help: "Character to use when masking. \ Default is 'X' for protein sequences, 'N' for nucleic sequences. \ If the mask character is set to be the SPACE character or a null character, then the sequence is 'masked' by changing it to lower-case, just as with the '-lowercase' flag."
   expected: "'X' for protein, 'N' for nucleic"
+]
+
+endsection: required
+
+section: output [ info: "output Section" type: page ]
+
+seqout: outseq  [
+  parameter: "Y"
 ]
 
 endsection: output
