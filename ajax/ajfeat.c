@@ -212,7 +212,7 @@ static FeatOInFormat featInFormatDef[] = {
    featReadSwiss,   featRegInitSwiss,   featDelRegSwiss},
   {"sw",            AJFALSE,             AJTRUE,       AJFALSE,
    featReadSwiss,   featRegInitSwiss,   featDelRegSwiss},
-  {NULL, NULL, NULL, NULL, NULL, NULL}
+  {NULL, AJFALSE, AJFALSE, AJFALSE, NULL, NULL, NULL}
 };
 
 static FeatPInFormat featInFormat = featInFormatDef;
@@ -3832,7 +3832,7 @@ static AjBool featVocabRead (char* name, AjPTable TypeTable,
     ajRegFree(&ValExp);
     ajRegFree(&TagExp);
     ajRegFree(&VocabExp);
-    return NULL;
+    return ajFalse;
   }
   else{
     ajDebug("OKAY\n");
