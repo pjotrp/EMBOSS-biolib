@@ -3809,7 +3809,7 @@ IN
 FI stderr
 FC = 2
 FI hsts1.pal
-FZ = 1380
+FZ = 1383
 FP /^Palindromes:\n126   caaaaaaaaaaaaaaaa   142\n/
 FP /^217   gtttttttttttttttt   201\n/
 FP /^127   aaaaaaaaaaaaaaaagaccgccagggct   155\n/
