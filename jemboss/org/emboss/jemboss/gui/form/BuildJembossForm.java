@@ -793,7 +793,7 @@ public class BuildJembossForm implements ActionListener
           {
             MakeFileSafe sf = new MakeFileSafe(fn);
             sfn = sf.getSafeFileName();
-            filesToMove.put(sfn,cp);
+            filesToMove.put(sfn,cp.getBytes());
             options = options.concat(" -" + val + " " + sfn);
 
           }
