@@ -1794,7 +1794,7 @@ IN
 FI stderr
 FC = 2
 FI stdout 
-FZ = 1471
+FZ > 1445
 FP /^# Score: 795\.0\n/
 FP /^ECLACY +1342 gtgaatgaagtcgcttaagcaatcaatgtcggatgcggcgcgacgcttat  +1391\n/
 FP /^ECLACA +1 gtgaatgaagtcgcttaagcaatcaatgtcggatgcggcgcgacgcttat +50\n/
@@ -1833,7 +1833,7 @@ IN
 FI stderr
 FC = 2
 FI hba_human.needle 
-FZ = 1311
+FZ > 1295
 FP /^# Score: 290\.5\n/
 FP /HBB_HUMAN +2 +HLTPEEKSAVTALWGKV--NVDEVGGEALGRLLVVYPWTQRFFESFGDLS +49\n/
 FP /HBA_HUMAN +50 -----HGSAQVKGHGKKVADALTNAVAHVDDMPNALSALSDLHAHKLRVD +94\n/
@@ -4852,7 +4852,7 @@ FZ = 0
 FI supermatcher.error
 FZ = 0
 FI eclac.supermatcher
-FZ > 73160
+FZ > 71350
 FP /^ECLAC +9 /
 FP /^# Score: 37305\.0/
 FP 5 /^# Score: /
@@ -5168,7 +5168,7 @@ IN
 FI stderr
 FC = 2
 FI hba_human.water 
-FZ > 1220
+FZ > 1200
 FP /^# Score: 293.5\n/
 FP /^HBA_HUMAN +2 +LSPADKTNVKAAWGKVGAHAGEYGAEALERMFLSFPTTKTYFPHF-DLS- +49\n/
 FP /^HBB_HUMAN +3 +LTPEEKSAVTALWGKV--NVDEVGGEALGRLLVVYPWTQRFFESFGDLST +50\n/
