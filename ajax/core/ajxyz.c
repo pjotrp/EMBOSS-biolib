@@ -22,108 +22,232 @@
 ** Boston, MA  02111-1307, USA.
 ********************************************************************/
 
+
+/* ==================================================================== */
+/* ========================== include files =========================== */
+/* ==================================================================== */
+
 #include <math.h>
 #include "ajax.h"
 
 
+/* ==================================================================== */
+/* ========================== private data ============================ */
+/* ==================================================================== */
+
+/* ==================================================================== */
+/* ======================== private functions ========================= */
+/* ==================================================================== */
 
 
+/* ==================================================================== */
+/* ========================= constructors ============================= */
+/* ==================================================================== */
 
-AjBool   ajCpdbWriteAll(AjPFile outf, AjPPdb pdb)
+/* @section Protein Constructors ********************************************
+**
+** All constructors return a new item by pointer. It is the responsibility
+** of the user to first destroy any previous item. The target pointer
+** does not need to be initialised to NULL, but it is good programming practice
+** to do so anyway.
+**
+** The range of constructors is provided to allow flexibility in how
+** applications can define new items.
+**
+******************************************************************************/
+
+/* @func ajPdbNew ************************************************************
+**
+** Pdb object constructor. Fore-knowledge of the number of chains and 
+** models is required. This is normally called by the Cpdb reading
+** routine.
+**
+** @param [r] chains [int] Number of chains in this pdb entry
+** @param [r] models [int] Number of models per chain
+**
+** @return [AjPPdb] Pointer to a pdb object
+** @@
+******************************************************************************/
+
+AjPPdb ajPdbNew(int chains, int models)
 {
-    int      x;
-    int      y;
-    int      offset;
-    int      done_first_co_line;
-    AjIList  iter=NULL;
-    AjPAtom  tmp=NULL;
+    AjPPdb ret=NULL;
+    int i;
     
+    AJNEW0(ret);
+  
 
-    ajFmtPrintF(outf, "%-5s%S\n", "ID", pdb->Pdb);
-    ajFmtPrintF(outf, "XX\n");
+    ret->Pdb = ajStrNew();
+    ret->Compnd = ajStrNew();
+    ret->Source = ajStrNew();
 
-    ajFmtPrintSplit(outf,pdb->Compnd,"DE   ",75," \t\r\n");
-    ajFmtPrintF(outf, "XX\n");
+    AJCNEW0(ret->Chains,chains);
+    for(i=0;i<chains;++i)
+	ret->Chains[i] = ajChainNew(models);
+    
+    return ret;
+}
 
-    ajFmtPrintSplit(outf,pdb->Source,"OS   ",75," \t\r\n");
-    ajFmtPrintF(outf, "XX\n");
+/* @func ajChainNew ***********************************************************
+**
+** Chain object constructor. Fore-knowledge of the number of models is 
+** required. This is normally called by the ajPdbNew function
+**
+** @param [r] models [int] Number of models per chain
+**
+** @return [AjPChain] Pointer to a chain object
+** @@
+******************************************************************************/
 
-    ajFmtPrintF(outf, "%-5sMETHOD ", "EX");
-    if(pdb->Method == XRAY)
-	ajFmtPrintF(outf, "xray; ");	
-    else
-	ajFmtPrintF(outf, "nmr_or_model; ");		
-    ajFmtPrintF(outf, "RESO %.2f; NMOD %d; NCHA %d;\n", pdb->Reso,
-		pdb->Nmod, pdb->Nchn);
+AjPChain ajChainNew(int models)
+{
+  AjPChain ret=NULL;
+  int val;
+  
+  AJNEW0(ret);
 
-    for(x=0;x<pdb->Nchn;x++)
-    { 
-	ajFmtPrintF(outf, "XX\n");	
-	ajFmtPrintF(outf, "%-5s[%d]\n", "CN", x+1);	
-	ajFmtPrintF(outf, "XX\n");	
-	ajFmtPrintF(outf, "%-5sID %c; NR %d; NH %d; NW %d;\n", 
-		    "IN", 
-		    pdb->Chains[x]->Id,
-		    pdb->Chains[x]->Nres,
-		    pdb->Chains[x]->Nhet,
-		    pdb->Chains[x]->Nwat);
-	ajFmtPrintF(outf, "XX\n");	
-	ajSeqWriteCdb(outf, pdb->Chains[x]->Seq);
-    }
+  ret->Seq    = ajStrNewC("");
+  ret->Atoms  = ajListNew();
+  ret->Models = ajIntNewL(models);  
 
-    ajFmtPrintF(outf, "XX\n");	
+  return ret;
+}
 
-    for(x=1;x<=pdb->Nmod;x++)
-    {
-	for(y=0;y<pdb->Nchn;y++)
-	{
-	    done_first_co_line=0;
-	    offset=0;	
-	    
-	    iter=ajListIter(pdb->Chains[y]->Atoms);
-	    while(ajListIterMore(iter))
-	    {
-		tmp=(AjPAtom)ajListIterNext(iter);
-		if(tmp->Mod!=x)
-		    continue;
-		else	
-		{
-		    if(!done_first_co_line)
-		    {
-			ajIntPut(&pdb->Chains[y]->Models, x-1, offset);	
-			done_first_co_line=1;
-		    }
-		    offset++;
-		    
-		    ajFmtPrintF(outf, "%-6s%-6d%-6d%-6c%-6d%-6d%-5c%-6S%-6S"
-				"%-9.3f%-9.3f%-9.3f\n", 
-				"CO", 
-				tmp->Mod, 
-				tmp->Chn, 
-				tmp->Type, 
-				tmp->Idx, 
-				tmp->Pdb, 
-				tmp->Id1, 
-				tmp->Id3,
-				tmp->Atm, 
-				tmp->X, 
-				tmp->Y, 
-				tmp->Z);
-		}
-	    }
-	    ajListIterFree(iter);			
-	} 	
-    }
-    ajFmtPrintF(outf, "//\n");    
+/* @func ajAtomNew ***********************************************************
+**
+** Constructor for atom co-ordinates.
+** This is normally called by the ajChainNew function
+**
+** @return [AjPAtom] Pointer to an atom object
+** @@
+******************************************************************************/
+
+AjPAtom ajAtomNew(void)
+{
+    AjPAtom ret=NULL;
+
+    AJNEW0(ret);
+    
+    ret->Id3 = ajStrNew();
+    ret->Atm = ajStrNew();
+
+    return ret;
+}
+
+/* ==================================================================== */
+/* ========================= Destructors ============================== */
+/* ==================================================================== */
+
+
+
+/* @func ajPdbDel ***********************************************************
+**
+** Destructor for pdb object.
+**
+** @param [w] thys [AjPPdb*] Pdb object pointer
+**
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajPdbDel(AjPPdb *thys)
+{
+    AjPPdb pthis = *thys;
+    
+    int nc=0;
+    int i=0;
+
+    if(!pthis || !thys)
+	return;
+    
+    nc = pthis->Nchn;
+
+    ajStrDel(&pthis->Pdb);
+    ajStrDel(&pthis->Compnd);
+    ajStrDel(&pthis->Source);
+    
+    for(i=0;i<nc;++i)
+	ajChainDel(&pthis->Chains[i]);
+    AJFREE(pthis);
+
+    return;
 }
 
 
-/*
-KNOWN FEATURES:
-Only ever returns ajTrue.  Needs modifying to return ajFalse
-in case of bad file format, failed file read etc.
-*/  
-AjBool   ajCpdbRead(AjPStr str, AjPPdb *pdb)
+/* @func ajChainDel ***********************************************************
+**
+** Destructor for chain object.
+**
+** @param [w] thys [AjPChain*] Chain object pointer
+**
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajChainDel(AjPChain *thys)
+{
+    AjPChain pthis = *thys;
+    AjPAtom atm=NULL;
+
+    if(!thys || !pthis)
+	return;
+    
+    while(ajListPop(pthis->Atoms,(void **)&atm))
+	ajAtomDel(&atm);
+
+    ajListDel(&pthis->Atoms);
+
+    ajIntDel(&pthis->Models);  
+    
+    AJFREE(pthis);
+
+    return;
+}
+
+/* @func ajAtomDel ***********************************************************
+**
+** Destructor for atom co-ordinates.
+**
+** @param [w] thys [AjPAtom*] Atom object pointer
+**
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajAtomDel(AjPAtom *thys)
+{
+    AjPAtom pthis = *thys;
+
+    if(!thys || !pthis)
+	return;
+
+    ajStrDel(&pthis->Id3);
+    ajStrDel(&pthis->Atm);
+
+    AJFREE(pthis);
+
+    return;
+}
+
+
+
+/* ==================================================================== */
+/* ======================== Exported functions ======================== */
+/* ==================================================================== */
+
+/* @func ajCpdbRead ***********************************************************
+**
+** Reads a Cpdb database entry and returns a filled Pdb object.
+** Needs modifying to return ajFalse in case of bad format etc
+**
+** @param [r] name [AjPStr] Entry name
+** @param [w] thys [AjPPdb*] Pdb object pointer
+**
+** @return [AjBool] True on success
+** @@
+******************************************************************************/
+
+AjBool ajCpdbRead(AjPStr name, AjPPdb *thys)
 {
     AjPFile   inf=NULL;
     AjPStr    fn=NULL;
@@ -152,12 +276,12 @@ AjBool   ajCpdbRead(AjPStr str, AjPPdb *pdb)
     int   done_first_co_line=0;
     
 
-    fn = ajStrNewC(ajStrStr(str));
+    fn = ajStrNewC(ajStrStr(name));
     ajFileDataNew(fn,&inf);
     if(!inf)
     {
 	(void) ajStrAssC(&fn,"CPDB/");
-	(void) ajStrAppC(&fn,ajStrStr(str));
+	(void) ajStrAppC(&fn,ajStrStr(name));
 	ajFileDataNew(fn,&inf);
 	if(!inf)
 	{
@@ -252,25 +376,25 @@ AjBool   ajCpdbRead(AjPStr str, AjPPdb *pdb)
 	    
 	    ajStrToInt(token,&ncha);
 
-	    *pdb = ajPdbNew(ncha, nmod);
+	    *thys = ajPdbNew(ncha, nmod);
 
-	    ajStrAssS(&(*pdb)->Pdb,idstr);
-	    ajStrAssS(&(*pdb)->Compnd,destr);
-	    ajStrAssS(&(*pdb)->Source,osstr);
+	    ajStrAssS(&(*thys)->Pdb,idstr);
+	    ajStrAssS(&(*thys)->Compnd,destr);
+	    ajStrAssS(&(*thys)->Source,osstr);
 	    if(ajStrMatchC(xstr,"xray"))
-		(*pdb)->Method = XRAY;
+		(*thys)->Method = XRAY;
 	    else
-		(*pdb)->Method = NMR;
+		(*thys)->Method = NMR;
 
-	    (*pdb)->Reso = reso;
-	    (*pdb)->Nmod = nmod;
-	    (*pdb)->Nchn = ncha;
+	    (*thys)->Reso = reso;
+	    (*thys)->Nmod = nmod;
+	    (*thys)->Nchn = ncha;
 
 	    /*Set the offests for the first model of each chain to zero */
 	    /*
 	    for(x=0; x<ncha; x++)
-		ajIntPut(&(*pdb)->Chains[x]->Models, 0, 0);	
-*/
+		ajIntPut(&(*thys)->Chains[x]->Models, 0, 0);	
+	     */
 
 	}
 	
@@ -281,16 +405,16 @@ AjBool   ajCpdbRead(AjPStr str, AjPPdb *pdb)
 	    ajStrToken(&token,&handle,NULL);
 	    ajStrToken(&token,&handle,NULL);
 	    ajStrToken(&token,&handle,NULL); /* id value */
-	    (*pdb)->Chains[nc-1]->Id=*ajStrStr(token);
+	    (*thys)->Chains[nc-1]->Id=*ajStrStr(token);
 	    ajStrToken(&token,&handle,NULL);
 	    ajStrToken(&token,&handle,NULL); /* residues */
-	    ajStrToInt(token,&(*pdb)->Chains[nc-1]->Nres);
+	    ajStrToInt(token,&(*thys)->Chains[nc-1]->Nres);
 	    ajStrToken(&token,&handle,NULL);
 	    ajStrToken(&token,&handle,NULL); /* hetatm */
-	    ajStrToInt(token,&(*pdb)->Chains[nc-1]->Nhet);
+	    ajStrToInt(token,&(*thys)->Chains[nc-1]->Nhet);
 	    ajStrToken(&token,&handle,NULL);
 	    ajStrToken(&token,&handle,NULL); /* water */
-	    ajStrToInt(token,&(*pdb)->Chains[nc-1]->Nwat);
+	    ajStrToInt(token,&(*thys)->Chains[nc-1]->Nwat);
 	    continue;
 	}
   
@@ -300,8 +424,8 @@ AjBool   ajCpdbRead(AjPStr str, AjPPdb *pdb)
 	if(ajStrPrefixC(line,"SQ"))
 	{
 	    while(ajFileReadLine(inf,&line) && !ajStrPrefixC(line,"XX"))
-		ajStrAppC(&(*pdb)->Chains[nc-1]->Seq,ajStrStr(line));
-	    ajStrCleanWhite(&(*pdb)->Chains[nc-1]->Seq);
+		ajStrAppC(&(*thys)->Chains[nc-1]->Seq,ajStrStr(line));
+	    ajStrCleanWhite(&(*thys)->Chains[nc-1]->Seq);
 	    continue;
 	}
     
@@ -333,9 +457,9 @@ AjBool   ajCpdbRead(AjPStr str, AjPPdb *pdb)
 	    {
 		if(last_mod < nmod)
 		{
-		    val=ajIntGet((*pdb)->Chains[last_chn-1]->Models,
+		    val=ajIntGet((*thys)->Chains[last_chn-1]->Models,
 				 last_mod-1); 	
-		    ajIntPut(&(*pdb)->Chains[last_chn-1]->Models, last_mod,
+		    ajIntPut(&(*thys)->Chains[last_chn-1]->Models, last_mod,
 			     offset+val);
 		}
 		offset=0;
@@ -376,7 +500,7 @@ AjBool   ajCpdbRead(AjPStr str, AjPPdb *pdb)
 	    ajStrToken(&token,&handle,NULL);
 	    ajStrToFloat(token,&atom->Z);
 
-	    ajListPushApp((*pdb)->Chains[chn-1]->Atoms,(void *)atom);
+	    ajListPushApp((*thys)->Chains[chn-1]->Atoms,(void *)atom);
 	}
 	
     }
@@ -394,111 +518,103 @@ AjBool   ajCpdbRead(AjPStr str, AjPPdb *pdb)
     return ajTrue;
 }
 
+/* @func ajCpdbWriteAll ******************************************************
+**
+** Write contents of a Pdb object to an output file
+**
+** @param [w] outf [AjPFile] Output file stream
+** @param [r] thys [AjPPdb] Pdb object
+**
+** @return [AjBool] True on success
+** @@
+******************************************************************************/
 
-
-
-
-
-
-
-AjPAtom ajAtomNew(void)
+AjBool ajCpdbWriteAll(AjPFile outf, AjPPdb thys)
 {
-    AjPAtom ret=NULL;
-
-    AJNEW0(ret);
+    int      x;
+    int      y;
+    int      offset;
+    int      done_first_co_line;
+    AjIList  iter=NULL;
+    AjPAtom  tmp=NULL;
     
-    ret->Id3 = ajStrNew();
-    ret->Atm = ajStrNew();
 
-    return ret;
-}
+    ajFmtPrintF(outf, "%-5s%S\n", "ID", thys->Pdb);
+    ajFmtPrintF(outf, "XX\n");
 
+    ajFmtPrintSplit(outf,thys->Compnd,"DE   ",75," \t\r\n");
+    ajFmtPrintF(outf, "XX\n");
 
+    ajFmtPrintSplit(outf,thys->Source,"OS   ",75," \t\r\n");
+    ajFmtPrintF(outf, "XX\n");
 
+    ajFmtPrintF(outf, "%-5sMETHOD ", "EX");
+    if(thys->Method == XRAY)
+	ajFmtPrintF(outf, "xray; ");	
+    else
+	ajFmtPrintF(outf, "nmr_or_model; ");		
+    ajFmtPrintF(outf, "RESO %.2f; NMOD %d; NCHA %d;\n", thys->Reso,
+		thys->Nmod, thys->Nchn);
 
-void ajAtomDel(AjPAtom *thys)
-{
-    ajStrDel(&(*thys)->Id3);
-    ajStrDel(&(*thys)->Atm);
+    for(x=0;x<thys->Nchn;x++)
+    { 
+	ajFmtPrintF(outf, "XX\n");	
+	ajFmtPrintF(outf, "%-5s[%d]\n", "CN", x+1);	
+	ajFmtPrintF(outf, "XX\n");	
+	ajFmtPrintF(outf, "%-5sID %c; NR %d; NH %d; NW %d;\n", 
+		    "IN", 
+		    thys->Chains[x]->Id,
+		    thys->Chains[x]->Nres,
+		    thys->Chains[x]->Nhet,
+		    thys->Chains[x]->Nwat);
+	ajFmtPrintF(outf, "XX\n");	
+	ajSeqWriteCdb(outf, thys->Chains[x]->Seq);
+    }
 
-    AJFREE(*thys);
+    ajFmtPrintF(outf, "XX\n");	
 
-    return;
-}
+    for(x=1;x<=thys->Nmod;x++)
+    {
+	for(y=0;y<thys->Nchn;y++)
+	{
+	    done_first_co_line=0;
+	    offset=0;	
+	    
+	    iter=ajListIter(thys->Chains[y]->Atoms);
+	    while(ajListIterMore(iter))
+	    {
+		tmp=(AjPAtom)ajListIterNext(iter);
+		if(tmp->Mod!=x)
+		    continue;
+		else	
+		{
+		    if(!done_first_co_line)
+		    {
+			ajIntPut(&thys->Chains[y]->Models, x-1, offset);	
+			done_first_co_line=1;
+		    }
+		    offset++;
+		    
+		    ajFmtPrintF(outf, "%-6s%-6d%-6d%-6c%-6d%-6d%-5c%-6S%-6S"
+				"%-9.3f%-9.3f%-9.3f\n", 
+				"CO", 
+				tmp->Mod, 
+				tmp->Chn, 
+				tmp->Type, 
+				tmp->Idx, 
+				tmp->Pdb, 
+				tmp->Id1, 
+				tmp->Id3,
+				tmp->Atm, 
+				tmp->X, 
+				tmp->Y, 
+				tmp->Z);
+		}
+	    }
+	    ajListIterFree(iter);			
+	} 	
+    }
+    ajFmtPrintF(outf, "//\n");    
 
-
-
-
-AjPChain ajChainNew(int n)
-{
-  AjPChain ret=NULL;
-  int val;
-  
-  AJNEW0(ret);
-
-  ret->Seq    = ajStrNewC("");
-  ret->Atoms  = ajListNew();
-  ret->Models = ajIntNewL(n);  
-
-  return ret;
-}
-
-
-
-
-void ajChainDel(AjPChain *thys)
-{
-    AjPAtom atm=NULL;
-    
-    while(ajListPop((*thys)->Atoms,(void **)&atm))
-	ajAtomDel(&atm);
-
-    ajListDel(&(*thys)->Atoms);
-
-    ajIntDel(&(*thys)->Models);  
-    
-    AJFREE(*thys);
-
-    return;
-}
-
-
-
-AjPPdb ajPdbNew(int n, int m)
-{
-    AjPPdb ret=NULL;
-    int i;
-    
-    AJNEW0(ret);
-  
-
-    ret->Pdb = ajStrNew();
-    ret->Compnd = ajStrNew();
-    ret->Source = ajStrNew();
-
-    AJCNEW0(ret->Chains,n);
-    for(i=0;i<n;++i)
-	ret->Chains[i] = ajChainNew(m);
-    
-    return ret;
-}
-
-
-
-void ajPdbDel(AjPPdb *thys)
-{
-    int nc=0;
-    int i=0;
-    
-    nc = (*thys)->Nchn;
-
-    ajStrDel(&(*thys)->Pdb);
-    ajStrDel(&(*thys)->Compnd);
-    ajStrDel(&(*thys)->Source);
-    
-    for(i=0;i<nc;++i)
-	ajChainDel(&(*thys)->Chains[i]);
-    AJFREE(*thys);
-
-    return;
+    return ajTrue;
 }

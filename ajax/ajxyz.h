@@ -6,8 +6,8 @@ extern "C"
 #ifndef ajxyz_h
 #define ajxyz_h
 
-#define XRAY  0    /*Structure was determined by X-ray crystallography*/
-#define NMR   1    /*Structure was determined by NMR or is a model*/
+#define XRAY  0    /* Structure was determined by X-ray crystallography */
+#define NMR   1    /* Structure was determined by NMR or is a model     */
 #define OUT_BLK       75
 
 
@@ -30,7 +30,10 @@ typedef struct AjSAtom
   float      X;          /*X coordinate*/
   float      Y;          /*Y coordinate*/
   float      Z;          /*Z coordinate*/
-}AjSAtom, *AjPAtom;
+} AjSAtom, *AjPAtom;
+
+
+
 
 typedef struct AjSChain
 {
@@ -45,7 +48,7 @@ typedef struct AjSChain
   AjPList    Atoms;      /*List of Atoms */
   AjPInt     Models;     /*Offsets to the first first atom of each model*/
                          /*in the chain. */
-}AjOChain, *AjPChain;
+} AjOChain, *AjPChain;
 
 
 
@@ -79,13 +82,13 @@ typedef struct AjSPdb
 
 AjPAtom  ajAtomNew(void);
 void     ajAtomDel(AjPAtom *thys);
-AjPChain ajChainNew(int n);
+AjPChain ajChainNew(int models);
 void     ajChainDel(AjPChain *thys);
-AjPPdb   ajPdbNew(int n, int m);
+AjPPdb   ajPdbNew(int chains, int models);
 void     ajPdbDel(AjPPdb *thys);
 
-AjBool   ajCpdbRead(AjPStr str, AjPPdb *thys);
-AjBool   ajCpdbWriteAll(AjPFile out, AjPPdb pdb);
+AjBool   ajCpdbRead(AjPStr name, AjPPdb *thys);
+AjBool   ajCpdbWriteAll(AjPFile out, AjPPdb thys);
 
 
 #endif
