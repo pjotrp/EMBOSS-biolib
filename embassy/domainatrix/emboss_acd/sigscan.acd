@@ -20,7 +20,7 @@ infile: sigin  [
 ]
 
 seqall: database  [
-  paramater: "Y"
+  parameter: "Y"
   prompt: "Name of swissprot sequence database to search"
 ]
 
