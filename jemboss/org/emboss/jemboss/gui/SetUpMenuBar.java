@@ -79,7 +79,11 @@ public class SetUpMenuBar
         try
         {
           JFrame fres = new JFrame();
-          fres.getContentPane().add(new RemoteFileTreePanel(mysettings));
+          RemoteFileTreePanel rtree = new RemoteFileTreePanel(mysettings,false);
+          fres.getContentPane().add(rtree);
+          JMenuBar rtreeBar = new JMenuBar();
+          rtreeBar.add(rtree.getRootSelect());
+          fres.setJMenuBar(rtreeBar);
           fres.pack();
           fres.setVisible(true);
         }
