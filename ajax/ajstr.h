@@ -386,6 +386,8 @@ AjBool     ajStrReplace  (AjPStr* pthis, ajint pos1,
 			  const AjPStr overwrite, ajint len);
 AjBool     ajStrReplaceC (AjPStr* pthis, ajint pos1,
 			  const char* overwrite, ajint len);
+AjBool     ajStrReplaceK (AjPStr* pthis, ajint pos1,
+			  char overwrite, ajint len);
 ajint      ajStrRef(const AjPStr thys);
 #define    MAJSTRREF(str) str->Use
 void       ajStrRemoveHtml(AjPStr *thys);

@@ -1538,6 +1538,44 @@ AjBool ajStrReplaceC ( AjPStr* pthis, ajint begin, const char* overwrite,
   return ajTrue;
 }
 
+/* @func ajStrReplaceK ********************************************************
+** 
+** Replace string at pos1 and add len copies of character overwrite.
+** Or to the end of the existing string
+**
+** @param [uP] pthis [AjPStr*] Target string
+** @param [r] begin [ajint] Number of characters of target string to keep.
+** @param [r] overwrite [const char] Character to replace.
+** @param [r] ilen [ajint] Number of characters to copy from text.
+** @return [AjBool] ajTrue on success
+** @@
+******************************************************************************/
+
+AjBool ajStrReplaceK ( AjPStr* pthis, ajint begin, const char overwrite,
+		       ajint ilen) {
+
+  AjPStr thys;
+  ajint ibegin;
+  ajint iend;
+  char* ptr1 = 0;
+
+  (void) ajStrMod (pthis);
+  thys = *pthis;
+
+  ibegin = ajStrPos (thys, begin);
+  iend = ibegin + ilen;
+
+  if(iend  > thys->Len) /* can't fit */
+    return ajFalse;
+
+  ptr1 = &thys->Ptr[ibegin];
+  
+  for(;ilen>0;ilen--) {
+    *ptr1++ = overwrite;
+  }
+  return ajTrue;
+}
+
 /* @func ajStrJoin ************************************************************
 ** 
 ** Cut down string at pos1 and add string2 from position pos2.
