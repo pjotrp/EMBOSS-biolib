@@ -3,11 +3,11 @@
 #
 
 echo
-echo "*** Run this script from the installedi jemboss utils directory."
-echo "*** If you are using SSL the script will use the client.keystore"
-echo "*** in the $JEMBOSS/resources directory to create client.jar"
-echo "*** which is wrapped with the Jemboss client in Jemboss.jar."
-echo "*** Press any key to continue."
+echo '*** Run this script from the installed jemboss utils directory.'
+echo '*** If you are using SSL the script will use the client.keystore'
+echo '*** in the $JEMBOSS/resources directory to create client.jar'
+echo '*** which is wrapped with the Jemboss client in Jemboss.jar.'
+echo '*** Press any key to continue.'
 read
 
 cd ..
@@ -159,9 +159,14 @@ echo '       </jnlp>'                                   >> $JNLP
 #
  
 echo
-echo "Created the signed jar files, index.html and $JNLP"
-echo "in the directory ../jnlp."
-echo "Please edit the codebase line in $JNLP."
-echo "Also, edit the 'Click here' line in index.html to point href at $JNLP."
+echo "*** Created the signed jar files, index.html and $JNLP "
+echo "*** in the directory $CWPWD/jnlp."
+echo "*** "
+echo "*** Please edit the codebase line in $JNLP."
+echo "*** Also, edit the 'Click here' line in index.html to point"
+echo "*** href at $JNLP."
+echo "*** The 'jnlp' directory will then need to be added to your HTTP"
+echo "*** server configuration file or move it into the www data"
+echo "*** directories."
 echo
 
