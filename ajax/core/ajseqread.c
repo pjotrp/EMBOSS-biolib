@@ -155,10 +155,9 @@ static SeqOInFormat seqInFormatDef[] = { /* AJFALSE = ignore (duplicates) */
   {"swissprot",  AJTRUE,  seqReadSwiss},
   {"nbrf",       AJTRUE,  seqReadNbrf},	/* test before NCBI */
   {"pir",        AJFALSE, seqReadNbrf},	/* alias for nbrf */
-  {"fasta",      AJTRUE,  seqReadFasta},/* test before NCBI so
-					   it is the default 'fasta' format */
-  {"ncbi",       AJTRUE,  seqReadNcbi},
-  {"pearson",    AJFALSE, seqReadFasta}, /* alias for fasta */
+  {"fasta",      AJTRUE,  seqReadNcbi}, /* alias for ncbi, preferred name */
+  {"ncbi",       AJFALSE, seqReadNcbi}, /* test before pearson */
+  {"pearson",    AJTRUE,  seqReadFasta}, /* plain fasta can read bad files */
   {"genbank",    AJTRUE,  seqReadGenbank},
   {"gb",         AJFALSE, seqReadGenbank}, /* alias for genbank */
   {"ddbj",       AJFALSE, seqReadGenbank}, /* alias for genbank */
