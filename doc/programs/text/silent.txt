@@ -140,7 +140,6 @@ See also
    remap         Display a sequence with restriction cut sites, translation etc
    restrict      Finds restriction enzyme cleavage sites
    showseq       Display a sequence with features, translation etc
-   tfmult        Finds transcription factors common to several sequences
    tfscan        Scans DNA sequences for transcription factors
    
 Author(s)
