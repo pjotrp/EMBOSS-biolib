@@ -402,7 +402,6 @@ typedef struct AcdSExpList {
 **
 ** Functions for processing expressions in ACD dependencies
 **
-** @return [void]
 ******************************************************************************/
 
 static AcdOExpList explist[] = {
@@ -786,7 +785,6 @@ typedef struct AcdSKey
 ** Processing predefined ACD keywords (application, variable, section,
 ** endsection)
 **
-** @return [void]
 ******************************************************************************/
 
 AcdOKey acdKeywords[] =
@@ -996,7 +994,6 @@ AcdOQual acdQualGraphxy[] =
 **
 ** Includes the acdSet functions for each ACD type
 **
-** @return [void]
 ******************************************************************************/
 
 AcdOType acdType[] =
@@ -1078,7 +1075,6 @@ typedef struct AcdSValid
 ** ACD type help processing, includes functions to describe valid
 ** values and expected values in -help output and -acdtable output
 **
-** @return [void]
 ******************************************************************************/
 
 AcdOValid acdValid[] =

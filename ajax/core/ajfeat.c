@@ -230,7 +230,6 @@ typedef struct FeatSInFormat {
 ** Includes the read function (featRead), and initialising (featInitReg)
 ** and deletion (featDelReg) of parsing resular expression.
 **
-** @return [void]
 ******************************************************************************/
 
 static FeatOInFormat featInFormatDef[] = {
@@ -349,7 +348,6 @@ typedef struct FeatSOutFormat {
 ** (featVocabInit) - done automatically for input formats by the featInitReg
 ** functions) and to write the output file (ajFeattableWrite)
 **
-** @return [void]
 ******************************************************************************/
 
 static FeatOOutFormat featOutFormatDef[] = {
@@ -2277,6 +2275,7 @@ static void featGroupSet (AjPFeature gf, AjPFeattable table,
 ** @param [u] gf [AjPFeature] Feature
 ** @param [u] table [AjPFeattable] Feature
 ** @param [r] groupfield [AjPStr] Group field identifier
+** @param [r] version [float] GFF version
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -2361,6 +2360,10 @@ static void featGffProcessTagval (AjPFeature gf, AjPFeattable table,
 **
 ** @param [r] thys [AjPFeattable] Feature table
 ** @param [r] origline [AjPStr] Input line
+** @param [r] savefeat [AjPStr*] Stored feature type
+** @param [r] savefrom [AjPStr*] Continued from position
+** @param [r] saveto   [AjPStr*] Continued to position
+** @param [r] saveline [AjPStr*] Continued tag-value pairs
 ** @return [AjPFeature] New feature.
 ** @@
 ******************************************************************************/
@@ -5198,6 +5201,7 @@ AjPStr ajFeatTagSet (AjPFeature thys, AjPStr tag, AjPStr value) {
 ** @param [r] thys [AjPFeature] Feature
 ** @param [r] tag [AjPStr] Feature tag
 ** @param [r] value [AjPStr] Feature tag value
+** @return [void]
 ** @@
 ******************************************************************************/
 

@@ -1009,7 +1009,7 @@ static void alignWriteSrsPair (AjPAlign thys) {
 **
 ** @param [R] thys [AjPAlign] Alignment object
 ** @param [R] imax [ajint] Maximum number of sequences (0 for unknown)
-** @param [R] markj [AjBool] Markup the alignment
+** @param [R] mark [AjBool] Markup the alignment
 ** @return [void]
 ** @@
 ******************************************************************************/
