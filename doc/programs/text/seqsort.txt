@@ -23,7 +23,7 @@ CONTENTS
 1.0 SUMMARY
 
    Reads DHF files (domain hits files) of database hits (sequences) and
-   removes hits of ambiguous classification.
+   removes hits of ambiguous classification
 
 2.0 INPUTS & OUTPUTS
 
@@ -56,42 +56,118 @@ CONTENTS
    superfamilies or folds (ambiguities file). Domains of the same node
    (e.g. family) will be grouped together in blocks, i.e. all hits for
    domain A, then all hits for domain B and so on (see Figure 1).
-   Figure 1 Excerpt from a domain families file (output)
 
-> P00478^.^8^99^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^Asparta
-te carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate carbamoy
-ltransferase, Regulatory-chain, N-terminal domain^PSIBLAST^191.00^0.000e+00^0.0
-00e+00
-VEAIKRGTVIDHIPAQIGFKLLSLFKLTETDQRITIGLNLPSGEMGRKDLIKIENTFLSEDQVDQLALYAPQATVNRID
-NYEVVGKSRPSLP
-> O58452^.^6^99^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^Asparta
-te carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate carbamoy
-ltransferase, Regulatory-chain, N-terminal domain^PSIBLAST^94.30^0.000e+00^6.00
-0e-20
-VSAIKEGTVIDHIPAGKGLKVIEILGLSKLSNGGSVLLAMNVPSKKLGRKDIVKVEGKFLSEEEVNKIALVAPTATVNI
-IRNYKVVEKFKVEVP
-> O30129^.^6^98^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^Asparta
-te carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate carbamoy
-ltransferase, Regulatory-chain, N-terminal domain^PSIBLAST^79.60^0.000e+00^2.00
-0e-15
-VSKIKEGTVIDHINAGKALLVLKILKIQPGTDLTVSMAMNVPSSKMGKKDIVKVEGMFIRDEELNKIALISPNATINLI
-RDYEIERKFKVSPP
-> O26938^.^11^101^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^Aspar
-tate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate carbam
-oyltransferase, Regulatory-chain, N-terminal domain^PSIBLAST^81.90^0.000e+00^3.
-000e-16
-VKPIKNGTVIDHITANRSLNVLNILGLPDGRSKVTVAMNMDSSQLGSKDIVKIENRELKPSEVDQIALIAPRATINIVR
-DYKIVEKAKVRL
-> Q9WVI4^.^513^667^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^Aden
-ylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase cataly
-tic domain^PSIBLAST^113.00^0.000e+00^2.000e-25
-RKFDDVTMLFSDIVGFTAICAQCTPMQVISMLNELYTRFDHQCGFLDIYKVETIGDAYCVASGLHRKSLCHAKPIALMA
-LKMMELSEEVLTPDGRPIQMRIGIHSGSVLAGVVGVRMPRYCLFGNNVTLASKFESGSHPRRINISPTTYQLLKRE
-> Q9ERL9^.^475^626^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^Aden
-ylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase cataly
-tic domain^PSIBLAST^101.00^0.000e+00^9.000e-22
-KKFSEVTMLFSDIVGFTAICSQCSPLQVITMLNALYTRFDQQCGELDVYKVETIGDAYCVAGGLHRESDTHAVQIALMA
-LKMMELSNEVMSPHGEPIKMRIGLHSGSVFAGVVGVKMPRYCLFGNNVTLANKFESCSVPRKINVSPTTYRLL
+  Output files for usage example
+
+  File: scop.fam
+
+CL   Alpha and beta proteins (a+b)
+XX
+FO   Ferredoxin-like
+XX
+SF   Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain
+XX
+FA   Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain
+XX
+SI   54894
+XX
+NS   27
+XX
+NN   [1]
+XX
+TY   HIT
+XX
+SC   0.00
+XX
+AC   Q9YBD5
+XX
+RA   11 START; 105 END;
+XX
+SQ   SEQUENCE    95 AA;  10687 MW;  B8ACF34B CRC32;
+     VRKIRSGVVI DHIPPGRAFT MLKALGLLPP RGYRWRIAVV INAESSKLGR KDILKIEGYK
+     PRQRDLEVLG IIAPGATFNV IEDYKVVEKV KLKLP
+XX
+NN   [2]
+XX
+TY   HIT
+XX
+SC   0.00
+XX
+AC   Q9UX07
+XX
+RA   12 START; 104 END;
+XX
+SQ   SEQUENCE    93 AA;  10312 MW;  12DDDE7C CRC32;
+     VSKIRNGTVI DHIPAGRALA VLRILGIRGS EGYRVALVMN VESKKIGRKD IVKIEDRVID
+     EKEASLITLI APSATINIIR DYVVTEKRHL EVP
+XX
+NN   [3]
+XX
+TY   HIT
+XX
+SC   0.00
+XX
+AC   Q9KP65
+XX
+RA   9 START; 100 END;
+XX
+
+
+  [Part of this file has been deleted for brevity]
+
+     MMFHKIYIQK HDNVSILFAD IEGFTSLASQ CTAQELVMTL NELFARFDKL AAENHCLRIK
+     ILGDCYYCVS GLPEARADHA HCCVEMGVDM IEAISLVREV TGVNVNMRVG IHSGRVHCGV
+     LGLRKWQFDV WSNDVTLANH MEAGGRAGRI HITRATLQYL NGDYEVEPGR GGERNAYLKE
+     QHIETFLIL
+XX
+NN   [111]
+XX
+TY   HIT
+XX
+SC   0.00
+XX
+AC   O30820
+XX
+RA   241 START; 400 END;
+XX
+SQ   SEQUENCE   160 AA;  17506 MW;  B1E1A024 CRC32;
+     NIIADKYDEA SVLFADIVGF TERASSTAPA DLVRFLDRLY SAFDELVDQH GLEKIKVSGD
+     SYMVVSGVPR PRPDHTQALA DFALDMTNVA AQLKDPRGNP VPLRVGLATG PVVAGVVGSR
+     RFFYDVWGDA VNVASRMEST DSVGQIQVPD EVYERLKDDF
+XX
+NN   [112]
+XX
+TY   HIT
+XX
+SC   0.00
+XX
+AC   O19179
+XX
+RA   877 START; 1032 END;
+XX
+SQ   SEQUENCE   156 AA;  17212 MW;  675838EA CRC32;
+     PEYFEEVTLY FSDIVGFTTI SAMSEPIEVV DLLNDLYTLF DAIIGSHDVY KVETIGDAYM
+     VASGLPQRNG QRHAAEIANM ALDILSAVGS FRMRHMPEVP VRIRIGLHSG PCVAGVVGLT
+     MPRYCLFGDT VNTASRMEST GLPYRIHVNM STVRIL
+XX
+NN   [113]
+XX
+TY   HIT
+XX
+SC   0.00
+XX
+AC   O02740
+XX
+RA   877 START; 1042 END;
+XX
+SQ   SEQUENCE   166 AA;  18151 MW;  E2BB2824 CRC32;
+     PEGFDLVTLY FSDIVGFTTI SAMSEPIEVV DLLNDLYTLF DAIIGSHDVY KVETIGDAYM
+     VASGLPKRNG MRHAAEIANM SLDILSSVGT FKMRHMPEVP VRIRIGLHSG PVVAGVVGLT
+     MPRYCLFGDT VNTASRMEST GLPYRIHVSH STVTILRTLG EGYEVE
+XX
+//
+
+  File: scop.oth
 
 5.0 DATA FILES
 
@@ -100,6 +176,102 @@ LKMMELSNEVMSPHGEPIKMRIGLHSGSVFAGVVGVKMPRYCLFGNNVTLANKFESCSVPRKINVSPTTYRLL
 6.0 USAGE
 
   6.1 COMMAND LINE ARGUMENTS
+
+   Standard (Mandatory) qualifiers (* if not always prompted):
+  [-dhfin]             directory  This option specifies the location of DHF
+                                  files (domain hits files) (input). A 'domain
+                                  hits file' contains database hits
+                                  (sequences) with domain classification
+                                  information, in the DHF format (FASTA or
+                                  EMBL-like). The hits are relatives to a SCOP
+                                  or CATH family and are found from a search
+                                  of a sequence database. Files containing
+                                  hits retrieved by PSIBLAST are generated by
+                                  using SEQSEARCH.
+   -overlap            integer    This option specifies the number of
+                                  overlapping residues required for merging of
+                                  two hits. Each family is also processed so
+                                  that ovlerapping hits (hits with identical
+                                  accesssion number that overlap by at least a
+                                  user-defined number of residues) are
+                                  replaced by a hit that is produced from
+                                  merging the two overlapping hits.
+   -dofamilies         toggle     This option specifies to write a domain
+                                  families file. If this option is set a
+                                  domain families file is written.
+   -doambiguities      toggle     This option specifies whether to write a
+                                  domain ambiguities file. If this option is
+                                  set a domain ambiguities file is written.
+  [-dhfout]            directory  This option specifies the location of DHF
+                                  files (domain hits files) (output). A
+                                  'domain hits file' contains database hits
+                                  (sequences) with domain classification
+                                  information, in the DHF format (FASTA or
+                                  EMBL-like). The hits are relatives to a SCOP
+                                  or CATH family and are found from a search
+                                  of a sequence database. Files containing
+                                  hits retrieved by PSIBLAST are generated by
+                                  using SEQSEARCH.
+*  -hitsf              outfile    This option specifies the name of domain
+                                  families file (output). A 'domain families
+                                  file' contains sequence relatives (hits) for
+                                  each of a number of different SCOP or CATH
+                                  families found from searching a sequence
+                                  database, e.g. by using SEQSEARCH
+                                  (psiblast). The file contains the collated
+                                  search results for the indvidual families;
+                                  only those hits of unambiguous family
+                                  assignment are included. Hits of ambiguous
+                                  family assignment are assigned as relatives
+                                  to a SCOP or CATH superfamily or fold
+                                  instead and are collated into a 'domain
+                                  ambiguities file'. The domain families and
+                                  ambiguities files are generated by using
+                                  SEQSORT and use the same format as a DHF
+                                  file (domain hits file).
+*  -ambigf             outfile    This option specifies the name of domain
+                                  ambiguities file (output). A 'domain
+                                  families file' contains sequence relatives
+                                  (hits) for each of a number of different
+                                  SCOP or CATH families found from searching a
+                                  sequence database, e.g. by using SEQSEARCH
+                                  (psiblast). The file contains the collated
+                                  search results for the indvidual families;
+                                  only those hits of unambiguous family
+                                  assignment are included. Hits of ambiguous
+                                  family assignment are assigned as relatives
+                                  to a SCOP or CATH superfamily or fold
+                                  instead and are collated into a 'domain
+                                  ambiguities file'. The domain families and
+                                  ambiguities files are generated by using
+                                  SEQSORT and use the same format as a DHF
+                                  file (domain hits file).
+
+   Additional (Optional) qualifiers: (none)
+   Advanced (Unprompted) qualifiers: (none)
+   Associated qualifiers:
+
+   "-hitsf" associated qualifiers
+   -odirectory         string     Output directory
+
+   "-ambigf" associated qualifiers
+   -odirectory         string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write standard output
+   -filter             boolean    Read standard input, write standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report deaths
+
 
    Standard (Mandatory) qualifiers Allowed values Default
    [-dhfin]
@@ -118,10 +290,10 @@ LKMMELSNEVMSPHGEPIKMRIGLHSGSVFAGVVGVKMPRYCLFGNNVTLANKFESCSVPRKINVSPTTYRLL
    integer value 10
    -dofamilies This option specifies to write a domain families file. If
    this option is set a domain families file is written. Toggle value
-   Yes/No N
+   Yes/No No
    -doambiguities This option specifies whether to write a domain
    ambiguities file. If this option is set a domain ambiguities file is
-   written. Toggle value Yes/No N
+   written. Toggle value Yes/No No
    [-dhfout]
    (Parameter 2) This option specifies the location of DHF files (domain
    hits files) (output). A 'domain hits file' contains database hits
@@ -159,24 +331,28 @@ LKMMELSNEVMSPHGEPIKMRIGLHSGSVFAGVVGVKMPRYCLFGNNVTLANKFESCSVPRKINVSPTTYRLL
 
   6.2 EXAMPLE SESSION
 
-   An example of interactive use of SEQSORT is shown below.
+   An example of interactive use of SEQSORT is shown below. Here is a
+   sample session with seqsort
 
-Unix % seqsort
-Reads files of database hits (sequences) for nodes in a DCF file (domain
-classification file) and removes hits of ambiguous classification.
-Location of DHF files (domain hits files) for input (DHF format) [./]: /test_da
-ta
-Number of overlapping residues required for merging of two hits [10]:
-Write domain families file [N]: y
-Write domain ambiguities file [N]: y
-Location of DHF files (domain hits files) for output (DHF format) [./]: /test_d
-ata/seqsort
-Name of domain families file (output) [fam.dhf]: /test_data/seqsort/fam.dhf
-Name of domain ambiguities file (output) [oth.dhf]: /test_data/seqsort/oth.dhf
+
+% seqsort 
+Reads multiple files of hits and writes (i) a scop families file and (ii) a
+scop ambiguities file.
+Mode of operation
+         1 : Process psiblast hits
+         2 : Process swissparse hits (WARNING - untested)
+         3 : Merge psiblast and swissparse hits (WARNING - untested)
+Select mode [1]: 
+Location of scop hits files (input) [./]: structure
+Extension of scop hits files (input) [.hits]: 
+Number of overlapping residues required for merging of two hits [10]: 20
+Name of scop families file (output) [fam.hits]: scop.fam
+Name of ambiguities file (output) [oth.hits]: scop.oth
 Warning: Empty list in embDmxScophitsToHitlist
 Warning: Empty list in embDmxScophitsToHitlist
 Warning: Empty list in embDmxScophitsToHitlist
-Unix %
+
+   Go to the output files for this example
 
    All DHF files (of the file extension .dhf specicied in ACD) in
    directory /test_data were processed by SEQSORT. DHF output files were
@@ -184,12 +360,6 @@ Unix %
    more identical was required to class two sequences as overlapping.
    Domain families and ambiguities files called fam.dhf and oth.dhf
    respectively were written to /test_data/seqsort.
-   The following command line would achieve the same result.
-
-
-seqsort /test_data /test_data/seqsort -overlap 10 -dofamilies Y -doambiguities
-Y
--hitsf /test_data/seqsort/fam.dhf -ambigf /test_data/seqsort/oth.dhf
 
 7.0 KNOWN BUGS & WARNINGS
 
@@ -224,6 +394,8 @@ Y
    a hit is assigned as relatives to a superfamily or fold instead. The
    domain validation file is generated by using SEQNR and uses the same
    format as a DHF file (domain hits file). N.A.
+
+   None
 
 9.0 DESCRIPTION
 
@@ -270,18 +442,48 @@ Y
 
 11.0 RELATED APPLICATIONS
 
-   APPLICATION DESCRIPTION
-   SEQSEARCH Generate DHF files (domain hits files) of database hits
-   (sequences) from a DAF file (domain alignment file) or other sequences
-   by using PSI-BLAST.
-   SEQWORDS Generates DHF files (domain hits files) of database hits
+See also
+
+   Program name Description
+   contactcount Counts specific versus non-specific contacts in a
+   directory of cleaned protein chain contact files
+   contacts Reads CCF files (clean coordinate files) and writes CON files
+   (contact files) of intra-chain residue-residue contact data
+   domainalign Generates DAF files (domain alignment files) of
+   structure-based sequence alignments for nodes in a DCF file (domain
+   classification file)
+   domainrep Reorder DCF file (domain classification file) so that the
+   representative structure of each user-specified node is given first
+   domainreso Removes low resolution domains from a DCF file (domain
+   classification file)
+   interface Reads CCF files (clean coordinate files) and writes CON
+   files (contact files) of inter-chain residue-residue contact data
+   libgen Generates various types of discriminating elements for each
+   alignment in a directory
+   psiphi Calculates phi and psi torsion angles from cleaned EMBOSS-style
+   protein co-ordinate file
+   rocon Reads a DHF file (domain hits file) of hits (sequences of
+   unknown structural classification) and a DHF file of validation
+   sequences (known classification) and writes a 'hits file' for the
+   hits, which are classified and rank-ordered on the basis of score
+   rocplot Provides interpretation and graphical display of the
+   performance of discriminating elements (e.g. profiles for protein
+   families). rocplot reads file(s) of hits from discriminator-database
+   search(es), performs ROC analysis on the hits, and writes graphs
+   illustrating the diagnostic performance of the discriminating elements
+   seqalign Reads a DAF file (domain alignment file) and a DHF file
+   (domain hits file) and writes a DAF file extended with the hits
+   seqfraggle Removes fragments from DHF files (domain hits files) or
+   other files of sequences
+   seqsearch Generate database hits (sequences) for nodes in a DCF file
+   (domain classification file) by using PSI-BLAST
+   seqwords Generates DHF files (domain hits files) of database hits
    (sequences) for nodes in a DCF file (domain classification file) by
-   keyword search of UniProt.
-   SEQFRAGGLE Removes fragments from DHF files (domain hits files) or
-   other files of sequences.
-   SEQSORT Reads DHF files (domain hits files) of database hits
-   (sequences) and removes hits of ambiguous classification.
-   SEQNR Removes redundancy from files of database hits (sequences).
+   keyword search of UniProt
+   siggen Generates a sparse protein signature from an alignment and
+   residue contact data
+   sigscan Generates a DHF file (domain hits file) of hits (sequences)
+   from scanning a signature against a sequence database
 
 12.0 DIAGNOSTIC ERROR MESSAGES
 

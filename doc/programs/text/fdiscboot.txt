@@ -1,7 +1,8 @@
 
                                    Not Found
 
-   The requested URL /apps/fdiscboot.html was not found on this server.
+   The requested URL /embassy/phylipnew/fdiscboot.html was not found on
+   this server.
      _________________________________________________________________
 
 

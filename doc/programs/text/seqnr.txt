@@ -23,7 +23,7 @@ CONTENTS
 1.0 SUMMARY
 
    Removes redundancy from DHF files (domain hits files) or other files
-   of sequences.
+   of sequences
 
 2.0 INPUTS & OUTPUTS
 
@@ -58,10 +58,350 @@ CONTENTS
    If other sequences or sequence sets (aligned or unaligned) are used as
    input, all of the common file formats are supported.
 
+  Input files for usage example
+
+  File: scop.fam
+
+CL   Alpha and beta proteins (a+b)
+XX
+FO   Ferredoxin-like
+XX
+SF   Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain
+XX
+FA   Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain
+XX
+SI   54894
+XX
+NS   27
+XX
+NN   [1]
+XX
+TY   HIT
+XX
+SC   0.00
+XX
+AC   Q9YBD5
+XX
+RA   11 START; 105 END;
+XX
+SQ   SEQUENCE    95 AA;  10687 MW;  B8ACF34B CRC32;
+     VRKIRSGVVI DHIPPGRAFT MLKALGLLPP RGYRWRIAVV INAESSKLGR KDILKIEGYK
+     PRQRDLEVLG IIAPGATFNV IEDYKVVEKV KLKLP
+XX
+NN   [2]
+XX
+TY   HIT
+XX
+SC   0.00
+XX
+AC   Q9UX07
+XX
+RA   12 START; 104 END;
+XX
+SQ   SEQUENCE    93 AA;  10312 MW;  12DDDE7C CRC32;
+     VSKIRNGTVI DHIPAGRALA VLRILGIRGS EGYRVALVMN VESKKIGRKD IVKIEDRVID
+     EKEASLITLI APSATINIIR DYVVTEKRHL EVP
+XX
+NN   [3]
+XX
+TY   HIT
+XX
+SC   0.00
+XX
+AC   Q9KP65
+XX
+RA   9 START; 100 END;
+XX
+
+
+  [Part of this file has been deleted for brevity]
+
+     MMFHKIYIQK HDNVSILFAD IEGFTSLASQ CTAQELVMTL NELFARFDKL AAENHCLRIK
+     ILGDCYYCVS GLPEARADHA HCCVEMGVDM IEAISLVREV TGVNVNMRVG IHSGRVHCGV
+     LGLRKWQFDV WSNDVTLANH MEAGGRAGRI HITRATLQYL NGDYEVEPGR GGERNAYLKE
+     QHIETFLIL
+XX
+NN   [111]
+XX
+TY   HIT
+XX
+SC   0.00
+XX
+AC   O30820
+XX
+RA   241 START; 400 END;
+XX
+SQ   SEQUENCE   160 AA;  17506 MW;  B1E1A024 CRC32;
+     NIIADKYDEA SVLFADIVGF TERASSTAPA DLVRFLDRLY SAFDELVDQH GLEKIKVSGD
+     SYMVVSGVPR PRPDHTQALA DFALDMTNVA AQLKDPRGNP VPLRVGLATG PVVAGVVGSR
+     RFFYDVWGDA VNVASRMEST DSVGQIQVPD EVYERLKDDF
+XX
+NN   [112]
+XX
+TY   HIT
+XX
+SC   0.00
+XX
+AC   O19179
+XX
+RA   877 START; 1032 END;
+XX
+SQ   SEQUENCE   156 AA;  17212 MW;  675838EA CRC32;
+     PEYFEEVTLY FSDIVGFTTI SAMSEPIEVV DLLNDLYTLF DAIIGSHDVY KVETIGDAYM
+     VASGLPQRNG QRHAAEIANM ALDILSAVGS FRMRHMPEVP VRIRIGLHSG PCVAGVVGLT
+     MPRYCLFGDT VNTASRMEST GLPYRIHVNM STVRIL
+XX
+NN   [113]
+XX
+TY   HIT
+XX
+SC   0.00
+XX
+AC   O02740
+XX
+RA   877 START; 1042 END;
+XX
+SQ   SEQUENCE   166 AA;  18151 MW;  E2BB2824 CRC32;
+     PEGFDLVTLY FSDIVGFTTI SAMSEPIEVV DLLNDLYTLF DAIIGSHDVY KVETIGDAYM
+     VASGLPKRNG MRHAAEIANM SLDILSSVGT FKMRHMPEVP VRIRIGLHSG PVVAGVVGLT
+     MPRYCLFGDT VNTASRMEST GLPYRIHVSH STVTILRTLG EGYEVE
+XX
+//
+
+  File: scop.oth
+
+  File: all.scop2
+
+ID   D1CS4A_
+XX
+EN   1CS4
+XX
+SI   53931 CL; 54861 FO; 55073 SF; 55074 FA; 55077 DO; 55078 SO; 39418 DD;
+XX
+CL   Alpha and beta proteins (a+b)
+XX
+FO   Ferredoxin-like
+XX
+SF   Adenylyl and guanylyl cyclase catalytic domain
+XX
+FA   Adenylyl and guanylyl cyclase catalytic domain
+XX
+DO   Adenylyl cyclase VC1, domain C1a
+XX
+OS   Dog (Canis familiaris)
+XX
+NC   1
+XX
+CN   [1]
+XX
+CH   A CHAIN; . START; . END;
+//
+ID   D1FX2A_
+XX
+EN   1FX2
+XX
+SI   53931 CL; 54861 FO; 55073 SF; 55074 FA; 55081 DO; 55082 SO; 39430 DD;
+XX
+CL   Alpha and beta proteins (a+b)
+XX
+FO   Ferredoxin-like
+XX
+SF   Adenylyl and guanylyl cyclase catalytic domain
+XX
+FA   Adenylyl and guanylyl cyclase catalytic domain
+XX
+DO   Receptor-type monomeric adenylyl cyclase
+XX
+OS   Trypanosome (Trypanosoma brucei), different isoform
+XX
+NC   1
+XX
+CN   [1]
+XX
+CH   A CHAIN; . START; . END;
+//
+ID   D4AT1B1
+XX
+EN   4AT1
+XX
+SI   53931 CL; 54861 FO; 54893 SF; 54894 FA; 54895 DO; 54896 SO; 39019 DD;
+XX
+CL   Alpha and beta proteins (a+b)
+XX
+FO   Ferredoxin-like
+XX
+SF   Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain
+XX
+FA   Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain
+XX
+DO   Aspartate carbamoyltransferase
+XX
+OS   Escherichia coli
+XX
+NC   1
+XX
+CN   [1]
+XX
+CH   B CHAIN; 8 START; 100 END;
+//
+ID   D4AT1D1
+XX
+EN   4AT1
+XX
+SI   53931 CL; 54861 FO; 54893 SF; 54894 FA; 54895 DO; 54896 SO; 39020 DD;
+XX
+CL   Alpha and beta proteins (a+b)
+XX
+FO   Ferredoxin-like
+XX
+SF   Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain
+XX
+FA   Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain
+XX
+DO   Aspartate carbamoyltransferase
+XX
+OS   Escherichia coli
+XX
+NC   1
+XX
+CN   [1]
+XX
+CH   D CHAIN; 8 START; 100 END;
+//
+
 4.0 OUTPUT FILE FORMAT
 
    The format of the domain hits file is described in SEQSEARCH
    documentation.
+
+  Output files for usage example
+
+  File: famnr.hits
+
+  File: scop.all
+
+CL   Alpha and beta proteins (a+b)
+XX
+FO   Ferredoxin-like
+XX
+SF   Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain
+XX
+FA   Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain
+XX
+SI   54894
+XX
+NS   27
+XX
+NN   [1]
+XX
+TY   HIT
+XX
+SC   0.00
+XX
+GP   NON_REDUNDANT
+XX
+AC   Q9YBD5
+XX
+RA   11 START; 105 END;
+XX
+SQ   SEQUENCE    95 AA;  10687 MW;  B8ACF34B CRC32;
+     VRKIRSGVVI DHIPPGRAFT MLKALGLLPP RGYRWRIAVV INAESSKLGR KDILKIEGYK
+     PRQRDLEVLG IIAPGATFNV IEDYKVVEKV KLKLP
+XX
+NN   [2]
+XX
+TY   HIT
+XX
+SC   0.00
+XX
+GP   NON_REDUNDANT
+XX
+AC   Q9UX07
+XX
+RA   12 START; 104 END;
+XX
+SQ   SEQUENCE    93 AA;  10312 MW;  12DDDE7C CRC32;
+     VSKIRNGTVI DHIPAGRALA VLRILGIRGS EGYRVALVMN VESKKIGRKD IVKIEDRVID
+     EKEASLITLI APSATINIIR DYVVTEKRHL EVP
+XX
+NN   [3]
+XX
+TY   HIT
+XX
+SC   0.00
+XX
+
+
+  [Part of this file has been deleted for brevity]
+
+XX
+TY   HIT
+XX
+SC   0.00
+XX
+GP   NON_REDUNDANT
+XX
+AC   O30820
+XX
+RA   241 START; 400 END;
+XX
+SQ   SEQUENCE   160 AA;  17506 MW;  B1E1A024 CRC32;
+     NIIADKYDEA SVLFADIVGF TERASSTAPA DLVRFLDRLY SAFDELVDQH GLEKIKVSGD
+     SYMVVSGVPR PRPDHTQALA DFALDMTNVA AQLKDPRGNP VPLRVGLATG PVVAGVVGSR
+     RFFYDVWGDA VNVASRMEST DSVGQIQVPD EVYERLKDDF
+XX
+NN   [112]
+XX
+TY   HIT
+XX
+SC   0.00
+XX
+GP   NON_REDUNDANT
+XX
+AC   O19179
+XX
+RA   877 START; 1032 END;
+XX
+SQ   SEQUENCE   156 AA;  17212 MW;  675838EA CRC32;
+     PEYFEEVTLY FSDIVGFTTI SAMSEPIEVV DLLNDLYTLF DAIIGSHDVY KVETIGDAYM
+     VASGLPQRNG QRHAAEIANM ALDILSAVGS FRMRHMPEVP VRIRIGLHSG PCVAGVVGLT
+     MPRYCLFGDT VNTASRMEST GLPYRIHVNM STVRIL
+XX
+NN   [113]
+XX
+TY   HIT
+XX
+SC   0.00
+XX
+GP   NON_REDUNDANT
+XX
+AC   O02740
+XX
+RA   877 START; 1042 END;
+XX
+SQ   SEQUENCE   166 AA;  18151 MW;  E2BB2824 CRC32;
+     PEGFDLVTLY FSDIVGFTTI SAMSEPIEVV DLLNDLYTLF DAIIGSHDVY KVETIGDAYM
+     VASGLPKRNG MRHAAEIANM SLDILSSVGT FKMRHMPEVP VRIRIGLHSG PVVAGVVGLT
+     MPRYCLFGDT VNTASRMEST GLPYRIHVSH STVTILRTLG EGYEVE
+XX
+//
+
+  File: seqnr.log
+
+//
+54894
+No swissprot sequence for domain D4AT1B1 from alignment so no hit will be given
+ in validation file
+No swissprot sequence for domain D4AT1D1 from alignment so no hit will be given
+ in validation file
+Overlap between 2 SEEDs (acc. Not_available) from alignment file.
+//
+55074
+No swissprot sequence for domain D1CS4A_ from alignment so no hit will be given
+ in validation file
+No swissprot sequence for domain D1FX2A_ from alignment so no hit will be given
+ in validation file
+Overlap between 2 SEEDs (acc. Not_available) from alignment file.
 
 5.0 DATA FILES
 
@@ -70,6 +410,172 @@ CONTENTS
 6.0 USAGE
 
   6.1 COMMAND LINE ARGUMENTS
+
+   Standard (Mandatory) qualifiers (* if not always prompted):
+  [-dhfin]             dirlist    This option specifies the location of DHF
+                                  files (domain hits files) (input). A 'domain
+                                  hits file' contains database hits
+                                  (sequences) with domain classification
+                                  information, in the DHF format (FASTA or
+                                  EMBL-like). The hits are relatives to a SCOP
+                                  or CATH family and are found from a search
+                                  of a sequence database. Files containing
+                                  hits retrieved by PSIBLAST are generated by
+                                  using SEQSEARCH.
+   -[no]dosing         toggle     This option specifies whether to use singlet
+                                  sequences (e.g. DHF files) to filter input.
+                                  Optionally, up to two further directories
+                                  of sequences may be read: these are
+                                  considered in the redundancy calculation but
+                                  never appear in the output files.
+*  -singlets           directory  This option specifies the location of
+                                  singlet filter sequences (e.g. DHF files)
+                                  (input). A 'domain hits file' contains
+                                  database hits (sequences) with domain
+                                  classification information, in the DHF
+                                  format (FASTA or EMBL-like). The hits are
+                                  relatives to a SCOP or CATH family and are
+                                  found from a search of a sequence database.
+                                  Files containing hits retrieved by PSIBLAST
+                                  are generated by using SEQSEARCH.
+   -[no]dosets         toggle     This option specifies whether to use sets of
+                                  sequences (e.g. DHF files) to filter input.
+                                  Optionally, up to two further directories
+                                  of sequences may be read: these are
+                                  considered in the redundancy calculation but
+                                  never appear in the output files.
+*  -insets             directory  This option specifies location of sets of
+                                  filter sequences (e.g. DAF files) (input). A
+                                  'domain alignment file' contains a sequence
+                                  alignment of domains belonging to the same
+                                  SCOP or CATH family. The file is in clustal
+                                  format annotated with domain family
+                                  classification information. The files
+                                  generated by using SCOPALIGN will contain a
+                                  structure-based sequence alignment of
+                                  domains of known structure only. Such
+                                  alignments can be extended with sequence
+                                  relatives (of unknown structure) by using
+                                  SEQALIGN.
+   -mode               menu       This option specifies whether to remove
+                                  redundancy at a single threshold % sequence
+                                  similarity or remove redundancy outside a
+                                  range of acceptable threshold % similarity.
+                                  All permutations of pair-wise sequence
+                                  alignments are calculated for each set of
+                                  input sequences in turn using the EMBOSS
+                                  implementation of the Needleman and Wunsch
+                                  global alignment algorithm. Redundant
+                                  sequences are removed in one of two modes as
+                                  follows: (i) If a pair of proteins achieve
+                                  greater than a threshold percentage sequence
+                                  similarity (specified by the user) the
+                                  shortest sequence is discarded. (ii) If a
+                                  pair of proteins have a percentage sequence
+                                  similarity that lies outside an acceptable
+                                  range (specified by the user) the shortest
+                                  sequence is discarded.
+*  -thresh             float      This option specifies the % sequence
+                                  identity redundancy threshold. The %
+                                  sequence identity redundancy threshold
+                                  determines the redundancy calculation. If a
+                                  pair of proteins achieve greater than this
+                                  threshold the shortest sequence is
+                                  discarded.
+*  -threshlow          float      This option specifies the % sequence
+                                  identity redundancy threshold (lower limit).
+                                  The % sequence identity redundancy
+                                  threshold determines the redundancy
+                                  calculation. If a pair of proteins have a
+                                  percentage sequence similarity that lies
+                                  outside an acceptable range the shortest
+                                  sequence is discarded.
+*  -threshup           float      This option specifies the % sequence
+                                  identity redundancy threshold (upper limit).
+                                  The % sequence identity redundancy
+                                  threshold determines the redundancy
+                                  calculation. If a pair of proteins have a
+                                  percentage sequence similarity that lies
+                                  outside an acceptable range the shortest
+                                  sequence is discarded.
+  [-dhfout]            directory  This option specifies the location of DHF
+                                  files (domain hits files) of non-redundant
+                                  sequences (output). A 'domain hits file'
+                                  contains database hits (sequences) with
+                                  domain classification information, in the
+                                  DHF format (FASTA or EMBL-like). The hits
+                                  are relatives to a SCOP or CATH family and
+                                  are found from a search of a sequence
+                                  database. Files containing hits retrieved by
+                                  PSIBLAST are generated by using SEQSEARCH.
+   -dored              toggle     This option specifies whether to retain
+                                  redundant sequences. If this option is set a
+                                  DHF file (domain hits file) of redundant
+                                  sequences is written.
+*  -outred             directory  This option specifies the location of DHF
+                                  files (domain hits files) of redundant
+                                  sequences (output). A 'domain hits file'
+                                  contains database hits (sequences) with
+                                  domain classification information, in the
+                                  DHF format (FASTA or EMBL-like). The hits
+                                  are relatives to a SCOP or CATH family and
+                                  are found from a search of a sequence
+                                  database. Files containing hits retrieved by
+                                  PSIBLAST are generated by using SEQSEARCH.
+   -logf               outfile    This option specifies the name of SEQNR log
+                                  file (output). The log file contains
+                                  messages about any errors arising while
+                                  SEQNR ran.
+
+   Additional (Optional) qualifiers:
+   -matrix             matrixf    This option specifies the residue
+                                  substitution matrix that is used for
+                                  sequence comparison.
+   -gapopen            float      This option specifies the gap insertion
+                                  penalty. The gap insertion penalty is the
+                                  score taken away when a gap is created. The
+                                  best value depends on the choice of
+                                  comparison matrix. The default value assumes
+                                  you are using the EBLOSUM62 matrix for
+                                  protein sequences, and the EDNAFULL matrix
+                                  for nucleotide sequences.
+   -gapextend          float      This option specifies the gap extension
+                                  penalty. The gap extension, penalty is added
+                                  to the standard gap penalty for each base
+                                  or residue in the gap. This is how long gaps
+                                  are penalized. Usually you will expect a
+                                  few long gaps rather than many short gaps,
+                                  so the gap extension penalty should be lower
+                                  than the gap penalty. An exception is where
+                                  one or both sequences are single reads with
+                                  possible sequencing errors in which case
+                                  you would expect many single base gaps. You
+                                  can get this result by setting the gap open
+                                  penalty to zero (or very low) and using the
+                                  gap extension penalty to control gap
+                                  scoring.
+
+   Advanced (Unprompted) qualifiers: (none)
+   Associated qualifiers:
+
+   "-logf" associated qualifiers
+   -odirectory         string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write standard output
+   -filter             boolean    Read standard input, write standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report deaths
+
 
    Standard (Mandatory) qualifiers Allowed values Default
    [-dhfin]
@@ -80,11 +586,11 @@ CONTENTS
    and are found from a search of a sequence database. Files containing
    hits retrieved by PSIBLAST are generated by using SEQSEARCH. Directory
    with files ./
-   -dosing This option specifies whether to use singlet sequences (e.g.
-   DHF files) to filter input. Optionally, up to two further directories
-   of sequences may be read: these are considered in the redundancy
-   calculation but never appear in the output files. Toggle value Yes/No
-   Y
+   -[no]dosing This option specifies whether to use singlet sequences
+   (e.g. DHF files) to filter input. Optionally, up to two further
+   directories of sequences may be read: these are considered in the
+   redundancy calculation but never appear in the output files. Toggle
+   value Yes/No Yes
    -singlets This option specifies the location of singlet filter
    sequences (e.g. DHF files) (input). A 'domain hits file' contains
    database hits (sequences) with domain classification information, in
@@ -92,11 +598,11 @@ CONTENTS
    or CATH family and are found from a search of a sequence database.
    Files containing hits retrieved by PSIBLAST are generated by using
    SEQSEARCH. Directory ./
-   -dosets This option specifies whether to use sets of sequences (e.g.
-   DHF files) to filter input. Optionally, up to two further directories
-   of sequences may be read: these are considered in the redundancy
-   calculation but never appear in the output files. Toggle value Yes/No
-   Y
+   -[no]dosets This option specifies whether to use sets of sequences
+   (e.g. DHF files) to filter input. Optionally, up to two further
+   directories of sequences may be read: these are considered in the
+   redundancy calculation but never appear in the output files. Toggle
+   value Yes/No Yes
    -insets This option specifies location of sets of filter sequences
    (e.g. DAF files) (input). A 'domain alignment file' contains a
    sequence alignment of domains belonging to the same SCOP or CATH
@@ -144,8 +650,8 @@ CONTENTS
    sequence database. Files containing hits retrieved by PSIBLAST are
    generated by using SEQSEARCH. Directory ./
    -dored This option specifies whether to retain redundant sequences. If
-   this option is set a DHF (domain hits file) of redundant sequences is
-   written. Toggle value Yes/No N
+   this option is set a DHF file (domain hits file) of redundant
+   sequences is written. Toggle value Yes/No No
    -outred This option specifies the location of DHF files (domain hits
    files) of redundant sequences (output). A 'domain hits file' contains
    database hits (sequences) with domain classification information, in
@@ -181,45 +687,56 @@ CONTENTS
 
   6.2 EXAMPLE SESSION
 
-   An example of interactive use of SEQNR is shown below.
+   An example of interactive use of SEQNR is shown below. Here is a
+   sample session with seqnr
 
-Hello, darling: seqnr
-Removes redundancy from DHF files (domain hits files) or other files of
-sequences.
-Location of DHF files (domain hits files) for input (DHF format) [./]: test_dat
-a/seqnr/hitsin
-Use singlet sequences (e.g. DHF files) to filter input [Y]: y
-Location of singlet filter sequences (e.g. DHF files) for input [./]: test_data
-/seqnr/singlets
-Use sets of sequences (e.g. DHF files) to filter input [Y]: y
-Location of sets of filter sequences (e.g. DAF files) for input [./]: test_data
-/seqnr/sets
-Redundancy removal options
-         1 : Remove redundancy at a single threshold % sequence similarity
-         2 : Remove redundancy outside a range of acceptable threshold % simila
-rity
-Select number [1]: 1
-The % sequence identity redundancy threshold [95.0]: 70
-Location of DHF files (domain hits files) of non-redundant sequences for output
- (DHF format) [./]: test_data/seqnr/hitsnr
-Retain redundant sequences [N]: y
-Location of DHF files (domain hits files) of redundant sequences for output (DH
-F format) [./]: test_data/seqnr/hitsred
-Name seqnr log file (output) [seqnr.log]: test_data/seqnr/seqnr.log
-Processing test_data/seqnr/hitsin/54894.dhf
-Processing test_data/seqnr/hitsin/55074.dhf
+
+% seqnr 
+Reads a scop families file and a scop ambiguities file and writes (i) a
+non-redundant scop families file and (ii) a scop validation file.
+Name of the scop families file (input): scop.fam
+Name of ambiguities file (input): scop.oth
+Name of scop classification file (embl format input): all.scop2
+Location of scop alignment files (input) [./]: 
+Extension of scop alignment files [.salign]: 
+Number of overlapping residues required to define two hits as 'overlapping' [10
+]: 20
+The % sequence identity redundancy threshold [95.0]: 40
+Mode of operation
+         1 : Validation file for signatures from structure-based sequence align
+emnts (no scop families file)
+         2 : Validation file for signatures from extended alignments (plus non-
+redundant scop families file)
+Select mode [1]: 
+Name of scop validation file (output) [all.hits]: scop.all
+Name seqnr log file (output) [seqnr.log]: seqnr.log
+Warning: Sequence length smaller than overlap limit in embDmxScophitsOverlapAcc
+ ... checking for string match instead
+Warning: 2 domains in the alignment share the same accession number and overlap
+.
+Only one will be given in the validation file.
+Warning: Sequence length smaller than overlap limit in embDmxScophitsOverlapAcc
+ ... checking for string match instead
+Warning: Zero length sequence in SeqsetNR
+Warning: Sequence length smaller than overlap limit in embDmxScophitsOverlapAcc
+ ... checking for string match instead
+Warning: 2 domains in the alignment share the same accession number and overlap
+.
+Only one will be given in the validation file.
+Warning: Sequence length smaller than overlap limit in embDmxScophitsOverlapAcc
+ ... checking for string match instead
+Warning: Zero length sequence in SeqsetNR
+
+Processing 54894
+Processing 55074
+
+   Go to the input files for this example
+   Go to the output files for this example
 
    Two domains within the same family are classified as redundant if they
    share at least 40% sequence similarity; the default residue
    substitution matrix EBLOSUM62 and default gap insertion and extension
    penalties were used for the alignments.
-   The following command line would achieve the same result.
-
-
-seqnr -in test_data/seqnr/hitsin -dosing Y -insing test_data/seqnr/singlets -do
-sets Y -insets
-test_data/seqnr/sets -mode 1 -thresh 70 -out test_data/seqnr/hitsnr -dored Y
--outred test_data/seqnr/hitsred -logf testdata_new/seqnr/seqnr.log
 
 7.0 KNOWN BUGS & WARNINGS
 
@@ -244,6 +761,8 @@ test_data/seqnr/sets -mode 1 -thresh 70 -out test_data/seqnr/hitsnr -dored Y
    sequence alignment of domains of known structure). DOMAINALIGN
    alignments can be extended with sequence relatives (of unknown
    structure) to the family in question by using SEQALIGN.
+
+   None
 
 9.0 DESCRIPTION
 
@@ -274,24 +793,45 @@ test_data/seqnr/sets -mode 1 -thresh 70 -out test_data/seqnr/hitsnr -dored Y
 
 11.0 RELATED APPLICATIONS
 
-   APPLICATION DESCRIPTION
-   DOMAINREP Reorder DCF file (domain classification file) so that the
-   representative structure of each user-specified node is given first.
-   DOMAINALIGN Generates structure-based sequence alignments for nodes in
-   a DCF file (domain classification file).
-   SEQSEARCH Generate DHF files (domain hits files) of database hits
-   (sequences) from a DAF file (domain alignment file) or other sequences
-   by using PSI-BLAST.
-   SEQWORDS Generates DHF files (domain hits files) of database hits
-   (sequences) for nodes in a DCF file (domain classification file) by
-   keyword search of UniProt.
-   SEQFRAGGLE Removes fragments from DHF files (domain hits files) or
-   other files of sequences.
-   SEQSORT Reads DHF files (domain hits files) of database hits
-   (sequences) and removes hits of ambiguous classification.
-   SEQNR Removes redundancy from files of database hits (sequences).
-   SEQALIGN Reads a DAF file (domain alignment file) and a DHF (domain
-   hits file) and writes a DAF file extended with the hits.
+See also
+
+   Program name Description
+   aaindexextract Extract data from AAINDEX
+   allversusall Does an all-versus-all global alignment for each set of
+   sequences in an input directory and writes files of sequence
+   similarity values
+   cathparse Reads raw CATH classification files and writes DCF file
+   (domain classification file)
+   cutgextract Extract data from CUTG
+   domainer Reads CCF files (clean coordinate files) for proteins and
+   writes CCF files for domains, taken from a DCF file (domain
+   classification file)
+   domainnr Removes redundant domains from a DCF file (domain
+   classification file). The file must contain domain sequence
+   information, which can be added by using DOMAINSEQS
+   domainseqs Adds sequence records to a DCF file (domain classification
+   file)
+   domainsse Adds secondary structure records to a DCF file (domain
+   classification file)
+   hetparse Converts raw dictionary of heterogen groups to a file in
+   EMBL-like format
+   pdbparse Parses PDB files and writes CCF files (clean coordinate
+   files) for proteins
+   pdbplus Add residue solvent accessibility and secondary structure data
+   to a CCF file (clean coordinate file) for a protein or domain
+   pdbtosp Convert raw swissprot:PDB equivalence file to EMBL-like format
+   printsextract Extract data from PRINTS
+   prosextract Builds the PROSITE motif database for patmatmotifs to
+   search
+   rebaseextract Extract data from REBASE
+   scopparse Reads raw SCOP classification files and writes a DCF file
+   (domain classification file)
+   sites Reads CCF files (clean coordinate files) and writes CON files
+   (contact files) of residue-ligand contact data for domains in a DCF
+   file (domain classification file)
+   ssematch Searches a DCF file (domain classification file) for
+   secondary structure matches
+   tfextract Extract data from TRANSFAC
 
 12.0 DIAGNOSTIC ERROR MESSAGES
 

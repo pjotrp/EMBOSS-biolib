@@ -1,9 +1,3 @@
-<html>
-<head>
-<title>EMBASSY domainatrix: pdbparse</title>
-<base href="http://emboss.sourceforge.net/embassy/domainatrix/">
-</head>
-<body>
 <!-- START OF HEADER -->
 <HTML><HEAD>
 <TITLE> EMBOSS: PDBPARSE documentation. </TITLE>
@@ -58,9 +52,10 @@
 -->
 <a name="1.0"></a>
 <H2> 1.0   SUMMARY  </H2>
+
 Parses PDB files and writes CCF files (clean coordinate files) for proteins
 
-Parses PDB files and writes CCF files (clean coordinate files) for proteins.
+<H3> 1.1   DESCRIPTION </H3>
 
 <br><br>
 The parsing of protein coordinate data from the Protein Data Bank (PDB) 
@@ -121,7 +116,12 @@ PDBPARSE implement the parsing methodology described under 'ALGORITHM' below. Th
 <H2> 3.0   INPUT FILE FORMAT         </H2>
 
   An excerpt of a PDB file is shown below (Figure 1).  A detailed explanation of the pdb
-  file format is available on the PDB web site:  http://www.rcsb.org/pdb/info.html#File_Formats_and_Standards
+  file format is available on the PDB web site:
+  http://www.rcsb.org/pdb/info.html#File_Formats_and_Standards
+
+
+
+<!--
 <br>
 <br><b>Figure 1   Excerpt from a PDB file </b>
 <table><td bgcolor="#CFCCFF">
@@ -276,7 +276,7 @@ PDBPARSE implement the parsing methodology described under 'ALGORITHM' below. Th
 </pre>      
 </table>
 
-
+-->
 
 
 
@@ -294,39 +294,36 @@ PDBPARSE implement the parsing methodology described under 'ALGORITHM' below. Th
 <a name="4.0"></a>
 <H2> 4.0   OUTPUT FILE FORMAT         </H2>
 
-An excerpt from a protein CCF file is shown in Figure 2.  The data are as follows (record names are given in parentheses):
+
+An excerpt from a protein CCF file is shown below.  The data are as follows (record names are given in parentheses):
 <H3>4.1 Bibliographic data </H3>     These include the 4-character PDB identifier code or the 7-character domain identifier code taken from SCOP (ID), text from the COMPND (DE) and SOURCE (OS) records of the PDB file and experimental data (EX).  Tokens delimiting items of experimental data are as follows.  (1) METHOD: The text 'nmr_or_model' for structures determined by nuclear  magnetic resonance or modelling, or 'xray' for X-ray crystallography.  (2) RESO: The resolution of X-ray structures, or '0' otherwise.  (3, 4) NMOD and NCHN: The number of models or polypeptide chains: for domain coordinate files a 1 is always given.  (5) NGRP: Number of non-covalently associated groups ('heterogens') that could not be assigned to a specific chain.  Spacing lines (XX) are used for improving clarity of the file and the end of file (//) is clearly indicated.
 <H3>4.2 Chain-specific data </H3>     Following the EX record the file has a section for each chain, containing the chain number (CN), chain-specific data (IN) and the chain sequence (SQ).  Tokens delimiting items of chain-specific data are as follow.  (1) ID: The PDB chain identifier or a '.' if one was not specified in the PDB file or if a domain is comprised of segments from more than one chain.  (2) NR: The number of residues in the chain or domain.  (3) NL: The number of heterogens that are associated with the chain.  Domain coordinate files do not include coordinates for these groups so a value of 0 is always given.  (4, 5) NH and NE: The number of helices and beta-strands in the chain or domain (see Section 11.2).  Values for NH and NE are added by using PDBPLUS and a 0 will be given if PDBPLUS is not used.
 <H3>4.3 Coordinate data </H3>     Each CO record contains data for a single atom.  The data are in 34 columns in the CO record (column numbers are given in parentheses): (1) CO is always given.  (2 - 3) Model and chain number (always 1 for domains).  (4) Group number of heterogens or '.'.  (5) Either 'P' (a protein atom), 'H' (heterogen) or 'W' (water).  (6) Residue number: the position of the residue in the sequence given in the SQ record (for protein atoms) or '.' (for heterogens and water).  (7) Original PDB residue number.  (8) SSE type from the PDB file:  either 'C' (coil), 'H' (helix), 'E' (beta-strand) or 'T' (turn).  (9) SSE serial number from columns 8 - 10 in a HELIX, SHEET or TURN record of a PDB file.  A '.' is given for atoms not in a helix or sheet.  (10) SSE identifier code from columns 12 - 14 in a HELIX, SHEET or TURN record, or '.' for atoms not in a helix or sheet.  (11) The class of helix, which is an integer from 1-10; 1 - right-handed alpha, 2 - right-handed omega, 3 - right-handed pi, 4 - right-handed gamma, 5 - right-handed 3-10, 6 - left-handed alpha, 7 - left-handed omega, 8 - left-handed gamma, 9 - 27 ribbon/helix or 10 polyproline; see http://www.rcsb.org/pdb/docs/format/pdbguide2.2/guide2.2_frame.html.  (12) Secondary structure assignment according to STRIDE (see Section 11.2).  (13) SSE number: the position of the SSE (see Section 11.2) from the N-terminus.  A '.' is given if the atom is not in an element.  (14) Single character amino acid code or a '.' (for heterogens and water).  (15) 3-character residue identifier code. (16) Atom type.  (17-19) The x, y and z orthogonal coordinates.  (20) Occupancy.  (21) Temperature factor.  (22-24) Phi and Psi angle and solvent accessible surface area of residue as calculated by STRIDE.  (25-34) Accessible surface area according to NACCESS.  Absolute and relative measures of accessibility: (25-26) for all atoms, (27-28) all side-chain atoms, (29-30) all main-chain atoms, (31-32) all non-polar side-chain atoms, (33-34) all polar side-chain atoms.  Values for records 12-13 and 22-34 are added by using PDBPLUS and a '.' will be given if a value is not available.  
-  
-<br>
-<br><b>Figure 2   Excerpt from a clean protein coordinate file</b>
-<table><td bgcolor="#CFCCFF">
-<pre>
-ID  1CS4
-DE  MOL_ID: 1; MOLECULE: TYPE V ADENYLATE CYCLASE; CHAIN: A; FRAGMENT: C1A
-OS  MOL_ID: 1; ORGANISM_SCIENTIFIC: CANIS FAMILIARIS; ORGANISM_COMMON: DOG;
-EX  METHOD xray; RESO 2.50; NMOD 1; NCHN 3; NGRP 0;
-CN  [1]
-IN  ID A; NR 225; NL 0; NH 6; NE 6;
-SQ  SEQUENCE  225 AA;  25486 MW;  437C8290 CRC32;
-    MHHHHHHAME MKADINAKQE DMMFHKIYIQ KHDNVSILFA DIEGFTSLAS QCTAQELVMT
-    LNELFARFDK LAAENHCLRI KILGDCYYCV SGLPEARADH AHCCVEMGMD MIEAISLVRE
-    MTGVNVNMRV GIHSGRVHCG VLGLRKWQFD VWSNDVTLAN HMEAGGKAGR IHITKATLSY
-    LNGDYEVEPG CGGERNAYLK EHSIETFLIL RCTQKRKEEK AMIAK
-CN  [2]
-<font color=red>< data omitted for clarity ></font>
-CO  1  1  .  P  41  396  E 3 A1 . E 1 D ASP N   51.711 -11.782 62.798 1.00 51.17 -144.22 138.76  23.90  20.87  14.90  20.87  20.30  0.00   0.00   4.02   8.20  16.85  18.50
-CO  1  1  .  P  41  396  E 3 A1 . E 1 D ASP CA  52.810 -11.644 61.848 1.00 54.45 -144.22 138.76  23.90  20.87  14.90  20.87  20.30  0.00   0.00   4.02   8.20  16.85  18.50
-<font color=red>< data omitted for clarity ></font>
-An excerpt from a protein CCF file (clean coordinate file) is shown.  The data are described in Section 4.0.
-</pre>  
-</table>
 
 
 <a name="output.1"></a>
 <h3>Output files for usage example </h3>
-<p><h3>File: 1cs4.pxyz</h3>
+<p><h3>File: pdbparse.log</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+/ebi/services/idata/pmr/hgmp/test/data/structure/pdb1cs4.ent
+SEQRESLENDIF   1 (A)
+ATOMCOL12      429
+BADINDEX       1 (A)
+GAPPEDOK       1 (A)
+SECSTART       1 1 ILE 384
+SECSTART       1 1 ILE 384
+//
+/ebi/services/idata/pmr/hgmp/test/data/structure/pdb1ii7.ent
+SEQRESLENDIF   1 (A)
+ATOMCOL12      390
+SECBOTH        1 1 SER 57 GLU 73
+SECBOTH        1 1 VAL 78 ILE 81
+SECBOTH        1 1 LYS 2 LEU 6
+//
+</pre>
+</td></tr></table><p>
+<p><h3>File: 1cs4.ccf</h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
 ID   1cs4
@@ -335,11 +332,11 @@ DE   MOL_ID: 1; MOLECULE: TYPE V ADENYLATE CYCLASE;
 XX
 OS   MOL_ID: 1; ORGANISM_SCIENTIFIC: CANIS FAMILIARIS;
 XX
-EX   METHOD xray; RESO 2.50; NMOD 1; NCHN 1; NLIG 0;
+EX   METHOD xray; RESO 2.50; NMOD 1; NCHN 1; NGRP 0;
 XX
 CN   [1]
 XX
-IN   ID A; NRES 52; NL 7; NH 0; NE 0;
+IN   ID A; NR 52; NL 7; NH 0; NE 0;
 XX
 SQ   SEQUENCE    52 AA;   5817 MW;  47362A43 CRC32;
      ADIEGFTSLA SQCTAQELVM TLNELFARFD KLAAENHCLR IKILGDCYYC VS
@@ -436,7 +433,7 @@ CO   1    1    7    H    .     1005  .    .    .    .    .    .    .    POP    O
 //
 </pre>
 </td></tr></table><p>
-<p><h3>File: 1ii7.pxyz</h3>
+<p><h3>File: 1ii7.ccf</h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
 ID   1ii7
@@ -445,11 +442,11 @@ DE   MOL_ID: 1; MOLECULE: MRE11 NUCLEASE;
 XX
 OS   MOL_ID: 1; ORGANISM_SCIENTIFIC: PYROCOCCUS FURIOSUS;
 XX
-EX   METHOD xray; RESO 2.20; NMOD 1; NCHN 1; NLIG 0;
+EX   METHOD xray; RESO 2.20; NMOD 1; NCHN 1; NGRP 0;
 XX
 CN   [1]
 XX
-IN   ID A; NRES 65; NL 5; NH 0; NE 0;
+IN   ID A; NR 65; NL 6; NH 0; NE 0;
 XX
 SQ   SEQUENCE    65 AA;   7396 MW;  0CFB92A3 CRC32;
      MKFAHLADIH LGYEQFHKPQ REEEFAEAFK NALEIAVQEN VDFILIAGDL FHSSRPSPGT
@@ -503,69 +500,76 @@ CO   1    1    2    H    .     403   .    .    .    .    .    .    .     MN    M
 CO   1    1    2    H    .     404   .    .    .    .    .    .    .     MN    MN     5.801   27.935   24.271    1.00   39.57    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
 CO   1    1    3    H    .     405   .    .    .    .    .    .    .     MN    MN    36.023   34.916   44.253    1.00   39.52    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
 CO   1    1    3    H    .     406   .    .    .    .    .    .    .     MN    MN    33.658   36.365   46.296    1.00   33.69    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
-CO   1    1    4    H    .     501   .    .    .    .    .    .    .    SO4    S     17.175   28.112   32.476    1.00  100.80    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
-CO   1    1    4    H    .     501   .    .    .    .    .    .    .    SO4    O1    18.136   28.230   31.357    1.00  100.18    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
-CO   1    1    4    H    .     501   .    .    .    .    .    .    .    SO4    O2    17.097   26.692   32.887    1.00  100.80    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
-CO   1    1    4    H    .     501   .    .    .    .    .    .    .    SO4    O3    17.633   28.926   33.626    1.00  100.14    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
-CO   1    1    4    H    .     501   .    .    .    .    .    .    .    SO4    O4    15.834   28.575   32.045    1.00  100.56    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
-CO   1    1    4    H    .     502   .    .    .    .    .    .    .    SO4    S      0.566   29.512   36.007    1.00   86.73    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
-CO   1    1    4    H    .     502   .    .    .    .    .    .    .    SO4    O1     1.690   28.556   35.971    1.00   87.27    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
-CO   1    1    4    H    .     502   .    .    .    .    .    .    .    SO4    O2    -0.620   28.803   36.523    1.00   87.87    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
-CO   1    1    4    H    .     502   .    .    .    .    .    .    .    SO4    O3     0.896   30.642   36.905    1.00   86.58    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
-CO   1    1    4    H    .     502   .    .    .    .    .    .    .    SO4    O4     0.287   30.037   34.658    1.00   86.51    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
-CO   1    1    4    H    .     503   .    .    .    .    .    .    .    SO4    S    -13.586   39.644   36.031    1.00  100.28    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
-CO   1    1    4    H    .     503   .    .    .    .    .    .    .    SO4    O1   -12.340   39.512   35.250    1.00  100.72    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
-CO   1    1    4    H    .     503   .    .    .    .    .    .    .    SO4    O2   -14.638   38.811   35.421    1.00  100.46    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
-CO   1    1    4    H    .     503   .    .    .    .    .    .    .    SO4    O3   -13.347   39.201   37.420    1.00   99.66    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
-CO   1    1    4    H    .     503   .    .    .    .    .    .    .    SO4    O4   -14.020   41.056   36.015    1.00   99.97    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
-CO   1    1    5    H    .     401   .    .    .    .    .    .    .    101    P      7.599   25.305   23.994    1.00   56.33    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
-CO   1    1    5    H    .     401   .    .    .    .    .    .    .    101    O1P    8.249   24.467   25.030    1.00   56.70    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
-CO   1    1    5    H    .     401   .    .    .    .    .    .    .    101    O2P    6.700   26.285   24.649    1.00   54.49    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
-CO   1    1    5    H    .     401   .    .    .    .    .    .    .    101    O3P    8.637   26.026   23.216    1.00   53.97    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
-CO   1    1    5    H    .     401   .    .    .    .    .    .    .    101    O5*    7.095   23.970   23.128    1.00   59.20    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
-CO   1    1    5    H    .     401   .    .    .    .    .    .    .    101    C5*    7.073   23.961   21.762    1.00   66.74    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
-CO   1    1    5    H    .     401   .    .    .    .    .    .    .    101    C4*    6.041   23.013   21.296    1.00   71.22    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
-CO   1    1    5    H    .     401   .    .    .    .    .    .    .    101    O4*    6.029   21.855   22.189    1.00   73.78    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
-CO   1    1    5    H    .     401   .    .    .    .    .    .    .    101    C3*    4.736   23.676   21.350    1.00   73.80    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
-CO   1    1    5    H    .     401   .    .    .    .    .    .    .    101    O3*    4.355   23.874   19.995    1.00   76.51    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
-CO   1    1    5    H    .     401   .    .    .    .    .    .    .    101    C2*    3.864   22.749   22.165    1.00   74.04    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
-CO   1    1    5    H    .     401   .    .    .    .    .    .    .    101    C1*    4.682   21.474   22.506    1.00   74.70    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
-CO   1    1    5    H    .     401   .    .    .    .    .    .    .    101    N9     4.578   21.123   23.969    1.00   76.71    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
-CO   1    1    5    H    .     401   .    .    .    .    .    .    .    101    C8     3.630   21.533   24.876    1.00   76.87    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
-CO   1    1    5    H    .     401   .    .    .    .    .    .    .    101    N7     3.758   21.069   26.081    1.00   77.50    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
-CO   1    1    5    H    .     401   .    .    .    .    .    .    .    101    C5     4.896   20.300   25.989    1.00   77.78    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
-CO   1    1    5    H    .     401   .    .    .    .    .    .    .    101    C6     5.570   19.479   26.941    1.00   78.16    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
-CO   1    1    5    H    .     401   .    .    .    .    .    .    .    101    N6     5.155   19.409   28.200    1.00   78.77    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
-CO   1    1    5    H    .     401   .    .    .    .    .    .    .    101    N1     6.682   18.805   26.554    1.00   78.32    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
-CO   1    1    5    H    .     401   .    .    .    .    .    .    .    101    C2     7.090   18.888   25.277    1.00   78.14    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
-CO   1    1    5    H    .     401   .    .    .    .    .    .    .    101    N3     6.541   19.611   24.271    1.00   78.05    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
-CO   1    1    5    H    .     401   .    .    .    .    .    .    .    101    C4     5.403   20.288   24.700    1.00   78.10    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    1    5    H    .     501   .    .    .    .    .    .    .    SO4    S     17.175   28.112   32.476    1.00  100.80    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    1    5    H    .     501   .    .    .    .    .    .    .    SO4    O1    18.136   28.230   31.357    1.00  100.18    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    1    5    H    .     501   .    .    .    .    .    .    .    SO4    O2    17.097   26.692   32.887    1.00  100.80    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    1    5    H    .     501   .    .    .    .    .    .    .    SO4    O3    17.633   28.926   33.626    1.00  100.14    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    1    5    H    .     501   .    .    .    .    .    .    .    SO4    O4    15.834   28.575   32.045    1.00  100.56    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    1    5    H    .     502   .    .    .    .    .    .    .    SO4    S      0.566   29.512   36.007    1.00   86.73    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    1    5    H    .     502   .    .    .    .    .    .    .    SO4    O1     1.690   28.556   35.971    1.00   87.27    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    1    5    H    .     502   .    .    .    .    .    .    .    SO4    O2    -0.620   28.803   36.523    1.00   87.87    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    1    5    H    .     502   .    .    .    .    .    .    .    SO4    O3     0.896   30.642   36.905    1.00   86.58    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    1    5    H    .     502   .    .    .    .    .    .    .    SO4    O4     0.287   30.037   34.658    1.00   86.51    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    1    5    H    .     503   .    .    .    .    .    .    .    SO4    S    -13.586   39.644   36.031    1.00  100.28    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    1    5    H    .     503   .    .    .    .    .    .    .    SO4    O1   -12.340   39.512   35.250    1.00  100.72    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    1    5    H    .     503   .    .    .    .    .    .    .    SO4    O2   -14.638   38.811   35.421    1.00  100.46    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    1    5    H    .     503   .    .    .    .    .    .    .    SO4    O3   -13.347   39.201   37.420    1.00   99.66    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    1    5    H    .     503   .    .    .    .    .    .    .    SO4    O4   -14.020   41.056   36.015    1.00   99.97    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    1    6    H    .     401   .    .    .    .    .    .    .    101    P      7.599   25.305   23.994    1.00   56.33    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    1    6    H    .     401   .    .    .    .    .    .    .    101    O1P    8.249   24.467   25.030    1.00   56.70    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    1    6    H    .     401   .    .    .    .    .    .    .    101    O2P    6.700   26.285   24.649    1.00   54.49    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    1    6    H    .     401   .    .    .    .    .    .    .    101    O3P    8.637   26.026   23.216    1.00   53.97    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    1    6    H    .     401   .    .    .    .    .    .    .    101    O5*    7.095   23.970   23.128    1.00   59.20    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    1    6    H    .     401   .    .    .    .    .    .    .    101    C5*    7.073   23.961   21.762    1.00   66.74    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    1    6    H    .     401   .    .    .    .    .    .    .    101    C4*    6.041   23.013   21.296    1.00   71.22    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    1    6    H    .     401   .    .    .    .    .    .    .    101    O4*    6.029   21.855   22.189    1.00   73.78    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    1    6    H    .     401   .    .    .    .    .    .    .    101    C3*    4.736   23.676   21.350    1.00   73.80    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    1    6    H    .     401   .    .    .    .    .    .    .    101    O3*    4.355   23.874   19.995    1.00   76.51    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    1    6    H    .     401   .    .    .    .    .    .    .    101    C2*    3.864   22.749   22.165    1.00   74.04    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    1    6    H    .     401   .    .    .    .    .    .    .    101    C1*    4.682   21.474   22.506    1.00   74.70    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    1    6    H    .     401   .    .    .    .    .    .    .    101    N9     4.578   21.123   23.969    1.00   76.71    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    1    6    H    .     401   .    .    .    .    .    .    .    101    C8     3.630   21.533   24.876    1.00   76.87    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    1    6    H    .     401   .    .    .    .    .    .    .    101    N7     3.758   21.069   26.081    1.00   77.50    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    1    6    H    .     401   .    .    .    .    .    .    .    101    C5     4.896   20.300   25.989    1.00   77.78    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    1    6    H    .     401   .    .    .    .    .    .    .    101    C6     5.570   19.479   26.941    1.00   78.16    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    1    6    H    .     401   .    .    .    .    .    .    .    101    N6     5.155   19.409   28.200    1.00   78.77    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    1    6    H    .     401   .    .    .    .    .    .    .    101    N1     6.682   18.805   26.554    1.00   78.32    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    1    6    H    .     401   .    .    .    .    .    .    .    101    C2     7.090   18.888   25.277    1.00   78.14    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    1    6    H    .     401   .    .    .    .    .    .    .    101    N3     6.541   19.611   24.271    1.00   78.05    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    1    6    H    .     401   .    .    .    .    .    .    .    101    C4     5.403   20.288   24.700    1.00   78.10    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
 CO   1    .    .    W    .     407   .    .    .    .    .    .    .    HOH    O      5.997   27.242   22.189    1.00   38.84    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
 CO   1    .    .    W    .     408   .    .    .    .    .    .    .    HOH    O     35.697   35.756   46.350    1.00   41.39    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
 CO   1    .    .    W    .     600   .    .    .    .    .    .    .    HOH    O     20.825   31.690   27.031    1.00   20.90    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
 //
 </pre>
 </td></tr></table><p>
-<p><h3>File: pdbparse.log</h3>
-<table width="90%"><tr><td bgcolor="#CCFFCC">
-<pre>
-/ebi/services/idata/pmr/hgmp/test/data/structure/pdb1cs4.ent
-SEQRESLENDIF   1 (A)
-ATOMCOL12      429
-BADINDEX       1 (A)
-SECSTART       1 1 ILE 384
-SECSTART       1 1 ILE 384
-//
-/ebi/services/idata/pmr/hgmp/test/data/structure/pdb1ii7.ent
-SEQRESLENDIF   1 (A)
-ATOMCOL12      390
-SECBOTH        1 1 SER 57 GLU 73
-SECBOTH        1 1 VAL 78 ILE 81
-SECBOTH        1 1 LYS 2 LEU 6
-//
-</pre>
-</td></tr></table><p>
 
+
+<!--  
+<br>
+<br><b>Figure 2   Excerpt from a clean protein coordinate file</b>
+<table><td bgcolor="#CFCCFF">
+<pre>
+ID  1CS4
+DE  MOL_ID: 1; MOLECULE: TYPE V ADENYLATE CYCLASE; CHAIN: A; FRAGMENT: C1A
+OS  MOL_ID: 1; ORGANISM_SCIENTIFIC: CANIS FAMILIARIS; ORGANISM_COMMON: DOG;
+EX  METHOD xray; RESO 2.50; NMOD 1; NCHN 3; NGRP 0;
+CN  [1]
+IN  ID A; NR 225; NL 0; NH 6; NE 6;
+SQ  SEQUENCE  225 AA;  25486 MW;  437C8290 CRC32;
+    MHHHHHHAME MKADINAKQE DMMFHKIYIQ KHDNVSILFA DIEGFTSLAS QCTAQELVMT
+    LNELFARFDK LAAENHCLRI KILGDCYYCV SGLPEARADH AHCCVEMGMD MIEAISLVRE
+    MTGVNVNMRV GIHSGRVHCG VLGLRKWQFD VWSNDVTLAN HMEAGGKAGR IHITKATLSY
+    LNGDYEVEPG CGGERNAYLK EHSIETFLIL RCTQKRKEEK AMIAK
+CN  [2]
+<font color=red>< data omitted for clarity ></font>
+CO  1  1  .  P  41  396  E 3 A1 . E 1 D ASP N   51.711 -11.782 62.798 1.00 51.17 -144.22 138.76  23.90  20.87  14.90  20.87  20.30  0.00   0.00   4.02   8.20  16.85  18.50
+CO  1  1  .  P  41  396  E 3 A1 . E 1 D ASP CA  52.810 -11.644 61.848 1.00 54.45 -144.22 138.76  23.90  20.87  14.90  20.87  20.30  0.00   0.00   4.02   8.20  16.85  18.50
+<font color=red>< data omitted for clarity ></font>
+An excerpt from a protein CCF file (clean coordinate file) is shown.  The data are described in Section 4.0.
+</pre>  
+</table>
+-->
 
 <!-- DATA FILES         
      Any data files used (e.g. translation table file, substitution matrix 
@@ -594,126 +598,184 @@ PDBPARSE does not use a data file.
 
 <H3> 6.1   COMMAND LINE ARGUMENTS </H3>
  
+<pre>
+   Standard (Mandatory) qualifiers:
+  [-pdb]               dirlist    This option specifies the location of PDB
+                                  files (input). A PDB file contains protein
+                                  coordinate and other data. A detailed
+                                  explanation of the PDB file format is
+                                  available on the PDB web site
+                                  http://www.rcsb.org/pdb/info.html.
+   -camask             boolean    This option specifies whether to to mask
+                                  non-amino acid groups in protein chains that
+                                  do not contain a C-alpha atom. If masked,
+                                  the group will not appear in either the CO
+                                  or SQ records of the clean coordinate file.
+   -camaska            boolean    This option specifies whether to mask amino
+                                  acids in protein chains that do not contain
+                                  a C-alpha atom. If masked, the amino acid
+                                  will not appear in the CO record but will
+                                  still be present in the SQ record of the
+                                  clean coordinate file.
+   -atommask           boolean    This option specifies whether to mask amino
+                                  acid residues in protein chains with a
+                                  single atom only. If masked, the amino acid
+                                  will appear not appear in the CO record but
+                                  will still be present in the SQ record of
+                                  the clean coordinate file.
+  [-ccf]               directory  This option specifies the location of CCF
+                                  files (clean coordinate files) (output). A
+                                  'protein clean cordinate file' contains
+                                  protein coordinate and other data for a
+                                  single PDB file. The files, generated by
+                                  using PDBPARSE, are in CCF format
+                                  (EMBL-like) and contain 'cleaned-up' data
+                                  that is self-consistent and error-corrected.
+                                  Records for residue solvent accessibility
+                                  and secondary structure are added to the
+                                  file by using PDBPLUS.
+   -errf               outfile    This option specifies tame of the log file
+                                  for the build. The log file may contain
+                                  messages about inconsistencies or errors in
+                                  the PDB files that were parsed.
+
+   Additional (Optional) qualifiers:
+   -[no]ccfnaming      boolean    This option specifies whether to use pdbid
+                                  code to name the output files. If set, the
+                                  PDB identifier code (from the PDB file) is
+                                  used to name the file. Otherwise, the output
+                                  files have the same names as the input
+                                  files.
+   -chnsiz             integer    Minimum number of amino acid residues in a
+                                  chain for it to be parsed.
+   -maxmis             integer    Maximum number of permissible mismatches
+                                  between the ATOM and SEQRES sequences.
+   -maxtrim            integer    Max. no. residues to trim when checking for
+                                  missing C-terminal SEQRES sequences.
+
+   Advanced (Unprompted) qualifiers: (none)
+   Associated qualifiers:
+
+   "-errf" associated qualifiers
+   -odirectory         string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write standard output
+   -filter             boolean    Read standard input, write standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report deaths
+
+
+</pre>
+</td></tr></table>
+<P>
 <table border cellspacing=0 cellpadding=3 bgcolor="#ccccff">
 <tr bgcolor="#FFFFCC">
 <th align="left" colspan=2>Standard (Mandatory) qualifiers</th>
 <th align="left">Allowed values</th>
 <th align="left">Default</th>
 </tr>
- 
+
 <tr>
 <td>[-pdb]<br>(Parameter 1)</td>
-<td>This option specifies the location of PDB files (input). These are PDB format files for protein coordinate data. A detailed explanation of the PDB file format is available on the PDB web site http://www.rcsb.org/pdb/info.html.</td>
+<td>This option specifies the location of PDB files (input). A PDB file contains protein coordinate and other data. A detailed explanation of the PDB file format is available on the PDB web site http://www.rcsb.org/pdb/info.html.</td>
 <td>Directory with files</td>
 <td>./</td>
 </tr>
- 
+
 <tr>
 <td>-camask</td>
 <td>This option specifies whether to to mask non-amino acid groups in protein chains that do not contain a C-alpha atom. If masked, the group will not appear in either the CO or SQ records of the clean coordinate file.</td>
 <td>Boolean value Yes/No</td>
 <td>No</td>
 </tr>
- 
+
 <tr>
 <td>-camaska</td>
 <td>This option specifies whether to mask amino acids in protein chains that do not contain a C-alpha atom. If masked, the amino acid will not appear in the CO record but will still be present in the SQ record of the clean coordinate file.</td>
 <td>Boolean value Yes/No</td>
 <td>No</td>
 </tr>
- 
+
 <tr>
 <td>-atommask</td>
 <td>This option specifies whether to mask amino acid residues in protein chains with a single atom only. If masked, the amino acid will appear not appear in the CO record but will still be present in the SQ record of the clean coordinate file.</td>
 <td>Boolean value Yes/No</td>
 <td>No</td>
 </tr>
- 
+
 <tr>
 <td>[-ccf]<br>(Parameter 2)</td>
 <td>This option specifies the location of CCF files (clean coordinate files) (output). A 'protein clean cordinate file' contains protein coordinate and other data for a single PDB file. The files, generated by using PDBPARSE, are in CCF format (EMBL-like) and contain 'cleaned-up' data that is self-consistent and error-corrected. Records for residue solvent accessibility and secondary structure are added to the file by using PDBPLUS.</td>
 <td>Directory</td>
 <td>./</td>
 </tr>
- 
+
 <tr>
 <td>-errf</td>
 <td>This option specifies tame of the log file for the build. The log file may contain messages about inconsistencies or errors in the PDB files that were parsed.</td>
 <td>Output file</td>
 <td>pdbparse.log</td>
 </tr>
- 
+
 <tr bgcolor="#FFFFCC">
 <th align="left" colspan=2>Additional (Optional) qualifiers</th>
 <th align="left">Allowed values</th>
 <th align="left">Default</th>
 </tr>
- 
+
 <tr>
 <td>-[no]ccfnaming</td>
 <td>This option specifies whether to use pdbid code to name the output files. If set, the PDB identifier code (from the PDB file) is used to name the file. Otherwise, the output files have the same names as the input files.</td>
 <td>Boolean value Yes/No</td>
 <td>Yes</td>
 </tr>
- 
+
 <tr>
 <td>-chnsiz</td>
 <td>Minimum number of amino acid residues in a chain for it to be parsed.</td>
 <td>Any integer value</td>
 <td>5</td>
 </tr>
- 
+
 <tr>
 <td>-maxmis</td>
 <td>Maximum number of permissible mismatches between the ATOM and SEQRES sequences.</td>
 <td>Any integer value</td>
 <td>3</td>
 </tr>
- 
+
+<tr>
+<td>-maxtrim</td>
+<td>Max. no. residues to trim when checking for missing C-terminal SEQRES sequences.</td>
+<td>Any integer value</td>
+<td>10</td>
+</tr>
+
 <tr bgcolor="#FFFFCC">
 <th align="left" colspan=2>Advanced (Unprompted) qualifiers</th>
 <th align="left">Allowed values</th>
 <th align="left">Default</th>
 </tr>
- 
+
 <tr>
 <td colspan=4>(none)</td>
 </tr>
- 
+
 </table>
 
 
 <H3> 6.2 EXAMPLE SESSION </H3>
 An example of interactive use of PDBPARSE is shown below.
-<table><td bgcolor="#FFCCFF">
-<pre>
-Unix % pdbparse
-Parses PDB files and writes cleaned-up protein coordinate files.
-Location of PDB files (input) [./]: /test_data
-Mask non-amino acid groups in protein chains that do not contain a C-alpha atom [N]: 
-Mask amino acids in protein chains that do not contain a C-alpha atom [N]: y
-Mask amino acid residues in protein chains with a single atom only [N]: 
-Location of CCF files (clean coordinate files) (output) [./]: /test_data/pdbparse
-Name of log file for the build [pdbparse.log]: /test_data/pdbparse/pdbparse.log
-Processing /test_data/pdb1cs4.ent
-Processing /test_data/pdb1ii7.ent
-Unix %
-</pre>
-</table>
-
-<br><br>
-The PDB files pdb1ii7.ent and pdb1cs4.ent were read. The protein clean 
-coordinate files 1cs4.ccf and 1ii7.ccf are written.  A log file called 
-/test_data/pdbparse/pdbparse.log was also written.
-<br><br>
-The following command line would achieve the same result.
-<br>
-<table><td bgcolor="#FFCCFF">
-<pre>
-pdbparse  /test_data /test_data/pdbparse -camask N -camaska Y -atommask N -errf 
-/test_data//test_data/pdbparse/pdbparse.log -chnsiz 5 
-</pre>
-</td></table>
 
 <b>Here is a sample session with pdbparse</b>
 <p>
@@ -722,15 +784,14 @@ pdbparse  /test_data /test_data/pdbparse -camask N -camaska Y -atommask N -errf
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
 % <b>pdbparse </b>
-Parses pdb files and writes cleaned-up protein coordinate files.
-Location of pdb files (pdb format input) [./]: <b>structure</b>
-Extension of pdb files (pdb format input) [.ent]: <b></b>
-Mask non-amino acid groups in protein chains that do not contain a C-alpha atom [N]: <b></b>
-Mask amino acids in protein chains that do not contain a C-alpha atom [N]: <b>Y</b>
-Mask amino acid residues in protein chains with a single atom only [N]: <b></b>
-Name of log file for the build [pdbparse.log]: <b></b>
-Location of coordinate files (embl format output) [./]: <b></b>
-Extension of coordinate files (embl format output) [.pxyz]: <b></b>
+Parses PDB files and writes CCF files (clean coordinate files) for
+proteins.
+Location of PDB files (input) [./]: <b>structure</b>
+Mask non-amino acid groups in protein chains that do not contain a C-alpha atom. [N]: <b></b>
+Mask amino acids in protein chains that do not contain a C-alpha atom. [N]: <b>Y</b>
+Mask amino acid residues in protein chains with a single atom only. [N]: <b></b>
+Location of CCF files (clean coordinate files) (output) [./]: <b></b>
+Name of log file for the build. [pdbparse.log]: <b></b>
 
 Processing /ebi/services/idata/pmr/hgmp/test/data/structure/pdb1cs4.ent
 Processing /ebi/services/idata/pmr/hgmp/test/data/structure/pdb1ii7.ent
@@ -740,6 +801,11 @@ Processing /ebi/services/idata/pmr/hgmp/test/data/structure/pdb1ii7.ent
 <a href="#output.1">Go to the output files for this example</a><p><p>
 
 
+<br><br>
+The PDB files pdb1ii7.ent and pdb1cs4.ent were read. The protein clean 
+coordinate files 1cs4.ccf and 1ii7.ccf are written.  A log file called 
+/test_data/pdbparse/pdbparse.log was also written.
+<br><br>
 
 
 <!-- KNOWN BUGS & WARNINGS
@@ -815,6 +881,10 @@ is used, then simply type 'unlimit' before PDBPARSE is run.
 </table>
 
 
+
+None
+
+
 <!-- DESCRIPTION
      A complete, non-technical, user-level description of the application.
 -->
@@ -887,50 +957,9 @@ The correct residue sequence and numbering for a chain is determined by an align
      Other applications that either generate the input, use the output or 
      are in some other way related to the application are described here. 
 -->
+
 <a name="11.0"></a>
 <H2> 11.0  RELATED APPLICATIONS      </H2>
-
-<table BORDER CELLSPACING=5 CELLPADDING=5 BGCOLOR="#f5f5ff" >
-<tr>
-<td><b>APPLICATION</b></td>
-<td><b>DESCRIPTION</b></td>
-</tr>
-<tr>
-<td><b><a href="pdbplus.html.html">PDBPLUS</a> </b></td>
-<td> Add residue solvent accessibility and secondary structure data to
-     a CCF file (clean coordinate file) for a protein or domain. </td>
-</tr>
-<tr>
-<td><b><a href="domainer.html">DOMAINER</a> </b></td>
-<td> Reads CCF files (clean coordinate files) for proteins and writes CCF files for domains in a DCF file (domain classification file).</td>
-</tr>
-<tr>
-<td><b><a href="contacts.html">CONTACTS</a> </b></td>
-<td> Reads CCF files (clean coordinate files) and writes CON files (contact files) of intra-chain residue-residue contact data. </td>
-</tr>
-<tr>
-<td><b><a href="interface.html">INTERFACE</a> </b></td>
-<td> Reads CCF files (clean coordinate files) and writes CON files (contact files) of inter-chain residue-residue contact data. </td>
-</tr>
-<tr>
-<td><b><a href="funky.html">FUNKY</a> </b></td>
-<td> Reads CCF files (clean coordinate files) and writes CON files (contact files) of residue-ligand contact data for domains in a DCF file (domain classification file). </td>
-</tr>
-</table>
-
-
-<H3>11.1 Domain coordinate data</H3>
-We wrote the DOMAINER application to read protein CCF files and generate files of coordinates for single SCOP domains in the CCF format (domain CCF files, Figure 1) and the PDB format.  DOMAINER reads a file of SCOP classification data that is prepared by using the application SCOPPARSE, and generates an output file in each format for each domain listed.  Where coordinates for multiple models were determined, data in the output files are given for the first model only.  In cases where a domain consists of sections from more than one polypeptide chain, the data are presented as belonging to a single chain only (a single sequence with a chain identifier of is given).  SCOPPARSE was written to parse the raw SCOP classification files (dir.cla.scop.txt and dir.des.scop.txt) available at URL (http://scop.mrc-lmb.cam.ac.uk/scop/parse/) and generate an output file suitable for use with DOMAINER.
-
-<H3>11.2 Derived data</H3>
-We wrote the PDBPLUS application, as a wrapper to the STRIDE [10] and NACCESS [11] programs, to add the derived data (i - iv below) to a CCF file. PDBPLUS runs on both protein and domain CCF files and requires corresponding files in PDB format, either the original PDB file (for proteins) or one generated by using DOMAINER (for domains).  The values of the derived data for a given residue will of course depend on whether they were calculated from the coordinates for the entire structure or just the domain.  Thus PDBPLUS provides useful flexibility in generating the derived data.
-<br>i.  Absolute (Abs.) and relative (Rel.) accessible surface area of residues according to NACCESS.  Abs. is the summed accessible surface area of the atoms, whereas Rel. is expressed as a percentage relative to the accessibility of the atoms in an extended ALA-x-ALA tri-peptide conformation.  The NACCESS authors treat alpha carbons as side-chain atoms so that glycine can have a value for side-chain accessible surface area (see 'Database format' below).  They are therefore not included in the main-chain.  
-<br>ii.  Phi and Psi angle and solvent accessible surface area of residues as calculated by using STRIDE.  
-<br>iii.  Secondary structure assignment according to STRIDE, one of 'H' (alpha helix), 'G' (3-10 helix), 'I' (Pi-helix), 'E' (extended conformation), 'B' or 'b' (isolated bridge), 'T' (turn) or 'C' (coil, i.e. none of the above).  
-<br>iv.  The number of helical or beta-strand secondary structure elements (SSEs) in the chain or domain.  An 'element' is defined as a run of a user-defined number (typically 4) of residues in the 'H', 'G' or 'I' conformation (helices) or the 'E' conformation (beta-strands).  
-
- 
-
 
 <h2><a name="See also">See also</a></h2>
 <table border cellpadding=4 bgcolor="#FFFFF0">
@@ -959,8 +988,15 @@ We wrote the PDBPLUS application, as a wrapper to the STRIDE [10] and NACCESS [1
 
 
 
+<H3>11.1 Domain coordinate data</H3>
+We wrote the DOMAINER application to read protein CCF files and generate files of coordinates for single SCOP domains in the CCF format (domain CCF files, Figure 1) and the PDB format.  DOMAINER reads a file of SCOP classification data that is prepared by using the application SCOPPARSE, and generates an output file in each format for each domain listed.  Where coordinates for multiple models were determined, data in the output files are given for the first model only.  In cases where a domain consists of sections from more than one polypeptide chain, the data are presented as belonging to a single chain only (a single sequence with a chain identifier of is given).  SCOPPARSE was written to parse the raw SCOP classification files (dir.cla.scop.txt and dir.des.scop.txt) available at URL (http://scop.mrc-lmb.cam.ac.uk/scop/parse/) and generate an output file suitable for use with DOMAINER.
 
-
+<H3>11.2 Derived data</H3>
+We wrote the PDBPLUS application, as a wrapper to the STRIDE [10] and NACCESS [11] programs, to add the derived data (i - iv below) to a CCF file. PDBPLUS runs on both protein and domain CCF files and requires corresponding files in PDB format, either the original PDB file (for proteins) or one generated by using DOMAINER (for domains).  The values of the derived data for a given residue will of course depend on whether they were calculated from the coordinates for the entire structure or just the domain.  Thus PDBPLUS provides useful flexibility in generating the derived data.
+<br>i.  Absolute (Abs.) and relative (Rel.) accessible surface area of residues according to NACCESS.  Abs. is the summed accessible surface area of the atoms, whereas Rel. is expressed as a percentage relative to the accessibility of the atoms in an extended ALA-x-ALA tri-peptide conformation.  The NACCESS authors treat alpha carbons as side-chain atoms so that glycine can have a value for side-chain accessible surface area (see 'Database format' below).  They are therefore not included in the main-chain.  
+<br>ii.  Phi and Psi angle and solvent accessible surface area of residues as calculated by using STRIDE.  
+<br>iii.  Secondary structure assignment according to STRIDE, one of 'H' (alpha helix), 'G' (3-10 helix), 'I' (Pi-helix), 'E' (extended conformation), 'B' or 'b' (isolated bridge), 'T' (turn) or 'C' (coil, i.e. none of the above).  
+<br>iv.  The number of helical or beta-strand secondary structure elements (SSEs) in the chain or domain.  An 'element' is defined as a run of a user-defined number (typically 4) of residues in the 'H', 'G' or 'I' conformation (helices) or the 'E' conformation (beta-strands).  
 
 
 <!-- DIAGNOSTIC ERROR MESSAGES
@@ -1212,6 +1248,3 @@ See also <a href="http://emboss.sourceforge.net/">http://emboss.sourceforge.net/
 
 </BODY>
 </HTML>
-
-</body>
-</html>

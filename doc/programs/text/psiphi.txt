@@ -1,8 +1,86 @@
 
-                                   Not Found
-
-   The requested URL /apps/psiphi.html was not found on this server.
-     _________________________________________________________________
+                                  psiphi 
 
 
-    Apache/1.3.33 Server at emboss.sourceforge.net Port 80
+
+Function
+
+   [an error occurred while processing this directive]
+
+Description
+
+   Calculates the psi and phi torsion angles around the alpha carbons
+   (CA) in (a specified stretch of) a specified chain of a protein
+   structure from the co-ordinates of the mainchain atoms in the two
+   planes around it
+
+Algorithm
+
+   **************** EDIT HERE ****************
+
+Usage
+
+   [an error occurred while processing this directive]
+
+Command line arguments
+
+   [an error occurred while processing this directive]
+
+   [an error occurred while processing this directive]
+
+Input file format
+
+   psiphi reads ...
+
+   [an error occurred while processing this directive]
+
+Output file format
+
+   psiphi outputs ...
+
+   [an error occurred while processing this directive]
+
+Data files
+
+Notes
+
+   None.
+
+References
+
+   None.
+
+Warnings
+
+   None.
+
+Diagnostic Error Messages
+
+   None.
+
+Exit status
+
+   It always exits with status 0.
+
+Known bugs
+
+   None. [an error occurred while processing this directive]
+
+Author(s)
+
+   Damian Counsell (d.counsell © rfcgr.mrc.ac.uk)
+   MRC Rosalind Franklin Centre for Genomics Research Wellcome Trust
+   Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
+
+History
+
+   [an error occurred while processing this directive]
+
+Target users
+
+   This program is intended to be used by everyone and everything, from
+   naive users to embedded scripts.
+
+Comments
+
+   [an error occurred while processing this directive]

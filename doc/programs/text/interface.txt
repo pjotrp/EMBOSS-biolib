@@ -42,6 +42,22 @@ Algorithm
 
 Usage
 
+   Here is a sample session with interface
+
+
+% interface 
+Reads CCF files (clean coordinate files) and writes CON files (contact
+files) of inter-chain residue-residue contact data.
+Name of protein CCF file (clean coordinate file) (input): interface/2hhb.ccf
+Threshold contact distance [1.0]: 1
+Name of CON file (contact file) (output) [test.con]: 2hhb.con
+Name of log file for the build [interface.log]: 
+
+2hhb
+
+   Go to the input files for this example
+   Go to the output files for this example
+
 Command line arguments
 
    Standard (Mandatory) qualifiers:
@@ -163,10 +179,346 @@ Input file format
 
    interface reads any normal sequence USAs.
 
+  Input files for usage example
+
+  File: interface/2hhb.ccf
+
+ID   2hhb
+XX
+DE   HEMOGLOBIN (DEOXY)
+XX
+OS   HUMAN (HOMO SAPIENS)
+XX
+EX   METHOD xray; RESO 1.74; NMOD 1; NCHN 4; NGRP 0;
+XX
+CN   [1]
+XX
+IN   ID A; NR 141; NL 1; NH 0; NE 0;
+XX
+SQ   SEQUENCE   141 AA;  15127 MW;  5EC7DB1E CRC32;
+     VLSPADKTNV KAAWGKVGAH AGEYGAEALE RMFLSFPTTK TYFPHFDLSH GSAQVKGHGK
+     KVADALTNAV AHVDDMPNAL SALSDLHAHK LRVDPVNFKL LSHCLLVTLA AHLPAEFTPA
+     VHASLDKFLA SVSTVLTSKY R
+XX
+CN   [2]
+XX
+IN   ID B; NR 146; NL 1; NH 0; NE 0;
+XX
+SQ   SEQUENCE   146 AA;  15868 MW;  EC9744C9 CRC32;
+     VHLTPEEKSA VTALWGKVNV DEVGGEALGR LLVVYPWTQR FFESFGDLST PDAVMGNPKV
+     KAHGKKVLGA FSDGLAHLDN LKGTFATLSE LHCDKLHVDP ENFRLLGNVL VCVLAHHFGK
+     EFTPPVQAAY QKVVAGVANA LAHKYH
+XX
+CN   [3]
+XX
+IN   ID C; NR 141; NL 1; NH 0; NE 0;
+XX
+SQ   SEQUENCE   141 AA;  15127 MW;  5EC7DB1E CRC32;
+     VLSPADKTNV KAAWGKVGAH AGEYGAEALE RMFLSFPTTK TYFPHFDLSH GSAQVKGHGK
+     KVADALTNAV AHVDDMPNAL SALSDLHAHK LRVDPVNFKL LSHCLLVTLA AHLPAEFTPA
+     VHASLDKFLA SVSTVLTSKY R
+XX
+CN   [4]
+XX
+IN   ID D; NR 146; NL 2; NH 0; NE 0;
+XX
+SQ   SEQUENCE   146 AA;  15868 MW;  EC9744C9 CRC32;
+     VHLTPEEKSA VTALWGKVNV DEVGGEALGR LLVVYPWTQR FFESFGDLST PDAVMGNPKV
+     KAHGKKVLGA FSDGLAHLDN LKGTFATLSE LHCDKLHVDP ENFRLLGNVL VCVLAHHFGK
+     EFTPPVQAAY QKVVAGVANA LAHKYH
+XX
+CO   1    1    .    P    1     1     .    .    .    .    .    .    V    VAL
+N      6.130   16.559    4.905    7.00   41.29    0.00    0.00    0.00    0.00
+   0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    1    .    P    1     1     .    .    .    .    .    .    V    VAL
+CA     6.870   17.784    4.702    6.00   41.33    0.00    0.00    0.00    0.00
+   0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    1    .    P    1     1     .    .    .    .    .    .    V    VAL
+C      8.377   17.548    4.913    6.00   31.64    0.00    0.00    0.00    0.00
+   0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    1    .    P    1     1     .    .    .    .    .    .    V    VAL
+O      8.820   16.980    5.922    8.00   38.31    0.00    0.00    0.00    0.00
+   0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    1    .    P    1     1     .    .    .    .    .    .    V    VAL
+CB     6.345   18.763    5.731    6.00   52.26    0.00    0.00    0.00    0.00
+   0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    1    .    P    1     1     .    .    .    .    .    .    V    VAL
+CG1    6.745   20.188    5.356    6.00   52.75    0.00    0.00    0.00    0.00
+   0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+
+
+  [Part of this file has been deleted for brevity]
+
+CO   1    .    .    W    .     174   .    .    .    .    .    .    .    HOH
+O     -4.764   -6.228    5.515    8.00   40.89    0.00    0.00    0.00    0.00
+   0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    .    .    W    .     175   .    .    .    .    .    .    .    HOH
+O     23.809   19.925    1.758    8.00   39.37    0.00    0.00    0.00    0.00
+   0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    .    .    W    .     176   .    .    .    .    .    .    .    HOH
+O     -7.871   -9.078    2.406    8.00   43.37    0.00    0.00    0.00    0.00
+   0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    .    .    W    .     177   .    .    .    .    .    .    .    HOH
+O      4.693   12.083    7.558    8.00   40.24    0.00    0.00    0.00    0.00
+   0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    .    .    W    .     178   .    .    .    .    .    .    .    HOH
+O      8.775  -23.438   16.055    8.00   42.33    0.00    0.00    0.00    0.00
+   0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    .    .    W    .     179   .    .    .    .    .    .    .    HOH
+O     -7.480  -10.898   17.998    8.00   38.06    0.00    0.00    0.00    0.00
+   0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    .    .    W    .     180   .    .    .    .    .    .    .    HOH
+O     -4.731   16.453    2.295    8.00   36.37    0.00    0.00    0.00    0.00
+   0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    .    .    W    .     181   .    .    .    .    .    .    .    HOH
+O     -1.055   11.866   -0.448    8.00   43.19    0.00    0.00    0.00    0.00
+   0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    .    .    W    .     182   .    .    .    .    .    .    .    HOH
+O    -27.610  -10.991    5.353    8.00   43.46    0.00    0.00    0.00    0.00
+   0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    .    .    W    .     183   .    .    .    .    .    .    .    HOH
+O     26.015   11.766    5.159    8.00   40.95    0.00    0.00    0.00    0.00
+   0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    .    .    W    .     184   .    .    .    .    .    .    .    HOH
+O    -18.517   -8.355   15.267    8.00   35.55    0.00    0.00    0.00    0.00
+   0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    .    .    W    .     185   .    .    .    .    .    .    .    HOH
+O    -14.034    2.806  -30.367    8.00   41.77    0.00    0.00    0.00    0.00
+   0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    .    .    W    .     186   .    .    .    .    .    .    .    HOH
+O    -32.905   -9.033    0.480    8.00   43.68    0.00    0.00    0.00    0.00
+   0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    .    .    W    .     187   .    .    .    .    .    .    .    HOH
+O    -28.749  -13.315    1.938    8.00   45.36    0.00    0.00    0.00    0.00
+   0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    .    .    W    .     188   .    .    .    .    .    .    .    HOH
+O      0.516   -8.074  -26.354    8.00   41.53    0.00    0.00    0.00    0.00
+   0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    .    .    W    .     189   .    .    .    .    .    .    .    HOH
+O    -20.080   -9.873  -22.862    8.00   36.25    0.00    0.00    0.00    0.00
+   0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    .    .    W    .     190   .    .    .    .    .    .    .    HOH
+O    -13.442    9.778  -13.572    8.00   39.70    0.00    0.00    0.00    0.00
+   0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    .    .    W    .     191   .    .    .    .    .    .    .    HOH
+O    -24.804   -2.608  -15.488    8.00   37.79    0.00    0.00    0.00    0.00
+   0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    .    .    W    .     192   .    .    .    .    .    .    .    HOH
+O      6.547    9.706   16.296    8.00   41.86    0.00    0.00    0.00    0.00
+   0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    .    .    W    .     193   .    .    .    .    .    .    .    HOH
+O      0.029   22.606   14.164    8.00   43.02    0.00    0.00    0.00    0.00
+   0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    .    .    W    .     194   .    .    .    .    .    .    .    HOH
+O    -11.367    0.306   28.463    8.00   44.30    0.00    0.00    0.00    0.00
+   0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    .    .    W    .     195   .    .    .    .    .    .    .    HOH
+O    -19.950  -10.635   14.301    8.00   40.17    0.00    0.00    0.00    0.00
+   0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    .    .    W    .     196   .    .    .    .    .    .    .    HOH
+O     -7.047   -6.324   20.098    8.00   36.98    0.00    0.00    0.00    0.00
+   0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    .    .    W    .     197   .    .    .    .    .    .    .    HOH
+O    -23.876    1.108   14.102    8.00   33.31    0.00    0.00    0.00    0.00
+   0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    .    .    W    .     198   .    .    .    .    .    .    .    HOH
+O    -34.199    8.033   11.037    8.00   40.72    0.00    0.00    0.00    0.00
+   0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    .    .    W    .     199   .    .    .    .    .    .    .    HOH
+O    -14.173   13.393   -8.778    8.00   43.21    0.00    0.00    0.00    0.00
+   0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    .    .    W    .     200   .    .    .    .    .    .    .    HOH
+O     11.388  -11.044   24.763    8.00   39.34    0.00    0.00    0.00    0.00
+   0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    .    .    W    .     201   .    .    .    .    .    .    .    HOH
+O      3.735   -3.643    2.734    8.00   42.17    0.00    0.00    0.00    0.00
+   0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    .    .    W    .     202   .    .    .    .    .    .    .    HOH
+O      3.149   -0.692    2.083    8.00   41.40    0.00    0.00    0.00    0.00
+   0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    .    .    W    .     203   .    .    .    .    .    .    .    HOH
+O      4.511  -25.886   13.006    8.00   39.83    0.00    0.00    0.00    0.00
+   0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    .    .    W    .     204   .    .    .    .    .    .    .    HOH
+O      8.712  -21.655    3.577    8.00   43.08    0.00    0.00    0.00    0.00
+   0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    .    .    W    .     205   .    .    .    .    .    .    .    HOH
+O     22.926   -4.304   24.079    8.00   38.10    0.00    0.00    0.00    0.00
+   0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    .    .    W    .     206   .    .    .    .    .    .    .    HOH
+O     11.435    9.654   20.618    8.00   40.23    0.00    0.00    0.00    0.00
+   0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    .    .    W    .     207   .    .    .    .    .    .    .    HOH
+O     18.099    5.542   27.744    8.00   39.03    0.00    0.00    0.00    0.00
+   0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    .    .    W    .     208   .    .    .    .    .    .    .    HOH
+O     12.174    9.951    9.804    8.00   44.34    0.00    0.00    0.00    0.00
+   0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    .    .    W    .     209   .    .    .    .    .    .    .    HOH
+O     24.745   -2.501   15.270    8.00   39.78    0.00    0.00    0.00    0.00
+   0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    .    .    W    .     210   .    .    .    .    .    .    .    HOH
+O     24.231    0.100   14.764    8.00   42.94    0.00    0.00    0.00    0.00
+   0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    .    .    W    .     211   .    .    .    .    .    .    .    HOH
+O     23.324  -18.136   10.981    8.00   53.60    0.00    0.00    0.00    0.00
+   0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    .    .    W    .     212   .    .    .    .    .    .    .    HOH
+O     25.576  -22.211    6.309    8.00   45.18    0.00    0.00    0.00    0.00
+   0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    .    .    W    .     213   .    .    .    .    .    .    .    HOH
+O     14.639   24.823   -4.300    8.00   41.35    0.00    0.00    0.00    0.00
+   0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    .    .    W    .     214   .    .    .    .    .    .    .    HOH
+O     14.903    5.393  -23.047    8.00   37.45    0.00    0.00    0.00    0.00
+   0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    .    .    W    .     215   .    .    .    .    .    .    .    HOH
+O     16.650   -5.137  -16.717    8.00   39.12    0.00    0.00    0.00    0.00
+   0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    .    .    W    .     216   .    .    .    .    .    .    .    HOH
+O      7.424   -6.700  -20.085    8.00   38.62    0.00    0.00    0.00    0.00
+   0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    .    .    W    .     217   .    .    .    .    .    .    .    HOH
+O     -1.263   -2.837  -21.251    8.00   45.10    0.00    0.00    0.00    0.00
+   0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    .    .    W    .     218   .    .    .    .    .    .    .    HOH
+O     23.120   -3.118  -12.992    8.00   37.05    0.00    0.00    0.00    0.00
+   0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    .    .    W    .     219   .    .    .    .    .    .    .    HOH
+O     23.664    0.968  -14.389    8.00   36.25    0.00    0.00    0.00    0.00
+   0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    .    .    W    .     220   .    .    .    .    .    .    .    HOH
+O     25.698    7.981  -15.362    8.00   35.85    0.00    0.00    0.00    0.00
+   0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    .    .    W    .     221   .    .    .    .    .    .    .    HOH
+O     30.009   16.347   -6.794    8.00   37.62    0.00    0.00    0.00    0.00
+   0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    .    .    W    .     222   .    .    .    .    .    .    .    HOH
+O     27.728   16.677   -1.376    8.00   42.54    0.00    0.00    0.00    0.00
+   0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    .    .    W    .     223   .    .    .    .    .    .    .    HOH
+O      8.142   18.836    1.041    8.00   39.90    0.00    0.00    0.00    0.00
+   0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+//
+
    The format of the clean protein coordinate file is described in
    pdbparse
 
 Output file format
+
+  Output files for usage example
+
+  File: 2hhb.con
+
+XX   Inter-chain residue-residue contact data.
+XX
+TY   INTER
+XX
+EX   THRESH 1.0; IGNORE 20.0; NMOD 1; NCHA 4
+XX
+NE   6
+XX
+EN   [1]
+XX
+ID   PDB 2hhb; DOM .; LIG .
+XX
+CN   MO 1; CN1 1; CN2 2; ID1 A; ID2 B; NRES1 141; NRES2 146
+XX
+S1   SEQUENCE   141 AA;  15127 MW;  5EC7DB1E CRC32;
+     VLSPADKTNV KAAWGKVGAH AGEYGAEALE RMFLSFPTTK TYFPHFDLSH GSAQVKGHGK
+     KVADALTNAV AHVDDMPNAL SALSDLHAHK LRVDPVNFKL LSHCLLVTLA AHLPAEFTPA
+     VHASLDKFLA SVSTVLTSKY R
+XX
+S2   SEQUENCE   146 AA;  15868 MW;  EC9744C9 CRC32;
+     VHLTPEEKSA VTALWGKVNV DEVGGEALGR LLVVYPWTQR FFESFGDLST PDAVMGNPKV
+     KAHGKKVLGA FSDGLAHLDN LKGTFATLSE LHCDKLHVDP ENFRLLGNVL VCVLAHHFGK
+     EFTPPVQAAY QKVVAGVANA LAHKYH
+XX
+NC   SM 48; LI .
+XX
+SM   GLU 30 ; PRO 124
+SM   ARG 31 ; PHE 122
+SM   ARG 31 ; THR 123
+SM   ARG 31 ; PRO 124
+SM   ARG 31 ; GLN 127
+SM   LEU 34 ; PRO 124
+SM   LEU 34 ; PRO 125
+SM   LEU 34 ; ALA 128
+SM   SER 35 ; GLN 127
+SM   SER 35 ; ALA 128
+SM   SER 35 ; GLN 131
+SM   PHE 36 ; GLN 131
+SM   HIS 103 ; ASN 108
+SM   HIS 103 ; VAL 111
+SM   HIS 103 ; CYS 112
+SM   HIS 103 ; GLN 127
+SM   HIS 103 ; GLN 131
+SM   CYS 104 ; GLN 127
+SM   LEU 106 ; CYS 112
+SM   VAL 107 ; VAL 111
+SM   VAL 107 ; CYS 112
+SM   VAL 107 ; ALA 115
+SM   VAL 107 ; PHE 122
+SM   VAL 107 ; GLN 127
+
+
+  [Part of this file has been deleted for brevity]
+
+SM   GLU 27 ; PRO 124
+SM   GLU 30 ; PRO 124
+SM   ARG 31 ; PHE 122
+SM   ARG 31 ; THR 123
+SM   ARG 31 ; PRO 124
+SM   ARG 31 ; GLN 127
+SM   LEU 34 ; PRO 124
+SM   LEU 34 ; PRO 125
+SM   LEU 34 ; ALA 128
+SM   SER 35 ; GLN 127
+SM   SER 35 ; ALA 128
+SM   SER 35 ; GLN 131
+SM   PHE 36 ; GLN 131
+SM   HIS 103 ; ASN 108
+SM   HIS 103 ; VAL 111
+SM   HIS 103 ; CYS 112
+SM   HIS 103 ; GLN 127
+SM   HIS 103 ; GLN 131
+SM   CYS 104 ; GLN 127
+SM   LEU 106 ; CYS 112
+SM   VAL 107 ; VAL 111
+SM   VAL 107 ; CYS 112
+SM   VAL 107 ; ALA 115
+SM   VAL 107 ; PHE 122
+SM   VAL 107 ; GLN 127
+SM   ALA 110 ; CYS 112
+SM   ALA 110 ; ALA 115
+SM   ALA 110 ; HIS 116
+SM   ALA 111 ; ALA 115
+SM   ALA 111 ; GLY 119
+SM   LEU 113 ; HIS 116
+SM   PRO 114 ; HIS 116
+SM   PHE 117 ; ARG 30
+SM   PHE 117 ; CYS 112
+SM   PHE 117 ; HIS 116
+SM   THR 118 ; ARG 30
+SM   PRO 119 ; ARG 30
+SM   PRO 119 ; VAL 33
+SM   PRO 119 ; VAL 34
+SM   PRO 119 ; MET 55
+SM   ALA 120 ; VAL 33
+SM   ALA 120 ; PRO 51
+SM   HIS 122 ; ARG 30
+SM   HIS 122 ; VAL 34
+SM   HIS 122 ; VAL 109
+SM   HIS 122 ; CYS 112
+SM   ALA 123 ; VAL 33
+SM   ALA 123 ; VAL 34
+SM   ASP 126 ; VAL 34
+SM   ASP 126 ; TYR 35
+//
+
+  File: interface.log
+
+   2hhb
 
    The embl-like format used for the contact files (below) uses the
    following records:

@@ -1,9 +1,3 @@
-<html>
-<head>
-<title>EMBASSY domainatrix: domainrep</title>
-<base href="http://emboss.sourceforge.net/embassy/domainatrix/">
-</head>
-<body>
 <!-- START OF HEADER -->
 <HTML><HEAD>
 <TITLE> EMBOSS: DOMAINREP documentation. </TITLE>
@@ -58,11 +52,8 @@
 -->
 <a name="1.0"></a>
 <br><br><br><H2> 1.0   SUMMARY  </H2>
- Reorder DCF file (domain classification file) so that the representative structure of each
-      user-specified node is given first.
 
-
-
+Reorder DCF file (domain classification file) so that the representative structure of each user-specified node is given first
 
 
 <!-- INPUTS & OUTPUTS
@@ -71,16 +62,18 @@
 -->
 <a name="2.0"></a>
 <br><br><br><H2> 2.0   INPUTS & OUTPUTS          </H2>
-DOMAINREP reads a DCF file (domain classification file) and writes a DCF file containing the
-same data except that the order of domains within each user-specified node (e.g. family) in the hierarchy 
-may be changed so that the representative structure of each node is 
-given first.  The representative structure is found by using 
-stamp and this application must be installed on the system that is running 
-DOMAINREP and correctly configured (see 'Notes' below).  A 
-'domain PDB file' for each domain in the DCF file must exist in a directory specified in the 
-stamp "pdb.directories" file (see 'Notes' below). 
-The domain PDB file contains coordinate data for a single domain from SCOP or CATH, in PDB format.
-The input and output files are specified by the user.
+
+DOMAINREP reads a DCF file (domain classification file) and writes a
+DCF file containing the same data except that the order of domains
+within each user-specified node (e.g. family) in the hierarchy may be
+changed so that the representative structure of each node is given
+first.  The representative structure is found by using stamp and this
+application must be installed on the system that is running DOMAINREP
+and correctly configured (see 'Notes' below).  A 'domain PDB file' for
+each domain in the DCF file must exist in a directory specified in the
+stamp "pdb.directories" file (see 'Notes' below).  The domain PDB file
+contains coordinate data for a single domain from SCOP or CATH, in PDB
+format.  The input and output files are specified by the user.
 
 
 
@@ -104,6 +97,67 @@ The format of the DCF file is described in the <a href="scopparse.html">SCOPPARS
 
 
 
+<a name="input.1"></a>
+<h3>Input files for usage example </h3>
+<p><h3>File: all.scop</h3>
+<table width="90%"><tr><td bgcolor="#FFCCFF">
+<pre>
+ID   D1CS4A_
+XX
+EN   1CS4
+XX
+TY   SCOP
+XX
+SI   53931 CL; 54861 FO; 55073 SF; 55074 FA; 55077 DO; 55078 SO; 39418 DD;
+XX
+CL   Alpha and beta proteins (a+b)
+XX
+FO   Ferredoxin-like
+XX
+SF   Adenylyl and guanylyl cyclase catalytic domain
+XX
+FA   Adenylyl and guanylyl cyclase catalytic domain
+XX
+DO   Adenylyl cyclase VC1, domain C1a
+XX
+OS   Dog (Canis familiaris)
+XX
+NC   1
+XX
+CN   [1]
+XX
+CH   A CHAIN; . START; . END;
+//
+ID   D1II7A_
+XX
+EN   1II7
+XX
+TY   SCOP
+XX
+SI   53931 CL; 56299 FO; 56300 SF; 64427 FA; 64428 DO; 64429 SO; 62415 DD;
+XX
+CL   Alpha and beta proteins (a+b)
+XX
+FO   Metallo-dependent phosphatases
+XX
+SF   Metallo-dependent phosphatases
+XX
+FA   DNA double-strand break repair nuclease
+XX
+DO   Mre11
+XX
+OS   Archaeon Pyrococcus furiosus
+XX
+NC   1
+XX
+CN   [1]
+XX
+CH   A CHAIN; . START; . END;
+//
+</pre>
+</td></tr></table><p>
+
+
 
 <!-- OUTPUT FILE FORMAT 
      Description and example(s) of output file formats.  Should provide enough
@@ -118,6 +172,67 @@ The format of the DCF file is described in the <a href="scopparse.html">SCOPPARS
 <a name="4.0"></a>
 <br><br><br><H2> 4.0   OUTPUT FILE FORMAT         </H2>
 The format of the DCF file is described in the <a href="scopparse.html">SCOPPARSE documentation.</a>
+
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: all_rep1st.scop</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+ID   D1CS4A_
+XX
+EN   1CS4
+XX
+TY   SCOP
+XX
+SI   53931 CL; 54861 FO; 55073 SF; 55074 FA; 55077 DO; 55078 SO; 39418 DD;
+XX
+CL   Alpha and beta proteins (a+b)
+XX
+FO   Ferredoxin-like
+XX
+SF   Adenylyl and guanylyl cyclase catalytic domain
+XX
+FA   Adenylyl and guanylyl cyclase catalytic domain
+XX
+DO   Adenylyl cyclase VC1, domain C1a
+XX
+OS   Dog (Canis familiaris)
+XX
+NC   1
+XX
+CN   [1]
+XX
+CH   A CHAIN; . START; . END;
+//
+ID   D1II7A_
+XX
+EN   1II7
+XX
+TY   SCOP
+XX
+SI   53931 CL; 56299 FO; 56300 SF; 64427 FA; 64428 DO; 64429 SO; 62415 DD;
+XX
+CL   Alpha and beta proteins (a+b)
+XX
+FO   Metallo-dependent phosphatases
+XX
+SF   Metallo-dependent phosphatases
+XX
+FA   DNA double-strand break repair nuclease
+XX
+DO   Mre11
+XX
+OS   Archaeon Pyrococcus furiosus
+XX
+NC   1
+XX
+CN   [1]
+XX
+CH   A CHAIN; . START; . END;
+//
+</pre>
+</td></tr></table><p>
 
 
 
@@ -147,372 +262,57 @@ DOMAINREP does not use any data files but does make use of the stamp
 <br><br><br><H2> 6.0   USAGE                     </H2>
 <H3> 6.1   COMMAND LINE ARGUMENTS </H3>
  
- 
-<table border cellspacing=0 cellpadding=3 bgcolor="#ccccff">
-<tr bgcolor="#FFFFCC">
-<th align="left" colspan=2>Standard (Mandatory) qualifiers</th>
-<th align="left">Allowed values</th>
-<th align="left">Default</th>
-</tr>
- 
-<tr>
-<td>[-dcfin]<br>(Parameter 1)</td>
-<td>This option specifies the name of DCF file (domain classification file) (input). A 'domain classification file' contains classification and other data for domains from SCOP or CATH, in DCF format (EMBL-like). The files are generated by using SCOPPARSE and CATHPARSE. Domain sequence information can be added to the file by using DOMAINSEQS.</td>
-<td>Input file</td>
-<td><b>Required</b></td>
-</tr>
- 
-<tr>
-<td>-node</td>
-<td>This option specifies the node fore reordering the file. Reordering can be done for any specified node in the SCOP or CATH hierarchies. For example by selecting 'Class' entries belonging to the same Class will be reordered in turn.</td>
-<td><table><tr><td>1</td> <td><i>(Class (SCOP))</i></td></tr><tr><td>2</td> <td><i>(Fold (SCOP))</i></td></tr><tr><td>3</td> <td><i>(Superfamily (SCOP))</i></td></tr><tr><td>4</td> <td><i>(Family (SCOP))</i></td></tr><tr><td>5</td> <td><i>(Class (CATH))</i></td></tr><tr><td>6</td> <td><i>(Architecture (CATH))</i></td></tr><tr><td>7</td> <td><i>(Topology (CATH))</i></td></tr><tr><td>8</td> <td><i>(Homologous Superfamily (CATH))</i></td></tr><tr><td>9</td> <td><i>(Family (CATH))</i></td></tr></table></td>
-<td>1</td>
-</tr>
- 
-<tr>
-<td>[-dcfout]<br>(Parameter 2)</td>
-<td>This option specifies the name of DCF file (domain classification file) (output). A 'domain classification file' contains classification and other data for domains from SCOP or CATH, in DCF format (EMBL-like). The files are generated by using SCOPPARSE and CATHPARSE. Domain sequence information can be added to the file by using DOMAINSEQS.</td>
-<td>Output file</td>
-<td>test.scop</td>
-</tr>
- 
-<tr bgcolor="#FFFFCC">
-<th align="left" colspan=2>Additional (Optional) qualifiers</th>
-<th align="left">Allowed values</th>
-<th align="left">Default</th>
-</tr>
- 
-<tr>
-<td colspan=4>(none)</td>
-</tr>
- 
-<tr bgcolor="#FFFFCC">
-<th align="left" colspan=2>Advanced (Unprompted) qualifiers</th>
-<th align="left">Allowed values</th>
-<th align="left">Default</th>
-</tr>
- 
-<tr>
-<td colspan=4>(none)</td>
-</tr>
- 
-</table>
-
-
-
-<H3> 6.2 EXAMPLE SESSION </H3>
-An example of interactive use of DOMAINREP is shown below.
-<table><td bgcolor="#FFCCFF">
 <pre>
-Unix % domainrep
-Reorder DCF file (domain classification file) so that the representative
-structure of each user-specified node is given first.
-Name of DCF file (domain classification file) for input (DCF format): test_data/all.scop
-Node at which to reorder file
-         1 : Class (SCOP)
-         2 : Fold (SCOP)
-         3 : Superfamily (SCOP)
-         4 : Family (SCOP)
-         5 : Class (CATH)
-         6 : Architecture (CATH)
-         7 : Topology (CATH)
-         8 : Homologous Superfamily (CATH)
-         9 : Family (CATH)
-Select number [1]: 4
-Name of DCF file (domain classification file) for output (DCF format). [test.scop]: test_data/domainrep/all_rep1st.scop
-Unix % 
+   Standard (Mandatory) qualifiers:
+  [-dcfin]             infile     This option specifies the name of DCF file
+                                  (domain classification file) (input). A
+                                  'domain classification file' contains
+                                  classification and other data for domains
+                                  from SCOP or CATH, in DCF format
+                                  (EMBL-like). The files are generated by
+                                  using SCOPPARSE and CATHPARSE. Domain
+                                  sequence information can be added to the
+                                  file by using DOMAINSEQS.
+   -node               menu       This option specifies the node fore
+                                  reordering the file. Reordering can be done
+                                  for any specified node in the SCOP or CATH
+                                  hierarchies. For example by selecting
+                                  'Class' entries belonging to the same Class
+                                  will be reordered in turn.
+  [-dcfout]            outfile    This option specifies the name of DCF file
+                                  (domain classification file) (output). A
+                                  'domain classification file' contains
+                                  classification and other data for domains
+                                  from SCOP or CATH, in DCF format
+                                  (EMBL-like). The files are generated by
+                                  using SCOPPARSE and CATHPARSE. Domain
+                                  sequence information can be added to the
+                                  file by using DOMAINSEQS.
+
+   Additional (Optional) qualifiers: (none)
+   Advanced (Unprompted) qualifiers: (none)
+   Associated qualifiers:
+
+   "-dcfout" associated qualifiers
+   -odirectory2        string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write standard output
+   -filter             boolean    Read standard input, write standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report deaths
+
+
 </pre>
-</table>
-
-The DCF file /test_data/all.scop was read and the DCF 
-file /test_data/domainrep/all_rep1st.scop was written in which the
-order of domains for each <i>family</i> was changed if necessary so that the 
-representative structure of each family is given first.  
-
-<br> 
-<br>The following command line would achieve the same result.
-<br>
-<table><td bgcolor="#FFCCFF">
-<pre> 
-domainrep test_data/all.scop test_data/domainrep/all_rep1st.scop -node 4
-</pre> 
-</table>
-
-<!-- KNOWN BUGS & WARNINGS
-     Bugs that have not yet been fixed, easily missued features, problems
-     and caveats etc. Potentially stupid things the program will let you do.
--->
-<a name="7.0"></a>
-<br><br><br><H2> 7.0   KNOWN BUGS & WARNINGS     </H2>
-None.
-
-
-
-
-
-<!-- NOTES
-     Important general remarks, including:
-       Restrictions.
-       Interesting behaviour.
-       Useful things you can do with this program.
-       Future plans.
-       etc.
--->
-<a name="8.0"></a>
-<br><br><br><H2> 8.0   NOTES                     </H2>
-<b>stamp modification</b>
-<br>DOMAINREP will only run with with a version of stamp which has been modified
-so that PDB id codes of length greater than 4 characters are acceptable.
-This involves a trivial change to the stamp module getdomain.c (around line
-number 155), a 4 must be changed to a 7 as follows:
-<br><br>
-<table><td bgcolor="#FFCCFF">
-<pre>
-temp=getfile(domain[0].id,dirfile,4,OUTPUT); 
-<font color=red>< change to ... ></font>
-temp=getfile(domain[0].id,dirfile,7,OUTPUT); 
-</pre>
-</table>
-
-<br>
-<b>stamp configuration</b>
-<br>
-stamp searches for pdb files with a certain prefix, extension and path as 
-specified in the stamp "pdb.directories" file, which should look like 
-something like this (change the text according to your system setup):
-
-<br><br>
-<table><td bgcolor="#FFCCFF">
-<pre>
-/data/pdb - -
-/data/pdb _ .ent
-/data/pdb _ .pdb
-/data/pdb pdb .ent
-/data/pdbscop _ _
-/data/pdbscop _ .ent
-/data/pdbscop _ .pdb
-/data/pdbscop pdb .ent
-./ _ _
-./ _ .ent
-./ _ .ent.z
-./ _ .ent.gz
-./ _ .pdb
-./ _ .pdb.Z
-./ _ .pdb.gz
-./ pdb .ent
-./ pdb .ent.Z
-./ pdb .ent.gz
-/data/CASS1/pdb/coords/ _ .pdb
-/data/CASS1/pdb/coords/ _ .pdb.Z
-/data/CASS1/pdb/coords/ _ .pdb.gz
-</pre>
-</table>
-
-<br>
-<b>RFCGR Users</b>
-<br>
-For users of the RFCGR computer systems, the modified stamp code is kept in /packages/stamp/src2.
-When running DOMAINREP at the RFCGR it is essential that the command 
-'use stamp2' (which runs the script /packages/menu/USE/stamp2) is given 
-before DOMAINREP is run.  This will ensure that the modified version of 
-stamp is used.
-For RFCGR users, the pdb.directories file is /packages/stamp/defs/pdb.directories.
-Domain PDB files (pdb format) for SCOP domains are stored in /data/pdbscop.
-
-
-
-
-<H3> 8.1   GLOSSARY OF FILE TYPES    </H3>
-
-<table BORDER CELLSPACING=5 CELLPADDING=5 BGCOLOR="#f5f5ff" >
-<tr>
-<td><b>FILE TYPE</b></td>
-<td><b>FORMAT</b></td>
-<td><b>DESCRIPTION</b></td>
-<td><b>CREATED BY <b></td>
-<td><b>SEE ALSO</b></td>
-</tr>
-<tr>
-<td><b> Domain classification file (for SCOP)</b></td>
-<td> DCF format (EMBL-like format for domain classification data). </td>
-<td> Classification and other data for domains from SCOP.  </td>
-<td> <a href="scopparse.html">SCOPPARSE</a> </td>
-<td> Domain sequence information can be added to the file by using DOMAINSEQS.  </td>
-</tr>
-<tr>
-<td><b> Domain classification file (for CATH)</b></td>
-<td> DCF format (EMBL-like format for domain classification data). </td>
-<td> Classification and other data for domains from CATH.  </td>
-<td> <a href="cathparse.html">CATHPARSE</a> </td>
-<td> Domain sequence information can be added to the file by using DOMAINSEQS.  </td>
-</tr>
-<tr>
-<td><b>Domain PDB file </b></td>
-<td> PDB format for domain coordinate data. </td>
-<td> Coordinate data for a single domain from SCOP or CATH. </td>
-<td> <a href="domainer.html">DOMAINER</a> </td>
-<td> N.A. </td>
-</tr>
-</table>
-
-
-
-
-
-<!-- DESCRIPTION
-     A complete, non-technical, user-level description of the application.
--->
-<a name="9.0"></a>
-<br><br><br><H2> 9.0   DESCRIPTION               </H2>
-The protein structural alignment program stamp aligns multiple structures 
-to a seed structure.  The best alignments will result when the seed is the
-best available representative of the entire set, i.e. in 
-structural terms, is more similar to the other structures than any other 
-structure.  
-<br>
-<a href="domainalign.html">DOMAINALIGN</a> calls stamp to generate alignments
-of domains belonging to the same node (e.g. family) in a DCF file.  DOMAINALIGN will produce better
-alignments if the DCF file is reordered so that the 
-representative structure of each node is given first, because the first
-strucutres are used as the seeds.  The reordering of the DCF file is done by using DOMAINREP.
-
-
-
-
-
-
-<!-- ALGORITHM
-     A technical description of algorithmic aspects, describing exactly how
-     the key aspects of the application work.
--->
-<a name="10.0"></a>
-<br><br><br><H2> 10.0  ALGORITHM                 </H2>
-
-More information on stamp can be found at
-http://www.compbio.dundee.ac.uk/manuals/stamp.4.2/
-
-
-
-
-<!-- RELATED APPLICATIONS
-     Other applications that either generate the input, use the output or 
-     are in some other way related to the application are described here. 
-     (Take this from "Sister applications" in the old documentation)
--->
-<a name="11.0"></a>
-<br><br><br><H2> 11.0  RELATED APPLICATIONS      </H2>
-
-
-<table BORDER CELLSPACING=5 CELLPADDING=5 BGCOLOR="#f5f5ff" >
-<tr>
-<td><b>APPLICATION</b></td>
-<td><b>DESCRIPTION</b></td>
-</tr>
-<tr>
-<td><b><a href="pdbparse.html">PDBPARSE</a> </b></td>
-<td> Parses PDB files and writes CCF files (clean coordinate files) for proteins.</td>
-</tr>
-<tr>
-<td><b><a href="domainer.html">DOMAINER</a> </b></td>
-<td> Reads CCF files (clean coordinate files) for proteins and writes CCF files for domains in a DCF file (domain classification file). </td>
-</tr>
-<tr>
-<td><b><a href="funky.html">FUNKY</a> </b></td>
-<td> Reads CCF files (clean coordinate files) and writes CON files (contact files) of residue-ligand contact data for domains in a DCF file (domain classification file). </td>
-</tr>
-<tr>
-<td><b><a href="scopparse.html">SCOPPARSE</a> </b></td>
-<td> Reads raw SCOP classification files and writes a DCF file (domain classification file). </td>
-</tr>
-<tr>
-<td><b><a href="cathparse.html">CATHPARSE</a> </b></td>
-<td> Reads raw CATH classification files and writes DCF file (domain classification file). </td>
-</tr>
-<tr>
-<td><b><a href="domainreso.html">DOMAINRESO</a> </b></td>
-<td> Removes low resolution domains from a DCF file (domain classification file). </td>
-</tr>
-<tr>
-<td><b><a href="domainseqs.html">DOMAINSEQS</a> </b></td>
-<td> Adds sequence records to a DCF file (domain classification file). </td>
-</tr>
-<tr>
-<td><b><a href="domainnr.html">DOMAINNR</a> </b></td>
-<td> Removes redundant domains from a DCF file (domain classification file).  The file must contain domain sequence information, 
-which can be added by using DOMAINSEQS. </td>
-</tr>
-<tr>
-<td><b><a href="domainrep.html">DOMAINREP</a> </b></td>
-<td> Reorder DCF file (domain classification file) so that the representative structure of each
-      user-specified node is given first. </td>
-</tr>
-<tr>
-<td><b><a href="domainalign.html">DOMAINALIGN</a> </b></td>
-<td> Generates structure-based sequence alignments for nodes in a DCF
-      file (domain classification file). </td>
-</tr>
-<tr>
-<td><b><a href="seqsearch.html">SEQSEARCH</a> </b></td>
-<td> Generate DHF files (domain hits files) of database hits (sequences) from a DAF file (domain alignment file) or other sequences by using PSI-BLAST.</td>
-</tr>
-<tr>
-<td><b><a href="seqwords.html">SEQWORDS</a> </b></td>
-<td>Generates DHF files (domain hits files) of database hits (sequences) for nodes in a DCF file (domain classification file) by keyword search of UniProt.</td>
-</tr>
-</table>
-
-
-
-
-
-<!-- DIAGNOSTIC ERROR MESSAGES
-     Description of error messages or log file, if one is written.
--->
-<a name="12.0"></a>
-<br><br><br><H2> 12.0  DIAGNOSTIC ERROR MESSAGES </H2>
-None.
-
-
-
-
-
-
-<!-- AUTHORS -->
-<a name="13.0"><br><br><br><H2> 13.0  AUTHORS                   </H2></a>
-
-Mat Blades <a href="mailto:Matthew.Blades@astrazeneca.com">(Matthew.Blades@astrazeneca.com)</a>
-<br><br>
-Jon Ison <a href="mailto:jison@rfcgr.mrc.ac.uk">(jison@rfcgr.mrc.ac.uk)</a>
-<br>
-MRC Rosalind Franklin Centre for Genomics Research
-Wellcome Trust Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
-
-
-
-
-<!-- REFERENCES
-     Quote the paper where the application was first published, described, used etc. 
--->
-<a name="14.0"></a>
-<br><br><br><H2> 14.0  REFERENCES                </H2>
-
-Please cite the authors and EMBOSS.
-<br><br>
-<i>Rice P, Longden I and Bleasby A (2000) "EMBOSS - The European
-Molecular Biology Open Software Suite"  Trends in Genetics,
-15:276-278.
-
-<p>
-See also <a href="http://emboss.sourceforge.net/">http://emboss.sourceforge.net/</a></i>
-
-
-
-<H3>14.1 Other useful references  </H3>
-
-<br>
-
-</BODY>
-</HTML>
-
-</body>
-</html>
+</td></tr></table>
+<P>
+[an error occurred while processing this directive]

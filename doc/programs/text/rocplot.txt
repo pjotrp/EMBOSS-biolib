@@ -22,6 +22,14 @@ CONTENTS
 
 1.0 SUMMARY
 
+   Provides interpretation and graphical display of the performance of
+   discriminating elements (e.g. profiles for protein families). rocplot
+   reads file(s) of hits from discriminator-database search(es), performs
+   ROC analysis on the hits, and writes graphs illustrating the
+   diagnostic performance of the discriminating elements
+
+  1.1 DESCRIPTION
+
    ROCPLOT is a generic and flexible tool for interpretation and
    graphical display of the performance of predictive methods. ROCPLOT
    reads one or more files of hits, performs Receiver Operator
@@ -118,15 +126,15 @@ CONTENTS
 
   3.1 Hits files
 
-   A hits file (Figure 2) contains a list of classified hits that are
-   rank-ordered on the basis of score. The first line must have '>' in
-   the first character position and a space (' ') in the second, then two
-   token - integer pairs delimited by ';'. The integer following
-   'RELATED' is the total number of known true hits ('relatives') and is
-   the maximum number of TRUE tokens (see below) that could ever appear
-   in the hits file. The integer following 'ROC' is the ROC value that
-   will be calculated. This integer also determines the limit of the
-   x-axes of the ROC and classification plots (see Sections 9.2 & 9.4).
+   A hits file contains a list of classified hits that are rank-ordered
+   on the basis of score. The first line must have '>' in the first
+   character position and a space (' ') in the second, then two token -
+   integer pairs delimited by ';'. The integer following 'RELATED' is the
+   total number of known true hits ('relatives') and is the maximum
+   number of TRUE tokens (see below) that could ever appear in the hits
+   file. The integer following 'ROC' is the ROC value that will be
+   calculated. This integer also determines the limit of the x-axes of
+   the ROC and classification plots (see Sections 9.2 & 9.4).
    The file then contains a number of lines corresponding to a list of
    classified hits. The hits *must* be rank-ordered on the basis of
    score, p-value, E-value etc, with the highest scoring / most
@@ -145,26 +153,6 @@ CONTENTS
    point data are not required to define unique hits: in these cases the
    start and end values for all hits should be set to 0 and 1
    respectively.
-   Figure 2 Excerpt from a hits file 
-
-> RELATED 140 ; ROC 50
-TRUE         DBCODE1   1   50
-TRUE         DBCODE2   12  65
-TRUE         DBCODE3   13  62
-TRUE         DBCODE4   13  63
-CROSS        DBCODE5   13  63
-TRUE         DBCODE6   14  61
-TRUE         DBCODE7   1   50
-CROSS        DBCODE8   32  84
-TRUE         DBCODE9   31  85
-FALSE        DBCODE10  13  63
-TRUE         DBCODE11  1   50
-UNCERTAIN    DBCODE12  1   51
-UNCERTAIN    DBCODE13  1   52
-UNKNOWN      DBCODE14  37  84
-UNKNOWN      DBCODE15  35  82
-FALSE        DBCODE16  13  61
-FALSE        DBCODE17  1   51
 
 4.0 OUTPUT FILE FORMAT
 
@@ -178,24 +166,6 @@ FALSE        DBCODE17  1   51
    are given for each hits file. In cases where data from multiple hits
    files were combined a single ROCn value will be given instead of this
    section. The mean and SD of the ROCn values are given if calculated.
-   Figure 3 Summary file 
-
-< This section is always given >
-ROCPLOT summary file
-mode         == 2 (Multiple hits file)
-multimode    == 2 (Combine data)
-datamode     == 1 (Single gold standard)
-< The section is only given in "Single hits file" mode and "Multiple hits files
-" - "Do not combine data" mode. >
-File         Known      ROC50 (*1)
-user_data1   124       0.874
-user_data2   124       0.687
-< This line is only given in "Multiple hits files" - "Combine data" mode. >
-ROC50        == 0.666 (combined) (*1)
-< This section is only given in "Multiple hits files" - "Do not combine data" m
-ode >
-mean ROC50   == 0.781 (*1)
-sd   ROC50   == 0.093 (*1)
 
   4.2 GNUPLOT files
 
@@ -247,6 +217,663 @@ _barchart          Driver file for bar chart.
    The plots are visualised by using GNUPLOT, for example by typing load
    '_classplot1' from the GNUPLOT command line.
 
+  Output files for usage example
+
+  File: _rocplot
+
+# GNUPLOT driver file for roc plot
+set title "ROC plots for data1.hits & data2.hits (combined - "
+set xlabel "1 - SPEC"
+set ylabel "SENS"
+set nokey
+set noautoscale
+set xrange [0:1]
+set yrange [0:1]
+set key top outside title "Data Series" box 3
+set data style points
+set pointsize 0.45
+plot "_rocplot_dat0" smooth bezier title "Combined dataset (0.185)"
+
+  File: _rocplot_dat0
+
+# GNUPLOT data file for rocplot, series 0
+0.000    0.007
+0.000    0.014
+0.000    0.021
+0.000    0.029
+0.200    0.029
+0.167    0.036
+0.143    0.043
+0.250    0.043
+0.222    0.050
+0.200    0.057
+0.182    0.064
+0.250    0.064
+0.231    0.071
+0.214    0.079
+0.200    0.086
+0.250    0.086
+0.235    0.093
+0.222    0.100
+0.263    0.100
+0.250    0.107
+0.238    0.114
+0.273    0.114
+0.261    0.121
+0.292    0.121
+0.280    0.129
+0.308    0.129
+0.296    0.136
+0.286    0.143
+0.276    0.150
+0.300    0.150
+0.290    0.157
+0.281    0.164
+0.273    0.171
+0.294    0.171
+0.286    0.179
+0.278    0.186
+0.297    0.186
+0.316    0.186
+0.333    0.186
+0.350    0.186
+0.366    0.186
+0.381    0.186
+0.395    0.186
+0.409    0.186
+0.400    0.193
+0.391    0.200
+0.404    0.200
+0.417    0.200
+0.429    0.200
+0.440    0.200
+0.451    0.200
+0.462    0.200
+0.472    0.200
+0.481    0.200
+0.473    0.207
+0.464    0.214
+0.474    0.214
+0.483    0.214
+0.492    0.214
+0.500    0.214
+0.508    0.214
+0.516    0.214
+0.524    0.214
+0.531    0.214
+0.538    0.214
+0.545    0.214
+0.552    0.214
+0.559    0.214
+0.565    0.214
+0.571    0.214
+0.577    0.214
+0.583    0.214
+0.589    0.214
+0.595    0.214
+0.600    0.214
+0.605    0.214
+0.610    0.214
+0.615    0.214
+0.620    0.214
+0.625    0.214
+
+  File: _classplot
+
+# GNUPLOT driver file for classification plot
+set title "Classification plot for data1.hits & data2.hits (c"
+set xlabel "Number of hits detected"
+set ylabel "Proportion of hits detected that are of a certain type"
+set nokey
+set key top outside title "Data Series" box 3
+set data style points
+set pointsize 0.45
+plot "_classplot_dat0" smooth bezier title "True hits", "_classplot_dat1" smoot
+h bezier title "Cross hits", "_classplot_dat2" smooth bezier title "Uncertain h
+its", "_classplot_dat3" smooth bezier title "Unknown hits", "_classplot_dat4" s
+mooth bezier title "False hits"
+
+  File: _classplot_dat0
+
+# GNUPLOT data file for True hits, series 0
+1.000    1.000
+2.000    1.000
+3.000    1.000
+4.000    1.000
+5.000    0.800
+6.000    0.833
+7.000    0.857
+8.000    0.750
+9.000    0.778
+10.000    0.800
+11.000    0.818
+12.000    0.750
+13.000    0.769
+14.000    0.786
+15.000    0.800
+16.000    0.750
+17.000    0.765
+18.000    0.778
+19.000    0.737
+20.000    0.750
+21.000    0.762
+22.000    0.727
+23.000    0.739
+24.000    0.708
+25.000    0.720
+26.000    0.692
+27.000    0.704
+28.000    0.714
+29.000    0.724
+30.000    0.700
+31.000    0.710
+32.000    0.719
+33.000    0.727
+34.000    0.706
+35.000    0.714
+36.000    0.722
+37.000    0.703
+38.000    0.684
+39.000    0.667
+40.000    0.650
+41.000    0.634
+42.000    0.619
+43.000    0.605
+44.000    0.591
+45.000    0.600
+46.000    0.609
+47.000    0.596
+48.000    0.583
+49.000    0.571
+50.000    0.560
+51.000    0.549
+52.000    0.538
+53.000    0.528
+54.000    0.519
+55.000    0.527
+56.000    0.536
+57.000    0.526
+58.000    0.517
+59.000    0.508
+60.000    0.500
+61.000    0.492
+62.000    0.484
+63.000    0.476
+64.000    0.469
+65.000    0.462
+66.000    0.455
+67.000    0.448
+68.000    0.441
+69.000    0.435
+70.000    0.429
+71.000    0.423
+72.000    0.417
+73.000    0.411
+74.000    0.405
+75.000    0.400
+76.000    0.395
+77.000    0.390
+78.000    0.385
+79.000    0.380
+80.000    0.375
+
+  File: _classplot_dat1
+
+# GNUPLOT data file for Cross hits, series 1
+1.000    0.000
+2.000    0.000
+3.000    0.000
+4.000    0.000
+5.000    0.200
+6.000    0.167
+7.000    0.143
+8.000    0.250
+9.000    0.222
+10.000    0.200
+11.000    0.182
+12.000    0.250
+13.000    0.231
+14.000    0.214
+15.000    0.200
+16.000    0.250
+17.000    0.235
+18.000    0.222
+19.000    0.263
+20.000    0.250
+21.000    0.238
+22.000    0.273
+23.000    0.261
+24.000    0.250
+25.000    0.240
+26.000    0.231
+27.000    0.222
+28.000    0.214
+29.000    0.207
+30.000    0.233
+31.000    0.226
+32.000    0.219
+33.000    0.212
+34.000    0.235
+35.000    0.229
+36.000    0.222
+37.000    0.216
+38.000    0.211
+39.000    0.205
+40.000    0.200
+41.000    0.195
+42.000    0.190
+43.000    0.186
+44.000    0.182
+45.000    0.178
+46.000    0.174
+47.000    0.170
+48.000    0.167
+49.000    0.163
+50.000    0.160
+51.000    0.157
+52.000    0.154
+53.000    0.151
+54.000    0.148
+55.000    0.145
+56.000    0.143
+57.000    0.140
+58.000    0.138
+59.000    0.136
+60.000    0.133
+61.000    0.131
+62.000    0.129
+63.000    0.127
+64.000    0.125
+65.000    0.123
+66.000    0.121
+67.000    0.119
+68.000    0.118
+69.000    0.116
+70.000    0.114
+71.000    0.113
+72.000    0.111
+73.000    0.110
+74.000    0.108
+75.000    0.107
+76.000    0.105
+77.000    0.104
+78.000    0.103
+79.000    0.101
+80.000    0.100
+
+  File: _classplot_dat2
+
+# GNUPLOT data file for Uncertain hits, series 2
+1.000    0.000
+2.000    0.000
+3.000    0.000
+4.000    0.000
+5.000    0.000
+6.000    0.000
+7.000    0.000
+8.000    0.000
+9.000    0.000
+10.000    0.000
+11.000    0.000
+12.000    0.000
+13.000    0.000
+14.000    0.000
+15.000    0.000
+16.000    0.000
+17.000    0.000
+18.000    0.000
+19.000    0.000
+20.000    0.000
+21.000    0.000
+22.000    0.000
+23.000    0.000
+24.000    0.000
+25.000    0.000
+26.000    0.038
+27.000    0.037
+28.000    0.036
+29.000    0.034
+30.000    0.033
+31.000    0.032
+32.000    0.031
+33.000    0.030
+34.000    0.029
+35.000    0.029
+36.000    0.028
+37.000    0.054
+38.000    0.053
+39.000    0.051
+40.000    0.050
+41.000    0.049
+42.000    0.048
+43.000    0.047
+44.000    0.045
+45.000    0.044
+46.000    0.043
+47.000    0.064
+48.000    0.062
+49.000    0.061
+50.000    0.060
+51.000    0.059
+52.000    0.058
+53.000    0.057
+54.000    0.056
+55.000    0.055
+56.000    0.054
+57.000    0.070
+58.000    0.069
+59.000    0.068
+60.000    0.067
+61.000    0.066
+62.000    0.065
+63.000    0.063
+64.000    0.062
+65.000    0.062
+66.000    0.061
+67.000    0.060
+68.000    0.059
+69.000    0.058
+70.000    0.057
+71.000    0.056
+72.000    0.056
+73.000    0.055
+74.000    0.054
+75.000    0.053
+76.000    0.053
+77.000    0.052
+78.000    0.051
+79.000    0.051
+80.000    0.050
+
+  File: _classplot_dat3
+
+# GNUPLOT data file for Unknown hits, series 3
+1.000    0.000
+2.000    0.000
+3.000    0.000
+4.000    0.000
+5.000    0.000
+6.000    0.000
+7.000    0.000
+8.000    0.000
+9.000    0.000
+10.000    0.000
+11.000    0.000
+12.000    0.000
+13.000    0.000
+14.000    0.000
+15.000    0.000
+16.000    0.000
+17.000    0.000
+18.000    0.000
+19.000    0.000
+20.000    0.000
+21.000    0.000
+22.000    0.000
+23.000    0.000
+24.000    0.000
+25.000    0.000
+26.000    0.000
+27.000    0.000
+28.000    0.000
+29.000    0.000
+30.000    0.000
+31.000    0.000
+32.000    0.000
+33.000    0.000
+34.000    0.000
+35.000    0.000
+36.000    0.000
+37.000    0.000
+38.000    0.026
+39.000    0.026
+40.000    0.025
+41.000    0.049
+42.000    0.048
+43.000    0.047
+44.000    0.068
+45.000    0.067
+46.000    0.065
+47.000    0.064
+48.000    0.083
+49.000    0.082
+50.000    0.080
+51.000    0.098
+52.000    0.096
+53.000    0.094
+54.000    0.111
+55.000    0.109
+56.000    0.107
+57.000    0.105
+58.000    0.121
+59.000    0.119
+60.000    0.117
+61.000    0.131
+62.000    0.129
+63.000    0.127
+64.000    0.125
+65.000    0.123
+66.000    0.121
+67.000    0.119
+68.000    0.118
+69.000    0.116
+70.000    0.114
+71.000    0.113
+72.000    0.111
+73.000    0.110
+74.000    0.108
+75.000    0.107
+76.000    0.105
+77.000    0.104
+78.000    0.103
+79.000    0.101
+80.000    0.100
+
+  File: _classplot_dat4
+
+# GNUPLOT data file for False hits, series 4
+1.000    0.000
+2.000    0.000
+3.000    0.000
+4.000    0.000
+5.000    0.000
+6.000    0.000
+7.000    0.000
+8.000    0.000
+9.000    0.000
+10.000    0.000
+11.000    0.000
+12.000    0.000
+13.000    0.000
+14.000    0.000
+15.000    0.000
+16.000    0.000
+17.000    0.000
+18.000    0.000
+19.000    0.000
+20.000    0.000
+21.000    0.000
+22.000    0.000
+23.000    0.000
+24.000    0.042
+25.000    0.040
+26.000    0.038
+27.000    0.037
+28.000    0.036
+29.000    0.034
+30.000    0.033
+31.000    0.032
+32.000    0.031
+33.000    0.030
+34.000    0.029
+35.000    0.029
+36.000    0.028
+37.000    0.027
+38.000    0.026
+39.000    0.051
+40.000    0.075
+41.000    0.073
+42.000    0.095
+43.000    0.116
+44.000    0.114
+45.000    0.111
+46.000    0.109
+47.000    0.106
+48.000    0.104
+49.000    0.122
+50.000    0.140
+51.000    0.137
+52.000    0.154
+53.000    0.170
+54.000    0.167
+55.000    0.164
+56.000    0.161
+57.000    0.158
+58.000    0.155
+59.000    0.169
+60.000    0.183
+61.000    0.180
+62.000    0.194
+63.000    0.206
+64.000    0.219
+65.000    0.231
+66.000    0.242
+67.000    0.254
+68.000    0.265
+69.000    0.275
+70.000    0.286
+71.000    0.296
+72.000    0.306
+73.000    0.315
+74.000    0.324
+75.000    0.333
+76.000    0.342
+77.000    0.351
+78.000    0.359
+79.000    0.367
+80.000    0.375
+
+  File: _summary
+
+rocplot summary file (15 Jul 2004)
+
+mode      == 2 (Multiple input file mode)
+multimode == 2 (Combine data: single ROC plot, single classification plot.)
+datamode  == 1 (Single list of known true relatives.)
+
+File           Known
+data1.hits     140
+data2.hits     140
+
+ROC50     == 0.185 (combined)
+
+  File: rocplot.errors
+
+MODE INFO
+modei: 2
+multimodei: 2
+datamodei: 1
+
+
+
+NUMBER OF INPUT FILES
+numfiles: 2
+
+
+
+NAMES ONLY OF INPUT FILES
+hitsnames[0]: data1.hits
+hitsnames[1]: data2.hits
+
+
+
+LISTS OF HITS IN EACH FILE
+>>>>>  FILE 0 >>>>>
+TRUE
+TRUE
+TRUE
+TRUE
+TRUE
+TRUE
+TRUE
+TRUE
+TRUE
+TRUE
+TRUE
+TRUE
+TRUE
+TRUE
+TRUE
+TRUE
+TRUE
+TRUE
+TRUE
+TRUE
+TRUE
+TRUE
+TRUE
+TRUE
+TRUE
+TRUE
+TRUE
+TRUE
+TRUE
+TRUE
+
+
+  [Part of this file has been deleted for brevity]
+
+For hit     0 ntrue=   27 ntrue_sum=349.000
+For hit     0 ntrue=   28 ntrue_sum=349.000
+For hit     0 ntrue=   28 ntrue_sum=377.000
+For hit     0 ntrue=   28 ntrue_sum=405.000
+For hit     0 ntrue=   28 ntrue_sum=433.000
+For hit     0 ntrue=   28 ntrue_sum=461.000
+For hit     0 ntrue=   28 ntrue_sum=489.000
+For hit     0 ntrue=   28 ntrue_sum=517.000
+For hit     0 ntrue=   28 ntrue_sum=545.000
+For hit     0 ntrue=   28 ntrue_sum=573.000
+For hit     0 ntrue=   29 ntrue_sum=573.000
+For hit     0 ntrue=   30 ntrue_sum=573.000
+For hit     0 ntrue=   30 ntrue_sum=603.000
+For hit     0 ntrue=   30 ntrue_sum=633.000
+For hit     0 ntrue=   30 ntrue_sum=663.000
+For hit     0 ntrue=   30 ntrue_sum=693.000
+For hit     0 ntrue=   30 ntrue_sum=723.000
+For hit     0 ntrue=   30 ntrue_sum=753.000
+For hit     0 ntrue=   30 ntrue_sum=783.000
+For hit     0 ntrue=   30 ntrue_sum=813.000
+For hit     0 ntrue=   30 ntrue_sum=843.000
+For hit     0 ntrue=   30 ntrue_sum=873.000
+For hit     0 ntrue=   30 ntrue_sum=903.000
+For hit     0 ntrue=   30 ntrue_sum=933.000
+For hit     0 ntrue=   30 ntrue_sum=963.000
+For hit     0 ntrue=   30 ntrue_sum=993.000
+For hit     0 ntrue=   30 ntrue_sum=1023.000
+For hit     0 ntrue=   30 ntrue_sum=1053.000
+For hit     0 ntrue=   30 ntrue_sum=1083.000
+For hit     0 ntrue=   30 ntrue_sum=1113.000
+For hit     0 ntrue=   30 ntrue_sum=1143.000
+For hit     0 ntrue=   30 ntrue_sum=1173.000
+For hit     0 ntrue=   30 ntrue_sum=1203.000
+For hit     0 ntrue=   30 ntrue_sum=1233.000
+For hit     0 ntrue=   30 ntrue_sum=1263.000
+For hit     0 ntrue=   30 ntrue_sum=1293.000
+ROC NUMBER
+roc: 50
+
+
+
+ROC VALUES
+rocn[0]: 0.184714
+
+
+
+COUNT OF HITS
+hitcnt[0]: 80
+
+
+
 5.0 DATA FILES
 
    ROCPLOT does not use a data file.
@@ -254,6 +881,177 @@ _barchart          Driver file for bar chart.
 6.0 USAGE
 
   6.1 COMMAND LINE ARGUMENTS
+
+   Standard (Mandatory) qualifiers (* if not always prompted):
+  [-hitsfiles]         dirlist    This option specifies the directory of hits
+                                  files (input). A 'hits file'contains a list
+                                  of hits (e.g. from a prediction method) that
+                                  are classified and rank-ordered on the
+                                  basis of score, p-value, E-value etc. The
+                                  files generated by using SIGSCAN and LIBSCAN
+                                  will contain the results of a search of a
+                                  discriminating element (e.g. hidden Markov
+                                  model, profile or signature) against a
+                                  sequence database. The ROCPLOT application
+                                  is run on the files to perform Receiver
+                                  Operator Characteristic (ROC) analysis on
+                                  the hits.
+   -mode               menu       This option specifies the mode of ROCPLOT
+                                  operation (main mode). In 'single input file
+                                  mode', ROC analysis is performed on the
+                                  individual hits file; a ROC plot containing
+                                  a single ROC curve, and a single ROC value
+                                  and classification plot are generated. In
+                                  'multiple input file mode' there are two
+                                  sub-modes depending upon whether (1) ROC
+                                  analysis is to performed separately for the
+                                  individual input files or (2) the lists of
+                                  hits in the hits files are combined and ROC
+                                  analysis is performed on the whole (see the
+                                  ACD option called 'multimode' for more
+                                  information). If the input file does not
+                                  contain at least as many 'FALSE' hits as are
+                                  specified after the 'ROC' token in the
+                                  input file, then an error will be generated
+                                  and rocplot will terminate. Where multiple
+                                  input files are given as input, each must
+                                  contain the same value after the 'ROC'
+                                  token, or an error will be generated and
+                                  rocplot will terminate. The hits in the hits
+                                  files *must* have been rank-ordered on the
+                                  basis of score, p-value, E-value etc, with
+                                  the highest scoring / most significant hit
+                                  being given in the highest rank (1); i.e. on
+                                  the second line of the file. Other hits
+                                  should then be given in order of decreasing
+                                  score / significance.
+*  -multimode          menu       This option specifies the mode of ROCPLOT
+                                  operation (multimode). In 'Do not combine
+                                  data' mode, ROC analysis is performed
+                                  separately for the individual input files.
+                                  Multiple ROC curves will be given on the
+                                  same ROC plot and a ROC value and a
+                                  classification plot will be generated for
+                                  each input file. A bar chart giving the
+                                  distribution of ROCn values, and the mean
+                                  and standard deviation of ROCn values are
+                                  also generated. In 'Combine data' mode, the
+                                  lists of hits in the hits files are combined
+                                  and ROC analysis is performed on the whole.
+                                  A single ROC curve will be given in the ROC
+                                  plot and a single ROC value and
+                                  classification plot will be generated. In
+                                  this second mode there are two further
+                                  sub-modes depending on whether there is (1)
+                                  a single list of known true relatives for
+                                  the different searches or (2) there is a
+                                  different list of known true relatives for
+                                  each different search (see the ACD option
+                                  called 'datamode' for more information)
+*  -datamode           menu       This option specifies the mode of ROCPLOT
+                                  operation (datamode). This determine how the
+                                  ROC number and value are calculated in
+                                  cases where there are multiple input files
+                                  (lists of hits) and the user has specified
+                                  the data are to be combined. See rocplot.c
+                                  for more information.
+*  -thresh             integer    This option specifies the overlap threshold
+                                  for hits. In cases where the lists of hits
+                                  are to be combined and there is a single set
+                                  of relatives, the accession number (or
+                                  other database identifier code) of the hit,
+                                  and the start and end point respectively of
+                                  the hit relative to full length sequence
+                                  must be provided in the lists of hits (see
+                                  'Input file format' below). rocplot ensures
+                                  that only unique hits are counted when
+                                  calculating SENS and SPEC; two hits are
+                                  'unique' if they have (i) different
+                                  accesssion numbers or (ii) the same
+                                  accession numbers but which do not overlap
+                                  by any more than a user-defined number of
+                                  residues. The overlap is determined from the
+                                  start and end points of the hit. For
+                                  example two hits both with the same
+                                  accession numbers and with the start and end
+                                  points of 1-100 and 91 - 190 respectively
+                                  are considered to be the same hit if the
+                                  overlap threshold is 10 or less.
+  [-outdir]            directory  This option specifies the directory where
+                                  output files are written.
+  [-rocbasename]       string     This option specifies the base name of ROC
+                                  plot file(s) (output). A file of meta data
+                                  that contains graphs that illustrate the
+                                  diagnostic performance of the discriminator.
+                                  rocplot generates Receiver Operating
+                                  Characteristic (ROC) curves, that display
+                                  graphically the sensitivity and specificity
+                                  of discriminating elements, and accompanying
+                                  ROC value(s), which are a convenient
+                                  numerical measure of the sensitivity and
+                                  specificity of a method. Classification
+                                  plots, which are a valuable aid in
+                                  interpreting the ROC plot and value, are
+                                  also generated and, depending upon the mode
+                                  rocplot is run in, a plot of the
+                                  distribution of ROC values.
+   -outfdata           outfile    This option specifies the name of summary
+                                  file (output). A text file summarising the
+                                  analysis.
+*  -barbasename        string     This option specifies the base name of bar
+                                  chart for ROC value distribution (output). A
+                                  bar chart giving the distribution of ROCn
+                                  values will be generated when multiple input
+                                  files (lists of hits) are provided and the
+                                  user has specified 'Do not combine data
+                                  (multiple ROC curves).
+   -classbasename      string     This option specifies the base name of
+                                  classification plot file(s) (output).
+                                  Classification plots are a valuable aid in
+                                  interpreting the ROC plot and value. A
+                                  single plot will be generated where a single
+                                  input file is provided or where multiple
+                                  input files are provided and the user has
+                                  specified 'Combine data (single ROC curve)'
+                                  mode. Multiple plots will be generated where
+                                  multiple input files are provided and the
+                                  user has specified 'Do not combine data
+                                  (multiple ROC curves)' mode.
+
+   Additional (Optional) qualifiers: (none)
+   Advanced (Unprompted) qualifiers:
+   -norange            boolean    This option specifies whether to disregard
+                                  range data when identifying unique hits. If
+                                  set, the range data specified in the hits
+                                  files are disregarded, two hits are classed
+                                  as unique if they have different accession
+                                  numbers (no requirement for overlapping
+                                  ranges).
+   -errf               outfile    Name of error file (output).
+
+   Associated qualifiers:
+
+   "-outfdata" associated qualifiers
+   -odirectory         string     Output directory
+
+   "-errf" associated qualifiers
+   -odirectory         string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write standard output
+   -filter             boolean    Read standard input, write standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report deaths
+
 
    Standard (Mandatory) qualifiers Allowed values Default
    [-hitsfiles]
@@ -328,8 +1126,11 @@ _barchart          Driver file for bar chart.
    numbers and with the start and end points of 1-100 and 91 - 190
    respectively are considered to be the same hit if the overlap
    threshold is 10 or less. Any integer value 10
+   [-outdir]
+   (Parameter 2) This option specifies the directory where output files
+   are written. Directory ./
    [-rocbasename]
-   (Parameter 2) This option specifies the base name of ROC plot file(s)
+   (Parameter 3) This option specifies the base name of ROC plot file(s)
    (output). A file of meta data that contains graphs that illustrate the
    diagnostic performance of the discriminator. rocplot generates
    Receiver Operating Characteristic (ROC) curves, that display
@@ -358,47 +1159,53 @@ _barchart          Driver file for bar chart.
    Additional (Optional) qualifiers Allowed values Default
    (none)
    Advanced (Unprompted) qualifiers Allowed values Default
+   -norange This option specifies whether to disregard range data when
+   identifying unique hits. If set, the range data specified in the hits
+   files are disregarded, two hits are classed as unique if they have
+   different accession numbers (no requirement for overlapping ranges).
+   Boolean value Yes/No No
    -errf Name of error file (output). Output file rocplot.errors
 
   6.2 EXAMPLE SESSION
 
-   An example of interactive use of ROCPLOT is shown below.
+   An example of interactive use of ROCPLOT is shown below. Here is a
+   sample session with rocplot
 
->: rocplot
+
+% rocplot 
 Provides interpretation and graphical display of the performance of
-discriminating elements (e.g. profiles for protein families). ROCPLOT
-reads file(s) of hits from discriminator-database search(es), performs
-ROC analysis on the hits, and writes graphs illustrating the diagnostic
-performance of the discriminating elements.
-Directory of hits files []: rocplot
+discriminating elements (e.g. profiles for protein families). rocplot reads
+file(s) of hits from discriminator-database search(es), performs ROC analysis o
+n
+the hits, and writes graphs illustrating the diagnostic performance of the
+discriminating elements.
+Directory of hits files (input). [rocplot]: rocplot/hitsin
 Available modes
-         1 : single hits file mode
-         2 : multiple hits file mode
-Select mode of operation [1]: 2
+         1 : Single input file mode
+         2 : Multiple input file mode
+Select mode of operation. [1]: 2
 Available modes
-         1 : Do not combine data (multiple ROC curves in single ROC plot
-  multiple classification plots) :
-         2 : Combine data (single ROC curve
-  single classification plot) :
-Select mode of operation [1]: 2
+         1 : Do not combine data (multiple ROC curves in single ROC plot - mult
+iple classification plots)
+         2 : Combine data (single ROC curve - single classification plot)
+Select mode of operation. [1]: 2
 Available modes
-         1 : single gold standard
+         1 : Single list of known true relatives
          2 : Multiple lists of known true relatives
-Select mode of operation [1]: 1
-Overlap threshold for hits [10]:
-Name of ROC plot file (output) []: _rocplot
-Name of summary file (output) []: _summary
-Base name of classification plot file(s) (output) []: _classplot
-Processing data1.rocplot
-Processing data2.rocplot
+Select mode of operation. [1]: 1
+Overlap threshold for hits. [10]: 
+Directory for output files. [./]: 
+Base name of ROC plot file(s) (output). [_rocplot]: 
+Name of summary file (output). [_summary]: 
+Base name of classification plot file(s) (output). [_classplot]: 
+
+/ebi/services/idata/pmr/hgmp/test/data/structure/rocplot/hitsin/data1.hits
+/ebi/services/idata/pmr/hgmp/test/data/structure/rocplot/hitsin/data2.hits
+Processing data1.hits
+Processing data2.hits
 Please wait ... done!
->:
 
-   The following command line would achieve the same result.
-
-
-rocplot rocplot _rocplot -mode 2 -multimode 2 -datamode 1
--thresh 10 -outfdata _summary -classbasename _classplot
+   Go to the output files for this example
 
 7.0 KNOWN BUGS & WARNINGS
 
@@ -432,6 +1239,8 @@ rocplot rocplot _rocplot -mode 2 -multimode 2 -datamode 1
    signature) against a sequence database). ROCPLOT is run on the files
    to perform Receiver Operator Characteristic (ROC) analysis on the
    hits.
+
+   None
 
 9.0 DESCRIPTION
 
@@ -855,13 +1664,45 @@ Rank  File1  File2  File3
 
 11.0 RELATED APPLICATIONS
 
-   APPLICATION DESCRIPTION
-   SIGSCAN Generates hits (sequences) from scanning a signature against a
-   sequence database.
-   LIBSCAN Generates hits (sequences) from searches of various types of
-   discriminator (HMMs, profiles etc) against a sequence database. Or
-   generates hits from screening sequences against a library of such
-   discriminators.
+See also
+
+   Program name Description
+   contactcount Counts specific versus non-specific contacts in a
+   directory of cleaned protein chain contact files
+   contacts Reads CCF files (clean coordinate files) and writes CON files
+   (contact files) of intra-chain residue-residue contact data
+   domainalign Generates DAF files (domain alignment files) of
+   structure-based sequence alignments for nodes in a DCF file (domain
+   classification file)
+   domainrep Reorder DCF file (domain classification file) so that the
+   representative structure of each user-specified node is given first
+   domainreso Removes low resolution domains from a DCF file (domain
+   classification file)
+   interface Reads CCF files (clean coordinate files) and writes CON
+   files (contact files) of inter-chain residue-residue contact data
+   libgen Generates various types of discriminating elements for each
+   alignment in a directory
+   psiphi Calculates phi and psi torsion angles from cleaned EMBOSS-style
+   protein co-ordinate file
+   rocon Reads a DHF file (domain hits file) of hits (sequences of
+   unknown structural classification) and a DHF file of validation
+   sequences (known classification) and writes a 'hits file' for the
+   hits, which are classified and rank-ordered on the basis of score
+   seqalign Reads a DAF file (domain alignment file) and a DHF file
+   (domain hits file) and writes a DAF file extended with the hits
+   seqfraggle Removes fragments from DHF files (domain hits files) or
+   other files of sequences
+   seqsearch Generate database hits (sequences) for nodes in a DCF file
+   (domain classification file) by using PSI-BLAST
+   seqsort Reads DHF files (domain hits files) of database hits
+   (sequences) and removes hits of ambiguous classification
+   seqwords Generates DHF files (domain hits files) of database hits
+   (sequences) for nodes in a DCF file (domain classification file) by
+   keyword search of UniProt
+   siggen Generates a sparse protein signature from an alignment and
+   residue contact data
+   sigscan Generates a DHF file (domain hits file) of hits (sequences)
+   from scanning a signature against a sequence database
 
 12.0 DIAGNOSTIC ERROR MESSAGES
 

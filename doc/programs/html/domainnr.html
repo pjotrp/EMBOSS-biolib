@@ -1,9 +1,3 @@
-<html>
-<head>
-<title>EMBASSY domainatrix: domainnr</title>
-<base href="http://emboss.sourceforge.net/embassy/domainatrix/">
-</head>
-<body>
 <!-- START OF HEADER -->
 <HTML><HEAD>
 <TITLE> EMBOSS: DOMAINNR documentation. </TITLE>
@@ -58,11 +52,74 @@
 -->
 <a name="1.0"></a>
 <br><br><br><H2> 1.0   SUMMARY  </H2>
- Removes redundant domains from a DCF file (domain classification file). 
- The file must contain domain sequence information, which can be added by 
- using DOMAINSEQS.
+ 
 
-
+<a name="input.1"></a>
+<h3>Input files for usage example </h3>
+<p><h3>File: all_s.scop</h3>
+<table width="90%"><tr><td bgcolor="#FFCCFF">
+<pre>
+ID   D1CS4A_
+XX
+EN   1CS4
+XX
+TY   SCOP
+XX
+SI   53931 CL; 54861 FO; 55073 SF; 55074 FA; 55077 DO; 55078 SO; 39418 DD;
+XX
+CL   Alpha and beta proteins (a+b)
+XX
+FO   Ferredoxin-like
+XX
+SF   Adenylyl and guanylyl cyclase catalytic domain
+XX
+FA   Adenylyl and guanylyl cyclase catalytic domain
+XX
+DO   Adenylyl cyclase VC1, domain C1a
+XX
+OS   Dog (Canis familiaris)
+XX
+DS   SEQUENCE    52 AA;   5817 MW;  47362A43 CRC32;
+     ADIEGFTSLA SQCTAQELVM TLNELFARFD KLAAENHCLR IKILGDCYYC VS
+XX
+NC   1
+XX
+CN   [1]
+XX
+CH   A CHAIN; . START; . END;
+//
+ID   D1II7A_
+XX
+EN   1II7
+XX
+TY   SCOP
+XX
+SI   53931 CL; 56299 FO; 56300 SF; 64427 FA; 64428 DO; 64429 SO; 62415 DD;
+XX
+CL   Alpha and beta proteins (a+b)
+XX
+FO   Metallo-dependent phosphatases
+XX
+SF   Metallo-dependent phosphatases
+XX
+FA   DNA double-strand break repair nuclease
+XX
+DO   Mre11
+XX
+OS   Archaeon Pyrococcus furiosus
+XX
+DS   SEQUENCE    65 AA;   7396 MW;  0CFB92A3 CRC32;
+     MKFAHLADIH LGYEQFHKPQ REEEFAEAFK NALEIAVQEN VDFILIAGDL FHSSRPSPGT
+     LKKAI
+XX
+NC   1
+XX
+CN   [1]
+XX
+CH   A CHAIN; . START; . END;
+//
+</pre>
+</td></tr></table><p>
 
 
 
@@ -100,6 +157,74 @@ The format of the DCF file is described in the <a href="scopparse.html">SCOPPARS
 
 
 
+<a name="input.1"></a>
+<h3>Input files for usage example </h3>
+<p><h3>File: all_s.scop</h3>
+<table width="90%"><tr><td bgcolor="#FFCCFF">
+<pre>
+ID   D1CS4A_
+XX
+EN   1CS4
+XX
+TY   SCOP
+XX
+SI   53931 CL; 54861 FO; 55073 SF; 55074 FA; 55077 DO; 55078 SO; 39418 DD;
+XX
+CL   Alpha and beta proteins (a+b)
+XX
+FO   Ferredoxin-like
+XX
+SF   Adenylyl and guanylyl cyclase catalytic domain
+XX
+FA   Adenylyl and guanylyl cyclase catalytic domain
+XX
+DO   Adenylyl cyclase VC1, domain C1a
+XX
+OS   Dog (Canis familiaris)
+XX
+DS   SEQUENCE    52 AA;   5817 MW;  47362A43 CRC32;
+     ADIEGFTSLA SQCTAQELVM TLNELFARFD KLAAENHCLR IKILGDCYYC VS
+XX
+NC   1
+XX
+CN   [1]
+XX
+CH   A CHAIN; . START; . END;
+//
+ID   D1II7A_
+XX
+EN   1II7
+XX
+TY   SCOP
+XX
+SI   53931 CL; 56299 FO; 56300 SF; 64427 FA; 64428 DO; 64429 SO; 62415 DD;
+XX
+CL   Alpha and beta proteins (a+b)
+XX
+FO   Metallo-dependent phosphatases
+XX
+SF   Metallo-dependent phosphatases
+XX
+FA   DNA double-strand break repair nuclease
+XX
+DO   Mre11
+XX
+OS   Archaeon Pyrococcus furiosus
+XX
+DS   SEQUENCE    65 AA;   7396 MW;  0CFB92A3 CRC32;
+     MKFAHLADIH LGYEQFHKPQ REEEFAEAFK NALEIAVQEN VDFILIAGDL FHSSRPSPGT
+     LKKAI
+XX
+NC   1
+XX
+CN   [1]
+XX
+CH   A CHAIN; . START; . END;
+//
+</pre>
+</td></tr></table><p>
+
+
 
 
 <!-- OUTPUT FILE FORMAT 
@@ -115,6 +240,89 @@ The format of the DCF file is described in the <a href="scopparse.html">SCOPPARS
 <a name="4.0"></a>
 <br><br><br><H2> 4.0   OUTPUT FILE FORMAT         </H2>
 The format of the DCF file is described in the <a href="scopparse.html">SCOPPARSE documentation.</a>
+
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: all_nr.scop</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+ID   D1CS4A_
+XX
+EN   1CS4
+XX
+TY   SCOP
+XX
+SI   53931 CL; 54861 FO; 55073 SF; 55074 FA; 55077 DO; 55078 SO; 39418 DD;
+XX
+CL   Alpha and beta proteins (a+b)
+XX
+FO   Ferredoxin-like
+XX
+SF   Adenylyl and guanylyl cyclase catalytic domain
+XX
+FA   Adenylyl and guanylyl cyclase catalytic domain
+XX
+DO   Adenylyl cyclase VC1, domain C1a
+XX
+OS   Dog (Canis familiaris)
+XX
+DS   SEQUENCE    52 AA;   5817 MW;  47362A43 CRC32;
+     ADIEGFTSLA SQCTAQELVM TLNELFARFD KLAAENHCLR IKILGDCYYC VS
+XX
+NC   1
+XX
+CN   [1]
+XX
+CH   A CHAIN; . START; . END;
+//
+ID   D1II7A_
+XX
+EN   1II7
+XX
+TY   SCOP
+XX
+SI   53931 CL; 56299 FO; 56300 SF; 64427 FA; 64428 DO; 64429 SO; 62415 DD;
+XX
+CL   Alpha and beta proteins (a+b)
+XX
+FO   Metallo-dependent phosphatases
+XX
+SF   Metallo-dependent phosphatases
+XX
+FA   DNA double-strand break repair nuclease
+XX
+DO   Mre11
+XX
+OS   Archaeon Pyrococcus furiosus
+XX
+DS   SEQUENCE    65 AA;   7396 MW;  0CFB92A3 CRC32;
+     MKFAHLADIH LGYEQFHKPQ REEEFAEAFK NALEIAVQEN VDFILIAGDL FHSSRPSPGT
+     LKKAI
+XX
+NC   1
+XX
+CN   [1]
+XX
+CH   A CHAIN; . START; . END;
+//
+</pre>
+</td></tr></table><p>
+<p><h3>File: domainnr.log</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+Families are non-redundant
+95% redundancy threshold
+// Adenylyl and guanylyl cyclase catalytic domain
+Retained
+D1CS4A_
+Rejected
+// DNA double-strand break repair nuclease
+Retained
+D1II7A_
+Rejected
+</pre>
+</td></tr></table><p>
 
 
 
@@ -142,134 +350,276 @@ DOMAINNR requires a residue substitution matrix.
 <br><br><br><H2> 6.0   USAGE                     </H2>
 <H3> 6.1   COMMAND LINE ARGUMENTS </H3>
  
- 
+<pre>
+   Standard (Mandatory) qualifiers (* if not always prompted):
+  [-dcfin]             infile     This option specifies name of DCF file
+                                  (domain classification file) (input). A
+                                  'domain classification file' contains
+                                  classification and other data for domains
+                                  from SCOP or CATH, in DCF format
+                                  (EMBL-like). The files are generated by
+                                  using SCOPPARSE and CATHPARSE. Domain
+                                  sequence information can be added to the
+                                  file by using DOMAINSEQS.
+   -retain             toggle     This option specifies whether to write
+                                  redundant domains to a separate file. If
+                                  this option is selected, redundant domains
+                                  are written to a separate output file.
+   -node               menu       This option specifies the node for
+                                  redundancy removal. Redundancy can be
+                                  removed at any specified node in the SCOP or
+                                  CATH hierarchies. For example by selecting
+                                  'Class' entries belonging to the same Class
+                                  will be non-redundant.
+   -mode               menu       This option specifies whether to remove
+                                  redundancy at a single threshold % sequence
+                                  similarity or remove redundancy outside a
+                                  range of acceptable threshold % similarity.
+                                  All permutations of pair-wise sequence
+                                  alignments are calculated for each domain
+                                  family in turn using the EMBOSS
+                                  implementation of the Needleman and Wunsch
+                                  global alignment algorithm. Redundant
+                                  sequences are removed in one of two modes as
+                                  follows: (i) If a pair of proteins achieve
+                                  greater than a threshold percentage sequence
+                                  similarity (specified by the user) the
+                                  shortest sequence is discarded. (ii) If a
+                                  pair of proteins have a percentage sequence
+                                  similarity that lies outside an acceptable
+                                  range (specified by the user) the shortest
+                                  sequence is discarded.
+*  -thresh             float      This option specifies the % sequence
+                                  identity redundancy threshold, which
+                                  determines the redundancy calculation. If a
+                                  pair of proteins achieve greater than this
+                                  threshold the shortest sequence is
+                                  discarded.
+*  -threshlow          float      This option specifies the % sequence
+                                  identity redundancy threshold, which
+                                  determines the redundancy calculation. If a
+                                  pair of proteins have a percentage sequence
+                                  similarity that lies outside an acceptable
+                                  range the shortest sequence is discarded.
+*  -threshup           float      This option specifies the % sequence
+                                  identity redundancy threshold, which
+                                  determines the redundancy calculation. If a
+                                  pair of proteins have a percentage sequence
+                                  similarity that lies outside an acceptable
+                                  range the shortest sequence is discarded.
+  [-dcfout]            outfile    This option specifies the name of
+                                  non-redundant DCF file (domain
+                                  classification file) (output). A 'domain
+                                  classification file' contains classification
+                                  and other data for domains from SCOP or
+                                  CATH, in DCF format (EMBL-like). The files
+                                  are generated by using SCOPPARSE and
+                                  CATHPARSE. Domain sequence information can
+                                  be added to the file by using DOMAINSEQS.
+*  -redout             outfile    This option specifies the name of DCF file
+                                  (domain classification file) for redundant
+                                  sequences (output). A 'domain classification
+                                  file' contains classification and other
+                                  data for domains from SCOP or CATH, in DCF
+                                  format (EMBL-like). The files are generated
+                                  by using SCOPPARSE and CATHPARSE. Domain
+                                  sequence information can be added to the
+                                  file by using DOMAINSEQS.
+   -errf               outfile    This option specifies the name of log file
+                                  for the build. The log file contains
+                                  messages about any errors arising while
+                                  domainnr ran.
+
+   Additional (Optional) qualifiers:
+   -datafile           matrixf    This option specifies the residue
+                                  substitution matrix. This is used for
+                                  sequence comparison.
+   -gapopen            float      This option specifies the gap insertion
+                                  penalty. This is the score taken away when a
+                                  gap is created. The best value depends on
+                                  the choice of comparison matrix. The default
+                                  value assumes you are using the EBLOSUM62
+                                  matrix for protein sequences, and the
+                                  EDNAFULL matrix for nucleotide sequences.
+   -gapextend          float      This option specifies the gap extension
+                                  penalty. This is added to the standard gap
+                                  penalty for each base or residue in the gap.
+                                  This is how long gaps are penalized.
+                                  Usually you will expect a few long gaps
+                                  rather than many short gaps, so the gap
+                                  extension penalty should be lower than the
+                                  gap penalty. An exception is where one or
+                                  both sequences are single reads with
+                                  possible sequencing errors in which case you
+                                  would expect many single base gaps. You can
+                                  get this result by setting the gap open
+                                  penalty to zero (or very low) and using the
+                                  gap extension penalty to control gap
+                                  scoring.
+
+   Advanced (Unprompted) qualifiers: (none)
+   Associated qualifiers:
+
+   "-dcfout" associated qualifiers
+   -odirectory2        string     Output directory
+
+   "-redout" associated qualifiers
+   -odirectory         string     Output directory
+
+   "-errf" associated qualifiers
+   -odirectory         string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write standard output
+   -filter             boolean    Read standard input, write standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report deaths
+
+
+</pre>
+</td></tr></table>
+<P>
 <table border cellspacing=0 cellpadding=3 bgcolor="#ccccff">
 <tr bgcolor="#FFFFCC">
 <th align="left" colspan=2>Standard (Mandatory) qualifiers</th>
 <th align="left">Allowed values</th>
 <th align="left">Default</th>
 </tr>
- 
+
 <tr>
 <td>[-dcfin]<br>(Parameter 1)</td>
 <td>This option specifies name of DCF file (domain classification file) (input). A 'domain classification file' contains classification and other data for domains from SCOP or CATH, in DCF format (EMBL-like). The files are generated by using SCOPPARSE and CATHPARSE. Domain sequence information can be added to the file by using DOMAINSEQS.</td>
 <td>Input file</td>
 <td><b>Required</b></td>
 </tr>
- 
+
 <tr>
 <td>-retain</td>
 <td>This option specifies whether to write redundant domains to a separate file. If this option is selected, redundant domains are written to a separate output file.</td>
 <td>Toggle value Yes/No</td>
-<td>N</td>
+<td>No</td>
 </tr>
- 
+
 <tr>
 <td>-node</td>
 <td>This option specifies the node for redundancy removal. Redundancy can be removed at any specified node in the SCOP or CATH hierarchies. For example by selecting 'Class' entries belonging to the same Class will be non-redundant.</td>
 <td><table><tr><td>1</td> <td><i>(Class (SCOP))</i></td></tr><tr><td>2</td> <td><i>(Fold (SCOP))</i></td></tr><tr><td>3</td> <td><i>(Superfamily (SCOP))</i></td></tr><tr><td>4</td> <td><i>(Family (SCOP))</i></td></tr><tr><td>5</td> <td><i>(Class (CATH))</i></td></tr><tr><td>6</td> <td><i>(Architecture (CATH))</i></td></tr><tr><td>7</td> <td><i>(Topology (CATH))</i></td></tr><tr><td>8</td> <td><i>(Homologous Superfamily (CATH))</i></td></tr><tr><td>9</td> <td><i>(Family (CATH))</i></td></tr></table></td>
 <td>1</td>
 </tr>
- 
+
 <tr>
 <td>-mode</td>
 <td>This option specifies whether to remove redundancy at a single threshold % sequence similarity or remove redundancy outside a range of acceptable threshold % similarity. All permutations of pair-wise sequence alignments are calculated for each domain family in turn using the EMBOSS implementation of the Needleman and Wunsch global alignment algorithm. Redundant sequences are removed in one of two modes as follows: (i) If a pair of proteins achieve greater than a threshold percentage sequence similarity (specified by the user) the shortest sequence is discarded. (ii) If a pair of proteins have a percentage sequence similarity that lies outside an acceptable range (specified by the user) the shortest sequence is discarded.</td>
 <td><table><tr><td>1</td> <td><i>(Remove redundancy at a single threshold % sequence similarity)</i></td></tr><tr><td>2</td> <td><i>(Remove redundancy outside a range of acceptable threshold % similarity)</i></td></tr></table></td>
 <td>1</td>
 </tr>
- 
+
 <tr>
 <td>-thresh</td>
 <td>This option specifies the % sequence identity redundancy threshold, which determines the redundancy calculation. If a pair of proteins achieve greater than this threshold the shortest sequence is discarded.</td>
 <td>Any numeric value</td>
 <td>95.0</td>
 </tr>
- 
+
 <tr>
 <td>-threshlow</td>
 <td>This option specifies the % sequence identity redundancy threshold, which determines the redundancy calculation. If a pair of proteins have a percentage sequence similarity that lies outside an acceptable range the shortest sequence is discarded.</td>
 <td>Any numeric value</td>
 <td>30.0</td>
 </tr>
- 
+
 <tr>
 <td>-threshup</td>
 <td>This option specifies the % sequence identity redundancy threshold, which determines the redundancy calculation. If a pair of proteins have a percentage sequence similarity that lies outside an acceptable range the shortest sequence is discarded.</td>
 <td>Any numeric value</td>
 <td>90.0</td>
 </tr>
- 
+
 <tr>
 <td>[-dcfout]<br>(Parameter 2)</td>
 <td>This option specifies the name of non-redundant DCF file (domain classification file) (output). A 'domain classification file' contains classification and other data for domains from SCOP or CATH, in DCF format (EMBL-like). The files are generated by using SCOPPARSE and CATHPARSE. Domain sequence information can be added to the file by using DOMAINSEQS.</td>
 <td>Output file</td>
 <td>test.scop</td>
 </tr>
- 
+
 <tr>
 <td>-redout</td>
 <td>This option specifies the name of DCF file (domain classification file) for redundant sequences (output). A 'domain classification file' contains classification and other data for domains from SCOP or CATH, in DCF format (EMBL-like). The files are generated by using SCOPPARSE and CATHPARSE. Domain sequence information can be added to the file by using DOMAINSEQS.</td>
 <td>Output file</td>
 <td>test.scop</td>
 </tr>
- 
+
 <tr>
 <td>-errf</td>
 <td>This option specifies the name of log file for the build. The log file contains messages about any errors arising while domainnr ran.</td>
 <td>Output file</td>
 <td>domainnr.log</td>
 </tr>
- 
+
 <tr bgcolor="#FFFFCC">
 <th align="left" colspan=2>Additional (Optional) qualifiers</th>
 <th align="left">Allowed values</th>
 <th align="left">Default</th>
 </tr>
- 
+
 <tr>
 <td>-datafile</td>
 <td>This option specifies the residue substitution matrix. This is used for sequence comparison.</td>
 <td>Comparison matrix file in EMBOSS data path</td>
 <td>EBLOSUM62</td>
 </tr>
- 
+
 <tr>
 <td>-gapopen</td>
 <td>This option specifies the gap insertion penalty. This is the score taken away when a gap is created. The best value depends on the choice of comparison matrix. The default value assumes you are using the EBLOSUM62 matrix for protein sequences, and the EDNAFULL matrix for nucleotide sequences.</td>
 <td>Floating point number from 1.0 to 100.0</td>
 <td>10.0 for any sequence</td>
 </tr>
- 
+
 <tr>
 <td>-gapextend</td>
 <td>This option specifies the gap extension penalty. This is added to the standard gap penalty for each base or residue in the gap. This is how long gaps are penalized. Usually you will expect a few long gaps rather than many short gaps, so the gap extension penalty should be lower than the gap penalty. An exception is where one or both sequences are single reads with possible sequencing errors in which case you would expect many single base gaps. You can get this result by setting the gap open penalty to zero (or very low) and using the gap extension penalty to control gap scoring.</td>
 <td>Floating point number from 0.0 to 10.0</td>
 <td>0.5 for any sequence</td>
 </tr>
- 
+
 <tr bgcolor="#FFFFCC">
 <th align="left" colspan=2>Advanced (Unprompted) qualifiers</th>
 <th align="left">Allowed values</th>
 <th align="left">Default</th>
 </tr>
- 
+
 <tr>
 <td colspan=4>(none)</td>
 </tr>
- 
+
 </table>
 
 
 <H3> 6.2 EXAMPLE SESSION </H3>
 An example of interactive use of DOMAINNR is shown below.
-<table><td bgcolor="#FFCCFF">
-<pre>
-Unix % domainnr
+
+<b>Here is a sample session with domainnr</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>domainnr </b>
 Removes redundant domains from a DCF file (domain classification file). The
 file must contain domain sequence information, which can be added by using
 DOMAINSEQS.
-Name of DCF file (domain classification file for input (DCF format): test_data/all_s.scop
-Write redundant sequences to separate file. [N]:
+Name of DCF file (domain classification file) (input).: <b>all_s.scop</b>
+Write redundant domains to separate file. [N]: <b></b>
 Node at which to remove redundancy
          1 : Class (SCOP)
          2 : Fold (SCOP)
@@ -280,21 +630,24 @@ Node at which to remove redundancy
          7 : Topology (CATH)
          8 : Homologous Superfamily (CATH)
          9 : Family (CATH)
-Select number [1]: 4
+Select number. [1]: <b>4</b>
 Redundancy removal options
          1 : Remove redundancy at a single threshold % sequence similarity
          2 : Remove redundancy outside a range of acceptable threshold % similarity
-Select number [1]: 1
-The % sequence identity redundancy threshold [95.0]:
-Name of non-redundant DCF file (domain classification file) for output (DCF format) [test.scop]: test_data/domainnr/all_nr.scop
-Name of log file for the build [domainnr.log]: test_data/domainnr/domainnr.log
+Select number. [1]: <b>1</b>
+The % sequence identity redundancy threshold. [95.0]: <b></b>
+Name of non-redundant DCF file (domain classification file) (output) [test.scop]: <b>all_nr.scop</b>
+Name of log file for the build. [domainnr.log]: <b></b>
+
 // Adenylyl and guanylyl cyclase catalytic domain
 D1CS4A_
 // DNA double-strand break repair nuclease
 D1II7A_
-Unix %
-</pre>
-</table>
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>
+
 
 <br><br>
 The DCF file /test_data/all_s.scop with families containing
@@ -306,14 +659,6 @@ similarity to another domain.  Redundant domains were not retained. The log file
 
 
 
-<br> 
-<br>The following command line would achieve the same result.
-<br>
-<table><td bgcolor="#FFCCFF">
-<pre> 
-domainnr test_data/all_s.scop test_data/domainnr/all_nr.scop -mode 1 -thresh 95 -errf test_data/domainnr/domainnr.log -retain N -node 4
-</pre> 
-</table>
 
 <!-- KNOWN BUGS & WARNINGS
      Bugs that have not yet been fixed, easily missued features, problems
@@ -365,6 +710,10 @@ to the same family will be non-redundant.
 </tr>
 </table>
 
+
+
+
+None
 
 
 
@@ -421,52 +770,29 @@ function embAlignCalcSimilarity.
 <a name="11.0"></a>
 <br><br><br><H2> 11.0  RELATED APPLICATIONS      </H2>
 
-<table BORDER CELLSPACING=5 CELLPADDING=5 BGCOLOR="#f5f5ff" >
-<tr>
-<td><b>APPLICATION</b></td>
-<td><b>DESCRIPTION</b></td>
-</tr>
-<tr>
-<td><b><a href="domainer.html">DOMAINER</a> </b></td>
-<td> Reads CCF files (clean coordinate files) for proteins and writes CCF files for domains in a DCF file (domain classification file).</td>
-</tr>
-<tr>
-<td><b><a href="funky.html">FUNKY</a> </b></td>
-<td> Reads CCF files (clean coordinate files) and writes CON files (contact files) of residue-ligand contact data for domains in a DCF file (domain classification file). </td>
-</tr>
-<tr>
-<td><b><a href="domainreso.html">DOMAINRESO</a> </b></td>
-<td> Removes low resolution domains from a DCF file (domain classification file). </td>
-</tr>
-<tr>
-<td><b><a href="domainseqs.html">DOMAINSEQS</a> </b></td>
-<td> Adds sequence records to a DCF file (domain classification file). </td>
-</tr>
-<tr>
-<td><b><a href="domainrep.html">DOMAINREP</a> </b></td>
-<td> Reorder DCF file (domain classification file) so that the representative structure of each
-      user-specified node is given first. </td>
-</tr>
-<tr>
-<td><b><a href="domainalign.html">DOMAINALIGN</a> </b></td>
-<td> Generates structure-based sequence alignments for nodes in a DCF
-      file (domain classification file). </td>
-</tr>
-<tr>
-<td><b><a href="seqsearch.html">SEQSEARCH</a> </b></td>
-<td> Generate DHF files (domain hits files) of database hits (sequences) from a DAF file (domain alignment file) or other sequences by using PSI-BLAST.</td>
-</tr>
-<tr>
-<td><b><a href="seqwords.html">SEQWORDS</a> </b></td>
-<td>Generates DHF files (domain hits files) of database hits (sequences) for nodes in a DCF file (domain classification file) by keyword search of UniProt.</td>
-</tr>
-<tr>
-<td><b><a href="seqsort.html">SEQSORT</a> </b></td>
-<td>  Reads DHF files (domain hits files) of database hits (sequences) and removes hits of ambiguous classification. </td>
-</tr>
+<h2><a name="See also">See also</a></h2>
+<table border cellpadding=4 bgcolor="#FFFFF0">
+<tr><th>Program name</th><th>Description</th></tr>
+<tr><td><a href="../../apps/aaindexextract.html">aaindexextract</a></td><td>Extract data from AAINDEX</td></tr>
+<tr><td><a href="allversusall.html">allversusall</a></td><td>Does an all-versus-all global alignment for each set of sequences in an input directory and writes files of sequence similarity values</td></tr>
+<tr><td><a href="../../apps/cathparse.html">cathparse</a></td><td>Reads raw CATH classification files and writes DCF file (domain classification file)</td></tr>
+<tr><td><a href="../../apps/cutgextract.html">cutgextract</a></td><td>Extract data from CUTG</td></tr>
+<tr><td><a href="domainer.html">domainer</a></td><td>Reads CCF files (clean coordinate files) for proteins and writes CCF files for domains, taken from a DCF file (domain classification file)</td></tr>
+<tr><td><a href="domainseqs.html">domainseqs</a></td><td>Adds sequence records to a DCF file (domain classification file)</td></tr>
+<tr><td><a href="../../apps/domainsse.html">domainsse</a></td><td>Adds secondary structure records to a DCF file (domain classification file)</td></tr>
+<tr><td><a href="hetparse.html">hetparse</a></td><td>Converts raw dictionary of heterogen groups to a file in EMBL-like format</td></tr>
+<tr><td><a href="pdbparse.html">pdbparse</a></td><td>Parses PDB files and writes CCF files (clean coordinate files) for proteins</td></tr>
+<tr><td><a href="pdbplus.html">pdbplus</a></td><td>Add residue solvent accessibility and secondary structure data to a CCF file (clean coordinate file) for a protein or domain</td></tr>
+<tr><td><a href="pdbtosp.html">pdbtosp</a></td><td>Convert raw swissprot:PDB equivalence file to EMBL-like format</td></tr>
+<tr><td><a href="../../apps/printsextract.html">printsextract</a></td><td>Extract data from PRINTS</td></tr>
+<tr><td><a href="../../apps/prosextract.html">prosextract</a></td><td>Builds the PROSITE motif database for patmatmotifs to search</td></tr>
+<tr><td><a href="../../apps/rebaseextract.html">rebaseextract</a></td><td>Extract data from REBASE</td></tr>
+<tr><td><a href="scopparse.html">scopparse</a></td><td>Reads raw SCOP classification files and writes a DCF file (domain classification file)</td></tr>
+<tr><td><a href="seqnr.html">seqnr</a></td><td>Removes redundancy from DHF files (domain hits files) or other files of sequences</td></tr>
+<tr><td><a href="sites.html">sites</a></td><td>Reads CCF files (clean coordinate files) and writes CON files (contact files) of residue-ligand contact data for domains in a DCF file (domain classification file)</td></tr>
+<tr><td><a href="../../apps/ssematch.html">ssematch</a></td><td>Searches a DCF file (domain classification file) for secondary structure matches</td></tr>
+<tr><td><a href="../../apps/tfextract.html">tfextract</a></td><td>Extract data from TRANSFAC</td></tr>
 </table>
-
-
 
 
 
@@ -475,16 +801,20 @@ function embAlignCalcSimilarity.
 -->
 <a name="12.0"></a>
 <br><br><br><H2> 12.0  DIAGNOSTIC ERROR MESSAGES </H2>
-DOMAINNR generates a log file an excerpt of which is shown in Figure 1. The 
-first two lines give the level in the SCOP or CATH hierarchy at which redundancy 
-was removed (e.g. 'Families') and the value
-of the redundancy threshold.  The file then contains a section for each node, e.g.
-each family. Each section contains a line with the record '//' immediately 
-followed by the name of the node (family in this case), and two lines containing 'Retained' 
-and 'Rejected' respectively. Domain identifier codes of domains that appear in output 
-file are listed under 'Retained', while redundant domains are listed under 'Rejected'.
-Tthese will be saved in a second output file if the user has specified redundant domains to be retained.
-The text  'ERROR filename file read error' will be given when an error was encountered during a file read.
+
+DOMAINNR generates a log file an excerpt of which is shown in Figure
+1. The first two lines give the level in the SCOP or CATH hierarchy at
+which redundancy was removed (e.g. 'Families') and the value of the
+redundancy threshold.  The file then contains a section for each node,
+e.g.  each family. Each section contains a line with the record '//'
+immediately followed by the name of the node (family in this case),
+and two lines containing 'Retained' and 'Rejected'
+respectively. Domain identifier codes of domains that appear in output
+file are listed under 'Retained', while redundant domains are listed
+under 'Rejected'.  Tthese will be saved in a second output file if the
+user has specified redundant domains to be retained.  The text 'ERROR
+filename file read error' will be given when an error was encountered
+during a file read.
 
 <br><br><b>Figure 1  Summary of ROCPLOT output </b>
 <table><td bgcolor="#FFCCFF">
@@ -516,13 +846,17 @@ Rejected
 
 
 <!-- AUTHORS -->
-<a name="13.0"><br><br><br><H2> 13.0  AUTHORS                   </H2></a>
- Ranjeeva Ranasinghe  <a href="mailto:rranasin@hgmp.mrc.ac.uk">(rranasin@hgmp.mrc.ac.uk)</a>
+<a name="13.0"><br><br><br><H2> 13.0  AUTHORS</H2></a>
+
+ Ranjeeva Ranasinghe <a
+ href="mailto:rranasin@hgmp.mrc.ac.uk">(rranasin@hgmp.mrc.ac.uk)</a>
+
 <br><br>
-Jon Ison <a href="mailto:jison@rfcgr.mrc.ac.uk">(jison@rfcgr.mrc.ac.uk)</a>
-<br>MRC Rosalind Franklin Centre for Genomics Research, Wellcome Trust Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
 
-
+Jon Ison <a
+href="mailto:jison@rfcgr.mrc.ac.uk">(jison@rfcgr.mrc.ac.uk)</a>
+<br>MRC Rosalind Franklin Centre for Genomics Research, Wellcome Trust
+Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
 
 
 
@@ -550,6 +884,3 @@ See also <a href="http://emboss.sourceforge.net/">http://emboss.sourceforge.net/
 
 </BODY>
 </HTML>
-
-</body>
-</html>

@@ -1,10 +1,416 @@
 
-                                Gateway Timeout
+                                  garnier 
 
-    The following error occurred:
 
-   [code=GATEWAY_TIMEOUT] A gateway timeout occurred. The server is
-   unreachable. Retry the request.
-     _________________________________________________________________
 
-   Please contact the administrator.
+Function
+
+   Predicts protein secondary structure
+
+Description
+
+   This is an implementation of the original Garnier Osguthorpe Robson
+   algorithm (GOR I) for predicting protein secondary structure.
+
+   Secondary structure prediction is notoriously difficult to do
+   accurately. The GOR I alogorithm is one of the first semi-successful
+   methods.
+
+   The Garnier method is not regarded as the most accurate prediction,
+   but is simple to calculate on most workstations.
+
+   The accuracy of any secondary structure prediction program is not much
+   better than 70% to 80% at best. This is an early algorithm and will
+   probably not predict with much better than about 65% accuracy.
+
+   The Web servers for PHD, DSC, and others are generally preferred.
+
+   Do not rely on this (or any other) program alone to make your
+   predictions with. Use several programs and take a consensus of the
+   results.
+
+Usage
+
+   Here is a sample session with garnier
+
+
+% garnier 
+Predicts protein secondary structure
+Input sequence(s): tsw:amic_pseae
+Output report [amic_pseae.garnier]: 
+
+   Go to the input files for this example
+   Go to the output files for this example
+
+Command line arguments
+
+   Standard (Mandatory) qualifiers:
+  [-sequence]          seqall     Sequence database USA
+  [-outfile]           report     Output report file name
+
+   Additional (Optional) qualifiers: (none)
+   Advanced (Unprompted) qualifiers:
+   -idc                integer    In their paper, GOR mention that if you know
+                                  something about the secondary structure
+                                  content of the protein you are analyzing,
+                                  you can do better in prediction. 'idc' is an
+                                  index into a set of arrays, dharr[] and
+                                  dsarr[], which provide 'decision constants'
+                                  (dch, dcs), which are offsets that are
+                                  applied to the weights for the helix and
+                                  sheet (extend) terms. So, idc=0 says don't
+                                  use the decision constant offsets, and idc=1
+                                  to 6 indicates that various combinations of
+                                  dch,dcs offsets should be used.
+
+   Associated qualifiers:
+
+   "-sequence" associated qualifiers
+   -sbegin1             integer    Start of each sequence to be used
+   -send1               integer    End of each sequence to be used
+   -sreverse1           boolean    Reverse (if DNA)
+   -sask1               boolean    Ask for begin/end/reverse
+   -snucleotide1        boolean    Sequence is nucleotide
+   -sprotein1           boolean    Sequence is protein
+   -slower1             boolean    Make lower case
+   -supper1             boolean    Make upper case
+   -sformat1            string     Input sequence format
+   -sdbname1            string     Database name
+   -sid1                string     Entryname
+   -ufo1                string     UFO features
+   -fformat1            string     Features format
+   -fopenfile1          string     Features file name
+
+   "-outfile" associated qualifiers
+   -rformat2            string     Report format
+   -rname2              string     Base file name
+   -rextension2         string     File name extension
+   -rdirectory2         string     Output directory
+   -raccshow2           boolean    Show accession number in the report
+   -rdesshow2           boolean    Show description in the report
+   -rscoreshow2         boolean    Show the score in the report
+   -rusashow2           boolean    Show the full USA in the report
+
+   General qualifiers:
+   -auto                boolean    Turn off prompts
+   -stdout              boolean    Write standard output
+   -filter              boolean    Read standard input, write standard output
+   -options             boolean    Prompt for standard and additional values
+   -debug               boolean    Write debug output to program.dbg
+   -verbose             boolean    Report some/full command line options
+   -help                boolean    Report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning             boolean    Report warnings
+   -error               boolean    Report errors
+   -fatal               boolean    Report fatal errors
+   -die                 boolean    Report deaths
+
+
+   Standard (Mandatory) qualifiers Allowed values Default
+   [-sequence]
+   (Parameter 1) Sequence database USA Readable sequence(s) Required
+   [-outfile]
+   (Parameter 2) Output report file name Report output file
+   Additional (Optional) qualifiers Allowed values Default
+   (none)
+   Advanced (Unprompted) qualifiers Allowed values Default
+   -idc In their paper, GOR mention that if you know something about the
+   secondary structure content of the protein you are analyzing, you can
+   do better in prediction. 'idc' is an index into a set of arrays,
+   dharr[] and dsarr[], which provide 'decision constants' (dch, dcs),
+   which are offsets that are applied to the weights for the helix and
+   sheet (extend) terms. So, idc=0 says don't use the decision constant
+   offsets, and idc=1 to 6 indicates that various combinations of dch,dcs
+   offsets should be used. Integer from 0 to 6 0
+
+   The meaning and use of the parameter 'idc' is currently being
+   investigated. The original author, Bill Pearson writes:
+
+   "In their paper, GOR mention that if you know something about the
+   secondary structure content of the protein you are analyzing, you can
+   do better in prediction. "idc" is an index into a set of arrays,
+   dharr[] and dsarr[], which provide "decision constants" (dch, dcs),
+   which are offsets that are applied to the weights for the helix and
+   sheet (extend) terms. So, idc=0 says don't use the decision constant
+   offsets, and idc=1 to 6 indicates that various combinations of dch,dcs
+   offsets should be used. I don't remember what they are, but I must
+   have gotten the values from their paper."
+
+Input file format
+
+   garnier read any protein sequence USA.
+
+  Input files for usage example
+
+   'tsw:amic_pseae' is a sequence entry in the example protein database
+   'tsw'
+
+  Database entry: tsw:amic_pseae
+
+ID   AMIC_PSEAE     STANDARD;      PRT;   384 AA.
+AC   P27017;
+DT   01-AUG-1992 (Rel. 23, Created)
+DT   01-DEC-1992 (Rel. 24, Last sequence update)
+DT   15-DEC-1998 (Rel. 37, Last annotation update)
+DE   ALIPHATIC AMIDASE EXPRESSION-REGULATING PROTEIN.
+GN   AMIC.
+OS   Pseudomonas aeruginosa.
+OC   Bacteria; Proteobacteria; gamma subdivision; Pseudomonas group;
+OC   Pseudomonas.
+RN   [1]
+RP   SEQUENCE FROM N.A., AND SEQUENCE OF 1-18.
+RC   STRAIN=PAC;
+RX   MEDLINE; 91317707.
+RA   WILSON S.A., DREW R.E.;
+RT   "Cloning and DNA sequence of amiC, a new gene regulating expression
+RT   of the Pseudomonas aeruginosa aliphatic amidase, and purification of
+RT   the amiC product.";
+RL   J. Bacteriol. 173:4914-4921(1991).
+RN   [2]
+RP   X-RAY CRYSTALLOGRAPHY.
+RX   MEDLINE; 92106343.
+RA   WILSON S.A., CHAYEN N.E., HEMMINGS A.M., DREW R.E., PEARL L.H.;
+RT   "Crystallization of and preliminary X-ray data for the negative
+RT   regulator (AmiC) of the amidase operon of Pseudomonas aeruginosa.";
+RL   J. Mol. Biol. 222:869-871(1991).
+RN   [3]
+RP   X-RAY CRYSTALLOGRAPHY (2.1 ANGSTROMS).
+RX   MEDLINE; 95112789.
+RA   PEARL L.H., O'HARA B., DREW R.E., WILSON S.A.;
+RT   "Crystal structure of AmiC: the controller of transcription
+RT   antitermination in the amidase operon of Pseudomonas aeruginosa.";
+RL   EMBO J. 13:5810-5817(1994).
+CC   -!- FUNCTION: NEGATIVELY REGULATES THE EXPRESSION OF THE ALIPHATIC
+CC       AMIDASE OPERON. AMIC FUNCTIONS BY INHIBITING THE ACTION OF AMIR
+CC       AT THE PROTEIN LEVEL. IT BINDS TO AMIR. IT EXHIBITS PROTEIN KINASE
+CC       ACTIVITY.
+CC   -!- SUBUNIT: HOMODIMER.
+CC   -!- DOMAIN: CONSISTS OF TWO BETA-ALPHA-BETA DOMAINS WITH A CENTRAL
+CC       CLEFT IN WHICH THE AMIDE BINDS.
+CC   --------------------------------------------------------------------------
+CC   This SWISS-PROT entry is copyright. It is produced through a collaboration
+CC   between  the Swiss Institute of Bioinformatics  and the  EMBL outstation -
+CC   the European Bioinformatics Institute.  There are no  restrictions on  its
+CC   use  by  non-profit  institutions as long  as its content  is  in  no  way
+CC   modified and this statement is not removed.  Usage  by  and for commercial
+CC   entities requires a license agreement (See http://www.isb-sib.ch/announce/
+CC   or send an email to license@isb-sib.ch).
+CC   --------------------------------------------------------------------------
+DR   EMBL; X13776; CAA32024.1; -.
+DR   PIR; A40359; A40359.
+DR   PDB; 1PEA; 03-APR-96.
+KW   Transferase; Kinase; Repressor; 3D-structure.
+FT   INIT_MET      0      0
+SQ   SEQUENCE   384 AA;  42704 MW;  68FF861F CRC32;
+     GSHQERPLIG LLFSETGVTA DIERSHAYGA LLAVEQLNRE GGVGGRPIET LSQDPGGDPD
+     RYRLCAEDFI RNRGVRFLVG CYMSHTRKAV MPVVERADAL LCYPTPYEGF EYSPNIVYGG
+     PAPNQNSAPL AAYLIRHYGE RVVFIGSDYI YPRESNHVMR HLYRQHGGTV LEEIYIPLYP
+     SDDDLQRAVE RIYQARADVV FSTVVGTGTA ELYRAIARRY GDGRRPPIAS LTTSEAEVAK
+     MESDVAEGQV VVAPYFSSID TPASRAFVQA CHGFFPENAT ITAWAEAAYW QTLLLGRAAQ
+     AAGNWRVEDV QRHLYDIDID APQGPVRVER QNNHSRLSSR IAEIDARGVF QVRWQSPEPI
+     RPDPYVVVHN LDDWSASMGG GPLP
+//
+
+Output file format
+
+   The output is a standard EMBOSS report file.
+
+   The results can be output in one of several styles by using the
+   command-line qualifier -rformat xxx, where 'xxx' is replaced by the
+   name of the required format. The available format names are: embl,
+   genbank, gff, pir, swiss, trace, listfile, dbmotif, diffseq, excel,
+   feattable, motif, regions, seqtable, simple, srs, table, tagseq
+
+   See: http://emboss.sf.net/docs/themes/ReportFormats.html for further
+   information on report formats.
+
+   By default garnier writes a 'tagseq' report file.
+
+  Output files for usage example
+
+  File: amic_pseae.garnier
+
+########################################
+# Program: garnier
+# Rundate: Thu Jan 20 2005 17:35:20
+# Report_format: tagseq
+# Report_file: amic_pseae.garnier
+########################################
+
+#=======================================
+#
+# Sequence: AMIC_PSEAE     from: 1   to: 384
+# HitCount: 111
+#
+# DCH = 0, DCS = 0
+#
+#  Please cite:
+#  Garnier, Osguthorpe and Robson (1978) J. Mol. Biol. 120:97-120
+#
+#
+#=======================================
+
+          .   10    .   20    .   30    .   40    .   50
+      GSHQERPLIGLLFSETGVTADIERSHAYGALLAVEQLNREGGVGGRPIET
+helix                   HHHHHHHHHHHHHHHHHHH
+sheet      EE EEEEE                                 EEEE
+turns        T                              TTTT
+ coil CCCCC        CCCCC                   C    CCCC
+          .   60    .   70    .   80    .   90    .  100
+      LSQDPGGDPDRYRLCAEDFIRNRGVRFLVGCYMSHTRKAVMPVVERADAL
+helix               HHHHHH            HHHH H     HHHHHH
+sheet E         EEEE           EEEE          EEEE      E
+turns  TT TT   T          TTTTT    TTT    T T
+ coil    C  CCC
+          .  110    .  120    .  130    .  140    .  150
+      LCYPTPYEGFEYSPNIVYGGPAPNQNSAPLAAYLIRHYGERVVFIGSDYI
+helix                              HHH
+sheet EEE    E       EE           E   EEEE    EEEEE
+turns       T TTT  TT  T     TT           TT T     TTTT
+ coil    CCC     CC     CCCCC  CCC          C          C
+          .  160    .  170    .  180    .  190    .  200
+      YPRESNHVMRHLYRQHGGTVLEEIYIPLYPSDDDLQRAVERIYQARADVV
+helix       HHHH                       HHHHHHHHHHHHH
+sheet           EEE       EEEEEEE                   EEEE
+turns   TTT        TTT             TTTT
+ coil CC   C          CCCC       CC
+          .  210    .  220    .  230    .  240    .  250
+      FSTVVGTGTAELYRAIARRYGDGRRPPIASLTTSEAEVAKMESDVAEGQV
+helix          HHHHHHH                HHHHHHHHHHHHHHHHH
+sheet EEEE            EE         EEE                   E
+turns                   TTTTTT
+ coil     CCCCC               CCC   CC
+          .  260    .  270    .  280    .  290    .  300
+      VVAPYFSSIDTPASRAFVQACHGFFPENATITAWAEAAYWQTLLLGRAAQ
+helix               HHHH           HHHHHHHHHHHHH    HHHH
+sheet EEEE   E          EE                      E
+turns     TTT T   T       TTT   TT
+ coil          CCC C         CCC  C              CCC
+          .  310    .  320    .  330    .  340    .  350
+      AAGNWRVEDVQRHLYDIDIDAPQGPVRVERQNNHSRLSSRIAEIDARGVF
+helix       HHHHHHH                             HHH
+sheet              E  EEEE     EEEEE         EEE      EE
+turns               TT     T        TT   T         TTT
+ coil CCCCCC              C CCC       CCC CCC
+          .  360    .  370    .  380
+      QVRWQSPEPIRPDPYVVVHNLDDWSASMGGGPLP
+helix
+sheet EE           EEEEEEE     E
+turns   TT    TT           TTT  TTT
+ coil     CCCC  CCC       C   C    CCCCC
+
+#---------------------------------------
+#
+#  Residue totals: H:111   E: 98   T: 81   C: 94
+#         percent: H: 30.2 E: 26.6 T: 22.0 C: 25.5
+#
+#---------------------------------------
+
+Data files
+
+   None.
+
+Notes
+
+   The Garnier method is not regarded as the most accurate prediction,
+   but is simple to calculate on most workstations.
+
+   The Web servers for PHD, DSC, and others are generally preferred.
+
+   Do not rely on this (or any other) program alone to make your
+   predictions with. Use several programs and take a consensus of the
+   results.
+
+   The 3D structure for the example sequence is known, although the 2D
+   structure elements were not in the SwissProt feature table for release
+   38 when the test data was extracted.
+
+   DSSP shows:
+ From     To   Structure
+    9     13   E beta sheet
+   21     39   H alpha helix
+   50     54   E beta sheet
+   60     72   H alpha helix
+   78     81   E beta sheet
+   85     97   H alpha helix
+  101    104   E beta sheet
+  117    119   E beta sheet
+  128    136   H alpha helix
+  142    148   E beta sheet
+  151    166   H alpha helix
+  170    177   E beta sheet
+  183    196   H alpha helix
+  200    204   E beta sheet
+  208    221   H alpha helix
+  229    231   E beta sheet
+  236    239   H alpha helix
+  244    247   H alpha helix
+  251    254   E beta sheet
+  263    273   H alpha helix
+  284    303   H alpha helix
+  308    315   H alpha helix
+  320    322   E beta sheet
+  325    329   E beta sheet
+  336    337   E beta sheet
+  341    345   E beta sheet
+  351    356   E beta sheet
+
+References
+
+    1. Garnier J, Osguthorpe DJ, Robson B Analysis of the accuracy and
+       implications of simple methods for predicting the secondary
+       structure of globular proteins. J Mol Biol 1978 Mar
+       25;120(1):97-120
+
+Warnings
+
+   The accuracy of any secondary structure prediction program is not much
+   better than 70% to 80% at best. This is an early algorithm and will
+   probably not predict with much better than about 65% accuracy.
+
+   You are advised to use several of the latest Web-based prediction
+   sites and combine them to make a consensus prediction.
+
+Diagnostic Error Messages
+
+   None.
+
+Exit status
+
+   It always exits with a status of 0.
+
+Known bugs
+
+   None.
+
+See also
+
+    Program name             Description
+   helixturnhelix Report nucleic acid binding motifs
+   hmoment        Hydrophobic moment calculation
+   pepcoil        Predicts coiled coil regions
+   pepnet         Displays proteins as a helical net
+   pepwheel       Shows protein sequences as helices
+   tmap           Displays membrane spanning regions
+
+Author(s)
+
+   This program ('GARNIER') was originally written by William Pearson
+   (wrp@virginia.edu) and released as part of his FASTA package.
+
+   This application was modified for inclusion in EMBOSS by Rodrigo Lopez
+   (rls © ebi.ac.uk)
+   European Bioinformatics Institute, Wellcome Trust Genome Campus,
+   Hinxton, Cambridge CB10 1SD, UK
+
+History
+
+Target users
+
+   This program is intended to be used by everyone and everything, from
+   naive users to embedded scripts.
+
+Comments
+
+   None
