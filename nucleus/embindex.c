@@ -123,7 +123,7 @@ EmbPBtcache embBtreeCacheNewC(const char *file, const char *mode,
 {
     FILE *fp;
     EmbPBtcache cache = NULL;
-#if defined (HAVE64) && !defined(_OSF_SOURCE) && !defined(_AIX) && !defined(__hpux) && !defined(__ppc__)
+#if defined (HAVE64) && !defined(_OSF_SOURCE) && !defined(_AIX) && !defined(__hpux) && !defined(__ppc__) && !defined(__FreeBSD__)
     struct stat64 buf;
 #else
     struct stat buf;
@@ -141,7 +141,7 @@ EmbPBtcache embBtreeCacheNewC(const char *file, const char *mode,
 	return NULL;
 
 
-#if defined (HAVE64) && !defined(_OSF_SOURCE) && !defined(_AIX) && !defined(__hpux) && !defined(__ppc__)
+#if defined (HAVE64) && !defined(_OSF_SOURCE) && !defined(_AIX) && !defined(__hpux) && !defined(__ppc__) && !defined(__FreeBSD__)
     if(!stat64(file, &buf))
 #else
     if(!stat(file, &buf))
