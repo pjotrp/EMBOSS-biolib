@@ -1,1 +1,1 @@
-DISTFILES = *.h Makefile.am
+DISTFILES = *.h Makefile.am Makefile.in
