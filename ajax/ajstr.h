@@ -466,6 +466,7 @@ AjBool     ajStrWrapLeft (AjPStr* pthis, ajint width, ajint left);
 AjBool     ajStrUncomment (AjPStr* text);
 AjBool     ajStrUncommentStart (AjPStr* text);
 char*      ajStrYN (AjBool boule);
+char*      ajStrStrMod(AjPStr *pthis);
 
 #endif
 

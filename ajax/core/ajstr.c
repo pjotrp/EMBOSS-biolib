@@ -7678,3 +7678,48 @@ AjBool ajStrWhole(const AjPStr thys, ajint begin, ajint end)
 
     return ajTrue;
 }
+
+
+
+
+/* @func ajStrStrMod *********************************************************
+**
+** Make certain a string is modifiable by checking it has no
+** other references, or by making a new real copy of the string.
+**
+** Uses strClone to copy without copying the reference count.
+**
+** The target string is guaranteed to have a reference count of exactly 1.
+**
+** @param [w] pthis [AjPStr*] String
+** @return [char*] String char * pointer
+** @category modify [AjPStr] Make certain a string is modifiable by
+**                checking it has no other references, or by making a
+**                new real copy of the string.
+** @@
+******************************************************************************/
+
+char *ajStrStrMod(AjPStr* pthis)
+{
+    AjBool ret;
+    AjPStr thys;
+
+    thys = pthis ? *pthis : 0;
+
+    if(!*pthis)
+    {
+	ret = ajTrue;
+	thys = *pthis = ajStrNew();
+    }
+
+    if(thys->Use > 1)
+    {
+	ret = ajTrue;
+	strClone(pthis);
+    }
+
+    if(!ret)
+	return NULL;
+
+    return thys->Ptr;
+}
