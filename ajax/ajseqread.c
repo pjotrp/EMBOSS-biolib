@@ -1904,8 +1904,8 @@ static AjBool seqReadStockholm(AjPSeq thys, AjPSeqin seqin)
 
 	if(!ok || !ajStrPrefixC(line,"# STOCKHOLM 1.0"))
 	{
-	    ajFileSeek(buff->File,lpos,0);
-	    ajFileBuffClear(buff,-1);
+/*	    ajFileSeek(buff->File,lpos,0);
+	    ajFileBuffClear(buff,-1);*/
 	    ajFileBuffReset(buff);
 	    ajStrDel(&line);
 	    return ajFalse;
