@@ -1,3 +1,6 @@
+	Palindrome no longer reports palindromes that are only composed
+	of N's
+
 	Msbar can now check that the result doesn't match a set of
 	input other sequences.  For example you could specify that it
 	doesn't match the input sequence or a set of presiously produced
