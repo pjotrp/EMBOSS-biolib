@@ -513,11 +513,11 @@ FEATURES             Location/Qualifiers
                      /transl_table=11
                      /gene="amiR"
                      /protein_id="CAA32023.1"
-                     /translation="MSANSLLGSLRELQVLVLNPPGEVSDALVLQLIRIGCSVRQCWPP
+                     /TransLation="MSANSLLGSLRELQVLVLNPPGEVSDALVLQLIRIGCSVRQCWPP
                      PEAFDVPVDVVFTSIFQNGHHDEIAALLAAGTPRTTLVALVEYESPAVLSQIIELECHG
                      VITQPLDAHRVLPVLVSARRISEEMAKLKQKTEQLQDRIAGQARINQAKVLLMQRHGWD
                      EREAHQHLSREAMKRREPILKIAQELLGNEPSA"
-     misc_feature    135..1292
+     CODS            135..1292
                      /db_xref="SWISS-PROT:P27017"
                      /note="negative regulator of amiR"
                      /transl_table=11
