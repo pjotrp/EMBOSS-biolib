@@ -9291,10 +9291,10 @@ IN
 FI stderr
 FC = 2
 FP 7 /:/
-FP 1 /FLength \[0\]: /
+FP 1 /FLength \[32987\]: /
 FP 1 /FName: /
 FP 1 /FBegin \[1\]: /
-FP 1 /FEnd \[0\]: /
+FP 1 /FEnd \[32987\]: /
 FP 1 /FProtein \[N\]:/
 FP 1 /FNucleic \[Y\]: /
 FP 1 /FSize \[81\]: /
