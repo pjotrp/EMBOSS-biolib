@@ -1411,7 +1411,9 @@ AjBool embHitsOverlap(const AjPHit hit1, const AjPHit hit2, ajint n)
 ** 
 ** @param [u] inf      [AjPFile] Input file stream
 **
-** @return [AjPHit] Hit object
+** @return [AjPHit] Hit object, or NULL if the file was not in extended 
+** FASTA (DHF) format (indicated by a token count of the the lines 
+** beginning with '>').
 ** @@
 ****************************************************************************/
 
@@ -1445,7 +1447,13 @@ AjPHit embHitReadFasta(AjPFile inf)
 	    /* Check line has correct no. of tokens and allocate Hit */
 	    ajStrAssSub(&subline, line, 1, -1);
 	    if( (ntok=ajStrTokenCount(subline, "^")) != 16)
-		ajFatal("Incorrect no. (%d) of tokens on line %S\n", ntok, line);
+	    {
+		ajWarn("Wrong no. (%d) of tokens for a DHF file on line %S\n", ntok, line);
+		ajStrDel(&line);
+		ajStrDel(&subline);
+		return NULL;
+	    }
+	    
 	    else
 	    {
 		parseok = ajTrue;
