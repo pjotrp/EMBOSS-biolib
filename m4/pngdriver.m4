@@ -18,6 +18,8 @@ dnl   #endif /* PLD_png */
 dnl
 dnl @author Ian Longden <il@sanger.ac.uk>
 dnl Modified: Alan Bleasby. Corrected library order
+dnl Modified: David Mathog.   Looks in ALT_HOME, and then /usr no matter what for
+dnl   all 3 libs.
 dnl
 
 AC_DEFUN(CHECK_PNGDRIVER,
@@ -37,10 +39,7 @@ else
 fi], [
 AC_MSG_RESULT(yes)
 ALT_HOME=/usr/local
-if test ! -f "${ALT_HOME}/include/zlib.h"
-then
-        ALT_HOME=/usr
-fi
+ALT_USED=0
 ])
 
 
@@ -61,15 +60,29 @@ then
         LDFLAGS="$LDFLAGS -L${ALT_HOME}/lib"
         CPPFLAGS="$CPPFLAGS -I${ALT_HOME}/include"
 #
-# Check for zlib
+# Check for zlib in ALT_HOME
 #
-        AC_CHECK_LIB(z, inflateEnd, CHECK=1, CHECK=0)
+        AC_CHECK_LIB(z, inflateEnd, CHECK=1, CHECK=0, -L${ALT_HOME}/lib -lz)
+#
+# Failed?  Look in /usr/lib too.  If it shows up there it won't change LDFLAGS which
+# should always include /usr/lib.
+#       
+	if test $CHECK = "0" ; then
+	  AC_CHECK_LIB(z, inflateEnd, CHECK=1, CHECK=0 , -L/usr/lib -lz)
+        else
+          ALT_USED=1
+	fi
 
 #
 # Check for png
 #
 	if test $CHECK = "1" ; then
 	  AC_CHECK_LIB(png, png_destroy_read_struct, CHECK=1, CHECK=0 , -L${ALT_HOME}/lib -lz)
+	  if test $CHECK = "0" ; then
+	    AC_CHECK_LIB(z, inflateEnd, CHECK=1, CHECK=0 , -L/usr/lib -lz)
+          else
+            ALT_USED=1
+	  fi
 	fi
 	
 #
@@ -77,6 +90,11 @@ then
 #
 	if test $CHECK = "1"; then
 	  AC_CHECK_LIB(gd, gdImageCreateFromPng, CHECK=1, CHECK=0 , -L${ALT_HOME}/lib -lgd -lpng -lz -lm)
+	  if test $CHECK = "0" ; then
+	    AC_CHECK_LIB(gd, gdImageCreateFromPng, CHECK=1, CHECK=0 , -L/usr/lib -lgd -lpng -lz -lm)
+          else
+            ALT_USED=1
+	  fi
           if test $CHECK = "0"; then
 		echo need to upgrade gd for png driver for plplot
 	  fi
@@ -88,6 +106,12 @@ then
 	  LIBS="$LIBS -lgd -lpng -lz -lm"
 	  AC_DEFINE(PLD_png)
 	  AM_CONDITIONAL(AMPNG, true)
+          if test $ALT_USED = "1" ; then
+	    echo Using libz, libgd, and/or libpng from ${ALT_HOME}
+          else
+            LDFLAGS="$ALT_LDFLAGS"
+	    CPPFLAGS="$ALT_CPPFLAGS"
+          fi
 	else
 #
 # If not okay then reset FLAGS.
@@ -96,9 +120,11 @@ then
 	  CPPFLAGS="$ALT_CPPFLAGS"
 	  echo No png driver will be made due to librarys missing/old.
 	fi
-#	echo LIBS = $LIBS
-#	echo LDFLAGS = $LDFLAGS
-#	echo CPPFLAGS = $CPPFLAGS
+#       echo PNG STUFF FOLLOWS!!!
+#       echo CHECK = $CHECK
+#       echo LIBS = $LIBS
+#       echo LDFLAGS = $LDFLAGS
+#       echo CPPFLAGS = $CPPFLAGS
 
 fi
 ])
