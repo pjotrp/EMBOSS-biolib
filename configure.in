@@ -55,6 +55,8 @@ AC_CHECK_LIB(c, gethostbyname, LIBS="$LIBS", LIBS="$LIBS -lnsl")
 #AC_CHECK_LIB(curses, main)
 
 CHECK_PNGDRIVER
+CHECK_JAVA
+CHECK_JAVAOS
 
 CFLAGS="-O"
 
