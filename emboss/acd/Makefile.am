@@ -5,7 +5,7 @@ pkgdata_DATA = codes.english \
 	btwisted.acd cai.acd chaos.acd charge.acd checktrans.acd chips.acd \
 	cirdna.acd cluster.acd codcmp.acd coderet.acd \
 	complex.acd compseq.acd cons.acd corbatest.acd \
-	cpgplot.acd cpgreport.acd cusp.acd cutseq.acd \
+	cpgplot.acd cpgreport.acd cusp.acd cutgextract.acd cutseq.acd \
 	dan.acd dbiblast.acd dbifasta.acd dbiflat.acd \
 	dbigcg.acd demofeatures.acd demolist.acd demosequence.acd \
 	demostring.acd demotable.acd descseq.acd diffseq.acd \
