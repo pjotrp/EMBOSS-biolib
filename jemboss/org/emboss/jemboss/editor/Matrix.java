@@ -195,6 +195,12 @@ public class Matrix
   public int getMatrixIndex(String s)
   {
     s = s.toUpperCase();
+
+    if(!residueMatrixPosition.containsKey(s))
+      if(s.equals(".") || s.equals("-") 
+                       || s.equals("~"))
+        s = "X";
+
     if(!residueMatrixPosition.containsKey(s))
       return -1;
     return ((Integer)residueMatrixPosition.get(s)).intValue();

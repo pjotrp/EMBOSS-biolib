@@ -121,10 +121,12 @@ public class Consensus
                             float setcase, int identity)
   {
     int nseqs = seqs.size();
-//  int mlen = ((Sequence)seqs.get(0)).getLength();
     int mlen = getMaxSequenceLength(seqs);
 
     String nocon = "-";
+    if(((Sequence)seqs.get(0)).isProtein())
+      nocon = "X";
+
     String res = "";
 
     int matsize = mat.getIDimension();
@@ -147,7 +149,7 @@ public class Consensus
       for(i=0;i<matsize;i++)          /* reset id's and +ve matches */
       {
         identical[i] = 0.f;
-        matching[i] = 0.f;
+        matching[i]  = 0.f;
       }
 
       for(i=0;i<nseqs;i++)
@@ -157,6 +159,9 @@ public class Consensus
       {
         s1 = getResidue(seqs,i,k);
         m1 = mat.getMatrixIndex(s1); 
+
+        if(m1 >= 0)
+          identical[m1] += getSequenceWeight(seqs,i);
         for(j=i+1;j<nseqs;j++)
         {
           s2 = getResidue(seqs,j,k);
@@ -175,7 +180,7 @@ public class Consensus
       float max = -(float)Integer.MAX_VALUE;
       for(i=0;i<nseqs;i++)
       {
-        if( score[i] >= max ||
+        if( score[i] > max ||
            (score[i] == max &&
             getResidue(seqs,highindex,k).equals("-") ))
         {
@@ -189,29 +194,36 @@ public class Consensus
       {
         s1 = getResidue(seqs,i,k); 
         m1 = mat.getMatrixIndex(s1);
-        for(j=0;j<nseqs;j++)
+        if(matching[m1] == 0.f)
         {
-          if( i != j)
+          for(j=0;j<nseqs;j++)
           {
-            s2 = getResidue(seqs,j,k);
-            m2 = mat.getMatrixIndex(s2);
-            if(m1 >= 0 && m2 >= 0 && matrix[m1][m2] > 0)
-              matching[m1] += getSequenceWeight(seqs,j);
+            if(i != j)
+            {
+              s2 = getResidue(seqs,j,k);
+              m2 = mat.getMatrixIndex(s2);
+              if(m1 >= 0 && m2 >= 0 && matrix[m1][m2] > 0)
+                matching[m1] += getSequenceWeight(seqs,j);
+            }
           }
         }
       }
 
-      
-      int matchingmaxindex  = 0;      /* get max matching and identical */
+
+      int matchingmaxindex  = 0;  /* get max matching and identical */
       int identicalmaxindex = 0;
       for(i=0;i<nseqs;i++)
       {
         s1 = getResidue(seqs,i,k);
         m1 = mat.getMatrixIndex(s1);
+
         if(m1 >= 0)
+        {
           if(identical[m1] > identical[identicalmaxindex])
-            identicalmaxindex= m1;
+            identicalmaxindex = m1;
+        }
       }
+
       for(i=0;i<nseqs;i++)
       {
         s1 = getResidue(seqs,i,k);
@@ -219,7 +231,7 @@ public class Consensus
         if(m1 >= 0)
         {
           if(matching[m1] > matching[matchingmaxindex])
-            matchingmaxindex= m1;
+            matchingmaxindex = m1;
           else if(matching[m1] ==  matching[matchingmaxindex])
           {
             if(identical[m1] > identical[matchingmaxindex])
@@ -234,10 +246,10 @@ public class Consensus
       m1 = mat.getMatrixIndex(s1);
 
       if(m1 >= 0 && matching[m1] >= fplural
-         && !s1.equals("-"))
+         && !s1.equals("-") && !s1.equals("."))
          res = s1;
 
-      if(matching[highindex] <= setcase)
+      if(matching[m1] <= setcase)
         res = res.toLowerCase();
 
       if(identity>0)                      /* if just looking for id's */
@@ -248,7 +260,7 @@ public class Consensus
           s1 = getResidue(seqs,i,k); 
           m1 = mat.getMatrixIndex(s1);
           if(matchingmaxindex == m1)
-          j++;
+            j++;
         }
         if(j<identity)
           res = nocon;
@@ -345,26 +357,29 @@ public class Consensus
     {
       res = ((Sequence)seqs.get(i)).getSequence().substring(k,k+1);
     }
-    catch(StringIndexOutOfBoundsException sexp){}
+    catch(StringIndexOutOfBoundsException sexp)
+    {
+    }
     return res;
   }
 
   public static void main(String args[])
   {
     Vector seqs = new Vector();
-//  seqs.add(new Sequence("MALEGFP"));
-//  seqs.add(new Sequence("MALEGFP"));
-//  seqs.add(new Sequence("MAPEGFP"));
-//  seqs.add(new Sequence("MAPEGFP"));
 
-    seqs.add(new Sequence("MHQDGISSMNQLGGLFVNGRP"));
-    seqs.add(new Sequence("-MQNSHSGVNQLGGVFVNGRP"));
-    seqs.add(new Sequence("STPLGQGRVNQLGGVFINGRP"));
-    seqs.add(new Sequence("STPLGQGRVNQLGGVFINGRP"));
-    seqs.add(new Sequence("-MEQTYGEVNQLGGVFVNGRP"));
+    seqs.add(new Sequence("MHQDGISSMNQLGGLFVNGRPQ"));
+    seqs.add(new Sequence("-MQNSHSGVNQLGGVFVNGRPQ"));
+    seqs.add(new Sequence("STPLGQGRVNQLGGVFINGRPP"));
+    seqs.add(new Sequence("STPLGQGRVNQLGGVFINGRPP"));
+    seqs.add(new Sequence("-MEQTYGEVNQLGGVFVNGRPE"));
+    seqs.add(new Sequence("-MEQTYGEVNQLGGVFVNGRPE"));
+    seqs.add(new Sequence("MHQDGISSMNQLGGLFVNGRPH"));
+    seqs.add(new Sequence("MHQDGISSMNQLGGLFVNGRPR"));
+    seqs.add(new Sequence("MHQDGISSMNQLLGLFVNGRPR"));
+    seqs.add(new Sequence("MHQDGISSMNQLLGGGGGGGGR"));
 
-    new Consensus(new File("/packages/emboss_dev/tcarver/emboss/emboss/emboss/data/EBLOSUM80"),
-                  seqs,1.f,1.f,1);
+    new Consensus(new File("/packages/emboss_dev/tcarver/emboss/emboss/emboss/data/EBLOSUM62"),
+                  seqs,49.75f,0.f,0);
   }
 }
 

@@ -22,6 +22,7 @@ package org.emboss.jemboss.editor;
 
 import javax.swing.*;
 import java.awt.Dimension;
+import java.awt.Cursor;
 import java.awt.event.*;
 import org.emboss.jemboss.gui.form.TextFieldFloat;
 import org.emboss.jemboss.gui.form.TextFieldInt;
@@ -33,8 +34,13 @@ public class ConsensusOptions extends JFrame
   private TextFieldFloat pluralFloat;
   private TextFieldInt idInt;
   private TextFieldFloat caseFloat;
+  private GraphicSequenceCollection gsc;
+  private Matrix mat;
+  private Cursor cbusy = new Cursor(Cursor.WAIT_CURSOR);
+  private Cursor cdone = new Cursor(Cursor.DEFAULT_CURSOR);
+  private JScrollPane jspSequence; // Sequence scrollpane
 
-  public ConsensusOptions()
+  public ConsensusOptions(JScrollPane jspSequence)
   {
     super("Consensus Options");
 
@@ -44,7 +50,7 @@ public class ConsensusOptions extends JFrame
     Box bacross = Box.createHorizontalBox();
     pluralFloat = new TextFieldFloat();
     pluralFloat.setText("1.0");
-    Dimension d = new Dimension(50, 30);
+    Dimension d = new Dimension(65,30);
     pluralFloat.setPreferredSize(d);
     pluralFloat.setMaximumSize(d);
     bacross.add(pluralFloat);
@@ -59,7 +65,7 @@ public class ConsensusOptions extends JFrame
 
     bacross = Box.createHorizontalBox();
     idInt = new TextFieldInt();
-    idInt.setText("1");
+    idInt.setText("0");
     idInt.setPreferredSize(d);
     idInt.setMaximumSize(d);
     bacross.add(idInt);
@@ -78,7 +84,7 @@ public class ConsensusOptions extends JFrame
 
     bacross = Box.createHorizontalBox();
     caseFloat = new TextFieldFloat();
-    caseFloat.setText("1.0");
+    caseFloat.setText("0.0");
     caseFloat.setPreferredSize(d);
     caseFloat.setMaximumSize(d);
     bacross.add(caseFloat);
@@ -92,6 +98,36 @@ public class ConsensusOptions extends JFrame
     bacross.add(Box.createHorizontalGlue());
     bdown.add(bacross);
  
+     
+    bacross = Box.createHorizontalBox();
+    JButton calculate = new JButton("Calculate Consensus");
+    calculate.addActionListener(new ActionListener()
+    {
+      public void actionPerformed(ActionEvent e)
+      {
+        setCursor(cbusy);
+        gsc.deleteSequence("Consensus");
+        Consensus conseq = new Consensus(mat,
+                    gsc.getSequenceCollection(),
+                    getPlurality(),
+                    getCase(),
+                    getIdentity());
+
+        int fontSize = gsc.getFontSize();
+        gsc.addSequence(conseq.getConsensusSequence(),true,5,fontSize);
+
+        Dimension dpane = gsc.getPanelSize();
+        gsc.setPreferredSize(dpane);
+        gsc.setNamePanelWidth(gsc.getNameWidth());
+//      jspSequence.setViewportView(gsc);
+        setCursor(cdone);
+      }
+    });
+    bacross.add(calculate);
+    bacross.add(Box.createHorizontalGlue());
+    bdown.add(bacross);
+
+
 // set up a menu bar
     JMenuBar menuBar = new JMenuBar();
 
@@ -152,6 +188,21 @@ public class ConsensusOptions extends JFrame
   public int getIdentity()
   {
     return Integer.parseInt(idInt.getText());
+  }
+
+  protected void setGraphicSequenceCollection(GraphicSequenceCollection gsc)
+  {
+    this.gsc = gsc;
+  }
+
+  protected void setMatrix(Matrix mat)
+  {
+    this.mat = mat;
+  }
+
+  protected void setPlurality(float plurality)
+  {
+    pluralFloat.setText(Float.toString(plurality));
   }
 
 }

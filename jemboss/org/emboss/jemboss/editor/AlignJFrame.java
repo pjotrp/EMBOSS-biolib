@@ -354,6 +354,7 @@ public class AlignJFrame extends JFrame
       {
         if(ppj == null)
           ppj = new PrettyPlotJFrame(gsc);
+        gsc.setMatrix(mat);
         ppj.setVisible(true);
       }
     });
@@ -364,7 +365,7 @@ public class AlignJFrame extends JFrame
     menuBar.add(calculateMenu);
 
 // consensus sequence
-    final ConsensusOptions options = new ConsensusOptions();
+    final ConsensusOptions options = new ConsensusOptions(jspSequence);
     calculateCons.addActionListener(new ActionListener()
     {
       public void actionPerformed(ActionEvent e)
@@ -398,6 +399,19 @@ public class AlignJFrame extends JFrame
     {
       public void actionPerformed(ActionEvent e)
       {
+        try
+        {
+          Vector vseq = gsc.getSequenceCollection();
+          Enumeration enum = vseq.elements();
+          float wgt = 0.f;
+          while(enum.hasMoreElements())
+            wgt+=((Sequence)enum.nextElement()).getWeight();
+
+          options.setPlurality(wgt/2.f);
+          options.setGraphicSequenceCollection(gsc);
+        }
+        catch(NullPointerException npe){}
+        options.setMatrix(mat);
         options.setVisible(true);
       }
     });

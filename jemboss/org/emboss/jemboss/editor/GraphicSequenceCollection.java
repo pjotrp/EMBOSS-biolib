@@ -83,7 +83,8 @@ public class GraphicSequenceCollection extends JPanel
   private int plotConStrut = 20;
   /** pretty plot values */
   private PrettyPlotJFrame prettyPlot;
-
+  /** scoring matrix */
+  private Matrix mat;
 
   /**
   *
@@ -360,6 +361,11 @@ public class GraphicSequenceCollection extends JPanel
   }
 
 
+  protected void setMatrix(Matrix mat)
+  {
+    this.mat = mat;
+  }
+
   /**
   *
   * Determine the colour of a residue at a given position. If
@@ -393,7 +399,25 @@ public class GraphicSequenceCollection extends JPanel
   
     if(identical >= prettyPlot.getMinimumIdentity(nseqs))
       return prettyPlot.getColour();
-
+    else if(mat != null)
+    {
+      int matrix[][] = mat.getMatrix();
+      enum = seqs.elements();
+      while(enum.hasMoreElements())
+      {
+        Sequence seq = (Sequence)(enum.nextElement());
+        if(!seqName.equals(seq.getName()))
+        {
+          int m1 = mat.getMatrixIndex(s);
+          if(pos < seq.getLength())
+          {
+            int m2 = mat.getMatrixIndex(seq.getResidue(pos));
+            if(matrix[m1][m2]>0)
+              return Color.blue;
+          }
+        }
+      } 
+    }
     return Color.black;
   }
 
