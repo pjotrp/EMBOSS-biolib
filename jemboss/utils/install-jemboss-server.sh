@@ -554,6 +554,10 @@ if [ "$MACOSX" = "y" ]; then
 # cp $EMBOSS_INSTALL/lib/libajax.[0-9].dylib /System/Library/Frameworks/JavaVM.framework/Libraries/libajax.jnilib
 fi
 
+if [ "$PLATFORM" = "hpux" ]; then
+  ln -s $EMBOSS_INSTALL/lib/libajax.sl $EMBOSS_INSTALL/lib/libajax.so
+fi
+
 #
 #
 # Tomcat scripts
