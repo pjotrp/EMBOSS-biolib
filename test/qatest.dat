@@ -11109,6 +11109,7 @@ FP 1 /Died: /
 
 ID seqret-query-srs-id
 CC Requires a local SRS installation
+RQ srs
 AP seqret
 PP EMBOSSRC=../..
 PP export EMBOSSRC
@@ -11121,6 +11122,7 @@ FP 1 /^ID /
 
 ID seqret-query-srs-acc
 CC Requires a local SRS installation
+RQ srs
 AP seqret
 PP EMBOSSRC=../..
 PP export EMBOSSRC
@@ -11133,6 +11135,7 @@ FP 1 /^ID /
 
 ID seqret-query-srs-sv
 CC Requires a local SRS installation
+RQ srs
 AP seqret
 PP EMBOSSRC=../..
 PP export EMBOSSRC
@@ -11145,6 +11148,7 @@ FP 1 /^ID /
 
 ID seqret-query-srs-name
 CC Requires a local SRS installation
+RQ srs
 AP seqret
 PP EMBOSSRC=../..
 PP export EMBOSSRC
@@ -11157,6 +11161,7 @@ FP 1 /^ID /
 
 ID seqret-query-srs-fail
 CC Requires a local SRS installation
+RQ srs
 ER 1
 AP seqret
 PP EMBOSSRC=../..
@@ -11172,6 +11177,7 @@ FP 1 /Died: /
 
 ID seqret-query-srsfasta-id
 CC Requires a local SRS installation
+RQ srs
 AP seqret
 PP EMBOSSRC=../..
 PP export EMBOSSRC
@@ -11184,6 +11190,7 @@ FP 1 /^ID /
 
 ID seqret-query-srsfasta-acc
 CC Requires a local SRS installation
+RQ srs
 AP seqret
 PP EMBOSSRC=../..
 PP export EMBOSSRC
@@ -11196,6 +11203,7 @@ FP 1 /^ID /
 
 ID seqret-query-srsfasta-sv
 CC Requires a local SRS installation
+RQ srs
 AP seqret
 PP EMBOSSRC=../..
 PP export EMBOSSRC
@@ -11208,6 +11216,7 @@ FP 1 /^ID /
 
 ID seqret-query-srsfasta-name
 CC Requires a local SRS installation
+RQ srs
 AP seqret
 PP EMBOSSRC=../..
 PP export EMBOSSRC
@@ -11220,6 +11229,7 @@ FP 1 /^ID /
 
 ID seqret-query-srsfasta-fail
 CC Requires a local SRS installation
+RQ srs
 ER 1
 AP seqret
 PP EMBOSSRC=../..
