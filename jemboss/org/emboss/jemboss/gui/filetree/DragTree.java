@@ -188,10 +188,20 @@ public class DragTree extends JTree implements DragGestureListener,
         else
           path = f.getAbsolutePath();
  
-        File dir = new File(path+System.getProperty("file.separator")+
-                            inputValue);
-        dir.mkdir();
-        addObject(inputValue,path);
+        String fullname = path+System.getProperty("file.separator")+
+                          inputValue;
+        File dir = new File(fullname);
+        
+        if(dir.exists())
+        {
+          JOptionPane.showMessageDialog(null, fullname+" alread exists!",
+                                   "Warning", JOptionPane.ERROR_MESSAGE);
+        }
+        else
+        {
+          dir.mkdir();
+          addObject(inputValue,path);
+        }
       }
     }
     else if(isFileSelection())
@@ -201,20 +211,30 @@ public class DragTree extends JTree implements DragGestureListener,
         final String inputValue = JOptionPane.showInputDialog(null,
                                 "New File Name","Rename "+f.getName(), 
                                 JOptionPane.QUESTION_MESSAGE);
+
         if(inputValue != null && !inputValue.equals("") )
         {
           final String path = f.getParent();
-          File fnew = new File(path+System.getProperty("file.separator")+inputValue);
-          f.renameTo(fnew);
-          Runnable deleteFileFromTree = new Runnable()
+          String fullname   = path+System.getProperty("file.separator")+inputValue;
+          File fnew = new File(fullname);
+          if(fnew.exists())
           {
-            public void run () 
-            { 
-              deleteObject(node,f.getParentFile().getAbsolutePath());
-              addObject(inputValue,path);
+            JOptionPane.showMessageDialog(null, fullname+" alread exists!", 
+                                     "Warning", JOptionPane.ERROR_MESSAGE);
+          }
+          else
+          {
+            f.renameTo(fnew);
+            Runnable deleteFileFromTree = new Runnable()
+            {
+              public void run () 
+              { 
+                deleteObject(node,f.getParentFile().getAbsolutePath());
+                addObject(inputValue,path);
+              };
             };
-          };
-          SwingUtilities.invokeLater(deleteFileFromTree);
+            SwingUtilities.invokeLater(deleteFileFromTree);
+          }
         }
         
       }
