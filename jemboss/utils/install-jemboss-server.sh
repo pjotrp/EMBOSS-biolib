@@ -504,11 +504,11 @@ if [ "$AUTH" = "y" ]; then
   echo "#include <stdio.h>" > dummy.c
   echo 'int main(){ printf("%d\n",getuid()); }' >> dummy.c
   if (cc dummy.c -o dummy >/dev/null 2>&1); then
-    UUIDTMP=`dummy`
+    UUIDTMP=`./dummy`
     CC="cc"; 
   else
     gcc dummy.c -o dummy >/dev/null 2>&1
-    UUIDTMP=`dummy`
+    UUIDTMP=`./dummy`
     CC="gcc";
   fi
   rm -f dummy.c dummy
