@@ -354,6 +354,7 @@ static void acdPromptCpdb (AcdPAcd thys);
 static void acdPromptDirlist (AcdPAcd thys);
 static void acdPromptFeat (AcdPAcd thys);
 static void acdPromptFeatout (AcdPAcd thys);
+static void acdPromptFilelist (AcdPAcd thys);
 static void acdPromptGraph (AcdPAcd thys);
 static void acdPromptReport (AcdPAcd thys);
 static void acdPromptScop (AcdPAcd thys);
@@ -438,6 +439,7 @@ static void acdHelpValidCodon (AcdPAcd thys, AjPStr* str);
 static void acdHelpValidDirlist (AcdPAcd thys, AjPStr* str);
 static void acdHelpValidData  (AcdPAcd thys, AjPStr* str);
 static void acdHelpValidFeatout (AcdPAcd thys, AjPStr* str);
+static void acdHelpValidFilelist (AcdPAcd thys, AjPStr* str);
 static void acdHelpValidFloat (AcdPAcd thys, AjPStr* str);
 static void acdHelpValidGraph (AcdPAcd thys, AjPStr* str);
 static void acdHelpValidIn (AcdPAcd thys, AjPStr* str);
@@ -457,6 +459,7 @@ static void acdHelpExpectCodon (AcdPAcd thys, AjPStr* str);
 static void acdHelpExpectDirlist (AcdPAcd thys, AjPStr* str);
 static void acdHelpExpectData (AcdPAcd thys, AjPStr* str);
 static void acdHelpExpectFeatout (AcdPAcd thys, AjPStr* str);
+static void acdHelpExpectFilelist (AcdPAcd thys, AjPStr* str);
 static void acdHelpExpectFloat (AcdPAcd thys, AjPStr* str);
 static void acdHelpExpectGraph (AcdPAcd thys, AjPStr* str);
 static void acdHelpExpectIn (AcdPAcd thys, AjPStr* str);
@@ -488,6 +491,7 @@ static void acdSetDatafile (AcdPAcd thys);
 static void acdSetDirectory (AcdPAcd thys);
 static void acdSetFeat (AcdPAcd thys);
 static void acdSetFeatout (AcdPAcd thys);
+static void acdSetFilelist (AcdPAcd thys);
 static void acdSetFloat (AcdPAcd thys);
 static void acdSetGraph (AcdPAcd thys);
 static void acdSetGraphxy (AcdPAcd thys);
@@ -627,6 +631,9 @@ AcdOAttr acdAttrFeat[] = { {"name", VT_STR},
 
 AcdOAttr acdAttrFeatout[] = { {"name", VT_STR},
 			      {"extension", VT_STR},
+			      {NULL, VT_NULL} };
+
+AcdOAttr acdAttrFilelist[] = { {"nullok", VT_BOOL},
 			      {NULL, VT_NULL} };
 
 AcdOAttr acdAttrFloat[] = { {"minimum", VT_FLOAT},
@@ -1028,6 +1035,8 @@ AcdOType acdType[] =
    acdQualFeat,      "Readable feature table" },
   {"featout",     acdAttrFeatout,   acdSetFeatout,
    acdQualFeatout,   "Writeable feature table" },
+  {"filelist",	  acdAttrFilelist,     acdSetFilelist,
+   NULL,             "Comma-separated file list" },
   {"float",       acdAttrFloat,     acdSetFloat,
    NULL,             "Floating point number" },
   {"graph",       acdAttrGraph,     acdSetGraph,
@@ -1091,31 +1100,32 @@ typedef struct AcdSValid
 
 AcdOValid acdValid[] =
 {
-  {"sequence",  acdHelpValidSeq,     acdHelpExpectSeq},
-  {"seqset",    acdHelpValidSeq,     acdHelpExpectSeq},
-  {"seqall",    acdHelpValidSeq,     acdHelpExpectSeq},
-  {"seqout",    acdHelpValidSeqout,  acdHelpExpectSeqout},
-  {"seqoutset", acdHelpValidSeqout,  acdHelpExpectSeqout},
-  {"seqoutall", acdHelpValidSeqout,  acdHelpExpectSeqout},
-  {"outfile",   acdHelpValidOut,     acdHelpExpectOut},
-  {"infile",    acdHelpValidIn,      acdHelpExpectIn},
-  {"datafile",  acdHelpValidData,    acdHelpExpectData},
-  {"codon",     acdHelpValidCodon,   acdHelpExpectCodon},
-  {"dirlist",   acdHelpValidDirlist, acdHelpExpectDirlist},
-  {"list",      acdHelpValidList,    NULL},
-  {"cpdb",      acdHelpValidCpdb,    acdHelpExpectCpdb},
-  {"scop",      acdHelpValidScop,    acdHelpExpectScop},
-  {"select",    acdHelpValidSelect,  NULL},
-  {"graph",     acdHelpValidGraph,   acdHelpExpectGraph},
-  {"xygraph",   acdHelpValidGraph,   acdHelpExpectGraph},
-  {"regexp",    acdHelpValidRegexp,  acdHelpExpectRegexp},
-  {"string",    acdHelpValidString,  acdHelpExpectString},
-  {"integer",   acdHelpValidInt,     acdHelpExpectInt},
-  {"float",     acdHelpValidFloat,   acdHelpExpectFloat},
-  {"matrix",    acdHelpValidMatrix,  acdHelpExpectMatrix},
-  {"matrixf",   acdHelpValidMatrix,  acdHelpExpectMatrix},
-  {"range",     acdHelpValidRange,   acdHelpExpectRange},
-  {"featout",   acdHelpValidFeatout, acdHelpExpectFeatout},
+  {"sequence",  acdHelpValidSeq,      acdHelpExpectSeq},
+  {"seqset",    acdHelpValidSeq,      acdHelpExpectSeq},
+  {"seqall",    acdHelpValidSeq,      acdHelpExpectSeq},
+  {"seqout",    acdHelpValidSeqout,   acdHelpExpectSeqout},
+  {"seqoutset", acdHelpValidSeqout,   acdHelpExpectSeqout},
+  {"seqoutall", acdHelpValidSeqout,   acdHelpExpectSeqout},
+  {"outfile",   acdHelpValidOut,      acdHelpExpectOut},
+  {"infile",    acdHelpValidIn,       acdHelpExpectIn},
+  {"datafile",  acdHelpValidData,     acdHelpExpectData},
+  {"codon",     acdHelpValidCodon,    acdHelpExpectCodon},
+  {"dirlist",   acdHelpValidDirlist,  acdHelpExpectDirlist},
+  {"filelist",  acdHelpValidFilelist, acdHelpExpectFilelist},
+  {"list",      acdHelpValidList,     NULL},
+  {"cpdb",      acdHelpValidCpdb,     acdHelpExpectCpdb},
+  {"scop",      acdHelpValidScop,     acdHelpExpectScop},
+  {"select",    acdHelpValidSelect,   NULL},
+  {"graph",     acdHelpValidGraph,    acdHelpExpectGraph},
+  {"xygraph",   acdHelpValidGraph,    acdHelpExpectGraph},
+  {"regexp",    acdHelpValidRegexp,   acdHelpExpectRegexp},
+  {"string",    acdHelpValidString,   acdHelpExpectString},
+  {"integer",   acdHelpValidInt,      acdHelpExpectInt},
+  {"float",     acdHelpValidFloat,    acdHelpExpectFloat},
+  {"matrix",    acdHelpValidMatrix,   acdHelpExpectMatrix},
+  {"matrixf",   acdHelpValidMatrix,   acdHelpExpectMatrix},
+  {"range",     acdHelpValidRange,    acdHelpExpectRange},
+  {"featout",   acdHelpValidFeatout,  acdHelpExpectFeatout},
   {NULL,        NULL}
 };
 
@@ -4161,6 +4171,91 @@ static void acdSetFeatout (AcdPAcd thys)
 
     return;
 }
+
+
+
+/* @func ajAcdGetFilelist *****************************************************
+**
+** Returns a list of files given a comma-separated list.
+** Called by the application after all ACD values have been set,
+** and simply returns what the ACD item already has.
+**
+** @param [r] token [char*] Text token name
+** @return [AjPList] List of files.
+** @cre failure to find an item with the right name and type aborts.
+** @@
+******************************************************************************/
+
+AjPList ajAcdGetFilelist (char *token)
+{
+    return acdGetValue (token, "filelist");
+}
+
+
+/* @funcstatic acdSetFilelist ************************************************
+**
+** Using the definition in the ACD file, and any values for the
+** item or its associated qualifiers provided on the command line,
+** prompts the user if necessary (and possible) and
+** sets the actual value for an ACD directory item.
+**
+** Understands all attributes and associated qualifiers for this item type.
+**
+** The default value is "." the current directory.
+**
+** @param [u] thys [AcdPAcd] ACD item.
+** @return [void]
+** @@
+******************************************************************************/
+
+static void acdSetFilelist (AcdPAcd thys)
+{
+    AjPList val;
+    AjBool required = ajFalse;
+    AjBool ok = ajFalse;
+    static AjPStr defreply = NULL;
+    static AjPStr reply = NULL;
+    ajint itry;
+    AjBool nullok=ajFalse;
+    
+    val = NULL;
+
+    (void) acdAttrToBool (thys, "nullok", ajFalse, &nullok);
+    acdLog ("nullok: %B\n", nullok);
+
+    required = acdIsRequired(thys);
+    (void) acdReplyInit (thys, "", &defreply);
+    acdPromptFilelist(thys);
+    
+    for (itry=acdPromptTry; itry && !ok; itry--)
+    {
+	ok = ajTrue;		/* accept the default if nothing changes */
+
+	(void) ajStrAssS (&reply, defreply);
+
+	if (required)
+	    (void) acdUserGet (thys, &reply);
+
+	if (!ajStrLen(reply))
+	{
+	    if (!nullok)
+	    {
+		acdBadVal (thys, required, "File list is required");
+		ok = ajFalse;
+	    }
+	}
+    }
+    if (!ok)
+	acdBadRetry (thys);
+
+    val = ajFileFileList(reply);
+
+    thys->Value = val;
+    (void) ajStrAssS (&thys->ValStr, reply);
+
+    return;
+}
+
 
 /* @func ajAcdGetFloat ********************************************************
 **
@@ -7766,6 +7861,20 @@ static void acdHelpValidDirlist (AcdPAcd thys, AjPStr* str) {
   return;
 }
 
+/* @funcstatic acdHelpValidFilelist *******************************************
+**
+** Generates valid description for a filelist type.
+**
+** @param [r] thys [AcdPAcd] ACD object
+** @param [r] str [AjPStr*] Help text (if any) generated
+** @return [void]
+** @@
+******************************************************************************/
+
+static void acdHelpValidFilelist (AcdPAcd thys, AjPStr* str) {
+  return;
+}
+
 /* @funcstatic acdHelpValidMatrix *********************************************
 **
 ** Generates valid description for a comparison matrix type.
@@ -8262,6 +8371,23 @@ static void acdHelpExpectDirlist (AcdPAcd thys, AjPStr* str) {
   if (ajStrLen(*str)) return;
 
   ajStrAssC (str, DEFDLIST);
+
+  return;
+}
+
+/* @funcstatic acdHelpExpectFilelist ******************************************
+**
+** Generates expected value description for a filelist type.
+**
+** @param [r] thys [AcdPAcd] ACD object
+** @param [r] str [AjPStr*] Help text (if any) generated
+** @return [void]
+** @@
+******************************************************************************/
+
+static void acdHelpExpectFilelist (AcdPAcd thys, AjPStr* str) {
+
+  ajStrAssC (str, "<i>comma-separated file list</i>");
 
   return;
 }
@@ -12116,6 +12242,30 @@ static void acdPromptDirlist (AcdPAcd thys) {
   (void) ajFmtPrintS (prompt, "Directory with files");
   return;
 }
+
+/* @funcstatic acdPromptFilelist *********************************************
+**
+** Sets the default prompt for this ACD object to be a filelist
+**
+** @param [r] thys [AcdPAcd] Current ACD object.
+** @return [void]
+** @@
+******************************************************************************/
+
+static void acdPromptFilelist (AcdPAcd thys) {
+  AjPStr* prompt;
+
+  if (!thys->DefStr)
+    return;
+
+  prompt = &thys->DefStr[DEF_PROMPT];
+  if (ajStrLen(*prompt))
+    return;
+
+  (void) ajFmtPrintS (prompt, "Comma-separated file list");
+  return;
+}
+
 
 /* @funcstatic acdPromptFeat **************************************************
 **

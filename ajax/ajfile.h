@@ -150,6 +150,7 @@ AjBool      ajFileDirUp (AjPStr* dir);
 AjBool      ajFileDirPath (AjPStr* dir);
 AjBool      ajFileDirTrim (AjPStr* name);
 void        ajFileExit (void);
+AjPList     ajFileFileList(AjPStr files);
 FILE*       ajFileFp (const AjPFile thys);
 AjBool      ajFileGetwd (AjPStr* dir);
 AjPStr      ajFileGetName (const AjPFile thys);

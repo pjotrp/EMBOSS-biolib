@@ -29,6 +29,8 @@
 #include <unistd.h>
 #include <limits.h>
 
+#define FILERECURSLV 20
+
 static ajint fileBuffSize = 2048;
 
 static ajint fileHandle = 0;
@@ -39,6 +41,7 @@ static ajint fileOpenTot = 0;
 
 static void fileClose (const AjPFile thys);
 static DIR* fileOpenDir (AjPStr *dir);
+static void fileListRecurs(AjPStr file, AjPList list, ajint *recurs);
 
 /* ==================================================================== */
 /* ========================= constructors ============================= */
@@ -3738,4 +3741,120 @@ ajint ajFileBuffStripSrs(AjPFileBuff thys)
 */
 
     return ajTrue;
+}
+
+
+/* @funcstatic fileListRecurs  ********************************************
+**
+** Add a filename, expanded wildcard filenames and list file contents to
+** a list
+**
+** @param [r] file [AjPStr] filename, wildfilename or listfilename
+** @param [w] list [AjPList] result filename list
+** @param [rw] recurs [ajint *] recursion level counter
+**
+** @return [void]
+** @@
+******************************************************************************/
+
+static void fileListRecurs(AjPStr file, AjPList list, ajint *recurs)
+{
+    char c;
+    AjPStr ptr=NULL;
+    AjPStr dir=NULL;
+    char   *p;
+    AjPList dlist;
+    AjPFile inf;
+    AjPStr  line=NULL;
+
+
+    ++(*recurs);
+    if(*recurs > FILERECURSLV)
+	ajFatal("Filelist maximum recursion level reached");
+    
+    ajStrChomp(&file);
+    c = *ajStrStr(file);
+
+    dir   = ajStrNew();
+    line  = ajStrNew();
+    dlist = ajListNew();
+    
+    
+    if(ajStrIsWild(file))
+    {
+	if(!(p=strrchr(ajStrStr(file),(int)'/')))
+	    ajStrAssC(&dir,"./");
+	else
+	    ajStrAssSubC(&dir,ajStrStr(file),0,p-ajStrStr(file));
+	ajFileScan(dir,file,&dlist,ajFalse,ajFalse,NULL,NULL,ajFalse,NULL);
+	while(ajListPop(dlist,(void **)&ptr))
+	{
+	    if(ajStrPrefixC(ptr,"./"))
+		ajStrTrim(&ptr,2);
+	    ajListPushApp(list,(void *)ptr);
+	}
+    }
+    else if(c=='@')
+    {
+	if((inf=ajFileNewInC(ajStrStr(file)+1)))
+	    while(ajFileReadLine(inf,&line))
+		fileListRecurs(line,list,recurs);
+	if(inf)
+	    ajFileClose(&inf);
+    }
+    else
+    {
+	ptr = ajStrNewC(ajStrStr(file));
+	ajListPushApp(list,(void *)ptr);
+    }
+    
+
+    ajListDel(&dlist);
+    ajStrDel(&dir);
+    ajStrDel(&line);
+
+    --(*recurs);
+
+    return;
+}
+
+
+
+/* @func ajFileFileList  ********************************************
+**
+** Return a list of files that match a comma-separated string of
+** filenames which can include wildcards or listfiles 
+**
+** @param [r] files [AjPStr] comma-separated filename list
+**
+** @return [AjPList] or NULL if no files were specified
+** @@
+******************************************************************************/
+
+AjPList ajFileFileList(AjPStr files)
+{
+    AjPStr *fstr = NULL;
+    ajint  ncl;
+    ajint  i;
+    ajint  rlevel=0;
+    AjPList list;
+
+    list = ajListNew();
+
+    ncl = ajArrCommaList(files,&fstr);
+    for(i=0;i<ncl;++i)
+    {
+	fileListRecurs(fstr[i],list,&rlevel);
+	ajStrDel(&fstr[i]);
+    }
+
+    AJFREE(fstr);
+    
+    if(!ajListLength(list))
+    {
+	ajListDel(&list);
+	return NULL;
+    }
+
+    return list;
 }
