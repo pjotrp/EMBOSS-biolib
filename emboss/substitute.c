@@ -6,8 +6,8 @@
 **
 **
 ** @author: Copyright (C) Damian Counsell
-** @version $Revision: 1.11 $
-** @modified $Date: 2004/11/17 18:03:14 $
+** @version $Revision: 1.12 $
+** @modified $Date: 2004/11/19 17:59:18 $
 ** @@
 **
 ** This program is free software; you can redistribute it and/or
@@ -25,13 +25,23 @@
 ** Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******************************************************************************/
 
+/*
+ * note that the template sequence always comes first
+ * in gold standard alignment pairs, but always comes
+ * second in my programs
+ */
+
 enum constant
     {
-	enumDebugLevel       = 0,
+	enumDebugLevel       = 2,
 	enumTemplateSeqIndex = 0,
 	enumQuerySeqIndex    = 1,
 	enumPair             = 2
     };
+
+/* name spacer and gap characters */
+const char cHyphen = '-';
+const char cDot = '.';
 
 #include "emboss.h"
 #include <math.h>
@@ -44,16 +54,19 @@ enum constant
 **
 ******************************************************************************/
 
+static AjBool is_a_gap(char cTraceElement);
+
+
 int main(int argc , char **argv)
 {
     /* sequence objects and strings */
-    const AjPSeq ajpSeqTraceAcross = NULL; /* template sequence---has structure */
     const AjPSeq ajpSeqTraceDown   = NULL; /* query sequence---no structure     */
+    const AjPSeq ajpSeqTraceAcross = NULL; /* template sequence---has structure */
     AjPStr ajpStrSeqFileName       = NULL; /* name of file containing input seq */
     AjPSeq ajpSeqSubstituted       = NULL; /* rewritable template seq           */
     AjPSeqset ajpSeqsetPair        = NULL; /* current pair of sequences         */
-    char *pcTraceAcross            = NULL; /* C string of template sequence     */
     char *pcTraceDown              = NULL; /* C string of query sequence        */
+    char *pcTraceAcross            = NULL; /* C string of template sequence     */
     char *pcSubstitutedSeq         = NULL;
     AjPSeqout ajpSeqoutSubstituted = NULL; /* substituted output seq object     */
 
@@ -68,7 +81,22 @@ int main(int argc , char **argv)
     ajint ajIntAcrossTraceLen;
 
     /* alignment parameters */
-    AjPStr ajpStrSubstitutedSeq     = NULL; /* substituted seq string           */
+    AjPStr ajpStrSubstitutedSeq = NULL; /* substituted seq string           */
+
+    /* variables for constructing sequence name */
+    AjPStr ajpStrTempQuerySeqName     = NULL;
+    AjPStr ajpStrQuerySeqName         = NULL;
+    AjIStr ajpStrIterQuerySeqName    = NULL;
+    char cQuerySeqName                = '\0';
+    AjBool ajBoolQueryNameRead        = AJFALSE;
+    
+    AjPStr ajpStrTempTemplateSeqName  = NULL;
+    AjPStr ajpStrTemplateSeqName      = NULL;
+    AjIStr ajpStrIterTemplateSeqName = NULL;
+    char cTemplateSeqName             = '\0';
+    AjBool ajBoolTemplateNameRead     = AJFALSE;
+
+    AjPStr ajpStrJoinOutfileName      = NULL;
 
     embInit("substitute", argc, argv);
 
@@ -87,8 +115,80 @@ int main(int argc , char **argv)
     ajpSeqTraceDown = ajSeqsetGetSeq(ajpSeqsetPair,
 				     enumQuerySeqIndex);
 
-    /* read name of file containing seqset into string object */
-    ajpStrSeqFileName = ajStrNewS(ajpSeqsetPair->Filename);
+    /* get name from sequence properties */
+    ajpStrTempQuerySeqName = ajStrNewS(ajpSeqTraceDown->Name);
+
+    /* iterate over the characters in the name */
+    ajpStrIterQuerySeqName = ajStrIter(ajpStrTempQuerySeqName);
+
+    ajBoolQueryNameRead = AJFALSE;	    
+    while(!ajStrIterDone(ajpStrIterQuerySeqName) &&
+	  !ajBoolQueryNameRead)
+    {
+	/* read in current character */
+	cQuerySeqName = ajStrIterGetK(ajpStrIterQuerySeqName);
+	ajStrIterNext(ajpStrIterQuerySeqName);
+	/*
+	 * if there is a dot in the sequence name, truncate 
+	 * the name there and append the first character
+	 * after the dot to this leading string
+	 */
+	if(cQuerySeqName == cDot)
+	{
+	    ajBoolQueryNameRead = AJTRUE;
+	    cQuerySeqName = ajStrIterGetK(ajpStrIterQuerySeqName);
+	    /* 
+	     * if the next character is not a number
+	     * append a zero otherwise keep same digit
+	     */
+	    if(!isdigit(cQuerySeqName))
+		cQuerySeqName = '0';
+	}
+	/* if there is no dot, use the whole sequence name */
+	ajStrAppK(&ajpStrQuerySeqName, cQuerySeqName);
+    }
+
+    /* get name from sequence properties */
+    ajpStrTempTemplateSeqName = ajStrNewS(ajpSeqTraceAcross->Name);
+    /* iterate over the characters in the name */
+    ajpStrIterTemplateSeqName = ajStrIter(ajpStrTempTemplateSeqName);
+    ajBoolTemplateNameRead = AJFALSE;	    
+    while(!ajStrIterDone(ajpStrIterTemplateSeqName) &&
+	  !ajBoolTemplateNameRead)
+    {
+	/* read in current character */
+	cTemplateSeqName = ajStrIterGetK(ajpStrIterTemplateSeqName);
+	ajStrIterNext(ajpStrIterTemplateSeqName);
+	/*
+	 * if there is a dot in the sequence name, truncate 
+	 * the name there and append the first character
+	 * after the dot to this leading string
+	 */
+	if(cTemplateSeqName == cDot)
+	{
+	    ajBoolTemplateNameRead = AJTRUE;
+	    cTemplateSeqName = ajStrIterGetK(ajpStrIterTemplateSeqName);
+	    /* 
+	     * if the next character is not a number
+	     * append a zero otherwise keep same digit
+	     */
+	    if(!isdigit(cTemplateSeqName))
+		cTemplateSeqName = '0';
+	}
+	/* if there is no dot, use the whole sequence name */
+	ajStrAppK(&ajpStrTemplateSeqName, cTemplateSeqName);
+    }
+
+    /* delimiter between halves of sequence filename */
+    ajpStrJoinOutfileName = ajStrNewC("_");    
+    /*
+     * note that the template sequence always comes first
+     * in gold standard alignment pairs, but always comes
+     * second in my programs
+     */
+    ajStrCopy(&ajpStrSeqFileName, ajpStrTemplateSeqName);
+    ajStrApp(&ajpStrSeqFileName, ajpStrJoinOutfileName);
+    ajStrApp(&ajpStrSeqFileName, ajpStrQuerySeqName);
     ajFileNameShorten(&ajpStrSeqFileName);
     ajFileNameTrim(&ajpStrSeqFileName);
 
@@ -127,16 +227,15 @@ int main(int argc , char **argv)
 	/* discard gaps in template trace */
 	if(isalpha(cTempTraceAcross))
 	{
-	    /* default to keeping current residue */
+	    /* default to keeping current template residue */
 	    cTempSubstitutedSeq = pcTraceAcross[ajIntTraceCount];
-	    /* discard gaps in query trace */
-
-	    if(isalpha(cTempTraceDown))
+	    /* but substitute corresponding matches or gaps from query trace */
+	    if(isalpha(cTempTraceDown) || is_a_gap(cTempTraceDown))
 	    {
-		/* but substitute matches into output sequence */
 		cTempSubstitutedSeq = pcTraceDown[ajIntTraceCount];
 	    }
-	    /* read either original or matched character into output */
+	    
+	    /* read substituted symbol into output */
 	    pcSubstitutedSeq[ajIntSubstitutedSeqCount] = cTempSubstitutedSeq;
 	    ajIntSubstitutedSeqCount++;
 	}
@@ -192,4 +291,18 @@ int main(int argc , char **argv)
 
     /* exit properly (main() was declared as an int) */
     return 0;
+}
+
+
+
+static AjBool is_a_gap(char cTraceElement)
+{
+    AjBool ajBoolIsAGap = AJFALSE;
+
+    if ((cTraceElement == cHyphen) || (cTraceElement == cDot))
+    {
+	ajBoolIsAGap = AJTRUE;
+    }
+
+    return ajBoolIsAGap;
 }
