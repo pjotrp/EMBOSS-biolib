@@ -26,12 +26,17 @@ section: required [
     default: "V"
     minimum: "1"
     maximum: "1"
-    values: "F:fungi,I:insect,P:plant,V:vertebrate,O:other"
+    values: "F:fungi,I:insect,P:plant,V:vertebrate,O:other,C:Custom"
     delimiter: ","
     codedelimiter: ":"
     header: "Transcription Factor Class"
     information: "Select class"
     button: "Y"
+  ]
+
+  string: custom  [
+    standard: "@($(menu)==C)"
+    information: "Name of data file"
   ]
 
   integer: mismatch  [

@@ -98,6 +98,9 @@ int main(int argc, char **argv)
 	ajStrAssC(&pname,"tfplant");
     else if(*p=='V')
 	ajStrAssC(&pname,"tfvertebrate");
+    else if(*p=='C')
+	pname = ajAcdGetString("custom");
+
     ajFileDataNew(pname,&inf);
     if(!inf)
 	ajFatal("Either EMBOSS_DATA undefined or TFEXTRACT needs running");
