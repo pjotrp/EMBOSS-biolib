@@ -21,7 +21,7 @@ infile: sigin  [
 
 seqall: database  [
   parameter: "Y"
-  information: "Name of swissprot sequence database to search"
+  type: "protein"
 ]
 
 endsection: input

@@ -3,7 +3,7 @@ appl: newcoils [
   groups: "Protein:2D Structure"
 ]
 
-section: input [ info: "input Section" type: page ]
+section: input [ info: "Input section" type: page ]
 seqall: sequence  [
   parameter: "Y"
   type: "PureProtein"
@@ -63,9 +63,11 @@ datafile: datafile  [
 
 endsection: input
 
-section: output [ info: "output Section" type: page ]
+section: output [ info: "Output section" type: page ]
+
 outfile: outfile  [
   parameter: "Y"
+  knowntype: "newcoils output"
 ]
 
 endsection: output
