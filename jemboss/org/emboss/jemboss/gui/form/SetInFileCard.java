@@ -152,11 +152,9 @@ public class SetInFileCard
       bdown[k] =  Box.createVerticalBox();
 
     fileChoose = new FileChooser(bdown[0],name);
-    cutnPaste = new CutNPasteTextArea(bdown[1],"Sequence Cut and Paste");
 
 //sequence attibute options
     final JButton boption = new JButton("Input Sequence Options");
-    final JButton bopt = new JButton("Input Sequence Options");
     fileChoose.setSize(boption.getPreferredSize());
     fileChoose.setForeground(labelColor);
 
@@ -170,8 +168,14 @@ public class SetInFileCard
     {
       public void run () 
       {
+//input attributes
         inSeqAttr[h] = new InputSequenceAttributes(db,fileChoose);
         final JScrollPane rscroll = inSeqAttr[h].getJScrollPane();
+
+//cut 'n paste
+        cutnPaste = new CutNPasteTextArea(bdown[1],"Sequence Cut and Paste");
+ 
+//buttons for input attributes
         boption.addActionListener(new ActionListener()
         {
           public void actionPerformed(ActionEvent e)
@@ -182,6 +186,7 @@ public class SetInFileCard
           }
         });
 
+        JButton bopt = new JButton("Input Sequence Options");
         bopt.addActionListener(new ActionListener()
         {
           public void actionPerformed(ActionEvent e)
@@ -192,14 +197,14 @@ public class SetInFileCard
           }
         });
 
+        Box bleft= new Box(BoxLayout.X_AXIS);
+        bleft.add(bopt);
+        bleft.add(Box.createHorizontalGlue());
+        bdown[1].add(bleft);
+
       }
     };
     SwingUtilities.invokeLater(constructInSeqAttr);
-
-    bxleft= new Box(BoxLayout.X_AXIS);
-    bxleft.add(bopt);
-    bxleft.add(Box.createHorizontalGlue());
-    bdown[1].add(bxleft);
 
     pfile.add(bdown[0], "File");
     pfile.add(bdown[1], "Paste");
