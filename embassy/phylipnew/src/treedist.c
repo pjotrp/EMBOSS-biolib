@@ -14,7 +14,7 @@ extern long tree_pairing;
 
 /* The following extern's refer to things declared in cons.c */
 
-typedef enum {SYMMETRIC, BSD } distance_type;
+typedef enum {PHYLIPSYMMETRIC, PHYLIPBSD } distance_type;
 
 boolean bsd_possible;
 distance_type  dtype;
@@ -372,7 +372,7 @@ void print_matrix_heading(long tree, long maxtree)
   } else fprintf(outfile, "\n\n      ");
       
   for ( i = tree ;  i <= maxtree ; i++ ) {
-    if ( dtype == SYMMETRIC ) 
+    if ( dtype == PHYLIPSYMMETRIC ) 
       fprintf(outfile, "%5ld ", i);
     else 
       fprintf(outfile, "    %7ld ", i);
@@ -383,7 +383,7 @@ void print_matrix_heading(long tree, long maxtree)
   else
     fprintf(outfile, "      \\");
   for ( i = tree ;  i <= maxtree ; i++ ) {
-    if ( dtype == SYMMETRIC )
+    if ( dtype == PHYLIPSYMMETRIC )
       fprintf(outfile, "------");
     else fprintf(outfile, "------------");
   }
@@ -501,14 +501,14 @@ void tree_diff(group_type **tree1, group_type **tree2, double *lengths1,
   double diffd;
 
   switch (dtype) {
-    case SYMMETRIC:
+    case PHYLIPSYMMETRIC:
       diffl = symetric_diff (tree1, tree2, ntree1, ntree2,
                               patternsz1, patternsz2);
       diffl += symetric_diff (tree2, tree1, ntree1, ntree2,
                                patternsz2, patternsz1);
       output_long_distance(diffl, ntree1, ntree2, trees_in_1, trees_in_2);
       break;
-    case BSD:
+    case PHYLIPBSD:
       diffd = bsd_tree_diff(tree1, tree2, ntree1, ntree2,
                              lengths1, lengths2, patternsz1, patternsz2);
       output_double_distance(diffd, ntree1, ntree2, trees_in_1, trees_in_2);
@@ -519,7 +519,7 @@ void tree_diff(group_type **tree1, group_type **tree2, double *lengths1,
 
 int get_num_columns(void) 
 {
-  if ( dtype == SYMMETRIC )
+  if ( dtype == PHYLIPSYMMETRIC )
     return 10;
   else return 7;
 } /* get_num_columns */
@@ -710,7 +710,7 @@ void print_header(long trees_in_1, long trees_in_2)
 
       if (output_scheme == VERBOSE) {
         fprintf(outfile, "\nTree distance program, version %s\n\n", VERSION);
-        if (dtype == BSD)
+        if (dtype == PHYLIPBSD)
           fprintf (outfile, 
               "Branch score distances between adjacent pairs of trees:\n\n");
         else
@@ -726,7 +726,7 @@ void print_header(long trees_in_1, long trees_in_2)
 
       if (output_scheme == VERBOSE) {
         fprintf(outfile, "\nTree distance program, version %s\n\n", VERSION);
-        if (dtype == BSD)
+        if (dtype == PHYLIPBSD)
           fprintf (outfile, 
         "Branch score distances between all pairs of trees in tree file\n\n");
         else
@@ -735,7 +735,7 @@ void print_header(long trees_in_1, long trees_in_2)
       }
       else if (output_scheme == FULL_MATRIX) {
         fprintf(outfile, "\nTree distance program, version %s\n\n", VERSION);
-        if (dtype == BSD)
+        if (dtype == PHYLIPBSD)
           fprintf (outfile, 
         "Branch score distances between all pairs of trees in tree file:\n\n");
         else
@@ -748,7 +748,7 @@ void print_header(long trees_in_1, long trees_in_2)
 
       if (output_scheme == VERBOSE) {
         fprintf(outfile, "\nTree distance program, version %s\n\n", VERSION);
-      if (dtype == BSD) {
+      if (dtype == PHYLIPBSD) {
           fprintf (outfile, 
             "Branch score distances between corresponding pairs of trees\n");
           fprintf (outfile, "   from first and second tree files:\n\n");
@@ -767,7 +767,7 @@ void print_header(long trees_in_1, long trees_in_2)
     case (ALL_IN_1_AND_2) :
       if ( output_scheme == VERBOSE) {
         fprintf(outfile, "\nTree distance program, version %s\n\n", VERSION);
-        if (dtype == BSD) {
+        if (dtype == PHYLIPBSD) {
           fprintf (outfile, 
             "Branch score distances between all pairs of trees\n");
           fprintf (outfile, "   from first and second tree files:\n\n");
@@ -938,7 +938,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
   AjPStr tree_p = NULL;
   AjPStr style = NULL;
 
-  dtype          = BSD;
+  dtype          = PHYLIPBSD;
   tree_pairing   = ADJACENT_PAIRS;
   output_scheme  = VERBOSE;
   ibmpc          = IBMCRT;
@@ -990,8 +990,8 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
 
     disttype = ajAcdGetListI("dtype", 1);
 
-    if(ajStrMatchC(disttype, "s")) dtype = SYMMETRIC;
-    else dtype = BSD;
+    if(ajStrMatchC(disttype, "s")) dtype = PHYLIPSYMMETRIC;
+    else dtype = PHYLIPBSD;
 
     noroot = !ajAcdGetBool("noroot");
 
