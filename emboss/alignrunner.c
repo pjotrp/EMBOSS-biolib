@@ -4,8 +4,8 @@
 **  writes the resulting alignments into a new directory
 **
 ** @author: Copyright (C) Damian Counsell
-** @version $Revision: 1.7 $
-** @modified $Date: 2004/11/18 18:51:02 $
+** @version $Revision: 1.8 $
+** @modified $Date: 2004/11/19 17:58:47 $
 ** @@
 **
 ** This program is free software; you can redistribute it and/or
@@ -80,17 +80,17 @@ int main( int argc , char **argv )
     AjPStr ajpStrFirstCommandLine     = NULL; /* command line given to alignment program       */
     AjPStr ajpStrSecondCommandLine    = NULL; /* command line given to alignment program       */
     
-    AjPStr ajpStrTempQuerySeqName;
-    AjPStr ajpStrQuerySeqName;
-    AjIStr ajpStrIterQuerySeqName;
-    char cQuerySeqName;
-    AjBool ajBoolQueryNameRead = AJFALSE;
+    AjPStr ajpStrTempQuerySeqName     = NULL;
+    AjPStr ajpStrQuerySeqName         = NULL;
+    AjIStr ajpStrIterQuerySeqName     = NULL;
+    char cQuerySeqName                = '\0';
+    AjBool ajBoolQueryNameRead        = AJFALSE;
     
-    AjPStr ajpStrTempTemplateSeqName;
-    AjIStr ajpStrIterTemplateSeqName;
-    AjPStr ajpStrTemplateSeqName;
-    char cTemplateSeqName;
-    AjBool ajBoolTemplateNameRead = AJFALSE;
+    AjPStr ajpStrTempTemplateSeqName  = NULL;
+    AjPStr ajpStrTemplateSeqName      = NULL;
+    AjIStr ajpStrIterTemplateSeqName  = NULL;
+    char cTemplateSeqName             = '\0';
+    AjBool ajBoolTemplateNameRead     = AJFALSE;
     
     char cDot = '.';
 
@@ -122,8 +122,6 @@ int main( int argc , char **argv )
     ajpSeqinUnalignedPair = ajSeqinNew();
     /* new seqset to store input unaligned sequences */
     ajpSeqsetUnalignedPair = ajSeqsetNew();
-    /* new string for alignment command and options to it */
-    ajpStrJoinOutfileName = ajStrNewC("_");
 
     ajpSeqQuery = ajSeqNew();    
     ajpSeqTemplate = ajSeqNew();
@@ -222,6 +220,9 @@ int main( int argc , char **argv )
 		/* if there is no dot, use the whole sequence name */
 		ajStrAppK(&ajpStrTemplateSeqName, cTemplateSeqName);
 	    }
+
+	    /* delimiter between halves of sequence filename */
+	    ajpStrJoinOutfileName = ajStrNewC("_");
 
 	    ajStrCopy(&ajpStrRootOutfileName, ajpStrQuerySeqName);
 	    ajStrApp(&ajpStrRootOutfileName, ajpStrJoinOutfileName);
