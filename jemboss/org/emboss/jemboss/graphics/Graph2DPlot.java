@@ -53,6 +53,11 @@ public class Graph2DPlot extends ScrollPanel
   private float ymin = 0;
   private float ymax = 0;
   
+  private float xmin_screen = 0;
+  private float xmax_screen = 0;
+  private float ymin_screen = 0;
+  private float ymax_screen = 0;
+
   private StringBuffer graph_data;
   private Color graph_colour = Color.black;
   private TextFieldFloat graph_line;
@@ -85,7 +90,7 @@ public class Graph2DPlot extends ScrollPanel
   // draw rectangle around graph
   private boolean rectangle = false;
 
-  private boolean calculate_min_max = true;
+  private boolean screen_min_max = false;
   private Image offscreen = null;
 
   private String maintitle = "";
@@ -137,8 +142,7 @@ public class Graph2DPlot extends ScrollPanel
     }
     catch(FileNotFoundException fnne){}
     catch(IOException ioe){}
-    if(calculate_min_max)
-      calcMinMax();
+    calcMinMax();
   }
 
   /**
@@ -155,8 +159,7 @@ public class Graph2DPlot extends ScrollPanel
     }
     catch(FileNotFoundException fnne){}
     catch(IOException ioe){}  
-    if(calculate_min_max)
-      calcMinMax();
+     calcMinMax();
   }
 
   /**
@@ -608,7 +611,7 @@ public class Graph2DPlot extends ScrollPanel
       else
       {
         if(isTick(emboss_data[1][i], emboss_data[2][i],
-                  emboss_data[3][i], emboss_data[4][i]))
+                  emboss_data[3][i], emboss_data[4][i],false))
           continue;
 
         x = emboss_data[1][i];
@@ -636,6 +639,22 @@ public class Graph2DPlot extends ScrollPanel
       if(ymax < y)
         ymax = y;
     }
+ 
+    if(screen_min_max)
+    {
+      if(xmin > xmax)
+      {
+        xmin = xmin_screen;
+        xmax = xmax_screen;
+      }
+
+      if(ymin > ymax)
+      {
+        ymin = ymin_screen;
+        ymax = ymax_screen;
+      }
+    }
+
 
 //  System.out.println("xmin "+xmin);
 //  System.out.println("xmax "+xmax);
@@ -1048,8 +1067,8 @@ public class Graph2DPlot extends ScrollPanel
     float x2;
     float y2;
 
-    float xendPoint = (float)(xend.getValue()-xstart.getValue())*xfactor;
-    float yendPoint = (float)(yend.getValue()-ystart.getValue())*yfactor;
+    float xendPoint =  (float)(xend.getValue()-xstart.getValue())*xfactor;
+    float yendPoint = -(float)(yend.getValue()-ystart.getValue())*yfactor;
 
     g2d.translate(xborder, getHeight()-yborder);
     for(int i=1; i<xnum; i++)
@@ -1058,9 +1077,7 @@ public class Graph2DPlot extends ScrollPanel
       y2 = -(emboss_data[1][i] - (float)ystart.getValue())*yfactor;
 
       if( x1 >= 0 && x2 >= 0 &&
-          x1 <= xendPoint && x2 <= xendPoint &&
-          y1 <= 0 && y2 <= 0 &&
-          y1 >= -yendPoint && y2 >= -yendPoint )
+          y1 <= 0 && y2 <= 0 )
         g.drawLine((int)x1,(int)y1,(int)x2,(int)y2);   
 
       x1 = x2;
@@ -1104,14 +1121,14 @@ public class Graph2DPlot extends ScrollPanel
         StringTokenizer tok = new StringTokenizer(line," ");
         tok.nextToken();
         tok.nextToken();
-        xmin = Float.parseFloat(tok.nextToken());
+        xmin_screen = Float.parseFloat(tok.nextToken());
         tok.nextToken();
-        ymin = Float.parseFloat(tok.nextToken());
+        ymin_screen = Float.parseFloat(tok.nextToken());
         tok.nextToken();
-        xmax = Float.parseFloat(tok.nextToken());
+        xmax_screen = Float.parseFloat(tok.nextToken());
         tok.nextToken();
-        ymax = Float.parseFloat(tok.nextToken());
-        calculate_min_max = false;
+        ymax_screen = Float.parseFloat(tok.nextToken());
+        screen_min_max = true;
       }
       else if(line.startsWith("Rectangle"))
         rectangle = true;
@@ -1147,7 +1164,7 @@ public class Graph2DPlot extends ScrollPanel
         in.mark(100);
         if((line = in.readLine()) != null )
         {
-          if(!isTick(line))
+          if(!isTick(line,false))
             in.reset();      
           else
             continue;
@@ -1210,7 +1227,7 @@ public class Graph2DPlot extends ScrollPanel
   * Determine if this looks like a tick line.
   *
   */
-  private boolean isTick(String line)
+  private boolean isTick(String line, boolean checkBounds)
   {
     StringTokenizer tok = new StringTokenizer(line," ");
     String type = tok.nextToken();
@@ -1227,7 +1244,7 @@ public class Graph2DPlot extends ScrollPanel
     tok.nextToken();
     float y2 = Float.parseFloat(tok.nextToken());
 
-    return isTick(x1,y1,x2,y2);
+    return isTick(x1,y1,x2,y2,checkBounds);
   }
 
   /**
@@ -1235,13 +1252,40 @@ public class Graph2DPlot extends ScrollPanel
   * Determine if this looks like a tick line.
   *
   */
-  private boolean isTick(float x1,float y1,float x2,float y2)
+  private boolean isTick(float x1,float y1,float x2,float y2,
+                         boolean checkBounds)
   {
-    if( (x1 == x2 || y1 == y2) )
-      return true;
+    if(x1 == x2 || y1 == y2)
+    {
+      if(checkBounds) // check this is out of the graph boundary
+      {
+        if(isOutOfXBounds(x1) || isOutOfXBounds(x2) ||
+           isOutOfYBounds(y1) || isOutOfYBounds(y2) ) 
+          return true;
+      }
+      else
+        return true;
+
+    }
 
     return false;
   }
+
+  private boolean isOutOfXBounds(float x)
+  {
+    if( x < xmin || x > xmax)
+      return true;
+    return false;
+  }
+
+
+  private boolean isOutOfYBounds(float y)
+  {
+    if( y < ymin || y > ymax)
+      return true;
+    return false;
+  }
+
 
   public static void main(String arg[])
   {
