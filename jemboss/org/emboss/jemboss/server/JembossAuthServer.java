@@ -720,13 +720,13 @@ public class JembossAuthServer
     {
 
 // COMMENT THIS LINE TO USE QUEUEING SOFTWARE
-//    boolean lforkB = aj.forkBatch(userName,passwd,environ,
-//                                  embossCommand,project);
+      boolean lforkB = aj.forkBatch(userName,passwd,environ,
+                                    embossCommand,project);
 
 // UNCOMMENT THIS LINE TO USE QUEUEING SOFTWARE
 //    runAsBatch(aj,userName,passwd,project,quoteMe(embossCommand));
 //    runAsGNQSBatch(aj,userName,passwd,project,quoteMe(embossCommand));
-      runAsPBSBatch(aj,userName,passwd,project,quoteMe(embossCommand));
+//    runAsPBSBatch(aj,userName,passwd,project,quoteMe(embossCommand));
       result.add("msg");
       result.add("");
       result.add("job_submitted");
