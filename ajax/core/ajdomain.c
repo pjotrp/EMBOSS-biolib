@@ -2553,13 +2553,20 @@ AjPScop ajScopReadCNew(AjPFile inf, const char *entry)
 	return NULL;
     
     
-    while(ok && !ajStrPrefixC(line,"//"))
+    while(ok && (!ajStrPrefixC(line,"//")))
     {
 	if(ajStrPrefixC(line,"XX"))
 	{
 	    ok = ajFileReadLine(inf,&line);
 	    continue;
 	}
+	/* Empty line */
+	if(!(MAJSTRLEN(line)))
+	{
+	    ok = ajFileReadLine(inf,&line);
+	    continue;
+	}
+   
 	ajRegExec(exp1,line);
 	ajRegPost(exp1,&str);
 
@@ -2574,7 +2581,7 @@ AjPScop ajScopReadCNew(AjPFile inf, const char *entry)
 	else if(ajStrPrefixC(line,"FO"))
 	{
 	    ajStrAssS(&fold,str);
-	    while(ajFileReadLine(inf,&line))
+	    while((ok=ajFileReadLine(inf,&line)))
 	    {
 		if(ajStrPrefixC(line,"XX"))
 		    break;
@@ -2585,7 +2592,7 @@ AjPScop ajScopReadCNew(AjPFile inf, const char *entry)
 	else if(ajStrPrefixC(line,"SF"))
 	{
 	    ajStrAssS(&super,str);
-	    while(ajFileReadLine(inf,&line))
+	    while((ok=ajFileReadLine(inf,&line)))
 	    {
 		if(ajStrPrefixC(line,"XX"))
 		    break;
@@ -2596,7 +2603,7 @@ AjPScop ajScopReadCNew(AjPFile inf, const char *entry)
 	else if(ajStrPrefixC(line,"FA"))
 	{
 	    ajStrAssS(&family,str);
-	    while(ajFileReadLine(inf,&line))
+	    while((ok=ajFileReadLine(inf,&line)))
 	    {
 		if(ajStrPrefixC(line,"XX"))
 		    break;
@@ -2607,7 +2614,7 @@ AjPScop ajScopReadCNew(AjPFile inf, const char *entry)
 	else if(ajStrPrefixC(line,"DO"))
 	{
 	    ajStrAssS(&domain,str);
-	    while(ajFileReadLine(inf,&line))
+	    while((ok=ajFileReadLine(inf,&line)))
 	    {
 		if(ajStrPrefixC(line,"XX"))
 		    break;
