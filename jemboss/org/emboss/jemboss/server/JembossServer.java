@@ -1,5 +1,5 @@
 /****************************************************************
-* 
+*    
 *  This program is free software; you can redistribute it and/or
 *  modify it under the terms of the GNU General Public License
 *  as published by the Free Software Foundation; either version 2
@@ -39,6 +39,7 @@ public class JembossServer
 
   private String fs = new String(System.getProperty("file.separator"));
   private String ps = new String(System.getProperty("path.separator"));
+  private String ls = new String(System.getProperty("line.separator"));
 
 //get paths to EMBOSS
   JembossParams jp = new JembossParams();
@@ -54,7 +55,8 @@ public class JembossServer
   private String tmproot = new String("/tmp/SOAP/emboss/" + username );
   private File tmprootDir = new File(tmproot);
 
-  private String[] envp = {
+  private String[] envp = 
+  {
     "PATH=" + embossPath + ps + embossBin,
     "PLPLOT_LIB=" + plplot,
     "EMBOSS_DATA=" + embossData,
@@ -227,6 +229,7 @@ public class JembossServer
     File tf = null;
 
     Vector vans = new Vector();
+
     // create temporary file
     if( ((fileContent.indexOf(":") < 0) || 
          (fileContent.indexOf("\n") > 0) ) &&
@@ -252,11 +255,12 @@ public class JembossServer
     }
     else
     {
-      fn = fileContent;     //db entry or local file name
+      fn = fileContent;     //looks like db entry or local file name
     }
 
     boolean ok = false;
     Ajax aj = null;
+
     if( ((new File(fn)).exists()) ||    //call ajax if sequence file
          (fn.indexOf(":") > 0) )        //or db
     {
@@ -359,7 +363,7 @@ public class JembossServer
   public Vector run_prog(String embossCommand, String options, Hashtable inFiles)
   {
 
-    System.out.println("Running runProg now.... " + tmproot);
+    System.out.println("Running runProg now.... " + tmproot + " OPTIONS " + options);
     Enumeration enum = inFiles.keys();
     String appl   = embossCommand.substring(0,embossCommand.indexOf(" "));
     String rest   = embossCommand.substring(embossCommand.indexOf(" "));
@@ -390,12 +394,13 @@ public class JembossServer
 
 //create description file
     File desc = new File(new String(project + fs + ".desc"));
+
     try
     {
-      PrintWriter dout = new PrintWriter(new FileWriter(desc));  
-      dout.println("EMBOSS run details\n\n");
-      dout.println("Application: " + appl + "\n" + rest);
-      dout.println("Started at " + dat + "\n\nInput files:");
+      PrintWriter dout = new PrintWriter(new FileWriter(desc));
+      dout.println("EMBOSS run details" + ls + ls);
+      dout.println("Application: " + appl + ls + rest);
+      dout.println("Started at " + dat + ls + ls + "Input files:");
   
       while (enum.hasMoreElements())
       {
@@ -415,24 +420,39 @@ public class JembossServer
           msg = new String("Error making description file");
         }
       }
+      
       dout.close();
     }
     catch (IOException ioe) {} 
  
     RunEmbossApplication rea = new RunEmbossApplication(embossCommand,envp,new File(project));
     
+//create finished file
+    File finished = new File(new String(project + fs + ".finished"));
+    try
+    {
+      PrintWriter fout = new PrintWriter(new FileWriter(finished));
+      fout.println((new Date()).toString());
+      fout.close();
+    }
+    catch (IOException ioe) {}
+
     result.add("cmd");
     result.add(appl + " " + rest);
     result.add("msg");
     result.add(msg);
     result.add("status");
     result.add("0");
-    if(rea.isProcessStdout())
+
+    if(options.toLowerCase().indexOf("interactive") > -1)
     {
-      result.add("stdout");
-      result.add(rea.getProcessStdout());
+      if(rea.isProcessStdout())
+      {
+        result.add("stdout");
+        result.add(rea.getProcessStdout());
+      }
     }
-    System.out.println("JEMBOSSSERVER running " + appl);
+    System.out.println("JEMBOSSSERVER running " + embossCommand);
     
 //get the output files
     result = loadFilesContent(projectDir,project,result);
