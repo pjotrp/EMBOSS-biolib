@@ -1708,9 +1708,9 @@ AjBool ajSeqTypeIsProt(const AjPStr type_name)
 	switch(seqType[itype].Type)
 	{
 	case ISNUC:
-	    return ajFalse; break;
+	    return ajFalse;
 	default:
-	    return ajTrue; break;
+	    return ajTrue;
 	}
 
     return ajFalse;
@@ -1736,9 +1736,9 @@ AjBool ajSeqTypeIsNuc(const AjPStr type_name)
 	switch(seqType[itype].Type)
 	{
 	case ISPROT:
-	    return ajFalse; break;
+	    return ajFalse;
 	default:
-	    return ajTrue; break;
+	    return ajTrue;
 	}
 
     return ajFalse;
@@ -1764,11 +1764,11 @@ AjBool ajSeqTypeIsAny(const AjPStr type_name)
 	switch(seqType[itype].Type)
 	{
 	case ISNUC:
-	    return ajFalse; break;
+	    return ajFalse;
 	case ISPROT:
-	    return ajFalse; break;
+	    return ajFalse;
 	default:
-	    return ajTrue; break;
+	    return ajTrue;
 	}
 
     return ajFalse;

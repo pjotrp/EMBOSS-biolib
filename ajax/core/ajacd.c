@@ -15238,40 +15238,39 @@ static AjBool acdValIsBool(const char* arg)
 	if(!arg[1])
 	    return ajTrue;
 	return ajStrMatchCaseCC(arg, "no");
-	break;
 
     case 'y':
     case 'Y':
 	if(!arg[1])
 	    return ajTrue;
 	return ajStrMatchCaseCC(arg, "yes");
-	break;
+
 
     case 't':
     case 'T':
 	if(!arg[1])
 	    return ajTrue;
 	return ajStrMatchCaseCC(arg, "true");
-	break;
+
 
     case 'f':
     case 'F':
 	if(!arg[1])
 	    return ajTrue;
 	return ajStrMatchCaseCC(arg, "false");
-	break;
+
 
     case '0':
 	if(!arg[1])
 	    return ajTrue;
 	return ajStrMatchCaseCC(arg, "0");
-	break;
+
 
     case '1':
 	if(!arg[1])
 	    return ajTrue;
 	return ajStrMatchCaseCC(arg, "1");
-	break;
+
 
     default:
 	break;
