@@ -13,44 +13,48 @@ appl:funky
 
 section: input [ info: "input Section" type: page ]
 string: prot  [
+  parameter: Y
   information: "Location of protein coordinate files for input (embl-like format)"
   default: "./"
-  gui: "yes"
-  batch: "yes"
-  cpu: "high"
 ]
 
 
 string: protextn  [
+  parameter: Y
   information: "Extension of protein coordinate files (embl-like format)"
   default: ".pxyz"
 ]
 
 
 string: dom  [
+  parameter: Y
   information: "Location of domain coordinate files for input (embl-like format)"
   default: "./"
 ]
 
 
 string: domextn  [
+  parameter: Y
   information: "Extension of domain coordinate files (embl-like format)"
   default: ".pxyz"
 ]
 
 infile: dic  [
+  required: Y
   prompt: "Name of dictionary of heterogen groups"
   default: "Ehet.dat"
 ]
 
 
 infile: scop  [
+  required: Y
   prompt: "Name of scop file for input (embl-like format)"
   default: "Escop.dat"
 ]
 
 
 infile: vdwf  [
+  required: Y
   prompt: "Name of data file with van der Waals radii"
   default: "Evdw.dat"
 ]
