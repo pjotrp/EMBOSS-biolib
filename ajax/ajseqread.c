@@ -48,6 +48,10 @@ typedef struct SeqSInFormat
 {
     char *Name;
     AjBool Try;
+    AjBool Protein;
+    AjBool Nucleotide;
+    AjBool Feature;
+    AjBool Gap;
     AjBool Multiset;
     AjBool (*Read) (AjPSeq thys, AjPSeqin seqin);
 } SeqOInFormat;
@@ -247,56 +251,101 @@ static void       seqUsaSave(SeqPListUsa node, const AjPSeqin seqin);
 ******************************************************************************/
 
 static SeqOInFormat seqInFormatDef[] = { /* AJFALSE = ignore (duplicates) */
-  {"unknown",    AJFALSE, AJFALSE, seqReadText},	/* alias for text */
-  {"gcg",        AJTRUE,  AJFALSE, seqReadGcg}, /* do first, headers mislead */
-  {"gcg8",       AJFALSE, AJFALSE, seqReadGcg}, /* alias for gcg (8.x too) */
-  {"embl",       AJTRUE,  AJFALSE, seqReadEmbl},
-  {"em",         AJFALSE, AJFALSE, seqReadEmbl},	/* alias for embl */
-  {"swiss",      AJTRUE,  AJFALSE, seqReadSwiss},
-  {"sw",         AJFALSE, AJFALSE, seqReadSwiss}, /* alias for swiss */
-  {"swissprot",  AJTRUE,  AJFALSE, seqReadSwiss},
-  {"nbrf",       AJTRUE,  AJFALSE, seqReadNbrf},	/* test before NCBI */
-  {"pir",        AJFALSE, AJFALSE, seqReadNbrf},	/* alias for nbrf */
-  {"fasta",      AJTRUE,  AJFALSE, seqReadNcbi}, /* alias for ncbi,
+  {"unknown",    AJFALSE, AJTRUE,  AJTRUE,
+       AJFALSE, AJTRUE, AJFALSE, seqReadText},	/* alias for text */
+  {"gcg",        AJTRUE, AJTRUE,  AJTRUE,
+       AJFALSE, AJTRUE,  AJFALSE, seqReadGcg}, /* do first, headers mislead */
+  {"gcg8",       AJFALSE, AJTRUE,  AJTRUE,
+       AJFALSE, AJTRUE, AJFALSE, seqReadGcg}, /* alias for gcg (8.x too) */
+  {"embl",       AJTRUE, AJTRUE,  AJTRUE,
+       AJFALSE, AJTRUE, AJFALSE, seqReadEmbl},
+  {"em",         AJFALSE, AJTRUE,  AJTRUE,
+       AJFALSE, AJTRUE, AJFALSE, seqReadEmbl},	/* alias for embl */
+  {"swiss",      AJTRUE, AJTRUE,  AJTRUE,
+       AJFALSE, AJTRUE, AJFALSE, seqReadSwiss},
+  {"sw",         AJFALSE, AJTRUE,  AJTRUE,
+       AJFALSE, AJTRUE, AJFALSE, seqReadSwiss}, /* alias for swiss */
+  {"swissprot",  AJTRUE, AJTRUE,  AJTRUE,
+       AJFALSE, AJTRUE, AJFALSE, seqReadSwiss},
+  {"nbrf",       AJTRUE, AJTRUE,  AJTRUE,
+       AJFALSE, AJTRUE, AJFALSE, seqReadNbrf},	/* test before NCBI */
+  {"pir",        AJFALSE, AJTRUE,  AJTRUE,
+       AJFALSE, AJTRUE, AJFALSE, seqReadNbrf},	/* alias for nbrf */
+  {"fasta",      AJTRUE, AJTRUE,  AJTRUE,
+       AJFALSE, AJTRUE, AJFALSE, seqReadNcbi}, /* alias for ncbi,
 						    preferred name */
-  {"ncbi",       AJFALSE, AJFALSE, seqReadNcbi}, /* test before pearson */
-  {"pearson",    AJTRUE,  AJFALSE, seqReadFasta}, /* plain fasta - off by
+  {"ncbi",       AJFALSE, AJTRUE,  AJTRUE,
+       AJFALSE, AJTRUE, AJFALSE, seqReadNcbi}, /* test before pearson */
+  {"pearson",    AJTRUE, AJTRUE,  AJTRUE,
+       AJFALSE, AJTRUE, AJFALSE, seqReadFasta}, /* plain fasta - off by
 						 default, can read bad files */
-  {"genbank",    AJTRUE,  AJFALSE, seqReadGenbank},
-  {"gb",         AJFALSE, AJFALSE, seqReadGenbank}, /* alias for genbank */
-  {"ddbj",       AJFALSE, AJFALSE, seqReadGenbank}, /* alias for genbank */
-  {"codata",     AJTRUE,  AJFALSE, seqReadCodata},
-  {"strider",    AJTRUE,  AJFALSE, seqReadStrider},
-  {"clustal",    AJTRUE,  AJFALSE, seqReadClustal},
-  {"aln",        AJFALSE, AJFALSE, seqReadClustal}, /* alias for clustal */
-  {"phylip",     AJTRUE,  AJTRUE,  seqReadPhylip},
-  {"acedb",      AJTRUE,  AJFALSE, seqReadAcedb},
-  {"dbid",       AJFALSE, AJFALSE, seqReadDbId},    /* odd fasta with id as
+  {"genbank",    AJTRUE, AJTRUE,  AJTRUE,
+       AJFALSE, AJTRUE, AJFALSE, seqReadGenbank},
+  {"gb",         AJFALSE, AJTRUE,  AJTRUE,
+       AJFALSE, AJTRUE, AJFALSE, seqReadGenbank}, /* alias for genbank */
+  {"ddbj",       AJFALSE, AJTRUE,  AJTRUE,
+       AJFALSE, AJTRUE, AJFALSE, seqReadGenbank}, /* alias for genbank */
+  {"codata",     AJTRUE, AJTRUE,  AJTRUE,
+       AJFALSE, AJTRUE, AJFALSE, seqReadCodata},
+  {"strider",    AJTRUE, AJTRUE,  AJTRUE,
+       AJFALSE, AJTRUE, AJFALSE, seqReadStrider},
+  {"clustal",    AJTRUE, AJTRUE,  AJTRUE,
+       AJFALSE, AJTRUE, AJFALSE, seqReadClustal},
+  {"aln",        AJFALSE, AJTRUE,  AJTRUE,
+       AJFALSE, AJTRUE, AJFALSE, seqReadClustal}, /* alias for clustal */
+  {"phylip",     AJTRUE, AJTRUE,  AJTRUE,
+       AJFALSE, AJTRUE, AJTRUE,  seqReadPhylip},
+  {"acedb",      AJTRUE, AJTRUE,  AJTRUE,
+       AJFALSE, AJTRUE, AJFALSE, seqReadAcedb},
+  {"dbid",       AJFALSE, AJTRUE,  AJTRUE,
+       AJFALSE, AJTRUE, AJFALSE, seqReadDbId},    /* odd fasta with id as
 						       second token */
-  {"msf",        AJTRUE,  AJFALSE, seqReadMsf},
-  {"hennig86",   AJTRUE,  AJFALSE, seqReadHennig86},
-  {"jackknifer", AJTRUE,  AJFALSE, seqReadJackknifer},
-  {"jackknifernon", AJTRUE, AJFALSE, seqReadJackknifernon},
-  {"nexus",      AJTRUE,  AJFALSE, seqReadNexus},
-  {"nexusnon",   AJTRUE,  AJFALSE, seqReadNexusnon},
-  {"paup",       AJFALSE, AJFALSE, seqReadNexus}, /* alias for nexus */
-  {"paupnon",    AJFALSE, AJFALSE, seqReadNexusnon}, /* alias for nexusnon */
-  {"treecon",    AJTRUE,  AJFALSE, seqReadTreecon},
-  {"mega",       AJTRUE,  AJFALSE, seqReadMega},
-  {"meganon",    AJTRUE,  AJFALSE, seqReadMeganon},
-  {"ig",         AJFALSE, AJFALSE, seqReadIg}, /* can read almost anything */
-  {"experiment", AJFALSE, AJFALSE, seqReadStaden}, /* reads almost anything */
-  {"staden",     AJFALSE, AJFALSE, seqReadStaden}, /* alias for experiment */
-  {"text",       AJFALSE, AJFALSE, seqReadText}, /* can read almost anything */
-  {"plain",      AJFALSE, AJFALSE, seqReadText},	/* alias for text */
-  {"abi",        AJTRUE,  AJFALSE, seqReadAbi},
-  {"gff",        AJTRUE,  AJFALSE, seqReadGff},
-  {"selex",      AJTRUE,  AJFALSE, seqReadSelex},
-  {"stockholm",  AJTRUE,  AJFALSE, seqReadStockholm},
-  {"pfam",       AJTRUE,  AJFALSE, seqReadStockholm},
-  {"raw",        AJTRUE,  AJFALSE, seqReadRaw}, /* OK - only sequence chars
+  {"msf",        AJTRUE, AJTRUE,  AJTRUE,
+       AJFALSE, AJTRUE, AJFALSE, seqReadMsf},
+  {"hennig86",   AJTRUE, AJTRUE,  AJTRUE,
+       AJFALSE, AJTRUE, AJFALSE, seqReadHennig86},
+  {"jackknifer", AJTRUE, AJTRUE,  AJTRUE,
+       AJFALSE, AJTRUE, AJFALSE, seqReadJackknifer},
+  {"jackknifernon", AJTRUE, AJTRUE,  AJTRUE,
+       AJFALSE, AJTRUE, AJFALSE, seqReadJackknifernon},
+  {"nexus",      AJTRUE, AJTRUE,  AJTRUE,
+       AJFALSE, AJTRUE, AJFALSE, seqReadNexus},
+  {"nexusnon",   AJTRUE, AJTRUE,  AJTRUE,
+       AJFALSE, AJTRUE, AJFALSE, seqReadNexusnon},
+  {"paup",       AJFALSE, AJTRUE,  AJTRUE,
+       AJFALSE, AJTRUE, AJFALSE, seqReadNexus}, /* alias for nexus */
+  {"paupnon",    AJFALSE, AJTRUE,  AJTRUE,
+       AJFALSE, AJTRUE, AJFALSE, seqReadNexusnon}, /* alias for nexusnon */
+  {"treecon",    AJTRUE, AJTRUE,  AJTRUE,
+       AJFALSE, AJTRUE, AJFALSE, seqReadTreecon},
+  {"mega",       AJTRUE, AJTRUE,  AJTRUE,
+       AJFALSE, AJTRUE, AJFALSE, seqReadMega},
+  {"meganon",    AJTRUE, AJTRUE,  AJTRUE,
+       AJFALSE, AJTRUE, AJFALSE, seqReadMeganon},
+  {"ig",         AJFALSE, AJTRUE,  AJTRUE,
+       AJFALSE, AJTRUE, AJFALSE, seqReadIg}, /* can read almost anything */
+  {"experiment", AJFALSE, AJTRUE,  AJTRUE,
+       AJFALSE, AJTRUE, AJFALSE, seqReadStaden}, /* reads almost anything */
+  {"staden",     AJFALSE, AJTRUE,  AJTRUE,
+       AJFALSE, AJTRUE, AJFALSE, seqReadStaden}, /* alias for experiment */
+  {"text",       AJFALSE, AJTRUE,  AJTRUE,
+       AJFALSE, AJTRUE, AJFALSE, seqReadText}, /* can read almost anything */
+  {"plain",      AJFALSE, AJTRUE,  AJTRUE,
+       AJFALSE, AJTRUE, AJFALSE, seqReadText},	/* alias for text */
+  {"abi",        AJTRUE, AJTRUE,  AJTRUE,
+       AJFALSE, AJTRUE, AJFALSE, seqReadAbi},
+  {"gff",        AJTRUE, AJTRUE,  AJTRUE,
+       AJFALSE, AJTRUE, AJFALSE, seqReadGff},
+  {"selex",      AJTRUE, AJTRUE,  AJTRUE,
+       AJFALSE, AJTRUE, AJFALSE, seqReadSelex},
+  {"stockholm",  AJTRUE, AJTRUE,  AJTRUE,
+       AJFALSE, AJTRUE, AJFALSE, seqReadStockholm},
+  {"pfam",       AJTRUE, AJTRUE,  AJTRUE,
+       AJFALSE, AJTRUE, AJFALSE, seqReadStockholm},
+  {"raw",        AJTRUE, AJTRUE,  AJTRUE,
+       AJFALSE, AJTRUE, AJFALSE, seqReadRaw}, /* OK - only sequence chars
 						allowed - but off by default*/
-  {NULL, 0, 0, NULL}
+  {NULL, 0, 0, 0, 0, 0, 0, NULL}
 };
 
 
@@ -642,8 +691,18 @@ AjBool ajSeqAllRead(AjPSeq thys, AjPSeqin seqin)
 
     if(ret)			/* clone any specified DB or entryname */
     {
-	ajStrSet(&thys->Db, seqin->Db);
-	ajStrSet(&thys->Entryname, seqin->Entryname);
+	if (ajStrLen(seqin->Db))
+	{
+	    ajDebug("++ajSeqallread set db: '%S' => '%S'\n",
+		    seqin->Db, thys->Db);
+	    ajStrAssS(&thys->Db, seqin->Db);
+	}
+	if (ajStrLen(seqin->Entryname))
+	{
+	    ajDebug("++ajSeqallread set entryname: '%S' => '%S'\n",
+		    seqin->Entryname, thys->Entryname);
+	    ajStrAssS(&thys->Entryname, seqin->Entryname);
+	}
 
 	if(!ajStrLen(thys->Type)) /* make sure the type is set */
 	    ajSeqType(thys);
@@ -1021,7 +1080,7 @@ AjBool ajSeqRead(AjPSeq thys, AjPSeqin seqin)
 	    thys->Entryname, seqin->Entryname);
     ajStrSet(&thys->Db, seqin->Db);
     ajStrSet(&thys->Entryname, seqin->Entryname);
-    ajStrSet(&thys->Name, thys->Entryname);
+    /*ajStrSet(&thys->Name, thys->Entryname); */
     ajDebug("ajSeqRead: thys->Name '%S'\n",
 	    thys->Name);
 
@@ -1477,6 +1536,9 @@ static AjBool seqRead(AjPSeq thys, AjPSeqin seqin)
 
     /*    AjPFileBuff buff = seqin->Filebuff; unused */
 
+    ajSeqClear(thys);
+    ajDebug("seqRead: cleared\n");
+
     if(seqin->Single && seqin->Count)
     {
 	/*
@@ -1501,8 +1563,6 @@ static AjBool seqRead(AjPSeq thys, AjPSeqin seqin)
 
     ajDebug("seqRead: seqin format %d '%S'\n", seqin->Format,
 	    seqin->Formatstr);
-    ajSeqClear(thys);
-    ajDebug("seqRead: cleared\n");
 
     seqin->Count++;
 
@@ -5492,14 +5552,24 @@ void ajSeqPrintInFormat(const AjPFile outf, AjBool full)
 
     ajFmtPrintF(outf, "\n");
     ajFmtPrintF(outf, "# sequence input formats\n");
-    ajFmtPrintF(outf, "# Name         Try (test for unknown input)"
-		" files)\n");
+    ajFmtPrintF(outf, "# Name  Format name (or alias)\n");
+    ajFmtPrintF(outf, "# Try   Test for unknown input files\n");
+    ajFmtPrintF(outf, "# Pro   Can read protein input\n");
+    ajFmtPrintF(outf, "# Nuc   Can read nucleotide input\n");
+    ajFmtPrintF(outf, "# Feat  Can read feature annotation\n");
+    ajFmtPrintF(outf, "# Gap   Can read gap characters\n");
+    ajFmtPrintF(outf, "# Name         Try  Pro  Nuc Feat  Gap MSet\n");
     ajFmtPrintF(outf, "\n");
     ajFmtPrintF(outf, "InFormat {\n");
     for(i=0; seqInFormatDef[i].Name; i++)
 	if(full || seqInFormatDef[i].Try)
-	    ajFmtPrintF(outf, "  %-12s %B\n", seqInFormatDef[i].Name,
-			seqInFormatDef[i].Try);
+	    ajFmtPrintF(outf, "  %-12s %3B  %3B  %3B  %3B  %3B\n",
+			seqInFormatDef[i].Name,
+			seqInFormatDef[i].Protein,
+			seqInFormatDef[i].Nucleotide,
+			seqInFormatDef[i].Feature,
+			seqInFormatDef[i].Gap,
+			seqInFormatDef[i].Multiset);
 
     ajFmtPrintF(outf, "}\n\n");
 
@@ -6107,9 +6177,11 @@ static AjBool seqUsaProcess(AjPSeq thys, AjPSeqin seqin)
 	ajDebug("list found @%S fmt:%B range:%B\n",
 		qrylist, fmtstat, rangestat);
 	if(seqin->Count && fmtstat)
-	    ajWarn("List includes another list and format. Results undefined\n");
+	    ajWarn("List includes another list and format. "
+		   "Results undefined\n");
 	if(seqin->Count && rangestat)
-	    ajWarn("List includes another list with range. Results undefined\n");
+	    ajWarn("List includes another list with range. "
+		   "Results undefined\n");
 	return seqListProcess(thys, seqin, qrylist);
     }
 
