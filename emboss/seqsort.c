@@ -1371,3 +1371,10 @@ static AjBool seqsort_WriteOutputFile(AjPFile fptr, AjPList famlist, AjPList sup
 
     return ajTrue;
 }
+
+
+void seqsort_unused()
+{
+  seqsort_SwissparseHitSort(NULL,NULL,NULL,0,NULL,NULL);
+  return;
+}
