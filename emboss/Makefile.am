@@ -14,7 +14,7 @@ endif
 check_PROGRAMS = ajtest \
 complex corbatest \
 demoalign demofeatures demolist demoreport demosequence demostring demotable \
-entrails funky histogramtest intconv \
+entrails histogramtest intconv \
 patmattest \
 prima primers \
 seqinfo seqretsingle \
@@ -102,7 +102,6 @@ embossdata_SOURCES = embossdata.c
 emma_SOURCES = emma.c
 emowse_SOURCES = emowse.c
 entrails_SOURCES = entrails.c
-funky_SOURCES = funky.c
 entret_SOURCES = entret.c
 equicktandem_SOURCES = equicktandem.c
 est2genome_SOURCES = est2genome.c
