@@ -7017,9 +7017,10 @@ static AjBool seqUsaProcess(AjPSeq thys, AjPSeqin seqin)
 			return ajFalse;
 		    }
 
-		    /* treat Gi as another Sv, so no new query field */
 		    if(ajStrMatchCaseC(qry->Field, "sv"))
 			ajStrAssS(&qry->Sv, qry->QryString);
+		    else if(ajStrMatchCaseC(qry->Field, "gi"))
+			ajStrAssS(&qry->Gi, qry->QryString);
 		    else if(ajStrMatchCaseC(qry->Field, "des"))
 			ajStrAssS(&qry->Des, qry->QryString);
 		    else if(ajStrMatchCaseC(qry->Field, "org"))
@@ -7118,11 +7119,10 @@ static AjBool seqUsaProcess(AjPSeq thys, AjPSeqin seqin)
 			    ajStrAssS(&qry->Id, qry->QryString);
 			else if(ajStrMatchCaseC(qry->Field, "acc"))
 			    ajStrAssS(&qry->Acc, qry->QryString);
-
-			/* treat Gi as another Sv, so no new query field */
-
 			else if(ajStrMatchCaseC(qry->Field, "sv"))
 			    ajStrAssS(&qry->Sv, qry->QryString);
+			else if(ajStrMatchCaseC(qry->Field, "gi"))
+			    ajStrAssS(&qry->Gi, qry->QryString);
 			else if(ajStrMatchCaseC(qry->Field, "des"))
 			    ajStrAssS(&qry->Des, qry->QryString);
 			else if(ajStrMatchCaseC(qry->Field, "org"))
@@ -7685,6 +7685,7 @@ AjPSeqQuery ajSeqQueryNew(void)
     pthis->Id     = ajStrNew();
     pthis->Acc    = ajStrNew();
     pthis->Sv     = ajStrNew();
+    pthis->Gi     = ajStrNew();
     pthis->Des    = ajStrNew();
     pthis->Org    = ajStrNew();
     pthis->Key    = ajStrNew();
@@ -7748,6 +7749,7 @@ void ajSeqQueryDel(AjPSeqQuery* pthis)
     ajStrDel(&thys->Key);
     ajStrDel(&thys->Org);
     ajStrDel(&thys->Sv);
+    ajStrDel(&thys->Gi);
     ajStrDel(&thys->Method);
     ajStrDel(&thys->Formatstr);
     ajStrDel(&thys->IndexDir);
@@ -7822,6 +7824,7 @@ void ajSeqQueryClear(AjPSeqQuery thys)
     ajStrClear(&thys->Id);
     ajStrClear(&thys->Acc);
     ajStrClear(&thys->Sv);
+    ajStrClear(&thys->Gi);
     ajStrClear(&thys->Des);
     ajStrClear(&thys->Org);
     ajStrClear(&thys->Key);
@@ -7879,9 +7882,9 @@ static AjBool seqQueryMatch(const AjPSeqQuery thys, const AjPSeq seq)
     AjPStr taxstr;			/* from list, do not delete */
     AjBool ok = ajFalse;
 
-    ajDebug("seqQueryMatch '%S' id '%S' acc '%S' Sv '%S' Des '%S'"
+    ajDebug("seqQueryMatch '%S' id '%S' acc '%S' Sv '%S' Gi '%S' Des '%S'"
 	    " Key '%S' Org '%S'\n",
-	    seq->Name, thys->Id, thys->Acc, thys->Sv,
+	    seq->Name, thys->Id, thys->Acc, thys->Sv, thys->Gi,
 	    thys->Des, thys->Key, thys->Org);
 
     if(!thys)			   /* no query to test, that's fine */
@@ -7902,7 +7905,7 @@ static AjBool seqQueryMatch(const AjPSeqQuery thys, const AjPSeq seq)
 	ok = ajFalse;
     }
 
-    if(ajStrLen(thys->Sv))		/* test Sv and Gi */
+    if(ajStrLen(thys->Sv) || ajStrLen(thys->Gi)) /* test Sv and Gi */
     {
 	if(ajStrMatchWild(seq->Sv, thys->Sv))
 	    return ajTrue;
@@ -8019,7 +8022,8 @@ static AjBool seqQueryMatch(const AjPSeqQuery thys, const AjPSeq seq)
 /* @func ajSeqQueryWild *******************************************************
 **
 ** Tests whether a query includes wild cards in any element,
-** of can return more than one entry.
+** or can return more than one entry (keyword and some other search terms
+** will find multiple entries)
 **
 ** @param [r] qry [const AjPSeqQuery] Query object.
 ** @return [AjBool] ajTrue if query had wild cards.
@@ -8033,9 +8037,9 @@ AjBool ajSeqQueryWild(const AjPSeqQuery qry)
     if(!qrywildexp)
 	seqQryWildComp();
 
-    ajDebug("ajSeqQueryWild id '%S' acc '%S' sv '%S' des '%S'"
+    ajDebug("ajSeqQueryWild id '%S' acc '%S' sv '%S' gi '%S' des '%S'"
 	    " org '%S' key '%S'\n",
-	    qry->Id, qry->Acc, qry->Sv, qry->Des, qry->Org, qry->Key);
+	    qry->Id, qry->Acc, qry->Sv, qry->Gi, qry->Des, qry->Org, qry->Key);
 
     if(ajRegExec(qrywildexp, qry->Id))
     {
@@ -8061,6 +8065,15 @@ AjBool ajSeqQueryWild(const AjPSeqQuery qry)
     {
 	ajDebug("wild (has) query Sv '%S'\n", qry->Sv);
 	return ajTrue;
+    }
+
+    if(ajStrLen(qry->Gi))
+    {
+	if(!ajStrIsNum(qry->Gi))
+	{
+	    ajDebug("wild (has) query Gi '%S'\n", qry->Gi);
+	    return ajTrue;
+	}
     }
 
     if(ajStrLen(qry->Des))
@@ -8121,6 +8134,12 @@ void ajSeqQueryStarclear(AjPSeqQuery qry)
 	ajStrClear(&qry->Sv);
     }
 
+    if(ajStrMatchC(qry->Gi, "*"))
+    {
+	ajDebug("ajSeqQueryStarclear clear Gi '%S'\n", qry->Gi);
+	ajStrClear(&qry->Gi);
+    }
+
     if(ajStrMatchC(qry->Des, "*"))
     {
 	ajDebug("ajSeqQueryStarclear clear Des '%S'\n", qry->Des);
@@ -8165,6 +8184,8 @@ AjBool ajSeqQueryIs(const AjPSeqQuery qry)
     if(ajStrLen(qry->Acc))
 	return ajTrue;
     if(ajStrLen(qry->Sv))
+	return ajTrue;
+    if(ajStrLen(qry->Gi))
 	return ajTrue;
     if(ajStrLen(qry->Des))
 	return ajTrue;
@@ -8227,6 +8248,9 @@ void ajSeqQueryTrace(const AjPSeqQuery thys)
 
     if(ajStrLen(thys->Sv))
 	ajDebug( "    Sv: '%S'\n", thys->Sv);
+
+    if(ajStrLen(thys->Gi))
+	ajDebug( "    Gi: '%S'\n", thys->Gi);
 
     if(ajStrLen(thys->Des))
 	ajDebug( "    Des: '%S'\n", thys->Des);
