@@ -30,7 +30,7 @@ public class CallAjax {
   private int length;
   private float weight;
   private boolean protein;
-  private EmbreoPublicRequest epr;
+  private PublicRequest epr;
 
    public CallAjax(String fileContent, String seqtype, EmbreoParams mysettings) 
        throws EmbreoAuthException 
@@ -42,7 +42,7 @@ public class CallAjax {
      params.addElement(new Parameter("seqtype", String.class,
                                      seqtype, null));
 
-     epr = new EmbreoPublicRequest(mysettings,"call_ajax",params);
+     epr = new PublicRequest(mysettings,"call_ajax",params);
 
      Hashtable res = epr.getHash();
      Enumeration enumRes = res.keys();

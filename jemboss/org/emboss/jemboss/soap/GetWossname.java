@@ -30,12 +30,12 @@ public class GetWossname
    private String statusmsg;
    private String status;
    private String dbText;
-   private EmbreoPublicRequest epr;
+   private PublicRequest epr;
 
    public GetWossname(EmbreoParams mysettings)
    {
 
-     epr = new EmbreoPublicRequest(mysettings,"getWossname");
+     epr = new PublicRequest(mysettings,"getWossname");
 
    }
 
