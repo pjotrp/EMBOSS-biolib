@@ -338,8 +338,8 @@ static SeqOInFormat seqInFormatDef[] = {
        AJFALSE, AJTRUE,  AJFALSE, seqReadStockholm},
   {"fitch",       AJTRUE,  AJTRUE,  AJTRUE,
        AJFALSE, AJTRUE,  AJFALSE, seqReadFitch},
-  {"mase",        AJTRUE,  AJTRUE,  AJTRUE,
-       AJFALSE, AJTRUE,  AJFALSE, seqReadMase},
+  {"mase",        AJFALSE; AJTRUE,  AJTRUE,
+       AJFALSE, AJTRUE,  AJFALSE, seqReadMase},	/* like ig - off by default*/
   {"raw",         AJTRUE,  AJTRUE,  AJTRUE,
        AJFALSE, AJFALSE, AJFALSE, seqReadRaw}, /* OK - only sequence chars
 						allowed - but off by default*/
