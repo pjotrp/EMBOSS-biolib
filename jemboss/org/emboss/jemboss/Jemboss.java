@@ -93,7 +93,6 @@ public class Jemboss implements ActionListener
   public Jemboss ()
   {
 
-
     ClassLoader cl = this.getClass().getClassLoader();
     fwdArrow = new ImageIcon(cl.getResource("images/Forward_arrow_button.gif"));
     bwdArrow = new ImageIcon(cl.getResource("images/Backward_arrow_button.gif"));

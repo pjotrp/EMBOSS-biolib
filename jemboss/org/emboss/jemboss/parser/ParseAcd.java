@@ -85,6 +85,9 @@ public class ParseAcd
   public ParseAcd(String acdText, boolean groups) 
   {
 
+    ApplicationFields variables[] = new ApplicationFields[20];
+    int nvars = 0;
+
     int len;
     int colonPos=0;
     int braketPos=0;
@@ -103,7 +106,7 @@ public class ParseAcd
       line = new String();
       char c;
 
-      in.mark(1500);
+      in.mark(2500);
       line = in.readLine();
 
 // loop over all parameter definitions
@@ -114,7 +117,7 @@ public class ParseAcd
      
         if(line.startsWith("#") || len ==0)
         {
-          in.mark(1500);
+          in.mark(2500);
           continue;
         }
 
@@ -138,19 +141,21 @@ public class ParseAcd
         if(line.startsWith("var:") || line.startsWith("variable"))
         {
           param = param.trim();
-          appF[numofFields] = new ApplicationFields();
-          appF[numofFields].setNumberOfParam(2);
-          appF[numofFields].setParam(0,dataType,param);
+          variables[nvars] = new ApplicationFields();
+          variables[nvars].setNumberOfParam(2);
       
           int ns = param.indexOf(" ");
           if(ns > -1)
           {
-            String value = param.substring(ns);
+            String value = param.substring(0,ns);
             value = value.replace('"',' ').trim();
-            appF[numofFields].setParam(1, "value", value);
+            variables[nvars].setParam(0,dataType,value);
+            value = param.substring(ns);
+            value = value.replace('"',' ').trim();
+            variables[nvars].setParam(1, "value", value);
           }
-          numofFields++;
-          in.mark(1500);
+          nvars++;
+          in.mark(2500);
           continue;
         }
         else if(line.startsWith("endsection"))
@@ -159,7 +164,7 @@ public class ParseAcd
           appF[numofFields].setNumberOfParam(1);
           appF[numofFields].setParam(0, dataType, param);
           numofFields++;
-          in.mark(1500);
+          in.mark(2500);
           continue;
         }
         else if(line.startsWith("section"))
@@ -184,7 +189,7 @@ public class ParseAcd
          st.nextToken();
         }
 
-        in.mark(1500);
+        in.mark(2500);
         do 
         {
           ttype = parseParam(in, st);
@@ -203,6 +208,9 @@ public class ParseAcd
           if( ttype != java.io.StreamTokenizer.TT_NUMBER &&
               attr != null) 
           {
+             if(nvars>0)
+               svalue = resolveVariables(variables,nvars,svalue);
+
              appF[numofFields].setParam(numofParams, attr, svalue);
 //           System.out.println(" ATTR " + attr + " SVALUE " + 
 //                          getParamValueStr(numofFields,numofParams));
@@ -271,7 +279,7 @@ public class ParseAcd
         }
 
         numofFields++;
-        in.mark(1500);
+        in.mark(2500);
 
         if(groups && dataType.startsWith("appl")) 
         {
@@ -284,11 +292,29 @@ public class ParseAcd
     }
     catch (IOException e) 
     {
-      System.out.println("Cannot open EMBOSS acd file " );
+      System.out.println("Parsing acd file error" );
     }
 
   }
 
+
+  private String resolveVariables(ApplicationFields variables[],int nvars,
+                                  String svalue)
+  {
+    String res=svalue;
+
+    for(int i=0; i<nvars;i++)
+    {
+      String vName  = variables[i].getParamValueStr(0);
+      String vValue = variables[i].getParamValueStr(1);
+      AcdVariableResolve avresolve = new AcdVariableResolve(res,vName,vValue);
+      res = avresolve.getResult();
+    }
+
+//  if(!res.equals(svalue))
+//    System.out.println("START VALUE " + svalue  + " FINAL VALUE" + res + "\n");
+    return res;
+  }
 
 /**
 *
@@ -474,6 +500,11 @@ public class ParseAcd
   }
 
 
+  public void setParamValueStr(int field, int param, String svalue)
+  {
+    appF[field].resetParam(param,svalue);
+  }
+
 /**
 *
 * Gets the double value of a parameter.
@@ -548,7 +579,6 @@ public class ParseAcd
   {
 
     numOfDependents = 0;
-
 
     for(int i=field+1;i<numofFields;i++) 
     {

@@ -67,7 +67,6 @@ public class SectionPanel
   private ParseAcd parseAcd;
   private int numofFields;
   private int nf;
-//private boolean jni = true;
   public static int ajaxLength;
   public static float ajaxWeight;
   public static boolean ajaxProtein;
@@ -147,7 +146,6 @@ public class SectionPanel
     this.f = f;
 
 //using JNI?
-//  jni = AdvancedOptions.prefjni.isSelected();
     nf = nff;
 
     String att = parseAcd.getParameterAttribute(nf,0).toLowerCase();
@@ -585,6 +583,7 @@ public class SectionPanel
     final String valS = parseAcd.getParamValueStr(nf,0).toLowerCase();
     final int nff = nf;
 
+
     if(parseAcd.isDependents(valS,nf,numofFields)) 
     {
       final int h = parseAcd.getGuiHandleNumber(nf);
@@ -783,6 +782,7 @@ public class SectionPanel
         });
       }
     }
+
   }
 
 
@@ -800,9 +800,10 @@ public class SectionPanel
       AcdVarResolve avr = new AcdVarResolve(exp,textVal,varName,parseAcd,
                             numofFields,textf,textInt,textFloat,fieldOption,
                             checkBox);
+
+//    System.out.println(exp + "EXP ==> " + avr.getResult() + " " + textVal);
       exp = avr.getResult();
 
-//    System.out.println("EXP ==> " + exp);
       AcdFunResolve afr = new AcdFunResolve(exp);
       String result = afr.getResult();
       String att = parseAcd.getParameterAttribute(
@@ -889,7 +890,7 @@ public class SectionPanel
       }
       else if(att.startsWith("bool"))
       {
-        if(type.startsWith("opt") || type.startsWith("req"))
+        if(type.startsWith("opt") || type.startsWith("req")) 
         {
           if(result.equals("false"))
             setShadingAndVisibility(checkBox[h], false, field);
@@ -942,7 +943,9 @@ public class SectionPanel
   private void setShadingAndVisibility(Component c, boolean useThis, int field)
   {
     if(isShadedGUI)
+    {
       c.setEnabled(useThis);
+    }
     else
     {
       c.setVisible(useThis);

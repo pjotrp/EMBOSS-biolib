@@ -113,7 +113,11 @@ public class LaunchJalView extends JFrame
     JPanel jp = (JPanel)getContentPane();
     jp.setLayout(new BorderLayout());  
     jp.add(bdown, BorderLayout.CENTER);
+
     pack();
+    setLocation( (int)((getWidth())/2),
+                 (int)((getHeight())/2) );
+
     setVisible(true);      
   }
 
