@@ -63,11 +63,11 @@
 /*static AjBool acdDebug = 0;*/
 /*static AjBool acdDebugSet = 0;*/
 /*static AjPStr acdProgram = NULL;*/
+static AjBool acdDoHelp = 0;
 static AjBool acdDoLog = 0;
 static AjBool acdDoPretty = 0;
-static AjBool acdDoHelp = 0;
+static AjBool acdDoTable = 0;
 static AjBool acdVerbose = 0;
-static AjBool acdTable = 0;
 static AjBool acdAuto = 0;
 static AjBool acdFilter = 0;
 static AjBool acdOptions = 0;
@@ -1063,9 +1063,11 @@ AcdOQual acdQualAppl[] =	/* careful: index numbers used in*/
                                   /* after auto and stdout so it can replace */
   {"options",    "N", "boolean", "Prompt for required and optional values"},
   {"debug",      "N", "boolean", "Write debug output to program.dbg"},
+  /* deprecated - to be removed in a future version */
   {"acdlog",     "N", "boolean", "Write ACD processing log to program.acdlog"},
   {"acdpretty",  "N", "boolean", "Rewrite ACD file as program.acdpretty"},
   {"acdtable",   "N", "boolean", "Write HTML table of options"},
+  /* end of deprecated set */
   {"verbose",    "N", "boolean", "Report some/full command line options"},
   {"help",       "N", "boolean", "Report command line options. "
    "More information on associated and general qualifiers "
@@ -7702,13 +7704,14 @@ static void acdHelp (void) {
 
   if (!acdDoHelp) return;
 
-  if (acdTable) {
+  if (acdDoTable) {
     reqlist = ajListNew();
     optlist = ajListNew();
     advlist = ajListNew();
     genlist = ajListNew();
     if (acdVerbose) asslist = ajListNew();
-    ajUser ("<table border cellspacing=0 cellpadding=3 bgcolor=\"#f5f5ff\">");
+    ajUser ("<table border cellspacing=0 cellpadding=3 bgcolor=\"#ccccff\">");
+    /* was #f5f5ff */
   }
 
   acdLog ("++ acdHelp\n");
@@ -7816,12 +7819,12 @@ static void acdHelp (void) {
   if (acdVerbose) acdHelpShow
 		    (helpAss, "Associated qualifiers");
   acdHelpShow (helpGen, "General qualifiers");
-  if (acdVerbose && acdTable)
+  if (acdVerbose && acdDoTable)
     acdHelpTableShow (asslist, "Associated qualifiers");
-  if (acdVerbose && acdTable)
+  if (acdVerbose && acdDoTable)
     acdHelpTableShow (genlist, "General qualifiers");
 
-  if (acdTable) {
+  if (acdDoTable) {
     ajUser ("</table>");
   }
 
@@ -8939,7 +8942,7 @@ static void acdHelpText (AcdPAcd thys, AjPStr* str) {
 
 static void acdHelpShow (AjPStr str, char* title) {
 
-  if (acdTable) return;
+  if (acdDoTable) return;
 
   if (!ajStrLen(str)) {
     ajUser("   %s: (none)", title);
@@ -8969,9 +8972,9 @@ static void acdHelpTableShow (AjPList tablist, char* title) {
   AcdPTableItem item;
   AjIList iter = NULL;
 
-  if (!acdTable) return;
+  if (!acdDoTable) return;
 
-  ajUser("<tr bgcolor=\"#FFFFD0\">");
+  ajUser("<tr bgcolor=\"#FFFFCC\">"); /* was #FFFFD0 */
   ajUser("<th align=\"left\" colspan=2>%s</th>", title);
   ajUser("<th align=\"left\">Allowed values</th>");
   ajUser("<th align=\"left\">Default</th>");
@@ -9024,7 +9027,7 @@ static void acdHelpAssocTable (AcdPAcd thys, AjPList tablist, char flag) {
   ajint i;
   AcdPAcd pa;
 
-  if (!acdTable) return;
+  if (!acdDoTable) return;
 
   acdLog ("++ acdHelpAssoc %S\n", thys->Name);
 
@@ -9084,7 +9087,7 @@ static void acdHelpTable (AcdPAcd thys, AjPList tablist, char flag) {
 
   AjPStr defstr;
 
-  if (!acdTable) return;
+  if (!acdDoTable) return;
 
   AJNEW0 (item);
 
@@ -11278,6 +11281,50 @@ static AjBool acdAttrValueStr (AcdPAcd thys, char *attrib, char* def,
   return ajFalse;
 }
 
+/* @func ajAcdControl *********************************************************
+**
+** Sets special qualifiers which were originally provided via the
+** command line.
+**
+** Sets special internal variables to reflect their presence.
+**
+** Currently these are "acdlog", "acdpretty", "acdtable"
+**
+** @param [r] argstr [char*] option name
+** @return [AjBool] ajTrue if option was recognised
+** @@
+******************************************************************************/
+
+AjBool ajAcdSetControl (char* optionName) {
+
+  if (!ajStrCmpCaseCC(optionName, "acdlog")) {
+    acdDoLog = ajTrue;
+    return ajTrue;
+  }
+  if (!ajStrCmpCaseCC(optionName, "acdpretty")) {
+    acdDoPretty = ajTrue;
+    return ajTrue;
+  }
+  if (!ajStrCmpCaseCC(optionName, "acdtable")) {
+    acdDoTable = ajTrue;
+    return ajTrue;
+  }
+
+  if (!ajStrCmpCaseCC(optionName, "acdhelp")) {
+    acdDoHelp = ajTrue;
+    return ajTrue;
+  }
+
+  if (!ajStrCmpCaseCC(optionName, "acdverbose")) {
+    acdVerbose = ajTrue;
+    return ajTrue;
+  }
+
+  ajDie("Unknown control option '%s'", optionName);
+
+  return ajFalse;
+}
+
 /* @funcstatic acdArgsScan ****************************************************
 **
 ** Steps through the command line and checks for special qualifiers.
@@ -11311,9 +11358,13 @@ static void acdArgsScan (ajint argc, char *argv[]) {
     if (!strcmp(argv[i], "-verbose"))  acdVerbose = ajTrue;
     if (!strcmp(argv[i], "-help"))     acdDoHelp = ajTrue;
     if (!strcmp(argv[i], "-auto"))     acdAuto = ajTrue;
+
+    /* deprecated - to be removed in a future version */
     if (!strcmp(argv[i], "-acdlog"))   acdDoLog = ajTrue;
     if (!strcmp(argv[i], "-acdpretty"))  acdDoPretty = ajTrue;
-    if (!strcmp(argv[i], "-acdtable")) acdTable = ajTrue;
+    if (!strcmp(argv[i], "-acdtable")) acdDoTable = ajTrue;
+    /* end of deprecated set */
+
     if (!strcmp(argv[i], "-warning"))   AjErrorLevel.warning = ajTrue;
     if (!strcmp(argv[i], "-nowarning")) AjErrorLevel.warning = ajFalse;
     if (!strcmp(argv[i], "-error"))     AjErrorLevel.error = ajTrue;
@@ -13294,9 +13345,13 @@ static AjBool acdSetQualAppl (AcdPAcd thys, AjBool val) {
 	  (void) ajStrToBool(bufstr, &acdDebugBuffer);
 	}
 	break;
+
+	/* deprecated - to be removed in a future version */
       case 5: acdDoLog    = setval; break;
       case 6: acdDoPretty = setval; break;
-      case 7: acdTable    = setval; break;
+      case 7: acdDoTable    = setval; break;
+	/* end of deprecated set */
+
       case 8: acdVerbose  = setval; break;
       case 9: acdDoHelp   = setval; break;
       case 10: AjErrorLevel.warning = setval; break;
