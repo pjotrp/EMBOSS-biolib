@@ -54,10 +54,8 @@ print HTMLB  "<html><head><title>$title</title></head><body bgcolor=\"#ffffff\">
 print HTML  "<h1>$pubout</h1>\n";
 print HTMLB  "<h1>$pubout</h1>\n";
 
-foreach $x ("new", "delete", "assign", "modify", "use", "cast",
-	    "input", "output", "other",
-	    "alias", "attr", "cc") {
-    $tables{$x} = 1;
+foreach $x ("alias", "attr", "cc", "iterator", "other") {
+    $tables{$x} = 3;
 }
 
 foreach $x ("new", "delete", "assign", "modify", "use", "cast",
@@ -67,10 +65,6 @@ foreach $x ("new", "delete", "assign", "modify", "use", "cast",
 
 foreach $x ("del", "ass", "set", "mod") {
     $tables{$x} = 2;
-}
-
-foreach $x ("other", "alias", "attr", "cc", "iterator") {
-    $tables{$x} = 3;
 }
 
 foreach $x ("author", "version", "modified", "source", "plus", "funclist",
