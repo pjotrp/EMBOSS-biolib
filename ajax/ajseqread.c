@@ -660,9 +660,10 @@ AjBool ajSeqRead (AjPSeq thys, AjPSeqin seqin)
 	ajSeqinUsa (&seqin, usa);
 	ajStrDel(&usa);
 
-	if (!seqUsaProcess (thys, seqin))
+/*	if (!seqUsaProcess (thys, seqin))
 	    return ajFalse;
-
+*/
+	seqUsaProcess (thys, seqin);
 	ret = seqRead (thys, seqin);
     }
 
