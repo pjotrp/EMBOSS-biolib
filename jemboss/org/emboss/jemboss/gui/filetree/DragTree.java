@@ -88,7 +88,7 @@ public class DragTree extends JTree implements DragGestureListener,
     menuItem = new JMenuItem("New Folder...");
     menuItem.addActionListener(this);
     popup.add(menuItem);
-    menuItem = new JMenuItem("Delete File...");
+    menuItem = new JMenuItem("Delete...");
     menuItem.addActionListener(this);
     popup.add(menuItem);
 
@@ -200,7 +200,7 @@ public class DragTree extends JTree implements DragGestureListener,
         }
       }
     }
-    else if(source.getText().equals("Delete File..."))
+    else if(source.getText().equals("Delete..."))
     {
       int n = JOptionPane.showConfirmDialog(null,
                                  "Delete "+f.getAbsolutePath()+"?",
