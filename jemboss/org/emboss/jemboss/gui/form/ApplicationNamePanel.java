@@ -43,7 +43,7 @@ public class ApplicationNamePanel extends JPanel
     setFont(font);
     FontMetrics metrics = getFontMetrics(font);
     int width = metrics.stringWidth(name);
-    setPreferredSize(new Dimension(width, fontSize));   
+    setPreferredSize(new Dimension(width, fontSize+1));   
     setBackground(Color.white);
   } 
 
