@@ -351,13 +351,15 @@ static void namPrintResource (AjPStr* rsattr){
 
 void ajNamPrintDbAttr (AjPFile outf, AjBool full) {
   ajint i;
-  ajFmtPrintF (outf, "Database attributes\n");
+  ajFmtPrintF (outf, "# Database attributes\n");
   ajFmtPrintF (outf, "%12s %10s %s\n", "Attribute", "default", "Comment");
+  ajFmtPrintF (outf, "namDbAttrs {\n");
   for (i=0; namDbAttrs[i].Name; i++) {
     ajFmtPrintF (outf, "%12s %10s %s\n",
 		 namDbAttrs[i].Name, namDbAttrs[i].Defval,
 		 namDbAttrs[i].Comment);
   }
+  ajFmtPrintF (outf, "}\n");
   return;
 }
 
@@ -372,13 +374,15 @@ void ajNamPrintDbAttr (AjPFile outf, AjBool full) {
 
 void ajNamPrintRsAttr (AjPFile outf, AjBool full) {
   ajint i;
-  ajFmtPrintF (outf, "Resource attributes\n");
+  ajFmtPrintF (outf, "# Resource attributes\n");
   ajFmtPrintF (outf, "%12s %10s %s\n", "Attribute", "default", "Comment");
+  ajFmtPrintF (outf, "namRsAttrs {\n");
   for (i=0; namRsAttrs[i].Name; i++) {
     ajFmtPrintF (outf, "%12s %10s %s\n",
 		 namRsAttrs[i].Name, namRsAttrs[i].Defval,
 		 namRsAttrs[i].Comment);
   }
+  ajFmtPrintF (outf, "}\n");
   return;
 }
 

@@ -990,10 +990,12 @@ void ajSeqPrintType (AjPFile outf, AjBool full) {
 
   ajFmtPrintF (outf, "\n#Sequence Types\n");
   ajFmtPrintF (outf, "# Name            Gap N/P Desciption\n");
+  ajFmtPrintF (outf, "seqType {\n");
   for (i=0; seqType[i].Name; i++) {
     ajFmtPrintF (outf, "  %-15s %3B %s \"%s\"\n",
 		 seqType[i].Name, seqType[i].Gaps,
 		 typeName[seqType[i].Type], seqType[i].Desc);
 
   }
+  ajFmtPrintF (outf, "}\n");
 }
