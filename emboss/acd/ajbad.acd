@@ -12,6 +12,7 @@ string: typea  [
   standard: "y"
   information: "Sequence type"
   valid: "valid value test"
+  knowntype: "sequence type"
 ]
 
 sequence: sequence  [
@@ -40,6 +41,7 @@ string: typeb  [
   default: "$(seqa.type)"
   expected: "expected value"
   information: "Second type"
+  knowntype: "sequence type"
 ]
 
 string: date  [
@@ -48,6 +50,7 @@ string: date  [
   maxlength: "8"
   information: "Index date"
   pattern: "^([0-9]+.[0-9]+.[0-9]+)?$"
+  knowntype: "date"
 ]
 
 endsection: required
