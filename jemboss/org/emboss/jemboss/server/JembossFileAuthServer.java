@@ -113,7 +113,7 @@ public class JembossFileAuthServer
                  + "/" + dirname);
     String listAll = aj.getOutStd();
 
-    System.out.println("listAll "+listAll+" STDERR "+aj.getErrStd());
+//  System.out.println("listAll "+listAll+" STDERR "+aj.getErrStd());
     aj.listDirs(userName,passwd,environ,
                  getRoot(options.substring(split),userName,passwd)
                  + "/" + dirname);
