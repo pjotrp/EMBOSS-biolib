@@ -2,6 +2,7 @@
 ** @source AJAX file routines
 **
 ** @version 1.0
+** @modified May 14 Jon Ison Added ajFileExtnTrim & ajFileDirExtnTrim
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -5066,6 +5067,65 @@ AjBool ajFileDirTrim(AjPStr* name)
 
     return ajTrue;
 }
+
+
+
+/* @func ajFileExtnTrim *******************************************************
+**
+** Trims the extension (if any) from a filename
+**
+** @param [u] name [AjPStr*] Filename
+** @return [AjBool] ajTrue is there was an extension
+******************************************************************************/
+
+AjBool ajFileExtnTrim(AjPStr* name)
+{
+    ajint i;
+
+    if(!ajStrLen(*name))
+	return ajFalse;
+
+    i = ajStrRFindC(*name, ".");
+    if(i < 0)
+	return ajFalse;
+
+    ajStrTrim(name, i+1);
+
+    return ajTrue;
+}
+
+
+
+
+/* @func ajFileDirExtnTrim ****************************************************
+**
+** Trims the directory path (if any) and extension (if any) from a filename.
+**
+** @param [u] name [AjPStr*] Filename
+** @return [AjBool] ajTrue is there was a directory path or extension.
+******************************************************************************/
+
+AjBool ajFileDirExtnTrim(AjPStr* name)
+{
+    ajint i;
+    ajint j;
+
+    if(!ajStrLen(*name))
+	return ajFalse;
+
+    i = ajStrRFindC(*name, ".");
+    ajStrTrim(name, i+1);
+
+    j = ajStrRFindC(*name, "/");
+    ajStrTrim(name, j+1);
+
+
+    if((i < 0) && (j < 0))
+	return ajFalse;
+
+    return ajTrue;
+}
+
 
 
 
