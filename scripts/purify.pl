@@ -47,6 +47,7 @@ sub runtest ($) {
 	  "stretcher" => "stretcher tembl:hsfau tembl:hsfau1 -auto",
 	  "splitter" => "splitter -size 500 tembl:hsfau -auto",
 	  "silent" => "silent tembl:hsfau -sbeg 31 -send 50 -auto",
+	  "siggen" => "siggen -algpath $ENV{EPURE}/../test/data -algextn .align -conpath $ENV{EPURE}/../test/data -conextn .con -sparsity 10 -randomize N -datafile EBLOSUM62 -scoreseq Y -scorencon Y -scoreccon Y -scoreboth N -postsim Y -auto",
 	  "sigcleave" => "sigcleave tsw:opsd_human -auto",
 	  "shuffleseq" => "shuffleseq tembl:hsfau -auto",
 	  "showseq" => "showseq tembl:hsfau -auto",
