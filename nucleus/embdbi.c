@@ -100,6 +100,7 @@ EmbPentry embDbiEntryNew (void) {
 **
 ** @param [r] dir [AjPStr] Directory
 ** @param [r] wildfile [AjPStr] Wildcard file name
+** @param [r] trim [AjBool] Expand to search, trim results
 ** @return [AjPList] New list of all files with full paths
 ** @@ 
 ******************************************************************************/
@@ -138,7 +139,9 @@ AjPList embDbiFileList (AjPStr dir, AjPStr wildfile, AjBool trim) {
   if (ajStrChar(dirfix, -1) != '/')
     (void) ajStrAppC (&dirfix, "/");
 
-  (void) ajStrAppC(&wildfile,"*");
+  if (trim) {
+    (void) ajStrAppC(&wildfile,"*");
+  }
 
   dp = opendir (ajStrStr(dirfix));
   if (!dp)
