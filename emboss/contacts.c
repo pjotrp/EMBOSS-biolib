@@ -147,7 +147,6 @@ static AjBool new_contacts_WriteContactMap(AjPInt2d *mat, ajint *ncon, ajint dim
 				       float thresh, float ignore, ajint mod, ajint chn,
 					   AjPPdb pdb, AjPVdwall vdw);
 
-static float contacts_VdwRad(AjPAtom atm, AjPVdwall vdw);
 static float contacts_Distance(AjPAtom atm1, AjPAtom atm2, AjPVdwall vdw);
 
 
@@ -595,7 +594,7 @@ static float contacts_Distance(AjPAtom atm1, AjPAtom atm2, AjPVdwall vdw)
 
 
     /*  This calculation uses square root */
-    val1= sqrt(val) - contacts_VdwRad(atm1, vdw) - contacts_VdwRad(atm2, vdw);
+    val1= sqrt(val) - ajXyzVdwRad(atm1, vdw) - ajXyzVdwRad(atm2, vdw);
     
         
     return val1;
@@ -603,37 +602,6 @@ static float contacts_Distance(AjPAtom atm1, AjPAtom atm2, AjPVdwall vdw)
 
 
 
-
-/* @funcstatic contacts_VdwRad ***********************************************
-**
-** Returns the van der Waals radius of an atom. Returns 1.2 as default.
-**
-** @param [r] atm    [AjPAtom]     Atom object
-** @param [r] vdw    [AjPVdwall]   Vdwall object
-**
-** Contact between two atoms is defined as when the van der Waals surface of 
-** the first atom comes within the threshold contact distance (thresh) of the 
-** van der Waals surface of the second atom.
-**
-** @return [float] van der Waals radius of the atom
-** @@
-**
-******************************************************************************/
-
-static float contacts_VdwRad(AjPAtom atm, AjPVdwall vdw)
-{
-    ajint x=0;
-    ajint y=0;
-    
-    for(x=0;x<vdw->N;x++)
-	for(y=0;y<vdw->Res[x]->N;y++)
-	{
-	    if(ajStrMatch(atm->Atm, vdw->Res[x]->Atm[y]))
-		return(vdw->Res[x]->Rad[y]);	 
-	}
-    
-    return((float)1.2);
-}
 
 
 
@@ -823,7 +791,7 @@ static AjBool new_contacts_WriteContactMap(AjPInt2d *mat, ajint *ncon, ajint dim
 		    fflush(xxxtemp->fp); */
 		    
 		    
-/*		    if(contacts_InContact(arr[idx1], arr[idx2], thresh, vdw))		 */
+/*		    if(ajXyzInContact(arr[idx1], arr[idx2], thresh, vdw))		 */
 		    if((dis = contacts_Distance(arr[idx1], arr[idx2], vdw))<=thresh)
 		    {
 /*			ajFmtPrintF(xxxtemp, "CONTACT\n");
