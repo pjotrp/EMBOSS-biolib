@@ -1418,9 +1418,18 @@ AjBool ajFeatUfoRead (AjPFeattable* pthis, AjPFeattabIn featin, AjPStr ufo) {
     ajRegSubI (filexp, 1, &featin->Filename);
   }
   else {
-    (void) ajFmtPrintS(&ufotest, "%S.%S", featin->Seqname, featin->Formatstr);
-    (void) ajStrSet (&featin->Filename, ufotest);
-    ajDebug ("generate filename  '%S'\n", featin->Filename);
+    if (ajStrLen(featin->Seqname) && ajStrLen(featin->Formatstr)) {
+      (void) ajFmtPrintS(&ufotest, "%S.%S",
+			 featin->Seqname, featin->Formatstr);
+      (void) ajStrSet (&featin->Filename, ufotest);
+      ajDebug ("generate filename  '%S'\n", featin->Filename);
+    }
+    else {
+      ajDebug ("unable to generate filename "
+	       "Featin Seqname '%S' Formatstr '%S'\n",
+	       featin->Seqname, featin->Formatstr);
+      return ajFalse;
+    }
   }
 
   /* Open the file so that we can try to read it */
