@@ -2053,14 +2053,14 @@ AjBool ajStrMask (AjPStr* pthis, ajint begin, ajint end, char maskchar) {
   thys = *pthis;
 
   ibegin = strPos (thys, begin);
-  iend = strPosI (thys, ibegin, end+1);
+  iend = strPosI (thys, ibegin, end);
 
   ajDebug ("ajStrMask %d %d len: %d ibegin: %d iend: %d char '%c'\n",
 	   begin, end, thys->Len, ibegin, iend, maskchar);
 
   if (iend < ibegin) return ajFalse;
 
-  for (i=ibegin; i<iend; i++)
+  for (i=ibegin; i<=iend; i++)
     thys->Ptr[i] = maskchar;
 
   return ajTrue;

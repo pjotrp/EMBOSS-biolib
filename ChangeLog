@@ -1,4 +1,6 @@
 Version 2.7.0
+	Boundary fix for ajStrMask
+
 	Tightened up on reporting of isoschizomer groups in 'showseq -limit'
 	and 'remap -limit'. 
 
