@@ -60,6 +60,19 @@ section: additional [
            will not be changed."
   ]
 
+
+  toggle: tolower  [
+    additional: "Y"
+    default: "N"
+    information: "Change poly-A tail to lower-case"
+    help: "The poly-A region can be 'masked' by converting the sequence
+           characters to lower-case. Some non-EMBOSS programs e.g. fasta can
+           interpret this as a masked region. The sequence is unchanged apart
+           from the case change. You might like to ensure that the whole
+           sequence is in upper-case before masking the specified regions to
+           lower-case by using the '-supper' sequence qualifier."
+  ]
+
 endsection: additional
 
 section: advanced [
