@@ -422,7 +422,6 @@ void ajListPushApp(AjPList thys, void* x)
        penultimate node, so we use the dummy node and make a new dummy node
        instead */
     AjPListNode tmp=NULL;
-    AjPListNode node;
 
     if(!thys->Count)
     {
@@ -1558,8 +1557,6 @@ void ajListPushList (AjPList thys, AjPList* pmore)
 {
     AjPList more = *pmore;
     AjPListNode  tmp=NULL;
-    AjPListNode  node;
-
 
     if (more->Count)
     {					/* more list has items */
