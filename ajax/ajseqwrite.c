@@ -193,9 +193,13 @@ void ajSeqAllWrite (AjPSeqout outseq, AjPSeq seq) {
   if (outseq->Single)
     (void) seqFileReopen(outseq);
 
-  if (outseq->Features) {
+  seqOutFormat[outseq->Format].Write (outseq);
+  outseq->Count++;
+
+  if (outseq->Features && !ajFeattabOutIsOpen(outseq->Ftquery)) {
       /* ajWarn ("ajSeqAllWrite features cloned from ajSeqWrite\n"); */
 
+    (void) ajFeattabOutOpen (outseq->Ftquery, outseq->Ufo);
     (void) ajStrSet (&outseq->Ftquery->Seqname, seq->Name);
     (void) ajStrSet (&outseq->Ftquery->Type, seq->Type);
     ajFeattableTrace(outseq->Fttable);
@@ -206,8 +210,6 @@ void ajSeqAllWrite (AjPSeqout outseq, AjPSeq seq) {
     }
   }
     
-  seqOutFormat[outseq->Format].Write (outseq);
-  outseq->Count++;
   seqDeclone (outseq);
 
   return;
@@ -265,11 +267,12 @@ void ajSeqsetWrite (AjPSeqout outseq, AjPSeqset seq) {
     if (outseq->Single)
       (void) seqFileReopen(outseq);
 
-    if (outseq->Features)
-      ajWarn("ajSeqsetWrite Features not yet implemented");
-
     seqOutFormat[outseq->Format].Write (outseq);
     outseq->Count++;
+
+    if (outseq->Features && !ajFeattabOutIsOpen(outseq->Ftquery))
+      ajWarn("ajSeqsetWrite Features not yet implemented");
+
     seqDeclone (outseq);
   }
 
@@ -309,7 +312,7 @@ static void seqWriteListAppend (AjPSeqout outseq, AjPSeq seq) {
     seqOutFormat[outseq->Format].Write (outseq);
   }
 
-  if (outseq->Features)
+  if (outseq->Features && !ajFeattabOutIsOpen(outseq->Ftquery))
     ajWarn ("seqWriteListAppend features output not yet implemented");
 
   return;
@@ -376,8 +379,10 @@ void ajSeqWrite (AjPSeqout outseq, AjPSeq seq) {
     (void) seqFileReopen(outseq);
 
   seqOutFormat[outseq->Format].Write (outseq);
+  outseq->Count++;
 
-  if (outseq->Features) {
+  if (outseq->Features && !ajFeattabOutIsOpen(outseq->Ftquery)) {
+    (void) ajFeattabOutOpen (outseq->Ftquery, outseq->Ufo);
     (void) ajStrSet (&outseq->Ftquery->Seqname, seq->Name);
     (void) ajStrSet (&outseq->Ftquery->Type, seq->Type);
     ajFeattableTrace(outseq->Fttable);
@@ -388,7 +393,6 @@ void ajSeqWrite (AjPSeqout outseq, AjPSeq seq) {
     }
   }
     
-  outseq->Count++;
   seqDeclone (outseq);
 
   return;
@@ -1519,12 +1523,28 @@ static void seqWriteGenbank (AjPSeqout outseq) {
 
   static SeqPSeqFormat sf=NULL;
   ajint b[5];
+  static AjPStr ftfmt = NULL;
+
+  if (!ftfmt)
+    ajStrAssC (&ftfmt, "genbank");
+
 
   (void) ajFmtPrintF (outseq->File, "LOCUS       %S\n", outseq->Name);
   if (ajStrLen(outseq->Acc))
     (void) ajFmtPrintF (outseq->File, "ACCESSION   %S\n", outseq->Acc);
   if (ajStrLen(outseq->Desc))
     (void) ajFmtPrintF (outseq->File, "DEFINITION  %S\n", outseq->Desc);
+
+  if (seqoutUfoLocal(outseq)) {
+        outseq->Ftquery = ajFeattabOutNewSSF (ftfmt, outseq->Name,
+					  ajStrStr(outseq->Type),
+					  outseq->File);
+    if (!ajFeatWrite (outseq->Ftquery, outseq->Fttable)) {
+      ajWarn ("seqWriteGenbank features output failed UFO: '%S'",
+	      outseq->Ufo);
+    }
+  }
+
   ajSeqCount (outseq->Seq, b);
   if (b[4])
     (void) ajFmtPrintF (outseq->File,
@@ -2150,7 +2170,7 @@ AjBool ajSeqoutOpen (AjPSeqout thys) {
     return ret;
 
   (void) ajStrSet (&thys->Ftquery->Seqname, thys->Name);
-  ret = ajFeattabOutOpen (thys->Ftquery, thys->Ufo);
+  ret = ajFeattabOutSet (thys->Ftquery, thys->Ufo);
   return ret;
 }
 
