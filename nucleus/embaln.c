@@ -2993,12 +2993,15 @@ void embAlignCalcSimilarity(const AjPStr m, const AjPStr n,
     }
 
     max = (lenm>lenn) ? lenm : lenn;
-
+    
     *idx  = *id / (float)max * 100.;
     *simx = *sim / (float)max * 100.;
     *id   *= (100. / (float)(olen-gaps));
     *sim  *= (100. / (float)(olen-gaps));
 
+
+    ajStrDel(&fm);
+    ajStrDel(&fn);
     return;
 }
 
