@@ -26,8 +26,8 @@ Description
        
    All of these criteria are user-specifiable as constraints.
    
-   primer3
-   can also pick hybridisation oligos that are internal to the product.
+   primer3 can also pick hybridisation oligos that are internal to the
+   product.
    
   ADVICE FOR PICKING PRIMERS
   
@@ -1034,7 +1034,13 @@ Output file format
    
    The 'Start' positions are given counting from the start of the
    sequence for both the forward and reverse primer (and for the internal
-   oligos).
+   oligos). Note that if you compare the results to the output from the
+   public Primer3 web site you will see a difference in the reverse
+   primer positions - this is because the original Primer3 program
+   reports the reverse primer positions as couted from the 3' end. The
+   convention in EMBOSS is to report both forward and reverse featyres as
+   counted from the 5' end, so the reverse primer positions are given
+   counted from the 5' start of the sequence.
    
 Data files
 
