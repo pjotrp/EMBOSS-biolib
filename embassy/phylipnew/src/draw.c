@@ -1318,7 +1318,7 @@ void loadfont(short *font, char *application)
   AjPStr token = NULL;
 
   if (!intexp)
-      intexp = ajRegCompC("[-0-9]+");
+      intexp = ajRegCompC("[0-9-]+");
   i=0;
   fontfile = ajAcdGetInfile("fontfile");
 
