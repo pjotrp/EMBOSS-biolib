@@ -537,7 +537,8 @@ AjPCmap ajCmapReadNew(AjPFile inf, ajint mode, ajint chn, ajint mod)
     static   AjPStr temp_domid = NULL;   /* Temp. domain id  */
     static   AjPStr temp_ligid = NULL;   /* Temp. ligand id  */
     static   AjPStr type       = NULL;   /* Type of contact  */
-    static   AjPStr desc       = NULL;   /* Ligand desc., SITES output only */
+    static   AjPStr desc       = NULL;   /* Ligand description,  SITES output
+					    only */
     AjPStr   token             = NULL;   /* For parsing      */
         
     ajint    smcon     = 0;      /* No. of SM contacts       */	
@@ -2747,8 +2748,9 @@ AjBool   ajAtomSSEnv(AjPAtom atom, char *SEnv, AjPFile logf)
 	    *SEnv='C';
 	else if(atom->eType == '.')
 	{
-	    /* ajFmtPrintF(logf, "SEnv unassigned for residue %d\n", atom->Idx); */
-	    *SEnv='\0';
+	    ajFmtPrintF(logf, "SEnv unknown for residue %d\n", atom->Idx);
+	    /* *SEnv='C';  */
+	    *SEnv='\0';  
 	    return ajFalse;
 	}
     }
@@ -2764,7 +2766,7 @@ AjBool   ajAtomSSEnv(AjPAtom atom, char *SEnv, AjPFile logf)
 
 /* @func ajAtomEnv1 ***********************************************************
 ** Assigns environment based only of side chain accessibility and secondary
-** structure.
+** structure.  Assigns environment of "*" as default.
 ** @param [r] atom [AjPAtom]         AtomStride object
 ** @param [w] OEnv [char]            Character for the overall environment class 
 ** @return [ajint]                   Number of environments
@@ -2822,9 +2824,9 @@ ajint   ajAtomEnv1(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
 	ajStrAssC(OEnv,"AU");
     else
     {
-	ajStrClear(OEnv);
-	/* ajFmtPrintF(logf, "OEnv unassigned for residue %d\n", atom->Idx); */
-	return ajFalse;
+	ajStrClear(OEnv); 
+	ajFmtPrintF(logf, "OEnv unassigned for residue %d\n", atom->Idx); 
+	return 0;
     }
 
     /*The total number of environments*/
@@ -2839,7 +2841,7 @@ ajint   ajAtomEnv1(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
 
 /* @func ajAtomEnv2 ***********************************************************
 ** Assigns environment based on side chain accessibility and secondary 
-** structure.
+** structure.  Assigns environment of "*" as default.
 ** @param [r] atom [AjPAtom]         AtomStride object
 ** @param [w] OEnv [char]            Character for the overall environment class 
 ** @return [ajint]
@@ -2858,7 +2860,7 @@ ajint   ajAtomEnv2(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
     if(!atom)
     {
 	ajWarn("No atom to ajAtomEnv");
-	return ajFalse;
+	return 0;
     }
   
     ajStrClear(OEnv);
@@ -2888,8 +2890,9 @@ ajint   ajAtomEnv2(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
 	ajStrAssC(&BEnv, "E");
     else
     {
-	ajStrClear(OEnv);
+	ajStrClear(OEnv); 
 	ajFmtPrintF(logf, "BEnv unassigned for residue %d\n", atom->Idx);
+	ajStrDel(&BEnv);
 	return 0;
     }
   
@@ -2932,9 +2935,10 @@ ajint   ajAtomEnv2(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
 	ajStrAssC(OEnv,"AR");
     else
     {
-	ajStrClear(OEnv);
+	ajStrClear(OEnv); 
 	ajFmtPrintF(logf, "OEnv unassigned for residue %d\n", atom->Idx);
-	return ajFalse;
+	ajStrDel(&BEnv);
+	return 0;
     }
 
     ajStrDel(&BEnv);
@@ -2951,7 +2955,7 @@ ajint   ajAtomEnv2(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
 
 /* @func ajAtomEnv3 ***********************************************************
 ** Assigns environment based on side chain accessibility and secondary
-** structure.
+** structure.  Assigns environment of "*" as default.
 ** @param [r] atom [AjPAtom]         AtomStride object
 ** @param [w] OEnv [char]            Character for the overall environment class 
 ** @return [ajint]
@@ -3006,8 +3010,10 @@ ajint   ajAtomEnv3(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
 	ajStrAssC(&BEnv, "E");
     else
     {
-	ajStrClear(OEnv);
+	ajStrClear(OEnv); 
 	ajFmtPrintF(logf, "BEnv unassigned for residue %d\n", atom->Idx);
+
+	ajStrDel(&BEnv);
 	return 0;
     }
   
@@ -3062,9 +3068,11 @@ ajint   ajAtomEnv3(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
 	ajStrAssC(OEnv,"AX");
     else
     {
-	ajStrClear(OEnv);
+	ajStrClear(OEnv); 
 	ajFmtPrintF(logf, "OEnv unassigned for residue %d\n", atom->Idx);
-	return ajFalse;
+
+	ajStrDel(&BEnv);
+	return 0;
     }
 
     ajStrDel(&BEnv);
@@ -3075,7 +3083,7 @@ ajint   ajAtomEnv3(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
 
 /* @func ajAtomEnv4 ***********************************************************
 ** Assigns environment based only of side chain accessibility and secondary 
-** structure.
+** structure.  Assigns environment of "*" as default.
 ** @param [r] atom [AjPAtom]         AtomStride object
 ** @param [w] OEnv [char]            Character for the overall environment class 
 ** @return [ajint]
@@ -3111,7 +3119,8 @@ ajint   ajAtomEnv4(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
     else
     {
 	ajStrClear(OEnv);
-	/* ajFmtPrintF(logf, "OEnv unassigned for residue %d\n", atom->Idx); */
+	ajFmtPrintF(logf, "OEnv unassigned for residue %d\n", atom->Idx); 
+
 	return 0;
     }
 
@@ -3127,7 +3136,7 @@ ajint   ajAtomEnv4(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
 
 /* @func ajAtomEnv5 ***********************************************************
 ** Assigns environment based on side chain accessibility and secondary 
-** structure.
+** structure.  Assigns environment of "*" as default.
 ** @param [r] atom [AjPAtom]         AtomStride object
 ** @param [w] OEnv [char]            Character for the overall environment class 
 ** @return [ajint]
@@ -3183,8 +3192,10 @@ ajint   ajAtomEnv5(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
 	ajStrAssC(&BEnv, "E2");
     else
     {
-	ajStrClear(OEnv);
+	ajStrClear(OEnv); 
 	ajFmtPrintF(logf, "BEnv unassigned for residue %d\n", atom->Idx);
+
+	ajStrDel(&BEnv);
 	return 0;
     }
   
@@ -3239,9 +3250,11 @@ ajint   ajAtomEnv5(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
 	ajStrAssC(OEnv,"AX");
     else
     {
-	ajStrClear(OEnv);
+	ajStrClear(OEnv); 
 	ajFmtPrintF(logf, "OEnv unassigned for residue %d\n", atom->Idx);
-	return ajFalse;
+
+	ajStrDel(&BEnv);
+	return 0;
     }
 
     ajStrDel(&BEnv);
@@ -3259,7 +3272,7 @@ ajint   ajAtomEnv5(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
 
 /* @func ajAtomEnv6 ***********************************************************
 ** Assigns environment based on side chain accessibility and secondary 
-** structure.
+** structure.  Assigns environment of "*" as default.
 ** @param [r] atom [AjPAtom]         AtomStride object
 ** @param [w] OEnv [char]            Character for the overall environment class 
 ** @return [ajint]
@@ -3315,8 +3328,10 @@ ajint   ajAtomEnv6(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
 	ajStrAssC(&BEnv, "E5");
     else
     {
-	ajStrClear(OEnv);
+	ajStrClear(OEnv); 
 	ajFmtPrintF(logf, "BEnv unassigned for residue %d\n", atom->Idx);
+
+	ajStrDel(&BEnv);
 	return 0;
     }
   
@@ -3371,9 +3386,11 @@ ajint   ajAtomEnv6(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
 	ajStrAssC(OEnv,"AX");
     else
     {
-	ajStrClear(OEnv);
+	ajStrClear(OEnv); 
 	ajFmtPrintF(logf, "OEnv unassigned for residue %d\n", atom->Idx);
-	return ajFalse;
+
+	ajStrDel(&BEnv);
+	return 0;
     }
 
     ajStrDel(&BEnv);
@@ -3392,7 +3409,7 @@ ajint   ajAtomEnv6(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
 
 /* @func ajAtomEnv7 ***********************************************************
 ** Assigns environment based on side chain accessibility and secondary 
-** structure.
+** structure.  Assigns environment of "*" as default.
 ** @param [r] atom [AjPAtom]         AtomStride object
 ** @param [w] OEnv [char]            Character for the overall environment class 
 ** @return [AjBool]
@@ -3412,6 +3429,7 @@ ajint   ajAtomEnv7(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
     if(!atom)
     {
 	ajWarn("No atom to ajAtomEnv");
+	ajStrDel(&BEnv);
 	return 0;
     }
   
@@ -3441,8 +3459,10 @@ ajint   ajAtomEnv7(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
 	ajStrAssC(&BEnv, "E4");
     else
     {
-	ajStrClear(OEnv);
+	ajStrClear(OEnv); 
 	ajFmtPrintF(logf, "BEnv unassigned for residue %d\n", atom->Idx);
+
+	ajStrDel(&BEnv);
 	return 0;
     }
   
@@ -3497,8 +3517,10 @@ ajint   ajAtomEnv7(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
 	ajStrAssC(OEnv,"AX");
     else
     {
-	ajStrClear(OEnv);
+	ajStrClear(OEnv); 
 	ajFmtPrintF(logf, "OEnv unassigned for residue %d\n", atom->Idx);
+
+	ajStrDel(&BEnv);
 	return 0;
     }
 
@@ -3515,7 +3537,7 @@ ajint   ajAtomEnv7(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
 
 /* @func ajAtomEnv8 ***********************************************************
 ** Assigns environment based only of side chain accessibility and secondary 
-** structure.
+** structure.  Assigns environment of "*" as default.
 ** @param [r] atom [AjPAtom]         AtomStride object
 ** @param [w] OEnv [char]            Character for the overall environment class 
 ** @return [ajint]
@@ -3574,8 +3596,9 @@ ajint   ajAtomEnv8(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
 	ajStrAssC(OEnv,"AU");
     else
     {
-	ajStrClear(OEnv);
-	/* ajFmtPrintF(logf, "OEnv unassigned for residue %d\n", atom->Idx); */
+	ajStrClear(OEnv); 
+	ajFmtPrintF(logf, "OEnv unassigned for residue %d\n", atom->Idx); 
+
 	return 0;
     }
 
@@ -3590,7 +3613,7 @@ ajint   ajAtomEnv8(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
 
 /* @func ajAtomEnv9 ***********************************************************
 ** Assigns environment based only of side chain accessibility and secondary 
-** structure.
+** structure.  Assigns environment of "*" as default.
 ** @param [r] atom [AjPAtom]         AtomStride object
 ** @param [w] OEnv [char]            Character for the overall environment class 
 ** @return [ajint]
@@ -3626,7 +3649,8 @@ ajint   ajAtomEnv9(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
     else
     {
 	ajStrClear(OEnv);
-	/* ajFmtPrintF(logf, "OEnv unassigned for residue %d\n", atom->Idx); */
+	ajFmtPrintF(logf, "OEnv unassigned for residue %d\n", atom->Idx); 
+	
 	return 0;
     }
 
@@ -3641,7 +3665,7 @@ ajint   ajAtomEnv9(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
 
 /* @func ajAtomEnv10 **********************************************************
 ** Assigns environment based on side chain accessibility and secondary 
-** structure.
+** structure.  Assigns environment of "*" as default.
 ** @param [r] atom [AjPAtom]         AtomStride object
 ** @param [w] OEnv [char]            Character for the overall environment class 
 ** @return [ajint]
@@ -3696,8 +3720,10 @@ ajint   ajAtomEnv10(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
 	ajStrAssC(&BEnv, "E2");
     else
     {
-	ajStrClear(OEnv);
+	 ajStrClear(OEnv);
 	ajFmtPrintF(logf, "BEnv unassigned for residue %d\n", atom->Idx);
+	
+	ajStrDel(&BEnv);
 	return 0;
     }
   
@@ -3752,8 +3778,10 @@ ajint   ajAtomEnv10(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
 	ajStrAssC(OEnv,"AX");
     else
     {
-	ajStrClear(OEnv);
+ 	ajStrClear(OEnv); 
 	ajFmtPrintF(logf, "OEnv unassigned for residue %d\n", atom->Idx);
+
+	ajStrDel(&BEnv);
 	return 0;
     }
 
@@ -3774,7 +3802,7 @@ ajint   ajAtomEnv10(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
 
 /* @func ajAtomEnv11 **********************************************************
 ** Assigns environment based on side chain accessibility and secondary 
-** structure.
+** structure.  Assigns environment of "*" as default.
 ** @param [r] atom [AjPAtom]         AtomStride object
 ** @param [w] OEnv [char]            Character for the overall environment class 
 ** @return [ajing]
@@ -3825,8 +3853,10 @@ ajint   ajAtomEnv11(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
 	ajStrAssC(&BEnv, "E");
     else
     {
-	ajStrClear(OEnv);
+	ajStrClear(OEnv); 
 	ajFmtPrintF(logf, "BEnv unassigned for residue %d\n", atom->Idx);
+
+	ajStrDel(&BEnv);
 	return 0;
     }
   
@@ -3883,6 +3913,8 @@ ajint   ajAtomEnv11(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
     {
 	ajStrClear(OEnv);
 	ajFmtPrintF(logf, "OEnv unassigned for residue %d\n", atom->Idx);
+
+	ajStrDel(&BEnv);
 	return 0;
     }
 
@@ -3900,7 +3932,7 @@ ajint   ajAtomEnv11(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
 
 /* @func ajAtomEnv12 **********************************************************
 ** Assigns environment based on side chain accessibility and secondary 
-** structure.
+** structure.  Assigns environment of "*" as default.
 ** @param [r] atom [AjPAtom]         AtomStride object
 ** @param [w] OEnv [char]            Character for the overall environment class 
 ** @return [ajint]
@@ -3953,6 +3985,7 @@ ajint   ajAtomEnv12(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
     {
 	ajStrClear(OEnv);
 	ajFmtPrintF(logf, "BEnv unassigned for residue %d\n", atom->Idx);
+	ajStrDel(&BEnv);
 	return 0;
     }
   
@@ -4007,8 +4040,10 @@ ajint   ajAtomEnv12(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
 	ajStrAssC(OEnv,"AX");
     else
     {
-	ajStrClear(OEnv);
+	ajStrClear(OEnv); 
 	ajFmtPrintF(logf, "OEnv unassigned for residue %d\n", atom->Idx);
+
+	ajStrDel(&BEnv);
 	return 0;
     }
 
@@ -4028,7 +4063,7 @@ ajint   ajAtomEnv12(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
 
 /* @func ajAtomEnv13 **********************************************************
 ** Assigns environment based on side chain accessibility and secondary 
-** structure.
+** structure.  Assigns environment of "*" as default.
 ** @param [r] atom [AjPAtom]         AtomStride object
 ** @param [w] OEnv [char]            Character for the overall environment class 
 ** @return [ajint]
@@ -4077,8 +4112,10 @@ ajint   ajAtomEnv13(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
 	ajStrAssC(&BEnv, "E6");
     else
     {
-	ajStrClear(OEnv);
+ 	ajStrClear(OEnv); 
 	ajFmtPrintF(logf, "BEnv unassigned for residue %d\n", atom->Idx);
+
+	ajStrDel(&BEnv);
 	return 0;
     }
   
@@ -4133,8 +4170,10 @@ ajint   ajAtomEnv13(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
 	ajStrAssC(OEnv,"AX");
     else
     {
-	ajStrClear(OEnv);
+	ajStrClear(OEnv); 
 	ajFmtPrintF(logf, "OEnv unassigned for residue %d\n", atom->Idx);
+
+	ajStrDel(&BEnv);
 	return 0;
     }
 
@@ -4153,7 +4192,7 @@ ajint   ajAtomEnv13(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
 
 /* @func ajAtomEnv14 **********************************************************
 ** Assigns environment based on side chain accessibility and secondary 
-** structure.
+** structure.  Assigns environment of "*" as default.
 ** @param [r] atom [AjPAtom]         AtomStride object
 ** @param [w] OEnv [char]            Character for the overall environment class 
 ** @return [AjBool]
@@ -4202,8 +4241,10 @@ ajint   ajAtomEnv14(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
 	ajStrAssC(&BEnv, "E");
     else
     {
-	ajStrClear(OEnv);
+ 	ajStrClear(OEnv);
 	ajFmtPrintF(logf, "BEnv unassigned for residue %d\n", atom->Idx);
+
+	ajStrDel(&BEnv);
 	return 0;
     }
 
@@ -4258,8 +4299,10 @@ ajint   ajAtomEnv14(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
 	ajStrAssC(OEnv,"AX");
     else
     {
-	ajStrClear(OEnv);
+	ajStrClear(OEnv); 
 	ajFmtPrintF(logf, "OEnv unassigned for residue %d\n", atom->Idx);
+
+	ajStrDel(&BEnv);
 	return 0;
     }
 
@@ -4276,7 +4319,7 @@ ajint   ajAtomEnv14(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
 
 /* @func ajAtomEnv15 **********************************************************
 ** Assigns environment based on side chain accessibility and secondary 
-** structure.
+** structure.   Assigns environment of "*" as default.
 ** @param [r] atom [AjPAtom]      AtomStride object
 ** @param [w] OEnv [char]         Character for the overall environment class 
 ** @return [ajint]
@@ -4325,8 +4368,10 @@ ajint   ajAtomEnv15(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
 	ajStrAssC(&BEnv, "E");
     else
     {
-	ajStrClear(OEnv);
+	ajStrClear(OEnv); 
 	ajFmtPrintF(logf, "BEnv unassigned for residue %d\n", atom->Idx);
+
+	ajStrDel(&BEnv);
 	return 0;
     }
 
@@ -4381,8 +4426,10 @@ ajint   ajAtomEnv15(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
 	ajStrAssC(OEnv,"AX");
     else
     {
-	ajStrClear(OEnv);
+	ajStrClear(OEnv); 
 	ajFmtPrintF(logf, "OEnv unassigned for residue %d\n", atom->Idx);
+
+	ajStrDel(&BEnv);
 	return 0;
     }
 
@@ -4400,7 +4447,7 @@ ajint   ajAtomEnv15(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
 
 /* @func ajAtomEnv16 **********************************************************
 ** Assigns environment based on side chain accessibility and secondary 
-** structure.
+** structure.  Assigns environment of "*" as default.
 ** @param [r] atom [AjPAtom]    AtomStride object
 ** @param [w] OEnv [char]       Character for the overall environment class 
 ** @return [ajint]
@@ -4450,8 +4497,10 @@ ajint   ajAtomEnv16(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
 	ajStrAssC(&BEnv, "E");
     else
     {
-	ajStrClear(OEnv);
+	ajStrClear(OEnv); 
 	ajFmtPrintF(logf, "BEnv unassigned for residue %d\n", atom->Idx);
+
+	ajStrDel(&BEnv);
 	return 0;
     }
 
@@ -4506,10 +4555,13 @@ ajint   ajAtomEnv16(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
 	ajStrAssC(OEnv,"AX");
     else
     {
-	ajStrClear(OEnv);
+	ajStrClear(OEnv); 
 	ajFmtPrintF(logf, "OEnv unassigned for residue %d\n", atom->Idx);
+
+	ajStrDel(&BEnv);
 	return 0;
     }
+
 
     ajStrDel(&BEnv);
 
