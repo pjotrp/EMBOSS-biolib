@@ -415,10 +415,12 @@ output_auth_xml()
 get_libs()
 {
   USER_CONFIG=$1
-  if (test -f /usr/local/include/png.h) && (test -f /usr/local/include/gd.h); then
-     USER_CONFIG="--with-pngdriver=/usr/local"
-  elif (test -f /usr/include/png.h) && (test -f /usr/include/gd.h); then
+  if (test -f /usr/include/png.h) && (test -f /usr/include/gd.h); then
      USER_CONFIG="default"
+  elif (test -f /usr/local/include/png.h) && (test -f /usr/local/include/gd.h); then
+     USER_CONFIG="--with-pngdriver=/usr/local"
+  elif (test -f /opt/freeware/include/png.h) && (test -f /opt/freeware/include/gd.h); then
+     USER_CONFIG="--with-pngdriver=/opt/freeware"
   fi
 }
 
@@ -454,9 +456,9 @@ check_libs()
 
   if (test $WARN = "true"); then
     echo
-    echo "--------------------------------------------------------------"
+    echo "------------------------- WARNING ----------------------------"
     echo
-    echo "WARNING! The script has detected that $DIR/include/png.h"
+    echo "The script has detected that $DIR/include/png.h"
     echo "does not exist!"
     echo
     echo "Download libpng from"
@@ -490,9 +492,9 @@ check_libs()
 
   if (test $WARN = "true"); then
     echo
-    echo "--------------------------------------------------------------"
+    echo "------------------------- WARNING ----------------------------"
     echo
-    echo "WARNING! The script has detected that $DIR/include/gd.h"
+    echo "The script has detected that $DIR/include/gd.h"
     echo "does not exist"
     echo
     echo "Download gd from"
@@ -520,10 +522,12 @@ check_libs()
 
   if (test $WARN = "true"); then
     echo
-    echo "--------------------------------------------------------------"
+    echo "------------------------- WARNING ----------------------------"
     echo
-    echo "WARNING! The script has detected that zlib is not"
-    echo "installed in /usr or /usr/local"
+    echo "The script has detected that zlib is not installed in /usr"
+    if( (test $PLATFORM = "macos") || (test $PLATFORM = "linux") ); then
+      echo "or /usr/local"
+    fi
     echo
     echo "Download zlib from"
     echo "       http://www.info-zip.org/pub/infozip/zlib/"
@@ -996,10 +1000,22 @@ USER_CONFIG=""
 get_libs $USER_CONFIG
 
 if [ "$USER_CONFIG" = "" ]; then
+  echo
+  echo "--------------------------------------------------------------"
+  echo
+  echo "The libraries for EMBOSS (libpng and gd) do not appear to"
+  echo "be in /usr. It may be necessary to use the configuration"
+  echo "flag --with-pngdriver to specify their location"
+  echo
+  echo "For details see the EMBOSS admin guide:"
+  echo "http://www.hgmp.mrc.ac.uk/Software/EMBOSS/Doc/Admin_guide/adminguide/"
+  echo
   echo "Enter any other EMBOSS configuration options (e.g. --with-pngdriver=pathname)"
   echo "or press return to leave blank:"
   read USER_CONFIG
 elif [ "$USER_CONFIG" = "default" ]; then
+  echo
+  echo "--------------------------------------------------------------"
   echo
   echo "The libraries for EMBOSS (libpng and gd) appear to be in /usr,"
   echo "if these are the correct libraries then there should be no need"
