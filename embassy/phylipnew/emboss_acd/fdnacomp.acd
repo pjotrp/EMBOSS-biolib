@@ -3,6 +3,11 @@ application: fdnacomp [
   groups: "Phylogeny:Molecular sequence"
 ]
 
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
 seqsetall: sequence  [
   parameter: "Y"
   type: "gapdna"
@@ -19,6 +24,13 @@ properties: weights [
   information: "Weights file"
   nullok: "Y"
   knowntype: "Phylip weights"
+]
+
+endsection: input
+
+section: output [
+  information: "Output section"
+  type: "page"
 ]
 
 outfile: outfile  [
@@ -43,7 +55,7 @@ integer: outgroup  [
   minimum: "0"
   default: "0"
   maximum: "$(sequence.size)"
-  information: "number of the outgroup"
+  information: "Number of the outgroup"
 ]
 
 boolean: printdata  [
@@ -70,6 +82,13 @@ boolean: ancseq  [
   information: "Print sequences at all nodes of tree"
 ]
 
+endsection: output
+
+section: required [
+  information: "Required section"
+  type: "page"
+]
+
 integer: jumble [
   additional: "Y"
   information: "Number of times to jumble"
@@ -85,3 +104,5 @@ integer: seed [
   maximum: "32765"
   default: 1
 ]
+
+endsection: required

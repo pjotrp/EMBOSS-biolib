@@ -7,6 +7,11 @@ application: fdnaml [
   cpu: "high"
 ]
 
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
 seqsetall: sequence  [
   parameter: "Y"
   type: "gapany"
@@ -19,6 +24,35 @@ tree: intreefile [
   knowntype: "Newick tree"
 ]
 
+integer: ncategories  [
+  additional: "Y"
+  default: "1"	
+  minimum: "1"
+  maximum: "9"
+  information: "Number of substitution rate categories"
+]
+
+properties: categories  [
+  additional: "Y"
+  characters: "1-$(ncategories)"
+  information: "File of substitution rate categories"
+  nullok: "Y"
+]
+
+properties: weights  [
+  additional: "Y"
+  characters: "01"
+  information: "Weights file: Ignore sites with weight zero"
+  nullok: "Y"
+]
+
+endsection: input
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
 outfile: outfile  [
   parameter: "Y"
   knowntype: "dnaml output"
@@ -29,6 +63,25 @@ outfile: outtreefile  [
   information: "Tree file name"
   knowntype: "Newick tree"
   nullok: "Y"
+]
+
+boolean: printdata  [
+  additional: "Y"
+  default: "N"
+  information: "Print out the data at start of run"
+]
+
+boolean: progress  [
+  additional: "Y"
+  default: "N"
+  information: "Print indications of progress of run"
+]
+
+endsection: output
+
+section: additional [
+  information: "Additional section"
+  type: "page"
 ]
 
 list: gamma  [
@@ -45,6 +98,7 @@ list: gamma  [
 ]
 
 float: coefficient [
+  additional: "y"
   information: "Coefficient of variation"
   minimum: "0.001"
   maximum: "1.0"
@@ -57,21 +111,6 @@ float: invarfrac  [
   default: "0.0"
   minimum: "0.0"
   maximum: "0.9999"
-]
-
-integer: ncategories  [
-  additional: "Y"
-  default: "1"	
-  minimum: "1"
-  maximum: "9"
-  information: "Number of substitution rate categories"
-]
-
-properties: categories  [
-  additional: "Y"
-  characters: "1-$(ncategories)"
-  information: "File of substitution rate categories"
-  nullok: "Y"
 ]
 
 array: rates [
@@ -111,44 +150,27 @@ array: hmmprobabilities [
 ]
 
 float: lambda [
+  additional: "Y"
   default: "1.0"
   information: "Mean block length of sites having the same rate"
   minimum: "1.0"
 ]
 
-properties: weights  [
-  additional: "Y"
-  characters: "01"
-  information: "Weights file: Ignore sites with weight zero"
-  nullok: "Y"
-]
-
 float: ttratio  [
-  standard: "y"
+  additional: "y"
   information: "Transition/transversion ratio"
   default: "2.0"
   maximum: "100.0"
 ]
 
 array: basefreqs [
+  additional: "y"
   information: "Base frequencies"
   size: "4"
   minimum: "0.0"
   maximum: "1.0"
   default: "0.25 0.25 0.25 0.25"
   sum: "1.0"
-]
-
-boolean: printdata  [
-  additional: "Y"
-  default: "N"
-  information: "Print out the data at start of run"
-]
-
-boolean: progress  [
-  additional: "Y"
-  default: "N"
-  information: "Print indications of progress of run"
 ]
 
 boolean: global [
@@ -186,3 +208,5 @@ boolean: freqsfrom [
   default: "Y"
   information: "Use empirical base frequencies from seqeunce input"
 ]
+
+endsection: additional

@@ -11,13 +11,13 @@ section: input [
   type: "page"
 ]
 
-  seqall: est [
+  seqall: estsequence [
     parameter: "Y"
     type: "dna"
     information: "EST sequence(s)"
   ]
 
-  sequence: genome [
+  sequence: genomesequence [
     parameter: "Y"
     type: "dna"
     information: "Genomic sequence"

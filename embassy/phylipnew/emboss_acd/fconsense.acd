@@ -3,6 +3,11 @@ application: fconsense [
   groups: "Phylogeny:Consensus"
 ]
 
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
 tree: intreefile [
   parameter: "Y"
   knowntype: "Newick tree"
@@ -19,12 +24,19 @@ list: method [
   default: "mre"
 ]
 
+endsection: input
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
 outfile: outfile [
   parameter: "Y"
   knowntype: "consense output"
 ]
 
-boolean: trout [
+toggle: trout [
   parameter: "Y"
   default: "Y"
   information: "Create a tree file"
@@ -43,24 +55,6 @@ outfile: outtreefile [
   knowntype: "Newick tree"
 ]
 
-boolean: root [
-  additional: "Y"
-  default: "N"
-  information: "Trees to be treated as Rooted"
-]
-
-boolean: og [
-  standard: "$(root)"
-  information: "Outgroup root"
-  default: "N"
-]
-
-integer: outgnum [
-  standard: "$(og)"
-  minimum: "1"
-  default: "1"
-  information: "number of the outgroup"
-]
 
 boolean: progress [
   additional: "Y"
@@ -73,3 +67,30 @@ boolean: printsets [
   default: "Y"
   information: "Print out the sets of species"
 ]
+endsection: output
+
+section: required [
+  information: "Required section"
+  type: "page"
+]
+
+toggle: root [
+  additional: "Y"
+  default: "N"
+  information: "Trees to be treated as Rooted"
+]
+
+toggle: og [
+  standard: "$(root)"
+  information: "Outgroup root"
+  default: "N"
+]
+
+integer: outgnum [
+  standard: "$(og)"
+  minimum: "1"
+  default: "1"
+  information: "Number of the outgroup"
+]
+
+endsection: required

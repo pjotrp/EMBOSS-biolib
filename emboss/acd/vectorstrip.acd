@@ -19,7 +19,7 @@ section: input [
     type: "frame"
   ]
 
-    boolean: vectorfile  [
+    toggle: vectorfile  [
       parameter: "Y"
       default: "Y"
       information: "Are your vector sequences in a file?"

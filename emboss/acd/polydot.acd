@@ -51,13 +51,13 @@ section: output [
     information: "Draw a box around each dotplot"
   ]
 
-  boolean: dumpfeat  [
+  toggle: dumpfeat  [
     default: "N"
     additional: "Y"
     information: "Dump all matches as feature files"
   ]
 
-  featout: featout  [
+  featout: outfeat  [
     standard: "$(dumpfeat)"
     nullok: "@(!$(dumpfeat))"
     nulldefault: "@(!$(dumpfeat))"

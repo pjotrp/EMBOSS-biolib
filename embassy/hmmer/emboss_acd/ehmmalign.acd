@@ -6,33 +6,54 @@ application: ehmmalign [
   cpu: "medium"
 ]
 
-infile: hmmfile  [
-  parameter: "Y"
-  information: "HMM file"
-  knowntype: "hmm file"
+section: input [
+  information: "Input section"
+  type: "page"
 ]
 
-seqset: sequences  [
-  parameter: "Y"
-  type: "gapany"
+  infile: hmmfile  [
+    parameter: "Y"
+    information: "HMM file"
+    knowntype: "hmm file"
+  ]
+
+  seqset: sequences  [
+    parameter: "Y"
+    type: "gapany"
+  ]
+
+endsection: input
+
+section: advanced [
+  information: "Advanced section"
+  type: "page"
 ]
 
-string: mapali  [
-  default: ""
-  information: "Map alignment"
+  string: mapali  [
+    default: ""
+    information: "Map alignment"
+  ]
+
+  string: withali  [
+    default: ""
+    information: "Heuristic alignment"
+  ]
+
+  boolean: matchonly  [
+    default: "N"
+    information: "Only show match state alignment symbols"
+  ]
+
+endsection: advanced
+
+section: output [
+  information: "Output section"
+  type: "page"
 ]
 
-string: withali  [
-  default: ""
-  information: "Heuristic alignment"
-]
+  outfile: outfile  [
+    parameter: "Y"
+    knowntype: "hmmalign output"
+  ]
 
-boolean: matchonly  [
-  default: "N"
-  information: "Only show match state alignment symbols"
-]
-
-outfile: outfile  [
-  parameter: "Y"
-  knowntype: "hmmalign output"
-]
+endsection: output

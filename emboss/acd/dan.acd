@@ -73,7 +73,7 @@ section: additional [
     type: "frame"
   ]
 
-    boolean: product  [
+    toggle: product  [
       additional: "Y"
       information: "Prompt for product values"
       help: "This prompts for percent formamide, percent of mismatches
@@ -117,7 +117,7 @@ section: additional [
     type: "frame"
   ]
 
-    boolean: thermo  [
+    toggle: thermo  [
       additional: "Y"
       information: "Thermodynamic calculations"
       help: "Output the DeltaG, DeltaH and DeltaS values of the
@@ -157,7 +157,7 @@ section: output [
   type: "page"
 ]
 
-  boolean: plot  [
+  toggle: plot  [
     information: "Produce a plot"
     help: "If this is not specified then the file of output data is
            produced, else a plot of the melting point along the sequence is

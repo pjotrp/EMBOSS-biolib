@@ -7,10 +7,51 @@ application: efitch [
   cpu: "high"
 ]
 
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
 infile: infile  [
   parameter: "Y"
-  information: "data file"
+  information: "Data file"
   knowntype: "fitch input"
+]
+
+boolean: lt  [
+  additional: "Y"
+  default: "N"
+  information: "Lower-triangular data matrix"
+]
+
+boolean: ut  [
+  additional: "Y"
+  default: "N"
+  information: "Upper-triangular data matrix"
+]
+
+boolean: replicates  [
+  additional: "Y"
+  default: "N"
+  information: "Subreplicates"
+]
+
+toggle: multsets  [
+  additional: "Y"
+  default: "N"
+  information: "Analyze multiple data sets"
+]
+
+integer: datasets  [
+  standard: "$(multsets)"
+  information: "How many data sets"
+]
+
+endsection: input
+
+section: output [
+  information: "Output section"
+  type: "page"
 ]
 
 outfile: outfile  [
@@ -19,8 +60,46 @@ outfile: outfile  [
   knowntype: "fitch output"
 ]
 
-boolean: besttree  [
+boolean: printdata  [
+  additional: "Y"
+  default: "N"
+  information: "Print out the data at start of run"
+]
+
+boolean: progress  [
+  additional: "Y"
+  default: "N"
+  information: "Print indications of progress of run"
+]
+
+toggle: trout  [
   parameter: "Y"
+  default: "Y"
+  information: "Create a tree file"
+]
+
+boolean: drawtree  [
+  additional: "Y"
+  default: "Y"
+  information: "Draw tree"
+]
+
+outfile: treefile  [
+  standard: "$(trout)"
+  extension: "treefile"
+  information: "Tree file name"
+  knowntype: "tree file"
+]
+
+endsection: output
+
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
+toggle: besttree  [
+  additional: "Y"
   default: "Y"
   information: "Search for best tree"
 ]
@@ -43,7 +122,20 @@ boolean: negbranch  [
   information: "Negative branch lengths allowed"
 ]
 
-boolean: random  [
+boolean: global  [
+  additional: "$(besttree)"
+  default: "N"
+  information: "Global rearrangements"
+]
+
+endsection: additional
+
+section: required [
+  information: "Required section"
+  type: "page"
+]
+
+toggle: random  [
   additional: "$(besttree)"
   default: "N"
   information: "Randomize input order of species"
@@ -59,13 +151,7 @@ integer: randtimes  [
   information: "Number of times to jumble"
 ]
 
-boolean: global  [
-  additional: "$(besttree)"
-  default: "N"
-  information: "Global rearrangements"
-]
-
-boolean: og  [
+toggle: og  [
   standard: "Y"
   information: "Outgroup root"
   default: "N"
@@ -75,65 +161,7 @@ integer: outgnum  [
   standard: "$(og)"
   minimum: "1"
   default: "1"
-  information: "number of the outgroup"
+  information: "Number of the outgroup"
 ]
 
-boolean: lt  [
-  additional: "Y"
-  default: "N"
-  information: "Lower-triangular data matrix"
-]
-
-boolean: ut  [
-  additional: "Y"
-  default: "N"
-  information: "Upper-triangular data matrix"
-]
-
-boolean: replicates  [
-  additional: "Y"
-  default: "N"
-  information: "Subreplicates"
-]
-
-boolean: multsets  [
-  additional: "Y"
-  default: "N"
-  information: "Analyze multiple data sets"
-]
-
-integer: datasets  [
-  standard: "$(multsets)"
-  information: "How many data sets"
-]
-
-boolean: printdata  [
-  additional: "Y"
-  default: "N"
-  information: "Print out the data at start of run"
-]
-
-boolean: progress  [
-  additional: "Y"
-  default: "N"
-  information: "Print indications of progress of run"
-]
-
-boolean: trout  [
-  parameter: "Y"
-  default: "Y"
-  information: "Create a tree file"
-]
-
-boolean: drawtree  [
-  additional: "Y"
-  default: "Y"
-  information: "Draw tree"
-]
-
-outfile: treefile  [
-  standard: "$(trout)"
-  extension: "treefile"
-  information: "Tree file name"
-  knowntype: "tree file"
-]
+endsection: required

@@ -42,7 +42,7 @@ section: additional [
   type: "page"
 ]
 
-  boolean: tolower  [
+  toggle: tolower  [
     additional: "Y"
     default: "N"
     information: "Change masked region to lower-case"

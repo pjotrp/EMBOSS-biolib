@@ -3,58 +3,28 @@ application: ednapenny [
   groups: "Phylogeny:Molecular sequence"
 ]
 
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
 seqset: sequence  [
   parameter: "Y"
   type: "gapany"
   help: "File containing a sequence"
 ]
 
+endsection: input
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
 outfile: outfile  [
   parameter: "Y"
   default: "ednapenny.outfile"
   knowntype: "dnapenny output"
-]
-
-integer: numgroups  [
-  additional: "Y"
-  information: "How many groups of 100 trees"
-  default: "1000"
-]
-
-integer: howoften  [
-  additional: "Y"
-  information: "How often to report, in trees"
-  default: "100"
-]
-
-boolean: simple  [
-  additional: "Y"
-  information: "Branch and bound is simple"
-]
-
-boolean: og  [
-  additional: "Y"
-  information: "Outgroup root"
-  default: "N"
-]
-
-integer: outgnum  [
-  standard: "$(og)"
-  minimum: "1"
-  default: "1"
-  information: "number of the outgroup"
-]
-
-boolean: thresh  [
-  default: "N"
-  information: "Use Threshold parsimony"
-]
-
-float: valthresh  [
-  standard: "$(thresh)"
-  minimum: "1.0"
-  default: "1.0"
-  information: "threshold value"
 ]
 
 boolean: printdata  [
@@ -87,7 +57,7 @@ boolean: drawtree  [
   information: "Draw tree"
 ]
 
-boolean: trout  [
+toggle: trout  [
   parameter: "Y"
   default: "Y"
   information: "Create a tree file"
@@ -99,3 +69,61 @@ outfile: treefile  [
   information: "Tree file name"
   knowntype: "tree file"
 ]
+
+endsection: output
+
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
+integer: numgroups  [
+  additional: "Y"
+  information: "How many groups of 100 trees"
+  default: "1000"
+]
+
+integer: howoften  [
+  additional: "Y"
+  information: "How often to report, in trees"
+  default: "100"
+]
+
+boolean: simple  [
+  additional: "Y"
+  information: "Branch and bound is simple"
+]
+
+endsection: additional
+
+section: required [
+  information: "Required section"
+  type: "page"
+]
+
+toggle: og  [
+  standard: "Y"
+  information: "Outgroup root"
+  default: "N"
+]
+
+integer: outgnum  [
+  standard: "$(og)"
+  minimum: "1"
+  default: "1"
+  information: "Number of the outgroup"
+]
+
+toggle: thresh  [
+  default: "N"
+  information: "Use Threshold parsimony"
+]
+
+float: valthresh  [
+  standard: "$(thresh)"
+  minimum: "1.0"
+  default: "1.0"
+  information: "Threshold value"
+]
+
+endsection: required

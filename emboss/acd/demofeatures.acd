@@ -27,7 +27,7 @@ section: output [
   type: "page"
 ]
 
-featout: featout  [
+featout: outfeat  [
   parameter: "Y"
   default: "gff:demofeatures.gff"
   help: "File for output of normal tab delimited gff's"

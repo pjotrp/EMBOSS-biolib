@@ -3,6 +3,11 @@ application: ftreedistpair [
   groups: "Phylogeny:Consensus"
 ]
 
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
 infile: intreefile [
   parameter: "Y"
   knowntype: "Newick tree"
@@ -16,12 +21,33 @@ infile: bintreefile [
   nullok: "Y"
 ]
 
+endsection: input
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
 outfile: outfile  [
   parameter: "Y"
   knowntype: "treedist file"
 ]
 
+boolean: progress [
+  additional: "Y"
+  default: "N"
+  information: "Print indications of progress of run"
+]
+
+endsection: output
+
+section: required [
+  information: "Required section"
+  type: "page"
+]
+
 list: pairing [
+  standard: "Y"
   information: "Tree pairing method"
   values: "Adjacent:Distances between adjacent pairs in tree file;
            Pairs:Distances between all possible pairs in tree file;
@@ -33,6 +59,7 @@ list: pairing [
 ]
 
 list: style [
+  standard: "Y"
   information: "Distances output option"
   values: "Full:Full_matrix;
            Verbose:One pair per line;
@@ -40,10 +67,4 @@ list: style [
   default: "Verbose"
 ]
 
-
-boolean: progress [
-  additional: "Y"
-  default: "N"
-  information: "Print indications of progress of run"
-]
-
+endsection: required

@@ -64,7 +64,7 @@ seqoutall: outseq  [
   help: "Sequence file to hold output ORF sequences"
 ]
 
-featout: featout  [
+featout: outfeat  [
   parameter: "Y"
   help: "File for output features"
   type: "protein"

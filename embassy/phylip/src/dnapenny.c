@@ -167,11 +167,11 @@ AjPFile treef;
   fprintf(outfile, " branch-and-bound to find all");
   fprintf(outfile, " most parsimonious trees\n\n");
 
-  thresh = ajAcdGetBool("thresh");
+  thresh = ajAcdGetToggle("thresh");
   if(thresh)
     threshold = ajAcdGetFloat("valthresh");
   
-  outgropt = ajAcdGetBool("og");
+  outgropt = ajAcdGetToggle("og");
   if(outgropt)
     outgrno = ajAcdGetInt("outgnum"); 
   else
@@ -186,7 +186,7 @@ AjPFile treef;
   ancseq = ajAcdGetBool("seqatnodes");
 
   treeprint = ajAcdGetBool("drawtree");
-  trout = ajAcdGetBool("trout");
+  trout = ajAcdGetToggle("trout");
   if(trout){
     treef = ajAcdGetOutfile("treefile");
     treefile = treef->fp;

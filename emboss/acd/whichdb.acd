@@ -23,7 +23,7 @@ section: output [
   type: "page"
 ]
 
-  boolean: get  [
+  toggle: get  [
     default: "N"
     information: "Retrieve sequences"
   ]

@@ -4,9 +4,21 @@ application: fdnadist [
   groups: "Phylogeny:Molecular sequence"
 ]
 
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
 seqsetall: sequence  [
   parameter: "Y"
   type: "gapany"
+]
+
+endsection: input
+
+section: required [
+  information: "Required section"
+  type: "page"
 ]
 
 list: method  [
@@ -19,6 +31,55 @@ list: method  [
             Similarity:Similarity table"
   information: "Choose the method to use"
   default: "F84"
+]
+
+endsection: required
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+outfile: outfile  [
+  parameter: "Y"
+  knowntype: "dnadist output"
+]
+
+boolean: printdata  [
+  additional: "Y"
+  default: "N"
+  information: "Print out the data at start of run"
+]
+
+boolean: progress  [
+  additional: "Y"
+  default: "N"
+  information: "Print indications of progress of run"
+]
+
+outfile: distancefile [
+  standard: "@($(method) != Similarity)"
+  information: "Distance matrix output"
+  knowntype: "distance matrix"
+  extension: "distance"
+  nullok: "Y"
+  nulldefault: "@($(method) == Similarity)"
+]
+
+outfile: similarityfile [
+  standard: "@($(method) == Similarity)"
+  information: "Similarity matrix output"
+  knowntype: "similarity matrix"
+  extension: "similarity"
+  nullok: "Y"
+  nulldefault: "@($(method) != Similarity)"
+]
+
+endsection: output
+
+section: additional [
+  information: "Additional section"
+  type: "page"
 ]
 
 list: gamma  [
@@ -34,6 +95,7 @@ list: gamma  [
 ]
 
 float: coefficient [
+  additional: "Y"
   information: "Coefficient of variation (F84, Kimura, or Jukes-Cantor
                 methods)"
   minimum: "0.001"
@@ -81,18 +143,14 @@ properties: weights  [
 ]
 
 float: ttratio  [
-  standard: "y"
+  additional: "y"
   information: "Transition/transversion ratio"
   default: "2.0"
   maximum: "100.0"
 ]
 
-outfile: outfile  [
-  parameter: "Y"
-  knowntype: "dnadist output"
-]
-
 array: basefreqs [
+  additional: "y"
   information: "Base frequencies"
   size: "4"
   minimum: "0.0"
@@ -101,33 +159,4 @@ array: basefreqs [
   sum: "1.0"
 ]
 
-outfile: distancefile [
-  standard: "@($(method) != Similarity)"
-  information: "Distance matrix output"
-  knowntype: "distance matrix"
-  extension: "distance"
-  nullok: "Y"
-  nulldefault: "@($(method) == Similarity)"
-]
-
-outfile: similarityfile [
-  standard: "@($(method) == Similarity)"
-  information: "Similarity matrix output"
-  knowntype: "similarity matrix"
-  extension: "similarity"
-  nullok: "Y"
-  nulldefault: "@($(method) != Similarity)"
-]
-
-boolean: printdata  [
-  additional: "Y"
-  default: "N"
-  information: "Print out the data at start of run"
-]
-
-boolean: progress  [
-  additional: "Y"
-  default: "N"
-  information: "Print indications of progress of run"
-]
-
+endsection: additional

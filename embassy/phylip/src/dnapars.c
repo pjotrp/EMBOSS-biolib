@@ -115,9 +115,9 @@ long inseed0;
 
   outf = ajAcdGetOutfile("outfile");
   outfile = outf->fp;
-  usertree = !ajAcdGetBool("besttree");
+  usertree = !ajAcdGetToggle("besttree");
   if(!usertree){
-    jumble = ajAcdGetBool("random");
+    jumble = ajAcdGetToggle("random");
     if(jumble){
       inseed = ajAcdGetInt("randseed");
       /* make sure it's odd*/
@@ -140,11 +140,11 @@ long inseed0;
       njumble = 1;
   }
 
-  thresh = ajAcdGetBool("thresh");
+  thresh = ajAcdGetToggle("thresh");
   if(thresh)
     threshold = ajAcdGetFloat("valthresh");
   
-  outgropt = ajAcdGetBool("og");
+  outgropt = ajAcdGetToggle("og");
   if(outgropt)
     outgrno = ajAcdGetInt("outgnum"); 
   else
@@ -160,7 +160,7 @@ long inseed0;
 
   treeprint = ajAcdGetBool("drawtree");
  
-  trout = ajAcdGetBool("trout");
+  trout = ajAcdGetToggle("trout");
   if(trout){
     treef = ajAcdGetOutfile("treefile");
     treefile = treef->fp;

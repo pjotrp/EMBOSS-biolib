@@ -3,10 +3,39 @@ application: egendist [
   groups: "Phylogeny:Gene frequencies"
 ]
 
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
 infile: infile  [
   parameter: "Y"
-  information: "data file"
+  information: "Data file"
   knowntype: "gendist input"
+]
+
+boolean: lowertriangle  [
+  additional: "Y"
+  default: "N"
+  information: "Lower-triangular (else Square)"
+]
+
+toggle: multsets  [
+  additional: "Y"
+  default: "N"
+  information: "Analyze multiple data sets"
+]
+
+integer: datasets  [
+  standard: "$(multsets)"
+  information: "How many data sets"
+]
+
+endsection: input
+
+section: output [
+  information: "Output section"
+  type: "page"
 ]
 
 outfile: outfile  [
@@ -15,11 +44,31 @@ outfile: outfile  [
   knowntype: "gendist output"
 ]
 
+boolean: progress  [
+  additional: "Y"
+  default: "N"
+  information: "Print indications of progress of run"
+]
+
+endsection: output
+
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
 boolean: all  [
   additional: "Y"
   default: "N"
   information: "Input file contains all alleles at each locus
                 (else one)"
+]
+
+endsection: additional
+
+section: required [
+  information: "Required section"
+  type: "page"
 ]
 
 list: method  [
@@ -33,25 +82,4 @@ list: method  [
   default: "Nei"
 ]
 
-boolean: lowertriangle  [
-  additional: "Y"
-  default: "N"
-  information: "Lower-triangular (else Square)"
-]
-
-boolean: multsets  [
-  additional: "Y"
-  default: "N"
-  information: "Analyze multiple data sets"
-]
-
-integer: datasets  [
-  standard: "$(multsets)"
-  information: "How many data sets"
-]
-
-boolean: progress  [
-  additional: "Y"
-  default: "N"
-  information: "Print indications of progress of run"
-]
+endsection: required

@@ -20,16 +20,17 @@ dendsection additional Dendrogram options
 fastalignsection additional Fast align options
 featuresection additional Feature display options
 featurerelationsection input Feature relation options
+gapoptions additional Gap options
 gapsection required Gap options
 htmlsection output Html section
 markupsection output Markup section
 matrixsection additional Matrix options
 oligosinput additional Internal oligo input
-oligosection advanced Internal oligo options
+oligosection additional Internal oligo options
 profiletypesection required Profile type specific options
 primersection additional Primer options
 primerweights advanced Primer penalty weights
-programsection advanced Program options
+programsection additional Program options
 productsection additional Product options
 protalignsection additional Protein align options
 remapsection advanced Restriction map options

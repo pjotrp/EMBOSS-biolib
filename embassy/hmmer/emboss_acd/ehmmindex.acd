@@ -6,8 +6,15 @@ application: ehmmindex [
   cpu: "medium"
 ]
 
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
 infile: infile  [
   parameter: "Y"
   information: "HMM database file"
   knowntype: "hmm database"
 ]
+
+endsection: input

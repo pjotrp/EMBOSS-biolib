@@ -35,8 +35,8 @@ boolean: membrane  [
   default: "Y"
 ]
 
-boolean: signature  [
-  additional: "Y"
+toggle: signature  [
+  standard: "Y"
   default: "N"
   information: "Are there any signature areas to be marked"
 ]

@@ -3,10 +3,22 @@ application: ffreqboot [
   groups: "Phylogeny:Molecular sequence"
 ]
 
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
 infile: datafile  [
   parameter: "Y"
   information: "Input file"
   knowntype: "freqboot input"
+]
+
+endsection: input
+
+section: output [
+  information: "Output section"
+  type: "page"
 ]
 
 outfile: outfile  [
@@ -14,39 +26,23 @@ outfile: outfile  [
   knowntype: "freqboot output"
 ]
 
-boolean: inter  [
+boolean: printdata  [
   additional: "Y"
-  information: "Interleaved input"
   default: "N"
+  information: "Print out the data at start of run"
 ]
 
-integer: randseed  [
-  standard: "Y"
-  default: "3"
-  information: "Random number seed (must be odd)"
-]
-
-list: method  [
-  standard: "y"
-  minimum: "1"
-  maximum: "1"
-  header: "Method"
-  values: "Seq:Molecular sequences; Mor:Discrete Morphology;
-           Res:Restriction Sites; Gen:Gene Frequencies"
-  information: "Choose the method"
-  default: "Seq"
-]
-
-boolean: enzymes  [
-  additional: "@($(method) == Res)"
-  information: "Present in input file"
+boolean: progress  [
+  additional: "Y"
   default: "N"
+  information: "Print indications of progress of run"
 ]
 
-boolean: all  [
-  additional: "@($(method) == Gen)"
-  information: "All alleles present at each locus"
-  default: "N"
+endsection: output
+
+section: required [
+  information: "Required section"
+  type: "page"
 ]
 
 list: test  [
@@ -67,14 +63,46 @@ integer: reps  [
   default: "100"
 ]
 
-boolean: printdata  [
-  additional: "Y"
-  default: "N"
-  information: "Print out the data at start of run"
+integer: randseed  [
+  standard: "Y"
+  default: "3"
+  information: "Random number seed (must be odd)"
 ]
 
-boolean: progress  [
-  additional: "Y"
-  default: "N"
-  information: "Print indications of progress of run"
+list: method  [
+  standard: "y"
+  minimum: "1"
+  maximum: "1"
+  header: "Method"
+  values: "Seq:Molecular sequences; Mor:Discrete Morphology;
+           Res:Restriction Sites; Gen:Gene Frequencies"
+  information: "Choose the method"
+  default: "Seq"
 ]
+
+endsection: required
+
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
+boolean: inter  [
+  additional: "Y"
+  information: "Interleaved input"
+  default: "N"
+]
+
+boolean: enzymes  [
+  additional: "@($(method) == Res)"
+  information: "Present in input file"
+  default: "N"
+]
+
+boolean: all  [
+  additional: "@($(method) == Gen)"
+  information: "All alleles present at each locus"
+  default: "N"
+]
+
+endsection: additional

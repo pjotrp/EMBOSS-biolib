@@ -3,73 +3,15 @@ application: fmix [
   groups: "Phylogeny:Discrete characters"
 ]
 
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
 infile: infile  [
   parameter: "Y"
-  information: "data file"
+  information: "Data file"
   knowntype: "mix input"
-]
-
-outfile: outfile  [
-  parameter: "Y"
-  knowntype: "mix output"
-]
-
-boolean: besttree  [
-  parameter: "Y"
-  default: "Y"
-  information: "Search for best tree"
-]
-
-list: method  [
-  standard: "y"
-  minimum: "1"
-  maximum: "1"
-  header: "Method"
-  values: "Wag:Wagner; Cam:Camin-Sokal; Mix:Mixed;"
-  information: "Choose
-           the method to use"
-  default: "Wag"
-]
-
-boolean: random  [
-  additional: "$(besttree)"
-  default: "N"
-  information: "Randomize input order of species"
-]
-
-integer: randseed  [
-  standard: "$(random)"
-  information: "Random number seed (must be odd)"
-]
-
-integer: randtimes  [
-  standard: "$(random)"
-  information: "Number of times to jumble"
-]
-
-boolean: og  [
-  standard: "Y"
-  information: "Outgroup root"
-  default: "N"
-]
-
-integer: outgnum  [
-  standard: "$(og)"
-  minimum: "1"
-  default: "1"
-  information: "number of the outgroup"
-]
-
-boolean: thresh  [
-  default: "N"
-  information: "Use Threshold parsimony"
-]
-
-float: valthresh  [
-  standard: "$(thresh)"
-  minimum: "1.0"
-  default: "1.0"
-  information: "threshold value"
 ]
 
 boolean: ancestral  [
@@ -78,7 +20,7 @@ boolean: ancestral  [
   information: "Use ancestral states in input file"
 ]
 
-boolean: multsets  [
+toggle: multsets  [
   additional: "Y"
   default: "N"
   information: "Analyze multiple data sets"
@@ -87,6 +29,18 @@ boolean: multsets  [
 integer: datasets  [
   standard: "$(multsets)"
   information: "How many data sets"
+]
+
+endsection: input
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+outfile: outfile  [
+  parameter: "Y"
+  knowntype: "mix output"
 ]
 
 boolean: printdata  [
@@ -113,7 +67,7 @@ boolean: steps  [
   information: "Print out steps in each character"
 ]
 
-boolean: trout  [
+toggle: trout  [
   parameter: "Y"
   default: "Y"
   information: "Create a tree file"
@@ -131,3 +85,70 @@ outfile: treefile  [
   information: "Tree file name"
   knowntype: "Newick tree"
 ]
+
+endsection: output
+
+section: required [
+  information: "Required section"
+  type: "page"
+]
+
+toggle: besttree  [
+  parameter: "Y"
+  default: "Y"
+  information: "Search for best tree"
+]
+
+list: method  [
+  standard: "y"
+  minimum: "1"
+  maximum: "1"
+  header: "Method"
+  values: "Wag:Wagner; Cam:Camin-Sokal; Mix:Mixed;"
+  information: "Choose
+           the method to use"
+  default: "Wag"
+]
+
+toggle: random  [
+  additional: "$(besttree)"
+  default: "N"
+  information: "Randomize input order of species"
+]
+
+integer: randseed  [
+  standard: "$(random)"
+  information: "Random number seed (must be odd)"
+]
+
+integer: randtimes  [
+  standard: "$(random)"
+  information: "Number of times to jumble"
+]
+
+toggle: og  [
+  standard: "Y"
+  information: "Outgroup root"
+  default: "N"
+]
+
+integer: outgnum  [
+  standard: "$(og)"
+  minimum: "1"
+  default: "1"
+  information: "Number of the outgroup"
+]
+
+toggle: thresh  [
+  default: "N"
+  information: "Use threshold parsimony"
+]
+
+float: valthresh  [
+  standard: "$(thresh)"
+  minimum: "1.0"
+  default: "1.0"
+  information: "Threshold value"
+]
+
+endsection: required

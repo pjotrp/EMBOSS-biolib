@@ -112,12 +112,12 @@ AjPFile inf;
   outf = ajAcdGetOutfile("outfile");
   outfile = outf->fp;
 
-  thresh = ajAcdGetBool("thresh");
+  thresh = ajAcdGetToggle("thresh");
   if(thresh)
     threshold = ajAcdGetFloat("valthresh");
   
   
-  mulsets = ajAcdGetBool("multsets");
+  mulsets = ajAcdGetToggle("multsets");
   if (mulsets)
     datasets = ajAcdGetInt("datasets");
  
@@ -130,7 +130,7 @@ AjPFile inf;
   ancseq = ajAcdGetBool("statesatnodes");
 
   treeprint = ajAcdGetBool("drawtree");
-  trout = ajAcdGetBool("trout");
+  trout = ajAcdGetToggle("trout");
   if(trout){
     treef = ajAcdGetOutfile("treefile");
     treefile = treef->fp;

@@ -114,7 +114,7 @@ section: output [
     type: "frame"
   ]
 
-    boolean: html  [
+    toggle: html  [
       additional: "Y"
       default: "N"
       information: "Format the output for HTML"

@@ -3,57 +3,15 @@ application: fdollop [
   groups: "Phylogeny:Discrete characters"
 ]
 
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
 infile: infile  [
   parameter: "Y"
-  information: "data file to be read in"
+  information: "Data file"
   knowntype: "dollop input"
-]
-
-outfile: outfile  [
-  parameter: "Y"
-  knowntype: "dollop output"
-]
-
-boolean: besttree  [
-  additional: "Y"
-  default: "Y"
-  information: "Search for best tree"
-]
-
-boolean: random  [
-  additional: "$(besttree)"
-  default: "N"
-  information: "Randomize input order of species"
-]
-
-integer: randseed  [
-  standard: "$(random)"
-  default: "3"
-  information: "Random number seed (must be odd)"
-]
-
-integer: randtimes  [
-  standard: "$(random)"
-  default: "3"
-  information: "How many times to randomise"
-]
-
-boolean: dollo  [
-  additional: "Y"
-  default: "Y"
-  information: "Do Dollo (else Polymorphism)"
-]
-
-boolean: thresh  [
-  default: "N"
-  information: "Use Threshold parsimony"
-]
-
-float: valthresh  [
-  standard: "$(thresh)"
-  minimum: "1.0"
-  default: "1.0"
-  information: "threshold value"
 ]
 
 boolean: ancestral  [
@@ -62,29 +20,29 @@ boolean: ancestral  [
   information: "Use ancestral states in input file"
 ]
 
-boolean: multsets  [
+toggle: multsets  [
   additional: "Y"
   default: "N"
   information: "Analyze multiple data sets"
-]
-
-boolean: stepbox  [
-  additional: "Y"
-  default: "N"
-  information: "Print out steps in each character"
-]
-
-boolean: ancseq [
-  additional: "Y"
-  default: "N"
-  information: "Print out steps at all nodes of tree"
 ]
 
 integer: datasets  [
   standard: "$(multsets)"
   minimum: "2"
   default: "2"
-  information: "number of sets"
+  information: "Number of sets"
+]
+
+endsection: input
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+outfile: outfile  [
+  parameter: "Y"
+  knowntype: "dollop output"
 ]
 
 boolean: printdata  [
@@ -111,13 +69,25 @@ boolean: statesatnodes  [
   information: "Print states at all nodes of tree"
 ]
 
+boolean: stepbox  [
+  additional: "Y"
+  default: "N"
+  information: "Print out steps in each character"
+]
+
+boolean: ancseq [
+  additional: "Y"
+  default: "N"
+  information: "Print out steps at all nodes of tree"
+]
+
 boolean: drawtree  [
   additional: "Y"
   default: "Y"
   information: "Draw tree"
 ]
 
-boolean: trout  [
+toggle: trout  [
   parameter: "Y"
   default: "Y"
   information: "Create a tree file"
@@ -130,6 +100,49 @@ outfile: outtreefile  [
   knowntype: "Newick tree"
 ]
 
+endsection: output
+
+section: required [
+  information: "Required section"
+  type: "page"
+]
+
+toggle: besttree  [
+  additional: "Y"
+  default: "Y"
+  information: "Search for best tree"
+]
+
+toggle: random  [
+  additional: "$(besttree)"
+  default: "N"
+  information: "Randomize input order of species"
+]
+
+integer: randseed  [
+  standard: "$(random)"
+  default: "3"
+  information: "Random number seed (must be odd)"
+]
+
+integer: randtimes  [
+  standard: "$(random)"
+  default: "3"
+  information: "How many times to randomise"
+]
+
+toggle: thresh  [
+  default: "N"
+  information: "Use threshold parsimony"
+]
+
+float: valthresh  [
+  standard: "$(thresh)"
+  minimum: "1.0"
+  default: "1.0"
+  information: "Threshold value"
+]
+
 list: multiple [
   default: "none"
   standard: "Y"
@@ -140,8 +153,9 @@ list: multiple [
            datasets:Multiple datasets;
            weights: Multiple weights"
 ]
+
 integer: jumble [
-  additional: "Y"
+  standard: "Y"
   information: "Number of times to jumble"
   minimum: "1"
   default: "1"
@@ -192,6 +206,19 @@ series of choices, which may not be what you want."
 
 ]
 
+endsection: required
+
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
+boolean: dollo  [
+  additional: "Y"
+  default: "Y"
+  information: "Do Dollo (else Polymorphism)"
+]
+
 float: threshold [
   additional: "Y"
   information: "Threshold value"
@@ -231,3 +258,4 @@ The 'threhold' option is an important and
 
 ]
 
+endsection: additional

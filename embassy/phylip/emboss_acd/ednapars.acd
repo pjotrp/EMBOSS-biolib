@@ -3,65 +3,28 @@ application: ednapars [
   groups: "Phylogeny:Molecular sequence"
 ]
 
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
 seqset: sequence  [
   parameter: "Y"
   type: "gapany"
   help: "File containing a sequence allignment"
 ]
 
+endsection: input
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
 outfile: outfile  [
   parameter: "Y"
   default: "ednapars.outfile"
   knowntype: "dnapars output"
-]
-
-boolean: besttree  [
-  additional: "Y"
-  default: "Y"
-  information: "Search for best tree"
-]
-
-boolean: random  [
-  standard: "$(besttree)"
-  default: "N"
-  information: "Randomize input order of species"
-]
-
-integer: randseed  [
-  standard: "$(random)"
-  default: "3"
-  information: "Random number seed (must be odd)"
-]
-
-integer: randtimes  [
-  standard: "$(random)"
-  default: "3"
-  information: "How many times to randomise"
-]
-
-boolean: og  [
-  additional: "Y"
-  information: "Outgroup root"
-  default: "N"
-]
-
-integer: outgnum  [
-  standard: "$(og)"
-  minimum: "1"
-  default: "1"
-  information: "number of the outgroup"
-]
-
-boolean: thresh  [
-  default: "N"
-  information: "Use Threshold parsimony"
-]
-
-float: valthresh  [
-  standard: "$(thresh)"
-  minimum: "1.0"
-  default: "1.0"
-  information: "threshold value"
 ]
 
 boolean: printdata  [
@@ -94,7 +57,7 @@ boolean: drawtree  [
   information: "Draw tree"
 ]
 
-boolean: trout  [
+toggle: trout  [
   parameter: "Y"
   default: "Y"
   information: "Create a tree file"
@@ -106,3 +69,61 @@ outfile: treefile  [
   information: "Tree file name"
   knowntype: "tree file"
 ]
+
+endsection: output
+
+section: required [
+  information: "Required section"
+  type: "page"
+]
+
+toggle: besttree  [
+  additional: "Y"
+  default: "Y"
+  information: "Search for best tree"
+]
+
+toggle: random  [
+  standard: "$(besttree)"
+  default: "N"
+  information: "Randomize input order of species"
+]
+
+integer: randseed  [
+  standard: "$(random)"
+  default: "3"
+  information: "Random number seed (must be odd)"
+]
+
+integer: randtimes  [
+  standard: "$(random)"
+  default: "3"
+  information: "How many times to randomise"
+]
+
+toggle: og  [
+  additional: "Y"
+  information: "Outgroup root"
+  default: "N"
+]
+
+integer: outgnum  [
+  standard: "$(og)"
+  minimum: "1"
+  default: "1"
+  information: "Number of the outgroup"
+]
+
+toggle: thresh  [
+  default: "N"
+  information: "Use Threshold parsimony"
+]
+
+float: valthresh  [
+  standard: "$(thresh)"
+  minimum: "1.0"
+  default: "1.0"
+  information: "Threshold value"
+]
+
+endsection: required

@@ -3,10 +3,22 @@ application: ednacomp [
   groups: "Phylogeny:Molecular sequence"
 ]
 
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
 seqset: sequence  [
   parameter: "Y"
   type: "gapany"
   help: "File containing a sequence alignment"
+]
+
+endsection: input
+
+section: output [
+  information: "Output section"
+  type: "page"
 ]
 
 outfile: outfile  [
@@ -15,7 +27,7 @@ outfile: outfile  [
   knowntype: "dnacomp output"
 ]
 
-boolean: trout  [
+toggle: trout  [
   parameter: "Y"
   default: "Y"
   information: "Create a tree file"
@@ -33,19 +45,6 @@ outfile: treefile  [
   information: "Tree file name"
   knowntype: "Newick tree"
   nullok: "Y"
-]
-
-boolean: og  [
-  standard: "Y"
-  information: "Outgroup root"
-  default: "N"
-]
-
-integer: outgnum  [
-  standard: "$(og)"
-  minimum: "1"
-  default: "1"
-  information: "number of the outgroup"
 ]
 
 boolean: printdata  [
@@ -72,8 +71,28 @@ boolean: allnodes  [
   information: "Print sequences at all nodes of tree"
 ]
 
-boolean: random  [
-  additional: "Y"
+endsection: output
+
+section: required [
+  information: "Required section"
+  type: "page"
+]
+
+toggle: og  [
+  standard: "Y"
+  information: "Outgroup root"
+  default: "N"
+]
+
+integer: outgnum  [
+  standard: "$(og)"
+  minimum: "1"
+  default: "1"
+  information: "Number of the outgroup"
+]
+
+toggle: random  [
+  standard: "Y"
   default: "N"
   information: "Randomize input order of species"
 ]
@@ -87,3 +106,5 @@ integer: randtimes  [
   standard: "$(random)"
   information: "Number of times to jumble"
 ]
+
+endsection: required

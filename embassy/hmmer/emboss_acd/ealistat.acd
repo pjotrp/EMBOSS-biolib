@@ -6,23 +6,44 @@ application: ealistat [
   cpu: "medium"
 ]
 
-infile: infile  [
-  parameter: "Y"
-  knowntype: "alistat input"
-  information: "alignment file"
+section: input [
+  information: "Input section"
+  type: "page"
 ]
 
-boolean: additional  [
-  default: "N"
-  information: "Show additional information"
+  infile: infile  [
+    parameter: "Y"
+    knowntype: "alistat input"
+    information: "Alignment file"
+  ]
+
+endsection: input
+
+section: advanced [
+  information: "Advanced section"
+  type: "page"
 ]
 
-boolean: fast  [
-  default: "N"
-  information: "Use sampling method"
+  boolean: additional  [
+    default: "N"
+    information: "Show additional information"
+  ]
+
+  boolean: fast  [
+    default: "N"
+    information: "Use sampling method"
+  ]
+
+endsection: advanced
+
+section: output [
+  information: "Output section"
+  type: "page"
 ]
 
-outfile: outfile  [
-  parameter: "Y"
-  knowntype: "alistat output"
-]
+  outfile: outfile  [
+    parameter: "Y"
+    knowntype: "alistat output"
+  ]
+
+endsection: output

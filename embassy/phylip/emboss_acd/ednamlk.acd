@@ -7,10 +7,22 @@ application: ednamlk [
   cpu: "high"
 ]
 
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
 seqset: sequence  [
   parameter: "Y"
   type: "gapany"
   help: "File containing a sequence alignment"
+]
+
+endsection: input
+
+section: output [
+  information: "Output section"
+  type: "page"
 ]
 
 outfile: outfile  [
@@ -19,8 +31,46 @@ outfile: outfile  [
   knowntype: "dnamlk output"
 ]
 
-boolean: besttree  [
+boolean: printdata  [
   additional: "Y"
+  default: "N"
+  information: "Print out the data at start of run"
+]
+
+boolean: progress  [
+  additional: "Y"
+  default: "N"
+  information: "Print indications of progress of run"
+]
+
+boolean: drawtree  [
+  additional: "Y"
+  default: "Y"
+  information: "Draw tree"
+]
+
+toggle: trout  [
+  parameter: "Y"
+  default: "Y"
+  information: "Create a tree file"
+]
+
+outfile: treefile  [
+  standard: "$(trout)"
+  default: "ednamlk.treefile"
+  information: "Tree file name"
+  knowntype: "tree file"
+]
+
+endsection: output
+
+section: required [
+  information: "Required section"
+  type: "page"
+]
+
+toggle: besttree  [
+  standard: "Y"
   default: "Y"
   information: "Search for best tree"
 ]
@@ -37,7 +87,7 @@ boolean: global  [
   information: "Global rearrangements"
 ]
 
-boolean: random  [
+toggle: random  [
   standard: "$(besttree)"
   default: "N"
   information: "Randomize input order of species"
@@ -55,14 +105,8 @@ integer: randtimes  [
   information: "How many times to randomise"
 ]
 
-float: ttratio  [
-  additional: "Y"
-  default: "2.0"
-  information: "Transition/transversion ratio"
-]
-
-bool: basefrequency [
-  additional: "Y"
+toggle: basefrequency [
+  standard: "Y"
   default: "Y"
   information: "Use empirical base frequencies"
 ]
@@ -99,8 +143,8 @@ float: freqt  [
   information: "Frequency for T/U"
 ]
 
-boolean: categories  [
-  additional: "Y"
+toggle: categories  [
+  standard: "Y"
   default: "N"
   information: "More than one category of substitution rates"
 ]
@@ -115,15 +159,15 @@ integer: catnum  [
 
 string: catvals  [
   standard: "$(categories)"
-  information: "space seperated category values"
+  information: "Space separated category values"
 ]
 
 string: catprob [
   standard: "$(categories)"
-  information: "space seperated probabillity values"
+  information: "Space separated probabillity values"
 ]
 
-bool: autog [
+toggle: autog [
   standard: "$(categories)"
   default: "N"
   information: "Use Default Mean block length of sites"
@@ -137,33 +181,17 @@ float: lambda  [
                 (greater than 1)"
 ]
 
-boolean: printdata  [
+endsection: required
+
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
+float: ttratio  [
   additional: "Y"
-  default: "N"
-  information: "Print out the data at start of run"
+  default: "2.0"
+  information: "Transition/transversion ratio"
 ]
 
-boolean: progress  [
-  additional: "Y"
-  default: "N"
-  information: "Print indications of progress of run"
-]
-
-boolean: drawtree  [
-  additional: "Y"
-  default: "Y"
-  information: "Draw tree"
-]
-
-boolean: trout  [
-  parameter: "Y"
-  default: "Y"
-  information: "Create a tree file"
-]
-
-outfile: treefile  [
-  standard: "$(trout)"
-  default: "ednamlk.treefile"
-  information: "Tree file name"
-  knowntype: "tree file"
-]
+endsection: additional

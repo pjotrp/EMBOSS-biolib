@@ -100,12 +100,12 @@ void emboss_getoptions(char *pgm, int argc, char *argv[]){
   fprintf(outfile, "\nRestriction site Maximum Likelihood");
   fprintf(outfile, " method, version %s\n\n",VERSION);
 
-  usertree = !ajAcdGetBool("besttree");
+  usertree = !ajAcdGetToggle("besttree");
       
   if(!usertree){
     global = ajAcdGetBool("global");
 
-    jumble = ajAcdGetBool("random");
+    jumble = ajAcdGetToggle("random");
     if(jumble){
       inseed = ajAcdGetInt("randseed");
       /* make sure it's odd*/
@@ -137,7 +137,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[]){
 
   extrapol = ajAcdGetFloat("extrap");
 
-  mulsets = ajAcdGetBool("multsets");
+  mulsets = ajAcdGetToggle("multsets");
   if (mulsets)
     datasets = ajAcdGetInt("datasets");
   
@@ -147,7 +147,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[]){
 
   treeprint = ajAcdGetBool("drawtree");
  
-  trout = ajAcdGetBool("trout");
+  trout = ajAcdGetToggle("trout");
   if(trout){
     treef = ajAcdGetOutfile("treefile");
     treefile = treef->fp;

@@ -121,16 +121,20 @@ AjPStr *methodlist;
   outf = ajAcdGetOutfile("outfile");
   outfile = outf->fp;
 
-  thresh = ajAcdGetBool("thresh");
+  thresh = ajAcdGetToggle("thresh");
   if(thresh)
     threshold = ajAcdGetFloat("valthresh");
   
-  outgropt = ajAcdGetBool("og");
+  outgropt = ajAcdGetToggle("og");
   if(outgropt)
     outgrno = ajAcdGetInt("outgnum"); 
   else
     outgrno = 1;
   
+  mulsets = ajAcdGetToggle("multsets");
+  if (mulsets)
+    datasets = ajAcdGetInt("datasets");
+ 
   printdata = ajAcdGetBool("printdata");
 
   progress = ajAcdGetBool("progress");
@@ -140,7 +144,7 @@ AjPStr *methodlist;
   ancseq = ajAcdGetBool("seqatnodes");
 
   treeprint = ajAcdGetBool("drawtree");
-  trout = ajAcdGetBool("trout");
+  trout = ajAcdGetToggle("trout");
   if(trout){
     treef = ajAcdGetOutfile("treefile");
     treefile = treef->fp;

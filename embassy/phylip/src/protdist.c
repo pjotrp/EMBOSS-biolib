@@ -207,7 +207,7 @@ AjPFile outf;
 
     ttratio = ajAcdGetFloat("tranrate");
 
-    basesequal = ajAcdGetBool("basefrequency");
+    basesequal = ajAcdGetToggle("basefrequency");
     if(basesequal){
       freqa = ajAcdGetFloat("freqa");
       freqc = ajAcdGetFloat("freqc");

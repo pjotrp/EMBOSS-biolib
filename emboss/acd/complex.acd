@@ -54,7 +54,7 @@ section: advanced [
   type: "page"
 ]
 
-boolean: omnia  [
+toggle: omnia  [
   default: "N"
   information: "All sequences"
   help: "Calculate over a set of sequences"

@@ -139,12 +139,12 @@ int scanned;
   outf = ajAcdGetOutfile("outfile");
   outfile = outf->fp;
 
-  usertree = !ajAcdGetBool("besttree");
+  usertree = !ajAcdGetToggle("besttree");
   if(usertree)
     lngths = ajAcdGetBool("lengths");
   else {
     global = ajAcdGetBool("global");
-    jumble = ajAcdGetBool("random");
+    jumble = ajAcdGetToggle("random");
     if(jumble){
       inseed = ajAcdGetInt("randseed");
       /* make sure it's odd*/
@@ -169,7 +169,7 @@ int scanned;
   
   ttratio = ajAcdGetFloat("ttratio");
    
-  freqsfrom = ajAcdGetBool("basefrequency");
+  freqsfrom = ajAcdGetToggle("basefrequency");
   if(!freqsfrom){
     freqa = ajAcdGetFloat("freqa");
     freqc = ajAcdGetFloat("freqc");
@@ -177,7 +177,7 @@ int scanned;
     freqg = ajAcdGetFloat("freqg");
   }
 
-  ctgry = ajAcdGetBool("categories");
+  ctgry = ajAcdGetToggle("categories");
   if(ctgry){
     categs = ajAcdGetInt("catnum");
     if (probcat){
@@ -226,7 +226,7 @@ int scanned;
       ajUser("Error probabilities must add up to 1.0, plus or minus 0.001.");
       ajExit();
     }
-    auto_ = !ajAcdGetBool("autog");
+    auto_ = !ajAcdGetToggle("autog");
     if(auto_){
       lambda = ajAcdGetFloat("lambda");
       lambda = 1.0 / lambda;
@@ -239,7 +239,7 @@ int scanned;
      probcat[0] = 1.0;
    }
 
-  outgropt = ajAcdGetBool("og");
+  outgropt = ajAcdGetToggle("og");
   if(outgropt)
     outgrno = ajAcdGetInt("outgnum"); 
   else
@@ -251,7 +251,7 @@ int scanned;
 
   treeprint = ajAcdGetBool("drawtree");
  
-  trout = ajAcdGetBool("trout");
+  trout = ajAcdGetToggle("trout");
   if(trout){
     treef = ajAcdGetOutfile("treefile");
     treefile = treef->fp;

@@ -57,7 +57,7 @@ section: output [
   type: "page"
 ]
 
-  boolean: stretch  [
+  toggle: stretch  [
     default: "N"
     information: "Stretch plot"
     help: "Display a non-proportional graph"

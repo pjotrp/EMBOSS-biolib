@@ -3,10 +3,22 @@ application: econsense [
   groups: "Phylogeny:Consensus"
 ]
 
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
 infile: infile  [
   parameter: "Y"
-  information: "file to read in (New Hampshire standard form)"
+  information: "New Hampshire standard form tree file"
   knowntype: "Newick tree"
+]
+
+endsection: input
+
+section: output [
+  information: "Output section"
+  type: "page"
 ]
 
 outfile: outfile  [
@@ -30,27 +42,8 @@ boolean: drawtree  [
 outfile: treefile  [
   parameter: "Y"
   extension: "treefile"
-  information: "tree file name"
+  information: "Tree file"
   knowntype: "Newick tree"
-]
-
-boolean: root  [
-  additional: "Y"
-  default: "N"
-  information: "Trees to be treated as Rooted"
-]
-
-boolean: og  [
-  standard: "$(root)"
-  information: "Outgroup root"
-  default: "N"
-]
-
-integer: outgnum  [
-  standard: "$(og)"
-  minimum: "1"
-  default: "1"
-  information: "number of the outgroup"
 ]
 
 boolean: progress  [
@@ -64,3 +57,38 @@ boolean: printsets  [
   default: "Y"
   information: "Print out the sets of species"
 ]
+
+endsection: output
+
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
+toggle: root  [
+  additional: "Y"
+  default: "N"
+  information: "Trees to be treated as Rooted"
+]
+
+endsection: additional
+
+section: required [
+  information: "Required section"
+  type: "page"
+]
+
+toggle: og  [
+  standard: "$(root)"
+  information: "Outgroup root"
+  default: "N"
+]
+
+integer: outgnum  [
+  standard: "$(og)"
+  minimum: "1"
+  default: "1"
+  information: "Number of the outgroup"
+]
+
+endsection: required

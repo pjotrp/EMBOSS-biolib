@@ -63,7 +63,7 @@ AjPFile trf;
 
   reg = ajAcdGetBool("corplusreg");
 
-  mulsets = ajAcdGetBool("multsets");
+  mulsets = ajAcdGetToggle("multsets");
   if(mulsets)
     numtrees = ajAcdGetInt("datasets");
 

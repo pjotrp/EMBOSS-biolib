@@ -3,29 +3,15 @@ application: fclique [
   groups: "Phylogeny:Discrete characters"
 ]
 
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
 discretestates: infile  [
   parameter: "Y"
   characters: "01PB?"
   knowntype: "two state characters"
-]
-
-outfile: outfile  [
-  parameter: "Y"
-  knowntype: "clique output"
-]
-
-boolean: drawtree  [
-  additional: "Y"
-  default: "Y"
-  information: "Draw tree"
-]
-
-outfile: outtreefile  [
-  parameter: "Y"
-  extension: "treefile"
-  information: "tree file name"
-  knowntype: "Newick tree"
-  nullok: "Y"
 ]
 
 properties: ancestral [
@@ -55,18 +41,30 @@ properties: weights [
   default: ""
 ]
 
-integer: minclique  [
-  additional: "Y"
-  default: "0"
-  minimum: "0"
-  information: "Minimum clique size"
+endsection: input
+
+section: output [
+  information: "Output section"
+  type: "page"
 ]
 
-integer: outgroup [
+outfile: outfile  [
+  parameter: "Y"
+  knowntype: "clique output"
+]
+
+boolean: drawtree  [
   additional: "Y"
-  information: "Number of the outgroup"
-  default: "0"
-  minimum: "0"
+  default: "Y"
+  information: "Draw tree"
+]
+
+outfile: outtreefile  [
+  parameter: "Y"
+  extension: "treefile"
+  information: "Tree file"
+  knowntype: "Newick tree"
+  nullok: "Y"
 ]
 
 boolean: printdata  [
@@ -86,3 +84,26 @@ boolean: matrixout  [
   default: "N"
   information: "Print out compatibility matrix"
 ]
+
+endsection: output
+
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
+integer: minclique  [
+  additional: "Y"
+  default: "0"
+  minimum: "0"
+  information: "Minimum clique size"
+]
+
+integer: outgroup [
+  additional: "Y"
+  information: "Number of the outgroup"
+  default: "0"
+  minimum: "0"
+]
+
+endsection: additional

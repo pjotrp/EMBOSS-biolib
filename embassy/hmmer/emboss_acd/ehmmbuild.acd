@@ -6,154 +6,175 @@ application: ehmmbuild [
   cpu: "medium"
 ]
 
-seqset: sequences  [
-  parameter: "Y"
-  type: "any"
+section: input [
+  information: "Input section"
+  type: "page"
 ]
 
-list: strategy  [
-  default: "L"
-  minimum: "1"
-  maximum: "1"
-  values: "M:multiple,L:local,G:global"
-  delimiter: ","
-  codedelimiter: ":"
-  header: "Local/Global preference"
-  information: "Select preference"
-  button: "Y"
+  seqset: sequences  [
+    parameter: "Y"
+    type: "any"
+  ]
+
+endsection: input
+
+section: advanced [
+  information: "Advanced section"
+  type: "page"
 ]
 
-string: name  [
-  default: "Ehmm"
-  information: "Name for the HMM"
+  list: strategy  [
+    default: "L"
+    minimum: "1"
+    maximum: "1"
+    values: "M:multiple,L:local,G:global"
+    delimiter: ","
+    codedelimiter: ":"
+    header: "Local/Global preference"
+    information: "Select preference"
+    button: "Y"
+  ]
+
+  string: name  [
+    default: "Ehmm"
+    information: "Name for the HMM"
+  ]
+
+  string: resave  [
+    default: ""
+    information: "Resave selex file"
+  ]
+
+  boolean: append  [
+    default: "N"
+    information: "Append to file"
+  ]
+
+  boolean: force  [
+    default: "N"
+    information: "Force overwriting"
+  ]
+
+  boolean: amino  [
+    default: "N"
+    information: "Treat as protein"
+  ]
+
+  boolean: nucleic  [
+    default: "N"
+    information: "Treat as dna"
+  ]
+
+  float: archpri  [
+    default: "0.85"
+    information: "Architecture prior"
+  ]
+
+  boolean: binary  [
+    default: "N"
+    information: "Write HMM as binary"
+  ]
+
+  string: cfile  [
+    default: ""
+    information: "Emission and transition count file"
+  ]
+
+  list: cstrategy  [
+    default: "F"
+    minimum: "1"
+    maximum: "1"
+    values: "F:Fast,H:Hand"
+    delimiter: ","
+    codedelimiter: ":"
+    header: "Fast or by hand"
+    information: "Select strategy"
+    button: "Y"
+  ]
+
+  boolean: fast  [
+    default: "N"
+    information: "Work in fast mode"
+  ]
+
+  float: gapmax  [
+    default: "0.5"
+    information: "Fast mode control"
+  ]
+
+  boolean: hand  [
+    default: "N"
+    information: "Specify model by hand"
+  ]
+
+  float: idlevel  [
+    default: "0.62"
+    information: "Cutoff ID threhold"
+  ]
+
+  boolean: efficiency  [
+    default: "Y"
+    information: "Be efficient"
+  ]
+
+  string: null  [
+    default: ""
+    information: "NULL model file"
+  ]
+
+  string: pam  [
+    default: ""
+    information: "PAM file"
+  ]
+
+  float: pamweight  [
+    default: "20.0"
+    information: "Weighting for PAM"
+  ]
+
+  string: prior  [
+    default: ""
+    information: "Prior file"
+  ]
+
+  float: swentry  [
+    default: "0.5"
+    information: "Probability control for local entries"
+  ]
+
+  float: swexit  [
+    default: "0.5"
+    information: "Probability control for exits"
+  ]
+
+  boolean: more  [
+    default: "N"
+    information: "Verbosity"
+  ]
+
+  list: weighting  [
+    default: "G"
+    minimum: "1"
+    maximum: "1"
+    values:
+             "B:Blosum,G:Gerstein/Sonnhammer/Chothia,K:Krogh/Mitchison,N:None,V:Voronoi"
+    delimiter: ","
+    codedelimiter: ":"
+    header: "Weighting method"
+    information: "Select weighting"
+    button: "Y"
+  ]
+
+endsection: advanced
+
+section: output [
+  information: "Output section"
+  type: "page"
 ]
 
-string: resave  [
-  default: ""
-  information: "Resave selex file"
-]
+  outfile: outfile  [
+    parameter: "Y"
+    knowntype: "hmm file"
+  ]
 
-boolean: append  [
-  default: "N"
-  information: "Append to file"
-]
-
-boolean: force  [
-  default: "N"
-  information: "Force overwriting"
-]
-
-boolean: amino  [
-  default: "N"
-  information: "Treat as protein"
-]
-
-boolean: nucleic  [
-  default: "N"
-  information: "Treat as dna"
-]
-
-float: archpri  [
-  default: "0.85"
-  information: "Architecture prior"
-]
-
-boolean: binary  [
-  default: "N"
-  information: "Write HMM as binary"
-]
-
-string: cfile  [
-  default: ""
-  information: "Emission and transition count file"
-]
-
-list: cstrategy  [
-  default: "F"
-  minimum: "1"
-  maximum: "1"
-  values: "F:Fast,H:Hand"
-  delimiter: ","
-  codedelimiter: ":"
-  header: "Fast or by hand"
-  information: "Select strategy"
-  button: "Y"
-]
-
-boolean: fast  [
-  default: "N"
-  information: "Work in fast mode"
-]
-
-float: gapmax  [
-  default: "0.5"
-  information: "Fast mode control"
-]
-
-boolean: hand  [
-  default: "N"
-  information: "specify model by hand"
-]
-
-float: idlevel  [
-  default: "0.62"
-  information: "Cutoff ID threhold"
-]
-
-boolean: efficiency  [
-  default: "Y"
-  information: "Be efficient"
-]
-
-string: null  [
-  default: ""
-  information: "NULL model file"
-]
-
-string: pam  [
-  default: ""
-  information: "PAM file"
-]
-
-float: pamweight  [
-  default: "20.0"
-  information: "Weighting for PAM"
-]
-
-string: prior  [
-  default: ""
-  information: "Prior file"
-]
-
-float: swentry  [
-  default: "0.5"
-  information: "Probability control for local entries"
-]
-
-float: swexit  [
-  default: "0.5"
-  information: "Probability control for exits"
-]
-
-boolean: more  [
-  default: "N"
-  information: "Verbosity"
-]
-
-list: weighting  [
-  default: "G"
-  minimum: "1"
-  maximum: "1"
-  values:
-           "B:Blosum,G:Gerstein/Sonnhammer/Chothia,K:Krogh/Mitchison,N:None,V:Voronoi"
-  delimiter: ","
-  codedelimiter: ":"
-  header: "Weighting method"
-  information: "Select weighting"
-  button: "Y"
-]
-
-outfile: outfile  [
-  parameter: "Y"
-  knowntype: "hmm file"
-]
+endsection: output

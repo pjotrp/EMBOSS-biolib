@@ -7,74 +7,15 @@ application: ffitch [
   cpu: "high"
 ]
 
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
 infile: infile  [
   parameter: "Y"
-  information: "data file"
+  information: "Data file"
   knowntype: "fitch input"
-]
-
-outfile: outfile  [
-  parameter: "Y"
-  knowntype: "fitch output"
-]
-
-boolean: besttree  [
-  parameter: "Y"
-  default: "Y"
-  information: "Search for best tree"
-]
-
-boolean: length  [
-  additional: "@(!$(besttree))"
-  default: "N"
-  information: "Use lengths from user trees"
-]
-
-float: power  [
-  additional: "Y"
-  default: "3.0"
-  information: "Power"
-]
-
-boolean: negbranch  [
-  additional: "Y"
-  default: "N"
-  information: "Negative branch lengths allowed"
-]
-
-boolean: random  [
-  additional: "$(besttree)"
-  default: "N"
-  information: "Randomize input order of species"
-]
-
-integer: randseed  [
-  standard: "$(random)"
-  information: "Random number seed (must be odd)"
-]
-
-integer: randtimes  [
-  standard: "$(random)"
-  information: "Number of times to jumble"
-]
-
-boolean: global  [
-  additional: "$(besttree)"
-  default: "N"
-  information: "Global rearrangements"
-]
-
-boolean: og  [
-  standard: "Y"
-  information: "Outgroup root"
-  default: "N"
-]
-
-integer: outgnum  [
-  standard: "$(og)"
-  minimum: "1"
-  default: "1"
-  information: "number of the outgroup"
 ]
 
 boolean: lt  [
@@ -89,13 +30,7 @@ boolean: ut  [
   information: "Upper-triangular data matrix"
 ]
 
-boolean: replicates  [
-  additional: "Y"
-  default: "N"
-  information: "Subreplicates"
-]
-
-boolean: multsets  [
+toggle: multsets  [
   additional: "Y"
   default: "N"
   information: "Analyze multiple data sets"
@@ -104,6 +39,18 @@ boolean: multsets  [
 integer: datasets  [
   standard: "$(multsets)"
   information: "How many data sets"
+]
+
+endsection: input
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+outfile: outfile  [
+  parameter: "Y"
+  knowntype: "fitch output"
 ]
 
 boolean: printdata  [
@@ -118,7 +65,7 @@ boolean: progress  [
   information: "Print indications of progress of run"
 ]
 
-boolean: trout  [
+toggle: trout  [
   parameter: "Y"
   default: "Y"
   information: "Create a tree file"
@@ -136,3 +83,84 @@ outfile: treefile  [
   information: "Tree file name"
   knowntype: "Newick tree"
 ]
+
+endsection: output
+
+section: required [
+  information: "Required section"
+  type: "page"
+]
+
+toggle: besttree  [
+  parameter: "Y"
+  default: "Y"
+  information: "Search for best tree"
+]
+
+toggle: random  [
+  additional: "$(besttree)"
+  default: "N"
+  information: "Randomize input order of species"
+]
+
+integer: randseed  [
+  standard: "$(random)"
+  information: "Random number seed (must be odd)"
+]
+
+integer: randtimes  [
+  standard: "$(random)"
+  information: "Number of times to jumble"
+]
+
+toggle: og  [
+  standard: "Y"
+  information: "Outgroup root"
+  default: "N"
+]
+
+integer: outgnum  [
+  standard: "$(og)"
+  minimum: "1"
+  default: "1"
+  information: "Number of the outgroup"
+]
+
+endsection: required
+
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
+float: power  [
+  additional: "Y"
+  default: "3.0"
+  information: "Power"
+]
+
+boolean: negbranch  [
+  additional: "Y"
+  default: "N"
+  information: "Negative branch lengths allowed"
+]
+
+boolean: global  [
+  additional: "$(besttree)"
+  default: "N"
+  information: "Global rearrangements"
+]
+
+toggle: length  [
+  additional: "@(!$(besttree))"
+  default: "N"
+  information: "Use lengths from user trees"
+]
+
+boolean: replicates  [
+  additional: "Y"
+  default: "N"
+  information: "Subreplicates"
+]
+
+endsection: additional

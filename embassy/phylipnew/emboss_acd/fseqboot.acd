@@ -3,10 +3,28 @@ application: fseqboot [
   groups: "Phylogeny:Molecular sequence"
 ]
 
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
 infile: datafile  [
   parameter: "Y"
   information: "Input file"
   knowntype: "seqboot input"
+]
+
+boolean: inter  [
+  additional: "Y"
+  information: "Interleaved input"
+  default: "N"
+]
+
+endsection: input
+
+section: output [
+  information: "Output section"
+  type: "page"
 ]
 
 outfile: outfile  [
@@ -14,10 +32,23 @@ outfile: outfile  [
   knowntype: "seqboot output"
 ]
 
-boolean: inter  [
+boolean: printdata  [
   additional: "Y"
-  information: "Interleaved input"
   default: "N"
+  information: "Print out the data at start of run"
+]
+
+boolean: progress  [
+  additional: "Y"
+  default: "N"
+  information: "Print indications of progress of run"
+]
+
+endsection: output
+
+section: required [
+  information: "Required section"
+  type: "page"
 ]
 
 integer: randseed  [
@@ -35,18 +66,6 @@ list: method  [
            Res:Restriction Sites; Gen:Gene Frequencies"
   information: "Choose the method"
   default: "Seq"
-]
-
-boolean: enzymes  [
-  additional: "@($(method) == Res)"
-  information: "Present in input file"
-  default: "N"
-]
-
-boolean: all  [
-  additional: "@($(method) == Gen)"
-  information: "All alleles present at each locus"
-  default: "N"
 ]
 
 list: test  [
@@ -67,14 +86,23 @@ integer: reps  [
   default: "100"
 ]
 
-boolean: printdata  [
-  additional: "Y"
-  default: "N"
-  information: "Print out the data at start of run"
+endsection: required
+
+section: additional [
+  information: "Additional section"
+  type: "page"
 ]
 
-boolean: progress  [
-  additional: "Y"
+boolean: enzymes  [
+  additional: "@($(method) == Res)"
+  information: "Present in input file"
   default: "N"
-  information: "Print indications of progress of run"
 ]
+
+boolean: all  [
+  additional: "@($(method) == Gen)"
+  information: "All alleles present at each locus"
+  default: "N"
+]
+
+endsection: additional

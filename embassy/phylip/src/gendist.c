@@ -59,7 +59,7 @@ AjPStr *methodlist;
 
   lower = ajAcdGetBool("lowertriangle");
 
-  mulsets = ajAcdGetBool("multsets");
+  mulsets = ajAcdGetToggle("multsets");
   if(mulsets)
     datasets = ajAcdGetInt("datasets");
 

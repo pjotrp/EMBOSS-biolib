@@ -6,10 +6,35 @@ application: ehmmemit [
   cpu: "medium"
 ]
 
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
 infile: infile  [
   parameter: "Y"
   information: "HMM file"
   knowntype: "hmm file"
+]
+
+endsection: input
+
+section: advanced [
+  information: "Advanced section"
+  type: "page"
+]
+
+integer: seed  [
+  default: "0"
+  minimum: "0"
+  information: "Random seed"
+]
+
+endsection: advanced
+
+section: output [
+  information: "Output section"
+  type: "page"
 ]
 
 boolean: selex  [
@@ -27,13 +52,10 @@ integer: number  [
   information: "Number of sequences to produce"
 ]
 
-integer: seed  [
-  default: "0"
-  minimum: "0"
-  information: "Random seed"
-]
 
 outfile: outfile  [
   parameter: "Y"
   knowntype: "hmmemit output"
 ]
+
+endsection: output

@@ -126,19 +126,19 @@ long inseed0;
 
   stepbox = ajAcdGetBool("stepoutput");
 
-  trout = ajAcdGetBool("trout");
+  trout = ajAcdGetToggle("trout");
   if(trout){
     treef = ajAcdGetOutfile("treefile");
     treefile = treef->fp;
   }
 
-  outgropt = ajAcdGetBool("og");
+  outgropt = ajAcdGetToggle("og");
   if(outgropt)
     outgrno = ajAcdGetInt("outgnum"); 
   else
     outgrno = 1;
 
-  jumble = ajAcdGetBool("random");
+  jumble = ajAcdGetToggle("random");
   if(jumble){
     inseed = ajAcdGetInt("randseed");
     /* make sure it's odd*/

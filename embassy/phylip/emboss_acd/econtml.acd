@@ -7,52 +7,21 @@ application: econtml [
   cpu: "high"
 ]
 
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
 infile: infile  [
   parameter: "Y"
-  information: "input file"
+  information: "Continuous character input file"
   knowntype: "contml input"
 ]
 
-outfile: outfile  [
-  parameter: "Y"
-  default: "econtml.outfile"
-  knowntype: "contml output"
-]
-
-boolean: besttree  [
-  additional: "Y"
-  default: "Y"
-  information: "Search for best tree"
-]
-
-boolean: lengths  [
-  standard: "@(!$(besttree))"
-  default: "N"
-  information: "Use lengths from user trees"
-]
-
-boolean: global  [
-  standard: "$(besttree)"
-  default: "N"
-  information: "Global rearrangements"
-]
-
-boolean: random  [
-  standard: "$(besttree)"
-  default: "N"
-  information: "Randomize input order of species"
-]
-
-integer: randseed  [
-  standard: "$(random)"
-  default: "3"
-  information: "Random number seed (must be odd)"
-]
-
-boolean: continuous  [
+toggle: continuous  [
   additional: "Y"
   default: "N"
-  information: "continuous characters (else Gene frequencies)"
+  information: "Continuous characters (else Gene frequencies)"
 ]
 
 boolean: all  [
@@ -61,31 +30,19 @@ boolean: all  [
   information: "Input file has all alleles at each locus"
 ]
 
-boolean: og  [
-  additional: "Y"
-  information: "Outgroup root"
-  default: "N"
+endsection: input
+
+section: output [
+  information: "Output section"
+  type: "page"
 ]
 
-integer: outgnum  [
-  standard: "$(og)"
-  minimum: "1"
-  default: "1"
-  information: "number of the outgroup"
+outfile: outfile  [
+  parameter: "Y"
+  default: "econtml.outfile"
+  knowntype: "contml output"
 ]
 
-boolean: multsets  [
-  additional: "Y"
-  default: "N"
-  information: "Analyze multiple data sets"
-]
-
-integer: datasets  [
-  standard: "$(multsets)"
-  minimum: "1"
-  default: "1"
-  information: "How many data sets"
-]
 
 boolean: printdata  [
   additional: "Y"
@@ -105,7 +62,7 @@ boolean: drawtree  [
   information: "Draw tree"
 ]
 
-boolean: trout  [
+toggle: trout  [
   parameter: "Y"
   default: "Y"
   information: "Create a tree file"
@@ -117,3 +74,76 @@ outfile: treefile  [
   information: "Tree file name"
   knowntype: "Newick tree"
 ]
+
+endsection: output
+
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
+endsection: additional
+
+section: required [
+  information: "Required section"
+  type: "page"
+]
+
+toggle: besttree  [
+  standard: "Y"
+  default: "Y"
+  information: "Search for best tree"
+]
+
+boolean: lengths  [
+  standard: "@(!$(besttree))"
+  default: "N"
+  information: "Use lengths from user trees"
+]
+
+boolean: global  [
+  standard: "$(besttree)"
+  default: "N"
+  information: "Global rearrangements"
+]
+
+toggle: random  [
+  standard: "$(besttree)"
+  default: "N"
+  information: "Randomize input order of species"
+]
+
+integer: randseed  [
+  standard: "$(random)"
+  default: "3"
+  information: "Random number seed (must be odd)"
+]
+
+toggle: og  [
+  standard: "Y"
+  information: "Outgroup root"
+  default: "N"
+]
+
+integer: outgnum  [
+  standard: "$(og)"
+  minimum: "1"
+  default: "1"
+  information: "Number of the outgroup"
+]
+
+toggle: multsets  [
+  standard: "Y"
+  default: "N"
+  information: "Analyze multiple data sets"
+]
+
+integer: datasets  [
+  standard: "$(multsets)"
+  minimum: "1"
+  default: "1"
+  information: "How many data sets"
+]
+
+endsection: required
+

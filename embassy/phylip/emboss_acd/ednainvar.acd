@@ -3,10 +3,22 @@ application: ednainvar [
   groups: "Phylogeny:Molecular sequence"
 ]
 
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
 seqset: sequence  [
   parameter: "Y"
  type: "gapdna"
   help: "File containing sequences"
+]
+
+endsection: input
+
+section: output [
+  information: "Output section"
+  type: "page"
 ]
 
 outfile: outfile  [
@@ -26,3 +38,5 @@ boolean: progress  [
   default: "N"
   information: "Print indications of progress of run"
 ]
+
+endsection: output

@@ -3,6 +3,11 @@ application: fcontrast [
   groups: "Phylogeny:Continuous characters"
 ]
 
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
 frequencies: infile  [
   parameter: "Y"
 ]
@@ -12,15 +17,16 @@ tree: intreefile  [
   knowntype: "Newick tree"
 ]
 
+endsection: input
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
 outfile: outfile  [
   parameter: "Y"
   knowntype: "contrast output"
-]
-
-boolean: lrt  [
-  additional: "Y"
-  default: "Y"
-  information: "LRT test of no phylogenetic component, with and without VarA"
 ]
 
 boolean: printcorplusreg  [
@@ -46,3 +52,18 @@ boolean: progress  [
   default: "N"
   information: "Print indications of progress of run"
 ]
+
+endsection: output
+
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
+boolean: lrt  [
+  additional: "Y"
+  default: "Y"
+  information: "LRT test of no phylogenetic component, with and without VarA"
+]
+
+endsection: additional

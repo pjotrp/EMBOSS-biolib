@@ -3,6 +3,11 @@ application: fdnainvar [
   groups: "Phylogeny:Molecular sequence"
 ]
 
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
 seqsetall: sequence  [
   parameter: "Y"
   type: "gapdna"
@@ -13,6 +18,13 @@ properties: weights [
   help: "Weights file"
   nullok: "Y"
   knowntype: "Phylip weights"
+]
+
+endsection: input
+
+section: output [
+  information: "Output section"
+  type: "page"
 ]
 
 outfile: outfile  [
@@ -49,3 +61,5 @@ boolean: progress  [
   default: "N"
   information: "Print indications of progress of run"
 ]
+
+endsection: output

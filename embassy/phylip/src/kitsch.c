@@ -91,7 +91,7 @@ int i;
 
   treeprint = ajAcdGetBool("drawtree");
 
-  usertree = ! ajAcdGetBool("besttree");
+  usertree = ! ajAcdGetToggle("besttree");
 
   /*  if(usertree)
       lengths = ajAcdGetBool("length");*/
@@ -114,7 +114,7 @@ int i;
   if (!usertree) {
     /*    global = ajAcdGetBool("global");*/
 
-    jumble = ajAcdGetBool("random");
+    jumble = ajAcdGetToggle("random");
     if(jumble){
       inseed = ajAcdGetInt("randseed");
       /* make sure it's odd*/
@@ -134,7 +134,7 @@ int i;
       njumble = ajAcdGetInt("randtimes");
     }
   }
-  mulsets = ajAcdGetBool("multsets");
+  mulsets = ajAcdGetToggle("multsets");
   if(mulsets)
     datasets = ajAcdGetInt("datasets");
 

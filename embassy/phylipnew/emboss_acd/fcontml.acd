@@ -7,6 +7,11 @@ application: fcontml [
   cpu: "high"
 ]
 
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
 frequencies: infile [
   parameter: "Y"
   knowntype: "contml input"
@@ -18,35 +23,17 @@ tree: intreefile [
   nullok: "Y"
 ]
 
+endsection: input
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
 outfile: outfile  [
   parameter: "Y"
   knowntype: "contml output"
 ]
-
-integer: jumble [
-  additional: "Y"
-  information: "Number of times to jumble"
-  minimum: "1"
-  default: "1"
-
-]
-
-integer: seed [
-  standard: "$(jumble)"
-  information: "Random number seed (must be odd)"
-  minimum: 1
-  maximum: "32765"
-  default: 1
-]
-
-integer: outgroup [
-  additional: "Y"
-  information: "Number of the outgroup"
-  default: "0"
-  minimum: "0"
-  maximum: "$(infile.freqsize)"
-
- ]
 
 boolean: printdata  [
   additional: "Y"
@@ -72,3 +59,37 @@ outfile: outtreefile  [
   information: "Tree file name"
   knowntype: "Newick tree"
 ]
+
+endsection: output
+
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
+integer: jumble [
+  additional: "Y"
+  information: "Number of times to jumble"
+  minimum: "1"
+  default: "1"
+
+]
+
+integer: seed [
+  additional: "$(jumble)"
+  information: "Random number seed (must be odd)"
+  minimum: 1
+  maximum: "32765"
+  default: 1
+]
+
+integer: outgroup [
+  additional: "Y"
+  information: "Number of the outgroup"
+  default: "0"
+  minimum: "0"
+  maximum: "$(infile.freqsize)"
+
+ ]
+
+endsection: additional

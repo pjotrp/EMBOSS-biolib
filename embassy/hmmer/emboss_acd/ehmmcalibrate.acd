@@ -6,10 +6,22 @@ application: ehmmcalibrate [
   cpu: "medium"
 ]
 
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
 infile: infile  [
   parameter: "Y"
   information: "HMM file"
   knowntype: "hmm file"
+]
+
+endsection: input
+
+section: advanced [
+  information: "Advanced section"
+  type: "page"
 ]
 
 integer: cpu  [
@@ -54,7 +66,16 @@ integer: seed  [
   information: "Random seed"
 ]
 
+endsection: advanced
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
 outfile: outfile  [
   parameter: "Y"
   knowntype: "hmmcalibrate output"
 ]
+
+endsection: output

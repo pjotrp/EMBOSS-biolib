@@ -49,7 +49,7 @@ section: output [
   type: "page"
 ]
 
-  boolean: plot  [
+  toggle: plot  [
     information: "Produce plot"
   ]
 

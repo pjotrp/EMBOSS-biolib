@@ -72,12 +72,12 @@ AjPFile inf;
   if(trout){
     treef = ajAcdGetOutfile("treefile");
     treefile = treef->fp;
-  }
+}
 
   
-  noroot = !ajAcdGetBool("root");
+  noroot = !ajAcdGetToggle("root");
   if(noroot){
-    outgropt = ajAcdGetBool("og");
+    outgropt = ajAcdGetToggle("og");
     if(outgropt)
       outgrno = ajAcdGetInt("outgnum"); 
     else

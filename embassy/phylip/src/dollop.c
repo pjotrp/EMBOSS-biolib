@@ -114,7 +114,7 @@ long inseed0;
   fprintf(outfile,"\nDollo and polymorphism parsimony algorithm,");
   fprintf(outfile," version %s\n\n",VERSION);
 
-  usertree = !ajAcdGetBool("besttree");
+  usertree = !ajAcdGetToggle("besttree");
   if(!usertree){
     jumble = ajAcdGetBool("random");
     if(jumble){
@@ -141,7 +141,7 @@ long inseed0;
 
   dollo = ajAcdGetBool("dollo");
 
-  thresh = ajAcdGetBool("thresh");
+  thresh = ajAcdGetToggle("thresh");
   if(thresh){
     threshold = ajAcdGetFloat("valthresh");
     threshold = (long)(threshold * 10.0 + 0.5) / 10.0;
@@ -149,7 +149,7 @@ long inseed0;
 
   ancvar = ajAcdGetBool("ancest");
 
-  mulsets = ajAcdGetBool("multsets");
+  mulsets = ajAcdGetToggle("multsets");
   if (mulsets)
     datasets = ajAcdGetInt("datasets");
   
@@ -163,7 +163,7 @@ long inseed0;
 
   treeprint = ajAcdGetBool("drawtree");
  
-  trout = ajAcdGetBool("trout");
+  trout = ajAcdGetToggle("trout");
   if(trout){
     treef = ajAcdGetOutfile("treefile");
     treefile = treef->fp;

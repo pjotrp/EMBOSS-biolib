@@ -3,67 +3,18 @@ application: edollop [
   groups: "Phylogeny:Discrete characters"
 ]
 
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
 infile: datafile  [
   parameter: "Y"
-  information: "data file to be read in"
+  information: "Data file to be read in"
   knowntype: "dollop input"
 ]
 
-outfile: outfile  [
-  parameter: "Y"
-  default: "edollop.outfile"
-  knowntype: "dollop output"
-]
-
-boolean: besttree  [
-  additional: "Y"
-  default: "Y"
-  information: "Search for best tree"
-]
-
-boolean: random  [
-  additional: "$(besttree)"
-  default: "N"
-  information: "Randomize input order of species"
-]
-
-integer: randseed  [
-  standard: "$(random)"
-  default: "3"
-  information: "Random number seed (must be odd)"
-]
-
-integer: randtimes  [
-  standard: "$(random)"
-  default: "3"
-  information: "How many times to randomise"
-]
-
-boolean: dollo  [
-  additional: "Y"
-  default: "Y"
-  information: "Do Dollo (else Polymorphism)"
-]
-
-boolean: thresh  [
-  default: "N"
-  information: "Use Threshold parsimony"
-]
-
-float: valthresh  [
-  standard: "$(thresh)"
-  minimum: "1.0"
-  default: "1.0"
-  information: "threshold value"
-]
-
-boolean: ancest  [
-  additional: "Y"
-  default: "N"
-  information: "Use ancestral states in input file"
-]
-
-boolean: multsets  [
+toggle: multsets  [
   additional: "Y"
   default: "N"
   information: "Analyze multiple data sets"
@@ -73,7 +24,26 @@ integer: datasets  [
   standard: "$(multsets)"
   minimum: "2"
   default: "2"
-  information: "number of sets"
+  information: "Number of sets"
+]
+
+boolean: ancest  [
+  additional: "Y"
+  default: "N"
+  information: "Use ancestral states in input file"
+]
+
+endsection: input
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+outfile: outfile  [
+  parameter: "Y"
+  default: "edollop.outfile"
+  knowntype: "dollop output"
 ]
 
 boolean: printdata  [
@@ -106,7 +76,7 @@ boolean: drawtree  [
   information: "Draw tree"
 ]
 
-boolean: trout  [
+toggle: trout  [
   parameter: "Y"
   default: "Y"
   information: "Create a tree file"
@@ -118,3 +88,61 @@ outfile: treefile  [
   information: "Tree file name"
   knowntype: "tree file"
 ]
+
+endsection: output
+
+section: required [
+  information: "Required section"
+  type: "page"
+]
+
+toggle: besttree  [
+  additional: "Y"
+  default: "Y"
+  information: "Search for best tree"
+]
+
+toggle: random  [
+  additional: "$(besttree)"
+  default: "N"
+  information: "Randomize input order of species"
+]
+
+integer: randseed  [
+  standard: "$(random)"
+  default: "3"
+  information: "Random number seed (must be odd)"
+]
+
+integer: randtimes  [
+  standard: "$(random)"
+  default: "3"
+  information: "How many times to randomise"
+]
+
+toggle: thresh  [
+  default: "N"
+  information: "Use Threshold parsimony"
+]
+
+float: valthresh  [
+  standard: "$(thresh)"
+  minimum: "1.0"
+  default: "1.0"
+  information: "Threshold value"
+]
+
+endsection: required
+
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
+boolean: dollo  [
+  additional: "Y"
+  default: "Y"
+  information: "Do Dollo (else Polymorphism)"
+]
+
+endsection: additional

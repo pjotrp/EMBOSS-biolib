@@ -26,14 +26,7 @@ section: required [
     default: "N"
   ]
 
-endsection: required
-
-section: advanced [
-  information: "Advanced section"
-  type: "page"
-]
-
-  boolean: delete  [
+  toggle: delete  [
     information: "Delete the target sequence sections"
     default: "N"
   ]
@@ -44,7 +37,7 @@ section: advanced [
     default: "A"
   ]
 
-endsection: advanced
+endsection: required
 
 section: output [
   information: "Output section"

@@ -99,7 +99,7 @@ AjPFile inf;
     treefile = treef->fp;
   }
 
-  outgropt = ajAcdGetBool("og");
+  outgropt = ajAcdGetToggle("og");
   if(outgropt)
     outgrno = ajAcdGetInt("outgnum"); 
   else
@@ -108,7 +108,7 @@ AjPFile inf;
 
   ancvar = ajAcdGetBool("ancestral");
 
-  Clmin = ajAcdGetBool("minclique");
+  Clmin = ajAcdGetToggle("minclique");
   if(Clmin)
     Cliqmin = ajAcdGetInt("cliqminnum"); 
   

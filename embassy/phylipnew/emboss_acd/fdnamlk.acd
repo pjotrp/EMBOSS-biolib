@@ -7,10 +7,22 @@ application: fdnamlk [
   cpu: "high"
 ]
 
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
 seqset: sequences  [
   parameter: "Y"
   type: "gapany"
   help: "File containing a sequence allignment"
+]
+
+endsection: input
+
+section: output [
+  information: "Output section"
+  type: "page"
 ]
 
 outfile: outfile  [
@@ -18,7 +30,45 @@ outfile: outfile  [
   knowntype: "dnamlk output"
 ]
 
-boolean: besttree  [
+boolean: printdata  [
+  additional: "Y"
+  default: "N"
+  information: "Print out the data at start of run"
+]
+
+boolean: progress  [
+  additional: "Y"
+  default: "N"
+  information: "Print indications of progress of run"
+]
+
+boolean: drawtree  [
+  additional: "Y"
+  default: "Y"
+  information: "Draw tree"
+]
+
+toggle: trout  [
+  parameter: "Y"
+  default: "Y"
+  information: "Create a tree file"
+]
+
+outfile: treefile  [
+  standard: "$(trout)"
+  extension: "treefile"
+  information: "Tree file name"
+  knowntype: "Newick tree"
+]
+
+endsection: output
+
+section: required [
+  information: "Required section"
+  type: "page"
+]
+
+toggle: besttree  [
   additional: "Y"
   default: "Y"
   information: "Search for best tree"
@@ -36,7 +86,7 @@ boolean: global  [
   information: "Global rearrangements"
 ]
 
-boolean: random  [
+toggle: random  [
   standard: "$(besttree)"
   default: "N"
   information: "Randomize input order of species"
@@ -54,13 +104,7 @@ integer: randtimes  [
   information: "How many times to randomise"
 ]
 
-float: ttratio  [
-  additional: "Y"
-  default: "2.0"
-  information: "Transition/transversion ratio"
-]
-
-bool: basefrequency [
+toggle: basefrequency [
   additional: "Y"
   default: "Y"
   information: "Use empirical base frequencies"
@@ -98,7 +142,13 @@ float: freqt  [
   information: "Frequency for T/U"
 ]
 
-boolean: categories  [
+float: ttratio  [
+  standard: "Y"
+  default: "2.0"
+  information: "Transition/transversion ratio"
+]
+
+toggle: categories  [
   additional: "Y"
   default: "N"
   information: "More than one category of substitution rates"
@@ -114,15 +164,15 @@ integer: catnum  [
 
 string: catvals  [
   standard: "$(categories)"
-  information: "space seperated category values"
+  information: "Space seperated category values"
 ]
 
 string: catprob [
   standard: "$(categories)"
-  information: "space seperated probabillity values"
+  information: "Space seperated probabillity values"
 ]
 
-boolean: autog [
+toggle: autog [
   standard: "$(categories)"
   default: "N"
   information: "Use Defualt Mean block length of sites"
@@ -136,33 +186,4 @@ float: lambda  [
                 (greater than 1)"
 ]
 
-boolean: printdata  [
-  additional: "Y"
-  default: "N"
-  information: "Print out the data at start of run"
-]
-
-boolean: progress  [
-  additional: "Y"
-  default: "N"
-  information: "Print indications of progress of run"
-]
-
-boolean: drawtree  [
-  additional: "Y"
-  default: "Y"
-  information: "Draw tree"
-]
-
-boolean: trout  [
-  parameter: "Y"
-  default: "Y"
-  information: "Create a tree file"
-]
-
-outfile: treefile  [
-  standard: "$(trout)"
-  extension: "treefile"
-  information: "Tree file name"
-  knowntype: "Newick tree"
-]
+endsection: required

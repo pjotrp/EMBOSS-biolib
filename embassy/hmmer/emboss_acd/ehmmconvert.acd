@@ -3,10 +3,22 @@ application: ehmmconvert [
   groups: "HMM"
 ]
 
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
 infile: infile  [
   parameter: "Y"
   information: "HMM file"
   knowntype: "hmm file"
+]
+
+endsection: input
+
+section: advanced [
+  information: "Advanced section"
+  type: "page"
 ]
 
 list: format  [
@@ -31,7 +43,16 @@ boolean: force  [
   information: "Force overwriting"
 ]
 
+endsection: advanced
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
 outfile: outfile  [
   parameter: "Y"
   knowntype: "hmm file"
 ]
+
+endsection: output

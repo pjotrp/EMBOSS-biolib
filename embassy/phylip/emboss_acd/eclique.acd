@@ -3,10 +3,22 @@ application: eclique [
   groups: "Phylogeny:Discrete characters"
 ]
 
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
 infile: infile  [
   parameter: "Y"
-  information: "file to read in"
+  information: "Discrete characters input"
   knowntype: "clique input"
+]
+
+endsection: input
+
+section: output [
+  information: "Output section"
+  type: "page"
 ]
 
 outfile: outfile  [
@@ -30,40 +42,9 @@ boolean: drawtree  [
 outfile: treefile  [
   parameter: "Y"
   default: "eclique.treefile"
-  information: "tree file name"
+  information: "Tree file"
   knowntype: "tree file"
   nullok: "Y"
-]
-
-boolean: ancestral  [
-  additional: "Y"
-  default: "N"
-  information: "Use ancestral states in input file"
-]
-
-boolean: minclique  [
-  additional: "Y"
-  default: "N"
-  information: "Use minimum clique size"
-]
-
-integer: cliqminnum  [
-  standard: "$(minclique)"
-  default: "1"
-  information: "Minimum clique size"
-]
-
-boolean: og  [
-  standard: "Y"
-  information: "Outgroup root"
-  default: "N"
-]
-
-integer: outgnum  [
-  standard: "$(og)"
-  minimum: "1"
-  default: "1"
-  information: "number of the outgroup"
 ]
 
 boolean: printdata  [
@@ -83,3 +64,50 @@ boolean: matrixout  [
   default: "N"
   information: "Print out compatibility matrix"
 ]
+
+endsection: output
+
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
+boolean: ancestral  [
+  additional: "Y"
+  default: "N"
+  information: "Use ancestral states in input file"
+]
+
+endsection: additional
+
+section: required [
+  information: "Required section"
+  type: "page"
+]
+
+toggle: minclique  [
+  standard: "Y"
+  default: "N"
+  information: "Use minimum clique size"
+]
+
+integer: cliqminnum  [
+  standard: "$(minclique)"
+  default: "1"
+  information: "Minimum clique size"
+]
+
+toggle: og  [
+  standard: "Y"
+  information: "Outgroup root"
+  default: "N"
+]
+
+integer: outgnum  [
+  standard: "$(og)"
+  minimum: "1"
+  default: "1"
+  information: "Number of the outgroup"
+]
+
+endsection: required

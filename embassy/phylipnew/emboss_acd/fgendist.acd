@@ -3,15 +3,15 @@ application: fgendist [
   groups: "Phylogeny:Gene frequencies"
 ]
 
-infile: infile  [
-  parameter: "Y"
-  information: "data file"
-  knowntype: "gendist input"
+section: input [
+  information: "Input section"
+  type: "page"
 ]
 
-outfile: outfile  [
+infile: infile  [
   parameter: "Y"
-  knowntype: "gendist output"
+  information: "Data file"
+  knowntype: "gendist input"
 ]
 
 boolean: all  [
@@ -38,7 +38,7 @@ boolean: lowertriangle  [
   information: "Lower-triangular (else Square)"
 ]
 
-boolean: multsets  [
+toggle: multsets  [
   additional: "Y"
   default: "N"
   information: "Analyze multiple data sets"
@@ -49,8 +49,22 @@ integer: datasets  [
   information: "How many data sets"
 ]
 
+endsection: input
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+outfile: outfile  [
+  parameter: "Y"
+  knowntype: "gendist output"
+]
+
 boolean: progress  [
   additional: "Y"
   default: "N"
   information: "Print indications of progress of run"
 ]
+
+endsection: output

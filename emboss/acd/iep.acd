@@ -45,12 +45,12 @@ section: output [
   type: "page"
 ]
 
-  boolean: plot  [
+  toggle: plot  [
     default: "N"
     information: "Plot charge vs pH"
   ]
 
-  boolean: report  [
+  toggle: report  [
     default: "Y"
     information: "Write results to a file"
   ]

@@ -7,49 +7,15 @@ application: fkitsch [
   cpu: "high"
 ]
 
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
 infile: infile  [
   parameter: "Y"
-  information: "data file"
-  knowntype: "kitch input"
-]
-
-outfile: outfile  [
-  parameter: "Y"
-  knowntype: "kitch output"
-]
-
-boolean: besttree  [
-  parameter: "Y"
-  default: "Y"
-  information: "Search for best tree"
-]
-
-float: power  [
-  additional: "Y"
-  default: "3.0"
-  information: "Power"
-]
-
-boolean: negbranch  [
-  additional: "Y"
-  default: "N"
-  information: "Negative branch lengths allowed"
-]
-
-boolean: random  [
-  additional: "$(besttree)"
-  default: "N"
-  information: "Randomize input order of species"
-]
-
-integer: randseed  [
-  standard: "$(random)"
-  information: "Random number seed (must be odd)"
-]
-
-integer: randtimes  [
-  standard: "$(random)"
-  information: "Number of times to jumble"
+  information: "Data file"
+  knowntype: "kitsch input"
 ]
 
 boolean: lt  [
@@ -64,13 +30,7 @@ boolean: ut  [
   information: "Upper-triangular data matrix"
 ]
 
-boolean: replicates  [
-  additional: "Y"
-  default: "N"
-  information: "Subreplicates"
-]
-
-boolean: multsets  [
+toggle: multsets  [
   additional: "Y"
   default: "N"
   information: "Analyze multiple data sets"
@@ -79,6 +39,18 @@ boolean: multsets  [
 integer: datasets  [
   standard: "$(multsets)"
   information: "How many data sets"
+]
+
+endsection: input
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+outfile: outfile  [
+  parameter: "Y"
+  knowntype: "kitch output"
 ]
 
 boolean: printdata  [
@@ -105,3 +77,59 @@ outfile: treefile  [
   information: "Tree file name"
   knowntype: "Newick tree"
 ]
+
+endsection: output
+
+section: required [
+  information: "Required section"
+  type: "page"
+]
+
+toggle: besttree  [
+  parameter: "Y"
+  default: "Y"
+  information: "Search for best tree"
+]
+
+toggle: random  [
+  additional: "$(besttree)"
+  default: "N"
+  information: "Randomize input order of species"
+]
+
+integer: randseed  [
+  standard: "$(random)"
+  information: "Random number seed (must be odd)"
+]
+
+integer: randtimes  [
+  standard: "$(random)"
+  information: "Number of times to jumble"
+]
+
+endsection: required
+
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
+float: power  [
+  additional: "Y"
+  default: "3.0"
+  information: "Power"
+]
+
+boolean: negbranch  [
+  additional: "Y"
+  default: "N"
+  information: "Negative branch lengths allowed"
+]
+
+boolean: replicates  [
+  additional: "Y"
+  default: "N"
+  information: "Subreplicates"
+]
+
+endsection: additional

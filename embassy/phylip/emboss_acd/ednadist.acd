@@ -4,16 +4,49 @@ application: ednadist [
   groups: "Phylogeny:Molecular sequence"
 ]
 
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
 seqset: sequence  [
   parameter: "Y"
   type: "gapany"
   help: "File containing a sequence alignment"
 ]
 
+list: matrix  [
+  standard: "y"
+  header: "Form of distance matrix"
+  values: "S:Square;L:Lower-triangular"
+  information: "Form"
+  default: "S"
+]
+
+endsection: input
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
 outfile: outfile  [
   parameter: "Y"
   default: "ednadist.outfile"
   knowntype: "dnadist output"
+]
+
+boolean: printinitial  [
+  additional: "Y"
+  default: "N"
+  information: "Print out the data at start of run"
+]
+
+endsection: output
+
+section: required [
+  information: "Required section"
+  type: "page"
 ]
 
 list: method  [
@@ -35,6 +68,13 @@ float: ttratio  [
   maximum: "100.0"
 ]
 
+endsection: required
+
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
 integer: categories  [
   additional: "Y"
   default: "1"
@@ -45,12 +85,6 @@ boolean: basefrequency  [
   additional: "@($(method) == ML)"
   default: "Y"
   information: "Use empirical base frequencies"
-]
-
-boolean: printinitial  [
-  additional: "Y"
-  default: "N"
-  information: "Print out the data at start of run"
 ]
 
 float: freqa  [
@@ -85,10 +119,4 @@ float: freqt  [
   information: "Frequency for T/U"
 ]
 
-list: matrix  [
-  standard: "y"
-  header: "Form of distance matrix"
-  values: "S:Square;L:Lower-triangular"
-  information: "Form"
-  default: "S"
-]
+endsection: additional

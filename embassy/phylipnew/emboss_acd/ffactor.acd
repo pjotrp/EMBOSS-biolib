@@ -3,10 +3,22 @@ application: ffactor [
   groups: "Phylogeny:Discrete characters"
 ]
 
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
 infile: datafile  [
   parameter: "Y"
-  information: "data file"
+  information: "Data file"
   knowntype: "factor input"
+]
+
+endsection: input
+
+section: output [
+  information: "Output section"
+  type: "page"
 ]
 
 outfile: outfile  [
@@ -17,17 +29,19 @@ outfile: outfile  [
 boolean: anc  [
   additional: "Y"
   default: "N"
-  information: "put ancestral states in output file"
+  information: "Put ancestral states in output file"
 ]
 
 boolean: factors  [
   additional: "Y"
   default: "N"
-  information: "put factors information in output file"
+  information: "Put factors information in output file"
 ]
 
 boolean: progress  [
   additional: "Y"
   default: "Y"
-  information: "show progress"
+  information: "Show progress"
 ]
+
+endsection: output

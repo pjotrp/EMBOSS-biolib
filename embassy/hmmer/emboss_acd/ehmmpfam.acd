@@ -6,6 +6,11 @@ application: ehmmpfam [
   cpu: "medium"
 ]
 
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
 seqall: seqall  [
   parameter: "Y"
   type: "any"
@@ -15,6 +20,13 @@ string: hmmfile  [
   parameter: "Y"
   information: "HMM file"
   knowntype: "hmm file"
+]
+
+endsection: input
+
+section: advanced [
+  information: "Advanced section"
+  type: "page"
 ]
 
 boolean: nucleic  [
@@ -77,7 +89,16 @@ boolean: xnu  [
   information: "Use XNU filtering"
 ]
 
+endsection: advanced
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
 outfile: outfile  [
   parameter: "Y"
   knowntype: "hmmpfam output"
 ]
+
+endsection: output

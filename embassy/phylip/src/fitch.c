@@ -87,14 +87,14 @@ int i;
   inf = ajAcdGetInfile("infile");
   infile = inf->fp;
 
-  trout = ajAcdGetBool("trout");
+  trout = ajAcdGetToggle("trout");
   if(trout){
     treef = ajAcdGetOutfile("treefile");
     treefile = treef->fp;
   }
   treeprint = ajAcdGetBool("drawtree");
 
-  usertree = ! ajAcdGetBool("besttree");
+  usertree = ! ajAcdGetToggle("besttree");
 
   if(usertree)
     lengths = ajAcdGetBool("length");
@@ -103,7 +103,7 @@ int i;
 
   negallowed = ajAcdGetBool("negbranch");
 
-  outgropt = ajAcdGetBool("og");
+  outgropt = ajAcdGetToggle("og");
   if(outgropt)
     outgrno = ajAcdGetInt("outgnum"); 
 
@@ -117,7 +117,7 @@ int i;
   if (!usertree) {
     global = ajAcdGetBool("global");
 
-    jumble = ajAcdGetBool("random");
+    jumble = ajAcdGetToggle("random");
     if(jumble){
       inseed = ajAcdGetInt("randseed");
       /* make sure it's odd*/
@@ -138,7 +138,7 @@ int i;
     }
   }
 
-  mulsets = ajAcdGetBool("multsets");
+  mulsets = ajAcdGetToggle("multsets");
   if(mulsets)
     datasets = ajAcdGetInt("datasets");
 

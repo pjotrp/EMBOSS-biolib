@@ -3,6 +3,11 @@ application: econtrast [
   groups: "Phylogeny:Continuous characters"
 ]
 
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
 infile: infile  [
   parameter: "Y"
   information: "Continuous character frequency file"
@@ -11,8 +16,29 @@ infile: infile  [
 
 infile: treefile  [
   parameter: "Y"
-  information: "input tree file"
+  information: "Newick tree file"
   knowntype: "Newick tree"
+]
+
+
+toggle: multsets  [
+  standard: "Y"
+  default: "N"
+  information: "Analyze multiple data sets"
+]
+
+integer: datasets  [
+  standard: "$(multsets)"
+  minimum: "1"
+  default: "1"
+  information: "How many data sets"
+]
+
+endsection: input
+
+section: output [
+  information: "Output section"
+  type: "page"
 ]
 
 outfile: outfile  [
@@ -27,19 +53,6 @@ boolean: corplusreg  [
   information: "Print out correlations and regressions"
 ]
 
-boolean: multsets  [
-  additional: "Y"
-  default: "N"
-  information: "Analyze multiple data sets"
-]
-
-integer: datasets  [
-  standard: "$(multsets)"
-  minimum: "1"
-  default: "1"
-  information: "How many data sets"
-]
-
 boolean: printdata  [
   additional: "Y"
   default: "N"
@@ -51,3 +64,5 @@ boolean: progress  [
   default: "N"
   information: "Print indications of progress of run"
 ]
+
+endsection: output

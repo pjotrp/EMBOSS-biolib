@@ -3,10 +3,35 @@ application: erestml [
   groups: "Phylogeny:Molecular sequence"
 ]
 
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
 infile: datafile  [
   parameter: "Y"
   information: "Input file"
   knowntype: "restml input"
+]
+
+toggle: multsets  [
+  additional: "Y"
+  default: "N"
+  information: "Analyze multiple data sets"
+]
+
+integer: datasets  [
+  standard: "$(multsets)"
+  minimum: "2"
+  default: "2"
+  information: "Number of sets"
+]
+
+endsection: input
+
+section: output [
+  information: "Output section"
+  type: "page"
 ]
 
 outfile: outfile  [
@@ -15,7 +40,45 @@ outfile: outfile  [
   knowntype: "restml output"
 ]
 
-boolean: besttree  [
+boolean: printdata  [
+  additional: "Y"
+  default: "N"
+  information: "Print out the data at start of run"
+]
+
+boolean: progress  [
+  additional: "Y"
+  default: "N"
+  information: "Print indications of progress of run"
+]
+
+boolean: drawtree  [
+  additional: "Y"
+  default: "Y"
+  information: "Draw tree"
+]
+
+toggle: trout  [
+  parameter: "Y"
+  default: "Y"
+  information: "Create a tree file"
+]
+
+outfile: treefile  [
+  standard: "$(trout)"
+  default: "erestml.treefile"
+  information: "Tree file name"
+  knowntype: "tree file"
+]
+
+endsection: output
+
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
+toggle: besttree  [
   additional: "Y"
   default: "Y"
   information: "Search for best tree"
@@ -54,7 +117,14 @@ boolean: global  [
   information: "Global rearrangements"
 ]
 
-boolean: random  [
+endsection: additional
+
+section: required [
+  information: "Required section"
+  type: "page"
+]
+
+toggle: random  [
   standard: "$(besttree)"
   default: "N"
   information: "Randomize input order of species"
@@ -72,7 +142,7 @@ integer: randtimes  [
   information: "How many times to randomise"
 ]
 
-boolean: og  [
+toggle: og  [
   additional: "Y"
   information: "Outgroup root"
   default: "N"
@@ -82,49 +152,7 @@ integer: outgnum  [
   standard: "$(og)"
   minimum: "1"
   default: "1"
-  information: "number of the outgroup"
+  information: "Number of the outgroup"
 ]
 
-boolean: multsets  [
-  additional: "Y"
-  default: "N"
-  information: "Analyze multiple data sets"
-]
-
-integer: datasets  [
-  standard: "$(multsets)"
-  minimum: "2"
-  default: "2"
-  information: "number of sets"
-]
-
-boolean: printdata  [
-  additional: "Y"
-  default: "N"
-  information: "Print out the data at start of run"
-]
-
-boolean: progress  [
-  additional: "Y"
-  default: "N"
-  information: "Print indications of progress of run"
-]
-
-boolean: drawtree  [
-  additional: "Y"
-  default: "Y"
-  information: "Draw tree"
-]
-
-boolean: trout  [
-  parameter: "Y"
-  default: "Y"
-  information: "Create a tree file"
-]
-
-outfile: treefile  [
-  standard: "$(trout)"
-  default: "erestml.treefile"
-  information: "Tree file name"
-  knowntype: "tree file"
-]
+endsection: required

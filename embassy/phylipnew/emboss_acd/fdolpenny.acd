@@ -3,50 +3,15 @@ application: fdolpenny [
   groups: "Phylogeny:Discrete characters"
 ]
 
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
 infile: datafile  [
   parameter: "Y"
-  information: "data file"
+  information: "Data file"
   knowntype: "dolpenny input"
-]
-
-outfile: outfile  [
-  parameter: "Y"
-  knowntype: "dolpenny output"
-]
-
-boolean: dollo  [
-  parameter: "Y"
-  default: "Y"
-  information: "Dollo Parsimony method (else Polymorphis)"
-]
-
-integer: numgroups  [
-  additional: "Y"
-  information: "How many groups of 100 trees"
-  default: "1000"
-]
-
-integer: howoften  [
-  additional: "Y"
-  information: "How often to report, in trees"
-  default: "100"
-]
-
-boolean: simple  [
-  additional: "Y"
-  information: "Branch and bound is simple"
-]
-
-boolean: thresh  [
-  default: "N"
-  information: "Use Threshold parsimony"
-]
-
-float: valthresh  [
-  standard: "$(thresh)"
-  minimum: "1.0"
-  default: "1.0"
-  information: "threshold value"
 ]
 
 boolean: ancest  [
@@ -55,7 +20,7 @@ boolean: ancest  [
   information: "Use ancestral states in input file"
 ]
 
-boolean: multsets  [
+toggle: multsets  [
   additional: "Y"
   default: "N"
   information: "Analyze multiple data sets"
@@ -65,7 +30,19 @@ integer: datasets  [
   standard: "$(multsets)"
   minimum: "2"
   default: "2"
-  information: "number of sets"
+  information: "Number of sets"
+]
+
+endsection: input
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+outfile: outfile  [
+  parameter: "Y"
+  knowntype: "dolpenny output"
 ]
 
 boolean: printdata  [
@@ -98,7 +75,7 @@ boolean: drawtree  [
   information: "Draw tree"
 ]
 
-boolean: trout  [
+toggle: trout  [
   parameter: "Y"
   default: "Y"
   information: "Create a tree file"
@@ -110,3 +87,54 @@ outfile: treefile  [
   information: "Tree file name"
   knowntype: "Newick tree"
 ]
+
+endsection: output
+
+section: required [
+  information: "Required section"
+  type: "page"
+]
+
+boolean: dollo  [
+  parameter: "Y"
+  default: "Y"
+  information: "Dollo Parsimony method (else Polymorphism)"
+]
+
+toggle: thresh  [
+  default: "N"
+  information: "Use threshold parsimony"
+]
+
+float: valthresh  [
+  standard: "$(thresh)"
+  minimum: "1.0"
+  default: "1.0"
+  information: "Threshold value"
+]
+
+endsection: required
+
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
+integer: numgroups  [
+  additional: "Y"
+  information: "How many groups of 100 trees"
+  default: "1000"
+]
+
+integer: howoften  [
+  additional: "Y"
+  information: "How often to report, in trees"
+  default: "100"
+]
+
+boolean: simple  [
+  additional: "Y"
+  information: "Branch and bound is simple"
+]
+
+endsection: additional

@@ -3,16 +3,47 @@ application: eprotdist [
   groups: "Phylogeny:Molecular sequence"
 ]
 
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
 seqset: sequence  [
   parameter: "Y"
   type: "gapany"
   help: "File containing sequences"
 ]
 
+endsection: input
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
 outfile: outfile  [
   parameter: "Y"
   default: "eprotdist.outfile"
   knowntype: "protdist output"
+]
+
+boolean: printdata  [
+  additional: "Y"
+  default: "N"
+  information: "Print out the data at start of run"
+]
+
+boolean: progress  [
+  additional: "Y"
+  default: "N"
+  information: "Print indications of progress of run"
+]
+
+endsection: output
+
+section: required [
+  information: "Required section"
+  type: "page"
 ]
 
 list: method  [
@@ -24,6 +55,13 @@ list: method  [
            Cat:Categories model"
   information: "Choose the method to use"
   default: "Pam"
+]
+
+endsection: required
+
+section: additional [
+  information: "Additional section"
+  type: "page"
 ]
 
 list: categ  [
@@ -66,7 +104,7 @@ float: tranrate  [
   information: "Transition/transversion ratio"
 ]
 
-boolean: basefrequency  [
+toggle: basefrequency  [
   additional: "@($(method) == Cat)"
   default: "Y"
   information: "Use empirical base frequencies"
@@ -104,14 +142,4 @@ float: freqt  [
   information: "Frequency for T/U"
 ]
 
-boolean: printdata  [
-  additional: "Y"
-  default: "N"
-  information: "Print out the data at start of run"
-]
-
-boolean: progress  [
-  additional: "Y"
-  default: "N"
-  information: "Print indications of progress of run"
-]
+endsection: additional
