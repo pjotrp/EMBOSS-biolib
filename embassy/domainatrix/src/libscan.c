@@ -1012,8 +1012,8 @@ static AjBool libscan_HmmSearch(AjPSeqset db, AjPStr hmmfile,
         }
     
         ajFileClose(&inf);
-        ajSysUnlink(&hmmoutfname);
-        ajSysUnlink(&hmminfname); 
+        ajSysUnlink(hmmoutfname);
+        ajSysUnlink(hmminfname); 
     
     }
 
@@ -1361,8 +1361,8 @@ static AjBool libscan_ProfileSearch(AjPSeqset db, AjPStr profile,
         nhits++;
         ajFileClose(&inf);
     
-        ajSysUnlink(&profoutfname);
-        ajSysUnlink(&profinfname);    
+        ajSysUnlink(profoutfname);
+        ajSysUnlink(profinfname);    
     }
   
     /* CONSTRUCT THE HITLIST*/
@@ -2302,7 +2302,7 @@ static AjBool libscan_HmmLibScan(AjPSeq seq, AjPStr hmmpath, AjPStr hmmextn,
         }
 
         ajFileClose(&inf);
-        ajSysUnlink(&hmmoutfname);      
+        ajSysUnlink(hmmoutfname);      
     }
 
     ajListIterFree(&iter);
@@ -2356,8 +2356,8 @@ static AjBool libscan_HmmLibScan(AjPSeq seq, AjPStr hmmpath, AjPStr hmmextn,
     }
        
     /* remove temparary files from directory */
-    ajSysUnlink(&hmminfname);
-    ajSysUnlink(&hmmoutfname);
+    ajSysUnlink(hmminfname);
+    ajSysUnlink(hmmoutfname);
     
     /* delete and clean up tmplist */
     iter=ajListIterRead(tmplist);
@@ -2612,7 +2612,7 @@ static AjBool libscan_ProfileLibScan(AjPSeq seq, AjPStr path, AjPStr extn,
         ajListPushApp(tmplist,(AjPScophit) hit);
             
         ajFileClose(&inf);
-        ajSysUnlink(&profileoutfname);  
+        ajSysUnlink(profileoutfname);  
     }   
     ajListIterFree(&iter);
 
@@ -2656,7 +2656,7 @@ static AjBool libscan_ProfileLibScan(AjPSeq seq, AjPStr path, AjPStr extn,
 	    ajListPushApp(*mrglist,(AjPScophit) mhit);
 	ajListIterFree(&iter); 
 	ajListDel(&familyhits);
-	ajSysUnlink(&profileinfname);
+	ajSysUnlink(profileinfname);
 	
 	
 	/* delete and clean up pointlist */

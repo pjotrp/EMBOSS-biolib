@@ -645,11 +645,11 @@ int main(int argc, char **argv)
 		for(x=1;x<ncluster+1;x++)
 		{
 		    ajFmtPrintS(&temp, "rm %S.%d", name, x);
-		    ajSystem(&temp);
+		    ajSystem(temp);
 		}
 		
 		ajFmtPrintS(&temp, "rm %S.%d.post", name, ncluster);
-		ajSystem(&temp);
+		ajSystem(temp);
 		
 
 		/* Open domain set file */
@@ -796,31 +796,31 @@ int main(int argc, char **argv)
 
     /* Remove all temporary files */
     ajFmtPrintS(&temp, "rm %S", log);
-    ajSystem(&temp);
+    ajSystem(temp);
     ajFmtPrintS(&temp, "rm %S", dom);
-    ajSystem(&temp);
+    ajSystem(temp);
     ajFmtPrintS(&temp, "rm %S", set);
-    ajSystem(&temp);
+    ajSystem(temp);
     ajFmtPrintS(&temp, "rm %S", scan);
-    ajSystem(&temp);
+    ajSystem(temp);
     ajFmtPrintS(&temp, "rm %S", sort);
-    ajSystem(&temp);
+    ajSystem(temp);
     ajFmtPrintS(&temp, "rm %S", out);
-    ajSystem(&temp);
+    ajSystem(temp);
     ajStrAssS(&temp, name);	
     ajStrAppC(&temp, ".mat");
     ajFmtPrintS(&temp1, "rm %S", temp);
-    ajSystem(&temp1);
+    ajSystem(temp1);
 
 
     /* Remove all temporary files */
     for(x=1;x<ncluster+1;x++)
     {
 	ajFmtPrintS(&temp, "rm %S.%d", name, x);
-	ajSystem(&temp);
+	ajSystem(temp);
     }
     ajFmtPrintS(&temp, "rm %S.%d.post", name, ncluster);
-    ajSystem(&temp);
+    ajSystem(temp);
     
     
 

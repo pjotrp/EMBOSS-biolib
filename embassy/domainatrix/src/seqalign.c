@@ -443,9 +443,9 @@ int main(int argc, char **argv)
 		    ajFatal("Could not open %S for writing\n", clustinf1);
 		}
 
-		 ajDmxScopalgWriteFasta(align,outf1);  
-		/* ajDmxScopalgWriteClustal(align, outf1);   */
-		/*	    ajDmxScopalgWrite(align, outf1);  */
+		ajDmxScopalgWriteFasta(align,outf1);  
+		/* ajDmxScopalgWriteClustal(align,&outf1);   */
+		/*	    ajDmxScopalgWrite(outf1, align);  */
 		ajFileClose(&outf1);
 	    } 
 	    
@@ -456,7 +456,7 @@ int main(int argc, char **argv)
 	    /* extract the relavent family or superfamily or etc.. into a 
 	       list of Hitlist objects. */
 
-	    if(!(tmp_list = embHitlistReadNode(scopin, fam, sfam,
+	    if(!(tmp_list = embHitlistReadNode(scopin, fam, sfam, 
 					       fold, class)))
 	    {
 		ajWarn("Hitlist not found in Scop hits file");
@@ -470,8 +470,8 @@ int main(int argc, char **argv)
 		ajFileClose(&alnf);
 		
 
-		/* Rewind the scop families input file, write scop
-		   families output file.  The Typeobj element of the
+		/* Rewind the scop families input file, write scop 
+		   families output file.  The Typeobj element of the 
 		   hits used in the alignment are given as SEED */
 		ajFileSeek(scopin,0,SEEK_SET);
 
@@ -604,11 +604,11 @@ int main(int argc, char **argv)
 
 	    /* clean up directory */
 	    if(align->N !=0)
-		ajSysUnlink(&clustinf1);
+		ajSysUnlink(clustinf1);
 
-	    ajSysUnlink(&clustinf2);
-	    ajSysUnlink(&clustoutf);
-	    ajSysUnlink(&clustdndf);
+	    ajSysUnlink(clustinf2);
+	    ajSysUnlink(clustoutf);
+	    ajSysUnlink(clustdndf);
 
 
 	    /* Delete Scopalg structure */

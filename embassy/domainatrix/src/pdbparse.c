@@ -297,7 +297,7 @@ int main(ajint argc, char **argv)
 	    
 	    ajFmtPrintS(&temp, "rm %S", cpdb_name);
 	    ajFmtPrint("%S", temp);
-	    ajSystem(&temp);
+	    ajSystem(temp);
 
 	    ajFileClose(&pdb_inf);
 	    ajFileClose(&cpdb_outf);

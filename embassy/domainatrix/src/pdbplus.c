@@ -305,7 +305,7 @@ int main(ajint argc, char **argv)
 	ajStrApp(&pdb_name, pdb_extn);
 
         /* Check corresponding PDB file exists for reading using ajFileStat. */
-	if(!(ajFileStat(&pdb_name, AJ_FILE_R )))
+	if(!(ajFileStat(pdb_name, AJ_FILE_R )))
         {
             ajFmtPrintF(errf, "%s%S\n//\n", "PDB file not found: ", pdb_name);
             ajWarn("%s%S\n//\n", "PDB file not found: ", pdb_name);
@@ -437,7 +437,7 @@ int main(ajint argc, char **argv)
 
 	    /* Remove temporary file (stride output file). */
 	    ajFmtPrintS(&exec, "rm %S", randomname); 
-	    ajSystem(&exec); 
+	    ajSystem(exec); 
 	    
 	    /* 
 	    **  Calculate element serial numbers (eStrideNum)& ammend atom
@@ -590,19 +590,19 @@ int main(ajint argc, char **argv)
 	    ajFileClose(&tempf);
 	    
 	    ajFmtPrintS(&exec, "rm %S", naccess_str); 
-	    ajSystem(&exec); 
+	    ajSystem(exec); 
 
 	    ajStrAssS(&naccess_str, pdb_prefix);
 	    ajStrApp(&naccess_str, pdb->Pdb);
 	    ajStrAppC(&naccess_str, ".asa");
 	    ajFmtPrintS(&exec, "rm %S", naccess_str);
-	    ajSystem(&exec); 
+	    ajSystem(exec); 
 
 	    ajStrAssS(&naccess_str, pdb_prefix);
 	    ajStrApp(&naccess_str, pdb->Pdb);
 	    ajStrAppC(&naccess_str, ".log");
 	    ajFmtPrintS(&exec, "rm %S", naccess_str);
-	    ajSystem(&exec); 
+	    ajSystem(exec); 
 	}
 
         /* Construct name of corresp. output file, out_name, & allocate it. */

@@ -96,8 +96,8 @@ int main(int argc, char **argv)
     pdb_extn      = ajAcdGetString("pdbextn");
 */
     mode          = ajAcdGetList("mode");
-    pdbscop_dir  = ajAcdGetOutdir("pdboutdir");
     cpdbscop_dir = ajAcdGetOutdir("cpdboutdir");
+    pdbscop_dir  = ajAcdGetOutdir("pdboutdir");
     scop_inf      = ajAcdGetInfile("scopfile");
     errf1         = ajAcdGetOutfile("pdberrfile");
     errf2         = ajAcdGetOutfile("cpdberrfile");
@@ -200,7 +200,7 @@ int main(int argc, char **argv)
 	    ajFileClose(&pdbscop_outf);
 	    ajFmtPrintS(&temp, "rm %S\n", pdbscop_name);
 	    ajFmtPrint("%S", temp);
-	    ajSystem(&temp);
+	    ajSystem(temp);
 
 	}
 
@@ -216,7 +216,7 @@ int main(int argc, char **argv)
 	    ajFmtPrintS(&temp, "rm %S\n", cpdbscop_name);
 	    ajFmtPrint("%S", temp);
 	    
-	    ajSystem(&temp);
+	    ajSystem(temp);
 	}
 
 

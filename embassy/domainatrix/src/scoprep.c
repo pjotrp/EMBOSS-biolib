@@ -646,17 +646,17 @@ int main(int argc, char **argv)
     if(domf)
     {
 	ajFmtPrintS(&temp, "rm %S", dom);
-	ajSystem(&temp);
+	ajSystem(temp);
     }
     if(setf)
     {
 	ajFmtPrintS(&temp, "rm %S", set);
-	ajSystem(&temp);
+	ajSystem(temp);
     }
     if(outf)
     {    
 	ajFmtPrintS(&temp, "rm %S", out);
-	ajSystem(&temp);
+	ajSystem(temp);
     }
     
     

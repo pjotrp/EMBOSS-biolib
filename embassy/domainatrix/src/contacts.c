@@ -373,7 +373,7 @@ int main(ajint argc, char **argv)
     skip          = ajAcdGetBool("skip");
     ignore        = ajAcdGetFloat("ignore");
 /*    vdwfstr       = ajAcdGetString("vdwf");*/
-    vdwf       = ajAcdGetInfile("vdwf");
+    vdwf       = ajAcdGetDatafile("vdwf");
 
 
     /* Check directories etc.*/
@@ -513,7 +513,7 @@ rm /data/structure/con_new/d1qjha_.conD1G1XA_
 
 	    ajFmtPrintS(&temp, "rm %S", con_name);
 	    ajFmtPrint("%S", temp);
-	    ajSystem(&temp);
+	    ajSystem(temp);
 
 	    ajFileClose(&cpdb_inf);
 	    ajFileClose(&con_outf);

@@ -953,7 +953,7 @@ int main(int argc, char **argv)
 /*	    printf("done sigplot_SeedIdCalc\n"); */
 
 	    /* Call sigplot_HitIdCalc */
-	    sigplot_HitIdCalc(seedlist, hitlist, alg, matrixout,
+	    sigplot_HitIdCalc(seedlist, hitlist, alg, matrixout, 
 			      submat, gapopen, gapextn,
 			      &codes, rank);
 
@@ -984,17 +984,15 @@ int main(int argc, char **argv)
 
 	    /*delete and clean up seedlist */
 	    iter=ajListIterRead(seedlist);
+	    iter2=ajListIterRead(hitlist);
 	    while((seed_seq=(AjPSeq)ajListIterNext(iter)))
 		ajSeqDel(&seed_seq);
-	    ajListIterFree(&iter);
-	    ajListDel(&seedlist);
-
-	    iter2=ajListIterRead(hitlist);
 	    while((hit_seq=(AjPSeq)ajListIterNext(iter2)))
 		ajSeqDel(&hit_seq);
+	    ajListIterFree(&iter);
 	    ajListIterFree(&iter2);
+	    ajListDel(&seedlist);
 	    ajListDel(&hitlist);
-
 	    ajSeqDel(&seed_seq);
 	    ajSeqDel(&hit_seq);
 	    ajStrDel(&mat);	    
@@ -1030,7 +1028,7 @@ int main(int argc, char **argv)
 /* Cannot unlink using this because we've added the file extension ajSysUnlink(&tmpname); */
 	cmd=ajStrNew();
 	ajFmtPrintS(&cmd, "rm %S", tmpname);
-	ajSystem(&cmd);
+	ajSystem(cmd);
 	ajStrDel(&cmd);
     }
     
