@@ -4,9 +4,9 @@ pkgdata_DATA =  SITE-DIRECTED.txt abiview.txt antigenic.txt backtranseq.txt \
                compseq.txt cons.txt consense.txt contml.txt contrast.txt \
                cpgplot.txt cpgreport.txt cusp.txt cutseq.txt dan.txt \
                dbiblast.txt dbifasta.txt dbiflat.txt dbigcg.txt \
-               degapseq.txt descseq.txt diffseq.txt digest.txt \
-               distances.txt dnacomp.txt dnadist.txt dnainvar.txt dnaml.txt \
-               dnamlk.txt dnapars.txt dnapenny.txt dollop.txt dolpenny.txt \
+               degapseq.txt descseq.txt diffseq.txt digest.txt distmat.txt \
+               dnacomp.txt dnadist.txt dnainvar.txt dnaml.txt dnamlk.txt \
+               dnapars.txt dnapenny.txt dollop.txt dolpenny.txt \
                domainer.txt dotmatcher.txt dotpath.txt dottup.txt dreg.txt \
                eclique.txt econsense.txt econtml.txt econtrast.txt \
                ednacomp.txt ednadist.txt ednainvar.txt ednaml.txt \
