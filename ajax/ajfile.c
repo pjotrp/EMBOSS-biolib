@@ -2511,6 +2511,21 @@ FILE* ajOutfileFp (const AjPOutfile thys)
 
 
 
+/* @func ajOutfileFormat ******************************************************
+**
+** Returns the C FILE* for an AjPOutfile object
+**
+** @param [r] thys [const AjPOutfile] Outfile object
+** @return [AjPStr] Format name
+******************************************************************************/
+
+AjPStr ajOutfileFormat (const AjPOutfile thys)
+{
+    return thys->Formatstr;
+}
+
+
+
 /* @section File Casts ********************************************************
 **
 ** These functions examine the contents of a file object and return some
