@@ -11,6 +11,7 @@ section: input [ info: "input Section" type: page ]
 string: pdb  [
   parameter: "Y"
   information: "Location of pdb files (pdb format input)"
+  help: "A detailed explanation of the pdb file format is available on the pdb web site http://www.rcsb.org/pdb/info.html#File_Formats_and_Standards"
   default: "./"
 ]
 
@@ -26,14 +27,14 @@ endsection: input
 
 
 section: required [ info: "required Section" type: page ]
-bool: nocamask  [
+bool: camask  [
   required: "Y"
   information: "Mask non-amino acid groups in protein chains that do not contain a C-alpha atom"
   help: "The group will not appear in either the CO or SQ records of the clean coordinate file"
   default: "N"
 ]
 
-bool: nocamaska  [
+bool: camaska  [
   required: "Y"
   information: "Mask amino acids in protein chains that do not contain a C-alpha atom"
   help: "The amino acid will not appear in the CO record but will still be present in the SQ record of the clean coordinate file"
@@ -46,6 +47,13 @@ bool: atommask  [
   help: "The amino acid will appear not appear in the CO record but will still be present in the SQ record of the clean coordinate file"
   default: "N"
 ]
+
+outfile: errf  [
+  required: "Y"
+  information: "Name of log file for the build"
+  help: "The log file may contain messages about inconsistencies or errors in the pdb files that were parsed."
+  default: "pdbparse.log"
+]
 endsection: required
 
 
@@ -56,12 +64,13 @@ section: advanced [ info: "advanced Section" type: page ]
 bool: cpdbnaming  [
   optional: "N"
   information: "Use pdbid code to name files"
+  help: " The user specifies whether the output files have the same names as the input files or whether the pdb identifier code (from the pdb file) are used to name the files."
   default: "Y"
 ]
 
 integer: chnsiz  [
   optional: "Y"
-  information: "Minimum number of residues in a chain for it to be parsed"
+  information: "Minimum number of amino acid residues in a chain for it to be parsed"
   default: "5"
 ]
 
@@ -80,6 +89,7 @@ section: output [ info: "output Section" type: page ]
 string: cpdb  [
   parameter: "Y"
   information: "Location of coordinate files (embl format output)"
+  help: "A 'protein coordinate file' contains protein coordinate and other data extracted from a single pdb file.  The files are in embl-like format and contain 'cleaned-up' data that is self-consistent and error-corrected."
   default: "./"
 ]
 
@@ -94,13 +104,3 @@ endsection: output
 
 
 
-
-
-
-
-
-outfile: errf  [
-  required: "Y"
-  prompt: "Name of log file for the build"
-  default: "pdbparse.log"
-]

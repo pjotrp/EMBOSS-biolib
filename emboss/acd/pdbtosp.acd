@@ -9,7 +9,8 @@ appl: pdbtosp [
 
 section: input [ info: "input Section" type: page ]
 infile: infilea  [
-  prompt: "Name of raw swissprot:pdb equivalence file (input)"
+  information: "Name of raw swissprot:pdb equivalence file (input)"
+  help: "pdbtosp parses the swissprot:pdb equivalence table available at URL http://www.expasy.ch/cgi-bin/lists?pdbtosp.txt"
   parameter: "Y"
 ]
 endsection: input
@@ -20,7 +21,7 @@ endsection: input
 
 section: output [ info: "output Section" type: page ]
 outfile: outfile  [
-  prompt: "Name of swissprot:pdb equivalence file (embl format output)"
+  information: "Name of swissprot:pdb equivalence file (embl format output)"
   default: "Epdbtosp.dat"
   parameter: "Y"
 ]

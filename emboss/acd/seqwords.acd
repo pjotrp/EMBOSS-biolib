@@ -10,13 +10,12 @@ appl: seqwords [
 
 section: input [ info: "input Section" type: page ]
 infile: keyfile  [
-  prompt: "Name of keywords file (input)"
+  information: "Name of keywords file (input)"
   parameter: "Y"
 ]
 
 infile: spfile  [
-  prompt: "Name of swissprot database (input)"
-  default: "./seq.dat"
+  information: "Name of swissprot database (input)"
   required: "Y"
 ]
 endsection: input
@@ -27,8 +26,8 @@ endsection: input
 
 section: output [ info: "output Section" type: page ]
 outfile: outfile  [
-  prompt: "Name of seqwords hits file (output)"
-  default: "test.seqhits"
+  information: "Name of scop hits file (output)"
+  default: "test.hits"
   parameter: "Y"
 ]
 endsection: output

@@ -12,15 +12,16 @@ appl: profgen [
 
 section: input [ info: "input Section" type: page ]
 string: infpath [
-        req: Y
+        param: Y
         def: "./"
-        help: "Location of sequence alignment files (input)"
+        information: "Location of scop alignment files (input)"
+	help: "A 'scop family alignment file' contains a sequence alignment of domains belonging to the same scop family.  The file is in embl-like format and is annotated with records describing the SCOP classification of the family.  A scop family alignment file generatd by scopalign will contain a structure-based sequence alignment of domains of known structure only.  Such alignments can be extended with sequence relatives (of unknown structure) to the family in question by using seqalign."
 ]
 
 string: infextn [
-        req: Y
+        param: Y
         def: ".ealign"
-        help: "Extension of sequence alignment files"
+        information: "Extension of scop alignment files"
 ]
 endsection: input
 
@@ -38,7 +39,7 @@ list: type  [
   delimiter: ","
   codedelimiter: ":"
   header: "Profile type"
-  prompt: "Select type"
+  information: "Select type"
   button: "Y"
 ]
 
@@ -54,14 +55,14 @@ integer: threshold  [
 
 matrixf: datafile  [
   required: "@($(type)!=F)"
-  information: "Scoring matrix"
+  information: "Residue substitution matrix"
   default: "@($(type) = G: Epprofile H: EBLOSUM62 F: EBLOSUM62)"
   expected: "'Epprofile' for Gribskov type, or EBLOSUM62"
 ]
 
 float: open  [
   required: "$(dogap)"
-  information: "Gap opening penalty"
+  information: "Gap insertion penalty"
   default: "3.0"
 ]
 
@@ -79,38 +80,38 @@ endsection: required
 section: output [ info: "output Section" type: page ]
 string: smpfpath [
         req: "@($(type)==F)"
-        def: "./tmp/"
-        help: "Location of simple profile files (output)"
+        def: "./"
+        information: "Location of simple profile files (output)"
 ]
 
 string: smpfextn [
         req: "@($(type)==F)"
         def: ".freq"
-        help: "Extention of simple profile files"
+        information: "Extention of simple profile files"
 ]
 
 string: gbpfpath [
         req: "@($(type)==G)"
-        def: "./tmp/"
-        help: "Location of Gribskov profile files (output)"
+        def: "./"
+        information: "Location of Gribskov profile files (output)"
 ]
 
 string: gbpfextn [
         req: "@($(type)==G)"
         def: ".gribs"
-        help: "Extension of Gribskov profile files"
+        information: "Extension of Gribskov profile files"
 ]
 
 string: hnpfpath [
         req: "@($(type)==H)"
-        def: "./tmp/"
-        help: "Location of Henikoff profile files (output)"
+        def: "./"
+        information: "Location of Henikoff profile files (output)"
 ]
 
 string: hnpfextn [
         req: "@($(type)==H)"
         def: ".henik"
-        help: "Extention of Henikoff profile files"
+        information: "Extention of Henikoff profile files"
 ]
 endsection: output
 

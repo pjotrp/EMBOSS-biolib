@@ -13,7 +13,8 @@ appl: hetparse [
 section: input [ info: "input Section" type: page ]
 infile: inf  [
   parameter: "Y"
-  prompt: "Name of input file (raw dictionary of heterogen groups)"
+  information: "Name of input file (raw dictionary of heterogen groups)"
+  help: "hetparse parse the dictionary of heterogen groups available at http://pdb.rutgers.edu/het_dictionary.txt"
 ]
 endsection: input
 
@@ -24,19 +25,20 @@ endsection: input
 section: required [ info: "required Section" type: page ]
 bool: dogrep  [
   required: "Y"
-  prompt: "Search a directory of files with keywords?"
+  information: "Search a directory of files with keywords?"
+  help: "Optionally, hetparse will search a directory of pdb files and will count the number of files that each heterogen appears in."
   default: "N"
 ]
 
 string: path  [
   required: "$(dogrep)"
-  prompt: "Directory to search with keywords"
+  information: "Directory to search with keywords"
   default: "./"
 ]
 
 string: extn  [
   required: "$(dogrep)"
-  prompt: "Exension of files to search in above directory"
+  information: "Exension of files to search in above directory"
   default: ".ent"
 ]
 endsection: required
@@ -48,7 +50,8 @@ endsection: required
 section: output [ info: "output Section" type: page ]
 outfile: outf  [
   parameter: "Y"
-  prompt: "Name of output file (embl format)"
+  information: "Name of output file (embl format)"
+  default: "Ehet.dat"
 ]
 endsection: output
 
