@@ -107,8 +107,14 @@ AC_ARG_WITH(auth,
 	  if test "$withval" = "shadow" ; then
 		ALT_AUTHTYPE="-DSHADOW"
 	  fi
+	  if test "$withval" = "rshadow" ; then
+		ALT_AUTHTYPE="-DRSHADOW"
+	  fi
 	  if test "$withval" = "noshadow" ; then
 		ALT_AUTHTYPE="-DNO_SHADOW"
+	  fi
+	  if test "$withval" = "rnoshadow" ; then
+		ALT_AUTHTYPE="-DRNO_SHADOW"
 	  fi
 	  if test "$withval" = "aixshadow" ; then
 		ALT_AUTHTYPE="-DAIX_SHADOW"
