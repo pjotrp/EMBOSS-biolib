@@ -98,11 +98,14 @@ Input file format
 Output file format
 
    The ouput is a list of three columns.
+   
    The first column is the name of the matching sequence found.
    The second is the start position in the sequence of the match.
    The third column (after the word 'Percentage:') is the percentage of
    the maximum possible score (sum of the highest value at each position
-   in the frequency matrix). The output from the above example follows:
+   in the frequency matrix).
+   
+   The output from the above example follows:
      _________________________________________________________________
    
 # PROF scan using simple frequency matrix mymatrix
