@@ -60,7 +60,7 @@ crashing when deleting first character of the field
 #define PROGRAM_NAME "emnu"
 
 /* the version of this program */
-#define PROGRAM_VERSION "1.0.3"
+#define PROGRAM_VERSION "1.0.4"
 
 
 #include "emboss.h"
@@ -624,14 +624,12 @@ shellout(WINDOW *curwin, char *cmd)
     	result = chdir(&cmd[3]);
     } else if (!strncmp(cmd, "cd", 2)) {
     	result = chdir(home);
-/* IF THEY REAL WANT TO RUN THE MENU RECURSIVELY - LET THEM!
+/* STOP USER RUNNING THE MENU RECURSIVELY - implemented 9 Feb 2001 - GWW */
     } else if (!strcmp(cmd, PROGRAM_NAME)) {
-    	printf("Yes - very clever!\n\n");
-    	printf("You are not the first to try to run '%s' from within '%s'\n", PROGRAM_NAME, PROGRAM_NAME);
-    	printf("and you won't be the last.\n\n");
-    	printf("(Actually, you wouldn't damage anything, it just gets a bit confusing.)\n\n");
+    	printf("You are trying to run '%s' from within '%s'\n", PROGRAM_NAME, PROGRAM_NAME);
+    	printf("This can get confusing, so it is not allowed.\n\n");
     	result = 0;
-*/
+
     } else {
 
 /* get the time so we can note files created by this command */
@@ -1317,7 +1315,7 @@ populate_program_menus(AjPList plist, ITEM **ip)
     while ((gl = ajListIterNext(giter)) != NULL) {
     	if (ajStrLen(gl->doc) + namelen + 2 > COLS) {
 /* doc is longer than max length - copy string to buffer then truncate */
-    	    buffer = (char *) malloc(ajStrLen(gl->doc+1));
+    	    buffer = (char *) malloc(ajStrLen(gl->doc)+1);
     	    strcpy(buffer, ajStrStr(gl->doc));
     	    buffer[COLS-namelen-2] = '\0';
             *ip++ = new_item(ajStrStr(gl->name), buffer);
