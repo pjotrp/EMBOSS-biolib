@@ -28,7 +28,7 @@ pkgdata2_DATA =	megamerger.acd merger.acd msbar.acd needle.acd \
 	plotcon.acd plotorf.acd polydot.acd \
 	preg.acd prettyplot.acd prettyseq.acd prima.acd \
 	primersearch.acd printsextract.acd profit.acd prophecy.acd \
-	prophet.acd prosextract.acd pscan.acd \
+	prophet.acd prosextract.acd pscan.acd psiblasts.acd\
 	rebaseextract.acd recoder.acd redata.acd remap.acd \
 	restover.acd restrict.acd revseq.acd \
 	scopalign.acd scope.acd seealso.acd \
