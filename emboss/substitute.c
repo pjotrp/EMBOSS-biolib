@@ -5,8 +5,8 @@
 **
 **
 ** @author: Copyright (C) Damian Counsell
-** @version $Revision: 1.4 $
-** @modified $Date: 2004/07/19 13:14:21 $
+** @version $Revision: 1.5 $
+** @modified $Date: 2004/07/20 09:51:45 $
 ** @@
 **
 ** This program is free software; you can redistribute it and/or
@@ -67,7 +67,6 @@ int main(int argc , char **argv)
     /* file details for aligned sequence pairs */
     AjPStr ajpStrPairFileName            = NULL; /* input file name        */
     AjPStr ajpStrSingleFileName          = NULL; /* output file name       */
-    AjPStr ajpStrInfileSuffix            = NULL;
     AjPFile ajpFilePairCurrent           = NULL; /* input file             */
     AjPFile ajpFileSingleCurrent         = NULL; /* output file            */
     AjPList ajpListPairFiles             = NULL; /* list of pair files     */
@@ -94,12 +93,11 @@ int main(int argc , char **argv)
     ajpListPairFiles = ajAcdGetDirlist("alignedpairsdir");
 
     /* DDDDEBUG: FIRST DO THIS FOR ONE SEQUENCE PAIR ONLY */
-    ajStrAssC(&ajpStrInfileSuffix, ".needle");
     ajStrAssC(&ajpStrPairDir,
 	      "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_alignments/");
 
     /* make new directory object (second arg is file extension) */
-    ajpDirPairs= ajDirNewS(ajpStrPairDir, ajpStrOutfileSuffix);
+    ajpDirPairs = ajDirNewS(ajpStrPairDir, ajpStrOutfileSuffix);
 
     ajStrAssC(&ajpStrPairFileCurrentBaseName,
 	      "substitute_test.needle");
@@ -119,6 +117,8 @@ int main(int argc , char **argv)
 
     /* reserve memory for new seqset */
     ajpSeqsetPairCurrent = ajSeqsetNew();
+
+
     
     /* get sequence objects from current alignment file */
     ajSeqsetGetFromUsa(ajpStrPairFileCurrent,
