@@ -56,10 +56,18 @@ public class RemoteFileNode extends DefaultMutableTreeNode
 
     public RemoteFileNode(JembossParams mysettings, FileRoots froots,
                     String file, FileList parentList, String parent)
+    {
+      this(mysettings, froots, file, parentList, parent, false);
+    }
+
+    public RemoteFileNode(JembossParams mysettings, FileRoots froots,
+                    String file, FileList parentList, String parent,
+                    boolean ldir)
     { 
       this.mysettings = mysettings;
       this.froots = froots;
       this.parentList = parentList;
+      isDir = ldir;
       rootdir = froots.getCurrentRoot();
       serverPathToFile = (String)froots.getRoots().get(rootdir);
 
@@ -73,9 +81,12 @@ public class RemoteFileNode extends DefaultMutableTreeNode
           isDir = true;
       }
       else if(parent != null)
-        fullname = "."+fs+file;
+        fullname = "."+fs+parent+fs+file;
       else
         fullname = ".";
+
+      if(parent != null)
+        serverPathToFile = serverPathToFile.concat(fs+parent);
 
       setUserObject(file); 
     }
