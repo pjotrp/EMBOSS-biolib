@@ -15,7 +15,8 @@ backtranseq banana btwisted \
 chaos checktrans chips cirdna codcmp coderet \
 compseq cons cpgplot cpgreport cusp cutseq \
 dan dbiblast dbifasta dbiflat dbigcg \
-descseq diffseq digest domainer dotmatcher dotpath dottup dreg \
+degapseq descseq diffseq digest domainer \
+dotmatcher dotpath dottup dreg \
 einverted embossdata emma emowse entret \
 equicktandem est2genome etandem extractseq \
 findkm freak fuzznuc fuzzpro fuzztran \
@@ -70,6 +71,7 @@ dbiblast_SOURCES = dbiblast.c
 dbifasta_SOURCES = dbifasta.c
 dbiflat_SOURCES = dbiflat.c
 dbigcg_SOURCES = dbigcg.c
+degapseq_SOURCES = degapseq.c
 descseq_SOURCES = descseq.c
 diffseq_SOURCES = diffseq.c
 digest_SOURCES = digest.c
