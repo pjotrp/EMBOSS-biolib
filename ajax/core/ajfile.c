@@ -765,6 +765,7 @@ void ajFileDataNewC(const char *s, AjPFile *f)
 
 ajint ajFileSeek (const AjPFile thys, ajlong offset, ajint wherefrom) {
   ajint ret;
+
   clearerr(thys->fp);
   ret = fseek (thys->fp, offset, wherefrom);
 
@@ -775,6 +776,7 @@ ajint ajFileSeek (const AjPFile thys, ajlong offset, ajint wherefrom) {
   else {
     thys->End = ajFalse;
   }
+
   return ret;
 }
 
@@ -2597,6 +2599,29 @@ AjBool ajFileBuffEof (const AjPFileBuff thys) {
   return thys->File->End;
 }
 
+/* @func ajFileBuffEnd ********************************************************
+**
+** Tests whether the file is exhausted. This means end of file is reached
+** and the buffer is empty
+**
+** @param [u] thys [const AjPFileBuff] File buffer
+** @return [AjBool] ajTrue if we already set end-of-file
+** @@
+******************************************************************************/
+
+AjBool ajFileBuffEnd (const AjPFileBuff thys) {
+
+  ajDebug("ajFileBuffEnd End: %B Size: %d\n", thys->File->End, thys->Size);
+
+  if (!thys->File->End)		/* not reached EOF yet */
+    return ajFalse;
+
+  if (thys->Size != 0)		/* Something in the buffer*/
+    return ajFalse;
+
+  return ajTrue;
+}
+
 /* @func ajFileBuffReset ******************************************************
 **
 ** Resets the pointer and current record of a file buffer so the next read
@@ -2631,7 +2656,7 @@ void ajFileBuffResetPos (const AjPFileBuff thys) {
   thys->Pos = 0;
   thys->Curr = thys->Lines;
 
-  if (!thys->File->End)
+  if (!thys->File->End && (thys->File->fp != stdin))
   {
     ajFileSeek(thys->File, thys->Fpos, SEEK_SET);
   }
