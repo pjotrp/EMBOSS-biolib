@@ -7983,6 +7983,52 @@ FP /^\s+11\s+14\s+TaqI\s+TCGA\s+11\s+13\s+[.]\s+[.]\n/
 FP /^\s+125\s+135\s+Hin4I\s+GAYNNNNNVTC\s+116\s+111\s+148\s+143\n/
 //
 
+ID restrict-ex2
+UC This gives the lengths of the restriction fragments produced by
+UC cutting with all of the specified enzymes.
+AP restrict
+CL -fragments
+## split export EMBOSS_DATA=../rebaseextract-keep/ into two statements
+PP EMBOSS_DATA=../rebaseextract-keep/
+PP export EMBOSS_DATA
+IN tembl:hsfau
+IN
+IN
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI hsfau.restrict
+FP /^\s+11\s+14\s+TaqI\s+TCGA\s+11\s+13\s+[.]\s+[.]\n/
+FP /^\s+125\s+135\s+Hin4I\s+GAYNNNNNVTC\s+116\s+111\s+148\s+143\n/
+FP /^#\s+79/
+//
+
+ID restrict-ex3
+UC This gives the lengths of the restriction fragments created by
+UC cutting with just one of each of the specified enzymes in turn.
+AP restrict
+CL -solofragment
+## split export EMBOSS_DATA=../rebaseextract-keep/ into two statements
+PP EMBOSS_DATA=../rebaseextract-keep/
+PP export EMBOSS_DATA
+IN tembl:hsfau
+IN
+IN
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI hsfau.restrict
+FP /^\s+11\s+14\s+TaqI\s+TCGA\s+11\s+13\s+[.]\s+[.]\n/
+FP /^\s+125\s+135\s+Hin4I\s+GAYNNNNNVTC\s+116\s+111\s+148\s+143\n/
+FP /^#\s+3\s+13\s+25\s+33\s+37\s+114/
+//
+
 ID revseq-ex
 UC To create the reverse complement (reverse sense) of 'tembl:hsfau' in the file 'hsfau.rev':
 AP revseq
