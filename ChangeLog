@@ -1,4 +1,10 @@
 Version 2.9.0
+	Programs that produce graphics or text (outfile) output now
+	by default will not create the outfile if there is a graph (done
+	by setting the nullok attribute of the outfile).
+
+	Acdvalid now checks for incomplete ACD types and attributes.
+
         trimest now has the option '-toplower' which changes the
         poly-A tail to lower-case instead of cutting it off. 
 
