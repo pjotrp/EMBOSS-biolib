@@ -30,10 +30,10 @@ extern "C"
 ******************************************************************************/
 typedef struct AjSScorealg
 {   
-    AjPInt    seq_score;    /* Array of scores based on residue convervation */
+/*JC AjPInt ==> AjPFloat */    AjPFloat  seq_score;    /* Array of scores based on residue convervation */
     AjPInt    post_similar; /* Array of scores based on stamp pij value      */
-    AjPInt    ncon_score;   /* Array of scores based on number of contacts   */
-    AjPInt    ccon_score;   /* Array of scores based on convervation of contacts */
+/*JC AjPInt ==> AjPFloat */    AjPFloat    ncon_score;   /* Array of scores based on number of contacts   */
+/*JC AjPInt ==> AjPFloat */     AjPFloat    ccon_score;   /* Array of scores based on convervation of contacts */
     AjPInt    nccon_score; /* Array of total score based on convervation and number of contacts */
 
     AjPInt    combi_score;  /* Array of total score based on users scoring criteria  */
@@ -553,6 +553,9 @@ AjPScophit  ajXyzScophitNew(void);
 void     ajXyzScophitDel(AjPScophit *pthis);
 AjBool ajXyzHitlistToScophits(AjPList in, AjPList *out);
 AjBool        ajXyzHitsOverlap(AjPHit h1, AjPHit h2, ajint n);
+AjBool ajXyzScophitCopy(AjPScophit *to, AjPScophit from);
+
+
 
 
 void     ajXyzHitDel(AjPHit *pthis);
@@ -596,6 +599,7 @@ void     ajXyzScopToPdb(AjPStr scop, AjPStr *pdb);
 
 
 AjBool   ajXyzScopalgRead(AjPFile inf, AjPScopalg *thys);
+AjBool   ajXyzScopalgWrite(AjPFile outf, AjPScopalg *thys);
 void ajXyzScopalgDel(AjPScopalg *pthis);
 AjPScopalg  ajXyzScopalgNew(int n);
 

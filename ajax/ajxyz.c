@@ -200,10 +200,10 @@ AjPScorealg  ajXyzScorealgNew(ajint len)
     /* Create the scoring arrays */
     if(len)
     {
-	ret->seq_score    = ajIntNewL((ajint)len);
+	ret->seq_score    = ajFloatNewL((float)len);
 	ret->post_similar = ajIntNewL((ajint)len);
-	ret->ncon_score   = ajIntNewL((ajint)len);
-	ret->ccon_score   = ajIntNewL((ajint)len);
+	ret->ncon_score   = ajFloatNewL((float)len);
+	ret->ccon_score   = ajFloatNewL((float)len);
 	ret->nccon_score = ajIntNewL((ajint)len);
 	ret->combi_score  = ajIntNewL((ajint)len);
     }
@@ -731,10 +731,10 @@ void     ajXyzHitidxDel(AjPHitidx *pthis)
 ******************************************************************************/
 void ajXyzScorealgDel(AjPScorealg *pthis)
 {
-    ajIntDel(&(*pthis)->seq_score);
+    ajFloatDel(&(*pthis)->seq_score);
     ajIntDel(&(*pthis)->post_similar);
-    ajIntDel(&(*pthis)->ncon_score);
-    ajIntDel(&(*pthis)->ccon_score);
+    ajFloatDel(&(*pthis)->ncon_score);
+    ajFloatDel(&(*pthis)->ccon_score);
     ajIntDel(&(*pthis)->nccon_score);
     ajIntDel(&(*pthis)->combi_score);
 
@@ -4229,6 +4229,25 @@ void   ajXyzScopToPdb(AjPStr scop, AjPStr *pdb)
 
 
 
+/* @func ajXyzScopalgWrite ***************************************************
+**
+** Write a Scopalg object to file in embl-like format.
+** 
+** @param [r] outf     [AjPFile] Output file stream
+** @param [w] thys     [AjPScopalg*]  Scopalg object
+**
+** @return [AjBool] True on success (an alignment was written)
+** @@
+******************************************************************************/
+AjBool   ajXyzScopalgWrite(AjPFile outf, AjPScopalg *thys)
+{
+    /* JC Write this function and modify scopalign.c etc. Not urgent. */
+    return ajFalse;
+    
+}
+
+
+
 /* @func ajXyzScopalgRead ****************************************************
 **
 ** Read a Scopalg object from a file in embl-like format.
@@ -4259,6 +4278,7 @@ AjBool   ajXyzScopalgRead(AjPFile inf, AjPScopalg *thys)
     AjPStr  *arr_seqs       =NULL;     /* Array of sequences */
     AjPStr  seq             =NULL;     
     AjPStr  code            =NULL;     /* Id code of sequence */
+    AjPStr  codetmp         =NULL;     /* Id code of sequence */
     AjPStr  seq1            =NULL;
 
 
@@ -4279,6 +4299,7 @@ AjBool   ajXyzScopalgRead(AjPFile inf, AjPScopalg *thys)
 	postsim = ajStrNew();
 	posttmp = ajStrNew();
 	seq1    = ajStrNew();
+	codetmp = ajStrNew();
     }
 
     
@@ -4395,6 +4416,7 @@ AjBool   ajXyzScopalgRead(AjPFile inf, AjPScopalg *thys)
     }
 
 
+    
     if(!cnt)
     {
 	ajWarn("No sequences in alignment !\n");
@@ -4403,8 +4425,10 @@ AjBool   ajXyzScopalgRead(AjPFile inf, AjPScopalg *thys)
     }
     
 
+
     /* Allocate memory for Scopalg structure */
     (*thys) = ajXyzScopalgNew(cnt);
+
 
 
     /* Assign SCOP records */
@@ -4413,8 +4437,7 @@ AjBool   ajXyzScopalgRead(AjPFile inf, AjPScopalg *thys)
     ajStrAssS(&(*thys)->Superfamily,super);
     ajStrAssS(&(*thys)->Family,family); 
     
-    /* Assign width */
-    (*thys)->width = ajStrLen((*thys)->Seqs[0]);
+
 
     
     /* Assign sequences and free memory */
@@ -4423,16 +4446,36 @@ AjBool   ajXyzScopalgRead(AjPFile inf, AjPScopalg *thys)
 	    ajStrAssS(&(*thys)->Seqs[x],arr_seqs[x]); 
 	    AJFREE(arr_seqs[x]);
 	}
+
+
+
+    /* Assign width */
+    (*thys)->width = ajStrLen((*thys)->Seqs[0]);
+
+    printf("scopalgwidth: %d\n", (*thys)->width);
+    fflush(stdout);
+
+
+
+
+
+
     /* Free array */
     AJFREE(arr_seqs);
 
 
-    for(x=0; ajListstrPop(list_codes,&code); x++)
-	ajStrAssS(&(*thys)->Codes[x],arr_seqs[x]); 	
+
+
+    for(x=0; ajListstrPop(list_codes,&codetmp); x++)
+	ajStrAssS(&(*thys)->Codes[x],codetmp); 	 
+/*JC	ajStrAssS(&(*thys)->Codes[x],arr_seqs[x]); 	 */
+
+
 
 
     /* Assign Post_similar line */
     ajStrAssS(&(*thys)->Post_similar,postsim); 
+
 
 
     /* Clean up */
@@ -4440,8 +4483,8 @@ AjBool   ajXyzScopalgRead(AjPFile inf, AjPScopalg *thys)
     ajListstrDel(&list_codes); 
     
 
+
     /* Return */
-    ajExit();
     return ajTrue;
 }
 
@@ -4819,6 +4862,42 @@ AjBool   ajXyzVdwallRead(AjPFile inf, AjPVdwall *thys)
 }
 
 
+
+
+/* @func ajXyzScophitCopy ******************************************************
+**
+** Copies the contents from one Scophit object to another.
+**
+** @param [w] to   [AjPScophit*] Scophit object pointer 
+** @param [w] from [AjPScophit] Scophit object 
+**
+** @return [AjBool] True if copy was successful.
+** @@
+******************************************************************************/
+AjBool ajXyzScophitCopy(AjPScophit *to, AjPScophit from)
+{
+    /* Check args */
+    if(!(*to) || !from)
+	return ajFalse;
+
+    ajStrAss(&(*to)->Class, from->Class);
+    ajStrAss(&(*to)->Fold, from->Fold);
+    ajStrAss(&(*to)->Superfamily, from->Superfamily);
+    ajStrAss(&(*to)->Family, from->Family);
+    ajStrAss(&(*to)->Seq, from->Seq);
+    ajStrAss(&(*to)->Id, from->Id);
+    ajStrAss(&(*to)->Typeobj, from->Typeobj);
+    ajStrAss(&(*to)->Typesbj, from->Typesbj);
+    ajStrAss(&(*to)->Alg, from->Alg);
+    (*to)->Start = from->Start;
+    (*to)->End = from->End;
+    (*to)->Group = from->Group;
+    (*to)->Rank = from->Rank;
+    (*to)->Score = from->Score;
+    (*to)->Eval = from->Eval;
+
+    return ajTrue;
+}
 
 
 
