@@ -37,7 +37,7 @@ public class JembossAuthServer
 {
 
   /** SOAP results directory */
-  private String tmproot = new String("/tmp/SOAP/emboss/");
+  private String tmproot = new String("/data/sandbox/");
   /** Jemboss log file       */
   private String logFile = new String(tmproot+"/jemboss.log");
   /** Jemboss error log file */
@@ -203,9 +203,6 @@ public class JembossAuthServer
       String fdir  = fileContent.substring(0,ind);
       String ffile = fileContent.substring(ind+1).trim(); 
       boolean ok = aj.listFiles(userName,passwd,environ,fdir);
-
-      appendToLogFile("call_ajax aj.getErrStd() "+aj.getErrStd(),
-                         errorLog);
 
       if(!ok)
         return returnError(aj,"listFiles error in call_ajax");
