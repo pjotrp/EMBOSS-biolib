@@ -27,6 +27,7 @@ AjPStr    ajAcdGetListI (char *token, int num);
 AjPMatrix ajAcdGetMatrix (char *token);
 AjPMatrixf ajAcdGetMatrixf (char *token);
 AjPFile   ajAcdGetOutfile (char *token);
+AjPPdb    ajAcdGetCpdb (char *token);
 AjPRange  ajAcdGetRange (char *token);
 AjPRegexp ajAcdGetRegexp (char *token);
 AjPStr*   ajAcdGetSelect (char *token);

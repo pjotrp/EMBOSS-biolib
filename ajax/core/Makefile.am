@@ -11,7 +11,7 @@ ajmath.c ajmatrices.c ajmem.c ajmess.c ajnam.c \
 ajposreg.c ajrange.c ajreg.c \
 ajseq.c ajseqdb.c ajseqread.c ajseqtype.c ajseqwrite.c \
 ajsort.c ajstr.c ajsys.c \
-ajtable.c ajtime.c ajtranslate.c ajutil.c \
+ajtable.c ajtime.c ajtranslate.c ajutil.c ajxyz.c \
 hsp_debug.c hsp_regcomp.c hsp_regerror.c \
 hsp_regexec.c hsp_regfree.c hsp_split.c \
 hsregerror.c hsregexp.c hsregsub.c 
@@ -26,7 +26,7 @@ ajmath.h ajmatrices.h ajmem.h ajmess.h ajnam.h \
 ajposreg.h ajrange.h ajreg.h ajsort.h \
 ajseq.h ajseqdata.h ajseqdb.h ajseqread.h ajseqtype.h ajseqwrite.h \
 ajstr.h ajsys.h \
-ajtable.h ajtime.h ajtranslate.h ajutil.h \
+ajtable.h ajtime.h ajtranslate.h ajutil.h ajxyz.h \
 hsregmagic.h hsregexp.h \
 hsp_cclass.h hsp_cname.h hsp_engine.c hsp_engine.h \
 hsp_regcomp.h hsp_regerror.h \

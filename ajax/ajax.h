@@ -1,4 +1,3 @@
-/*  Last edited: Feb  7 16:58 2000 (pmr) */
 #ifdef __cplusplus
 extern "C"
 {
@@ -55,6 +54,7 @@ extern "C"
 #include "ajarr.h"
 #include "ajgraphstruct.h"
   /*#include "ajhist.h"*/
+#include "ajxyz.h"
 #include "ajacd.h"
 #include "ajcall.h"
 
