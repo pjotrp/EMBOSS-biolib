@@ -1,4 +1,4 @@
-/********************************************************************
+ /********************************************************************
 ** @source AJAX structure functions
 **
 ** @author Copyright (C) 2000 Jon Ison (jison@hgmp.mrc.ac.uk)
@@ -9639,17 +9639,15 @@ AjBool       ajXyzHitlistPriorityLow(AjPHitlist *list)
 **
 ** Checks to see if the Target element of a Scophit object == ajTrue.
 **
-** @param [r] ptr [const void*] Scophit object pointer
+** @param [r] ptr [AjPScophit] Scophit object pointer
 **
 ** @return [AjBool] Returns ajTrue if the Target element of the Scophit object 
 ** == ajTrue, returns ajFalse otherwise.
 ** @@
 ******************************************************************************/
-AjBool   ajXyzScophitCheckTarget(const void *ptr)
+AjBool   ajXyzScophitCheckTarget(AjPScophit ptr)
 {
-    AjPScophit sh = (AjPScophit)ptr;
-    
-    return sh->Target;
+    return ptr->Target;
 }
 
 

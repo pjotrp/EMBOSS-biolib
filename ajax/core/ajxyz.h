@@ -854,7 +854,7 @@ AjBool        ajXyzScophitsOverlapAcc(AjPScophit h1, AjPScophit h2, ajint n);
 AjBool        ajXyzScophitCopy(AjPScophit *to, AjPScophit from);
 AjPList       ajXyzScophitListCopy(AjPList ptr);
 AjBool        ajXyzScophitToHit(AjPHit *to, AjPScophit from);
-AjBool        ajXyzScophitCheckTarget(const void *ptr);
+AjBool        ajXyzScophitCheckTarget(AjPScophit ptr);
 AjBool        ajXyzScophitTarget(AjPScophit *h);
 AjBool        ajXyzScophitTarget2(AjPScophit *h);
 AjBool        ajXyzScophitTargetLowPriority(AjPScophit *h);
