@@ -2004,7 +2004,7 @@ static int java_jembossctl(ajint command, AjPStr username, AjPStr password,
     }
 
     /* Setup commandline */
-    ajFmtPrintS(&cl,"jembossctl %s -auto",cuniq);
+    ajFmtPrintS(&cl,"jembossctl %s",cuniq);
     argp = make_array(cl);
     
     pipe(outpipe);
