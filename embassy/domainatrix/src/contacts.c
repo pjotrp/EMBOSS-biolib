@@ -113,7 +113,8 @@
 **  test_data/contacts.log was written.
 **  
 **  The following command line would achieve the same result.
-**  contacts /test_data .dxyz /test_data .con -thresh 1.0 -conerrf /test_data/contacts.log
+**  contacts /test_data .dxyz /test_data .con -thresh 1.0 -conerrf 
+**  /test_data/contacts.log -vdwf Evdw.dat
 **
 **  
 **  
@@ -149,12 +150,15 @@
 **  number of amino acid residues comprising the chain (or the chains from 
 **  which a domain is comprised) is given after NR. The number of residue-residue
 **  contacts is given after NSMCON. 
-**  (8) SM - Line of residue contact data. Pairs of amino acid identifiers and 
+**  (8) SQ - domain or protein sequence. The number of residues is given before 
+**  AA on the first line.  The sequece is given on subsequent lines. 
+**  (9) SM - Line of residue contact data. Pairs of amino acid identifiers and 
 **  residue numbers are delimited by a ';'. Residue numbers are taken from the 
 **  clean coordinate file and give a correct index into the sequence (i.e. they
-**  are not necessarily the same as the original pdb file).
-**  (9) XX - used for spacing.
-**  (10) // - given on the last line of the file only.
+**  are not necessarily the same as the original pdb file).  This sequence is 
+**  given in the contact file itself (SQ record).
+**  (10) XX - used for spacing.
+**  (11) // - given on the last line of the file only.
 ** 
 **  Note - SM records are used for contacts between either either side-chain 
 **  or main-chain atoms as defined above.  In a future implementation, SS will
@@ -173,6 +177,9 @@
 **  CN   [1]
 **  XX
 **  IN   ID B; NR 146; NSMCON 2514;
+**  XX
+**  SQ   SEQUENCE    146 AA;   5817 MW;  47362A43 CRC32;
+**       VHLTPEEKLA VQCTAQELVM TLNELFARFD KLAAENHCLR IKILGDCYYC VS
 **  XX
 **  SM   VAL 1 ; HIS 2
 **  SM   VAL 1 ; LEU 3
@@ -488,7 +495,7 @@ rm /data/structure/con_new/d1qjha_.conD1G1XA_
 	    ajStrDel(&temp);	
 	    continue;
 	}  
-    
+
 	
 	/* Write contacts file */
 	if(!contacts_WriteFile(logf, con_outf, thresh, ignore, pdb, vdw))
@@ -508,7 +515,6 @@ rm /data/structure/con_new/d1qjha_.conD1G1XA_
 	    continue;
 	}
 
-	
 
 	/* Tidy up*/
 	ajFileClose(&cpdb_inf);
@@ -618,12 +624,12 @@ static AjBool contacts_WriteFile(AjPFile logf, AjPFile outf, float thresh,
 	    {
 		/* Allocate memory for the contact map (a SQUARE 2d int array) */
 		mat = ajInt2dNewL((ajint)pdb->Chains[y]->Nres);   	
+
 		for(z=0;z<pdb->Chains[y]->Nres;++z)
 		    ajInt2dPut(&mat, z, pdb->Chains[y]->Nres-1, (ajint) 0);
-
 	    
 		/* Write the contact map */
-	    
+	
 		if(!contacts_ContactMapCalc(&mat, &ncon, pdb->Chains[y]->Nres, 
 					     thresh, ignore, x+1, y+1, pdb,  vdw))
 		{
@@ -632,6 +638,7 @@ static AjBool contacts_WriteFile(AjPFile logf, AjPFile outf, float thresh,
 		    return ajFalse;
 		}
 
+	    
 
 		/* Print out chain-specific data */
 		ajFmtPrintF(outf, "%-5s[%d]\n", "CN", y+1);	
@@ -642,7 +649,8 @@ static AjBool contacts_WriteFile(AjPFile logf, AjPFile outf, float thresh,
 			    pdb->Chains[y]->Nres,
 			    ncon);
 		ajFmtPrintF(outf, "XX\n");	
-
+		ajSeqWriteXyz(outf, pdb->Chains[y]->Seq, "SQ");
+		ajFmtPrintF(outf, "XX\n");	
 
 		if(ncon)
 		{
@@ -959,7 +967,6 @@ static AjBool contacts_ContactMapCalc(AjPInt2d *mat, ajint *ncon, ajint dim,
 	if(!done)
 	    continue;
 		
-
 	/*Loop for second residue */
 	for(res2=res1+1, idx2=idx1; res2<=reslast; res2++)
 	{
@@ -989,7 +996,7 @@ static AjBool contacts_ContactMapCalc(AjPInt2d *mat, ajint *ncon, ajint dim,
 		      idx1, idx2,arr[idx1]->Idx, arr[idx2]->Idx);
 		    fflush(xxxtemp->fp); */
 		    
-		    
+
 /*		    if(ajXyzInContact(arr[idx1], arr[idx2], thresh, vdw))		 */
 		    if((dis = ajXyzAtomDistance(arr[idx1], arr[idx2], vdw))<=thresh)
 		    {
@@ -998,9 +1005,17 @@ static AjBool contacts_ContactMapCalc(AjPInt2d *mat, ajint *ncon, ajint dim,
 
 			/* Increment no. contacts and write contact map */
 			(*ncon)++;
-  			ajInt2dPut(mat, arr[idx1]->Idx-1, arr[idx2]->Idx-1, (ajint) 1);
-			ajInt2dPut(mat, arr[idx2]->Idx-1, arr[idx1]->Idx-1, (ajint) 1); 
 
+			if((arr[idx1]->Idx==0)||(arr[idx2]->Idx==0))
+			{
+			    ajWarn("Indexing error, contact not written !\n");
+			}
+			else
+			{
+			    ajInt2dPut(mat, arr[idx1]->Idx-1, arr[idx2]->Idx-1, (ajint) 1);
+			    ajInt2dPut(mat, arr[idx2]->Idx-1, arr[idx1]->Idx-1, (ajint) 1); 
+			}
+			
 			done=ajTrue;
 			break;
 		    }
@@ -1031,6 +1046,16 @@ static AjBool contacts_ContactMapCalc(AjPInt2d *mat, ajint *ncon, ajint dim,
     return ajTrue;
 }
 
+
+
+
+
+
+
+
+
+
+
     
     
-    
+
