@@ -35,8 +35,6 @@ static void stepdown (AjPList l16, AjPList l8, AjPFeatTable *tab);
 static void output_stored_match(AjBool stored_match, ajint stored_dist,
 	ajint s8, ajint s16, AjPFeatTable *tab);	
 
-static ajint    patRestrictStartCompare(const void *a, const void *b);
-
 
 /* the maximum distance between a length 16 pattern and a length 8
 pattern in a MRS */
@@ -216,10 +214,10 @@ int main(int argc, char **argv)
 
 /* append reverse lists to forward lists and sort them by match position */
 	  ajListPushList(l8, &l8rev);
-	  ajListSort(l8, patRestrictStartCompare);
+	  ajListSort(l8, embPatRestrictStartCompare);
 
 	  ajListPushList(l16, &l16rev);
-	  ajListSort(l16, patRestrictStartCompare);
+	  ajListSort(l16, embPatRestrictStartCompare);
 
 /* initialise the output feature table */
           dict = ajFeatGffDictionaryCreate();
@@ -540,21 +538,3 @@ the end position of the MRS = second pattern + length of second pattern -1 */
     
 
 }
-/* @funcstatic patRestrictStartCompare ****************************************
-**      
-** Sort pattern hits on the basis of start position
-**
-** @param [r] a [const void *] First EmbPMatMatch hit
-** @param [r] b [const void *] Second EmbPMatMatch hit
-**       
-** @return [ajint] 0 if a and b are equal
-**               -ve if a is less than b,
-**               +ve if a is greater than b
-******************************************************************************/
-            
-static ajint patRestrictStartCompare(const void *a, const void *b)
-{
-    return (*(EmbPMatMatch *)a)->start - (*(EmbPMatMatch *)b)->start;
-} 
-
-

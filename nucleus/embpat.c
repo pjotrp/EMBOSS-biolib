@@ -25,9 +25,6 @@
 
 static void   patRestrictPushHit(EmbPPatRestrict *enz, AjPList *l, ajint pos,
 				 ajint begin, ajint len, AjBool forward);
-static ajint    patRestrictStartCompare(const void *a, const void *b);
-static ajint    patRestrictCutCompare(const void *a, const void *b);
-static ajint    patRestrictNameCompare(const void *a, const void *b);
 
 static void   patAminoCarboxyl(AjPStr *s, AjBool *amino, AjBool *carboxyl);
 static AjBool patParenTest(char *p, AjBool *repeat, AjBool *range);
@@ -1094,7 +1091,7 @@ ajint embPatRestrictScan(EmbPPatRestrict *enz, AjPStr *substr, AjPStr *binstr,
 
     if(hits)
     {
-	ajListSort(tx,patRestrictCutCompare);
+	ajListSort(tx,embPatRestrictCutCompare);
 	for(i=0,rhits=0,v=0;i<hits;++i)
 	{
 	    (void) ajListPop(tx,(void **)&m);
@@ -2961,7 +2958,7 @@ ajint embPatVariablePattern (AjPStr *pattern, AjPStr opattern, AjPStr text,
 
 /* @func embPatRestrictRestrict ***********************************************
 **
-** Cut down the number of restriction enzyme hits from ajPatRestrictScan
+** Cut down the number of restriction enzyme hits from embPatRestrictScan
 ** Notably double reporting of symmetric palindromes and reporting
 ** of isoschizomers. Also provides an optional alphabetic sort.
 **
@@ -2969,8 +2966,8 @@ ajint embPatVariablePattern (AjPStr *pattern, AjPStr opattern, AjPStr text,
 ** found will be added to the string 'iso' in the returned list of
 ** EmbPMatMatch structures.  If 'isos' is AjTrue then they will be left alone.
 **
-** @param [rw] l [AjPList *] list of hits from ajPatRestrictScan
-** @param [r] hits [ajint] number of hits from ajPatRestrictScan
+** @param [rw] l [AjPList *] list of hits from embPatRestrictScan
+** @param [r] hits [ajint] number of hits from embPatRestrictScan
 ** @param [r] isos [AjBool] Allow isoschizomers
 ** @param [r] alpha [AjBool] Sort alphabetically
 **
@@ -3003,7 +3000,7 @@ ajint embPatRestrictRestrict (AjPList *l, ajint hits, AjBool isos,
 
 
     /* Remove Mirrors for each enzyme separately */
-    ajListSort(*l,patRestrictNameCompare);
+    ajListSort(*l,embPatRestrictNameCompare);
     tc=nc=0;
 
     if(hits)
@@ -3024,8 +3021,8 @@ ajint embPatRestrictRestrict (AjPList *l, ajint hits, AjBool isos,
 	{
 	    ajStrAss(&ps,m->cod);
 	    ajListPush(*l,(void *)m);
-	    ajListSort(tlist,patRestrictStartCompare);
-	    ajListSort(tlist,patRestrictCutCompare);
+	    ajListSort(tlist,embPatRestrictStartCompare);
+	    ajListSort(tlist,embPatRestrictCutCompare);
 	    cut1=cut2=INT_MAX;
 	    for(i=0;i<tc;++i)
 	    {
@@ -3042,8 +3039,8 @@ ajint embPatRestrictRestrict (AjPList *l, ajint hits, AjBool isos,
 	    tc=0;
 	}
     }
-    ajListSort(tlist,patRestrictStartCompare);
-    ajListSort(tlist,patRestrictCutCompare);
+    ajListSort(tlist,embPatRestrictStartCompare);
+    ajListSort(tlist,embPatRestrictCutCompare);
     cut1=cut2=INT_MAX;
     for(i=0;i<tc;++i)
     {
@@ -3070,7 +3067,7 @@ ajint embPatRestrictRestrict (AjPList *l, ajint hits, AjBool isos,
     {
 	/* Now remove Isoschizomers         */
 	/* Keep only first alphabetical one */
-	ajListSort(newlist,patRestrictStartCompare);
+	ajListSort(newlist,embPatRestrictStartCompare);
 	if(hits)
 	{
 	    ajListPop(newlist,(void **)&m);
@@ -3098,7 +3095,7 @@ be checked later to see if they are isoschizomers */
 		 * Now for list of all enz's which cut at same pos 
 		 *  sorted by Name
 		 */
-		ajListSort(tlist,patRestrictNameCompare);
+		ajListSort(tlist,embPatRestrictNameCompare);
 
 		/*
 		 * Now loop rejecting, for each left in the list,
@@ -3150,7 +3147,7 @@ delete */
 
 
 
-	ajListSort(tlist,patRestrictNameCompare);
+	ajListSort(tlist,embPatRestrictNameCompare);
 	while(tc)
 	{
 	    ajListPop(tlist,(void **)&m);
@@ -3202,10 +3199,10 @@ delete */
     
 
     /* Finally sort on position of recognition sequence and print */
-    ajListSort(*l,patRestrictStartCompare);
+    ajListSort(*l,embPatRestrictStartCompare);
 
     if(alpha)
-	ajListSort(*l,patRestrictNameCompare);
+	ajListSort(*l,embPatRestrictNameCompare);
 
     ajStrDel(&ps);
     
@@ -3216,7 +3213,7 @@ delete */
 
 
 
-/* @funcstatic patRestrictStartCompare ****************************************
+/* @func embPatRestrictStartCompare ****************************************
 **
 ** Sort restriction site hits on the basis of start position
 **
@@ -3228,12 +3225,12 @@ delete */
 **               +ve if a is greater than b
 ******************************************************************************/
 
-static ajint patRestrictStartCompare(const void *a, const void *b)
+ajint embPatRestrictStartCompare(const void *a, const void *b)
 {
     return (*(EmbPMatMatch *)a)->start - (*(EmbPMatMatch *)b)->start;
 }
 
-/* @funcstatic patRestrictCutCompare ****************************************
+/* @func embPatRestrictCutCompare ****************************************
 **
 ** Sort restriction site hits on the basis of cut position
 **
@@ -3245,12 +3242,12 @@ static ajint patRestrictStartCompare(const void *a, const void *b)
 **               +ve if a is greater than b
 ******************************************************************************/
 
-static ajint patRestrictCutCompare(const void *a, const void *b)
+ajint embPatRestrictCutCompare(const void *a, const void *b)
 {
     return (*(EmbPMatMatch *)a)->cut1 - (*(EmbPMatMatch *)b)->cut1;
 }
 
-/* @funcstatic patRestrictNameCompare ****************************************
+/* @func embPatRestrictNameCompare ****************************************
 **
 ** Sort restriction site hits on the basis of enzyme name
 **
@@ -3262,7 +3259,7 @@ static ajint patRestrictCutCompare(const void *a, const void *b)
 **               +ve if a is greater than b
 ******************************************************************************/
 
-static ajint patRestrictNameCompare(const void *a, const void *b)
+ajint embPatRestrictNameCompare(const void *a, const void *b)
 {
     return strcmp (ajStrStr((*(EmbPMatMatch *)a)->cod),
 		   ajStrStr((*(EmbPMatMatch *)b)->cod));
