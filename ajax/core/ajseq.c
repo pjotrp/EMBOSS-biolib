@@ -4222,7 +4222,11 @@ ajint ajSeqCvtKS (const AjPSeqCvt thys, const AjPStr ch)
     
     for(i=0;i<thys->len;i++)
 	if(ajStrMatch(ch, thys->labels[i]))
-	    return i;
+	    return i+1;
+    /* i+1 is returned because the size of a matrix is always 1 bigger than
+       the number of labels. This is the "padding" first row/column which 
+       has all values of 0. */
+
 
     ajWarn("Sequence character string not found in ajSeqCvtKS");
     return 0;
