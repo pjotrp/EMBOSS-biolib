@@ -993,10 +993,20 @@ public class BuildJembossForm implements ActionListener
 
   }
 
-
   public Hashtable getacdStore()
   {
     return acdStore;
+  }
+
+  /**
+  *
+  * Ensures garbaged collected when there are
+  * no more pointers to this.
+  * 
+  */
+  public void finalize() throws Throwable
+  {
+    super.finalize();
   }
 
 }
