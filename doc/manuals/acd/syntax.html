@@ -947,7 +947,7 @@ needed: "y"<br>
 parameter: "N"<br>
 prompt: ""<br>
 qualifier: ""<br>
-relation: ""<br>
+relations: ""<br>
 standard: "N"<br>
 style: ""<br>
 template: ""<br>
@@ -1338,6 +1338,7 @@ extension: ""<br>
   <p>
 fullpath: N<br>
 nullok: N<br>
+extension: ""<br>
 
  </p>
  </td>
@@ -1879,6 +1880,7 @@ length (integer)<br>
 protein (boolean)<br>
 nucleic (boolean)<br>
 name (string)<br>
+totweight (float)<br>
 count (integer)<br>
 multicount (integer)<br>
 
@@ -4441,6 +4443,18 @@ value is calculated, the user may need some extra guidance.</p>
   </td>
   <td>
   <p>Can accept a null filename as 'no file'<br>Default: N</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>&nbsp;</p>
+  </td>
+  <td>
+  <p>extension: <i>string<i></p>
+  </td>
+  <td>
+  <p>Default file extension<br>Default: ""</p>
   </td>
  </tr>
 
@@ -7855,6 +7869,18 @@ sequence, the length, the type of sequence (Protein, DNA, RNA etc).</p>
   <p>&nbsp;</p>
   </td>
   <td>
+  <p>totweight: <i>float<i></p>
+  </td>
+  <td>
+  <p>Float, total sequence weight for each set<br>Default: </p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>&nbsp;</p>
+  </td>
+  <td>
   <p>count: <i>integer<i></p>
   </td>
   <td>
@@ -8118,6 +8144,27 @@ table 8.</p>
 
  <tr>
   <td>
+  <p>gapdnaphylo</p>
+  </td>
+  <td>
+  <p>Protein only</p>
+  </td>
+  <td>
+  <p>Kept</p>
+  </td>
+  <td>
+  <p>Yes</p>
+  </td>
+  <td>
+  <p> 'U'=&gt;'T'</p>
+  </td>
+  <td>
+  <p>DNA sequence with gaps and queries</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
   <p>rna</p>
   </td>
   <td>
@@ -8181,6 +8228,27 @@ table 8.</p>
 
  <tr>
   <td>
+  <p>gaprnaphylo</p>
+  </td>
+  <td>
+  <p>Protein only</p>
+  </td>
+  <td>
+  <p>Kept</p>
+  </td>
+  <td>
+  <p>Yes</p>
+  </td>
+  <td>
+  <p> 'T'=&gt;'U'</p>
+  </td>
+  <td>
+  <p>RNA sequence with gaps and queries</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
   <p>nucleotide</p>
   </td>
   <td>
@@ -8239,6 +8307,27 @@ table 8.</p>
   </td>
   <td>
   <p>nucleotide sequence with gaps</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>gapnucleotidephylo</p>
+  </td>
+  <td>
+  <p>Nucleotide only</p>
+  </td>
+  <td>
+  <p>Kept</p>
+  </td>
+  <td>
+  <p>Yes</p>
+  </td>
+  <td>
+  <p>&nbsp;</p>
+  </td>
+  <td>
+  <p>nucleotide sequence with gaps and queries</p>
   </td>
  </tr>
 
@@ -8323,6 +8412,27 @@ table 8.</p>
   </td>
   <td>
   <p>protein sequence with gaps</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>gapproteinphylo</p>
+  </td>
+  <td>
+  <p>Protein only</p>
+  </td>
+  <td>
+  <p>Kept</p>
+  </td>
+  <td>
+  <p>Yes</p>
+  </td>
+  <td>
+  <p>&nbsp;</p>
+  </td>
+  <td>
+  <p>protein sequence with gaps, stops and queries</p>
   </td>
  </tr>
 
