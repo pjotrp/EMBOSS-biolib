@@ -1310,7 +1310,7 @@ static AjBool parseGenbank (AjPStr line, AjPStr* id, AjPList acl) {
     idexp = ajRegCompC ("^ID   ([^ \t]+)");
 
   if (!acexp)
-    acexp = ajRegCompC ("^AC   ");
+    acexp = ajRegCompC ("^ACCESSION   ");
 
   if (!ac2exp)
     ac2exp = ajRegCompC ("([A-Za-z0-9]+)");
