@@ -821,7 +821,7 @@ FZ > 0
 FP 1 /Warning: Ambiguous name/token 'd' \(debug,die\)/
 FP 1 /Error: /
 FP 0 /Died: /
-FP /Error: File .*ambigdefattr.acd line 3: \(ambigdefattr\) Attribute or qualifier 'd' ambiguous\n/
+FP /Error: File .*ambigdefattr.acd line 3: \(ambigdefattr\) Attribute or qualifier 'd' ambiguous \(debug,die\)\n/
 //
 
 ID acd-ambigassoc
@@ -836,7 +836,7 @@ FP 1 /Warning: /
 FP 1 /Error: /
 FP 0 /Died: /
 FP /Warning: Ambiguous name/token 'f' \(fformat,fopenfile\)\n/
-FP /Error: File .*ambigassoc.acd line 8: \(asequence\) Attribute or qualifier 'f' ambiguous\n/
+FP /Error: File .*ambigassoc.acd line 8: \(asequence\) Attribute or qualifier 'f' ambiguous \(fformat,fopenfile\)\n/
 //
 
 ID acd-mixedcase
