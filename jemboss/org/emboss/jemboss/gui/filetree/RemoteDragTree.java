@@ -68,7 +68,6 @@ public class RemoteDragTree extends JTree implements DragGestureListener,
   */
   public RemoteDragTree(final JembossParams mysettings, FileRoots froots)
   {
-
     this.mysettings = mysettings;
     this.froots = froots;
 
@@ -86,8 +85,7 @@ public class RemoteDragTree extends JTree implements DragGestureListener,
     this.getSelectionModel().setSelectionMode
                   (TreeSelectionModel.SINGLE_TREE_SELECTION);
 
-
-    // Popup menu
+// popup menu
     addMouseListener(new PopupListener());
     popup = new JPopupMenu();
     JMenuItem menuItem = new JMenuItem("Refresh");
@@ -339,7 +337,7 @@ public class RemoteDragTree extends JTree implements DragGestureListener,
     {
       if(node.isLeaf())
       {
-        final String inputValue = JOptionPane.showInputDialog(null,
+        String inputValue = JOptionPane.showInputDialog(null,
                                 "New File Name","Rename "+fn,
                                 JOptionPane.QUESTION_MESSAGE);
 
@@ -354,7 +352,11 @@ public class RemoteDragTree extends JTree implements DragGestureListener,
             newfile = parent+"/"+inputValue;
           String dir = ((RemoteFileNode)node.getParent()).getFullName();
           if(inputValue.indexOf("/") > 0)
-            dir = inputValue.substring(0,inputValue.indexOf("/"));
+          {
+            int index = inputValue.lastIndexOf("/");
+            dir = inputValue.substring(0,index);
+          }
+      
           RemoteFileNode parentNode = getNode(dir);
           if(!nodeExists(parentNode,newfile))
             rename(rootPath,fn,parent,inputValue,node,parentNode);
@@ -382,7 +384,6 @@ public class RemoteDragTree extends JTree implements DragGestureListener,
       return true;
     }
 
-    System.out.println("FALSE");
     return false;
   }
 
@@ -401,10 +402,6 @@ public class RemoteDragTree extends JTree implements DragGestureListener,
                       String pathToNewFile, final String newfile,
                       final RemoteFileNode node, final RemoteFileNode parentNode)
   {
-    System.out.println("rootPath      "+rootPath);
-    System.out.println("fullname      "+fullname);
-    System.out.println("pathToNewFile "+pathToNewFile);
-    System.out.println("newfile       "+newfile);
     Vector params = new Vector();
     params.addElement("fileroot=" + rootPath);
     params.addElement(fullname);
@@ -442,16 +439,8 @@ public class RemoteDragTree extends JTree implements DragGestureListener,
   {
     RemoteFileNode parentNode = (RemoteFileNode)node.getParent();
     DefaultTreeModel model = (DefaultTreeModel)getModel();
-
-    if(parentNode == null)
-    {
-      System.out.println("parentNode NULL");
-      return;
-    }
-
     model.removeNodeFromParent(node);
-    parentNode.reExplore(mysettings,froots);
-    model.nodeStructureChanged(parentNode);
+//  model.nodeStructureChanged(parentNode);
     return;
   }
 
@@ -496,20 +485,26 @@ public class RemoteDragTree extends JTree implements DragGestureListener,
       {
         Point ploc = e.getLocation();
         TreePath dropPath = getPathForLocation(ploc.x,ploc.y);
-        System.out.println("Detected local drop ");
         if(dropPath != null)
         {
           RemoteFileNode fn =
             (RemoteFileNode)t.getTransferData(RemoteFileNode.REMOTEFILENODE);
 
+          fn = getNode(fn.getServerName()); // need to get the instance of
+                                            // this directly to manipulate tree
           String dropDest = null;
           RemoteFileNode fdropPath = (RemoteFileNode)dropPath.getLastPathComponent();
           String dropRoot = fdropPath.getRootDir();
+          String dropFile = null;
+          if(fdropPath.getFile().equals(" "))
+            dropFile = fn.getFile();
+          else
+            dropFile = fdropPath.getFile()+"/"+fn.getFile();
 
           if(!nodeExists(fdropPath,fdropPath.getServerName()+"/"+fn.getFile()))
             rename(fn.getRootDir(),fn.getFullName(),
-                 fdropPath.getServerName(),
-                 fn.getFile(), fn, fdropPath);
+                   fdropPath.getPathName(),
+                   dropFile, fn, fdropPath);
         }
       }
       catch(Exception ex){}
@@ -759,7 +754,6 @@ public class RemoteDragTree extends JTree implements DragGestureListener,
     {
       RemoteFileNode childNode = (RemoteFileNode)children.nextElement();
       String nodeName = childNode.getServerName();
-//    System.out.println(childName+"  nodeName  "+nodeName);
       if(childName.equals(nodeName))
         return childNode;
     }
@@ -789,6 +783,10 @@ public class RemoteDragTree extends JTree implements DragGestureListener,
     //create new file node
     if(path.equals(" "))
       path = "";
+
+    if(child.indexOf("/") > -1)
+      child = child.substring(child.lastIndexOf("/")+1);
+
     File newleaf = new File(path + "/" + child);
 
     RemoteFileNode childNode = new RemoteFileNode(mysettings,froots,
