@@ -386,10 +386,13 @@ ajint ajSeqallLen(const AjPSeqall seqall)
 
 ajint ajSeqallBegin(const AjPSeqall seq)
 {
-    if(!seq->Begin)
-	return 1;
+    if (seq->Begin)
+	return ajSeqPos(seq->Seq, seq->Begin);
 
-    return ajSeqPos(seq->Seq, seq->Begin);
+    if(seq->Seq->Begin)
+	return ajSeqPos(seq->Seq, seq->Seq->Begin);
+
+    return 1;
 }
 
 
@@ -407,10 +410,13 @@ ajint ajSeqallBegin(const AjPSeqall seq)
 
 ajint ajSeqallEnd(const AjPSeqall seq)
 {
-    if(!seq->End)
-	return ajSeqLen(seq->Seq);
+    if (seq->End)
+	return ajSeqPosI(seq->Seq, ajSeqallBegin(seq), seq->End);
 
-    return ajSeqPosI(seq->Seq, ajSeqallBegin(seq), seq->End);
+    if(seq->Seq->End)
+	return ajSeqPosI(seq->Seq, ajSeqallBegin(seq), seq->Seq->End);
+
+    return ajSeqLen(seq->Seq);
 }
 
 
@@ -1403,6 +1409,66 @@ AjPSeq ajSeqNewStr(const AjPStr seq)
     pthis->TextPtr   = ajStrNew();
 
     ajStrAssS(&pthis->Seq, seq);
+
+    pthis->Rev      = ajFalse;
+    pthis->Reversed = ajFalse;
+
+    pthis->EType  = 0;
+    pthis->Format = 0;
+    pthis->Begin  = 0;
+    pthis->End    = 0;
+    pthis->Offset = 0;
+    pthis->Offend = 0;
+    pthis->Weight = 1.0;
+
+    pthis->Acclist = ajListstrNew();
+    pthis->Keylist = ajListstrNew();
+    pthis->Taxlist = ajListstrNew();
+    pthis->Selexdata = NULL;
+
+    return pthis;
+}
+
+
+
+
+/* @func ajSeqNewC **********************************************************
+**
+** Creates and initialises a sequence object with a specified existing
+** sequence as a char*
+**
+** @param [r] seq [const char*] Sequence string
+** @param [r] name [const char*] Sequence name
+** @return [AjPSeq] New sequence object.
+** @@
+******************************************************************************/
+
+AjPSeq ajSeqNewC(const char* seq, const char* name)
+{
+    AjPSeq pthis;
+
+    AJNEW0(pthis);
+
+    ajStrAssC(&pthis->Name, name);
+    pthis->Acc  = ajStrNew();
+    pthis->Sv   = ajStrNew();
+    pthis->Gi   = ajStrNew();
+    pthis->Tax  = ajStrNew();
+    pthis->Type = ajStrNew();
+    pthis->Db   = ajStrNew();
+    pthis->Full = ajStrNew();
+    pthis->Date = ajStrNew();
+    pthis->Desc = ajStrNew();
+    pthis->Doc  = ajStrNew();
+    pthis->Usa  = ajStrNew();
+    pthis->Ufo  = ajStrNew();
+
+    pthis->Formatstr = ajStrNew();
+    pthis->Filename  = ajStrNew();
+    pthis->Entryname = ajStrNew();
+    pthis->TextPtr   = ajStrNew();
+
+    ajStrAssC(&pthis->Seq, seq);
 
     pthis->Rev      = ajFalse;
     pthis->Reversed = ajFalse;
