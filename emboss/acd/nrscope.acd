@@ -40,13 +40,14 @@ float: thresh
 [
 	param: Y
 	prompt: "The % sequence identity redundancy threshold"
-	def: 95
+	def: 95.0
 ]
 
 matrixf: datafile 
 [
 	param: Y
-	prompt: "Residue substitution file"
+	prompt: "Residue substitution matrix"
+	default: "EBLOSUM62"
 ]	
 
 float: gapopen 
