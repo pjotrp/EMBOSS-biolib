@@ -4,7 +4,7 @@
 **  This is a copyrighted work.  (c) William A. Gilbert, Whitehead Insitutute
 **
 **  Modification History:
- * Last edited: May 16 09:14 2000 (pmr)
+ * Last edited: October 22  09:14 2003 (ajb)
 **  --------------------
 **  February, 1986 Originally written in FORTRAN. (V1.0)
 **  January 1987   Rewritten in VMS C using CKit library. (V2.0)
@@ -12,6 +12,7 @@
 **  September 1989 Data Structures revised to match new CKit Library. (V2.1)
 **  August 1990    Minor fixs to incorporate changes to CKit (V2.2)
 **  October 1999   Now uses curses for Unix C (V3.0) (il@sanger.ac.uk)
+**  October 2003   Fix for file closing
 **
 *****************************************************************************/
 #include "ajax.h"
@@ -121,6 +122,9 @@ void DoSave(char *FName)
     ajSeqAllWrite(outseq, seqnew);
     ajSeqDel(&seqnew);
   }
+
+  ajSeqWriteClose(outseq);
+  ajSeqoutDel(&outseq);
   
   sprintf(OutLine,"Sequences written to %s",OutFName);
   ShowText(OutLine);
