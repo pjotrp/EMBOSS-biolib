@@ -916,9 +916,11 @@ int main(int argc, char **argv)
 
 	    if(colourbyconsensus)
 	    {
+		part = matrix[ajSeqCvtK(cvt, seqcharptr[j][k])]
+		    [ajSeqCvtK(cvt, seqcharptr[highindex][k])];
 		if(con && seqcharptr[highindex][k] == seqcharptr[j][k])
 		    seqcolptr[j][k] = cidentity;
-		else if(part)
+		else if(part > 0.0)
 		    seqcolptr[j][k] = csimilarity;
 		else
 		    seqcolptr[j][k] = cother;
