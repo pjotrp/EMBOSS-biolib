@@ -1,7 +1,7 @@
 #!/usr/local/bin/perl -w
 
 # Runs valgrind, a Linux utility to check for memory leaks.
-# Alternatives are third (3dr degree) on OSF
+# Alternatives are third (3rd degree) on OSF
 # or purify (purify.pl) on Irix and Solaris
 #
 # Valgrind is free software, with documentation online at
@@ -15,16 +15,23 @@ sub runtest ($) {
     my $defbytes = 0;
     my $posbytes = 0;
     my $rembytes = 0;
-    my $timeout = 100;
+    my $errcount = 0;
+    my $timeout = 300;
     my $timealarm = 0;
 
     if (defined($tests{$name})) {
-	print "Running valgrind $valgopts $valgpath$tests{$name}\n";
+	if (defined($testcheck{$name})) {
+	    $myvalgpath = "../../emboss/";
+	}
+	else {
+	    $myvalgpath = $valgpath;
+	}
+	    print "Running valgrind $valgopts $myvalgpath$tests{$name}\n";
 
 	eval {
 	    $status = 0;
 	    alarm($timeout);
-	    $sysstat = system ("valgrind $valgopts $valgpath$tests{$name} 9> valgrind/$name.valgrind" );
+	    $sysstat = system ("valgrind $valgopts $myvalgpath$tests{$name} 9> valgrind/$name.valgrind" );
 	    alarm(0);
 	    $status = $sysstat >> 8;
 	};
@@ -58,12 +65,19 @@ sub runtest ($) {
 		$rembytes=$1;
 		#$remblock=$2;
 	    }
+	    if (/ERROR SUMMARY: +(\d+) errors from (\d+) contexts/) {
+		$errcount=$1;
+		#$remblock=$2;
+	    }
 	}
 	if ($status) {
 	    print STDERR "Valgrind test $name returned status $status\n";
 	}
 	else {
-	    if ($defbytes){
+	    if ($errcount){
+		print STDERR "Valgrind test $name errors $errcount\n";
+	    }
+	    elsif ($defbytes){
 		print STDERR "Valgrind test $name leak $defbytes (possibly $posbytes) bytes, still reachable $rembytes bytes\n";
 	    }
 	    elsif (defined($rembytes)) {
@@ -83,6 +97,7 @@ sub runtest ($) {
 }
 
 %tests = ();
+%testcheck = ();
 
 if (defined($ENV{EVALGRIND})) {
     $valgpath = $ENV{EVALGRIND}."/";
@@ -95,7 +110,11 @@ open (MEMTEST, "../memtest.dat");
 while (<MEMTEST>) {
     if (/^[#]/) {next}
     if (/(\S+) += +(\S.*)/) {
-	$tests{$1}=$2;
+	$tests{$1}="$2";
+    }
+    if (/(\S+) +=test= +(\S.*)/) {
+	$tests{$1}="$2";
+	$testcheck{$1} = 1;
     }
 }
 close MEMTEST;
