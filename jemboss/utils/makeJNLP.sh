@@ -3,8 +3,11 @@
 #
 
 echo
-echo "Run this script from the installed jemboss directories."
-echo "Press any key to continue"
+echo "*** Run this script from the installedi jemboss utils directory."
+echo "*** If you are using SSL the script will use the client.keystore"
+echo "*** in the $JEMBOSS/resources directory to create client.jar"
+echo "*** which is wrapped with the Jemboss client in Jemboss.jar."
+echo "*** Press any key to continue."
 read
 
 cd ..
