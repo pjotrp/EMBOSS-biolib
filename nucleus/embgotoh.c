@@ -8,9 +8,9 @@
 **  Gotoh,  O., "An Improved algorithm for matching biological sequences."
 **  Journal of Molecular Biology 162:705-708
 **
-** @author Copyright (C) 2003 Damian Counsell
-** @version $Revision: 1.4 $
-** @modified $Date: 2004/02/13 11:08:46 $
+** @author Copyright (C) 2003--2004 Damian Counsell
+** @version $Revision: 1.5 $
+** @modified $Date: 2004/02/18 19:21:47 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -67,9 +67,9 @@ static ajint DEBUG_LEVEL = 0;
 
 /* @func embGotohCellNew *****************************************************
 **
-** Default constructor for zeroed NUCLEUS Gotoh alignment table cell.
+** Default constructor for NUCLEUS Gotoh alignment table cell.
 **
-** @return [AjPGotohCell] Pointer to a zeroed AjPGotohCell
+** @return [AjPGotohCell] Pointer to an AjPGotohCell
 ** @@
 ******************************************************************************/
 
@@ -109,8 +109,8 @@ AjPGotohCell embGotohCellCreate(ajint ajIntRow, ajint ajIntColumn,
 
     AJNEW0(ajpGotohCellReturned);
     
-    ajpGotohCellReturned->ajIntRow = ajIntRow;
-    ajpGotohCellReturned->ajIntColumn = ajIntColumn;
+    ajpGotohCellReturned->ajIntRowPointer = ajIntRow;
+    ajpGotohCellReturned->ajIntColumnPointer = ajIntColumn;
     ajpGotohCellReturned->fSubScore = fSubScore;
     ajpGotohCellReturned->cDownResidue = cDownResidue;
     ajpGotohCellReturned->cAcrossResidue = cAcrossResidue;
@@ -158,8 +158,8 @@ void embGotohCellDel(AjPGotohCell* pthis)
     if(!*pthis)
 	return;
 
-    thys->ajIntRow = 0;
-    thys->ajIntColumn = 0;
+    thys->ajIntRowPointer = 0;
+    thys->ajIntColumnPointer = 0;
     thys->fSubScore = 0.0;
     thys->cDownResidue = '\0';
     thys->cAcrossResidue = '\0';
@@ -195,28 +195,38 @@ AjPGotohCell** embGotohCellGetArray(ajint ajIntDownSeqLen,
 
   AJCNEW0(ajpGotohCellGotohScores,(ajIntDownSeqLen + cAjIntOffset));
 
-  for(ajIntRow = 0;ajIntRow < (ajIntDownSeqLen + cAjIntOffset);ajIntRow++)
+  for(ajIntRow = 0;
+      ajIntRow < (ajIntDownSeqLen + cAjIntOffset);
+      ajIntRow++)
     {
       AJCNEW0(ajpGotohCellGotohScores[ajIntRow],(ajIntAcrossSeqLen + cAjIntOffset));
     }
 
-  for(ajIntRow = 0;ajIntRow < (ajIntDownSeqLen + cAjIntOffset);ajIntRow++)
+  for(ajIntRow = 0;
+      ajIntRow < (ajIntDownSeqLen + cAjIntOffset);
+      ajIntRow++)
     {
-      for(ajIntColumn = 0;ajIntColumn < (ajIntAcrossSeqLen + cAjIntOffset);ajIntColumn++)
+      for(ajIntColumn = 0;
+	  ajIntColumn < (ajIntAcrossSeqLen + cAjIntOffset);
+	  ajIntColumn++)
 	{
 	  AJNEW0(ajpGotohCellGotohScores[ajIntRow][ajIntColumn]);
 	}
     }
 
   /* set default values   */
-  for(ajIntRow = 0; ajIntRow < ajIntDownSeqLen;ajIntRow++)
+  for(ajIntRow = 0;
+      ajIntRow < (ajIntDownSeqLen + cAjIntOffset);
+      ajIntRow++)
     {
-    for(ajIntColumn = 0;ajIntColumn < ajIntAcrossSeqLen;ajIntColumn++)
+    for(ajIntColumn = 0;
+	ajIntColumn < (ajIntAcrossSeqLen + cAjIntOffset);
+	ajIntColumn++)
       {
   	ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->fSubScore = 0.0;
-	ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->ajIntRow = 0;
-	ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->ajIntColumn = 0;
-	ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->ajBoolIsIndel = ajFalse;
+	ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->ajIntRowPointer = 0;
+	ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->ajIntColumnPointer = 0;
+	ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->ajBoolIsIndel = AJFALSE;
 	ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->cDownResidue = '$';
 	ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->cAcrossResidue = '#';
       }
@@ -271,11 +281,11 @@ void embGotohCellCalculateSumScore(AjPFloat2d ajpFloat2dPairScores,
   /* deal with boundary conditions                            */
   /* first set top left cell to zero...                       */
   ajpGotohCellGotohScores[0][0]->fSubScore= 0.0;
-  ajpGotohCellGotohScores[0][0]->ajIntRow = 0;
-  ajpGotohCellGotohScores[0][0]->ajIntColumn = 0;
+  ajpGotohCellGotohScores[0][0]->ajIntRowPointer = 0;
+  ajpGotohCellGotohScores[0][0]->ajIntColumnPointer = 0;
   ajpGotohCellGotohScores[0][0]->cDownResidue = '|';
   ajpGotohCellGotohScores[0][0]->cAcrossResidue = '_';
-  ajpGotohCellGotohScores[0][0]->ajBoolIsIndel = ajFalse;
+  ajpGotohCellGotohScores[0][0]->ajBoolIsIndel = AJFALSE;
 
   /* get dimensions of matrix */
   ajIntRowMax = ajSeqLen(ajpSeqDown);
@@ -290,18 +300,18 @@ void embGotohCellCalculateSumScore(AjPFloat2d ajpFloat2dPairScores,
   /*  (-1 multiple for later recursive score)                  */
   for (ajIntColumn = cAjIntOffset;ajIntColumn <= ajIntColumnMax;ajIntColumn++)
     {
-      ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->fSubScore
-	  = ((float)ajIntColumn * fExtensionPenalty);
-      ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->ajIntRow
-	  = ajIntRow;
-      ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->ajIntColumn
-	  = (ajIntColumn - 1);
-      ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->ajBoolIsIndel
-	  = ajTrue;
-      ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->cDownResidue
-	  = '|';
-      ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->cAcrossResidue
-	  = ajStrChar(ajpStrAcrossSeq, ajIntColumn - cAjIntOffset);
+	ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->fSubScore
+	    = ((float)ajIntColumn * fExtensionPenalty);
+	ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->ajIntRowPointer
+	    = ajIntRow;
+	ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->ajIntColumnPointer
+	    = (ajIntColumn - 1);
+	ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->ajBoolIsIndel
+	    = AJTRUE;
+	    ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->cDownResidue
+		= '|';
+	    ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->cAcrossResidue
+		= ajStrChar(ajpStrAcrossSeq, ajIntColumn - cAjIntOffset);
     }
 
   /* ...then set leftmost column to multiples of gap penalty */
@@ -311,19 +321,19 @@ void embGotohCellCalculateSumScore(AjPFloat2d ajpFloat2dPairScores,
     {
       ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->fSubScore
 	  = ((float)ajIntRow * fExtensionPenalty);
-      ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->ajIntRow
+      ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->ajIntRowPointer
 	  = (ajIntRow - 1);
-      ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->ajIntColumn
+      ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->ajIntColumnPointer
 	  = ajIntColumn ;
       ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->ajBoolIsIndel
-	  = ajTrue;
+	  = AJTRUE;
       ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->cDownResidue
-	  = ajStrChar(ajpStrDownSeq , ajIntRow - cAjIntOffset);
+	  = ajStrChar(ajpStrDownSeq, ajIntRow - cAjIntOffset);
       ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->cAcrossResidue
 	  = '_';
     }
 
-  ajbIsCurrentIndel = ajFalse;
+  ajbIsCurrentIndel = AJFALSE;
 
   /* start one row from top-left cell                         */
   /* and finish one row from bottom-right cell   */
@@ -333,75 +343,84 @@ void embGotohCellCalculateSumScore(AjPFloat2d ajpFloat2dPairScores,
     /*  and finish one column from bottom-right cell         */
     for(ajIntColumn = cAjIntOffset;ajIntColumn <= ajIntColumnMax;ajIntColumn++)
       {
-	fUpperLeftSum =
-	    ajpGotohCellGotohScores[ajIntRow-1][ajIntColumn-1]->fSubScore;
+	  /* THIS IS THE CORE DYNAMIC PROGRAMMING ALGORITHM */
 
-	if(ajpGotohCellGotohScores[ajIntRow-1][ajIntColumn]->ajBoolIsIndel)
+	  /* calculate cumulative score for north-west cell */
+	  fUpperLeftSum =
+	      ajpGotohCellGotohScores[ajIntRow-1][ajIntColumn-1]->fSubScore +
+	      (ajFloat2dGet(ajpFloat2dPairScores, ajIntRow, ajIntColumn));
+
+	  /* calculate cumulative (affine gap) score for north cell */  
+	  if(ajpGotohCellGotohScores[ajIntRow-1][ajIntColumn]->ajBoolIsIndel)
 	  {
-	    fUpperPenalty = fExtensionPenalty;
+	      fUpperPenalty = fExtensionPenalty;
 	  }
-	else fUpperPenalty = fGapPenalty;
-
-	if(ajpGotohCellGotohScores[ajIntRow][ajIntColumn-1]->ajBoolIsIndel)
+	  else fUpperPenalty = fGapPenalty;
+	  fUpperSum =
+	      ajpGotohCellGotohScores[ajIntRow-1][ajIntColumn]->fSubScore +
+	      fUpperPenalty;
+	  
+	  /* calculate cumulative (affine gap) score for west cell */
+	  if(ajpGotohCellGotohScores[ajIntRow][ajIntColumn-1]->ajBoolIsIndel)
 	  {
-	    fLeftPenalty = fExtensionPenalty;
+	      fLeftPenalty = fExtensionPenalty;
 	  }
-	else fLeftPenalty = fGapPenalty;
+	  else fLeftPenalty = fGapPenalty;
+	  fLeftSum =
+	      ajpGotohCellGotohScores[ajIntRow][ajIntColumn-1]->fSubScore +
+	      fLeftPenalty;
 
-	fUpperSum =
-	    ajpGotohCellGotohScores[ajIntRow-1][ajIntColumn]->fSubScore+fUpperPenalty;
-	fLeftSum =
-	    ajpGotohCellGotohScores[ajIntRow][ajIntColumn-1]->fSubScore+fLeftPenalty;
+	  /* FIND MAXIMUM SCORE OF THE THREE */
 
-	/* find maximum score of the three */
+	  /* default to north-west as max    */
+	  fMaxSum = fUpperLeftSum;
+	  ajIntMaxRowPosition = ajIntRow-1;
+	  ajIntMaxColumnPosition = ajIntColumn-1;
+	  ajbIsCurrentIndel = AJFALSE;
 
-	/* default to upper left as max    */
-	fMaxSum = fUpperLeftSum;
-	ajIntMaxRowPosition = ajIntRow-1;
-	ajIntMaxColumnPosition = ajIntColumn-1;
-	ajbIsCurrentIndel = ajFalse;
-
-	if(fUpperSum >= fMaxSum)
+	  /* north max if greater */
+	  if(fUpperSum > fMaxSum)
 	  {
 	    fMaxSum = fUpperSum;
-	    ajbIsCurrentIndel = ajTrue;
+	    ajbIsCurrentIndel = AJTRUE;
 	    ajIntMaxColumnPosition = ajIntColumn;
 	    ajIntMaxRowPosition = ajIntRow-1;
 	  }
 
-	if(fLeftSum >= fMaxSum)
+	  /* west max if greater */
+	  if(fLeftSum > fMaxSum)
 	  {
-	    fMaxSum = fLeftSum;
-	    ajbIsCurrentIndel = ajTrue;
-	    ajIntMaxRowPosition = ajIntRow;
-	    ajIntMaxColumnPosition = ajIntColumn-1;
+	      fMaxSum = fLeftSum;
+	      ajbIsCurrentIndel = AJTRUE;
+	      ajIntMaxRowPosition = ajIntRow;
+	      ajIntMaxColumnPosition = ajIntColumn-1;
 	  }
-
-	/* and set current cell to own score + that maximum value */
-	ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->ajIntRow =
-	    ajIntMaxRowPosition;
-	ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->ajIntColumn =
-	    ajIntMaxColumnPosition;
-	ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->fSubScore =
-	    (fMaxSum + (ajFloat2dGet(ajpFloat2dPairScores, ajIntRow, ajIntColumn)));
-	ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->cDownResidue =
-	    ajStrChar(ajpStrDownSeq , ajIntRow - cAjIntOffset);
-	ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->cAcrossResidue =
-	    ajStrChar(ajpStrAcrossSeq , ajIntColumn - cAjIntOffset);
-	ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->ajBoolIsIndel =
-	    ajbIsCurrentIndel;
-
-	/* DDDDEBUGGING */
-	if(DEBUG_LEVEL > 1)
-	{
-	    ajFmtPrint("====================================================================================================\n");
-	    ajFmtPrint("IN calculate_Gotoh_score() (%4d , %4d):\nfUpperLeftSum: %f fUpperSum: %f fLeftSum:\t%f\n" , \
-		       ajIntRow , ajIntColumn , fUpperLeftSum , fUpperSum , fLeftSum);
-	    ajFmtPrint("sub score:\t%f fMaxSum: %f\nipointer :%d jpointer :%d \n" , \
-		       ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->fSubScore , fMaxSum , ajIntMaxRowPosition , ajIntMaxColumnPosition);
-	    ajFmtPrint("====================================================================================================\n");
-	}
-	
+	  
+	  /* set resulting current cell score */
+	  ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->ajIntRowPointer =
+	      ajIntMaxRowPosition;
+	  ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->ajIntColumnPointer =
+	      ajIntMaxColumnPosition;
+	  ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->fSubScore =
+	      fMaxSum;
+	  ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->cDownResidue =
+	      ajStrChar(ajpStrDownSeq , ajIntRow - cAjIntOffset);
+	  ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->cAcrossResidue =
+	      ajStrChar(ajpStrAcrossSeq , ajIntColumn - cAjIntOffset);
+	  ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->ajBoolIsIndel =
+	      ajbIsCurrentIndel;
+	  
+	  /* DDDDEBUGGING */
+	  if (DEBUG_LEVEL)
+	  {    
+	      ajFmtPrint("====================================================================================================\n");
+	      ajFmtPrint("IN embGotohCellCalculateSumScore() (%4d , %4d):\nfUpperLeftSum: %f fUpperSum: %f fLeftSum:\t%f\n" , \
+			 ajIntRow , ajIntColumn , fUpperLeftSum , fUpperSum , fLeftSum);
+	      ajFmtPrint("sub score:\t%f fMaxSum: %f\nipointer :%d jpointer :%d \n" , \
+			 ajpGotohCellGotohScores[ajIntRow][ajIntColumn]->fSubScore , fMaxSum , ajIntMaxRowPosition , ajIntMaxColumnPosition);
+	      ajFmtPrint("====================================================================================================\n");
+	  }
+	  
       }
     }
 }
@@ -455,28 +474,32 @@ ajint embGotohCellBacktrace(AjPGotohCell **ajpGotohCellGotohScores,
 
   do
     {
-	/* DDDDEBUGGING */
 	if(DEBUG_LEVEL > 1)
 	{
 	    ajFmtPrint("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 	    ajFmtPrint("\najIntCurrentRow:\t%d\t" , ajIntCurrentRow);
 	    ajFmtPrint("ajIntCurrentColumn:\t%d\n" , ajIntCurrentColumn);
-	    ajFmtPrint("i pointer:\t%d" , ajpGotohCellGotohScores[ajIntCurrentRow][ajIntCurrentColumn]->ajIntRow);
-	    ajFmtPrint("\tj pointer:\t%d\n" , ajpGotohCellGotohScores[ajIntCurrentRow][ajIntCurrentColumn]->ajIntColumn);
-	    ajFmtPrint("\nfloatSubScore:\t%f\n" , ajpGotohCellGotohScores[ajIntCurrentRow][ajIntCurrentColumn] ->fSubScore);
-	    ajFmtPrint("ajIntAlignmentLen:\t%d\n" , ajIntAlignmentLen);
-	    ajFmtPrint("\tajBoolIsIndel:\t%B\n" , ajpGotohCellGotohScores[ajIntCurrentRow][ajIntCurrentColumn]->ajBoolIsIndel);
-	    ajFmtPrint("cDownResidue: %c\t" , ajpGotohCellGotohScores[ajIntCurrentRow][ajIntCurrentColumn]->cDownResidue);
-	    ajFmtPrint("cAcrossResidue: %c\n" , ajpGotohCellGotohScores[ajIntCurrentRow][ajIntCurrentColumn]->cAcrossResidue);
+	    ajFmtPrint("i pointer:\t%d",
+		       ajpGotohCellGotohScores[ajIntCurrentRow][ajIntCurrentColumn]->ajIntRowPointer);
+	    ajFmtPrint("\tj pointer:\t%d\n",
+		       ajpGotohCellGotohScores[ajIntCurrentRow][ajIntCurrentColumn]->ajIntColumnPointer);
+	    ajFmtPrint("\nfloatSubScore:\t%f\n" ,
+		       ajpGotohCellGotohScores[ajIntCurrentRow][ajIntCurrentColumn] ->fSubScore);
+	    ajFmtPrint("ajIntAlignmentLen:\t%d\n",
+		       ajIntAlignmentLen);
+	    ajFmtPrint("\tajBoolIsIndel:\t%B\n",
+		       ajpGotohCellGotohScores[ajIntCurrentRow][ajIntCurrentColumn]->ajBoolIsIndel);
+	    ajFmtPrint("cDownResidue: %c\t",
+		       ajpGotohCellGotohScores[ajIntCurrentRow][ajIntCurrentColumn]->cDownResidue);
+	    ajFmtPrint("cAcrossResidue: %c\n",
+		       ajpGotohCellGotohScores[ajIntCurrentRow][ajIntCurrentColumn]->cAcrossResidue);
 	    ajFmtPrint("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
 	}
 	
-	ajIntNextRow =
-	    ajpGotohCellBackTrace->ajIntRow =
-	    ajpGotohCellGotohScores[ajIntCurrentRow][ajIntCurrentColumn]->ajIntRow;
-	ajIntNextColumn =
-	    ajpGotohCellBackTrace->ajIntColumn =
-	    ajpGotohCellGotohScores[ajIntCurrentRow][ajIntCurrentColumn]->ajIntColumn;
+	ajpGotohCellBackTrace->ajIntRowPointer = 
+	    ajpGotohCellGotohScores[ajIntCurrentRow][ajIntCurrentColumn]->ajIntRowPointer;
+	ajpGotohCellBackTrace->ajIntColumnPointer =
+	    ajpGotohCellGotohScores[ajIntCurrentRow][ajIntCurrentColumn]->ajIntColumnPointer;
 	ajpGotohCellBackTrace->fSubScore =
 	    ajpGotohCellGotohScores[ajIntCurrentRow][ajIntCurrentColumn] ->fSubScore;
 	ajpGotohCellBackTrace->ajBoolIsIndel =
@@ -485,36 +508,42 @@ ajint embGotohCellBacktrace(AjPGotohCell **ajpGotohCellGotohScores,
 	    ajpGotohCellGotohScores[ajIntCurrentRow][ajIntCurrentColumn]->cDownResidue;
 	ajpGotohCellBackTrace->cAcrossResidue =
 	    ajpGotohCellGotohScores[ajIntCurrentRow][ajIntCurrentColumn]->cAcrossResidue;
-
+	
 	/* DDDDEBUGGING */
 	if(DEBUG_LEVEL > 1)
 	{
 	    ajFmtPrint("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-	    ajFmtPrint("\n NEXT CURRENT ROW:\t%d\t" , ajpGotohCellGotohScores[ajIntCurrentRow][ajIntCurrentColumn]->ajIntRow);
-	    ajFmtPrint(" NEXT CURRENT COLUMN:\t%d\n" , ajpGotohCellGotohScores[ajIntCurrentRow][ajIntCurrentColumn]->ajIntColumn);
+	    ajFmtPrint("\n NEXT CURRENT ROW:\t%d\t",
+		       ajpGotohCellGotohScores[ajIntCurrentRow][ajIntCurrentColumn]->ajIntRowPointer);
+	    ajFmtPrint(" NEXT CURRENT COLUMN:\t%d\n",
+		       ajpGotohCellGotohScores[ajIntCurrentRow][ajIntCurrentColumn]->ajIntColumnPointer);
 	    ajFmtPrint("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
 	}
 	
+	ajIntNextRow = 
+	    ajpGotohCellGotohScores[ajIntCurrentRow][ajIntCurrentColumn]->ajIntRowPointer;
+	ajIntNextColumn =
+	    ajpGotohCellGotohScores[ajIntCurrentRow][ajIntCurrentColumn]->ajIntColumnPointer;	
 	if (ajIntNextRow == ajIntCurrentRow)
 	{
 	    ajpGotohCellBackTrace->cDownResidue = '-';
 	}
-	
 	if (ajIntNextColumn == ajIntCurrentColumn)
 	{
 	    ajpGotohCellBackTrace->cAcrossResidue = '-';
 	}
 	
 	ajIntAlignmentLen++;      
+
 	/* put ajpGotohCell onto the stack */
-	ajListPush(ajpListGotohCellsMaxScoringTrace , (void *)(ajpGotohCellBackTrace));
+	ajListPush(ajpListGotohCellsMaxScoringTrace, (void *)(ajpGotohCellBackTrace));
 	
 	ajIntCurrentRow = ajIntNextRow;
 	ajIntCurrentColumn = ajIntNextColumn;
 	
 	/* get co-ordinates of next cell */
-	ajIntCurrentRow = ajpGotohCellBackTrace->ajIntRow;
-	ajIntCurrentColumn = ajpGotohCellBackTrace->ajIntColumn;
+	ajIntCurrentRow = ajpGotohCellBackTrace->ajIntRowPointer;
+	ajIntCurrentColumn = ajpGotohCellBackTrace->ajIntColumnPointer;
 	
 	AJNEW0(ajpGotohCellBackTrace);
 	
@@ -619,21 +648,33 @@ AjPFloat2d embGotohPairScore(AjPMatrixf ajpMatrixFscoring,
   ajIntRow = 0;
 
   /* ...then set topmost row to multiples of extension penalty */
-  for (ajIntColumn = 0;ajIntColumn <= (ajIntAcrossSeqLen + cAjIntOffset);ajIntColumn++)
+  for (ajIntColumn = 0;
+       ajIntColumn <= (ajIntAcrossSeqLen + cAjIntOffset);
+       ajIntColumn++)
     {
-      ajFloat2dPut(&ajpFloat2dPairScores, ajIntRow, ajIntColumn,
+      ajFloat2dPut(&ajpFloat2dPairScores,
+		   ajIntRow,
+		   ajIntColumn,
 		   (float)ajIntColumn*fExtensionPenalty);
     }
 
   /* score two numerical sequences */
-  for( ajIntRow = cAjIntOffset;ajIntRow < (ajIntDownSeqLen + cAjIntOffset);ajIntRow++)
+  for(ajIntRow = cAjIntOffset;
+      ajIntRow <= (ajIntDownSeqLen + cAjIntOffset);
+      ajIntRow++)
     {
-      for(ajIntColumn = cAjIntOffset;ajIntColumn < ( ajIntAcrossSeqLen + cAjIntOffset );ajIntColumn++)
+      for(ajIntColumn = cAjIntOffset;
+	  ajIntColumn <= ( ajIntAcrossSeqLen + cAjIntOffset );
+	  ajIntColumn++)
 	{
-	  ajFloat2dPut(&ajpFloat2dPairScores, ajIntRow, ajIntColumn,
+	  ajFloat2dPut(&ajpFloat2dPairScores,
+		       ajIntRow,
+		       ajIntColumn,
 		       (float)(floatArray2dScoring
-			       [(ajint)ajStrChar(ajpStrDownNumerical, (ajIntRow - cAjIntOffset))]
-			       [(ajint)ajStrChar(ajpStrAcrossNumerical, (ajIntColumn - cAjIntOffset))]));
+			       [(ajint)ajStrChar(ajpStrDownNumerical,
+						 (ajIntRow - cAjIntOffset))]
+			       [(ajint)ajStrChar(ajpStrAcrossNumerical,
+						 (ajIntColumn - cAjIntOffset))]));
 	}
     }
 
@@ -681,8 +722,8 @@ ajint embGotohReadOffBacktrace(AjPList ajpListGotohCellsMaxScoringTrace,
   ajIntCurrentRow = 0;
   ajIntCurrentColumn = 0;
 
-  ajbIsDownGap = ajFalse;
-  ajbIsAcrossGap = ajFalse;
+  ajbIsDownGap = AJFALSE;
+  ajbIsAcrossGap = AJFALSE;
 
   do
     {
@@ -696,14 +737,16 @@ ajint embGotohReadOffBacktrace(AjPList ajpListGotohCellsMaxScoringTrace,
       
       /* DDDDEBUG */
       if(DEBUG_LEVEL)
-	  ajFmtPrint("\nthis template residue: %c , this query residue: %c\n" , cBufferCurrentDown , cBufferCurrentAcross); 
+	  ajFmtPrint("\nthis template residue: %c , this query residue: %c\n",
+		     cBufferCurrentDown , cBufferCurrentAcross); 
 
     }
   while(ajListIterMore(ajListIterBacktrace));
 
   /* DDDDEBUG */
       if(DEBUG_LEVEL)
-	  ajFmtPrint("\n FULL TEMPLATE STRING: %S , FULL QUERY STRING: %S\n" , strDownTrace , strAcrossTrace); 
+	  ajFmtPrint("\n FULL TEMPLATE STRING: %S , FULL QUERY STRING: %S\n",
+		     strDownTrace , strAcrossTrace); 
 
   ajSeqReplace(ajpSeqDown, strDownTrace); 
   ajSeqReplace(ajpSeqAcross, strAcrossTrace); 
