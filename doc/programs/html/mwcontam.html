@@ -66,12 +66,9 @@ matrix or presence of keratin from the sample preparer.
 
 <p>
 
-The output of <b>mwcontam</b>, with minimal editing, can be added to the data
-file for the <a href="mwfilter.html"><b>mwfilter</b></a> program. 
-
-
-
-
+The output of <b>mwcontam</b>, with minimal editing, can be added to the
+data file for the <a href="mwfilter.html"><b>mwfilter</b></a> program
+('Emwfilter.dat').
 
 
 
@@ -231,24 +228,29 @@ An example of the input data files follows:
 <pre>
 File mw1.dat:
 
+<hr>
 20.0
 33.0
 67.0
 128.0
 415.0
 999.0
+<hr>
 
 File mw2.dat:
 
+<hr>
 13.0
 41.0
 67.0
 415.0
 846.0
 781.0
+<hr>
 
 File mw3.dat:
 
+<hr>
 3.0
 18.0
 67.0
@@ -258,6 +260,7 @@ File mw3.dat:
 415.0
 587.0
 632.0
+<hr>
 </pre>
 
 
@@ -315,10 +318,12 @@ An example of the output data follows:
 
 <p>
 
+<hr>
 <pre>
 67.000
 415.000
 </pre>
+<hr>
 
 
 
@@ -385,7 +390,27 @@ The directories are searched in the following order:
 
    -->
 
-None.
+<b>mwcontam</b> uses no data files.
+
+<p>
+
+The output of <b>mwcontam</b>, with minimal editing, can be added to the
+data file for the <a href="mwfilter.html"><b>mwfilter</b></a> program
+('Emwfilter.dat').  For example you might like to fetch 'Emwfilter.dat'
+using <b>embossdata</b> (as described in the <b>mwfilter</b>
+documentation) and edit it to include the lines:
+
+<p>
+
+<hr>
+<pre>
+# data produced from the program mwcontam
+mwcontam	67.000
+mwcontam	415.000 
+</pre>
+<hr>
+
+
 
 
 

@@ -15,7 +15,7 @@ Description
    of the matrix or presence of keratin from the sample preparer.
    
    The output of mwcontam, with minimal editing, can be added to the data
-   file for the mwfilter program.
+   file for the mwfilter program ('Emwfilter.dat').
    
 Usage
 
@@ -69,6 +69,7 @@ Input file format
    An example of the input data files follows:
    
 File mw1.dat:
+  __________________________________________________________________________
 
 20.0
 33.0
@@ -76,8 +77,11 @@ File mw1.dat:
 128.0
 415.0
 999.0
+  __________________________________________________________________________
+
 
 File mw2.dat:
+  __________________________________________________________________________
 
 13.0
 41.0
@@ -85,8 +89,11 @@ File mw2.dat:
 415.0
 846.0
 781.0
+  __________________________________________________________________________
+
 
 File mw3.dat:
+  __________________________________________________________________________
 
 3.0
 18.0
@@ -97,19 +104,33 @@ File mw3.dat:
 415.0
 587.0
 632.0
+  __________________________________________________________________________
 
 Output file format
 
    The output is a list of the molecular weights common to all files.
    
    An example of the output data follows:
+     _________________________________________________________________
    
 67.000
 415.000
-
+     _________________________________________________________________
+   
 Data files
 
-   None.
+   mwcontam uses no data files.
+   
+   The output of mwcontam, with minimal editing, can be added to the data
+   file for the mwfilter program ('Emwfilter.dat'). For example you might
+   like to fetch 'Emwfilter.dat' using embossdata (as described in the
+   mwfilter documentation) and edit it to include the lines:
+     _________________________________________________________________
+   
+# data produced from the program mwcontam
+mwcontam        67.000
+mwcontam        415.000
+     _________________________________________________________________
    
 Notes
 
