@@ -1,6 +1,6 @@
 appl: stamps
 [
-        doc: "Reads embl-like format scop file and calls STAMP to generate alignments for each SCOP family"
+        doc: "Generate alignments for SCOP families in EMBL-format SCOP file"
 	groups: "PROTEIN: structure"
 ]
 
