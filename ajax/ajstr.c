@@ -1152,9 +1152,9 @@ AjBool ajStrFromDoubleE (AjPStr* pthis, double val, ajint precision) {
   ajint ival = abs((ajint) val);
 
   if (ival)
-    i = precision + (ajint) log10((double)ival) + 4;
+    i = precision + (ajint) log10((double)ival) + 8;
   else
-    i = precision + 4;
+    i = precision + 8;
 
   ret = ajStrModL(pthis, i);
   thys = *pthis;
