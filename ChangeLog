@@ -1,4 +1,8 @@
 Version 2.7.0
+	Add a -equivalences option (on by default) to rebaseextract.
+	This option calculates an embossre.equ file using RE
+	prototypes in the withrefm file.
+
 	A guide to the EMBASSY package domainatrix (domainatrix.doc)
 	has been added to /emboss/emboss/doc/manuals
 
