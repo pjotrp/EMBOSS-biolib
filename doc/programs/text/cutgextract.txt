@@ -9,21 +9,34 @@ Function
    
 Description
 
-   cutgextract is used to prepare files of codon usage tables used by
-   many other EMBOSS programs. These files are saved to the CODONS
-   directory which is a subdirectory of your EMBOSS data directory.
+   given the name of a directory containing the CUTG database
+   (ftp://ftp.ebi.ac.uk/pub/databases/cutg) this will calculate codon
+   usage tables for individual species (e.g. EHomo_sapiens.cut) and place
+   them in the CODONS subdirectory of the EMBOSS data directory. This is
+   an all-or-nothing extraction, will create many files and take several
+   minutes. The usage tables are from the sum of codons over all
+   sequences for each organism. Given the name of a directory containing
+   the CUTG database (ftp://ftp.ebi.ac.uk/pub/databases/cutg) cutgextract
+   will calculate codon usage tables for individual species (e.g.
+   EHomo_sapiens.cut) and place them in the CODONS subdirectory of the
+   EMBOSS data directory. This is an all-or-nothing extraction, will
+   create many files and take several minutes. The usage tables are from
+   the sum of codons over all sequences for each organism.
    
-   The EMBOSS distribution comes loaded with a set of codon usage tables
-   (mainly derived from the EBI ftp server, see:
-   ftp://ftp.ebi.ac.uk/pub/databases/codonusage/README), but many people
-   would prefer to create their own from the public CUTG data.
+   The EMBOSS distribution comes loaded with a set of codon usage tables.
+   Thes codon usage tables provided with the distribution are calculated
+   from the files in
+   ftp://ftp.ebi.ac.uk/pub/databases/codonusage/README), with a few
+   additions whose exact derivation cannot easily be determined. Many
+   people would prefer to create their own from the public CUTG data.
    
-   You run cutgextract on the CUTG database from . You should get all the
+   You run cutgextract on the CUTG database from
+   ftp://ftp.ebi.ac.uk/pub/databases/cutg. You should get all the
    required *.codon files from CUTG, and uncompress them if they are
    compressed before running cutgextract on them.
    
    The task of downloading the CUTG database and running cutgextract to
-   create the codon usage table fiels from it would normally be done only
+   create the codon usage table files from it would normally be done only
    once when the EMBOSS package is being installled or if a new version
    of the CUTG database is released.
    

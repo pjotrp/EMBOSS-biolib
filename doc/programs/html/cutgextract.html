@@ -59,32 +59,49 @@ IT IS DONE FOR YOU.
   -->
 
 
-<b>cutgextract</b> is used to prepare files of codon usage tables used by
-many other EMBOSS programs.  These files are saved to the CODONS directory which
-is a subdirectory of your EMBOSS data directory.
+given the name of a directory containing the
+   CUTG database  (ftp://ftp.ebi.ac.uk/pub/databases/cutg) this
+   will calculate codon usage tables for individual species
+   (e.g. EHomo_sapiens.cut) and place them in the CODONS subdirectory
+   of the EMBOSS data directory. This is an all-or-nothing extraction,
+   will create many files and take several minutes. The usage tables
+   are from the sum of codons over all sequences for each organism.
+                          
+
+Given the name of a directory containing the CUTG database
+(ftp://ftp.ebi.ac.uk/pub/databases/cutg) <b>cutgextract</b> will
+calculate codon usage tables for individual species (e.g. 
+EHomo_sapiens.cut) and place them in the CODONS subdirectory of the
+EMBOSS data directory.  This is an all-or-nothing extraction, will
+create many files and take several minutes.  The usage tables are from
+the sum of codons over all sequences for each organism. 
+             
+<p>
+
+
+The EMBOSS distribution comes loaded with a set of codon usage tables. 
+Thes codon usage tables provided with the distribution are calculated
+from the files in <a
+href="ftp://ftp.ebi.ac.uk/pub/databases/codonusage/README">
+ftp://ftp.ebi.ac.uk/pub/databases/codonusage/README</a>), with a few
+additions whose exact derivation cannot easily be determined.  Many
+people would prefer to create their own from the public CUTG data. 
 
 <p>
 
-The EMBOSS distribution comes loaded with a set of codon usage tables (mainly
-derived from the EBI ftp server, see:  <a
-href="ftp://ftp.ebi.ac.uk/pub/databases/codonusage/README">ftp://ftp.ebi.ac.uk/pub/databases/codonusage/README</a>),
-but many people would prefer to create their own from the public CUTG data.
-
-
-<p>
 
 You run <b>cutgextract</b> on the CUTG database from <a
-href="ftp://ftp.ebi.ac.uk/pub/databases/cutg"
-ftp://ftp.ebi.ac.uk/pub/databases/cutg</a>.  You should get all the required
-*.codon files from CUTG, and uncompress them if they are compressed before running
-<b>cutgextract</b> on them.
+href="ftp://ftp.ebi.ac.uk/pub/databases/cutg">
+ftp://ftp.ebi.ac.uk/pub/databases/cutg</a>.  You should get all the
+required *.codon files from CUTG, and uncompress them if they are
+compressed before running <b>cutgextract</b> on them. 
 
 <p>
 
-The task of downloading the CUTG database and running <b>cutgextract</b> to
-create the codon usage table fiels from it would normally be done only once when
-the EMBOSS package is being installled or if a new version of the CUTG database
-is released. 
+The task of downloading the CUTG database and running <b>cutgextract</b>
+to create the codon usage table files from it would normally be done
+only once when the EMBOSS package is being installled or if a new
+version of the CUTG database is released. 
 
 
 
@@ -113,15 +130,16 @@ without making the distinction between different gene populations.
 	  Pseudocode/Vague description/Handwaving/web links to useful pages
   -->
 
-<b>cutgextract</b> looks in the specified directory and opens all the files with the extension '.codon'.
-These are all expected to be CUTG data files.
+<b>cutgextract</b> looks in the specified directory and opens all the
+files with the extension '.codon'.  These are all expected to be CUTG
+data files. 
 
 <p>
 
-It then parses out the codon usage data from these *.codon files and writes one
-file per species into the EMBOSS data/CODONS directory.  The names of the files
-are derived from the species names in the CUTG files.  These files names will be
-long (and therefore descriptive).
+It then parses out the codon usage data from these *.codon files and
+writes one file per species into the EMBOSS data/CODONS directory.  The
+names of the files are derived from the species names in the CUTG files. 
+These files names will be long (and therefore descriptive). 
 
 
 
