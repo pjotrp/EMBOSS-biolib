@@ -6,7 +6,6 @@ int main(int argc, char **argv)
   AjPSeqall seqall;
   AjPSeqout seqout;
   AjPSeq seq = NULL;
-  AjBool firstonly;
   AjPStr str=NULL;
 
   embInit ("degapseq", argc, argv);
