@@ -4,8 +4,8 @@
 **  writes the resulting alignments into a new directory
 **
 ** @author: Copyright (C) Damian Counsell
-** @version $Revision: 1.6 $
-** @modified $Date: 2004/11/17 18:00:37 $
+** @version $Revision: 1.7 $
+** @modified $Date: 2004/11/18 18:51:02 $
 ** @@
 **
 ** This program is free software; you can redistribute it and/or
@@ -181,8 +181,13 @@ int main( int argc , char **argv )
 		{
 		    ajBoolQueryNameRead = AJTRUE;
 		    cQuerySeqName = ajStrIterGetK(ajpStrIterQuerySeqName);
+		    /* 
+		     * if the next character is not a number
+		     * append a zero otherwise keep same digit
+		     */
+		    if(!isdigit(cQuerySeqName))
+			cQuerySeqName = '0';
 		}
-
 		/* if there is no dot, use the whole sequence name */
 		ajStrAppK(&ajpStrQuerySeqName, cQuerySeqName);
 	    }
@@ -207,8 +212,13 @@ int main( int argc , char **argv )
 		{
 		    ajBoolTemplateNameRead = AJTRUE;
 		    cTemplateSeqName = ajStrIterGetK(ajpStrIterTemplateSeqName);
+		    /* 
+		     * if the next character is not a number
+		     * append a zero otherwise keep same digit
+		     */
+		    if(!isdigit(cTemplateSeqName))
+			cTemplateSeqName = '0';
 		}
-
 		/* if there is no dot, use the whole sequence name */
 		ajStrAppK(&ajpStrTemplateSeqName, cTemplateSeqName);
 	    }
