@@ -82,6 +82,21 @@ public class MemoryComboBox extends JComboBox
       order.add(item);
   }
 
+  
+  /**
+  *
+  * Determine if a return page is stored
+  * @return 	true if a return page available
+  *
+  */
+  protected boolean isBackPage()
+  {
+    int currentIndex = order.indexOf(getSelectedItem());
+    if(order.size() <= 1 || currentIndex < 1)
+      return false;
+    else
+      return true;
+  }
 
   /**
   *
@@ -101,9 +116,6 @@ public class MemoryComboBox extends JComboBox
 
   public int getIndexOf(Object item)
   {
-//  int nitems = order.size();
-//  for(int i=0;i<nitems;i++)
-//    System.out.println(i+" "+((URL)order.get(i)).getFile());
     return order.indexOf(item);
   }
 

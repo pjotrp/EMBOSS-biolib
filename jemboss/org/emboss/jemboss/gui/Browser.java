@@ -64,6 +64,10 @@ public class Browser extends JFrame
   private JList spLeft;
   /** JSplitPane sp */
   private JSplitPane sp;
+  /** Back menu option */
+  private JMenuItem backMenu;
+  /** Back button option */
+  private JButton backBt;
 
   /**
   *
@@ -186,12 +190,13 @@ public class Browser extends JFrame
     menuBar.add(fileMenu);
 
     // back
-    JMenuItem backMenu = new JMenuItem("Back");
+    backMenu = new JMenuItem("Back");
     backMenu.setAccelerator(KeyStroke.getKeyStroke(
               KeyEvent.VK_B, ActionEvent.CTRL_MASK));
     backMenu.setActionCommand("BACK");
     backMenu.addActionListener(this);
     fileMenu.add(backMenu);
+    backMenu.setEnabled(false);
 
     JMenuItem fwdMenu = new JMenuItem("Forward");
     fwdMenu.setAccelerator(KeyStroke.getKeyStroke(
@@ -253,7 +258,7 @@ public class Browser extends JFrame
 
 // Icon tool bar
     // Back JButton
-    JButton backBt = new JButton()
+    backBt = new JButton()
     {
       public void paintComponent(Graphics g)
       {
@@ -261,11 +266,17 @@ public class Browser extends JFrame
         Graphics2D g2 = (Graphics2D)g;
 
         g2.setColor(new Color(0,128,0));
-        g2.fill(Browser.makeTriangle(4,12,14,22,14,12));
-        g2.fill(Browser.makeRect(14,12,14,16,18,16,18,12));
+        g2.fill(Browser.makeShape(4,12,14,22,14,16,18,16,18,12));
         g2.setColor(Color.green);
-        g2.fill(Browser.makeTriangle(4,12,14,2,14,12));
-        g2.fill(Browser.makeRect(14,12,14,8,18,8,18,12));
+        g2.fill(Browser.makeShape(4,12,14,2,14,8,18,8,18,12));
+
+        if(!isEnabled())
+        {
+          g2.setColor(Color.gray);
+          g2.fill(Browser.makeShape(5,12,14,21,14,15,18,15,18,12));
+          g2.setColor(Color.lightGray);
+          g2.fill(Browser.makeShape(5,12,14,3,14,9,18,9,18,12));
+        }
         setSize(22,24);
       }
     };
@@ -275,6 +286,7 @@ public class Browser extends JFrame
     backBt.setPreferredSize(new Dimension(15,15));
     backBt.setActionCommand("BACK");
     backBt.addActionListener(this);
+    backBt.setEnabled(false);
 
     // Forward JButton
     JButton fwdBt = new JButton()
@@ -285,11 +297,18 @@ public class Browser extends JFrame
         Graphics2D g2 = (Graphics2D)g;
 
         g2.setColor(new Color(0,128,0));
-        g2.fill(Browser.makeTriangle(8,12,8,22,18,12));
-        g2.fill(Browser.makeRect(4,12,4,16,8,16,8,12));
+        g2.fill(Browser.makeShape(4,12,4,16,8,16,8,22,18,12));
         g2.setColor(Color.green);
-        g2.fill(Browser.makeTriangle(8,12,8,2,18,12));
-        g2.fill(Browser.makeRect(4,12,4,8,8,8,8,12));
+        g2.fill(Browser.makeShape(4,12,4,8,8,8,8,2,18,12));
+
+        if(!isEnabled())
+        {
+          g2.setColor(Color.gray);
+          g2.fill(Browser.makeShape(4,12,4,15,8,15,8,21,17,12));
+          g2.setColor(Color.lightGray);
+          g2.fill(Browser.makeShape(4,12,4,7,8,7,8,3,17,12));
+        }
+
         setSize(22,24);
       }
     };
@@ -391,6 +410,8 @@ public class Browser extends JFrame
             setCursor(cdone);
             warnUser("Can't follow link to " + inURL );
           }
+          backMenu.setEnabled(urlField.isBackPage());
+          backBt.setEnabled(urlField.isBackPage());
 	}
       }
     });
@@ -492,14 +513,17 @@ public class Browser extends JFrame
       sp.setDividerLocation(0);
       return;
     }
+
     try
     {
       htmlPane.setPage(url);
-    
       if(!urlField.isItem(url))
         urlField.add(url);
       else
         urlField.setSelectedItem(url);
+
+      backMenu.setEnabled(urlField.isBackPage());
+      backBt.setEnabled(urlField.isBackPage());
     }
     catch(IOException ioe)
     {
@@ -552,42 +576,24 @@ public class Browser extends JFrame
                                   JOptionPane.ERROR_MESSAGE);
   }
 
-
   /**
   *
-  * Use to draw a triangle Shape.
+  * Use to draw a Shape.
   *
   */
-  public static GeneralPath makeTriangle
-       (float a1, float b1, float a2, float b2, float a3, float b3)
+  public static GeneralPath makeShape(float a1, float b1,
+        float a2, float b2, float a3, float b3, float a4, 
+        float b4, float a5, float b5)
   {
     GeneralPath path = new GeneralPath(GeneralPath.WIND_NON_ZERO);
-
-    path.moveTo(a1,b1);
-    path.lineTo(a2,b2);
-    path.lineTo(a3,b3);
-    path.closePath();
-
-    return path;
-  }
-
-
-  /**
-  *
-  * Use to draw a rectangle Shape.
-  *
-  */
-  public static GeneralPath makeRect(float a1, float b1,
-       float a2, float b2, float a3, float b3, float a4, float b4)
-  {
-    GeneralPath path = new GeneralPath(GeneralPath.WIND_NON_ZERO);
-
+                                                                                
     path.moveTo(a1,b1);
     path.lineTo(a2,b2);
     path.lineTo(a3,b3);
     path.lineTo(a4,b4);
+    path.lineTo(a5,b5);
     path.closePath();
-
+                                                                                
     return path;
   }
 
