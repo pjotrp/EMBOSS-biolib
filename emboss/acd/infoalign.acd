@@ -95,7 +95,7 @@ section: output [
     help: "This is a way of shortening the command line if you only
            want a few things to be displayed. Instead of specifying: \
            '-nohead -nousa -noname -noalign -nogaps -nogapcount -nosimcount
-           -noidcount -nodiffcount -noweight' \
+           -noidcount -nodiffcount' \
            to get only the sequence length output, you can specify \
            '-only -seqlength'"
   ]
@@ -156,7 +156,7 @@ section: output [
   ]
 
   boolean: weight  [
-    default: "@(!$(only))"
+    default: "N"
     information: "Display 'weight' column"
   ]
 
