@@ -495,6 +495,7 @@ static FeatOTypeIn featInTypes[] =
     {"protein", "P"},
     {"N", "N"},
     {"nucleotide", "N"},
+    {"any", ""},
     {NULL, NULL}
 };
 
@@ -5715,13 +5716,15 @@ AjBool ajFeattabInSetTypeC(AjPFeattabIn thys, char* type)
     if (!*type)
 	return ajTrue;
 
-    while (featInTypes[i].Name)
+    for (i=0; featInTypes[i].Name; i++)
     {
 	if (ajStrMatchCaseCC(featInTypes[i].Name, type))
 	{
-	    ajStrAssC (&thys->Type, featInTypes[i].Value);
+	    if (featInTypes[i].Value)
+		ajStrAssC (&thys->Type, featInTypes[i].Value);
 	    return ajTrue;
 	}
+	i++;
     }
     ajErr("Unrecognized feature input type '%s'", type);
     return ajFalse;
@@ -5759,11 +5762,12 @@ AjBool ajFeattabOutSetTypeC(AjPFeattabOut thys, char* type)
     if (!*type)
 	return ajTrue;
 
-    while (featOutTypes[i].Name)
+    for (i=0; featOutTypes[i].Name; i++)
     {
 	if (ajStrMatchCaseCC(featOutTypes[i].Name, type))
 	{
-	    ajStrAssC (&thys->Type, featOutTypes[i].Value);
+	    if (featInTypes[i].Value)
+		ajStrAssC (&thys->Type, featOutTypes[i].Value);
 	    return ajTrue;
 	}
     }
@@ -8453,14 +8457,13 @@ static AjBool featTypePirIn (AjPStr* type)
 {
     ajint i = 0;
 
-    while (FeatPirType[i].Pir) 
+    for (i=0; FeatPirType[i].Pir; i++) 
     {
 	if (ajStrMatchCaseC(*type, FeatPirType[i].Pir))
 	{
 	    ajStrAssC (type, FeatPirType[i].Internal);
 	    return ajTrue;
 	}
-	i++;
     }
     return ajFalse;
 }
@@ -8478,14 +8481,13 @@ static AjBool featTypePirOut (AjPStr* type)
 {
     ajint i = 0;
 
-    while (FeatPirType[i].Pir)
+    for (i=0; FeatPirType[i].Pir; i++)
     {
 	if (ajStrMatchCaseC(*type, FeatPirType[i].Internal))
 	{
 	    ajStrAssC (type, FeatPirType[i].Pir);
 	    return ajTrue;
 	}
-	i++;
     }
     return ajFalse;
 }
