@@ -295,12 +295,10 @@ See also
 
    Program name Description
    emma Multiple alignment program - interface to ClustalW program
-   fixusa Search all databases for an entry
    infoseq Displays some simple information about sequences
    plotcon Plots the quality of conservation of a sequence alignment
    prettyplot Displays aligned sequences, with colouring and boxing
    seealso Finds programs sharing group names
-   seekseq Searches SRS for sequences matching keywords
    showalign Displays a multiple sequence alignment
    showdb Displays information on the currently available databases
    textsearch Search sequence documentation text. SRS and Entrez are

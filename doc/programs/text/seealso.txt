@@ -261,7 +261,6 @@ See also
    Program name Description
    abiview Reads ABI file and display the trace
    cirdna Draws circular maps of DNA constructs
-   fixusa Search all databases for an entry
    infoalign Information on a multiple sequence alignment
    infoseq Displays some simple information about sequences
    lindna Draws linear maps of DNA constructs
@@ -270,7 +269,6 @@ See also
    prettyplot Displays aligned sequences, with colouring and boxing
    prettyseq Output sequence with translated ranges
    remap Display a sequence with restriction cut sites, translation etc
-   seekseq Searches SRS for sequences matching keywords
    showalign Displays a multiple sequence alignment
    showdb Displays information on the currently available databases
    showfeat Show features of a sequence
