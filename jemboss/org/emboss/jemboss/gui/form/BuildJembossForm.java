@@ -616,8 +616,7 @@ public class BuildJembossForm implements ActionListener
       if ( att.startsWith("datafile")|| att.startsWith("featout")||
            att.startsWith("string")  || att.startsWith("seqout") ||
            att.startsWith("outfile") || att.startsWith("matrix") ||
-           att.startsWith("infile")  || att.startsWith("regexp") ||
-           att.startsWith("codon") )
+           att.startsWith("regexp") || att.startsWith("codon") )
       {
         if(!(textf[h].getText()).equals("") && textf[h].isVisible()
                                             && textf[h].isEnabled()) 
@@ -723,6 +722,18 @@ public class BuildJembossForm implements ActionListener
           options = options.concat(" -" + val + " " + 
                          rangeText + " ");
         } 
+      }
+      else if ( att.startsWith("infile") )
+      {
+        if(!(textf[h].getText()).equals("") && textf[h].isVisible()
+                                            && textf[h].isEnabled())
+        {
+          if(withSoap)
+            options = filesForSoap(textf[h].getText(),options,val,filesToMove);
+          else
+            options = options.concat(" -" + val + " " +  textf[h].getText());
+        }
+
       }
       else if ( att.startsWith("seqset") || att.startsWith("seqall") ||
                 att.startsWith("sequence") )
