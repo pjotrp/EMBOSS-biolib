@@ -8,7 +8,7 @@
 static AjBool ajJavaGetSeqFromUsa (AjPStr thys, AjPSeq *seq);
 
 
-JNIEXPORT jboolean JNICALL Java_org_emboss_Jemboss_parser_Ajax_seqType
+JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_seqType
            (JNIEnv *env, jobject obj, jstring usa)
 {
     AjPStr name=NULL;
@@ -70,7 +70,6 @@ static AjBool ajJavaGetSeqFromUsa (AjPStr thys, AjPSeq *seq)
     ajSeqinUsa (&seqin, thys);
     ok = ajSeqRead(*seq, seqin);
     ajSeqinDel (&seqin);
-
 
     if(!ok)
 	return ajFalse;
