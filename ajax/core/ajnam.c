@@ -1859,6 +1859,9 @@ void ajNamInit(const char* prefix)
     if(ajNamGetenv(debugStr, &debugVal))
 	ajStrToBool(debugVal, &namDoHomeRc);
 
+    ajStrDel(&debugStr);
+    ajStrDel(&debugVal);
+    
     if(namDoHomeRc &&prefixRoot)
     {
 	ajStrAssC(&namRootStr, prefixRoot);
