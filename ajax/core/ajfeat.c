@@ -84,7 +84,7 @@ static AjBool   FeatInitSwiss = AJFALSE;
 static AjPTable FeatTypeTableSwiss = NULL;
 static AjPTable FeatTagsTableSwiss = NULL;
 
-static AjBool   FeatInitAcedb = AJFALSE;
+/*static AjBool   FeatInitAcedb = AJFALSE;*/
 static AjPTable FeatTypeTableAcedb = NULL;
 static AjPTable FeatTagsTableAcedb = NULL;
 
@@ -93,7 +93,7 @@ static ajint       featCompByEnd(const void *a, const void *b);
 static ajint       featCompByGroup(const void *a, const void *b);
 static ajint       featCompByStart(const void *a, const void *b);
 static ajint       featCompByType(const void *a, const void *b);
-static AjBool      featDelRegAcedb();
+/*static AjBool      featDelRegAcedb();*/
 static AjBool      featDelRegEmbl();
 static AjBool      featDelRegGff();
 static AjBool      featDelRegPir();
@@ -141,17 +141,17 @@ static AjBool      featoutUfoProcess (AjPFeattabOut thys, AjPStr ufo);
 static AjPFeature  featPirFromLine ( AjPFeattable thys,
 				     AjPStr origline);
 static AjBool      featReadUnknown  ( AjPFeattable thys, AjPFileBuff file) ;
-static AjBool      featReadAcedb    ( AjPFeattable thys, AjPFileBuff file) ;
+/*static AjBool      featReadAcedb    ( AjPFeattable thys, AjPFileBuff file) ;*/
 static AjBool      featReadEmbl     ( AjPFeattable thys, AjPFileBuff file) ;
 static AjBool      featReadGff      ( AjPFeattable thys, AjPFileBuff file) ;
 static AjBool      featReadPir      ( AjPFeattable thys, AjPFileBuff file) ;
 static AjBool      featReadSwiss    ( AjPFeattable thys, AjPFileBuff file) ;
-static AjBool      featRegInitAcedb();
+/*static AjBool      featRegInitAcedb();*/
 static AjBool      featRegInitEmbl();
 static AjBool      featRegInitGff();
 static AjBool      featRegInitPir();
 static AjBool      featRegInitSwiss();
-static AjBool      featVocabInitAcedb();
+/*static AjBool      featVocabInitAcedb();*/
 static AjBool      featVocabInitEmbl();
 static AjBool      featVocabInitGff();
 static AjBool      featVocabInitPir();
@@ -1745,10 +1745,10 @@ AjBool ajFeatWrite ( AjPFeattabOut ftout, AjPFeattable features )
 ** @@
 ******************************************************************************/
 
-static AjBool featReadAcedb    ( AjPFeattable thys, AjPFileBuff file){
+/*static AjBool featReadAcedb    ( AjPFeattable thys, AjPFileBuff file){
   ajDebug("featReadAcedb NOT IMPLEMENTED YET\n");
   return ajFalse;
-}
+}*/
 
 /* @funcstatic featReadEmbl ***************************************************
 **
@@ -2983,13 +2983,13 @@ AjBool ajFeattableWriteGff (AjPFeattable Feattab, AjPFile file)
 ** @@
 ******************************************************************************/
 
-static AjBool featRegInitAcedb (void) 
+/*static AjBool featRegInitAcedb (void) 
 {
   featInit();
 
   ajDebug("Hello Acedb\n");
   return ajFalse;
-}
+}*/
 /* @funcstatic featRegInitEmbl ************************************************
 **
 ** Initialize regular expressions and data structures for
@@ -3159,7 +3159,7 @@ static AjBool featRegInitGff (void) {
 ** @return [AjBool] ajFalse if unsuccesful
 ** @@
 ******************************************************************************/
-static AjBool featDelRegAcedb(void) {
+/*static AjBool featDelRegAcedb(void) {
 
   if (!FeatInitAcedb)
     return ajTrue;
@@ -3170,7 +3170,7 @@ static AjBool featDelRegAcedb(void) {
   FeatInitAcedb = ajFalse;
 
   return ajFalse;
-}
+}*/
 
 /* @funcstatic featDelRegEmbl *************************************************
 **
@@ -4593,11 +4593,11 @@ static AjBool featVocabRead (char* name, ajint typsize, ajint tagsize,
 ** @return [AjBool] ajTrue on success
 ******************************************************************************/
 
-static AjBool featVocabInitAcedb (void) {
+/*static AjBool featVocabInitAcedb (void) {
 
   return featVocabRead ("acedb", 0, 0, &FeatTypeTableEmbl, &FeatTagsTableEmbl);
 
-}
+}*/
 
 /* @funcstatic featVocabInitEmbl **********************************************
 **
