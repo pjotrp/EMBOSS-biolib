@@ -94,7 +94,8 @@ public class PublicRequest
      try
      {
        String  endpoint = mysettings.getPublicSoapURL();
-       Service serv     = new Service();
+       org.apache.axis.client.Service serv = 
+                        new org.apache.axis.client.Service();
 
        Call    call     = (Call) serv.createCall();
        call.setTargetEndpointAddress( new java.net.URL(endpoint) );
