@@ -739,7 +739,7 @@ void ajMessVWarning (char *format, va_list args) {
   return;
 }
 
-/* @func ajMessExit ***********************************************************
+/* @func ajMessExitmsg ********************************************************
 **
 ** Formats an exit message and calls the exit function (if any).
 ** Otherwise prints the message to standard error with a trailing newline
@@ -758,7 +758,7 @@ void ajMessVWarning (char *format, va_list args) {
 ** @@
 ******************************************************************************/
 
-void ajMessExit(char *format, ...) {
+void ajMessExitmsg(char *format, ...) {
   char *prefix = EXIT_PREFIX ;
   char *mesg_buf = NULL ;
   va_list args ;
@@ -1546,3 +1546,18 @@ ajint ajUserGet (AjPStr* pthis, char* fmt, ...) {
   return thys->Len;
 }
 
+/* @func ajMessExit ***********************************************************
+**
+** Delete any static initialised values
+**
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajMessExit (void){
+
+  ajFileClose(&fileDebugFile);
+  ajStrDel(&fileDebugName);
+
+  return;
+}
