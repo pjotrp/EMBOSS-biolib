@@ -92,7 +92,8 @@ public class Graph2DPlot extends ScrollPanel
   private static int TEXT = 2;
   private static int RECTANGLE = 3;
   private static int FILLED_RECTANGLE = 4;
-  private static int AXIS = 5;
+  private static int TEXTLINE = 5;
+  private static int AXIS = 6;
 
   // draw rectangle around graph
   private boolean draw_axes  = true;
@@ -162,6 +163,7 @@ public class Graph2DPlot extends ScrollPanel
       height = HGT;
     }
 
+//  if(xmin == 0 && xmax == 0 && ymin == 0 && ymax == 0)
     calcMinMax();
   }
 
@@ -189,6 +191,7 @@ public class Graph2DPlot extends ScrollPanel
       height = HGT;
     }
 
+//  if(xmin == 0 && xmax == 0 && ymin == 0 && ymax == 0)
     calcMinMax();
   }
 
@@ -621,10 +624,13 @@ public class Graph2DPlot extends ScrollPanel
   {
     int xnum = emboss_data[0].length;
 
-    xmin = 1000000;
-    xmax = -1000000;
-    ymin = xmin;
-    ymax = xmax;
+    if(xmin == 0 && xmax == 0 && ymin == 0 && ymax == 0)
+    {
+      xmin = 1000000;
+      xmax = -1000000;
+      ymin = xmin;
+      ymax = xmax;
+    }
 
     float x;
     float y;
@@ -640,11 +646,13 @@ public class Graph2DPlot extends ScrollPanel
       }
       else
       {
-        if(isTick(((Float)emboss_data[1][i]).floatValue(), 
-                  ((Float)emboss_data[2][i]).floatValue(),
-                  ((Float)emboss_data[3][i]).floatValue(), 
-                  ((Float)emboss_data[4][i]).floatValue(),false) ||
-           ((Integer)emboss_data[0][i]).intValue() == TEXT)
+        if( ((Integer)emboss_data[0][i]).intValue() == TEXT ||
+            ((Integer)emboss_data[0][i]).intValue() == TEXTLINE ||
+            isTick(((Float)emboss_data[1][i]).floatValue(), 
+                   ((Float)emboss_data[2][i]).floatValue(),
+                   ((Float)emboss_data[3][i]).floatValue(), 
+                   ((Float)emboss_data[4][i]).floatValue(),
+                   ((Float)emboss_data[5][i]).floatValue(),false))
           continue;
 
         x = ((Float)emboss_data[1][i]).floatValue();
@@ -1218,6 +1226,39 @@ public class Graph2DPlot extends ScrollPanel
             maintitle_field = new JTextField((String)emboss_data[5][i]);
         }
       }
+      else if( ((Integer)emboss_data[0][i]).intValue() == TEXTLINE)
+      {
+        boolean number = true;
+        try
+        {
+          String text = (String)emboss_data[6][i];
+          Float.parseFloat(text);
+        }
+        catch(NumberFormatException nfe)
+        {
+          number = false;
+        }
+
+        if( x1 >= 0 && y1 <= 0 &&
+            x1 <= xendPoint && y1 >= -yendPoint )
+        {
+          int colourID = (int) ((Float)emboss_data[5][i]).floatValue();
+//        int textWidth = justify((String)emboss_data[6][i],fm);
+
+          g.setColor(plplot_colour[colourID]);
+          g.drawString((String)emboss_data[6][i],(int)x1,(int)y1);
+        }
+        else if(y1 > 0 && !number)  // looks like x-axis title
+        {
+          if(ytitle_field == null)
+            ytitle_field = new JTextField((String)emboss_data[5][i]);
+        }
+        else if(y1 < yendPoint && !number)  // looks like main title
+        {
+          if(maintitle_field == null)
+            maintitle_field = new JTextField((String)emboss_data[5][i]);
+        }
+      }
     }
     g2d.translate(-xborder, -getHeight()+yborder);
     g2d.setStroke(stroke);
@@ -1352,6 +1393,18 @@ public class Graph2DPlot extends ScrollPanel
         ymax_screen = Float.parseFloat(tok.nextToken());
         screen_min_max = true;
       }
+      else if(line.startsWith("##Xmin "))
+      {
+        StringTokenizer tok = new StringTokenizer(line," ");
+        tok.nextToken();
+        xmin = Float.parseFloat(tok.nextToken());
+        tok.nextToken();
+        xmax = Float.parseFloat(tok.nextToken());
+        tok.nextToken();
+        ymin = Float.parseFloat(tok.nextToken());
+        tok.nextToken();
+        ymax = Float.parseFloat(tok.nextToken());
+      }
       else if(!line.startsWith("#") && !line.equals("") && 
               !line.startsWith("Text") && !line.startsWith("Line"))
       {
@@ -1383,7 +1436,7 @@ public class Graph2DPlot extends ScrollPanel
         int ind = line.indexOf(" ");
         maintitle = line.substring(ind).trim();
       }
-      else if(line.startsWith("Text") && !line.startsWith("Textline"))
+      else if(line.startsWith("Text"))
         vx.add(line);
     }
 
@@ -1401,7 +1454,7 @@ public class Graph2DPlot extends ScrollPanel
     }
     else
     {
-      emboss_data = new Object[6][npoints];
+      emboss_data = new Object[7][npoints];
       for(int i=0; i<npoints; i++)
         setGraphicRow(emboss_data,(String)vx.get(i),i);
     }
@@ -1422,6 +1475,8 @@ public class Graph2DPlot extends ScrollPanel
     String type = tok.nextToken(); 
     if(type.equals("Line"))
       emboss_data[0][i] = new Integer(LINE);
+    else if(type.startsWith("Textline"))
+      emboss_data[0][i] = new Integer(TEXTLINE);
     else if(type.startsWith("Text"))
       emboss_data[0][i] = new Integer(TEXT);
     else if(type.equals("Rectangle"))
@@ -1447,7 +1502,18 @@ public class Graph2DPlot extends ScrollPanel
       tok.nextToken();
       emboss_data[5][i] = Float.valueOf(tok.nextToken());
     }
-    else if(type.startsWith("Text"))
+    else if(type.startsWith("Textline"))
+    {
+      tok.nextToken();
+      emboss_data[5][i] = Float.valueOf(tok.nextToken());
+      tok.nextToken();
+      tok.nextToken();
+      String text = new String();
+      while(tok.hasMoreTokens())
+        text = text+" "+tok.nextToken();
+      emboss_data[6][i] = text.trim();
+    }
+    else if(type.startsWith("Text") )
     {
       String text = new String();
       while(tok.hasMoreTokens())
@@ -1461,34 +1527,37 @@ public class Graph2DPlot extends ScrollPanel
   * Determine if this looks like a tick line.
   *
   */
-  private boolean isTick(String line, boolean checkBounds)
-  {
-    StringTokenizer tok = new StringTokenizer(line," ");
-    String type = tok.nextToken();
+//private boolean isTick(String line, boolean checkBounds)
+//{
+//  StringTokenizer tok = new StringTokenizer(line," ");
+//  String type = tok.nextToken();
 
-    if(!type.equals("Line"))
-      return false;
+//  if(!type.equals("Line"))
+//    return false;
 
-    tok.nextToken();
-    float x1 = Float.parseFloat(tok.nextToken());
-    tok.nextToken();
-    float y1 = Float.parseFloat(tok.nextToken());
-    tok.nextToken();
-    float x2 = Float.parseFloat(tok.nextToken());
-    tok.nextToken();
-    float y2 = Float.parseFloat(tok.nextToken());
+//  tok.nextToken();
+//  float x1 = Float.parseFloat(tok.nextToken());
+//  tok.nextToken();
+//  float y1 = Float.parseFloat(tok.nextToken());
+//  tok.nextToken();
+//  float x2 = Float.parseFloat(tok.nextToken());
+//  tok.nextToken();
+//  float y2 = Float.parseFloat(tok.nextToken());
 
-    return isTick(x1,y1,x2,y2,checkBounds);
-  }
+//  return isTick(x1,y1,x2,y2,checkBounds);
+//}
 
   /**
   *
   * Determine if this looks like a tick line.
   *
   */
-  private boolean isTick(float x1,float y1,float x2,float y2,
+  private boolean isTick(float x1,float y1,float x2,float y2, float colourID,
                          boolean checkBounds)
   {
+    if(colourID != 0)  // assume tick lines are black
+      return false;
+
     if(x1 == x2 || y1 == y2)
     {
       if(checkBounds) // check this is out of the graph boundary
