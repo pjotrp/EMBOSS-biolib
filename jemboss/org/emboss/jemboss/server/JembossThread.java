@@ -41,7 +41,7 @@ public class JembossThread extends Thread
   { 
     try
     {
-      rea.isProcessStdout();
+      rea.readProcessStdout();
       rea.getProcess().waitFor();
       createFinishedFile();
     }
