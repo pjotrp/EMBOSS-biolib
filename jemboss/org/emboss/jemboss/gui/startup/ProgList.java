@@ -64,7 +64,6 @@ public class ProgList
 
 // get alphabetic program listing
      String line;
-     String allProgLines[] = null;
      Vector wossLine = new Vector();
 
 //parse the output of wossname 
@@ -95,7 +94,7 @@ public class ProgList
      }
 
 //find unique program names 
-     allProgLines = new String[numProgs];
+     Vector allProgLines = new Vector();
      numProgs = 0;
      Enumeration enumWoss = wossLine.elements();
      while(enumWoss.hasMoreElements())
@@ -106,30 +105,27 @@ public class ProgList
          line = line.trim();
          boolean news =true;
          String progN = new String(line.substring(0,line.indexOf(" ")+1));
-         for(int i=0;i<numProgs;i++)
+         if(!allProgLines.contains(progN))
          {
-           if(allProgLines[i].startsWith(progN))
-           {
-             news = false;
-             break;
-           }
-         }
-         if(news)
-         {
-           allProgLines[numProgs] = new String(line);
+           allProgLines.add(line);
            numProgs++;
          }
        }
      }
 
 //sort alphabetically
-     java.util.Arrays.sort(allProgLines,0,numProgs);
      allProgs = new String[numProgs];
+     Enumeration e = allProgLines.elements();
+
+     for(int i=0; e.hasMoreElements() ; i++)
+        allProgs[i] =  (String)(e.nextElement());
+
+     java.util.Arrays.sort(allProgs,0,numProgs);
      allDescription = new String[numProgs];
 
      for(int i=0;i<numProgs;i++)
      {
-       line = allProgLines[i].trim();
+       line = allProgs[i].trim();
        int split = line.indexOf(" ");
        int len   = line.length();
        allProgs[i] = new String(line.substring(0,split));
@@ -161,6 +157,9 @@ public class ProgList
        while((groups = in.readLine()) != null)
        {
          groups = groups.trim();
+         if(groups.equals(""))
+           continue;
+
          index = groups.indexOf(":");  
          sexist = false;
 
@@ -219,6 +218,12 @@ public class ProgList
            {
              int split = line.indexOf(" ");
              int app=0;
+
+             if(split < 0)
+             {
+               System.out.println("WARNING SKIPPING : " + line);
+               continue;
+             }
              String p = line.substring(0,split);
              for(int i=0;i<numProgs;i++) 
              {
@@ -244,7 +249,7 @@ public class ProgList
        }
 
      }
-     catch (IOException e) 
+     catch (IOException ex) 
      {
        System.out.println("Cannot open EMBOSS acd file ");
      }
