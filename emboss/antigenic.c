@@ -293,6 +293,7 @@ int main(int argc, char **argv)
 	ajReportWrite(report, TabRpt, seq);
 
 	ajStrDel(&strand);
+	ajFeattableDel(&TabRpt);
 
     }
     
