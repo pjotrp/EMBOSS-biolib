@@ -1082,11 +1082,12 @@ public class Graph2DPlot extends ScrollPanel
  
     graph_data = new StringBuffer();
     int npoints = 0;
+    boolean xygraph = false;
 
     while((line = in.readLine()) != null )
     {
       graph_data.append(line+"\n");
-      if(line.startsWith("Line"))
+      if(line.startsWith("Line") && !xygraph)
       {
         vx.add(line);
       }
@@ -1097,13 +1098,15 @@ public class Graph2DPlot extends ScrollPanel
       }
       else if(line.startsWith("Rectangle"))
         rectangle = true;
-      else if(!line.startsWith("#") && !line.equals("") && !line.startsWith("Text"))
+      else if(!line.startsWith("#") && !line.equals("") && 
+              !line.startsWith("Text") && !line.startsWith("Line"))
       {
         line = line.trim();
         int ind = line.indexOf("\t");
         if(ind == -1)
           ind = line.indexOf(" ");
         
+        xygraph = true;
         vx.add(new Float(line.substring(0,ind).trim()));
         vy.add(new Float(line.substring(ind).trim()));
       }
