@@ -103,13 +103,10 @@ public class ShowResultSet extends JFrame
 // now load png files into pane
     for(int i=0; i<stabs.length;i++)
     {
-      s1 = new ScrollPanel(new GridLayout());
-      r1 = new JScrollPane(s1);
-      r1.getViewport().setBackground(Color.white);
-
       ImageIcon i1 = new ImageIcon((byte [])reslist.get(stabs[i]));
-      JLabel l1 = new JLabel(i1);
-      s1.add(l1);
+      ImageIconJPanel iiPanel = new ImageIconJPanel(i1);
+      r1 = new JScrollPane(iiPanel);
+      r1.getViewport().setBackground(Color.white);
       if(stabs[i] != null)
       {
         rtp.add(r1,i);
@@ -160,9 +157,6 @@ public class ShowResultSet extends JFrame
       {
         if (thiskey.endsWith("png") || thiskey.endsWith("html"))
         {
-          s1 = new ScrollPanel(new GridLayout());
-          r1 = new JScrollPane(s1);
-          r1.getViewport().setBackground(Color.white);
           int index = findInt(thiskey);
           if(index>0)
           {
@@ -172,8 +166,9 @@ public class ShowResultSet extends JFrame
           else
           {
             ImageIcon i1 = new ImageIcon((byte [])h.get(thiskey));
-            JLabel l1 = new JLabel(i1);
-            s1.add(l1);
+            ImageIconJPanel iiPanel = new ImageIconJPanel(i1);
+            r1 = new JScrollPane(iiPanel);
+            r1.getViewport().setBackground(Color.white);
             rtp.add(thiskey,r1);
           }
         }
