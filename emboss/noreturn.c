@@ -23,12 +23,12 @@
 #include "emboss.h"
 
 
-int main(int argc, char **argv)
+ajint main(ajint argc, char **argv)
 {
     AjPFile inf  = NULL;
     AjPFile outf = NULL;
     AjPStr  line = NULL;
-    int     len;
+    ajint     len;
     char    *p;
     
     embInit("noreturn", argc, argv);

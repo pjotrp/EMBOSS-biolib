@@ -1,6 +1,6 @@
 #include "emboss.h"
 
-int main (int argc, char **argv) {
+ajint main (ajint argc, char **argv) {
   AjPFeatLexicon dict=NULL;
   AjPFeatTable feattable;
   AjPStr name=NULL,score=NULL,desc=NULL,source=NULL,type=NULL;
@@ -10,7 +10,7 @@ int main (int argc, char **argv) {
   AjPFile file;
   AjPFeature feature;
   AjPFeatTabOut output = NULL;
-  int i;
+  ajint i;
 
   embInit ("demofeatures", argc, argv);
 

@@ -30,10 +30,10 @@ static void WordMatchListConvDiffToFeat(AjPList list, AjPFeatTable *tab1,
                 AjPFeatTable *tab2, AjPStr seq1name, AjPStr seq2name, AjPSeq
                 seq1, AjPSeq seq2);
                                 
-int main(int argc, char * argv[]) {
+ajint main(ajint argc, char * argv[]) {
   
   AjPSeq seq1,seq2;
-  int wordlen;
+  ajint wordlen;
   AjPTable seq1MatchTable =0 ;
   AjPList matchlist=NULL ;
   AjPFile outfile;
@@ -110,9 +110,9 @@ void WordMatchListConvDiffToFeat(AjPList list, AjPFeatTable *tab1,
   AjPFeature feature;
   AjIList iter=NULL;
   AjPFeatLexicon dict=NULL;
-  int misstart1 = -1;   /* start of mismatch region in seq1 */
-  int misstart2 = -1;   /* start of mismatch region in seq2 */
-  int misend1, misend2; /* end of mismatch region */
+  ajint misstart1 = -1;   /* start of mismatch region in seq1 */
+  ajint misstart2 = -1;   /* start of mismatch region in seq2 */
+  ajint misend1, misend2; /* end of mismatch region */
   AjPStr notestr=NULL, replacestr=NULL;
 
   dict = ajFeatGffDictionaryCreate(); 
@@ -232,7 +232,7 @@ static void AddTags(AjPFile outfile, AjPList taglist, AjBool values) {
   titer = ajListIter(taglist);
   while (ajListIterMore(titer)) {
     tagstr = (LPFeatTagValue)ajListIterNext(titer);
-/* don't display the translation tag - it is far too long :-) */
+/* don't display the translation tag - it is far too ajlong :-) */
     if (ajStrCmpC(tagstr->Tag->VocTag->name, "translation")) {
       if (values == ajTrue) {
         (void) ajFmtPrintF(outfile, " %S=\"%S\"", tagstr->Tag->VocTag->name, tagstr->Value);
@@ -253,13 +253,13 @@ static void AddTags(AjPFile outfile, AjPList taglist, AjBool values) {
 **
 ** @param [r] outfile [AjPFile] Output file containing report.
 ** @param [r] feat [AjPFeatTable] Feature table to search
-** @param [r] start [int] Start position of region (in human coordinates)
-** @param [r] end [int] End position of region (in human coordinates)
+** @param [r] start [ajint] Start position of region (in human coordinates)
+** @param [r] end [ajint] End position of region (in human coordinates)
 ** @return [void] 
 ** @@
 ******************************************************************************/
 
-static void Features(AjPFile outfile, AjPFeatTable feat, int start, int end) {
+static void Features(AjPFile outfile, AjPFeatTable feat, ajint start, ajint end) {
 
   AjIList    iter = NULL ;
   AjPFeature gf   = NULL ;
@@ -271,17 +271,17 @@ static void Features(AjPFile outfile, AjPFeatTable feat, int start, int end) {
 *  AjPFeatTable      Owner ;
 *  AjPFeatVocFeat     Source ;
 *  AjPFeatVocFeat     Type ;
-*  int               Start ;
-*  int               End; 
-*  int               Start2;
-*  int               End2;
+*  ajint               Start ;
+*  ajint               End; 
+*  ajint               Start2;
+*  ajint               End2;
 *  AjPStr            Score ;
 *  AjPList           Tags ;     a.k.a. the [group] field tag-values of GFF2 
 *  AjPStr            Comment ;
 *  AjEFeatStrand     Strand ;
 *  AjEFeatFrame      Frame ;
 *  AjPStr            desc ;
-*  int               Flags;
+*  ajint               Flags;
 *
 */
 
@@ -329,19 +329,19 @@ static void diff (AjPList matchlist, AjPSeq seq1, AjPSeq seq2, AjPFile
 
   AjIList iter=NULL;		/* match list iterator */
   EmbPWordMatch p=NULL;		/* match structure */
-  int count=0;			/* count of matches */
+  ajint count=0;			/* count of matches */
   AjPStr s1 = ajSeqStr(seq1);	/* string of seq1 */
   AjPStr s2 = ajSeqStr(seq2);	/* string of seq2 */
-  int prev1end=0, prev2end=0;	/* end positions (+1) of previous match */
+  ajint prev1end=0, prev2end=0;	/* end positions (+1) of previous match */
   AjPStr tmp = ajStrNew();	/* temporary string */
   AjPStr name1 = ajStrNewC(ajSeqName(seq1));	/* name of seq1 */
   AjPStr name2 = ajStrNewC(ajSeqName(seq2));	/* name of seq2 */
-  int start, end;		/* start and end of the difference (using human coords) */
+  ajint start, end;		/* start and end of the difference (using human coords) */
 
 /* stuff for counting SNPs, transitions & transversions */
-  int snps=0, transitions=0, transversions = 0;	/* counts of SNP types */
+  ajint snps=0, transitions=0, transversions = 0;	/* counts of SNP types */
   char base1='\0', base2='\0';
-  int len1, len2;
+  ajint len1, len2;
 
 /* get the feature table of the sequences */
   AjPFeatTable feat1 = ajSeqGetFeat(seq1);
@@ -421,8 +421,8 @@ static void diff (AjPList matchlist, AjPSeq seq1, AjPSeq seq2, AjPFile
 /* count SNPs, transitions & transversions */
       if (len1 == 1 && len2 == 1) {
         snps++;
-        transitions += (int) embPropTransition(base1, base2);
-        transversions += (int) embPropTransversion(base1, base2);
+        transitions += (ajint) embPropTransition(base1, base2);
+        transversions += (ajint) embPropTransversion(base1, base2);
       }
 
     }

@@ -24,13 +24,13 @@
 
 #include "emboss.h"
 
-int main (int argc, char * argv[]) {
+ajint main (ajint argc, char * argv[]) {
 
   AjPSeqall seqall;
   AjPSeqout seqout;
   AjPSeq seq = NULL;
-  int n;
-  int count;
+  ajint n;
+  ajint count;
   
   embInit ("nthseq", argc, argv);
 

@@ -22,13 +22,13 @@
 
 #include "emboss.h"
 
-int main (int argc, char * argv[]) {
+ajint main (ajint argc, char * argv[]) {
 
   AjPSeq seq;
   AjPSeqout seqout;
-  int from, to;
+  ajint from, to;
   AjPStr str=NULL; /* NULL definition is required for the ajStrAss() call */
-  int beg, end;
+  ajint beg, end;
 
   embInit ("cutseq", argc, argv);
 

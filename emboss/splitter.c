@@ -22,7 +22,7 @@
 
 #include "emboss.h"
 
-int main (int argc, char * argv[]) {
+ajint main (ajint argc, char * argv[]) {
 
   AjPSeqall seqall;
   AjPSeqout seqout;
@@ -31,9 +31,9 @@ int main (int argc, char * argv[]) {
   AjPStr str = NULL;
   AjPStr name = NULL;
   AjPStr value = NULL;
-  int size, overlap;
-  int from, to, start, end;
-  int seqlen;
+  ajint size, overlap;
+  ajint from, to, start, end;
+  ajint seqlen;
   
   (void) embInit ("splitter", argc, argv);
 

@@ -4,7 +4,7 @@ SUBDIRS = acd data
 check_PROGRAMS = ajtest ajtest2 ajtest3 ajtestajnam \
 cluster corbatest \
 demofeatures demolist demosequence demostring demotable \
-entrails histogramtest messtest \
+entrails histogramtest intconv messtest \
 patmattest plplottest proteinmotifsearch \
 seqinfo \
 seqretallfeat seqretfeat seqtofeat \
@@ -98,6 +98,7 @@ getorf_SOURCES = getorf.c
 helixturnhelix_SOURCES = helixturnhelix.c
 iep_SOURCES = iep.c
 infoseq_SOURCES = infoseq.c
+intconv_SOURCES = intconv.c
 isochore_SOURCES = isochore.c
 lindna_SOURCE = lindna.c
 maskfeat_SOURCES = maskfeat.c

@@ -24,14 +24,14 @@
 #include "emboss.h"
 static void FeatSeqMask (AjPSeq seq, AjPStr type, AjPStr maskchar);
 
-int main (int argc, char * argv[]) {
+ajint main (ajint argc, char * argv[]) {
 
   AjPSeqall seqall;
   AjPSeq seq;
   AjPSeqout seqout;
   AjPStr type;
   AjPStr maskchar;
-  /*  int beg, end;*/
+  /*  ajint beg, end;*/
 
   (void) embInit ("maskfeat", argc, argv);
 

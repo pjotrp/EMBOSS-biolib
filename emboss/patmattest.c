@@ -21,14 +21,14 @@
 
 char *testset[] = { "GAN","GAATTC","CCSGG","GANTC","GABNNNNNVTC","GA","GANN","TC"};
   
-int main (int argc, char * argv[]) {
+ajint main (ajint argc, char * argv[]) {
   AjPStr cut = NULL;
   AjPStr new = NULL;
   AjPStr test = NULL;
   AjPStr regexp = NULL;
   EmbPPatMatch results = NULL;
   AjPSeq seq;
-  int i,j;
+  ajint i,j;
 
   embInit ("patmattest", argc, argv);
 

@@ -23,7 +23,7 @@
 #include "emboss.h"
 
 
-int main(int argc, char **argv)
+ajint main(ajint argc, char **argv)
 {
     AjPSeq     a;
     AjPSeqout  outf;
@@ -31,8 +31,8 @@ int main(int argc, char **argv)
     AjPStr     substr;
     AjPStr     back;
     
-    int beg;
-    int end;
+    ajint beg;
+    ajint end;
     
     embInit("backtranseq", argc, argv);
 

@@ -23,7 +23,7 @@
 #include "emboss.h"
 #include <math.h>
 
-int main(int argc, char **argv)
+ajint main(ajint argc, char **argv)
 {
     AjPFile    outf;
     AjPCod     first;
@@ -34,9 +34,9 @@ int main(int argc, char **argv)
     
     double     t;
     
-    int        unused;
+    ajint        unused;
 
-    int i;
+    ajint i;
     
 
     

@@ -23,7 +23,7 @@
 
 #include "emboss.h"
 
-int main (int argc, char * argv[]) {
+ajint main (ajint argc, char * argv[]) {
 
   if (argc < 2)
     ajFatal("Error - must specify an application to compile\n");

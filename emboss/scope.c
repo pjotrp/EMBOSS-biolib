@@ -93,7 +93,7 @@
 
 
 
-int main(int argc, char**argv)
+ajint main(ajint argc, char**argv)
 {
     AjPRegexp rexp    = NULL;
     AjPRegexp exp2    = NULL;
@@ -115,10 +115,10 @@ int main(int argc, char**argv)
     char *p           = NULL;
     char c            = ' ';
     
-    int n;
-    int i;
-    int from;
-    int to;
+    ajint n;
+    ajint i;
+    ajint from;
+    ajint to;
     
     AjPScop scop      = NULL;
     

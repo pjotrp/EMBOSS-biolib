@@ -22,7 +22,7 @@
 
 #include "emboss.h"
 
-int main (int argc, char **argv)
+ajint main (ajint argc, char **argv)
 {
     AjPSeqall seqall=NULL;
     AjPFile outf=NULL;

@@ -30,7 +30,7 @@ AjBool getnakaidata(AjPFile file, float matrix[]){
   AjPStr delim = NULL;
   AjPStr description=NULL;
   AjPStrTok token;
-  int line =0;
+  ajint line =0;
   char *ptr;
 
 
@@ -134,14 +134,14 @@ AjBool getnakaidata(AjPFile file, float matrix[]){
   return ajTrue;
 }
   
-int main (int argc, char * argv[]) {
+ajint main (ajint argc, char * argv[]) {
   AjPFile datafile;
   AjPStr aa0str=0;
   char *s1;
   AjPSeq seq;
-  int llen;
+  ajint llen;
   float matrix[AZ];
-  int i,midpoint,j;
+  ajint i,midpoint,j;
   AjPGraphData graphdata;
   AjPGraph mult;
   float min= 555.5,max = -555.5,total;
@@ -160,7 +160,7 @@ int main (int argc, char * argv[]) {
 
   graphdata = ajGraphxyDataNewI(ajSeqLen(seq)-llen);
 
-  midpoint = (int)((llen+1)/2);
+  midpoint = (ajint)((llen+1)/2);
 
   ajGraphDataxySetTypeC(graphdata,"2D Plot");
   
@@ -178,7 +178,7 @@ int main (int argc, char * argv[]) {
   for(i=0;i<ajSeqLen(seq)-llen;i++){
     total = 0;
     for(j=0;j<llen;j++)
-      total = total + matrix[(int)s1[j]];
+      total = total + matrix[(ajint)s1[j]];
     total=total/(float)llen;
     graphdata->x[i] = (float)i+midpoint;
     graphdata->y[i] = total;

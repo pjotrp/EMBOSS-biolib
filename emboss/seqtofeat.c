@@ -1,6 +1,6 @@
 #include "emboss.h"
 
-int main (int argc, char * argv[]) {
+ajint main (ajint argc, char * argv[]) {
 
   AjPSeq seq;
   AjPFeatTabOut outft;
@@ -12,9 +12,9 @@ int main (int argc, char * argv[]) {
   AjPStr src = NULL;
   AjPStr ftname = NULL;
 
-  int ioffset = 1;
-  int icnt = 0;
-  int istart, iend;
+  ajint ioffset = 1;
+  ajint icnt = 0;
+  ajint istart, iend;
 
   embInit ("seqtofeat", argc, argv);
 

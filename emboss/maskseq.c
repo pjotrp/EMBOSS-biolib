@@ -24,14 +24,14 @@
 #include "emboss.h"
 void MaskRegions(AjPStr regions, AjPSeq *seq, AjPStr maskchar);
 
-int main (int argc, char * argv[]) {
+ajint main (ajint argc, char * argv[]) {
 
   AjPSeq seq;
   AjPSeqout seqout;
   AjPRange regions;
   AjPStr maskchar;
   AjPStr str=NULL;
-  int beg, end;
+  ajint beg, end;
 
   (void) embInit ("maskseq", argc, argv);
 

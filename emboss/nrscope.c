@@ -88,12 +88,12 @@
 
 
 
-int main(int argc, char **argv)
+ajint main(ajint argc, char **argv)
 {
-    int        x         = 0;
-    int        nset      = 0;	 /*No. proteins in our  set*/
-    int        nsetnr    = 0;	 /*No. proteins in the non-redundant set */
-    int        nfam      = 0;	 /* Counter of SCOP families */
+    ajint        x         = 0;
+    ajint        nset      = 0;	 /*No. proteins in our  set*/
+    ajint        nsetnr    = 0;	 /*No. proteins in the non-redundant set */
+    ajint        nfam      = 0;	 /* Counter of SCOP families */
 
     float      gapopen;		 /* Gap insertion penalty*/
     float      gapextend;	 /* Gap extension penalty*/

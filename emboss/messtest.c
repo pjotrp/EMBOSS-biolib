@@ -2,7 +2,7 @@
 #include "emboss.h"
 #include "ajmess.h"
 
-int main(int argc, char * argv[]){
+ajint main(ajint argc, char * argv[]){
   AjPStr str1;
 
   ajMessErrorInit("Mess Test");

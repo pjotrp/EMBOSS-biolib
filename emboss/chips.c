@@ -23,7 +23,7 @@
 #include "emboss.h"
 
 
-int main(int argc, char **argv)
+ajint main(ajint argc, char **argv)
 {
     AjPSeqall  seqall;
     AjPSeq     seq;
@@ -31,9 +31,9 @@ int main(int argc, char **argv)
     AjPCod     codon;
     AjPStr     substr;
     
-    int ccnt;
-    int beg;
-    int end;
+    ajint ccnt;
+    ajint beg;
+    ajint end;
     
     float Nc;
     

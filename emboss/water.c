@@ -21,7 +21,7 @@
 
 #include "emboss.h"
 
-int main(int argc, char **argv)
+ajint main(ajint argc, char **argv)
 {
     AjPSeqall seqall;
     AjPSeq a;
@@ -33,19 +33,19 @@ int main(int argc, char **argv)
     AjPFile outf;
     AjBool  show;
     
-    int    lena;
-    int    lenb;
-    int    i;
+    ajint    lena;
+    ajint    lenb;
+    ajint    i;
     
     char   *p;
     char   *q;
 
-    int start1=0;
-    int start2=0;
+    ajint start1=0;
+    ajint start2=0;
     
     
     float  *path;
-    int    *compass;
+    ajint    *compass;
     
     AjPMatrixf matrix;
     AjPSeqCvt  cvt=0;
@@ -54,12 +54,12 @@ int main(int argc, char **argv)
     float gapopen;
     float gapextend;
 
-    int maxarr=1000;
-    int len;
+    ajint maxarr=1000;
+    ajint len;
 
     float score;
-    int begina;
-    int beginb;
+    ajint begina;
+    ajint beginb;
 
     AjBool dosim=ajFalse;
     AjBool fasta=ajFalse;

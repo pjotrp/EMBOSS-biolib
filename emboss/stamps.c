@@ -33,10 +33,10 @@
 
 
 
-int main(int argc, char **argv)
+ajint main(ajint argc, char **argv)
 {
-    int       nfam      = 0;	/* Counter for the families */
-    int       ncluster  = 0;	/* Counter for the number of clusters*/    
+    ajint       nfam      = 0;	/* Counter for the families */
+    ajint       ncluster  = 0;	/* Counter for the number of clusters*/    
 
     AjPStr    last_fam  = NULL;	/* Last family that was processed */
     AjPStr    exec      = NULL;	/* The UNIX command line to be executed*/

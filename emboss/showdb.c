@@ -26,7 +26,7 @@ static void DBOut(AjPFile outfile, AjPStr dbname, AjPStr type, AjBool
 id, AjBool qry, AjBool all, AjPStr comment, AjBool html, AjBool dotype,
 AjBool doid, AjBool doqry, AjBool doall, AjBool docomment);
 
-int main (int argc, char * argv[]) {
+ajint main (ajint argc, char * argv[]) {
   AjBool html;
   AjBool protein;
   AjBool nucleic;

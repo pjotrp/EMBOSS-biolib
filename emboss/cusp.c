@@ -23,16 +23,16 @@
 #include "emboss.h"
 
 
-int main(int argc, char **argv)
+ajint main(ajint argc, char **argv)
 {
     AjPSeqall  seqall;
     AjPSeq     seq;
     AjPFile    outf;
     AjPCod     codon;
     AjPStr     substr;
-    int beg;
-    int end;
-    int ccnt;
+    ajint beg;
+    ajint end;
+    ajint ccnt;
     
     
     embInit("cusp", argc, argv);

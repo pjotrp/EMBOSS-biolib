@@ -1,6 +1,6 @@
 #include "emboss.h"
 
-int main (int argc, char * argv[]) {
+ajint main (ajint argc, char * argv[]) {
 
   AjPSeqall seqall;
   AjPFile outf;
@@ -10,9 +10,9 @@ int main (int argc, char * argv[]) {
   AjPStr tmpstr = NULL;
   AjPStr substr = NULL;
   AjBool found;
-  int ioff;
-  int ipos;
-  int ilen;
+  ajint ioff;
+  ajint ipos;
+  ajint ilen;
 
   embInit ("dreg", argc, argv);
 

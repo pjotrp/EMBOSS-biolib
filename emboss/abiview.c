@@ -27,21 +27,21 @@
 
 
 static AjPGraphData graphDisplay(AjPGraph graphs, AjPInt2d trace, 
-            int nstart, int nstop, AjPShort  basePositions, int base,
-            int colour, AjBool overlay, float tmax, int* ntrace);
+            ajint nstart, ajint nstop, AjPShort  basePositions, ajint base,
+            ajint colour, AjBool overlay, float tmax, ajint* ntrace);
 
-static AjPGraphData graphTextDisplay(AjPGraph graphs, int nstart,
-             int nstop, AjPShort  basePositions, 
-             AjBool overlay, AjPStr nseq, float tmax, int nt);
+static AjPGraphData graphTextDisplay(AjPGraph graphs, ajint nstart,
+             ajint nstop, AjPShort  basePositions, 
+             AjBool overlay, AjPStr nseq, float tmax, ajint nt);
 
-static void TextDisplay(AjPGraph graphs, int nstart, int nstop,
+static void TextDisplay(AjPGraph graphs, ajint nstart, ajint nstop,
                         AjPStr nseq, float tmax);
 static AjBool drawbase(char* res, AjPStr baseN);
-static int getResColour(char B);
+static ajint getResColour(char B);
 
 
 
-int main (int argc, char * argv[])
+ajint main (ajint argc, char * argv[])
 {
     AjPStr  fname;
     AjPFile fp;
@@ -68,21 +68,21 @@ int main (int argc, char * argv[])
     AjPGraphData gd4 = NULL;
     AjPGraphData gd5 = NULL;
 
-    int ntrace;
-    int strace;
-    long int fwo_;
+    ajint ntrace;
+    ajint strace;
+    ajlong fwo_;
 
     float tmax;
-    int nstart;
-    int nstop;
-    int window;
-    int i;
-    int base;
-    int nbases;
-    long int baseO;
-    long int numBases;
-    long int numPoints;
-    long int dataOffset[4];
+    ajint nstart;
+    ajint nstop;
+    ajint window;
+    ajint i;
+    ajint base;
+    ajint nbases;
+    ajlong baseO;
+    ajlong numBases;
+    ajlong numPoints;
+    ajlong dataOffset[4];
 
     char res1;
     char res2;
@@ -90,7 +90,7 @@ int main (int argc, char * argv[])
     char res4;
 
     /* BYTE[i] is a byte mask for byte i */
-    const long int BYTE[] = { 0x000000ff };
+    const ajlong BYTE[] = { 0x000000ff };
    
 
 
@@ -272,14 +272,14 @@ int main (int argc, char * argv[])
 **     
 *************************************************************************/
 static AjPGraphData graphDisplay(AjPGraph graphs, AjPInt2d trace, 
-             int nstart, int nstop, AjPShort  basePositions,
-             int base, int colour, AjBool overlay, float tmax,
-             int* nt)
+             ajint nstart, ajint nstop, AjPShort  basePositions,
+             ajint base, ajint colour, AjBool overlay, float tmax,
+             ajint* nt)
 {
-    int i;
-    short bP;
-    short lastbP;
-    int bstart;
+    ajint i;
+    ajshort bP;
+    ajshort lastbP;
+    ajint bstart;
 
     AjPGraphData gdata;
 
@@ -328,12 +328,12 @@ static AjPGraphData graphDisplay(AjPGraph graphs, AjPInt2d trace,
 ** returns: graph data object containing the sequence text
 **          
 *************************************************************************/
-static AjPGraphData graphTextDisplay(AjPGraph graphs, int nstart,
-             int nstop, AjPShort  basePositions, AjBool overlay,
-             AjPStr nseq, float tmax, int nt)
+static AjPGraphData graphTextDisplay(AjPGraph graphs, ajint nstart,
+             ajint nstop, AjPShort  basePositions, AjBool overlay,
+             AjPStr nseq, float tmax, ajint nt)
 {
-    int i;
-    int colres;
+    ajint i;
+    ajint colres;
 
     AjPGraphData gdata;
    
@@ -370,11 +370,11 @@ static AjPGraphData graphTextDisplay(AjPGraph graphs, int nstart,
 ** returns: 
 **          
 *************************************************************************/
-static void TextDisplay(AjPGraph graphs, int nstart, int nstop,
+static void TextDisplay(AjPGraph graphs, ajint nstart, ajint nstop,
                         AjPStr nseq, float tmax)
 {
-    int i;
-    int colres;
+    ajint i;
+    ajint colres;
 
     char res[2];
 
@@ -404,7 +404,7 @@ static AjBool drawbase(char* res, AjPStr baseN)
   AjPRegexp rexp = NULL;
   AjBool draw = ajFalse;
   AjPStr b;
-  int i;
+  ajint i;
 
 
   b = ajStrNew();
@@ -433,7 +433,7 @@ static AjBool drawbase(char* res, AjPStr baseN)
 ** returns: base colour
 **         
 *************************************************************************/
-static int getResColour(char B)
+static ajint getResColour(char B)
 {
   return ((B)=='C'?RED:(B)=='A'?GREEN:(B)=='G'?BLUE:(B)=='T'?BLACK:YELLOW);
 }

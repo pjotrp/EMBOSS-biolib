@@ -5,11 +5,11 @@
 */
 #include "emboss.h"
 
-int main()
+ajint main()
 { 
   AjPStr value = 0;
   char *name[] = {"end","acdroot","dataroot","embldir","configdir", NULL};
-  int i;
+  ajint i;
 
   ajNamInit("emboss");
 
