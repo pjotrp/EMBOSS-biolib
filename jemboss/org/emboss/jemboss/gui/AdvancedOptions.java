@@ -90,7 +90,7 @@ public class AdvancedOptions extends JPanel
 
 //set users home root directory
     bleft =  Box.createHorizontalBox();         
-    JLabel lhome = new JLabel("Local Root Directory:");
+    JLabel lhome = new JLabel("Local Home Directory:");
     lhome.setForeground(Color.black);
     bleft.add(lhome);
     bleft.add(Box.createHorizontalGlue());
