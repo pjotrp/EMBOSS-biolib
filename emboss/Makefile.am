@@ -10,7 +10,7 @@ scope seqinfo \
 seqretallfeat seqretfeat seqtofeat \
 simplesw testplot treetypedisplay 
 
-bin_PROGRAMS = acdc antigenic \
+bin_PROGRAMS = abiview acdc antigenic \
 backtranseq banana btwisted \
 chaos checktrans chips cirdna codcmp coderet complex \
 compseq cons cpgplot cpgreport cusp cutseq \
@@ -32,7 +32,7 @@ plotcon plotorf polydot preg \
 prettyplot prettyseq prima primersearch printsextract \
 profit prophecy prophet \
 prosextract pscan \
-rebaseextract redata remap restrict revseq \
+rebaseextract recode redata remap restrict revseq \
 seealso seqmatchall seqret seqretall seqretset seqretsplit \
 showdb showfeat showorf showseq \
 shuffleseq sigcleave silent splitter stretcher \
@@ -49,6 +49,7 @@ wossname
 
 INCLUDES = -I$(top_srcdir)/nucleus -I$(top_srcdir)/ajax -I$(top_srcdir)/plplot
 
+abiview_SOURCES = abiview.c
 acdc_SOURCES = acdc.c
 antigenic_SOURCES = antigenic.c
 backtranseq_SOURCES = backtranseq.c
@@ -144,6 +145,7 @@ prosextract_SOURCES = prosextract.c
 proteinmotifsearch_SOURCES = proteinmotifsearch.c
 pscan_SOURCES = pscan.c
 rebaseextract_SOURCES = rebaseextract.c
+recode_SOURCES = recode.c
 redata_SOURCES = redata.c
 remap_SOURCES = remap.c
 restrict_SOURCES = restrict.c
