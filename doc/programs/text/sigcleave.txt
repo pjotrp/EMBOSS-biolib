@@ -28,9 +28,9 @@ Command line arguments
 
    Mandatory qualifiers:
   [-sequence]          seqall     Sequence database USA
-  [-outfile]           report     (no help text) report value
    -minweight          float      Minimum scoring weight value for the
                                   predicted cleavage site
+  [-outfile]           report     (no help text) report value
 
    Optional qualifiers:
    -prokaryote         bool       Specifies the sequence is prokaryotic and
@@ -53,10 +53,10 @@ Command line arguments
    Mandatory qualifiers Allowed values Default
    [-sequence]
    (Parameter 1) Sequence database USA Readable sequence(s) Required
-   [-outfile]
-   (Parameter 2) (no help text) report value Report file
    -minweight Minimum scoring weight value for the predicted cleavage
    site Number from 0.000 to 100.000 3.5
+   [-outfile]
+   (Parameter 2) (no help text) report value Report file
    Optional qualifiers Allowed values Default
    -prokaryote Specifies the sequence is prokaryotic and changes the
    default scoring data file name Yes/No No

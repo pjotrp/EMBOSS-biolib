@@ -31,13 +31,13 @@ Command line arguments
 
    Mandatory qualifiers:
   [-sequence]          sequence   Sequence USA
-  [-outseq]            seqout     Output sequence USA
    -from               integer    This is the start position (inclusive) of
                                   the section of the sequence that you wish to
                                   remove.
    -to                 integer    This is the end position (inclusive) of the
                                   section of the sequence that you wish to
                                   remove.
+  [-outseq]            seqout     Output sequence USA
 
    Optional qualifiers: (none)
    Advanced qualifiers: (none)
@@ -50,14 +50,14 @@ Command line arguments
    Mandatory qualifiers Allowed values Default
    [-sequence]
    (Parameter 1) Sequence USA Readable sequence Required
-   [-outseq]
-   (Parameter 2) Output sequence USA Writeable sequence <sequence>.format
    -from This is the start position (inclusive) of the section of the
    sequence that you wish to remove. Any integer value Start of sequence
    (0)
    -to This is the end position (inclusive) of the section of the
    sequence that you wish to remove. Any integer value End of sequence
    (0)
+   [-outseq]
+   (Parameter 2) Output sequence USA Writeable sequence <sequence>.format
    Optional qualifiers Allowed values Default
    (none)
    Advanced qualifiers Allowed values Default

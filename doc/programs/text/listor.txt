@@ -105,7 +105,7 @@ Command line arguments
                                   to this list file
 
    Optional qualifiers:
-   -operator           list       The following logical operators combine the
+   -operator           menu       The following logical operators combine the
                                   sequences in the following ways:
                                   OR - gives all that occur in one set or the
                                   other

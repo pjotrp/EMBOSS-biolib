@@ -202,8 +202,10 @@ Known bugs
 See also
 
    Program name Description
+   fixusa Search all databases for an entry
    infoalign Information on a multiple sequence alignment
    seealso Finds programs sharing group names
+   seekseq Searches SRS for sequences matching keywords
    showdb Displays information on the currently available databases
    textsearch Search sequence documentation text. SRS and Entrez are
    faster!

@@ -33,11 +33,11 @@ Command line arguments
    Mandatory qualifiers:
   [-sequence]          sequence   Sequence USA
   [-insseq]            sequence   Sequence to insert
-  [-outseq]            seqout     Output sequence USA
    -pos                integer    The position in the main input sequence to
                                   insert after.
                                   To insert before the start use the position
                                   0.
+  [-outseq]            seqout     Output sequence USA
 
    Optional qualifiers: (none)
    Advanced qualifiers: (none)
@@ -52,11 +52,11 @@ Command line arguments
    (Parameter 1) Sequence USA Readable sequence Required
    [-insseq]
    (Parameter 2) Sequence to insert Readable sequence Required
-   [-outseq]
-   (Parameter 3) Output sequence USA Writeable sequence <sequence>.format
    -pos The position in the main input sequence to insert after. To
    insert before the start use the position 0. Integer 0 or more
    $(sequence.end)
+   [-outseq]
+   (Parameter 3) Output sequence USA Writeable sequence <sequence>.format
    Optional qualifiers Allowed values Default
    (none)
    Advanced qualifiers Allowed values Default

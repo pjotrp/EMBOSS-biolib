@@ -131,12 +131,12 @@ IT IS DONE FOR YOU.
    -[no]ambiguity      bool       Allow ambiguous matches
    -plasmid            bool       Allow circular DNA
    -[no]commercial     bool       Only enzymes with suppliers
+   -datafile           string     Alternative RE data file
    -[no]limit          bool       Limits reports to one isoschizomer
    -preferred          bool       Report preferred isoschizomers
    -alphabetic         bool       Sort output alphabetically
    -fragments          bool       Show fragment lengths
    -name               bool       Show sequence name
-   -datafile           string     Alternative RE data file
 
    General qualifiers:
   -help                bool       report command line options. More
@@ -265,6 +265,13 @@ PpiI</td>
 </tr>
 
 <tr>
+<td>-datafile</td>
+<td>Alternative RE data file</td>
+<td>Any string is accepted</td>
+<td><i>An empty string is accepted</i></td>
+</tr>
+
+<tr>
 <td>-[no]limit</td>
 <td>Limits reports to one isoschizomer</td>
 <td>Yes/No</td>
@@ -297,13 +304,6 @@ PpiI</td>
 <td>Show sequence name</td>
 <td>Yes/No</td>
 <td>No</td>
-</tr>
-
-<tr>
-<td>-datafile</td>
-<td>Alternative RE data file</td>
-<td>Any string is accepted</td>
-<td><i>An empty string is accepted</i></td>
 </tr>
 
 </table>

@@ -25,8 +25,8 @@ Command line arguments
    Mandatory qualifiers (* if not always prompted):
   [-inf]               infile     Name of raw input file (dictionary of
                                   heterogen groups)
-  [-outf]              outfile    Name of output file
   [-dogrep]            bool       Search a directory of files with keywords?
+  [-outf]              outfile    Name of output file
 *  -path               string     Directory to search with keywords
 *  -extn               string     Exension of files to search in above
                                   directory
@@ -43,10 +43,10 @@ Command line arguments
    [-inf]
    (Parameter 1) Name of raw input file (dictionary of heterogen groups)
    Input file Required
-   [-outf]
-   (Parameter 2) Name of output file Output file <sequence>.dichet
    [-dogrep]
-   (Parameter 3) Search a directory of files with keywords? Yes/No No
+   (Parameter 2) Search a directory of files with keywords? Yes/No No
+   [-outf]
+   (Parameter 3) Name of output file Output file <sequence>.dichet
    -path Directory to search with keywords Any string is accepted ./
    -extn Exension of files to search in above directory Any string is
    accepted .ent
@@ -98,7 +98,6 @@ See also
    interface    Reads coordinate files and writes inter-chain contact files
    psiblasts    Runs PSI-BLAST given scopalign alignments
    scopalign    Generate alignments for SCOP families
-   seqsort      Removes ambiguities from database search results
    siggen       Generates a sparse protein signature
    sigscan      Scans a sparse protein signature against swissprot
    

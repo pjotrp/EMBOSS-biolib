@@ -66,12 +66,12 @@ Command line arguments
    -[no]ambiguity      bool       Allow ambiguous matches
    -plasmid            bool       Allow circular DNA
    -[no]commercial     bool       Only enzymes with suppliers
+   -datafile           string     Alternative RE data file
    -[no]limit          bool       Limits reports to one isoschizomer
    -preferred          bool       Report preferred isoschizomers
    -alphabetic         bool       Sort output alphabetically
    -fragments          bool       Show fragment lengths
    -name               bool       Show sequence name
-   -datafile           string     Alternative RE data file
 
    General qualifiers:
   -help                bool       report command line options. More
@@ -107,13 +107,13 @@ Command line arguments
    -[no]ambiguity Allow ambiguous matches Yes/No Yes
    -plasmid Allow circular DNA Yes/No No
    -[no]commercial Only enzymes with suppliers Yes/No Yes
+   -datafile Alternative RE data file Any string is accepted An empty
+   string is accepted
    -[no]limit Limits reports to one isoschizomer Yes/No Yes
    -preferred Report preferred isoschizomers Yes/No No
    -alphabetic Sort output alphabetically Yes/No No
    -fragments Show fragment lengths Yes/No No
    -name Show sequence name Yes/No No
-   -datafile Alternative RE data file Any string is accepted An empty
-   string is accepted
    
 Input file format
 

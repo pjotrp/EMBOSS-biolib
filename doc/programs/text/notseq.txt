@@ -54,7 +54,6 @@ Command line arguments
 
    Mandatory qualifiers:
   [-sequence]          seqall     Sequence database USA
-  [-outseq]            seqoutall  Output sequence(s) USA
   [-exclude]           string     Enter a list of sequence names or accession
                                   numbers to exclude from the sequences read
                                   in. The excluded sequences will be written
@@ -69,6 +68,7 @@ Command line arguments
                                   An example of a list of sequences to be
                                   excluded is:
                                   myseq, hs*, one two three
+  [-outseq]            seqoutall  Output sequence(s) USA
 
    Optional qualifiers:
    -junkout            seqoutall  This file collects the sequences which you
@@ -85,11 +85,8 @@ Command line arguments
    Mandatory qualifiers Allowed values Default
    [-sequence]
    (Parameter 1) Sequence database USA Readable sequence(s) Required
-   [-outseq]
-   (Parameter 2) Output sequence(s) USA Writeable sequence(s)
-   <sequence>.format
    [-exclude]
-   (Parameter 3) Enter a list of sequence names or accession numbers to
+   (Parameter 2) Enter a list of sequence names or accession numbers to
    exclude from the sequences read in. The excluded sequences will be
    written to the file specified in the 'junkout' parameter. The
    remainder will be written out to the file specified in the 'outseq'
@@ -98,6 +95,9 @@ Command line arguments
    names are case independent. An example of a list of sequences to be
    excluded is: myseq, hs*, one two three Any string is accepted An empty
    string is accepted
+   [-outseq]
+   (Parameter 3) Output sequence(s) USA Writeable sequence(s)
+   <sequence>.format
    Optional qualifiers Allowed values Default
    -junkout This file collects the sequences which you have excluded from
    the main output file of sequences. Writeable sequence(s) /dev/null
