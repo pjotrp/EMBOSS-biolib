@@ -236,9 +236,9 @@ void ajSeqinDel (AjPSeqin* pthis) {
   
   if(thys->Ftquery && ! thys->multi)
   {
-      if(thys->Ftquery->Handle->File->Name)
+      if(thys->Ftquery->Handle)
 	  ajStrDel(&thys->Ftquery->Handle->File->Name);
-      if(thys->Ftquery->Handle->File->Buff)
+      if(thys->Ftquery->Handle)
 	  ajStrDel(&thys->Ftquery->Handle->File->Buff);
   }
   if(thys->Ftquery)  
