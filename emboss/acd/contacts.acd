@@ -39,6 +39,14 @@ float: thresh
 	def: 1.0
 ]
 
+float: ignore
+[
+	param: Y
+	info: "Threshold ignore distance"
+	help: "If any two atoms from two different residues are at least this distance apart then no futher inter-atomic contacts will be checked for for that residue pair . This speeds the calculation up considerably."
+	def: 20.0
+]
+
 string: vdwf
 [ 
 	param: Y

@@ -30,16 +30,18 @@ extern "C"
 ******************************************************************************/
 typedef struct AjSScorealg
 {   
-/*JC AjPInt ==> AjPFloat */    AjPFloat  seq_score;    /* Array of scores based on residue convervation */
-    AjPInt    post_similar; /* Array of scores based on stamp pij value      */
-/*JC AjPInt ==> AjPFloat */    AjPFloat    ncon_score;   /* Array of scores based on number of contacts   */
-/*JC AjPInt ==> AjPFloat */     AjPFloat    ccon_score;   /* Array of scores based on convervation of contacts */
-    AjPInt    nccon_score; /* Array of total score based on convervation and number of contacts */
-
-    AjPInt    combi_score;  /* Array of total score based on users scoring criteria  */
-    
-    AjBool    seq_do;       /* Whether to use score based on residue convervation */
-    AjBool    filter;       /* Whether to filter on basis of post_similar line      */
+    AjPFloat  seqmat_score;    /* Array of scores based on residue convervation */
+    AjPFloat  seqvar_score;    /* Array of scores based on residue variability */
+    AjPInt    post_similar;    /* Array of scores based on stamp pij value      */
+    AjPFloat  ncon_score;      /* Array of scores based on number of contacts   */
+    AjPFloat  ccon_score;      /* Array of scores based on convervation of contacts */
+    AjPInt    nccon_score;     /* Array of total score based on convervation and number of contacts */
+    AjPInt    combi_score;     /* Array of total score based on users scoring criteria  */
+    AjBool    seqmat_do;       /* Whether to use score based on residue convervation */
+    AjBool    seqvar_do;       /* Whether to use score based on residue variablility */
+    AjBool    filterpsim;       /* Whether to filter on basis of post_similar line      */
+    AjBool    filtercon;       /* Whether to filter on basis of number of contacts      */
+    ajint     conthresh;     /* Threshold number of contacts for filtercon */
     AjBool    ncon_do;      /* Whether to use score based on number of contacts   */
     AjBool    ccon_do;      /* Whether to use score based on convervation of contacts */
     AjBool    nccon_do;    /* Whether to use score based on convervation and number of contacts */
@@ -191,6 +193,9 @@ typedef struct AjSScophit
     float     Score;      /* Score of hit */
     float     Eval;       /* E-value of hit */
     AjPStr    Alg;        /* Alignment, e.g. of a signature to the sequence */
+    AjBool    Target;     /* True if the Scophit is targetted for removal from 
+			     a list of Scophit objects */
+    AjBool    Priority;   /* True if the Scop hit is high priority. */
 } AjOScophit, *AjPScophit;
 
 
@@ -251,6 +256,7 @@ typedef struct AjSHitlist
     AjPStr  Fold;
     AjPStr  Superfamily;
     AjPStr  Family;
+    AjBool  Priority;   /* True if the Hitlist is high priority. */
     ajint   N;            /* No. of hits */
     AjPHit *hits;        /* Array of hits */
 } AjOHitlist, *AjPHitlist;
@@ -553,10 +559,22 @@ AjPScop  ajXyzScopNew(ajint n);
 
 AjPScophit  ajXyzScophitNew(void);
 void     ajXyzScophitDel(AjPScophit *pthis);
+void     ajXyzScophitDelWrap(const void  **ptr);
 AjBool ajXyzHitlistToScophits(AjPList in, AjPList *out);
 AjBool        ajXyzHitsOverlap(AjPHit h1, AjPHit h2, ajint n);
 AjBool        ajXyzScophitsOverlap(AjPScophit h1, AjPScophit h2, ajint n);
+AjBool        ajXyzScophitsOverlapAcc(AjPScophit h1, AjPScophit h2, ajint n);
 AjBool ajXyzScophitCopy(AjPScophit *to, AjPScophit from);
+AjPList ajXyzScophitListCopy(AjPList ptr);
+AjBool   ajXyzScophitCheckTarget(AjPScophit ptr);
+AjBool        ajXyzScophitTarget(AjPScophit *h);
+AjBool        ajXyzScophitTargetLowPriority(AjPScophit *h);
+
+AjBool   ajXyzScophitMergeInsertThis(AjPList list, AjPScophit hit1, 
+				     AjPScophit hit2,  AjIList iter);
+AjBool   ajXyzScophitMergeInsertOther(AjPList list, AjPScophit hit1, AjPScophit hit2);
+AjPScophit  ajXyzScophitMerge(AjPScophit hit1, AjPScophit hit2);
+
 
 
 
@@ -658,7 +676,13 @@ AjBool        ajXyzHitlistClassify(AjPHitlist *hits, AjPList targets,
 				   ajint thresh);
 
 
-
+AjBool       ajXyzHitlistPriorityHigh(AjPHitlist *list);
+AjBool       ajXyzHitlistPriorityLow(AjPHitlist *list);
+ajint ajXyzScophitCompId(const void *hit1, const void *hit2);
+ajint ajXyzScophitCompStart(const void *hit1, const void *hit2);
+ajint ajXyzScophitCompFold(const void *hit1, const void *hit2);
+ajint ajXyzScophitCompSfam(const void *hit1, const void *hit2);
+ajint ajXyzScophitCompFam(const void *hit1, const void *hit2);
 
 
 

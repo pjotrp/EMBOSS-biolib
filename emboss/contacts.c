@@ -139,18 +139,28 @@
 #include "math.h"
 
 static AjBool contacts_ContactsWrite(AjPFile logf, AjPFile outf, float thresh, 
-				     AjPPdb pdb, AjPVdwall vdw);
+				     float ignore, AjPPdb pdb, AjPVdwall vdw);
 static AjBool contacts_PrintContactMap(AjPFile outf, AjPInt2d mat, char *txt, 
 				       ajint mod, ajint chn, AjPPdb pdb);
 static AjBool contacts_WriteContactMap(AjPInt2d *mat, ajint *ncon, ajint dim, 
 				       float thresh, ajint mod, ajint chn,
 				       AjPPdb pdb, AjPVdwall vdw);
+
+static AjBool new_contacts_WriteContactMap(AjPInt2d *mat, ajint *ncon, ajint dim, 
+				       float thresh, float ignore, ajint mod, ajint chn,
+					   AjPPdb pdb, AjPVdwall vdw);
+
 static AjBool contacts_InContact(AjPAtom atm1, AjPAtom atm2, float thresh, 
 				 AjPVdwall vdw);
 static float contacts_VdwRad(AjPAtom atm, AjPVdwall vdw);
 static AjBool contacts_InContact(AjPAtom atm1, AjPAtom atm2, float thresh,
 				 AjPVdwall vdw);
+static float contacts_Distance(AjPAtom atm1, AjPAtom atm2, AjPVdwall vdw);
 
+
+
+/*    AjPFile    xxxtemp=NULL;
+    AjPStr     xxxtempstr=NULL;   */
 
 
 /* @prog contacts *******************************************************
@@ -181,6 +191,7 @@ int main(ajint argc, char **argv)
     AjPList    list          =NULL;       
 
     float      thresh        =0;
+    float      ignore        =0;
     
     AjPVdwall  vdw           =NULL;     /* Structure for vdw radii */
     
@@ -197,6 +208,7 @@ int main(ajint argc, char **argv)
     con_path      = ajStrNew();
     con_extn      = ajStrNew();
     con_name      = ajStrNew();
+    vdwfstr       = ajStrNew();
 
 
     /* Read data from acd */
@@ -207,6 +219,7 @@ int main(ajint argc, char **argv)
     con_extn      = ajAcdGetString("conextn");
     logf          = ajAcdGetOutfile("conerrf");
     thresh        = ajAcdGetFloat("thresh");
+    ignore        = ajAcdGetFloat("ignore");
     vdwfstr       = ajAcdGetString("vdwf");
 
 
@@ -231,6 +244,7 @@ int main(ajint argc, char **argv)
     ajFileScan(cpdb_path, temp, &list, ajFalse, ajFalse, NULL, NULL, 
 	       ajFalse, NULL); 
 
+
     ajStrDel(&temp);
     
     /* Allocate and read Vdwall object */
@@ -243,15 +257,13 @@ int main(ajint argc, char **argv)
 
 
 
-
-
     /*Start of main application loop*/
     while(ajListPop(list,(void **)&temp))
     {
 	/* Read clean coordinate file*/
 	if((cpdb_inf=ajFileNewIn(temp))==NULL)
 	{
-	    ajFmtPrintS(&msg, "Could not open for reading %S %S", 
+	    ajFmtPrintS(&msg, "Could not open for reading %S", 
 			temp);
 	    ajWarn(ajStrStr(msg));
 	    ajFmtPrintF(logf, "WARN  Could not open for reading %S\n", 
@@ -275,8 +287,11 @@ int main(ajint argc, char **argv)
 	}
 
 
+
+
 	/* Open contact file for writing*/
 	ajStrAss(&con_name, con_path);
+
 	ajStrApp(&con_name, pdb->Pdb);
 	ajStrToLower(&con_name);
 	ajStrAppC(&con_name, ajStrStr(con_extn));
@@ -295,7 +310,7 @@ int main(ajint argc, char **argv)
     
 	
 	/* Write contacts file */
-	if(!contacts_ContactsWrite(logf, con_outf, thresh, pdb, vdw))
+	if(!contacts_ContactsWrite(logf, con_outf, thresh, ignore, pdb, vdw))
 	{
 	    ajFmtPrintS(&msg, "ERROR  file write error %S", con_name);
 	    ajWarn(ajStrStr(msg));
@@ -311,7 +326,6 @@ int main(ajint argc, char **argv)
 	    ajStrDel(&temp);	
 	    continue;
 	}
-
 
 	/* Write diagnostic */
 	ajFmtPrint("%S\n", pdb->Pdb);   
@@ -338,11 +352,8 @@ int main(ajint argc, char **argv)
     ajStrDel(&con_extn);
     ajStrDel(&con_name);
     ajStrDel(&msg);
-    ajStrDel(&temp);
     ajStrDel(&vdwfstr);
     
-    ajFileClose(&cpdb_inf);
-    ajFileClose(&con_outf);
     ajFileClose(&logf);
     ajFileClose(&vdwf);
 
@@ -367,6 +378,7 @@ int main(ajint argc, char **argv)
 ** @param [w] logf   [AjPFile] Output file stream (log file)
 ** @param [w] outf   [AjPFile] Output file stream (contact file)
 ** @param [r] thresh [float]   Threshold contact distance
+** @param [r] ignore [float]   Threshold ignore distance
 ** @param [r] pdb    [AjPPdb]  Pdb object
 ** @param [r] vdw    [AjPVdwall]   Vdwall object
 **
@@ -376,7 +388,7 @@ int main(ajint argc, char **argv)
 ******************************************************************************/
 
 static AjBool contacts_ContactsWrite(AjPFile logf, AjPFile outf, float thresh, 
-				     AjPPdb pdb, AjPVdwall vdw)
+				     float ignore, AjPPdb pdb, AjPVdwall vdw)
 {
     AjPInt2d    mat   =NULL;		/* Contact map */
     ajint       x,y,z;			/* Loop counters */
@@ -397,8 +409,8 @@ static AjBool contacts_ContactsWrite(AjPFile logf, AjPFile outf, float thresh,
     ajFmtPrintF(outf, "%-5s%s\n", 
 		"DE", "Residue-residue side-chain contact data");
     ajFmtPrintF(outf, "XX\n");
-    ajFmtPrintF(outf, "%-5s%s%.1f; NMOD %d; NCHA %d;\n", "EX", "THRESH ", 
-		thresh, pdb->Nmod, pdb->Nchn);
+    ajFmtPrintF(outf, "%-5s%s%.1f; %s%.1f; NMOD %d; NCHA %d;\n", "EX", 
+		"THRESH ", thresh, "IGNORE ", ignore, pdb->Nmod, pdb->Nchn);
 
 
     /* Start of loop to print out data for each model / chain */
@@ -418,8 +430,9 @@ static AjBool contacts_ContactsWrite(AjPFile logf, AjPFile outf, float thresh,
 
 	    
 	    /* Write the contact map */
-	    if(!contacts_WriteContactMap(&mat, &ncon, pdb->Chains[y]->Nres, 
-					 thresh, x+1, y+1, pdb,  vdw))
+	    
+	    if(!new_contacts_WriteContactMap(&mat, &ncon, pdb->Chains[y]->Nres, 
+					 thresh, ignore, x+1, y+1, pdb,  vdw))
 	    {
 		ajFmtPrintF(logf, "ERROR  Writing contact map\n");
 		ajInt2dDel(&mat);
@@ -725,20 +738,70 @@ static AjBool contacts_WriteContactMap(AjPInt2d *mat, ajint *ncon, ajint dim,
 static AjBool contacts_InContact(AjPAtom atm1, AjPAtom atm2, float thresh,
 				 AjPVdwall vdw)
 {
-    float val=0;
+    float val =0.0;
+    float val1=0.0;
 
+    
     val=((atm1->X -  atm2->X) * (atm1->X -  atm2->X)) +
 	((atm1->Y -  atm2->Y) * (atm1->Y -  atm2->Y)) +
 	    ((atm1->Z -  atm2->Z) * (atm1->Z -  atm2->Z));
 
 
-    
+    /*  This calculation uses square root 
     if((sqrt(val) - contacts_VdwRad(atm1, vdw) -
 	contacts_VdwRad(atm2, vdw)) <= thresh)
 	return ajTrue;
+	*/
+
+
+    /* Same calculation avoiding square root */
+    val1 = contacts_VdwRad(atm1, vdw) +	contacts_VdwRad(atm2, vdw) + thresh;
+    
+    if(val <= (val1*val1))
+	return ajTrue;
+
 
     return ajFalse;
 } 
+
+
+
+
+
+/* @funcstatic contacts_Distance ********************************************
+**
+** Returns the distance (Angstroms) between two atoms.
+**
+** @param [r] atm1   [AjPAtom]     Atom 1 object
+** @param [r] atm2   [AjPAtom]     Atom 1 object
+** @param [r] vdw    [AjPVdwall]   Vdwall object
+**
+** Returns the distance (Angstroms) between the van der Waals surface of two
+** atoms.
+**
+** @return [float] Distance (Angstroms) between two atoms.
+** @@
+**
+******************************************************************************/
+
+static float contacts_Distance(AjPAtom atm1, AjPAtom atm2, AjPVdwall vdw)
+{
+    float val =0.0;
+    float val1=0.0;
+
+    
+    val=((atm1->X -  atm2->X) * (atm1->X -  atm2->X)) +
+	((atm1->Y -  atm2->Y) * (atm1->Y -  atm2->Y)) +
+	    ((atm1->Z -  atm2->Z) * (atm1->Z -  atm2->Z));
+
+
+    /*  This calculation uses square root */
+    val1= sqrt(val) - contacts_VdwRad(atm1, vdw) - contacts_VdwRad(atm2, vdw);
+    
+        
+    return val1;
+} 
+
 
 
 
@@ -772,3 +835,236 @@ static float contacts_VdwRad(AjPAtom atm, AjPVdwall vdw)
     
     return((float)1.2);
 }
+
+
+
+
+
+
+
+static AjBool new_contacts_WriteContactMap(AjPInt2d *mat, ajint *ncon, ajint dim, 
+				       float thresh, float ignore, ajint mod, ajint chn,
+				       AjPPdb pdb, AjPVdwall vdw)
+{	
+    /* Contact is checked for between two residues, residue 1 and residue 2 */
+    
+    
+    AjPAtom    *arr  =NULL;   /* Array of AjPAtom objects from list of AjPAtom objects
+				 for chain <chn> from <pdb>*/
+    ajint       siz  =0;      /* Size of <arr> */
+    
+    
+    ajint       idxfirst=0;   /* Index in <arr> of first atom belonging to model <mod> */
+    ajint       idxlast=0;    /* Index in <arr> of last atom belonging to model <mod> */
+    
+    
+    ajint       resfirst=0;   /* Residue number of first atom belonging to model <mod> */
+    ajint       reslast=0;    /* Residue number of last atom belonging to model <mod> */
+    
+    
+    ajint       idx1=0;       /* Index in <arr> for atom from residue 1 */
+    ajint       idx2=0;       /* Index in <arr> for atom from residue 2 */
+    
+    ajint       idx1first=0;  /* Index in <arr> of first atom from residue 1 */
+    ajint       idx2first=0;  /* Index in <arr> of first atom from residue 2 */
+    
+    ajint       res1=0;       /* Residue number of residue 1 */
+    ajint       res2=0;       /* Residue number of residue 2 */
+    
+    AjBool      done=ajFalse; /* Flag */
+    
+    float       dis=0.0;      /* Inter-atomic distance */
+    
+
+    /*JC this block */
+    /*
+    ajint x=0;
+    
+    xxxtempstr=ajStrNew();
+    ajStrAssC(&xxxtempstr, "bolox");
+    xxxtemp=ajFileNewOut(xxxtempstr); 
+    */
+    /*JC*/
+
+
+    /* Error checking on args */
+    if(!mat || !pdb || !chn || !mod)
+    {	
+	ajWarn("Null or zero arg. passed to contacts_WriteContactMap");
+	return ajFalse;
+    }
+    
+
+    /* Initialise no. contacts to zero */
+    (*ncon)=0;
+    
+    
+    /*Convert the AjPList of atoms to an array of AjPAtom*/
+    if(!(siz=ajListToArray((AjPList)pdb->Chains[chn-1]->Atoms,
+			   (void ***)&arr)))
+    {
+	ajWarn("Zero sized list of sequences passed into "
+	       "contacts_WriteContactMap");
+	return ajFalse;
+    }
+
+    /*JC WAS RETURNING HERE */
+
+
+/*    printf("...");
+    fflush(stdout); */
+
+/*    
+    ajFmtPrintF(xxxtemp, "Last node %d res %d\n", siz-1, arr[siz-1]->Idx);
+    ajFmtPrint("Last node %d res %d\n", siz-1, arr[siz-1]->Idx);    
+  */
+  
+
+
+    /*JC*/	
+    /*
+    ajFmtPrintF(xxxtemp, "%5S\n", pdb->Pdb);
+    ajFmtPrintF(xxxtemp, "siz : %d\n", siz);
+*/
+    
+
+    /*
+    for(x=0;x<siz;x++)
+    {
+	ajFmtPrintF(xxxtemp, "idx%5d res%5d\n", x, arr[x]->Idx);
+	fflush(xxxtemp->fp);
+    }
+    */
+    
+
+    
+    /* Find index in <arr> of first atom belonging to correct model */
+    for(done=ajFalse, idxfirst=0; idxfirst<siz; idxfirst++) 
+	/* Find the correct model */
+	if(arr[idxfirst]->Mod==mod)
+	{
+	    done=ajTrue;
+	    resfirst=arr[idxfirst]->Idx;
+	    break;
+	}
+    if(!done)
+    {
+	ajWarn("Model not found in contacts_WriteContactMap");
+	AJFREE(arr);
+	return ajFalse;
+    } 
+    
+    
+    /* Find index in <arr> of last atom belonging to correct model */
+    for(idxlast=idxfirst; idxlast<siz; idxlast++)
+    {
+	if(arr[idxlast]->Mod!=mod  || arr[idxlast]->Type!='P')
+	{
+	    idxlast--;
+	    break;	
+	}
+    }
+    
+
+    
+    if(idxlast==siz)
+	idxlast--;
+    if(idxlast == idxfirst)
+    {
+	ajWarn("No atoms for the chain in contacts_WriteContactMap");
+	AJFREE(arr);
+	return ajFalse;
+    } 
+    reslast=arr[idxlast]->Idx;
+    
+
+
+
+    
+    /*Loop for first residue */
+    for(res1=resfirst,  idx1=idxfirst; res1<reslast; res1++)
+    {
+	/*Assign position of first atom of res1 */
+	for(done=ajFalse, idx1first=idx1; idx1first<idxlast; idx1first++)
+	    if(arr[idx1first]->Idx == res1)
+	    {
+		done=ajTrue;
+		break;
+	    }
+	if(!done)
+	    continue;
+		
+
+	/*Loop for second residue */
+	for(res2=res1+1, idx2=idx1; res2<=reslast; res2++)
+	{
+	    /*Assign position of first atom of res2 */
+	    for(done=ajFalse, idx2first=idx2; idx2first<idxlast; idx2first++)
+		if(arr[idx2first]->Idx == res2)
+		{
+		    done=ajTrue;
+		    break;
+		}
+	    if(!done)
+		continue;
+	
+	    /*Loop for atoms in first residue */
+	    for(done=ajFalse, idx1=idx1first; idx1<siz; idx1++)
+	    {
+		if(arr[idx1]->Idx != res1)
+		    break;
+		
+		/*Loop for atoms in second residue */
+		for(idx2=idx2first; idx2<siz; idx2++)
+		{
+		    if(arr[idx2]->Idx != res2)
+			break;
+		    
+		    /*ajFmtPrintF(xxxtemp, "Trying%5d%5d (res %5d-%-5d)...", idx1, idx2,arr[idx1]->Idx, arr[idx2]->Idx);
+		    fflush(xxxtemp->fp); */
+		    
+		    
+/*		    if(contacts_InContact(arr[idx1], arr[idx2], thresh, vdw))		 */
+		    if((dis = contacts_Distance(arr[idx1], arr[idx2], vdw))<=thresh)
+		    {
+/*			ajFmtPrintF(xxxtemp, "CONTACT\n");
+			fflush(xxxtemp->fp);  */
+
+			/* Increment no. contacts and write contact map */
+			(*ncon)++;
+  			ajInt2dPut(mat, arr[idx1]->Idx-1, arr[idx2]->Idx-1, (ajint) 1);
+			ajInt2dPut(mat, arr[idx2]->Idx-1, arr[idx1]->Idx-1, (ajint) 1); 
+
+			done=ajTrue;
+			break;
+		    }
+		    else if(dis >= ignore)
+			{
+			    /*The atoms are so far apart we should not bother finding
+			      any more distances for this pair of atoms */
+			    done=ajTrue;
+			    break;
+			}
+		    
+		    /* ajFmtPrintF(xxxtemp, "NO CONTACT\n");  */
+
+		}	
+		if(done)
+		    break;
+	    }
+	}
+    }
+
+
+    
+    /* Tidy up */
+    AJFREE(arr);
+    
+
+    /* Return */
+    return ajTrue;
+}
+
+    
+    
+    

@@ -15,7 +15,7 @@ infile: sigin
 seqall: database
 [ 
 	param: Y
-	info: "Name of sequence database to search"
+	prompt: "Name of sequence database to search"
 	def: "./test.seq"
 ]
 
