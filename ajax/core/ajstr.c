@@ -5049,4 +5049,3 @@ void ajStrDegap(AjPStr* thys)
 
     return;
 }
-
