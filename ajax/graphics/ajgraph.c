@@ -4949,6 +4949,7 @@ void ajGraphUnused(void)
     GraphCheckPoints (0, &f, &f);
     GraphCheckFlags (0);
     GraphArrayGapsI (0, &i, &i);
+    GraphOpenNull(NULL,NULL);
 }
 
 #endif
