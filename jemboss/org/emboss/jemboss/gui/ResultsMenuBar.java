@@ -367,12 +367,20 @@ public class ResultsMenuBar extends JMenuBar
 //        save results
           String tabTitle = rtb.getTitleAt(rtb.getSelectedIndex());
 
-          if(hashOut.containsKey(tabTitle))
-            fileSave(cwd,fileSelected,tabTitle,hashOut);
-          else if(hashIn != null)
+          JTextComponent jtc = getJTextComponentAt(rtb,rtb.getSelectedIndex());
+          if(jtc != null)    // text save
           {
-            if(hashIn.containsKey(tabTitle))
-              fileSave(cwd,fileSelected,tabTitle,hashIn);
+            fileSave(cwd,fileSelected,jtc.getText());
+          }
+          else               // image icon save
+          {
+            if(hashOut.containsKey(tabTitle))
+              fileSave(cwd,fileSelected,tabTitle,hashOut);
+            else if(hashIn != null)
+            {
+              if(hashIn.containsKey(tabTitle))
+                fileSave(cwd,fileSelected,tabTitle,hashIn);
+            }
           }
           frame.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
         }
@@ -553,10 +561,16 @@ public class ResultsMenuBar extends JMenuBar
   private void fileSave(String cwd, String fileSelected, 
                         String tabTitle, Hashtable h)
   {
+    fileSave(cwd,fileSelected,h.get(tabTitle));
+  }
+
+  private void fileSave(String cwd, String fileSelected,
+                        Object fileContents)
+  {
     String fs = new String(System.getProperty("file.separator"));
     FileSave fsave = new FileSave(new File(cwd + fs + fileSelected));
     if(fsave.doWrite())
-      fsave.fileSaving(h.get(tabTitle));
+      fsave.fileSaving(fileContents);
     if(!fsave.fileExists())
     {
       org.emboss.jemboss.Jemboss.tree.addObject(fileSelected,cwd,null);
