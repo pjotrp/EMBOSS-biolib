@@ -53,7 +53,8 @@ seek (ENT, 300, 0);
 
 $entidlen = $entrecordlen-10;
 
-for ($i=1;$i<=$trgrecordcnt;$i++) {
+$i=1;
+while ($i<=$trgrecordcnt) {
 
   seek (TRG, 300-$trgrecordlen+($i*$trgrecordlen), 0);
   read (TRG, $trgrecord, $trgrecordlen, 0);
@@ -72,6 +73,7 @@ for ($i=1;$i<=$trgrecordcnt;$i++) {
     $recnum = $hitnum+$j-1;
     print "Hit record $recnum: Entry $entrec file $entfile offsets $entref,$entseq '$entid'\n";
   }
+  $i++;
 }
 
 close HIT;
