@@ -107,7 +107,7 @@ typedef struct AjSPhyloFreq
 ** Weights are converted to integers 0-9, A=10 Z=35 by phylip
 ** There are programs that can use multiple weights
 ** We can handle this by making all of these multiple,
-**  and using ACD to limit them to 1 for nonm-weight data.
+** and using ACD to limit them to 1 for non-weight data.
 **
 ** Ancestral states are character data
 **
@@ -220,15 +220,18 @@ ajint          ajPhyloPropGetSize (const AjPPhyloProp thys);
 AjPPhyloProp   ajPhyloPropNew (void);
 AjPPhyloProp   ajPhyloPropRead (const AjPStr filename, const AjPStr propchars,
 				ajint len, ajint size);
+void           ajPhyloPropTrace (const AjPPhyloProp thys);
 
 void           ajPhyloStateDel (AjPPhyloState* pthis);
 AjPPhyloState  ajPhyloStateNew (void);
 AjPPhyloState* ajPhyloStateRead (const AjPStr filename,
 				 const AjPStr statechars);
+void           ajPhyloStateTrace (const AjPPhyloState thys);
 
 void           ajPhyloTreeDel (AjPPhyloTree* pthis);
 AjPPhyloTree   ajPhyloTreeNew (void);
 AjPPhyloTree*  ajPhyloTreeRead (const AjPStr filename, ajint size);
+void           ajPhyloTreeTrace (const AjPPhyloTree thys);
 
 #endif
 

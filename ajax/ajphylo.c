@@ -1054,7 +1054,7 @@ void ajPhyloFreqTrace(const AjPPhyloFreq thys)
 ** @param [r] filename [const AjPStr] input filename
 ** @param [r] propchars [const AjPStr] Valid property characters
 ** @param [r] len [ajint] Length of properties string
-** @param [r] size [ajint] Number of trees expected
+** @param [r] size [ajint] Number of property sets expected
 **                         If zero, read first only or whatever the file says
 ** @return [AjPPhyloProp] Phylogenetic properties object on success
 **                        NULL on failure
@@ -1077,6 +1077,7 @@ AjPPhyloProp ajPhyloPropRead(const AjPStr filename, const AjPStr propchars,
     AjPStr proppat = NULL;
     AjPStr propstr = NULL;
     ajint count;
+    ajint dosize;
 
     ret = ajPhyloPropNew();
 
@@ -1086,28 +1087,49 @@ AjPPhyloProp ajPhyloPropRead(const AjPStr filename, const AjPStr propchars,
 	ajFmtPrintS(&proppat, "[%S]+", propchars);
     propexp = ajRegComp(proppat);
 
+    ajDebug("ajPhyloPropRead '%S' propchars: '%S' len: %d size: %d\n",
+	    filename, propchars, len, size);
     proplist = ajListstrNew();
-    count = size;
-    if(count < 1)
+    dosize = size;
+    if (size)
+	count = size;
+    else
 	count = 1;
 
     propfile = ajFileNewIn(filename);
-    if(!propfile)
+    if(!propfile)		/* read the filename string as data */
     {
-	if(!ajRegExec(propexp, filename))
+	if (size > 1)
+	{
+	    ajErr("Bad properties string '%S':"
+			  " valid filename required to read %d sets",
+			  filename, size);
+	    return NULL;
+	}
+	ajStrAssS(&rdline, filename);
+	/*ajStrToUpper(&rdline);*/ /* keep to catch names without '.' */
+	if(!ajRegExec(propexp, rdline))
 	    return NULL;
 	ajRegSubI(propexp, 0, &token);
-	if(!ajStrMatch(filename, token))
+	if(!ajStrMatch(rdline, token))
 	    return NULL;
-	size = 1;
-	len = ajStrLen(token);
+	dosize = 1;
+	ilen = ajStrLen(token);
+	if(ilen > len)
+	{
+	    ajErr("Bad properties file '%S':"
+		  " read %d properties, expected %d",
+		  filename, ilen, len);
+	    return NULL;
+	}
 	AJCNEW0(ret->Str, 2);
 	ajStrAssS(&ret->Str[0], token);
     }
 
-    if(propfile)
+    else				/* read data from the file */
     {
-	for(i = 0; i < count; i++)
+	i = 0;
+	while (!dosize || i < count)
 	{
 	    propstr = ajStrNewL(len+1);
 	    propok = ajFalse;
@@ -1133,19 +1155,32 @@ AjPPhyloProp ajPhyloPropRead(const AjPStr filename, const AjPStr propchars,
 	    }
 
 	    if(!propok)
-		ajErr("End of properties file '%S':"
-		      " after %d properties, expected %d",
-		      filename, ilen, len);
+	    {
+		if (ilen)
+		    ajErr("End of properties file '%S':"
+			  " after %d properties, expected %d",
+			  filename, ilen, len);
+		else if (size)
+		    ajErr("End of properties file '%S':"
+			  " after %d sets, expected %d",
+			  filename, i, size);
+		else if (ajFileEof(propfile))
+		    break;
+	    }
 	    ajListstrPushApp(proplist, propstr);
+	    i++;
 	}
 	ajFileClose(&propfile);
 	ajListToArray(proplist, (void***) &props);
 	ret->Str = (AjPStr*) props;
     }
 
-    ret->Size = size;
+    ret->Size = ajListLength(proplist);;
     ret->Len = len;
 
+    ajListDel(&proplist);
+
+    ajPhyloPropTrace(ret);
     return ret;
 }
 
@@ -1166,6 +1201,36 @@ ajint ajPhyloPropGetSize(const AjPPhyloProp thys)
 	return 0;
 
     return thys->Size;
+}
+
+
+
+
+/* @func ajPhyloPropTrace *****************************************************
+**
+** Reports phylogenetic property data to the debug file
+**
+** @param [r] thys [const AjPPhyloDist] Phylogenetic frequencies object
+** @return [void]
+******************************************************************************/
+
+void ajPhyloPropTrace(const AjPPhyloProp thys)
+{
+    ajint i;
+
+    ajDebug("ajPhyloPropTrace\n");
+    ajDebug("================\n");
+
+    ajDebug("  Len: %d  Size: %d IsWeight: %B IsFactor: %B\n",
+	    thys->Len, thys->Size, thys->IsWeight, thys->IsFactor);
+
+    for(i=0; i < thys->Size; i++)
+    {
+	ajDebug("%3d: '%S'",i,  thys->Str[i]);
+	ajDebug("\n");
+    }
+
+    return;
 }
 
 
@@ -1307,6 +1372,34 @@ AjPPhyloState* ajPhyloStateRead(const AjPStr filename, const AjPStr statechars)
     return ret;
 }
 
+
+
+
+/* @func ajPhyloStateTrace ****************************************************
+**
+** Reports phylogenetic discrete state data to the debug file
+**
+** @param [r] thys [const AjPPhyloState] Phylogenetic discrete states object
+** @return [void]
+******************************************************************************/
+
+void ajPhyloStateTrace(const AjPPhyloState thys)
+{
+    ajint i;
+
+    ajDebug("ajPhyloStateTrace\n");
+    ajDebug("=================\n");
+
+    ajDebug("  Len: %d  Size: %d Count: %d Characters: '%S'\n",
+	    thys->Len, thys->Size, thys->Count, thys->Characters);
+
+    for(i=0; i < thys->Size; i++)
+    {
+	ajDebug("%S: %S\n", thys->Names[i], thys->Str[i]);
+    }
+
+    return;
+}
 
 
 
@@ -1491,3 +1584,27 @@ AjPPhyloTree* ajPhyloTreeRead(const AjPStr filename, ajint size)
     
     return ret;
 }
+/* @func ajPhyloStateTrace ****************************************************
+**
+** Reports phylogenetic discrete state data to the debug file
+**
+** @param [r] thys [const AjPPhylotree] Phylogenetic discrete states object
+** @return [void]
+******************************************************************************/
+
+void ajPhyloTreeTrace(const AjPPhyloTree thys)
+{
+    ajDebug("ajPhyloTreeTrace\n");
+    ajDebug("================\n");
+
+    ajDebug("  Multifurcated: %B BaseTrifurcated; %B BaseBifurcated: %B"
+	    " BaseQuartet: %B Tree: '%S'\n",
+	    thys->Multifurcated, thys->BaseTrifurcated,
+	    thys->BaseBifurcated, thys->BaseQuartet,
+	    thys->Tree);
+
+    return;
+}
+
+
+
