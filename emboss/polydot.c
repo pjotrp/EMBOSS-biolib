@@ -169,8 +169,8 @@ int main(int argc, char **argv)
 		    plotMatches(matchlist,text);
 		if(i<j && dumpfeat)
 		    embWordMatchListConvToFeat(matchlist,&tabptr[i],
-					       &tabptr[j],seq1->Name,
-					       seq2->Name);
+					       &tabptr[j],seq1,
+					       seq2);
      
 		if(matchlist)  /* free the match structures */
 		    embWordMatchListDelete(matchlist);

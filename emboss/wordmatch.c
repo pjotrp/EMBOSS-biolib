@@ -49,7 +49,7 @@ int main(int argc, char **argv)
   ajFmtPrintF(outf, "%10s %10s Length\n", ajSeqName(seq1), ajSeqName(seq2));
   if(matchlist) {
     embWordMatchListPrint(outf, matchlist);
-    embWordMatchListConvToFeat(matchlist,&Tab1,&Tab2,seq1->Name, seq2->Name);
+    embWordMatchListConvToFeat(matchlist,&Tab1,&Tab2,seq1, seq2);
     
     embWordMatchListDelete(matchlist); /* free the match structures */
   }
