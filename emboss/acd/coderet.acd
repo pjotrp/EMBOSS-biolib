@@ -1,0 +1,22 @@
+appl: coderet [
+        doc: "Extract CDS and mRNA sequences from feature tables"
+        groups: "sequence features"
+]
+
+sequence: sequence [
+	param: Y
+	type: DNA
+	entry: Y
+]
+
+bool: cds [
+	opt: N
+	def: Y
+	info: "Extract CDS sequences"
+]
+
+bool: mrna [
+	opt: N
+	def: Y
+	info: "Extract mrna sequences"
+]

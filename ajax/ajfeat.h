@@ -649,6 +649,8 @@ AjPFeatVocTag        CheckDictForTag(AjPFeatTable table, AjPStr tag);
 void                 ajFeatDickTracy(AjPFeatLexicon dictionary);
 AjPFeatLexicon       ajFeatTableDict(AjPFeatTable thys);
 
+AjBool ajFeatLocToSeq(AjPStr seq, AjPStr line, AjPStr *res);
+int    ajfeatGetLocs(AjPStr str, AjPStr **cds, char *type);
 
 
 

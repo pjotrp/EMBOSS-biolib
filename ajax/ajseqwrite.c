@@ -2039,6 +2039,29 @@ AjBool ajSeqOutSetFormat (AjPSeqout thys, AjPStr format) {
   return ajTrue;
 }
 
+/* @func ajSeqOutSetFormatC ************************************************
+**
+** Sets the output format. Currently hard coded but will be replaced
+** in future by a variable.
+**
+** @param [wP] thys [AjPSeqout] Sequence output object.
+** @param [r] format [char *] Output format.
+** @return [AjBool] ajTrue on success.
+** @@
+******************************************************************************/
+
+AjBool ajSeqOutSetFormatC (AjPSeqout thys, char* format) {
+
+  AjPStr fmt = NULL;
+  AjBool ret;
+  
+  fmt = ajStrNewC(format);
+  ret = ajSeqOutSetFormat(thys,fmt);
+  ajStrDel(&fmt);
+
+  return ret;
+}
+
 /* @func ajSeqOutFormatDefault ************************************************
 **
 ** Sets the default output format. Currently hard coded but will be replaced

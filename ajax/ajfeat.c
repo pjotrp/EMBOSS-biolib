@@ -6137,3 +6137,283 @@ void ajFeatTabInClear (AjPFeatTabIn thys)
 
   return;
 }
+
+
+/* @func ajFeatLocToSeq ****************************************************
+**
+** Returns a sequence entry from a feature location
+**
+** @param [r] seq [AjPStr] sequence
+** @param [r] line [AjPStr] location
+** @param [w] res [AjPStr*] sequence construct
+
+** @return [AjBool] true on success
+** @@
+******************************************************************************/
+
+AjBool ajFeatLocToSeq(AjPStr seq, AjPStr line, AjPStr *res)
+{
+    static AjPStr str=NULL;
+    char *p;
+    char *q;
+    
+    int len;
+    int i;
+    int off;
+    static AjPStr token=NULL;
+    static AjPStr tmp=NULL;
+    AjPRegexp exp_ndotn = NULL;
+    AjPRegexp exp_brnbr = NULL;
+    AjPRegexp exp_compbrndashnbr = NULL;
+    AjPRegexp exp_joinbr = NULL;
+    AjPStrTok handle = NULL;
+    
+    AjBool isglobcomp=ajFalse;
+    AjBool isjoin=ajFalse;
+    AjBool docomp=ajFalse;
+
+    int begin=0;
+    int end=0;
+    
+    if(!str)
+    {
+	token = ajStrNew();
+	str   = ajStrNew();
+	tmp   = ajStrNew();
+    }
+
+    ajStrAssS(&str,line);
+
+    /* Cannot cope with inclusion of other entries yet */
+    p = ajStrStr(str);
+    while(*p)
+	if(*(p++)==':')
+	    return ajFalse;
+
+    /* Remove chevrons */
+    p=ajStrStr(str);
+    len = ajStrLen(str);
+    for(i=0;i<len;++i)
+    {
+	if(*p=='<' || *p=='>')
+	    *p=' ';
+	++p;
+    }
+
+    ajStrCleanWhite(&str);
+
+    /* Replace sites by a single location */
+    p=ajStrStr(str);
+    len = ajStrLen(str);
+    while(*p)
+    {
+	if(*p=='^')
+	{
+	    *(p++)=' ';
+	    while(*p>='0' && *p<='9')
+		*(p++) = ' ';
+	}
+	else
+	    ++p;
+    }
+    ajStrCleanWhite(&str);
+
+
+    /* Replace any x.y with x */
+    exp_ndotn = ajRegCompC("([0-9]+)[.]([0-9]+)");
+    p = ajStrStr(str);
+    while(ajRegExec(exp_ndotn,str))
+    {
+	off = ajRegOffset(exp_ndotn);
+	while(p[off]!='.')
+	    ++off;
+	p[off++]=' ';
+	while(p[off]>='0' && p[off]<='9')
+	    p[off++]=' ';
+    }
+
+    ajStrCleanWhite(&str);
+
+    /* Replace any (n) with n */
+    exp_brnbr = ajRegCompC("[(]([0-9]+)[)]");
+    p = ajStrStr(str);
+    while(ajRegExec(exp_brnbr,str))
+    {
+	off = ajRegOffset(exp_brnbr);
+	p[off++]=' ';
+	while(p[off]!=')')
+	    ++off;
+	p[off++]=' ';
+    }
+
+    ajStrCleanWhite(&str);
+
+    /* See if its a global complement and remove complement enclosure */
+    if(ajStrPrefixC(str,"complement("))
+    {
+	p=ajStrStr(str);
+	len=ajStrLen(str);
+	ajStrAssSub(&str,str,11,len-2);
+	isglobcomp=ajTrue;
+    }
+    
+    /* Replace .. with - */
+    p = ajStrStr(str);
+    while(*p)
+    {
+	if(*p=='.' && *(p+1)=='.')
+	{
+	    *p='-';
+	    *(p+1)=' ';
+	}
+	++p;
+    }
+
+    ajStrCleanWhite(&str);    
+
+
+    /* Replace complement(n-n) with ^n-n */
+    exp_compbrndashnbr = ajRegCompC("complement[(]([0-9]+)[-]([0-9]+)[)]");
+    p = ajStrStr(str);
+    while(ajRegExec(exp_compbrndashnbr,str))
+    {
+	off = ajRegOffset(exp_compbrndashnbr);
+	for(i=0;i<10;++i)
+	    p[off++]=' ';
+	p[off]='^';
+	while(p[off]!=')')
+	    ++off;
+	p[off++]=' ';
+    }
+    ajStrCleanWhite(&str);
+
+
+    /* Check for only one "join" */
+    p = ajStrStr(str);
+    exp_joinbr = ajRegCompC("join[(]");    
+    i=0;
+    while(ajRegExec(exp_joinbr,str))
+    {
+	off = ajRegOffset(exp_joinbr);
+	++i;
+	if(off)
+	{
+	    ajWarn("Too many joins");
+	    return ajFalse;
+	}
+	p=ajStrStr(str);
+	len=ajStrLen(str);
+	ajStrAssSub(&str,str,5,len-2);
+	isjoin=ajTrue;
+    }
+    
+
+    /* Construct the sequence */
+    ajStrAssC(res,"");
+    handle = ajStrTokenInit(str,",");
+    while(ajStrToken(&token,&handle,NULL))
+    {
+	p = ajStrStr(token);
+	if(*p=='^')
+	{
+	    ++p;
+	    docomp=ajTrue;
+	}
+	else
+	    docomp=ajFalse;
+	if(sscanf(p,"%d-%d",&begin,&end)!=2)
+	{
+	    ajWarn("LocToSeq: Unpaired range");
+	    return ajFalse;
+	}
+	ajStrAssSubC(&tmp,ajStrStr(seq),--begin,--end);
+	if(docomp)
+	    ajSeqReverseStr(&tmp);
+	ajStrAppC(res,ajStrStr(tmp));
+    }
+    
+    if(isglobcomp)
+	ajSeqReverseStr(res);
+
+    return ajTrue;
+}
+
+/* @func ajFeatGetLocs ****************************************************
+**
+** Returns location information from catenated sequence entry
+**
+** @param [r] str [AjPStr] catenated (seq->TextPtr) entry
+** @param [w] cds [AjPStr**] array of locations
+** @param [r] type [char*] type (e.g. CDS/mrna)
+
+** @return [int] number of location lines
+** @@
+******************************************************************************/
+
+int ajFeatGetLocs(AjPStr str, AjPStr **cds, char *type)
+{
+    AjPStr *entry=NULL;
+    int nlines=0;
+    int i=0;
+    int ncds=0;
+    int nc=0;
+    char *p=NULL;
+    AjPStr test=NULL;
+
+    test = ajStrNew();
+    ajFmtPrintS(&test,"     %s",type);
+    
+    nlines = ajStrListToArray(str, &entry);
+
+    for(i=0;i<nlines;++i)
+    {
+	if(ajStrPrefixC(entry[i],"FT "))
+	{
+	    p = ajStrStr(entry[i]);
+	    *p = *(p+1) = ' ';
+	}
+	
+	if(ajStrPrefix(entry[i],test))
+	    ++ncds;
+    }
+    
+
+    if(ncds)
+    {
+	AJCNEW0(*cds,ncds);
+	for(i=0;i<ncds;++i)
+	    (*cds)[i] = ajStrNew();
+    }
+
+
+    for(nc=i=0;nc<ncds;++nc)
+    {
+	if(ajStrPrefixC(entry[i],"FT "))
+	{
+	    p = ajStrStr(entry[i]);
+	    *p = *(p+1) = ' ';
+	}
+	
+	while(!ajStrPrefix(entry[i],test))
+	    ++i;
+	
+	ajStrAssC(&(*cds)[nc],ajStrStr(entry[i++])+21);
+	while( *(p=ajStrStr(entry[i]))==' ')
+	{
+	    if(*(p+21)=='/' || *(p+5)!=' ')
+		break;
+	    ajStrAppC(&(*cds)[nc],p+21);
+	    ++i;
+	}
+	ajStrClean(&(*cds)[nc]);
+    }
+	
+
+    for(i=0;i<nlines;++i)
+	ajStrDel(&entry[i]);
+    AJFREE(entry);
+
+    ajStrDel(&test);
+
+    return ncds;
+}
