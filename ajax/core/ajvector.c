@@ -12,8 +12,8 @@
 **  i, j, and k unit vectors in the x y and z directions respectively
 **
 ** @author Copyright (C) 2003 Damian Counsell
-** @version $Revision: 1.5 $
-** @modified $Date: 2003/10/17 18:39:45 $
+** @version $Revision: 1.6 $
+** @modified $Date: 2003/10/21 16:53:12 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -181,17 +181,17 @@ void aj3dVectorCrossProduct(AjP3dVector ajp3dVectorFirst,
     fXOfCrossProduct  = ajp3dVectorFirst->y * ajp3dVectorSecond->z;
     fXOfCrossProduct -= ajp3dVectorFirst->z * ajp3dVectorSecond->y;
 
-    ajp3dVectorCrossProduct->x   = fXOfCrossProduct;
+    ajp3dVectorCrossProduct->x = fXOfCrossProduct;
 
     fYOfCrossProduct  = ajp3dVectorFirst->z * ajp3dVectorSecond->x;
     fYOfCrossProduct -= ajp3dVectorFirst->x * ajp3dVectorSecond->z;
 
-    ajp3dVectorCrossProduct->y   = fYOfCrossProduct;
+    ajp3dVectorCrossProduct->y = fYOfCrossProduct;
 
     fZOfCrossProduct  = ajp3dVectorFirst->x * ajp3dVectorSecond->y;
     fZOfCrossProduct -= ajp3dVectorFirst->y * ajp3dVectorSecond->x;
 
-    ajp3dVectorCrossProduct->z   = fZOfCrossProduct;
+    ajp3dVectorCrossProduct->z = fZOfCrossProduct;
 
     return;
 }
