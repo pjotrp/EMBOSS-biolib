@@ -17,6 +17,62 @@ seqset: sequence  [
 
 endsection: input
 
+section: required [
+  information: "Required section"
+  type: "page"
+]
+
+toggle: og  [
+  standard: "Y"
+  information: "Outgroup root"
+  default: "N"
+]
+
+integer: outgnum  [
+  standard: "$(og)"
+  minimum: "1"
+  default: "1"
+  information: "Number of the outgroup"
+]
+
+toggle: thresh  [
+  default: "N"
+  information: "Use Threshold parsimony"
+]
+
+float: valthresh  [
+  standard: "$(thresh)"
+  minimum: "1.0"
+  default: "1.0"
+  information: "Threshold value"
+]
+
+endsection: required
+
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
+integer: numgroups  [
+  additional: "Y"
+  information: "How many groups of 100 trees"
+  default: "1000"
+]
+
+integer: howoften  [
+  additional: "Y"
+  information: "How often to report, in trees"
+  default: "100"
+]
+
+boolean: simple  [
+  additional: "Y"
+  information: "Branch and bound is simple"
+]
+
+endsection: additional
+
 section: output [
   information: "Output section"
   type: "page"
@@ -72,59 +128,3 @@ outfile: treefile  [
 ]
 
 endsection: output
-
-section: additional [
-  information: "Additional section"
-  type: "page"
-]
-
-integer: numgroups  [
-  additional: "Y"
-  information: "How many groups of 100 trees"
-  default: "1000"
-]
-
-integer: howoften  [
-  additional: "Y"
-  information: "How often to report, in trees"
-  default: "100"
-]
-
-boolean: simple  [
-  additional: "Y"
-  information: "Branch and bound is simple"
-]
-
-endsection: additional
-
-section: required [
-  information: "Required section"
-  type: "page"
-]
-
-toggle: og  [
-  standard: "Y"
-  information: "Outgroup root"
-  default: "N"
-]
-
-integer: outgnum  [
-  standard: "$(og)"
-  minimum: "1"
-  default: "1"
-  information: "Number of the outgroup"
-]
-
-toggle: thresh  [
-  default: "N"
-  information: "Use Threshold parsimony"
-]
-
-float: valthresh  [
-  standard: "$(thresh)"
-  minimum: "1.0"
-  default: "1.0"
-  information: "Threshold value"
-]
-
-endsection: required

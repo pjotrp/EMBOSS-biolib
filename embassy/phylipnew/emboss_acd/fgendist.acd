@@ -16,6 +16,25 @@ frequencies: infile  [
 
 endsection: input
 
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
+list: method  [
+  additional: "y"
+  minimum: "1"
+  maximum: "1"
+  header: "Distance methods"
+  values: "n:Nei genetic distance; 
+	   c:Cavalli-Sforza chord measure; 
+           r:Reynolds genetic distance"
+  information: "Which method to use"
+  default: "n"
+]
+
+endsection: additional
+
 section: output [
   information: "Output section"
   type: "page"
@@ -38,22 +57,3 @@ boolean: lower [
 	information: "Lower triangular distance matrix"
 ]
 endsection: output
-
-section: additional [
-  information: "Additional section"
-  type: "page"
-]
-
-list: method  [
-  additional: "y"
-  minimum: "1"
-  maximum: "1"
-  header: "Distance methods"
-  values: "n:Nei genetic distance; 
-	   c:Cavalli-Sforza chord measure; 
-           r:Reynolds genetic distance"
-  information: "Which method to use"
-  default: "n"
-]
-
-endsection: additional

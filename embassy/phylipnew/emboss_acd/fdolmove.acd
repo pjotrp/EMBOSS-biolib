@@ -48,20 +48,6 @@ properties: factorfile [
 ]
 endsection: input
 
-section: output [
-  information: "Output section"
-  type: "page"
-]
-
-outfile: outtreefile [
-	additional: "Y"
-	extension: "treefile"
-	knowntype: "newick tree"
-	nullok: "Y"
-]
-
-endsection: output
-
 section: additional [
 	information: "Additional section"
 	type: "page"
@@ -86,9 +72,9 @@ toggle: thresh [
 
 float: threshold [
 	additional: "$(thresh)"
-	min: 0
+	minimum: "0"
 	information: "Threshold value"
-	default: 1
+	default: "1"
 ]
 
 list: initialtree  [
@@ -116,3 +102,17 @@ integer: screenlines [
 ]
 
 endsection: additional
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+outfile: outtreefile [
+	additional: "Y"
+	extension: "treefile"
+	knowntype: "newick tree"
+	nullok: "Y"
+]
+
+endsection: output

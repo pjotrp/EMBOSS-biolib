@@ -21,50 +21,6 @@ seqset: sequence  [
 
 endsection: input
 
-section: output [
-  information: "Output section"
-  type: "page"
-]
-
-outfile: outfile  [
-  parameter: "Y"
-  default: "ednamlk.outfile"
-  knowntype: "dnamlk output"
-]
-
-boolean: printdata  [
-  additional: "Y"
-  default: "N"
-  information: "Print out the data at start of run"
-]
-
-boolean: progress  [
-  additional: "Y"
-  default: "N"
-  information: "Print indications of progress of run"
-]
-
-boolean: drawtree  [
-  additional: "Y"
-  default: "Y"
-  information: "Draw tree"
-]
-
-toggle: trout  [
-  parameter: "Y"
-  default: "Y"
-  information: "Create a tree file"
-]
-
-outfile: treefile  [
-  standard: "$(trout)"
-  default: "ednamlk.treefile"
-  information: "Tree file name"
-  knowntype: "newick tree"
-]
-
-endsection: output
-
 section: required [
   information: "Required section"
   type: "page"
@@ -198,3 +154,47 @@ float: ttratio  [
 ]
 
 endsection: additional
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+outfile: outfile  [
+  parameter: "Y"
+  default: "ednamlk.outfile"
+  knowntype: "dnamlk output"
+]
+
+boolean: printdata  [
+  additional: "Y"
+  default: "N"
+  information: "Print out the data at start of run"
+]
+
+boolean: progress  [
+  additional: "Y"
+  default: "N"
+  information: "Print indications of progress of run"
+]
+
+boolean: drawtree  [
+  additional: "Y"
+  default: "Y"
+  information: "Draw tree"
+]
+
+toggle: trout  [
+  parameter: "Y"
+  default: "Y"
+  information: "Create a tree file"
+]
+
+outfile: treefile  [
+  standard: "$(trout)"
+  default: "ednamlk.treefile"
+  information: "Tree file name"
+  knowntype: "newick tree"
+]
+
+endsection: output

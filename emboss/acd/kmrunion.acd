@@ -21,6 +21,23 @@ section: input [
 
 endsection: input
 
+section: advanced [
+  information: "Advanced section"
+  type: "page"
+]
+
+  boolean: source  [
+    default: "N"
+    information: "Create source features"
+  ]
+
+  boolean: findoverlap [
+    default: "N"
+    information: "Look for overlaps when joining"
+  ]
+
+endsection: advanced
+
 section: output [
   information: "Output section"
   type: "page"
@@ -39,20 +56,3 @@ section: output [
   ]
 
 endsection: output
-
-section: advanced [
-  information: "Advanced section"
-  type: "page"
-]
-
-  boolean: source  [
-    default: "N"
-    information: "Create source features"
-  ]
-
-  boolean: findoverlap [
-    default: "N"
-    information: "Look for overlaps when joining"
-  ]
-
-endsection: advanced

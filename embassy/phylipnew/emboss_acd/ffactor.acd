@@ -16,29 +16,6 @@ infile: infile  [
 
 endsection: input
 
-section: output [
-  information: "Output section"
-  type: "page"
-]
-
-
-outfile: outfile [
-	parameter: "Y"
-	knowntype: "factor output"
-]
-
-outfile: outfactorfile [
-	extension: "factor"
-	information: "Factor outfile name"
-	nullok: "Y"
-]
-outfile: outancfile [
-	extension: "ancestor"
-	information: "Ancestor outfile name"
-	nullok: "Y"
-]
-endsection: output
-
 section: additional [
   information: "Additional section"
   type: "page"
@@ -63,3 +40,26 @@ boolean: progress [
 ]
 
 endsection: additional
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+
+outfile: outfile [
+	parameter: "Y"
+	knowntype: "factor output"
+]
+
+outfile: outfactorfile [
+	extension: "factor"
+	information: "Factor outfile name"
+	nullok: "Y"
+]
+outfile: outancfile [
+	extension: "ancestor"
+	information: "Ancestor outfile name"
+	nullok: "Y"
+]
+endsection: output

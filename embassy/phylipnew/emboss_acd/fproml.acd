@@ -56,57 +56,6 @@ properties: weights [
 
 endsection: input
 
-section: output [
-	information: "Output section"
-	type: "page"
-]
-
-
-outfile: outfile [
-	parameter: "Y"
-	knowntype: "proml output"
-]
-
-toggle: trout [
-	additional: "Y"
-	default: "Y"
-	information: "Write out trees to tree file"
-]
-
-outfile: outtreefile  [
-  additional: "$(trout)"
-  extension: "treefile"
-  information: "Tree file name"
-  knowntype: "newick tree"
-  nullok: "Y"
-]
-
-boolean: printdata [
-	additional: "Y"
-	default: "N"
-	information: "Print data at start of run"
-]
-
-boolean: progress [
-	additional: "Y"
-	default: "Y"
-	information: "Print indications of progress of run"
-]
-
-boolean: treeprint [
-	additional: "Y"
-	default: "Y"
-	information: "Print out tree"
-]
-
-boolean: hypstate [
-	additional: "Y"
-	default: "N"
-	information: "Reconstruct hypothetical sequence"
-]
-
-endsection: output
-
 section: additional [
 	information: "Additional section"
 	type: "page"
@@ -154,9 +103,9 @@ float: gammacoefficient [
 
 integer: ngammacat [
 	additional: "@($(gamma)==g)"
-	min: 1
-	max: 9
-	default: 1
+	minimum: "1"
+	maximum: "9"
+	default: "1"
 	information: "Number of categories (1-9)"
 ]
 
@@ -170,9 +119,9 @@ float: invarcoefficient [
 
 integer: ninvarcat [
 	additional: "@($(gamma)==i)"
-	min: 1
-	max: 9
-	default: 1
+	minimum: "1"
+	maximum: "9"
+	default: "1"
 	information: "Number of categories (1-9) including one for invariant sites"
 ]
 
@@ -227,17 +176,17 @@ float: lambda [
 
 integer: njumble [
 	additional: "@(!$(intreefile.isdefined))"
-	default: 0
-	min: 0
+	default: "0"
+	minimum: "0"
 	information: "Number of times to randomise, choose 0 if you don't want to randomise"
 ]
 
 integer: seed [
 	additional: "$(njumble)"
 	information: "Random number seed between 1 and 32767 (must be odd)"
-	max: 32767
-	min: 1
-	default: 1
+	minimum: "1"
+	maximum: "32767"
+	default: "1"
 ]
 
 boolean: global [
@@ -248,9 +197,9 @@ boolean: global [
 
 integer: outgrno [
 	additional: "Y"
-	min: 0  
-        max: "$(sequence.count)"
-	default: 0
+	minimum: "0"  
+        maximum: "$(sequence.count)"
+	default: "0"
 	information: "Species number to use as outgroup"
 ]
 
@@ -263,4 +212,53 @@ boolean: rough [
 
 endsection: additional	
 
-	
+section: output [
+	information: "Output section"
+	type: "page"
+]
+
+
+outfile: outfile [
+	parameter: "Y"
+	knowntype: "proml output"
+]
+
+toggle: trout [
+	additional: "Y"
+	default: "Y"
+	information: "Write out trees to tree file"
+]
+
+outfile: outtreefile  [
+  additional: "$(trout)"
+  extension: "treefile"
+  information: "Tree file name"
+  knowntype: "newick tree"
+  nullok: "Y"
+]
+
+boolean: printdata [
+	additional: "Y"
+	default: "N"
+	information: "Print data at start of run"
+]
+
+boolean: progress [
+	additional: "Y"
+	default: "Y"
+	information: "Print indications of progress of run"
+]
+
+boolean: treeprint [
+	additional: "Y"
+	default: "Y"
+	information: "Print out tree"
+]
+
+boolean: hypstate [
+	additional: "Y"
+	default: "N"
+	information: "Reconstruct hypothetical sequence"
+]
+
+endsection: output

@@ -26,6 +26,64 @@ tree: intreefile [
 
 endsection: input
 
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
+list: matrixtype  [
+	additional: "Y"
+	minimum: "1"
+	maximum: "1"
+	header: "Matrix type"
+	values: "s:Square;
+        	 u:Upper triangular;
+          	 l:Lower triangular"
+  	information: "Type of data matrix"
+  	default: "s"
+]
+
+boolean: minev  [
+	additional: "Y"
+  	information: "Minimum evolution"
+  	default: "N"
+]
+
+integer: njumble [
+	additional: "@(!$(intreefile.isdefined))"
+	default: "0"
+	minimum: "0"
+	information: "Number of times to randomise"
+]
+
+integer: seed [
+	additional: "$(njumble)"
+	information: "Random number seed between 1 and 32767 (must be odd)"
+	minimum: "1"
+	maximum: "32767"
+	default: "1"
+]
+
+float: power  [
+  additional: "Y"
+  default: "2.0"
+  information: "Power"
+]
+
+boolean: negallowed  [
+  additional: "Y"
+  default: "N"
+  information: "Negative branch lengths allowed"
+]
+
+boolean: replicates  [
+  additional: "Y"
+  default: "N"
+  information: "Subreplicates"
+]
+
+endsection: additional
+
 section: output [
   information: "Output section"
   type: "page"
@@ -70,61 +128,3 @@ boolean: treeprint [
 ]
 
 endsection: output
-
-section: additional [
-  information: "Additional section"
-  type: "page"
-]
-
-list: matrixtype  [
-	additional: "Y"
-	minimum: "1"
-	maximum: "1"
-	header: "Matrix type"
-	values: "s:Square;
-        	 u:Upper triangular;
-          	 l:Lower triangular"
-  	information: "Type of data matrix"
-  	default: "s"
-]
-
-boolean: minev  [
-	additional: "Y"
-  	information: "Minimum evolution"
-  	default: "N"
-]
-
-integer: njumble [
-	additional: "@(!$(intreefile.isdefined))"
-	default: 0
-	min: 0
-	information: "Number of times to randomise"
-]
-
-integer: seed [
-	additional: "$(njumble)"
-	information: "Random number seed between 1 and 32767 (must be odd)"
-	max: 32767
-	min: 1
-	default: 1
-]
-
-float: power  [
-  additional: "Y"
-  default: "2.0"
-  information: "Power"
-]
-
-boolean: negallowed  [
-  additional: "Y"
-  default: "N"
-  information: "Negative branch lengths allowed"
-]
-
-boolean: replicates  [
-  additional: "Y"
-  default: "N"
-  information: "Subreplicates"
-]
-
-endsection: additional

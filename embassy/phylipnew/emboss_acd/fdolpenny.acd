@@ -35,6 +35,54 @@ properties: ancfile [
 
 endsection: input
 
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
+toggle: thresh [
+	additional: "Y"
+	default: "N"
+	information: "Use threshold parsimony"
+]
+
+float: threshold [
+	additional: "$(thresh)"
+	minimum: "0"
+	information: "Threshold value"
+	default: "1"
+]
+integer: howmany  [
+  additional: "Y"
+  information: "How many groups of trees"
+  default: "1000"
+]
+
+integer: howoften  [
+  additional: "Y"
+  information: "How often to report, in trees"
+  default: "100"
+]
+
+boolean: simple  [
+  additional: "Y"
+  information: "Branch and bound is simple"
+  default: "Y"
+]
+
+list: method  [
+	additional: "Y"
+	minimum: "1"
+	maximum: "1"
+	header: "Method"
+	values: "d:Dollo;
+                 p:Polymorphism"
+  	information: "Parsimony method"
+  	default: "d"
+]
+
+endsection: additional
+
 section: output [
   information: "Output section"
   type: "page"
@@ -92,51 +140,3 @@ boolean: stepbox  [
 ]
 
 endsection: output
-
-section: additional [
-  information: "Additional section"
-  type: "page"
-]
-
-toggle: thresh [
-	additional: "Y"
-	default: "N"
-	information: "Use threshold parsimony"
-]
-
-float: threshold [
-	additional: "$(thresh)"
-	min: 0
-	information: "Threshold value"
-	default: 1
-]
-integer: howmany  [
-  additional: "Y"
-  information: "How many groups of trees"
-  default: "1000"
-]
-
-integer: howoften  [
-  additional: "Y"
-  information: "How often to report, in trees"
-  default: "100"
-]
-
-boolean: simple  [
-  additional: "Y"
-  information: "Branch and bound is simple"
-  default: "Y"
-]
-
-list: method  [
-	additional: "Y"
-	minimum: "1"
-	maximum: "1"
-	header: "Method"
-	values: "d:Dollo;
-                 p:Polymorphism"
-  	information: "Parsimony method"
-  	default: "d"
-]
-
-endsection: additional

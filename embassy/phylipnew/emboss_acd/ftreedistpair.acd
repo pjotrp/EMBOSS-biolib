@@ -24,24 +24,6 @@ infile: bintreefile [
 
 endsection: input
 
-section: output [
-  information: "Output section"
-  type: "page"
-]
-
-outfile: outfile  [
-  parameter: "Y"
-  knowntype: "treedist output"
-]
-
-boolean: progress [
-  additional: "Y"
-  default: "N"
-  information: "Print indications of progress of run"
-]
-
-endsection: output
-
 section: required [
   information: "Required section"
   type: "page"
@@ -69,3 +51,21 @@ list: style [
 ]
 
 endsection: required
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+outfile: outfile  [
+  parameter: "Y"
+  knowntype: "treedist output"
+]
+
+boolean: progress [
+  additional: "Y"
+  default: "N"
+  information: "Print indications of progress of run"
+]
+
+endsection: output

@@ -48,6 +48,7 @@ section: required [
     minlength: "1"
     information: "Database name"
     knowntype: "emboss database name"
+    pattern: "[A-z][A-z0-9_]+"
   ]
 
   string: release  [

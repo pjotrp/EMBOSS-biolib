@@ -10,6 +10,7 @@ section: input [
 
 seqset: infile  [
   parameter: "Y"
+  type: "gapany"
   knowntype: "seqboot input"
 ]
 
@@ -57,36 +58,6 @@ properties: factorfile [
         size: "1"
 ]
 endsection: input
-
-section: output [
-  information: "Output section"
-  type: "page"
-]
-
-outfile: outfile  [
-  parameter: "Y"
-  knowntype: "seqboot output"
-]
-
-boolean: printdata  [
-  additional: "Y"
-  default: "N"
-  information: "Print out the data at start of run"
-]
-
-boolean: dotdiff [
-	additional: "$(printdata)"
-	default: "Y"
-	information: "Use dot-differencing"
-]
-
-boolean: progress  [
-  additional: "Y"
-  default: "Y"
-  information: "Print indications of progress of run"
-]
-
-endsection: output
 
 section: additional [
   information: "Additional section"
@@ -211,8 +182,38 @@ boolean: all  [
 integer: seed [
 	additional: "@($(test) != r)"
 	information: "Random number seed between 1 and 32767 (must be odd)"
-	max: 32767
-	min: 1
-	default: 1
+	minimum: "1"
+	maximum: "32767"
+	default: "1"
 ]
 endsection: additional
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+outfile: outfile  [
+  parameter: "Y"
+  knowntype: "seqboot output"
+]
+
+boolean: printdata  [
+  additional: "Y"
+  default: "N"
+  information: "Print out the data at start of run"
+]
+
+boolean: dotdiff [
+	additional: "$(printdata)"
+	default: "Y"
+	information: "Use dot-differencing"
+]
+
+boolean: progress  [
+  additional: "Y"
+  default: "Y"
+  information: "Print indications of progress of run"
+]
+
+endsection: output

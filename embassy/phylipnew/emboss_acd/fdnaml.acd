@@ -57,56 +57,6 @@ section: input [
 
 endsection: input
 
-section: output [
-  information: "Output section"
-  type: "page"
-]
-
-  outfile: outfile [
-    parameter: "Y"
-    knowntype: "dnaml output"
-  ]
-
-  toggle: trout [
-    additional: "Y"
-    default: "Y"
-    information: "Write out trees to tree file"
-  ]
-
-  outfile: outtreefile [
-    additional: "$(trout)"
-    extension: "treefile"
-    information: "Tree file name"
-    knowntype: "newick tree"
-    nullok: "Y"
-  ]
-
-  boolean: printdata [
-    additional: "Y"
-    default: "N"
-    information: "Print data at start of run"
-  ]
-
-  boolean: progress [
-    additional: "Y"
-    default: "Y"
-    information: "Print indications of progress of run"
-  ]
-
-  boolean: treeprint [
-    additional: "Y"
-    default: "Y"
-    information: "Print out tree"
-  ]
-
-  boolean: hypstate [
-    additional: "Y"
-    default: "N"
-    information: "Reconstruct hypothetical sequence"
-  ]
-
-endsection: output
-
 section: additional [
   information: "Additional section"
   type: "page"
@@ -275,3 +225,53 @@ section: additional [
   ]
 
 endsection: additional
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  outfile: outfile [
+    parameter: "Y"
+    knowntype: "dnaml output"
+  ]
+
+  toggle: trout [
+    additional: "Y"
+    default: "Y"
+    information: "Write out trees to tree file"
+  ]
+
+  outfile: outtreefile [
+    additional: "$(trout)"
+    extension: "treefile"
+    information: "Tree file name"
+    knowntype: "newick tree"
+    nullok: "Y"
+  ]
+
+  boolean: printdata [
+    additional: "Y"
+    default: "N"
+    information: "Print data at start of run"
+  ]
+
+  boolean: progress [
+    additional: "Y"
+    default: "Y"
+    information: "Print indications of progress of run"
+  ]
+
+  boolean: treeprint [
+    additional: "Y"
+    default: "Y"
+    information: "Print out tree"
+  ]
+
+  boolean: hypstate [
+    additional: "Y"
+    default: "N"
+    information: "Reconstruct hypothetical sequence"
+  ]
+
+endsection: output

@@ -24,36 +24,6 @@ properties: weights [
 
 endsection: input
 
-section: output [
-  information: "Output section"
-  type: "page"
-]
-
-outfile: outfile  [
-  parameter: "Y"
-  knowntype: "seqbootfreq output"
-]
-
-boolean: printdata  [
-  additional: "Y"
-  default: "N"
-  information: "Print out the data at start of run"
-]
-
-boolean: dotdiff [
-	additional: "$(printdata)"
-	default: "Y"
-	information: "Use dot-differencing"
-]
-
-boolean: progress  [
-  additional: "Y"
-  default: "Y"
-  information: "Print indications of progress of run"
-]
-
-endsection: output
-
 section: additional [
   information: "Additional section"
   type: "page"
@@ -116,8 +86,38 @@ list: justweights  [
 integer: seed [
 	additional: "@($(test) != r)"
 	information: "Random number seed between 1 and 32767 (must be odd)"
-	max: 32767
-	min: 1
-	default: 1
+	minimum: "1"
+	maximum: "32767"
+	default: "1"
 ]
 endsection: additional
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+outfile: outfile  [
+  parameter: "Y"
+  knowntype: "seqbootfreq output"
+]
+
+boolean: printdata  [
+  additional: "Y"
+  default: "N"
+  information: "Print out the data at start of run"
+]
+
+boolean: dotdiff [
+	additional: "$(printdata)"
+	default: "Y"
+	information: "Use dot-differencing"
+]
+
+boolean: progress  [
+  additional: "Y"
+  default: "Y"
+  information: "Print indications of progress of run"
+]
+
+endsection: output

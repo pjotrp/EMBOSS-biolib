@@ -22,24 +22,6 @@ tree: secondintreefile [
 
 endsection: input
 
-section: output [
-  information: "Output section"
-  type: "page"
-]
-
-outfile: outfile  [
-  parameter: "Y"
-  knowntype: "treedist output"
-]
-
-
-boolean: progress [
-  additional: "Y"
-  default: "Y"
-  information: "Print indications of progress of run"
-]
-endsection: output
-
 section: additional [
   information: "Additional section"
   type: "page"
@@ -86,9 +68,26 @@ boolean: noroot [
 
 integer: outgrno [
 	additional: "Y"
-	min: 0  
-	default: 0
+	minimum: "0"  
+	default: "0"
 	information: "Species number to use as outgroup"
 ]
 endsection: additional
 
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+outfile: outfile  [
+  parameter: "Y"
+  knowntype: "treedist output"
+]
+
+
+boolean: progress [
+  additional: "Y"
+  default: "Y"
+  information: "Print indications of progress of run"
+]
+endsection: output

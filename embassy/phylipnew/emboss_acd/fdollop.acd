@@ -41,6 +41,46 @@ properties: ancfile [
 
 endsection: input
 
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+list: method  [
+	additional: "Y"
+	minimum: "1"
+	maximum: "1"
+	header: "Method"
+	values: "d:Dollo;
+                 p:Polymorphism"
+  	information: "Parsimony method"
+  	default: "d"
+]
+
+integer: njumble [
+	additional: "@(!$(intreefile.isdefined))"
+	default: "0"
+	minimum: "0"
+	information: "Number of times to randomise"
+]
+
+integer: seed [
+	additional: "$(njumble)"
+	information: "Random number seed between 1 and 32767 (must be odd)"
+	maximum: "32767"
+	minimum: "1"
+	default: "1"
+]
+
+
+float: threshold [
+	additional: "Y"
+	minimum: 0
+	information: "Threshold value"
+	default: "$(infile.discretesize)" 
+]
+
+endsection: additional
+
 section: output [
   information: "Output section"
   type: "page"
@@ -97,43 +137,3 @@ boolean: stepbox  [
 ]
 
 endsection: output
-
-section: additional [
-  information: "Additional section"
-  type: "page"
-]
-list: method  [
-	additional: "Y"
-	minimum: "1"
-	maximum: "1"
-	header: "Method"
-	values: "d:Dollo;
-                 p:Polymorphism"
-  	information: "Parsimony method"
-  	default: "d"
-]
-
-integer: njumble [
-	additional: "@(!$(intreefile.isdefined))"
-	default: 0
-	min: 0
-	information: "Number of times to randomise"
-]
-
-integer: seed [
-	additional: "$(njumble)"
-	information: "Random number seed between 1 and 32767 (must be odd)"
-	max: 32767
-	min: 1
-	default: 1
-]
-
-
-float: threshold [
-	additional: "Y"
-	min: 0
-	information: "Threshold value"
-	default: "$(infile.discretesize)" 
-]
-
-endsection: additional

@@ -32,6 +32,70 @@ tree: intreefile [
 
 endsection: input
 
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
+integer: njumble [
+	additional: "Y"
+	default: "0"
+	minimum: "0"
+	information: "Number of times to randomise"
+]
+
+integer: seed [
+	additional: "$(njumble)"
+	information: "Random number seed between 1 and 32767 (must be odd)"
+	minimum: "1"
+	maximum: "32767"
+	default: "1"
+]
+
+integer: outgrno [
+	additional: "Y"
+	minimum: "0"  
+	maximum: "$(data.size)"
+	default: "0"
+	information: "Species number to use as outgroup"
+]
+
+boolean: allsites  [
+  additional: "Y"
+  default: "Y"
+  information: "All sites detected"
+]
+
+boolean: lengths  [
+  additional: "$(intreefile.isdefined)"
+  default: "N"
+  information: "Use lengths from user trees"
+]
+
+integer: sitelength  [
+  additional: "Y"
+  default: "6"
+  minimum: "1"
+  maximum: "8"
+  information: "Site length"
+]
+
+boolean: global  [
+  additional: "@(!$(intreefile.isdefined))"
+  default: "N"
+  information: "Global rearrangements"
+]
+
+
+boolean: rough [
+	additional: "@(!$(intreefile.isdefined))"
+	default: "Y"
+	information: "Speedier but rougher analysis"
+]
+  	
+
+endsection: additional
+
 section: output [
   information: "Output section"
   type: "page"
@@ -73,67 +137,3 @@ boolean: trout  [
 ]
 
 endsection: output
-
-section: additional [
-  information: "Additional section"
-  type: "page"
-]
-
-integer: njumble [
-	additional: "Y"
-	default: 0
-	min: 0
-	information: "Number of times to randomise"
-]
-
-integer: seed [
-	additional: "$(njumble)"
-	information: "Random number seed between 1 and 32767 (must be odd)"
-	max: 32767
-	min: 1
-	default: 1
-]
-
-integer: outgrno [
-	additional: "Y"
-	min: "0"  
-	max: "$(data.size)"
-	default: 0
-	information: "Species number to use as outgroup"
-]
-
-boolean: allsites  [
-  additional: "Y"
-  default: "Y"
-  information: "All sites detected"
-]
-
-boolean: lengths  [
-  additional: "$(intreefile.isdefined)"
-  default: "N"
-  information: "Use lengths from user trees"
-]
-
-integer: sitelength  [
-  additional: "Y"
-  default: "6"
-  minimum: "1"
-  maximum: "8"
-  information: "Site length"
-]
-
-boolean: global  [
-  additional: "@(!$(intreefile.isdefined))"
-  default: "N"
-  information: "Global rearrangements"
-]
-
-
-boolean: rough [
-	additional: "@(!$(intreefile.isdefined))"
-	default: "Y"
-	information: "Speedier but rougher analysis"
-]
-  	
-
-endsection: additional

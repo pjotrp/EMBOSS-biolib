@@ -15,6 +15,47 @@ tree: intreefile [
 
 endsection: input
 
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
+list: method [
+  additional: "Y"
+  minimum: "1"
+  maximum: "1"
+  information: "Consensus method"
+  values: "s:strict consensus tree; 
+           mr:Majority Rule;
+           mre:Majority Rule (extended); 
+           ml:Minimum fraction (0.5 to 1.0)"
+  default: "mre"
+]
+
+float: mlfrac [
+	additional: "@($(method)==ml)"
+	minimum: "0.5"
+	maximum: "1.0"
+	default: "0.5"
+	information: "Fraction (l) of times a branch must appear"
+]
+
+toggle: root [
+  additional: "Y"
+  default: "N"
+  information: "Trees to be treated as Rooted"
+]
+
+
+integer: outgrno [
+	additional: "Y"
+	minimum: "0"  
+	default: "0"
+	information: "Species number to use as outgroup"
+]
+
+endsection: additional
+
 section: output [
   information: "Output section"
   type: "page"
@@ -57,44 +98,3 @@ boolean: prntsets [
   information: "Print out the sets of species"
 ]
 endsection: output
-
-section: additional [
-  information: "Additional section"
-  type: "page"
-]
-
-list: method [
-  additional: "Y"
-  minimum: "1"
-  maximum: "1"
-  information: "Consensus method"
-  values: "s:strict consensus tree; 
-           mr:Majority Rule;
-           mre:Majority Rule (extended); 
-           ml:Minimum fraction (0.5 to 1.0)"
-  default: "mre"
-]
-
-float: mlfrac [
-	additional: "@($(method)==ml)"
-	min: "0.5"
-	max: "1.0"
-	default: "0.5"
-	information: "Fraction (l) of times a branch must appear"
-]
-
-toggle: root [
-  additional: "Y"
-  default: "N"
-  information: "Trees to be treated as Rooted"
-]
-
-
-integer: outgrno [
-	additional: "Y"
-	min: 0  
-	default: 0
-	information: "Species number to use as outgroup"
-]
-
-endsection: additional

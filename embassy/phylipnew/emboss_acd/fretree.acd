@@ -22,17 +22,6 @@ tree: intreefile [
 
 endsection: input
 
-section: output [
-  information: "Output section"
-  type: "page"
-]
-
-outfile: outtreefile  [
-  extension: "treefile"
-  knowntype: "newick tree"
-]
-endsection: output
-
 section: additional [
 	information: "Additional section"
 	type: "page"
@@ -80,3 +69,14 @@ integer: screenlines [
 	information: "Number of lines on screen"
 ]
 endsection: additional
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+outfile: outtreefile  [
+  extension: "treefile"
+  knowntype: "newick tree"
+]
+endsection: output

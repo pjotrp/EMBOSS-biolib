@@ -31,68 +31,6 @@ properties: weights [
 
 endsection: input
 
-section: output [
-  information: "Output section"
-  type: "page"
-]
-
-outfile: outfile  [
-  parameter: "Y"
-  knowntype: "dnapars output"
-]
-
-toggle: trout [
-	additional: "Y"
-	default: "Y"
-	information: "Write out trees to tree file"
-]
-
-outfile: outtreefile  [
-  additional: "$(trout)"
-  extension: "treefile"
-  information: "Tree file name"
-  knowntype: "newick tree"
-  nullok: "Y"
-]
-
-boolean: printdata  [
-  additional: "Y"
-  default: "N"
-  information: "Print data at start of run"
-]
-
-boolean: progress  [
-  additional: "Y"
-  default: "Y"
-  information: "Print indications of progress of run"
-]
-
-boolean: stepbox  [
-  additional: "Y"
-  default: "N"
-  information: "Print out steps in each site"
-]
-
-boolean: ancseq  [
-  additional: "Y"
-  default: "N"
-  information: "Print sequences at all nodes of tree"
-]
-
-boolean: treeprint  [
-  additional: "Y"
-  default: "Y"
-  information: "Print out tree"
-]
-
-boolean: dotdiff [
-  additional: "@($(ancseq) | $(printdata))"
-  default: "Y"
-  information: "Use dot differencing to display results"
-]
-
-endsection: output
-
 section: additional [
   information: "Additional section"
   type: "page"
@@ -162,3 +100,65 @@ float: threshold  [
 ]
 
 endsection: additional
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+outfile: outfile  [
+  parameter: "Y"
+  knowntype: "dnapars output"
+]
+
+toggle: trout [
+	additional: "Y"
+	default: "Y"
+	information: "Write out trees to tree file"
+]
+
+outfile: outtreefile  [
+  additional: "$(trout)"
+  extension: "treefile"
+  information: "Tree file name"
+  knowntype: "newick tree"
+  nullok: "Y"
+]
+
+boolean: printdata  [
+  additional: "Y"
+  default: "N"
+  information: "Print data at start of run"
+]
+
+boolean: progress  [
+  additional: "Y"
+  default: "Y"
+  information: "Print indications of progress of run"
+]
+
+boolean: stepbox  [
+  additional: "Y"
+  default: "N"
+  information: "Print out steps in each site"
+]
+
+boolean: ancseq  [
+  additional: "Y"
+  default: "N"
+  information: "Print sequences at all nodes of tree"
+]
+
+boolean: treeprint  [
+  additional: "Y"
+  default: "Y"
+  information: "Print out tree"
+]
+
+boolean: dotdiff [
+  additional: "@($(ancseq) | $(printdata))"
+  default: "Y"
+  information: "Use dot differencing to display results"
+]
+
+endsection: output

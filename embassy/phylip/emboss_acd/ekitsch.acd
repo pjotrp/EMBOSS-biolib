@@ -50,6 +50,54 @@ integer: datasets  [
 
 endsection: input
 
+section: required [
+  information: "Required section"
+  type: "page"
+]
+
+toggle: random  [
+  additional: "$(besttree)"
+  default: "N"
+  information: "Randomize input order of species"
+]
+
+integer: randseed  [
+  standard: "$(random)"
+  information: "Random number seed (must be odd)"
+]
+
+integer: randtimes  [
+  standard: "$(random)"
+  information: "Number of times to jumble"
+]
+
+endsection: required
+
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
+toggle: besttree  [
+  additional: "Y"
+  default: "Y"
+  information: "Search for best tree"
+]
+
+float: power  [
+  additional: "Y"
+  default: "3.0"
+  information: "Power"
+]
+
+boolean: negbranch  [
+  additional: "Y"
+  default: "N"
+  information: "Negative branch lengths allowed"
+]
+
+endsection: additional
+
 section: output [
   information: "Output section"
   type: "page"
@@ -87,51 +135,3 @@ outfile: treefile  [
 ]
 
 endsection: output
-
-section: additional [
-  information: "Additional section"
-  type: "page"
-]
-
-toggle: besttree  [
-  additional: "Y"
-  default: "Y"
-  information: "Search for best tree"
-]
-
-float: power  [
-  additional: "Y"
-  default: "3.0"
-  information: "Power"
-]
-
-boolean: negbranch  [
-  additional: "Y"
-  default: "N"
-  information: "Negative branch lengths allowed"
-]
-
-endsection: additional
-
-section: required [
-  information: "Required section"
-  type: "page"
-]
-
-toggle: random  [
-  additional: "$(besttree)"
-  default: "N"
-  information: "Randomize input order of species"
-]
-
-integer: randseed  [
-  standard: "$(random)"
-  information: "Random number seed (must be odd)"
-]
-
-integer: randtimes  [
-  standard: "$(random)"
-  information: "Number of times to jumble"
-]
-
-endsection: required

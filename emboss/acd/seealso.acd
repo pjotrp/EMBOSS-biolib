@@ -19,6 +19,32 @@ section: input [
 
 endsection: input
 
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
+  boolean: explode  [
+    additional: "Y"
+    default: "N"
+    information: "Use the expanded group names"
+    help: "The groups that EMBOSS applications belong to have two
+           forms, exploded and not exploded. The exploded group names are
+           more numerous and often vaguely phrased than the non-exploded
+           ones. The exploded names are formed from definitions of the group
+           names that start like NAME1:NAME2 and which are then expanded into
+           many combinations of the names as: 'NAME1', 'NAME2', 'NAME1
+           NAME2', NAME2 NAME1'. The non-expanded names are simply like:
+           'NAME1 NAME2'. \
+           Using expanded group names will find many more programs which
+           share at least some of the expanded names than using the
+           non-exploded names and so you will get more programs reported as
+           sharing a similar function than you will if you specify that you
+           wish to use non-exploded names"
+  ]
+
+endsection: additional
+
 section: advanced [
   information: "Advanced section"
   type: "page"
@@ -60,32 +86,6 @@ section: advanced [
   ]
 
 endsection: advanced
-
-section: additional [
-  information: "Additional section"
-  type: "page"
-]
-
-  boolean: explode  [
-    additional: "Y"
-    default: "N"
-    information: "Use the expanded group names"
-    help: "The groups that EMBOSS applications belong to have two
-           forms, exploded and not exploded. The exploded group names are
-           more numerous and often vaguely phrased than the non-exploded
-           ones. The exploded names are formed from definitions of the group
-           names that start like NAME1:NAME2 and which are then expanded into
-           many combinations of the names as: 'NAME1', 'NAME2', 'NAME1
-           NAME2', NAME2 NAME1'. The non-expanded names are simply like:
-           'NAME1 NAME2'. \
-           Using expanded group names will find many more programs which
-           share at least some of the expanded names than using the
-           non-exploded names and so you will get more programs reported as
-           sharing a similar function than you will if you specify that you
-           wish to use non-exploded names"
-  ]
-
-endsection: additional
 
 section: output [
   information: "Output section"

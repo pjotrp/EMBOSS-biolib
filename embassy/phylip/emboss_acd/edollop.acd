@@ -36,62 +36,6 @@ boolean: ancest  [
 
 endsection: input
 
-section: output [
-  information: "Output section"
-  type: "page"
-]
-
-outfile: outfile  [
-  parameter: "Y"
-  default: "edollop.outfile"
-  knowntype: "dollop output"
-]
-
-boolean: printdata  [
-  additional: "Y"
-  default: "N"
-  information: "Print out the data at start of run"
-]
-
-boolean: progress  [
-  additional: "Y"
-  default: "N"
-  information: "Print indications of progress of run"
-]
-
-boolean: steps  [
-  additional: "Y"
-  default: "N"
-  information: "Print out steps in each site"
-]
-
-boolean: statesatnodes  [
-  additional: "Y"
-  default: "N"
-  information: "Print states at all nodes of tree"
-]
-
-boolean: drawtree  [
-  additional: "Y"
-  default: "Y"
-  information: "Draw tree"
-]
-
-toggle: trout  [
-  parameter: "Y"
-  default: "Y"
-  information: "Create a tree file"
-]
-
-outfile: treefile  [
-  standard: "$(trout)"
-  default: "edollop.treefile"
-  information: "Tree file name"
-  knowntype: "newick tree"
-]
-
-endsection: output
-
 section: required [
   information: "Required section"
   type: "page"
@@ -147,3 +91,59 @@ boolean: dollo  [
 ]
 
 endsection: additional
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+outfile: outfile  [
+  parameter: "Y"
+  default: "edollop.outfile"
+  knowntype: "dollop output"
+]
+
+boolean: printdata  [
+  additional: "Y"
+  default: "N"
+  information: "Print out the data at start of run"
+]
+
+boolean: progress  [
+  additional: "Y"
+  default: "N"
+  information: "Print indications of progress of run"
+]
+
+boolean: steps  [
+  additional: "Y"
+  default: "N"
+  information: "Print out steps in each site"
+]
+
+boolean: statesatnodes  [
+  additional: "Y"
+  default: "N"
+  information: "Print states at all nodes of tree"
+]
+
+boolean: drawtree  [
+  additional: "Y"
+  default: "Y"
+  information: "Draw tree"
+]
+
+toggle: trout  [
+  parameter: "Y"
+  default: "Y"
+  information: "Create a tree file"
+]
+
+outfile: treefile  [
+  standard: "$(trout)"
+  default: "edollop.treefile"
+  information: "Tree file name"
+  knowntype: "newick tree"
+]
+
+endsection: output

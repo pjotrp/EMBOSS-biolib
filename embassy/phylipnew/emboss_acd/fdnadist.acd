@@ -75,30 +75,6 @@ properties: weights  [
 
 endsection: input
 
-section: output [
-  information: "Output section"
-  type: "page"
-]
-
-outfile: outfile  [
-  parameter: "Y"
-  knowntype: "dnadist output"
-]
-
-boolean: printdata  [
-  additional: "Y"
-  default: "N"
-  information: "Print data at start of run"
-]
-
-boolean: progress  [
-  additional: "Y"
-  default: "Y"
-  information: "Print indications of progress of run"
-]
-
-endsection: output
-
 section: additional [
   information: "Additional section"
   type: "page"
@@ -137,8 +113,8 @@ toggle: freqsfrom [
 array: basefreq [
 	additional: "@(!$(freqsfrom))"
 	size: "4"
-	min: "0.0"
-	max: "1.0"
+	minimum: "0.0"
+	maximum: "1.0"
 	default: "0.25 0.25 0.25 0.25"
 	information: "Base frequencies for A C G T/U (use blanks to separate)"
 	sum: 1.0
@@ -152,5 +128,26 @@ boolean: lower [
 
 endsection: additional
 
+section: output [
+  information: "Output section"
+  type: "page"
+]
 
- 
+outfile: outfile  [
+  parameter: "Y"
+  knowntype: "dnadist output"
+]
+
+boolean: printdata  [
+  additional: "Y"
+  default: "N"
+  information: "Print data at start of run"
+]
+
+boolean: progress  [
+  additional: "Y"
+  default: "Y"
+  information: "Print indications of progress of run"
+]
+
+endsection: output

@@ -34,62 +34,6 @@ integer: datasets  [
 
 endsection: input
 
-section: output [
-  information: "Output section"
-  type: "page"
-]
-
-outfile: outfile  [
-  parameter: "Y"
-  default: "emix.outfile"
-  knowntype: "mix output"
-]
-
-boolean: printdata  [
-  additional: "Y"
-  default: "N"
-  information: "Print out the data at start of run"
-]
-
-boolean: progress  [
-  additional: "Y"
-  default: "N"
-  information: "Print indications of progress of run"
-]
-
-boolean: statesatnodes  [
-  additional: "Y"
-  default: "N"
-  information: "Print states at all nodes of tree"
-]
-
-boolean: steps  [
-  additional: "Y"
-  default: "N"
-  information: "Print out steps in each character"
-]
-
-toggle: trout  [
-  parameter: "Y"
-  default: "Y"
-  information: "Create a tree file"
-]
-
-boolean: drawtree  [
-  additional: "Y"
-  default: "Y"
-  information: "Draw tree"
-]
-
-outfile: treefile  [
-  standard: "$(trout)"
-  default: "emix.treefile"
-  information: "Tree file name"
-  knowntype: "newick tree"
-]
-
-endsection: output
-
 section: required [
   information: "Required section"
   type: "page"
@@ -155,3 +99,59 @@ float: valthresh  [
 ]
 
 endsection: required
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+outfile: outfile  [
+  parameter: "Y"
+  default: "emix.outfile"
+  knowntype: "mix output"
+]
+
+boolean: printdata  [
+  additional: "Y"
+  default: "N"
+  information: "Print out the data at start of run"
+]
+
+boolean: progress  [
+  additional: "Y"
+  default: "N"
+  information: "Print indications of progress of run"
+]
+
+boolean: statesatnodes  [
+  additional: "Y"
+  default: "N"
+  information: "Print states at all nodes of tree"
+]
+
+boolean: steps  [
+  additional: "Y"
+  default: "N"
+  information: "Print out steps in each character"
+]
+
+toggle: trout  [
+  parameter: "Y"
+  default: "Y"
+  information: "Create a tree file"
+]
+
+boolean: drawtree  [
+  additional: "Y"
+  default: "Y"
+  information: "Draw tree"
+]
+
+outfile: treefile  [
+  standard: "$(trout)"
+  default: "emix.treefile"
+  information: "Tree file name"
+  knowntype: "newick tree"
+]
+
+endsection: output

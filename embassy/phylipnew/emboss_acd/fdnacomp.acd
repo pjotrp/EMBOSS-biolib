@@ -30,6 +30,37 @@ properties: weights [
 
 endsection: input
 
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
+integer: outgrno  [
+  additional: "Y"
+  minimum: "0"
+  default: "0"
+  maximum: "$(sequence.count)"
+  information: "Species number to use as outgroup"
+]
+
+integer: njumble [
+  additional: "@(!$(intreefile.isdefined))"
+  information: "Number of times to randomise"
+  minimum: "0"
+  default: "0"
+
+]
+
+integer: seed [
+  additional: "$(njumble)"
+  information: "Random number seed between 1 and 32767 (must be odd)"
+  minimum: 1
+  maximum: "32767"
+  default: 1
+]
+
+endsection: additional
+
 section: output [
   information: "Output section"
   type: "page"
@@ -85,34 +116,3 @@ boolean: ancseq  [
 ]
 
 endsection: output
-
-section: additional [
-  information: "Additional section"
-  type: "page"
-]
-
-integer: outgrno  [
-  additional: "Y"
-  minimum: "0"
-  default: "0"
-  maximum: "$(sequence.count)"
-  information: "Species number to use as outgroup"
-]
-
-integer: njumble [
-  additional: "@(!$(intreefile.isdefined))"
-  information: "Number of times to randomise"
-  minimum: "0"
-  default: "0"
-
-]
-
-integer: seed [
-  additional: "$(njumble)"
-  information: "Random number seed between 1 and 32767 (must be odd)"
-  minimum: 1
-  maximum: "32767"
-  default: 1
-]
-
-endsection: additional

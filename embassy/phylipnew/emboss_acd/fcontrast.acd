@@ -21,31 +21,6 @@ tree: intreefile  [
 
 endsection: input
 
-section: output [
-  information: "Output section"
-  type: "page"
-]
-
-outfile: outfile  [
-  parameter: "Y"
-  knowntype: "contrast output"
-]
-
-
-boolean: printdata [
-	additional: "Y"
-	default: "N"
-	information: "Print data at start of run"
-]
-
-boolean: progress [
-	additional: "Y"
-	default: "Y"
-	information: "Print indications of progress of run"
-]
-
-endsection: output
-
 section: additional [
   information: "Additional section"
   type: "page"
@@ -75,3 +50,28 @@ boolean: nophylo  [
 ]
 
 endsection: additional
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+outfile: outfile  [
+  parameter: "Y"
+  knowntype: "contrast output"
+]
+
+
+boolean: printdata [
+	additional: "Y"
+	default: "N"
+	information: "Print data at start of run"
+]
+
+boolean: progress [
+	additional: "Y"
+	default: "Y"
+	information: "Print indications of progress of run"
+]
+
+endsection: output

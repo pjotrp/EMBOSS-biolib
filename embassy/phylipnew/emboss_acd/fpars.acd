@@ -28,6 +28,80 @@ properties: weights [
 ]
 endsection: input
 
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
+list: method  [
+  additional: "y"
+  minimum: "1"
+  maximum: "1"
+  header: "Method"
+  values: "w:Wagner; 
+           c:Camin-Sokal"
+  information: "Choose the parsimony method to use"
+  default: "Wagner"
+]
+
+integer: maxtrees [
+  additional: "Y"
+  information: "Number of trees to save"
+  default: "100"
+  minimum: "1"
+  maximum: "1000000"
+]
+
+toggle: thorough [
+  additional: "@(!$(intreefile.isdefined))"
+  information: "More thorough search"
+  default: "Y"
+]
+
+boolean: rearrange [
+  additional: "$(thorough)"
+  default: "Y"
+  information: "Rearrange on just one best tree"
+]
+
+integer: njumble [
+	additional: "@(!$(intreefile.isdefined))"
+	default: "0"
+	minimum: "0"
+	information: "Number of times to randomise"
+]
+
+integer: seed [
+	additional: "$(njumble)"
+	information: "Random number seed between 1 and 32767 (must be odd)"
+	minimum: "1"
+	maximum: "32767"
+	default: "1"
+]
+
+integer: outgrno [
+	additional: "Y"
+	minimum: "0"  
+        maximum: "$(infile.discretesize)"
+	default: "0"
+	information: "Species number to use as outgroup"
+]
+
+toggle: thresh [
+	additional: "Y"
+	default: "N"
+	information: "Use threshold parsimony"
+]
+
+float: threshold [
+	additional: "$(thresh)"
+	minimum: "1"
+	information: "Threshold value"
+	default: "1"
+]
+
+endsection: additional
+
 section: output [
   information: "Output section"
   type: "page"
@@ -89,78 +163,3 @@ boolean: dotdiff [
 ]
 
 endsection: output
-
-section: additional [
-  information: "Additional section"
-  type: "page"
-]
-
-list: method  [
-  additional: "y"
-  minimum: "1"
-  maximum: "1"
-  header: "Method"
-  values: "w:Wagner; 
-           c:Camin-Sokal"
-  information: "Choose the parsimony method to use"
-  default: "Wagner"
-]
-
-integer: maxtrees [
-  additional: "Y"
-  information: "Number of trees to save"
-  default: "100"
-  minimum: "1"
-  maximum: "1000000"
-]
-
-toggle: thorough [
-  additional: "@(!$(intreefile.isdefined))"
-  information: "More thorough search"
-  default: "Y"
-]
-
-boolean: rearrange [
-  additional: "$(thorough)"
-  default: "Y"
-  information: "Rearrange on just one best tree"
-]
-
-integer: njumble [
-	additional: "@(!$(intreefile.isdefined))"
-	default: 0
-	min: 0
-	information: "Number of times to randomise"
-]
-
-integer: seed [
-	additional: "$(njumble)"
-	information: "Random number seed between 1 and 32767 (must be odd)"
-	max: 32767
-	min: 1
-	default: 1
-]
-
-integer: outgrno [
-	additional: "Y"
-	min: 0  
-        max: "$(infile.discretesize)"
-	default: 0
-	information: "Species number to use as outgroup"
-]
-
-toggle: thresh [
-	additional: "Y"
-	default: "N"
-	information: "Use threshold parsimony"
-]
-
-float: threshold [
-	additional: "$(thresh)"
-	min: 1
-	information: "Threshold value"
-	default: 1
-]
-
-endsection: additional
-

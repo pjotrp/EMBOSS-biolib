@@ -31,20 +31,6 @@ properties: weights [
 
 endsection: input
 
-section: output [
-	information: "Output section"
-	type: "page"
-]
-
-outfile: outtreefile [
-	additional: "Y"
-	extension: "treefile"
-	knowntype: "newick tree"
-	nullok: "Y"
-]
-
-endsection: output
-
 section: additional [
 	information: "Additional section"
 	type: "page"
@@ -52,9 +38,9 @@ section: additional [
 
 integer: outgrno [
 	additional: "Y"
-	min: 0  
-        max: "$(sequence.count)"
-	default: 0
+	minimum: "0"  
+        maximum: "$(sequence.count)"
+	default: "0"
 	information: "Species number to use as outgroup"
 ]
 
@@ -66,9 +52,9 @@ toggle: thresh [
 
 float: threshold [
 	additional: "$(thresh)"
-	min: 1
+	minimum: "1"
 	information: "Threshold value"
-	default: 1
+	default: "1"
 ]
 
 
@@ -99,4 +85,16 @@ integer: screenlines [
 
 endsection: additional	
 
-	
+section: output [
+	information: "Output section"
+	type: "page"
+]
+
+outfile: outtreefile [
+	additional: "Y"
+	extension: "treefile"
+	knowntype: "newick tree"
+	nullok: "Y"
+]
+
+endsection: output

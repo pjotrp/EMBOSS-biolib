@@ -1,4 +1,4 @@
-application: drawgram [
+application: fdrawgram [
   documentation: "Plots a cladogram- or phenogram-like rooted tree diagram"
   groups: "Phylogeny:Tree drawing"
   batch: "no"
@@ -21,6 +21,13 @@ tree: intreefile [
 ]
 
 endsection: input
+
+section: additional [
+	information: "Additional section"
+	type: "page"
+]
+
+endsection: additional	
 
 section: output [
 	information: "Output section"
@@ -61,12 +68,16 @@ list: plotter [
 	header: "Plotter or printer"
 	values: "l:Postscript printer file format;
                  m:PICT format (for drawing programs);
-                 j:HP Laserjet PCL file format; 
+                 j:HP 75 DPI Laserjet PCL file format; 
+                 s:HP 150 DPI Laserjet PCL file format; 
+                 y:HP 300 DPI Laserjet PCL file format; 
                  w:MS-Windows Bitmap;
                  f:FIG 2.0 drawing program format;         
 	         a:Idraw drawing program format;
        	         z:VRML Virtual Reality Markup Language file;
-	         p:PCX file format (for drawing programs);
+	         n:PCX 640x350 file format (for drawing programs);
+	         p:PCX 800x600 file format (for drawing programs);
+	         q:PCX 1024x768 file format (for drawing programs);
        		 k:TeKtronix 4010 graphics terminal;
 	         x:X Bitmap format;
 	         v:POVRAY 3D rendering program file;
@@ -81,31 +92,6 @@ list: plotter [
        		 u:other (one you have inserted code for)"
    	information: "Plotter or printer the tree will be drawn on"
   	default: "l"
-]
-
-list: plotterpcl [
-	additional: @($(plotter)==j)
-	minimum: 1
-	maximum: 1
-	header: "Laserjet resolution"
-	values: "1:75 DPI;
-		 2:150 DPI;
-		 3:300 DPI"
-	information: "Laserjet resolution"
-	default: "1"
-]
-
-
-list: plotterpcx [
-	additional: @($(plotter)==p)
-	minimum: 1
-	maximum: 1
-	header: "PCX file resolution"
-	values: "1:EGA 640  X 350;
-		 2:VGA 800  X 600;
-		 3:VGA 1024 X 768"
-	information: "PCX file resolution"
-	default: "1"
 ]
 
 list: previewer  [
@@ -134,16 +120,17 @@ boolean: lengths [
 
 float: labelrotation [
 	additional: "@($(style)!=c)"
-	information: "Angle of lables (0 degrees is horizontal for a tree growing vertically)"
+	information: "Angle of labels (0 degrees is horizontal for a
+	              tree growing vertically)"
 	default: "90.0" 
-        min: "0.0"
-	max: "360.0"
+        minimum: "0.0"
+	maximum: "360.0"
 ]
 
 toggle: rescaled [
 	additional: "Y"
 	default: "Y"
-	information: "Automatically rescale branch lenghts"
+	information: "Automatically rescale branch lengths"
 ]
 
 float: bscale [
@@ -156,24 +143,24 @@ float: treedepth [
 	additional: "Y"
 	default: "0.53"
 	information: "Depth of tree as fraction of its breadth"
-	min: "0.1"
-	max: "100.0"
+	minimum: "0.1"
+	maximum: "100.0"
 ]
 
 float: stemlength [
 	additional: "Y"
 	default: "0.05"
 	information: "Stem length as fraction of tree depth"
-	min: "0.1"
-	max: "100.0"
+	minimum: "0.1"
+	maximum: "100.0"
 ]
 
 float: nodespace [
 	additional: "Y"
 	default: "0.3333"
 	information: "Character height as fraction of tip spacing"
-	min: "0.1"
-	max: "100.0"
+	minimum: "0.1"
+	maximum: "100.0"
 ]
 
 list: nodeposition [
@@ -193,26 +180,26 @@ list: nodeposition [
 float: xmargin [
 	additional: "@($(plotter)!=r)"
 	default: "1.65"
-	min: "0.1"
+	minimum: "0.1"
 	information: "Horizontal margin (cm)"
 ]
 float: ymargin [
 	additional: "@($(plotter)!=r)"
 	default: "2.16"
-	min: "0.1"
+	minimum: "0.1"
 	information: "Vertical margin (cm)"
 ]
 
 float: xmarginray [
 	additional: "@($(plotter)==r)"
 	default: "1.65"
-	min: "0.1"
+	minimum: "0.1"
 	information: "Horizontal margin (pixels)"
 ]
 float: ymarginray [
 	additional: "@($(plotter)==r)"
 	default: "2.16"
-	min: "0.1"
+	minimum: "0.1"
 	information: "Vertical margin (pixels)"
 ]
 
@@ -226,27 +213,27 @@ float: papery [
 	additional: "Y"
 	default: "26.98750"
 	information: "Paper height"
-	min: "0.1"
+	minimum: "0.1"
 ]
 
 float: pagesheight [
-	additional: Y
-	default: 1
+	additional: "Y"
+	default: "1"
 	information: "Number of trees across height of page"
-	min: 1
+	minimum: 1
 ]
 float: pageswidth [
-	additional: Y
-	default: 1
+	additional: "Y"
+	default: "1"
 	information: "Number of trees across width of page"
-	min: 1
+	minimum: "1"
 ]
 
 float: hpmargin [
 	additional: "Y"
 	default: "0.41275"
 	information: "Horizontal overlap (cm)"
-	min: "0.001"
+	minimum: "0.001"
 ]
 
 
@@ -254,18 +241,7 @@ float: vpmargin [
 	additional: "Y"
 	default: "0.53975"
 	information: "Vertical overlap (cm)"
-	min: "0.001"
+	minimum: "0.001"
 ]
 
 endsection: output
-
-section: additional [
-	information: "Additional section"
-	type: "page"
-]
-
-
-
-
-
-endsection: additional	

@@ -48,20 +48,6 @@ properties: factorfile [
 ]
 endsection: input
 
-section: output [
-  information: "Output section"
-  type: "page"
-]
-
-outfile: outtreefile [
-	additional: "Y"
-	extension: "treefile"
-	knowntype: "newick tree"
-	nullok: "Y"
-]
-
-endsection: output
-
 section: additional [
 	information: "Additional section"
 	type: "page"
@@ -82,15 +68,15 @@ list: method  [
 
 integer: outgrno [
 	additional: "Y"
-	min: 0  
-        max: "$(infile.discretsize)"
-	default: 0
+	minimum: "0"  
+        maximum: "$(infile.discretesize)"
+	default: "0"
 	information: "Species number to use as outgroup"
 ]
 
 float: threshold [
 	additional: "Y"
-	min: 0
+	minimum: "0"
 	information: "Threshold value"
 	default: "$(infile.discretesize)" 
 ]
@@ -120,3 +106,17 @@ integer: screenlines [
 ]
 
 endsection: additional
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+outfile: outtreefile [
+	additional: "Y"
+	extension: "treefile"
+	knowntype: "newick tree"
+	nullok: "Y"
+]
+
+endsection: output

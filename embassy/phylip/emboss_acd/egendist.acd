@@ -34,6 +34,38 @@ integer: datasets  [
 
 endsection: input
 
+section: required [
+  information: "Required section"
+  type: "page"
+]
+
+list: method  [
+  standard: "y"
+  minimum: "1"
+  maximum: "1"
+  header: "Distance methods"
+  values: "Nei:Nei genetic distance; Cav:Cavalli-Sforza chord
+           measure; Rey:Reynolds genetic distance;"
+  information: "Choose the method to use"
+  default: "Nei"
+]
+
+endsection: required
+
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
+boolean: all  [
+  additional: "Y"
+  default: "N"
+  information: "Input file contains all alleles at each locus
+                (else one)"
+]
+
+endsection: additional
+
 section: output [
   information: "Output section"
   type: "page"
@@ -52,35 +84,3 @@ boolean: progress  [
 ]
 
 endsection: output
-
-section: additional [
-  information: "Additional section"
-  type: "page"
-]
-
-boolean: all  [
-  additional: "Y"
-  default: "N"
-  information: "Input file contains all alleles at each locus
-                (else one)"
-]
-
-endsection: additional
-
-section: required [
-  information: "Required section"
-  type: "page"
-]
-
-list: method  [
-  standard: "y"
-  minimum: "1"
-  maximum: "1"
-  header: "Distance methods"
-  values: "Nei:Nei genetic distance; Cav:Cavalli-Sforza chord
-           measure; Rey:Reynolds genetic distance;"
-  information: "Choose the method to use"
-  default: "Nei"
-]
-
-endsection: required

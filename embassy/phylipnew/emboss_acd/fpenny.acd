@@ -1,4 +1,4 @@
-application: penny [
+application: fpenny [
   documentation: "Penny algorithm, branch-and-bound to find all most parsimonious trees"
   groups: "Phylogeny:Discrete characters"
 ]
@@ -41,6 +41,57 @@ properties: mixfile [
 ]
 
 endsection: input
+
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
+list: method  [
+  additional: "y"
+  minimum: "1"
+  maximum: "1"
+  header: "Method"
+  values: "Wag:Wagner; 
+           Cam:Camin-Sokal; 
+           Mix:Mixed;"
+  information: "Choose the method to use"
+  default: "Wagner"
+]
+
+integer: outgrno [
+	additional: "Y"
+	minimum: "0"  
+        maximum: "$(infile.discretesize)"
+	default: "0"
+	information: "Species number to use as outgroup"
+]
+
+integer: howmany  [
+  additional: "Y"
+  information: "How many groups of trees"
+  default: "1000"
+]
+
+integer: howoften  [
+  additional: "Y"
+  information: "How often to report, in trees"
+  default: "100"
+]
+
+boolean: simple  [
+  additional: "Y"
+  information: "Branch and bound is simple"
+]
+
+float: threshold  [
+  additional: "Y"
+  minimum: "1.0"
+  default: "$(infile.discretesize)" 
+  information: "Threshold value"
+]
+
+endsection: additional
 
 section: output [
   information: "Output section"
@@ -97,54 +148,3 @@ boolean: ancseq  [
 ]
 
 endsection: output
-
-section: additional [
-  information: "Additional section"
-  type: "page"
-]
-
-list: method  [
-  additional: "y"
-  minimum: "1"
-  maximum: "1"
-  header: "Method"
-  values: "Wag:Wagner; 
-           Cam:Camin-Sokal; 
-           Mix:Mixed;"
-  information: "Choose the method to use"
-  default: "Wagner"
-]
-
-integer: outgrno [
-	additional: "Y"
-	min: 0  
-        max: "$(infile.discretesize)"
-	default: 0
-	information: "Species number to use as outgroup"
-]
-
-integer: howmany  [
-  additional: "Y"
-  information: "How many groups of trees"
-  default: "1000"
-]
-
-integer: howoften  [
-  additional: "Y"
-  information: "How often to report, in trees"
-  default: "100"
-]
-
-boolean: simple  [
-  additional: "Y"
-  information: "Branch and bound is simple"
-]
-
-float: threshold  [
-  additional: "Y"
-  minimum: "1.0"
-  default: "$(infile.discretesize)" 
-  information: "Threshold value"
-]
-
-endsection: additional

@@ -17,6 +17,42 @@ seqset: sequence  [
 
 endsection: input
 
+section: required [
+  information: "Required section"
+  type: "page"
+]
+
+toggle: og  [
+  standard: "Y"
+  information: "Outgroup root"
+  default: "N"
+]
+
+integer: outgnum  [
+  standard: "$(og)"
+  minimum: "1"
+  default: "1"
+  information: "Number of the outgroup"
+]
+
+toggle: random  [
+  standard: "Y"
+  default: "N"
+  information: "Randomize input order of species"
+]
+
+integer: randseed  [
+  standard: "$(random)"
+  information: "Random number seed (must be odd)"
+]
+
+integer: randtimes  [
+  standard: "$(random)"
+  information: "Number of times to jumble"
+]
+
+endsection: required
+
 section: output [
   information: "Output section"
   type: "page"
@@ -73,39 +109,3 @@ boolean: allnodes  [
 ]
 
 endsection: output
-
-section: required [
-  information: "Required section"
-  type: "page"
-]
-
-toggle: og  [
-  standard: "Y"
-  information: "Outgroup root"
-  default: "N"
-]
-
-integer: outgnum  [
-  standard: "$(og)"
-  minimum: "1"
-  default: "1"
-  information: "Number of the outgroup"
-]
-
-toggle: random  [
-  standard: "Y"
-  default: "N"
-  information: "Randomize input order of species"
-]
-
-integer: randseed  [
-  standard: "$(random)"
-  information: "Random number seed (must be odd)"
-]
-
-integer: randtimes  [
-  standard: "$(random)"
-  information: "Number of times to jumble"
-]
-
-endsection: required

@@ -33,58 +33,6 @@ boolean: all  [
 
 endsection: input
 
-section: output [
-  information: "Output section"
-  type: "page"
-]
-
-outfile: outfile  [
-  parameter: "Y"
-  default: "econtml.outfile"
-  knowntype: "contml output"
-]
-
-
-boolean: printdata  [
-  additional: "Y"
-  default: "N"
-  information: "Print out the data at start of run"
-]
-
-boolean: progress  [
-  additional: "Y"
-  default: "N"
-  information: "Print indications of progress of run"
-]
-
-boolean: drawtree  [
-  additional: "Y"
-  default: "Y"
-  information: "Draw tree"
-]
-
-toggle: trout  [
-  parameter: "Y"
-  default: "Y"
-  information: "Create a tree file"
-]
-
-outfile: treefile  [
-  standard: "$(trout)"
-  default: "econtml.treefile"
-  information: "Tree file name"
-  knowntype: "Newick tree"
-]
-
-endsection: output
-
-section: additional [
-  information: "Additional section"
-  type: "page"
-]
-
-endsection: additional
-
 section: required [
   information: "Required section"
   type: "page"
@@ -148,3 +96,54 @@ integer: datasets  [
 
 endsection: required
 
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
+endsection: additional
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+outfile: outfile  [
+  parameter: "Y"
+  default: "econtml.outfile"
+  knowntype: "contml output"
+]
+
+
+boolean: printdata  [
+  additional: "Y"
+  default: "N"
+  information: "Print out the data at start of run"
+]
+
+boolean: progress  [
+  additional: "Y"
+  default: "N"
+  information: "Print indications of progress of run"
+]
+
+boolean: drawtree  [
+  additional: "Y"
+  default: "Y"
+  information: "Draw tree"
+]
+
+toggle: trout  [
+  parameter: "Y"
+  default: "Y"
+  information: "Create a tree file"
+]
+
+outfile: treefile  [
+  standard: "$(trout)"
+  default: "econtml.treefile"
+  information: "Tree file name"
+  knowntype: "Newick tree"
+]
+
+endsection: output

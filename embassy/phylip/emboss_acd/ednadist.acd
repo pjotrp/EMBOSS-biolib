@@ -26,25 +26,6 @@ list: matrix  [
 
 endsection: input
 
-section: output [
-  information: "Output section"
-  type: "page"
-]
-
-outfile: outfile  [
-  parameter: "Y"
-  default: "ednadist.outfile"
-  knowntype: "dnadist output"
-]
-
-boolean: printinitial  [
-  additional: "Y"
-  default: "N"
-  information: "Print out the data at start of run"
-]
-
-endsection: output
-
 section: required [
   information: "Required section"
   type: "page"
@@ -121,3 +102,22 @@ float: freqt  [
 ]
 
 endsection: additional
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+outfile: outfile  [
+  parameter: "Y"
+  default: "ednadist.outfile"
+  knowntype: "dnadist output"
+]
+
+boolean: printinitial  [
+  additional: "Y"
+  default: "N"
+  information: "Print out the data at start of run"
+]
+
+endsection: output

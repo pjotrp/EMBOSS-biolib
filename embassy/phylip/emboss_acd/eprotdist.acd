@@ -17,31 +17,6 @@ seqset: sequence  [
 
 endsection: input
 
-section: output [
-  information: "Output section"
-  type: "page"
-]
-
-outfile: outfile  [
-  parameter: "Y"
-  default: "eprotdist.outfile"
-  knowntype: "protdist output"
-]
-
-boolean: printdata  [
-  additional: "Y"
-  default: "N"
-  information: "Print out the data at start of run"
-]
-
-boolean: progress  [
-  additional: "Y"
-  default: "N"
-  information: "Print indications of progress of run"
-]
-
-endsection: output
-
 section: required [
   information: "Required section"
   type: "page"
@@ -144,3 +119,28 @@ float: freqt  [
 ]
 
 endsection: additional
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+outfile: outfile  [
+  parameter: "Y"
+  default: "eprotdist.outfile"
+  knowntype: "protdist output"
+]
+
+boolean: printdata  [
+  additional: "Y"
+  default: "N"
+  information: "Print out the data at start of run"
+]
+
+boolean: progress  [
+  additional: "Y"
+  default: "N"
+  information: "Print indications of progress of run"
+]
+
+endsection: output

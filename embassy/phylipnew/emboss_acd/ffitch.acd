@@ -1,4 +1,4 @@
-application: fitch [
+application: ffitch [
   documentation: "Fitch-Margoliash and Least-Squares Distance Methods"
   groups: "Phylogeny:Distance matrix"
   gui: "yes"
@@ -24,6 +24,84 @@ tree: intreefile [
 ]
 
 endsection: input
+
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
+list: matrixtype  [
+	additional: "Y"
+	minimum: "1"
+	maximum: "1"
+	header: "Matrix type"
+	values: "s:Square;
+        	 u:Upper triangular;
+          	 l:Lower triangular"
+  	information: "Type of input data matrix"
+  	default: "s"
+]
+
+boolean: minev  [
+	additional: "Y"
+  	information: "Minimum evolution"
+  	default: "N"
+]
+
+integer: njumble [
+	additional: "@(!$(intreefile.isdefined))"
+	default: 0
+	minimum: 0
+	information: "Number of times to randomise"
+]
+
+integer: seed [
+	additional: "$(njumble)"
+	information: "Random number seed between 1 and 32767 (must be odd)"
+	minimum: "1"
+	maximum: "32767"
+	default: "1"
+]
+
+integer: outgrno [
+	additional: "Y"
+	minimum: "0"
+        maximum: "$(datafile.distancesize)"
+	default: "0"
+	information: "Species number to use as outgroup"
+]
+
+float: power  [
+  additional: "Y"
+  default: "2.0"
+  information: "Power"
+]
+
+boolean: lengths [
+	additional: "$(intreefile.isdefined)"
+	default: "N"
+	information: "Use branch lengths from user trees"
+]
+
+boolean: negallowed  [
+  additional: "@(!$(minev))"
+  default: "N"
+  information: "Negative branch lengths allowed"
+]
+
+boolean: global [
+	additional: "@(!$(intreefile.isdefined))"
+	default: "N"
+	information: "Global rearrangements"
+]
+
+boolean: replicates  [
+  additional: "Y"
+  default: "N"
+  information: "Subreplicates"
+]
+
+endsection: additional
 
 section: output [
   information: "Output section"
@@ -68,81 +146,3 @@ boolean: treeprint [
 ]
 
 endsection: output
-
-section: additional [
-  information: "Additional section"
-  type: "page"
-]
-
-list: matrixtype  [
-	additional: "Y"
-	minimum: "1"
-	maximum: "1"
-	header: "Matrix type"
-	values: "s:Square;
-        	 u:Upper triangular;
-          	 l:Lower triangular"
-  	information: "Type of input data matrix"
-  	default: "s"
-]
-
-boolean: minev  [
-	additional: "Y"
-  	information: "Minimum evolution"
-  	default: "N"
-]
-
-integer: njumble [
-	additional: "@(!$(intreefile.isdefined))"
-	default: 0
-	min: 0
-	information: "Number of times to randomise"
-]
-
-integer: seed [
-	additional: "$(njumble)"
-	information: "Random number seed between 1 and 32767 (must be odd)"
-	max: 32767
-	min: 1
-	default: 1
-]
-
-integer: outgrno [
-	additional: "Y"
-	min: 0  
-        max: "$(datafile.distancesize)"
-	default: 0
-	information: "Species number to use as outgroup"
-]
-
-float: power  [
-  additional: "Y"
-  default: "2.0"
-  information: "Power"
-]
-
-boolean: lengths [
-	additional: "$(intreefile.isdefined)"
-	default: "N"
-	information: "Use branch lengths from user trees"
-]
-
-boolean: negallowed  [
-  additional: "@(!$(minev))"
-  default: "N"
-  information: "Negative branch lengths allowed"
-]
-
-boolean: global [
-	additional: "@(!$(intreefile.isdefined))"
-	default: "N"
-	information: "Global rearrangements"
-]
-
-boolean: replicates  [
-  additional: "Y"
-  default: "N"
-  information: "Subreplicates"
-]
-
-endsection: additional

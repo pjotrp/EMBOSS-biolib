@@ -30,49 +30,43 @@ integer: datasets  [
 
 endsection: input
 
-section: output [
-  information: "Output section"
+section: required [
+  information: "Required section"
   type: "page"
 ]
 
-outfile: outfile  [
-  parameter: "Y"
-  default: "erestml.outfile"
-  knowntype: "restml output"
-]
-
-boolean: printdata  [
-  additional: "Y"
+toggle: random  [
+  standard: "$(besttree)"
   default: "N"
-  information: "Print out the data at start of run"
+  information: "Randomize input order of species"
 ]
 
-boolean: progress  [
+integer: randseed  [
+  standard: "$(random)"
+  default: "3"
+  information: "Random number seed (must be odd)"
+]
+
+integer: randtimes  [
+  standard: "$(random)"
+  default: "3"
+  information: "How many times to randomise"
+]
+
+toggle: og  [
   additional: "Y"
+  information: "Outgroup root"
   default: "N"
-  information: "Print indications of progress of run"
 ]
 
-boolean: drawtree  [
-  additional: "Y"
-  default: "Y"
-  information: "Draw tree"
+integer: outgnum  [
+  standard: "$(og)"
+  minimum: "1"
+  default: "1"
+  information: "Number of the outgroup"
 ]
 
-toggle: trout  [
-  parameter: "Y"
-  default: "Y"
-  information: "Create a tree file"
-]
-
-outfile: treefile  [
-  standard: "$(trout)"
-  default: "erestml.treefile"
-  information: "Tree file name"
-  knowntype: "newick tree"
-]
-
-endsection: output
+endsection: required
 
 section: additional [
   information: "Additional section"
@@ -120,40 +114,46 @@ boolean: global  [
 
 endsection: additional
 
-section: required [
-  information: "Required section"
+section: output [
+  information: "Output section"
   type: "page"
 ]
 
-toggle: random  [
-  standard: "$(besttree)"
-  default: "N"
-  information: "Randomize input order of species"
+outfile: outfile  [
+  parameter: "Y"
+  default: "erestml.outfile"
+  knowntype: "restml output"
 ]
 
-integer: randseed  [
-  standard: "$(random)"
-  default: "3"
-  information: "Random number seed (must be odd)"
-]
-
-integer: randtimes  [
-  standard: "$(random)"
-  default: "3"
-  information: "How many times to randomise"
-]
-
-toggle: og  [
+boolean: printdata  [
   additional: "Y"
-  information: "Outgroup root"
   default: "N"
+  information: "Print out the data at start of run"
 ]
 
-integer: outgnum  [
-  standard: "$(og)"
-  minimum: "1"
-  default: "1"
-  information: "Number of the outgroup"
+boolean: progress  [
+  additional: "Y"
+  default: "N"
+  information: "Print indications of progress of run"
 ]
 
-endsection: required
+boolean: drawtree  [
+  additional: "Y"
+  default: "Y"
+  information: "Draw tree"
+]
+
+toggle: trout  [
+  parameter: "Y"
+  default: "Y"
+  information: "Create a tree file"
+]
+
+outfile: treefile  [
+  standard: "$(trout)"
+  default: "erestml.treefile"
+  information: "Tree file name"
+  knowntype: "newick tree"
+]
+
+endsection: output

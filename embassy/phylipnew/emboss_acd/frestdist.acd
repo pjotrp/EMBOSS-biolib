@@ -17,6 +17,58 @@ discretestates: data [
 
 endsection: input
 
+section: additional [
+	information: "Additional section"
+	type: "page"
+]
+
+boolean: restsites [
+	additional: "Y"
+	information: "Restriction sites (put N if you want restriction fragments)"
+	default: "Y"
+]
+
+boolean: neili [
+	additional: "Y"
+	information: "Use original Nei/Li model (default uses modified Nei/Li model)"
+	default: "N"
+]
+
+boolean: gamma  [
+	additional: "@(!$(neili))"
+  	information: "Gama distributed rates among sites"
+  	default: "N"
+]
+
+float: gammacoefficient [
+	additional: "$(gamma)" 
+	information: "Coefficient of variation of substitution rate among sites"
+	minimum: "0.001"
+	default: "1"
+]
+
+float: ttratio [
+	additional: "Y"
+	default: "2.0"
+        minimum: "0.001"
+	information: "Transition/transversion ratio"
+]
+
+integer: sitelength [
+	additional: "Y"
+	default: "6"
+	information: "Site length"
+	minimum: "1"
+]
+
+boolean: lower [
+	additional: "Y"
+	default: "N"
+	information: "Lower triangular distance matrix"
+]
+
+endsection: additional	
+
 section: output [
 	information: "Output section"
 	type: "page"
@@ -41,58 +93,3 @@ boolean: progress [
 ]
 
 endsection: output
-
-section: additional [
-	information: "Additional section"
-	type: "page"
-]
-
-boolean: restsites [
-	additional: "Y"
-	information: "Restriction sites (put N if you want restriction fragments)"
-	default: "Y"
-]
-
-boolean: neili [
-	additional: "Y"
-	information: "Use original Nei/Li model (default uses modified Nei/Li model)"
-	default: "N"
-]
-
-boolean: gamma  [
-	additional: "@(!$(neili))"
-  	information: "Gama distributed rates among sites"
-  	default: "N"
-]
-
-
-float: gammacoefficient [
-	additional: "$(gamma)" 
-	information: "Coefficient of variation of substitution rate among sites"
-	minimum: "0.001"
-	default: "1"
-]
-
-float: ttratio [
-	additional: "Y"
-	default: "2.0"
-        min: "0.001"
-	information: "Transition/transversion ratio"
-]
-
-int: sitelength [
-	additional: "Y"
-	default: "6"
-	information: "Site length"
-	min: "1"
-]
-
-boolean: lower [
-	additional: "Y"
-	default: "N"
-	information: "Lower triangular distance matrix"
-]
-
-endsection: additional	
-
-	

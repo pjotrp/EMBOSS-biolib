@@ -17,6 +17,51 @@ infile: infile  [
 
 endsection: input
 
+section: required [
+  information: "Required section"
+  type: "page"
+]
+
+toggle: minclique  [
+  standard: "Y"
+  default: "N"
+  information: "Use minimum clique size"
+]
+
+integer: cliqminnum  [
+  standard: "$(minclique)"
+  default: "1"
+  information: "Minimum clique size"
+]
+
+toggle: og  [
+  standard: "Y"
+  information: "Outgroup root"
+  default: "N"
+]
+
+integer: outgnum  [
+  standard: "$(og)"
+  minimum: "1"
+  default: "1"
+  information: "Number of the outgroup"
+]
+
+endsection: required
+
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
+boolean: ancestral  [
+  additional: "Y"
+  default: "N"
+  information: "Use ancestral states in input file"
+]
+
+endsection: additional
+
 section: output [
   information: "Output section"
   type: "page"
@@ -67,48 +112,3 @@ boolean: matrixout  [
 ]
 
 endsection: output
-
-section: additional [
-  information: "Additional section"
-  type: "page"
-]
-
-boolean: ancestral  [
-  additional: "Y"
-  default: "N"
-  information: "Use ancestral states in input file"
-]
-
-endsection: additional
-
-section: required [
-  information: "Required section"
-  type: "page"
-]
-
-toggle: minclique  [
-  standard: "Y"
-  default: "N"
-  information: "Use minimum clique size"
-]
-
-integer: cliqminnum  [
-  standard: "$(minclique)"
-  default: "1"
-  information: "Minimum clique size"
-]
-
-toggle: og  [
-  standard: "Y"
-  information: "Outgroup root"
-  default: "N"
-]
-
-integer: outgnum  [
-  standard: "$(og)"
-  minimum: "1"
-  default: "1"
-  information: "Number of the outgroup"
-]
-
-endsection: required

@@ -22,18 +22,6 @@ seqall: bsequence  [
 
 endsection: input
 
-section: output [
-  information: "Output section"
-  type: "page"
-]
-
-outfile: outfile  [
-  parameter: "Y"
-  knowntype: "sim4 output"
-]
-
-endsection: output
-
 section: additional [
   information: "Additional section"
   type: "page"
@@ -219,3 +207,15 @@ integer: tob  [
 ]
 
 endsection: additional
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+outfile: outfile  [
+  parameter: "Y"
+  knowntype: "sim4 output"
+]
+
+endsection: output

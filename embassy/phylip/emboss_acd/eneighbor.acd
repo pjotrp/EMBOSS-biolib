@@ -50,6 +50,41 @@ integer: datasets  [
 
 endsection: input
 
+section: required [
+  information: "Required section"
+  type: "page"
+]
+
+toggle: nj  [
+  standard: "Y"
+  information: "Neighbor-joining"
+  default: "Y"
+]
+
+toggle: og  [
+  standard: "$(nj)"
+  information: "Outgroup root"
+  default: "N"
+]
+
+integer: outgnum  [
+  standard: "$(og)"
+  information: "Number of the outgroup"
+]
+
+toggle: random  [
+  additional: "Y"
+  default: "N"
+  information: "Randomize input order of species"
+]
+
+integer: randseed  [
+  standard: "$(random)"
+  information: "Random number seed (must be odd)"
+]
+
+endsection: required
+
 section: output [
   information: "Output section"
   type: "page"
@@ -93,38 +128,3 @@ outfile: treefile  [
 ]
 
 endsection: output
-
-section: required [
-  information: "Required section"
-  type: "page"
-]
-
-toggle: nj  [
-  standard: "Y"
-  information: "Neighbor-joining"
-  default: "Y"
-]
-
-toggle: og  [
-  standard: "$(nj)"
-  information: "Outgroup root"
-  default: "N"
-]
-
-integer: outgnum  [
-  standard: "$(og)"
-  information: "Number of the outgroup"
-]
-
-toggle: random  [
-  additional: "Y"
-  default: "N"
-  information: "Randomize input order of species"
-]
-
-integer: randseed  [
-  standard: "$(random)"
-  information: "Random number seed (must be odd)"
-]
-
-endsection: required
