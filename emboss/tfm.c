@@ -48,6 +48,9 @@ int main(int argc, char **argv)
     AjPStr cmd  = NULL;			/* command line for running 'more' */
     AjPFile infile = NULL;
     AjPStr line    = NULL;		/* buffer for infile lines */
+    AjPStr pager   = NULL;
+
+    char *shellpager = NULL;
 
     embInit("tfm", argc, argv);
     
@@ -55,6 +58,12 @@ int main(int argc, char **argv)
     outfile = ajAcdGetOutfile("outfile");
     html    = ajAcdGetBool("html");
     more    = ajAcdGetBool("more");
+
+    cmd   = ajStrNew();
+    path  = ajStrNew();
+    pager = ajStrNew();
+    line  = ajStrNew();
+    
     
     /* is a search string specified - should be tested in tfm.acd file */
     if(!ajStrLen(program))
@@ -63,11 +72,18 @@ int main(int argc, char **argv)
     if(!tfm_FindAppDoc(program, html, &path))
 	ajFatal("The documentation for program '%S' was not found.", program);
     
-    /* outputting to STDOUT and piping through 'more'? */
+    /* outputing to STDOUT and piping through 'more'? */
     if(ajFileStdout(outfile) && more)
     {
-	ajStrAssC(&cmd, "more ");
-	ajStrApp(&cmd, path);
+	if(!ajNamGetValueC("PAGER",&pager))
+	{
+	    shellpager = getenv("PAGER");
+	    if(shellpager)
+		ajStrAssC(&pager,shellpager);
+	    if(!ajStrLen(pager))
+		ajStrAssC(&pager,"more");
+	}
+	ajFmtPrintS(&cmd,"%S %S",pager,path);
 	ajSystem(&cmd);
     }
     else
@@ -82,6 +98,12 @@ int main(int argc, char **argv)
     }
     
     ajFileClose(&outfile);
+
+
+    ajStrDel(&path);
+    ajStrDel(&pager);
+    ajStrDel(&line);
+    ajStrDel(&cmd);
     
     ajExit();
 
@@ -182,3 +204,4 @@ static AjBool tfm_FindAppDoc(AjPStr program, AjBool html, AjPStr* path)
 
     return ajFalse;
 }
+
