@@ -1201,6 +1201,9 @@ AjBool ajStrApp (AjPStr* pthis, const AjPStr src) {
   AjPStr thys = pthis ? *pthis : 0;
   ajint j;
 
+  if (!src)
+    return ajStrAppC(pthis, "");
+
   t = ajStrNewC(src->Ptr);
 
   if (pthis && *pthis) {
@@ -1239,6 +1242,9 @@ AjBool ajStrAppC (AjPStr* pthis, const char* txt) {
   
   AjPStr thys = pthis ? *pthis : 0;
   ajint i, j;
+
+  if (!txt)
+    return ajStrAppC(pthis, "");
 
   t = ajStrNewC(txt);
   i = strlen(txt);
