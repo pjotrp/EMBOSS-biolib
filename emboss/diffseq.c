@@ -142,6 +142,13 @@ static void diffseq_WordMatchListConvDiffToFeat(AjPList list,
 	*tab1 = ajFeattableNewSeq(seq1);
     if(!*tab2)
 	*tab2 = ajFeattableNewSeq(seq2);
+
+    source     = ajStrNew();
+    type       = ajStrNew();
+    note       = ajStrNew();
+    replace    = ajStrNew();
+    replacestr = ajStrNew();
+    notestr    = ajStrNew();
   
     ajStrAssC(&source,"diffseq");
     ajStrAssC(&type,"conflict");
@@ -162,8 +169,6 @@ static void diffseq_WordMatchListConvDiffToFeat(AjPList list,
 	    /* check that we have seen a match already */
 	    if (misstart1 <= misend1)
 	    {	/* is there a gap between the matches? */
-		notestr = ajStrNew();
-		replacestr = ajStrNew();
 		feature = ajFeatureNew(*tab1, source, type,
 				       misstart1+1, misend1+1, score, 
 				       strand, frame, desc, 0, 0) ;
@@ -194,8 +199,6 @@ static void diffseq_WordMatchListConvDiffToFeat(AjPList list,
 
 	    if (misstart2 <= misend2)
 	    {	/* is there a gap between the matches? */
-		notestr = ajStrNew();
-		replacestr = ajStrNew();
 		feature = ajFeatureNew(*tab2, source, type,
 				       misstart2+1, misend2+1, score, 
 				       strand, frame, desc, 0, 0) ;
@@ -238,11 +241,8 @@ static void diffseq_WordMatchListConvDiffToFeat(AjPList list,
     ajStrDel(&type);
     ajStrDel(&note);
     ajStrDel(&replace);
-
-    /* These are still used in ajFeatTagSet()
-     * ajStrDel(&notestr);
-     * ajStrDel(&replacestr);
-     */
+    ajStrDel(&replacestr);
+    ajStrDel(&notestr);
 
     return;
 }
@@ -509,7 +509,9 @@ static void diffseq_diff (AjPList matchlist, AjPSeq seq1, AjPSeq seq2, AjPFile
 	prev1end = p->seq1start + p->length;
 	prev2end = p->seq2start + p->length;
 
-    }   	
+    }
+
+    ajListIterFree(iter);
 
     /* end of overlapping region */
     if (p)
