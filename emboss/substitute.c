@@ -1,12 +1,13 @@
 /* @source substitute application
 **
-** takes a directory of pairs of aligned sequences and substitutes match
-**  residues from the second sequence of each pair into the first
+** takes a pair of aligned sequence traces and substitutes match residues
+**  from the second sequence of each pair into the first, removing any gaps
+**  
 **
 **
 ** @author: Copyright (C) Damian Counsell
-** @version $Revision: 1.8 $
-** @modified $Date: 2004/09/06 19:54:00 $
+** @version $Revision: 1.9 $
+** @modified $Date: 2004/09/28 11:53:19 $
 ** @@
 **
 ** This program is free software; you can redistribute it and/or
@@ -26,9 +27,9 @@
 
 enum constant
     {
-	enumDebugLevel       = 0,
-	enumQuerySeqIndex    = 0,
-	enumTemplateSeqIndex = 1,
+	enumDebugLevel       = 2,
+	enumTemplateSeqIndex = 0,
+	enumQuerySeqIndex    = 1,
 	enumPair             = 2
     };
 
@@ -37,181 +38,136 @@ enum constant
 
 /* @prog substitute **********************************************************
 ** 
-** substitutes match residues from second of two aligned sequences given into
-**  corresponding positions in first of them, writing result as new sequence
+** substitutes match residues from second of two given traces into
+**   corresponding positions in first given trace, writing result as new,
+**   ungapped sequence
 **
 ******************************************************************************/
 
 int main(int argc , char **argv)
 {
     /* sequence objects and strings */
-    const AjPSeq ajpSeqTraceAcross = NULL; /* template---structure known   */
-    const AjPSeq ajpSeqTraceDown   = NULL; /* query---structure unknown    */
-    AjPSeq ajpSeqSingle            = NULL; /* rewritable template seq      */
-    AjPSeqset ajpSeqsetPairCurrent = NULL;
-    char *pcTraceDown              = NULL;
-    char *pcTraceAcross            = NULL;
-    char *pcSingleSeq              = NULL;
+    const AjPSeq ajpSeqTraceAcross = NULL; /* template sequence---has structure */
+    const AjPSeq ajpSeqTraceDown   = NULL; /* query sequence---no structure     */
+    AjPSeq ajpSeqSubstituted       = NULL; /* rewritable template seq           */
+    AjPSeqset ajpSeqsetPair        = NULL; /* current pair of sequences         */
+    char *pcTraceAcross            = NULL; /* C string of template sequence     */
+    char *pcTraceDown              = NULL; /* C string of query sequence        */
+    char *pcSubstitutedSeq         = NULL;
+    AjPSeqout ajpSeqoutSubstituted = NULL; /* substituted output seq object     */
 
     /* sequence characters */
-    char cTempTraceDown   = '\0';
-    char cTempTraceAcross = '\0';
-    char cTempSingleSeq   = '\0';
+    char cTempTraceDown      = '\0';
+    char cTempTraceAcross    = '\0';
+    char cTempSubstitutedSeq = '\0';
 
     /* sequence lengths */
-    ajint ajIntSingleSeqCount;
+    ajint ajIntSubstitutedSeqCount;
     ajint ajIntTraceCount;
     ajint ajIntAcrossTraceLen;
-    
-    /* file details for aligned sequence pairs */
-    AjPStr ajpStrPairFileName       = NULL; /* input file name         */
-    AjPStr ajpStrSingleFileName     = NULL; /* output file name        */
-    AjPFile ajpFileSingleCurrent    = NULL; /* output file             */
-    AjPList ajpListPairFiles        = NULL; /* list of pair files      */
 
     /* alignment parameters */
-    AjPDir ajpDirPairs              = NULL; /* dir of seq pair files   */
-    AjPStr ajpStrInFileSuffix       = NULL; /* extension pair files    */
-    AjPStr ajpStrOutFileSuffix      = NULL; /* extension sub'd files   */
-    AjPStr ajpStrSingleSeq          = NULL; /* substituted seq string  */
-    const AjPStr ajpStrSeqoutFormat = NULL; /* format of sub'd seqfile */
-    AjPSeqout ajpSeqoutSingle       = NULL; /* to write sub'd seq to   */
+    AjPStr ajpStrSubstitutedSeq     = NULL; /* substituted seq string           */
 
     embInit("substitute", argc, argv);
 
-    /* get alignment file directory from ACD */
-    ajpListPairFiles   = ajAcdGetDirlist("alignedpairsdirlist");
-    ajpDirPairs        = ajAcdGetDirectory("pairsdir");
-    ajpStrInFileSuffix = ajDirExt(ajpDirPairs);
+    /* get alignment from ACD */
+    ajpSeqsetPair = ajAcdGetSeqset("alignedpair");
+    ajpSeqoutSubstituted  = ajAcdGetSeqout("substitutedseq");
+    
+    /* if there aren't two sequences in alignment, bail */ 
+    if(ajpSeqsetPair->Size != enumPair)
+	ajFatal("\nThe file %S does not contain exactly one pair of sequence traces!\n",
+		ajpSeqsetPair->Filename);
 
-    ajpStrOutFileSuffix = ajStrNewC("sbs");
-    ajpStrSeqoutFormat  = ajStrNewC("fasta");
+    /* read seqset into seqs */
+    ajpSeqTraceAcross = ajSeqsetGetSeq(ajpSeqsetPair,
+				       enumTemplateSeqIndex);
+    ajpSeqTraceDown = ajSeqsetGetSeq(ajpSeqsetPair,
+				     enumQuerySeqIndex);
 
-    /* loop over pair files in alignment directory */
-    while(ajListPop(ajpListPairFiles, (void **)&ajpStrPairFileName))
-    {
-	/* DDDDEBUG: PRINT CURRENT FILENAME FROM ALIGNMENT DIRECTORY */
-	ajFmtPrint("\n%S", ajpStrPairFileName);
+    /* substitute all matches into a new version of the template sequence */
+    ajpSeqSubstituted = ajSeqNewS(ajpSeqTraceDown);
+    pcSubstitutedSeq  = ajSeqCharCopy(ajpSeqTraceAcross);
 
-	/* reserve memory for new seqset */
-	ajpSeqsetPairCurrent = ajSeqsetNew();
+    /* copy the original traces into character strings */
+    pcTraceDown   = ajSeqCharCopy(ajpSeqTraceDown);
+    pcTraceAcross = ajSeqCharCopy(ajpSeqTraceAcross);
 
-	/* get sequence objects from current alignment file */
-	ajSeqsetGetFromUsa(ajpStrPairFileName,
-			   &ajpSeqsetPairCurrent);
+    ajIntSubstitutedSeqCount = 0;
 
-	/* if there aren't two sequences in alignment, bail */ 
-	if(ajpSeqsetPairCurrent->Size != enumPair)
-	    ajFatal("The file %S does not contain exactly one pair of sequence traces!\n",ajpStrPairFileName);
+    /* get trace length */
+    ajIntAcrossTraceLen = ajSeqLen(ajpSeqTraceAcross);
 
-	/* read seqset into seqs */
-	ajpSeqTraceDown = ajSeqsetGetSeq(ajpSeqsetPairCurrent,
-					 enumQuerySeqIndex);
-	ajpSeqTraceAcross = ajSeqsetGetSeq(ajpSeqsetPairCurrent,
-					   enumTemplateSeqIndex);
-	/* get trace length */
-	ajIntAcrossTraceLen = ajSeqLen(ajpSeqTraceAcross);
-
-	/* substitute all matches into a new version of the template sequence */
-	ajpSeqSingle = ajSeqNewS(ajpSeqTraceDown);
-	pcSingleSeq  = ajSeqCharCopy(ajpSeqTraceAcross);
-
-	/* copy the original traces into character strings */
-	pcTraceDown   = ajSeqCharCopy(ajpSeqTraceDown);
-	pcTraceAcross = ajSeqCharCopy(ajpSeqTraceAcross);
-
-	ajIntSingleSeqCount = 0;
-
-	/* loop over entire length of template trace */
-	for(ajIntTraceCount = 0;
-	    ajIntTraceCount < ajIntAcrossTraceLen;
-	    ajIntTraceCount++)
+    /* loop over entire length of template trace */
+    for(ajIntTraceCount = 0;
+	ajIntTraceCount < ajIntAcrossTraceLen;
+	ajIntTraceCount++)
+    {    
+	/* DDDDEBUG */
+	if(enumDebugLevel > 1)
 	{
-	    /* DDDDEBUG */
 	    ajFmtPrint("BEFORE trace count: %d\t", ajIntTraceCount);
-	    ajFmtPrint("BEFORE sequence count: %d\t\n", ajIntSingleSeqCount);
+	    ajFmtPrint("BEFORE sequence count: %d\t\n", ajIntSubstitutedSeqCount);
 	    ajFmtPrint("BEFORE down (query): %c\t", cTempTraceDown);
 	    ajFmtPrint("BEFORE across (template): %c\t", cTempTraceAcross);
-	    ajFmtPrint("BEFORE substitute: %c\t\n\n", cTempSingleSeq);
+	    ajFmtPrint("BEFORE substitute: %c\t\n\n", cTempSubstitutedSeq);
+	}
+	
+	/* get current character in each trace string */
+	cTempTraceDown   = pcTraceDown[ajIntTraceCount];
+	cTempTraceAcross = pcTraceAcross[ajIntTraceCount];
 	    
-	    /* get current character in each trace string */
-	    cTempTraceDown   = pcTraceDown[ajIntTraceCount];
-	    cTempTraceAcross = pcTraceAcross[ajIntTraceCount];
-	    
-	    /* discard gaps in template trace */
-	    if(isalpha(cTempTraceAcross))
+	/* discard gaps in template trace */
+	if(isalpha(cTempTraceAcross))
+	{
+	    /* default to keeping current residue */
+	    cTempSubstitutedSeq = pcTraceAcross[ajIntTraceCount];
+	    /* discard gaps in query trace */
+
+	    if(isalpha(cTempTraceDown))
 	    {
-		/* default to keeping current residue */
-		cTempSingleSeq = pcTraceAcross[ajIntTraceCount];
-		/* discard gaps in query trace */
-
-		if(isalpha(cTempTraceDown))
-		{
-		    /* but substitute matches into output sequence */
-		    cTempSingleSeq = pcTraceDown[ajIntTraceCount];
-		}
-		/* read either original or matched character into output */
-		pcSingleSeq[ajIntSingleSeqCount] = cTempSingleSeq;
-		ajIntSingleSeqCount++;
+		/* but substitute matches into output sequence */
+		cTempSubstitutedSeq = pcTraceDown[ajIntTraceCount];
 	    }
-
-	    /* terminate substituted sequence string */
-	    pcSingleSeq[ajIntSingleSeqCount] = '\0';
-
-	    /* DDDDEBUG */
-	    ajFmtPrint("AFTER trace count: %d\t", ajIntTraceCount);
-	    ajFmtPrint("AFTER sequence count: %d\t\n", ajIntSingleSeqCount);
-	    ajFmtPrint("AFTER down (query): %c\t", cTempTraceDown);
-	    ajFmtPrint("AFTER across (template): %c\t", cTempTraceAcross);
-	    ajFmtPrint("AFTER substitute: %c\t\n\n", cTempSingleSeq);
+	    /* read either original or matched character into output */
+	    pcSubstitutedSeq[ajIntSubstitutedSeqCount] = cTempSubstitutedSeq;
+	    ajIntSubstitutedSeqCount++;
 	}
 
-	ajpStrSingleSeq = ajStrNewC(pcSingleSeq);
+	/* terminate substituted sequence string */
+	pcSubstitutedSeq[ajIntSubstitutedSeqCount] = '\0';
+
+	/* DDDDEBUG */
+	if(enumDebugLevel > 1)
+	{
+	    ajFmtPrint("AFTER trace count: %d\t", ajIntTraceCount);
+	    ajFmtPrint("AFTER sequence count: %d\t\n", ajIntSubstitutedSeqCount);
+	    ajFmtPrint("AFTER down (query): %c\t", cTempTraceDown);
+	    ajFmtPrint("AFTER across (template): %c\t", cTempTraceAcross);
+	    ajFmtPrint("AFTER substitute: %c\t\n\n", cTempSubstitutedSeq);
+	}
+    }
+
+    /* DDDDEBUG */
+    if(enumDebugLevel)
+	ajFmtPrint("!!!!Trace Length: %d\t!!!!\n", ajIntAcrossTraceLen);
+
+    ajpStrSubstitutedSeq = ajStrNewC(pcSubstitutedSeq);
+
+    /* DDDDEBUG */
+    if(enumDebugLevel)
+	ajFmtPrint("\n%S\n", ajpStrSubstitutedSeq);
+
+    ajSeqAssSeq(ajpSeqSubstituted, (const AjPStr)ajpStrSubstitutedSeq);
 	
-	ajFmtPrint("\n%S\n", ajpStrSingleSeq);
+    /* write out "aligned" sequences  */
+    ajSeqWrite(ajpSeqoutSubstituted, ajpSeqSubstituted);
 	
-	ajSeqAssSeq(ajpSeqSingle, (const AjPStr) ajpStrSingleSeq);
-
-	ajStrAss(&ajpStrSingleFileName, ajpStrPairFileName);
-	
-	/* write out "aligned" sequences  */
-	ajStrSubstitute(&ajpStrSingleFileName,
-			ajpStrInFileSuffix,
-			ajpStrOutFileSuffix);
-
-	ajpFileSingleCurrent = ajFileNewOut(ajpStrSingleFileName);    
-	ajpSeqoutSingle = ajSeqoutNewF(ajpFileSingleCurrent);
-	ajSeqOutSetFormat(ajpSeqoutSingle, ajpStrSeqoutFormat);
-	ajSeqWrite(ajpSeqoutSingle, ajpSeqSingle);
-	
-	/* free output sequence */
-	ajSeqoutDel(&ajpSeqoutSingle);
-
-	/* free current pair set */
-	ajSeqsetDel(&ajpSeqsetPairCurrent);
-
-	/* free pair file name */
-	ajStrDel(&ajpStrSingleFileName);
-
-	/* free current substituted sequence object */
-	ajSeqDel(&ajpSeqSingle);
-
-	/* free current output file */
-	ajFileClose(&ajpFileSingleCurrent);
-    }    
-
-    /* clear up the pair file objects */
-    while(ajListPop(ajpListPairFiles, (void **)&ajpStrPairFileName))
-	AJFREE(ajpStrPairFileName);
-
-    ajDirDel(&ajpDirPairs);
-
-    /* clean up strings */
-    ajStrDel(&ajpStrPairFileName);
-    ajStrDel(&ajpStrInFileSuffix);
-
-    ajListFree(&ajpListPairFiles);
-
+    /* free objects */
+    ajSeqoutDel(&ajpSeqoutSubstituted);
+    ajSeqsetDel(&ajpSeqsetPair);
+    ajSeqDel(&ajpSeqSubstituted);
 
     /* tidy up everything else */
     ajExit();
