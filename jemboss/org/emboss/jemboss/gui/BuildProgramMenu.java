@@ -254,6 +254,7 @@ public class BuildProgramMenu
 
         final JTextField alphaTextPaneEntry = new JTextField(12);
         alphaTextPaneEntry.setMaximumSize(new Dimension(100,20));
+        //scroll program list on typing 
         alphaTextPaneEntry.getDocument().addDocumentListener(new DocumentListener()
         {
           public void insertUpdate(DocumentEvent e)
@@ -277,6 +278,26 @@ public class BuildProgramMenu
               }
           }
         });
+        //load program form on carriage return
+        alphaTextPaneEntry.addActionListener(new ActionListener()
+        {
+          public void actionPerformed(ActionEvent e)
+          {
+            f.setCursor(cbusy);
+            int index = progList.getSelectedIndex();
+            applName = allAcd[index];
+            p2.removeAll();
+            BuildJembossForm bjf = new BuildJembossForm(index,allDes,db,
+                    allAcd,envp,cwd,embossBin,acdDirToParse,withSoap,p2,
+                    mysettings,acdStore,f);
+            p2.setVisible(false);
+            p2.setVisible(true);
+            JViewport vp = scrollProgForm.getViewport();
+            vp.setViewPosition(new Point(0,0));
+            f.setCursor(cdone);
+          }
+        });
+
         alphaTextPane.add(alphaTextPaneEntry);
         alphaPane.add(alphaTextPane);
         alphaPane.add(scrollPane);
