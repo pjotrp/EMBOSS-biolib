@@ -1,3 +1,3 @@
 #!/bin/csh
 
-../../scripts/purify.pl
+../../scripts/purify.pl -all
