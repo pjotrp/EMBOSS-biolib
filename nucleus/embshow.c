@@ -1658,7 +1658,6 @@ static void showFillTran(const EmbPShow thys,
 
     AjPStr line;
     AjPSeq tran   = NULL;
-    AjPStr seqstr = NULL; /* local copy of seq string for translating ranges */
     AjPSeq seq    = NULL; /* local copy of sequence for translating ranges */
     AjPStr temp = NULL;
     AjPStr sajb =NULL;	  /* peptide expanded to 3-let code or by 2 spaces */
@@ -1691,13 +1690,8 @@ static void showFillTran(const EmbPShow thys,
 	if(info->regions && ajRangeNumber(info->regions))
 	{
 	    framepad = 0;
-	    seqstr = ajSeqStrCopy(thys->seq);
-	    temp = ajStrNew();
-	    ajRangeStrExtract(info->regions, seqstr, &temp);
-	    ajStrDel(&seqstr);
-	    seq = ajSeqNew();
-	    ajSeqReplace(seq, temp);
-	    ajStrClear(&temp);
+	    seq = ajSeqNewS(thys->seq);
+	    ajRangeSeqExtract(info->regions, seq);
 	    tran = ajTrnSeqOrig(info->trnTable, seq, 1);
 	    ajSeqDel(&seq);
 
@@ -1719,8 +1713,7 @@ static void showFillTran(const EmbPShow thys,
 	    **  now put in spaces to align the translation to the
 	    **  sequence ranges
 	    */
-	    ajRangeStrStuff(info->regions, ajSeqStr(tran), &temp);
-	    ajSeqReplace(tran, temp);
+	    ajRangeSeqStuff(info->regions, tran);
 	    ajStrClear(&temp);
 	}
 	else
@@ -1777,15 +1770,17 @@ static void showFillTran(const EmbPShow thys,
 		for(i=0; i<ajStrLen(transeq); i++)
 		    if(ajStrChar(transeq,i) == '*')
 		    {
-			if(i-last < info->orfminsize+1) 
+			if(i-last < info->orfminsize+1)
+			{
 			    if(!(info->firstorf && last == -1))
 			    {
 				j = last+1;
 				if(info->lcinterorf)
 				    ajStrToLowerII(&transeq,j,i-1);
 				else
-				    ajStrReplaceK(&transeq,j,i-j,'-');
+				    ajStrReplaceK(&transeq,j,'-',i-j);
 			    }
+			}
 			last = i;
 		    }
 
@@ -1797,7 +1792,7 @@ static void showFillTran(const EmbPShow thys,
 		    if(info->lcinterorf)
 			ajStrToLowerII(&transeq,j,i-1);
 		    else
-			ajStrReplaceK(&transeq,j,i-j,'-');
+			ajStrReplaceK(&transeq,j,'-',i-j);
 		}
 		ajSeqReplace(tran, transeq);
 		ajStrDel(&transeq);
@@ -1815,7 +1810,7 @@ static void showFillTran(const EmbPShow thys,
 				if(info->lcinterorf)
 				    ajStrToLowerII(&transeq,j,i-1);
 				else
-				    ajStrReplaceK(&transeq,j,i-j,'-');
+				    ajStrReplaceK(&transeq,j,'-',i-j);
 			    }
 			last = i;
 		    } 
@@ -1828,7 +1823,7 @@ static void showFillTran(const EmbPShow thys,
 		    if(info->lcinterorf)
 			ajStrToLowerII(&transeq,j,i-1);
 		    else
-			ajStrReplaceK(&transeq,j,i-j,'-');
+			ajStrReplaceK(&transeq,j,'-',i-j);
 		}
 		ajSeqReplace(tran, transeq);
 		ajStrDel(&transeq);
@@ -2283,7 +2278,7 @@ static void showFillREflat(const EmbPShow thys,
 
 	    /* cover binding site with '='s */
 	    for(i=base-start; i<base-start+ajStrLen(m->pat); i++)
-		ajStrReplaceK(&sitestr, i, 1, '=');
+		ajStrReplaceK(&sitestr, i, '=', 1);
 
 	    /*
 	    **  I tried showing the pattern instead of '='s, but it looks
@@ -2296,15 +2291,15 @@ static void showFillREflat(const EmbPShow thys,
 	    /* put in cut sites */
 	    if(info->sense == 1)
 	    {				/* forward sense */
-		ajStrReplaceK(&sitestr, (cut1-start-1), 1, '>');
+		ajStrReplaceK(&sitestr, (cut1-start-1), '>', 1);
 		if(cut3)
-		    ajStrReplaceK(&sitestr, (cut3-start-1), 1, '>');
+		    ajStrReplaceK(&sitestr, (cut3-start-1), '>', 1);
 	    }
 	    else
 	    {				/* reverse sense */
-		ajStrReplaceK(&sitestr, (cut2-start-1), 1, '<');
+		ajStrReplaceK(&sitestr, (cut2-start-1), '<', 1);
 		if(cut4)
-		    ajStrReplaceK(&sitestr, (cut4-start-1), 1, '<');
+		    ajStrReplaceK(&sitestr, (cut4-start-1), '<', 1);
 	    }
 
 
