@@ -710,6 +710,20 @@ FP 0 /Died: /
 FP 1 /^Error: .*testarray.acd line 8: \(numlist\) Array attribute size: 0 less than 1/
 //
 
+ID acd-attralias
+AP acdc
+ER 1
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+CL testalias
+FI stderr
+FZ > 0
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 0 /Died: /
+FP 1 /^Error: .*testalias.acd line 22: \(hstring\) Attribute 'requ' unknown/
+//
+
 ## Command line validation tests
 ## Handling of associated qualifiers
 
@@ -1549,6 +1563,171 @@ FP /Error: File .*dbnoquote.rc line 8: '\]' found, unclosed quotes in 'unclosed 
 FP /Error: File .*dbnoquote.rc line 12: '\]' found, unclosed quotes in 'unclosed mixed quotes''\n/
 //
 
+#######################
+# Associated qualifiers
+#######################
+
+
+ID qual-ufo
+AP seqret
+CL ../../data/hba.fa -feat -ufo ../../data/hba.gff
+CL -auto -sf fasta
+## Fails to set feature type in output GFF
+FI stderr
+FC = 0
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 0
+FI hba_human.fasta
+FC = 4
+FP /^>HBA_HUMAN /
+FI hba_human.gff
+FC = 158
+FP /^##Type unknown Protein HBA_HUMAN\n/
+//
+
+ID qual-ufo-noid
+AP seqret
+CL ../../data/noid.fa -feat -ufo ../../data/hba.gff
+CL -stdout -auto -sf fasta
+## noid.fa has no sequence ID
+## This upsets the feature reading
+## Error GFF Group field for table ''
+FI stderr
+FC = 0
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 2
+FP /^>EMBOSS_001/
+//
+
+ID qual-ufo-noid-id
+AP seqret
+CL ../../data/noid.fa -feat -ufo ../../data/hba.gff
+CL -stdout -auto -sf fasta -sid fred
+## noid.fa has no sequence ID
+## This upsets the feature reading
+## Error GFF Group field for table ''
+FI stderr
+FC = 0
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 2
+FP /^>fred /
+//
+
+ID qual-sid
+AP seqret
+CL ../../data/noid.fa
+CL -stdout -auto -sf fasta -sid fred
+## Fails to use -sid in the output
+FI stderr
+FC = 0
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 2
+FP /^>fred/
+//
+
+ID qual-sid2
+AP seqret
+CL ../../data/noid.fa
+CL -stdout -auto -sf fasta -sid fred -osf ncbi
+## Fails to use -sid in the output
+FI stderr
+FC = 0
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 2
+FP /^>fred/
+//
+
+ID qual-sdb
+AP seqret
+CL ../../data/hba.fa
+CL -stdout -auto -sf fasta -sdb fred
+## noid.fa has no sequence ID
+## This upsets the feature reading
+## Error GFF Group field for table ''
+FI stderr
+FC = 0
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 4
+FP /^>HBA_HUMAN/
+//
+
+ID qual-sdb2
+AP seqret
+CL ../../data/hba.fa
+CL -stdout -auto -sf fasta -sdb fred -osf ncbi
+## noid.fa has no sequence ID
+## This upsets the feature reading
+## Error GFF Group field for table ''
+FI stderr
+FC = 0
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 4
+FP /^>gnl[|]fred[|]HBA_HUMAN /
+//
+
+ID qual-osdb
+AP seqret
+CL ../../data/hba.fa
+CL -stdout -auto -sf fasta -osdb fred
+FI stderr
+FC = 0
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 4
+FP /^>fred:HBA_HUMAN /
+//
+
+ID qual-osdb2
+AP seqret
+CL ../../data/hba.fa
+CL -stdout -auto -sf fasta -osdb fred -osf ncbi
+FI stderr
+FC = 0
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 4
+FP /^>gnl[|]fred[|]HBA_HUMAN /
+//
+
+ID qual-osdb3
+AP seqret
+CL ../../data/hba.fa
+CL -stdout -auto -sf fasta -sdb jim -osdb fred -osf ncbi
+FI stderr
+FC = 0
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 4
+FP /^>gnl[|]fred[|]HBA_HUMAN /
+//
+
 ###################
 # Main applications
 ###################
@@ -1557,16 +1736,15 @@ ID aaindexextract-keep
 AP aaindexextract
 DL keep
 PP mkdir ./AAINDEX
-## split export EMBOSS_DATA=./ into two statements
 PP EMBOSS_DATA=./
 PP export EMBOSS_DATA
 IN ../../data/aaindex1.test
 FI stderr
 FC = 2
-DI AAINDEX
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
+DI AAINDEX
 //
 
 ID abiview-ex
@@ -14051,10 +14229,10 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FP /^# Identity: +7\/11 \(63\.6%\)/
-FP /^# Score: +24\.0\n/
-FP 1 /^AFULL              5 aaccgg---tt     12\n/
-FP 1 /^BFULL              1 aaacgggcctt     11\n/
+FP /^# Identity: +7\/10 \(70\.0%\)/
+FP /^# Score: +25\.0\n/
+FP 1 /^AFULL              5 aaccgg--tt     12\n/
+FP 1 /^BFULL              2 aacgggcctt     11\n/
 FC = 31
 //
 
