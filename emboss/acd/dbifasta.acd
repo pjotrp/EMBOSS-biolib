@@ -23,16 +23,14 @@ string: dbname  [
   prompt: "Database name"
 ]
 
-variable:  dbknown "@(is: $(dbname))"
-
 string: directory  [
-  required: "$(dbknown)"
+  required: "Y"
   default: "."
   prompt: "Database directory"
 ]
 
 string: filenames  [
-  required: "$(dbknown)"
+  required: "Y"
   default: "*.dat"
   prompt: "Wildcard database filename"
 ]
