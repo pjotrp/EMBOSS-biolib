@@ -30,9 +30,7 @@ import java.util.Hashtable;
 
 import org.emboss.jemboss.soap.FileRoots;
 import org.emboss.jemboss.soap.JembossSoapException;
-
-import uk.ac.mrc.hgmp.embreo.*;
-import uk.ac.mrc.hgmp.embreo.filemgr.*;
+import org.emboss.jemboss.JembossParams;
 
 public class RemoteFileTreePanel extends JPanel 
 {
@@ -45,9 +43,9 @@ public class RemoteFileTreePanel extends JPanel
 * Creates a panel to contain the directory trees on an embreo server.
 * A combobox allows the user to select which filesystem to view.
 *
-* @param mysettings EmbreoParams with settings information
+* @param mysettings JembossParams with settings information
 */
-  public RemoteFileTreePanel(final EmbreoParams mysettings) throws JembossSoapException
+  public RemoteFileTreePanel(final JembossParams mysettings) throws JembossSoapException
   {
 
     jp = this;

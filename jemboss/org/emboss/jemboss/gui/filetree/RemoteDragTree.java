@@ -33,7 +33,7 @@ import java.util.*;
 
 import org.emboss.jemboss.gui.ResultsMenuBar;
 import org.emboss.jemboss.soap.*;
-import uk.ac.mrc.hgmp.embreo.EmbreoParams;
+import org.emboss.jemboss.JembossParams;
 import org.apache.soap.rpc.*;
 
 /**
@@ -46,7 +46,7 @@ public class RemoteDragTree extends JTree implements DragGestureListener,
 {
 
   public static DefaultTreeModel model;
-  private static EmbreoParams mysettings; 
+  private static JembossParams mysettings; 
   private static FileRoots froots;
 
   private String fs = new String(System.getProperty("file.separator"));
@@ -54,7 +54,7 @@ public class RemoteDragTree extends JTree implements DragGestureListener,
   final Cursor cdone = new Cursor(Cursor.DEFAULT_CURSOR);
 
 
-  public RemoteDragTree(EmbreoParams mysettings, FileRoots froots,
+  public RemoteDragTree(JembossParams mysettings, FileRoots froots,
                         final JPanel viewPane) 
   {
 

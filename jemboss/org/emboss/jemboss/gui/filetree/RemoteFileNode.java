@@ -28,7 +28,7 @@ import java.util.*;
 
 import org.emboss.jemboss.soap.*;
 
-import uk.ac.mrc.hgmp.embreo.EmbreoParams;
+import org.emboss.jemboss.JembossParams;
 
 
 public class RemoteFileNode extends DefaultMutableTreeNode 
@@ -43,7 +43,7 @@ public class RemoteFileNode extends DefaultMutableTreeNode
     private Vector children;
     private String rootdir;   
     private transient FileList parentList;        // make transient for
-    private transient EmbreoParams mysettings;    // Transferable to work
+    private transient JembossParams mysettings;    // Transferable to work
     private transient FileRoots froots;
 
 //  private String fs = new String(System.getProperty("file.separator"));
@@ -54,7 +54,7 @@ public class RemoteFileNode extends DefaultMutableTreeNode
     static DataFlavor flavors[] = { REMOTEFILENODE, DataFlavor.stringFlavor };
 
 
-    public RemoteFileNode(EmbreoParams mysettings, FileRoots froots,
+    public RemoteFileNode(JembossParams mysettings, FileRoots froots,
                     String file, FileList parentList, String parent)
     { 
       this.mysettings = mysettings;

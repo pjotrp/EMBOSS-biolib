@@ -25,7 +25,7 @@ package org.emboss.jemboss.soap;
 import java.util.*;
 import java.io.*;
 
-import uk.ac.mrc.hgmp.embreo.EmbreoParams;
+import org.emboss.jemboss.JembossParams;
 
 public class FileRoots implements Serializable 
 {
@@ -40,10 +40,10 @@ public class FileRoots implements Serializable
 /**
 *
 * Retrieve the list of available filesystem roots
-* @param mysettings EmbreoParams defining server parameters
+* @param mysettings JembossParams defining server parameters
 *
 */
-  public FileRoots(EmbreoParams mysettings) throws JembossSoapException
+  public FileRoots(JembossParams mysettings) throws JembossSoapException
   {
 
     fileRoots = null;

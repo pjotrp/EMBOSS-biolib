@@ -24,7 +24,7 @@ package org.emboss.jemboss.soap;
 import java.io.*;
 import java.util.*;
 
-import uk.ac.mrc.hgmp.embreo.EmbreoParams;
+import org.emboss.jemboss.JembossParams;
 
 //for Parameter definition
 import org.apache.soap.rpc.*;
@@ -45,10 +45,10 @@ static
 * Retrieve an ACD file using soap
 *
 * @param acdProg    The name of the application described by the ACD
-* @param mysettings EmbreoParams defining server parameters
+* @param mysettings JembossParams defining server parameters
 *
 */
-   public GetACD(String acdProg, EmbreoParams mysettings)
+   public GetACD(String acdProg, JembossParams mysettings)
    {
 
      if (mysettings.getDebug()) 

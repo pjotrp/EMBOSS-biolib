@@ -37,7 +37,7 @@ import org.emboss.jemboss.programs.ListFile;
 import org.emboss.jemboss.gui.sequenceChooser.*;
 import org.emboss.jemboss.soap.CallAjax;
 import org.emboss.jemboss.soap.JembossSoapException;
-import uk.ac.mrc.hgmp.embreo.EmbreoParams;
+import org.emboss.jemboss.JembossParams;
 
 
 /**
@@ -75,7 +75,7 @@ public class SectionPanel
   private JPanel sectionPane;
   private Box sectionBox;
 
-  private EmbreoParams mysettings;
+  private JembossParams mysettings;
 
 // input, required, advanced & output sections
   private boolean isInp = false;
@@ -110,7 +110,7 @@ public class SectionPanel
 * @param String containing the one line description for the application
 * @param Box for all the component labels
 * @param int total number of fields
-* @param EmbreoParams mysettings
+* @param JembossParams mysettings
 *
 * 
 */
@@ -121,7 +121,7 @@ public class SectionPanel
             InputSequenceAttributes inSeqAttr[],
             myComboPopup fieldOption[], JList multiOption[], SetInFileCard inSeq[],
             String db[], String des, Box lab[], int numofFields,
-            EmbreoParams mysettings, boolean withSoap)
+            JembossParams mysettings, boolean withSoap)
   {
 
     Border etched = BorderFactory.createEtchedBorder();

@@ -24,9 +24,11 @@ package org.emboss.jemboss;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.event.*;
-
 import java.awt.event.*;
 import java.io.*;
+
+import java.security.Security; //ssl
+import java.net.*;
 
 import org.emboss.jemboss.gui.startup.*;    // splash window
 import org.emboss.jemboss.gui.filetree.*;   // local files
@@ -61,7 +63,7 @@ public class Jemboss implements ActionListener
   private JScrollPane scrollTree;
 
 /** SOAP settings */
-  static EmbreoParams mysettings;
+  static JembossParams mysettings;
 
 /** true if in client-server mode (using SOAP) */
   static boolean withSoap;
@@ -88,14 +90,13 @@ public class Jemboss implements ActionListener
     String acdDirToParse = "";
     String[] envp = new String[4];  /* environment vars */
 
-    JembossParams jp = new JembossParams();
     if(!withSoap)
     {
-      String plplot = jp.getPlplot();
-      String embossData = jp.getEmbossData();
-      embossBin = jp.getEmbossBin();
-      String embossPath = jp.getEmbossPath();
-      acdDirToParse = jp.getAcdDirToParse();
+      String plplot = mysettings.getPlplot();
+      String embossData = mysettings.getEmbossData();
+      embossBin = mysettings.getEmbossBin();
+      String embossPath = mysettings.getEmbossPath();
+      acdDirToParse = mysettings.getAcdDirToParse();
       embossPath = new String("PATH" + ps +
                       embossPath + ps + embossBin + ps);
       envp[0] = "PATH=" + embossPath;        
@@ -106,6 +107,47 @@ public class Jemboss implements ActionListener
                        System.getProperty("user.home") + fs);
 
       envp[3] = "HOME=" + homeDirectory;
+    }
+    else if(mysettings.getPublicSoapURL().startsWith("https"))
+    {
+      //SSL settings
+
+//    System.setProperty ("javax.net.debug", "all");
+      com.sun.net.ssl.internal.ssl.Provider p =
+                     new com.sun.net.ssl.internal.ssl.Provider();
+      Security.addProvider(p);
+
+      //have to do it this way to work with JNLP
+      URL.setURLStreamHandlerFactory( new URLStreamHandlerFactory()
+      {
+        public URLStreamHandler createURLStreamHandler(final String protocol)
+        {
+          if(protocol != null && protocol.compareTo("https") == 0)
+          {
+            return new com.sun.net.ssl.internal.www.protocol.https.Handler();
+          }
+          return null;
+        }
+      });
+//    System.setProperty("java.protocol.handler.pkgs",
+//                        "com.sun.net.ssl.internal.www.protocol");
+
+      //location of keystore
+      System.setProperty("javax.net.ssl.trustStore",
+                        "resources/client.keystore");
+
+      String jembossClientKeyStore = System.getProperty("user.home") + 
+                       fs + ".jembossClientKeystore";
+
+      try
+      {
+        new JembossJarUtil("resources/client.jar").writeByteFile(
+                     "client.keystore",jembossClientKeyStore);
+        System.setProperty("javax.net.ssl.trustStore",
+                            jembossClientKeyStore);
+      }
+      catch(Exception exp){}
+
     }
 
     f = new JFrame("Jemboss");
@@ -262,7 +304,7 @@ public class Jemboss implements ActionListener
   {
     
     // initialize settings
-    mysettings = new EmbreoParams("jemboss");
+    mysettings = new JembossParams();
 
     if(args.length > 0)
     {

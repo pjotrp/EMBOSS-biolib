@@ -25,7 +25,7 @@ package org.emboss.jemboss.soap;
 import java.io.*;
 import java.util.*;
 
-import uk.ac.mrc.hgmp.embreo.EmbreoParams;
+import org.emboss.jemboss.JembossParams;
 
 //SOAP 
 import java.net.*;
@@ -50,10 +50,10 @@ public class PublicRequest
 /**
 * Makes a soap call to a public server, using the default service
 *
-* @param mysettings EmbreoParams defining server parameters
+* @param mysettings JembossParams defining server parameters
 * @param method     String defining which method to call
 */
-   public PublicRequest(EmbreoParams mysettings, String method)
+   public PublicRequest(JembossParams mysettings, String method)
    {
      this(mysettings, mysettings.getPublicSoapService(), method);
    }
@@ -61,11 +61,11 @@ public class PublicRequest
 /**
 * Makes a soap call to a public server, using the default service
 *
-* @param mysettings EmbreoParams defining server parameters
+* @param mysettings JembossParams defining server parameters
 * @param method     String defining which method to call
 * @param args       Vector of arguments
 */
-   public PublicRequest(EmbreoParams mysettings, String method, Vector args)
+   public PublicRequest(JembossParams mysettings, String method, Vector args)
    {
      this(mysettings, mysettings.getPublicSoapService(), method, args);
    }
@@ -73,11 +73,11 @@ public class PublicRequest
 /**
 * Makes a soap call to a public server
 *
-* @param mysettings EmbreoParams defining server parameters
+* @param mysettings JembossParams defining server parameters
 * @param service    String defining which service to call
 * @param method     String defining which method to call
 */
-   public PublicRequest(EmbreoParams mysettings, String service, String method)
+   public PublicRequest(JembossParams mysettings, String service, String method)
    {
      this(mysettings, service, method, (Vector) null);
    }
@@ -85,12 +85,12 @@ public class PublicRequest
 /**
 * Makes a soap call to a public server
 *
-* @param mysettings EmbreoParams defining server parameters
+* @param mysettings JembossParams defining server parameters
 * @param service    String defining which service to call
 * @param method     String defining which method to call
 * @param args       Vector of arguments
 */
-   public PublicRequest(EmbreoParams mysettings, String service, String method, Vector args)
+   public PublicRequest(JembossParams mysettings, String service, String method, Vector args)
    {
 
      if (mysettings.getDebug())
@@ -149,7 +149,7 @@ public class PublicRequest
      } 
      catch(SOAPException e) 
      {
-       mysettings.setServerStatus(soapURLName, EmbreoParams.SERVER_DOWN);
+       mysettings.setServerStatus(soapURLName, JembossParams.SERVER_DOWN);
        System.err.println("PublicRequest: Caught SOAPException (" +
 			  e.getFaultCode () + "): " +
 			  e.getMessage ());
@@ -171,14 +171,14 @@ public class PublicRequest
              {
 	       proglistresp = proglistcall.invoke(proglisturl,null);
 	       System.out.println("PublicRequest: success!");
-	       mysettings.setServerStatus(newurl, EmbreoParams.SERVER_OK);
+	       mysettings.setServerStatus(newurl, JembossParams.SERVER_OK);
 	       mysettings.setPublicSoapURL(newurl);
 	       successful = true;
 	       break;
 	     } 
              catch (SOAPException e2) 
              {
-	       mysettings.setServerStatus(newurl, EmbreoParams.SERVER_DOWN);
+	       mysettings.setServerStatus(newurl, JembossParams.SERVER_DOWN);
 	       System.err.println("PublicRequest: Caught SOAPException (" +
 			  e2.getFaultCode () + "): " +
 			  e2.getMessage ());

@@ -31,7 +31,6 @@ import java.net.URL;
 import java.util.*;
 import java.awt.event.*;
 import java.io.*;
-import uk.ac.mrc.hgmp.embreo.EmbreoParams;
 import org.emboss.jemboss.parser.*;
 import org.emboss.jemboss.programs.*;
 import org.emboss.jemboss.*;
@@ -92,13 +91,13 @@ public class BuildJembossForm implements ActionListener
   private String embossBin;
 
   private int numofFields;
-  private EmbreoParams mysettings;
+  private JembossParams mysettings;
 
   
   public BuildJembossForm(String appDescription, String db[],
         final String applName, String[] envp, String cwd, String embossBin,
         String acdText, final boolean withSoap, JPanel p2, 
-        final EmbreoParams mysettings, final JFrame f)
+        final JembossParams mysettings, final JFrame f)
   {
 
     this.f = f;

@@ -44,7 +44,7 @@ public class SetUpMenuBar
 
   public static SequenceList seqList;
 
-  public SetUpMenuBar(final EmbreoParams mysettings, final JFrame f,
+  public SetUpMenuBar(final JembossParams mysettings, final JFrame f,
                       final String envp[], final String cwd,
                       final boolean withSoap)
   {

@@ -26,7 +26,6 @@ import java.io.*;
 import java.util.*;
 
 import org.emboss.jemboss.JembossParams;
-import uk.ac.mrc.hgmp.embreo.EmbreoParams;
 
 import java.net.*;
 import org.w3c.dom.*;
@@ -52,13 +51,13 @@ public class PrivateRequest
 /**
 *
 * Make a soap call to a private server, using the default service
-* @param mysettings EmbreoParams defining server parameters
+* @param mysettings JembossParams defining server parameters
 * @param method     String defining which method to call
 * @param args       Vector of arguments
 * @throws JembossSoapException If authentication fails
 *
 */
-   public PrivateRequest(EmbreoParams mysettings, String method, Vector args) 
+   public PrivateRequest(JembossParams mysettings, String method, Vector args) 
                 throws JembossSoapException 
    {
      this(mysettings, mysettings.getPrivateSoapService(), method, args);
@@ -67,13 +66,13 @@ public class PrivateRequest
 /**
 *
 * Make a soap call to a private server
-* @param mysettings EmbreoParams defining server parameters
+* @param mysettings JembossParams defining server parameters
 * @param service    String defining which service to call
 * @param method     String defining which method to call
 *
 * @throws JembossSoapException If authentication fails
 */
-   public PrivateRequest(EmbreoParams mysettings, String service, String method)
+   public PrivateRequest(JembossParams mysettings, String service, String method)
                 throws JembossSoapException
    {
      this(mysettings, service, method, (Vector) null);
@@ -82,14 +81,14 @@ public class PrivateRequest
 /**
 *
 * Make a soap call to a private server
-* @param mysettings EmbreoParams defining server parameters
+* @param mysettings JembossParams defining server parameters
 * @param service    String defining which service to call
 * @param method     String defining which method to call
 * @param args       Vector of arguments
 *
 * @throws JembossSoapException If authentication fails
 */
-   public PrivateRequest(EmbreoParams mysettings, String service, String method,
+   public PrivateRequest(JembossParams mysettings, String service, String method,
                          Vector args) throws JembossSoapException 
    {
 
@@ -190,7 +189,7 @@ public class PrivateRequest
        } 
        else 
        {
-	 mysettings.setServerStatus(soapURLName, EmbreoParams.SERVER_DOWN);
+	 mysettings.setServerStatus(soapURLName, JembossParams.SERVER_DOWN);
 	 if (mysettings.getPrivateServerFailover()) 
          {
 	   if (mysettings.getDebug()) 

@@ -34,7 +34,7 @@ import java.util.*;
 
 import org.emboss.jemboss.programs.*;
 import org.emboss.jemboss.soap.*;
-import uk.ac.mrc.hgmp.embreo.EmbreoParams;
+import org.emboss.jemboss.JembossParams;
 
 /**
 *
@@ -90,7 +90,7 @@ public class ShowSavedResults
 * Show the saved results on the server.
 *
 */
-  public ShowSavedResults(final EmbreoParams mysettings, final JFrame f) 
+  public ShowSavedResults(final JembossParams mysettings, final JFrame f) 
   {
 
     this("Saved Results on Server");
@@ -306,7 +306,7 @@ public class ShowSavedResults
 * Show the results sent to a batch queue.
 *
 */
-  public ShowSavedResults(final EmbreoParams mysettings, final PendingResults epr)
+  public ShowSavedResults(final JembossParams mysettings, final PendingResults epr)
                                            throws JembossSoapException
   {
 

@@ -26,7 +26,7 @@ import java.io.*;
 import java.util.*;
 import javax.swing.DefaultListModel;
 
-import uk.ac.mrc.hgmp.embreo.EmbreoParams;
+import org.emboss.jemboss.JembossParams;
 
 import org.apache.soap.rpc.*;
 
@@ -48,13 +48,13 @@ public class FileList
 * list of files (including directories) and a list of those files
 * that are directories.
 *
-* @param mysettings EmbreoParams defining server parameters
+* @param mysettings JembossParams defining server parameters
 * @param fileRoot the filesystem root being used
 * @param dir directory to list files in, relative to fileRoot
 *
 * @throws JembossSoapException If authentication fails
 */
-   public FileList(EmbreoParams mysettings, String fileRoot, String dir)
+   public FileList(JembossParams mysettings, String fileRoot, String dir)
                       throws JembossSoapException 
    {
 

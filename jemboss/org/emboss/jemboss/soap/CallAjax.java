@@ -24,7 +24,7 @@ package org.emboss.jemboss.soap;
 import java.io.*;
 import java.util.*;
 import org.apache.soap.rpc.*;
-import uk.ac.mrc.hgmp.embreo.*;
+import org.emboss.jemboss.JembossParams;
 
 public class CallAjax {
 
@@ -35,7 +35,7 @@ public class CallAjax {
   private boolean protein;
   private PublicRequest epr;
 
-   public CallAjax(String fileContent, String seqtype, EmbreoParams mysettings) 
+   public CallAjax(String fileContent, String seqtype, JembossParams mysettings) 
        throws JembossSoapException 
    {
 

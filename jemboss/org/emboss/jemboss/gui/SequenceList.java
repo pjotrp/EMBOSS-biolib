@@ -34,7 +34,7 @@ import java.awt.event.*;
 import org.emboss.jemboss.parser.*;
 import org.emboss.jemboss.soap.*;
 
-import uk.ac.mrc.hgmp.embreo.EmbreoParams;
+import org.emboss.jemboss.JembossParams;
 
 import org.emboss.jemboss.gui.filetree.*;
 import java.awt.datatransfer.*;
@@ -62,7 +62,7 @@ public class SequenceList extends JFrame
   final Cursor cdone = new Cursor(Cursor.DEFAULT_CURSOR);
 
 
-  public SequenceList(final boolean withSoap,final EmbreoParams mysettings)
+  public SequenceList(final boolean withSoap,final JembossParams mysettings)
   {
     super("Sequence List");
     setSize(400,155);

@@ -24,7 +24,7 @@ package org.emboss.jemboss.soap;
 import java.io.*;
 import java.util.*;
 
-import uk.ac.mrc.hgmp.embreo.*;
+import org.emboss.jemboss.JembossParams;
 
 
 public class GetWossname 
@@ -35,7 +35,7 @@ public class GetWossname
    private String dbText;
    private PublicRequest epr;
 
-   public GetWossname(EmbreoParams mysettings)
+   public GetWossname(JembossParams mysettings)
    {
 
      epr = new PublicRequest(mysettings,"getWossname");

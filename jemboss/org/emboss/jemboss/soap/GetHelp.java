@@ -24,7 +24,7 @@ package org.emboss.jemboss.soap;
 import java.io.*;
 import java.util.*;
 
-import uk.ac.mrc.hgmp.embreo.EmbreoParams;
+import org.emboss.jemboss.JembossParams;
 import org.apache.soap.rpc.*;
 
 public class GetHelp 
@@ -38,10 +38,10 @@ public class GetHelp
 *
 * Get the help text for an application
 * @param acdProg name of the application to get the help text for
-* @param mysettings EmbreoParams defining server parameters
+* @param mysettings JembossParams defining server parameters
 *
 */
-   public GetHelp(String acdProg, EmbreoParams mysettings)
+   public GetHelp(String acdProg, JembossParams mysettings)
    {
 
      Vector params = new Vector();

@@ -24,7 +24,7 @@ package org.emboss.jemboss.soap;
 import java.io.*;
 import java.util.*;
 
-import uk.ac.mrc.hgmp.embreo.EmbreoParams;
+import org.emboss.jemboss.JembossParams;
 
 public class ShowDB 
 {
@@ -36,10 +36,10 @@ public class ShowDB
 /**
 *
 * Makes a soap call to retrieve the showdb output
-* @param mysettings EmbreoParams defining server parameters
+* @param mysettings JembossParams defining server parameters
 *
 */
-  public ShowDB(EmbreoParams mysettings)
+  public ShowDB(JembossParams mysettings)
   {
     
     PublicRequest dbReq = new PublicRequest(mysettings, "show_db");

@@ -32,12 +32,12 @@ import java.io.*;
 import java.util.*;
 
 import org.emboss.jemboss.JembossJarUtil;
+import org.emboss.jemboss.JembossParams;
 import org.emboss.jemboss.programs.*;      // running EMBOSS programs
 import org.emboss.jemboss.gui.startup.*;   // finds progs, groups, docs & db's
 import org.emboss.jemboss.soap.*;
 import org.emboss.jemboss.gui.form.*;      // prog forms constructed from ACD
 import org.emboss.jemboss.soap.GetWossname;
-import uk.ac.mrc.hgmp.embreo.*;
 
 /**
 *
@@ -62,7 +62,7 @@ public class BuildProgramMenu
 *  @param  JScrollPane EMBOSS form scroll pane 
 *  @param  String location of the EMBOSS binaries
 *  @param  String array of environment variables for EMBOSS applications.
-*  @param  EmbreoParams SOAP parameter settings
+*  @param  JembossParams SOAP parameter settings
 *  @param  boolean true if using SOAP server
 *  @param  String current working directory (local)
 *  @param  String location of the ACD directory
@@ -73,7 +73,7 @@ public class BuildProgramMenu
   public BuildProgramMenu(final JPanel p1, final JPanel p2, 
            final JPanel pform, final JScrollPane scrollProgForm,
            final String embossBin, final String envp[],
-           final EmbreoParams mysettings, final boolean withSoap,
+           final JembossParams mysettings, final boolean withSoap,
            final String cwd, final String acdDirToParse,
            final JFrame f, final AuthPopup splashing)
   {
@@ -387,7 +387,7 @@ public class BuildProgramMenu
 *
 */
   private String getAcdText(String applName, String acdDirToParse,
-                            EmbreoParams mysettings, boolean withSoap)
+                            JembossParams mysettings, boolean withSoap)
   {
 
     String acdText = new String("");

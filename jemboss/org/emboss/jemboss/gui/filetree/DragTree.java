@@ -34,7 +34,7 @@ import org.apache.soap.rpc.*;
 
 import org.emboss.jemboss.soap.*;
 import org.emboss.jemboss.gui.ResultsMenuBar;
-import uk.ac.mrc.hgmp.embreo.EmbreoParams;
+import org.emboss.jemboss.JembossParams;
 
 /**
 *
@@ -48,7 +48,7 @@ public class DragTree extends JTree implements DragGestureListener,
 
   public static DefaultTreeModel model;
   private Hashtable openNodeDir;
-  private EmbreoParams mysettings;
+  private JembossParams mysettings;
 
   private File root;
   private String fs = new String(System.getProperty("file.separator"));
@@ -56,7 +56,7 @@ public class DragTree extends JTree implements DragGestureListener,
   final Cursor cdone = new Cursor(Cursor.DEFAULT_CURSOR);
 
 
-  public DragTree(File rt, final JFrame f, EmbreoParams mysettings) 
+  public DragTree(File rt, final JFrame f, JembossParams mysettings) 
   {
     this.mysettings = mysettings;
     this.root = rt;
