@@ -8987,7 +8987,7 @@ AjPRange ajAcdGetRange(const char *token)
 
 static void acdSetRange(AcdPAcd thys)
 {
-    AjPRange val;
+    AjPRange val = NULL;
 
     AjBool required = ajFalse;
     AjBool ok       = ajFalse;
