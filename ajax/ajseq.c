@@ -3694,7 +3694,7 @@ ajint ajSeqGapCountS (AjPStr str) {
 void ajSeqGapStandard (AjPSeq thys, char gapch) {
 
   char newgap = '-';
-  static char testchars[] = "-~."; /* all known gap characters */
+  static char testchars[] = "-~. "; /* all known gap characters */
   char *testgap = testchars;
 
   if (gapch)
