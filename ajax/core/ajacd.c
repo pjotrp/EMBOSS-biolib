@@ -950,10 +950,10 @@ AcdOAttr acdAttrAlign[] =
 	 "[P]rotein or [N]ucleotide"},
     {"taglist", VT_STR, "",
 	 "Extra tags to report"},
-    {"minseqs", VT_INT, "0",
-	 "Minimum number of extra tags"},
-    {"maxseqs", VT_INT, "0",
-	 "Maximum number of extra tags"},
+    {"minseqs", VT_INT, "1",
+	 "Minimum number of sequences"},
+    {"maxseqs", VT_INT, "(INT_MAX)",
+	 "Maximum number of sequences"},
     {"multiple", VT_BOOL, "N",
 	 "More than one alignment in one file"},
     {"nullok", VT_BOOL, "N",
@@ -1363,6 +1363,10 @@ AcdOAttr acdAttrSeqall[] =
 	 "Read features if any"},
     {"entry", VT_BOOL, "N",
 	 "Read whole entry text"},
+    {"minseqs", VT_INT, "1",
+	 "Minimum number of sequences"},
+    {"maxseqs", VT_INT, "(INT_MAX)",
+	 "Maximum number of sequences"},
     {"nullok", VT_BOOL, "N",
 	 "Can accept a null filename as 'no file'"},
     {NULL, VT_NULL, NULL,
@@ -1395,6 +1399,10 @@ AcdOAttr acdAttrSeqoutall[] =
 	 "Write features if any"},
     {"type", VT_STR, "",
 	 "Output sequence type (protein, gapprotein, etc.)"},
+    {"minseqs", VT_INT, "1",
+	 "Minimum number of sequences"},
+    {"maxseqs", VT_INT, "(INT_MAX)",
+	 "Maximum number of sequences"},
     {"nullok", VT_BOOL, "N",
 	 "Can accept a null USA as 'no output'"},
     {NULL, VT_NULL, NULL,
@@ -1411,6 +1419,10 @@ AcdOAttr acdAttrSeqoutset[] =
 	 "Write features if any"},
     {"type", VT_STR, "",
 	 "Output sequence type (protein, gapprotein, etc.)"},
+    {"minseqs", VT_INT, "1",
+	 "Minimum number of sequences"},
+    {"maxseqs", VT_INT, "(INT_MAX)",
+	 "Maximum number of sequences"},
     {"nullok", VT_BOOL, "N",
 	 "Can accept a null USA as 'no output'"},
     {NULL, VT_NULL, NULL,
@@ -1423,6 +1435,10 @@ AcdOAttr acdAttrSeqset[] =
 	 "Input sequence type (protein, gapprotein, etc.)"},
     {"features", VT_BOOL, "N",
 	 "Read features if any"},
+    {"minseqs", VT_INT, "1",
+	 "Minimum number of sequences"},
+    {"maxseqs", VT_INT, "(INT_MAX)",
+	 "Maximum number of sequences"},
     {"nullok", VT_BOOL, "N",
 	 "Can accept a null filename as 'no file'"},
     {NULL, VT_NULL, NULL,
@@ -1435,6 +1451,14 @@ AcdOAttr acdAttrSeqsetall[] =
 	 "Input sequence type (protein, gapprotein, etc.)"},
     {"features", VT_BOOL, "N",
 	 "Read features if any"},
+    {"minseqs", VT_INT, "1",
+	 "Minimum number of sequences"},
+    {"maxseqs", VT_INT, "(INT_MAX)",
+	 "Maximum number of sequences"},
+    {"minsets", VT_INT, "1",
+	 "Minimum number of sequence sets"},
+    {"maxsets", VT_INT, "(INT_MAX)",
+	 "Maximum number of sequence sets"},
     {"nullok", VT_BOOL, "N",
 	 "Can accept a null filename as 'no file'"},
     {NULL, VT_NULL, NULL,
@@ -17603,7 +17627,8 @@ static AjPStr* acdSelectValue(const AcdPAcd thys, ajint min, ajint max,
 {
     AjPStr *val = NULL;
     
-    AjPStr delim;
+    static AjPStr delim;
+    AjPStr tmpstr;
     AjPStr value;
     AjBool exactcase;
     AjPStrTok handle;
@@ -17633,8 +17658,10 @@ static AjPStr* acdSelectValue(const AcdPAcd thys, ajint min, ajint max,
     
     acdAttrToBool(thys, "casesensitive", ajFalse, &exactcase);
     
-    delim = acdAttrValue(thys, "delimiter");
-    if(!ajStrLen(delim))
+    tmpstr = acdAttrValue(thys, "delimiter");
+    if(ajStrLen(tmpstr))
+	ajStrAssS(&delim, tmpstr);
+    else
 	ajStrAssC(&delim, ";");
     
     if(!repdelim)
