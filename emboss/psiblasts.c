@@ -134,6 +134,12 @@
 **  Must implement better way of producing value of TRAIN for TY record - 
 **  which uses file of correspondence between SCOP domains and SWISPROT 
 **  sequences ?
+**
+**  Important Note
+**
+**  WHEN RUNNING PSIBLASTS AT THE HGMP IT IS ESSENTIAL THAT THE COMMAND 
+**  'use blast_v2' (which runs the script /packages/menu/USE/blast_v2) IS GIVEN 
+**  BEFORE IT IS RUN. 
 ******************************************************************************/ 
         
 
@@ -219,12 +225,12 @@ AjPList SeqGet(AjPStr alignf)
 	    ajFmtScanS(line, "%*s%S", &seq);
 	    	    
 	    /* Push string onto list */
-	    ajListPushApp(list_seqs,seq);
+	    ajListstrPushApp(list_seqs,seq);
 	    continue;
 	}
 	
     }
-    ajListDel(&list_seqs); 
+    ajListstrDel(&list_seqs); 
     list_seqs = ajListstrNew();
    
     for(x=0;x<cnt;x++)
@@ -232,7 +238,7 @@ AjPList SeqGet(AjPStr alignf)
 	seq = ajStrNew();
 	ajStrSubstituteCC(&arr_seqs[x],"-","");
 	ajStrAss(&seq,arr_seqs[x]);
-	ajListPushApp(list_seqs,seq);
+	ajListstrPushApp(list_seqs,seq);
     } 
         
     /* Free up the list */
