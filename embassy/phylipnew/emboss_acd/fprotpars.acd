@@ -8,9 +8,9 @@ section: input [
   type: "page"
 ]
 
-seqset: sequences  [
+seqsetall: sequences  [
   parameter: "Y"
-  type: "gapany"
+  type: "gapproteinphylo"
 ]
 
 endsection: input
@@ -22,7 +22,6 @@ section: output [
 
 outfile: outfile  [
   parameter: "Y"
-  default: "eprotpars.outfile"
   knowntype: "protpars output"
 ]
 
@@ -63,7 +62,7 @@ toggle: trout  [
   information: "Create a tree file"
 ]
 
-outfile: treefile  [
+outfile: outtreefile  [
   standard: "$(trout)"
   extension: "treefile"
   information: "Tree file name"
