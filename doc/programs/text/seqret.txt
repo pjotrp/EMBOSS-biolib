@@ -115,8 +115,8 @@ Description
    embl or EMBL:* All sequences in the EMBL database
    @mylist Reads file mylist and uses each line as a separate USA. This
    is standard VMS list file syntax, also used in SRS 4.0 but missing in
-   SRS 5.0. List files can contain references to other lists files or any
-   other standard USA.
+   SRS 5.0. The list file is a list of USAs (one per line). List files
+   can contain references to other lists files or any other standard USA.
    list::mylist Same as "@mylist" above
    'getz -e [embl-id:paamir] |' The pipe character "|" causes EMBOSS to
    fire up getz (SRS 5.1) to extract entry PAAMIR from EMBL in EMBL
@@ -210,25 +210,46 @@ Description
    To date, the following sequence formats are available as output.
    
    Some sequence formats can hold multiple sequences in one file, these
-   are marked as multiple in the following table. Others, such as GCG,
-   plain and staden formats can only hold one sequence per file, these
-   are marked as single.
+   are marked as multiple in the following table. The details of how many
+   sequences are held in one file differs between formats, but they
+   either allow many sequences to be concatenated one after the other, or
+   they hold the sequences together in some sort of aligned set of
+   sequences.
    
-   The single-only formats cause problems when there are multiple
-   sequences to write out because a file containing multiple sequences in
-   that format is invalid. Therefore, when these formats are specified
-   for output, an EMBOSS program will ignore the given output filename
-   and will generate its own file names. These file names are made from
-   the sequence ID name, with the name of the format as the extension
-   (e.g. hsfau.gcg).
+   Other formats, such as GCG, plain and staden formats can only hold one
+   sequence per file, these are marked as single. An attempt to
+   concatenate several sequences in one file leaves the results as a mess
+   that makes it impossible to decide where the sequences start and end
+   or what is annotation and what is sequence.
    
-   To force it to use a the named file, use -osf gcg -noossingle on the
-   command line. If more than one sequence is written to a file in a
-   format that cannot cope with multiple sequences in a file, you will
-   not be able to read in the sequences again using EMBOSS programs.
+   These single formats therefore cause problems when there are multiple
+   sequences to write out because a single file containing multiple
+   sequences in that format is invalid. When these formats are specified
+   for output, an EMBOSS program will allow you to write many sequences
+   to one file, but EMBOSS programs will not be able to reliably read in
+   the resulting mess.
    
-   There must be a better way of dealing with this but we can't for the
-   life of us think of it at the moment.
+   N.B This behaviour changed in EMBOSS version 1.7.0. (31 Oct 2000)
+   Previously, EMBOSS programs that were asked to write multiple
+   sequences in a single format whould ignore the requested output file
+   name and would write each sequence into a separate file whose name was
+   constructed from the sequence name and the name of the format. This
+   resulted in ouput to files whose names could not be reliably
+   controlled. A decision was taken that EMBOSS users were intelligent
+   people who could live with the consequences of their actions and who
+   could learn not to write out multiple sequences to a file in formats
+   that could not cope with multiple sequences.
+   
+   It you really wish to write multiple sequences out in formats that can
+   not cope with multiple sequences, you are advised to add the global
+   qualifier -ossingle on the command line. This will force the EMBOSS
+   program to ignore the given output file name and will generate its own
+   file names. One sequence will be written to each such file. These file
+   names are made from the sequence ID name, with the name of the format
+   as the extension (e.g. hsfau.gcg).
+   
+   This is not ideal. Preferably, you should stay away from formats that
+   can't cope with multiple sequences in a file.
    
    Output Format Single/
    Multiple Comments
