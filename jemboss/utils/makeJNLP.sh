@@ -136,7 +136,7 @@ fi
 
 cd $CWPWD
 jar cf Jemboss.jar images/* org/emboss/jemboss/*class resources/*.jar \
-        resources/version resources/jemboss.properties resources/readme.txt \
+        resources/version resources/jemboss.properties \
         resources/*html org/emboss/jemboss/*/*class \
         org/emboss/jemboss/*/*/*class 
 mv Jemboss.jar jnlp
