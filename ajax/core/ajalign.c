@@ -1370,8 +1370,8 @@ static void alignWriteTCoffee (AjPAlign thys)
     AjPFile outf = thys->File;
     int nseq;
     int nali;
-    AlignPData* pdata;
-    AlignPData data;
+    AlignPData* pdata = NULL;
+    AlignPData data = NULL;
     ajint iali;
     ajint iseq;
     ajint i;
