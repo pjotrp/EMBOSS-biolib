@@ -27,7 +27,7 @@ pkgdata_DATA = codes.english \
 	preg.acd prettyplot.acd prettyseq.acd prima.acd \
 	primersearch.acd printsextract.acd profit.acd prophecy.acd \
 	prophet.acd prosextract.acd proteinmotifsearch.acd pscan.acd \
-	rebaseextract.acd recode.acd redata.acd remap.acd \
+	rebaseextract.acd recoder.acd redata.acd remap.acd \
 	restover.acd restrict.acd revseq.acd scope.acd seealso.acd \
 	seqinfo.acd seqmatchall.acd seqret.acd seqretall.acd \
 	seqretallfeat.acd seqretfeat.acd seqretset.acd \

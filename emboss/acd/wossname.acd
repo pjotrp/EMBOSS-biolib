@@ -4,7 +4,7 @@
 
 appl: wossname [
 	doc: "Finds programs by keywords in their one-line documentation"
-	groups: "Help"
+	groups: "Information"
 ]
 
   string: search [
