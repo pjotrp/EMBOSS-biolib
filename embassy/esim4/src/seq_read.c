@@ -7,12 +7,12 @@
 
 #ifndef __lint
 static const char rcsid[] =
-"$Id: seq_read.c,v 1.1 2002/02/25 09:33:50 hgmp Exp $";
+"$Id: seq_read.c,v 1.2 2004/08/05 16:02:32 rice Exp $";
 #endif
 
 static SEQ *seq_mask_inplace(SEQ *seq);
 static int getpair(FILE *fp, int *a, int *b);
-static char *byte_fill_range(uchar *p, int l, int c, int a, int b);
+static char *byte_fill_range(sim4_uchar *p, int l, int c, int a, int b);
 static int ws(int c);
 static int getnwc(FILE *fp);
 static void un_getc(int c, FILE *fp);
@@ -110,7 +110,7 @@ int seq_read(SEQ *seq)
 	if (SEQ_LEN(seq) == -1) {
 		char_append(&sseq, 0);
 		charvec_fit(&sseq);
-		seq->seq = (uchar*)sseq.a;
+		seq->seq = (sim4_uchar*)sseq.a;
 		seq->slen = sseq.len;
 		if (seq->slen > 0) --seq->slen;  /* don't include '\0' */
 	} else {
@@ -129,7 +129,7 @@ int seq_read(SEQ *seq)
 			char_append(&ssub, sseq.a[i-1]);
 		char_append(&ssub, 0);
 		charvec_fini(&sseq);
-		seq->seq = (uchar*)ssub.a;
+		seq->seq = (sim4_uchar*)ssub.a;
 	}
 
 	seq->flags = seq->flags &~ SEQ_IS_REVCOMP;
@@ -175,7 +175,7 @@ static int getpair(FILE *fp, int *a, int *b)
         return 1;
 }
 
-static char *byte_fill_range(uchar *p, int l, int c, int a, int b)
+static char *byte_fill_range(sim4_uchar *p, int l, int c, int a, int b)
 {
         /* fill [a,b] (1-indexed) in p with c */
 

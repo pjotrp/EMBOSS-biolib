@@ -7,18 +7,18 @@
 
 #ifndef __lint
 /*@unused@*/
-static const char rcsid[] = "$Id: poly.c,v 1.2 2002/05/10 16:10:17 rice Exp $";
+static const char rcsid[] = "$Id: poly.c,v 1.3 2004/08/05 16:02:32 rice Exp $";
 #endif
 
-static void remove_polyT_front(struct edit_script_list **,Exon *,uchar *,uchar*,int *);
-static void remove_polyA_back(struct edit_script_list **,Exon *,uchar *,uchar*,int,int *);
-static void trim_polyT_align(struct edit_script_list **,Exon **,const int,int *,uchar *,uchar *);
-static void trim_polyA_align(struct edit_script_list **,Exon *,Exon **,const int,int *,uchar *,uchar *);
+static void remove_polyT_front(struct edit_script_list **,Exon *,sim4_uchar *,sim4_uchar*,int *);
+static void remove_polyA_back(struct edit_script_list **,Exon *,sim4_uchar *,sim4_uchar*,int,int *);
+static void trim_polyT_align(struct edit_script_list **,Exon **,const int,int *,sim4_uchar *,sim4_uchar *);
+static void trim_polyA_align(struct edit_script_list **,Exon *,Exon **,const int,int *,sim4_uchar *,sim4_uchar *);
 
-void get_polyAT(uchar *seq, int len, int *pT, int *pA, int flag)
+void get_polyAT(sim4_uchar *seq, int len, int *pT, int *pA, int flag)
 {
     register int i, sum10, sum20;
-    register uchar *s, *t, *v;
+    register sim4_uchar *s, *t, *v;
     int last10;
 
     static char encodingA[128];
@@ -94,7 +94,7 @@ void get_polyAT(uchar *seq, int len, int *pT, int *pA, int flag)
 }
 
 
-void remove_poly(struct edit_script_list **Script, Exon *Exons, uchar *s1, uchar *s2, int len2, int *pT, int *pA)
+void remove_poly(struct edit_script_list **Script, Exon *Exons, sim4_uchar *s1, sim4_uchar *s2, int len2, int *pT, int *pA)
 {
      remove_polyT_front(Script, Exons, s1, s2, pT); 
      remove_polyA_back(Script, Exons, s1, s2, len2, pA);
@@ -104,9 +104,9 @@ void remove_poly(struct edit_script_list **Script, Exon *Exons, uchar *s1, uchar
      return;
 }
 
-static void remove_polyA_back(struct edit_script_list **Sptr, Exon *Exons, uchar *s1, uchar *s2, int len2, int *lastA) {
+static void remove_polyA_back(struct edit_script_list **Sptr, Exon *Exons, sim4_uchar *s1, sim4_uchar *s2, int len2, int *lastA) {
      Exon *t, *exons_tail, *prev; /* start from Lblock */
-     uchar *b, *end;
+     sim4_uchar *b, *end;
      int numA, pA, dummy, trim_p, reverse_script=0;
 
      *lastA = len2+1;  pA = 0;
@@ -151,12 +151,12 @@ static void remove_polyA_back(struct edit_script_list **Sptr, Exon *Exons, uchar
      if (reverse_script) script_flip_list(Sptr);
 }
 
-static void trim_polyA_align(struct edit_script_list **Sptr, Exon *lblock, Exon **exons, const int bc, int *pA, uchar *s1,uchar *s2) 
+static void trim_polyA_align(struct edit_script_list **Sptr, Exon *lblock, Exon **exons, const int bc, int *pA, sim4_uchar *s1,sim4_uchar *s2) 
 {
     edit_script_list *head = *Sptr;
     edit_script *tp;
     int tmpi = 0, num, idents = 0;
-    uchar *a, *b;
+    sim4_uchar *a, *b;
     Exon *prev;
 
     int i, j;  /* i index in the cDNA */
@@ -266,10 +266,10 @@ static void trim_polyA_align(struct edit_script_list **Sptr, Exon *lblock, Exon 
 }
 
 
-static void remove_polyT_front(struct edit_script_list **Sptr, Exon *Exons, uchar *s1, uchar *s2, int *lastT)
+static void remove_polyT_front(struct edit_script_list **Sptr, Exon *Exons, sim4_uchar *s1, sim4_uchar *s2, int *lastT)
 {
      Exon *t, *exons_head; /* start from Lblock */
-     uchar *b, *end;
+     sim4_uchar *b, *end;
      int numT, dummy, trim_p, reverse_script=0, pT;
 
      *lastT = pT = 0;
@@ -308,12 +308,12 @@ static void remove_polyT_front(struct edit_script_list **Sptr, Exon *Exons, ucha
 }
 
 /* s2 is the cdna */
-static void trim_polyT_align(struct edit_script_list **Sptr, Exon **exons, const int ec, int *pT, uchar *s1, uchar *s2)
+static void trim_polyT_align(struct edit_script_list **Sptr, Exon **exons, const int ec, int *pT, sim4_uchar *s1, sim4_uchar *s2)
 {
     edit_script_list *head = *Sptr;
     edit_script *tp;
     int tmpi = 0, num, idents = 0;
-    uchar *a, *b;
+    sim4_uchar *a, *b;
     Exon *t;
 
     int i, j;  /* i index in the cDNA */

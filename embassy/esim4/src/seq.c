@@ -6,7 +6,7 @@
 #include "encoding.h"
 
 static const char rcsid[] =
-"$Id: seq.c,v 1.1 2002/02/25 09:33:50 hgmp Exp $";
+"$Id: seq.c,v 1.2 2004/08/05 16:02:32 rice Exp $";
 
 static int parse_fname(const char* arg, 
 		char **fname, int *from, int *len, char **maskfile)
@@ -92,7 +92,7 @@ SEQ *seq_copy(const SEQ *s)
 {
 	SEQ *ss = ckallocz(sizeof(SEQ));
 	*ss = *s;
-	ss->seq = (uchar*)copy_string((const char*)s->seq);
+	ss->seq = (sim4_uchar*)copy_string((const char*)s->seq);
 	ss->header = copy_string(s->header);
 	ss->fname = copy_string(s->fname);
 	ss->maskname = copy_string(s->fname);
@@ -175,7 +175,7 @@ SEQ* seq_close(SEQ *s)
 	return 0;
 }
 
-uchar dna_cmpl(uchar ch)
+sim4_uchar dna_cmpl(sim4_uchar ch)
 {
 	/* XXX - assumes ascii, returns space on error. */
 	return dna_complement[ch];
@@ -183,7 +183,7 @@ uchar dna_cmpl(uchar ch)
 
 static SEQ *seq_revcomp_helper(SEQ *seq)
 {
-	uchar *s, *p;
+	sim4_uchar *s, *p;
 
 	/* assert(SEQ_CHARS in dcomp-' '); */
 	/* seq_read should check this. */
@@ -191,7 +191,7 @@ static SEQ *seq_revcomp_helper(SEQ *seq)
 	s = SEQ_CHARS(seq);
 	p = s+SEQ_LEN(seq)-1;
 	while (s<=p) {
-		uchar c;
+		sim4_uchar c;
 
 		c = dna_cmpl(*s); 
 		*s = dna_cmpl(*p); 

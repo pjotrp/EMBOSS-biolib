@@ -1,8 +1,8 @@
 #ifndef SIM4B1_H
 #define SIM4B1_H
-/* $Id: sim4b1.h,v 1.2 2004/06/14 14:43:30 rice Exp $ */
+/* $Id: sim4b1.h,v 1.3 2004/08/05 16:02:32 rice Exp $ */
 
-extern uchar *seq1, *seq2;
+extern sim4_uchar *seq1, *seq2;
 extern int M, N, encoding[NACHARS];
 extern int file_type;
 extern coords last_GT, last_CT, last_AG, last_AC;
@@ -17,10 +17,10 @@ void flip_list(Exon **,Exon **);
 void free_list(Exon *);
 void free_table(void);
 void free_align(edit_script_list *);
-void seq_toupper(uchar *, int, const char *); 
+void seq_toupper(sim4_uchar *, int, const char *); 
 void complement_exons(Exon **,int,int);
 void print_exons(Exon *);
-void print_pipmaker_exons(Exon *,edit_script_list *,char *,int,int,int,int,uchar *,uchar*,int);
-void bld_table(uchar *,int,int,int);
-struct edit_script_list *SIM4(uchar*,uchar*,int,int,int,int,int,int,int,int*,int*,int*,Exon**,sim4_stats_t *);
+void print_pipmaker_exons(Exon *,edit_script_list *,char *,int,int,int,int,sim4_uchar *,sim4_uchar*,int);
+void bld_table(sim4_uchar *,int,int,int);
+struct edit_script_list *SIM4(sim4_uchar*,sim4_uchar*,int,int,int,int,int,int,int,int*,int*,int*,Exon**,sim4_stats_t *);
 #endif /* SIM4B1_H */

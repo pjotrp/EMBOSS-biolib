@@ -6,7 +6,7 @@
 #ifndef __lint
 /*@unused@*/
 static const char rcsid[] =
-"$Id: splice.c,v 1.2 2002/05/10 16:10:17 rice Exp $";
+"$Id: splice.c,v 1.3 2004/08/05 16:02:32 rice Exp $";
 #endif
 
 static int spl_encode[NACHARS];
@@ -22,21 +22,21 @@ sim_signal_t ac = {{2, 5, 2, 2, 2},{0, 2, 0, 0, 0},{0, 2, 0, 0, 0},{0, 2, 0, 0, 
 static void print_splice(splice_t *);
 #endif
 
-static void splice_donor(uchar *xseq, uchar *yseq, int M, int N, int *gt_score,
+static void splice_donor(sim4_uchar *xseq, sim4_uchar *yseq, int M, int N, int *gt_score,
                          int *ct_score, int **max_Gf, int **max_Cf,
                          int **start_Gi, int **start_Ci);
-static void splice_donor_uni(uchar *xseq, uchar *yseq, int M, int N,
+static void splice_donor_uni(sim4_uchar *xseq, sim4_uchar *yseq, int M, int N,
                          int *It_score, int **max_IF, int **end_Ii);
-static void splice_acceptor(uchar *xseq, uchar *yseq, int M, int N,
+static void splice_acceptor(sim4_uchar *xseq, sim4_uchar *yseq, int M, int N,
                          int *ag_score, int *ac_score, int **max_Gb,  
                          int **max_Cb, int **end_Gi, int **end_Ci);
-static void splice_acceptor_uni(uchar *xseq, uchar *yseq, int M, int N,
+static void splice_acceptor_uni(sim4_uchar *xseq, sim4_uchar *yseq, int M, int N,
                          int *aI_score, int **max_Ib, int **end_Ii);
 static int  stepct(int n);
 
 
-void splice(uchar *in_seqx, int ls, int us, int le, int ue,
-            uchar *in_seqy, int ys, int ye, 
+void splice(sim4_uchar *in_seqx, int ls, int us, int le, int ue,
+            sim4_uchar *in_seqy, int ys, int ye, 
             splice_t **gcell, splice_t **ccell, int ori)
 {
    int p, q, *gtscore=NULL, *ctscore=NULL, *agscore=NULL, *acscore=NULL;
@@ -44,7 +44,7 @@ void splice(uchar *in_seqx, int ls, int us, int le, int ue,
    int maxCscore, maxGscore, Gxs, Gxe, Gy, Cxs, Cxe, Cy, keep_Ci, keep_Gi;
    int *max_Cf=NULL, *max_Gf=NULL, *max_Cb=NULL, *max_Gb=NULL;
    int *start_Gi=NULL, *start_Ci=NULL, *end_Gi=NULL, *end_Ci=NULL;
-   uchar *s;
+   sim4_uchar *s;
    
    if (!encodeInit) {
        for (i=0; i<NACHARS; spl_encode[i++]=4);
@@ -152,13 +152,14 @@ static void print_splice(splice_t *g)
 }
 #endif
 
-static void splice_donor(uchar *xseq, uchar *yseq, int M, int N, int *gt_score,
+static void splice_donor(sim4_uchar *xseq, sim4_uchar *yseq,
+			 int M, int N, int *gt_score,
                          int *ct_score, int **max_Gf, int **max_Cf, 
                          int **start_Gi, int **start_Ci)
 {
    int *CCf, *mG, *mC, *sC, *sG, *X;
    int i, j, tmp, ss, ssx, cx, c;
-   uchar *s, *t;
+   sim4_uchar *s, *t;
 
    CCf = (int *)ckalloc((M+1)*sizeof(int));
    X = (int *)ckalloc((M+1)*sizeof(int));
@@ -204,12 +205,12 @@ static void splice_donor(uchar *xseq, uchar *yseq, int M, int N, int *gt_score,
    free(CCf); free(X); 
 }  
 
-static void splice_donor_uni(uchar *xseq, uchar *yseq, int M, int N,
+static void splice_donor_uni(sim4_uchar *xseq, sim4_uchar *yseq, int M, int N,
                              int *It_score, int **max_If, int **start_Ii)
 {
    int *CCf, *mI, *sI, *X;
    int i, j, tmp, ss, ssx, cx, c;
-   uchar *s, *t;
+   sim4_uchar *s, *t;
 
    CCf = (int *)ckalloc((M+1)*sizeof(int));
    X = (int *)ckalloc((M+1)*sizeof(int));
@@ -249,13 +250,13 @@ static void splice_donor_uni(uchar *xseq, uchar *yseq, int M, int N,
 }
 
      
-static void splice_acceptor(uchar *xseq, uchar *yseq, int M, int N, 
+static void splice_acceptor(sim4_uchar *xseq, sim4_uchar *yseq, int M, int N, 
                             int *ag_score, int *ac_score, int **max_Gb, 
                             int **max_Cb, int **end_Gi, int **end_Ci)
 {
    int *CCb, *X, *mC, *mG, *eC, *eG;
    int tmp, i, j, ss, ssx, cx, c;
-   uchar *t, *s;
+   sim4_uchar *t, *s;
 
    CCb = (int *)ckalloc((M+1)*sizeof(int));
    X = (int *)ckalloc((M+1)*sizeof(int));
@@ -302,12 +303,12 @@ static void splice_acceptor(uchar *xseq, uchar *yseq, int M, int N,
 }
 
 
-static void splice_acceptor_uni(uchar *xseq, uchar *yseq, int M, int N,
+static void splice_acceptor_uni(sim4_uchar *xseq, sim4_uchar *yseq, int M, int N,
                                 int *aI_score, int **max_Ib, int **end_Ii)
 {
    int *CCb, *X, *mI, *eI;
    int tmp, i, j, ss, ssx, cx, c;
-   uchar *t, *s;
+   sim4_uchar *t, *s;
 
    CCb = (int *)ckalloc((M+1)*sizeof(int));
    X = (int *)ckalloc((M+1)*sizeof(int));

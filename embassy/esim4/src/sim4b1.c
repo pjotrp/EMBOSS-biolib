@@ -6,7 +6,7 @@
 #ifndef __lint
 /*@unused@*/
 static const char rcsid[] = 
-"$Id: sim4b1.c,v 1.3 2004/06/14 14:43:30 rice Exp $";
+"$Id: sim4b1.c,v 1.4 2004/08/05 16:02:32 rice Exp $";
 #endif
 
 #include <stdio.h>
@@ -29,7 +29,7 @@ static const char rcsid[] =
 
 #define  SLIDE_INTRON(x)   (((x)==SIMTRUE)?sync_slide_intron:slide_intron)
 
-uchar      *seq1, *seq2;
+sim4_uchar      *seq1, *seq2;
 int         M, N, encoding[NACHARS];
 coords      last_GT, last_CT, last_AG, last_AC;
 int         file_type;
@@ -45,34 +45,34 @@ static Exon_ptr    exon_list;
 
 static void   merge(Exon **,Exon **); 
 static bool   get_sync_flag(Exon *, Exon *, int);
-static void   slide_intron(int w, Exon **,uchar *,uchar *);
-static void   sync_slide_intron(int w, Exon **,uchar *,uchar *);
-static void   wobble(Exon **,Exon **,const char *,const char *,uchar *seq1);
-static Exon  *bmatch(uchar *,uchar *,int,int,int,int);
-static Exon  *fmatch(uchar *,uchar *,int,int,int,int);
+static void   slide_intron(int w, Exon **,sim4_uchar *,sim4_uchar *);
+static void   sync_slide_intron(int w, Exon **,sim4_uchar *,sim4_uchar *);
+static void   wobble(Exon **,Exon **,const char *,const char *,sim4_uchar *seq1);
+static Exon  *bmatch(sim4_uchar *,sim4_uchar *,int,int,int,int);
+static Exon  *fmatch(sim4_uchar *,sim4_uchar *,int,int,int,int);
 static void   compact_list(Exon **Lblock, Exon **Rblock);
-static int    resolve_overlap(Exon *,Exon *,uchar *);
-static int    greedy(uchar *,uchar *,int,int,int,int,Exon **, Exon **);
-static int    extend_bw(uchar *,uchar *,int,int,int,int,int *,int *);
-static int    extend_fw(uchar *,uchar *,int,int,int,int,int *,int *);
+static int    resolve_overlap(Exon *,Exon *,sim4_uchar *);
+static int    greedy(sim4_uchar *,sim4_uchar *,int,int,int,int,Exon **, Exon **);
+static int    extend_bw(sim4_uchar *,sim4_uchar *,int,int,int,int,int *,int *);
+static int    extend_fw(sim4_uchar *,sim4_uchar *,int,int,int,int,int *,int *);
 static void   pluri_align(int *,int *,Exon *,struct edit_script_list **);
 static void   get_stats(Exon *,sim4_stats_t *); 
-static int    get_edist(int,int,int,int,uchar *,uchar *);
+static int    get_edist(int,int,int,int,sim4_uchar *,sim4_uchar *);
 static int    get_msp_threshold(int len1, int len2);
 static int    find_log_entry(long *log4s, int n, int len, int offset);
 static Exon  *new_exon(int,int,int,int,int,int,int,Exon *);
 static void   add_word(int,int);
-static void   extend_hit(int,int,const uchar *const,const uchar * const,int,int,int);
+static void   extend_hit(int,int,const sim4_uchar *const,const sim4_uchar * const,int,int,int);
 static void   sort_msps(void);
 static void   heapify(int,int);
 static int    smaller(int,int);
-static void   search(uchar *,uchar *,int,int,int);
+static void   search(sim4_uchar *,sim4_uchar *,int,int,int);
 static int    link_msps(Msp_ptr *msp,int,int,int);
 static int    scale(int n);
-static void   msp2exons(Msp_ptr *,int,uchar *,uchar *);
+static void   msp2exons(Msp_ptr *,int,sim4_uchar *,sim4_uchar *);
 static void   free_msps(Msp_ptr **,int *);
-static void   exon_cores(uchar*,uchar*,int,int,int,int,int,int,int,int);
-static void   relink(Msp_ptr *,int,int,int,int,int,uchar *,uchar *);
+static void   exon_cores(sim4_uchar*,sim4_uchar*,int,int,int,int,int,int,int,int);
+static void   relink(Msp_ptr *,int,int,int,int,int,sim4_uchar *,sim4_uchar *);
 static int    dispatch_find_ends(int,int,int *,int *,edit_script_list *,int,int,int);
 static int    find_ends(edit_script_list *,int);
 static bool   get_match_quality(Exon *,Exon *,sim4_stats_t *,int);
@@ -88,13 +88,13 @@ static void   debug_print_exons(Exon *, char *);
 
 /*  Not currently used: */
 #ifdef AUXUTILS 
-   static void   remove_polyA_tails(Exon *,uchar *,uchar *,int);
+   static void   remove_polyA_tails(Exon *,sim4_uchar *,sim4_uchar *,int);
    static void   find_introns(Exon *, Intron **);
    static void   print_introns(Intron *);
 #endif
 
 /* seq1 = genomic  DNA (text); seq2 = cDNA */
-struct edit_script_list *SIM4(uchar *in_seq1, uchar *in_seq2, 
+struct edit_script_list *SIM4(sim4_uchar *in_seq1, sim4_uchar *in_seq2, 
                          int in_M, int in_N, int in_W, 
                          int in_X, int in_K, int in_C, int in_H,
                          int *dist_ptr, int *pT, int *pA,
@@ -107,7 +107,7 @@ struct edit_script_list *SIM4(uchar *in_seq1, uchar *in_seq2,
          *tmp_Lblock=NULL, *tmp_Rblock=NULL, *new;
 
   struct edit_script_list *Script_head=NULL;
-  uchar tmp[50];
+  sim4_uchar tmp[50];
   coords *sig;
 
   seq1 = in_seq1;
@@ -651,7 +651,7 @@ static int find_log_entry(long *log4s, int n, int len, int offset)
 
 /* --------------------   exon_cores()   --------------------- */
 
-static void  exon_cores(uchar *s1, uchar *s2, int len1, int len2, int offset1, int offset2, int flag, int in_W, int in_K, int type)
+static void  exon_cores(sim4_uchar *s1, sim4_uchar *s2, int len1, int len2, int offset1, int offset2, int flag, int in_W, int in_K, int type)
 {
     int       i, W, last_msp, lower, upper;
     int      *allocated;
@@ -690,7 +690,7 @@ static void  exon_cores(uchar *s1, uchar *s2, int len1, int len2, int offset1, i
                       search(s1,s2,len1,len2,W);
                       break;
        case GEN_EST:  if (type!=TEMP) {
-                      uchar *aux; int   auxi;
+                      sim4_uchar *aux; int   auxi;
 
                       aux = s1; s1 = s2; s2 = aux; 
                       auxi = len1; len1 = len2; len2 = auxi;
@@ -700,7 +700,7 @@ static void  exon_cores(uchar *s1, uchar *s2, int len1, int len2, int offset1, i
                       search(s1,s2,len1,len2,W); 
                       if (type!=TEMP) {
                           register int   auxi; 
-                          uchar *aux;
+                          sim4_uchar *aux;
                           Msp_ptr mp; 
 
                           /* change s1 and s2 back */
@@ -777,7 +777,7 @@ static void  exon_cores(uchar *s1, uchar *s2, int len1, int len2, int offset1, i
     return ;
 }
 
-static void relink(Msp_ptr *in_msp, int in_numMSPs, int H, int offset1, int offset2, int flag, uchar *s1, uchar *s2)
+static void relink(Msp_ptr *in_msp, int in_numMSPs, int H, int offset1, int offset2, int flag, sim4_uchar *s1, sim4_uchar *s2)
 {
     int last_msp;
     Exon *tmp_block;
@@ -859,11 +859,11 @@ static int link_msps(Msp_ptr *msp, int numMSPs, int H, int flag)
 
 /* -----------   build table of W-tuples in one of the sequences  ------------*/
 
-void bld_table(uchar *s, int len, int in_W, int type)
+void bld_table(sim4_uchar *s, int len, int in_W, int type)
 {
         int ecode;
         int i, j;
-        uchar *t;
+        sim4_uchar *t;
 
         if (type == PERM) {
             mask = (1 << (in_W+in_W-2)) - 1;
@@ -948,10 +948,10 @@ static void add_word(int ecode, int pos)
 
 /* -----------------------   search the other sequence   ---------------------*/
 
-static void search(uchar *s1, uchar *s2, int len1, int len2, int in_W)
+static void search(sim4_uchar *s1, sim4_uchar *s2, int len1, int len2, int in_W)
 {
         register struct hash_node *h;
-        register uchar *t;
+        register sim4_uchar *t;
         register int ecode, hval;
         int i, j, p;
 
@@ -998,10 +998,10 @@ static void search(uchar *s1, uchar *s2, int len1, int len2, int in_W)
 
 /* extend_hit - extend a word-sized hit to a longer match */
 static void extend_hit(int pos1, int pos2, 
-		       const uchar * const s1, const uchar * const s2,
+		       const sim4_uchar * const s1, const sim4_uchar * const s2,
 		       int len1, int len2, int in_W)
 {
-        const uchar *beg2, *beg1, *end1, *q, *s;
+        const sim4_uchar *beg2, *beg1, *end1, *q, *s;
         int right_sum, left_sum, sum, diag, score;
 
         diag = pos2 - pos1;
@@ -1107,7 +1107,7 @@ int i, j;
 
 /* ---------------------  organize the MSPs into exons  ---------------------*/
 
-static void msp2exons(Msp_ptr *msp, int last_msp, uchar *s1, uchar *s2)  
+static void msp2exons(Msp_ptr *msp, int last_msp, sim4_uchar *s1, sim4_uchar *s2)  
 {
   Msp_ptr   mp;
   int diag_dist, diff;
@@ -1155,9 +1155,9 @@ static void msp2exons(Msp_ptr *msp, int last_msp, uchar *s1, uchar *s2)
   } 
 }
 
-static int get_edist(int f1, int f2, int t1, int t2, uchar *seq1, uchar *seq2)
+static int get_edist(int f1, int f2, int t1, int t2, sim4_uchar *seq1, sim4_uchar *seq2)
 {
-    uchar *s1, *s2, *q1, *q2;
+    sim4_uchar *s1, *s2, *q1, *q2;
     int dist=0;
 
     s1 = seq1+f1+1;   /* bc at this stage, the msp pos do not have added +1 */
@@ -1300,7 +1300,8 @@ void print_exons(Exon *left)
 
 /* to and from are in the original cDNA sequence */
 void print_pipmaker_exons(Exon *exons, edit_script_list *aligns, char *gene, 
-                          int from, int to, int M, int N, uchar *seq1, uchar *seq2, 
+                          int from, int to, int M, int N,
+			  sim4_uchar *seq1, sim4_uchar *seq2, 
                           int match_ori)
 {
    Exon  *tmp_block, *left, *right;
@@ -1552,7 +1553,7 @@ static void print_introns(Intron_ptr intron_list)
 static void pluri_align(int *dist_ptr,int *num_matches,Exon *lblock,struct edit_script_list **Aligns)
 {
    int    tmpi, di_count, i, end1, end2, diff, ali_dist, nmatches;
-   uchar *a, *b;
+   sim4_uchar *a, *b;
    Exon  *tmp_block=lblock, *tmp_block1;
 
    struct edit_script_list *enew;
@@ -1763,11 +1764,11 @@ static void get_stats(Exon *lblock, sim4_stats_t *st)
    }
 }
 
-static int resolve_overlap(Exon *tmp_block, Exon *tmp_block1, uchar *seq1)
+static int resolve_overlap(Exon *tmp_block, Exon *tmp_block1, sim4_uchar *seq1)
 {          
      int   diff, best_u, l0, l1, u, cost;
      int    GTAG_score, CTAC_score;
-     uchar *s1, *s2, *e1;
+     sim4_uchar *s1, *s2, *e1;
        
      diff = tmp_block1->from2-tmp_block->to2-1;
      if (diff>=0) return (tmp_block1->from2-1);
@@ -1816,7 +1817,7 @@ static int resolve_overlap(Exon *tmp_block, Exon *tmp_block1, uchar *seq1)
 }      
 
 
-static int  greedy(uchar *s1, uchar *s2, int m, int n, int offset1, int offset2, Exon **lblock, Exon **rblock)
+static int  greedy(sim4_uchar *s1, sim4_uchar *s2, int m, int n, int offset1, int offset2, Exon **lblock, Exon **rblock)
 {
   int     col,                    /* column number */
           d,                      /* current distance */
@@ -2182,7 +2183,7 @@ int  good_ratio(int length)
      else return (int)(.75*P*length+1);
 }
 
-static int extend_bw(uchar *s1, uchar *s2, int m, int n, int offset1, int offset2, int *line1, int *line2)
+static int extend_bw(sim4_uchar *s1, sim4_uchar *s2, int m, int n, int offset1, int offset2, int *line1, int *line2)
 {
   int     col,                    /* column number */
           row,                    /* row number */
@@ -2344,7 +2345,7 @@ static int extend_bw(uchar *s1, uchar *s2, int m, int n, int offset1, int offset
 }
 
 
-static int extend_fw(uchar *s1, uchar *s2, int m, int n, int offset1, int offset2, int *line1, int *line2)
+static int extend_fw(sim4_uchar *s1, sim4_uchar *s2, int m, int n, int offset1, int offset2, int *line1, int *line2)
 {
   int     col,                    /* column number */
           row,                    /* row number */
@@ -2608,7 +2609,7 @@ void free_table(void)
      }     
 }  
 
-static Exon *bmatch (uchar *s1, uchar *s2, int len1, int len2, int offset1, int offset2)
+static Exon *bmatch (sim4_uchar *s1, sim4_uchar *s2, int len1, int len2, int offset1, int offset2)
 {
        int  i, j, i1, score;
        Exon *new=NULL;
@@ -2637,7 +2638,7 @@ static Exon *bmatch (uchar *s1, uchar *s2, int len1, int len2, int offset1, int 
        return NULL;
 }
 
-static Exon *fmatch (uchar *s1, uchar *s2, int len1, int len2, int offset1, int offset2)
+static Exon *fmatch (sim4_uchar *s1, sim4_uchar *s2, int len1, int len2, int offset1, int offset2)
 {
        int  i, j, i1, score;
        Exon *new=NULL;
@@ -2682,10 +2683,10 @@ static void debug_print_exons (Exon *lblock, char *label)
 
 /* -------------------- to be added to psublast ---------------------- */
 
-void seq_toupper(uchar *seq, int len, const char *filename)
+void seq_toupper(sim4_uchar *seq, int len, const char *filename)
 {
      int i=0, flag = 0;
-     uchar *s=seq;
+     sim4_uchar *s=seq;
 
      for (; *s && (i<min(100,len)); i++, s++) 
        if (islower(*s)) { flag = 1; break; }
@@ -2716,7 +2717,7 @@ static bool get_sync_flag(Exon *lblock, Exon *rblock, int w)
 }
  
 
-static void sync_slide_intron(int in_w, Exon **lblock, uchar *seq1, uchar *seq2)
+static void sync_slide_intron(int in_w, Exon **lblock, sim4_uchar *seq1, sim4_uchar *seq2)
 {
     Exon *t0=NULL, *t1=NULL, *head = *lblock;
     splice_t *g=NULL, *c=NULL, *cell=NULL;
@@ -2852,10 +2853,10 @@ static void sync_slide_intron(int in_w, Exon **lblock, uchar *seq1, uchar *seq2)
     return;
 }
 
-static void wobble(Exon **t0, Exon **t1, const char *donor, const char *acceptor, uchar *seq1)
+static void wobble(Exon **t0, Exon **t1, const char *donor, const char *acceptor, sim4_uchar *seq1)
 {
-    uchar *s = seq1+(*t0)->to1;  /* first nt of donor */
-    uchar *q = seq1+(*t1)->from1-3;  /* first nt of acceptor */
+    sim4_uchar *s = seq1+(*t0)->to1;  /* first nt of donor */
+    sim4_uchar *q = seq1+(*t1)->from1-3;  /* first nt of acceptor */
 
     if (!strncmp((char *)(s), donor, 2)) {
        /* match in place */
@@ -2904,7 +2905,7 @@ static void wobble(Exon **t0, Exon **t1, const char *donor, const char *acceptor
     return;
 }
 
-static void slide_intron(int in_w, Exon **lblock, uchar *seq1, uchar *seq2)
+static void slide_intron(int in_w, Exon **lblock, sim4_uchar *seq1, sim4_uchar *seq2)
 { 
     Exon *t0, *t1, *head = *lblock;       
     splice_t *g, *c, *cell;
@@ -2923,7 +2924,7 @@ static void slide_intron(int in_w, Exon **lblock, uchar *seq1, uchar *seq2)
                    t0->ori = 'C';
          else {      
            int gtag=0, ctac=0;
-           uchar *s;
+           sim4_uchar *s;
    
            w1 = min(in_w, min(t0->length-1, t0->to1-t0->from1));
            w2 = min(in_w, min(t1->length-1, t1->to1-t1->from1));
@@ -2965,10 +2966,10 @@ static void slide_intron(int in_w, Exon **lblock, uchar *seq1, uchar *seq2)
 }
 
 #ifdef AUXUTILS
-static void remove_polyA_tails(Exon *lblock, uchar *seq1, uchar *seq2, int len2)
+static void remove_polyA_tails(Exon *lblock, sim4_uchar *seq1, sim4_uchar *seq2, int len2)
 {
     Exon *t, *prev;
-    uchar *s, *q;
+    sim4_uchar *s, *q;
     int xcut, diff, u, tmp, I, J, first = 1;
 
     t = lblock->next_exon; prev = lblock;

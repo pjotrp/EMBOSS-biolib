@@ -8,15 +8,15 @@
 
 #ifndef __lint
 static const char rcsid[] =
-"$Id: discrim.c,v 1.1 2002/02/25 09:33:49 hgmp Exp $";
+"$Id: discrim.c,v 1.2 2004/08/05 16:02:32 rice Exp $";
 #endif
 
 /* DNA characters */
-const uchar dchars[] = "ABCDGHKMNRSTVWXY";
+const sim4_uchar dchars[] = "ABCDGHKMNRSTVWXY";
 
 static int is_dchar(int ch);
 
-bool is_DNA(uchar *s, int len)
+bool is_DNA(sim4_uchar *s, int len)
 {
 	int ACGT, i;
 

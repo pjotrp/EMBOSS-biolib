@@ -1,9 +1,9 @@
 #ifndef SIM_SEQ_H
 #define SIM_SEQ_H
-/* $Id: seq.h,v 1.1 2002/02/25 09:33:50 hgmp Exp $ */
+/* $Id: seq.h,v 1.2 2004/08/05 16:02:32 rice Exp $ */
 
 typedef struct seq_data {
-	uchar *seq;
+	sim4_uchar *seq;
 	int slen; /* bytes in seq, not including '\0' */
 	int origin;
 } seq_data_t;
@@ -22,7 +22,7 @@ typedef struct seq_file {
 	char *header;
 	int hlen; /* bytes in header, not including '\0' */
 
-	uchar *seq;
+	sim4_uchar *seq;
 	int slen; /* bytes in seq, not including '\0' */
 } SEQ;
 
@@ -61,7 +61,7 @@ SEQ *seq_subseq(const SEQ *s, int origin, int length);
 SEQ *seq_revcomp_inplace(SEQ *seq);
 SEQ *seq_get(const char *fname, const char *mode, int flags);
 SEQ* seq_from_chars(unsigned char *chrs, unsigned int len);
-uchar dna_cmpl(unsigned char);
+sim4_uchar dna_cmpl(unsigned char);
 
 int seq_count(SEQ *s);
 int seq_revisit(SEQ *s, long offset);

@@ -62,7 +62,7 @@
 #ifndef __lint     
 /*@unused@*/       
 static const char rcsid[] =
-"$Id: sim4.init.c,v 1.6 2004/06/14 14:43:30 rice Exp $";
+"$Id: sim4.init.c,v 1.7 2004/08/05 16:02:32 rice Exp $";
 #endif         
            
 
@@ -73,8 +73,8 @@ static char *extract_tok(char *);
 
 static void add_offset_exons(Exon *,int);
 static void add_offset_aligns(edit_script_list *,int);
-static void print_align_blk(uchar *,uchar *,int,int,edit_script_list **,int,int);
-static void print_align_lat(uchar *,uchar *,int,int,edit_script_list **,Exon *,int,int);
+static void print_align_blk(sim4_uchar *,sim4_uchar *,int,int,edit_script_list **,int,int);
+static void print_align_lat(sim4_uchar *,sim4_uchar *,int,int,edit_script_list **,Exon *,int,int);
 
 static const char Usage[] =
 "%s seq1 seq2_db [[WXKCRDHAPNBS]=]\n\n\
@@ -139,12 +139,12 @@ AjPFile   ESIM4_OUTDEV;  /* value set in sim4_argvals(), below */
        
 int main(int argc, char *argv[])
 {
-        uchar  *revseq1=NULL; 
+        sim4_uchar  *revseq1=NULL; 
         int    len1, len2, count, dist, match_ori, in_K, in_C, in_H;
         int pA, pT, xpT, xpA, rev_xpT, rev_xpA;
         int cds_from, cds_to;
-        uchar *seq1;
-	uchar *seq2;
+        sim4_uchar *seq1;
+	sim4_uchar *seq2;
         char  *cds_gene=NULL, *line;
 	char* h1;
 	char* h2;
@@ -185,7 +185,7 @@ int main(int argc, char *argv[])
 	ajSeqTrim(esim4_sequence);
         
 	len1 = strlen(ajSeqChar(esim4_sequence));
-        seq1 = malloc(sizeof(uchar) * (1 + len1 ));
+        seq1 = malloc(sizeof(sim4_uchar) * (1 + len1 ));
         (void) strcpy((char *) seq1,ajSeqChar(esim4_sequence));
 	h1= ajCharNewC(ajSeqName(esim4_sequence));
 	if (!is_DNA(seq1, len1))
@@ -199,7 +199,7 @@ int main(int argc, char *argv[])
 	/* AJB: Trim genomic sequence */
 	ajSeqTrim(esim4_genome);
 	len2 = strlen(ajSeqChar(esim4_genome));
-        seq2 = malloc(sizeof(uchar) * (2 + len2 ));
+        seq2 = malloc(sizeof(sim4_uchar) * (2 + len2 ));
         (void) strcpy((char *) seq2,ajSeqChar(esim4_genome));
 	h2= ajCharNewC(ajSeqName(esim4_genome));
 	if (!is_DNA(seq2, len2))
@@ -213,7 +213,7 @@ int main(int argc, char *argv[])
          
         /* make reverse of sequence 1 */
  
-        revseq1 = malloc(sizeof(uchar) * (1 + len1 ));
+        revseq1 = malloc(sizeof(sim4_uchar) * (1 + len1 ));
         esim4_rsequence = ajSeqNew ();
 	ajSeqReplace (esim4_rsequence,ajSeqStrCopy(esim4_sequence));
         ESIM4REVSEQ(esim4_rsequence,revseq1);
@@ -343,7 +343,7 @@ else {
 	      ajSeqTrim(esim4_genome);
 	      len2 = strlen(ajSeqChar(esim4_genome));
               if(seq2 != NULL)free(seq2);
-              seq2 = malloc(sizeof(uchar) * (2 + len2 ));
+              seq2 = malloc(sizeof(sim4_uchar) * (2 + len2 ));
               (void) strcpy((char *) seq2,ajSeqChar(esim4_genome));
 	      tok = h2= ajCharNewC(ajSeqName(esim4_genome));
 	      if (!is_DNA(seq2, len2))
@@ -672,7 +672,7 @@ else {
        return 0;
 }
 
-static void print_align_blk(uchar *seq1, uchar *seq2, int len1, int len2,
+static void print_align_blk(sim4_uchar *seq1, sim4_uchar *seq2, int len1, int len2,
                             edit_script_list **Aligns, 
                             int file_type, int match_ori)
 {
@@ -720,7 +720,7 @@ static void print_align_blk(uchar *seq1, uchar *seq2, int len1, int len2,
     return;
 }
 
-static void print_align_lat(uchar *seq1, uchar *seq2, int len1, int len2, 
+static void print_align_lat(sim4_uchar *seq1, sim4_uchar *seq2, int len1, int len2, 
                             edit_script_list **Aligns, Exon *Exons, 
                             int file_type, int match_ori) 
 {

@@ -14,7 +14,7 @@
 
 #ifndef __lint
 static const char rcsid[] =
-"$Id: prnt.c,v 1.2 2003/01/28 10:53:43 ajb Exp $";
+"$Id: prnt.c,v 1.3 2004/08/05 16:02:32 rice Exp $";
 #endif
 
 /* XXX */
@@ -187,10 +187,10 @@ static const char* revlabel(SEQ *s)
 
 
 /* print_align  ----------------------------------- print a general alignment */
-void print_align(int score, uchar *seq1, uchar *seq2, int beg1, int end1, int beg2, int end2,int *S)
+void print_align(int score, sim4_uchar *seq1, sim4_uchar *seq2, int beg1, int end1, int beg2, int end2,int *S)
 {
         int M, N, i, j, op, start_i, start_j, match, run, pct;
-        uchar *P, *p, *q;
+        sim4_uchar *P, *p, *q;
 
         beg1 += offset1;
         end1 += offset1;

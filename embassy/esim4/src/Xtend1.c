@@ -10,12 +10,12 @@
 #ifndef __lint
 /*@unused@*/
 static const char rcsid[] =
-"$Id: Xtend1.c,v 1.1 2002/02/25 09:33:49 hgmp Exp $";
+"$Id: Xtend1.c,v 1.2 2004/08/05 16:02:32 rice Exp $";
 #endif
 
 static void   free_coords(coords ***,int);
 
-int Xextend_bw(uchar *s1, uchar *s2, int m, int n, int offset1, int offset2, int *line1, int *line2)  
+int Xextend_bw(sim4_uchar *s1, sim4_uchar *s2, int m, int n, int offset1, int offset2, int *line1, int *line2)  
 { 
   int     col,                    /* column number */
           row,                    /* row number */
@@ -277,7 +277,7 @@ int Xextend_bw(uchar *s1, uchar *s2, int m, int n, int offset1, int offset2, int
      return d;     
 }                       
 
-int Xextend_fw(uchar *s1, uchar *s2, int m, int n, int offset1, int offset2, int *line1, int *line2)              
+int Xextend_fw(sim4_uchar *s1, sim4_uchar *s2, int m, int n, int offset1, int offset2, int *line1, int *line2)              
 { 
   int     col,                    /* column number */
           row,                    /* row number */

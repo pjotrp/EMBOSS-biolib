@@ -11,7 +11,7 @@
 #ifndef __lint
 /*@unused@*/
 static const char rcsid[] =
-"$Id: align.c,v 1.2 2002/05/10 16:10:17 rice Exp $";
+"$Id: align.c,v 1.3 2004/08/05 16:02:32 rice Exp $";
 #endif
 
 static int snake(int k, int x, int endx, int endy);
@@ -498,13 +498,13 @@ void align_reverse(int *S)
                          
 /* Alignment display routine */
 
-static uchar ALINE[51], BLINE[51], CLINE[51];
+static sim4_uchar ALINE[51], BLINE[51], CLINE[51];
 
-void IDISPLAY(uchar A[], uchar B[], int M, int N, int S[], int AP, int BP,
+void IDISPLAY(sim4_uchar A[], sim4_uchar B[], int M, int N, int S[], int AP, int BP,
               int est_strand, Exon *exons)
 { 
   Exon *t0;
-  register uchar *a, *b, *c, sign;
+  register sim4_uchar *a, *b, *c, sign;
   register int    i,  j, op, index;
   int   lines, ap, bp, starti;
         
