@@ -344,7 +344,7 @@ public class BuildProgramMenu
           {
             public Object construct()
             {
-              EmbreoShowDB showdb = new EmbreoShowDB(mysettings);
+              ShowDB showdb = new ShowDB(mysettings);
               String showdbOut = showdb.getDBText();
               Database d = new Database(showdbOut);
               db = d.getDB();
@@ -494,7 +494,7 @@ public class BuildProgramMenu
       }
       else
       {
-        EmbreoACD progacd = new EmbreoACD(applName,mysettings);
+        GetACD progacd = new GetACD(applName,mysettings);
         acdText = progacd.getAcd();
         System.out.println("Retrieved "+applName+" acd file via soap");
         acdStore.put(applName,acdText);
