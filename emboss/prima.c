@@ -990,6 +990,24 @@ static void prima_best_primer(AjPList *forlist, AjPList *revlist,
 
 /* @funcstatic prima_PrimerDel ************************************************
 **
+** Free memory from primers
+**
+** @param [w] p [AjPPrimer*] Undocumented
+** @@
+******************************************************************************/
+
+static void prima_PrimerDel(AjPPrimer *p)
+{
+    ajStrDel(&((*p)->substr));
+    AJFREE(*p);
+    return;
+}
+
+  
+  
+
+/* @funcstatic prima_PrimerCompare ********************************************
+**
 ** Undocumented.
 **
 ** @param [r] a [const void*] Undocumented
