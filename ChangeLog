@@ -1,4 +1,8 @@
 Version 2.6.0
+	Extractfeat - added option (-featinname) to include the name of
+	the feature as part of the ID name of the sequence that is
+	written out. 
+
 	Added sirna - designs siRNA probes in mRNA
 
 	Sigcleave sorts results highest score first
