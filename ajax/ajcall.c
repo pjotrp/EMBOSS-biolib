@@ -117,7 +117,7 @@ void* call(char *name, ...)
 
     if(!calls)
     {
-	ajMessCrash("Graphics calls not Registered. "
+	ajMessCrash("Graphics calls not registered. "
 		    "Use ajGraphInit in main function first",name);
 	return retval;
     }
