@@ -16161,7 +16161,8 @@ AB domainatrix
 AA domainrep
 RQ stamp
 CC documentation says stamp is required
-CC but the test case does not fail without it
+CC but the test case does not fail without it.
+CC Needs more examples in test data to invoke stamp
 IN ../../data/structure/all.scop
 IN 4
 IN all_rep1st.scop
@@ -16225,7 +16226,6 @@ FZ = 0
 FI d1cs4a_.ent
 FZ = 29889
 FC = 369
-## has "A 400" not "A   6"
 FP /^ATOM\s+31\s+CA\s+PHE\s+A\s\d+\s+60.914 -11.143  59.200  1.00 58.07\s+C\s+\n/
 FI d1cs4a_.ccf
 FZ = 82219
@@ -16353,27 +16353,32 @@ IN
 IN
 IN
 FI stderr
-FC = 3
+FC = 7
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
 FC = 8
+FP 2 /[.]ent  \>\> naccess[.]log/
+FP 2 /failures: 0\n/
 FI pdbplus.log
 FC = 20
-FZ = 422
+FP 2 /stride output for/
+FP 2 /failures: 0\n/
 FI stride.log
 FC = 0
 FZ = 0
 FI naccess.log
-FC = 6
-FZ = 312
+FC = 4
+FP 2 /naccess: using defualt vdw.radii\n/
+FP 2 /naccess: using default STD FILE\n/
 FI 1cs4.ccf
 FC = 491
 FZ = 109604
+FP /^SQ   SEQUENCE    52 AA;   5817 MW;  47362A43 CRC32;\n/
 FI 1ii7.ccf
 FC = 419
-FZ = 92826
+FP /^SQ   SEQUENCE    65 AA;   7396 MW;  0CFB92A3 CRC32;\n/
 //
 
 ID pdbtosp-ex
@@ -16429,7 +16434,7 @@ FP 402 /^CO /
 ID rocon-ex
 AB domainatrix
 AA rocon
-IN ../../data/structure/rocon.dhf
+IN ../../data/structure/rocon/rocon.dhf
 IN ../../data/structure/rocon.valid
 IN 10
 IN 1
@@ -16451,7 +16456,6 @@ FP 1 /^UNKNOWN /
 ID rocplot-ex
 AB domainatrix
 AA rocplot
-CC appears to give different results to those at HGMP
 IN ../../data/structure/rocplot/hitsin
 IN 2
 IN 2
@@ -16506,9 +16510,9 @@ FC = 11
 FZ = 333
 FP /ROC50     == 0.185 \(combined\)/
 FI  rocplot.errors
-FC = 486
-FZ = 5880
-##FP /rocn\[0\]: 0.000000\n/
+FC = 33
+FZ = 250
+FP /rocn\[0\]: 0.184714\n/
 FP /roc: 50\n/
 //
 
@@ -16547,20 +16551,22 @@ FZ = 60
 
 ID seqsearch-ex
 RQ blastpgp
-CC Uses blastpgp to search
+## Uses blastpgp to search
+## blastpgp generates 4 warning messages
+## (WARNING so the test pattern misses it) in stderr
 AB domainatrix
 AA seqsearch
 IN 2
 IN ../../data/structure
-IN swissprot
-IN 1
+IN ../../data/structure/swsmall
+IN
 IN 0.0001
 IN 100
 IN
 IN
 IN 2
 FI stderr
-FC = 10
+FC = 13
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
@@ -16575,7 +16581,7 @@ FC = 72
 FZ = 13281
 FI seqsearch.log
 FC = 4
-FZ = 60
+FP 2 /[.]daf\n/
 //
 
 ID seqfraggle-ex
@@ -16615,8 +16621,8 @@ IN
 IN
 IN
 FI stderr
-FC = 9
-FP 3 /Warning: /
+FC = 3
+FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI fam.dhf
@@ -16642,11 +16648,11 @@ AA sigscan
 CC output does not match HGMP
 IN ../../data/structure/54894.sig
 IN ../../data/structure/swsmall
-IN EBLOSUM62
-IN 20
-IN 0.5
-IN 1
-IN 100
+IN
+IN
+IN
+IN
+IN
 IN
 IN
 FI stderr
@@ -16747,9 +16753,9 @@ ID sites-ex
 AB domainatrix
 AA sites
 CC input files do not match
+CL -dicfile ../../data/structure/Ehet.dat
 IN ../../data/structure/sites
-IN ../../data/structure/sites
-IN ../../data/structure/Ehet.dat
+IN ../../data/structure
 IN ../../data/structure/sites/sites.dcf
 IN 1
 IN
@@ -16759,7 +16765,7 @@ FC = 4
 FP /CCF FILE: .*/data/structure/sites/1cs4.ccf \(1\/2\)/
 FP /CCF FILE: .*/data/structure/sites/1ii7.ccf \(2\/2\)/
 FI stderr
-FZ = 191
+FZ = 430
 FP 0 /^Warning:/
 FP 0 /^Error:/
 FP 0 /^Died:/
@@ -16768,7 +16774,9 @@ FC = 50
 FZ = 1041
 FI SITES.log
 FC = 2
-FZ = 150
+FZ = 208
+FP /^CCF:.*1cs4.ccf    HETS:YES        NHETS:7 SCOP:YES        NDOMS: 1\n/
+FP /^CCF:.*1ii7.ccf    HETS:YES        NHETS:5 SCOP:YES        NDOMS: 1\n/
 //
 
 ID siggen-ex
