@@ -3276,7 +3276,7 @@ void ajSeqoutTrace (AjPSeqout seq) {
 
 
 
-/* @func ajXyzSeqWrite ********************************************************
+/* @func ajSeqWriteXyz ********************************************************
 **
 ** Writes a sequence in SWISSPROT format.
 **
@@ -3287,7 +3287,7 @@ void ajSeqoutTrace (AjPSeqout seq) {
 ** @@
 ******************************************************************************/
 
-void ajXyzSeqWrite(AjPFile outf, AjPStr seq, char *prefix)
+void ajSeqWriteXyz(AjPFile outf, AjPStr seq, char *prefix)
 {
     AjPSeqout outseq=NULL;
     static SeqPSeqFormat sf=NULL;
