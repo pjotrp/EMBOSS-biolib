@@ -63,7 +63,7 @@ public class BuildProgramMenu
 /**
 *
 *  @param  JPanel p1 is the menu pane
-*  @param  JPanel p2 is the form pane
+*  @param  ScollPanel p2 is the form pane
 *  @param  JScrollPane EMBOSS form scroll pane 
 *  @param  String location of the EMBOSS binaries
 *  @param  String array of environment variables for EMBOSS applications.
@@ -75,7 +75,7 @@ public class BuildProgramMenu
 *  @param  Dimension form pane dimension
 *
 */
-  public BuildProgramMenu(final JPanel p1, final JPanel p2, 
+  public BuildProgramMenu(final JPanel p1, final ScrollPanel p2, 
            final JPanel pform, final JScrollPane scrollProgForm,
            final String embossBin, final String envp[],
            final JembossParams mysettings, final boolean withSoap,
@@ -339,9 +339,7 @@ public class BuildProgramMenu
                   BuildJembossForm bjf = new BuildJembossForm(allDes[k],
                                 db,allAcd[k],envp,cwd,embossBin,acdText,
                                 withSoap,p2,mysettings,f);
-                  
-                  p2.setVisible(false);
-                  p2.setVisible(true);
+                  scrollProgForm.setViewportView(p2);               
                   JViewport vp = scrollProgForm.getViewport();
                   vp.setViewPosition(new Point(0,0));
                   break;
@@ -408,9 +406,7 @@ public class BuildProgramMenu
             BuildJembossForm bjf = new BuildJembossForm(allDes[index],
                                   db,allAcd[index],envp,cwd,embossBin,
                                   acdText,withSoap,p2,mysettings,f);
-               
-            p2.setVisible(false);
-            p2.setVisible(true);
+            scrollProgForm.setViewportView(p2);   
             JViewport vp = scrollProgForm.getViewport();
             vp.setViewPosition(new Point(0,0));
             f.setCursor(cdone);
@@ -465,9 +461,7 @@ public class BuildProgramMenu
             BuildJembossForm bjf = new BuildJembossForm(allDes[index],
                                   db,allAcd[index],envp,cwd,embossBin,
                                   acdText,withSoap,p2,mysettings,f);
-
-            p2.setVisible(false);
-            p2.setVisible(true);
+            scrollProgForm.setViewportView(p2);
             JViewport vp = scrollProgForm.getViewport();
             vp.setViewPosition(new Point(0,0));
             f.setCursor(cdone);
