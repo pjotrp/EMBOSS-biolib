@@ -1365,11 +1365,41 @@ void ajListRemove (AjIList iter)
 
 void ajListstrRemove (AjIList iter)
 {
+    AjPListNode p;
+    
+    /* ajDebug ("ajListRemove\n");*/
 
-    ajListRemove (iter);
+    p = iter->Here;
+
+    if(iter->Dir == ajLASTFWD)
+    {
+	if(!p->Prev)
+	    ajFatal("Attempt to delete from unused iterator\n");
+
+	if(!p->Prev->Prev)
+	{
+	    ajStrDel((AjPStr *)&(iter->Head->First->Item));
+	    (void) listNodeDel(&(iter->Head->First));
+	}
+	else
+	{
+	    ajStrDel((AjPStr *)&p->Prev->Prev->Next->Item);	    
+	    (void) listNodeDel(&p->Prev->Prev->Next);
+	}
+    }
+    else
+    {
+	ajStrDel((AjPStr *)&p->Prev->Prev->Next->Item);
+	(void) listNodeDel(&p->Prev->Prev->Next);
+    }
+    
+    
+
+    iter->Head->Count--;
 
     return;
 }
+
 
 /* @func ajListInsert *******************************************************
 **
