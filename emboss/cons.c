@@ -37,7 +37,7 @@
 #include <limits.h>         /* for INT_MAX */
 
 
-void calc_consensus(AjPSeqset seqset,AjPFile outf,AjPMatrix cmpmatrix,
+void calc_consensus(AjPSeqset seqset,AjPMatrix cmpmatrix,
                     int nseqs, int mlen, float fplural, float setcase, 
                     int identity, AjPStr *cons);
 
@@ -52,7 +52,8 @@ int main (int argc, char * argv[])
     float setcase;
     char  *p;
     AjPSeqset seqset;
-    AjPFile   outf;
+    AjPSeqout seqout;
+    AjPSeq    seqo;
     AjPStr    cons;
     AjPMatrix cmpmatrix=0;
  
@@ -64,7 +65,7 @@ int main (int argc, char * argv[])
     fplural   = ajAcdGetFloat("plurality");
     setcase   = ajAcdGetFloat("setcase");
     identity  = ajAcdGetInt("identity");
-    outf      = ajAcdGetOutfile ("outf");
+    seqout    = ajAcdGetSeqout("outseq");
 
     nseqs = ajSeqsetSize(seqset);
     if(nseqs<2)
@@ -80,21 +81,23 @@ int main (int argc, char * argv[])
     }
 
     cons = ajStrNew();
-    calc_consensus(seqset,outf,cmpmatrix,nseqs,mlen,
-                    fplural,setcase,identity,&cons);
+    calc_consensus(seqset,cmpmatrix,nseqs,mlen,
+                   fplural,setcase,identity,&cons);
 
-    /* print consensus */
-    ajFmtPrintF(outf,"Consensus \n%s\n",ajStrStr(cons));   
-
-    ajFileClose(&outf);
+    /* write out consensus sequence */
+    seqo = ajSeqNew();
+    ajSeqAssSeq(seqo,cons);
+    ajSeqAssName(seqo,ajSeqsetGetName(seqset));
+    ajSeqWrite(seqout,seqo);
+    
     ajStrDel(&cons);
-
+    ajSeqDel(&seqo);
     ajExit ();
     return 0;
 
 }
 
-void calc_consensus(AjPSeqset seqset,AjPFile outf,AjPMatrix cmpmatrix,
+void calc_consensus(AjPSeqset seqset,AjPMatrix cmpmatrix,
                     int nseqs,int mlen,float fplural,float setcase,
                     int identity, AjPStr *cons)
 {

@@ -44,5 +44,9 @@ appl: cons [
         min : 0
   ]
 
-  outfile: outf [ param: Y ]
+  seqout: outseq [
+        param: Y
+  ]
+
+# outfile: outf [ param: Y ]
 
