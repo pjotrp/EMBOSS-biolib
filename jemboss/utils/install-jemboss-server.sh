@@ -263,40 +263,37 @@ ssl_print_notes()
 
  if [ -d "$TOMCAT_ROOT/shared/classes" ]; then
 
+   TCVERSION=`sed -n -e 's|\(.*\)Running The Tomcat 4\(.*\)|4|p' $TOMCAT_ROOT/RUNNING.txt`
+
+   if [ "$TCVERSION" != "4" ]; then 
 #tomcat 5.x
-   echo
-   echo 'IF USING TOMCAT 5.x'
-   echo
-   echo
-
-   echo '    <!-- Define a SSL Coyote HTTP/1.1 Connector on port '$PORT' -->'
-   echo '    <Connector className="org.apache.coyote.tomcat5.CoyoteConnector"'
-   echo '               port="'$PORT'" minProcessors="5" maxProcessors="75"'
-   echo '               enableLookups="false"'
-   echo '               acceptCount="10" debug="0" scheme="https" secure="true"'
-   echo '               useURIValidationHack="false">'
-   echo '      <Factory className="org.apache.coyote.tomcat5.CoyoteServerSocketFactory"'
-   echo '           keystoreFile="'$KEYSTOREFILE'" keystorePass="'$PASSWD'"'
-   echo '           clientAuth="false" protocol="TLS"/>'
-   echo '    </Connector>'
-   
-   echo
-   echo
-   echo 'OR IF USING TOMCAT 4.1.x'
-   echo
-   echo
-
+     echo
+     echo '    <!-- Define a SSL Coyote HTTP/1.1 Connector on port '$PORT' -->'
+     echo '    <Connector className="org.apache.coyote.tomcat5.CoyoteConnector"'
+     echo '               port="'$PORT'" minProcessors="5" maxProcessors="75"'
+     echo '               enableLookups="false"'
+     echo '               acceptCount="10" debug="0" scheme="https" secure="true"'
+     echo '               useURIValidationHack="false">'
+     echo '      <Factory className="org.apache.coyote.tomcat5.CoyoteServerSocketFactory"'
+     echo '           keystoreFile="'$KEYSTOREFILE'" keystorePass="'$PASSWD'"'
+     echo '           clientAuth="false" protocol="TLS"/>'
+     echo '    </Connector>'
+     echo
+   else
 #tomcat 4.1.x
-   echo '    <!-- Define a SSL Coyote HTTP/1.1 Connector on port '$PORT' -->'
-   echo '    <Connector className="org.apache.coyote.tomcat4.CoyoteConnector"'
-   echo '               port="'$PORT'" minProcessors="5" maxProcessors="75"'
-   echo '               enableLookups="false"'
-   echo '               acceptCount="10" debug="0" scheme="https" secure="true"'
-   echo '               useURIValidationHack="false">'
-   echo '      <Factory className="org.apache.coyote.tomcat4.CoyoteServerSocketFactory"'
-   echo '           keystoreFile="'$KEYSTOREFILE'" keystorePass="'$PASSWD'"'
-   echo '           clientAuth="false" protocol="TLS"/>'
-   echo '    </Connector>'
+     echo
+     echo '    <!-- Define a SSL Coyote HTTP/1.1 Connector on port '$PORT' -->'
+     echo '    <Connector className="org.apache.coyote.tomcat4.CoyoteConnector"'
+     echo '               port="'$PORT'" minProcessors="5" maxProcessors="75"'
+     echo '               enableLookups="false"'
+     echo '               acceptCount="10" debug="0" scheme="https" secure="true"'
+     echo '               useURIValidationHack="false">'
+     echo '      <Factory className="org.apache.coyote.tomcat4.CoyoteServerSocketFactory"'
+     echo '           keystoreFile="'$KEYSTOREFILE'" keystorePass="'$PASSWD'"'
+     echo '           clientAuth="false" protocol="TLS"/>'
+     echo '    </Connector>'
+     echo
+   fi
  else
 #tomcat 4.0.x
    echo '   <!-- Define an SSL HTTP/1.1 Connector on port '$PORT' -->'
