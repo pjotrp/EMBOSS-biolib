@@ -1,4 +1,30 @@
 Version 2.9.0
+	Major cleanup of ACD files to match acdvalid standards. Featout
+	qualifiers are now -outfeat, which means all output start with
+	-out but it does clash with -outfile so -outf is not always usable
+	as an abbreviation.
+
+	Options for emma have been cleaned up. -insist is no longer used
+	(use -sprotein instead) and -slowfast is now a simple boolean
+	-slow. Both changed lead to a much cleaner ACD file.
+
+	Options for eprimer3 have been cleaned up. New options -primer
+	(true) and -hybridprobe (false) make the dependencies far
+	simpler. The default task is now 1 (same as the old zero) and the
+	-hybridprobe option is needed to calculate the hybridization
+	probes. This removes a lot of dependencies on tasks 1 and 4
+	(hybridprobe) and not-task-4 (primer)
+
+	New AjPDir to hold directory path and default extension. Intended
+	for domainatrix applications. This requires changing
+	ajAcdGetDirectory to return an AjPDir and providing
+	ajAcdGetDirectoryName to return the path as a string. Several
+	programs were changed to reflect this changed call.
+
+	New ACD type outdirectory for a directory to which files will be
+	written. Must have a knowntype describing the files that will
+	appear there. Expected qualifier name is -outdir.
+
 	compseq now has the option '-calcfreq'. This makes it calculate
 	the expecetd frequencies of the words in the sequences from the
 	observed frequencies of the single bases or residues in those
