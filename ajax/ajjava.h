@@ -61,44 +61,44 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_fork
 /* Jembossctl functions */
 
 JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_userAuth
-(JNIEnv *env, jobject obj, jstring door, jstring key,
+(JNIEnv *env, jobject obj, jstring door, jbyteArray key,
  jstring environment);
 
 JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_forkEmboss
-(JNIEnv *env, jobject obj, jstring door, jstring key,
+(JNIEnv *env, jobject obj, jstring door, jbyteArray key,
  jstring environment, jstring cline, jstring direct);
 
 JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_makeDir
-(JNIEnv *env, jobject obj, jstring door, jstring key,
+(JNIEnv *env, jobject obj, jstring door, jbyteArray key,
  jstring environment, jstring direct);
 
 JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_delFile
-(JNIEnv *env, jobject obj, jstring door, jstring key,
+(JNIEnv *env, jobject obj, jstring door, jbyteArray key,
  jstring environment, jstring filename);
 
 
 JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_delDir
-(JNIEnv *env, jobject obj, jstring door, jstring key,
+(JNIEnv *env, jobject obj, jstring door, jbyteArray key,
  jstring environment, jstring direct);
 
 
 JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_listFiles
-(JNIEnv *env, jobject obj, jstring door, jstring key,
+(JNIEnv *env, jobject obj, jstring door, jbyteArray key,
  jstring environment, jstring direct);
 
 
 JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_listDirs
-(JNIEnv *env, jobject obj, jstring door, jstring key,
+(JNIEnv *env, jobject obj, jstring door, jbyteArray key,
  jstring environment, jstring direct);
 
 
 JNIEXPORT jbyteArray JNICALL Java_org_emboss_jemboss_parser_Ajax_getFile
-(JNIEnv *env, jobject obj, jstring door, jstring key,
+(JNIEnv *env, jobject obj, jstring door, jbyteArray key,
  jstring environment, jstring filename);
 
 
 JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_putFile
-(JNIEnv *env, jobject obj, jstring door, jstring key,
+(JNIEnv *env, jobject obj, jstring door, jbyteArray key,
  jstring environment, jstring filename, jbyteArray arr);
 
 

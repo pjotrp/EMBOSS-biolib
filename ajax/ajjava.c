@@ -2281,7 +2281,7 @@ static void java_tidy_command3(AjPStr *uniq, AjPStr *cl, AjPStr *clemboss,
 ******************************************************************************/
 
 JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_userAuth
-(JNIEnv *env, jobject obj, jstring door, jstring key,
+(JNIEnv *env, jobject obj, jstring door, jbyteArray key,
  jstring environment)
 {
     AjPStr username=NULL;
@@ -2299,11 +2299,14 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_userAuth
     char   *juser=NULL;
     char   *jpass=NULL;
     char   *jenv =NULL;
+    jsize  plen = (*env)->GetArrayLength(env,key);
+    jbyte  *ca = (*env)->GetByteArrayElements(env,key,0);
 
     AjPStr home=NULL;
 
     AjBool ok=ajFalse;
-
+    int i;
+    
     
     username = ajStrNew();
     password = ajStrNew();
@@ -2317,12 +2320,14 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_userAuth
 	return (unsigned char)ajFalse;
     (*env)->ReleaseStringUTFChars(env,door,juser);
 
-    jpass = (char *) (*env)->GetStringUTFChars(env,key,0);
-    if(jpass)
-	ajStrAssC(&password,jpass);
-    else
+
+    if(!(jpass=(char *)malloc(plen+1)))
 	return (unsigned char)ajFalse;
-    (*env)->ReleaseStringUTFChars(env,key,jpass);
+    bzero((void *)jpass,plen+1);
+    for(i=0;i<plen;++i)
+	jpass[i] = (char)ca[i];
+    ajStrAssC(&password,jpass);
+    (*env)->ReleaseByteArrayElements(env,key,ca,0);
 
     jenv = (char *) (*env)->GetStringUTFChars(env,environment,0);
     if(jenv)
@@ -2392,7 +2397,7 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_userAuth
 ******************************************************************************/
 
 JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_forkEmboss
-(JNIEnv *env, jobject obj, jstring door, jstring key,
+(JNIEnv *env, jobject obj, jstring door, jbyteArray key,
  jstring environment, jstring cline, jstring direct)
 {
     AjPStr username=NULL;
@@ -2416,7 +2421,10 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_forkEmboss
     AjPStr directory=NULL;
     
     AjBool ok=ajFalse;
-
+    jsize  plen = (*env)->GetArrayLength(env,key);
+    jbyte  *ca = (*env)->GetByteArrayElements(env,key,0);
+    int i;
+    
     
     username = ajStrNew();
     password = ajStrNew();
@@ -2432,12 +2440,15 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_forkEmboss
 	return (unsigned char)ajFalse;
     (*env)->ReleaseStringUTFChars(env,door,juser);
 
-    jpass = (char *) (*env)->GetStringUTFChars(env,key,0);
-    if(jpass)
-	ajStrAssC(&password,jpass);
-    else
+
+    if(!(jpass=(char *)malloc(plen+1)))
 	return (unsigned char)ajFalse;
-    (*env)->ReleaseStringUTFChars(env,key,jpass);
+    bzero((void *)jpass,plen+1);
+    for(i=0;i<plen;++i)
+	jpass[i] = (char)ca[i];
+    ajStrAssC(&password,jpass);
+    (*env)->ReleaseByteArrayElements(env,key,ca,0);
+
 
     jenv = (char *) (*env)->GetStringUTFChars(env,environment,0);
     if(jenv)
@@ -2515,7 +2526,7 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_forkEmboss
 ******************************************************************************/
 
 JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_makeDir
-(JNIEnv *env, jobject obj, jstring door, jstring key,
+(JNIEnv *env, jobject obj, jstring door, jbyteArray key,
  jstring environment, jstring direct)
 {
     AjPStr username=NULL;
@@ -2537,7 +2548,10 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_makeDir
     AjPStr directory=NULL;
 
     AjBool ok=ajFalse;
-
+    jsize  plen = (*env)->GetArrayLength(env,key);
+    jbyte  *ca = (*env)->GetByteArrayElements(env,key,0);
+    int i;
+    
     
     username = ajStrNew();
     password = ajStrNew();
@@ -2552,12 +2566,14 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_makeDir
 	return (unsigned char)ajFalse;
     (*env)->ReleaseStringUTFChars(env,door,juser);
 
-    jpass = (char *) (*env)->GetStringUTFChars(env,key,0);
-    if(jpass)
-	ajStrAssC(&password,jpass);
-    else
+
+    if(!(jpass=(char *)malloc(plen+1)))
 	return (unsigned char)ajFalse;
-    (*env)->ReleaseStringUTFChars(env,key,jpass);
+    bzero((void *)jpass,plen+1);
+    for(i=0;i<plen;++i)
+	jpass[i] = (char)ca[i];
+    ajStrAssC(&password,jpass);
+    (*env)->ReleaseByteArrayElements(env,key,ca,0);
 
     jenv = (char *) (*env)->GetStringUTFChars(env,environment,0);
     if(jenv)
@@ -2628,7 +2644,7 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_makeDir
 ******************************************************************************/
 
 JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_delFile
-(JNIEnv *env, jobject obj, jstring door, jstring key,
+(JNIEnv *env, jobject obj, jstring door, jbyteArray key,
  jstring environment, jstring filename)
 {
     AjPStr username=NULL;
@@ -2650,7 +2666,10 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_delFile
     AjPStr file=NULL;
 
     AjBool ok=ajFalse;
-
+    jsize  plen = (*env)->GetArrayLength(env,key);
+    jbyte  *ca = (*env)->GetByteArrayElements(env,key,0);
+    int i;
+    
     
     username = ajStrNew();
     password = ajStrNew();
@@ -2665,12 +2684,15 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_delFile
 	return (unsigned char)ajFalse;
     (*env)->ReleaseStringUTFChars(env,door,juser);
 
-    jpass = (char *) (*env)->GetStringUTFChars(env,key,0);
-    if(jpass)
-	ajStrAssC(&password,jpass);
-    else
+
+    if(!(jpass=(char *)malloc(plen+1)))
 	return (unsigned char)ajFalse;
-    (*env)->ReleaseStringUTFChars(env,key,jpass);
+    bzero((void *)jpass,plen+1);
+    for(i=0;i<plen;++i)
+	jpass[i] = (char)ca[i];
+    ajStrAssC(&password,jpass);
+    (*env)->ReleaseByteArrayElements(env,key,ca,0);
+
 
     jenv = (char *) (*env)->GetStringUTFChars(env,environment,0);
     if(jenv)
@@ -2740,7 +2762,7 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_delFile
 ******************************************************************************/
 
 JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_delDir
-(JNIEnv *env, jobject obj, jstring door, jstring key,
+(JNIEnv *env, jobject obj, jstring door, jbyteArray key,
  jstring environment, jstring direct)
 {
     AjPStr username=NULL;
@@ -2762,7 +2784,10 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_delDir
     AjPStr directory=NULL;
 
     AjBool ok=ajFalse;
-
+    jsize  plen = (*env)->GetArrayLength(env,key);
+    jbyte  *ca = (*env)->GetByteArrayElements(env,key,0);
+    int i;
+    
     
     username = ajStrNew();
     password = ajStrNew();
@@ -2777,12 +2802,15 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_delDir
 	return (unsigned char)ajFalse;
     (*env)->ReleaseStringUTFChars(env,door,juser);
 
-    jpass = (char *) (*env)->GetStringUTFChars(env,key,0);
-    if(jpass)
-	ajStrAssC(&password,jpass);
-    else
+
+    if(!(jpass=(char *)malloc(plen+1)))
 	return (unsigned char)ajFalse;
-    (*env)->ReleaseStringUTFChars(env,key,jpass);
+    bzero((void *)jpass,plen+1);
+    for(i=0;i<plen;++i)
+	jpass[i] = (char)ca[i];
+    ajStrAssC(&password,jpass);
+    (*env)->ReleaseByteArrayElements(env,key,ca,0);
+
 
     jenv = (char *) (*env)->GetStringUTFChars(env,environment,0);
     if(jenv)
@@ -2853,7 +2881,7 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_delDir
 ******************************************************************************/
 
 JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_listFiles
-(JNIEnv *env, jobject obj, jstring door, jstring key,
+(JNIEnv *env, jobject obj, jstring door, jbyteArray key,
  jstring environment, jstring direct)
 {
     AjPStr username=NULL;
@@ -2875,7 +2903,10 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_listFiles
     AjPStr directory=NULL;
 
     AjBool ok=ajFalse;
-
+    jsize  plen = (*env)->GetArrayLength(env,key);
+    jbyte  *ca = (*env)->GetByteArrayElements(env,key,0);
+    int i;
+    
     
     username = ajStrNew();
     password = ajStrNew();
@@ -2890,12 +2921,16 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_listFiles
 	return (unsigned char)ajFalse;
     (*env)->ReleaseStringUTFChars(env,door,juser);
 
-    jpass = (char *) (*env)->GetStringUTFChars(env,key,0);
-    if(jpass)
-	ajStrAssC(&password,jpass);
-    else
+
+    if(!(jpass=(char *)malloc(plen+1)))
 	return (unsigned char)ajFalse;
-    (*env)->ReleaseStringUTFChars(env,key,jpass);
+    bzero((void *)jpass,plen+1);
+    for(i=0;i<plen;++i)
+	jpass[i] = (char)ca[i];
+    ajStrAssC(&password,jpass);
+    (*env)->ReleaseByteArrayElements(env,key,ca,0);
+
+
 
     jenv = (char *) (*env)->GetStringUTFChars(env,environment,0);
     if(jenv)
@@ -2966,7 +3001,7 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_listFiles
 ******************************************************************************/
 
 JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_listDirs
-(JNIEnv *env, jobject obj, jstring door, jstring key,
+(JNIEnv *env, jobject obj, jstring door, jbyteArray key,
  jstring environment, jstring direct)
 {
     AjPStr username=NULL;
@@ -2988,7 +3023,10 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_listDirs
     AjPStr directory=NULL;
 
     AjBool ok=ajFalse;
-
+    jsize  plen = (*env)->GetArrayLength(env,key);
+    jbyte  *ca = (*env)->GetByteArrayElements(env,key,0);
+    int i;
+    
     
     username = ajStrNew();
     password = ajStrNew();
@@ -3003,12 +3041,14 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_listDirs
 	return (unsigned char)ajFalse;
     (*env)->ReleaseStringUTFChars(env,door,juser);
 
-    jpass = (char *) (*env)->GetStringUTFChars(env,key,0);
-    if(jpass)
-	ajStrAssC(&password,jpass);
-    else
+    if(!(jpass=(char *)malloc(plen+1)))
 	return (unsigned char)ajFalse;
-    (*env)->ReleaseStringUTFChars(env,key,jpass);
+    bzero((void *)jpass,plen+1);
+    for(i=0;i<plen;++i)
+	jpass[i] = (char)ca[i];
+    ajStrAssC(&password,jpass);
+    (*env)->ReleaseByteArrayElements(env,key,ca,0);
+
 
     jenv = (char *) (*env)->GetStringUTFChars(env,environment,0);
     if(jenv)
@@ -3082,7 +3122,7 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_listDirs
 
 
 JNIEXPORT jbyteArray JNICALL Java_org_emboss_jemboss_parser_Ajax_getFile
-(JNIEnv *env, jobject obj, jstring door, jstring key,
+(JNIEnv *env, jobject obj, jstring door, jbyteArray key,
  jstring environment, jstring filename)
 {
     AjPStr username=NULL;
@@ -3111,6 +3151,8 @@ JNIEXPORT jbyteArray JNICALL Java_org_emboss_jemboss_parser_Ajax_getFile
     int i;
     
     AjBool ok=ajFalse;
+    jsize  plen = (*env)->GetArrayLength(env,key);
+    jbyte  *ca = (*env)->GetByteArrayElements(env,key,0);
 
     
     username = ajStrNew();
@@ -3124,11 +3166,14 @@ JNIEXPORT jbyteArray JNICALL Java_org_emboss_jemboss_parser_Ajax_getFile
 	ajStrAssC(&username,juser);
     (*env)->ReleaseStringUTFChars(env,door,juser);
 
-    jpass = (char *) (*env)->GetStringUTFChars(env,key,0);
-    if(jpass)
-	ajStrAssC(&password,jpass);
+    if(!(jpass=(char *)malloc(plen+1)))
+	return NULL;
+    bzero((void *)jpass,plen+1);
+    for(i=0;i<plen;++i)
+	jpass[i] = (char)ca[i];
+    ajStrAssC(&password,jpass);
+    (*env)->ReleaseByteArrayElements(env,key,ca,0);
 
-    (*env)->ReleaseStringUTFChars(env,key,jpass);
 
     jenv = (char *) (*env)->GetStringUTFChars(env,environment,0);
     if(jenv)
@@ -3236,7 +3281,7 @@ JNIEXPORT jbyteArray JNICALL Java_org_emboss_jemboss_parser_Ajax_getFile
 ******************************************************************************/
 
 JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_putFile
-(JNIEnv *env, jobject obj, jstring door, jstring key,
+(JNIEnv *env, jobject obj, jstring door, jbyteArray key,
  jstring environment, jstring filename, jbyteArray arr)
 {
     AjPStr username=NULL;
@@ -3263,6 +3308,8 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_putFile
     int i;
     
     AjBool ok=ajFalse;
+    jsize  plen = (*env)->GetArrayLength(env,key);
+    jbyte  *ca = (*env)->GetByteArrayElements(env,key,0);
 
 
     size = len;
@@ -3285,12 +3332,14 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_putFile
 	return (unsigned char)ajFalse;
     (*env)->ReleaseStringUTFChars(env,door,juser);
 
-    jpass = (char *) (*env)->GetStringUTFChars(env,key,0);
-    if(jpass)
-	ajStrAssC(&password,jpass);
-    else
+    if(!(jpass=(char *)malloc(plen+1)))
 	return (unsigned char)ajFalse;
-    (*env)->ReleaseStringUTFChars(env,key,jpass);
+    bzero((void *)jpass,plen+1);
+    for(i=0;i<plen;++i)
+	jpass[i] = (char)ca[i];
+    ajStrAssC(&password,jpass);
+    (*env)->ReleaseByteArrayElements(env,key,ca,0);
+
 
     jenv = (char *) (*env)->GetStringUTFChars(env,environment,0);
     if(jenv)
