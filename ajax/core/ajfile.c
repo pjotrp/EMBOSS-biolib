@@ -842,9 +842,9 @@ void ajFileDataDirNew(const AjPStr tfile, const AjPStr dir, AjPFile *fnew)
 ** in the EMBOSS/data/(dir) directory, or is found in the usual directories
 ** by ajFileDataNew
 **
-** @param [r] tfile [const AjPStr] Filename in AjStr.
-** @param [r] dir [const AjPStr] Data directory name in AjStr.
-** @param [w] fnew [AjPFile*] file pointer.
+** @param [r] s [const char*] Filename
+** @param [r] d [const char*] Data directory name.
+** @param [w] f [AjPFile*] file pointer.
 ** @return [void]
 ** @@
 ******************************************************************************/

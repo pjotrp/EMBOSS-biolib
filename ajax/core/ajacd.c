@@ -13952,6 +13952,8 @@ void ajAcdPrintType (AjPFile outf, AjBool full) {
 **
 ** @param [r] outf [AjPFile] Output file
 ** @param [r] full [AjBool] Full report
+** @param [r] acdtype [char*] ACD type name
+** @param [r] calcattr [AcdOAttr[]] Acd calculated attributes
 ** @return [void]
 **
 ******************************************************************************/
@@ -14004,6 +14006,8 @@ static AjBool acdVocabCheck (AjPStr str, char** vocab) {
 **
 ** Cleans up feature table internal memory
 **
+** @param [R] silent [AjBool] Turn off messages (used when some messages
+**                            are expected but can be ignored).
 ** @return [void]
 ** @@
 ******************************************************************************/

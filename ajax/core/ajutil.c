@@ -210,8 +210,8 @@ void ajUtilRev4 (ajint* ival) {
 **
 ** Reverses the byte order in an 8 byte long.
 **
-** @param [u] ival [ajlong] Integer in wrong byte order.
-**                          Returned in correct order.
+** @param [u] ival [ajlong*] Integer in wrong byte order.
+**                           Returned in correct order.
 ** @return [void]
 ** @@
 ******************************************************************************/

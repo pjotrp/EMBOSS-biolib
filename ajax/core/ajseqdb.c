@@ -2041,12 +2041,14 @@ static AjBool seqCdQryQuery (AjPSeqQuery qry)
     return ajFalse;
 }
 
-/* @funcstatic seqCdEntryCmp ********************************************
+/* @funcstatic seqCdEntryCmp **************************************************
 **
 ** Compares two SeqPEntry objects
 **
-** @param [r] qry [AjPSeqQuery] Query data
-** @return [AjBool] ajTrue if successful
+** @param [r] pa [const void*] SeqPEntry object
+** @param [r] pb [const void*] SeqPEntry object
+** @return [int] -1 if first entry should sort before second, +1 if the
+**         second entry should sort first. 0 if they are identical
 ** @@
 ******************************************************************************/
 static int seqCdEntryCmp (const void* pa, const void* pb) {
@@ -2064,12 +2066,13 @@ static int seqCdEntryCmp (const void* pa, const void* pb) {
   return (a->annoff - b->annoff);
 }
 
-/* @funcstatic seqCdEntryDel********************************************
+/* @funcstatic seqCdEntryDel***************************************************
 **
 ** Deletes a SeqPCdEntry object
 **
-** @param [r] qry [AjPSeqQuery] Query data
-** @return [AjBool] ajTrue if successful
+** @param [r] pentry [void**] Address of a SeqPCdEntry object
+** @param [r] cl [void*] Standard unused argument, usually NULL.
+** @return [void]
 ** @@
 ******************************************************************************/
 static void seqCdEntryDel (void** pentry, void* cl) {
@@ -3277,63 +3280,6 @@ static AjBool seqCdQryFile (AjPSeqQuery qry)
     return ajTrue;
 }
 
-/* @section NBRF Database Indexing ****************************************
-**
-** These functions manage the NBRF index access methods.
-**
-******************************************************************************/
-
-/* #funcstatic seqAccessNbrf **************************************************
-**
-** Reads sequence(s) using NBRF index files. Returns with the file pointer
-** set to the position in the sequence file.
-**
-** @param [r] seqin [AjPSeqin] Sequence input.
-** @return [AjBool] ajTrue on success.
-** @@
-******************************************************************************/
-
-/*
-//static AjBool seqAccessNbrf (AjPSeqin seqin)
-//{
-//    static AjPStr fullname = NULL;
-//
-//    AjPSeqQuery qry = seqin->Query;
-//
-//    ajDebug ("seqAccessNbrf %S\n", qry->DbName);
-//
-//    if (!ajStrLen(qry->Directory))
-//    {
-//	ajErr ("NBRF access: directory not defined");
-//	return ajFalse;
-//    }
-//
-//    if (!ajStrLen(qry->Filename))
-//    {
-//	ajErr ("NBRF access: filename not defined");
-//	return ajFalse;
-//    }
-//
-//    ajDebug ("Try to open %S%S.seq\n", qry->Directory, qry->Filename);
-//
-//    seqin->Filebuff = ajFileBuffNewDW (qry->Directory, qry->Filename);
-//    if (!seqin->Filebuff)
-//    {
-//	ajErr ("NBRF access: failed to open filename '%S/%S'",
-//	       qry->Directory, qry->Filename);
-//	return ajFalse;
-//    }
-//
-//    (void) ajStrAssS (&seqin->Filename, qry->Filename);
-//    (void) ajStrAssS (&seqin->Entryname, qry->Id);
-//    (void) ajStrAssS (&seqin->Db, qry->DbName);
-//
-//    ajStrDel (&fullname);
-//
-//    return ajTrue;
-//}
-*/
-
 /* @section Remote URL Database Access ****************************************
 **
 ** These functions manage the remote URL database access methods.
@@ -3556,32 +3502,7 @@ static AjBool seqAccessUrl (AjPSeqin seqin)
     return ajTrue;
 }
 
-/* @section Command Line Database Access **********************************
-**
-** These functions manage the command line database access methods.
-**
-******************************************************************************/
-
-
-/* #funcstatic seqAccessCmd ***************************************************
-**
-** Reads sequence data using a command. (not yet implemented)
-**
-** @param [r] seqin [AjPSeqin] Sequence input.
-** @return [AjBool] ajTrue on success.
-** @@
-******************************************************************************/
-
-/*
-//static AjBool seqAccessCmd (AjPSeqin seqin)
-//{
-//    ajErr ("seqAccessCmd is not yet implemented");
-//
-//    return ajFalse;
-//}
-*/
-
-/* @section Application Database Access **********************************
+/* @section Application Database Access ***************************************
 **
 ** These functions manage the application database access methods.
 **

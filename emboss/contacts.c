@@ -409,7 +409,7 @@ rm /data/structure/con_new/d1qjha_.conD1G1XA_
 
 
 
-/* @funcstatic contact_WriteFile *****************************************
+/* @funcstatic contacts_WriteFile *********************************************
 **
 ** Writes a file of INTRA-chain residue contact data in embl-like format 
 ** for a pdb structure.

@@ -5914,10 +5914,10 @@ ajint ajStrCountC (AjPStr thys, const char* str) {
 **
 ** Tests whether a range refers to the whole string
 **
-** @param [r] thys [AjPStr] String
+** @param [r] thys [const AjPStr] String
 ** @param [r] begin [ajint] Begin position (0 start, negative from the end)
 ** @param [r] end [ajint] Begin position (0 start, negative from the end)
-** @return [ajint] Number of times character was found in string
+** @return [AjBool] ajTrue is range covers the whole string
 ******************************************************************************/
 
 AjBool ajStrWhole (const AjPStr thys, ajint begin, ajint end) {

@@ -7769,10 +7769,10 @@ AjBool ajFeatIsLocalRange (AjPFeature gf, ajint start, ajint end)
 ** Tests whether the feature is a child member of a join
 ** The parent (first) feature of a join gives:
 ** ajFeatIsChild == ajFalse && ajFeatIsMultiple == ajTrue
-** Returns AJTRUE if it is a child, AJFALSE if it is not a child
 **
 ** @param [r] gf       [AjPFeature]  Feature
-** @return [AjBool]
+** @return [AjBool] Returns AJTRUE if it is a child,
+**                  AJFALSE if it is not a child
 ** @@
 ******************************************************************************/
 AjBool ajFeatIsChild (AjPFeature gf) 
@@ -7784,10 +7784,9 @@ AjBool ajFeatIsChild (AjPFeature gf)
 /* @func ajFeatIsMultiple ****************************************************
 **
 ** Tests whether the feature is a member of a join, group order or one_of
-** Returns AJTRUE if it is a member
 **
 ** @param [r] gf       [AjPFeature]  Feature
-** @return [AjBool]
+** @return [AjBool] Returns AJTRUE if it is a member
 ** @@
 ******************************************************************************/
 AjBool ajFeatIsMultiple (AjPFeature gf) 
@@ -7801,10 +7800,9 @@ AjBool ajFeatIsMultiple (AjPFeature gf)
 **
 ** Tests whether the feature is a member of a complement around a
 ** multiple (join, etc.)
-** Returns AJTRUE if it is a complemented multiple
 **
 ** @param [r] gf       [AjPFeature]  Feature
-** @return [AjBool]
+** @return [AjBool] Returns AJTRUE if it is a complemented multiple
 ** @@
 ******************************************************************************/
 AjBool ajFeatIsCompMult (AjPFeature gf) 

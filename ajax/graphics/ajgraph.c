@@ -4983,11 +4983,11 @@ void ajGraphRectangleOnCurve(PLFLT xcentre, PLFLT ycentre, PLFLT Radius, PLFLT B
   return;
 }
 
-/* @func ajGraphInfo **************************************************
+/* @func ajGraphInfo **********************************************************
 **
 ** Information on files created for graph output
 **
-** @param [w] files [AjPList] List of graph files
+** @param [w] files [AjPList*] List of graph files
 ** @return [ajint] Number of files (will match length of list)
 ** @@
 ******************************************************************************/

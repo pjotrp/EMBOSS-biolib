@@ -449,7 +449,9 @@ int main(int argc, char **argv)
 ** @param [r] ifile [ajint] File number.
 ** @param [r] idformat [AjPStr] Id format in FASTA file
 ** @param [r] systemsort [AjBool] If ajTrue use system sort, else internal sort
-** @param [r] fields [AjPStr*] Fields to be indexed
+** @param [r] fields [AjPStr*] Field names to be indexed
+** @param [w] maxFieldLen [ajint*] Maximum token length for each field
+** @param [w] maxidlen [ajint*] Maximum entry ID length
 ** @param [r] elistfile [AjPFile] entry file
 ** @param [r] alistfile [AjPFile*] field data files array
 ** @return [EmbPEntry] Entry data object.
@@ -632,12 +634,14 @@ static void dbiblast_dbfree ( PBlastDb* pdb)
   return;
 }
 
-/* @funcstatic dbiblast_blastopenlib *****************************************
+/* @funcstatic dbiblast_blastopenlib ******************************************
 **
 ** Open BLAST library
 **
 ** @param [r] name [AjPStr] Source file name
-** @param ru] usesrc [AjBool] If ajTrue, use the source (fasta) file
+** @param [u] usesrc [AjBool] If ajTrue, use the source (fasta) file
+** @param [r] blastv [ajint] Blast version number (1 or 2)
+** @param [r] dbtype [char] Blast database type (p)rotein or (n)ucleotide
 ** @param [u] pdb [PBlastDb*] Blast dababase structure.
 ** @return [AjBool] ajTrue on success
 ** @@
@@ -832,12 +836,17 @@ static AjBool dbiblast_blastopenlib (AjPStr name, AjBool usesrc,
 
 
 
-/* @funcstatic dbiblast_parseNcbi ********************************************
+/* @funcstatic dbiblast_parseNcbi *********************************************
 **
 ** Parses an NCBI style header from the BLAST header table.
 **
 ** @param [r] line [AjPStr] Input line
+** @param [w] alistfile [AjPFile*] List of field temporary files
+** @param [r] systemsort [AjBool] If ajTrue, use the system sort utility,
+**                                else sort in memory
+** @param [w] fields [AjPStr*] Field names
 ** @param [r] db [PBlastDb] Database object
+** @param [r] maxFieldLen [ajint*] Maximum token lengths for each field
 ** @param [w] id [AjPStr*] ID
 ** @param [w] fdlist [AjPList*] Field token lists (one list for each field)
 ** @return [AjBool] ajTrue on success
@@ -989,9 +998,13 @@ static AjBool dbiblast_parseNcbi (AjPStr line, AjPFile* alistfile,
 ** Parses a GCG style header from the BLAST header table.
 **
 ** @param [r] line [AjPStr] Input line
+** @param [r] alistfile [AjPFile*] field data files array
+** @param [r] systemsort [AjBool] If ajTrue use system sort, else internal sort
+** @param [r] fields [AjPStr*] Field names to be indexed
 ** @param [r] db [PBlastDb] Database object
+** @param [w] maxFieldLen [ajint*] Maximum token length for each field
 ** @param [w] id [AjPStr*] ID
-** @param [w] acl [AjPList] Accession number list 
+** @param [w] fdl [AjPList*] Accession number list 
 ** @return [AjBool] ajTrue on success
 ** @@
 ******************************************************************************/
@@ -1074,9 +1087,13 @@ static AjBool dbiblast_parseGcg (AjPStr line, AjPFile* alistfile,
 ** Parses a plain header from the BLAST header table.
 **
 ** @param [r] line [AjPStr] Input line
+** @param [r] alistfile [AjPFile*] field data files array
+** @param [r] systemsort [AjBool] If ajTrue use system sort, else internal sort
+** @param [r] fields [AjPStr*] Field names to be indexed
 ** @param [r] db [PBlastDb] Database object
+** @param [w] maxFieldLen [ajint*] Maximum token length for each field
 ** @param [w] id [AjPStr*] ID
-** @param [w] acl [AjPList] Accession number list 
+** @param [w] fdl [AjPList*] Accession number list 
 ** @return [AjBool] ajTrue on success
 ** @@
 ******************************************************************************/
@@ -1159,9 +1176,13 @@ static AjBool dbiblast_parseSimple (AjPStr line, AjPFile* alistfile,
 ** Parses a simple FASTA ID from the BLAST header table.
 **
 ** @param [r] line [AjPStr] Input line
+** @param [r] alistfile [AjPFile*] field data files array
+** @param [r] systemsort [AjBool] If ajTrue use system sort, else internal sort
+** @param [r] fields [AjPStr*] Field names to be indexed
 ** @param [r] db [PBlastDb] Database object
+** @param [w] maxFieldLen [ajint*] Maximum token length for each field
 ** @param [w] id [AjPStr*] ID
-** @param [w] acl [AjPList] Accession number list 
+** @param [w] fdl [AjPList*] Accession number list 
 ** @return [AjBool] ajTrue on success
 ** @@
 ******************************************************************************/
@@ -1227,9 +1248,13 @@ static AjBool dbiblast_parseId (AjPStr line, AjPFile* alistfile,
 ** Parses an unknown type ID from the BLAST header table.
 **
 ** @param [r] line [AjPStr] Input line
+** @param [r] alistfile [AjPFile*] field data files array
+** @param [r] systemsort [AjBool] If ajTrue use system sort, else internal sort
+** @param [r] fields [AjPStr*] Field names to be indexed
 ** @param [r] db [PBlastDb] Database object
+** @param [w] maxFieldLen [ajint*] Maximum token length for each field
 ** @param [w] id [AjPStr*] ID
-** @param [w] acl [AjPList] Accession number list 
+** @param [w] fdl [AjPList*] Accession number list 
 ** @return [AjBool] ajTrue on success
 ** @@
 ******************************************************************************/
@@ -1508,9 +1533,9 @@ static AjBool dbiblast_wrongtype(AjPStr oname, char *suff)
     return ajFalse;
 }
 
-/* @funcstatic dbiblast_memfopenfile *****************************************
+/* @funcstatic dbiblast_memfclosefile *****************************************
 **
-** Open a (possibly memory mapped) binary file
+** Close a (possibly memory mapped) binary file
 **
 ** @param [d] pfd [PMemFile*] File
 ** @return [void]

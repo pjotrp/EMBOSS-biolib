@@ -194,7 +194,7 @@ int main(int argc, char **argv)
 
 
 
-/* @funcstatic  cutgextract_next **********************************************
+/* @funcstatic cutgextract_next ***********************************************
 **
 ** Undocumented.
 **
@@ -250,7 +250,7 @@ static char* cutgextract_next(AjPFile inf, AjPInt *array)
 }
 
 
-/* @funcstatic  cutgextract_readcodons ****************************************
+/* @funcstatic cutgextract_readcodons *****************************************
 **
 ** Undocumented.
 **
