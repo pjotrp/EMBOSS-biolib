@@ -39,6 +39,13 @@ DB qapflatinc  [ type: P format: swiss method: emblcd
   comment: "Swissnew flatfiles, only updated sequence file"
 ]
 
+DB qapflatall  [ type: P format: swiss method: emblcd
+  dir: $emboss_qadata/swnew
+  indexdir: $emboss_qadata/qa/dbiflat-swiss-allsys-keep
+  comment: "Swissnew flatfiles, all fields indexed"
+  fields: "sv des org key"
+]
+
 ###########################################
 ### Access method EMBLCD, FASTA format data
 ###########################################
@@ -59,6 +66,13 @@ DB qawfasta  [ type: N format: fasta method: emblcd
   dir: $emboss_qadata/data
   indexdir: $emboss_qadata/qa/dbifasta-worm-keep
   comment: "FASTA file wormpep entries"
+]
+
+DB qanfastaall  [ type: N format: fasta method: emblcd
+  dir: $emboss_qadata/data
+  indexdir: $emboss_qadata/qa/dbifasta-allsys-keep
+  comment: "FASTA file EMBL rodents, all fields indexed"
+  fields: "sv des"
 ]
 
 #######################
@@ -92,6 +106,13 @@ DB qapblastsplitinc  [ type: P format: ncbi method: blast
   comment: "BLAST swissnew split in 5 files, only file 02"
 ]
 
+DB qapblastall  [ type: P format: ncbi method: blast
+  dir: $emboss_qadata/data
+  indexdir: $emboss_qadata/qa/dbiblast-allsys-keep
+  comment: "BLAST swissnew, all fields indexed"
+  fields: "sv des"
+]
+
 #####################
 ### access method GCG
 #####################
@@ -117,11 +138,26 @@ DB qangcginc  [ type: N format: embl method: gcg
   comment: "GCG format EMBL only prokaryotes"
 ]
 
+DB qangcgall  [ type: N format: embl method: gcg
+  dir: $emboss_qadata/embl
+  indexdir: $emboss_qadata/qa/dbigcg-allsys-keep
+  comment: "GCG format EMBL"
+  fields: "sv des org key"
+]
+
+#####################
+### access method SRS
+#####################
+
 DB qasrs [ type: N format: embl method: srs
   dbalias: embl
   fields: "sv des org"     # key omitted to test error messages
   comment: "EMBL in local srs installation"
 ]
+
+##########################
+### access method SRSFASTA
+##########################
 
 DB qasrsfasta [ type: N format: fasta method: srsfasta
   dbalias: embl
@@ -129,10 +165,13 @@ DB qasrsfasta [ type: N format: fasta method: srsfasta
   comment: "EMBL in local srs installation, fasta format"
 ]
 
+########################
+### access method SRSWWW
+########################
+
 DB qasrswww [ type: N format: embl method: srswww
   dbalias: embl
   fields: "sv des org key"
-  url: http://srs.ebi.ac.uk/srs6bin/cgi-bin/wgetz
+  url: http://picasso.lionbio.co.uk:8723/srs6bin/cgi-bin/wgetz
   comment: "Remote SRS web server"
 ]
-
