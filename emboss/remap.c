@@ -42,6 +42,7 @@ static void remap_NoCutList (AjPFile outfile, AjPTable hittable,
 			     AjBool sticky, ajint sitelen, AjBool commercial);
 static void remap_DelTable(AjPTable * table);
 static void remap_read_file_of_enzyme_names(AjPStr *enzymes);
+static int remap_ajStrCmpCase (const void* str1, const void* str2);
 
 /* structure for counts and isoschizomers of a restriction enzyme hit */
 typedef struct SValue
@@ -744,8 +745,8 @@ static void remap_NoCutList (AjPFile outfile, AjPTable hittable,
      *  nocutlist item is deleted.
      */
     
-    ajListSort(nocutlist, ajStrCmp);
-    ajListSort(cutlist, ajStrCmp);
+    ajListSort(nocutlist, remap_ajStrCmpCase);
+    ajListSort(cutlist, remap_ajStrCmpCase);
     
     citer = ajListIter(cutlist);
     niter = ajListIter(nocutlist);
@@ -763,8 +764,9 @@ static void remap_NoCutList (AjPFile outfile, AjPTable hittable,
     
     while (nocutname != NULL && cutname != NULL)
     {
-	ajDebug("compare cutname, nocutname: %S %S\n", cutname, nocutname);
 	i = ajStrCmpCase(cutname, nocutname);
+	ajDebug("compare cutname, nocutname: %S %S ", cutname, nocutname);
+	ajDebug("ajStrCmpCase=%d\n", i);
 	if (i == 0)
 	{			/* match - so remove from nocutlist */
 	    ajDebug("ajListstrRemove %S\n", nocutname);
@@ -930,3 +932,32 @@ static void remap_read_file_of_enzyme_names(AjPStr *enzymes)
     return;
 }
 
+/* @funcstatic remap_ajStrCmpCase ************************************************************
+**  
+** Compares the value of two strings for use in sorting (e.g. ajListSort)
+** Case Independent!
+** 
+** @param [r] str1 [const void*] First string
+** @param [r] str2 [const void*] Second string
+** @return [int] -1 if first string should sort before second, +1 if the
+**         second string should sort first. 0 if they are identical
+**         in length and content.
+** @@
+******************************************************************************/
+
+static int remap_ajStrCmpCase (const void* str1, const void* str2) {
+  const char* cp; 
+  const char* cq;  
+
+  for (cp = (*(AjPStr*)str1)->Ptr, cq = (*(AjPStr*)str2)->Ptr; *cp && *cq; cp++, cq++) {
+    if (toupper((ajint) *cp) != toupper((ajint) *cq)) {
+      if (toupper((ajint) *cp) > toupper((ajint) *cq)) return 1;
+      else return -1;
+    }
+  }
+
+  if (*cp) return 1;  
+  if (*cq) return -1;
+  return 0;
+
+}
