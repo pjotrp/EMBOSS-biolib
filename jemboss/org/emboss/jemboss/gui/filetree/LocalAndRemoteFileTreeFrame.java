@@ -33,7 +33,7 @@ import org.emboss.jemboss.JembossParams;
 public class LocalAndRemoteFileTreeFrame extends JFrame
 {
 
-  private DragTree ltree;
+  private static DragTree ltree;
   private JSplitPane treePane;
   private JMenuItem prefClose;
 
@@ -156,7 +156,7 @@ public class LocalAndRemoteFileTreeFrame extends JFrame
 
   }
 
-  public DragTree getLocalDragTree()
+  public static DragTree getLocalDragTree()
   {
     return ltree;
   }
