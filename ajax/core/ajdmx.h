@@ -52,6 +52,7 @@ extern "C"
 ** @alias AjSScophit
 ** @alias AjOScophit
 **
+** @attr Type    [ajint]   Type, either ajSCOP (1) or ajCATH (2).
 ** @attr Class [AjPStr] Class name
 ** @attr  Architecture  [AjPStr]    CATH classification.
 ** @attr  Topology     [AjPStr]    CATH classification.
@@ -67,6 +68,7 @@ extern "C"
 **	 to full length swissprot sequence
 ** @attr Acc [AjPStr] Accession number of sequence entry
 ** @attr Spr [AjPStr] Swissprot code of sequence entry
+** @attr  Dom      [AjPStr]  SCOP or CATH database identifier code of entry. 
 ** @attr Typeobj [AjPStr] Bibliographic information ... objective
 ** @attr Typesbj [AjPStr] Bibliographic information ... subjective
 ** @attr Model [AjPStr] String for model type (HMM, Gribskov etc)
@@ -119,6 +121,8 @@ extern "C"
 **        of a list of Scop objects that is provided.  
 ** @output ajDmxScophitsWrite Write contents of a list of Scophits to an output
 **        file.
+** @input ajDmxScophitReadFasta  Read a Scophit object from a file in 
+**        extended FASTA format. 
 ** @assign   ajDmxScophitCopy Copies the contents from one Scophit object to 
 **        another.
 ** @@
@@ -126,6 +130,7 @@ extern "C"
 
 typedef struct AjSScophit
 {
+    ajint     Type;
     AjPStr    Class;
     AjPStr    Architecture;
     AjPStr    Topology;
@@ -138,6 +143,7 @@ typedef struct AjSScophit
     ajint     End;
     AjPStr    Acc;
     AjPStr    Spr;
+    AjPStr    Dom;        
     AjPStr    Typeobj;
     AjPStr    Typesbj;
     AjPStr    Model;
@@ -228,7 +234,7 @@ typedef struct AjSScopalg
     AjPStr  *Seqs;
     AjPStr   Post_similar;
     AjPStr   Positions;
-} AjOScopalg;
+}AjOScopalg;
 #define AjPScopalg AjOScopalg*
 
 
@@ -262,6 +268,7 @@ ajint         ajDmxScophitCompPval(const void *hit1, const void *hit2);
 
 AjBool        ajDmxScopSeqFromSunid(ajint id, AjPStr *seq, const AjPList list);
 AjBool        ajDmxScophitsWrite(AjPFile outf, const AjPList list);
+AjPScophit    ajDmxScophitReadFasta(AjPFile inf);
 AjBool        ajDmxScophitCopy(AjPScophit *to, const AjPScophit from);
 
 

@@ -103,6 +103,7 @@ AjPScophit ajDmxScophitNew(void)
     ret->Seq          = ajStrNew();
     ret->Acc          = ajStrNew();
     ret->Spr          = ajStrNew();
+    ret->Dom          = ajStrNew();
     ret->Typeobj      = ajStrNew();
     ret->Typesbj      = ajStrNew(); 
     ret->Model        = ajStrNew();
@@ -545,6 +546,7 @@ void ajDmxScophitDel(AjPScophit *pthis)
     ajStrDel(&(*pthis)->Seq);
     ajStrDel(&(*pthis)->Acc);
     ajStrDel(&(*pthis)->Spr);
+    ajStrDel(&(*pthis)->Dom);
     ajStrDel(&(*pthis)->Typeobj);
     ajStrDel(&(*pthis)->Typesbj);
     ajStrDel(&(*pthis)->Model);
@@ -719,6 +721,7 @@ AjBool ajDmxScophitCopy(AjPScophit *to, const AjPScophit from)
     if(!(*to) || !from)
 	return ajFalse;
 
+    (*to)->Type = from->Type;
     ajStrAssS(&(*to)->Class, from->Class);
     ajStrAssS(&(*to)->Architecture, from->Architecture);
     ajStrAssS(&(*to)->Topology, from->Topology);
@@ -728,6 +731,7 @@ AjBool ajDmxScophitCopy(AjPScophit *to, const AjPScophit from)
     ajStrAssS(&(*to)->Seq, from->Seq);
     ajStrAssS(&(*to)->Acc, from->Acc);
     ajStrAssS(&(*to)->Spr, from->Spr);
+    ajStrAssS(&(*to)->Dom, from->Dom);
     ajStrAssS(&(*to)->Typeobj, from->Typeobj);
     ajStrAssS(&(*to)->Typesbj, from->Typesbj);
     ajStrAssS(&(*to)->Model, from->Model);
@@ -1283,6 +1287,17 @@ AjBool ajDmxScophitsWrite(AjPFile outf, const AjPList list)
         if(!thys)
             return ajFalse;
 
+	if(thys->Type == ajSCOP)
+	    ajFmtPrintF(outf,"TY   SCOP\nXX\n");  
+	else if(thys->Type == ajCATH)
+	    ajFmtPrintF(outf,"TY   CATH\nXX\n");  
+
+	if(MAJSTRLEN(thys->Dom))
+	{
+	    ajFmtPrintF(outf, "%-5s%S\n", "DO", thys->Dom);
+	    ajFmtPrintF(outf, "XX\n");
+	}
+	
         if(MAJSTRLEN(thys->Class))
         {
 	    ajFmtPrintF(outf,"CL   %S\n",thys->Class);	    
@@ -1354,6 +1369,13 @@ AjBool ajDmxScophitsWrite(AjPFile outf, const AjPList list)
 
         ajFmtPrintF(outf, "%-5s%S\n", "AC", thys->Acc);
         ajFmtPrintF(outf, "XX\n");
+
+	if(MAJSTRLEN(thys->Spr))
+	{
+	    ajFmtPrintF(outf, "%-5s%S\n", "SP", thys->Spr);
+	    ajFmtPrintF(outf, "XX\n");
+	}
+	
         ajFmtPrintF(outf, "%-5s%d START; %d END;\n", "RA", thys->Start,
 		    thys->End);
         ajFmtPrintF(outf, "XX\n");
@@ -1370,6 +1392,179 @@ AjBool ajDmxScophitsWrite(AjPFile outf, const AjPList list)
 }
 
 
+
+
+/* @func ajDmxScophitReadFasta **********************************************
+**
+** Read a Scophit object from a file in extended FASTA format 
+** (see documentation for the DOMAINATRIX "seqsearch" application). 
+** 
+** @param [u] inf      [AjPFile] Input file stream
+**
+** @return [AjPScophit] Scophit object, or NULL if the file was not in 
+** extended FASTA (DHF) format (indicated by a token count of the the lines 
+** beginning with '>').
+** @@
+****************************************************************************/
+
+AjPScophit ajDmxScophitReadFasta(AjPFile inf) 
+{
+    AjPScophit    hit       = NULL;    /* Current hit */
+    AjBool    donefirst = ajFalse; /* First '>' line has been read */
+    ajint     ntok      = 0;       /* No. tokens in a line */
+    AjPStr    token     = NULL;
+    AjPStr    line      = NULL;    /* Line of text */
+    AjPStr    subline   = NULL;
+    AjBool    ok        = ajFalse; /* Line was not NULL */
+    AjPStr    type     = NULL;
+
+
+    /* Allocate strings */
+    line     = ajStrNew();
+    subline  = ajStrNew();
+    type     = ajStrNew();
+
+    while((ok = ajFileReadLine(inf,&line)))
+    {
+	if(ajStrPrefixC(line,">"))
+	{
+	    /* Process the last hit */
+	    if(donefirst)
+	    {
+		ajStrCleanWhite(&hit->Seq);
+		ajStrDel(&line);
+		ajStrDel(&subline);
+		ajStrDel(&type);
+		return hit;
+	    }	
+	    else
+		hit = ajDmxScophitNew();
+
+	    /* Check line has correct no. of tokens and allocate Hit */
+	    ajStrAssSub(&subline, line, 1, -1);
+	    if( (ntok=ajStrTokenCount(subline, "^")) != 17)
+	    {
+		ajWarn("Wrong no. (%d) of tokens for a DHF file on line %S\n", ntok, line);
+		ajStrDel(&line);
+		ajStrDel(&subline);
+		ajDmxScophitDel(&hit);
+		ajStrDel(&type);
+		return NULL;
+	    }
+	    else
+	    {
+		hit = ajDmxScophitNew();
+	    }
+	    	    
+	    /* Acc */
+	    token = ajStrTokC(subline, "^");
+	    ajStrAssS(&hit->Acc, token);
+	    ajStrChomp(&hit->Acc); 
+	    if(ajStrMatchC(hit->Acc, "."))
+		ajStrClear(&hit->Acc);
+	    	    
+	    /* Spr */
+	    token = ajStrTokC(NULL, "^");
+	    ajStrAssS(&hit->Spr, token);
+	    if(ajStrMatchC(hit->Spr, "."))
+		ajStrClear(&hit->Spr);
+
+	    /* Start */
+	    token = ajStrTokC(NULL, "^");
+	    ajFmtScanS(token, "%d", &hit->Start);
+
+	    /* End */
+	    token = ajStrTokC(NULL, "^");
+	    ajFmtScanS(token, "%d", &hit->End);
+	    
+	    /* Type */
+	    token = ajStrTokC(NULL, "^");
+	    ajStrAssS(&type, token);
+	    if(ajStrMatchC(type, "SCOP"))
+		hit->Type = ajSCOP;
+	    else if(ajStrMatchC(type, "CATH"))
+		hit->Type = ajCATH;
+
+	    /* Dom */
+	    token = ajStrTokC(NULL, "^");
+	    ajStrAssS(&hit->Dom, token);
+	    if(ajStrMatchC(hit->Dom, "."))
+		ajStrClear(&hit->Dom);
+
+	    /* Domain identifier */
+	    token = ajStrTokC(NULL, "^");
+	    ajFmtScanS(token, "%d", &hit->Sunid_Family);
+
+	    token = ajStrTokC(NULL, "^");
+	    ajStrAssS(&hit->Class, token);
+	    if(ajStrMatchC(hit->Class, "."))
+		ajStrClear(&hit->Class);		
+
+	    token = ajStrTokC(NULL, "^");
+	    ajStrAssS(&hit->Architecture, token);
+	    if(ajStrMatchC(hit->Architecture, "."))
+		ajStrClear(&hit->Architecture);
+
+	    token = ajStrTokC(NULL, "^");
+	    ajStrAssS(&hit->Topology, token);
+	    if(ajStrMatchC(hit->Topology, "."))
+		ajStrClear(&hit->Topology);
+
+	    token = ajStrTokC(NULL, "^");
+	    ajStrAssS(&hit->Fold, token);
+	    if(ajStrMatchC(hit->Fold, "."))
+		ajStrClear(&hit->Fold);
+
+	    token = ajStrTokC(NULL, "^");
+	    ajStrAssS(&hit->Superfamily, token);
+	    if(ajStrMatchC(hit->Superfamily, "."))
+		ajStrClear(&hit->Superfamily);
+
+	    token = ajStrTokC(NULL, "^");
+	    ajStrAssS(&hit->Family, token);
+	    if(ajStrMatchC(hit->Family, "."))
+		ajStrClear(&hit->Family);
+
+	    token = ajStrTokC(NULL, "^");
+	    ajStrAssS(&hit->Model, token);
+	    if(ajStrMatchC(hit->Model, "."))
+		ajStrClear(&hit->Model);
+
+	    token = ajStrTokC(NULL, "^");
+	    ajFmtScanS(token, "%f", &hit->Score);
+	    
+	    token = ajStrTokC(NULL, "^");
+	    ajFmtScanS(token, "%f", &hit->Pval);
+
+	    token = ajStrTokC(NULL, "^");
+	    ajFmtScanS(token, "%f", &hit->Eval);
+
+	    donefirst = ajTrue;
+	}
+	else
+	{
+	    if(hit)
+		ajStrApp(&hit->Seq, line);
+	}
+    }
+
+    /* EOF therefore process last hit */
+    if(donefirst)
+    {
+	ajStrCleanWhite(&hit->Seq);
+	ajStrDel(&line);
+	ajStrDel(&subline);
+	ajStrDel(&type);
+	return hit;
+    }
+    
+
+    /* Tidy up */
+    ajStrDel(&line);
+    ajStrDel(&subline);
+    ajStrDel(&type);
+    return NULL;
+}
 
 
 
@@ -1506,10 +1701,11 @@ AjBool ajDmxScopalgWrite(const AjPScopalg scop, AjPFile outf)
 	    ajStrRemoveCharsC(&nogap, " -");
 	    len_nogap = MAJSTRLEN(nogap);
 	    	    
-	    pos = ajIntGet(idx, y), 
+	    pos = ajIntGet(idx, y);
+
 	    ajFmtPrintF(outf, "%*S%7d %-50S%7d\n", 
-			code_wid,
-			pos,
+			code_wid, 
+			pos, 
 			scop->Codes[y], 
 			tmp_seq, 
 			pos+len_nogap-1);
