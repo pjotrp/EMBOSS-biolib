@@ -12,7 +12,6 @@ section: input [
   string: program  [
     parameter: "Y"
     default: ""
-    missing: "N"
     information: "Program to search for"
     help: "Enter the name of an EMBOSS program"
     minlength: "1"
