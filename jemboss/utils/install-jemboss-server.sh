@@ -186,7 +186,11 @@ ssl_print_notes()
 
  echo
  if [ -f $JAVA_HOME/jre/lib/security/java.security ]; then
-   if grep 'security.provider.2=com.sun.net.ssl.internal.ssl.Provider' $JAVA_HOME/jre/lib/security/java.security >/dev/null 2>&1; then 
+
+   SECURITY=`sed -n  -e 's|^security.provider.\([0-9]\)=com.sun.net.ssl.internal.ssl.Provider|security|p' $JAVA_HOME/jre/lib/security/java.security`
+
+
+   if ( SECURITY != ""); then 
      NUM=1 
    else
      echo "1) EDIT "$JAVA_HOME/jre/lib/security/java.security
@@ -405,6 +409,83 @@ output_auth_xml()
   echo '</deployment>' >> $XML_FILE
 
 }
+
+check_libs()
+{
+  USER_CONFIG=$1
+ 
+  if [ "$USER_CONFIG" = "" ]; then
+    DIR="/usr"
+  else
+    DIR=`echo $USER_CONFIG | sed -n -e 's|\(.*\)--with-pngdriver=\([^ ]*\)\(.*\)|\2|p'`
+  fi
+
+  echo
+  echo "Inspecting $DIR"
+ 
+# test for libpng
+  if (test ! -f $DIR/include/png.h ) || 
+     ( (test ! -f $DIR/lib/libpng.a) && (test ! -f $DIR/lib/libpng.so) ); then
+    echo
+    echo "--------------------------------------------------------------"
+    echo
+    echo "WARNING! The script has detected that $DIR/include/png.h"
+    echo "does not exist!"
+    echo
+    echo "Download libpng from"
+    echo "      http://www.libpng.org/pub/png/libpng.html"
+    echo "      http://libpng.sourceforge.net/"
+    echo
+    echo "To exit use Control C or press return to continue."
+    echo
+    echo "--------------------------------------------------------------"
+    read
+  else
+    echo "...found libpng"
+  fi
+
+# test for gd
+  if (test ! -f $DIR/include/gd.h) ||
+     ( (test ! -f $DIR/lib/libgd.a) && (test ! -f $DIR/lib/libgd.so) ); then
+    echo
+    echo "--------------------------------------------------------------"
+    echo
+    echo "WARNING! The script has detected that $DIR/include/gd.h"
+    echo "does not exist"
+    echo
+    echo "Download gd from"
+    echo "       http://www.boutell.com/gd/"
+    echo
+    echo "To exit use Control C or press return to continue."
+    echo
+    echo "--------------------------------------------------------------"
+    read
+  else
+    echo "...found libgd"
+  fi
+
+# test for zlib which can be either in /usr/lib or $DIR/lib
+  if ( (test ! -f /usr/lib/libz.a) && (test ! -f $DIR/lib/libz.a) );then
+    echo
+    echo "--------------------------------------------------------------"
+    echo
+    echo "WARNING! The script has detected that zlib is not"
+    echo "installed"
+    echo 
+    echo "Download zlib from"
+    echo "       http://www.info-zip.org/pub/infozip/zlib/"
+    echo
+    echo "To exit use Control C or press return to continue."
+    echo
+    echo "--------------------------------------------------------------"
+    read
+  else
+    echo "...found zlib"
+  fi
+
+}
+
+
 
 clear
 echo
@@ -861,6 +942,8 @@ USER_CONFIG=""
 echo "Enter any other EMBOSS configuration options (e.g. --with-pngdriver=pathname"
 echo "or press return to leave blank):"
 read USER_CONFIG
+
+check_libs "$USER_CONFIG"
 
 echo "$USER_CONFIG" >> $RECORD
 #
