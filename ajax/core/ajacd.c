@@ -7063,11 +7063,13 @@ static void acdHelp (void) {
 	else {
 	  acdHelpAssoc (pa, &helpGen, "help");
 	  acdHelpAssocTable  (pa, genlist, hlpFlag);
-		}
+	}
       }
       else {
-	acdHelpAssoc (pa, &helpAss, NULL);
-	acdHelpAssocTable  (pa, asslist, hlpFlag);
+	if (acdVerbose) {
+	  acdHelpAssoc (pa, &helpAss, NULL);
+	  acdHelpAssocTable  (pa, asslist, hlpFlag);
+	}
       }
     }
   }
@@ -7772,7 +7774,7 @@ static void acdHelpExpectOut (AcdPAcd thys, AjPStr* str) {
   return;
 }
 
-/* @funcstatic acdHelpExpectInt ************************************************
+/* @funcstatic acdHelpExpectInt ***********************************************
 **
 ** Generates expected value description for an integer type.
 **
