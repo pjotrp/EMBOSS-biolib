@@ -53,6 +53,22 @@ public class PrettyPlotJFrame extends JFrame
 
   /**
   *
+  * @param 
+  *
+  */
+  public PrettyPlotJFrame(int minID, Color colID, Color colMatch,
+                          boolean lboxPretty)
+  {
+    textInt = new TextFieldInt();
+    textInt.setText(Integer.toString(minID));
+    idColour = new ColourPanel("Identity Colour",colID);
+    matchColour = new ColourPanel("Match Colour",colMatch);
+    prettyBox = new JCheckBox();
+    prettyBox.setSelected(lboxPretty);
+  }
+
+  /**
+  *
   * @param gsc	graphic sequence panel
   *
   */
@@ -185,7 +201,7 @@ public class PrettyPlotJFrame extends JFrame
 
   /**
   *
-  * Determine if boxes are to be drawn aroun the 
+  * Determine if boxes are to be drawn around the 
   * identical matches
   * @param	draw boxes if true
   *

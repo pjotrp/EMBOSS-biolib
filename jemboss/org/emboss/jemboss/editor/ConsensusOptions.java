@@ -81,7 +81,7 @@ public class ConsensusOptions extends JFrame
     idInt.setMaximumSize(d);
     bacross.add(idInt);
     LabelTextBox  caselLabel = new LabelTextBox(
-                "Minimum number of identified for there to be a consensus",
+                "Minimum number of identities for there to be a consensus",
                 "The required number of identities\n"+
                 "at a site for it to give a consensus\n"+
                 "at that position. Therefore, if this\n"+

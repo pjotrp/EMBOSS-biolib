@@ -203,7 +203,9 @@ public class SetUpMenuBar
     {
       public void actionPerformed(ActionEvent e)
       {
-        new org.emboss.jemboss.editor.AlignJFrame();
+        org.emboss.jemboss.editor.AlignJFrame ajFrame =
+                   new org.emboss.jemboss.editor.AlignJFrame();
+        ajFrame.setVisible(true);
       }
     });
     toolMenu.add(toolAlignJFrame);

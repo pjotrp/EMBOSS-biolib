@@ -72,7 +72,6 @@ public class PrintableJTable extends JTable implements Printable
   }
 
 
-
   public void doPrintActions()
   {
     PrinterJob pj=PrinterJob.getPrinterJob();
@@ -82,8 +81,12 @@ public class PrintableJTable extends JTable implements Printable
     { 
      pj.print();
     }
-    catch (Exception PrintException) {}
+    catch (Exception printException)
+    {
+      printException.printStackTrace();
+    }
   }
+
 
 }
 

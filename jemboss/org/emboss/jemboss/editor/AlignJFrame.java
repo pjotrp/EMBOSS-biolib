@@ -45,10 +45,10 @@ public class AlignJFrame extends JFrame
   private Vector seqs;               // Vector containing Sequence objects
   private Vector graphicSequence;    // Vector containing graphical seqs
   protected JScrollPane jspSequence; // Sequence scrollpane
-  protected GraphicSequenceCollection gsc;
-  private Matrix mat;
+  protected static GraphicSequenceCollection gsc;
+  private static Matrix mat;
   private PrettyPlotJFrame ppj = null;
-  protected JTextField statusField = new JTextField();
+  protected static JTextField statusField = new JTextField();
   private File sequenceFile = null;
   private Cursor cbusy = new Cursor(Cursor.WAIT_CURSOR);
   private Cursor cdone = new Cursor(Cursor.DEFAULT_CURSOR);
@@ -541,7 +541,6 @@ public class AlignJFrame extends JFrame
     pack();
     setLocation( (int)(dScreen.getWidth()-getWidth())/3,
                  (int)(dScreen.getHeight()-getHeight())/3 );
-    setVisible(true);
   }
 
   /**
@@ -802,67 +801,186 @@ public class AlignJFrame extends JFrame
 
   public static void main(String args[])
   {
-    Vector seqs = new Vector();
-    Sequence s = new Sequence("Seq2","ggcagcttaagccaaacattcccaaatctatgaagcagggcccattgttggtcagttgtt"+
-"atttgcaatgaagcacagttctgatcatgtttaaagtggaggcacgcagggcaggagtgc"+
-"ttgagcccaagcaaaggatggaaaaaaataagcctttgttgggtaaaaaaggactgtctg"+
-"agactttcatttgttctgtgcaacatataagtcaatacagataagtcttcctctgcaaac"+
-"ttcactaaaaagcctgggggttctggcagtctagattaaaatgcttgcacatgcagaaac"+
-"ctctggggacaaagacacacttccactgaattatactctgctttaaaaaaatccccaaaa"+
-"gcaaatgatcagaaatgtagaaattaatggaaggatttaaacatgaccttctcgttcaat"+
-"atctactgttttttagttaaggaattacttgtgaacagataattgagattcattgctccg"+
-"gcatgaaatatactaataattttattccaccagagttgctgcacatttggagacaccttc"+
-"ctaagttgcagtttttgtatgtgtgcatgtagttttgttcagtgtcagcctgcactgcac"+
-"agcagcacatttctgcaggggagtgagcacacatacgcactgttggtacaattgccggtg"+
-"cagacatttctacctcctgacattttgcagcctacattccctgagggctgtgtgctgagg"+
-"gaactgtcagagaagggctatgtgggagtgcatgccacagctgctggctggcttacttct"+
-"tccttctcgctggctgtaatttccaccacggtcaggcagccagttccggcccacggttct"+
-"gttgtgtagacagcagagactttggagacccggatgtcgcacgccaggtgcaagaggtgg"+
-"gaatgggagaaaaggagtgacgtgggagcggagggtctgtatgtgtgcacttgggcacgt"+
-"atatgtgtgctctgaaggtcaggattgccagggcaaagtagcacagtctggtatagtctg"+
-"aagaagcggctgctcagctgcagaagccctctggtccggcaggatgggaacggctgcctt"+
-"gccttctgcccacaccctagggacatgagctgtccttccaaacagagctccaggcactct"+
-"cttggggacagcatggcaggctctgtgtggtagcagtgcctgggagttggccttttactc"+
-"attgttgaaataatttttgtttattatttatttaacgatacatatatttatatatttatc"+
-"aatggggtatctgcagggatgttttgacaccatcttccaggatggagattatttgtgaag"+
-"acttcagtagaatcccaggactaaacgtctaaattttttctccaaacttgactgacttgg"+
-"gaaaaccaggtgaatagaataagagctgaatgttttaagtaataaacgttcaaactgctc"+
-"taagtaaaaaaatgcattttactgcaatgaatttctagaatatttttcccccaaagctat"+
-"gcctcctaacccttaaatggtgaacaactggtttcttgctacagctcactgccatttctt"+
-"cttactatcatcactaggtttcctaagattcactcatacagtattatttgaagattcagc"+
-"tttgttctgtgaatgtcatcttaggattgtgtctatattcttttgcttatttctttttac"+
-"tctgggcctctcatactagtaagattttaaaaagccttttcttctctgtatgtttggctc"+
-"accaaggcgaaatatatattcttctctttttcatttctcaagaataaacctcatctgctt"+
-"ttttgtttttctgtgttttggcttggtactgaatgactcaactgctcggttttaaagttc"+
-"aaagtgtaagtacttagggttagtactgcttatttcaataatgttgacggtgactatctt"+
-"tggaaagcagtaacatgctgtcttagaaatgacattaataatgggcttaaacaaatgaat"+
-"aggggggtccccccactctccttttgtatgcctatgtgtgtctgatttgttaaaagatgg"+
-"acagggaattgattgcagagtgtcgcttccttctaaagtagttttattttgtctactgtt"+
-"agtatttaaagatcctggaggtggacataaggaataaatggaagagaaaagtagatattg"+
-"tatggtggctactaaaaggaaattcaaaaagtcttagaacccgagcacctgagcaaactg"+
-"cagtagtcaaaatatttatctcatgttaaagaaaggcaaatctagtgtaagaaatgagta"+
-"ccatatagggttttgaagttcatatactagaaacacttaaaagatatcatttcagatatt"+
-"acgtttggcattgttcttaagtatttatatctttgagtcaagctgataattaaaaaaaat"+
-"ctgttaatggagtgtatatttcataatgtatcaaaatggtgtctatacctaaggtagcat"+
-"tattgaagagagatatgtttatgtagtaagttattaacataatgagtaacaaataatgtt"+
-"tccagaagaaaggaaaacacattttcagagtgcgtttttatcagaggaagacaaaaatac"+
-"acacccctctccagtagcttatttttacaaagccggcccagtgaattagaaaaacaaagc"+
-"acttggatatgatttttggaaagcccaggtacacttattattcaaaatgcacttttactg");
+    AlignJFrame ajFrame = null;
 
-    Sequence s1 = new Sequence("Seq1a","ACTATACAGAGTAGACTgTATAGAtTATAAGCGACATACGAGAGACGAC");
-    s1.reverseSequence();
-//  seqs.add(s1);
-//  seqs.add(s);
-//  seqs.add(new Sequence("Seq1b","ACTATACAGAGTAGACTgTATAGAtTATAAGCGACATACGAGAGACGAC"));
-//  seqs.add(new Sequence("Seq2a","AAAAAACAGAGTAGACTgTATAGAtTATAAGCGACATACGAGAGACGAC"));
-//  seqs.add(new Sequence("Seq3","ACTATACAGAGTAGACTgTATAGAtTATAAGCGACATACGAGAGACGAC"));
-//  seqs.add(new Sequence("Seq4","AAAAAACAGAGTAGACTgTATAGAtTATAAGCGACATACGAGAGACGAC"));
-//  seqs.add(new Sequence("Seq5","ACTATACAGAGTAGACTgTATAGAtTATAAGCGACATACGAGAGACGAC"));
-//  seqs.add(new Sequence("Seq6","AAAAAACAGAGTAGACTgTATAGAtTATAAGCGACATACGAGAGACGAC"));
-//  seqs.add(new Sequence("Seq111","ACTATACAGAGTAGACTgTATAGAtTATAAGCGACATACGAGAGACGAC"));
+    if( args.length > 0 )
+    {
+      for(int i=0;i<args.length;i++)
+      {
+        if(args[i].indexOf("-help") > -1)
+        {
+          System.out.println(
+              "                  Jemboss Alignment Editor\n\n"+
+              "DESCRIPTION\n"+
+              "The Jemboss Alignment Editor can be used interactively to\n"+
+              "edit a sequence alignment (read in fasta or MSF format). It can\n"+
+              "also be used from the command line to produce image files\n"+
+              "of the alignment.\n\nUSAGE\n"+
+              "java org/emboss/jemboss/editor/AlignJFrame file [options]\n\n"+
+              "OPTIONS\n"+
+              "-calc      Calculate consensus and display under the alignment.\n"+
+              "           The following 3 flags can be used to define values\n"+
+              "           used in the calculations.\n"+
+              "           -plu       (plurality) minimum positive match score\n"+
+              "                      value for there to be a consensus.\n"+
+              "           -numid     minimum number of identities for there to\n"+
+              "                      be a consensus.\n"+
+              "           -case      minimum positive match score for setting\n"+
+              "                      the consensus to upper-case.\n"+
+              "-color     Used to define a colour scheme, below is the list of\n"+
+              "           available colour schemes:\n"+
+              "           taylor\n"+
+              "           residue\n"+
+              "           rasmol\n"+
+              "           acid\n"+
+              "           polar\n"+
+              "           hydrophobic\n"+
+              "           aromatic\n"+
+              "           surface\n"+
+              "           charge\n"+
+              "           size\n"+
+              "           base\n\n"+
+              "           java org/emboss/jemboss/editor/AlignJFrame file -color size\n\n"+
+              "-id        Print a percentage ID pair table.\n"+
+              "-noshow    Turns of the alignment display.\n"+
+              "-nres      Number of residues to each line is a print out.\n"+
+              "-pretty    Prettyplot colour scheme.\n"+
+              "-print     Print the alignment image.\n"+
+              "-list      List the available scoring matrix files.\n");
+          System.exit(0);
+        }
+      }
 
+      File seqFile = new File(args[0]);
+      if(seqFile.canRead())
+      {
+        ajFrame = new AlignJFrame(true);
+        SequenceReader sr = new SequenceReader(seqFile);
+        sr.getSequenceFile();
+        ajFrame.openMethod(sr.getSequenceVector());
+        ajFrame.setTitle("Jemboss Alignment Viewer    :: "+
+                         seqFile.getName());
+        gsc.setMatrix(mat);
+      }
 
-    new AlignJFrame(true);
+      boolean show  = true;
+      boolean print = false;
+      int nresiduesPerLine = 20;
+      for(int i=0;i<args.length;i++)
+      {
+        if(args[i].indexOf("-color") > -1)
+        {
+          i++;
+          if(args[i].startsWith("taylor"))      
+            gsc.setColorScheme(SequenceProperties.taylorColor);
+          else if(args[i].startsWith("residue"))
+            gsc.setColorScheme(SequenceProperties.residueColor);
+          else if(args[i].startsWith("rasmol"))
+            gsc.setColorScheme(SequenceProperties.rasmolColor);
+          else if(args[i].startsWith("acid"))
+            gsc.setColorScheme(SequenceProperties.acidColor);
+          else if(args[i].startsWith("polar"))
+            gsc.setColorScheme(SequenceProperties.polarColor);
+          else if(args[i].startsWith("hydro"))
+            gsc.setColorScheme(SequenceProperties.hydrophobicColor);
+          else if(args[i].startsWith("aromatic"))
+            gsc.setColorScheme(SequenceProperties.aromaticColor);
+          else if(args[i].startsWith("surface"))
+            gsc.setColorScheme(SequenceProperties.surfaceColor);
+          else if(args[i].startsWith("charge"))
+            gsc.setColorScheme(SequenceProperties.chargeColor);
+          else if(args[i].startsWith("size"))
+            gsc.setColorScheme(SequenceProperties.sizeColor);
+          else if(args[i].startsWith("base"))
+            gsc.setColorScheme(SequenceProperties.baseColor);
+        }
+        else if(args[i].indexOf("-calc") > -1)
+        {
+          float wgt = 0.f;
+
+          Vector vseq = gsc.getSequenceCollection();
+          Enumeration enum = vseq.elements();
+          while(enum.hasMoreElements())
+          {
+            Sequence s = (Sequence)enum.nextElement();
+            if(!s.getName().equals("Consensus"))
+              wgt+=s.getWeight();
+          }
+         
+          float plu = wgt/2.f;
+          float cas = wgt/2.f;
+          int ident = 0;
+          for(int j=0;j<args.length;j++)
+          {
+            if(args[j].indexOf("-plu") > -1)
+              plu = Float.parseFloat(args[j+1]);
+            else if(args[j].indexOf("-case") > -1)
+              cas = Float.parseFloat(args[j+1]);
+            else if(args[j].indexOf("-numid") > -1)
+              ident = Integer.parseInt(args[j+1]);
+          }
+          Consensus conseq = new Consensus(mat,
+                    gsc.getSequenceCollection(),
+                    plu,cas,ident);
+
+          int fontSize = gsc.getFontSize();
+          gsc.addSequence(conseq.getConsensusSequence(),true,5,fontSize);
+
+          Dimension dpane = gsc.getPanelSize();
+          gsc.setPreferredSize(dpane);
+          gsc.setNamePanelWidth(gsc.getNameWidth());
+        }
+        else if(args[i].indexOf("-list") > -1)
+          System.out.println("AVAILABLE DATABASES:\n"+
+                             mat.getKeyNamesString());
+        else if(args[i].indexOf("-matrix") > -1)
+        {
+          mat = new Matrix("resources/resources.jar",
+                           args[i+1]);
+          gsc.setMatrix(mat);
+          statusField.setText("Current matrix: "+args[i+1]);
+        }
+        else if(args[i].indexOf("-id") > -1)
+        {
+          IDTableJFrame idtab = new IDTableJFrame(gsc.getSequenceCollection()); 
+          idtab.printTable();
+        }
+        else if(args[i].indexOf("-noshow") > -1)
+          show = false;
+        else if(args[i].indexOf("-print") > -1)
+          print = true;
+        else if(args[i].indexOf("-nres")  > -1)
+          nresiduesPerLine = Integer.parseInt(args[i+1]);
+        else if(args[i].indexOf("-pretty")  > -1)          
+        {
+          int minID = gsc.getNumberSequences();
+          PrettyPlotJFrame pretty = new PrettyPlotJFrame(minID,
+                                     Color.red,Color.blue,true);
+          gsc.setPrettyPlot(true,pretty);
+          gsc.setDrawBoxes(false);
+          gsc.setDrawColor(false);
+        }  
+        else if(args[i].indexOf("-preview")  > -1)
+        {
+          PrintAlignmentImage pai = new PrintAlignmentImage(gsc);
+          pai.printPreview();
+          show = true;
+        }
+      }
+
+      if(print)
+      {
+        PrintAlignmentImage pai = new PrintAlignmentImage(gsc);
+        pai.print(nresiduesPerLine,"jpeg","output");
+      }
+      if(!show)
+        System.exit(0);
+    }
+    else
+    {
+      ajFrame = new AlignJFrame(true);
+    }
+    ajFrame.setVisible(true);
   }
 
 

@@ -25,6 +25,7 @@ import javax.swing.table.TableColumn;
 import java.util.Vector;
 import java.awt.event.*;
 import java.awt.*;
+import java.io.*;
 
 
 /**
@@ -167,4 +168,23 @@ public class IDTableJFrame extends JFrame
 
   }
 
+ 
+  protected void printTable()
+  {
+    int ncol = idTable.getColumnCount();
+    int nrow = idTable.getRowCount();
+    for(int i=0;i<nrow;i++)
+    {
+      for(int j=0;j<ncol;j++)
+      {
+        Object val = idTable.getValueAt(i,j);
+        if(val==null)
+          val="-";
+        System.out.print(val+"\t");
+      }
+      System.out.print("\n");
+    }   
+  }
+
 }
+

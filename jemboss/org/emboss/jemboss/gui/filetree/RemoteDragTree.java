@@ -220,8 +220,10 @@ public class RemoteDragTree extends JTree implements DragGestureListener,
       {
         PrivateRequest gReq = new PrivateRequest(mysettings,"EmbreoFile",
                                                     "get_file",params);
-        new org.emboss.jemboss.editor.AlignJFrame(
+        org.emboss.jemboss.editor.AlignJFrame ajFrame =
+                      new org.emboss.jemboss.editor.AlignJFrame(
                               (String)gReq.getHash().get("contents"),fn);
+        ajFrame.setVisible(true);
       }
       catch(JembossSoapException eae)
       {

@@ -164,6 +164,35 @@ public class PrintAlignmentImage extends ScrollPanel
     }
   }
 
+
+  /**
+  *
+  * Print to a jpeg or png file
+  *
+  */
+  public void print(int nResPerLine, String type,String filePrefix)
+  {
+    PrinterJob printerJob = PrinterJob.getPrinterJob();
+    format = new PageFormat();
+
+    try
+    {
+      int npages = gsc.getNumberPages(format,nResPerLine);
+      for(int i=0;i<npages;i++)
+      {
+        RenderedImage rendImage = createAlignmentImage(i);
+        writeImageToFile(rendImage,
+                      new File(filePrefix+i+"."+type),type);
+      }
+    }
+    catch(NoClassDefFoundError ex)
+    {
+      JOptionPane.showMessageDialog(this,
+            "This option requires Java 1.4 or higher.");
+    }
+  }
+
+
   /**
   *
   * Provide some options for the image created
@@ -185,9 +214,13 @@ public class PrintAlignmentImage extends ScrollPanel
     {
       JLabel jlab = new JLabel("File prefix: ");
       String def = System.getProperty("user.dir")+
-                   System.getProperty("file.separator")+
-                   "      ";
-    
+                   System.getProperty("file.separator");
+                   
+      try
+      {
+        def = def.concat(gsc.getName());
+      }
+      catch(Exception e){}
       fileField = new JTextField(def);
       XBox = Box.createHorizontalBox();
       XBox.add(jlab);

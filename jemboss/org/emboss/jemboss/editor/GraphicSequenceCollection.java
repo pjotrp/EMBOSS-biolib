@@ -722,6 +722,12 @@ public class GraphicSequenceCollection extends JPanel
     return new Dimension(len,hgt);
   }
 
+
+  public String getName(int i)
+  {
+    return ((Sequence)seqs.get(i)).getName();
+  }
+
   /**
   *
   * Get the sequence name view size
@@ -1208,7 +1214,7 @@ public class GraphicSequenceCollection extends JPanel
     if(istop > MAXSEQLENGTH)
       istop = MAXSEQLENGTH;
 
-    System.out.println("pageIndex "+pageIndex+" numResPerLine "+numResPerLine);
+//  System.out.println("pageIndex "+pageIndex+" numResPerLine "+numResPerLine);
     for(int i=istart;i<istop;i+=numResPerLine)
     {
       Enumeration enum = graphicSequence.elements();

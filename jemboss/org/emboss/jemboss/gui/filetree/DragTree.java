@@ -106,7 +106,7 @@ public class DragTree extends JTree implements DragGestureListener,
 //open menu
     JMenu openMenu = new JMenu("Open With");
     popup.add(openMenu);
-    menuItem = new JMenuItem("Jemboss Aligmnment Editor");
+    menuItem = new JMenuItem("Jemboss Alignment Editor");
     menuItem.addActionListener(this);
     openMenu.add(menuItem);
     menuItem = new JMenuItem("Text Editor");
@@ -201,8 +201,12 @@ public class DragTree extends JTree implements DragGestureListener,
     
     final File f = node.getFile();
 
-    if(source.getText().equals("Jemboss Aligmnment Editor"))
-      new org.emboss.jemboss.editor.AlignJFrame(f);
+    if(source.getText().equals("Jemboss Alignment Editor"))
+    {
+      org.emboss.jemboss.editor.AlignJFrame ajFrame =
+               new org.emboss.jemboss.editor.AlignJFrame(f);
+      ajFrame.setVisible(true);
+    }
     else if(source.getText().equals("Text Editor"))
       showFilePane(f.getAbsolutePath(), mysettings);
     else if(source.getText().equals("New Folder..."))

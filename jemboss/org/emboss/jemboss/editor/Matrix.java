@@ -159,11 +159,15 @@ public class Matrix
       Object[] kname = new Object[nkeys];
       for(int i=0;i<nkeys;i++)
       {
-        int pos = ((String)keys[i]).indexOf("/")+1;
-        kname[i] = ((String)keys[i]).substring(pos);
+        String k = (String)keys[i];
+        if(k.indexOf("MANIFEST.MF") == -1)
+        {
+          int pos  = k.indexOf("/")+1;
+          kname[i] = k.substring(pos);
+        }
       }
       return kname;
-      }
+    }
     catch(NullPointerException npe)
     {
       JOptionPane.showMessageDialog(null, 
@@ -173,6 +177,40 @@ public class Matrix
       return null;  
     }
   }
+
+
+  /**
+  *
+  * Scoring matrix names available
+  *
+  */
+  public String getKeyNamesString()
+  {
+    try
+    {
+      int nkeys = keys.length;
+      StringBuffer kname = new StringBuffer();
+      for(int i=0;i<nkeys;i++)
+      {
+        String k = (String)keys[i];
+        if(k.indexOf("MANIFEST.MF") == -1)
+        {
+          int pos = k.indexOf("/")+1;
+          kname.append(k.substring(pos)+"\n");
+        }
+      }
+      return kname.toString();
+    }
+    catch(NullPointerException npe)
+    {
+      JOptionPane.showMessageDialog(null,
+                 "No matrix files found!",
+                 "Matrix files missing",
+                  JOptionPane.ERROR_MESSAGE);
+      return null;
+    }
+  }
+
 
   /**
   *
