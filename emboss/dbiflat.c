@@ -112,6 +112,7 @@ int main(int argc, char **argv)
 
     EmbPentry entry;
     EmbPac acnum=NULL;
+    EmbPac acnumtmp=NULL;
     char* lastac=NULL;
 
     ajint i;
@@ -212,7 +213,7 @@ int main(int argc, char **argv)
     AJCNEW0(divfiles, nfiles);
 
     if (systemsort)
-	acnum = embDbiAcnumNew();
+	acnum = acnumtmp = embDbiAcnumNew();
 
     for (ifile=0; ifile<nfiles; ifile++)
     {
@@ -585,6 +586,19 @@ int main(int argc, char **argv)
 
     ajDebug ("finished...\n%7d files\n%7d entries\n%7d acnum.trg\n%7d "
 	     "acnum.hit\n", nfiles, nid, iac, nac);
+
+    ajRegFree(&datexp);
+    ajRegFree(&idsrtexp);
+    ajRegFree(&acsrtexp);
+    ajRegFree(&acsrt2exp);
+
+
+    /* Peter. This might need more work */
+    if(acnumtmp)
+	AJFREE(acnumtmp);
+    ajListDel(&inlist);
+    
+
     ajExit ();
     return 0;
 }
