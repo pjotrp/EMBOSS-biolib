@@ -177,6 +177,7 @@ public class AuthPopup
       splashf = new JFrame("Jemboss Launch");
       exitOnDone = true;
     }
+    splashf.setLocation(1,5);
 
   }
 

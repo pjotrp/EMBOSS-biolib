@@ -131,6 +131,17 @@ public class ListFilePanel extends JPanel
     return fn;
   }
 
+/**
+*
+* Reset the values of the list files
+*
+*/
+  public void doReset()
+  {
+    for(int i=0;i < nFiles;i++)
+      fileChooser[i].setText("");
+  }
+
 }
 
 

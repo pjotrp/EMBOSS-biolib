@@ -77,7 +77,8 @@ public class CutNPasteTextArea
 
     seqPaste = new TextAreaSink();
     seqScroll = new JScrollPane(seqPaste);
-    seqScroll.setPreferredSize(new Dimension(450, 100));
+
+    seqScroll.setPreferredSize(new Dimension(490, 100));
 
     seqPaste.setBorder(defaultBorder);
 
@@ -94,6 +95,16 @@ public class CutNPasteTextArea
   public String getText() 
   {
     return seqPaste.getText();
+  }
+
+/**
+*
+* @param String set contents of the text area
+*
+*/
+  public void setText(String s)
+  {
+    seqPaste.setText(s);
   }
 
 }

@@ -308,6 +308,16 @@ public class InputSequenceAttributes
     send.setValue(iseq);
   }
 
+  public void setBegSeq(String s)
+  {
+    sbeg.setText(s);
+  }
+
+  public void setEndSeq(String s)
+  {
+    send.setText(s);
+  }
+
   public String getBegSeq()
   {
     return sbeg.getText();

@@ -41,6 +41,8 @@ public class SetInFileCard
   private FileChooser fileChoose;
   private CutNPasteTextArea cutnPaste;
   private ListFilePanel listPane = null;
+  private InputSequenceAttributes inSeqAttr[];
+  private int h;
 
 /**
 *
@@ -58,6 +60,9 @@ public class SetInFileCard
                  final String db[], String name, final String appName,
                  final InputSequenceAttributes inSeqAttr[], boolean fopt)
   {
+
+    this.h = h;
+    this.inSeqAttr = inSeqAttr;
 
     boxFile = new Box(BoxLayout.Y_AXIS);
     final CardLayout fileCard = new CardLayout();
@@ -155,12 +160,16 @@ public class SetInFileCard
 
 //sequence attibute options
     final JButton boption = new JButton("Input Sequence Options");
+    final JButton breset = new JButton("Reset");
     fileChoose.setSize(boption.getPreferredSize());
     fileChoose.setForeground(labelColor);
 
     Box bxleft= new Box(BoxLayout.X_AXIS);
     bxleft.add(boption);
     bxleft.add(Box.createHorizontalGlue());
+    bxleft.add(breset);
+    bxleft.add(Box.createRigidArea(new Dimension(5,0)));
+
     bdown[0].add(Box.createVerticalGlue());
     bdown[0].add(bxleft);
 
@@ -186,7 +195,16 @@ public class SetInFileCard
           }
         });
 
+        breset.addActionListener(new ActionListener()
+        {
+          public void actionPerformed(ActionEvent e)
+          {
+            doReset(); 
+          }
+        });
+
         JButton bopt = new JButton("Input Sequence Options");
+        JButton bres = new JButton("Reset");
         bopt.addActionListener(new ActionListener()
         {
           public void actionPerformed(ActionEvent e)
@@ -197,9 +215,20 @@ public class SetInFileCard
           }
         });
 
+        bres.addActionListener(new ActionListener()
+        {
+          public void actionPerformed(ActionEvent e)
+          {
+            doReset(); 
+          }
+        });
+
         Box bleft= new Box(BoxLayout.X_AXIS);
         bleft.add(bopt);
         bleft.add(Box.createHorizontalGlue());
+        bleft.add(bres);
+        bleft.add(Box.createHorizontalStrut(5));
+
         bdown[1].add(bleft);
 
       }
@@ -301,6 +330,16 @@ public class SetInFileCard
   public String getSequence(int n)
   {
     return listPane.getSequence(n);
+  }
+
+  public void doReset()
+  {
+    cutnPaste.setText("");
+    fileChoose.setText("");
+    inSeqAttr[h].setBegSeq("");
+    inSeqAttr[h].setEndSeq("");
+    if(listPane!=null) 
+      listPane.doReset();
   }
 
 }
