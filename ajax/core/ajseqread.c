@@ -4724,10 +4724,11 @@ static AjBool seqUsaProcess (AjPSeq thys, AjPSeqin seqin)
 	return ajSeqAccessAsis (seqin);
     }
 
+    liststat = ajRegExec (listexp, usatest);
     fmtstat = ajRegExec (fmtexp, usatest);
-    ajDebug("format regexp: %B\n", fmtstat);
+    ajDebug("format regexp: %B list:%B\n", fmtstat, liststat);
 
-    if (fmtstat)
+    if (fmtstat && !liststat)
     {
 	ajRegSubI (fmtexp, 1, &qry->Formatstr);
 	/* default unknown */
