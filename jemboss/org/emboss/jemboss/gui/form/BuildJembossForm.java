@@ -156,7 +156,7 @@ public class BuildJembossForm implements ActionListener
     JButton bhelp = new JButton(new ImageIcon(
            cl.getResource("images/Information_button.gif")));
     bhelp.addActionListener(this);
-    bhelp.setBorder(BorderFactory.createRaisedBevelBorder());
+    bhelp.setMargin(new Insets(0,1,0,1));
 
 
     bhelp.addActionListener(new ActionListener()
@@ -196,20 +196,20 @@ public class BuildJembossForm implements ActionListener
 // Display results button
     bresults = new JButton("Show results");
     bresults.addActionListener(this);
-    bresults.setBorder(BorderFactory.createRaisedBevelBorder());
+    bresults.setMargin(new Insets(0,1,0,1));
 
 // Go button
     
-    JButton bgo = new JButton("GO");
     ImageIcon rfii = new ImageIcon(cl.getResource("images/Go_button.gif"));
+    JButton bgo = new JButton(rfii);
+    bgo.setActionCommand("GO");
     bgo.setIcon(rfii);
-    bgo.setBorder(BorderFactory.createRaisedBevelBorder());
+    bgo.setMargin(new Insets(0,0,0,0));
     bgo.addActionListener(this);
 
 // Advanced options
     JButton badvanced = new JButton("Advanced Options");
     badvanced.addActionListener(this);
-    badvanced.setBorder(BorderFactory.createRaisedBevelBorder());
 
     Box tools;
     tools = Box.createHorizontalBox();
