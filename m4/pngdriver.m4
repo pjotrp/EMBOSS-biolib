@@ -20,7 +20,8 @@ dnl @author Ian Longden <il@sanger.ac.uk>
 dnl Modified: Alan Bleasby. Corrected library order
 dnl Modified: David Mathog. Looks in ALT_HOME, and then /usr no matter what
 dnl                         for all 3 libs.
-dnl Modified: Alan Bleasby. png correction
+dnl Modified: Alan Bleasby. Correct png def. Correct cacheing. Correct
+dnl                         for case of all libs in /usr
 dnl
 
 AC_DEFUN(CHECK_PNGDRIVER,
@@ -35,13 +36,17 @@ AC_ARG_WITH(pngdriver,
 [if test "$withval" != no ; then
   AC_MSG_RESULT(yes)
   ALT_HOME="$withval"
+  ALT_ALLINUSR=1
 else
   AC_MSG_RESULT(no)
+  ALT_ALLINUSR=1
 fi], [
 AC_MSG_RESULT(yes)
 ALT_HOME=/usr/local
 ALT_USED=0
+ALT_ALLINUSR=1
 ])
+
 
 
 #
@@ -49,6 +54,27 @@ ALT_USED=0
 #
 if test -d "${ALT_HOME}"
 then
+
+# See if they're all in /usr anyway
+	AC_CHECK_LIB(z, inflateEnd, CHECK=1, CHECK=0, -L/usr/lib -lz)
+	if test $CHECK = "0" ; then
+		ALT_ALLINUSR=0
+	fi
+	AC_CHECK_LIB(png, png_destroy_read_struct, CHECK=1, CHECK=0 , -L/usr/lib -lz)
+	if test $CHECK = "0" ; then
+		ALT_ALLINUSR=0
+	fi
+	AC_CHECK_LIB(gd, gdImageCreateFromPng, CHECK=1, CHECK=0 , -L/usr/lib -lgd -lpng -lz -lm)
+	if test $CHECK = "0" ; then
+		ALT_ALLINUSR=0
+	fi
+
+	unset ac_cv_lib_z_inflateEnd
+	unset ac_cv_lib_png_png_destroy_read_struct
+	unset ac_cv_lib_gd_gdImageCreateFromPng
+
+
+
 #
 # Keep a copy if it fails
 #
@@ -60,6 +86,7 @@ then
 #
         LDFLAGS="$LDFLAGS -L${ALT_HOME}/lib"
         CPPFLAGS="$CPPFLAGS -I${ALT_HOME}/include"
+
 #
 # Check for zlib in ALT_HOME
 #
@@ -69,6 +96,7 @@ then
 # should always include /usr/lib.
 #       
 	if test $CHECK = "0" ; then
+	unset ac_cv_lib_z_inflateEnd
 	  AC_CHECK_LIB(z, inflateEnd, CHECK=1, CHECK=0 , -L/usr/lib -lz)
         else
           ALT_USED=1
@@ -80,6 +108,7 @@ then
 	if test $CHECK = "1" ; then
 	  AC_CHECK_LIB(png, png_destroy_read_struct, CHECK=1, CHECK=0 , -L${ALT_HOME}/lib -lz)
 	  if test $CHECK = "0" ; then
+	    unset ac_cv_lib_png_png_destroy_read_struct
 	    AC_CHECK_LIB(png, png_destroy_read_struct, CHECK=1, CHECK=0 , -L/usr/lib -lz)
           else
             ALT_USED=1
@@ -92,6 +121,7 @@ then
 	if test $CHECK = "1"; then
 	  AC_CHECK_LIB(gd, gdImageCreateFromPng, CHECK=1, CHECK=0 , -L${ALT_HOME}/lib -lgd -lpng -lz -lm)
 	  if test $CHECK = "0" ; then
+	    unset ac_cv_lib_gd_gdImageCreateFromPng
 	    AC_CHECK_LIB(gd, gdImageCreateFromPng, CHECK=1, CHECK=0 , -L/usr/lib -lgd -lpng -lz -lm)
           else
             ALT_USED=1
@@ -108,7 +138,13 @@ then
 	  AC_DEFINE(PLD_png)
 	  AM_CONDITIONAL(AMPNG, true)
           if test $ALT_USED = "1" ; then
-	    echo Using libz, libgd, and/or libpng from ${ALT_HOME}
+#	    echo "ALT_ALLINUSR = $ALT_ALLINUSR"
+	    if test $ALT_ALLINUSR = "0" ; then
+		    echo Using libz, libgd, and/or libpng from ${ALT_HOME}
+	    else
+		LDFLAGS="$ALT_LDFLAGS"
+		CPPFLAGS="$ALT_CPPFLAGS"
+	    fi
           else
             LDFLAGS="$ALT_LDFLAGS"
 	    CPPFLAGS="$ALT_CPPFLAGS"
