@@ -6,7 +6,7 @@ extern "C"
 #ifndef embxyz_h
 #define embxyz_h
 
-AjBool embXyzSeqsetNR(AjPList input, AjPInt *keep, int *nset,
+AjBool embXyzSeqsetNR(AjPList input, AjPInt *keep, ajint *nset,
 		      AjPMatrixf matrix, float gapopen, float gapextend,
 		      float thresh);
 

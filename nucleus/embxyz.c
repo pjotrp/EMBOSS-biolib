@@ -43,18 +43,18 @@
 ** @return [AjBool] ajTrue on success
 ** @@
 ******************************************************************************/
-AjBool embXyzSeqsetNR(AjPList input, AjPInt *keep, int *nset,
+AjBool embXyzSeqsetNR(AjPList input, AjPInt *keep, ajint *nset,
 		      AjPMatrixf matrix, float gapopen, float gapextend,
 		      float thresh)
 {
-    int         start1  =0;	/*Start of seq 1, passed as arg but not used*/
-    int         start2  =0;	/*Start of seq 2, passed as arg but not used*/
-    int         maxarr  =300;	/*Initial size for matrix*/
-    int         len;
-    int         x;		/*Counter for seq 1*/
-    int         y;		/*Counter for seq 2*/ 
-    int         nin;		/*Number of sequences in input list*/
-    int        *compass;
+    ajint         start1  =0;	/*Start of seq 1, passed as arg but not used*/
+    ajint         start2  =0;	/*Start of seq 2, passed as arg but not used*/
+    ajint         maxarr  =300;	/*Initial size for matrix*/
+    ajint         len;
+    ajint         x;		/*Counter for seq 1*/
+    ajint         y;		/*Counter for seq 2*/ 
+    ajint         nin;		/*Number of sequences in input list*/
+    ajint        *compass;
 
     char       *p;
     char       *q;
@@ -102,7 +102,7 @@ AjBool embXyzSeqsetNR(AjPList input, AjPInt *keep, int *nset,
     }
 
     
-    /*Create an int array to hold lengths of sequences*/
+    /*Create an ajint array to hold lengths of sequences*/
     lens = ajIntNewL(nin);     
     for(x=0; x<nin; x++)
 	ajIntPut(&lens,x,ajSeqLen(inseqs[x]));
