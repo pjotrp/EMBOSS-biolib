@@ -948,6 +948,8 @@ AjBool        ajXyzDichetRawRead(AjPFile fptr, AjPDichet *ptr);
 AjBool        ajXyzDichetRead(AjPFile fptr, AjPDichet *ptr);
 AjBool        ajXyzDichetWrite(AjPFile fptr, AjPDichet ptr, AjBool dogrep);
 
+void ajXyzSeqWrite(AjPFile outf, AjPStr seq, char *prefix);
+
 
 
 

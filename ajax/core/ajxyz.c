@@ -727,6 +727,10 @@ AjPScop ajXyzScopNew(ajint chains)
     ret->Family      = ajStrNew();  
     ret->Domain      = ajStrNew();  
     ret->Source      = ajStrNew();
+    ret->Acc         = ajStrNew();
+    ret->Spr         = ajStrNew();
+    ret->SeqPdb      = ajStrNew();
+    ret->SeqSpr      = ajStrNew();
 
     if(chains)
     {
@@ -1546,6 +1550,10 @@ void ajXyzScopDel(AjPScop *thys)
     ajStrDel(&pthis->Family);
     ajStrDel(&pthis->Domain);
     ajStrDel(&pthis->Source);
+    ajStrDel(&pthis->Acc);
+    ajStrDel(&pthis->Spr);
+    ajStrDel(&pthis->SeqPdb);
+    ajStrDel(&pthis->SeqSpr);
 
 
     if(pthis->N)
@@ -3735,7 +3743,7 @@ AjBool ajXyzCpdbWriteDomain(AjPFile errf, AjPFile outf, AjPPdb pdb, AjPScop scop
 		pdb->Chains[chn-1]->numSheets, 
 		pdb->Chains[chn-1]->numTurns);
     ajFmtPrintF(outf, "XX\n");	
-    ajSeqWriteCdb(outf, seq);
+    ajSeqWriteXyz(outf, seq, "SQ");
     ajFmtPrintF(outf, "XX\n");	
 
     
@@ -3943,7 +3951,7 @@ AjBool ajXyzCpdbWriteAll(AjPFile outf, AjPPdb thys)
 		    thys->Chains[x]->Nwat);
 		    */
 	ajFmtPrintF(outf, "XX\n");	
-	ajSeqWriteCdb(outf, thys->Chains[x]->Seq);
+	ajSeqWriteXyz(outf, thys->Chains[x]->Seq, "SQ");
     }
     ajFmtPrintF(outf, "XX\n");	
 
@@ -5362,13 +5370,22 @@ void ajXyzScopWrite(AjPFile outf, AjPScop thys)
 
     ajFmtPrintF(outf,"ID   %S\nXX\n",thys->Entry);
     ajFmtPrintF(outf,"EN   %S\nXX\n",thys->Pdb);
-    ajFmtPrintF(outf,"OS   %S\nXX\n",thys->Source);
-    ajFmtPrintF(outf,"CL   %S",thys->Class);
+    ajFmtPrintF(outf,"SI   %d\nXX\n",thys->Sunid);
 
+    ajFmtPrintF(outf,"CL   %S",thys->Class);
     ajFmtPrintSplit(outf,thys->Fold,"\nXX\nFO   ",75," \t\n\r");
     ajFmtPrintSplit(outf,thys->Superfamily,"XX\nSF   ",75," \t\n\r");
     ajFmtPrintSplit(outf,thys->Family,"XX\nFA   ",75," \t\n\r");
     ajFmtPrintSplit(outf,thys->Domain,"XX\nDO   ",75," \t\n\r");;
+    ajFmtPrintF(outf,"OS   %S\nXX\n",thys->Source);
+
+    ajSeqWriteXyz(outf, thys->SeqPdb, "DS");
+    ajFmtPrintF(outf, "XX\n");	
+    ajFmtPrintF(outf,"AC   %S\nXX\n",thys->Acc);    
+    ajFmtPrintF(outf,"SP   %S\nXX\n",thys->Spr);
+    ajFmtPrintF(outf, "%-5s%d START; %d END;\n", "RA", thys->Startd,thys->Endd);
+    ajFmtPrintF(outf, "XX\n");	
+    ajSeqWriteXyz(outf, thys->SeqSpr, "SQ");
     
     ajFmtPrintF(outf,"XX\nNC   %d\n",thys->N);
 
@@ -5805,12 +5822,21 @@ AjBool ajXyzScopReadC(AjPFile inf, char *entry, AjPScop *thys)
     static AjPStr pdb     =NULL;
     static AjPStr tentry  =NULL;
     static AjPStr stmp    =NULL;
-    
+    static AjPStr Acc     =NULL;         
+    static AjPStr Spr     =NULL;          
+    static AjPStr SeqPdb  =NULL;	
+    static AjPStr SeqSpr  =NULL;	
+
     AjBool ok             =ajFalse;
     
     char   *p;
     ajint    idx            =0;
     ajint    n=0;
+    ajint  Startd;      /* Start of sequence relative to full length 
+			    swissprot sequence */
+    ajint  Endd;        /* End of sequence relative to full length 
+			    swissprot sequence */
+    ajint  Sunid;         /* SCOP sunid for domain data */
     
 
     /* Only initialise strings if this is called for the first time*/
@@ -5828,10 +5854,15 @@ AjBool ajXyzScopReadC(AjPFile inf, char *entry, AjPScop *thys)
 	line    = ajStrNew();
 	tentry  = ajStrNew();
 	stmp    = ajStrNew();
+	Acc     = ajStrNew();
+	Spr     = ajStrNew();
 	exp1    = ajRegCompC("^([^ \t\r\n]+)[ \t\n\r]+");
 	exp2    = ajRegCompC("^([A-Za-z0-9.]+)[ ]*[^ \t\r\n]+[ ]*([0-9.-]+)[ ]*"
 			     "[^ \t\r\n]+[ ]*([0-9.-]+)");
     }
+    
+    SeqSpr  = ajStrNew();
+    SeqPdb  = ajStrNew();
 
 
     
@@ -5929,7 +5960,13 @@ AjBool ajXyzScopReadC(AjPFile inf, char *entry, AjPScop *thys)
 	    ajStrAssS(&(*thys)->Domain,domain);
 	    ajStrAssS(&(*thys)->Superfamily,super);
 	    ajStrAssS(&(*thys)->Family,family);
-	    
+	    ajStrAssS(&(*thys)->Acc,Acc);
+	    ajStrAssS(&(*thys)->Spr,Spr);
+	    ajStrAssS(&(*thys)->SeqPdb,SeqPdb);
+	    ajStrAssS(&(*thys)->SeqSpr,SeqSpr);
+	    (*thys)->Sunid = Sunid;
+	    (*thys)->Startd = Startd ;
+	    (*thys)->Endd = Endd;
 	}
 	else if(ajStrPrefixC(line,"CN"))
 	{
@@ -5949,9 +5986,50 @@ AjBool ajXyzScopReadC(AjPFile inf, char *entry, AjPScop *thys)
 	    ajStrAssC(&(*thys)->End[idx-1],ajStrStr(str)); 
 
 	}
+	/* Sequence from pdb file */
+	else if(ajStrPrefixC(line,"DS"))
+	{
+	    while((ok=ajFileReadLine(inf,&line)) && !ajStrPrefixC(line,"XX"))
+		ajStrAppC(&SeqPdb,ajStrStr(line));
+	    ajStrCleanWhite(&SeqPdb);
+	    continue;
+	}
+	/* Sequence from swissprot */
+	else if(ajStrPrefixC(line,"SQ"))
+	{
+	    while((ok=ajFileReadLine(inf,&line)) && !ajStrPrefixC(line,"XX"))
+		ajStrAppC(&SeqSpr,ajStrStr(line));
+	    ajStrCleanWhite(&SeqSpr);
+	    continue;
+	}
+	/* Accession number */
+	else if(ajStrPrefixC(line,"AC"))
+	{
+	    ajFmtScanS(line, "%*s %S", &Acc);
+	}
+	/* Swissprot code */
+	else if(ajStrPrefixC(line,"SP"))
+	{
+	    ajFmtScanS(line, "%*s %S", &Spr);
+	}
+	/* Start and end relative to swissprot sequence */
+	else if(ajStrPrefixC(line,"RA"))
+	{
+	    ajFmtScanS(line, "%*s %d %*s %d", &Startd, &Endd);
+	}
+	/* Sunid of domain data */
+	else if(ajStrPrefixC(line,"SI"))
+	{
+	    ajFmtScanS(line, "%*s %d", &Sunid);
+	}
+	
 	ok = ajFileReadLine(inf,&line);
     }
-    
+ 
+
+    /* Tidy up */
+    ajStrDel(&SeqSpr);
+    ajStrDel(&SeqPdb);
     
     return ajTrue;
 }
@@ -6726,7 +6804,7 @@ AjBool ajXyzHitlistWrite(AjPFile outf, AjPHitlist thys)
 	}
 	ajFmtPrintF(outf, "%-5s%d START; %d END;\n", "RA", thys->hits[x]->Start, thys->hits[x]->End);
 	ajFmtPrintF(outf, "XX\n");
-	ajSeqWriteCdb(outf, thys->hits[x]->Seq);
+	ajSeqWriteXyz(outf, thys->hits[x]->Seq, "SQ");
 	ajFmtPrintF(outf, "XX\n");
     }
     ajFmtPrintF(outf, "//\n");
@@ -8452,5 +8530,9 @@ AjBool   ajXyzPdbAtomIndexC(AjPPdb pdb, char chn, AjPInt *idx)
 
     return ajTrue;
 }
+
+
+
+
 
 

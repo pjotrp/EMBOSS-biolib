@@ -3272,3 +3272,49 @@ void ajSeqoutTrace (AjPSeqout seq) {
     
 }
 
+
+
+
+
+/* @func ajXyzSeqWrite ********************************************************
+**
+** Writes a sequence in SWISSPROT format.
+**
+** @param [w] outf [AjPFile] output stream
+** @param [r] seq [AjPStr] sequence
+** @param [r] prefix [char *] identifier code - should be 2 char's long
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajXyzSeqWrite(AjPFile outf, AjPStr seq, char *prefix)
+{
+    AjPSeqout outseq=NULL;
+    static SeqPSeqFormat sf=NULL;
+    
+    ajint mw;
+    ajuint crc;
+
+    outseq = ajSeqoutNew();
+
+    outseq->File = outf;
+    ajStrAssS(&outseq->Seq,seq);
+    
+    crc = ajSeqCrc (outseq->Seq);
+    mw = (ajint) (0.5+ajSeqMW (outseq->Seq));
+    (void) ajFmtPrintF (outseq->File,
+			"%-5sSEQUENCE %5d AA; %6d MW;  %08X CRC32;\n",
+			prefix, ajStrLen(outseq->Seq), mw, crc);
+
+    seqSeqFormat(ajStrLen(outseq->Seq), &sf);
+    (void) strcpy (sf->endstr, "");
+    sf->tab = 4;
+    sf->spacer = 11;
+    sf->width = 60;
+
+    seqWriteSeq (outseq, sf);
+
+    ajSeqoutDel(&outseq);
+
+    return;
+}
