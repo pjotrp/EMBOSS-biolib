@@ -25,7 +25,7 @@
 #include "emboss.h"
 
 
-/* @macro gap *****************************************************************
+/* @macro stretchergap ********************************************************
 **
 ** k-symbol indel score
 **
@@ -33,7 +33,7 @@
 ** @return [void]  
 ******************************************************************************/
 
-#define gap(k)  ((k) <= 0 ? 0 : g+hh*(k))	/* k-symbol indel score */
+#define stretchergap(k)  ((k) <= 0 ? 0 : g+hh*(k)) /* k-symbol indel score */
 
 
 static ajint stretcher_Ealign(char *A, char *B, ajint M, ajint N, ajint G,
@@ -58,7 +58,7 @@ static ajint hh;
 static ajint m;					/* g = G, hh = H, m = g+h */
 
 
-/* @macro DEL *******************************************************
+/* @macro STRETCHERDEL *******************************************************
 **
 ** Macro for a "Delete k" operation
 **
@@ -66,14 +66,14 @@ static ajint m;					/* g = G, hh = H, m = g+h */
 ** @return [void]
 ******************************************************************************/
 
-#define DEL(k)				\
+#define STRETCHERDEL(k)				\
 { if (last < 0)				\
     last = sapp[-1] -= (k);		\
   else					\
     last = *sapp++ = -(k);		\
 }
 						/* Append "Insert k" op */
-/* @macro INS *******************************************************
+/* @macro STRETCHERINS *******************************************************
 **
 ** Macro for an "Insert k" operation
 **
@@ -81,21 +81,21 @@ static ajint m;					/* g = G, hh = H, m = g+h */
 ** @return [void]
 ******************************************************************************/
 
-#define INS(k)				\
+#define STRETCHERINS(k)				\
 { if (last < 0)				\
     { sapp[-1] = (k); *sapp++ = last; }	\
   else					\
     last = *sapp++ = (k);		\
 }
 
-/* @macro REP *******************************************************
+/* @macro STRETCHERREP *******************************************************
 **
 ** Macro for a "Replace" operation
 **
 ** @return [void]
 ******************************************************************************/
 
-#define REP { last = *sapp++ = 0; }		/* Append "Replace" op */
+#define STRETCHERREP { last = *sapp++ = 0; } /* Append "Replace" op */
 
 
 static AjPSeq seq;
@@ -368,27 +368,27 @@ static ajint stretcher_Align(char *A,char *B,ajint M,ajint N,ajint tb,ajint te)
     if (N <= 0)
     {
 	if (M > 0)
-	    DEL(M);
-	return -gap(M);
+	    STRETCHERDEL(M);
+	return -stretchergap(M);
     }
 
     if (M <= 1)
     {
 	if (M <= 0)
 	{
-	    INS(N)
-	    return -gap(N);
+	    STRETCHERINS(N)
+	    return -stretchergap(N);
 	}
 
 	if (tb < te)
 	    tb = te;
 
-	midc = (tb-hh) - gap(N);
+	midc = (tb-hh) - stretchergap(N);
 	midj = 0;
 	wa = sub[(ajint)A[1]];
 	for (j = 1; j <= N; j++)
         {
-	    c = -gap(j-1) + wa[(ajint)B[j]] - gap(N-j);
+	    c = -stretchergap(j-1) + wa[(ajint)B[j]] - stretchergap(N-j);
 	    if (c > midc)
             {
 		midc = c;
@@ -397,15 +397,15 @@ static ajint stretcher_Align(char *A,char *B,ajint M,ajint N,ajint tb,ajint te)
         }
 	if (midj == 0)
         {
-	    INS(N) DEL(1)
+	    STRETCHERINS(N) STRETCHERDEL(1)
 	}
 	else
         {
 	    if (midj > 1)
-		INS(midj-1)
-	      REP
+		STRETCHERINS(midj-1)
+	    STRETCHERREP
 	    if (midj < N)
-		INS(N-midj)
+		STRETCHERINS(N-midj)
         }
 	return midc;
     }
@@ -501,7 +501,7 @@ static ajint stretcher_Align(char *A,char *B,ajint M,ajint N,ajint tb,ajint te)
     else
     {
 	stretcher_Align(A,B,midi-1,midj,tb,0);
-	DEL(2);
+	STRETCHERDEL(2);
 	stretcher_Align(A+midi+1,B+midj,M-midi-1,N-midj,0,te);
     }
 

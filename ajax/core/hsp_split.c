@@ -236,14 +236,14 @@ ajint dosplit(char *string, char *seps)
     register ajint nf;
 
     nf = split(string, fields, NF, seps);
-    (void) print(nf, NF, fields);
+    (void) hsp_split_print(nf, NF, fields);
 }
 
 
 
 
 
-/* @func print *******************************************************
+/* @func hsp_split_print ******************************************************
 **
 ** Undocumented
 ** 
@@ -253,7 +253,7 @@ ajint dosplit(char *string, char *seps)
 ** @return [ajint] Undocumented
 ******************************************************************************/
 
-ajint print(ajint nf, ajint nfp, char *fields[])
+ajint hsp_split_print(ajint nf, ajint nfp, char *fields[])
 {
     register ajint fn;
     register ajint bound;
@@ -394,7 +394,7 @@ ajint regress()
 	    }
 	}
 	if (printit)
-	    print(nf, RNF, fields);
+	    hsp_split_print(nf, RNF, fields);
     }
 }
 #endif

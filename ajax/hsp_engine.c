@@ -52,7 +52,7 @@ struct match {
 #include "hsp_engine.h"
 
 #ifdef REDEBUG
-#define	SP(t, s, c)	print(m, t, s, c, stdout)
+#define	SP(t, s, c)	hsp_engine_print(m, t, s, c, stdout)
 #define	AT(t, p1, p2, s1, s2)	at(m, t, p1, p2, s1, s2)
 #define	NOTE(str)	{ if (m->eflags&REG_TRACE) (void) printf("=%s\n",
 								 (str)); }
@@ -978,7 +978,7 @@ static states step(register REGUTSSTRUCT *g, sopno start, sopno stop,
 #ifdef REDEBUG
 
 
-/* @funcstatic print **********************************************************
+/* @funcstatic hsp_engine_print ***********************************************
 **
 ** print a set of states
 **
@@ -990,7 +990,8 @@ static states step(register REGUTSSTRUCT *g, sopno start, sopno stop,
 ** @return [void]
 ******************************************************************************/
 
-static void print(struct match m, char *caption, states st, ajint ch, FILE *d)
+static void hsp_engine_print(struct match m, char *caption, states st,
+			    ajint ch, FILE *d)
 {
     register REGUTSSTRUCT *g = m->g;
     register ajint i;
