@@ -97,7 +97,7 @@ public class BuildProgramMenu
     }
     else 
     {
-      envp = new String[4];  /* environment vars */
+      envp = new String[5];  /* environment vars */
       String ps = new String(System.getProperty("path.separator"));
       String embossBin  = mysettings.getEmbossBin();
       String embossPath = mysettings.getEmbossPath();
@@ -107,6 +107,8 @@ public class BuildProgramMenu
       envp[1] = "PLPLOT_LIB=" + mysettings.getPlplot();
       envp[2] = "EMBOSS_DATA=" + mysettings.getEmbossData();
       envp[3] = "HOME=" + System.getProperty("user.home") + fs;
+      if(mysettings.isCygwin())
+        envp[4] = "EMBOSSCYGROOT" + mysettings.getCygwinRoot();
     }
 
 

@@ -174,7 +174,7 @@ public class JembossParams
   private String jembossServerName = "jemboss.server";
 
   /** cygwin */
-  private static boolean cygwin = false;
+  private static String cygwin = null;
   /** property name for Jemboss java server */
   private String cygwinName = "cygwin";
 
@@ -391,8 +391,7 @@ public class JembossParams
       tmp = jembossSettings.getProperty(jembossServerName);
       jembossServer = new Boolean(tmp).booleanValue();
          
-      tmp = jembossSettings.getProperty(cygwinName);
-      cygwin = new Boolean(tmp).booleanValue();
+      cygwin = jembossSettings.getProperty(cygwinName);
       
       tmp = jembossSettings.getProperty(useHTTPSProxyName);
       useHTTPSProxy = new Boolean(tmp).booleanValue();
@@ -728,8 +727,24 @@ public class JembossParams
 */
   public static boolean isCygwin()
   {
+    if(cygwin == null || cygwin.equals(""))
+      return false;
+    else
+      return true;
+  }
+
+
+/**
+*
+*  Get the cygwin root 
+*  @return      cygwin root
+*
+*/
+  public String getCygwinRoot()
+  {
     return cygwin;
   }
+
 
 
 /**
