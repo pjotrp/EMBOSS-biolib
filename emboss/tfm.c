@@ -276,7 +276,7 @@ static void tfm_FixImages(AjPStr *line, AjPStr path)
     }
     ajStrAssC(&post,p);
 
-    ajFmtPrintS(line,"%Sfile://%S%S%S",pre,newpath,name,post);
+    ajFmtPrintS(line,"%Sfile://%S/html/%S%S",pre,newpath,name,post);
 
     ajStrDel(&newpath);
     ajStrDel(&name);
