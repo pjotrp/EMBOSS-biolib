@@ -70,7 +70,8 @@ static void grpAddGroupsToList(const AjPList alpha, AjPList glist,
 ******************************************************************************/
 
 void embGrpGetProgGroups(AjPList glist, AjPList alpha, char * const env[],
-			 AjBool emboss, AjBool embassy, AjPStr embassyname,
+			 AjBool emboss, AjBool embassy,
+			 const AjPStr embassyname,
 			 AjBool explode, AjBool colon, AjBool gui)
 {
 

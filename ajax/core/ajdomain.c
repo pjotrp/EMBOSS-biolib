@@ -1801,7 +1801,7 @@ void ajCathDel(AjPCath *ptr)
 **
 ** Copies the contents from one Scop object to another.
 **
-** @param [wD] to   [AjPScop*] Scop object pointer 
+** @param [w] to   [AjPScop*] Scop object pointer 
 ** @param [r] from [const AjPScop]  Scop object 
 **
 ** @return [AjBool] True if copy was successful.

@@ -621,7 +621,7 @@ void ajCharFree(char** txt)
 ** Ensures a string is set. If is already has a value, it is left alone.
 ** Otherwise the default value is used.
 **
-** @param [wD] pthis [AjPStr*] Target string which is overwritten.
+** @param [w] pthis [AjPStr*] Target string which is overwritten.
 ** @param [rN] str [const AjPStr] Source string object.
 ** @return [AjBool] ajTrue if string was reallocated
 ** @category assign [AjPStr] If empty, initialize with a copy of a
@@ -649,7 +649,7 @@ AjBool ajStrSet(AjPStr* pthis, const AjPStr str)
 ** Ensures a string is set. If is already has a value, it is left alone.
 ** Otherwise the default value is used.
 **
-** @param [wD] pthis [AjPStr*] Target string which is overwritten.
+** @param [w] pthis [AjPStr*] Target string which is overwritten.
 ** @param [r] str [const char*] Source text.
 ** @return [AjBool] ajTrue if string was reallocated
 ** @category assign [AjPStr] If empty, initialize with a copy of a
@@ -678,7 +678,7 @@ AjBool ajStrSetC(AjPStr* pthis, const char* str)
 **
 ** Assignment constructor with copy of a string object
 **
-** @param [wD] pthis [AjPStr*] Target string
+** @param [w] pthis [AjPStr*] Target string
 ** @param [uN] str [AjPStr] Source string
 **                 Can copy by reference count, so not a const AjPStr.
 ** @return [AjBool] ajTrue if string was reallocated
@@ -707,7 +707,7 @@ AjBool ajStrAss(AjPStr* pthis, AjPStr str)
 **
 ** Copy a text string to a string object.
 **
-** @param [wD] pthis [AjPStr*] Target string.
+** @param [w] pthis [AjPStr*] Target string.
 ** @param [rN] text [const char*] Source text.
 ** @return [AjBool] ajTrue if string was reallocated
 ** @category assign [AjPStr] Assignment with char* text.
@@ -743,7 +743,7 @@ AjBool ajStrAssC(AjPStr* pthis, const char* text)
 **
 ** Copy a single character to a string object.
 **
-** @param [wD] pthis [AjPStr*] Target string.
+** @param [w] pthis [AjPStr*] Target string.
 ** @param [rN] text [const char] Source text.
 ** @return [AjBool] ajTrue if string was reallocated
 ** @category assign [AjPStr] Assignment with char* text.
@@ -775,7 +775,7 @@ AjBool ajStrAssK(AjPStr* pthis, const char text)
 ** Useful where both strings will be separately overwritten later
 ** so that they can both remain modifiable.
 **
-** @param [wD] pthis [AjPStr*] Target string.
+** @param [w] pthis [AjPStr*] Target string.
 ** @param [rN] str [const AjPStr] Source string.
 ** @return [AjBool] ajTrue if string was reallocated
 ** @category assign [AjPStr] Assigns a copy of a string
@@ -817,7 +817,7 @@ AjBool ajStrAssS(AjPStr* pthis, const AjPStr str)
 **
 ** Copy a text string to a string object.
 **
-** @param [wD] pthis [AjPStr*] Target string.
+** @param [w] pthis [AjPStr*] Target string.
 ** @param [rN] str [const AjPStr] Source text.
 ** @param [r] i [size_t] Length of source text.
 ** @return [AjBool] ajTrue if string was reallocated
@@ -855,7 +855,7 @@ AjBool ajStrAssI(AjPStr* pthis, const AjPStr str, size_t i)
 **
 ** Copy a text string to a string object.
 **
-** @param [wD] pthis [AjPStr*] Target string.
+** @param [w] pthis [AjPStr*] Target string.
 ** @param [rN] str [const AjPStr] Source text.
 ** @param [r] i [size_t] Size of new string.
 ** @return [AjBool] ajTrue if string was reallocated
@@ -903,7 +903,7 @@ AjBool ajStrAssL(AjPStr* pthis, const AjPStr str, size_t i)
 **
 ** Copy a text string to a string object.
 **
-** @param [wD] pthis [AjPStr*] Target string.
+** @param [w] pthis [AjPStr*] Target string.
 ** @param [rN] txt [const char*] Source text.
 ** @param [r] ilen [size_t] Length of source text.
 ** @return [AjBool] ajTrue if string was reallocated
@@ -937,7 +937,7 @@ AjBool ajStrAssCI(AjPStr* pthis, const char* txt, size_t ilen)
 **
 ** Copy a text string to a string object.
 **
-** @param [wD] pthis [AjPStr*] Target string.
+** @param [w] pthis [AjPStr*] Target string.
 ** @param [rN] txt [const char*] Source text.
 ** @param [r] i [size_t] Space to reserve.
 ** @return [AjBool] ajTrue if string was reallocated
@@ -985,7 +985,7 @@ AjBool ajStrAssCL(AjPStr* pthis, const char* txt, size_t i)
 **
 ** Sets the destination string to NULL if the source string is NULL.
 **
-** @param [wD] pthis [AjPStr*] Target string which is overwritten.
+** @param [w] pthis [AjPStr*] Target string which is overwritten.
 ** @param [uN] str [AjPStr] Source string object
 **        A NULL pointer makes the target NULL too.
 **        Copy by reference count so not const.
@@ -1018,7 +1018,7 @@ AjBool ajStrCopy(AjPStr* pthis, AjPStr str)
 **
 ** Sets the destination string to NULL if the source string is NULL.
 **
-** @param [wD] pthis [AjPStr*] Target string which is overwritten.
+** @param [w] pthis [AjPStr*] Target string which is overwritten.
 ** @param [rN] str [const char*] Source string object
 **        A NULL pointer makes the target NULL too.
 ** @return [AjBool] ajTrue if string was reallocated
@@ -1046,7 +1046,7 @@ AjBool ajStrCopyC(AjPStr* pthis, const char* str)
 **
 ** Copies a substring to a string object.
 **
-** @param [wD] pthis [AjPStr*] Target string
+** @param [w] pthis [AjPStr*] Target string
 ** @param [r] str [const AjPStr] Source string
 ** @param [r] begin [ajint] start position for substring
 ** @param [r] end [ajint] end position for substring
@@ -1078,7 +1078,7 @@ AjBool ajStrAssSub(AjPStr* pthis, const AjPStr str, ajint begin, ajint end)
 **
 ** Copies a substring to a string object.
 **
-** @param [wD] pthis [AjPStr*] Target string
+** @param [w] pthis [AjPStr*] Target string
 ** @param [r] txt [const char*] Source text
 ** @param [r] begin [ajint] start position for substring
 ** @param [r] end [ajint] end position for substring
@@ -1114,7 +1114,7 @@ AjBool ajStrAssSubC(AjPStr* pthis, const char* txt, ajint begin, ajint end)
 ** Converts a Boolean value into a 1-letter string. Can be used to print
 ** boolean values, but the ajFmt library has better ways.
 **
-** @param [wD] pthis [AjPStr*] String to hold the result.
+** @param [w] pthis [AjPStr*] String to hold the result.
 ** @param [r] boule [AjBool] Boolean value
 ** @return [AjBool] ajTrue if string was reallocated
 ** @category assign [AjPStr] Creates a string representation of an AjBool
@@ -1143,7 +1143,7 @@ AjBool ajStrFromBool(AjPStr* pthis, AjBool boule)
 ** Converts an integer value into a string. The string size is set to be
 ** just large enough to hold the value.
 **
-** @param [wD] pthis [AjPStr*] Target string
+** @param [w] pthis [AjPStr*] Target string
 ** @param [r] val [ajint] Integer value
 ** @return [AjBool] ajTrue if string was reallocated
 ** @category assign [AjPStr] Creates a string representation of an int
@@ -1180,7 +1180,7 @@ AjBool ajStrFromInt(AjPStr* pthis, ajint val)
 ** Converts a ajlong integer value into a string. The string size is set to be
 ** just large enough to hold the value.
 **
-** @param [wD] pthis [AjPStr*] Target string
+** @param [w] pthis [AjPStr*] Target string
 ** @param [r] val [ajlong] Long integer value
 ** @return [AjBool] ajTrue if string was reallocated
 ** @category assign [AjPStr] Creates a string representation of a ajlong int
@@ -1217,7 +1217,7 @@ AjBool ajStrFromLong(AjPStr* pthis, ajlong val)
 ** Converts a floating point value into a string. The string size is set to be
 ** just large enough to hold the value.
 **
-** @param [wD] pthis [AjPStr*] Target string
+** @param [w] pthis [AjPStr*] Target string
 ** @param [r] val [float] Floating point value
 ** @param [r] precision [ajint] Precision (number of decimal places) to use.
 ** @return [AjBool] ajTrue if string was reallocated
@@ -1257,7 +1257,7 @@ AjBool ajStrFromFloat(AjPStr* pthis, float val, ajint precision)
 ** Converts a double precision value into a string. The string size is set
 ** to be just large enough to hold the value.
 **
-** @param [wD] pthis [AjPStr*] Target string
+** @param [w] pthis [AjPStr*] Target string
 ** @param [r] val [double] Double precision value
 ** @param [r] precision [ajint] Precision (number of decimal places) to use.
 ** @return [AjBool] ajTrue if string was reallocated
@@ -1297,7 +1297,7 @@ AjBool ajStrFromDouble(AjPStr* pthis, double val, ajint precision)
 ** Converts a double precision value into a string. The string size is set
 ** to be just large enough to hold the value. Uses exponential form.
 **
-** @param [wD] pthis [AjPStr*] Target string
+** @param [w] pthis [AjPStr*] Target string
 ** @param [r] val [double] Double precision value
 ** @param [r] precision [ajint] Precision (number of decimal places) to use.
 ** @return [AjBool] ajTrue if string was reallocated
@@ -1512,7 +1512,7 @@ static void strCloneL(AjPStr* pthis, size_t size)
 ** Appends a string object to the end of another string object.
 ** Uses {ajStrModL} to make sure target string is modifiable.
 **
-** @param [wD] pthis [AjPStr*] Target string
+** @param [w] pthis [AjPStr*] Target string
 ** @param [rN] src [const AjPStr] Source string
 ** @return [AjBool] ajTrue if string was reallocated
 ** @category modify [AjPStr] Appends a string object
@@ -1561,7 +1561,7 @@ AjBool ajStrApp(AjPStr* pthis, const AjPStr src)
 ** Appends a character string to the end of a string object.
 ** Uses {ajStrModL} to make sure target string is modifiable.
 **
-** @param [wD] pthis [AjPStr*] Target string
+** @param [w] pthis [AjPStr*] Target string
 ** @param [rN] txt [const char*] Source text
 ** @return [AjBool] ajTrue if string was reallocated
 ** @category modify [AjPStr] Appends a char* text
@@ -1608,7 +1608,7 @@ AjBool ajStrAppC(AjPStr* pthis, const char* txt)
 ** Appends a character to the end of a string object.
 ** Uses {ajStrModL} to make sure target string is modifiable.
 **
-** @param [wD] pthis [AjPStr*] Target string
+** @param [w] pthis [AjPStr*] Target string
 ** @param [rN] chr [const char] Source character
 ** @return [AjBool] ajTrue if string was reallocated
 ** @category modify [AjPStr] Appends a char
@@ -1648,7 +1648,7 @@ AjBool ajStrAppK(AjPStr* pthis, const char chr)
 **
 ** Uses {ajStrModL} to make sure target string is modifiable.
 **
-** @param [wD] pthis [AjPStr*] Target string
+** @param [w] pthis [AjPStr*] Target string
 ** @param [rN] chr [const char] Source character
 ** @param [r] number [ajint] Repeat count
 ** @return [AjBool] ajTrue if string was reallocated
@@ -1695,7 +1695,7 @@ AjBool ajStrAppKI(AjPStr* pthis, const char chr, ajint number)
 ** Appends a substring to the end of another string object.
 ** Uses {ajStrModL} to make sure target string is modifiable.
 **
-** @param [wD] pthis [AjPStr*] Target string
+** @param [w] pthis [AjPStr*] Target string
 ** @param [rN] src [const AjPStr] Source string
 ** @param [r] begin [ajint] start position for substring
 ** @param [r] end [ajint] end position for substring
