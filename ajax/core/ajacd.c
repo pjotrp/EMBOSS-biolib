@@ -6000,7 +6000,7 @@ static void acdSetReport (AcdPAcd thys)
 			  &val->Showacc, &defreply);
     (void) acdQualToBool (thys, "rdesshow", ajFalse,
 			  &val->Showdes, &defreply);
-    (void) acdQualToBool (thys, "rscorehow", ajTrue,
+    (void) acdQualToBool (thys, "rscoreshow", ajTrue,
 			  &val->Showscore, &defreply);
     (void) acdQualToBool (thys, "rusashow", ajFalse,
 			  &val->Showusa, &defreply);
