@@ -462,6 +462,7 @@ static void restover_read_equiv(AjPFile *equfile, AjPTable *table)
     }
 
     ajFileClose(equfile);
+    ajStrDel(&line);
 
     return;
 }

@@ -386,7 +386,7 @@ int main(int argc, char **argv)
     if(do_plot)
     {
 	ajGraphCloseWin();
-	ajGraphxyDel(graphs);
+	ajGraphxyDel(&graphs);
     }
 
     ajExit();

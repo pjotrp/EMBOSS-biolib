@@ -214,7 +214,7 @@ int main(int argc, char **argv)
     ajGraphxyDisplay(plot,AJTRUE);
 
     /* Delete the structures and data */
-    ajGraphxyDel(plot);
+    ajGraphxyDel(&plot);
 #endif
 
 

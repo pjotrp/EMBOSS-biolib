@@ -334,6 +334,7 @@ int main(int argc, char **argv)
 
 	ajListDel(&restrictlist);
 	ajFeattableDel(&newfeattab);
+	ajFeattableDel(&feattab);
 
 	/* add a newline at the end of the sequence */
 	ajFmtPrintF(outfile, "\n");

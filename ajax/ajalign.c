@@ -1803,7 +1803,7 @@ void ajAlignWriteHeader(AjPAlign thys)
     {
 	ajFmtPrintF(outf, "########################################\n");
 	ajFmtPrintF(outf, "# Program:  %s\n", ajAcdProgram());
-	ajFmtPrintF(outf, "# Rundate:  %D\n", ajTimeTodayF("log"));
+	ajFmtPrintF(outf, "# Rundate:  %D\n", ajTimeTodayRefF("log"));
 	ajFmtPrintF(outf, "# Align_format: %S\n", thys->Formatstr);
 	ajFmtPrintF(outf, "# Report_file: %F\n", outf);
 	if(!doSingle || thys->Multi)

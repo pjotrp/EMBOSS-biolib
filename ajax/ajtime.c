@@ -62,6 +62,35 @@ static TimeOFormat timeFormat[] =  /* formats for strftime */
 
 
 
+/* @func ajTimeTodayRef *******************************************************
+**
+** AJAX function to return today's time as an AjPTime object reference
+** @return [const AjPTime] Pointer to static time object containing
+**                         today's date/time
+** @@
+******************************************************************************/
+
+const AjPTime ajTimeTodayRef(void)
+{
+    static AjPTime thys = NULL;
+    time_t tim;
+    
+    tim = time(0);
+
+    if(!thys)
+	AJNEW0(thys);
+
+    if(!ajTimeLocal(tim,thys))
+        return NULL;
+
+    thys->format = NULL;
+
+    return thys;
+}
+
+
+
+
 /* @func ajTimeToday **********************************************************
 **
 ** AJAX function to return today's time as an AjPTime object
@@ -140,6 +169,40 @@ static char* TimeFormat(const char *timefmt)
 AjPTime ajTimeTodayF(const char* timefmt)
 {
     AjPTime thys = NULL;
+    time_t tim;
+    
+    tim = time(0);
+
+    if(!thys)
+	AJNEW0(thys);
+
+    if(!ajTimeLocal(tim,thys))
+        return NULL;
+
+    thys->format = TimeFormat(timefmt);
+
+    return thys;
+}
+
+
+
+
+/* @func ajTimeTodayRefF ******************************************************
+**
+** AJAX function to return today's time as a static AjPTime object
+** with a specified output format
+**
+** @param [r] timefmt [const char*] A controlled vocabulary of time formats
+**
+** @return [] [const AjPTime] Pointer to static time object containing
+**                            today's date/time
+** @@
+**
+******************************************************************************/
+
+const AjPTime ajTimeTodayRefF(const char* timefmt)
+{
+    static AjPTime thys = NULL;
     time_t tim;
     
     tim = time(0);

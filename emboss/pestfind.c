@@ -712,7 +712,7 @@ int main(int argc, char **argv)
     ajGraphxyTitleC(graph, "PEST-find");
     ajGraphxyDisplay(graph, AJTRUE);
     ajGraphCloseWin();
-    ajGraphxyDel(graph);
+    ajGraphxyDel(&graph);
     
     /* clean-up and destruction */
     itrlst = ajListIter(reslst);

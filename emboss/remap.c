@@ -1006,6 +1006,7 @@ static void remap_read_equiv(AjPFile *equfile, AjPTable *table)
     }
 
     ajFileClose(equfile);
+    ajStrDel(&line);
 
     return;
 }
@@ -1253,7 +1254,9 @@ static void remap_RestrictPreferred(AjPList l, AjPTable t)
     }
     
     ajListIterFree(iter);     
-    
+    ajStrDel(&newiso);
+    ajStrDel(&code);
+
     return; 
 }
 

@@ -3748,7 +3748,7 @@ AjBool ajFeattableWriteGff(AjPFeattable Feattab, const AjPFile file)
 {
     AjIList    iter = NULL;
     AjPFeature gf   = NULL;
-    
+
     /* Check arguments */
     /* ajDebug ("ajFeattableWriteGff Checking arguments\n"); */
     assert(file);
@@ -3756,7 +3756,7 @@ AjBool ajFeattableWriteGff(AjPFeattable Feattab, const AjPFile file)
     /* Print header first */
     ajFmtPrintF(file, "##gff-version 2.0\n") ;
     
-    ajFmtPrintF(file, "##date %D\n", ajTimeTodayF("GFF")) ;
+    ajFmtPrintF(file, "##date %D\n", ajTimeTodayRefF("GFF")) ;
     
     if(ajStrMatchC(Feattab->Type, "N"))
 	ajFmtPrintF(file, "##Type %s %S\n", "DNA",
@@ -3782,7 +3782,7 @@ AjBool ajFeattableWriteGff(AjPFeattable Feattab, const AjPFile file)
 	}
 	ajListIterFree(iter);
     }
-    
+
     return ajTrue;
 }
 
@@ -5800,7 +5800,7 @@ static AjBool featVocabRead(const char* name, ajint typsize, ajint tagsize,
 				  name, defname);
 			typtagstr = NULL;
 		    }
-		    else	  /* save the previous feature type */
+		    else	  /* save the previous feature type + tags */
 		    {
 			if(ajTablePut (*pTypeTable, savetype, typtagstr))
 			    ajErr("Efeatures.%s duplicate tag for '%S'",
@@ -5845,11 +5845,12 @@ static AjBool featVocabRead(const char* name, ajint typsize, ajint tagsize,
     ajStrDel(&token);
     
     line = (AjPStr) ajTableGet(*pTypeTable, ajStrNew());
-    ajDebug("Default type: '%S'\n", line);
+    ajDebug("Default type...: '%S'\n", line);
     
     line = (AjPStr) ajTableGet(*pTagsTable, ajStrNew());
-    ajDebug("Default tag:  '%S'\n", line);
+    ajDebug("Default tag...:  '%S'\n", line);
     
+    ajDebug("Total types...: %d\n", typecount);
     /*
        ajTableTrace(*pTypeTable);
        ajTableTrace(*pTagsTable);
@@ -5862,6 +5863,7 @@ static AjBool featVocabRead(const char* name, ajint typsize, ajint tagsize,
     ajStrDel(&TagsFName);
     ajStrDel(&req);
     ajStrDel(&tag);
+    ajStrDel(&type);
     
     return ajTrue;    
 }
@@ -9483,6 +9485,7 @@ AjBool ajFeattableTrimOff(AjPFeattable thys, ajint ioffset, ajint ilen)
 	}
     }
 
+    ajListIterFree(iter);
     thys->Offset = ioffset;
     return ok;
 }

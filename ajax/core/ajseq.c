@@ -5011,7 +5011,8 @@ AjBool ajSeqsetConsStats(AjPSeqset thys, AjPMatrix mymatrix, AjPStr *cons,
 	    ajStrAssC(&matname, "EBLOSUM62");
 	ajMatrixRead(&imatrix, matname);
     }
-    
+    ajStrDel(&matname);
+
     *retident = 0;
     *retsim   = 0;
     *retgap   = 0;
@@ -5255,12 +5256,14 @@ AjBool ajSeqsetConsStats(AjPSeqset thys, AjPMatrix mymatrix, AjPStr *cons,
     ajDebug("ret ident:%d sim:%d gap:%d len:%d\n",
 	    *retident, *retsim, *retgap, *retlen);
     
+    AJFREE(seqs);
     AJFREE(seqcharptr);
     AJFREE(matching);
     AJFREE(identical);
     ajFloatDel(&posScore);
     ajStrDel(&debugstr1);
     ajStrDel(&debugstr2);
+    ajMatrixDel(&imatrix);
 
     return ajTrue;    
 }

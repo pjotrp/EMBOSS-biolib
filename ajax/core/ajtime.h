@@ -25,6 +25,8 @@ typedef struct AjSTime {
 AjBool  ajTimeLocal(const time_t timer, AjPTime thys);
 AjPTime ajTimeToday (void);
 AjPTime ajTimeTodayF (const char* timefmt);
+const AjPTime ajTimeTodayRef (void);
+const AjPTime ajTimeTodayRefF (const char* timefmt);
 void    ajTimeTrace (const AjPTime thys);
 AjPTime ajTimeSet( const char *timefmt, ajint mday, ajint mon, ajint year) ;
 AjPTime ajTimeNew(void);

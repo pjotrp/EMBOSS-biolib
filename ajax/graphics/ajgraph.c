@@ -64,7 +64,6 @@ static void     GraphCheckFlags(ajint flags);
 static void     GraphCheckPoints(PLINT n, PLFLT *x, PLFLT *y);
 static void     GraphClose(void);
 static void     GraphDatafileNext(void);
-static void     GraphDataObjDel(AjPGraphData graphs);
 static void     GraphDataObjDraw(AjPGraphData graphs);
 static void     GraphDataObjPrint(AjPGraphData graphs);
 static void     GraphFill(ajint numofpoints, float *x, float *y);
@@ -3556,26 +3555,32 @@ void ajGraphxyDataSetXtitleC(AjPGraphData graphdata, char* title)
 **
 ** Destructor for a graph object
 **
-** @param [w] mult  [AjPGraph] Graph structure to store info in.
+** @param [w] pmult  [AjPGraph*] Graph structure to store info in.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajGraphxyDel(AjPGraph mult)
+void ajGraphxyDel(AjPGraph* pmult)
 {
     AjPGraphData graphdata;
+    AjPGraph mult;
     ajint i;
+
+    mult = *pmult;
 
     for(i = 0 ; i < mult->numofgraphs ; i++)
     {
 	graphdata = (mult->graphs)[i];
-	if(!graphdata->xcalc)
-	    AJFREE(graphdata->x);
-	if(!graphdata->ycalc)
-	    AJFREE(graphdata->y);
-	if(!graphdata->gtype)
-	    ajStrDel(&graphdata->gtype);
-	GraphDataObjDel(graphdata);
+	if (graphdata)
+	{
+	    if(!graphdata->xcalc)
+		AJFREE(graphdata->x);
+	    if(!graphdata->ycalc)
+		AJFREE(graphdata->y);
+	    if(!graphdata->gtype)
+		ajStrDel(&graphdata->gtype);
+	    ajGraphDataObjDel(&graphdata);
+	}
 	ajStrDel(&mult->title);
 	ajStrDel(&mult->subtitle);
 	ajStrDel(&mult->xaxis);
@@ -3586,6 +3591,8 @@ void ajGraphxyDel(AjPGraph mult)
 
     AJFREE(mult->graphs);
     AJFREE(mult);
+
+    *pmult = NULL;
 
     return;
 }
@@ -3955,7 +3962,11 @@ AjPGraph ajGraphxyNewI(ajint numsets)
 
 void ajGraphSetMulti(AjPGraph thys, ajint numsets)
 {
-    AJFREE(thys->graphs);
+    if (!thys)
+	return;
+
+    if (thys->graphs)
+	AJFREE(thys->graphs);
     AJCNEW0(thys->graphs,numsets);
 
     ajDebug("ajGraphSetMulti numsets: %d\n", numsets);
@@ -5033,6 +5044,9 @@ void ajGraphDataObjDel(AjPGraphData *thys)
     AjPGraphObj here = NULL;
     AjPGraphObj p    = NULL;
 
+    if (!*thys)
+	return;
+
     here = p = (*thys)->Obj;
     while(p)
     {
@@ -5042,8 +5056,17 @@ void ajGraphDataObjDel(AjPGraphData *thys)
 	here = p;
     }
 
+    ajStrDel(&(*thys)->title);
+    ajStrDel(&(*thys)->subtitle);
+    ajStrDel(&(*thys)->xaxis);
+    ajStrDel(&(*thys)->yaxis);
+    ajStrDel(&(*thys)->gtype);
+    AJFREE((*thys)->x);
+    AJFREE((*thys)->y);
     (*thys)->numofobjects = 0;
     (*thys)->Obj = NULL;
+
+    AJFREE(*thys);
 
     return;
 }
@@ -5053,7 +5076,7 @@ void ajGraphDataObjDel(AjPGraphData *thys)
 
 /* @func ajGraphObjDel ********************************************************
 **
-** Delete all objects from a graph object.
+** Delete all objects from a graph object, but keep the graph
 **
 ** @param [w] thys [AjPGraph*] Graph object
 **
@@ -5065,6 +5088,9 @@ void ajGraphObjDel(AjPGraph *thys)
 {
     AjPGraphObj here = NULL;
     AjPGraphObj p    = NULL;
+
+    if (!*thys)
+	return;
 
     here = p = (*thys)->Obj;
     while(p)
@@ -5100,6 +5126,9 @@ void ajGraphDataDel(AjPGraphData *thys)
 
     this = *thys;
 
+    if (!thys)
+	return;
+
     AJFREE(this->x);
     AJFREE(this->y);
     ajStrDel(&this->title);
@@ -5110,7 +5139,7 @@ void ajGraphDataDel(AjPGraphData *thys)
 
     ajGraphDataObjDel(thys);
 
-    AJFREE(this);
+    AJFREE(*thys);
 
     return;
 }
@@ -5541,37 +5570,6 @@ static void GraphDataObjDraw(AjPGraphData graphs)
 
 
 
-
-/* @funcstatic GraphDataObjDel ************************************************
-**
-** Delete all the drawable objects connected to the graphdata object.
-**
-** @param [r] graphs [AjPGraphData] Graph data object
-**
-** @return [void]
-** @@
-******************************************************************************/
-
-static void GraphDataObjDel(AjPGraphData graphs)
-{
-    AjPGraphObj Obj,anoth;
-
-    if(!graphs->Obj)
-	return;
-    else
-    {
-	Obj = graphs->Obj;
-	while(Obj)
-	{
-	    anoth = Obj->next;
-	    AJFREE(Obj);
-	    Obj = anoth;
-	}
-    }
-    graphs->Obj = 0;
-
-    return;
-}
 
 
 

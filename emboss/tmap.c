@@ -475,15 +475,12 @@ static void tmap_present3p(ajint antal, ajint *npos, ajint *cpos,
     AjPStr tmp = NULL;
     AjPStr hdr = NULL;
     AjPSeq seq;
-    AjPAlign align;
     AjPStr cons = NULL;
     ajint calcid;
     ajint calcsim;
     ajint calcgap;
     ajint calclen;
 
-    align = ajAlignNew();
-    ajAlignDefine(align, seqset);
     ajSeqsetConsStats(seqset, NULL, &cons,
 		      &calcid, &calcsim, &calcgap, &calclen);
 
@@ -524,6 +521,9 @@ static void tmap_present3p(ajint antal, ajint *npos, ajint *cpos,
 	ajFeattableDel(&feat);
     }
 
+    ajStrDel(&cons);
+    ajStrDel(&hdr);
+    ajStrDel(&tmp);
     return;
 }
 
