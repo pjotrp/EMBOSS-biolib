@@ -3212,10 +3212,13 @@ static AjBool jctl_check_buffer(const char *buf, int mlen)
     int str1len;
     int command;
     int count;
-
+    char *tbuf;
+    
     if(mlen==JBUFFLEN)
 	return ajFalse;
-    buf[mlen]='\0';
+
+    tbuf = (char *)buf;
+    tbuf[mlen]='\0';
 
     /* get the first string and check for reasonable length */
     p = buf;
