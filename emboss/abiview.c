@@ -257,8 +257,12 @@ int main(int argc, char **argv)
 		    ajGraphDataDel(&gd5);
 		}
 		else
+		{
+		    printf("I'm here\n");
 		    ajGraphObjDel(&graphs); /* free seq text mem */
+		}
 	    }
+
 
 	    ajGraphNewPage(ajFalse);	/* display new page  */
 	}
@@ -267,8 +271,12 @@ int main(int argc, char **argv)
 	nstop  = nstart+window+1;
     }
  
+
+    ajFileClose(&fp);
    
     ajGraphCloseWin();
+    if(dseq && overlay)
+	ajGraphObjDel(&graphs); /* free seq text mem */
     ajGraphxyDel(graphs);
     ajInt2dDel(&trace);
     ajShortDel(&basePositions);

@@ -725,7 +725,7 @@ void ajGraphOpenWin (AjPGraph thys, float xmin, float xmax,
 /* @func ajGraphNewPage ***********************************************
 **
 ** Clear Screen if (X) or new page if plotter/postscript. Also pass a boolean
-** to state wether you want the current oen colour character sizes etc to
+** to state whether you want the current pen colour character sizes etc to
 ** be reset or stay the same for the next page.
 **
 ** @param [r] resetdefaults [AjBool] reset page setting?
@@ -3666,8 +3666,7 @@ void ajGraphObjAddText(AjPGraph graphs, float x1, float y1,
 
 
   Obj->type = TEXT;
-  Obj->text = 0;
-  (void) ajStrSetC(&Obj->text,text);
+  Obj->text = ajStrNewC(text);
   Obj->x1 = x1;
   Obj->x2 = 0.0;
   Obj->y1 = y1;
