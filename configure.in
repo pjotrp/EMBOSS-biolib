@@ -6,7 +6,7 @@ dnl Process this file with autoconf to produce a configure script.
 #CC=cc
 
 AC_INIT(ajax/ajacd.c)
-AM_INIT_AUTOMAKE(EMBOSS, 1.9.0)
+AM_INIT_AUTOMAKE(EMBOSS, 1.10.0)
 
 dnl Use libtool to make a shared library.
 AM_PROG_LIBTOOL
@@ -59,7 +59,7 @@ CHECK_PNGDRIVER
 CFLAGS="-O"
 
 
-dnl Test is --enable-corba is given
+dnl Test if --enable-corba is given
 AC_ARG_ENABLE(corba,
 [ --enable-corba	   corba (need glib and orbit)])
 if test "${enable_corba}" = "yes" ; then
@@ -81,6 +81,41 @@ AC_ARG_ENABLE(debug,
 if test "${enable_debug}" = "yes" ; then
   CFLAGS="-g"
 fi          
+
+
+
+
+
+
+dnl Test if --enable-64 is given
+AC_ARG_ENABLE(64,
+[ --enable-64	   64 ])
+if test "${enable_64}" = "yes" ; then
+AC_MSG_CHECKING(for 64 bit flags)
+
+dnl Test for Linux large file support
+if test "`uname`" = "Linux"; then
+CPPFLAGS="-DAJ_Linux64 -D__USE_FILEOFFSET64 -D__USE_LARGEFILE64 $CPPFLAGS"
+fi
+
+dnl Test for Solaris large file support
+if test "`uname`" = "SunOS"; then
+CPPFLAGS="-DAJ_Solaris64 -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE $CPPFLAGS"
+fi
+
+dnl Test for SGI large file support
+if test "`uname`" = "IRIX"; then
+CPPFLAGS="-DAJ_IRIX64 -D__OFF64_T -D_LFAPI -D_NO_ANSIMODE $CPPFLAGS"
+fi
+
+
+
+AC_MSG_RESULT(done)
+fi
+
+
+
+
 
 
 
