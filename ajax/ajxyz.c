@@ -37,6 +37,10 @@
 /* ==================================================================== */
 
 #define OUT_BLK       75
+#define CMAP_MODE_I   1
+#define CMAP_MODE_C   2
+
+
 
 /* ==================================================================== */
 /* ======================== private functions ========================= */
@@ -94,6 +98,8 @@ AjPSigpos     ajXyzSigposNew(ajint ngap)
 ** Sigdat object constructor. This is normally called by the ajXyzSignatureRead
 ** function. Fore-knowledge of the number of empirical residues and gaps is 
 ** required.
+** Important: Functions which manipulate the Sigdat object rely on data in the 
+** gap arrays (gsiz and grfq) being filled in order of increasing gap size.
 **
 ** @param [r] nres [ajint]   Number of emprical residues.
 ** @param [r] ngap [ajint]   Number of emprical gaps.
@@ -111,11 +117,42 @@ AjPSigdat     ajXyzSigdatNew(ajint nres, ajint ngap)
     ret->ngap=ngap;
 
     /* Create arrays */
+/*  
     AJCNEW0(ret->gsiz, ngap);
     AJCNEW0(ret->gfrq, ngap);
     AJCNEW0(ret->rids, nres);
-    AJCNEW0(ret->rfrq, nres);
+    AJCNEW0(ret->rfrq, nres); */
         
+    if(ngap)
+    {
+	ret->gsiz = ajIntNewL((ajint) ngap);
+	ret->gfrq = ajIntNewL((ajint) ngap);
+	ajIntPut(&ret->gsiz, ngap-1, (int)0);
+	ajIntPut(&ret->gfrq, ngap-1, (int)0);
+    }
+    else
+    {
+	ret->gsiz = ajIntNew();
+	ret->gfrq = ajIntNew();
+	ajIntPut(&ret->gsiz, 0, (int)0);
+	ajIntPut(&ret->gfrq, 0, (int)0);
+    }
+
+    if(nres)
+    {
+	ret->rids = ajChararrNewL((ajint) nres);
+	ret->rfrq = ajIntNewL((ajint) nres);
+        ajIntPut(&ret->rfrq, nres-1, (int)0);
+	ajChararrPut(&ret->rids, nres-1, (char)' ');
+    }
+    else
+    {
+	ret->rids = ajChararrNew();
+	ret->rfrq = ajIntNew();
+	ajIntPut(&ret->rfrq, 0, (int)0);
+	ajChararrPut(&ret->rids, 0, (char)' ');
+    }
+    
     return ret;
 }
 
@@ -146,9 +183,12 @@ AjPSignature  ajXyzSignatureNew(ajint n)
     ret->npos=n;
 
     /* Create arrays of pointers to Sigdat & Sigpos structures */
-    ret->dat = AJCALLOC0(n, sizeof(AjPSigdat));
-    ret->pos = AJCALLOC0(n, sizeof(AjPSigpos));
-        
+    if(n)
+    {
+	ret->dat = AJCALLOC0(n, sizeof(AjPSigdat));
+	ret->pos = AJCALLOC0(n, sizeof(AjPSigpos));
+    }
+    
     return ret;
 }
 
@@ -200,12 +240,18 @@ AjPScorealg  ajXyzScorealgNew(ajint len)
     /* Create the scoring arrays */
     if(len)
     {
-	ret->seq_score    = ajFloatNewL((float)len);
+	ret->seq_score    = ajFloatNewL((ajint)len);
+	ajFloatPut(&ret->seq_score, len-1, (float)0.0);
 	ret->post_similar = ajIntNewL((ajint)len);
-	ret->ncon_score   = ajFloatNewL((float)len);
-	ret->ccon_score   = ajFloatNewL((float)len);
+	ajIntPut(&ret->post_similar , len-1, (int)0);
+	ret->ncon_score   = ajFloatNewL((ajint)len);
+	ajFloatPut(&ret->ncon_score , len-1, (float)0.0);
+	ret->ccon_score   = ajFloatNewL((ajint)len);
+	ajFloatPut(&ret->ccon_score  , len-1, (float)0.0);
 	ret->nccon_score = ajIntNewL((ajint)len);
+	ajIntPut(&ret->nccon_score, len-1, (int)0);
 	ret->combi_score  = ajIntNewL((ajint)len);
+	ajIntPut(&ret->combi_score, len-1, (int)0);
     }
     else
 	ajWarn("Zero sized arg passed to ajXyzScorealgNew.\n");
@@ -652,11 +698,17 @@ void ajXyzSigposDel(AjPSigpos *pthis)
 ******************************************************************************/
 void ajXyzSigdatDel(AjPSigdat *pthis)
 {
+/*
     AJFREE((*pthis)->gsiz);
     AJFREE((*pthis)->gfrq);
     AJFREE((*pthis)->rids);
     AJFREE((*pthis)->rfrq);
-
+*/
+    ajIntDel(&(*pthis)->gsiz);
+    ajIntDel(&(*pthis)->gfrq);
+    ajIntDel(&(*pthis)->rfrq);
+    ajChararrDel(&(*pthis)->rids);
+    
     AJFREE(*pthis);    
 
     return; 
@@ -677,20 +729,34 @@ void ajXyzSignatureDel(AjPSignature *pthis)
 {
     ajint x=0;
     
-    for(x=0;x<(*pthis)->npos; ++x)
-    {
-	ajXyzSigdatDel(&(*pthis)->dat[x]);
-	ajXyzSigposDel(&(*pthis)->pos[x]);
-    }
+    if(!(*pthis))
+	return;
+    
+    if((*pthis)->dat)
+	for(x=0;x<(*pthis)->npos; ++x)
+	    if((*pthis)->dat[x])
+		ajXyzSigdatDel(&(*pthis)->dat[x]);
 
-    ajStrDel(&(*pthis)->Class);
-    ajStrDel(&(*pthis)->Fold);
-    ajStrDel(&(*pthis)->Superfamily);
-    ajStrDel(&(*pthis)->Family);
+    if((*pthis)->pos)
+	for(x=0;x<(*pthis)->npos; ++x)
+	    if((*pthis)->pos[x])
+		ajXyzSigposDel(&(*pthis)->pos[x]);
 
+    if((*pthis)->Class)
+	ajStrDel(&(*pthis)->Class);
+    if((*pthis)->Fold)
+	ajStrDel(&(*pthis)->Fold);
+    if((*pthis)->Superfamily)
+	ajStrDel(&(*pthis)->Superfamily);
+    if((*pthis)->Family)
+	ajStrDel(&(*pthis)->Family);
 
-    AJFREE((*pthis)->dat);
-    AJFREE((*pthis)->pos);
+    if((*pthis)->dat)
+	AJFREE((*pthis)->dat);
+
+    if((*pthis)->pos)
+	AJFREE((*pthis)->pos);
+
     AJFREE(*pthis);    
 
     return;
@@ -1279,12 +1345,14 @@ AjBool ajXyzSignatureWrite(AjPFile outf, AjPSignature thys)
 		    thys->dat[i]->nres, thys->dat[i]->ngap, thys->dat[i]->wsiz);
 
 	for(j=0;j<thys->dat[i]->nres;++j)
-	    ajFmtPrintF(outf,"AA   %c ; %d\n",thys->dat[i]->rids[j], 
-			thys->dat[i]->rfrq[j]);
+	    ajFmtPrintF(outf,"AA   %c ; %d\n",
+			(char)  ajChararrGet(thys->dat[i]->rids, j),
+			(ajint) ajIntGet(thys->dat[i]->rfrq, j));
 	ajFmtPrintF(outf,"XX\n");
 	for(j=0;j<thys->dat[i]->ngap;++j)
-	    ajFmtPrintF(outf,"GA   %d ; %d\n",thys->dat[i]->gsiz[j], 
-			thys->dat[i]->gfrq[j]);
+	    ajFmtPrintF(outf,"GA   %d ; %d\n",
+			(ajint) ajIntGet(thys->dat[i]->gsiz, j),
+			(ajint) ajIntGet(thys->dat[i]->gfrq, j));
     }
     ajFmtPrintF(outf,"//\n");
     
@@ -1345,7 +1413,8 @@ AjBool ajXyzSignatureCompile(AjPSignature *S, float gapo, float gape,
     {
 	/* ALLOCATE TEMP. ARRAY OF GAP SIZES, OF SIZE == 
 	   LARGEST GAP + WINDOW SIZE */
-	dim = (*S)->dat[x]->gsiz[(*S)->dat[x]->ngap - 1]
+	/*      (*S)->dat[x]->gsiz[(*S)->dat[x]->ngap - 1] */
+	dim = (ajIntGet((*S)->dat[x]->gsiz, (*S)->dat[x]->ngap - 1))
 	    + (*S)->dat[x]->wsiz + 1;
 	AJCNEW0(tgap, dim);
 	AJCNEW0(tpen, dim);
@@ -1354,8 +1423,8 @@ AjBool ajXyzSignatureCompile(AjPSignature *S, float gapo, float gape,
 	for(y=0; y<(*S)->dat[x]->ngap; y++)
 	{
 	    /*GAP NOT EXTENDED BY WINDOW */
-	    tgap[(*S)->dat[x]->gsiz[y]]=ajTrue;
-	    tpen[(*S)->dat[x]->gsiz[y]]=0;
+	    tgap[(ajIntGet((*S)->dat[x]->gsiz, y))]=ajTrue;
+	    tpen[(ajIntGet((*S)->dat[x]->gsiz, y))]=0;
 	    
 
 	    /*GAP IS EXTENDED BY WINDOW */
@@ -1364,33 +1433,33 @@ AjBool ajXyzSignatureCompile(AjPSignature *S, float gapo, float gape,
 		pen=gapo+gape*(z-1);
 		
 		/* A penalty has been assigned for this gap distance before*/
-		if(tgap[(*S)->dat[x]->gsiz[y]+z])
+		if(tgap[(ajIntGet((*S)->dat[x]->gsiz, y))+z])
 		{
-		    if( pen < tpen[(*S)->dat[x]->gsiz[y]+z])
-			tpen[(*S)->dat[x]->gsiz[y]+z]=pen;
+		    if( pen < tpen[(ajIntGet((*S)->dat[x]->gsiz, y))+z])
+			tpen[(ajIntGet((*S)->dat[x]->gsiz, y))+z]=pen;
 		}
 		/* We have not assigned a penalty to this gap distance before*/
 		else
 		{
-		    tpen[(*S)->dat[x]->gsiz[y]+z]=pen;
-		    tgap[(*S)->dat[x]->gsiz[y]+z]=ajTrue;
+		    tpen[(ajIntGet((*S)->dat[x]->gsiz, y))+z]=pen;
+		    tgap[(ajIntGet((*S)->dat[x]->gsiz, y))+z]=ajTrue;
 		}
 		
 
 		
-		if( (*S)->dat[x]->gsiz[y]-z >= 0)
+		if( ajIntGet((*S)->dat[x]->gsiz, y)-z >= 0)
 		{
 		    /* A penalty has been assigned for this gap distance before*/
-		    if(tgap[(*S)->dat[x]->gsiz[y]-z])
+		    if(tgap[ajIntGet((*S)->dat[x]->gsiz, y)-z])
 		    {
-			if(pen < tpen[(*S)->dat[x]->gsiz[y]-z])
-			    tpen[(*S)->dat[x]->gsiz[y]-z]=pen;
+			if(pen < tpen[(ajIntGet((*S)->dat[x]->gsiz, y))-z])
+			    tpen[(ajIntGet((*S)->dat[x]->gsiz, y))-z]=pen;
 		    }
 		    /* We have not assigned a penalty to this gap distance before*/
 		    else
 		    { 
-			tpen[(*S)->dat[x]->gsiz[y]-z]=pen;
-			tgap[(*S)->dat[x]->gsiz[y]-z]=ajTrue;
+			tpen[(ajIntGet((*S)->dat[x]->gsiz, y))-z]=pen;
+			tgap[(ajIntGet((*S)->dat[x]->gsiz, y))-z]=ajTrue;
 		    }
 		}
 	    }
@@ -1418,16 +1487,18 @@ AjBool ajXyzSignatureCompile(AjPSignature *S, float gapo, float gape,
 	{
 	    for(div=0, y=0; y<(*S)->dat[x]->nres; y++)
 	    {
-		div+=(*S)->dat[x]->rfrq[y];
+		div+=(ajIntGet((*S)->dat[x]->rfrq, y));
 		
 		(*S)->pos[x]->subs[z] += 
-		    (*S)->dat[x]->rfrq[y] * 
+		    (ajIntGet((*S)->dat[x]->rfrq, y)) * 
 			sub[ajSeqCvtK(cvt,(char)((ajint)'A'+z))]
-			    [ajSeqCvtK(cvt,(*S)->dat[x]->rids[y])];
+			    [ajSeqCvtK(cvt, ajChararrGet((*S)->dat[x]->rids, y))];
 	    }
 	    (*S)->pos[x]->subs[z] /= div;
 	}
 	
+	
+
 	/* FREE tgap & tpen ARRAYS */
 	AJFREE(tgap);
 	AJFREE(tpen);
@@ -4247,6 +4318,65 @@ AjBool   ajXyzScopalgWrite(AjPFile outf, AjPScopalg *thys)
 }
 
 
+/* @func ajXyzScopalgGetseqs *************************************************
+**
+** Read a Scopalg object and writes an array of AjPStr containing the sequences
+** without gaps.
+** 
+** @param [r] thys     [AjPScopalg]  Scopalg object
+** @param [w] arr      [AjPStr **]   Array of AjPStr 
+**
+** @return [ajint] Number of sequences read
+** @@
+******************************************************************************/
+ajint ajXyzScopalgGetseqs(AjPScopalg thys, AjPStr **arr)
+{
+    ajint i;
+        
+    /*Check args*/
+    if(!thys)
+	{
+	    ajWarn("Null args passed to ajXyzScopalgGetseqs");
+	    return 0;
+	}
+    
+    
+    *arr = (AjPStr *) AJCALLOC0(thys->N, sizeof(AjPStr));
+    
+    for(i=0;i<thys->N;++i)
+    {
+	(*arr)[i] = ajStrNew();
+
+	ajStrAssS(&((*arr)[i]), thys->Seqs[i]);
+	
+	ajStrDegap(&((*arr)[i]));
+	
+/*	ajFmtPrint("i:%d %S\n", i, (*arr)[i]); */
+	
+    }
+    return thys->N;
+
+
+    /*
+    AJCNEW0(*arr,thys->N);
+
+    for(i=0;i<thys->N;++i)
+    {
+	*arr[i] = ajStrNew();
+
+	ajStrAssS(&(*arr[i]), thys->Seqs[i]); 
+
+	ajStrDegap(&(*arr[i]));
+
+    }
+    return thys->N;
+    */
+}
+
+
+
+
+
 
 /* @func ajXyzScopalgRead ****************************************************
 **
@@ -4310,11 +4440,13 @@ AjBool   ajXyzScopalgRead(AjPFile inf, AjPScopalg *thys)
 
     /* Start of code for reading input file */
     /*Ignore everything up to first line beginning with 'Number'*/
+    /*
     while(ajFileReadLine(inf,&line))
     {
 	if(ajStrPrefixC(line,"Number"))
 	    break;
     }
+*/
 
     /* Read the rest of the file */
     while(ajFileReadLine(inf,&line))
@@ -4432,10 +4564,10 @@ AjBool   ajXyzScopalgRead(AjPFile inf, AjPScopalg *thys)
 
 
     /* Assign SCOP records */
-    ajStrAssS(&(*thys)->Class,class);
-    ajStrAssS(&(*thys)->Fold,fold);
-    ajStrAssS(&(*thys)->Superfamily,super);
-    ajStrAssS(&(*thys)->Family,family); 
+    ajStrAss(&(*thys)->Class,class);
+    ajStrAss(&(*thys)->Fold,fold);
+    ajStrAss(&(*thys)->Superfamily,super);
+    ajStrAss(&(*thys)->Family,family); 
     
 
 
@@ -4452,8 +4584,6 @@ AjBool   ajXyzScopalgRead(AjPFile inf, AjPScopalg *thys)
     /* Assign width */
     (*thys)->width = ajStrLen((*thys)->Seqs[0]);
 
-    printf("scopalgwidth: %d\n", (*thys)->width);
-    fflush(stdout);
 
 
 
@@ -4687,13 +4817,10 @@ AjBool ajXyzHitlistWrite(AjPFile outf, AjPHitlist thys)
 }
 
 
-
-
-
-
-/* @func ajXyzCmapRead ****************************************************
+/* @func ajXyzCmapReadI ****************************************************
 **
-** Read a Cmap object from a file in embl-like format. 
+** Read a Cmap object from a file in embl-like format. Takes the chain 
+** identifier as an integer.
 ** 
 ** @param [r] inf     [AjPFile]  Input file stream
 ** @param [r] chn     [ajint]    Chain number
@@ -4703,7 +4830,56 @@ AjBool ajXyzHitlistWrite(AjPFile outf, AjPHitlist thys)
 ** @return [AjBool] True on success (an object read)
 ** @@
 ******************************************************************************/
-AjBool   ajXyzCmapRead(AjPFile inf, ajint chn, ajint mod, AjPCmap *thys)
+AjBool   ajXyzCmapReadI(AjPFile inf, ajint chn, ajint mod, AjPCmap *thys)
+{
+    if(ajXyzCmapRead(inf, CMAP_MODE_I, chn, mod, thys))
+	return ajTrue;
+    else 
+	return ajFalse;
+}
+
+
+
+/* @func ajXyzCmapReadC ****************************************************
+**
+** Read a Cmap object from a file in embl-like format. Takes the chain 
+** identifier as a character.
+** 
+** @param [r] inf     [AjPFile]  Input file stream
+** @param [r] chn     [char]     Chain number
+** @param [r] mod     [ajint]    Model number
+** @param [w] thys    [AjPCmap*] Pointer to Cmap object
+**
+** @return [AjBool] True on success (an object read)
+** @@
+******************************************************************************/
+AjBool   ajXyzCmapReadC(AjPFile inf, char chn, ajint mod, AjPCmap *thys)
+{
+    if(ajXyzCmapRead(inf, CMAP_MODE_C, (ajint)chn, mod, thys))
+	return ajTrue;
+    else 
+	return ajFalse;
+}
+
+
+
+
+/* @func ajXyzCmapRead ****************************************************
+**
+** Read a Cmap object from a file in embl-like format. This is not usually
+** called by the user, who uses ajXyzCmapReadI or ajXyzCmapReadC instead.
+** 
+** @param [r] inf     [AjPFile]  Input file stream
+** @param [r] mode    [ajint]    Mode, either CMAP_MODE_I (treat chn arg as  
+** an integer) or CMAP_MODE_C (treat chn arg as a character)
+** @param [r] chn     [ajint]    Chain identifier / number
+** @param [r] mod     [ajint]    Model number
+** @param [w] thys    [AjPCmap*] Pointer to Cmap object
+**
+** @return [AjBool] True on success (an object read)
+** @@
+******************************************************************************/
+AjBool   ajXyzCmapRead(AjPFile inf, ajint mode, ajint chn, ajint mod, AjPCmap *thys)
 {	
     static   AjPStr line    =NULL;   /* Line of text */
     static   AjPStr temp_id =NULL;   /* Temp location for protein id */
@@ -4714,7 +4890,9 @@ AjBool   ajXyzCmapRead(AjPFile inf, ajint chn, ajint mod, AjPCmap *thys)
     ajint    y              =0;      /* No. of second residue making contact */	
     ajint    md             =-1;     /* Model number */
     ajint    cn             =-1;     /* Chain number */
-
+    char     chnid          ='.';    /* Temp. chain identifier*/
+    AjBool   idok           =ajFalse; /* If the required chain has been found */
+    
 
     /* Check args */	
     if(!inf)
@@ -4722,8 +4900,13 @@ AjBool   ajXyzCmapRead(AjPFile inf, ajint chn, ajint mod, AjPCmap *thys)
 	ajWarn("Invalid args to ajXyzCmapRead");	
 	return ajFalse;
     }
-    
 
+
+    /* Convert '_' chain identifiers to '.' if necessary */
+    if(mode==CMAP_MODE_C)
+	if(chn=='_')
+	    chn='.';
+    
     /* Initialise strings */
     if(!line)
     {
@@ -4746,19 +4929,25 @@ AjBool   ajXyzCmapRead(AjPFile inf, ajint chn, ajint mod, AjPCmap *thys)
 	    ajFmtScanS(line, "%*s[%d]", &cn);
 	/* Read IN line */	    
 	/* Parse number of residues and total number of contacts */
-	else if((ajStrPrefixC(line, "IN")) && (md==mod) && (cn==chn))
+	else if((ajStrPrefixC(line, "IN")) && (md==mod))
 	{
-	    ajFmtScanS(line, "%*s %*s %*s %*s %d; %*s %d;", 
-		       &num_res, &num_con);
-
-
-	    /* Allocate contact map and write values */
-	    (*thys)=ajXyzCmapNew(num_res);
-	    (*thys)->Ncon = num_con;
-	    ajStrAssS(&(*thys)->Id, temp_id);
+	    ajFmtScanS(line, "%*s %*s %c; %*s %d; %*s %d;", 
+		       &chnid, &num_res, &num_con);
+	    
+	    if(((cn==chn)&&(mode==CMAP_MODE_I)) ||
+	       ((toupper(chnid)==toupper((char)chn))&&(mode==CMAP_MODE_C)))
+	    {
+		idok=ajTrue;
+		
+		/* Allocate contact map and write values */
+		(*thys)=ajXyzCmapNew(num_res);
+		(*thys)->Ncon = num_con;
+		ajStrAssS(&(*thys)->Id, temp_id);
+	    }
 	}
+    
 	/* Read and parse residue contacts */
-	else if((ajStrPrefixC(line, "SM")) && (md==mod) && (cn==chn))
+	else if((ajStrPrefixC(line, "SM")) && (md==mod) && (idok))
 	{
 	    ajFmtScanS(line, "%*s %*s %d %*c %*s %d", &x, &y);
 

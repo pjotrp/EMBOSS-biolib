@@ -11,12 +11,6 @@ infile: sigin
 	def: "test.sig"
 ]
 
-outfile: sigout
-[ 
-	param: Y
-	prompt: "Name of signature file for output"
-	def: "test.sig.out"
-]
 
 seqall: database
 [ 
@@ -120,3 +114,5 @@ outfile: alignf
 ]
 
 	
+
+

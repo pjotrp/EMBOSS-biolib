@@ -434,7 +434,9 @@ typedef struct AjSSigcell
 **
 ** Ajax Sigdat object.
 **
-** Holds empirical data for an (uncompiled) signature position.
+** Holds empirical data for an (uncompiled) signature position. 
+** Important: Functions which manipulate this structure rely on the data in 
+** the gap arrays (gsiz and grfq) being filled in order of increasing gap size.
 **
 ** AjPSigdat is implemented as a pointer to a C data structure.
 **
@@ -445,14 +447,14 @@ typedef struct AjSSigcell
 ******************************************************************************/
 typedef struct AJSSigdat
 {
-    ajint    nres;         /* No. diff. types of residue*/
-    char    *rids;         /* Residue id's */
-    ajint   *rfrq;         /* Residue frequencies */
+    ajint       nres;         /* No. diff. types of residue*/
+    AjPChar     rids;         /* Residue id's */
+    AjPInt      rfrq;         /* Residue frequencies */
 
-    ajint    ngap;         /* No. diff. sizes of empirical gap*/
-    ajint   *gsiz;         /* Gap sizes */
-    ajint   *gfrq;         /* Frequencies of gaps of each size*/
-    ajint    wsiz;         /* Window size for this gap */
+    ajint       ngap;         /* No. diff. sizes of empirical gap*/
+    AjPInt      gsiz;         /* Gap sizes */
+    AjPInt      gfrq;         /* Frequencies of gaps of each size*/
+    ajint       wsiz;         /* Window size for this gap */
 } AJOSigdat, *AjPSigdat;
 
 
@@ -602,10 +604,16 @@ AjBool   ajXyzScopalgRead(AjPFile inf, AjPScopalg *thys);
 AjBool   ajXyzScopalgWrite(AjPFile outf, AjPScopalg *thys);
 void ajXyzScopalgDel(AjPScopalg *pthis);
 AjPScopalg  ajXyzScopalgNew(int n);
+ajint ajXyzScopalgGetseqs(AjPScopalg thys, AjPStr **arr);
+
 
 void ajXyzCmapDel(AjPCmap *pthis);
 AjPCmap  ajXyzCmapNew(int dim);
-AjBool   ajXyzCmapRead(AjPFile inf, ajint chn, ajint mod, AjPCmap *thys);
+
+AjBool   ajXyzCmapRead(AjPFile inf, ajint mode, ajint chn, ajint mod, AjPCmap *thys);
+AjBool   ajXyzCmapReadC(AjPFile inf, char chn, ajint mod, AjPCmap *thys);
+AjBool   ajXyzCmapReadI(AjPFile inf, ajint chn, ajint mod, AjPCmap *thys);
+
 
 AjPVdwall  ajXyzVdwallNew(ajint n);
 AjPVdwres  ajXyzVdwresNew(ajint n);
