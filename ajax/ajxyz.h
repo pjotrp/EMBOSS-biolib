@@ -34,7 +34,7 @@ typedef struct AjSAtom
   char       Type;       /*'P' (protein atom), 'H' ("heterogens") or 'w' 
 			   (water)*/
   int        Idx;        /*Residue number - index into sequence*/
-  int        Pdb;        /*Residue number - according to original PDB file*/
+  AjPStr     Pdb;        /*Residue number - according to original PDB file*/
   char       Id1;        /*Standard residue identifier or '?' for unknown 
 			   types or '.' for heterogens and water*/
   AjPStr     Id3;        /*Residue or group identifier*/
@@ -70,8 +70,6 @@ typedef struct AjSChain
 			   chain*/
   AjPStr     Seq;	 /* sequence as string */
   AjPList    Atoms;      /*List of Atoms */
-  AjPInt     Models;     /*Offsets to the first first atom of each model*/
-                         /*in the chain. */
 } AjOChain, *AjPChain;
 
 
@@ -139,17 +137,37 @@ typedef struct AjSScop
 
 AjPAtom  ajAtomNew(void);
 void     ajAtomDel(AjPAtom *thys);
-AjPChain ajChainNew(int models);
+AjPChain ajChainNew(void);
 void     ajChainDel(AjPChain *thys);
-AjBool   ajCpdbRead(AjPStr name, AjPPdb *thys);
-AjBool   ajCpdbWriteAll(AjPFile out, AjPPdb thys);
-AjPPdb   ajPdbNew(int chains, int models);
+AjPPdb   ajPdbNew(int chains);
 void     ajPdbDel(AjPPdb *thys);
 void     ajScopDel(AjPScop *pthis);
 AjPScop  ajScopNew(int n);
+
 AjBool   ajScopRead(AjPFile inf, AjPStr entry, AjPScop *thys);
 AjBool   ajScopReadC(AjPFile inf, char *entry, AjPScop *thys);
 void     ajScopWrite(AjPFile outf, AjPScop thys);
+
+AjBool   ajCpdbRead(AjPStr name, AjPPdb *thys);
+AjBool   ajCpdbWriteAll(AjPFile out, AjPPdb thys);
+AjBool   ajCpdbWriteDomain(AjPFile outf, AjPPdb pdb, AjPScop scop);
+
+AjBool   ajPdbWriteAll(AjPFile outf, AjPPdb pdb);
+AjBool   ajPdbWriteDomain(AjPFile outf, AjPPdb pdb, AjPScop scop); 
+
+AjBool   ajPrintPdbSeqresChain(AjPFile outf, AjPPdb pdb, int chn);
+AjBool   ajPrintPdbSeqresDomain(AjPFile outf, AjPPdb pdb, AjPScop scop);
+AjBool   ajPrintPdbAtomChain(AjPFile outf, AjPPdb pdb, int mod, int chn);
+AjBool   ajPrintPdbAtomDomain(AjPFile outf, AjPPdb pdb, AjPScop scop, int mod);
+AjBool   ajPrintPdbText(AjPFile outf, AjPStr str, char *prefix, int len, char *delim);
+AjBool   ajPrintPdbHeader(AjPFile outf, AjPPdb pdb);
+AjBool   ajPrintPdbTitle(AjPFile outf, AjPPdb pdb);
+AjBool   ajPrintPdbCompnd(AjPFile outf, AjPPdb pdb);
+AjBool   ajPrintPdbSource(AjPFile outf, AjPPdb pdb);
+AjBool   ajPrintPdbEmptyRemark(AjPFile outf, AjPPdb pdb);
+AjBool   ajPrintPdbResolution(AjPFile outf, AjPPdb pdb);
+
+AjBool   ajPdbChain(char id, AjPPdb pdb, int *chn);
 
 
 #endif
