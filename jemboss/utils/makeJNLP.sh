@@ -96,7 +96,8 @@ fi
 
 jar cf Jemboss.jar images/* org/emboss/jemboss/*class resources/*.jar \
         resources/version resources/jemboss.properties resources/readme.txt \
-        org/emboss/jemboss/*/*class org/emboss/jemboss/*/*/*class 
+        resources/*html org/emboss/jemboss/*/*class \
+        org/emboss/jemboss/*/*/*class 
 mv Jemboss.jar jnlp
 cp lib/*jar jnlp
 cp images/Jemboss_logo_large.gif jnlp
