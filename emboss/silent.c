@@ -235,6 +235,7 @@ int main(int argc, char **argv)
     ajListDel(&shits);
     ajListDel(&nshits);
 
+    ajReportClose(report);
     ajReportDel(&report);
 
     ajExit();

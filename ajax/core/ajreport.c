@@ -1862,6 +1862,8 @@ void ajReportDel(AjPReport* pthys)
     ajFeattableDel(&thys->Fttable);
     ajFeattabOutDel(&thys->Ftquery);
 
+    ajReportClose(thys);
+
     AJFREE(*pthys);
 
     return;

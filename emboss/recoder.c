@@ -234,6 +234,7 @@ int main(int argc, char **argv)
     ajListDel(&muts);
     ajListDel(&nmuts);
 
+    ajReportClose(report);
     ajReportDel(&report);
 
     ajExit();

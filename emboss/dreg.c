@@ -88,6 +88,7 @@ int main(int argc, char **argv)
         ajFeattableDel(&feat);
     }
 
+    ajReportClose(report);
     ajReportDel(&report);
 
     ajExit();
