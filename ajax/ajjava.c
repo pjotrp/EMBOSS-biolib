@@ -56,6 +56,10 @@
 #include <signal.h>
 #endif
 
+#ifdef linux
+#include <signal.h>
+#endif
+
 #if defined(__CYGWIN__)
 #include <sys/termios.h>
 #endif
@@ -2844,6 +2848,9 @@ static int java_jembossctl(ajint command,
 	if(n==-1 || !c)
 	    ajStrAppC(errstd,"Error receiving (java_batch)\n");
 #ifdef __hpux
+	signal(SIGCLD,SIG_IGN);
+#endif
+#ifdef linux
 	signal(SIGCLD,SIG_IGN);
 #endif
 #if defined (__SVR4) && defined (__sun)
