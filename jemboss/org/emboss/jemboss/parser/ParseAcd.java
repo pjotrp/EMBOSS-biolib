@@ -223,8 +223,8 @@ public class ParseAcd
                svalue = svalue.toLowerCase();
 
              appF.setParam(numofParams, attr, svalue);
-//           System.out.println(" ATTR " + attr + " SVALUE " + 
-//                          getParamValueStr(numofFields,numofParams));
+             System.out.println(" ATTR " + attr + " SVALUE " + 
+                            getParamValueStr(numofFields,numofParams));
           }   
           else if ( ttype == java.io.StreamTokenizer.TT_NUMBER) 
           {
@@ -1395,12 +1395,18 @@ public class ParseAcd
     nvalue = st.nval;
  
    // cope with double quotes by forwarding to end quote
+   // and remove unwanted white space
     if( svalue == null &&
         st.ttype != java.io.StreamTokenizer.TT_NUMBER ) 
     {
       svalue = "";
+      char last = ' ';
       while( (c = (char)in.read()) != '\"') 
-        svalue = svalue.concat(java.lang.String.valueOf(c));
+      {
+        if( c != ' ' || last != ' ')
+          svalue = svalue.concat(java.lang.String.valueOf(c));
+        last = c;
+      }
     }
  
     numofParams++;
