@@ -222,7 +222,7 @@ AC_CHECK_LIB(c, socket, LIBS="$LIBS" , LIBS="$LIBS -lsocket")
 AC_CHECK_LIB(m, main)
 
 dnl GD for FreeBSD requires libiconv
-if test "`uname`" = "FreeBSD"; then
+if test "`uname`" = "FreeBSD" && ${with_pngdriver} != "no"; then
 AC_CHECK_LIB(iconv, main, LIBS="$LIBS", LIBS="-liconv $LIBS")
 fi
 
