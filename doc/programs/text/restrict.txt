@@ -722,6 +722,12 @@ Output file format
    
 Data files
 
+   This uses the EMBOSS REBASE data files in 'data/REBASE/*' under the
+   EMBOSS installation directory.
+   
+   These files must first be set up using the program 'rebaseextract'.
+   Running 'rebaseextract' may be the job of your system manager.
+   
    EMBOSS data files are distributed with the application and stored in
    the standard EMBOSS data directory, which is defined by the EMBOSS
    environment variable EMBOSS_DATA.
@@ -758,13 +764,13 @@ Data files
    The reported enzyme from any one group of isoschizomers (the
    prototype) is specified in the REBASE database and the information is
    held in the data file 'embossre.equ'. You may edit this file to set
-   your own preferred prototype,if you wish.
+   your own preferred prototype, if you wish.
    
    The format of the file "embossre.equ" is
    Enzyme-name Prototype-name
    
    i.e. two columns of enzyme names separated by a space. The first name
-   of the pair os enzymes of the name that if not preferred and the
+   of the pair of enzymes is the name that is not preferred and the
    second is the preferred, prototype name.
    
 Notes

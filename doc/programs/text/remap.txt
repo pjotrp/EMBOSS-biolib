@@ -960,7 +960,7 @@ Data files
    Enzyme-name Prototype-name
    
    i.e. two columns of enzyme names separated by a space. The first name
-   of the pair of enzymes of the name that if not preferred and the
+   of the pair of enzymes is the name that is not preferred and the
    second is the preferred, prototype name.
    
 Notes
