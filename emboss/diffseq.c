@@ -747,7 +747,7 @@ static void diffseq_DiffList(const AjPList matchlist, AjPList difflist,
                 */
                 for (i=0;
                      diff->Len1 && diff->Len2 &&
-                     tolower(seqc1[i]) == tolower(seqc2[i]); i++)
+                     tolower((ajint)seqc1[i]) == tolower((ajint)seqc2[i]); i++)
                 {
                     diff->Len1--;
                     diff->Len2--;
@@ -803,7 +803,8 @@ static void diffseq_DiffList(const AjPList matchlist, AjPList difflist,
         */
         for (i=ajSeqLen(seq1), j=ajSeqLen(seq2); 
              diff->Len1 && diff->Len2 &&
-             tolower(seqc1[i-1]) == tolower(seqc2[j-1]); i--, j--)
+             tolower((ajint)seqc1[i-1]) == tolower((ajint)seqc2[j-1]);
+	     i--, j--)
         {
             diff->Len1--;
             diff->Len2--;
