@@ -2,7 +2,7 @@
 ## Process this file with automake to produce Makefile.in in all directories.
 AUTOMAKE_OPTIONS = gnits
 
-SUBDIRS = plplot ajax nucleus emboss test doc
+SUBDIRS = plplot ajax nucleus emboss test doc jemboss
 
 # AJAX_FIXED_ROOT = \"`pwd`/emboss/acd\"
 

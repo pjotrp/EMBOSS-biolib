@@ -205,4 +205,36 @@ emboss/data/CODONS/Makefile emboss/data/REBASE/Makefile
 emboss/data/PRINTS/Makefile emboss/data/PROSITE/Makefile
 doc/Makefile doc/manuals/Makefile doc/tutorials/Makefile
 doc/programs/Makefile doc/programs/html/Makefile doc/programs/text/Makefile
+jemboss/Makefile jemboss/api/Makefile jemboss/api/org/Makefile
+jemboss/api/org/emboss/Makefile jemboss/api/org/emboss/jemboss/Makefile
+jemboss/api/org/emboss/jemboss/gui/Makefile
+jemboss/api/org/emboss/jemboss/gui/filetree/Makefile
+jemboss/api/org/emboss/jemboss/gui/form/Makefile
+jemboss/api/org/emboss/jemboss/gui/sequenceChooser/Makefile
+jemboss/api/org/emboss/jemboss/gui/startup/Makefile
+jemboss/api/org/emboss/jemboss/parser/Makefile
+jemboss/api/org/emboss/jemboss/parser/acd/Makefile
+jemboss/api/org/emboss/jemboss/programs/Makefile
+jemboss/api/org/emboss/jemboss/soap/Makefile
+jemboss/embreo/Makefile jemboss/embreo/Modules/Makefile
+jemboss/embreo/api-docs/Makefile jemboss/embreo/api-docs/uk/Makefile
+jemboss/embreo/api-docs/uk/ac/Makefile
+jemboss/embreo/api-docs/uk/ac/Makefile
+jemboss/embreo/api-docs/uk/ac/mrc/Makefile
+jemboss/embreo/api-docs/uk/ac/mrc/hgmp/Makefile
+jemboss/embreo/api-docs/uk/ac/mrc/hgmp/embreo/Makefile
+jemboss/embreo/api-docs/uk/ac/mrc/hgmp/embreo/filemgr/Makefile
+jemboss/embreo/cgi-bin/Makefile jemboss/images/Makefile
+jemboss/lib/Makefile jemboss/org/Makefile jemboss/org/emboss/Makefile
+jemboss/org/emboss/jemboss/Makefile jemboss/org/emboss/jemboss/gui/Makefile
+jemboss/org/emboss/jemboss/gui/filetree/Makefile
+jemboss/org/emboss/jemboss/gui/form/Makefile
+jemboss/org/emboss/jemboss/gui/startup/Makefile
+jemboss/org/emboss/jemboss/gui/sequenceChooser/Makefile
+jemboss/org/emboss/jemboss/parser/Makefile
+jemboss/org/emboss/jemboss/parser/acd/Makefile
+jemboss/org/emboss/jemboss/programs/Makefile
+jemboss/org/emboss/jemboss/server/Makefile
+jemboss/org/emboss/jemboss/soap/Makefile
+jemboss/resources/Makefile jemboss/utils/Makefile
 Makefile)
