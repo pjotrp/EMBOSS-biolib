@@ -49,7 +49,7 @@ import uk.ac.mrc.hgmp.embreo.*;
 public class BuildProgramMenu
 {
 
-  private String db[];                           // database names
+  private static String db[];                    // database names
   private String applName;
   private Hashtable acdStore = new Hashtable();  // cache the acd files
   private JFrame f;
@@ -378,6 +378,11 @@ public class BuildProgramMenu
     };
     groupworker.start();
 
+  }
+
+  protected static String[] getDatabaseList()
+  {
+    return db;
   }
 
 }
