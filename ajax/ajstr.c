@@ -4087,6 +4087,7 @@ AjBool ajStrIsBool (const AjPStr thys) {
 
   char* cp = ajStrStr(thys);
 
+  if (!thys) return ajFalse;
   if (!thys->Len) return ajFalse;
 
   if (!strchr("YyTt1NnFf0", *cp)) return ajFalse;
@@ -4110,6 +4111,7 @@ AjBool ajStrIsHex (const AjPStr thys) {
   char* cp = ajStrStr(thys);
   char* ptr = NULL;
 
+  if (!thys) return ajFalse;
   if (!thys->Len) return ajFalse;
 
   errno = 0;
@@ -4137,6 +4139,7 @@ AjBool ajStrIsInt (const AjPStr thys) {
   char* cp = ajStrStr(thys);
   char* ptr = NULL;
 
+  if (!thys) return ajFalse;
   if (!thys->Len) return ajFalse;
 
   errno = 0;
@@ -4164,6 +4167,7 @@ AjBool ajStrIsLong (const AjPStr thys) {
   char* cp = ajStrStr(thys);
   char* ptr = NULL;
 
+  if (!thys) return ajFalse;
   if (!thys->Len) return ajFalse;
 
   errno = 0;
@@ -4193,6 +4197,7 @@ AjBool ajStrIsFloat (const AjPStr thys) {
   char* ptr = NULL;
   double d;
 
+  if (!thys) return ajFalse;
   if (!thys->Len) return ajFalse;
 
   errno = 0;
@@ -4223,6 +4228,7 @@ AjBool ajStrIsDouble (const AjPStr thys) {
   char* cp = ajStrStr(thys);
   char* ptr = NULL;
 
+  if (!thys) return ajFalse;
   if (!thys->Len) return ajFalse;
 
   errno = 0;
@@ -4253,8 +4259,8 @@ AjBool ajStrToBool (const AjPStr thys, AjBool* result) {
 
   *result = ajFalse;
 
-  if (thys->Len < 1)
-    return ajFalse;
+  if (!thys) return ret;
+  if (thys->Len < 1) return ret;
 
   if (strchr("YyTt1", *cp)) {
     *result = ajTrue;
@@ -4297,6 +4303,8 @@ AjBool ajStrToHex (const AjPStr thys, ajint* result) {
   char* ptr;
 
   *result = 0;
+
+  if (!thys) return ret;
   if (!thys->Len) return ret;
 
   errno = 0;
@@ -4332,6 +4340,8 @@ AjBool ajStrToInt (const AjPStr thys, ajint* result) {
   char* ptr;
 
   *result = 0;
+
+  if (!thys) return ret;
   if (!thys->Len) return ret;
 
   errno = 0;
@@ -4367,6 +4377,8 @@ AjBool ajStrToLong (const AjPStr thys, ajlong* result) {
   char* ptr;
 
   *result = 0;
+
+  if (!thys) return ret;
   if (!thys->Len) return ret;
 
   errno = 0;
@@ -4400,8 +4412,9 @@ AjBool ajStrToFloat (const AjPStr thys, float* result) {
   char* ptr = NULL;
 
   *result = 0.0;
-  if (!thys->Len)
-    return ret;
+
+  if (!thys) return ret;
+  if (!thys->Len) return ret;
 
   errno = 0;
   d = strtod (cp, &ptr);
@@ -4436,8 +4449,9 @@ AjBool ajStrToDouble (const AjPStr thys, double* result) {
   char* ptr = NULL;
 
   *result = 0.0;
-  if (!thys->Len)
-    return ret;
+
+  if (!thys) return ret;
+  if (!thys->Len) return ret;
 
   errno = 0;
   d = strtod (cp, &ptr);
