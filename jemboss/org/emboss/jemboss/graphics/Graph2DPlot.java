@@ -104,6 +104,7 @@ public class Graph2DPlot extends ScrollPanel
   private String maintitle = "";
   private String xtitle = "";
   private String ytitle = "";
+  private String fileName = null;
 
   private Color plplot_colour[] = { 
                    Color.black, Color.red, 
@@ -125,6 +126,7 @@ public class Graph2DPlot extends ScrollPanel
     setToolTipText("");
   }
 
+
   /**
   *
   * Set the data to plot.
@@ -141,8 +143,9 @@ public class Graph2DPlot extends ScrollPanel
   * Pass in EMBOSS data graphics file
   *
   */
-  public void setFileData(String s)
+  public void setFileData(String s, String fileName)
   {
+    this.fileName = fileName;
     try
     {
       StringReader reader = new StringReader(s);
@@ -160,6 +163,7 @@ public class Graph2DPlot extends ScrollPanel
   */
   public void setFileData(File filename)
   {
+    this.fileName = filename.getName();
     try
     {
       FileReader reader = new FileReader(filename);
@@ -1108,6 +1112,8 @@ public class Graph2DPlot extends ScrollPanel
     float xendPoint = (float)(xend.getValue()-xstart.getValue())*xfactor;
     float yendPoint = (float)(yend.getValue()-ystart.getValue())*yfactor;
 
+    System.out.println("HERE "+fileName);
+ 
     g2d.translate(xborder, getHeight()-yborder);
     for(int i=0; i<xnum; i++)
     {
@@ -1151,7 +1157,7 @@ public class Graph2DPlot extends ScrollPanel
             x1 <= xendPoint && y1 >= -yendPoint )
         {
           int colourID = (int) ((Float)emboss_data[3][i]).floatValue();
-          int textWidth = fm.stringWidth((String)emboss_data[5][i])/2;
+          int textWidth = justify((String)emboss_data[5][i],fm);
 
           g.setColor(plplot_colour[colourID]);
           g.drawString((String)emboss_data[5][i],(int)(x1-textWidth),(int)y1);
@@ -1172,6 +1178,18 @@ public class Graph2DPlot extends ScrollPanel
     g2d.setStroke(stroke);
   }
 
+ 
+  private int justify(String s, FontMetrics fm)
+  {
+    int textWidth = 0;
+    if(s.length() == 1)
+    {
+      if(fileName.indexOf("prettyplot") > -1)
+        return textWidth; 
+    }
+
+    return fm.stringWidth(s)/2;
+  }
 
   /**
   *

@@ -133,7 +133,8 @@ public class ShowResultSet extends JFrame
       {
         Graph2DPlot gp = new Graph2DPlot();
         r1 = new JScrollPane(gp);
-        gp.setFileData(new String((byte [])reslist.get(stabs[i])));
+        gp.setFileData(new String((byte [])reslist.get(stabs[i])),
+                       stabs[i]);
         rtp.add(r1, i);
         rtp.setTitleAt(i,stabs[i]);
         setJMenuBar(gp.getMenuBar(false, this));
