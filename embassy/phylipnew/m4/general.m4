@@ -1,4 +1,4 @@
-AC_DEFUN(CHECK_GENERAL,
+AC_DEFUN([CHECK_GENERAL],
 #
 # Handle general setup e.g. documentation directory
 #

@@ -20,7 +20,7 @@ dnl @author Ian Longden <il@sanger.ac.uk>
 dnl Modified: Alan Bleasby. Corrected library order
 dnl
 
-AC_DEFUN(CHECK_PNGDRIVER,
+AC_DEFUN([CHECK_PNGDRIVER],
 #
 # Handle user hints
 #
