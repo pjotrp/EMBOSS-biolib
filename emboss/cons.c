@@ -54,6 +54,7 @@ int main (int argc, char * argv[])
     AjPSeqset seqset;
     AjPSeqout seqout;
     AjPSeq    seqo;
+    AjPStr    name = NULL;
     AjPStr    cons;
     AjPMatrix cmpmatrix=0;
  
@@ -66,6 +67,7 @@ int main (int argc, char * argv[])
     setcase   = ajAcdGetFloat("setcase");
     identity  = ajAcdGetInt("identity");
     seqout    = ajAcdGetSeqout("outseq");
+    name      = ajAcdGetString ("name");
 
     nseqs = ajSeqsetSize(seqset);
     if(nseqs<2)
@@ -87,7 +89,11 @@ int main (int argc, char * argv[])
     /* write out consensus sequence */
     seqo = ajSeqNew();
     ajSeqAssSeq(seqo,cons);
-    ajSeqAssName(seqo,ajSeqsetGetName(seqset));
+    if(name == NULL)
+     ajSeqAssName(seqo,ajSeqsetGetName(seqset));
+    else
+     ajSeqAssName(seqo,name);
+
     ajSeqWrite(seqout,seqo);
     
     ajStrDel(&cons);
@@ -122,7 +128,7 @@ void calc_consensus(AjPSeqset seqset,AjPMatrix cmpmatrix,
     AjPFloat score=NULL;
     char **seqcharptr;
     char res;
-
+    char nocon;
 
 
     matrix  = ajMatrixArray(cmpmatrix);
@@ -135,12 +141,19 @@ void calc_consensus(AjPSeqset seqset,AjPMatrix cmpmatrix,
 
     score = ajFloatNew();
 
+    nocon = '-';
+    if(ajSeqsetIsNuc(seqset))        /* set non-consensus character */
+       nocon = 'N'; 
+    else if ( ajSeqsetIsProt(seqset))
+       nocon = 'X';
+    
+   
     for(i=0;i<nseqs;i++)                  /* get sequence as string */
       seqcharptr[i] =  ajSeqsetSeq(seqset, i);  
 
     for(k=0; k< mlen; k++)
     {
-      res = '-';
+      res = nocon;
 
       for(i=0;i<matsize;i++)          /* reset id's and +ve matches */
       {
@@ -222,12 +235,13 @@ void calc_consensus(AjPSeqset seqset,AjPMatrix cmpmatrix,
       }
 
       /* plurality check */
-      if(matching[ajSeqCvtK(cvt,seqcharptr[highindex][k])] >= fplural)
+      if(matching[ajSeqCvtK(cvt,seqcharptr[highindex][k])] >= fplural
+         && seqcharptr[highindex][k] != '-')
          res = seqcharptr[highindex][k];
 
       if(matching[highindex]<= setcase)
         res = tolower(res);
-  
+
       if(identity)                      /* if just looking for id's */
       {
         j=0;
@@ -237,7 +251,7 @@ void calc_consensus(AjPSeqset seqset,AjPMatrix cmpmatrix,
           j++;
         }
         if(j<identity) 
-          res = '-';
+          res = nocon;
       }
 
       ajStrAppK(cons,res);

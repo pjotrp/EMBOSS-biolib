@@ -25,8 +25,7 @@ appl: cons [
         info: "Plurality check value"
         help: "Set a cut-off for the number of positive matches below
 which there is no consensus.  The default plurality is taken as half the
-total weight of all the sequences in the alignment.  A value of zero
-means there will always be a consensus."
+total weight of all the sequences in the alignment."
         def: "@( $(msf.totweight) / 2)"
         expect: "Half the total sequence weighting"
   ]
@@ -57,5 +56,9 @@ only columns of identities contribute to the consensus."
         param: Y
   ]
 
-# outfile: outf [ param: Y ]
+  string: name [
+        opt: Y
+        def: ""
+        info: "Name of the consensus sequence"
+  ]
 
