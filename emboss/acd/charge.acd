@@ -52,6 +52,7 @@ section: output [
   outfile: outfile  [
     standard: "@(!$(plot))"
     knowntype: "charge output"
+    nullok: "$(plot)"
   ]
 
 endsection: output
