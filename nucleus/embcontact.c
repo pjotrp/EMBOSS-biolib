@@ -6,8 +6,8 @@
 **
 **
 ** @author Copyright (C) 2004 Damian Counsell
-** @version $Revision: 1.4 $
-** @modified $Date: 2005/01/07 10:48:12 $
+** @version $Revision: 1.5 $
+** @modified $Date: 2005/01/19 18:09:24 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -363,6 +363,49 @@ ajint embAjintToScoringMatrixIndex(ajint ajIntResType)
 
 
 
+/* @func embCharToAjint1 *****************************************************
+**
+** converts residue type character to integer
+**
+** @param [r] cResType [char] original single-letter residue type
+** @return [ajint] integer corresponding to character in one-letter code list
+** @@
+******************************************************************************/
+
+ajint embCharToAjint1(char cResType)
+{
+    ajint ajIntOneLetterCode;
+    ajint ajIntCount;
+
+    /* look up array for permitted one-letter codes */
+    static char cOneLetterCodes[enumTotalResTypes] =
+	{
+	    'A','B','C','D','E','F','G','H',
+	    'I','\0','K','L','M','N','\0','P',
+	    'Q','R','S','T','U','V','W','X',
+	    'Y','Z','\0','\0','\0','\0'
+	};
+
+    if (cResType == '*')
+	cResType = enumAsciiAsterisk;
+    if (cResType == '?')
+	cResType = enumAsciiQuestionMark;
+
+    /* default to out-of-range value */
+    ajIntOneLetterCode = 28;
+    for(ajIntCount = 0; ajIntCount < enumTotalResTypes; ajIntCount++)
+    {
+	if(cResType == cOneLetterCodes[ajIntCount])
+	{
+	    ajIntOneLetterCode = ajIntCount;
+	}
+    }
+    
+    return ajIntOneLetterCode;
+}
+
+
+
 /* @func embCharToScoringMatrixIndex *****************************************
 **
 ** converts residue type character to scoring_matrix index
@@ -463,6 +506,203 @@ AjPStr embAjint1ToString3 (ajint ajIntCode)
 
 
 
+/* @func embReadAndReviseCmapFile *********************************************
+**
+** reads ajpdb contact map file into three arrays of ints and modifies residue
+**  values according to alignment provided 
+**
+** @param [r] ajpFileCmap [AjPFile] input file stream of current cmap
+** @param [r] pcTraceDown [char *] trace of query sequence
+** @param [r] pcTraceAcross [char *] trace of template sequence
+** @param [r] ajIntSeqLen [ajint] Sequence length
+** @param [r] pEmbpCmapHeader [EmbPCmapHeader*] Contact map header
+** @param [r] pEmbpInt2dCmapSummary [AjPInt2d*] contacts summary
+** @param [r] pEmbpInt2dCmapResTypes [AjPInt2d*] contacts as residue types
+** @param [r] pEmbpInt2dCmapPositions [AjPInt2d*] contacts as positions
+**                                               in chain
+** @return [AjBool] ajTrue if file successfully read
+** @@
+******************************************************************************/
+
+AjBool embReadAndReviseCmapFile (AjPFile ajpFileCmap,
+				 char *pcUpdatedSeqAcross,
+				 ajint ajIntSeqLen,
+				 AjPInt2d *pAjpInt2dCmapSummary,
+				 EmbPCmapHeader *pEmbpCmapHeader,
+				 AjPInt2d *pAjpInt2dCmapResTypes,
+				 AjPInt2d *pAjpInt2dCmapPositions)
+{
+    AjBool ajBoolCmapFileRead; /* has the file been read? */
+    /* DDDD DEBUG: ARE NULL HEADERS BEING RETURNED? */
+    AjBool ajBoolCmapHeaderLoaded; /* has the Cmap header been read? */
+
+    ajint ajIntColumnCount;
+
+    /* what kind of contact map line has been read in? */
+    ajint ajIntCmapLineType;
+
+    /* to store contact attributes from contact map */
+    ajint ajIntFirstResType;
+    ajint ajIntSecondResType;
+    ajint ajIntFirstPosition;
+    ajint ajIntSecondPosition;
+    ajint ajIntLastContact;
+
+     /* object to hold single contact */
+    EmbPContact embpContactTemp = NULL;
+
+    /* structure to hold header text */
+    EmbPCmapHeader embpCmapHeader = NULL;
+
+    /* residue in seq updated by alignment */
+    char cTempUpdatedRes;
+
+    /* arrays to hold contacts */
+    AjPInt2d ajpInt2dCmapSummary = NULL;
+    AjPInt2d ajpInt2dCmapResTypes = NULL;
+    AjPInt2d ajpInt2dCmapPositions = NULL;
+
+    /* string to store that contact map line */
+    AjPStr ajpStrCmapLine = NULL;
+
+    /* default to no line */
+    ajIntCmapLineType = enumNoCmapLine;
+
+    ajBoolCmapFileRead = ajFalse;
+
+    /* DDDD DEBUG: ARE NULL HEADERS BEING RETURNED? */
+    ajBoolCmapHeaderLoaded = ajFalse;
+
+    /* check file passed to function is usable */	
+    if(!ajpFileCmap)
+    {	
+	ajWarn("function embReadCmapFile cannot open passed filestream");	
+	return ajFalse;
+    }
+
+    /* there are no contacts in any of the columns of the contact arrays yet */
+    for(ajIntColumnCount = 0; ajIntColumnCount < ajIntSeqLen; ajIntColumnCount++)
+	ajInt2dPut(pAjpInt2dCmapSummary,
+		   enumLastContactIndex,
+		   ajIntColumnCount,
+		   enumZeroContacts);
+
+    /* reserve memory for current contact string */
+    ajpStrCmapLine = ajStrNew();
+    
+    /* reserve memory for current contact object */
+    embpContactTemp = embContactNew();
+
+    /* dereference pointers to passed object pointers */
+    embpCmapHeader = *pEmbpCmapHeader;
+    ajpInt2dCmapSummary = *pAjpInt2dCmapSummary;
+    ajpInt2dCmapResTypes = *pAjpInt2dCmapResTypes;
+    ajpInt2dCmapPositions = *pAjpInt2dCmapPositions;    
+
+    /* read through contact map file until there are no more contacts */
+    while( ( ajpStrCmapLine = embReadCmapLine(ajpFileCmap) ) )
+    {
+	ajIntCmapLineType = embTypeCmapLine(ajpStrCmapLine);
+
+	ajIntLastContact = enumZeroContacts;
+	
+	if(ajIntCmapLineType == enumContactCmapLine)
+	{
+	    embLoadContactLine(ajpStrCmapLine, embpContactTemp);
+
+	    /* load up temporary contact object with values read from line in Cmap file */ 
+	    ajIntFirstResType = 
+		embString3ToAjint1(embpContactTemp->ajpStrFirstResType);
+	    ajIntSecondResType = 
+		embString3ToAjint1(embpContactTemp->ajpStrSecondResType);
+	    ajIntFirstPosition = 
+		embpContactTemp->ajIntFirstPosition;
+	    ajIntSecondPosition = 
+		embpContactTemp->ajIntSecondPosition;
+
+	    /* change residue type if necessary */
+	    cTempUpdatedRes = pcUpdatedSeqAcross[ajIntFirstPosition];
+	    ajFmtPrint( "\n££ cTempUpdatedRes: %c integer conversion: %d ££", cTempUpdatedRes,
+			embCharToAjint1(cTempUpdatedRes));
+	    
+	    cTempUpdatedRes = pcUpdatedSeqAcross[ajIntSecondPosition];
+	    ajFmtPrint( "\n££ cTempUpdatedRes: %c integer conversion: %d £\n", cTempUpdatedRes,
+			embCharToAjint1(cTempUpdatedRes));
+	    
+	    /* get position of last contact in column */
+	    ajIntLastContact = ajInt2dGet(ajpInt2dCmapSummary,
+					  enumLastContactIndex,
+					  ajIntFirstPosition);
+	    
+	    /*
+	     * insert type of first residue in contact into
+	     * column of ints in summary array
+	     */
+	    ajInt2dPut(pAjpInt2dCmapSummary,
+		       enumFirstResType,
+		       ajIntFirstPosition,
+		       ajIntFirstResType);
+
+	    /*
+	     * insert position of second residue in contact into
+	     * column of ints in array of second residue positions
+	     */
+	    ajInt2dPut(pAjpInt2dCmapPositions,
+		       ajIntLastContact,
+		       ajIntFirstPosition,
+		       ajIntSecondPosition);
+	    
+	    /*
+	     * insert type of second residue in contact into
+	     * column of ints in array of second residues
+	     */
+	    ajInt2dPut(pAjpInt2dCmapResTypes,
+		       ajIntLastContact,
+		       ajIntFirstPosition,
+		       ajIntSecondResType);
+	    
+	    /* increment contact counter at zeroth position in column */
+	    ajIntLastContact++;
+	    
+	    /*
+	     * insert incremented contact counter
+	     * into summary array
+	     */
+	    ajInt2dPut(pAjpInt2dCmapSummary,
+		       enumLastContactIndex,
+		       ajIntFirstPosition,
+		       ajIntLastContact);	    
+
+	}
+	/*
+	 * XXXX IDEALLY THERE SHOULD BE A LOOP HERE SO THAT, IF THE
+	 *  LINE IS THE FIRST SEQUENCE ("SQ") LINE, THEN ALL THE
+	 *  ALL THE LINES OF SEQUENCE BEFORE THE NEXT TRUE BLANK ("XX")
+	 *  LINE ARE READ IN AS A BLOCK
+	 */
+
+	else if(ajIntCmapLineType == enumHeaderCmapLine ||
+		ajIntCmapLineType == enumSeqCmapLine)
+	{
+	    /* DDDDEBUG: DEBUGGGING VERSION OF THIS CLAUSE USED HERE */
+	    ajBoolCmapHeaderLoaded = embLoadHeaderLine(ajpStrCmapLine,
+						       embpCmapHeader);
+	    if(!ajBoolCmapHeaderLoaded)
+		    {	
+			ajWarn("HEADER NOT READ!");	
+			return ajFalse;
+		    }
+	}
+    }
+
+    /* free contact */
+    embContactDel(&embpContactTemp);
+    
+    return ajBoolCmapFileRead;
+}
+
+
+
 /* @func embReadCmapFile ******************************************************
 **
 ** reads ajpdb contact map file into three arrays of ints  
@@ -517,7 +757,7 @@ AjBool embReadCmapFile (AjPFile ajpFileCmap,
 
     /* default to no line */
     ajIntCmapLineType = enumNoCmapLine;
-
+ 
     ajBoolCmapFileRead = ajFalse;
     /* DDDD DEBUG: ARE NULL HEADERS BEING RETURNED? */
     ajBoolCmapHeaderLoaded = ajFalse;
