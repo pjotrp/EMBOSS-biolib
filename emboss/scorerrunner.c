@@ -8,8 +8,8 @@
 **
 **
 ** @author: Copyright (C) Damian Counsell
-** @version $Revision: 1.1 $
-** @modified $Date: 2004/10/28 18:05:40 $
+** @version $Revision: 1.2 $
+** @modified $Date: 2004/11/22 18:21:17 $
 ** @@
 **
 ** This program is free software; you can redistribute it and/or
@@ -120,7 +120,7 @@ int main(int argc , char **argv)
 	 * assemble command line to score each pair of substituted sequences
 	 */
 	ajFmtPrintS(&ajpStrCommandLine,
-		    "%S%S %S %S -auto >> scores.csv",
+		    "%S%S %S %S -auto >> /users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_scoring_files/22Nov04/scores.csv",
 		    ajpStrPathToCommand, ajpStrCommandName,
 		    ajpStrGoldSeqFileName,
 		    ajpStrTestSeqFileName);
