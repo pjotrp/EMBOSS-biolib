@@ -65,7 +65,7 @@ sub usage () {
 sub runtest ($) {
 
   my ($testdef) = @_;		# we pass in the full definition
-   print $testdef;
+  # print $testdef;
   my $idir = 0;
   my $ifile = 0;
   my $ipatt = 0;
@@ -98,7 +98,7 @@ sub runtest ($) {
 # parse the test definition (EMBL-style 2 character prefixes)
 
   foreach $line  (split (/^/, $testdef)) {
-    print "<$line>\n";
+    ###print "<$line>\n";
     chomp $line;
 
 # first line of the definition - initialise variables
@@ -731,6 +731,7 @@ opendir (ACDDIR, "../../emboss/acd") || die "Cannot open emboss/acd directory";
 closedir ACDDIR;
 
 if (!$numtests) {
+
   $testappname = 1;
 
   foreach $acd (@acdfiles) {
