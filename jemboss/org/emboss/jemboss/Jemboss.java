@@ -88,9 +88,9 @@ public class Jemboss implements ActionListener
     String acdDirToParse = "";
     String[] envp = new String[4];  /* environment vars */
 
+    JembossParams jp = new JembossParams();
     if(!withSoap)
     {
-      JembossParams jp = new JembossParams();
       String plplot = jp.getPlplot();
       String embossData = jp.getEmbossData();
       embossBin = jp.getEmbossBin();
