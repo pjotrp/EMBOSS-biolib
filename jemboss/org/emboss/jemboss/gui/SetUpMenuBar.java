@@ -204,6 +204,16 @@ public class SetUpMenuBar
       }
     });
     toolMenu.add(toolJalview);
+
+    JMenuItem toolAlignJFrame = new JMenuItem("Multiple Sequence Editor - Jemboss");
+    toolAlignJFrame.addActionListener(new ActionListener()
+    {
+      public void actionPerformed(ActionEvent e)
+      {
+        new org.emboss.jemboss.editor.AlignJFrame();
+      }
+    });
+    toolMenu.add(toolAlignJFrame);
     toolMenu.addSeparator();
 
     JMenuItem toolWorkList = new JMenuItem("Sequence List");
