@@ -1,4 +1,8 @@
 Version 2.8.0
+	The home directory ~/.embossrc file can be turned off with
+	"setenv EMBOSS_HOMERC N" This was added for cleaner QA tests
+	but may have other uses.
+
 	Report format output added (by Henrikki Almusa) for dreg, preg,
 	recoder and silent.
 
@@ -16,7 +20,7 @@ Version 2.8.0
 	standard nexus files. Later releases will accept nexus format for
 	other input data.
 
-	Jackknifer, Mega, Treecon and fitch formats parsed, at least in
+	Jackknifer, Mega, Treecon Mase and Fitch formats parsed, at least in
 	their EMBOSS output forms.
 
 	Underscores are allowed in accession numbers and sequence versions
