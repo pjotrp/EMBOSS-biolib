@@ -12,8 +12,8 @@
 **  i, j, and k unit vectors in the x y and z directions respectively
 **
 ** @author Copyright (C) 2003 Damian Counsell
-** @version $Revision: 1.7 $
-** @modified $Date: 2003/10/22 12:25:43 $
+** @version $Revision: 1.8 $
+** @modified $Date: 2003/10/29 10:34:25 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -263,6 +263,8 @@ float aj3dVectorLength(AjP3dVector ajp3dVectorToBeSized)
 **
 ** calculates the angle between two vectors
 **
+** method adapted from vmd XXXX INSERT CREDIT/REFERENCE HERE
+**
 ** @param [r] ajpFloatFirstVector [AjP3dVector] first vector
 ** @param [r] ajpFloatSecondVector [AjP3dVector] second vector
 **
@@ -273,29 +275,41 @@ float aj3dVectorLength(AjP3dVector ajp3dVectorToBeSized)
 float aj3dVectorAngle(AjP3dVector ajp3dVectorFirst,
 		      AjP3dVector ajp3dVectorSecond)
 {
-    float fCosineOfVectorAngle;
+    float fLengthOfFirstVector;
+    float fLengthOfSecondVector;
+    float fLengthOfCrossProduct;
+    
+    float fDotProduct;
+    float fVectorAngleInRadians;
     float fVectorAngleInDegrees;
-    float fVectorAngle;
 
-    /* XXXX STILL NEED TO INSERT A TRAP FOR VERY SMALL VALUES OF ANGLE */
+    AjP3dVector ajp3dVectorCrossProduct=NULL;
 
-    /* compute vector angle */
-    fCosineOfVectorAngle = aj3dVectorDotProduct(ajp3dVectorFirst,
-						    ajp3dVectorSecond);
-    fCosineOfVectorAngle /= aj3dVectorLength(ajp3dVectorFirst);
-    fCosineOfVectorAngle /= aj3dVectorLength(ajp3dVectorSecond);
+    fLengthOfFirstVector    = aj3dVectorLength(ajp3dVectorFirst);
+    fLengthOfSecondVector   = aj3dVectorLength(ajp3dVectorSecond);
 
-    fVectorAngle = (float)acos((double)fCosineOfVectorAngle);
-
-    fVectorAngleInDegrees = ajRadToDeg(fVectorAngle);
-
+    if((fLengthOfFirstVector < 0.0001) || (fLengthOfSecondVector < 0.0001))
+    {
+	fVectorAngleInDegrees = 180;
+    }
+    else
+    {
+	ajp3dVectorCrossProduct  = aj3dVectorNew();
+	/* compute vector angle */
+        aj3dVectorCrossProduct(ajp3dVectorFirst, ajp3dVectorSecond, ajp3dVectorCrossProduct);
+	fDotProduct             = aj3dVectorDotProduct(ajp3dVectorFirst, ajp3dVectorSecond);
+	fLengthOfCrossProduct   = aj3dVectorLength(ajp3dVectorCrossProduct);
+	/* return the arctangent in the range -pi to +pi */
+	fVectorAngleInRadians   = (float)atan2((double)fLengthOfCrossProduct, (double)fDotProduct);
+	fVectorAngleInDegrees   = ajRadToDeg(fVectorAngleInRadians);
+    }
     return( fVectorAngleInDegrees );
 }
 
 
 
 
-/* @func aj3dVectorDihedralAngle *********************************************
+/* @func aj3dVectorDihedralAngle ********************************************
 **
 ** calculates the angle from the plane perpendicular to A x B to the plane
 **  perpendicular to B x C (where A, B and C are vectors)
@@ -309,68 +323,25 @@ float aj3dVectorAngle(AjP3dVector ajp3dVectorFirst,
 ******************************************************************************/
 
 float aj3dVectorDihedralAngle(AjP3dVector ajp3dVectorA,
-			      AjP3dVector ajp3dVectorB,
-			      AjP3dVector ajp3dVectorC)
-{ 
-    float fDihedralAngle;
-
-    AjP3dVector ajp3dVectorTorqueFirst  = NULL;
-    AjP3dVector ajp3dVectorTorqueSecond = NULL;
-    AjP3dVector ajp3dVectorTorqueThird  = NULL;
-
-    ajp3dVectorTorqueFirst  = aj3dVectorNew();
-    ajp3dVectorTorqueSecond = aj3dVectorNew();
-    ajp3dVectorTorqueThird  = aj3dVectorNew();
-
-    aj3dVectorCrossProduct(ajp3dVectorA, ajp3dVectorB,
-			   ajp3dVectorTorqueFirst);
-    aj3dVectorCrossProduct(ajp3dVectorB, ajp3dVectorC,
-			   ajp3dVectorTorqueSecond);
-
-    fDihedralAngle = aj3dVectorAngle(ajp3dVectorTorqueFirst,
-					 ajp3dVectorTorqueSecond);
-
-    aj3dVectorCrossProduct(ajp3dVectorTorqueFirst, ajp3dVectorTorqueSecond,
-			   ajp3dVectorTorqueThird);
-
-    if(aj3dVectorDotProduct(ajp3dVectorB, ajp3dVectorTorqueThird) < 0.0)
-	fDihedralAngle = -1.0 * fDihedralAngle;
-
-    return fDihedralAngle;
-}
-
-
-
-
-/* @func aj3dVectorDihedralAngle2 ********************************************
-**
-** calculates the angle from the plane perpendicular to A x B to the plane
-**  perpendicular to B x C (where A, B and C are vectors)
-**
-** @param [r] ajp3dVectorA [AjP3dVector] 
-** @param [r] ajp3dVectorB [AjP3dVector] 
-** @param [r] ajp3dVectorC [AjP3dVector] 
-**
-** @return [float] dihedral angle
-** @@
-******************************************************************************/
-
-float aj3dVectorDihedralAngle2(AjP3dVector ajp3dVectorA,
 			       AjP3dVector ajp3dVectorB,
 			       AjP3dVector ajp3dVectorC)
 { 
-    float fDihedralAngle2;
+    float fDihedralAngle;
     float fNumerator;
     float fDenominator;
     float fBterm;
+    float fSignCoefficient = 1.0;
 
-    AjP3dVector ajp3dVectorTorqueFirst  = NULL;
-    AjP3dVector ajp3dVectorTorqueSecond = NULL;
-    AjP3dVector ajp3dVectorTorqueThird  = NULL;
+    AjP3dVector ajp3dVectorTorqueFirst    = NULL;
+    AjP3dVector ajp3dVectorTorqueSecond   = NULL;
+    AjP3dVector ajp3dVectorTorqueThird    = NULL;
+    AjP3dVector ajp3dVectorTorqueCombined = NULL;
 
-    ajp3dVectorTorqueFirst  = aj3dVectorNew();
-    ajp3dVectorTorqueSecond = aj3dVectorNew();
-    ajp3dVectorTorqueThird  = aj3dVectorNew();
+    ajp3dVectorTorqueFirst     = aj3dVectorNew();
+    ajp3dVectorTorqueSecond    = aj3dVectorNew();
+    ajp3dVectorTorqueThird     = aj3dVectorNew();
+    ajp3dVectorTorqueCombined  = aj3dVectorNew();
+
     aj3dVectorCrossProduct(ajp3dVectorA, ajp3dVectorB,
 			   ajp3dVectorTorqueFirst);
     aj3dVectorCrossProduct(ajp3dVectorB, ajp3dVectorC,
@@ -378,10 +349,19 @@ float aj3dVectorDihedralAngle2(AjP3dVector ajp3dVectorA,
     fNumerator = aj3dVectorDotProduct(ajp3dVectorTorqueFirst,
 					 ajp3dVectorTorqueSecond);
     fDenominator = aj3dVectorLength(ajp3dVectorTorqueFirst) * aj3dVectorLength(ajp3dVectorTorqueSecond);
+    aj3dVectorCrossProduct(ajp3dVectorTorqueFirst, ajp3dVectorTorqueSecond, ajp3dVectorTorqueCombined);
+    
     fBterm = fNumerator / fDenominator;
-    fDihedralAngle2 = ajRadToDeg( (float)acos((double)fBterm) );
+    fDihedralAngle = ajRadToDeg( (float)acos((double)fBterm) );
 
-    return fDihedralAngle2;
+    /* get sign of angle of rotation */
+    if( ( aj3dVectorDotProduct(ajp3dVectorB, ajp3dVectorTorqueCombined) ) < 0.0 )
+    {
+	fSignCoefficient = -1.0;
+	
+    }
+
+    return (fSignCoefficient * fDihedralAngle);
 }
 
 
