@@ -132,6 +132,8 @@ int main(int argc, char **argv)
 
     while (ajSeqallNext(seqall, &seq))
     {
+	ajSeqTrim(seq);
+
 	/* note the name of the sequence */
 	if (count_of_sequence_names++ < 10)
 	    (void) ajFmtPrintF(outfile, "#\t%s\n", ajSeqName(seq));

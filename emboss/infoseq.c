@@ -92,6 +92,7 @@ int main(int argc, char **argv)
 
     while (ajSeqallNext(seqall, &seq))
     {
+	ajSeqTrim(seq);
 	ajSeqTrace(seq);
 	if (firsttime)
 	{
