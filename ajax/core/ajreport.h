@@ -37,6 +37,8 @@ typedef struct AjSReport {
   AjPList Tagtypes;		/* List of extra tag datatypes (from ACD) */
   AjPStr Header;		/* Text to add to header with newlines */
   AjPStr Tail;			/* Text to add to tail with newlines */
+  AjPList FileNames;		/* Names of extra files (see FileTypes) */
+  AjPList FileTypes;		/* Types of extra files (see FileNames) */
   AjBool Showusa;		/* Report USA (-rusa) or only seqname */
   AjBool Multi;			/* if true, assume >1 sequence */
   ajint Mintags;		/* Minimum number of tags to report */
@@ -46,10 +48,11 @@ typedef struct AjSReport {
 void         ajReportClose (AjPReport pthys);
 void         ajReportDel (AjPReport* pthys);
 AjBool       ajReportOpen (AjPReport thys, AjPStr name);
+void         ajReportFileAdd (AjPReport thys, AjPFile file, AjPStr type);
 AjBool       ajReportFindFormat (AjPStr format, ajint* iformat);
 AjBool       ajReportFormatDefault (AjPStr* pformat);
 ajint        ajReportLists (AjPReport thys, AjPStr** types, AjPStr** names,
-			    AjPStr** prints);
+			    AjPStr** prints, ajint** tagsizes);
 AjPReport    ajReportNew (void);
 AjPStr       ajReportSeqName (AjPReport thys, AjPSeq seq);
 void         ajReportSetHeader (AjPReport thys, AjPStr header);
