@@ -1293,7 +1293,7 @@ AjBool ajXyzProfileSearch(AjPSeqset db, AjPStr profile, float gapopen, float gap
 
     /* need garbage collection here */
     ajListGarbageCollect(scophits, ajXyzScophitDelWrap,
-                         (const void *) ajXyzScophitCheckTarget);
+                         (int(*)(const void*)) ajXyzScophitCheckTarget);
 
     /* CALCULATE THE DISTRIBUTION WITH THE TRUE HITS AND CROSS HITS REMOVED FROM THE LIST */
     pointlist = ajXyzCalcDistribution(scophits, class, fold, superfamily, family, sun_id);
@@ -1567,7 +1567,7 @@ AjBool ajXyzSignatureSearch(AjPSeqset db, AjPStr sigfile, AjPMatrixf sub, float 
 
     /* need garbage collection here */
     ajListGarbageCollect(scophits, ajXyzScophitDelWrap,
-                         (const void *) ajXyzScophitCheckTarget);
+                         (int(*)(const void*)) ajXyzScophitCheckTarget);
 
 
     /* CALCULATE THE DISTRIBUTION WITH THE TRUE HITS AND CROSS HITS REMOVED FROM THE LIST */
@@ -1847,7 +1847,7 @@ AjPList ajXyzCalcDistribution(AjPList scophits, AjPStr class, AjPStr fold, AjPSt
 
     /* but only remove them inside the ajXyzCalcDistribution sub-routine */                     
     ajListGarbageCollect(scophits, ajXyzScophitDelWrap,
-                         (const void *) ajXyzScophitCheckTarget);
+                         (int(*)(const void*)) ajXyzScophitCheckTarget);
 
     /* sort the list according to score */
     ajListSort(scophits,ajXyzScophitCompScore);
@@ -3706,13 +3706,13 @@ AjPList ajXyzCalcLibscanDistribution(AjPList scophits)
         ajFatal("No list of hits passed to ajXyzCalcDistribution\n");
     
     if(ajListLength(scophits)==0)
-	return ajFalse;
+	return NULL;
     
     pointlist = ajListNew();
 
     /* but only remove them inside the ajXyzCalcDistribution sub-routine */                     
     ajListGarbageCollect(scophits, ajXyzScophitDelWrap,
-                         (const void *) ajXyzScophitCheckTarget);
+                         (int(*)(const void*)) ajXyzScophitCheckTarget);
 
     /* sort the list according to score */
     ajListSort(scophits,ajXyzScophitCompScore);
