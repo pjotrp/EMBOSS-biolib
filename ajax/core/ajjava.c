@@ -2138,10 +2138,14 @@ static void java_wait_for_term(int pid,AjPStr *outstd, AjPStr *errstd,
 	select(outpipe[0]+1,&rec,NULL,NULL,&t);
 	if(FD_ISSET(outpipe[0],&rec))
 	{
+	    *buf = '\0';
 	    while((nread = read(outpipe[0],(void *)buf,JBUFFLEN))==-1
 		  && errno==EINTR);
-	    buf[nread]='\0';
-	    ajStrAppC(outstd,buf);
+	    if(nread > 0)
+	    {
+		buf[nread]='\0';
+		ajStrAppC(outstd,buf);
+	    }
 	}
 
 	FD_ZERO(&rec);
@@ -2151,10 +2155,14 @@ static void java_wait_for_term(int pid,AjPStr *outstd, AjPStr *errstd,
 	select(errpipe[0]+1,&rec,NULL,NULL,&t);
 	if(FD_ISSET(errpipe[0],&rec))
 	{
+	    *buf = '\0';
 	    while((nread = read(errpipe[0],(void *)buf,JBUFFLEN))==-1
 		  && errno==EINTR);
-	    buf[nread]='\0';
-	    ajStrAppC(errstd,buf);
+	    if(nread>0)
+	    {
+		buf[nread]='\0';
+		ajStrAppC(errstd,buf);
+	    }
 	}
 
 
@@ -2168,10 +2176,14 @@ static void java_wait_for_term(int pid,AjPStr *outstd, AjPStr *errstd,
     select(outpipe[0]+1,&rec,NULL,NULL,&t);
     if(FD_ISSET(outpipe[0],&rec))
     {
+	*buf = '\0';
 	while((nread = read(outpipe[0],(void *)buf,JBUFFLEN))==-1
 	      && errno==EINTR);
-	buf[nread]='\0';
-	ajStrAppC(outstd,buf);
+	if(nread>0)
+	{
+	    buf[nread]='\0';
+	    ajStrAppC(outstd,buf);
+	}
     }
 
 
@@ -2182,10 +2194,14 @@ static void java_wait_for_term(int pid,AjPStr *outstd, AjPStr *errstd,
     select(errpipe[0]+1,&rec,NULL,NULL,&t);
     if(FD_ISSET(errpipe[0],&rec))
     {
+	*buf = '\0';
 	while((nread = read(errpipe[0],(void *)buf,JBUFFLEN))==-1
 	      && errno==EINTR);
-	buf[nread]='\0';
-	ajStrAppC(errstd,buf);
+	if(nread >0)
+	{
+	    buf[nread]='\0';
+	    ajStrAppC(errstd,buf);
+	}
     }
 #endif
 
@@ -2348,6 +2364,7 @@ static void java_wait_for_file(int pid,AjPStr *outstd, AjPStr *errstd,
 	select(outpipe[0]+1,&rec,NULL,NULL,&t);
 	if(size && FD_ISSET(outpipe[0],&rec))
 	{
+	    *buf = '\0';
 	    while((nread = read(outpipe[0],(void *)buf,JBUFFLEN))==-1
 		  && errno==EINTR);
 	    if(nread>0)
@@ -2364,6 +2381,7 @@ static void java_wait_for_file(int pid,AjPStr *outstd, AjPStr *errstd,
 	select(errpipe[0]+1,&rec,NULL,NULL,&t);
 	if(FD_ISSET(errpipe[0],&rec))
 	{
+	    *buf = '\0';
 	    while((nread = read(errpipe[0],(void *)buf,JBUFFLEN))==-1
 		  && errno==EINTR);
 	    if(nread > -1)
@@ -2384,6 +2402,7 @@ static void java_wait_for_file(int pid,AjPStr *outstd, AjPStr *errstd,
     select(outpipe[0]+1,&rec,NULL,NULL,&t);
     if(size && FD_ISSET(outpipe[0],&rec))
     {
+	*buf = '\0';
 	while((nread = read(outpipe[0],(void *)buf,JBUFFLEN))==-1
 	      && errno==EINTR);
 	if(nread>0)
@@ -2401,6 +2420,7 @@ static void java_wait_for_file(int pid,AjPStr *outstd, AjPStr *errstd,
     select(errpipe[0]+1,&rec,NULL,NULL,&t);
     if(FD_ISSET(errpipe[0],&rec))
     {
+	*buf = '\0';
 	while((nread = read(errpipe[0],(void *)buf,JBUFFLEN))==-1
 	      && errno==EINTR);
 	if(nread>-1)
