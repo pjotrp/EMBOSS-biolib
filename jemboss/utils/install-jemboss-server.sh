@@ -1113,6 +1113,25 @@ if [ $INSTALL_TYPE = "1" ]; then
   done
   echo "$TOMCAT_ROOT" >> $RECORD
   echo
+
+  if [ -d "$TOMCAT_ROOT/webapps/axis/WEB-INF/classes/org" ]; then
+    echo
+    echo "It looks like an installation has already been carried out in: "
+    echo "$TOMCAT_ROOT/webapps/axis/WEB-INF/classes/ "
+    echo "It is recommended that tomcat is removed and a fresh copy of tomcat used."
+    echo "This is likely to fail if you continue."
+    read BLANK
+  fi
+
+  if [ -d "$TOMCAT_ROOT/webapps/axis/WEB-INF/classes/resources" ]; then
+    echo
+    echo "It looks like an installation has already been carried out in: "
+    echo "$TOMCAT_ROOT/webapps/axis/WEB-INF/classes/ "
+    echo "It is recommended that tomcat is removed and a fresh copy of tomcat used."
+    echo "This is likely to fail if you continue."
+    read BLANK
+  fi
+
 #
 # Apache AXIS (SOAP)
 #
