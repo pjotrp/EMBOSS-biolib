@@ -24,23 +24,36 @@ package org.emboss.jemboss.soap;
 import java.io.*;
 import javax.swing.*;
 import java.awt.*;
+import java.util.*;
 
-import org.emboss.jemboss.gui.form.TextFieldPaste;
+import java.awt.event.*;
+import org.emboss.jemboss.gui.MemoryComboBox;
 import uk.ac.mrc.hgmp.embreo.*;
 
 
-public class ServerSetup extends JPanel
+public class ServerSetup extends JPanel 
 {
   
-  private TextFieldPaste publicURL;
-  private TextFieldPaste privateURL;
-  private TextFieldPaste publicName;
-  private TextFieldPaste privateName;
+  private MemoryComboBox publicURL;
+  private MemoryComboBox privateURL;
+  private MemoryComboBox publicName;
+  private MemoryComboBox privateName;
+
   private EmbreoParams mysettings; 
 
   public ServerSetup(EmbreoParams mysettings)
   {
+
     this.mysettings = mysettings;
+
+    Vector PublicServerURL = new Vector();
+    PublicServerURL.add(mysettings.getPublicSoapURL());
+    Vector PrivateServerURL = new Vector();
+    PrivateServerURL.add(mysettings.getPrivateSoapURL());
+    Vector PublicServerName = new Vector();
+    PublicServerName.add(mysettings.getPublicSoapService());
+    Vector PrivateServerName = new Vector();
+    PrivateServerName.add(mysettings.getPrivateSoapService());
 
     GridLayout gl = new GridLayout(3,1,10,10);
     
@@ -58,24 +71,20 @@ public class ServerSetup extends JPanel
     JLabel lab = new JLabel("Public Server");
     jpWest.add(lab);
 
-    publicURL = new TextFieldPaste();
-    publicURL.setText(mysettings.getPublicSoapURL());
+    publicURL = new MemoryComboBox(PublicServerURL);
     jpCenter.add(publicURL);
 
-    publicName = new TextFieldPaste();
-    publicName.setText(mysettings.getPublicSoapService());
+    publicName = new MemoryComboBox(PublicServerName);
     jpEast.add(publicName);
 
 //private server
     lab = new JLabel("Private Server");
     jpWest.add(lab);
+    privateURL = new MemoryComboBox(PrivateServerURL);
 
-    privateURL = new TextFieldPaste();
-    privateURL.setText(mysettings.getPrivateSoapURL());
-    jpCenter.add(privateURL);
-     
-    privateName = new TextFieldPaste();
-    privateName.setText(mysettings.getPrivateSoapService());
+    jpCenter.add(privateURL);    
+
+    privateName = new MemoryComboBox(PrivateServerName);
     jpEast.add(privateName);
  
     add(jpWest, BorderLayout.WEST);
@@ -86,13 +95,12 @@ public class ServerSetup extends JPanel
 
   public EmbreoParams setNewSettings()
   {
-    mysettings.setPublicSoapURL(publicURL.getText());
-    mysettings.setPrivateSoapURL(privateURL.getText());
-    mysettings.setPublicSoapService(publicName.getText());
-    mysettings.setPrivateSoapService(privateName.getText());
+    mysettings.setPublicSoapURL((String)publicURL.getSelectedItem());
+    mysettings.setPrivateSoapURL((String)privateURL.getSelectedItem());
+    mysettings.setPublicSoapService((String)publicName.getSelectedItem());
+    mysettings.setPrivateSoapService((String)privateName.getSelectedItem());
     return mysettings;
   }
-
 
 }
 
