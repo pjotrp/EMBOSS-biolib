@@ -68,7 +68,7 @@ public class BuildJembossForm implements ActionListener
   protected static JPanel inpSection;
 
 //private JComboBox fieldOption[];
-  private myComboPopup fieldOption[];
+  private JembossComboPopup fieldOption[];
   private JList multiOption[];
   private SetInFileCard inSeq[];
   private JButton bresults;
@@ -273,7 +273,7 @@ public class BuildJembossForm implements ActionListener
     checkBox  = new JCheckBox[nbool];
     inSeqAttr = new InputSequenceAttributes[nseqs];
     filelist  = new ListFilePanel[nflist];
-    fieldOption = new myComboPopup[nlist];
+    fieldOption = new JembossComboPopup[nlist];
     multiOption = new JList[mlist];
     rangeField  = new JTextField[nrange];
 

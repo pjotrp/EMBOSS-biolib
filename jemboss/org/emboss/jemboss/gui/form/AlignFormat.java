@@ -48,7 +48,7 @@ public class AlignFormat
              "srspair", "score"};
 
   /** component to display formats */
-  private myComboPopup cp;
+  private JembossComboPopup cp;
   /** default format */
   private String def;
   /** true if pairwise alignment format */
@@ -63,7 +63,7 @@ public class AlignFormat
   public AlignFormat(ParseAcd parseAcd, int nf) 
   {
     lpair = isPairWise(parseAcd,nf);
-    cp = new myComboPopup(getAlignFormats(lpair));
+    cp = new JembossComboPopup(getAlignFormats(lpair));
 
     int np = parseAcd.getNumofParams(nf);
 
@@ -87,7 +87,7 @@ public class AlignFormat
   * @return 	combo-popup component for alignment formats
   *
   */
-  public myComboPopup getComboPopup()
+  public JembossComboPopup getComboPopup()
   {
     return cp;
   }

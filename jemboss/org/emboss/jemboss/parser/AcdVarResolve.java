@@ -42,7 +42,7 @@ public class AcdVarResolve
   public AcdVarResolve(String exp, String val, String varName, 
                        ParseAcd parseAcd, int nof, 
                        TextFieldSink textf[], TextFieldInt textInt[],
-                       TextFieldFloat textFloat[], myComboPopup fieldOption[],
+                       TextFieldFloat textFloat[], JembossComboPopup fieldOption[],
                        JCheckBox  checkBox[]) 
   {
 

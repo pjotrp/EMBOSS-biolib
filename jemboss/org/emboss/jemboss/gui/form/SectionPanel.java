@@ -57,7 +57,7 @@ public class SectionPanel
   private InputSequenceAttributes inSeqAttr[];
   private ListFilePanel filelist[];
 
-  private myComboPopup fieldOption[];
+  private JembossComboPopup fieldOption[];
   private JList multiOption[];
   private SetInFileCard inSeq[];
   private Box lab[];
@@ -105,7 +105,7 @@ public class SectionPanel
 * @param TextFieldInt for the integer fields in the form
 * @param JCheckBox for the boolean switches
 * @param InputSequenceAttributes for the input sequence(s)
-* @param myComboPopup for the list/selection data types
+* @param JembossComboPopup for the list/selection data types
 * @param JList for multiple selection lists
 * @param String array containing the databases
 * @param String containing the one line description for the application
@@ -120,7 +120,7 @@ public class SectionPanel
             TextFieldInt textInt[], TextFieldFloat textFloat[],
             JTextField rangeField[], JCheckBox  checkBox[],
             InputSequenceAttributes inSeqAttr[],
-            myComboPopup fieldOption[], JList multiOption[], 
+            JembossComboPopup fieldOption[], JList multiOption[], 
             SetInFileCard inSeq[], ListFilePanel filelist[],
             String db[], String des, Box lab[], int numofFields,
             JembossParams mysettings, boolean withSoap)
@@ -270,13 +270,13 @@ public class SectionPanel
           Box pan2 = new Box(BoxLayout.X_AXIS);
           section.add(pan2);
           
-          myComboPopup selectMatrix = new myComboPopup(
+          JembossComboPopup selectMatrix = new JembossComboPopup(
                                         BuildProgramMenu.getMatrices());
           selectMatrix.addActionListener(new ActionListener()
           {
             public void actionPerformed(ActionEvent e)
             {
-              myComboPopup cb = (myComboPopup)e.getSource();
+              JembossComboPopup cb = (JembossComboPopup)e.getSource();
               String matrix = (String)cb.getSelectedItem();
               textf[h].setText(matrix);
             }
@@ -303,13 +303,13 @@ public class SectionPanel
    
           Box pan2 = new Box(BoxLayout.X_AXIS);
           section.add(pan2);
-          myComboPopup selectMatrix = new myComboPopup(
+          JembossComboPopup selectMatrix = new JembossComboPopup(
                                         BuildProgramMenu.getCodonUsage());
           selectMatrix.addActionListener(new ActionListener()
           {
             public void actionPerformed(ActionEvent e)
             {
-              myComboPopup cb = (myComboPopup)e.getSource();
+              JembossComboPopup cb = (JembossComboPopup)e.getSource();
               String matrix = (String)cb.getSelectedItem();
               textf[h].setText(matrix);
             }
@@ -450,7 +450,7 @@ public class SectionPanel
           }
           else
           {
-            fieldOption[h] = new myComboPopup(list);
+            fieldOption[h] = new JembossComboPopup(list);
 
             Vector def = parseAcd.getListOrSelectDefault();
 

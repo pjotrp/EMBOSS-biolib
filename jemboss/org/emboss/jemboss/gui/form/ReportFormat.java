@@ -40,7 +40,7 @@ public class ReportFormat
              "seqtable", "simple", "srs",
              "table", "tagseq"};
 
-  private myComboPopup cp;
+  private JembossComboPopup cp;
   private JCheckBox raccshow = new JCheckBox();
   private JCheckBox rdesshow = new JCheckBox();
   private JCheckBox rusashow = new JCheckBox();
@@ -48,7 +48,7 @@ public class ReportFormat
 
   public ReportFormat(ParseAcd parseAcd, int nf)
   {
-    cp = new myComboPopup(getReportFormats());
+    cp = new JembossComboPopup(getReportFormats());
 
     int np = parseAcd.getNumofParams(nf);
 
@@ -67,7 +67,7 @@ public class ReportFormat
 
   }
 
-  public myComboPopup getComboPopup()
+  public JembossComboPopup getComboPopup()
   {
     return cp;
   }
