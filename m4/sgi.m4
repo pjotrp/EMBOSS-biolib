@@ -11,7 +11,7 @@ AC_ARG_WITH(sgiabi,
   if test "`uname`" = "IRIX64" || test "`uname`" = "IRIX" ; then
 
     if test "$withval" = n32m3 ; then
-      CFLAGS="-n32 -Ofast -mips3 $CFLAGS"
+      CFLAGS="-n32 -mips3 $CFLAGS"
       LD="/usr/bin/ld -n32 -mips3 -IPA"
 	if test -d /usr/freeware ; then
           LDFLAGS="-L/usr/freeware/lib32 $LDFLAGS"
@@ -19,7 +19,7 @@ AC_ARG_WITH(sgiabi,
     fi
 
     if test "$withval" = n32m4 ; then
-      CFLAGS="-n32 -Ofast -mips4 $CFLAGS"
+      CFLAGS="-n32 -mips4 $CFLAGS"
       LD="/usr/bin/ld -n32 -mips4 -IPA"
 	if test -d /usr/freeware ; then
           LDFLAGS="-L/usr/freeware/lib32 $LDFLAGS"
@@ -27,7 +27,7 @@ AC_ARG_WITH(sgiabi,
     fi
 
     if test "$withval" = 64m3 ; then
-      CFLAGS="-64 -Ofast -mips3 $CFLAGS"
+      CFLAGS="-64 -mips3 $CFLAGS"
       LD="/usr/bin/ld -64 -mips3 -IPA"
 	if test -d /usr/freeware ; then
           LDFLAGS="-L/usr/freeware/lib64 $LDFLAGS"
@@ -35,7 +35,7 @@ AC_ARG_WITH(sgiabi,
     fi
 
     if test "$withval" = 64m4 ; then
-      CFLAGS="-64 -Ofast -mips4 $CFLAGS"
+      CFLAGS="-64 -mips4 $CFLAGS"
       LD="/usr/bin/ld -64 -mips4 -IPA"
 	if test -d /usr/freeware ; then
           LDFLAGS="-L/usr/freeware/lib64 $LDFLAGS"
