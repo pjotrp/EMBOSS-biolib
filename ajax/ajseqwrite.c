@@ -3842,3 +3842,52 @@ void ajSeqWriteXyz(AjPFile outf, AjPStr seq, char *prefix)
 
     return;
 }
+
+
+
+
+
+/* @func ajSssWriteXyz
+********************************************************
+**
+** Writes a sequence in SWISSPROT format w/o checksum or molecular weight -
+** used for printing secondary structure strings.
+**
+** @param [w] outf [AjPFile] output stream
+** @param [r] seq [AjPStr] sequence
+** @param [r] prefix [char *] identifier code - should be 2 char's long
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajSssWriteXyz(AjPFile outf, AjPStr seq, char *prefix)
+{
+    AjPSeqout outseq=NULL;
+    static SeqPSeqFormat sf=NULL;
+
+    ajint mw;
+    ajint crc;
+
+    outseq = ajSeqoutNew();
+
+    outseq->File = outf;
+    ajStrAssS(&outseq->Seq,seq);
+
+    crc = ajSeqCrc (outseq->Seq);
+    mw = (ajint) (0.5+ajSeqMW (outseq->Seq));
+    (void) ajFmtPrintF (outseq->File,
+   "%-5sSEQUENCE %5d AA;\n",
+   prefix, ajStrLen(outseq->Seq));
+
+    seqSeqFormat(ajStrLen(outseq->Seq), &sf);
+    (void) strcpy (sf->endstr, "");
+    sf->tab = 4;
+    sf->spacer = 11;
+    sf->width = 60;
+
+    seqWriteSeq (outseq, sf);
+
+    ajSeqoutDel(&outseq);
+
+    return;
+}
