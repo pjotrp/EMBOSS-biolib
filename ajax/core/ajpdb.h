@@ -116,6 +116,41 @@ extern "C"
 ** @other   embPdbListHeterogens Construct a list of arrays of Atom objects 
 **          for ligands in the current Pdb object (a single array for each
 **          ligand). 
+** 
+** @use ajAtomSSEnv  Assigns secondary structure environment of a residue.
+** @use ajAtomEnv1 Assigns environment based on side chain accessibility and
+**  secondary structure.
+** @use ajAtomEnv2 Assigns environment based on side chain accessibility and
+**  secondary structure.
+** @use ajAtomEnv3 Assigns environment based on side chain accessibility and
+**  secondary structure.
+** @use ajAtomEnv4 Assigns environment based on side chain accessibility and
+**  secondary structure.
+** @use ajAtomEnv5 Assigns environment based on side chain accessibility and
+**  secondary structure.
+** @use ajAtomEnv6 Assigns environment based on side chain accessibility and
+**  secondary structure.
+** @use ajAtomEnv7 Assigns environment based on side chain accessibility and
+**  secondary structure.
+** @use ajAtomEnv8 Assigns environment based on side chain accessibility and
+**  secondary structure.
+** @use ajAtomEnv9 Assigns environment based on side chain accessibility and
+**  secondary structure.
+** @use ajAtomEnv10 Assigns environment based on side chain accessibility and
+**  secondary structure.
+** @use ajAtomEnv11 Assigns environment based on side chain accessibility and
+**  secondary structure.
+** @use ajAtomEnv12 Assigns environment based on side chain accessibility and
+**  secondary structure.
+** @use ajAtomEnv13 Assigns environment based on side chain accessibility and
+**  secondary structure.
+** @use ajAtomEnv14 Assigns environment based on side chain accessibility and
+**  secondary structure.
+** @use ajAtomEnv15 Assigns environment based on side chain accessibility and
+**  secondary structure.
+** @use ajAtomEnv16 Assigns environment based on side chain accessibility and
+**  secondary structure.
+
 ** @@
 ****************************************************************************/
 
@@ -517,15 +552,21 @@ typedef struct AjSVdwall
 ** @attr  Mat   [AjPInt2d] Contact map. 
 ** @attr  Dim   [ajint]    Dimension of contact map. 
 ** @attr  Ncon  [ajint]    No. of contacts (1's in contact map). 
+** @attr  sn    [ajint]    Site number (ajLIGAND only)
+** @attr  ns    [ajint]    No. of sites (ajLIGAND only)
+** @attr  Desc  [AjPStr]   Description of ligand (ajLIGAND only)
 ** 
 ** 
 ** @new     ajCmapNew Default Cmap constructor.
 ** @new     ajCmapReadINew Cmap constructor from reading file in CON (embl-like)
 **          format (see documentation for the EMBASSY DOMAINATRIX package).
-** @new     ajCmapReadCNew Cmap constructor from reading file in CON (embl-like)
+** @new     ajCmapReadCNew Cmap constructor from reading file in CON 
 **          format (see documentation for the EMBASSY DOMAINATRIX package).
-** @new     ajCmapReadNew Cmap constructor from reading file in CON (embl-like)
+** @new     ajCmapReadNew Cmap constructor from reading file in CON 
 **          format (see documentation for the EMBASSY DOMAINATRIX package).
+** @new     ajCmapReadAllNew Constructs list of Cmap objects from reading file 
+**          in CON format (see documentation for the EMBASSY 
+**          DOMAINATRIX package).
 ** @delete  ajCmapDel Default Cmap destructor.
 **
 ** @@
@@ -549,6 +590,10 @@ typedef struct AjSCmap
     AjPInt2d  Mat;    
     ajint     Dim;    
     ajint     Ncon;   
+
+    ajint     ns;
+    ajint     sn;
+    AjPStr    Desc;
 } AjOCmap;
 #define AjPCmap AjOCmap*
 
@@ -657,19 +702,25 @@ void         ajVdwresDel(AjPVdwres *ptr);
 /* ======================================================================= */
 AjPAtom      ajAtomNew(void);
 void         ajAtomDel(AjPAtom *ptr);
-AjBool       ajAtomCopy(AjPAtom *to, const AjPAtom from);
-AjBool       ajAtomListCopy(AjPList *to, const AjPList from);
-
-
-
-
-
-/* ======================================================================= */
-/* ============================ Cmap object ============================== */
-/* ======================================================================= */
-AjPCmap      ajCmapNew(ajint n);
-void         ajCmapDel(AjPCmap *ptr);
-
+ajint       ajAtomCopy(AjPAtom *to, const AjPAtom from);
+ajint       ajAtomListCopy(AjPList *to, const AjPList from);
+ajint       ajAtomSSEnv(AjPAtom atom, char *SEnv,AjPFile logf);
+ajint       ajAtomEnv1(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf);
+ajint       ajAtomEnv2(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf);
+ajint       ajAtomEnv3(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf);
+ajint       ajAtomEnv4(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf);
+ajint       ajAtomEnv5(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf);
+ajint       ajAtomEnv6(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf);
+ajint       ajAtomEnv7(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf);
+ajint       ajAtomEnv8(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf);
+ajint       ajAtomEnv9(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf);
+ajint       ajAtomEnv10(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf);
+ajint       ajAtomEnv11(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf);
+ajint       ajAtomEnv12(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf);
+ajint       ajAtomEnv13(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf);
+ajint       ajAtomEnv14(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf);
+ajint       ajAtomEnv15(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf);
+ajint       ajAtomEnv16(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf);
 
 
 
@@ -740,9 +791,14 @@ AjPVdwall    ajVdwallReadNew(AjPFile inf);
 /* ======================================================================= */
 /* =========================== Cmap object =============================== */
 /* ======================================================================= */
+AjPCmap      ajCmapNew(ajint n);
 AjPCmap      ajCmapReadCNew(AjPFile inf, char chn, ajint mod);
 AjPCmap      ajCmapReadINew(AjPFile inf, ajint chn, ajint mod);
 AjPCmap      ajCmapReadNew(AjPFile inf, ajint mode, ajint chn, ajint mod);
+AjPList      ajCmapReadAllNew(AjPFile inf);
+void         ajCmapDel(AjPCmap *ptr);
+
+
 
 
 

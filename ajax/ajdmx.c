@@ -92,6 +92,7 @@ AjPScophit ajDmxScophitNew(void)
 {
     AjPScophit ret = NULL;
 
+
     AJNEW0(ret);
 
     ret->Class        = ajStrNew();
@@ -1394,7 +1395,7 @@ AjBool ajDmxScophitsWrite(AjPFile outf, const AjPList list)
 
 /* @func ajDmxScophitsWriteFasta ********************************************
 **
-** Write contents of a list of Scophits to an output file in embl-like format
+** Write contents of a list of Scophits to an output file in DHF format
 ** (see scopalign.c documentation).
 ** Text for Class, Archhitecture, Topology, Fold, Superfamily and Family 
 ** is only written if the text is available.
@@ -1559,10 +1560,6 @@ AjPScophit ajDmxScophitReadFasta(AjPFile inf)
 		ajDmxScophitDel(&hit);
 		ajStrDel(&type);
 		return NULL;
-	    }
-	    else
-	    {
-		hit = ajDmxScophitNew();
 	    }
 	    	    
 	    /* Acc */

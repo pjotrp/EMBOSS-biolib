@@ -418,16 +418,17 @@ AjPList  ajPdbtospReadAllNew(AjPFile inf)
 
 /* @func ajCmapReadINew ****************************************************
 **
-** Read a Cmap object from a file in CON (embl-like) format (see 
+** Read a Cmap object from a file in CON  format (see 
 ** documentation for DOMAINATRIX "contacts" application). Takes the chain 
-** identifier as an integer.
+** identifier as an integer. If the arguments mod and chn are both 0, the 
+** function will read the next Cmap in the file.
 ** 
 ** @param [u] inf     [AjPFile]  Input file stream
 ** @param [r] chn     [ajint]    Chain number
 ** @param [r] mod     [ajint]    Model number
 **
 ** @return [AjPCmap] Pointer to new Cmap object.
-** @category new [AjPCmap] Cmap constructor from reading file in embl-like
+** @category new [AjPCmap] Cmap constructor from reading file in CON
 **           format (see documentation for the EMBASSY DOMAINATRIX package).
 ** @@
 ****************************************************************************/
@@ -448,16 +449,16 @@ AjPList  ajPdbtospReadAllNew(AjPFile inf)
 
 /* @func ajCmapReadCNew ****************************************************
 **
-** Read a Cmap object from a file in CON format (embl-like) (see 
+** Read a Cmap object from a file in CON format (see 
 ** documentation for DOMAINATRIX "contacts" application). Takes the chain 
-** identifier as a character.
+** identifier as a character.  
 ** 
 ** @param [u] inf     [AjPFile]  Input file stream
 ** @param [r] chn     [char]     Chain number
 ** @param [r] mod     [ajint]    Model number
 **
 ** @return [AjPCmap]   Pointer to new Cmap object.
-** @category new [AjPCmap] Cmap constructor from reading file in embl-like
+** @category new [AjPCmap] Cmap constructor from reading file in CON
 **              format (see documentation for the EMBASSY DOMAINATRIX package).
 ** @@
 ****************************************************************************/
@@ -476,12 +477,43 @@ AjPCmap ajCmapReadCNew(AjPFile inf, char chn, ajint mod)
 
 
 
+/* @func ajCmapReadAllNew ***************************************************
+**
+** Read every Cmap object from a file in CON format (see 
+** documentation for DOMAINATRIX "contacts" application) and returns a list
+** of these objects. 
+** 
+** @param [u] inf     [AjPFile]  Input file stream
+**
+** @return [AjPList]   List of Cmap objects.
+** @category new [AjPCmap] Cmap constructor from reading file in CON
+**              format (see documentation for the EMBASSY DOMAINATRIX package).
+** @@
+****************************************************************************/
+
+AjPList ajCmapReadAllNew(AjPFile inf)
+{
+  AjPList ret  = NULL;
+  AjPCmap cmap = NULL;
+
+  ret = ajListNew();
+
+  while((cmap = ajCmapReadNew(inf, CMAP_MODE_I, 0, 0)))
+    ajListPushApp(ret, cmap);
+
+  return ret;
+}
+
+
+
+
 /* @func ajCmapReadNew *****************************************************
 **
-** Read a Cmap object from a file in CON format (embl-like) (see 
+** Read a Cmap object from a file in CON format (see 
 ** documentation for DOMAINATRIX "contacts" application). This is not 
 ** usually called by the user, who uses ajCmapReadINew or ajCmapReadCNew 
-** instead.
+** instead.  If mode==CMAP_MODE_I, chn==0 and  mod==0, the function will 
+** read the next Cmap in the file.
 ** 
 ** @param [u] inf     [AjPFile]  Input file stream.
 ** @param [r] mode    [ajint]    Mode, either CMAP_MODE_I (treat chn arg as  
@@ -491,7 +523,7 @@ AjPCmap ajCmapReadCNew(AjPFile inf, char chn, ajint mod)
 ** @param [r] mod     [ajint]    Model number.
 **
 ** @return [AjPCmap] True on success (an object read)
-** @category new [AjPCmap] Cmap constructor from reading file in embl-like
+** @category new [AjPCmap] Cmap constructor from reading file in CON
 **              format (see documentation for the EMBASSY DOMAINATRIX package).
 ** @@
 ****************************************************************************/
@@ -505,6 +537,7 @@ AjPCmap ajCmapReadNew(AjPFile inf, ajint mode, ajint chn, ajint mod)
     static   AjPStr temp_domid = NULL;   /* Temp. domain id  */
     static   AjPStr temp_ligid = NULL;   /* Temp. ligand id  */
     static   AjPStr type       = NULL;   /* Type of contact  */
+    static   AjPStr desc       = NULL;   /* Ligand description, SITES output only */
     AjPStr   token             = NULL;   /* For parsing      */
         
     ajint    smcon     = 0;      /* No. of SM contacts       */	
@@ -522,8 +555,10 @@ AjPCmap ajCmapReadNew(AjPFile inf, ajint mode, ajint chn, ajint mod)
     AjPStr   seq2      = NULL;   /* Sequence 2 */
            
     AjBool   idok      = ajFalse; /* If the required chain has been found */
-    AjBool   valid_id  = ajFalse; /* If an ID line has been read */
 
+    ajint     ns;                /* No. of sites, SITES output only */
+    ajint     sn;                /* Site number, SITES output only */
+    
     /* Check args */	
     if(!inf)
     {	
@@ -536,6 +571,9 @@ AjPCmap ajCmapReadNew(AjPFile inf, ajint mode, ajint chn, ajint mod)
     if(mode==CMAP_MODE_C)
 	if(chn=='_')
 	    chn='.';
+
+
+
     
     /* Initialise strings */
     if(!line)
@@ -544,14 +582,36 @@ AjPCmap ajCmapReadNew(AjPFile inf, ajint mode, ajint chn, ajint mod)
 	temp_id    = ajStrNew();
 	temp_domid = ajStrNew();
 	temp_ligid = ajStrNew();
+	desc       = ajStrNew();
     }
     
 
     /* Start of main loop */
     while((ajFileReadLine(inf, &line)))
     {
+        /* // */
+	if(ajStrPrefixC(line, "//"))
+	{
+        /* If the delimiter between entries is found and ret is non-NULL, i.e.
+           has been allocated, the function should return. */
+	  ajStrDel(&seq1);
+	  ajStrDel(&seq2);
+	  return ret;	
+	}
+
+
+        /* SI */
+	else if(ajStrPrefixC(line, "SI"))
+	{ 
+	  token = ajStrTokC(line, ";");
+	  ajFmtScanS(token, "%*s %*s %d", &sn);
+
+	  token = ajStrTokC(NULL, ";");
+	  ajFmtScanS(token, "%*s %d", &ns);
+        }
+
 	/* TY */
-	if(ajStrPrefixC(line, "TY"))
+	else if(ajStrPrefixC(line, "TY"))
 	{
 	    ajFmtScanS(line, "%*s %S", &type);
 	    ajStrClear(&seq1);
@@ -569,45 +629,47 @@ AjPCmap ajCmapReadNew(AjPFile inf, ajint mode, ajint chn, ajint mod)
 	/* ID */
 	else if(ajStrPrefixC(line, "ID"))
 	{
-	    valid_id = ajTrue;
-
 	    token = ajStrTokC(line, ";");
-	    ajFmtScanS(line, "%*s %*s %S", &temp_id);
+	    ajFmtScanS(token, "%*s %*s %S", &temp_id);
 	    token = ajStrTokC(NULL, ";");
-	    ajFmtScanS(line, "%*s %S", &temp_domid);
+	    ajFmtScanS(token, "%*s %S", &temp_domid);
 	    token = ajStrTokC(NULL, ";");
-	    ajFmtScanS(line, "%*s %S", &temp_ligid);
+	    ajFmtScanS(token, "%*s %S", &temp_ligid);
 	}
 
 	/* DE records are not parsed (SITES output) */
+	else if(ajStrPrefixC(line, "DE"))
+	{
+	  ajStrAssSub(&desc, line, 4, -1);
+	}
 
 	/* CN */
 	else if(ajStrPrefixC(line, "CN"))
 	{
 	    token = ajStrTokC(line, ";");
-	    ajFmtScanS(line, "%*s %*s %d", &md);
+	    ajFmtScanS(token, "%*s %*s %d", &md);
 	    if(md == '.')
 		md = 0;	    
 
 	    token = ajStrTokC(NULL, ";");
-	    ajFmtScanS(line, "%*s %d", &cn1);
+	    ajFmtScanS(token, "%*s %d", &cn1);
 
 	    token = ajStrTokC(NULL, ";");
-	    ajFmtScanS(line, "%*s %d", &cn2);
+	    ajFmtScanS(token, "%*s %d", &cn2);
 
 	    token = ajStrTokC(NULL, ";");
-	    ajFmtScanS(line, "%*s %c", &id1);
+	    ajFmtScanS(token, "%*s %c", &id1);
 
 	    token = ajStrTokC(NULL, ";");
-	    ajFmtScanS(line, "%*s %c", &id2);
+	    ajFmtScanS(token, "%*s %c", &id2);
 
 	    token = ajStrTokC(NULL, ";");
-	    ajFmtScanS(line, "%*s %d", &nres1);
+	    ajFmtScanS(token, "%*s %d", &nres1);
 	    if(nres1 == '.')
 		nres1 = 0;
-	    
+
 	    token = ajStrTokC(NULL, ";");
-	    ajFmtScanS(line, "%*s %d", &nres2);
+	    ajFmtScanS(token, "%*s %d", &nres2);
 	    if(nres2 == '.')
 		nres2 = 0;
 	}
@@ -628,17 +690,18 @@ AjPCmap ajCmapReadNew(AjPFile inf, ajint mode, ajint chn, ajint mod)
 	    ajStrCleanWhite(&seq2);
 	}
 	/* NC */	    
-	else if((ajStrPrefixC(line, "NC")) && (md==mod))
+	else if((ajStrPrefixC(line, "NC")) && 
+		((md==mod) || ((chn==0)&&(mod==0)&&(mode==CMAP_MODE_I))))
 	{
 	    token = ajStrTokC(line, ";");
-	    ajFmtScanS(line, "%*s %*s %d", &smcon);
+	    ajFmtScanS(token, "%*s %*s %d", &smcon);
 
 	    token = ajStrTokC(NULL, ";");
-	    ajFmtScanS(line, "%*s %d", &licon);
+	    ajFmtScanS(token, "%*s %d", &licon);
 	    
 
 	    /*
-	    ** The third conditional is to capture those few domains which are 
+	    ** The fourth conditional is to capture those few domains which are 
 	    ** made up from more than one chain.  For these, the chain 
 	    ** character passed in might be an A or a B (e.g. the character
 	    ** extracted from the scop domain code) whereas the chain id given
@@ -647,20 +710,30 @@ AjPCmap ajCmapReadNew(AjPFile inf, ajint mode, ajint chn, ajint mod)
 	    ** where a chain id was not specified in the original pdb file).
 	    */
 
-	    if(((cn1==chn)&&(mode==CMAP_MODE_I)) ||
-	       ((toupper((int)id1)==toupper(chn))&&(mode==CMAP_MODE_C))||
-	       ((toupper((int)id1)=='.') && (toupper(chn)!='.') &&
-		(mode==CMAP_MODE_C)))
+	    if( ((cn1==chn)&&(mode==CMAP_MODE_I))                       ||
+		((chn==0)&&(mod==0)&&(mode==CMAP_MODE_I))               ||
+		((toupper((int)id1)==toupper(chn))&&(mode==CMAP_MODE_C))||
+		((toupper((int)id1)=='.') && (toupper(chn)!='.') &&
+		(mode==CMAP_MODE_C))
+
+		)
 	    {
 		idok=ajTrue;
 		
 		/* Allocate contact map and write values */
-		if(ajStrMatchC(type, "LIGAND"))
-		    (ret) = ajCmapNew(licon);
+		if(ajStrMatchC(type, "INTER"))
+		{
+		    if(nres1>nres2)
+		      (ret) = ajCmapNew(nres1);
+		    else
+		      (ret) = ajCmapNew(nres2);
+		}
 		else
-		    (ret) = ajCmapNew(smcon);
-		
+		  (ret) = ajCmapNew(nres1);
+
 		ajStrAssS(&(ret)->Id, temp_id);
+		ajStrAssS(&(ret)->Domid, temp_domid);
+		ajStrAssS(&(ret)->Ligid, temp_ligid);
 		
 		if(ajStrMatchC(type, "INTRA"))
 		{
@@ -673,9 +746,12 @@ AjPCmap ajCmapReadNew(AjPFile inf, ajint mode, ajint chn, ajint mod)
 		    (ret)->Ncon = smcon;
 		}
 		else if(ajStrMatchC(type, "LIGAND"))
-		{
+		  {
 		    ret->Type = ajLIGAND;
 		    (ret)->Ncon = licon;
+		    ret->ns = ns;
+		    ret->sn = sn;
+		    ajStrAssS(&ret->Desc, desc);
 		}
 		else
 		    ajFatal("Unrecognised contact type");
@@ -693,7 +769,9 @@ AjPCmap ajCmapReadNew(AjPFile inf, ajint mode, ajint chn, ajint mod)
 	}
 
 	/* SM */
-	else if((ajStrPrefixC(line, "SM")) && (md==mod) && (idok))
+	else if((ajStrPrefixC(line, "SM")) && 
+		((md==mod) || ((chn==0)&&(mod==0)&&(mode==CMAP_MODE_I)))
+		&& (idok))
 	{
 	    ajFmtScanS(line, "%*s %*s %d %*c %*s %d", &x, &y);
 
@@ -709,12 +787,14 @@ AjPCmap ajCmapReadNew(AjPFile inf, ajint mode, ajint chn, ajint mod)
 	}
 
 	/* LI */
-	else if((ajStrPrefixC(line, "LI")) && (md==mod) && (idok))
+	else if((ajStrPrefixC(line, "LI")) && 
+		((md==mod) || ((chn==0)&&(mod==0)&&(mode==CMAP_MODE_I)))
+		&& (idok))
 	{
 	    ajFmtScanS(line, "%*s %*s %d", &x);
 
 	    /* Check residue number is in range */
-	    if((x>(ret)->Dim) || (y>(ret)->Dim))
+	    if((x>(ret)->Dim))
 		ajFatal("Fatal attempt to write bad data in "
 			"ajCmapReadNew\nEmail culprit: "
 			"jison@hgmp.mrc.ac.uk\n");
@@ -726,13 +806,6 @@ AjPCmap ajCmapReadNew(AjPFile inf, ajint mode, ajint chn, ajint mod)
 	}
     }
 
-    if(!valid_id)
-    {
-	ajWarn("No valid ID in contact map file");	
-	ajStrDel(&seq1);
-	ajStrDel(&seq2);
-	return NULL;
-    }
     
     ajStrDel(&seq1);
     ajStrDel(&seq2);
@@ -1970,6 +2043,7 @@ AjPCmap ajCmapNew(ajint n)
     ret->Ligid = ajStrNew();    	
     ret->Seq1  = ajStrNew();
     ret->Seq2  = ajStrNew();
+    ret->Desc  = ajStrNew();
     ret->Chid1 = '.';
     ret->Chid2 = '.';
        
@@ -2339,6 +2413,9 @@ void ajCmapDel(AjPCmap *ptr)
     if((*ptr)->Seq2)
 	ajStrDel(&(*ptr)->Seq2);
 
+    if((*ptr)->Desc)
+        ajStrDel(&(*ptr)->Desc);
+
     if((*ptr)->Mat)
 	ajInt2dDel(&(*ptr)->Mat);
 
@@ -2636,6 +2713,1812 @@ AjBool ajPdbCopy(AjPPdb *to, const AjPPdb from)
 ** changes.
 **
 ****************************************************************************/
+
+
+
+/* @func ajAtomSSEnv **********************************************************
+** Assigns secondary structure environment of a residue
+** @param  [r] atom [AjPAtom]    Atom object
+** @param  [w] SEnv [char] Character for the Secondary structure environment
+** @return [AjBool]
+** @@
+******************************************************************************/
+/*Function to assign environment class*/
+AjBool   ajAtomSSEnv(AjPAtom atom, char *SEnv, AjPFile logf)
+{
+    *SEnv='\0';
+    ajFmtPrintF(logf, "R:%c-%d S:%c A:%.2f\n", atom->Id1, atom->Idx, 
+		atom->eStrideType, atom->side_rel);
+  
+    if(atom->eStrideType == 'H' || atom->eStrideType == 'G')
+	*SEnv='H';
+    else if(atom->eStrideType == 'E' || atom->eStrideType == 'B' || atom->eStrideType == 'b')
+	*SEnv='S';
+    else if(atom->eStrideType == 'T' || atom->eStrideType == 'C' || atom->eStrideType == 'I')
+	*SEnv='C';
+    else if(atom->eStrideType == '.')	/*If no stride assignment, get pdb assignment*/
+    {
+	if(atom->eType == 'H')
+	    *SEnv='H';
+	else if(atom->eType == 'E')
+	    *SEnv='S';
+	else if(atom->eType == 'C' || atom->eType == 'T')
+	    *SEnv='C';
+	else if(atom->eType == '.')
+	{
+	    /* ajFmtPrintF(logf, "SEnv unassigned for residue %d\n", atom->Idx); */
+	    *SEnv='\0';
+	    return ajFalse;
+	}
+    }
+
+    return ajTrue;
+}
+
+
+
+
+
+
+
+/* @func ajAtomEnv1 ***********************************************************
+** Assigns environment based only of side chain accessibility and secondary
+** structure.
+** @param [r] atom [AjPAtom]         AtomStride object
+** @param [w] OEnv [char]            Character for the overall environment class 
+** @return [ajint]                   Number of environments
+** @@
+******************************************************************************/
+ajint   ajAtomEnv1(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
+{
+    if(SEnv=='\0')
+    {
+	ajStrClear(OEnv);
+	return 0;
+    }
+  
+    if((atom->side_rel <= 15) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AA");
+    else if((atom->side_rel <= 15) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AB");
+    else if((atom->side_rel <= 15) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AC");
+    else if((atom->side_rel > 15) && (atom->side_rel <= 30) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AD"); 
+    else if((atom->side_rel > 15) && (atom->side_rel <= 30) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AE");
+    else if((atom->side_rel > 15) && (atom->side_rel <= 30) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AF");
+    else if((atom->side_rel > 30) && (atom->side_rel <= 45) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AG");
+    else if((atom->side_rel > 30) && (atom->side_rel <= 45) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AH");
+    else if((atom->side_rel > 30) && (atom->side_rel <= 45) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AI");
+    else if((atom->side_rel > 45) && (atom->side_rel <= 60) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AJ");
+    else if((atom->side_rel > 45) && (atom->side_rel <= 60) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AK");
+    else if((atom->side_rel > 45) && (atom->side_rel <= 60) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AL");
+    else if((atom->side_rel > 60) && (atom->side_rel <= 75) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AM");
+    else if((atom->side_rel > 60) && (atom->side_rel <= 75) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AN");  
+    else if((atom->side_rel > 60) && (atom->side_rel <= 75) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AO"); 
+    else if((atom->side_rel > 75) && (atom->side_rel <= 90) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AP");
+    else if((atom->side_rel > 75) && (atom->side_rel <= 90) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AQ");
+    else if((atom->side_rel > 75) && (atom->side_rel <= 90) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AR");
+    else if((atom->side_rel > 90) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AS");  
+    else if((atom->side_rel > 90) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AT");
+    else if((atom->side_rel > 90) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AU");
+    else
+    {
+	ajStrClear(OEnv);
+	/* ajFmtPrintF(logf, "OEnv unassigned for residue %d\n", atom->Idx); */
+	return ajFalse;
+    }
+
+    /*The total number of environments*/
+    return 21;
+}
+
+
+
+
+
+
+
+/* @func ajAtomEnv2 ***********************************************************
+** Assigns environment based on side chain accessibility and secondary 
+** structure.
+** @param [r] atom [AjPAtom]         AtomStride object
+** @param [w] OEnv [char]            Character for the overall environment class 
+** @return [ajint]
+** @@
+******************************************************************************/
+ajint   ajAtomEnv2(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
+{
+    float BLimit=40;			/*Upper limit for the relative solvent accessible area for a buried residue*/
+    float PBLimit=114;			/*Upper limit for the relative solvent accessible area for a Parially buried residue*/
+  
+    float HLimit=45;			/*Upper limit for the fraction polar measure of a Hydrophobic residue*/
+    float MPLimit=67;			/*Upper limit for the fraction polar measure of a Moderately oplar residue*/
+  
+    AjPStr   BEnv=NULL;
+
+    if(!atom)
+    {
+	ajWarn("No atom to ajAtomEnv");
+	return ajFalse;
+    }
+  
+    ajStrClear(OEnv);
+    BEnv=ajStrNew();
+
+    ajFmtPrintF(logf, "R:%c-%d S:%c A:%.2f f:%.2f\n", atom->Id1, atom->Idx, atom->eType, atom->side_rel, atom->pol_rel);
+  
+    /*Assign the basic classes*/
+
+    /*Buried, Hydrophobic*/
+    if((atom->side_rel <= BLimit) && (atom->pol_rel <= HLimit))
+	ajStrAssC(&BEnv, "B1");  
+    /*buried, moderately polar*/
+    else if((atom->side_rel <= BLimit) && (atom->pol_rel > HLimit) && (atom->pol_rel <= MPLimit)) 
+	ajStrAssC(&BEnv, "B2");
+    /*buried, polar*/
+    else if((atom->side_rel <= BLimit) && (atom->pol_rel > MPLimit))
+	ajStrAssC(&BEnv, "B3");
+    /*Partially buried, moderately Polar*/
+    else if((atom->side_rel > BLimit) && (atom->side_rel <= PBLimit) &&  (atom->pol_rel <= MPLimit))
+	ajStrAssC(&BEnv, "P1");
+    /*Partially buried, Polar*/
+    else if((atom->side_rel > BLimit) && (atom->side_rel <= PBLimit) && (atom->pol_rel > MPLimit))
+	ajStrAssC(&BEnv, "P2");
+    /*Exposed*/
+    else if(atom->side_rel > PBLimit)
+	ajStrAssC(&BEnv, "E");
+    else
+    {
+	ajStrClear(OEnv);
+	ajFmtPrintF(logf, "BEnv unassigned for residue %d\n", atom->Idx);
+	return 0;
+    }
+  
+    /*Assign overall environment class*/
+    if((ajStrMatchC(BEnv, "B1")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AA");
+    else if((ajStrMatchC(BEnv, "B1")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AB");
+    else if((ajStrMatchC(BEnv, "B1")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AC");
+    else if((ajStrMatchC(BEnv, "B2")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AD");
+    else if((ajStrMatchC(BEnv, "B2")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AE");
+    else if((ajStrMatchC(BEnv, "B2")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AF");
+    else if((ajStrMatchC(BEnv, "B3")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AG");
+    else if((ajStrMatchC(BEnv, "B3")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AH");
+    else if((ajStrMatchC(BEnv, "B3")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AI");
+    else if((ajStrMatchC(BEnv, "P1")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AJ");
+    else if((ajStrMatchC(BEnv, "P1")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AK");
+    else if((ajStrMatchC(BEnv, "P1")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AL");
+    else if((ajStrMatchC(BEnv, "P2")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AM");
+    else if((ajStrMatchC(BEnv, "P2")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AN");
+    else if((ajStrMatchC(BEnv, "P2")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AO");
+    else if((ajStrMatchC(BEnv, "E")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AP");
+    else if((ajStrMatchC(BEnv, "E")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AQ");
+    else if((ajStrMatchC(BEnv, "E")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AR");
+    else
+    {
+	ajStrClear(OEnv);
+	ajFmtPrintF(logf, "OEnv unassigned for residue %d\n", atom->Idx);
+	return ajFalse;
+    }
+
+    ajStrDel(&BEnv);
+
+    return 18;
+
+}
+
+
+
+
+
+
+
+/* @func ajAtomEnv3 ***********************************************************
+** Assigns environment based on side chain accessibility and secondary
+** structure.
+** @param [r] atom [AjPAtom]         AtomStride object
+** @param [w] OEnv [char]            Character for the overall environment class 
+** @return [ajint]
+** @@
+******************************************************************************/
+ajint   ajAtomEnv3(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
+{
+    float BLimit=5;			/*Upper limit for the relative solvent accessible area for a buried residue*/
+    float PBLimit=25;			/*Upper limit for the relative solvent accessible area for a Parially buried residue*/
+  
+    float PolLimit1=10;
+    float PolLimit2=30;
+    float PolLimit3=50;
+    float PolLimit4=80;
+
+  
+    AjPStr   BEnv=NULL;
+
+    if(!atom)
+    {
+	ajWarn("No atom to ajAtomEnv");
+	return 0;
+    }
+  
+    ajStrClear(OEnv);
+    BEnv=ajStrNew();
+
+    ajFmtPrintF(logf, "R:%c-%d S:%c A:%.2f f:%.2f\n", atom->Id1, atom->Idx, atom->eType, atom->side_rel, atom->pol_rel);
+  
+    /*Assign the basic classes*/
+
+    /*Buried, Hydrophobic*/
+    if((atom->side_rel <= BLimit) && (atom->pol_rel <= PolLimit1))
+	ajStrAssC(&BEnv, "B1");  
+    /*buried, moderately polar*/
+    else if((atom->side_rel <= BLimit) && (atom->pol_rel > PolLimit1) && (atom->pol_rel <= PolLimit2)) 
+	ajStrAssC(&BEnv, "B2");
+    else if((atom->side_rel <= BLimit) && (atom->pol_rel > PolLimit2) && (atom->pol_rel <= PolLimit3)) 
+	ajStrAssC(&BEnv, "B3");
+    else if((atom->side_rel <= BLimit) && (atom->pol_rel > PolLimit3) && (atom->pol_rel <= PolLimit4)) 
+	ajStrAssC(&BEnv, "B4");
+    else if((atom->side_rel <= BLimit) && (atom->pol_rel > PolLimit4)) 
+	ajStrAssC(&BEnv, "B5");
+    /*Partially buried, moderately Polar*/
+    else if((atom->side_rel > BLimit) && (atom->side_rel <= PBLimit) &&  (atom->pol_rel <= PolLimit3))
+	ajStrAssC(&BEnv, "P1");
+    /*Partially buried, Polar*/
+    else if((atom->side_rel > BLimit) && (atom->side_rel <= PBLimit) && (atom->pol_rel > PolLimit3))
+	ajStrAssC(&BEnv, "P2");
+    /*Exposed*/
+    else if(atom->side_rel > PBLimit)
+	ajStrAssC(&BEnv, "E");
+    else
+    {
+	ajStrClear(OEnv);
+	ajFmtPrintF(logf, "BEnv unassigned for residue %d\n", atom->Idx);
+	return 0;
+    }
+  
+    /*Assign overall environment class*/
+    if((ajStrMatchC(BEnv, "B1")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AA");
+    else if((ajStrMatchC(BEnv, "B1")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AB");
+    else if((ajStrMatchC(BEnv, "B1")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AC");
+    else if((ajStrMatchC(BEnv, "B2")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AD");
+    else if((ajStrMatchC(BEnv, "B2")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AE");
+    else if((ajStrMatchC(BEnv, "B2")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AF");
+    else if((ajStrMatchC(BEnv, "B3")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AG");
+    else if((ajStrMatchC(BEnv, "B3")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AH");
+    else if((ajStrMatchC(BEnv, "B3")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AI");
+    else if((ajStrMatchC(BEnv, "B4")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AJ");
+    else if((ajStrMatchC(BEnv, "B4")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AK");
+    else if((ajStrMatchC(BEnv, "B4")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AL"); 
+    else if((ajStrMatchC(BEnv, "B5")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AM");
+    else if((ajStrMatchC(BEnv, "B5")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AN");
+    else if((ajStrMatchC(BEnv, "B5")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AO");
+    else if((ajStrMatchC(BEnv, "P1")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AP");
+    else if((ajStrMatchC(BEnv, "P1")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AQ");
+    else if((ajStrMatchC(BEnv, "P1")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AR");
+    else if((ajStrMatchC(BEnv, "P2")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AS");
+    else if((ajStrMatchC(BEnv, "P2")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AT");
+    else if((ajStrMatchC(BEnv, "P2")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AU");
+    else if((ajStrMatchC(BEnv, "E")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AV");
+    else if((ajStrMatchC(BEnv, "E")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AW");
+    else if((ajStrMatchC(BEnv, "E")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AX");
+    else
+    {
+	ajStrClear(OEnv);
+	ajFmtPrintF(logf, "OEnv unassigned for residue %d\n", atom->Idx);
+	return ajFalse;
+    }
+
+    ajStrDel(&BEnv);
+
+    return 24;
+
+}
+
+/* @func ajAtomEnv4 ***********************************************************
+** Assigns environment based only of side chain accessibility and secondary 
+** structure.
+** @param [r] atom [AjPAtom]         AtomStride object
+** @param [w] OEnv [char]            Character for the overall environment class 
+** @return [ajint]
+** @@
+******************************************************************************/
+ajint   ajAtomEnv4(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
+{
+    ajStrClear(OEnv);
+    if(SEnv=='\0')
+    {
+	ajStrClear(OEnv);
+	return 0;
+    }
+  
+    if((atom->side_rel <= 5) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AA");
+    else if((atom->side_rel <= 5) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AB");
+    else if((atom->side_rel <= 5) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AC");
+    else if((atom->side_rel > 5) && (atom->side_rel <= 25) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AD");
+    else if((atom->side_rel > 5) && (atom->side_rel <= 25) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AE");
+    else if((atom->side_rel > 5) && (atom->side_rel <= 25) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AF");
+    else if((atom->side_rel > 25) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AG");
+    else if((atom->side_rel > 25) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AH");
+    else if((atom->side_rel > 25) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AI");
+    else
+    {
+	ajStrClear(OEnv);
+	/* ajFmtPrintF(logf, "OEnv unassigned for residue %d\n", atom->Idx); */
+	return 0;
+    }
+
+    return 9;
+
+}
+
+
+
+
+
+
+
+/* @func ajAtomEnv5 ***********************************************************
+** Assigns environment based on side chain accessibility and secondary 
+** structure.
+** @param [r] atom [AjPAtom]         AtomStride object
+** @param [w] OEnv [char]            Character for the overall environment class 
+** @return [ajint]
+** @@
+******************************************************************************/
+ajint   ajAtomEnv5(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
+{
+    float BLimit=5;			/*Upper limit for the relative solvent accessible area for a buried residue*/
+    float PBLimit=25;			/*Upper limit for the relative solvent accessible area for a Parially buried residue*/
+  
+    float PolLimit1=10;
+    float PolLimit2=30;
+    float PolLimit3=50;
+    float PolLimit4=80;
+
+  
+    AjPStr   BEnv=NULL;
+
+    if(!atom)
+    {
+	ajWarn("No atom to ajAtomEnv");
+	return 0;
+    }
+  
+    ajStrClear(OEnv);
+    BEnv=ajStrNew();
+
+    ajFmtPrintF(logf, "R:%c-%d S:%c A:%.2f f:%.2f\n", atom->Id1, atom->Idx, atom->eType, atom->side_rel, atom->pol_rel);
+  
+    /*Assign the basic classes*/
+
+    /*Buried*/
+    if(atom->side_rel <= BLimit)
+	ajStrAssC(&BEnv, "B");  
+    /*partially buried, hydrophobic*/
+    else if((atom->side_rel > BLimit) && (atom->side_rel <= PBLimit) && (atom->pol_rel <= PolLimit1))
+	ajStrAssC(&BEnv, "P1");  
+    /*partially buried, moderately polar*/
+    else if((atom->side_rel > BLimit) && (atom->side_rel <= PBLimit) && (atom->pol_rel > PolLimit1) && (atom->pol_rel <= PolLimit2)) 
+	ajStrAssC(&BEnv, "P2");
+    else if((atom->side_rel > BLimit) && (atom->side_rel <= PBLimit) && (atom->pol_rel > PolLimit2) && (atom->pol_rel <= PolLimit3)) 
+	ajStrAssC(&BEnv, "P3");
+    else if((atom->side_rel > BLimit) && (atom->side_rel <= PBLimit) && (atom->pol_rel > PolLimit3) && (atom->pol_rel <= PolLimit4)) 
+	ajStrAssC(&BEnv, "P4");
+    /*partially buried, polar*/
+    else if((atom->side_rel > BLimit) && (atom->side_rel <= PBLimit) && (atom->pol_rel > PolLimit4)) 
+	ajStrAssC(&BEnv, "P5");
+    /*Exposed, moderately Polar*/
+    else if((atom->side_rel > PBLimit) &&  (atom->pol_rel <= PolLimit3))
+	ajStrAssC(&BEnv, "E1");
+    /*Exposed, Polar*/
+    else if((atom->side_rel > PBLimit) && (atom->pol_rel > PolLimit3))
+	ajStrAssC(&BEnv, "E2");
+    else
+    {
+	ajStrClear(OEnv);
+	ajFmtPrintF(logf, "BEnv unassigned for residue %d\n", atom->Idx);
+	return 0;
+    }
+  
+    /*Assign overall environment class*/
+    if((ajStrMatchC(BEnv, "B")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AA");
+    else if((ajStrMatchC(BEnv, "B")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AB");
+    else if((ajStrMatchC(BEnv, "B")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AC");
+    else if((ajStrMatchC(BEnv, "P1")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AD");
+    else if((ajStrMatchC(BEnv, "P1")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AE");
+    else if((ajStrMatchC(BEnv, "P1")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AF");
+    else if((ajStrMatchC(BEnv, "P2")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AG");
+    else if((ajStrMatchC(BEnv, "P2")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AH");
+    else if((ajStrMatchC(BEnv, "P2")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AI");
+    else if((ajStrMatchC(BEnv, "P3")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AJ");
+    else if((ajStrMatchC(BEnv, "P3")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AK");
+    else if((ajStrMatchC(BEnv, "P3")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AL"); 
+    else if((ajStrMatchC(BEnv, "P4")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AM");
+    else if((ajStrMatchC(BEnv, "P4")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AN");
+    else if((ajStrMatchC(BEnv, "P4")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AO");
+    else if((ajStrMatchC(BEnv, "P5")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AP");
+    else if((ajStrMatchC(BEnv, "P5")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AQ");
+    else if((ajStrMatchC(BEnv, "P5")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AR");
+    else if((ajStrMatchC(BEnv, "E1")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AS");
+    else if((ajStrMatchC(BEnv, "E1")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AT");
+    else if((ajStrMatchC(BEnv, "E1")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AU");
+    else if((ajStrMatchC(BEnv, "E2")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AV");
+    else if((ajStrMatchC(BEnv, "E2")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AW");
+    else if((ajStrMatchC(BEnv, "E2")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AX");
+    else
+    {
+	ajStrClear(OEnv);
+	ajFmtPrintF(logf, "OEnv unassigned for residue %d\n", atom->Idx);
+	return ajFalse;
+    }
+
+    ajStrDel(&BEnv);
+
+    return 24;
+
+}
+
+
+
+
+
+
+
+
+/* @func ajAtomEnv6 ***********************************************************
+** Assigns environment based on side chain accessibility and secondary 
+** structure.
+** @param [r] atom [AjPAtom]         AtomStride object
+** @param [w] OEnv [char]            Character for the overall environment class 
+** @return [ajint]
+** @@
+******************************************************************************/
+ajint   ajAtomEnv6(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
+{
+    float BLimit=5;			/*Upper limit for the relative solvent accessible area for a buried residue*/
+    float PBLimit=25;			/*Upper limit for the relative solvent accessible area for a Parially buried residue*/
+  
+    float PolLimit1=10;
+    float PolLimit2=30;
+    float PolLimit3=50;
+    float PolLimit4=80;
+
+  
+    AjPStr   BEnv=NULL;
+
+    if(!atom)
+    {
+	ajWarn("No atom to ajAtomEnv");
+	return 0;
+    }
+  
+    ajStrClear(OEnv);
+    BEnv=ajStrNew();
+
+    ajFmtPrintF(logf, "R:%c-%d S:%c A:%.2f f:%.2f\n", atom->Id1, atom->Idx, atom->eType, atom->side_rel, atom->pol_rel);
+  
+    /*Assign the basic classes*/
+
+    /*Buried*/
+    if(atom->side_rel <= BLimit)
+	ajStrAssC(&BEnv, "B");  
+    /*Partially buried, hydrophobic*/
+    else if((atom->side_rel > BLimit) && (atom->side_rel <= PBLimit) &&  (atom->pol_rel <= PolLimit3))
+	ajStrAssC(&BEnv, "P1");
+    /*Partially buried, Polar*/
+    else if((atom->side_rel > BLimit) && (atom->side_rel <= PBLimit) && (atom->pol_rel > PolLimit3))
+	ajStrAssC(&BEnv, "P2");
+    /*partially buried, hydrophobic*/
+    else if((atom->side_rel > PBLimit) && (atom->pol_rel <= PolLimit1))
+	ajStrAssC(&BEnv, "E1");  
+    /*partially buried, moderately polar*/
+    else if((atom->side_rel > PBLimit) && (atom->pol_rel > PolLimit1) && (atom->pol_rel <= PolLimit2)) 
+	ajStrAssC(&BEnv, "E2");
+    else if((atom->side_rel > PBLimit) && (atom->pol_rel > PolLimit2) && (atom->pol_rel <= PolLimit3)) 
+	ajStrAssC(&BEnv, "E3");
+    else if((atom->side_rel > PBLimit) && (atom->pol_rel > PolLimit3) && (atom->pol_rel <= PolLimit4)) 
+	ajStrAssC(&BEnv, "E4");
+    /*partially buried, polar*/
+    else if((atom->side_rel > PBLimit) && (atom->pol_rel > PolLimit4)) 
+	ajStrAssC(&BEnv, "E5");
+    else
+    {
+	ajStrClear(OEnv);
+	ajFmtPrintF(logf, "BEnv unassigned for residue %d\n", atom->Idx);
+	return 0;
+    }
+  
+    /*Assign overall environment class*/
+    if((ajStrMatchC(BEnv, "B")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AA");
+    else if((ajStrMatchC(BEnv, "B")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AB");
+    else if((ajStrMatchC(BEnv, "B")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AC");
+    else if((ajStrMatchC(BEnv, "P1")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AD");
+    else if((ajStrMatchC(BEnv, "P1")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AE");
+    else if((ajStrMatchC(BEnv, "P1")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AF");
+    else if((ajStrMatchC(BEnv, "P2")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AG");
+    else if((ajStrMatchC(BEnv, "P2")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AH");
+    else if((ajStrMatchC(BEnv, "P2")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AI");
+    else if((ajStrMatchC(BEnv, "E1")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AJ");
+    else if((ajStrMatchC(BEnv, "E1")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AK");
+    else if((ajStrMatchC(BEnv, "E1")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AL"); 
+    else if((ajStrMatchC(BEnv, "E2")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AM");
+    else if((ajStrMatchC(BEnv, "E2")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AN");
+    else if((ajStrMatchC(BEnv, "E2")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AO");
+    else if((ajStrMatchC(BEnv, "E3")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AP");
+    else if((ajStrMatchC(BEnv, "E3")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AQ");
+    else if((ajStrMatchC(BEnv, "E3")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AR");
+    else if((ajStrMatchC(BEnv, "E4")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AS");
+    else if((ajStrMatchC(BEnv, "E4")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AT");
+    else if((ajStrMatchC(BEnv, "E4")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AU");
+    else if((ajStrMatchC(BEnv, "E5")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AV");
+    else if((ajStrMatchC(BEnv, "E5")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AW");
+    else if((ajStrMatchC(BEnv, "E5")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AX");
+    else
+    {
+	ajStrClear(OEnv);
+	ajFmtPrintF(logf, "OEnv unassigned for residue %d\n", atom->Idx);
+	return ajFalse;
+    }
+
+    ajStrDel(&BEnv);
+
+    return 24;
+
+}
+
+
+
+
+
+
+
+
+
+/* @func ajAtomEnv7 ***********************************************************
+** Assigns environment based on side chain accessibility and secondary 
+** structure.
+** @param [r] atom [AjPAtom]         AtomStride object
+** @param [w] OEnv [char]            Character for the overall environment class 
+** @return [AjBool]
+** @@
+******************************************************************************/
+ajint   ajAtomEnv7(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
+{
+    float BLimit=5;			/*Upper limit for the relative solvent accessible area for a buried residue*/
+    float PBLimit=25;			/*Upper limit for the relative solvent accessible area for a Parially buried residue*/
+  
+    float PolLimit1=10;
+    float PolLimit2=50;
+    float PolLimit3=90;
+  
+    AjPStr   BEnv=NULL;
+
+    if(!atom)
+    {
+	ajWarn("No atom to ajAtomEnv");
+	return 0;
+    }
+  
+    ajStrClear(OEnv);
+    BEnv=ajStrNew();
+
+    ajFmtPrintF(logf, "R:%c-%d S:%c A:%.2f f:%.2f\n", atom->Id1, atom->Idx, atom->eType, atom->side_rel, atom->pol_rel);
+  
+    /*Assign the basic classes*/
+
+    /*Buried*/
+    if((atom->side_rel <= BLimit) && (atom->pol_rel <=PolLimit1))
+	ajStrAssC(&BEnv, "B1");  
+    else if((atom->side_rel <= BLimit) && (atom->pol_rel > PolLimit1) && (atom->pol_rel <= PolLimit3))
+	ajStrAssC(&BEnv, "B2"); 
+    else if((atom->side_rel <= BLimit) && (atom->pol_rel > PolLimit3))
+	ajStrAssC(&BEnv, "B3");
+    else if((atom->side_rel > BLimit) && (atom->side_rel <= PBLimit))
+	ajStrAssC(&BEnv, "P");
+    else if((atom->side_rel > PBLimit) && (atom->pol_rel <= PolLimit1))
+	ajStrAssC(&BEnv, "E1");
+    else if((atom->side_rel > PBLimit) && (atom->pol_rel > PolLimit1) && (atom->pol_rel <= PolLimit2))
+	ajStrAssC(&BEnv, "E2");
+    else if((atom->side_rel > PBLimit) && (atom->pol_rel > PolLimit2) && (atom->pol_rel <= PolLimit3))
+	ajStrAssC(&BEnv, "E3");
+    else if((atom->side_rel > PBLimit) && (atom->pol_rel > PolLimit3))
+	ajStrAssC(&BEnv, "E4");
+    else
+    {
+	ajStrClear(OEnv);
+	ajFmtPrintF(logf, "BEnv unassigned for residue %d\n", atom->Idx);
+	return 0;
+    }
+  
+    /*Assign overall environment class*/
+    if((ajStrMatchC(BEnv, "B1")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AA");
+    else if((ajStrMatchC(BEnv, "B1")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AB");
+    else if((ajStrMatchC(BEnv, "B1")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AC");
+    else if((ajStrMatchC(BEnv, "B2")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AD");
+    else if((ajStrMatchC(BEnv, "B2")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AE");
+    else if((ajStrMatchC(BEnv, "B2")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AF");
+    else if((ajStrMatchC(BEnv, "B3")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AG");
+    else if((ajStrMatchC(BEnv, "B3")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AH");
+    else if((ajStrMatchC(BEnv, "B3")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AI");
+    else if((ajStrMatchC(BEnv, "P")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AJ");
+    else if((ajStrMatchC(BEnv, "P")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AK");
+    else if((ajStrMatchC(BEnv, "P")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AL"); 
+    else if((ajStrMatchC(BEnv, "E1")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AM");
+    else if((ajStrMatchC(BEnv, "E1")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AN");
+    else if((ajStrMatchC(BEnv, "E1")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AO");
+    else if((ajStrMatchC(BEnv, "E2")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AP");
+    else if((ajStrMatchC(BEnv, "E2")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AQ");
+    else if((ajStrMatchC(BEnv, "E2")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AR");
+    else if((ajStrMatchC(BEnv, "E3")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AS");
+    else if((ajStrMatchC(BEnv, "E3")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AT");
+    else if((ajStrMatchC(BEnv, "E3")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AU");
+    else if((ajStrMatchC(BEnv, "E4")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AV");
+    else if((ajStrMatchC(BEnv, "E4")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AW");
+    else if((ajStrMatchC(BEnv, "E4")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AX");
+    else
+    {
+	ajStrClear(OEnv);
+	ajFmtPrintF(logf, "OEnv unassigned for residue %d\n", atom->Idx);
+	return 0;
+    }
+
+    ajStrDel(&BEnv);
+
+    return 24;
+
+}
+
+
+
+
+
+
+/* @func ajAtomEnv8 ***********************************************************
+** Assigns environment based only of side chain accessibility and secondary 
+** structure.
+** @param [r] atom [AjPAtom]         AtomStride object
+** @param [w] OEnv [char]            Character for the overall environment class 
+** @return [ajint]
+** @@
+******************************************************************************/
+ajint   ajAtomEnv8(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
+{
+    ajStrClear(OEnv);
+    if(SEnv=='\0')
+    {
+	ajStrClear(OEnv);
+	return 0;
+    }
+  
+    if((atom->pol_rel <= 15) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AA");
+    else if((atom->pol_rel <= 15) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AB");
+    else if((atom->pol_rel <= 15) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AC");
+    else if((atom->pol_rel > 15) && (atom->pol_rel <= 30) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AD");
+    else if((atom->pol_rel > 15) && (atom->pol_rel <= 30) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AE");
+    else if((atom->pol_rel > 15) && (atom->pol_rel <= 30) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AF");
+    else if((atom->pol_rel > 30) && (atom->pol_rel <= 45) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AG");
+    else if((atom->pol_rel > 30) && (atom->pol_rel <= 45) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AH");
+    else if((atom->pol_rel > 30) && (atom->pol_rel <= 45) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AI");
+    else if((atom->pol_rel > 45) && (atom->pol_rel <= 60) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AJ");
+    else if((atom->pol_rel > 45) && (atom->pol_rel <= 60) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AK");
+    else if((atom->pol_rel > 45) && (atom->pol_rel <= 60) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AL");
+    else if((atom->pol_rel > 60) && (atom->pol_rel <= 75) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AM");
+    else if((atom->pol_rel > 60) && (atom->pol_rel <= 75) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AN");  
+    else if((atom->pol_rel > 60) && (atom->pol_rel <= 75) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AO"); 
+    else if((atom->pol_rel > 75) && (atom->pol_rel <= 90) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AP");
+    else if((atom->pol_rel > 75) && (atom->pol_rel <= 90) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AQ");
+    else if((atom->pol_rel > 75) && (atom->pol_rel <= 90) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AR");
+    else if((atom->pol_rel > 90) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AS");  
+    else if((atom->pol_rel > 90)&& (SEnv == 'S'))
+	ajStrAssC(OEnv,"AT");
+    else if((atom->pol_rel > 90)&& (SEnv == 'C'))
+	ajStrAssC(OEnv,"AU");
+    else
+    {
+	ajStrClear(OEnv);
+	/* ajFmtPrintF(logf, "OEnv unassigned for residue %d\n", atom->Idx); */
+	return 0;
+    }
+
+    return 21;
+
+}
+
+
+
+
+
+
+/* @func ajAtomEnv9 ***********************************************************
+** Assigns environment based only of side chain accessibility and secondary 
+** structure.
+** @param [r] atom [AjPAtom]         AtomStride object
+** @param [w] OEnv [char]            Character for the overall environment class 
+** @return [ajint]
+** @@
+******************************************************************************/
+ajint   ajAtomEnv9(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
+{
+    ajStrClear(OEnv);
+    if(SEnv=='\0')
+    {
+	ajStrClear(OEnv);
+	return 0;
+    }
+  
+    if((atom->pol_rel <= 5) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AA");
+    else if((atom->pol_rel <= 5) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AB");
+    else if((atom->pol_rel <= 5) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AC");
+    else if((atom->pol_rel > 5) && (atom->pol_rel <= 25) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AD");
+    else if((atom->pol_rel > 5) && (atom->pol_rel <= 25) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AE");
+    else if((atom->pol_rel > 5) && (atom->pol_rel <= 25) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AF");
+    else if((atom->pol_rel > 25) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AG");
+    else if((atom->pol_rel > 25) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AH");
+    else if((atom->pol_rel > 25) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AI");
+    else
+    {
+	ajStrClear(OEnv);
+	/* ajFmtPrintF(logf, "OEnv unassigned for residue %d\n", atom->Idx); */
+	return 0;
+    }
+
+    return 9;
+
+}
+
+
+
+
+
+
+/* @func ajAtomEnv10 **********************************************************
+** Assigns environment based on side chain accessibility and secondary 
+** structure.
+** @param [r] atom [AjPAtom]         AtomStride object
+** @param [w] OEnv [char]            Character for the overall environment class 
+** @return [ajint]
+** @@
+******************************************************************************/
+ajint   ajAtomEnv10(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
+{
+    float BLimit=5;			/*Upper limit for the relative solvent accessible area for a buried residue*/
+    float PBLimit=25;			/*Upper limit for the relative solvent accessible area for a Parially buried residue*/
+  
+    float HLimit=5;			/*Upper limit for the fraction polar measure of a Hydrophobic residue*/
+    float MPLimit=25;			/*Upper limit for the fraction polar measure of a Moderately oplar residue*/
+  
+    AjPStr   BEnv=NULL;
+
+    if(!atom)
+    {
+	ajWarn("No atom to ajAtomEnv");
+	return 0;
+    }
+  
+    ajStrClear(OEnv);
+    BEnv=ajStrNew();
+
+    ajFmtPrintF(logf, "R:%c-%d S:%c A:%.2f f:%.2f\n", atom->Id1, atom->Idx, atom->eType, atom->side_rel, atom->pol_rel);
+  
+    /*Assign the basic classes*/
+  
+    /*Buried, Hydrophobic*/
+    if((atom->side_rel <= BLimit) && (atom->pol_rel <= HLimit))
+	ajStrAssC(&BEnv, "B1");  
+    /*buried, moderately polar*/
+    else if((atom->side_rel <= BLimit) && (atom->pol_rel > HLimit) && (atom->pol_rel <= MPLimit)) 
+	ajStrAssC(&BEnv, "B2");
+    /*buried, polar*/
+    else if((atom->side_rel <= BLimit) && (atom->pol_rel > MPLimit))
+	ajStrAssC(&BEnv, "B3");
+    /*Partially buried, moderately hydrophobic*/
+    else if((atom->side_rel > BLimit) && (atom->side_rel <= PBLimit) && (atom->pol_rel <= HLimit))
+	ajStrAssC(&BEnv, "P1");
+    /*Partially buried, moderately polar*/
+    else if((atom->side_rel > BLimit) && (atom->side_rel <= PBLimit) && (atom->pol_rel > HLimit) &&(atom->pol_rel <= MPLimit))
+	ajStrAssC(&BEnv, "P2");
+    /*Partially buried, polar*/
+    else if((atom->side_rel > BLimit) && (atom->side_rel <= PBLimit) && (atom->pol_rel > MPLimit))
+	ajStrAssC(&BEnv, "P3");
+    /*Exposed, moderately polar*/
+    else if((atom->side_rel > PBLimit) && (atom->pol_rel <= MPLimit))
+	ajStrAssC(&BEnv, "E1");
+    /*Exposed, polar*/
+    else if((atom->side_rel > PBLimit) && (atom->pol_rel > MPLimit))
+	ajStrAssC(&BEnv, "E2");
+    else
+    {
+	ajStrClear(OEnv);
+	ajFmtPrintF(logf, "BEnv unassigned for residue %d\n", atom->Idx);
+	return 0;
+    }
+  
+    /*Assign overall environment class*/
+    if((ajStrMatchC(BEnv, "B1")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AA");
+    else if((ajStrMatchC(BEnv, "B1")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AB");
+    else if((ajStrMatchC(BEnv, "B1")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AC");
+    else if((ajStrMatchC(BEnv, "B2")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AD");
+    else if((ajStrMatchC(BEnv, "B2")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AE");
+    else if((ajStrMatchC(BEnv, "B2")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AF");
+    else if((ajStrMatchC(BEnv, "B3")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AG");
+    else if((ajStrMatchC(BEnv, "B3")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AH");
+    else if((ajStrMatchC(BEnv, "B3")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AI");
+    else if((ajStrMatchC(BEnv, "P1")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AJ");
+    else if((ajStrMatchC(BEnv, "P1")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AK");
+    else if((ajStrMatchC(BEnv, "P1")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AL"); 
+    else if((ajStrMatchC(BEnv, "P2")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AM");
+    else if((ajStrMatchC(BEnv, "P2")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AN");
+    else if((ajStrMatchC(BEnv, "P2")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AO");
+    else if((ajStrMatchC(BEnv, "P3")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AP");
+    else if((ajStrMatchC(BEnv, "P3")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AQ");
+    else if((ajStrMatchC(BEnv, "P3")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AR");
+    else if((ajStrMatchC(BEnv, "E1")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AS");
+    else if((ajStrMatchC(BEnv, "E1")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AT");
+    else if((ajStrMatchC(BEnv, "E1")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AU");
+    else if((ajStrMatchC(BEnv, "E2")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AV");
+    else if((ajStrMatchC(BEnv, "E2")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AW");
+    else if((ajStrMatchC(BEnv, "E2")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AX");
+    else
+    {
+	ajStrClear(OEnv);
+	ajFmtPrintF(logf, "OEnv unassigned for residue %d\n", atom->Idx);
+	return 0;
+    }
+
+    ajStrDel(&BEnv);
+  
+    return 24;
+
+}
+
+
+
+
+
+
+
+
+
+
+/* @func ajAtomEnv11 **********************************************************
+** Assigns environment based on side chain accessibility and secondary 
+** structure.
+** @param [r] atom [AjPAtom]         AtomStride object
+** @param [w] OEnv [char]            Character for the overall environment class 
+** @return [ajing]
+** @@
+******************************************************************************/
+ajint   ajAtomEnv11(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
+{
+    float BLimit=5;			/*Upper limit for the relative solvent accessible area for a buried residue*/
+    float PBLimit=25;			/*Upper limit for the relative solvent accessible area for a Parially buried residue*/
+  
+    float PolLimit1=10;
+    float PolLimit2=30;
+    float PolLimit3=50;
+    float PolLimit4=70;
+    float PolLimit5=90;
+
+  
+    AjPStr   BEnv=NULL;
+
+    if(!atom)
+    {
+	ajWarn("No atom to ajAtomEnv");
+	return 0;
+    }
+  
+    ajStrClear(OEnv);
+    BEnv=ajStrNew();
+
+    ajFmtPrintF(logf, "R:%c-%d S:%c A:%.2f f:%.2f\n", atom->Id1, atom->Idx, atom->eType, atom->side_rel, atom->pol_rel);
+  
+    /*Assign the basic classes*/
+  
+    if((atom->side_rel <= BLimit) && (atom->pol_rel <= PolLimit1))
+	ajStrAssC(&BEnv, "B1");    
+    else if((atom->side_rel <= BLimit) && (atom->pol_rel > PolLimit1) && (atom->pol_rel <= PolLimit2)) 
+	ajStrAssC(&BEnv, "B2");
+    else if((atom->side_rel <= BLimit) && (atom->pol_rel > PolLimit2) && (atom->pol_rel <= PolLimit3)) 
+	ajStrAssC(&BEnv, "B3");
+    else if((atom->side_rel <= BLimit) && (atom->pol_rel > PolLimit3) && (atom->pol_rel <= PolLimit4)) 
+	ajStrAssC(&BEnv, "B4");
+    else if((atom->side_rel <= BLimit) && (atom->pol_rel > PolLimit4) && (atom->pol_rel <= PolLimit5)) 
+	ajStrAssC(&BEnv, "B5");
+    else if((atom->side_rel <= BLimit) && (atom->pol_rel > PolLimit5)) 
+	ajStrAssC(&BEnv, "B6");
+    else if((atom->side_rel > BLimit) && (atom->side_rel <= PBLimit))
+	ajStrAssC(&BEnv, "P");
+    else if(atom->side_rel > PBLimit)
+	ajStrAssC(&BEnv, "E");
+    else
+    {
+	ajStrClear(OEnv);
+	ajFmtPrintF(logf, "BEnv unassigned for residue %d\n", atom->Idx);
+	return 0;
+    }
+  
+    /*Assign overall environment class*/
+    if((ajStrMatchC(BEnv, "B1")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AA");
+    else if((ajStrMatchC(BEnv, "B1")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AB");
+    else if((ajStrMatchC(BEnv, "B1")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AC");
+    else if((ajStrMatchC(BEnv, "B2")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AD");
+    else if((ajStrMatchC(BEnv, "B2")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AE");
+    else if((ajStrMatchC(BEnv, "B2")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AF");
+    else if((ajStrMatchC(BEnv, "B3")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AG");
+    else if((ajStrMatchC(BEnv, "B3")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AH");
+    else if((ajStrMatchC(BEnv, "B3")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AI");
+    else if((ajStrMatchC(BEnv, "B4")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AJ");
+    else if((ajStrMatchC(BEnv, "B4")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AK");
+    else if((ajStrMatchC(BEnv, "B4")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AL"); 
+    else if((ajStrMatchC(BEnv, "B5")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AM");
+    else if((ajStrMatchC(BEnv, "B5")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AN");
+    else if((ajStrMatchC(BEnv, "B5")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AO");
+    else if((ajStrMatchC(BEnv, "B6")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AP");
+    else if((ajStrMatchC(BEnv, "B6")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AQ");
+    else if((ajStrMatchC(BEnv, "B6")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AR");
+    else if((ajStrMatchC(BEnv, "P")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AS");
+    else if((ajStrMatchC(BEnv, "P")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AT");
+    else if((ajStrMatchC(BEnv, "P")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AU");
+    else if((ajStrMatchC(BEnv, "E")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AV");
+    else if((ajStrMatchC(BEnv, "E")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AW");
+    else if((ajStrMatchC(BEnv, "E")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AX");
+    else
+    {
+	ajStrClear(OEnv);
+	ajFmtPrintF(logf, "OEnv unassigned for residue %d\n", atom->Idx);
+	return 0;
+    }
+
+    ajStrDel(&BEnv);
+
+    return 24;
+
+} 
+
+
+
+
+
+
+
+/* @func ajAtomEnv12 **********************************************************
+** Assigns environment based on side chain accessibility and secondary 
+** structure.
+** @param [r] atom [AjPAtom]         AtomStride object
+** @param [w] OEnv [char]            Character for the overall environment class 
+** @return [ajint]
+** @@
+******************************************************************************/
+ajint   ajAtomEnv12(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
+{
+    float BLimit=5;			/*Upper limit for the relative solvent accessible area for a buried residue*/
+    float PBLimit=25;			/*Upper limit for the relative solvent accessible area for a Parially buried residue*/
+  
+    float PolLimit1=10;
+    float PolLimit2=30;
+    float PolLimit3=50;
+    float PolLimit4=70;
+    float PolLimit5=90;
+
+  
+    AjPStr   BEnv=NULL;
+
+    if(!atom)
+    {
+	ajWarn("No atom to ajAtomEnv");
+	return 0;
+    }
+  
+    ajStrClear(OEnv);
+    BEnv=ajStrNew();
+
+    ajFmtPrintF(logf, "R:%c-%d S:%c A:%.2f f:%.2f\n", atom->Id1, atom->Idx, atom->eType, atom->side_rel, atom->pol_rel);
+  
+    /*Assign the basic classes*/
+  
+    if((atom->side_rel <= BLimit))
+	ajStrAssC(&BEnv, "B");    
+    else if((atom->side_rel > BLimit) && (atom->side_rel <= PBLimit) && (atom->pol_rel <= PolLimit1))
+	ajStrAssC(&BEnv, "P1");
+    else if((atom->side_rel > BLimit) && (atom->side_rel <= PBLimit) && (atom->pol_rel > PolLimit1) && (atom->pol_rel <= PolLimit2))
+	ajStrAssC(&BEnv, "P2");
+    else if((atom->side_rel > BLimit) && (atom->side_rel <= PBLimit) && (atom->pol_rel > PolLimit2) && (atom->pol_rel <= PolLimit3))
+	ajStrAssC(&BEnv, "P3");
+    else if((atom->side_rel > BLimit) && (atom->side_rel <= PBLimit) && (atom->pol_rel > PolLimit3) && (atom->pol_rel <= PolLimit4))
+	ajStrAssC(&BEnv, "P4");
+    else if((atom->side_rel > BLimit) && (atom->side_rel <= PBLimit) && (atom->pol_rel > PolLimit4) && (atom->pol_rel <= PolLimit5))
+	ajStrAssC(&BEnv, "P5");
+    else if((atom->side_rel > BLimit) && (atom->side_rel <= PBLimit) && (atom->pol_rel > PolLimit5))
+	ajStrAssC(&BEnv, "P6");
+    else if(atom->side_rel > PBLimit)
+	ajStrAssC(&BEnv, "E"); 
+    else
+    {
+	ajStrClear(OEnv);
+	ajFmtPrintF(logf, "BEnv unassigned for residue %d\n", atom->Idx);
+	return 0;
+    }
+  
+    /*Assign overall environment class*/
+    if((ajStrMatchC(BEnv, "B")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AA");
+    else if((ajStrMatchC(BEnv, "B")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AB");
+    else if((ajStrMatchC(BEnv, "B")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AC");
+    else if((ajStrMatchC(BEnv, "P1")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AD");
+    else if((ajStrMatchC(BEnv, "P1")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AE");
+    else if((ajStrMatchC(BEnv, "P1")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AF");
+    else if((ajStrMatchC(BEnv, "P2")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AG");
+    else if((ajStrMatchC(BEnv, "P2")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AH");
+    else if((ajStrMatchC(BEnv, "P2")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AI");
+    else if((ajStrMatchC(BEnv, "P3")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AJ");
+    else if((ajStrMatchC(BEnv, "P3")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AK");
+    else if((ajStrMatchC(BEnv, "P3")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AL"); 
+    else if((ajStrMatchC(BEnv, "P4")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AM");
+    else if((ajStrMatchC(BEnv, "P4")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AN");
+    else if((ajStrMatchC(BEnv, "P4")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AO");
+    else if((ajStrMatchC(BEnv, "P5")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AP");
+    else if((ajStrMatchC(BEnv, "P5")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AQ");
+    else if((ajStrMatchC(BEnv, "P5")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AR");
+    else if((ajStrMatchC(BEnv, "P6")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AS");
+    else if((ajStrMatchC(BEnv, "P6")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AT");
+    else if((ajStrMatchC(BEnv, "P6")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AU");
+    else if((ajStrMatchC(BEnv, "E")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AV");
+    else if((ajStrMatchC(BEnv, "E")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AW");
+    else if((ajStrMatchC(BEnv, "E")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AX");
+    else
+    {
+	ajStrClear(OEnv);
+	ajFmtPrintF(logf, "OEnv unassigned for residue %d\n", atom->Idx);
+	return 0;
+    }
+
+    ajStrDel(&BEnv);
+
+    return 24;
+
+} 
+
+
+
+
+
+
+
+
+
+/* @func ajAtomEnv13 **********************************************************
+** Assigns environment based on side chain accessibility and secondary 
+** structure.
+** @param [r] atom [AjPAtom]         AtomStride object
+** @param [w] OEnv [char]            Character for the overall environment class 
+** @return [ajint]
+** @@
+******************************************************************************/
+ajint   ajAtomEnv13(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
+{
+    float BLimit=5;			/*Upper limit for the relative solvent accessible area for a buried residue*/
+    float PBLimit=25;			/*Upper limit for the relative solvent accessible area for a Parially buried residue*/
+  
+    float PolLimit1=10;
+    float PolLimit2=30;
+    float PolLimit3=50;
+    float PolLimit4=70;
+    float PolLimit5=90;
+
+    AjPStr   BEnv=NULL;
+
+    if(!atom)
+    {
+	ajWarn("No atom to ajAtomEnv");
+	return 0;
+    }
+  
+    ajStrClear(OEnv);
+    BEnv=ajStrNew();
+
+    ajFmtPrintF(logf, "R:%c-%d S:%c A:%.2f f:%.2f\n", atom->Id1, atom->Idx, atom->eType, atom->side_rel, atom->pol_rel);
+  
+    /*Assign the basic classes*/
+    if((atom->side_rel <= BLimit))
+	ajStrAssC(&BEnv, "B");    
+    else if((atom->side_rel > BLimit) && (atom->side_rel <= PBLimit))
+	ajStrAssC(&BEnv, "P");
+    else if((atom->side_rel > PBLimit) && (atom->pol_rel <= PolLimit1))
+	ajStrAssC(&BEnv, "E1");
+    else if((atom->side_rel > PBLimit) && (atom->pol_rel > PolLimit1) && (atom->pol_rel <= PolLimit2))
+	ajStrAssC(&BEnv, "E2");
+    else if((atom->side_rel > PBLimit) && (atom->pol_rel > PolLimit2) && (atom->pol_rel <= PolLimit3))
+	ajStrAssC(&BEnv, "E3");
+    else if((atom->side_rel > PBLimit) && (atom->pol_rel > PolLimit3) && (atom->pol_rel <= PolLimit4))
+	ajStrAssC(&BEnv, "E4"); 
+    else if((atom->side_rel > PBLimit) && (atom->pol_rel > PolLimit4) && (atom->pol_rel <= PolLimit5))
+	ajStrAssC(&BEnv, "E5"); 
+    else if((atom->side_rel > PBLimit) && (atom->pol_rel > PolLimit5))
+	ajStrAssC(&BEnv, "E6");
+    else
+    {
+	ajStrClear(OEnv);
+	ajFmtPrintF(logf, "BEnv unassigned for residue %d\n", atom->Idx);
+	return 0;
+    }
+  
+    /*Assign overall environment class*/
+    if((ajStrMatchC(BEnv, "B")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AA");
+    else if((ajStrMatchC(BEnv, "B")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AB");
+    else if((ajStrMatchC(BEnv, "B")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AC");
+    else if((ajStrMatchC(BEnv, "P")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AD");
+    else if((ajStrMatchC(BEnv, "P")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AE");
+    else if((ajStrMatchC(BEnv, "P")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AF");
+    else if((ajStrMatchC(BEnv, "E1")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AG");
+    else if((ajStrMatchC(BEnv, "E1")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AH");
+    else if((ajStrMatchC(BEnv, "E1")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AI");
+    else if((ajStrMatchC(BEnv, "E2")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AJ");
+    else if((ajStrMatchC(BEnv, "E2")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AK");
+    else if((ajStrMatchC(BEnv, "E2")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AL"); 
+    else if((ajStrMatchC(BEnv, "E3")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AM");
+    else if((ajStrMatchC(BEnv, "E3")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AN");
+    else if((ajStrMatchC(BEnv, "E3")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AO");
+    else if((ajStrMatchC(BEnv, "E4")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AP");
+    else if((ajStrMatchC(BEnv, "E4")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AQ");
+    else if((ajStrMatchC(BEnv, "E4")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AR");
+    else if((ajStrMatchC(BEnv, "E5")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AS");
+    else if((ajStrMatchC(BEnv, "E5")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AT");
+    else if((ajStrMatchC(BEnv, "E5")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AU");
+    else if((ajStrMatchC(BEnv, "E6")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AV");
+    else if((ajStrMatchC(BEnv, "E6")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AW");
+    else if((ajStrMatchC(BEnv, "E6")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AX");
+    else
+    {
+	ajStrClear(OEnv);
+	ajFmtPrintF(logf, "OEnv unassigned for residue %d\n", atom->Idx);
+	return 0;
+    }
+
+    ajStrDel(&BEnv);
+
+    return 24;
+
+} 
+
+
+
+
+
+
+
+
+/* @func ajAtomEnv14 **********************************************************
+** Assigns environment based on side chain accessibility and secondary 
+** structure.
+** @param [r] atom [AjPAtom]         AtomStride object
+** @param [w] OEnv [char]            Character for the overall environment class 
+** @return [AjBool]
+** @@
+******************************************************************************/
+ajint   ajAtomEnv14(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
+{
+    float PBLimit=25;			/*Upper limit for the relative solvent accessible area for a Parially buried residue*/
+  
+    float PolLimit1=5;
+    float PolLimit2=15;
+    float PolLimit3=25;
+    float PolLimit4=40;
+    float PolLimit5=60;
+    float PolLimit6=80;
+ 
+
+    AjPStr   BEnv=NULL;
+
+    if(!atom)
+    {
+	ajWarn("No atom to ajAtomEnv");
+	return 0;
+    }
+  
+    ajStrClear(OEnv);
+    BEnv=ajStrNew();
+
+    ajFmtPrintF(logf, "R:%c-%d S:%c A:%.2f f:%.2f\n", atom->Id1, atom->Idx, atom->eType, atom->side_rel, atom->pol_rel);
+
+    if((atom->side_rel <= PBLimit) && (atom->pol_rel <= PolLimit1))
+	ajStrAssC(&BEnv, "B1");
+    else if((atom->side_rel <= PBLimit) && (atom->pol_rel > PolLimit1) && (atom->pol_rel <= PolLimit2))
+	ajStrAssC(&BEnv, "B2");
+    else if((atom->side_rel <= PBLimit) && (atom->pol_rel > PolLimit2) && (atom->pol_rel <= PolLimit3))
+	ajStrAssC(&BEnv, "B3");
+    else if((atom->side_rel <= PBLimit) && (atom->pol_rel > PolLimit3) && (atom->pol_rel <= PolLimit4))
+	ajStrAssC(&BEnv, "B4");
+    else if((atom->side_rel <= PBLimit) && (atom->pol_rel > PolLimit4) && (atom->pol_rel <= PolLimit5))
+	ajStrAssC(&BEnv, "B5");
+    else if((atom->side_rel <= PBLimit) && (atom->pol_rel > PolLimit5) && (atom->pol_rel <= PolLimit6))
+	ajStrAssC(&BEnv, "B6");
+    else if((atom->side_rel <= PBLimit) && (atom->pol_rel > PolLimit6))
+	ajStrAssC(&BEnv, "B7");
+    else if((atom->side_rel > PBLimit))
+	ajStrAssC(&BEnv, "E");
+    else
+    {
+	ajStrClear(OEnv);
+	ajFmtPrintF(logf, "BEnv unassigned for residue %d\n", atom->Idx);
+	return 0;
+    }
+
+    /*Assign overall environment class*/
+    if((ajStrMatchC(BEnv, "B1")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AA");
+    else if((ajStrMatchC(BEnv, "B1")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AB");
+    else if((ajStrMatchC(BEnv, "B1")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AC");
+    else if((ajStrMatchC(BEnv, "B2")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AD");
+    else if((ajStrMatchC(BEnv, "B2")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AE");
+    else if((ajStrMatchC(BEnv, "B2")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AF");
+    else if((ajStrMatchC(BEnv, "B3")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AG");
+    else if((ajStrMatchC(BEnv, "B3")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AH");
+    else if((ajStrMatchC(BEnv, "B3")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AI");
+    else if((ajStrMatchC(BEnv, "B4")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AJ");
+    else if((ajStrMatchC(BEnv, "B4")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AK");
+    else if((ajStrMatchC(BEnv, "B4")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AL"); 
+    else if((ajStrMatchC(BEnv, "B5")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AM");
+    else if((ajStrMatchC(BEnv, "B5")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AN");
+    else if((ajStrMatchC(BEnv, "B5")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AO");
+    else if((ajStrMatchC(BEnv, "B6")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AP");
+    else if((ajStrMatchC(BEnv, "B6")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AQ");
+    else if((ajStrMatchC(BEnv, "B6")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AR");
+    else if((ajStrMatchC(BEnv, "B7")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AS");
+    else if((ajStrMatchC(BEnv, "B7")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AT");
+    else if((ajStrMatchC(BEnv, "B7")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AU");
+    else if((ajStrMatchC(BEnv, "E")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AV");
+    else if((ajStrMatchC(BEnv, "E")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AW");
+    else if((ajStrMatchC(BEnv, "E")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AX");
+    else
+    {
+	ajStrClear(OEnv);
+	ajFmtPrintF(logf, "OEnv unassigned for residue %d\n", atom->Idx);
+	return 0;
+    }
+
+    ajStrDel(&BEnv);
+    return 24;
+
+} 
+
+
+
+
+
+
+
+/* @func ajAtomEnv15 **********************************************************
+** Assigns environment based on side chain accessibility and secondary 
+** structure.
+** @param [r] atom [AjPAtom]      AtomStride object
+** @param [w] OEnv [char]         Character for the overall environment class 
+** @return [ajint]
+** @@
+******************************************************************************/
+ajint   ajAtomEnv15(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
+{
+    float PBLimit=25;			/*Upper limit for the relative solvent accessible area for a Parially buried residue*/
+  
+    float PolLimit1=5;
+    float PolLimit2=15;
+    float PolLimit3=25;
+    float PolLimit4=35;
+    float PolLimit5=45;
+    float PolLimit6=75;
+ 
+
+    AjPStr   BEnv=NULL;
+
+    if(!atom)
+    {
+	ajWarn("No atom to ajAtomEnv");
+	return 0;
+    }
+  
+    ajStrClear(OEnv);
+    BEnv=ajStrNew();
+
+    ajFmtPrintF(logf, "R:%c-%d S:%c A:%.2f f:%.2f\n", atom->Id1, atom->Idx, atom->eType, atom->side_rel, atom->pol_rel);
+
+    if((atom->side_rel <= PBLimit) && (atom->pol_rel <= PolLimit1))
+	ajStrAssC(&BEnv, "B1");
+    else if((atom->side_rel <= PBLimit) && (atom->pol_rel > PolLimit1) && (atom->pol_rel <= PolLimit2))
+	ajStrAssC(&BEnv, "B2");
+    else if((atom->side_rel <= PBLimit) && (atom->pol_rel > PolLimit2) && (atom->pol_rel <= PolLimit3))
+	ajStrAssC(&BEnv, "B3");
+    else if((atom->side_rel <= PBLimit) && (atom->pol_rel > PolLimit3) && (atom->pol_rel <= PolLimit4))
+	ajStrAssC(&BEnv, "B4");
+    else if((atom->side_rel <= PBLimit) && (atom->pol_rel > PolLimit4) && (atom->pol_rel <= PolLimit5))
+	ajStrAssC(&BEnv, "B5");
+    else if((atom->side_rel <= PBLimit) && (atom->pol_rel > PolLimit5) && (atom->pol_rel <= PolLimit6))
+	ajStrAssC(&BEnv, "B6");
+    else if((atom->side_rel <= PBLimit) && (atom->pol_rel > PolLimit6))
+	ajStrAssC(&BEnv, "B7");
+    else if((atom->side_rel > PBLimit))
+	ajStrAssC(&BEnv, "E");
+    else
+    {
+	ajStrClear(OEnv);
+	ajFmtPrintF(logf, "BEnv unassigned for residue %d\n", atom->Idx);
+	return 0;
+    }
+
+    /*Assign overall environment class*/
+    if((ajStrMatchC(BEnv, "B1")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AA");
+    else if((ajStrMatchC(BEnv, "B1")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AB");
+    else if((ajStrMatchC(BEnv, "B1")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AC");
+    else if((ajStrMatchC(BEnv, "B2")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AD");
+    else if((ajStrMatchC(BEnv, "B2")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AE");
+    else if((ajStrMatchC(BEnv, "B2")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AF");
+    else if((ajStrMatchC(BEnv, "B3")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AG");
+    else if((ajStrMatchC(BEnv, "B3")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AH");
+    else if((ajStrMatchC(BEnv, "B3")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AI");
+    else if((ajStrMatchC(BEnv, "B4")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AJ");
+    else if((ajStrMatchC(BEnv, "B4")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AK");
+    else if((ajStrMatchC(BEnv, "B4")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AL"); 
+    else if((ajStrMatchC(BEnv, "B5")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AM");
+    else if((ajStrMatchC(BEnv, "B5")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AN");
+    else if((ajStrMatchC(BEnv, "B5")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AO");
+    else if((ajStrMatchC(BEnv, "B6")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AP");
+    else if((ajStrMatchC(BEnv, "B6")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AQ");
+    else if((ajStrMatchC(BEnv, "B6")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AR");
+    else if((ajStrMatchC(BEnv, "B7")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AS");
+    else if((ajStrMatchC(BEnv, "B7")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AT");
+    else if((ajStrMatchC(BEnv, "B7")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AU");
+    else if((ajStrMatchC(BEnv, "E")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AV");
+    else if((ajStrMatchC(BEnv, "E")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AW");
+    else if((ajStrMatchC(BEnv, "E")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AX");
+    else
+    {
+	ajStrClear(OEnv);
+	ajFmtPrintF(logf, "OEnv unassigned for residue %d\n", atom->Idx);
+	return 0;
+    }
+
+    ajStrDel(&BEnv);
+
+    return 24;
+} 
+
+
+
+
+
+
+
+
+/* @func ajAtomEnv16 **********************************************************
+** Assigns environment based on side chain accessibility and secondary 
+** structure.
+** @param [r] atom [AjPAtom]    AtomStride object
+** @param [w] OEnv [char]       Character for the overall environment class 
+** @return [ajint]
+** @@
+******************************************************************************/
+ajint   ajAtomEnv16(AjPAtom atom, char SEnv, AjPStr *OEnv, AjPFile logf)
+{
+    float BLimit=5;			/*Upper limit for the relative solvent accessible area for a buried residue*/
+  
+    float PolLimit1=5;
+    float PolLimit2=15;
+    float PolLimit3=25;
+    float PolLimit4=35;
+    float PolLimit5=45;
+    float PolLimit6=75;
+ 
+
+    AjPStr   BEnv=NULL;
+
+    if(!atom)
+    {
+	ajWarn("No atom to ajAtomEnv");
+	return 0;
+    }
+  
+    ajStrClear(OEnv);
+    BEnv=ajStrNew();
+
+    ajFmtPrintF(logf, "R:%c-%d S:%c A:%.2f f:%.2f\n", atom->Id1, atom->Idx, 
+		atom->eType, atom->side_rel, atom->pol_rel);
+
+    if((atom->side_rel <= BLimit) && (atom->pol_rel <= PolLimit1))
+	ajStrAssC(&BEnv, "B1");
+    else if((atom->side_rel <= BLimit) && (atom->pol_rel > PolLimit1) && (atom->pol_rel <= PolLimit2))
+	ajStrAssC(&BEnv, "B2");
+    else if((atom->side_rel <= BLimit) && (atom->pol_rel > PolLimit2) && (atom->pol_rel <= PolLimit3))
+	ajStrAssC(&BEnv, "B3");
+    else if((atom->side_rel <= BLimit) && (atom->pol_rel > PolLimit3) && (atom->pol_rel <= PolLimit4))
+	ajStrAssC(&BEnv, "B4");
+    else if((atom->side_rel <= BLimit) && (atom->pol_rel > PolLimit4) && (atom->pol_rel <= PolLimit5))
+	ajStrAssC(&BEnv, "B5");
+    else if((atom->side_rel <= BLimit) && (atom->pol_rel > PolLimit5) && (atom->pol_rel <= PolLimit6))
+	ajStrAssC(&BEnv, "B6");
+    else if((atom->side_rel <= BLimit) && (atom->pol_rel > PolLimit6))
+	ajStrAssC(&BEnv, "B7");
+    else if((atom->side_rel > BLimit))
+	ajStrAssC(&BEnv, "E");
+    else
+    {
+	ajStrClear(OEnv);
+	ajFmtPrintF(logf, "BEnv unassigned for residue %d\n", atom->Idx);
+	return 0;
+    }
+
+    /*Assign overall environment class*/
+    if((ajStrMatchC(BEnv, "B1")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AA");
+    else if((ajStrMatchC(BEnv, "B1")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AB");
+    else if((ajStrMatchC(BEnv, "B1")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AC");
+    else if((ajStrMatchC(BEnv, "B2")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AD");
+    else if((ajStrMatchC(BEnv, "B2")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AE");
+    else if((ajStrMatchC(BEnv, "B2")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AF");
+    else if((ajStrMatchC(BEnv, "B3")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AG");
+    else if((ajStrMatchC(BEnv, "B3")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AH");
+    else if((ajStrMatchC(BEnv, "B3")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AI");
+    else if((ajStrMatchC(BEnv, "B4")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AJ");
+    else if((ajStrMatchC(BEnv, "B4")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AK");
+    else if((ajStrMatchC(BEnv, "B4")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AL"); 
+    else if((ajStrMatchC(BEnv, "B5")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AM");
+    else if((ajStrMatchC(BEnv, "B5")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AN");
+    else if((ajStrMatchC(BEnv, "B5")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AO");
+    else if((ajStrMatchC(BEnv, "B6")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AP");
+    else if((ajStrMatchC(BEnv, "B6")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AQ");
+    else if((ajStrMatchC(BEnv, "B6")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AR");
+    else if((ajStrMatchC(BEnv, "B7")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AS");
+    else if((ajStrMatchC(BEnv, "B7")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AT");
+    else if((ajStrMatchC(BEnv, "B7")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AU");
+    else if((ajStrMatchC(BEnv, "E")) && (SEnv == 'H'))
+	ajStrAssC(OEnv,"AV");
+    else if((ajStrMatchC(BEnv, "E")) && (SEnv == 'S'))
+	ajStrAssC(OEnv,"AW");
+    else if((ajStrMatchC(BEnv, "E")) && (SEnv == 'C'))
+	ajStrAssC(OEnv,"AX");
+    else
+    {
+	ajStrClear(OEnv);
+	ajFmtPrintF(logf, "OEnv unassigned for residue %d\n", atom->Idx);
+	return 0;
+    }
+
+    ajStrDel(&BEnv);
+
+    return 24;
+
+} 
+
+
+
+
 
 
 /* @func ajPdbGetEStrideType ************************************************

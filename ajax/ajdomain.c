@@ -1072,7 +1072,7 @@ static ajint domainSortDomainID(const void *DomID1, const void *DomID2)
 /* @func ajCathReadAllNew **************************************************
 **
 ** Reads a DCF file (domain classification file) for CATH domains. This file
-** is in DCF format (embl-like, see documentation for DOMAINATRIX "cathparse"
+** is in DCF format (see documentation for DOMAINATRIX "cathparse"
 ** application) and creates a list of Cath objects for the entire content.
 ** 
 ** @param [u] inf  [AjPFile]     Pointer to CATH classification file
@@ -1705,7 +1705,7 @@ AjPList   ajCathReadAllRawNew(AjPFile cathf, AjPFile domf, AjPFile namesf,
 /* @func ajCathReadCNew ****************************************************
 **
 ** Read a Cath object from a DCF file (domain classification file) in DCF 
-** format (embl-like) (see documentation for 
+** format (see documentation for 
 ** DOMAINATRIX "cathparse" application).
 **
 ** @param [u] inf   [AjPFile]  Input file stream
@@ -1922,7 +1922,7 @@ AjPList   ajCathReadAllRawNew(AjPFile cathf, AjPFile domf, AjPFile namesf,
 /* @func ajCathReadNew *****************************************************
 **
 ** Read a Cath object from a DCF file (domain classification file) which is
-** in DCF format (embl-like) (see documentation for 
+** in DCF format (see documentation for 
 ** DOMAINATRIX "cathparse" application).
 **
 ** @param [u] inf   [AjPFile]  Input file stream
@@ -2002,7 +2002,7 @@ AjPList  ajDomainReadAllNew(AjPFile inf)
 /* @func ajScopReadAllNew **************************************************
 **
 ** Reads the DCF file (domain classification file) of SCOP domains. The DCF
-** file is in DCF format (embl-like), see documentation 
+** file is in DCF format (see documentation 
 ** for DOMAINATRIX "scopparse" application). The function creates a list of 
 ** cop objects for the entire content.
 ** 
@@ -2372,7 +2372,7 @@ AjPDomain ajDomainReadNew(AjPFile inf, const AjPStr entry)
 /* @func ajScopReadNew *****************************************************
 **
 ** Read a Scop object from a DCF file (domain classification file). The DCF
-** file is in DCF format (embl-like) (see documentation for 
+** file is in DCF format (see documentation for 
 ** DOMAINATRIX "scopparse" application).
 **
 ** @param [u] inf   [AjPFile] Input file stream.
@@ -2448,7 +2448,7 @@ AjPDomain ajDomainReadCNew(AjPFile inf, const char *entry, ajint dtype)
 /* @func ajScopReadCNew ****************************************************
 **
 ** Read a Scop object from a DCF file (domain classification file) in DCF
-** format (embl-like) (see documentation for 
+** format (see documentation for 
 ** DOMAINATRIX "scopparse" application).
 **
 ** @param [u] inf   [AjPFile]  Input file stream
@@ -4165,8 +4165,8 @@ AjBool ajPdbWriteDomain(AjPFile outf, const AjPPdb pdb,
 /* @func ajCathWrite *******************************************************
 **
 ** Write contents of a Cath object to an output DCF file (domain 
-** classification file) in DCF format (embl-like)
-** (see documentation for DOMAINATRIX "cathparse" application).
+** classification file) in DCF format (see documentation for DOMAINATRIX
+** "cathparse" application).
 ** 
 ** @param [u] outf [AjPFile] Output file stream
 ** @param [r] obj  [const AjPCath] Cath object
@@ -4317,8 +4317,8 @@ AjBool ajDomainWrite(AjPFile outf, const AjPDomain obj)
 /* @func ajScopWrite *******************************************************
 **
 ** Write contents of a Scop object to a DCF file (domain classification 
-** file).  The DCF file uses DCF format (embl-like).
-** (see documentation for DOMAINATRIX "scopparse" application).
+** file).  The DCF file uses DCF format (see documentation for DOMAINATRIX
+** "scopparse" application).
 **
 ** @param [u] outf [AjPFile] Output file stream
 ** @param [r] obj  [const AjPScop] Scop object
