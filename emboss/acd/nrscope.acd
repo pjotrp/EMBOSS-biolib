@@ -1,6 +1,6 @@
 appl: nrscope 
 [
-        doc: "Read embl-like format scop file and write a non-redundant file in the same format"
+        doc: "Converts redundant EMBL-format SCOP file to non-redundant one"
 	groups: "PROTEIN: structure"
 ]
 
