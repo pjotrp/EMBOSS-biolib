@@ -16,7 +16,7 @@ pkgdata_DATA = codes.english \
 	dotmatcher.acd dotpath.acd dottup.acd \
 	dreg.acd einverted.acd embossdata.acd embossversion.acd emma.acd \
 	emowse.acd entrails.acd entret.acd equicktandem.acd \
-	est2genome.acd etandem.acd extractseq.acd findkm.acd \
+	est2genome.acd etandem.acd extractseq.acd extractfeat.acd findkm.acd \
 	freak.acd fuzznuc.acd fuzzpro.acd fuzztran.acd \
 	garnier.acd geecee.acd getorf.acd helixturnhelix.acd hmoment.acd \
 	histogramtest.acd iep.acd infoalign.acd infoseq.acd isochore.acd \
