@@ -30,7 +30,9 @@ import org.emboss.jemboss.programs.ListFile;
 
 /**
 *
-* Used with JNI to EMBOSS ajax library to determine sequence attributes.
+* Used with JNI to access EMBOSS ajax library. 
+* This is used to determine sequence attributes and
+* authenticate the server methods.
 *
 */
 public class Ajax
@@ -46,6 +48,38 @@ public class Ajax
 /** determine sequence attributes */
   public native boolean seqType(String usa);
   public native boolean seqsetType(String usa);
+
+/** user home dir */
+  public String home;
+/** user id */
+  public static int uid;
+/** group id */
+  public static int gid;
+
+/** authentication method */
+  public native boolean userInfo(String userName, 
+                                 String passWord);
+  public native int setuid(int uid);
+  public native int setgid(int gid);
+
+  public native int seteuid(int uid);
+  public native int setegid(int gid);
+
+  public native int getuid();
+  public native int getgid();
+
+  public native int geteuid();
+  public native int getegid();
+
+
+/** stdout & stderr from fork */
+  public String outStd;
+  public String errStd;
+
+  public native boolean fork(String cmdLine, String envp,
+                          String dir, int uid, int gid);
+
+
 
   static
   {
