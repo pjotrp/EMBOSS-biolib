@@ -2308,19 +2308,19 @@ static void showFillFT(EmbPShow thys, AjPList lines, EmbPShowFT info, ajint pos)
      *
      *  AjEFeatClass      Class ;
      *  AjPFeattable      Owner ;
-     *  AjPFeatVocFeat     Source ;
-     *  AjPFeatVocFeat     Type ;
-     *  ajint               Start ;
-     *  ajint               End; 
-     *  ajint               Start2;
-     *  ajint               End2;
+     *  AjPFeatVocFeat    Source ;
+     *  AjPFeatVocFeat    Type ;
+     *  ajint             Start ;
+     *  ajint             End; 
+     *  ajint             Start2;
+     *  ajint             End2;
      *  AjPStr            Score ;
      *  AjPList           Tags ;  a.k.a. the [group] field tag-values of GFF2 
      *  AjPStr            Comment ;
      *  AjEFeatStrand     Strand ;
      *  AjEFeatFrame      Frame ;
      *  AjPStr            desc ;
-     *  ajint               Flags;
+     *  ajint             Flags;
      *
      */
 
@@ -2333,7 +2333,10 @@ static void showFillFT(EmbPShow thys, AjPList lines, EmbPShowFT info, ajint pos)
 	{
 	    gf = ajListIterNext (iter) ;
     
-	    /* don't output the 'source' feature - it is very irritating! */
+            /* ignore remote IDs */
+            if (!ajFeatIsLocal(gf)) continue;
+
+            /* don't output the 'source' feature - it is very irritating! */
 	    if (!ajStrCmpC(gf->Type, "source")) continue;
 
 	    /*

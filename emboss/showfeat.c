@@ -284,6 +284,10 @@ static void showfeat_ShowFeatSeq (AjPFile outfile, AjPSeq seq, ajint beg,
 	{
 	    gf = ajListIterNext (iter) ;
 
+            /* ignore remote IDs */
+            if (!ajFeatIsLocal(gf))
+                continue;
+            
 	    /* check that we want to output this sense */
 	    if (!forward && gf->Strand == '+')
 		continue;
