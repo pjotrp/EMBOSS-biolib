@@ -152,7 +152,7 @@ integer: thresh
   default:       10 
 ]
 
-endsection: standard
+endsection: required
 
 
 
