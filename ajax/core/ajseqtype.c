@@ -87,10 +87,12 @@ static AjPRegexp  seqTypeCharAnyGap(void);
 static AjPRegexp  seqTypeCharDnaGap(void);
 static AjPRegexp  seqTypeCharNuc(void);
 static AjPRegexp  seqTypeCharNucGap(void);
+static AjPRegexp  seqTypeCharNucGapPhylo(void);
 static AjPRegexp  seqTypeCharNucPure(void);
 static AjPRegexp  seqTypeCharProt(void);
 static AjPRegexp  seqTypeCharProtAny(void);
 static AjPRegexp  seqTypeCharProtGap(void);
+static AjPRegexp  seqTypeCharProtGapPhylo(void);
 static AjPRegexp  seqTypeCharProtPure(void);
 static AjPRegexp  seqTypeCharProtStop(void);
 static AjPRegexp  seqTypeCharRnaGap(void);
@@ -141,6 +143,7 @@ char seqCharGapdash[]   = "-";
 char seqCharGapdot[]    = ".";
 char seqGap = '-';		/* the (only) EMBOSS gap character */
 char seqCharGapTest[]   = " .~Oo-";   /* phylip uses O - don't forget space */
+char seqCharPhylo[]       = "?";	/* phylip uses ? for unknown or gap */
 
 
 
@@ -170,6 +173,9 @@ static SeqOType seqType[] =
     {"gapdna",         AJTRUE,  AJTRUE,  ISNUC,  "?XxUu", "NNNTt",
 	 seqTypeCharNucGap,
 	 "DNA sequence with gaps"},
+    {"gapdnaphylo",     AJTRUE,  AJTRUE,  ISPROT, "Uu",  "Tt",
+	 seqTypeCharNucGapPhylo,
+	 "DNA sequence with gaps and queries"},
     {"rna",            AJFALSE, AJTRUE,  ISNUC,  "?XxTt", "NNNUu",
 	 seqTypeCharAny,
 	 "RNA sequence"},
@@ -179,6 +185,9 @@ static SeqOType seqType[] =
     {"gaprna",         AJTRUE,  AJTRUE,  ISNUC,  "?XxTt", "NNNUu",
 	 seqTypeCharNucGap,
 	 "RNA sequence with gaps"},
+    {"gaprnaphylo",     AJTRUE,  AJTRUE,  ISPROT, "Tt",  "Uu",
+	 seqTypeCharNucGapPhylo,
+	 "RNA sequence with gaps and queries"},
     {"nucleotide",     AJFALSE, AJTRUE,  ISNUC,  "?Xx",   "NNN",
 	 seqTypeCharNuc,
 	 "nucleotide sequence"},
@@ -188,6 +197,9 @@ static SeqOType seqType[] =
     {"gapnucleotide",  AJTRUE,  AJTRUE,  ISNUC,  "?Xx",   "NNN",
 	 seqTypeCharNucGap,
 	 "nucleotide sequence with gaps"},
+    {"gapnucleotidephylo",  AJTRUE,  AJTRUE,  ISNUC,  "",   "",
+	 seqTypeCharNucGapPhylo,
+	 "nucleotide sequence with gaps and queries"},
     {"protein",        AJFALSE, AJTRUE,  ISPROT, "?*",  "XX",
 	 seqTypeCharProt,
 	 "protein sequence"},
@@ -200,6 +212,9 @@ static SeqOType seqType[] =
     {"gapprotein",     AJTRUE,  AJTRUE,  ISPROT, "?*",  "XX",
 	 seqTypeCharProtGap,
 	 "protein sequence with gaps"},
+    {"gapproteinphylo",     AJTRUE,  AJTRUE,  ISPROT, "",  "",
+	 seqTypeCharProtGapPhylo,
+	 "protein sequence with gaps, stops and queries"},
     {"proteinstandard",AJFALSE, AJTRUE,  ISPROT, "?*Uu", "XXXx",
 	 seqTypeCharProt,
 	 "protein sequence with no selenocysteine"},
@@ -545,8 +560,9 @@ AjBool ajSeqTypeCheckIn(AjPSeq thys, const AjPSeqin seqin)
     
     AjPStr Type;
     
-    ajDebug("testing sequence '%s' type '%S' IsNuc %B IsProt %B\n",
-	    ajSeqName(thys), seqin->Inputtype, seqin->IsNuc, seqin->IsProt);
+    ajDebug("testing sequence '%s' '%S' type '%S' IsNuc %B IsProt %B\n",
+	    ajSeqName(thys), thys->Seq,
+	    seqin->Inputtype, seqin->IsNuc, seqin->IsProt);
 
     Type = seqin->Inputtype; /* ACD file had a predefined seq type */
     
@@ -1165,8 +1181,7 @@ static char seqTypeTest(const AjPStr thys, AjPRegexp badchars)
     if(!ajStrLen(thys))
 	return ret;
 
-    /* ajDebug("seqTypeTest, Sequence '%S'\n",
-       thys); */
+    ajDebug("seqTypeTest, Sequence '%S'\n", thys);
     if(!ajRegExec(badchars, thys))
 	return ret;
 
@@ -1302,6 +1317,36 @@ static AjPRegexp seqTypeCharNucGap(void)
 
 
 
+/* @funcstatic seqTypeCharNucGapPhylo *****************************************
+**
+** Returns regular expression to test for nucleotide bases with gaps
+** and queries
+**
+** @return [AjPRegexp] valid characters
+******************************************************************************/
+
+static AjPRegexp seqTypeCharNucGapPhylo(void)
+{
+    AjPStr regstr = NULL;
+
+    if(!seqtypeRegNucGap)
+    {
+	regstr = ajStrNewL(256);
+	ajFmtPrintS(&regstr, "([^%s%s%s%s]+)",
+		    seqCharNucPure,
+		    seqCharNucAmbig,
+		    seqCharPhylo,
+		    seqCharGap);
+	seqtypeRegNucGap = ajRegComp(regstr);
+	ajStrDel(&regstr);
+    }
+
+    return seqtypeRegNucGap;
+}
+
+
+
+
 /* @funcstatic seqTypeCharNucPure *********************************************
 **
 ** Returns regular expression to test for nucleotide bases
@@ -1424,10 +1469,11 @@ static AjPRegexp seqTypeCharProtAny(void)
     if(!seqtypeRegProtAny)
     {
 	regstr = ajStrNewL(256);
-	ajFmtPrintS(&regstr, "([^%s%s%s%s]+)",
+	ajFmtPrintS(&regstr, "([^%s%s%s%s%s]+)",
 		    seqCharProtPure,
 		    seqCharProtAmbig,
 		    seqCharProtStop,
+		    seqCharPhylo,
 		    seqCharGap);
 	seqtypeRegProtAny = ajRegComp(regstr);
 	ajStrDel(&regstr);
@@ -1456,6 +1502,37 @@ static AjPRegexp seqTypeCharProtGap(void)
 	ajFmtPrintS(&regstr, "([^%s%s%s]+)",
 		    seqCharProtPure,
 		    seqCharProtAmbig,
+		    seqCharGap);
+	seqtypeRegProtGap = ajRegComp(regstr);
+	ajStrDel(&regstr);
+    }
+
+    return seqtypeRegProtGap;
+}
+
+
+
+
+/* @funcstatic seqTypeCharProtGapPhylo ****************************************
+**
+** Returns regular expression to test for protein residues or gaps
+** stops and queries
+**
+** @return [AjPRegexp] valid characters
+******************************************************************************/
+
+static AjPRegexp seqTypeCharProtGapPhylo(void)
+{
+    AjPStr regstr = NULL;
+
+    if(!seqtypeRegProtGap)
+    {
+	regstr = ajStrNewL(256);
+	ajFmtPrintS(&regstr, "([^%s%s%s%s%s]+)",
+		    seqCharProtPure,
+		    seqCharProtStop,
+		    seqCharProtAmbig,
+		    seqCharPhylo,
 		    seqCharGap);
 	seqtypeRegProtGap = ajRegComp(regstr);
 	ajStrDel(&regstr);
