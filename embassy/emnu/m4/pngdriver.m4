@@ -17,6 +17,7 @@ dnl   #include <zlib.h>
 dnl   #endif /* PLD_png */
 dnl
 dnl @author Ian Longden <il@sanger.ac.uk>
+dnl Modified: Alan Bleasby. Corrected library order
 dnl
 
 AC_DEFUN(CHECK_PNGDRIVER,
@@ -75,7 +76,7 @@ then
 # Check for gd
 #
 	if test $CHECK = "1"; then
-	  AC_CHECK_LIB(gd, gdImageCreateFromPng, CHECK=1, CHECK=0 , -lgd -lpng -lz)
+	  AC_CHECK_LIB(gd, gdImageCreateFromPng, CHECK=1, CHECK=0 , -L${ALT_HOME}/lib -lgd -lpng -lz -lm)
           if test $CHECK = "0"; then
 		echo need to upgrade gd for png driver for plplot
 	  fi
@@ -84,8 +85,9 @@ then
 # If everything found okay then proceed to include png driver in config.
 #
 	if test $CHECK = "1" ; then
-	  LIBS="$LIBS -lz -lgd -lpng"
+	  LIBS="$LIBS -lgd -lpng -lz -lm"
 	  AC_DEFINE(PLD_png)
+	  AM_CONDITIONAL(AMPNG, true)
 	else
 #
 # If not okay then reset FLAGS.
