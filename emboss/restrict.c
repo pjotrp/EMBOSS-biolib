@@ -386,6 +386,7 @@ static void restrict_printHits(AjPFile *outf, AjPList *l, AjPStr *name,
 **
 ** @param [w] report [AjPReport] report
 ** @param [r] seq [AjPSeq] sequence object
+** @param [w] TabRpt [AjPfeattable] feature table object to store results
 ** @param [w] l [AjPList*] hits
 ** @param [r] hits [ajint] number of hits
 ** @param [r] begin [ajint] start position
@@ -455,8 +456,6 @@ static void restrict_reportHits(AjPReport report, AjPSeq seq,
     else
 	ajFmtPrintAppS(&tmpStr,"Ambiguities allowed\n");
 
-    ajReportSetHeader(report, tmpStr);
-   
 
     hits = embPatRestrictRestrict(l,hits,!limit,alpha);
 
@@ -469,8 +468,14 @@ static void restrict_reportHits(AjPReport report, AjPSeq seq,
 
     ajFmtPrintAppS(&tmpStr,
 		   "Number of hits: %d\n",hits);
-    ajFmtPrintAppS(&tmpStr,
-		   "Base Number\tEnzyme\t\tSite\t\t5'\t3'\t[5'\t3']\n");
+    ajReportSetHeader(report, tmpStr);
+   
+    /* not needed - column headings from the old report */
+    /*
+    // ajFmtPrintAppS(&tmpStr,
+    //		   "Base Number\tEnzyme\t\tSite\t\t5'\t3'\t[5'\t3']\n");
+    */
+
     for(i=0;i<hits;++i)
     {
 	ajListPop(*l,(void **)&m);
