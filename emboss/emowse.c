@@ -214,7 +214,7 @@ int main(int argc, char **argv)
 **
 ** Undocumented.
 **
-** @param [?] ffile [AjPFile] Undocumented
+** @param [?] finf [AjPFile] Undocumented
 ** @param [?] freqs [AjPDouble*] Undocumented
 ** @return [void]
 ** @@
