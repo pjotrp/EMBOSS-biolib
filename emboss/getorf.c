@@ -379,7 +379,7 @@ static void getorf_FindORFs(AjPSeq seq, ajint len, AjPTrn trnTable,
 				      pos, aa);
 
 		    if(ajStrLen(newstr[frame]) >= minsize &&
-		       ajStrLen(newstr[frame]) >= maxsize)
+		       ajStrLen(newstr[frame]) <= maxsize)
 		    {
 			/* create a new sequence */
 			if(codon == STOP)
