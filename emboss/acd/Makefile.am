@@ -27,7 +27,7 @@ pkgdata2_DATA =	megamerger.acd merger.acd msbar.acd \
 	newcpgreport.acd newcpgseek.acd newseq.acd noreturn.acd \
 	notseq.acd nrscope.acd nthseq.acd octanol.acd oddcomp.acd \
 	palindrome.acd pasteseq.acd patmatdb.acd patmatmotifs.acd \
-	patmattest.acd pepcoil.acd pepinfo.acd pepnet.acd \
+	patmattest.acd pdbtosp.acd pepcoil.acd pepinfo.acd pepnet.acd \
 	pepstats.acd pepwheel.acd pepwindow.acd pepwindowall.acd \
 	plotcon.acd plotorf.acd polydot.acd \
 	preg.acd prettyplot.acd prettyseq.acd prima.acd primer3.acd \

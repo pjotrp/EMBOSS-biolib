@@ -39,7 +39,7 @@ needle newcpgreport newcpgseek newseq \
 noreturn notseq nrscope nthseq \
 octanol oddcomp \
 palindrome pasteseq patmatdb patmatmotifs \
-pepcoil pepinfo pepnet pepstats \
+pdbtosp pepcoil pepinfo pepnet pepstats \
 pepwheel pepwindow pepwindowall \
 plotcon plotorf polydot preg \
 prettyplot prettyseq primer3 primersearch printsextract \
@@ -149,6 +149,7 @@ palindrome_SOURCES = palindrome.c
 pasteseq_SOURCES = pasteseq.c
 patmatdb_SOURCES = patmatdb.c
 patmatmotifs_SOURCES = patmatmotifs.c
+pdbtosp_SOURCES = pdbtosp.c
 pepcoil_SOURCES = pepcoil.c
 pepinfo_SOURCE = pepinfo.c
 pepnet_SOURCES = pepnet.c
