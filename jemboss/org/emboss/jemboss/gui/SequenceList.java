@@ -48,6 +48,8 @@ public class SequenceList extends JFrame
 
   private DragJTable table;
   private SequenceListTableModel seqModel;
+  private JCheckBoxMenuItem storeSeqList;
+
   final Cursor cbusy = new Cursor(Cursor.WAIT_CURSOR);
   final Cursor cdone = new Cursor(Cursor.DEFAULT_CURSOR);
 
@@ -69,9 +71,6 @@ public class SequenceList extends JFrame
       column.setPreferredWidth(
              SequenceListTableModel.modelColumns[i].width);
     }
-
-//  MouseListener popupListener = new PopupListener(); 
-//  table.addMouseListener(popupListener);
 
     JScrollPane scrollpane = new JScrollPane(table);
     scrollpane.setSize(300,100);
@@ -108,7 +107,6 @@ public class SequenceList extends JFrame
     fileMenu.add(openMenuItem);
 
     JMenuItem addSeq = new JMenuItem("Add sequence");
-    addSeq.setMnemonic(KeyEvent.VK_A);
     addSeq.addActionListener(new ActionListener()
     {
       public void actionPerformed(ActionEvent e)
@@ -208,7 +206,17 @@ public class SequenceList extends JFrame
       }
     });
     toolMenu.add(ajaxSeq);
+    toolMenu.addSeparator();
 
+    storeSeqList = new JCheckBoxMenuItem("Save Sequence List");
+    File fseq = new File(System.getProperty("user.home")
+                           + System.getProperty("file.separator")
+                           + ".jembossSeqList");
+    if(fseq.canRead())
+      storeSeqList.setSelected(true);
+    else
+      storeSeqList.setSelected(false);
+    toolMenu.add(storeSeqList);
 
     JMenuItem reset = new JMenuItem("Reset Table");
     reset.addActionListener(new ActionListener()
@@ -283,6 +291,21 @@ public class SequenceList extends JFrame
 
     return (String)seqModel.getValueAt(ndef,
              SequenceListTableModel.COL_NAME);
+  }
+
+  public int getRowCount()
+  {
+    return seqModel.getRowCount();
+  }
+
+  public SequenceData getSequenceData(int nrow)
+  {
+    return seqModel.getSequenceData(nrow);
+  }
+
+  public boolean isStoreSequenceList()
+  {
+    return storeSeqList.isSelected();
   }
 
 //class PopupListener extends MouseAdapter 
@@ -471,11 +494,23 @@ class SequenceListTableModel extends AbstractTableModel
 {
 
   protected static Vector modelVector;
+  public static final int COL_NAME = 0;
+  public static final int COL_BEG  = 1;
+  public static final int COL_END  = 2;
+  public static final int COL_LIST = 3;
+  public static final int COL_DEF  = 4;
 
   public SequenceListTableModel()
   {
     modelVector = new Vector();
+    File fseq = new File(System.getProperty("user.home")
+                  + System.getProperty("file.separator")
+                  + ".jembossSeqList");
+
     setDefaultData();
+
+    if(fseq.canRead())
+      loadStoredSeqList(fseq);
   }
 
   public static final ColumnData modelColumns[] =
@@ -498,14 +533,63 @@ class SequenceListTableModel extends AbstractTableModel
     return getValueAt(0, c).getClass();
   }
 
+/**
+*
+* Load from stored file the SequenceList created from
+* a previous session.
+* @param File fseq contains stored sequence list
+*
+*/
+  protected void loadStoredSeqList(File fseq)
+  {
+    try
+    {
+      BufferedReader in = new BufferedReader(new FileReader(fseq));
+      String line;
+      int nrow = 0;
 
-  public static final int COL_NAME = 0;
-  public static final int COL_BEG  = 1;
-  public static final int COL_END  = 2;
-  public static final int COL_LIST = 3;
-  public static final int COL_DEF  = 4;
+      while((line = in.readLine()) != null)
+      {
+        if(!line.equals(""))
+        {
+          line = line.trim();
+          StringTokenizer st = new StringTokenizer(line, " ");
+          for(int i=0;i<getColumnCount();i++)
+          {
+            if(!st.hasMoreTokens())
+              break;
 
-  public void setDefaultData()
+            if(nrow >= getRowCount())
+            {
+              Boolean bdef = new Boolean(false);
+              modelVector.addElement(new SequenceData("","","",bdef,bdef,bdef));
+            }
+             
+            String value = st.nextToken();
+            if(value.equals("-"))
+              value = "";
+            if(value.equalsIgnoreCase("true") || value.equalsIgnoreCase("false"))
+              setValueAt(new Boolean(value),nrow,i);
+            else 
+              setValueAt(value,nrow,i);
+          }
+          nrow++;
+        }
+      } 
+    }
+    catch (ArrayIndexOutOfBoundsException ai)
+    {
+      System.out.println("ArrayIndexOutOfBoundsException in SequenceList");
+      setDefaultData();
+    }
+    catch (IOException ioe)
+    {
+      setDefaultData();
+    }
+
+  }
+
+  protected void setDefaultData()
   {
     modelVector.removeAllElements();
     Boolean bdef = new Boolean(false);
