@@ -434,21 +434,30 @@ public class SectionPanel
   public Box setLabelText(String sl, String tt)
   {
     int stop;
+    int width = 335;
     JLabel l;
     Box blab = new Box(BoxLayout.Y_AXIS);
+
+    l = new JLabel();
+    FontMetrics fm = l.getFontMetrics(labfont);
+
 
     if(!sl.equals(""))
     {
       sl = sl.replace('\n',' ');
+      String subLabel;
 
-      while((stop = sl.indexOf(' ',44))>0)
+      while(fm.stringWidth(sl) > width)
       {
-        if(stop > 44)
-          stop = sl.indexOf(' ',38);
-        if(stop > 44)
-          stop = sl.indexOf(' ',34);
+        stop = sl.lastIndexOf(" ");
+        subLabel = sl.substring(0,stop);
+        while(fm.stringWidth(subLabel) > width)
+        {
+          stop = subLabel.lastIndexOf(" ");
+          subLabel = subLabel.substring(0,stop);
+        }
 
-        l = new JLabel(" " + sl.substring(0,stop));
+        l = new JLabel(" " + subLabel);
         blab.add(l);
         sl = sl.substring(stop+1,sl.length());
         l.setFont(labfont);
