@@ -133,19 +133,32 @@ HS$A24COL_03         R04790   5123  5128  gggcgg
 etc......
      _________________________________________________________________
    
-   The output consists of a title line then 5 coulumns separated by
+   The output consists of a title line then 5 columns separated by
    whitespace.
    
-   The first column is the identifier of the entry. The second column is
-   the Accession Number of the entry. The third and fourth columns are
-   the start and end positions of the match in your input sequence. The
-   fifth column is the sequence of the region where a match has been
-   found. For further details on an entry from the TRANSFAC database,
-   see:
+   The first column is the identifier of the entry.
+   
+   The second column is the Accession Number of the entry.
+   
+   The third and fourth columns are the start and end positions of the
+   match in your input sequence.
+   
+   The fifth column is the sequence of the region where a match has been
+   found.
+   
+   For further details on an entry from the TRANSFAC database, see:
    http://transfac.gbf.de/cgi-bin/qt/search.pl
    
 Data files
 
+   tfscan reads the TRANSFAC SITE data held in the EMBOSS data files:
+   
+     * tffungi
+     * tfinsect
+     * tfplant
+     * tfvertebrate
+     * tfother
+       
    EMBOSS data files are distributed with the application and stored in
    the standard EMBOSS data directory, which is defined by the EMBOSS
    environment variable EMBOSS_DATA.
@@ -177,8 +190,11 @@ Notes
    
 References
 
-   None.
-   
+     * Nucleic Acids Res. 16: 1879-1902, 1988
+     * BioTechForum - Advances in Molecular Genetics (J. Collins,A.J.
+       Driesel, eds.) 4:95-108, 1991
+     * Nucleic Acids Res. 20:3-26, 1992
+       
 Warnings
 
    None.
