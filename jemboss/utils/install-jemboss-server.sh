@@ -352,8 +352,7 @@ deploy_axis_services()
         -l$URL/axis/services JembossServer.wsdd
 
   echo "#!/bin/csh " > deploy.csh
-  echo "$JAVAHOME/bin/java -classpath $CLASSPATH $OPT_PROP1 $OPT_PROP2 \\ " >> deploy.csh
-  echo "org.apache.axis.client.AdminClient -l$URL/axis/services JembossServer.wsdd" >> deploy.csh
+  echo "$JAVAHOME/bin/java -classpath $CLASSPATH $OPT_PROP1 $OPT_PROP2 org.apache.axis.client.AdminClient -l$URL/axis/services JembossServer.wsdd" >> deploy.csh
   chmod u+x deploy.csh
 }
 
@@ -990,6 +989,9 @@ if [ $INSTALL_TYPE = "1" ]; then
   echo "$SOAP_ROOT" >> $RECORD
   echo
   cp -R $SOAP_ROOT/webapps/axis $TOMCAT_ROOT/webapps
+  
+  #already have commons-logging.jar in $TOMCAT_ROOT/server/lib/
+  rm -f $TOMCAT_ROOT/webapps/axis/WEB-INF/lib/commons-logging.jar
 fi
 
 #
