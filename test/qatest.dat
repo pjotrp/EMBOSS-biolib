@@ -9610,6 +9610,40 @@ FZ = 562
 FP /^>HSFAU /
 //
 
+ID twofeat-ex
+UC Without the -twoout option the output report contains just one feature for every pair of features found.
+AP twofeat
+CL tembl:hsfau
+IN polyA_signal
+IN polyA_site
+IN 10
+IN 50
+IN 
+FI stderr
+FC = 2
+FP 0 /Warning:/
+FI hsfau.twofeat
+FZ = 516
+FP /484     509   0.000    484    489    509    509/
+//
+
+ID twofeat-ex2
+UC The -twoout option makes the output report give the pairs of features found.
+AP twofeat
+CL -twoout tembl:hsfau
+IN polyA_signal
+IN polyA_site
+IN 10
+IN 50
+IN 
+FI stderr
+FC = 2
+FP 0 /Warning:/
+FI hsfau.twofeat
+FZ = 568
+FP /484     489   0.000      .      .      .      ./
+//
+
 ID union-ex
 UC the file 'cds.list' contains a list of the regions making up the coding sequence of 'embl:hsfau':
 AP union
