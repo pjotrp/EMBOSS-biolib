@@ -20,13 +20,13 @@ extern "C"
 #define VA_V(x) (*x)
 #endif
 
-typedef void (*Fmt_T)(int code, VALIST ap,
-	int put(int c, void *cl), void *cl,
-	unsigned int flags[256], int width, int precision);
+typedef void (*Fmt_T)(ajint code, VALIST ap,
+	ajint put(ajint c, void *cl), void *cl,
+	ajuint flags[256], ajint width, ajint precision);
 
-extern void ajFmtFmt (int put(int c, void *cl), void *cl,
+extern void ajFmtFmt (ajint put(ajint c, void *cl), void *cl,
 	const char *fmt, ...);
-extern void ajFmtVfmt(int put(int c, void *cl), void *cl,
+extern void ajFmtVfmt(ajint put(ajint c, void *cl), void *cl,
 	const char *fmt, va_list ap);
 extern void ajFmtError (const char *fmt, ...);
 extern void ajFmtVError (const char *fmt, va_list ap);
@@ -40,27 +40,27 @@ extern void ajFmtPrintF(AjPFile file,
 	const char *fmt, ...);
 extern void ajFmtVPrintF(AjPFile file,
 	const char *fmt, va_list ap);
-extern int ajFmtPrintCL (char *buf, int size,
+extern ajint ajFmtPrintCL (char *buf, ajint size,
 	const char *fmt, ...);
-extern int ajFmtVPrintCL (char *buf, int size,
+extern ajint ajFmtVPrintCL (char *buf, ajint size,
 	const char *fmt, va_list ap);
-extern void ajFmtPrintSplit(AjPFile outf, AjPStr str, char *prefix, int len,
+extern void ajFmtPrintSplit(AjPFile outf, AjPStr str, char *prefix, ajint len,
 			    char *delim);
-extern int ajFmtVFmtS(char *buf, int size,
+extern ajint ajFmtVFmtS(char *buf, ajint size,
 	const char *fmt, va_list ap);
 extern char *ajFmtString (const char *fmt, ...);
 extern char *ajFmtVString(const char *fmt, va_list ap);
-extern Fmt_T ajFmtRegister(int code, Fmt_T cvt);
-extern void ajFmtPutd(const char *str, int len,
-	int put(int c, void *cl), void *cl,
-	unsigned int flags[256], int width, int precision);
-extern void ajFmtPuts(const char *str, int len,
-	int put(int c, void *cl), void *cl,
-	unsigned int flags[256], int width, int precision);
+extern Fmt_T ajFmtRegister(ajint code, Fmt_T cvt);
+extern void ajFmtPutd(const char *str, ajint len,
+	ajint put(ajint c, void *cl), void *cl,
+	ajuint flags[256], ajint width, ajint precision);
+extern void ajFmtPuts(const char *str, ajint len,
+	ajint put(ajint c, void *cl), void *cl,
+	ajuint flags[256], ajint width, ajint precision);
 extern AjPStr ajFmtStr(const char *fmt, ...);
 extern AjPStr ajFmtPrintS(AjPStr *pthis, const char *fmt, ...) ;
 extern AjPStr ajFmtPrintAppS(AjPStr *pthis, const char *fmt, ...) ;
-int ajFmtVfmtCL(char* buf, int size, const char* fmt,
+ajint ajFmtVfmtCL(char* buf, ajint size, const char* fmt,
 	va_list ap);
 #endif
 

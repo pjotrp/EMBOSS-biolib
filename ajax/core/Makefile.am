@@ -23,7 +23,7 @@ hsregerror.c hsregexp.c hsregsub.c
 
 AJAXGSRC = ajgraph.c ajhist.c
 
-noinst_HEADERS = ajax.h ajdefine.h \
+noinst_HEADERS = ajax.h ajarch.h ajdefine.h \
 ajacd.h ajarr.h ajassert.h \
 ajbase.h ajcall.h ajcod.h \
 ajcorba.h ajcorbaembl.h \

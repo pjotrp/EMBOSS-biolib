@@ -54,10 +54,10 @@
 struct buf {
 	char *buf;
 	char *bp;
-	int size;
+	ajint size;
 };
 
-#define pad(n,c) do { int nn = (n); \
+#define pad(n,c) do { ajint nn = (n); \
                    while (nn-- > 0) \
                      (void) put((c), cl); } while (0)
 
@@ -67,20 +67,20 @@ struct buf {
 **
 ** As for C RTL but prints null if given a null pointer.
 **
-** @param [r] code [int] Format code specified (usually s)
+** @param [r] code [ajint] Format code specified (usually s)
 ** @param [r] ap [va_list] Original arguments at current position
 ** @param [r] put [int function] Standard function
 ** @param [r] cl [void*] Standard
-** @param [r] flags [unsigned int*] Flags (after the %)
-** @param [r] width [int] Width (before the dot)
-** @param [r] precision [int] Precision (after the dot)
+** @param [r] flags [ajuint*] Flags (after the %)
+** @param [r] width [ajint] Width (before the dot)
+** @param [r] precision [ajint] Precision (after the dot)
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void cvt_s(int code, VALIST ap,
-		  int put(int c, void* cl), void* cl,
-		  unsigned int* flags, int width, int precision) {
+static void cvt_s(ajint code, VALIST ap,
+		  ajint put(ajint c, void* cl), void* cl,
+		  ajuint* flags, ajint width, ajint precision) {
 
   char *str = va_arg(VA_V(ap), char *);
 
@@ -98,34 +98,34 @@ static void cvt_s(int code, VALIST ap,
 **
 ** Conversion for %d to print integer
 **
-** @param [r] code [int] Format code specified (usually d)
+** @param [r] code [ajint] Format code specified (usually d)
 ** @param [r] ap [va_list*] Original arguments at current position
 ** @param [r] put [int function] Standard function
 ** @param [r] cl [void*] Standard
-** @param [r] flags [unsigned int*] Flags (after the %)
-** @param [r] width [int] Width (before the dot)
-** @param [r] precision [int] Precision (after the dot)
+** @param [r] flags [ajuint*] Flags (after the %)
+** @param [r] width [ajint] Width (before the dot)
+** @param [r] precision [ajint] Precision (after the dot)
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void cvt_d(int code, VALIST ap,
-		  int put(int c, void* cl), void* cl,
-		  unsigned int* flags, int width, int precision) {
+static void cvt_d(ajint code, VALIST ap,
+		  ajint put(ajint c, void* cl), void* cl,
+		  ajuint* flags, ajint width, ajint precision) {
 
-  long val;
-  unsigned long m;
+  ajlong val;
+  ajulong m;
   char buf[43];
   char *p = buf + sizeof buf;
 
   if (flags['l']) {
-    val = (long) va_arg(VA_V(ap), long);
+    val = (ajlong) va_arg(VA_V(ap), long);
   }
   else if (flags['h']) {
-    val = (long) va_arg(VA_V(ap), int); /* ANSI C converts short to int */
+    val = (ajlong) va_arg(VA_V(ap), int); /* ANSI C converts short to ajint */
   }
   else {
-    val = (long) va_arg(VA_V(ap), int);
+    val = (ajlong) va_arg(VA_V(ap), int);
   }
 
   if (val == INT_MIN)
@@ -152,32 +152,32 @@ static void cvt_d(int code, VALIST ap,
 **
 ** Conversion for %u to print unsigned integer
 **
-** @param [r] code [int] Format code specified (usually u)
+** @param [r] code [ajint] Format code specified (usually u)
 ** @param [r] app [va_list] Original arguments at current position
 ** @param [r] put [int function] Standard function
 ** @param [r] cl [void*] Standard
-** @param [r] flags [unsigned int*] Flags (after the %)
-** @param [r] width [int] Width (before the dot)
-** @param [r] precision [int] Precision (after the dot)
+** @param [r] flags [ajuint*] Flags (after the %)
+** @param [r] width [ajint] Width (before the dot)
+** @param [r] precision [ajint] Precision (after the dot)
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void cvt_u(int code, VALIST ap,
-		  int put(int c, void* cl), void* cl,
-		  unsigned int* flags, int width, int precision) {
+static void cvt_u(ajint code, VALIST ap,
+		  ajint put(ajint c, void* cl), void* cl,
+		  ajuint* flags, ajint width, ajint precision) {
 
-  unsigned long m;
+  ajulong m;
 
   char buf[43];
   char *p = buf + sizeof buf;
 
   if (flags['l'])
-    m  = va_arg(VA_V(ap), unsigned long);
+    m  = va_arg(VA_V(ap), ajulong);
   else if (flags['h'])
-    m  = va_arg(VA_V(ap), unsigned int); /* ANSI C converts short to int */
+    m  = va_arg(VA_V(ap), ajuint); /* ANSI C converts short to ajint */
   else
-    m  = va_arg(VA_V(ap), unsigned int);
+    m  = va_arg(VA_V(ap), ajuint);
 
   do
     *--p = ajSysItoC(m%10 + '0');
@@ -193,31 +193,31 @@ static void cvt_u(int code, VALIST ap,
 **
 ** Conversion for %o to print unsigned integer as octal
 **
-** @param [r] code [int] Format code specified (usually o)
+** @param [r] code [ajint] Format code specified (usually o)
 ** @param [r] ap [va_list] Original arguments at current position
 ** @param [r] put [int function] Standard function
 ** @param [r] cl [void*] Standard
-** @param [r] flags [unsigned int*] Flags (after the %)
-** @param [r] width [int] Width (before the dot)
-** @param [r] precision [int] Precision (after the dot)
+** @param [r] flags [ajuint*] Flags (after the %)
+** @param [r] width [ajint] Width (before the dot)
+** @param [r] precision [ajint] Precision (after the dot)
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void cvt_o(int code, VALIST ap,
-		  int put(int c, void* cl), void* cl,
-		  unsigned int* flags, int width, int precision) {
+static void cvt_o(ajint code, VALIST ap,
+		  ajint put(ajint c, void* cl), void* cl,
+		  ajuint* flags, ajint width, ajint precision) {
 
-  unsigned long m;
+  ajulong m;
   char buf[43];
   char *p = buf + sizeof buf;
 
   if (flags['l'])
-    m = va_arg(VA_V(ap), unsigned long);
+    m = va_arg(VA_V(ap), ajulong);
   if (flags['h'])
-    m = va_arg(VA_V(ap), unsigned int); /* ANSI C converts short to int */
+    m = va_arg(VA_V(ap), ajuint); /* ANSI C converts short to ajint */
   else
-    m = va_arg(VA_V(ap), unsigned int);
+    m = va_arg(VA_V(ap), ajuint);
 
   do
     *--p = ajSysItoC((m&0x7) + '0');
@@ -236,31 +236,31 @@ static void cvt_o(int code, VALIST ap,
 *
 ** Conversion for %x to print unsigned integer as hexadecimal
 **
-** @param [r] code [int] Format code specified (usually x)
+** @param [r] code [ajint] Format code specified (usually x)
 ** @param [r] ap [va_list] Original arguments at current position
 ** @param [r] put [int function] Standard function
 ** @param [r] cl [void*] Standard
-** @param [r] flags [unsigned int*] Flags (after the %)
-** @param [r] width [int] Width (before the dot)
-** @param [r] precision [int] Precision (after the dot)
+** @param [r] flags [ajuint*] Flags (after the %)
+** @param [r] width [ajint] Width (before the dot)
+** @param [r] precision [ajint] Precision (after the dot)
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void cvt_x(int code, VALIST ap,
-		  int put(int c, void* cl), void* cl,
-		  unsigned int* flags, int width, int precision) {
+static void cvt_x(ajint code, VALIST ap,
+		  ajint put(ajint c, void* cl), void* cl,
+		  ajuint* flags, ajint width, ajint precision) {
 
-  unsigned long m;
+  ajulong m;
   char buf[43];
   char *p = buf + sizeof buf;
 
   if (flags['l'])
-    m = va_arg(VA_V(ap), unsigned long);
+    m = va_arg(VA_V(ap), ajulong);
   else if (flags['h'])
-    m = va_arg(VA_V(ap), unsigned int); /* ANSI C converts short to int */
+    m = va_arg(VA_V(ap), ajuint); /* ANSI C converts short to ajint */
   else
-    m = va_arg(VA_V(ap), unsigned int);
+    m = va_arg(VA_V(ap), ajuint);
 
   if (code == 'X') {
     do
@@ -291,21 +291,21 @@ static void cvt_x(int code, VALIST ap,
 **
 ** Conversion for %p to print pointers of type void* as hexadecimal
 **
-** @param [r] code [int] Format code specified (usually p)
+** @param [r] code [ajint] Format code specified (usually p)
 ** @param [r] ap [va_list] Original arguments at current position
 ** @param [r] put [int function] Standard function
 ** @param [r] cl [void*] Standard
-** @param [r] flags [unsigned int*] Flags (after the %)
-** @param [r] width [int] Width (before the dot)
-** @param [r] precision [int] Precision (after the dot)
+** @param [r] flags [ajuint*] Flags (after the %)
+** @param [r] width [ajint] Width (before the dot)
+** @param [r] precision [ajint] Precision (after the dot)
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void cvt_p(int code, VALIST ap,
-	int put(int c, void* cl), void* cl,
-	unsigned int* flags, int width, int precision) {
-	unsigned long m = (unsigned long)va_arg(VA_V(ap), void*);
+static void cvt_p(ajint code, VALIST ap,
+	ajint put(ajint c, void* cl), void* cl,
+	ajuint* flags, ajint width, ajint precision) {
+	ajulong m = (ajulong)va_arg(VA_V(ap), void*);
 	char buf[43];
 	char *p = buf + sizeof buf;
 	precision = INT_MIN;
@@ -322,22 +322,22 @@ static void cvt_p(int code, VALIST ap,
 ** as a single character.
 **
 ** Arguments passed in the variable part of an argument list are promoted
-** by default, so char is always promoted to int by the time it reaches here.
+** by default, so char is always promoted to ajint by the time it reaches here.
 **
-** @param [r] code [int] Format code specified (usually c)
+** @param [r] code [ajint] Format code specified (usually c)
 ** @param [r] ap [va_list] Original arguments at current position
 ** @param [r] put [int function] Standard function
 ** @param [r] cl [void*] Standard
-** @param [r] flags [unsigned int*] Flags (after the %)
-** @param [r] width [int] Width (before the dot)
-** @param [r] precision [int] Precision (after the dot)
+** @param [r] flags [ajuint*] Flags (after the %)
+** @param [r] width [ajint] Width (before the dot)
+** @param [r] precision [ajint] Precision (after the dot)
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void cvt_c(int code, VALIST ap,
-	int put(int c, void* cl), void* cl,
-	unsigned int* flags, int width, int precision) {
+static void cvt_c(ajint code, VALIST ap,
+	ajint put(ajint c, void* cl), void* cl,
+	ajuint* flags, ajint width, ajint precision) {
 	if (width == INT_MIN)
 		width = 0;
 	if (width < 0) {
@@ -362,20 +362,20 @@ static void cvt_c(int code, VALIST ap,
 ** Precision is limited to 99 decimal places so it will fit in 2 characters
 ** of the format for sprintf.
 **
-** @param [r] code [int] Format code specified (usually f)
+** @param [r] code [ajint] Format code specified (usually f)
 ** @param [r] ap [va_list] Original arguments at current position
 ** @param [r] put [int function] Standard function
 ** @param [r] cl [void*] Standard
-** @param [r] flags [unsigned int*] Flags (after the %)
-** @param [r] width [int] Width (before the dot)
-** @param [r] precision [int] Precision (after the dot)
+** @param [r] flags [ajuint*] Flags (after the %)
+** @param [r] width [ajint] Width (before the dot)
+** @param [r] precision [ajint] Precision (after the dot)
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void cvt_f(int code, VALIST ap,
-		  int put(int c, void* cl), void* cl,
-		  unsigned int* flags, int width, int precision) {
+static void cvt_f(ajint code, VALIST ap,
+		  ajint put(ajint c, void* cl), void* cl,
+		  ajuint* flags, ajint width, ajint precision) {
   char buf[DBL_MAX_10_EXP+1+1+99+1];
 
   if (precision < 0) {
@@ -388,7 +388,7 @@ static void cvt_f(int code, VALIST ap,
   {				/* use sprintf to convert to string */
 				/* using code and precision */
     static char fmt[12] = "%.dd";
-    int i = 2;
+    ajint i = 2;
 
     (void) assert(precision <= 99);
     fmt[i++] = ajSysItoC((precision/10)%10 + '0');
@@ -410,20 +410,20 @@ static void cvt_f(int code, VALIST ap,
 **
 ** Conversion for %S to print a string
 **
-** @param [r] code [int] Format code specified (usually S)
+** @param [r] code [ajint] Format code specified (usually S)
 ** @param [r] ap [va_list] Original arguments at current position
 ** @param [r] put [int function] Standard function
 ** @param [r] cl [void*] Standard
-** @param [r] flags [unsigned int*] Flags (after the %)
-** @param [r] width [int] Width (before the dot)
-** @param [r] precision [int] Precision (after the dot)
+** @param [r] flags [ajuint*] Flags (after the %)
+** @param [r] width [ajint] Width (before the dot)
+** @param [r] precision [ajint] Precision (after the dot)
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void cvt_S(int code, VALIST ap,
-	int put(int c, void* cl), void* cl,
-	unsigned int* flags, int width, int precision) {
+static void cvt_S(ajint code, VALIST ap,
+	ajint put(ajint c, void* cl), void* cl,
+	ajuint* flags, ajint width, ajint precision) {
 	AjPStr str1 = va_arg(VA_V(ap), AjPStr);
 	if (str1) {
 	  ajFmtPuts(str1->Ptr, str1->Len, put, cl, flags,
@@ -439,20 +439,20 @@ static void cvt_S(int code, VALIST ap,
 **
 ** Conversion for %b to print a boolean as a 1 letter code (Y or N)
 **
-** @param [r] code [int] Format code specified (usually b)
+** @param [r] code [ajint] Format code specified (usually b)
 ** @param [r] ap [va_list] Original arguments at current position
 ** @param [r] put [int function] Standard function
 ** @param [r] cl [void*] Standard
-** @param [r] flags [unsigned int*] Flags (after the %)
-** @param [r] width [int] Width (before the dot)
-** @param [r] precision [int] Precision (after the dot)
+** @param [r] flags [ajuint*] Flags (after the %)
+** @param [r] width [ajint] Width (before the dot)
+** @param [r] precision [ajint] Precision (after the dot)
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void cvt_b(int code, VALIST ap,
-	int put(int c, void* cl), void* cl,
-	unsigned int* flags, int width, int precision) {
+static void cvt_b(ajint code, VALIST ap,
+	ajint put(ajint c, void* cl), void* cl,
+	ajuint* flags, ajint width, ajint precision) {
 	AjBool bl = va_arg(VA_V(ap), AjBool);
 	if (bl)
 	  ajFmtPuts("Y", 1, put, cl, flags,
@@ -467,20 +467,20 @@ static void cvt_b(int code, VALIST ap,
 **
 ** Conversion for %B to print a boolean as text (Yes or No)
 **
-** @param [r] code [int] Format code specified (usually B)
+** @param [r] code [ajint] Format code specified (usually B)
 ** @param [r] ap [va_list] Original arguments at current position
 ** @param [r] put [int function] Standard function
 ** @param [r] cl [void*] Standard
-** @param [r] flags [unsigned int*] Flags (after the %)
-** @param [r] width [int] Width (before the dot)
-** @param [r] precision [int] Precision (after the dot)
+** @param [r] flags [ajuint*] Flags (after the %)
+** @param [r] width [ajint] Width (before the dot)
+** @param [r] precision [ajint] Precision (after the dot)
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void cvt_B(int code, VALIST ap,
-	int put(int c, void* cl), void* cl,
-	unsigned int* flags, int width, int precision) {
+static void cvt_B(ajint code, VALIST ap,
+	ajint put(ajint c, void* cl), void* cl,
+	ajuint* flags, ajint width, ajint precision) {
 	AjBool bl = va_arg(VA_V(ap), AjBool);
 	if (bl)
 	  ajFmtPuts("Yes", 3, put, cl, flags,
@@ -495,20 +495,20 @@ static void cvt_B(int code, VALIST ap,
 **
 ** Conversion for %D to print a datetime value
 **
-** @param [r] code [int] Format code specified (usually D)
+** @param [r] code [ajint] Format code specified (usually D)
 ** @param [r] ap [va_list] Original arguments at current position
 ** @param [r] put [int function] Standard function
 ** @param [r] cl [void*] Standard
-** @param [r] flags [unsigned int*] Flags (after the %)
-** @param [r] width [int] Width (before the dot)
-** @param [r] precision [int] Precision (after the dot)
+** @param [r] flags [ajuint*] Flags (after the %)
+** @param [r] width [ajint] Width (before the dot)
+** @param [r] precision [ajint] Precision (after the dot)
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void cvt_D(int code, VALIST ap,
-	int put(int c, void* cl), void* cl,
-	unsigned int* flags, int width, int precision) {
+static void cvt_D(ajint code, VALIST ap,
+	ajint put(ajint c, void* cl), void* cl,
+	ajuint* flags, ajint width, ajint precision) {
         AJTIME *time =  va_arg(VA_V(ap), AJTIME *);
 	struct tm *mytime = time->time;
 
@@ -535,20 +535,20 @@ static void cvt_D(int code, VALIST ap,
 **
 ** Conversion for %F to print a file object
 **
-** @param [r] code [int] Format code specified (usually F)
+** @param [r] code [ajint] Format code specified (usually F)
 ** @param [r] ap [va_list] Original arguments at current position
 ** @param [r] put [int function] Standard function
 ** @param [r] cl [void*] Standard
-** @param [r] flags [unsigned int*] Flags (after the %)
-** @param [r] width [int] Width (before the dot)
-** @param [r] precision [int] Precision (after the dot)
+** @param [r] flags [ajuint*] Flags (after the %)
+** @param [r] width [ajint] Width (before the dot)
+** @param [r] precision [ajint] Precision (after the dot)
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void cvt_F(int code, VALIST ap,
-	int put(int c, void* cl), void* cl,
-	unsigned int* flags, int width, int precision) {
+static void cvt_F(ajint code, VALIST ap,
+	ajint put(ajint c, void* cl), void* cl,
+	ajuint* flags, ajint width, ajint precision) {
 	AjPFile fil = va_arg(VA_V(ap), AjPFile);
 	if (fil && fil->Name) {
 	  ajFmtPuts(fil->Name->Ptr, fil->Name->Len, put, cl, flags,
@@ -606,12 +606,12 @@ static Fmt_T cvt[256] = {
 
 static char *Fmt_flags = "-+ 0#"; 
 
-static int outc(int c, void* cl) {
+static ajint outc(ajint c, void* cl) {
 	FILE *f = cl;
 	return putc(c, f);
 }
 
-static int s_ajinsert(int c, void* cl) {
+static ajint s_ajinsert(ajint c, void* cl) {
 	struct buf *p = cl;
 	if (p->bp >= p->buf + p->size)
 		AJRAISE(Fmt_Overflow);
@@ -619,7 +619,7 @@ static int s_ajinsert(int c, void* cl) {
 	return c;
 }
 
-static int s_ajappend(int c, void* cl) {
+static ajint s_ajappend(ajint c, void* cl) {
 	struct buf *p = cl;
 	if (p->bp >= p->buf + p->size) {
 		AJRESIZE(p->buf, 2*p->size);
@@ -638,21 +638,21 @@ static int s_ajappend(int c, void* cl) {
 ** for str=null, len less than 0 or flags=null.
 **
 ** @param [w] str [const char*] Text to write.
-** @param [r] len [int] Text length.
+** @param [r] len [ajint] Text length.
 ** @param [f] put [int function] Standard function.
 ** @param [r] cl [void*] Standard.
-** @param [r] flags [unsigned int*] Flags (after the %)
-** @param [r] width [int] Width (before the dot)
-** @param [r] precision [int] Precision (after the dot)
+** @param [r] flags [ajuint*] Flags (after the %)
+** @param [r] width [ajint] Width (before the dot)
+** @param [r] precision [ajint] Precision (after the dot)
 ** @return [void]
 ** @cre attempting to write over len chars to str
 **
 ** @@
 **************************************************************************/
 
-void ajFmtPuts (const char* str, int len,
-	       int put(int c, void* cl), void* cl,
-	       unsigned int* flags, int width, int precision) {
+void ajFmtPuts (const char* str, ajint len,
+	       ajint put(ajint c, void* cl), void* cl,
+	       ajuint* flags, ajint width, ajint precision) {
 
   (void) assert(str);
   (void) assert(len >= 0);
@@ -671,7 +671,7 @@ void ajFmtPuts (const char* str, int len,
   if (!flags['-'])
     pad(width - len, ' ');
   {
-    int i;
+    ajint i;
     for (i = 0; i < len; i++)
       (void) put((unsigned char)*str++, cl);
   }
@@ -694,7 +694,7 @@ void ajFmtPuts (const char* str, int len,
 ** @@
 **************************************************************************/
 
-void ajFmtFmt (int put(int c, void* cl), void* cl,
+void ajFmtFmt (ajint put(ajint c, void* cl), void* cl,
 	const char* fmt, ...) {
 	va_list ap;
 	va_start(ap, fmt);
@@ -838,15 +838,15 @@ void ajFmtPrintFp(FILE* stream, const char* fmt, ...) {
 ** if more than size-1 characters are emitted.
 **
 ** @param [w] buf [char*] char string to be written too.
-** @param [r] size [int] length of buffer
+** @param [r] size [ajint] length of buffer
 ** @param [r] fmt [const char*] Format string.
 ** @param [r] ap [va_list] Variable length argument list
-** @return [int] number of characters written to buf.
+** @return [ajint] number of characters written to buf.
 ** @@
 **************************************************************************/
 
-int ajFmtVPrintCL(char* buf, int size, const char* fmt, va_list ap) {
-	int len;
+ajint ajFmtVPrintCL(char* buf, ajint size, const char* fmt, va_list ap) {
+	ajint len;
 	len = ajFmtVfmtCL(buf, size, fmt, ap);
 	return len;
 }
@@ -860,18 +860,18 @@ int ajFmtVPrintCL(char* buf, int size, const char* fmt, va_list ap) {
 ** if more than size-1 characters are emitted.
 **
 ** @param [w] buf [char*] char string to be written too.
-** @param [r] size [int] length of buffer
+** @param [r] size [ajint] length of buffer
 ** @param [r] fmt [const char*] Format string
 ** @param [v] [...] Variable length argument list
 **
-** @return [] [int] number of characters written to buf.
+** @return [] [ajint] number of characters written to buf.
 **
 ** @@
 **************************************************************************/
 
-int ajFmtPrintCL(char* buf, int size, const char* fmt, ...) {
+ajint ajFmtPrintCL(char* buf, ajint size, const char* fmt, ...) {
 	va_list ap;
-	int len;
+	ajint len;
 	va_start(ap, fmt);
 	len = ajFmtVfmtCL(buf, size, fmt, ap);
 	va_end(ap);
@@ -899,7 +899,7 @@ AjPStr ajFmtStr (const char* fmt, ...) {
 	va_list save_ap;
 #endif
 	volatile AjBool okay=ajFalse;
-	int len =20;
+	ajint len =20;
 	AjPStr fnew;
 
 	fnew = ajStrNewL (len);
@@ -952,7 +952,7 @@ AjPStr ajFmtPrintS (AjPStr* pthis, const char* fmt, ...) {
 	va_list save_ap;
 #endif
 	volatile AjBool okay = ajFalse;
-	int len ;
+	ajint len ;
 
 	va_start(ap, fmt);
 
@@ -1016,7 +1016,7 @@ AjPStr ajFmtPrintAppS(AjPStr* pthis, const char* fmt, ...) {
 	va_list save_ap;
 #endif
 	volatile AjBool okay = ajFalse;
-	int len ;
+	ajint len ;
 
 	va_start(ap, fmt);
 
@@ -1059,16 +1059,16 @@ AjPStr ajFmtPrintAppS(AjPStr* pthis, const char* fmt, ...) {
 ** Same as ajFmtPrintCL but takes arguments from the list ap.
 **
 ** @param [w] buf [char*] char string to be written too.
-** @param [r] size [int] length of buffer
+** @param [r] size [ajint] length of buffer
 ** @param [r] fmt [const char*] Format string.
 ** @param [r] ap [va_list] Variable length argument list.
 **
-** @return [] [int] number of characters written to buf.
+** @return [] [ajint] number of characters written to buf.
 **
 ** @@
 **************************************************************************/
 
-int ajFmtVfmtCL(char* buf, int size, const char* fmt,
+ajint ajFmtVfmtCL(char* buf, ajint size, const char* fmt,
 	va_list ap) {
 	struct buf cl;
 	(void) assert(buf);
@@ -1142,7 +1142,7 @@ char* ajFmtVString(const char* fmt, va_list ap) {
 ** @@
 ******************************************************************************/
 
-void ajFmtVfmt (int put(int c, void* cl), void* cl,
+void ajFmtVfmt (ajint put(ajint c, void* cl), void* cl,
 	       const char* fmt, va_list ap) {
 
   (void) assert(put);
@@ -1153,53 +1153,53 @@ void ajFmtVfmt (int put(int c, void* cl), void* cl,
       (void) put((unsigned char)*fmt++, cl);
     else {			/* we have a % - get working on the format */
       unsigned char c;
-      int flags[256];
-      int width = INT_MIN, precision = INT_MIN;
+      ajint flags[256];
+      ajint width = INT_MIN, precision = INT_MIN;
       (void) memset(flags, '\0', sizeof flags);
       if (Fmt_flags) {		/* look for any conversion flags */
 	unsigned char c = *fmt;
-	for ( ; (int)c && strchr(Fmt_flags, c); c = *++fmt) {
-	  (void) assert(flags[(int)c] < 255);
-	  flags[(int)c]++;
+	for ( ; (ajint)c && strchr(Fmt_flags, c); c = *++fmt) {
+	  (void) assert(flags[(ajint)c] < 255);
+	  flags[(ajint)c]++;
 	}
       }
-      if (*fmt == '*' || isdigit((int)*fmt)) { 
-	int n;
-	if (*fmt == '*') {	/* '*' width = int arg */
+      if (*fmt == '*' || isdigit((ajint)*fmt)) { 
+	ajint n;
+	if (*fmt == '*') {	/* '*' width = ajint arg */
 	  n = va_arg(ap, int);
 	  (void) assert(n != INT_MIN);
 	  fmt++;
 	} else
-	  for (n = 0; isdigit((int)*fmt); fmt++) {
-	    int d = *fmt - '0';
+	  for (n = 0; isdigit((ajint)*fmt); fmt++) {
+	    ajint d = *fmt - '0';
 	    (void) assert(n <= (INT_MAX - d)/10);
 	    n = 10*n + d;
 	  }
 	width = n;
       }
-      if (*fmt == '.' && (*++fmt == '*' || isdigit((int)*fmt))) {
-	int n; 
-	if (*fmt == '*') {	/* '*' precision = int arg */
+      if (*fmt == '.' && (*++fmt == '*' || isdigit((ajint)*fmt))) {
+	ajint n; 
+	if (*fmt == '*') {	/* '*' precision = ajint arg */
 	  n = va_arg(ap, int);
 	  (void) assert(n != INT_MIN);
 	  fmt++;
 	} else
-	  for (n = 0; isdigit((int)*fmt); fmt++) {
-	    int d = *fmt - '0';
+	  for (n = 0; isdigit((ajint)*fmt); fmt++) {
+	    ajint d = *fmt - '0';
 	    (void) assert(n <= (INT_MAX - d)/10);
 	    n = 10*n + d;
 	  }
 	  precision = n;
       }
       if (*fmt == 'l' || *fmt == 'L'|| *fmt == 'h') { /* size modifiers */
-	(void) assert(flags[(int)*fmt] < 255); /* store as flags - */
+	(void) assert(flags[(ajint)*fmt] < 255); /* store as flags - */
 	                                          /* values do not clash */
-	flags[(int)*fmt]++;
+	flags[(ajint)*fmt]++;
 	fmt++;
       }
       c = *fmt++;		/* finally, next character is the code */
-      (void) assert(cvt[(int)c]);		/* we need a defined routine */
-      (*cvt[(int)c])(c, VA_P(ap), put, cl, (unsigned int *)flags, width, precision);
+      (void) assert(cvt[(ajint)c]);		/* we need a defined routine */
+      (*cvt[(ajint)c])(c, VA_P(ap), put, cl, (ajuint *)flags, width, precision);
     }
   }
 }
@@ -1208,17 +1208,17 @@ void ajFmtVfmt (int put(int c, void* cl), void* cl,
 **
 ** Registers 'newcvt' as the conversion routine for format code 'code'
 **
-** @param [r] code [int] value of char to be replaced
+** @param [r] code [ajint] value of char to be replaced
 ** @param [f] newcvt [Fmt_T] new routine for conversion
 **
 ** @return [Fmt_T] old value
 ** @@
 ************************************************************************/
 
-Fmt_T ajFmtRegister(int code, Fmt_T newcvt) {
+Fmt_T ajFmtRegister(ajint code, Fmt_T newcvt) {
   Fmt_T old;
   (void) assert(0 < code
-		&& code < (int)(sizeof (cvt)/sizeof (cvt[0])));
+		&& code < (ajint)(sizeof (cvt)/sizeof (cvt[0])));
   old = cvt[code];
   cvt[code] = newcvt;
   return old;
@@ -1230,20 +1230,20 @@ Fmt_T ajFmtRegister(int code, Fmt_T newcvt) {
 ** and precision values.
 **
 ** @param [w] str [const char*] Text to write.
-** @param [r] len [int] Text length.
+** @param [r] len [ajint] Text length.
 ** @param [f] put [int function] Standard function.
 ** @param [r] cl [void*] Standard.
-** @param [r] flags [unsigned int*] Flags (after the %)
-** @param [r] width [int] Width (before the dot)
-** @param [r] precision [int] Precision (after the dot)
+** @param [r] flags [ajuint*] Flags (after the %)
+** @param [r] width [ajint] Width (before the dot)
+** @param [r] precision [ajint] Precision (after the dot)
 ** @return [void]
 ** @@
 *****************************************************************************/
 
-void ajFmtPutd(const char* str, int len,
-	      int put(int c, void* cl), void* cl,
-	      unsigned int* flags, int width, int precision) {
-  int sign;
+void ajFmtPutd(const char* str, ajint len,
+	      ajint put(ajint c, void* cl), void* cl,
+	      ajuint* flags, ajint width, ajint precision) {
+  ajint sign;
   (void) assert(str);
   (void) assert(len >= 0);
   (void) assert(flags);
@@ -1271,8 +1271,8 @@ void ajFmtPutd(const char* str, int len,
     sign = 0;
 
   {
-    int n;
-    int j=0;
+    ajint n;
+    ajint j=0;
     if (precision < 0)
       precision = 1;
     if (len < precision)
@@ -1307,7 +1307,7 @@ void ajFmtPutd(const char* str, int len,
     }
     pad(precision - len, '0');	/* pad after end */
     {
-      int i;
+      ajint i;
       for (i = j; i < len; i++)
 	(void) put((unsigned char)*str++, cl);
     }
@@ -1323,21 +1323,21 @@ void ajFmtPutd(const char* str, int len,
 ** @param [w] outf [AjPFile] output stream
 ** @param [r] str [AjPStr] text to write
 ** @param [r] prefix [char *] prefix string
-** @param [r] len [int] maximum span
+** @param [r] len [ajint] maximum span
 ** @param [r] delim [char *] delimiter string
 ** @return [void]
 ** @@
 *****************************************************************************/
 
-void ajFmtPrintSplit(AjPFile outf, AjPStr str, char *prefix, int len,
+void ajFmtPrintSplit(AjPFile outf, AjPStr str, char *prefix, ajint len,
 		     char *delim)
 {
     AjPStrTok handle=NULL;
     AjPStr token = NULL;
     AjPStr tmp   = NULL;
-    int    n = 0;
-    int    l = 0;
-    int    c = 0;
+    ajint    n = 0;
+    ajint    l = 0;
+    ajint    c = 0;
     
     token = ajStrNew();
     tmp   = ajStrNewC("");

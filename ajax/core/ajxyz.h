@@ -29,11 +29,11 @@ extern "C"
 
 typedef struct AjSAtom
 {
-  int        Mod;        /*Model number*/
-  int        Chn;        /*Chain number*/
+  ajint        Mod;        /*Model number*/
+  ajint        Chn;        /*Chain number*/
   char       Type;       /*'P' (protein atom), 'H' ("heterogens") or 'w' 
 			   (water)*/
-  int        Idx;        /*Residue number - index into sequence*/
+  ajint        Idx;        /*Residue number - index into sequence*/
   AjPStr     Pdb;        /*Residue number - according to original PDB file*/
   char       Id1;        /*Standard residue identifier or '?' for unknown 
 			   types or '.' for heterogens and water*/
@@ -65,10 +65,10 @@ typedef struct AjSChain
 {
   char       Id;         /*Chain id, ('.' if one wasn't specified in the 
 			   original PDB file)*/
-  int        Nres;       /*No. of amino acid residues*/
-  int        Nhet;       /*No. of atoms which are non-covalently associated 
+  ajint        Nres;       /*No. of amino acid residues*/
+  ajint        Nhet;       /*No. of atoms which are non-covalently associated 
 			   with the chain, excluding water ("heterogens")*/
-  int        Nwat;       /*No. of water atoms which are associated with the 
+  ajint        Nwat;       /*No. of water atoms which are associated with the 
 			   chain*/
   AjPStr     Seq;	 /* sequence as string */
   AjPList    Atoms;      /*List of Atoms */
@@ -95,10 +95,10 @@ typedef struct AjSPdb
   AjPStr     Pdb;        /*PDB code*/
   AjPStr     Compnd;     /*Text from COMPND records in PDB file*/
   AjPStr     Source;     /*Text from SOURCE records in PDB file*/
-  int        Method;     /*Exp. type, value is either XRAY or NMR*/
+  ajint        Method;     /*Exp. type, value is either XRAY or NMR*/
   float      Reso;       /*Resolution of an XRAY structure or 0*/
-  int        Nmod;       /*No. of models (always 1 for XRAY structures)*/
-  int        Nchn;       /*No. polypeptide chains */
+  ajint        Nmod;       /*No. of models (always 1 for XRAY structures)*/
+  ajint        Nchn;       /*No. polypeptide chains */
   AjPChain  *Chains;     /*Array of pointers to AjSChain structures*/
 }AjOPdb, *AjPPdb;
 
@@ -126,7 +126,7 @@ typedef struct AjSScop
     AjPStr Family;
     AjPStr Domain;
     AjPStr Source;
-    int    N;
+    ajint    N;
     char   *Chain;
     AjPStr *Start;
     AjPStr *End;
@@ -139,10 +139,10 @@ AjPAtom  ajXyzAtomNew(void);
 void     ajXyzAtomDel(AjPAtom *thys);
 AjPChain ajXyzChainNew(void);
 void     ajXyzChainDel(AjPChain *thys);
-AjPPdb   ajXyzPdbNew(int chains);
+AjPPdb   ajXyzPdbNew(ajint chains);
 void     ajXyzPdbDel(AjPPdb *thys);
 void     ajXyzScopDel(AjPScop *pthis);
-AjPScop  ajXyzScopNew(int n);
+AjPScop  ajXyzScopNew(ajint n);
 
 AjBool   ajXyzScopRead(AjPFile inf, AjPStr entry, AjPScop *thys);
 AjBool   ajXyzScopReadC(AjPFile inf, char *entry, AjPScop *thys);
@@ -158,13 +158,13 @@ AjBool   ajXyzPdbWriteDomain(AjPFile errf, AjPFile outf, AjPPdb pdb,
 			     AjPScop scop); 
 
 AjBool   ajXyzPrintPdbSeqresChain(AjPFile errf, AjPFile outf, AjPPdb pdb,
-				  int chn);
+				  ajint chn);
 AjBool   ajXyzPrintPdbSeqresDomain(AjPFile errf, AjPFile outf, AjPPdb pdb,
 				   AjPScop scop);
-AjBool   ajXyzPrintPdbAtomChain(AjPFile outf, AjPPdb pdb, int mod, int chn);
+AjBool   ajXyzPrintPdbAtomChain(AjPFile outf, AjPPdb pdb, ajint mod, ajint chn);
 AjBool   ajXyzPrintPdbAtomDomain(AjPFile errf, AjPFile outf, AjPPdb pdb,
-				 AjPScop scop, int mod);
-AjBool   ajXyzPrintPdbText(AjPFile outf, AjPStr str, char *prefix, int len,
+				 AjPScop scop, ajint mod);
+AjBool   ajXyzPrintPdbText(AjPFile outf, AjPStr str, char *prefix, ajint len,
 			   char *delim);
 AjBool   ajXyzPrintPdbHeader(AjPFile outf, AjPPdb pdb);
 AjBool   ajXyzPrintPdbHeaderScop(AjPFile outf, AjPScop scop);
@@ -174,7 +174,7 @@ AjBool   ajXyzPrintPdbSource(AjPFile outf, AjPPdb pdb);
 AjBool   ajXyzPrintPdbEmptyRemark(AjPFile outf, AjPPdb pdb);
 AjBool   ajXyzPrintPdbResolution(AjPFile outf, AjPPdb pdb);
 
-AjBool   ajXyzPdbChain(char id, AjPPdb pdb, int *chn);
+AjBool   ajXyzPdbChain(char id, AjPPdb pdb, ajint *chn);
 void     ajXyzScopToPdb(AjPStr scop, AjPStr *pdb);
 
 #endif

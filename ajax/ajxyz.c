@@ -65,16 +65,16 @@
 ** is required. This is normally called by the Cpdb reading
 ** routine.
 **
-** @param [r] chains [int] Number of chains in this pdb entry
+** @param [r] chains [ajint] Number of chains in this pdb entry
 **
 ** @return [AjPPdb] Pointer to a pdb object
 ** @@
 ******************************************************************************/
 
-AjPPdb ajXyzPdbNew(int chains)
+AjPPdb ajXyzPdbNew(ajint chains)
 {
     AjPPdb ret=NULL;
-    int i;
+    ajint i;
     
     AJNEW0(ret);
   
@@ -138,17 +138,17 @@ AjPAtom ajXyzAtomNew(void)
 ** Scop object constructor. Fore-knowledge of the number of chains is 
 ** required.
 **
-** @param [r] chains [int] Number of chains
+** @param [r] chains [ajint] Number of chains
 **
 ** @return [AjPScop] Pointer to a scop object
 ** @@
 ******************************************************************************/
 
-AjPScop ajXyzScopNew(int chains)
+AjPScop ajXyzScopNew(ajint chains)
 {
 
     AjPScop ret = NULL;
-    int i;
+    ajint i;
 
     AJNEW0(ret);
 
@@ -200,8 +200,8 @@ void ajXyzPdbDel(AjPPdb *thys)
 {
     AjPPdb pthis = *thys;
     
-    int nc=0;
-    int i=0;
+    ajint nc=0;
+    ajint i=0;
 
     if(!pthis || !thys)
 	return;
@@ -288,7 +288,7 @@ void ajXyzScopDel(AjPScop *thys)
 {
     AjPScop pthis = *thys;
     
-    int i;
+    ajint i;
 
     if(!pthis || !thys)
 	return;
@@ -340,14 +340,14 @@ void ajXyzScopDel(AjPScop *thys)
 
 AjBool ajXyzCpdbRead(AjPFile inf, AjPPdb *thys)
 {
-    int         nmod =0;
-    int         ncha =0;
-    int           nc =0;
-    int          mod =0;
-    int          chn =0;
-    int     last_chn =0;
-    int     last_mod =0;
-    int done_co_line =0;
+    ajint         nmod =0;
+    ajint         ncha =0;
+    ajint           nc =0;
+    ajint          mod =0;
+    ajint          chn =0;
+    ajint     last_chn =0;
+    ajint     last_mod =0;
+    ajint done_co_line =0;
 
     float       reso =0.0;
 
@@ -619,14 +619,14 @@ AjBool ajXyzCpdbWriteDomain(AjPFile errf, AjPFile outf, AjPPdb pdb, AjPScop scop
 {
     /*rn_mod is a modifier to the residue number to give correct residue
       numbering for the domain*/
-    int      z;
-    int      chn;
-    int      start       =0;
-    int      end         =0;
-    int      finalrn     =0;
-    int      rn_mod      =0;  
-    int      last_rn     =0;  
-    int      this_rn;
+    ajint      z;
+    ajint      chn;
+    ajint      start       =0;
+    ajint      end         =0;
+    ajint      finalrn     =0;
+    ajint      rn_mod      =0;  
+    ajint      last_rn     =0;  
+    ajint      this_rn;
     char     id;
     
     AjPStr   tmpseq      =NULL;   
@@ -984,8 +984,8 @@ AjBool ajXyzCpdbWriteDomain(AjPFile errf, AjPFile outf, AjPPdb pdb, AjPScop scop
 
 AjBool ajXyzCpdbWriteAll(AjPFile outf, AjPPdb thys)
 {
-    int         x;
-    int         y;
+    ajint         x;
+    ajint         y;
     AjIList  iter =NULL;
     AjPAtom   tmp =NULL;
     
@@ -1092,9 +1092,9 @@ AjBool ajXyzCpdbWriteAll(AjPFile outf, AjPPdb thys)
 ** @return [AjBool] True on succcess
 ** @@
 ******************************************************************************/
-AjBool ajXyzPdbChain(char id, AjPPdb pdb, int *chn)
+AjBool ajXyzPdbChain(char id, AjPPdb pdb, ajint *chn)
 {
-    int a;
+    ajint a;
     
     for(a=0;a<pdb->Nchn;a++)
 	if(toupper(pdb->Chains[a]->Id) == toupper(id))
@@ -1125,18 +1125,18 @@ AjBool ajXyzPdbChain(char id, AjPPdb pdb, int *chn)
 ** @param [w] outf   [AjPFile] Output file stream
 ** @param [r] str    [AjPStr]  Text to print out
 ** @param [r] prefix [char *]  Text to print out at start of line
-** @param [r] len    [int]     Width of record to print into
+** @param [r] len    [ajint]     Width of record to print into
 ** @param [r] delim  [char *]  String for tokenization of text
 **
 ** @return [AjBool] True on succcess
 ** @@
 ******************************************************************************/
-AjBool  ajXyzPrintPdbText(AjPFile outf, AjPStr str, char *prefix, int len, 
+AjBool  ajXyzPrintPdbText(AjPFile outf, AjPStr str, char *prefix, ajint len, 
 		       char *delim)
 {
-    int        n      = 0;
-    int        l      = 0;
-    int        c      = 0;
+    ajint        n      = 0;
+    ajint        l      = 0;
+    ajint        c      = 0;
 
     AjPStrTok  handle = NULL;
     AjPStr     token  = NULL;
@@ -1204,22 +1204,22 @@ AjBool  ajXyzPrintPdbText(AjPFile outf, AjPStr str, char *prefix, int len,
 ** @param [w] errf [AjPFile] Output file stream for error messages
 ** @param [r] pdb  [AjPPdb] Pdb object
 ** @param [r] scop [AjPScop] Scop object
-** @param [r] mod  [int] Model number, beginning at 1
+** @param [r] mod  [ajint] Model number, beginning at 1
 **
 ** @return [AjBool] True on succcess
 ** @@
 ******************************************************************************/
 AjBool ajXyzPrintPdbAtomDomain(AjPFile errf, AjPFile outf, AjPPdb pdb, 
-			    AjPScop scop, int mod)
+			    AjPScop scop, ajint mod)
 {
     /*rn_mod is a modifier to the residue number to give correct residue 
       numbering for the domain*/
 
-    int      acnt        =1;
-    int      rn_mod      =0;  
-    int      z;
-    int      finalrn     =0;
-    int      chn;
+    ajint      acnt        =1;
+    ajint      rn_mod      =0;  
+    ajint      z;
+    ajint      finalrn     =0;
+    ajint      chn;
     char     id='\0';
 
     AjBool   found_start =ajFalse;
@@ -1397,19 +1397,19 @@ AjBool ajXyzPrintPdbAtomDomain(AjPFile errf, AjPFile outf, AjPPdb pdb,
 **
 ** @param [w] outf [AjPFile] Output file stream
 ** @param [r] pdb  [AjPPdb] Pdb object
-** @param [r] chn  [int] Chain number, beginning at 1
-** @param [r] mod  [int] Model number, beginning at 1
+** @param [r] chn  [ajint] Chain number, beginning at 1
+** @param [r] mod  [ajint] Model number, beginning at 1
 **
 ** @return [AjBool] True on succcess
 ** @@
 ******************************************************************************/
-AjBool ajXyzPrintPdbAtomChain(AjPFile outf, AjPPdb pdb, int mod, int chn)
+AjBool ajXyzPrintPdbAtomChain(AjPFile outf, AjPPdb pdb, ajint mod, ajint chn)
 {
     AjBool   doneter=ajFalse;
     AjIList  iter=NULL;
     AjPAtom  atm=NULL;
     AjPAtom  atm2=NULL;
-    int      acnt;
+    ajint      acnt;
     
 
     /* Check args are not NULL */
@@ -1512,14 +1512,14 @@ AjBool ajXyzPrintPdbAtomChain(AjPFile outf, AjPPdb pdb, int mod, int chn)
 AjBool ajXyzPrintPdbSeqresDomain(AjPFile errf, AjPFile outf, AjPPdb pdb, 
 			      AjPScop scop)
 {
-    int      last_rn=0;  
-    int      this_rn;
-    int      x;
-    int      y;
-    int      z;
-    int      rcnt=0;
-    int      len;
-    int	     chn=-1;
+    ajint      last_rn=0;  
+    ajint      this_rn;
+    ajint      x;
+    ajint      y;
+    ajint      z;
+    ajint      rcnt=0;
+    ajint      len;
+    ajint	     chn=-1;
     char    *p;
     char     id;
 
@@ -1756,19 +1756,19 @@ AjBool ajXyzPrintPdbSeqresDomain(AjPFile errf, AjPFile outf, AjPPdb pdb,
 ** @param [w] outf [AjPFile] Output file stream
 ** @param [w] errf [AjPFile] Output file stream for error messages
 ** @param [r] pdb  [AjPPdb] Pdb object
-** @param [r] chn  [int] chain number, beginning at 1
+** @param [r] chn  [ajint] chain number, beginning at 1
 **
 ** @return [AjBool] True on succcess
 ** @@
 ******************************************************************************/
 AjBool ajXyzPrintPdbSeqresChain(AjPFile errf, AjPFile outf, AjPPdb pdb, 
-			     int chn)
+			     ajint chn)
 {
-    int      last_rn =0;  
-    int      this_rn;
-    int      x;
-    int      y;
-    int      len;
+    ajint      last_rn =0;  
+    ajint      this_rn;
+    ajint      x;
+    ajint      y;
+    ajint      len;
     char    *p;
 
     AjPStr   tmp1    =NULL;
@@ -2077,8 +2077,8 @@ AjBool ajXyzPrintPdbHeaderScop(AjPFile outf, AjPScop scop)
 ******************************************************************************/
 AjBool   ajXyzPdbWriteDomain(AjPFile errf, AjPFile outf, AjPPdb pdb, AjPScop scop)
 {
-    int z;     /* A counter */
-    int chn;   /* No. of the chain in the pdb structure */
+    ajint z;     /* A counter */
+    ajint chn;   /* No. of the chain in the pdb structure */
 
 
     /* Check for errors in chain identifier and length*/
@@ -2164,8 +2164,8 @@ AjBool   ajXyzPdbWriteDomain(AjPFile errf, AjPFile outf, AjPPdb pdb, AjPScop sco
 ******************************************************************************/
 AjBool   ajXyzPdbWriteAll(AjPFile errf, AjPFile outf, AjPPdb pdb)
 {
-    int x;
-    int y;
+    ajint x;
+    ajint y;
     
 
     /* Write bibliographic info.*/
@@ -2235,7 +2235,7 @@ AjBool   ajXyzPdbWriteAll(AjPFile errf, AjPFile outf, AjPPdb pdb)
 
 void ajXyzScopWrite(AjPFile outf, AjPScop thys)
 {
-    int i;
+    ajint i;
 
     ajFmtPrintF(outf,"ID   %S\nXX\n",thys->Entry);
     ajFmtPrintF(outf,"EN   %S\nXX\n",thys->Pdb);
@@ -2321,8 +2321,8 @@ AjBool ajXyzScopReadC(AjPFile inf, char *entry, AjPScop *thys)
     AjBool ok             =ajFalse;
     
     char   *p;
-    int    idx            =0;
-    int    n=0;
+    ajint    idx            =0;
+    ajint    n=0;
     
 
     /* Only initialise strings if this is called for the first time*/
