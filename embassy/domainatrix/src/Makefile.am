@@ -3,9 +3,9 @@
 SUBDIRS =
 
 bin_PROGRAMS = contacts domainer fraggle hetparse hmmgen interface libscan \
-               pdbparse pdbplus pdbtosp profgen scopalign scopnr scopparse \
-               scoprep scopreso scopseqs seqalign seqnr seqsearch seqsort \
-               seqwords siggen sigplot sigscan
+               pdbparse pdbplus pdbtosp profgen rocplot scopalign scopnr \
+               scopparse scoprep scopreso scopseqs seqalign seqnr seqsearch \
+               seqsort seqwords siggen sigplot sigscan
 
 INCLUDES = -I../../../plplot -I../../../ajax -I../../../nucleus
 
@@ -27,6 +27,7 @@ libscan_SOURCES = libscan.c
 pdbparse_SOURCES = pdbparse.c
 pdbplus_SOURCES = pdbplus.c
 pdbtosp_SOURCES = pdbtosp.c
+rocplot_SOURCES = rocplot.c
 profgen_SOURCES = profgen.c
 scopalign_SOURCES = scopalign.c
 scopnr_SOURCES = scopnr.c

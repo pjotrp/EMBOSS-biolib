@@ -1,0 +1,231 @@
+application: rocplot 
+[
+  documentation: "Provides interpretation and graphical display of the 
+                  performance of discriminating elements (e.g. profiles for
+                  protein families).  rocplot reads file(s) of hits from 
+	          discriminator-database search(es), performs ROC analysis 
+	          on the hits, and writes graphs illustrating the diagnostic 
+	          performance of the discriminating elements."
+  groups:        "Protein:3D Structure"
+  gui:           "yes"
+  batch:         "yes"
+  cpu:           "low"
+
+]
+
+
+
+section: input 
+[
+  information: "Input section"
+  type: "page"
+]
+
+dirlist: hitsfiles
+[
+    parameter:   "Y"
+    information: "Directory of hits files"
+    help:        "Each hits file must contain a list of classified database 
+                  hits, rank-ordered on the basis of score, that are the 
+	          results of a search of a discriminator (e.g. a profile for
+	          a protein family) against a database (e.g. of protein 
+	          sequences)."
+    default: "rocplot"
+]
+
+endsection: input
+
+
+
+section: standard 
+[
+  information: "Standard section"
+  type: "page"
+]
+
+list: mode  
+[
+  standard:      "Y"
+  values:        "1: Single input file mode, 2: Multiple input file mode"
+  default:       "1"
+  minimum:       "1"
+  maximum:       "2"
+  delimiter:     ","
+  codedelimiter: ":"
+  button:        "Y"
+  header:        "Available modes"
+  information:   "Select mode of operation"
+  help:          "In 'single input file mode', ROC analysis is performed on
+                  the individual hits file; a ROC plot containing a single 
+	          ROC curve, and a single ROC value and classification plot
+	          are generated. In 'multiple input file mode' there are two
+                  sub-modes depending upon whether (1) ROC analysis is to 
+	          performed separately for the individual input files or (2)
+	          the lists of hits in the hits files are combined and ROC 
+	          analysis is performed on the whole (see the ACD option 
+	          called 'multimode' for more information). 
+                  If the input file does not contain at least as many 'FALSE' 
+                  hits as are specified after the 'ROC' token in the input file,
+                  then an error will be generated and rocplot will terminate.  
+                  Where multiple input files are given as input, each must 
+                  contain the same value after the 'ROC' token, or an error will
+                  be generated and rocplot will terminate. 
+                  The hits in the hits files *must* have been rank-ordered on 
+                  the basis of score, p-value, E-value etc, with the highest
+                  scoring / most significant hit being given in the highest rank
+                  (1); i.e. on the second line of the file. Other hits should 
+                  then be given in order of decreasing score / significance."
+]
+
+list: multimode  
+[
+  standard:      "@($(mode)==2)"
+  values:        "1: Do not combine data (multiple ROC curves in single ROC 
+	          plot, multiple classification plots), 2: Combine data 
+		  (single ROC curve, single classification plot)"
+  default:       "1"
+  minimum:       "1"
+  maximum:       "2"
+  delimiter:     ","
+  codedelimiter: ":"
+  button:        "Y"
+  header:        "Available modes"
+  information:   "Select mode of operation"
+  help:          "In 'Do not combine data' mode, ROC analysis is performed 
+                  separately for the individual input files. Multiple ROC curves
+                  will be given on the same ROC plot and a ROC value and a 
+                  classification plot will be generated for each input file.
+                  A bar chart giving the distribution of ROCn values, and the 
+                  mean and standard deviation of ROCn values are also generated.
+                  In 'Combine data' mode, the lists of hits in the hits files 
+                  are combined and ROC analysis is performed on the whole. A 
+                  single ROC curve will be given in the ROC plot and a single 
+                  ROC value and classification plot will be generated. In 
+                  this second mode there are two further sub-modes depending on
+                  whether there is (1) a single list of known true relatives for
+                  the different searches or (2) there is a different list of 
+                  known true relatives for each different search (see the ACD 
+                  option called 'datamode' for more information)"
+]
+
+list: datamode  
+[
+  standard:      "@(@($(mode)==2) & @($(multimode)==2))"
+  values:        "1: Single list of known true relatives, 2: Multiple lists of
+                  known true relatives"
+  default:       "1"
+  minimum:       "1"
+  maximum:       "2"
+  delimiter:     ","
+  codedelimiter: ":"
+  button:        "Y"
+  header:        "Available modes"
+  information:   "Select mode of operation"
+  help:          "This determine how the ROC number and value are calculated in
+                  cases where there are multiple input files (lists of hits) 
+                  and the user has specified the data are to be combined. See
+                  rocplot.c for more information."
+]
+
+
+
+
+integer: thresh
+[
+  standard:      "@(@(@($(mode)==2) & @($(multimode)==2)) & @($(datamode)==1))"
+  information:   "Overlap threshold for hits"
+  help:          "In cases where the lists of hits are to be combined and there
+                  is a single set of relatives, the accession number (or other
+                  database identifier code) of the hit, and the start and end
+                  point respectively of the hit relative to full length sequence
+                  must be provided in the lists of hits (see 'Input file format'
+                  below). rocplot ensures that only unique hits are counted when 
+                  calculating SENS and SPEC; two hits are 'unique' if they have 
+                  (i) different accesssion numbers or (ii) the same accession 
+                  numbers but which do not overlap by any more than a 
+                  user-defined number of residues.  The overlap is determined 
+                  from the start and end points of the hit.  For example two
+                  hits both with the same accession numbers and with the start
+                  and end points of 1-100 and 91 - 190 respectively are 
+                  considered to be the same hit if the overlap threshold is 10
+                  or less."
+  default:       10 
+]
+
+endsection: standard
+
+
+
+section: output 
+[
+  information: "Output section"
+  type:        "page"
+]
+
+# Convert this to an outfile if the graphics library functions are 
+# ever adapated to take AjPFile rather than AjPStr 
+string: outfroc
+[
+    parameter:   "Y"
+    information: "Base name of ROC plot file(s) (output)"
+    help:        "A file of meta data that contains graphs that illustrate the
+                  diagnostic performance of the discriminator. rocplot generates
+                  Receiver Operating Characteristic (ROC) curves, that display
+                  graphically the sensitivity and specificity of discriminating
+                  elements, and accompanying ROC value(s), which are a 
+                  convenient numerical measure of the sensitivity and 
+                  specificity of a method.  Classification plots, which are a
+                  valuable aid in interpreting the ROC plot and value, are also
+                  generated and, depending upon the mode rocplot is run in, a 
+                  plot of the distribution of ROC values."
+    default:     "_rocplot"
+]
+
+
+
+outfile: outfdata
+[
+    standard:    "Y"
+    information: "Name of summary file (output)"
+    help:        "A text file summarising the analysis."
+    default:     "_summary"
+]
+
+
+# Convert this to a outfile if the graphics library functions are 
+# ever adapated to take AjPFile rather than AjPStr 
+string: outfbar
+[                 
+    standard:    "@(@($(mode)==2) & @($(multimode)==1))"
+    information: "Base name of bar chart for ROC value distribution (output)"
+    help:        "A bar chart giving the distribution of ROCn values will be
+                  generated when multiple input files (lists of hits) are 
+                  provided and the user has specified 'Do not combine data 
+                  (multiple ROC curves)."
+    default:     "_barchart"
+]
+
+
+string:  basename
+[
+   standard:     "Y"
+   information:  "Base name of classification plot file(s) (output)"
+   help:         "Classification plots are a valuable aid in interpreting the
+                  ROC plot and value. A single plot will be generated where a 
+                  single input file is provided or where multiple input files
+                  are provided and the user has specified 'Combine data (single
+                  ROC curve)' mode.  Multiple plots will be generated where 
+                  multiple input files are provided and the user has specified
+                  'Do not combine data (multiple ROC curves)' mode."
+   default:      "_classplot"
+]
+
+
+outfile: errf
+[
+    standard:    "Y"
+    information: "Name of error file (output)"
+    default:     "rocplot.errors"
+]
+
+endsection: output
