@@ -139,7 +139,7 @@ int main(int argc, char **argv)
 	ajFmtPrintF(outf,"Imp");
     else
 	ajFmtPrintF(outf,"P");
-    ajFmtPrintF(outf,"robability of forming inclusion bodies = %.3lf\n\n",
+    ajFmtPrintF(outf,"robability of expression in inclusion bodies = %.3lf\n\n",
 		psolu);
 
 
