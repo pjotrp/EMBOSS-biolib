@@ -2416,7 +2416,10 @@ IN
 FI stderr
 FC = 6
 FI globins.prophecy 
-FZ = 24742
+##
+## Do not check file size. AIX reports -0.00 in some positions
+## so the file can be slightly larger
+##
 FP /^Max_score\s+645\.45\n/
 FP /^Consensus\s+PIVDT.*ELGYQG\n/
 FP /^0\.15 0\.00 0\.03 0\.03 0\.03 -0\.18 .* 0\.87 0\.87\n/
