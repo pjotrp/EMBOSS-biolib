@@ -523,12 +523,13 @@ public class BuildJembossForm implements ActionListener
         rscroll = new JScrollPane(pscroll);
         rscroll.getViewport().setBackground(Color.WHITE);
         presults.add(rscroll, BorderLayout.CENTER);
-        JTextArea atext = new JTextArea(stdout);
+        JTextPane atext = new JTextPane();
+        atext.setText(stdout);
         atext.setFont(new Font("monospaced", Font.PLAIN, 12));
         pscroll.add(atext, BorderLayout.CENTER);
         atext.setCaretPosition(0);
-        fresults.add("stdout",presults);
-        hashRes.put("stdout",stdout);
+        fresults.add(applName+" output",presults);
+        hashRes.put(applName+" output",stdout);
       }
 
       boolean seenGraphs = false;
@@ -559,7 +560,8 @@ public class BuildJembossForm implements ActionListener
             in.close();
  
             String txt = text.toString();
-            JTextArea seqText = new JTextArea(txt);
+            JTextPane seqText = new JTextPane();
+            seqText.setText(txt);
             seqText.setFont(new Font("monospaced", Font.PLAIN, 12));
             pscroll.add(seqText, BorderLayout.CENTER);
             seqText.setCaretPosition(0);
