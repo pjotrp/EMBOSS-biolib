@@ -3037,7 +3037,7 @@ AjBool ajFileNameExtC (AjPStr* filename, const char* extension)
 ** @param [r] recurs [AjBool] Do recursion
 ** @param [w] outf [const AjPFile] File for "show" results (or NULL)
 **
-** @return [void]
+** @return [ajint] number of entries in list
 ** @@
 ******************************************************************************/
 
