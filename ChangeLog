@@ -17,7 +17,9 @@ Version 2.4.0
 	original application so their precision is defined in the
 	code. The score is a float, as part of the internal (GFF) feature
 	structure.  A zero value produces an integer score (strictly, it
-	uses %.0f as the format)
+	uses %.0f as the format). Set precision for etandem, fuzznuc,
+	fuzzpro, fuzztran, patmatdb, patmatmotifs (integer scores) and
+	restrict (no score)
 	
 	Report output for equicktandem and etandem, with -origfile to
 	write the original output format for sites (Sanger for example)
@@ -86,6 +88,18 @@ Version 2.4.0
 
 	Sequence objects include the SeqVersion, Keyword list and Taxonomy
 	list.
+
+	The GI number is read as an alternative SeqVersion where it is
+	available (GenBank and some NCBI formats). The GI number is
+	reported in GenBank format if available, but the GenBank VERSION
+	line may have only the SeqVersion if, for example, the sequence
+	was reead from an EMBL entry. "sv" queries check both the
+	SeqVersion and GI number.
+
+	Accession numbers have a strict definition, which covers the old
+	and new EMBL/GenBank format, SwissProt, PIR, and REFSEQ
+	(NM_nnnnnn). Earlier versions would accept any "accession number"
+	in some sequence formats, especially NCBI format.
 
 	SeqVersion (EMBL SV line, GenBank VERSION line) is used in preference
 	to accession number where available. Can also be read in FASTA
