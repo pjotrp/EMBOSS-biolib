@@ -421,6 +421,30 @@ AjPFile ajFileNewOut (const AjPStr name) {
   return thys;
 }
 
+/* @func ajFileNewOutC ********************************************************
+**
+** Creates a new output file object with a specified name.
+**
+** 'stdout' and 'stderr' are special names for standard output and
+** standard error respectively.
+**
+** @param [r] name [const char*] File name.
+** @return [AjPFile] New file object.
+** @@
+******************************************************************************/
+
+AjPFile ajFileNewOutC (const char* name)
+{
+    AjPStr tmp;
+    AjPFile thys;
+
+    tmp = ajStrNewC(name);
+    thys = ajFileNewIn(tmp);
+    ajStrDel(&tmp);
+
+    return thys;
+}
+
 /* @func ajFileNewOutD ********************************************************
 **
 ** Creates a new output file object with a specified directory and name.

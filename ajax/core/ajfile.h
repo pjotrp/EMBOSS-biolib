@@ -194,6 +194,7 @@ AjPFile     ajFileNewInC (const char *name);
 AjPFile     ajFileNewInPipe (const AjPStr name);
 AjPFile     ajFileNewInList (const AjPList list);
 AjPFile     ajFileNewOut (const AjPStr name);
+AjPFile     ajFileNewOutC (const char *name);
 AjPFile     ajFileNewOutD (const AjPStr dir, const AjPStr name);
 void        ajFileOutHeader (const AjPFile thys);
 void        ajFileOutClose (AjPFile *pthis);
