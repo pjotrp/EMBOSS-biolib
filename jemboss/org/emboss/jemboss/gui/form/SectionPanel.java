@@ -291,9 +291,41 @@ public class SectionPanel
           pan2.add(Box.createHorizontalGlue());
           
         }
+        else if(att.startsWith("codon"))
+        {   
+          if(parseAcd.isDefaultParamValueStr(nf))
+            if( !(parseAcd.getDefaultParamValueStr(nf).startsWith("@") ||
+                  parseAcd.getDefaultParamValueStr(nf).startsWith("$")) )
+              textf[h].setText( parseAcd.getDefaultParamValueStr(nf));
+          pan.add(textf[h]);
+          pan.add(lab[nf]);
+   
+          Box pan2 = new Box(BoxLayout.X_AXIS);
+          section.add(pan2);
+         
+          myComboPopup selectMatrix = new myComboPopup(BuildProgramMenu.getCodonUsage());
+          selectMatrix.addActionListener(new ActionListener()
+          {
+            public void actionPerformed(ActionEvent e)
+            {
+              myComboPopup cb = (myComboPopup)e.getSource();
+              String matrix = (String)cb.getSelectedItem();
+              textf[h].setText(matrix);
+            }
+          });
+
+          Dimension d = selectMatrix.getPreferredSize();
+          d = new Dimension(150,(int)d.getHeight());
+
+          selectMatrix.setMaximumSize(d);
+          selectMatrix.setPreferredSize(d);
+
+          pan2.add(selectMatrix);
+          pan2.add(Box.createHorizontalGlue());
+        }
         else if(att.startsWith("dirlist") || att.startsWith("string") ||
                 att.startsWith("infile")  || att.startsWith("regexp") ||
-                att.startsWith("codon")   || att.startsWith("featout") )
+                att.startsWith("featout") )
         {
           if(parseAcd.isDefaultParamValueStr(nf)) 
             if( !(parseAcd.getDefaultParamValueStr(nf).startsWith("@") ||

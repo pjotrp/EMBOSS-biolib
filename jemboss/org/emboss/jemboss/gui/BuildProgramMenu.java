@@ -53,6 +53,8 @@ public class BuildProgramMenu
   private static String db[];
   /** matrices */
   private static Vector matrices;
+  /** codons usage tables  */
+  private static Vector codons;
   /** acd files cache */
   private Hashtable acdStore = new Hashtable();   
 
@@ -158,6 +160,7 @@ public class BuildProgramMenu
           for(int i=0;i<dataFile.length;i++)
             matrices.add(dataFile[i]);
           
+          // get the available codon usage tables
         }
 
         return woss;
@@ -371,6 +374,7 @@ public class BuildProgramMenu
               db = d.getDB();
 
               matrices = showdb.getMatrices();  // get the available matrices
+              codons   = showdb.getCodonUsage(); 
 
               JLabel jl = new JLabel("<html>"); // not used but speeds first
                                                 // ACD form loading which
@@ -401,6 +405,13 @@ public class BuildProgramMenu
   {
     return matrices;
   }
+
+
+  public static Vector getCodonUsage()
+  {
+    return codons;
+  }
+
 
 
 
