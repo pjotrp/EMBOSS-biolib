@@ -846,7 +846,7 @@ static void cvt_uD(ajint code, VALIST ap, int put(int c, void* cl), void* cl,
     char yr[280];
 
     time   =  va_arg(VA_V(ap), AjPTime);
-    mytime = time->time;
+    mytime = &time->time;
 
     if(time->format)
 	strftime(buf,280, time->format,mytime);

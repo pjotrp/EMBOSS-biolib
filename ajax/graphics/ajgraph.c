@@ -1007,7 +1007,7 @@ void ajGraphOpenWin(AjPGraph thys, float xmin, float xmax,
     ajDebug("ajGraphOpenWin(%.3f, %.3f, %.3f, %.3f)\n",
 	    xmin, xmax, ymin, ymax);
 
-    ajtime.time = localtime(&tim);
+    ajTimeLocal(tim,&ajtime);
     ajtime.format = 0;
 
     ajGraphSetDevice(thys);
@@ -1119,7 +1119,7 @@ void ajGraphOpen(AjPGraph thys, PLFLT xmin, PLFLT xmax,
 
     tim = time(0);
 
-    ajtime.time = localtime(&tim);
+    ajTimeLocal(tim,&ajtime);
     ajtime.format = 0;
 
     ajGraphSetDevice(thys);
@@ -4727,8 +4727,7 @@ static void GraphxyGeneral(AjPGraph graphs, AjBool closeit)
 
     tim = time(0);
     
-    
-    ajtime.time = localtime(&tim);
+    ajTimeLocal(tim,&ajtime);
     ajtime.format = 0;
     
     ajGraphSetDevice(graphs);

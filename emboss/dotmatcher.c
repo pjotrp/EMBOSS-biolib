@@ -139,7 +139,7 @@ int main(int argc, char **argv)
 
     tim = time(0);
 
-    ajtime.time = localtime(&tim);
+    ajTimeLocal(tim,&ajtime);
     ajtime.format = 0;
     
     ajGraphInit("dotmatcher", argc, argv);

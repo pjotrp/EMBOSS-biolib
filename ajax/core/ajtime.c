@@ -71,15 +71,17 @@ static TimeOFormat timeFormat[] =  /* formats for strftime */
 
 AjPTime ajTimeToday(void)
 {
-    static AjPTime thys = NULL;
+    AjPTime thys = NULL;
     time_t tim;
-
+    
     tim = time(0);
 
     if(!thys)
 	AJNEW0(thys);
 
-    thys->time   = localtime(&tim);
+    if(!ajTimeLocal(tim,thys))
+        return NULL;
+
     thys->format = NULL;
 
     return thys;
@@ -136,15 +138,16 @@ static char* TimeFormat(const char *timefmt)
 
 AjPTime ajTimeTodayF(const char* timefmt)
 {
-    static AjPTime thys = NULL;
+    AjPTime thys = NULL;
     time_t tim;
-
+    
     tim = time(0);
 
     if(!thys)
 	AJNEW0(thys);
 
-    thys->time = localtime(&tim);
+    if(!ajTimeLocal(tim,thys))
+        return NULL;
 
     thys->format = TimeFormat(timefmt);
 
@@ -195,12 +198,48 @@ AjPTime ajTimeSet( const char *timefmt, ajint mday, ajint mon, ajint year)
 
     thys = ajTimeTodayF(timefmt) ;
 
-    thys->time->tm_mday  = mday ;
-    thys->time->tm_mon   = mon-1;
+    thys->time.tm_mday  = mday ;
+    thys->time.tm_mon   = mon-1;
     if(year > 1899) year = year-1900;
-    thys->time->tm_year  = year ;
+    thys->time.tm_year  = year ;
 
-    mktime(thys->time);
+    mktime(&thys->time);
 
     return thys ;
+}
+
+
+
+
+/* @func ajTimeLocal ************************************************************ A localtime()/localtime_r() replacement for AjPTime objects
+**
+** @param  [r] timer [const time_t] Time
+** @param  [w] thys [AjPTime] Time object
+**
+** @return [AjBool] true if successful
+** @@
+******************************************************************************/
+
+AjBool ajTimeLocal(const time_t timer, AjPTime thys)
+{
+    struct tm *result;
+
+#ifdef __ppc__
+    result = localtime(&timer);
+    if(!result)
+	return ajFalse;
+
+    thys->time.tm_sec = result->tm_sec;
+    thys->time.tm_min = result->tm_min;
+    thys->time.tm_mday = result->tm_mday;
+    thys->time.tm_hour = result->tm_hour;
+    thys->time.tm_mon  = result->tm_mon;
+    thys->time.tm_year = result->tm_year;
+#else
+    result = (struct tm *)localtime_r(&timer,&thys->time);
+    if(!result)
+	return ajFalse;
+#endif
+
+    return ajTrue;
 }
