@@ -4404,6 +4404,8 @@ AjBool ajSeqAccessOffset(AjPSeqin seqin)
 ** The sequence input object holds a directory name and a (wildcard)
 ** file specification.
 **
+** Updated to use exclude and include definitions for files in the directory.
+**
 ** @param [u] seqin [AjPSeqin] Sequence input.
 ** @return [AjBool] ajTrue on success.
 ** @@
@@ -4412,6 +4414,7 @@ AjBool ajSeqAccessOffset(AjPSeqin seqin)
 static AjBool seqAccessDirect(AjPSeqin seqin)
 {
     AjPSeqQuery qry;
+    AjPList list;
 
     ajDebug("seqAccessDirect %S\n", seqin->Query->DbName);
 
@@ -4423,10 +4426,11 @@ static AjBool seqAccessDirect(AjPSeqin seqin)
 	return ajFalse;
     }
 
-    ajDebug("Try to open %S%S.seq\n", qry->Directory, qry->Filename);
+    ajDebug("Try to open %S%S\n", qry->Directory, qry->Filename);
 
     ajFileBuffDel(&seqin->Filebuff);
-    seqin->Filebuff = ajFileBuffNewDW(qry->Directory, qry->Filename);
+    seqin->Filebuff = ajFileBuffNewDWE(qry->Directory, qry->Filename,
+				       qry->Exclude);
     if(!seqin->Filebuff)
     {
 	ajDebug("DIRECT access: unable to open file '%S/%S'\n",

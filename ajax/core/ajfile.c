@@ -3070,13 +3070,107 @@ AjPFileBuff ajFileBuffNewDW(const AjPStr dir, const AjPStr wildfile)
 
 
 
+/* @func ajFileBuffNewDWE *****************************************************
+**
+** Opens directory "dir"
+** Looks for file(s) matching "file"
+** Skip files natching excluded files wildcard
+** Opens them as a list of files using a buffered file object.
+**
+** @param [r] dir [const AjPStr] Directory
+** @param [r] wildfile [const AjPStr] Wildcard filename.
+** @param [r] exclude [const AjPStr] Wildcard excluded filename.
+** @return [AjPFileBuff] New buffered file object.
+** @category new [AjPFileBuff] Constructor using a directory and
+**                             wildcard filename
+** @@
+******************************************************************************/
+
+AjPFileBuff ajFileBuffNewDWE(const AjPStr dir, const AjPStr wildfile,
+			     const AjPStr exclude)
+{
+    DIR* dp;
+    static AjPStr dirfix = NULL;
+#if defined(AJ_IRIXLF)
+    struct dirent64 *de;
+#else
+    struct dirent* de;
+#endif
+    ajint dirsize;
+    AjPList list = NULL;
+    AjPStr name  = NULL;
+    AjPStr tmpname  = NULL;
+#ifdef _POSIX_C_SOURCE
+    char buf[sizeof(struct dirent)+MAXNAMLEN];
+#endif
+    
+    if(ajStrLen(dir))
+	ajStrAssS(&dirfix, dir);
+    else
+	ajStrAssC(&dirfix, "./");
+    
+    if(ajStrChar(dir, -1) != '/')
+	ajStrAppC(&dirfix, "/");
+    
+    dp = fileOpenDir(&dirfix);
+    if(!dp)
+	return NULL;
+    
+    dirsize = 0;
+    list = ajListstrNew();
+
+#if defined(AJ_IRIXLF)
+#ifdef _POSIX_C_SOURCE
+    while(!readdir64_r(dp,(struct dirent64 *)buf,&de))
+    {
+	if(!de)
+	    break;
+#else
+	while((de=readdir64(dp)))
+	{
+#endif
+#else
+#ifdef _POSIX_C_SOURCE
+    while(!readdir_r(dp,(struct dirent *)buf,&de))
+    {
+	if(!de)
+	    break;
+#else
+	while((de=readdir(dp)))
+	{
+#endif
+#endif
+	/* skip deleted files with inode zero */
+	if(!de->d_ino)
+	    continue;
+	ajStrAssC(&tmpname, de->d_name);
+	ajDebug("testing '%s'\n", de->d_name);
+	if(!ajFileTestSkip(tmpname, exclude, wildfile, ajFalse, ajFalse))
+	    continue;
+	dirsize++;
+	ajDebug("accept '%s'\n", de->d_name);
+	name = NULL;
+	ajFmtPrintS(&name, "%S%s", dirfix, de->d_name);
+	ajListstrPushApp(list, name);
+    }
+    
+    closedir(dp);
+    ajDebug("%d files for '%S' '%S'\n", dirsize, dir, wildfile);
+	ajStrDel(&tmpname);
+    
+    return ajFileBuffNewInList(list);
+}
+
+
+
+
 /* @func ajFileBuffNewDC ******************************************************
 **
 ** Opens directory "dir"
 ** Looks for file "file"
-** Opens them as a list of files using a buffered file object.
+** Opens the file.
 **
-** @param [r] dir [const AjPStr] Directory
+** @param [r] dir [const AjPStr] Directory. If empty uses current directory.
 ** @param [r] filename [const char*] Filename.
 ** @return [AjPFileBuff] New buffered file object.
 ** @@
@@ -3106,9 +3200,9 @@ AjPFileBuff ajFileBuffNewDC(const AjPStr dir, const char* filename)
 **
 ** Opens directory "dir"
 ** Looks for file "file"
-** Opens them as a list of files using a buffered file object.
+** Opens the file.
 **
-** @param [r] dir [const AjPStr] Directory
+** @param [r] dir [const AjPStr] Directory. If empty uses current directory.
 ** @param [r] filename [const AjPStr] Filename.
 ** @return [AjPFileBuff] New buffered file object.
 ** @@
@@ -3202,6 +3296,96 @@ AjPFile ajFileNewDW(const AjPStr dir, const AjPStr wildfile)
 	if(!de->d_ino)
 	    continue;
 	if(!ajStrMatchWildCO(de->d_name, wildfile))
+	    continue;
+	dirsize++;
+	ajDebug("accept '%s'\n", de->d_name);
+	name = NULL;
+	ajFmtPrintS(&name, "%S%s", dirfix, de->d_name);
+	ajListstrPushApp(list, name);
+    }
+    
+    closedir(dp);
+    ajDebug("%d files for '%S' '%S'\n", dirsize, dir, wildfile);
+    
+    return ajFileNewInList(list);
+}
+
+
+
+
+/* @func ajFileNewDWE *********************************************************
+**
+** Opens directory "dir"
+** Looks for file(s) matching "file"
+** Skip files natching excluded files wildcard
+** Opens them as a list of files using a simple file object.
+**
+** @param [r] dir [const AjPStr] Directory
+** @param [r] wildfile [const AjPStr] Wildcard filename.
+** @param [r] exclude [const AjPStr] Wildcard excluded filename.
+** @return [AjPFile] New file object.
+** @@
+******************************************************************************/
+
+AjPFile ajFileNewDWE(const AjPStr dir, const AjPStr wildfile,
+			     const AjPStr exclude)
+{
+    DIR* dp;
+    static AjPStr dirfix = NULL;
+#if defined(AJ_IRIXLF)
+    struct dirent64 *de;
+#else
+    struct dirent* de;
+#endif
+    ajint dirsize;
+    AjPList list = NULL;
+    AjPStr name  = NULL;
+    AjPStr tmpname  = NULL;
+#ifdef _POSIX_C_SOURCE
+    char buf[sizeof(struct dirent)+MAXNAMLEN];
+#endif
+    
+    if(ajStrLen(dir))
+	ajStrAssS(&dirfix, dir);
+    else
+	ajStrAssC(&dirfix, "./");
+    
+    if(ajStrChar(dir, -1) != '/')
+	ajStrAppC(&dirfix, "/");
+    
+    dp = fileOpenDir(&dirfix);
+    if(!dp)
+	return NULL;
+    
+    dirsize = 0;
+    list = ajListstrNew();
+    
+#if defined(AJ_IRIXLF)
+#ifdef _POSIX_C_SOURCE
+    while(!readdir64_r(dp,(struct dirent64 *)buf,&de))
+    {
+	if(!de)
+	    break;
+#else
+	while((de=readdir64(dp)))
+	{
+#endif
+#else
+#ifdef _POSIX_C_SOURCE
+    while(!readdir_r(dp,(struct dirent *)buf,&de))
+    {
+	if(!de)
+	    break;
+#else
+	while((de=readdir(dp)))
+	{
+#endif
+#endif
+	/* skip deleted files with inode zero */
+	if(!de->d_ino)
+	    continue;
+	ajStrAssC(&tmpname, de->d_name);
+	if(!ajFileTestSkip(tmpname, exclude, wildfile, ajFalse, ajFalse))
 	    continue;
 	dirsize++;
 	ajDebug("accept '%s'\n", de->d_name);
