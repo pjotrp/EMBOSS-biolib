@@ -4112,7 +4112,7 @@ FI stderr
 FC = 2
 FP 0 /Warning:/
 FI eclaci.orf
-FZ = 861
+FZ = 877
 FP /^>ECLACI_1 \[735 - 1112\]/
 FP /^TGKRAV\n/
 FP /^>ECLACI_2 \[1 - 1110\]/
