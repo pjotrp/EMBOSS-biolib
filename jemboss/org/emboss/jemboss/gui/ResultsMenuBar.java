@@ -33,7 +33,6 @@ import javax.swing.border.*;
 import javax.swing.undo.UndoManager;
 import javax.swing.undo.CannotRedoException;
 import javax.swing.text.JTextComponent;
-import org.apache.soap.rpc.Parameter;
 
 import org.emboss.jemboss.soap.PrivateRequest;
 import org.emboss.jemboss.soap.JembossSoapException;
@@ -456,13 +455,15 @@ public class ResultsMenuBar extends JMenuBar
           JTextComponent jtc = getJTextComponentAt(rtb,rtb.getSelectedIndex());      
 
           Vector params = new Vector();
-          params.addElement(new Parameter("project", String.class,
-                            project, null));
-          params.addElement(new Parameter("filename", String.class,
-                            rtb.getTitleAt(rtb.getSelectedIndex()), null));
-          params.addElement(new Parameter("filecontent", String.class,
-                            jtc.getText(), null));
-
+//        params.addElement(new Parameter("project", String.class,
+//                          project, null));
+//        params.addElement(new Parameter("filename", String.class,
+//                          rtb.getTitleAt(rtb.getSelectedIndex()), null));
+//        params.addElement(new Parameter("filecontent", String.class,
+//                          jtc.getText(), null));
+          params.addElement(project);
+          params.addElement(rtb.getTitleAt(rtb.getSelectedIndex()));
+          params.addElement(jtc.getText());
           try
           {
             PrivateRequest gReq = new PrivateRequest(mysettings,

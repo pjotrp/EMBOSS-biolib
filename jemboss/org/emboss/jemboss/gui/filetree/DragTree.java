@@ -31,7 +31,6 @@ import javax.swing.tree.*;
 import java.io.*;
 import java.util.Vector;
 import java.util.Enumeration;
-import org.apache.soap.rpc.Parameter;
 
 import org.emboss.jemboss.soap.PrivateRequest;
 import org.emboss.jemboss.gui.ResultsMenuBar;
@@ -388,10 +387,12 @@ public class DragTree extends JTree implements DragGestureListener,
             {
 
               Vector params = new Vector();
-              params.addElement(new Parameter("options", String.class,
-                                    "fileroot=" + fn.getRootDir(), null));
-              params.addElement(new Parameter("filename", String.class,
-                                    fn.getFullName(), null));
+//            params.addElement(new Parameter("options", String.class,
+//                                  "fileroot=" + fn.getRootDir(), null));
+//            params.addElement(new Parameter("filename", String.class,
+//                                  fn.getFullName(), null));
+              params.addElement("fileroot=" + fn.getRootDir());
+              params.addElement(fn.getFullName());
               PrivateRequest gReq = new PrivateRequest(mysettings,"EmbreoFile",
                                                     "get_file",params);
 
