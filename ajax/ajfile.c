@@ -3208,7 +3208,7 @@ AjBool ajFileBuffGetStore(AjPFileBuff thys, AjPStr* pdest,
 
     if(store && ret)
     {
-	ajDebug("ajFileBuffGetStore:\n%S", *pdest);
+	/* ajDebug("ajFileBuffGetStore:\n%S", *pdest); */
 	ajStrApp(astr,*pdest);
     }
 
