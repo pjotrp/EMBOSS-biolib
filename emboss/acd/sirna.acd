@@ -11,7 +11,6 @@ seqall: sequence  [
   features: "Y"
 ]
 
-endsection: input
 
 section: selection [ info: "selection Section" type: page ]
 
@@ -52,6 +51,9 @@ bool: polybase [
 #]
 
 endsection: selection
+
+endsection: input
+
 
 section: output [ info: "output Section" type: page ]
 
