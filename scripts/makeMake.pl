@@ -25,13 +25,12 @@ if ($#ARGV >= 0) {
 
 
 if ($html) {
-  $dir = "html"
+  $dir = "html";
 } else {
-  $dir = "text"
+  $dir = "text";
 }
 
 chdir "$cvsdoc/$dir";
-print "cd $cvsdoc/$dir";
  
 open(M, ">make.temp") || die "Can't open make.temp\n";
    
