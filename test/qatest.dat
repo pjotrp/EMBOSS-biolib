@@ -4342,20 +4342,15 @@ CC No example in the documentation
 //
 
 ID isochore-ex
-##CC Reads Genbank entry SCCHRIII from remote server
 CC Change to reading tembl:AF129756 - much faster
 AP isochore
-##CL tgenbank:scchriii -graph cps
 CL tembl:AF129756  -graph cps
 IN
 FI stderr
 FC = 2
 FP 0 /Warning:/
-##FI scchriii.iso
 FI af129756.iso
-##FZ = 39979
 FZ = 22819
-##FP /^5000\s+0\.364\n/
 FP /^5000\s+0.476\n/
 FI isochore.ps
 FZ > 100
@@ -5154,6 +5149,27 @@ FI pepwindowall.ps
 FZ = 13789
 FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 1\n/
+//
+
+ID pestfind-ex
+AP pestfind
+CL -graph cps
+IN ../../data/exu2_drops.embl
+IN 
+IN 
+IN 
+FI stderr
+FC = 6
+FP 0 /Warning:/
+FI stdout
+FZ = 20
+FP /^Created pestfind.ps\n/
+FI exu2_drops.pestfind
+FZ = 2585
+FP /238 KMVYEMALQLIESESTESPESFESPESSESSEAEVK 273/
+FI pestfind.ps
+FZ = 24084
+FP /^%%Title: PLplot Graph\n/
 //
 
 # change example to use globins.msf
