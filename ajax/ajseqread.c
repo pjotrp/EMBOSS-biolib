@@ -3845,6 +3845,14 @@ static AjBool seqReadGenbank (AjPSeq thys, AjPSeqin seqin)
 	bufflines++;
     }
 
+    /* This loop necessary owing to headers on GB distro files */
+    while (!ajStrPrefixC(rdline, "LOCUS"))
+    {
+	if (!ajFileBuffGet (buff, &rdline))
+	    return ajFalse;
+	bufflines++;
+    }
+
     if (!ajStrPrefixC(rdline, "LOCUS"))
     {
 	ajDebug("failed - LOCUS not found - first line was\n%S\n", rdline);
