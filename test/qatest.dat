@@ -153,7 +153,7 @@ PP EMBOSS_ACDROOT=../../acd
 PP export EMBOSS_ACDROOT
 CL qatest -acdpretty
 FI qatest.acdpretty
-FZ = 821
+FZ = 810
 FP 3 /^string:/
 FP 12 /^[a-z]+: /
 //
