@@ -1654,6 +1654,97 @@ void ajListSort (AjPList thys, int (*compar) (const void*, const void*))
     return;
 }
 
+
+/* @func ajListPopEnd **********************************************
+**
+** remove the last node but set pointer to data first.
+**
+** @param [u] thys [AjPList] List
+** @param [P] x [void**] pointer to pointer to data
+** @return [AjBool] ajTrue on success.
+** @@
+****************************************************************/
+
+AjBool ajListPopEnd(AjPList thys, void** x)
+{
+    AjPListNode pthis=NULL;
+
+    if (!thys)
+	return ajFalse;
+
+    if (!thys->Count)
+	return ajFalse;
+
+    pthis = thys->Last->Prev;
+
+    if (x)
+	*x = listNodeItem(pthis);
+
+
+    if(thys->Count==1)
+    {
+	thys->Last->Prev = NULL;
+	AJFREE(thys->First);
+	thys->First = thys->Last;
+    }
+    else
+    {
+	pthis->Prev->Next = thys->Last;
+	thys->Last->Prev = pthis->Prev;
+	AJFREE(pthis);
+    }
+
+
+    --thys->Count;
+    return ajTrue;
+}
+
+
+/* @func ajListstrPopEnd **********************************************
+**
+** Remove the last node but set pointer to data first.
+**
+** @param [u] thys [AjPList] List
+** @param [P] x [AjPStr*] String
+** @return [AjBool] ajTrue on success.
+** @@
+****************************************************************/
+
+AjBool ajListstrPopEnd(AjPList thys, AjPStr *x)
+{
+    AjPListNode pthis=NULL;
+
+    if (!thys)
+	return ajFalse;
+
+    if (!thys->Count)
+	return ajFalse;
+
+    pthis = thys->Last->Prev;
+
+    if (x)
+	*x = (AjPStr) listNodeItem(pthis);
+
+
+    if(thys->Count==1)
+    {
+	thys->Last->Prev = NULL;
+	AJFREE(thys->First);
+	thys->First = thys->Last;
+    }
+    else
+    {
+	pthis->Prev->Next = thys->Last;
+	thys->Last->Prev = pthis->Prev;
+	AJFREE(pthis);
+    }
+
+
+    --thys->Count;
+    return ajTrue;
+}
+
+
 /* Dummy function to catch all unused functions defined above */
 void ajListDummyFunction(void** array)
 {
