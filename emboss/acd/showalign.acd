@@ -43,6 +43,7 @@ section: additional [
            then the consensus sequence will be used as the reference
            sequence. By default the consensus sequence is used as the
            reference sequence."
+    knowntype: "sequence id input"
   ]
 
   boolean: bottom  [

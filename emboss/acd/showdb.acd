@@ -13,6 +13,7 @@ section: input [
     default: ""
     additional: "Y"
     information: "Name of a single database to give information on"
+    knowntype: "emboss database name"
   ]
 
 endsection: input

@@ -38,7 +38,7 @@ section: required [
   ]
 
   list: things  [
-    standard: "@(!$(format))"
+    standard: "@($(format)==0)"
     default: "B,N,T,S,A,F"
     minimum: "1"
     maximum: "100"
@@ -161,6 +161,7 @@ section: additional [
              hindiii \
              HinfI \
              PpiI"
+      knowntype: "enzyme list"
     ]
 
   list: table  [
@@ -203,6 +204,7 @@ section: additional [
              If you wish to show more than one source, separate their names
              with the character '|', eg: \
              gene* | embl"
+      knowntype: "feature source list"
     ]
 
     string: matchtype  [
@@ -220,6 +222,7 @@ section: additional [
              If you wish to show more than one type, separate their names
              with the character '|', eg: \
              *UTR | intron"
+      knowntype: "feature key list"
     ]
 
     integer: matchsense  [
@@ -268,6 +271,7 @@ section: additional [
              If you wish to show more than one tag, separate their names with
              the character '|', eg: \
              gene | label"
+      knowntype: "feature tag list"
     ]
 
     string: matchvalue  [
@@ -290,6 +294,7 @@ section: additional [
              If you wish to show more than one tag value, separate their
              names with the character '|', eg: \
              pax* | 10"
+      knowntype: "feature tagvalue list"
     ]
 
     boolean: stricttags  [
