@@ -690,8 +690,8 @@ AjBool ajSeqAllRead(AjPSeq thys, AjPSeqin seqin)
 	    listdata = ajTrue;
     }
 
-    ret = seqRead(thys, seqin); /* read the sequence */
 
+    ret = seqRead(thys, seqin); /* read the sequence */
     if(ret)			/* clone any specified DB or entryname */
     {
 	if (ajStrLen(seqin->Db))
@@ -7242,7 +7242,8 @@ static AjBool seqListProcess(AjPSeq seq, AjPSeqin seqin, AjPStr listfile)
     static ajint MAXDEPTH = 16;
 
     depth++;
-    ajDebug("++seqListProcess %S depth %d\n", listfile, depth);
+    ajDebug("++seqListProcess %S depth %d Rev: %B\n",
+	    listfile, depth, seqin->Rev);
     if(depth > MAXDEPTH)
 	ajFatal("USA List too deep");
 
@@ -7300,6 +7301,7 @@ static AjBool seqListProcess(AjPSeq seq, AjPSeqin seqin, AjPStr listfile)
     {
         ajDebug("++pop first item '%S'\n", node->Usa);
 	ajSeqinUsa(&seqin, node->Usa);
+	seqUsaRestore(seqin, node);
 	ajStrDel(&node->Usa);
 	ajStrDel(&node->Formatstr);
 	AJFREE(node);
