@@ -1,17 +1,17 @@
 #!/usr/local/bin/perl -w
 
 ##########################
-# THINGS TO DO
+# DONE
 ##########################
 # Timeout (TI line to set) default 60secs, diffseq needs more
 # Preprocess (PP line) command
 # Postprocess (QQ line) command - e.g. testing database builds, reusing output
+# EMBOSS_RC variable to read and extra .embossrc file (for new test dbs)
 #
 ##########################
 # THINGS TO DO
 ##########################
 #
-# EMBOSS_RC variable to read and extra .embossrc file (for new test dbs)
 #
 
 # EMBOSS QA Test Processing
