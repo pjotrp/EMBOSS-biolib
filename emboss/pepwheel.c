@@ -26,11 +26,13 @@
 
 
 
+
 static void pepwheel_plotresidue(char c, float r, float a, char *squares,
 				 char *circles, char *diamonds,
 				 float xmin,float xmax,
 				 float ymin,float ymax);
 static void pepwheel_drawocta(float x, float y, float size);
+
 
 
 
@@ -50,15 +52,15 @@ static void pepwheel_drawocta(float x, float y, float size);
 
 int main(int argc, char **argv)
 {
-    AjPSeq    seq=NULL;
-    AjPStr    strand=NULL;
-    AjPStr    substr=NULL;
-    AjPStr    squares=NULL;
-    AjPStr    diamonds=NULL;
-    AjPStr    octags=NULL;
-    AjBool    wheel;
-    AjBool    amphipathic;
-    AjPStr    txt=NULL;
+    AjPSeq seq      = NULL;
+    AjPStr strand   = NULL;
+    AjPStr substr   = NULL;
+    AjPStr squares  = NULL;
+    AjPStr diamonds = NULL;
+    AjPStr octags   = NULL;
+    AjBool wheel;
+    AjBool amphipathic;
+    AjPStr txt = NULL;
     AjPGraph  graph=0;
     AjBool first;
     AjBool startloop;
@@ -75,15 +77,15 @@ int main(int argc, char **argv)
     ajint j;
     ajint k;
 
-    float xmin= -1.0;
-    float xmax=  1.0;
-    float ymin= -0.75;
-    float ymax=  0.75;
+    float xmin = -1.0;
+    float xmax =  1.0;
+    float ymin = -0.75;
+    float ymax =  0.75;
 
-    float minresplot= 36.0;
-    float resgap=      0.0533;
-    float wheelgap=    0.00;
-    float nresgap=     0.08;
+    float minresplot = 36.0;
+    float resgap =     0.0533;
+    float wheelgap =   0.00;
+    float nresgap =    0.08;
 
 
 
@@ -99,17 +101,17 @@ int main(int argc, char **argv)
     float y2;
 
 
-    (void) ajGraphInit("pepwheel", argc, argv);
+    ajGraphInit("pepwheel", argc, argv);
 
 
-    seq       = ajAcdGetSeq("sequence");
-    steps     = ajAcdGetInt("steps");
-    turns     = ajAcdGetInt("turns");
-    graph     = ajAcdGetGraph("graph");
-    octags    = ajAcdGetString("octags");
-    squares   = ajAcdGetString("squares");
-    diamonds  = ajAcdGetString("diamonds");
-    wheel     = ajAcdGetBool("wheel");
+    seq         = ajAcdGetSeq("sequence");
+    steps       = ajAcdGetInt("steps");
+    turns       = ajAcdGetInt("turns");
+    graph       = ajAcdGetGraph("graph");
+    octags      = ajAcdGetString("octags");
+    squares     = ajAcdGetString("squares");
+    diamonds    = ajAcdGetString("diamonds");
+    wheel       = ajAcdGetBool("wheel");
     amphipathic = ajAcdGetBool("amphipathic");
 
     ajStrToUpper(&octags);
@@ -128,14 +130,14 @@ int main(int argc, char **argv)
     txt    = ajStrNew();
 
 
-    begin=ajSeqBegin(seq);
-    end=ajSeqEnd(seq);
+    begin = ajSeqBegin(seq);
+    end   = ajSeqEnd(seq);
     ajDebug("begin: %d end: %d\n", begin, end);
     strand = ajSeqStrCopy(seq);
 
     ajStrToUpper(&strand);
     ajStrAssSubC(&substr,ajStrStr(strand),begin-1,end-1);
-    len    = ajStrLen(substr);
+    len = ajStrLen(substr);
 
     ajFmtPrintS(&txt,"PEPWHEEL of %s from %d to %d",ajSeqName(seq),
 		begin,end);
@@ -144,7 +146,7 @@ int main(int argc, char **argv)
 
     ajGraphSetFore(AJB_BLACK);
     ajGraphText(0.0,0.64,ajStrStr(txt),0.5);
-    /*	ajGraphSetBackBlack();*/
+
     ajGraphSetFore(AJB_BLACK);
 
     ang = (360.0 / (float)steps) * (float)turns;
@@ -161,9 +163,10 @@ int main(int argc, char **argv)
 	k = AJMIN(i+steps, end);
 	for(j=i;j<k;++j)
 	{
-	    oldangle=angle;
-	    angle=oldangle-ang;
-	    if(first) startloop=first=ajFalse;
+	    oldangle = angle;
+	    angle    = oldangle-ang;
+	    if(first)
+		startloop = first = ajFalse;
 	    else
 	    {
 		if(startloop)
@@ -177,14 +180,12 @@ int main(int argc, char **argv)
 		    startloop=ajFalse;
 		}
 		else
-		{
 		    if(wheel)
 		    {
 			ajPolToRec(wradius,oldangle,&x1,&y1);
 			ajPolToRec(wradius,angle,&x2,&y2);
 			ajGraphLine(x1,y1,x2,y2);
 		    }
-		}
 	    }
 	    pepwheel_plotresidue(*(ajStrStr(substr)+lc),radius+resgap,angle,
 				 ajStrStr(squares),ajStrStr(octags),
@@ -201,16 +202,16 @@ int main(int argc, char **argv)
     ajGraphCloseWin();
 
     ajStrDel(&strand);
-
-
-
-
     ajSeqDel(&seq);
     ajStrDel(&substr);
 
     ajExit();
+
     return 0;
 }
+
+
+
 
 /* @funcstatic pepwheel_drawocta **********************************************
 **
@@ -221,7 +222,6 @@ int main(int argc, char **argv)
 ** @param [r] size [float] size
 ** @@
 ******************************************************************************/
-
 
 static void pepwheel_drawocta(float x, float y, float size)
 {
@@ -239,10 +239,8 @@ static void pepwheel_drawocta(float x, float y, float size)
 
 
     for(i=0;i<8;++i)
-    {
 	ajGraphLine(x+polyx[i]*size,y+polyy[i]*size,x+polyx[i+1]*size,
 			y+polyy[i+1]*size);
-   }
 
     return;
 }
@@ -267,7 +265,6 @@ static void pepwheel_drawocta(float x, float y, float size)
 ** @@
 ******************************************************************************/
 
-
 static void pepwheel_plotresidue(char c, float r, float a, char *squares,
 				 char *octags, char *diamonds,
 				 float xmin, float xmax,
@@ -278,8 +275,8 @@ static void pepwheel_plotresidue(char c, float r, float a, char *squares,
 
     static char cs[2];
 
-    cs[1]='\0';
-    *cs=c;
+    cs[1] = '\0';
+    *cs   = c;
 
     ajPolToRec(r, a, &x, &y);
 
@@ -294,16 +291,18 @@ static void pepwheel_plotresidue(char c, float r, float a, char *squares,
 	ajGraphSetFore(AJB_BLUE);
 	ajGraphBox(x-0.025,y-0.022,0.05);
     }
+
     if(strstr(octags,cs))
     {
 	ajGraphSetFore(AJB_BLACK);
 	pepwheel_drawocta(x,y+0.003,0.28);
     }
+
     if(strstr(diamonds,cs))
     {
 	ajGraphSetFore(AJB_RED);
 	ajGraphDia(x-0.042,y-0.04,0.085);
-   }
+    }
 
     ajGraphText(x,y,cs,0.5);
     ajGraphSetFore(AJB_BLACK);
