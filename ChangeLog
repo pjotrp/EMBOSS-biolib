@@ -1,5 +1,9 @@
 Version 2.5.0
 
+	showfeat - added '-sort join' to display joined features on one line.
+
+	diffseq - don't give summary of SNPs if the sequences are proteins.
+
 	Inclusion of stat64 and readdir64 for offsetbits=64 (ajfile.c
 	and ajsys.c)
 
