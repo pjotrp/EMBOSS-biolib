@@ -301,11 +301,11 @@ int main(int argc, char **argv)
 	
 
 	/* Write output file */
-	ajXyzHitlistWrite(outf, hitptr);
+	embHitlistWrite(outf, hitptr);
 
 
 	/* Free memory for hitlist & keyptr*/
-	ajXyzHitlistDel(&hitptr);
+	embHitlistDel(&hitptr);
 	seqwords_TermsDel(&keyptr);
     }
     seqwords_TermsDel(&keyptr);    
@@ -656,7 +656,7 @@ static AjBool seqwords_keysearch(AjPFile inf, AjPTerms terms,
 		     * structure
 		     */
 		    AJCRESIZE((*hits)->hits, (*hits)->N);
-		    (*hits)->hits[(*hits)->N-1]=ajXyzHitNew();
+		    (*hits)->hits[(*hits)->N-1]=embHitNew();
 
 
 		    /* Assign start and end of hit */
@@ -687,7 +687,7 @@ static AjBool seqwords_keysearch(AjPFile inf, AjPTerms terms,
 		    
 		/* Reallocate memory for array of hits in hitlist structure */
 		AJCRESIZE((*hits)->hits, (*hits)->N);
-		(*hits)->hits[(*hits)->N-1]=ajXyzHitNew();
+		(*hits)->hits[(*hits)->N-1]=embHitNew();
 				    
 
 		/* Extract whole sequence */

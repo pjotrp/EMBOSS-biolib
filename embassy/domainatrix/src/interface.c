@@ -272,12 +272,12 @@ int main(ajint argc, char **argv)
 {
     AjPStr     msg           =NULL;	/* Error message */
     AjPStr     temp          =NULL;	/* Temp string */
-
+    
     AjPFile    cpdb_inf      =NULL;     /* cpdb input file pointer */
     AjPFile    con_outf      =NULL;     /* contact output file pointer */
     AjPFile    logf          =NULL;     /* log file pointer*/
     AjPFile    vdwf          =NULL;     /* van der Waals file pointer*/
-/*    AjPStr     vdwfstr       =NULL; */
+    /*    AjPStr     vdwfstr       =NULL; */
     
     AjPPdb     pdb           =NULL;
 
@@ -291,7 +291,7 @@ int main(ajint argc, char **argv)
     /* Initialise strings */
     temp          = ajStrNew();
     msg           = ajStrNew();
-/*    vdwfstr       = ajStrNew(); */
+    /*    vdwfstr       = ajStrNew(); */
 
 
     /* Read data from acd */
@@ -302,22 +302,22 @@ int main(ajint argc, char **argv)
     logf          = ajAcdGetOutfile("conerrf");
     thresh        = ajAcdGetFloat("thresh");
     ignore        = ajAcdGetFloat("ignore");
-/*    vdwfstr       = ajAcdGetString("vdwf");*/
+    /*    vdwfstr       = ajAcdGetString("vdwf");*/
     vdwf       = ajAcdGetInfile("vdwf");
 
 
     
     /* Allocate and read Vdwall object */
-/*    ajFileDataNew(vdwfstr,&vdwf);
-    if(!vdwf)
-	ajFatal("Cannot open %S",vdwfstr); */
+    /*    ajFileDataNew(vdwfstr,&vdwf);
+	  if(!vdwf)
+	  ajFatal("Cannot open %S",vdwfstr); */
 
-    if(!ajXyzVdwallRead(vdwf, &vdw))
+    if(!(vdw=embVdwallReadNew(vdwf)))
 	ajFatal("Error reading vdw radii file\n");
 
 
     /* Read pdb structure */
-    if(!ajXyzCpdbRead(cpdb_inf, &pdb))	       
+    if(!(pdb=embPdbReadNew(cpdb_inf)))
     {
 	ajFmtPrintS(&msg, "ERROR file read error");
 	ajWarn(ajStrStr(msg));
@@ -325,7 +325,7 @@ int main(ajint argc, char **argv)
 	
 	ajFileClose(&cpdb_inf);
 	
-	ajXyzPdbDel(&pdb);
+	ajPdbDel(&pdb);
 	
 	ajStrDel(&temp);	
 	ajStrDel(&msg);
@@ -345,7 +345,7 @@ int main(ajint argc, char **argv)
 		
 	ajFileClose(&cpdb_inf);
 	
-	ajXyzPdbDel(&pdb);
+	ajPdbDel(&pdb);
 	
 	ajStrDel(&temp);	
 	ajStrDel(&msg);
@@ -366,7 +366,7 @@ int main(ajint argc, char **argv)
 	ajFileClose(&cpdb_inf);
 	ajFileClose(&con_outf);
 
-	ajXyzPdbDel(&pdb);
+	ajPdbDel(&pdb);
 	
 	ajStrDel(&temp);	
 	ajStrDel(&msg);
@@ -386,7 +386,7 @@ int main(ajint argc, char **argv)
     ajFileClose(&cpdb_inf);
     ajFileClose(&con_outf);
 
-    ajXyzPdbDel(&pdb);
+    ajPdbDel(&pdb);
 
     ajStrDel(&temp);	
     ajStrDel(&msg);
@@ -395,7 +395,7 @@ int main(ajint argc, char **argv)
     ajFileClose(&logf);
     ajFileClose(&vdwf);
 
-    ajXyzVdwallDel(&vdw);
+    ajVdwallDel(&vdw);
     
 
     /* Return */
@@ -918,8 +918,8 @@ static AjBool interface_ContactMapCalc(AjPInt2d *mat, ajint *ncon,
 		    fflush(xxxtemp->fp); */
 		    
 		    
-/*		    if(ajXyzInContact(arr[idx1], arr[idx2], thresh, vdw))		 */
-		    if((dis = ajXyzAtomDistance(arr1[idx1], arr2[idx2], vdw))<=thresh)
+/*		    if(embAtomInContact(arr[idx1], arr[idx2], thresh, vdw))		 */
+		    if((dis = embAtomDistance(arr1[idx1], arr2[idx2], vdw))<=thresh)
 		    {
 /*			ajFmtPrintF(xxxtemp, "CONTACT\n");
 			fflush(xxxtemp->fp);  */

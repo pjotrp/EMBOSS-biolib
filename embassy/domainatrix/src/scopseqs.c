@@ -204,6 +204,11 @@
 #include "emboss.h"
 
 
+
+
+
+
+
 static AjBool scopseqs_AlignDomain(AjPSeq sp_seq, AjPSeq pdb_seq, 
 				AjPMatrixf matrix, float gapopen, 
 				float gapextend, ajint* start, 
@@ -215,6 +220,9 @@ static AjBool scopseqs_FindDomainLimits(AjPSeq sp_seq, AjPSeq pdb_seq,
 				     float gapextend, float score, 
 				     AjPMatrixf matrix, ajint begina, 
 				     ajint beginb, ajint* start, ajint* end);
+
+
+
 
 
 /* @prog scopseqs ************************************************************
@@ -274,7 +282,6 @@ int main(int argc, char **argv)
     db         = ajStrNew();
     sp_dom_seq = ajStrNew();
 
-    list       = ajListNew();
 
 
     /* Read data from acd */
@@ -302,10 +309,10 @@ int main(int argc, char **argv)
 
     /* set up the pdbtosp object list */
     if(getswiss)
-	ajXyzPdbtospReadAll(pdbtosp_inf,&list);
+	list = embPdbtospReadAllNew(pdbtosp_inf);
    
     /* Start of main application loop */
-    while((ajXyzScopReadC(scop_inf, "*", &scop)))
+    while((scop=(embScopReadCNew(scop_inf, "*"))))
     {
 	ajStrAssS(&dpdb_name,scop->Entry);
 	ajStrToLower(&dpdb_name);
@@ -320,19 +327,19 @@ int main(int argc, char **argv)
 	    ajFmtPrintF(errf, "%-15s\n", "FILE_OPEN");  
 	    ajFmtPrintS(&msg, "Could not open dpdb file %S", dpdb_name);
 	    ajWarn(ajStrStr(msg));
-	    ajXyzScopDel(&scop);
+	    ajScopDel(&scop);
 	    continue;
 	}
 	
 	/*Read the coordinate file for the domain*/
-	if(!ajXyzCpdbRead(dpdb_inf, &pdb))
+	if((!(pdb=embPdbReadNew(dpdb_inf))))
 	{
 	    ajFmtPrintF(errf, "%-15s\n", "FILE_READ");  
 	    ajFmtPrintS(&msg, "Error reading dpdb file %S", dpdb_name);
 	    ajWarn(ajStrStr(msg));
 	    ajFileClose(&dpdb_inf);
-	    ajXyzScopDel(&scop);
-	    ajXyzPdbDel(&pdb);
+	    ajScopDel(&scop);
+	    ajPdbDel(&pdb);
 	    continue;
 	}
 		
@@ -351,11 +358,11 @@ int main(int argc, char **argv)
 	/* if we do not need the swissprot sequence */
 	if(!getswiss)
 	{
-	    ajXyzScopWrite(scop_outf,scop); 
+	    embScopWrite(scop_outf,scop); 
 	    ajFileClose(&dpdb_inf);  
 	    ajSeqDel(&pdb_seq);
-	    ajXyzPdbDel(&pdb);
-	    ajXyzScopDel(&scop);
+	    ajPdbDel(&pdb);
+	    ajScopDel(&scop);
 	    continue;
 	}
 	
@@ -366,25 +373,25 @@ int main(int argc, char **argv)
 	{
 	    ajWarn("Will not retrieve swissprot sequence for segmented domain %S\n",dpdb_name);
 	    ajFmtPrintF(errf, "%-15s\n", "SEGMENTED_DOMAIN_NO_SP_SEQ");  
-	    ajXyzScopWrite(scop_outf,scop);
+	    embScopWrite(scop_outf,scop);
 	    ajFileClose(&dpdb_inf);
-	    ajXyzScopDel(&scop);
-	    ajXyzPdbDel(&pdb);
+	    ajScopDel(&scop);
+	    ajPdbDel(&pdb);
 	    ajSeqDel(&pdb_seq);
 	    continue;
 	}
 	
 	/* given a pdb code get the accession number an list of pdbtoscop 
 	   structures */
-	if(!ajXyzPdbToAcc(scop->Pdb,&acc,list))
+	if(!embPdbidToAcc(scop->Pdb,&acc,list))
 	{
 	    /*JISON added tidy up and log file code*/
 	    ajWarn("No accession number found for domain %S\n",dpdb_name);
 	    ajFmtPrintF(errf, "%-15s\n", "NO_ACCESSION_NUMBER");  
-	    ajXyzScopWrite(scop_outf,scop);
+	    embScopWrite(scop_outf,scop);
 	    ajFileClose(&dpdb_inf);
-	    ajXyzScopDel(&scop);
-	    ajXyzPdbDel(&pdb);
+	    ajScopDel(&scop);
+	    ajPdbDel(&pdb);
 	    ajSeqDel(&pdb_seq);
 	    continue;
 	}
@@ -402,10 +409,10 @@ int main(int argc, char **argv)
 	if(!(ajSeqGetFromUsa(db,ajTrue,&sp_seq)))
         {
             ajFmtPrintF(errf, "%-15s\n", "ENTRY_NOT_FOUND_IN_SW");
-            ajXyzScopWrite(scop_outf,scop);
+            embScopWrite(scop_outf,scop);
 	    ajFileClose(&dpdb_inf);
-	    ajXyzScopDel(&scop);
-	    ajXyzPdbDel(&pdb);
+	    ajScopDel(&scop);
+	    ajPdbDel(&pdb);
 	    ajSeqDel(&pdb_seq);
 	    ajSeqDel(&sp_seq);
             continue;
@@ -448,7 +455,7 @@ int main(int argc, char **argv)
 	ajStrAssS(&scop->SeqSpr,sp_dom_seq);
 
 	/*write out the scop structure */
-	ajXyzScopWrite(scop_outf,scop);
+	embScopWrite(scop_outf,scop);
 
 	/* clean up */
 	start = 0;
@@ -458,8 +465,8 @@ int main(int argc, char **argv)
 	ajSeqDel(&sp_seq);
 	ajSeqDel(&pdb_seq);
 	/*JISON*/
-	ajXyzPdbDel(&pdb);
-	ajXyzScopDel(&scop);
+	ajPdbDel(&pdb);
+	ajScopDel(&scop);
     }
     
 
@@ -789,6 +796,12 @@ static AjBool scopseqs_FindDomainLimits(AjPSeq sp_seq, AjPSeq pdb_seq,AjPStr m,
 
     return ajTrue;
 }
+
+
+
+
+
+
 
 
 

@@ -209,25 +209,9 @@ int main(int argc, char **argv)
 {
     AjPFile    inf1    =NULL;
     AjPFile    outf    =NULL;
-    AjPStr     pdb     =NULL;   /* PDB identifier */
-    AjPStr     spr     =NULL;   /* Swissprot identifier */
-    AjPStr     acc     =NULL;   /* Accession number */
-    AjPStr     pspr    =NULL;   /* Swissprot identifier pointer */
-    AjPStr     pacc    =NULL;   /* Accession number pointer */
-    AjPStr     line    =NULL;   /* Line from file */
-    AjPStr     token   =NULL;   /* Token from line */
-    AjPStr     subtoken=NULL;   /* Token from line */
-    AjPList    acclist =NULL;   /* List of accession numbers */
-    AjPList    sprlist =NULL;   /* List of swissprot identifiers */
-    ajint      n       =0;      /* No. of accession numbers for current pdb code */
-    AjBool     ok      =ajFalse;/* True if "____  _" has been found and we can start
-				  parsing */
-    AjBool     done_1st=ajFalse;/* True if the first line of data has been parsed*/
-
-    
-    
-    
-
+    AjPList    list    =NULL;  /* List of AjPPdbtosp objects */
+    AjPPdbtosp  tmp    =NULL;
+          
 
     /* Read data from acd*/
     ajNamInit("emboss");
@@ -236,144 +220,18 @@ int main(int argc, char **argv)
     outf  =  ajAcdGetOutfile("outfile");
 
 
-    /* Memory allocation */
-    line    = ajStrNew();
-    token   = ajStrNew();
-    subtoken= ajStrNew();
-    pdb     = ajStrNew();
-    acclist = ajListstrNew();
-    sprlist = ajListstrNew();
+    list = embPdbtospReadAllRawNew(inf1);
+    embPdbtospWrite(outf, list);
+        
 
-
-    /* Read lines from file */
-    while(ajFileReadLine(inf1, &line))
-    {
-	if(ajStrPrefixC(line, "____  _"))
-	{
-	    ok=ajTrue;
-	    continue;
-	}
-	
-	
-	if(!ok)
-	    continue;
-
-	if(ajStrMatchC(line, ""))
-	    break; 
-	
-	
-
-	/* Read in pdb code first.  Then tokenise by ':', discard the 
-	   first token, then tokenise the second token by ',', parsing 
-	   out the swisssprot codes and accession numbers from the subtokens*/
-
-
-	/* Make sure this is a line containing the pdb code */
-	if((ajStrFindC(line, ":")!=-1))
-	{
-	    if(done_1st)
-	    {
-		/* Print data for last pdb code to file */
-		ajFmtPrintF(outf, "%-5s%S\nXX\n%-5s%d\nXX\n", 
-			    "EN", pdb, "NE", n);
-	    
-		while(ajListstrPop(acclist, &pacc))
-		{
-		    ajListstrPop(sprlist, &pspr);
-	    
-		    ajFmtPrintF(outf, "%-5s%S ID; %S ACC;\n", 
-				"IN", pspr, pacc);
-
-		    ajStrDel(&pspr);
-		    ajStrDel(&pacc);
-		}
-		ajFmtPrintF(outf, "XX\n//\n");
-
-		n=0;
-	    }	
-
-	    ajFmtScanS(line, "%S", &pdb);
-
-	    ajStrTokC(line, ":");
-	    ajStrAssS(&token, ajStrTokC(NULL, ":"));
-
-	    done_1st=ajTrue;
-	}
-	else 
-	{
-	    ajStrAssS(&token, line);
-	}
-	
-
-	spr  = ajStrNew();
-	acc  = ajStrNew();
-	ajFmtScanS(token, "%S (%S", &spr, &acc);
-	
-	if(ajStrSuffixC(acc, "),"))
-	{
-	    ajStrChop(&acc);
-	    ajStrChop(&acc);
-	}
-	else
-       	    ajStrChop(&acc);
-	
-	
-	ajListstrPushApp(acclist, acc);
-	ajListstrPushApp(sprlist, spr);
-	n++;
-
-	ajStrTokC(token, ",");
-	while((subtoken=ajStrTokC(NULL, ",")))
-	{
-	    spr  = ajStrNew();
-	    acc  = ajStrNew();
-
-	    ajFmtScanS(subtoken, "%S (%S", &spr, &acc); 
-
-	    if(ajStrSuffixC(acc, "),"))
-	    {
-		ajStrChop(&acc);
-		ajStrChop(&acc);
-	    }
-	    else
-		ajStrChop(&acc);
-
-
-	    ajListstrPushApp(acclist, acc);
-	    ajListstrPushApp(sprlist, spr);
-	    n++;
-	}
-    }	
-    
-    
-    /* Print data for last pdb code to file */
-    ajFmtPrintF(outf, "%-5s%S\nXX\n%-5s%d\nXX\n", 
-		"EN", pdb, "NE", n);
-	    
-    while(ajListstrPop(acclist, &pacc))
-    {
-	ajListstrPop(sprlist, &pspr);
-	
-	ajFmtPrintF(outf, "%-5s%S ID; %S ACC;\n", 
-		    "IN", pspr, pacc);
-	
-	ajStrDel(&pspr);
-	ajStrDel(&pacc);
-    }
-    ajFmtPrintF(outf, "XX\n//\n");
-
-
-
-    /* Tidy up */
+    /* Clean up */
+    while(ajListPop(list, (void **) &tmp))
+	ajPdbtospDel(&tmp);
+    ajListDel(&list);
     ajFileClose(&inf1);
     ajFileClose(&outf);
-    ajStrDel(&line);
-    ajStrDel(&token);
-    ajStrDel(&subtoken);
-    ajStrDel(&pdb);
-    ajListstrDel(&acclist);	
-    ajListstrDel(&sprlist);	
 
     ajExit();
     return 0;
 }
+

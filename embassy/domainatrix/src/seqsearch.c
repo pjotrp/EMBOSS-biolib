@@ -295,12 +295,12 @@
 
 
 
-static AjPHitlist seqsearch_ajXyzHitlistPsiblast(AjPScopalg scopalg, AjPFile psif);
-static AjPFile seqsearch_ajXyzScopalgPsiblast(AjPScopalg scopalg, AjPFile alignf, 
+static AjPHitlist seqsearch_ajDmxHitlistPsiblast(AjPScopalg scopalg, AjPFile psif);
+static AjPFile seqsearch_ajDmxScopalgPsiblast(AjPScopalg scopalg, AjPFile alignf, 
                                        AjPStr *psiname, ajint niter, 
                                        ajint maxhits, float evalue, 
                                        AjPStr database);
-static AjPFile seqsearch_ajXyzScopPsiblast(AjPStr singlet, AjPStr *psiname, 
+static AjPFile seqsearch_ajDmxScopPsiblast(AjPStr singlet, AjPStr *psiname, 
                                            ajint niter, ajint maxhits, 
                                            float evalue,  AjPStr database);
 
@@ -366,7 +366,6 @@ int main(int argc, char **argv)
     singlet   = ajStrNew();
     
     list     = ajListNew();
-    scoplist = ajListNew();
 
 
     /* Read data from acd */
@@ -403,11 +402,11 @@ int main(int argc, char **argv)
     ajFileScan(align,temp,&list,ajFalse,ajFalse,NULL,NULL,ajFalse,NULL); 
     
     /* create a list of scop objects */
-    ajXyzScopReadAll(escop,&scoplist);
+    scoplist = embScopReadAllNew(escop);
     ajFileClose(&escop);
     
     /* need to sort the list before binary search otherwise does not work */
-    ajListSort(scoplist,ajXyzScopCompSunid);
+    ajListSort(scoplist,ajScopMatchSunid);
     
     /*Start of main application loop*/   
     while(ajListPop(list,(void **)&alignname))
@@ -432,7 +431,7 @@ int main(int argc, char **argv)
         }
         
         /* Read alignment file */
-        ajXyzScopalgRead(alignf, &scopalg);
+        ajDmxScopalgRead(alignf, &scopalg);
 
         /* seqsearch is hard-coded to give to scan swissprot, (-d swissprot  option 
            to blastpgp. This is probably specific to use on the HGMP server. Option
@@ -444,23 +443,23 @@ int main(int argc, char **argv)
         if(scopalg->N==0)
         {
 	    ajFmtPrintF(logf, "No sequences in alignment (singlet)\n");
-            if(!(ajXyzScopSeqFromSunid(scopalg->Sunid_Family,&singlet,scoplist)))
+            if(!(ajDmxScopSeqFromSunid(scopalg->Sunid_Family,&singlet,scoplist)))
                 ajFatal("The bin search does not work! email rranasin@hgmp.mrc.ac.uk\n");
             
             /* Generate input files for psiblast from a singlet and callpsiblast */
-            if(!(psif = seqsearch_ajXyzScopPsiblast(singlet,&psiname,niter,maxhits,
+            if(!(psif = seqsearch_ajDmxScopPsiblast(singlet,&psiname,niter,maxhits,
 						    evalue,database)))
                 ajFatal("Error creating psiblast file"); 
         }
 
         else
             /* Generate input files from an alignment for psiblast and callpsiblast */
-            if(!(psif = seqsearch_ajXyzScopalgPsiblast(scopalg,alignf,&psiname,niter,
+            if(!(psif = seqsearch_ajDmxScopalgPsiblast(scopalg,alignf,&psiname,niter,
 						       maxhits,evalue,database)))
                 ajFatal("Error creating psiblast file");
 
         /*  Parse the Psi-Blast output file and write a Hitlist object */
-        tmphitlist = seqsearch_ajXyzHitlistPsiblast(scopalg, psif);
+        tmphitlist = seqsearch_ajDmxHitlistPsiblast(scopalg, psif);
         
         /* Close alignment file and delete psiblast output file*/
         ajFileClose(&alignf);
@@ -512,8 +511,8 @@ int main(int argc, char **argv)
 	    ajFileClose(&families);
 
 
-	    ajXyzHitlistDel(&tmphitlist);
-	    ajXyzScopalgDel(&scopalg);  
+	    embHitlistDel(&tmphitlist);
+	    ajDmxScopalgDel(&scopalg);  
 	    ajFileClose(&psif); 
 
 	    ajListDel(&listin);
@@ -528,10 +527,10 @@ int main(int argc, char **argv)
 	    ajListPushApp(listin,tmphitlist);
           
 	    /* create a list of scophits to eleminate identical hits */
-	    ajXyzHitlistToScophits(listin, &listout);
+	    embXyzHitlistToScophits(listin, &listout);
           
 	    /* sort this list by accession number, then by start, then by end */
-	    ajListSort3(listout,ajXyzScophitCompAcc, ajXyzScophitCompStart, ajXyzScophitCompEnd);
+	    ajListSort3(listout,ajDmxScophitCompAcc, ajDmxScophitCompStart, ajDmxScophitCompEnd);
           
 	    /* eleminate identical hits */
 	    iter=ajListIter(listout); 
@@ -546,7 +545,7 @@ int main(int argc, char **argv)
 		   the start and end are identical */
 		if(ajStrMatch(hit->Acc,nexthit->Acc) && hit->Start == nexthit->Start && hit->End == nexthit->End)
 		{
-		    ajXyzScophitTarget(&hit);
+		    ajDmxScophitTarget(&hit);
 		    hit = nexthit;
 		}
             
@@ -559,11 +558,11 @@ int main(int argc, char **argv)
      
 	    /* The end of the list been reached */
 	    /* Delete hits in the list that are targetted for removal */
-	    ajListGarbageCollect(listout, ajXyzScophitDelWrap, 
-				 (const void *) ajXyzScophitCheckTarget);
+	    ajListGarbageCollect(listout, ajDmxScophitDelWrap, 
+				 (const void *) ajDmxScophitCheckTarget);
           
 	    /* recreate the hitlist for printing */
-	    ajXyzScophitsToHitlist(listout,&hitlist,&iter);
+	    embXyzScophitsToHitlist(listout,&hitlist,&iter);
 	    ajListIterFree(iter);
 	    iter =  NULL;
 	    /* END NEW STUFF */
@@ -589,21 +588,21 @@ int main(int argc, char **argv)
 		ajWarn(ajStrStr(msg));
 		ajFmtPrintF(logf, "WARN  Could not open for writing %S\n", 
 			    hitsname);
-		ajXyzHitlistDel(&hitlist);
-		ajXyzScopalgDel(&scopalg);  
+		embHitlistDel(&hitlist);
+		ajDmxScopalgDel(&scopalg);  
 		ajFileClose(&psif); 
 
 		/* free up listin */
 		iter=ajListIter(listin); 
 		while((tmphitlist=(AjPHitlist)ajListIterNext(iter)))
-		    ajXyzHitlistDel(&tmphitlist);
+		    embHitlistDel(&tmphitlist);
 		ajListDel(&listin);
 		ajListIterFree(iter);
 		
 		/* free up listout */
 		iter=ajListIter(listout); 
 		while((hit=(AjPScophit)ajListIterNext(iter)))
-		    ajXyzScophitDel(&hit);
+		    ajDmxScophitDel(&hit);
 		ajListDel(&listout);
 		ajListIterFree(iter);
 
@@ -611,7 +610,7 @@ int main(int argc, char **argv)
 	    }       
         
 	    /* Write the Hitlist object to file */         
-	    ajXyzHitlistWrite(families, hitlist);
+	    embHitlistWrite(families, hitlist);
         
 	    /* Close families file */
 	    ajFileClose(&families);
@@ -619,20 +618,20 @@ int main(int argc, char **argv)
 	    /* free up listin */
 	    iter=ajListIter(listin); 
 	    while((tmphitlist=(AjPHitlist)ajListIterNext(iter)))
-		ajXyzHitlistDel(&tmphitlist);
+		embHitlistDel(&tmphitlist);
 	    ajListDel(&listin);
 	    ajListIterFree(iter);
           
 	    /* free up listout */
 	    iter=ajListIter(listout); 
 	    while((hit=(AjPScophit)ajListIterNext(iter)))
-		ajXyzScophitDel(&hit);
+		ajDmxScophitDel(&hit);
 	    ajListDel(&listout);
 	    ajListIterFree(iter);
 
 	    /* Free memory etc*/
-	    ajXyzHitlistDel(&hitlist);
-	    ajXyzScopalgDel(&scopalg);
+	    embHitlistDel(&hitlist);
+	    ajDmxScopalgDel(&scopalg);
 	    ajFileClose(&psif);     
 	    ajStrDel(&alignname);
 	}
@@ -656,14 +655,14 @@ int main(int argc, char **argv)
     ajListDel(&list);
 
     while(ajListPop(scoplist,(void **)&scoptmp))
-	ajXyzScopDel(&scoptmp);
+	ajScopDel(&scoptmp);
     ajListDel(&scoplist);
     
     ajExit();
     return 0;
 }
 
-/* @funcstatic seqsearch_ajXyzScopalgPsiblast *******************************
+/* @funcstatic seqsearch_ajDmxScopalgPsiblast *******************************
  **
  ** Reads a Scopalg object and the corresponding alignment file. Calls psiblast
  ** to do a search for the SCOP family over a specified database. The psiblast 
@@ -685,7 +684,7 @@ int main(int argc, char **argv)
  ** need to pass in a pointer to the alignment file itself. Write ScopalgWrite
  ** and modify this function accordingly - not urgent.
  ******************************************************************************/
-static AjPFile seqsearch_ajXyzScopalgPsiblast(AjPScopalg scopalg, AjPFile alignf, 
+static AjPFile seqsearch_ajDmxScopalgPsiblast(AjPScopalg scopalg, AjPFile alignf, 
                                               AjPStr *psiname, ajint niter, ajint maxhits, 
                                               float evalue,  AjPStr database)
 {
@@ -727,9 +726,9 @@ static AjPFile seqsearch_ajXyzScopalgPsiblast(AjPScopalg scopalg, AjPFile alignf
 
 
     /* Read scopalg structure and extract sequences only */
-    if(!(nseqs=ajXyzScopalgGetseqs(scopalg, &seqs)))
-        ajFatal("ajXyzScopalgGetseqs returned 0 sequences in "
-                "seqsearch_ajXyzScopalgPsiblast. Email jison@hgmp.mrc.ac.uk\n");
+    if(!(nseqs=ajDmxScopalgGetseqs(scopalg, &seqs)))
+        ajFatal("ajDmxScopalgGetseqs returned 0 sequences in "
+                "seqsearch_ajDmxScopalgPsiblast. Email jison@hgmp.mrc.ac.uk\n");
 
 
     /* Initialise random number generator for naming of temp. files
@@ -826,7 +825,7 @@ static AjPFile seqsearch_ajXyzScopalgPsiblast(AjPScopalg scopalg, AjPFile alignf
     return psif;
 }
 
-/* @funcstatic seqsearch_ajXyzScopPsiblast *******************************
+/* @funcstatic seqsearch_ajDmxScopPsiblast *******************************
  **
  ** Calls psiblast to do a search for the SCOP family over a specified 
  ** database. The psiblast output file is created and a pointer to it provided.
@@ -846,7 +845,7 @@ static AjPFile seqsearch_ajXyzScopalgPsiblast(AjPScopalg scopalg, AjPFile alignf
  ** need to pass in a pointer to the alignment file itself. Write ScopalgWrite
  ** and modify this function accordingly - not urgent.
  ******************************************************************************/
-static AjPFile seqsearch_ajXyzScopPsiblast(AjPStr singlet, AjPStr *psiname, 
+static AjPFile seqsearch_ajDmxScopPsiblast(AjPStr singlet, AjPStr *psiname, 
                                            ajint niter, ajint maxhits, 
                                            float evalue,  AjPStr database)
 {
@@ -901,7 +900,7 @@ static AjPFile seqsearch_ajXyzScopPsiblast(AjPStr singlet, AjPStr *psiname,
 }
 
 
-/* @funcstatic seqsearch_ajXyzHitlistPsiblast ********************************
+/* @funcstatic seqsearch_ajDmxHitlistPsiblast ********************************
  **
  ** Reads a psiblast output file and writes a Hitlist object containing the 
  ** hits.
@@ -913,7 +912,7 @@ static AjPFile seqsearch_ajXyzScopPsiblast(AjPStr singlet, AjPStr *psiname,
  ** @@
  ** 
  ******************************************************************************/
-static AjPHitlist seqsearch_ajXyzHitlistPsiblast(AjPScopalg scopalg, AjPFile psif)
+static AjPHitlist seqsearch_ajDmxHitlistPsiblast(AjPScopalg scopalg, AjPFile psif)
 {
     /* The hits are organised into blocks, each block contains hits to 
        a protein with a unique accession number.  
@@ -955,7 +954,7 @@ static AjPHitlist seqsearch_ajXyzHitlistPsiblast(AjPScopalg scopalg, AjPFile psi
     
     
     /* Allocate memory for Hitlist object */
-    if(!(hitlist = ajXyzHitlistNew(nhits)))
+    if(!(hitlist = embHitlistNew(nhits)))
         return(hitlist);
     
     
@@ -1047,7 +1046,6 @@ static AjPHitlist seqsearch_ajXyzHitlistPsiblast(AjPScopalg scopalg, AjPFile psi
 
     return hitlist;
 }
-
 
 
 

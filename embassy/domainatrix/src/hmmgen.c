@@ -318,7 +318,7 @@ int main(int argc, char **argv)
             }
                 
             /* read alignment file into a scopalg structure */
-            ajXyzScopalgRead(inf,&scopalg);
+            ajDmxScopalgRead(inf,&scopalg);
                     
 	    printf("scopalg structure read ok\n");
 	    fflush(stdout);
@@ -327,9 +327,9 @@ int main(int argc, char **argv)
             /* open up a file and write out the alignment in CLUSTAL format */
             seqsinf = ajFileNewOut(seqsin);
           
-            ajXyzScopalgWriteClustal2(scopalg,&seqsinf);
+            ajDmxScopalgWriteClustal2(scopalg,&seqsinf);
           
-	    ajXyzScopalgDel(&scopalg);
+	    ajDmxScopalgDel(&scopalg);
 	    
 
 	    printf("ScopalgWriteClustal2 called ok\n");

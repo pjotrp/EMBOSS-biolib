@@ -82,7 +82,7 @@
 **  
 **  Known bugs & warnings
 **  seqalign uses a temporary file in fasta reather than clustal format and
-**  passes this to clustalw (i..e ajXyzScopalgWriteFasta is called).  This
+**  passes this to clustalw (i..e embXyzScopalgWriteFasta is called).  This
 **  was necessary because jalview, used for hand-editing alignments, writes
 **  out a different clustal format file than which clustalw expects, causing
 **  clustalw to fail.  scopalgwriteclustal was writing the clustalw file
@@ -240,7 +240,7 @@
 
 #include "emboss.h"
 
-AjBool ajXyzScopalgWriteFasta(AjPScopalg align, AjPFile* outf);
+AjBool        seqalign_HitlistsWriteFasta(AjPList *list, AjPFile *outf);
 
 
 /* @prog seqalign *************************************************************
@@ -424,7 +424,7 @@ int main(int argc, char **argv)
 	    ajStrAppC(&clustoutf,".out");
 	    
 	    /* read the scop seed alignment file into a scopalg object */
-	    ajXyzScopalgRead(alnf,&align);
+	    ajDmxScopalgRead(alnf,&align);
 
 	    /* extract the scop information */
 	    ajStrAssS(&fam,align->Family);
@@ -443,9 +443,9 @@ int main(int argc, char **argv)
 		    ajFatal("Could not open %S for writing\n", clustinf1);
 		}
 
-		 ajXyzScopalgWriteFasta(align,&outf1);  
-		/* ajXyzScopalgWriteClustal(align,&outf1);   */
-		/*	    ajXyzScopalgWrite(outf1, align);  */
+		 embXyzScopalgWriteFasta(align,&outf1);  
+		/* ajDmxScopalgWriteClustal(align,&outf1);   */
+		/*	    ajDmxScopalgWrite(outf1, align);  */
 		ajFileClose(&outf1);
 	    } 
 	    
@@ -455,8 +455,8 @@ int main(int argc, char **argv)
 	    /* scopf = ajFileNewIn(scopfam); */
 	    /* extract the relavent family or superfamily or etc.. into a 
 	       list of Hitlist objects. */
-	    tmp_list = ajListNew();
-	    if(!ajXyzHitlistReadNode(scopin,&tmp_list, fam, sfam, fold, class))
+
+	    if(!(tmp_list = embHitlistReadNode(scopin, fam, sfam, fold, class)))
 	    {
 		ajWarn("Hitlist not found in Scop hits file");
 		
@@ -464,7 +464,7 @@ int main(int argc, char **argv)
 		ajListDel(&tmp_list);
 
 		/* Delete Scopalg structure */
-		ajXyzScopalgDel(&align);
+		ajDmxScopalgDel(&align);
 		
 		ajFileClose(&alnf);
 		
@@ -487,7 +487,7 @@ int main(int argc, char **argv)
 		ajListDel(&tmp_list);
 
 		/* Delete Scopalg structure */
-		ajXyzScopalgDel(&align);
+		ajDmxScopalgDel(&align);
 		
 		ajFileClose(&alnf);
 
@@ -517,13 +517,13 @@ int main(int argc, char **argv)
 	    /* write out the sequences in the list of Hitlist structures in 
 	       CLUSTAL format. */
 	    outf2 = ajFileNewOut(clustinf2);
-	    ajXyzHitlistsWriteFasta(&tmp_list,&outf2);
+	    seqalign_HitlistsWriteFasta(&tmp_list,&outf2);
 	    ajFileClose(&alnf);
 
 	    ajFileClose(&outf2);
 
 	    while(ajListPop(tmp_list,(void **)&temphl))
-		ajXyzHitlistDel(&temphl);
+		embHitlistDel(&temphl);
 	    ajListDel(&tmp_list);
 
 
@@ -610,7 +610,7 @@ int main(int argc, char **argv)
 
 
 	    /* Delete Scopalg structure */
-	    ajXyzScopalgDel(&align);
+	    ajDmxScopalgDel(&align);
 	}
 	/* Free the nodes ! */
 	ajStrDel(&filename);
@@ -647,44 +647,58 @@ int main(int argc, char **argv)
 
 
 
+/* @func seqalign_HitlistsWriteFasta ********************************************
+**
+** Takes a list of Hitlist structures, converts them into a list of 
+** Scophit structures and then writes the sequences to a file in FASTA
+** format.
+**
+** @param [r] list      [AjPList *]    A list Hitlist structures.
+** @param [w] outf      [AjPFile *]    Outfile file pointer
+** 
+** @return [AjBool] True on success (a file has been written)
+** @@
+****************************************************************************/
+
+AjBool seqalign_HitlistsWriteFasta(AjPList *list, AjPFile *outf)
+{
+    AjPList hitslist = NULL; /* list of populatd scophit objects */ 
+    AjIList iter     = NULL; /* a list iterator for hitslist */
+    AjPScophit hit   = NULL; /* a scophit object to hold a hit */
+    
+    /* check arguments */
+    if(!(*list) || (!(*outf)))
+    {
+	ajWarn("Bad arguments\n");
+	return ajFalse;
+    }
+    
+    hitslist = ajListNew();
+    
+    if(embXyzHitlistToScophits(*list,&hitslist))
+    {
+	iter = ajListIter(hitslist);
+	/*
+	** iterate through the list and write out the accession number
+	** and sequence to outf in FASTA format.
+	*/
+	while((hit = (AjPScophit)ajListIterNext(iter)))
+	{
+	    /* print the accession number and sequence to outfile */
+	    ajFmtPrintF(*outf,">%S_%d_%d\n",hit->Acc,hit->Start,hit->End);
+	    ajFmtPrintF(*outf,"%S\n",hit->Seq);
+	    ajDmxScophitDel(&hit);
+	}	
+	ajListIterFree(iter);
+	ajListDel(&hitslist);
+    }		
+    
+    return ajTrue;
+}
 
 
 			      
 				 
-/* @func ajXyzScopalgWriteFasta ********************************************
-**
-** Writes a Scopalg object to a specified file in FASTA format (just the 
-** alignment without the SCOP classification information).
-**
-** @param [r] align      [AjPScopalg]  A list Hitlist structures.
-** @param [w] outf       [AjPFile *]     Outfile file pointer
-** 
-** @return [AjBool] True on success (a file has been written)
-** @@
-******************************************************************************/
-AjBool ajXyzScopalgWriteFasta(AjPScopalg align, AjPFile* outf)
-{
-    ajint i;
-    
-    /*Check args*/
-    if(!align)
-    {
-	ajWarn("Null args passed to ajXyzScopalgWriteClustal ");
-	return ajFalse;
-    }
-    
-    /* remove i from the print statement before commiting
-    ajFmtPrintF(*outf,"CLUSTALW\n\n");
-    ajFmtPrintF(*outf, "\n");*/ 
-
-    for(i=0;i<align->N;++i)
-    	ajFmtPrintF(*outf,">%S_%d\n%S\n",align->Codes[i],i,align->Seqs[i]);
-    ajFmtPrintF(*outf,"\n");
-    ajFmtPrintF(*outf,"\n"); 
-    
-    return ajTrue;
-}	
-
 
 
 

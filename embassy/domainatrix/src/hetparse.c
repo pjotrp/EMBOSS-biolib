@@ -258,8 +258,8 @@ int main(int argc, char **argv)
     
 
     /* Parse raw file */
-    if(!ajXyzHetRawRead(fin, &dic))
-	ajFatal("ajXyzHetRawRead failed\n");
+    if(!(dic=embHetReadRawNew(fin)))
+       ajFatal("embHetReadRawNew failed\n");
         
     
     /* Search pdb files for heterogens if appropriate */
@@ -268,12 +268,12 @@ int main(int argc, char **argv)
     
 			
     /* Write output file */
-    if(!ajXyzHetWrite(fout, dic, dogrep))
-	ajFatal("ajXyzHetWrite failed\n");
+    if(!embHetWrite(fout, dic, dogrep))
+	ajFatal("embHetWrite failed\n");
     
 
     /* Tidy up and return */
-    ajXyzHetDel(&dic);
+    ajHetDel(&dic);
     ajFileClose(&fin);
     ajFileClose(&fout); 
     ajStrDel(&path);

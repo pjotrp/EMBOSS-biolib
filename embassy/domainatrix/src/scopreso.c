@@ -152,6 +152,8 @@
 #include "emboss.h"
 
 
+ajint StrBinSearchScop(AjPStr id, AjPStr *arr, ajint siz);
+ajint StrComp(const void *str1, const void *str2);
 
 
 
@@ -268,7 +270,7 @@ int main(ajint argc, char **argv)
 
 
         /* Read coordinate data file */ 
-        ajXyzCpdbRead(fptr_cpdb, &pdb);
+	pdb = embPdbReadNew(fptr_cpdb);
         
 
         /* Check if resolution is above threshold */
@@ -281,7 +283,7 @@ int main(ajint argc, char **argv)
 	}        
 	
         /* Close coordinate file and tidy up*/
-        ajXyzPdbDel(&pdb);
+        ajPdbDel(&pdb);
         ajFileClose(&fptr_cpdb);
 	ajStrDel(&temp);
     }
@@ -296,15 +298,15 @@ int main(ajint argc, char **argv)
     
     /* Read Escop.dat and compare IDs to those in list          */
     /* if not present then write scop structure data to output  */
-    while((ajXyzScopReadC(scopinf, "*", &scop)))
+    while((scop=(embScopReadCNew(scopinf, "*"))))
     {
 	/* SCOP id not found in the list of domains with resolution 
 	   above the threshold, so include it in the output file */
 	if((StrBinSearchScop(scop->Entry, entryarr, num))==-1)
-	    ajXyzScopWrite(scopoutf, scop);
+	    embScopWrite(scopoutf, scop);
 
         /* Delete scop structure */
-        ajXyzScopDel(&scop);
+        ajScopDel(&scop);
     }
 
 
@@ -326,6 +328,73 @@ int main(ajint argc, char **argv)
 }
 
 
+
+
+
+/* @func StrBinSearchScop *************************************************
+**
+** Performs a binary search for a SCOP domain code over an array of AjPStr
+** (which of course must first have been sorted, e.g. by StrComp). This is a 
+** case-insensitive search.
+**
+** @param [r] id  [AjPStr]      Search term
+** @param [r] arr [AjPStr*]     Array of AjPStr objects
+** @param [r] siz [ajint]       Size of array
+**
+** @return [ajint] Index of first AjPStr object found with an PDB code
+** matching id, or -1 if id is not found.
+** @@
+******************************************************************************/
+ajint StrBinSearchScop(AjPStr id, AjPStr *arr, ajint siz)
+{
+    int l;
+    int m;
+    int h;
+    int c;
+
+
+    l = 0;
+    h = siz-1;
+    while(l<=h)
+    {
+        m = (l+h)>>1;
+
+        if((c=ajStrCmpCase(id, arr[m])) < 0)
+	    h = m-1;
+        else if(c>0) 
+	    l = m+1;
+        else 
+	    return m;
+    }
+
+    return -1;
+}
+
+
+
+
+/* @func StrComp *******************************************************
+**
+** Function to sort strings.
+**
+** @param [r] str1  [const void*] AjPStr 1
+** @param [r] str2  [const void*] AjPStr 2
+**
+** @return [ajint] -1 if str1 should sort before str2, +1 if the str2 should 
+** sort first. 0 if they are identical in length and content. 
+** @@
+******************************************************************************/
+
+ajint StrComp(const void *str1, const void *str2)
+{
+    AjPStr p = NULL;
+    AjPStr q = NULL;
+
+    p = (*(AjPStr*)str1);
+    q = (*(AjPStr*)str2);
+    
+    return ajStrCmpO(p, q);
+}
 
 
 

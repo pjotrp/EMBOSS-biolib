@@ -281,7 +281,7 @@ int main(int argc, char **argv)
 
         else
         {
-            ajXyzScopalgRead(inf,&scopalg);
+            ajDmxScopalgRead(inf,&scopalg);
 
             seqset   = ajSeqsetNew();
             
@@ -395,7 +395,7 @@ int main(int argc, char **argv)
                 ajFatal("Bad type selected\n");
 
             /* clean up jobs after each file */
-            ajXyzScopalgDel(&scopalg);
+            ajDmxScopalgDel(&scopalg);
 
             ajSeqsetDel(&seqset);
             ajFileClose(&inf);

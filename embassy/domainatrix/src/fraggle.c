@@ -367,7 +367,8 @@ int main(int argc, char **argv)
             ajFileSeek(hitsPtr, 0, 0);
         
             /* Read hitlist into structure */
-            ajXyzHitlistRead(hitsPtr, "//", &hitlist);
+            hitlist = embHitlistRead(hitsPtr);
+	    
         
             /* create output file name and path */
             ajStrAss(&name, hitsout);
@@ -392,7 +393,7 @@ int main(int argc, char **argv)
             hitsoutPtr = ajFileNewOut(name);
 
             /* Write family header information to output file */
-	    /* Now done by call to ajXyzHitlistWriteSubset
+	    /* Now done by call to embHitlistWriteSubset
             if(MAJSTRLEN(hitlist->Class))
                 ajFmtPrintF(hitsoutPtr,"CL   %S\n",hitlist->Class);
             if(MAJSTRLEN(hitlist->Fold))
@@ -432,14 +433,14 @@ int main(int argc, char **argv)
             }
         
             /* Write NS field to file */
-	    /* Now done by call to ajXyzHitlistWriteSubset
+	    /* Now done by call to embHitlistWriteSubset
             ajFmtPrintF(hitsoutPtr,"XX\nNS   %d\nXX\n",y); */
 
             /* Go through seq_ok array if element == 1 then   */
             /* write that element of structure to output file */
 
 
-	    /* Now done by call to ajXyzHitlistWriteSubset
+	    /* Now done by call to embHitlistWriteSubset
 
             y = 0;
 
@@ -473,12 +474,12 @@ int main(int argc, char **argv)
             ajFmtPrintF(hitsoutPtr, "//\n");
 	    */
 
-	    ajXyzHitlistWriteSubset(hitsoutPtr, hitlist, seq_ok);
+	    embHitlistWriteSubset(hitsoutPtr, hitlist, seq_ok);
 	    
 
 
             /* Close input and output files and tidy up */
-            ajXyzHitlistDel(&hitlist);
+            embHitlistDel(&hitlist);
             hitlist=NULL;
             ajFileClose(&hitsoutPtr);
             ajFileClose(&hitsPtr);
@@ -498,8 +499,8 @@ int main(int argc, char **argv)
             ajFileSeek(hitsPtr, 0, 0);
             
             /* Read hitlist into structure */
-            ajXyzHitlistRead(hitsPtr, "//", &hitlist);
-        
+            hitlist = embHitlistRead(hitsPtr);
+	            
             /* create output file name and path */
             ajStrAss(&name, hitsout);
             ajStrFromInt(&hold, hitlist->Sunid_Family);
@@ -567,7 +568,7 @@ int main(int argc, char **argv)
             /* tidy and go on to next file */
             ajFileClose(&hitsPtr);
             ajFileClose(&hitsoutPtr);
-            ajXyzHitlistDel(&hitlist);
+            embHitlistDel(&hitlist);
             hitlist=NULL;
         }
 
