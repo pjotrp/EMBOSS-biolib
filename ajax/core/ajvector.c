@@ -173,25 +173,25 @@ void aj3dVectorCrossProduct(AjP3dVector ajp3dVectorFirst,
 			    AjP3dVector ajp3dVectorSecond,
 			    AjP3dVector ajp3dVectorCrossProduct)
 {
-    float floatXOfCrossProduct;
-    float floatYOfCrossProduct;
-    float floatZOfCrossProduct;
+    float fXOfCrossProduct;
+    float fYOfCrossProduct;
+    float fZOfCrossProduct;
 
     /* compute cross product */
-    floatXOfCrossProduct  = ajp3dVectorFirst->y * ajp3dVectorSecond->z;
-    floatXOfCrossProduct -= ajp3dVectorFirst->z * ajp3dVectorSecond->y;
+    fXOfCrossProduct  = ajp3dVectorFirst->y * ajp3dVectorSecond->z;
+    fXOfCrossProduct -= ajp3dVectorFirst->z * ajp3dVectorSecond->y;
 
-    ajp3dVectorCrossProduct->x   = floatXOfCrossProduct;
+    ajp3dVectorCrossProduct->x   = fXOfCrossProduct;
 
-    floatYOfCrossProduct  = ajp3dVectorFirst->z * ajp3dVectorSecond->x;
-    floatYOfCrossProduct -= ajp3dVectorFirst->x * ajp3dVectorSecond->z;
+    fYOfCrossProduct  = ajp3dVectorFirst->z * ajp3dVectorSecond->x;
+    fYOfCrossProduct -= ajp3dVectorFirst->x * ajp3dVectorSecond->z;
 
-    ajp3dVectorCrossProduct->y   = floatYOfCrossProduct;
+    ajp3dVectorCrossProduct->y   = fYOfCrossProduct;
 
-    floatZOfCrossProduct  = ajp3dVectorFirst->x * ajp3dVectorSecond->y;
-    floatZOfCrossProduct -= ajp3dVectorFirst->y * ajp3dVectorSecond->x;
+    fZOfCrossProduct  = ajp3dVectorFirst->x * ajp3dVectorSecond->y;
+    fZOfCrossProduct -= ajp3dVectorFirst->y * ajp3dVectorSecond->x;
 
-    ajp3dVectorCrossProduct->z   = floatZOfCrossProduct;
+    ajp3dVectorCrossProduct->z   = fZOfCrossProduct;
 
     return;
 }
@@ -211,14 +211,14 @@ void aj3dVectorCrossProduct(AjP3dVector ajp3dVectorFirst,
 ** @@
 ******************************************************************************/
 
-void aj3dVectorBetweenPoints(float startX, float startY, float startZ,
-			     float endX, float endY, float endZ,
+void aj3dVectorBetweenPoints(float fStartX, float fStartY, float fStartZ,
+			     float fEndX, float fEndY, float fEndZ,
 			     AjP3dVector ajp3dVectorBetweenPoints)
 {
     /* compute vector between points */
-    ajp3dVectorBetweenPoints->x = endX - startX;
-    ajp3dVectorBetweenPoints->y = endY - startY;
-    ajp3dVectorBetweenPoints->z = endZ - startZ;
+    ajp3dVectorBetweenPoints->x = fEndX - fStartX;
+    ajp3dVectorBetweenPoints->y = fEndY - fStartY;
+    ajp3dVectorBetweenPoints->z = fEndZ - fStartZ;
 
     return;
 }
@@ -232,28 +232,28 @@ void aj3dVectorBetweenPoints(float startX, float startY, float startZ,
 **
 ** @param [r] ajp3dVectorToBeSized [AjP3dVector] vector to be sized
 **
-** @return floatVectorLength [float] length of vector to be sized
+** @return fVectorLength [float] length of vector to be sized
 ** @@
 ******************************************************************************/
 
 float aj3dVectorLength(AjP3dVector ajp3dVectorToBeSized)
 {
-    float floatSquareOfVectorLength;
-    float floatVectorLength;
+    float fSquareOfVectorLength;
+    float fVectorLength;
 
     /* compute vector length */
-    floatSquareOfVectorLength = ajp3dVectorToBeSized->x *
+    fSquareOfVectorLength = ajp3dVectorToBeSized->x *
 	ajp3dVectorToBeSized->x;
 
-    floatSquareOfVectorLength += ajp3dVectorToBeSized->y *
+    fSquareOfVectorLength += ajp3dVectorToBeSized->y *
 	ajp3dVectorToBeSized->y;
 
-    floatSquareOfVectorLength += ajp3dVectorToBeSized->z *
+    fSquareOfVectorLength += ajp3dVectorToBeSized->z *
 	ajp3dVectorToBeSized->z;
 
-    floatVectorLength = (float)sqrt((double)floatSquareOfVectorLength);
+    fVectorLength = (float)sqrt((double)fSquareOfVectorLength);
 
-    return floatVectorLength;
+    return fVectorLength;
 }
 
 
@@ -273,23 +273,23 @@ float aj3dVectorLength(AjP3dVector ajp3dVectorToBeSized)
 float aj3dVectorAngle(AjP3dVector ajp3dVectorFirst,
 		      AjP3dVector ajp3dVectorSecond)
 {
-    float floatCosineOfVectorAngle;
-    float floatVectorAngleInDegrees;
-    float floatVectorAngle;
+    float fCosineOfVectorAngle;
+    float fVectorAngleInDegrees;
+    float fVectorAngle;
 
     /* XXXX STILL NEED TO INSERT A TRAP FOR VERY SMALL VALUES OF ANGLE */
 
     /* compute vector angle */
-    floatCosineOfVectorAngle = aj3dVectorDotProduct(ajp3dVectorFirst,
+    fCosineOfVectorAngle = aj3dVectorDotProduct(ajp3dVectorFirst,
 						    ajp3dVectorSecond);
-    floatCosineOfVectorAngle /= aj3dVectorLength(ajp3dVectorFirst);
-    floatCosineOfVectorAngle /= aj3dVectorLength(ajp3dVectorSecond);
+    fCosineOfVectorAngle /= aj3dVectorLength(ajp3dVectorFirst);
+    fCosineOfVectorAngle /= aj3dVectorLength(ajp3dVectorSecond);
 
-    floatVectorAngle = acos((double) floatCosineOfVectorAngle);
+    fVectorAngle = (float)acos((double)fCosineOfVectorAngle);
 
-    floatVectorAngleInDegrees = ajRadToDeg(floatVectorAngle);
+    fVectorAngleInDegrees = ajRadToDeg(fVectorAngle);
 
-    return( floatVectorAngleInDegrees );
+    return( fVectorAngleInDegrees );
 }
 
 
@@ -312,7 +312,7 @@ float aj3dVectorDihedralAngle(AjP3dVector ajp3dVectorA,
 			      AjP3dVector ajp3dVectorB,
 			      AjP3dVector ajp3dVectorC)
 { 
-    float floatDihedralAngle;
+    float fDihedralAngle;
 
     AjP3dVector ajp3dVectorTorqueFirst  = NULL;
     AjP3dVector ajp3dVectorTorqueSecond = NULL;
@@ -327,16 +327,16 @@ float aj3dVectorDihedralAngle(AjP3dVector ajp3dVectorA,
     aj3dVectorCrossProduct(ajp3dVectorB, ajp3dVectorC,
 			   ajp3dVectorTorqueSecond);
 
-    floatDihedralAngle = aj3dVectorAngle(ajp3dVectorTorqueFirst,
+    fDihedralAngle = aj3dVectorAngle(ajp3dVectorTorqueFirst,
 					 ajp3dVectorTorqueSecond);
 
     aj3dVectorCrossProduct(ajp3dVectorTorqueFirst, ajp3dVectorTorqueSecond,
 			   ajp3dVectorTorqueThird);
 
     if(aj3dVectorDotProduct(ajp3dVectorB, ajp3dVectorTorqueThird) < 0.0)
-	floatDihedralAngle = -1.0 * floatDihedralAngle;
+	fDihedralAngle = -1.0 * fDihedralAngle;
 
-    return floatDihedralAngle;
+    return fDihedralAngle;
 }
 
 
@@ -357,14 +357,14 @@ float aj3dVectorDihedralAngle(AjP3dVector ajp3dVectorA,
 float aj3dVectorDotProduct(AjP3dVector ajp3dVectorFirst,
 			   AjP3dVector ajp3dVectorSecond)
 {
-    float floatDotProduct;
+    float fDotProduct;
 
     /* compute dot product */
-    floatDotProduct  = ajp3dVectorFirst->x * ajp3dVectorSecond->x;
-    floatDotProduct += ajp3dVectorFirst->y * ajp3dVectorSecond->y;
-    floatDotProduct += ajp3dVectorFirst->z * ajp3dVectorSecond->z;
+    fDotProduct  = ajp3dVectorFirst->x * ajp3dVectorSecond->x;
+    fDotProduct += ajp3dVectorFirst->y * ajp3dVectorSecond->y;
+    fDotProduct += ajp3dVectorFirst->z * ajp3dVectorSecond->z;
 
-    return(floatDotProduct);
+    return(fDotProduct);
 }
 
 
