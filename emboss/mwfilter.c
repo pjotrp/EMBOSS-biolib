@@ -106,8 +106,8 @@ int main(int argc, char **argv)
 
     /* Get keratin/trypsin & oxymet/oxythr/sodium data */
     mwfilter_readdata(datafile, &rmarray, &darray);
-   ajFileClose(&datafile);
-     rmn = ajDoubleLen(rmarray);
+    ajFileClose(&datafile);
+    rmn = ajDoubleLen(rmarray);
     dn  = ajDoubleLen(darray);
 
     /* Get experimental results */
@@ -212,7 +212,6 @@ static void mwfilter_readdata(AjPFile inf, AjPDouble *rmarray,
     }
 
     ajStrDel(&line);
-    ajFileClose(&inf);
 
     return;
 }
