@@ -586,6 +586,11 @@ if [ "$MACOSX" = "y" ]; then
  echo "setenv DYLD_LIBRARY_PATH /usr/local/emboss/lib" >> tomstart
 fi
 
+if [ "$PLATFORM" = "hpux" ]; then
+ echo "setenv SHLIB_PATH $EMBOSS_INSTALL/lib" >> tomstart
+fi
+
+
 if [ "$AUTH_TYPE" = "3" ]; then
   echo "setenv LD_PRELOAD /lib/libpam.so" >> tomstart
 fi
