@@ -147,33 +147,44 @@ sub testiterate($$$\@) {
 
 sub testinput($\@\@) {
     my ($tdata, $tcast, $tcode) = @_;
+    my $ok = 0;
+    my $i = 0;
     if ($#{$tcast} < 0) {
 	print "bad category input - no parameters\n";
 	return 0;
     }
-    $tc = ${$tcast}[0];
-    $tx = ${$tcode}[0];
-    if ($tc ne "$tdata") {
-	print "bad category input - parameter1 '$tc' not '$tdata'\n";
+	
+    for ($i=0; $i <= $#{$tcast}; $i++) {
+	$tc = ${$tcast}[$i];
+	$tx = ${$tcode}[$i];
+	if ($tc eq "$tdata" && ($tx =~ /[wu]/)) {
+	    $ok = 1;
+	}
     }
-    if ($tx !~ /[wu]/) {
-	print "bad category input - code1 '$tx' not 'w' or 'u'\n";
+    if (!$ok) {
+	print "bad category input - no parameter '$tdata' with code 'w' or 'u'\n";
     }
 }
 
 sub testoutput($\@\@) {
     my ($tdata, $tcast, $tcode) = @_;
+    my $ok = 0;
+    my $i = 0;
     if ($#{$tcast} < 0) {
 	print "bad category output - no parameters\n";
 	return 0;
     }
-    $tc = ${$tcast}[0];
-    $tx = ${$tcode}[0];
-    if ($tc ne "$tdata" && $tc ne "const $tdata") {
-	print "bad category output - parameter1 '$tc' not (const) '$tdata'\n";
+    for ($i=0; $i <= $#{$tcast}; $i++) {
+	$tc = ${$tcast}[$i];
+	$tx = ${$tcode}[$i];
+	if ($tc eq "$tdata" || $tc eq "const $tdata") {
+	    if  ($tx =~ /[ru]/) {
+		$ok = 1;
+	    }
+	}
     }
-    if ($tx !~ /[ru]/) {
-	print "bad category output - code1 '$tx' not 'r' or 'u'\n";
+    if (!$ok) {
+	print "bad category output - no parameter (const) '$tdata' and code 'r' or 'u'\n";
     }
 }
 
