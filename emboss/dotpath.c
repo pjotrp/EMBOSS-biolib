@@ -114,7 +114,7 @@ int main(int argc, char **argv)
 		   0.0-xmargin,(float)max+xmargin);
     
     ajGraphTextMid(max*0.5,(ajSeqLen(seq2))+(xmargin*0.5),
-		   ajStrStr(graph->title));
+		   ajGraphGetTitleC(graph));
     ajGraphSetCharSize(0.5);
     
     /* display the overlapping matches in red */
@@ -149,7 +149,7 @@ int main(int argc, char **argv)
 	ticklen = xmargin*0.1;
 	onefifth  = xmargin*0.2;
 	ajGraphTextMid((ajSeqLen(seq1))*0.5,0.0-(onefifth*3),
-		       ajStrStr(graph->yaxis));
+		       ajGraphGetYTitleC(graph));
 
 	if(ajSeqLen(seq2)/ajSeqLen(seq1) > 10 )
 	{
@@ -180,7 +180,7 @@ int main(int argc, char **argv)
 	onefifth  = ymargin*0.2;
 	ajGraphTextLine(0.0-(onefifth*4),(ajSeqLen(seq2))*0.5,
 			0.0-(onefifth*4),(float)ajSeqLen(seq2),
-			ajStrStr(graph->xaxis),0.5);
+			ajGraphGetXTitleC(graph),0.5);
 
 	if(ajSeqLen(seq1)/ajSeqLen(seq2) > 10 )
 	{

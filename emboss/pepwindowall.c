@@ -45,7 +45,7 @@ int main(int argc, char **argv)
     AjPFile datafile;
     AjPStr aa0str = 0;
     AjPSeqset seqset;
-    AjPGraphData graphdata;
+    AjPGraphPlpData graphdata;
     AjPGraph mult;
     char *seq;
     char *s1;
@@ -88,8 +88,8 @@ int main(int argc, char **argv)
 	seq = ajSeqsetSeq(seqset, i);
 	ajStrClear(&aa0str);
 
-	graphdata = ajGraphxyDataNewI(ajSeqsetLen(seqset));
-	ajGraphDataxySetTypeC(graphdata,"Overlay 2D Plot");
+	graphdata = ajGraphPlpDataNewI(ajSeqsetLen(seqset));
+	ajGraphPlpDataSetTypeC(graphdata,"Overlay 2D Plot");
 	ymin = 64000.;
 	ymax = -64000.;
 
@@ -154,14 +154,14 @@ int main(int argc, char **argv)
 	while(!graphdata->x[end])
 	    --end;
 
-	ajGraphDataxySetMaxima(graphdata,(float)graphdata->x[0],
+	ajGraphPlpDataSetMaxima(graphdata,(float)graphdata->x[0],
 			       (float)graphdata->x[graphdata->numofpoints-1],
 			       ymin,ymax);
 
-	ajGraphxyDataSetYtitleC(graphdata,"Hydropathy");
-	ajGraphxyDataSetXtitleC(graphdata,"Sequence");
+	ajGraphPlpDataSetYTitleC(graphdata,"Hydropathy");
+	ajGraphPlpDataSetXTitleC(graphdata,"Sequence");
 
-	ajGraphxyAddGraph(mult,graphdata);
+	ajGraphDataAdd(mult,graphdata);
     }
 
     min = min*1.1;
@@ -171,7 +171,7 @@ int main(int argc, char **argv)
     ajGraphxySetOverLap(mult,AJTRUE);
 
     ajGraphxySetMaxMin(mult,0.0,(float)ajSeqsetLen(seqset),min,max);
-    ajGraphxyTitleC(mult,"Pepwindowall");
+    ajGraphSetTitleC(mult,"Pepwindowall");
 
 
     ajGraphxyDisplay(mult,AJTRUE);

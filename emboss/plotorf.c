@@ -64,7 +64,7 @@ int main(int argc, char **argv)
     ajint nstops;
 
     AjPGraph graph;
-    AjPGraphData data;
+    AjPGraphPlpData data;
 
     float *x[6];
     float *y[6];
@@ -122,31 +122,31 @@ int main(int argc, char **argv)
     {
 	plotorf_norfs(ajStrStr(str),ajStrStr(rev),i,x,y,&cnt,beg,starts,
 		      nstarts,stops,nstops);
-	data = ajGraphxyDataNewI(2);
+	data = ajGraphPlpDataNewI(2);
 	data->numofpoints = 0;
 
 
-	ajGraphxyAddGraph(graph,data);
+	ajGraphDataAdd(graph,data);
 	ajGraphxySetOverLap(graph,ajFalse);
 	ajGraphxySetYTick(graph, ajFalse);
-	ajGraphDataxySetMaxima(data,(float)beg,(float)end,0.0,1.0);
-	ajGraphDataxySetTypeC(data,"Multi 2D Plot Small");
-	ajGraphxyDataSetYtitleC(data,"Orf");
-	ajGraphxyDataSetXtitleC(data,"Sequence");
-	ajGraphxyDataSetTitleC(data,ftit[i]);
+	ajGraphPlpDataSetMaxima(data,(float)beg,(float)end,0.0,1.0);
+	ajGraphPlpDataSetTypeC(data,"Multi 2D Plot Small");
+	ajGraphPlpDataSetYTitleC(data,"Orf");
+	ajGraphPlpDataSetXTitleC(data,"Sequence");
+	ajGraphPlpDataSetTitleC(data,ftit[i]);
 
 	for(j=0;j<ajIntGet(cnt,i);++j)
-	    ajGraphDataObjAddRect(data,y[i][j],0.0,
+	    ajGraphPlpDataAddRect(data,y[i][j],0.0,
 					      x[i][j],1.0,4,1);
     }
 
 
-    ajGraphxySetTitleDo(graph, ajTrue);
+    ajGraphSetTitleDo(graph, ajTrue);
     ajGraphxySetMaxMin(graph,(float)beg,(float)end,0.0,1.0);
 
     ajGraphxySetYStart(graph,0.0);
     ajGraphxySetYEnd(graph,2.0);
-    ajGraphxyTitleC(graph,"Potential codons (rectangles)");
+    ajGraphSetTitleC(graph,"Potential codons (rectangles)");
     ajGraphxyDisplay(graph,ajTrue);
 
 

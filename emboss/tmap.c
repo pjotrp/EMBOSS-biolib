@@ -1279,7 +1279,7 @@ static void tmap_align_rel(ajint antal, ajint poss, ajint span)
 
 static void tmap_plot2(AjPGraph mult)
 {
-  AjPGraphData graph = NULL;
+  AjPGraphPlpData graphdata = NULL;
   float max = -10.0;
   float min = 10.0;
   ajint i;
@@ -1297,21 +1297,21 @@ static void tmap_plot2(AjPGraph mult)
 	  min = profile[j][i];
       }
     }
-    graph = ajGraphxyDataNew();
-    ajGraphDataxySetTypeC(graph,"Overlay 2D Plot");
+    graphdata = ajGraphPlpDataNew();
+    ajGraphPlpDataSetTypeC(graphdata,"Overlay 2D Plot");
 
-    ajGraphxyAddDataCalcPtr(graph,poss,0.0,1.0,&profile[j][0]);
+    ajGraphPlpDataCalcXY(graphdata,poss,0.0,1.0,&profile[j][0]);
 
-    ajGraphDataxySetMaxima(graph,0.,(float)poss,min,max);
+    ajGraphPlpDataSetMaxima(graphdata,0.,(float)poss,min,max);
 
-    ajGraphxyDataSetXtitleC(graph,"Residue no.");
-    ajGraphxyDataSetYtitleC(graph,"");
-    ajGraphxyDataSetTitleC(graph,"");
-    ajGraphxyDataSetSubtitleC(graph,"");
+    ajGraphPlpDataSetXTitleC(graphdata,"Residue no.");
+    ajGraphPlpDataSetYTitleC(graphdata,"");
+    ajGraphPlpDataSetTitleC(graphdata,"");
+    ajGraphPlpDataSetSubTitleC(graphdata,"");
 
-    ajGraphxyAddGraph(mult,graph);
+    ajGraphDataAdd(mult,graphdata);
   }
-  ajGraphxySetLineType(graph, 2);
+  ajGraphPlpDataSetLineType(graphdata, 2);
   ajGraphxySetGaps(mult,AJTRUE);
   ajGraphxySetOverLap(mult,AJTRUE);
 
@@ -1324,12 +1324,12 @@ static void tmap_plot2(AjPGraph mult)
   max = max*1.1;
 
   ajGraphxySetMaxMin(mult,0.0,(float)poss,min,max);
-  ajGraphxyTitleC(mult,"Tmap");
+  ajGraphSetTitleC(mult,"Tmap");
 
   max = max *0.95;
 
   for(i=1; i<=tm_number; i++)
-    ajGraphObjAddRect(mult,(float)tm_segment[i][0],max,(float)tm_segment[i][1],
+    ajGraphAddRect(mult,(float)tm_segment[i][0],max,(float)tm_segment[i][1],
 		      max+((max-min)*0.01),BLACK,1);
 
   ajGraphxyDisplay(mult,AJFALSE);

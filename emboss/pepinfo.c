@@ -378,7 +378,7 @@ int main(int argc, char **argv)
 	    ajGraphNewPage(ajFalse);
 
 	ajGraphSetCharSize(0.50);
-	ajGraphxyTitleC(graphs,"Pepinfo");
+	ajGraphSetTitleC(graphs,"Pepinfo");
 
 	ajGraphxyDisplay(graphs,AJTRUE);
     }
@@ -496,7 +496,7 @@ static void pepinfo_plotGraph2Float(AjPGraph graphs, AjPSeq seq,
 				    ajint plotcolour)
 {
 
-    AjPGraphData plot;
+    AjPGraphPlpData plot;
 
     ajint npts = 0;
 
@@ -505,24 +505,24 @@ static void pepinfo_plotGraph2Float(AjPGraph graphs, AjPSeq seq,
 
     npts = seq_end - seq_start;
 
-    ajGraphDataxyMaxMin(results,npts,&ymin,&ymax);
+    ajGraphArrayMaxMin(results,npts,&ymin,&ymax);
 
     /*
     **  initialise plot, the number of points will be the length of the data
     **  in the results structure
     */
-    plot = ajGraphxyDataNewI(npts);
+    plot = ajGraphPlpDataNewI(npts);
 
     /*Set up rest of plot information*/
-    ajGraphxyDataSetTitleC(plot, title_text);
-    ajGraphxyDataSetXtitleC(plot, xtext);
-    ajGraphxyDataSetYtitleC(plot, ytext);
-    ajGraphDataxySetMaxMin(plot,(float)1,(float)npts,ymin,ymax);
-    ajGraphDataxySetMaxima(plot,(float)1,(float)npts,ymin,ymax);
-    ajGraphDataxySetTypeC(plot,"2D Plot");
+    ajGraphPlpDataSetTitleC(plot, title_text);
+    ajGraphPlpDataSetXTitleC(plot, xtext);
+    ajGraphPlpDataSetYTitleC(plot, ytext);
+    ajGraphPlpDataSetMaxMin(plot,(float)1,(float)npts,ymin,ymax);
+    ajGraphPlpDataSetMaxima(plot,(float)1,(float)npts,ymin,ymax);
+    ajGraphPlpDataSetTypeC(plot,"2D Plot");
 
-    ajGraphxyAddDataCalcPtr(plot, npts, seq_begin, 1.0, results);
-    ajGraphxyAddGraph(graphs, plot);
+    ajGraphPlpDataCalcXY(plot, npts, seq_begin, 1.0, results);
+    ajGraphDataAdd(graphs, plot);
 
     return;
 }

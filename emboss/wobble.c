@@ -61,7 +61,7 @@ int main(int argc, char **argv)
 
 
     AjPGraph   graph;
-    AjPGraphData data;
+    AjPGraphPlpData data;
 
     float *x[6];
     float *y[6];
@@ -131,7 +131,7 @@ int main(int argc, char **argv)
 	wobble_calcpc(ajStrStr(fwd),ajStrStr(rev),i,x,y,count,beg,ajStrStr(gc),
 		      window);
 
-	data = ajGraphxyDataNewI(count[i]);
+	data = ajGraphPlpDataNewI(count[i]);
 
 	ajGraphxySetOverLap(graph,ajFalse);
 
@@ -147,27 +147,27 @@ int main(int argc, char **argv)
 	    data->y[j] = y[i][j];
 	}
 
-	ajGraphDataxyMaxMin(data->y,count[i],&ymin,&ymax);
-	ajGraphDataxySetMaxima(data,(float)beg,(float)end,ymin,ymax);
+	ajGraphArrayMaxMin(data->y,count[i],&ymin,&ymax);
+	ajGraphPlpDataSetMaxima(data,(float)beg,(float)end,ymin,ymax);
 
-	ajGraphDataxySetTypeC(data,"2D Plot");
-	ajGraphxyAddGraph(graph,data);
+	ajGraphPlpDataSetTypeC(data,"2D Plot");
+	ajGraphDataAdd(graph,data);
 
 	ajGraphxySetYTick(graph, ajTrue);
 
-	ajGraphxyDataSetYtitleC(data,ajStrStr(gc));
-	ajGraphxyDataSetXtitleC(data,"Sequence");
-	ajGraphxyDataSetTitleC(data,ftit[i]);
-	ajGraphDataObjAddLine(data,(float)beg,mean,(float)end,mean,4);
+	ajGraphPlpDataSetYTitleC(data,ajStrStr(gc));
+	ajGraphPlpDataSetXTitleC(data,"Sequence");
+	ajGraphPlpDataSetTitleC(data,ftit[i]);
+	ajGraphPlpDataAddLine(data,(float)beg,mean,(float)end,mean,4);
     }
     
     
-    ajGraphxySetTitleDo(graph, ajTrue);
+    ajGraphSetTitleDo(graph, ajTrue);
     ajGraphxySetMaxMin(graph,(float)beg,(float)end,0.0,100.0);
     
     ajGraphxySetYStart(graph,0.0);
     ajGraphxySetYEnd(graph,100.0);
-    ajGraphxyTitleC(graph,"Wobble bases");
+    ajGraphSetTitleC(graph,"Wobble bases");
     
     ajGraphSetCharSize(0.7);
     

@@ -82,8 +82,8 @@ int main(int argc, char **argv)
     graph    = ajAcdGetGraph("graph");
     gap      = ajAcdGetInt("gap");
     boxit    = ajAcdGetBool("boxit");
-    seq1out  = ajAcdGetFeatout("featout");
-    dumpfeat = ajAcdGetBool("dumpfeat");
+    seq1out  = ajAcdGetFeatout("outfeat");
+    dumpfeat = ajAcdGetToggle("dumpfeat");
 
     sajb = ajStrNew();
     embWordLength(wordlen);
@@ -119,7 +119,7 @@ int main(int argc, char **argv)
     ajGraphOpenWin(graph, 0.0-xmargin,(total+xmargin)*1.35,0.0-ymargin,
 		   total+ymargin);
     ajGraphTextMid((total+xmargin)*0.5,(total+ymargin)*0.9,
-		   ajStrStr(graph->title));
+		   ajGraphGetTitleC(graph));
     ajGraphSetCharSize(0.3);
     
     

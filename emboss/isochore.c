@@ -104,13 +104,12 @@ static AjPFltarr isochore_FltarrNew0(size_t size);
 
 int main(int argc, char **argv)
 {
-
     AjPSeq seq;
     AjPFile out;
     AjPFltarr results;
 
     AjPGraph plot;
-    AjPGraphData graphdata;
+    AjPGraphPlpData graphdata;
 
     ajint iwin;
     ajint ishift;
@@ -188,21 +187,21 @@ int main(int argc, char **argv)
 
     /* create the graph */
 
-    graphdata = ajGraphxyDataNew();
+    graphdata = ajGraphPlpDataNew();
 
-    ajGraphDataxyMaxMin(results->Array,isize,&amin,&amax);
+    ajGraphArrayMaxMin(results->Array,isize,&amin,&amax);
 
-    ajGraphDataxySetMaxima(graphdata,(float)ipos,(float)(ipos+(ishift*isize)),
+    ajGraphPlpDataSetMaxima(graphdata,(float)ipos,(float)(ipos+(ishift*isize)),
 			   amin,amax);
-    ajGraphDataxySetMaxMin(graphdata,(float)ipos,(float)(ipos+(ishift*isize)),
+    ajGraphPlpDataSetMaxMin(graphdata,(float)ipos,(float)(ipos+(ishift*isize)),
 			   amin,amax);
-    ajGraphDataxySetTypeC(graphdata,"2D Plot");
-    ajGraphxyDataSetTitleC(graphdata,"");
+    ajGraphPlpDataSetTypeC(graphdata,"2D Plot");
+    ajGraphPlpDataSetTitleC(graphdata,"");
 
 
 
-    ajGraphxyAddGraph(plot,graphdata);
-    ajGraphxyAddDataCalcPtr(graphdata, isize,(float)(ipos),(float)ishift,
+    ajGraphDataAdd(plot,graphdata);
+    ajGraphPlpDataCalcXY(graphdata, isize,(float)(ipos),(float)ishift,
 			    results->Array);
 
 

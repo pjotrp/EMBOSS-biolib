@@ -1166,7 +1166,7 @@ static ajint prettyplot_fillinboxes(float ystart, ajint length, ajint numseq,
     if(shownames)
     {
 	for(i=seqstart,l=0;i<seqend;i++,l++)
-	    ajGraphTextStart (-charlen,y-(yincr*l),ajStrStr(seqnames[i]));
+	    ajGraphTextStart(-charlen,y-(yincr*l),ajStrStr(seqnames[i]));
 
 	if(consensus && (numseq==seqend))
 	    ajGraphTextStart(-charlen,y-(yincr*((seqend-seqstart)+1)),
