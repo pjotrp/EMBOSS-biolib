@@ -103,12 +103,12 @@ AjPTrn ajTrnNewI (ajint trnFileNameInt);
 AjPTrn ajTrnNewC (const char *trnFileName);
 void   ajTrnReadFile (AjPTrn trnObj, AjPFile trnFile);
 AjPSeq ajTrnNewPep(const AjPSeq nucleicSeq, ajint frame);
-const AjPStr ajTrnCodon (const AjPTrn trnObj, const AjPStr codon);
-const AjPStr ajTrnRevCodon (const AjPTrn trnObj, const AjPStr codon);
-const AjPStr ajTrnCodonC (const AjPTrn trnObj, const char *codon);
-const AjPStr ajTrnRevCodonC (const AjPTrn trnObj, const char *codon);
-const char   ajTrnCodonK (const AjPTrn trnObj, const char *codon);
-const char   ajTrnRevCodonK (const AjPTrn trnObj, const char *codon);
+const  AjPStr ajTrnCodon (const AjPTrn trnObj, const AjPStr codon);
+const  AjPStr ajTrnRevCodon (const AjPTrn trnObj, const AjPStr codon);
+const  AjPStr ajTrnCodonC (const AjPTrn trnObj, const char *codon);
+const  AjPStr ajTrnRevCodonC (const AjPTrn trnObj, const char *codon);
+char   ajTrnCodonK (const AjPTrn trnObj, const char *codon);
+char   ajTrnRevCodonK (const AjPTrn trnObj, const char *codon);
 void   ajTrnC (const AjPTrn trnObj, const char *str, ajint len,
 	       AjPStr *pep);
 void   ajTrnRevC (const AjPTrn trnObj, const char *str, ajint len,

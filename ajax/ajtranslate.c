@@ -1087,13 +1087,13 @@ const AjPStr ajTrnRevCodonC(const AjPTrn trnObj, const char *codon)
 ** @param [r] trnObj [const AjPTrn] Translation tables
 ** @param [r] codon [const char *] codon to translate
 **                           (these 3 characters need not be NULL-terminated)
-** @return [const char] Amino acid translation
+** @return [char] Amino acid translation
 ** @category use [AjPTrn] Translating a codon from a char* to a
 **                char
 ** @@
 ******************************************************************************/
 
-const char ajTrnCodonK(const AjPTrn trnObj, const char *codon)
+char ajTrnCodonK(const AjPTrn trnObj, const char *codon)
 {
     return trnObj->GC[trnconv[(ajint)codon[0]]]
 	             [trnconv[(ajint)codon[1]]]
@@ -1110,13 +1110,13 @@ const char ajTrnCodonK(const AjPTrn trnObj, const char *codon)
 ** @param [r] trnObj [const AjPTrn] Translation tables
 ** @param [r] codon [const char *] codon to translate
 **                           (these 3 characters need not be NULL-terminated)
-** @return [const char] Amino acid translation
+** @return [char] Amino acid translation
 ** @category use [AjPTrn] Reverse complement translating a codon
 **                from a char* to a char
 ** @@
 ******************************************************************************/
 
-const char ajTrnRevCodonK(const AjPTrn trnObj, const char *codon)
+char ajTrnRevCodonK(const AjPTrn trnObj, const char *codon)
 {
 
     return trnObj->GC[trncomp[(ajint)codon[2]]]
