@@ -107,6 +107,8 @@ public class SectionPanel
   private boolean isReq = false;
   /** true if the advanced section */
   private boolean isAdv = false;
+  /** true if the additional section */
+  private boolean isAdd = false;
   /** true if the output section   */
   private boolean isOut = false;
 
@@ -223,12 +225,13 @@ public class SectionPanel
       String secType = parseAcd.getInfoParamValue(nf).toLowerCase();
       if(secType.startsWith("advanced "))
         isAdv = true;
+      else if(secType.startsWith("additional "))
+        isAdd = true;
       else if(secType.startsWith("input "))
         isInp = true;
       else if(secType.startsWith("output "))
         isOut = true;
-      else if(secType.startsWith("additional ") ||
-              secType.startsWith("required "))
+      else if(secType.startsWith("required "))
         isOut = true;
       else
         System.out.println("Unknown section type " + secType);
@@ -594,6 +597,8 @@ public class SectionPanel
   protected boolean isRequiredSection() { return isReq; }
   /** @return     true if the advanced section */
   protected boolean isAdvancedSection() { return isAdv; }
+  /** @return     true if the additional section */
+  protected boolean isAdditionalSection() { return isAdd; }
 
   /** 
   *
@@ -1165,6 +1170,7 @@ public class SectionPanel
 //
     if(!isShadedGUI)
     {
+      sectionResize(BuildJembossForm.addSection);
       sectionResize(BuildJembossForm.advSection);
       sectionResize(BuildJembossForm.reqdSection);
       sectionResize(BuildJembossForm.outSection);

@@ -62,7 +62,9 @@ public class BuildJembossForm implements ActionListener
   protected static OutputSequenceAttributes outSeqAttr;
 
   private Box advSectionBox;
+  private Box addSectionBox;
   protected static JPanel advSection;
+  protected static JPanel addSection;
   protected static JPanel reqdSection;
   protected static JPanel outSection;
   protected static JPanel inpSection;
@@ -218,7 +220,8 @@ public class BuildJembossForm implements ActionListener
     tools.add(bhelp);
       
 // Advanced options
-    if(advSectionBox!= null)
+    if(advSectionBox != null ||
+       addSectionBox != null)
     {
       JButton badvanced = new JButton("Advanced Options");
       badvanced.addActionListener(this);
@@ -237,12 +240,20 @@ public class BuildJembossForm implements ActionListener
     bgo.setMinimumSize(new Dimension(200, 40));
     bgo.setMaximumSize(new Dimension(200, 40));
 
-    if(advSectionBox!= null)
+// additional section
+    if(addSectionBox != null)
+    {
+      fieldPane.add(addSectionBox);
+      addSectionBox.setVisible(false);
+    }
+
+// advanced section
+    if(advSectionBox != null)
     {
       fieldPane.add(advSectionBox);
       advSectionBox.setVisible(false);
     }
-     
+
     fieldPane.add(Box.createVerticalGlue());
   }
 
@@ -325,7 +336,7 @@ public class BuildJembossForm implements ActionListener
     int nfield = 0;
 
     advSectionBox = null;
-    advSection = null;
+    addSectionBox = null;
     reqdSection = null;
     outSection = null;
     inpSection = null;
@@ -357,7 +368,12 @@ public class BuildJembossForm implements ActionListener
         if(sp.isAdvancedSection())
         {
           advSectionBox = sp.getSectionBox();
-          advSection = sp.getSectionPanel();
+          advSection    = sp.getSectionPanel();
+        }
+        else if(sp.isAdditionalSection())
+        {
+          addSectionBox = sp.getSectionBox();
+          addSection    = sp.getSectionPanel();
         }
         else if(sp.getSectionBox() != null)
         {
@@ -391,18 +407,13 @@ public class BuildJembossForm implements ActionListener
 
     if( ae.getActionCommand().startsWith("Advanced Option"))
     {
-      if(advSectionBox.isVisible())
-      {
-        advSectionBox.setVisible(false);
-        p2.setVisible(false);
-        p2.setVisible(true);
-      }
-      else
-      {
-        advSectionBox.setVisible(true);
-        p2.setVisible(false);
-        p2.setVisible(true);
-      }
+      if(advSectionBox != null)
+        advSectionBox.setVisible(!advSectionBox.isVisible());
+      if(addSectionBox != null)
+        addSectionBox.setVisible(!addSectionBox.isVisible());
+
+      p2.setVisible(false);
+      p2.setVisible(true);
     }
     else if ( ae.getActionCommand().startsWith("GO"))
     {
