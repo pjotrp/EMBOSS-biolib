@@ -109,12 +109,11 @@ static const ajint ajStatusFatal = 8;
 
 #define STRCASE2(a) ((a[0] << 8) + a[1])
 
-#define ajXRAY  0    /* Structure was determined by X-ray crystallography */
-#define ajNMR   1    /* Structure was determined by NMR or is a model     */
-#define ajPDB   0    /* Use original PDB residue numbering                */
-#define ajIDX   1    /* Use corrected residue numbering                   */
+static const ajint ajXRAY = 0;    /* Structure was determined by X-ray crystallography */
+static const ajint ajNMR  = 1;    /* Structure was determined by NMR or is a model     */
+static const ajint ajPDB  = 0;    /* Use original PDB residue numbering                */
+static const ajint ajIDX  = 1;    /* Use corrected residue numbering                   */
 #define ajESCOP "Escop.dat" /* Scop data file */
-
 
 
 
