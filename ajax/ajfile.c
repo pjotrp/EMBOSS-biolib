@@ -446,6 +446,7 @@ AjPFile ajFileNewInPipe(const AjPStr name)
     if(!thys->fp)
     {
 	thys->Handle = 0;
+	ajFileClose(&thys);
 	return NULL;
     }
     thys->Handle = ++fileHandle;

@@ -1212,6 +1212,7 @@ static void alignWriteSimple(AjPAlign thys)
     ajStrDel(&mrkstr);
     ajStrDel(&tmpstr);
     AJFREE(ipos);
+    AJFREE(incs);
     AJFREE(pdata);
     
     return;

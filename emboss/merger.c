@@ -474,7 +474,7 @@ static AjBool merger_bestquality(const char * a, const char *b,
 	qb = merger_quality(b, bpos, 20);
     }
 
-    ajUser("merger_bestquality %d..%d = $.3f %.3f", apos, bpos, qa, qb);
+    ajDebug("merger_bestquality %d..%d = %.3f %.3f\n", apos, bpos, qa, qb);
 
     if(qa >= qb)
 	/*  both have the same quality, use the first sequence */
