@@ -25,7 +25,7 @@
 ** 
 ** 
 ******************************************************************************
-**IMPORTANT NOTE      IMPORTANT NOTE      IMPORTANT NOTE        IMPORTANT NOTE     
+**IMPORTANT NOTE      IMPORTANT NOTE      IMPORTANT NOTE        IMPORTANT NOTE
 ******************************************************************************
 **
 ** Mon May 20 11:43:39 BST 2002
@@ -34,18 +34,18 @@
 ** will be updated shortly. 
 ** 
 ******************************************************************************
-**IMPORTANT NOTE      IMPORTANT NOTE      IMPORTANT NOTE        IMPORTANT NOTE     
+**IMPORTANT NOTE      IMPORTANT NOTE      IMPORTANT NOTE        IMPORTANT NOTE
 ******************************************************************************
 ** 
 ** 
 ** 
 ** Operation
-** scopreso reads a directory of cpdb file, creates a list of the files, then
-** reads every list entry and extracts the resolution of the structure.  If 
-** the value is less than a threshold (user defined) then the scop identifier
-** is pushed onto a list.  The Escop.dat file is then read and scop identifiers
-** compared to those on the list, if found then the scop structure data is written 
-
+** scopreso reads a directory of cpdb file, creates a list
+** of the files, then reads every list entry and extracts the
+** resolution of the structure.  If the value is less than a threshold
+** (user defined) then the scop identifier is pushed onto a list.  The
+** Escop.dat file is then read and scop identifiers compared to those
+** on the list, if found then the scop structure data is written to
 ** the new Escop_X.X.dat scop data file.
 **
 ******************************************************************************/
@@ -57,42 +57,45 @@
 #include "emboss.h"
 
 
-static ajint scopreso_comp(const void *str1, const void *str2);
+static int scopreso_comp(const void *str1, const void *str2);
 static ajint scopreso_BinSearch(AjPStr id, AjPStr *arr, ajint siz);
 
 
 
 /* @prog scopreso *************************************************************
 **
-
 ** Domain resolution redundancy program 
 **
 ******************************************************************************/
 int main(ajint argc, char **argv)
 {
 
-    AjPStr      cpdb_path     = NULL;    /* Location of coordinate files for input */
-    AjPStr      cpdb_extn     = NULL;    /* Extn. of coordinate files              */
-    AjPStr      cpdb_name     = NULL;    /* Name of coordinate file                */
-    AjPStr      temp          = NULL;    /* temp string                            */
-    AjPStr      temp2         = NULL;    /* temp string                            */
-    AjPList     entry        = NULL;     /* List of pdb codes with resolution      */
-                                         /* ABOVE the threshold                    */
-    AjPStr     *entryarr      = NULL;    /* entry as an array                      */
+    AjPStr      cpdb_path     = NULL;    /* Location of coordinate
+                                            files for input */
+    AjPStr      cpdb_extn     = NULL;    /* Extn. of coordinate files */
+    AjPStr      cpdb_name     = NULL;    /* Name of coordinate file */
+    AjPStr      temp          = NULL;    /* temp string */
+    AjPStr      temp2         = NULL;    /* temp string */
+    AjPList     entry        = NULL;     /* List of pdb codes with
+                                            resolution */
+                                         /* ABOVE the threshold */
+    AjPStr     *entryarr      = NULL;    /* entry as an array */
     
 
-    AjPFile     fptr_cpdb     = NULL;    /* Pointer to current coordinate file     */
-    AjPFile     scopinf       = NULL;    /* Escop.dat input file                   */
-    AjPFile     scopoutf      = NULL;    /* New Escop.dat output file              */
+    AjPFile     fptr_cpdb     = NULL;    /* Pointer to current
+                                            coordinate file */
+    AjPFile     scopinf       = NULL;    /* Escop.dat input file */
+    AjPFile     scopoutf      = NULL;    /* New Escop.dat output file */
 
-    AjPList     list          = NULL;    /* List of files in alignment directory   */   
+    AjPList     list          = NULL;    /* List of files in alignment
+                                            directory */
 
-    AjPPdb      pdb           = NULL;    /* Pdb object pointer                     */    
-    AjPScop     scop          = NULL;    /* Scop structure                         */
+    AjPPdb      pdb           = NULL;    /* Pdb object pointer */
+    AjPScop     scop          = NULL;    /* Scop structure */
  
 
-    float       threshold     = 0.0;     /* Resolution threshold                   */
-    ajint       num           = 0;       /* number of nodes in list                */
+    float       threshold     = 0.0;     /* Resolution threshold */
+    ajint       num           = 0;       /* number of nodes in list */
 
 
 
@@ -227,18 +230,19 @@ int main(ajint argc, char **argv)
 
 
 
-/* @func scopreso_comp *******************************************************
+/* @funcstatic scopreso_comp *************************************************
 **
 ** Function to sort strings.
 **
 ** @param [r] str1  [const void*] AjPStr 1
 ** @param [r] str2  [const void*] AjPStr 2
 **
-** @return [ajint] -1 if str1 should sort before str2, +1 if the str2 should 
-** sort first. 0 if they are identical in length and content. 
+** @return [int] -1 if str1 should sort before str2, +1 if the str2
+**                  should sort first. 0 if they are identical in
+**                  length and content.
 ** @@
 ******************************************************************************/
-static ajint scopreso_comp(const void *str1, const void *str2)
+static int scopreso_comp(const void *str1, const void *str2)
 {
     AjPStr p  = NULL;
     AjPStr q  = NULL;
@@ -252,7 +256,7 @@ static ajint scopreso_comp(const void *str1, const void *str2)
 
 
 
-/* @func scopreso_BinSearch *************************************************
+/* @funcstatic scopreso_BinSearch *********************************************
 **
 ** Performs a binary search for a SCOP domain code over an array of AjPStr
 ** (which of course must first have been sorted). This is a 
@@ -263,7 +267,7 @@ static ajint scopreso_comp(const void *str1, const void *str2)
 ** @param [r] siz [ajint]       Size of array
 **
 ** @return [ajint] Index of first AjPStr object found with an PDB code
-** matching id, or -1 if id is not found.
+**                 matching id, or -1 if id is not found.
 ** @@
 ******************************************************************************/
 static ajint scopreso_BinSearch(AjPStr id, AjPStr *arr, ajint siz)

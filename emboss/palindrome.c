@@ -290,7 +290,7 @@ static Palindrome palindrome_New( ajint fstart, ajint fend, ajint rstart,
   return pal;
 }
 
-/* @funcstatic  palindrome_AInB **********************************************
+/* @funcstatic palindrome_AInB ************************************************
 **
 ** Undocumented.
 **
@@ -312,7 +312,7 @@ static AjBool palindrome_AInB( Palindrome a, Palindrome b)
   return AJFALSE;
 }
 
-/* @funcstatic  palindrome_AOverB ********************************************
+/* @funcstatic palindrome_AOverB **********************************************
 **
 ** Undocumented.
 **
@@ -341,7 +341,7 @@ static AjBool palindrome_AOverB( Palindrome a, Palindrome b)
   return AJFALSE;
 }
 
-/* @funcstatic  palindrome_Over **********************************************
+/* @funcstatic palindrome_Over ************************************************
 **
 ** Undocumented.
 **
@@ -364,7 +364,7 @@ static AjBool palindrome_Over( ajint astart, ajint aend, ajint bstart,
   return ajFalse;
 }
 
-/* @funcstatic  palindrome_Longer ********************************************
+/* @funcstatic palindrome_Longer **********************************************
 **
 ** Undocumented.
 **
@@ -383,7 +383,7 @@ static AjBool palindrome_Longer( Palindrome a, Palindrome b )
   return ajFalse;
 }
 
-/* @funcstatic  palindrome_Swap **********************************************
+/* @funcstatic palindrome_Swap ************************************************
 **
 ** Undocumented.
 **

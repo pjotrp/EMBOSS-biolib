@@ -26,7 +26,7 @@
 ** 
 ** 
 ******************************************************************************
-**IMPORTANT NOTE      IMPORTANT NOTE      IMPORTANT NOTE        IMPORTANT NOTE     
+**IMPORTANT NOTE      IMPORTANT NOTE      IMPORTANT NOTE        IMPORTANT NOTE
 ******************************************************************************
 **
 ** Mon May 20 11:43:39 BST 2002
@@ -35,7 +35,7 @@
 ** will be updated shortly. 
 ** 
 ******************************************************************************
-**IMPORTANT NOTE      IMPORTANT NOTE      IMPORTANT NOTE        IMPORTANT NOTE     
+**IMPORTANT NOTE      IMPORTANT NOTE      IMPORTANT NOTE        IMPORTANT NOTE
 ******************************************************************************
 ** 
 ** 
@@ -166,7 +166,8 @@
 
 #include "emboss.h"
 
-static AjBool scoprep_WriteRmsd(ajint x, ajint y, AjPFloat2d *scores,  AjPFile fptr);
+static AjBool scoprep_WriteRmsd(ajint x, ajint y, AjPFloat2d *scores,
+				AjPFile fptr);
 
 
 
@@ -185,12 +186,14 @@ int main(int argc, char **argv)
     ajint     y         = 0;  /* Counter */
     
 
-/*    ajint     last_fam = NULL; */ /* SCOP Sunid of last family that was processed */
+/* ajint last_fam = NULL; */ /* SCOP Sunid of last family that was
+      processed */
     AjPStr    last_fam  = NULL; /* Last family that was processed */
     AjPStr    exec      = NULL;	/* The UNIX command line to be executed*/
     AjPStr    dom       = NULL;	/* Name of file containing single domain*/
     AjPStr    set       = NULL;	/* Name of file containing set of domains*/
-    AjPStr    out       = NULL;	/* Name of file containing pairwise rmsd values */
+    AjPStr    out       = NULL;	/* Name of file containing pairwise
+                                   rmsd values */
     AjPStr    name      = NULL;	/* Base name of STAMP temp files */
     AjPStr    temp      = NULL;	/* A temporary string */
 
@@ -198,7 +201,8 @@ int main(int argc, char **argv)
     AjPFile   scopout   = NULL;	/* File pointer for Escop.dat file (output)*/
     AjPFile   domf      = NULL;	/* File pointer for single domain file */
     AjPFile   setf      = NULL;	/* File pointer for domain set file */
-    AjPFile   outf      = NULL;	/* File pointer for file containing pairwise rmsd values */
+    AjPFile   outf      = NULL;	/* File pointer for file containing
+                                   pairwise rmsd values */
     
 
     AjPScop   scop      = NULL;	/* Pointer to scop structure */
@@ -209,8 +213,10 @@ int main(int argc, char **argv)
     AjPScop  tmp     =NULL;  /* Temp. pointer for freeing famlist*/
     ajint   famsize     =0;     /* No. domains in the family */
     
-    AjPFloat2d      scores        = NULL;    /* Array of pairwise rmsd values          */
-    AjPFloat        means         = NULL;    /* Array of average pairwise rmsd values  */
+    AjPFloat2d      scores        = NULL;    /* Array of pairwise rmsd
+                                                values */
+    AjPFloat        means         = NULL;    /* Array of average
+                                                pairwise rmsd values */
     float      reso_cnt =0.0;   /* Used to calculate means array */
     ajint      div      =0;     /* Used to calculate means array */
     ajint      ignore   =0;     /* Used for writing ordered scop output file */
@@ -321,8 +327,10 @@ int main(int argc, char **argv)
 			    
 			    
 			    /* Call STAMP */
-			    ajFmtPrintS(&exec,"stamp -l %S -s -n 2 -slide 5 -prefix "
-					"%S -d %S > %S\n", dom, name, set, out);
+			    ajFmtPrintS(&exec,
+					"stamp -l %S -s -n 2 -slide 5 -prefix "
+					"%S -d %S > %S\n",
+					dom, name, set, out);
 			    ajFmtPrint("%S\n", exec);
 			    system(ajStrStr(exec));  
 
@@ -331,7 +339,8 @@ int main(int argc, char **argv)
 			    outf = ajFileNewIn(out);
 			    
 
-			    /* Parse stamp output file and write scores array */ 
+			    /* Parse stamp output file and write
+                               scores array */
 			    scoprep_WriteRmsd(x, y, &scores, outf);
 			    
 			    
@@ -343,16 +352,19 @@ int main(int argc, char **argv)
 		    
 		    /* Calculate the means array 
 
-		       In this code, the mean calculation does NOT include (obviously)
-		       the comparison of the domain against itself.  And in cases where
-		       the array value = 100 (i.e. no rmsd given in scopalign.out file)
-		       the calculation again does not involve this domain.
+		       In this code, the mean calculation does NOT
+		       include (obviously) the comparison of the
+		       domain against itself.  And in cases where the
+		       array value = 100 (i.e. no rmsd given in
+		       scopalign.out file) the calculation again does
+		       not involve this domain.
 		       
-		       The important thing is that the mean is only calculated from the
-		       domains against which the scan domain was scanned and an rmsd 
-		       obtaioned. the mean is calculated by dividing by the number of 
-		       domains for which acceptable rmsd valuse were available.
-		       */
+		       The important thing is that the mean is only
+		       calculated from the domains against which the
+		       scan domain was scanned and an rmsd
+		       obtaioned. the mean is calculated by dividing
+		       by the number of domains for which acceptable
+		       rmsd valuse were available.  */
 		 
 		    for(x=0;x<famsize;x++)
 		    {
@@ -374,8 +386,9 @@ int main(int argc, char **argv)
 		    }
 		    
 		    
-		    /* Write the scop classificaiton file (output) giving the structure
-		       with the lowest mean rmsd first */
+		    /* Write the scop classificaiton file (output)
+		       giving the structure with the lowest mean rmsd
+		       first */
 		    for(ignore=0, min = 1000000, x=0;x<famsize;x++)
 		    {
 			if(ajFloatGet(means, x) < min)
@@ -394,7 +407,8 @@ int main(int argc, char **argv)
 		    }
 
 
-		    /* Delete family array amd family list, create new family list*/
+		    /* Delete family array amd family list, create new
+                       family list*/
 		    AJFREE(arr);
 		    arr=NULL;
 		    
@@ -408,8 +422,9 @@ int main(int argc, char **argv)
 		    ajFloat2dDel(&scores);  	    	    
 		    ajFloatDel(&means);
 		}
-		/* family only has 1 or 2 members, Write output file with domain 
-		   or two domains in family list, delete family list and continue */
+		/* family only has 1 or 2 members, Write output file
+		   with domain or two domains in family list, delete
+		   family list and continue */
 		else
 		{
 		    while(ajListPop(famlist,(void**)&tmp))
@@ -631,7 +646,7 @@ int main(int argc, char **argv)
 
 
 
-/* @funcstatic scoprep_WriteRmsd  *********************************************
+/* @funcstatic scoprep_WriteRmsd **********************************************
  **
  ** Reads a file containing the redirected stdout output from the scopalign
  ** application and extracts the pairwise rmsd data.  The rmsd values are 
@@ -639,19 +654,22 @@ int main(int argc, char **argv)
  **
  ** @param  [r] x        [ajint]      Index into scoring array
  ** @param  [r] y        [ajint]      Index into scoring array
- ** @param  [w] scores   [AjPFloat2d] 2d float score array 
+ ** @param  [w] scores   [AjPFloat2d*] 2d float score array 
  ** @param  [r] fptr     [AjPFile]    File pointer to scopalign file
- ** @return              [AjBool]     True on succcess
+ ** @return              [AjBool]     True on success
  ** @@
- ******************************************************************************/
-static AjBool scoprep_WriteRmsd(ajint x, ajint y, AjPFloat2d *scores,  AjPFile fptr)
+ *****************************************************************************/
+static AjBool scoprep_WriteRmsd(ajint x, ajint y, AjPFloat2d *scores,
+				AjPFile fptr)
 {
 
-    AjPStr      scan          = NULL;    /* scan domain                            */
-    AjPStr      dom           = NULL;    /* domain scanned against scan domian     */
-    AjPStr      line          = NULL;    /* string to hold file line               */
-    AjPStr      skip          = NULL;    /* string                                 */
-    float       rmsd          = 0.0;     /* rmsd for this pairwise comparison      */
+    AjPStr      scan          = NULL;    /* scan domain */
+    AjPStr      dom           = NULL;    /* domain scanned against
+                                            scan domian */
+    AjPStr      line          = NULL;    /* string to hold file line */
+    AjPStr      skip          = NULL;    /* string */
+    float       rmsd          = 0.0;     /* rmsd for this pairwise
+                                            comparison */
     
 
 
@@ -732,4 +750,3 @@ static AjBool scoprep_WriteRmsd(ajint x, ajint y, AjPFloat2d *scores,  AjPFile f
     /* Return */
     return ajTrue;
 }
-

@@ -205,18 +205,18 @@ int main(int argc, char **argv)
 
 
 
-/* @funcstatic  hetparse_HetScan ********************************************
+/* @funcstatic hetparse_HetScan ***********************************************
 **
 ** Search a directory of pdb files and count the number of files that each 
 ** heterogen (from a Het object) appears in.
 **
-** @param [w] ptr  [AjPHet]    Het object
 ** @param [r] path [AjPStr]    Path of pdb files
 ** @param [r] extn [AjPStr]    Extension of pdb files
+** @param [w] ptr  [AjPHet]    Het object
 **
 ** @return [AjBool] True on success
 ** @@
-*****************************************************************************/
+******************************************************************************/
 static AjBool        hetparse_HetScan(AjPStr path, AjPStr extn, AjPHet ptr)
 {
     AjPList     listfiles=NULL;   /* List of files in  directory */   

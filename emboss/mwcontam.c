@@ -93,7 +93,7 @@ int main(int argc, char **argv)
 
 
 
-/* @funcstatic  mwcontam_readdata ***********************************
+/* @funcstatic mwcontam_readdata **********************************************
 **
 ** Read molecular weight files.
 **
@@ -101,7 +101,7 @@ int main(int argc, char **argv)
 ** @param [w] lists [AjPList**] Array of lists for molwts
 ** @param [w] n [ajint*] number of files/lists
 ** @@
-*******************************************************************/
+******************************************************************************/
 static void mwcontam_readdata(AjPList files, AjPList **lists,
 			      ajint *n)
 {
@@ -152,7 +152,7 @@ static void mwcontam_readdata(AjPList files, AjPList **lists,
 
 
 
-/* @funcstatic  mwcontam_complists ***********************************
+/* @funcstatic mwcontam_complists *********************************************
 **
 ** Compare two lists for matching molwts leaving the result in
 ** the second list.
@@ -161,7 +161,7 @@ static void mwcontam_readdata(AjPList files, AjPList **lists,
 ** @param [rw] two [AjPList*] Second list
 ** @param [r] tolerance [float] mw tolerance (ppm)
 ** @@
-*******************************************************************/
+******************************************************************************/
 
 static void mwcontam_complists(AjPList one, AjPList *two, float tolerance)
 {

@@ -794,8 +794,8 @@ static AjBool jctl_check_pass(AjPStr username,AjPStr password,ajint *uid,
 ** Primary username/password check. Return uid/gid/homedir
 **
 ** @param [w] buf [char*] socket buffer
-** @param [w] uid [ajint*] uid
-** @param [w] gid [ajint*] gid
+** @param [w] uid [int*] uid
+** @param [w] gid [int*] gid
 ** @param [w] home [AjPStr*] home
 **
 ** @return [AjBool] true if success
@@ -872,8 +872,8 @@ static AjBool jctl_up(char *buf, int *uid, int *gid, AjPStr *home)
 ** Fork emboss program
 **
 ** @param [w] buf [char*] socket buffer
-** @param [w] uid [ajint*] uid
-** @param [w] gid [ajint*] gid
+** @param [w] uid [int] uid
+** @param [w] gid [int] gid
 **
 ** @return [AjBool] true if success
 ******************************************************************************/
@@ -1265,8 +1265,8 @@ static AjBool jctl_do_batch(char *buf, int uid, int gid)
 ** Fork emboss program
 **
 ** @param [w] buf [char*] socket buffer
-** @param [w] uid [ajint*] uid
-** @param [w] gid [ajint*] gid
+** @param [w] uid [int] uid
+** @param [w] gid [int] gid
 **
 ** @return [AjBool] true if success
 ******************************************************************************/
@@ -1608,7 +1608,7 @@ static AjBool jctl_do_fork(char *buf, int uid, int gid)
 ** @return [char**] env or argv array
 ******************************************************************************/
 
-static char **jctl_make_array(AjPStr str)
+static char** jctl_make_array(AjPStr str)
 {
     int n;
     char **ptr=NULL;
@@ -2524,8 +2524,8 @@ static AjBool jctl_do_listdirs(char *buf, int uid, int gid,AjPStr *retlist)
 ** Get a user file
 **
 ** @param [w] buf [char*] socket buffer
-** @param [w] uid [int*] uid
-** @param [w] gid [int*] gid
+** @param [w] uid [int] uid
+** @param [w] gid [int] gid
 ** @param [w] fbuf [unsigned char**] file
 ** @param [w] size [int*] uid
 **
@@ -2808,14 +2808,13 @@ static AjBool jctl_do_getfile(char *buf, int uid, int gid,
 
 
 
-/* @funcstatic jctl_do_putfile *********************************************
+/* @funcstatic jctl_do_putfile ************************************************
 **
 ** Put a user file
 **
 ** @param [w] buf [char*] socket buffer
-** @param [w] uid [int*] uid
-** @param [w] gid [int*] gid
-** @param [r] sockdes [int] socket
+** @param [w] uid [int] uid
+** @param [w] gid [int] gid
 **
 ** @return [AjBool] true if success
 ******************************************************************************/
@@ -3056,7 +3055,7 @@ static AjBool jctl_do_putfile(char *buf, int uid, int gid)
 }
 
 
-/* @funcstatic jctl_jctl_tidy_strings ****************************************
+/* @funcstatic jctl_tidy_strings **********************************************
 **
 ** Deallocate memory
 **
@@ -3116,7 +3115,7 @@ static void jctl_fork_tidy(AjPStr *cl, AjPStr *prog, AjPStr *enviro,
 ** Sanity check on socket commands
 **
 ** @param [r] buf [char*] socket buffer
-** @param [r] mlen [ajint] buffer length
+** @param [r] mlen [int] buffer length
 **
 ** @return [AjBool] true if sane
 ******************************************************************************/
@@ -3241,7 +3240,7 @@ static AjBool jctl_chdir(char *file)
 ** Initialise groups
 **
 ** @param [r] buf [char*] socket buffer
-** @param [r] gid [char*] gid
+** @param [r] gid [int] gid
 **
 ** @return [AjBool] true if success
 ******************************************************************************/

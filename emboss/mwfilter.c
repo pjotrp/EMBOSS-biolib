@@ -143,7 +143,7 @@ int main(int argc, char **argv)
 
 
 
-/* @funcstatic  mwfilter_readdata ***********************************
+/* @funcstatic mwfilter_readdata **********************************************
 **
 ** Read molecular weight exclusion file.
 **
@@ -151,7 +151,7 @@ int main(int argc, char **argv)
 ** @param [w] rmarray [AjPDouble*] keratin/trypsin data etc
 ** @param [w] darray [AjPDouble*] oxymet/sodium data etc
 ** @@
-*******************************************************************/
+******************************************************************************/
 static void mwfilter_readdata(AjPStr datafile, AjPDouble *rmarray,
 			      AjPDouble *darray)
 {
@@ -215,14 +215,14 @@ static void mwfilter_readdata(AjPStr datafile, AjPDouble *rmarray,
 
 
 
-/* @funcstatic  mwfilter_readexp ***********************************
+/* @funcstatic mwfilter_readexp ***********************************************
 **
 ** Read experimental data.
 **
 ** @param [r] inf [AjPFile] Experimental data
 ** @param [w] exparray [AjPDouble*] Data array
 ** @@
-*******************************************************************/
+******************************************************************************/
 static void mwfilter_readexp(AjPFile inf, AjPDouble *exparray)
 {
     ajint   expn  = 0;
@@ -254,7 +254,7 @@ static void mwfilter_readexp(AjPFile inf, AjPDouble *exparray)
 
 
 
-/* @funcstatic  mwfilter_noisedel **********************************
+/* @funcstatic mwfilter_noisedel **********************************************
 **
 ** Mark as DELETED keratin/trypsin peaks.
 **
@@ -266,7 +266,7 @@ static void mwfilter_readexp(AjPFile inf, AjPDouble *exparray)
 ** @param [r] showdel [AjBool] show deleted wts
 ** @param [w] dlist [AjPList] list to store deleted weights
 ** @@
-*******************************************************************/
+******************************************************************************/
 static void mwfilter_noisedel(AjPDouble exparray, ajint expn,
 			      AjPDouble rmarray, ajint rmn,
 			      ajint tol, AjBool showdel, AjPList dlist)
@@ -310,14 +310,14 @@ static void mwfilter_noisedel(AjPDouble exparray, ajint expn,
 
 
 
-/* @funcstatic  mwfilter_arraytidy *********************************
+/* @funcstatic mwfilter_arraytidy *********************************************
 **
 ** Delete from an array peaks marked as DELETED.
 **
 ** @param [rw] exparray [AjPDouble] Experimental data
 ** @param [r] expn [ajint*] Number of experimental peaks
 ** @@
-*******************************************************************/
+******************************************************************************/
 static void mwfilter_arraytidy(AjPDouble exparray, ajint *expn)
 {
     ajint i;
@@ -352,7 +352,7 @@ static void mwfilter_arraytidy(AjPDouble exparray, ajint *expn)
 
 
 
-/* @funcstatic  mwfilter_moddel ************************************
+/* @funcstatic mwfilter_moddel ************************************************
 **
 ** Mark as DELETED oxymet/sodium peaks.
 **
@@ -362,7 +362,7 @@ static void mwfilter_arraytidy(AjPDouble exparray, ajint *expn)
 ** @param [r] dn [ajint] Number of oxymet/sodium molwts
 ** @param [r] tol [ajint] Tolerance (ppm)
 ** @@
-*******************************************************************/
+******************************************************************************/
 static void mwfilter_moddel(AjPDouble exparray, ajint expn,
 			    AjPDouble darray, ajint dn,
 			    ajint tol)

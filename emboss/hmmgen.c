@@ -20,7 +20,7 @@
 ** Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 **
 ******************************************************************************
-**IMPORTANT NOTE      IMPORTANT NOTE      IMPORTANT NOTE        IMPORTANT NOTE     
+**IMPORTANT NOTE      IMPORTANT NOTE      IMPORTANT NOTE        IMPORTANT NOTE
 ******************************************************************************
 **
 ** Mon May 20 11:43:39 BST 2002
@@ -29,7 +29,7 @@
 ** will be updated shortly. 
 ** 
 ******************************************************************************
-**IMPORTANT NOTE      IMPORTANT NOTE      IMPORTANT NOTE        IMPORTANT NOTE     
+**IMPORTANT NOTE      IMPORTANT NOTE      IMPORTANT NOTE        IMPORTANT NOTE
 ******************************************************************************
 ** 
 **
@@ -52,23 +52,28 @@
 int main(int argc, char **argv)
 {
 
-    AjPStr infpath    = NULL;      /* path to directory containing extended alignments */
-    AjPStr infextn    = NULL;      /* file extension of extended alignment files */
+    AjPStr infpath    = NULL;      /* path to directory containing
+                                      extended alignments */
+    AjPStr infextn    = NULL;      /* file extension of extended
+                                      alignment files */
     AjPStr outfpath   = NULL;      /* output directory for the HMM profiles */
     AjPStr outfextn   = NULL;      /* output file extension for HMM profiles */
     AjPStr filename   = NULL;      /* name of extended alignment file */
     AjPStr outfile    = NULL;      /* name of output file a HMM */
-    AjPStr tmp        = NULL;      /* temparary string variable */
+    AjPStr tmp        = NULL;      /* temporary string variable */
     AjPStr cmd        = NULL;      /* the unix command line to execute hmmer */
-    AjPStr tmpname    = NULL;      /* randomly generated name for hmmer input */
-    AjPStr seqsin     = NULL;      /* name of sequence file for input into hmmer in CLUSTAL format */
+    AjPStr tmpname    = NULL;      /* randomly generated name for
+                                      hmmer input */
+    AjPStr seqsin     = NULL;      /* name of sequence file for input
+                                      into hmmer in CLUSTAL format */
 
     AjPList list      = NULL;      /* a list of file names */
 
     AjPFile inf       = NULL;      /* file pointer for extn alignments */
     AjPFile seqsinf   = NULL;      /* file pointer of seqsin */
 
-    AjPScopalg scopalg= NULL;      /* scopalg object for read in extn alignment files */
+    AjPScopalg scopalg= NULL;      /* scopalg object for read in extn
+                                      alignment files */
 
     ajint posdash     = 0;
     ajint posdot      = 0;
@@ -95,20 +100,26 @@ int main(int argc, char **argv)
     /* Create list of files in the path */
     ajStrAssC(&tmp, "*");               /* assign a wildcard to tmp */
         
-    if((ajStrChar(infextn, 0)=='.'))    /* checks if the file extension starts with "." */
-        ajStrApp(&tmp, infextn);        /* assign the acd input file extension to tmp */
+    if((ajStrChar(infextn, 0)=='.'))    /* checks if the file
+                                           extension starts with "."  */
+        ajStrApp(&tmp, infextn);        /* assign the acd input file
+                                           extension to tmp */
  
-    /* this picks up situations where the user has specified an extension without a "." */
+    /* this picks up situations where the user has specified an
+       extension without a "." */
     else
     {
         ajStrAppC(&tmp, ".");           /* assign "." to tmp */  
-        ajStrApp(&tmp, infextn);        /* append tmp with a user specified extension */  
+        ajStrApp(&tmp, infextn);        /* append tmp with a user
+                                           specified extension */
     }   
 
     /* all files containing extended alignments will be in a list */
-    ajFileScan(infpath, tmp, &list, ajFalse, ajFalse, NULL, NULL, ajFalse, NULL);    
+    ajFileScan(infpath, tmp, &list, ajFalse, ajFalse, NULL, NULL,
+	       ajFalse, NULL);    
 
-    /* read each each extended alignment file and run prophecy to generate profile */
+    /* read each each extended alignment file and run prophecy to
+       generate profile */
     while(ajListPop(list,(void **)&filename))
     {  
         if((inf = ajFileNewIn(filename)) == NULL)
@@ -129,7 +140,10 @@ int main(int argc, char **argv)
 
             /* create an output filename */
             /* Add a '.' to outextn if one does not already exist */
-            if((ajStrChar(outfextn, 0)!='.'))        /* checks if the file extension starts with "." */
+            if((ajStrChar(outfextn, 0)!='.'))        /* checks if the
+                                                        file extension
+                                                        starts with
+                                                        "." */
                 ajStrInsertC(&outfextn, 0, ".");
                 
             /* Create the name of the output file */
@@ -137,7 +151,8 @@ int main(int argc, char **argv)
             posdot  = ajStrRFindC(filename, ".");
                 
             if(posdash >= posdot)
-                ajFatal("Could not create filename. Email rranasin@hgmp.mrc.ac.uk");
+                ajFatal("Could not create filename. "
+			"Email rranasin@hgmp.mrc.ac.uk");
             else
             {
                 ajStrAssS(&outfile,outfpath);

@@ -314,7 +314,7 @@ int main(int argc, char **argv)
 
 
 
-/* @funcstatic  scopparse_CompSunid ******************************************
+/* @funcstatic scopparse_CompSunid ********************************************
 **
 ** Function to sort AjOScopdes objects by Sunid element.
 **
@@ -346,7 +346,7 @@ static ajint scopparse_CompSunid(const void *scop1, const void *scop2)
 
 
 
-/* @funcstatic  scopparse_search *********************************************
+/* @funcstatic scopparse_search ***********************************************
 **
 ** Performs a binary search for a Sunid over an array of Scopdes objects 
 ** structures (which of course must first have been sorted). 
@@ -355,8 +355,8 @@ static ajint scopparse_CompSunid(const void *scop1, const void *scop2)
 ** @param [r] arr [AjPScopdes*] Array of AjOScopdes objects
 ** @param [r] siz [ajint]       Size of array
 **
-** @return [ajint] Index of first AjOScopdes object found with an Sunid element 
-** matching id, or -1 if id is not found.
+** @return [ajint] Index of first AjOScopdes object found with an
+** Sunid element matching id, or -1 if id is not found.
 ** @@
 ******************************************************************************/
 static ajint scopparse_search(ajint id, AjPScopdes *arr, ajint siz)

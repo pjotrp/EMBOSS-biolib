@@ -443,7 +443,7 @@ int main(int argc, char **argv)
     return 0;
 }
 
-/* @funcstatic  lindna_TextRuler *********************************************
+/* @funcstatic lindna_TextRuler ***********************************************
 **
 **  compute the character size that fits all elements of the ruler provided
 ** that the height and the length of all strings are at most TextHeight and
@@ -510,107 +510,107 @@ static float lindna_TextRuler(float Start, float End, ajint GapSize,
 
 
 
-/* @funcstatic  lindna_TextRulerStr ******************************************
+/* #funcstatic lindna_TextRulerStr ********************************************
 **
 **  compute the character size that fits all elements of the ruler provided
 **  that the height and the length of all strings are multiplied by TextCoef
 **
-** @param [?] Start [float] Undocumented
-** @param [?] End [float] Undocumented
-** @param [?] GapSize [ajint] Undocumented
-** @param [?] TextOri [char] Undocumented
-** @param [?] TextCoef [float] Undocumented
-** @return [float] Undocumented
+** #param [?] Start [float] Undocumented
+** #param [?] End [float] Undocumented
+** #param [?] GapSize [ajint] Undocumented
+** #param [?] TextOri [char] Undocumented
+** #param [?] TextCoef [float] Undocumented
+** #return [float] Undocumented
 ** @@
 ******************************************************************************/
 /*
-static float lindna_TextRulerStr(float Start, float End, ajint GapSize,
-				 char TextOri, float TextCoef)
-{
-    ajint i;
-    AjPStr string = ajStrNew();
-    float charsize;
-    float minsize = 100.0;
-    float stringLength;
-    float stringHeight;
-
-    ajStrFromInt(&string, Start);
-    if( TextOri=='H' )
-    {
-	stringLength = ajGraphTextLength( 0, 0, 1, 0, ajStrStr(string) );
-	stringHeight = ajGraphTextHeight(0, 0, 1, 0);
-	charsize = ajGraphFitTextOnLine( 0, 0, stringLength/TextCoef, 0,
-					ajStrStr(string),
-					stringHeight/TextCoef );
-    }
-    else
-    {
-	stringLength = ajGraphTextLength( 0, 0, 0, 1, ajStrStr(string) );
-	stringHeight = ajGraphTextHeight(0, 0, 0, 1);
-	charsize = ajGraphFitTextOnLine( 0, 0, 0, stringLength/TextCoef,
-					ajStrStr(string),
-					stringHeight/TextCoef );
-    }
-    if( charsize < minsize )
-	minsize = charsize;
-
-    for(i=GapSize; i<End; i+=GapSize)
-    {
-	if( i>Start )
-	{
-	    ajStrFromInt(&string, i);
-	    if( TextOri=='H' )
-	    {
-		stringLength = ajGraphTextLength( 0, 0, 1, 0,
-						 ajStrStr(string) );
-		stringHeight = ajGraphTextHeight(0, 0, 1, 0);
-		charsize = ajGraphFitTextOnLine( 0, 0, stringLength/TextCoef,
-						0, ajStrStr(string),
-						stringHeight/TextCoef );
-	    }
-	    else
-	    {
-		stringLength = ajGraphTextLength( 0, 0, 0, 1,
-						 ajStrStr(string) );
-		stringHeight = ajGraphTextHeight(0, 0, 0, 1);
-		charsize = ajGraphFitTextOnLine( 0, 0, 0,
-						stringLength/TextCoef,
-						ajStrStr(string),
-						stringHeight/TextCoef );
-	    }
-	    if( charsize < minsize )
-		minsize = charsize;
-	}
-    }
-
-    ajStrFromInt(&string, End);
-    if( TextOri=='H' )
-    {
-	stringLength = ajGraphTextLength( 0, 0, 1, 0, ajStrStr(string) );
-	stringHeight = ajGraphTextHeight(0, 0, 1, 0);
-	charsize = ajGraphFitTextOnLine( 0, 0, stringLength/TextCoef, 0,
-					ajStrStr(string),
-					stringHeight/TextCoef );
-    }
-    else
-    {
-	stringLength = ajGraphTextLength( 0, 0, 0, 1, ajStrStr(string) );
-	stringHeight = ajGraphTextHeight(0, 0, 0, 1);
-	charsize = ajGraphFitTextOnLine( 0, 0, 0, stringLength/TextCoef,
-					ajStrStr(string),
-					stringHeight/TextCoef );
-    }
-    if( charsize < minsize )
-	minsize = charsize;
-
-    ajStrDel(&string);
-
-    return minsize;
-}
+//static float lindna_TextRulerStr(float Start, float End, ajint GapSize,
+//				 char TextOri, float TextCoef)
+//{
+//    ajint i;
+//    AjPStr string = ajStrNew();
+//    float charsize;
+//    float minsize = 100.0;
+//    float stringLength;
+//    float stringHeight;
+//
+//    ajStrFromInt(&string, Start);
+//    if( TextOri=='H' )
+//    {
+//	stringLength = ajGraphTextLength( 0, 0, 1, 0, ajStrStr(string) );
+//	stringHeight = ajGraphTextHeight(0, 0, 1, 0);
+//	charsize = ajGraphFitTextOnLine( 0, 0, stringLength/TextCoef, 0,
+//					ajStrStr(string),
+//					stringHeight/TextCoef );
+//    }
+//    else
+//    {
+//	stringLength = ajGraphTextLength( 0, 0, 0, 1, ajStrStr(string) );
+//	stringHeight = ajGraphTextHeight(0, 0, 0, 1);
+//	charsize = ajGraphFitTextOnLine( 0, 0, 0, stringLength/TextCoef,
+//					ajStrStr(string),
+//					stringHeight/TextCoef );
+//    }
+//    if( charsize < minsize )
+//	minsize = charsize;
+//
+//    for(i=GapSize; i<End; i+=GapSize)
+//    {
+//	if( i>Start )
+//	{
+//	    ajStrFromInt(&string, i);
+//	    if( TextOri=='H' )
+//	    {
+//		stringLength = ajGraphTextLength( 0, 0, 1, 0,
+//						 ajStrStr(string) );
+//		stringHeight = ajGraphTextHeight(0, 0, 1, 0);
+//		charsize = ajGraphFitTextOnLine( 0, 0, stringLength/TextCoef,
+//						0, ajStrStr(string),
+//						stringHeight/TextCoef );
+//	    }
+//	    else
+//	    {
+//		stringLength = ajGraphTextLength( 0, 0, 0, 1,
+//						 ajStrStr(string) );
+//		stringHeight = ajGraphTextHeight(0, 0, 0, 1);
+//		charsize = ajGraphFitTextOnLine( 0, 0, 0,
+//						stringLength/TextCoef,
+//						ajStrStr(string),
+//						stringHeight/TextCoef );
+//	    }
+//	    if( charsize < minsize )
+//		minsize = charsize;
+//	}
+//    }
+//
+//    ajStrFromInt(&string, End);
+//    if( TextOri=='H' )
+//    {
+//	stringLength = ajGraphTextLength( 0, 0, 1, 0, ajStrStr(string) );
+//	stringHeight = ajGraphTextHeight(0, 0, 1, 0);
+//	charsize = ajGraphFitTextOnLine( 0, 0, stringLength/TextCoef, 0,
+//					ajStrStr(string),
+//					stringHeight/TextCoef );
+//    }
+//    else
+//    {
+//	stringLength = ajGraphTextLength( 0, 0, 0, 1, ajStrStr(string) );
+//	stringHeight = ajGraphTextHeight(0, 0, 0, 1);
+//	charsize = ajGraphFitTextOnLine( 0, 0, 0, stringLength/TextCoef,
+//					ajStrStr(string),
+//					stringHeight/TextCoef );
+//    }
+//    if( charsize < minsize )
+//	minsize = charsize;
+//
+//    ajStrDel(&string);
+//
+//    return minsize;
+//}
 */
 
 
-/* @funcstatic  lindna_HeightRuler *******************************************
+/* @funcstatic lindna_HeightRuler *********************************************
 **
 ** compute the ruler's height
 **
@@ -784,7 +784,7 @@ static void lindna_DrawTicks(float xDraw, float yDraw, float TickHeight,
 
 
 
-/* @funcstatic  lindna_DrawBlocks *********************************************
+/* @funcstatic lindna_DrawBlocks **********************************************
 **
 **  draw a Block
 **
@@ -844,7 +844,7 @@ static void lindna_DrawBlocks(float xDraw, float yDraw, float BlockHeight,
 
 
 
-/* @funcstatic  lindna_DrawRanges *******************************************
+/* @funcstatic lindna_DrawRanges **********************************************
 **
 ** draw a Range
 **
@@ -980,7 +980,7 @@ static void lindna_InterBlocks(float xDraw, float yDraw, float BlockHeight,
 
 
 
-/* @funcstatic  lindna_DrawArrowHeadsOnLine **********************************
+/* @funcstatic lindna_DrawArrowHeadsOnLine ************************************
 **
 ** draw arrowheads on a line
 **
@@ -1055,7 +1055,6 @@ static void lindna_DrawBracketsOnLine(float xDraw, float yDraw, float Height,
 ** @param [?] xDraw [float] Undocumented
 ** @param [?] yDraw [float] Undocumented
 ** @param [?] Height [float] Undocumented
-** @param [?] Way [ajint] Undocumented
 ** @@
 ******************************************************************************/
 
@@ -1296,31 +1295,31 @@ static float lindna_VerTextSeqHeightMax(AjPStr Name, float postext,
 
 
 
-/* @funcstatic lindna_VerTextSeqLength ***************************************
+/* #funcstatic lindna_VerTextSeqLength ***************************************
 **
 ** compute the length of a sequence of vertical text strings
 **
-** @param [?] postext [float] Undocumented
-** @param [?] NumNames [ajint] Undocumented
-** @return [float] Undocumented
+** #param [?] postext [float] Undocumented
+** #param [?] NumNames [ajint] Undocumented
+** #return [float] Undocumented
 ** @@
 ******************************************************************************/
 /*
-static float lindna_VerTextSeqLength(float postext, ajint NumNames)
-{
-    float stringHeight;
-    float totalHeight;
-    ajint i;
-
-    totalHeight = 0.0;
-    for(i=0; i<NumNames; i++)
-    {
-	stringHeight = ajGraphTextHeight(0, 0, 0, 1);
-	totalHeight+=(stringHeight+postext);
-    }
-
-    return (totalHeight-postext);
-}
+//static float lindna_VerTextSeqLength(float postext, ajint NumNames)
+//{
+//    float stringHeight;
+//    float totalHeight;
+//    ajint i;
+//
+//    totalHeight = 0.0;
+//    for(i=0; i<NumNames; i++)
+//    {
+//	stringHeight = ajGraphTextHeight(0, 0, 0, 1);
+//	totalHeight+=(stringHeight+postext);
+//    }
+//
+//    return (totalHeight-postext);
+//}
 */
 
 
@@ -1538,75 +1537,75 @@ static float lindna_TextGroup(float Margin, float TextHeight, float TextLength,
 
 
 
-/* @funcstatic lindna_TextGroupStr *******************************************
+/* #funcstatic lindna_TextGroupStr *******************************************
 **
 **  compute the character size that fits all elements of a group provided that
 **  the height and the length of all strings are multiplied by TextCoef
 **
-** @param [?] Margin [float] Undocumented
-** @param [?] TextHeight [float] Undocumented
-** @param [?] Name [AjPStr*] Undocumented
-** @param [?] TextOri [char*] Undocumented
-** @param [?] NumLabels [ajint] Undocumented
-** @param [?] NumNames [ajint*] Undocumented
-** @param [?] GroupName [AjPStr] Undocumented
-** @param [?] TextCoef [float] Undocumented
-** @return [float] Undocumented
+** #param [?] Margin [float] Undocumented
+** #param [?] TextHeight [float] Undocumented
+** #param [?] Name [AjPStr*] Undocumented
+** #param [?] TextOri [char*] Undocumented
+** #param [?] NumLabels [ajint] Undocumented
+** #param [?] NumNames [ajint*] Undocumented
+** #param [?] GroupName [AjPStr] Undocumented
+** #param [?] TextCoef [float] Undocumented
+** #return [float] Undocumented
 ** @@
 ******************************************************************************/
 /*
-static float lindna_TextGroupStr(float Margin, float TextHeight, AjPStr *Name,
-				 char *TextOri, ajint NumLabels,
-				 ajint *NumNames, AjPStr GroupName,
-				 float TextCoef)
-{
-    ajint i;
-    ajint j;
-    float charsize;
-    float minsize = 100.0;
-    float stringLength;
-    float stringHeight;
-    AjPStr token;
-
-    charsize = ajGraphFitTextOnLine( 0, 0, Margin-10, 0, ajStrStr(GroupName),
-				    TextHeight );
-    if( charsize < minsize )
-	minsize = charsize;
-
-    for(i=0; i<NumLabels; i++)
-    {
-	for(j=0; j<NumNames[i]; j++)
-	{
-	    if(j==0)
-		token = ajStrTokC(Name[i], ";");
-	    else
-		token = ajStrTokC(NULL, ";");
-	    if( TextOri[i]=='H' )
-	    {
-		stringLength = ajGraphTextLength( 0, 0, 1, 0,
-						 ajStrStr(token) );
-		stringHeight = ajGraphTextHeight(0, 0, 1, 0);
-		charsize = ajGraphFitTextOnLine( 0, 0, stringLength/TextCoef,
-						0, ajStrStr(token),
-						stringHeight/TextCoef );
-	    }
-	    else
-	    {
-		stringLength = ajGraphTextLength( 0, 0, 0, 1,
-						 ajStrStr(token) );
-		stringHeight = ajGraphTextHeight(0, 0, 0, 1);
-		charsize = ajGraphFitTextOnLine( 0, 0, 0,
-						stringLength/TextCoef,
-						ajStrStr(token),
-						stringHeight/TextCoef );
-	    }
-	    if( charsize < minsize )
-		minsize = charsize;
-	}
-    }
-
-    return minsize;
-}
+//static float lindna_TextGroupStr(float Margin, float TextHeight, AjPStr *Name,
+//				 char *TextOri, ajint NumLabels,
+//				 ajint *NumNames, AjPStr GroupName,
+//				 float TextCoef)
+//{
+//    ajint i;
+//    ajint j;
+//    float charsize;
+//    float minsize = 100.0;
+//    float stringLength;
+//    float stringHeight;
+//    AjPStr token;
+//
+//    charsize = ajGraphFitTextOnLine( 0, 0, Margin-10, 0, ajStrStr(GroupName),
+//				    TextHeight );
+//    if( charsize < minsize )
+//	minsize = charsize;
+//
+//    for(i=0; i<NumLabels; i++)
+//    {
+//	for(j=0; j<NumNames[i]; j++)
+//	{
+//	    if(j==0)
+//		token = ajStrTokC(Name[i], ";");
+//	    else
+//		token = ajStrTokC(NULL, ";");
+//	    if( TextOri[i]=='H' )
+//	    {
+//		stringLength = ajGraphTextLength( 0, 0, 1, 0,
+//						 ajStrStr(token) );
+//		stringHeight = ajGraphTextHeight(0, 0, 1, 0);
+//		charsize = ajGraphFitTextOnLine( 0, 0, stringLength/TextCoef,
+//						0, ajStrStr(token),
+//						stringHeight/TextCoef );
+//	    }
+//	    else
+//	    {
+//		stringLength = ajGraphTextLength( 0, 0, 0, 1,
+//						 ajStrStr(token) );
+//		stringHeight = ajGraphTextHeight(0, 0, 0, 1);
+//		charsize = ajGraphFitTextOnLine( 0, 0, 0,
+//						stringLength/TextCoef,
+//						ajStrStr(token),
+//						stringHeight/TextCoef );
+//	    }
+//	    if( charsize < minsize )
+//		minsize = charsize;
+//	}
+//    }
+//
+//    return minsize;
+//}
 */
 
 
@@ -1643,7 +1642,6 @@ static float lindna_HeightGroup(float posblock, float posrange, float postext,
     float umaxheight = 0.0;
     float lheight;
     float lmaxheight = 0.0;
-
 
     for(i=0; i<NumLabels; i++)
     {
