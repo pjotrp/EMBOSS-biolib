@@ -586,6 +586,8 @@ public class SequenceJPanel extends JPanel
   *
   * Set the colour scheme 
   * @param colorHash	colour scheme to use
+  *
+  */
   public void setColorScheme(Hashtable colorHash)
   {
     this.colorTable = colorHash;
