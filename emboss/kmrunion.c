@@ -30,7 +30,7 @@ static void union_CopyFeatures (const AjPFeattable old_feattable,
                                 ajulong offset,
                                 const AjPFeature source_feature);
 
-/* @prog union ****************************************************************
+/* @prog kmrunion *************************************************************
 **
 ** Reads sequence fragments and builds one sequence
 **
@@ -66,7 +66,7 @@ int main(int argc, char **argv)
 
     int source_group = -1000000;
 
-    embInit ("union", argc, argv);
+    embInit ("kmrunion", argc, argv);
 
     feature = ajAcdGetBool ("feature");
     source  = ajAcdGetBool ("source");

@@ -1,4 +1,4 @@
-application: splitter [
+application: kmrsplitter [
   documentation: "Split a sequence into (overlapping) smaller
                   sequences"
   groups: "Edit"

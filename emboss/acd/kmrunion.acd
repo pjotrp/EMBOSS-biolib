@@ -1,4 +1,4 @@
-application: union [
+application: kmrunion [
   documentation: "Reads sequence fragments and builds one sequence"
   groups: "Edit"
 ]

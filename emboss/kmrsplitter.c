@@ -38,7 +38,7 @@ static void splitter_MakeSubSeqName (AjPStr * name_ptr, const AjPSeq seq,
 
 
 
-/* @prog splitter *************************************************************
+/* @prog kmrsplitter **********************************************************
 **
 ** Split a sequence into (overlapping) smaller sequences
 **
@@ -65,7 +65,7 @@ int main(int argc, char **argv)
     AjPStr type = NULL;
     AjPStr origid = NULL;
 
-    embInit("splitter", argc, argv);
+    embInit("kmrsplitter", argc, argv);
 
     seqout  = ajAcdGetSeqoutall("outseq");
     seqall  = ajAcdGetSeqall("sequence");
