@@ -27,7 +27,7 @@ import java.io.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import java.awt.event.*;
-//import org.emboss.jemboss.gui.form.Separator;
+import org.emboss.jemboss.gui.form.Separator;
 
 
 public class AdvancedOptions extends JPanel
@@ -83,20 +83,30 @@ public class AdvancedOptions extends JPanel
     bleft.add(ljobMgr);
     bleft.add(Box.createHorizontalGlue());
     bdown.add(bleft);
+
+    bdown.add(Box.createVerticalStrut(5));
+    bdown.add(new Separator(new Dimension(100,10)));
     bdown.add(Box.createVerticalStrut(5));
 
-//set users home directory
-    userHome = new JTextField();
+//set users home root directory
+    bleft =  Box.createHorizontalBox();         
+    JLabel lhome = new JLabel("Local Root Directory:");
+    lhome.setForeground(Color.black);
+    bleft.add(lhome);
+    bleft.add(Box.createHorizontalGlue());
+    bdown.add(bleft);
+
+    userHome = new JTextField();                 
     userHome.setText(System.getProperty("user.home"));
     bleft =  Box.createHorizontalBox();
     bleft.add(userHome);
-    JLabel lhome = new JLabel(" Home directory");
-    lhome.setForeground(Color.black);
-    bleft.add(lhome);
     bdown.add(bleft);
-    JButton jroot = new JButton("Load as local filemanger root directory");
+    JButton jroot = new JButton("Set");
     bleft =  Box.createHorizontalBox();
     bleft.add(jroot);
+    JButton jreset = new JButton("Reset");
+    bleft.add(jreset);
+    bleft.add(Box.createHorizontalGlue());
     bdown.add(bleft);
     
     jroot.addActionListener(new ActionListener()
@@ -121,6 +131,19 @@ public class AdvancedOptions extends JPanel
 
       }
     });
+
+//reset button
+    jreset.addActionListener(new ActionListener()
+    {
+      public void actionPerformed(ActionEvent e)
+      {
+        userHome.setText(System.getProperty("user.home"));
+      }
+    });
+
+    bdown.add(Box.createVerticalStrut(5));
+    bdown.add(new Separator(new Dimension(100,10)));
+    bdown.add(Box.createVerticalStrut(5));
 
     this.add(bdown);
   }
