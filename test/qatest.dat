@@ -6743,7 +6743,7 @@ PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL -auto -out test.out -osf embl qasrswww-ID:AB000095
 FI test.out
-FZ = 3664
+FZ = 3678
 FP /^ID   AB000095 /
 FP 1 /^ID /
 //
@@ -6755,7 +6755,7 @@ PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL -auto -out test.out -osf embl qasrswww-ACC:AB000095
 FI test.out
-FZ = 3664
+FZ = 3678
 FP /^ID   AB000095 /
 FP 1 /^ID /
 //
@@ -6767,7 +6767,7 @@ PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL -auto -out test.out -osf embl qasrswww-SV:AB000095.1
 FI test.out
-FZ = 3664
+FZ = 3678
 FP /^ID   AB000095 /
 FP 1 /^ID /
 //
@@ -6779,7 +6779,7 @@ PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL -auto -out test.out -osf embl qasrswww:AB000095
 FI test.out
-FZ = 3664
+FZ = 3678
 FP /^ID   AB000095 /
 FP 1 /^ID /
 //
