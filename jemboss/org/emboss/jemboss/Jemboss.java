@@ -48,31 +48,17 @@ public class Jemboss implements ActionListener
 // system properties
   private String fs = new String(System.getProperty("file.separator")); 
   private String ps = new String(System.getProperty("path.separator"));
-
-// path names
-  private String plplot;
-  private String embossData;
-  private String embossBin;
-  private String embossPath;
-  private String acdDirToParse;
-
   private String cwd = new String(
                        System.getProperty("user.dir") + fs);
-  private String homeDirectory = new String(
-                       System.getProperty("user.home") + fs);
 
 // Swing components
   private JFrame f;
   private JSplitPane pmain;
-  private JSplitPane ptree;
 
   private JPanel p3;
   public static DragTree tree;
   private JButton extend;
   private JScrollPane scrollTree;
-
-/** environment variables */
-  private String[] envp = new String[4];
 
 /** SOAP settings */
   static EmbreoParams mysettings;
@@ -98,19 +84,27 @@ public class Jemboss implements ActionListener
     bwdArrow = new ImageIcon(cl.getResource("images/Backward_arrow_button.gif"));
 
     AuthPopup splashing = null;
+    String embossBin = "";
+    String acdDirToParse = "";
+    String[] envp = new String[4];  /* environment vars */
+
     if(!withSoap)
     {
       JembossParams jp = new JembossParams();
-      plplot = jp.getPlplot();
-      embossData = jp.getEmbossData();
+      String plplot = jp.getPlplot();
+      String embossData = jp.getEmbossData();
       embossBin = jp.getEmbossBin();
-      embossPath = jp.getEmbossPath();
+      String embossPath = jp.getEmbossPath();
       acdDirToParse = jp.getAcdDirToParse();
       embossPath = new String("PATH" + ps +
                       embossPath + ps + embossBin + ps);
       envp[0] = "PATH=" + embossPath;        
       envp[1] = "PLPLOT_LIB=" + plplot;
       envp[2] = "EMBOSS_DATA=" + embossData;
+
+      String homeDirectory = new String(
+                       System.getProperty("user.home") + fs);
+
       envp[3] = "HOME=" + homeDirectory;
     }
 
