@@ -1,0 +1,47 @@
+appl: sigplot
+[
+        doc: "Generates gnuplot data files of signature performance"
+        groups: "PROTEIN:3D STRUCTURE"
+]
+
+infile: hitsin
+[
+        param: Y
+        prompt: "Name of signature hits file for input"
+        def: "my.hits"
+]
+
+outfile: datafile
+[ 
+        param: Y
+        prompt: "Name of gnuplot data file for output"
+        def: "my.dat"
+]
+
+string: true
+[ 
+        param: Y
+        prompt: "Name of data file for true hits"
+        def: "my_true.dat"
+]
+
+string: false
+[ 
+        param: Y
+        prompt: "Name of data file for false hits"
+        def: "my_false.dat"
+]
+
+string: cross
+[ 
+        param: Y
+        prompt: "Name of data file for cross hits"
+        def: "my_cross.dat"
+]
+
+string: unknown
+[ 
+        param: Y
+        prompt: "Name of data file for unknown hits"
+        def: "my_unknown.dat"
+]
