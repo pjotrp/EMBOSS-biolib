@@ -30,7 +30,7 @@ import java.awt.*;
 
 /**
 *
-* Plot the average similarity, calculated by:
+* Plot the average similarity. This is calculated by:
 *
 * <p> Av. Sim. =    sum( Mij*wi + Mji*w2  ) / 
 *              ( (Nseq*Wsize)*((Nseq-1)*Wsize) )

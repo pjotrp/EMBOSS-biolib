@@ -36,23 +36,36 @@ import javax.imageio.stream.*;
 import org.emboss.jemboss.gui.ScrollPanel;
 
 
-public class PrintAlignmentImage extends ScrollPanel
-{
-
-  private PageFormat format = null;   // page format
-  private int pageIndex = 0;          // page number to print
-  private GraphicSequenceCollection gsc;
-  private String filePrefix;
-  private JTextField statusField = new JTextField("");
-  private int nResPerLine = 0;
-
 /**
 *
+* Print png/jpeg image and print preview.
 * Java 1.4 or higher is required for the imageio package
 * which is used here to create jpeg and png images of the
 * multiple alignment.
 *
 */
+public class PrintAlignmentImage extends ScrollPanel
+{
+
+  /** page format */
+  private PageFormat format = null;   
+  /** page number to print    */
+  private int pageIndex = 0; 
+  /** alignment sequence panel */
+  private GraphicSequenceCollection gsc;
+  /** prefix of file           */
+  private String filePrefix;
+  /** status field for print preview */
+  private JTextField statusField = new JTextField("");
+  /** number of residues per line    */
+  private int nResPerLine = 0;
+
+  /**
+  *
+  * @param gsc	sequence panel
+  * @param 	page format
+  *
+  */
   public PrintAlignmentImage(GraphicSequenceCollection gsc,
                              PageFormat format)
   {
@@ -60,13 +73,11 @@ public class PrintAlignmentImage extends ScrollPanel
     this.format = format;
   }
 
-/**
-*
-* Java 1.4 or higher is required for the imageio package
-* which is used here to create jpeg and png images of the
-* multiple alignment.
-*
-*/
+  /**
+  *
+  * @param gsc  sequence panel
+  * 
+  */
   public PrintAlignmentImage(GraphicSequenceCollection gsc)
   {
     super();
@@ -74,39 +85,45 @@ public class PrintAlignmentImage extends ScrollPanel
     setBackground(Color.white);
   }
  
-/**
-*
-* Set the page format
-* @param PageFormat format to use for the image
-*
-*/
+  /**
+  *
+  * Set the page format
+  * @param format 	to use for the image
+  *
+  */
   protected void setFormat(PageFormat format)
   {
     this.format = format; 
   }
 
+  /**
+  *
+  * Get the page format
+  * @return format       to use for the image
+  *
+  */
   protected PageFormat getFormat()
   {
     return format;
   }
 
-/**
-*
-* Set the page number to create an image of
-* @param int pageIndex page number
-*
-*/
+  /**
+  *
+  * Set the page number to create an image of
+  * @param pageIndex 	page number
+  *
+  */
   public void setPageIndex(int pageIndex)
   {
     this.pageIndex = pageIndex;
   }
 
-/**
-*
-* Override this method to draw the sequences
-* @param Graphics g
-*
-*/
+  /**
+  *
+  * Override this method to draw the sequences
+  * @return Graphics g
+  *
+  */
   public void paintComponent(Graphics g)
   {
 // let UI delegate paint first (incl. background filling)
@@ -119,12 +136,11 @@ public class PrintAlignmentImage extends ScrollPanel
   } 
 
 
-
-/**
-*
-* Print to a jpeg or png file
-*
-*/
+  /**
+  *
+  * Print to a jpeg or png file
+  *
+  */
   public void print()
   {
     if(format == null)
@@ -148,11 +164,12 @@ public class PrintAlignmentImage extends ScrollPanel
     }
   }
 
-/**
-*
-* Provide some options for the image created
-*
-*/
+  /**
+  *
+  * Provide some options for the image created
+  * @param showFileOptions	display file options
+  *	
+  */
   private String showOptions(boolean showFileOptions)
   {
     JPanel joptions = new JPanel();
@@ -211,11 +228,12 @@ public class PrintAlignmentImage extends ScrollPanel
   }
 
 
-/**
-*
-* Define a PageFormat
-*
-*/
+  /**
+  *
+  * Get a default page format
+  * @return	page format
+  *
+  */
   protected PageFormat getFormatDialog()
   {
     PrinterJob printerJob = PrinterJob.getPrinterJob();
@@ -224,11 +242,13 @@ public class PrintAlignmentImage extends ScrollPanel
     return format;
   }
  
-/**
-*
-*  Returns a generated image 
-*
-*/
+  /**
+  *
+  *  Returns a generated image 
+  *  @param pageIndex	page number
+  *  @return 		image
+  *
+  */
   private RenderedImage createAlignmentImage(int pageIndex)
   {
     int width  = (int)format.getWidth();
@@ -251,14 +271,13 @@ public class PrintAlignmentImage extends ScrollPanel
     return bufferedImage;
   }
 
-/**
-*
-* Display a print preview page
-*
-*/
+  /**
+  *
+  * Display a print preview page
+  *
+  */
   protected void printPreview()
   {
-
     Border loweredbevel = BorderFactory.createLoweredBevelBorder();
     Border raisedbevel = BorderFactory.createRaisedBevelBorder();
     Border compound = BorderFactory.createCompoundBorder(raisedbevel,loweredbevel);
@@ -415,11 +434,14 @@ public class PrintAlignmentImage extends ScrollPanel
     f.setVisible(true);
   }
 
-/**
-*
-* Write out the image 
-*
-*/
+  /**
+  *
+  * Write out the image 
+  * @param image	image
+  * @param file		file to write image to
+  * @param type		type of image 
+  *
+  */
   private void writeImageToFile(RenderedImage image, 
                                File file, String type)
   {
