@@ -3798,13 +3798,15 @@ static AjBool seqReadGenbank (AjPSeq thys, AjPSeqin seqin)
     else
     {					/* read the sequence and terminator */
 	ajDebug("sequence start at '%S'\n", rdline);
-	while(!ajStrPrefixC(rdline,"ORIGIN"))
+	while(!ajStrPrefixC(rdline,"ORIGIN") &&
+	      !ajStrPrefixC(rdline,"BASE COUNT"))
 	    if(!ajFileBuffGetStore(buff,&rdline, seqin->Text, &thys->TextPtr))
 		break;
 	ok = ajFileBuffGetStore (buff, &rdline, seqin->Text, &thys->TextPtr);
 	while (ok && !ajStrPrefixC(rdline, "//"))
 	{
-	    if (!ajStrPrefixC(rdline, "ORIGIN"))
+	    if (!ajStrPrefixC(rdline, "ORIGIN") &&
+		!ajStrPrefixC(rdline,"BASE COUNT"))
 		(void) seqAppend (&thys->Seq, rdline);
 	    ok = ajFileBuffGetStore (buff, &rdline, seqin->Text,
 				     &thys->TextPtr);
