@@ -20,10 +20,11 @@
 ** Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******************************************************************************/
 
-
 #include "emboss.h"
 #include <math.h>
 #include <stdlib.h>
+
+
 
 
 static void cpgplot_findbases(AjPStr *substr, ajint begin, ajint len,
@@ -55,6 +56,7 @@ static void cpgplot_dumpfeatout(AjPFeattabOut featout, AjBool *thresh,
 
 
 
+
 /* @prog cpgplot **************************************************************
 **
 ** Plot CpG rich areas
@@ -64,15 +66,15 @@ static void cpgplot_dumpfeatout(AjPFeattabOut featout, AjBool *thresh,
 int main(int argc, char **argv)
 {
     AjPSeqall seqall;
-    AjPSeq    seq=NULL;
-    AjPFile   outf=NULL;
-    AjPStr    strand=NULL;
-    AjPStr    substr=NULL;
-    AjPStr    bases=NULL;
+    AjPSeq seq    = NULL;
+    AjPFile outf  = NULL;
+    AjPStr strand = NULL;
+    AjPStr substr = NULL;
+    AjPStr bases  = NULL;
     AjPGraph mult;
-    AjBool    doobsexp;
-    AjBool    dopc;
-    AjBool    docg;
+    AjBool doobsexp;
+    AjBool dopc;
+    AjBool docg;
 
     ajint begin;
     ajint end;
@@ -87,17 +89,17 @@ int main(int argc, char **argv)
     ajint plstart;
     ajint plend;
 
-    float  *xypc=NULL;
-    float  *obsexp=NULL;
-    AjBool *thresh=NULL;
+    float  *xypc   = NULL;
+    float  *obsexp = NULL;
+    AjBool *thresh = NULL;
     float  obsexpmax;
 
     ajint i;
     ajint maxarr;
-    AjPFeattabOut featout=NULL;
+    AjPFeattabOut featout = NULL;
 
 
-    (void) ajGraphInit("cpgplot",argc,argv);
+    ajGraphInit("cpgplot",argc,argv);
 
     seqall    = ajAcdGetSeqall("sequence");
     window    = ajAcdGetInt("window");
@@ -122,24 +124,25 @@ int main(int argc, char **argv)
 
     while(ajSeqallNext(seqall, &seq))
     {
-	begin=ajSeqallBegin(seqall);
-	end=ajSeqallEnd(seqall);
+	begin = ajSeqallBegin(seqall);
+	end   = ajSeqallEnd(seqall);
 	strand = ajSeqStrCopy(seq);
-	(void) ajStrToUpper(&strand);
+	ajStrToUpper(&strand);
 
-	(void) ajStrAssSubC(&substr,ajStrStr(strand),--begin,--end);
-	len=ajStrLen(substr);
+	ajStrAssSubC(&substr,ajStrStr(strand),--begin,--end);
+	len = ajStrLen(substr);
 
-	if (len > maxarr)
+	if(len > maxarr)
 	{
-	  AJCRESIZE(obsexp, len);
-	  AJCRESIZE(thresh, len);
-	  AJCRESIZE(xypc, len);
+	  AJCRESIZE(obsexp,len);
+	  AJCRESIZE(thresh,len);
+	  AJCRESIZE(xypc,len);
 	}
+
 	for(i=0;i<len;++i)
 	{
-	    thresh[i]=ajFalse;
-	    obsexp[i]=xypc[i]=0.0;
+	    thresh[i] = ajFalse;
+	    obsexp[i] = xypc[i] = 0.0;
 	}
 
 
@@ -160,7 +163,7 @@ int main(int argc, char **argv)
 	ajStrDel(&strand);
     }
 
-    if (mult)
+    if(mult)
     {
 	ajGraphCloseWin();
 	ajGraphxyDel(mult);
@@ -171,8 +174,10 @@ int main(int argc, char **argv)
     ajFileClose(&outf);
 
     ajExit();
+
     return 0;
 }
+
 
 
 
@@ -208,17 +213,17 @@ static void cpgplot_findbases(AjPStr *substr, ajint begin, ajint len,
     float obs;
     float exp;
     ajint i;
-    ajint j=0;
+    ajint j = 0;
     ajint offset;
 
     char *p;
     char *q;
 
-    windowf = (float)window;
+    windowf    = (float)window;
     *obsexpmax = 0.0;
-    offset=window/2;
-    *plstart = offset;
-    q = ajStrStr(*bases);
+    offset     = window/2;
+    *plstart   = offset;
+    q          = ajStrStr(*bases);
 
     for(i=0; i<(len-window+1);i+=shift)
     {
@@ -228,18 +233,21 @@ static void cpgplot_findbases(AjPStr *substr, ajint begin, ajint len,
 
 	obs = cxpy;
 	exp = (cxf*cyf)/windowf;
-	if(!exp) obsexp[j]=0.0;
+	if(!exp)
+	    obsexp[j]=0.0;
 	else
 	{
-	    obsexp[j]=obs/exp;
+	    obsexp[j] = obs/exp;
 	    *obsexpmax = (*obsexpmax > obsexp[j]) ? *obsexpmax : obsexp[j];
 	}
-	xypc[j]=(cxf/windowf)*100.0 + (cyf/windowf)*100.0;
+	xypc[j] = (cxf/windowf)*100.0 + (cyf/windowf)*100.0;
     }
 
     *plend = j;
+
     return;
 }
+
 
 
 
@@ -282,18 +290,20 @@ static void cpgplot_countbases(char *seq, char *bases, ajint window,
 
         if(!(15-codea))   /* look for abiguity code 'N' */
         {
-          *cx = *cx + 0.25;
-          if(!(15-codeb))
-             *cxpy = *cxpy + 0.0625;
+	    *cx = *cx + 0.25;
+	    if(!(15-codeb))
+		*cxpy = *cxpy + 0.0625;
         }
         else
         {
-          if(codea && !(codea & (15-codex)))
-          {
-            ++*cx;
-            if(codeb && !(codeb & (15-codey))) ++*cxpy;
-          }
-          if(codea && !(codea & (15-codey))) ++*cy;
+	    if(codea && !(codea & (15-codex)))
+	    {
+		++*cx;
+		if(codeb && !(codeb & (15-codey)))
+		    ++*cxpy;
+	    }
+	    if(codea && !(codea & (15-codey)))
+		++*cy;
         }
     }
 
@@ -333,66 +343,65 @@ static void cpgplot_identify(AjPFile outf, float *obsexp, float *xypc,
 			     ajint minlen, float minobsexp, float minpc,
 			     AjPFeattabOut featout)
 {
-  static ajint avwindow=10;
-  float avpc;
-  float avobsexp;
-  float sumpc;
-  float sumobsexp;
+    static ajint avwindow = 10;
+    float avpc;
+    float avobsexp;
+    float sumpc;
+    float sumobsexp;
 
-  ajint i;
-  ajint pos;
-  ajint sumlen;
-  ajint first=0;
+    ajint i;
+    ajint pos;
+    ajint sumlen;
+    ajint first = 0;
 
-  for(i=0; i<len; ++i) thresh[i]=ajFalse;
+    for(i=0; i<len; ++i)
+	thresh[i] = ajFalse;
 
-  sumlen=0;
-  /*  posmin = begin;*/
-  for(pos=0,first=0;pos<(len-avwindow*shift);pos+=shift)
-  {
-    sumpc=sumobsexp=0.0;
-    ajDebug("pos: %d max: %d\n", pos, pos+avwindow*shift);
-    for(i=pos;i<=(pos+avwindow*shift);++i)
+    sumlen = 0;
+    for(pos=0,first=0;pos<(len-avwindow*shift);pos+=shift)
     {
-      ajDebug("obsexp[%d] %.2f xypc[%d] %.2f\n",
-	      i, obsexp[i], i, xypc[i]);
-      sumpc += xypc[i];
-      sumobsexp += obsexp[i];
+	sumpc = sumobsexp = 0.0;
+	ajDebug("pos: %d max: %d\n", pos, pos+avwindow*shift);
+	for(i=pos;i<=(pos+avwindow*shift);++i)
+	{
+	    ajDebug("obsexp[%d] %.2f xypc[%d] %.2f\n",
+		    i, obsexp[i], i, xypc[i]);
+	    sumpc     += xypc[i];
+	    sumobsexp += obsexp[i];
+	}
+
+	avpc     = sumpc/(float)avwindow;
+	avobsexp = sumobsexp/(float)avwindow;
+	ajDebug("sumpc: %.2f sumobsexp: %.2f\n", sumpc, sumobsexp);
+	ajDebug(" avpc: %.2f  avobsexp: %.2f\n", avpc, avobsexp);
+	if((avobsexp>minobsexp)&&(avpc>minpc))
+	{
+	    if(!sumlen)
+		first = pos;	/* start a new island */
+	    sumlen += shift;
+	    ajDebug(" ** hit first: %d sumlen: %d\n", first, sumlen);
+	}
+	else
+	{
+	    if(sumlen >= minlen)
+		/* island long enough? */
+		for(i=first; i<=pos-shift;++i)
+		    thresh[i] = ajTrue;
+
+	    sumlen=0;
+	}
     }
 
-    avpc = sumpc/(float)avwindow;
-    avobsexp = sumobsexp/(float)avwindow;
-    ajDebug("sumpc: %.2f sumobsexp: %.2f\n", sumpc, sumobsexp);
-    ajDebug(" avpc: %.2f  avobsexp: %.2f\n", avpc, avobsexp);
-    if((avobsexp>minobsexp)&&(avpc>minpc))
-    {
-      if(!sumlen) first=pos; /* start a new island */
-      sumlen += shift;
-      ajDebug(" ** hit first: %d sumlen: %d\n", first, sumlen);
-    }
-    else
-    {
-      if(sumlen >= minlen)
-      {	/* island long enough? */
-	for(i=first; i<=pos-shift;++i)
-	  thresh[i]=ajTrue;
-      }
-      sumlen=0;
-    }
-  }
+    if(sumlen>=minlen)
+	for(i=first;i<len;++i)
+	    thresh[i] = ajTrue;
 
-  if(sumlen>=minlen)
-  {
-    for(i=first;i<len;++i)
-      thresh[i]=ajTrue;
-  }
+    cpgplot_reportislands(outf, thresh, bases, name, minobsexp, minpc,
+			  minlen, begin, len);
 
-  cpgplot_reportislands(outf, thresh, bases, name, minobsexp, minpc,
-		minlen, begin, len);
+    cpgplot_dumpfeatout(featout,thresh, name, begin, len );
 
-  cpgplot_dumpfeatout(featout,thresh, name, begin, len );
-
-  return;
+    return;
 }
 
 
@@ -419,19 +428,19 @@ static void cpgplot_reportislands(AjPFile outf, AjBool *thresh, char *bases,
 				  ajint minlen, ajint begin, ajint len)
 {
     AjBool island;
-    ajint startpos=0;
+    ajint startpos = 0;
     ajint endpos;
     ajint slen;
     ajint i;
 
 
-    (void) ajFmtPrintF(outf,"\n\nCPGPLOT islands of unusual %s composition\n",
+    ajFmtPrintF(outf,"\n\nCPGPLOT islands of unusual %s composition\n",
 		bases);
-    (void) ajFmtPrintF(outf,"%s from %d to %d\n\n",name,begin+1,begin+len);
-    (void) ajFmtPrintF(outf,"     Observed/Expected ratio > %.2f\n",minobsexp);
-    (void) ajFmtPrintF(outf,"     Percent %c + Percent %c > %.2f\n",bases[0],
+    ajFmtPrintF(outf,"%s from %d to %d\n\n",name,begin+1,begin+len);
+    ajFmtPrintF(outf,"     Observed/Expected ratio > %.2f\n",minobsexp);
+    ajFmtPrintF(outf,"     Percent %c + Percent %c > %.2f\n",bases[0],
 		bases[1],minpc);
-    (void) ajFmtPrintF(outf,"     Length > %d\n",minlen);
+    ajFmtPrintF(outf,"     Length > %d\n",minlen);
 
     island = ajFalse;
     for(i=0;i<len;++i)
@@ -443,23 +452,24 @@ static void cpgplot_reportislands(AjPFile outf, AjBool *thresh, char *bases,
 	    {
 		slen = i - startpos;
 		endpos = i;
-		(void) ajFmtPrintF(outf,"\n Length %d (%d..%d)\n",slen,
-				   startpos+begin+1,endpos+begin);
+		ajFmtPrintF(outf,"\n Length %d (%d..%d)\n",slen,
+			    startpos+begin+1,endpos+begin);
 	    }
 	}
 	else
 	{
-	    island=thresh[i];
-	    if(island) startpos=i;
+	    island = thresh[i];
+	    if(island)
+		startpos = i;
 	}
     }
 
     if(island)
     {
-	slen=len-startpos+1;
-	endpos=len-1;
-	(void) ajFmtPrintF(outf,"\n Length %d (%d..%d)\n",slen,
-			   startpos+begin+1, endpos+begin);
+	slen = len-startpos+1;
+	endpos = len-1;
+	ajFmtPrintF(outf,"\n Length %d (%d..%d)\n",slen,
+		    startpos+begin+1, endpos+begin);
     }
 
     return;
@@ -500,15 +510,14 @@ static void cpgplot_plotit(char *seq, ajint begin, ajint len, ajint shift,
     AjPGraphData tmGraph  = NULL;
     AjPGraphData tmGraph2 = NULL;
     AjPGraphData tmGraph3 = NULL;
-    float *tmp=NULL;
+    float *tmp = NULL;
     ajint i;
-    float min=0.;
-    float max=0.;
+    float min = 0.;
+    float max = 0.;
 
     if(doobsexp)
     {
-
-	tmGraph2=ajGraphxyDataNew();
+	tmGraph2 = ajGraphxyDataNew();
 	ajGraphxyDataSetTitleC(tmGraph2,"Observed vs Expected");
 	ajGraphxyDataSetXtitleC(tmGraph2,"Base number");
 	ajGraphxyDataSetYtitleC(tmGraph2,"Obs/Exp");
@@ -541,7 +550,7 @@ static void cpgplot_plotit(char *seq, ajint begin, ajint len, ajint shift,
 
     if(dopc)
     {
-	tmGraph3=ajGraphxyDataNew();
+	tmGraph3 = ajGraphxyDataNew();
 	ajGraphxyDataSetTitleC(tmGraph3,"Percentage");
 	ajGraphxyDataSetXtitleC(tmGraph3,"Base number");
 	ajGraphxyDataSetYtitleC(tmGraph3,"Percentage");
@@ -577,12 +586,12 @@ static void cpgplot_plotit(char *seq, ajint begin, ajint len, ajint shift,
 	for(i=0;i<len;++i)
 	{
 	    if(thresh[i])
-		tmp[i]=1.0;
+		tmp[i] = 1.0;
 	    else
-		tmp[i]=0.0;
+		tmp[i] = 0.0;
 	}
 
-	tmGraph=ajGraphxyDataNew();
+	tmGraph = ajGraphxyDataNew();
 	ajGraphxyDataSetTitleC(tmGraph,"Putative Islands");
 	ajGraphxyDataSetXtitleC(tmGraph,"Base Number");
 	ajGraphxyDataSetYtitleC(tmGraph,"Threshold");
@@ -641,15 +650,15 @@ static void cpgplot_dumpfeatout(AjPFeattabOut featout, AjBool *thresh,
 				char *seqname, ajint begin, ajint len)
 {
     AjBool island;
-    ajint startpos=0;
+    ajint startpos = 0;
     ajint endpos;
     ajint i;
     AjPFeattable feattable;
-    AjPStr name=NULL;
-    AjPStr source=NULL;
-    AjPStr type=NULL;
-    char strand='+';
-    ajint frame=0;
+    AjPStr name   = NULL;
+    AjPStr source = NULL;
+    AjPStr type   = NULL;
+    char strand   = '+';
+    ajint frame   = 0;
     AjPFeature feature;
     float score = 0.0;
 
@@ -679,17 +688,18 @@ static void cpgplot_dumpfeatout(AjPFeattabOut featout, AjBool *thresh,
 	}
 	else
 	{
-	    island=thresh[i];
-	    if(island) startpos=i;
+	    island = thresh[i];
+	    if(island)
+		startpos = i;
 	}
     }
 
     if(island)
     {
-	endpos=len-1;
+	endpos  = len-1;
 	feature = ajFeatNew(feattable, source, type,
 			    startpos+begin+1,endpos+begin,
-			    score, strand, frame) ;
+			    score, strand, frame);
     }
     ajFeatSortByStart(feattable);
     ajFeatWrite (featout, feattable);
