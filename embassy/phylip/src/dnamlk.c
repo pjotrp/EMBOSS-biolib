@@ -261,7 +261,7 @@ int scanned;
   fprintf(outfile, "\nNucleic acid sequence\n");
   fprintf(outfile, "   Maximum Likelihood method with molecular ");
   fprintf(outfile, "clock, version %s\n\n",VERSION);
-  putchar('\n');
+  fprintf(outfile, "\n");
 }
 void emboss_inputdata(){
  int i,j;
