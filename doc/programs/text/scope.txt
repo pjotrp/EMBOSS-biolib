@@ -20,8 +20,10 @@ Description
    The SCOP database aims to provide a detailed and comprehensive
    description of the structural and evolutionary relationships between
    all proteins whose structure is known, including all entries in the
-   Protein Data Bank (PDB). scope reads the SCOP classification file
-   available at http://scop.mrc-lmb.cam.ac.uk/scop/search.cgi?dir=lin
+   Protein Data Bank (PDB).
+   
+   scope reads the SCOP classification file available at
+   http://scop.mrc-lmb.cam.ac.uk/scop/search.cgi?dir=lin
    
    scope writes the SCOP classification to an EMBL-like format file.
    
