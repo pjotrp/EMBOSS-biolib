@@ -1,3 +1,20 @@
+misc_feature
+	/citation
+                      /db_xref                   
+                      /evidence
+                      /function
+                      /gene
+                      /label
+                      /map
+                      /note
+                      /partial
+                      /number
+                      /phenotype
+                      /product
+                      /pseudo
+                      /standard_name
+                      /usedin
+		      /Sequence
 attenuator
 	/citation
 	/db_xref
@@ -233,23 +250,6 @@ misc_difference
                       /replace  
                       /standard_name
                       /usedin
-misc_feature
-/citation
-                      /db_xref                   
-                      /evidence
-                      /function
-                      /gene
-                      /label
-                      /map
-                      /note
-                      /partial
-                      /number
-                      /phenotype
-                      /product
-                      /pseudo
-                      /standard_name
-                      /usedin
-		      /Sequence
 misc_recomb
 	M/organism
 	/citation
