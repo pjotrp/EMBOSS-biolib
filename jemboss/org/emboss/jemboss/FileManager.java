@@ -26,6 +26,11 @@ import java.net.*;
 import org.emboss.jemboss.soap.AuthPopup; 
 import org.emboss.jemboss.soap.JembossSoapException;
 
+/**
+*
+* Display the local and remote file managers
+*
+*/
 public class FileManager
 {
 

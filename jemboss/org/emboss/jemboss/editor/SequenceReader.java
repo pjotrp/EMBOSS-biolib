@@ -132,7 +132,7 @@ public class SequenceReader
 
   /**
   *
-  * Read a formatted sequence string (e.g. msf) and create a vector
+  * Read a formatted sequence string (e.g msf) and create a vector
   * of sequences
   * @return     vector of Sequence objects
   *
