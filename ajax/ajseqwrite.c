@@ -1143,13 +1143,13 @@ static void seqWriteNexus(AjPSeqout outseq)
     ajFmtPrintF(outseq->File,
 		";\n\n");
     ajFmtPrintF(outseq->File,
-		"endblock;\n");
+		"end;\n");
     ajFmtPrintF(outseq->File,
 		"begin assumptions;\n");
     ajFmtPrintF(outseq->File,
 		"options deftype=unord;\n");
     ajFmtPrintF(outseq->File,
-		"end;\n");		/* or is it endblock; ??? */
+		"end;\n");
     return;
 }
 
@@ -1222,13 +1222,13 @@ static void seqWriteNexusnon(AjPSeqout outseq)
     ajFmtPrintF(outseq->File,
 		";\n\n");
     ajFmtPrintF(outseq->File,
-		"endblock;\n");
+		"end;\n");
     ajFmtPrintF(outseq->File,
 		"begin assumptions;\n");
     ajFmtPrintF(outseq->File,
 		"options deftype=unord;\n");
     ajFmtPrintF(outseq->File,
-		"end;\n");		/* or is it endblock; ??? */
+		"end;\n");
     return;
 }
 
@@ -1826,6 +1826,7 @@ static void seqWriteMsf(AjPSeqout outseq)
     ajint ipos;
     ajint iend;
     ajint igap;
+    ajint maxnamelen = 10;
     
     ajDebug("seqWriteMsf list size %d\n", ajListLength(outseq->Savelist));
     
@@ -1837,11 +1838,14 @@ static void seqWriteMsf(AjPSeqout outseq)
     
     ajDebug("ajListToArray listed %d items\n", itest);
     seqarr = (AjPSeq*) seqs;
+    maxnamelen = 10;
     for(i=0; i < isize; i++)
     {
 	seq = seqarr[i];
 	if(ilen < ajSeqLen(seq))
 	    ilen = ajSeqLen(seq);
+	if (ajStrLen(seq->Name) > maxnamelen)
+	    maxnamelen = ajStrLen(seq->Name);
     }
     
     for(i=0; i < isize; i++)
@@ -1885,8 +1889,8 @@ static void seqWriteMsf(AjPSeqout outseq)
 	seq = seqarr[i];
 	check = ajSeqCheckGcg(seq);
 	ajFmtPrintF(outseq->File,
-		    "  Name: %S Len: %d  Check: %4d Weight: %.2f\n",
-		    seq->Name, ajStrLen(seq->Seq),
+		    "  Name: %-*S Len: %d  Check: %4d Weight: %.2f\n",
+		    maxnamelen, seq->Name, ajStrLen(seq->Seq),
 		    check, seq->Weight);
     }
     
@@ -1905,7 +1909,7 @@ static void seqWriteMsf(AjPSeqout outseq)
 		    sbeg, send, ipos, iend, igap, ajStrLen(send));
 	    if(igap >= ajStrLen(send))
 		ajFmtPrintF(outseq->File,
-			    "           %S %*S\n", sbeg, igap, send);
+			    "%*s %S %*S\n", maxnamelen, " ", sbeg, igap, send);
 	    else
 		ajFmtPrintF(outseq->File, "           %S\n", sbeg);
 	}
@@ -1918,8 +1922,8 @@ static void seqWriteMsf(AjPSeqout outseq)
 	    check = ajSeqCheckGcg(seq);
 	    ajStrAssSub(&sseq, seq->Seq, ipos-1, iend-1);
 	    ajFmtPrintF(outseq->File,
-			"%-10S %S\n",
-			seq->Name, sseq);
+			"%-*S %S\n",
+			maxnamelen, seq->Name, sseq);
 	}
 	ajFmtPrintF(outseq->File, "\n");
     }
