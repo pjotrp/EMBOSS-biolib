@@ -707,6 +707,7 @@ static void garnier_report(AjPReport report, AjPFeattable TabRpt,
 	  ajFeatTagAdd(gf,  NULL, tmpStr);
 	  break;
 	default:
+	  break;
 	}
 	l0=i+1;
       }
