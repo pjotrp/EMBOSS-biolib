@@ -352,47 +352,49 @@ void embWordMatchListPrint(AjPFile file, AjPList list)
 
 void embWordMatchListConvToFeat(AjPList list,
 				AjPFeattable *tab1, AjPFeattable *tab2,
-				AjPSeq seq1, AjPSeq seq2) {
-  char strand = '+';
-  ajint frame = 0;
-  AjPStr source=NULL,type=NULL,tag=NULL;
-  AjPFeature feature;
-  AjIList iter=NULL;
-  float score = 1.0;
-
-  if(!*tab1)
-    *tab1 = ajFeattableNewSeq(seq1);
-  if(!*tab2)
-    *tab2 = ajFeattableNewSeq(seq2);
-
-  ajStrAssC(&source,"wordmatch");
-  ajStrAssC(&type,"misc_feature");
-  score = 1.0;
-  ajStrAssC(&tag,"note");
-
-  iter = ajListIter(list);
-  while(ajListIterMore(iter)) {
-    EmbPWordMatch p = (EmbPWordMatch) ajListIterNext (iter) ;
-    feature = ajFeatNew(*tab1, source, type,
-			p->seq1start+1,p->seq1start+p->length , score,
-			strand, frame) ;
-
-    ajFeatTagSet(feature, tag, ajSeqGetName(seq2));
-
-    feature = ajFeatNew(*tab2, source, type,
-			   p->seq2start+1,p->seq2start+p->length , score,
-			   strand, frame) ;
-
-    ajFeatTagSet(feature, tag, ajSeqGetName(seq1));
-  }
-  /* delete the iterator */
-
-  ajListIterFree(iter);
-  ajStrDel(&source);
-  ajStrDel(&type);
-  ajStrDel(&tag);
-
-  return;
+				AjPSeq seq1, AjPSeq seq2)
+{
+    char strand = '+';
+    ajint frame = 0;
+    AjPStr source=NULL,type=NULL,tag=NULL;
+    AjPFeature feature;
+    AjIList iter=NULL;
+    float score = 1.0;
+    
+    if(!*tab1)
+	*tab1 = ajFeattableNewSeq(seq1);
+    if(!*tab2)
+	*tab2 = ajFeattableNewSeq(seq2);
+    
+    ajStrAssC(&source,"wordmatch");
+    ajStrAssC(&type,"misc_feature");
+    score = 1.0;
+    ajStrAssC(&tag,"note");
+    
+    iter = ajListIter(list);
+    while(ajListIterMore(iter))
+    {
+	EmbPWordMatch p = (EmbPWordMatch) ajListIterNext (iter) ;
+	feature = ajFeatNew(*tab1, source, type,
+			    p->seq1start+1,p->seq1start+p->length , score,
+			    strand, frame) ;
+	
+	ajFeatTagSet(feature, tag, ajSeqGetName(seq2));
+	
+	feature = ajFeatNew(*tab2, source, type,
+			    p->seq2start+1,p->seq2start+p->length , score,
+			    strand, frame) ;
+	
+	ajFeatTagSet(feature, tag, ajSeqGetName(seq1));
+    }
+    /* delete the iterator */
+    
+    ajListIterFree(iter);
+    ajStrDel(&source);
+    ajStrDel(&type);
+    ajStrDel(&tag);
+    
+    return;
 }
 
 /* @func embWordGetTable ******************************************************
@@ -434,7 +436,7 @@ ajint embWordGetTable(AjPTable *table, AjPSeq seq)
 
     if(!*table)
     {
-	*table = ajTableNew(0, wordCmpStr, wordStrHash);
+	*table = ajTableNewL(ajSeqLen(seq), wordCmpStr, wordStrHash);
 	ajDebug ("make new table\n");
     }
 
@@ -573,6 +575,7 @@ static ajint wordGetWholeMatch (EmbPWordMatch match, AjPTable seq1MatchTable)
 
 static void wordOrderMatchTable(AjPList unorderedList)
 {
+    ajDebug("wordOrderMatchTable size %d\n", ajListLength(unorderedList));
     ajListSort (unorderedList, wordMatchCmp);
     return;
 }
@@ -1311,19 +1314,20 @@ void embWordMatchMin(AjPList matchlist, ajint seq1length, ajint seq2length)
 ******************************************************************************/
 
 AjBool embWordMatchIter (AjIList iter, ajint* start1, ajint* start2,
-			  ajint* len) {
+			 ajint* len)
+{
 
-  EmbPWordMatch p;
+    EmbPWordMatch p;
 
-  if (!ajListIterMore(iter))
-    return ajFalse;
+    if (!ajListIterMore(iter))
+	return ajFalse;
 
-  p = (EmbPWordMatch) ajListIterNext (iter);
-  *start1 = p->seq1start;
-  *start2 = p->seq2start;
-  *len = p->length;
+    p = (EmbPWordMatch) ajListIterNext (iter);
+    *start1 = p->seq1start;
+    *start2 = p->seq2start;
+    *len = p->length;
 
-  return ajTrue;
+    return ajTrue;
 }
 
 /* @funcstatic wordListInsertOld **********************************************
