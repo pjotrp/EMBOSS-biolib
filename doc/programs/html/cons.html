@@ -68,16 +68,21 @@ The residue (or nucleotide) <b>i</b> in an alignment column, is compared
 to all other residues (<b>j</b>) in the column.  The score for <b>i</b>
 is the sum over all residues <b>j</b> (not <b>i=j</b>) of the
 score(<b>ij</b>)*weight(<b>j</b>) .  Where score(<b>ij</b>) is taken
-from a nucleotide or protein scoring matrix (see <b>-datafile<b>
+from a nucleotide or protein scoring matrix (see <b>-datafile</b>
 qualifier) and the "weight(<b>j</b>)" is the weighting given to the
 sequence <b>j</b>, which is given in the alignment file.
 <P>
 
-The highest scoring residue is then found in the column.  If the number
-of positive matches for this residue is greater than the "plurality
-value" then this residue is the consensus.  The positive matches for a
-residue <b>i</b> are calculated as being the sum of weights of all the
-residues that increase the score of residue <b>i</b> (i.e.  positive). 
+The highest scoring type of residue is then found in the column.  If the
+number of positive matches for this residue is greater than the
+"plurality value" then this residue is the consensus.  The positive
+matches for a residue <b>i</b> are calculated as being the sum of
+weights of all the residues that increase the score of residue <b>i</b>
+(i.e.  positive). 
+<P>
+
+Where no consensus is found at a position <b>i</b>, an 'n' or an 'x'
+character is output; (depending on it being a DNA or protein sequence).
 <P>
 
    The "plurality" qualifier allows the user to set a cut-off for the
@@ -140,8 +145,7 @@ Output file [outfile.cons]: aligned.cons
                                   matches below which there is no consensus.
                                   The default plurality is taken as half the
                                   total weight of all the sequences in the
-                                  alignment. A value of zero means there will
-                                  always be a consensus.
+                                  alignment.
    -setcase            float      Sets the threshold for the positive matches
                                   above which the consensus is is upper-case
                                   and below which the consensus is in
@@ -152,6 +156,7 @@ Output file [outfile.cons]: aligned.cons
                                   Therefore, if this is set to the number of
                                   sequences in the alignment only columns of
                                   identities contribute to the consensus.
+   -name               string     Name of the consensus sequence
 
    Advanced qualifiers: (none)
 
@@ -194,7 +199,7 @@ Output file [outfile.cons]: aligned.cons
 
 <tr>
 <td>-plurality</td>
-<td>Set a cut-off for the number of positive matches below which there is no consensus. The default plurality is taken as half the total weight of all the sequences in the alignment. A value of zero means there will always be a consensus.</td>
+<td>Set a cut-off for the number of positive matches below which there is no consensus. The default plurality is taken as half the total weight of all the sequences in the alignment.</td>
 <td>Any integer value</td>
 <td>Half the total sequence weighting</td>
 </tr>
@@ -211,6 +216,13 @@ Output file [outfile.cons]: aligned.cons
 <td>Provides the facility of setting the required number of identities at a site for it to give a consensus at that position. Therefore, if this is set to the number of sequences in the alignment only columns of identities contribute to the consensus.</td>
 <td>Integer 0 or more</td>
 <td>0</td>
+</tr>
+
+<tr>
+<td>-name</td>
+<td>Name of the consensus sequence</td>
+<td>Any string is accepted</td>
+<td><i>An empty string is accepted</i></td>
 </tr>
 
 <tr bgcolor="#FFFFD0">
@@ -279,7 +291,7 @@ For example:
 <P>
 <HR>
 <pre>
->Consensus 
+>EMBOSS_001
 tagctgacctgacgggactgatgcgt
 </pre>
 <HR>

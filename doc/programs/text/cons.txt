@@ -22,11 +22,15 @@ Description
    qualifier) and the "weight(j)" is the weighting given to the sequence
    j, which is given in the alignment file.
    
-   The highest scoring residue is then found in the column. If the number
-   of positive matches for this residue is greater than the "plurality
-   value" then this residue is the consensus. The positive matches for a
-   residue i are calculated as being the sum of weights of all the
-   residues that increase the score of residue i (i.e. positive).
+   The highest scoring type of residue is then found in the column. If
+   the number of positive matches for this residue is greater than the
+   "plurality value" then this residue is the consensus. The positive
+   matches for a residue i are calculated as being the sum of weights of
+   all the residues that increase the score of residue i (i.e. positive).
+   
+   Where no consensus is found at a position i, an 'n' or an 'x'
+   character is output; (depending on it being a DNA or protein
+   sequence).
    
    The "plurality" qualifier allows the user to set a cut-off for the
    number of positive matches below which there is no consensus.
@@ -61,8 +65,7 @@ Command line arguments
                                   matches below which there is no consensus.
                                   The default plurality is taken as half the
                                   total weight of all the sequences in the
-                                  alignment. A value of zero means there will
-                                  always be a consensus.
+                                  alignment.
    -setcase            float      Sets the threshold for the positive matches
                                   above which the consensus is is upper-case
                                   and below which the consensus is in
@@ -73,6 +76,7 @@ Command line arguments
                                   Therefore, if this is set to the number of
                                   sequences in the alignment only columns of
                                   identities contribute to the consensus.
+   -name               string     Name of the consensus sequence
 
    Advanced qualifiers: (none)
    
@@ -88,9 +92,8 @@ Command line arguments
    EDNAMAT for DNA
    -plurality Set a cut-off for the number of positive matches below
    which there is no consensus. The default plurality is taken as half
-   the total weight of all the sequences in the alignment. A value of
-   zero means there will always be a consensus. Any integer value Half
-   the total sequence weighting
+   the total weight of all the sequences in the alignment. Any integer
+   value Half the total sequence weighting
    -setcase Sets the threshold for the positive matches above which the
    consensus is is upper-case and below which the consensus is in
    lower-case. Any integer value 0
@@ -99,6 +102,8 @@ Command line arguments
    Therefore, if this is set to the number of sequences in the alignment
    only columns of identities contribute to the consensus. Integer 0 or
    more 0
+   -name Name of the consensus sequence Any string is accepted An empty
+   string is accepted
    Advanced qualifiers Allowed values Default
    (none)
    
@@ -112,7 +117,7 @@ Output file format
    For example:
      _________________________________________________________________
    
->Consensus
+>EMBOSS_001
 tagctgacctgacgggactgatgcgt
      _________________________________________________________________
    
