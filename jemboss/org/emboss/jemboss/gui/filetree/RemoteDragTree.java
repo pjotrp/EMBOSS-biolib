@@ -816,7 +816,7 @@ public class RemoteDragTree extends JTree implements DragGestureListener,
           else
             dropFile = fdropPath.getFile()+"/"+fn.getFile();
 
-          if(!nodeExists(fdropPath,fdropPath.getServerName()+"/"+fn.getFile()))
+          if(!nodeExists(fdropPath,fdropPath.getServerName()+fn.getFile()))
             rename(fn.getRootDir(),fn.getFullName(),
                    fdropPath.getPathName(),
                    dropFile, fn, fdropPath);
@@ -838,49 +838,57 @@ public class RemoteDragTree extends JTree implements DragGestureListener,
           String dropDest = null;
           RemoteFileNode fdropPath = (RemoteFileNode)dropPath.getLastPathComponent();
           String dropRoot = fdropPath.getRootDir();
-          if(fdropPath.isLeaf()) 
+ 
+          RemoteFileNode pn = fdropPath;         
+          if(fdropPath.isLeaf())
           {
-            RemoteFileNode pn = (RemoteFileNode)fdropPath.getParent();
+            pn = (RemoteFileNode)fdropPath.getParent();
             dropDest = pn.getFullName() + "/" + lfn.getName(); //assumes unix file sep.!
-          } 
-          else 
+          }
+          else
             dropDest = fdropPath.getFullName()+ "/" + lfn.getName();
 
-          try 
+          if(!nodeExists(pn,pn.getServerName()+lfn.getName()))
           {
-            Vector params = new Vector();
-            byte[] fileData = getLocalFile(lfn);
-            params.addElement("fileroot=" + dropRoot);
-            params.addElement(dropDest);
-            params.addElement(fileData);
 
-            setCursor(cbusy);
-            PrivateRequest gReq = new PrivateRequest(mysettings,"EmbreoFile",
-                                                           "put_file",params);
-            setCursor(cdone);
-            //add file to remote file tree
-            RemoteFileNode parentNode = fdropPath;
-            if(parentNode.isLeaf())
-              parentNode = (RemoteFileNode)fdropPath.getParent();
-            else
-              parentNode = fdropPath;
-           
-            if(parentNode.isExplored())
-              addObject(parentNode,lfn.getName(),false);
-            else
+            try 
             {
-              exploreNode(parentNode);
-              RemoteFileNode childNode = getNode(parentNode.getServerName() 
-                                                     + "/" + lfn.getName());
-              scrollPathToVisible(new TreePath(childNode.getPath())); 
+              Vector params = new Vector();
+              byte[] fileData = getLocalFile(lfn);
+              params.addElement("fileroot=" + dropRoot);
+              params.addElement(dropDest);
+              params.addElement(fileData);
+
+              setCursor(cbusy);
+              PrivateRequest gReq = new PrivateRequest(mysettings,"EmbreoFile",
+                                                             "put_file",params);
+              setCursor(cdone);
+              //add file to remote file tree
+              RemoteFileNode parentNode = fdropPath;
+              if(parentNode.isLeaf())
+                parentNode = (RemoteFileNode)fdropPath.getParent();
+              else
+                parentNode = fdropPath;
+           
+              if(parentNode.isExplored())
+                addObject(parentNode,lfn.getName(),false);
+              else
+              {
+                exploreNode(parentNode);
+                RemoteFileNode childNode = getNode(parentNode.getServerName() 
+                                                       + "/" + lfn.getName());
+                scrollPathToVisible(new TreePath(childNode.getPath())); 
+              }
+            } 
+            catch (Exception exp) 
+            {
+              setCursor(cdone);
+              System.out.println("RemoteDragTree: caught exception " + dropRoot +
+                  " Destination: " + dropDest + " Local File " + lfn.toString());
             }
-          } 
-          catch (Exception exp) 
-          {
-            setCursor(cdone);
-            System.out.println("RemoteDragTree: caught exception " + dropRoot +
-                " Destination: " + dropDest + " Local File " + lfn.toString());
           }
+          else
+            e.rejectDrop();
         }
       }
       catch (Exception ex) 
@@ -888,10 +896,7 @@ public class RemoteDragTree extends JTree implements DragGestureListener,
       }
     } 
     else
-    {
       e.rejectDrop();
-      return;
-    }
 
   }
 
