@@ -615,7 +615,8 @@ FP /GCT\tA\t\t0\.000\t0\.000\t0/
 ID cutgextract-keep
 AP cutgextract
 PP mkdir CODONS
-PP export EMBOSSDATA=./
+PP EMBOSS_DATA=./
+PP export EMBOSSDATA
 IN ../../data
 FI stderr
 FC = 2
