@@ -606,6 +606,57 @@ public class JembossAuthServer
 
 /**
 *
+* Submit to a batch queue. This method creates a script for
+* submission to a batch queueing system.
+*
+*/
+  private void runAsBatch(Ajax aj, String userName, byte[] passwd,
+                    String project, String embossCommand)
+  {
+    String scriptIt = "#!/bin/sh\n";
+    scriptIt = scriptIt.concat(environ.replace(' ','\n'));
+    scriptIt = scriptIt.concat("export PATH\n");
+    scriptIt = scriptIt.concat("export PLPLOT_LIB\n");
+    scriptIt = scriptIt.concat("export EMBOSS_DATA\n");
+    scriptIt = scriptIt.concat("cd "+project+"\n"+embossCommand+"\n");
+    scriptIt = scriptIt.concat("date > "+project+"/.finished\n");
+    
+    boolean ok = false;
+    try
+    {
+      ok = aj.putFile(userName,passwd,environ,
+               new String(project+fs+".scriptfile"),
+               scriptIt.getBytes());
+    }
+    catch(Exception exp){}
+
+    if(!ok)
+    {
+      appendToLogFile("Failed to make file "+project+fs+".scriptfile",errorLog);
+      appendToLogFile("STDERR "+aj.getErrStd(),errorLog);
+      appendToLogFile("STDOUT "+aj.getOutStd(),errorLog);
+    }
+  
+    boolean lfork=true;
+    try
+    {
+      //EDIT batchCommand 
+      String batchCommand = "/bin/batchQueue.sh " + project +
+                            "/.scriptfile ";
+                         
+      lfork = aj.forkEmboss(userName,passwd,environ,
+                            batchCommand,project);
+    }
+    catch(Exception exp){}
+
+    if(!lfork || !aj.getErrStd().equals(""))
+      appendToLogFile("Fork batch process failed "+embossCommand,errorLog);
+
+    return;
+  }
+
+/**
+*
 * Private Server
 *
 * Returns the results for a saved project.
