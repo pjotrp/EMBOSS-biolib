@@ -153,7 +153,6 @@ static AjBool       featRegInitEmbl();
 static AjBool       featRegInitGff();
 static AjBool       featRegInitPir();
 static AjBool       featRegInitSwiss();
-static AjPFeattable featTableNew (void);
 /*static AjBool      featVocabInitAcedb();*/
 static AjBool       featVocabInitEmbl();
 static AjBool       featVocabInitGff();
@@ -167,9 +166,11 @@ static AjPFeature   featSwissProcess  ( AjPFeattable thys, AjPStr feature,
 					AjPStr fromstr, AjPStr tostr,
 					AjPStr source,
 					AjPStr tags);
-static void         featTabClear  ( AjPFeattable thys ) ;
-static void         featTabInit ( AjPFeattable thys, 
+static void         featTableClear  ( AjPFeattable thys ) ;
+static void         featTableInit ( AjPFeattable thys, 
 				  AjPStr name);
+static AjPFeattable featTableNew (void);
+static AjPFeattable featTableNewS (AjPStr name);
 static AjPStr       featTableTag (AjPStr tag, AjPTable table);
 static AjPStr       featTableTagC (char *tag, AjPTable table);
 static AjPStr       featTableType (AjPStr type, AjPTable table);
@@ -1164,7 +1165,7 @@ void ajFeattableDel(AjPFeattable *pthis)
 
   if (!thys) return ;
 
-  featTabClear(thys) ;
+  featTableClear(thys) ;
 
   ajStrDel (&thys->Type);
 
@@ -1531,7 +1532,7 @@ void ajFeatSortByEnd(AjPFeattable Feattab){
 **
 ******************************************************************************/
 
-/* @funcstatic featTabInit ****************************************************
+/* @funcstatic featTableInit **************************************************
 **
 ** Initialize the components of a previously allocated AjPFeattable object.
 **
@@ -1546,18 +1547,18 @@ void ajFeatSortByEnd(AjPFeattable Feattab){
 ** 
 ******************************************************************************/
 
-static void featTabInit ( AjPFeattable thys, 
+static void featTableInit ( AjPFeattable thys, 
                           AjPStr name) { 
-  ajDebug ("featTabInit Entering...\n");
+  ajDebug ("featTableInit Entering...\n");
 
-  ajDebug ("featTabInit initializing name: '%S'\n", name);
+  ajDebug ("featTableInit initializing name: '%S'\n", name);
   (void) ajStrAssS(&thys->Name,name) ;
   thys->DefFormat = 0;
 
   return;
 }
 
-/* @funcstatic featTabClear ***************************************************
+/* @funcstatic featTableClear *************************************************
 **
 ** Clears a feature table of all features
 **
@@ -1566,7 +1567,7 @@ static void featTabInit ( AjPFeattable thys,
 ** @@
 ******************************************************************************/
 
-static void featTabClear ( AjPFeattable thys )
+static void featTableClear ( AjPFeattable thys )
 {
   AjIList iter       = NULL ;
   AjPFeature feature = NULL ;
@@ -5249,9 +5250,7 @@ AjPFeattable ajFeattableNew( AjPStr name )
   AjPFeattable thys = NULL ;
 
   /* Allocate the object... */
-  thys = featTableNew() ;
-
-  featTabInit(thys, name) ;
+  thys = featTableNewS(name) ;
 
   ajDebug("ajFeattableNew %x\n", thys);
 
@@ -5308,9 +5307,8 @@ AjPFeattable ajFeattableNewDna( AjPStr name )
   AjPFeattable thys = NULL ;
 
   /* Allocate the object... */
-  thys = featTableNew();
+  thys = featTableNewS(name);
 
-  featTabInit(thys, name) ;
   ajStrAssC (&thys->Type, "N");
 
   ajDebug("ajFeattableNewDna %x\n", thys);
@@ -5361,9 +5359,8 @@ AjPFeattable ajFeattableNewProt ( AjPStr name )
   AjPFeattable thys = NULL ;
 
   /* Allocate the object... */
-  thys = featTableNew() ;
+  thys = featTableNewS(name) ;
 
-  featTabInit(thys, name) ;
   ajStrAssC (&thys->Type, "P");
 
   ajDebug("ajFeattableNewProt %x\n", thys);
@@ -7409,6 +7406,8 @@ void ajFeatUnused (void) {
 
 /* @funcstatic featFeatureNew *************************************************
 **
+** Constructor for a feature
+**
 ** @return [AjPFeature] New empty feature
 ******************************************************************************/
 
@@ -7425,6 +7424,10 @@ static AjPFeature featFeatureNew (void) {
 
 /* @funcstatic featTableNew ***************************************************
 **
+** Constructor for a feature table object.
+**
+** The type is left uninitialised
+**
 ** @return [AjPFeature] New empty feature table
 ******************************************************************************/
 
@@ -7435,6 +7438,25 @@ static AjPFeattable featTableNew (void) {
   AJNEW0(ret);
 
   ret->Features = ajListNew() ;	/* assume empty until otherwise needed */
+
+  return ret;
+}
+/* @funcstatic featTableNewS **************************************************
+**
+** Constructor for a feature table object with a defined name
+**
+** The type is left uninitialised
+**
+** @param [R] name [AjPStr] Name for new feature table (or NULL for unnamed)
+** @return [AjPFeature] New empty feature table
+******************************************************************************/
+
+static AjPFeattable featTableNewS (AjPStr name) {
+
+  AjPFeattable ret;
+
+  ret = featTableNew();
+  featTableInit(ret, name);
 
   return ret;
 }
