@@ -17,10 +17,16 @@
 #include "ajax.h"
 #include "limits.h"
 
+
+
+
 static ajint seqMaxGcglines = 5000;
 static AjPRegexp qrywildexp = 0;
 
 static AjBool seqInFormatSet = AJFALSE;
+
+
+
 
 /* @datastatic SeqPInFormat ***************************************************
 **
@@ -40,13 +46,16 @@ static AjBool seqInFormatSet = AJFALSE;
 
 typedef struct SeqSInFormat
 {
-  char *Name;
-  AjBool Try;
-  AjBool Multiset;
-  AjBool (*Read) (AjPSeq thys, AjPSeqin seqin);
+    char *Name;
+    AjBool Try;
+    AjBool Multiset;
+    AjBool (*Read) (AjPSeq thys, AjPSeqin seqin);
 } SeqOInFormat;
 
 #define SeqPInFormat SeqOInFormat*
+
+
+
 
 /* @datastatic SeqPMsfData ****************************************************
 **
@@ -65,40 +74,46 @@ typedef struct SeqSInFormat
 
 typedef struct SeqSMsfData
 {
-  AjPTable Table;
-  AjPStr* Names;
-  ajint Count;
-  ajint Nseq;
-  ajint Bufflines;
+    AjPTable Table;
+    AjPStr* Names;
+    ajint Count;
+    ajint Nseq;
+    ajint Bufflines;
 } SeqOMsfData;
 
 #define SeqPMsfData SeqOMsfData*
 
+
+
+
 /* @datastatic SeqPMsfItem ****************************************************
-**
-** MSF alignment output individual sequence data
-**
-** @alias SeqSMsfItem
-** @alias SeqOMsfItem
-**
-** @attr Name [AjPStr] Sequence name
-** @attr Len [ajint] Sequence length
-** @attr Check [ajint] Sequence GCG checksum
-** @attr Weight [float] Weight (default 1.0)
-** @attr Seq [AjPStr] Sequence
-** @@
-******************************************************************************/
+ **
+ ** MSF alignment output individual sequence data
+ **
+ ** @alias SeqSMsfItem
+ ** @alias SeqOMsfItem
+ **
+ ** @attr Name [AjPStr] Sequence name
+ ** @attr Len [ajint] Sequence length
+ ** @attr Check [ajint] Sequence GCG checksum
+ ** @attr Weight [float] Weight (default 1.0)
+ ** @attr Seq [AjPStr] Sequence
+ ** @@
+*****************************************************************************/
 
 typedef struct SeqSMsfItem
 {
-  AjPStr Name;
-  ajint Len;
-  ajint Check;
-  float Weight;
-  AjPStr Seq;
+    AjPStr Name;
+    ajint Len;
+    ajint Check;
+    float Weight;
+    AjPStr Seq;
 } SeqOMsfItem;
 
 #define SeqPMsfItem SeqOMsfItem*
+
+
+
 
 /* @datastatic SeqPListUsa ****************************************************
 **
@@ -121,78 +136,84 @@ typedef struct SeqSMsfItem
 
 typedef struct SeqSListUsa
 {
-  ajint Begin;
-  ajint End;
-  AjBool Rev;
-  ajint Format;
-  AjBool Features;
-  AjPStr Formatstr;
-  AjPStr Usa;
+    ajint Begin;
+    ajint End;
+    AjBool Rev;
+    ajint Format;
+    AjBool Features;
+    AjPStr Formatstr;
+    AjPStr Usa;
 } SeqOListUsa;
 
 #define SeqPListUsa SeqOListUsa*
 
+
+
+
 enum fmtcode {FMT_OK, FMT_NOMATCH, FMT_BADTYPE, FMT_FAIL};
 
-static AjBool     seqReadAbi (AjPSeq thys, AjPSeqin seqin);
 
-static void       seqAccSave (AjPSeq thys, const AjPStr acc);
-static ajint      seqAppend (AjPStr* seq, const AjPStr line);
-static AjBool     seqClustalReadseq (const AjPStr rdline, AjPTable msftable);
-static AjBool     seqFindInFormat (const AjPStr format, ajint *iformat);
-static AjBool     seqFormatSet (AjPSeq thys, AjPSeqin seqin);
-static AjBool     seqGcgDots (AjPSeq thys, const AjPSeqin seqin,
-			      AjPStr* pline, ajint maxlines, ajint *len);
-static AjBool     seqGcgMsfDots (AjPSeq thys, const AjPSeqin seqin,
-				 AjPStr* pline,
-				 ajint maxlines, ajint *len);
-static AjBool     seqGcgMsfHeader (const AjPStr line, SeqPMsfItem* msfitem);
+
+
+static AjBool     seqReadAbi(AjPSeq thys, AjPSeqin seqin);
+
+static void       seqAccSave(AjPSeq thys, const AjPStr acc);
+static ajint      seqAppend(AjPStr* seq, const AjPStr line);
+static AjBool     seqClustalReadseq(const AjPStr rdline, AjPTable msftable);
+static AjBool     seqFindInFormat(const AjPStr format, ajint *iformat);
+static AjBool     seqFormatSet(AjPSeq thys, AjPSeqin seqin);
+static AjBool     seqGcgDots(AjPSeq thys, const AjPSeqin seqin,
+			     AjPStr* pline, ajint maxlines, ajint *len);
+static AjBool     seqGcgMsfDots(AjPSeq thys, const AjPSeqin seqin,
+				AjPStr* pline,
+				ajint maxlines, ajint *len);
+static AjBool     seqGcgMsfHeader(const AjPStr line, SeqPMsfItem* msfitem);
 static AjBool     seqGcgMsfReadseq(const AjPStr rdline, AjPTable msftable);
-static AjBool     seqHennig86Readseq (const AjPStr rdline, AjPTable msftable);
-static AjBool     seqinUfoLocal (const AjPSeqin thys);
-static void       seqListNoComment (AjPStr* text);
-static AjBool     seqListProcess (AjPSeq thys, AjPSeqin seqin, AjPStr usa);
-static void       seqMsfTabDel (const void *key, void **value, void *cl);
-static void       seqMsfTabList (const void *key, void **value, void *cl);
-static AjBool     seqPhylipReadseq (const AjPStr rdline, AjPTable phytable,
-				    const AjPStr token,
-				    ajint len, ajint* ilen, AjBool* done);
-static AjBool     seqQueryField (const AjPSeqQuery qry, const AjPStr field);
-static AjBool     seqQueryFieldC (const AjPSeqQuery qry, char* field);
-static AjBool     seqQueryMatch (AjPSeq thys, const AjPSeqQuery query);
-static void       seqQryWildComp (void);
-static AjBool     seqRead (AjPSeq thys, AjPSeqin seqin);
-static AjBool     seqReadAcedb (AjPSeq thys, AjPSeqin seqin);
-static AjBool     seqReadClustal (AjPSeq thys, AjPSeqin seqin);
-static AjBool     seqReadCodata (AjPSeq thys, AjPSeqin seqin);
-static AjBool     seqReadDbId (AjPSeq thys, AjPSeqin seqin);
-static AjBool     seqReadEmbl (AjPSeq thys, AjPSeqin seqin);
-static AjBool     seqReadFasta (AjPSeq thys, AjPSeqin seqin);
-static AjBool     seqReadFmt (AjPSeq thys, AjPSeqin seqin,
-			      ajint format);
-static AjBool     seqReadGcg (AjPSeq thys, AjPSeqin seqin);
-static AjBool     seqReadGenbank (AjPSeq thys, AjPSeqin seqin);
-static AjBool     seqReadGff (AjPSeq thys, AjPSeqin seqin);
-static AjBool     seqReadHennig86 (AjPSeq thys, AjPSeqin seqin);
-static AjBool     seqReadIg (AjPSeq thys, AjPSeqin seqin);
-static AjBool     seqReadJackknifer (AjPSeq thys, AjPSeqin seqin);
-static AjBool     seqReadJackknifernon (AjPSeq thys, AjPSeqin seqin);
-static AjBool     seqReadMega (AjPSeq thys, AjPSeqin seqin);
-static AjBool     seqReadMeganon (AjPSeq thys, AjPSeqin seqin);
-static AjBool     seqReadMsf (AjPSeq thys, AjPSeqin seqin);
-static AjBool     seqReadNbrf (AjPSeq thys, AjPSeqin seqin);
-static AjBool     seqReadNcbi (AjPSeq thys, AjPSeqin seqin);
-static AjBool     seqReadNexus (AjPSeq thys, AjPSeqin seqin);
-static AjBool     seqReadNexusnon (AjPSeq thys, AjPSeqin seqin);
-static AjBool     seqReadPhylip (AjPSeq thys, AjPSeqin seqin);
-static AjBool     seqReadRaw (AjPSeq thys, AjPSeqin seqin);
+static AjBool     seqHennig86Readseq(const AjPStr rdline, AjPTable msftable);
+static AjBool     seqinUfoLocal(const AjPSeqin thys);
+static void       seqListNoComment(AjPStr* text);
+static AjBool     seqListProcess(AjPSeq thys, AjPSeqin seqin, AjPStr usa);
+static void       seqMsfTabDel(const void *key, void **value, void *cl);
+static void       seqMsfTabList(const void *key, void **value, void *cl);
+static AjBool     seqPhylipReadseq(const AjPStr rdline, AjPTable phytable,
+				   const AjPStr token,
+				   ajint len, ajint* ilen, AjBool* done);
+static AjBool     seqQueryField(const AjPSeqQuery qry, const AjPStr field);
+static AjBool     seqQueryFieldC(const AjPSeqQuery qry, char* field);
+static AjBool     seqQueryMatch(AjPSeq thys, const AjPSeqQuery query);
+static void       seqQryWildComp(void);
+static AjBool     seqRead(AjPSeq thys, AjPSeqin seqin);
+static AjBool     seqReadAcedb(AjPSeq thys, AjPSeqin seqin);
+static AjBool     seqReadClustal(AjPSeq thys, AjPSeqin seqin);
+static AjBool     seqReadCodata(AjPSeq thys, AjPSeqin seqin);
+static AjBool     seqReadDbId(AjPSeq thys, AjPSeqin seqin);
+static AjBool     seqReadEmbl(AjPSeq thys, AjPSeqin seqin);
+static AjBool     seqReadFasta(AjPSeq thys, AjPSeqin seqin);
+static AjBool     seqReadFmt(AjPSeq thys, AjPSeqin seqin,
+			     ajint format);
+static AjBool     seqReadGcg(AjPSeq thys, AjPSeqin seqin);
+static AjBool     seqReadGenbank(AjPSeq thys, AjPSeqin seqin);
+static AjBool     seqReadGff(AjPSeq thys, AjPSeqin seqin);
+static AjBool     seqReadHennig86(AjPSeq thys, AjPSeqin seqin);
+static AjBool     seqReadIg(AjPSeq thys, AjPSeqin seqin);
+static AjBool     seqReadJackknifer(AjPSeq thys, AjPSeqin seqin);
+static AjBool     seqReadJackknifernon(AjPSeq thys, AjPSeqin seqin);
+static AjBool     seqReadMega(AjPSeq thys, AjPSeqin seqin);
+static AjBool     seqReadMeganon(AjPSeq thys, AjPSeqin seqin);
+static AjBool     seqReadMsf(AjPSeq thys, AjPSeqin seqin);
+static AjBool     seqReadNbrf(AjPSeq thys, AjPSeqin seqin);
+static AjBool     seqReadNcbi(AjPSeq thys, AjPSeqin seqin);
+static AjBool     seqReadNexus(AjPSeq thys, AjPSeqin seqin);
+static AjBool     seqReadNexusnon(AjPSeq thys, AjPSeqin seqin);
+static AjBool     seqReadPhylip(AjPSeq thys, AjPSeqin seqin);
+static AjBool     seqReadRaw(AjPSeq thys, AjPSeqin seqin);
 static AjBool     seqReadSelex(AjPSeq thys, AjPSeqin seqin);
 static AjBool     seqReadStockholm(AjPSeq thys, AjPSeqin seqin);
-static AjBool     seqReadStaden (AjPSeq thys, AjPSeqin seqin);
-static AjBool     seqReadStrider (AjPSeq thys, AjPSeqin seqin);
-static AjBool     seqReadSwiss (AjPSeq thys, AjPSeqin seqin);
-static AjBool     seqReadText (AjPSeq thys, AjPSeqin seqin);
-static AjBool     seqReadTreecon (AjPSeq thys, AjPSeqin seqin);
+static AjBool     seqReadStaden(AjPSeq thys, AjPSeqin seqin);
+static AjBool     seqReadStrider(AjPSeq thys, AjPSeqin seqin);
+static AjBool     seqReadSwiss(AjPSeq thys, AjPSeqin seqin);
+static AjBool     seqReadText(AjPSeq thys, AjPSeqin seqin);
+static AjBool     seqReadTreecon(AjPSeq thys, AjPSeqin seqin);
 static void       seqSelexAppend(AjPStr src, AjPStr *dest, ajint beg,
 				 ajint end);
 static void       seqSelexCopy(AjPSeq *thys, AjPSeqin seqin, ajint n);
@@ -202,17 +223,20 @@ static void       seqSelexPos(AjPStr line, ajint *begin, ajint *end);
 static AjBool     seqSelexReadBlock(AjPSelex *thys, AjBool *named, ajint n,
 				    AjPStr *line, AjPFileBuff buff,
 				    AjBool store, AjPStr *astr);
-static AjBool     seqSetInFormat (const AjPStr format);
-static void       seqSetName (AjPStr* name, const AjPStr str);
-static void       seqSetNameFile (AjPStr* name, AjPSeqin seqin);
+static AjBool     seqSetInFormat(const AjPStr format);
+static void       seqSetName(AjPStr* name, const AjPStr str);
+static void       seqSetNameFile(AjPStr* name, AjPSeqin seqin);
 static void       seqStockholmCopy(AjPSeq *thys, AjPSeqin seqin, ajint n);
-static void       seqSvSave (AjPSeq thys, const AjPStr sv);
-static void       seqTaxSave (AjPSeq thys, const AjPStr tax);
-static void       seqTextSeq (AjPStr* textptr, const AjPStr seq);
-static void       seqUsaListTrace (AjPList list);
-static AjBool     seqUsaProcess (AjPSeq thys, AjPSeqin seqin);
-static void       seqUsaRestore (AjPSeqin seqin, const SeqPListUsa node);
-static void       seqUsaSave (SeqPListUsa node, const AjPSeqin seqin);
+static void       seqSvSave(AjPSeq thys, const AjPStr sv);
+static void       seqTaxSave(AjPSeq thys, const AjPStr tax);
+static void       seqTextSeq(AjPStr* textptr, const AjPStr seq);
+static void       seqUsaListTrace(AjPList list);
+static AjBool     seqUsaProcess(AjPSeq thys, AjPSeqin seqin);
+static void       seqUsaRestore(AjPSeqin seqin, const SeqPListUsa node);
+static void       seqUsaSave(SeqPListUsa node, const AjPSeqin seqin);
+
+
+
 
 /* static data that needs the function definitions and so must come later */
 
@@ -275,6 +299,9 @@ static SeqOInFormat seqInFormatDef[] = { /* AJFALSE = ignore (duplicates) */
   {NULL, 0, 0, NULL}
 };
 
+
+
+
 /* ==================================================================== */
 /* ========================= constructors ============================= */
 /* ==================================================================== */
@@ -297,48 +324,54 @@ static SeqOInFormat seqInFormatDef[] = { /* AJFALSE = ignore (duplicates) */
 ** @@
 ******************************************************************************/
 
-AjPSeqin ajSeqinNew (void)
+AjPSeqin ajSeqinNew(void)
 {
     AjPSeqin pthis;
 
     AJNEW0(pthis);
 
-    pthis->Name = ajStrNew();
-    pthis->Acc = ajStrNew();
-    pthis->Inputtype = ajStrNew();
-    pthis->Db = ajStrNew();
-    pthis->Full = ajStrNew();
-    pthis->Date = ajStrNew();
-    pthis->Desc = ajStrNew();
-    pthis->Doc = ajStrNew();
-    pthis->Rev = ajFalse;
+    pthis->Name  = ajStrNew();
+    pthis->Acc   = ajStrNew();
+    pthis->Db    = ajStrNew();
+    pthis->Full  = ajStrNew();
+    pthis->Date  = ajStrNew();
+    pthis->Desc  = ajStrNew();
+    pthis->Doc   = ajStrNew();
+    pthis->Rev   = ajFalse;
     pthis->Begin = 0;
-    pthis->End = 0;
-    pthis->Usa = ajStrNew();
-    pthis->Ufo = ajStrNew();
-    pthis->List = NULL;
+    pthis->End   = 0;
+    pthis->Usa   = ajStrNew();
+    pthis->Ufo   = ajStrNew();
+    pthis->List  = NULL;
+
+    pthis->Inputtype = ajStrNew();
     pthis->Formatstr = ajStrNew();
-    pthis->Format = 0;
-    pthis->Filename = ajStrNew();
+    pthis->Filename  = ajStrNew();
     pthis->Entryname = ajStrNew();
-    pthis->Filebuff = NULL;
-    pthis->Search = ajTrue;
-    pthis->Single = ajFalse;
-    pthis->Features = ajFalse;
-    pthis->Upper = ajFalse;
-    pthis->Lower = ajFalse;
-    pthis->Text  = ajFalse;
-    pthis->Count = 0;
+
+
+    pthis->Format    = 0;
+    pthis->Filebuff  = NULL;
+    pthis->Search    = ajTrue;
+    pthis->Single    = ajFalse;
+    pthis->Features  = ajFalse;
+    pthis->Upper     = ajFalse;
+    pthis->Lower     = ajFalse;
+    pthis->Text      = ajFalse;
+    pthis->Count     = 0;
     pthis->Filecount = 0;
-    pthis->Fileseqs = 0;
-    pthis->Query = ajSeqQueryNew();
-    pthis->Data = NULL;
-    pthis->Ftquery = ajFeattabInNew(); /* empty object */
-    pthis->multi = ajFalse;
-    pthis->multiset = ajFalse;
+    pthis->Fileseqs  = 0;
+    pthis->Query     = ajSeqQueryNew();
+    pthis->Data      = NULL;
+    pthis->Ftquery   = ajFeattabInNew(); /* empty object */
+    pthis->multi     = ajFalse;
+    pthis->multiset  = ajFalse;
 
     return pthis;
 }
+
+
+
 
 
 /* ==================================================================== */
@@ -352,6 +385,9 @@ AjPSeqin ajSeqinNew (void)
 **
 ******************************************************************************/
 
+
+
+
 /* @func ajSeqinDel ***********************************************************
 **
 ** Deletes a sequence input object.
@@ -361,11 +397,13 @@ AjPSeqin ajSeqinNew (void)
 ** @@
 ******************************************************************************/
 
-void ajSeqinDel (AjPSeqin* pthis)
+void ajSeqinDel(AjPSeqin* pthis)
 {
-    AjPSeqin thys = *pthis;
+    AjPSeqin thys;
 
-    ajDebug("ajSeqinDel called usa:'%S'\n", thys->Usa);
+    ajDebug("ajSeqinDel called usa:'%S'\n", (*pthis)->Usa);
+
+    thys = *pthis;
 
     ajStrDel(&thys->Name);
     ajStrDel(&thys->Acc);
@@ -393,29 +431,28 @@ void ajSeqinDel (AjPSeqin* pthis)
     ajFileBuffDel(&thys->Filebuff);
 
     if(thys->Fttable)
-    {
 	ajFeattableDel(&thys->Fttable);
-    }
 
 /*
-//    if(thys->Ftquery && ! thys->multi)
-//    {
-//	if(thys->Ftquery->Handle)
-//	    ajStrDel(&thys->Ftquery->Handle->File->Name);
-//	if(thys->Ftquery->Handle)
-//	    ajStrDel(&thys->Ftquery->Handle->File->Buff);
-//    }
+    if(thys->Ftquery && ! thys->multi)
+    {
+	if(thys->Ftquery->Handle)
+	    ajStrDel(&thys->Ftquery->Handle->File->Name);
+	if(thys->Ftquery->Handle)
+	    ajStrDel(&thys->Ftquery->Handle->File->Buff);
+    }
 */
 
     if(thys->Ftquery)		/* this deletes filebuff stuff above anyway */
-    {
         ajFeattabInDel(&thys->Ftquery);
-    }
 
     AJFREE(*pthis);
 
     return;
 }
+
+
+
 
 /* ==================================================================== */
 /* =========================== Modifiers ============================== */
@@ -428,6 +465,9 @@ void ajSeqinDel (AjPSeqin* pthis)
 **
 ******************************************************************************/
 
+
+
+
 /* @func ajSeqinSetNuc ********************************************************
 **
 ** Sets the type to be forced as nucleic for a sequence input object
@@ -437,10 +477,15 @@ void ajSeqinDel (AjPSeqin* pthis)
 ** @@
 ******************************************************************************/
 
-void ajSeqinSetNuc (AjPSeqin seqin)
+void ajSeqinSetNuc(AjPSeqin seqin)
 {
-  seqin->IsNuc = ajTrue;
+    seqin->IsNuc = ajTrue;
+
+    return;
 }
+
+
+
 
 /* @func ajSeqinSetProt *******************************************************
 **
@@ -451,10 +496,15 @@ void ajSeqinSetNuc (AjPSeqin seqin)
 ** @@
 ******************************************************************************/
 
-void ajSeqinSetProt (AjPSeqin seqin)
+void ajSeqinSetProt(AjPSeqin seqin)
 {
-  seqin->IsProt = ajTrue;
+    seqin->IsProt = ajTrue;
+
+    return;
 }
+
+
+
 
 /* @func ajSeqinSetRange ******************************************************
 **
@@ -467,17 +517,20 @@ void ajSeqinSetProt (AjPSeqin seqin)
 ** @@
 ******************************************************************************/
 
-void ajSeqinSetRange (AjPSeqin seqin, ajint ibegin, ajint iend)
+void ajSeqinSetRange(AjPSeqin seqin, ajint ibegin, ajint iend)
 {
 
-    if (ibegin)
+    if(ibegin)
 	seqin->Begin = ibegin;
 
-    if (iend)
+    if(iend)
 	seqin->End = iend;
 
     return;
 }
+
+
+
 
 /* ==================================================================== */
 /* ========================== Assignments ============================= */
@@ -490,6 +543,9 @@ void ajSeqinSetRange (AjPSeqin seqin, ajint ibegin, ajint iend)
 **
 ******************************************************************************/
 
+
+
+
 /* @func ajSeqinUsa ***********************************************************
 **
 ** Creates or resets a sequence input object using a new Universal
@@ -501,24 +557,25 @@ void ajSeqinSetRange (AjPSeqin seqin, ajint ibegin, ajint iend)
 ** @@
 ******************************************************************************/
 
-void ajSeqinUsa (AjPSeqin* pthis, const AjPStr Usa)
+void ajSeqinUsa(AjPSeqin* pthis, const AjPStr Usa)
 {
     AjPSeqin thys;
 
-    if (!*pthis)
-    {
+    if(!*pthis)
 	thys = *pthis = ajSeqinNew();
-    }
     else
     {
 	thys = *pthis;
 	ajSeqinClear(thys);
     }
 
-    (void) ajStrAssS (&thys->Usa, Usa);
+    ajStrAssS(&thys->Usa, Usa);
 
     return;
 }
+
+
+
 
 /* ==================================================================== */
 /* ======================== Operators ==================================*/
@@ -530,6 +587,9 @@ void ajSeqinUsa (AjPSeqin* pthis, const AjPStr Usa)
 ** not make any changes.
 **
 ******************************************************************************/
+
+
+
 
 /* @func ajSeqAllRead *********************************************************
 **
@@ -549,52 +609,55 @@ void ajSeqinUsa (AjPSeqin* pthis, const AjPStr Usa)
 ** @@
 ******************************************************************************/
 
-AjBool ajSeqAllRead (AjPSeq thys, AjPSeqin seqin)
+AjBool ajSeqAllRead(AjPSeq thys, AjPSeqin seqin)
 {
-    AjBool ret = ajFalse;
+    AjBool ret       = ajFalse;
     AjPStr tmpformat = NULL;
     SeqPListUsa node = NULL;
-    AjBool listdata = ajFalse;
+    AjBool listdata  = ajFalse;
 
-    if (!seqInFormatSet)
-    {					/* we need a copy of the formatlist */
-	if (ajNamGetValueC("format", &tmpformat))
+    if(!seqInFormatSet)
+    {
+	/* we need a copy of the formatlist */
+	if(ajNamGetValueC("format", &tmpformat))
 	{
-	    (void) seqSetInFormat(tmpformat);
-	    ajDebug ("seqSetInFormat '%S' from EMBOSS_FORMAT\n", tmpformat);
+	    seqSetInFormat(tmpformat);
+	    ajDebug("seqSetInFormat '%S' from EMBOSS_FORMAT\n", tmpformat);
 	}
 	ajStrDel(&tmpformat);
 	seqInFormatSet = ajTrue;
     }
 
-    if (!seqin->Filebuff) {	/* First call. No file open yet ... */
-      if (!seqUsaProcess (thys, seqin)	/* ... so process the USA */
-	  && ! ajListLength(seqin->List)) /* not list with bad 1st item */
-	return ajFalse;		/* if this fails, we read no sequence at all */
-	if (ajListLength(seqin->List))
-	  listdata = ajTrue;
-    }
-
-    ret = seqRead (thys, seqin); /* read the sequence */
-
-    if (ret)			/* clone any specified DB or entryname */
+    if(!seqin->Filebuff)
     {
-	(void) ajStrSet (&thys->Db, seqin->Db);
-	(void) ajStrSet (&thys->Entryname, seqin->Entryname);
-
-	if (!ajStrLen(thys->Type)) /* make sure the type is set */
-	    ajSeqType (thys);
+	/* First call. No file open yet ... */
+	if(!seqUsaProcess(thys, seqin)	       /* ... so process the USA */
+	   && !ajListLength(seqin->List))      /* not list with bad 1st item */
+	    return ajFalse; /* if this fails, we read no sequence at all */
+	if(ajListLength(seqin->List))
+	    listdata = ajTrue;
     }
 
-    while (!ret && ajListLength (seqin->List))
+    ret = seqRead(thys, seqin); /* read the sequence */
+
+    if(ret)			/* clone any specified DB or entryname */
+    {
+	ajStrSet(&thys->Db, seqin->Db);
+	ajStrSet(&thys->Entryname, seqin->Entryname);
+
+	if(!ajStrLen(thys->Type)) /* make sure the type is set */
+	    ajSeqType(thys);
+    }
+
+    while(!ret && ajListLength(seqin->List))
     {
 	/* Failed, but we have a list still - keep trying it */
 
-        ajErr ("Unable to read sequence '%S'", seqin->Usa);
+        ajErr("Unable to read sequence '%S'", seqin->Usa);
 
-	(void) ajListPop (seqin->List, (void**) &node);
+	ajListPop(seqin->List, (void**) &node);
 	ajDebug("++try again: pop from list '%S'\n", node->Usa);
-	ajSeqinUsa (&seqin, node->Usa);
+	ajSeqinUsa(&seqin, node->Usa);
 	ajDebug("++SAVE (AGAIN) SEQIN '%S' %d..%d(%b) '%S' %d\n",
 		seqin->Usa, seqin->Begin, seqin->End, seqin->Rev,
 		seqin->Formatstr, seqin->Format);
@@ -602,27 +665,28 @@ AjBool ajSeqAllRead (AjPSeq thys, AjPSeqin seqin)
 
 	ajStrDel(&node->Usa);
 	ajStrDel(&node->Formatstr);
-	AJFREE (node);
+	AJFREE(node);
 
 	/* must exit if this fails ... for bad list USAs */
 
-	if (!seqUsaProcess (thys, seqin))
+	if(!seqUsaProcess(thys, seqin))
 	    continue;
 
-	/*	seqUsaProcess (thys, seqin);*/
-
- 	ret = seqRead (thys, seqin);
+ 	ret = seqRead(thys, seqin);
     }
 
-    if (!ret)
+    if(!ret)
     {
-      if (listdata)
-	ajErr ("Unable to read sequence '%S'", seqin->Usa);
+      if(listdata)
+	ajErr("Unable to read sequence '%S'", seqin->Usa);
       return ajFalse;
     }
 
     return ret;
 }
+
+
+
 
 /* @func ajSeqallFile *********************************************************
 **
@@ -638,14 +702,14 @@ AjBool ajSeqAllRead (AjPSeq thys, AjPSeqin seqin)
 
 AjPSeqall ajSeqallFile(const AjPStr usa)
 {
-    AjPSeqall seqall=NULL;
-    AjPSeqin  seqin=NULL;
-    AjPSeq    seq=NULL;
+    AjPSeqall seqall = NULL;
+    AjPSeqin  seqin  = NULL;
+    AjPSeq    seq    = NULL;
 
     seqall = ajSeqallNew();
 
     seqin = seqall->Seqin;
-    seqin->multi = ajTrue;
+    seqin->multi  = ajTrue;
     seqin->Single = ajFalse;
     seq = seqall->Seq;
 
@@ -660,6 +724,9 @@ AjPSeqall ajSeqallFile(const AjPStr usa)
     return seqall;
 }
 
+
+
+
 /* @func ajSeqallNext *********************************************************
 **
 ** Reads the next sequence into a sequence stream. For the first call this
@@ -672,44 +739,30 @@ AjPSeqall ajSeqallFile(const AjPStr usa)
 ** @@
 ******************************************************************************/
 
-AjBool ajSeqallNext (AjPSeqall seqall, AjPSeq* retseq)
+AjBool ajSeqallNext(AjPSeqall seqall, AjPSeq* retseq)
 {
 
-    if (!seqall->Count)
+    if(!seqall->Count)
     {
 	seqall->Count = 1;
-	ajSeqSetRange (seqall->Seq, seqall->Begin, seqall->End);
+	ajSeqSetRange(seqall->Seq, seqall->Begin, seqall->End);
 
 	/*
-//	seqall->Seq->Begin = seqall->Begin;
-//	seqall->Seq->End = seqall->End;
+	seqall->Seq->Begin = seqall->Begin;
+	seqall->Seq->End   = seqall->End;
 	*/
 
 	*retseq = seqall->Seq;
 	return ajTrue;
     }
 
-    /*
-//    ajMemStat("ajSeqAllNext starting");
-//    ajStrStat("ajSeqAllNext starting");
-    */
 
-    if (ajSeqRead (seqall->Seq, seqall->Seqin))
+    if(ajSeqRead(seqall->Seq, seqall->Seqin))
     {
 	seqall->Count++;
-	ajSeqSetRange (seqall->Seq, seqall->Begin, seqall->End);
-
-	/*
-//	seqall->Seq->Begin = seqall->Begin;
-//	seqall->Seq->End = seqall->End;
-	*/
+	ajSeqSetRange(seqall->Seq, seqall->Begin, seqall->End);
 
 	*retseq = seqall->Seq;
-
-	/*
-//	ajMemStat("ajSeqAllNext done");
-//	ajStrStat("ajSeqAllNext done");
-	*/
 
 	ajDebug("ajSeqallNext success\n");
 	return ajTrue;
@@ -722,6 +775,9 @@ AjBool ajSeqallNext (AjPSeqall seqall, AjPSeq* retseq)
     return ajFalse;
 }
 
+
+
+
 /* @func ajSeqinClear *********************************************************
 **
 ** Clears a Sequence input object back to "as new" condition, except
@@ -732,32 +788,32 @@ AjBool ajSeqallNext (AjPSeqall seqall, AjPSeq* retseq)
 ** @@
 ******************************************************************************/
 
-void ajSeqinClear (AjPSeqin thys)
+void ajSeqinClear(AjPSeqin thys)
 {
 
-    ajDebug ("ajSeqinClear called\n");
+    ajDebug("ajSeqinClear called\n");
 
-    (void) ajStrClear(&thys->Name);
-    (void) ajStrClear(&thys->Acc);
+    ajStrClear(&thys->Name);
+    ajStrClear(&thys->Acc);
     /* preserve thys->Inputtype */
-    (void) ajStrClear(&thys->Db);
-    (void) ajStrClear(&thys->Full);
-    (void) ajStrClear(&thys->Date);
-    (void) ajStrClear(&thys->Desc);
-    (void) ajStrClear(&thys->Doc);
+    ajStrClear(&thys->Db);
+    ajStrClear(&thys->Full);
+    ajStrClear(&thys->Date);
+    ajStrClear(&thys->Desc);
+    ajStrClear(&thys->Doc);
     /* preserve thys->List */
-    (void) ajStrClear(&thys->Usa);
-    (void) ajStrClear(&thys->Ufo);
-    (void) ajStrClear(&thys->Formatstr);
-    (void) ajStrClear(&thys->Filename);
-    (void) ajStrClear(&thys->Entryname);
-    (void) ajStrClear(&thys->Inseq);
+    ajStrClear(&thys->Usa);
+    ajStrClear(&thys->Ufo);
+    ajStrClear(&thys->Formatstr);
+    ajStrClear(&thys->Filename);
+    ajStrClear(&thys->Entryname);
+    ajStrClear(&thys->Inseq);
 
     /* preserve thys->Query */
 
-    if (thys->Filebuff)
+    if(thys->Filebuff)
 	ajFileBuffDel(&thys->Filebuff);
-    if (thys->Filebuff)
+    if(thys->Filebuff)
 	ajFatal("ajSeqinClear did not delete Filebuff");
 
     if(thys->Fttable)
@@ -765,36 +821,41 @@ void ajSeqinClear (AjPSeqin thys)
 	ajFeattableDel(&thys->Fttable);
     }
 
+
 /*
-//    if(thys->Ftquery && ! thys->multi)
-//    {
-//	if(thys->Ftquery->Handle)
-//	    ajStrDel(&thys->Ftquery->Handle->File->Name);
-//	if(thys->Ftquery->Handle)
-//	    ajStrDel(&thys->Ftquery->Handle->File->Buff);
-//   }
+    if(thys->Ftquery && ! thys->multi)
+    {
+	if(thys->Ftquery->Handle)
+	    ajStrDel(&thys->Ftquery->Handle->File->Name);
+	if(thys->Ftquery->Handle)
+	    ajStrDel(&thys->Ftquery->Handle->File->Buff);
+   }
 */
 
+
     if(thys->Ftquery)  		/* this clears filebuff stuff above anyway */
-    {
         ajFeattabInClear(thys->Ftquery);
-    }
 
     ajSeqQueryClear(thys->Query);
     thys->Data = NULL;
 
-    thys->Rev = ajFalse;
+    thys->Rev    = ajFalse;
     thys->Format = 0;
 
     thys->Search = ajTrue;
     thys->Single = ajFalse;
+
     /* keep thys->Features */
     /* thys->Features = ajFalse;*/
-    thys->Count = 0;
+
+    thys->Count     = 0;
     thys->Filecount = 0;
 
     return;
 }
+
+
+
 
 /* ==================================================================== */
 /* ============================ Casts ==================================*/
@@ -809,6 +870,9 @@ void ajSeqinClear (AjPSeqin thys)
 **
 ******************************************************************************/
 
+
+
+
 /* ==================================================================== */
 /* ========================== Assignments ============================= */
 /* ==================================================================== */
@@ -818,6 +882,9 @@ void ajSeqinClear (AjPSeqin thys)
 ** These functions overwrite the sequence provided as the first argument.
 **
 ******************************************************************************/
+
+
+
 
 /* @func ajSeqRead ************************************************************
 **
@@ -834,43 +901,44 @@ void ajSeqinClear (AjPSeqin thys)
 ** @@
 ******************************************************************************/
 
-AjBool ajSeqRead (AjPSeq thys, AjPSeqin seqin)
+AjBool ajSeqRead(AjPSeq thys, AjPSeqin seqin)
 {
     AjPStr tmpformat = NULL;
-    AjBool ret = ajFalse;
+    AjBool ret       = ajFalse;
     SeqPListUsa node = NULL;
-    AjBool listdata = ajFalse;
+    AjBool listdata  = ajFalse;
 
-    if (!seqInFormatSet)
-    {					/* we need a copy of the formatlist */
-	if (ajNamGetValueC("format", &tmpformat))
+    if(!seqInFormatSet)
+    {
+	/* we need a copy of the formatlist */
+	if(ajNamGetValueC("format", &tmpformat))
 	{
-	    (void) seqSetInFormat(tmpformat);
-	    ajDebug ("seqSetInFormat '%S' from EMBOSS_FORMAT\n", tmpformat);
+	    seqSetInFormat(tmpformat);
+	    ajDebug("seqSetInFormat '%S' from EMBOSS_FORMAT\n", tmpformat);
 	}
 	ajStrDel(&tmpformat);
 	seqInFormatSet = ajTrue;
     }
 
-    if (seqin->Filebuff)
+    if(seqin->Filebuff)
     {
 	/* (a) if file still open, keep reading */
 	ajDebug("ajSeqRead: input file '%F' still there, try again\n",
 		seqin->Filebuff->File);
-	ret = seqRead (thys, seqin);
+	ret = seqRead(thys, seqin);
 	ajDebug("ajSeqRead: open buffer  usa: '%S' returns: %B\n",
 		seqin->Usa, ret);
-   }
+    }
     else
     {
 	/* (b) if we have a list, try the next USA in the list */
-	if (ajListLength (seqin->List))
+	if(ajListLength(seqin->List))
 	{
 	    listdata = ajTrue;
-	    (void) ajListPop (seqin->List, (void**) &node);
+	    ajListPop(seqin->List, (void**) &node);
 
 	    ajDebug("++pop from list '%S'\n", node->Usa);
-	    ajSeqinUsa (&seqin, node->Usa);
+	    ajSeqinUsa(&seqin, node->Usa);
 	    ajDebug("++SAVE SEQIN '%S' %d..%d(%b) '%S' %d\n",
 		    seqin->Usa, seqin->Begin, seqin->End, seqin->Rev,
 		    seqin->Formatstr, seqin->Format);
@@ -878,24 +946,24 @@ AjBool ajSeqRead (AjPSeq thys, AjPSeqin seqin)
 
 	    ajStrDel(&node->Usa);
 	    ajStrDel(&node->Formatstr);
-	    AJFREE (node);
+	    AJFREE(node);
 
 	    ajDebug("ajSeqRead: open list, try '%S'\n", seqin->Usa);
-	    if (!seqUsaProcess (thys, seqin) && !ajListLength (seqin->List))
-	      return ajFalse;
-	    ret = seqRead (thys, seqin);
+	    if(!seqUsaProcess(thys, seqin) && !ajListLength(seqin->List))
+		return ajFalse;
+	    ret = seqRead(thys, seqin);
 	    ajDebug("ajSeqRead: list usa: '%S' returns: %B\n",
 		    seqin->Usa, ret);
 	}
 	else
 	{
 	    ajDebug("ajSeqRead: no file yet - test USA '%S'\n", seqin->Usa);
-	/* (c) Must be a USA - decode it */
-	    if (!seqUsaProcess (thys, seqin) && !ajListLength (seqin->List))
-	      return ajFalse;
-	    if (ajListLength (seqin->List)) /* could be a new list */
+	    /* (c) Must be a USA - decode it */
+	    if(!seqUsaProcess(thys, seqin) && !ajListLength(seqin->List))
+		return ajFalse;
+	    if(ajListLength(seqin->List)) /* could be a new list */
 		listdata = ajTrue;
-	    ret = seqRead (thys, seqin);
+	    ret = seqRead(thys, seqin);
 	    ajDebug("ajSeqRead: new usa: '%S' returns: %B\n",
 		    seqin->Usa, ret);
 	}
@@ -903,16 +971,16 @@ AjBool ajSeqRead (AjPSeq thys, AjPSeqin seqin)
 
     /* Now read whatever we got */
 
-    while (!ret && ajListLength (seqin->List))
+    while(!ret && ajListLength(seqin->List))
     {
 	/* Failed, but we have a list still - keep trying it */
-        if (listdata)
-	  ajErr ("Unable to read sequence '%S'", seqin->Usa);
+        if(listdata)
+	    ajErr("Unable to read sequence '%S'", seqin->Usa);
 
 	listdata = ajTrue;
-	(void) ajListPop (seqin->List, (void**) &node);
+	ajListPop(seqin->List,(void**) &node);
 	ajDebug("++try again: pop from list '%S'\n", node->Usa);
-	ajSeqinUsa (&seqin, node->Usa);
+	ajSeqinUsa(&seqin, node->Usa);
 	ajDebug("++SAVE (AGAIN) SEQIN '%S' %d..%d(%b) '%S' %d\n",
 		seqin->Usa, seqin->Begin, seqin->End, seqin->Rev,
 		seqin->Formatstr, seqin->Format);
@@ -920,47 +988,51 @@ AjBool ajSeqRead (AjPSeq thys, AjPSeqin seqin)
 
 	ajStrDel(&node->Usa);
 	ajStrDel(&node->Formatstr);
-	AJFREE (node);
+	AJFREE(node);
 
-	if (!seqUsaProcess (thys, seqin))
+	if(!seqUsaProcess(thys, seqin))
 	    continue;
 
-	ret = seqRead (thys, seqin);
+	ret = seqRead(thys, seqin);
 	ajDebug("ajSeqRead: list retry usa: '%S' returns: %B\n",
 		seqin->Usa, ret);
-   }
+    }
 
-    if (!ret)
+    if(!ret)
     {
-      if (listdata)
-	ajErr ("Unable to read sequence '%S'", seqin->Usa);
+	if(listdata)
+	    ajErr("Unable to read sequence '%S'", seqin->Usa);
 
-      return ajFalse;
+	return ajFalse;
     }
 
 
     /* if values are missing in the sequence object, we can use defaults
        from seqin or calculate where possible */
 
-    ajDebug ("++keep restored %d..%d (%b) '%S' %d\n",
-	     seqin->Begin, seqin->End, seqin->Rev,
-	     seqin->Formatstr, seqin->Format);
-    ajDebug ("ajSeqRead: thys->Db '%S', seqin->Db '%S'\n",
-	     thys->Db, seqin->Db);
-    ajDebug ("ajSeqRead: thys->Name '%S'\n",
-	     thys->Name);
-    ajDebug ("ajSeqRead: thys->Entryname '%S', seqin->Entryname '%S'\n",
-	     thys->Entryname, seqin->Entryname);
-    (void) ajStrSet (&thys->Db, seqin->Db);
-    (void) ajStrSet (&thys->Entryname, seqin->Entryname);
-    (void) ajStrSet (&thys->Name, thys->Entryname);
-    ajDebug ("ajSeqRead: thys->Name '%S'\n",
-	     thys->Name);
-    if (!ajStrLen(thys->Type))
-	ajSeqType (thys);
+    ajDebug("++keep restored %d..%d (%b) '%S' %d\n",
+	    seqin->Begin, seqin->End, seqin->Rev,
+	    seqin->Formatstr, seqin->Format);
+    ajDebug("ajSeqRead: thys->Db '%S', seqin->Db '%S'\n",
+	    thys->Db, seqin->Db);
+    ajDebug("ajSeqRead: thys->Name '%S'\n",
+	    thys->Name);
+    ajDebug("ajSeqRead: thys->Entryname '%S', seqin->Entryname '%S'\n",
+	    thys->Entryname, seqin->Entryname);
+    ajStrSet(&thys->Db, seqin->Db);
+    ajStrSet(&thys->Entryname, seqin->Entryname);
+    ajStrSet(&thys->Name, thys->Entryname);
+    ajDebug("ajSeqRead: thys->Name '%S'\n",
+	    thys->Name);
 
+    if(!ajStrLen(thys->Type))
+	ajSeqType(thys);
+    
     return ajTrue;
 }
+
+
+
 
 /* ==================================================================== */
 /* ========================== Assignments ============================= */
@@ -972,6 +1044,9 @@ AjBool ajSeqRead (AjPSeq thys, AjPSeqin seqin)
 ** first argument.
 **
 ******************************************************************************/
+
+
+
 
 /* @func ajSeqsetRead *********************************************************
 **
@@ -992,7 +1067,7 @@ AjBool ajSeqRead (AjPSeq thys, AjPSeqin seqin)
 ** @@
 ******************************************************************************/
 
-AjBool ajSeqsetRead (AjPSeqset thys, AjPSeqin seqin)
+AjBool ajSeqsetRead(AjPSeqset thys, AjPSeqin seqin)
 {
     AjPSeq seq;
     AjPList setlist;
@@ -1001,13 +1076,13 @@ AjBool ajSeqsetRead (AjPSeqset thys, AjPSeqin seqin)
 
     seq = ajSeqNew();
 
-    ajDebug ("ajSeqsetRead\n");
+    ajDebug("ajSeqsetRead\n");
 
-    if (!seqUsaProcess (seq, seqin))
+    if(!seqUsaProcess(seq, seqin))
 	return ajFalse;
 
-    (void) ajStrAss (&thys->Usa, seqin->Usa);
-    (void) ajStrAss (&thys->Ufo, seqin->Ufo);
+    ajStrAss(&thys->Usa, seqin->Usa);
+    ajStrAss(&thys->Ufo, seqin->Ufo);
     thys->Begin = seqin->Begin;
     thys->End = seqin->End;
 
@@ -1016,44 +1091,47 @@ AjBool ajSeqsetRead (AjPSeqset thys, AjPSeqin seqin)
     ajDebug("ready to start reading format '%S' '%S' %d..%d\n",
 	    seqin->Formatstr, seq->Formatstr, seqin->Begin, seqin->End);
 
-    while (ajSeqRead (seq, seqin))
+    while(ajSeqRead(seq, seqin))
     {
 	/*ajDebug("read name '%S' length %d format '%S' '%S' seqindata: %x\n",
 	  seq->Entryname, ajSeqLen(seq),
 	  seqin->Formatstr, seq->Formatstr, seqin->Data);*/
-	(void) ajStrSet (&seq->Db, seqin->Db);
-	if (!ajStrLen(seq->Type))
-	    ajSeqType (seq);
+	ajStrSet(&seq->Db, seqin->Db);
+	if(!ajStrLen(seq->Type))
+	    ajSeqType(seq);
 
 	/*ajDebug ("ajSeqsetRead read sequence %d '%s' %d..%d\n",
 	  iseq, ajSeqName(seq), seq->Begin, seq->End);*/
 	/*ajSeqTrace(seq);*/
 	iseq++;
 
-	ajListPushApp (setlist, seq);
+	ajListPushApp(setlist, seq);
 
 	/*ajDebug("appended to list\n");*/
 
 	/* add to a list of sequences */
 
 	seq = ajSeqNew();
-	(void) seqFormatSet (seq, seqin);
+	seqFormatSet(seq, seqin);
     }
     ajSeqDel(&seq);
 
-    if (!iseq)
+    if(!iseq)
 	return ajFalse;
 
     /* convert the list of sequences into a seqset structure */
 
-    ajSeqsetFromList (thys, setlist);
+    ajSeqsetFromList(thys, setlist);
 
-    ajListFree (&setlist);
+    ajListFree(&setlist);
 
-    ajDebug ("ajSeqsetRead total %d sequences\n", iseq);
+    ajDebug("ajSeqsetRead total %d sequences\n", iseq);
 
     return ajTrue;
 }
+
+
+
 
 /* @func ajSeqsetallRead ******************************************************
 **
@@ -1076,24 +1154,24 @@ AjBool ajSeqsetRead (AjPSeqset thys, AjPSeqin seqin)
 ** @@
 ******************************************************************************/
 
-AjBool ajSeqsetallRead (AjPList thys, AjPSeqin seqin)
+AjBool ajSeqsetallRead(AjPList thys, AjPSeqin seqin)
 {
     AjPSeq seq;
     AjPList setlist;
-    AjPSeqset seqset=NULL;
+    AjPSeqset seqset = NULL;
 
     ajint iseq = 0;
 
     seq = ajSeqNew();
     seqset = ajSeqsetNew();
 
-    ajDebug ("ajSeqsetallRead\n");
+    ajDebug("ajSeqsetallRead\n");
 
-    if (!seqUsaProcess (seq, seqin))
+    if(!seqUsaProcess(seq, seqin))
 	return ajFalse;
 
-    (void) ajStrAss (&seqset->Usa, seqin->Usa);
-    (void) ajStrAss (&seqset->Ufo, seqin->Ufo);
+    ajStrAss(&seqset->Usa, seqin->Usa);
+    ajStrAss(&seqset->Ufo, seqin->Ufo);
     seqset->Begin = seqin->Begin;
     seqset->End = seqin->End;
 
@@ -1102,34 +1180,34 @@ AjBool ajSeqsetallRead (AjPList thys, AjPSeqin seqin)
     ajDebug("ready to start reading format '%S' '%S' %d..%d\n",
 	    seqin->Formatstr, seq->Formatstr, seqin->Begin, seqin->End);
 
-    while (ajSeqRead (seq, seqin))
+    while(ajSeqRead(seq, seqin))
     {
 	ajDebug("read name '%S' length %d format '%S' '%S' "
 		"seqindata: %x multidone: %B\n",
-	  seq->Entryname, ajSeqLen(seq),
-	  seqin->Formatstr, seq->Formatstr, seqin->Data, seqin->multidone);
-	(void) ajStrSet (&seq->Db, seqin->Db);
-	if (!ajStrLen(seq->Type))
-	    ajSeqType (seq);
+		seq->Entryname, ajSeqLen(seq),
+		seqin->Formatstr, seq->Formatstr, seqin->Data, seqin->multidone);
+	ajStrSet(&seq->Db, seqin->Db);
+	if(!ajStrLen(seq->Type))
+	    ajSeqType(seq);
 
 	/*ajDebug ("ajSeqsetallRead read sequence %d '%s' %d..%d\n",
 	  iseq, ajSeqName(seq), seq->Begin, seq->End);*/
 	/*ajSeqTrace(seq);*/
 	iseq++;
 
-	ajListPushApp (setlist, seq);
+	ajListPushApp(setlist, seq);
 
 	/*ajDebug("appended to list\n");*/
 
 	/* add to a list of sequences */
 
 	seq = ajSeqNew();
-	(void) seqFormatSet (seq, seqin);
-	if (seqin->multidone)
+	seqFormatSet(seq, seqin);
+	if(seqin->multidone)
 	{
-	    ajSeqsetFromList (seqset, setlist);
-	    ajListFree (&setlist);
-	    ajListPushApp (thys, seqset);
+	    ajSeqsetFromList(seqset, setlist);
+	    ajListFree(&setlist);
+	    ajListPushApp(thys, seqset);
 	    ajDebug("ajSeqsetallRead multidone save set %d of %d sequences\n",
 		    ajListLength(thys), ajSeqsetSize(seqset));
 	    setlist = ajListNew();
@@ -1137,23 +1215,26 @@ AjBool ajSeqsetallRead (AjPList thys, AjPSeqin seqin)
     }
     ajSeqDel(&seq);
 
-    if (!iseq)
+    if(!iseq)
 	return ajFalse;
 
     /* convert the list of sequences into a seqset structure */
 
-    if (ajListLength(setlist))
+    if(ajListLength(setlist))
     {
-	ajSeqsetFromList (seqset, setlist);
-	ajListFree (&setlist);
-	ajListPushApp (thys, seqset);
+	ajSeqsetFromList(seqset, setlist);
+	ajListFree(&setlist);
+	ajListPushApp(thys, seqset);
     }
 
-    ajDebug ("ajSeqsetallRead total %d sets of %d sequences\n",
-	     ajListLength(thys), iseq);
+    ajDebug("ajSeqsetallRead total %d sets of %d sequences\n",
+	    ajListLength(thys), iseq);
 
     return ajTrue;
 }
+
+
+
 
 /* @func ajSeqsetFromList *****************************************************
 **
@@ -1164,41 +1245,44 @@ AjBool ajSeqsetallRead (AjPList thys, AjPSeqin seqin)
 ** @return [ajint] Number of sequences in the set.
 ******************************************************************************/
 
-ajint ajSeqsetFromList (AjPSeqset thys, AjPList list)
+ajint ajSeqsetFromList(AjPSeqset thys, AjPList list)
 {
 
-  ajint i;
-  AjIList iter;
-  AjPSeq seq;
+    ajint i;
+    AjIList iter;
+    AjPSeq seq;
 
-  thys->Size = ajListLength(list);
-  thys->Seq = AJCALLOC0(thys->Size, sizeof(AjPSeq));
-  thys->Seqweight = AJCALLOC0(thys->Size, sizeof(float));
+    thys->Size      = ajListLength(list);
+    thys->Seq       = AJCALLOC0(thys->Size, sizeof(AjPSeq));
+    thys->Seqweight = AJCALLOC0(thys->Size, sizeof(float));
 
-  i = 0;
-  iter = ajListIter (list);
-  while ((seq = ajListIterNext(iter)))
-  {
-    if (!i)
+    i = 0;
+    iter = ajListIter(list);
+    while((seq = ajListIterNext(iter)))
     {
-      thys->EType = seq->EType;
-      (void) ajStrAss (&thys->Type, seq->Type);
-      thys->Format = seq->Format;
-      (void) ajStrAss (&thys->Formatstr, seq->Formatstr);
-      (void) ajStrAss (&thys->Filename, seq->Filename);
-      (void) ajStrAss (&thys->Full, seq->Full);
+	if(!i)
+	{
+	    thys->EType = seq->EType;
+	    ajStrAss(&thys->Type, seq->Type);
+	    thys->Format = seq->Format;
+	    ajStrAss(&thys->Formatstr, seq->Formatstr);
+	    ajStrAss(&thys->Filename, seq->Filename);
+	    ajStrAss(&thys->Full, seq->Full);
+	}
+	thys->Seqweight[i] = seq->Weight;
+	thys->Seq[i] = seq;
+	thys->Totweight += seq->Weight;
+	if(ajSeqLen(seq) > thys->Len)
+	    thys->Len = ajSeqLen(seq);
+	i++;
     }
-    thys->Seqweight[i] = seq->Weight;
-    thys->Seq[i] = seq;
-    thys->Totweight += seq->Weight;
-    if (ajSeqLen(seq) > thys->Len)
-      thys->Len = ajSeqLen(seq);
-    i++;
-  }
-  ajListIterFree(iter);
+    ajListIterFree(iter);
 
-  return thys->Size;
+    return thys->Size;
 }
+
+
+
 
 /* @func ajSeqsetFromPair *****************************************************
 **
@@ -1210,14 +1294,17 @@ ajint ajSeqsetFromList (AjPSeqset thys, AjPList list)
 ** @return [ajint] Number of sequences in the set.
 ******************************************************************************/
 
-ajint ajSeqsetFromPair (AjPSeqset thys, const AjPSeq seqa, const AjPSeq seqb)
+ajint ajSeqsetFromPair(AjPSeqset thys, const AjPSeq seqa, const AjPSeq seqb)
 {
 
-  (void) ajSeqsetApp (thys, seqa);
-  (void) ajSeqsetApp (thys, seqb);
+    ajSeqsetApp(thys, seqa);
+    ajSeqsetApp(thys, seqb);
 
-  return thys->Size;
+    return thys->Size;
 }
+
+
+
 
 /* @func ajSeqsetApp **********************************************************
 **
@@ -1228,41 +1315,44 @@ ajint ajSeqsetFromPair (AjPSeqset thys, const AjPSeq seqa, const AjPSeq seqb)
 ** @return [ajint] Number of sequences in the set.
 ******************************************************************************/
 
-ajint ajSeqsetApp (AjPSeqset thys, const AjPSeq seq)
+ajint ajSeqsetApp(AjPSeqset thys, const AjPSeq seq)
 {
-  ajint iseq;
+    ajint iseq;
 
-  iseq = thys->Size;
+    iseq = thys->Size;
 
-  ajDebug ("ajSeqsetApp '%S' size %d len %d add '%S' len %d\n",
-	   thys->Full, thys->Size, thys->Len,
-	   seq->Full, ajSeqLen(seq));
+    ajDebug("ajSeqsetApp '%S' size %d len %d add '%S' len %d\n",
+	    thys->Full, thys->Size, thys->Len,
+	    seq->Full, ajSeqLen(seq));
 
-  thys->Size ++;
-  AJCRESIZE(thys->Seq, thys->Size);
-  AJCRESIZE(thys->Seqweight, thys->Size);
+    thys->Size ++;
+    AJCRESIZE(thys->Seq, thys->Size);
+    AJCRESIZE(thys->Seqweight, thys->Size);
 
-  if (!iseq)
-  {
-    thys->EType = seq->EType;
-    (void) ajStrSet (&thys->Type, seq->Type);
-    thys->Format = seq->Format;
-    (void) ajStrSet (&thys->Formatstr, seq->Formatstr);
-    (void) ajStrSet (&thys->Filename, seq->Filename);
-    (void) ajStrSet (&thys->Full, seq->Full);
-  }
+    if(!iseq)
+    {
+	thys->EType = seq->EType;
+	ajStrSet(&thys->Type, seq->Type);
+	thys->Format = seq->Format;
+	ajStrSet(&thys->Formatstr, seq->Formatstr);
+	ajStrSet(&thys->Filename, seq->Filename);
+	ajStrSet(&thys->Full, seq->Full);
+    }
 
-  thys->Seqweight[iseq] = seq->Weight;
-  thys->Seq[iseq] = ajSeqNewS(seq);
-  thys->Totweight += seq->Weight;
-  if (ajSeqLen(seq) > thys->Len)
-    thys->Len = ajSeqLen(seq);
+    thys->Seqweight[iseq] = seq->Weight;
+    thys->Seq[iseq] = ajSeqNewS(seq);
+    thys->Totweight += seq->Weight;
+    if(ajSeqLen(seq) > thys->Len)
+	thys->Len = ajSeqLen(seq);
 
-  ajDebug ("result '%S' size %d len\n",
-	   thys->Full, thys->Size, thys->Len);
+    ajDebug("result '%S' size %d len\n",
+	    thys->Full, thys->Size, thys->Len);
 
-  return thys->Size;
+    return thys->Size;
 }
+
+
+
 
 /* @funcstatic seqReadFmt *****************************************************
 **
@@ -1289,42 +1379,39 @@ ajint ajSeqsetApp (AjPSeqset thys, const AjPSeq seq)
 **
 ******************************************************************************/
 
-static ajint seqReadFmt (AjPSeq thys, AjPSeqin seqin,
-		       ajint format)
+static ajint seqReadFmt(AjPSeq thys, AjPSeqin seqin,
+			ajint format)
 {
-    ajDebug ("++seqReadFmt format %d (%s) '%S' feat %B\n",
-	     format, seqInFormatDef[format].Name,
-	     seqin->Usa, seqin->Features);
+    ajDebug("++seqReadFmt format %d (%s) '%S' feat %B\n",
+	    format, seqInFormatDef[format].Name,
+	    seqin->Usa, seqin->Features);
 
     /* Calling funclist seqInFormatDef() */
-    if (seqInFormatDef[format].Read (thys, seqin))
+    if(seqInFormatDef[format].Read(thys, seqin))
     {
-	ajDebug ("seqReadFmt success with format %d (%s)\n",
-		 format, seqInFormatDef[format].Name);
+	ajDebug("seqReadFmt success with format %d (%s)\n",
+		format, seqInFormatDef[format].Name);
 	seqin->Format = format;
-	(void) ajStrAssC(&seqin->Formatstr, seqInFormatDef[format].Name);
-	(void) ajStrAssC(&thys->Formatstr, seqInFormatDef[format].Name);
-	(void) ajStrAssS(&thys->Db, seqin->Db);
-	(void) ajStrAssS(&thys->Entryname, seqin->Entryname);
-	(void) ajStrAssS(&thys->Filename, seqin->Filename);
+	ajStrAssC(&seqin->Formatstr, seqInFormatDef[format].Name);
+	ajStrAssC(&thys->Formatstr, seqInFormatDef[format].Name);
+	ajStrAssS(&thys->Db, seqin->Db);
+	ajStrAssS(&thys->Entryname, seqin->Entryname);
+	ajStrAssS(&thys->Filename, seqin->Filename);
 
-	if (seqQueryMatch(thys, seqin->Query))
+	if(seqQueryMatch(thys, seqin->Query))
 	{
-	    if (seqin->Features && !thys->Fttable)
+	    if(seqin->Features && !thys->Fttable)
 	    {
-		(void) ajStrSet (&seqin->Ftquery->Seqname, thys->Name);
-		if (!ajFeatUfoRead (&seqin->Fttable, seqin->Ftquery,
-				    seqin->Ufo))
+		ajStrSet(&seqin->Ftquery->Seqname, thys->Name);
+		if(!ajFeatUfoRead(&seqin->Fttable, seqin->Ftquery,
+				  seqin->Ufo))
 		{
-		    ajDebug ("seqReadFmt features input failed UFO: '%S'\n",
-		       seqin->Ufo);
+		    ajDebug("seqReadFmt features input failed UFO: '%S'\n",
+			    seqin->Ufo);
 		    /*
-		     *  GWW 21 Aug 2000 - don't warn about missing feature
-		     *  tables. Caveat emptor!
-		     */
-		    /* ajWarn ("seqReadFmt features input failed UFO: '%S'",
-		       seqin->Ufo); */
-		    /*	   return FMT_FAIL;*/
+		     **  GWW 21 Aug 2000 - don't warn about missing feature
+		     **  tables
+		     **/
 		}
 		else
 		{
@@ -1335,38 +1422,42 @@ static ajint seqReadFmt (AjPSeq thys, AjPSeqin seqin,
 		}
 	    }
 
-	    if (ajSeqTypeCheckIn(thys, seqin))
+	    if(ajSeqTypeCheckIn(thys, seqin))
 	    {
-		/* ajSeqinTrace (seqin); */
+		/* ajSeqinTrace(seqin); */
 		if(seqin->Upper)
 		    ajSeqToUpper(thys);
 		if(seqin->Lower)
 		    ajSeqToLower(thys);
-		if (seqin->Begin)
-		  thys->Begin = seqin->Begin;
-		if (seqin->End)
-		  thys->End = seqin->End;
-		if (seqin->Rev)
-		  thys->Rev = seqin->Rev;
+		if(seqin->Begin)
+		    thys->Begin = seqin->Begin;
+		if(seqin->End)
+		    thys->End = seqin->End;
+		if(seqin->Rev)
+		    thys->Rev = seqin->Rev;
 		return FMT_OK;
 	    }
 	    else
 		return FMT_BADTYPE;
 	}
-	ajDebug ("query match failed, continuing ...\n");
-	ajSeqClear (thys);
+	ajDebug("query match failed, continuing ...\n");
+	ajSeqClear(thys);
 	return FMT_NOMATCH;
     }
     else
     {
-      ajFileBuffResetStore(seqin->Filebuff, seqin->Text, &thys->TextPtr);
-      ajDebug("Format %d (%s) failed, file buffer reset by seqReadFmt\n",
-	      format, seqInFormatDef[format].Name);
-      /* ajFileBuffTraceFull(seqin->Filebuff, 10, 10);*/
+	ajFileBuffResetStore(seqin->Filebuff, seqin->Text, &thys->TextPtr);
+	ajDebug("Format %d (%s) failed, file buffer reset by seqReadFmt\n",
+		format, seqInFormatDef[format].Name);
+	/* ajFileBuffTraceFull(seqin->Filebuff, 10, 10);*/
     }
-    ajDebug ("++seqReadFmt failed - nothing read\n");
+    ajDebug("++seqReadFmt failed - nothing read\n");
+
     return FMT_FAIL;
 }
+
+
+
 
 /* @funcstatic seqRead ********************************************************
 **
@@ -1379,108 +1470,111 @@ static ajint seqReadFmt (AjPSeq thys, AjPSeqin seqin,
 ** @@
 ******************************************************************************/
 
-static AjBool seqRead (AjPSeq thys, AjPSeqin seqin)
+static AjBool seqRead(AjPSeq thys, AjPSeqin seqin)
 {
     ajint i;
     ajint stat;
 
-/*    AjPFileBuff buff = seqin->Filebuff; unused */
+    /*    AjPFileBuff buff = seqin->Filebuff; unused */
 
-    if (seqin->Single && seqin->Count)
+    if(seqin->Single && seqin->Count)
     {
-      /*
-      ** we read one sequence at a time.
-      ** the first sequence was read by ACD
-      ** for the following ones we need to reset the AjPSeqin
-      **
-      ** Single is set by the access method
-      */
+	/*
+	 ** we read one sequence at a time.
+	 ** the first sequence was read by ACD
+	 ** for the following ones we need to reset the AjPSeqin
+	 **
+	 ** Single is set by the access method
+	 */
 
-	ajDebug ("seqRead: single access - count %d - call access"
-		 " routine again\n",
-		 seqin->Count);
+	ajDebug("seqRead: single access - count %d - call access"
+		" routine again\n",
+		seqin->Count);
 	/* Calling funclist seqAccess() */
-	if (!seqin->Query->Access->Access(seqin))
+	if(!seqin->Query->Access->Access(seqin))
 	{
-	    ajDebug ("seqRead: seqin->Query->Access->Access(seqin) "
-		     "*failed*\n");
+	    ajDebug("seqRead: seqin->Query->Access->Access(seqin) "
+		    "*failed*\n");
 	    return ajFalse;
 	}
     }
 
     ajDebug("seqRead: seqin format %d '%S'\n", seqin->Format,
 	    seqin->Formatstr);
-    ajSeqClear (thys);
+    ajSeqClear(thys);
     ajDebug("seqRead: cleared\n");
 
     seqin->Count++;
 
-    if (!seqin->Filebuff)
-      return ajFalse;
+    if(!seqin->Filebuff)
+	return ajFalse;
 
-    if (!seqin->Format)
-    {	/* no format specified, try all defaults */
+    if(!seqin->Format)
+    {			   /* no format specified, try all defaults */
 
-	for (i = 1; seqInFormatDef[i].Name; i++)
+	for(i = 1; seqInFormatDef[i].Name; i++)
 	{
-	    if (!seqInFormatDef[i].Try) /* skip if Try is ajFalse */
+	    if(!seqInFormatDef[i].Try)	/* skip if Try is ajFalse */
 		continue;
 
-	    ajDebug ("seqRead:try format %d (%s)\n",
-		     i, seqInFormatDef[i].Name);
+	    ajDebug("seqRead:try format %d (%s)\n",
+		    i, seqInFormatDef[i].Name);
 
-	    stat = seqReadFmt (thys, seqin, i);
-	    switch (stat) {
+	    stat = seqReadFmt(thys, seqin, i);
+	    switch(stat)
+	    {
 	    case FMT_OK:
-	      ajDebug("++seqRead OK, set format %d\n", seqin->Format);
-	      return ajTrue;
+		ajDebug("++seqRead OK, set format %d\n", seqin->Format);
+		return ajTrue;
 	    case FMT_BADTYPE:
-	      ajDebug ("seqRead: (a1) seqReadFmt stat == BADTYPE *failed*\n");
-	      return ajFalse;
+		ajDebug("seqRead: (a1) seqReadFmt stat == BADTYPE *failed*\n");
+		return ajFalse;
 	    case FMT_FAIL:
-	      ajDebug ("seqRead: (b1) seqReadFmt stat == FAIL *failed*\n");
-	      break;		/* we can try next format */
+		ajDebug("seqRead: (b1) seqReadFmt stat == FAIL *failed*\n");
+		break;			/* we can try next format */
 	    case FMT_NOMATCH:
-	      ajDebug ("seqRead: (c1) seqReadFmt stat == NOMATCH *try again*\n");
-	      break;
+		ajDebug("seqRead: (c1) seqReadFmt stat==NOMATCH try again\n");
+		break;
 	    default:
-	      ajDebug("unknown code %d from seqReadFmt\n", stat);
+		ajDebug("unknown code %d from seqReadFmt\n", stat);
 	    }
 
-	    if (seqin->Format) break;	/* we read something */
+	    if(seqin->Format)
+		break;			/* we read something */
 	}
 
-	if (!seqin->Format)
-	{   /* all default formats failed, give up */
-	    ajDebug ("seqRead:all default formats failed, give up\n");
+	if(!seqin->Format)
+	{		     /* all default formats failed, give up */
+	    ajDebug("seqRead:all default formats failed, give up\n");
 	    return ajFalse;
 	}
 	ajDebug("++seqRead set format %d\n", seqin->Format);
     }
     else
-    {	/* one format specified */
-      ajDebug("seqRead: one format specified\n");
-	ajFileBuffNobuff (seqin->Filebuff);
+    {					/* one format specified */
+	ajDebug("seqRead: one format specified\n");
+	ajFileBuffNobuff(seqin->Filebuff);
 
-	ajDebug ("++seqRead known format %d\n", seqin->Format);
-	stat = seqReadFmt (thys, seqin, seqin->Format);
-	switch (stat) {
+	ajDebug("++seqRead known format %d\n", seqin->Format);
+	stat = seqReadFmt(thys, seqin, seqin->Format);
+	switch(stat)
+	{
 	case FMT_OK:
-	  return ajTrue;
+	    return ajTrue;
 	case FMT_BADTYPE:
-	  ajDebug ("seqRead: (a2) seqReadFmt stat == BADTYPE *failed*\n");
-	  return ajFalse;
+	    ajDebug("seqRead: (a2) seqReadFmt stat == BADTYPE *failed*\n");
+	    return ajFalse;
 	case FMT_FAIL:
-	  ajDebug ("seqRead: (b2) seqReadFmt stat == FAIL *failed*\n");
-	  break;		/* could be simply end-of-file */
+	    ajDebug("seqRead: (b2) seqReadFmt stat == FAIL *failed*\n");
+	    break;		     /* could be simply end-of-file */
 	case FMT_NOMATCH:
-	  ajDebug ("seqRead: (c2) seqReadFmt stat == NOMATCH *try again*\n");
-	  break;
+	    ajDebug("seqRead: (c2) seqReadFmt stat == NOMATCH *try again*\n");
+	    break;
 	default:
-	  ajDebug("unknown code %d from seqReadFmt\n", stat);
+	    ajDebug("unknown code %d from seqReadFmt\n", stat);
 	}
 
-	ajSeqClear (thys);	/* 1 : read, failed to match id/acc/query */
+	ajSeqClear(thys); /* 1 : read, failed to match id/acc/query */
     }
 
     /* failed - probably entry/accession query failed. Can we try again? */
@@ -1488,37 +1582,41 @@ static AjBool seqRead (AjPSeq thys, AjPSeqin seqin)
     ajDebug("seqRead failed - try again with format %d '%s'\n",
 	    seqin->Format, seqInFormatDef[seqin->Format].Name);
 
-    /*while (seqin->Search && !ajFileBuffEmpty (buff))*/
-    while (seqin->Search)
+    /*while(seqin->Search && !ajFileBuffEmpty(buff))*/
+    while(seqin->Search)
     {
-	stat = seqReadFmt (thys, seqin, seqin->Format);
-	switch (stat) {
+	stat = seqReadFmt(thys, seqin, seqin->Format);
+	switch(stat)
+	{
 	case FMT_OK:
-	  return ajTrue;
+	    return ajTrue;
 	case FMT_BADTYPE:
-	  ajDebug ("seqRead: (a3) seqReadFmt stat == BADTYPE *failed*\n");
-	  return ajFalse;
+	    ajDebug("seqRead: (a3) seqReadFmt stat == BADTYPE *failed*\n");
+	    return ajFalse;
 	case FMT_FAIL:
-	  ajDebug ("seqRead: (b3) seqReadFmt stat == FAIL *failed*\n");
-	  return ajFalse;
+	    ajDebug("seqRead: (b3) seqReadFmt stat == FAIL *failed*\n");
+	    return ajFalse;
 	case FMT_NOMATCH:
-	  ajDebug ("seqRead: (c3) seqReadFmt stat == NOMATCH *try again*\n");
-	  break;
+	    ajDebug("seqRead: (c3) seqReadFmt stat == NOMATCH *try again*\n");
+	    break;
 	default:
-	  ajDebug("unknown code %d from seqReadFmt\n", stat);
+	    ajDebug("unknown code %d from seqReadFmt\n", stat);
 	}
-	ajSeqClear (thys);	/* 1 : read, failed to match id/acc/query */
+	ajSeqClear(thys); /* 1 : read, failed to match id/acc/query */
     }
 
-    if (seqin->Format)
-	ajDebug ("seqRead: *failed* to read sequence %S using format %s\n",
-		 seqin->Usa, seqInFormatDef[seqin->Format].Name);
+    if(seqin->Format)
+	ajDebug("seqRead: *failed* to read sequence %S using format %s\n",
+		seqin->Usa, seqInFormatDef[seqin->Format].Name);
     else
-	ajDebug ("seqRead: *failed* to read sequence %S using any format\n",
-		 seqin->Usa);
+	ajDebug("seqRead: *failed* to read sequence %S using any format\n",
+		seqin->Usa);
 
     return ajFalse;
 }
+
+
+
 
 /* @funcstatic seqReadFasta ***************************************************
 **
@@ -1531,84 +1629,90 @@ static AjBool seqRead (AjPSeq thys, AjPSeqin seqin)
 ** @@
 ******************************************************************************/
 
-static AjBool seqReadFasta (AjPSeq thys, AjPSeqin seqin)
+static AjBool seqReadFasta(AjPSeq thys, AjPSeqin seqin)
 {
     static AjPStr rdline = NULL;
-    AjPFileBuff buff = seqin->Filebuff;
-    static AjPStr id = NULL;
-    static AjPStr acc = NULL;
-    static AjPStr sv = NULL;
+
+    AjPFileBuff buff;
+    static AjPStr id   = NULL;
+    static AjPStr acc  = NULL;
+    static AjPStr sv   = NULL;
     static AjPStr desc = NULL;
 
     char *cp;
     ajint bufflines = 0;
-    ajlong fpos = 0;
-    ajlong fposb = 0;
-    AjBool ok = ajTrue;
+    ajlong fpos     = 0;
+    ajlong fposb    = 0;
+    AjBool ok       = ajTrue;
 
-    ajDebug ("seqReadFasta\n");
-    /* ajFileBuffTrace (buff); */
 
-    ok = ajFileBuffGetStoreL (buff, &rdline, &fpos,
-			      seqin->Text, &thys->TextPtr);
-    if (!ok)
+    ajDebug("seqReadFasta\n");
+
+    buff = seqin->Filebuff;
+
+    /* ajFileBuffTrace(buff); */
+
+    ok = ajFileBuffGetStoreL(buff, &rdline, &fpos,
+			     seqin->Text, &thys->TextPtr);
+    if(!ok)
 	return ajFalse;
 
     bufflines++;
 
-    if (ajStrChar(rdline, 3) == ';')	/* then it is really PIR format */
+    if(ajStrChar(rdline, 3) == ';') /* then it is really PIR format */
 	return ajFalse;
 
     cp = ajStrStr(rdline);
-    if (*cp != '>')
+    if(*cp != '>')
     {
 	ajDebug("first line is not FASTA\n");
-	ajFileBuffReset (buff);
+	ajFileBuffReset(buff);
 	return ajFalse;
     }
 
-    if (!ajSeqParseFasta(rdline, &id, &acc, &sv, &desc)) {
-      ajFileBuffReset (buff);
-      return ajFalse;
+    if(!ajSeqParseFasta(rdline, &id, &acc, &sv, &desc))
+    {
+	ajFileBuffReset(buff);
+	return ajFalse;
     }
 
-    seqSetName (&thys->Name, id);
+    seqSetName(&thys->Name, id);
 
-    if (ajStrLen(sv))
-      (void) seqSvSave (thys, sv);
+    if(ajStrLen(sv))
+	seqSvSave(thys, sv);
 
-    if (ajStrLen(acc))
-      (void) seqAccSave (thys, acc);
+    if(ajStrLen(acc))
+	seqAccSave(thys, acc);
 
-    (void) ajStrAssS (&thys->Desc, desc);
+    ajStrAssS(&thys->Desc, desc);
 
-    if (ajStrLen(seqin->Inseq))
-    {	/* we have a sequence to use */
+    if(ajStrLen(seqin->Inseq))
+    {				       /* we have a sequence to use */
         ajDebug("++fasta use Inseq '%S'\n", seqin->Inseq);
-	ajStrAssS (&thys->Seq, seqin->Inseq);
-	if (seqin->Text)
-	{
-	  seqTextSeq(&thys->TextPtr, seqin->Inseq);
-	}
-	ajFileBuffClear (buff, 0);
+	ajStrAssS(&thys->Seq, seqin->Inseq);
+	if(seqin->Text)
+	    seqTextSeq(&thys->TextPtr, seqin->Inseq);
+
+	ajFileBuffClear(buff, 0);
     }
     else
     {
-	ok = ajFileBuffGetStoreL (buff, &rdline, &fposb,
-				  seqin->Text, &thys->TextPtr);
-	while (ok && !ajStrPrefixC(rdline, ">"))
+	ok = ajFileBuffGetStoreL(buff, &rdline, &fposb,
+				 seqin->Text, &thys->TextPtr);
+	while(ok && !ajStrPrefixC(rdline, ">"))
 	{
-	    (void) seqAppend (&thys->Seq, rdline);
+	    seqAppend(&thys->Seq, rdline);
 	    bufflines++;
 	    ajDebug("++fasta append line '%S'\n", rdline);
-	    ok = ajFileBuffGetStoreL (buff, &rdline, &fposb,
-				      seqin->Text, &thys->TextPtr);
+	    ok = ajFileBuffGetStoreL(buff, &rdline, &fposb,
+				     seqin->Text, &thys->TextPtr);
 	}
-	if (ok)
-	    ajFileBuffClearStore (buff, 1,
-				  rdline, seqin->Text, &thys->TextPtr);
+
+	if(ok)
+	    ajFileBuffClearStore(buff, 1,
+				 rdline, seqin->Text, &thys->TextPtr);
 	else
-	    ajFileBuffClear (buff, 0);
+	    ajFileBuffClear(buff, 0);
     }
 
     thys->Fpos = fpos;
@@ -1617,6 +1721,9 @@ static AjBool seqReadFasta (AjPSeq thys, AjPSeqin seqin)
 
     return ajTrue;
 }
+
+
+
 
 /* @funcstatic seqReadDbId ****************************************************
 **
@@ -1629,98 +1736,99 @@ static AjBool seqReadFasta (AjPSeq thys, AjPSeqin seqin)
 ** @@
 ******************************************************************************/
 
-static AjBool seqReadDbId (AjPSeq thys, AjPSeqin seqin)
+static AjBool seqReadDbId(AjPSeq thys, AjPSeqin seqin)
 {
     static AjPStrTok handle = NULL;
-    static AjPStr token = NULL;
-    static AjPStr rdline = NULL;
-    AjPFileBuff buff = seqin->Filebuff;
+    static AjPStr token     = NULL;
+    static AjPStr rdline    = NULL;
+    AjPFileBuff buff;
 
     char *cp;
-    AjPStr vacc = NULL;
+    AjPStr vacc     = NULL;
     ajint bufflines = 0;
-    ajlong fpos = 0;
-    ajlong fposb = 0;
-    AjBool ok = ajTrue;
+    ajlong fpos     = 0;
+    ajlong fposb    = 0;
+    AjBool ok       = ajTrue;
 
-    ajDebug ("seqReadDbId\n");
-    /* ajFileBuffTrace (buff); */
+    ajDebug("seqReadDbId\n");
 
-    ok = ajFileBuffGetStoreL (buff, &rdline, &fpos,
-			      seqin->Text, &thys->TextPtr);
-    if (!ok)
+    buff = seqin->Filebuff;
+    /* ajFileBuffTrace(buff); */
+
+    ok = ajFileBuffGetStoreL(buff, &rdline, &fpos,
+			     seqin->Text, &thys->TextPtr);
+    if(!ok)
 	return ajFalse;
 
     bufflines++;
 
-    if (ajStrChar(rdline, 3) == ';')	/* then it is really PIR format */
+    if(ajStrChar(rdline, 3) == ';') /* then it is really PIR format */
 	return ajFalse;
 
     cp = ajStrStr(rdline);
-    if (*cp != '>')
+    if(*cp != '>')
     {
 	ajDebug("first line is not FASTA\n");
-	ajFileBuffReset (buff);
+	ajFileBuffReset(buff);
 	return ajFalse;
     }
 
-    (void) ajStrTokenAss (&handle, rdline, "> ");
-    (void) ajStrToken (&token, &handle, " \t\n\r");
-    (void) ajStrToken (&token, &handle, " \t\n\r");
-    seqSetName (&thys->Name, token);
+    ajStrTokenAss(&handle, rdline, "> ");
+    ajStrToken(&token, &handle, " \t\n\r");
+    ajStrToken(&token, &handle, " \t\n\r");
+    seqSetName(&thys->Name, token);
 
-    (void) ajStrToken (&token, &handle, NULL);
+    ajStrToken(&token, &handle, NULL);
 
     vacc = ajIsSeqversion(token);
-    if (vacc)
+    if(vacc)
     {
-	(void) seqSvSave (thys, token);
-	(void) seqAccSave (thys, vacc);
-	(void) ajStrToken (&thys->Desc, &handle, "\n\r");
+	seqSvSave(thys, token);
+	seqAccSave(thys, vacc);
+	ajStrToken(&thys->Desc, &handle, "\n\r");
     }
-    else if (ajIsAccession(token))
+    else if(ajIsAccession(token))
     {
-	(void) seqAccSave (thys, token);
-	(void) ajStrToken (&thys->Desc, &handle, "\n\r");
-    }
-    else
-    {
-	(void) ajStrAss (&thys->Desc, token);
-	if (ajStrToken (&token, &handle, "\n\r"))
-	{
-	    (void) ajStrAppC (&thys->Desc, " ");
-	    (void) ajStrApp (&thys->Desc, token);
-	}
-    }
-
-    (void) ajStrDelReuse(&token); /* duplicate of accession or description */
-    (void) ajStrTokenReset (&handle);
-
-    if (ajStrLen(seqin->Inseq))
-    {					/* we have a sequence to use */
-	ajStrAssS (&thys->Seq, seqin->Inseq);
-	if (seqin->Text)
-	{
-	  seqTextSeq(&thys->TextPtr, seqin->Inseq);
-	}
-	ajFileBuffClear (buff, 0);
+	seqAccSave(thys, token);
+	ajStrToken(&thys->Desc, &handle, "\n\r");
     }
     else
     {
-	ok = ajFileBuffGetStoreL (buff, &rdline, &fposb,
-				  seqin->Text, &thys->TextPtr);
-	while (ok && !ajStrPrefixC(rdline, ">"))
+	ajStrAss(&thys->Desc, token);
+	if(ajStrToken(&token, &handle, "\n\r"))
 	{
-	    (void) seqAppend (&thys->Seq, rdline);
+	    ajStrAppC(&thys->Desc, " ");
+	    ajStrApp(&thys->Desc, token);
+	}
+    }
+
+    ajStrDelReuse(&token); /* duplicate of accession or description */
+    ajStrTokenReset(&handle);
+
+    if(ajStrLen(seqin->Inseq))
+    {				       /* we have a sequence to use */
+	ajStrAssS(&thys->Seq, seqin->Inseq);
+	if(seqin->Text)
+	    seqTextSeq(&thys->TextPtr, seqin->Inseq);
+
+	ajFileBuffClear(buff, 0);
+    }
+    else
+    {
+	ok = ajFileBuffGetStoreL(buff, &rdline, &fposb,
+				 seqin->Text, &thys->TextPtr);
+	while(ok && !ajStrPrefixC(rdline, ">"))
+	{
+	    seqAppend(&thys->Seq, rdline);
 	    bufflines++;
-	    ok = ajFileBuffGetStoreL (buff, &rdline, &fposb,
-				      seqin->Text, &thys->TextPtr);
+	    ok = ajFileBuffGetStoreL(buff, &rdline, &fposb,
+				     seqin->Text, &thys->TextPtr);
 	}
-	if (ok)
-	    ajFileBuffClearStore (buff, 1,
-				  rdline, seqin->Text, &thys->TextPtr);
+	if(ok)
+	    ajFileBuffClearStore(buff, 1,
+				 rdline, seqin->Text, &thys->TextPtr);
 	else
-	    ajFileBuffClear (buff, 0);
+	    ajFileBuffClear(buff, 0);
     }
 
     thys->Fpos = fpos;
@@ -1729,6 +1837,9 @@ static AjBool seqReadDbId (AjPSeq thys, AjPSeqin seqin)
 
     return ajTrue;
 }
+
+
+
 
 /* @funcstatic seqReadNbrf ****************************************************
 **
@@ -1741,22 +1852,28 @@ static AjBool seqReadDbId (AjPSeq thys, AjPSeqin seqin)
 ** @@
 ******************************************************************************/
 
-static AjBool seqReadNbrf (AjPSeq thys, AjPSeqin seqin)
+static AjBool seqReadNbrf(AjPSeq thys, AjPSeqin seqin)
 {
-    static AjPStr token = NULL;
+    static AjPStr token  = NULL;
     static AjPStr rdline = NULL;
-    AjPFileBuff buff = seqin->Filebuff;
-    static AjPStr ftfmt = NULL;
-    AjBool dofeat = ajFalse;
 
-    static AjPStrTok handle2=NULL;
-    static AjPStr    token2=NULL;
-    static AjPStr    rdline2=NULL;
+    static AjPStr ftfmt = NULL;
+    AjBool dofeat       = ajFalse;
+
+    static AjPStrTok handle2 = NULL;
+    static AjPStr    token2  = NULL;
+    static AjPStr    rdline2 = NULL;
+    static AjPRegexp idexp   = NULL;
 
     AjBool ok;
+    AjPFileBuff buff;
 
-    static AjPRegexp idexp = NULL;
-    ajDebug ("seqReadNbrf\n");
+
+
+
+    ajDebug("seqReadNbrf\n");
+
+    buff = seqin->Filebuff;
 
     if(!token2)
     {
@@ -1764,142 +1881,141 @@ static AjBool seqReadNbrf (AjPSeq thys, AjPSeqin seqin)
 	rdline2 = ajStrNew();
     }
 
-    if (!ftfmt)
-	ajStrAssC (&ftfmt, "pir");
+    if(!ftfmt)
+	ajStrAssC(&ftfmt, "pir");
 
-    if (!idexp)
+    if(!idexp)
 	idexp = ajRegCompC("^>(..)[>;]([^ \t\n]+)");
 
-    if (!ajFileBuffGetStore (buff, &rdline,
-			     seqin->Text, &thys->TextPtr))
-    {
+    if(!ajFileBuffGetStore(buff, &rdline,
+			   seqin->Text, &thys->TextPtr))
 	return ajFalse;
-    }
 
-    ajDebug ("nbrf first line:\n%S", rdline);
+    ajDebug("nbrf first line:\n%S", rdline);
 
-    if (!ajRegExec (idexp, rdline))
+    if(!ajRegExec(idexp, rdline))
     {
-	ajFileBuffResetStore (buff, seqin->Text, &thys->TextPtr);
+	ajFileBuffResetStore(buff, seqin->Text, &thys->TextPtr);
 	return ajFalse;
     }
     ajRegSubI(idexp, 1, &token);
     ajRegSubI(idexp, 2, &thys->Name);
-    ajDebug ("parsed line name '%S' token '%S' token(1) '%c'\n",
-	     thys->Name, token, ajStrChar(token, 0));
+    ajDebug("parsed line name '%S' token '%S' token(1) '%c'\n",
+	    thys->Name, token, ajStrChar(token, 0));
 
-    /* token has the NBRF 2-char type. First char is the type
+    /*
+     ** token has the NBRF 2-char type. First char is the type
      ** and second char is Linear, Circular, or 1
      ** or, for GCG databases, thys is just '>>'
      */
 
-    switch (toupper((ajint) ajStrChar(token, 0)))
+    switch(toupper((ajint) ajStrChar(token, 0)))
     {
     case 'P':
     case 'F':
-	ajSeqSetProt (thys);
+	ajSeqSetProt(thys);
 	break;
     case 'B':				/* used by DIANA */
     case 'D':				/* DNA */
     case 'R':				/* RNA */
-	ajSeqSetNuc (thys);
+	ajSeqSetNuc(thys);
 	break;
     default:
-	ajWarn ("Unknown NBRF sequence type '%S'", token);
+	ajWarn("Unknown NBRF sequence type '%S'", token);
     }
 
     /* next line is the description, with no prefix */
 
-    if (!ajFileBuffGetStore (buff, &rdline, seqin->Text, &thys->TextPtr))
+    if(!ajFileBuffGetStore(buff, &rdline, seqin->Text, &thys->TextPtr))
     {
-	ajFileBuffResetStore (buff, seqin->Text, &thys->TextPtr);
+	ajFileBuffResetStore(buff, seqin->Text, &thys->TextPtr);
 	return ajFalse;
     }
 
-    (void) ajStrAss (&thys->Desc, rdline);
-    if (ajStrChar(thys->Desc, -1) == '\n')
-	(void) ajStrTrim (&thys->Desc, -1);
+    ajStrAss(&thys->Desc, rdline);
+    if(ajStrChar(thys->Desc, -1) == '\n')
+	ajStrTrim(&thys->Desc, -1);
 
     /* read on, looking for feature and sequence lines */
 
-    ok = ajFileBuffGetStore (buff, &rdline, seqin->Text, &thys->TextPtr);
-    while (ok && !ajStrPrefixC(rdline, ">"))
+    ok = ajFileBuffGetStore(buff, &rdline, seqin->Text, &thys->TextPtr);
+    while(ok && !ajStrPrefixC(rdline, ">"))
     {
-	if (ajStrChar(rdline, 1) != ';')
-	{
-	    (void) seqAppend (&thys->Seq, rdline);
-	}
+	if(ajStrChar(rdline, 1) != ';')
+	    seqAppend(&thys->Seq, rdline);
 	else
 	{
-	    if (ajStrPrefixC(rdline, "C;Accession:"))
+	    if(ajStrPrefixC(rdline, "C;Accession:"))
 	    {
 		ajStrAssC(&rdline2,ajStrStr(rdline)+13);
-		ajStrTokenAss (&handle2,rdline2, " ;\n\r");
-		while (ajStrToken (&token2, &handle2, NULL))
-		    seqAccSave (thys, token2);
+		ajStrTokenAss(&handle2,rdline2, " ;\n\r");
+		while(ajStrToken(&token2, &handle2, NULL))
+		    seqAccSave(thys, token2);
 	    }
 
-	    if (ajStrPrefixC(rdline, "C;Species:"))
+	    if(ajStrPrefixC(rdline, "C;Species:"))
 	    {
 		ajStrAssC(&rdline2,ajStrStr(rdline)+13);
-		ajStrTokenAss (&handle2,rdline2, " ;\n\r");
-		while (ajStrToken (&token2, &handle2, NULL))
-		    seqTaxSave (thys, token2);
+		ajStrTokenAss(&handle2,rdline2, " ;\n\r");
+		while(ajStrToken(&token2, &handle2, NULL))
+		    seqTaxSave(thys, token2);
 	    }
 
-	    if (ajStrChar(rdline,0) == 'R')
-	    {			/* skip reference lines with no prefix */
+	    if(ajStrChar(rdline,0) == 'R')
+	    {		     /* skip reference lines with no prefix */
 		while((ok=ajFileBuffGetStore(buff,&rdline,
 					     seqin->Text, &thys->TextPtr)))
-		{
 		    if(ajStrChar(rdline,1)==';' || ajStrChar(rdline,0)=='>')
-			break;	/* X; line or next sequence */
-		}
+			break;		/* X; line or next sequence */
+
 		if(ok)
 		    continue;
 	    }
-	    else if (ajStrChar(rdline,0) == 'F')
-	    {			/* feature lines */
-	      if (seqinUfoLocal(seqin))
-	      {
-		if (!dofeat)
-		{
-		  dofeat = ajTrue;
-		  ajFeattabInDel(&seqin->Ftquery);
-		  seqin->Ftquery = ajFeattabInNewSS (ftfmt, thys->Name, "N");
-		  ajDebug("seqin->Ftquery Handle %x\n",
-			  seqin->Ftquery->Handle);
-		}
-		ajFileBuffLoadS (seqin->Ftquery->Handle, rdline);
-		/* ajDebug ("NBRF FEAT saved line:\n%S", rdline); */
-	      }
+	    else if(ajStrChar(rdline,0) == 'F')
+	    {				/* feature lines */
+		if(seqinUfoLocal(seqin))
+		    if(!dofeat)
+		    {
+			dofeat = ajTrue;
+			ajFeattabInDel(&seqin->Ftquery);
+			seqin->Ftquery = ajFeattabInNewSS(ftfmt, thys->Name,
+							  "N");
+			ajDebug("seqin->Ftquery Handle %x\n",
+				seqin->Ftquery->Handle);
+		    }
+		ajFileBuffLoadS(seqin->Ftquery->Handle, rdline);
+		/* ajDebug("NBRF FEAT saved line:\n%S", rdline); */
 	    }
 	}
-	if (ok)
-	    ok = ajFileBuffGetStore (buff, &rdline,
-				     seqin->Text, &thys->TextPtr);
+	if(ok)
+	    ok = ajFileBuffGetStore(buff, &rdline,
+				    seqin->Text, &thys->TextPtr);
     }
-    if (ajStrChar(thys->Seq, -1) == '*')
-	(void) ajStrTrim(&thys->Seq, -1);
 
-    if (ok)
-	ajFileBuffClearStore (buff, 1,
-			      rdline, seqin->Text, &thys->TextPtr);
+    if(ajStrChar(thys->Seq, -1) == '*')
+	ajStrTrim(&thys->Seq, -1);
+
+    if(ok)
+	ajFileBuffClearStore(buff, 1,
+			     rdline, seqin->Text, &thys->TextPtr);
     else
-	ajFileBuffClear (buff, 0);
+	ajFileBuffClear(buff, 0);
 
-    if (dofeat)
+    if(dofeat)
     {
-      ajDebug("seqin->Ftquery Handle %x\n",
-	      seqin->Ftquery->Handle);
-      ajFeattableDel(&seqin->Fttable);
-      thys->Fttable = ajFeatRead (seqin->Ftquery);
-      /* ajFeattableTrace(thys->Fttable); */
-      ajFeattabInClear(seqin->Ftquery);
+	ajDebug("seqin->Ftquery Handle %x\n",
+		seqin->Ftquery->Handle);
+	ajFeattableDel(&seqin->Fttable);
+	thys->Fttable = ajFeatRead(seqin->Ftquery);
+	/* ajFeattableTrace(thys->Fttable); */
+	ajFeattabInClear(seqin->Ftquery);
     }
 
-     return ajTrue;
+    return ajTrue;
 }
+
+
+
 
 /* @funcstatic seqReadGcg *****************************************************
 **
@@ -1912,45 +2028,49 @@ static AjBool seqReadNbrf (AjPSeq thys, AjPSeqin seqin)
 ** @@
 ******************************************************************************/
 
-static AjBool seqReadGcg (AjPSeq thys, AjPSeqin seqin)
+static AjBool seqReadGcg(AjPSeq thys, AjPSeqin seqin)
 {
     static AjPStr rdline = NULL;
-    ajint bufflines = 0;
+    ajint bufflines      = 0;
     AjBool ok;
-    ajint len=0;
-    AjPFileBuff buff = seqin->Filebuff;
-    AjBool seqed=ajFalse;
-    char *p=NULL;
 
-    ok = ajFileBuffGetStore (buff, &rdline,
-			     seqin->Text, &thys->TextPtr);
-    if (!ok)
-      return ajFalse;
+    ajint len    = 0;
+    AjBool seqed = ajFalse;
+    char *p      = NULL;
+
+    AjPFileBuff buff;
+
+    buff = seqin->Filebuff;
+
+    ok = ajFileBuffGetStore(buff, &rdline,
+			    seqin->Text, &thys->TextPtr);
+    if(!ok)
+	return ajFalse;
     bufflines++;
 
-    ajDebug ("seqReadGcg first line ok: %B\n", ok);
+    ajDebug("seqReadGcg first line ok: %B\n", ok);
 
     /* test GCG 9.x file types if available */
     /* any type on the .. line will override this */
 
-    if (ajStrPrefixC(rdline, "!!NA_SEQUENCE"))
+    if(ajStrPrefixC(rdline, "!!NA_SEQUENCE"))
 	ajSeqSetNuc(thys);
-    else if (ajStrPrefixC(rdline, "!!AA_SEQUENCE"))
+    else if(ajStrPrefixC(rdline, "!!AA_SEQUENCE"))
 	ajSeqSetProt(thys);
 
-    if (!seqGcgDots (thys, seqin, &rdline, seqMaxGcglines, &len))
+    if(!seqGcgDots(thys, seqin, &rdline, seqMaxGcglines, &len))
     {
-	ajFileBuffReset (buff);
+	ajFileBuffReset(buff);
 	return ajFalse;
     }
-    ajDebug ("   Gcg dots read ok len: %d\n", len);
+    ajDebug("   Gcg dots read ok len: %d\n", len);
 
 
-    while (ok &&  (ajSeqLen(thys) < len))
+    while(ok &&  (ajSeqLen(thys) < len))
     {
-	ok = ajFileBuffGetStore (buff, &rdline,
-				 seqin->Text, &thys->TextPtr);
-	if (ok)
+	ok = ajFileBuffGetStore(buff, &rdline,
+				seqin->Text, &thys->TextPtr);
+	if(ok)
 	{
 	    if(!seqed)
 	    {
@@ -1958,7 +2078,7 @@ static AjBool seqReadGcg (AjPSeq thys, AjPSeqin seqin)
 		if(strpbrk(p,"<>"))
 		    seqed = ajTrue;
 		else
-		    (void) seqAppend (&thys->Seq, rdline);
+		    seqAppend(&thys->Seq, rdline);
 		bufflines++;
 		continue;
 	    }
@@ -1971,15 +2091,19 @@ static AjBool seqReadGcg (AjPSeq thys, AjPSeqin seqin)
 		++bufflines;
 	    }
 	}
-	ajDebug ("line %d seqlen: %d ok: %B\n", bufflines, ajSeqLen(thys), ok);
+	ajDebug("line %d seqlen: %d ok: %B\n", bufflines, ajSeqLen(thys), ok);
     }
-    ajDebug ("lines: %d ajSeqLen : %d len: %d ok: %B\n",
-	     bufflines, ajSeqLen(thys), len, ok);
-    ajFileBuffClear (buff, 0);
+    ajDebug("lines: %d ajSeqLen : %d len: %d ok: %B\n",
+	    bufflines, ajSeqLen(thys), len, ok);
+
+    ajFileBuffClear(buff, 0);
 
 
     return ok;
 }
+
+
+
 
 /* @funcstatic seqReadNcbi ****************************************************
 **
@@ -1992,31 +2116,34 @@ static AjBool seqReadGcg (AjPSeq thys, AjPSeqin seqin)
 ** @@
 ******************************************************************************/
 
-static AjBool seqReadNcbi (AjPSeq thys, AjPSeqin seqin)
+static AjBool seqReadNcbi(AjPSeq thys, AjPSeqin seqin)
 {
     static AjPStrTok handle = NULL;
-    static AjPStr rdline = NULL;
-    static AjPStr id = NULL;
-    static AjPStr acc = NULL;
-    static AjPStr sv = NULL;
-    static AjPStr gi = NULL;
-    static AjPStr desc = NULL;
+    static AjPStr rdline    = NULL;
+    static AjPStr id        = NULL;
+    static AjPStr acc       = NULL;
+    static AjPStr sv        = NULL;
+    static AjPStr gi        = NULL;
+    static AjPStr desc      = NULL;
 
-    AjPFileBuff buff = seqin->Filebuff;
+    AjPFileBuff buff;
 
     ajint bufflines = 0;
     AjBool ok;
 
-    ok = ajFileBuffGetStore (buff, &rdline,
-			     seqin->Text, &thys->TextPtr);
-    if (!ok)
-      return ajFalse;
 
-    (void) ajStrAssC(&id,"");
-    (void) ajStrAssC(&acc,"");
-    (void) ajStrAssC(&sv,"");
-    (void) ajStrAssC(&gi,"");
-    (void) ajStrAssC(&desc,"");
+    buff = seqin->Filebuff;
+
+    ok = ajFileBuffGetStore(buff, &rdline,
+			    seqin->Text, &thys->TextPtr);
+    if(!ok)
+	return ajFalse;
+
+    ajStrAssC(&id,"");
+    ajStrAssC(&acc,"");
+    ajStrAssC(&sv,"");
+    ajStrAssC(&gi,"");
+    ajStrAssC(&desc,"");
 
 
     if(!ajSeqParseNcbi(rdline,&id,&acc,&sv,&gi,&desc))
@@ -2027,52 +2154,54 @@ static AjBool seqReadNcbi (AjPSeq thys, AjPSeqin seqin)
 
     ajDebug("parsed id '%S' acc '%S' sv '%S' gi '%S' desc '%S'\n",
 	    id, acc, sv, gi, desc);
-    if (ajStrLen(gi))
-      ajStrAssS(&thys->Gi, gi);
+    if(ajStrLen(gi))
+	ajStrAssS(&thys->Gi, gi);
 
-    if (ajStrLen(sv))
-	(void) seqSvSave (thys, sv);
+    if(ajStrLen(sv))
+	seqSvSave(thys, sv);
 
-    if (ajStrLen(acc))
-	(void) seqAccSave (thys, acc);
+    if(ajStrLen(acc))
+	seqAccSave(thys, acc);
 
-    seqSetName (&thys->Name, id);
-    (void) ajStrAss (&thys->Desc, desc);
+    seqSetName(&thys->Name, id);
+    ajStrAss(&thys->Desc, desc);
 
 
 
-    if (ajStrLen(seqin->Inseq))
-    {					/* we have a sequence to use */
-	ajStrAssS (&thys->Seq, seqin->Inseq);
-	if (seqin->Text)
-	{
-	  seqTextSeq(&thys->TextPtr, seqin->Inseq);
-	}
-	ajFileBuffClearStore (buff, 1,
-			      rdline, seqin->Text, &thys->TextPtr);
+    if(ajStrLen(seqin->Inseq))
+    {				       /* we have a sequence to use */
+	ajStrAssS(&thys->Seq, seqin->Inseq);
+	if(seqin->Text)
+	    seqTextSeq(&thys->TextPtr, seqin->Inseq);
+
+	ajFileBuffClearStore(buff, 1,
+			     rdline, seqin->Text, &thys->TextPtr);
     }
     else
     {
-	ok = ajFileBuffGetStore (buff, &rdline,
-				 seqin->Text, &thys->TextPtr);
-	while (ok && !ajStrPrefixC(rdline, ">"))
+	ok = ajFileBuffGetStore(buff, &rdline,
+				seqin->Text, &thys->TextPtr);
+	while(ok && !ajStrPrefixC(rdline, ">"))
 	{
-	    (void) seqAppend (&thys->Seq, rdline);
+	    seqAppend(&thys->Seq, rdline);
 	    bufflines++;
-	    ok = ajFileBuffGetStore (buff, &rdline,
-				     seqin->Text, &thys->TextPtr);
+	    ok = ajFileBuffGetStore(buff, &rdline,
+				    seqin->Text, &thys->TextPtr);
 	}
-	if (ok)
-	    ajFileBuffClearStore (buff, 1,
-				  rdline, seqin->Text, &thys->TextPtr);
+
+	if(ok)
+	    ajFileBuffClearStore(buff, 1,
+				 rdline, seqin->Text, &thys->TextPtr);
 	else
-	    ajFileBuffClear (buff, 0);
+	    ajFileBuffClear(buff, 0);
     }
 
-    (void) ajStrTokenReset (&handle);
+    ajStrTokenReset(&handle);
 
     return ajTrue;
 }
+
+
 
 
 /* @funcstatic seqReadSelex ***************************************************
@@ -2090,16 +2219,16 @@ static AjBool seqReadSelex(AjPSeq thys, AjPSeqin seqin)
     AjPFileBuff buff  = seqin->Filebuff;
     AjPStr      line  = NULL;
     AjPSelex    selex;
-    ajint       n     = 0;
-    char        *p    = NULL;
-    AjBool      ok    = ajFalse;
-    AjBool      isseq = ajFalse;
+    ajint       n      = 0;
+    char        *p     = NULL;
+    AjBool      ok     = ajFalse;
+    AjBool      isseq  = ajFalse;
     AjBool      named  = ajFalse;
     AjBool      head   = ajTrue;
     ajint       sqcnt  = 0;
     ajint       i;
-    char        c='\0';
-    AjBool      first=ajTrue;
+    char        c      = '\0';
+    AjBool      first  = ajTrue;
     ajint       filestat;
 
     line = ajStrNew();
@@ -2107,13 +2236,13 @@ static AjBool seqReadSelex(AjPSeq thys, AjPSeqin seqin)
 
     if(!seqin->Selex)
     {
-        if (ajFileBuffEof(buff) && ajFileStdin(ajFileBuffFile(buff)))
+        if(ajFileBuffEof(buff) && ajFileStdin(ajFileBuffFile(buff)))
 	  return ajFalse;
 	ajFileBuffClear(buff,-1);
 	ajFileBuffReset(buff);
 	buff->Fpos = 0;
 	filestat = ajFileSeek(buff->File, 0L, 0);
-	ajDebug ("filestat %d\n", filestat);
+	ajDebug("filestat %d\n", filestat);
 
 	/* First count the sequences, and get any header information */
 	while(!isseq && (ok=ajFileBuffGet(buff,&line)))
@@ -2135,6 +2264,7 @@ static AjBool seqReadSelex(AjPSeq thys, AjPSeqin seqin)
 	    else
 		isseq = ajTrue;
 	}
+
 	if(!ok && !isseq)
 	    return ajFalse;
 	++n;
@@ -2158,7 +2288,7 @@ static AjBool seqReadSelex(AjPSeq thys, AjPSeqin seqin)
 	ajFileSeek(buff->File, 0L, 0);
 	selex = ajSelexNew(n);
 
-/* now read it for real */
+	/* now read it for real */
 
 	while(head && ajFileBuffGetStore(buff,&line,
 					 seqin->Text, &thys->TextPtr))
@@ -2184,7 +2314,7 @@ static AjBool seqReadSelex(AjPSeq thys, AjPSeqin seqin)
 	{
 	    seqSelexReadBlock(&selex,&named,n,&line,buff,
 			      seqin->Text, &thys->TextPtr);
-	    ok = ajFileBuffGetStore (buff,&line,
+	    ok = ajFileBuffGetStore(buff,&line,
 				     seqin->Text, &thys->TextPtr);
 	}
 	seqin->Selex = selex;
@@ -2207,8 +2337,10 @@ static AjBool seqReadSelex(AjPSeq thys, AjPSeqin seqin)
     ajFileBuffClear(buff,0);
 
     ajStrDel(&line);
+
     return ajTrue;
 }
+
 
 
 
@@ -2240,25 +2372,23 @@ static AjBool seqReadStockholm(AjPSeq thys, AjPSeqin seqin)
     AjPRegexp    sexp  = NULL;
     AjPStockholm stock = NULL;
 
-    ajint i = 0;
-    ajint n = 0;
-    ajlong lpos=0L;
-    ajint  scnt=0;
+    ajint i     = 0;
+    ajint n     = 0;
+    ajlong lpos = 0L;
+    ajint  scnt = 0;
 
     line = ajStrNew();
 
     if(!seqin->Stockholm)
     {
 	lpos = ajFileTell(buff->File);
-	ok=ajFileBuffGetStore (buff,&line,
+	ok=ajFileBuffGetStore(buff,&line,
 			       seqin->Text, &thys->TextPtr);
-	if (!ok)
+	if(!ok)
 	  return ajFalse;
 
 	if(!ok || !ajStrPrefixC(line,"# STOCKHOLM 1.0"))
 	{
-/*	    ajFileSeek(buff->File,lpos,0);
-	    ajFileBuffClear(buff,-1);*/
 	    ajFileBuffReset(buff);
 	    ajStrDel(&line);
 	    return ajFalse;
@@ -2268,9 +2398,10 @@ static AjBool seqReadStockholm(AjPSeq thys, AjPSeqin seqin)
 	{
 	    if(ajStrPrefixC(line,"#=GF SQ"))
 		ajFmtScanS(line,"%*s%*s%d",&n);
-	    ok=ajFileBuffGetStore (buff,&line,
+	    ok=ajFileBuffGetStore(buff,&line,
 				   seqin->Text, &thys->TextPtr);
 	}
+
 	if(!ok || ajStrPrefixC(line,"//"))
 	{
 	    ajFileSeek(buff->File,lpos,0);
@@ -2284,9 +2415,9 @@ static AjBool seqReadStockholm(AjPSeq thys, AjPSeqin seqin)
 	ajFileBuffClear(buff,-1);
 	ajFileBuffReset(buff);
 
-        ok=ajFileBuffGetStore (buff,&line,
+        ok=ajFileBuffGetStore(buff,&line,
 			       seqin->Text, &thys->TextPtr);
-	ok=ajFileBuffGetStore (buff,&line,
+	ok=ajFileBuffGetStore(buff,&line,
 			       seqin->Text, &thys->TextPtr);
 	stock = ajStockholmNew(n);
 
@@ -2408,7 +2539,7 @@ static AjBool seqReadStockholm(AjPSeq thys, AjPSeqin seqin)
 		++scnt;
 	    }
 
-	    ok = ajFileBuffGetStore (buff,&line,
+	    ok = ajFileBuffGetStore(buff,&line,
 				     seqin->Text, &thys->TextPtr);
 	}
 
@@ -2435,11 +2566,10 @@ static AjBool seqReadStockholm(AjPSeq thys, AjPSeqin seqin)
 
     ajFileBuffClear(buff,0);
 
-
     ajStrDel(&line);
+
     return ajTrue;
 }
-
 
 
 
@@ -2503,6 +2633,8 @@ static void seqSelexCopy(AjPSeq *thys, AjPSeqin seqin, ajint n)
 }
 
 
+
+
 /* @funcstatic seqStockholmCopy ***********************************************
 **
 ** Copy Stockholm data to sequence object.
@@ -2517,9 +2649,12 @@ static void seqSelexCopy(AjPSeq *thys, AjPSeqin seqin, ajint n)
 
 static void seqStockholmCopy(AjPSeq *thys, AjPSeqin seqin, ajint n)
 {
-    AjPSeq pthis   = *thys;
-    AjPStockholm stock = seqin->Stockholm;
+    AjPSeq pthis;
+    AjPStockholm stock;
     AjPStockholmdata sdata;
+
+    pthis = *thys;
+    stock = seqin->Stockholm;
 
     ajStrAssS(&pthis->Seq, stock->str[n]);
     ajStrAssS(&pthis->Name, stock->name[n]);
@@ -2555,6 +2690,8 @@ static void seqStockholmCopy(AjPSeq *thys, AjPSeqin seqin, ajint n)
 }
 
 
+
+
 /* @funcstatic seqSelexAppend *************************************************
 **
 ** Append sequence and related Selex info to selex object.
@@ -2570,14 +2707,14 @@ static void seqStockholmCopy(AjPSeq *thys, AjPSeqin seqin, ajint n)
 
 static void seqSelexAppend(AjPStr src, AjPStr *dest, ajint beg, ajint end)
 {
-    char *p=NULL;
+    char *p = NULL;
     char c;
     ajint len;
     ajint i;
-    ajint pad=0;
+    ajint pad = 0;
 
     len = end-beg+1;
-    p = ajStrStr(src);
+    p   = ajStrStr(src);
 
     if(beg>=ajStrLen(src))
     {
@@ -2604,6 +2741,8 @@ static void seqSelexAppend(AjPStr src, AjPStr *dest, ajint beg, ajint end)
 }
 
 
+
+
 /* @funcstatic seqSelexHeader *************************************************
 **
 ** Load a Selex object with header information for a single line
@@ -2620,9 +2759,13 @@ static void seqSelexAppend(AjPStr src, AjPStr *dest, ajint beg, ajint end)
 static AjBool seqSelexHeader(AjPSelex *thys, AjPStr line, ajint n,
 			     AjBool *named, ajint *sqcnt)
 {
-    AjPSelex pthis = *thys;
-    AjPStrTok token=NULL;
-    AjPStr handle=NULL;
+    AjPSelex pthis;
+    AjPStrTok token = NULL;
+    AjPStr handle   = NULL;
+
+
+    pthis = *thys;
+
 
     if(ajStrPrefixC(line,"#=ID"))
     {
@@ -2698,6 +2841,8 @@ static AjBool seqSelexHeader(AjPSelex *thys, AjPStr line, ajint n,
 }
 
 
+
+
 /* @funcstatic seqSelexPos ****************************************************
 **
 ** Find start and end positions of sequence & related Selex information
@@ -2712,17 +2857,18 @@ static AjBool seqSelexHeader(AjPSelex *thys, AjPStr line, ajint n,
 static void seqSelexPos(AjPStr line, ajint *begin, ajint *end)
 {
     ajint pos = 0;
-    ajint len   = 0;
+    ajint len = 0;
 
     char  *p;
 
     /*
-     *  Selex sequence info can start any number of spaces
-     *  after the names so we need to find out where to
-     *  start counting chars from and where to end
+    **  Selex sequence info can start any number of spaces
+    **  after the names so we need to find out where to
+    **  start counting chars from and where to end
      */
-    len = ajStrLen(line) - 1;
-    pos = len -1;
+
+    len  = ajStrLen(line) - 1;
+    pos  = len -1;
     *end = (pos > *end) ? pos : *end;
     p = ajStrStr(line);
 
@@ -2737,6 +2883,8 @@ static void seqSelexPos(AjPStr line, ajint *begin, ajint *end)
 
     return;
 }
+
+
 
 
 /* @funcstatic seqSelexReadBlock **********************************************
@@ -2758,21 +2906,23 @@ static AjBool seqSelexReadBlock(AjPSelex *thys, AjBool *named, ajint n,
 				AjPStr *line, AjPFileBuff buff,
 				AjBool store, AjPStr *astr)
 {
-    AjPSelex pthis = *thys;
-    AjPStr *seqs=NULL;
-    AjPStr *ss=NULL;
+    AjPSelex pthis;
+    AjPStr *seqs = NULL;
+    AjPStr *ss   = NULL;
 
-    AjPStr rf=NULL;
-    AjPStr cs=NULL;
+    AjPStr rf = NULL;
+    AjPStr cs = NULL;
     ajint  i;
     ajint  begin;
     ajint  end;
     AjBool ok;
     ajint  cnt;
-    AjPStr tmp=NULL;
-    AjBool haverf=ajFalse;
-    AjBool havecs=ajFalse;
-    AjBool havess=ajFalse;
+    AjPStr tmp    = NULL;
+    AjBool haverf = ajFalse;
+    AjBool havecs = ajFalse;
+    AjBool havess = ajFalse;
+
+    pthis = *thys;
 
     begin = INT_MAX;
     end   = -(INT_MAX);
@@ -2799,11 +2949,13 @@ static AjBool seqSelexReadBlock(AjPSelex *thys, AjBool *named, ajint n,
 	    haverf=ajTrue;
 	    ajStrAssS(&rf,*line);
 	}
+
 	if(ajStrPrefixC(*line,"#=CS"))
 	{
 	    havecs=ajTrue;
 	    ajStrAssS(&cs,*line);
 	}
+
 	if(ajStrPrefixC(*line,"#=SS"))
 	{
 	    havess=ajTrue;
@@ -2830,7 +2982,7 @@ static AjBool seqSelexReadBlock(AjPSelex *thys, AjBool *named, ajint n,
 	    ++cnt;
 	}
 
-	ok = ajFileBuffGetStore (buff,line, store, astr);
+	ok = ajFileBuffGetStore(buff,line, store, astr);
 	if(ajStrPrefixC(*line,"\n"))
 	    ok = ajFalse;
     }
@@ -2838,8 +2990,10 @@ static AjBool seqSelexReadBlock(AjPSelex *thys, AjBool *named, ajint n,
 
     if(haverf)
 	seqSelexAppend(rf,&pthis->rf,begin,end);
+
     if(havecs)
 	seqSelexAppend(cs,&pthis->cs,begin,end);
+
     for(i=0;i<n;++i)
     {
 	seqSelexAppend(seqs[i],&pthis->str[i],begin,end);
@@ -2866,6 +3020,8 @@ static AjBool seqSelexReadBlock(AjPSelex *thys, AjBool *named, ajint n,
 }
 
 
+
+
 /* @funcstatic seqReadStaden **************************************************
 **
 ** Given data in a sequence structure, tries to read everything needed
@@ -2877,49 +3033,56 @@ static AjBool seqSelexReadBlock(AjPSelex *thys, AjBool *named, ajint n,
 ** @@
 ******************************************************************************/
 
-static AjBool seqReadStaden (AjPSeq thys, AjPSeqin seqin)
+static AjBool seqReadStaden(AjPSeq thys, AjPSeqin seqin)
 {
     static AjPStr rdline = NULL;
-    static AjPStr token = NULL;
-    ajint bufflines = 0;
-    AjPFileBuff buff = seqin->Filebuff;
+    static AjPStr token  = NULL;
+    ajint bufflines      = 0;
+    AjPFileBuff buff;
+
     static AjPRegexp idexp = NULL;
 
-    if (!idexp)
-	idexp = ajRegCompC ("[<]([^>-]+)[-]*[>]");
+    buff = seqin->Filebuff;
 
-    if (!ajFileBuffGetStore (buff, &rdline,
-			     seqin->Text, &thys->TextPtr))
+    if(!idexp)
+	idexp = ajRegCompC("[<]([^>-]+)[-]*[>]");
+
+    if(!ajFileBuffGetStore(buff, &rdline,
+			   seqin->Text, &thys->TextPtr))
 	return ajFalse;
     bufflines++;
 
-    if (ajRegExec(idexp, rdline))
+    if(ajRegExec(idexp, rdline))
     {
-	(void) ajRegSubI (idexp, 1, &token);
-	(void) seqSetName (&thys->Name, token);
+	ajRegSubI(idexp, 1, &token);
+	seqSetName(&thys->Name, token);
 	ajDebug("seqReadStaden name '%S' token '%S'\n",
 		thys->Name, token);
-	(void) ajRegPost (idexp, &token);
-	(void) seqAppend (&thys->Seq, token);
+	ajRegPost(idexp, &token);
+	seqAppend(&thys->Seq, token);
     }
     else
     {
-	(void) seqSetName (&thys->Name, thys->Filename);
-	(void) seqAppend (&thys->Seq, rdline);
+	seqSetName(&thys->Name, thys->Filename);
+	seqAppend(&thys->Seq, rdline);
     }
 
-    while (ajFileBuffGetStore (buff, &rdline,
-			       seqin->Text, &thys->TextPtr))
+    while(ajFileBuffGetStore(buff, &rdline,
+			     seqin->Text, &thys->TextPtr))
     {
-	(void) seqAppend (&thys->Seq, rdline);
+	seqAppend(&thys->Seq, rdline);
 	bufflines++;
     }
 
-    ajFileBuffClear (buff, 0);
+    ajFileBuffClear(buff, 0);
 
-    if (!bufflines) return ajFalse;
+    if(!bufflines) return ajFalse;
+
     return ajTrue;
 }
+
+
+
 
 /* @funcstatic seqReadText ****************************************************
 **
@@ -2932,30 +3095,37 @@ static AjBool seqReadStaden (AjPSeq thys, AjPSeqin seqin)
 ** @@
 ******************************************************************************/
 
-static AjBool seqReadText (AjPSeq thys, AjPSeqin seqin)
+static AjBool seqReadText(AjPSeq thys, AjPSeqin seqin)
 {
     static AjPStr rdline = NULL;
-    ajint bufflines = 0;
-    AjPFileBuff buff = seqin->Filebuff;
+    ajint bufflines      = 0;
+    AjPFileBuff buff;
 
-    ajDebug ("seqReadText\n");
+    ajDebug("seqReadText\n");
 
-    while (ajFileBuffGetStore (buff, &rdline,
-			       seqin->Text, &thys->TextPtr))
+    buff = seqin->Filebuff;
+
+    while(ajFileBuffGetStore(buff, &rdline,
+			     seqin->Text, &thys->TextPtr))
     {
-	ajDebug ("read '%S'\n", rdline);
-	(void) seqAppend (&thys->Seq, rdline);
+	ajDebug("read '%S'\n", rdline);
+	seqAppend(&thys->Seq, rdline);
 	bufflines++;
     }
 
-    ajDebug ("read %d lines\n", bufflines);
-    ajFileBuffClear (buff, 0);
+    ajDebug("read %d lines\n", bufflines);
+    ajFileBuffClear(buff, 0);
 
-    if (!bufflines) return ajFalse;
+    if(!bufflines)
+	return ajFalse;
 
     seqSetNameFile(&thys->Name, seqin);
+
     return ajTrue;
 }
+
+
+
 
 /* @funcstatic seqReadRaw *****************************************************
 **
@@ -2969,38 +3139,45 @@ static AjBool seqReadText (AjPSeq thys, AjPSeqin seqin)
 ** @@
 ******************************************************************************/
 
-static AjBool seqReadRaw (AjPSeq thys, AjPSeqin seqin)
+static AjBool seqReadRaw(AjPSeq thys, AjPSeqin seqin)
 {
     static AjPStr rdline = NULL;
-    ajint bufflines = 0;
-    AjPFileBuff buff = seqin->Filebuff;
+    ajint bufflines      = 0;
+    AjPFileBuff buff;
     static AjPRegexp rawexp = NULL;
 
-    ajDebug ("seqReadRaw\n");
+    ajDebug("seqReadRaw\n");
 
-    if (!rawexp)
+    buff = seqin->Filebuff;
+
+    if(!rawexp)
 	rawexp = ajRegCompC("[^A-Za-z0-9 \t\n\r]");
 
-    while (ajFileBuffGetStore (buff, &rdline,
-			       seqin->Text, &thys->TextPtr))
+    while(ajFileBuffGetStore(buff, &rdline,
+			     seqin->Text, &thys->TextPtr))
     {
-	ajDebug ("read '%S'\n", rdline);
-	if (ajRegExec(rawexp, rdline))
+	ajDebug("read '%S'\n", rdline);
+	if(ajRegExec(rawexp, rdline))
 	{
 	    ajDebug("Bad character found in line: %S\n", rdline);
-	    ajFileBuffReset (buff);
+	    ajFileBuffReset(buff);
 	    return ajFalse;
 	}
-	(void) seqAppend (&thys->Seq, rdline);
+	seqAppend(&thys->Seq, rdline);
 	bufflines++;
     }
 
-    ajDebug ("read %d lines\n", bufflines);
-    ajFileBuffClear (buff, 0);
+    ajDebug("read %d lines\n", bufflines);
+    ajFileBuffClear(buff, 0);
 
-    if (!bufflines) return ajFalse;
+    if(!bufflines)
+	return ajFalse;
+
     return ajTrue;
 }
+
+
+
 
 /* @funcstatic seqReadIg ******************************************************
 **
@@ -3013,39 +3190,45 @@ static AjBool seqReadRaw (AjPSeq thys, AjPSeqin seqin)
 ** @@
 ******************************************************************************/
 
-static AjBool seqReadIg (AjPSeq thys, AjPSeqin seqin)
+static AjBool seqReadIg(AjPSeq thys, AjPSeqin seqin)
 {
     static AjPStr rdline = NULL;
-    ajint bufflines = 0;
-    AjPFileBuff buff = seqin->Filebuff;
+    ajint bufflines      = 0;
+    AjPFileBuff buff;
     AjBool ok = ajTrue;
 
-    do
-    { /* skip comments with ';' prefix */
-	ok = ajFileBuffGetStore (buff, &rdline,
-				 seqin->Text, &thys->TextPtr);
-	bufflines++;
-    } while (ok && ajStrPrefixC (rdline, ";"));
+    buff = seqin->Filebuff;
 
-    if (!ok)
+    do
+    {
+	/* skip comments with ';' prefix */
+	ok = ajFileBuffGetStore(buff, &rdline,
+				seqin->Text, &thys->TextPtr);
+	bufflines++;
+    } while(ok && ajStrPrefixC(rdline, ";"));
+
+    if(!ok)
 	return ajFalse;
 
-    (void) ajStrAssS (&thys->Name, rdline);
-    (void) ajStrTrim (&thys->Name, -1);
+    ajStrAssS(&thys->Name, rdline);
+    ajStrTrim(&thys->Name, -1);
     bufflines++;
 
-    while (ajFileBuffGetStore (buff, &rdline,
-			       seqin->Text, &thys->TextPtr) &&
-	   !ajStrPrefixC(rdline, "\014"))
+    while(ajFileBuffGetStore(buff, &rdline,
+			     seqin->Text, &thys->TextPtr) &&
+	  !ajStrPrefixC(rdline, "\014"))
     {
-	(void) seqAppend (&thys->Seq, rdline);
+	seqAppend(&thys->Seq, rdline);
 	bufflines++;
     }
 
-    ajFileBuffClear (buff, 0);
+    ajFileBuffClear(buff, 0);
 
     return ajTrue;
 }
+
+
+
 
 /* @funcstatic seqReadClustal *************************************************
 **
@@ -3057,117 +3240,121 @@ static AjBool seqReadIg (AjPSeq thys, AjPSeqin seqin)
 ** @@
 ******************************************************************************/
 
-static AjBool seqReadClustal (AjPSeq thys, AjPSeqin seqin)
+static AjBool seqReadClustal(AjPSeq thys, AjPSeqin seqin)
 {
     static AjPStr rdline = NULL;
     static AjPStr seqstr = NULL;
-    ajint bufflines = 0;
-    AjBool ok = ajFalse;
-    ajint iseq = 0;
-    AjPFileBuff buff = seqin->Filebuff;
-    AjPTable alntable = NULL;
-    SeqPMsfItem alnitem = NULL;
-    AjPList alnlist = NULL;
-    SeqPMsfData alndata = NULL;
+    ajint bufflines      = 0;
+    AjBool ok            = ajFalse;
+    ajint iseq           = 0;
+    AjPFileBuff buff     = seqin->Filebuff;
+    AjPTable alntable    = NULL;
+    SeqPMsfItem alnitem  = NULL;
+    AjPList alnlist      = NULL;
+    SeqPMsfData alndata  = NULL;
+
     static AjPRegexp blankexp = NULL;
-    static AjPRegexp markexp = NULL;
-    static AjPRegexp seqexp = NULL;
+    static AjPRegexp markexp  = NULL;
+    static AjPRegexp seqexp   = NULL;
     ajint i;
 
     ajDebug("seqReadClustal seqin->Data %x\n", seqin->Data);
 
-    if (!blankexp)
-	blankexp = ajRegCompC ("^[ \t\n\r]*$");
+    if(!blankexp)
+	blankexp = ajRegCompC("^[ \t\n\r]*$");
 
-    if (!markexp)
-	markexp = ajRegCompC ("^[ \t\n\r]"); /* space or empty line */
+    if(!markexp)
+	markexp = ajRegCompC("^[ \t\n\r]"); /* space or empty line */
 
-    if (!seqexp)
-	seqexp = ajRegCompC ("^([^ \t\n\r]+)");
+    if(!seqexp)
+	seqexp = ajRegCompC("^([^ \t\n\r]+)");
 
-    if (!seqin->Data)
+    if(!seqin->Data)
     {					/* start of file */
-	ok = ajFileBuffGetStore (buff, &rdline,
-				 seqin->Text, &thys->TextPtr);
+	ok = ajFileBuffGetStore(buff, &rdline,
+				seqin->Text, &thys->TextPtr);
 	bufflines++;
-	if (!ok)
-	  return ajFalse;
+	if(!ok)
+	    return ajFalse;
 
 	ajDebug("first line:\n'%S'\n", rdline);
 
-	if (!ajStrPrefixC(rdline, "CLUSTAL")) {	/* first line test */
-	    ajFileBuffReset (buff);
+	if(!ajStrPrefixC(rdline, "CLUSTAL"))
+	{
+	    /* first line test */
+	    ajFileBuffReset(buff);
 	    return ajFalse;
 	}
 
-	ajDebug ("first line OK: '%S'\n", rdline);
+	ajDebug("first line OK: '%S'\n", rdline);
 
-	while (ok)
+	while(ok)
 	{				/* skip blank lines */
-	    ok = ajFileBuffGetStore (buff, &rdline,
-				     seqin->Text, &thys->TextPtr);
+	    ok = ajFileBuffGetStore(buff, &rdline,
+				    seqin->Text, &thys->TextPtr);
 	    bufflines++;
-	    if (!ajRegExec(blankexp, rdline))
+	    if(!ajRegExec(blankexp, rdline))
 		break;
 	}
-	if (!ok)
+
+	if(!ok)
 	{
-	    ajDebug ("FAIL (blankexp only)\n");
-	    ajFileBuffReset (buff);
+	    ajDebug("FAIL (blankexp only)\n");
+	    ajFileBuffReset(buff);
 	    return ajFalse;
 	}
 
 	seqin->Data = AJNEW0(alndata);
-	alndata->Table = alntable = ajTableNew (0, ajStrTableCmp, ajStrTableHash);
+	alndata->Table = alntable = ajTableNew(0,ajStrTableCmp,ajStrTableHash);
 	alnlist = ajListstrNew();
 	seqin->Filecount = 0;
 
 	ok = ajTrue;
-	while (ok && !ajRegExec (markexp, rdline))
+	while(ok && !ajRegExec(markexp, rdline))
 	{				/* first set - create table */
-	    if (!ajRegExec (seqexp, rdline))
+	    if(!ajRegExec(seqexp, rdline))
 	    {
-		ajDebug ("FAIL (not seqexp): '%S'\n", rdline);
-		ajFileBuffReset (buff);
+		ajDebug("FAIL (not seqexp): '%S'\n", rdline);
+		ajFileBuffReset(buff);
 		return ajFalse;
 	    }
 	    AJNEW0(alnitem);
-	    ajRegSubI (seqexp, 1, &alnitem->Name);
+	    ajRegSubI(seqexp, 1, &alnitem->Name);
 	    alnitem->Weight = 1.0;
-	    (void) ajRegPost (seqexp, &seqstr);
-	    (void) seqAppend (&alnitem->Seq, seqstr);
+	    ajRegPost(seqexp, &seqstr);
+	    seqAppend(&alnitem->Seq, seqstr);
 
-	    (void) ajTablePut(alntable, alnitem->Name, alnitem);
-	    ajListstrPushApp (alnlist, alnitem->Name);
+	    ajTablePut(alntable, alnitem->Name, alnitem);
+	    ajListstrPushApp(alnlist, alnitem->Name);
 	    iseq++;
-	    ajDebug ("first set %d: '%S'\n", iseq, rdline);
+	    ajDebug("first set %d: '%S'\n", iseq, rdline);
 
-	    ok = ajFileBuffGetStore (buff, &rdline,
-				     seqin->Text, &thys->TextPtr);
+	    ok = ajFileBuffGetStore(buff, &rdline,
+				    seqin->Text, &thys->TextPtr);
 	    bufflines++;
 	}
 
-	ajDebug ("Header has %d sequences\n", iseq);
-	ajListstrTrace (alnlist);
-	ajTableTrace (alntable);
-	ajTableMap (alntable, seqMsfTabList, NULL);
+	ajDebug("Header has %d sequences\n", iseq);
+	ajListstrTrace(alnlist);
+	ajTableTrace(alntable);
+	ajTableMap(alntable, seqMsfTabList, NULL);
 
-	alndata->Names = AJCALLOC (iseq, sizeof(*alndata->Names));
-	for (i=0; i < iseq; i++)
+	alndata->Names = AJCALLOC(iseq, sizeof(*alndata->Names));
+	for(i=0; i < iseq; i++)
 	{
-	    (void) ajListstrPop (alnlist, &alndata->Names[i]);
-	    ajDebug ("list [%d] '%S'\n", i, alndata->Names[i]);
+	    ajListstrPop(alnlist, &alndata->Names[i]);
+	    ajDebug("list [%d] '%S'\n", i, alndata->Names[i]);
 	}
 	ajListstrFree(&alnlist);
 
-	while (ajFileBuffGetStore (buff, &rdline,
-				   seqin->Text, &thys->TextPtr))
+	while(ajFileBuffGetStore(buff, &rdline,
+				 seqin->Text, &thys->TextPtr))
 	{				/* now read the rest */
 	    bufflines++;
-	    (void) seqClustalReadseq(rdline, alntable);
+	    seqClustalReadseq(rdline, alntable);
 	}
 
-	ajTableMap (alntable, seqMsfTabList, NULL);
+	ajTableMap(alntable, seqMsfTabList, NULL);
 	alndata->Nseq = iseq;
 	alndata->Count = 0;
 	alndata->Bufflines = bufflines;
@@ -3176,7 +3363,7 @@ static AjBool seqReadClustal (AjPSeq thys, AjPSeqin seqin)
 
     alndata = seqin->Data;
     alntable = alndata->Table;
-    if (alndata->Count >=alndata->Nseq)
+    if(alndata->Count >=alndata->Nseq)
     {					/* all done */
 	ajFileBuffClear(seqin->Filebuff, 0);
 	ajTableMap(alntable, seqMsfTabDel, NULL);
@@ -3187,19 +3374,22 @@ static AjBool seqReadClustal (AjPSeq thys, AjPSeqin seqin)
 	return ajFalse;
     }
     i = alndata->Count;
-    ajDebug ("returning [%d] '%S'\n", i, alndata->Names[i]);
+    ajDebug("returning [%d] '%S'\n", i, alndata->Names[i]);
     alnitem = ajTableGet(alntable, alndata->Names[i]);
-    (void) ajStrAss(&thys->Name, alndata->Names[i]);
+    ajStrAss(&thys->Name, alndata->Names[i]);
     ajStrDel(&alndata->Names[i]);
 
     thys->Weight = alnitem->Weight;
-    (void) ajStrAss (&thys->Seq, alnitem->Seq);
+    ajStrAss(&thys->Seq, alnitem->Seq);
     ajStrDel(&alnitem->Seq);
 
     alndata->Count++;
 
     return ajTrue;
 }
+
+
+
 
 /* @funcstatic seqClustalReadseq **********************************************
 **
@@ -3212,32 +3402,35 @@ static AjBool seqReadClustal (AjPSeq thys, AjPSeqin seqin)
 ** @@
 ******************************************************************************/
 
-static AjBool seqClustalReadseq (const AjPStr rdline, AjPTable msftable)
+static AjBool seqClustalReadseq(const AjPStr rdline, AjPTable msftable)
 {
-  static AjPRegexp seqexp = NULL;
-  SeqPMsfItem msfitem;
-  static AjPStr token = NULL;
-  static AjPStr seqstr = NULL;
+    static AjPRegexp seqexp = NULL;
+    SeqPMsfItem msfitem;
+    static AjPStr token     = NULL;
+    static AjPStr seqstr    = NULL;
 
-  if (!seqexp)
-    seqexp = ajRegCompC("^[^ \t\n\r]+"); /* must be at start of line */
+    if(!seqexp)
+	seqexp = ajRegCompC("^[^ \t\n\r]+"); /* must be at start of line */
 
-  if (!ajRegExec(seqexp, rdline))
-    return ajFalse;
+    if(!ajRegExec(seqexp, rdline))
+	return ajFalse;
 
-  ajRegSubI (seqexp, 0, &token);
-  msfitem = ajTableGet(msftable, token);
-  if (!msfitem)
-  {
-    ajStrDel(&token);
-    return ajFalse;
-  }
+    ajRegSubI(seqexp, 0, &token);
+    msfitem = ajTableGet(msftable, token);
+    if(!msfitem)
+    {
+	ajStrDel(&token);
+	return ajFalse;
+    }
 
-  (void) ajRegPost (seqexp, &seqstr);
-  (void) seqAppend (&msfitem->Seq, seqstr);
+    ajRegPost(seqexp, &seqstr);
+    seqAppend(&msfitem->Seq, seqstr);
 
-  return ajTrue;
+    return ajTrue;
 }
+
+
+
 
 /* @funcstatic seqReadPhylip **************************************************
 **
@@ -3249,175 +3442,181 @@ static AjBool seqClustalReadseq (const AjPStr rdline, AjPTable msftable)
 ** @@
 ******************************************************************************/
 
-static AjBool seqReadPhylip (AjPSeq thys, AjPSeqin seqin)
+static AjBool seqReadPhylip(AjPSeq thys, AjPSeqin seqin)
 {
     static AjPStr rdline = NULL;
     static AjPStr seqstr = NULL;
     static AjPStr tmpstr = NULL;
     ajint bufflines = 0;
-    AjBool ok = ajFalse;
-    ajint iseq = 0;
-    ajint jseq = 0;
-    ajint len = 0;
-    ajint ilen = 0;
-    ajint maxlen = 0;
-    AjPFileBuff buff = seqin->Filebuff;
-    AjPTable phytable = NULL;
-    SeqPMsfItem phyitem = NULL;
-    AjPList phylist = NULL;
-    SeqPMsfData phydata = NULL;
-    static AjPRegexp topexp = NULL;
+    AjBool ok       = ajFalse;
+    ajint iseq      = 0;
+    ajint jseq      = 0;
+    ajint len       = 0;
+    ajint ilen      = 0;
+    ajint maxlen    = 0;
+    AjPFileBuff buff;
+
+    AjPTable phytable        = NULL;
+    SeqPMsfItem phyitem      = NULL;
+    AjPList phylist          = NULL;
+    SeqPMsfData phydata      = NULL;
+    static AjPRegexp topexp  = NULL;
     static AjPRegexp headexp = NULL;
-    static AjPRegexp seqexp = NULL;
+    static AjPRegexp seqexp  = NULL;
     ajint i;
     AjBool done = ajFalse;
 
     ajDebug("seqReadPhylip seqin->Data %x\n", seqin->Data);
 
-    if (!topexp)
-	topexp = ajRegCompC ("^ *([0-9]+) +([0-9]+)");
+    buff = seqin->Filebuff;
 
-    if (!headexp)
-	headexp = ajRegCompC ("^(..........) ?"); /* 10 chars */
+    if(!topexp)
+	topexp = ajRegCompC("^ *([0-9]+) +([0-9]+)");
 
-    if (!seqexp)
-	seqexp = ajRegCompC ("^[ \t\n\r]*$");
+    if(!headexp)
+	headexp = ajRegCompC("^(..........) ?"); /* 10 chars */
 
-    if (!seqin->Data)
-    {	/* start of file */
+    if(!seqexp)
+	seqexp = ajRegCompC("^[ \t\n\r]*$");
+
+    if(!seqin->Data)
+    {					/* start of file */
 	seqin->multidone = ajFalse;
-	ok = ajFileBuffGetStore (buff, &rdline,
-				 seqin->Text, &thys->TextPtr);
-	if (!ok)
-	  return ajFalse;
+	ok = ajFileBuffGetStore(buff, &rdline,
+				seqin->Text, &thys->TextPtr);
+	if(!ok)
+	    return ajFalse;
 	bufflines++;
 
 	ajDebug("first line:\n'%S'\n", rdline);
 
-	if (!ajRegExec(topexp, rdline)) { /* first line test */
-	  ajFileBuffReset (buff);
-	  return ajFalse;
+	if(!ajRegExec(topexp, rdline))
+	{				/* first line test */
+	    ajFileBuffReset(buff);
+	    return ajFalse;
 	}
 
 	ajRegSubI(topexp, 1, &tmpstr);
-	(void) ajStrToInt (tmpstr, &iseq);
+	ajStrToInt(tmpstr, &iseq);
 	ajRegSubI(topexp, 2, &tmpstr);
-	(void) ajStrToInt (tmpstr, &len);
-	ajDebug ("first line OK: '%S' iseq; %d len: %d\n",
-		 rdline, iseq, len);
+	ajStrToInt(tmpstr, &len);
+	ajDebug("first line OK: '%S' iseq; %d len: %d\n",
+		rdline, iseq, len);
 
 	seqin->Data = AJNEW0(phydata);
-	phydata->Table = phytable = ajTableNew (0, ajStrTableCmp,
-						ajStrTableHash);
+	phydata->Table = phytable = ajTableNew(0, ajStrTableCmp,
+					       ajStrTableHash);
 	phylist = ajListstrNew();
 	seqin->Filecount = 0;
 
-	ok = ajFileBuffGetStore (buff, &rdline,
-				 seqin->Text, &thys->TextPtr);
+	ok = ajFileBuffGetStore(buff, &rdline,
+				seqin->Text, &thys->TextPtr);
 	bufflines++;
 	ilen = 0;
-	while (ok && (jseq < iseq))
-	{   /* first set - create table */
-	    if (!ajRegExec (headexp, rdline))
+	while(ok && (jseq < iseq))
+	{
+	    /* first set - create table */
+	    if(!ajRegExec(headexp, rdline))
 	    {
-		ajDebug ("FAIL (not headexp): '%S'\n", rdline);
+		ajDebug("FAIL (not headexp): '%S'\n", rdline);
 		ajFileBuffReset(buff);
 		return ajFalse;
 	    }
 	    AJNEW0(phyitem);
-	    ajRegSubI (headexp, 1, &phyitem->Name);
+	    ajRegSubI(headexp, 1, &phyitem->Name);
 	    phyitem->Weight = 1.0;
-	    (void) ajRegPost (headexp, &seqstr);
-	    (void) seqAppend (&phyitem->Seq, seqstr);
+	    ajRegPost(headexp, &seqstr);
+	    seqAppend(&phyitem->Seq, seqstr);
 	    ilen = ajStrLen(phyitem->Seq);
-	    if (ilen == len)
+	    if(ilen == len)
 		done = ajTrue;
-	    else if (ilen > len)
+	    else if(ilen > len)
 	    {
 		ajDebug("Phylip format: sequence %S header size %d exceeded\n",
-		      phyitem->Name, len);
+			phyitem->Name, len);
 		return ajFalse;
 	    }
-	    (void) ajTablePut(phytable, phyitem->Name, phyitem);
-	    ajListstrPushApp (phylist, phyitem->Name);
-	    if (!jseq)
+	    ajTablePut(phytable, phyitem->Name, phyitem);
+	    ajListstrPushApp(phylist, phyitem->Name);
+	    if(!jseq)
 		maxlen = ilen;
 	    else
 	    {
-		if (ilen != maxlen)
+		if(ilen != maxlen)
 		{
 		    ajWarn("phylip format length mismatch in header");
 		    return ajFalse;
 		}
 	    }
 	    jseq++;
-	    ajDebug ("first set %d: '%S'\n", jseq, rdline);
+	    ajDebug("first set %d: '%S'\n", jseq, rdline);
 
-	    if (jseq < iseq)
+	    if(jseq < iseq)
 	    {
-		ok = ajFileBuffGetStore (buff, &rdline,
-					 seqin->Text, &thys->TextPtr);
+		ok = ajFileBuffGetStore(buff, &rdline,
+					seqin->Text, &thys->TextPtr);
 		bufflines++;
 	    }
 	}
 
-	ajDebug ("Header has %d sequences\n", jseq);
-	ajListstrTrace (phylist);
-	ajTableTrace (phytable);
-	ajTableMap (phytable, seqMsfTabList, NULL);
+	ajDebug("Header has %d sequences\n", jseq);
+	ajListstrTrace(phylist);
+	ajTableTrace(phytable);
+	ajTableMap(phytable, seqMsfTabList, NULL);
 
-	phydata->Names = AJCALLOC (iseq, sizeof(*phydata->Names));
-	for (i=0; i < iseq; i++)
+	phydata->Names = AJCALLOC(iseq, sizeof(*phydata->Names));
+	for(i=0; i < iseq; i++)
 	{
-	    (void) ajListstrPop (phylist, &phydata->Names[i]);
-	    ajDebug ("list [%d] '%S'\n", i, phydata->Names[i]);
+	    ajListstrPop(phylist, &phydata->Names[i]);
+	    ajDebug("list [%d] '%S'\n", i, phydata->Names[i]);
 	}
 	ajListstrFree(&phylist);
 
-	if (ilen < maxlen)
+	if(ilen < maxlen)
 	{
 	    jseq=0;
-	    while (ajFileBuffGetStore (buff, &rdline,
-				       seqin->Text, &thys->TextPtr))
-	    {   /* now read the rest */
+	    while(ajFileBuffGetStore(buff, &rdline,
+				     seqin->Text, &thys->TextPtr))
+	    {				/* now read the rest */
 		ajDebug("seqReadPhylip line '%S\n", rdline);
 		bufflines++;
-		if (seqPhylipReadseq(rdline, phytable, phydata->Names[jseq],
-				     len, &ilen, &done))
+		if(seqPhylipReadseq(rdline, phytable, phydata->Names[jseq],
+				    len, &ilen, &done))
 		{
-		    if (!jseq)
+		    if(!jseq)
 			maxlen = ilen;
 		    else
 		    {
-			if (ilen != maxlen)
+			if(ilen != maxlen)
 			{
 			    ajDebug("phylip format length mismatch at %dan",
-				   maxlen);
+				    maxlen);
 			    return ajFalse;
 			}
 		    }
 
 		    jseq++;
-		    if (jseq == iseq) jseq = 0;
-		    if (!jseq && done)
+		    if(jseq == iseq) jseq = 0;
+		    if(!jseq && done)
 		    {
 			ajDebug("seqReadPhylip set done\n");
 			break;
 		    }
-		    done = ajTrue;		/* for end-of-file */
+		    done = ajTrue;	/* for end-of-file */
 		}
 	    }
-	    if (!done)
+	    if(!done)
 		return ajFalse;
-	    if (jseq)
+
+	    if(jseq)
 	    {
-		ajDebug ("Phylip format %d sequences partly read at end\n",
-		       iseq-jseq);
+		ajDebug("Phylip format %d sequences partly read at end\n",
+			iseq-jseq);
 		return ajFalse;
 	    }
 	}
 
-	ajTableMap (phytable, seqMsfTabList, NULL);
+	ajTableMap(phytable, seqMsfTabList, NULL);
 	phydata->Nseq = iseq;
 	phydata->Count = 0;
 	phydata->Bufflines = bufflines;
@@ -3428,17 +3627,17 @@ static AjBool seqReadPhylip (AjPSeq thys, AjPSeqin seqin)
     phytable = phydata->Table;
 
     i = phydata->Count;
-    ajDebug ("returning [%d] '%S'\n", i, phydata->Names[i]);
+    ajDebug("returning [%d] '%S'\n", i, phydata->Names[i]);
     phyitem = ajTableGet(phytable, phydata->Names[i]);
-    (void) ajStrAss(&thys->Name, phydata->Names[i]);
+    ajStrAss(&thys->Name, phydata->Names[i]);
     ajStrDel(&phydata->Names[i]);
 
     thys->Weight = phyitem->Weight;
-    (void) ajStrAss (&thys->Seq, phyitem->Seq);
+    ajStrAss(&thys->Seq, phyitem->Seq);
     ajStrDel(&phyitem->Seq);
 
     phydata->Count++;
-    if (phydata->Count >=phydata->Nseq)
+    if(phydata->Count >=phydata->Nseq)
     {
 	seqin->multidone = ajTrue;
 	ajDebug("seqReadPhylip multidone\n");
@@ -3452,6 +3651,9 @@ static AjBool seqReadPhylip (AjPSeq thys, AjPSeqin seqin)
 
     return ajTrue;
 }
+
+
+
 
 /* @funcstatic seqPhylipReadseq ***********************************************
 **
@@ -3468,40 +3670,44 @@ static AjBool seqReadPhylip (AjPSeq thys, AjPSeqin seqin)
 ** @@
 ******************************************************************************/
 
-static AjBool seqPhylipReadseq (const AjPStr rdline, AjPTable phytable,
-				const AjPStr token,
-				ajint len, ajint* ilen, AjBool* done)
+static AjBool seqPhylipReadseq(const AjPStr rdline, AjPTable phytable,
+			       const AjPStr token,
+			       ajint len, ajint* ilen, AjBool* done)
 {
     static AjPRegexp seqexp = NULL;
     SeqPMsfItem phyitem;
 
     *done = ajFalse;
-    if (!seqexp)
+    if(!seqexp)
 	seqexp = ajRegCompC("[^ \t\n\r]");
 
-    if (!ajRegExec(seqexp, rdline))
+    if(!ajRegExec(seqexp, rdline))
 	return ajFalse;
 
     phyitem = ajTableGet(phytable, token);
-    if (!phyitem)
+    if(!phyitem)
 	return ajFalse;
 
-    (void) seqAppend (&phyitem->Seq, rdline);
+    seqAppend(&phyitem->Seq, rdline);
     *ilen = ajStrLen(phyitem->Seq);
 
-    if (*ilen == len)
+    if(*ilen == len)
 	*done = ajTrue;
-    else if (*ilen > len)
+    else if(*ilen > len)
     {
 	ajDebug("Phylip format error, sequence %S length %d exceeded\n",
-	      token, len);
+		token, len);
 	return ajFalse;
     }
 
     ajDebug("seqPhylipReadSeq '%S' len: %d ilen: %d done: %B\n",
 	    token, len, *ilen, *done);
+
     return ajTrue;
 }
+
+
+
 
 /* @funcstatic seqReadHennig86 ************************************************
 **
@@ -3513,116 +3719,120 @@ static AjBool seqPhylipReadseq (const AjPStr rdline, AjPTable phytable,
 ** @@
 ******************************************************************************/
 
-static AjBool seqReadHennig86 (AjPSeq thys, AjPSeqin seqin)
+static AjBool seqReadHennig86(AjPSeq thys, AjPSeqin seqin)
 {
     static AjPStr rdline = NULL;
     static AjPStr seqstr = NULL;
     static AjPStr tmpstr = NULL;
     ajint bufflines = 0;
-    AjBool ok = ajFalse;
-    ajint iseq = 0;
-    ajint len = 0;
-    AjPFileBuff buff = seqin->Filebuff;
-    AjPTable fmttable = NULL;
+    AjBool ok       = ajFalse;
+    ajint iseq      = 0;
+    ajint len       = 0;
+    AjPFileBuff buff;
+    AjPTable fmttable   = NULL;
     SeqPMsfItem fmtitem = NULL;
-    AjPList fmtlist = NULL;
+    AjPList fmtlist     = NULL;
     SeqPMsfData fmtdata = NULL;
     char *cp;
     static AjPRegexp blankexp = NULL;
-    static AjPRegexp markexp = NULL;
-    static AjPRegexp seqexp = NULL;
-    static AjPRegexp topexp = NULL;
-    static AjPRegexp headexp = NULL;
+    static AjPRegexp markexp  = NULL;
+    static AjPRegexp seqexp   = NULL;
+    static AjPRegexp topexp   = NULL;
+    static AjPRegexp headexp  = NULL;
 
     ajint i;
-    ajint jseq=0;
+    ajint jseq = 0;
 
     ajDebug("seqReadHennig86 seqin->Data %x\n", seqin->Data);
 
-    if (!headexp)
-	headexp = ajRegCompC ("[^1-4? \t]");
+    buff = seqin->Filebuff;
 
-    if (!topexp)
-	topexp = ajRegCompC ("^ *([0-9]+) +([0-9]+)");
+    if(!headexp)
+	headexp = ajRegCompC("[^1-4? \t]");
 
-    if (!blankexp)
-	blankexp = ajRegCompC ("^[ \t\n\r]*$");
+    if(!topexp)
+	topexp = ajRegCompC("^ *([0-9]+) +([0-9]+)");
 
-    if (!markexp)
-	markexp = ajRegCompC ("^[ \t]");
+    if(!blankexp)
+	blankexp = ajRegCompC("^[ \t\n\r]*$");
 
-    if (!seqexp)
-	seqexp = ajRegCompC ("^([^ \t\n\r]+)");
+    if(!markexp)
+	markexp = ajRegCompC("^[ \t]");
 
-    if (!seqin->Data)
-    {					/* start: load in file */
-	ok = ajFileBuffGetStore (buff, &rdline,
-				 seqin->Text, &thys->TextPtr);
-	if (!ok)
-	  return ajFalse;
+    if(!seqexp)
+	seqexp = ajRegCompC("^([^ \t\n\r]+)");
+
+    if(!seqin->Data)
+    {
+	/* start: load in file */
+	ok = ajFileBuffGetStore(buff, &rdline,
+				seqin->Text, &thys->TextPtr);
+	if(!ok)
+	    return ajFalse;
 	bufflines++;
 
 	ajDebug("first line:\n'%S'\n", rdline);
 
-	if (!ajStrPrefixC(rdline, "xread")) { /* first line test */
-	    ajFileBuffReset (buff);
+	if(!ajStrPrefixC(rdline, "xread"))
+	{
+	    /* first line test */
+	    ajFileBuffReset(buff);
 	    return ajFalse;
 	}
 
-	ajDebug ("first line OK: '%S'\n", rdline);
+	ajDebug("first line OK: '%S'\n", rdline);
 
 	/* skip title line */
-	for (i=0; i<2; i++)
+	for(i=0; i<2; i++)
 	{
-	    ok = ajFileBuffGetStore (buff, &rdline,
-				     seqin->Text, &thys->TextPtr);
+	    ok = ajFileBuffGetStore(buff, &rdline,
+				    seqin->Text, &thys->TextPtr);
 	    bufflines++;
 
-	    if (!ok)
+	    if(!ok)
 	    {
-		ajDebug ("FAIL (bad header)\n");
-		ajFileBuffReset (buff);
+		ajDebug("FAIL (bad header)\n");
+		ajFileBuffReset(buff);
 		return ajFalse;
 	    }
 	}
 
-	if (!ajRegExec(topexp, rdline)) /* first line test */
+	if(!ajRegExec(topexp, rdline))	/* first line test */
 	    return ajFalse;
 
 	ajRegSubI(topexp, 1, &tmpstr);
-	(void) ajStrToInt (tmpstr, &iseq);
+	ajStrToInt(tmpstr, &iseq);
 	ajRegSubI(topexp, 2, &tmpstr);
-	(void) ajStrToInt (tmpstr, &len);
-	ajDebug ("first line OK: '%S' iseq; %d len: %d\n",
-		 rdline, iseq, len);
+	ajStrToInt(tmpstr, &len);
+	ajDebug("first line OK: '%S' iseq; %d len: %d\n",
+		rdline, iseq, len);
 
 	seqin->Data = AJNEW0(fmtdata);
-	fmtdata->Table = fmttable = ajTableNew (0, ajStrTableCmp, ajStrTableHash);
+	fmtdata->Table = fmttable = ajTableNew(0,ajStrTableCmp,ajStrTableHash);
 	fmtlist = ajListstrNew();
 	seqin->Filecount = 0;
 
-	ok = ajFileBuffGetStore (buff, &rdline,
-				 seqin->Text, &thys->TextPtr);
+	ok = ajFileBuffGetStore(buff, &rdline,
+				seqin->Text, &thys->TextPtr);
 	bufflines++;
-	while (ok && (jseq < iseq))
+	while(ok && (jseq < iseq))
 	{				/* first set - create table */
-	    if (!ajRegExec (headexp, rdline))
+	    if(!ajRegExec(headexp, rdline))
 	    {
-		ajDebug ("FAIL (not headexp): '%S'\n", rdline);
+		ajDebug("FAIL (not headexp): '%S'\n", rdline);
 		return ajFalse;
 	    }
 	    AJNEW0(fmtitem);
-	    ajStrAssS (&fmtitem->Name, rdline);
+	    ajStrAssS(&fmtitem->Name, rdline);
 	    fmtitem->Weight = 1.0;
-	    ok = ajFileBuffGetStore (buff, &rdline,
-				     seqin->Text, &thys->TextPtr);
+	    ok = ajFileBuffGetStore(buff, &rdline,
+				    seqin->Text, &thys->TextPtr);
 	    bufflines++;
-	    while (ok && ajRegExec (seqexp, rdline))
+	    while(ok && ajRegExec(seqexp, rdline))
 	    {
-		(void) ajRegPost (seqexp, &seqstr);
-		for (cp = ajStrStr(seqstr); cp; cp++)
-		{
-		    switch (*cp)
+		ajRegPost(seqexp, &seqstr);
+		for(cp = ajStrStr(seqstr); cp; cp++)
+		    switch(*cp)
 		    {
 		    case 0: *cp = 'A';break;
 		    case 1: *cp = 'T';break;
@@ -3630,41 +3840,41 @@ static AjBool seqReadHennig86 (AjPSeq thys, AjPSeqin seqin)
 		    case 3: *cp = 'C';break;
 		    default: *cp = '.';break;
 		    }
-		}
-		(void) seqAppend (&fmtitem->Seq, seqstr);
+
+		seqAppend(&fmtitem->Seq, seqstr);
 	    }
 
-	    (void) ajTablePut(fmttable, fmtitem->Name, fmtitem);
-	    ajListstrPushApp (fmtlist, fmtitem->Name);
+	    ajTablePut(fmttable, fmtitem->Name, fmtitem);
+	    ajListstrPushApp(fmtlist, fmtitem->Name);
 	    jseq++;
-	    ajDebug ("first set %d: '%S'\n", jseq, rdline);
+	    ajDebug("first set %d: '%S'\n", jseq, rdline);
 
-	    ok = ajFileBuffGetStore (buff, &rdline,
-				     seqin->Text, &thys->TextPtr);
+	    ok = ajFileBuffGetStore(buff, &rdline,
+				    seqin->Text, &thys->TextPtr);
 	    bufflines++;
 	}
 
-	ajDebug ("Header has %d sequences\n", iseq);
-	ajListstrTrace (fmtlist);
-	ajTableTrace (fmttable);
-	ajTableMap (fmttable, seqMsfTabList, NULL);
+	ajDebug("Header has %d sequences\n", iseq);
+	ajListstrTrace(fmtlist);
+	ajTableTrace(fmttable);
+	ajTableMap(fmttable, seqMsfTabList, NULL);
 
-	fmtdata->Names = AJCALLOC (iseq, sizeof(*fmtdata->Names));
-	for (i=0; i < iseq; i++)
+	fmtdata->Names = AJCALLOC(iseq, sizeof(*fmtdata->Names));
+	for(i=0; i < iseq; i++)
 	{
-	    (void) ajListstrPop (fmtlist, &fmtdata->Names[i]);
-	    ajDebug ("list [%d] '%S'\n", i, fmtdata->Names[i]);
+	    ajListstrPop(fmtlist, &fmtdata->Names[i]);
+	    ajDebug("list [%d] '%S'\n", i, fmtdata->Names[i]);
 	}
 	ajListstrFree(&fmtlist);
 
-	while (ajFileBuffGetStore (buff, &rdline,
-				   seqin->Text, &thys->TextPtr))
+	while(ajFileBuffGetStore(buff, &rdline,
+				 seqin->Text, &thys->TextPtr))
 	{				/* now read the rest */
 	    bufflines++;
-	    (void) seqHennig86Readseq(rdline, fmttable);
+	    seqHennig86Readseq(rdline, fmttable);
 	}
 
-	ajTableMap (fmttable, seqMsfTabList, NULL);
+	ajTableMap(fmttable, seqMsfTabList, NULL);
 	fmtdata->Nseq = iseq;
 	fmtdata->Count = 0;
 	fmtdata->Bufflines = bufflines;
@@ -3675,7 +3885,7 @@ static AjBool seqReadHennig86 (AjPSeq thys, AjPSeqin seqin)
 
     fmtdata = seqin->Data;
     fmttable = fmtdata->Table;
-    if (fmtdata->Count >=fmtdata->Nseq)
+    if(fmtdata->Count >=fmtdata->Nseq)
     {					/* all done */
 	ajFileBuffClear(seqin->Filebuff, 0);
 	ajTableMap(fmttable, seqMsfTabDel, NULL);
@@ -3686,19 +3896,22 @@ static AjBool seqReadHennig86 (AjPSeq thys, AjPSeqin seqin)
 	return ajFalse;
     }
     i = fmtdata->Count;
-    ajDebug ("returning [%d] '%S'\n", i, fmtdata->Names[i]);
+    ajDebug("returning [%d] '%S'\n", i, fmtdata->Names[i]);
     fmtitem = ajTableGet(fmttable, fmtdata->Names[i]);
-    (void) ajStrAss(&thys->Name, fmtdata->Names[i]);
+    ajStrAss(&thys->Name, fmtdata->Names[i]);
     ajStrDel(&fmtdata->Names[i]);
 
     thys->Weight = fmtitem->Weight;
-    (void) ajStrAss (&thys->Seq, fmtitem->Seq);
+    ajStrAss(&thys->Seq, fmtitem->Seq);
     ajStrDel(&fmtitem->Seq);
 
     fmtdata->Count++;
 
     return ajTrue;
 }
+
+
+
 
 /* @funcstatic seqHennig86Readseq *********************************************
 **
@@ -3711,32 +3924,35 @@ static AjBool seqReadHennig86 (AjPSeq thys, AjPSeqin seqin)
 ** @@
 ******************************************************************************/
 
-static AjBool seqHennig86Readseq (const AjPStr rdline, AjPTable msftable)
+static AjBool seqHennig86Readseq(const AjPStr rdline, AjPTable msftable)
 {
     static AjPRegexp seqexp = NULL;
     SeqPMsfItem msfitem;
-    static AjPStr token = NULL;
+    static AjPStr token  = NULL;
     static AjPStr seqstr = NULL;
 
-    if (!seqexp)
+    if(!seqexp)
 	seqexp = ajRegCompC("^[^ \t\n\r]+"); /* must be at start of line */
 
-    if (!ajRegExec(seqexp, rdline))
+    if(!ajRegExec(seqexp, rdline))
 	return ajFalse;
 
-    ajRegSubI (seqexp, 0, &token);
+    ajRegSubI(seqexp, 0, &token);
     msfitem = ajTableGet(msftable, token);
-    if (!msfitem)
+    if(!msfitem)
     {
 	ajStrDel(&token);
 	return ajFalse;
     }
 
-    (void) ajRegPost (seqexp, &seqstr);
-    (void) seqAppend (&msfitem->Seq, seqstr);
+    ajRegPost(seqexp, &seqstr);
+    seqAppend(&msfitem->Seq, seqstr);
 
     return ajTrue;
 }
+
+
+
 
 /* @funcstatic seqReadTreecon *************************************************
 **
@@ -3750,10 +3966,13 @@ static AjBool seqHennig86Readseq (const AjPStr rdline, AjPTable msftable)
 ** @@
 ******************************************************************************/
 
-static AjBool seqReadTreecon (AjPSeq thys, AjPSeqin seqin)
+static AjBool seqReadTreecon(AjPSeq thys, AjPSeqin seqin)
 {
     return ajFalse;
 }
+
+
+
 
 /* @funcstatic seqReadJackknifer **********************************************
 **
@@ -3767,10 +3986,13 @@ static AjBool seqReadTreecon (AjPSeq thys, AjPSeqin seqin)
 ** @@
 ******************************************************************************/
 
-static AjBool seqReadJackknifer (AjPSeq thys, AjPSeqin seqin)
+static AjBool seqReadJackknifer(AjPSeq thys, AjPSeqin seqin)
 {
     return ajFalse;
 }
+
+
+
 
 /* @funcstatic seqReadJackknifernon *******************************************
 **
@@ -3784,10 +4006,13 @@ static AjBool seqReadJackknifer (AjPSeq thys, AjPSeqin seqin)
 ** @@
 ******************************************************************************/
 
-static AjBool seqReadJackknifernon (AjPSeq thys, AjPSeqin seqin)
+static AjBool seqReadJackknifernon(AjPSeq thys, AjPSeqin seqin)
 {
     return ajFalse;
 }
+
+
+
 
 /* @funcstatic seqReadNexus ***************************************************
 **
@@ -3801,10 +4026,13 @@ static AjBool seqReadJackknifernon (AjPSeq thys, AjPSeqin seqin)
 ** @@
 ******************************************************************************/
 
-static AjBool seqReadNexus (AjPSeq thys, AjPSeqin seqin)
+static AjBool seqReadNexus(AjPSeq thys, AjPSeqin seqin)
 {
     return ajFalse;
 }
+
+
+
 
 /* @funcstatic seqReadNexusnon ************************************************
 **
@@ -3818,10 +4046,13 @@ static AjBool seqReadNexus (AjPSeq thys, AjPSeqin seqin)
 ** @@
 ******************************************************************************/
 
-static AjBool seqReadNexusnon (AjPSeq thys, AjPSeqin seqin)
+static AjBool seqReadNexusnon(AjPSeq thys, AjPSeqin seqin)
 {
     return ajFalse;
 }
+
+
+
 
 /* @funcstatic seqReadMega ****************************************************
 **
@@ -3835,10 +4066,13 @@ static AjBool seqReadNexusnon (AjPSeq thys, AjPSeqin seqin)
 ** @@
 ******************************************************************************/
 
-static AjBool seqReadMega (AjPSeq thys, AjPSeqin seqin)
+static AjBool seqReadMega(AjPSeq thys, AjPSeqin seqin)
 {
     return ajFalse;
 }
+
+
+
 
 /* @funcstatic seqReadMeganon *************************************************
 **
@@ -3852,10 +4086,13 @@ static AjBool seqReadMega (AjPSeq thys, AjPSeqin seqin)
 ** @@
 ******************************************************************************/
 
-static AjBool seqReadMeganon (AjPSeq thys, AjPSeqin seqin)
+static AjBool seqReadMeganon(AjPSeq thys, AjPSeqin seqin)
 {
     return ajFalse;
 }
+
+
+
 
 /* @funcstatic seqReadCodata **************************************************
 **
@@ -3868,82 +4105,89 @@ static AjBool seqReadMeganon (AjPSeq thys, AjPSeqin seqin)
 ** @@
 ******************************************************************************/
 
-static AjBool seqReadCodata (AjPSeq thys, AjPSeqin seqin)
+static AjBool seqReadCodata(AjPSeq thys, AjPSeqin seqin)
 {
     static AjPStrTok handle = NULL;
-    static AjPStr token = NULL;
-    static AjPStr rdline = NULL;
-    ajint bufflines = 0;
-    AjPFileBuff buff = seqin->Filebuff;
+    static AjPStr token     = NULL;
+    static AjPStr rdline    = NULL;
+    ajint bufflines         = 0;
+    AjPFileBuff buff;
     AjBool ok = ajTrue;
 
-    if (!ajFileBuffGetStore (buff, &rdline,
-			     seqin->Text, &thys->TextPtr))
+
+    buff = seqin->Filebuff;
+
+    if(!ajFileBuffGetStore(buff, &rdline,
+			   seqin->Text, &thys->TextPtr))
 	return ajFalse;
 
     bufflines++;
 
-    ajDebug ("first line '%S'\n", rdline);
+    ajDebug("first line '%S'\n", rdline);
 
-    if (!ajStrPrefixC(rdline, "ENTRY "))
+    if(!ajStrPrefixC(rdline, "ENTRY "))
     {
-	ajFileBuffReset (buff);
+	ajFileBuffReset(buff);
 	return ajFalse;
     }
-    (void) ajStrTokenAss (&handle, rdline, " \n\r");
-    (void) ajStrToken (&token, &handle, NULL); /* 'ENTRY' */
-    (void) ajStrToken (&token, &handle, NULL); /* entry name */
+    ajStrTokenAss(&handle, rdline, " \n\r");
+    ajStrToken(&token, &handle, NULL);	/* 'ENTRY' */
+    ajStrToken(&token, &handle, NULL);	/* entry name */
 
     seqSetName (&thys->Name, token);
 
-    ok = ajFileBuffGetStore (buff, &rdline,
-			     seqin->Text, &thys->TextPtr);
+    ok = ajFileBuffGetStore(buff, &rdline,
+			    seqin->Text, &thys->TextPtr);
 
-    while (ok && !ajStrPrefixC(rdline, "SEQUENCE"))
+    while(ok && !ajStrPrefixC(rdline, "SEQUENCE"))
     {
 	bufflines++;
-	if (ajStrPrefixC(rdline, "ACCESSION "))
+	if(ajStrPrefixC(rdline, "ACCESSION "))
 	{
-	    (void) ajStrTokenAss (&handle, rdline, " ;\n\r");
-	    (void) ajStrToken (&token, &handle, NULL); /* 'AC' */
-	    (void) ajStrToken (&token, &handle, NULL); /* accnum */
-	    (void) seqAccSave (thys, token);
+	    ajStrTokenAss(&handle, rdline, " ;\n\r");
+	    ajStrToken(&token, &handle, NULL); /* 'AC' */
+	    ajStrToken(&token, &handle, NULL); /* accnum */
+	    seqAccSave(thys, token);
 	}
-	if (ajStrPrefixC(rdline, "TITLE "))
+
+	if(ajStrPrefixC(rdline, "TITLE "))
 	{
-	    (void) ajStrTokenAss (&handle, rdline, " ");
-	    (void) ajStrToken (&token, &handle, NULL); /* 'DE' */
-	    (void) ajStrToken (&token, &handle, "\n\r"); /* desc */
-	    while (ok && ajStrPrefixC(rdline, " "))
+	    ajStrTokenAss(&handle, rdline, " ");
+	    ajStrToken(&token, &handle, NULL); /* 'DE' */
+	    ajStrToken(&token, &handle, "\n\r"); /* desc */
+	    while(ok && ajStrPrefixC(rdline, " "))
 	    {
 		bufflines++;
-		(void) ajStrTokenAss (&handle, rdline, " ");
-		(void) ajStrToken (&token, &handle, "\n\r");
-		(void) ajStrAppC (&thys->Desc, " ");
-		(void) ajStrApp (&thys->Desc, token);
-		ok = ajFileBuffGetStore (buff, &rdline,
-					 seqin->Text, &thys->TextPtr);
+		ajStrTokenAss(&handle, rdline, " ");
+		ajStrToken(&token, &handle, "\n\r");
+		ajStrAppC(&thys->Desc, " ");
+		ajStrApp(&thys->Desc, token);
+		ok = ajFileBuffGetStore(buff, &rdline,
+					seqin->Text, &thys->TextPtr);
 	    }
 	}
-	ok = ajFileBuffGetStore (buff, &rdline,
-				 seqin->Text, &thys->TextPtr);
+	ok = ajFileBuffGetStore(buff, &rdline,
+				seqin->Text, &thys->TextPtr);
     }
 
-    ok = ajFileBuffGetStore (buff, &rdline,
-			     seqin->Text, &thys->TextPtr);
-    while (ok && !ajStrPrefixC(rdline, "///"))
+    ok = ajFileBuffGetStore(buff, &rdline,
+			    seqin->Text, &thys->TextPtr);
+    while(ok && !ajStrPrefixC(rdline, "///"))
     {
-	(void) seqAppend (&thys->Seq, rdline);
+	seqAppend(&thys->Seq, rdline);
 	bufflines++;
-	ok = ajFileBuffGetStore (buff, &rdline,
-				 seqin->Text, &thys->TextPtr);
+	ok = ajFileBuffGetStore(buff, &rdline,
+				seqin->Text, &thys->TextPtr);
     }
-    ajFileBuffClear (buff, 0);
+    ajFileBuffClear(buff, 0);
 
-    (void) ajStrTokenReset (&handle);
+    ajStrTokenReset(&handle);
 
     return ajTrue;
 }
+
+
+
 
 /* @funcstatic seqReadAcedb ***************************************************
 **
@@ -3956,26 +4200,28 @@ static AjBool seqReadCodata (AjPSeq thys, AjPSeqin seqin)
 ** @@
 ******************************************************************************/
 
-static AjBool seqReadAcedb (AjPSeq thys, AjPSeqin seqin)
+static AjBool seqReadAcedb(AjPSeq thys, AjPSeqin seqin)
 {
     static AjPStrTok handle = NULL;
-    static AjPStr token = NULL;
-    static AjPStr rdline = NULL;
-    ajint bufflines = 0;
-    AjPFileBuff buff = seqin->Filebuff;
+    static AjPStr token     = NULL;
+    static AjPStr rdline    = NULL;
+    ajint bufflines         = 0;
+    AjPFileBuff buff;
     AjBool ok = ajTrue;
 
     ajDebug("seqReadAcedb\n");
 
+    buff = seqin->Filebuff;
+
     do
     {
-	ok = ajFileBuffGetStore (buff, &rdline,
-				 seqin->Text, &thys->TextPtr);
+	ok = ajFileBuffGetStore(buff, &rdline,
+				seqin->Text, &thys->TextPtr);
 	bufflines++;
-    } while (ok &&
-	     (ajStrPrefixC (rdline, "//") || ajStrPrefixC(rdline, "\n")));
+    } while(ok &&
+	    (ajStrPrefixC(rdline, "//") || ajStrPrefixC(rdline, "\n")));
 
-    if (!ok)
+    if(!ok)
     {
 	ajFileBuffReset(buff);
 	return ajFalse;
@@ -3983,16 +4229,16 @@ static AjBool seqReadAcedb (AjPSeq thys, AjPSeqin seqin)
     ajDebug("first line:\n'%S'\n", rdline);
 
 
-    (void) ajStrTokenAss (&handle, rdline, " \n\r");
-    (void) ajStrToken (&token, &handle, " \t"); /* 'DNA' or 'Peptide'*/
+    ajStrTokenAss(&handle, rdline, " \n\r");
+    ajStrToken(&token, &handle, " \t"); /* 'DNA' or 'Peptide'*/
     ajDebug("Token 1 '%S'\n", token);
 
-    if (ajStrMatchCaseC (token, "Peptide"))
+    if(ajStrMatchCaseC(token, "Peptide"))
     {
 	ajDebug("Protein\n");
 	ajSeqSetProt(thys);
     }
-    else if (ajStrMatchCaseC (token, "DNA"))
+    else if(ajStrMatchCaseC(token, "DNA"))
     {
 	ajDebug("DNA\n");
 	ajSeqSetNuc(thys);
@@ -4003,40 +4249,43 @@ static AjBool seqReadAcedb (AjPSeq thys, AjPSeqin seqin)
 	ajFileBuffReset(buff);
 	return ajFalse;
     }
-    (void) ajStrToken (&token, &handle, " \t\""); /* : */
-    if (!ajStrMatchC(token, ":"))
+
+    ajStrToken(&token, &handle, " \t\""); /* : */
+    if(!ajStrMatchC(token, ":"))
     {
 	ajFileBuffReset(buff);
 	return ajFalse;
     }
 
-    (void) ajStrToken (&token, &handle, "\""); /* name */
-    if (!ajStrLen(token))
+    ajStrToken(&token, &handle, "\"");	/* name */
+    if(!ajStrLen(token))
     {
 	ajFileBuffReset(buff);
 	return ajFalse;
     }
 
-    seqSetName (&thys->Name, token);
+    seqSetName(&thys->Name, token);
 
     /* OK, we have the name. Now look for the sequence */
 
-    ok = ajFileBuffGetStore (buff, &rdline,
-			     seqin->Text, &thys->TextPtr);
-    while (ok && !ajStrPrefixC(rdline,"\n"))
+    ok = ajFileBuffGetStore(buff, &rdline,
+			    seqin->Text, &thys->TextPtr);
+    while(ok && !ajStrPrefixC(rdline,"\n"))
     {
-	(void) seqAppend (&thys->Seq, rdline);
+	seqAppend(&thys->Seq, rdline);
 	bufflines++;
-	ok = ajFileBuffGetStore (buff, &rdline,
-				 seqin->Text, &thys->TextPtr);
+	ok = ajFileBuffGetStore(buff, &rdline,
+				seqin->Text, &thys->TextPtr);
     }
 
-    ajFileBuffClear (buff, 0);
+    ajFileBuffClear(buff, 0);
 
-    (void) ajStrTokenReset (&handle);
+    ajStrTokenReset(&handle);
 
     return ajTrue;
 }
+
+
 
 
 /* @funcstatic seqReadStrider *************************************************
@@ -4050,52 +4299,58 @@ static AjBool seqReadAcedb (AjPSeq thys, AjPSeqin seqin)
 ** @@
 ******************************************************************************/
 
-static AjBool seqReadStrider (AjPSeq thys, AjPSeqin seqin)
+static AjBool seqReadStrider(AjPSeq thys, AjPSeqin seqin)
 {
     static AjPStrTok handle = NULL;
-    static AjPStr token = NULL;
-    static AjPStr rdline = NULL;
-    ajint bufflines = 0;
-    AjPFileBuff buff = seqin->Filebuff;
+    static AjPStr token     = NULL;
+    static AjPStr rdline    = NULL;
+    ajint bufflines         = 0;
+    AjPFileBuff buff;
     AjBool ok = ajTrue;
+
+    buff = seqin->Filebuff;
 
     do
     {
-	ok = ajFileBuffGetStore (buff, &rdline,
-				 seqin->Text, &thys->TextPtr);
-	if (ajStrPrefixC(rdline, "; DNA sequence"))
+	ok = ajFileBuffGetStore(buff, &rdline,
+				seqin->Text, &thys->TextPtr);
+	if(ajStrPrefixC(rdline, "; DNA sequence"))
 	{
-	    (void) ajStrTokenAss (&handle, rdline, " ;\t,\n");
-	    (void) ajStrToken (&token, &handle, NULL); /* 'DNA' */
-	    (void) ajStrToken (&token, &handle, NULL); /* sequence */
-	    (void) ajStrToken (&token, &handle, NULL); /* entry name */
+	    ajStrTokenAss(&handle, rdline, " ;\t,\n");
+	    ajStrToken(&token, &handle, NULL); /* 'DNA' */
+	    ajStrToken(&token, &handle, NULL); /* sequence */
+	    ajStrToken(&token, &handle, NULL); /* entry name */
 	}
 	bufflines++;
-    } while (ok && ajStrPrefixC (rdline, ";"));
+    } while(ok && ajStrPrefixC(rdline, ";"));
 
-    if (!ok || !ajStrLen(token))
+    if(!ok || !ajStrLen(token))
     {
 	ajFileBuffReset(buff);
 	return ajFalse;
     }
 
-    seqSetName (&thys->Name, token);
+    seqSetName(&thys->Name, token);
 
     /* OK, we have the name. Now look for the sequence */
 
-    while (ok && !ajStrPrefixC(rdline, "//"))
+    while(ok && !ajStrPrefixC(rdline, "//"))
     {
-	(void) seqAppend (&thys->Seq, rdline);
+	seqAppend(&thys->Seq, rdline);
 	bufflines++;
-	ok = ajFileBuffGetStore (buff, &rdline,
-				 seqin->Text, &thys->TextPtr);
+	ok = ajFileBuffGetStore(buff, &rdline,
+				seqin->Text, &thys->TextPtr);
     }
 
-    ajFileBuffClear (buff, 0);
+    ajFileBuffClear(buff, 0);
 
-    (void) ajStrTokenReset (&handle);
+    ajStrTokenReset(&handle);
+
     return ajTrue;
 }
+
+
+
 
 /* @funcstatic seqReadMsf *****************************************************
 **
@@ -4108,41 +4363,44 @@ static AjBool seqReadStrider (AjPSeq thys, AjPSeqin seqin)
 ** @@
 ******************************************************************************/
 
-static AjBool seqReadMsf (AjPSeq thys, AjPSeqin seqin)
+static AjBool seqReadMsf(AjPSeq thys, AjPSeqin seqin)
 {
     static AjPStr rdline = NULL;
-    ajint bufflines = 0;
+    ajint bufflines      = 0;
     ajint len;
-    AjBool ok = ajFalse;
+    AjBool ok  = ajFalse;
     ajint iseq = 0;
-    AjPFileBuff buff = seqin->Filebuff;
-    AjPTable msftable = NULL;
+
+    AjPFileBuff buff;
+    AjPTable msftable   = NULL;
     SeqPMsfItem msfitem = NULL;
-    AjPList msflist = NULL;
+    AjPList msflist     = NULL;
     SeqPMsfData msfdata = NULL;
 
     ajint i;
 
     ajDebug("seqReadMsf seqin->Data %x\n", seqin->Data);
 
-    if (!seqin->Data)
+    buff = seqin->Filebuff;
+
+    if(!seqin->Data)
     {
-	ok = ajFileBuffGetStore (buff, &rdline,
-				 seqin->Text, &thys->TextPtr);
-	if (!ok)
-	  return ajFalse;
+	ok = ajFileBuffGetStore(buff, &rdline,
+				seqin->Text, &thys->TextPtr);
+	if(!ok)
+	    return ajFalse;
 	bufflines++;
 
-	if (ajStrPrefixC(rdline, "!!"))
+	if(ajStrPrefixC(rdline, "!!"))
 	{
-	    if (ajStrPrefixC(rdline, "!!AA_MULTIPLE_ALIGNMENT"))
+	    if(ajStrPrefixC(rdline, "!!AA_MULTIPLE_ALIGNMENT"))
 		ajSeqSetProt(thys);
 
-	    if (ajStrPrefixC(rdline, "!!NA_MULTIPLE_ALIGNMENT"))
+	    if(ajStrPrefixC(rdline, "!!NA_MULTIPLE_ALIGNMENT"))
 		ajSeqSetNuc(thys);
 	}
 
-	if (!seqGcgMsfDots (thys, seqin, &rdline, seqMaxGcglines, &len))
+	if(!seqGcgMsfDots(thys, seqin, &rdline, seqMaxGcglines, &len))
 	{
 	    ajDebug("seqGcgMsfDots failed\n");
 	    ajFileBuffReset(buff);
@@ -4150,48 +4408,49 @@ static AjBool seqReadMsf (AjPSeq thys, AjPSeqin seqin)
 	}
 
 	seqin->Data = AJNEW0(msfdata);
-	msfdata->Table = msftable = ajTableNew (0, ajStrTableCmp,
-						ajStrTableHash);
+	msfdata->Table = msftable = ajTableNew(0, ajStrTableCmp,
+					       ajStrTableHash);
 	msflist = ajListstrNew();
 	seqin->Filecount = 0;
-	ok = ajFileBuffGetStore (buff, &rdline,
-				 seqin->Text, &thys->TextPtr);
+	ok = ajFileBuffGetStore(buff, &rdline,
+				seqin->Text, &thys->TextPtr);
 	bufflines++;
-	while (ok && !ajStrPrefixC (rdline, "//"))
+	while(ok && !ajStrPrefixC(rdline, "//"))
 	{
-	    ok = ajFileBuffGetStore (buff, &rdline,
-				     seqin->Text, &thys->TextPtr);
+	    ok = ajFileBuffGetStore(buff, &rdline,
+				    seqin->Text, &thys->TextPtr);
 	    bufflines++;
-	    if (bufflines > seqMaxGcglines)
+	    if(bufflines > seqMaxGcglines)
 		ok = ajFalse;
-	    if (seqGcgMsfHeader(rdline, &msfitem))
+
+	    if(seqGcgMsfHeader(rdline, &msfitem))
 	    {
-		(void) ajTablePut(msftable, msfitem->Name, msfitem);
-		ajListstrPushApp (msflist, msfitem->Name);
+		ajTablePut(msftable, msfitem->Name, msfitem);
+		ajListstrPushApp(msflist, msfitem->Name);
 		iseq++;
 	    }
 	}
 
-	ajDebug ("Header has %d sequences\n", iseq);
-	ajListstrTrace (msflist);
-	ajTableTrace (msftable);
-	ajTableMap (msftable, seqMsfTabList, NULL);
+	ajDebug("Header has %d sequences\n", iseq);
+	ajListstrTrace(msflist);
+	ajTableTrace(msftable);
+	ajTableMap(msftable, seqMsfTabList, NULL);
 
-	msfdata->Names = AJCALLOC (iseq, sizeof(*msfdata->Names));
-	for (i=0; i < iseq; i++)
+	msfdata->Names = AJCALLOC(iseq, sizeof(*msfdata->Names));
+	for(i=0; i < iseq; i++)
 	{
-	    (void) ajListstrPop (msflist, &msfdata->Names[i]);
-	    ajDebug ("list [%d] '%S'\n", i, msfdata->Names[i]);
+	    ajListstrPop(msflist, &msfdata->Names[i]);
+	    ajDebug("list [%d] '%S'\n", i, msfdata->Names[i]);
 	}
 	ajListstrFree(&msflist);
-	while (ajFileBuffGetStore (buff, &rdline,
-				   seqin->Text, &thys->TextPtr))
+	while(ajFileBuffGetStore(buff, &rdline,
+				 seqin->Text, &thys->TextPtr))
 	{
 	    bufflines++;
-	    (void) seqGcgMsfReadseq(rdline, msftable);
+	    seqGcgMsfReadseq(rdline, msftable);
 	}
 
-	ajTableMap (msftable, seqMsfTabList, NULL);
+	ajTableMap(msftable, seqMsfTabList, NULL);
 	msfdata->Nseq = iseq;
 	msfdata->Count = 0;
 	msfdata->Bufflines = bufflines;
@@ -4200,7 +4459,7 @@ static AjBool seqReadMsf (AjPSeq thys, AjPSeqin seqin)
 
     msfdata = seqin->Data;
     msftable = msfdata->Table;
-    if (msfdata->Count >= msfdata->Nseq)
+    if(msfdata->Count >= msfdata->Nseq)
     {
 	ajFileBuffClear(seqin->Filebuff, 0);
 	ajTableMap(msftable, seqMsfTabDel, NULL);
@@ -4211,19 +4470,22 @@ static AjBool seqReadMsf (AjPSeq thys, AjPSeqin seqin)
 	return ajFalse;
     }
     i = msfdata->Count;
-    ajDebug ("returning [%d] '%S'\n", i, msfdata->Names[i]);
+    ajDebug("returning [%d] '%S'\n", i, msfdata->Names[i]);
     msfitem = ajTableGet(msftable, msfdata->Names[i]);
-    (void) ajStrAss(&thys->Name, msfdata->Names[i]);
+    ajStrAss(&thys->Name, msfdata->Names[i]);
     ajStrDel(&msfdata->Names[i]);
 
     thys->Weight = msfitem->Weight;
-    (void) ajStrAss (&thys->Seq, msfitem->Seq);
+    ajStrAss(&thys->Seq, msfitem->Seq);
     ajStrDel(&msfitem->Seq);
 
     msfdata->Count++;
 
     return ajTrue;
 }
+
+
+
 
 /* @funcstatic seqGcgMsfReadseq ***********************************************
 **
@@ -4236,33 +4498,36 @@ static AjBool seqReadMsf (AjPSeq thys, AjPSeqin seqin)
 ** @@
 ******************************************************************************/
 
-static AjBool seqGcgMsfReadseq (const AjPStr rdline, AjPTable msftable)
+static AjBool seqGcgMsfReadseq(const AjPStr rdline, AjPTable msftable)
 {
     static AjPRegexp seqexp = NULL;
     SeqPMsfItem msfitem;
-    static AjPStr token = NULL;
-    static AjPStr seqstr = NULL;
+    static AjPStr token     = NULL;
+    static AjPStr seqstr    = NULL;
 
 
-    if (!seqexp)
+    if(!seqexp)
 	seqexp = ajRegCompC("[^ \t\n\r]+");
 
-    if (!ajRegExec(seqexp, rdline))
+    if(!ajRegExec(seqexp, rdline))
 	return ajFalse;
 
-    ajRegSubI (seqexp, 0, &token);
+    ajRegSubI(seqexp, 0, &token);
     msfitem = ajTableGet(msftable, token);
-    if (!msfitem)
+    if(!msfitem)
     {
 	ajStrDel(&token);
 	return ajFalse;
     }
 
-    (void) ajRegPost (seqexp, &seqstr);
-    (void) seqAppend (&msfitem->Seq, seqstr);
+    ajRegPost(seqexp, &seqstr);
+    seqAppend(&msfitem->Seq, seqstr);
 
     return ajTrue;
 }
+
+
+
 
 /* @funcstatic seqMsfTabList **************************************************
 **
@@ -4277,14 +4542,20 @@ static AjBool seqGcgMsfReadseq (const AjPStr rdline, AjPTable msftable)
 ** @@
 ******************************************************************************/
 
-static void seqMsfTabList (const void* key, void** value, void* cl)
+static void seqMsfTabList(const void* key, void** value, void* cl)
 {
-    SeqPMsfItem msfitem = (SeqPMsfItem) *value;
+    SeqPMsfItem msfitem;
 
-    ajDebug ("key '%S' Name '%S' Seqlen %d\n",
-	     key, msfitem->Name, ajStrLen(msfitem->Seq));
+    msfitem = (SeqPMsfItem) *value;
+
+    ajDebug("key '%S' Name '%S' Seqlen %d\n",
+	    key, msfitem->Name, ajStrLen(msfitem->Seq));
+
     return;
 }
+
+
+
 
 /* @funcstatic seqMsfTabDel ***************************************************
 **
@@ -4297,14 +4568,18 @@ static void seqMsfTabList (const void* key, void** value, void* cl)
 ** @@
 ******************************************************************************/
 
-static void seqMsfTabDel (const void* key, void** value, void* cl)
+static void seqMsfTabDel(const void* key, void** value, void* cl)
 {
-    SeqPMsfItem msfitem = (SeqPMsfItem) *value;
+    SeqPMsfItem msfitem;
 
+    msfitem = (SeqPMsfItem) *value;
     AJFREE(msfitem);
 
     return;
 }
+
+
+
 
 /* @funcstatic seqReadSwiss ***************************************************
 **
@@ -4317,160 +4592,169 @@ static void seqMsfTabDel (const void* key, void** value, void* cl)
 ** @@
 ******************************************************************************/
 
-static AjBool seqReadSwiss (AjPSeq thys, AjPSeqin seqin)
+static AjBool seqReadSwiss(AjPSeq thys, AjPSeqin seqin)
 {
     static AjPStrTok handle = NULL;
-    static AjPStr token = NULL;
-    static AjPStr rdline = NULL;
-    ajint bufflines = 0;
+    static AjPStr token     = NULL;
+    static AjPStr rdline    = NULL;
+    ajint bufflines         = 0;
     AjBool ok;
-    AjPFileBuff buff = seqin->Filebuff;
-    static AjPStr ftfmt = NULL;
+    AjPFileBuff buff;
+    static AjPStr ftfmt  = NULL;
     static AjPStr tmpstr = NULL;
-    AjBool dofeat = ajFalse;
-    AjPStr liststr;		/* for lists, do not delete */
+    AjBool dofeat        = ajFalse;
+    AjPStr liststr;			/* for lists, do not delete */
 
-    if (!ftfmt)
-	ajStrAssC (&ftfmt, "swissprot");
 
-    if (!ajFileBuffGetStore (buff, &rdline, seqin->Text, &thys->TextPtr))
+    buff = seqin->Filebuff;
+
+    if(!ftfmt)
+	ajStrAssC(&ftfmt, "swissprot");
+
+    if(!ajFileBuffGetStore(buff, &rdline, seqin->Text, &thys->TextPtr))
 	return ajFalse;
 
     bufflines++;
 
-    ajDebug ("seqReadSwiss first line '%S'\n", rdline);
+    ajDebug("seqReadSwiss first line '%S'\n", rdline);
 
-    if (!ajStrPrefixC(rdline, "ID   "))
+    if(!ajStrPrefixC(rdline, "ID   "))
     {
-	ajFileBuffReset (buff);
+	ajFileBuffReset(buff);
 	return ajFalse;
     }
-    (void) ajStrTokenAss (&handle, rdline, " \n\r");
-    (void) ajStrToken (&token, &handle, NULL); /* 'ID' */
-    (void) ajStrToken (&token, &handle, NULL); /* entry name */
+    ajStrTokenAss(&handle, rdline, " \n\r");
+    ajStrToken(&token, &handle, NULL);	/* 'ID' */
+    ajStrToken(&token, &handle, NULL);	/* entry name */
 
-    seqSetName (&thys->Name, token);
+    seqSetName(&thys->Name, token);
 
-    ok = ajFileBuffGetStore (buff, &rdline, seqin->Text, &thys->TextPtr);
-    while (ok && !ajStrPrefixC(rdline, "SQ   "))
+    ok = ajFileBuffGetStore(buff, &rdline, seqin->Text, &thys->TextPtr);
+    while(ok && !ajStrPrefixC(rdline, "SQ   "))
     {
 	bufflines++;
-	if (ajStrPrefixC(rdline, "AC   "))
+
+	if(ajStrPrefixC(rdline, "AC   "))
 	{
-	    (void) ajStrTokenAss (&handle, rdline, " ;\n\r");
-	    (void) ajStrToken (&token, &handle, NULL); /* 'AC' */
-	    while (ajStrToken (&token, &handle, NULL))
-	    {
-		seqAccSave (thys, token);
-	    }
+	    ajStrTokenAss(&handle, rdline, " ;\n\r");
+	    ajStrToken(&token, &handle, NULL); /* 'AC' */
+	    while(ajStrToken(&token, &handle, NULL))
+		seqAccSave(thys, token);
 	}
-	if (ajStrPrefixC(rdline, "DE   "))
+
+	if(ajStrPrefixC(rdline, "DE   "))
 	{
-	    (void) ajStrTokenAss (&handle, rdline, " ");
-	    (void) ajStrToken (&token, &handle, NULL); /* 'DE' */
-	    (void) ajStrToken (&token, &handle, "\n\r"); /* desc */
-	    if (ajStrLen(thys->Desc))
+	    ajStrTokenAss(&handle, rdline, " ");
+	    ajStrToken(&token, &handle, NULL); /* 'DE' */
+	    ajStrToken(&token, &handle, "\n\r"); /* desc */
+	    if(ajStrLen(thys->Desc))
 	    {
-		(void) ajStrAppC (&thys->Desc, " ");
-		(void) ajStrApp (&thys->Desc, token);
+		ajStrAppC(&thys->Desc, " ");
+		ajStrApp(&thys->Desc, token);
 	    }
 	    else
-	    {
-		(void) ajStrAss (&thys->Desc, token);
-	    }
+		ajStrAss(&thys->Desc, token);
 	}
-	if (ajStrPrefixC(rdline, "KW   "))
+
+	if(ajStrPrefixC(rdline, "KW   "))
 	{
-	    (void) ajStrTokenAss (&handle, rdline, " \n\r");
-	    (void) ajStrToken (&token, &handle, NULL); /* 'KW' */
-	    while (ajStrToken (&token, &handle, ".;\n\r"))
+	    ajStrTokenAss(&handle, rdline, " \n\r");
+	    ajStrToken(&token, &handle, NULL); /* 'KW' */
+	    while(ajStrToken(&token, &handle, ".;\n\r"))
 	    {
-	      liststr = ajStrNewS(token);
-	      ajStrChomp(&liststr);
-	      ajListstrPushApp (thys->Keylist, liststr);
+		liststr = ajStrNewS(token);
+		ajStrChomp(&liststr);
+		ajListstrPushApp(thys->Keylist, liststr);
 	    }
 	}
-	if (ajStrPrefixC(rdline, "OS   "))
+
+	if(ajStrPrefixC(rdline, "OS   "))
 	{
-	    (void) ajStrTokenAss (&handle, rdline, " \n\r");
-	    (void) ajStrToken (&token, &handle, NULL); /* 'OS' */
-	    while (ajStrToken (&token, &handle, ".;\n\r"))
+	    ajStrTokenAss(&handle, rdline, " \n\r");
+	    ajStrToken(&token, &handle, NULL); /* 'OS' */
+	    while(ajStrToken(&token, &handle, ".;\n\r"))
 	    {
-	      ajStrAssS(&tmpstr, token);
-	      ajStrChomp(&tmpstr);
-	      seqTaxSave (thys, tmpstr);
-	      ajStrDel(&tmpstr);
+		ajStrAssS(&tmpstr, token);
+		ajStrChomp(&tmpstr);
+		seqTaxSave(thys, tmpstr);
+		ajStrDel(&tmpstr);
 	    }
 	}
-	if (ajStrPrefixC(rdline, "OC   "))
+
+	if(ajStrPrefixC(rdline, "OC   "))
 	{
-	    (void) ajStrTokenAss (&handle, rdline, " \n\r");
-	    (void) ajStrToken (&token, &handle, NULL); /* 'OC' */
-	    while (ajStrToken (&token, &handle, ".;\n\r"))
+	    ajStrTokenAss(&handle, rdline, " \n\r");
+	    ajStrToken(&token, &handle, NULL); /* 'OC' */
+	    while(ajStrToken(&token, &handle, ".;\n\r"))
 	    {
-	      ajStrAssS(&tmpstr, token);
-	      ajStrChomp(&tmpstr);
-	      seqTaxSave (thys, tmpstr);
-	      ajStrDel(&tmpstr);
+		ajStrAssS(&tmpstr, token);
+		ajStrChomp(&tmpstr);
+		seqTaxSave(thys, tmpstr);
+		ajStrDel(&tmpstr);
 	    }
 	}
-	if (ajStrPrefixC(rdline, "FT   "))
-	{
-	  if (seqinUfoLocal(seqin))
-	  {
-	    if (!dofeat)
+
+	if(ajStrPrefixC(rdline, "FT   "))
+	    if(seqinUfoLocal(seqin))
 	    {
-	      dofeat = ajTrue;
-	      ajFeattabInDel(&seqin->Ftquery);
-	      seqin->Ftquery = ajFeattabInNewSS (ftfmt, thys->Name, "N");
-	      ajDebug("seqin->Ftquery ftfile %x\n",
-		      seqin->Ftquery->Handle);
+		if(!dofeat)
+		{
+		    dofeat = ajTrue;
+		    ajFeattabInDel(&seqin->Ftquery);
+		    seqin->Ftquery = ajFeattabInNewSS(ftfmt, thys->Name, "N");
+		    ajDebug("seqin->Ftquery ftfile %x\n",
+			    seqin->Ftquery->Handle);
+		}
+		ajFileBuffLoadS(seqin->Ftquery->Handle, rdline);
+		/* ajDebug("SWISS FEAT saved line:\n%S", rdline); */
 	    }
-	    ajFileBuffLoadS (seqin->Ftquery->Handle, rdline);
-		/* ajDebug ("SWISS FEAT saved line:\n%S", rdline); */
-	    }
-	}
-	ok = ajFileBuffGetStore (buff, &rdline, seqin->Text, &thys->TextPtr);
+
+	ok = ajFileBuffGetStore(buff, &rdline, seqin->Text, &thys->TextPtr);
     }
 
-    if (dofeat)
+    if(dofeat)
     {
- 	ajDebug ("EMBL FEAT TabIn %x\n", seqin->Ftquery);
+ 	ajDebug("EMBL FEAT TabIn %x\n", seqin->Ftquery);
 	ajFeattableDel(&thys->Fttable);
-	thys->Fttable = ajFeatRead (seqin->Ftquery);
+	thys->Fttable = ajFeatRead(seqin->Ftquery);
 	/* ajFeattableTrace(thys->Fttable); */
 	ajFeattabInClear(seqin->Ftquery);
     }
 
-    if (ajStrLen(seqin->Inseq))
-    {	/* we have a sequence to use */
-	ajStrAssS (&thys->Seq, seqin->Inseq);
-	if (seqin->Text)
+    if(ajStrLen(seqin->Inseq))
+    {
+	/* we have a sequence to use */
+	ajStrAssS(&thys->Seq, seqin->Inseq);
+	if(seqin->Text)
 	{
-	  seqTextSeq(&thys->TextPtr, seqin->Inseq);
-	  ajFmtPrintAppS(&thys->TextPtr, "//\n");
+	    seqTextSeq(&thys->TextPtr, seqin->Inseq);
+	    ajFmtPrintAppS(&thys->TextPtr, "//\n");
 	}
     }
     else
-    {	/* read the sequence and terminator */
-	ok = ajFileBuffGetStore (buff, &rdline, seqin->Text, &thys->TextPtr);
-	while (ok && !ajStrPrefixC(rdline, "//"))
+    {
+	/* read the sequence and terminator */
+	ok = ajFileBuffGetStore(buff, &rdline, seqin->Text, &thys->TextPtr);
+	while(ok && !ajStrPrefixC(rdline, "//"))
 	{
-	    (void) seqAppend (&thys->Seq, rdline);
+	    seqAppend(&thys->Seq, rdline);
 	    bufflines++;
-	    ok = ajFileBuffGetStore (buff, &rdline, seqin->Text,
-				     &thys->TextPtr);
+	    ok = ajFileBuffGetStore(buff, &rdline, seqin->Text,
+				    &thys->TextPtr);
 	}
     }
 
-    ajFileBuffClear (buff, 0);
+    ajFileBuffClear(buff, 0);
 
-    (void) ajStrDelReuse (&token);
+    ajStrDelReuse(&token);
 
-    (void) ajStrTokenReset (&handle);
+    ajStrTokenReset(&handle);
 
     return ajTrue;
 }
+
+
+
 
 /* @funcstatic seqReadEmbl ****************************************************
 **
@@ -4483,184 +4767,199 @@ static AjBool seqReadSwiss (AjPSeq thys, AjPSeqin seqin)
 ** @@
 ******************************************************************************/
 
-static AjBool seqReadEmbl (AjPSeq thys, AjPSeqin seqin)
+static AjBool seqReadEmbl(AjPSeq thys, AjPSeqin seqin)
 {
 
     static AjPStrTok handle = NULL;
-    static AjPStr token = NULL;
-    static AjPStr rdline = NULL;
-    ajint bufflines = 0;
+    static AjPStr token     = NULL;
+    static AjPStr rdline    = NULL;
+    ajint bufflines         = 0;
     AjBool ok;
-    AjPFileBuff buff = seqin->Filebuff;
-    static AjPStr ftfmt = NULL;
+    AjPFileBuff buff;
+    static AjPStr ftfmt  = NULL;
     static AjPStr tmpstr = NULL;
-    AjBool dofeat = ajFalse;
-    AjPStr liststr;		/* for lists, do not delete */
+    AjBool dofeat        = ajFalse;
+    AjPStr liststr;			/* for lists, do not delete */
 
-    if (!ftfmt)
-	ajStrAssC (&ftfmt, "embl");
+    buff = seqin->Filebuff;
 
-    if (!ajFileBuffGetStore (buff, &rdline,
-			     seqin->Text, &thys->TextPtr))
+    if(!ftfmt)
+	ajStrAssC(&ftfmt, "embl");
+
+    if(!ajFileBuffGetStore(buff, &rdline,
+			   seqin->Text, &thys->TextPtr))
 	return ajFalse;
 
     bufflines++;
 
     /* for GCG formatted databases */
 
-    while (ajStrPrefixC(rdline, "WP ")) {
-      if (!ajFileBuffGetStore (buff, &rdline,
-			       seqin->Text, &thys->TextPtr))
-	return ajFalse;
-      bufflines++;
-    }
-
-    ajDebug ("seqReadEmbl first line '%S'\n", rdline);
-
-    if (!ajStrPrefixC(rdline, "ID   "))
+    while(ajStrPrefixC(rdline, "WP "))
     {
-	ajFileBuffReset (buff);
+	if(!ajFileBuffGetStore(buff, &rdline,
+			       seqin->Text, &thys->TextPtr))
+	    return ajFalse;
+	bufflines++;
+    }
+
+    ajDebug("seqReadEmbl first line '%S'\n", rdline);
+
+    if(!ajStrPrefixC(rdline, "ID   "))
+    {
+	ajFileBuffReset(buff);
 	return ajFalse;
     }
+
     if(seqin->Text)
 	ajStrAssC(&thys->TextPtr,ajStrStr(rdline));
 
     ajDebug("seqReadEmbl ID line found\n");
-    (void) ajStrTokenAss (&handle, rdline, " \n\r");
-    (void) ajStrToken (&token, &handle, NULL); /* 'ID' */
-    (void) ajStrToken (&token, &handle, NULL); /* entry name */
+    ajStrTokenAss(&handle, rdline, " \n\r");
+    ajStrToken(&token, &handle, NULL);	/* 'ID' */
+    ajStrToken(&token, &handle, NULL);	/* entry name */
 
-    seqSetName (&thys->Name, token);
+    seqSetName(&thys->Name, token);
 
-    ok = ajFileBuffGetStore (buff, &rdline, seqin->Text, &thys->TextPtr);
-    while (ok && !ajStrPrefixC(rdline, "SQ   "))
+    ok = ajFileBuffGetStore(buff, &rdline, seqin->Text, &thys->TextPtr);
+
+    while(ok && !ajStrPrefixC(rdline, "SQ   "))
     {
 	bufflines++;
-	if (ajStrPrefixC(rdline, "AC   "))
+
+	if(ajStrPrefixC(rdline, "AC   "))
 	{
-	    (void) ajStrTokenAss (&handle, rdline, " ;\n\r");
-	    (void) ajStrToken (&token, &handle, NULL); /* 'AC' */
-	    while (ajStrToken (&token, &handle, NULL))
-		seqAccSave (thys, token);
+	    ajStrTokenAss(&handle, rdline, " ;\n\r");
+	    ajStrToken(&token, &handle, NULL); /* 'AC' */
+	    while(ajStrToken(&token, &handle, NULL))
+		seqAccSave(thys, token);
 	}
-	if (ajStrPrefixC(rdline, "SV   "))
+
+	if(ajStrPrefixC(rdline, "SV   "))
 	{
-	    (void) ajStrTokenAss (&handle, rdline, " \n\r");
-	    (void) ajStrToken (&token, &handle, NULL); /* 'AC' */
-	    (void) ajStrToken (&token, &handle, NULL); /* version */
-	    seqSvSave (thys, token);
+	    ajStrTokenAss(&handle, rdline, " \n\r");
+	    ajStrToken(&token, &handle, NULL); /* 'AC' */
+	    ajStrToken(&token, &handle, NULL); /* version */
+	    seqSvSave(thys, token);
 	}
-	if (ajStrPrefixC(rdline, "DE   "))
+
+	if(ajStrPrefixC(rdline, "DE   "))
 	{
-	    (void) ajStrTokenAss (&handle, rdline, " ");
-	    (void) ajStrToken (&token, &handle, NULL); /* 'DE' */
-	    (void) ajStrToken (&token, &handle, "\n\r"); /* desc */
-	    if (ajStrLen(thys->Desc))
+	    ajStrTokenAss(&handle, rdline, " ");
+	    ajStrToken(&token, &handle, NULL); /* 'DE' */
+	    ajStrToken(&token, &handle, "\n\r"); /* desc */
+	    if(ajStrLen(thys->Desc))
 	    {
-		(void) ajStrAppC (&thys->Desc, " ");
-		(void) ajStrApp (&thys->Desc, token);
+		ajStrAppC(&thys->Desc, " ");
+		ajStrApp(&thys->Desc, token);
 	    }
 	    else
-		(void) ajStrAss (&thys->Desc, token);
+		ajStrAss(&thys->Desc, token);
 	}
-	if (ajStrPrefixC(rdline, "KW   "))
+
+	if(ajStrPrefixC(rdline, "KW   "))
 	{
-	    (void) ajStrTokenAss (&handle, rdline, " \n\r");
-	    (void) ajStrToken (&token, &handle, NULL); /* 'KW' */
-	    while (ajStrToken (&token, &handle, ".;\n\r"))
+	    ajStrTokenAss(&handle, rdline, " \n\r");
+	    ajStrToken(&token, &handle, NULL); /* 'KW' */
+	    while(ajStrToken(&token, &handle, ".;\n\r"))
 	    {
-	      liststr = ajStrNewS(token);
-	      ajStrChomp(&liststr);
-	      ajListstrPushApp (thys->Keylist, liststr);
+		liststr = ajStrNewS(token);
+		ajStrChomp(&liststr);
+		ajListstrPushApp(thys->Keylist, liststr);
 	    }
 	}
-	if (ajStrPrefixC(rdline, "OS   "))
+
+	if(ajStrPrefixC(rdline, "OS   "))
 	{
-	    (void) ajStrTokenAss (&handle, rdline, " \n\r");
-	    (void) ajStrToken (&token, &handle, NULL); /* 'OS' */
-	    while (ajStrToken (&token, &handle, ".;\n\r"))
+	    ajStrTokenAss(&handle, rdline, " \n\r");
+	    ajStrToken(&token, &handle, NULL); /* 'OS' */
+	    while(ajStrToken(&token, &handle, ".;\n\r"))
 	    {
-	      ajStrAssS(&tmpstr, token);
-	      ajStrChomp(&tmpstr);
-	      seqTaxSave (thys, tmpstr);
-	      ajStrDel(&tmpstr);
+		ajStrAssS(&tmpstr, token);
+		ajStrChomp(&tmpstr);
+		seqTaxSave(thys, tmpstr);
+		ajStrDel(&tmpstr);
 	    }
 	}
-	if (ajStrPrefixC(rdline, "OC   "))
+
+	if(ajStrPrefixC(rdline, "OC   "))
 	{
-	    (void) ajStrTokenAss (&handle, rdline, " \n\r");
-	    (void) ajStrToken (&token, &handle, NULL); /* 'OC' */
-	    while (ajStrToken (&token, &handle, ".;\n\r"))
+	    ajStrTokenAss(&handle, rdline, " \n\r");
+	    ajStrToken(&token, &handle, NULL); /* 'OC' */
+	    while(ajStrToken(&token, &handle, ".;\n\r"))
 	    {
-	      ajStrAssS(&tmpstr, token);
-	      ajStrChomp(&tmpstr);
-	      seqTaxSave (thys, tmpstr);
-	      ajStrDel(&tmpstr);
+		ajStrAssS(&tmpstr, token);
+		ajStrChomp(&tmpstr);
+		seqTaxSave(thys, tmpstr);
+		ajStrDel(&tmpstr);
 	    }
 	}
-	if (ajStrPrefixC(rdline, "FT   "))
-	{
-	    if (seqinUfoLocal(seqin))
+
+	if(ajStrPrefixC(rdline, "FT   "))
+	    if(seqinUfoLocal(seqin))
 	    {
-		if (!dofeat)
+		if(!dofeat)
 		{
-		  dofeat = ajTrue;
-		  ajFeattabInDel(&seqin->Ftquery);
-		  seqin->Ftquery = ajFeattabInNewSS (ftfmt, thys->Name, "N");
-		  /* ajDebug("seqin->Ftquery Handle %x\n",
-			  seqin->Ftquery->Handle); */
+		    dofeat = ajTrue;
+		    ajFeattabInDel(&seqin->Ftquery);
+		    seqin->Ftquery = ajFeattabInNewSS(ftfmt, thys->Name, "N");
+		    /* ajDebug("seqin->Ftquery Handle %x\n",
+		       seqin->Ftquery->Handle); */
 		}
-		ajFileBuffLoadS (seqin->Ftquery->Handle, rdline);
-		/* ajDebug ("EMBL FEAT saved line:\n%S", rdline); */
+		ajFileBuffLoadS(seqin->Ftquery->Handle, rdline);
+		/* ajDebug("EMBL FEAT saved line:\n%S", rdline); */
 	    }
-	}
-	ok = ajFileBuffGetStore (buff, &rdline, seqin->Text, &thys->TextPtr);
+
+	ok = ajFileBuffGetStore(buff, &rdline, seqin->Text, &thys->TextPtr);
     }
 
 
 
-    if (dofeat)
+    if(dofeat)
     {
-	/* ajDebug ("EMBL FEAT TabIn %x\n", seqin->Ftquery); */
+	/* ajDebug("EMBL FEAT TabIn %x\n", seqin->Ftquery); */
 	ajFeattableDel(&thys->Fttable);
-	thys->Fttable = ajFeatRead (seqin->Ftquery);
+	thys->Fttable = ajFeatRead(seqin->Ftquery);
 	/* ajFeattableTrace(thys->Fttable); */
 	ajFeattabInClear(seqin->Ftquery);
     }
 
-    if (ajStrLen(seqin->Inseq))
-    {	/* we have a sequence to use */
-	ajStrAssS (&thys->Seq, seqin->Inseq);
-	if (seqin->Text)
+    if(ajStrLen(seqin->Inseq))
+    {
+	/* we have a sequence to use */
+	ajStrAssS(&thys->Seq, seqin->Inseq);
+	if(seqin->Text)
 	{
-	  seqTextSeq(&thys->TextPtr, seqin->Inseq);
-	  ajFmtPrintAppS(&thys->TextPtr, "//\n");
+	    seqTextSeq(&thys->TextPtr, seqin->Inseq);
+	    ajFmtPrintAppS(&thys->TextPtr, "//\n");
 	}
     }
     else
-    {	/* read the sequence and terminator */
-	ok = ajFileBuffGetStore (buff, &rdline, seqin->Text, &thys->TextPtr);
-	while (ok && !ajStrPrefixC(rdline, "//"))
+    {
+	/* read the sequence and terminator */
+	ok = ajFileBuffGetStore(buff, &rdline, seqin->Text, &thys->TextPtr);
+	while(ok && !ajStrPrefixC(rdline, "//"))
 	{
-	    (void) seqAppend (&thys->Seq, rdline);
+	    seqAppend(&thys->Seq, rdline);
 	    bufflines++;
-	    ok = ajFileBuffGetStore (buff, &rdline, seqin->Text,
-				     &thys->TextPtr);
+	    ok = ajFileBuffGetStore(buff, &rdline, seqin->Text,
+				    &thys->TextPtr);
 	}
     }
 
-    ajFileBuffClear (buff, 0);
+    ajFileBuffClear(buff, 0);
 
-    (void) ajStrDelReuse (&token);
-				/* 3033
- */
-    (void) ajStrTokenReset (&handle);
+    ajStrDelReuse(&token);
+
+    ajStrTokenReset(&handle);
 
 
     /* ajSeqTrace(thys); */
 
     return ajTrue;
 }
+
+
+
 
 /* @funcstatic seqReadGenbank *************************************************
 **
@@ -4673,282 +4972,289 @@ static AjBool seqReadEmbl (AjPSeq thys, AjPSeqin seqin)
 ** @@
 ******************************************************************************/
 
-static AjBool seqReadGenbank (AjPSeq thys, AjPSeqin seqin)
+static AjBool seqReadGenbank(AjPSeq thys, AjPSeqin seqin)
 {
     static AjPStrTok handle = NULL;
-    static AjPStr token = NULL;
-    static AjPStr rdline = NULL;
-    ajint bufflines = 0;
+    static AjPStr token     = NULL;
+    static AjPStr rdline    = NULL;
+    ajint bufflines         = 0;
     AjBool ok;
     AjBool done = ajFalse;
-    AjPFileBuff buff = seqin->Filebuff;
-    static AjPStr ftfmt = NULL;
+    AjPFileBuff buff;
+    static AjPStr ftfmt  = NULL;
     static AjPStr tmpstr = NULL;
-    AjBool dofeat = ajFalse;
-    AjPSeqQuery qry = seqin->Query;
-    AjPStr liststr;		/* for lists, do not delete */
+    AjBool dofeat        = ajFalse;
+    AjPSeqQuery qry;
+    AjPStr liststr;			/* for lists, do not delete */
 
     ajDebug("seqReadGenbank\n");
 
-    if (!ftfmt)
-	ajStrAssC (&ftfmt, "genbank");
+    buff = seqin->Filebuff;
+    qry  = seqin->Query;
 
-    if (!ajFileBuffGetStore (buff, &rdline,
-			     seqin->Text, &thys->TextPtr))
-      return ajFalse;
+    if(!ftfmt)
+	ajStrAssC(&ftfmt, "genbank");
+
+    if(!ajFileBuffGetStore(buff, &rdline,
+			   seqin->Text, &thys->TextPtr))
+	return ajFalse;
     bufflines++;
 
     ok = ajTrue;
 
     /* for GCG formatted databases */
 
-    if (ajStrPrefixC(rdline, "WPCOMMENT"))
+    if(ajStrPrefixC(rdline, "WPCOMMENT"))
     {
-      ajFileBuffGetStore (buff, &rdline,
-			  seqin->Text, &thys->TextPtr);
-      bufflines++;
-      ok = ajTrue;
-      while (ok && ajStrPrefixC(rdline, " "))
-      {
-	ok = ajFileBuffGetStore (buff, &rdline,
-				 seqin->Text, &thys->TextPtr);
- 	bufflines++;
-      }
+	ajFileBuffGetStore(buff, &rdline,
+			   seqin->Text, &thys->TextPtr);
+	bufflines++;
+	ok = ajTrue;
+	while(ok && ajStrPrefixC(rdline, " "))
+	{
+	    ok = ajFileBuffGetStore(buff, &rdline,
+				    seqin->Text, &thys->TextPtr);
+	    bufflines++;
+	}
     }
-    if (!ok)
+
+    if(!ok)
     {
-      ajFileBuffReset (buff);
-      return ajFalse;
+	ajFileBuffReset(buff);
+	return ajFalse;
     }
 
     /* This loop necessary owing to headers on GB distro files */
     if(ajStrFindC(rdline,"Genetic Sequence Data Bank") >= 0)
-	while (!ajStrPrefixC(rdline, "LOCUS"))
+	while(!ajStrPrefixC(rdline, "LOCUS"))
 	{
-	    if (!ajFileBuffGetStore (buff, &rdline,
-				     seqin->Text, &thys->TextPtr))
+	    if(!ajFileBuffGetStore(buff, &rdline,
+				   seqin->Text, &thys->TextPtr))
 		return ajFalse;
 	    bufflines++;
 	}
 
-    if (!ajStrPrefixC(rdline, "LOCUS"))
+    if(!ajStrPrefixC(rdline, "LOCUS"))
     {
 	ajDebug("failed - LOCUS not found - first line was\n%S\n", rdline);
-	ajFileBuffReset (buff);
+	ajFileBuffReset(buff);
 	return ajFalse;
     }
+
     if(seqin->Text)
 	ajStrAssC(&thys->TextPtr,ajStrStr(rdline));
 
-    (void) ajStrTokenAss (&handle, rdline, " \n\r");
-    (void) ajStrToken (&token, &handle, NULL); /* 'ID' */
-    (void) ajStrToken (&token, &handle, NULL); /* entry name */
+    ajStrTokenAss(&handle, rdline, " \n\r");
+    ajStrToken(&token, &handle, NULL);	/* 'ID' */
+    ajStrToken(&token, &handle, NULL);	/* entry name */
 
-    seqSetName (&thys->Name, token);
+    seqSetName(&thys->Name, token);
 
     ok = ajFileBuffGetStore(buff, &rdline, seqin->Text, &thys->TextPtr);
-    while (ok &&
-	   !ajStrPrefixC(rdline, "ORIGIN") &&
-	   !ajStrPrefixC(rdline, "BASE COUNT"))
+    while(ok &&
+	  !ajStrPrefixC(rdline, "ORIGIN") &&
+	  !ajStrPrefixC(rdline, "BASE COUNT"))
     {
 	done = ajFalse;
 	bufflines++;
-	if (ajStrPrefixC(rdline, "ACCESSION"))
+	if(ajStrPrefixC(rdline, "ACCESSION"))
 	{
 	    ajDebug("accession found\n");
 
-	    (void) ajStrTokenAss (&handle, rdline, " ;\n\r");
-	    (void) ajStrToken (&token, &handle, NULL); /* 'ACCESSION' */
-	    while (ajStrToken (&token, &handle, NULL))
-	    {
-		seqAccSave (thys, token);
-	    }
+	    ajStrTokenAss(&handle, rdline, " ;\n\r");
+	    ajStrToken(&token, &handle, NULL); /* 'ACCESSION' */
+	    while(ajStrToken(&token, &handle, NULL))
+		seqAccSave(thys, token);
 	}
-	if (ajStrPrefixC(rdline, "VERSION"))
+
+	if(ajStrPrefixC(rdline, "VERSION"))
 	{
 	    ajDebug("seqversion found\n");
 
-	    (void) ajStrTokenAss (&handle, rdline, " \n\r");
-	    (void) ajStrToken (&token, &handle, NULL); /* 'VERSION' */
-	    (void) ajStrToken (&token, &handle, NULL);
-	    seqSvSave (thys, token);
-	    if (ajStrToken (&token, &handle, ": \n\r"))	/* GI: */
+	    ajStrTokenAss(&handle, rdline, " \n\r");
+	    ajStrToken(&token, &handle, NULL); /* 'VERSION' */
+	    ajStrToken(&token, &handle, NULL);
+	    seqSvSave(thys, token);
+	    if(ajStrToken(&token, &handle, ": \n\r")) /* GI: */
 	    {
-	      (void) ajStrToken (&token, &handle, NULL);
-	      ajStrAssS(&thys->Gi, token);
+		ajStrToken(&token, &handle, NULL);
+		ajStrAssS(&thys->Gi, token);
 	    }
 	}
-	if (ajStrPrefixC(rdline, "FEATURES"))
-	{
-	    if (seqinUfoLocal(seqin))
+
+	if(ajStrPrefixC(rdline, "FEATURES"))
+	    if(seqinUfoLocal(seqin))
 	    {
 		ajDebug("features found\n");
-		if (!dofeat)
+		if(!dofeat)
 		{
-		  dofeat = ajTrue;
-		  ajFeattabInDel(&seqin->Ftquery);
-		  seqin->Ftquery = ajFeattabInNewSS (ftfmt, thys->Name, "N");
-		  ajDebug("seqin->Ftquery Handle %x\n",
-			  seqin->Ftquery->Handle);
-		    /* ajDebug ("GENBANK FEAT first line:\n%S", rdline); */
+		    dofeat = ajTrue;
+		    ajFeattabInDel(&seqin->Ftquery);
+		    seqin->Ftquery = ajFeattabInNewSS(ftfmt, thys->Name, "N");
+		    ajDebug("seqin->Ftquery Handle %x\n",
+			    seqin->Ftquery->Handle);
+		    /* ajDebug("GENBANK FEAT first line:\n%S", rdline); */
 		}
-		ajFileBuffLoadS (seqin->Ftquery->Handle, rdline);
-		ok = ajFileBuffGetStore (buff, &rdline,
-					 seqin->Text, &thys->TextPtr);
+		ajFileBuffLoadS(seqin->Ftquery->Handle, rdline);
+		ok = ajFileBuffGetStore(buff, &rdline,
+					seqin->Text, &thys->TextPtr);
 		done = ajTrue;
-		while (ok && ajStrPrefixC(rdline, " "))
+		while(ok && ajStrPrefixC(rdline, " "))
 		{
 		    bufflines++;
-		    ajFileBuffLoadS (seqin->Ftquery->Handle, rdline);
-		    /* ajDebug ("GENBANK FEAT saved line:\n%S", rdline); */
-		    ok = ajFileBuffGetStore (buff, &rdline, seqin->Text,
-					     &thys->TextPtr);
+		    ajFileBuffLoadS(seqin->Ftquery->Handle, rdline);
+		    /* ajDebug("GENBANK FEAT saved line:\n%S", rdline); */
+		    ok = ajFileBuffGetStore(buff, &rdline, seqin->Text,
+					    &thys->TextPtr);
 		}
 	    }
-	}
 
-	if (ajStrPrefixC(rdline, "DEFINITION"))
+
+	if(ajStrPrefixC(rdline, "DEFINITION"))
 	{
 	    ajDebug("definition found\n");
-	    (void) ajStrTokenAss (&handle, rdline, " ");
-	    (void) ajStrToken (&token, &handle, NULL); /* 'DEFINITION' */
-	    (void) ajStrToken (&token, &handle, "\n\r"); /* desc */
-	    (void) ajStrAss (&thys->Desc, token);
-	    ok = ajFileBuffGetStore (buff, &rdline, seqin->Text,
-				     &thys->TextPtr);
+	    ajStrTokenAss(&handle, rdline, " ");
+	    ajStrToken(&token, &handle, NULL); /* 'DEFINITION' */
+	    ajStrToken(&token, &handle, "\n\r"); /* desc */
+	    ajStrAss(&thys->Desc, token);
+	    ok = ajFileBuffGetStore(buff, &rdline, seqin->Text,
+				    &thys->TextPtr);
 	    done = ajTrue;
-	    while (ok && ajStrPrefixC(rdline, " "))
+	    while(ok && ajStrPrefixC(rdline, " "))
 	    {
 		bufflines++;
-		(void) ajStrTokenAss (&handle, rdline, " ");
-		(void) ajStrToken (&token, &handle, "\n\r");
-		(void) ajStrAppC (&thys->Desc, " ");
-		(void) ajStrApp (&thys->Desc, token);
-		ok = ajFileBuffGetStore (buff, &rdline, seqin->Text,
-					 &thys->TextPtr);
+		ajStrTokenAss(&handle, rdline, " ");
+		ajStrToken(&token, &handle, "\n\r");
+		ajStrAppC(&thys->Desc, " ");
+		ajStrApp(&thys->Desc, token);
+		ok = ajFileBuffGetStore(buff, &rdline, seqin->Text,
+					&thys->TextPtr);
 	    }
 	}
 
-	if (ajStrPrefixC(rdline, "KEYWORDS"))
+	if(ajStrPrefixC(rdline, "KEYWORDS"))
 	{
 	    ajDebug("keywords found\n");
-	    (void) ajStrTokenAss (&handle, rdline, " ");
-	    (void) ajStrToken (&token, &handle, NULL); /* 'KEYWORDS' */
-	    while (ajStrToken (&token, &handle, ".;\n\r"))
+	    ajStrTokenAss(&handle, rdline, " ");
+	    ajStrToken(&token, &handle, NULL); /* 'KEYWORDS' */
+	    while(ajStrToken(&token, &handle, ".;\n\r"))
 	    {
-	      liststr = ajStrNewS(token);
-	      ajStrChomp(&liststr);
-	      ajListstrPushApp (thys->Keylist, liststr);
+		liststr = ajStrNewS(token);
+		ajStrChomp(&liststr);
+		ajListstrPushApp(thys->Keylist, liststr);
 	    }
 
-	    ok = ajFileBuffGetStore (buff, &rdline, seqin->Text,
-				     &thys->TextPtr);
+	    ok = ajFileBuffGetStore(buff, &rdline, seqin->Text,
+				    &thys->TextPtr);
 	    done = ajTrue;
-	    while (ok && ajStrPrefixC(rdline, " "))
+	    while(ok && ajStrPrefixC(rdline, " "))
 	    {
 		bufflines++;
-		(void) ajStrTokenAss (&handle, rdline, " ");
-		while (ajStrToken (&token, &handle, ".;\n\r"))
+		ajStrTokenAss(&handle, rdline, " ");
+		while(ajStrToken(&token, &handle, ".;\n\r"))
 		{
 		    liststr = ajStrNewS(token);
 		    ajStrChomp(&liststr);
-		    ajListstrPushApp (thys->Keylist, liststr);
+		    ajListstrPushApp(thys->Keylist, liststr);
 		}
-		ok = ajFileBuffGetStore (buff, &rdline, seqin->Text,
-					 &thys->TextPtr);
+		ok = ajFileBuffGetStore(buff, &rdline, seqin->Text,
+					&thys->TextPtr);
 	    }
 	}
 
-	if (ajStrPrefixC(rdline, "  ORGANISM"))
+	if(ajStrPrefixC(rdline, "  ORGANISM"))
 	{
 	    ajDebug("organism found\n");
-	    (void) ajStrTokenAss (&handle, rdline, " ");
-	    (void) ajStrToken (&token, &handle, NULL); /* 'ORGANISM' */
-	    while (ajStrToken (&token, &handle, ".;\n\r"))
+	    ajStrTokenAss(&handle, rdline, " ");
+	    ajStrToken(&token, &handle, NULL); /* 'ORGANISM' */
+	    while(ajStrToken(&token, &handle, ".;\n\r"))
 	    {
-	      ajStrAssS(&tmpstr, token);
-	      ajStrChomp(&tmpstr);
-	      seqTaxSave(thys, tmpstr);
+		ajStrAssS(&tmpstr, token);
+		ajStrChomp(&tmpstr);
+		seqTaxSave(thys, tmpstr);
 	    }
 
-	    ok = ajFileBuffGetStore (buff, &rdline, seqin->Text,
-				     &thys->TextPtr);
+	    ok = ajFileBuffGetStore(buff, &rdline, seqin->Text,
+				    &thys->TextPtr);
 	    done = ajTrue;
-	    while (ok && ajStrPrefixC(rdline, "    "))
+	    while(ok && ajStrPrefixC(rdline, "    "))
 	    {
 		bufflines++;
-		(void) ajStrTokenAss (&handle, rdline, " ");
-		while (ajStrToken (&token, &handle, ".;\n\r"))
+		ajStrTokenAss(&handle, rdline, " ");
+		while(ajStrToken(&token, &handle, ".;\n\r"))
 		{
-		  ajStrAssS(&tmpstr, token);
-		  ajStrChomp(&tmpstr);
-		  seqTaxSave(thys, tmpstr);
+		    ajStrAssS(&tmpstr, token);
+		    ajStrChomp(&tmpstr);
+		    seqTaxSave(thys, tmpstr);
 		}
-		ok = ajFileBuffGetStore (buff, &rdline, seqin->Text,
-					 &thys->TextPtr);
+		ok = ajFileBuffGetStore(buff, &rdline, seqin->Text,
+					&thys->TextPtr);
 	    }
 	}
 
-	if (!done)
-	    ok = ajFileBuffGetStore (buff, &rdline, seqin->Text,
-				     &thys->TextPtr);
+	if(!done)
+	    ok = ajFileBuffGetStore(buff, &rdline, seqin->Text,
+				    &thys->TextPtr);
     }
 
-    if (dofeat)
+    if(dofeat)
     {
-	ajDebug ("GENBANK FEAT TabIn %x\n", seqin->Ftquery);
+	ajDebug("GENBANK FEAT TabIn %x\n", seqin->Ftquery);
 	ajFeattableDel(&thys->Fttable);
-	thys->Fttable = ajFeatRead (seqin->Ftquery);
+	thys->Fttable = ajFeatRead(seqin->Ftquery);
 	/* ajFeattableTrace(thys->Fttable); */
 	ajFeattabInClear(seqin->Ftquery);
     }
 
-    if (ajStrLen(seqin->Inseq))
-    {					/* we have a sequence to use */
+    if(ajStrLen(seqin->Inseq))
+    {
+	/* we have a sequence to use */
 	ajDebug("Got an Inseq sequence\n");
 	if(ajStrMatchC(qry->Method,"gcg"))
-	{
 	    while(!ajStrPrefixC(rdline,"ORIGIN"))
-	      ajFileBuffGetStore(buff,&rdline, seqin->Text, &thys->TextPtr);
-	}
-	ajStrAssS (&thys->Seq, seqin->Inseq);
-	if (seqin->Text)
+		ajFileBuffGetStore(buff,&rdline, seqin->Text, &thys->TextPtr);
+
+	ajStrAssS(&thys->Seq, seqin->Inseq);
+	if(seqin->Text)
 	{
-	  seqTextSeq(&thys->TextPtr, seqin->Inseq);
-	  ajFmtPrintAppS(&thys->TextPtr, "//\n");
+	    seqTextSeq(&thys->TextPtr, seqin->Inseq);
+	    ajFmtPrintAppS(&thys->TextPtr, "//\n");
 	}
     }
     else
-    {					/* read the sequence and terminator */
+    {
+	/* read the sequence and terminator */
 	ajDebug("sequence start at '%S'\n", rdline);
 	while(!ajStrPrefixC(rdline,"ORIGIN") &&
 	      !ajStrPrefixC(rdline,"BASE COUNT"))
 	    if(!ajFileBuffGetStore(buff,&rdline, seqin->Text, &thys->TextPtr))
 		break;
-	ok = ajFileBuffGetStore (buff, &rdline, seqin->Text, &thys->TextPtr);
-	while (ok && !ajStrPrefixC(rdline, "//"))
+	ok = ajFileBuffGetStore(buff, &rdline, seqin->Text, &thys->TextPtr);
+	while(ok && !ajStrPrefixC(rdline, "//"))
 	{
-	    if (!ajStrPrefixC(rdline, "ORIGIN") &&
-		!ajStrPrefixC(rdline,"BASE COUNT"))
-		(void) seqAppend (&thys->Seq, rdline);
-	    ok = ajFileBuffGetStore (buff, &rdline, seqin->Text,
-				     &thys->TextPtr);
+	    if(!ajStrPrefixC(rdline, "ORIGIN") &&
+	       !ajStrPrefixC(rdline,"BASE COUNT"))
+		seqAppend(&thys->Seq, rdline);
+	    ok = ajFileBuffGetStore(buff, &rdline, seqin->Text,
+				    &thys->TextPtr);
 	    bufflines++;
 	}
     }
 
     if(!ajStrMatchC(qry->Method,"gcg"))
-    {
 	while(!ajStrPrefixC(rdline,"//"))
 	    ajFileBuffGetStore(buff,&rdline, seqin->Text, &thys->TextPtr);
-    }
 
-    ajFileBuffClear (buff, 0);
 
-    (void) ajStrTokenReset (&handle);
+    ajFileBuffClear(buff, 0);
+
+    ajStrTokenReset(&handle);
 
     return ajTrue;
 }
+
+
+
 
 /* @funcstatic seqReadGff *****************************************************
 **
@@ -4969,104 +5275,114 @@ static AjBool seqReadGenbank (AjPSeq thys, AjPSeqin seqin)
 ** @@
 ******************************************************************************/
 
-static AjBool seqReadGff (AjPSeq thys, AjPSeqin seqin)
+static AjBool seqReadGff(AjPSeq thys, AjPSeqin seqin)
 {
 
-  static AjPRegexp typexp = NULL;
-  static AjPStr rdline = NULL;
-  ajint bufflines = 0;
-  AjBool ok;
-  AjBool isseq = ajFalse;
-  AjPFileBuff buff = seqin->Filebuff;
-  AjPFileBuff ftfile = NULL;
-  static AjPStr ftfmt = NULL;
-  AjBool dofeat = ajFalse;
-  static AjPStr typstr;
-  static AjPStr verstr = NULL;	/* copy of version line */
-  static AjPStr outstr = NULL;	/* generated Type line */
+    static AjPRegexp typexp = NULL;
+    static AjPStr rdline    = NULL;
+    ajint bufflines         = 0;
+    AjBool ok;
+    AjBool isseq            = ajFalse;
+    AjPFileBuff buff;
+    AjPFileBuff ftfile   = NULL;
+    static AjPStr ftfmt  = NULL;
+    AjBool dofeat        = ajFalse;
+    static AjPStr typstr;
+    static AjPStr verstr = NULL;	/* copy of version line */
+    static AjPStr outstr = NULL;	/* generated Type line */
 
-  if (!typexp)
-    typexp = ajRegCompC("^##([DR]NA|Protein) +([^ \t\r\n]+)");
+    buff = seqin->Filebuff;
 
-  if (!ftfmt)
-    ajStrAssC (&ftfmt, "gff");
+    if(!typexp)
+	typexp = ajRegCompC("^##([DR]NA|Protein) +([^ \t\r\n]+)");
 
-  ok = ajFileBuffGetStore (buff, &rdline,
-			   seqin->Text, &thys->TextPtr);
-  if (!ok)
-    return ajFalse;
+    if(!ftfmt)
+	ajStrAssC(&ftfmt, "gff");
 
-  bufflines++;
+    ok = ajFileBuffGetStore(buff, &rdline,
+			    seqin->Text, &thys->TextPtr);
+    if(!ok)
+	return ajFalse;
 
-  ajDebug ("seqReadGff first line '%S'\n", rdline);
+    bufflines++;
 
-  if (!ajStrPrefixC(rdline, "##gff-version ")) {
-    ajFileBuffReset (buff);
-    return ajFalse;
-  }
-  ajStrAssS (&verstr, rdline);
+    ajDebug("seqReadGff first line '%S'\n", rdline);
 
-  if(seqin->Text)
-    ajStrAssS(&thys->TextPtr,rdline);
-
-  ok = ajFileBuffGetStore (buff, &rdline, seqin->Text, &thys->TextPtr);
-  while (ok && ajStrPrefixC (rdline, "##")) {
-    if (ajRegExec(typexp, rdline)) {
-      isseq = ajTrue;
-      ajRegSubI(typexp, 1, &typstr);
-      ajRegSubI(typexp, 2, &thys->Name);
-      if (ajStrMatchC(typstr, "Protein"))
-	ajSeqSetProt(thys);
-      else
-	ajSeqSetNuc(thys);
-      ajFmtPrintS (&outstr, "##Type %S %S", typstr, thys->Name);
+    if(!ajStrPrefixC(rdline, "##gff-version "))
+    {
+	ajFileBuffReset(buff);
+	return ajFalse;
     }
-    else if (ajStrPrefixC(rdline, "##end-")) {
-      isseq = ajFalse;
+    ajStrAssS(&verstr, rdline);
+
+    if(seqin->Text)
+	ajStrAssS(&thys->TextPtr,rdline);
+
+    ok = ajFileBuffGetStore(buff, &rdline, seqin->Text, &thys->TextPtr);
+    while(ok && ajStrPrefixC(rdline, "##"))
+    {
+	if(ajRegExec(typexp, rdline))
+	{
+	    isseq = ajTrue;
+	    ajRegSubI(typexp, 1, &typstr);
+	    ajRegSubI(typexp, 2, &thys->Name);
+	    if(ajStrMatchC(typstr, "Protein"))
+		ajSeqSetProt(thys);
+	    else
+		ajSeqSetNuc(thys);
+	    ajFmtPrintS(&outstr, "##Type %S %S", typstr, thys->Name);
+	}
+	else if(ajStrPrefixC(rdline, "##end-"))
+	    isseq = ajFalse;
+	else if(isseq)
+	    seqAppend(&thys->Seq, rdline);
+
+	ok = ajFileBuffGetStore(buff, &rdline, seqin->Text, &thys->TextPtr);
     }
-    else if (isseq) {
-      (void) seqAppend (&thys->Seq, rdline);
+
+    if(!ajSeqLen(thys))
+    {
+	ajFileBuffReset(buff);
+	return ajFalse;
     }
-    ok = ajFileBuffGetStore (buff, &rdline, seqin->Text, &thys->TextPtr);
-  }
 
-  if (!ajSeqLen(thys)) {
-    ajFileBuffReset (buff);
-    return ajFalse;
-  }
+    /* do we want the features now? */
 
-  /* do we want the features now? */
-
-  if (ok & seqinUfoLocal(seqin)) {
-    dofeat = ajTrue;
-    ftfile = ajFileBuffNew();
-    ajFileBuffLoadS (ftfile, verstr);
-    ajFileBuffLoadS (ftfile, outstr);
-    while (ok && !ajStrPrefixC(rdline, "##")) {
-      ajFileBuffLoadS (ftfile, rdline);
-      /* ajDebug ("GFF FEAT saved line:\n%S", rdline); */
-      ok = ajFileBuffGetStore (buff, &rdline, seqin->Text, &thys->TextPtr);
+    if(ok & seqinUfoLocal(seqin))
+    {
+	dofeat = ajTrue;
+	ftfile = ajFileBuffNew();
+	ajFileBuffLoadS(ftfile, verstr);
+	ajFileBuffLoadS(ftfile, outstr);
+	while(ok && !ajStrPrefixC(rdline, "##"))
+	{
+	    ajFileBuffLoadS(ftfile, rdline);
+	    /* ajDebug("GFF FEAT saved line:\n%S", rdline); */
+	    ok = ajFileBuffGetStore(buff,&rdline,seqin->Text,&thys->TextPtr);
+	}
     }
-  }
 
-  if (dofeat) {
-    ajFeattabInDel(&seqin->Ftquery);
-    seqin->Ftquery = ajFeattabInNewSSF (ftfmt, thys->Name,
-					ajStrStr(seqin->Type), ftfile);
-    ajDebug ("GFF FEAT TabIn %x\n", seqin->Ftquery);
-    ftfile = NULL;			/* now copied to seqin->FeattabIn */
-    ajFeattableDel(&seqin->Fttable);
-    seqin->Fttable = ajFeatRead (seqin->Ftquery);
-    /* ajFeattableTrace(seqin->Fttable); */
-    ajFeattableDel(&thys->Fttable);
-    thys->Fttable = seqin->Fttable;
-    seqin->Fttable = NULL;
-  }
+    if(dofeat)
+    {
+	ajFeattabInDel(&seqin->Ftquery);
+	seqin->Ftquery = ajFeattabInNewSSF(ftfmt, thys->Name,
+					   ajStrStr(seqin->Type), ftfile);
+	ajDebug("GFF FEAT TabIn %x\n", seqin->Ftquery);
+	ftfile = NULL;		  /* now copied to seqin->FeattabIn */
+	ajFeattableDel(&seqin->Fttable);
+	seqin->Fttable = ajFeatRead(seqin->Ftquery);
+	/* ajFeattableTrace(seqin->Fttable); */
+	ajFeattableDel(&thys->Fttable);
+	thys->Fttable = seqin->Fttable;
+	seqin->Fttable = NULL;
+    }
 
-  ajFileBuffClear (buff, 0);
+    ajFileBuffClear(buff, 0);
 
-  return ajTrue;
+    return ajTrue;
 }
+
+
 
 
 /* @funcstatic seqReadAbi *****************************************************
@@ -5080,23 +5396,27 @@ static AjBool seqReadGff (AjPSeq thys, AjPSeqin seqin)
 ** @@
 ******************************************************************************/
 
-static AjBool seqReadAbi (AjPSeq thys, AjPSeqin seqin)
+static AjBool seqReadAbi(AjPSeq thys, AjPSeqin seqin)
 {
-    AjPFileBuff buff = seqin->Filebuff;
-    AjBool  ok=ajFalse;
-    ajlong baseO=0L;
-    ajlong numBases=0L;
-    AjPStr sample=NULL;
-    AjPStr smpl=NULL;
+    AjPFileBuff buff;
+    AjBool  ok      = ajFalse;
+    ajlong baseO    = 0L;
+    ajlong numBases = 0L;
+    AjPStr sample   = NULL;
+    AjPStr smpl     = NULL;
     static AjPRegexp dotsexp = NULL;
-    AjPFile fp = ajFileBuffFile (buff);
+    AjPFile fp;
     ajint filestat;
 
+    buff = seqin->Filebuff;
+    fp = ajFileBuffFile(buff);
+
     ajDebug("seqReadAbi file %F\n", fp);
+
     /* ajFileBuffTraceFull(buff, 10, 10); */
 
-    if (ajFileBuffEnd(buff))
-      return ajFalse;
+    if(ajFileBuffEnd(buff))
+	return ajFalse;
 
     if(!ajSeqABITest(fp))
     {
@@ -5105,42 +5425,42 @@ static AjBool seqReadAbi (AjPSeq thys, AjPSeqin seqin)
 	return ajFalse;
     }
 
-    if (seqin->Text)
+    if(seqin->Text)
 	ajWarn("Unable to read text from binary ABI file %F", fp);
 
     filestat = ajFileSeek(fp,0L,0);
-    ajDebug ("filestat %d\n", filestat);
+    ajDebug("filestat %d\n", filestat);
 
     numBases = ajSeqABIGetNBase(fp);
     /* Find BASE tag & get offset                    */
     baseO = ajSeqABIGetBaseOffset(fp);
     /* Read in sequence         */
     ok = ajSeqABIReadSeq(fp,baseO,numBases,&thys->Seq);
-    if (!ok) {
-      ajFileBuffResetPos(buff);
-      return ajFalse;
+    if(!ok) {
+	ajFileBuffResetPos(buff);
+	return ajFalse;
     }
 
     sample = ajStrNew();
     ajSeqABISampleName(fp, &sample);
 
     /* replace dots in the sample name with underscore */
-    dotsexp = ajRegCompC ("^(.*)[.](.*)$");
+    dotsexp = ajRegCompC("^(.*)[.](.*)$");
     smpl = ajStrNew();
 
     while(ajRegExec(dotsexp,sample))
     {
-      ajStrClear(&sample);
-      ajRegSubI(dotsexp,1,&smpl);
-      ajStrAppC(&smpl,"_");
-      ajStrApp(&sample,smpl);
-      ajRegSubI(dotsexp,2,&smpl);
-      ajStrApp(&sample,smpl);
+	ajStrClear(&sample);
+	ajRegSubI(dotsexp,1,&smpl);
+	ajStrAppC(&smpl,"_");
+	ajStrApp(&sample,smpl);
+	ajRegSubI(dotsexp,2,&smpl);
+	ajStrApp(&sample,smpl);
     }
 
     ajStrAssC(&thys->Name,ajStrStr(sample));
 
-    ajSeqSetNuc (thys);
+    ajSeqSetNuc(thys);
 
     ajFileBuffClear(buff, -1);
     buff->File->End=ajTrue;
@@ -5150,6 +5470,9 @@ static AjBool seqReadAbi (AjPSeq thys, AjPSeqin seqin)
 
     return ajTrue;
 }
+
+
+
 
 /* @func ajSeqPrintInFormat ***************************************************
 **
@@ -5161,26 +5484,28 @@ static AjBool seqReadAbi (AjPSeq thys, AjPSeqin seqin)
 ** @@
 ******************************************************************************/
 
-void ajSeqPrintInFormat (const AjPFile outf, AjBool full)
+void ajSeqPrintInFormat(const AjPFile outf, AjBool full)
 {
-    ajint i=0;
+    ajint i = 0;
 
-    ajFmtPrintF (outf, "\n");
-    ajFmtPrintF (outf, "# sequence input formats\n");
-    ajFmtPrintF (outf, "# Name         Try (test for unknown input)"
-		 " files)\n");
-    ajFmtPrintF (outf, "\n");
-    ajFmtPrintF (outf, "InFormat {\n");
-    for (i=0; seqInFormatDef[i].Name; i++)
-    {
-	if (full || seqInFormatDef[i].Try)
-	    ajFmtPrintF (outf, "  %-12s %B\n", seqInFormatDef[i].Name,
-			 seqInFormatDef[i].Try);
-    }
-    ajFmtPrintF (outf, "}\n\n");
+    ajFmtPrintF(outf, "\n");
+    ajFmtPrintF(outf, "# sequence input formats\n");
+    ajFmtPrintF(outf, "# Name         Try (test for unknown input)"
+		" files)\n");
+    ajFmtPrintF(outf, "\n");
+    ajFmtPrintF(outf, "InFormat {\n");
+    for(i=0; seqInFormatDef[i].Name; i++)
+	if(full || seqInFormatDef[i].Try)
+	    ajFmtPrintF(outf, "  %-12s %B\n", seqInFormatDef[i].Name,
+			seqInFormatDef[i].Try);
+
+    ajFmtPrintF(outf, "}\n\n");
 
     return;
 }
+
+
+
 
 /* @funcstatic seqFindInFormat ************************************************
 **
@@ -5195,36 +5520,39 @@ void ajSeqPrintInFormat (const AjPFile outf, AjBool full)
 ** @@
 ******************************************************************************/
 
-
-static AjBool seqFindInFormat (const AjPStr format, ajint* iformat)
+static AjBool seqFindInFormat(const AjPStr format, ajint* iformat)
 {
     AjPStr tmpformat = NULL;
     ajint i = 0;
 
-    /* ajDebug ("seqFindInFormat '%S'\n", format); */
-    if (!ajStrLen(format))
+    /* ajDebug("seqFindInFormat '%S'\n", format); */
+    if(!ajStrLen(format))
 	return ajFalse;
 
-    (void) ajStrAssS (&tmpformat, format);
-    (void) ajStrToLower(&tmpformat);
+    ajStrAssS(&tmpformat, format);
+    ajStrToLower(&tmpformat);
 
-    for (i=0; seqInFormatDef[i].Name; i++)
+    for(i=0; seqInFormatDef[i].Name; i++)
     {
-	/* ajDebug ("test %d '%s' \n", i, seqInFormatDef[i].Name); */
-	if (ajStrMatchCaseC(tmpformat, seqInFormatDef[i].Name))
+	/* ajDebug("test %d '%s' \n", i, seqInFormatDef[i].Name); */
+	if(ajStrMatchCaseC(tmpformat, seqInFormatDef[i].Name))
 	{
 	    *iformat = i;
 	    ajStrDel(&tmpformat);
-	    /* ajDebug ("found '%s' at %d\n", seqInFormatDef[i].Name, i); */
+	    /* ajDebug("found '%s' at %d\n", seqInFormatDef[i].Name, i); */
 	    return ajTrue;
 	}
     }
 
-    ajErr ("Unknown input format '%S'", format);
+    ajErr("Unknown input format '%S'", format);
 
     ajStrDel(&tmpformat);
+
     return ajFalse;
 }
+
+
+
 
 /* @func ajSeqFormatTest ******************************************************
 **
@@ -5235,17 +5563,19 @@ static AjBool seqFindInFormat (const AjPStr format, ajint* iformat)
 ** @@
 ******************************************************************************/
 
-AjBool ajSeqFormatTest (const AjPStr format)
+AjBool ajSeqFormatTest(const AjPStr format)
 {
-  ajint i;
+    ajint i;
 
-  for (i=0; seqInFormatDef[i].Name; i++)
-  {
-    if (ajStrMatchCaseC(format, seqInFormatDef[i].Name))
-      return ajTrue;
-  }
-  return ajFalse;
+    for(i=0; seqInFormatDef[i].Name; i++)
+	if(ajStrMatchCaseC(format, seqInFormatDef[i].Name))
+	    return ajTrue;
+
+    return ajFalse;
 }
+
+
+
 
 /* @funcstatic seqSetInFormat *************************************************
 **
@@ -5259,34 +5589,33 @@ AjBool ajSeqFormatTest (const AjPStr format)
 ** @@
 ******************************************************************************/
 
-static AjBool seqSetInFormat (const AjPStr format)
+static AjBool seqSetInFormat(const AjPStr format)
 {
     ajint i;
-    AjPStr fmtstr = NULL;
+    AjPStr fmtstr           = NULL;
     static AjPStrTok handle = NULL;
     ajint ifound;
-    AjBool ret = ajTrue;
+    AjBool ret              = ajTrue;
 
-    for (i=0; seqInFormatDef[i].Name; i++)
+    for(i=0; seqInFormatDef[i].Name; i++)
 	seqInFormatDef[i].Try = ajFalse;
 
     ajDebug("seqSetInformat '%S'\n", format);
 
-    (void) ajStrTokenAss (&handle, format, " \t\n\r,;:");
-    while (ajStrToken (&fmtstr, &handle, " \t\n\r,;:"))
+    ajStrTokenAss(&handle, format, " \t\n\r,;:");
+    while(ajStrToken(&fmtstr, &handle, " \t\n\r,;:"))
     {
 	ifound = 0;
-	for (i=0; seqInFormatDef[i].Name; i++)
-	{
-	    if (ajStrMatchCaseC(fmtstr, seqInFormatDef[i].Name))
+	for(i=0; seqInFormatDef[i].Name; i++)
+	    if(ajStrMatchCaseC(fmtstr, seqInFormatDef[i].Name))
 	    {
 		/* ajDebug("found '%S' %d\n", fmtstr, i); */
 		seqInFormatDef[i].Try = ajTrue;
 		ifound = 1;
 		break;
 	    }
-	}
-	if (!ifound)
+
+	if(!ifound)
 	{
 	    /* ajDebug("not found '%S'\n", fmtstr); */
 
@@ -5295,10 +5624,12 @@ static AjBool seqSetInFormat (const AjPStr format)
 	}
     }
 
-    (void) ajStrTokenReset (&handle);
+    ajStrTokenReset(&handle);
 
     return ret;
 }
+
+
 
 
 /* @funcstatic seqAppend ******************************************************
@@ -5312,27 +5643,30 @@ static AjBool seqSetInFormat (const AjPStr format)
 ** @@
 ******************************************************************************/
 
-static ajint seqAppend (AjPStr* pseq, const AjPStr line)
+static ajint seqAppend(AjPStr* pseq, const AjPStr line)
 {
-    static AjPStr token = NULL;
     const char* cp;
+    static AjPStr token     = NULL;
     static AjPRegexp seqexp = NULL;
-    ajint i=0;
+    ajint i = 0;
 
-    if (!seqexp)
-	seqexp = ajRegCompC ("[A-Za-z*.~-]+");
+    if(!seqexp)
+	seqexp = ajRegCompC("[A-Za-z*.~-]+");
 
     cp = ajStrStr(line);
-    while (cp && ajRegExecC(seqexp, cp))
+    while(cp && ajRegExecC(seqexp, cp))
     {
-	ajRegSubI (seqexp, 0, &token);
-	(void) ajStrApp (pseq, token);
+	ajRegSubI(seqexp, 0, &token);
+	ajStrApp(pseq, token);
 	i += ajStrLen(token);
-	(void) ajRegPostC (seqexp, &cp);
+	ajRegPostC(seqexp, &cp);
     }
 
     return i;
 }
+
+
+
 
 /* @funcstatic seqGcgDots *****************************************************
 **
@@ -5355,15 +5689,15 @@ static ajint seqAppend (AjPStr* pseq, const AjPStr line)
 ** @@
 ******************************************************************************/
 
-static AjBool seqGcgDots (AjPSeq thys,const  AjPSeqin seqin,
-			  AjPStr* pline,
-			  ajint maxlines, ajint* len)
+static AjBool seqGcgDots(AjPSeq thys,const  AjPSeqin seqin,
+			 AjPStr* pline,
+			 ajint maxlines, ajint* len)
 {
     static AjPStr token = NULL;
-    ajint check=0;
-    ajint nlines=0;
+    ajint check  = 0;
+    ajint nlines = 0;
 
-    AjPFileBuff buff = seqin->Filebuff;
+    AjPFileBuff buff;
 
     static AjPRegexp dotexp = NULL;
     static AjPRegexp chkexp = NULL;
@@ -5372,7 +5706,9 @@ static AjBool seqGcgDots (AjPSeq thys,const  AjPSeqin seqin,
     static AjPRegexp namexp = NULL;
     static AjPRegexp msfexp = NULL;
 
-    if (!dotexp)
+    buff = seqin->Filebuff;
+
+    if(!dotexp)
     {
 	dotexp = ajRegCompC("[.][.]");
 	chkexp = ajRegCompC("[Cc][Hh][Ee][Cc][Kk]:[ \t]*([0-9]+)");
@@ -5382,54 +5718,58 @@ static AjBool seqGcgDots (AjPSeq thys,const  AjPSeqin seqin,
 	msfexp = ajRegCompC("[Mm][Ss][Ff]:[ \t]*([0-9]+)");
     }
 
-    while (nlines < maxlines)
+    while(nlines < maxlines)
     {
-	if (nlines++)
-	    if (!ajFileBuffGetStore(buff, pline,
-				    seqin->Text, &thys->TextPtr))
+	if(nlines++)
+	    if(!ajFileBuffGetStore(buff, pline,
+				   seqin->Text, &thys->TextPtr))
 		return ajFalse;
 
-	if (nlines > maxlines)
+	if(nlines > maxlines)
 	    return ajFalse;
 
-	if (!ajRegExec(dotexp, *pline))
+	if(!ajRegExec(dotexp, *pline))
 	    continue;
 
-	ajDebug ("seqGcgDots   .. found\n'%S'\n", *pline);
-	if (!ajRegExec(chkexp, *pline)) /* checksum required */
+	ajDebug("seqGcgDots   .. found\n'%S'\n", *pline);
+	if(!ajRegExec(chkexp, *pline))	/* checksum required */
 	    return ajFalse;
 
-	if (ajRegExec(msfexp, *pline))	/* oops - it's an MSF file */
+	if(ajRegExec(msfexp, *pline))	/* oops - it's an MSF file */
 	    return ajFalse;
 
-	ajRegSubI (chkexp, 1, &token);
-	(void) ajStrToInt (token, &check);
+	ajRegSubI(chkexp, 1, &token);
+	ajStrToInt(token, &check);
 
-	ajDebug ("   checksum %d\n", check);
+	ajDebug("   checksum %d\n", check);
 
-	if (ajRegExec (lenexp, *pline))
+	if(ajRegExec(lenexp, *pline))
 	{
-	    ajRegSubI (lenexp, 1, &token);
-	    (void) ajStrToInt (token, len);
-	    ajDebug ("   length %d\n", *len);
+	    ajRegSubI(lenexp, 1, &token);
+	    ajStrToInt(token, len);
+	    ajDebug("   length %d\n", *len);
 	}
 
-	if (ajRegExec (namexp, *pline))
+	if(ajRegExec(namexp, *pline))
 	{
-	    ajRegSubI (namexp, 0, &thys->Name);
-	    ajDebug ("   name '%S'\n", thys->Name);
+	    ajRegSubI(namexp, 0, &thys->Name);
+	    ajDebug("   name '%S'\n", thys->Name);
 	}
 
-	if (ajRegExec (typexp, *pline))
+	if(ajRegExec(typexp, *pline))
 	{
-	    ajRegSubI (typexp, 1, &thys->Type);
-	    ajDebug ("   type '%S'\n", thys->Type);
+	    ajRegSubI(typexp, 1, &thys->Type);
+	    ajDebug("   type '%S'\n", thys->Type);
 	}
+
 	return ajTrue;
     }
 
     return ajFalse;
 }
+
+
+
 
 /* @funcstatic seqGcgMsfDots **************************************************
 **
@@ -5452,14 +5792,14 @@ static AjBool seqGcgDots (AjPSeq thys,const  AjPSeqin seqin,
 ** @@
 ******************************************************************************/
 
-static AjBool seqGcgMsfDots (AjPSeq thys, const AjPSeqin seqin, AjPStr* pline,
-			     ajint maxlines, ajint* len)
+static AjBool seqGcgMsfDots(AjPSeq thys, const AjPSeqin seqin, AjPStr* pline,
+			    ajint maxlines, ajint* len)
 {
     static AjPStr token = NULL;
-    ajint check=0;
-    ajint nlines=0;
+    ajint check  = 0;
+    ajint nlines = 0;
 
-    AjPFileBuff buff = seqin->Filebuff;
+    AjPFileBuff buff;
 
     static AjPRegexp dotexp = NULL;
     static AjPRegexp chkexp = NULL;
@@ -5467,7 +5807,9 @@ static AjBool seqGcgMsfDots (AjPSeq thys, const AjPSeqin seqin, AjPStr* pline,
     static AjPRegexp typexp = NULL;
     static AjPRegexp namexp = NULL;
 
-    if (!dotexp)
+    buff = seqin->Filebuff;
+
+    if(!dotexp)
     {
 	dotexp = ajRegCompC("[.][.]");
 	chkexp = ajRegCompC("[Cc][Hh][Ee][Cc][Kk]:[ \t]+([0-9]+)");
@@ -5476,48 +5818,51 @@ static AjBool seqGcgMsfDots (AjPSeq thys, const AjPSeqin seqin, AjPStr* pline,
 	namexp = ajRegCompC("[^ \t]+");
     }
 
-    ajDebug ("seqGcgMsfDots maxlines: %d\nline: '%S'\n", maxlines,*pline);
+    ajDebug("seqGcgMsfDots maxlines: %d\nline: '%S'\n", maxlines,*pline);
 
-    while (nlines < maxlines)
+    while(nlines < maxlines)
     {
-	if (nlines++)
-	    if (!ajFileBuffGetStore(buff, pline,
-				    seqin->Text, &thys->TextPtr))
+	if(nlines++)
+	    if(!ajFileBuffGetStore(buff, pline,
+				   seqin->Text, &thys->TextPtr))
 		return ajFalse;
 
-	ajDebug ("testing line %d\n'%S'\n", nlines,*pline);
-	if (nlines > maxlines)
+	ajDebug("testing line %d\n'%S'\n", nlines,*pline);
+	if(nlines > maxlines)
 	    return ajFalse;
 
-	if (!ajRegExec(dotexp, *pline))
+	if(!ajRegExec(dotexp, *pline))
 	    continue;
 
 	/* dots found. This must be the line if this is MSF format */
 
-	if (!ajRegExec(chkexp, *pline)) /* check: is required */
+	if(!ajRegExec(chkexp, *pline))	/* check: is required */
 	    return ajFalse;
 
-	if (!ajRegExec (lenexp, *pline)) /* MSF: len is required for GCG*/
+	if(!ajRegExec(lenexp, *pline)) /* MSF: len is required for GCG*/
 	    return ajFalse;
 
 
-	ajRegSubI (lenexp, 1, &token);
-	(void) ajStrToInt (token, len);
+	ajRegSubI(lenexp, 1, &token);
+	ajStrToInt(token, len);
 
-	ajRegSubI (chkexp, 1, &token);
-	(void) ajStrToInt (token, &check);
+	ajRegSubI(chkexp, 1, &token);
+	ajStrToInt(token, &check);
 
-	if (ajRegExec (namexp, *pline))
-	    ajRegSubI (namexp, 0, &thys->Name);
+	if(ajRegExec(namexp, *pline))
+	    ajRegSubI(namexp, 0, &thys->Name);
 
-	if (ajRegExec (typexp, *pline))
-	    ajRegSubI (typexp, 1, &thys->Type);
+	if(ajRegExec(typexp, *pline))
+	    ajRegSubI(typexp, 1, &thys->Type);
 
 	return ajTrue;
     }
 
     return ajFalse;
 }
+
+
+
 
 /* @funcstatic seqGcgMsfHeader ************************************************
 **
@@ -5533,9 +5878,10 @@ static AjBool seqGcgMsfDots (AjPSeq thys, const AjPSeqin seqin, AjPStr* pline,
 ** @@
 ******************************************************************************/
 
-static AjBool seqGcgMsfHeader (const AjPStr line, SeqPMsfItem* pmsfitem)
+static AjBool seqGcgMsfHeader(const AjPStr line, SeqPMsfItem* pmsfitem)
 {
-    AjPStr name = NULL;	/* NOTE: not static. New each time for list */
+    AjPStr name         = NULL;	/* NOTE: not static. New each time for list */
+    /* Hurrah! */
     static AjPStr token = NULL;
     SeqPMsfItem msfitem = NULL;
 
@@ -5544,7 +5890,7 @@ static AjBool seqGcgMsfHeader (const AjPStr line, SeqPMsfItem* pmsfitem)
     static AjPRegexp wgtexp = NULL;
     static AjPRegexp namexp = NULL;
 
-    if (!chkexp)
+    if(!chkexp)
     {
 	chkexp = ajRegCompC("[Cc][Hh][Ee][Cc][Kk]:[ \t]*([0-9]+)");
 	lenexp = ajRegCompC("[Ll][Ee][Nn][Gg]?[Tt]?[Hh]?:[ \t]*([0-9]+)");
@@ -5552,48 +5898,51 @@ static AjBool seqGcgMsfHeader (const AjPStr line, SeqPMsfItem* pmsfitem)
 	namexp = ajRegCompC("[Nn][Aa][Mm][Ee]:[ \t]*([^ \t]+)");
     }
 
-    ajDebug ("seqGcgMsfHeader '%S'\n", line);
+    ajDebug("seqGcgMsfHeader '%S'\n", line);
 
-    if (!ajRegExec (namexp, line))
+    if(!ajRegExec(namexp, line))
 	return ajFalse;
 
-    ajRegSubI (namexp, 1, &name);
-    /*ajDebug ("Name found\n");*/
+    ajRegSubI(namexp, 1, &name);
+    /*ajDebug("Name found\n");*/
 
-    if (!ajRegExec(chkexp, line))
+    if(!ajRegExec(chkexp, line))
 	return ajFalse;
 
-    /*ajDebug ("Check found\n");*/
+    /*ajDebug("Check found\n");*/
 
     *pmsfitem = AJNEW0(msfitem);
     msfitem->Name = name;
 
-    ajRegSubI (chkexp, 1, &token);
-    (void) ajStrToInt (token, &msfitem->Check);
+    ajRegSubI(chkexp, 1, &token);
+    ajStrToInt(token, &msfitem->Check);
 
-    if (ajRegExec (lenexp, line))
+    if(ajRegExec(lenexp, line))
     {
-	ajRegSubI (lenexp, 1, &token);
-	(void) ajStrToInt (token, &msfitem->Len);
+	ajRegSubI(lenexp, 1, &token);
+	ajStrToInt(token, &msfitem->Len);
     }
     else
 	msfitem->Len = 0;
 
     msfitem->Seq = ajStrNewL(msfitem->Len+1);
 
-    if (ajRegExec (wgtexp, line))
+    if(ajRegExec(wgtexp, line))
     {
-	ajRegSubI (wgtexp, 1, &token);
-	(void) ajStrToFloat (token, &msfitem->Weight);
+	ajRegSubI(wgtexp, 1, &token);
+	ajStrToFloat(token, &msfitem->Weight);
     }
     else
 	msfitem->Weight = 1.0;
 
-    ajDebug ("MSF header name '%S' check %d len %d weight %.3f\n",
-	     msfitem->Name, msfitem->Check, msfitem->Len, msfitem->Weight);
+    ajDebug("MSF header name '%S' check %d len %d weight %.3f\n",
+	    msfitem->Name, msfitem->Check, msfitem->Len, msfitem->Weight);
 
     return ajTrue;
 }
+
+
+
 
 /* @funcstatic seqUsaProcess **************************************************
 **
@@ -5623,54 +5972,51 @@ static AjBool seqGcgMsfHeader (const AjPStr line, SeqPMsfItem* pmsfitem)
 ** @@
 ******************************************************************************/
 
-static AjBool seqUsaProcess (AjPSeq thys, AjPSeqin seqin)
+static AjBool seqUsaProcess(AjPSeq thys, AjPSeqin seqin)
 {
-    static AjPRegexp fmtexp = NULL;
-    static AjPRegexp dbexp = NULL;
-    static AjPRegexp idexp = NULL;
-    static AjPRegexp wildexp = NULL;
-    static AjPRegexp listexp = NULL;
-    static AjPRegexp asisexp = NULL;
+    static AjPRegexp fmtexp   = NULL;
+    static AjPRegexp dbexp    = NULL;
+    static AjPRegexp idexp    = NULL;
+    static AjPRegexp wildexp  = NULL;
+    static AjPRegexp listexp  = NULL;
+    static AjPRegexp asisexp  = NULL;
     static AjPRegexp rangeexp = NULL;
 
     static AjPStr usatest = NULL;
 
-    static AjPStr qrydb = NULL;
+    static AjPStr qrydb   = NULL;
     static AjPStr qrylist = NULL;
-    static AjPStr qrychr = NULL;
-    static AjPStr tmpstr = NULL;
+    static AjPStr qrychr  = NULL;
+    static AjPStr tmpstr  = NULL;
 
-    AjPSeqQuery qry = seqin->Query;
+    AjPSeqQuery qry;
 
-    AjBool fmtstat = ajFalse;		/* status returns from regex tests */
-    AjBool regstat = ajFalse;
-    AjBool dbstat = ajFalse;
-    AjBool methstat = ajFalse;
-    AjBool accstat = ajFalse;	/* return status from reading something */
-    AjBool liststat = ajFalse;
-    AjBool asisstat = ajFalse;
+    AjBool fmtstat   = ajFalse;	 /* status returns from regex tests */
+    AjBool regstat   = ajFalse;
+    AjBool dbstat    = ajFalse;
+    AjBool methstat  = ajFalse;
+    AjBool accstat   = ajFalse;	/* return status from reading something */
+    AjBool liststat  = ajFalse;
+    AjBool asisstat  = ajFalse;
     AjBool rangestat = ajFalse;
 
-    /*
-    ajint ibegin=0;
-    ajint iend=0;
-    AjBool irev=ajFalse;
-    */
+    qry = seqin->Query;
 
-    ajStrDel(&qry->Field);	/* clear it. we test this for regstat */
+
+    ajStrDel(&qry->Field);    /* clear it. we test this for regstat */
 
     ajDebug("++seqUsaProcess '%S' %d..%d(%b) '%S' %d \n",
 	    seqin->Usa, seqin->Begin, seqin->End, seqin->Rev,
 	    seqin->Formatstr, seqin->Format);
 
-    if (!fmtexp)
-	fmtexp = ajRegCompC ("^([A-Za-z0-9]*)::(.*)$");
+    if(!fmtexp)
+	fmtexp = ajRegCompC("^([A-Za-z0-9]*)::(.*)$");
     /* \1 format */
     /* \2 remainder */
 
-    if (!dbexp)
-	dbexp = ajRegCompC ("^([A-Za-z0-9_]+)([-]([A-Za-z]+))?"
-			    "([:{]([^}]*)}?)?$");
+    if(!dbexp)
+	dbexp = ajRegCompC("^([A-Za-z0-9_]+)([-]([A-Za-z]+))?"
+			   "([:{]([^}]*)}?)?$");
 
     /* \1 dbname */
     /* \2 -id or -acc */
@@ -5678,275 +6024,279 @@ static AjBool seqUsaProcess (AjPSeq thys, AjPSeqin seqin)
     /* \4 :qry->QryString */
     /* \5 qry->QryString */
 
-    if (!idexp)			/* \1 is filename \4 is the qry->QryString */
-	idexp = ajRegCompC ("^([^|]+[|]|[^:{%]+)"
-			    "(([:{%])(([^:}]+):)?([^:}]*)}?)?$");
+    if(!idexp)		 /* \1 is filename \4 is the qry->QryString */
+	idexp = ajRegCompC("^([^|]+[|]|[^:{%]+)"
+			   "(([:{%])(([^:}]+):)?([^:}]*)}?)?$");
 
-    if (!listexp)		/* \1 is filename \3 is the qry->QryString */
-	listexp = ajRegCompC ("^(@|[Ll][Ii][Ss][Tt]:+)(.+)$");
+    if(!listexp)	 /* \1 is filename \3 is the qry->QryString */
+	listexp = ajRegCompC("^(@|[Ll][Ii][Ss][Tt]:+)(.+)$");
 
-    if (!asisexp)		/* \1 is filename \3 is the qry->QryString */
-	asisexp = ajRegCompC ("^[Aa][Ss][Ii][Ss]:+(.+)$");
+    if(!asisexp)	 /* \1 is filename \3 is the qry->QryString */
+	asisexp = ajRegCompC("^[Aa][Ss][Ii][Ss]:+(.+)$");
 
-    if (!wildexp)
-	wildexp = ajRegCompC ("(.*[*].*)");
+    if(!wildexp)
+	wildexp = ajRegCompC("(.*[*].*)");
     /* \1 wildcard query */
 
-    if (!rangeexp)	    /* \1 is rest of USA \2 start \3 end \5 reverse*/
-	rangeexp = ajRegCompC ("(.*)[[](-?[0-9]*):(-?[0-9]*)(:([Rr])?)?[]]$");
+    if(!rangeexp)    /* \1 is rest of USA \2 start \3 end \5 reverse*/
+	rangeexp = ajRegCompC("(.*)[[](-?[0-9]*):(-?[0-9]*)(:([Rr])?)?[]]$");
 
-    (void) ajStrAss (&usatest, seqin->Usa);
+    ajStrAss(&usatest, seqin->Usa);
     /* Strip any leading spaces */
     ajStrTrimC(&usatest," \t\n");
 
     ajDebug("USA to test: '%S'\n\n", usatest);
 
-    rangestat = ajRegExec (rangeexp, usatest);
-    if (rangestat) {
-      ajRegSubI(rangeexp, 2, &tmpstr);
-      if (ajStrLen(tmpstr))
-	ajStrToInt (tmpstr, &seqin->Begin);
-      ajRegSubI(rangeexp, 3, &tmpstr);
-      if (ajStrLen(tmpstr))
-	ajStrToInt (tmpstr, &seqin->End);
-      ajRegSubI(rangeexp, 5, &tmpstr);
-      if (ajStrLen(tmpstr))
-	seqin->Rev = ajTrue;
-      ajRegSubI(rangeexp, 1, &usatest);
-      ajDebug ("range found [%d:%d:%b]\n",
-	       seqin->Begin, seqin->End, seqin->Rev);
-    }
-
-    asisstat = ajRegExec (asisexp, usatest);
-    if (asisstat)
+    rangestat = ajRegExec(rangeexp, usatest);
+    if(rangestat)
     {
-	ajRegSubI (asisexp, 1, &qry->Filename);
-	(void) ajStrAssC (&qry->Formatstr, "text");
-	(void) ajStrAss (&seqin->Formatstr, qry->Formatstr);
-	(void) seqFormatSet (thys, seqin);
-	ajDebug ("asis sequence '%S'\n", qry->Filename);
-	return ajSeqAccessAsis (seqin);
+	ajRegSubI(rangeexp, 2, &tmpstr);
+	if(ajStrLen(tmpstr))
+	    ajStrToInt(tmpstr, &seqin->Begin);
+	ajRegSubI(rangeexp, 3, &tmpstr);
+	if(ajStrLen(tmpstr))
+	    ajStrToInt(tmpstr, &seqin->End);
+	ajRegSubI(rangeexp, 5, &tmpstr);
+	if(ajStrLen(tmpstr))
+	    seqin->Rev = ajTrue;
+	ajRegSubI(rangeexp, 1, &usatest);
+	ajDebug("range found [%d:%d:%b]\n",
+		seqin->Begin, seqin->End, seqin->Rev);
     }
 
-    liststat = ajRegExec (listexp, usatest);
-    fmtstat = ajRegExec (fmtexp, usatest);
+    asisstat = ajRegExec(asisexp, usatest);
+    if(asisstat)
+    {
+	ajRegSubI(asisexp, 1, &qry->Filename);
+	ajStrAssC(&qry->Formatstr, "text");
+	ajStrAss(&seqin->Formatstr, qry->Formatstr);
+	seqFormatSet(thys, seqin);
+	ajDebug("asis sequence '%S'\n", qry->Filename);
+	return ajSeqAccessAsis(seqin);
+    }
+
+    liststat = ajRegExec(listexp, usatest);
+    fmtstat = ajRegExec(fmtexp, usatest);
     ajDebug("format regexp: %B list:%B\n", fmtstat, liststat);
 
-    if (fmtstat && !liststat)
+    if(fmtstat && !liststat)
     {
-	ajRegSubI (fmtexp, 1, &qry->Formatstr);
+	ajRegSubI(fmtexp, 1, &qry->Formatstr);
 	/* default unknown */
-	(void) ajStrSetC (&qry->Formatstr, seqInFormatDef[0].Name);
-	ajRegSubI (fmtexp, 2, &usatest);
-	ajDebug ("found format %S\n", qry->Formatstr);
-	if (seqFindInFormat (qry->Formatstr, &seqin->Format))
-	    (void) ajStrAss (&seqin->Formatstr, qry->Formatstr);
+	ajStrSetC(&qry->Formatstr, seqInFormatDef[0].Name);
+	ajRegSubI(fmtexp, 2, &usatest);
+	ajDebug("found format %S\n", qry->Formatstr);
+	if(seqFindInFormat(qry->Formatstr, &seqin->Format))
+	    ajStrAss(&seqin->Formatstr, qry->Formatstr);
 	else
-	    ajDebug ("unknown format '%S'\n", qry->Formatstr);
+	    ajDebug("unknown format '%S'\n", qry->Formatstr);
     }
     else
-    {
 	ajDebug("no format specified in USA\n");
-    }
-    ajDebug ("\n");
 
-    (void) seqFormatSet (thys, seqin);
+    ajDebug("\n");
 
-    liststat = ajRegExec (listexp, usatest);
-    if (liststat)
+    seqFormatSet(thys, seqin);
+
+    liststat = ajRegExec(listexp, usatest);
+    if(liststat)
     {
-	ajRegSubI (listexp, 2, &qrylist);
-	ajDebug ("list found @%S fmt:%B range:%B\n",
-		 qrylist, fmtstat, rangestat);
-	if (seqin->Count && fmtstat)
-	  ajWarn("List includes another list with format. Results undefined\n");
-	if (seqin->Count && rangestat)
-	  ajWarn("List includes another list with range. Results undefined\n");
-	return seqListProcess (thys, seqin, qrylist);
+	ajRegSubI(listexp, 2, &qrylist);
+	ajDebug("list found @%S fmt:%B range:%B\n",
+		qrylist, fmtstat, rangestat);
+	if(seqin->Count && fmtstat)
+	    ajWarn("List includes another list and format. Results undefined\n");
+	if(seqin->Count && rangestat)
+	    ajWarn("List includes another list with range. Results undefined\n");
+	return seqListProcess(thys, seqin, qrylist);
     }
 
-    regstat = ajRegExec (dbexp, usatest);
+    regstat = ajRegExec(dbexp, usatest);
     ajDebug("dbname dbexp: %B\n", regstat);
 
-    if (regstat)		/* clear it if this was really a file */
+    if(regstat)
     {
-	ajRegSubI (dbexp, 3, &qry->Field);
-	ajRegSubI (dbexp, 1, &qrydb);
-	if (!ajNamDatabase(qrydb))
+	/* clear it if this was really a file */	
+	ajRegSubI(dbexp, 3, &qry->Field);
+	ajRegSubI(dbexp, 1, &qrydb);
+	if(!ajNamDatabase(qrydb))
 	{
-	    ajDebug ("unknown dbname %S, try filename\n", qrydb);
+	    ajDebug("unknown dbname %S, try filename\n", qrydb);
 	    regstat = ajFalse;
 	}
     }
 
-    if (regstat)
+    if(regstat)
     {
-	ajRegSubI (dbexp, 5, &qry->QryString);
-	(void) ajStrAss (&qry->DbName, qrydb);
-	ajDebug ("found dbname '%S' level: '%S' qry->QryString: '%S'\n",
-		 qry->DbName, qry->Field, qry->QryString);
-	dbstat = ajNamDbData (qry);
+	ajRegSubI(dbexp, 5, &qry->QryString);
+	ajStrAss(&qry->DbName, qrydb);
+	ajDebug("found dbname '%S' level: '%S' qry->QryString: '%S'\n",
+		qry->DbName, qry->Field, qry->QryString);
+	dbstat = ajNamDbData(qry);
 
-	if (dbstat && ajStrLen(qry->QryString))
+	if(dbstat && ajStrLen(qry->QryString))
 	{
-	    /* ajDebug ("  qry->QryString %S\n", qry->QryString); */
-	    if (ajStrLen(qry->Field))
+	    /* ajDebug("  qry->QryString %S\n", qry->QryString); */
+	    if(ajStrLen(qry->Field))
 	    {
-		ajDebug ("  db QryString '%S' Field '%S'\n",
-			 qry->QryString, qry->Field);
-		if (ajStrMatchCaseC (qry->Field, "id"))
-		    (void) ajStrAss (&qry->Id, qry->QryString);
-		else if (ajStrMatchCaseC (qry->Field, "acc"))
-		    (void) ajStrAss (&qry->Acc, qry->QryString);
-		else {
-		  if (!seqQueryField(qry, qry->Field)) {
-		      ajErr ("USA '%S' query field '%S' not defined"
-			     " for database '%S'",
-			     usatest, qry->Field, qry->DbName);
-		      return ajFalse;
-		  }
-
-		  /* treat Gi as another Sv, so no new query field */
-		  if (ajStrMatchCaseC (qry->Field, "sv"))
-		    (void) ajStrAss (&qry->Sv, qry->QryString);
-		  else if (ajStrMatchCaseC (qry->Field, "des"))
-		    (void) ajStrAss (&qry->Des, qry->QryString);
-		  else if (ajStrMatchCaseC (qry->Field, "org"))
-		    (void) ajStrAss (&qry->Org, qry->QryString);
-		  else if (ajStrMatchCaseC (qry->Field, "key"))
-		    (void) ajStrAss (&qry->Key, qry->QryString);
-		  else
+		ajDebug("  db QryString '%S' Field '%S'\n",
+			qry->QryString, qry->Field);
+		if(ajStrMatchCaseC(qry->Field, "id"))
+		    ajStrAss(&qry->Id, qry->QryString);
+		else if(ajStrMatchCaseC(qry->Field, "acc"))
+		    ajStrAss(&qry->Acc, qry->QryString);
+		else
+		{
+		    if(!seqQueryField(qry, qry->Field))
 		    {
-		      ajErr ("USA '%S' query level '%S' not supported",
-			     usatest, qry->Field);
-		      return ajFalse;
+			ajErr("USA '%S' query field '%S' not defined"
+			      " for database '%S'",
+			      usatest, qry->Field, qry->DbName);
+			return ajFalse;
+		    }
+
+		    /* treat Gi as another Sv, so no new query field */
+		    if(ajStrMatchCaseC(qry->Field, "sv"))
+			ajStrAss(&qry->Sv, qry->QryString);
+		    else if(ajStrMatchCaseC(qry->Field, "des"))
+			ajStrAss(&qry->Des, qry->QryString);
+		    else if(ajStrMatchCaseC(qry->Field, "org"))
+			ajStrAss(&qry->Org, qry->QryString);
+		    else if(ajStrMatchCaseC(qry->Field, "key"))
+			ajStrAss(&qry->Key, qry->QryString);
+		    else
+		    {
+			ajErr("USA '%S' query level '%S' not supported",
+			      usatest, qry->Field);
+			return ajFalse;
 		    }
 		}
 	    }
 	    else
 	    {
-		(void) ajStrAss (&qry->Id, qry->QryString);
-		(void) ajStrAss (&qry->Acc, qry->QryString);
-		if (seqQueryFieldC(qry, "sv"))
-		  (void) ajStrAss (&qry->Sv, qry->QryString);
+		ajStrAss(&qry->Id, qry->QryString);
+		ajStrAss(&qry->Acc, qry->QryString);
+		if(seqQueryFieldC(qry, "sv"))
+		    ajStrAss(&qry->Sv, qry->QryString);
 	    }
 	}
-	dbstat = ajNamDbQuery (qry);
-	if (dbstat)
+	dbstat = ajNamDbQuery(qry);
+	if(dbstat)
 	{
 	    ajDebug("database type: '%S' format '%S'\n",
 		    qry->DbType, qry->Formatstr);
-	    if (seqFindInFormat (qry->Formatstr, &seqin->Format))
-		(void) ajStrAss (&seqin->Formatstr, qry->Formatstr);
+	    if(seqFindInFormat(qry->Formatstr, &seqin->Format))
+		ajStrAss(&seqin->Formatstr, qry->Formatstr);
 	    else
-		ajDebug ("unknown format '%S'\n", qry->Formatstr);
+		ajDebug("unknown format '%S'\n", qry->Formatstr);
 
-	    ajDebug ("use access method '%S'\n", qry->Method);
-	    methstat = ajSeqMethod (qry->Method, &qry->Access);
-	    if (!methstat)
+	    ajDebug("use access method '%S'\n", qry->Method);
+	    methstat = ajSeqMethod(qry->Method, &qry->Access);
+	    if(!methstat)
 	    {
-		ajErr ("Access method '%S' unknown", qry->Method);
+		ajErr("Access method '%S' unknown", qry->Method);
 		return ajFalse;
 	    }
 	    else
 	    {
-		/* ajDebug ("trying access method '%S'\n", qry->Method); */
+		/* ajDebug("trying access method '%S'\n", qry->Method); */
 
-	      /* Calling funclist seqAccess() */
-		accstat = qry->Access->Access (seqin);
-		if (accstat)
-		  return ajTrue;
+		/* Calling funclist seqAccess() */
+		accstat = qry->Access->Access(seqin);
+		if(accstat)
+		    return ajTrue;
 
-		ajDebug ("Database '%S' : access method '%s' failed\n",
-			 qry->DbName, qry->Access->Name);
+		ajDebug("Database '%S' : access method '%s' failed\n",
+			qry->DbName, qry->Access->Name);
 		return ajFalse;
 	    }
 	}
 	else
 	{
-	    ajErr ("no access method available for '%S'", usatest);
+	    ajErr("no access method available for '%S'", usatest);
 	    return ajFalse;
 	}
     }
     else
-    {
-	ajDebug ("no dbname specified\n");
-    }
-    ajDebug ("\n");
+	ajDebug("no dbname specified\n");
+
+    ajDebug("\n");
 
     /* no database name, try filename */
 
-    if (!dbstat)
+    if(!dbstat)
     {
-	regstat = ajRegExec (idexp, usatest);
-	ajDebug ("entry-id regexp: %B\n", regstat);
+	regstat = ajRegExec(idexp, usatest);
+	ajDebug("entry-id regexp: %B\n", regstat);
 
-	if (regstat)
+	if(regstat)
 	{
-	    ajRegSubI (idexp, 1, &qry->Filename);
-	    ajRegSubI (idexp, 3, &qrychr);
-	    ajRegSubI (idexp, 5, &qry->Field);
-	    ajRegSubI (idexp, 6, &qry->QryString);
-	    ajDebug ("found filename %S\n", qry->Filename);
-	    if (ajStrMatchC(qrychr, "%")) {
+	    ajRegSubI(idexp, 1, &qry->Filename);
+	    ajRegSubI(idexp, 3, &qrychr);
+	    ajRegSubI(idexp, 5, &qry->Field);
+	    ajRegSubI(idexp, 6, &qry->QryString);
+	    ajDebug("found filename %S\n", qry->Filename);
+	    if(ajStrMatchC(qrychr, "%")) {
 		ajStrToLong(qry->QryString, &qry->Fpos);
-		accstat = ajSeqAccessOffset (seqin);
-		if (accstat)
-		  return ajTrue;
+		accstat = ajSeqAccessOffset(seqin);
+		if(accstat)
+		    return ajTrue;
 	    }
 	    else
 	    {
-	      if (ajStrLen(qry->QryString))
-	      {
-		  ajDebug ("file QryString '%S' Field '%S' qrychr '%S'\n",
-			   qry->QryString, qry->Field, qrychr);
-		  if (ajStrLen(qry->Field)) /* set by dbname above */
-		  {
-		    /* ajDebug ("    qry->Field %S\n", qry->Field); */
-		    if (ajStrMatchCaseC (qry->Field, "id"))
-		      (void) ajStrAss (&qry->Id, qry->QryString);
-		    else if (ajStrMatchCaseC (qry->Field, "acc"))
-		      (void) ajStrAss (&qry->Acc, qry->QryString);
-
-		  /* treat Gi as another Sv, so no new query field */
-
-		    else if (ajStrMatchCaseC (qry->Field, "sv"))
-		      (void) ajStrAss (&qry->Sv, qry->QryString);
-		    else if (ajStrMatchCaseC (qry->Field, "des"))
-		      (void) ajStrAss (&qry->Des, qry->QryString);
-		    else if (ajStrMatchCaseC (qry->Field, "org"))
-		      (void) ajStrAss (&qry->Org, qry->QryString);
-		    else if (ajStrMatchCaseC (qry->Field, "key"))
-		      (void) ajStrAss (&qry->Key, qry->QryString);
-		    else	/* assume it was part of the filename */
+		if(ajStrLen(qry->QryString))
+		{
+		    ajDebug("file QryString '%S' Field '%S' qrychr '%S'\n",
+			    qry->QryString, qry->Field, qrychr);
+		    if(ajStrLen(qry->Field)) /* set by dbname above */
 		    {
-		      ajErr("Unknown query field '%S' in USA '%S'",
-			    qry->Field, usatest);
-		      return ajFalse;
+			/* ajDebug("    qry->Field %S\n", qry->Field); */
+			if(ajStrMatchCaseC(qry->Field, "id"))
+			    ajStrAss(&qry->Id, qry->QryString);
+			else if(ajStrMatchCaseC(qry->Field, "acc"))
+			    ajStrAss(&qry->Acc, qry->QryString);
+
+			/* treat Gi as another Sv, so no new query field */
+
+			else if(ajStrMatchCaseC(qry->Field, "sv"))
+			    ajStrAss(&qry->Sv, qry->QryString);
+			else if(ajStrMatchCaseC(qry->Field, "des"))
+			    ajStrAss(&qry->Des, qry->QryString);
+			else if(ajStrMatchCaseC(qry->Field, "org"))
+			    ajStrAss(&qry->Org, qry->QryString);
+			else if(ajStrMatchCaseC(qry->Field, "key"))
+			    ajStrAss(&qry->Key, qry->QryString);
+			else  /* assume it was part of the filename */
+			{
+			    ajErr("Unknown query field '%S' in USA '%S'",
+				  qry->Field, usatest);
+			    return ajFalse;
+			}
 		    }
-		  }
-		  else
-		  {
-		    (void) ajStrAss (&qry->Id, qry->QryString);
-		    (void) ajStrAss (&qry->Acc, qry->QryString);
-		  }
-	      }
-	      accstat = ajSeqAccessFile (seqin);
-	      if (accstat)
-		return ajTrue;
+		    else
+		    {
+			ajStrAss(&qry->Id, qry->QryString);
+			ajStrAss(&qry->Acc, qry->QryString);
+		    }
+		}
+		accstat = ajSeqAccessFile(seqin);
+		if(accstat)
+		    return ajTrue;
 	    }
-	    ajErr ("failed to open filename '%S'", qry->Filename);
+	    ajErr("failed to open filename '%S'", qry->Filename);
 	    return ajFalse;
 	}
-	else			/* dbstat and regstat both failed */
-	{
-	    ajDebug ("no filename specified\n");
-	}
-	ajDebug ("\n");
+	else			  /* dbstat and regstat both failed */
+	    ajDebug("no filename specified\n");
+
+	ajDebug("\n");
     }
 
     return accstat;
 }
+
+
+
 
 /* @funcstatic seqQueryField **************************************************
 **
@@ -5958,10 +6308,14 @@ static AjBool seqUsaProcess (AjPSeq thys, AjPSeqin seqin)
 ** @return [AjBool] ajTrue if the field is defined
 ******************************************************************************/
 
-static AjBool seqQueryField (const AjPSeqQuery qry, const AjPStr field) {
+static AjBool seqQueryField(const AjPSeqQuery qry, const AjPStr field)
+{
 
-  return seqQueryFieldC (qry, ajStrStr(field));
+    return seqQueryFieldC(qry, ajStrStr(field));
 }
+
+
+
 
 /* @funcstatic seqQueryFieldC *************************************************
 **
@@ -5973,25 +6327,31 @@ static AjBool seqQueryField (const AjPSeqQuery qry, const AjPStr field) {
 ** @return [AjBool] ajTrue if the field is defined
 ******************************************************************************/
 
-static AjBool seqQueryFieldC (const AjPSeqQuery qry, char* field) {
+static AjBool seqQueryFieldC(const AjPSeqQuery qry, char* field)
+{
 
-  static AjPStrTok handle = NULL;
-  static AjPStr token = NULL;
+    static AjPStrTok handle = NULL;
+    static AjPStr token     = NULL;
 
-  ajDebug("seqQueryFieldC usa '%s' fields '%S'\n", field, qry->DbFields);
-  (void) ajStrTokenAss (&handle, qry->DbFields, " ");
-  while (ajStrToken (&token, &handle, NULL)) {
-    ajDebug("seqQueryField test '%S'\n", token);
-    if (ajStrMatchCaseC(token, field)) {
-    ajDebug("seqQueryField match '%S'\n", token);
-      (void) ajStrTokenReset (&handle);
-      (void) ajStrDelReuse(&token);
-      return ajTrue;
+    ajDebug("seqQueryFieldC usa '%s' fields '%S'\n", field, qry->DbFields);
+    ajStrTokenAss(&handle, qry->DbFields, " ");
+    while(ajStrToken(&token, &handle, NULL))
+    {
+	ajDebug("seqQueryField test '%S'\n", token);
+	if(ajStrMatchCaseC(token, field))
+	{
+	    ajDebug("seqQueryField match '%S'\n", token);
+	    ajStrTokenReset(&handle);
+	    ajStrDelReuse(&token);
+	    return ajTrue;
+	}
     }
-  }
 
-  return ajFalse;
+    return ajFalse;
 }
+
+
+
 
 /* @funcstatic seqUsaRestore **************************************************
 **
@@ -6002,17 +6362,21 @@ static AjBool seqQueryFieldC (const AjPSeqQuery qry, char* field) {
 ** @return [void]
 ******************************************************************************/
 
-static void seqUsaRestore (AjPSeqin seqin, const SeqPListUsa node) {
+static void seqUsaRestore(AjPSeqin seqin, const SeqPListUsa node)
+{
 
-  seqin->Begin = node->Begin;
-  seqin->End = node->End;
-  seqin->Rev = node->Rev;
-  seqin->Format = node->Format;
-  seqin->Features = node->Features;
-  ajStrAssS(&seqin->Formatstr, node->Formatstr);
+    seqin->Begin    = node->Begin;
+    seqin->End      = node->End;
+    seqin->Rev      = node->Rev;
+    seqin->Format   = node->Format;
+    seqin->Features = node->Features;
+    ajStrAssS(&seqin->Formatstr, node->Formatstr);
 
-  return;
+    return;
 }
+
+
+
 
 /* @funcstatic seqUsaSave *****************************************************
 **
@@ -6023,16 +6387,20 @@ static void seqUsaRestore (AjPSeqin seqin, const SeqPListUsa node) {
 ** @return [void]
 ******************************************************************************/
 
-static void seqUsaSave (SeqPListUsa node, const AjPSeqin seqin) {
-  node->Begin = seqin->Begin;
-  node->End = seqin->End;
-  node->Rev = seqin->Rev;
-  node->Format = seqin->Format;
-  node->Features = seqin->Features;
-  ajStrAssS(&node->Formatstr, seqin->Formatstr);
+static void seqUsaSave(SeqPListUsa node, const AjPSeqin seqin)
+{
+    node->Begin    = seqin->Begin;
+    node->End      = seqin->End;
+    node->Rev      = seqin->Rev;
+    node->Format   = seqin->Format;
+    node->Features = seqin->Features;
+    ajStrAssS(&node->Formatstr, seqin->Formatstr);
 
-  return;
+    return;
 }
+
+
+
 
 /* @funcstatic seqUsaListTrace ************************************************
 **
@@ -6042,23 +6410,31 @@ static void seqUsaSave (SeqPListUsa node, const AjPSeqin seqin) {
 ** @return [void]
 ******************************************************************************/
 
-static void seqUsaListTrace (AjPList list) {
-  AjIList iter;
-  SeqPListUsa node;
-  ajint i=0;
+static void seqUsaListTrace(AjPList list)
+{
+    AjIList iter;
+    SeqPListUsa node;
+    ajint i = 0;
 
-  iter = ajListIter(list);
+    iter = ajListIter(list);
 
-  ajDebug ("SeqUsaListTrace %d nodes\n", ajListLength(list));
-  while (ajListIterMore(iter)) {
-    node = (SeqPListUsa) ajListIterNext(iter);
-    ajDebug ("%3d: '%S' %4d..%d (%b) '%S' %d\n",
-	     ++i, node->Usa, node->Begin, node->End, node->Rev,
-	     node->Formatstr, node->Format);
-  }
-  ajListIterFree(iter);
-  ajDebug("...Done...\n");
+    ajDebug("SeqUsaListTrace %d nodes\n", ajListLength(list));
+    while(ajListIterMore(iter))
+    {
+	node = (SeqPListUsa) ajListIterNext(iter);
+	ajDebug("%3d: '%S' %4d..%d (%b) '%S' %d\n",
+		++i, node->Usa, node->Begin, node->End, node->Rev,
+		node->Formatstr, node->Format);
+    }
+
+    ajListIterFree(iter);
+    ajDebug("...Done...\n");
+
+    return;
 }
+
+
+
 
 /* @funcstatic seqListProcess *************************************************
 **
@@ -6081,48 +6457,48 @@ static void seqUsaListTrace (AjPList list) {
 ** @@
 ******************************************************************************/
 
-static AjBool seqListProcess (AjPSeq seq, AjPSeqin seqin, AjPStr listfile)
+static AjBool seqListProcess(AjPSeq seq, AjPSeqin seqin, AjPStr listfile)
 {
-    AjPList list = NULL;
-    AjPFile file = NULL;
+    AjPList list  = NULL;
+    AjPFile file  = NULL;
     AjPStr rdline = NULL;
-    AjPStr token = NULL;
+    AjPStr token  = NULL;
     static AjPStrTok handle = NULL;
-    AjBool ret = ajFalse;
+    AjBool ret       = ajFalse;
     SeqPListUsa node = NULL;
 
-    static ajint depth = 0;
+    static ajint depth    = 0;
     static ajint MAXDEPTH = 16;
 
     depth++;
-    ajDebug ("++seqListProcess %S depth %d\n", listfile, depth);
-    if (depth > MAXDEPTH)
-	ajFatal ("USA List too deep");
+    ajDebug("++seqListProcess %S depth %d\n", listfile, depth);
+    if(depth > MAXDEPTH)
+	ajFatal("USA List too deep");
 
-    if (!ajListLength(seqin->List))
+    if(!ajListLength(seqin->List))
 	seqin->List = ajListNew();
 
     list = ajListNew();
 
     file = ajFileNewIn(listfile);
-    if (!file)
+    if(!file)
     {
-	ajErr ("unable to open list file '%S'", listfile);
+	ajErr("unable to open list file '%S'", listfile);
 	depth--;
 	return ret;
     }
-    while (ajFileGetsTrim(file, &rdline))
+    while(ajFileGetsTrim(file, &rdline))
     {
-	seqListNoComment (&rdline);
-	if (ajStrLen(rdline))
+	seqListNoComment(&rdline);
+	if(ajStrLen(rdline))
 	{
-	    (void) ajStrTokenAss (&handle, rdline, " \t\n\r");
-	    (void) ajStrToken (&token, &handle, NULL);
-	    /* (void) ajDebug ("Line  '%S'\ntoken '%S'\n", rdline, token); */
-	    if (ajStrLen(token))
+	    ajStrTokenAss(&handle, rdline, " \t\n\r");
+	    ajStrToken(&token, &handle, NULL);
+	    /* ajDebug("Line  '%S'\ntoken '%S'\n", rdline, token); */
+	    if(ajStrLen(token))
 	    {
 	        ajDebug("++Add to list: '%S'\n", token);
-	        AJNEW0 (node);
+	        AJNEW0(node);
 	        ajStrAssS(&node->Usa, token);
 	        seqUsaSave(node, seqin);
 	        ajListPushApp(list, node);
@@ -6132,37 +6508,43 @@ static AjBool seqListProcess (AjPSeq seq, AjPSeqin seqin, AjPStr listfile)
 	}
     }
     ajFileClose(&file);
-    ajStrDel (&rdline);
+    ajStrDel(&rdline);
 
     ajDebug("Trace seqin->List\n");
-    seqUsaListTrace (seqin->List);
+    seqUsaListTrace(seqin->List);
     ajDebug("Trace new list\n");
-    seqUsaListTrace (list);
-    ajListPushList (seqin->List, &list);
+    seqUsaListTrace(list);
+    ajListPushList(seqin->List, &list);
 
     ajDebug("Trace combined seqin->List\n");
-    seqUsaListTrace (seqin->List);
+    seqUsaListTrace(seqin->List);
 
-    /* now try the first item on the list */
-    /* this can descend recursively if it is also a list */
-    /* which is why we check the depth above */
+    /*
+     ** now try the first item on the list
+     ** this can descend recursively if it is also a list
+     ** which is why we check the depth above
+     */
 
-    if (ajListPop (seqin->List, (void**) &node))
+    if(ajListPop(seqin->List, (void**) &node))
     {
         ajDebug("++pop first item '%S'\n", node->Usa);
-	ajSeqinUsa (&seqin, node->Usa);
-	ajStrDel (&node->Usa);
-	ajStrDel (&node->Formatstr);
-	AJFREE (node);
-	ajDebug ("descending with usa '%S'\n", seqin->Usa);
-	ret = seqUsaProcess (seq, seqin);
+	ajSeqinUsa(&seqin, node->Usa);
+	ajStrDel(&node->Usa);
+	ajStrDel(&node->Formatstr);
+	AJFREE(node);
+	ajDebug("descending with usa '%S'\n", seqin->Usa);
+	ret = seqUsaProcess(seq, seqin);
     }
 
-    (void) ajStrTokenReset (&handle);
+    ajStrTokenReset(&handle);
     depth--;
     ajDebug("++seqListProcess depth: %d returns: %B\n", depth, ret);
+
     return ret;
 }
+
+
+
 
 /* @funcstatic seqListNoComment ***********************************************
 **
@@ -6174,25 +6556,28 @@ static AjBool seqListProcess (AjPSeq seq, AjPSeqin seqin, AjPStr listfile)
 ** @@
 ******************************************************************************/
 
-static void seqListNoComment (AjPStr* text)
+static void seqListNoComment(AjPStr* text)
 {
     ajint i;
     char *cp;
 
-    i = ajStrLen (*text);
+    i = ajStrLen(*text);
 
-    if (!i)				/* empty string */
+    if(!i)				/* empty string */
 	return;
 
     cp = strchr(ajStrStr(*text), '#');
-    if (cp)
+    if(cp)
     {					/* comment found */
 	*cp = '\0';
-	ajStrFix (*text);
+	ajStrFix(*text);
     }
 
     return;
 }
+
+
+
 
 /* @funcstatic seqFormatSet ***************************************************
 **
@@ -6205,32 +6590,33 @@ static void seqListNoComment (AjPStr* text)
 ** @@
 ******************************************************************************/
 
-static AjBool seqFormatSet (AjPSeq thys, AjPSeqin seqin)
+static AjBool seqFormatSet(AjPSeq thys, AjPSeqin seqin)
 {
 
-    if (ajStrLen(seqin->Formatstr))
+    if(ajStrLen(seqin->Formatstr))
     {
-	ajDebug ("... input format value '%S'\n", seqin->Formatstr);
-	if (seqFindInFormat (seqin->Formatstr, &seqin->Format))
+	ajDebug("... input format value '%S'\n", seqin->Formatstr);
+	if(seqFindInFormat(seqin->Formatstr, &seqin->Format))
 	{
-	    (void) ajStrAss (&thys->Formatstr, seqin->Formatstr);
+	    ajStrAss(&thys->Formatstr, seqin->Formatstr);
 	    thys->Format = seqin->Format;
-	    ajDebug ("...format OK '%S' = %d\n", seqin->Formatstr,
-		     seqin->Format);
+	    ajDebug("...format OK '%S' = %d\n", seqin->Formatstr,
+		    seqin->Format);
 	}
 	else
-	{
-	    ajDebug ("...format unknown '%S'\n", seqin->Formatstr);
-	}
+	    ajDebug("...format unknown '%S'\n", seqin->Formatstr);
+
 	return ajTrue;
     }
     else
-    {
-	ajDebug ("...input format not set\n");
-    }
+	ajDebug("...input format not set\n");
+
 
     return ajFalse;
 }
+
+
+
 
 /* @funcstatic seqinUfoLocal **************************************************
 **
@@ -6242,12 +6628,16 @@ static AjBool seqFormatSet (AjPSeq thys, AjPSeqin seqin)
 ** @@
 ******************************************************************************/
 
-static AjBool seqinUfoLocal (const AjPSeqin thys) {
-  if (thys->Features && ! ajStrLen(thys->Ufo))
-    return ajTrue;
+static AjBool seqinUfoLocal(const AjPSeqin thys)
+{
+    if(thys->Features && ! ajStrLen(thys->Ufo))
+	return ajTrue;
 
-  return ajFalse;
+    return ajFalse;
 }
+
+
+
 
 /* @funcstatic seqSetName *****************************************************
 **
@@ -6261,22 +6651,25 @@ static AjBool seqinUfoLocal (const AjPSeqin thys) {
 ** @@
 ******************************************************************************/
 
-static void seqSetName (AjPStr* name, const AjPStr str)
+static void seqSetName(AjPStr* name, const AjPStr str)
 {
     static AjPRegexp idexp = NULL;
 
-    if (!idexp)
+    if(!idexp)
 	idexp = ajRegCompC("([^ \t\n\r,<>|;]+:)?([^ \t\n\r,<>|;]+)");
 
-    if (ajRegExec(idexp, str))
+    if(ajRegExec(idexp, str))
 	ajRegSubI(idexp, 2, name);
     else
-	(void) ajStrAssS (name, str);
+	ajStrAssS(name, str);
 
     ajDebug("seqSetName '%S' result: '%S'\n", str, *name);
 
     return;
 }
+
+
+
 
 /* @funcstatic seqSetNameFile *************************************************
 **
@@ -6289,14 +6682,14 @@ static void seqSetName (AjPStr* name, const AjPStr str)
 ** @@
 ******************************************************************************/
 
-static void seqSetNameFile (AjPStr* name, AjPSeqin seqin)
+static void seqSetNameFile(AjPStr* name, AjPSeqin seqin)
 {
     AjPStr tmpname = NULL;
 
-    ajStrAssS (&tmpname, seqin->Filename);
+    ajStrAssS(&tmpname, seqin->Filename);
 
     seqSetName(name, tmpname);
-    if (seqin->Count > 1)
+    if(seqin->Count > 1)
 	ajFmtPrintAppS(name, "_%3d", seqin->Count);
 
     ajDebug("seqSetNameFile '%S' result: '%S'\n", tmpname, *name);
@@ -6304,6 +6697,9 @@ static void seqSetNameFile (AjPStr* name, AjPSeqin seqin)
 
     return;
 }
+
+
+
 
 /* @funcstatic seqAccSave *****************************************************
 **
@@ -6316,18 +6712,21 @@ static void seqSetNameFile (AjPStr* name, AjPSeqin seqin)
 ** @@
 ******************************************************************************/
 
-static void seqAccSave (AjPSeq thys, const AjPStr acc)
+static void seqAccSave(AjPSeq thys, const AjPStr acc)
 {
-    AjPStr liststr;		/* do not free - it is stored in a list */
+    AjPStr liststr;	    /* do not free - it is stored in a list */
 
-    liststr = ajStrNewS (acc);
-    ajListstrPushApp (thys->Acclist, liststr);
+    liststr = ajStrNewS(acc);
+    ajListstrPushApp(thys->Acclist, liststr);
 
-    if (!ajStrLen(thys->Acc))
-	ajStrAssS (&thys->Acc, acc);
+    if(!ajStrLen(thys->Acc))
+	ajStrAssS(&thys->Acc, acc);
 
     return;
 }
+
+
+
 
 /* @funcstatic seqTaxSave *****************************************************
 **
@@ -6340,18 +6739,21 @@ static void seqAccSave (AjPSeq thys, const AjPStr acc)
 ** @@
 ******************************************************************************/
 
-static void seqTaxSave (AjPSeq thys, const AjPStr tax)
+static void seqTaxSave(AjPSeq thys, const AjPStr tax)
 {
-    AjPStr liststr;		/* do not free - it is stored in a list */
+    AjPStr liststr;	    /* do not free - it is stored in a list */
 
-    liststr = ajStrNewS (tax);
-    ajListstrPushApp (thys->Taxlist, liststr);
+    liststr = ajStrNewS(tax);
+    ajListstrPushApp(thys->Taxlist, liststr);
 
-    if (!ajStrLen(thys->Tax))
-	ajStrAssS (&thys->Tax, tax);
+    if(!ajStrLen(thys->Tax))
+	ajStrAssS(&thys->Tax, tax);
 
     return;
 }
+
+
+
 
 /* @funcstatic seqSvSave ******************************************************
 **
@@ -6363,13 +6765,16 @@ static void seqTaxSave (AjPSeq thys, const AjPStr tax)
 ** @@
 ******************************************************************************/
 
-static void seqSvSave (AjPSeq thys, const AjPStr sv)
+static void seqSvSave(AjPSeq thys, const AjPStr sv)
 {
-    if (!ajStrLen(thys->Sv))
-	ajStrAssS (&thys->Sv, sv);
+    if(!ajStrLen(thys->Sv))
+	ajStrAssS(&thys->Sv, sv);
 
     return;
 }
+
+
+
 
 /* ==================================================================== */
 /* ========================= constructors ============================= */
@@ -6385,6 +6790,9 @@ static void seqSvSave (AjPSeq thys, const AjPStr sv)
 **
 ******************************************************************************/
 
+
+
+
 /* @func ajSeqQueryNew ********************************************************
 **
 ** Creates a new sequence query object
@@ -6393,35 +6801,38 @@ static void seqSvSave (AjPSeq thys, const AjPStr sv)
 ** @@
 ******************************************************************************/
 
-AjPSeqQuery ajSeqQueryNew (void)
+AjPSeqQuery ajSeqQueryNew(void)
 {
     AjPSeqQuery pthis;
 
     AJNEW0(pthis);
 
     pthis->DbName = ajStrNew();
-    pthis->Id = ajStrNew();
-    pthis->Acc = ajStrNew();
-    pthis->Sv = ajStrNew();
-    pthis->Des = ajStrNew();
-    pthis->Org = ajStrNew();
-    pthis->Key = ajStrNew();
+    pthis->Id     = ajStrNew();
+    pthis->Acc    = ajStrNew();
+    pthis->Sv     = ajStrNew();
+    pthis->Des    = ajStrNew();
+    pthis->Org    = ajStrNew();
+    pthis->Key    = ajStrNew();
     pthis->Method = ajStrNew();
-    pthis->Formatstr = ajStrNew();
-    pthis->IndexDir = ajStrNew();
-    pthis->Directory = ajStrNew();
-    pthis->Filename = ajStrNew();
+    pthis->Formatstr   = ajStrNew();
+    pthis->IndexDir    = ajStrNew();
+    pthis->Directory   = ajStrNew();
+    pthis->Filename    = ajStrNew();
     pthis->Application = ajStrNew();
-    pthis->Field = ajStrNew();
+    pthis->Field       = ajStrNew();
 
-    pthis->Type = QRY_UNKNOWN;
-    pthis->Access = NULL;
+    pthis->Type    = QRY_UNKNOWN;
+    pthis->Access  = NULL;
     pthis->QryData = NULL;
-    pthis->Fpos = NULLFPOS;
+    pthis->Fpos    = NULLFPOS;
     pthis->QryDone = ajFalse;
 
     return pthis;
 }
+
+
+
 
 /* ==================================================================== */
 /* ========================== destructors ============================= */
@@ -6434,6 +6845,9 @@ AjPSeqQuery ajSeqQueryNew (void)
 **
 ******************************************************************************/
 
+
+
+
 /* @func ajSeqQueryDel ********************************************************
 **
 ** Deletes a sequence query object
@@ -6443,11 +6857,13 @@ AjPSeqQuery ajSeqQueryNew (void)
 ** @@
 ******************************************************************************/
 
-void ajSeqQueryDel (AjPSeqQuery* pthis)
+void ajSeqQueryDel(AjPSeqQuery* pthis)
 {
-    AjPSeqQuery thys = *pthis;
+    AjPSeqQuery thys;
 
-    ajDebug("ajSeqQueryDel db:'%S' id:'%S'\n", thys->DbName, thys->Id);
+    ajDebug("ajSeqQueryDel db:'%S' id:'%S'\n", (*pthis)->DbName, (*pthis)->Id);
+
+    thys = *pthis;
 
     ajStrDel(&thys->DbName);
     ajStrDel(&thys->DbType);
@@ -6472,15 +6888,19 @@ void ajSeqQueryDel (AjPSeqQuery* pthis)
  
     if(thys->QryData)
     {
-      if (thys->Access->AccessFree)
-	thys->Access->AccessFree(thys->QryData);
-      AJFREE(thys->QryData);
+	if(thys->Access->AccessFree)
+	    thys->Access->AccessFree(thys->QryData);
+
+	AJFREE(thys->QryData);
     }
 
     AJFREE(*pthis);
 
     return;
 }
+
+
+
 
 /* ==================================================================== */
 /* ========================== Assignments ============================= */
@@ -6493,6 +6913,9 @@ void ajSeqQueryDel (AjPSeqQuery* pthis)
 **
 ******************************************************************************/
 
+
+
+
 /* @func ajSeqQueryClear ******************************************************
 **
 ** Resets a Sequence query object to a clean state for reuse
@@ -6502,32 +6925,35 @@ void ajSeqQueryDel (AjPSeqQuery* pthis)
 ** @@
 ******************************************************************************/
 
-
-void ajSeqQueryClear (AjPSeqQuery thys)
+void ajSeqQueryClear(AjPSeqQuery thys)
 {
 
-    (void) ajStrClear(&thys->DbName);
-    (void) ajStrClear(&thys->Id);
-    (void) ajStrClear(&thys->Acc);
-    (void) ajStrClear(&thys->Sv);
-    (void) ajStrClear(&thys->Des);
-    (void) ajStrClear(&thys->Org);
-    (void) ajStrClear(&thys->Key);
-    (void) ajStrClear(&thys->Method);
-    (void) ajStrClear(&thys->Formatstr);
-    (void) ajStrClear(&thys->IndexDir);
-    (void) ajStrClear(&thys->Directory);
-    (void) ajStrClear(&thys->Filename);
-    (void) ajStrClear(&thys->Application);
+    ajStrClear(&thys->DbName);
+    ajStrClear(&thys->Id);
+    ajStrClear(&thys->Acc);
+    ajStrClear(&thys->Sv);
+    ajStrClear(&thys->Des);
+    ajStrClear(&thys->Org);
+    ajStrClear(&thys->Key);
+    ajStrClear(&thys->Method);
+    ajStrClear(&thys->Formatstr);
+    ajStrClear(&thys->IndexDir);
+    ajStrClear(&thys->Directory);
+    ajStrClear(&thys->Filename);
+    ajStrClear(&thys->Application);
 
-    thys->Type = QRY_UNKNOWN;
+    thys->Type   = QRY_UNKNOWN;
     thys->Access = NULL;
     if(thys->QryData)
 	AJFREE(thys->QryData);
+
     thys->QryDone = ajFalse;
 
     return;
 }
+
+
+
 
 /* ==================================================================== */
 /* =========================== Modifiers ============================== */
@@ -6541,6 +6967,8 @@ void ajSeqQueryClear (AjPSeqQuery thys)
 ******************************************************************************/
 
 
+
+
 /* ==================================================================== */
 /* ======================== Operators ==================================*/
 /* ==================================================================== */
@@ -6552,6 +6980,9 @@ void ajSeqQueryClear (AjPSeqQuery thys)
 **
 ******************************************************************************/
 
+
+
+
 /* @funcstatic seqQueryMatch **************************************************
 **
 ** Compares a sequence to a query and returns true if they match.
@@ -6562,155 +6993,153 @@ void ajSeqQueryClear (AjPSeqQuery thys)
 ** @@
 ******************************************************************************/
 
-static AjBool seqQueryMatch (AjPSeq thys, const AjPSeqQuery query)
+static AjBool seqQueryMatch(AjPSeq thys, const AjPSeqQuery query)
 {
     AjBool tested = ajFalse;
-    AjIList iter = NULL;
-    AjPStr accstr;		/* from list, do not delete */
-    AjPStr keystr;		/* from list, do not delete */
-    AjPStr taxstr;		/* from list, do not delete */
+    AjIList iter  = NULL;
+    AjPStr accstr;			/* from list, do not delete */
+    AjPStr keystr;			/* from list, do not delete */
+    AjPStr taxstr;			/* from list, do not delete */
     AjBool ok = ajFalse;
 
-    ajDebug ("seqQueryMatch '%S' id '%S' acc '%S' Sv '%S' Des '%S'"
-	     " Key '%S' Org '%S'\n",
-	     thys->Name, query->Id, query->Acc, query->Sv,
-	     query->Des, query->Key, query->Org);
+    ajDebug("seqQueryMatch '%S' id '%S' acc '%S' Sv '%S' Des '%S'"
+	    " Key '%S' Org '%S'\n",
+	    thys->Name, query->Id, query->Acc, query->Sv,
+	    query->Des, query->Key, query->Org);
 
-    ajStrAssS (&thys->Entryname, thys->Name);
+    ajStrAssS(&thys->Entryname, thys->Name);
 
-    if (!query)			/* no query to test, that's fine */
+    if(!query)			   /* no query to test, that's fine */
 	return ajTrue;
 
-    if (query->QryDone)		/* do we need to test here? */
+    if(query->QryDone)			/* do we need to test here? */
 	return ajTrue;
 
     /* test the query field(s) */
 
-    if (ajStrLen(query->Id))
+    if(ajStrLen(query->Id))
     {
-	if (ajStrMatchWild (thys->Name, query->Id))
+	if(ajStrMatchWild(thys->Name, query->Id))
 	    return ajTrue;
 
-	ajDebug ("id test failed\n");
+	ajDebug("id test failed\n");
 	tested = ajTrue;
 	ok = ajFalse;
     }
 
-    if (ajStrLen(query->Sv))	/* test Sv and Gi */
+    if(ajStrLen(query->Sv))		/* test Sv and Gi */
     {
-	if (ajStrMatchWild (thys->Sv, query->Sv))
+	if(ajStrMatchWild(thys->Sv, query->Sv))
 	    return ajTrue;
 
-	if (ajStrMatchWild (thys->Gi, query->Sv))
+	if(ajStrMatchWild(thys->Gi, query->Sv))
 	    return ajTrue;
 
-	ajDebug ("sv test failed\n");
+	ajDebug("sv test failed\n");
 	tested = ajTrue;
 	ok = ajFalse;
     }
 
-    if (!ajStrLen(query->Acc))
-    {
-	ajDebug ("No accession number to test\n");
-    }
-    else if (ajListLength(thys->Acclist))
-    {			   /* accession number test - check the entire list */
-	iter = ajListIter (thys->Acclist);
-	while (ajListIterMore(iter))
+    if(!ajStrLen(query->Acc))
+	ajDebug("No accession number to test\n");
+    else if(ajListLength(thys->Acclist))
+    {		   /* accession number test - check the entire list */
+	iter = ajListIter(thys->Acclist);
+	while(ajListIterMore(iter))
 	{
 	    accstr = ajListIterNext(iter);
-	    ajDebug ("... try accession '%S' '%S'\n", accstr,
-		     query->Acc);
+	    ajDebug("... try accession '%S' '%S'\n", accstr,
+		    query->Acc);
 
-	    if (ajStrMatchWild (accstr, query->Acc))
-	      return ajTrue;
+	    if(ajStrMatchWild(accstr, query->Acc))
+		return ajTrue;
 	}
 	tested = ajTrue;
-	ajDebug ("acc test failed\n");
+	ajDebug("acc test failed\n");
 	ajListIterFree(iter);
     }
 
-    if (!ajStrLen(query->Org))
-    {
-	ajDebug ("No taxonomy to test\n");
-    }
-    else if (ajListLength(thys->Taxlist))
+    if(!ajStrLen(query->Org))
+	ajDebug("No taxonomy to test\n");
+    else if(ajListLength(thys->Taxlist))
     {			   /* taxonomy test - check the entire list */
-	iter = ajListIter (thys->Taxlist);
-	while (ajListIterMore(iter))
+	iter = ajListIter(thys->Taxlist);
+	while(ajListIterMore(iter))
 	{
 	    taxstr = ajListIterNext(iter);
-	    ajDebug ("... try organism '%S' '%S'\n", taxstr,
-		     query->Org);
+	    ajDebug("... try organism '%S' '%S'\n", taxstr,
+		    query->Org);
 
-	    if (ajStrMatchWild (taxstr, query->Org))
-	      return ajTrue;
+	    if(ajStrMatchWild(taxstr, query->Org))
+		return ajTrue;
 	}
 	tested = ajTrue;
-	ajDebug ("org test failed\n");
+	ajDebug("org test failed\n");
 	ajListIterFree(iter);
     }
     else
     {
-      ajDebug ("org test failed - nothing to test\n");
-      return ajFalse;
+	ajDebug("org test failed - nothing to test\n");
+	return ajFalse;
     }
 
-    if (!ajStrLen(query->Key))
-    {
-	ajDebug ("No keyword to test\n");
-    }
-    else if (ajListLength(thys->Keylist))
-    {			   /* keyword test - check the entire list */
-	iter = ajListIter (thys->Keylist);
-	while (ajListIterMore(iter))
+    if(!ajStrLen(query->Key))
+	ajDebug("No keyword to test\n");
+    else if(ajListLength(thys->Keylist))
+    {			    /* keyword test - check the entire list */
+	iter = ajListIter(thys->Keylist);
+	while(ajListIterMore(iter))
 	{
 	    keystr = ajListIterNext(iter);
-	    ajDebug ("... try keyword '%S' '%S'\n", keystr,
-		     query->Key);
+	    ajDebug("... try keyword '%S' '%S'\n", keystr,
+		    query->Key);
 
-	    if (ajStrMatchWild (keystr, query->Key))
-	      return ajTrue;
+	    if(ajStrMatchWild(keystr, query->Key))
+		return ajTrue;
 	}
 	tested = ajTrue;
-	ajDebug ("key test failed\n");
+	ajDebug("key test failed\n");
 	ajListIterFree(iter);
     }
     else
     {
-      ajDebug ("key test failed - nothing to test\n");
-      return ajFalse;
+	ajDebug("key test failed - nothing to test\n");
+	return ajFalse;
     }
 
-    if (!ajStrLen(query->Des))
+    if(!ajStrLen(query->Des))
     {
-	ajDebug ("No description to test\n");
+	ajDebug("No description to test\n");
 	ok = ajFalse;
     }
-    else if (ajStrLen(thys->Desc))
-    {			   /* description test - check the string */
-	ajDebug ("... try description '%S' '%S'\n", thys->Desc,
-		     query->Des);
+    else if(ajStrLen(thys->Desc))
+    {			     /* description test - check the string */
+	ajDebug("... try description '%S' '%S'\n", thys->Desc,
+		query->Des);
 
-	if (ajStrMatchWord (thys->Desc, query->Des))
-	  return ajTrue;
+	if(ajStrMatchWord(thys->Desc, query->Des))
+	    return ajTrue;
 
 	tested = ajTrue;
-	ajDebug ("des test failed\n");
+	ajDebug("des test failed\n");
 	ajListIterFree(iter);
     }
     else
     {
-      ajDebug ("des test failed - nothing to test\n");
-      return ajFalse;
+	ajDebug("des test failed - nothing to test\n");
+	return ajFalse;
     }
 
-    if (!tested)		/* nothing to test, so accept it anyway */
+    if(!tested)		    /* nothing to test, so accept it anyway */
 	return ajTrue;
 
-    ajDebug ("result: %B\n", ok);
+    ajDebug("result: %B\n", ok);
+
     return ok;
 }
+
+
+
 
 /* @func ajSeqQueryWild *******************************************************
 **
@@ -6722,57 +7151,57 @@ static AjBool seqQueryMatch (AjPSeq thys, const AjPSeqQuery query)
 ** @@
 ******************************************************************************/
 
-AjBool ajSeqQueryWild (AjPSeqQuery qry)
+AjBool ajSeqQueryWild(AjPSeqQuery qry)
 {
 
-    if (!qrywildexp)
+    if(!qrywildexp)
 	seqQryWildComp();
 
     ajDebug("ajSeqQueryWild id '%S' acc '%S' sv '%S' des '%S'"
 	    " org '%S' key '%S'\n",
 	    qry->Id, qry->Acc, qry->Sv, qry->Des, qry->Org, qry->Key);
 
-    ajSeqQueryStarclear (qry);
+    ajSeqQueryStarclear(qry);
 
-    if (ajRegExec(qrywildexp, qry->Id))
+    if(ajRegExec(qrywildexp, qry->Id))
     {
 	ajDebug("wild query Id '%S'\n", qry->Id);
 	return ajTrue;
     }
 
-    if (ajStrLen(qry->Acc))
+    if(ajStrLen(qry->Acc))
     {
-        if (!ajStrLen(qry->Id))
+        if(!ajStrLen(qry->Id))
 	{
 	    ajDebug("wild (has, but no Id) query Acc '%S'\n", qry->Acc);
 	    return ajTrue;
 	}
-	else if (ajRegExec(qrywildexp, qry->Id))
+	else if(ajRegExec(qrywildexp, qry->Id))
         {
-	    ajDebug ("wild query Acc '%S'\n", qry->Acc);
+	    ajDebug("wild query Acc '%S'\n", qry->Acc);
 	    return ajTrue;
 	}
     }
 
-    if (ajStrLen(qry->Sv))
+    if(ajStrLen(qry->Sv))
     {
 	ajDebug("wild (has) query Sv '%S'\n", qry->Sv);
 	return ajTrue;
     }
 
-    if (ajStrLen(qry->Des))
+    if(ajStrLen(qry->Des))
     {
 	ajDebug("wild (has) query Des '%S'\n", qry->Des);
 	return ajTrue;
     }
 
-    if (ajStrLen(qry->Org))
+    if(ajStrLen(qry->Org))
     {
 	ajDebug("wild (has) query Org '%S'\n", qry->Org);
 	return ajTrue;
     }
 
-    if (ajStrLen(qry->Key))
+    if(ajStrLen(qry->Key))
     {
 	ajDebug("wild (has) query Key '%S'\n", qry->Key);
 	return ajTrue;
@@ -6782,6 +7211,9 @@ AjBool ajSeqQueryWild (AjPSeqQuery qry)
 
     return ajFalse;
 }
+
+
+
 
 /* @func ajSeqQueryStarclear **************************************************
 **
@@ -6793,46 +7225,49 @@ AjBool ajSeqQueryWild (AjPSeqQuery qry)
 ** @@
 ******************************************************************************/
 
-void ajSeqQueryStarclear (AjPSeqQuery qry)
+void ajSeqQueryStarclear(AjPSeqQuery qry)
 {
-    if (ajStrMatchC(qry->Id, "*"))
+    if(ajStrMatchC(qry->Id, "*"))
     {
-	ajDebug ("ajSeqQueryWild clear Id '%S'\n", qry->Id);
-	(void) ajStrClear(&qry->Id);
+	ajDebug("ajSeqQueryWild clear Id '%S'\n", qry->Id);
+	ajStrClear(&qry->Id);
     }
 
-    if (ajStrMatchC(qry->Acc, "*"))
+    if(ajStrMatchC(qry->Acc, "*"))
     {
-	ajDebug ("ajSeqQueryWild clear Acc '%S'\n", qry->Acc);
-	(void) ajStrClear(&qry->Acc);
+	ajDebug("ajSeqQueryWild clear Acc '%S'\n", qry->Acc);
+	ajStrClear(&qry->Acc);
     }
 
-    if (ajStrMatchC(qry->Sv, "*"))
+    if(ajStrMatchC(qry->Sv, "*"))
     {
-	ajDebug ("ajSeqQueryWild clear Sv '%S'\n", qry->Sv);
-	(void) ajStrClear(&qry->Sv);
+	ajDebug("ajSeqQueryWild clear Sv '%S'\n", qry->Sv);
+	ajStrClear(&qry->Sv);
     }
 
-    if (ajStrMatchC(qry->Des, "*"))
+    if(ajStrMatchC(qry->Des, "*"))
     {
-	ajDebug ("ajSeqQueryWild clear Des '%S'\n", qry->Des);
-	(void) ajStrClear(&qry->Des);
+	ajDebug("ajSeqQueryWild clear Des '%S'\n", qry->Des);
+	ajStrClear(&qry->Des);
     }
 
-    if (ajStrMatchC(qry->Org, "*"))
+    if(ajStrMatchC(qry->Org, "*"))
     {
-	ajDebug ("ajSeqQueryWild clear Org '%S'\n", qry->Org);
-	(void) ajStrClear(&qry->Org);
+	ajDebug("ajSeqQueryWild clear Org '%S'\n", qry->Org);
+	ajStrClear(&qry->Org);
     }
 
-     if (ajStrMatchC(qry->Key, "*"))
+    if(ajStrMatchC(qry->Key, "*"))
     {
-	ajDebug ("ajSeqQueryWild clear Key '%S'\n", qry->Key);
-	(void) ajStrClear(&qry->Key);
+	ajDebug("ajSeqQueryWild clear Key '%S'\n", qry->Key);
+	ajStrClear(&qry->Key);
     }
 
     return;
 }
+
+
+
 
 /* @func ajSeqQueryIs *********************************************************
 **
@@ -6845,20 +7280,29 @@ void ajSeqQueryStarclear (AjPSeqQuery qry)
 ** @@
 ******************************************************************************/
 
-AjBool ajSeqQueryIs (AjPSeqQuery qry)
+AjBool ajSeqQueryIs(AjPSeqQuery qry)
 {
 
-    ajSeqQueryStarclear (qry);
+    ajSeqQueryStarclear(qry);
 
-    if (ajStrLen(qry->Id)) return ajTrue;
-    if (ajStrLen(qry->Acc)) return ajTrue;
-    if (ajStrLen(qry->Sv)) return ajTrue;
-    if (ajStrLen(qry->Des)) return ajTrue;
-    if (ajStrLen(qry->Org)) return ajTrue;
-    if (ajStrLen(qry->Key)) return ajTrue;
+    if(ajStrLen(qry->Id))
+	return ajTrue;
+    if(ajStrLen(qry->Acc))
+	return ajTrue;
+    if(ajStrLen(qry->Sv))
+	return ajTrue;
+    if(ajStrLen(qry->Des))
+	return ajTrue;
+    if(ajStrLen(qry->Org))
+	return ajTrue;
+    if(ajStrLen(qry->Key))
+	return ajTrue;
 
     return ajFalse;
 }
+
+
+
 
 /* @funcstatic seqQryWildComp *************************************************
 **
@@ -6869,13 +7313,16 @@ AjBool ajSeqQueryIs (AjPSeqQuery qry)
 ** @@
 ******************************************************************************/
 
-static void seqQryWildComp (void)
+static void seqQryWildComp(void)
 {
-    if (!qrywildexp)
-	qrywildexp = ajRegCompC ("[*?]");
+    if(!qrywildexp)
+	qrywildexp = ajRegCompC("[*?]");
 
     return;
 }
+
+
+
 
 /* @func ajSeqQueryTrace ******************************************************
 **
@@ -6886,47 +7333,67 @@ static void seqQryWildComp (void)
 ** @@
 ******************************************************************************/
 
-void ajSeqQueryTrace (const AjPSeqQuery thys)
+void ajSeqQueryTrace(const AjPSeqQuery thys)
 {
-    ajDebug ( "  Query Trace\n");
-    if (ajStrLen(thys->DbName))
-	ajDebug ( "    DbName: '%S'\n", thys->DbName);
-    if (ajStrLen(thys->DbType))
-	ajDebug ( "    DbType: '%S' (%d)\n", thys->DbType, thys->Type);
-    ajDebug ( "   QryDone: %B\n", thys->QryDone);
-    if (ajStrLen(thys->Id))
-	ajDebug ( "    Id: '%S'\n", thys->Id);
-    if (ajStrLen(thys->Acc))
-	ajDebug ( "    Acc: '%S'\n", thys->Acc);
-    if (ajStrLen(thys->Sv))
-	ajDebug ( "    Sv: '%S'\n", thys->Sv);
-    if (ajStrLen(thys->Des))
-	ajDebug ( "    Des: '%S'\n", thys->Des);
-    if (ajStrLen(thys->Key))
-	ajDebug ( "    Key: '%S'\n", thys->Key);
-    if (ajStrLen(thys->Org))
-	ajDebug ( "    Org: '%S'\n", thys->Org);
-    if (ajStrLen(thys->Method))
-	ajDebug ( "    Method: '%S'\n", thys->Method);
-    if (ajStrLen(thys->Formatstr))
-	ajDebug ( "    Formatstr: '%S'\n", thys->Formatstr);
-    if (ajStrLen(thys->IndexDir))
-	ajDebug ( "    IndexDir: '%S'\n", thys->IndexDir);
-    if (ajStrLen(thys->Directory))
-	ajDebug ( "    Directory: '%S'\n", thys->Directory);
-    if (ajStrLen(thys->Filename))
-	ajDebug ( "    Filename: '%S'\n", thys->Filename);
-    if (ajStrLen(thys->Exclude))
-	ajDebug ( "    Exclude: '%S'\n", thys->Exclude);
-    if (ajStrLen(thys->Application))
-	ajDebug ( "    Application: '%S'\n", thys->Application);
-    if (thys->Access)
-	ajDebug ( "    Access: exists\n");
-    if (thys->QryData)
-	ajDebug ( "    QryData: exists\n");
+    ajDebug( "  Query Trace\n");
+
+    if(ajStrLen(thys->DbName))
+	ajDebug( "    DbName: '%S'\n", thys->DbName);
+
+    if(ajStrLen(thys->DbType))
+	ajDebug( "    DbType: '%S' (%d)\n", thys->DbType, thys->Type);
+    ajDebug( "   QryDone: %B\n", thys->QryDone);
+
+    if(ajStrLen(thys->Id))
+	ajDebug( "    Id: '%S'\n", thys->Id);
+
+    if(ajStrLen(thys->Acc))
+	ajDebug( "    Acc: '%S'\n", thys->Acc);
+
+    if(ajStrLen(thys->Sv))
+	ajDebug( "    Sv: '%S'\n", thys->Sv);
+
+    if(ajStrLen(thys->Des))
+	ajDebug( "    Des: '%S'\n", thys->Des);
+
+    if(ajStrLen(thys->Key))
+	ajDebug( "    Key: '%S'\n", thys->Key);
+
+    if(ajStrLen(thys->Org))
+	ajDebug( "    Org: '%S'\n", thys->Org);
+
+    if(ajStrLen(thys->Method))
+	ajDebug( "    Method: '%S'\n", thys->Method);
+
+    if(ajStrLen(thys->Formatstr))
+	ajDebug( "    Formatstr: '%S'\n", thys->Formatstr);
+
+    if(ajStrLen(thys->IndexDir))
+	ajDebug( "    IndexDir: '%S'\n", thys->IndexDir);
+
+    if(ajStrLen(thys->Directory))
+	ajDebug( "    Directory: '%S'\n", thys->Directory);
+
+    if(ajStrLen(thys->Filename))
+	ajDebug( "    Filename: '%S'\n", thys->Filename);
+
+    if(ajStrLen(thys->Exclude))
+	ajDebug( "    Exclude: '%S'\n", thys->Exclude);
+
+    if(ajStrLen(thys->Application))
+	ajDebug( "    Application: '%S'\n", thys->Application);
+
+    if(thys->Access)
+	ajDebug( "    Access: exists\n");
+
+    if(thys->QryData)
+	ajDebug( "    QryData: exists\n");
 
     return;
 }
+
+
+
 
 /* ==================================================================== */
 /* ============================ Casts ================================= */
@@ -6941,6 +7408,8 @@ void ajSeqQueryTrace (const AjPSeqQuery thys)
 ** caution.
 **
 ******************************************************************************/
+
+
 
 
 /* @func ajSeqParseFasta ******************************************************
@@ -6960,53 +7429,55 @@ AjBool ajSeqParseFasta(const AjPStr instr, AjPStr* id, AjPStr* acc,
 		       AjPStr* sv, AjPStr* desc)
 {
     static AjPStrTok handle = NULL;
-    static AjPStr token = NULL;
-    static AjPStr str = NULL;
+    static AjPStr token     = NULL;
+    static AjPStr str       = NULL;
     AjBool ok = ajFalse;
 
     ajDebug("ajSeqParseFasta '%S'\n", instr);
 
-    ajStrAssS (&str, instr);
+    ajStrAssS(&str, instr);
 
-    if (!ajStrPrefixC(str, ">"))
-      return ajFalse;
+    if(!ajStrPrefixC(str, ">"))
+	return ajFalse;
 
-    (void) ajStrTokenAss (&handle, str, "> ");
-    (void) ajStrToken (id, &handle, " \t\n\r");
+    ajStrTokenAss(&handle, str, "> ");
+    ajStrToken(id, &handle, " \t\n\r");
 
-    ok = ajStrToken (&token, &handle, NULL);
+    ok = ajStrToken(&token, &handle, NULL);
 
-    if (ok && ajIsSeqversion(token))
+    if(ok && ajIsSeqversion(token))
     {
-        (void) ajStrAssS (acc, ajIsSeqversion(token));
-	(void) ajStrAssS (sv, token);
-	(void) ajStrToken (desc, &handle, "\n\r");
+        ajStrAssS(acc, ajIsSeqversion(token));
+	ajStrAssS(sv, token);
+	ajStrToken(desc, &handle, "\n\r");
     }
-    else if (ok && ajIsAccession(token))
+    else if(ok && ajIsAccession(token))
     {
-	(void) ajStrAssS (acc, token);
-        (void) ajStrAssC (sv, "");
-	(void) ajStrToken (desc, &handle, "\n\r");
+	ajStrAssS(acc, token);
+        ajStrAssC(sv, "");
+	ajStrToken(desc, &handle, "\n\r");
     }
     else
     {
-        (void) ajStrAssC (acc, "");
-        (void) ajStrAssC (sv, "");
-	(void) ajStrAssS (desc, token);
-	if (ajStrToken (&token, &handle, "\n\r"))
+        ajStrAssC(acc, "");
+        ajStrAssC(sv, "");
+	ajStrAssS(desc, token);
+	if(ajStrToken(&token, &handle, "\n\r"))
 	{
-	    (void) ajStrAppC (desc, " ");
-	    (void) ajStrApp (desc, token);
+	    ajStrAppC(desc, " ");
+	    ajStrApp(desc, token);
 	}
     }
 
-    (void) ajStrDelReuse(&token);  /* duplicate of accession or description */
-    (void) ajStrTokenReset (&handle);
+    ajStrDelReuse(&token); /* duplicate of accession or description */
+    ajStrTokenReset(&handle);
 
     ajDebug("result id: '%S' acc: '%S' desc: '%S'\n", *id, *acc, *desc);
 
     return ajTrue;
 }
+
+
 
 
 /* @func ajSeqParseNcbi *******************************************************
@@ -7028,193 +7499,199 @@ AjBool ajSeqParseFasta(const AjPStr instr, AjPStr* id, AjPStr* acc,
 ** @return [AjBool] ajTrue if ncbi format
 ** @@
 ******************************************************************************/
+
 AjBool ajSeqParseNcbi(const AjPStr instr, AjPStr* id, AjPStr* acc,
 		      AjPStr* sv, AjPStr* gi, AjPStr* desc)
 {
     static AjPStrTok idhandle = NULL;
-    static AjPStrTok handle = NULL;
-    static AjPStr idstr = NULL;
-    static AjPStr reststr = NULL;
-    static AjPStr prefix = NULL;
-    static AjPStr token = NULL;
-    static AjPStr numtoken = NULL;
-    static AjPStr str = NULL;
-    static AjPStr vacc = NULL;
+    static AjPStrTok handle   = NULL;
+    static AjPStr idstr       = NULL;
+    static AjPStr reststr     = NULL;
+    static AjPStr prefix      = NULL;
+    static AjPStr token       = NULL;
+    static AjPStr numtoken    = NULL;
+    static AjPStr str         = NULL;
+    static AjPStr vacc        = NULL;
     char *q;
     ajint  i;
     ajint  nt;
 
     /* NCBI's list of standard identifiers June 2001
-    ** ftp://ncbi.nlm.nih.gov/blast/db/README.formatdb
-    **
-    ** Database Name                         Identifier Syntax
-    **
-    ** GenBank                               gb|accession|locus
-    ** EMBL Data Library                     emb|accession|locus
-    ** DDBJ, DNA Database of Japan           dbj|accession|locus
-    ** SWISS-PROT                            sp|accession|entry name
-    ** NCBI Reference Sequence               ref|accession|locus
-    **
-    ** General database identifier           gnl|database|identifier
-    ** BLAST formatdb                        gnl|BL_ORD_ID|number
-    **   (prefix for normal FASTA header - remove)
-    **
-    ** NBRF PIR                              pir||entry
-    ** Protein Research Foundation           prf||name
-    **   (Japanese SEQDB protein DB)
-    **
-    ** Brookhaven Protein Data Bank          pdb|entry|chain
-    **
-    ** Patents                               pat|country|number
-    **
-    ** GenInfo Backbone Id                   bbs|number
-    ** Local Sequence identifier             lcl|identifier
-    **
-    ** GenInfo identifier prefix             gi|gi_identifier
-    **   (prefix - remove)
-    */
+     ** ftp://ncbi.nlm.nih.gov/blast/db/README.formatdb
+     **
+     ** Database Name                         Identifier Syntax
+     **
+     ** GenBank                               gb|accession|locus
+     ** EMBL Data Library                     emb|accession|locus
+     ** DDBJ, DNA Database of Japan           dbj|accession|locus
+     ** SWISS-PROT                            sp|accession|entry name
+     ** NCBI Reference Sequence               ref|accession|locus
+     **
+     ** General database identifier           gnl|database|identifier
+     ** BLAST formatdb                        gnl|BL_ORD_ID|number
+     **   (prefix for normal FASTA header - remove)
+     **
+     ** NBRF PIR                              pir||entry
+     ** Protein Research Foundation           prf||name
+     **   (Japanese SEQDB protein DB)
+     **
+     ** Brookhaven Protein Data Bank          pdb|entry|chain
+     **
+     ** Patents                               pat|country|number
+     **
+     ** GenInfo Backbone Id                   bbs|number
+     ** Local Sequence identifier             lcl|identifier
+     **
+     ** GenInfo identifier prefix             gi|gi_identifier
+     **   (prefix - remove)
+     */
 
-    (void) ajDebug("ajSeqParseNcbi '%S'\n", instr);
+    ajDebug("ajSeqParseNcbi '%S'\n", instr);
 
-    if (ajStrChar(instr, 3) == ';')	/* then it is really PIR format */
+    if(ajStrChar(instr, 3) == ';')  /* then it is really PIR format */
     {
-      ajDebug("ajSeqParseNcbi failed: this is PIR format\n");
-      return ajFalse;
+	ajDebug("ajSeqParseNcbi failed: this is PIR format\n");
+	return ajFalse;
     }
 
-     ajStrAssS (&str, instr);
+    ajStrAssS(&str, instr);
 
-     /* (void) ajDebug ("id test %B %B\n",
-		    !strchr(MAJSTRSTR(str), (ajint)'|'),
-		    (*MAJSTRSTR(str)!='>')); */
+    /* ajDebug("id test %B %B\n",
+       !strchr(MAJSTRSTR(str), (ajint)'|'),
+       (*MAJSTRSTR(str)!='>')); */
 
     /* Line must start with '>', and include '|' bar, hopefully in the ID */
 
     if(*MAJSTRSTR(str)!='>')
     {
-      ajDebug("ajSeqParseNcbi failed: no '>' at start\n");
-      return ajFalse;
+	ajDebug("ajSeqParseNcbi failed: no '>' at start\n");
+	return ajFalse;
     }
 
     /* pick out the ID */
 
-    (void) ajStrTokenAss(&idhandle,str,"> \t\r\n");
-    (void) ajStrToken(&idstr, &idhandle, NULL);
-    (void) ajStrToken(&reststr, &idhandle, "\r\n");
-    (void) ajStrTokenReset(&idhandle);
+    ajStrTokenAss(&idhandle,str,"> \t\r\n");
+    ajStrToken(&idstr, &idhandle, NULL);
+    ajStrToken(&reststr, &idhandle, "\r\n");
+    ajStrTokenReset(&idhandle);
 
     /* check we have an ID */
 
-    if (!ajStrLen(idstr)) {
-      (void) ajDebug ("No ID string found - but try FASTA\n");
-      return ajSeqParseFasta (str, id, acc, sv, desc);
+    if(!ajStrLen(idstr))
+    {
+	ajDebug("No ID string found - but try FASTA\n");
+	return ajSeqParseFasta(str, id, acc, sv, desc);
     }
 
     /* NCBI ids always have | somewhere. Else we try a simple FASTA format */
 
     if(!strchr(MAJSTRSTR(idstr),(ajint)'|'))
     {
-      ajDebug("trying ajSeqParseFasta\n");
-      return ajSeqParseFasta (str, id, acc, sv, desc);
+	ajDebug("trying ajSeqParseFasta\n");
+	return ajSeqParseFasta(str, id, acc, sv, desc);
     }
 
-    (void) ajStrTokenAss(&handle,idstr,"|");
+    ajStrTokenAss(&handle,idstr,"|");
 
-    (void) ajStrToken(&prefix, &handle, NULL);
+    ajStrToken(&prefix, &handle, NULL);
     q = MAJSTRSTR(prefix);
 
-    /* (void) ajDebug (" idstr: '%S'\n", idstr); */
-    /* (void) ajDebug ("prefix: '%S'\n", prefix); */
+    /* ajDebug(" idstr: '%S'\n", idstr); */
+    /* ajDebug("prefix: '%S'\n", prefix); */
 
     if(!strncmp(q,"gi",2))
     {
-        /* (void) ajDebug("gi prefix\n"); */
-	(void) ajStrToken(&token, &handle, NULL);
+        /* ajDebug("gi prefix\n"); */
+	ajStrToken(&token, &handle, NULL);
 	ajStrAssS(gi, token);
-	if (! ajStrToken(&prefix, &handle, NULL)) {
-	  /* we only have a gi prefix */
-	  /* (void) ajDebug("*only* gi prefix\n"); */
-	  (void) ajStrAssS(id, token);
-	  (void) ajStrAssC(acc, "");
-	  (void) ajStrAssS (desc, reststr);
-	  /* (void) ajDebug ("found pref: '%S' id: '%S', acc: '%S' "
-	     "desc: '%S'\n",
-	     prefix, *id, *acc, *desc); */
-	  return ajTrue;
+	if(! ajStrToken(&prefix, &handle, NULL))
+	{
+	    /* we only have a gi prefix */
+	    /* ajDebug("*only* gi prefix\n"); */
+	    ajStrAssS(id, token);
+	    ajStrAssC(acc, "");
+	    ajStrAssS(desc, reststr);
+	    /* ajDebug("found pref: '%S' id: '%S', acc: '%S' "
+	       "desc: '%S'\n",
+	       prefix, *id, *acc, *desc); */
+	    return ajTrue;
 	}
 
 	/* otherwise we continue to parse the rest */
 	q = MAJSTRSTR(prefix);
-	/* (void) ajDebug("continue with '%S'\n", prefix); */
+	/* ajDebug("continue with '%S'\n", prefix); */
     }
 
 
-/*
- * This next routine and associated function could be used if
- * whatever is appended to gnl lines is consistent
- */
+    /*
+     * This next routine and associated function could be used if
+     * whatever is appended to gnl lines is consistent
+     */
 
     if(!strncmp(MAJSTRSTR(idstr),"gnl|BL_ORD_ID|",14))
     {
-        /* (void) ajDebug("gnl|BL_ORD_ID stripping\n"); */
-	(void) ajStrToken(&token, &handle, NULL); /* BL_ORD_ID */
-	(void) ajStrToken(&numtoken, &handle, NULL); /* number */
-	(void) ajStrInsertC(&reststr, 0, ">");
+        /* ajDebug("gnl|BL_ORD_ID stripping\n"); */
+	ajStrToken(&token, &handle, NULL); /* BL_ORD_ID */
+	ajStrToken(&numtoken, &handle, NULL); /* number */
+	ajStrInsertC(&reststr, 0, ">");
 
-	if(ajSeqParseNcbi(reststr,id,acc,sv,gi,desc)) {	/* recursive ... */
-	  /* (void) ajDebug("ajSeqParseNcbi recursive success\n"); */
-	  /* (void) ajDebug ("found pref: '%S' id: '%S', acc: '%S' "
-	     "sv: '%S' desc: '%S'\n",
-	     prefix, *id, *acc, *sv, *desc); */
-	  return ajTrue;
+	if(ajSeqParseNcbi(reststr,id,acc,sv,gi,desc))
+	{
+	    /* recursive ... */
+	    /* ajDebug("ajSeqParseNcbi recursive success\n"); */
+	    /* ajDebug("found pref: '%S' id: '%S', acc: '%S' "
+	       "sv: '%S' desc: '%S'\n",
+	       prefix, *id, *acc, *sv, *desc); */
+	    return ajTrue;
 	}
-        /* (void) ajDebug("ajSeqParseNcbi recursive failed - use gnl id\n"); */
-	(void) ajStrAss(id,numtoken);
-	(void) ajStrAssC(acc,"");
-	/* (void) ajDebug ("found pref: '%S' id: '%S', acc: '%S' "
+        /* ajDebug("ajSeqParseNcbi recursive failed - use gnl id\n"); */
+	ajStrAss(id,numtoken);
+	ajStrAssC(acc,"");
+	/* ajDebug("found pref: '%S' id: '%S', acc: '%S' "
 	   "sv: '%S' desc: '%S'\n",
 	   prefix, *id, *acc, *sv, *desc); */
 	return ajTrue;
     }
 
-/* works for NCBI formatdb reformatted blast databases
-** still checking for any misformatted databases elsewhere */
+    /* works for NCBI formatdb reformatted blast databases
+     ** still checking for any misformatted databases elsewhere */
 
     if(!strcmp(q,"bbs") || !strcmp(q,"lcl"))
     {
-        /* (void) ajDebug("bbs or lcl prefix\n"); */
-	(void) ajStrToken(id, &handle, NULL);
-	(void) ajStrAssC(acc,"");
-	(void) ajStrAssS(desc, reststr);
-	/* (void) ajDebug ("found pref: '%S' id: '%S', acc: '%S' desc: '%S'\n",
+        /* ajDebug("bbs or lcl prefix\n"); */
+	ajStrToken(id, &handle, NULL);
+	ajStrAssC(acc,"");
+	ajStrAssS(desc, reststr);
+	/* ajDebug("found pref: '%S' id: '%S', acc: '%S' desc: '%S'\n",
 	   prefix, *id, *acc, *desc); */
 	return ajTrue;
     }
 
     if(!strcmp(q,"gnl") || !strcmp(q,"pat"))
     {
-        /* (void) ajDebug("gnl or pat or pdb prefix\n"); */
-	(void) ajStrToken(&token, &handle, NULL);
-	(void) ajStrToken(id, &handle, NULL);
-	(void) ajStrAssC(acc,""); /* no accession number */
-	(void) ajStrAssS(desc, reststr);
-	/* (void) ajDebug ("found pref: '%S' id: '%S', acc: '%S' desc: '%S'\n",
-	  prefix, *id, *acc, *desc); */
+        /* ajDebug("gnl or pat or pdb prefix\n"); */
+	ajStrToken(&token, &handle, NULL);
+	ajStrToken(id, &handle, NULL);
+	ajStrAssC(acc,"");		/* no accession number */
+	ajStrAssS(desc, reststr);
+	/* ajDebug("found pref: '%S' id: '%S', acc: '%S' desc: '%S'\n",
+	   prefix, *id, *acc, *desc); */
 	return ajTrue;
     }
 
 
     if(!strcmp(q,"pdb"))
     {
-        /* (void) ajDebug("gnl or pat or pdb prefix\n"); */
-	(void) ajStrToken(id, &handle, NULL);
-	if (ajStrToken(&token, &handle, NULL)) {
-	  /* chain identifier to append */
-	  (void) ajStrApp(id, token);
+        /* ajDebug("gnl or pat or pdb prefix\n"); */
+	ajStrToken(id, &handle, NULL);
+	if(ajStrToken(&token, &handle, NULL))
+	{
+	    /* chain identifier to append */
+	    ajStrApp(id, token);
 	}
-	(void) ajStrAssC(acc,""); /* no accession number */
-	(void) ajStrAssS(desc, reststr);
-	/* (void) ajDebug ("found pref: '%S' id: '%S', acc: '%S' desc: '%S'\n",
+	ajStrAssC(acc,"");		/* no accession number */
+	ajStrAssS(desc, reststr);
+	/* ajDebug("found pref: '%S' id: '%S', acc: '%S' desc: '%S'\n",
 	   prefix, *id, *acc, *desc); */
 	return ajTrue;
     }
@@ -7223,23 +7700,24 @@ AjBool ajSeqParseNcbi(const AjPStr instr, AjPStr* id, AjPStr* acc,
     if(!strcmp(q,"gb") || !strcmp(q,"emb") || !strcmp(q,"dbj")
        || !strcmp(q,"sp") || !strcmp(q,"ref"))
     {
-        /* (void) ajDebug("gb,emb,dbj,sp,ref prefix\n"); */
-	(void) ajStrToken(&token, &handle, NULL);
+        /* ajDebug("gb,emb,dbj,sp,ref prefix\n"); */
+	ajStrToken(&token, &handle, NULL);
 	vacc = ajIsSeqversion(token);
-	if (vacc)
-	  {
-	    (void) ajStrAss(sv,token);
-	    (void) ajStrAss(acc,vacc);
-	  }
-	else if (ajIsAccession(token))
-	  (void) ajStrAss(acc,token);
-
-	if (!ajStrToken(id, &handle, NULL)) {
-	  /* no ID, reuse accession token */
-	  (void) ajStrAssS (id, token);
+	if(vacc)
+	{
+	    ajStrAss(sv,token);
+	    ajStrAss(acc,vacc);
 	}
-	(void) ajStrAssS(desc, reststr);
-	/* (void) ajDebug ("found pref: '%S' id: '%S', acc: '%S' desc: '%S'\n",
+	else if(ajIsAccession(token))
+	    ajStrAss(acc,token);
+
+	if(!ajStrToken(id, &handle, NULL))
+	{
+	    /* no ID, reuse accession token */
+	    ajStrAssS(id, token);
+	}
+	ajStrAssS(desc, reststr);
+	/* ajDebug("found pref: '%S' id: '%S', acc: '%S' desc: '%S'\n",
 	   prefix, *id, *acc, *desc); */
 	return ajTrue;
     }
@@ -7247,56 +7725,59 @@ AjBool ajSeqParseNcbi(const AjPStr instr, AjPStr* id, AjPStr* acc,
 
     if(!strcmp(q,"pir") || !strcmp(q,"prf"))
     {
-        /* (void) ajDebug("pir,prf prefix\n"); */
-	(void) ajStrToken(id, &handle, NULL);
-	(void) ajStrAssS(desc, reststr);
-	(void) ajStrAssC(acc, "");
-	/* (void) ajDebug ("found pref: '%S' id: '%S', acc: '%S' desc: '%S'\n",
+        /* ajDebug("pir,prf prefix\n"); */
+	ajStrToken(id, &handle, NULL);
+	ajStrAssS(desc, reststr);
+	ajStrAssC(acc, "");
+	/* ajDebug("found pref: '%S' id: '%S', acc: '%S' desc: '%S'\n",
 	   prefix, *id, *acc, *desc); */
 	return ajTrue;
     }
 
 
-  /* else assume that the last two barred tokens contain [acc]|id */
+    /* else assume that the last two barred tokens contain [acc]|id */
 
-    /* (void) ajDebug("No prefix accepted - try the last 2 fields\n"); */
+    /* ajDebug("No prefix accepted - try the last 2 fields\n"); */
 
     nt = ajStrTokenCount(&idstr,"|");
 
-    /* (void) ajDebug ("Barred tokens - %d found\n", nt); */
+    /* ajDebug("Barred tokens - %d found\n", nt); */
 
-  if(nt < 2)
-    return ajFalse;
+    if(nt < 2)
+	return ajFalse;
 
-  /* restart parsing with only bars */
+    /* restart parsing with only bars */
 
-  (void) ajStrTokenAss(&handle,str,"|");
-  for(i=0;i<nt-2;++i)
-      (void) ajStrToken(&token, &handle, NULL);
+    ajStrTokenAss(&handle,str,"|");
+    for(i=0;i<nt-2;++i)
+	ajStrToken(&token, &handle, NULL);
 
-  (void) ajStrToken (&token, &handle, NULL);
-  /* (void) ajDebug ("token acc: '%S'\n", token); */
-  vacc = ajIsSeqversion(token);
-  if (vacc)
-  {
-    (void) ajStrAss(sv,token);
-    (void) ajStrAss(acc,vacc);
-  }
-  else if (ajIsAccession(token))
-    (void) ajStrAss(acc,token);
+    ajStrToken(&token, &handle, NULL);
+    /* ajDebug("token acc: '%S'\n", token); */
+    vacc = ajIsSeqversion(token);
+    if(vacc)
+    {
+	ajStrAss(sv,token);
+	ajStrAss(acc,vacc);
+    }
+    else if(ajIsAccession(token))
+	ajStrAss(acc,token);
 
-  (void) ajStrToken (&token, &handle, " \n\t\r");
-  /* (void) ajDebug ("token id: '%S'\n", token); */
+    ajStrToken(&token, &handle, " \n\t\r");
+    /* ajDebug("token id: '%S'\n", token); */
 
-  (void) ajStrAss(id,token);
+    ajStrAss(id,token);
 
-  (void) ajStrToken (&token, &handle, "\n\r");
-  (void) ajStrAss (desc, token);
+    ajStrToken(&token, &handle, "\n\r");
+    ajStrAss(desc, token);
 
-  /* (void) ajDebug ("found pref: '%S' id: '%S', acc: '%S' desc: '%S'\n",
-     prefix, *id, *acc, *desc); */
-  return ajTrue;
+    /* ajDebug("found pref: '%S' id: '%S', acc: '%S' desc: '%S'\n",
+       prefix, *id, *acc, *desc); */
+
+    return ajTrue;
 }
+
+
 
 
 /* @func ajSeqGetFromUsa ******************************************************
@@ -7310,24 +7791,24 @@ AjBool ajSeqParseNcbi(const AjPStr instr, AjPStr* id, AjPStr* acc,
 ** @@
 ******************************************************************************/
 
-AjBool ajSeqGetFromUsa (const AjPStr thys, AjBool protein, AjPSeq *seq)
+AjBool ajSeqGetFromUsa(const AjPStr thys, AjBool protein, AjPSeq *seq)
 {
     AjPSeqin seqin;
     AjBool ok;
 
 
-    seqin = ajSeqinNew();
+    seqin        = ajSeqinNew();
     seqin->multi = ajFalse;
     seqin->Text  = ajFalse;
 
     if(!protein)
-	ajSeqinSetNuc (seqin);
+	ajSeqinSetNuc(seqin);
     else
-	ajSeqinSetProt (seqin);
+	ajSeqinSetProt(seqin);
 
-    ajSeqinUsa (&seqin, thys);
+    ajSeqinUsa(&seqin, thys);
     ok = ajSeqRead(*seq, seqin);
-    ajSeqinDel (&seqin);
+    ajSeqinDel(&seqin);
 
 
     if(!ok)
@@ -7335,6 +7816,8 @@ AjBool ajSeqGetFromUsa (const AjPStr thys, AjBool protein, AjPSeq *seq)
 
     return ajTrue;
 }
+
+
 
 
 /* @func ajSeqsetGetFromUsa *****************************************
@@ -7351,13 +7834,13 @@ AjBool ajSeqsetGetFromUsa(const AjPStr thys, AjPSeqset *seq)
     AjPSeqin seqin;
     AjBool ok;
 
-    seqin = ajSeqinNew();
+    seqin        = ajSeqinNew();
     seqin->multi = ajTrue;
     seqin->Text  = ajFalse;
 
-    ajSeqinUsa (&seqin, thys);
+    ajSeqinUsa(&seqin, thys);
     ok = ajSeqsetRead(*seq, seqin);
-    ajSeqinDel (&seqin);
+    ajSeqinDel(&seqin);
 
 
     if(!ok)
@@ -7365,6 +7848,8 @@ AjBool ajSeqsetGetFromUsa(const AjPStr thys, AjPSeqset *seq)
 
     return ajTrue;
 }
+
+
 
 
 /* @funcstatic seqTextSeq *****************************************************
@@ -7379,21 +7864,25 @@ AjBool ajSeqsetGetFromUsa(const AjPStr thys, AjPSeqset *seq)
 ** @return [void]
 ******************************************************************************/
 
-static void seqTextSeq (AjPStr* textptr, const AjPStr seq) {
+static void seqTextSeq(AjPStr* textptr, const AjPStr seq)
+{
+    ajint i;
+    ajint istart;
+    ajint iend;
+    ajint ilen;
+    static ajint iwidth;
+    static AjPStr tmpstr = NULL;
 
-  ajint i;
-  ajint istart;
-  ajint iend;
-  ajint ilen = ajStrLen(seq);
-  static ajint iwidth=60;
-  static AjPStr tmpstr=NULL;
+    ilen = ajStrLen(seq);
+    iwidth = 60;
 
-  for (i=0; i < ilen; i += iwidth) {
-    istart = i;
-    iend = AJMIN(ilen-1, istart+iwidth-1);
-    ajStrAssSub(&tmpstr, seq, istart, iend);
-    ajFmtPrintAppS (textptr, "%S\n", tmpstr);
-  }
+    for(i=0; i < ilen; i += iwidth)
+    {
+	istart = i;
+	iend = AJMIN(ilen-1, istart+iwidth-1);
+	ajStrAssSub(&tmpstr, seq, istart, iend);
+	ajFmtPrintAppS(textptr, "%S\n", tmpstr);
+    }
 
-  return;
+    return;
 }
