@@ -1077,6 +1077,35 @@ AjPFeature ajFeatNewII(AjPFeattable thys,
 
     ret = featFeatNew(thys,source,type,Start,End,score,strand,frame,
 		      0,0,0,NULL, NULL,flags);
+    return ret;
+}
+
+
+
+
+/* @func ajFeatNewIIRev *******************************************************
+**
+** Simple constructor with only start and end positions, sets feature to be
+** on the reverse strand
+**
+** User must specify associated 'ajFeattable' to which the new feature
+** is automatically added!
+**
+** @param  [rC]   thys    [AjPFeattable] Pointer to the ajFeattable which
+**                         owns the feature
+** @param  [rNU]  Start    [ajint]  Start position of the feature
+** @param  [rNU]  End      [ajint]  End position of the feature
+** @return [AjPFeature] newly allocated feature object
+** @@
+******************************************************************************/
+
+AjPFeature ajFeatNewIIRev(AjPFeattable thys,
+			  ajint Start, ajint End)
+{
+    AjPFeature ret = NULL ;
+
+    ret = ajFeatNewII(thys,Start,End);
+    ret->Strand = '-';
 
     return ret;
 }

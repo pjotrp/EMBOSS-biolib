@@ -67,7 +67,9 @@ AjPFeature    ajFeatNew (AjPFeattable thys,
 			 ajint Start, ajint End, float score,
 			 char strand, ajint frame);
 AjPFeature    ajFeatNewII (AjPFeattable thys,
-			 ajint Start, ajint End);
+			   ajint Start, ajint End);
+AjPFeature    ajFeatNewIIRev (AjPFeattable thys,
+			      ajint Start, ajint End);
 AjPFeature    ajFeatNewProt (AjPFeattable thys,
 			     const AjPStr source, const AjPStr type,
 			     ajint Start, ajint End, float score);
