@@ -816,6 +816,13 @@ $EMBOSS_INSTALL/bin/wossname -colon -gui -outf wossname.out -auto
 $JAVA_HOME/bin/jar cvf $JEMBOSS/resources/wossname.jar wossname.out
 
 #
+# create resources.jar archive of the scoring matrix
+#
+cd $EMBOSS_INSTALL/share/EMBOSS/data
+$JAVA_HOME/bin/jar cvf $JEMBOSS/resources/resources.jar EPAM* EBLOSUM* ENUC*
+
+
+#
 #
 #
 
