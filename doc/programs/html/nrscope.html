@@ -114,10 +114,31 @@ application <b>domainer</b>.
 
 
 Here is a sample session with nrscope:
+<p>
 
 <pre>
 
 % nrscope
+Converts redundant EMBL-format SCOP file to non-redundant one
+Name of scop file for input (embl-like format) [Escop.dat]: /data/scop/Escop.dat
+Name of non-redundant scop file for output (embl-like format) [EscopNR.dat]: EscopNR.test
+Location of clean domain coordinate files for input (embl-like format) [./]: /data/cpdbscop/
+File extension of clean domain coordinate files [.pxyz]:
+The % sequence identity redundancy threshold [95]: 95
+Residue substitution file [EBLOSUM62]:
+Gap insertion penalty [10]: 20
+Gap extension penalty [0.5]: 1
+Name of log file for the build [nrscope.log]: EscopNR.log
+D3SDHA_
+D3SDHB_
+D3HBIA_
+D3HBIB_
+D4SDHA_
+D4SDHB_
+D4HBIA_
+D4HBIB_
+D5HBIA_
+D5HBIB_
 
 </pre>
 

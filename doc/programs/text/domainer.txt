@@ -40,8 +40,31 @@ Description
 Usage
 
    Here is a sample session with domainer:
+   
 
 % domainer
+Build domain coordinate files
+Name of scop file for input (embl-like format) [Escop.dat]: /data/scop/Escop.da
+t
+Location of coordinate files for input (embl-like format) [./]: /data/cpdb/
+Location of coordinate files for output (embl-like format) [./]:
+Extension of coordinate files (embl-like format) [.pxyz]:
+Location of coordinate files for output (pdb format) [./]:
+Extension of coordinate files (pdb format) [.ent]:
+Name of log file for the embl-like format build [domainer.log1]: log.1
+Name of log file for the pdb format build [domainer.log2]: log.2
+D3SDHA_
+D3SDHB_
+D3HBIA_
+D3HBIB_
+D4SDHA_
+D4SDHB_
+D4HBIA_
+D4HBIB_
+D5HBIA_
+D5HBIB_
+D7HBIA_
+D7HBIB_
 
 Command line arguments
 
