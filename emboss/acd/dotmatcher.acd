@@ -15,10 +15,10 @@ appl: dotmatcher [
         min : "3"
   ]
 
-  float: threshold [
+  int:  threshold [
         optional: Y 
         info: "threshold"
-        def : "17.0"
+        def : "17"
         min : "0"
   ]
 
