@@ -280,16 +280,16 @@ AjBool ajRegPost (AjPRegexp rp, AjPStr* post)
 **
 ** After a successful match, returns the remainder of the string.
 ** Result is a character string, which is set to point to the internal
-** string data. This in turn is poart of the original string. If this
+** string data. This in turn is part of the original string. If this
 ** changes then the results are undefined.
 **
 ** @param [r] rp [AjPRegexp] Compiled regular expression.
-** @param [w] post [const char**] Character string to hold the result.
+** @param [w] post [char**] Character string to hold the result.
 ** @return [AjBool] ajTrue on success.
 ** @@
 ******************************************************************************/
 
-AjBool ajRegPostC (AjPRegexp rp, const char** post)
+AjBool ajRegPostC (AjPRegexp rp, char** post)
 {
     if (rp->ovector[1])
     {
