@@ -1710,7 +1710,7 @@ static AjBool jctl_do_directory(char *buf, int uid, int gid)
     str = ajStrNew();
     ajStrAssC(&str,dbuf);
 
-    if(mkdir(ajStrStr(str),0755)==-1)
+    if(mkdir(ajStrStr(str),0751)==-1)
     {
 	AJFREE(dbuf);
 	ajStrDel(&str);
