@@ -1395,8 +1395,8 @@ static AjPStr cirdna_ReadGroup(AjPFile infile, float *From, float *To,
 				sscanf( ajStrStr(line), "%*s %f %f %d %*c",
  				       &To[i], &From[i], &Color[i] );
 			    if( ajStrMatchCaseCC(style, "Range") )
-				sscanf( ajStrStr(line), "%*s %f %f %c %c %d
-                                         %*c", &To[i], &From[i],
+			     sscanf( ajStrStr(line), "%*s %f %f %c %c %d %*c",
+				    &To[i], &From[i],
  				       &FromSymbol[i], &ToSymbol[i],
  				       &Color[i] );
 			    ajStrAssC(&Style2[i], style);
