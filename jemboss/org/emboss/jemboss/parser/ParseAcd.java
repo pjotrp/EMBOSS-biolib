@@ -264,10 +264,10 @@ public class ParseAcd
   {
     String res=svalue;
 
-    Enumeration enum = variables.elements();
-    while(enum.hasMoreElements())
+    Enumeration enumer = variables.elements();
+    while(enumer.hasMoreElements())
     {
-      ApplicationFields var = (ApplicationFields)enum.nextElement();
+      ApplicationFields var = (ApplicationFields)enumer.nextElement();
       String vName  = var.getParamValueStr(0);
       String vValue = var.getParamValueStr(1);
 

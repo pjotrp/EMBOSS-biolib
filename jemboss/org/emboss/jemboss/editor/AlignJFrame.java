@@ -381,10 +381,10 @@ public class AlignJFrame extends JFrame
         if(selectedValue == JOptionPane.OK_OPTION)
         {
           Vector vseq = gsc.getSequenceCollection();
-          Enumeration enum = vseq.elements();
-          while(enum.hasMoreElements())
+          Enumeration enumer = vseq.elements();
+          while(enumer.hasMoreElements())
           {
-            Sequence s = (Sequence)enum.nextElement();
+            Sequence s = (Sequence)enumer.nextElement();
             s.trim(start.getValue(),end.getValue());  
           }
           gsc.setMaxSeqLength();
@@ -571,7 +571,7 @@ public class AlignJFrame extends JFrame
         try
         {
           Vector vseq = gsc.getSequenceCollection();
-          Enumeration enum = vseq.elements();
+//        Enumeration enumer = vseq.elements();
           float wgt = getTotalWeight(gsc.getSequenceCollection());
           options.setCase(wgt/2.f);
           options.setPlurality(wgt/2.f);
@@ -698,10 +698,10 @@ public class AlignJFrame extends JFrame
   {
     float wgt = 0.f;
     vseq = gsc.getSequenceCollection();
-    Enumeration enum = vseq.elements();
-    while(enum.hasMoreElements())
+    Enumeration enumer = vseq.elements();
+    while(enumer.hasMoreElements())
     {
-      Sequence s = (Sequence)enum.nextElement();
+      Sequence s = (Sequence)enumer.nextElement();
       if(!s.getName().equals("Consensus"))
         wgt+=s.getWeight();
     }

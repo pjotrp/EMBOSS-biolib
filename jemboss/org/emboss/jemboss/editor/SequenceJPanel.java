@@ -327,9 +327,9 @@ public class SequenceJPanel extends JPanel
   {
     if(observers != null)
     {
-      Enumeration enum = observers.elements();
-      while(enum.hasMoreElements())
-        ((SequenceJPanel)enum.nextElement()).update(res,pressed);
+      Enumeration enumer = observers.elements();
+      while(enumer.hasMoreElements())
+        ((SequenceJPanel)enumer.nextElement()).update(res,pressed);
     }
   }
 

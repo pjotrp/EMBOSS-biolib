@@ -1248,10 +1248,10 @@ public class JembossParams
 */
   public void updateJembossPropHash(Hashtable hash) 
   {
-    Enumeration enum = hash.keys();
-    while(enum.hasMoreElements()) 
+    Enumeration enumer = hash.keys();
+    while(enumer.hasMoreElements()) 
     {
-      String thiskey = (String)enum.nextElement().toString();
+      String thiskey = (String)enumer.nextElement().toString();
       String thisval = (String)hash.get(thiskey);
       updateJembossProperty(thiskey,thisval);
     }
