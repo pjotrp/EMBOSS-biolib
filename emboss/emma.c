@@ -444,8 +444,11 @@ static AjPStr emma_getUniqueFileName()
 
     AjPStr filename = NULL;
 
-    ajStrFromInt( &filename, getpid());
-    ajStrAppC( &filename, ext);
+    /* make sure the filename is more than 5 characters */
+    /* clustalw has a known bug with short input filenames */
+
+    ajFmtPrintS( &filename, "%08d%s",getpid(), ext);
+
     if (++ext[0] > 'Z')
 	ext[0] = 'A';
 

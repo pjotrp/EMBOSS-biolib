@@ -1,4 +1,7 @@
 Version 2.7.0
+	Padded temporary filename for emma to avoid clustalw bug with
+	short input filename
+
 	-help output modified to align all the qualifiers
 
 	acdpretty output revised to resolve to full names
