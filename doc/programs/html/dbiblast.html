@@ -95,6 +95,29 @@ If they are present in your database, you may specify that
 words in the description by using the '-fields' qualifier with the
 appropriate values. 
 
+<h3>Indexing the Blast database</h3>
+
+<b>dbiblast</b> can't use the new style of Blast indices.  You must
+create the old style of Blast indices by adding <b>-A F</b> to the
+formatdb command line. 
+
+<p>
+
+The reason is that NCBI have not documented the new format, so we cannot
+extend dbiblast to read it.
+
+<p>
+
+If you have the original (fasta format) file you can build the previous
+blast database format with:
+
+<p>
+
+<i>formatdb -A F</i>
+
+<p>
+
+This turns off the new "ASN.1" formatting. blastall will still work. 
 
 
 <H2>
@@ -443,7 +466,10 @@ None.
     Warnings
 </H2>
 
-None.
+<b>dbiblast</b> can't use the new style of Blast indices.  You must
+create the old style of Blast indices by adding <b>-A F</b> to the
+formatdb command line. 
+
 
 
 <H2>
@@ -464,7 +490,10 @@ None.
     Known bugs
 </H2>
 
-None.
+<b>dbiblast</b> can't use the new style of Blast indices.  You must
+create the old style of Blast indices by adding <b>-A F</b> to the
+formatdb command line. 
+
 
 
 <!--

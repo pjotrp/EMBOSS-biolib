@@ -46,6 +46,22 @@ DB swnew [
    description by using the '-fields' qualifier with the appropriate
    values.
    
+  Indexing the Blast database
+  
+   dbiblast can't use the new style of Blast indices. You must create the
+   old style of Blast indices by adding -A F to the formatdb command
+   line.
+   
+   The reason is that NCBI have not documented the new format, so we
+   cannot extend dbiblast to read it.
+   
+   If you have the original (fasta format) file you can build the
+   previous blast database format with:
+   
+   formatdb -A F
+   
+   This turns off the new "ASN.1" formatting. blastall will still work.
+   
 Usage
 
    Here is a sample session with dbiblast
@@ -220,7 +236,9 @@ References
    
 Warnings
 
-   None.
+   dbiblast can't use the new style of Blast indices. You must create the
+   old style of Blast indices by adding -A F to the formatdb command
+   line.
    
 Diagnostic Error Messages
 
@@ -232,7 +250,9 @@ Exit status
    
 Known bugs
 
-   None.
+   dbiblast can't use the new style of Blast indices. You must create the
+   old style of Blast indices by adding -A F to the formatdb command
+   line.
    
 See also
 
