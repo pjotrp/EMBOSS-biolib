@@ -115,7 +115,7 @@ fi
 
 dnl test for Solaris optimisation
 if test "`uname`" = "SunOS"; then
-CFLAGS="$CFLAGS -fast"
+CFLAGS="$CFLAGS -O"
 dnl test for 64 bit ptr here (see Solaris 64bit above)
 if test "${enable_64}" = "yes" ; then
 CFLAGS="$CFLAGS -xtarget=ultra -xarch=v9"
