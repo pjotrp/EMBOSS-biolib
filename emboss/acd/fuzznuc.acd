@@ -36,34 +36,12 @@ bool: complement  [
 endsection: advanced
 
 section: output [ info: "output Section" type: page ]
-outfile: outf  [
+
+report: outfile  [
   parameter: "Y"
-]
-
-bool: mmshow  [
-  optional: "N"
-  default: "0"
-  information: "Show mismatches"
-]
-
-bool: accshow  [
-  optional: "N"
-  default: "0"
-  information: "Show accession numbers"
-]
-
-bool: descshow  [
-  optional: "N"
-  default: "0"
-  information: "Show descriptions"
-]
-
-bool: usashow  [
-  optional: "N"
-  default: "0"
-  information: "Show USA"
-  help: "Showing the USA (Uniform Sequence Address) of the matching sequences will turn your output file into a 'list' file that can then be read in by many other EMBOSS programs by specifying it with a '@' in front of the filename."
+  taglist: "int:mismatch=Mismatch"
+  rformat: "seqtable"
+  precision: 0
 ]
 
 endsection: output
-

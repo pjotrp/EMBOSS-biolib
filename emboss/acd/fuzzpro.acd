@@ -12,6 +12,7 @@ seqall: sequence  [
 endsection: input
 
 section: required [ info: "required Section" type: page ]
+
 string: pattern  [
   required: "Y"
   prompt: "Search pattern"
@@ -27,33 +28,13 @@ integer: mismatch  [
 endsection: required
 
 section: output [ info: "output Section" type: page ]
-bool: mmshow  [
-  optional: "N"
-  default: "0"
-  information: "Show mismatches"
-]
 
-bool: accshow  [
-  optional: "N"
-  default: "0"
-  information: "Show accession numbers"
-]
-
-bool: usashow  [
-  optional: "N"
-  default: "0"
-  information: "Show USA"
-  help: "Showing the USA (Uniform Sequence Address) of the matching sequences will turn your output file into a 'list' file that can then be read in by many other EMBOSS programs by specifying it with a '@' in front of the filename."
-]
-
-bool: descshow  [
-  optional: "N"
-  default: "0"
-  information: "Show descriptions"
-]
-
-outfile: outf  [
+report: outfile  [
   parameter: "Y"
+  taglist: "int:mismatch=Mismatch"
+  rformat: "seqtable"
+  precision: 0
 ]
+
 endsection: output
 
