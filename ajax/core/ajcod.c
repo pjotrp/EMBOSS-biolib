@@ -71,7 +71,8 @@ AjPCod ajCodNew(void)
 
     AJNEW0(thys);
 
-    thys->name = ajStrNew();
+    thys->Name = ajStrNew();
+    thys->Desc = ajStrNew();
     AJCNEW(thys->back, AJCODAMINOS);
     AJCNEW(thys->aa, AJCODSIZE);
     AJCNEW(thys->num, AJCODSIZE);
@@ -101,7 +102,8 @@ AjPCod ajCodDup(const AjPCod thys)
 
     dup = ajCodNew();
 
-    ajStrAssC(&dup->name,ajStrStr(thys->name));
+    ajStrAssS(&dup->Name,thys->Name);
+    ajStrAssS(&dup->Desc,thys->Desc);
 
     for(i=0;i<AJCODSIZE;++i)
     {
@@ -143,7 +145,8 @@ void ajCodDel(AjPCod *thys)
     AJFREE((*thys)->num);
     AJFREE((*thys)->aa);
     AJFREE((*thys)->back);
-    ajStrDel(&(*thys)->name);
+    ajStrDel(&(*thys)->Name);
+    ajStrDel(&(*thys)->Desc);
 
     AJFREE(*thys);
 
@@ -514,7 +517,8 @@ void ajCodClear(AjPCod *thys)
 {
     ajint i;
 
-    ajStrAssC(&((*thys)->name),"");
+    ajStrAssC(&((*thys)->Name),"");
+    ajStrAssC(&((*thys)->Desc),"");
     for(i=0;i<AJCODSIZE;++i)
     {
 	(*thys)->fraction[i] = (*thys)->tcount[i] = 0.0;
@@ -662,7 +666,11 @@ AjBool ajCodRead(AjPCod thys, const AjPStr fn)
     while(ajFileGets(inf,&line))
     {
 	p=ajStrStr(line);
-	if(*p=='#' || *p=='!' || *p=='\n')
+	if(*p=='\n')
+	    continue;
+	else if(*p=='#')
+	    continue;
+	else if(*p=='!')
 	    continue;
 	p = ajSysStrtok(p," \t\r\n");
 	ajStrAssC(&t,p);
@@ -672,18 +680,18 @@ AjBool ajCodRead(AjPCod thys, const AjPStr fn)
 	    c=27;
 	p = ajSysStrtok(NULL," \t\r\n");
 	if(sscanf(p,"%lf",&fraction)!=1)
-	    ajFatal("No fraction");
+	    ajFatal("No fraction in codon file %S", fn);
 	p = ajSysStrtok(NULL," \t\r\n");
 	if(sscanf(p,"%lf",&tcount)!=1)
-	    ajFatal("No tcount");
+	    ajFatal("No tcount in codon file %S", fn);
 	p = ajSysStrtok(NULL," \t\r\n");
 	if(sscanf(p,"%d",&num)!=1)
-	    ajFatal("No num");
+	    ajFatal("No num in codon file %S", fn);
 
 	idx = ajCodIndex(t);
 	if(idx<0)
 	{
-	    ajWarn("Corrupt codon index file");
+	    ajWarn("Corrupt codon index file %S", fn);
 	    return ajFalse;
 	}
 
@@ -693,7 +701,7 @@ AjBool ajCodRead(AjPCod thys, const AjPStr fn)
 	thys->fraction[idx] =fraction;
     }
 
-    ajStrAssC(&(thys->name),ajStrStr(fn));
+    ajStrAssC(&(thys->Name),ajStrStr(fn));
 
     ajStrDel(&t);
     ajStrDel(&line);
@@ -1039,4 +1047,56 @@ double ajCodCai(const AjPCod thys, const AjPStr str)
     AJFREE(wk);
 
     return exp(total);
+}
+
+/* @func ajCodGetName *********************************************************
+**
+** Returns the name of a codon table
+**
+** @param [r] thys [AjPCod] Codon usage object
+** @return [const AjPStr] Original filename
+******************************************************************************/
+
+const AjPStr ajCodGetName(AjPCod thys)
+{
+    return thys->Name;
+}
+
+/* @func ajCodGetNameC ********************************************************
+**
+** Returns the name of a codon table
+**
+** @param [r] thys [AjPCod] Codon usage object
+** @return [const char*] Original filename
+******************************************************************************/
+
+const char* ajCodGetNameC(AjPCod thys)
+{
+    return ajStrStr(thys->Name);
+}
+
+/* @func ajCodGetDesc *********************************************************
+**
+** Returns the description of a codon table
+**
+** @param [r] thys [AjPCod] Codon usage object
+** @return [const AjPStr] Original filename
+******************************************************************************/
+
+const AjPStr ajCodGetDesc(AjPCod thys)
+{
+    return thys->Desc;
+}
+
+/* @func ajCodGetDescC ********************************************************
+**
+** Returns the description of a codon table
+**
+** @param [r] thys [AjPCod] Codon usgage object
+** @return [const char*] Original filename
+******************************************************************************/
+
+const char* ajCodGetDescC(AjPCod thys)
+{
+    return ajStrStr(thys->Desc);
 }
