@@ -94,7 +94,9 @@ void disc_inputdata2(AjPPhyloState state, pointptr2 treenode)
   long i, j, l;
   char k;
   Char charstate;
-  AjPStr str = state->Str[0];
+  AjPStr str;
+
+
   /* possible states are '0', '1', 'P', 'B', and '?' */
 
   if (printdata)
@@ -102,6 +104,7 @@ void disc_inputdata2(AjPPhyloState state, pointptr2 treenode)
   for (i = 0; i < (chars); i++)
     extras[i] = 0;
   for (i = 1; i <= spp; i++) {
+    str = state->Str[i-1];
     initnamestate(state,i-1);
     if (printdata) {
       for (j = 0; j < nmlngth; j++)
