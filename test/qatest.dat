@@ -156,6 +156,9 @@ FI qatest.acdpretty
 FZ = 810
 FP 3 /^string:/
 FP 12 /^[a-z]+: /
+FI stdout
+FC = 1
+FP /^Created qatest.acdpretty\n/
 //
 
 ID acdc-0011
@@ -164,7 +167,7 @@ PP EMBOSS_ACDROOT=../../acd
 PP export EMBOSS_ACDROOT
 CL qatest -help
 FI stderr
-FZ = 896
+FZ = 895
 FP 3 / qualifiers:\n/
 FP 4 / qualifiers:/
 FP 1 /^ +\[-asequence\] +sequence +Sequence USA\n/
@@ -182,7 +185,7 @@ PP EMBOSS_ACDROOT=../../acd
 PP export EMBOSS_ACDROOT
 CL qatest -help -verbose
 FI stderr
-FZ = 3931
+FZ = 3878
 FP 26 /   boolean /
 FP  6 /   integer /
 FP 28 /   string /
@@ -688,6 +691,9 @@ FP /Warning: File .*mixedcase.acd line 16: Automatically converting 'testA' to l
 FI mixedcase.acdpretty
 FZ > 0
 FP /: testa /
+FI stdout
+FC = 1
+FP /Created mixedcase.acdpretty\n/
 //
 
 ID acd-testarray
