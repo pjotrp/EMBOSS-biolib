@@ -12,8 +12,8 @@
 **  i, j, and k unit vectors in the x y and z directions respectively
 **
 ** @author Copyright (C) 2003 Damian Counsell
-** @version $Revision: 1.4 $
-** @modified $Date: 2003/10/16 18:11:00 $
+** @version $Revision: 1.5 $
+** @modified $Date: 2003/10/17 18:39:45 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -386,10 +386,10 @@ void aj3dVectorSum(AjP3dVector ajp3dVectorFirst,
 		   AjP3dVector ajp3dVectorSecond,
 		   AjP3dVector ajp3dVectorSum)
 {
-  /* compute sum of vectors by adding individual components */
-  ajp3dVectorSum->x = ajp3dVectorFirst->x + ajp3dVectorSecond->x;
-  ajp3dVectorSum->y = ajp3dVectorFirst->y + ajp3dVectorSecond->y;
-  ajp3dVectorSum->z = ajp3dVectorFirst->z + ajp3dVectorSecond->z;
+    /* compute sum of vectors by adding individual components */
+    ajp3dVectorSum->x = ajp3dVectorFirst->x + ajp3dVectorSecond->x;
+    ajp3dVectorSum->y = ajp3dVectorFirst->y + ajp3dVectorSecond->y;
+    ajp3dVectorSum->z = ajp3dVectorFirst->z + ajp3dVectorSecond->z;
 
-  return;
+    return;
 }
