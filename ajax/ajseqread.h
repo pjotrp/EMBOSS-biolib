@@ -44,8 +44,29 @@ void         ajSeqinSetRange (AjPSeqin seqin, int ibegin, int iend);
 void         ajSeqinUsa (AjPSeqin* pthis, AjPStr Usa);
 void         ajSeqPrintInFormat (AjPFile outf, AjBool full);
 AjBool       ajSeqRead (AjPSeq thys, AjPSeqin seqin);
-AjBool       ajSeqABIRead(AjPStr s);
 AjBool       ajSeqsetRead (AjPSeqset thys, AjPSeqin seqin);
+AjBool 	     ajSeqABITest(AjPFile fp);
+AjBool 	     ajSeqABIReadSeq(AjPFile fp,long int baseO,long int numBases,
+                             AjPStr* nseq);
+AjBool 	     ajSeqABIMachineName(AjPFile fp,AjPStr machine);
+int 	     ajSeqABIGetNData(AjPFile fp);
+int	     ajSeqABIGetNBase(AjPFile fp);
+void 	     ajSeqABIGetData(AjPFile fp,long int *Offset,long int numPoints, 
+                             AjPInt2d trace);
+void 	     ajSeqABIGetBasePosition(AjPFile fp,long int numBases, 
+                             AjPShort* basePositions);
+void 	     ajSeqABIGetSignal(AjPFile fp,long int fwo_,
+                    	       short int sigC,short int sigA,
+                   	       short int sigG,short int sigT);
+float 	     ajSeqABIGetBaseSpace(AjPFile fp);
+int	     ajSeqABIGetBaseOffset(AjPFile fp);
+int 	     ajSeqABIGetBasePosOffset(AjPFile fp);
+int	     ajSeqABIGetFWO(AjPFile fp);
+int 	     ajSeqABIGetPrimerOffset(AjPFile fp);
+int	     ajSeqABIGetPrimerPosition(AjPFile fp);
+AjBool 	     ajSeqABIGetTraceOffset(AjPFile fp,long int *Offset);
+
+
 
 #endif
 
