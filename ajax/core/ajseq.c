@@ -5119,15 +5119,16 @@ void ajSeqGapStandard(AjPSeq thys, char gapch)
     if(gapch)
 	newgap = gapch;
 
-    ajDebug("ajSeqGapStandard '%c'=>'%c' '%S'\n", gapch, newgap, thys->Seq);
+    /*ajDebug("ajSeqGapStandard '%c'=>'%c' '%S'\n",
+            gapch, newgap, thys->Seq);*/
 
     while(*testgap)
     {
 	if(newgap != *testgap)
 	{
 	    ajStrSubstituteKK(&thys->Seq, *testgap, newgap);
-	    ajDebug(" replaced         '%c'=>'%c' '%S'\n",
-		    *testgap, newgap, thys->Seq);
+	    /*ajDebug(" ajSeqGapStandard replaced         '%c'=>'%c' '%S'\n",
+		    *testgap, newgap, thys->Seq);*/
 	}
 	testgap++;
     }
