@@ -203,6 +203,23 @@ foreach $name (@dotest) {
       }
       exit;
     }
+    elsif ($arg =~ /block=(\d+)/) {
+      $block=$1;
+      $i=0;
+      $blocksize=10;
+      $blockcount=0;
+      foreach $x (sort (keys (%tests))) {
+	if (!$i) {
+	  $blockcount++;
+	}
+	$i++;
+	if ($i >= $blocksize) {$i=0}
+	if ($blockcount == $block) {
+	  runtest($x);
+	}
+      }
+      exit;
+    }
     else {
       print STDERR "Invalid argument $name (ignored)\n";
       next;
