@@ -1,3 +1,27 @@
+/********************************************************************
+** @source AJAX Jave Native Interface (JNI) functions
+**
+** @author Copyright (C) 2001 Alan Bleasby
+** @version 1.0 
+** @modified Jul 07 2001 ajb First version
+** @@
+** 
+** This library is free software; you can redistribute it and/or
+** modify it under the terms of the GNU Library General Public
+** License as published by the Free Software Foundation; either
+** version 2 of the License, or (at your option) any later version.
+** 
+** This library is distributed in the hope that it will be useful,
+** but WITHOUT ANY WARRANTY; without even the implied warranty of
+** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+** Library General Public License for more details.
+** 
+** You should have received a copy of the GNU Library General Public
+** License along with this library; if not, write to the
+** Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+** Boston, MA  02111-1307, USA.
+********************************************************************/
+
 #ifdef HAVE_JAVA
 
 #include <jni.h>
@@ -61,6 +85,20 @@ static AjBool ajJavaGetSeqFromUsa (AjPStr thys, AjPSeq *seq);
 static AjBool ajJavaGetSeqsetFromUsa (AjPStr thys, AjPSeqset *seq);
 
 
+
+
+/* @func Ajax.seqType **************************************************
+**
+** Return length, weight and type information for a sequence
+**
+** @param [rw] env [JNIEnv*] java environment
+** @param [r] obj [jobject] java object
+** @param [r] usa [jstring] usa
+**
+** @return [jboolean] true if the sequence exists
+** @@
+******************************************************************************/
+
 JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_seqType
            (JNIEnv *env, jobject obj, jstring usa)
 {
@@ -105,7 +143,17 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_seqType
     return (unsigned char) ok;
 }
 
-
+/* @func Ajax.seqsetType **************************************************
+**
+** Return length, weight and type information for a seqset
+**
+** @param [rw] env [JNIEnv*] java environment
+** @param [r] obj [jobject] java object
+** @param [r] usa [jstring] usa
+**
+** @return [jboolean] true if the sequences exist
+** @@
+******************************************************************************/
 
 JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_seqsetType
            (JNIEnv *env, jobject obj, jstring usa)
@@ -154,10 +202,10 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_seqsetType
 
 /* @funcstatic ajJavaGetSeqFromUsa ********************************************
 **
-** Undocumented
+** Return a sequence given a USA
 **
-** @param [r] thys [AjPStr] Undocumented
-** @param [r] seq [AjPSeq*] Undocumented
+** @param [r] thys [AjPStr] usa
+** @param [w] seq [AjPSeq*] sequence
 ** @return [AjBool] ajTrue on success
 ******************************************************************************/
 
@@ -186,10 +234,10 @@ static AjBool ajJavaGetSeqFromUsa(AjPStr thys, AjPSeq *seq)
 
 /* @funcstatic ajJavaGetSeqsetFromUsa *****************************************
 **
-** Undocumented
+** Return a seqset given a usa
 **
-** @param [r] thys [AjPStr] Undocumented
-** @param [r] seq [AjPSeqset*] Undocumented
+** @param [r] thys [AjPStr] usa
+** @param [w] seq [AjPSeqset*] seqset
 ** @return [AjBool] ajTrue on success
 ******************************************************************************/
 
@@ -216,6 +264,18 @@ static AjBool ajJavaGetSeqsetFromUsa(AjPStr thys, AjPSeqset *seq)
 }
 
 
+/* @func Ajax.userInfo **************************************************
+**
+** Return the uid, gid and home directory of a user
+**
+** @param [rw] env [JNIEnv*] java environment
+** @param [r] obj [jobject] java object
+** @param [r] door [jstring] username
+** @param [r] key [jstring] password
+**
+** @return [jboolean] true if the username/password are valid
+** @@
+******************************************************************************/
 
 
 JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_userInfo
@@ -286,6 +346,13 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_userInfo
 
 
 
+/* @funcstatic empty_core_dump ***********************************************
+**
+** Set process coredump size to be zero
+**
+** @return [void]
+** @@
+******************************************************************************/
 
 static void empty_core_dump()
 {
@@ -546,12 +613,36 @@ static AjBool check_pass(AjPStr username,AjPStr password,ajint *uid,
 
 
 
+/* @func Ajax.setuid **************************************************
+**
+** Set the uid of the current process
+**
+** @param [rw] env [JNIEnv*] java environment
+** @param [r] j [jclass] java class
+** @param [r] uid [jint] uid
+**
+** @return [jint] 0 on success, -1 if failure
+** @@
+******************************************************************************/
 
 JNIEXPORT jint JNICALL Java_org_emboss_jemboss_parser_Ajax_setuid
 (JNIEnv *env, jclass j, jint uid)
 {
     return((jint)setuid((uid_t)uid));
 }
+
+
+/* @func Ajax.seteuid **************************************************
+**
+** Set the effective uid of the current process
+**
+** @param [rw] env [JNIEnv*] java environment
+** @param [r] j [jclass] java class
+** @param [r] uid [jint] uid
+**
+** @return [jint] 0 on success, -1 if failure
+** @@
+******************************************************************************/
 
 JNIEXPORT jint JNICALL Java_org_emboss_jemboss_parser_Ajax_seteuid
 (JNIEnv *env, jclass j, jint uid)
@@ -560,12 +651,36 @@ JNIEXPORT jint JNICALL Java_org_emboss_jemboss_parser_Ajax_seteuid
 }
 
 
+/* @func Ajax.setgid **************************************************
+**
+** Set the gid of the current process
+**
+** @param [rw] env [JNIEnv*] java environment
+** @param [r] j [jclass] java class
+** @param [r] gid [jint] gid
+**
+** @return [jint] 0 on success, -1 if failure
+** @@
+******************************************************************************/
 
 JNIEXPORT jint JNICALL Java_org_emboss_jemboss_parser_Ajax_setgid
 (JNIEnv *env, jclass j, jint gid)
 {
     return((jint)setgid((gid_t)gid));
 }
+
+
+/* @func Ajax.setegid **************************************************
+**
+** Set the effective gid of the current process
+**
+** @param [rw] env [JNIEnv*] java environment
+** @param [r] j [jclass] java class
+** @param [r] gid [jint] gid
+**
+** @return [jint] 0 on success, -1 if failure
+** @@
+******************************************************************************/
 
 JNIEXPORT jint JNICALL Java_org_emboss_jemboss_parser_Ajax_setegid
 (JNIEnv *env, jclass j, jint gid)
@@ -574,11 +689,34 @@ JNIEXPORT jint JNICALL Java_org_emboss_jemboss_parser_Ajax_setegid
 }
 
 
+/* @func Ajax.getuid **************************************************
+**
+** Return the uid of the current process
+**
+** @param [rw] env [JNIEnv*] java environment
+** @param [r] j [jclass] java class
+**
+** @return [jint] uid
+** @@
+******************************************************************************/
+
 JNIEXPORT jint JNICALL Java_org_emboss_jemboss_parser_Ajax_getuid
 (JNIEnv *env, jclass j)
 {
     return((jint)getuid());
 }
+
+
+/* @func Ajax.getgid **************************************************
+**
+** Return the gid of the current process
+**
+** @param [rw] env [JNIEnv*] java environment
+** @param [r] j [jclass] java class
+**
+** @return [jint] gid
+** @@
+******************************************************************************/
 
 JNIEXPORT jint JNICALL Java_org_emboss_jemboss_parser_Ajax_getgid
 (JNIEnv *env, jclass j)
@@ -586,11 +724,36 @@ JNIEXPORT jint JNICALL Java_org_emboss_jemboss_parser_Ajax_getgid
     return((jint)getgid());
 }
 
+
+/* @func Ajax.geteuid **************************************************
+**
+** Return the effective uid of the current process
+**
+** @param [rw] env [JNIEnv*] java environment
+** @param [r] j [jclass] java class
+**
+** @return [jint] uid
+** @@
+******************************************************************************/
+
 JNIEXPORT jint JNICALL Java_org_emboss_jemboss_parser_Ajax_geteuid
 (JNIEnv *env, jclass j)
 {
     return((jint)geteuid());
 }
+
+
+
+/* @func Ajax.getegid **************************************************
+**
+** Return the effective gid of the current process
+**
+** @param [rw] env [JNIEnv*] java environment
+** @param [r] j [jclass] java class
+**
+** @return [jint] gid
+** @@
+******************************************************************************/
 
 JNIEXPORT jint JNICALL Java_org_emboss_jemboss_parser_Ajax_getegid
 (JNIEnv *env, jclass j)
@@ -600,6 +763,21 @@ JNIEXPORT jint JNICALL Java_org_emboss_jemboss_parser_Ajax_getegid
 
 
 
+/* @func Ajax.fork **************************************************
+**
+** Fork off new process with given uid & gid, chdir and execute command
+** return stdout and stderr of the child process
+**
+** @param [rw] env [JNIEnv*] java environment
+** @param [r] obj [jobject] java object
+** @param [r] commandline [jstring] command to execute
+** @param [r] directory [jstring] chdir here before execution
+** @param [r] uid [jint] uid for setuid
+** @param [r] gid [jint] gid for setgid
+**
+** @return [jboolean] true if success
+** @@
+******************************************************************************/
 
 JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_fork
 (JNIEnv *env, jobject obj, jstring commandline,
@@ -787,6 +965,15 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_fork
     return (unsigned char)ajTrue;
 }
 
+
+/* @funcstatic make_array ********************************************
+**
+** Construct argv and env arrays for Ajax.fork
+**
+** @param [r] str [AjPStr] space separated tokens
+**
+** @return [char**] env or argv array
+******************************************************************************/
 
 static char **make_array(AjPStr str)
 {
