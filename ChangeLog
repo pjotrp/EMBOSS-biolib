@@ -1,4 +1,7 @@
 Version 2.7.0
+	Simplified error messages for sequence reading, and corrected
+	handling of a bad USA as the first in a list file.
+
 	Padded temporary filename for emma to avoid clustalw bug with
 	short input filename
 
