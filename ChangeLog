@@ -119,6 +119,8 @@ Version 2.4.2
 	logfile. Takes the logfile name on the command line. Reports
 	total use, most active user, and total user count.
 
+	extractseq now only reads one sequence as input. 
+
 Version 2.4.1
 	Fixed error reading multiple databases
 	Fixed MacOSX reading of incomplete sequence files
