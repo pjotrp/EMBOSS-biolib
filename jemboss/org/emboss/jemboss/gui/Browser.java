@@ -109,6 +109,10 @@ public class Browser extends JFrame
 
     if(mysettings.isBrowserProxy())
     {
+      System.setProperty("http.proxyHost",mysettings.getBrowserProxyHost());
+      System.setProperty("http.proxyPort", Integer.toString(
+                          mysettings.getBrowserProxyPort()));
+   
       System.setProperty("proxyHost",mysettings.getBrowserProxyHost());
       System.setProperty("proxyPort", Integer.toString(
                           mysettings.getBrowserProxyPort()));
