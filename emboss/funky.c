@@ -1102,7 +1102,7 @@ AjBool      funky_HeterogenContacts(float dist_thresh, AjPList list_domains, AjP
   ajint res_ctr=0;                      /* Counter for looping through aa_code */
   AjPStr temp=NULL;                     /* Temporary string for holding Hetrogen atom information - diagnostic */
 
-  if((dist_thresh==NULL) || (list_domains==NULL) || (list_pdbscopids==NULL) || (list_heterogens==NULL) || (list_pdbscopids==NULL) || (siz_domains==NULL) || (siz_heterogens==NULL) || (vdw==NULL) || (dbase==NULL)) 
+  if((!dist_thresh) || (list_domains==NULL) || (list_pdbscopids==NULL) || (list_heterogens==NULL) || (list_pdbscopids==NULL) || (siz_domains==NULL) || (siz_heterogens==NULL) || (vdw==NULL) || (dbase==NULL)) 
     {
       ajWarn("funky_HeterogenContacts: Bad arguments passed to function\n");
       return ajFalse;
