@@ -874,6 +874,7 @@ if [ "$AIX" = "y" ]; then
  cp $EMBOSS_DOWNLOAD/ajax/.libs/libajax.so.0 $EMBOSS_INSTALL/lib
  ln -s $EMBOSS_INSTALL/lib/libajax.so.0 $EMBOSS_INSTALL/lib/libajax.so
 else
+ echo "setenv JAVA_OPTS \"-Djava.library.path=$EMBOSS_INSTALL/lib\"" >> tomstart
  echo "setenv LD_LIBRARY_PATH $EMBOSS_INSTALL/lib" >> tomstart
 fi
 
