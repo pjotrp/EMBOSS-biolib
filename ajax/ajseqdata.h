@@ -630,6 +630,7 @@ typedef struct AjSSeq {
 ** @modify ajSeqsetToUpper Converts a sequence set to upper case
 ** @cast ajSeqsetLen Returns the maximum length of a sequence set
 ** @cast ajSeqsetSize Returns the number of sequences in a sequence set
+** @cast ajSeqsetAcc Returns the accession number of a sequence in a set
 ** @cast ajSeqsetName Returns the name of a sequence in a set
 ** @cast ajSeqsetSeq Returns the char* pointer to a sequence in a set
 ** @cast ajSeqsetIsNuc Tests whether the sequence set is nucleotide

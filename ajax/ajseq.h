@@ -186,6 +186,7 @@ AjBool       ajSeqsetIsProt (const AjPSeqset thys);
 AjBool       ajSeqsetIsRna (const AjPSeqset thys);
 ajint        ajSeqsetLen (const AjPSeqset seq);
 const AjPStr ajSeqsetName (const AjPSeqset seq, ajint i);
+const AjPStr ajSeqsetAcc (const AjPSeqset seq, ajint i);
 AjPSeqset    ajSeqsetNew (void);
 void         ajSeqSetRange (AjPSeq seq, ajint ibegin, ajint iend);
 void         ajSeqsetReverse (AjPSeqset thys);

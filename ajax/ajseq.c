@@ -1048,6 +1048,26 @@ const AjPStr ajSeqsetName(const AjPSeqset seq, ajint i)
 }
 
 
+/* @func ajSeqsetAcc **********************************************************
+**
+** Returns the accession number of a sequence in a sequence set
+**
+** @param [r] seq [const AjPSeqset] Sequence set object
+** @param [r] i [ajint] Sequence index
+** @return [const AjPStr] accession number as a string.
+** @category cast [AjPSeqset] Returns the accession number of a sequence in a
+**                set
+** @@
+******************************************************************************/
+
+const AjPStr ajSeqsetAcc(const AjPSeqset seq, ajint i)
+{
+    if(i >= seq->Size)
+	return NULL;
+
+    return seq->Seq[i]->Acc;
+}
+
 
 
 /* @func ajSeqsetWeight *******************************************************
