@@ -230,7 +230,7 @@ void calc_consensus(AjPSeqset seqset,AjPFile outf,AjPMatrix cmpmatrix,
         j=0;
         for(i=0;i<nseqs;i++)
         {
-          if(highindex == ajSeqCvtK(cvt,seqcharptr[i][k]))
+          if(matchingmaxindex == ajSeqCvtK(cvt,seqcharptr[i][k]))
           j++;
         }
         if(j<identity) 
