@@ -157,8 +157,7 @@ typedef struct AjSAtom
     float   npol_rel;    
     float   pol_abs;  
     float   pol_rel;  
-} AjOAtom;
-#define AjPAtom AjOAtom*
+} AjOAtom, *AjPAtom;
 
 
 
@@ -212,8 +211,7 @@ typedef struct AjSChain
     ajint    numStrands;  
     AjPStr   Seq;      
     AjPList  Atoms;    
-} AjOChain;
-#define AjPChain AjOChain*
+} AjOChain, *AjPChain;
 
 
 
@@ -253,9 +251,9 @@ typedef struct AjSChain
 ** 
 ** 
 ** @new     ajPdbNew Default Pdb constructor.
-** @input   ajPdbReadRawNew Pdb constructor from reading pdb format file.
-** @input   ajPdbReadNew Pdb constructor from reading ccf format file.
-** @input   ajPdbReadFirstModelNew Pdb constructor from reading ccf format 
+** @new     ajPdbReadRawNew Pdb constructor from reading pdb format file.
+** @new     ajPdbReadNew Pdb constructor from reading CCF format file.
+** @new     ajPdbReadFirstModelNew Pdb constructor from reading CCF format 
 **          file (retrive data for 1st model only).
 ** @delete  ajPdbDel Default Pdb destructor.
 ** @assign  ajPdbCopy Replicates a Pdb object.
@@ -292,9 +290,9 @@ typedef struct AjSChain
 **          protein.
 ** @output  ajPdbWriteAllRaw Writes a pdb-format file for a protein.
 ** @output  ajPdbWriteDomainRaw Writes a pdb-format file for a SCOP domain.
-** @output  ajPdbWriteAll Writes a ccf-format file for a protein.
-** @output  ajPdbWriteDomain Writes a ccf-format file for a domain).
-** @output  ajPdbWriteSegment Writes a ccf-format file for a segment of a 
+** @output  ajPdbWriteAll Writes a CCF-format file for a protein.
+** @output  ajPdbWriteDomain Writes a CCF-format file for a domain).
+** @output  ajPdbWriteSegment Writes a CCF-format file for a segment of a 
 **          protein.
 ** @cast    embPdbListHeterogens Construct a list of arrays of Atom objects 
 **          for ligands in the current Pdb object (a single array for each
@@ -317,8 +315,7 @@ typedef struct AjSPdb
     AjPChar    gpid;	
     AjPList    Groups;    
     AjPList    Water;     
-}AjOPdb;
-#define AjPPdb AjOPdb*
+}AjOPdb, *AjPPdb;
 
 
 
@@ -358,8 +355,7 @@ typedef struct AjSHetent
     AjPStr   syn;   
     AjPStr   ful;   
     ajint    cnt;   
-} AjOHetent;
-#define AjPHetent AjOHetent*
+} AjOHetent, *AjPHetent;
 
 
 
@@ -383,13 +379,13 @@ typedef struct AjSHetent
 **
 ** 
 ** @new     ajHetNew Default Het constructor.
-** @input   ajHetReadRawNew Het constructor from reading dictionary of 
+** @new     ajHetReadRawNew Het constructor from reading dictionary of 
 **          heterogen groups in raw format.
-** @input   ajHetReadNew Het constructor from reading dictionary of 
-**          heterogen groups in clean format (see documentation for the 
+** @new     ajHetReadNew Het constructor from reading dictionary of 
+**          heterogen groups in embl-like format (see documentation for the 
 **          EMBASSY DOMAINATRIX package).
 ** @delete  ajHetDel Default Het destructor.
-** @output  ajHetWrite Write Het object to file in clean format (see 
+** @output  ajHetWrite Write Het object to file in embl-like format (see 
 **          documentation for the EMBASSY DOMAINATRIX package).
 **
 ** @@
@@ -398,8 +394,7 @@ typedef struct AjSHet
 {
     ajint         n;   
     AjPHetent *entries;
-} AjOHet;
-#define AjPHet AjOHet*
+} AjOHet, *AjPHet;
 
 
 
@@ -440,8 +435,7 @@ typedef struct AjSVdwres
     ajint    N;       
     AjPStr  *Atm;     
     float   *Rad;     
-} AjOVdwres;
-#define AjPVdwres AjOVdwres*
+} AjOVdwres, *AjPVdwres;
 
 
 
@@ -468,7 +462,7 @@ typedef struct AjSVdwres
 **
 ** 
 ** @new     ajVdwallNew Default Vdwall constructor.
-** @input   ajVdwallReadNew Vdwall constructor from reading file in embl-like
+** @new     ajVdwallReadNew Vdwall constructor from reading file in embl-like
 **          format (see documentation for the EMBASSY DOMAINATRIX package).
 ** @delete  ajVdwallDel Default Vdwall destructor.
 **
@@ -478,8 +472,7 @@ typedef struct AjSVdwall
 {
     ajint       N;    
     AjPVdwres  *Res;  
-} AjOVdwall;
-#define AjPVdwall AjOVdwall*
+} AjOVdwall, *AjPVdwall;
 
 
 
@@ -509,11 +502,11 @@ typedef struct AjSVdwall
 ** 
 ** 
 ** @new     ajCmapNew Default Cmap constructor.
-** @input   ajCmapReadINew Cmap constructor from reading file in embl-like
+** @new     ajCmapReadINew Cmap constructor from reading file in CON (embl-like)
 **          format (see documentation for the EMBASSY DOMAINATRIX package).
-** @input   ajCmapReadCNew Cmap constructor from reading file in embl-like
+** @new     ajCmapReadCNew Cmap constructor from reading file in CON (embl-like)
 **          format (see documentation for the EMBASSY DOMAINATRIX package).
-** @input   ajCmapReadNew Cmap constructor from reading file in embl-like
+** @new     ajCmapReadNew Cmap constructor from reading file in CON (embl-like)
 **          format (see documentation for the EMBASSY DOMAINATRIX package).
 ** @delete  ajCmapDel Default Cmap destructor.
 **
@@ -526,8 +519,7 @@ typedef struct AjSCmap
     AjPInt2d  Mat;    
     ajint     Dim;    
     ajint     Ncon;   
-} AjOCmap;
-#define AjPCmap AjOCmap*
+} AjOCmap, *AjPCmap;
 
 
 
@@ -556,16 +548,16 @@ typedef struct AjSCmap
 ** 
 ** 
 ** @new     ajPdbtospNew Default Pdbtosp constructor.
-** @input   ajPdbtospReadAllRawNew Pdbtosp constructor from reading swissprot-
+** @new     ajPdbtospReadAllRawNew Pdbtosp constructor from reading swissprot-
 **          pdb equivalence table in raw format.
-** @input   ajPdbtospReadNew Pdbtosp constructor from reading file in 
+** @new     ajPdbtospReadNew Pdbtosp constructor from reading file in 
 **          embl-like format (see documentation for the EMBASSY DOMAINATRIX
 **          package).
-** @input   ajPdbtospReadCNew Pdbtosp constructor from reading file in 
+** @new     ajPdbtospReadCNew Pdbtosp constructor from reading file in 
 **          embl-like format (see documentation for the EMBASSY DOMAINATRIX
 **          package).
 ** @delete  ajPdbtospDel Default Pdbtosp destructor.
-** @input   ajPdbtospReadAllNew Constructor for list of Pdbtosp objects from
+** @new     ajPdbtospReadAllNew Constructor for list of Pdbtosp objects from
 **          reading file in embl-like format (see documentation for the 
 **          EMBASSY DOMAINATRIX package).
 ** @output  ajPdbtospWrite Write Pdbtosp object to file in embl-like format 
@@ -582,8 +574,7 @@ typedef struct AjSPdbtosp
     ajint    n;  
     AjPStr  *Acc;
     AjPStr  *Spr;
-} AjOPdbtosp;
-#define AjPPdbtosp AjOPdbtosp*
+} AjOPdbtosp, *AjPPdbtosp;
 
 
 
@@ -634,7 +625,7 @@ void         ajVdwresDel(AjPVdwres *ptr);
 /* ======================================================================= */
 AjPAtom      ajAtomNew(void);
 void         ajAtomDel(AjPAtom *ptr);
-AjBool       ajAtomCopy(AjPAtom *to, const AjPAtom from);
+AjBool       ajAtomCopy(AjPAtom *to, AjPAtom from);
 AjBool       ajAtomListCopy(AjPList *to, const AjPList from);
 
 
@@ -656,8 +647,7 @@ void         ajCmapDel(AjPCmap *ptr);
 /* ======================================================================= */
 AjPPdbtosp   ajPdbtospNew(ajint n);
 void         ajPdbtospDel(AjPPdbtosp *ptr);
-ajint        ajPdbtospArrFindPdbid(AjPPdbtosp const *arr,
-				   ajint siz, const AjPStr id);
+ajint        ajPdbtospArrFindPdbid(AjPPdbtosp *arr, ajint siz, const AjPStr id);
 
 
 
@@ -678,17 +668,16 @@ void         ajChainDel(AjPChain *ptr);
 /* ======================================================================= */
 AjPPdb       ajPdbNew(ajint n);
 void         ajPdbDel(AjPPdb *ptr);
-AjBool       ajPdbCopy(AjPPdb *to, const AjPPdb from);
-AjBool       ajPdbChnidToNum(char id, const AjPPdb pdb, ajint *chn);
+AjBool       ajPdbCopy(AjPPdb *to, AjPPdb from);
+AjBool       ajPdbChnidToNum(char id, AjPPdb pdb, ajint *chn);
 
 AjPPdb       ajPdbReadNew(AjPFile inf);
 AjPPdb       ajPdbReadFirstModelNew(AjPFile inf);
-AjBool       ajPdbWriteAll(AjPFile out, const AjPPdb obj);
-AjBool       ajPdbWriteSegment(AjPFile outf, const AjPPdb pdb, 
-				const AjPStr seq, char chn,
-			       const AjPStr domain, 
+AjBool       ajPdbWriteAll(AjPFile out, AjPPdb obj);
+AjBool       ajPdbWriteSegment(AjPFile outf, AjPPdb pdb, 
+				AjPStr seq, char chn, AjPStr domain, 
 				AjPFile errf);
-ajint        ajPdbGetEStrideType(const AjPPdb obj, ajint chn, 
+ajint        ajPdbGetEStrideType(AjPPdb obj, ajint chn, 
 				 AjPStr *EStrideType);
 
 
@@ -699,7 +688,7 @@ ajint        ajPdbGetEStrideType(const AjPPdb obj, ajint chn,
 /* ======================================================================= */
 AjPHet       ajHetReadRawNew(AjPFile inf);
 AjPHet       ajHetReadNew(AjPFile inf);
-AjBool       ajHetWrite(AjPFile outf, const AjPHet ptr, AjBool dogrep);
+AjBool       ajHetWrite(AjPFile outf, AjPHet ptr, AjBool dogrep);
 
 
 
@@ -729,10 +718,10 @@ AjPCmap      ajCmapReadNew(AjPFile inf, ajint mode, ajint chn, ajint mod);
 /* ======================== Pdbtosp object =============================== */
 /* ======================================================================= */
 AjPList      ajPdbtospReadAllRawNew(AjPFile inf);
-AjPPdbtosp   ajPdbtospReadNew(AjPFile inf, const AjPStr entry);
+AjPPdbtosp   ajPdbtospReadNew(AjPFile inf, AjPStr entry);
 AjPPdbtosp   ajPdbtospReadCNew(AjPFile inf, const char *entry);
 AjPList      ajPdbtospReadAllNew(AjPFile inf);
-AjBool       ajPdbtospWrite(AjPFile outf, const AjPList list);
+AjBool       ajPdbtospWrite(AjPFile outf, AjPList list);
 
 
 

@@ -40,22 +40,21 @@ extern "C"
 /* ======================================================================= */
 /* =========================== Pdb object ================================ */
 /* ======================================================================= */
-AjPPdb  ajPdbReadRawNew(AjPFile inf, const AjPStr pdbid, ajint min_chain_size, 
+AjPPdb  ajPdbReadRawNew(AjPFile inf, AjPStr pdbid, ajint min_chain_size, 
 			 ajint max_mismatch, AjBool camask, AjBool camask1, 
 			 AjBool atommask, AjPFile logf);
 
-AjBool  ajPdbWriteAllRaw(ajint mode, const AjPPdb pdb, AjPFile outf, 
+AjBool  ajPdbWriteAllRaw(ajint mode, AjPPdb pdb, AjPFile outf, 
 			  AjPFile errf);
 
-AjBool  ajPdbWriteDomainRaw(ajint mode, const AjPPdb pdb, const AjPScop scop, 
+AjBool  ajPdbWriteDomainRaw(ajint mode, AjPPdb pdb, AjPScop scop, 
 			     AjPFile outf, AjPFile errf); 
 
-AjBool  ajPdbWriteRecordRaw(ajint mode, const AjPPdb pdb, ajint mod, 
+AjBool  ajPdbWriteRecordRaw(ajint mode, AjPPdb pdb, ajint mod, 
 			     ajint chn, AjPFile outf, AjPFile errf); 
 
-AjBool  ajPdbWriteDomainRecordRaw(ajint mode, const AjPPdb pdb, ajint mod,
-				  const AjPScop scop,
-				  AjPFile outf, AjPFile errf);
+AjBool  ajPdbWriteDomainRecordRaw(ajint mode, AjPPdb pdb, ajint mod,
+				   AjPScop scop, AjPFile outf, AjPFile errf);
 
 
 
