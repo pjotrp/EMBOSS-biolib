@@ -33,7 +33,6 @@
 #include <limits.h>
 
 #define FILERECURSLV 20
-
 static ajint fileBuffSize = 2048;
 
 static ajint fileHandle = 0;
@@ -2450,7 +2449,7 @@ AjPFileBuff ajFileBuffNewDW(const AjPStr dir, const AjPStr wildfile)
     AjPList list = NULL;
     AjPStr name  = NULL;
 #ifdef _POSIX_C_SOURCE
-    char buf[sizeof(struct dirent)+NAME_MAX];
+    char buf[sizeof(struct dirent)+MAXNAMLEN];
 #endif
     
     if(ajStrLen(dir))
@@ -2599,7 +2598,7 @@ AjPFile ajFileNewDW(const AjPStr dir, const AjPStr wildfile)
     AjPList list = NULL;
     AjPStr name  = NULL;
 #ifdef _POSIX_C_SOURCE
-    char buf[sizeof(struct dirent)+NAME_MAX];
+    char buf[sizeof(struct dirent)+MAXNAMLEN];
 #endif
     
     if(ajStrLen(dir))
@@ -4125,7 +4124,7 @@ ajint ajFileScan(AjPStr path, AjPStr filename, AjPList *result,
     AjBool flag;
     AjPStr tpath = NULL;
 #ifdef _POSIX_C_SOURCE
-    char buf[sizeof(struct dirent)+NAME_MAX];
+    char buf[sizeof(struct dirent)+MAXNAMLEN];
 #endif
     
     tpath = ajStrNew();
