@@ -440,7 +440,7 @@ FC = 2
 FI paamir.dan
 FP / 1      20 64\.9   70\.0 .* ggtaccgctggccgagcatc *\n/
 FP / 2      21 63\.7   65\.0 .* gtaccgctggccgagcatct *\n/
-FC = 2165
+FC = 2164
 //
 
 ID dan-ex2
@@ -993,7 +993,7 @@ FC = 11
 FI opsd_human.digest
 FP /^    246     248 346\.378    K      E      AEK\s*\n/
 FP /yields 14 fragments/
-FC = 34
+FC = 33
 //
 
 
@@ -1757,8 +1757,10 @@ IN
 FI stderr
 FC = 2
 FI hba_human.matcher
-FZ = 916
-FP /^  43\.4% identity in 145 HBA_HUMAN overlap; score:  264\n/
+FP /^# Identity: +63\/145 \(43\.4%\)/
+FP /^# Score: +264\n/
+FP /^HBA_HU -----GSAQVKGHGKKVADALTNAVAHVDDMPNALSALSDLHAHKLRVDP\n/
+FC = 44
 //
 
 ID megamerger-ex
@@ -1792,10 +1794,10 @@ IN
 FI stderr
 FC = 2
 FI stdout 
-FZ = 16012
-FP /^Score: 795\.00\n/
-FP /^ECLACY +1351 +gtcgcttaagcaatcaatgtcggatgcggcgcgacgcttatccga 1395 +\n/
-FP /^ECLACA +10 +gtcgcttaagcaatcaatgtcggatgcggcgcgacgcttatccga 54 +\n/
+FZ = 1471
+FP /^# Score: 795\.0\n/
+FP /^ECLACY +1342 gtgaatgaagtcgcttaagcaatcaatgtcggatgcggcgcgacgcttat  +1391\n/
+FP /^ECLACA +1 gtgaatgaagtcgcttaagcaatcaatgtcggatgcggcgcgacgcttat +50\n/
 ##
 ## starts with eclacy, ends with eclaca, small overlap
 ##
@@ -1831,10 +1833,10 @@ IN
 FI stderr
 FC = 2
 FI hba_human.needle 
-FZ = 1025
-FP /^Score: 290\.50\n/
-FP / 1 +VHLTPEEKSAVTALWGKV\.\.NVDEVGGEALGRLLVVYPWTQRFFE 43 /
-FP / 45 +HF\.DLS\.\.\.\.\.HGSAQVKGHGKKVADALTNAVAHVDDMPNALSAL 83 /
+FZ = 1311
+FP /^# Score: 290\.5\n/
+FP /HBB_HUMAN +2 +HLTPEEKSAVTALWGKV--NVDEVGGEALGRLLVVYPWTQRFFESFGDLS +49\n/
+FP /HBA_HUMAN +50 -----HGSAQVKGHGKKVADALTNAVAHVDDMPNALSALSDLHAHKLRVD +94\n/
 //
 
 ID newcpgreport-ex
@@ -4423,6 +4425,180 @@ FZ = 6376
 FP /^>HSFOS /
 //
 
+#####################################################
+# Testing NCBI formatted ID lines are correctly split
+#####################################################
+
+ID seqret-ncbi-gb
+AP seqret
+CL ../../data/testids.ncbi:GENBANK test.out -auto
+FI test.out
+FP 1 /^>/
+FP /^>GENBANK G12345 /
+FP /^GENBANK$/
+FZ = 58
+//
+
+ID seqret-ncbi-embl
+AP seqret
+CL ../../data/testids.ncbi:EMBL test.out -auto
+FI test.out
+FP 1 /^>/
+FP /^>EMBL E12345 /
+FP /^EMBL$/
+FZ = 49
+//
+
+ID seqret-ncbi-ddbj
+AP seqret
+CL ../../data/testids.ncbi:DDBJ test.out -auto
+FI test.out
+FP 1 /^>/
+FP /^>DDBJ D12345 /
+FP /^DDB-$/
+FZ = 49
+//
+
+ID seqret-ncbi-pir
+AP seqret
+CL ../../data/testids.ncbi:PIR test.out -auto
+FI test.out
+FP 1 /^>/
+FP /^>PIR PIR/
+FP /^PIR$/
+FZ = 40
+//
+
+ID seqret-ncbi-prf
+AP seqret
+CL ../../data/testids.ncbi:PRF test.out -auto
+FI test.out
+FP 1 /^>/
+FP /^>PRF Protein /
+FP /^PRF$/
+FZ = 58
+//
+
+ID seqret-ncbi-swissprt
+AP seqret
+CL ../../data/testids.ncbi:SWISS_PRT test.out -auto
+FI test.out
+FP 1 /^>/
+FP /^>SWISS_PRT P01234/
+FP /^SWISSPR-T$/
+FZ = 64
+//
+
+ID seqret-ncbi-pdb
+AP seqret
+CL ../../data/testids.ncbi:2PDBA test.out -auto
+FI test.out
+FP 1 /^>/
+FP /^>2PDBA PDB /
+FP /^-PDB-A$/
+FZ = 35
+//
+
+ID seqret-ncbi-pat
+AP seqret
+CL ../../data/testids.ncbi:12345 test.out -auto
+FI test.out
+FP 1 /^>/
+FP /^>12345 Patent/
+FP /^PAT-K$/
+FZ = 39
+//
+
+ID seqret-ncbi-bbs
+AP seqret
+CL ../../data/testids.ncbi:GENINFO test.out -auto
+FI test.out
+FP 1 /^>/
+FP /^>geninfo Geninfo/
+FP /^GENINF-$/
+FZ = 37
+//
+
+ID seqret-ncbi-gnl
+AP seqret
+CL ../../data/testids.ncbi:E1234 test.out -auto
+FI test.out
+FP 1 /^>/
+FP /^>e1234 General/
+FP /^GNLPID$/
+FZ = 68
+//
+
+ID seqret-ncbi-ref1
+AP seqret
+CL ../../data/testids.ncbi:REF_12345 test.out -auto
+FI test.out
+FP 1 /^>/
+FP /^>REF_12345 NP_007225[.]1/
+FP /^REFSEQ$/
+FZ = 54
+//
+
+ID seqret-ncbi-ref2
+AP seqret
+CL ../../data/testids.ncbi:NM_012488.1 test.out -auto
+FI test.out
+FP 1 /^>/
+FP /^>NM_012488[.]1 NM_012488[.]1 /
+FP /^REFSEQ$/
+FZ = 306
+//
+
+ID seqret-ncbi-lcl
+AP seqret
+CL ../../data/testids.ncbi:LOCALID test.out -auto
+FI test.out
+FP 1 /^>/
+FP /^>localid Local /
+FP /^L-CALID$/
+FZ = 53
+//
+
+ID seqret-ncbi-gi
+AP seqret
+CL ../../data/testids.ncbi:123456 test.out -auto
+FI test.out
+FP 1 /^>/
+FP /^>123456 gi prefix/
+FP /^GIPREFIX$/
+FZ = 27
+//
+
+ID seqret-ncbi-gigb
+AP seqret
+CL ../../data/testids.ncbi:GIGENBANK test.out -auto
+FI test.out
+FP 1 /^>/
+FP /^>GIGENBANK G67890 /
+FP /^GIGENBANK$/
+FZ = 52
+//
+
+ID seqret-ncbi-gisp
+AP seqret
+CL ../../data/testids.ncbi:GISWISS_PRT test.out -auto
+FI test.out
+FP 1 /^>/
+FP /^>GISWISS_PRT P01234 /
+FP /^GISWISSPR-T$/
+FZ = 58
+//
+
+ID seqret-ncbi-gnlblast
+AP seqret
+CL ../../data/testids.ncbi:BLAST test.out -auto
+FI test.out
+FP 1 /^>/
+FP /^>blast formatdb /
+FP /^BLAST$/
+FZ = 46
+//
+
 # change example to use globins.msf
 ID showalign-ex
 AP showalign
@@ -4639,11 +4815,14 @@ IN
 FI stderr
 FC = 2
 FI hba_human.stretcher
-FZ = 1073
-FP /^scoring matrix: EBLOSUM62, gap penalties: 12/2\n/
-FP /^43\.2% identity;\s+Global alignment score: 272\n/
-FP /^HBA_HU V-LSPADKTNVKAAWGKVGAHAGEYGAEALERMFLSFPTTKTYFPHF-DLSH-----GSA\n/
-FP /^HBB_HU VHLTPEEKSAVTALWGKV--NVDEVGGEALGRLLVVYPWTQRFFESFGDLSTPDAVMGNP\n/
+FZ = 1472
+FP /^# Matrix: EBLOSUM62\n/
+FP /^# Gap penalty: 12\n/
+FP /^# Extend penalty: 2\n/
+FP /^# Identity: +64/148 \(43\.2%\)\n/
+FP /^# Score: 272\n/
+FP /^HBA_HU V-LSPADKTNVKAAWGKVGAHAGEYGAEALERMFLSFPTTKTYFPHF-DL\n/
+FP /^HBB_HU VHLTPEEKSAVTALWGKV--NVDEVGGEALGRLLVVYPWTQRFFESFGDL\n/
 //
 
 ID stssearch-ex
@@ -4673,11 +4852,11 @@ FZ = 0
 FI supermatcher.error
 FZ = 0
 FI eclac.supermatcher
-FZ = 77788
-FP /^ECLAC           9/
-FP /^Score: 37305\.00/
-FP 5 /^Score: /
-FP /^ECLACY          1486/
+FZ > 73160
+FP /^ECLAC +9 /
+FP /^# Score: 37305\.0/
+FP 5 /^# Score: /
+FP /^ECLACY +1451 [acgt]+ +1492\n/
 //
 
 ID syco-ex
@@ -4989,12 +5168,16 @@ IN
 FI stderr
 FC = 2
 FI hba_human.water 
-FZ = 1021
-FP /^Score: 293.50\n/
-FP /^HBB_HUMAN +3 +LTPEEKSAVTALWGKV\.\.NVDEVGGEALGRLLVVYPWTQRFFESF 45 +\n/
-FP /^HBA_HUMAN +47 +\.DLS\.\.\.\.\.HGSAQVKGHGKKVADALTNAVAHVDDMPNALSALSD 85 +\n/
-FP /^%id = 45.99\s+%similarity = 64.23\n/
-FP /^Overall %id = 43.15\s+Overall %similarity = 60.27\n/
+FZ > 1220
+FP /^# Score: 293.5\n/
+FP /^HBA_HUMAN +2 +LSPADKTNVKAAWGKVGAHAGEYGAEALERMFLSFPTTKTYFPHF-DLS- +49\n/
+FP /^HBB_HUMAN +3 +LTPEEKSAVTALWGKV--NVDEVGGEALGRLLVVYPWTQRFFESFGDLST +50\n/
+FP /^HBA_HUMAN +50 +----HGSAQVKGHGKKVADALTNAVAHVDDMPNALSALSDLHAHKLRVDP +95\n/
+FP /^# Identity: +63/145 \(43\.4%\)\n/
+FP /^# Similarity: +88/145 \(60.7%\)\n/
+## Old scores ... check calculation method
+## FP /^%id = 45.99\s+%similarity = 64.23\n/
+## FP /^Overall %id = 43.15\s+Overall %similarity = 60.27\n/
 //
 
 ID wobble-ex
