@@ -1,4 +1,4 @@
-Mon May 20 13:35:54 BST 2002
+Version 2.4.2
 
         Major new revision of protein structure applications - w/o full documentation.
 
@@ -111,7 +111,13 @@ Mon May 20 13:35:54 BST 2002
 	     funky    -	Reads clean coordinate files and writes file 
 	                of protein-heterogen contact data.
 
-
+	Updated "make check" program entrails. Corrected sequence format
+	reports, added report and alignment formats and database access
+	methods.
+	
+	Added scripts/logreport1.pl to report EMBOSS usage from the
+	logfile. Takes the logfile name on the command line. Reports
+	total use, most active user, and total user count.
 
 Version 2.4.1
 	Fixed error reading multiple databases
