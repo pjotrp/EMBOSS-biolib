@@ -792,7 +792,6 @@ See also
    restover Finds restriction enzymes that produce a specific overhang
    restrict Finds restriction enzyme cleavage sites
    seealso Finds programs sharing group names
-   showalign Display a multiple sequence alignment
    showdb Displays information on the currently available databases
    showfeat Show features of a sequence
    showorf Pretty output of DNA translations

@@ -144,7 +144,6 @@ See also
    equicktandem Finds tandem repeats
    etandem      Looks for tandem repeats in a nucleotide sequence
    palindrome   Looks for inverted repeats in a nucleotide sequence
-   transsplice  Finds trans-splicing RNA structures
    
    palindrome also looks for inverted repeats but is much faster and less
    sensitive, as it looks for near-perfect repeats.
