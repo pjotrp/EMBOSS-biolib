@@ -876,7 +876,7 @@ echo
 getJavaHomePath
 JAVA_HOME=$JAVA_HOME_TMP
 if [ "$JAVA_HOME" != "0" ]; then
-  echo "Enter java (1.3 or above) location [$JAVA_HOME_TMP]: "
+  echo "Enter java (1.4 or above) location [$JAVA_HOME_TMP]: "
   read JAVA_HOME
 
   if [ "$JAVA_HOME" = "" ]; then 
