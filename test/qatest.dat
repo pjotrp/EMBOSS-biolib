@@ -949,6 +949,19 @@ FI outfile.testalignok
 FZ = 0
 //
 
+ID acdc-nodatafile
+AP acdc
+ER 1
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+CL datafile -pepdatafile badname.dat
+IN
+FI stderr
+FZ > 0
+FP 0 /^Warning:/
+FP /Error: Unable to open data file 'badname.dat' for input\n/
+//
+
 ID acdc-listambig1
 AP acdc
 ER 1
@@ -6319,7 +6332,7 @@ AP pepwindowall
 CL ../../data/globins.msf -gxtitle="Base Number" -gytitle="hydropathy"
 IN cps
 FI stderr
-FC = 11
+FC = 2
 FP 0 /Warning:/
 FI stdout
 FZ = 24
@@ -9195,7 +9208,7 @@ PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL -auto -out test.out -osf embl qasrs-id:OLD
 FI stderr
-FZ = 114
+FZ = 116
 FP /^Error: Unable to read sequence 'qasrs-id:OLD'/
 FP 1 /^Error: /
 FP 1 /^Died: /
