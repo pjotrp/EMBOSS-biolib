@@ -1,5 +1,7 @@
 Version 2.5.0
 
+        palindrome now does not print a '|' in an alignment where there
+        is a mismatched pair of bases.
 
 	Added filelist datatype to ACD
 
