@@ -41,7 +41,7 @@ section: required [
 
 
   float: thresh  [
-    required: "Y"
+    standard: "Y"
     information: "Threshold contact distance"
     help: "Contact between two residues is defined as when the van der
            Waals surface of any atom of the first residue comes within the
@@ -67,7 +67,7 @@ section: advanced [
            this distance apart then no futher inter-atomic contacts will be
            checked for for that residue pair . This speeds the calculation up
            considerably."
-    optional: "Y"
+    additional: "Y"
     default: "20.0"
   ]
 
@@ -91,7 +91,7 @@ section: output [
 
 
   outfile: conerrf  [
-    required: "Y"
+    standard: "Y"
     information: "Name of log file for the build"
     default: "interface.log"
     help: "The log file contains messages about any errors arising

@@ -167,7 +167,7 @@ PP EMBOSS_ACDROOT=../../acd
 PP export EMBOSS_ACDROOT
 CL qatest -help
 FI stderr
-FZ = 895
+FZ = 933
 FP 3 / qualifiers:\n/
 FP 4 / qualifiers:/
 FP 1 /^ +\[-asequence\] +sequence +Sequence USA\n/
@@ -185,7 +185,7 @@ PP EMBOSS_ACDROOT=../../acd
 PP export EMBOSS_ACDROOT
 CL qatest -help -verbose
 FI stderr
-FZ = 3878
+FZ = 3995
 FP 26 /   boolean /
 FP  6 /   integer /
 FP 28 /   string /
@@ -1873,6 +1873,8 @@ IN ../../data/paamir.pep
 IN
 IN
 IN
+IN
+IN
 FI stderr
 FC = 2
 FP 0 /Warning: /
@@ -2037,13 +2039,14 @@ FC = 2
 FI aligned.cons
 FZ = 134
 FP /\A>EMBOSS_001\n/
-FP /^acgtacgtacgtacgtacgtnnnnacgtacgtacgtacgtnnnnnnnnnnnnnnnnnnnn\n/
-FP /^nnnnnnnnnnnnnnnnnnnnacgtacgtacgtacgtacgtacgtacgtnnnnacgtacgt\n/
+FP /^ACGTACGTACGTACGTACGTnnnnACGTACGTACGTACGTnnnnnnnnnnnnnnnnnnnn\n/
+FP /^nnnnnnnnnnnnnnnnnnnnACGTACGTACGTACGTACGTACGTACGTnnnnACGTACGT\n/
 //
 
 ID cpgplot-ex
 AP cpgplot
 CL tembl:rnu68037 -graph cps
+IN
 IN
 IN
 IN
@@ -2072,6 +2075,7 @@ FP /^%%Title: PLplot Graph/
 ID cpgplot-old
 AP cpgplot
 CL tembl:rnu68037 -graph data
+IN
 IN
 IN
 IN
@@ -2109,6 +2113,7 @@ FP /^444\.000000\s+1\.000000\n/
 ID cpgreport-ex
 AP cpgreport
 CL tembl:rnu68037
+IN
 IN
 IN
 FI stderr
@@ -4833,6 +4838,8 @@ TI 300
 CL tembl:ap000504 tembl:af129756
 IN
 IN
+IN
+IN
 FI stderr
 FC = 2
 FP 0 /Warning: /
@@ -5774,6 +5781,7 @@ FP 5 /PRODUCT SIZE: +[0-9]+/
 ID equicktandem-ex
 UC The input sequence is the human herpesvirus tandem repeat.
 AP equicktandem
+CL -noorigfile
 IN tembl:hhtetra
 IN
 IN
@@ -5957,6 +5965,7 @@ FP 0 /^Exon/
 ID etandem-ex
 UC The input sequence is the human herpesvirus tandem repeat. 
 AP etandem
+CL -noorigfile
 IN tembl:hhtetra
 IN 6
 IN
@@ -7437,7 +7446,7 @@ FP 0 /Died: /
 FI stdout
 FZ = 19
 FP /^Created pepinfo.ps\n/
-FI pepinfo.out 
+FI opsd_human.pepinfo 
 FZ = 202670
 FP 3 /^\s+4\s+T\s+1\n/
 FP 6 /^\s+4\s+T\s+0\n/
@@ -13249,6 +13258,8 @@ AP wordmatch
 CL tsw:hba_human tsw:hbb_human
 IN
 IN
+IN
+IN
 FI stderr
 FC = 2
 FP 0 /Warning: /
@@ -13283,6 +13294,8 @@ AP wordmatch
 CL tsw:hba_human tsw:hbb_human -aformat pair
 IN
 IN
+IN
+IN
 FI stderr
 FC = 2
 FP 0 /Warning: /
@@ -13305,6 +13318,8 @@ FP /^HBB_HUMAN\twordmatch\tmisc_feature\t63\t67\t1\.000\t/
 ID wordmatch-srspair
 AP wordmatch
 CL tsw:hba_human tsw:hbb_human -aformat srspair
+IN
+IN
 IN
 IN
 FI stderr
@@ -13331,6 +13346,8 @@ AP wordmatch
 CL tsw:hba_human tsw:hbb_human -aformat markx0
 IN
 IN
+IN
+IN
 FI stderr
 FC = 2
 FP 0 /Warning: /
@@ -13353,6 +13370,8 @@ FP /^HBB_HUMAN\twordmatch\tmisc_feature\t63\t67\t1\.000\t/
 ID wordmatch-markx1
 AP wordmatch
 CL tsw:hba_human tsw:hbb_human -aformat markx1
+IN
+IN
 IN
 IN
 FI stderr
@@ -13380,6 +13399,8 @@ AP wordmatch
 CL tsw:hba_human tsw:hbb_human -aformat markx2
 IN
 IN
+IN
+IN
 FI stderr
 FC = 2
 FP 0 /Warning: /
@@ -13403,6 +13424,8 @@ AP wordmatch
 CL tsw:hba_human tsw:hbb_human -aformat markx3
 IN
 IN
+IN
+IN
 FI stderr
 FC = 2
 FP 0 /Warning: /
@@ -13423,6 +13446,8 @@ FP /^HBB_HUMAN\twordmatch\tmisc_feature\t63\t67\t1\.000\t/
 ID wordmatch-markx10
 AP wordmatch
 CL tsw:hba_human tsw:hbb_human -aformat markx10
+IN
+IN
 IN
 IN
 FI stderr

@@ -1,17 +1,18 @@
 application: econsense [
   documentation: "Majority-rule and strict consensus tree"
-  groups: "Phylogeny"
+  groups: "Phylogeny:Consensus"
 ]
 
 infile: infile  [
   parameter: "Y"
   information: "file to read in (New Hampshire standard form)"
-  prompt: "input file"
+  knowntype: "Newick tree"
 ]
 
 outfile: outfile  [
   parameter: "Y"
   default: "econsense.outfile"
+  knowntype: "consense output"
 ]
 
 boolean: trout  [
@@ -21,49 +22,45 @@ boolean: trout  [
 ]
 
 boolean: drawtree  [
-  optional: "Y"
+  additional: "Y"
   default: "Y"
   information: "Draw tree"
 ]
 
 outfile: treefile  [
   parameter: "Y"
-  default: "econsense.treefile"
+  extension: "treefile"
   information: "tree file name"
-  prompt: "tree file"
+  knowntype: "Newick tree"
 ]
 
 boolean: root  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Trees to be treated as Rooted"
-  prompt: "Trees to be treated as Rooted"
 ]
 
 boolean: og  [
-  required: "$(root)"
+  standard: "$(root)"
   information: "Outgroup root"
   default: "N"
 ]
 
 integer: outgnum  [
-  required: "$(og)"
+  standard: "$(og)"
   minimum: "1"
   default: "1"
   information: "number of the outgroup"
-  prompt: "number of the outgroup"
 ]
 
 boolean: progress  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Print indications of progress of run"
-  prompt: "Print indications of progress of run"
 ]
 
 boolean: printsets  [
-  optional: "Y"
+  additional: "Y"
   default: "Y"
   information: "Print out the sets of species"
-  prompt: "Print out the sets of species"
 ]

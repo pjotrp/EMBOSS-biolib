@@ -1,18 +1,18 @@
 application: ednacomp [
   documentation: "DNA compatibility algorithm"
-  groups: "Phylogeny"
+  groups: "Phylogeny:Molecular sequence"
 ]
 
-seqset: msf  [
+seqset: sequence  [
   parameter: "Y"
   type: "gapany"
-  prompt: "Sequences file to be read in"
-  help: "File containing a sequence allignment"
+  help: "File containing a sequence alignment"
 ]
 
 outfile: outfile  [
   parameter: "Y"
   default: "ednacomp.outfile"
+  knowntype: "dnacomp output"
 ]
 
 boolean: trout  [
@@ -22,67 +22,68 @@ boolean: trout  [
 ]
 
 boolean: drawtree  [
-  optional: "Y"
+  additional: "Y"
   default: "Y"
   information: "Draw tree"
 ]
 
 outfile: treefile  [
-  required: "$(trout)"
+  standard: "$(trout)"
   default: "ednacomp.treefile"
   information: "Tree file name"
-  prompt: "Treefile name"
+  knowntype: "Newick tree"
+  nullok: "Y"
 ]
 
 boolean: og  [
-  required: "Y"
+  standard: "Y"
   information: "Outgroup root"
   default: "N"
 ]
 
 integer: outgnum  [
-  required: "$(og)"
+  standard: "$(og)"
   minimum: "1"
   default: "1"
   information: "number of the outgroup"
 ]
 
 boolean: printdata  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Print out the data at start of run"
 ]
 
 boolean: progress  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Print indications of progress of run"
 ]
 
 boolean: stepoutput  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Print steps & compatibility at sites"
 ]
 
 boolean: allnodes  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Print sequences at all nodes of tree"
 ]
 
 boolean: random  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Randomize input order of species"
 ]
 
 integer: randseed  [
-  required: "$(random)"
+  standard: "$(random)"
   information: "Random number seed (must be odd)"
 ]
 
 integer: randtimes  [
-  required: "$(random)"
+  standard: "$(random)"
   information: "Number of times to jumble"
 ]

@@ -13,7 +13,7 @@ endsection: input
 
 section: advanced [ info: "advanced Section" type: page ]
 float: step  [
-  required: "N"
+  standard: "N"
   information: "pH step value"
   minimum: ".01"
   maximum: "1."
@@ -21,13 +21,13 @@ float: step  [
 ]
 
 integer: amino  [
-  required: "N"
+  standard: "N"
   information: "Number of N-termini"
   default: "1"
 ]
 
 bool: termini  [
-  required: "N"
+  standard: "N"
   default: "Y"
   information: "Include charge at N and C terminus"
 ]
@@ -36,23 +36,23 @@ endsection: advanced
 
 section: output [ info: "output Section" type: page ]
 bool: plot  [
-  required: "N"
+  standard: "N"
   default: "N"
   information: "Plot charge vs pH"
 ]
 
 bool: report  [
-  required: "N"
+  standard: "N"
   default: "Y"
   information: "Write results to a file"
 ]
 
 xygraph: graph  [
-  required: "$(plot)"
+  standard: "$(plot)"
 ]
 
 outfile: outfile  [
-  required: "$(report)"
+  standard: "$(report)"
 ]
 
 endsection: output

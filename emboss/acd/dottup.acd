@@ -16,7 +16,7 @@ section: input [
 
   sequence: bsequence [
     parameter: "y"
-    type: "@($(asequence.protein) ? stopprotein : nucleotide)"
+    type: "@($(acdprotein) ? stopprotein : nucleotide)"
   ]
 
 endsection: input
@@ -27,7 +27,7 @@ section: required [
 ]
 
   integer: wordsize  [
-    required: "Y"
+    standard: "Y"
     default: "10"
     minimum: "2"
     information: "Word size"
@@ -47,18 +47,18 @@ section: output [
   ]
 
   graph: graph  [
-    required: "@(!$(stretch))"
+    standard: "@(!$(stretch))"
     gxtitle: "$(bsequence.name)"
     gytitle: "$(asequence.name)"
   ]
 
   xygraph: xygraph  [
-    required: "$(stretch)"
+    standard: "$(stretch)"
   ]
 
   boolean: boxit  [
     default: "Y"
-    optional: "@(!$(stretch))"
+    additional: "@(!$(stretch))"
     information: "Draw a box around dotplot"
   ]
 

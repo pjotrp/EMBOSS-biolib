@@ -152,7 +152,7 @@ AjPFile treef;
   ajNamInit("emboss");
   retval =  ajAcdInitP (pgm, argc, argv,"PHYLIP");
 
-  seqset = ajAcdGetSeqset("msf");
+  seqset = ajAcdGetSeqset("sequence");
 
   howmany = ajAcdGetInt("numgroups");
 

@@ -57,8 +57,8 @@ int main(int argc, char **argv)
 
     embInit("tranalign", argc, argv);
 
-    nucseq    = ajAcdGetSeqall("nsequence");
-    protseq   = ajAcdGetSeqset("psequence");
+    nucseq    = ajAcdGetSeqall("asequence");
+    protseq   = ajAcdGetSeqset("bsequence");
     tablelist = ajAcdGetList("table");
     seqout    = ajAcdGetSeqoutset("outseq");
 

@@ -61,7 +61,7 @@ typedef struct EmbSMdata
 ** @alias SHits
 ** @alias OHits
 **
-** @attr seq [AjPStr] Seqeunce
+** @attr seq [AjPStr] Sequence
 ** @attr name [AjPStr] Name
 ** @attr desc [AjPStr] Description
 ** @attr found [AjPInt] Found data

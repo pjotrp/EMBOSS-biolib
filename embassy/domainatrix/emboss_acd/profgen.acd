@@ -46,7 +46,7 @@ section: required [
 
 
 list: type  [
-  required: "Y"
+  standard: "Y"
   default: "F"
   minimum: "1"
   maximum: "1"
@@ -61,7 +61,7 @@ list: type  [
 variable:  dogap "@($(type) != f)"
 
 integer: threshold  [
-  required: "@($(type)==F)"
+  standard: "@($(type)==F)"
   default: "75"
   minimum: "1"
   maximum: "100"
@@ -69,20 +69,20 @@ integer: threshold  [
 ]
 
 matrixf: datafile  [
-  required: "@($(type)!=F)"
+  standard: "@($(type)!=F)"
   information: "Residue substitution matrix"
   default: "@($(type) = G: Epprofile H: EBLOSUM62 F: EBLOSUM62)"
   expected: "'Epprofile' for Gribskov type, or EBLOSUM62"
 ]
 
 float: open  [
-  required: "$(dogap)"
+  standard: "$(dogap)"
   information: "Gap insertion penalty"
   default: "3.0"
 ]
 
 float: extension  [
-  required: "$(dogap)"
+  standard: "$(dogap)"
   information: "Gap extension penalty"
   default: "0.3"
 ]
@@ -95,38 +95,38 @@ section: output [
 ]
 
   string: smpfpath  [
-    required: "@($(type)==F)"
+    standard: "@($(type)==F)"
     default: "./"
     information: "Location of simple profile files (output)"
   ]
 
   string: smpfextn  [
-    required: "@($(type)==F)"
+    standard: "@($(type)==F)"
     default: ".freq"
     information: "Extention of simple profile files"
   ]
 
   string: gbpfpath  [
-    required: "@($(type)==G)"
+    standard: "@($(type)==G)"
     default: "./"
     information: "Location of Gribskov profile files (output)"
   ]
 
   string: gbpfextn  [
-    required: "@($(type)==G)"
+    standard: "@($(type)==G)"
     default: ".gribs"
     information: "Extension of Gribskov profile files"
   ]
 
 
   string: hnpfpath  [
-    required: "@($(type)==H)"
+    standard: "@($(type)==H)"
     default: "./"
     information: "Location of Henikoff profile files (output)"
   ]
 
   string: hnpfextn  [
-    required: "@($(type)==H)"
+    standard: "@($(type)==H)"
     default: ".henik"
     information: "Extension of Henikoff profile files"
   ]

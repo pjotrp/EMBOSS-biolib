@@ -29,7 +29,7 @@ section: required [
 
 
   boolean: dogrep  [
-    required: "Y"
+    standard: "Y"
     information: "Search a directory of files with keywords?"
     help: "Optionally, hetparse will search a directory of pdb files
            and will count the number of files that each heterogen appears
@@ -40,14 +40,14 @@ section: required [
 
 
   string: path  [
-    required: "$(dogrep)"
+    standard: "$(dogrep)"
     information: "Directory to search with keywords"
     default: "./"
   ]
 
 
   string: extn  [
-    required: "$(dogrep)"
+    standard: "$(dogrep)"
     information: "Extension of files to search in above
                   directory"
     default: ".ent"

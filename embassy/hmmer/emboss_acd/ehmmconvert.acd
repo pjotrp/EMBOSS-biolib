@@ -5,6 +5,8 @@ application: ehmmconvert [
 
 infile: infile  [
   parameter: "Y"
+  information: "HMM file"
+  knowntype: "hmm file"
 ]
 
 list: format  [
@@ -15,7 +17,7 @@ list: format  [
   delimiter: ","
   codedelimiter: ":"
   header: "HMM format"
-  prompt: "Select format"
+  information: "Select format"
   button: "Y"
 ]
 
@@ -31,4 +33,5 @@ boolean: force  [
 
 outfile: outfile  [
   parameter: "Y"
+  knowntype: "hmm file"
 ]

@@ -8,6 +8,8 @@ application: ealistat [
 
 infile: infile  [
   parameter: "Y"
+  knowntype: "alistat input"
+  information: "alignment file"
 ]
 
 boolean: additional  [
@@ -22,4 +24,5 @@ boolean: fast  [
 
 outfile: outfile  [
   parameter: "Y"
+  knowntype: "alistat output"
 ]

@@ -1,6 +1,7 @@
 application: fdrawtree [
   documentation: "Plots an unrooted tree diagram"
-  groups: "Phylogeny:Tree_drawing"
+  groups: "Phylogeny:Tree drawing"
   batch: "no"
 ]
+
 

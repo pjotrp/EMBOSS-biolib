@@ -237,7 +237,7 @@ int main(int argc, char **argv)
 
     ajGraphInit("tmap", argc, argv);
 
-    seqset = ajAcdGetSeqset("msf");
+    seqset = ajAcdGetSeqset("sequences");
     mult   = ajAcdGetGraphxy("graph");
     report = ajAcdGetReport("outfile");
 

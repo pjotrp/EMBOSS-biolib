@@ -36,7 +36,7 @@ section: required [
 
 
   list: mode  [
-    required: "Y"
+    standard: "Y"
     default: "1"
     minimum: "1"
     maximum: "2"
@@ -62,20 +62,20 @@ section: required [
 
 
   float: thresh  [
-    required: "@($(mode)==1)"
+    standard: "@($(mode)==1)"
     information: "The % sequence identity redundancy threshold"
     default: "95.0"
   ]
 
   float: threshlow  [
-    required: "@($(mode)==2)"
+    standard: "@($(mode)==2)"
     information: "The % sequence identity redundancy threshold
                   (lower limit)"
     default: "30.0"
   ]
 
   float: threshup  [
-    required: "@($(mode)==2)"
+    standard: "@($(mode)==2)"
     information: "The % sequence identity redundancy threshold
                   (upper limit)"
     default: "90.0"
@@ -90,7 +90,7 @@ section: advanced [
 ]
 
   matrixf: datafile  [
-    optional: "Y"
+    additional: "Y"
     information: "Residue substitution matrix"
     default: "EBLOSUM62"
   ]
@@ -98,7 +98,7 @@ section: advanced [
 
 
   float: gapopen  [
-    optional: "Y"
+    additional: "Y"
     information: "Gap insertion penalty"
     minimum: "1."
     maximum: "100."
@@ -114,7 +114,7 @@ section: advanced [
 
 
   float: gapextend  [
-    optional: "Y"
+    additional: "Y"
     information: "Gap extension penalty"
     minimum: "0.0"
     maximum: "10."
@@ -149,7 +149,7 @@ section: output [
 
 
   outfile: errf  [
-    required: "Y"
+    standard: "Y"
     information: "Name of log file for the build"
     help: "The log file contains messages about any errors arising
            while scopnr ran."

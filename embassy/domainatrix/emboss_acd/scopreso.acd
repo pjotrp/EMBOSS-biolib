@@ -51,7 +51,7 @@ section: required [
 ]
 
   float: threshold  [
-    required: "Y"
+    standard: "Y"
     information: "Threshold for inclusion (Angstroms)"
     default: "2.8"
   ]

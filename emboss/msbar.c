@@ -88,7 +88,7 @@ int main(int argc, char **argv)
     inframe = ajAcdGetBool("inframe");
     min     = ajAcdGetInt("minimum");
     max     = ajAcdGetInt("maximum");
-    other   = ajAcdGetSeqall("other");
+    other   = ajAcdGetSeqall("othersequence");
 
 
     str = ajStrNew();

@@ -22,47 +22,47 @@ section: advanced [
 ]
 
   boolean: competition  [
-    optional: "Y"
+    additional: "Y"
     information: "Who else is working with this target?"
   ]
 
   boolean: rdtime  [
-    optional: "Y"
+    additional: "Y"
     information: "Total research and development time to bring
                   a drug for this target to market."
   ]
 
   boolean: rdcost  [
-    optional: "Y"
+    additional: "Y"
     information: "Total cost of our research and development
                   effort."
   ]
 
   boolean: animalstudies  [
-    optional: "Y"
+    additional: "Y"
     information: "What will we learn from the animal studies?"
   ]
 
   boolean: clinicaltrials  [
-    optional: "Y"
+    additional: "Y"
     information: "Detail all of the surprises we'll get from
                   the clinical trials."
   ]
 
   boolean: fdaproblems  [
-    optional: "Y"
+    additional: "Y"
     information: "List all of the issues the FDA will raise
                   with our paperwork."
   ]
 
   boolean: fdatime  [
-    optional: "Y"
+    additional: "Y"
     information: "How long will the FDA take to render a
                   decision?"
   ]
 
   boolean: profit  [
-    optional: "Y"
+    additional: "Y"
     information: "How much will we make after the drug gets to
                   market?"
   ]
@@ -81,7 +81,7 @@ section: output [
 
   outfile: outfile  [
     parameter: "Y"
-    standardtype: "crystalball output"
+    knowntype: "crystalball output"
   ]
 
 endsection: output

@@ -22,7 +22,7 @@ section: output [
 ]
 
   graph: graph  [
-    required: "Y"
+    standard: "Y"
   ]
 
 endsection: output

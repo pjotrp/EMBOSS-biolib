@@ -1,52 +1,50 @@
 application: fdnapars [
   documentation: "Discrete character parsimony"
-  groups: "Phylogeny:Discrete_characters"
+  groups: "Phylogeny:Discrete characters"
 ]
 
-seqset: msf  [
+seqset: sequences  [
   parameter: "Y"
   type: "gapany"
-  prompt: "Sequences file to be read in"
-  help: "File containing a sequence allignment"
 ]
 
 outfile: outfile  [
   parameter: "Y"
-  default: "ednapars.outfile"
+  knowntype: "pars output"
 ]
 
 boolean: besttree  [
-  optional: "Y"
+  additional: "Y"
   default: "Y"
   information: "Search for best tree"
 ]
 
 boolean: random  [
-  required: "$(besttree)"
+  standard: "$(besttree)"
   default: "N"
   information: "Randomize input order of species"
 ]
 
 integer: randseed  [
-  required: "$(random)"
+  standard: "$(random)"
   default: "3"
   information: "Random number seed (must be odd)"
 ]
 
 integer: randtimes  [
-  required: "$(random)"
+  standard: "$(random)"
   default: "3"
   information: "How many times to randomise"
 ]
 
 boolean: og  [
-  optional: "Y"
+  additional: "Y"
   information: "Outgroup root"
   default: "N"
 ]
 
 integer: outgnum  [
-  required: "$(og)"
+  standard: "$(og)"
   minimum: "1"
   default: "1"
   information: "number of the outgroup"
@@ -58,38 +56,38 @@ boolean: thresh  [
 ]
 
 float: valthresh  [
-  required: "$(thresh)"
+  standard: "$(thresh)"
   minimum: "1.0"
   default: "1.0"
   information: "threshold value"
 ]
 
 boolean: printdata  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Print out the data at start of run"
 ]
 
 boolean: progress  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Print indications of progress of run"
 ]
 
 boolean: steps  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Print out steps in each site"
 ]
 
 boolean: seqatnodes  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Print sequences at all nodes of tree"
 ]
 
 boolean: drawtree  [
-  optional: "Y"
+  additional: "Y"
   default: "Y"
   information: "Draw tree"
 ]
@@ -101,8 +99,8 @@ boolean: trout  [
 ]
 
 outfile: treefile  [
-  required: "$(trout)"
-  default: "ednapars.treefile"
+  standard: "$(trout)"
+  extension: "treefile"
   information: "Tree file name"
-  prompt: "Output treefile name"
+  knowntype: "Newick tree"
 ]

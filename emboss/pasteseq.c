@@ -45,8 +45,8 @@ int main(int argc, char **argv)
 
     embInit("pasteseq", argc, argv);
 
-    seq       = ajAcdGetSeq("sequence");
-    insertseq = ajAcdGetSeq("insseq");
+    seq       = ajAcdGetSeq("asequence");
+    insertseq = ajAcdGetSeq("bsequence");
     pos       = ajAcdGetInt("pos");
     seqout    = ajAcdGetSeqout("outseq");
 

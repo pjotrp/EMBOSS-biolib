@@ -36,7 +36,7 @@ section: input [
   ]
 
   infile: scopin  [
-    required: "Y"
+    standard: "Y"
     information: "Name of scop families file (input)"
     help: "A 'scop families file' contains sequence relatives (hits)
            for each of a number of different scop families found from

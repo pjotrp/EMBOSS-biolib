@@ -22,7 +22,7 @@ section: advanced [
 ]
 
   string: refseq  [
-    optional: "Y"
+    additional: "Y"
     default: "0"
     information: "The number or the name of the reference
                   sequence"
@@ -36,7 +36,7 @@ section: advanced [
   ]
 
   boolean: bottom  [
-    optional: "Y"
+    additional: "Y"
     default: "Y"
     information: "Display the reference sequence at the bottom"
     help: "If this is true then the reference sequence is displayed at
@@ -44,7 +44,7 @@ section: advanced [
   ]
 
   list: show  [
-    optional: "Y"
+    additional: "Y"
     default: "N"
     minimum: "1"
     maximum: "1"
@@ -59,7 +59,7 @@ section: advanced [
   ]
 
   list: order  [
-    optional: "Y"
+    additional: "Y"
     default: "I"
     minimum: "1"
     maximum: "1"
@@ -72,7 +72,7 @@ section: advanced [
   ]
 
   boolean: similarcase  [
-    optional: "Y"
+    additional: "Y"
     default: "Y"
     information: "Show similar residues in lower-case"
     help: "If this is set True, then when -show is set to
@@ -85,9 +85,9 @@ section: advanced [
   ]
 
   matrix: matrix  [
-    optional: "Y"
+    additional: "Y"
     information: "Similarity scoring Matrix file"
-    protein: "$(sequence.protein)"
+    protein: "$(acdprotein)"
     help: "This is the scoring matrix file used when comparing
            sequences. By default it is the file 'EBLOSUM62' (for proteins) or
            the file 'EDNAFULL' (for nucleic sequences). These files are
@@ -199,7 +199,7 @@ section: advanced [
   ]
 
   boolean: consensus  [
-    optional: "Y"
+    additional: "Y"
     default: "Y"
     information: "Display the consensus line"
     help: "If this is true then the consensus line is displayed."
@@ -214,10 +214,7 @@ section: output [
 
   outfile: outfile  [
     parameter: "Y"
-    extension: "showalign"
-    information: "Output sequence details to a file"
-    help: "If you enter the name of a file here then this program will
-           write the sequence details into that file."
+    knowntype: "showalign output"
   ]
 
 endsection: output

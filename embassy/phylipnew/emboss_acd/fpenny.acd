@@ -1,54 +1,55 @@
 application: fpenny [
   documentation: "Penny algorithm, branch-and-bound to find
                   all most parsimonious trees"
-  groups: "Phylogeny:Discrete_characters"
+  groups: "Phylogeny:Discrete characters"
 ]
 
 infile: infile  [
   parameter: "Y"
-  prompt: "data file"
+  information: "data file"
+  knowntype: "penny input"
 ]
 
 outfile: outfile  [
   parameter: "Y"
-  default: "epenny.outfile"
+  knowntype: "penny output"
 ]
 
 list: method  [
-  required: "y"
+  standard: "y"
   minimum: "1"
   maximum: "1"
   header: "Method"
   values: "Wag:Wagner; Cam:Camin-Sokal; Mix:Mixed;"
-  prompt: "Choose the method to use"
+  information: "Choose the method to use"
   default: "Wag"
 ]
 
 integer: numgroups  [
-  optional: "Y"
+  additional: "Y"
   information: "How many groups of 100 trees"
   default: "1000"
 ]
 
 integer: howoften  [
-  optional: "Y"
+  additional: "Y"
   information: "How often to report, in trees"
   default: "100"
 ]
 
 boolean: simple  [
-  optional: "Y"
+  additional: "Y"
   information: "Branch and bound is simple"
 ]
 
 boolean: og  [
-  optional: "Y"
+  additional: "Y"
   information: "Outgroup root"
   default: "N"
 ]
 
 integer: outgnum  [
-  required: "$(og)"
+  standard: "$(og)"
   minimum: "1"
   default: "1"
   information: "number of the outgroup"
@@ -60,49 +61,49 @@ boolean: thresh  [
 ]
 
 float: valthresh  [
-  required: "$(thresh)"
+  standard: "$(thresh)"
   minimum: "1.0"
   default: "1.0"
   information: "threshold value"
 ]
 
 boolean: multsets  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Analyze multiple data sets"
 ]
 
 integer: datasets  [
-  required: "$(multsets)"
+  standard: "$(multsets)"
   information: "How many data sets"
 ]
 
 boolean: printdata  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Print out the data at start of run"
 ]
 
 boolean: progress  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Print indications of progress of run"
 ]
 
 boolean: steps  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Print out steps in each site"
 ]
 
 boolean: seqatnodes  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Print sequences at all nodes of tree"
 ]
 
 boolean: drawtree  [
-  optional: "Y"
+  additional: "Y"
   default: "Y"
   information: "Draw tree"
 ]
@@ -114,8 +115,8 @@ boolean: trout  [
 ]
 
 outfile: treefile  [
-  required: "$(trout)"
+  standard: "$(trout)"
   default: "epenny.treefile"
   information: "Tree file name"
-  prompt: "Output treefile name"
+  knowntype: "Newick tree"
 ]

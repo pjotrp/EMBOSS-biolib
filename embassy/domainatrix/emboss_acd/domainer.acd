@@ -14,7 +14,7 @@ section: input [
 
 
   infile: scop  [
-    required: "Y"
+    standard: "Y"
     information: "Name of scop classification file (embl format
                   input)"
     help: "A 'scop classification file' contains classification and
@@ -84,7 +84,7 @@ section: output [
     default: ".ent"
   ]
   outfile: cpdberrf  [
-    required: "Y"
+    standard: "Y"
     information: "Name of log file for the embl format build"
     help: "The log file contains messages about any errors arising
            while domainer generated embl format files"
@@ -92,7 +92,7 @@ section: output [
   ]
 
   outfile: pdberrf  [
-    required: "Y"
+    standard: "Y"
     information: "Name of log file for the pdb format build"
     help: "The log file contains messages about any errors arising
            while domainer generated pdb format files"

@@ -13,7 +13,7 @@ section: input [
 
 
   list: mode  [
-    required: "Y"
+    standard: "Y"
     default: "1"
     minimum: "1"
     maximum: "1"
@@ -69,14 +69,14 @@ section: input [
 
 
   boolean: splithit  [
-    required: "Y"
+    standard: "Y"
     information: "Graph 'true' hits as proportion of redundant
                   and non-redundant hits"
     default: "Y"
   ]
 
   integer: rocval  [
-    required: "Y"
+    standard: "Y"
     information: "Number of false hits to consider for ROC
                   curve"
     default: "50"
@@ -91,7 +91,7 @@ section: required [
 
 
   boolean: seedid  [
-    required: "Y"
+    standard: "Y"
     information: "Generate matrix of %id between seed proteins
                   and hits"
     default: "Y"
@@ -106,7 +106,7 @@ section: advanced [
 
 
   infile: alignfile  [
-    required: "$(seedid)"
+    standard: "$(seedid)"
     nullok: "Y"
     information: "Name of scop alignment file for input"
     help: "A 'scop family alignment file' contains a sequence
@@ -120,27 +120,27 @@ section: advanced [
   ]
 
   string: aligndir  [
-    required: "$(seedid)"
+    standard: "$(seedid)"
     information: "Location of sigscan alignment files for
                   input"
     default: "./"
   ]
 
   string: alignextn  [
-    required: "$(seedid)"
+    standard: "$(seedid)"
     information: "Extension of sigscan alignment files"
     default: ".sigalign"
   ]
 
   matrixf: submat  [
-    required: "$(seedid)"
+    standard: "$(seedid)"
     information: "Substitution matrix to be used"
     default: "./EBLOSUM62"
   ]
 
 
   float: gapopen  [
-    required: "$(seedid)"
+    standard: "$(seedid)"
     information: "Gap insertion penalty"
     minimum: "1."
     maximum: "100."
@@ -155,7 +155,7 @@ section: advanced [
   ]
 
   float: gapextn  [
-    required: "$(seedid)"
+    standard: "$(seedid)"
     information: "Gap extension penalty"
     minimum: "0.0"
     maximum: "10."

@@ -8,6 +8,8 @@ application: ehmmcalibrate [
 
 infile: infile  [
   parameter: "Y"
+  information: "HMM file"
+  knowntype: "hmm file"
 ]
 
 integer: cpu  [
@@ -54,4 +56,5 @@ integer: seed  [
 
 outfile: outfile  [
   parameter: "Y"
+  knowntype: "hmmcalibrate output"
 ]

@@ -36,7 +36,7 @@ section: output [
 
   outfile: outfile  [
     parameter: "Y"
-    standardtype: "dreg output"
+    knowntype: "dreg output"
   ]
 
 endsection: output

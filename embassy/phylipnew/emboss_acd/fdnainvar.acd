@@ -1,6 +1,6 @@
 application: fdnainvar [
   documentation: "Nucleic acid sequence Invariants method"
-  groups: "Phylogeny:Molecular_sequence"
+  groups: "Phylogeny:Molecular sequence"
 ]
 
 seqsetall: sequence  [
@@ -9,42 +9,43 @@ seqsetall: sequence  [
 ]
 
 properties: weights [
-  required: "Y"
-  information: "Weights file"
+  standard: "Y"
+  help: "Weights file"
   nullok: "Y"
-  standardtype: "Phylip weights"
+  knowntype: "Phylip weights"
 ]
 
 outfile: outfile  [
   parameter: "Y"
+  knowntype: "dnainvar output"
 ]
 
 boolean: printdata  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Print out the data at start of run"
 ]
 
 boolean: printdotdiff [
-  optional: "Y"
+  additional: "Y"
   default: "Y"
   information: "Use dot-differencing to display data"
 ]
 
 boolean: printpattern [
-  optional: "Y"
+  additional: "Y"
   default: "Y"
   information: "Print out the counts of patterns"
 ]
 
 boolean: printinvariant  [
-  optional: "Y"
+  additional: "Y"
   default: "Y"
   information: "Print out the invariants"
 ]
 
 boolean: progress  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Print indications of progress of run"
 ]

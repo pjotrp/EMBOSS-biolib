@@ -1,4 +1,30 @@
 Version 2.8.0
+	Major (well, obvious impact on ACD authors) ACD change - the
+	"required" attribute is renamed "standard" and the "optional"
+	attribute is renamed "additional". They have exactly the same
+	functions as before. The change is to (hopefully) make their
+	meannig more obvious to those developing ACD parsers and wrappers
+	for EMBOSS. ACD attribute "standardtype" clashed with "standard"
+	and is renamed "knowntype".
+
+	ACD attributes have been added for applications and for all ACD
+	types to make wrappers easier to control. These new attributes are
+	specifically for SoapLab from EBI, and need not have any impact on
+	other wrappers (SoapLab uses ACD to define non-EMBOSS applications
+	and needs extra attributes to define some additional properties).
+	
+	pepinfo now writes to a file with a standard output filename of
+	(sequenceid).pepinfio instead of pepinfo.out
+
+	Completed the standardization of ACD definitions, using "acdvalid"
+	to remove all errors and allowing only selected and hard to avoid
+	warnings to remain. The warnings are for calculated "required" or
+	"optional" definitions (simple true/false relations to another
+	boolean are accepted). In particular: all essential inputs and
+	outputs are parameters, with standardtype defined. Non-essential
+	niputs and outputs have the nullok attribute set. Information
+	strings are defined only where there is no standard prompt.
+
 	The definition of AjPStr and other "pointers to structs" is
 	causing strange problems in specifying "const" for structs that
 	are unchanged by function calls. In summary, it appears (for all
@@ -22,7 +48,7 @@ Version 2.8.0
 	allows the full Perl regular expression syntax, and was very easy
 	to integrate. Regular expressions are used internally for parsing
 	and for manipulating strings such as fiel ane directory names, and
-	also for macthing by programs such as dreg and preg.
+	also for matching by programs such as dreg and preg.
 
 	The previous Henry Spencer library functions are renamed from
 	ajReg to ajHsReg. The Posix version of the Henry Spencer library

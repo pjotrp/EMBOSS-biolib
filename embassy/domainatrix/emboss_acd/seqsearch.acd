@@ -64,19 +64,19 @@ section: required [
 
 
 integer: niter  [
-  required: "Y"
+  standard: "Y"
   information: "Number of PSIBLAST iterations"
   default: "1"
 ]
 
 float: evalue  [
-  required: "Y"
+  standard: "Y"
   information: "Threshold E-value for inclusion in family"
   default: "0.001"
 ]
 
 integer: maxhits  [
-  required: "Y"
+  standard: "Y"
   information: "Maximum number of hits"
   default: "1000"
 ]
@@ -112,7 +112,7 @@ section: output [
   ]
 
   outfile: logf  [
-    required: "Y"
+    standard: "Y"
     information: "Name of log file for the build"
     default: "seqsearch.log"
     help: "The log file contains messages about any errors arising

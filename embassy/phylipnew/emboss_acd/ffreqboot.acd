@@ -1,79 +1,80 @@
 application: fseqboot [
   documentation: "Bootstrapped sequences algorithm"
-  groups: "Phylogeny:Molecular_sequence"
+  groups: "Phylogeny:Molecular sequence"
 ]
 
 infile: datafile  [
   parameter: "Y"
   information: "Input file"
+  knowntype: "freqboot input"
 ]
 
 outfile: outfile  [
   parameter: "Y"
-  default: "eseqboot.outfile"
+  knowntype: "freqboot output"
 ]
 
 boolean: inter  [
-  optional: "Y"
+  additional: "Y"
   information: "Interleaved input"
   default: "N"
 ]
 
 integer: randseed  [
-  required: "Y"
+  standard: "Y"
   default: "3"
   information: "Random number seed (must be odd)"
 ]
 
 list: method  [
-  required: "y"
+  standard: "y"
   minimum: "1"
   maximum: "1"
   header: "Method"
   values: "Seq:Molecular sequences; Mor:Discrete Morphology;
            Res:Restriction Sites; Gen:Gene Frequencies"
-  prompt: "Choose the method"
+  information: "Choose the method"
   default: "Seq"
 ]
 
 boolean: enzymes  [
-  optional: "@($(method) == Res)"
+  additional: "@($(method) == Res)"
   information: "Present in input file"
   default: "N"
 ]
 
 boolean: all  [
-  optional: "@($(method) == Gen)"
+  additional: "@($(method) == Gen)"
   information: "All alleles present at each locus"
   default: "N"
 ]
 
 list: test  [
-  required: "y"
+  standard: "y"
   minimum: "1"
   maximum: "1"
   header: "test"
   values: "Boot:Bootstrap; Jack:Delete-half Jackknife; Perm:Permute
            species for each character"
-  prompt: "Choose test"
+  information: "Choose test"
   default: "Boot"
 ]
 
 integer: reps  [
-  required: "Y"
+  standard: "Y"
   information: "How many replicates"
   minimum: "1"
   default: "100"
 ]
 
 boolean: printdata  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Print out the data at start of run"
 ]
 
 boolean: progress  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Print indications of progress of run"
 ]

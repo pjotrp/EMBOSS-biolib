@@ -109,7 +109,7 @@ int main(int argc, char **argv)
 
     embInit("palindrome", argc, argv);
 
-    seqall  = ajAcdGetSeqall("insequence");
+    seqall  = ajAcdGetSeqall("sequence");
     minLen  = ajAcdGetInt("minpallen");
     maxLen  = ajAcdGetInt("maxpallen");
     maxGap  = ajAcdGetInt("gaplimit");

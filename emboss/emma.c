@@ -50,6 +50,7 @@ int main(int argc, char **argv, char **env)
 
     AjBool only_dend;
     AjBool are_prot;
+    AjBool insist;
     AjBool do_slow;
     AjBool use_dend;
     AjPStr dend_file = NULL;
@@ -121,7 +122,7 @@ int main(int argc, char **argv, char **env)
     only_dend = ajAcdGetBool("onlydend");
     use_dend  = ajAcdGetBool("dend");
     dend_file = ajAcdGetString("dendfile");
-    are_prot  = ajAcdGetBool("prot");
+    insist  = ajAcdGetBool("insist");
 
     slowstr = ajAcdGetList("slowfast");
 
@@ -225,6 +226,8 @@ int main(int argc, char **argv, char **env)
         **  Still to be done
         **  Write out sequences
         */
+	if (!nb)
+	    are_prot  = ajSeqIsProt(seq);
         ajSeqWrite(fil_file, seq);
 	++nb;
     }
@@ -255,7 +258,7 @@ int main(int argc, char **argv, char **env)
 	    ajStrAppC(&cmd, " -align");
 
     /* Set sequence type from information from acd file */
-    if(are_prot)
+    if(are_prot || insist)
         ajStrAppC(&cmd, " -type=protein");
     else
         ajStrAppC(&cmd, " -type=dna");

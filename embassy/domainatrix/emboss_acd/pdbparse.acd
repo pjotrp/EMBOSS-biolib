@@ -35,7 +35,7 @@ section: required [
 ]
 
   boolean: camask  [
-    required: "Y"
+    standard: "Y"
     information: "Mask non-amino acid groups in protein chains
                   that do not contain a C-alpha atom"
     help: "The group will not appear in either the CO or SQ records of
@@ -44,7 +44,7 @@ section: required [
   ]
 
   boolean: camaska  [
-    required: "Y"
+    standard: "Y"
     information: "Mask amino acids in protein chains that do
                   not contain a C-alpha atom"
     help: "The amino acid will not appear in the CO record but will
@@ -54,7 +54,7 @@ section: required [
 
 
   boolean: atommask  [
-    required: "Y"
+    standard: "Y"
     information: "Mask amino acid residues in protein chains
                   with a single atom only"
     help: "The amino acid will appear not appear in the CO record but
@@ -65,7 +65,7 @@ section: required [
 
 
   outfile: errf  [
-    required: "Y"
+    standard: "Y"
     information: "Name of log file for the build"
     help: "The log file may contain messages about inconsistencies or
            errors in the pdb files that were parsed."
@@ -80,7 +80,7 @@ section: advanced [
 ]
 
   boolean: cpdbnaming  [
-    optional: "Y"
+    additional: "Y"
     information: "Use pdbid code to name files"
     help: "The user specifies whether the output files have the same
            names as the input files or whether the pdb identifier code (from
@@ -89,7 +89,7 @@ section: advanced [
   ]
 
   integer: chnsiz  [
-    optional: "Y"
+    additional: "Y"
     information: "Minimum number of amino acid residues in a
                   chain for it to be parsed"
     default: "5"
@@ -97,7 +97,7 @@ section: advanced [
 
 
   integer: maxmis  [
-    optional: "Y"
+    additional: "Y"
     information: "Maximum number of permissible mismatches
                   between the ATOM and SEQRES sequences"
     default: "3"

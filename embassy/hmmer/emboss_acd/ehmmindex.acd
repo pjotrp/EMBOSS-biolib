@@ -8,4 +8,6 @@ application: ehmmindex [
 
 infile: infile  [
   parameter: "Y"
+  information: "HMM database file"
+  knowntype: "hmm database"
 ]

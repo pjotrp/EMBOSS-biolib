@@ -1,38 +1,39 @@
 application: frestml [
   documentation: "Restriction site maximum Likelihood method"
-  groups: "Phylogeny:Molecular_sequence"
+  groups: "Phylogeny:Molecular sequence"
 ]
 
 infile: datafile  [
   parameter: "Y"
   information: "Input file"
+  knowntype: "restml input"
 ]
 
 outfile: outfile  [
   parameter: "Y"
-  default: "erestml.outfile"
+  knowntype: "restml output"
 ]
 
 boolean: besttree  [
-  optional: "Y"
+  additional: "Y"
   default: "Y"
   information: "Search for best tree"
 ]
 
 boolean: allsites  [
-  optional: "Y"
+  additional: "Y"
   default: "Y"
   information: "Are all sites detected"
 ]
 
 boolean: lengths  [
-  optional: "@(!$(besttree))"
+  additional: "@(!$(besttree))"
   default: "N"
   information: "Use lengths from user trees"
 ]
 
 integer: sitelen  [
-  optional: "Y"
+  additional: "Y"
   default: "6"
   minimum: "1"
   maximum: "8"
@@ -40,76 +41,76 @@ integer: sitelen  [
 ]
 
 float: extrap  [
-  optional: "Y"
+  additional: "Y"
   default: "100.0"
   minimum: "0.001"
   information: "Extrapolation factor"
 ]
 
 boolean: global  [
-  optional: "$(besttree)"
+  additional: "$(besttree)"
   default: "N"
   information: "Global rearrangements"
 ]
 
 boolean: random  [
-  required: "$(besttree)"
+  standard: "$(besttree)"
   default: "N"
   information: "Randomize input order of species"
 ]
 
 integer: randseed  [
-  required: "$(random)"
+  standard: "$(random)"
   default: "3"
   information: "Random number seed (must be odd)"
 ]
 
 integer: randtimes  [
-  required: "$(random)"
+  standard: "$(random)"
   default: "3"
   information: "How many times to randomise"
 ]
 
 boolean: og  [
-  optional: "Y"
+  additional: "Y"
   information: "Outgroup root"
   default: "N"
 ]
 
 integer: outgnum  [
-  required: "$(og)"
+  standard: "$(og)"
   minimum: "1"
   default: "1"
   information: "number of the outgroup"
 ]
 
 boolean: multsets  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Analyze multiple data sets"
 ]
 
 integer: datasets  [
-  required: "$(multsets)"
+  standard: "$(multsets)"
   minimum: "2"
   default: "2"
   information: "number of sets"
 ]
 
 boolean: printdata  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Print out the data at start of run"
 ]
 
 boolean: progress  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Print indications of progress of run"
 ]
 
 boolean: drawtree  [
-  optional: "Y"
+  additional: "Y"
   default: "Y"
   information: "Draw tree"
 ]
@@ -121,8 +122,8 @@ boolean: trout  [
 ]
 
 outfile: treefile  [
-  required: "$(trout)"
-  default: "erestml.treefile"
+  standard: "$(trout)"
+  extension: "treefile"
   information: "Tree file name"
-  prompt: "Output treefile name"
+  knowntype: "Newick tree"
 ]

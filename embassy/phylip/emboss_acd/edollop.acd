@@ -1,44 +1,46 @@
 application: edollop [
   documentation: "Dollo and polymorphism parsimony algorithm"
-  groups: "Phylogeny"
+  groups: "Phylogeny:Discrete characters"
 ]
 
 infile: datafile  [
   parameter: "Y"
   information: "data file to be read in"
+  knowntype: "dollop input"
 ]
 
 outfile: outfile  [
   parameter: "Y"
   default: "edollop.outfile"
+  knowntype: "dollop output"
 ]
 
 boolean: besttree  [
-  optional: "Y"
+  additional: "Y"
   default: "Y"
   information: "Search for best tree"
 ]
 
 boolean: random  [
-  optional: "$(besttree)"
+  additional: "$(besttree)"
   default: "N"
   information: "Randomize input order of species"
 ]
 
 integer: randseed  [
-  required: "$(random)"
+  standard: "$(random)"
   default: "3"
   information: "Random number seed (must be odd)"
 ]
 
 integer: randtimes  [
-  required: "$(random)"
+  standard: "$(random)"
   default: "3"
   information: "How many times to randomise"
 ]
 
 boolean: dollo  [
-  optional: "Y"
+  additional: "Y"
   default: "Y"
   information: "Do Dollo (else Polymorphism)"
 ]
@@ -49,57 +51,57 @@ boolean: thresh  [
 ]
 
 float: valthresh  [
-  required: "$(thresh)"
+  standard: "$(thresh)"
   minimum: "1.0"
   default: "1.0"
   information: "threshold value"
 ]
 
 boolean: ancest  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Use ancestral states in input file"
 ]
 
 boolean: multsets  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Analyze multiple data sets"
 ]
 
 integer: datasets  [
-  required: "$(multsets)"
+  standard: "$(multsets)"
   minimum: "2"
   default: "2"
   information: "number of sets"
 ]
 
 boolean: printdata  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Print out the data at start of run"
 ]
 
 boolean: progress  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Print indications of progress of run"
 ]
 
 boolean: steps  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Print out steps in each site"
 ]
 
 boolean: statesatnodes  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Print states at all nodes of tree"
 ]
 
 boolean: drawtree  [
-  optional: "Y"
+  additional: "Y"
   default: "Y"
   information: "Draw tree"
 ]
@@ -111,8 +113,8 @@ boolean: trout  [
 ]
 
 outfile: treefile  [
-  required: "$(trout)"
+  standard: "$(trout)"
   default: "edollop.treefile"
   information: "Tree file name"
-  prompt: "Output treefile name"
+  knowntype: "tree file"
 ]

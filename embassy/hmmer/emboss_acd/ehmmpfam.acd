@@ -6,13 +6,15 @@ application: ehmmpfam [
   cpu: "medium"
 ]
 
-seqall: sequences  [
+seqall: seqall  [
   parameter: "Y"
+  type: "any"
 ]
 
 string: hmmfile  [
   parameter: "Y"
   information: "HMM file"
+  knowntype: "hmm file"
 ]
 
 boolean: nucleic  [
@@ -77,4 +79,5 @@ boolean: xnu  [
 
 outfile: outfile  [
   parameter: "Y"
+  knowntype: "hmmpfam output"
 ]

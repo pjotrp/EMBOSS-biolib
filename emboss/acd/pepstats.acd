@@ -39,7 +39,8 @@ section: output [
 ]
 
   outfile: outfile  [
-    required: "Y"
+    standard: "Y"
+    knowntype: "pepstats output"
   ]
 
 endsection: output

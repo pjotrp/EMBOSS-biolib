@@ -5,46 +5,44 @@ application: fcontrast [
 
 frequencies: infile  [
   parameter: "Y"
-  standardtype: "Continuous character frequency file"
 ]
 
 tree: intreefile  [
   parameter: "Y"
-  information: "input tree file"
-  standardtype: "Newick tree"
+  knowntype: "Newick tree"
 ]
 
 outfile: outfile  [
   parameter: "Y"
-  standardtype: "contrast output"
+  knowntype: "contrast output"
 ]
 
 boolean: lrt  [
-  optional: "Y"
+  additional: "Y"
   default: "Y"
   information: "LRT test of no phylogenetic component, with and without VarA"
 ]
 
 boolean: printcorplusreg  [
-  optional: "Y"
+  additional: "Y"
   default: "Y"
   information: "Print out correlations and regressions"
 ]
 
 boolean: printdata  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Print out the data at start of run"
 ]
 
 boolean: printcontrasts  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Print out contrasts"
 ]
 
 boolean: progress  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Print indications of progress of run"
 ]

@@ -5,12 +5,11 @@ application: fconsense [
 
 tree: intreefile [
   parameter: "Y"
-  information: "file to read in (Newick standard form)"
-  standardtype: "Newick tree"
+  knowntype: "Newick tree"
 ]
 
 list: method [
-  required: "Y"
+  standard: "Y"
   minimum: "1"
   maximum: "1"
   information: "Consensus method"
@@ -22,7 +21,7 @@ list: method [
 
 outfile: outfile [
   parameter: "Y"
-  standardtype: "consense output"
+  knowntype: "consense output"
 ]
 
 boolean: trout [
@@ -32,7 +31,7 @@ boolean: trout [
 ]
 
 boolean: drawtree [
-  optional: "Y"
+  additional: "Y"
   default: "Y"
   information: "Write out trees to tree file"
 ]
@@ -41,40 +40,36 @@ outfile: outtreefile [
   parameter: "Y"
   information: "Tree file name"
   extension: "treefile"
-  standardtype: "Newick tree"
+  knowntype: "Newick tree"
 ]
 
 boolean: root [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Trees to be treated as Rooted"
-  prompt: "Trees to be treated as Rooted"
 ]
 
 boolean: og [
-  required: "$(root)"
+  standard: "$(root)"
   information: "Outgroup root"
   default: "N"
 ]
 
 integer: outgnum [
-  required: "$(og)"
+  standard: "$(og)"
   minimum: "1"
   default: "1"
   information: "number of the outgroup"
-  prompt: "number of the outgroup"
 ]
 
 boolean: progress [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Print indications of progress of run"
-  prompt: "Print indications of progress of run"
 ]
 
 boolean: printsets [
-  optional: "Y"
+  additional: "Y"
   default: "Y"
   information: "Print out the sets of species"
-  prompt: "Print out the sets of species"
 ]

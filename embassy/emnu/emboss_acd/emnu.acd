@@ -5,7 +5,7 @@ application: emnu [
 ]
 
 boolean: morefiles  [
-  optional: "Y"
+  additional: "Y"
   default: "Y"
   information: "Display files created by commands"
   help: "After every command that you run in the menu, either by
@@ -17,7 +17,7 @@ boolean: morefiles  [
 ]
 
 boolean: explode  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Use the expanded group names"
   help: "The groups that EMBOSS applications belong to have two forms,

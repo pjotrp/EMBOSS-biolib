@@ -144,12 +144,12 @@ int main(int argc, char **argv)
 
     embInit("silent", argc, argv);
 
-    seq     = ajAcdGetSeq("seq");
+    seq     = ajAcdGetSeq("sequence");
     enzymes = ajAcdGetString("enzymes");
     sshow   = ajAcdGetBool("sshow");
     tshow   = ajAcdGetBool("tshow");
     allmut  = ajAcdGetBool("allmut");
-    outf    = ajAcdGetOutfile("outf");
+    outf    = ajAcdGetOutfile("outfile");
 
     shits  = ajListNew();
     nshits = ajListNew();

@@ -38,7 +38,7 @@ section: required [
 ]
 
 boolean: outputall [
-  required: "Y"
+  standard: "Y"
   information: "Write multi-chain domains"
   default: "N"
 ]

@@ -1,44 +1,45 @@
 application: fdollop [
   documentation: "Dollo and polymorphism parsimony algorithm"
-  groups: "Phylogeny:Discrete_characters"
+  groups: "Phylogeny:Discrete characters"
 ]
 
 infile: infile  [
   parameter: "Y"
   information: "data file to be read in"
+  knowntype: "dollop input"
 ]
 
 outfile: outfile  [
   parameter: "Y"
-  standardtype: "dollop output"
+  knowntype: "dollop output"
 ]
 
 boolean: besttree  [
-  optional: "Y"
+  additional: "Y"
   default: "Y"
   information: "Search for best tree"
 ]
 
 boolean: random  [
-  optional: "$(besttree)"
+  additional: "$(besttree)"
   default: "N"
   information: "Randomize input order of species"
 ]
 
 integer: randseed  [
-  required: "$(random)"
+  standard: "$(random)"
   default: "3"
   information: "Random number seed (must be odd)"
 ]
 
 integer: randtimes  [
-  required: "$(random)"
+  standard: "$(random)"
   default: "3"
   information: "How many times to randomise"
 ]
 
 boolean: dollo  [
-  optional: "Y"
+  additional: "Y"
   default: "Y"
   information: "Do Dollo (else Polymorphism)"
 ]
@@ -49,69 +50,69 @@ boolean: thresh  [
 ]
 
 float: valthresh  [
-  required: "$(thresh)"
+  standard: "$(thresh)"
   minimum: "1.0"
   default: "1.0"
   information: "threshold value"
 ]
 
 boolean: ancestral  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Use ancestral states in input file"
 ]
 
 boolean: multsets  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Analyze multiple data sets"
 ]
 
 boolean: stepbox  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Print out steps in each character"
 ]
 
 boolean: ancseq [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Print out steps at all nodes of tree"
 ]
 
 integer: datasets  [
-  required: "$(multsets)"
+  standard: "$(multsets)"
   minimum: "2"
   default: "2"
   information: "number of sets"
 ]
 
 boolean: printdata  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Print out the data at start of run"
 ]
 
 boolean: progress  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Print indications of progress of run"
 ]
 
 boolean: steps  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Print out steps in each site"
 ]
 
 boolean: statesatnodes  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Print states at all nodes of tree"
 ]
 
 boolean: drawtree  [
-  optional: "Y"
+  additional: "Y"
   default: "Y"
   information: "Draw tree"
 ]
@@ -123,14 +124,15 @@ boolean: trout  [
 ]
 
 outfile: outtreefile  [
-  required: "$(trout)"
+  standard: "$(trout)"
   extension: "treefile"
   information: "Tree file name"
+  knowntype: "Newick tree"
 ]
 
 list: multiple [
   default: "none"
-  required: "Y"
+  standard: "Y"
   minimum: "1"
   maximum: "1"
   information: "Multiple input option"
@@ -139,7 +141,7 @@ list: multiple [
            weights: Multiple weights"
 ]
 integer: jumble [
-  optional: "Y"
+  additional: "Y"
   information: "Number of times to jumble"
   minimum: "1"
   default: "1"
@@ -162,7 +164,7 @@ individual run)."
 ]
 
 integer: seed [
-  required: "$(jumble)"
+  standard: "$(jumble)"
   information: "Random number seed (must be odd)"
   minimum: 1
   maximum: "32765"
@@ -191,7 +193,7 @@ series of choices, which may not be what you want."
 ]
 
 float: threshold [
-  optional: "Y"
+  additional: "Y"
   information: "Threshold value"
   minimum: "1.0"
   maximum: "$(sequence.size)"

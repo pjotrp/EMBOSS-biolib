@@ -111,7 +111,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[]){
   ajNamInit("emboss");
   retval =  ajAcdInitP (pgm, argc, argv,"PHYLIP");
 
-  seqset = ajAcdGetSeqset("msf");
+  seqset = ajAcdGetSeqset("sequence");
   
   outf = ajAcdGetOutfile("outfile");
   outfile = outf->fp;

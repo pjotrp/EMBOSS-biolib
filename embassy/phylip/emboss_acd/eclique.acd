@@ -1,17 +1,18 @@
 application: eclique [
   documentation: "Largest clique program"
-  groups: "Phylogeny"
+  groups: "Phylogeny:Discrete characters"
 ]
 
 infile: infile  [
   parameter: "Y"
   information: "file to read in"
-  prompt: "phylip file to read in"
+  knowntype: "clique input"
 ]
 
 outfile: outfile  [
   parameter: "Y"
   default: "eclique.outfile"
+  knowntype: "clique output"
 ]
 
 boolean: trout  [
@@ -21,69 +22,64 @@ boolean: trout  [
 ]
 
 boolean: drawtree  [
-  optional: "Y"
+  additional: "Y"
   default: "Y"
   information: "Draw tree"
 ]
 
 outfile: treefile  [
-  parameter: "$(trout)"
+  parameter: "Y"
   default: "eclique.treefile"
   information: "tree file name"
-  prompt: "tree file"
+  knowntype: "tree file"
+  nullok: "Y"
 ]
 
 boolean: ancestral  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Use ancestral states in input file"
-  prompt: "Use ancestral states in input file"
 ]
 
 boolean: minclique  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Use minimum clique size"
-  prompt: "Use minimum clique size"
 ]
 
 integer: cliqminnum  [
-  required: "$(minclique)"
+  standard: "$(minclique)"
   default: "1"
   information: "Minimum clique size"
-  prompt: "Minimum clique size"
 ]
 
 boolean: og  [
-  required: "Y"
+  standard: "Y"
   information: "Outgroup root"
   default: "N"
 ]
 
 integer: outgnum  [
-  required: "$(og)"
+  standard: "$(og)"
   minimum: "1"
   default: "1"
   information: "number of the outgroup"
 ]
 
 boolean: printdata  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Print out the data at start of run"
-  prompt: "Print out the data at start of run"
 ]
 
 boolean: progress  [
-  optional: "Y"
+  additional: "Y"
   default: "Neze"
   information: "Print indications of progress of run"
-  prompt: "Print indications of progress of run"
 ]
 
 boolean: matrixout  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Print out compatibility matrix"
-  prompt: "Print out compatibility matrix"
 ]

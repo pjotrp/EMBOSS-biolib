@@ -1,126 +1,135 @@
 application: fdnamlk [
   documentation: "Estimates phylogenies from nucleic acid
                   sequence Maximum Likelihood with molecular clock"
-  groups: "Phylogeny:Molecular_sequence"
+  groups: "Phylogeny:Molecular sequence"
   gui: "yes"
   batch: "yes"
   cpu: "high"
 ]
 
-seqset: msf  [
+seqset: sequences  [
   parameter: "Y"
   type: "gapany"
-  prompt: "Sequences file to be read in"
   help: "File containing a sequence allignment"
 ]
 
 outfile: outfile  [
   parameter: "Y"
-  default: "ednamlk.outfile"
+  knowntype: "dnamlk output"
 ]
 
 boolean: besttree  [
-  optional: "Y"
+  additional: "Y"
   default: "Y"
   information: "Search for best tree"
 ]
 
 boolean: lengths  [
-  required: "@(!$(besttree))"
+  standard: "@(!$(besttree))"
   default: "N"
   information: "Use lengths from user trees"
 ]
 
 boolean: global  [
-  required: "$(besttree)"
+  standard: "$(besttree)"
   default: "N"
   information: "Global rearrangements"
 ]
 
 boolean: random  [
-  required: "$(besttree)"
+  standard: "$(besttree)"
   default: "N"
   information: "Randomize input order of species"
 ]
 
 integer: randseed  [
-  required: "$(random)"
+  standard: "$(random)"
   default: "3"
   information: "Random number seed (must be odd)"
 ]
 
 integer: randtimes  [
-  required: "$(random)"
+  standard: "$(random)"
   default: "3"
   information: "How many times to randomise"
 ]
 
 float: ttratio  [
-  optional: "Y"
+  additional: "Y"
   default: "2.0"
   information: "Transition/transversion ratio"
-  prompt: "Transition/transversion ratio"] bool: basefrequency [
-           opt: Y def: Y prompt: "Use empirical base frequencies"
+]
+
+bool: basefrequency [
+  additional: "Y"
+  default: "Y"
+  information: "Use empirical base frequencies"
 ]
 
 float: freqa  [
-  required: "@(!$(basefrequency))"
+  standard: "@(!$(basefrequency))"
   minimum: "0.0"
   maximum: "1.0"
   default: "0.25"
-  prompt: "Frequency for A"
+  information: "Frequency for A"
 ]
 
 float: freqc  [
-  required: "@(!$(basefrequency))"
+  standard: "@(!$(basefrequency))"
   minimum: "0.0"
   maximum: "1.0"
   default: "0.25"
-  prompt: "Frequency for C"
+  information: "Frequency for C"
 ]
 
 float: freqg  [
-  required: "@(!$(basefrequency))"
+  standard: "@(!$(basefrequency))"
   minimum: "0.0"
   maximum: "1.0"
   default: "0.25"
-  prompt: "Frequency for G"
+  information: "Frequency for G"
 ]
 
 float: freqt  [
-  required: "@(!$(basefrequency))"
+  standard: "@(!$(basefrequency))"
   minimum: "0.0"
   maximum: "1.0"
   default: "0.25"
-  prompt: "Frequency for T/U"
+  information: "Frequency for T/U"
 ]
 
 boolean: categories  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
-  prompt: "More than one category of substitution rates"
+  information: "More than one category of substitution rates"
 ]
 
 integer: catnum  [
-  required: "$(categories)"
+  standard: "$(categories)"
   minimum: "2"
   maximum: "9"
   default: "2"
-  prompt: "Number of categories of substitution rates"
+  information: "Number of categories of substitution rates"
 ]
 
 string: catvals  [
-  required: "$(categories)"
-  prompt: "space seperated category values"] string: catprob [ req:
-           "$(categories)"
-  prompt: "space seperated probabillity values"] bool: autog [ req:
-           "$(categories)"
+  standard: "$(categories)"
+  information: "space seperated category values"
+]
+
+string: catprob [
+  standard: "$(categories)"
+  information: "space seperated probabillity values"
+]
+
+boolean: autog [
+  standard: "$(categories)"
   default: "N"
-  prompt: "Use Defualt Mean block length of sites"
+  information: "Use Defualt Mean block length of sites"
 ]
 
 float: lambda  [
-  required: "@(!$(autog))"
+  standard: "@(!$(autog))"
   minimum: "1.0"
   default: "1.0"
   information: "Mean block length of sites having the same rate
@@ -128,19 +137,19 @@ float: lambda  [
 ]
 
 boolean: printdata  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Print out the data at start of run"
 ]
 
 boolean: progress  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Print indications of progress of run"
 ]
 
 boolean: drawtree  [
-  optional: "Y"
+  additional: "Y"
   default: "Y"
   information: "Draw tree"
 ]
@@ -152,8 +161,8 @@ boolean: trout  [
 ]
 
 outfile: treefile  [
-  required: "$(trout)"
-  default: "ednamlk.treefile"
+  standard: "$(trout)"
+  extension: "treefile"
   information: "Tree file name"
-  prompt: "Output treefile name"
+  knowntype: "Newick tree"
 ]

@@ -1,16 +1,17 @@
 application: fmix [
   documentation: "Mixed parsimony algorithm"
-  groups: "Phylogeny:Discrete_characters"
+  groups: "Phylogeny:Discrete characters"
 ]
 
 infile: infile  [
   parameter: "Y"
-  prompt: "data file"
+  information: "data file"
+  knowntype: "mix input"
 ]
 
 outfile: outfile  [
   parameter: "Y"
-  default: "emix.outfile"
+  knowntype: "mix output"
 ]
 
 boolean: besttree  [
@@ -20,39 +21,40 @@ boolean: besttree  [
 ]
 
 list: method  [
-  required: "y"
+  standard: "y"
   minimum: "1"
   maximum: "1"
   header: "Method"
-  values: "Wag:Wagner; Cam:Camin-Sokal; Mix:Mixed; prompt: "Choose
+  values: "Wag:Wagner; Cam:Camin-Sokal; Mix:Mixed;"
+  information: "Choose
            the method to use"
   default: "Wag"
 ]
 
 boolean: random  [
-  optional: "$(besttree)"
+  additional: "$(besttree)"
   default: "N"
   information: "Randomize input order of species"
 ]
 
 integer: randseed  [
-  required: "$(random)"
+  standard: "$(random)"
   information: "Random number seed (must be odd)"
 ]
 
 integer: randtimes  [
-  required: "$(random)"
+  standard: "$(random)"
   information: "Number of times to jumble"
 ]
 
 boolean: og  [
-  required: "Y"
+  standard: "Y"
   information: "Outgroup root"
   default: "N"
 ]
 
 integer: outgnum  [
-  required: "$(og)"
+  standard: "$(og)"
   minimum: "1"
   default: "1"
   information: "number of the outgroup"
@@ -64,50 +66,49 @@ boolean: thresh  [
 ]
 
 float: valthresh  [
-  required: "$(thresh)"
+  standard: "$(thresh)"
   minimum: "1.0"
   default: "1.0"
   information: "threshold value"
 ]
 
 boolean: ancestral  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Use ancestral states in input file"
-  prompt: "Use ancestral states in input file"
 ]
 
 boolean: multsets  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Analyze multiple data sets"
 ]
 
 integer: datasets  [
-  required: "$(multsets)"
+  standard: "$(multsets)"
   information: "How many data sets"
 ]
 
 boolean: printdata  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Print out the data at start of run"
 ]
 
 boolean: progress  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Print indications of progress of run"
 ]
 
 boolean: statesatnodes  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Print states at all nodes of tree"
 ]
 
 boolean: steps  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Print out steps in each character"
 ]
@@ -119,14 +120,14 @@ boolean: trout  [
 ]
 
 boolean: drawtree  [
-  optional: "Y"
+  additional: "Y"
   default: "Y"
   information: "Draw tree"
 ]
 
 outfile: treefile  [
-  required: "$(trout)"
+  standard: "$(trout)"
   default: "emix.treefile"
   information: "Tree file name"
-  prompt: "Treefile name"
+  knowntype: "Newick tree"
 ]

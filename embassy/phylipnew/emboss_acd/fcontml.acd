@@ -1,7 +1,7 @@
 application: fcontml [
   documentation: "Continuous character Maximum Likelihood
                   method"
-  groups: "Phylogeny:Continuous_characters"
+  groups: "Phylogeny:Continuous characters"
   gui: "yes"
   batch: "yes"
   cpu: "high"
@@ -9,24 +9,22 @@ application: fcontml [
 
 frequencies: infile [
   parameter: "Y"
-  information: "input file"
-  standardtype: "phylip input"
+  knowntype: "contml input"
 ]
 
 tree: intreefile [
   parameter: "Y"
-  information: "input tree file"
-  standardtype: "Newick tree"
+  knowntype: "Newick tree"
   nullok: "Y"
 ]
 
 outfile: outfile  [
   parameter: "Y"
-  standardtype: "fcontml output"
+  knowntype: "contml output"
 ]
 
 integer: jumble [
-  optional: "Y"
+  additional: "Y"
   information: "Number of times to jumble"
   minimum: "1"
   default: "1"
@@ -34,7 +32,7 @@ integer: jumble [
 ]
 
 integer: seed [
-  required: "$(jumble)"
+  standard: "$(jumble)"
   information: "Random number seed (must be odd)"
   minimum: 1
   maximum: "32765"
@@ -42,7 +40,7 @@ integer: seed [
 ]
 
 integer: outgroup [
-  optional: "Y"
+  additional: "Y"
   information: "Number of the outgroup"
   default: "0"
   minimum: "0"
@@ -51,25 +49,26 @@ integer: outgroup [
  ]
 
 boolean: printdata  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Print out the data at start of run"
 ]
 
 boolean: progress  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Print indications of progress of run"
 ]
 
 boolean: drawtree  [
-  optional: "Y"
+  additional: "Y"
   default: "Y"
   information: "Draw tree"
 ]
 
 outfile: outtreefile  [
-  required: "Y"
+  standard: "Y"
   extension: "treefile"
   information: "Tree file name"
+  knowntype: "Newick tree"
 ]

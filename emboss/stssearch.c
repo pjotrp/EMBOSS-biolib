@@ -85,9 +85,9 @@ int main(int argc, char **argv)
 
     embInit("stssearch", argc, argv);
 
-    primfile = ajAcdGetInfile("primers");
-    out      = ajAcdGetOutfile("out");
-    seqall   = ajAcdGetSeqall("sequences");
+    primfile = ajAcdGetInfile("primersfile");
+    out      = ajAcdGetOutfile("outfile");
+    seqall   = ajAcdGetSeqall("seqall");
 
     while(ajFileReadLine(primfile, &rdline))
     {

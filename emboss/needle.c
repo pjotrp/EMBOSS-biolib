@@ -84,7 +84,7 @@ int main(int argc, char **argv)
     matrix    = ajAcdGetMatrixf("datafile");
     a         = ajAcdGetSeq("asequence");
     ajSeqTrim(a);
-    seqall    = ajAcdGetSeqall("seqall");
+    seqall    = ajAcdGetSeqall("bsequence");
     gapopen   = ajAcdGetFloat("gapopen");
     gapextend = ajAcdGetFloat("gapextend");
     dobrief   = ajAcdGetBool("brief");

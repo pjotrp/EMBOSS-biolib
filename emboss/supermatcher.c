@@ -140,8 +140,8 @@ int main(int argc, char **argv)
     embInit("supermatcher", argc, argv);
 
     matrix    = ajAcdGetMatrixf("datafile");
-    seq1      = ajAcdGetSeqall("seqa");
-    seq2      = ajAcdGetSeqset("seqb");
+    seq1      = ajAcdGetSeqall("asequence");
+    seq2      = ajAcdGetSeqset("bsequence");
     gapopen   = ajAcdGetFloat("gapopen");
     gapextend = ajAcdGetFloat("gapextend");
     wordlen   = ajAcdGetInt("wordlen");

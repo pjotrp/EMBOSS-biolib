@@ -29,7 +29,7 @@ section: output [
   ]
 
   string: squares  [
-    optional: "@(!$(amphipathic))"
+    additional: "@(!$(amphipathic))"
     default: "ILVM"
     information: "Mark as squares"
     help: "By default the aliphatic residues ILVM are marked with
@@ -37,14 +37,14 @@ section: output [
   ]
 
   string: diamonds  [
-    optional: "@(!$(amphipathic))"
+    additional: "@(!$(amphipathic))"
     default: "DENQST"
     information: "Mark as diamonds"
     help: "By default the residues DENQST are marked with diamonds."
   ]
 
   string: octags  [
-    optional: "@(!$(amphipathic))"
+    additional: "@(!$(amphipathic))"
     default: "HKR"
     information: "Mark as octagons"
     help: "By default the positively charged residues HKR are marked
@@ -52,7 +52,7 @@ section: output [
   ]
 
   graph: graph  [
-    required: "Y"
+    standard: "Y"
   ]
 
 endsection: output

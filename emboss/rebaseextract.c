@@ -92,8 +92,8 @@ int main(int argc, char **argv)
     
     embInit("rebaseextract",argc,argv);
 
-    inf   = ajAcdGetInfile("inf");
-    infp  = ajAcdGetInfile("proto");
+    inf   = ajAcdGetInfile("infile");
+    infp  = ajAcdGetInfile("protofile");
     doequ = ajAcdGetBool("equivalences");
     
 

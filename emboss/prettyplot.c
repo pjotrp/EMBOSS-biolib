@@ -206,7 +206,7 @@ int main(int argc, char **argv)
 
     ajGraphInit("prettyplot", argc, argv);
 
-    seqset   = ajAcdGetSeqset("msf");
+    seqset   = ajAcdGetSeqset("sequences");
     numres   = ajAcdGetInt("residuesperline");
     resbreak = ajAcdGetInt("resbreak");
 

@@ -1,55 +1,57 @@
 application: egendist [
   documentation: "Genetic Distance Matrix program"
-  groups: "Phylogeny"
+  groups: "Phylogeny:Gene frequencies"
 ]
 
 infile: infile  [
   parameter: "Y"
-  prompt: "data file"
+  information: "data file"
+  knowntype: "gendist input"
 ]
 
 outfile: outfile  [
   parameter: "Y"
   default: "egendist.outfile"
+  knowntype: "gendist output"
 ]
 
 boolean: all  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Input file contains all alleles at each locus
                 (else one)"
 ]
 
 list: method  [
-  required: "y"
+  standard: "y"
   minimum: "1"
   maximum: "1"
   header: "Distance methods"
   values: "Nei:Nei genetic distance; Cav:Cavalli-Sforza chord
-           measur; Rey:Reynolds genetic distance; info: "Choose the method to
-           use"
+           measure; Rey:Reynolds genetic distance;"
+  information: "Choose the method to use"
   default: "Nei"
 ]
 
 boolean: lowertriangle  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Lower-triangular (else Square)"
 ]
 
 boolean: multsets  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Analyze multiple data sets"
 ]
 
 integer: datasets  [
-  required: "$(multsets)"
+  standard: "$(multsets)"
   information: "How many data sets"
 ]
 
 boolean: progress  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Print indications of progress of run"
 ]

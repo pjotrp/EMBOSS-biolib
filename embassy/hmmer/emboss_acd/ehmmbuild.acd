@@ -8,6 +8,7 @@ application: ehmmbuild [
 
 seqset: sequences  [
   parameter: "Y"
+  type: "any"
 ]
 
 list: strategy  [
@@ -18,7 +19,7 @@ list: strategy  [
   delimiter: ","
   codedelimiter: ":"
   header: "Local/Global preference"
-  prompt: "Select preference"
+  information: "Select preference"
   button: "Y"
 ]
 
@@ -75,7 +76,7 @@ list: cstrategy  [
   delimiter: ","
   codedelimiter: ":"
   header: "Fast or by hand"
-  prompt: "Select strategy"
+  information: "Select strategy"
   button: "Y"
 ]
 
@@ -148,10 +149,11 @@ list: weighting  [
   delimiter: ","
   codedelimiter: ":"
   header: "Weighting method"
-  prompt: "Select weighting"
+  information: "Select weighting"
   button: "Y"
 ]
 
 outfile: outfile  [
   parameter: "Y"
+  knowntype: "hmm file"
 ]

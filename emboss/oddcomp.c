@@ -80,7 +80,7 @@ int main(int argc, char **argv)
     seqall   = ajAcdGetSeqall("sequence");
     window   = ajAcdGetInt("window");
     outfile  = ajAcdGetOutfile("outfile");
-    compdata = ajAcdGetInfile("compdata");
+    compdata = ajAcdGetInfile("compdatafile");
     ignorebz = ajAcdGetBool("ignorebz");
 
     /* number of overlapping words in a window */

@@ -78,7 +78,7 @@ int main(int argc, char **argv)
     thresh = ajAcdGetInt("threshold");
     imtx   = ajAcdGetMatrixf("datafile");
     type   = ajAcdGetList("type");
-    outf   = ajAcdGetOutfile("outf");
+    outf   = ajAcdGetOutfile("outfile");
 
     gapopen   = ajAcdGetFloat("open");
     gapextend = ajAcdGetFloat("extension");

@@ -37,7 +37,7 @@ string: cpdb  [
   ]
 
   infile: vdwf  [
-    required: "Y"
+    standard: "Y"
     information: "Name of data file with van der Waals radii"
     default: "Evdw.dat"
   ]
@@ -51,7 +51,7 @@ section: required [
 ]
 
   float: thresh  [
-    required: "Y"
+    standard: "Y"
     information: "Threshold contact distance"
     help: "Contact between two residues is defined as when the van der
            Waals surface of any atom of the first residue comes within the
@@ -72,7 +72,7 @@ section: advanced [
 
 
   float: ignore  [
-    optional: "Y"
+    additional: "Y"
     information: "Threshold ignore distance"
     help: "If any two atoms from two different residues are at least
            this distance apart then no futher inter-atomic contacts will be
@@ -108,7 +108,7 @@ string: conextn  [
 ]
 
   outfile: conerrf  [
-    required: "Y"
+    standard: "Y"
     information: "Name of log file for the build"
     default: "contacts.log"
     help: "The log file contains messages about any errors arising

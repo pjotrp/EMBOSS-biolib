@@ -1,7 +1,7 @@
 application: econtml [
   documentation: "Continuous character Maximum Likelihood
                   method"
-  groups: "Phylogeny"
+  groups: "Phylogeny:Continuous characters"
   gui: "yes"
   batch: "yes"
   cpu: "high"
@@ -10,96 +10,97 @@ application: econtml [
 infile: infile  [
   parameter: "Y"
   information: "input file"
-  prompt: "input file"
+  knowntype: "contml input"
 ]
 
 outfile: outfile  [
   parameter: "Y"
   default: "econtml.outfile"
+  knowntype: "contml output"
 ]
 
 boolean: besttree  [
-  optional: "Y"
+  additional: "Y"
   default: "Y"
   information: "Search for best tree"
 ]
 
 boolean: lengths  [
-  required: "@(!$(besttree))"
+  standard: "@(!$(besttree))"
   default: "N"
   information: "Use lengths from user trees"
 ]
 
 boolean: global  [
-  required: "$(besttree)"
+  standard: "$(besttree)"
   default: "N"
   information: "Global rearrangements"
 ]
 
 boolean: random  [
-  required: "$(besttree)"
+  standard: "$(besttree)"
   default: "N"
   information: "Randomize input order of species"
 ]
 
 integer: randseed  [
-  required: "$(random)"
+  standard: "$(random)"
   default: "3"
   information: "Random number seed (must be odd)"
 ]
 
 boolean: continuous  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "continuous characters (else Gene frequencies)"
 ]
 
 boolean: all  [
-  required: "@(!$(continuous))"
+  standard: "@(!$(continuous))"
   default: "N"
   information: "Input file has all alleles at each locus"
 ]
 
 boolean: og  [
-  optional: "Y"
+  additional: "Y"
   information: "Outgroup root"
   default: "N"
 ]
 
 integer: outgnum  [
-  required: "$(og)"
+  standard: "$(og)"
   minimum: "1"
   default: "1"
   information: "number of the outgroup"
 ]
 
 boolean: multsets  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Analyze multiple data sets"
 ]
 
 integer: datasets  [
-  required: "$(multsets)"
+  standard: "$(multsets)"
   minimum: "1"
   default: "1"
   information: "How many data sets"
 ]
 
 boolean: printdata  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Print out the data at start of run"
 ]
 
 boolean: progress  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Print indications of progress of run"
 ]
 
 boolean: drawtree  [
-  optional: "Y"
+  additional: "Y"
   default: "Y"
   information: "Draw tree"
 ]
@@ -111,8 +112,8 @@ boolean: trout  [
 ]
 
 outfile: treefile  [
-  required: "$(trout)"
+  standard: "$(trout)"
   default: "econtml.treefile"
   information: "Tree file name"
-  prompt: "Output treefile name"
+  knowntype: "Newick tree"
 ]

@@ -69,7 +69,7 @@ int main(int argc, char **argv)
 
     ajGraphInit("pepwindowall", argc, argv);
 
-    seqset   = ajAcdGetSeqset("msf");
+    seqset   = ajAcdGetSeqset("sequences");
     mult     = ajAcdGetGraphxy("graph");
     datafile = ajAcdGetDatafile("datafile");
     llen     = ajAcdGetInt("length");

@@ -9,9 +9,9 @@ section: output [
 ]
 
   outfile: outfile  [
-    optional: "Y"
+    additional: "Y"
     default: "stdout"
-    standardtype: "embossversion output"
+    knowntype: "embossversion output"
   ]
 
 endsection: output

@@ -142,7 +142,7 @@ int main(int argc, char **argv)
     aa_hydro = ajListNew();
 
     /* Get parameters */
-    inseq         = ajAcdGetSeq("inseq");
+    inseq         = ajAcdGetSeq("sequence");
     seq_begin     = ajSeqBegin(inseq);
     seq_end       = ajSeqEnd(inseq);
     seq_start     = seq_begin - 1;

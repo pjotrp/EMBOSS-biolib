@@ -1,33 +1,31 @@
 application: fprotdist [
   documentation: "Protein distance algorithm"
-  groups: "Phylogeny:Molecular_sequence"
+  groups: "Phylogeny:Molecular sequence"
 ]
 
-seqset: msf  [
+seqset: sequences  [
   parameter: "Y"
   type: "gapany"
-  prompt: "Sequences file to be read in"
-  help: "File containing sequences"
 ]
 
 outfile: outfile  [
   parameter: "Y"
-  default: "eprotdist.outfile"
+  knowntype: "protdist output"
 ]
 
 list: method  [
-  required: "y"
+  standard: "y"
   minimum: "1"
   maximum: "1"
   header: "Method"
   values: "Pam:Dayhoff PAM matrix; Kim:Kimura formula;
            Cat:Categories model"
-  prompt: "Choose the method to use"
+  information: "Choose the method to use"
   default: "Pam"
 ]
 
 list: categ  [
-  optional: "@($(method) == Cat)"
+  additional: "@($(method) == Cat)"
   minimum: "1"
   maximum: "1"
   header: "categorization of amino acids\n all have groups: (Glu Gln
@@ -36,23 +34,23 @@ list: categ  [
            Ser Thr Pro); C:Chemical (Cys Met), (Val Leu Ileu Gly Ala Ser
            Thr), (Pro); H:Hall (Cys), (Met Val Leu Ileu), (Gly Ala Ser Thr),
            (Pro)"
-  prompt: "Choose the categorie to use"
+  information: "Choose the categorie to use"
   default: "G"
 ]
 
 list: gencode  [
-  optional: "@($(method) == Cat)"
+  additional: "@($(method) == Cat)"
   minimum: "1"
   maximum: "1"
   header: "Which genetic code"
   values: "U:Universal; M:Mitochondrial; V:Vertebrate mitochondrial;
            F:Fly mitochondrial; Y:Yeast mitochondrial"
-  prompt: "Which genetic code"
+  information: "Which genetic code"
   default: "U"
 ]
 
 float: prob  [
-  optional: "@($(method) == Cat)"
+  additional: "@($(method) == Cat)"
   minimum: "0.0"
   maximum: "1.0"
   default: "0.457"
@@ -60,58 +58,58 @@ float: prob  [
 ]
 
 float: tranrate  [
-  optional: "@($(method) == Cat)"
+  additional: "@($(method) == Cat)"
   minimum: "0.0"
   default: "2.0"
   information: "Transition/transversion ratio"
 ]
 
 boolean: basefrequency  [
-  optional: "@($(method) == Cat)"
+  additional: "@($(method) == Cat)"
   default: "Y"
-  prompt: "Use empirical base frequencies"
+  information: "Use empirical base frequencies"
 ]
 
 float: freqa  [
-  optional: "@(!$(basefrequency))"
+  additional: "@(!$(basefrequency))"
   minimum: "0.0"
   maximum: "1.0"
   default: "0.25"
-  prompt: "Frequency for A"
+  information: "Frequency for A"
 ]
 
 float: freqc  [
-  optional: "@(!$(basefrequency))"
+  additional: "@(!$(basefrequency))"
   minimum: "0.0"
   maximum: "1.0"
   default: "0.25"
-  prompt: "Frequency for C"
+  information: "Frequency for C"
 ]
 
 float: freqg  [
-  optional: "@(!$(basefrequency))"
+  additional: "@(!$(basefrequency))"
   minimum: "0.0"
   maximum: "1.0"
   default: "0.25"
-  prompt: "Frequency for G"
+  information: "Frequency for G"
 ]
 
 float: freqt  [
-  optional: "@(!$(basefrequency))"
+  additional: "@(!$(basefrequency))"
   minimum: "0.0"
   maximum: "1.0"
   default: "0.25"
-  prompt: "Frequency for T/U"
+  information: "Frequency for T/U"
 ]
 
 boolean: printdata  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Print out the data at start of run"
 ]
 
 boolean: progress  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Print indications of progress of run"
 ]

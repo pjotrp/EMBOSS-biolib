@@ -152,11 +152,11 @@ int main(int argc, char **argv)
 
     embInit("recoder", argc, argv);
 
-    seq     = ajAcdGetSeq("seq");          /* sequence to investigate */
+    seq     = ajAcdGetSeq("sequence");          /* sequence to investigate */
     enzymes = ajAcdGetString("enzymes");   /* enzyme list             */
     sshow   = ajAcdGetBool("sshow");       /* display seq             */
     tshow   = ajAcdGetBool("tshow");       /* display translated seq  */
-    outf    = ajAcdGetOutfile("outf");     /* output filename         */
+    outf    = ajAcdGetOutfile("outfile");     /* output filename         */
 
 
     RStotal=recoder_readRE(&relist,enzymes);      /* read in RE info */

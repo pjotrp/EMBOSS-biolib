@@ -1,6 +1,6 @@
 application: fdrawgram [
   documentation: "Plots a cladogram- or phenogram-like rooted tree diagram"
-  groups: "Phylogeny:Tree_drawing"
+  groups: "Phylogeny:Tree drawing"
   batch: "no"
 ]
 

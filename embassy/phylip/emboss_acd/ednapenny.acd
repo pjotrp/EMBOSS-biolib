@@ -1,45 +1,45 @@
 application: ednapenny [
   documentation: "Penny algorithm for DNA"
-  groups: "Phylogeny"
+  groups: "Phylogeny:Molecular sequence"
 ]
 
-seqset: msf  [
+seqset: sequence  [
   parameter: "Y"
   type: "gapany"
-  prompt: "Sequences file to be read in"
   help: "File containing a sequence"
 ]
 
 outfile: outfile  [
   parameter: "Y"
   default: "ednapenny.outfile"
+  knowntype: "dnapenny output"
 ]
 
 integer: numgroups  [
-  optional: "Y"
+  additional: "Y"
   information: "How many groups of 100 trees"
   default: "1000"
 ]
 
 integer: howoften  [
-  optional: "Y"
+  additional: "Y"
   information: "How often to report, in trees"
   default: "100"
 ]
 
 boolean: simple  [
-  optional: "Y"
+  additional: "Y"
   information: "Branch and bound is simple"
 ]
 
 boolean: og  [
-  optional: "Y"
+  additional: "Y"
   information: "Outgroup root"
   default: "N"
 ]
 
 integer: outgnum  [
-  required: "$(og)"
+  standard: "$(og)"
   minimum: "1"
   default: "1"
   information: "number of the outgroup"
@@ -51,38 +51,38 @@ boolean: thresh  [
 ]
 
 float: valthresh  [
-  required: "$(thresh)"
+  standard: "$(thresh)"
   minimum: "1.0"
   default: "1.0"
   information: "threshold value"
 ]
 
 boolean: printdata  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Print out the data at start of run"
 ]
 
 boolean: progress  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Print indications of progress of run"
 ]
 
 boolean: steps  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Print out steps in each site"
 ]
 
 boolean: seqatnodes  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Print sequences at all nodes of tree"
 ]
 
 boolean: drawtree  [
-  optional: "Y"
+  additional: "Y"
   default: "Y"
   information: "Draw tree"
 ]
@@ -94,8 +94,8 @@ boolean: trout  [
 ]
 
 outfile: treefile  [
-  required: "$(trout)"
+  standard: "$(trout)"
   default: "ednapenny.treefile"
   information: "Tree file name"
-  prompt: "Output treefile name"
+  knowntype: "tree file"
 ]

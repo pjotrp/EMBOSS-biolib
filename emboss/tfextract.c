@@ -53,7 +53,7 @@ int main(int argc, char **argv)
 
     embInit("tfextract",argc,argv);
 
-    inf = ajAcdGetInfile("inf");
+    inf = ajAcdGetInfile("infile");
 
     pfname = ajStrNewC("tffungi");
     ajFileDataNewWrite(pfname,&fout);

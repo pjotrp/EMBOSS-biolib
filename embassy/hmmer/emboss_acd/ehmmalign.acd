@@ -9,10 +9,12 @@ application: ehmmalign [
 infile: hmmfile  [
   parameter: "Y"
   information: "HMM file"
+  knowntype: "hmm file"
 ]
 
 seqset: sequences  [
   parameter: "Y"
+  type: "gapany"
 ]
 
 string: mapali  [
@@ -32,4 +34,5 @@ boolean: matchonly  [
 
 outfile: outfile  [
   parameter: "Y"
+  knowntype: "hmmalign output"
 ]

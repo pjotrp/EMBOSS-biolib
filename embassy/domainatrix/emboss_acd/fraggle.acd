@@ -42,7 +42,7 @@ section: required [
 
 
   integer: thresh  [
-    required: "Y"
+    standard: "Y"
     information: "Percentage of median length for definition of
                   fragments"
     help: "Fraggle first determines the median length of all the

@@ -8,6 +8,8 @@ application: ehmmemit [
 
 infile: infile  [
   parameter: "Y"
+  information: "HMM file"
+  knowntype: "hmm file"
 ]
 
 boolean: selex  [
@@ -33,4 +35,5 @@ integer: seed  [
 
 outfile: outfile  [
   parameter: "Y"
+  knowntype: "hmmemit output"
 ]

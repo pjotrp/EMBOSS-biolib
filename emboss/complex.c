@@ -68,7 +68,7 @@ int main(int argc, char **argv)
 
     seqout = ajAcdGetSeqoutall("outseq");
     outfile = ajAcdGetOutfile("outfile");
-    pfile = ajAcdGetOutfile("ujtable");
+    pfile = ajAcdGetOutfile("ujtablefile");
 
     ajDebug("Output file: %F \n",outfile);
 

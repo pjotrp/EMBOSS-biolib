@@ -1,14 +1,15 @@
 application: meme [
   documentation: "Motif detection"
-  groups: "PROTEIN: protein structure"
+  groups: "Protein:Motifs"
 ]
 
-seqall: datafile  [
+seqall: sequence  [
   parameter: "Y"
+  type: "any"
 ]
 
 list: ntype  [
-  optional: "Y"
+  additional: "Y"
   default: "pair"
   minimum: "1"
   maximum: "1"
@@ -16,11 +17,11 @@ list: ntype  [
   values: "pair:Pairwise method, blend:Blending method"
   delimiter: ","
   codedelimiter: ":"
-  prompt: "Method to use"
+  information: "Method to use"
 ]
 
 list: model  [
-  required: "Y"
+  standard: "Y"
   default: "zoops"
   minimum: "1"
   maximum: "1"
@@ -29,83 +30,83 @@ list: model  [
            Distribution"
   delimiter: ","
   codedelimiter: ":"
-  prompt: "Model to use"
+  information: "Model to use"
 ]
 
 boolean: protein  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Assume sequences are proteins"
 ]
 
 boolean: nucleic  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Assume sequences are DNA"
 ]
 
 boolean: palindromes  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Allow palindromes"
 ]
 
 boolean: ponly  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Force palindromes"
 ]
 
 boolean: shorten  [
-  optional: "Y"
+  additional: "Y"
   default: "Y"
   information: "Allow motifs shorter than MINW"
 ]
 
 float: nsites  [
-  optional: "Y"
+  additional: "Y"
   default: "0."
   information: "Expected number of sites for each motif"
 ]
 
 float: minsites  [
-  optional: "Y"
+  additional: "Y"
   default: "0."
   information: "Minimum number of sites for each motif"
 ]
 
 float: maxsites  [
-  optional: "Y"
+  additional: "Y"
   default: "0."
   information: "Maximum number of sites for each motif"
 ]
 
 integer: w  [
-  optional: "Y"
+  additional: "Y"
   default: "0"
   information: "Starting motif width to try"
 ]
 
 integer: minw  [
-  optional: "Y"
+  additional: "Y"
   default: "8"
   information: "Minimum starting motif width to try"
 ]
 
 integer: maxw  [
-  optional: "Y"
+  additional: "Y"
   default: "57"
   information: "Maximum starting motif width to try"
 ]
 
 integer: nmotifs  [
-  required: "Y"
+  standard: "Y"
   default: "1"
   information: "Maximum number of motifs to find"
 ]
 
 list: prior  [
-  optional: "Y"
+  additional: "Y"
   default: "dirichlet"
   minimum: "1"
   maximum: "1"
@@ -114,23 +115,23 @@ list: prior  [
            prior, megap:megap prior, addone:addone prior"
   delimiter: ","
   codedelimiter: ":"
-  prompt: "Prior to use"
+  information: "Prior to use"
 ]
 
 boolean: brief  [
-  optional: "Y"
+  additional: "Y"
   default: "Y"
   information: "Don't print documemtation"
 ]
 
 float: b  [
-  optional: "Y"
+  additional: "Y"
   default: "-1.0"
   information: "Strength of the prior"
 ]
 
 list: spmap  [
-  optional: "Y"
+  additional: "Y"
   default: "uni"
   minimum: "1"
   maximum: "1"
@@ -138,41 +139,41 @@ list: spmap  [
   values: "uni:uni map type, pam:pam map type"
   delimiter: ","
   codedelimiter: ":"
-  prompt: "Mapping start"
+  information: "Mapping start"
 ]
 
 float: spfuzz  [
-  optional: "Y"
+  additional: "Y"
   default: "-1.0"
   information: "Fuzziness of sequence to theta mapping"
 ]
 
 integer: maxiter  [
-  optional: "Y"
+  additional: "Y"
   default: "50"
   information: "Maximum EM iterations to run"
 ]
 
 float: distance  [
-  optional: "Y"
+  additional: "Y"
   default: "1e-3"
   information: "EM convergence criterion"
 ]
 
 string: cons  [
-  optional: "Y"
+  additional: "Y"
   default: ""
   information: "Consensus sequence to start EM from"
 ]
 
 float: chi  [
-  optional: "Y"
+  additional: "Y"
   default: "1.0"
   information: "p-value cutoff"
 ]
 
 list: adj  [
-  optional: "Y"
+  additional: "Y"
   default: "root"
   minimum: "1"
   maximum: "1"
@@ -180,123 +181,124 @@ list: adj  [
   values: "none:no LRT, bon:bon LRT, root:root LRT"
   delimiter: ","
   codedelimiter: ":"
-  prompt: "Type"
+  information: "Type"
 ]
 
 integer: maxsize  [
-  optional: "Y"
+  additional: "Y"
   default: "100000"
   information: "Maximum dataset size in characters"
 ]
 
 integer: page  [
-  optional: "Y"
+  additional: "Y"
   default: "80"
   information: "Width of page"
 ]
 
 boolean: status  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Print progress reports"
 ]
 
 boolean: v  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Verbose mode"
 ]
 
 boolean: cfive  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Use 5' to 3' complementary strand as well"
 ]
 
 boolean: cthree  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Use 3' to 5' complementary strand as well"
 ]
 
 boolean: wthree  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Use 3' to 5' main strand as well"
 ]
 
 float: prob  [
-  optional: "Y"
+  additional: "Y"
   default: "1.0"
   information: "Starting point confidence level"
 ]
 
 integer: seed  [
-  optional: "Y"
+  additional: "Y"
   default: "0"
   information: "Seed for random numbers in sampling"
 ]
 
 float: seqfrac  [
-  optional: "Y"
+  additional: "Y"
   default: "1.0"
   information: "Fraction of sequences to use"
 ]
 
 boolean: align  [
-  optional: "Y"
+  additional: "Y"
   default: "Y"
   information: "Print aligned motif occurrences"
 ]
 
 boolean: trace  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Trace starting points"
 ]
 
 boolean: allprint  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Print all debugging information"
 ]
 
 boolean: wprint  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Print erasure matrix"
 ]
 
 boolean: zprint  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Print missing information matrix"
 ]
 
 boolean: llprint  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Print log likelihood during EM"
 ]
 
 boolean: startsprint  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Print starting points"
 ]
 
 boolean: fastaprint  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Print sites in FASTA format"
 ]
 
 integer: timer  [
-  optional: "Y"
+  additional: "Y"
   default: "0"
   information: "Timer type"
 ]
 
 outfile: outfile  [
   parameter: "Y"
+  knowntype: "meme output"
 ]

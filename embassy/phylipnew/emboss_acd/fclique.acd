@@ -6,16 +6,16 @@ application: fclique [
 discretestates: infile  [
   parameter: "Y"
   characters: "01PB?"
-  standardtype: "two state characters"
+  knowntype: "two state characters"
 ]
 
 outfile: outfile  [
   parameter: "Y"
-  standardtype: "clique output"
+  knowntype: "clique output"
 ]
 
 boolean: drawtree  [
-  optional: "Y"
+  additional: "Y"
   default: "Y"
   information: "Draw tree"
 ]
@@ -24,66 +24,65 @@ outfile: outtreefile  [
   parameter: "Y"
   extension: "treefile"
   information: "tree file name"
-  standardtype: "Newick tree"
+  knowntype: "Newick tree"
   nullok: "Y"
 ]
 
 properties: ancestral [
-  optional: "Y"
+  additional: "Y"
   characters: "01"
   length: "$(infile.discretelength)"
-  standardtype: "Ancestral states"
+  knowntype: "Ancestral states"
   nullok: "Y"
   default: ""
 ]
 
 properties: multistate [
-  optional: "Y"
+  additional: "Y"
   characters: ""
   length: "$(infile.discretelength)"
-  standardtype: "Multistate factors"
+  knowntype: "Multistate factors"
   nullok: "Y"
   default: ""
 ]
 
 properties: weights [
-  optional: "Y"
+  additional: "Y"
   characters: "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
   length: "$(infile.discretelength)"
-  standardtype: "Weights"
+  knowntype: "Weights"
   nullok: "Y"
   default: ""
 ]
 
 integer: minclique  [
-  optional: "Y"
+  additional: "Y"
   default: "0"
   minimum: "0"
   information: "Minimum clique size"
-  prompt: "Minimum clique size"
 ]
 
 integer: outgroup [
-  optional: "Y"
+  additional: "Y"
   information: "Number of the outgroup"
   default: "0"
   minimum: "0"
 ]
 
 boolean: printdata  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Print out the data at start of run"
 ]
 
 boolean: progress  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Print indications of progress of run"
 ]
 
 boolean: matrixout  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Print out compatibility matrix"
 ]

@@ -17,18 +17,18 @@ seqall: genome  [
 
 outfile: outfile  [
   parameter: "Y"
-  standardtype: "sim4 output"
+  knowntype: "sim4 output"
 ]
 
 integer: word  [
-  optional: "Y"
+  additional: "Y"
   default: "12"
   information: "(W) Sets the word size for blast hits. Default
                 value: 12."
 ]
 
 integer: extend  [
-  optional: "Y"
+  additional: "Y"
   default: "12"
   information: "(X) Sets the word extension termination limit
                 for the blast-like stage of the algorithm. Default value:
@@ -36,21 +36,21 @@ integer: extend  [
 ]
 
 integer: cutoff  [
-  optional: "Y"
+  additional: "Y"
   default: "3"
   maximum: "10"
   information: "(E) Sets the cutoff in range [3,10]."
 ]
 
 boolean: usermspa  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "False: esim4 calculates mspA, True: value from
                 mspA command line argument."
 ]
 
 integer: mspa  [
-  optional: "$(usermspA)"
+  additional: "$(usermspA)"
   default: "16"
   information: "(K) MSP score threshold for the first stage of
                 the algorithm."
@@ -63,14 +63,14 @@ integer: mspa  [
 ]
 
 boolean: usermspb  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "False: esim4 calculates mspB, True: value from
                 mspB command line argument."
 ]
 
 integer: mspb  [
-  required: "$(usermspB)"
+  standard: "$(usermspB)"
   default: "12"
   information: "(C) Sets the MSP score threshold during the
                 second stage of the algorithm."
@@ -81,21 +81,21 @@ integer: mspb  [
 ]
 
 integer: weight  [
-  optional: "Y"
+  additional: "Y"
   default: "0"
   information: "(H) Sets the weight value (undocumented). 0
                 uses a default, >0 is a value"
 ]
 
 integer: diagonal  [
-  optional: "Y"
+  additional: "Y"
   default: "10"
   information: "(K) Sets the bound for the diagonal distance
                 within consecutive MSPs in an exon."
 ]
 
 string: strand  [
-  optional: "Y"
+  additional: "Y"
   default: "both"
   information: "(R) Align mRNA to specified genome strand(s)."
   help: "(R) This determines the strand of the genome with which the
@@ -105,7 +105,7 @@ string: strand  [
 ]
 
 integer: format  [
-  optional: "Y"
+  additional: "Y"
   minimum: "0"
   maximum: "5"
   default: "0"
@@ -127,7 +127,7 @@ integer: format  [
 ]
 
 boolean: cliptails  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "(P) Trim poly-A tails"
   help: "(P) Trim poly-A tails. Specifies whether or not the program
@@ -139,7 +139,7 @@ boolean: cliptails  [
 ]
 
 boolean: smallexons  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "(N) Search for small marginal exons"
   help: "(N) Requests an additional search for small marginal exons
@@ -149,7 +149,7 @@ boolean: smallexons  [
 ]
 
 boolean: ambiguity  [
-  optional: "Y"
+  additional: "Y"
   default: "Y"
   information: "(B) Disallow ambiguity characters"
   help: "(B) Controls the set of characters allowed in the input
@@ -159,7 +159,7 @@ boolean: ambiguity  [
 ]
 
 string: cdsregion  [
-  optional: "Y"
+  additional: "Y"
   information: "(S) Define CDS ends in mRNA"
   help: "(S) Allows the user to specify the endpoints of the CDS in
          the input mRNA, with the syntax: -cdsregion=n1..n2. This option is
@@ -172,25 +172,25 @@ string: cdsregion  [
 ]
 
 integer: offseta  [
-  optional: "Y"
+  additional: "Y"
   information: "(f) Undocumented - some sort of offset in first
                 sequence."
 ]
 
 integer: offsetb  [
-  optional: "Y"
+  additional: "Y"
   information: "(F) Undocumented - some sort of offset in
                 second sequence."
 ]
 
 integer: toa  [
-  optional: "Y"
+  additional: "Y"
   information: "(t) Undocumented - offset end of first
                 sequence?"
 ]
 
 integer: tob  [
-  optional: "Y"
+  additional: "Y"
   information: "(T) Undocumented - offset end of second
                 sequence?"
 ]

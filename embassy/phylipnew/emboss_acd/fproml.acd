@@ -1,6 +1,6 @@
 application: fproml [
   documentation: "Protein maximum Likelihood program"
-  groups: "Phylogeny:Molecular_sequence"
+  groups: "Phylogeny:Molecular sequence"
   batch: "no"
 ]
 

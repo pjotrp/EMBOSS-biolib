@@ -219,7 +219,7 @@ int main(int argc, char **argv)
 
 
     sequence = ajAcdGetSeq("sequence");
-    outf     = ajAcdGetOutfile("outf");
+    outf     = ajAcdGetOutfile("outfile");
 
     minprimerlen = ajAcdGetInt("minprimerlen");
     maxprimerlen = ajAcdGetInt("maxprimerlen");

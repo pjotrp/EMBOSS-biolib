@@ -105,7 +105,7 @@ int main(int argc, char **argv)
     graph  = ajAcdGetGraphxy("graph");
     gc     = ajAcdGetString("bases");
     window = ajAcdGetInt("window");
-    outf   = ajAcdGetOutfile("outf");
+    outf   = ajAcdGetOutfile("outfile");
     
     ajSeqToUpper(seq);
     ajStrToUpper(&gc);

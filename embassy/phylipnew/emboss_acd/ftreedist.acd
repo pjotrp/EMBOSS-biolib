@@ -5,19 +5,20 @@ application: ftreedist [
 
 infile: intreefile [
   parameter: "Y"
-  standardtype: "Newick tree"
+  knowntype: "Newick tree"
+  information: "Tree file"
 ]
 
 infile: bintreefile [
   parameter: "Y"
-  standardtype: "Newick tree"
+  knowntype: "Newick tree"
   information: "Second input tree file"
   nullok: "Y"
 ]
 
 outfile: outfile  [
   parameter: "Y"
-  standardtype: "treedist file"
+  knowntype: "treedist file"
 ]
 
 list: pairing [
@@ -41,9 +42,8 @@ list: style [
 
 
 boolean: progress [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Print indications of progress of run"
-  prompt: "Print indications of progress of run"
 ]
 

@@ -79,7 +79,7 @@ int main(int argc, char **argv)
 
     embInit("printsextract",argc,argv);
 
-    inf    = ajAcdGetInfile("inf");
+    inf    = ajAcdGetInfile("infile");
     pfname = ajStrNewC(DATANAME);
     ajFileDataNewWrite(pfname,&outf);
     printsextract_printHeader(outf);

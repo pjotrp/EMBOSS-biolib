@@ -12,7 +12,6 @@ section: input [
   seqset: sequences  [
     parameter: "Y"
     type: "any"
-    information: "Sequences file to be read in"
     help: "File containing a sequence alignment"
   ]
 
@@ -24,7 +23,7 @@ section: required [
 ]
 
   integer: wordsize  [
-    required: "Y"
+    standard: "Y"
     default: "6"
     minimum: "2"
     information: "Word size"
@@ -38,12 +37,12 @@ section: output [
 ]
 
   section: datasection [
-    information: "data Section"
+    information: "Data output section"
     type: "frame"
   ]
 
     graph: graph  [
-      required: "Y"
+      standard: "Y"
       gtitle: "Polydot:"
     ]
 
@@ -60,25 +59,25 @@ section: output [
 
   boolean: boxit  [
     default: "Y"
-    optional: "Y"
+    additional: "Y"
     information: "Draw a box around each dotplot"
   ]
 
   boolean: dumpfeat  [
     default: "N"
-    optional: "Y"
+    additional: "Y"
     information: "Dump all matches as feature files"
   ]
 
   string: format  [
     default: "gff"
-    optional: "Y"
+    additional: "Y"
     information: "format to Dump out as"
   ]
 
   string: ext  [
     default: "gff"
-    optional: "Y"
+    additional: "Y"
     information: "Extension for feature file"
   ]
 

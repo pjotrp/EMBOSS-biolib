@@ -1,6 +1,6 @@
 application: fdnacomp [
   documentation: "DNA compatibility algorithm"
-  groups: "Phylogeny:Molecular_sequence"
+  groups: "Phylogeny:Molecular sequence"
 ]
 
 seqsetall: sequence  [
@@ -11,23 +11,23 @@ seqsetall: sequence  [
 
 tree: intreefile  [
   nullok: "Y"
-  standardtype: "Newick tree"
+  knowntype: "Newick tree"
 ]
 
 properties: weights [
-  required: "Y"
+  standard: "Y"
   information: "Weights file"
   nullok: "Y"
-  standardtype: "Phylip weights"
+  knowntype: "Phylip weights"
 ]
 
 outfile: outfile  [
   parameter: "Y"
-  standardtype: "dnacomp output"
+  knowntype: "dnacomp output"
 ]
 
 boolean: drawtree  [
-  optional: "Y"
+  additional: "Y"
   default: "Y"
   information: "Draw tree"
 ]
@@ -35,7 +35,7 @@ boolean: drawtree  [
 outfile: outtreefile  [
   extension: "treefile"
   information: "Tree file name"
-  standardtype: "Newick tree"
+  knowntype: "Newick tree"
   nullok: "Y"
 ]
 
@@ -47,31 +47,31 @@ integer: outgroup  [
 ]
 
 boolean: printdata  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Print out the data at start of run"
 ]
 
 boolean: progress  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Print indications of progress of run"
 ]
 
 boolean: stepbox  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Print steps & compatibility at sites"
 ]
 
 boolean: ancseq  [
-  optional: "Y"
+  additional: "Y"
   default: "N"
   information: "Print sequences at all nodes of tree"
 ]
 
 integer: jumble [
-  optional: "Y"
+  additional: "Y"
   information: "Number of times to jumble"
   minimum: "1"
   default: "1"
@@ -79,7 +79,7 @@ integer: jumble [
 ]
 
 integer: seed [
-  required: "$(jumble)"
+  standard: "$(jumble)"
   information: "Random number seed (must be odd)"
   minimum: 1
   maximum: "32765"

@@ -9,9 +9,8 @@ section: input [
   type: "page"
 ]
 
-  sequence: seq  [
+  sequence: sequence  [
     parameter: "Y"
-    information: "Nucleic acid sequence"
     type: "DNA"
   ]
 
@@ -23,7 +22,7 @@ section: required [
 ]
 
   string: enzymes  [
-    required: "Y"
+    standard: "Y"
     default: "all"
     information: "Comma separated enzyme list"
   ]
@@ -45,9 +44,9 @@ section: output [
     information: "Display translated sequence"
   ]
 
-  outfile: outf  [
+  outfile: outfile  [
     parameter: "Y"
-    information: "Results file name"
+    knowntype: "recoder output"
   ]
 
 endsection: output

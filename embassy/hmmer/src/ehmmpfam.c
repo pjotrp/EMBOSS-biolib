@@ -15,7 +15,7 @@
  * Conditionally includes PVM parallelization when HMMER_PVM is defined
  *    at compile time; hmmpfam --pvm runs the PVM version.
  *    
- * RCS $Id: ehmmpfam.c,v 1.1 2001/07/29 14:13:49 ajb Exp $
+ * RCS $Id: ehmmpfam.c,v 1.2 2003/10/06 09:00:54 rice Exp $
  * Modified for EMBOSS by Alan Bleasby (ISMB 2001)
  */
 
@@ -212,7 +212,7 @@ int main(int argc, char **argv)
     else
 	hmmfile = ajStrStr(ajhmmfile);
   
-    seqall = ajAcdGetSeqall("sequences");
+    seqall = ajAcdGetSeqall("seqall");
     ajb = ajAcdGetBool("nucleic");
     if(ajb)
 	do_nucleic=TRUE;

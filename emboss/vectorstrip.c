@@ -153,13 +153,13 @@ int main(int argc, char **argv)
     embInit("vectorstrip", argc, argv);
 
     seqall     = ajAcdGetSeqall("sequence");
-    outf       = ajAcdGetOutfile("outf");
+    outf       = ajAcdGetOutfile("outfile");
     seqout     = ajAcdGetSeqoutall("outseq");
     vec        = ajAcdGetBool("vectorfile");
     besthits   = ajAcdGetBool("besthits");
     fiveprime  = ajAcdGetString("linkerA");
     threeprime = ajAcdGetString("linkerB");
-    vectorfile = ajAcdGetInfile("vectors");
+    vectorfile = ajAcdGetInfile("vectorsFILE");
 
     vectorlist = ajListNew();
 

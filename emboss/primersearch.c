@@ -179,9 +179,9 @@ int main(int argc, char **argv)
 
     embInit("primersearch", argc, argv);
 
-    seqall     = ajAcdGetSeqall("sequences");
-    outf       = ajAcdGetOutfile("out");
-    primerFile = ajAcdGetInfile("primers");
+    seqall     = ajAcdGetSeqall("seqall");
+    outf       = ajAcdGetOutfile("outfile");
+    primerFile = ajAcdGetInfile("primersfile");
     mmp        = ajAcdGetInt("mismatchpercent");
 
     /* build list of forward/reverse primer pairs as read from primerfile */

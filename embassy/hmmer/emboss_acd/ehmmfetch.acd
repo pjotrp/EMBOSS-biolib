@@ -9,13 +9,16 @@ application: ehmmfetch [
 string: database  [
   parameter: "Y"
   information: "Database name"
+  knowntype: "hmm database name"
 ]
 
 string: consensus  [
   parameter: "Y"
   information: "Entry name"
+  knowntype: "hmm entry name"
 ]
 
 outfile: outfile  [
   parameter: "Y"
+  knowntype: "hmm file"
 ]
