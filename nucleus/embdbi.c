@@ -1067,12 +1067,15 @@ ajint embDbiSortWriteFields (AjPStr dbname, AjPStr release,
 	ajRegSubI (toksrtexp, 2, &fieldStr);
 	while (!ajStrMatch(idstr, currentid))
 	{
-	    ient++;
+	    ajStrAssS(&lastidstr, currentid);
 	    if (!ajFileGets(elistfile, &eline))
-	      ajFatal ("Error in embDbiSortWriteFields, expected entry %S not found",
+	      ajFatal ("Error in embDbiSortWriteFields, "
+		       "expected entry %S not found",
 		       idstr);
 	    ajRegExec (idsrtexp, eline);
 	    ajRegSubI (idsrtexp, 1, &currentid);
+	    if (!ajStrMatch(lastidstr, currentid))
+	      ient++;
 	}
 	ajFmtPrintF (blistfile, "%S %0*d\n", fieldStr, idwidth, ient);
 	fieldCount++;
