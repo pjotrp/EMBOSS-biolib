@@ -125,7 +125,6 @@ void ajMessInvokeDebugger (void) {
 
   if (!reentrant) {
     reentrant = AJTRUE ;
-    /* messalloccheck() ;*/
     reentrant = AJFALSE ;
   }
 }
