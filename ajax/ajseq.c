@@ -221,10 +221,8 @@ void ajSeqallReverse (AjPSeqall thys)
     ajDebug ("ajSeqallReverse len: %d Begin: %d End: %d\n",
 	     ajSeqallLen(thys), thys->Begin, thys->End);
 
-    if (ibegin)
-	thys->End = -(ibegin);
-    if (iend)
-	thys->Begin = -(iend);
+    thys->End = -(ibegin);
+    thys->Begin = -(iend);
 
     (void) ajSeqReverse(thys->Seq);
 
@@ -1932,10 +1930,8 @@ void ajSeqReverse (AjPSeq thys)
     ajDebug ("ajSeqReverse len: %d Begin: %d End: %d\n",
 	     ajSeqLen(thys), thys->Begin, thys->End);
 
-    if (ibegin)
-	thys->End = -(ibegin);
-    if (iend)
-	thys->Begin = -(iend);
+    thys->End = -(ibegin);
+    thys->Begin = -(iend);
 
     (void) ajSeqReverseStr(&thys->Seq);
 

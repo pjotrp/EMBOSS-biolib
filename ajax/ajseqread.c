@@ -514,8 +514,11 @@ AjBool ajSeqallNext (AjPSeqall seqall, AjPSeq* retseq)
     if (!seqall->Count)
     {
 	seqall->Count = 1;
+	ajSeqSetRange (seqall->Seq, seqall->Begin, seqall->End);
+	/*
 	seqall->Seq->Begin = seqall->Begin;
 	seqall->Seq->End = seqall->End;
+	*/
 	*retseq = seqall->Seq;
 	return ajTrue;
     }
@@ -526,8 +529,12 @@ AjBool ajSeqallNext (AjPSeqall seqall, AjPSeq* retseq)
     if (ajSeqRead (seqall->Seq, seqall->Seqin))
     {
 	seqall->Count++;
+	ajSeqSetRange (seqall->Seq, seqall->Begin, seqall->End);
+	/*
 	seqall->Seq->Begin = seqall->Begin;
 	seqall->Seq->End = seqall->End;
+	*/
+
 	*retseq = seqall->Seq;
 	ajMemStat("ajSeqAllNext done");
 	ajStrStat("ajSeqAllNext done");
@@ -738,6 +745,7 @@ AjBool ajSeqRead (AjPSeq thys, AjPSeqin seqin)
     if (!ajStrLen(thys->Type))
 	ajSeqType (thys);
 
+
     return ajTrue;
 }
 
@@ -930,6 +938,12 @@ static ajint seqReadFmt (AjPSeq thys, AjPSeqin seqin, SeqPInFormat inform,
 		    ajSeqToUpper(thys);
 		if(seqin->Lower)
 		    ajSeqToLower(thys);
+		if (seqin->Begin)
+		  thys->Begin = seqin->Begin;
+		if (seqin->End)
+		  thys->End = seqin->End;
+		if (seqin->Rev)
+		  thys->Rev = seqin->Rev;
 		return FMT_OK;
 	    }
 	    else
@@ -4458,6 +4472,7 @@ static AjBool seqUsaProcess (AjPSeq thys, AjPSeqin seqin)
     static AjPRegexp wildexp = NULL;
     static AjPRegexp listexp = NULL;
     static AjPRegexp asisexp = NULL;
+    static AjPRegexp rangeexp = NULL;
 
     static AjPStr usatest = NULL;
 
@@ -4466,6 +4481,7 @@ static AjBool seqUsaProcess (AjPSeq thys, AjPSeqin seqin)
     static AjPStr qrylevel = NULL;
     static AjPStr qryid = NULL;
     static AjPStr qrychr = NULL;
+    static AjPStr tmpstr = NULL;
 
     AjPSeqQuery qry = seqin->Query;
 
@@ -4476,8 +4492,16 @@ static AjBool seqUsaProcess (AjPSeq thys, AjPSeqin seqin)
     AjBool accstat = ajFalse;
     AjBool liststat = ajFalse;
     AjBool asisstat = ajFalse;
+    AjBool rangestat = ajFalse;
+
+    /*
+    ajint ibegin=0;
+    ajint iend=0;
+    AjBool irev=ajFalse;
+    */
 
     ajDebug("seqUsaProcess\n");
+
     if (!fmtexp)
 	fmtexp = ajRegCompC ("^([A-Za-z0-9]*)::(.*)$");
     /* \1 format */
@@ -4504,11 +4528,30 @@ static AjBool seqUsaProcess (AjPSeq thys, AjPSeqin seqin)
 	wildexp = ajRegCompC ("(.*[*].*)");
     /* \1 wildcard query */
 
+    if (!rangeexp)	    /* \1 is rest of USA \2 start \3 end \5 reverse*/
+	rangeexp = ajRegCompC ("(.*)[[](-?[0-9]*):(-?[0-9]*)(:([Rr])?)?[]]$");
+
     (void) ajStrAss (&usatest, seqin->Usa);
     /* Strip any leading spaces */
     ajStrTrimC(&usatest," \t\n");
     
     ajDebug("USA to test: '%S'\n\n", usatest);
+
+    rangestat = ajRegExec (rangeexp, usatest);
+    if (rangestat) {
+      ajRegSubI(rangeexp, 2, &tmpstr);
+      if (ajStrLen(tmpstr))
+	ajStrToInt (tmpstr, &seqin->Begin);
+      ajRegSubI(rangeexp, 3, &tmpstr);
+      if (ajStrLen(tmpstr))
+	ajStrToInt (tmpstr, &seqin->End);
+      ajRegSubI(rangeexp, 5, &tmpstr);
+      if (ajStrLen(tmpstr))
+	seqin->Rev = ajTrue;
+      ajRegSubI(rangeexp, 1, &usatest);
+      ajDebug ("range found [%d:%d:%b]\n",
+	       seqin->Begin, seqin->End, seqin->Rev);
+    }
 
     liststat = ajRegExec (listexp, usatest);
     if (liststat)

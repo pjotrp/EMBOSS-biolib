@@ -5501,7 +5501,8 @@ static void acdSetReport (AcdPAcd thys)
     required = acdIsRequired(thys);
     val = ajReportNew();
 
-    acdAttrResolve (thys, "name", &name);
+    (void) acdAttrResolve (thys, "name", &name);
+    (void) acdAttrResolve (thys, "extension", &ext);
     (void) acdAttrToStr (thys, "taglist", "", &taglist);
     (void) acdAttrToInt (thys, "mintags", 0, &val->Mintags);
     (void) acdAttrToStr (thys, "type", "", &val->Type);
@@ -5517,7 +5518,7 @@ static void acdSetReport (AcdPAcd thys)
       ajErr("Unable to use report format '%S'", val->Formatstr);
     }
 
-    (void) acdOutFilename (&outfname, name, val->Formatstr);
+    (void) acdOutFilename (&outfname, name, ext);
     (void) acdReplyInit (thys, ajStrStr(outfname), &defreply);
     acdPromptReport (thys);
 
@@ -5718,9 +5719,13 @@ static void acdSetSeq (AcdPAcd thys) {
 
   AjBool required = ajFalse;
   AjBool ok = ajFalse;
+  AjBool okbeg = ajFalse;
+  AjBool okend = ajFalse;
+  AjBool okrev = ajFalse;
   static AjPStr defreply = NULL;
   static AjPStr reply = NULL;
   static AjPStr promptreply = NULL;
+  static AjPStr tmpstr = NULL;
   ajint itry;
   ajint i;
 
@@ -5741,8 +5746,6 @@ static void acdSetSeq (AcdPAcd thys) {
   AjBool sprompt=ajFalse;
   AjBool snuc=ajFalse;
   AjBool sprot=ajFalse;
-  AjBool slower=ajFalse;
-  AjBool supper=ajFalse;
   
   val = ajSeqNew();		/* set the default value */
   seqin = ajSeqinNew();		/* set the default value */
@@ -5752,11 +5755,6 @@ static void acdSetSeq (AcdPAcd thys) {
   (void) acdQualToBool (thys, "snucleotide", ajFalse, &snuc, &defreply);
   (void) acdQualToBool (thys, "sprotein", ajFalse, &sprot, &defreply);
 
-  if (snuc)
-    ajSeqinSetNuc (seqin);
-
-  if (sprot)
-    ajSeqinSetProt (seqin);
 
   required = acdIsRequired(thys);
   (void) acdInFilename (&infname);
@@ -5787,6 +5785,16 @@ static void acdSetSeq (AcdPAcd thys) {
     (void) acdAttrToStr(thys, "type", "", &seqin->Inputtype);
     (void) acdAttrToBool(thys, "features", ajFalse, &seqin->Features);
     (void) acdAttrToBool(thys, "entry", ajFalse, &seqin->Text);
+    (void) acdQualToBool (thys, "supper", ajFalse, &seqin->Upper, &tmpstr);
+    (void) acdQualToBool (thys, "slower", ajFalse, &seqin->Lower, &tmpstr);
+    okbeg = acdQualToSeqbegin (thys, "sbegin", 0, &sbegin, &tmpstr);
+    okend = acdQualToSeqend (thys, "send", 0, &send, &tmpstr);
+    okrev = acdQualToBool (thys, "sreverse", ajFalse, &sreverse, &tmpstr);
+
+    if (snuc)
+      ajSeqinSetNuc (seqin);
+    if (sprot)
+      ajSeqinSetProt (seqin);
 
     i = ajStrLen(seqin->Ufo) + ajStrLen(seqin->Ftquery->Formatstr)
       + ajStrLen(seqin->Ftquery->Filename);
@@ -5798,8 +5806,13 @@ static void acdSetSeq (AcdPAcd thys) {
       ajDebug ("acdSetSeq with features UFO '%S'\n", seqin->Ufo);
 
     (void) ajStrStat ("before ajSeqRead");
+
+    /* (try to) read the sequence */
+
     ok = ajSeqRead(val, seqin);
+
     (void) ajStrStat ("after ajSeqRead");
+
     if (!ok) {
       acdBadVal (thys, required,
 		 "Unable to read sequence '%S'", reply);
@@ -5813,71 +5826,84 @@ static void acdSetSeq (AcdPAcd thys) {
 
   /* some standard options using associated qualifiers */
 
-  (void) acdQualToBool (thys, "supper", ajFalse, &supper, &defreply);
-  (void) acdQualToBool (thys, "slower", ajFalse, &slower, &defreply);
   (void) acdQualToBool (thys, "sask", ajFalse, &sprompt, &defreply);
   
   /* now process the begin, end and reverse options */
 
-  ok = acdQualToSeqbegin (thys, "sbegin", 0, &sbegin, &defreply);
-  for (itry=acdPromptTry; itry && !ok; itry--) {
-    (void) ajStrAssS (&promptreply, defreply);
+  if (seqin->Begin) {
+    okbeg = ajTrue;
+  }
+
+  for (itry=acdPromptTry; itry && !okbeg; itry--) {
+    (void) ajStrAssC (&promptreply, "start");
     if (sprompt)
       (void) acdUserGetPrompt (" Begin at position", &promptreply);
     if (ajStrMatchCaseC(promptreply, "start"))
       (void) ajStrAssC(&promptreply, "0");
-    ok = ajStrToInt(promptreply, &sbegin);
-    if (!ok)
+    okbeg = ajStrToInt(promptreply, &sbegin);
+    if (!okbeg)
       acdBadVal (thys, sprompt,
 		 "Invalid sequence position '%S'", promptreply);
   }
-  if (!ok)
+  if (!okbeg)
     acdBadRetry (thys);
-  (void) acdSetQualDefInt(thys, "sbegin", sbegin);
 
-  ok = acdQualToSeqend (thys, "send", 0, &send, &defreply);
-  for (itry=acdPromptTry; itry && !ok; itry--) {
-    (void) ajStrAssS (&promptreply, defreply);
+  if (sbegin) {
+    seqin->Begin = sbegin;
+    val->Begin = sbegin;
+    (void) acdSetQualDefInt(thys, "sbegin", sbegin);
+  }
+
+  if (seqin->End) {
+    okend = ajTrue;
+  }
+
+  for (itry=acdPromptTry; itry && !okend; itry--) {
+    (void) ajStrAssC (&promptreply, "end");
     if (sprompt)
       (void) acdUserGetPrompt ("   End at position", &promptreply);
     if (ajStrMatchCaseC(promptreply, "end"))
       (void) ajStrAssC(&promptreply, "0");
-    ok = ajStrToInt(promptreply, &send);
-    if (!ok)
+    okend = ajStrToInt(promptreply, &send);
+    if (!okend)
       acdBadVal (thys, sprompt,
 		 "Invalid sequence position '%S'", promptreply);
   }
-  if (!ok)
+  if (!okend)
     acdBadRetry (thys);
-  (void) acdSetQualDefInt(thys, "send", send);
+
+  if (send) {
+    seqin->End = send;
+    val->End = send;
+    (void) acdSetQualDefInt(thys, "send", send);
+  }
 
   if (ajSeqIsNuc(val)) {
-    ok = acdQualToBool (thys, "sreverse", ajFalse, &sreverse, &defreply);
-    for (itry=acdPromptTry; itry && !ok; itry--) {
-      (void) ajStrAssS (&promptreply, defreply);
+    if (seqin->Rev) {
+      okrev = ajTrue;
+    }
+    for (itry=acdPromptTry; itry && !okrev; itry--) {
+      (void) ajStrAssC (&promptreply, "N");
       if (sprompt)
 	(void) acdUserGetPrompt ("    Reverse strand", &promptreply);
-      ok = ajStrToBool(promptreply, &sreverse);
-      if (!ok)
+      okrev = ajStrToBool(promptreply, &sreverse);
+      if (!okrev)
 	acdBadVal (thys, sprompt,
 		   "Invalid Y/N value '%S'", promptreply);
     }
-    if (!ok)
+    if (!okrev)
       acdBadRetry (thys);
-    (void) acdSetQualDefBool(thys, "sreverse", sreverse);
+    if (sreverse) {
+      seqin->Rev = sreverse;
+      val->Rev = sreverse;
+      (void) acdSetQualDefBool(thys, "sreverse", sreverse);
+   }
   }
 
   acdLog ("sbegin: %d, send: %d, sreverse: %s\n",
 		 sbegin, send, ajStrBool(sreverse));
   
-  ajSeqSetRange(val, sbegin, send);
-  ajSeqinSetRange(seqin, sbegin, send);
-
-  if (slower)
-    (void) ajStrToLower (&val->Seq);
-  if (supper)
-    (void) ajStrToUpper (&val->Seq);
-  if (sreverse)
+  if (val->Rev)
     ajSeqReverse (val);
 
   ajSeqinDel (&seqin);
@@ -5956,9 +5982,13 @@ static void acdSetSeqset (AcdPAcd thys) {
 
   AjBool required = ajFalse;
   AjBool ok = ajFalse;
+  AjBool okbeg = ajFalse;
+  AjBool okend = ajFalse;
+  AjBool okrev = ajFalse;
   static AjPStr defreply = NULL;
   static AjPStr reply = NULL;
   static AjPStr promptreply = NULL;
+  static AjPStr tmpstr = NULL;
   ajint itry;
 
   static AjPStr infname = NULL;
@@ -5980,8 +6010,6 @@ static void acdSetSeqset (AcdPAcd thys) {
   AjBool sprompt=ajFalse;
   AjBool snuc=ajFalse;
   AjBool sprot=ajFalse;
-  AjBool slower=ajFalse;
-  AjBool supper=ajFalse;
 
   val = ajSeqsetNew();		/* set the default value */
   seqin = ajSeqinNew();		/* set the default value */
@@ -5990,12 +6018,6 @@ static void acdSetSeqset (AcdPAcd thys) {
 
   (void) acdQualToBool (thys, "snucleotide", ajFalse, &snuc, &defreply);
   (void) acdQualToBool (thys, "sprotein", ajFalse, &sprot, &defreply);
-
-  if (snuc)
-    ajSeqinSetNuc (seqin);
-
-  if (sprot)
-    ajSeqinSetProt (seqin);
 
   required = acdIsRequired(thys);
   (void) acdInFilename (&infname);
@@ -6023,6 +6045,18 @@ static void acdSetSeqset (AcdPAcd thys) {
 
     (void) acdAttrToStr(thys, "type", "", &seqin->Inputtype);
     (void) acdAttrToBool(thys, "features", ajFalse, &seqin->Features);
+    (void) acdQualToBool (thys, "supper", ajFalse, &seqin->Upper, &tmpstr);
+    (void) acdQualToBool (thys, "slower", ajFalse, &seqin->Lower, &tmpstr);
+    okbeg = acdQualToSeqbegin (thys, "sbegin", 0, &seqin->Begin, &tmpstr);
+    okend = acdQualToSeqend (thys, "send", 0, &seqin->End, &tmpstr);
+    okrev = acdQualToBool (thys, "sreverse", ajFalse, &seqin->Rev, &tmpstr);
+
+    if (snuc)
+      ajSeqinSetNuc (seqin);
+
+    if (sprot)
+      ajSeqinSetProt (seqin);
+
     if (ajStrLen(seqin->Ufo))
       seqin->Features = ajTrue;
 
@@ -6035,72 +6069,92 @@ static void acdSetSeqset (AcdPAcd thys) {
   if (!ok)
     acdBadRetry (thys);
 
-  ajSeqinDel (&seqin);
-
   (void) acdInFileSave(ajSeqsetGetName(val)); /* save the sequence name */
 
-  (void) acdQualToBool (thys, "supper", ajFalse, &supper, &defreply);
-  (void) acdQualToBool (thys, "slower", ajFalse, &slower, &defreply);
   (void) acdQualToBool (thys, "sask", ajFalse, &sprompt, &defreply);
 
   /* now process the begin, end and reverse options */
 
-  ok = acdQualToSeqbegin (thys, "sbegin", 0, &sbegin, &defreply);
-  for (itry=acdPromptTry; itry && !ok; itry--) {
+  if (seqin->Begin) {
+    okbeg = ajTrue;
+    val->Begin = seqin->Begin;
+  }
+
+  for (itry=acdPromptTry; itry && !okbeg; itry--) {
     (void) ajStrAssS (&promptreply, defreply);
     if (sprompt)
       (void) acdUserGetPrompt (" Begin at position", &promptreply);
     if (ajStrMatchCaseC(promptreply, "start"))
       (void) ajStrAssC(&promptreply, "0");
-    ok = ajStrToInt(promptreply, &sbegin);
-    if (!ok)
+    okbeg = ajStrToInt(promptreply, &sbegin);
+    if (!okbeg)
       acdBadVal (thys, sprompt,
 		 "Invalid integer value '%S'", promptreply);
   }
-  if (!ok)
+  if (!okbeg)
     acdBadRetry (thys);
 
+  if (sbegin) {
+    seqin->Begin = sbegin;
+    val->Begin = sbegin;
+    (void) acdSetQualDefInt(thys, "sbegin", sbegin);
+  }
 
-  ok = acdQualToSeqend (thys, "send", 0, &send, &defreply);
-  for (itry=acdPromptTry; itry && !ok; itry--) {
+  if (seqin->End) {
+    okend = ajTrue;
+    val->End = seqin->End;
+  }
+
+  for (itry=acdPromptTry; itry && !okend; itry--) {
     (void) ajStrAssS (&promptreply, defreply);
     if (sprompt)
       (void) acdUserGetPrompt ("   End at position", &promptreply);
     if (ajStrMatchCaseC(promptreply, "end"))
       (void) ajStrAssC(&promptreply, "0");
-    ok = ajStrToInt(promptreply, &send);
-    if (!ok)
+    okend = ajStrToInt(promptreply, &send);
+    if (!okend)
       acdBadVal (thys, sprompt,
 		 "Invalid integer value '%S'", promptreply);
   }
-  if (!ok)
+  if (!okend)
     acdBadRetry (thys);
 
+  if (send) {
+    seqin->End = send;
+    val->End = send;
+    (void) acdSetQualDefInt(thys, "send", send);
+  }
+
   if (ajSeqsetIsNuc(val)) {
-    ok = acdQualToBool (thys, "sreverse", ajFalse, &sreverse, &defreply);
-    for (itry=acdPromptTry; itry && !ok; itry--) {
+    if (seqin->Rev) {
+      okrev = ajTrue;
+      val->Rev = seqin->Rev;
+    }
+    for (itry=acdPromptTry; itry && !okrev; itry--) {
       (void) ajStrAssS (&promptreply, defreply);
       if (sprompt)
 	(void) acdUserGetPrompt ("    Reverse strand", &promptreply);
-      ok = ajStrToBool(promptreply, &sreverse);
-      if (!ok)
+      okrev = ajStrToBool(promptreply, &sreverse);
+      if (!okrev)
 	acdBadVal (thys, sprompt,
 		   "Invalid Y/N value '%S'", promptreply);
     }
-    if (!ok)
+    if (!okrev)
       acdBadRetry (thys);
+    if (sreverse) {
+      seqin->Rev = sreverse;
+      val->Rev = sreverse;
+      (void) acdSetQualDefBool(thys, "sreverse", sreverse);
+    }
   }
 
   acdLog ("sbegin: %d, send: %d, sreverse: %s\n",
 		 sbegin, send, ajStrBool(sreverse));
 
-  ajSeqsetSetRange (val, sbegin, send);
-  if (slower)
-    ajSeqsetToLower (val);
-  if (supper)
-    ajSeqsetToUpper (val);
-  if (sreverse)
+  if (val->Rev)
     ajSeqsetReverse (val);
+
+  ajSeqinDel (&seqin);
 
   /* sequences have special set attributes */
 
@@ -6184,9 +6238,13 @@ static void acdSetSeqall (AcdPAcd thys) {
 
   AjBool required = ajFalse;
   AjBool ok = ajFalse;
+  AjBool okbeg = ajFalse;
+  AjBool okend = ajFalse;
+  AjBool okrev = ajFalse;
   static AjPStr defreply = NULL;
   static AjPStr reply = NULL;
   static AjPStr promptreply = NULL;
+  static AjPStr tmpstr = NULL;
   ajint itry;
 
   static AjPStr infname = NULL;
@@ -6206,8 +6264,6 @@ static void acdSetSeqall (AcdPAcd thys) {
   AjBool sprompt=ajFalse;
   AjBool snuc=ajFalse;
   AjBool sprot=ajFalse;
-  AjBool slower=ajFalse;
-  AjBool supper=ajFalse;
   
   val = ajSeqallNew();		/* set the default value */
   seqin = val->Seqin;
@@ -6216,19 +6272,6 @@ static void acdSetSeqall (AcdPAcd thys) {
 
   (void) acdQualToBool (thys, "snucleotide", ajFalse, &snuc, &defreply);
   (void) acdQualToBool (thys, "sprotein", ajFalse, &sprot, &defreply);
-  (void) acdQualToBool (thys, "supper", ajFalse, &supper, &defreply);
-  (void) acdQualToBool (thys, "slower", ajFalse, &slower, &defreply);
-
-  if(slower)
-      seqin->Lower = ajTrue;
-  if(supper)
-      seqin->Upper = ajTrue;
-
-  if (snuc)
-    ajSeqinSetNuc (seqin);
-
-  if (sprot)
-    ajSeqinSetProt (seqin);
 
   required = acdIsRequired(thys);
   (void) acdInFilename (&infname);
@@ -6257,6 +6300,17 @@ static void acdSetSeqall (AcdPAcd thys) {
     (void) acdAttrToStr(thys, "type", "", &seqin->Inputtype);
     (void) acdAttrToBool(thys, "features", ajFalse, &seqin->Features);
     (void) acdAttrToBool(thys, "entry", ajFalse, &seqin->Text);
+    (void) acdQualToBool (thys, "supper", ajFalse, &seqin->Upper, &tmpstr);
+    (void) acdQualToBool (thys, "slower", ajFalse, &seqin->Lower, &tmpstr);
+    okbeg = acdQualToSeqbegin (thys, "sbegin", 0, &seqin->Begin, &tmpstr);
+    okend = acdQualToSeqend (thys, "send", 0, &seqin->End, &tmpstr);
+    okrev = acdQualToBool (thys, "sreverse", ajFalse, &seqin->Rev, &tmpstr);
+
+    if (snuc)
+      ajSeqinSetNuc (seqin);
+
+    if (sprot)
+      ajSeqinSetProt (seqin);
 
     if (ajStrLen(seqin->Ufo))
       seqin->Features = ajTrue;
@@ -6278,60 +6332,97 @@ static void acdSetSeqall (AcdPAcd thys) {
 
   /* now process the begin, end and reverse options */
 
-  ok = acdQualToSeqbegin (thys, "sbegin", 0, &sbegin, &defreply);
-  for (itry=acdPromptTry; itry && !ok; itry--) {
-    (void) ajStrAssS (&promptreply, defreply);
+  if (seqin->Begin) {
+    okbeg = ajTrue;
+    val->Begin = seqin->Begin;
+  }
+
+  for (itry=acdPromptTry; itry && !okbeg; itry--) {
+    (void) ajStrAssC (&promptreply, "start");
     if (sprompt)
       (void) acdUserGetPrompt (" Begin at position", &promptreply);
     if (ajStrMatchCaseC(promptreply, "start"))
       (void) ajStrAssC(&promptreply, "0");
-    ok = ajStrToInt(promptreply, &sbegin);
-    if (!ok)
+    okbeg = ajStrToInt(promptreply, &sbegin);
+    if (!okbeg)
       acdBadVal (thys, sprompt,
 		 "Invalid integer value '%S'", promptreply);
   }
-  if (!ok)
+  if (!okbeg)
     acdBadRetry (thys);
 
-  ok = acdQualToSeqend (thys, "send", 0, &send, &defreply);
-  for (itry=acdPromptTry; itry && !ok; itry--) {
-    (void) ajStrAssS (&promptreply, defreply);
+  if (sbegin) {
+    seqin->Begin = sbegin;
+    seq->Begin = sbegin;
+    val->Begin = sbegin;
+    (void) acdSetQualDefInt(thys, "sbegin", sbegin);
+  }
+
+  if (seqin->End) {
+    okend = ajTrue;
+    val->End = seqin->End;
+  }
+
+  for (itry=acdPromptTry; itry && !okend; itry--) {
+    (void) ajStrAssC (&promptreply, "end");
     if (sprompt)
       (void) acdUserGetPrompt ("   End at position", &promptreply);
     if (ajStrMatchCaseC(promptreply, "end"))
       (void) ajStrAssC(&promptreply, "0");
-    ok = ajStrToInt(promptreply, &send);
-    if (!ok)
+    okend = ajStrToInt(promptreply, &send);
+    if (!okend)
       acdBadVal (thys, sprompt,
 		 "Invalid integer value '%S'", promptreply);
   }
-  if (!ok)
+  if (!okend)
     acdBadRetry (thys);
 
+  if (send) {
+    seqin->End = send;
+    seq->End = send;
+    val->End = send;
+    (void) acdSetQualDefInt(thys, "send", send);
+  }
+
   if (ajSeqIsNuc(seq)) {
-    ok = acdQualToBool (thys, "sreverse", ajFalse, &sreverse, &defreply);
-    for (itry=acdPromptTry; itry && !ok; itry--) {
-      (void) ajStrAssS (&promptreply, defreply);
+    if (seqin->Rev) {
+      okrev = ajTrue;
+      val->Rev = seqin->Rev;
+    }
+    for (itry=acdPromptTry; itry && !okrev; itry--) {
+      (void) ajStrAssC (&promptreply, "N");
       if (sprompt)
 	(void) acdUserGetPrompt ("    Reverse strand", &promptreply);
-      ok = ajStrToBool(promptreply, &sreverse);
-      if (!ok)
+      okrev = ajStrToBool(promptreply, &sreverse);
+      if (!okrev)
 	acdBadVal (thys, sprompt,
 		   "Invalid Y/N value '%S'", promptreply);
     }
-    if (!ok)
+    if (!okrev)
       acdBadRetry (thys);
+    if (sreverse) {
+      seqin->Rev = sreverse;
+      seq->Rev = sreverse;
+      val->Rev = sreverse;
+      (void) acdSetQualDefBool(thys, "sreverse", sreverse);
+    }
   }
+
+  /*
+//  ajUser ("ajAcdSetSeqall s %d .. %d %b  seqin %d .. %d %b  "
+//"val %d .. %d %b  seq %d .. %d %b\n",
+//	  sbegin, send, sreverse,
+//	  seqin->Begin, seqin->End, seqin->Rev,
+//	  val->Begin, val->End, val->Rev,
+//	  seq->Begin, seq->End, seq->Rev);
+  */
+
+  if (val->Rev)
+    ajSeqallReverse (val);
 
   acdLog ("sbegin: %d, send: %d, sreverse: %s\n",
 		 sbegin, send, ajStrBool(sreverse));
   
-  ajSeqallSetRange(val, sbegin, send);
-
-  if (sreverse)
-    ajSeqallReverse (val);
-  
-
   /* sequences have special set attributes */
 
   thys->SAttr = acdAttrListCount (setattr);
@@ -9178,7 +9269,7 @@ static AjBool acdQualToInt (AcdPAcd thys, char *qual,
 /* @funcstatic acdQualToSeqbegin **********************************************
 **
 ** Converts an associated qualifier value into an integer, or the
-** string "begin".
+** string "start".
 **
 ** Any variable references are resolved at this stage.
 **
