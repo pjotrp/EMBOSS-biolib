@@ -4169,6 +4169,27 @@ AjPStr ajSeqGetGi(const AjPSeq thys)
 
 
 
+/* @func ajSeqGetTax **********************************************************
+**
+** Returns the sequence primary taxon (species).
+** Because this is a pointer to the real internal string
+** the caller must take care not to change the character string in any way.
+** If the string is to be changed (case for example) then it must first
+** be copied.
+**
+** @param [u] thys [const AjPSeq] Sequence object.
+** @return [AjPStr] Description as a string.
+** @@
+******************************************************************************/
+
+AjPStr ajSeqGetTax(const AjPSeq thys)
+{
+    return thys->Tax;
+}
+
+
+
+
 /* @func ajSeqGetDesc *********************************************************
 **
 ** Returns the sequence description.

@@ -136,6 +136,7 @@ ajint        ajSeqGetRange (const AjPSeq thys, ajint* begin, ajint* end);
 AjBool       ajSeqGetReverse (const AjPSeq thys);
 AjBool       ajSeqGetReversed (const AjPSeq thys);
 AjPStr       ajSeqGetSv (const AjPSeq thys);
+AjPStr       ajSeqGetTax (const AjPSeq thys);
 AjPStr       ajSeqGetUsa (AjPSeq thys);
 void         ajSeqinTrace (const AjPSeqin thys);
 AjBool       ajSeqIsNuc (AjPSeq thys);
