@@ -15,8 +15,8 @@ pkgdata_DATA =  abiview.1.abiview.gif chaos.1.chaos.gif cirdna.1.cirdna.gif \
                alignment_differences_group.html \
                alignment_dot_plots_group.html alignment_global_group.html \
                alignment_local_group.html alignment_multiple_group.html \
-               antigenic.html backtranseq.html banana.html \
-               biosed.html btwisted.html cai.html chaos.html charge.html \
+               antigenic.html backtranseq.html banana.html biosed.html \
+               btwisted.html cai.html chaos.html charge.html \
                checktrans.html chips.html cirdna.html clique.html \
                codcmp.html coderet.html compseq.html cons.html \
                consense.html contacts.html contml.html contrast.html \
@@ -50,8 +50,7 @@ pkgdata2_DATA = kitsch.html lindna.html listor.html marscan.html \
                menus_group.html merger.html mix.html msbar.html mse.html \
                mwcontam.html mwfilter.html needle.html neighbor.html \
                newcpgreport.html newcpgseek.html newseq.html noreturn.html \
-               notseq.html nthseq.html \
-               nucleic_2d_structure_group.html \
+               notseq.html nthseq.html nucleic_2d_structure_group.html \
                nucleic_codon_usage_group.html \
                nucleic_composition_group.html \
                nucleic_cpg_islands_group.html \
@@ -73,23 +72,22 @@ pkgdata2_DATA = kitsch.html lindna.html listor.html marscan.html \
                protein_3d_structure_group.html \
                protein_composition_group.html protein_motifs_group.html \
                protein_mutation_group.html protein_profiles_group.html \
-               protein_structure_group.html pscan.html \
-               rebaseextract.html recode.html recoder.html redata.html \
-               remap.html restml.html restover.html restrict.html \
-               revseq.html scopalign.html scope.html scopnr.html \
-               scopparse.html scoprep.html scopreso.html scopseqs.html \
-               seealso.html seqalign.html seqboot.html seqmatchall.html \
-               seqnr.html seqret.html seqretall.html seqretallfeat.html \
-               seqretfeat.html seqretset.html seqretsplit.html \
-               seqsearch.html seqsort.html seqwords.html showalign.html \
-               showdb.html showfeat.html showorf.html showseq.html \
-               shuffleseq.html sigcleave.html siggen.html sigscan.html \
-               silent.html skipseq.html splitter.html stamps.html \
-               stretcher.html stssearch.html supermatcher.html \
-               swissparse.html syco.html test_group.html textsearch.html \
-               tfextract.html tfm.html tfscan.html tmap.html topo.html \
-               tranalign.html transeq.html trimest.html trimseq.html \
-               union.html utils_database_creation_group.html \
+               protein_structure_group.html pscan.html rebaseextract.html \
+               recode.html recoder.html redata.html remap.html restml.html \
+               restover.html restrict.html revseq.html scopalign.html \
+               scope.html scopnr.html scopparse.html scoprep.html \
+               scopreso.html scopseqs.html seealso.html seqalign.html \
+               seqboot.html seqmatchall.html seqnr.html seqret.html \
+               seqretall.html seqretallfeat.html seqretfeat.html \
+               seqretset.html seqretsplit.html seqsearch.html seqsort.html \
+               seqwords.html showalign.html showdb.html showfeat.html \
+               showorf.html showseq.html shuffleseq.html sigcleave.html \
+               siggen.html sigscan.html silent.html sirna.html skipseq.html \
+               splitter.html stamps.html stretcher.html stssearch.html \
+               supermatcher.html swissparse.html syco.html test_group.html \
+               textsearch.html tfextract.html tfm.html tfscan.html \
+               tmap.html topo.html tranalign.html transeq.html trimest.html \
+               trimseq.html union.html utils_database_creation_group.html \
                utils_database_indexing_group.html utils_misc_group.html \
                vectorstrip.html water.html whichdb.html wobble.html \
                wordcount.html wordmatch.html wossname.html yank.html \
