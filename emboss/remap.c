@@ -76,7 +76,6 @@ int main(int argc, char **argv)
     ajint offset;
     AjBool html;
     AjPStr descriptionline;
-    AjPFeattable feat;
     ajint orfminsize;
     AjPTrn trnTable;
     AjBool translation;
@@ -187,9 +186,6 @@ int main(int argc, char **argv)
 	    }
 	}
 
-	/* get the feature table of the sequence */
-	feat = ajSeqCopyFeat(seq);
-
 	/* get the restriction cut sites */
 	/*
 	 *  most of this is lifted from the program 'restrict.c' by Alan
@@ -282,7 +278,7 @@ int main(int argc, char **argv)
 
 	/* tidy up */
 	(void) embShowDel(&ss);
-	(void) ajFeattableDel(&feat);
+
 	while(ajListPop(restrictlist,(void **)&mm))
 	    embMatMatchDel(&mm);
 	(void) ajListDel(&restrictlist);
