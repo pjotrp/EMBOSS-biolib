@@ -16,7 +16,7 @@ pkgdata_DATA =  abiview0.gif banana0.gif chaos0.gif cpgplot0.gif \
                cutseq.html dan.html database_entry_extraction_group.html \
                database_indexing_group.html database_information_group.html \
                dbiblast.html dbifasta.html dbiflat.html dbigcg.html \
-               descseq.html diffseq.html digest.html \
+               degapseq.html descseq.html diffseq.html digest.html \
                display_alignment_multiple_group.html \
                dna_sequence_composition_group.html \
                dna_sequence_features_group.html \
