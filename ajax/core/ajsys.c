@@ -865,8 +865,10 @@ char* ajSysFgets(char *buf, int size, FILE *fp)
 
 FILE* ajSysFopen(char *name, char *flags)
 {
-    AjPStr fname = NULL;
     FILE   *ret  = NULL;
+#ifdef __CYGWIN__
+    AjPStr fname = NULL;
+#endif
     
 #ifdef __CYGWIN__
     if(*(name+1) == ':')

@@ -242,7 +242,10 @@ static void tfm_FixImages(AjPStr *line, AjPStr path)
     
     char *p    = NULL;
     char *q    = NULL;
+
+#ifdef __CYGWIN__
     char *root = NULL;
+#endif
     
     q = ajStrStr(*line);
 
