@@ -221,14 +221,14 @@ public class SectionPanel
       sectionPane.setBorder(title);
 
       String secType = parseAcd.getInfoParamValue(nf).toLowerCase();
-      if(secType.startsWith("advanced ") ||
-         secType.startsWith("additional ") )
+      if(secType.startsWith("advanced "))
         isAdv = true;
       else if(secType.startsWith("input "))
         isInp = true;
       else if(secType.startsWith("output "))
         isOut = true;
-      else if(secType.startsWith("required "))
+      else if(secType.startsWith("additional ") ||
+              secType.startsWith("required "))
         isOut = true;
       else
         System.out.println("Unknown section type " + secType);
