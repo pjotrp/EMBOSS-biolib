@@ -14,19 +14,27 @@ Description
    between two sequences.
    
    The two sequences are placed on the axes of a rectangular image and
-   wherever there is a similarity between the sequences a dot is placed
-   on the image.
+   (in the simplest forms of dotplot) wherever there is a similarity
+   between the sequences a dot is placed on the image.
    
    Where the two sequences have substantial regions of similarity, many
    dots align to form diagonal lines. It is therefore possible to see at
-   a glance where there are local regions of similarity.
+   a glance where there are local regions of similarity as these will
+   have long diagonal lines. It is also easy to see other features such
+   as repeats (which form parallel diagonal lines), and insertions or
+   deletions (which form breaks or discontinuities in the diagonal
+   lines).
    
    dottup looks for places where words (tuples) of a specified length
    have an exact match in both sequences and draws a diagonal line over
-   the position of these words.
+   the position of these words. This is a fast, but not especially
+   sensitive way of creating dotplots. It is an acceptable method for
+   displaying regions of substantial similarity between two sequences.
    
-   Using a longer word (tuple) size thus displays less random noise, runs
-   extremely quickly, but is less sensitive.
+   Using a longer word (tuple) size displays less random noise, runs
+   extremely quickly, but is less sensitive. Shorter word sizes are more
+   sensitive to shorter or fragmentary regions of similarity, but also
+   display more random points of similarity (noise) and runs slower.
    
 Usage
 
@@ -118,20 +126,32 @@ etc.
        
 Data files
 
+   None.
+   
 Notes
 
+   None.
+   
 References
 
+   None.
+   
 Warnings
 
+   None.
+   
 Diagnostic Error Messages
 
+   None.
+   
 Exit status
 
    0 upon successful completion.
    
 Known bugs
 
+   None.
+   
 See also
 
     Program name                           Description
