@@ -4,18 +4,20 @@ SUBDIRS = acd data
 EXTRA_DIST = emboss.default.template
 
 check_PROGRAMS = ajtest \
-contacts complex corbatest \
+complex corbatest \
 demofeatures demolist demosequence demostring demotable \
 entrails histogramtest intconv \
 patmattest \
+psiblasts \
 seqinfo \
 seqretallfeat seqtofeat \
-swissparse testplot treetypedisplay 
+sigscan \
+testplot treetypedisplay 
 
 bin_PROGRAMS = abiview acdc antigenic \
 backtranseq banana btwisted \
 cai chaos charge checktrans chips cirdna codcmp coderet \
-compseq cons cpgplot cpgreport cusp cutgextract cutseq \
+contacts compseq cons cpgplot cpgreport cusp cutgextract cutseq \
 dan dbiblast dbifasta dbiflat dbigcg \
 degapseq descseq diffseq digest distmat domainer \
 dotmatcher dotpath dottup dreg \
@@ -38,8 +40,8 @@ prosextract pscan \
 rebaseextract recoder redata remap restover restrict revseq scope \
 seealso seqmatchall seqret seqretall seqretset seqretsplit \
 showalign showdb showfeat showorf showseq \
-shuffleseq sigcleave siggen sigscan silent splitter scopalign stretcher \
-stssearch supermatcher syco \
+shuffleseq sigcleave siggen silent splitter scopalign stretcher \
+stssearch supermatcher swissparse syco \
 textsearch tfextract tfm tfscan \
 tmap transeq trimseq \
 vectorstrip \
@@ -65,6 +67,7 @@ coderet_SOURCES = coderet.c
 complex_SOURCES = complex.c
 compseq_SOURCES = compseq.c
 cons_SOURCES = cons.c
+contacts_SOURCES = contacts.c
 corbatest_SOURCES = corbatest.c
 cpgplot_SOURCES = cpgplot.c
 cpgreport_SOURCES = cpgreport.c
@@ -177,7 +180,6 @@ showorf_SOURCES = showorf.c
 showseq_SOURCES = showseq.c
 shuffleseq_SOURCES = shuffleseq.c
 siggen_SOURCES = siggen.c
-sigscan_SOURCES = sigscan.c
 sigcleave_SOURCES = sigcleave.c
 silent_SOURCES = silent.c
 splitter_SOURCES = splitter.c
@@ -185,6 +187,7 @@ scopalign_SOURCES = scopalign.c
 stretcher_SOURCES = stretcher.c
 stssearch_SOURCES = stssearch.c
 supermatcher_SOURCES = supermatcher.c
+swissparse_SOURCES = swissparse.c
 syco_SOURCES = syco.c
 textsearch_SOURCES = textsearch.c
 tfextract_SOURCES = tfextract.c
@@ -201,7 +204,6 @@ wordmatch_SOURCES = wordmatch.c
 wossname_SOURCES = wossname.c
 
 ajtest_SOURCES = ajtest.c
-contacts_SOURCES = contacts.c
 demofeatures_SOURCES = demofeatures.c
 demolist_SOURCES = demolist.c
 demosequence_SOURCES = demosequence.c
@@ -209,9 +211,10 @@ demostring_SOURCES = demostring.c
 demotable_SOURCES = demotable.c
 histogramtest_SOURCES = histogramtest.c
 patmattest_SOURCES = patmattest.c
-swissparse_SOURCES = swissparse.c
+psiblasts_SOURCES = psiblasts.c
 seqretallfeat_SOURCES = seqretallfeat.c
 seqtofeat_SOURCES = seqtofeat.c
+sigscan_SOURCES = sigscan.c
 testplot_SOURCES = testplot.c
 treetypedisplay_SOURCES = treetypedisplay.c
 
