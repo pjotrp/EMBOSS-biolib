@@ -54,7 +54,7 @@ AC_CHECK_LIB(socket, socket)
 AC_CHECK_LIB(c, gethostbyname, LIBS="$LIBS", LIBS="$LIBS -lnsl")
 #AC_CHECK_LIB(curses, main)
 
-CFLAGS="-O"
+#CFLAGS="-O"
 
 dnl Test if --enable-debug given
 AC_ARG_ENABLE(debug,
