@@ -1,4 +1,4 @@
-/* @source recoder
+/* @source recode
 **
 ** Find restriction sites in a nucleotide sequence and remove 
 ** them whilst maintaining the same translation.
@@ -103,7 +103,7 @@ int main(int argc, char **argv)
     AjPRinfo re;
  
 
-    embInit("recoder", argc, argv);
+    embInit("recode", argc, argv);
 	
     seq = ajAcdGetSeq("seq");             /* sequence to investigate */
     enzymes = ajAcdGetString("enzymes");  /* enzyme list             */  

@@ -1,6 +1,6 @@
-# recode application 
+# recoder application 
 #
-appl: recode [
+appl: recoder [
           doc: "Remove restriction sites but maintain the same translation"
           groups: "Nucleic:Restriction"
 ]
