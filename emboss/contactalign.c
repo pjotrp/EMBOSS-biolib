@@ -432,13 +432,16 @@ static AjPStr ajint1_to_string3 (ajint ajIntCode)
 
 
 
-/* @funcstatic read_cmap_file ************************************************
+/* @funcstatic read_cmap_file *************************************************
 **
-** reads ajpdb contact map file into two arrays of ints  
+** reads ajpdb contact map file into three arrays of ints  
 **
-** @param [r] ajpFileCmap [AjPFile]  input file stream of current cmap
-** @param [r] pAjpInt2dCmapResTypes [AjPInt2d *] contacts as residue types
-** @param [r] pAjpInt2dCmapPositions [AjPInt2d *] contacts as positions
+** @param [r] ajpFileCmap [AjPFile] input file stream of current cmap
+** @param [r] ajIntSeqLen [ajint] Sequence length
+** @param [r] pAjpCmapHeader [AjPCmapHeader*] Contact map header
+** @param [r] pAjpInt2dCmapSummary [AjPInt2d*] contacts summary
+** @param [r] pAjpInt2dCmapResTypes [AjPInt2d*] contacts as residue types
+** @param [r] pAjpInt2dCmapPositions [AjPInt2d*] contacts as positions
 **                                               in chain
 ** @return [AjBool] ajTrue if file successfully read
 ** @@
@@ -620,8 +623,8 @@ static AjPStr read_cmap_line (AjPFile ajpFileCmap)
 **
 ** based on first two chars, returns type of line from contact map file:
 **
-** @param [r] ajpFileCmap [AjPFile]  input file stream of current cmap
-** @return [AjPStr] contents of line read
+** @param [r] ajpStrCmapLine [AjPStr] Contact map file line  
+** @return [ajint] Enumerated line code
 ** @@
 ******************************************************************************/
 
@@ -663,12 +666,12 @@ static ajint type_cmap_line (AjPStr ajpStrCmapLine)
 
 
 
-/* @funcstatic load_contact_line ************************************************
+/* @funcstatic load_contact_line **********************************************
 **
 ** loads single contact from single line of ajpdb contact map file
 **
-** @param [r] pAjpStrCmapLine [AjPStr *] to contact line from Cmap file
-** @param [r] pAjpContactParsed [AjPContact *] to contact object from line
+** @param [r] pAjpStrCmapLine [AjPStr*] to contact line from Cmap file
+** @param [r] pAjpContactLoaded [AjPContact*] to contact object from line
 ** @return [AjBool] ajTrue if contact successfully parsed
 ** @@
 ******************************************************************************/
@@ -727,12 +730,12 @@ static AjBool load_contact_line (AjPStr *pAjpStrCmapLine,
 
 
 
-/* @funcstatic load_header_line ************************************************
+/* @funcstatic load_header_line ***********************************************
 **
 ** loads single line from ajpdb contact map file into header object
 **
-** @param [r] pAjpStrCmapLine [AjPStr *] to header line from Cmap file
-** @param [r] pAjpHeaderToLoad [AjPCmapHeader *] to header object from line
+** @param [r] pAjpStrCmapLine [AjPStr*] to header line from Cmap file
+** @param [r] pAjpCmapHeaderToLoad [AjPCmapHeader*] to header object from line
 ** @return [AjBool] ajTrue if line successfully loaded
 ** @@
 ******************************************************************************/
@@ -807,9 +810,11 @@ static AjBool load_header_line (AjPStr *pAjpStrCmapLine,
 **
 ** @param [r] ajpFileUpdatedCmap [AjPFile] output file stream of current cmap
 ** @param [r] ajIntSeqLen [ajint] number of residues in chain sequence
-** @param [r] pAjPInt2dCmapSummary [AjPInt2d *] summary of contact map
-** @param [r] pAjPInt2dCmapResTypes [AjPInt2d *] contacts as residue types
-** @param [r] pAjPInt2dCmapPositions [AjPInt2d *] contacts as positions in chain
+** @param [r] pAjpCmapHeader [AjPCmapHeader*] Contact map header
+** @param [r] pAjpInt2dCmapSummary [AjPInt2d*] summary of contact map
+** @param [r] pAjpInt2dCmapResTypes [AjPInt2d*] contacts as residue types
+** @param [r] pAjpInt2dCmapPositions [AjPInt2d*] contacts as positions in
+**                                               chain
 ** @return [AjBool] ajTrue if file successfully written
 ** @@
 ******************************************************************************/
@@ -970,7 +975,7 @@ static void ajContactDel(AjPContact* pthis)
 **
 ** Default constructor for a contact map header object
 **
-** @return [AjpCmapHeader] Pointer to an AjPCmapHeader
+** @return [AjPCmapHeader] Pointer to an AjPCmapHeader
 ** @@
 ******************************************************************************/
 
@@ -985,11 +990,11 @@ static AjPCmapHeader ajCmapHeaderNew(void)
 
 
 
-/* @funcstatic ajCmapHeaderDel **************************************************
+/* @funcstatic ajCmapHeaderDel ************************************************
 **
 ** Default destructor for a contact map header object
 **
-** @param [r] pAjpCmapHeaderToDel [AjPCmapHeader *] header to be deleted
+** @param [r] pthis [AjPCmapHeader*] header to be deleted
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -1019,12 +1024,12 @@ static void ajCmapHeaderDel (AjPCmapHeader* pthis)
 
 
 
-/* @funcstatic get_cmap_summary *************************************************
+/* @funcstatic get_cmap_summary ***********************************************
 **
 ** reserves memory for a 2-D array of ints to summarise a contact map 
 **
-** @param [r] ajIntAcrossSeqLen [AjPContact] number of residues in template
-** @return [ajint **] array of ajints containing number of contacts and
+** @param [r] pcSeq [char*] Contact map
+** @return [AjPInt2d] array of ajints containing number of contacts and
 ** types of first residue in each contact
 ** @@
 ******************************************************************************/
@@ -1231,7 +1236,7 @@ static AjBool write_contact (AjPFile ajpFileUpdatedCmap,
 }
 
 
-/* @funcstatic write_cmap_header *************************************************
+/* @funcstatic write_cmap_header **********************************************
 **
 ** writes header object to open contact map file
 **
@@ -1266,11 +1271,11 @@ static AjBool write_cmap_header (AjPFile ajpFileUpdatedCmap,
 }
 
 
-/* @funcstatic debug_cmap_header *********************************************
+/* @funcstatic debug_cmap_header **********************************************
 **
 ** prints out a contact map header
 **
-** @param [r] ajpCmapHeaderToPrint [AjPCmapHeader *] to header to be printed
+** @param [r] pAjpCmapHeaderToPrint [AjPCmapHeader*] to header to be printed
 ** @return [AjBool] did it work?
 ** @@
 ******************************************************************************/

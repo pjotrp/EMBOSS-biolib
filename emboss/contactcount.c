@@ -448,11 +448,11 @@ static ajint char_to_scoring_matrix_index(char cResType)
 
 
 
-/* @funcstatic scoring_matrix_index_to_char ******************************************
+/* @funcstatic scoring_matrix_index_to_char ***********************************
 **
 ** converts scoring_matrix index number to char
 **
-** @param [r] ajIntBlosumIndex [ajint] BLOSUM index number
+** @param [r] ajIntScoringMatrixIndex [ajint] BLOSUM index number
 ** @return [ajint]  original single-letter residue type
 ** @@
 ******************************************************************************/
