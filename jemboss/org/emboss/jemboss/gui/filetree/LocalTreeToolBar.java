@@ -70,7 +70,8 @@ public class LocalTreeToolBar extends JToolBar
     };
     upBt.setPreferredSize(buttonSize);
     upBt.setMaximumSize(buttonSize);
-    
+    upBt.setToolTipText("Move Up a Directory");
+
     upBt.addActionListener(new ActionListener()
     {
       public void actionPerformed(ActionEvent e)
@@ -100,6 +101,8 @@ public class LocalTreeToolBar extends JToolBar
     };
     shortCut2.setPreferredSize(buttonSize);
     shortCut2.setMaximumSize(buttonSize);
+    shortCut2.setToolTipText("Move To Working Directory");
+
     shortCut2.addActionListener(new ActionListener()
     {
       public void actionPerformed(ActionEvent e)
@@ -128,6 +131,8 @@ public class LocalTreeToolBar extends JToolBar
     };
     homeBt.setPreferredSize(buttonSize);
     homeBt.setMaximumSize(buttonSize);
+    homeBt.setToolTipText("Move To Home Directory");
+
     homeBt.addActionListener(new ActionListener()
     {
       public void actionPerformed(ActionEvent e)
