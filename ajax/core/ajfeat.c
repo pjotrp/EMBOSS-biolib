@@ -1016,6 +1016,10 @@ static AjPFeature featFeatNew (AjPFeattable thys,
 				  ajint        flags ) {
   AjPFeature ret = NULL ;
   static ajint maxexon = 0;
+  static AjPStr defsource=NULL;
+
+  if (!defsource)
+    ajAcdProgramS (&defsource);
 
   ajDebug ("\nfeatFeatNew '%S' %d .. %d %x\n", type, Start, End, flags);
 
@@ -1042,7 +1046,10 @@ static AjPFeature featFeatNew (AjPFeattable thys,
     ret->Exon = 0;
   }
 
-  ajStrAssS (&ret->Source, source);
+  if (ajStrLen(source))
+    ajStrAssS (&ret->Source, source);
+  else
+    ajStrAssS (&ret->Source, defsource);
 
   ajStrAssS (&ret->Type, featTypeDna(type));
 
@@ -1100,6 +1107,10 @@ static AjPFeature featFeatNewProt (AjPFeattable thys,
 				   ajint        flags ) {
   AjPFeature ret = NULL ;
   static ajint maxexon = 0;
+  static AjPStr defsource=NULL;
+
+  if (!defsource)
+    ajAcdProgramS (&defsource);
 
   ajDebug ("\nfeatFeatNew '%S' %d .. %d %x\n", type, Start, End, flags);
 
@@ -1122,7 +1133,10 @@ static AjPFeature featFeatNewProt (AjPFeattable thys,
     ret->Exon = 0;
   }
 
-  ajStrAssS (&ret->Source, source);
+  if (ajStrLen(source))
+    ajStrAssS (&ret->Source, source);
+  else
+    ajStrAssS (&ret->Source, defsource);
 
   ajStrAssS (&ret->Type, featTypeProt(type));
 
