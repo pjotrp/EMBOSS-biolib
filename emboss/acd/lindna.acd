@@ -14,6 +14,20 @@ infile: infile  [
   knowntype: "lindna mapping commands"
 ]
 
+integer: maxgroups  [
+  additional: "Y"
+  default: "20"
+  minimum: "1"
+  information: "maximum number of groups"
+]
+
+integer: maxlabels  [
+  additional: "Y"
+  default: "10000"
+  minimum: "1"
+  information: "maximum number of labels"
+]
+
 boolean: ruler  [
   standard: "Y"
   default: "Y"

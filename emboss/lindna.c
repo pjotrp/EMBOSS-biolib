@@ -26,15 +26,14 @@
 #include <string.h>
 #include <stdlib.h>
 
-#define MAXGROUPS 20
-#define MAXLABELS 10000
 
 
 
 
 static void lindna_ReadInput(AjPFile infile, float *Start, float *End);
 
-static AjPStr lindna_ReadGroup(AjPFile infile, float *From, float *To,
+static AjPStr lindna_ReadGroup(AjPFile infile, ajint maxlabels,
+			       float *From, float *To,
 			       AjPStr *Name, char *FromSymbol, char *ToSymbol,
 			       AjPStr *Style, char *TextOri, ajint *NumLabels,
 			       ajint *NumNames, ajint *Colour);
@@ -142,23 +141,34 @@ int main(int argc, char **argv)
     ajint i;
     ajint j;
     ajint GapSize;
-    ajint NumLabels[MAXGROUPS];
-    ajint NumNames[MAXGROUPS][MAXLABELS];
+    ajint* NumLabels=NULL;
+    ajint** NumNames=NULL;
+/*    ajint NumLabels[MAXGROUPS];*/
+/*    ajint NumNames[MAXGROUPS][MAXLABELS];*/
     ajint NumGroups;
     ajint InterColour;
-    ajint Colour[MAXGROUPS][MAXLABELS];
-    ajint Adjust[MAXGROUPS][MAXLABELS];
-    ajint AdjustMax[MAXGROUPS];
-    char FromSymbol[MAXGROUPS][MAXLABELS];
-    char ToSymbol[MAXGROUPS][MAXLABELS];
-    char TextOri[MAXGROUPS][MAXLABELS];
+    ajint** Colour=NULL;
+    ajint** Adjust=NULL;
+    ajint* AdjustMax=NULL;
+    char** FromSymbol=NULL;
+    char** ToSymbol=NULL;
+    char** TextOri=NULL;
+/*    ajint Colour[MAXGROUPS][MAXLABELS];*/
+/*    ajint Adjust[MAXGROUPS][MAXLABELS];*/
+/*    ajint AdjustMax[MAXGROUPS];*/
+/*    char FromSymbol[MAXGROUPS][MAXLABELS];*/
+/*    char ToSymbol[MAXGROUPS][MAXLABELS];*/
+/*    char TextOri[MAXGROUPS][MAXLABELS];*/
     float xDraw;
     float yDraw;
     float ReduceCoef;
-    float From[MAXGROUPS][MAXLABELS];
-    float To[MAXGROUPS][MAXLABELS];
+    float** From=NULL;
+    float** To=NULL;
+/*    float From[MAXGROUPS][MAXLABELS];*/
+/*    float To[MAXGROUPS][MAXLABELS];*/
     float TotalHeight;
-    float GroupHeight[MAXGROUPS];
+    float* GroupHeight=NULL;
+/*    float GroupHeight[MAXGROUPS];*/
     float RulerHeight;
     float Width;
     float Height;
@@ -179,27 +189,28 @@ int main(int argc, char **argv)
     float postext;
     AjPFile infile;
     AjPStr line;
-    AjPStr GroupName[MAXGROUPS];
+    AjPStr* GroupName;
+/*    AjPStr GroupName[MAXGROUPS];*/
     AjBool Ruler;
     AjPStr InterSymbol;
     AjBool InterTicks;
     AjBool TickLines;
     AjPStr BlockType;
-    AjPStr Name[MAXGROUPS][MAXLABELS];
-    AjPStr Style[MAXGROUPS][MAXLABELS];
+    AjPStr** Name=NULL;
+    AjPStr** Style=NULL;
+/*    AjPStr Name[MAXGROUPS][MAXLABELS];*/
+/*    AjPStr Style[MAXGROUPS][MAXLABELS];*/
     float charsize;
     float minsize;
-
-    for(i=0;i<MAXGROUPS;++i)
-	for(j=0;j<MAXLABELS;++j)
-	{
-	    Name[i][j]  = ajStrNewC("");
-	    Style[i][j] = ajStrNewC("");
-	    To[i][j] = 0.;
-	}
+    ajint maxgroups;
+    ajint maxlabels;
 
     /* read the ACD file for graphical programs */
     ajGraphInit("lindna", argc, argv);
+
+    /* array size limits */
+    maxgroups = ajAcdGetInt("maxgroups");
+    maxlabels = ajAcdGetInt("maxlabels");
 
     /* to draw or not to draw the ruler */
     Ruler = ajAcdGetBool("ruler");
@@ -226,6 +237,23 @@ int main(int argc, char **argv)
     /* get the input file */
     infile = ajAcdGetInfile("infile");
 
+    /* Allocate memory for the old fixed-length arrays */
+
+    AJCNEW0(GroupName, maxgroups);
+    AJCNEW0(NumLabels, maxgroups);
+    AJCNEW0(NumNames, maxgroups);
+    AJCNEW0(Colour, maxgroups);
+    AJCNEW0(Adjust, maxgroups);
+    AJCNEW0(AdjustMax, maxgroups);
+    AJCNEW0(FromSymbol, maxgroups);
+    AJCNEW0(ToSymbol, maxgroups);
+    AJCNEW0(TextOri, maxgroups);
+    AJCNEW0(From, maxgroups);
+    AJCNEW0(To, maxgroups);
+    AJCNEW0(GroupHeight, maxgroups);
+    AJCNEW0(Style, maxgroups);
+    AJCNEW0(Name, maxgroups);
+ 
     /* length and height of text */
     TextHeight = 20*ajAcdGetFloat("textheight");
     TextLength = 40*ajAcdGetFloat("textlength");
@@ -273,15 +301,59 @@ int main(int argc, char **argv)
     {
 	if(ajStrPrefixC(line, "group"))
 	{
-	    GroupName[i] = lindna_ReadGroup(infile, From[i], To[i], Name[i],
-					    FromSymbol[i], ToSymbol[i],
-					    Style[i], TextOri[i],
-					    &NumLabels[i], NumNames[i],
-					    Colour[i]);
+	    if (i == maxgroups)
+		ajWarn("Too many groups (maxgroups=%d) in input", maxgroups);
+	    if (i < maxgroups)
+	    {
+		AJCNEW0(NumNames[i], maxlabels);
+		AJCNEW0(Colour[i], maxlabels);
+		AJCNEW0(Adjust[i], maxlabels);
+		AJCNEW0(FromSymbol[i], maxlabels);
+		AJCNEW0(ToSymbol[i], maxlabels);
+		AJCNEW0(TextOri[i], maxlabels);
+		AJCNEW0(From[i], maxlabels);
+		AJCNEW0(To[i], maxlabels);
+		AJCNEW0(Style[i], maxlabels);
+		AJCNEW0(Name[i], maxlabels);
+
+		GroupName[i] = lindna_ReadGroup(infile,maxlabels,
+						From[i], To[i],
+						Name[i],
+						FromSymbol[i], ToSymbol[i],
+						Style[i], TextOri[i],
+						&NumLabels[i], NumNames[i],
+						Colour[i]);
+		j = NumLabels[i];
+		AJCRESIZE(NumNames[i],j);
+		AJCRESIZE(Colour[i], j);
+		AJCRESIZE(Adjust[i], j);
+		AJCRESIZE(FromSymbol[i], j);
+		AJCRESIZE(ToSymbol[i], j);
+		AJCRESIZE(TextOri[i], j);
+		AJCRESIZE(From[i], j);
+		AJCRESIZE(To[i], j);
+		AJCRESIZE(Style[i], j);
+		AJCRESIZE(Name[i], j);
+	    }
 	    i++;
 	}
     }
     NumGroups = i;
+
+    AJCRESIZE(GroupName, i);
+    AJCRESIZE(NumLabels, i);
+    AJCRESIZE(NumNames, i);
+    AJCRESIZE(Colour, i);
+    AJCRESIZE(Adjust, i);
+    AJCRESIZE(AdjustMax, i);
+    AJCRESIZE(FromSymbol, i);
+    AJCRESIZE(ToSymbol, i);
+    AJCRESIZE(TextOri, i);
+    AJCRESIZE(From, i);
+    AJCRESIZE(To, i);
+    AJCRESIZE(GroupHeight, i);
+    AJCRESIZE(Style, i);
+    AJCRESIZE(Name, i);
 
     /* scale the groups */
     for(i=0; i<NumGroups; i++)
@@ -291,8 +363,11 @@ int main(int argc, char **argv)
 	    **  remove the beginning of the molecule in case it doesn't
 	    **  begin at 1
 	    */
-	    From[i][j] -= (Start-1);
-	    To[i][j]   -= (Start-1);
+	    if (Start != 1)
+	    {
+		From[i][j] -= (Start-1);
+		To[i][j]   -= (Start-1);
+	    }
 	    /* scale the real size to window's size */
 	    From[i][j]/=ReduceCoef;
 	    To[i][j]/=ReduceCoef;
@@ -1272,6 +1347,7 @@ static void lindna_ReadInput(AjPFile infile, float *Start, float *End)
 ** read a group
 **
 ** @param [?] infile [AjPFile] Undocumented
+** @param [?] maxlabels [ajint] Undocumented
 ** @param [?] From [float*] Undocumented
 ** @param [?] To [float*] Undocumented
 ** @param [?] Name [AjPStr*] Undocumented
@@ -1286,7 +1362,8 @@ static void lindna_ReadInput(AjPFile infile, float *Start, float *End)
 ** @@
 ******************************************************************************/
 
-static AjPStr lindna_ReadGroup(AjPFile infile, float *From, float *To,
+static AjPStr lindna_ReadGroup(AjPFile infile, ajint maxlabels,
+			       float *From, float *To,
 			       AjPStr *Name, char *FromSymbol, char *ToSymbol,
 			       AjPStr *Style, char *TextOri, ajint *NumLabels,
 			       ajint *NumNames, ajint *Colour)
@@ -1334,27 +1411,35 @@ static AjPStr lindna_ReadGroup(AjPFile infile, float *From, float *To,
 		/* read the group's label(s) */
 		if(ajStrPrefixC(line, "label"))
 		{
+		    if (i == maxlabels)
+			ajWarn("Too many labels (maxlabels=%d) in input",
+			       maxlabels);
 		    while(ajFileReadLine(infile, &line))
 		    {
 			token = ajStrTokC(line, " \n\t\r\f");
 			if(ajStrLen(token)!=0)
 			{
-			    FromSymbol[i] = '<';
-			    ToSymbol[i] = '>';
-			    TextOri[i] = 'H';
-			    sscanf(ajStrStr(line), "%s", style);
-			    if(ajStrMatchCaseCC(style, "Tick"))
-				sscanf(ajStrStr(line), "%*s %f %d %c",
-				       &From[i], &Colour[i], &TextOri[i]);
-			    if(ajStrMatchCaseCC(style, "Block"))
-				sscanf(ajStrStr(line), "%*s %f %f %d %c",
-				       &From[i], &To[i], &Colour[i],
-				       &TextOri[i]);
-			    if(ajStrMatchCaseCC(style, "Range"))
-				sscanf(ajStrStr(line),"%*s %f %f %c %c %d %c",
-				       &From[i], &To[i], &FromSymbol[i],
-				       &ToSymbol[i], &Colour[i], &TextOri[i]);
-			    ajStrAssC(&Style[i], style);
+			    if (i < maxlabels)
+			    {
+				FromSymbol[i] = '<';
+				ToSymbol[i] = '>';
+				TextOri[i] = 'H';
+				sscanf(ajStrStr(line), "%s", style);
+				if(ajStrMatchCaseCC(style, "Tick"))
+				    sscanf(ajStrStr(line), "%*s %f %d %c",
+					   &From[i], &Colour[i], &TextOri[i]);
+				if(ajStrMatchCaseCC(style, "Block"))
+				    sscanf(ajStrStr(line), "%*s %f %f %d %c",
+					   &From[i], &To[i], &Colour[i],
+					   &TextOri[i]);
+				if(ajStrMatchCaseCC(style, "Range"))
+				    sscanf(ajStrStr(line),
+					   "%*s %f %f %c %c %d %c",
+					   &From[i], &To[i], &FromSymbol[i],
+					   &ToSymbol[i], &Colour[i],
+					   &TextOri[i]);
+				ajStrAssC(&Style[i], style);
+			    }
 			    break;
 			}
 		    }
@@ -1370,19 +1455,26 @@ static AjPStr lindna_ReadGroup(AjPFile infile, float *From, float *To,
 				break;
 			    else
 			    {
-				ajStrApp(&Name[i], line);
-				ajStrAppC(&Name[i], ";");
-				j++;
+				if (i < maxlabels)
+				{
+				    ajStrApp(&Name[i], line);
+				    ajStrAppC(&Name[i], ";");
+				    j++;
+				}
 			    }
 			}
 		    }
-		    NumNames[i] = j;
+		    if (i < maxlabels)
+			NumNames[i] = j;
 		    i++;
 		}
 	    }
 	}
     }
-    *NumLabels = i;
+    if (i < maxlabels)
+	*NumLabels = i;
+    else
+	*NumLabels = maxlabels;
 
     AJFREE(style);
     ajStrDel(&line);
@@ -1567,10 +1659,19 @@ static ajint lindna_OverlapTextGroup(AjPStr *Name, AjPStr *Style,
     ajint j;
     ajint AdjustMax;
     AjPStr token;
-    float FromText[MAXLABELS];
-    float ToText[MAXLABELS];
+    static float* FromText=NULL;
+    static float* ToText=NULL;
+    ajint maxnumlabels=0;
+/*    float FromText[MAXLABELS];*/
+/*    float ToText[MAXLABELS];*/
     float stringLength;
 
+    if (NumLabels > maxnumlabels)
+    {
+	maxnumlabels = NumLabels;
+	AJCRESIZE(FromText, maxnumlabels);
+	AJCRESIZE(ToText, maxnumlabels);
+    }
 
     /* compute the length of the horizontal strings */
     for(i=0; i<NumLabels; i++)
@@ -1724,12 +1825,21 @@ static void lindna_DrawGroup(float xDraw, float yDraw, float Border,
 			     AjPStr InterSymbol, AjBool InterTicks,
 			     char *TextOri, ajint NumLabels, ajint *NumNames,
 			     AjPStr GroupName, ajint *Adjust,
-			     ajint InterColour, ajint *Colour, AjPStr BlockType)
+			     ajint InterColour, ajint *Colour,
+			     AjPStr BlockType)
 {
     ajint i;
     ajint j;
     ajint NumBlocks;
-    ajint Inter[MAXLABELS];
+    static ajint maxinter=0;
+    static ajint* Inter=NULL;
+/*    ajint Inter[MAXLABELS];*/
+
+    if (NumLabels > maxinter)
+    {
+	maxinter = NumLabels;
+	AJCRESIZE(Inter, maxinter);
+    }
 
     /*ajGraphSetBackgroundWhite();*/
     ajGraphSetFore(1);

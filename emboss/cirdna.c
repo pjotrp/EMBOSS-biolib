@@ -25,26 +25,25 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#define MAXGROUPS 20
-#define MAXLABELS 10000
 
 
 
 
 static void cirdna_ReadInput(AjPFile infile, float *Start, float *End);
-static AjPStr cirdna_ReadGroup(AjPFile infile, float *From, float *To,
+static AjPStr cirdna_ReadGroup(AjPFile infile, ajint maxlabels,
+			       float* From, float *To,
 			       AjPStr *Name2, char *FromSymbol,
 			       char *ToSymbol, AjPStr *Style2,
 			       ajint *NumLabels, ajint *NumNames,
 			       ajint *Colour);
 static float cirdna_TextGroup(float TextHeight, float TextLength,
 			      AjPStr *Name2, ajint NumLabels, ajint *NumNames,
-			      AjPStr GroupName, AjPStr *Style2, float *From,
-			      float *To, float BlockHeight, AjPStr PosTicks);
+			      AjPStr GroupName, AjPStr *Style2, float* From,
+			      float* To, float BlockHeight, AjPStr PosTicks);
 static float cirdna_TextGroupStr(AjPStr *Name2, ajint NumLabels,
 				 ajint *NumNames, AjPStr GroupName,
-				 float TextCoef, AjPStr *Style2, float *From,
-				 float *To, float BlockHeight,
+				 float TextCoef, AjPStr *Style2, float* From,
+				 float* To, float BlockHeight,
 				 AjPStr PosTicks);
 static float cirdna_HeightGroup(float posblock, float posrange, float postext,
 				float TickHeight, float BlockHeight,
@@ -53,18 +52,18 @@ static float cirdna_HeightGroup(float posblock, float posrange, float postext,
 				ajint *NumNames, AjPStr PosTicks,
 				AjPStr PosBlocks, ajint Adjust);
 static ajint cirdna_OverlapTextGroup(AjPStr *Name2, AjPStr *Style2,
-				     ajint NumLabels, float *From, float *To,
+				     ajint NumLabels, float* From, float* To,
 				     float Start, float End,
 				     AjPStr PosTicks, ajint *Adjust);
 static AjBool cirdna_OverlapTickRuler(ajint NumGroups, ajint *NumLabels,
-				      float *From, AjPStr PosTicks,
+				      float** From, AjPStr PosTicks,
 				      ajint RulerTick);
 static void cirdna_DrawGroup(float xDraw, float yDraw, float posblock,
 			     float posrange, float postext, float TickHeight,
 			     float BlockHeight, float RangeHeight,
 			     float RealLength, float TextLength,
 			     float TextHeight, float Radius, float RadiusMax,
-			     float *From, float *To, AjPStr *Name2,
+			     float* From, float* To, AjPStr *Name2,
 			     char *FromSymbol, char *ToSymbol,
 			     AjPStr *Style2, AjBool InterSymbol,
 			     AjBool InterTicks, ajint NumLabels,
@@ -89,7 +88,7 @@ static void cirdna_DrawRuler(float xDraw, float yDraw, float Start, float End,
 			     float OriginAngle, ajint GapSize,
 			     AjBool TickLines, float TextLength,
 			     float TextHeight, float postext,
-			     ajint NumGroups, ajint *NumLabels, float *From,
+			     ajint NumGroups, ajint *NumLabels, float** From,
 			     AjPStr PosTicks, ajint Colour);
 static void cirdna_DrawTicks(float xDraw, float yDraw, float RealLength,
 			     float Radius, float TickHeight, float From,
@@ -137,8 +136,10 @@ static float cirdna_ComputeAngle(float RealLength, float Length,
 
 
 
-static AjPStr Style[MAXGROUPS][MAXLABELS];
-static AjPStr Name[MAXGROUPS][MAXLABELS];
+static AjPStr** Style=NULL;
+static AjPStr** Name=NULL;
+/*static AjPStr Style[MAXGROUPS][MAXLABELS]; */
+/*static AjPStr Name[MAXGROUPS][MAXLABELS];*/
 
 
 
@@ -155,25 +156,34 @@ int main(int argc, char **argv)
     ajint i;
     ajint j;
     ajint GapSize;
-    ajint NumLabels[MAXGROUPS];
-    ajint NumNames[MAXGROUPS][MAXLABELS];
+    ajint* NumLabels;
+    ajint** NumNames;
+/*    ajint NumNames[MAXGROUPS][MAXLABELS];*/
     ajint NumGroups;
     ajint InterColour;
-    ajint Colour[MAXGROUPS][MAXLABELS];
-    ajint Adjust[MAXGROUPS][MAXLABELS];
-    ajint AdjustMax[MAXGROUPS];
-    char FromSymbol[MAXGROUPS][MAXLABELS];
-    char ToSymbol[MAXGROUPS][MAXLABELS];
+    ajint** Colour;
+    ajint** Adjust;
+    ajint* AdjustMax=NULL;
+    char** FromSymbol=NULL;
+    char** ToSymbol=NULL;
+/*    ajint Colour[MAXGROUPS][MAXLABELS];*/
+/*    ajint Adjust[MAXGROUPS][MAXLABELS];*/
+/*    ajint AdjustMax[MAXGROUPS];*/
+/*    char FromSymbol[MAXGROUPS][MAXLABELS];*/
+/*    char ToSymbol[MAXGROUPS][MAXLABELS];*/
     float xDraw;
     float yDraw;
     float Radius;
     float RadiusMax;
     float DrawRadius;
     float OriginAngle;
-    float From[MAXGROUPS][MAXLABELS];
-    float To[MAXGROUPS][MAXLABELS];
+    float** From=NULL;
+    float** To=NULL;
+/*    float From[MAXGROUPS][MAXLABELS];*/
+/*    float To[MAXGROUPS][MAXLABELS];*/
     float TotalHeight;
-    float GroupHeight[MAXGROUPS];
+    float* GroupHeight=NULL;
+/*    float GroupHeight[MAXGROUPS];*/
     float RulerHeight;
     float Width;
     float Height;
@@ -193,7 +203,8 @@ int main(int argc, char **argv)
     float postext;
     AjPFile infile;
     AjPStr line;
-    AjPStr GroupName[MAXGROUPS];
+    AjPStr* GroupName=NULL;
+/*    AjPStr GroupName[MAXGROUPS];*/
     AjBool Ruler;
     AjBool InterSymbol;
     AjBool InterTicks;
@@ -203,10 +214,15 @@ int main(int argc, char **argv)
     AjPStr PosBlocks;
     float charsize;
     float minsize;
-
+    ajint maxgroups;
+    ajint maxlabels;
 
     /* read the ACD file for graphical programs */
     ajGraphInit("cirdna", argc, argv);
+
+    /* array size limits */
+    maxgroups = ajAcdGetInt("maxgroups");
+    maxlabels = ajAcdGetInt("maxlabels");
 
     /* to draw or not to draw the ruler */
     Ruler = ajAcdGetBool("ruler");
@@ -243,15 +259,28 @@ int main(int argc, char **argv)
     /* get the input file */
     infile = ajAcdGetInfile("infile");
 
+    /* Allocate memory for the old fixed-length arrays */
+
+    AJCNEW0(Style, maxgroups);
+    AJCNEW0(Name, maxgroups);
+    AJCNEW0(NumNames, maxgroups);
+    AJCNEW0(NumLabels, maxgroups);
+    AJCNEW0(Colour, maxgroups);
+    AJCNEW0(Adjust, maxgroups);
+    AJCNEW0(AdjustMax, maxgroups);
+    AJCNEW0(FromSymbol, maxgroups);
+    AJCNEW0(ToSymbol, maxgroups);
+    AJCNEW0(From, maxgroups);
+    AJCNEW0(To, maxgroups);
+    AJCNEW0(GroupHeight, maxgroups);
+    AJCNEW0(GroupName, maxgroups);
+
     /* length and height of text */
     /*TextHeight = 10;
     TextLength = TextHeight+25;*/
     TextHeight = 20*ajAcdGetFloat("textheight");
     TextLength = 40*ajAcdGetFloat("textlength");
 
-    for(i=0;i<MAXGROUPS;++i)
-	for(j=0;j<MAXLABELS;++j)
-	    To[i][j] = 0.;
 
     /* read the start and end positions */
     cirdna_ReadInput(infile, &Start, &End);
@@ -299,22 +328,66 @@ int main(int argc, char **argv)
     {
 	if( ajStrPrefixC(line, "group") )
 	{
-	    GroupName[i] = cirdna_ReadGroup(infile, From[i], To[i], Name[i],
-					    FromSymbol[i], ToSymbol[i],
-					    Style[i], &NumLabels[i],
-					    NumNames[i], Colour[i]);
+	    if (i == maxgroups)
+		ajWarn("Too many groups (maxgroups=%d) in input", maxgroups);
+	    if (i < maxgroups)
+	    {
+		AJCNEW0(Style[i], maxlabels);
+		AJCNEW0(Name[i], maxlabels);
+		AJCNEW0(NumNames[i], maxlabels);
+		AJCNEW0(Colour[i], maxlabels);
+		AJCNEW0(Adjust[i], maxlabels);
+		AJCNEW0(FromSymbol[i], maxlabels);
+		AJCNEW0(ToSymbol[i], maxlabels);
+		AJCNEW0(From[i], maxlabels);
+		AJCNEW0(To[i], maxlabels);
+
+		GroupName[i] = cirdna_ReadGroup(infile, maxlabels,
+						From[i], To[i],
+						Name[i],
+						FromSymbol[i], ToSymbol[i],
+						Style[i], &NumLabels[i],
+						NumNames[i], Colour[i]);
+		j = NumLabels[i];
+		AJCRESIZE(Style[i], j);
+		AJCRESIZE(Name[i], j);
+		AJCRESIZE(NumNames[i], j);
+		AJCRESIZE(Colour[i], j);
+		AJCRESIZE(Adjust[i], j);
+		AJCRESIZE(FromSymbol[i], j);
+		AJCRESIZE(ToSymbol[i], j);
+		AJCRESIZE(From[i], j);
+		AJCRESIZE(To[i], j);
+	    }
 	    i++;
 	}
     }
     NumGroups = i;
 
+    AJCRESIZE(Style, i);
+    AJCRESIZE(Name, i);
+    AJCRESIZE(NumNames, i);
+    AJCRESIZE(NumLabels, i);
+    AJCRESIZE(Colour, i);
+    AJCRESIZE(Adjust, i);
+    AJCRESIZE(AdjustMax, i);
+    AJCRESIZE(FromSymbol, i);
+    AJCRESIZE(ToSymbol, i);
+    AJCRESIZE(From, i);
+    AJCRESIZE(To, i);
+    AJCRESIZE(GroupHeight, i);
+    AJCRESIZE(GroupName, i);
+
     /* remove the beginning of the molecule in case it doesn't begin at 1 */
-    for(i=0; i<NumGroups; i++)
-	for(j=0; j<NumLabels[i]; j++)
-	{
-	    From[i][j] -= (Start-1);
-	    To[i][j]   -= (Start-1);
-	}
+    if (Start != 1)
+    {
+	for(i=0; i<NumGroups; i++)
+	    for(j=0; j<NumLabels[i]; j++)
+	    {
+		From[i][j] -= (Start-1);
+		To[i][j]   -= (Start-1);
+	    }
+    }
 
     /* compute the character size that fits all groups, including the ruler */
     minsize = 100.0;
@@ -425,7 +498,7 @@ int main(int argc, char **argv)
 			 RealLength, Radius, TickHeight,
 			 OriginAngle, GapSize, TickLines, TextLength,
 			 TextHeight, postext, NumGroups, NumLabels,
-			 &From[0][0], PosTicks, 1);
+			 From, PosTicks, 1);
 
     /* draw the groups */
     for(i=0; i<NumGroups; i++)
@@ -694,7 +767,7 @@ static float cirdna_HeightRuler(float Start, float End, ajint GapSize,
 ** @param [?] postext [float] Undocumented
 ** @param [?] NumGroups [ajint] Undocumented
 ** @param [?] NumLabels [ajint*] Undocumented
-** @param [?] From [float*] Undocumented
+** @param [?] From [float**] Undocumented
 ** @param [?] PosTicks [AjPStr] Undocumented
 ** @param [?] Colour [ajint] Undocumented
 ** @@
@@ -705,7 +778,7 @@ static void cirdna_DrawRuler(float xDraw, float yDraw, float Start, float End,
 			     float OriginAngle, ajint GapSize,
 			     AjBool TickLines, float TextLength,
 			     float TextHeight, float postext,
-			     ajint NumGroups, ajint *NumLabels, float *From,
+			     ajint NumGroups, ajint *NumLabels, float** From,
 			     AjPStr PosTicks, ajint Colour)
 {
     ajint i;
@@ -1409,6 +1482,7 @@ static void cirdna_ReadInput(AjPFile infile, float *Start, float *End)
 ** read a group
 **
 ** @param [?] infile [AjPFile] Undocumented
+** @param [?] maxlabels [ajint] Undocumented
 ** @param [?] From [float*] Undocumented
 ** @param [?] To [float*] Undocumented
 ** @param [?] Name [AjPStr*] Undocumented
@@ -1422,7 +1496,8 @@ static void cirdna_ReadInput(AjPFile infile, float *Start, float *End)
 ******************************************************************************/
 
 
-static AjPStr cirdna_ReadGroup(AjPFile infile, float *From, float *To,
+static AjPStr cirdna_ReadGroup(AjPFile infile, ajint maxlabels,
+			       float* From, float* To,
 			       AjPStr *Name, char *FromSymbol,
 			       char *ToSymbol, AjPStr *Style2,
 			       ajint *NumLabels, ajint *NumNames,
@@ -1474,27 +1549,31 @@ static AjPStr cirdna_ReadGroup(AjPFile infile, float *From, float *To,
 		{
 		    while(ajFileReadLine(infile, &line))
 		    {
+			if (i == maxlabels)
+			    ajWarn("Too many labels (maxlabels=%d) in input",
+				   maxlabels);
 			token = ajStrTokC(line, " \n\t\r\f");
 			if(ajStrLen(token)!=0)
 			{
-			    FromSymbol[i] = '<';
-			    ToSymbol[i] = '>';
-			    sscanf( ajStrStr(line), "%s", style );
-
-			    if(ajStrMatchCaseCC(style, "Tick"))
-				sscanf( ajStrStr(line), "%*s %f %d %*c",
- 				       &From[i], &Colour[i] );
-
-			    if(ajStrMatchCaseCC(style, "Block"))
-				sscanf( ajStrStr(line), "%*s %f %f %d %*c",
- 				       &To[i], &From[i], &Colour[i] );
-
-			    if(ajStrMatchCaseCC(style, "Range"))
-			     sscanf( ajStrStr(line), "%*s %f %f %c %c %d %*c",
-				    &To[i], &From[i],
- 				       &FromSymbol[i], &ToSymbol[i],
- 				       &Colour[i] );
-			    ajStrAssC(&Style2[i], style);
+			    if (i < maxlabels)
+			    {
+				FromSymbol[i] = '<';
+				ToSymbol[i] = '>';
+				sscanf( ajStrStr(line), "%s", style );
+				if(ajStrMatchCaseCC(style, "Tick"))
+				    sscanf( ajStrStr(line), "%*s %f %d %*c",
+					   &From[i], &Colour[i] );
+				if(ajStrMatchCaseCC(style, "Block"))
+				    sscanf( ajStrStr(line), "%*s %f %f %d %*c",
+					   &To[i], &From[i], &Colour[i] );
+				if(ajStrMatchCaseCC(style, "Range"))
+				    sscanf( ajStrStr(line),
+					   "%*s %f %f %c %c %d %*c",
+					   &To[i], &From[i],
+					   &FromSymbol[i], &ToSymbol[i],
+					   &Colour[i] );
+				ajStrAssC(&Style2[i], style);
+			    }
 			    break;
 			}
 		    }
@@ -1511,19 +1590,26 @@ static AjPStr cirdna_ReadGroup(AjPFile infile, float *From, float *To,
 				break;
 			    else
 			    {
-				ajStrApp(&Name[i], line);
-				ajStrAppC(&Name[i], ";");
-				j++;
+				if (i < maxlabels)
+				{
+				    ajStrApp(&Name[i], line);
+				    ajStrAppC(&Name[i], ";");
+				    j++;
+				}
 			    }
 			}
 		    }
-		    NumNames[i] = j;
+		    if (i < maxlabels)
+			NumNames[i] = j;
 		    i++;
 		}
 	    }
 	}
     }
-    *NumLabels = i;
+    if (i < maxlabels)
+	*NumLabels = i;
+    else
+	*NumLabels = maxlabels;
 
     AJFREE(style);
     ajStrDel(&line);
@@ -1555,8 +1641,8 @@ static AjPStr cirdna_ReadGroup(AjPFile infile, float *From, float *To,
 ******************************************************************************/
 static float cirdna_TextGroup(float TextHeight, float TextLength,
 			      AjPStr *Name, ajint NumLabels, ajint *NumNames,
-			      AjPStr GroupName, AjPStr *Style2, float *From,
-			      float *To, float BlockHeight, AjPStr PosTicks)
+			      AjPStr GroupName, AjPStr *Style2, float* From,
+			      float* To, float BlockHeight, AjPStr PosTicks)
 {
     ajint i;
     ajint j;
@@ -1618,7 +1704,7 @@ static float cirdna_TextGroup(float TextHeight, float TextLength,
 static float cirdna_TextGroupStr(AjPStr *Name2, ajint NumLabels,
 				 ajint *NumNames, AjPStr GroupName,
 				 float TextCoef, AjPStr *Style2,
-				 float *From, float *To, float BlockHeight,
+				 float* From, float* To, float BlockHeight,
 				 AjPStr PosTicks)
 {
     ajint i;
@@ -1773,7 +1859,7 @@ static float cirdna_HeightGroup(float posblock, float posrange, float postext,
 ******************************************************************************/
 
 static ajint cirdna_OverlapTextGroup(AjPStr *Name2, AjPStr *Style2,
-				     ajint NumLabels, float *From, float *To,
+				     ajint NumLabels, float* From, float* To,
 				     float Start, float End,
 				     AjPStr PosTicks, ajint *Adjust)
 {
@@ -1781,13 +1867,21 @@ static ajint cirdna_OverlapTextGroup(AjPStr *Name2, AjPStr *Style2,
     ajint j;
     ajint AdjustMax;
     AjPStr token;
-    float FromText[MAXLABELS];
-    float ToText[MAXLABELS];
+    static float* FromText=NULL;
+    static float* ToText=NULL;
+    static ajint maxnumlabels=0;
+/*    float FromText[MAXLABELS];*/
+/*    float ToText[MAXLABELS];*/
     float llim;
     float ulim;
     float stringLength;
 
-
+    if (NumLabels > maxnumlabels)
+    {
+	maxnumlabels = NumLabels;
+	AJCRESIZE(FromText, maxnumlabels);
+	AJCRESIZE(ToText, maxnumlabels);
+    }
     /* compute the length of the horizontal strings */
     for(i=0; i<NumLabels; i++)
     {
@@ -1913,14 +2007,14 @@ static ajint cirdna_OverlapTextGroup(AjPStr *Name2, AjPStr *Style2,
 **
 ** @param [?] NumGroups [ajint] Undocumented
 ** @param [?] NumLabels [ajint*] Undocumented
-** @param [?] From [float*] Undocumented
+** @param [?] From [float**] Undocumented
 ** @param [?] PosTicks [AjPStr] Undocumented
 ** @param [?] RulerTick [ajint] Undocumented
 ** @return [AjBool] Undocumented
 ******************************************************************************/
 
 static AjBool cirdna_OverlapTickRuler(ajint NumGroups, ajint *NumLabels,
-				      float *From, AjPStr PosTicks,
+				      float** From, AjPStr PosTicks,
 				      ajint RulerTick)
 {
     ajint i;
@@ -1932,7 +2026,7 @@ static AjBool cirdna_OverlapTickRuler(ajint NumGroups, ajint *NumLabels,
 	{
 	    if(ajStrMatchCaseC(Style[i][j], "Tick") &&
 	       ajStrMatchCaseC(PosTicks, "Out") &&
-	       From[(i*MAXLABELS)+j]==RulerTick)
+	       From[i][j]==RulerTick)
 	    {
 		overlap = 1;
 		break;
@@ -1991,7 +2085,7 @@ static void cirdna_DrawGroup(float xDraw, float yDraw, float posblock,
 			     float BlockHeight, float RangeHeight,
 			     float RealLength, float TextLength,
 			     float TextHeight, float Radius, float RadiusMax,
-			     float *From, float *To, AjPStr *Name2,
+			     float* From, float* To, AjPStr *Name2,
 			     char *FromSymbol, char *ToSymbol, AjPStr *Style2,
 			     AjBool InterSymbol, AjBool InterTicks,
 			     ajint NumLabels, AjPStr GroupName,
@@ -2003,8 +2097,15 @@ static void cirdna_DrawGroup(float xDraw, float yDraw, float posblock,
     ajint i;
     ajint j;
     ajint  NumBlocks;
-    ajint Inter[MAXLABELS];
+    static ajint maxinter=0;
+    static ajint* Inter=NULL;
+    /*ajint Inter[MAXLABELS];*/
 
+    if (NumLabels > maxinter)
+    {
+	maxinter = NumLabels;
+	AJCRESIZE(Inter, maxinter);
+    }
 
     /* draw all labels */
     for(j=0, i=0; i<NumLabels; i++)
@@ -2030,7 +2131,8 @@ static void cirdna_DrawGroup(float xDraw, float yDraw, float posblock,
 	if( ajStrMatchCaseC(Style2[i], "Block") )
 	{
 	    cirdna_DrawBlocks(xDraw, yDraw, RealLength, Radius-posblock,
-			      BlockHeight, From[i], To[i], Name2[i], postext,
+			      BlockHeight, From[i], To[i],
+			      Name2[i], postext,
 			      OriginAngle, PosBlocks, NumNames[i], Adjust[i],
 			      Colour[i], BlockType);
 	    Inter[j++] = i;
