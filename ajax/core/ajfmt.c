@@ -73,39 +73,41 @@ typedef struct FmtSBuf
     char* bp;				/* next position in buffer */
     ajint size;			      /* size of buffer from malloc */
     AjBool fixed;		    /* if ajTrue, cannot reallocate */
-} FmtOBuf, *FmtPBuf;
+} FmtOBuf;
+
+#define FmtPBuf FmtOBuf*
 
 #define pad(n,c) do { ajint nn = (n); \
                    while (nn-- > 0) \
                      (void) put((c), cl); } while (0)
 
-static AjBool c_notin(ajint c, char *list);
-static AjBool c_isin(ajint c, char *list);
-static ajint ajFmtVscan(char *thys,const char *fmt,va_list ap);
+static AjBool c_notin(ajint c, const char *list);
+static AjBool c_isin(ajint c, const char *list);
+static ajint fmtVscan(const char *thys,const char *fmt,va_list ap);
 
-static void scvt_uS(char *fmt, char **pos, VALIST ap, ajint width,
+static void scvt_uS(const char *fmt, char **pos, VALIST ap, ajint width,
 		   AjBool convert, AjBool *ok);
-static void scvt_d(char *fmt, char **pos, VALIST ap, ajint width,
+static void scvt_d(const char *fmt, char **pos, VALIST ap, ajint width,
 		   AjBool convert, AjBool *ok);
-static void scvt_x(char *fmt, char **pos, VALIST ap, ajint width,
+static void scvt_x(const char *fmt, char **pos, VALIST ap, ajint width,
 		   AjBool convert, AjBool *ok);
-static void scvt_f(char *fmt, char **pos, VALIST ap, ajint width,
+static void scvt_f(const char *fmt, char **pos, VALIST ap, ajint width,
 		   AjBool convert, AjBool *ok);
-static void scvt_s(char *fmt, char **pos, VALIST ap, ajint width,
+static void scvt_s(const char *fmt, char **pos, VALIST ap, ajint width,
 		   AjBool convert, AjBool *ok);
-static void scvt_o(char *fmt, char **pos, VALIST ap, ajint width,
+static void scvt_o(const char *fmt, char **pos, VALIST ap, ajint width,
 		   AjBool convert, AjBool *ok);
-static void scvt_u(char *fmt, char **pos, VALIST ap, ajint width,
+static void scvt_u(const char *fmt, char **pos, VALIST ap, ajint width,
 		   AjBool convert, AjBool *ok);
-static void scvt_p(char *fmt, char **pos, VALIST ap, ajint width,
+static void scvt_p(const char *fmt, char **pos, VALIST ap, ajint width,
 		   AjBool convert, AjBool *ok);
-static void scvt_uB(char *fmt, char **pos, VALIST ap, ajint width,
+static void scvt_uB(const char *fmt, char **pos, VALIST ap, ajint width,
 		   AjBool convert, AjBool *ok);
-static void scvt_c(char *fmt, char **pos, VALIST ap, ajint width,
+static void scvt_c(const char *fmt, char **pos, VALIST ap, ajint width,
 		   AjBool convert, AjBool *ok);
-static void scvt_b(char *fmt, char **pos, VALIST ap, ajint width,
+static void scvt_b(const char *fmt, char **pos, VALIST ap, ajint width,
 		   AjBool convert, AjBool *ok);
-static void scvt_z(char *fmt, char **pos, VALIST ap, ajint width,
+static void scvt_z(const char *fmt, char **pos, VALIST ap, ajint width,
 		   AjBool convert, AjBool *ok);
 
 
@@ -148,12 +150,12 @@ static ajulong sc_octal(const char *str);
 ** Checks whether a character is in a set
 **
 ** @param [r] c [ajint] character
-** @param [r] list [char*] set of characters
+** @param [r] list [const char*] set of characters
 ** @return [AjBool] ajTrue if character is in the set
 ** @@
 ******************************************************************************/
 
-static AjBool c_isin(ajint c, char *list)
+static AjBool c_isin(ajint c, const char *list)
 {
     while(*list)
 	if(c == (ajint)*(list++))
@@ -167,12 +169,12 @@ static AjBool c_isin(ajint c, char *list)
 ** Checks whether a character is not in a set
 **
 ** @param [r] c [ajint] character
-** @param [r] list [char*] set of characters
+** @param [r] list [const char*] set of characters
 ** @return [AjBool] ajTrue if character is not in the set
 ** @@
 ******************************************************************************/
 
-static AjBool c_notin(ajint c, char *list)
+static AjBool c_notin(ajint c, const char *list)
 {
     while(*list)
 	if(c == (ajint)*(list++))
@@ -874,8 +876,8 @@ static char *Fmt_flags = "-+ 0#";
 **
 ** General output function to print a single character to a file
 **
-** @param [R] c [int] Character to be written
-** @param [R] cl [void*] Output file
+** @param [r] c [int] Character to be written
+** @param [r] cl [void*] Output file
 ** @return [ajint] 0 on success
 ******************************************************************************/
 
@@ -891,8 +893,8 @@ static ajint fmtOutC(int c, void* cl)
 ** Inserts a character in a buffer, raises a Fmt_Overflow exception if
 ** the buffer is too small.
 **
-** @param [R] c [int] Character to be written
-** @param [R] cl [void*] Output file
+** @param [r] c [int] Character to be written
+** @param [r] cl [void*] Output file
 ** @return [ajint] 0 on success
 ******************************************************************************/
 
@@ -918,8 +920,8 @@ static ajint fmtInsert(int c, void* cl)
 **
 ** Appends a character to a buffer, resizing it if necessary
 **
-** @param [R] c [ajint] Character to be written
-** @param [R] cl [void*] Output file
+** @param [r] c [ajint] Character to be written
+** @param [r] cl [void*] Output file
 ** @return [ajint] 0 on success
 ******************************************************************************/
 
@@ -1101,14 +1103,14 @@ void ajFmtVError (const char* fmt, va_list ap)
 **
 ** format and emit the "..." arguments according to fmt;writes to stream..
 **
-** @param [r] file [AjPFile] Output file.
+** @param [r] file [const AjPFile] Output file.
 ** @param [r] fmt [const char*] Format string.
 ** @param [v] [...] Variable length argument list
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajFmtPrintF (AjPFile file, const char* fmt, ...)
+void ajFmtPrintF (const AjPFile file, const char* fmt, ...)
 {
     va_list ap;
 
@@ -1123,14 +1125,14 @@ void ajFmtPrintF (AjPFile file, const char* fmt, ...)
 **
 ** format and emit the "..." arguments according to fmt;writes to stream..
 **
-** @param [r] file [AjPFile] Output file.
+** @param [r] file [const AjPFile] Output file.
 ** @param [r] fmt [const char*] Format string.
 ** @param [r] ap [va_list] Variable length argument list
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajFmtVPrintF(AjPFile file, const char* fmt, va_list ap)
+void ajFmtVPrintF(const AjPFile file, const char* fmt, va_list ap)
 {
     ajFmtVfmt(fmtOutC, file->fp, fmt, ap);
 
@@ -1184,7 +1186,7 @@ void ajFmtPrintFp(FILE* stream, const char* fmt, ...)
 ** c.r.e for size to be less than or equal to 0. Raises Fmt_Overflow
 ** if more than size-1 characters are emitted.
 **
-** @param [w] buf [char*] char string to be written too.
+** @param [w] buf [char*] char string to be written to.
 ** @param [r] size [ajint] length of buffer
 ** @param [r] fmt [const char*] Format string.
 ** @param [r] ap [va_list] Variable length argument list
@@ -1208,7 +1210,7 @@ ajint ajFmtVPrintCL(char* buf, ajint size, const char* fmt, va_list ap)
 ** c.r.e for size to be lass than or equal to 0. Raises Fmt_Overflow
 ** if more than size-1 characters are emitted.
 **
-** @param [w] buf [char*] char string to be written too.
+** @param [w] buf [char*] char string to be written to.
 ** @param [r] size [ajint] length of buffer
 ** @param [r] fmt [const char*] Format string
 ** @param [v] [...] Variable length argument list
@@ -1292,7 +1294,7 @@ AjPStr ajFmtStr(const char* fmt, ...)
 
 AjPStr ajFmtPrintS (AjPStr* pthis, const char* fmt, ...)
 {
-    volatile AjPStr thys;
+    AjPStr thys;
     va_list ap;
 
 #if defined(__PPC__) && defined(_CALL_SYSV)
@@ -1337,7 +1339,7 @@ AjPStr ajFmtPrintS (AjPStr* pthis, const char* fmt, ...)
 
 AjPStr ajFmtVPrintS (AjPStr* pthis, const char* fmt, va_list ap)
 {
-    volatile AjPStr thys;
+    AjPStr thys;
 
     (void) ajStrModL(pthis, 32);
     thys = *pthis;
@@ -1367,7 +1369,7 @@ AjPStr ajFmtVPrintS (AjPStr* pthis, const char* fmt, va_list ap)
 
 AjPStr ajFmtPrintAppS(AjPStr* pthis, const char* fmt, ...)
 {
-    volatile AjPStr thys;
+    AjPStr thys;
     va_list ap;
 #if defined(__PPC__) && defined(_CALL_SYSV)
     va_list save_ap;
@@ -1397,9 +1399,9 @@ AjPStr ajFmtPrintAppS(AjPStr* pthis, const char* fmt, ...)
 **
 ** Same as ajFmtPrintCL but takes arguments from the list ap.
 **
-** @param [w] pbuf [char**] char string to be written too.
+** @param [w] pbuf [char**] char string to be written to.
 ** @param [r] pos [ajint] position in buffer to start writing
-** @param [U] size [ajint*] allocated size of the buffer
+** @param [u] size [ajint*] allocated size of the buffer
 ** @param [r] fmt [const char*] Format string.
 ** @param [r] ap [va_list] Variable length argument list.
 **
@@ -1409,7 +1411,7 @@ AjPStr ajFmtPrintAppS(AjPStr* pthis, const char* fmt, ...)
 ******************************************************************************/
 
 ajint ajFmtVfmtStrCL(char **pbuf, ajint pos, ajint* size,
-const char* fmt, va_list ap)
+		     const char* fmt, va_list ap)
 {
     FmtOBuf cl;
 
@@ -1435,7 +1437,7 @@ const char* fmt, va_list ap)
 **
 ** Same as ajFmtPrintCL but takes arguments from the list ap.
 **
-** @param [w] buf [char*] char string to be written too.
+** @param [w] buf [char*] char string to be written to.
 ** @param [r] size [ajint] length of buffer
 ** @param [r] fmt [const char*] Format string.
 ** @param [r] ap [va_list] Variable length argument list.
@@ -1756,17 +1758,18 @@ void ajFmtPutd(const char* str, ajint len, int put(int c, void* cl), void* cl,
 **
 ** Block and print a string. String is split at given delimiters
 **
-** @param [w] outf [AjPFile] output stream
-** @param [r] str [AjPStr] text to write
-** @param [r] prefix [char *] prefix string
+** @param [w] outf [const AjPFile] output stream
+** @param [r] str [const AjPStr] text to write
+** @param [r] prefix [const char *] prefix string
 ** @param [r] len [ajint] maximum span
-** @param [r] delim [char *] delimiter string
+** @param [r] delim [const char *] delimiter string
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajFmtPrintSplit(AjPFile outf, AjPStr str, char *prefix, ajint len,
-		     char *delim)
+void ajFmtPrintSplit(const AjPFile outf, const AjPStr str,
+		     const char *prefix, ajint len,
+		     const char *delim)
 {
     AjPStrTok handle=NULL;
     AjPStr token = NULL;
@@ -1832,14 +1835,14 @@ void ajFmtPrintSplit(AjPFile outf, AjPStr str, char *prefix, ajint len,
 ** Scan a string according to fmt and load the ... variable pointers
 ** Like C function sscanf.
 **
-** @param [r] thys [AjPStr] String.
+** @param [r] thys [const AjPStr] String.
 ** @param [r] fmt [const char*] Format string.
 ** @param [v] [...] Variable length argument list
 ** @return [ajint] number of successful conversions
 ** @@
 ******************************************************************************/
 
-ajint ajFmtScanS(AjPStr thys, const char* fmt, ...)
+ajint ajFmtScanS(const AjPStr thys, const char* fmt, ...)
 {
     va_list ap;
     ajint   n;
@@ -1853,7 +1856,7 @@ ajint ajFmtScanS(AjPStr thys, const char* fmt, ...)
     __va_copy(save_ap,ap);
 #endif
 
-    n = ajFmtVscan(thys->Ptr,fmt,ap);
+    n = fmtVscan(thys->Ptr,fmt,ap);
 
 #if defined(__PPC__) && defined(_CALL_SYSV)
     __va_copy(ap,save_ap);
@@ -1866,21 +1869,21 @@ ajint ajFmtScanS(AjPStr thys, const char* fmt, ...)
 }
 
 
-/* @funcstatic ajFmtVscan *****************************************************
+/* @funcstatic fmtVscan *******************************************************
 **
 ** Scan a string according to fmt and load the va_list variable pointers
 **
-** @param [r] thys [char*] String.
+** @param [r] thys [const char*] String.
 ** @param [r] fmt [const char*] Format string.
 ** @param [w] ap [va_list] Variable length argument list
 ** @return [ajint] number of successful conversions
 ** @@
 ******************************************************************************/
-static ajint ajFmtVscan(char *thys,const char *fmt,va_list ap)
+static ajint fmtVscan(const char *thys,const char *fmt,va_list ap)
 {
     ajint n;
     char *p;
-    char *q;
+    const char *q;
     static char *wspace=" \n\t";
     AjBool convert=ajTrue;
     AjBool ok=ajTrue;
@@ -1889,8 +1892,8 @@ static ajint ajFmtVscan(char *thys,const char *fmt,va_list ap)
     ajint d=0;
 
     n=0;
-    p = thys;
-    q = (char *)fmt;
+    p = (char*) thys;			/*  we update it as a pointer */
+    q = fmt;
 
     while(*p && *q)
     {
@@ -1993,7 +1996,7 @@ static ajint ajFmtVscan(char *thys,const char *fmt,va_list ap)
 **
 ** Conversion for %S to load a string
 **
-** @param [r] fmt [char*] Format string at conv char posn
+** @param [r] fmt [const char*] Format string at conv char posn
 ** @param [w] pos [char**] Input string current position
 ** @param [r] ap [VALIST] Original arguments at current position
 ** @param [r] width [ajint] Width
@@ -2003,7 +2006,7 @@ static ajint ajFmtVscan(char *thys,const char *fmt,va_list ap)
 ** @@
 ******************************************************************************/
 
-static void scvt_uS(char *fmt, char **pos, VALIST ap, ajint width,
+static void scvt_uS(const char *fmt, char **pos, VALIST ap, ajint width,
 		   AjBool convert, AjBool *ok)
 {
     char *p = *pos;
@@ -2039,7 +2042,7 @@ static void scvt_uS(char *fmt, char **pos, VALIST ap, ajint width,
 **
 ** Conversion for %d to load an integer
 **
-** @param [r] fmt [char*] Format string at conv char posn
+** @param [r] fmt [const char*] Format string at conv char posn
 ** @param [w] pos [char**] Input string current position
 ** @param [r] ap [VALIST] Original arguments at current position
 ** @param [r] width [ajint] Width
@@ -2049,7 +2052,7 @@ static void scvt_uS(char *fmt, char **pos, VALIST ap, ajint width,
 ** @@
 ******************************************************************************/
 
-static void scvt_d(char *fmt, char **pos, VALIST ap, ajint width,
+static void scvt_d(const char *fmt, char **pos, VALIST ap, ajint width,
 		   AjBool convert, AjBool *ok)
 {
     char *p = *pos;
@@ -2120,7 +2123,7 @@ static void scvt_d(char *fmt, char **pos, VALIST ap, ajint width,
 **
 ** Conversion for %x to load an unsigned hexadecimal
 **
-** @param [r] fmt [char*] Format string at conv char posn
+** @param [r] fmt [const char*] Format string at conv char posn
 ** @param [w] pos [char**] Input string current position
 ** @param [r] ap [VALIST] Original arguments at current position
 ** @param [r] width [ajint] Width
@@ -2130,7 +2133,7 @@ static void scvt_d(char *fmt, char **pos, VALIST ap, ajint width,
 ** @@
 ******************************************************************************/
 
-static void scvt_x(char *fmt, char **pos, VALIST ap, ajint width,
+static void scvt_x(const char *fmt, char **pos, VALIST ap, ajint width,
 		   AjBool convert, AjBool *ok)
 {
     char *p = *pos;
@@ -2205,7 +2208,7 @@ static void scvt_x(char *fmt, char **pos, VALIST ap, ajint width,
 **
 ** Conversion for %f to load a float/double
 **
-** @param [r] fmt [char*] Format string at conv char posn
+** @param [r] fmt [const char*] Format string at conv char posn
 ** @param [w] pos [char**] Input string current position
 ** @param [r] ap [VALIST] Original arguments at current position
 ** @param [r] width [ajint] Width
@@ -2215,7 +2218,7 @@ static void scvt_x(char *fmt, char **pos, VALIST ap, ajint width,
 ** @@
 ******************************************************************************/
 
-static void scvt_f(char *fmt, char **pos, VALIST ap, ajint width,
+static void scvt_f(const char *fmt, char **pos, VALIST ap, ajint width,
 		   AjBool convert, AjBool *ok)
 {
     char *p = *pos;
@@ -2275,7 +2278,7 @@ static void scvt_f(char *fmt, char **pos, VALIST ap, ajint width,
 **
 ** Conversion for %s to load a char *
 **
-** @param [r] fmt [char*] Format string at conv char posn
+** @param [r] fmt [const char*] Format string at conv char posn
 ** @param [w] pos [char**] Input string current position
 ** @param [r] ap [VALIST] Original arguments at current position
 ** @param [r] width [ajint] Width
@@ -2285,7 +2288,7 @@ static void scvt_f(char *fmt, char **pos, VALIST ap, ajint width,
 ** @@
 ******************************************************************************/
 
-static void scvt_s(char *fmt, char **pos, VALIST ap, ajint width,
+static void scvt_s(const char *fmt, char **pos, VALIST ap, ajint width,
 		   AjBool convert, AjBool *ok)
 {
     char *p = *pos;
@@ -2326,7 +2329,7 @@ static void scvt_s(char *fmt, char **pos, VALIST ap, ajint width,
 **
 ** Conversion for %o to load an unsigned octal
 **
-** @param [r] fmt [char*] Format string at conv char posn
+** @param [r] fmt [const char*] Format string at conv char posn
 ** @param [w] pos [char**] Input string current position
 ** @param [r] ap [VALIST] Original arguments at current position
 ** @param [r] width [ajint] Width
@@ -2336,7 +2339,7 @@ static void scvt_s(char *fmt, char **pos, VALIST ap, ajint width,
 ** @@
 ******************************************************************************/
 
-static void scvt_o(char *fmt, char **pos, VALIST ap, ajint width,
+static void scvt_o(const char *fmt, char **pos, VALIST ap, ajint width,
 		   AjBool convert, AjBool *ok)
 {
     char *p = *pos;
@@ -2412,7 +2415,7 @@ static void scvt_o(char *fmt, char **pos, VALIST ap, ajint width,
 **
 ** Conversion for %u to load an unsigned integer
 **
-** @param [r] fmt [char*] Format string at conv char posn
+** @param [r] fmt [const char*] Format string at conv char posn
 ** @param [w] pos [char**] Input string current position
 ** @param [r] ap [VALIST] Original arguments at current position
 ** @param [r] width [ajint] Width
@@ -2422,7 +2425,7 @@ static void scvt_o(char *fmt, char **pos, VALIST ap, ajint width,
 ** @@
 ******************************************************************************/
 
-static void scvt_u(char *fmt, char **pos, VALIST ap, ajint width,
+static void scvt_u(const char *fmt, char **pos, VALIST ap, ajint width,
 		   AjBool convert, AjBool *ok)
 {
     char *p = *pos;
@@ -2499,7 +2502,7 @@ static void scvt_u(char *fmt, char **pos, VALIST ap, ajint width,
 **
 ** Conversion for %p to load a pointer of type void * as hexadecimal
 **
-** @param [r] fmt [char*] Format string at conv char posn
+** @param [r] fmt [const char*] Format string at conv char posn
 ** @param [w] pos [char**] Input string current position
 ** @param [r] ap [VALIST] Original arguments at current position
 ** @param [r] width [ajint] Width
@@ -2509,7 +2512,7 @@ static void scvt_u(char *fmt, char **pos, VALIST ap, ajint width,
 ** @@
 ******************************************************************************/
 
-static void scvt_p(char *fmt, char **pos, VALIST ap, ajint width,
+static void scvt_p(const char *fmt, char **pos, VALIST ap, ajint width,
 		   AjBool convert, AjBool *ok)
 {
     char *p = *pos;
@@ -2555,7 +2558,7 @@ static void scvt_p(char *fmt, char **pos, VALIST ap, ajint width,
 **
 ** Conversion for %B to load a boolean (integer or YyNnTtFf)
 **
-** @param [r] fmt [char*] Format string at conv char posn
+** @param [r] fmt [const char*] Format string at conv char posn
 ** @param [w] pos [char**] Input string current position
 ** @param [r] ap [VALIST] Original arguments at current position
 ** @param [r] width [ajint] Width
@@ -2565,7 +2568,7 @@ static void scvt_p(char *fmt, char **pos, VALIST ap, ajint width,
 ** @@
 ******************************************************************************/
 
-static void scvt_uB(char *fmt, char **pos, VALIST ap, ajint width,
+static void scvt_uB(const char *fmt, char **pos, VALIST ap, ajint width,
 		   AjBool convert, AjBool *ok)
 {
     char *p = *pos;
@@ -2667,7 +2670,7 @@ static void scvt_uB(char *fmt, char **pos, VALIST ap, ajint width,
 **
 ** Conversion for %c to load a character
 **
-** @param [r] fmt [char*] Format string at conv char posn
+** @param [r] fmt [const char*] Format string at conv char posn
 ** @param [w] pos [char**] Input string current position
 ** @param [r] ap [VALIST] Original arguments at current position
 ** @param [r] width [ajint] Width
@@ -2677,7 +2680,7 @@ static void scvt_uB(char *fmt, char **pos, VALIST ap, ajint width,
 ** @@
 ******************************************************************************/
 
-static void scvt_c(char *fmt, char **pos, VALIST ap, ajint width,
+static void scvt_c(const char *fmt, char **pos, VALIST ap, ajint width,
 		   AjBool convert, AjBool *ok)
 {
     char *p = *pos;
@@ -2711,7 +2714,7 @@ static void scvt_c(char *fmt, char **pos, VALIST ap, ajint width,
 **
 ** Conversion for %B to load a boolean (YyNnTtFf)
 **
-** @param [r] fmt [char*] Format string at conv char posn
+** @param [r] fmt [const char*] Format string at conv char posn
 ** @param [w] pos [char**] Input string current position
 ** @param [r] ap [VALIST] Original arguments at current position
 ** @param [r] width [ajint] Width
@@ -2721,7 +2724,7 @@ static void scvt_c(char *fmt, char **pos, VALIST ap, ajint width,
 ** @@
 ******************************************************************************/
 
-static void scvt_b(char *fmt, char **pos, VALIST ap, ajint width,
+static void scvt_b(const char *fmt, char **pos, VALIST ap, ajint width,
 		   AjBool convert, AjBool *ok)
 {
     char *p = *pos;
@@ -2765,7 +2768,7 @@ static void scvt_b(char *fmt, char **pos, VALIST ap, ajint width,
 **
 ** Conversion for %z to load a char **
 **
-** @param [r] fmt [char*] Format string at conv char posn
+** @param [r] fmt [const char*] Format string at conv char posn
 ** @param [w] pos [char**] Input string current position
 ** @param [r] ap [VALIST] Original arguments at current position
 ** @param [r] width [ajint] Width
@@ -2775,7 +2778,7 @@ static void scvt_b(char *fmt, char **pos, VALIST ap, ajint width,
 ** @@
 ******************************************************************************/
 
-static void scvt_z(char *fmt, char **pos, VALIST ap, ajint width,
+static void scvt_z(const char *fmt, char **pos, VALIST ap, ajint width,
 		   AjBool convert, AjBool *ok)
 {
     char *p = *pos;

@@ -131,7 +131,8 @@ AjPSeqset seqset;
 
 void emboss_getoptions(char *pgm, int argc, char *argv[]){
 AjStatus retval;
-AjPFile outf,treef;
+AjPFile outf;
+AjPFile treef;
 
   howoften = often;
   howmany = many;

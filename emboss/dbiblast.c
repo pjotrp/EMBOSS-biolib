@@ -71,6 +71,19 @@
 #define BLASTIDSANGER  4
 #define BLASTPREFNCBI  1
 
+/* @datastatic PMemFile *******************************************************
+**
+** DbiBlast in-memory file
+**
+** @attr IsMem [AjBool] True if in memory mapped
+** @attr File [AjPFile] Ajax file
+** @attr Fd [ajint] Unix file descriptor (integer)
+** @attr Pos [ajlong] Position in file/memory
+** @attr Size [ajlong] Size of file/memory
+** @attr Name [AjPStr] Name of file 
+** @attr Mem [caddr_t] Memory map
+******************************************************************************/
+
 typedef struct SMemFile
 {
   AjBool IsMem;
@@ -80,7 +93,41 @@ typedef struct SMemFile
   ajlong Size;
   AjPStr Name;
   caddr_t Mem;
-} OMemFile, *PMemFile;
+} OMemFile;
+
+#define PMemFile OMemFile*
+
+/* @datastatic PBlastDb *******************************************************
+**
+** DbiBlast database
+**
+** @attr DbType [ajint] database type indicator
+** @attr DbFormat [ajint] database format (version) indicator
+** @attr IsProtein [ajint] 1 for protein
+** @attr IsBlast2 [ajint] 1 for blast2, 0 for blast1
+** @attr TitleLen [ajint] length of database title
+** @attr DateLen [ajint] length of database date string
+** @attr LineLen [ajint] length of database lines
+** @attr HeaderLen [ajint] bytes before tables start 
+** @attr Size [ajint] number of database entries
+** @attr CompLen [ajint] length of compressed seq file
+** @attr MaxSeqLen [ajint] max. entry length
+** @attr TotLen [ajint] number of bases or residues in database
+** @attr CleanCount [ajint] count of cleaned 8mers
+** @attr TopCmp [ajint] bytes before compressed table starts
+** @attr TopSrc [ajint] bytes before source table starts
+** @attr TopHdr [ajint] bytes before headers table starts
+** @attr TopAmb [ajint] bytes before ambiguity table starts
+** @attr IdType [ajint] ID type
+** @attr IdPrefix [ajint] ID prefix type
+** @attr TFile [PMemFile] table of offsets, also DB info
+** @attr HFile [PMemFile] description lines
+** @attr SFile [PMemFile] binary sequence data
+** @attr FFile [PMemFile] source sequence data
+** @attr Title [AjPStr] database title
+** @attr Date [AjPStr] database date
+** @attr Name [AjPStr] database base file name
+******************************************************************************/
 
 typedef struct SBlastDb
 {
@@ -110,7 +157,22 @@ typedef struct SBlastDb
   AjPStr Title;			/* database title */
   AjPStr Date;			/* database date */
   AjPStr Name;			/* database base file name */
-} OBlastDb, *PBlastDb;
+} OBlastDb;
+
+#define PBlastDb OBlastDb*
+
+
+/* @datastatic PBlastType *****************************************************
+**
+** DbiBlast types
+**
+** @attr ExtT [char*] Table filename extension
+** @attr ExtH [char*] Header filename extension
+** @attr ExtS [char*] Sequence filename extension
+** @attr IsProtein [AjBool] true for protein
+** @attr IsBlast2 [AjBool] blast2.x or blast 1.x
+** @attr Type [ajint] enumerated type
+******************************************************************************/
 
 typedef struct SBlastType
 {
@@ -120,7 +182,9 @@ typedef struct SBlastType
   AjBool  IsProtein;
   AjBool IsBlast2;
   ajint   Type;
-} OBlastType, *PBlastType;
+} OBlastType;
+
+#define PBlastType OBlastType*
 
 enum blastdbtype {BLAST1P, BLAST1N, BLAST2P, BLAST2N};
 
@@ -154,12 +218,12 @@ static AjBool dbiblast_parseUnknown (AjPStr line, AjPFile* alistfile,
 				     PBlastDb db, ajint* maxFieldLen,
 				     AjPStr* id, AjPList* fdl);
 
-/* @datastatic DbiblastPParser ************************************************
+/* @datastatic OParser ********************************************************
 **
 ** Parser definition structure
 **
-** @alias DbiblastSParser
-** @alias DbiblastOParser
+** @alias SParser
+** @alias OParser
 **
 ** @attr Name [char*] Parser name
 ** @attr Parser [(AjBool*)] Parser function

@@ -509,7 +509,7 @@ static void pepinfo_printFloatResults( AjPFile outfile, AjPSeq seq,
 **
 ** Create and add graph from set of results to graph set.
 **
-** @param [rw] graphs [AjPGraph] Graphs set to add new graph to.
+** @param [u] graphs [AjPGraph] Graphs set to add new graph to.
 ** @param [r] seq     [AjPSeq]  Sequence
 ** @param [r] results [float*]  float array of results.
 ** @param [r] title_text [char*] title for graph
@@ -561,7 +561,7 @@ static void pepinfo_plotGraph2Float(AjPGraph graphs, AjPSeq seq,
 **
 ** Add a histogram data to the set set.
 **
-** @param [rw] hist   [AjPHist] Histogram set to add new set to.
+** @param [u] hist   [AjPHist] Histogram set to add new set to.
 ** @param [r] seq     [AjPSeq]  Sequence
 ** @param [r] results [ajint*]  float array of results.
 ** @param [r] hist_num [ajint] the number of the histogram set.

@@ -686,7 +686,7 @@ AjBool ajCodRead(AjPStr fn, AjPCod *thys)
 ** Fill the codon usage object "back" element with the most commonly
 ** used triplet index for the amino acids
 **
-** @param [rw] thys [AjPCod *] codon usage structure
+** @param [u] thys [AjPCod *] codon usage structure
 **
 ** @return [void]
 ** @@

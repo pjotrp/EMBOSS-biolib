@@ -47,6 +47,19 @@
 #include "emboss.h"
 #include "ajtime.h"
 
+/* @datastatic PPoint *********************************************************
+**
+** Plotcon internals
+**
+** @alias SPoint
+** @alias OPoint
+**
+** @attr x1 [float] x1 coordinate
+** @attr y1 [float] y1 coordinate
+** @attr x2 [float] x2 coordinate
+** @attr y2 [float] y2 coordinate
+******************************************************************************/
+
 
 typedef struct SPoint
 {

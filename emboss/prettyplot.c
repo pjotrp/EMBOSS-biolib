@@ -106,7 +106,8 @@ int main(int argc, char **argv)
     ajint i,numseq,j=0,numres,count,k;
     ajint kmax;
     float defheight,currentheight;
-    AjPStr shade=NULL,pair=NULL;
+    AjPStr shade=NULL;
+    AjPStr pair=NULL;
     AjPGraph graph = NULL;
     AjPMatrix cmpmatrix=NULL;
     AjPSeqCvt cvt=NULL;
@@ -123,7 +124,9 @@ int main(int argc, char **argv)
     ajint identity;
     AjBool listoptions;
     ajint alternative;
-    AjPStr sidentity=NULL,ssimilarity=NULL,sother=NULL;
+    AjPStr sidentity=NULL;
+    AjPStr ssimilarity=NULL;
+    AjPStr sother=NULL;
     AjPStr sboxcolval=NULL;
     AjPStr options=NULL;
     ajint showscore = 0;

@@ -27,7 +27,23 @@
 #define SIMLIMIT2 70
 
 
-/* Definition of the primer object */
+/* @datastatic AjPPrimer ******************************************************
+**
+** Definition of the primer object
+**
+** @alias AjSPrimer
+** @alias AjOPrimer
+**
+** @attr substr [AjPStr] Undocumented
+** @attr start [ajint]  Undocumented
+** @attr primerlen [ajint]  Undocumented
+** @attr primerTm [float]  Undocumented
+** @attr primGCcont [float]  Undocumented
+** @attr prodTm [float]  Undocumented
+** @attr prodGC [float]  Undocumented
+** @attr score [ajint]  Undocumented
+******************************************************************************/
+
 typedef struct AjSPrimer
 {
   AjPStr substr;
@@ -41,7 +57,17 @@ typedef struct AjSPrimer
 } AjOPrimer, *AjPPrimer;
 
 
-/* Object to hold awesome primer pairs */
+/* @datastatic AjPPair ********************************************************
+**
+** Object to hold awesome primer pairs
+**
+** @alias AjSPair
+** @alias AjOPair
+**
+** @attr f [AjPPrimer] Forward primer
+** @attr r [AjPPrimer] Reverse primer
+******************************************************************************/
+
 typedef struct AjSPair
 {
     AjPPrimer f;
@@ -1006,7 +1032,7 @@ static void prima_PrimerDel(AjPPrimer *p)
 
 
 
-/* @funcstatic prima_PrimerCompare ********************************************
+/* @funcstatic prima_Compare ********************************************
 **
 ** Undocumented.
 **

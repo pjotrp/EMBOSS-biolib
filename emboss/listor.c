@@ -39,7 +39,8 @@ enum {L_OR, L_AND, L_XOR, L_NOT};
 int main(int argc, char **argv)
 {
 
-  AjPSeqset seq1, seq2;
+  AjPSeqset seq1;
+  AjPSeqset seq2;
   AjPFile list;
   ajint n1, n2;
   ajint *lengths1, *lengths2;

@@ -20,6 +20,16 @@ extern "C"
 
 /* @data AjPRegexp ************************************************************
 **
+** PCRE expression internals, wrapped for AJAX calls
+**
+** @alias AjSRegexp
+** @alias AjORegexp
+**
+** @attr pcre [real_pcre*] PCRE compiled expression
+** @attr extra [pcre_extra*] PCRE study data (if available, else NULL)
+** @attr ovecsize [int] Output vector size
+** @attr ovector [int*] Output vector offsets
+** @attr orig [const char*] Original string
 ******************************************************************************/
 
 typedef struct AjSRegexp {
@@ -28,7 +38,9 @@ typedef struct AjSRegexp {
     int ovecsize;
     int *ovector;
     const char* orig;
-} AjORegExp, *AjPRegexp;
+} AjORegexp;
+
+#define AjPRegexp AjORegexp*
 
 /* constructors */
 
@@ -37,7 +49,7 @@ AjPRegexp ajRegCompC (const char* exp);
 
 /* execute expression match */
 
-AjBool ajRegExec (AjPRegexp prog, AjPStr str);
+AjBool ajRegExec (AjPRegexp prog, const AjPStr str);
 AjBool ajRegExecC (AjPRegexp prog, const char* str);
 
 /* test substrings */

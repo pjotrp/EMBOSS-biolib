@@ -29,8 +29,30 @@
 
 #define AJA2 50
 
-/* the internals of a primer; each Primer has two of these,
-   one forward and one reverse */
+/* @datastatic PGuts **********************************************************
+**
+** the internals of a primer; each Primer has two of these,
+** one forward and one reverse
+**
+** @alias primerguts
+**
+** @attr patstr [AjPStr] Undocumented
+** @attr origpat [AjPStr] Undocumented
+** @attr type [ajint] Undocumented
+** @attr len [ajint] Undocumented
+** @attr real_len [ajint] Undocumented
+** @attr amino [AjBool] Undocumented
+** @attr carboxyl [AjBool] Undocumented
+** @attr mm [ajint] Undocumented
+** @attr buf [ajint*] Undocumented
+** @attr sotable [ajuint*] Undocumented
+** @attr solimit [ajuint] Undocumented
+** @attr off [EmbOPatBYPNode[AJALPHA]] Undocumented
+** @attr re [AjPStr] Undocumented
+** @attr skipm [ajint**] Undocumented
+** @attr tidy [void*] Undocumented
+******************************************************************************/
+
 typedef struct primerguts
 {
   AjPStr patstr;
@@ -52,7 +74,23 @@ typedef struct primerguts
   void* tidy;
 } *PGuts;
 
-/* holds details of a hit against a sequence ie this primer will amplify */
+/* @datastatic PHit ***********************************************************
+**
+** holds details of a hit against a sequence ie this primer will amplify
+**
+** @alias primerhit
+**
+** @attr seqname [AjPStr] Undocumented
+** @attr desc [AjPStr] Undocumented
+** @attr acc [AjPStr] Undocumented
+** @attr forward [AjPStr] pattern that hits forward strand 
+** @attr reverse [AjPStr] pattern that hits reverse strand 
+** @attr forward_pos [ajint] Undocumented
+** @attr reverse_pos [ajint] Undocumented
+** @attr amplen [ajint] Undocumented
+** @attr forward_mismatch [ajint] Undocumented
+** @attr reverse_mismatch [ajint] Undocumented
+******************************************************************************/
 typedef struct primerhit
 {
   AjPStr seqname;
@@ -67,7 +105,18 @@ typedef struct primerhit
   ajint reverse_mismatch;
 } *PHit;
 
-/* primer pairs will be read into a list of these structs */
+/* @datastatic Primer *********************************************************
+**
+** primer pairs will be read into a list of these structs
+**
+** @alias primers
+**
+** @attr Name [AjPStr] Undocumented
+** @attr forward [PGuts] Undocumented
+** @attr reverse [PGuts] Undocumented
+** @attr hitlist [AjPList] Undocumented
+******************************************************************************/
+
 typedef struct primers
 {
   AjPStr Name;
@@ -276,7 +325,7 @@ static void psearch_free_primer(void **x, void *cl)
 **
 ** Clean the hitlist
 **
-** @param [rw] hlist [AjPList] Undocumented
+** @param [u] hlist [AjPList] Undocumented
 ** @@
 ******************************************************************************/
 

@@ -357,11 +357,11 @@ int main(int argc, char **argv)
 ** @param [r] highlight [AjPRange] ranges to colour in HTML
 ** @param [r] threeletter [AjBool] use 3-letter code
 ** @param [r] numberseq [AjBool] put numbers on sequences
-** @param [r] feat [AjPFeattable*] sequence's feature table
+** @param [r] feat [AjPFeattable] sequence's feature table
 **                                 NULL after - pointer stored internally
 ** @param [r] orfminsize [ajint] minimum size of ORFs to display
 **                              (0 for no ORFs)
-** @param [r] restrictlist [AjPList*] restriction enzyme site list (or NULL)
+** @param [r] restrictlist [AjPList] restriction enzyme site list (or NULL)
 **                                 NULL after - pointer stored internally
 ** @param [r] flat [AjBool] show restriction sites in flat format
 ** @param [r] annotation [AjPRange] ranges to annotate
@@ -597,7 +597,7 @@ static void showseq_FeatureFilter(AjPFeattable featab, AjPFeattable newfeatab,
 ** @param [r] maxscore [float] Max required Score pattern
 ** @param [r] tag [AjPStr] Required Tag pattern
 ** @param [r] value [AjPStr] Required Value pattern
-** @param [rw] tagsmatch [AjBool *] true if a join has matching tag/values
+** @param [u] tagsmatch [AjBool *] true if a join has matching tag/values
 ** @param [r] stricttags [AjBool] If false then only display tag/values
 **                                that match the criteria
 ** @return [AjBool] True if feature matches criteria
@@ -726,7 +726,7 @@ static AjBool showseq_MatchPatternTags (AjPFeature gf, AjPFeature newgf,
     return val;
 }
 
-/* @func showseq_FeatCopy *****************************************************
+/* @funcstatic showseq_FeatCopy ***********************************************
 **
 ** Makes a copy of a feature, except for the Tags list which is added later.
 ** This is mostly copied from the original in ajFeatCopy,

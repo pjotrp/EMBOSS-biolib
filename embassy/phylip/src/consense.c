@@ -49,7 +49,9 @@ Static short tipy;
 /************ EMBOSS GET OPTIONS ROUTINES ******************************/
 void emboss_getoptions(char *pgm, int argc, char *argv[]){
 AjStatus retval;
-AjPFile outf,treef,inf;
+AjPFile outf;
+AjPFile treef;
+AjPFile inf;
  
   ajNamInit("emboss");
   retval =  ajAcdInitP (pgm, argc, argv,"PHYLIP");

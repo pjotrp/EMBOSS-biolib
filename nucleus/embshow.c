@@ -248,7 +248,7 @@ static EmbPShowInfo showInfoNew (void* info, ajint type) {
 **
 ** Deletes a show sequence object.
 **
-** @param [P] pthis [EmbPShow*] Show sequence object
+** @param [d] pthis [EmbPShow*] Show sequence object
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -348,7 +348,7 @@ void embShowDel (EmbPShow* pthis)
 **
 ** Deletes a show sequence descriptor object.
 **
-** @param [P] pinfo [EmbPShowSeq*] Show sequence descriptor object
+** @param [d] pinfo [EmbPShowSeq*] Show sequence descriptor object
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -363,7 +363,7 @@ static void showDelSeq (EmbPShowSeq* pinfo) {
 **
 ** Deletes a show blank descriptor object.
 **
-** @param [P] pinfo [EmbPShowBlank*] Show blank descriptor object
+** @param [d] pinfo [EmbPShowBlank*] Show blank descriptor object
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -378,7 +378,7 @@ static void showDelBlank (EmbPShowBlank* pinfo) {
 **
 ** Deletes a show ticks descriptor object.
 **
-** @param [P] pinfo [EmbPShowTicks*] Show ticks descriptor object
+** @param [d] pinfo [EmbPShowTicks*] Show ticks descriptor object
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -393,7 +393,7 @@ static void showDelTicks (EmbPShowTicks* pinfo) {
 **
 ** Deletes a show tick numbers descriptor object.
 **
-** @param [P] pinfo [EmbPShowTicknum*] Show tick numbers descriptor object
+** @param [d] pinfo [EmbPShowTicknum*] Show tick numbers descriptor object
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -408,7 +408,7 @@ static void showDelTicknum (EmbPShowTicknum* pinfo) {
 **
 ** Deletes a show complement descriptor object.
 **
-** @param [P] pinfo [EmbPShowComp*] Show complement descriptor object
+** @param [d] pinfo [EmbPShowComp*] Show complement descriptor object
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -423,7 +423,7 @@ static void showDelComp (EmbPShowComp* pinfo) {
 **
 ** Deletes a show translation descriptor object.
 **
-** @param [P] pinfo [EmbPShowTran*] Show translation descriptor object
+** @param [d] pinfo [EmbPShowTran*] Show translation descriptor object
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -439,7 +439,7 @@ static void showDelTran (EmbPShowTran* pinfo) {
 **
 ** Deletes a show restriction enzyme descriptor object.
 **
-** @param [P] pinfo [EmbPShowRE*] Show restriction enzyme descriptor object
+** @param [d] pinfo [EmbPShowRE*] Show restriction enzyme descriptor object
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -464,7 +464,7 @@ static void showDelRE (EmbPShowRE* pinfo) {
 **
 ** Deletes a show feature table descriptor object.
 **
-** @param [P] pinfo [EmbPShowFT*] Show feature table descriptor object
+** @param [d] pinfo [EmbPShowFT*] Show feature table descriptor object
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -483,7 +483,7 @@ static void showDelFT (EmbPShowFT* pinfo) {
 **
 ** Deletes a show annotation region descriptor object.
 **
-** @param [P] pinfo [EmbPShowNote*] Show annotation region descriptor object
+** @param [d] pinfo [EmbPShowNote*] Show annotation region descriptor object
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -513,7 +513,7 @@ static void showDelNote (EmbPShowNote* pinfo) {
 ** to hang all the other features and things on, there can be no output to
 ** show.
 **
-** @param [P] thys [EmbPShow] Show sequence object
+** @param [u] thys [EmbPShow] Show sequence object
 ** @param [r] number [AjBool] Number the sequence
 ** @param [r] threeletter [AjBool] Use three letter protein code
 ** @param [r] upperrange [AjPRange] Range of sequence to uppercase
@@ -544,7 +544,7 @@ AjPRange upperrange, AjPRange colour) {
 **
 ** Adds a blank line to the list of things to show.
 **
-** @param [P] thys [EmbPShow] Show sequence object
+** @param [u] thys [EmbPShow] Show sequence object
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -565,7 +565,7 @@ void embShowAddBlank (EmbPShow thys) {
 **
 ** Adds a ticks line to the list of things to show.
 **
-** @param [P] thys [EmbPShow] Show sequence object
+** @param [u] thys [EmbPShow] Show sequence object
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -586,7 +586,7 @@ void embShowAddTicks (EmbPShow thys) {
 **
 ** Adds a ticks number line to the list of things to show.
 **
-** @param [P] thys [EmbPShow] Show sequence object
+** @param [u] thys [EmbPShow] Show sequence object
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -607,7 +607,7 @@ void embShowAddTicknum (EmbPShow thys) {
 **
 ** Adds the sequence complement to be displayed to the list of things to show
 **
-** @param [P] thys [EmbPShow] Show sequence object
+** @param [u] thys [EmbPShow] Show sequence object
 ** @param [r] number [AjBool] ajTrue = number the complement
 ** @return [void]
 ** @@
@@ -679,7 +679,7 @@ void embShowAddTran (EmbPShow thys, AjPTrn trnTable, ajint frame,
 **
 ** Adds the Ristriction Enzymes to be displayed to the list of things to show
 **
-** @param [P] thys [EmbPShow] Show sequence object
+** @param [u] thys [EmbPShow] Show sequence object
 ** @param [r] sense [ajint] sense to translate (+1 or -1)
 ** @param [r] restrictlist [AjPList] restriction enzyme cut site list
 ** @param [r] flat [AjBool] show in flat format with recognition sites
@@ -709,7 +709,7 @@ void embShowAddRE (EmbPShow thys, ajint sense, AjPList restrictlist,
 **
 ** Adds the Features to be displayed to the list of things to show
 **
-** @param [P] thys [EmbPShow] Show sequence object
+** @param [u] thys [EmbPShow] Show sequence object
 ** @param [r] feat [AjPFeattable] features
 ** @return [void]
 ** @@
@@ -786,7 +786,7 @@ void embShowAddNote (EmbPShow thys, AjPRange regions) {
 ** Prints a Show object
 **
 ** @param [r] out [AjPFile] Output file handle
-** @param [P] thys [EmbPShow] Show sequence object
+** @param [r] thys [EmbPShow] Show sequence object
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -849,8 +849,8 @@ void embShowPrint(AjPFile out, EmbPShow thys)
 **
 ** Print the lines to the output.
 **
-** @param [P] out [AjPFile] Output file handle
-** @param [P] lines [AjPList] lines to print
+** @param [r] out [AjPFile] Output file handle
+** @param [r] lines [AjPList] lines to print
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -888,8 +888,8 @@ static void showPrintLines(AjPFile out, AjPList lines) {
 **
 ** Calls the descriptor routines to fill the lines.
 **
-** @param [P] lines [AjPList] Lines list
-** @param [P] thys [EmbPShow] Show sequence object
+** @param [r] lines [AjPList] Lines list
+** @param [r] thys [EmbPShow] Show sequence object
 ** @param [r] pos [ajint] position in sequence so far while printing
 ** @return [void]
 ** @@
@@ -963,7 +963,7 @@ static void showFillLines(AjPList lines, EmbPShow thys, ajint pos)
 **
 ** Add a blank margin to the lines list
 **
-** @param [P] thys [EmbPShow] Show sequence object
+** @param [r] thys [EmbPShow] Show sequence object
 ** @param [u] lines [AjPList] list of lines to add to
 ** @return [void]
 ** @@
@@ -984,7 +984,7 @@ static void showMargin(EmbPShow thys, AjPList lines) {
 /* @funcstatic showMarginNumber ***********************************************
 ** Add a margin containing a number to the lines list
 **
-** @param [P] thys [EmbPShow] Show sequence object
+** @param [r] thys [EmbPShow] Show sequence object
 ** @param [u] lines [AjPList] list of lines to add to
 ** @param [r] number [ajint] number to display
 ** @return [void]
@@ -1181,7 +1181,7 @@ static void showInsertHTML(AjPStr *target, ajint pos, AjPStr insert) {
 **
 ** Add this line's worth of sequence to the lines list
 **
-** @param [P] thys [EmbPShow] Show sequence object
+** @param [r] thys [EmbPShow] Show sequence object
 ** @param [u] lines [AjPList] list of lines to add to
 ** @param [r] info [EmbPShowSeq] data on how to display the sequence data
 ** @param [r] pos [ajint] current printing position in the sequence
@@ -1289,7 +1289,7 @@ static void showFillSeq(EmbPShow thys, AjPList lines, EmbPShowSeq info,
 **
 ** Add a blank line to the lines list
 **
-** @param [P] thys [EmbPShow] Show sequence object
+** @param [r] thys [EmbPShow] Show sequence object
 ** @param [u] lines [AjPList] list of lines to add to
 ** @param [r] info [EmbPShowBlank] data on how to display the sequence data
 ** @param [r] pos [ajint] current printing position in the sequence
@@ -1315,7 +1315,7 @@ static void showFillBlank(EmbPShow thys, AjPList lines, EmbPShowBlank info,
 **
 ** Add a tick line to the lines list
 **
-** @param [P] thys [EmbPShow] Show sequence object
+** @param [r] thys [EmbPShow] Show sequence object
 ** @param [u] lines [AjPList] list of lines to add to
 ** @param [r] info [EmbPShowTicks] data on how to display the sequence data
 ** @param [r] pos [ajint] current printing position in the sequence
@@ -1353,7 +1353,7 @@ static void showFillTicks(EmbPShow thys, AjPList lines, EmbPShowTicks info,
 **
 ** Add a tick line numbers to the lines list
 **
-** @param [P] thys [EmbPShow] Show sequence object
+** @param [r] thys [EmbPShow] Show sequence object
 ** @param [u] lines [AjPList] list of lines to add to
 ** @param [r] info [EmbPShowTicknum] data on how to display the sequence data
 ** @param [r] pos [ajint] current printing position in the sequence
@@ -1393,7 +1393,7 @@ static void showFillTicknum(EmbPShow thys, AjPList lines, EmbPShowTicknum info,
 **
 ** Add thys line's worth of sequence complement to the lines list
 **
-** @param [P] thys [EmbPShow] Show sequence object
+** @param [r] thys [EmbPShow] Show sequence object
 ** @param [u] lines [AjPList] list of lines to add to
 ** @param [r] info [EmbPShowComp] data on how to display the sequence data
 ** @param [r] pos [ajint] current printing position in the sequence
@@ -1451,7 +1451,7 @@ static void showFillComp(EmbPShow thys, AjPList lines, EmbPShowComp info,
 **
 ** Add this line's worth of sequence translation to the lines list
 **
-** @param [P] thys [EmbPShow] Show sequence object
+** @param [r] thys [EmbPShow] Show sequence object
 ** @param [u] lines [AjPList] list of lines to add to
 ** @param [r] info [EmbPShowTran] data on how to display the sequence data
 ** @param [r] pos [ajint] current printing position in the sequence
@@ -1713,7 +1713,7 @@ static void showFillTran(EmbPShow thys, AjPList lines, EmbPShowTran info,
 **
 ** Add this line's worth of Restriction Enzyme cut sites to the lines list
 **
-** @param [P] thys [EmbPShow] Show sequence object
+** @param [r] thys [EmbPShow] Show sequence object
 ** @param [u] lines [AjPList] list of lines to add to
 ** @param [r] info [EmbPShowRE] data on how to display the RE cut sites
 ** @param [r] pos [ajint] current printing position in the sequence
@@ -1747,7 +1747,7 @@ static void showFillRE(EmbPShow thys, AjPList lines, EmbPShowRE info,
 ** Add this line's worth of Restriction Enzyme cut sites to the lines list
 ** Display in upright sit-up-and-beg format
 **
-** @param [P] thys [EmbPShow] Show sequence object
+** @param [r] thys [EmbPShow] Show sequence object
 ** @param [u] lines [AjPList] list of lines to add to
 ** @param [r] info [EmbPShowRE] data on how to display the RE cut sites
 ** @param [r] pos [ajint] current printing position in the sequence
@@ -1954,7 +1954,7 @@ static ajint showFillREuprightSort (const void* a, const void* b) {
 ** Add this line's worth of Restriction Enzyme cut sites to the lines list
 ** Display in flat format with recognition sites
 **
-** @param [P] thys [EmbPShow] Show sequence object
+** @param [r] thys [EmbPShow] Show sequence object
 ** @param [u] lines [AjPList] list of lines to add to
 ** @param [r] info [EmbPShowRE] data on how to display the RE cut sites
 ** @param [r] pos [ajint] current printing position in the sequence
@@ -2393,7 +2393,7 @@ static void showFillREflat(EmbPShow thys, AjPList lines, EmbPShowRE info,
 ** Add this line's worth of features to the lines list
 ** NB. the 'source' feature is always ignored
 **
-** @param [P] thys [EmbPShow] Show sequence object
+** @param [r] thys [EmbPShow] Show sequence object
 ** @param [u] lines [AjPList] list of lines to add to
 ** @param [r] info [EmbPShowFT] data on how to display the features
 ** @param [r] pos [ajint] current printing position in the sequence
@@ -2685,7 +2685,7 @@ static void showFillFT(EmbPShow thys, AjPList lines, EmbPShowFT info,
 **
 ** Add this line's worth of user annotation to the lines list
 **
-** @param [P] thys [EmbPShow] Show sequence object
+** @param [r] thys [EmbPShow] Show sequence object
 ** @param [u] lines [AjPList] list of lines to add to
 ** @param [r] info [EmbPShowNote] data on how to display the annotation
 ** @param [r] pos [ajint] current printing position in the sequence

@@ -24,6 +24,17 @@
 
 static AjBool overlap;
 
+/* @datastatic Palindrome *****************************************************
+**
+** Palindrome internals
+**
+** @attr forwardStart [ajint] Start forward
+** @attr forwardEnd [ajint] End forward
+** @attr revStart [ajint] Start reverse
+** @attr revEnd [ajint] End reverse
+** @attr next [struct palindrome *] Pointer to next in list
+******************************************************************************/
+
 typedef struct palindrome
 {
    ajint forwardStart;

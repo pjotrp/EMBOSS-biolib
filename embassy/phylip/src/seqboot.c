@@ -44,8 +44,11 @@ Static long **sppord;
 
 void emboss_getoptions(char *pgm, int argc, char *argv[]){
   AjStatus retval;
-  AjPFile outf,treef,inf;
-  AjPStr *methodlist,*testlist;
+  AjPFile outf;
+  AjPFile treef;
+  AjPFile inf;
+  AjPStr *methodlist;
+  AjPStr *testlist;
   int temp,i;
   long inseed0,inseed;
 

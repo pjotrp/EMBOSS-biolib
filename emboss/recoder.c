@@ -33,10 +33,25 @@
 
 AjIUB aj_base_iubS[256];      /* base letters and their alternatives */
 
+/* @datastatic AjPRinfo *******************************************************
+**
+** recoder internals for RE information
+**
+** @alias AjSRinfo
+** @alias AjORinfo
+**
+** @attr code [AjPStr] Undocumented
+** @attr site [AjPStr] Undocumented
+** @attr ncuts [ajint] Undocumented
+** @attr cut1 [ajint] Undocumented
+** @attr cut2 [ajint] Undocumented
+** @attr cut3 [ajint] Undocumented
+** @attr cut4 [ajint] Undocumented
+******************************************************************************/
 
 typedef struct AjSRinfo
 {
-    AjPStr code;              /* structure for RE info */
+    AjPStr code;
     AjPStr site;
     ajint ncuts;
     ajint cut1;
@@ -46,9 +61,26 @@ typedef struct AjSRinfo
 } AjORinfo, *AjPRinfo;
 
 
+/* @datastatic Mutant *********************************************************
+**
+** recoder internals for mutation sites
+**
+** @alias AjSRinfo
+** @alias AjORinfo
+**
+** @attr code [AjPStr] Undocumented
+** @attr site [AjPStr] Undocumented
+** @attr match [ajint] Undocumented
+** @attr base [ajint] Undocumented
+** @attr seqaa [AjPStr] Undocumented
+** @attr reaa [AjPStr] Undocumented
+** @attr obase [char] Undocumented
+** @attr nbase [char] Undocumented
+******************************************************************************/
+
 typedef struct Mutant
 {
-    AjPStr code;              /* structure for mutation sites */
+    AjPStr code;
     AjPStr site;
     ajint match;
     ajint base;

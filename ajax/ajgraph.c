@@ -1815,8 +1815,8 @@ ajint* ajGraphGetBaseColour(void)
 **
 ** Get the char size.
 **
-** @param [rw] defheight [float *] where to store the default char height
-** @param [rw] currentheight [float *] where to the current  char height
+** @param [u] defheight [float *] where to store the default char height
+** @param [u] currentheight [float *] where to the current  char height
 **
 ** @return [void]
 ** @@
@@ -1843,12 +1843,12 @@ void ajGraphGetCharSize(float *defheight, float *currentheight)
 **
 ** For graph data type, sets to zero.
 **
-** @param [rw] xp [float *] where to store the default char height
-** @param [rw] yp [float *] where to the current  char height
-** @param [rw] xleng [ajint *] where to store the default char height
-** @param [rw] yleng [ajint *] where to the current  char height
-** @param [rw] xoff [ajint *] where to store the default char height
-** @param [rw] yoff [ajint *] where to the current  char height
+** @param [u] xp [float *] where to store the default char height
+** @param [u] yp [float *] where to the current  char height
+** @param [u] xleng [ajint *] where to store the default char height
+** @param [u] yleng [ajint *] where to the current  char height
+** @param [u] xoff [ajint *] where to store the default char height
+** @param [u] yoff [ajint *] where to the current  char height
 **
 ** @return [void]
 ** @@
@@ -3649,7 +3649,7 @@ void ajGraphxySetGaps(AjPGraph graphs, AjBool overlap)
 **
 ** Set whether the graph is to display a bottom x axis.
 **
-** @param [rw] graphs [AjPGraph] graph to have flag altered
+** @param [u] graphs [AjPGraph] graph to have flag altered
 ** @param [r]  set    [AjBool]   whether to set or turn off.
 ** @return [void]
 ** @@
@@ -3664,7 +3664,7 @@ void ajGraphxySetXBottom(AjPGraph graphs, AjBool set)
 **
 ** Set whether the graph is to display the left X axis at the top.
 **
-** @param [rw] graphs [AjPGraph] graph to have flag altered
+** @param [u] graphs [AjPGraph] graph to have flag altered
 ** @param [r]  set    [AjBool]   whether to set or turn off.
 ** @return [void]
 ** @@
@@ -3680,7 +3680,7 @@ void ajGraphxySetXTop(AjPGraph graphs, AjBool set)
 **
 ** Set the graph is to display a right hand Y axis.
 **
-** @param [rw] graphs [AjPGraph] graph to have flag altered
+** @param [u] graphs [AjPGraph] graph to have flag altered
 ** @param [r]  set    [AjBool]   whether to set or turn off.
 ** @return [void]
 ** @@
@@ -3695,7 +3695,7 @@ void ajGraphxySetYRight(AjPGraph graphs, AjBool set)
 **
 ** Set whether the graph is to display the left Y axis.
 **
-** @param [rw] graphs [AjPGraph] graph to have flag altered
+** @param [u] graphs [AjPGraph] graph to have flag altered
 ** @param [r]  set    [AjBool]   whether to set or turn off.
 ** @return [void]
 ** @@
@@ -3710,7 +3710,7 @@ void ajGraphxySetYLeft(AjPGraph graphs, AjBool set)
 **
 ** Set whether the graph is to display tick marks on the x axis.
 **
-** @param [rw] graphs [AjPGraph] graph to have flag altered
+** @param [u] graphs [AjPGraph] graph to have flag altered
 ** @param [r]  set    [AjBool]   whether to set or turn off.
 ** @return [void]
 ** @@
@@ -3725,7 +3725,7 @@ void ajGraphxySetXTick(AjPGraph graphs, AjBool set)
 **
 ** Set the graph is to display tick marks on the y axis.
 **
-** @param [rw] graphs [AjPGraph] graph to have flag altered
+** @param [u] graphs [AjPGraph] graph to have flag altered
 ** @param [r]  set    [AjBool]   whether to set or turn off.
 ** @return [void]
 ** @@
@@ -3740,7 +3740,7 @@ void ajGraphxySetYTick(AjPGraph graphs, AjBool set)
 **
 ** Set whether the graph is to label the x axis.
 **
-** @param [rw] graphs [AjPGraph] graph to have flag altered
+** @param [u] graphs [AjPGraph] graph to have flag altered
 ** @param [r]  set    [AjBool]   whether to set or turn off.
 ** @return [void]
 ** @@
@@ -3755,7 +3755,7 @@ void ajGraphxySetXLabel(AjPGraph graphs, AjBool set)
 **
 ** Set whether the graph is to label the y axis.
 **
-** @param [rw] graphs [AjPGraph] graph to have flag altered
+** @param [u] graphs [AjPGraph] graph to have flag altered
 ** @param [r]  set    [AjBool]   whether to set or turn off.
 ** @return [void]
 ** @@
@@ -3770,7 +3770,7 @@ void ajGraphxySetYLabel(AjPGraph graphs, AjBool set)
 **
 ** Set whether the graph is to display the title.
 **
-** @param [rw] graphs [AjPGraph] graph to have flag altered
+** @param [u] graphs [AjPGraph] graph to have flag altered
 ** @param [r]  set    [AjBool]   whether to set or turn off.
 ** @return [void]
 ** @@
@@ -3785,7 +3785,7 @@ void ajGraphxySetTitleDo(AjPGraph graphs, AjBool set)
 **
 ** Set whether the graph is to display the subtitle.
 **
-** @param [rw] graphs [AjPGraph] graph to have flag altered
+** @param [u] graphs [AjPGraph] graph to have flag altered
 ** @param [r]  set    [AjBool]   whether to set or turn off.
 ** @return [void]
 ** @@
@@ -3800,7 +3800,7 @@ void ajGraphxySetSubtitleDo(AjPGraph graphs, AjBool set)
 **
 ** Set the graph to draw circles at the points.
 **
-** @param [rw] graphs [AjPGraph] graph to have flag altered
+** @param [u] graphs [AjPGraph] graph to have flag altered
 ** @param [r]  set    [AjBool]   whether to set or turn off.
 ** @return [void]
 ** @@
@@ -3815,7 +3815,7 @@ void ajGraphxySetCirclePoints(AjPGraph graphs, AjBool set)
 **
 ** Set the graph to draw lines between the points.
 **
-** @param [rw] graphs [AjPGraph] graph to have flag altered
+** @param [u] graphs [AjPGraph] graph to have flag altered
 ** @param [r]  set    [AjBool]   whether to set or turn off.
 ** @return [void]
 ** @@
@@ -3830,7 +3830,7 @@ void ajGraphxySetJoinPoints(AjPGraph graphs, AjBool set)
 **
 ** Set whether the graph is to display the labels on the top x  axis.
 **
-** @param [rw] graphs [AjPGraph] graph to have flag altered
+** @param [u] graphs [AjPGraph] graph to have flag altered
 ** @param [r]  set    [AjBool]   whether to set or turn off.
 ** @return [void]
 ** @@
@@ -3845,7 +3845,7 @@ void ajGraphxySetXLabelTop(AjPGraph graphs, AjBool set)
 **
 ** Set whether the graph is to display the labels on the left hand axis.
 **
-** @param [rw] graphs [AjPGraph] graph to have flag altered
+** @param [u] graphs [AjPGraph] graph to have flag altered
 ** @param [r]  set    [AjBool]   whether to set or turn off.
 ** @return [void]
 ** @@
@@ -3861,7 +3861,7 @@ void ajGraphxySetYLabelLeft(AjPGraph graphs, AjBool set)
 ** Set whether the graph is to display the tick marks inside the plot on
 ** the x axis.
 **
-** @param [rw] graphs [AjPGraph] graph to have flag altered
+** @param [u] graphs [AjPGraph] graph to have flag altered
 ** @param [r]  set    [AjBool]   whether to set or turn off.
 ** @return [void]
 ** @@
@@ -3877,7 +3877,7 @@ void ajGraphxySetXInvTicks(AjPGraph graphs, AjBool set)
 ** Set whether the graph is to display the tick marks inside the plot
 ** on the y axis.
 **
-** @param [rw] graphs [AjPGraph] graph to have flag altered
+** @param [u] graphs [AjPGraph] graph to have flag altered
 ** @param [r]  set    [AjBool]   whether to set or turn off.
 ** @return [void]
 ** @@
@@ -3892,7 +3892,7 @@ void ajGraphxySetYInvTicks(AjPGraph graphs, AjBool set)
 **
 ** Set whether the graph is to grid the tick marks on the x axis.
 **
-** @param [rw] graphs [AjPGraph] graph to have flag altered
+** @param [u] graphs [AjPGraph] graph to have flag altered
 ** @param [r]  set    [AjBool]   whether to set or turn off.
 ** @return [void]
 ** @@
@@ -3907,7 +3907,7 @@ void ajGraphxySetXGrid(AjPGraph graphs, AjBool set)
 **
 ** Set whether the graph is to grid the tick marks on the x axis.
 **
-** @param [rw] graphs [AjPGraph] graph to have flag altered
+** @param [u] graphs [AjPGraph] graph to have flag altered
 ** @param [r]  set    [AjBool]   whether to set or turn off.
 ** @return [void]
 ** @@
@@ -3922,7 +3922,7 @@ void ajGraphxySetYGrid(AjPGraph graphs, AjBool set)
 **
 ** Set the max and min of the data points for all graphs.
 **
-** @param [rw] graphs [AjPGraph] multiple graph structure.
+** @param [u] graphs [AjPGraph] multiple graph structure.
 ** @param [r] xmin [float]  x min.
 ** @param [r] xmax [float]  x max.
 ** @param [r] ymin [float]  y min.
@@ -3955,7 +3955,7 @@ void ajGraphxySetMaxMin(AjPGraph graphs,float xmin,float xmax,
 **
 ** Set the max and min of the data points you wish to display.
 **
-** @param [rw] graphdata [AjPGraphData] multiple graph structure.
+** @param [u] graphdata [AjPGraphData] multiple graph structure.
 ** @param [r] xmin [float]  x min.
 ** @param [r] xmax [float]  x max.
 ** @param [r] ymin [float]  y min.
@@ -4005,7 +4005,7 @@ void ajGraphDataxyMaxMin(float *array, ajint npoints, float *min, float *max)
 **
 ** Set the scale max and min of the data points you wish to display.
 **
-** @param [rw] graphdata [AjPGraphData] multiple graph structure.
+** @param [u] graphdata [AjPGraphData] multiple graph structure.
 ** @param [r] xmin [float]  true x min.
 ** @param [r] xmax [float]  true x max.
 ** @param [r] ymin [float]  true y min.
@@ -4028,7 +4028,7 @@ void ajGraphDataxySetMaxima(AjPGraphData graphdata, float xmin, float xmax,
 **
 ** Set the type of the graph for data output.
 **
-** @param [rw] graphdata [AjPGraphData] multiple graph structure.
+** @param [u] graphdata [AjPGraphData] multiple graph structure.
 ** @param [r] type [char*]  Type e.g. "2D Plot", "Histogram".
 ** @return [void]
 ** @@
@@ -4043,7 +4043,7 @@ void ajGraphDataxySetTypeC(AjPGraphData graphdata, char* type)
 **
 ** Calculate the max and min of the data points and store them.
 **
-** @param [rw] graphs [AjPGraph] multiple graph structure.
+** @param [u] graphs [AjPGraph] multiple graph structure.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -4811,7 +4811,7 @@ static void GraphDataObjPrint(AjPGraphData graphs)
 **
 ** Display the drawable objects connected to this graph.
 **
-** @param [R] graphs [AjPGraphData] Graph data object
+** @param [r] graphs [AjPGraphData] Graph data object
 **
 ** @return [void]
 ** @@

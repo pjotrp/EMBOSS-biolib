@@ -119,12 +119,12 @@ AjPRegexp ajRegCompC (const char* exp)
 ** which other functions can retrieve.
 **
 ** @param [u] prog [AjPRegexp] Compiled regular expression.
-** @param [r] str [AjPStr] String to be compared.
+** @param [r] str [const AjPStr] String to be compared.
 ** @return [AjBool] ajTrue if a match was found.
 ** @@
 ******************************************************************************/
 
-AjBool ajRegExec (AjPRegexp prog, AjPStr str)
+AjBool ajRegExec (AjPRegexp prog, const AjPStr str)
 {
     int startoffset = 0;
     int options = 0;

@@ -144,7 +144,7 @@ int main(int argc, char **argv)
 **
 ** Mutate a random block of sequence
 **
-** @param [U] str [AjPStr*] sequence to mutate
+** @param [u] str [AjPStr*] sequence to mutate
 ** @param [r] isnuc [AjBool] TRUE if sequence is nucleic
 ** @param [r] blocklist [AjPStr*] Types of block mutations to perform
 ** @param [r] min [ajint] minimum size of block
@@ -258,7 +258,7 @@ static void msbar_blockmutn(AjPStr *str, AjBool isnuc, AjPStr *blocklist,
 **
 ** Mutate codons
 **
-** @param [U] str [AjPStr*] Sequence to mutate
+** @param [u] str [AjPStr*] Sequence to mutate
 ** @param [r] isnuc [AjBool] TRUE if sequence is nucleic
 ** @param [r] codonlist [AjPStr*] Types of codon mutations to perform
 ** @param [r] inframe [AjBool] mutate blocks preserving codon frame if TRUE
@@ -359,7 +359,7 @@ static void msbar_codonmutn(AjPStr *str, AjBool isnuc, AjPStr *codonlist,
 **
 ** Mutate random single points
 **
-** @param [U] str [AjPStr*] sequence to mutate
+** @param [u] str [AjPStr*] sequence to mutate
 ** @param [r] isnuc [AjBool] TRUE if sequence is nucleic
 ** @param [r] pointlist [AjPStr*] Types of point mutations to perform
 ** @@
@@ -442,7 +442,7 @@ static void msbar_pointmutn(AjPStr *str, AjBool isnuc, AjPStr *pointlist)
 **
 ** Insert random sequence at a position in the main sequence
 **
-** @param [U] str [AjPStr*] sequence to insert into
+** @param [u] str [AjPStr*] sequence to insert into
 ** @param [r] isnuc [AjBool] TRUE if sequence is nucleic
 ** @param [r] start [ajint] start position of insert
 ** @param [r] end [ajint] end of insert
@@ -481,7 +481,7 @@ static void msbar_Insert(AjPStr *str, AjBool isnuc, ajint start, ajint end)
 **
 ** Move a block of sequence from one position to another
 **
-** @param [U] str [AjPStr*] sequence to move within
+** @param [u] str [AjPStr*] sequence to move within
 ** @param [r] start [ajint] start position of block to move
 ** @param [r] end [ajint] end position of block to move
 ** @param [r] destination [ajint] destination of move
@@ -504,7 +504,7 @@ static void msbar_Move(AjPStr *str, ajint start, ajint end, ajint destination)
 **
 ** Duplicate a block of sequence adjacent to the source block of sequence
 **
-** @param [U] str [AjPStr*] sequence to duplicate within
+** @param [u] str [AjPStr*] sequence to duplicate within
 ** @param [r] start [ajint] start position of block to duplicate
 ** @param [r] end [ajint] end position of block to duplicate
 ** @@

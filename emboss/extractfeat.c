@@ -757,7 +757,7 @@ static void extractfeat_FeatureFilter(AjPFeattable featab, AjPStr
 ** @param [r] maxscore [float] Max required Score pattern
 ** @param [r] tag [AjPStr] Required Tag pattern
 ** @param [r] value [AjPStr] Required Value pattern
-** @param [rw] tagsmatch [AjBool *] true if a join has matching tag/values
+** @param [u] tagsmatch [AjBool *] true if a join has matching tag/values
 ** @return [AjBool] True if feature matches criteria
 ** @@
 ******************************************************************************/
@@ -869,7 +869,7 @@ static AjBool extractfeat_MatchPatternTags (AjPFeature feat, AjPStr tpattern,
 }
 
 
-/* @funcstatic extractfeat_MatchPatternTagsDescribe ***********************************
+/* @funcstatic extractfeat_MatchPatternDescribe *******************************
 **
 ** Checks all of the tag names of a feature against a set of patterns.
 ** If one or more matches are found, then it writes the matching tags
@@ -878,7 +878,7 @@ static AjBool extractfeat_MatchPatternTags (AjPFeature feat, AjPStr tpattern,
 **
 ** @param [r] feat [AjPFeature] Feature to process
 ** @param [r] describe [AjPStr] tags patterns to search with
-** @param [w] strout [AjPStr *] returned string to add to Description line
+** @param [w] strout [AjPStr*] returned string to add to Description line
 **
 ** @return [AjBool] ajTrue if any matching tags were found
 ** @@

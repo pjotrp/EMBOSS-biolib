@@ -66,7 +66,9 @@ short *weight, *alias, *aliasweight;
 
 void emboss_getoptions(char *pgm, int argc, char *argv[]){
   AjStatus retval;
-  AjPFile outf,treef,inf;
+  AjPFile outf;
+  AjPFile treef;
+  AjPFile inf;
   int temp,i;
   long inseed0;
 

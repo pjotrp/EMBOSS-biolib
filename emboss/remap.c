@@ -49,7 +49,17 @@ static void rebase_RenamePreferred(AjPList list, AjPTable table,
 	AjPList newlist);
 static void remap_RestrictPreferred(AjPList l, AjPTable t);
 
-/* structure for counts and isoschizomers of a restriction enzyme hit */
+/* @datastatic PValue *********************************************************
+**
+** structure for counts and isoschizomers of a restriction enzyme hit
+**
+** @alias SValue
+** @alias OValue
+**
+** @attr count [ajint] Undocumented
+** @attr iso [AjPStr] Undocumented
+******************************************************************************/
+
 typedef struct SValue
 {
     ajint  count;
@@ -1052,7 +1062,7 @@ static void remap_ajStrDel (void** str, void* cl)
 
 }
 
-/* @funcstatic rebase_RenamePreferred ******************************************
+/* @funcstatic rebase_RenamePreferred *****************************************
 **
 ** Iterates through a list of strings
 ** Forteach string it checks if that string occurs as
@@ -1062,7 +1072,7 @@ static void remap_ajStrDel (void** str, void* cl)
 **
 ** @param [r] list [AjPList] Inout list of strings
 ** @param [r] table [AjPTable] Table of replacements
-** @param [U] list [AjPList] Returned new list of strings
+** @param [u] newlist [AjPList] Returned new list of strings
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -1109,7 +1119,7 @@ static void rebase_RenamePreferred(AjPList list, AjPTable table,
 ** will be change to a name of B and isoschizomer list of "A, X, C"
 ** If the old name is not in the isoschizomer list, it will be added to it.
 **
-** @param [rw] l [AjPList] list of EmbPMatMatch hits
+** @param [u] l [AjPList] list of EmbPMatMatch hits
 ** @param [r] t [AjPTable] table from embossre.equ file
 **
 ** @return [void]

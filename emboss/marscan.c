@@ -328,7 +328,7 @@ int main(int argc, char **argv)
 **
 ** @param [r] l16 [AjPList] List of length 16 hits (both forward and reverse)
 ** @param [r] l8 [AjPList] List of length 8 hits (both forward and reverse)
-** @param [rw] tab [AjPFeattable*] feature table
+** @param [u] tab [AjPFeattable*] feature table
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -422,22 +422,22 @@ static void marscan_stepdown (AjPList l16, AjPList l8, AjPFeattable *tab)
 ** within MAXDIST of the last match in the other list
 **
 ** @param [r] l [AjPList] the list of matching positions
-** @param [rw] thisprev [ajint *] pointer to last stored position of
+** @param [u] thisprev [ajint *] pointer to last stored position of
 **                                this pattern
 ** @param [r] otherprev [ajint] last stored position of the other pattern
-** @param [rw] stored_match [AjBool *] flag set to ajtrue if have stored match
-** @param [rw] stored_dist [ajint *] distance between the patterns in
+** @param [u] stored_match [AjBool *] flag set to ajtrue if have stored match
+** @param [u] stored_dist [ajint *] distance between the patterns in
 **                                   the stored match
-** @param [rw] stored_8_pos [ajint *] position of this pattern match in
+** @param [u] stored_8_pos [ajint *] position of this pattern match in
 **                                    stored match
-** @param [rw] stored_16_pos [ajint *] position of 8 pattern match in
+** @param [u] stored_16_pos [ajint *] position of 8 pattern match in
 **                                     stored match
-** @param [rw] stored_lastpos [ajint *] position of end of second pattern
+** @param [u] stored_lastpos [ajint *] position of end of second pattern
 **                                      in stored match
-** @param [rw] tab [AjPFeattable*] feature table
+** @param [u] tab [AjPFeattable*] feature table
 ** @param [r] this_is_8 [AjBool] ajTrue is 'thisprev' refers to the
 **                               length 8 pattern
-** @param [rw] end_of_last_output_match [ajint *] end of the last output match
+** @param [u] end_of_last_output_match [ajint *] end of the last output match
 ** @return [AjBool] False if the list is empty
 ** @@
 ******************************************************************************/
@@ -645,7 +645,7 @@ static AjBool marscan_getpos (AjPList l, ajint *thisprev, ajint otherprev,
 **                                stored match
 ** @param [r] s8 [ajint]  position of 8bp pattern match in stored match
 ** @param [r] s16 [ajint] position of 16bp pattern match in stored match
-** @param [rw] tab [AjPFeattable*] feature table
+** @param [u] tab [AjPFeattable*] feature table
 ** @return [void]
 ** @@
 ******************************************************************************/

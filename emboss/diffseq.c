@@ -54,13 +54,15 @@ static void diffseq_AddTagsRpt(AjPStr* strval, AjPFeature feat,
 int main(int argc, char **argv)
 {
 
-    AjPSeq seq1,seq2;
+    AjPSeq seq1;
+    AjPSeq seq2;
     ajint wordlen;
     AjPTable seq1MatchTable =0 ;
     AjPList matchlist=NULL ;
     AjPFile outfile = NULL;
     AjPReport report;
-    AjPFeattable Tab1=NULL,Tab2=NULL;
+    AjPFeattable Tab1=NULL;
+    AjPFeattable Tab2=NULL;
     AjPFeattable TabRpt = NULL;
     AjPFeattabOut seq1out = NULL;
     AjPFeattabOut seq2out = NULL;
@@ -145,10 +147,10 @@ int main(int argc, char **argv)
 **
 ** convert the word table differences to feature tables.
 **
-** @param [Pr] list [AjPList] non-overlapping match list to be printed
+** @param [r] list [AjPList] non-overlapping match list to be printed
 **                            (sorted by position).
-** @param [rw] tab1 [AjPFeattable*] feature table for sequence 1
-** @param [rw] tab2 [AjPFeattable*] feature table for sequence 2
+** @param [u] tab1 [AjPFeattable*] feature table for sequence 1
+** @param [u] tab2 [AjPFeattable*] feature table for sequence 2
 ** @param [r] seq1 [AjPSeq] sequence 1
 ** @param [r] seq2 [AjPSeq] sequence 2
 ** @return [void]

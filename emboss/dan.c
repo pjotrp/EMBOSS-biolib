@@ -214,27 +214,27 @@ int main(int argc, char **argv)
 **
 ** Undocumented
 **
-** @param [R] strand [AjPStr*] Undocumented
-** @param [R] begin [ajint] Undocumented
-** @param [R] end [ajint] Undocumented
-** @param [R] window [ajint] Undocumented
-** @param [R] shift [ajint] Undocumented
-** @param [R] formamide [float] Undocumented
-** @param [R] mismatch [float] Undocumented
-** @param [R] prodLen [ajint] Undocumented
-** @param [R] dna [float] Undocumented
-** @param [R] salt [float] Undocumented
-** @param [R] temperature [float] Undocumented
-** @param [R] isDNA [AjBool] Undocumented
-** @param [R] isproduct [AjBool] Undocumented
-** @param [R] dothermo [AjBool] Undocumented
-** @param [R] outf [AjPFile] Undocumented
-** @param [R] doplot [AjBool] Undocumented
-** @param [R] xa [float[]] Undocumented
-** @param [R] ta [float[]] Undocumented
-** @param [R] tpa [float[]] Undocumented
-** @param [R] cga [float[]] Undocumented
-** @param [R] np [ajint*] Undocumented
+** @param [r] strand [AjPStr*] Undocumented
+** @param [r] begin [ajint] Undocumented
+** @param [r] end [ajint] Undocumented
+** @param [r] window [ajint] Undocumented
+** @param [r] shift [ajint] Undocumented
+** @param [r] formamide [float] Undocumented
+** @param [r] mismatch [float] Undocumented
+** @param [r] prodLen [ajint] Undocumented
+** @param [r] dna [float] Undocumented
+** @param [r] salt [float] Undocumented
+** @param [r] temperature [float] Undocumented
+** @param [r] isDNA [AjBool] Undocumented
+** @param [r] isproduct [AjBool] Undocumented
+** @param [r] dothermo [AjBool] Undocumented
+** @param [r] outf [AjPFile] Undocumented
+** @param [r] doplot [AjBool] Undocumented
+** @param [r] xa [float[]] Undocumented
+** @param [r] ta [float[]] Undocumented
+** @param [r] tpa [float[]] Undocumented
+** @param [r] cga [float[]] Undocumented
+** @param [r] np [ajint*] Undocumented
 ** @@
 ******************************************************************************/
 
@@ -343,26 +343,26 @@ static void dan_findgc(AjPStr *strand, ajint begin, ajint end, ajint window,
 **
 ** Undocumented
 **
-** @param [R] report [AjPReport] Undocumented
-** @param [R] seq [AjPSeq] Undocumented
-** @param [R] TabRpt [AjPFeattable] Undocumented
-** @param [R] window [ajint] Undocumented
-** @param [R] shift [ajint] Undocumented
-** @param [R] formamide [float] Undocumented
-** @param [R] mismatch [float] Undocumented
-** @param [R] prodLen [ajint] Undocumented
-** @param [R] dna [float] Undocumented
-** @param [R] salt [float] Undocumented
-** @param [R] temperature [float] Undocumented
-** @param [R] isDNA [AjBool] Undocumented
-** @param [R] isproduct [AjBool] Undocumented
-** @param [R] dothermo [AjBool] Undocumented
-** @param [R] doplot [AjBool] Undocumented
-** @param [R] xa [float[]] Undocumented
-** @param [R] ta [float[]] Undocumented
-** @param [R] tpa [float[]] Undocumented
-** @param [R] cga [float[]] Undocumented
-** @param [R] np [ajint*] Undocumented
+** @param [r] report [AjPReport] Undocumented
+** @param [r] seq [AjPSeq] Undocumented
+** @param [r] TabRpt [AjPFeattable] Undocumented
+** @param [r] window [ajint] Undocumented
+** @param [r] shift [ajint] Undocumented
+** @param [r] formamide [float] Undocumented
+** @param [r] mismatch [float] Undocumented
+** @param [r] prodLen [ajint] Undocumented
+** @param [r] dna [float] Undocumented
+** @param [r] salt [float] Undocumented
+** @param [r] temperature [float] Undocumented
+** @param [r] isDNA [AjBool] Undocumented
+** @param [r] isproduct [AjBool] Undocumented
+** @param [r] dothermo [AjBool] Undocumented
+** @param [r] doplot [AjBool] Undocumented
+** @param [r] xa [float[]] Undocumented
+** @param [r] ta [float[]] Undocumented
+** @param [r] tpa [float[]] Undocumented
+** @param [r] cga [float[]] Undocumented
+** @param [r] np [ajint*] Undocumented
 ** @@
 ******************************************************************************/
 

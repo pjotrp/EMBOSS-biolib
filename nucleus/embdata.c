@@ -110,7 +110,8 @@ static void dataListRead( AjPList data, AjPFile pfile)
    char whiteSpace[] = " \t\n\r";
    char commentLine[] = "#";
    char endOfData[] = "//";
-   AjPStr key, copyKey;
+   AjPStr key;
+   AjPStr copyKey;
    AjPStr value;
    static AjPTable table;
    AjIList iter=NULL;

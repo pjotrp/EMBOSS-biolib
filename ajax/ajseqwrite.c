@@ -17,7 +17,9 @@ typedef struct SeqSOutFormat
     AjBool Single;
     AjBool Save;
     void (*Write) (AjPSeqout outseq);
-} SeqOOutFormat, *SeqPOutFormat;
+} SeqOOutFormat;
+
+#define SeqPOutFormat SeqOOutFormat*
 
 /* @datastatic SeqPSeqFormat **************************************************
 **
@@ -89,20 +91,22 @@ typedef struct SeqSSeqFormat
        ajint interline;
        */
 
-} SeqOSeqFormat, *SeqPSeqFormat;
+} SeqOSeqFormat;
+
+#define SeqPSeqFormat SeqOSeqFormat*
 
 static ajint seqSpaceAll = -9;
 
 
-static void       seqAllClone (AjPSeqout outseq, AjPSeq seq);
-static void       seqClone (AjPSeqout outseq, AjPSeq seq);
-static void       seqDbName (AjPStr* name, AjPStr db);
+static void       seqAllClone (AjPSeqout outseq, const AjPSeq seq);
+static void       seqClone (AjPSeqout outseq, const AjPSeq seq);
+static void       seqDbName (AjPStr* name, const AjPStr db);
 static void       seqDeclone (AjPSeqout outseq);
 static void       seqDefName (AjPStr* name, AjBool multi);
 static AjBool     seqFileReopen (AjPSeqout outseq);
-static AjBool     seqoutUfoLocal (AjPSeqout thys);
+static AjBool     seqoutUfoLocal (const AjPSeqout thys);
 static AjBool     seqoutUsaProcess (AjPSeqout thys);
-static void       seqsetClone (AjPSeqout outseq, AjPSeqset seq, ajint i);
+static void       seqsetClone (AjPSeqout outseq, const AjPSeqset seq, ajint i);
 
 static void       seqSeqFormat (ajint seqlen, SeqPSeqFormat* psf);
 static void       seqWriteAcedb (AjPSeqout outseq);
@@ -120,7 +124,7 @@ static void       seqWriteHennig86 (AjPSeqout outseq);
 static void       seqWriteIg (AjPSeqout outseq);
 static void       seqWriteJackknifer (AjPSeqout outseq);
 static void       seqWriteJackknifernon (AjPSeqout outseq);
-static void       seqWriteListAppend (AjPSeqout outseq, AjPSeq seq);
+static void       seqWriteListAppend (AjPSeqout outseq, const AjPSeq seq);
 static void       seqWriteMega (AjPSeqout outseq);
 static void       seqWriteMeganon (AjPSeqout outseq);
 static void       seqWriteMsf (AjPSeqout outseq);
@@ -131,7 +135,7 @@ static void       seqWriteNexusnon (AjPSeqout outseq);
 static void       seqWritePhylip (AjPSeqout outseq);
 static void       seqWritePhylip3 (AjPSeqout outseq);
 static void       seqWriteSelex (AjPSeqout outseq);
-static void       seqWriteSeq (AjPSeqout outseq, SeqPSeqFormat sf);
+static void       seqWriteSeq (AjPSeqout outseq, const SeqPSeqFormat sf);
 static void       seqWriteStaden (AjPSeqout outseq);
 static void       seqWriteStrider (AjPSeqout outseq);
 static void       seqWriteSwiss (AjPSeqout outseq);
@@ -210,8 +214,8 @@ static SeqOOutFormat seqOutFormat[] =
 **
 ** Write next sequence out - continue until done.
 **
-** @param [P] outseq [AjPSeqout] Sequence output.
-** @param [P] seq [AjPSeq] Sequence.
+** @param [u] outseq [AjPSeqout] Sequence output.
+** @param [r] seq [AjPSeq] Sequence.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -306,13 +310,13 @@ void ajSeqAllWrite (AjPSeqout outseq, AjPSeq seq)
 **
 ** Write a set of sequences out.
 **
-** @param [P] outseq [AjPSeqout] Sequence output.
-** @param [P] seq [AjPSeqset] Sequence set.
+** @param [u] outseq [AjPSeqout] Sequence output.
+** @param [r] seq [const AjPSeqset] Sequence set.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajSeqsetWrite (AjPSeqout outseq, AjPSeqset seq)
+void ajSeqsetWrite (AjPSeqout outseq, const AjPSeqset seq)
 {
 
     ajint i = 0;
@@ -398,13 +402,13 @@ void ajSeqsetWrite (AjPSeqout outseq, AjPSeqset seq)
 ** sequence mode, also write it out now though it does not seem
 ** a great idea in most cases to ask for this.
 **
-** @param [P] outseq [AjPSeqout] Sequence output
-** @param [P] seq [AjPSeq] Sequence to be appended
+** @param [u] outseq [AjPSeqout] Sequence output
+** @param [r] seq [const AjPSeq] Sequence to be appended
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void seqWriteListAppend (AjPSeqout outseq, AjPSeq seq)
+static void seqWriteListAppend (AjPSeqout outseq, const AjPSeq seq)
 {
 
     AjPSeq listseq;
@@ -469,7 +473,7 @@ static void seqWriteListAppend (AjPSeqout outseq, AjPSeq seq)
 ** Close a sequence output file. For formats that save everything up
 ** and write at the end, call the Write function first.
 **
-** @param [P] outseq [AjPSeqout] Sequence output
+** @param [u] outseq [AjPSeqout] Sequence output
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -498,13 +502,13 @@ void ajSeqWriteClose (AjPSeqout outseq)
 ** Write a sequence out. For formats that save everything up
 ** and write at the end, just append to the output list.
 **
-** @param [P] outseq [AjPSeqout] Sequence output object.
-** @param [P] seq [AjPSeq] Sequence
+** @param [u] outseq [AjPSeqout] Sequence output object.
+** @param [r] seq [const AjPSeq] Sequence
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajSeqWrite (AjPSeqout outseq, AjPSeq seq)
+void ajSeqWrite (AjPSeqout outseq, const AjPSeq seq)
 {
     
     if (!outseq->Format)
@@ -578,7 +582,7 @@ void ajSeqWrite (AjPSeqout outseq, AjPSeq seq)
 **
 ** Writes a sequence in FASTA format.
 **
-** @param [P] outseq [AjPSeqout] Sequence output object.
+** @param [u] outseq [AjPSeqout] Sequence output object.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -621,7 +625,7 @@ static void seqWriteFasta (AjPSeqout outseq)
 **
 ** Writes a sequence in NCBI format.
 **
-** @param [P] outseq [AjPSeqout] Sequence output object.
+** @param [u] outseq [AjPSeqout] Sequence output object.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -673,7 +677,7 @@ static void seqWriteNcbi (AjPSeqout outseq)
 **
 ** Writes a sequence in GCG format.
 **
-** @param [P] outseq [AjPSeqout] Sequence output object.
+** @param [u] outseq [AjPSeqout] Sequence output object.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -726,7 +730,7 @@ static void seqWriteGcg (AjPSeqout outseq)
 **
 ** Writes a sequence in Staden format.
 **
-** @param [P] outseq [AjPSeqout] Sequence output object.
+** @param [u] outseq [AjPSeqout] Sequence output object.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -749,7 +753,7 @@ static void seqWriteStaden (AjPSeqout outseq)
 **
 ** Writes a sequence in plain Text format.
 **
-** @param [P] outseq [AjPSeqout] Sequence output object.
+** @param [u] outseq [AjPSeqout] Sequence output object.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -769,7 +773,7 @@ static void seqWriteText (AjPSeqout outseq)
 **
 ** Writes a sequence in Hennig86 format.
 **
-** @param [P] outseq [AjPSeqout] Sequence output object.
+** @param [u] outseq [AjPSeqout] Sequence output object.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -861,7 +865,7 @@ static void seqWriteHennig86 (AjPSeqout outseq)
 **
 ** Writes a sequence in Mega format.
 **
-** @param [P] outseq [AjPSeqout] Sequence output object.
+** @param [u] outseq [AjPSeqout] Sequence output object.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -929,7 +933,7 @@ static void seqWriteMega (AjPSeqout outseq)
 **
 ** Writes a sequence in Mega non-interleaved format.
 **
-** @param [P] outseq [AjPSeqout] Sequence output object.
+** @param [u] outseq [AjPSeqout] Sequence output object.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -987,7 +991,7 @@ static void seqWriteMeganon (AjPSeqout outseq)
 **
 ** Writes a sequence in Nexus interleaved format.
 **
-** @param [P] outseq [AjPSeqout] Sequence output object.
+** @param [u] outseq [AjPSeqout] Sequence output object.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -1073,7 +1077,7 @@ static void seqWriteNexus (AjPSeqout outseq)
 **
 ** Writes a sequence in Nexus non-interleaved format.
 **
-** @param [P] outseq [AjPSeqout] Sequence output object.
+** @param [u] outseq [AjPSeqout] Sequence output object.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -1147,7 +1151,7 @@ static void seqWriteNexusnon (AjPSeqout outseq)
 **
 ** Writes a sequence in Jackknifer format.
 **
-** @param [P] outseq [AjPSeqout] Sequence output object.
+** @param [u] outseq [AjPSeqout] Sequence output object.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -1216,7 +1220,7 @@ static void seqWriteJackknifer (AjPSeqout outseq)
 **
 ** Writes a sequence in Jackknifer on-interleaved format.
 **
-** @param [P] outseq [AjPSeqout] Sequence output object.
+** @param [u] outseq [AjPSeqout] Sequence output object.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -1292,7 +1296,7 @@ static void seqWriteJackknifernon (AjPSeqout outseq)
 **
 ** Writes a sequence in Treecon format.
 **
-** @param [P] outseq [AjPSeqout] Sequence output object.
+** @param [u] outseq [AjPSeqout] Sequence output object.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -1346,7 +1350,7 @@ static void seqWriteTreecon (AjPSeqout outseq)
 **
 ** Writes a sequence in Clustal (ALN) format.
 **
-** @param [P] outseq [AjPSeqout] Sequence output object.
+** @param [u] outseq [AjPSeqout] Sequence output object.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -1424,7 +1428,7 @@ static void seqWriteClustal (AjPSeqout outseq)
 **
 ** Writes a sequence in Selex format.
 **
-** @param [P] outseq [AjPSeqout] Sequence output object.
+** @param [u] outseq [AjPSeqout] Sequence output object.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -1700,7 +1704,7 @@ static void seqWriteSelex (AjPSeqout outseq)
 **
 ** Writes a sequence in GCG Multiple Sequence File format.
 **
-** @param [P] outseq [AjPSeqout] Sequence output object.
+** @param [u] outseq [AjPSeqout] Sequence output object.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -1841,7 +1845,7 @@ static void seqWriteMsf (AjPSeqout outseq)
 **
 ** Writes a sequence in Codata format.
 **
-** @param [P] outseq [AjPSeqout] Sequence output object.
+** @param [u] outseq [AjPSeqout] Sequence output object.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -1883,7 +1887,7 @@ static void seqWriteCodata (AjPSeqout outseq)
 **
 ** Writes a sequence in NBRF format.
 **
-** @param [P] outseq [AjPSeqout] Sequence output object.
+** @param [u] outseq [AjPSeqout] Sequence output object.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -1929,7 +1933,7 @@ static void seqWriteNbrf (AjPSeqout outseq)
 **
 ** Writes a sequence in EMBL format.
 **
-** @param [P] outseq [AjPSeqout] Sequence output object.
+** @param [u] outseq [AjPSeqout] Sequence output object.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -2088,7 +2092,7 @@ static void seqWriteEmbl (AjPSeqout outseq)
 **
 ** Writes a sequence in SWISSPROT format.
 **
-** @param [P] outseq [AjPSeqout] Sequence output object.
+** @param [u] outseq [AjPSeqout] Sequence output object.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -2256,7 +2260,7 @@ static void seqWriteSwiss (AjPSeqout outseq)
 **
 ** Writes a sequence in GENBANK format.
 **
-** @param [P] outseq [AjPSeqout] Sequence output object.
+** @param [u] outseq [AjPSeqout] Sequence output object.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -2421,7 +2425,7 @@ static void seqWriteGenbank (AjPSeqout outseq)
 **
 ** Writes a sequence in GFF format.
 **
-** @param [P] outseq [AjPSeqout] Sequence output object.
+** @param [u] outseq [AjPSeqout] Sequence output object.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -2494,7 +2498,7 @@ static void seqWriteGff (AjPSeqout outseq)
 **
 ** Writes a sequence in DNA STRIDER format.
 **
-** @param [P] outseq [AjPSeqout] Sequence output object.
+** @param [u] outseq [AjPSeqout] Sequence output object.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -2519,7 +2523,7 @@ static void seqWriteStrider (AjPSeqout outseq)
 **
 ** Writes a sequence in FITCH format.
 **
-** @param [P] outseq [AjPSeqout] Sequence output object.
+** @param [u] outseq [AjPSeqout] Sequence output object.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -2545,7 +2549,7 @@ static void seqWriteFitch (AjPSeqout outseq)
 **
 ** Writes a sequence in PHYLIP interleaved format.
 **
-** @param [P] outseq [AjPSeqout] Sequence output object.
+** @param [u] outseq [AjPSeqout] Sequence output object.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -2624,7 +2628,7 @@ static void seqWritePhylip (AjPSeqout outseq)
 **
 ** Writes a sequence in PHYLIP non-interleaved format.
 **
-** @param [P] outseq [AjPSeqout] Sequence output object.
+** @param [u] outseq [AjPSeqout] Sequence output object.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -2706,7 +2710,7 @@ static void seqWritePhylip3 (AjPSeqout outseq)
 **
 ** Writes a sequence in ASN.1 format.
 **
-** @param [P] outseq [AjPSeqout] Sequence output object.
+** @param [u] outseq [AjPSeqout] Sequence output object.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -2761,7 +2765,7 @@ static void seqWriteAsn1 (AjPSeqout outseq)
 **
 ** Writes a sequence in INTELLIGENETICS format.
 **
-** @param [P] outseq [AjPSeqout] Sequence output object.
+** @param [u] outseq [AjPSeqout] Sequence output object.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -2786,7 +2790,7 @@ static void seqWriteIg (AjPSeqout outseq)
 **
 ** Writes a sequence in ACEDB format.
 **
-** @param [P] outseq [AjPSeqout] Sequence output object.
+** @param [u] outseq [AjPSeqout] Sequence output object.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -2812,7 +2816,7 @@ static void seqWriteAcedb (AjPSeqout outseq)
 **
 ** Writes a sequence in debug report format.
 **
-** @param [P] outseq [AjPSeqout] Sequence output object.
+** @param [u] outseq [AjPSeqout] Sequence output object.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -2907,12 +2911,12 @@ static void seqWriteDebug (AjPSeqout outseq)
 ** special cases using standard output and standard error respectively.
 **
 ** @param [u] seqout [AjPSeqout] Sequence output object.
-** @param [r] name [AjPStr] Output filename.
+** @param [r] name [const AjPStr] Output filename.
 ** @return [AjBool] ajTrue on success.
 ** @@
 ******************************************************************************/
 
-AjBool ajSeqFileNewOut (AjPSeqout seqout, AjPStr name)
+AjBool ajSeqFileNewOut (AjPSeqout seqout, const AjPStr name)
 {
 
     AjBool single = seqout->Single;
@@ -2946,12 +2950,12 @@ AjBool ajSeqFileNewOut (AjPSeqout seqout, AjPStr name)
 ** Tests whether a sequence output object will write features to the
 ** sequence output file. The alternative is to use a separate UFO.
 **
-** @param [u] thys [AjPSeqout] Sequence output object.
+** @param [u] thys [const AjPSeqout] Sequence output object.
 ** @return [AjBool] ajTrue if the features will be written to the sequence
 ** @@
 ******************************************************************************/
 
-static AjBool seqoutUfoLocal (AjPSeqout thys)
+static AjBool seqoutUfoLocal (const AjPSeqout thys)
 {
     ajDebug ("seqoutUfoLocal Features %B Ufo %d '%S'\n",
 	     thys->Features, ajStrLen(thys->Ufo), thys->Ufo);
@@ -3114,7 +3118,7 @@ AjBool ajSeqoutOpen (AjPSeqout thys)
 ** more than one sequence is writte to a file. Obvious examples are plain
 ** text and GCG formats.
 **
-** @param [P] format [AjPStr] Output format required.
+** @param [u] format [AjPStr] Output format required.
 ** @return [AjBool] ajTrue if separate file is needed for each sequence.
 ** @@
 ******************************************************************************/
@@ -3136,13 +3140,13 @@ AjBool ajSeqOutFormatSingle (AjPStr format)
 ** Sets the output format. Currently hard coded but will be replaced
 ** in future by a variable.
 **
-** @param [wP] thys [AjPSeqout] Sequence output object.
-** @param [r] format [AjPStr] Output format.
+** @param [u] thys [AjPSeqout] Sequence output object.
+** @param [r] format [const AjPStr] Output format.
 ** @return [AjBool] ajTrue on success.
 ** @@
 ******************************************************************************/
 
-AjBool ajSeqOutSetFormat (AjPSeqout thys, AjPStr format)
+AjBool ajSeqOutSetFormat (AjPSeqout thys, const AjPStr format)
 {
     static AjPStr fmt = NULL;
 
@@ -3161,13 +3165,13 @@ AjBool ajSeqOutSetFormat (AjPSeqout thys, AjPStr format)
 ** Sets the output format. Currently hard coded but will be replaced
 ** in future by a variable.
 **
-** @param [wP] thys [AjPSeqout] Sequence output object.
-** @param [r] format [char *] Output format.
+** @param [u] thys [AjPSeqout] Sequence output object.
+** @param [r] format [const char *] Output format.
 ** @return [AjBool] ajTrue on success.
 ** @@
 ******************************************************************************/
 
-AjBool ajSeqOutSetFormatC (AjPSeqout thys, char* format)
+AjBool ajSeqOutSetFormatC (AjPSeqout thys, const char* format)
 {
     AjPStr fmt = NULL;
     AjBool ret;
@@ -3185,7 +3189,7 @@ AjBool ajSeqOutSetFormatC (AjPSeqout thys, char* format)
 ** Checks the _OUTFORMAT variable,
 ** and uses FASTA if no other definition is found.
 **
-** @param [wP] pformat [AjPStr*] Default output format.
+** @param [w] pformat [AjPStr*] Default output format.
 ** @return [AjBool] ajTrue on success.
 ** @@
 ******************************************************************************/
@@ -3219,13 +3223,13 @@ AjBool ajSeqOutFormatDefault (AjPStr* pformat)
 **
 ** Reports the internal data structures
 **
-** @param [r] outf [AjPFile] Output file
+** @param [r] outf [const AjPFile] Output file
 ** @param [r] full [AjBool] Full report (usually ajFalse)
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajSeqPrintOutFormat (AjPFile outf, AjBool full)
+void ajSeqPrintOutFormat (const AjPFile outf, AjBool full)
 {
 
     ajint i=0;
@@ -3254,13 +3258,13 @@ void ajSeqPrintOutFormat (AjPFile outf, AjBool full)
 ** Looks for the specified output format in the internal definitions and
 ** returns the index.
 **
-** @param [P] format [AjPStr] Format required.
+** @param [r] format [const AjPStr] Format required.
 ** @param [w] iformat [ajint*] Index
 ** @return [AjBool] ajTrue on success.
 ** @@
 ******************************************************************************/
 
-AjBool ajSeqFindOutFormat (AjPStr format, ajint* iformat)
+AjBool ajSeqFindOutFormat (const AjPStr format, ajint* iformat)
 {
 
     AjPStr tmpformat = NULL;
@@ -3278,7 +3282,7 @@ AjBool ajSeqFindOutFormat (AjPStr format, ajint* iformat)
 	}
     }
     else {
-	(void) ajStrAss (&tmpformat, format);
+	(void) ajStrAssS (&tmpformat, format);
     }
 
     (void) ajStrToLower(&tmpformat);
@@ -3303,7 +3307,7 @@ AjBool ajSeqFindOutFormat (AjPStr format, ajint* iformat)
 ** Initialises sequence output formatting parameters.
 **
 ** @param [r] seqlen [ajint] Sequence length
-** @param [uP] psf [SeqPSeqFormat*] Sequence format object
+** @param [u] psf [SeqPSeqFormat*] Sequence format object
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -3362,12 +3366,12 @@ static void seqSeqFormat (ajint seqlen, SeqPSeqFormat* psf)
 **
 ** Calculates a GCG checksum for an output sequence.
 **
-** @param [r] outseq [AjPSeqout] Output sequence.
+** @param [r] outseq [const AjPSeqout] Output sequence.
 ** @return [ajint] GCG checksum.
 ** @@
 ******************************************************************************/
 
-ajint ajSeqoutCheckGcg (AjPSeqout outseq)
+ajint ajSeqoutCheckGcg (const AjPSeqout outseq)
 {
     register ajlong  i, check = 0, count = 0;
     char *cp = ajStrStr(outseq->Seq);
@@ -3391,12 +3395,12 @@ ajint ajSeqoutCheckGcg (AjPSeqout outseq)
 ** already stored in the output sequence object and the formatting structure.
 **
 ** @param [r] outseq [AjPSeqout] Output sequence.
-** @param [w] sf [SeqPSeqFormat] Output formatting structure.
+** @param [w] sf [const SeqPSeqFormat] Output formatting structure.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void seqWriteSeq (AjPSeqout outseq, SeqPSeqFormat sf)
+static void seqWriteSeq (AjPSeqout outseq, const SeqPSeqFormat sf)
 {
     
     /* code adapted from what readseq did */
@@ -3605,13 +3609,13 @@ static void seqWriteSeq (AjPSeqout outseq, SeqPSeqFormat sf)
 ** Copies data from a sequence into a sequence output object.
 ** Used before writing the sequence.
 **
-** @param [P] outseq [AjPSeqout] Sequence output.
-** @param [P] seq [AjPSeq] Sequence.
+** @param [u] outseq [AjPSeqout] Sequence output.
+** @param [r] seq [const AjPSeq] Sequence.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void seqClone (AjPSeqout outseq, AjPSeq seq)
+static void seqClone (AjPSeqout outseq, const AjPSeq seq)
 {
 
     ajint ibegin = 1;
@@ -3672,13 +3676,13 @@ static void seqClone (AjPSeqout outseq, AjPSeq seq)
 ** Used before writing the sequence. This version works with sequence streams.
 ** The difference is that the output object must be overwritten.
 **
-** @param [P] outseq [AjPSeqout] Sequence output.
-** @param [P] seq [AjPSeq] Sequence.
+** @param [u] outseq [AjPSeqout] Sequence output.
+** @param [r] seq [const AjPSeq] Sequence.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void seqAllClone (AjPSeqout outseq, AjPSeq seq)
+static void seqAllClone (AjPSeqout outseq, const AjPSeq seq)
 {
 
     ajint ibegin = 1;
@@ -3737,14 +3741,14 @@ static void seqAllClone (AjPSeqout outseq, AjPSeq seq)
 **
 ** Clones one sequence from a set ready for output.
 **
-** @param [P] outseq [AjPSeqout] Sequence output.
-** @param [P] seqset [AjPSeqset] Sequence set.
+** @param [u] outseq [AjPSeqout] Sequence output.
+** @param [r] seqset [const AjPSeqset] Sequence set.
 ** @param [r] i [ajint] Sequence number, zero for the first sequence.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void seqsetClone (AjPSeqout outseq, AjPSeqset seqset, ajint i)
+static void seqsetClone (AjPSeqout outseq, const AjPSeqset seqset, ajint i)
 {
 
     /* intended to clone ith sequence in the set */
@@ -3760,7 +3764,7 @@ static void seqsetClone (AjPSeqout outseq, AjPSeqset seqset, ajint i)
 **
 ** Clears clones data in a sequence output object.
 **
-** @param [P] outseq [AjPSeqout] Sequence output.
+** @param [u] outseq [AjPSeqout] Sequence output.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -3796,7 +3800,7 @@ static void seqDeclone (AjPSeqout outseq)
 ** Reopen a sequence output file. Used after the file name has been changed
 ** when writing a set of sequences one to each file.
 **
-** @param [P] outseq [AjPSeqout] Sequence output object.
+** @param [u] outseq [AjPSeqout] Sequence output object.
 ** @return [AjBool] ajTrue on success
 ** @@
 ******************************************************************************/
@@ -3828,13 +3832,13 @@ static AjBool seqFileReopen (AjPSeqout outseq)
 ** Creates or resets a sequence output object using a new Universal
 ** Sequence Address
 **
-** @param [uP] pthis [AjPSeqout*] Sequence output object.
-** @param [P] Usa [AjPStr] USA
+** @param [u] pthis [AjPSeqout*] Sequence output object.
+** @param [r] Usa [const AjPStr] USA
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajSeqoutUsa (AjPSeqout* pthis, AjPStr Usa)
+void ajSeqoutUsa (AjPSeqout* pthis, const AjPStr Usa)
 {
     AjPSeqout thys;
 
@@ -3848,7 +3852,7 @@ void ajSeqoutUsa (AjPSeqout* pthis, AjPStr Usa)
 	ajSeqoutClear(thys);
     }
 
-    (void) ajStrAss (&thys->Usa, Usa);
+    (void) ajStrAssS (&thys->Usa, Usa);
 
     return;
 }
@@ -3857,7 +3861,7 @@ void ajSeqoutUsa (AjPSeqout* pthis, AjPStr Usa)
 **
 ** Clears a Sequence output object back to "as new" condition
 **
-** @param [P] thys [AjPSeqout] Sequence output object
+** @param [u] thys [AjPSeqout] Sequence output object
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -3917,12 +3921,12 @@ void ajSeqoutClear (AjPSeqout thys)
 ** Adds the database name (if any) to the name provided.
 **
 ** @param [w] name [AjPStr*] Derived name.
-** @param [r] db [AjPStr] Database name (if any)
+** @param [r] db [const AjPStr] Database name (if any)
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void seqDbName (AjPStr* name, AjPStr db)
+static void seqDbName (AjPStr* name, const AjPStr db)
 {
 
     static AjPStr tmpname = 0;
@@ -3970,12 +3974,12 @@ static void seqDefName (AjPStr* name, AjBool multi)
 **
 ** Debug calls to trace the data in a sequence object.
 **
-** @param [r] seq [AjPSeqout] Sequence output object.
+** @param [r] seq [const AjPSeqout] Sequence output object.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajSeqoutTrace (AjPSeqout seq)
+void ajSeqoutTrace (const AjPSeqout seq)
 {
     AjIList it;
     AjPStr cur;
@@ -4069,13 +4073,13 @@ void ajSeqoutTrace (AjPSeqout seq)
 ** Writes a sequence in SWISSPROT format.
 **
 ** @param [w] outf [AjPFile] output stream
-** @param [r] seq [AjPStr] sequence
-** @param [r] prefix [char *] identifier code - should be 2 char's long
+** @param [r] seq [const AjPStr] sequence
+** @param [r] prefix [const char *] identifier code - should be 2 char's long
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajSeqWriteXyz(AjPFile outf, AjPStr seq, char *prefix)
+void ajSeqWriteXyz(AjPFile outf, const AjPStr seq, const char *prefix)
 {
     AjPSeqout outseq=NULL;
     static SeqPSeqFormat sf=NULL;
@@ -4113,13 +4117,13 @@ void ajSeqWriteXyz(AjPFile outf, AjPStr seq, char *prefix)
 ** used for printing secondary structure strings.
 **
 ** @param [w] outf [AjPFile] output stream
-** @param [r] seq [AjPStr] sequence
-** @param [r] prefix [char *] identifier code - should be 2 char's long
+** @param [r] seq [const AjPStr] sequence
+** @param [r] prefix [const char *] identifier code - should be 2 char's long
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajSssWriteXyz(AjPFile outf, AjPStr seq, char *prefix)
+void ajSssWriteXyz(AjPFile outf, const AjPStr seq, const char *prefix)
 {
     AjPSeqout outseq=NULL;
     static SeqPSeqFormat sf=NULL;

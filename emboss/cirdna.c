@@ -1475,7 +1475,7 @@ static AjPStr cirdna_ReadGroup(AjPFile infile, float *From, float *To,
 ** @param [?] TextLength [float] Undocumented
 ** @param [?] Name [AjPStr*] Undocumented
 ** @param [?] NumLabels [ajint] Undocumented
-** @param [?] NumNames [ajint] Undocumented
+** @param [?] NumNames [ajint*] Undocumented
 ** @param [?] GroupName [AjPStr] Undocumented
 ** @param [?] Style2 [AjPStr*] Undocumented
 ** @param [?] From [float*] Undocumented

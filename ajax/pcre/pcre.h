@@ -104,8 +104,11 @@ extern "C" {
 struct real_pcre;                 /* declaration; the definition is private  */
 typedef struct real_pcre pcre;
 
-/* The structure for passing additional data to pcre_exec(). This is defined in
-such as way as to be extensible. */
+/* @data pcre_extra
+**
+** The structure for passing additional data to pcre_exec(). This is defined in
+** such as way as to be extensible.
+*/
 
 typedef struct pcre_extra {
   unsigned long int flags;        /* Bits for which fields are set */
@@ -114,10 +117,14 @@ typedef struct pcre_extra {
   void *callout_data;             /* Data passed back in callouts */
 } pcre_extra;
 
-/* The structure for passing out data via the pcre_callout_function. We use a
-structure so that new fields can be added on the end in future versions,
-without changing the API of the function, thereby allowing old clients to work
-without modification. */
+/* @data pcre_callout_block
+**
+** The structure for passing out data via the pcre_callout_function. We use a
+** structure so that new fields can be added on the end in future versions,
+** without changing the API of the function,
+** thereby allowing old clients to work
+** without modification.
+*/
 
 typedef struct pcre_callout_block {
   int          version;           /* Identifies version of block */

@@ -9,10 +9,35 @@ extern "C"
 
 #include <gdome.h>
 
+/* @data AjPXmlNode ***********************************************************
+**
+** Xml graph node
+**
+** @alias AjSXmlNode
+** @alias AjOXmlNode
+**
+** @attr theNode [GdomeNode] Undocumented
+******************************************************************************/
+
 typedef struct AjSXmlNode
 {
     GdomeNode *theNode;
 } AjOXmlNode, *AjPXmlNode;
+
+/* @data AjPXmlFile ***********************************************************
+**
+** Xml graph file
+**
+** @alias AjSXmlFile
+** @alias AjOXmlFile
+**
+** @attr domimpl [GdomeDOMImplementation *] Undocumented
+** @attr doc [GdomeDocument *] Undocumented
+** @attr currentGraphic [AjPXmlNode] Undocumented
+** @attr currentScene [AjPXmlNode] Undocumented
+** @attr colour [double[3]] Undocumented
+** @attr nodeTypes [AjPTable] Undocumented
+******************************************************************************/
 
 typedef struct AjSXmlFile
 {

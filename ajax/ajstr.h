@@ -191,7 +191,8 @@ typedef struct AjSStr {
   ajint Len;
   ajint Use;
   char *Ptr;
-} AjOStr, *AjPStr;
+} AjOStr;
+#define AjPStr AjOStr*
 
 /* @data AjIStr ***************************************************************
 **
@@ -214,7 +215,9 @@ typedef struct AjSStrIter {
   char *Start;
   char *End;
   char *Ptr;
-} *AjIStr;
+} AjOStrIter;
+
+#define AjIStr  AjOStrIter*
 
 
 /* @data AjPStrTok ************************************************************
@@ -240,7 +243,9 @@ typedef struct AjSStrTok {
   AjPStr String;
   AjPStr Delim;
   ajint Pos;
-} AjOStTok, *AjPStrTok;
+} AjOStrTok;
+
+#define AjPStrTok AjOStrTok*
 
 
 /* ========================================================================= */
@@ -262,7 +267,7 @@ AjBool     ajStrAppK (AjPStr* pthis, const char chr);
 AjBool     ajStrAppKI (AjPStr* pthis, const char chr, ajint number);
 AjBool     ajStrAppSub (AjPStr* pthis, const AjPStr src,
 			ajint begin, ajint end);
-AjBool     ajStrAss   (AjPStr* pthis, const AjPStr str);
+AjBool     ajStrAss   (AjPStr* pthis, AjPStr str); /* not const */
 AjBool     ajStrAssC  (AjPStr* pthis, const char* txt);
 AjBool     ajStrAssCI (AjPStr* pthis, const char* txt, size_t i);
 AjBool     ajStrAssCL (AjPStr* pthis, const char* txt, size_t i);
@@ -295,16 +300,16 @@ int        ajStrCmpWildCC (const char* str, const char* text);
 AjBool     ajStrConvert   (AjPStr* pthis, const AjPStr oldc,
 			   const AjPStr newc);
 AjBool     ajStrConvertCC (AjPStr* pthis, const char* oldc, const char* newc);
-AjBool     ajStrCopy (AjPStr* pthis, const AjPStr str);
+AjBool     ajStrCopy (AjPStr* pthis, AjPStr str); /* not const */
 AjBool     ajStrCopyC (AjPStr* pthis, const char* str);
-ajint      ajStrCountC (AjPStr thys, const char* str);
-ajint      ajStrCountK (AjPStr thys, char ch);
+ajint      ajStrCountC (const AjPStr thys, const char* str);
+ajint      ajStrCountK (const AjPStr thys, char ch);
 AjBool     ajStrCut (AjPStr* pthis, ajint begin, ajint end);
 void       ajStrDegap(AjPStr* thys);
 void       ajStrDel (AjPStr *thys);
 AjBool     ajStrDelim (AjPStr* pthis, AjPStrTok *ptoken, const char *delim);
 AjBool     ajStrDelReuse (AjPStr *thys);
-AjPStr     ajStrDup (const AjPStr thys);
+AjPStr     ajStrDup (AjPStr thys);
 void       ajStrExit (void);
 
 ajint      ajStrFind (const AjPStr thys, const AjPStr text);
@@ -313,9 +318,9 @@ ajint      ajStrFindCase (const AjPStr thys, const AjPStr text);
 ajint      ajStrFindCaseC (const AjPStr thys, const char* txt);
 
 void       ajStrFill (AjPStr* thys, ajint count, char fill);
-void       ajStrFix (const AjPStr thys);
-void       ajStrFixI (const AjPStr thys, ajint ilen);
-void       ajStrFixTestI (const AjPStr thys, ajint ilen);
+void       ajStrFix (AjPStr thys);
+void       ajStrFixI (AjPStr thys, ajint ilen);
+void       ajStrFixTestI (AjPStr thys, ajint ilen);
 AjBool     ajStrFromBool (AjPStr *pthis, AjBool boule);
 AjBool     ajStrFromDouble (AjPStr *pthis, double val, ajint precision);
 AjBool     ajStrFromDoubleE (AjPStr* pthis, double val, ajint precision);

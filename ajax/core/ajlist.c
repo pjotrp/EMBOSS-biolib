@@ -64,11 +64,11 @@ static ajint listIterNewCnt = 0;
 static ajint listIterDelCnt = 0;
 
 static AjPList listNew(AjEnum type);
-static void listInsertNode (AjPListNode* pnode, void* x);
-static AjPListNode listDummyNode (AjPListNode* pnode);
-static void listNodesTrace (AjPListNode node);
-static AjBool listNodeDel (AjPListNode* pnode);
-static void* listNodeItem (AjPListNode node);
+static void listInsertNode (AjPListNode * pnode, void* x);
+static AjPListNode listDummyNode (AjPListNode * pnode);
+static void listNodesTrace (const AjPListNode node);
+static AjBool listNodeDel (AjPListNode * pnode);
+static void* listNodeItem (const AjPListNode node);
 static void listArrayTrace (void** array);
 
 /* @func ajListNew ************************************************************
@@ -127,7 +127,7 @@ static AjPList listNew(AjEnum type)
 ** data pointer.
 **
 ** @param [u] thys [AjPList] list to be changed.
-** @param [P] x [void*] Pointer to data.
+** @param [r] x [void*] Pointer to data.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -149,7 +149,7 @@ void ajListPush (AjPList thys, void* x)
 ** Add a new node at the start of a string list.
 **
 ** @param [u] thys [AjPList] list to be changed.
-** @param [P] x [AjPStr] String data.
+** @param [r] x [AjPStr] String data.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -165,12 +165,12 @@ void ajListstrPush (AjPList thys, AjPStr x)
 **
 ** Traces through a list and validates it
 **
-** @param [r] thys [AjPList] list to be traced.
+** @param [r] thys [const AjPList] list to be traced.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajListTrace (AjPList thys)
+void ajListTrace (const AjPList thys)
 {
     ajint i = 0;
     AjPListNode node;
@@ -211,12 +211,12 @@ void ajListTrace (AjPList thys)
 **
 ** Traces through a string list and validates it
 **
-** @param [r] thys [AjPList] list to be traced.
+** @param [r] thys [const AjPList] list to be traced.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajListstrTrace (AjPList thys)
+void ajListstrTrace (const AjPList thys)
 {
     ajint i = 0;
     AjPListNode node;
@@ -335,7 +335,8 @@ AjPList ajListstrNewArgs (AjPStr x, ...)
 AjPListNode ajListNodesNew (void* x, ...)
 {
     va_list ap;
-    AjPListNode topnode, node;
+    AjPListNode topnode;
+    AjPListNode node;
     va_start(ap, x);
 
     topnode = listDummyNode (&node);
@@ -363,14 +364,14 @@ AjPListNode ajListNodesNew (void* x, ...)
 **
 ** Writes debug messages to trace from the current list node.
 **
-** @param [r] node [AjPListNode] Current node.
+** @param [r] node [const AjPListNode] Current node.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void listNodesTrace (AjPListNode node)
+static void listNodesTrace (const AjPListNode node)
 {
-    AjPListNode p = node;
+    const AjPListNode p = node;
 
     ajDebug("listNodesTrace %x\n", p);
 
@@ -387,7 +388,7 @@ static void listNodesTrace (AjPListNode node)
 ** Add a new node at the end of the list and add the
 ** data pointer.
 **
-** @param [P] thys [AjPList]  list to be changed.
+** @param [u] thys [AjPList]  list to be changed.
 ** @param [r] morenodes [AjPListNode] link list to append.
 ** @return [void]
 ** @@
@@ -422,8 +423,8 @@ void ajListAppend(AjPList thys, AjPListNode morenodes)
 ** Add a new node at the end of the list and add the
 ** data pointer.
 **
-** @param [P] thys [AjPList] List to be changed.
-** @param [P] x [void*] Pointer to data to append.
+** @param [u] thys [AjPList] List to be changed.
+** @param [r] x [void*] Pointer to data to append.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -459,8 +460,8 @@ void ajListPushApp(AjPList thys, void* x)
 ** Add a new node at the end of the list and add the
 ** data pointer.
 **
-** @param [P] thys [AjPList] List to be changed.
-** @param [P] x [AjPStr] String to append.
+** @param [u] thys [AjPList] List to be changed.
+** @param [r] x [AjPStr] String to append.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -477,12 +478,12 @@ void ajListstrPushApp(AjPList thys, AjPStr x)
 ** WARNING: pointers to the data are copied, NOT the data
 **          so be careful when cleaning up after copy.
 **
-** @param [r] thys [AjPList] List to be copied
+** @param [r] thys [const AjPList] List to be copied
 ** @return [AjPList] New, copied, list.
 ** @@
 ******************************************************************************/
 
-AjPList ajListstrCopy(AjPList thys)
+AjPList ajListstrCopy(const AjPList thys)
 {
     return ajListCopy (thys);
 }
@@ -494,12 +495,12 @@ AjPList ajListstrCopy(AjPList thys)
 ** WARNING: pointers to the data are copied, NOT the data
 **          so be careful when cleaning up after copy.
 **
-** @param [r] thys [AjPList] list to be copied
+** @param [r] thys [const AjPList] list to be copied
 ** @return [AjPList] new copied list.
 ** @@
 ******************************************************************************/
 
-AjPList ajListCopy(AjPList thys)
+AjPList ajListCopy(const AjPList thys)
 {
     AjPList newlist;
 
@@ -526,13 +527,13 @@ AjPList ajListCopy(AjPList thys)
 ** WARNING: Makes new copies of the strings. No good general solution
 **          so this is a strings-only function.
 **
-** @param [r] thys [AjPList] list to be copied
+** @param [r] thys [const AjPList] list to be copied
 ** @param [r] newlist [AjPList] (empty) target list
 ** @return [ajint] number of nodes.
 ** @@
 ******************************************************************************/
 
-ajint ajListstrClone(AjPList thys, AjPList newlist)
+ajint ajListstrClone(const AjPList thys, AjPList newlist)
 {
     AjPListNode node;
     ajint ret=0;
@@ -560,13 +561,13 @@ ajint ajListstrClone(AjPList thys, AjPList newlist)
 **
 ** Set pointer to first node's data. Does NOT remove the first node.
 **
-** @param [u] thys [AjPList] List
-** @param [P] x [void**] pointer to pointer to data
+** @param [u] thys [const AjPList] List
+** @param [r] x [void**] pointer to pointer to data
 ** @return [AjBool] ajTrue on success.
 ** @@
 ******************************************************************************/
 
-AjBool ajListFirst(AjPList thys, void** x)
+AjBool ajListFirst(const AjPList thys, void** x)
 {
     if (!thys)
 	return ajFalse;
@@ -581,13 +582,13 @@ AjBool ajListFirst(AjPList thys, void** x)
 **
 ** Set pointer to last node's data. Does NOT remove the last node.
 **
-** @param [u] thys [AjPList] List
-** @param [P] x [void**] pointer to pointer to data
+** @param [u] thys [const AjPList] List
+** @param [r] x [void**] pointer to pointer to data
 ** @return [AjBool] ajTrue on success.
 ** @@
 ******************************************************************************/
 
-AjBool ajListLast(AjPList thys, void** x)
+AjBool ajListLast(const AjPList thys, void** x)
 {
     AjPListNode rest;
 
@@ -608,14 +609,14 @@ AjBool ajListLast(AjPList thys, void** x)
 **
 ** Set pointer to last node's nth data item. 0 <= n < number of elements.
 **
-** @param [r] thys [AjPList] List
+** @param [r] thys [const AjPList] List
 ** @param [r] n [ajint] element of the list
 ** @param [w] x [void**] pointer to pointer to data
 ** @return [AjBool] ajTrue on success.
 ** @@
 ******************************************************************************/
 
-AjBool ajListNth(AjPList thys, ajint n, void** x)
+AjBool ajListNth(const AjPList thys, ajint n, void** x)
 {
     AjPListNode rest;
     ajint len;
@@ -641,7 +642,7 @@ AjBool ajListNth(AjPList thys, ajint n, void** x)
 ** remove the first node but set pointer to data first.
 **
 ** @param [u] thys [AjPList] List
-** @param [P] x [void**] pointer to pointer to data
+** @param [r] x [void**] pointer to pointer to data
 ** @return [AjBool] ajTrue on success.
 ** @@
 ******************************************************************************/
@@ -667,13 +668,13 @@ AjBool ajListPop (AjPList thys, void** x)
 **
 ** Return the first node but keep it on the list
 **
-** @param [u] thys [AjPList] List
-** @param [P] x [void**] pointer to pointer to data
+** @param [u] thys [const AjPList] List
+** @param [r] x [void**] pointer to pointer to data
 ** @return [AjBool] ajTrue on success.
 ** @@
 ******************************************************************************/
 
-AjBool ajListPeek (AjPList thys, void** x)
+AjBool ajListPeek (const AjPList thys, void** x)
 {
     if (!thys)
 	return ajFalse;
@@ -696,7 +697,7 @@ AjBool ajListPeek (AjPList thys, void** x)
 ** @@
 ******************************************************************************/
 
-static AjBool listNodeDel (AjPListNode* pnode)
+static AjBool listNodeDel (AjPListNode * pnode)
 {
     AjPListNode node = *pnode;
     AjPListNode tmp;
@@ -717,12 +718,12 @@ static AjBool listNodeDel (AjPListNode* pnode)
 **
 ** Return the data item for a list node.
 **
-** @param [r] node  [AjPListNode] Current node.
+** @param [r] node  [const AjPListNode] Current node.
 ** @return [void*] Data item.
 ** @@
 ******************************************************************************/
 
-static void* listNodeItem (AjPListNode node)
+static void* listNodeItem (const AjPListNode node)
 {
     if (!node || !node->Next)
 	return NULL;
@@ -736,7 +737,7 @@ static void* listNodeItem (AjPListNode node)
 ** Remove the first node but set pointer to data first.
 **
 ** @param [u] thys [AjPList] List
-** @param [P] x [AjPStr*] String
+** @param [w] x [AjPStr*] String
 ** @return [AjBool] ajTrue on success.
 ** @@
 ******************************************************************************/
@@ -762,13 +763,13 @@ AjBool ajListstrPop (AjPList thys, AjPStr* x)
 **
 ** Return the first node but keep it on the list.
 **
-** @param [u] thys [AjPList] List
-** @param [P] x [AjPStr*] String
+** @param [u] thys [const AjPList] List
+** @param [w] x [AjPStr*] String
 ** @return [AjBool] ajTrue on success.
 ** @@
 ******************************************************************************/
 
-AjBool ajListstrPeek (AjPList thys, AjPStr* x)
+AjBool ajListstrPeek (const AjPList thys, AjPStr* x)
 {
     if (!thys)
 	return ajFalse;
@@ -837,12 +838,12 @@ void ajListstrReverse(AjPList thys)
 **
 ** get the number of nodes in the linked list.
 **
-** @param [r] thys [AjPList] List
+** @param [r] thys [const AjPList] List
 ** @return [ajint] Number of nodes in list.
 ** @@
 ******************************************************************************/
 
-ajint ajListLength(AjPList thys)
+ajint ajListLength(const AjPList thys)
 {
     if (!thys)
 	return 0;
@@ -854,12 +855,12 @@ ajint ajListLength(AjPList thys)
 **
 ** get the number of nodes in the linked list.
 **
-** @param [r] thys [AjPList] List
+** @param [r] thys [const AjPList] List
 ** @return [ajint] Number of nodes in list.
 ** @@
 ******************************************************************************/
 
-ajint ajListstrLength(AjPList thys)
+ajint ajListstrLength(const AjPList thys)
 {
     return ajListLength(thys);
 }
@@ -1028,7 +1029,7 @@ void ajListstrDel(AjPList* pthis)
 **
 ** @param [u] thys [AjPList] List.
 ** @param [f] apply [void function] Function to call for each list item.
-** @param [P] cl [void*] Standard, usually NULL.
+** @param [r] cl [void*] Standard, usually NULL.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -1051,7 +1052,7 @@ void ajListMap (AjPList thys, void apply(void** x, void* cl), void* cl)
 **
 ** @param [u] thys [AjPList] List.
 ** @param [f] apply [void function] Function to call for each list item.
-** @param [P] cl [void*] Standard, usually NULL.
+** @param [r] cl [void*] Standard, usually NULL.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -1073,7 +1074,7 @@ void ajListstrMap(AjPList thys, void apply(AjPStr* x, void* cl), void* cl)
 ** Create an array of the pointers to the data.
 **
 ** @param [r] thys [AjPList] List
-** @param [P] array [void***] Array of pointers to list items.
+** @param [w] array [void***] Array of pointers to list items.
 ** @return [ajint] Size of array of pointers.
 ** @@
 ******************************************************************************/
@@ -1106,7 +1107,7 @@ ajint ajListToArray(AjPList thys, void*** array)
 ** create an array of the pointers to the data.
 **
 ** @param [r] thys [AjPList] List
-** @param [P] array [AjPStr**] Array of Stringss.
+** @param [w] array [AjPStr**] Array of Strings.
 **
 ** @return [ajint] Size of array of pointers.
 **
@@ -1141,14 +1142,15 @@ ajint ajListstrToArray(AjPList thys, AjPStr** array)
 ** For each node in the list call function 'apply' and return
 ** ajTrue when any node is matched by the function.
 **
-** @param [r] thys [AjPList] List
+** @param [r] thys [const AjPList] List
 ** @param [f] apply [AjBool function] Function to call to test each list item.
-** @param [P] cl [void*] Standard, usually NULL.
+** @param [r] cl [void*] Standard, usually NULL.
 ** @return [AjBool] ajTrue on success.
 ** @@
 ******************************************************************************/
 
-AjBool ajListFind(AjPList thys, AjBool apply(void** x, void* cl), void* cl)
+AjBool ajListFind(const AjPList thys,
+		  AjBool apply(void** x, void* cl), void* cl)
 {
     AjPListNode list;
 
@@ -1167,14 +1169,14 @@ AjBool ajListFind(AjPList thys, AjBool apply(void** x, void* cl), void* cl)
 ** For each node in the list call function apply and return
 ** ajTrue when any node is matched by the function.
 **
-** @param [r] thys [AjPList] List
+** @param [r] thys [const AjPList] List
 ** @param [f] apply [AjBool function] Function to call to test each list item.
-** @param [P] cl [void*] Standard, usually NULL.
+** @param [r] cl [void*] Standard, usually NULL.
 ** @return [AjBool] ajTrue on success.
 ** @@
 ******************************************************************************/
 
-AjBool ajListstrFind (AjPList thys, AjBool apply(AjPStr* x, void* cl),
+AjBool ajListstrFind (const AjPList thys, AjBool apply(AjPStr* x, void* cl),
 		      void* cl)
 {
     AjPListNode list;
@@ -1194,6 +1196,7 @@ AjBool ajListstrFind (AjPList thys, AjBool apply(AjPStr* x, void* cl),
 ** Creates an iterator to operate from start to end of list.
 **
 ** @param [r] thys [AjPList] List
+**                 Not const - the iterator can insert and delete entries
 ** @return [AjIList] New list iterator
 ** @@
 ******************************************************************************/
@@ -1221,6 +1224,7 @@ AjIList ajListIter (AjPList thys)
 ** Creates an iterator to operate from end to start of the list.
 **
 ** @param [r] thys [AjPList] List
+**                 Not const - the iterator can insert and delete entries
 ** @return [AjIList] New list iterator
 ** @@
 ******************************************************************************/
@@ -1255,12 +1259,12 @@ AjIList ajListIterBack (AjPList thys)
 **
 ** Tests whether an iterator has completed yet.
 **
-** @param [r] iter [AjIList] List iterator.
+** @param [r] iter [const AjIList] List iterator.
 ** @return [AjBool] ajTrue if the iterator is exhausted.
 ** @@
 ******************************************************************************/
 
-AjBool ajListIterDone (AjIList iter)
+AjBool ajListIterDone (const AjIList iter)
 {
     if (ajListIterMore(iter))
 	return ajFalse;
@@ -1272,12 +1276,12 @@ AjBool ajListIterDone (AjIList iter)
 **
 ** Tests whether a backwards iterator has completed yet.
 **
-** @param [r] iter [AjIList] List iterator.
+** @param [r] iter [const AjIList] List iterator.
 ** @return [AjBool] ajTrue if the iterator is exhausted.
 ** @@
 ******************************************************************************/
 
-AjBool ajListIterBackDone (AjIList iter)
+AjBool ajListIterBackDone (const AjIList iter)
 {
     if (ajListIterBackMore(iter))
 	return ajFalse;
@@ -1307,12 +1311,12 @@ void ajListIterFree (AjIList iter)
 **
 ** Tests whether ajListIterNext can return another item.
 **
-** @param [r] iter [AjIList] List iterator.
+** @param [r] iter [const AjIList] List iterator.
 ** @return [AjBool] ajTrue if the iterator can continue.
 ** @@
 ******************************************************************************/
 
-AjBool ajListIterMore (AjIList iter)
+AjBool ajListIterMore (const AjIList iter)
 {
     AjPListNode p;
 
@@ -1338,12 +1342,12 @@ AjBool ajListIterMore (AjIList iter)
 **
 ** Tests whether ajListIterBackNext can return another item.
 **
-** @param [r] iter [AjIList] List iterator.
+** @param [r] iter [const AjIList] List iterator.
 ** @return [AjBool] ajTrue if the iterator can continue.
 ** @@
 ******************************************************************************/
 
-AjBool ajListIterBackMore (AjIList iter)
+AjBool ajListIterBackMore (const AjIList iter)
 {
     AjPListNode p;
 
@@ -1620,13 +1624,13 @@ void ajListstrInsert (AjIList iter, AjPStr x)
 **
 ** Inserts a new node in a list at the current node position.
 **
-** @param [u] pnode [AjPListNode*] Current node.
+** @param [u] pnode [AjPListNode *] Current node.
 ** @param [r] x [void*] Data item to insert.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void listInsertNode (AjPListNode* pnode, void* x)
+static void listInsertNode (AjPListNode * pnode, void* x)
 {
     AjPListNode p;
 
@@ -1646,12 +1650,12 @@ static void listInsertNode (AjPListNode* pnode, void* x)
 **
 ** Creates a new empty node.
 **
-** @param [u] pnode [AjPListNode*] New node.
+** @param [u] pnode [AjPListNode *] New node.
 ** @return [AjPListNode] Copy of current node.
 ** @@
 ******************************************************************************/
 
-static AjPListNode listDummyNode (AjPListNode* pnode)
+static AjPListNode listDummyNode (AjPListNode * pnode)
 {
     AJNEW0(*pnode);
 
@@ -1664,12 +1668,12 @@ static AjPListNode listDummyNode (AjPListNode* pnode)
 **
 ** Traces a list iterator and validates it.
 **
-** @param [r] thys [AjIList] list iterator to be traced.
+** @param [r] thys [const AjIList] list iterator to be traced.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajListIterTrace (AjIList thys)
+void ajListIterTrace (const AjIList thys)
 {
     if (!thys)
 	return;
@@ -1684,12 +1688,12 @@ void ajListIterTrace (AjIList thys)
 **
 ** Traces a list iterator and validates it
 **
-** @param [r] thys [AjIList] List iterator to be traced.
+** @param [r] thys [const AjIList] List iterator to be traced.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajListstrIterTrace (AjIList thys)
+void ajListstrIterTrace (const AjIList thys)
 {
     if (!thys)
 	return;
@@ -1866,7 +1870,7 @@ void ajListUnique (AjPList thys,
 ** remove the last node but set pointer to data first.
 **
 ** @param [u] thys [AjPList] List
-** @param [P] x [void**] pointer to pointer to data
+** @param [w] x [void**] pointer to pointer to data
 ** @return [AjBool] ajTrue on success.
 ** @@
 ******************************************************************************/
@@ -1911,7 +1915,7 @@ AjBool ajListPopEnd(AjPList thys, void** x)
 ** Remove the last node but set pointer to data first.
 **
 ** @param [u] thys [AjPList] List
-** @param [P] x [AjPStr*] String
+** @param [w] x [AjPStr*] String
 ** @return [AjBool] ajTrue on success.
 ** @@
 ******************************************************************************/
@@ -1955,7 +1959,7 @@ AjBool ajListstrPopEnd(AjPList thys, AjPStr *x)
 **
 ** Dummy function to catch all unused functions defined in ajlist
 **
-** @param [R] array [void**] Array needed by ajListArrayTrace
+** @param [r] array [void**] Array needed by ajListArrayTrace
 ** @return [void]
 ******************************************************************************/
 

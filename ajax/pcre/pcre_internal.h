@@ -536,8 +536,11 @@ Unix, where it is defined in sys/types, so use "uschar" instead. */
 
 typedef unsigned char uschar;
 
-/* The real format of the start of the pcre block; the index of names and the
-code vector run on as long as necessary after the end. */
+/* @data real_pcre
+**
+** The real format of the start of the pcre block; the index of names and the
+** code vector run on as long as necessary after the end.
+*/
 
 typedef struct real_pcre {
   unsigned long int magic_number;
@@ -552,7 +555,10 @@ typedef struct real_pcre {
   unsigned short int name_count;      /* Number of name items */
 } real_pcre;
 
-/* The format of the block used to store data from pcre_study(). */
+/* @data pcre_study_data
+**
+** The format of the block used to store data from pcre_study().
+*/
 
 typedef struct pcre_study_data {
   size_t size;                        /* Total that was malloced */
@@ -560,8 +566,11 @@ typedef struct pcre_study_data {
   uschar start_bits[32];
 } pcre_study_data;
 
-/* Structure for passing "static" information around between the functions
-doing the compiling, so that they are thread-safe. */
+/* @data compile_data
+**
+** Structure for passing "static" information around between the functions
+** doing the compiling, so that they are thread-safe.
+*/
 
 typedef struct compile_data {
   const uschar *lcc;            /* Points to lower casing table */
@@ -577,28 +586,38 @@ typedef struct compile_data {
   int  req_varyopt;             /* "After variable item" flag for reqbyte */
 } compile_data;
 
-/* Structure for maintaining a chain of pointers to the currently incomplete
-branches, for testing for left recursion. */
+/* @data branch_chain
+**
+** Structure for maintaining a chain of pointers to the currently incomplete
+** branches, for testing for left recursion.
+*/
 
 typedef struct branch_chain {
   struct branch_chain *outer;
   uschar *current;
 } branch_chain;
 
-/* Structure for items in a linked list that represents an explicit recursive
-call within the pattern. */
+/* @data recursion_info
+**
+** Structure for items in a linked list that represents an explicit recursive
+** call within the pattern.
+*/
 
 typedef struct recursion_info {
   struct recursion_info *prev;  /* Previous recursion record (or NULL) */
   int group_num;                /* Number of group that was called */
-  const uschar *after_call;     /* "Return value": points after the call in the expr */
+  const uschar *after_call;     /* "Return value":
+				   points after the call in the expr */
   const uschar *save_start;     /* Old value of md->start_match */
   int *offset_save;             /* Pointer to start of saved offsets */
   int saved_max;                /* Number of saved offsets */
 } recursion_info;
 
-/* Structure for passing "static" information around between the functions
-doing the matching, so that they are thread-safe. */
+/* @data match_data
+**
+** Structure for passing "static" information around between the functions
+** doing the matching, so that they are thread-safe.
+*/
 
 typedef struct match_data {
   unsigned long int match_call_count; /* As it says */

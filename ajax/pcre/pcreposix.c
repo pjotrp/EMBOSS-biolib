@@ -121,181 +121,202 @@ static const char *pstring[] = {
 
 
 
-
-/*************************************************
-*          Translate PCRE text code to int       *
-*************************************************/
-
-/* PCRE compile-time errors are given as strings defined as macros. We can just
-look them up in a table to turn them into POSIX-style error codes. */
+/* @funcstatic pcre_posix_error_code ******************************************
+**
+** Translate PCRE text code to int
+**
+** PCRE compile-time errors are given as strings defined as macros. We can just
+** look them up in a table to turn them into POSIX-style error codes.
+**
+** @param [r] s [const char*] PCRE text code
+** @return [int] int equivalent
+******************************************************************************/
 
 static int
 pcre_posix_error_code(const char *s)
 {
-size_t i;
-for (i = 0; i < sizeof(estring)/sizeof(char *); i++)
-  if (strcmp(s, estring[i]) == 0) return eint[i];
-return REG_ASSERT;
+    size_t i;
+    for (i = 0; i < sizeof(estring)/sizeof(char *); i++)
+	if (strcmp(s, estring[i]) == 0) return eint[i];
+    return REG_ASSERT;
 }
 
 
-
-/*************************************************
-*          Translate error code to string        *
-*************************************************/
+/* @func pcre_regerror ********************************************************
+**
+** Translate error code to string
+**
+** @param [r] errcode [int] Error code
+** @param [r] preg [const regex_t*] Compiled expresion
+** @param [w] errbuf [char*] error buffer
+** @param [r] errbuf_size [size_t] error buffer size
+** @return [size_t] Message length
+******************************************************************************/
 
 size_t
-pcre_regerror(int errcode, const regex_t *preg, char *errbuf, size_t errbuf_size)
+pcre_regerror(int errcode, const regex_t *preg, char *errbuf,
+	      size_t errbuf_size)
 {
-const char *message, *addmessage;
-size_t length, addlength;
+    const char *message, *addmessage;
+    size_t length, addlength;
 
-message = (errcode >= (int)(sizeof(pstring)/sizeof(char *)))?
-  "unknown error code" : pstring[errcode];
-length = strlen(message) + 1;
+    message = (errcode >= (int)(sizeof(pstring)/sizeof(char *)))?
+	"unknown error code" : pstring[errcode];
+    length = strlen(message) + 1;
 
-addmessage = " at offset ";
-addlength = (preg != NULL && (int)preg->re_erroffset != -1)?
-  strlen(addmessage) + 6 : 0;
+    addmessage = " at offset ";
+    addlength = (preg != NULL && (int)preg->re_erroffset != -1)?
+	strlen(addmessage) + 6 : 0;
 
-if (errbuf_size > 0)
-  {
-  if (addlength > 0 && errbuf_size >= length + addlength)
-    sprintf(errbuf, "%s%s%-6d", message, addmessage, (int)preg->re_erroffset);
-  else
+    if (errbuf_size > 0)
     {
-    strncpy(errbuf, message, errbuf_size - 1);
-    errbuf[errbuf_size-1] = 0;
+	if (addlength > 0 && errbuf_size >= length + addlength)
+	    sprintf(errbuf, "%s%s%-6d",
+		    message, addmessage, (int)preg->re_erroffset);
+	else
+	{
+	    strncpy(errbuf, message, errbuf_size - 1);
+	    errbuf[errbuf_size-1] = 0;
+	}
     }
-  }
 
-return length + addlength;
+    return length + addlength;
 }
 
 
 
-
-/*************************************************
-*           Free store held by a regex           *
-*************************************************/
+/* @func pcre_regfree *********************************************************
+**
+** Free store held by a regex
+**
+** @param [d] preg [regex_t*] Regex
+** @return [void]
+******************************************************************************/
 
 void
 pcre_regfree(regex_t *preg)
 {
-(pcre_free)(preg->re_pcre);
+    (pcre_free)(preg->re_pcre);
 }
 
 
 
 
-/*************************************************
-*            Compile a regular expression        *
-*************************************************/
-
-/*
-Arguments:
-  preg        points to a structure for recording the compiled expression
-  pattern     the pattern to compile
-  cflags      compilation flags
-
-Returns:      0 on success
-              various non-zero codes on failure
-*/
+/* @func pcre_regcomp *********************************************************
+**
+** Compile a regular expression
+**
+** @param [w]  preg  [regex_t*] points to a structure for recording
+**                             the compiled expression
+** @param [r]  pattern [const char*] the pattern to compile
+** @param [r]  cflags [int] compilation flags
+** @return [int] 0 on success
+**              various non-zero codes on failure
+******************************************************************************/
 
 int
 pcre_regcomp(regex_t *preg, const char *pattern, int cflags)
 {
-const char *errorptr;
-int erroffset;
-int options = 0;
+    const char *errorptr;
+    int erroffset;
+    int options = 0;
 
-if ((cflags & REG_ICASE) != 0) options |= PCRE_CASELESS;
-if ((cflags & REG_NEWLINE) != 0) options |= PCRE_MULTILINE;
+    if ((cflags & REG_ICASE) != 0) options |= PCRE_CASELESS;
+    if ((cflags & REG_NEWLINE) != 0) options |= PCRE_MULTILINE;
 
-preg->re_pcre = pcre_compile(pattern, options, &errorptr, &erroffset, NULL);
-preg->re_erroffset = erroffset;
+    preg->re_pcre = pcre_compile(pattern, options, &errorptr,
+				 &erroffset, NULL);
+    preg->re_erroffset = erroffset;
 
-if (preg->re_pcre == NULL) return pcre_posix_error_code(errorptr);
+    if (preg->re_pcre == NULL) return pcre_posix_error_code(errorptr);
 
-preg->re_nsub = pcre_info(preg->re_pcre, NULL, NULL);
-return 0;
+    preg->re_nsub = pcre_info(preg->re_pcre, NULL, NULL);
+    return 0;
 }
 
 
 
-
-/*************************************************
-*              Match a regular expression        *
-*************************************************/
-
-/* Unfortunately, PCRE requires 3 ints of working space for each captured
-substring, so we have to get and release working store instead of just using
-the POSIX structures as was done in earlier releases when PCRE needed only 2
-ints. However, if the number of possible capturing brackets is small, use a
-block of store on the stack, to reduce the use of malloc/free. The threshold is
-in a macro that can be changed at configure time. */
+/* @func pcre_regexec *********************************************************
+**
+** Match a regular expression
+**
+** Unfortunately, PCRE requires 3 ints of working space for each captured
+** substring, so we have to get and release working store instead of just using
+** the POSIX structures as was done in earlier releases when PCRE needed only 2
+** ints. However, if the number of possible capturing brackets is small, use a
+** block of store on the stack, to reduce the use of malloc/free.
+** The threshold is in a macro that can be changed at configure time.
+**
+** @param [r] preg [const regex_t*] Undocumented
+** @param [?] string [const char*] Undocumented
+** @param [r] nmatch [size_t] Undocumented
+** @param [?] pmatch [regmatch_t[]] Undocumented
+** @param [r] eflags [int] Undocumented
+** @return [int] Undocumented
+******************************************************************************/
 
 int
 pcre_regexec(const regex_t *preg, const char *string, size_t nmatch,
-  regmatch_t pmatch[], int eflags)
+	     regmatch_t pmatch[], int eflags)
 {
-int rc;
-int options = 0;
-int *ovector = NULL;
-int small_ovector[POSIX_MALLOC_THRESHOLD * 3];
-BOOL allocated_ovector = FALSE;
-
-if ((eflags & REG_NOTBOL) != 0) options |= PCRE_NOTBOL;
-if ((eflags & REG_NOTEOL) != 0) options |= PCRE_NOTEOL;
-
-((regex_t *)preg)->re_erroffset = (size_t)(-1);  /* Only has meaning after compile */
-
-if (nmatch > 0)
-  {
-  if (nmatch <= POSIX_MALLOC_THRESHOLD)
+    int rc;
+    int options = 0;
+    int *ovector = NULL;
+    int small_ovector[POSIX_MALLOC_THRESHOLD * 3];
+    BOOL allocated_ovector = FALSE;
+    
+    if ((eflags & REG_NOTBOL) != 0) options |= PCRE_NOTBOL;
+    if ((eflags & REG_NOTEOL) != 0) options |= PCRE_NOTEOL;
+    
+    ((regex_t *)preg)->re_erroffset = (size_t)(-1);  /* Only has meaning
+							after compile */
+    
+    if (nmatch > 0)
     {
-    ovector = &(small_ovector[0]);
+	if (nmatch <= POSIX_MALLOC_THRESHOLD)
+	{
+	    ovector = &(small_ovector[0]);
+	}
+	else
+	{
+	    ovector = (int *)malloc(sizeof(int) * nmatch * 3);
+	    if (ovector == NULL) return REG_ESPACE;
+	    allocated_ovector = TRUE;
+	}
     }
-  else
+    
+    rc = pcre_exec(preg->re_pcre, NULL, string, (int)strlen(string),
+		   0, options, ovector, nmatch * 3);
+    
+    if (rc == 0) rc = nmatch;    /* All captured slots were filled in */
+    
+    if (rc >= 0)
     {
-    ovector = (int *)malloc(sizeof(int) * nmatch * 3);
-    if (ovector == NULL) return REG_ESPACE;
-    allocated_ovector = TRUE;
+	size_t i;
+	for (i = 0; i < (size_t)rc; i++)
+	{
+	    pmatch[i].rm_so = ovector[i*2];
+	    pmatch[i].rm_eo = ovector[i*2+1];
+	}
+	if (allocated_ovector) free(ovector);
+	for (; i < nmatch; i++) pmatch[i].rm_so = pmatch[i].rm_eo = -1;
+	return 0;
     }
-  }
-
-rc = pcre_exec(preg->re_pcre, NULL, string, (int)strlen(string), 0, options,
-  ovector, nmatch * 3);
-
-if (rc == 0) rc = nmatch;    /* All captured slots were filled in */
-
-if (rc >= 0)
-  {
-  size_t i;
-  for (i = 0; i < (size_t)rc; i++)
+    
+    else
     {
-    pmatch[i].rm_so = ovector[i*2];
-    pmatch[i].rm_eo = ovector[i*2+1];
+	if (allocated_ovector) free(ovector);
+	switch(rc)
+	{
+	case PCRE_ERROR_NOMATCH: return REG_NOMATCH;
+	case PCRE_ERROR_NULL: return REG_INVARG;
+	case PCRE_ERROR_BADOPTION: return REG_INVARG;
+	case PCRE_ERROR_BADMAGIC: return REG_INVARG;
+	case PCRE_ERROR_UNKNOWN_NODE: return REG_ASSERT;
+	case PCRE_ERROR_NOMEMORY: return REG_ESPACE;
+	default: return REG_ASSERT;
+	}
     }
-  if (allocated_ovector) free(ovector);
-  for (; i < nmatch; i++) pmatch[i].rm_so = pmatch[i].rm_eo = -1;
-  return 0;
-  }
-
-else
-  {
-  if (allocated_ovector) free(ovector);
-  switch(rc)
-    {
-    case PCRE_ERROR_NOMATCH: return REG_NOMATCH;
-    case PCRE_ERROR_NULL: return REG_INVARG;
-    case PCRE_ERROR_BADOPTION: return REG_INVARG;
-    case PCRE_ERROR_BADMAGIC: return REG_INVARG;
-    case PCRE_ERROR_UNKNOWN_NODE: return REG_ASSERT;
-    case PCRE_ERROR_NOMEMORY: return REG_ESPACE;
-    default: return REG_ASSERT;
-    }
-  }
 }
 
 /* End of pcreposix.c */

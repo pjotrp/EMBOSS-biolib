@@ -115,12 +115,28 @@ typedef struct NamSAttr {
     char* Name;
     char* Defval;
     char* Comment;
-} NamOAttr, *NamPAttr;
+} NamOAttr;
+
+#define NamPAttr NamOAttr*
+
+/* @datastatic NamPValid ******************************************************
+**
+** Resource attribute validation structure
+**
+** @alias NamSValid
+** @alias NamOValid
+**
+** @attr Name [char*] Attribute name
+** @attr Comment [char*] Comment for documentation purposes
+** @@
+******************************************************************************/
 
 typedef struct NamSValid {
     char* Name;
     char* Comment;
-} NamOValid, *NamPValid;
+} NamOValid;
+
+#define NamPValid NamOValid*
 
 
 NamOAttr namDbAttrs[] = {
@@ -207,40 +223,43 @@ typedef struct NamSEntry {
     ajint type;
     ajint scope;
     void* data ;		  /* Attribute values for databases */
-} NamOEntry, *NamPEntry;
+} NamOEntry;
 
-static ajint  namDbAttr (AjPStr thys);
-static ajint  namDbAttrC (char* str);
-static AjBool namDbSetAttr (AjPStr* dbattr, char* attrib, AjPStr* qrystr);
-static void   namDebugDatabase (AjPStr* dbattr);
-static void   namDebugResource (AjPStr* dbattr);
+#define NamPEntry NamOEntry*
+
+static ajint  namDbAttr (const AjPStr thys);
+static ajint  namDbAttrC (const char* str);
+static AjBool namDbSetAttr (const AjPStr* dbattr, const char* attrib,
+			    AjPStr* qrystr);
+static void   namDebugDatabase (const AjPStr* dbattr);
+static void   namDebugResource (const AjPStr* dbattr);
 static void   namDebugVariables (void);
 static void   namDebugMaster (ajint which);
 static void   namEntryDelete (NamPEntry* pentry);
-static void   namError (char* fmt, ...);
+static void   namError (const char* fmt, ...);
 static void   namListParse (AjPList listwords, AjPList listcount,
 			    AjPFile file);
 static void   namListMaster (ajint which);
 static void   namListMasterDelete (void);
-static ajint  namMethod2Scope (AjPStr method);
+static ajint  namMethod2Scope (const AjPStr method);
 static void   namNoColon (AjPStr *thys);
-static void   namPrintDatabase (AjPStr* dbattr);
-static void   namPrintResource (AjPStr* rsattr);
+static void   namPrintDatabase (const AjPStr* dbattr);
+static void   namPrintResource (const AjPStr* rsattr);
 static AjBool namProcessFile (AjPFile file);
-static ajint  namRsAttr (AjPStr thys);
-static ajint  namRsAttrC (char* str);
-static void   namUser (char *fmt, ...);
-static AjBool namValid(NamPEntry entry);
-static AjBool namValidDatabase(NamPEntry entry);
-static AjBool namValidResource(NamPEntry entry);
-static AjBool namValidVariable(NamPEntry entry);
+static ajint  namRsAttr (const AjPStr thys);
+static ajint  namRsAttrC (const char* str);
+static void   namUser (const char *fmt, ...);
+static AjBool namValid(const NamPEntry entry);
+static AjBool namValidDatabase(const NamPEntry entry);
+static AjBool namValidResource(const NamPEntry entry);
+static AjBool namValidVariable(const NamPEntry entry);
 static AjBool namVarResolve (AjPStr* var);
 
 /* @funcstatic namEntryDelete *************************************************
 **
 ** Deletes a variable, database, or resource entry from the internal table.
 **
-** @param [P] pentry [NamPEntry*] The entry to be deleted.
+** @param [r] pentry [NamPEntry*] The entry to be deleted.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -312,12 +331,12 @@ static void namListMasterDelete (void)
 **
 ** Prints a report of defined attributes for a database definition.
 **
-** @param [P] dbattr [AjPStr*] Attribute list from a database entry.
+** @param [r] dbattr [const AjPStr*] Attribute list from a database entry.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void namPrintDatabase (AjPStr* dbattr)
+static void namPrintDatabase (const AjPStr* dbattr)
 {
     ajint i;
 
@@ -336,12 +355,12 @@ static void namPrintDatabase (AjPStr* dbattr)
 **
 ** Prints a report of defined attributes for a resource definition.
 **
-** @param [P] rsattr [AjPStr*] Attribute list from a resource entry.
+** @param [r] rsattr [const AjPStr*] Attribute list from a resource entry.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void namPrintResource (AjPStr* rsattr)
+static void namPrintResource (const AjPStr* rsattr)
 {
     ajint i;
 
@@ -360,12 +379,12 @@ static void namPrintResource (AjPStr* rsattr)
 **
 ** Prints a report of the database attributes available (for entrails)
 **
-** @param [R] outf [AjPFile] Output file
-** @param [R] full [AjBool] Full output if AjTrue
+** @param [r] outf [const AjPFile] Output file
+** @param [r] full [AjBool] Full output if AjTrue
 ** @return [void]
 ******************************************************************************/
 
-void ajNamPrintDbAttr (AjPFile outf, AjBool full)
+void ajNamPrintDbAttr (const AjPFile outf, AjBool full)
 {
     ajint i;
     ajFmtPrintF (outf, "# Database attributes\n");
@@ -385,12 +404,12 @@ void ajNamPrintDbAttr (AjPFile outf, AjBool full)
 **
 ** Prints a report of the resource attributes available (for entrails)
 **
-** @param [R] outf [AjPFile] Output file
-** @param [R] full [AjBool] Full output if AjTrue
+** @param [r] outf [const AjPFile] Output file
+** @param [r] full [AjBool] Full output if AjTrue
 ** @return [void]
 ******************************************************************************/
 
-void ajNamPrintRsAttr (AjPFile outf, AjBool full)
+void ajNamPrintRsAttr (const AjPFile outf, AjBool full)
 {
     ajint i;
     ajFmtPrintF (outf, "# Resource attributes\n");
@@ -410,12 +429,12 @@ void ajNamPrintRsAttr (AjPFile outf, AjBool full)
 **
 ** Prints a report of defined attributes for a database definition.
 **
-** @param [P] dbattr [AjPStr*] Attribute list from a database entry.
+** @param [r] dbattr [const AjPStr*] Attribute list from a database entry.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void namDebugDatabase (AjPStr* dbattr)
+static void namDebugDatabase (const AjPStr* dbattr)
 {
     ajint i;
 
@@ -434,12 +453,12 @@ static void namDebugDatabase (AjPStr* dbattr)
 **
 ** Prints a report of defined attributes for a resource definition.
 **
-** @param [P] dbattr [AjPStr*] Attribute list from a database entry.
+** @param [r] rsattr [const AjPStr*] Attribute list from a database entry.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void namDebugResource (AjPStr* rsattr)
+static void namDebugResource (const AjPStr* rsattr)
 {
     ajint i;
 
@@ -552,7 +571,7 @@ static void namDebugMaster (ajint which)
 **
 ** Returns database access method information
 **
-** @param [r] name [AjPStr] Database name
+** @param [r] name [const AjPStr] Database name
 ** @param [w] type [AjPStr*] sequence type - 'P' or 'N'
 ** @param [w] id [AjBool*] ajTrue = can access single entries
 ** @param [w] qry [AjBool*] ajTrue = can access wild/query entries
@@ -563,8 +582,9 @@ static void namDebugMaster (ajint which)
 ** @@
 ******************************************************************************/
 
-AjBool ajNamDbDetails (AjPStr name, AjPStr* type, AjBool* id, AjBool* qry,
-		       AjBool* all, AjPStr* comment, AjPStr* release)
+AjBool ajNamDbDetails (const AjPStr name, AjPStr* type, AjBool* id,
+		       AjBool* qry, AjBool* all,
+		       AjPStr* comment, AjPStr* release)
 {
     NamPEntry fnew = 0;
     AjPStr* dbattr = NULL;
@@ -646,12 +666,11 @@ AjBool ajNamDbDetails (AjPStr name, AjPStr* type, AjBool* id, AjBool* qry,
 ** Returns OR'ed values of METHOD_ENTRY, METHOD_QUERY and METHOD_ALL
 ** for the various types of access method for databases.
 **
-** @param [r] method [AjPStr] Variable type, either TYPE_ENV for environment
-**
+** @param [r] method [const AjPStr] Access method string
 ** @return [ajint] OR'ed values for the valid scope of the access method given
 ** @@
 ******************************************************************************/
-static ajint namMethod2Scope (AjPStr method)
+static ajint namMethod2Scope (const AjPStr method)
 {
 
     ajint result = 0;
@@ -887,10 +906,10 @@ static void namDebugVariables (void)
 ** Derive environment variable and database definitions. Store
 ** all these in the internal tables.
 **
-** @param [R] listwords [AjPList] String list of word tokens to parse
-** @param [R] listcount [AjPList] List of word counts per line for
+** @param [r] listwords [AjPList] String list of word tokens to parse
+** @param [r] listcount [AjPList] List of word counts per line for
 **                                generating error messages
-** @param [R] file [AjPFile] Input file for messages
+** @param [r] file [AjPFile] Input file for messages
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -906,7 +925,8 @@ static void namListParse (AjPList listwords, AjPList listcount,
     static AjPStr* rsattr = 0;
     static ajint  db_input = -1;
     static ajint  rs_input = -1;
-    NamPEntry fnew = 0, entry=0;
+    NamPEntry fnew = NULL;
+    NamPEntry entry = NULL;
     AjBool dbsave = ajFalse;
     AjBool rssave = ajFalse;
     AjBool saveit = ajFalse;
@@ -1290,14 +1310,14 @@ static void namListParse (AjPList listwords, AjPList listcount,
 ** Looks for name as an environment variable.
 ** the AjPStr for this in "value". If not found returns NULL;
 **
-** @param [r] name [AjPStr] character string find in hash table.
-** @param [wP] value [AjPStr*] String for the value.
+** @param [r] name [const AjPStr] character string find in hash table.
+** @param [w] value [AjPStr*] String for the value.
 ** @return [AjBool] True if name was defined.
 ** @@
 **
 ******************************************************************************/
 
-AjBool ajNamGetenv (AjPStr name,
+AjBool ajNamGetenv (const AjPStr name,
 		    AjPStr* value)
 {
     char *envval;
@@ -1319,14 +1339,14 @@ AjBool ajNamGetenv (AjPStr name,
 ** and then as-is in the hash table and if found returns
 ** the AjPStr for this in "value". If not found returns NULL;
 **
-** @param [r] name [AjPStr] character string find in hash table.
-** @param [wP] value [AjPStr*] String for the value.
+** @param [r] name [const AjPStr] character string find in hash table.
+** @param [w] value [AjPStr*] String for the value.
 ** @return [AjBool] True if name was defined.
 ** @@
 **
 ******************************************************************************/
 
-AjBool ajNamGetValue (AjPStr name, AjPStr* value)
+AjBool ajNamGetValue (const AjPStr name, AjPStr* value)
 {
     return ajNamGetValueC (ajStrStr(name), value);
 }
@@ -1337,14 +1357,14 @@ AjBool ajNamGetValue (AjPStr name, AjPStr* value)
 ** and then as-is in the hash table and if found returns
 ** the AjPStr for this in "value". If not found returns NULL;
 **
-** @param [r] name [char*] character string find in hash table.
-** @param [wP] value [AjPStr*] Str for the value.
+** @param [r] name [const char*] character string find in hash table.
+** @param [w] value [AjPStr*] Str for the value.
 ** @return [AjBool] True if name was defined.
 ** @@
 **
 ******************************************************************************/
 
-AjBool ajNamGetValueC (char* name, AjPStr* value)
+AjBool ajNamGetValueC (const char* name, AjPStr* value)
 {
     NamPEntry fnew = 0;
     static AjPStr namstr = NULL;
@@ -1403,14 +1423,14 @@ AjBool ajNamGetValueC (char* name, AjPStr* value)
 ** Looks for name in the hash table and if found returns
 ** the attribute for this. If not found returns  NULL;
 **
-** @param [r] name [AjPStr] character string find in hash table.
+** @param [r] name [const AjPStr] character string find in hash table.
 ** @return [AjBool] true if database name is valid.
 ** @error  NULL if name not found in the table
 ** @@
 **
 ******************************************************************************/
 
-AjBool ajNamDatabase(AjPStr name)
+AjBool ajNamDatabase(const AjPStr name)
 {
     NamPEntry fnew = 0;
 
@@ -1431,7 +1451,7 @@ AjBool ajNamDatabase(AjPStr name)
 **
 ** Read the definitions file and append each token to the list.
 **
-** @param [P] file [AjPFile] Input file object
+** @param [r] file [AjPFile] Input file object
 ** @return [AjBool] ajTrue if no error were found
 ** @@
 ******************************************************************************/
@@ -1559,12 +1579,13 @@ static AjBool namProcessFile (AjPFile file)
 ** Initialise the variable and database definitions. Find the definition
 ** files and read them.
 **
-** @param [P] prefix [char*] Default prefix for all file and variable names.
+** @param [r] prefix [const char*] Default prefix for all file
+**                                 and variable names.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajNamInit (char* prefix)
+void ajNamInit (const char* prefix)
 {
     char *prefixRoot;
     AjPFile prefixRootFile;
@@ -1718,7 +1739,7 @@ void ajNamInit (char* prefix)
 **
 ** Remove any trailing colon ':' in the input string.
 **
-** @param [P] thys [AjPStr*] String.
+** @param [u] thys [AjPStr*] String.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -1735,12 +1756,12 @@ static void namNoColon (AjPStr* thys)
 **
 ** Return the index for a database attribute name.
 **
-** @param [P] thys [AjPStr] Attribute name.
+** @param [r] thys [const AjPStr] Attribute name.
 ** @return [ajint] Index in namDbAttrs, or -1 on failure.
 ** @@
 ******************************************************************************/
 
-static ajint namDbAttr (AjPStr thys)
+static ajint namDbAttr (const AjPStr thys)
 {
     return namDbAttrC(ajStrStr(thys));
 }
@@ -1749,12 +1770,12 @@ static ajint namDbAttr (AjPStr thys)
 **
 ** Return the index for a database attribute name.
 **
-** @param [P] str [char*] Attribute name.
+** @param [r] str [const char*] Attribute name.
 ** @return [ajint] Index in namDbAttrs, or -1 on failure.
 ** @@
 ******************************************************************************/
 
-static ajint namDbAttrC (char* str)
+static ajint namDbAttrC (const char* str)
 {
     ajint i = 0;
     ajint j = 0;
@@ -1780,12 +1801,12 @@ static ajint namDbAttrC (char* str)
 **
 ** Return the index for a resource attribute name.
 **
-** @param [P] thys [AjPStr] Attribute name.
+** @param [r] thys [const AjPStr] Attribute name.
 ** @return [ajint] Index in namRsAttrs, or -1 on failure.
 ** @@
 ******************************************************************************/
 
-static ajint namRsAttr (AjPStr thys)
+static ajint namRsAttr (const AjPStr thys)
 {
     return namRsAttrC(ajStrStr(thys));
 }
@@ -1794,12 +1815,12 @@ static ajint namRsAttr (AjPStr thys)
 **
 ** Return the index for a resource attribute name.
 **
-** @param [P] str [char*] Attribute name.
+** @param [r] str [const char*] Attribute name.
 ** @return [ajint] Index in namRsAttrs, or -1 on failure.
 ** @@
 ******************************************************************************/
 
-static ajint namRsAttrC (char* str)
+static ajint namRsAttrC (const char* str)
 {
     ajint i = 0;
     ajint j = 0;
@@ -1849,12 +1870,12 @@ void ajNamExit (void)
 **
 ** Looks for a database name in the known definitions.
 **
-** @param [P] dbname [AjPStr] Database name.
+** @param [r] dbname [const AjPStr] Database name.
 ** @return [AjBool] ajTrue on success.
 ** @@
 ******************************************************************************/
 
-AjBool ajNamDbTest (AjPStr dbname)
+AjBool ajNamDbTest (const AjPStr dbname)
 {
     NamPEntry data;
 
@@ -1872,13 +1893,13 @@ AjBool ajNamDbTest (AjPStr dbname)
 **
 ** Gets the URL definition for a database definition.
 **
-** @param [P] dbname [AjPStr] Database name.
-** @param [P] url [AjPStr*] URL returned.
+** @param [r] dbname [const AjPStr] Database name.
+** @param [w] url [AjPStr*] URL returned.
 ** @return [AjBool] ajTrue if success.
 ** @@
 ******************************************************************************/
 
-AjBool ajNamDbGetUrl (AjPStr dbname, AjPStr* url)
+AjBool ajNamDbGetUrl (const AjPStr dbname, AjPStr* url)
 {
 
     NamPEntry data;
@@ -1912,13 +1933,13 @@ AjBool ajNamDbGetUrl (AjPStr dbname, AjPStr* url)
 **
 ** Gets an alias name for a database.
 **
-** @param [P] dbname [AjPStr] Database name.
-** @param [P] dbalias [AjPStr*] Alias returned.
+** @param [r] dbname [const AjPStr] Database name.
+** @param [w] dbalias [AjPStr*] Alias returned.
 ** @return [AjBool] ajTrue if success.
 ** @@
 ******************************************************************************/
 
-AjBool ajNamDbGetDbalias (AjPStr dbname, AjPStr* dbalias)
+AjBool ajNamDbGetDbalias (const AjPStr dbname, AjPStr* dbalias)
 {
 
     NamPEntry data;
@@ -1959,7 +1980,8 @@ AjBool ajNamDbGetDbalias (AjPStr dbname, AjPStr* dbalias)
 ** See also ajNamDbQuery, which calls this function if the common
 ** query data is not yet set.
 **
-** @param [u] qry [AjPSeqQuery] Query structure with at least dbname filled in
+** @param [u] qry [AjPSeqQuery] Query structure with at least
+**                                    dbname filled in
 ** @return [AjBool] ajTrue if success.
 ** @@
 ******************************************************************************/
@@ -1969,7 +1991,7 @@ AjBool ajNamDbData (AjPSeqQuery qry)
 
     NamPEntry data;
 
-    AjPStr* dbattr;
+    const AjPStr* dbattr;
 
     data = ajTableGet(namMasterTable, ajStrStr(qry->DbName));
 
@@ -2014,7 +2036,8 @@ AjBool ajNamDbData (AjPSeqQuery qry)
 ** fill in the access method and some common fields according
 ** to the query level.
 **
-** @param [u] qry [AjPSeqQuery] Query structure with at least dbname filled in
+** @param [u] qry [AjPSeqQuery] Query structure with at least
+**                                    dbname filled in
 ** @return [AjBool] ajTrue if success.
 ** @@
 ******************************************************************************/
@@ -2024,7 +2047,7 @@ AjBool ajNamDbQuery (AjPSeqQuery qry)
 
     NamPEntry data;
 
-    AjPStr* dbattr;
+    const AjPStr* dbattr;
 
     data = ajTableGet(namMasterTable, ajStrStr(qry->DbName));
 
@@ -2083,14 +2106,15 @@ AjBool ajNamDbQuery (AjPSeqQuery qry)
 **
 ** Sets a named attribute value from an attribute list.
 **
-** @param [P] dbattr [AjPStr*] Attribute definitions.
-** @param [P] attrib [char*] Attribute name.
-** @param [P] qrystr [AjPStr*] Returned attribute value.
+** @param [r] dbattr [const AjPStr*] Attribute definitions.
+** @param [r] attrib [const char*] Attribute name.
+** @param [w] qrystr [AjPStr*] Returned attribute value.
 ** @return [AjBool] ajTrue on success.
 ** @@
 ******************************************************************************/
 
-static AjBool namDbSetAttr (AjPStr* dbattr, char* attrib, AjPStr* qrystr)
+static AjBool namDbSetAttr (const AjPStr* dbattr, const char* attrib,
+			    AjPStr* qrystr)
 {
 
     ajint i = namDbAttrC(attrib);
@@ -2115,7 +2139,7 @@ static AjBool namDbSetAttr (AjPStr* dbattr, char* attrib, AjPStr* qrystr)
 ** Resolves any variable or function references in a string.
 ** Yet to be implemented, but called in the right places.
 **
-** @param [uP] var [AjPStr*] String value
+** @param [u] var [AjPStr*] String value
 ** @return [AjBool] Always ajTrue so far
 ** @@
 ******************************************************************************/
@@ -2154,13 +2178,13 @@ static AjBool namVarResolve (AjPStr* var)
 **
 ** Formatted write as an error message.
 **
-** @param [P] fmt [char*] Format string
+** @param [r] fmt [const char*] Format string
 ** @param [v] [...] Format arguments.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void namUser (char* fmt, ...)
+static void namUser (const char* fmt, ...)
 {
     va_list args ;
 
@@ -2176,13 +2200,13 @@ static void namUser (char* fmt, ...)
 **
 ** Formatted write as an error message.
 **
-** @param [P] fmt [char*] Format string
+** @param [r] fmt [const char*] Format string
 ** @param [v] [...] Format arguments.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void namError (char* fmt, ...)
+static void namError (const char* fmt, ...)
 {
     va_list args ;
     AjPStr errstr=NULL;
@@ -2204,7 +2228,7 @@ static void namError (char* fmt, ...)
 ** Returns the install directory root for all file searches
 ** (package level)
 **
-** @param [P] root [AjPStr*] Root.
+** @param [w] root [AjPStr*] Root.
 ** @return [AjBool] ajTrue on success.
 ** @@
 ******************************************************************************/
@@ -2220,7 +2244,7 @@ AjBool ajNamRootInstall (AjPStr* root)
 **
 ** Returns the package name for the library
 **
-** @param [P] pack [AjPStr*] Package name.
+** @param [w] pack [AjPStr*] Package name.
 ** @return [AjBool] ajTrue on success.
 ** @@
 ******************************************************************************/
@@ -2236,7 +2260,7 @@ AjBool ajNamRootPack (AjPStr* pack)
 **
 ** Returns the version number for the library
 **
-** @param [P] version [AjPStr*] Version number.
+** @param [w] version [AjPStr*] Version number.
 ** @return [AjBool] ajTrue on success.
 ** @@
 ******************************************************************************/
@@ -2253,7 +2277,7 @@ AjBool ajNamRootVersion (AjPStr* version)
 ** Returns the directory for all file searches
 ** (package level)
 **
-** @param [P] root [AjPStr*] Root.
+** @param [w] root [AjPStr*] Root.
 ** @return [AjBool] ajTrue on success.
 ** @@
 ******************************************************************************/
@@ -2270,7 +2294,7 @@ AjBool ajNamRoot (AjPStr* root)
 ** Returns the base directory for all for all file searches
 ** (above package level).
 **
-** @param [P] rootbase [AjPStr*] Root.
+** @param [w] rootbase [AjPStr*] Root.
 ** @return [AjBool] ajTrue on success.
 ** @@
 ******************************************************************************/
@@ -2286,7 +2310,7 @@ AjBool ajNamRootBase (AjPStr* rootbase)
 **
 ** Resolves a variable name if the input string starts with a dollar sign.
 **
-** @param [P] name [AjPStr*] String
+** @param [w] name [AjPStr*] String
 ** @return [AjBool] ajTrue on success.
 ** @@
 ******************************************************************************/
@@ -2333,12 +2357,12 @@ AjBool ajNamResolve (AjPStr* name)
 **
 ** Validation of a master table entry
 **
-** @param [R] entry [NamPEntry] Internal table entry
+** @param [r] entry [const NamPEntry] Internal table entry
 ** @return [AjBool] ajTrue on success
 ** @@
 ******************************************************************************/
 
-static AjBool namValid(NamPEntry entry)
+static AjBool namValid(const NamPEntry entry)
 {
     if (entry->type == TYPE_ENV)
 	return namValidVariable (entry);
@@ -2357,12 +2381,12 @@ static AjBool namValid(NamPEntry entry)
 **
 ** Validation of a master table database entry
 **
-** @param [R] entry [NamPEntry] Internal table entry
+** @param [r] entry [const NamPEntry] Internal table entry
 ** @return [AjBool] ajTrue on success
 ** @@
 ******************************************************************************/
 
-static AjBool namValidDatabase(NamPEntry entry)
+static AjBool namValidDatabase(const NamPEntry entry)
 {
     ajint iattr=0;
     ajint j;
@@ -2445,12 +2469,12 @@ static AjBool namValidDatabase(NamPEntry entry)
 **
 ** Validation of a master table resource entry
 **
-** @param [R] entry [NamPEntry] Internal table entry
+** @param [r] entry [const NamPEntry] Internal table entry
 ** @return [AjBool] ajTrue on success
 ** @@
 ******************************************************************************/
 
-static AjBool namValidResource (NamPEntry entry)
+static AjBool namValidResource (const NamPEntry entry)
 {
     ajint iattr=0;
     ajint j;
@@ -2488,12 +2512,12 @@ static AjBool namValidResource (NamPEntry entry)
 **
 ** Validation of a master table variable entry
 **
-** @param [R] entry [NamPEntry] Internal table entry
+** @param [r] entry [const NamPEntry] Internal table entry
 ** @return [AjBool] ajTrue on success
 ** @@
 ******************************************************************************/
 
-static AjBool namValidVariable(NamPEntry entry)
+static AjBool namValidVariable(const NamPEntry entry)
 {
     return ajTrue;
 }
@@ -2504,12 +2528,12 @@ static AjBool namValidVariable(NamPEntry entry)
 **
 ** Currently these are "namdebug, namvalid"
 **
-** @param [r] argstr [char*] option name
+** @param [r] optionName [const char*] option name
 ** @return [AjBool] ajTrue if option was recognised
 ** @@
 ******************************************************************************/
 
-AjBool ajNamSetControl (char* optionName)
+AjBool ajNamSetControl (const char* optionName)
 {
 
     if (!ajStrCmpCaseCC(optionName, "namdebug"))

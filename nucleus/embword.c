@@ -146,7 +146,7 @@ void embWordClear (void)
 **
 ** Print the words found with their frequencies.
 **
-** @param [Pw] table [AjPTable] table to be created or updated.
+** @param [u] table [AjPTable] table to be created or updated.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -172,7 +172,7 @@ void embWordPrintTable(AjPTable table)
 **
 ** Print the words found with their frequencies.
 **
-** @param [Pw] table [AjPTable] table to be created or updated.
+** @param [u] table [AjPTable] table to be created or updated.
 ** @param [r] outf [AjPFile] Output file.
 ** @return [void]
 ** @@
@@ -200,8 +200,8 @@ void embWordPrintTableF(AjPTable table, AjPFile outf)
 **
 ** deletes entries in a list of positions.
 **
-** @param [wP] x [void**] Data values as void**
-** @param [P] cl [void*] Ignored user data, usually NULL.
+** @param [d] x [void**] Data values as void**
+** @param [r] cl [void*] Ignored user data, usually NULL.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -218,9 +218,9 @@ static void wordPositionListDelete(void **x,void *cl)
 **
 ** free the elements in a list of positons
 **
-** @param [P] key [const void*] key for a table item
-** @param [P] count [void**] Data values as void**
-** @param [P] cl [void*] Ignored user data, usually NULL.
+** @param [r] key [const void*] key for a table item
+** @param [d] count [void**] Data values as void**
+** @param [r] cl [void*] Ignored user data, usually NULL.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -246,7 +246,7 @@ static void wordVFree(const void *key, void **count, void *cl)
 **
 ** delete the word table and free the memory.
 **
-** @param [wP] table [AjPTable] table to be created or updated.
+** @param [u] table [AjPTable] table to be created or updated.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -264,8 +264,8 @@ void embWordFreeTable(AjPTable table)
 **
 ** deletes entries in a list of matches.
 **
-** @param [wP] x [void**] Data values as void**
-** @param [P] cl [void*] Ignored user data, usually NULL.
+** @param [d] x [void**] Data values as void**
+** @param [r] cl [void*] Ignored user data, usually NULL.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -283,7 +283,7 @@ static void wordMatchListDelete(void **x,void *cl)
 **
 ** delete the word table.
 **
-** @param [Pw] plist [AjPList*] list to be deleted.
+** @param [u] plist [AjPList*] list to be deleted.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -325,8 +325,8 @@ static void wordMatchListPrint(void **x,void *cl)
 **
 ** print the word table.
 **
-** @param [Pr] file [AjPFile] Output file
-** @param [Pr] list [AjPList] list to be printed.
+** @param [r] file [AjPFile] Output file
+** @param [r] list [AjPList] list to be printed.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -341,9 +341,9 @@ void embWordMatchListPrint(AjPFile file, AjPList list)
 **
 ** convert the word table to feature tables.
 **
-** @param [Pr] list [AjPList] list to be printed.
-** @param [rw] tab1 [AjPFeattable*] feature table for sequence 1
-** @param [rw] tab2 [AjPFeattable*] feature table for sequence 2
+** @param [r] list [AjPList] list to be printed.
+** @param [u] tab1 [AjPFeattable*] feature table for sequence 1
+** @param [u] tab2 [AjPFeattable*] feature table for sequence 2
 ** @param [r] seq1 [AjPSeq] sequence
 ** @param [r] seq2 [AjPSeq] second sequence
 ** @return [void]
@@ -356,7 +356,9 @@ void embWordMatchListConvToFeat(AjPList list,
 {
     char strand = '+';
     ajint frame = 0;
-    AjPStr source=NULL,type=NULL,tag=NULL;
+    AjPStr source=NULL;
+    AjPStr type=NULL;
+    AjPStr tag=NULL;
     AjPFeature feature;
     AjIList iter=NULL;
     float score = 1.0;
@@ -403,8 +405,8 @@ void embWordMatchListConvToFeat(AjPList list,
 **
 ** The word length must be defined by a call to embWordLength.
 **
-** @param [wP] table [AjPTable*] table to be created or updated.
-** @param [P] seq [AjPSeq] Sequence to be "worded"
+** @param [u] table [AjPTable*] table to be created or updated.
+** @param [r] seq [AjPSeq] Sequence to be "worded"
 ** @return [ajint] 1 if successful 0 if not.
 ** @@
 ******************************************************************************/
@@ -492,7 +494,7 @@ ajint embWordGetTable(AjPTable *table, AjPSeq seq)
 ** Looks for a word at a given position
 **
 ** @param [r] word [char*] Word to find
-** @param [P] seq1MatchTable [AjPTable] Match table
+** @param [r] seq1MatchTable [AjPTable] Match table
 ** @param [r] nextpos [ajint] Not used
 ** @return [ajint] Position found (1 is the start) or 0 if none.
 ** @@
@@ -527,8 +529,8 @@ static ajint wordFindWordAtPos (char *word, AjPTable seq1MatchTable,
 **
 ** Looks for a word length match.
 **
-** @param [P] match [EmbPWordMatch] match structure
-** @param [P] seq1MatchTable [AjPTable] match table
+** @param [r] match [EmbPWordMatch] match structure
+** @param [r] seq1MatchTable [AjPTable] match table
 ** @return [ajint] Match position
 ** @@
 ******************************************************************************/
@@ -568,7 +570,7 @@ static ajint wordGetWholeMatch (EmbPWordMatch match, AjPTable seq1MatchTable)
 **
 ** Sort the hits by length then seq1 start then by seq2 start
 **
-** @param [P] unorderedList [AjPList] Unsorted list
+** @param [u] unorderedList [AjPList] Unsorted list
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -587,8 +589,8 @@ static void wordOrderMatchTable(AjPList unorderedList)
 ** start position.  If the seq1 start positions are equal they are
 ** sorted by seq2 start position.
 **
-** @param [P] v1 [const void*] First word
-** @param [P] v2 [const void*] Comparison word
+** @param [r] v1 [const void*] First word
+** @param [r] v2 [const void*] Comparison word
 ** @return [ajint] Comparison value. 0 if equal, -1 if first is lower,
 **               +1 if first is higher.
 ** @@
@@ -651,7 +653,7 @@ static ajint wordMatchCmp (const void* v1, const void* v2)
 **
 ** Sort the hits by seq1 start then by seq2 start
 **
-** @param [P] unorderedList [AjPList] Unsorted list
+** @param [u] unorderedList [AjPList] Unsorted list
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -669,8 +671,8 @@ static void wordOrderPosMatchTable(AjPList unorderedList)
 ** start position.  If the seq1 start positions are equal they are
 ** sorted by seq2 start position.
 **
-** @param [P] v1 [const void*] First word
-** @param [P] v2 [const void*] Comparison word
+** @param [r] v1 [const void*] First word
+** @param [r] v2 [const void*] Comparison word
 ** @return [ajint] Comparison value. 0 if equal, -1 if first is lower,
 **               +1 if first is higher.
 ** @@
@@ -729,7 +731,7 @@ static ajint wordMatchCmpPos (const void* v1, const void* v2)
 **                 which is a list of items in "all hits" being updated
 **   (c) new hits, found in the word table from the other sequence.
 **
-** @param [Pw] seq1MatchTable [AjPTable*] Match table
+** @param [u] seq1MatchTable [AjPTable*] Match table
 ** @param [r] seq2 [AjPSeq] Second sequence
 ** @param [r] orderit [ajint] 1 to sort results at end, else 0.
 ** @return [AjPList] List of matches.
@@ -952,7 +954,7 @@ AjPList embWordBuildMatchTable (AjPTable *seq1MatchTable,  AjPSeq seq2,
 ** Reports contents of a word list.
 **
 ** @param [r] i [ajint] Offset
-** @param [P] newlist [AjPList] word list.
+** @param [r] newlist [AjPList] word list.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -979,7 +981,7 @@ static void wordNewListTrace (ajint i, AjPList newlist)
 **
 ** Reports contents of a word list.
 **
-** @param [P] curlist [AjPList] word list.
+** @param [r] curlist [AjPList] word list.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -1011,7 +1013,7 @@ static void wordCurListTrace (AjPList curlist)
 **
 ** Reports contents of a current word list iterator
 **
-** @param [P] curiter [AjIList] List iterator for the current word list
+** @param [r] curiter [AjIList] List iterator for the current word list
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -1084,7 +1086,7 @@ static void wordCurIterTrace (AjIList curiter)
 **       -------------------------
 **                 seq1
 **
-** @param [P] match [EmbPWordMatch] match to investigate
+** @param [r] match [EmbPWordMatch] match to investigate
 ** @param [r] deadx1 [ajint] x position of end of live zone 1
 ** @param [r] deady1 [ajint] y position of end of live zone 1
 ** @param [r] deadx2 [ajint] x position of end of live zone 2
@@ -1194,7 +1196,7 @@ static ajint wordDeadZone(EmbPWordMatch match, ajint deadx1, ajint deady1,
 ** Given a list of matches, reduce it to the minimal set of best
 ** non-overlapping matches.
 **
-** @param [P] matchlist [AjPList] list of matches to reduce to
+** @param [u] matchlist [AjPList] list of matches to reduce to
 **                                non-overlapping set
 ** @param [r] seq1length [ajint]  length of sequence1 being considered
 ** @param [r] seq2length [ajint]  length of sequence2 being considered
@@ -1305,10 +1307,10 @@ void embWordMatchMin(AjPList matchlist, ajint seq1length, ajint seq2length)
 ** Return the start positions and length for the next match.
 ** The caller iterates over the list, which is a standard AjPList
 **
-** @param [U] iter [AjIList] List iterator
-** @param [W] start1 [ajint*] Start in first sequence
-** @param [W] start2 [ajint*] Start in second sequence
-** @param [W] len [ajint*] Length of match
+** @param [u] iter [AjIList] List iterator
+** @param [w] start1 [ajint*] Start in first sequence
+** @param [w] start2 [ajint*] Start in second sequence
+** @param [w] len [ajint*] Length of match
 ** @return [AjBool] ajFalse if the iterator was exhausted
 **
 ******************************************************************************/

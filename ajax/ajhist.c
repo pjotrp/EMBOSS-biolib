@@ -360,7 +360,7 @@ void ajHistClose (void)
 ** Delete and free all memory associated with the histogram.
 ** Does not delete the graph.
 **
-** @param [rw] hist [AjPHist] Histogram to be deleted.
+** @param [u] hist [AjPHist] Histogram to be deleted.
 ** @return [void]
 **
 ** @@
@@ -461,7 +461,7 @@ AjPHist ajHistNewG (ajint numofsets, ajint numofpoints, AjPGraph graph)
 **
 ** Set ptr for title for index'th set..
 **
-** @param [rw] hist [AjPHist]   Histogram to have ptr set.
+** @param [u] hist [AjPHist]   Histogram to have ptr set.
 ** @param [r] index [ajint]       Index for the set number.
 ** @param [r] title [AjPStr]    Title.
 ** @return [void]
@@ -483,7 +483,7 @@ void ajHistSetMultiTitle(AjPHist hist, ajint index, AjPStr title)
 **
 ** Store title for the index'th set.
 **
-** @param [rw] hist [AjPHist]   Histogram to have ptr set.
+** @param [u] hist [AjPHist]   Histogram to have ptr set.
 ** @param [r]  index [ajint]      Index for the set number.
 ** @param [r]  title  [char *]  Title.
 ** @return [void]
@@ -505,7 +505,7 @@ void ajHistSetMultiTitleC(AjPHist hist, ajint index, char *title)
 **
 ** Set ptr for X axis title for index'th set..
 **
-** @param [rw] hist [AjPHist]   Histogram to have ptr set.
+** @param [u] hist [AjPHist]   Histogram to have ptr set.
 ** @param [r] index [ajint]       Index for the set number.
 ** @param [r] title [AjPStr]    x Title.
 ** @return [void]
@@ -527,7 +527,7 @@ void ajHistSetMultiXTitle(AjPHist hist, ajint index, AjPStr title)
 **
 ** Store X axis title for the index'th set.
 **
-** @param [rw] hist [AjPHist]   Histogram to have ptr set.
+** @param [u] hist [AjPHist]   Histogram to have ptr set.
 ** @param [r] index [ajint]       Index for the set number.
 ** @param [r] title [char *]    x Title.
 ** @return [void]
@@ -549,7 +549,7 @@ void ajHistSetMultiXTitleC(AjPHist hist, ajint index, char *title)
 **
 ** Set ptr for Y axis title for index'th set..
 **
-** @param [rw] hist [AjPHist]   Histogram to have ptr set.
+** @param [u] hist [AjPHist]   Histogram to have ptr set.
 ** @param [r] index [ajint]       Index for the set number.
 ** @param [r] title [AjPStr]    Y Title.
 ** @return [void]
@@ -571,7 +571,7 @@ void ajHistSetMultiYTitle(AjPHist hist, ajint index, AjPStr title)
 **
 ** Store Y axis title for the index'th set.
 **
-** @param [rw] hist [AjPHist]   Histogram to have ptr set.
+** @param [u] hist [AjPHist]   Histogram to have ptr set.
 ** @param [r] index [ajint]       Index for the set number.
 ** @param [r] title [char *]    Y Title.
 ** @return [void]
@@ -593,7 +593,7 @@ void ajHistSetMultiYTitleC(AjPHist hist, ajint index, char *title)
 **
 ** Set ptr to data for a set of data points for index'th set..
 **
-** @param [rw] hist [AjPHist] Histogram to have ptr set.
+** @param [u] hist [AjPHist] Histogram to have ptr set.
 ** @param [r] index [ajint]     Index for the set number.
 ** @param [r] data  [PLFLT*]  Ptr to the data.
 ** @return [void]
@@ -617,7 +617,7 @@ void ajHistSetPtrToData(AjPHist hist, ajint index, PLFLT *data)
 **
 ** Copy data from data ptr to histogram for index'th set.
 **
-** @param [rw] hist [AjPHist] Histogram to have ptr set.
+** @param [u] hist [AjPHist] Histogram to have ptr set.
 ** @param [r] index [ajint]     Index for the set number.
 ** @param [r] data  [PLFLT*]  Ptr to the data.
 ** @return [void]
@@ -647,7 +647,7 @@ void ajHistCopyData(AjPHist hist, ajint index, PLFLT *data)
 **
 ** Copy Title for the histogram.
 **
-** @param [rw] hist [AjPHist] histogram to set string in.
+** @param [u] hist [AjPHist] histogram to set string in.
 ** @param [r] string [char*] text to be copied.
 ** @return [void]
 ** @@
@@ -662,7 +662,7 @@ void ajHistSetTitleC(AjPHist hist, char* string)
 **
 ** Store X axis label for the histogram
 **
-** @param [rw] hist [AjPHist] histogram to set string in.
+** @param [u] hist [AjPHist] histogram to set string in.
 ** @param [r] string [char*] text to be copied.
 ** @return [void]
 ** @@
@@ -677,7 +677,7 @@ void ajHistSetXAxisC(AjPHist hist, char* string)
 **
 ** Store Y Axis Left Label for the histogram
 **
-** @param [rw] hist [AjPHist] histogram to set string in.
+** @param [u] hist [AjPHist] histogram to set string in.
 ** @param [r] string [char*] text to be copied.
 ** @return [void]
 ** @@
@@ -692,7 +692,7 @@ void ajHistSetYAxisLeftC(AjPHist hist, char* string)
 **
 ** Store Y Axis Right Label for the histogram
 **
-** @param [rw] hist [AjPHist] histogram to set string in.
+** @param [u] hist [AjPHist] histogram to set string in.
 ** @param [r] string [char*] text to be copied.
 ** @return [void]
 ** @@
@@ -707,7 +707,7 @@ void ajHistSetYAxisRightC(AjPHist hist, char* string)
 **
 ** Set colour for bars in histogram for index'th set.
 **
-** @param [rw] hist [AjPHist] Histogram to have ptr set.
+** @param [u] hist [AjPHist] Histogram to have ptr set.
 ** @param [r] index [ajint]     Index for the set number.
 ** @param [r] colour [ajint]    Colour for bar set.
 ** @return [void]
@@ -730,7 +730,7 @@ void ajHistSetColour(AjPHist hist, ajint index, ajint colour)
 **
 ** Set colour for bars in histogram for index'th set.
 **
-** @param [rw] hist [AjPHist] Histogram to have ptr set.
+** @param [u] hist [AjPHist] Histogram to have ptr set.
 ** @param [r] index [ajint]     Index for the set number.
 ** @param [r] style [ajint]    Line style number for bar set.
 ** @return [void]
@@ -753,7 +753,7 @@ void ajHistSetPattern(AjPHist hist, ajint index, ajint style)
 **
 ** Set patterns instead of colours for printing to B/W printers etc.
 **
-** @param [rw] hist [AjPHist] Histogram to have ptr set.
+** @param [u] hist [AjPHist] Histogram to have ptr set.
 ** @param [r] set [AjBool]    Set to use patterns or colour for filling.
 ** @return [void]
 ** @@

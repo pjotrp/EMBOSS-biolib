@@ -48,7 +48,9 @@
 typedef struct EstSKeyValue {
   float key;
   ajint value;
-} EstOKeyValue, *EstPKeyValue;
+} EstOKeyValue;
+
+#define EstPKeyValue EstOKeyValue*
 
 /* @datastatic EstPCoord ******************************************************
 **
@@ -65,7 +67,9 @@ typedef struct EstSKeyValue {
 typedef struct EstSCoord {
   ajint left;
   ajint right;
-} EstOCoord, *EstPCoord;
+} EstOCoord;
+
+#define EstPCoord EstOCoord*
 
 /* @datastatic EstPSavePair ***************************************************
 **
@@ -82,7 +86,9 @@ typedef struct EstSCoord {
 typedef struct EstSSavePair {
   ajint col;
   ajint row;
-} EstOSavePair, *EstPSavePair;
+} EstOSavePair;
+
+#define EstPSavePair EstOSavePair*
 
 #define LIMIT_RPAIR_SIZE 10000
 
@@ -639,7 +645,8 @@ EmbPEstAlign embEstAlignNonRecursive ( AjPSeq est, AjPSeq genome,
 				       ajint backtrack, ajint needleman,
 				       ajint init_path ) {
 
-  AjPSeq gdup=NULL, edup=NULL;
+  AjPSeq gdup=NULL;
+  AjPSeq edup=NULL;
   char* splice_sites_str = ajSeqChar(splice_sites);
   unsigned char **ppath=NULL, *path=NULL;
   ajint *score1, *score2;
@@ -656,7 +663,11 @@ EmbPEstAlign embEstAlignNonRecursive ( AjPSeq est, AjPSeq genome,
   ajint *temp_path=NULL;
   ajint is_acceptor;
   EmbPEstAlign ge;
-  EstPCoord start1=NULL, start2=NULL, t1=NULL, t2=NULL, t3;
+  EstPCoord start1=NULL;
+  EstPCoord start2=NULL;
+  EstPCoord t1=NULL;
+  EstPCoord t2=NULL;
+  EstPCoord t3=NULL;
   EstPCoord best_intron_start=NULL;
   EstOCoord best_start;
   ajint splice_type=0;
@@ -1135,8 +1146,11 @@ EmbPEstAlign embEstAlignLinearSpace ( AjPSeq est, AjPSeq genome,
 				      AjPSeq splice_sites,
 				      float megabytes ) {
 
-  EmbPEstAlign ge, rge;
-  AjPSeq genome_subseq, est_subseq, splice_subseq;
+  EmbPEstAlign ge;
+  EmbPEstAlign rge;
+  AjPSeq genome_subseq;
+  AjPSeq est_subseq;
+  AjPSeq splice_subseq;
   float area;
   float max_area = megabytes*(float)1.0e6;
 
@@ -1259,10 +1273,15 @@ static EmbPEstAlign estAlignRecursive ( AjPSeq est, AjPSeq genome,
 				 ajint init_path ) {
 
   ajint middle, gleft, gright, score, i, j;
-  AjPSeq left_splice=NULL, right_splice=NULL;
-  AjPSeq left_genome, right_genome;
-  AjPSeq left_est, right_est;
-  EmbPEstAlign left_ge, right_ge, ge;
+  AjPSeq left_splice=NULL;
+  AjPSeq right_splice=NULL;
+  AjPSeq left_genome;
+  AjPSeq right_genome;
+  AjPSeq left_est;
+  AjPSeq right_est;
+  EmbPEstAlign left_ge;
+  EmbPEstAlign right_ge;
+  EmbPEstAlign ge;
   float area;
   ajint split_on_del;
 
@@ -1479,7 +1498,8 @@ static ajint estAlignMidpt ( AjPSeq est, AjPSeq genome, ajint match,
 			     ajint splice_penalty, AjPSeq splice_sites,
 			     ajint middle, ajint *gleft, ajint *gright ) {
 
-  AjPSeq gdup=NULL, edup=NULL;
+  AjPSeq gdup=NULL;
+  AjPSeq edup=NULL;
   ajint *score1, *score2;
   ajint *s1, *s2, *s3;
   ajint *best_intron_score, *best_intron_coord;
@@ -1489,8 +1509,12 @@ static ajint estAlignMidpt ( AjPSeq est, AjPSeq genome, ajint match,
   char *gseq, *eseq, g;
   ajint max;
   ajint is_acceptor;
-  EstPCoord m1, m2, m3;
-  EstPCoord midpt1, midpt2, best_intron_midpt;
+  EstPCoord m1;
+  EstPCoord m2;
+  EstPCoord m3;
+  EstPCoord midpt1;
+  EstPCoord midpt2;
+  EstPCoord best_intron_midpt;
   char *splice_sites_str = ajSeqChar(splice_sites);
 
   AJCNEW (score1, ajSeqLen(est)+1);

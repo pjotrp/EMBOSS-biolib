@@ -28,14 +28,16 @@
 
 static int sixpack_findorfs(AjPSeqout *outseq, AjPFile *outf, ajint s,
 			    ajint len, char *seq, char *name, ajint orfml, 
-			    AjBool addedasterisk, AjBool firstorf, ajint frame, 
+			    AjBool addedasterisk, AjBool firstorf,
+			    ajint frame, 
 			    char *origname, AjBool mstart);
 
 static void sixpack_ajprintseq(AjPSeqout *outseq, char *seq, ajint begin,
-			       int end, ajint orflength, char *name, ajint count, 
-			       ajint frame, char *origname, ajint min_orflength);
+			       int end, ajint orflength, char *name,
+			       ajint count, ajint frame, char *origname,
+			       ajint min_orflength);
 
-/* @prog sixpack ****************************************************************
+/* @prog sixpack **************************************************************
 **
 ** Display a DNA sequence in both direction with its translation
 **
@@ -175,11 +177,14 @@ int main(int argc, char **argv)
       totalframes = 6;
       
       (void) embShowAddTran (ss, trnTable, -3, AJFALSE,
-			     AJFALSE, NULL, orfminsize, AJTRUE, firstorf, addlast, AJTRUE);
+			     AJFALSE, NULL, orfminsize, AJTRUE,
+			     firstorf, addlast, AJTRUE);
       (void) embShowAddTran (ss, trnTable, -2, AJFALSE,
-			     AJFALSE, NULL, orfminsize, AJTRUE, firstorf, addlast, AJTRUE);
+			     AJFALSE, NULL, orfminsize, AJTRUE,
+			     firstorf, addlast, AJTRUE);
       (void) embShowAddTran (ss, trnTable, -1, AJFALSE,
-			     AJFALSE, NULL, orfminsize, AJTRUE, firstorf, addlast, AJTRUE);
+			     AJFALSE, NULL, orfminsize, AJTRUE,
+			     firstorf, addlast, AJTRUE);
     }
   
   (void) embShowPrint(outfile, ss);
@@ -221,8 +226,10 @@ int main(int argc, char **argv)
 	  
     peplen=ajStrLen(substr);
 
-    totalorf += sixpack_findorfs(&outseq, &outfile, 0, peplen, ajStrStr(substr),
-				 ajSeqName(pep), orfminsize, addedasterisk, firstorf,
+    totalorf += sixpack_findorfs(&outseq, &outfile, 0, peplen,
+				 ajStrStr(substr),
+				 ajSeqName(pep), orfminsize,
+				 addedasterisk, firstorf,
 				 i+1, ajSeqName(seq), mstart);
 
 	  
@@ -252,14 +259,19 @@ int main(int argc, char **argv)
 ** @param [?] name [char*] Name of the translated sequence (with frame number)
 ** @param [?] min_orflength [ajint] Minimum size of the ORFs to report
 ** @param [r] addedasterisk [AjBool] True if an asterisk was added at the end
+** @param [?] firstorf [AjBool] ajTrue to find first ORF
 ** @param [?] frame [ajint] Frame number
 ** @param [?] origname [char*] Original name of the sequence (DNA)
+** @param [?] mstart [AjBool] ajTrue to start with methionine codon only
+** @return [int] number of orfs
 ** @@
 ******************************************************************************/
 
 static int sixpack_findorfs (AjPSeqout *outseq, AjPFile *outf, ajint from,
-			     ajint to, char *p, char *name, ajint min_orflength,
-			     AjBool addedasterisk, AjBool firstorf, ajint frame, 
+			     ajint to, char *p, char *name,
+			     ajint min_orflength,
+			     AjBool addedasterisk, AjBool firstorf,
+			     ajint frame, 
 			     char *origname, AjBool mstart)
 
 {
@@ -289,7 +301,9 @@ static int sixpack_findorfs (AjPSeqout *outseq, AjPFile *outf, ajint from,
 	      }
 	    if (orflength >= min_orflength)
 	      {
-		sixpack_ajprintseq(outseq, p,i-orflength,i-1,orflength,name,orfnb+1,frame,origname,min_orflength);
+		sixpack_ajprintseq(outseq, p,i-orflength,i-1,orflength,
+				   name,orfnb+1,frame,origname,
+				   min_orflength);
 		orfnb++;
 	      }
 	    else if ((last_stop == 0) && firstorf && p[0] != '*')
@@ -297,7 +311,9 @@ static int sixpack_findorfs (AjPSeqout *outseq, AjPFile *outf, ajint from,
 		if (mstart)
 		  orflength=i-last_stop;
 		if (orflength > 0) {
-		  sixpack_ajprintseq(outseq, p,i-orflength,i-1,orflength,name,orfnb+1,frame,origname,min_orflength);
+		  sixpack_ajprintseq(outseq, p,i-orflength,i-1,orflength,
+				     name,orfnb+1,frame,origname,
+				     min_orflength);
 		  orfnb++;
 		}
 	      }
@@ -306,7 +322,9 @@ static int sixpack_findorfs (AjPSeqout *outseq, AjPFile *outf, ajint from,
 		/*		if (mstart)
 				orflength=i-last_stop; */
 		if (orflength > 0) {
-		  sixpack_ajprintseq(outseq, p,i-orflength,i-1,orflength,name,orfnb+1,frame,origname,min_orflength);
+		  sixpack_ajprintseq(outseq, p,i-orflength,i-1,orflength,
+				     name,orfnb+1,frame,origname,
+				     min_orflength);
 		  orfnb++;
 		}
 	      }
@@ -337,19 +355,21 @@ static int sixpack_findorfs (AjPSeqout *outseq, AjPFile *outf, ajint from,
 ** @param [?] seq [char*] Sequence to write
 ** @param [?] begin [ajint] Start position of the ORF to write
 ** @param [?] end [int] End position of the ORF to write
-** @param [?] orflengtht [ajint] Size of the current ORF
+** @param [?] orflength [ajint] Size of the current ORF
 ** @param [?] name [char*] Name of the translated sequence (with frame number)
 ** @param [?] count [ajint] Number of the ORF to be written in this frame
 ** @param [?] frame [ajint] Frame number
 ** @param [?] origname [char*] Original name of the sequence (DNA)
 ** @param [?] min_orflength [ajint] Minimum size for an ORF
+** @return [void]
 ** @@
 ******************************************************************************/
 
 
 
 static void sixpack_ajprintseq(AjPSeqout *outseq, char *seq, ajint begin, int
-			       end, ajint orflength, char *name, ajint count, ajint frame, 
+			       end, ajint orflength, char *name,
+			       ajint count, ajint frame, 
 			       char *origname, ajint min_orflength)
 {
     AjPSeq sq;
@@ -363,7 +383,10 @@ static void sixpack_ajprintseq(AjPSeqout *outseq, char *seq, ajint begin, int
     ajStrAssSubC(&str,seq,begin,end);
     ajSeqReplace(sq,str);
 
-    ajFmtPrintS(&nm,"%s_ORF%d  Translation of %s in frame %d, ORF %d, threshold %d, %daa",name,count,origname,frame,count,min_orflength,orflength);
+    ajFmtPrintS(&nm,
+		"%s_ORF%d  Translation of %s in frame %d, ORF %d, "
+		"threshold %d, %daa",
+		name,count,origname,frame,count,min_orflength,orflength);
     ajSeqAssName(sq,nm);
 
     ajSeqWrite(*outseq, sq);
@@ -374,7 +397,3 @@ static void sixpack_ajprintseq(AjPSeqout *outseq, char *seq, ajint begin, int
 
     return;
 }
-
-
-
-

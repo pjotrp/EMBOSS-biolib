@@ -141,8 +141,27 @@ static ajint al_len; 				/* length of alignment */
       }							\
 }
 
-static  AjPSeq seq,seq2;
+static  AjPSeq seq;
+static  AjPSeq seq2;
 static ajint **sub;
+
+/* @datastatic vertex *********************************************************
+**
+** Matcher internals
+**
+** @alias NODE
+** @alias vertexptr
+**
+** @attr SCORE [ajint] Undocumented
+** @attr STARI [ajint] Undocumented
+** @attr STARJ [ajint] Undocumented
+** @attr ENDI [ajint] Undocumented
+** @attr ENDJ [ajint] Undocumented
+** @attr TOP [ajint] Undocumented
+** @attr BOT [ajint] Undocumented
+** @attr LEFT [ajint] Undocumented
+** @attr RIGHT [ajint] Undocumented
+******************************************************************************/
 
 typedef struct NODE
 	{ ajint  SCORE;
@@ -153,8 +172,8 @@ typedef struct NODE
 	  ajint  TOP;
 	  ajint  BOT;
 	  ajint  LEFT;
-	  ajint  RIGHT; }  vertex,
-     *vertexptr;
+	  ajint  RIGHT;
+}  vertex, *vertexptr;
 
 
 
@@ -173,7 +192,24 @@ static ajint flag;			/* indicate if recomputation necessary*/
 
 static ajint q, r;			/* gap penalties */
 static ajint qr;				/* qr = q + r */
-typedef struct ONE { ajint COL ;  struct ONE  *NEXT ;} pair, *pairptr;
+
+
+/* @datastatic pair ***********************************************************
+**
+** Matcher internals
+**
+** @alias ONE
+** @alias pairptr
+**
+** @attr COL [ajint] Undocumented
+** @attr NEXT [struct ONE*] Undocumented
+******************************************************************************/
+
+typedef struct ONE {
+    ajint COL ;
+    struct ONE  *NEXT ;
+} pair, *pairptr;
+
 pairptr *row, z; 			/* for saving used aligned pairs */
 
 #define PAIRNULL (pairptr)NULL

@@ -19,13 +19,16 @@
 int main(int argc, char **argv)
 {
 
-  AjPSeq seq1,seq2;
+  AjPSeq seq1;
+  AjPSeq seq2;
   ajint wordlen;
   AjPTable seq1MatchTable =0 ;
   AjPList matchlist = NULL;
   AjPFile outf = NULL;
-  AjPFeattable Tab1=NULL,Tab2=NULL;
-  AjPFeattabOut seq1out = NULL, seq2out = NULL;
+  AjPFeattable Tab1=NULL;
+  AjPFeattable Tab2=NULL;
+  AjPFeattabOut seq1out = NULL;
+  AjPFeattabOut seq2out = NULL;
   AjPAlign align = NULL;
   AjIList iter = NULL;
   ajint start1, start2, len;

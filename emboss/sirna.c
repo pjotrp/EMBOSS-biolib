@@ -416,7 +416,17 @@ static int sirna_compare_score (const void* v1, const void* v2);
 static void sirna_output (AjPList list, AjPFeattable TabRpt, AjPSeq seq,
 	AjBool context, AjPSeqout seqout);
 
-/* structure for position, score and GC count at the start of a window */
+/* @datastatic PValue *********************************************************
+**
+** structure for position, score and GC count at the start of a window
+**
+** @alias SValue
+** @alias OValue
+**
+** @attr pos [ajint] Position
+** @attr GCcount [ajint] GC count
+** @attr score [ajint] Score
+******************************************************************************/
 typedef struct SValue
 {
   ajint pos;
@@ -425,7 +435,7 @@ typedef struct SValue
 } OValue, *PValue;
  
 
-/* @prog sirna ******************************************************************
+/* @prog sirna ****************************************************************
 **
 ** Finds siRNA duplexes in mRNA
 **
@@ -478,13 +488,14 @@ int main(int argc, char **argv)
 **
 ** finds regions that can be used as siRNAs
 **
-** @param [U] report [AjPReport] Undocumented
+** @param [u] report [AjPReport] Undocumented
 ** @param [r] seq [AjPSeq] Sequence
 ** @param [r] poliii [AjBool] True if want poliii expressable probes
 ** @param [r] aa [AjBool] True if want AA at start of region
 ** @param [r] tt [AjBool] True if want TT at end of region
 ** @param [r] polybase [AjBool] True if we allow 4-mers of any base
-** @param [r] context [AjBool] True if we wish to show the 2 bases before the probe region
+** @param [r] context [AjBool] True if we wish to show the 2 bases before
+**                              the probe region
 ** @param [r] seqout [AjPSeqout] Ouput sequence object
 ** @return [void] 
 ** @@
@@ -875,7 +886,7 @@ static ajint sirna_begin (AjPSeq seq, AjPReport report, AjBool poliii,
 **
 ** creates a PValue object and adds it to the list
 **
-** @param [U] list [AjPList] list to add value to
+** @param [u] list [AjPList] list to add value to
 ** @param [r] pos [ajint] position in sequence
 ** @param [r] score [ajint] score
 ** @param [r] GCcount [ajint] number of GC bases
@@ -936,15 +947,17 @@ static int sirna_compare_score (const void* v1, const void* v2) {
 ** Output the probes
 **
 ** @param [r] list [AjPList] list of PValue structures
-** @param [U] TabRpt [AjPFeattable] feature table 
+** @param [u] TabRpt [AjPFeattable] feature table 
 ** @param [r] seq [AjPSeq] Sequence
-** @param [r] context [AjBool] True if we wish to show the 2 bases before the probe region
+** @param [r] context [AjBool] True if we wish to show the 2 bases before
+**                             the probe region
 ** @param [r] seqout [AjPSeqout] Ouput sequence object
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void sirna_output (AjPList list, AjPFeattable TabRpt, AjPSeq seq, AjBool context,
+static void sirna_output (AjPList list, AjPFeattable TabRpt, AjPSeq seq,
+			  AjBool context,
 			  AjPSeqout seqout) {
 
   AjIList iter;

@@ -40,7 +40,8 @@ static void dotpath_plotMatches(AjPList list);
 
 int main(int argc, char **argv)
 {
-    AjPSeq seq1,seq2;
+    AjPSeq seq1;
+    AjPSeq seq2;
     ajint wordlen;
     AjPTable seq1MatchTable =0 ;
     AjPList matchlist=NULL ;

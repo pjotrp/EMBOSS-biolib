@@ -149,7 +149,9 @@ AjPSeqset seqset;
 
 void emboss_getoptions(char *pgm, int argc, char *argv[]){
 AjStatus retval;
-AjPStr *methodlist,*categlist,*genlist;
+AjPStr *methodlist;
+AjPStr *categlist;
+AjPStr *genlist;
 AjPFile outf;
   weights = false;
   ttratio = 2.0;

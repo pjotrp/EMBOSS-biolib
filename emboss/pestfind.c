@@ -133,29 +133,29 @@ static ajint ajStrIterPosCopy (const AjIStr itrbeg, AjIStr itrend)
 
 
 
-/* @funcstatic ajStrAssSubItrItr ************************************
+/* #funcstatic ajStrAssSubItrItr ************************************
 ** Assigns a substring from two string iterators over the same 
 ** source string object.
-** @param [w] substr [AjPStr] Target string.
-** @param [r] str [const AjPStr] Source string.
-** @param [r] itrbeg [const AjIStr] First string iterator.
-** @param [r] itrend [const AjIStr] Second string iterator.
-** @return [AjBool] ajTrue if string was reallocated.
-** @@
+** #param [w] substr [AjPStr] Target string.
+** #param [r] str [const AjPStr] Source string.
+** #param [r] itrbeg [const AjIStr] First string iterator.
+** #param [r] itrend [const AjIStr] Second string iterator.
+** #return [AjBool] ajTrue if string was reallocated.
+** ##
 ** This function assigns a substring between two points of 
 ** string iteration within the same target string.
 ********************************************************************/
 /*
-static AjBool ajStrAssSubItrItr (AjPStr substr, const AjPStr str,
-				 const AjIStr itrbeg, const AjIStr itrend)
-{
-    if ((itrbeg->Ptr - itrbeg->Start) <= (itrend->Ptr - itrend->Start))
-	return ajStrAssSub (&substr, str, (itrbeg->Ptr - itrbeg->Start),
-			    (itrend->Ptr - itrend->Start));
-
-    return ajStrAssSub (&substr, str, (itrend->Ptr - itrend->Start),
-			(itrbeg->Ptr - itrbeg->Start));
-}
+//static AjBool ajStrAssSubItrItr (AjPStr substr, const AjPStr str,
+//				 const AjIStr itrbeg, const AjIStr itrend)
+//{
+//    if ((itrbeg->Ptr - itrbeg->Start) <= (itrend->Ptr - itrend->Start))
+//	return ajStrAssSub (&substr, str, (itrbeg->Ptr - itrbeg->Start),
+//			    (itrend->Ptr - itrend->Start));
+//
+//    return ajStrAssSub (&substr, str, (itrend->Ptr - itrend->Start),
+//			(itrbeg->Ptr - itrbeg->Start));
+//}
 */
 
 

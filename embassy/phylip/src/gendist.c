@@ -29,7 +29,8 @@ Static boolean all, cavalli, lower, nei, reynolds,  mulsets, ibmpc,
 /************ EMBOSS GET OPTIONS ROUTINES ******************************/
 void emboss_getoptions(char *pgm, int argc, char *argv[]){
 AjStatus retval;
-AjPFile outf,inf;
+AjPFile outf;
+AjPFile inf;
 AjPStr *methodlist;
 
   cavalli = false;

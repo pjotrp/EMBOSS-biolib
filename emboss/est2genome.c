@@ -79,9 +79,13 @@ static void  est2genome_make_output( AjPFile ofile, AjPSeq genome, AjPSeq est,
 int main(int argc, char **argv)
 {
     AjPSeq genome=NULL;
-    AjPSeq splice_sites=NULL, reversed_splice_sites=NULL;
-    AjPSeq est=NULL, reversed_est=NULL;
-    EmbPEstAlign fge=NULL, rge=NULL, bge=NULL;
+    AjPSeq splice_sites=NULL;
+    AjPSeq reversed_splice_sites=NULL;
+    AjPSeq est=NULL;
+    AjPSeq reversed_est=NULL;
+    EmbPEstAlign fge=NULL;
+    EmbPEstAlign rge=NULL;
+    EmbPEstAlign bge=NULL;
     ajint width=50;
     ajint match=1;
     ajint mismatch=1;

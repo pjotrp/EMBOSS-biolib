@@ -22,6 +22,21 @@
 
 #include "emboss.h"
 
+/* @datastatic gffptr *********************************************************
+**
+** demolist struct
+**
+** @alias sgff
+** @alias gff
+**
+** @attr clone [AjPStr] Demolist example struct
+** @attr source [AjPStr]  Demolist example struct
+** @attr type [AjPStr]  Demolist example struct
+** @attr start [ajint]  Demolist example struct
+** @attr end [ajint]  Demolist example struct
+** @attr score [ajint]  Demolist example struct
+******************************************************************************/
+
 typedef struct sgff
 {
   AjPStr clone;

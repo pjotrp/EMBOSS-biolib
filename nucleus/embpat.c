@@ -44,8 +44,8 @@ static AjBool patOUBrute(char *seq, char *pat, ajint spos,
 **
 ** Free a pattern structure, through an ajListMap call
 **
-** @param [D] x [void**] pattern
-** @param [R] cl [void*] Function
+** @param [d] x [void**] pattern
+** @param [r] cl [void*] Function
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -330,7 +330,7 @@ ajint embPatMatchGetStart(EmbPPatMatch data, ajint index){
 **
 ** Free all the memory from the pattern match search.
 **
-** @param [rw] pthis [EmbPPatMatch*] results to be freed.
+** @param [u] pthis [EmbPPatMatch*] results to be freed.
 ** @return [void]
 ******************************************************************************/
 
@@ -587,7 +587,7 @@ ajint embPatPosMatchGetStart(EmbPPatMatch data, ajint index)
 **
 ** Free all the memory from a posix pattern match search.
 **
-** @param [rw] pthis [EmbPPatMatch*] results to be freed.
+** @param [u] pthis [EmbPPatMatch*] results to be freed.
 ** @return [void]
 ******************************************************************************/
 
@@ -598,7 +598,7 @@ void embPatPosMatchDel(EmbPPatMatch* pthis)
 
 
 
-/* @func embPatPrositeToRegExp       ******************************************
+/* @func embPatPrositeToRegExp ************************************************
 **
 ** Convert a prosite pattern to a regular expression
 **
@@ -1508,7 +1508,7 @@ ajint embPatBYPSearch(AjPStr *str, AjPStr *name, ajint begin, ajint slen,
 ** Checks for start and/or end angle bracket markers
 ** Removes them from the string and sets bools accordingly
 **
-** @param [rw] s [AjPStr *] pattern
+** @param [u] s [AjPStr *] pattern
 ** @param [w] amino [AjBool *] set if start marker (left angle bracket)
 ** @param [w] carboxyl [AjBool *] set if end marker (right angle bracket)
 **
@@ -1614,7 +1614,7 @@ static AjBool patParenTest(char *p, AjBool *repeat, AjBool *range)
 **
 ** Expand repeats e.g. [ABC](2) to [ABC][ABC]
 **
-** @param [rw] s [AjPStr *] pattern
+** @param [u] s [AjPStr *] pattern
 **
 ** @return [AjBool] ajTrue on success
 ** @@
@@ -1695,7 +1695,7 @@ static AjBool patExpandRepeat(AjPStr *s)
 **
 ** Convert IUB symbols to classes e.g. S to [GC]
 **
-** @param [rw] pat [AjPStr *] pattern
+** @param [u] pat [AjPStr *] pattern
 **
 ** @return [void]
 ******************************************************************************/
@@ -1790,7 +1790,7 @@ static void patIUBTranslate(AjPStr *pat)
 **
 ** Classify patterns according to type
 **
-** @param [rw] pat     [AjPStr *] pattern
+** @param [u] pat     [AjPStr *] pattern
 ** @param [w] amino    [AjBool*] set if must match start of sequence
 ** @param [w] carboxyl [AjBool*] set if must match end of sequence
 ** @param [w] fclass   [AjBool*] set if class e.g. [ABC]
@@ -2814,7 +2814,7 @@ ajint embPatBruteForce(AjPStr *seq, AjPStr *pat, AjBool amino, AjBool carboxyl,
 ** Match variable pattern against constant text.
 ** Used for matching many patterns against one sequence.
 **
-** @param [rw] pattern [AjPStr *] pattern to match
+** @param [u] pattern [AjPStr *] pattern to match
 ** @param [r] opattern [AjPStr] read-only pattern
 ** @param [r] text [AjPStr] text to scan
 ** @param [r] patname [AjPStr] ID or AC of pattern
@@ -3000,7 +3000,7 @@ ajint embPatVariablePattern (AjPStr *pattern, AjPStr opattern, AjPStr text,
 **
 ** Replace RE names by the name of the prototype for that RE
 **
-** @param [rw] l [AjPList] list of EmbPMatMatch hits
+** @param [u] l [AjPList] list of EmbPMatMatch hits
 ** @param [r] t [AjPTable] table from embossre.equ file
 **
 ** @return [void]
@@ -3038,7 +3038,7 @@ void embPatRestrictPreferred(AjPList l, AjPTable t)
 ** found will be added to the string 'iso' in the returned list of
 ** EmbPMatMatch structures.  If 'isos' is AjTrue then they will be left alone.
 **
-** @param [rw] l [AjPList *] list of hits from embPatRestrictScan
+** @param [u] l [AjPList *] list of hits from embPatRestrictScan
 ** @param [r] hits [ajint] number of hits from embPatRestrictScan
 ** @param [r] isos [AjBool] Allow isoschizomers
 ** @param [r] alpha [AjBool] Sort alphabetically

@@ -24,6 +24,29 @@
 
 #define BIGVAL 10.
 
+/* @datastatic AjPTestcode ****************************************************
+**
+** tcode internals
+**
+** @alias AjStestcode
+** @alias AjOTestcode
+**
+** @attr positions [AjPFloat] Undocumented
+** @attr npositions [ajint] Undocumented
+** @attr content [AjPFloat] Undocumented
+** @attr ncontent [ajint] Undocumented
+** @attr pprobA [AjPFloat] Undocumented
+** @attr pprobC [AjPFloat] Undocumented
+** @attr pprobG [AjPFloat] Undocumented
+** @attr pprobT [AjPFloat] Undocumented
+** @attr cprobA [AjPFloat] Undocumented
+** @attr cprobC [AjPFloat] Undocumented
+** @attr cprobG [AjPFloat] Undocumented
+** @attr cprobT [AjPFloat] Undocumented
+** @attr pweights [AjPFloat] Undocumented
+** @attr cweights [AjPFloat] Undocumented
+******************************************************************************/
+
 typedef struct AjSTestcode 
 {
     AjPFloat positions;
@@ -207,7 +230,7 @@ int main(int argc, char **argv)
 **
 ** Read Etcode.dat data file
 **
-** @param [w] table1 [AjPFTestcode*] data object
+** @param [w] table1 [AjPTestcode*] data object
 ** @param [r] datafile [AjPFile] data file object 
 ** @return [AjBool] true if successful read
 ** @@
@@ -367,7 +390,7 @@ static AjPTestcode tcode_new(void)
 **
 ** Testcode data object destructor
 **
-** @param [w] thys [AjPFTestcode*] testcodedata object
+** @param [w] thys [AjPTestcode*] testcodedata object
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -411,7 +434,7 @@ static void tcode_del(AjPTestcode *thys)
 **
 ** @param [r] substr [AjPStr] sequence
 ** @param [r] window [ajint] size of sliding window
-** @param [r] table [AjPTestcode*] testcode data object
+** @param [r] table [AjPTestcode] testcode data object
 ** @param [r] pos [ajint] start position within sequence
 **
 ** @return [float] Testcode value
@@ -614,7 +637,7 @@ static ajint tcode_index(AjPFloat array, float value)
 ** @param [w] ftable [AjPFeattable] feature table for loading report
 ** @param [r] seq [AjPSeq] original sequence
 **
-** @return [ajint] index
+** @return [void]
 ** @@
 ******************************************************************************/
 

@@ -533,7 +533,7 @@ static AjPStr grpParseValueRB (AjPStrTok* tokenhandle, char* delim) {
 **
 ** The group names are returned as a list.
 **
-** @param [rw] groups [AjPList] List of groups
+** @param [u] groups [AjPList] List of groups
 ** @param [r]  value  [AjPStr] Groups string from ACD file
 ** @param [r]  explode [AjBool] Expand group names around ':'
 ** @param [r]  colon [AjBool] Retain ':' in group names
@@ -641,7 +641,7 @@ combinations of name */
 ** 'aaa'
 ** will be constructed and added to the list of group names in 'groups'
 **
-** @param [rw] groups [AjPList] List of groups
+** @param [u] groups [AjPList] List of groups
 ** @param [r] sublist [AjPList] (Sub)-names of groups string from ACD file
 **
 ** @return [void]
@@ -652,7 +652,10 @@ static void grpSubSplitList (AjPList groups, AjPList sublist) {
   AjPStr *sub;		/* array of sub-names */
   ajint len;		/* length of array of sub-names */
   ajint i, j;		/* loop counters */
-  AjPStr head, tail, revhead, revtail;	/* constructed group names */
+  AjPStr head;	/* constructed group names */
+  AjPStr tail;
+  AjPStr revhead;
+  AjPStr revtail;
   AjPStr dummy;		/* dummy string for ajListstrPop() */
 
 /*  ajDebug("Expanding the sub-groups\n"); */
@@ -738,9 +741,9 @@ Must write a routine in ajlist.c to do this better. */
 ** alpha is a list of application with sub-lists of their groups
 ** glist is a list of groups with sub-lists of their applications
 **
-** @param [rw] alpha [AjPList] Alphabetic list of programs
-** @param [rw] glist [AjPList] List of all known groups
-** @param [rw] groups [AjPList] List of groups for this application
+** @param [u] alpha [AjPList] Alphabetic list of programs
+** @param [u] glist [AjPList] List of all known groups
+** @param [u] groups [AjPList] List of groups for this application
 ** @param [r]  appl  [AjPStr] Application name
 ** @param [r]  doc  [AjPStr] Documentation string
 **
@@ -1135,7 +1138,7 @@ and name/doc */
 ** If the program we are searching for is not found, it returns *appgroups
 ** as NULL.
 **
-** @param [U] newlist [AjPList] List of application GPnode returned
+** @param [u] newlist [AjPList] List of application GPnode returned
 ** @param [w] appgroups [AjPList *] List of GPnode groups of program returned
 ** @param [r] alpha [AjPList] List of GPnode struct to search through
 ** @param [r] glist [AjPList] List of GPnode struct to search through
@@ -1245,7 +1248,7 @@ void embGrpKeySearchSeeAlso(AjPList newlist, AjPList *appgroups,
 ** Takes a sorted GPnode list and ensures that there are no duplicate
 ** group or application names in that list.
 **
-** @param [U] list [AjPList] List of application GPnode returned
+** @param [u] list [AjPList] List of application GPnode returned
 ** @return [void]
 ** @@
 ******************************************************************************/

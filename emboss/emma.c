@@ -56,7 +56,8 @@ int main(int argc, char **argv, char **env)
     ajint ktup, gapw, topdiags, window;
     AjBool nopercent;
 
-    AjPStr *pw_matrix,  *pw_dna_matrix ;
+    AjPStr *pw_matrix;
+    AjPStr *pw_dna_matrix ;
     AjPStr pairwise_matrix = NULL;
     float pw_gapc, pw_gapv;
 
@@ -72,7 +73,8 @@ int main(int argc, char **argv, char **env)
     char   m1c='\0';
     char   m2c='\0';
 
-    AjPStr *matrix, *dna_matrix;
+    AjPStr *matrix;
+    AjPStr *dna_matrix;
     AjPStr ma_matrix = NULL;
     float gapc, gapv;
     AjBool endgaps, norgap, nohgap;
@@ -86,7 +88,8 @@ int main(int argc, char **argv, char **env)
     char* prog_default = "clustalw";
     /* AjPStr prog_name = NULL;*/
     AjPStr cmd = NULL;
-    AjPStr tmp, tmpFilename;
+    AjPStr tmp;
+    AjPStr tmpFilename;
     AjPStr line = NULL;
     ajint nb=0;
 

@@ -23,6 +23,19 @@
 #include "emboss.h"
 #include "stdlib.h"
 
+/* @datastatic PHit ***********************************************************
+**
+** twofeat internals
+**
+** @alias SHit
+** @alias OHit
+**
+** @attr gfA [AjPFeature] Undocumented
+** @attr gfB [AjPFeature] Undocumented
+** @attr Start [ajint] Undocumented
+** @attr End [ajint] Undocumented
+** @attr distance [ajint] Undocumented
+******************************************************************************/
 
 typedef struct SHit
 {
@@ -281,7 +294,7 @@ int main(int argc, char **argv)
 ** @param [r] rangetypei [ajint] where to measure the distance from
 ** @param [r] sensei [ajint] sense relationships allowed
 ** @param [r] orderi [ajint] order relationships allowed
-** @param [r] outtab [ajPFeattable] output feature table
+** @param [r] outtab [AjPFeattable] output feature table
 ** @param [r] twoout [AjBool] True=write both features, else make a single one
 ** @param [r] typeout [AjPStr] if a single feature, this is its type name
 ** @return [void]
@@ -359,7 +372,7 @@ static void twofeat_rippledown (AjPFeattable tabA, AjPFeattable tabB,
 ** @param [r] hitlist [AjPList] list of matches (PHit) 
 ** @param [r] twoout [AjBool] True if want pairs of features output
 ** @param [r] typeout [AjPStr]  name of type if want single features
-** @param [rw] outtab [AjPFeattable] output feature table
+** @param [u] outtab [AjPFeattable] output feature table
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -435,7 +448,7 @@ static void twofeat_sort_hits (AjPList hitlist, AjBool twoout, AjPStr
 ** Finds seq features matching the required criteria and puts them in tab
 **
 ** @param [r] seq [AjPSeq] the sequence
-** @param [U] tab [AjPFeattable] Feature table to populate
+** @param [u] tab [AjPFeattable] Feature table to populate
 ** @param [r] begin [ajint] start position in sequence
 ** @param [r] end [ajint] end position in sequence
 ** @param [r] source [AjPStr] source criterion
@@ -516,7 +529,7 @@ static void twofeat_find_features (AjPSeq seq, AjPFeattable tab,
 ** @param [r] maxscore [float] Max required Score pattern
 ** @param [r] tag [AjPStr] Required Tag pattern
 ** @param [r] value [AjPStr] Required Value pattern
-** @param [rw] tagsmatch [AjBool *] true if a join has matching tag/values
+** @param [u] tagsmatch [AjBool *] true if a join has matching tag/values
 ** @return [AjBool] True if feature matches criteria
 ** @@
 ******************************************************************************/
@@ -626,7 +639,7 @@ static AjBool twofeat_MatchPatternTags (AjPFeature feat, AjPStr tpattern,
 **
 ** Creates a new PHit object
 **
-** @return [PHit]
+** @return [PHit] Hit object
 ** @@
 ******************************************************************************/
 static PHit twofeat_HitsNew()

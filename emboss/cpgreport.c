@@ -150,7 +150,9 @@ static void cpgreport_cpgsearch(AjPFile *outf, ajint from, ajint to, char *p,
     ajint dcg;
     ajint dgc;
     ajint gc;
-    static AjPStr name2=NULL,source=NULL,type=NULL;
+    static AjPStr name2=NULL;
+    static AjPStr source=NULL;
+    static AjPStr type=NULL;
     char  strand='+';
     ajint frame=0;
     AjPFeature feature;

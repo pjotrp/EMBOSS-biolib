@@ -158,7 +158,7 @@ static void mwcontam_readdata(AjPList files, AjPList **lists,
 ** the second list.
 **
 ** @param [r] one [AjPList] First list
-** @param [rw] two [AjPList*] Second list
+** @param [u] two [AjPList*] Second list
 ** @param [r] tolerance [float] mw tolerance (ppm)
 ** @@
 ******************************************************************************/

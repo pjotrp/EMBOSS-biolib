@@ -59,7 +59,8 @@ AjPSeqset seqset;
 
 void emboss_getoptions(char *pgm, int argc, char *argv[]){
 AjStatus retval;
-AjPStr *methodlist,*matrixlist;
+AjPStr *methodlist;
+AjPStr *matrixlist;
 AjPFile outf;
 
   progress = false;

@@ -243,14 +243,14 @@ AjPStr ajStrNewS (const AjPStr str)
 **
 ** Constructor making a copy of a string object.
 **
-** @param [r] thys [const AjPStr] AJAX string object
+** @param [r] thys [AjPStr] AJAX string object
 ** @return [AjPStr] Pointer to the string passed as an argument,
 **         with its use count increased by 1.
 ** @@
 ** Modified: pmr 21-jan-00 return empty string if there is no original string
 ******************************************************************************/
 
-AjPStr ajStrDup (const AjPStr thys)
+AjPStr ajStrDup (AjPStr thys)
 {
     if (!thys)
 	return ajStrNew();
@@ -265,7 +265,7 @@ AjPStr ajStrDup (const AjPStr thys)
 ** A text string constructor which allocates a string of the specified length
 ** and initialises it with the text string provided.
 **
-** @param [P] thys [const AjPStr] String object as initial value and size
+** @param [r] thys [const AjPStr] String object as initial value and size
 **                          for the text.
 ** @return [char*] A new text string.
 ** @ure The text provided must fit in the specified length
@@ -331,7 +331,7 @@ char* ajCharNewL (ajint len)
 ** and initialises it with the text string provided.
 **
 ** @param [r] size [size_t] Maximum string length, as returned by strlen
-** @param [P] thys [const AjPStr] String object as initial value and size
+** @param [r] thys [const AjPStr] String object as initial value and size
 **                          for the text.
 ** @return [char*] A new text string.
 ** @ure The text provided must fit in the specified length
@@ -385,7 +385,7 @@ static AjPStr strNewNew (size_t size)
 /* @funcstatic strClone *******************************************************
 **
 ** Makes a new clone of a string with a usage count of one.
-** @param [wP] pthis [AjPStr*] String
+** @param [w] pthis [AjPStr*] String
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -407,7 +407,7 @@ static void strClone (AjPStr* pthis)
 ** Makes a new clone of a string with a usage count of one and a minimum
 ** reserved size.
 **
-** @param [wP] pthis [AjPStr*] String
+** @param [w] pthis [AjPStr*] String
 ** @param [r] size [size_t] Minimum reserved size.
 ** @return [void]
 ** @@
@@ -452,7 +452,7 @@ static void strCloneL (AjPStr* pthis, size_t size)
 **
 ** If the given string is NULL, or a NULL pointer, simply returns.
 **
-** @param  [wP] pthis [AjPStr*] Pointer to the string to be deleted.
+** @param  [w] pthis [AjPStr*] Pointer to the string to be deleted.
 **         The pointer is always deleted.
 ** @return [void]
 ** @cre    The default null string must not be deleted. Calling this
@@ -507,7 +507,7 @@ void ajStrDel (AjPStr* pthis)
 **
 ** If the given string is NULL, or a NULL pointer, simply returns.
 **
-** @param  [wP] pthis [AjPStr*] Pointer to the string to be deleted.
+** @param  [w] pthis [AjPStr*] Pointer to the string to be deleted.
 ** @return [AjBool] ajTrue if the string still exists,
 **                  ajFalse if if was deleted.
 ** @cre    The default null string must not be deleted. Calling this
@@ -542,7 +542,7 @@ AjBool ajStrDelReuse (AjPStr* pthis)
 **
 ** A text string destructor which deallocates a text string.
 **
-** @param [wP] txt [char*] Text string to be deallocated.
+** @param [w] txt [char*] Text string to be deallocated.
 ** @return [char*] A NULL pointer.
 ** @ure The string is freed using free in the C RTL, so it
 **      must have been allocated by malloc in the C RTL
@@ -574,7 +574,7 @@ char* ajCharFree (char* txt)
 ** nothing happens. If the string has data, makes sure the string
 ** is modifiable and sets it to empty.
 **
-** @param  [wP] pthis [AjPStr*] Pointer to the string to be deleted.
+** @param  [w] pthis [AjPStr*] Pointer to the string to be deleted.
 **         The pointer is always deleted.
 ** @return [AjBool] ajTrue if string was reallocated
 ** @cre    The default null string must not be deleted. Calling this
@@ -620,10 +620,8 @@ AjBool ajStrSet (AjPStr* pthis, const AjPStr str)
 {
     AjBool ret = ajTrue;		/* true if ajStrDup is used */
 
-    if (!pthis)
-	*pthis = ajStrDup (str);
-    else if (!*pthis)
-	*pthis = ajStrDup (str);
+    if (!*pthis)
+	ajStrAssS(pthis, str);
     else if (!(*pthis)->Len)
     {
 	ret = ajStrAssS (pthis, str);
@@ -664,12 +662,13 @@ AjBool ajStrSetC (AjPStr* pthis, const char* str)
 ** Assignment constructor with copy of a string object
 **
 ** @param [wPN] pthis [AjPStr*] Target string
-** @param [rN] str [const AjPStr] Source string
+** @param [rN] str [AjPStr] Source string
+**                 Can copy by reference count, so not a const AjPStr.
 ** @return [AjBool] ajTrue if string was reallocated
 ** @@
 ******************************************************************************/
 
-AjBool ajStrAss (AjPStr* pthis, const AjPStr str)
+AjBool ajStrAss (AjPStr* pthis, AjPStr str)
 {
     AjBool ret = ajTrue;		/* always true for now */
 
@@ -686,7 +685,7 @@ AjBool ajStrAss (AjPStr* pthis, const AjPStr str)
 **
 ** Copy a text string to a string object.
 **
-** @param [wP] pthis [AjPStr*] Target string.
+** @param [w] pthis [AjPStr*] Target string.
 ** @param [r] text [const char*] Source text.
 ** @return [AjBool] ajTrue if string was reallocated
 ** @@
@@ -714,7 +713,7 @@ AjBool ajStrAssC (AjPStr* pthis, const char* text)
 ** Useful where both strings will be separately overwritten later
 ** so that they can both remain modifiable.
 **
-** @param [wP] pthis [AjPStr*] Target string.
+** @param [w] pthis [AjPStr*] Target string.
 ** @param [r] str [const AjPStr] Source string.
 ** @return [AjBool] ajTrue if string was reallocated
 ** @@
@@ -753,7 +752,7 @@ AjBool ajStrAssS (AjPStr* pthis, const AjPStr str)
 **
 ** Copy a text string to a string object.
 **
-** @param [wP] pthis [AjPStr*] Target string.
+** @param [w] pthis [AjPStr*] Target string.
 ** @param [r] str [const AjPStr] Source text.
 ** @param [r] i [size_t] Length of source text.
 ** @return [AjBool] ajTrue if string was reallocated
@@ -782,7 +781,7 @@ AjBool ajStrAssI (AjPStr* pthis, const AjPStr str, size_t i)
 **
 ** Copy a text string to a string object.
 **
-** @param [wP] pthis [AjPStr*] Target string.
+** @param [w] pthis [AjPStr*] Target string.
 ** @param [r] str [const AjPStr] Source text.
 ** @param [r] i [size_t] Size of new string.
 ** @return [AjBool] ajTrue if string was reallocated
@@ -813,7 +812,7 @@ AjBool ajStrAssL (AjPStr* pthis, const AjPStr str, size_t i)
 **
 ** Copy a text string to a string object.
 **
-** @param [wP] pthis [AjPStr*] Target string.
+** @param [w] pthis [AjPStr*] Target string.
 ** @param [r] txt [const char*] Source text.
 ** @param [r] ilen [size_t] Length of source text.
 ** @return [AjBool] ajTrue if string was reallocated
@@ -839,7 +838,7 @@ AjBool ajStrAssCI (AjPStr* pthis, const char* txt, size_t ilen)
 **
 ** Copy a text string to a string object.
 **
-** @param [wP] pthis [AjPStr*] Target string.
+** @param [w] pthis [AjPStr*] Target string.
 ** @param [r] txt [const char*] Source text.
 ** @param [r] i [size_t] Space to reserve.
 ** @return [AjBool] ajTrue if string was reallocated
@@ -874,14 +873,15 @@ AjBool ajStrAssCL (AjPStr* pthis, const char* txt, size_t i)
 ** Sets the destination string to NULL if the source string is NULL.
 **
 ** @param [wPN] pthis [AjPStr*] Target string which is overwritten.
-** @param [rN] str [const AjPStr] Source string object
+** @param [rN] str [AjPStr] Source string object
 **        A NULL pointer makes the target NULL too.
+**        Copy by reference count so not const.
 ** @return [AjBool] ajTrue if string was reallocated
 ** @cre If both arguments point to the same string object, nothing happens.
 ** @@
 ******************************************************************************/
 
-AjBool ajStrCopy (AjPStr* pthis, const AjPStr str)
+AjBool ajStrCopy (AjPStr* pthis, AjPStr str)
 {
     AjBool ret = ajTrue;		/* true if ajStrDup is used */
 
@@ -925,7 +925,7 @@ AjBool ajStrCopyC (AjPStr* pthis, const char* str)
 **
 ** Copies a substring to a string object.
 **
-** @param [wP] pthis [AjPStr*] Target string
+** @param [w] pthis [AjPStr*] Target string
 ** @param [r] str [const AjPStr] Source string
 ** @param [r] begin [ajint] start position for substring
 ** @param [r] end [ajint] end position for substring
@@ -953,7 +953,7 @@ AjBool ajStrAssSub (AjPStr* pthis, const AjPStr str, ajint begin, ajint end)
 **
 ** Copies a substring to a string object.
 **
-** @param [wP] pthis [AjPStr*] Target string
+** @param [w] pthis [AjPStr*] Target string
 ** @param [r] txt [const char*] Source text
 ** @param [r] begin [ajint] start position for substring
 ** @param [r] end [ajint] end position for substring
@@ -982,7 +982,7 @@ AjBool ajStrAssSubC (AjPStr* pthis, const char* txt, ajint begin, ajint end)
 ** Converts a Boolean value into a 1-letter string. Can be used to print
 ** boolean values, but the ajFmt library has better ways.
 **
-** @param [P] pthis [AjPStr*] String to hold the result.
+** @param [w] pthis [AjPStr*] String to hold the result.
 ** @param [r] boule [AjBool] Boolean value
 ** @return [AjBool] ajTrue if string was reallocated
 ** @@
@@ -1006,7 +1006,7 @@ AjBool ajStrFromBool(AjPStr* pthis, AjBool boule)
 ** Converts an integer value into a string. The string size is set to be
 ** just large enough to hold the value.
 **
-** @param [wP] pthis [AjPStr*] Target string
+** @param [w] pthis [AjPStr*] Target string
 ** @param [r] val [ajint] Integer value
 ** @return [AjBool] ajTrue if string was reallocated
 ** @@
@@ -1038,7 +1038,7 @@ AjBool ajStrFromInt (AjPStr* pthis, ajint val)
 ** Converts a ajlong integer value into a string. The string size is set to be
 ** just large enough to hold the value.
 **
-** @param [wP] pthis [AjPStr*] Target string
+** @param [w] pthis [AjPStr*] Target string
 ** @param [r] val [ajlong] Long integer value
 ** @return [AjBool] ajTrue if string was reallocated
 ** @@
@@ -1070,7 +1070,7 @@ AjBool ajStrFromLong (AjPStr* pthis, ajlong val)
 ** Converts a floating point value into a string. The string size is set to be
 ** just large enough to hold the value.
 **
-** @param [wP] pthis [AjPStr*] Target string
+** @param [w] pthis [AjPStr*] Target string
 ** @param [r] val [float] Floating point value
 ** @param [r] precision [ajint] Precision (number of decimal places) to use.
 ** @return [AjBool] ajTrue if string was reallocated
@@ -1106,7 +1106,7 @@ AjBool ajStrFromFloat (AjPStr* pthis, float val, ajint precision)
 ** Converts a double precision value into a string. The string size is set
 ** to be just large enough to hold the value.
 **
-** @param [wP] pthis [AjPStr*] Target string
+** @param [w] pthis [AjPStr*] Target string
 ** @param [r] val [double] Double precision value
 ** @param [r] precision [ajint] Precision (number of decimal places) to use.
 ** @return [AjBool] ajTrue if string was reallocated
@@ -1141,7 +1141,7 @@ AjBool ajStrFromDouble (AjPStr* pthis, double val, ajint precision)
 ** Converts a double precision value into a string. The string size is set
 ** to be just large enough to hold the value. Uses exponential form.
 **
-** @param [wP] pthis [AjPStr*] Target string
+** @param [w] pthis [AjPStr*] Target string
 ** @param [r] val [double] Double precision value
 ** @param [r] precision [ajint] Precision (number of decimal places) to use.
 ** @return [AjBool] ajTrue if string was reallocated
@@ -1403,7 +1403,7 @@ AjBool ajStrAppSub (AjPStr* pthis, const AjPStr src, ajint begin, ajint end)
 **
 ** Inserts text into a string object at a specified postion.
 **
-** @param [uP] pthis [AjPStr*] Target string
+** @param [u] pthis [AjPStr*] Target string
 ** @param [r] begin [ajint] Position where text is to be inserted
 ** @param [r] insert [const AjPStr] String to be inserted
 ** @return [AjBool] ajTrue on successful completion else ajFalse;
@@ -1421,7 +1421,7 @@ AjBool ajStrInsert(AjPStr* pthis, ajint begin, const AjPStr insert )
 **
 ** Inserts text into a string object at a specified postion.
 **
-** @param [uP] pthis [AjPStr*] Target string
+** @param [u] pthis [AjPStr*] Target string
 ** @param [r] begin [ajint] Position where text is to be inserted
 ** @param [r] insert [const char*] Text to be inserted
 ** @return [AjBool]  ajTrue if string was reallocated
@@ -1498,7 +1498,7 @@ AjBool ajStrInsertC(AjPStr* pthis, ajint begin, const char* insert )
 **
 ** Cut down string to N characters
 **
-** @param [uP] pthis [AjPStr*] Target string
+** @param [u] pthis [AjPStr*] Target string
 ** @param [r] begin [ajint] Length of required string.
 **
 ** @return [AjBool] ajTrue if string was reallocated
@@ -1530,7 +1530,7 @@ AjBool ajStrTruncate (AjPStr* pthis, ajint begin)
 ** Replace string at pos1 and add len characters from string overwrite.
 ** Or to the end of the existing string
 **
-** @param [uP] pthis [AjPStr*] Target string
+** @param [u] pthis [AjPStr*] Target string
 ** @param [r] begin [ajint] Number of characters of target string to keep.
 ** @param [r] overwrite [const AjPStr] String to replace.
 ** @param [r] ilen [ajint] Number of characters to copy from text.
@@ -1549,7 +1549,7 @@ AjBool ajStrReplace( AjPStr* pthis, ajint begin, const AjPStr overwrite,
 ** Replace string at pos1 and add len characters from string overwrite.
 ** Or to the end of the existing string
 **
-** @param [uP] pthis [AjPStr*] Target string
+** @param [u] pthis [AjPStr*] Target string
 ** @param [r] begin [ajint] Number of characters of target string to keep.
 ** @param [r] overwrite [const char*] String to replace.
 ** @param [r] ilen [ajint] Number of characters to copy from text.
@@ -1590,7 +1590,7 @@ AjBool ajStrReplaceC ( AjPStr* pthis, ajint begin, const char* overwrite,
 ** Replace string at pos1 and add len copies of character overwrite.
 ** Or to the end of the existing string
 **
-** @param [uP] pthis [AjPStr*] Target string
+** @param [u] pthis [AjPStr*] Target string
 ** @param [r] begin [ajint] Number of characters of target string to keep.
 ** @param [r] overwrite [const char] Character to replace.
 ** @param [r] ilen [ajint] Number of characters to copy from text.
@@ -1628,7 +1628,7 @@ AjBool ajStrReplaceK ( AjPStr* pthis, ajint begin, const char overwrite,
 **
 ** Cut down string at pos1 and add string2 from position pos2.
 **
-** @param [uP] pthis [AjPStr*] Target string.
+** @param [u] pthis [AjPStr*] Target string.
 ** @param [r] begin [ajint] Number of characters to keep in target string.
 ** @param [r] addbit [const AjPStr] String to append.
 ** @param [r] begin2 [ajint] Position of first character to copy from text.
@@ -1650,7 +1650,7 @@ AjBool ajStrJoin (AjPStr* pthis, ajint begin, const AjPStr addbit,
 **
 ** Cut down string at pos1 and add string2 from position pos2.
 **
-** @param [uP] pthis [AjPStr*] Target string.
+** @param [u] pthis [AjPStr*] Target string.
 ** @param [r] begin [ajint] Number of characters to keep in target string.
 ** @param [r] addbit [const char*] Text to append.
 ** @param [r] ibegin2 [ajint] Position of first character to copy from text.
@@ -1696,7 +1696,7 @@ AjBool ajStrJoinC (AjPStr* pthis, ajint begin, const char* addbit,
 **
 ** Replace all occurrences of replace with putin in string pthis.
 **
-** @param [uP] pthis [AjPStr*]  Target string.
+** @param [u] pthis [AjPStr*]  Target string.
 ** @param [r]  replace [const AjPStr] string to replace.
 ** @param [r]  putin [const AjPStr]   string to insert.
 ** @return [AjBool] ajTrue if string was reallocated
@@ -1737,7 +1737,7 @@ AjBool ajStrSubstitute (AjPStr* pthis,
 **
 ** Replace all occurrences of replace with putin in string pthis.
 **
-** @param [uP] pthis [AjPStr*]  Target string.
+** @param [u] pthis [AjPStr*]  Target string.
 ** @param [r]  replace [const char*] string to replace.
 ** @param [r]  putin [const char*]   string to insert.
 ** @return [AjBool] ajTrue if string was reallocated
@@ -1778,7 +1778,7 @@ AjBool ajStrSubstituteCC(AjPStr* pthis, const char* replace,
 **
 ** Replace all occurrences of character replace with putin in string pthis.
 **
-** @param [uP] pthis [AjPStr*]  Target string.
+** @param [u] pthis [AjPStr*]  Target string.
 ** @param [r]  replace [char] Character to replace.
 ** @param [r]  putin [char] Character to insert.
 ** @return [AjBool] ajTrue if string was reallocated
@@ -1811,7 +1811,7 @@ AjBool ajStrSubstituteKK(AjPStr* pthis, char replace,
 **
 ** Remove white space chars from the end of the String.
 **
-** @param [uP] pthis [AjPStr*] String
+** @param [u] pthis [AjPStr*] String
 ** @return [AjBool] ajTrue if string was reallocated
 ** @@
 ******************************************************************************/
@@ -1834,7 +1834,7 @@ AjBool ajStrChompEnd (AjPStr* pthis)
 **
 ** Remove start and end white space chars from the String.
 **
-** @param [uP] pthis [AjPStr*] String
+** @param [u] pthis [AjPStr*] String
 ** @return [AjBool] ajTrue if string was reallocated
 ** @@
 ******************************************************************************/
@@ -1857,7 +1857,7 @@ AjBool ajStrChomp (AjPStr* pthis)
 **
 ** Remove start and end white space chars from the String.
 **
-** @param [uP] pthis [AjPStr*] String
+** @param [u] pthis [AjPStr*] String
 ** @param [r] delim [const char*] delimiter(s)
 ** @return [AjBool] ajTrue if string was reallocated
 ** @@
@@ -1877,7 +1877,7 @@ AjBool ajStrChompC (AjPStr* pthis, const char* delim)
 **
 ** Removes the last character from a string
 **
-** @param [uP] pthis [AjPStr*] string
+** @param [u] pthis [AjPStr*] string
 ** @return [AjBool] ajTrue if string was reallocated
 ** @@
 ******************************************************************************/
@@ -1902,7 +1902,7 @@ AjBool ajStrChop (AjPStr* pthis)
 **
 ** Removes the characters from the start or end of a string
 **
-** @param [uP] pthis [AjPStr*] string
+** @param [u] pthis [AjPStr*] string
 ** @param [r] num [ajint] Number of characters to delete from the start (if
 **            positive) or the end (if negative)
 ** @return [AjBool] ajTrue if string was reallocated
@@ -1940,7 +1940,7 @@ AjBool ajStrTrim (AjPStr* pthis, ajint num)
 **
 ** Removes a set of characters from the start and end of a string
 **
-** @param [uP] pthis [AjPStr*] string
+** @param [u] pthis [AjPStr*] string
 ** @param [r] chars [const char*] Characters to delete from each end
 ** @return [AjBool] ajTrue if string was reallocated
 ** @@
@@ -1993,7 +1993,7 @@ AjBool ajStrTrimC (AjPStr* pthis, const char* chars)
 **
 ** Removes a set of characters from the end of a string
 **
-** @param [uP] pthis [AjPStr*] string
+** @param [u] pthis [AjPStr*] string
 ** @param [r] chars [const char*] Characters to delete from the end
 ** @return [AjBool] ajTrue if string was reallocated
 ** @@
@@ -2030,7 +2030,7 @@ AjBool ajStrTrimEndC (AjPStr* pthis, const char* chars)
 **
 ** Cut out a range of characters from a string.
 **
-** @param [wP] pthis [AjPStr*] Target string
+** @param [w] pthis [AjPStr*] Target string
 ** @param [r] begin [ajint] start position to be cut
 ** @param [r] end [ajint] end position to be cut
 ** @return [AjBool] ajTrue on success, ajFalse if begin is out of range
@@ -2067,7 +2067,7 @@ AjBool ajStrCut (AjPStr* pthis, ajint begin, ajint end)
 **
 ** Mask out a range of characters from a string.
 **
-** @param [wP] pthis [AjPStr*] Target string
+** @param [w] pthis [AjPStr*] Target string
 ** @param [r] begin [ajint] start position to be masked
 ** @param [r] end [ajint] end position to be masked
 ** @param [r] maskchar [char] masking character
@@ -2103,7 +2103,7 @@ AjBool ajStrMask (AjPStr* pthis, ajint begin, ajint end, char maskchar)
 **
 ** Reverses the order of characters in a string
 **
-** @param [wP] pthis [AjPStr*] Target string
+** @param [w] pthis [AjPStr*] Target string
 ** @return [AjBool] ajTrue if string was reallocated
 ** @@
 ******************************************************************************/
@@ -2137,7 +2137,7 @@ AjBool ajStrRev (AjPStr* pthis)
 **
 ** Makes sure a string is quoted (with double quotes)
 **
-** @param [rw] s [AjPStr *] string
+** @param [u] s [AjPStr *] string
 **
 ** @return [void]
 ** @@
@@ -2163,7 +2163,7 @@ void ajStrQuote(AjPStr* s)
 ** Makes sure a string is unquoted (remove any double quotes).
 ** Internal escaped or double quotes are converted to single quotes
 **
-** @param [rw] s [AjPStr *] string
+** @param [u] s [AjPStr *] string
 **
 ** @return [void]
 ** @@
@@ -2190,7 +2190,7 @@ void ajStrQuoteStrip(AjPStr* s)
 ** Returns randomised string in place
 ** NB: application should have already called ajRandomSeed() somewhere
 **
-** @param [rw] s [AjPStr *] string
+** @param [u] s [AjPStr *] string
 **
 ** @return [void]
 ** @@
@@ -2241,7 +2241,7 @@ void ajStrRandom(AjPStr* s)
 ** The end is allowed to be before begin, in which case the output is an
 ** empty string.
 **
-** @param [wP] pthis [AjPStr*] Target string.
+** @param [w] pthis [AjPStr*] Target string.
 ** @param [r] begin [ajint] Start position for substring.
 ** @param [r] end [ajint] End position for substring.
 ** @return [AjBool] ajTrue if string was reallocated
@@ -2292,7 +2292,7 @@ AjBool ajStrSub (AjPStr* pthis, ajint begin, ajint end)
 **
 ** The target string is guaranteed to have a reference count of exactly 1.
 **
-** @param [wP] pthis [AjPStr*] String
+** @param [w] pthis [AjPStr*] String
 ** @return [AjBool] ajTrue if the string was reallocated
 ** @@
 ******************************************************************************/
@@ -2325,7 +2325,7 @@ AjBool ajStrMod (AjPStr* pthis)
 ** The target string is guaranteed to have a reference count of 1,
 ** and a minimum reserved size.
 **
-** @param [wP] pthis [AjPStr*] String
+** @param [w] pthis [AjPStr*] String
 ** @param [r] size [size_t] Minimum reserved size.
 ** @return [AjBool] ajTrue if the string was reallocated
 ** @@
@@ -2357,7 +2357,7 @@ AjBool ajStrModL (AjPStr* pthis, size_t size)
 **
 ** Replaces one set of characters with another set
 **
-** @param [wP] pthis [AjPStr*] String
+** @param [w] pthis [AjPStr*] String
 ** @param [r] oldc [const AjPStr] Unwanted characters
 ** @param [r] newc [const AjPStr] Replacement characters
 ** @return [AjBool] ajTrue if string was reallocated
@@ -2374,7 +2374,7 @@ AjBool ajStrConvert (AjPStr* pthis,
 **
 ** Replaces one set of characters with another set
 **
-** @param [wP] pthis [AjPStr*] String
+** @param [w] pthis [AjPStr*] String
 ** @param [r] oldc [const char*] Unwanted characters
 ** @param [r] newc [const char*] Replacement characters
 ** @return [AjBool] ajTrue if string was reallocated
@@ -2427,7 +2427,7 @@ AjBool ajStrConvertCC (AjPStr* pthis, const char* oldc, const char* newc)
 ** Converts a string to lower case. If the string has multiple references,
 ** a new string is made first.
 **
-** @param [uP] pthis [AjPStr*] String
+** @param [u] pthis [AjPStr*] String
 ** @return [AjBool] ajTrue if string was reallocated
 ** @@
 ******************************************************************************/
@@ -2448,7 +2448,7 @@ AjBool ajStrToLower (AjPStr* pthis)
 **
 ** Converts a text string to lower case.
 **
-** @param [uP] txt [char*] Text string
+** @param [u] txt [char*] Text string
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -2477,7 +2477,7 @@ void ajCharToLower (char* txt)
 ** Converts a string to upper case. If the string has multiple references,
 ** a new string is made first.
 **
-** @param [uP] pthis [AjPStr*] String
+** @param [u] pthis [AjPStr*] String
 ** @return [AjBool] ajTrue if string was reallocated
 ** @@
 ******************************************************************************/
@@ -2498,7 +2498,7 @@ AjBool ajStrToUpper (AjPStr* pthis)
 **
 ** Converts a text string to upper case.
 **
-** @param [uP] txt [char*] Text string
+** @param [u] txt [char*] Text string
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -2529,7 +2529,7 @@ void ajCharToUpper (char* txt)
 ** Leading/trailing whitespace removed. Multiple spaces replaced by
 ** single spaces.
 **
-** @param [rw] s [AjPStr *] String to clean.
+** @param [u] s [AjPStr *] String to clean.
 ** @return [AjBool] ajTrue if string was reallocated
 ** @@
 ******************************************************************************/
@@ -2627,7 +2627,7 @@ AjBool ajStrClean(AjPStr* s)
 **
 ** Removes all whitespace from a string
 **
-** @param [rw] s [AjPStr *] String to clean.
+** @param [u] s [AjPStr *] String to clean.
 ** @return [AjBool] ajTrue if string was reallocated
 ** @@
 ******************************************************************************/
@@ -2741,12 +2741,12 @@ void ajStrFill (AjPStr* pthys, ajint len, char fill)
 **
 ** Reset string length when some nasty caller may have edited it
 **
-** @param [u] thys [const AjPStr] String.
+** @param [u] thys [AjPStr] String.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajStrFix (const AjPStr thys)
+void ajStrFix (AjPStr thys)
 {
     if (thys->Use > 1)
 	ajWarn ("ajStrFix called for string in use %d times\n", thys->Use);
@@ -2759,13 +2759,13 @@ void ajStrFix (const AjPStr thys)
 **
 ** Reset string length when some nasty caller may have edited it
 **
-** @param [u] thys [const AjPStr] String
+** @param [u] thys [AjPStr] String
 ** @param [r] ilen [ajint] Length expected.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajStrFixI (const AjPStr thys, ajint ilen)
+void ajStrFixI (AjPStr thys, ajint ilen)
 {
     if (thys->Use > 1)
     {
@@ -2804,13 +2804,13 @@ void ajStrFixI (const AjPStr thys, ajint ilen)
 ** Reset string length when some nasty caller may have edited it
 ** and issue warnings if the length was not correct.
 **
-** @param [u] thys [const AjPStr] String
+** @param [u] thys [AjPStr] String
 ** @param [r] ilen [ajint] Length expected.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajStrFixTestI (const AjPStr thys, ajint ilen)
+void ajStrFixTestI (AjPStr thys, ajint ilen)
 {
     if (thys->Use > 1)
 	ajWarn ("ajStrFixTestI called for string in use %d times\n",
@@ -2994,13 +2994,13 @@ ajint ajStrFindCaseC (const AjPStr thys, const char *text)
 ** Case insensitive
 **
 ** @param [r] thys [const AjPStr] String
-** @param [r] text [AjPStr] text to find
+** @param [r] text [const AjPStr] text to find
 ** @return [ajint] Position of the start of text in string if found.
 ** @error -1 Text not found.
 ** @@
 ******************************************************************************/
 
-ajint ajStrFindCase (const AjPStr thys, AjPStr text)
+ajint ajStrFindCase (const AjPStr thys, const AjPStr text)
 {
     return ajStrFindCaseC(thys,text->Ptr);
 }
@@ -4761,7 +4761,7 @@ ajint ajStrRoom (const AjPStr thys)
 ** Converts a string position into a true position. If ipos is negative,
 ** it is counted from the end of the string rather than the beginning.
 **
-** @param [wP] thys [const AjPStr] Target string.
+** @param [r] thys [const AjPStr] Target string.
 ** @param [r] ipos [ajint] Position (0 start, negative from the end).
 ** @return [ajint] string position between 0 and (length minus 1).
 ** @@
@@ -4781,7 +4781,7 @@ ajint ajStrPos (const AjPStr thys, ajint ipos)
 ** Usually this is the start position when the end of a range
 ** is being tested.
 **
-** @param [wP] thys [const AjPStr] Target string.
+** @param [r] thys [const AjPStr] Target string.
 ** @param [r] imin [ajint] Start position (0 start, no negative values).
 ** @param [r] ipos [ajint] Position (0 start, negative from the end).
 ** @return [ajint] string position between 0 and (length minus 1).
@@ -4823,7 +4823,7 @@ ajint ajStrPosII (ajint ilen, ajint imin, ajint ipos)
 ** Usually this is the start position when the end of a range
 ** is being tested.
 **
-** @param [wP] thys [const char*] Target string.
+** @param [r] thys [const char*] Target string.
 ** @param [r] ipos [ajint] Position (0 start, negative from the end).
 ** @return [ajint] string position between 0 and (length minus 1).
 ** @@
@@ -4853,7 +4853,7 @@ ajint ajCharPos (const char* thys, ajint ipos)
 ** Converts a string position into a true position. If ipos is negative,
 ** it is counted from the end of the string rather than the beginning.
 **
-** @param [wP] thys [const AjPStr] Target string.
+** @param [r] thys [const AjPStr] Target string.
 ** @param [r] ipos [ajint] Position (0 start, negative from the end).
 ** @return [ajint] string position between 0 and (length minus 1).
 ** @@
@@ -4873,7 +4873,7 @@ static ajint strPos (const AjPStr thys, ajint ipos)
 ** Usually this is the start position when the end of a range
 ** is being tested.
 **
-** @param [wP] thys [const AjPStr] Target string.
+** @param [r] thys [const AjPStr] Target string.
 ** @param [r] imin [ajint] Start position (0 start, no negative values).
 ** @param [r] ipos [ajint] Position (0 start, negative from the end).
 ** @return [ajint] string position between 0 and (length minus 1).
@@ -4943,7 +4943,7 @@ static ajint strPosII (ajint ilen, ajint imin, ajint ipos)
 **
 ** Creates an iterator over the characters in a string.
 **
-** @param [wP] thys [const AjPStr] Original string
+** @param [r] thys [const AjPStr] Original string
 ** @return [AjIStr] String Iterator
 ** @@
 ******************************************************************************/
@@ -4963,7 +4963,7 @@ AjIStr ajStrIter (const AjPStr thys)
 **
 ** Creates an iterator over the characters in a string set to end of string.
 **
-** @param [wP] thys [const AjPStr] Original string
+** @param [r] thys [const AjPStr] Original string
 ** @return [AjIStr] String Iterator
 ** @@
 ******************************************************************************/
@@ -4983,7 +4983,7 @@ AjIStr ajStrIterBack (const AjPStr thys)
 **
 ** Start condition for a string iterator.
 **
-** @param [P] iter [AjIStr] String iterator.
+** @param [u] iter [AjIStr] String iterator.
 ** @return [AjIStr] Begin
 ** @@
 ******************************************************************************/
@@ -4992,7 +4992,7 @@ AjIStr ajStrIterBack (const AjPStr thys)
 **
 ** Step to next character in string iterator.
 **
-** @param [P] iter [AjIStr] String iterator.
+** @param [u] iter [AjIStr] String iterator.
 ** @return [AjIStr] Updated iterator duplicated as return value.
 ** @@
 ******************************************************************************/
@@ -5010,7 +5010,7 @@ AjIStr ajStrIterNext (AjIStr iter)
 **
 ** Step to previous character in string iterator.
 **
-** @param [P] iter [AjIStr] String iterator.
+** @param [u] iter [AjIStr] String iterator.
 ** @return [AjIStr] Updated iterator duplicated as return value.
 ** @@
 ******************************************************************************/
@@ -5029,7 +5029,7 @@ AjIStr ajStrIterBackNext (AjIStr iter)
 **
 ** Stop condition for a string iterator.
 **
-** @param [P] iter [AjIStr] String iterator.
+** @param [u] iter [AjIStr] String iterator.
 ** @return [AjIStr] End
 ** @@
 ******************************************************************************/
@@ -5038,7 +5038,7 @@ AjIStr ajStrIterBackNext (AjIStr iter)
 **
 ** Current value for a string iterator.
 **
-** @param [P] iter [AjIStr] String iterator.
+** @param [u] iter [AjIStr] String iterator.
 ** @return [char*] Current text string within iterator
 ** @@
 ******************************************************************************/
@@ -5047,7 +5047,7 @@ AjIStr ajStrIterBackNext (AjIStr iter)
 **
 ** Current value for a string iterator.
 **
-** @param [P] iter [AjIStr] String iterator.
+** @param [u] iter [AjIStr] String iterator.
 ** @return [char] Current character within iterator
 ** @@
 ******************************************************************************/
@@ -5056,7 +5056,7 @@ AjIStr ajStrIterBackNext (AjIStr iter)
 **
 ** Deletes a string iterator
 **
-** @param [P] iter [AjIStr*] String iterator
+** @param [u] iter [AjIStr*] String iterator
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -5103,7 +5103,7 @@ AjPStrTok ajStrTokenInit (const AjPStr thys, const char* delim)
 
     AJNEW0(ret);
 
-    ret->String = ajStrDup (thys);
+    ajStrAssS(&ret->String, thys);
     if (delim)
     {
 	ret->Delim = ajStrNewC (delim);
@@ -5133,7 +5133,7 @@ AjPStrTok ajStrTokenInit (const AjPStr thys, const char* delim)
 **
 ** Destructor for a string token parser.
 **
-** @param [wP] token [AjPStrTok*] Token parser
+** @param [d] token [AjPStrTok*] Token parser
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -5188,7 +5188,7 @@ AjBool ajStrTokenAss (AjPStrTok* ptok, const AjPStr thys, const char* delim)
 	*ptok = tok;
     }
     
-    (void) ajStrAss (&tok->String, thys);
+    (void) ajStrAssS (&tok->String, thys);
     if (delim)
     {
 	(void) ajStrAssC (&tok->Delim, delim);
@@ -5275,9 +5275,9 @@ void ajStrTokenTrace (AjPStrTok tok)
 **
 ** The test used the C function 'strcspn'.
 **
-** @param [P] pthis [AjPStr*] Next token returned.
-** @param [P] ptoken [AjPStrTok*] String token parsing object.
-** @param [P] delim [const char*] Delimiter character set.
+** @param [w] pthis [AjPStr*] Next token returned.
+** @param [u] ptoken [AjPStrTok*] String token parsing object.
+** @param [r] delim [const char*] Delimiter character set.
 ** @return [AjBool] ajTrue if success.
 ** @@
 ******************************************************************************/
@@ -5328,8 +5328,8 @@ AjBool ajStrToken (AjPStr* pthis, AjPStrTok* ptoken, const char* delim)
 **
 ** The test used the C function 'strcspn'.
 **
-** @param [P] pthis [AjPStr*] Next token returned.
-** @param [P] ptoken [AjPStrTok*] String token parsing object.
+** @param [w] pthis [AjPStr*] Next token returned.
+** @param [u] ptoken [AjPStrTok*] String token parsing object.
 ** @return [AjBool] ajTrue if success.
 ** @@
 ******************************************************************************/
@@ -5370,7 +5370,7 @@ AjBool ajStrTokenRest (AjPStr* pthis, AjPStrTok* ptoken)
 ** Note: This can return "true" but an empty string in cases where the
 ** delimiter has changed since the previous call.
 **
-** @param [wP] pthis [AjPStr*] Token found
+** @param [w] pthis [AjPStr*] Token found
 ** @param [r] ptoken [AjPStrTok*] Token parser. Updated with the delimiter
 **        string (if any) in delim.
 ** @param [rN] delim [const char*] Optional delimiter string. If NULL, the
@@ -5862,7 +5862,7 @@ AjBool ajStrIsUpper (const AjPStr thys)
 ** Inserts newlines into a ajlong string, at white space if possible,
 ** so that it wraps when printed.
 **
-** @param [uP] pthis [AjPStr*] Target string
+** @param [u] pthis [AjPStr*] Target string
 ** @param [r] width [ajint] Line width
 ** @return [AjBool] ajTrue on successful completion else ajFalse;
 ** @@
@@ -5909,7 +5909,7 @@ AjBool ajStrWrap(AjPStr* pthis, ajint width )
 ** The margin is not added to the start of the string.
 ** At present the margin is added to the end of the string.
 **
-** @param [uP] pthis [AjPStr*] Target string
+** @param [u] pthis [AjPStr*] Target string
 ** @param [r] width [ajint] Line width
 ** @param [r] left [ajint] Left margin
 ** @return [AjBool] ajTrue on successful completion else ajFalse;
@@ -6220,7 +6220,7 @@ void ajStrRemoveNewline(AjPStr* thys)
 **
 ** Counts occurrences of a character in a string
 **
-** @param [r] thys [AjPStr] String
+** @param [r] thys [const AjPStr] String
 ** @param [r] ch [char] Character to count
 ** @return [ajint] Number of times character was found in string
 ******************************************************************************/
@@ -6241,7 +6241,7 @@ ajint ajStrCountK (const AjPStr thys, char ch)
 **
 ** Counts occurrences of a character set in a string
 **
-** @param [r] thys [AjPStr] String
+** @param [r] thys [const AjPStr] String
 ** @param [r] str [const char*] Characters to count
 ** @return [ajint] Number of times character was found in string
 ******************************************************************************/

@@ -100,7 +100,8 @@ AjPSeqset seqset;
 
 void emboss_getoptions(char *pgm, int argc, char *argv[]){
 AjStatus retval;
-AjPFile outf,treef;
+AjPFile outf;
+AjPFile treef;
 AjPStr valstr;
 boolean done1;
 char line[256];

@@ -24,6 +24,22 @@
 #include "emboss.h"
 #include <limits.h>
 
+/* @datastatic AjPRinfo *******************************************************
+**
+** recoder internals for RE information
+**
+** @alias AjSRinfo
+** @alias AjORinfo
+**
+** @attr code [AjPStr] Undocumented
+** @attr site [AjPStr] Undocumented
+** @attr ncuts [ajint] Undocumented
+** @attr cut1 [ajint] Undocumented
+** @attr cut2 [ajint] Undocumented
+** @attr cut3 [ajint] Undocumented
+** @attr cut4 [ajint] Undocumented
+******************************************************************************/
+
 typedef struct AjSRinfo
 {
     AjPStr code;   /*structure for silent mutation info*/
@@ -35,6 +51,24 @@ typedef struct AjSRinfo
     ajint cut4;
 } AjORinfo, *AjPRinfo;
 
+
+/* @datastatic AjPSilent ******************************************************
+**
+** recoder internals for silent sites
+**
+** @alias AjSSilent
+** @alias AjOSilent
+**
+** @attr code [AjPStr] Undocumented
+** @attr site [AjPStr] Undocumented
+** @attr match [ajint] Undocumented
+** @attr base [ajint] Undocumented
+** @attr seqaa [AjPStr] Undocumented
+** @attr reaa [AjPStr] Undocumented
+** @attr issilent [AjBool] Undocumented
+** @attr obase [char] Undocumented
+** @attr nbase [char] Undocumented
+******************************************************************************/
 
 typedef struct AjSSilent
 {

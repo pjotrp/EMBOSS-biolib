@@ -127,7 +127,8 @@ static char *seqc1;   /* aligned sequences */
 
 int main(int argc, char **argv)
 {
-    AjPStr aa0str=0,aa1str=0;
+    AjPStr aa0str=0;
+    AjPStr aa1str=0;
     char *s1,*s2;
     ajint gdelval,ggapval;
     ajint i;

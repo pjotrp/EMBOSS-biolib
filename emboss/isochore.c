@@ -25,12 +25,34 @@
 #include "ajgraph.h"
 #endif
 
+/* @datastatic AjPIntarr ******************************************************
+**
+** Integer array
+**
+** @alias AjSIntarr
+** @alias AjPIntarr
+**
+** @attr Size [ajint] Size
+** @attr Array [ajint*] Integer array
+******************************************************************************/
+
 typedef struct AjSIntarr
 {
   ajint Size;
   ajint* Array;
 } AjOIntarr, *AjPIntarr;
 
+
+/* @datastatic AjPFltarr ******************************************************
+**
+** Integer array
+**
+** @alias AjSFltarr
+** @alias AjPFltarr
+**
+** @attr Size [ajint] Size
+** @attr Array [float*] Float array
+******************************************************************************/
 
 typedef struct AjSFltarr
 {
@@ -43,7 +65,7 @@ static AjPFltarr isochore_FltarrNew0(size_t size);
 
 
 
-/* @program isochore
+/* @program isochore **********************************************************
 **
 **
 ** Calculates the G+C content of a DNA sequence

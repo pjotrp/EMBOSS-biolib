@@ -29,6 +29,19 @@
 static void dotmatcher_pushpoint(AjPList *l, float x1, float y1, float x2,
 				 float y2, AjBool stretch);
 
+/* @datastatic PPoint *********************************************************
+**
+** Dotmatcher point data
+**
+** @alias SPoint
+** @alias OPoint
+**
+** @attr x1 [float] x1 coordinate
+** @attr y1 [float] y1 coordinate
+** @attr x2 [float] x2 coordinate
+** @attr y2 [float] y2 coordinate
+******************************************************************************/
+
 typedef struct SPoint
 {
     float x1;

@@ -37,11 +37,11 @@
 **
 ** Ajax feature report formats 
 **
-** @attr Name [] format name
-** @attr Mintags [] Minimum number of special tags needed
-** @attr Showseq [] ajTrue if sequence is to be included
-** @attr Nuc [] ajTrue if format can work with nucleotide sequences
-** @attr Prot [] ajTrue if format can work with protein sequences
+** @attr Name [char *] Format name
+** @attr Mintags [ajint] Minimum number of special tags needed
+** @attr Showseq [AjBool] ajTrue if sequence is to be included
+** @attr Nuc [AjBool] ajTrue if format can work with nucleotide sequences
+** @attr Prot [AjBool] ajTrue if format can work with protein sequences
 ** @attr Write [(void*)] Function to write report
 ******************************************************************************/
 
@@ -52,8 +52,11 @@ typedef struct ReportSFormat
     AjBool Showseq;
     AjBool Nuc;
     AjBool Prot;
-    void (*Write) (AjPReport outrpt, AjPFeattable ftable, AjPSeq seq);
-} ReportOFormat, *ReportPFormat;
+    void (*Write) (AjPReport outrpt,
+		   AjPFeattable ftable, AjPSeq seq);
+} ReportOFormat;
+
+#define ReportPFormat ReportOFormat*
 
 static void reportWriteEmbl (AjPReport outrpt, AjPFeattable ftable,
 			      AjPSeq seq);
@@ -68,7 +71,6 @@ static void reportWriteSwiss (AjPReport outrpt, AjPFeattable ftable,
 
 static void reportWriteTrace (AjPReport outrpt, AjPFeattable ftable,
 			      AjPSeq seq);
-
 static void reportWriteListFile (AjPReport outrpt, AjPFeattable ftable,
 				 AjPSeq seq);
 
@@ -79,17 +81,17 @@ static void reportWriteDiffseq (AjPReport outrpt, AjPFeattable ftable,
 static void reportWriteExcel (AjPReport outrpt, AjPFeattable ftable,
 			      AjPSeq seq);
 static void reportWriteFeatTable (AjPReport outrpt, AjPFeattable ftable,
-			      AjPSeq seq);
+				  AjPSeq seq);
 static void reportWriteMotif (AjPReport outrpt, AjPFeattable ftable,
 			      AjPSeq seq);
 static void reportWriteNameTable (AjPReport outrpt, AjPFeattable ftable,
 				  AjPSeq seq);
 static void reportWriteRegions (AjPReport outrpt, AjPFeattable ftable,
-			      AjPSeq seq);
+				AjPSeq seq);
 static void reportWriteSeqTable (AjPReport outrpt, AjPFeattable ftable,
-			      AjPSeq seq);
+				 AjPSeq seq);
 static void reportWriteSimple (AjPReport outrpt, AjPFeattable ftable,
-			    AjPSeq seq);
+			       AjPSeq seq);
 static void reportWriteSrs (AjPReport outrpt, AjPFeattable ftable,
 			    AjPSeq seq);
 static void reportWriteSrsFlags (AjPReport outrpt, AjPFeattable ftable,
@@ -100,7 +102,7 @@ static void reportWriteTable (AjPReport outrpt, AjPFeattable ftable,
 static void reportWriteTagseq (AjPReport outrpt, AjPFeattable ftable,
 			       AjPSeq seq);
 
-static char* reportCharname (AjPReport thys);
+static char* reportCharname (const AjPReport thys);
 
 /* @funclist reportFormat *****************************************************
 **
@@ -140,9 +142,9 @@ static ReportOFormat reportFormat[] =
 **
 ** Writes a report in Trace format
 **
-** @param [R] thys [AjPReport] Report object
-** @param [R] ftable [AjPFeattable] Feature table object
-** @param [R] seq [AjPSeq] Sequence object
+** @param [r] thys [AjPReport] Report object
+** @param [r] ftable [AjPFeattable] Feature table object
+** @param [r] seq [AjPSeq] Sequence object
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -163,9 +165,9 @@ static void reportWriteTrace (AjPReport thys,
 **
 ** Writes a report in EMBL format
 **
-** @param [R] thys [AjPReport] Report object
-** @param [R] ftable [AjPFeattable] Feature table object
-** @param [R] seq [AjPSeq] Sequence object
+** @param [r] thys [AjPReport] Report object
+** @param [r] ftable [AjPFeattable] Feature table object
+** @param [r] seq [AjPSeq] Sequence object
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -195,10 +197,10 @@ static void reportWriteEmbl (AjPReport thys,
 **
 ** Writes a report in Genbank format
 **
-** @param [R] thys [AjPReport] Report object
-** @param [R] ftable [AjPFeattable] Feature table object
-** @param [R] seq [AjPSeq] Sequence object
-** @return [void]
+** @param [r] thys [AjPReport] Report object
+** @param [r] ftable [AjPFeattable] Feature table object
+** @param [r] seq [AjPSeq] Sequence object
+** @return [void]const 
 ** @@
 ******************************************************************************/
 
@@ -227,9 +229,9 @@ static void reportWriteGenbank (AjPReport thys,
 **
 ** Writes a report in GFF format
 **
-** @param [R] thys [AjPReport] Report object
-** @param [R] ftable [AjPFeattable] Feature table object
-** @param [R] seq [AjPSeq] Sequence object
+** @param [r] thys [AjPReport] Report object
+** @param [r] ftable [AjPFeattable] Feature table object
+** @param [r] seq [AjPSeq] Sequence object
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -257,9 +259,9 @@ static void reportWriteGff (AjPReport thys,
 **
 ** Writes a report in PIR format
 **
-** @param [R] thys [AjPReport] Report object
-** @param [R] ftable [AjPFeattable] Feature table object
-** @param [R] seq [AjPSeq] Sequence object
+** @param [r] thys [AjPReport] Report object
+** @param [r] ftable [AjPFeattable] Feature table object
+** @param [r] seq [AjPSeq] Sequence object
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -287,9 +289,9 @@ static void reportWritePir (AjPReport thys,
 **
 ** Writes a report in SwissProt format
 **
-** @param [R] thys [AjPReport] Report object
-** @param [R] ftable [AjPFeattable] Feature table object
-** @param [R] seq [AjPSeq] Sequence object
+** @param [r] thys [AjPReport] Report object
+** @param [r] ftable [AjPFeattable] Feature table object
+** @param [r] seq [AjPSeq] Sequence object
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -334,9 +336,9 @@ static void reportWriteSwiss (AjPReport thys,
 ** Tags reported: <br>
 **   all tags reported as name = value
 **
-** @param [R] thys [AjPReport] Report object
-** @param [R] ftable [AjPFeattable] Feature table object
-** @param [R] seq [AjPSeq] Sequence object
+** @param [r] thys [AjPReport] Report object
+** @param [r] ftable [AjPFeattable] Feature table object
+** @param [r] seq [AjPSeq] Sequence object
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -454,9 +456,9 @@ static void reportWriteDbMotif (AjPReport thys,
 **
 ** Tags reported: None
 **
-** @param [R] thys [AjPReport] Report object
-** @param [R] ftable [AjPFeattable] Feature table object
-** @param [R] seq [AjPSeq] Sequence object
+** @param [r] thys [AjPReport] Report object
+** @param [r] ftable [AjPFeattable] Feature table object
+** @param [r] seq [AjPSeq] Sequence object
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -479,9 +481,13 @@ static void reportWriteDiffseq (AjPReport thys,
     AjPStr secondfeat=NULL;
     AjPStr tagval = NULL;
     
-    static AjPStr tagfirst=NULL, tagsecond=NULL,
-    tagstart=NULL, tagend=NULL, taglength=NULL,
-    tagname=NULL, tagsequence=NULL;
+    static AjPStr tagfirst=NULL;
+    static AjPStr tagsecond=NULL;
+    static AjPStr tagstart=NULL;
+    static AjPStr tagend=NULL;
+    static AjPStr taglength=NULL;
+    static AjPStr tagname=NULL;
+    static AjPStr tagsequence=NULL;
     
     if (!tagstart)
     {
@@ -625,9 +631,9 @@ static void reportWriteDiffseq (AjPReport thys,
 **
 ** Tags reported: All defined tags
 **
-** @param [R] thys [AjPReport] Report object
-** @param [R] ftable [AjPFeattable] Feature table object
-** @param [R] seq [AjPSeq] Sequence object
+** @param [r] thys [AjPReport] Report object
+** @param [r] ftable [AjPFeattable] Feature table object
+** @param [r] seq [AjPSeq] Sequence object
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -730,9 +736,9 @@ static void reportWriteExcel (AjPReport thys,
 **
 ** Tags reported: All
 **
-** @param [R] thys [AjPReport] Report object
-** @param [R] ftable [AjPFeattable] Feature table object
-** @param [R] seq [AjPSeq] Sequence object
+** @param [r] thys [AjPReport] Report object
+** @param [r] ftable [AjPFeattable] Feature table object
+** @param [r] seq [AjPSeq] Sequence object
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -816,9 +822,9 @@ static void reportWriteFeatTable (AjPReport thys,
 **
 ** Tags reported: None
 **
-** @param [R] thys [AjPReport] Report object
-** @param [R] ftable [AjPFeattable] Feature table object
-** @param [R] seq [AjPSeq] Sequence object
+** @param [r] thys [AjPReport] Report object
+** @param [r] ftable [AjPFeattable] Feature table object
+** @param [r] seq [AjPSeq] Sequence object
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -904,9 +910,9 @@ static void reportWriteListFile (AjPReport thys,
 **
 ** Tags reported: All
 **
-** @param [R] thys [AjPReport] Report object
-** @param [R] ftable [AjPFeattable] Feature table object
-** @param [R] seq [AjPSeq] Sequence object
+** @param [r] thys [AjPReport] Report object
+** @param [r] ftable [AjPFeattable] Feature table object
+** @param [r] seq [AjPSeq] Sequence object
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -1047,9 +1053,9 @@ static void reportWriteMotif (AjPReport thys,
 **
 ** Tags reported:
 **
-** @param [R] thys [AjPReport] Report object
-** @param [R] ftable [AjPFeattable] Feature table object
-** @param [R] seq [AjPSeq] Sequence object
+** @param [r] thys [AjPReport] Report object
+** @param [r] ftable [AjPFeattable] Feature table object
+** @param [r] seq [AjPSeq] Sequence object
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -1155,9 +1161,9 @@ static void reportWriteNameTable (AjPReport thys,
 **
 ** Tags reported: All
 **
-** @param [R] thys [AjPReport] Report object
-** @param [R] ftable [AjPFeattable] Feature table object
-** @param [R] seq [AjPSeq] Sequence object
+** @param [r] thys [AjPReport] Report object
+** @param [r] ftable [AjPFeattable] Feature table object
+** @param [r] seq [AjPSeq] Sequence object
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -1251,9 +1257,9 @@ static void reportWriteRegions (AjPReport thys,
 **
 ** Tags reported: All
 **
-** @param [R] thys [AjPReport] Report object
-** @param [R] ftable [AjPFeattable] Feature table object
-** @param [R] seq [AjPSeq] Sequence object
+** @param [r] thys [AjPReport] Report object
+** @param [r] ftable [AjPFeattable] Feature table object
+** @param [r] seq [AjPSeq] Sequence object
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -1276,7 +1282,7 @@ static void reportWriteSeqTable (AjPReport thys,
     ajint j=0;
     AjPStr tagval = NULL;
     ajint jwid=6;
-    ajint jmin=6;			/* minimum width for printing special tags */
+    ajint jmin=6;	 /* minimum width for printing special tags */
     static AjPStr strstr=NULL;
     
     if (!strstr)
@@ -1358,9 +1364,9 @@ static void reportWriteSeqTable (AjPReport thys,
 **
 ** Tags reported: All
 **
-** @param [R] thys [AjPReport] Report object
-** @param [R] ftable [AjPFeattable] Feature table object
-** @param [R] seq [AjPSeq] Sequence object
+** @param [r] thys [AjPReport] Report object
+** @param [r] ftable [AjPFeattable] Feature table object
+** @param [r] seq [AjPSeq] Sequence object
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -1392,9 +1398,9 @@ static void reportWriteSimple (AjPReport thys,
 **
 ** Tags reported: All
 **
-** @param [R] thys [AjPReport] Report object
-** @param [R] ftable [AjPFeattable] Feature table object
-** @param [R] seq [AjPSeq] Sequence object
+** @param [r] thys [AjPReport] Report object
+** @param [r] ftable [AjPFeattable] Feature table object
+** @param [r] seq [AjPSeq] Sequence object
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -1426,9 +1432,9 @@ static void reportWriteSrs (AjPReport thys,
 **
 ** Tags reported: All
 **
-** @param [R] thys [AjPReport] Report object
-** @param [R] ftable [AjPFeattable] Feature table object
-** @param [R] seq [AjPSeq] Sequence object
+** @param [r] thys [AjPReport] Report object
+** @param [r] ftable [AjPFeattable] Feature table object
+** @param [r] seq [AjPSeq] Sequence object
 ** @param [r] withSeq [AjBool] If ajTrue, includes the sequence in the output.
 ** @return [void]
 ** @@
@@ -1542,9 +1548,9 @@ static void reportWriteSrsFlags (AjPReport thys,
 **
 ** Tags reported:
 **
-** @param [R] thys [AjPReport] Report object
-** @param [R] ftable [AjPFeattable] Feature table object
-** @param [R] seq [AjPSeq] Sequence object
+** @param [r] thys [AjPReport] Report object
+** @param [r] ftable [AjPFeattable] Feature table object
+** @param [r] seq [AjPSeq] Sequence object
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -1650,9 +1656,9 @@ static void reportWriteTable (AjPReport thys,
 **
 ** Tags reported:
 **
-** @param [R] thys [AjPReport] Report object
-** @param [R] ftable [AjPFeattable] Feature table object
-** @param [R] seq [AjPSeq] Sequence object
+** @param [r] thys [AjPReport] Report object
+** @param [r] ftable [AjPFeattable] Feature table object
+** @param [r] seq [AjPSeq] Sequence object
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -1765,7 +1771,7 @@ static void reportWriteTagseq (AjPReport thys,
 **
 ** Destructor for report objects
 **
-** @param [D] pthys [AjPReport*] Report object reference
+** @param [d] pthys [AjPReport*] Report object reference
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -1812,13 +1818,13 @@ void ajReportDel (AjPReport* pthys)
 **
 ** Opens a new report file
 **
-** @param [R] thys [AjPReport] Report object
-** @param [R] name [AjPStr] File name
+** @param [r] thys [AjPReport] Report object
+** @param [r] name [const AjPStr] File name
 ** @return [AjBool] ajTrue on success
 ** @@
 ******************************************************************************/
 
-AjBool ajReportOpen (AjPReport thys, AjPStr name)
+AjBool ajReportOpen (AjPReport thys, const AjPStr name)
 {
     if (!ajReportValid(thys)) return ajFalse;
 
@@ -1833,7 +1839,7 @@ AjBool ajReportOpen (AjPReport thys, AjPStr name)
 **
 ** Sets the default format for a feature report
 **
-** @param [W] pformat [AjPStr*] Default format returned
+** @param [w] pformat [AjPStr*] Default format returned
 ** @return [AjBool] ajTrue is format was returned
 ** @@
 ******************************************************************************/
@@ -1859,13 +1865,13 @@ AjBool ajReportFormatDefault (AjPStr* pformat)
 ** Looks for the specified report format in the internal definitions and
 ** returns the index.
 **
-** @param [P] format [AjPStr] Format required.
+** @param [r] format [const AjPStr] Format required.
 ** @param [w] iformat [ajint*] Index
 ** @return [AjBool] ajTrue on success.
 ** @@
 ******************************************************************************/
 
-AjBool ajReportFindFormat (AjPStr format, ajint* iformat)
+AjBool ajReportFindFormat (const AjPStr format, ajint* iformat)
 {
     AjPStr tmpformat = NULL;
     ajint i = 0;
@@ -1873,7 +1879,7 @@ AjBool ajReportFindFormat (AjPStr format, ajint* iformat)
     if (!ajStrLen(format))
 	return ajFalse;
 
-    (void) ajStrAss (&tmpformat, format);
+    (void) ajStrAssS (&tmpformat, format);
     (void) ajStrToLower(&tmpformat);
 
     while (reportFormat[i].Name)
@@ -1893,17 +1899,18 @@ AjBool ajReportFindFormat (AjPStr format, ajint* iformat)
 
 /* @func ajReportSetTags ******************************************************
 **
-** Constructor for a report object
+** Sets the tag list for a report
 **
-** @param [R] thys [AjPReport] Report object
-** @param [R] taglist [AjPStr] Tag names list
-** @param [R] mintags [ajint] Minimum number of tags to use in report
+** @param [r] thys [AjPReport] Report object
+** @param [r] taglist [const AjPStr] Tag names list
+** @param [r] mintags [ajint] Minimum number of tags to use in report
 **                            (used to check there are enough tags listed)
 ** @return [AjBool] ajTrue on success
 ** @@
 ******************************************************************************/
 
-AjBool ajReportSetTags (AjPReport thys, AjPStr taglist, ajint mintags)
+AjBool ajReportSetTags (AjPReport thys, const AjPStr taglist,
+			ajint mintags)
 {
     static AjPRegexp tagexp = NULL;
     static AjPStr tmplist = NULL;
@@ -1965,7 +1972,7 @@ AjBool ajReportSetTags (AjPReport thys, AjPStr taglist, ajint mintags)
 ** Checks the format works with the number of tags.
 ** Checks the format works with the type (protein or nucleotide).
 **
-** @param [R] thys [AjPReport] Report object
+** @param [r] thys [AjPReport] Report object
 ** @return [AjBool] ajTrue on success
 ** @@
 ******************************************************************************/
@@ -2032,9 +2039,9 @@ AjPReport ajReportNew (void)
 **
 ** Writes a feature report
 **
-** @param [R] thys [AjPReport] Report object
-** @param [R] ftable [AjPFeattable] Feature table object
-** @param [R] seq [AjPSeq] Sequence object
+** @param [r] thys [AjPReport] Report object
+** @param [r] ftable [AjPFeattable] Feature table object
+** @param [r] seq [AjPSeq] Sequence object
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -2068,7 +2075,7 @@ void ajReportWrite (AjPReport thys, AjPFeattable ftable, AjPSeq seq)
 **
 ** Closes a feature report
 **
-** @param [R] thys [AjPReport] Report object
+** @param [r] thys [AjPReport] Report object
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -2087,7 +2094,7 @@ void ajReportClose (AjPReport thys)
 ** Converts a report tagtypes definition (ACD taglist attribute)
 ** into arrays of tag types, names and printnames.
 **
-** @param [r] thys [AjPReport] Report object
+** @param [r] thys [const AjPReport] Report object
 ** @param [w] types [AjPStr**] Address of array of types generated
 ** @param [w] names [AjPStr**] Address of array of names generated
 ** @param [w] prints [AjPStr**] Address of array of print names generated
@@ -2095,7 +2102,7 @@ void ajReportClose (AjPReport thys)
 ** @return [ajint] Number of tagtypes (size of arrays created)
 ******************************************************************************/
 
-ajint ajReportLists (AjPReport thys, AjPStr** types, AjPStr** names,
+ajint ajReportLists (const AjPReport thys, AjPStr** types, AjPStr** names,
 		     AjPStr** prints, ajint** sizes)
 {
     ajint ntags;
@@ -2129,14 +2136,15 @@ ajint ajReportLists (AjPReport thys, AjPStr** types, AjPStr** names,
 **
 ** Writes a feature report header
 **
-** @param [R] thys [AjPReport] Report object
-** @param [R] ftable [AjPFeattable] Feature table object
-** @param [R] seq [AjPSeq] Sequence object
+** @param [r] thys [AjPReport] Report object
+** @param [r] ftable [const AjPFeattable] Feature table object
+** @param [r] seq [AjPSeq] Sequence object
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajReportWriteHeader (AjPReport thys, AjPFeattable ftable, AjPSeq seq)
+void ajReportWriteHeader (AjPReport thys,
+			  const AjPFeattable ftable, AjPSeq seq)
 {
     AjPFile outf = thys->File;
     AjPStr tmpstr=NULL;
@@ -2236,14 +2244,15 @@ void ajReportWriteHeader (AjPReport thys, AjPFeattable ftable, AjPSeq seq)
 **
 ** Writes a feature report tail
 **
-** @param [R] thys [AjPReport] Report object
-** @param [R] ftable [AjPFeattable] Feature table object
-** @param [R] seq [AjPSeq] Sequence object
+** @param [r] thys [AjPReport] Report object
+** @param [r] ftable [const AjPFeattable] Feature table object
+** @param [r] seq [AjPSeq] Sequence object
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajReportWriteTail (AjPReport thys, AjPFeattable ftable, AjPSeq seq)
+void ajReportWriteTail (AjPReport thys,
+			const AjPFeattable ftable, AjPSeq seq)
 {
     AjPFile outf = thys->File;
     AjPStr tmpstr=NULL;
@@ -2289,13 +2298,13 @@ void ajReportWriteTail (AjPReport thys, AjPFeattable ftable, AjPSeq seq)
 **
 ** Defines a feature report header
 **
-** @param [R] thys [AjPReport] Report object
-** @param [R] header [AjPStr] Report header with embedded newlines
+** @param [r] thys [AjPReport] Report object
+** @param [r] header [const AjPStr] Report header with embedded newlines
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajReportSetHeader (AjPReport thys, AjPStr header)
+void ajReportSetHeader (AjPReport thys, const AjPStr header)
 {
     ajStrAssS (&thys->Header, header);
 
@@ -2306,8 +2315,8 @@ void ajReportSetHeader (AjPReport thys, AjPStr header)
 **
 ** Defines a feature report header
 **
-** @param [R] thys [AjPReport] Report object
-** @param [R] header [const char*] Report header with embedded newlines
+** @param [r] thys [AjPReport] Report object
+** @param [r] header [const char*] Report header with embedded newlines
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -2323,13 +2332,13 @@ void ajReportSetHeaderC (AjPReport thys, const char* header)
 **
 ** Defines a feature report tail
 **
-** @param [R] thys [AjPReport] Report object
-** @param [R] tail [AjPStr] Report tail with embedded newlines
+** @param [r] thys [AjPReport] Report object
+** @param [r] tail [const AjPStr] Report tail with embedded newlines
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajReportSetTail (AjPReport thys, AjPStr tail)
+void ajReportSetTail (AjPReport thys, const AjPStr tail)
 {
     ajStrAssS (&thys->Tail, tail);
 
@@ -2340,8 +2349,8 @@ void ajReportSetTail (AjPReport thys, AjPStr tail)
 **
 ** Defines a feature report tail
 **
-** @param [R] thys [AjPReport] Report object
-** @param [R] tail [const char*] Report tail with embedded newlines
+** @param [r] thys [AjPReport] Report object
+** @param [r] tail [const char*] Report tail with embedded newlines
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -2357,14 +2366,15 @@ void ajReportSetTailC (AjPReport thys, const char* tail)
 **
 ** Sets the report type (if it is not set already)
 **
-** @param [R] thys [AjPReport] Report object
-** @param [R] ftable [AjPFeattable] Feature table object
-** @param [R] seq [AjPSeq] Sequence object
+** @param [r] thys [AjPReport] Report object
+** @param [r] ftable [const AjPFeattable] Feature table object
+** @param [r] seq [const AjPSeq] Sequence object
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajReportSetType (AjPReport thys, AjPFeattable ftable, AjPSeq seq)
+void ajReportSetType (AjPReport thys,
+		      const AjPFeattable ftable, const AjPSeq seq)
 {
     ajDebug("ajReportSetType '%S' ft: '%S' sq: '%S'\n",
 	    thys->Type, ftable->Type, seq->Type);
@@ -2391,11 +2401,11 @@ void ajReportSetType (AjPReport thys, AjPFeattable ftable, AjPSeq seq)
 **
 ** Returns 'residues' for a protein report, 'bases' for a nucleotide report.
 **
-** @param [r] thys [AjPReport] Report object
+** @param [r] thys [const AjPReport] Report object
 ** @return [char*] String to print the sequence character type
 ******************************************************************************/
 
-static char* reportCharname (AjPReport thys)
+static char* reportCharname (const AjPReport thys)
 {
     static char* protstr = "residues";
     static char* nucstr = "bases";
@@ -2420,12 +2430,12 @@ static char* reportCharname (AjPReport thys)
 ** Returns the sequence name or USA depending on the setting in the
 ** report object (derived from the ACD and command line -rusa option)
 **
-** @param [r] thys [AjPReport] Report object
+** @param [r] thys [const AjPReport] Report object
 ** @param [r] seq [AjPSeq] Sequence object
 ** @return [AjPStr] Sequence name for this report
 ******************************************************************************/
 
-AjPStr ajReportSeqName (AjPReport thys, AjPSeq seq)
+AjPStr ajReportSeqName (const AjPReport thys, AjPSeq seq)
 {
     if (thys->Showusa)
 	return ajSeqGetUsa(seq);
@@ -2438,12 +2448,12 @@ AjPStr ajReportSeqName (AjPReport thys, AjPSeq seq)
 ** Adds an extra file name and description to the report
 **
 ** @param [r] thys [AjPReport] Report object
-** @param [r] file [AjPFile] File
-** @param [r] type [AjPStr] Type (simple text description)
+** @param [r] file [const AjPFile] File
+** @param [r] type [const AjPStr] Type (simple text description)
 ** @return [void]
 ******************************************************************************/
 
-void ajReportFileAdd (AjPReport thys, AjPFile file, AjPStr type)
+void ajReportFileAdd (AjPReport thys, const AjPFile file, const AjPStr type)
 {
     AjPStr tmpname=NULL;
     AjPStr tmptype=NULL;
@@ -2466,13 +2476,13 @@ void ajReportFileAdd (AjPReport thys, AjPFile file, AjPStr type)
 **
 ** Reports the internal data structures
 **
-** @param [r] outf [AjPFile] Output file
+** @param [r] outf [const AjPFile] Output file
 ** @param [r] full [AjBool] Full report (usually ajFalse)
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajReportPrintFormat (AjPFile outf, AjBool full)
+void ajReportPrintFormat (const AjPFile outf, AjBool full)
 {
     ajint i=0;
 

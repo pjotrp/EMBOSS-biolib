@@ -551,9 +551,9 @@ void      embDbiHeader (AjPFile file, ajint filesize,
 ** Builds a filename for a single temporary file to save IDs or some other
 ** index field, for example EMBL01.list
 **
-** @param [R] dbname [AjPStr] Database name
-** @param [R] extension [char*] Filename extension.
-** @param [R] num [ajint] Number for this file (start at 1)
+** @param [r] dbname [AjPStr] Database name
+** @param [r] extension [char*] Filename extension.
+** @param [r] num [ajint] Number for this file (start at 1)
 ** @return [AjPFile] Opened output file
 **
 ******************************************************************************/
@@ -574,8 +574,8 @@ AjPFile embDbiFileSingle (AjPStr dbname, char* extension, ajint num) {
 ** Builds a filename for a summary file to read IDs or some other
 ** index field, for example EMBL.acnum_sort
 **
-** @param [R] dbname [AjPStr] Database name
-** @param [R] extension [char*] Filename extension.
+** @param [r] dbname [AjPStr] Database name
+** @param [r] extension [char*] Filename extension.
 ** @return [AjPFile] Opened output file
 **
 ******************************************************************************/
@@ -596,8 +596,8 @@ AjPFile embDbiFileIn (AjPStr dbname, char* extension) {
 ** Builds a filename for a summary file to save IDs or some other
 ** index field, for example EMBL.acnum_srt2
 **
-** @param [R] dbname [AjPStr] Database name
-** @param [R] extension [char*] Filename extension.
+** @param [r] dbname [AjPStr] Database name
+** @param [r] extension [char*] Filename extension.
 ** @return [AjPFile] Opened output file
 **
 ******************************************************************************/
@@ -618,9 +618,9 @@ AjPFile embDbiFileOut (AjPStr dbname, char* extension) {
 ** Builds a filename for a summary file to save IDs or some other
 ** index field, for example EMBL.acsrt2
 **
-** @param [R] indexdir [AjPStr] Index directory
-** @param [R] field [AjPStr] Field name
-** @param [R] extension [char*] Filename extension.
+** @param [r] indexdir [AjPStr] Index directory
+** @param [r] field [AjPStr] Field name
+** @param [r] extension [char*] Filename extension.
 ** @return [AjPFile] Opened output file
 **
 ******************************************************************************/
@@ -640,14 +640,14 @@ AjPFile embDbiFileIndex (AjPStr indexdir, AjPStr field, char* extension) {
 **
 ** Writes the division index file
 **
-** @param [R] indexdir [AjPStr] Index directory
-** @param [R] dbname [AjPStr] Database name
-** @param [R] release [AjPStr] Release number as a string
-** @param [R] date [char[4]] Date
-** @param [R] maxfilelen [ajint] Max file length
-** @param [R] nfiles [ajint] Number of files indexes
-** @param [R] divfiles [AjPStr*] Division filenames
-** @param [R] seqfiles [AjPStr*] Sequence filenames (or NULL if none)
+** @param [r] indexdir [AjPStr] Index directory
+** @param [r] dbname [AjPStr] Database name
+** @param [r] release [AjPStr] Release number as a string
+** @param [r] date [char[4]] Date
+** @param [r] maxfilelen [ajint] Max file length
+** @param [r] nfiles [ajint] Number of files indexes
+** @param [r] divfiles [AjPStr*] Division filenames
+** @param [r] seqfiles [AjPStr*] Sequence filenames (or NULL if none)
 ** @return [void]
 ******************************************************************************/
 
@@ -690,11 +690,11 @@ void embDbiWriteDivision (AjPStr indexdir,
 **
 ** Writes a record to the division lookup file
 **
-** @param [R] file [AjPFile] Index file
-** @param [R] maxnamlen [ajint] Maximum name length
-** @param [R] recnum [short] Record number
-** @param [R] datfile [AjPStr] Data file name
-** @param [R] seqfile [AjPStr] Seqeunce file name (or NULL if none)
+** @param [r] file [AjPFile] Index file
+** @param [r] maxnamlen [ajint] Maximum name length
+** @param [r] recnum [short] Record number
+** @param [r] datfile [AjPStr] Data file name
+** @param [r] seqfile [AjPStr] Seqeunce file name (or NULL if none)
 ** @return [void]
 ******************************************************************************/
 

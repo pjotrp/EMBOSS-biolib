@@ -73,7 +73,9 @@ long bits =  (8*sizeof(long) - 1);
 /************ EMBOSS GET OPTIONS ROUTINES ******************************/
 void emboss_getoptions(char *pgm, int argc, char *argv[]){
 AjStatus retval;
-AjPFile outf,inf,treef;
+AjPFile outf;
+AjPFile inf;
+AjPFile treef;
 AjPStr *methodlist;
 int temp;
 long inseed0;

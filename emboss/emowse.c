@@ -28,12 +28,39 @@
 #define MILLION (double)1000000.
 #define MAXLIST 50
 
+/* @datastatic EmbPMdata ******************************************************
+**
+** EMowse data
+**
+** @alias EmbSMdata
+** @alias EmbOMdata
+**
+** @attr mwt [double] Molecular weight
+** @attr sdata [AjPStr] string data
+******************************************************************************/
+
 typedef struct EmbSMdata
 {
     double mwt;
     AjPStr sdata;
 } EmbOMdata, *EmbPMdata;
 
+/* @datastatic PHits **********************************************************
+**
+** EMowse hits
+**
+** @alias SHits
+** @alias OHits
+**
+** @attr seq [AjPStr] Seqeunce
+** @attr name [AjPStr] Name
+** @attr desc [AjPStr] Description
+** @attr found [AjPInt] Found data
+** @attr score [double] Score
+** @attr mwt [double] Molecular weight
+** @attr frags [EmbPMolFrag*] Fragment data
+** @attr nf [ajint] Number found?
+******************************************************************************/
 
 typedef struct SHits
 {

@@ -17,14 +17,17 @@ extern "C"
 typedef struct AjSTime {
   struct tm *time;
   char *format;
-} AjOTime, *AjPTime, *AjPDate;
+} AjOTime, AjODate;
+
+#define AjPTime AjOTime*
+#define AjPDate AjODate*
 
 
 AjPTime ajTimeToday (void);
-AjPTime ajTimeTodayF (char* timefmt);
-void ajTimeTrace (AjPTime thys);
+AjPTime ajTimeTodayF (const char* timefmt);
+void ajTimeTrace (const AjPTime thys);
 
-AjPTime ajTimeSet( char *timefmt, ajint mday, ajint mon, ajint year) ;
+AjPTime ajTimeSet( const char *timefmt, ajint mday, ajint mon, ajint year) ;
 
 #endif
 

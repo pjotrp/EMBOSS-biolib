@@ -57,9 +57,12 @@ enum {
 };
 
 
-/* The structure representing a compiled regular expression. */
-
 #define NSUBEXP  10
+
+/* @data regex_t
+**
+** The structure representing a compiled regular expression.
+*/
 
 typedef struct {
   void *re_pcre;
@@ -70,9 +73,12 @@ typedef struct {
   char *endp[NSUBEXP];
 } regex_t;
 
-/* The structure in which a captured offset is returned. */
-
 typedef int regoff_t;
+
+/* @data regmatch_t
+**
+** The structure in which a captured offset is returned.
+*/
 
 typedef struct {
   regoff_t rm_so;

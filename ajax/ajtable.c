@@ -50,8 +50,8 @@ static void tableStrDel (const void* key, void** value, void* cl);
 **
 ** Default comparison function for key comparison
 **
-** @param [R] x [const void*] First key
-** @param [R] y [const void*] Second key
+** @param [r] x [const void*] First key
+** @param [r] y [const void*] Second key
 ** @return [ajint] 0 for success, 1 for different keys
 ** @@
 ******************************************************************************/
@@ -66,8 +66,8 @@ static ajint tableCmpAtom(const void *x, const void *y)
 **
 ** Default hash function for key indexing
 **
-** @param [R] key [const void*] Key
-** @param [R] hashsize [ajuint] Hash size (maximum hash value)
+** @param [r] key [const void*] Key
+** @param [r] hashsize [ajuint] Hash size (maximum hash value)
 ** @return [ajuint] 0 for success, 1 for different keys
 ** @@
 ******************************************************************************/
@@ -77,7 +77,7 @@ static ajuint tableHashAtom(const void *key, ajuint hashsize)
     return ((unsigned long)key>>2) % hashsize;
 }
 
-/* @func  ajTableNewI *********************************************************
+/* @func ajTableNewL *********************************************************
 **
 ** creates, initialises, and returns a new, empty table that expects
 ** a specified number of key-value pairs.
@@ -107,7 +107,7 @@ AjPTable ajTableNewL(ajint size,
     return ajTableNew(hint, cmp, hash);
 }
 
-/* @func  ajTableNew **********************************************************
+/* @func ajTableNew **********************************************************
 **
 ** creates, initialises, and returns a new, empty table that can hold an
 ** arbitrary number of key-value pairs. NOTE if cmp=null or hash = null
@@ -179,14 +179,14 @@ AjPTable ajTableNew(ajint hint,
 ** returns the value associated with key in table, or null
 ** if table does not hold key.
 **
-** @param [r] table [AjPTable] table to search
+** @param [r] table [const AjPTable] table to search
 ** @param [r] key   [const void*] key to find.
 ** @return [void*]  value associated with key
 ** @error NULL if key not found in table.
 ** @@
 ******************************************************************************/
 
-void * ajTableGet(AjPTable table, const void *key)
+void * ajTableGet(const AjPTable table, const void *key)
 {
     ajint i;
     struct binding *p;
@@ -211,14 +211,14 @@ void * ajTableGet(AjPTable table, const void *key)
 **
 ** Intended for case-insensitive keys, to return the true key
 **
-** @param [r] table [AjPTable] table to search
+** @param [r] table [const AjPTable] table to search
 ** @param [r] key   [const void*] key to find.
 ** @return [void*] key value as stored in the table
 ** @error NULL if key not found in table.
 ** @@
 ******************************************************************************/
 
-void * ajTableKey(AjPTable table, const void *key)
+void * ajTableKey(const AjPTable table, const void *key)
 {
     ajint i;
     struct binding *p;
@@ -240,12 +240,12 @@ void * ajTableKey(AjPTable table, const void *key)
 **
 ** Writes debug messages to trace the contents of a table.
 **
-** @param [u] table [AjPTable] Table
+** @param [u] table [const AjPTable] Table
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajTableTrace (AjPTable table)
+void ajTableTrace (const AjPTable table)
 {
     ajint i;
     ajint j;
@@ -281,12 +281,12 @@ void ajTableTrace (AjPTable table)
 ** Writes debug messages to trace the contents of a table,
 ** assuming all keys and values are strings.
 **
-** @param [u] table [AjPTable] Table
+** @param [u] table [const AjPTable] Table
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajStrTableTrace (AjPTable table)
+void ajStrTableTrace (const AjPTable table)
 {
     ajint i;
     ajint j;
@@ -368,30 +368,30 @@ void * ajTablePut(AjPTable table, const void *key, void *value)
     return prev;
 }
 
-/* @func  ajTableLength *******************************************************
+/* @func ajTableLength *******************************************************
 **
 ** returns the number of key-value pairs in table.
 **
-** @param [r] table [AjPTable] Table to be applied.
+** @param [r] table [const AjPTable] Table to be applied.
 ** @return [ajint] number of key-value pairs.
 ** @@
 ******************************************************************************/
 
-ajint ajTableLength(AjPTable table)
+ajint ajTableLength(const AjPTable table)
 {
     assert(table);
 
     return table->length;
 }
 
-/* @func  ajTableMap **********************************************************
+/* @func ajTableMap **********************************************************
 **
 ** calls function 'apply' for each key-value in table
 ** in an unspecified order.
 **
 ** @param [u] table [AjPTable] Table.
 ** @param [f] apply [void function] function to be applied
-** @param [P] cl [void*] Standard. Usually NULL. To be passed to apply
+** @param [r] cl [void*] Standard. Usually NULL. To be passed to apply
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -596,7 +596,7 @@ AjPTable ajStrTableNew (ajint hint)
 ** Hash function for a table with a character string key and
 ** case insensitivity.
 **
-** @param [P] key [const void*] Standard argument. Table key.
+** @param [r] key [const void*] Standard argument. Table key.
 ** @param [r] hashsize [ajuint] Standard argument. Estimated Hash size.
 ** @return [ajuint] Hash value.
 ** @@
@@ -620,7 +620,7 @@ ajuint ajStrTableHashCaseC (const void* key, ajuint hashsize)
 ** Hash function for a table with a string key and
 ** case insensitivity.
 **
-** @param [P] key [const void*] Standard argument. Table key.
+** @param [r] key [const void*] Standard argument. Table key.
 ** @param [r] hashsize [ajuint] Standard argument. Estimated Hash size.
 ** @return [ajuint] Hash value.
 ** @@
@@ -645,7 +645,7 @@ ajuint ajStrTableHashCase (const void* key, ajuint hashsize)
 **
 ** Hash function for a table with a character string key
 **
-** @param [P] key [const void*] Standard argument. Table key.
+** @param [r] key [const void*] Standard argument. Table key.
 ** @param [r] hashsize [ajuint] Standard argument. Estimated Hash size.
 ** @return [ajuint] Hash value.
 ** @@
@@ -668,7 +668,7 @@ ajuint ajStrTableHashC (const void* key, ajuint hashsize)
 **
 ** Hash function for a table with a string key
 **
-** @param [P] key [const void*] Standard argument. Table key.
+** @param [r] key [const void*] Standard argument. Table key.
 ** @param [r] hashsize [ajuint] Standard argument. Estimated Hash size.
 ** @return [ajuint] Hash value.
 ** @@
@@ -694,8 +694,8 @@ ajuint ajStrTableHash (const void* key, ajuint hashsize)
 ** Comparison function for a table with a character string key
 ** and case insensitivity.
 **
-** @param [P] x [const void*] Standard argument. Item value.
-** @param [P] y [const void*] Standard argument. Comparison item value.
+** @param [r] x [const void*] Standard argument. Item value.
+** @param [r] y [const void*] Standard argument. Comparison item value.
 ** @return [ajint] Comparison result. 0 if equal, +1 if x is higher.
 **               -1 if x is lower.
 ** @@
@@ -714,8 +714,8 @@ ajint ajStrTableCmpCaseC (const void* x, const void* y)
 ** Comparison function for a table with a string key
 ** and case insensitivity.
 **
-** @param [P] x [const void*] Standard argument. Item value.
-** @param [P] y [const void*] Standard argument. Comparison item value.
+** @param [r] x [const void*] Standard argument. Item value.
+** @param [r] y [const void*] Standard argument. Comparison item value.
 ** @return [ajint] Comparison result. 0 if equal, +1 if x is higher.
 **               -1 if x is lower.
 ** @@
@@ -733,8 +733,8 @@ ajint ajStrTableCmpCase (const void* x, const void* y)
 **
 ** Comparison function for a table with a character string key
 **
-** @param [P] x [const void*] Standard argument. Item value.
-** @param [P] y [const void*] Standard argument. Comparison item value.
+** @param [r] x [const void*] Standard argument. Item value.
+** @param [r] y [const void*] Standard argument. Comparison item value.
 ** @return [ajint] Comparison result. 0 if equal, +1 if x is higher.
 **               -1 if x is lower.
 ** @@
@@ -752,8 +752,8 @@ ajint ajStrTableCmpC (const void* x, const void* y)
 **
 ** Comparison function for a table with a string key
 **
-** @param [P] x [const void*] Standard argument. Item value.
-** @param [P] y [const void*] Standard argument. Comparison item value.
+** @param [r] x [const void*] Standard argument. Item value.
+** @param [r] y [const void*] Standard argument. Comparison item value.
 ** @return [ajint] Comparison result. 0 if equal, +1 if x is higher.
 **               -1 if x is lower.
 ** @@
@@ -771,7 +771,7 @@ ajint ajStrTableCmp (const void* x, const void* y)
 **
 ** Print function for a table with a string key.
 **
-** @param [P] table [AjPTable] Table.
+** @param [r] table [AjPTable] Table.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -785,9 +785,9 @@ void ajStrTablePrint (AjPTable table)
 **
 ** Print function for entries in a a table with a string key.
 **
-** @param [P] key [const void*] Standard argument. Table key.
-** @param [P] value [void**] Standard argument. Table item.
-** @param [P] cl [void*] Standard argument. Usually NULL.
+** @param [r] key [const void*] Standard argument. Table key.
+** @param [r] value [void**] Standard argument. Table item.
+** @param [r] cl [void*] Standard argument. Usually NULL.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -804,7 +804,7 @@ static void tableStrPrint (const void* key, void** value, void* cl)
 **
 ** Print function for a table with a character string key.
 **
-** @param [P] table [AjPTable] Table.
+** @param [r] table [AjPTable] Table.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -818,9 +818,9 @@ void ajStrTablePrintC (AjPTable table)
 **
 ** Print function for entries in a table with a character string key.
 **
-** @param [P] key [const void*] Standard argument. Table key.
-** @param [P] value [void**] Standard argument. Table item.
-** @param [P] cl [void*] Standard argument. Usually NULL.
+** @param [r] key [const void*] Standard argument. Table key.
+** @param [r] value [void**] Standard argument. Table item.
+** @param [r] cl [void*] Standard argument. Usually NULL.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -839,7 +839,7 @@ static void tableStrPrintC (const void* key, void** value, void* cl)
 ** in the table are real, and not just copies of pointers. Otherwise
 ** a call to ajTableFree is enough.
 **
-** @param [P] ptable [AjPTable*] Table
+** @param [r] ptable [AjPTable*] Table
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -859,9 +859,9 @@ void ajStrTableFree (AjPTable* ptable)
 **
 ** Delete an entry in a string table.
 **
-** @param [P] key [const void*] Standard argument. Table key.
-** @param [P] value [void**] Standard argument. Table item.
-** @param [P] cl [void*] Standard argument. Usually NULL.
+** @param [r] key [const void*] Standard argument. Table key.
+** @param [r] value [void**] Standard argument. Table item.
+** @param [r] cl [void*] Standard argument. Usually NULL.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -892,4 +892,3 @@ void ajTableExit (void)
 
     return;
 }
-

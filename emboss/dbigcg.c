@@ -94,12 +94,11 @@ static AjBool dbigcg_ParseGenbank (AjPFile libr,
 				   ajint* maxFieldLen,
 				   AjPStr *id, AjPList* fdl);
 
-/* @datastatic DbigcgPParser **************************************************
+/* @datastatic OParser **************************************************
 **
 ** Parser definition structure
 **
-** @alias DbigcgSParser
-** @alias DbigcgOParser
+** @alias SParser
 **
 ** @attr Name [char*] Parser name
 ** @attr GcgFormat [AjBool] If true, use GCG format, if false, use NBRF

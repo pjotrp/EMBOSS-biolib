@@ -50,6 +50,20 @@ Dissimilar	..W
 
 /* declare structures */
 
+/* @datastatic AjPOrder *******************************************************
+**
+** showalign internals
+**
+** @alias AjSOrder
+** @alias AjOOrder
+**
+** @attr seq [AjPSeq] Sequence
+** @attr similarity [ajint] total of similarity scores to consensus
+**                          for sort order 
+** @attr idcount [ajint] count of identical residues for stats
+** @attr simcount [ajint] count of similar residues for stats
+******************************************************************************/
+
 typedef struct AjSOrder
 {
   AjPSeq seq;
@@ -266,7 +280,7 @@ static ajint showalign_Getrefseq (AjPStr refseq, AjPSeqset seqset)
 ** the longest name to be displayed plus one extra space after it
 **
 ** @param [r] seqset [AjPSeqset] the sequences
-** @param [rw] margin [ajint*] margin
+** @param [u] margin [ajint*] margin
 ** @param [r] docon [AjBool] displaying the consensus line
 ** @param [r] nrefseq [ajint] the sequence being displayed
 ** @return [void]
@@ -611,7 +625,7 @@ static void showalign_MakeDissimilar (AjPSeq ref, AjPSeq seq, ajint **sub,
 ** @param [r] nrefseq [ajint] number of reference sequence
 ** @param [r] sub [ajint **] substitution matrix
 ** @param [r] cvt [AjPSeqCvt] substitution conversion table
-** @param [rw] aorder [AjOOrder *] output order to display the sequences
+** @param [u] aorder [AjOOrder *] output order to display the sequences
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -714,7 +728,7 @@ static void showalign_Order(AjPStr *order, AjPSeqset seqset, AjPSeq consensus,
 ** @param [r] docon [AjBool] display consensus sequence at the bottom
 ** @param [r] bottom [AjBool] display refseq at the botton of the alignment
 **                            as well
-** @param [rw] aorder [AjOOrder *] order to display the sequences
+** @param [u] aorder [AjOOrder *] order to display the sequences
 ** @param [r] html [AjBool] format for html display
 ** @param [r] highlight [AjPRange] ranges to highlight
 ** @param [r] uppercase [AjPRange] ranges to uppercase

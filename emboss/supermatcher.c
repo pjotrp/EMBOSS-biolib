@@ -33,6 +33,18 @@
 #include <limits.h>
 #include <math.h>
 
+/* @datastatic concat *********************************************************
+**
+** supermatcher internals
+**
+** @alias concatS
+**
+** @attr offset [ajint] Undocumented
+** @attr count [ajint] Undocumented
+** @attr total [ajint] Undocumented
+** @attr list [AjPList] Undocumented
+******************************************************************************/
+
 typedef struct concatS
 {
   ajint offset;
@@ -397,7 +409,7 @@ static void supermatcher_findmax(void **x,void *cl)
 ** @param [r] b [AjPSeq] second sequence
 ** @param [r] a [AjPSeq] first sequence
 ** @param [w] start1 [ajint*] start in sequence 1
-** @param [e] start2 [ajint*] start in sequence 2
+** @param [w] start2 [ajint*] start in sequence 2
 ** @param [w] end1 [ajint*] end in sequence 1
 ** @param [w] end2 [ajint*] end in sequence 2
 ** @param [r] width [ajint] width

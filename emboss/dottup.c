@@ -40,7 +40,8 @@ static void dottup_stretchplot(AjPGraph graph, AjPList matchlist, AjPSeq seq1,
 
 int main(int argc, char **argv)
 {
-    AjPSeq seq1,seq2;
+    AjPSeq seq1;
+    AjPSeq seq2;
     ajint wordlen;
     AjPTable seq1MatchTable=0;
     AjPList matchlist=NULL;

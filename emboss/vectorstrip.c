@@ -24,6 +24,27 @@
 #include "emboss.h"
 #include "stdlib.h"
 
+/* @datastatic CPattern *******************************************************
+**
+** vectorstrip internals
+**
+** @alias clip_pattern
+**
+** @attr patstr [AjPStr] Undocumented
+** @attr origpat [AjPStr] Undocumented
+** @attr len [ajint] Undocumented
+** @attr real_len [ajint] Undocumented
+** @attr amino [AjBool] Undocumented
+** @attr carboxyl [AjBool] Undocumented
+** @attr buf [ajint*] Undocumented
+** @attr sotable [ajuint*] Undocumented
+** @attr solimit [ajuint] Undocumented
+** @attr off [EmbOPatBYPNode[AJALPHA]] Undocumented
+** @attr re [AjPStr] Undocumented
+** @attr skipm [ajint**] Undocumented
+** @attr tidy [void*] Undocumented
+******************************************************************************/
+
 typedef struct clip_pattern
 {
   AjPStr patstr;
@@ -42,6 +63,17 @@ typedef struct clip_pattern
   ajint **skipm;
   void* tidy;
 }*CPattern;
+
+/* @datastatic Vector *********************************************************
+**
+** vectorstrip internals
+**
+** @alias vector
+**
+** @attr name [AjPStr] Undocumented
+** @attr fiveprime [AjPStr] Undocumented
+** @attr threeprime [AjPStr] Undocumented
+******************************************************************************/
 
 typedef struct vector
 {

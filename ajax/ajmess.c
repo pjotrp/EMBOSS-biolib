@@ -54,7 +54,7 @@ static AjBool fileDebug = 0;
 static AjPFile fileDebugFile = NULL;
 static AjPStr fileDebugName = NULL;
 
-static char* messGetFilename(char *path);
+static char* messGetFilename(const char *path);
 
 /*============================================================================
 **======================== Macros ============================================
@@ -179,8 +179,8 @@ va_end(FORMAT_ARGS) ;
 #define AJAXVFORMATSTRING(FORMAT_ARGS, FORMAT, TARGET_PTR, PREFIX)       \
 TARGET_PTR = messFormat(FORMAT_ARGS, FORMAT, PREFIX) ;
 
-static char *messFormat(va_list args, char *format, char *prefix) ;
-static void messDump (char *message);
+static char *messFormat(va_list args, const char *format, const char *prefix) ;
+static void messDump (const char *message);
 
 /* Some standard defines for titles/text for messages:                       */
 /*                                                                           */
@@ -222,7 +222,9 @@ typedef struct MessSErrorInfo
     char* filename ;		   /* Filename where error reported */
     ajint line_num ;		    /* line number of file where error
 				       reported. */
-} MessOErrorInfo, *MessPErrorInfo ;
+} MessOErrorInfo;
+
+#define MessPErrorInfo MessOErrorInfo*
 
 static MessOErrorInfo messageG = {NULL, NULL, 0} ;
 
@@ -380,16 +382,16 @@ void ajMessBeep (void)
 ** Formats a message. Calls the defined output function (if any).
 ** Otherwise prints the message to standard error with an extra newline.
 **
-** @param [r] format [char*] Format string
+** @param [r] format [const char*] Format string
 ** @param [v] [...] Variable length argument list
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajMessOutLine (char *format,...)
+void ajMessOutLine (const char *format,...)
 {
     va_list args ;
-    char *mesg_buf;
+    const char *mesg_buf;
 
     /* Format the message string. */
 
@@ -408,13 +410,13 @@ void ajMessOutLine (char *format,...)
 ** Formats a message. Calls the defined output function (if any).
 ** Otherwise prints the message to standard error with no newline.
 **
-** @param [r] format [char*] Format string
+** @param [r] format [const char*] Format string
 ** @param [v] [...] Variable length argument list
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajMessOut (char *format,...)
+void ajMessOut (const char *format,...)
 {
     va_list args ;
     char *mesg_buf;
@@ -436,13 +438,13 @@ void ajMessOut (char *format,...)
 ** Formats a message. Calls the defined output function (if any).
 ** Otherwise prints the message to standard error.
 **
-** @param [r] format [char*] Format string
+** @param [r] format [const char*] Format string
 ** @param [v] args [va_list] Variable length argument list
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajMessVOut (char *format, va_list args)
+void ajMessVOut (const char *format, va_list args)
 {
     char *mesg_buf;
 
@@ -463,13 +465,13 @@ void ajMessVOut (char *format, va_list args)
 ** Formats a message. Calls the dump function (if any).
 ** Otherwise no further action.
 **
-** @param [r] format [char*] format string.
+** @param [r] format [const char*] format string.
 ** @param [v] [...] Variable length argument list.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajMessDump (char *format,...)
+void ajMessDump (const char *format,...)
 {
     static char dumpbuf[BUFSIZE] ;   /* BEWARE limited buffer size. */
     char *mesg_buf = &dumpbuf[0] ;
@@ -491,12 +493,12 @@ void ajMessDump (char *format,...)
 **
 ** Calls the dump function (if any) to dump text followed by a newline.
 **
-** @param [r] message [char*] Message text
+** @param [r] message [const char*] Message text
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void messDump (char *message)
+static void messDump (const char *message)
 {
     if (dumpRoutine)
     {
@@ -527,13 +529,13 @@ ajint ajMessErrorCount (void)
 **
 ** The error message count is incremented by 1 for each call.
 **
-** @param [r] format [char*] Format
+** @param [r] format [const char*] Format
 ** @param [v] [...] Variable length argument list
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajMessError (char *format, ...)
+void ajMessError (const char *format, ...)
 {
     char *prefix = ERROR_PREFIX ;
     char *mesg_buf = NULL ;
@@ -570,13 +572,13 @@ void ajMessError (char *format, ...)
 **
 ** The error message count is incremented by 1 for each call.
 **
-** @param [r] format [char*] Format
+** @param [r] format [const char*] Format
 ** @param [v] args [va_list] Variable length argument list
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajMessVError (char *format, va_list args)
+void ajMessVError (const char *format, va_list args)
 {
     char *prefix = ERROR_PREFIX ;
     char *mesg_buf = NULL ;
@@ -611,16 +613,16 @@ void ajMessVError (char *format, va_list args)
 **
 ** The error message count is incremented by 1 for each call.
 **
-** @param [r] format [char*] Format
+** @param [r] format [const char*] Format
 ** @param [v] [...] Variable length argument list
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajMessDie (char *format, ...)
+void ajMessDie (const char *format, ...)
 {
-    char *prefix = DIE_PREFIX ;
-    char *mesg_buf = NULL ;
+    const char *prefix = DIE_PREFIX ;
+    const char *mesg_buf = NULL ;
     va_list args ;
 
     ++errorCount ;
@@ -658,13 +660,13 @@ void ajMessDie (char *format, ...)
 **
 ** The error message count is incremented by 1 for each call.
 **
-** @param [r] format [char*] Format
+** @param [r] format [const char*] Format
 ** @param [v] args [va_list] Variable length argument list
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajMessVDie (char *format, va_list args)
+void ajMessVDie (const char *format, va_list args)
 {
     char *prefix = DIE_PREFIX ;
     char *mesg_buf = NULL ;
@@ -694,13 +696,13 @@ void ajMessVDie (char *format, va_list args)
 ** Formats a warning message. Calls the warning function (if any).
 ** Otherwise prints the message to standard error with a trailing newline.
 **
-** @param [r] format [char*] Format
+** @param [r] format [const char*] Format
 ** @param [v] [...] Variable length argument list
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajMessWarning (char *format, ...)
+void ajMessWarning (const char *format, ...)
 {
     char *prefix = WARNING_PREFIX ;
     char *mesg_buf = NULL ;
@@ -733,13 +735,13 @@ void ajMessWarning (char *format, ...)
 ** Formats a warning message. Calls the warning function (if any).
 ** Otherwise prints the message to standard error with a trailing newline.
 **
-** @param [r] format [char*] Format
+** @param [r] format [const char*] Format
 ** @param [v] args [va_list] Variable length argument list
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajMessVWarning (char *format, va_list args)
+void ajMessVWarning (const char *format, va_list args)
 {
     char *prefix = WARNING_PREFIX ;
     char *mesg_buf = NULL ;
@@ -776,13 +778,13 @@ void ajMessVWarning (char *format, va_list args)
 ** any chance to interrupt it (see the crash routine in ajMessCrashFL), this
 ** could be changed to allow the application to register an exit handler.
 **
-** @param [r] format [char*] Format
+** @param [r] format [const char*] Format
 ** @param [v] [...] Variable length argument list
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajMessExitmsg(char *format, ...)
+void ajMessExitmsg(const char *format, ...)
 {
     char *prefix = EXIT_PREFIX ;
     char *mesg_buf = NULL ;
@@ -812,13 +814,13 @@ void ajMessExitmsg(char *format, ...)
 ** to call itself to report the error. To avoid infinite recursion we limit
 ** this to just one reporting of an internal error and then we abort.
 **
-** @param [r] format [char*] Format
+** @param [r] format [const char*] Format
 ** @param [v] [...] Variable length argument list
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajMessCrashFL (char *format, ...)
+void ajMessCrashFL (const char *format, ...)
 {
     enum {MAXERRORS = 1} ;
     static ajint internalErrors = 0 ;
@@ -881,13 +883,13 @@ void ajMessCrashFL (char *format, ...)
 ** to call itself to report the error. To avoid infinite recursion we limit
 ** this to just one reporting of an internal error and then we abort.
 **
-** @param [r] format [char*] Format
+** @param [r] format [const char*] Format
 ** @param [v] args [va_list] Variable length argument list
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajMessVCrashFL (char *format, va_list args)
+void ajMessVCrashFL (const char *format, va_list args)
 {
     enum {MAXERRORS = 1} ;
     static ajint internalErrors = 0 ;
@@ -1053,13 +1055,13 @@ char* ajMessSysErrorText (void)
 **                                  _minus_ terminating NULL)
 **
 ** @param [r] args [va_list] Variable length argument list
-** @param [r] format [char*] Format string
-** @param [r] prefix [char*] Message prefix
+** @param [r] format [const char*] Format string
+** @param [r] prefix [const char*] Message prefix
 ** @return [char*] Formatted message text
 ** @@
 ******************************************************************************/
 
-static char* messFormat(va_list args, char *format, char *prefix)
+static char* messFormat(va_list args, const char *format, const char *prefix)
 {
     static char *new_buf = NULL ;
     char *buf_ptr ;
@@ -1124,12 +1126,12 @@ static char* messFormat(va_list args, char *format, char *prefix)
 ** by macros from __FILE__ which could include part or all of the path
 ** depending on how the source code was compiled.
 **
-** @param [r] path [char*] File name, possibly with full path.
+** @param [r] path [const char*] File name, possibly with full path.
 ** @return [char*] Base file name
 ** @@
 ******************************************************************************/
 
-static char* messGetFilename(char *path)
+static char* messGetFilename(const char *path)
 {
     static char *path_copy = NULL ;
     const char *path_delim = SUBDIR_DELIMITER_STR ;
@@ -1172,12 +1174,12 @@ static char* messGetFilename(char *path)
 **
 ** Initialises the stored program name.
 **
-** @param [r] progname [char*] Program name.
+** @param [r] progname [const char*] Program name.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajMessErrorInit (char *progname)
+void ajMessErrorInit (const char *progname)
 {
     if (progname != NULL)
 	messageG.progname = ajSysStrdup(messGetFilename(progname)) ;
@@ -1193,13 +1195,13 @@ void ajMessErrorInit (char *progname)
 **
 ** Invoked automatically by a macro (e.g. ajFatal) where needed.
 **
-** @param [r] filename [char*] source filename, __FILE__
+** @param [r] filename [const char*] source filename, __FILE__
 ** @param [r] line_num [ajint] source line number, __LINE__
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajMessSetErr (char *filename, ajint line_num)
+void ajMessSetErr (const char *filename, ajint line_num)
 {
     assert(filename != NULL && line_num != 0) ;
 
@@ -1261,12 +1263,12 @@ Then a default one will be read */
 **
 ** Opens a file and sets this to be the error file.
 **
-** @param [r] errfile [char*] Error file name
+** @param [r] errfile [const char*] Error file name
 ** @return [AjBool] ajTrue on success
 ** @@
 ******************************************************************************/
 
-AjBool ajMessErrorSetFile(char *errfile)
+AjBool ajMessErrorSetFile(const char *errfile)
 {
     FILE *fp=0;
 
@@ -1348,12 +1350,12 @@ static AjBool ajMessReadErrorFile(void)
 **
 ** Writes an output message for a given message code.
 **
-** @param [r] code [char*] Message code
+** @param [r] code [const char*] Message code
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajMessOutCode(char *code)
+void ajMessOutCode(const char *code)
 {
     char *mess=0;
 
@@ -1386,12 +1388,12 @@ void ajMessOutCode(char *code)
 **
 ** Writes an error message for a given message code.
 **
-** @param [r] code [char*] Error code
+** @param [r] code [const char*] Error code
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajMessErrorCode(char *code)
+void ajMessErrorCode(const char *code)
 {
     char *mess=0;
 
@@ -1425,12 +1427,12 @@ void ajMessErrorCode(char *code)
 **
 ** Writes an error message for a given message code and crashes.
 **
-** @param [r] code [char*] Error code
+** @param [r] code [const char*] Error code
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajMessCrashCodeFL (char *code)
+void ajMessCrashCodeFL (const char *code)
 {
     char *mess=0;
 
@@ -1499,13 +1501,13 @@ void ajMessCodesDelete (void)
 ** line processing is complete as it can be a problem to find a reasonable
 ** file name for debug output under these circumstances.
 **
-** @param [r] fmt [char*] Format.
+** @param [r] fmt [const char*] Format.
 ** @param [v] [...] Variable argument list.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajDebug (char* fmt, ...)
+void ajDebug (const char* fmt, ...)
 {
     va_list args ;
     static ajint debugset = 0;
@@ -1577,13 +1579,13 @@ FILE* ajDebugFile (void)
 ** Writes a prompt to the terminal and reads one line from the user.
 **
 ** @param [w] pthis [AjPStr*] Buffer for the user response.
-** @param [r] fmt [char*] Format string
+** @param [r] fmt [const char*] Format string
 ** @param [v] [...] Variable argument list.
 ** @return [ajint] Length of response string.
 ** @@
 ******************************************************************************/
 
-ajint ajUserGet (AjPStr* pthis, char* fmt, ...)
+ajint ajUserGet (AjPStr* pthis, const char* fmt, ...)
 {
     AjPStr thys;
     char *cp;

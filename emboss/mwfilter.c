@@ -27,6 +27,16 @@
 #define DELETED -1.
 #define MILLION 1000000.
 
+/* @datastatic AjPMwh *********************************************************
+**
+** mwfilter internals
+**
+** @alias AjSMwh
+** @alias AjOMwh
+**
+** @attr exp [double] Undocumented
+** @attr data [double] Undocumented
+******************************************************************************/
 
 typedef struct AjSMwh
 {
@@ -147,7 +157,7 @@ int main(int argc, char **argv)
 **
 ** Read molecular weight exclusion file.
 **
-** @param [r] datafile [AjPFile] Datafile (Emwfilter.dat)
+** @param [r] inf [AjPFile] Datafile (Emwfilter.dat)
 ** @param [w] rmarray [AjPDouble*] keratin/trypsin data etc
 ** @param [w] darray [AjPDouble*] oxymet/sodium data etc
 ** @@
@@ -253,7 +263,7 @@ static void mwfilter_readexp(AjPFile inf, AjPDouble *exparray)
 **
 ** Mark as DELETED keratin/trypsin peaks.
 **
-** @param [rw] exparray [AjPDouble] Experimental data
+** @param [u] exparray [AjPDouble] Experimental data
 ** @param [r] expn [ajint] Number of experimental peaks
 ** @param [r] rmarray [AjPDouble] keratin/trypsin data etc
 ** @param [r] rmn [ajint] Number of keratin/trypsin peaks
@@ -309,7 +319,7 @@ static void mwfilter_noisedel(AjPDouble exparray, ajint expn,
 **
 ** Delete from an array peaks marked as DELETED.
 **
-** @param [rw] exparray [AjPDouble] Experimental data
+** @param [u] exparray [AjPDouble] Experimental data
 ** @param [r] expn [ajint*] Number of experimental peaks
 ** @@
 ******************************************************************************/
@@ -351,7 +361,7 @@ static void mwfilter_arraytidy(AjPDouble exparray, ajint *expn)
 **
 ** Mark as DELETED oxymet/sodium peaks.
 **
-** @param [rw] exparray [AjPDouble] Experimental data
+** @param [u] exparray [AjPDouble] Experimental data
 ** @param [r] expn [ajint] Number of experimental peaks
 ** @param [r] darray [AjPDouble] oxymet/sodium molwts etc
 ** @param [r] dn [ajint] Number of oxymet/sodium molwts

@@ -22,6 +22,19 @@
 
 #include "emboss.h"
 
+/* @datastatic Primer *********************************************************
+**
+** stssearch internals
+**
+** @alias primers
+**
+** @attr Name [AjPStr] Undocumented
+** @attr Prima [AjPRegexp] Undocumented
+** @attr Primb [AjPRegexp] Undocumented
+** @attr Oligoa [AjPStr] Undocumented
+** @attr Oligob [AjPStr] Undocumented
+******************************************************************************/
+
 typedef struct primers
 {
   AjPStr Name;

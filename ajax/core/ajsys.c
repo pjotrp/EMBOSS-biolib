@@ -33,7 +33,7 @@
 **
 ** Removes a directory specification from a filename
 **
-** @param [rw] s [AjPStr*] Filename in AjStr.
+** @param [u] s [AjPStr*] Filename in AjStr.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -105,7 +105,7 @@ unsigned char ajSysItoUC(ajint v)
 ** Gets the Basename of a file then searches $PATH sequentially until it
 ** finds a user-EXECUTABLE file of the same name.
 **
-** @param [rw] s [AjPStr*] Filename in AjStr, replaced by full pathname
+** @param [u] s [AjPStr*] Filename in AjStr, replaced by full pathname
 ** @return [AjBool] True if executable found, false otherwise
 ** @@
 ******************************************************************************/
@@ -167,8 +167,8 @@ AjBool ajSysWhich(AjPStr *s)
 ** Gets the Basename of a file then searches $PATH sequentially until it
 ** finds a user-EXECUTABLE file of the same name. Reentrant.
 **
-** @param [rw] s [AjPStr*] Filename in AjStr, replaced by full pathname
-** @param [rw] env [char**] Environment
+** @param [u] s [AjPStr*] Filename in AjStr, replaced by full pathname
+** @param [u] env [char**] Environment
 ** @return [AjBool] True if executable found, false otherwise
 ** @@
 ******************************************************************************/
@@ -440,14 +440,14 @@ void ajSysCanon(AjBool state)
 **
 ** Generates a program name and argument list from a command line string.
 **
-** @param [r] cmdline [AjPStr] Command line.
+** @param [r] cmdline [const AjPStr] Command line.
 ** @param [w] pgm [char**] Program name.
 ** @param [w] arglist [char***] Argument list.
 ** @return [AjBool] ajTrue on success.
 ** @@
 ******************************************************************************/
 
-AjBool ajSysArglist (AjPStr cmdline, char** pgm, char*** arglist)
+AjBool ajSysArglist (const AjPStr cmdline, char** pgm, char*** arglist)
 {    
     static AjPRegexp argexp = NULL;
     AjPStr tmpline = NULL;
@@ -464,7 +464,7 @@ AjBool ajSysArglist (AjPStr cmdline, char** pgm, char*** arglist)
     
     ajDebug("ajSysArgList '%S'\n", cmdline);
     
-    (void) ajStrAss (&tmpline, cmdline);
+    (void) ajStrAssS(&tmpline, cmdline);
     
     cp = ajStrStr(cmdline);
     ipos = 0;

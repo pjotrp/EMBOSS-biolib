@@ -56,7 +56,7 @@ static ajint propFragCompare(const void *a, const void *b);
 **
 ** Read amino acid properties from Eamino.dat
 **
-** @param [R] mfptr [AjPFile] Input file object
+** @param [r] mfptr [AjPFile] Input file object
 ** @return [void]
 ** @@
 ******************************************************************************/

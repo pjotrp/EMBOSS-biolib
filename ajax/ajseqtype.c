@@ -26,7 +26,9 @@ typedef struct SeqSType
     char *ConvertTo;
     AjPRegexp (*Badchars) (void);
     char *Desc;
-} SeqOType, *SeqPType;
+} SeqOType;
+
+#define SeqPType SeqOType*
 
 enum ProtNuc {ISANY=0, ISNUC=1, ISPROT=2};
 
@@ -35,11 +37,11 @@ enum ProtNuc {ISANY=0, ISNUC=1, ISPROT=2};
 ** gap conversion is a separate attribute, along with case convserion
 */
 
-static AjBool     seqFindType (AjPStr type_name, ajint* typenum);
+static AjBool     seqFindType (const AjPStr type_name, ajint* typenum);
 static void       seqGapSL (AjPStr* seq, char gapc, char padc, ajint ilen);
 static AjBool     seqTypeFix (AjPSeq thys, ajint itype);
 static AjBool     seqTypeFixReg (AjPSeq thys, ajint itype, char fixchar);
-static void       seqTypeSet (AjPSeq thys, AjPStr Type);
+static void       seqTypeSet (AjPSeq thys, const AjPStr Type);
 static AjBool     seqTypeStopTrimS (AjPStr* pthys);
 static char       seqTypeTest (AjPStr thys, AjPRegexp badchars);
 static AjBool     seqTypeTestI (AjPSeq thys, ajint itype);
@@ -168,8 +170,8 @@ static SeqOType seqType[] =
 ** If the type can have gaps, also tests for gap characters.
 ** Used only for testing, so never writes any error message
 **
-** @param [P] pthys [AjPSeq] Sequence string
-** @param [P] Type [AjPStr] Sequence type
+** @param [u] thys [AjPSeq] Sequence string
+** @param [r] Type [AjPStr] Sequence type
 ** @return [AjBool] ajTrue if compatible.
 ** @@
 ******************************************************************************/
@@ -202,14 +204,14 @@ AjBool ajSeqTypeTest (AjPSeq thys, AjPStr Type)
     return seqTypeFix(thys, itype);
 }
 
-/* @funcstatic ajSeqTypeTestI *************************************************
+/* @funcstatic seqTypeTestI ***************************************************
 **
 ** Tests the type of a sequence is compatible with a defined type.
 ** If the type can have gaps, also tests for gap characters.
 ** Used only for testing, so never writes any error message
 **
-** @param [P] pthys [AjPStr*] Sequence string
-** @param [R] itype [ajint] Sequence type index
+** @param [u] thys [AjPSeq] Sequence object
+** @param [r] itype [ajint] Sequence type index
 ** @return [AjBool] ajTrue if compatible.
 ** @@
 ******************************************************************************/
@@ -281,8 +283,8 @@ static AjBool seqTypeTestI (AjPSeq thys, ajint itype)
 ** (if no gaps are allowed) and by setting ambiguity codes (if they
 ** are allowed).
 **
-** @param [P] thys [AjPSeq] Sequence object
-** @param [R] itype [ajint] Sequence type index
+** @param [u] thys [AjPSeq] Sequence object
+** @param [r] itype [ajint] Sequence type index
 ** @return [AjBool] ajTrue if the type can be fixed
 ** @@
 ******************************************************************************/
@@ -334,9 +336,9 @@ static AjBool seqTypeFix (AjPSeq thys, ajint itype)
 ** (if no gaps are allowed) and by setting ambiguity codes (if they
 ** are allowed).
 **
-** @param [P] thys [AjPSeq] Sequence object
-** @param [R] itype [ajint] Sequence type index
-** @param [R] fixchar [char] Character to replace with
+** @param [u] thys [AjPSeq] Sequence object
+** @param [r] itype [ajint] Sequence type index
+** @param [r] fixchar [char] Character to replace with
 ** @return [AjBool] ajTrue if the type can be fixed
 ** @@
 ******************************************************************************/
@@ -375,13 +377,13 @@ static AjBool seqTypeFixReg (AjPSeq thys, ajint itype, char fixchar)
 ** Sets the sequence type. Uses the first character of the type
 ** which can be N or P
 **
-** @param [P] thys [AjPSeq] Sequence object
-** @param [P] Type [AjPStr] Sequence type
+** @param [u] thys [AjPSeq] Sequence object
+** @param [r] Type [const AjPStr] Sequence type
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void seqTypeSet (AjPSeq thys, AjPStr Type)
+static void seqTypeSet (AjPSeq thys, const AjPStr Type)
 {
     char* cp = ajStrStr(Type);
 
@@ -412,8 +414,8 @@ static void seqTypeSet (AjPSeq thys, AjPStr Type)
 ** If the type can have gaps, also tests for gap characters.
 ** Used for input validation - writes error message if the type check fails
 **
-** @param [P] pthys [AjPStr*] Sequence string
-** @param [P] type_name [AjPStr] Sequence type
+** @param [u] pthys [AjPStr*] Sequence string
+** @param [r] type_name [AjPStr] Sequence type
 ** @return [AjBool] ajTrue if compatible.
 ** @@
 ******************************************************************************/
@@ -492,13 +494,13 @@ AjBool ajSeqTypeCheckS (AjPStr* pthys, AjPStr type_name)
 ** If the type can have gaps, also tests for gap characters.
 ** Used for input validation - writes error message if the type check fails
 **
-** @param [P] thys [AjPSeq] Sequence object
-** @param [P] seqin [AjPSeqin] Sequence input object
+** @param [u] thys [AjPSeq] Sequence object
+** @param [r] seqin [const AjPSeqin] Sequence input object
 ** @return [AjBool] ajTrue if compatible.
 ** @@
 ******************************************************************************/
 
-AjBool ajSeqTypeCheckIn (AjPSeq thys, AjPSeqin seqin)
+AjBool ajSeqTypeCheckIn (AjPSeq thys, const AjPSeqin seqin)
 {    
     ajint itype = -1;
     AjPRegexp badchars;
@@ -1032,7 +1034,7 @@ static void seqGapSL (AjPStr* seq, char gapc, char padc, ajint ilen)
 **
 ** Removes a trailing stop (asterisk) from a protein sequence
 **
-** @param [P] pthys [AjPStr*] Sequence string
+** @param [u] pthys [AjPStr*] Sequence string
 ** @return [AjBool] ajTrue if a stop was removed.
 ** @@
 ******************************************************************************/
@@ -1052,7 +1054,7 @@ static AjBool seqTypeStopTrimS (AjPStr* pthys)
 **
 ** Sets a sequence type to "nucleotide"
 **
-** @param [P] thys [AjPSeq] Sequence object
+** @param [u] thys [AjPSeq] Sequence object
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -1066,7 +1068,7 @@ void ajSeqSetNuc (AjPSeq thys)
 **
 ** Sets a sequence type to "protein"
 **
-** @param [P] thys [AjPSeq] Sequence object
+** @param [u] thys [AjPSeq] Sequence object
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -1080,7 +1082,7 @@ void ajSeqSetProt (AjPSeq thys)
 **
 ** Sets the type of a sequence if it has not yet been defined.
 **
-** @param [P] thys [AjPSeq] Sequence object
+** @param [u] thys [AjPSeq] Sequence object
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -1114,12 +1116,12 @@ void ajSeqType (AjPSeq thys)
 ** Prints the seqType definitions.
 ** For EMBOSS entrails output
 **
-** @param [R] outf [AjPFile] Output file
-** @param [R] full [AjBool] Full output
+** @param [r] outf [const AjPFile] Output file
+** @param [r] full [AjBool] Full output
 ** @return [void]
 ******************************************************************************/
 
-void ajSeqPrintType (AjPFile outf, AjBool full)
+void ajSeqPrintType (const AjPFile outf, AjBool full)
 {
     ajint i;
 
@@ -1143,8 +1145,8 @@ void ajSeqPrintType (AjPFile outf, AjBool full)
 **
 ** Returns an invalid character for failure, or a null character for success.
 **
-** @param [R] thys [AjPStr] Sequence string
-** @param [R] badchars [AjPRegexp] Regular expression for
+** @param [r] thys [AjPStr] Sequence string
+** @param [r] badchars [AjPRegexp] Regular expression for
 **                                 sequence characters disallowed
 ** @return [char] invalid character if any.
 ******************************************************************************/
@@ -1419,13 +1421,13 @@ static AjPRegexp seqTypeCharProtStop (void)
 **
 ** Returns sequence type index and ajTrue if type was found
 **
-** @param [R] type_name [AjPStr] Sequence type
-** @param [W] typenum [ajint*] Sequence type index
+** @param [r] type_name [const AjPStr] Sequence type
+** @param [w] typenum [ajint*] Sequence type index
 ** @return [AjBool] ajTrue if sequence type was found
 **
 ******************************************************************************/
 
-static AjBool seqFindType (AjPStr type_name, ajint* typenum)
+static AjBool seqFindType (const AjPStr type_name, ajint* typenum)
 {
     ajint i;
     ajint itype = -1;
@@ -1453,12 +1455,12 @@ static AjBool seqFindType (AjPStr type_name, ajint* typenum)
 **
 ** Returns ajTrue is sequence type can be a protein (or 'any')
 **
-** @param [R] type_name [AjPStr] Sequence type
+** @param [r] type_name [const AjPStr] Sequence type
 ** @return [AjBool] ajTrue if sequence can be protein
 **
 ******************************************************************************/
 
-AjBool ajSeqTypeIsProt (AjPStr type_name)
+AjBool ajSeqTypeIsProt (const AjPStr type_name)
 {
     ajint itype;
     if (seqFindType(type_name, &itype))
@@ -1478,12 +1480,12 @@ AjBool ajSeqTypeIsProt (AjPStr type_name)
 **
 ** Returns ajTrue is sequence type can be a nucleotide (or 'any')
 **
-** @param [R] type_name [AjPStr] Sequence type
+** @param [r] type_name [const AjPStr] Sequence type
 ** @return [AjBool] ajTrue if sequence can be nucleotide
 **
 ******************************************************************************/
 
-AjBool ajSeqTypeIsNuc (AjPStr type_name)
+AjBool ajSeqTypeIsNuc (const AjPStr type_name)
 {
     ajint itype;
     if (seqFindType(type_name, &itype))
@@ -1503,12 +1505,12 @@ AjBool ajSeqTypeIsNuc (AjPStr type_name)
 **
 ** Returns ajTrue is sequence type can be a protein or nucleotide
 **
-** @param [R] type_name [AjPStr] Sequence type
+** @param [r] type_name [const AjPStr] Sequence type
 ** @return [AjBool] ajTrue if sequence can be protein or nucleotide
 **
 ******************************************************************************/
 
-AjBool ajSeqTypeIsAny (AjPStr type_name)
+AjBool ajSeqTypeIsAny (const AjPStr type_name)
 {
     ajint itype;
     if (seqFindType(type_name, &itype))

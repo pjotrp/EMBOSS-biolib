@@ -52,11 +52,11 @@ AjPTime ajTimeToday (void)
 **
 ** AJAX function to return the ANSI C format for an AJAX time string
 **
-** @param [r] timefmt [char*] AJAX time format
+** @param [r] timefmt [const char*] AJAX time format
 ** @return [char*] ANSI C time format, or NULL if none found
 ** @@
 ******************************************************************************/
-static char* TimeFormat(char *timefmt)
+static char* TimeFormat(const char *timefmt)
 {
     ajint i;
     AjBool ok    = ajFalse;
@@ -83,14 +83,14 @@ static char* TimeFormat(char *timefmt)
 ** AJAX function to return today's time as an AjPTime object
 ** with a specified output format
 **
-** @param [r] timefmt [char*] A controlled vocabulary of time formats
+** @param [r] timefmt [const char*] A controlled vocabulary of time formats
 **
 ** @return [] [AjPTime] Pointer to time object containing today's date/time
 ** @exception  'Mem_Failed' from memory allocations
 ** @@
 **
 ******************************************************************************/
-AjPTime ajTimeTodayF (char* timefmt)
+AjPTime ajTimeTodayF (const char* timefmt)
 {
     static AjPTime thys = NULL;
     const time_t tim = time(0);
@@ -107,12 +107,12 @@ AjPTime ajTimeTodayF (char* timefmt)
 **
 ** Debug report on the contents of an AjPTime object
 **
-** @param [r] thys [AjPTime] Time object
+** @param [r] thys [const AjPTime] Time object
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajTimeTrace (AjPTime thys) 
+void ajTimeTrace (const AjPTime thys) 
 {
     ajDebug ("Time value trace '%D'\n", thys);
     ajDebug ("format: '%s'\n", thys->format);
@@ -125,14 +125,14 @@ void ajTimeTrace (AjPTime thys)
 ** 'tm' time structure defined in the time.h header file.
 ** The range validity of numbers given are not checked.
 **
-** @param  [rN] timefmt [char*] Time format to use
+** @param  [rN] timefmt [const char*] Time format to use
 ** @param  [rN] mday    [ajint]   Day of the month [1-31]
 ** @param  [rN] mon     [ajint]   Month [1-12]
 ** @param  [rN] year    [ajint]   Four digit year
 ** @return [AjPTime] An AjPTime object
 ** @@
 ******************************************************************************/
-AjPTime ajTimeSet( char *timefmt, ajint mday, ajint mon, ajint year)
+AjPTime ajTimeSet( const char *timefmt, ajint mday, ajint mon, ajint year)
 {
     AjPTime thys = ajTimeTodayF (timefmt) ;
 

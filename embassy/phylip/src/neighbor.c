@@ -56,7 +56,9 @@ node **cluster;
 AjPSeqset seqset;
 void emboss_getoptions(char *pgm, int argc, char *argv[]){
 AjStatus retval;
-AjPFile outf,inf,treef;
+AjPFile outf;
+AjPFile inf;
+AjPFile treef;
 int temp;
 long inseed0;
 int i;
