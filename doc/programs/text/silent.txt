@@ -1,0 +1,152 @@
+
+                               EMBOSS: silent
+     _________________________________________________________________
+   
+                                Program silent
+                                       
+Function
+
+   Silent mutation restriction enzyme scan
+   
+Description
+
+   silent does a scan of a nucleic acid sequence for silent mutation
+   restriction enzyme sites.
+   
+Usage
+
+   Here is a sample session with silent:
+   
+% silent
+Silent mutation restriction enzyme scan
+Input sequence: embl:hsfau
+Comma separated enzyme list [all]: ecori,hindiii
+Output file [hsfau.silent]:
+
+Command line arguments
+
+   Mandatory qualifiers:
+  [-seq]               sequence   Sequence USA
+   -enzymes            string     Comma separated enzyme list
+  [-outf]              outfile    Output file name
+
+   Optional qualifiers: (none)
+   Advanced qualifiers:
+   -sshow              bool       Display untranslated sequence
+   -tshow              bool       Display translated sequence
+   -allmut             bool       Display all mutations
+
+
+   Mandatory qualifiers Allowed values Default
+   [-seq]
+   (Parameter 1) Sequence USA Readable sequence Required
+   -enzymes Comma separated enzyme list Any string is accepted all
+   [-outf]
+   (Parameter 2) Output file name Output file <sequence>.silent
+   Optional qualifiers Allowed values Default
+   (none)
+   Advanced qualifiers Allowed values Default
+   -sshow Display untranslated sequence Yes/No No
+   -tshow Display translated sequence Yes/No No
+   -allmut Display all mutations Yes/No No
+   
+Input file format
+
+   Nucleic acid sequence USA.
+   
+Output file format
+
+   This is the result of the example above:
+   
+Results for HSFAU:
+
+KEY:
+        Enzyme          Enzyme name
+        RS-Pattern      Restriction enzyme recognition site pattern
+        Match-Posn      Position of the first base of RS pattern in sequence
+        AA              Amino acid. Original sequence(.)After mutation
+        Base-Posn       Position of base to be mutated in sequence
+        Mutation        The base mutation to perform
+
+Silent mutations
+
+Enzyme      RS-Pattern  Match-Posn   AA  Base-Posn Mutation
+
+
+
+
+Results for reverse of HSFAU:
+
+Silent mutations
+
+Enzyme      RS-Pattern  Match-Posn   AA  Base-Posn Mutation
+
+HindIII     AAGCTT         267       A.A    268      A->T
+
+Data files
+
+   None.
+   
+Notes
+
+   None.
+   
+References
+
+   None.
+   
+Warnings
+
+   None.
+   
+Diagnostic Error Messages
+
+   None.
+   
+Exit status
+
+   It always exits with status 0.
+   
+Known bugs
+
+   None.
+   
+See also
+
+   Program name Description
+   chaos Create a chaos game representation plot for a sequence
+   cpgplot Plot CpG rich areas
+   cpgreport Reports all CpG rich regions
+   diffseq Find differences (SNPs) between nearly identical sequences
+   dotmatcher Displays a thresholded dotplot of two sequences
+   dotpath Displays a non-overlapping wordmatch dotplot of two sequences
+   dottup Displays a wordmatch dotplot of two sequences
+   einverted Finds DNA inverted repeats
+   equicktandem Finds tandem repeats
+   etandem Looks for tandem repeats in a nucleotide sequence
+   isochore Plots isochores in large DNA sequences
+   newcpgreport Report CpG rich areas
+   newcpgseek Reports CpG rich regions
+   palindrome Looks for inverted repeats in a nucleotide sequence
+   polydot Displays all-against-all dotplots of a set of sequences
+   rebaseextract Extract data from REBASE
+   redata Search REBASE for enzyme name, references, suppliers etc
+   remap Display a sequence with restriction cut sites, translation etc
+   restrict Finds restriction enzyme cleavage sites
+   showseq Display a sequence with features, translation etc
+   tfscan Scans DNA sequences for transcription factors
+   
+Author(s)
+
+   This application was written by Alan Bleasby (ableasby@hgmp.mrc.ac.uk)
+   
+History
+
+   Written (Aug 2000) - Alan Bleasby.
+   
+Target users
+
+   This program is intended to be used by everyone and everything, from
+   naive users to embedded scripts.
+   
+Comments

@@ -1,0 +1,15 @@
+/**  MSE  *********************************************************************
+**
+**  A Multiple Sequence Screen Editor for Biological Sequences.
+**  This is a copyrighted work.  (c) William A. Gilbert, Whitehead Insitutute
+**
+**  Modification History:
+**  --------------------
+**  February, 1986 Originally written in FORTRAN. (V1.0)
+**  January 1987   Rewritten in VMS C using CKit library. (V2.0)
+**                 Added GelAlign fragment assembly.
+**  September 1989 Data Structures revised to match new CKit Library. (V2.1)
+**  August 1990    Minor fixs to incorporate changes to CKit (V2.2)
+**  October 1999   Now uses curses for Unix C (V3.0) (il@sanger.ac.uk)
+**
+*****************************************************************************/

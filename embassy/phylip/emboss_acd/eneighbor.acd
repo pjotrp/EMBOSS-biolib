@@ -1,0 +1,90 @@
+appl: eneighbor [
+    doc: "estimates phylogenies from distance matrix data using the
+    Neighbor-Joining method or the UPGMA method of clustering"
+    group: "phylip"
+   ]
+
+infile: infile [ 
+	param: Y ]
+
+outfile: outfile [ 
+	 param: Y 
+	 def: "eneighbor.outfile" ]
+
+bool: trout [ 
+      param: Y 
+      def:Y
+      information: "Create a tree file" ]
+
+bool: drawtree [ 
+      opt: Y 
+      def: Y
+      information: "Draw tree" ]
+
+outfile: treefile [
+	  req: "$(trout)" 
+	  def: "eneighbor.treefile" 
+	  info: "Tree file name" 
+	  prompt:"Treefile name" ]
+
+bool: nj [ 
+      req: Y 
+      info: "Neighbor-joining" 
+      def: Y]
+
+
+bool: og [ 
+      req: "$(nj)" 
+      info: "Outgroup root" 
+      def: N ]
+
+int: outgnum [ 
+     req: "$(og)" 
+     info:"number of the outgroup" ]
+
+
+bool: lt [ 
+      opt: Y 
+      def: N 
+      info: "Lower-triangular data matrix"       ]
+
+bool: ut [ 
+      opt: Y 
+      def: N 
+      info: "Upper-triangular data matrix" ]
+
+bool: sr [ 
+      opt: Y 
+      def: Y 
+      info: "Subreplicates" ]
+
+
+bool: random [ 
+      opt: Y 
+      def: N 
+      info: "Randomize input order of species" ]
+
+int: randseed [ 
+     req: "$(random)" 
+     info: "Random number seed (must be odd)" ]
+
+
+bool:  multsets [ 
+       opt: Y 
+       def: N 
+       info: "Analyze multiple data sets" ]
+
+int: datasets [ 
+     req: "$(multsets)" 
+     info: "How many data sets" ]
+
+bool: printdata [ 
+      opt: Y 
+      def: N 
+      info: "Print out the data at start of run" ]
+
+bool: progress [ 
+      opt: Y 
+      def: N 
+      info: "Print indications of progress of run" ]
+

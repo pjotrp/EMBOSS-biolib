@@ -1,0 +1,49 @@
+appl: egendist [
+    doc: "Genetic Distance Matrix program"
+    group: "phylip"
+   ]
+
+infile: infile [
+	param: Y
+	prompt: "data file" ]
+
+outfile: outfile [ 
+         param: Y
+         def: "egendist.outfile" ]
+
+bool: all [
+      opt: Y
+      def: N
+      info: "Input file contains all alleles at each locus (else one)" ]
+
+list: method [ req: y min: 1 max: 1
+    header: "Distance methods"
+    values: "Nei:Nei genetic distance;
+             Cav:Cavalli-Sforza chord measur;
+             Rey:Reynolds genetic distance;
+    prompt: "Choose the method to use"
+    def: Nei
+]
+
+bool: lowertriangle [
+      opt: Y
+      def: N
+      info: "Lower-triangular (else Square)" ]
+
+bool:  multsets [ 
+       opt: Y 
+       def: N 
+       info: "Analyze multiple data sets" ]
+
+int: datasets [ 
+     req: "$(multsets)" 
+     info: "How many data sets" ]
+
+bool: progress [ 
+      opt: Y 
+      def: N 
+      info: "Print indications of progress of run" ]
+
+
+
+

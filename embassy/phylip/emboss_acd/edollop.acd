@@ -1,0 +1,101 @@
+appl: edollop [
+    doc: "Dollo and polymorphism parsimony algorithm"
+    group: "phylip"
+   ]
+
+infile: datafile [ 
+         param: Y
+	 info: "data file to be read in" ]
+
+outfile: outfile [ 
+         param: Y
+         def: "edollop.outfile" ]
+
+
+bool: besttree [
+      opt: Y
+      def: Y
+      info: "Search for best tree" ]
+
+bool: random [ 
+      opt: "$(besttree)"
+      def: N 
+      info: "Randomize input order of species" ]
+
+int: randseed [ 
+     req: "$(random)" 
+     def: 3
+     info: "Random number seed (must be odd)" ]
+
+int: randtimes [ 
+     req: "$(random)" 
+     def: 3
+     info: "How many times to randomise" ]
+
+bool: dollo [
+      opt: Y
+      def: Y
+      info: "Do Dollo (else Polymorphism)" ]
+
+bool: thresh [
+      req: N
+      def: N
+      info: "Use Threshold parsimony" ]
+
+float: valthresh [
+     req: "$(thresh)"
+     min: 1.0
+     def: 1.0
+     info: "threshold value" ]
+
+bool: ancest [
+      opt: Y
+      def: N 
+      info: "Use ancestral states in input file" ]
+
+bool:  multsets [ 
+       opt: Y 
+       def: N 
+       info: "Analyze multiple data sets" ]
+
+int: datasets [
+     req: "$(multsets)"
+     min: 2
+     def: 2
+     info: "number of sets" ]
+
+bool: printdata [ 
+      opt: Y 
+      def: N 
+      info: "Print out the data at start of run" ]
+
+bool: progress [ 
+      opt: Y 
+      def: N 
+      info: "Print indications of progress of run" ]
+
+bool: steps [ 
+      opt: Y 
+      def: N
+      information: "Print out steps in each site" ]
+
+bool: statesatnodes [ 
+      opt: Y 
+      def: N
+      information: "Print states at all nodes of tree" ]
+
+bool: drawtree [ 
+      opt: Y 
+      def: Y
+      information: "Draw tree" ]
+
+bool: trout [ 
+      param: Y 
+      def:Y
+      information: "Create a tree file" ]
+
+outfile: treefile [
+          req: "$(trout)" 
+          def: "edollop.treefile"
+          info: "Tree file name" 
+          prompt:"Output treefile name" ]

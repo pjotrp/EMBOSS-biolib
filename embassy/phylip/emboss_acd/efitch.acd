@@ -1,0 +1,112 @@
+appl: efitch [
+    doc: "Fitch-Margoliash and Least-Squares Distance Methods"
+    group: "phylip"
+   ]
+
+infile: infile [
+	param: Y
+	prompt: "data file" ]
+
+outfile: outfile [ 
+         param: Y
+         def: "efitch.outfile" ]
+
+bool: besttree [
+      param: Y
+      def: Y
+      info: "Search for best tree" ]
+
+bool: length [
+     opt: @(!$(besttree))
+     def: N
+     info: "Use lengths from user trees" ]
+
+float: power [
+     opt: Y
+     def: 3.0
+     info: "Power" ]
+
+bool: negbranch [
+      opt: Y
+      def: N
+      info: "Negative branch lengths allowed" ]
+
+bool: random [ 
+      opt: "$(besttree)" 
+      def: N 
+      info: "Randomize input order of species" ]
+
+int: randseed [ 
+     req: "$(random)" 
+     info: "Random number seed (must be odd)" ]
+
+int: randtimes [ 
+     req: "$(random)" 
+     info: "Number of times to jumble" ]
+
+bool: global [ 
+      opt: "$(besttree)" 
+      def: N 
+      info: "Global rearrangements" ]
+
+bool: og [ 
+      req: Y 
+      info: "Outgroup root" 
+      def: N ]
+
+int: outgnum [ 
+     req: "$(og)" 
+     min: 1
+     def: 1
+#     max: "@($(msf.count))"  
+     info:"number of the outgroup" ]
+
+bool: lt [ 
+      opt: Y 
+      def: N 
+      info: "Lower-triangular data matrix"       ]
+
+bool: ut [ 
+      opt: Y 
+      def: N 
+      info: "Upper-triangular data matrix" ]
+
+bool: replicates [ 
+      opt: Y 
+      def: N 
+      info: "Subreplicates" ]
+
+bool:  multsets [ 
+       opt: Y 
+       def: N 
+       info: "Analyze multiple data sets" ]
+
+int: datasets [ 
+     req: "$(multsets)" 
+     info: "How many data sets" ]
+
+bool: printdata [ 
+      opt: Y 
+      def: N 
+      info: "Print out the data at start of run" ]
+
+bool: progress [ 
+      opt: Y 
+      def: N 
+      info: "Print indications of progress of run" ]
+
+bool: trout [ 
+      param: Y 
+      def:Y
+      information: "Create a tree file" ]
+
+bool: drawtree [ 
+      opt: Y 
+      def: Y
+      information: "Draw tree" ]
+
+outfile: treefile [
+          req: "$(trout)" 
+          ext: "treefile" 
+          info: "Tree file name" 
+          prompt:"Treefile name" ]

@@ -1,0 +1,65 @@
+appl: eseqboot [
+    doc: "Bootstrapped sequences algorithm"
+    group: "phylip"
+   ]
+
+infile: datafile [ 
+         param: Y 
+	 info: "Input file" ]
+
+outfile: outfile [ 
+         param: Y
+         def: "eseqboot.outfile" ]
+
+bool: inter [
+      opt: Y
+      info: "Interleaved input"
+      def: N ]
+
+int: randseed [ 
+     req: Y 
+     def: 3
+     info: "Random number seed (must be odd)" ]
+
+list: method [ req: y min: 1 max: 1
+      header: "Method"
+      values: "Seq:Molecular sequences;    
+	      Mor:Discrete Morphology;
+	      Res:Restriction Sites;
+	      Gen:Gene Frequencies"
+      prompt: "Choose the method" 
+      def: Seq ]
+
+bool: enzymes [
+      opt: "@($(method) == Res)"
+      info:"Present in input file"
+      def: N ]
+      
+bool: all [
+      opt: "@($(method) == Gen)"
+      info:"All alleles present at each locus"
+      def: N ]
+
+list: test [ req: y min: 1 max: 1
+      header: "test"
+      values: "Boot:Bootstrap;
+	       Jack:Delete-half Jackknife;
+	       Perm:Permute species for each character"
+      prompt: "Choose test"
+      def: Boot ]
+
+int: reps [
+     req: Y
+     info: "How many replicates"
+     min: 1
+     def: 100 ]     
+
+bool: printdata [ 
+      opt: Y 
+      def: N 
+      info: "Print out the data at start of run" ]
+
+bool: progress [ 
+      opt: Y 
+      def: N 
+      info: "Print indications of progress of run" ]

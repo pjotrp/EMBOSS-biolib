@@ -1,0 +1,24 @@
+appl: ednainvar [
+    doc: "Nucleic acid sequence Invariants method"
+    group: "phylip"
+   ]
+
+seqset: msf [ 
+	param: Y
+        prompt: "Sequences file to be read in"
+        help: "File containing sequences"
+]
+
+outfile: outfile [ 
+         param: Y 
+         def: "ednainvar.outfile" ]
+
+bool: printdata [ 
+      opt: Y 
+      def: N 
+      info: "Print out the data at start of run" ]
+
+bool: progress [ 
+      opt: Y 
+      def: N 
+      info: "Print indications of progress of run" ]

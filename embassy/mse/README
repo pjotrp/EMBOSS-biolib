@@ -1,0 +1,23 @@
+Installation.
+
+1) Go to the emboss directory 
+cd EMBOSS-0.0.4
+
+2) make new directory embassy if it does not exisat already.
+mkdir embassy
+
+3) Go into that directory
+cd embassy
+
+4) unzip and untar the file
+gunzip MSE-0.0.4.tar.gz
+tar xvf MSE-0.0.4.tar
+
+5) go into the mse directory
+cd MSE-0.0.4
+
+6) configure and compile
+./configure (use same options as you used to compile emboss)
+make
+make install
+

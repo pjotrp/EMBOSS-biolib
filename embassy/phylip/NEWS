@@ -1,0 +1,11 @@
+	PHYLIP has now been embossified. All the programs now use the
+emboss command line code to get the options. If the programs before
+accepted sequences then these now use the emboss sequence reading code
+and hence can read many most format types.
+	All interactive programs have not been done as no advantage is
+gained from doing this. All programs have been tested to give the same
+results as those given by there respective test input/output files
+given in the phylip documentation which can be founds in the doc directory.
+       Some warnings are given on compilation but these have been left
+as the code was changed as little as possible to make subsequent new 
+versions of phylip more easily embossified.

@@ -1,0 +1,53 @@
+#!/bin/csh
+
+#
+# Note PLplot now compiled under emboss with automake.
+#
+
+#
+## gunzip and untar the plplot code (unchanged code)
+#
+#gunzip plplot4p99j.tar.gz
+#tar xvf plplot4p99j.tar
+#gzip plplot4p99j.tar        
+#cd plplot4p99j
+
+#
+## Configure Plplot. Note most things turned off, as we only need certain parts.
+#
+#./configure --prefix=`pwd`/ --disable-tk --disable-tcl 
+#--disable-f77 --disable-dp --without-shlib --disable-shared --disable-cxx --disable-linuxvga
+#make
+#mkdir bin
+#cp -f tmp/plpr bin
+#make install
+
+#
+## Set path to find bin directory. This is used later to find the library.
+#
+#set path = (`pwd`/bin $path)
+#rehash
+
+#
+## Set PLPLOT_LIB so that the fonts can be found.
+#
+#setenv PLPLOT_LIB "`pwd`/lib"
+#cd ..
+
+
+#
+## Now compile Emboss.
+#
+aclocal -I m4
+autoconf
+automake -a
+./configure --disable-shared
+make
+
+#cd plplot4p99j
+echo "------------------------------------------------------------------------------"
+echo " Add to your .cshrc file the following lines :-"
+echo "   set path = (`pwd`/emboss "'$'"path ) " 
+echo "   setenv PLPLOT_LIB "`pwd`/plplot/lib""
+echo "------------------------------------------------------------------------------"
+#cd ..

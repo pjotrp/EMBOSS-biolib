@@ -1,0 +1,80 @@
+appl: eclique [
+    doc: "Largest clique program"
+    group: "phylip"
+   ]
+
+infile: infile [ 
+        param: Y 
+	info: "file to read in"
+	prompt: "phylip file to read in" ]
+
+
+outfile: outfile [ 
+         param: Y
+	 def: "eclique.outfile" ]
+
+
+bool: trout [ 
+      param: Y 
+      def:Y
+      information: "Create a tree file" ]
+
+bool: drawtree [ 
+      opt: Y 
+      def: Y
+      information: "Draw tree" ]
+
+outfile: treefile [
+         param: "$(trout)"
+	 def: "eclique.treefile"
+	 info: "tree file name"
+	 prompt: "tree file" ]
+	 
+bool: ancestral [
+      opt: Y
+      def : N
+      info: "Use ancestral states in input file"
+      prompt: "Use ancestral states in input file" ]
+
+bool: minclique [
+      opt: Y
+      def: N
+      info: "Use minimum clique size"
+      prompt: "Use minimum clique size" ]
+
+int: cliqminnum [
+     req: "$(minclique)"
+     def: 1
+     info: "Minimum clique size"
+     prompt: " Minimum clique size" ]
+
+bool: og [ 
+      req: Y 
+      info: "Outgroup root" 
+      def: N ]
+
+int: outgnum [ 
+     req: "$(og)" 
+     min: 1
+     def: 1
+#     max: "@($(msf.count))"  
+     info:"number of the outgroup" ]
+
+bool: printdata [ 
+      opt: Y 
+      def: N 
+      info: "Print out the data at start of run" 
+      prompt: "Print out the data at start of run" ]
+
+bool: progress [ 
+      opt: Y 
+      def: N 
+      info: "Print indications of progress of run" 
+      prompt: "Print indications of progress of run" ]
+
+bool: matrixout [ 
+      opt: Y 
+      def: N 
+      info: "Print out compatibility matrix" 
+      prompt: "Print out compatibility matrix" ]
+

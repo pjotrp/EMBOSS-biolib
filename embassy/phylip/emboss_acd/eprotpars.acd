@@ -1,0 +1,106 @@
+appl: eprotpars [
+    doc: "Protein parsimony algorithm"
+    group: "phylip"
+   ]
+
+seqset: msf [ 
+        param: Y
+        type: gapany
+        prompt: "Sequences file to be read in"
+        help: "File containing a sequence allignment" ]
+
+outfile: outfile [ 
+         param: Y
+         def: "eprotpars.outfile" ]
+
+bool: besttree [
+      opt: Y
+      def: Y
+      info: "Search for best tree" ]
+
+bool: random [ 
+      req: "$(besttree)"
+      def: N 
+      info: "Randomize input order of species" ]
+
+int: randseed [ 
+     req: "$(random)" 
+     def: 3
+     info: "Random number seed (must be odd)" ]
+
+int: randtimes [ 
+     req: "$(random)" 
+     def: 3
+     info: "How many times to randomise" ]
+
+bool: og [ 
+      opt: Y 
+      info: "Outgroup root" 
+      def: N ]
+
+int: outgnum [ 
+     req: "$(og)"
+     min: 1 
+     def: 1
+     info:"number of the outgroup" ]
+
+bool: thresh [
+      req: N
+      def: N
+      info: "Use Threshold parsimony" ]
+
+float: valthresh [
+     req: "$(thresh)"
+     min: 1.0
+     def: 1.0
+     info: "threshold value" ]
+
+# IN documantation but not in code ??
+#list: gencode [ 
+#      opt: Y 
+#      min: 1 
+#      max: 1
+#      header:"Which genetic code"
+#      values: "U:Universal;
+#               M:Mitochondrial;
+#               V:Vertebrate mitochondrial;
+#               F:Fly mitochondrial;
+#               Y:Yeast mitochondrial"
+#      prompt: "Which genetic code"
+#      def: U ]
+
+bool: printdata [ 
+      opt: Y 
+      def: N 
+      info: "Print out the data at start of run" ]
+
+bool: progress [ 
+      opt: Y 
+      def: N 
+      info: "Print indications of progress of run" ]
+
+bool: steps [ 
+      opt: Y 
+      def: N
+      information: "Print out steps in each site" ]
+
+bool: seqatnodes [ 
+      opt: Y 
+      def: N
+      information: "Print sequences at all nodes of tree" ]
+
+bool: drawtree [ 
+      opt: Y 
+      def: Y
+      information: "Draw tree" ]
+
+bool: trout [ 
+      param: Y 
+      def:Y
+      information: "Create a tree file" ]
+
+outfile: treefile [
+          req: "$(trout)" 
+          def: "eprotpars.treefile"
+          info: "Tree file name" 
+          prompt:"Output treefile name" ]

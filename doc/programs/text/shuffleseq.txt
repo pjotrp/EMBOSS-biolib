@@ -1,0 +1,136 @@
+
+                             EMBOSS: shuffleseq
+     _________________________________________________________________
+   
+                              Program shuffleseq
+                                       
+Function
+
+   Shuffles a set of sequences maintaining composition
+   
+Description
+
+   This takes a sequence as input and outputs one or more sequences whose
+   order has been randomly shuffled. No bases or residues are changed,
+   only their order.
+   
+   The number of shuffled sequences output can be set by the '-shuffle'
+   qualifier.
+   
+Usage
+
+   Here is a sample session with shuffleseq making two randomised copies
+   of the input sequence.
+   
+
+% shuffleseq -shuffle 2
+Shuffles a set of sequences maintaining composition
+Input sequence(s): embl:mmam
+Output sequence [mmam.fasta]:
+
+Command line arguments
+
+   Mandatory qualifiers:
+  [-sequence]          seqall     Sequence database USA
+  [-outseq]            seqoutall  Output sequence(s) USA
+
+   Optional qualifiers: (none)
+   Advanced qualifiers:
+   -shuffle            integer    Number of shuffles
+
+
+   Mandatory qualifiers Allowed values Default
+   [-sequence]
+   (Parameter 1) Sequence database USA Readable sequence(s) Required
+   [-outseq]
+   (Parameter 2) Output sequence(s) USA Writeable sequence(s)
+   <sequence>.format
+   Optional qualifiers Allowed values Default
+   (none)
+   Advanced qualifiers Allowed values Default
+   -shuffle Number of shuffles Any integer value 1
+   
+Input file format
+
+   The USA of one or more sequences.
+   
+Output file format
+
+   The output is a sequence (by default in FASTA format) with the same
+   base composition as the input.
+   
+   Each run will produce a different sequence. Here is the output from
+   the example above:
+   
+>MMAM L48662 Mus musculus (cell line C3H/F2-11) chromosome 12 anti-DNA antibody
+
+heavy chain mRNA.
+ggcggcctccggtcaccaacctaattcggtgtcagtggcggccaagcatcctttatcaca
+agtcgacccattttcttcgtaccacacaatagctctaacgttcttgtgatagtttaggag
+ttgcagagcttcgagaggtacactaacaaggaaagagtgcgacaggaaccaaggagcatg
+aaatgaaacagctcctaaatctccaacgctaagactcggccattgctagtattantataa
+attcattcacagcccgttagcggccttttaatcacctgaaggcccccatatattaggcgt
+gacaggtatccaggcggacctttcgttcgtggtaagggtcgaatggagtgctacagtatn
+ctgaac
+>MMAM L48662 Mus musculus (cell line C3H/F2-11) chromosome 12 anti-DNA antibody
+
+heavy chain mRNA.
+ccaaaacaatcctagatgaacctctgccgattcaaggcagntagctttctgtaagctcgt
+ttgagatgctaatgtagccggtgaatagaagcctaggactcgcttcccactttctgcttt
+aagattatcgagccctacggaatgagctggaatctggtcttaggcattacgaacagnacg
+ggtggacgggggaccaaaagtggaggggatttctccctgctgacaaaagacactatagta
+tccccctggcattctagccgtcccgtctcgtgctagtaacggtcacagcaatgggagtct
+tgtagaacaataacggccgtctatgataccaagtcactttagacgtacaatcaaatctca
+tcaacc
+
+   Note that these two sequences have the same name.
+   
+Data files
+
+   None.
+   
+Notes
+
+   This program may be useful for producing sets of sequences which can
+   be used to check the statistics of sequence similarity finding
+   software.
+   
+References
+
+   None.
+   
+Warnings
+
+   None.
+   
+Diagnostic Error Messages
+
+   None.
+   
+Exit status
+
+   It always exits with status 0.
+   
+Known bugs
+
+   None.
+   
+See also
+
+   Program name Description
+   msbar Mutate sequence beyond all recognition
+   
+Author(s)
+
+   This application was written by Michael Schmitz (mschmitz@lbl.gov)
+   
+History
+
+   Finished.
+   
+Target users
+
+   This program is intended to be used by everyone and everything, from
+   naive users to embedded scripts.
+   
+Comments

@@ -1,0 +1,62 @@
+appl: econsense [
+    doc: "Majority-rule and strict consensus tree"
+    group: "phylip"
+   ]
+
+infile: infile [ 
+        param: Y 
+	info: "file to read in (New Hampshire standard form)"
+	prompt: "input file" ]
+
+
+outfile: outfile [ 
+         param: Y
+	 def: "econsense.outfile" ]
+
+bool: trout [ 
+      param: Y 
+      def:Y
+      information: "Create a tree file" ]
+
+bool: drawtree [ 
+      opt: Y 
+      def: Y
+      information: "Draw tree" ]
+
+outfile: treefile [
+         param: Y
+	 def: "econsense.treefile"
+	 info: "tree file name"
+	 prompt: "tree file" ]
+
+bool: root [
+      opt: Y
+      def: N
+      info: "Trees to be treated as Rooted"
+      prompt: "Trees to be treated as Rooted" ]
+      
+bool: og [ 
+      req: "$(root)" 
+      info: "Outgroup root" 
+      def: N ]
+
+int: outgnum [ 
+     req: "$(og)" 
+     min: 1
+     def: 1
+#     max: "@($(msf.count))"  
+     info: "number of the outgroup" 
+     prompt: "number of the outgroup" ]
+
+bool: progress [ 
+      opt: Y 
+      def: N 
+      info: "Print indications of progress of run" 
+      prompt: "Print indications of progress of run" ]
+
+bool: printsets [
+      opt: Y
+      def: Y
+      info: "Print out the sets of species"
+      prompt: "Print out the sets of species" ]
+

@@ -1,0 +1,44 @@
+appl: econtrast [
+    doc: "Continuous character Contrasts"
+    group: "phylip"
+   ]
+
+infile: infile [ 
+        param: Y 
+	info: "input file"
+	prompt: "input file" ]
+
+infile: treefile [ 
+        param: Y 
+	info: "input tree file"
+	prompt: "Input tree file" ]
+
+outfile: outfile [ 
+         param: Y
+	 def: "econtrast.outfile" ]
+
+bool: corplusreg [
+      opt: Y
+      def: Y
+      info: "Print out correlations and regressions" ]
+
+bool:  multsets [ 
+       opt: Y 
+       def: N 
+       info: "Analyze multiple data sets" ]
+
+int: datasets [ 
+     req: "$(multsets)"
+     min: 1
+     def: 1 
+     info: "How many data sets" ]
+
+bool: printdata [ 
+      opt: Y 
+      def: N 
+      info: "Print out the data at start of run" ]
+
+bool: progress [ 
+      opt: Y 
+      def: N 
+      info: "Print indications of progress of run" ]

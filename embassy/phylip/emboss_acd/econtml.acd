@@ -1,0 +1,98 @@
+appl: econtml [
+    doc: "Continuous character Maximum Likelihood method"
+    group: "phylip"
+   ]
+
+infile: infile [ 
+        param: Y 
+	info: "input file"
+	prompt: "input file" ]
+
+
+outfile: outfile [ 
+         param: Y
+	 def: "econtml.outfile" ]
+
+bool: besttree [
+      opt: Y
+      def: Y
+      info: "Search for best tree" ]
+
+bool: lengths [
+      req: @(!$(besttree))
+      def: N
+      info: "Use lengths from user trees" ]
+
+bool: global [
+      req: "$(besttree)"
+      def: N
+      info: "Global rearrangements" ]
+
+bool: random [ 
+      req: "$(besttree)"
+      def: N 
+      info: "Randomize input order of species" ]
+
+int: randseed [ 
+     req: "$(random)" 
+     def: 3
+     info: "Random number seed (must be odd)" ]
+
+bool: continuous [ 
+      opt: Y 
+      def: N
+      information: "continuous characters (else Gene frequencies)" ]
+
+bool: all [
+      req: @(!$(continuous))     
+      def: N
+      information: "Input file has all alleles at each locus" ]
+
+bool: og [ 
+      opt: Y 
+      info: "Outgroup root" 
+      def: N ]
+
+int: outgnum [ 
+     req: "$(og)"
+     min: 1 
+     def: 1
+     info:"number of the outgroup" ]
+
+bool:  multsets [ 
+       opt: Y 
+       def: N 
+       info: "Analyze multiple data sets" ]
+
+int: datasets [ 
+     req: "$(multsets)"
+     min: 1
+     def: 1 
+     info: "How many data sets" ]
+
+bool: printdata [ 
+      opt: Y 
+      def: N 
+      info: "Print out the data at start of run" ]
+
+bool: progress [ 
+      opt: Y 
+      def: N 
+      info: "Print indications of progress of run" ]
+
+bool: drawtree [ 
+      opt: Y 
+      def: Y
+      information: "Draw tree" ]
+
+bool: trout [ 
+      param: Y 
+      def:Y
+      information: "Create a tree file" ]
+
+outfile: treefile [
+          req: "$(trout)" 
+	  def: "econtml.treefile"
+          info: "Tree file name" 
+          prompt:"Output treefile name" ]
+

@@ -1,0 +1,45 @@
+Emboss problems mail emboss-bug@sanger.ac.uk
+
+Installation from .tar file.
+
+
+1) Go to the emboss directory 
+cd EMBOSS-0.0.4
+
+2) make new directory embassy if it does not exist already.
+mkdir embassy
+
+3) Go into that directory
+cd embassy
+
+4) unzip and untar the file
+gunzip TOPO-0.1.tar.gz
+tar xvf TOPO-0.1.tar
+
+5) go into the topo directory
+cd TOPO-0.1
+
+6) configure and compile
+./configure (use same options as you used to compile emboss)
+make
+make install
+
+
+Installation for anonymous cvs.
+(compile emboss first)
+
+1) Go to the topo directory 
+cd embassy/topo
+
+2) Create configure script
+aclocal -I m4
+autoconf
+automake -a
+
+3) Configure the makefile.
+./configure (use same arguments as those used to buils emboss)
+
+4) Compile and install
+make
+make install
+

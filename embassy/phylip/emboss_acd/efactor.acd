@@ -1,0 +1,27 @@
+appl: efactor [
+    doc: "multistate to binary recoding program"
+    group: "phylip"
+   ]
+
+infile: datafile [
+	param: Y
+	prompt: "data file" ]
+
+outfile: outfile [ 
+         param: Y
+         def: "efactor.outfile" ]
+
+bool: anc [
+      opt: Y
+      def: N
+      prompt: "put ancestral states in output file" ]
+
+bool: factors [
+      opt: Y
+      def: N
+      prompt: "put factors information in output file" ]
+
+bool: progress [
+      opt: Y
+      def: Y
+      info: "show progress" ]
