@@ -495,8 +495,8 @@ if ($cvsdoctextcommit ne "") {
 }
 
 print "Create make files\n";
-system("makeMake.pl");	# no parameter == do text
-system("makeMake.pl html");
+system("./makeMake.pl");	# no parameter == do text
+system("./makeMake.pl html");
 
 ######################################################################
 ######################################################################
