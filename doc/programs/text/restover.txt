@@ -179,7 +179,7 @@ Known bugs
 See also
 
    Program name                          Description
-   recode       Remove restriction sites but maintain the same translation
+   recoder      Remove restriction sites but maintain the same translation
    redata       Search REBASE for enzyme name, references, suppliers etc
    remap        Display a sequence with restriction cut sites, translation etc
    restrict     Finds restriction enzyme cleavage sites
