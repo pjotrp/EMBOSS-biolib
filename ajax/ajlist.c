@@ -2668,7 +2668,7 @@ void ajListExit(void)
 {
     ajDebug("List usage : %d opened, %d closed, %d maxsize %d nodes\n",
 	     listNewCnt, listDelCnt, listMaxNum, listNodeCnt);
-    ajDebug("List iterator usage : %d opened, %d closed, %d maxsize\n",
+    ajDebug("List iterator usage : %d opened, %d closed\n",
 	     listIterNewCnt, listIterDelCnt);
 
     return;
