@@ -35,66 +35,89 @@ public class SetInFileCard
 {
 
   private Box boxFile;
+  private boolean isFile = true;
+  private boolean isCut  = false;
+  private boolean isList = false;
+  private FileChooser fileChoose;
+  private CutNPasteTextArea cutnPaste;
+  private ListFilePanel listPane;
 
-  public SetInFileCard(final JPanel sectionPane, 
-                 final int h, String db[], JRadioButton rfile[],
-                 FileChooser fileChooser[], String name, final String appName,
+/**
+*
+* Build the GUI components for an input sequence(s).
+* @param sectionPane acd section panel
+* @param h GUI handle
+* @param db database list
+* @param name for the file card
+* @param appName application name
+* @param inSeqAttr input sequence attributes
+* @param boolean true if list files allowed
+*
+*/
+  public SetInFileCard(final JPanel sectionPane, final int h,
+                 String db[], String name, final String appName,
                  InputSequenceAttributes inSeqAttr[],
-                 CutNPasteTextArea cutnPaste[], boolean fopt)
+                 boolean fopt)
   {
-
 
     boxFile = new Box(BoxLayout.Y_AXIS);
     final CardLayout fileCard = new CardLayout();
-    final JPanel pfile = new JPanel(fileCard)
-    {
-      public Dimension getMinimumSize()
-      {
-       return getPreferredSize();
-      }
-      public Dimension getPreferredSize()
-      {
-       return new Dimension(500, 130);
-      }
-      public Dimension getMaximumSize()
-      {
-       return getPreferredSize();
-      }
-    };
-    
+    final JPanel pfile = new JPanel(fileCard);
+    Dimension d = new Dimension(500, 130);
+    pfile.setPreferredSize(d);
+    pfile.setMinimumSize(d);
+    pfile.setMaximumSize(d);
+
     Font labfont = SectionPanel.labfont;
     Color labelColor = SectionPanel.labelColor;
 
-    Box bacross;
-    bacross = Box.createHorizontalBox();
-    rfile[h]  = new JRadioButton ("file / database entry");
-    rfile[h].setFont(labfont);
-    JRadioButton rpaste = new JRadioButton ("paste");
-    rpaste.setFont(labfont);
-    rfile[h].addActionListener(new ActionListener()
+    Box bacross = Box.createHorizontalBox();
+    JRadioButton rfile  = new JRadioButton("file / database entry");
+    rfile.setFont(labfont);
+  
+    rfile.addActionListener(new ActionListener()
     {
       public void actionPerformed(ActionEvent e)
       {
-        if(((JRadioButton)e.getSource()).isSelected())
-          fileCard.show(pfile, "File");
-        else
-          fileCard.show(pfile, "Paste");
+        fileCard.show(pfile, "File");
+        isFile = true;
+        isCut  = false;
+        isList = false;
       }
     });
-    rfile[h].setSelected(true);
+    rfile.setSelected(true);
 
+    JRadioButton rpaste = new JRadioButton ("paste");
+    rpaste.setFont(labfont);
     rpaste.addActionListener(new ActionListener()
     {
-      public void actionPerformed(ActionEvent e) {
-        if(((JRadioButton)e.getSource()).isSelected())
-          fileCard.show(pfile, "Paste");
-        else
-          fileCard.show(pfile, "File");
+      public void actionPerformed(ActionEvent e) 
+      {
+        fileCard.show(pfile, "Paste");
+        isFile = false;
+        isCut  = true;
+        isList = false;
       }
     });
+
+    JRadioButton rlist = new JRadioButton ("list of files");
+    rlist.setFont(labfont);
+    rlist.addActionListener(new ActionListener()
+    {
+      public void actionPerformed(ActionEvent e)
+      {
+        fileCard.show(pfile, "List");
+        isFile = false;
+        isCut  = false;
+        isList = true;
+      }
+    });
+
     ButtonGroup group = new ButtonGroup();
-    group.add(rfile[h]);
+    group.add(rfile);
     group.add(rpaste);
+    group.add(rlist);  
+
     JLabel seqLabel = new JLabel("Enter the sequence as:"); 
     seqLabel.setForeground(labelColor);
     bacross.add(seqLabel);
@@ -103,31 +126,47 @@ public class SetInFileCard
     boxFile.add(bacross);
 
     bacross = Box.createHorizontalBox();
-    bacross.add(rfile[h]);
+    bacross.add(rfile);
     bacross.add(new JLabel(" or  "));
     bacross.add(rpaste);
+
+    if(fopt)
+    {
+      bacross.add(new JLabel(" or  "));
+      bacross.add(rlist);
+    }
+
     bacross.add(Box.createHorizontalGlue());
     boxFile.add(bacross);
     boxFile.add(Box.createVerticalStrut(8));
 
-    Box bdown[] = new Box[2];
-    for(int k=0; k<2; k++)
+    Box bdown[] = new Box[3];
+    for(int k=0; k<3; k++)
       bdown[k] =  Box.createVerticalBox();
 
-//  final JFrame f = new JFrame(appName.toLowerCase() + " - Input Sequence");
-    fileChooser[h] = new FileChooser(bdown[0],name);
+    fileChoose = new FileChooser(bdown[0],name);
+    cutnPaste = new CutNPasteTextArea(bdown[1],"Sequence Cut and Paste");
 
-    cutnPaste[h] = new CutNPasteTextArea(bdown[1],"Sequence Cut and Paste");
-//  f.setBackground(Color.white);
+    Box bxleft;
+    if(fopt)
+    {
+      listPane = new ListFilePanel(20);
+      bxleft = new Box(BoxLayout.X_AXIS);
+      bxleft.add(listPane);
+      bxleft.add(Box.createHorizontalGlue());
+      bdown[2].add(bxleft);
+    }
+
 //sequence attibute options
-    inSeqAttr[h] = new InputSequenceAttributes(db,fileChooser[h]);
+    inSeqAttr[h] = new InputSequenceAttributes(db,fileChoose);
     JButton boption = new JButton("Input Sequence Options");
-    fileChooser[h].setSize(boption.getPreferredSize());
-    fileChooser[h].setForeground(labelColor);
+    fileChoose.setSize(boption.getPreferredSize());
+    fileChoose.setForeground(labelColor);
 
-    Box bxleft= new Box(BoxLayout.X_AXIS);
+    bxleft= new Box(BoxLayout.X_AXIS);
     bxleft.add(boption);
     bxleft.add(Box.createHorizontalGlue());
+    bdown[0].add(Box.createVerticalGlue());
     bdown[0].add(bxleft);
 
     final JScrollPane rscroll = inSeqAttr[h].getJScrollPane();
@@ -139,7 +178,6 @@ public class SetInFileCard
         jop.showMessageDialog(sectionPane,rscroll,
                 appName.toLowerCase() + " - Input Sequence",
                 JOptionPane.PLAIN_MESSAGE);
-//      f.setVisible(true);
       }
     });
     boption = new JButton("Input Sequence Options");
@@ -156,12 +194,12 @@ public class SetInFileCard
         jop.showMessageDialog(sectionPane,rscroll,
                 appName.toLowerCase() + " - Input Sequence",
                 JOptionPane.PLAIN_MESSAGE);
-//      f.setVisible(true);
       }
     });
 
     pfile.add(bdown[0], "File");
     pfile.add(bdown[1], "Paste");
+    pfile.add(bdown[2], "List");
 
     bxleft= new Box(BoxLayout.X_AXIS);
     bxleft.add(pfile);
@@ -174,6 +212,86 @@ public class SetInFileCard
   protected Box getInCard()
   {
     return boxFile;
+  }
+
+/**
+*
+* @param isFile true if selected to use a file name
+*
+*/
+  public boolean isFileName()
+  {
+    return isFile;
+  }
+
+/**
+*
+* @param isCut true if selected to use cut 'n paste text
+*
+*/
+  public boolean isCutNPase()
+  {
+    return isCut;
+  }
+
+/**
+*
+* @param isList true if selected to use list of filenames
+*
+*/
+  public boolean isListFile()
+  {
+    return isList;
+  }
+
+/**
+*
+* @param String file or database name
+*
+*/
+  public String getFileChosen()
+  {
+    return fileChoose.getFileChosen();
+  }
+
+/**
+*
+* @param String cut 'n pasted text
+*
+*/
+  public String getCutNPasteText()
+  {
+    return cutnPaste.getText();
+  }
+
+/**
+*
+* @param String list of sequence filenames
+*
+*/
+  public String getListFile()
+  {
+    return listPane.getListFile();
+  }
+
+/**
+*
+* @param String[] list of sequence filenames
+*
+*/
+  public String[] getArrayListFile()
+  {
+    return listPane.getArrayListFile();
+  }
+
+/**
+*
+* @param String list of sequence filename
+*
+*/
+  public String getSequence(int n)
+  {
+    return listPane.getSequence(n);
   }
 
 }

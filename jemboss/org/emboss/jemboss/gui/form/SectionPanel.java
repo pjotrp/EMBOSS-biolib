@@ -57,13 +57,11 @@ public class SectionPanel
   private TextFieldFloat textFloat[];
   private JTextField rangeField[];
   private JCheckBox  checkBox[];
-  private FileChooser fileChooser[];
-  private CutNPasteTextArea cutnPaste[];
   private InputSequenceAttributes inSeqAttr[];
 
   private myComboPopup fieldOption[];
   private JList multiOption[];
-  private JRadioButton rfile[];
+  private SetInFileCard inSeq[];
   private Box lab[];
   private String db[];
 
@@ -88,7 +86,6 @@ public class SectionPanel
   private boolean isAdv = false;
   private boolean isOut = false;
 
-
   private boolean isShadedGUI;
 
   public static Color labelColor = new Color(0, 0, 0);
@@ -108,11 +105,9 @@ public class SectionPanel
 * @param TextFieldSink for the text fields in the form
 * @param TextFieldInt for the integer fields in the form
 * @param JCheckBox for the boolean switches
-* @param FileChooser for the sequence sections
-* @param CutNPasteTextArea for the sequence sections
 * @param InputSequenceAttributes for the input sequence(s)
-* @param JComboBox for the list/selection data types
-* @param JRadioButton 
+* @param myComboPopup for the list/selection data types
+* @param JList for multiple selection lists
 * @param String array containing the databases
 * @param String containing the one line description for the application
 * @param Box for all the component labels
@@ -122,14 +117,13 @@ public class SectionPanel
 * 
 */
   public SectionPanel(JFrame f, JPanel p3, Box fieldPane, 
-              ParseAcd parseAcd, int nff, TextFieldSink textf[], 
-              TextFieldInt textInt[], TextFieldFloat textFloat[],
-              JTextField rangeField[], JCheckBox  checkBox[],
-              FileChooser fileChooser[], CutNPasteTextArea cutnPaste[],
-              InputSequenceAttributes inSeqAttr[], myComboPopup fieldOption[],
-              JList multiOption[], JRadioButton rfile[], 
-              String db[], String des, Box lab[], int numofFields,
-              EmbreoParams mysettings, boolean withSoap)
+            ParseAcd parseAcd, int nff, TextFieldSink textf[], 
+            TextFieldInt textInt[], TextFieldFloat textFloat[],
+            JTextField rangeField[], JCheckBox  checkBox[],
+            InputSequenceAttributes inSeqAttr[],
+            myComboPopup fieldOption[], JList multiOption[], SetInFileCard inSeq[],
+            String db[], String des, Box lab[], int numofFields,
+            EmbreoParams mysettings, boolean withSoap)
   {
 
     // sets the delay for dismissing tooltips
@@ -145,12 +139,10 @@ public class SectionPanel
     this.textFloat = textFloat;
     this.rangeField = rangeField;
     this.checkBox = checkBox;
-    this.fileChooser = fileChooser;
-    this.cutnPaste = cutnPaste;
     this.inSeqAttr = inSeqAttr;
     this.fieldOption = fieldOption;
     this.multiOption = multiOption;
-    this.rfile = rfile;
+    this.inSeq = inSeq;
     this.numofFields = numofFields;
     this.db = db;
     this.lab = lab;
@@ -302,22 +294,22 @@ public class SectionPanel
           pan.add(textf[h]);
           pan.add(lab[nf]);
         }
-        else if(att.startsWith("seqset"))
+        else if(att.startsWith("seqset")) 
         {
-          SetInFileCard sin = new SetInFileCard(sectionPane,h,db,rfile,
-                                fileChooser,"Multiple Sequence Filename",
-                                appName,inSeqAttr,cutnPaste,false);
+          inSeq[h] = new SetInFileCard(sectionPane,h,db,
+                              "Multiple Sequence Filename",
+                              appName,inSeqAttr,true);
 
-          pan.add(sin.getInCard());
+          pan.add(inSeq[h].getInCard());
           pan.add(section.add(Box.createVerticalStrut(5)));
         }
-        else if(att.startsWith("seqall") || att.startsWith("sequence"))
+        else if(att.startsWith("sequence") || att.startsWith("seqall"))
         {
-          SetInFileCard sin = new SetInFileCard(sectionPane,h,db,rfile,
-                                fileChooser,"Sequence Filename",
-                                appName,inSeqAttr,cutnPaste,true);
+          inSeq[h] = new SetInFileCard(sectionPane,h,db,
+                                "Sequence Filename",
+                                appName,inSeqAttr,true);
 
-          pan.add(sin.getInCard());
+          pan.add(inSeq[h].getInCard());
           pan.add(section.add(Box.createVerticalStrut(5)));
         }
         else if(att.startsWith("range"))
@@ -618,10 +610,7 @@ public class SectionPanel
         section.add(left);
         section.add(Box.createVerticalStrut(10));
 
-        final TextFieldSink tfs = fileChooser[h].getTextFieldSink();
-        final CutNPasteTextArea cnp = cutnPaste[h];
-        final JRadioButton rf = rfile[h];
-
+        final SetInFileCard sifc = inSeq[h];
         upload.addActionListener(new ActionListener()
         {
           public void actionPerformed(ActionEvent e)
@@ -631,10 +620,12 @@ public class SectionPanel
             if(!withSoap)
             {
               String fc = new String("");
-              if(rf.isSelected())               // Sequence file/database
-                fc = tfs.getText();
+              if(sifc.isFileName())             // Sequence file/database
+                fc = sifc.getFileChosen();
+              else if(sifc.isListFile())        // List file
+                fc = sifc.getSequence(1);
               else                              // Cut-n-Paste
-                fc = cnp.getText();
+                fc = sifc.getCutNPasteText();
 
               if(fc.endsWith(":") || fc.endsWith(":*"))
               {
@@ -662,7 +653,7 @@ public class SectionPanel
                 ajaxProtein = aj.protein;
                 inSeqAttr[h].setBegSeq(0);
                 inSeqAttr[h].setEndSeq(aj.length);
-                resolveDependents(nod,dep,tfs.getText(),varName);
+                resolveDependents(nod,dep,sifc.getFileChosen(),varName);
               }
               else
               {
@@ -679,17 +670,23 @@ public class SectionPanel
               try
               {
                 String line = new String("");
-                if(rf.isSelected())
+                if(sifc.isFileName() || sifc.isListFile())
                 {
-                  if( (new File(tfs.getText())).exists() )    // Sequence file
+                  String fname;
+                  if(sifc.isListFile())
+                    fname = sifc.getSequence(1);
+                  else
+                    fname = sifc.getFileChosen();
+
+                  if( (new File(fname)).exists() )       // Sequence file
                   {
-                    BufferedReader in = new BufferedReader(new FileReader(tfs.getText()));
+                    BufferedReader in = new BufferedReader(new FileReader(fname));
                     while((line = in.readLine()) != null)
                       fc = fc.concat(line + "\n");
                   }
-                  else                                        // Database
+                  else                                   // Database
                   {
-                    fc = tfs.getText();
+                    fc = fname;
                     if(fc.endsWith(":") || fc.endsWith(":*"))
                     {
                        int n = JOptionPane.showConfirmDialog(f,
@@ -705,9 +702,9 @@ public class SectionPanel
 
                   }
                 }
-                else                                          // Cut-n-Paste
+                else                                     // Cut-n-Paste
                 {
-                  fc = cnp.getText(); 
+                  fc = sifc.getCutNPasteText(); 
                 }
               }
               catch (IOException ioe)
@@ -726,7 +723,7 @@ public class SectionPanel
                   int seqLen  = ca.getLength();
                   inSeqAttr[h].setBegSeq(0);     
                   inSeqAttr[h].setEndSeq(seqLen);
-                  resolveDependents(nod,dep,tfs.getText(),varName);
+                  resolveDependents(nod,dep,sifc.getFileChosen(),varName);
                 }
                 else
                 {
@@ -744,7 +741,7 @@ public class SectionPanel
               }
             }
             f.setCursor(cdone);
-//          resolveDependents(nod,dep,tfs.getText(),varName);
+//          resolveDependents(nod,dep,sifc.getFileChosen(),varName);
           }
         });
       }

@@ -58,8 +58,6 @@ public class BuildJembossForm implements ActionListener
   private TextFieldFloat textFloat[];
   private JTextField rangeField[];
   private JCheckBox  checkBox[];
-  private FileChooser fileChooser[];
-  private CutNPasteTextArea cutnPaste[];
   private InputSequenceAttributes inSeqAttr[];
   protected static OutputSequenceAttributes outSeqAttr;
 
@@ -72,7 +70,7 @@ public class BuildJembossForm implements ActionListener
 //private JComboBox fieldOption[];
   private myComboPopup fieldOption[];
   private JList multiOption[];
-  private JRadioButton rfile[];
+  private SetInFileCard inSeq[];
   private JButton bresults;
   private String applName;
   private String db[];
@@ -264,14 +262,12 @@ public class BuildJembossForm implements ActionListener
     textInt   = new TextFieldInt[nint];
     textFloat = new TextFieldFloat[nfloat];
     checkBox  = new JCheckBox[nbool];
-    fileChooser = new FileChooser[nseqs];
-    cutnPaste = new CutNPasteTextArea[nseqs];
     inSeqAttr = new InputSequenceAttributes[nseqs];
     fieldOption = new myComboPopup[nlist];
     multiOption = new JList[mlist];
     rangeField  = new JTextField[nrange];
 
-    rfile  = new JRadioButton [nseqs];
+    inSeq  = new SetInFileCard[nseqs];
 //  JRadioButton rpaste[] = new JRadioButton [nseqs];
     Box lab[] = new Box[numofFields];
 
@@ -338,9 +334,9 @@ public class BuildJembossForm implements ActionListener
       if(nfield < numofFields)
       {
         SectionPanel sp = new SectionPanel(f,p3,fieldPane,parseAcd,
-              nfield,textf,textInt,textFloat,rangeField,checkBox,fileChooser,
-              cutnPaste,inSeqAttr,fieldOption,multiOption,rfile,
-              db,allDes[app],lab,numofFields,mysettings,withSoap);
+              nfield,textf,textInt,textFloat,rangeField,checkBox,
+              inSeqAttr,fieldOption,multiOption,inSeq,db,allDes[app],
+              lab,numofFields,mysettings,withSoap);
 
         if(sp.isAdvancedSection())
         {
@@ -725,8 +721,9 @@ public class BuildJembossForm implements ActionListener
                 att.startsWith("sequence") )
       {
         int seq = h+1;
-        if(rfile[h].isSelected()) {                   // file or database
-          fn = new String(fileChooser[h].getFileChosen());
+        if(inSeq[h].isFileName())                     // file or database
+        {
+          fn = new String(inSeq[h].getFileChosen());
           if(withSoap)
             options = filesForSoap(fn,options,val,filesToMove);
           else
@@ -746,8 +743,26 @@ public class BuildJembossForm implements ActionListener
              }
           }
 
-        } else {                                   // cut 'n paste
-          String cp = cutnPaste[h].getText();
+        }
+        else if(inSeq[h].isListFile())                     // list file
+        {
+          String fns = inSeq[h].getListFile();
+          String ls = System.getProperty("line.separator");
+          if(withSoap)
+          {
+            options = filesForSoap("internalList::internalList"+ls+
+                                   fns,options,val,filesToMove);
+          }
+          else
+          { 
+            String fna[] = inSeq[h].getArrayListFile();
+            for(int i=0;i<fna.length;i++)
+              options = options.concat(" -" + val + " " +  fna[i]);
+          }
+        } 
+        else                                               // cut 'n paste
+        {
+          String cp = inSeq[h].getCutNPasteText();
           fn = new String(applName + (new Integer(h)).toString());
 
           if(withSoap)
@@ -780,63 +795,51 @@ public class BuildJembossForm implements ActionListener
     return options;
   }
 
+
   public String filesForSoap(String fn, String options, String val,
                              Hashtable filesToMove)
   {
 
       String sfn;
 
-      if (fn.startsWith("@")||fn.startsWith("list::"))    // list file
+      if (fn.startsWith("@")||fn.startsWith("list::")||
+          fn.startsWith("internalList::"))        // list file
       {
-        String lfn;
+        String lfn = "";
         if (fn.startsWith("@"))
-          lfn = new String(fn.substring(1));
-        else
-          lfn = new String(fn.substring(6));;
+          lfn = fn.substring(1);
+        else if(fn.startsWith("list::"))
+          lfn = fn.substring(6);
 
-        if ((new File(lfn)).exists())     // local list file
+        File inFile = new File(lfn);  
+        if( (inFile.exists() && inFile.canRead() && 
+             inFile.isFile())||
+             fn.startsWith("internalList::") )    // local list file 
         {
-          File inFile = new File(lfn);
-          if (inFile.exists() && inFile.canRead() && inFile.isFile())
-          {
-            EmbreoListFile.parse(lfn, filesToMove);
-            EmbreoMakeFileSafe sf = new EmbreoMakeFileSafe(lfn);
-            String sfs = sf.getSafeFileName();
-//          try
-//          {
-//            BufferedReader in = new BufferedReader(new FileReader(inFile));
-//            String text = "";
-//            String line;
-//            while((line = in.readLine()) != null)
-//              text = text.concat(line+"\n");
-//            // add to the file hash
-//            filesToMove.put(sfs,text);
-//          }
-//          catch (IOException e) {}
-            options = options.concat(" -" + val + " @" +  sfs);
-          }
+          ListFile.parse(fn, filesToMove);
+          if(fn.startsWith("internalList::"))
+            options = options.concat(" -" + val + " list::internalList");
           else
           {
-            System.out.println("Ignoring invalid local file "+fn);
-            options = options.concat(" -" + val + " @" +  lfn);
+            EmbreoMakeFileSafe sf = new EmbreoMakeFileSafe(lfn);
+            String sfs = sf.getSafeFileName();
+            options = options.concat(" -" + val + " list::" +  sfs);
           }
         }
-        else
+        else                                      // presume remote
         {
-          // not local, presume remote
           System.out.println("Can't find list file "+lfn);
-          options = options.concat(" -" + val + " @" +  lfn);
+          options = options.concat(" -" + val + " list::" +  lfn);
         }
-        // define as placeholder; delete when everything uses the hash
+        
         sfn=lfn;
       }
-      else
-      {                                   // not a list file
+      else                                        // not list file
+      {                                  
         EmbreoMakeFileSafe sf = new EmbreoMakeFileSafe(fn);
         sfn = sf.getSafeFileName();
-        if ((new File(fn)).exists())
+        if ((new File(fn)).exists())    // read & add to transfer list
         {
-          // read it in, add to the list of files to transfer
           File inFile = new File(fn);
           if (inFile.exists() && inFile.canRead() && inFile.isFile())
           {
@@ -847,21 +850,19 @@ public class BuildJembossForm implements ActionListener
               String line;
               while((line = in.readLine()) != null)
                 text = text.concat(line+"\n");
-              // add to the file hash
+              
               filesToMove.put(sfn,text);
             } catch (IOException e) {}
             options = options.concat(" -" + val + " " +  sfn);
           }
           else
           {
-            // not a valid local file
             System.out.println("Ignoring invalid local file "+fn);
             options = options.concat(" -" + val + " " +  fn);
           }
         }
-        else
+        else     //presume remote
         {
-          // not local, presume remote
           System.out.println("Can't find plain file "+fn);
           options = options.concat(" -" + val + " " +  fn);
         }

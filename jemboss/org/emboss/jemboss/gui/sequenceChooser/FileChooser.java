@@ -69,8 +69,10 @@ public class FileChooser
     Box file;
     file = Box.createHorizontalBox();
     bdown.add(file);
+
     JButton openButton = new JButton("Browse files...");
     file.add(fileName);
+    file.add(Box.createRigidArea(new Dimension(2,2)));
     file.add(openButton);
 
     fc.addChoosableFileFilter(new SequenceFilter());
@@ -95,8 +97,9 @@ public class FileChooser
   
   public String getFileChosen() 
   {
+    String ps = System.getProperty("path.separator");
     if(fileSelected != null) 
-      return currentDirectory.concat("/" + fileSelected);
+      return currentDirectory.concat(ps + fileSelected);
     else
       return fileName.getText();
   }

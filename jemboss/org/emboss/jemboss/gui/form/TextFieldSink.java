@@ -28,7 +28,7 @@ import javax.swing.event.*;
 import java.awt.event.*;
 import javax.swing.border.*;
 import java.awt.dnd.*;
-
+import java.awt.*;
 import java.io.*;
 
 
@@ -86,6 +86,8 @@ public class TextFieldSink extends JTextField implements DropTargetListener
   }
 
   protected static Border dropBorder = new BevelBorder(BevelBorder.LOWERED);
+  protected static Border endBorder = 
+                               BorderFactory.createLineBorder(Color.black);
 
   public void dragEnter(DropTargetDragEvent e) 
   {
@@ -96,11 +98,14 @@ public class TextFieldSink extends JTextField implements DropTargetListener
     }
   }
 
-  public void dragExit(DropTargetEvent e) { this.setBorder(null); }
+  public void dragExit(DropTargetEvent e) 
+  { 
+    this.setBorder(endBorder); 
+  }
 
   public void drop(DropTargetDropEvent e)
   {
-    this.setBorder(null);
+    this.setBorder(endBorder);
     Transferable t = e.getTransferable();
     if(t.isDataFlavorSupported(DataFlavor.stringFlavor))
     {
