@@ -150,8 +150,9 @@ static int jctl_rcv(char *buf);
 
 static int java_block(int chan, unsigned long flag);
 
-
+#ifndef __ppc__
 extern char *strptime(const char *s, const char *format, struct tm *tm);
+#endif
 
 #if defined (__SVR4) && defined (__sun)
 #define exit(a) _exit(a)
@@ -3662,6 +3663,15 @@ static time_t jctl_Datestr(AjPStr s)
     ajint min=0;
     ajint sec=0;
     ajint yr=0;
+#ifdef __ppc__
+    ajint i;
+    static char *ms[] = 
+    {
+	"Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct",
+	"Nov","Dec"
+    };
+    static char *jtz="GMT";
+#endif
 
     tmp = ajStrNew();
     ajStrAssS(&tmp,s);
@@ -3682,7 +3692,7 @@ static time_t jctl_Datestr(AjPStr s)
     }
     
     
-
+#ifndef __ppc__
     ajFmtPrintS(&tmp,"%S %d %d:%d:%d %d",mon,day,hr,min,sec,yr);
     ajStrDel(&mon);
     
@@ -3691,6 +3701,26 @@ static time_t jctl_Datestr(AjPStr s)
 
     if(!p)
 	return 0;
+#else
+    i=0;
+    while(i<=11)
+    {
+	if(!strcmp(ajStrStr(mon),ms[i]))
+	    break;
+	++i;
+    }
+    if(i==12)
+	i=11;
+    
+    tm.tm_mday = i;
+    tm.tm_sec = sec;
+    tm.tm_min = min;
+    tm.tm_hour = hr;
+    tm.tm_year = yr - 1900;
+    tm.tm_isdst = 0;
+    tm.tm_gmtoff = 0;
+    tm.tm_zone = jtz;
+#endif
     
     return mktime(&tm);
 }
