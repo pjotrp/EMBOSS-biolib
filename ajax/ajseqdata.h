@@ -498,6 +498,7 @@ typedef struct AjSSeqin {
 ** @attr Seq [AjPStr] The sequence
 ** @attr Selexdata [AjPSelexdata] Selex data
 ** @attr Stock [AjPStockholmdata] Stockholm data
+** @attr Garbage [AjBool] Flag for garbage collection
 **
 ** @new ajSeqNew Default constructor
 ** @new ajSeqNewL Constructor with expected maximum size.
@@ -523,6 +524,8 @@ typedef struct AjSSeqin {
 ** @modify ajSeqReverse Reverse complements a nucleotide sequence
 ** @modify ajSeqRevOnly Reverses a sequence (does not complement)
 ** @modify ajSeqCompOnly Complements a nucleotide sequence (does not reverse)
+** @modify ajSeqGarbageOn Sets Garbage to True.
+** @modify ajSeqGarbageOff Sets Garbage to False.
 ** @cast ajSeqChar Returns the actual char* holding the sequence.
 ** @cast ajSeqCharCopy Returns a copy of the sequence as char*.
 ** @cast ajSeqCharCopyL Returns a copy of the sequence as char* with
@@ -534,6 +537,7 @@ typedef struct AjSSeqin {
 ** @cast ajSeqEnd Returns the sequence end position
 ** @cast ajSeqCheckGcg Calculates the GCG checksum for a sequence.
 ** @cast ajSeqNum Convert sequence to numbers
+** @cast ajSeqIsGarbage Returns the Garbage element.
 ** @use ajSeqIsNuc tests whether a sequence is nucleotide
 ** @use ajSeqIsProt tests whether a sequence is protein
 ** @output ajSeqWrite Master sequence output routine
@@ -577,6 +581,7 @@ typedef struct AjSSeq {
   AjPStr Seq;
   AjPSelexdata Selexdata;
   AjPStockholmdata Stock;
+  AjBool Garbage;
 } AjOSeq;
 
 #define AjPSeq AjOSeq*

@@ -82,7 +82,7 @@ AjPSeqall ajSeqallNew(void)
 
 
 
-/* @funcstatic seqSelexClone **************************************************
+/* @funcstatic seqSelexClone *************************************************
 **
 ** Clone a Selexdata object
 **
@@ -3013,6 +3013,46 @@ void ajSeqCompOnly(AjPSeq thys)
 
 
 
+/* @func ajSeqGarbageOn *******************************************************
+**
+** Sets Garbage element of a Seq object to True.
+**
+** @param [u] thys [AjPSeq] Sequence
+** @return [void]
+** @category modify [AjPSeq] Sets Garbage to True.
+** @@
+******************************************************************************/
+
+void ajSeqGarbageOn(AjPSeq thys)
+{
+    thys->Garbage = ajTrue;
+    
+    return;
+}
+
+
+
+
+/* @func ajSeqGarbageOff ******************************************************
+**
+** Sets Garbage element of a Seq object to False.
+**
+** @param [u] thys [AjPSeq] Sequence
+** @return [void]
+** @category modify [AjPSeq] Sets Garbage to False.
+** @@
+******************************************************************************/
+
+void ajSeqGarbageOff(AjPSeq thys)
+{
+    thys->Garbage = ajFalse;
+    
+    return;
+}
+
+
+
+
 /* @func ajSeqRevOnly *********************************************************
 **
 ** Reverses but does not complement a nucleotide sequence.
@@ -3901,6 +3941,25 @@ AjBool ajSeqNumS(const AjPStr thys, const AjPSeqCvt cvt, AjPStr* numseq)
 
     return ajTrue;
 }
+
+
+
+
+/* @func ajSeqIsGarbage *******************************************************
+**
+** Returns the Garbage element of an Seq object.
+**
+** @param [r] thys [const AjPSeq] Sequence.
+** @return [AjBool] ajTrue on success.
+** @category cast [AjPSeq] Returns the Garbage element.
+** @@
+******************************************************************************/
+
+AjBool ajSeqIsGarbage(const AjPSeq thys)
+{
+    return thys->Garbage;
+}
+
 
 
 

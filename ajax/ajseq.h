@@ -105,6 +105,8 @@ char*        ajSeqCharCopyL (const AjPSeq seq, size_t size);
 ajint        ajSeqCheckGcg (const AjPSeq thys);
 void         ajSeqClear (AjPSeq thys);
 void         ajSeqCompOnly (AjPSeq thys);
+void         ajSeqGarbageOn(AjPSeq thys);
+void         ajSeqGarbageOff(AjPSeq thys);
 void         ajSeqCompOnlyStr (AjPStr* thys);
 AjPFeattable ajSeqCopyFeat (const AjPSeq thys);
 void         ajSeqCount (const AjPStr thys, ajint *b);
@@ -156,6 +158,7 @@ AjBool       ajSeqNum (const AjPSeq thys, const AjPSeqCvt cvt,
 		       AjPStr *numseq);
 AjBool       ajSeqNumS (const AjPStr thys, const AjPSeqCvt cvt,
 			AjPStr *numseq);
+AjBool       ajSeqIsGarbage(const AjPSeq thys);
 ajint        ajSeqOffset (const AjPSeq seq);
 ajint        ajSeqOffend (const AjPSeq seq);
 ajint        ajSeqPos (const AjPSeq thys, ajint ipos);
