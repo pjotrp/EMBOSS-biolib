@@ -620,6 +620,16 @@ Command line arguments
                                   and 'after' qualifiers have been set, then
                                   only the sequence before the first feature
                                   and after the last feature are added.
+   -featinname         boolean    To aid you in identifying the type of
+                                  feature that has been output, the type of
+                                  feature is added to the start of the
+                                  description of the output sequence.
+                                  Sometimes the description of a sequence is
+                                  lost in subsequent processing of the
+                                  sequences file, so it is useful for the type
+                                  to be a part of the sequence ID name. If
+                                  you set this to be TRUE then the name is
+                                  added to the ID name of the output sequence.
 
    Advanced qualifiers: (none)
    General qualifiers:
@@ -710,6 +720,13 @@ Command line arguments
    sequence. If the 'before' and 'after' qualifiers have been set, then
    only the sequence before the first feature and after the last feature
    are added. Boolean value Yes/No No
+   -featinname To aid you in identifying the type of feature that has
+   been output, the type of feature is added to the start of the
+   description of the output sequence. Sometimes the description of a
+   sequence is lost in subsequent processing of the sequences file, so it
+   is useful for the type to be a part of the sequence ID name. If you
+   set this to be TRUE then the name is added to the ID name of the
+   output sequence. Boolean value Yes/No No
    Advanced qualifiers Allowed values Default
    (none)
    
