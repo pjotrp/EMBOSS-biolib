@@ -31,10 +31,11 @@ import java.awt.event.*;
 import java.io.*;
 import java.util.*;
 
+import org.emboss.jemboss.JembossJarUtil;
 import org.emboss.jemboss.programs.*;      // running EMBOSS programs
-import org.emboss.jemboss.gui.startup.*;   // finds programs, groups, docs & db's
+import org.emboss.jemboss.gui.startup.*;   // finds progs, groups, docs & db's
 import org.emboss.jemboss.soap.*;
-import org.emboss.jemboss.gui.form.*;      // program forms constructed from ACD
+import org.emboss.jemboss.gui.form.*;      // prog forms constructed from ACD
 import org.emboss.jemboss.soap.GetWossname;
 import uk.ac.mrc.hgmp.embreo.*;
 
@@ -155,7 +156,7 @@ public class BuildProgramMenu
         ToolTipManager toolTipManager = ToolTipManager.sharedInstance();
         toolTipManager.setDismissDelay(80000);
 
-        acdStore = loadAcdStore("resources/acdstore.jar");
+        acdStore = (new JembossJarUtil("resources/acdstore.jar")).getHash();
 
 // program menu
         JMenuBar menuBar = new JMenuBar();
@@ -376,88 +377,6 @@ public class BuildProgramMenu
 
 /**
 *
-* Load hash table with Jar file text resources (e.g.
-* acd files).
-* @param String name of jar file (on classpath)
-* @return Hashtable of the file names and contents
-*
-*/
-
-  private Hashtable loadAcdStore(String jarFile)
-  {
-    Hashtable acdStore = new Hashtable();
-    try 
-    {
-      // extracts just sizes only
-      ClassLoader cl = this.getClass().getClassLoader();
-      ZipInputStream zis= new ZipInputStream(
-                     cl.getResourceAsStream(jarFile));
-      ZipEntry ze=null;
-      Hashtable htSizes = new Hashtable();
-
-      while((ze=zis.getNextEntry())!=null)
-      {
-        int ret=0;
-        int cnt=0;
-        int rb = 0;
-        while(ret != -1)
-        {
-          byte[] b1 = new byte[1];
-          ret=zis.read(b1,rb,1);
-          cnt++;
-        }
-        htSizes.put(ze.getName(),new Integer(cnt));
-      }
-      zis.close();
-
-      // extract resources and put them into the hashtable
-      zis = new ZipInputStream(cl.getResourceAsStream(jarFile));
-      ze=null;
-      while ((ze=zis.getNextEntry())!=null) 
-      {
-        if(ze.isDirectory()) 
-          continue;
-         
-        int size=(int)ze.getSize(); // -1 means unknown size
-        if(size==-1) 
-          size=((Integer)htSizes.get(ze.getName())).intValue();
-         
-        byte[] b=new byte[(int)size];
-        int rb=0;
-        int chunk=0;
-        while (((int)size - rb) > 0) 
-        {
-          chunk=zis.read(b,rb,(int)size - rb);
-          if(chunk==-1) 
-            break;
-          rb+=chunk;
-        }
-
-        // add to internal resource hashtable removing .acd suffix
-        acdStore.put(ze.getName().substring(0,
-                     ze.getName().length()-4),
-                     new String(b));
-      }
-      zis.close();
-    }
-    catch (NullPointerException e) 
-    {
-      System.out.println("BuildProgramMenu Error: acdStore");
-    } 
-    catch (FileNotFoundException e) 
-    {
-      e.printStackTrace();
-    }
-    catch (IOException e)
-    {
-      e.printStackTrace();
-    }
-    return acdStore;
-  }
-
-
-/**
-*
 * Get the contents of an ACD file in the form of a String.
 * @param String of the ACD file name
 * @param String representation of the ACD
@@ -487,9 +406,14 @@ public class BuildProgramMenu
     }
     else 
     {
-      if (acdStore.containsKey(applName))
+      if(acdStore.containsKey(applName+".acd"))
       {
-        acdText = (String)acdStore.get(applName);
+        Object obj = acdStore.get(applName+".acd");
+        if(obj.getClass().getName().equals("String"))
+          acdText = (String)obj;
+        else
+          acdText = new String((byte[])obj);
+ 
         System.out.println("Retrieved "+applName+" acd file from cache");
       }
       else
@@ -497,7 +421,7 @@ public class BuildProgramMenu
         GetACD progacd = new GetACD(applName,mysettings);
         acdText = progacd.getAcd();
         System.out.println("Retrieved "+applName+" acd file via soap");
-        acdStore.put(applName,acdText);
+        acdStore.put(applName,acdText+".acd");
       }
     }
     return acdText;
