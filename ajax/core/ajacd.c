@@ -1599,11 +1599,16 @@ static void acdParse (AjPStr text)
     }
     acdLog ("-- All Done --\n");
 
+    ajDebug("-- All Done : acdSecList length %d\n",
+	    ajListstrLength(acdSecList));
+
     if (ajListstrLength(acdSecList)) {
       while (ajListstrPop(acdSecList, &secname)) {
+	ajDebug("Section '%S' has no endsection\n", secname);
 	ajErr("Section '%S' has no endsection", secname);
 	ajStrDel(&secname);
       }
+      ajDebug("Unclosed sections in ACD file\n");
       ajFatal("Unclosed sections in ACD file");
     }
 
@@ -1946,11 +1951,16 @@ static AcdPAcd acdNewSec (AjPStr name)
 	firstcall = 0;
     }
 
+    ajDebug("acdNewSec '%S' acdSecList length %d\n", 
+	    name, ajListstrLength(acdSecList));
+
     acd = acdNewAcdKey(name, name, ikey);
     acd->Level = ACD_SEC;
 
     ajStrAssS(&secname, name);
-    ajListPush (acdSecList, secname);
+    ajListstrPush (acdSecList, secname);
+    ajDebug("acdNewSec acdSecList push '%S' new length %d\n",
+	    secname, ajListstrLength(acdSecList));
 
     return acd;
 }
@@ -1977,14 +1987,22 @@ static AcdPAcd acdNewEndsec (AjPStr name)
 	firstcall = 0;
     }
 
+    ajDebug("acdNewEndsec '%S' acdSecList length %d\n", 
+	    name, ajListstrLength(acdSecList));
+
     if(!ajListstrLength (acdSecList)) {
-	ajFatal("Bad endsection '%S'\nNot in a section", name, secname);
+	ajDebug("Bad endsection '%S'\nNot in a section\n", name);
+	ajFatal("Bad endsection '%S'\nNot in a section", name);
     }
 
     else {
       ajListstrPop (acdSecList, &secname);
+      ajDebug("Pop from acdSecList '%S' new length %d\n",
+	      secname, ajListstrLength(acdSecList));
 
       if (!ajStrMatch(name, secname)) {
+	ajDebug("Bad endsection '%S'\nCurrent section is '%S\n'",
+		name, secname);
 	ajFatal("Bad endsection '%S'\nCurrent section is '%S'", name, secname);
       }
       ajStrDel(&secname);
