@@ -1,4 +1,19 @@
 Version 2.9.0
+	Fixes for list files with sequence ranges in the USAs. The
+	sequence input object is now reset during list processing.
+
+	Sequence sets with begin and end positions are now automatically
+	trimmed on input. This applies for example to list input with
+	ranges in the USAs for programs such as polydot which were
+	previously reporting the entire sequence.
+
+	graph output now has the default title including the date in
+	dd-mmm-yy format instead of the unreadable dd/mm/yy format.
+
+	Align output for seqmatchall (like wordmatch). The algorithm is
+	not maintaining the sequence accession and description
+	information. They may be restored in a future update.
+
         infoalign now also displays the weight of the sequences in the
         alignment.  This can be turned off using '-noweight'. 
 
