@@ -15,10 +15,9 @@
 *  Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 *  Boston, MA  02111-1307, USA.
 *
-*  Modified from:
+*  Modified by Tim Carver from:
 *  http://www.javafaq.nu/java/free-swing-book/free-swing-book-chapter27.shtml
 *
-*  @author: Copyright (C) Tim Carver
 *
 ********************************************************************/
 
