@@ -1,0 +1,108 @@
+appl: pdbplus [
+  documentation: "Add records for secondary structure and residue accessibility to a coordinate file"
+  groups: "Utils:Database creation"
+  gui:   "yes"
+  batch: "yes"
+  cpu:   "medium"
+]
+
+section: input [ info: "input Section" type: page ]
+string: pdbpath  
+[
+  parameter: "Y"
+  information: "Location of pdb files (pdb format input)"
+  default: "./" 
+]
+
+string: pdbextn  
+[
+  parameter: "Y"
+  information: "Extension of pdb files (pdb format input)"
+  default: ".ent"
+]
+
+string: pdbprefix
+[
+  parameter: "Y"
+  information: "Prefix of pdb files (pdb format input)"
+  default: ""
+]
+
+
+string: inputemblpdbpath  
+[
+  parameter: "Y"
+  information: "Location of protein coordinate files (EMBL format input)"
+  default: "./"
+]
+
+string: inputemblpdbextn  
+[
+  parameter: "Y"
+  information: "Extension of protein coordinate files (EMBL format input)"
+  default: ".pxyz"
+]
+endsection: input
+
+
+
+
+section: standard [ info: "standard Section" type: page ]
+list: mode  [
+  standard: "Y"
+  default: "1"
+  minimum: "1"
+  maximum: "3"
+  delimiter: ","
+  codedelimiter: ":"
+  values: "1: Use STRIDE only, 2: Use NACCESS only, 3: Use STRIDE and NACCESS"
+  header: "Mode of operation"
+  prompt: "Select mode"
+]
+outfile: errf  
+[
+  standard: "Y"
+  prompt: "Name of log file for pdbplus"
+  default: "pdbplus.log"
+]
+
+outfile: serrf  
+[
+  standard: "@($(mode)!=2)"
+  prompt: "Name of log file for stride"
+  default: "stride.log"
+]
+
+outfile: nerrf  
+[
+  standard: "@($(mode)!=1)"
+  prompt: "Name of log file for nacess"
+  default: "naccess.log"
+]
+
+
+int: thresholdsize
+[
+    standard: "@($(mode)!=2)"
+    prompt: "Threshold size for SSEs (secondary structure elements)"
+    default: "4"
+]
+endsection: standard
+
+
+section: output [ info: "output Section" type: page ]
+string: outputemblpdbpath  
+[
+  parameter: "Y"
+  information: "Location of protein coordinate files (EMBL format output)"
+  default: "./"
+]
+
+string: outputemblpdbextn  
+[
+  parameter: "Y"
+  information: "Extension of protein coordinate files (EMBL format output)"
+  default: ".pxyz"
+]
+endsection: output
+
