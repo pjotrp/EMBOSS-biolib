@@ -23,7 +23,7 @@ section: required [
 
   string: enzymes  [
     standard: "Y"
-    default: "all
+    default: "all"
     information: "Comma separated enzyme list"
   ]
 
