@@ -12340,7 +12340,9 @@ static void acdHelpAppend(const AcdPAcd thys, AjPStr *str, char flag)
 	defstr = nullstr;
     
     ajStrAssC(&nostr, "");
-    if(acdIsQtype(thys) && ajStrMatchCC("boolean", acdType[thys->Type].Name))
+    if(acdIsQtype(thys) &&
+       (ajStrMatchCC("boolean", acdType[thys->Type].Name) ||
+	ajStrMatchCC("toggle", acdType[thys->Type].Name) ))
     {
 	if(ajStrToBool(defstr, &boolval) && boolval)
 	    ajStrAssC(&nostr, "[no]");
@@ -13634,7 +13636,9 @@ static void acdHelpTable(const AcdPAcd thys, AjPList tablist, char flag)
 	defstr = nullstr;
     
     ajStrAssC(&nostr, "");
-    if(acdIsQtype(thys) && ajStrMatchCC("boolean", acdType[thys->Type].Name))
+    if(acdIsQtype(thys) &&
+       (ajStrMatchCC("boolean", acdType[thys->Type].Name) ||
+	ajStrMatchCC("toggle", acdType[thys->Type].Name) ))
     {
 	if(ajStrToBool(defstr, &boolval))
 	{
