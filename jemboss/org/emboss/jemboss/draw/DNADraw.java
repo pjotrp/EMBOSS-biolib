@@ -91,6 +91,29 @@ public class DNADraw extends ScrollPanel
     lineAttr.put("end",new Integer(4000));
     lineAttr.put("lsize",new Integer(10));
     lineAttr.put("circular",new Boolean(true));
+
+    MouseListener mouseListener = new MouseAdapter()
+    {
+      public void mouseClicked(MouseEvent me)
+      {
+        if(me.getClickCount() == 2 &&
+           !me.isPopupTrigger())
+        {
+          for(int i=0; i<getComponentCount(); i++)
+          {
+            if(getComponent(i) instanceof Block)
+            {
+              Block drawBlock = (Block)getComponent(i);
+              if(drawBlock.isOverMe(me.getX(),me.getY()))
+                drawBlock.showProperties(DNADraw.this);
+            }
+          }
+
+        }
+      }
+    };
+    this.addMouseListener(mouseListener);
+
   }
 
 

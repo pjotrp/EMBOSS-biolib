@@ -22,12 +22,16 @@
 
 package org.emboss.jemboss.draw;
 
+import org.emboss.jemboss.gui.form.TextFieldInt;
+
 import javax.swing.*;
 import java.awt.geom.AffineTransform;
 import java.awt.*;
 import java.util.Vector;
 import java.awt.datatransfer.*;
 import java.io.*;
+import java.awt.event.*;
+import javax.swing.event.*;
 
 public class Block extends JPanel
                    implements Transferable
@@ -38,10 +42,11 @@ public class Block extends JPanel
   private double angStart;
   private double angEnd;
   private double fracRadii = 1.d;
+  private Rectangle rect = new Rectangle();
   final public static DataFlavor BLOCK =
          new DataFlavor(Block.class, "Block");
   static DataFlavor blockFlavors[] = { BLOCK };
-
+  
 
   public Block(Vector marker)
   {
@@ -100,6 +105,230 @@ public class Block extends JPanel
     return ((Integer)marker.elementAt(2)).intValue();
   }
 
+  protected void showProperties(final DNADraw draw)
+  {
+    final JFrame f = new JFrame("Properties");
+//set up menu bar
+    JMenuBar menuBar = new JMenuBar();
+    JMenu fileMenu = new JMenu("File");
+    fileMenu.setMnemonic(KeyEvent.VK_F);
+    menuBar.add(fileMenu);
+                                                                             
+    JMenuItem closeMenu = new JMenuItem("Close");
+    closeMenu.setAccelerator(KeyStroke.getKeyStroke(
+              KeyEvent.VK_E, ActionEvent.CTRL_MASK));
+                                                                             
+    closeMenu.addActionListener(new ActionListener()
+    {
+      public void actionPerformed(ActionEvent e)
+      {
+        f.dispose();
+      }
+    });
+    fileMenu.add(closeMenu);
+
+//set up window
+    f.setJMenuBar(menuBar);
+    JPanel pane = (JPanel)f.getContentPane();
+    String markerLabel = (String)marker.elementAt(0);
+    int bstart = ((Integer)marker.elementAt(1)).intValue();
+    int bend   = ((Integer)marker.elementAt(2)).intValue();
+    Color colour = (Color)marker.elementAt(3);
+    float strokeSize  = ((Float)marker.elementAt(4)).floatValue();
+    boolean arrowHead = ((Boolean)marker.elementAt(5)).booleanValue();
+    boolean arrowTail = ((Boolean)marker.elementAt(6)).booleanValue();
+         
+    Box bdown = Box.createVerticalBox();
+    pane.add(bdown);
+     
+    bdown.add(Box.createVerticalStrut(4));
+    Dimension d = new Dimension(200,30); 
+    Box bacross = Box.createHorizontalBox(); 
+    final JTextField annotation = new JTextField();
+    annotation.setPreferredSize(d);
+    annotation.setMaximumSize(d);
+    annotation.setText(markerLabel);
+    annotation.addActionListener(new ActionListener()
+    {
+      public void actionPerformed(ActionEvent e)
+      {
+        marker.setElementAt(annotation.getText(),0);
+        if(draw != null)
+          draw.repaint();
+      }
+    });
+    bacross.add(annotation);
+    bacross.add(new JLabel(" Label"));
+    bacross.add(Box.createHorizontalGlue());
+    bdown.add(bacross);
+
+    d = new Dimension(65,30);
+    bacross = Box.createHorizontalBox();  
+    final TextFieldInt start = new TextFieldInt();
+    start.setPreferredSize(d);
+    start.setMaximumSize(d);
+    start.setValue(bstart);
+    start.addActionListener(new ActionListener()
+    {
+      public void actionPerformed(ActionEvent e)
+      {
+        marker.setElementAt(new Integer(start.getValue()),1); 
+        if(draw != null)
+          draw.repaint();
+      }
+    });
+    bacross.add(start); 
+    bacross.add(new JLabel(" Start"));
+    bacross.add(Box.createHorizontalGlue());
+    bdown.add(bacross);
+
+    bacross = Box.createHorizontalBox();
+    final TextFieldInt end = new TextFieldInt();
+    end.setPreferredSize(d);
+    end.setMaximumSize(d);
+    end.setValue(bend);
+    end.addActionListener(new ActionListener()
+    {
+      public void actionPerformed(ActionEvent e)
+      {
+        marker.setElementAt(new Integer(end.getValue()),2);
+        if(draw != null)
+          draw.repaint();
+      }
+    });
+    bacross.add(end);
+    bacross.add(new JLabel(" End"));
+    bacross.add(Box.createHorizontalGlue());
+    bdown.add(bacross);
+
+//Set up the dialog that the button brings up.
+    final JButton button = new JButton("");
+    button.setBackground(colour);
+    final JColorChooser colorChooser = new JColorChooser();
+    ActionListener okListener = new ActionListener()
+    {
+      public void actionPerformed(ActionEvent e)
+      {
+        marker.setElementAt(colorChooser.getColor(),3);
+        button.setBackground(colorChooser.getColor());
+        if(draw != null)
+          draw.repaint();
+      }
+    };
+    final JDialog dialog = JColorChooser.createDialog(button,
+                                "Pick a Color",true,
+                                colorChooser, okListener,
+                                null);
+ 
+    //Here's the code that brings up the dialog.
+    button.addActionListener(new ActionListener()
+    {
+      public void actionPerformed(ActionEvent e)
+      {
+        dialog.show();
+      }
+    });
+    bacross = Box.createHorizontalBox();
+    bacross.add(button);
+    bacross.add(Box.createHorizontalGlue());
+    bdown.add(bacross);
+
+
+    bacross = Box.createHorizontalBox();
+    final JSlider slider = new JSlider(1,25,(int)strokeSize);
+    bacross.add(slider);
+    bacross.add(new JLabel(" Line width"));
+    bacross.add(Box.createHorizontalGlue());
+    slider.addChangeListener(new ChangeListener()
+    {
+      public void stateChanged(ChangeEvent e)
+      {
+        marker.setElementAt(new Float((float)slider.getValue()),4);
+        if(draw != null)
+          draw.repaint();
+      }
+    });
+    bacross.add(Box.createHorizontalGlue());
+    bdown.add(bacross);
+
+    bacross = Box.createHorizontalBox();
+    bacross.add(new JLabel("Arrow :"));
+    bacross.add(Box.createHorizontalGlue());
+    bdown.add(bacross);
+
+    bacross = Box.createHorizontalBox();
+    final JRadioButton head = new JRadioButton("Head");
+    final JRadioButton tail = new JRadioButton("Tail");
+    final JRadioButton none = new JRadioButton("None");
+    head.addActionListener(new ActionListener()
+    {
+      public void actionPerformed(ActionEvent e)
+      {
+        if(head.isSelected())
+        {
+          marker.setElementAt(new Boolean(true),5);   
+          marker.setElementAt(new Boolean(false),6);
+        }
+        else
+        {
+          marker.setElementAt(new Boolean(false),5);
+          marker.setElementAt(new Boolean(true),6);
+        }
+        if(draw != null)
+          draw.repaint();
+      }
+    });
+    bacross.add(head);
+
+    tail.addActionListener(new ActionListener()
+    {
+      public void actionPerformed(ActionEvent e)
+      {
+        if(tail.isSelected())
+        {
+          marker.setElementAt(new Boolean(true),6);
+          marker.setElementAt(new Boolean(false),5);
+        }
+        else
+        {
+          marker.setElementAt(new Boolean(false),6);
+          marker.setElementAt(new Boolean(true),5);
+        }
+        if(draw != null)
+          draw.repaint();
+      }
+    });
+    bacross.add(tail);
+
+    none.addActionListener(new ActionListener()
+    {
+      public void actionPerformed(ActionEvent e)
+      {
+        if(none.isSelected())
+        {
+          marker.setElementAt(new Boolean(false),6);
+          marker.setElementAt(new Boolean(false),5);
+        }
+        if(draw != null)
+          draw.repaint();
+      }
+    });
+    bacross.add(none);
+    bacross.add(Box.createHorizontalGlue());
+    bdown.add(bacross);
+
+    ButtonGroup group = new ButtonGroup();
+    group.add(head);
+    group.add(tail);
+    group.add(none);
+    if(arrowHead)
+      head.setSelected(true);
+    else if(arrowTail)
+      tail.setSelected(true);
+
+    f.pack();
+    f.setVisible(true);
+  }
 
   protected void drawLinear(Graphics2D g2)
   {
@@ -108,8 +337,9 @@ public class Block extends JPanel
     int bend   = ((Integer)marker.elementAt(2)).intValue();
     Color colour = (Color)marker.elementAt(3);
     float strokeSize  = ((Float)marker.elementAt(4)).floatValue();
-    boolean arrowHead   = ((Boolean)marker.elementAt(5)).booleanValue();
-    boolean arrowTail   = ((Boolean)marker.elementAt(6)).booleanValue();
+    float strokeSize2 = strokeSize/2.f;
+    boolean arrowHead = ((Boolean)marker.elementAt(5)).booleanValue();
+    boolean arrowTail = ((Boolean)marker.elementAt(6)).booleanValue();
 
     FontMetrics fm = g2.getFontMetrics();
     double hgt = fm.getAscent();
@@ -130,21 +360,28 @@ public class Block extends JPanel
                    (end-start))+location.x;
     if(arrowHead)
     {
-      xend-=strokeSize;
+      xend-=strokeSize2;
       int[] xPoints = {xend,xend,xend+(int)strokeSize};
       int[] yPoints = {ymid+(int)strokeSize,ymid-(int)strokeSize,ymid};
       g2.fillPolygon(xPoints,yPoints,3);
       g2.drawLine(xstart,ymid,xend,ymid);
+   
     }
     else if(arrowTail)
     {
-      xstart+=strokeSize;
+      xstart+=strokeSize2;
       int[] xPoints = {xstart,xstart,xstart-(int)strokeSize};
       int[] yPoints = {ymid+(int)strokeSize,ymid-(int)strokeSize,ymid};
       g2.fillPolygon(xPoints,yPoints,3);
       g2.drawLine(xstart,ymid,xend,ymid);
     }
+    else
+    {
+      g2.drawLine(xstart,ymid,xend,ymid);
+    }
 
+    rect.setLocation(xstart,ymid-(int)strokeSize2);
+    rect.setSize(xend-xstart,(int)strokeSize);
     int xmid = xstart+(int)(((xend-xstart)/2.)-(fm.stringWidth(markerLabel)/2.));
     g2.drawString(markerLabel,xmid,ymid-strokeSize);
     
@@ -277,18 +514,20 @@ public class Block extends JPanel
   */
   public boolean isOverMe(int x, int y)
   {
-    double dradii = current_dna.getDiameter()/2.d;
-    Point location = current_dna.getLocationPoint();
+    if(current_dna.isCircular())
+    {
+      double dradii = current_dna.getDiameter()/2.d;
+      Point location = current_dna.getLocationPoint();
 
-    double x_origin = location.x+dradii;
-    double y_origin = location.y+dradii;
+      double x_origin = location.x+dradii;
+      double y_origin = location.y+dradii;
 
-    double ttheta = (y_origin-y)/(x_origin-x);
-    double ang = 180-Math.toDegrees(Math.atan(ttheta));
-    if(x>x_origin)
-      ang+=180;
-    if(ang>360)
-      ang-=360;
+      double ttheta = (y_origin-y)/(x_origin-x);
+      double ang = 180-Math.toDegrees(Math.atan(ttheta));
+      if(x>x_origin)
+        ang+=180;
+      if(ang>360)
+        ang-=360;
 
 /*
     System.out.println("ANGLE "+ang);
@@ -297,18 +536,21 @@ public class Block extends JPanel
 */
 
 
-    // check it is within the right angle and
-    // at the correct distance from the origin
-    if( ang < (360+angStart) &&
-        ang > (360+angStart+angEnd) )
-    {
-      double len = Math.sqrt(Math.pow((y_origin-y),2)+
-                             Math.pow((x_origin-x),2));
-      double rat = (len/dradii)/fracRadii;
-      if(rat < 1.1 && rat > 0.9)
-        return true;
+      // check it is within the right angle and
+      // at the correct distance from the origin
+      if( ang < (360+angStart) &&
+          ang > (360+angStart+angEnd) )
+      {
+        double len = Math.sqrt(Math.pow((y_origin-y),2)+
+                               Math.pow((x_origin-x),2));
+        double rat = (len/dradii)/fracRadii;
+        if(rat < 1.1 && rat > 0.9)
+          return true;
+      }
     }
-
+    else
+      return rect.contains(x,y);
+    
     return false;
   }
 
