@@ -129,9 +129,8 @@ public class LaunchJalView extends JFrame
             catch(Exception npe)
             {
               setCursor(cdone);
-              String ls = System.getProperty("line.separator");
               JOptionPane.showMessageDialog(fr,
-                       "Check the sequence entered " + ls +
+                       "Check the sequence entered \n" + 
                        "and the format chosen.",
                        "Error Message", JOptionPane.ERROR_MESSAGE);
             }

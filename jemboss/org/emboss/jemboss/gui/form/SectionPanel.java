@@ -93,7 +93,6 @@ public class SectionPanel
   private final int maxSectionWidth = 498;
   private JFrame f;
 
-  private static String ls = System.getProperty("line.separator");
 
 /**
 *
@@ -822,9 +821,9 @@ public class SectionPanel
         ((e!=null) && (!e.equals(""))) )
     {
       int n = JOptionPane.showConfirmDialog(f,
-            "Overwrite the input sequence " + ls +
-            "start :" + s + ls + "end :" + e + 
-            ls + "values already set?",
+            "Overwrite the input sequence \n" + 
+            "start :" + s + "\n" + "end :" + e + 
+            "\n" + "values already set?",
             "Confirm",
             JOptionPane.YES_NO_OPTION);
 
