@@ -179,7 +179,7 @@ main( ajint argc, char *argv[])
 
   if ( ajSeqLen(genome) )
     {
-      /* Make sure we have enough space to hold the genomic AjPSeq /
+      /* Make sure we have enough space to hold the genomic AjPSeq */
 
       if ( megabytes < ajSeqLen(genome)*1.5e-6 ) 
 	{
