@@ -5838,7 +5838,7 @@ static void acdSetSeqset (AcdPAcd thys) {
   val = ajSeqsetNew();		/* set the default value */
   seqin = ajSeqinNew();		/* set the default value */
 
-  /* seqin->multi = ajFalse; */ /* pmr: moved to ajSeqinNew */
+  seqin->multi = ajTrue;  /* pmr: moved to ajSeqinNew */ /* ajb added back */
 
   (void) acdQualToBool (thys, "snucleotide", ajFalse, &snuc, &defreply);
   (void) acdQualToBool (thys, "sprotein", ajFalse, &sprot, &defreply);
