@@ -40,6 +40,14 @@ static ajint fileOpenMax = 0;
 static ajint fileCloseCnt = 0;
 static ajint fileOpenTot = 0;
 
+static AjPRegexp fileUserExp = NULL;
+static AjPRegexp fileWildExp = NULL;
+static AjPRegexp fileEntryExp = NULL;
+static AjPRegexp fileFileExp = NULL;
+static AjPRegexp fileRestExp = NULL;
+static AjPRegexp fileDirExp = NULL;
+static AjPRegexp fileFilenameExp = NULL;
+
 static void   fileBuffInit (AjPFileBuff thys);
 static void   fileBuffLineAdd (AjPFileBuff thys, AjPStr line);
 static void   fileBuffLineDel (AjPFileBuff thys);
@@ -179,8 +187,6 @@ AjPFile ajFileNewIn (const AjPStr name) {
     static AjPStr userstr = NULL;
     static AjPStr reststr = NULL;
     static AjPStr tmpname = NULL;
-    static AjPRegexp userexp = NULL;
-    static AjPRegexp wildexp = NULL;
     struct passwd* pass = NULL;
     AjPStr dirname=NULL;
     AjPStr wildname=NULL;
@@ -203,10 +209,10 @@ AjPFile ajFileNewIn (const AjPStr name) {
     if (ajStrChar(tmpname, 0) == '~')
     {
 	ajDebug("starts with '~'\n");
-	if (!userexp) userexp = ajRegCompC("^~([^/]*)");
-	(void) ajRegExec(userexp, tmpname);
-	ajRegSubI (userexp, 1, &userstr);
-	(void) ajRegPost (userexp, &reststr);
+	if (!fileUserExp) fileUserExp = ajRegCompC("^~([^/]*)");
+	(void) ajRegExec(fileUserExp, tmpname);
+	ajRegSubI (fileUserExp, 1, &userstr);
+	(void) ajRegPost (fileUserExp, &reststr);
 	ajDebug("  user: '%S' rest: '%S'\n", userstr, reststr);
 	if (ajStrLen(userstr))
 	{
@@ -225,13 +231,13 @@ AjPFile ajFileNewIn (const AjPStr name) {
 	}
     }
 
-    if (!wildexp)
-	wildexp = ajRegCompC("(.*/)?([^/]*[*?][^/]*)$");
+    if (!fileWildExp)
+	fileWildExp = ajRegCompC("(.*/)?([^/]*[*?][^/]*)$");
 
-    if (ajRegExec(wildexp, tmpname))
+    if (ajRegExec(fileWildExp, tmpname))
     {					/* wildcard file names */
-	(void) ajRegSubI(wildexp, 1, &dirname);
-	(void) ajRegSubI(wildexp, 2, &wildname);
+	(void) ajRegSubI(fileWildExp, 1, &dirname);
+	(void) ajRegSubI(fileWildExp, 2, &wildname);
 	ajDebug("wild dir '%S' files '%S'\n", dirname, wildname);
 	ptr = ajFileNewDW(dirname, wildname);
 	ajStrDel(&dirname);
@@ -1358,33 +1364,30 @@ AjBool ajFileNameShorten (AjPStr* fname) {
 
   static AjPStr tmpstr = NULL;
 
-  static AjPRegexp entryexp = NULL;
-  static AjPRegexp fileexp = NULL;
-  static AjPRegexp restexp = NULL;
 
-  if (!entryexp)		/* entryname at end */
-    entryexp = ajRegCompC(":([A-Za-z0-9_-]+)$");
+  if (!fileEntryExp)		/* entryname at end */
+    fileEntryExp = ajRegCompC(":([A-Za-z0-9_-]+)$");
 
-  if (ajRegExec(entryexp, *fname)) {
-    ajRegSubI(entryexp, 1, &tmpstr);
+  if (ajRegExec(fileEntryExp, *fname)) {
+    ajRegSubI(fileEntryExp, 1, &tmpstr);
     (void) ajStrAssS (fname, tmpstr);
     return ajTrue;
   }
 
-  if (!fileexp)	/* name.ext */
-    fileexp = ajRegCompC("([A-Za-z0-9_-]+)[.][A-Za-z0-9_-]+$");
+  if (!fileFileExp)	/* name.ext */
+    fileFileExp = ajRegCompC("([A-Za-z0-9_-]+)[.][A-Za-z0-9_-]+$");
 
-  if (ajRegExec(fileexp, *fname)) {
-    ajRegSubI(fileexp, 1, &tmpstr);
+  if (ajRegExec(fileFileExp, *fname)) {
+    ajRegSubI(fileFileExp, 1, &tmpstr);
     (void) ajStrAssS (fname, tmpstr);
     return ajTrue;
   }
 
-  if (!restexp)			/* last valid word */
-    restexp = ajRegCompC("([A-Za-z0-9_-]+)[^A-Za-z0-9_-]*$");
+  if (!fileRestExp)			/* last valid word */
+    fileRestExp = ajRegCompC("([A-Za-z0-9_-]+)[^A-Za-z0-9_-]*$");
 
-  if (ajRegExec(restexp, *fname)) {
-    ajRegSubI(restexp, 1, &tmpstr);
+  if (ajRegExec(fileRestExp, *fname)) {
+    ajRegSubI(fileRestExp, 1, &tmpstr);
     (void) ajStrAssS (fname, tmpstr);
     return ajTrue;
   }
@@ -1617,18 +1620,18 @@ AjBool ajFileGetwd (AjPStr* dir) {
 
 AjBool ajFileDirUp (AjPStr* dir) {
 
-  static AjPRegexp direxp = NULL;
   AjPStr tmpdir = NULL;
 
-  if (!direxp)
-    direxp = ajRegCompC ("^(.*/)[^/]+/?$");
+  if (!fileDirExp)
+    fileDirExp = ajRegCompC ("^(.*/)[^/]+/?$");
 
   ajStrAssS (&tmpdir, *dir);
-  if (!ajRegExec (direxp, tmpdir)) /* no match to pattern */
+  if (!ajRegExec (fileDirExp, tmpdir)) /* no match to pattern */
     return ajFalse;
-
-  ajRegSubI (direxp, 1, dir);
+ 
+  ajRegSubI (fileDirExp, 1, dir);
   ajStrDel(&tmpdir);
+ 
   return ajTrue;
 
 }
@@ -1678,6 +1681,14 @@ void ajFileExit (void) {
 
   ajDebug ("File usage : %d opened, %d closed, %d max, %d total\n",
 	   fileOpenCnt, fileCloseCnt, fileOpenMax, fileOpenTot);
+
+  ajRegFree (&fileUserExp);
+  ajRegFree (&fileWildExp);
+  ajRegFree (&fileEntryExp);
+  ajRegFree (&fileFileExp);
+  ajRegFree (&fileRestExp);
+  ajRegFree (&fileDirExp);
+  ajRegFree (&fileFilenameExp);
 
   return;
 }
@@ -3320,7 +3331,6 @@ AjBool ajFileNameDirSet (AjPStr* filename, const AjPStr dir) {
 ******************************************************************************/
 
 AjBool ajFileNameDirSetC (AjPStr* filename, const char* dir) {
-  static AjPRegexp fileexp = NULL;
   static AjPStr tmpstr = NULL;
   static AjPStr tmpdir = NULL;
   static AjPStr tmpnam = NULL;
@@ -3328,13 +3338,13 @@ AjBool ajFileNameDirSetC (AjPStr* filename, const char* dir) {
   if (!dir)
     return ajFalse;
 
-  if (!fileexp)
-    fileexp = ajRegCompC ("(.*/)?([^/]+)$");
+  if (!fileFilenameExp)
+    fileFilenameExp = ajRegCompC ("(.*/)?([^/]+)$");
 
   ajStrAssS (&tmpstr, *filename);
-  if (ajRegExec(fileexp, tmpstr)) {
-    ajRegSubI(fileexp, 1, &tmpdir);
-    ajRegSubI(fileexp, 2, &tmpnam);
+  if (ajRegExec(fileFilenameExp, tmpstr)) {
+    ajRegSubI(fileFilenameExp, 1, &tmpdir);
+    ajRegSubI(fileFilenameExp, 2, &tmpnam);
     if (ajStrLen(tmpdir)) {
       return ajFalse;			/* we already have a directory */
     }
