@@ -1,5 +1,6 @@
 
-pkgdata_DATA = codes.english groups.standard sections.standard \
+pkgdata_DATA = codes.english groups.standard knowntypes.standard \
+	sections.standard variables.standard \
 	aaindexextract.acd abiview.acd ajbad.acd ajfeatest.acd ajtest.acd \
 	antigenic.acd backtranseq.acd banana.acd biosed.acd \
 	btwisted.acd cai.acd chaos.acd charge.acd checktrans.acd chips.acd \
