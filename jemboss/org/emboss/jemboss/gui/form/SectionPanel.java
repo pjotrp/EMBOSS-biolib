@@ -93,6 +93,8 @@ public class SectionPanel
   private final int maxSectionWidth = 498;
   private JFrame f;
 
+  private static String ls = System.getProperty("line.separator");
+
 /**
 *
 * @param JFrame Jemboss frame
@@ -816,16 +818,13 @@ public class SectionPanel
 
   private boolean updateBeginEnd(String s, String e)
   {
-   
-    String ls = System.getProperty("line.separator");
-
     if( ((s!=null) && (!s.equals(""))) ||
         ((e!=null) && (!e.equals(""))) )
     {
       int n = JOptionPane.showConfirmDialog(f,
             "Overwrite the input sequence " + ls +
             "start :" + s + ls + "end :" + e + 
-            ls + " values already set?",
+            ls + "values already set?",
             "Confirm",
             JOptionPane.YES_NO_OPTION);
 
