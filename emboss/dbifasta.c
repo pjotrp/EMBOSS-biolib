@@ -281,6 +281,8 @@ int main(int argc, char **argv)
 
     ajListDel(&listInputFiles);
 
+    ajRegFree(&exp);
+
     ajExit();
 
     return 0;
