@@ -94,8 +94,9 @@
 **  
 **  Known bugs & warnings
 **  gnuplot must be started in the same directory as the gnuplot data files.
-**
+**  The use of sigplot in "merge mode" HAS NOT BEEN THOROUGHLY TESTED.
 **  
+** 
 **  
 **  Description
 **  This program is part of a suite of EMBOSS applications that directly or 
@@ -272,6 +273,10 @@ AjBool	sigplot_ValidatRead(AjPFile validatin, AjPScopdata *data, ajint *vali_TN,
 			    ajint *vali_FN, ajint *vali_true,ajint *vali_r, 
 			    ajint *vali_nr);
 
+AjBool	sigplot_ValidatRead3d(AjPFile validatin, AjPScopdata *data, ajint *vali_TN,
+			    ajint *vali_FN, ajint *vali_true,ajint *vali_r, 
+			    ajint *vali_nr);
+
 AjBool	sigplot_HitProportion(AjPFile hitsin, AjPScopdata *data, AjPFloat2d *prob_array,
 			      AjPFloat *sensi_array, AjPFloat *speci_array, ajint vali_TN,
 			      ajint vali_FN, ajint vali_true, ajint vali_r, ajint vali_nr, 
@@ -325,13 +330,13 @@ int main(int argc, char **argv)
     AjPStr     	outdir      = NULL;      /* Location of gnuplot data files for output      */
 
 
-    ajint	vali_TN     = 0;         /* ajint for storing validation information       */
-    ajint	vali_FN     = 0;         /* ajint for storing validation information       */
-    ajint	vali_true   = 0;         /* ajint for storing validation information       */
-    ajint	vali_r   = 0;            /* ajint for storing validation information       */
-    ajint	vali_nr   = 0;           /* ajint for storing validation information       */
-    ajint	redun       = 0;         /* ajint for storing no. of redundant hits        */
-    ajint	non_redun   = 0;         /* ajint for storing no. of non-redundant hits    */
+    ajint	vali_TN     = 0;      /* ajint for storing validation information       */
+    ajint	vali_FN     = 0;      /* ajint for storing validation information       */
+    ajint	vali_true   = 0;      /* ajint for storing validation information       */
+    ajint	vali_r   = 0;      /* ajint for storing validation information       */
+    ajint	vali_nr   = 0;      /* ajint for storing validation information       */
+    ajint	redun       = 0;      /* ajint for storing no. of redundant hits        */
+    ajint	non_redun   = 0;      /* ajint for storing no. of non-redundant hits    */
     ajint	nseqs	    = 0;         /* No. of sequences                               */
     ajint	x	    = 0;         /* Counter                                        */
     ajint	list_num    = 0;         /* Number of nodes on list                        */
@@ -395,7 +400,10 @@ int main(int argc, char **argv)
     ajint       tmpvali_nr=0;
     
     
-
+    AjPStr cmd=NULL;
+    ajint  cmdlen=0;  /* Length of cmd string */
+    
+    
     ajNamInit("emboss");
     ajAcdInitP("sigplot", argc, argv, "DOMAINATRIX");
 
@@ -416,6 +424,7 @@ int main(int argc, char **argv)
     aligndir  = ajStrNew();
     alignextn = ajStrNew();
     alg_temp  = ajStrNew();
+
 
     /* GET VALUES FROM ACD */
     mode        = ajAcdGetList("mode");
@@ -456,7 +465,7 @@ int main(int argc, char **argv)
     if(seedid == ajTrue)
     {
 	printf("............\n");
-	fflush(stdout);
+	fflush(stdout); 
 	
 	
 	alignfile    = ajAcdGetInfile("alignfile");
@@ -493,35 +502,63 @@ int main(int argc, char **argv)
 	outhitlist = ajXyzHitlistNew(0);
 	
 
+	
+/*	printf("1. Sanity check, list length = %d\n", ajListstrLength(list));
+	fflush(stdout); */
+	
+
 	/* Read each signature hits file in turn */
 	while(ajListPop(list,(void **)&hitname))
 	{
+	    ajFmtPrint("Opening %S\n", hitname); 
+	    
+
 	    /* Open hits file*/
 	    if((hitsin = ajFileNewIn(hitname)) == NULL)
 		ajFatal("Could not open for reading %S", hitname);
-	    
+
 	    /* Read hits file ... Get SCOP info.
 	                      ... push hits onto merged list */
-	    tmphitlist = ajXyzSignatureHitsRead(hitsin);
+	    if(!(tmphitlist = ajXyzSignatureHitsRead(hitsin)))
+		ajFatal("Signature hits file with no hits!");
+	    
+
+/*	    ajFmtPrint("IN LOOP tmphitlist->N: %d\n", tmphitlist->N); */
+
 	    for(z=0;z<tmphitlist->N;z++)
-		ajListPush(mrglist, tmphitlist->hits[z]);
-	    tmphitlist->N=0;
-	    ajXyzHitlistDel(&tmphitlist);
+		{
+/*		    ajFmtPrint("IN LOOP Pushed ok\n"); */
+		    ajListPush(mrglist, tmphitlist->hits[z]);
+		}
+	    
+
+
+/*	    printf("IN LOOP mrglist list length = %d\n", ajListstrLength(mrglist));
+	    fflush(stdout); */
 
 	    /* Write Scopdata object */
 	    data = sigplot_ScopdataNew();
+	    
+/*	    ajFmtPrint("data->Class: %S\n", data->Class);
+	    fflush(stdout); 
+
+	    ajFmtPrint("tmphitlist->Class: %S\n", tmphitlist->Class);
+	    fflush(stdout);
+*/
+	    
+	    
 	    ajStrAssS(&data->Class, tmphitlist->Class);
 	    ajStrAssS(&data->Fold, tmphitlist->Fold);
 	    ajStrAssS(&data->Superfamily, tmphitlist->Superfamily);
 	    ajStrAssS(&data->Family, tmphitlist->Family);
 	    data->Sunid = tmphitlist->Sunid_Family;
-	    
+
 	    /* Close hits file */
 	    ajFileClose(&hitsin);
 
 	    
 	    /* Call sigplot_ValidatRead to count number of hits for validation */
-	    sigplot_ValidatRead(validatin, &data, &tmpvali_TN, &tmpvali_FN, 
+	    sigplot_ValidatRead3d(validatin, &data, &tmpvali_TN, &tmpvali_FN, 
 				&tmpvali_true,&tmpvali_r, &tmpvali_nr);
 	    sigplot_ScopdataDel(&data);
 	    
@@ -542,28 +579,72 @@ int main(int argc, char **argv)
 	    ajStrAssS(&outhitlist->Superfamily, tmphitlist->Superfamily);
 	    ajStrAssS(&outhitlist->Family, tmphitlist->Family);
 	    outhitlist->Sunid_Family = tmphitlist->Sunid_Family;
+
+
+	    /* Tidy up memory */
+	    tmphitlist->N=0;
+	    ajXyzHitlistDel(&tmphitlist);
+	    
 	    
 	    ajStrDel(&hitname);
 	}	
 
 	/* Sort merged list of hits and create Hitlist for printing merged signature hits file */
+/*	printf("1.mrglist list length = %d\n", ajListstrLength(mrglist));
+	fflush(stdout); */
+
 	ajListSort(mrglist, ajXyzCompScore);
 	outhitlist->N=ajListToArray(mrglist, (void ***)&(outhitlist->hits));	
 	
 
-	/* Create temporary file */
-    tmpname = ajStrNew();
-    ajRandomSeed();
-    ajStrAssC(&tmpname, ajFileTempName(NULL));
-    
-    
+/*	printf("2.mrglist list length = %d\n", ajListstrLength(mrglist));
+	fflush(stdout); */
+
+	/* Create temporary file ... must add file extension and path (the current working directory)
+	 so that its name will be consistent */
+
+	tmpname = ajStrNew();
+	ajRandomSeed();
+	ajStrAssC(&tmpname, ajFileTempName(NULL));
+	/* Must remove './' from random name if its been used */
+	ajFmtPrint(">>>>>>>>>> tmpname (random): %S\n", tmpname);
+	if(ajStrFindC(tmpname, "./")!=-1)
+	{
+	    printf("Trimming\n");fflush(stdout);
+	    ajStrTrim(&tmpname, 2);
+	}
+	
+	   
+	ajFmtPrint(">>>>>>>>>> tmpname (random): %S\n", tmpname);
+
+	ajStrApp(&tmpname, hitextn); 
+	cmd=ajStrNew();
+	ajFileGetwd(&cmd);
+	ajStrInsert(&tmpname, 0, cmd);
+	cmdlen = ajStrLen(cmd);
+	ajStrDel(&cmd);
+
+
+
+
+
     /* Write & close temporary file and push its name onto list */
     tmpfile = ajFileNewOut(tmpname);
     ajXyzSignatureHitsWriteHitlist(tmpfile, outhitlist, roc_val);
     
 
+/*	printf("2. Sanity check, list length = %d\n", ajListstrLength(list));
+	fflush(stdout); */
+
     ajListPush(list, tmpname);
-    ajStrDel(&tmpname);
+	list_num = ajListstrLength(list);  /* Must count the number in the list again */
+
+	ajFmtPrint("0. name: %S\n", tmpname);
+
+/*	printf("3. Sanity check, list length = %d\n", ajListstrLength(list));
+	fflush(stdout); */
+
+/* This is freed later after popping off the list    ajStrDel(&tmpname); */
     ajFileClose(&tmpfile);
     
     /* Free merged list */
@@ -571,6 +652,9 @@ int main(int argc, char **argv)
 	ajXyzHitDel(&tmphit);
     ajListDel(&mrglist);
     }
+    
+    
+    
     
     
 
@@ -594,10 +678,25 @@ int main(int argc, char **argv)
 	len = ajStrLen(hitextn);
 	ajStrClear(&temp);
 	ajStrAssS(&temp, hitname);
+
+	ajFmtPrint("1. name = %S\n", temp); 
+
 	ajStrTrim(&temp, -len);
-	len = ajStrLen(hitdir);
-	ajStrTrim(&temp, len);
-/*	ajFmtPrint("name = %S\n", temp); */
+
+	/* The path of the hits file will be the cwd rather than that specified in acd 
+	   in mode 2, as we use a temp. file that is written to the cwd to hold the merged
+	   hits */
+	if(ajStrChar(*mode,0)=='2')
+	{
+	    ajStrTrim(&temp, cmdlen);
+	}
+	else
+	{
+	    len = ajStrLen(hitdir);
+	    ajStrTrim(&temp, len);
+	}
+	
+	ajFmtPrint("2. name = %S\n", temp); 
 
 	/* Create gnuplot data and seq id output file names*/
 	ajStrAssS(&data1, outdir);
@@ -615,7 +714,7 @@ int main(int argc, char **argv)
 	if(done == ajFalse)
 	{
 	    ajStrApp(&data2, temp);	
-	    ajStrSub(&data2, 0, 4);
+/*JCI	    ajStrSub(&data2, 0, 4); */
 /*	    ajStrAppC(&data2, "_");*/
 	    ajStrApp(&data2, hitextn);
 	    ajStrAppC(&data2, ".dat2");
@@ -641,11 +740,16 @@ int main(int argc, char **argv)
 
 	if(done == ajTrue)
 	{
-	    ajIntDel(&truehits);
-	    ajIntDel(&rank);
-	    ajInt2dDel(&range);
-	    AJFREE(codes);
+	    if(truehits) /*JCI*/
+		ajIntDel(&truehits);
+	    if(rank) /* JCI */
+		ajIntDel(&rank);
+	    if(range) /*JCI*/
+		ajInt2dDel(&range);
+	    if(codes) /*JCI*/
+		AJFREE(codes);
 	}
+
 
 	/* Call sigplot_CountHits                                        */	
 	if(!sigplot_CountHits(hitsin, &data, &truehits, &range, &codes, &rank,
@@ -655,7 +759,8 @@ int main(int argc, char **argv)
 	    AJFREE(seed_array);
 	    AJFREE(sig_seqs);    
 	    AJFREE(temp_seqs);    
-	    AJFREE(codes);
+	    if(codes) /*JCI*/
+		AJFREE(codes);
 	    AJFREE(data);
 	    AJFREE(alg);
 	
@@ -667,9 +772,13 @@ int main(int argc, char **argv)
 	    ajFloat2dDel(&prob_array);
 	    ajFloatDel(&sensi_array);
 	    ajFloatDel(&speci_array);
-	    ajIntDel(&truehits);
-	    ajIntDel(&rank);
-	    ajInt2dDel(&range);
+	    if(truehits) /*JCI*/
+		ajIntDel(&truehits);
+
+	    if(rank) 	    /*JCI*/ 
+		ajIntDel(&rank);
+	    if(range) /*JCI*/
+		ajInt2dDel(&range);
 	    if(seedid)
 		ajMatrixfDel(&submat);
 
@@ -692,20 +801,25 @@ int main(int argc, char **argv)
 	    ajExit();
 	    return 0;
 	}
+
 /*	ajFmtPrint("Number of hits in hits file = %d\n", (data)->num_hits);
 	ajFmtPrint("redundant = %d, non-redundant = %d\n", redun, non_redun); */
 
-	/* reset ints to zero */
-	vali_TN   = 0;
-	vali_FN   = 0;
-	vali_true = 0;
-	vali_r = 0;
-	vali_nr = 0;
 	
 	/* Call sigplot_ValidatRead */
 	if(ajStrChar(*mode,0)=='1')
-	    sigplot_ValidatRead(validatin, &data, &vali_TN, &vali_FN, 
+	{
+	    /* reset ints to zero */
+	    vali_TN   = 0;
+	    vali_FN   = 0;
+	    vali_true = 0;
+	    vali_r = 0;
+	    vali_nr = 0;
+
+	    sigplot_ValidatRead3d(validatin, &data, &vali_TN, &vali_FN, 
 				&vali_true,&vali_r, &vali_nr);
+	}
+	
 	/*
 	printf("vali_TN   = %d\n", vali_TN);
 	printf("vali_FN   = %d\n", vali_FN);
@@ -713,31 +827,39 @@ int main(int argc, char **argv)
 	printf("done validatread\n");
 	*/
 
+
 	/* Reset arrays and ints */
 	if(done == ajTrue)
 	{
+
 	    ajFloat2dDel(&prob_array);
 	    ajFloatDel(&sensi_array);
 	    ajFloatDel(&speci_array);
 	    prop = 0.0;
 	    prop_r = 0.0;
 	    prop_nr = 0.0;
+
 	}
 	
+
+
 	/* Call sigplot_HitProportion */
 	sigplot_HitProportion(hitsin, &data, &prob_array, &sensi_array, &speci_array,
 			  vali_TN, vali_FN, vali_true, vali_r, vali_nr, 
 			      split_hit, &prop, &prop_r, &prop_nr, roc_val, &roc_score);
     
+
 /*	printf("done hit proportion ROC%d = %.2f\n", roc_val, roc_score); */
 
 	/* Call sigplot_DataWrite */
 	sigplot_DataWrite(datafile, ssdatafile, data, prob_array, sensi_array, speci_array,
 			  split_hit, prop, prop_r, prop_nr, list_num, temp, roc_score, outdir);
     
+
 /*	printf("done datawrite\n");*/
    	
     
+
 	if(seedid == ajTrue)
 	{
 
@@ -778,6 +900,7 @@ int main(int argc, char **argv)
 	    ajStrApp(&alg_temp, alignextn);
 /*	    ajFmtPrint("sigalignfile = %S\n", alg_temp); */
 	    
+
 	    /* Open signature alignment file */
 	    if((sigalignfile=ajFileNewIn(alg_temp))==NULL)
 	    {
@@ -807,6 +930,7 @@ int main(int argc, char **argv)
 	    /* Extract sequences from alignment */
 	    nseqs=ajXyzScopalgGetseqs(alg, &seed_array);
 	 
+
 	    
 	    /* Push seed sequences onto list */
 	    for(x=0;x<nseqs;x++)
@@ -823,6 +947,7 @@ int main(int argc, char **argv)
 		ajStrAssS(&hit_seq->Seq, sig_seqs[x]);
 		ajListPushApp(hitlist, hit_seq); 
 	    }
+
 
 	    /* Call sigplot_SeedIdCalc */
 	    sigplot_SeedIdCalc(seedlist, alg, matrixout, submat, gapopen, gapextn); 
@@ -851,6 +976,7 @@ int main(int argc, char **argv)
 	    AJFREE(temp_seqs);    
 
 
+
 	    ajFileClose(&sigalignfile);
 	    ajFileClose(&matrixout);
 	    ajXyzScopalgDel(&alg);
@@ -874,6 +1000,7 @@ int main(int argc, char **argv)
 	    ajStrDel(&alg_temp);
 
 	    
+
 	    /* Set seed check to AjTrue so that next time all */
 	    /* deleted variable will be re-instated           */
 	    seedcheck = ajTrue;
@@ -881,6 +1008,7 @@ int main(int argc, char **argv)
 	
 	else if(seedid == ajFalse)
 	{
+
 	    AJFREE(seed_array);
 	    AJFREE(sig_seqs);    
 	    AJFREE(temp_seqs);    
@@ -893,22 +1021,33 @@ int main(int argc, char **argv)
     }
 	
 
+
     /* Tidy up the rest */
     if(ajStrChar(*mode,0)=='2')
     {
 	/* Delete temporary file */
-	ajSysUnlink(&tmpname);
+/* Cannot unlink using this because we've added the file extension ajSysUnlink(&tmpname); */
+	cmd=ajStrNew();
+	ajFmtPrintS(&cmd, "rm %S", tmpname);
+	ajSystem(&cmd);
+	ajStrDel(&cmd);
     }
     
     
 	    
 
 
-
-    for(x=0;x<data->num_hits;x++)
-	ajStrDel(&codes[x]);	
-    AJFREE(codes);
-
+    if(codes)/*JCI*/
+    {
+	for(x=0;x<data->num_hits;x++)
+	{
+	    if(codes[x]) /*JCI*/
+		ajStrDel(&codes[x]);	
+	}
+	
+	AJFREE(codes);
+    }
+    
 
     sigplot_ScopdataDel(&data);
     ajFileClose(&hitsin);
@@ -918,9 +1057,12 @@ int main(int argc, char **argv)
     ajFloat2dDel(&prob_array);
     ajFloatDel(&sensi_array);
     ajFloatDel(&speci_array);
-    ajIntDel(&truehits);
-    ajIntDel(&rank);
-    ajInt2dDel(&range);
+    if(truehits) /*JCI*/
+	ajIntDel(&truehits);
+    if(rank) /*JCI*/
+	ajIntDel(&rank);
+    if(range) /*JCI*/
+	ajInt2dDel(&range);
 
     ajListDel(&list);
 
@@ -1178,12 +1320,11 @@ AjBool   sigplot_CountHits(AjPFile hitsin, AjPScopdata *data, AjPInt *truehits,
 			printf("roc_val reached at hit number %d in hits file!!!\n", num_hits);
 			
 			/* Check if there are any true hits, if not then no point in continuing */
+			/* JCI removed this for mode 2 dataset 
 			if(true_cnt == 0)
 			{
-/*			    printf("No true hits found!!\n"); */
 			    ajWarn("There are no true hits in hits file %S........exiting sigplot!",
 				   ajFileGetName(hitsin));
-			    /* tidy up */
 			    ajStrDel(&line);
 			    ajStrDel(&name);
 			    ajStrDel(&class);
@@ -1198,16 +1339,23 @@ AjBool   sigplot_CountHits(AjPFile hitsin, AjPScopdata *data, AjPInt *truehits,
 			    ajStrDel(&code);
 			    ajStrDel(&type);
 	
-			    /* return ajFalse */
 			    return ajFalse;
 			}
+			*/
 			
 /*			printf("filling arrays\n"); */
 			/* Assign arrays and strings */
-			*truehits = ajIntNewL(num_hits);
-			*rank     = ajIntNewL(true_cnt);
-			*range    = ajInt2dNewL(num_hits);
-			*codes    = (AjPStr *) AJCALLOC0(num_hits, sizeof(AjPStr));
+			if(true_cnt) /*JCI*/
+			    *rank     = ajIntNewL(true_cnt);
+
+			if(num_hits) /*JCI*/
+			{
+			    *truehits = ajIntNewL(num_hits);
+			    *range    = ajInt2dNewL(num_hits);
+			    *codes    = (AjPStr *) AJCALLOC0(num_hits, sizeof(AjPStr));
+			}
+			
+
 			
 /*			printf("filling arrays 1\n"); */
 			/* Fill truehits array */
@@ -1363,12 +1511,11 @@ AjBool   sigplot_CountHits(AjPFile hitsin, AjPScopdata *data, AjPInt *truehits,
     ajWarn("Only %d false hits found in hits file %S", roc_false, ajFileGetName(hitsin));
 
     /* Check if there are any true hits, if not then no point in continuing */
+    /* JCI removed this for mode 2 dataset 
     if(true_cnt == 0)
     {
-/*	printf("No true hits found!!\n"); */
 	ajWarn("There are no true hits in hits file %S........exiting sigplot!",
 	       ajFileGetName(hitsin));
-	/* tidy up */
 	ajStrDel(&line);
 	ajStrDel(&name);
 	ajStrDel(&class);
@@ -1383,17 +1530,21 @@ AjBool   sigplot_CountHits(AjPFile hitsin, AjPScopdata *data, AjPInt *truehits,
 	ajStrDel(&code);
 	ajStrDel(&type);
 	
-	/* return ajFalse */
 	return ajFalse;
     }
-    
+    */
+
 
     /* Assign arrays and strings */
-    *truehits = ajIntNewL(num_hits);
-    *rank     = ajIntNewL(true_cnt);
-    *range    = ajInt2dNewL(num_hits);
-    *codes    = (AjPStr *) AJCALLOC0(num_hits, sizeof(AjPStr));
-
+    if(true_cnt) /*JCI */
+	*rank     = ajIntNewL(true_cnt);
+    if(num_hits) /*JCI*/
+    {
+	*truehits = ajIntNewL(num_hits);
+	*range    = ajInt2dNewL(num_hits);
+	*codes    = (AjPStr *) AJCALLOC0(num_hits, sizeof(AjPStr));
+    }
+    
 
     /* Fill truehits array */
     for(x=0;x<num_hits;x++)
@@ -1466,7 +1617,6 @@ AjBool   sigplot_CountHits(AjPFile hitsin, AjPScopdata *data, AjPInt *truehits,
 	}
     }
 
-
     /* Allocate memory for Scopdata structure */
     (*data) = sigplot_ScopdataNew();
 
@@ -1488,7 +1638,6 @@ AjBool   sigplot_CountHits(AjPFile hitsin, AjPScopdata *data, AjPInt *truehits,
     ajStrAssS(&(*data)->Family,family); 
     (*data)->Sunid = sunid;
     (*data)->num_true = true_cnt;
-    
 
     y=0;
     /* Process truehits array */
@@ -1503,7 +1652,6 @@ AjBool   sigplot_CountHits(AjPFile hitsin, AjPScopdata *data, AjPInt *truehits,
 	else
 	    continue;
     }
-
 
 
     /* tidy up */
@@ -1733,6 +1881,111 @@ AjBool	sigplot_ValidatRead(AjPFile validatin, AjPScopdata *data, ajint *vali_TN,
 }
 
 
+/* @funcstatic sigplot_ValidatRead3d *****************************************
+ **
+ ** Read validation file and count the number of sequences classified as
+ ** seed, other and hit for the family of the signature in question and 
+ ** also the number in different folds. THIS IS FOR A VALIDATION FILE FOR 
+ ** STRUCTURAL (LIGAND) DATA 
+ **
+ ** @param [r] validatin     [AjPFile]      File pointer to signature hits file
+ ** @param [r] data          [AjPScopdata*] Scopdata object pointer
+ ** @param [w] vali_TN       [ajint]        ajint for number in different fold
+ ** @param [w] vali_FN       [ajint]        ajint for number in family
+ ** 
+ ** @return [AjBool] True on succcess
+ ** @@
+ ******************************************************************************/
+AjBool	sigplot_ValidatRead3d(AjPFile validatin, AjPScopdata *data, ajint *vali_TN,
+			    ajint *vali_FN, ajint *vali_true,ajint *vali_r, 
+			    ajint *vali_nr)
+{
+
+
+
+    
+    AjPStr	line		= NULL;
+    AjPStr	string		= NULL;
+    AjPStr	fold	        = NULL;
+    AjPStr	family	        = NULL;
+    
+
+    AjBool	docnt		= ajFalse;
+    ajint       ns =0;
+    
+
+    line   = ajStrNew();
+    string = ajStrNew();
+    fold   = ajStrNew();
+    family   = ajStrNew();
+    
+
+    /* Check args */	
+    if(!validatin)
+	return ajFalse;
+
+    /* reset posinter to start of file */
+    ajFileSeek(validatin, 0, 0);
+
+
+
+    /* Determine vali_TN and vali_FN */
+    /* i.e. count no. of hits in DIFFERENT family */
+    while(ajFileReadLine(validatin, &line))
+    {
+	if(ajStrPrefixC(line, "FA"))
+	{
+	    /* Extract and clean up family line */
+	    ajStrAssS(&family,line);
+	    ajStrTrim(&family, 5);
+	    if(ajStrMatch(family, (*data)->Family))
+		docnt = ajTrue;
+	    else
+		docnt = ajFalse;
+	}
+	else if(ajStrPrefixC(line,"NS"))
+	{
+	    /* Scan line and assign int */
+	    ajFmtScanS(line, "%*s %d\n", &ns);
+	    if(docnt)
+	    {
+		(*vali_FN)   += ns;
+		(*vali_true) += ns;
+	    }
+	    else
+	    {
+		(*vali_TN) += ns;
+	    }
+	}
+	else if(ajStrPrefixC(line,"GP   NON_REDUNDANT"))
+	{
+	    if(docnt)
+		(*vali_nr)++;
+	}
+	
+	else if(ajStrPrefixC(line,"GP   REDUNDANT"))
+	{
+	    if(docnt)
+		(*vali_r)++;
+	}
+	else   
+	    continue;
+    }
+    
+
+    /*ajFmtPrint("vali_FN = %d vali_TN = %d vali_true = %d\n", *vali_FN, *vali_TN, *vali_true);*/
+    ajStrDel(&line);
+    ajStrDel(&string);
+    ajStrDel(&fold);
+    ajStrDel(&family);
+
+
+    /* return */
+    return ajTrue;
+    
+}
+
+
 
 /* @funcstatic sigplot_HitProportion  *****************************************
  **
@@ -1785,6 +2038,7 @@ AjBool	sigplot_HitProportion(AjPFile hitsin, AjPScopdata *data, AjPFloat2d *prob
 
 
     /* Allocate memory for the probability array */
+    
     *prob_array = ajFloat2dNewL((*data)->file_hitnum);
     *sensi_array = ajFloatNewL((*data)->file_hitnum);
     *speci_array = ajFloatNewL((*data)->file_hitnum);
@@ -2405,8 +2659,9 @@ AjBool  sigplot_DataWrite(AjPFile datafile, AjPFile ssdatafile, AjPScopdata data
 	fflush(stdout); */
 
 	truePtr    = ajFileNewOut(true);
+	/*
 	ajFmtPrint("redPtr NOT opened\n");
-	fflush(stdout);
+	fflush(stdout); */
     }
 
 /*    ajFmtPrint("cross = %S\n", cross);
@@ -2553,11 +2808,18 @@ AjBool  sigplot_DataWrite(AjPFile datafile, AjPFile ssdatafile, AjPScopdata data
     if(split_hit == ajTrue)
     {
 	ajFmtPrintF(datafile,    "plot \"%S\" smooth bezier title \"Redun Hits\", \"%S\" smooth bezier title \"Non Hits\",\"%S\" smooth bezier title \"Cross Hits\", \"%S\" smooth bezier title \"False Hits\", \"%S\" smooth bezier title \"Unknown Hits\"\n", red_nopath, non_nopath, cross_nopath, false_nopath, unknown_nopath);
+
+	printf("Option1\n");
+	
     }
     
     else if(split_hit == ajFalse)
+    {
 	ajFmtPrintF(datafile,    "plot \"%S\" smooth bezier title \"True Hits\", \"%S\" smooth bezier title \"Cross Hits\", \"%S\" smooth bezier title \"False Hits\", \"%S\" smooth bezier title \"Unknown Hits\"\n", true_nopath, cross_nopath, false_nopath, unknown_nopath);
- 
+
+	printf("Option2\n");
+    }
+    
    
     /* Only write ROC data file if on last hits file */
     /* i.e. file_cnt == list_num                     */
@@ -2590,15 +2852,26 @@ AjBool  sigplot_DataWrite(AjPFile datafile, AjPFile ssdatafile, AjPScopdata data
 	ajFmtPrintF(ssdatafile,    "set pointsize 0.45\n");
 	/* Execute plot command to plot data files */
 	ajFmtPrintF(ssdatafile,    "plot \"%S\" smooth bezier title \"%S(%f)\", ", sensi_nopath, temp, roc_score);
+
+	printf("Option3\n");
     }
     
 
     /* Execute plot command to plot data files */
     if((file_cnt != 0) && (file_cnt != list_num-1))
+    {
 	ajFmtPrintF(ssdatafile, "\"%S\" smooth bezier title \"%S(%f)\", ", sensi_nopath, temp, roc_score);
+	printf("Option4\n");
+    }
     
     else if(file_cnt == list_num-1)
+    {	
 	ajFmtPrintF(ssdatafile, "\"%S\" smooth bezier title \"%S(%f)\"\n", sensi_nopath, temp, roc_score);
+	printf("Option5\n");
+    }
+    else
+	printf("file_cnt: %d   list_num-1: %d\n", file_cnt, list_num-1);
+    
     
 
     /* Increment hits file_cnt */
