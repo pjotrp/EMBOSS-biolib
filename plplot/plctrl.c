@@ -1444,7 +1444,7 @@ plOpenFile(PLStream *pls)
 	if ((pls->OutFile = fopen(pls->FileName, "wb+")) == NULL) 
 	    (void) fprintf(stderr, "Can't open %s.\n", pls->FileName);
 	else
-	    (void) fprintf(stderr, "Created %s\n", pls->FileName);
+	    (void) fprintf(stdout, "Created %s\n", pls->FileName);
     }
 }
 
