@@ -116,8 +116,8 @@ AC_ARG_WITH(auth,
 	  if test "$withval" = "hpuxshadow" ; then
 		ALT_AUTHTYPE="-DHPUX_SHADOW"
 	  fi
-	  AC_CHECK_LIB(crypt, main, LDFLAGS="$LDFLAGS -lcrypt",LDFLAGS="$LDFLAGS")
-	  AC_CHECK_LIB(pam, main, LDFLAGS="$LDFLAGS -lpam",LDFLAGS="$LDFLAGS")
+	  AC_CHECK_LIB(crypt, main, CPPFLAGS="$CPPFLAGS -lcrypt",CPPFLAGS="$CPPFLAGS")
+	  AC_CHECK_LIB(pam, main, CPPFLAGS="$CPPFLAGS -lpam",CPPFLAGS="$CPPFLAGS")
 else
   AC_MSG_RESULT(no)
 fi], [
