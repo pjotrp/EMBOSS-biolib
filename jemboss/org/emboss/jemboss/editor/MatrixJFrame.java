@@ -80,7 +80,7 @@ public class MatrixJFrame extends JFrame
         setCursor(cbusy);
         String selMat = (String)list.getSelectedValue();
         mat = new Matrix("resources/resources.jar",
-                         "resources/"+selMat);
+                         selMat);
         statusField.setText("Current matrix: "+selMat);
         setMatrix(mat);
         alignFrame.setMatrix(mat);

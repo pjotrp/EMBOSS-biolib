@@ -269,7 +269,7 @@ public class PlotConsensus extends JPanel
     int wsize = 2;
     int interval = 10;
     Matrix mat = new Matrix("resources/resources.jar",
-                            "resources/EDNAFULL");
+                            "EDNAFULL");
 
     PlotConsensus pc =  new PlotConsensus(mat,seqs,wsize,interval);
     JFrame f = new JFrame("Plot Consensus");
