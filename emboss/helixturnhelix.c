@@ -493,7 +493,11 @@ static void hth_report_hits(AjPList ajb, ajint lastcol, AjPFeattable TabRpt)
     n = ajListToArray(ajb, (void***) &lp);
 
     if(!n)
+    {
+	ajIntDel(&hp);
+	ajFloatDel(&hsd);
 	return;
+    }
 
     for(i=0;i<n;++i)
     {
