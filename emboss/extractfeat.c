@@ -179,10 +179,10 @@ static void extractfeat_FeatSeqExtract (AjPSeq seq, AjPSeqout seqout,
 	{
 	    gf = ajListIterNext (iter) ;
 
-/* determine what sort of thing this feature is */
-	    child = ajFalse;
-	    parent = ajFalse;
-	    single = ajFalse;
+/* Determine what sort of thing this feature is. Only one of these will be true. */
+	    child = ajFalse;	/* True if this is part of a multiple join and it is not the parent */
+	    parent = ajFalse;	/* True if this is part of a multiple join and it is the parent */
+	    single = ajFalse;	/* True if this is not part of a multiple join */
             if (ajFeatIsMultiple(gf)) {
             	if (ajFeatIsChild(gf)) {
             	    child = ajTrue;
@@ -203,10 +203,10 @@ treated as single */
 
 
 
-	    ajDebug ("feature %d=%d is parent %B, child %B, single %B\n",
+	    ajDebug ("feature %d-%d is parent %B, child %B, single %B\n",
 			gf->Start, gf->End, parent, child, single);
 
-/* if single or parent, write out any previous sequence(s) */
+/* if single or parent, write out any stored previous feature sequence */
             if (single || parent) {
             	extractfeat_WriteOut(seqout, &featseq, compall, sense,
 			firstpos, lastpos, before, after, seq, remote, type, 
@@ -264,12 +264,15 @@ a Remote ID */
 		    firstpos = gf->Start-1;
 		}
             }
+
 /* get feature sequence (complement if required) */
             extractfeat_GetFeatseq(seq, gf, &tmpseq, sense);
 	    ajDebug("extracted feature = %d bases\n", ajStrLen(tmpseq));
-/* if child, append to previous sequence */
+
+/* if child, append to previous sequence, otherwise simply assign */
             if (child) {
             	ajStrApp(&featseq, tmpseq);
+	        ajDebug("joined feature so far = %d bases\n", ajStrLen(featseq));
             } else {
             	ajStrAss(&featseq, tmpseq);
             }
@@ -297,12 +300,12 @@ a Remote ID */
 
 /* @funcstatic extractfeat_GetFeatseq *****************************************
 **
-** Get the sequence string of a feature (complement if necessary)
+** Get the sequence string of a feature (complement if reverse sense)
 **
 ** @param [u] seq [AjPSeq] input sequence
 ** @param [r] gf [AjPFeature] feature
 ** @param [r] gfstr [AjPStr *] the resulting feature sequence string
-** @param [r] sense [AjBool] FALSE if reverse sense
+** @param [r] sense [AjBool] FALSE if reverse sense, so complement the result
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -320,14 +323,14 @@ static void extractfeat_GetFeatseq(AjPSeq seq, AjPFeature gf, AjPStr
     ajDebug("about to get sequence from %d-%d, len=%d\n",
 	    gf->Start, gf->End, gf->End-gf->Start+1);
 
-    ajStrAppSub (&tmp, str, gf->Start-1, gf->End-1);
+    ajStrAssSub (&tmp, str, gf->Start-1, gf->End-1);
 
     /* if feature was in reverse sense, then get reverse complement */
     if (!sense) {
     	ajSeqReverseStr(&tmp);
     }
 
-    ajStrApp(gfstr, tmp);
+    ajStrAss(gfstr, tmp);
 
 
     /* tidy up */
@@ -372,7 +375,7 @@ static void extractfeat_WriteOut (AjPSeqout seqout, AjPStr *featstr,
 
     /* see if there is a sequence to be written out */
     if (!ajStrLen(*featstr)) {
-        ajDebug("feature not written out because it has length=0\n");
+        ajDebug("feature not written out because it has length=0 (probably first time round)\n");
     	return;
     }
 
