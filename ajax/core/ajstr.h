@@ -334,6 +334,7 @@ AjBool     ajStrIsHex (const AjPStr thys);
 AjBool     ajStrIsInt (const AjPStr thys);
 AjBool     ajStrIsLong (const AjPStr thys);
 AjBool     ajStrIsLower (const AjPStr thys);
+AjBool     ajStrIsNum (const AjPStr thys);
 AjBool     ajStrIsSpace (const AjPStr thys);
 AjBool     ajStrIsUpper (const AjPStr thys);
 AjBool     ajStrIsWild (const AjPStr thys);

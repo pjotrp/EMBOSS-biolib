@@ -7267,6 +7267,34 @@ AjBool ajStrIsAlnum(const AjPStr thys)
 
 
 
+/* @func ajStrIsNum ***********************************************************
+**
+** Simple test for a string having only decimal digits
+** as defined by isdigit in the C RTL
+**
+** @param [rE] thys [const AjPStr] String
+** @return [AjBool] ajTrue if the string is entirely numeric
+** @cre an empty string returns ajFalse
+** @@
+******************************************************************************/
+
+AjBool ajStrIsNum(const AjPStr thys)
+{
+    const char* cp;
+
+    if(!thys->Len)
+	return ajFalse;
+
+    for(cp = ajStrStr(thys);*cp;cp++)
+	if(!isdigit((ajint)*cp))
+	    return ajFalse;
+
+    return ajTrue;
+}
+
+
+
+
 /* @func ajStrIsWord **********************************************************
 **
 ** Simple test for a string having no white space
