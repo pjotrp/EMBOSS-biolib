@@ -92,6 +92,9 @@ void         ajAlignClose (AjPAlign thys);
 AjBool       ajAlignDefine (AjPAlign pthys, AjPSeqset seqset);
 AjBool       ajAlignDefineSS (AjPAlign pthys,
 			      AjPSeq seqa, AjPSeq seqb);
+AjBool       ajAlignDefineCC (AjPAlign pthys,
+			      const char* seqa, const char* seqb,
+			      const char* namea,const  char* nameb);
 void         ajAlignDel (AjPAlign* pthys);
 AjBool       ajAlignOpen (AjPAlign thys, const AjPStr name);
 AjBool       ajAlignFindFormat (const AjPStr format, ajint* iformat);

@@ -1574,6 +1574,65 @@ AjBool ajAlignDefineSS(AjPAlign thys, AjPSeq seqa, AjPSeq seqb)
 
 
 
+/* @func ajAlignDefineCC ******************************************************
+**
+** Defines a pair of char* strings as an alignment
+**
+** @param [r] thys [AjPAlign] Alignment object
+** @param [r] seqa [const char*] First sequence
+** @param [r] seqb [const char*] Second sequence
+** @param [r] seqa [const char*] Name of first sequence
+** @param [r] seqb [const char*] Name of second sequence
+** @return [AjBool] ajTrue on success
+** @@
+******************************************************************************/
+
+AjBool ajAlignDefineCC(AjPAlign thys, const char* seqa, const char* seqb,
+		       const char* namea, const char* nameb)
+{
+    AlignPData data = NULL;
+
+
+    AJNEW0(data);
+
+    if(!thys->Nseqs)
+	thys->Nseqs = 2;
+
+    AJCNEW0(data->Start, 2);
+    AJCNEW0(data->End, 2);
+    AJCNEW0(data->Offset, 2);
+    AJCNEW0(data->SubOffset, 2);
+    AJCNEW0(data->Rev, 2);
+    AJCNEW0(data->Seq, 2);
+
+    data->Start[0] = 1;
+    data->End[0] = strlen(seqa);
+    data->Offset[0] = 0;
+    data->Rev[0] = ajFalse;
+
+    /* no external option - we do need to create the AjPSeqs */
+
+    data->Seq[0] = ajSeqNewC(seqa, namea);
+    ajSeqGapStandard(data->Seq[0], '-');
+
+    data->Start[1] = 1;
+    data->End[1] = strlen(seqb);
+    data->Offset[1] = 0;
+    data->Rev[1] = ajFalse;
+
+    data->Seq[1] = ajSeqNewC(seqb, nameb);
+    ajSeqGapStandard(data->Seq[1], '-');
+
+    data->Len = AJMIN(strlen(seqa), strlen(seqb));
+
+    ajListPushApp(thys->Data, data);
+
+    return ajTrue;
+}
+
+
+
+
 /* @func ajAlignDel ***********************************************************
 **
 ** Destructor for Alignment objects
@@ -1914,7 +1973,7 @@ void ajAlignWriteHeader(AjPAlign thys)
     }
     
     if(!doSingle || thys->Multi)
-	ajFmtPrintF(outf, "#=======================================\n#\n");
+	ajFmtPrintF(outf, "\n#=======================================\n#\n");
     
     ajFmtPrintF(outf, "# Aligned_sequences: %d\n", thys->Nseqs);
     for(i=0; i < thys->Nseqs; i++)
