@@ -20,7 +20,7 @@ In this way any updates to the client can be automatically downloaded.
 it to utilise the EMBOSS ajax library. This is used to calculate sequence
 attributes from any of the numerous formats that EMBOSS can use.
 <p>&nbsp;&nbsp;&nbsp; Jemboss currently uses Embreo which is still being developed
-at the HGMP.
+at the HGMP, to make SOAP calls to the server.
 <p>&nbsp;&nbsp;&nbsp; Note, this software has been developed and tested,
 so far,&nbsp; using java1.3.
 <br>&nbsp;
@@ -72,7 +72,8 @@ Directories</h2>
 Client Compilation</h2>
 1. Goto the Jemboss directory.
 <p>2. Set the classpath
-<br>setenv CLASSPATH :lib/soap.jar:lib/xerces.jar:lib/mail.jar:lib/activation.jar:lib/jakarta-regexp-1.2.jar:.:org/emboss/Jemboss/:
+<br>setenv CLASSPATH :lib/soap.jar:lib/xerces.jar:lib/mail.jar:lib/activation.jar:lib/jakarta-regexp-1.2.jar:embreo/embreo-full.jar:.:
+
 <p>3. Compile with java 1.3
 <br>javac org/emboss/jemboss/Jemboss.java
 <p>4. If you are running in the stand-alone mode (i.e. not using the server
