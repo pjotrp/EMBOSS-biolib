@@ -1,4 +1,9 @@
 Version 2.9.0
+	compseq now has the option '-calcfreq'. This makes it calculate
+	the expecetd frequencies of the words in the sequences from the
+	observed frequencies of the single bases or residues in those
+	frequencies.
+
 	HTML data from remote sites is becoming more complex. EMBOSS now
 	makes a first pass to look for a single preformatted block and
 	accepts this as the data (thus avoiding horrors such as the Entrez
