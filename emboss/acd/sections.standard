@@ -16,7 +16,6 @@ afeaturesection input First feature options
 bfeaturesection input Second feature options
 consensussection additional Consensus section
 datasection output Data output section
-dendsection additional Dendrogram options
 fastalignsection additional Fast align options
 featuresection additional Feature display options
 featurerelationsection input Feature relation options
@@ -28,7 +27,7 @@ matrixsection additional Matrix options
 oligosinput additional Internal oligo input
 oligosection additional Internal oligo options
 profiletypesection required Profile type specific options
-primersection additional Primer options
+primersection advanced Primer options
 primerweights advanced Primer penalty weights
 programsection additional Program options
 productsection additional Product options
@@ -37,6 +36,6 @@ remapsection advanced Restriction map options
 seqinsection input Sequence input options
 seqoptsection additional Sequence options
 slowalignsection additional Slow align options
-targetsection advanced Target options
+targetsection required Target options
 thermosection additional Thermodynamic options
 vectorfilesection input Vector input options
