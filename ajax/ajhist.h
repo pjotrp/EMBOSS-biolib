@@ -3,7 +3,7 @@ extern "C"
 {
 #endif
 
-/* @source embGraph.h
+/* @source ajhist.h
 **
 ** General Plot/Printing routines.
 **

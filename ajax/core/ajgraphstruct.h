@@ -3,14 +3,16 @@
 
 #define MAX_STRING 180
 
-/* @data AjPGraphObj **********************************************************
+#include "ajgraphxml.h"
+
+/* @data AjPGraphPlpObj *******************************************************
 **
 ** AJAX data structure for graph objects, contained as a substructure
-** in AjPGraphData
+** in AjPGraphPlpData
 **
 ******************************************************************************/
 
-typedef struct AjSGraphObj {
+typedef struct AjSGraphPlpObj {
   ajint type;			/* Object type in AjEGraphObjectTypes */
   ajint colour;			/* See AjEGraphColour for plplot colours */
   AjPStr text;			/* Text to plot */
@@ -18,17 +20,17 @@ typedef struct AjSGraphObj {
   float x2;			/* x end */
   float y1;			/* y start */
   float y2;			/* y end */
-  struct AjSGraphObj *next;	/* link to next object in the list */
-} AjOGraphObj, *AjPGraphObj;
+  struct AjSGraphPlpObj *next;	/* link to next object in the list */
+} AjOGraphPlpObj, *AjPGraphPlpObj;
 
-/* @data AjPGraphData *********************************************************
+/* @data AjPGraphPlpData ******************************************************
 **
-** Graph data object. Substructure of AjPGraph.
+** Graph data object. Substructure of AjPGraphPlp.
 **
 ** @@
 ******************************************************************************/
 
-typedef struct AjSGraphData {
+typedef struct AjSGraphPlpData {
   float *x;			/* x coordinates */
   AjBool xcalc;			/* if x calculated then delete after */
   float *y;			/* y coordinates */
@@ -51,21 +53,21 @@ typedef struct AjSGraphData {
   AjPStr gtype;			/* 2D, Tick etc */
   ajint colour;			/* See AjEGraphColour for plplot colours */
   ajint lineType;		/* Line type for plplot */
-  AjPGraphObj Obj;		/* First graph object - links to rest */
-} AjOGraphData, *AjPGraphData;
+  AjPGraphPlpObj Obj;		/* First graph object - links to rest */
+} AjOGraphPlpData, *AjPGraphPlpData;
 
-/* @data AjPGraph *************************************************************
+/* @data AjPGraphPlp **********************************************************
 **
-** Graph object.
+** Graph plplot object.
 **
 ** @@
 ******************************************************************************/
 
-typedef struct AjSGraph {
+typedef struct AjSGraphPlp {
   ajint numofgraphs;		/* Number of graphs in graphs*/
   ajint numofobjects;		/* Number of objects in Obj */
   ajint numofgraphsmax;		/* Maximum number of graphs expected */
-  ajint flags;		       /* over rides the EmbGraphData flags */
+  ajint flags;		        /* over rides the EmbGraphData flags */
   float minX;			/* Lowest x value for all graphs */
   float maxX;			/* Highest x value for all graphs */
   float minY;			/* Lowest y value for all graphs  */
@@ -83,8 +85,21 @@ typedef struct AjSGraph {
   AjPStr xaxis;			/* Plot x axis title */
   AjPStr yaxis;			/* Plot y axis title */
   AjPStr outputfile;		/* Output filename */
-  AjPGraphData *graphs;		/* XY Data to plot for Graph(s) */
-  AjPGraphObj Obj;		/* Objects to plot for single graph */
+  AjPGraphPlpData *graphs;	/* XY Data to plot for Graph(s) */
+  AjPGraphPlpObj Obj;		/* Objects to plot for single graph */
+} AjOGraphPlp, *AjPGraphPlp;
+
+/* @data AjPGraph *************************************************************
+**
+** Graph object.
+**
+** @@
+******************************************************************************/
+
+typedef struct AjSGraph {
+    ajint numsets;		/* Number of sets in a multiple graph */
+    AjPGraphPlp plplot;		/* PlPlot graph object */
+    AjPGraphXml xml;		/* XML graph object */
 } AjOGraph, *AjPGraph;
 
 enum AjEGraphColours {BLACK, RED, YELLOW, GREEN, AQUAMARINE,

@@ -33,37 +33,37 @@
 #define SQUARESIZE 0.03
 
 
-static AjPXmlNode	xml_MakeNewNode(AjPXmlFile file,AjPStr name,
+static AjPXmlNode	xml_MakeNewNode(AjPGraphXml file,AjPStr name,
 					AjPXmlNode parent);
-static AjPXmlNode	xml_MakeNewNodeC(AjPXmlFile file, char *name, 
+static AjPXmlNode	xml_MakeNewNodeC(AjPGraphXml file, char *name, 
 					 AjPXmlNode parent);
 
-static AjPXmlNode 	xml_MakeNewShapeNode(AjPXmlFile file,
+static AjPXmlNode 	xml_MakeNewShapeNode(AjPGraphXml file,
 					     AjPXmlNode parentNode,
 					     AjPStr nameReqd);
-static AjPXmlNode 	xml_MakeNewShapeNodeC(AjPXmlFile file,
+static AjPXmlNode 	xml_MakeNewShapeNodeC(AjPGraphXml file,
 					      AjPXmlNode parentNode,
 					      char *nameReqd);
-static AjPXmlNode 	xml_GetNodeTypeMakeIfNot(AjPXmlFile file,
+static AjPXmlNode 	xml_GetNodeTypeMakeIfNot(AjPGraphXml file,
 						 AjPStr nameReqd);
-static AjPXmlNode 	xml_GetNodeTypeMakeIfNotC(AjPXmlFile file,
+static AjPXmlNode 	xml_GetNodeTypeMakeIfNotC(AjPGraphXml file,
 						  char *nameReqd);
-static AjPXmlFile 	xml_CreateNewOutputFile();
-static AjPXmlNode 	xml_GetCurrentGraphic(AjPXmlFile file);
-static AjPXmlNode 	xml_GetCurrentScene(AjPXmlFile file);
+static AjPGraphXml 	xml_CreateNewOutputFile();
+static AjPXmlNode 	xml_GetCurrentGraphic(AjPGraphXml file);
+static AjPXmlNode 	xml_GetCurrentScene(AjPGraphXml file);
 static AjPXmlNode 	xml_SetNode(GdomeNode *node);
 static GdomeNode* 	xml_GetNode(AjPXmlNode node);
 static GdomeElement* 	xml_GetNodeElement(AjPXmlNode node);
 static AjPXmlNode 	xml_GetParent(AjPXmlNode node);
 
-static void 	xml_AddCylinder(AjPXmlFile file, double xCentre,
+static void 	xml_AddCylinder(AjPGraphXml file, double xCentre,
 				double yCentre, double angle, double height,
 				double width);
 static AjPStr 	xml_StrFromBool(AjBool boole);
 static AjBool 	xml_StrFromDouble(AjPStr *result, double val);
 static AjBool 	xml_AngleIsInSecondHalfOfCircle(double angle);
-static AjBool 	xml_PresentGraphicTypeIs(AjPXmlFile file, AjPStr name);
-static AjBool 	xml_PresentGraphicTypeIsC(AjPXmlFile file, char *name);
+static AjBool 	xml_PresentGraphicTypeIs(AjPGraphXml file, AjPStr name);
+static AjBool 	xml_PresentGraphicTypeIsC(AjPGraphXml file, char *name);
 static AjPStr 	xml_GetAttribute(AjPXmlNode node, AjPStr atName);
 static AjPStr 	xml_GetAttributeC(AjPXmlNode node, char *atName);
 static void 	xml_SetAttribute(AjPXmlNode node, AjPStr atName,
@@ -75,12 +75,12 @@ static void 	xml_SetIndex(AjPXmlNode node, AjPStr index);
 static AjPStr 	xml_GetPoints(AjPXmlNode node);
 static AjBool 	xml_SetPoints(AjPXmlNode node, AjPStr points);
 
-static AjPStr 	xml_PresentColourAsString(AjPXmlFile file);
-static AjBool 	xml_FileNeedsProtoDeclare(AjPXmlFile file, AjPStr protoName);
-static AjBool 	xml_FileNeedsProtoDeclareC(AjPXmlFile file, char *protoName);
-static AjBool 	xml_IsShapeThisColour(AjPXmlFile file, AjPXmlNode shape);
+static AjPStr 	xml_PresentColourAsString(AjPGraphXml file);
+static AjBool 	xml_FileNeedsProtoDeclare(AjPGraphXml file, AjPStr protoName);
+static AjBool 	xml_FileNeedsProtoDeclareC(AjPGraphXml file, char *protoName);
+static AjBool 	xml_IsShapeThisColour(AjPGraphXml file, AjPXmlNode shape);
 
-static void 	xml_AddArc(AjPXmlFile file, double xCentre, double yCentre,
+static void 	xml_AddArc(AjPGraphXml file, double xCentre, double yCentre,
 			   double startAngle, double endAngle, double radius);
 
 static void 	xml_AddACoord(double x, double y, AjBool joined, AjPStr* coord,
@@ -89,15 +89,15 @@ static int 	xml_GetLastInt(AjPStr str);
 static double 	xml_GetLastDouble(AjPStr str);
 static double 	xml_GetDoubleNo(AjPStr str, int index);
 
-static void 	xml_AddGraphProto(AjPXmlFile file);
-static void 	xml_AddDNAPlotProto(AjPXmlFile file);
-static void 	xml_AddCommonBit(AjPXmlFile file);
-static AjBool 	xml_WriteFile(AjPXmlFile file, AjPStr filename);
-static AjBool 	xml_WriteStdout(AjPXmlFile file);
+static void 	xml_AddGraphProto(AjPGraphXml file);
+static void 	xml_AddDNAPlotProto(AjPGraphXml file);
+static void 	xml_AddCommonBit(AjPGraphXml file);
+static AjBool 	xml_WriteFile(AjPGraphXml file, AjPStr filename);
+static AjBool 	xml_WriteStdout(AjPGraphXml file);
 
-static void 	xml_SetCurrentGraphic(AjPXmlFile file, AjPXmlNode node);
-static void 	xml_SetCurrentScene(AjPXmlFile file, AjPXmlNode node);
-static void 	xml_ClearFile(AjPXmlFile file);
+static void 	xml_SetCurrentGraphic(AjPGraphXml file, AjPXmlNode node);
+static void 	xml_SetCurrentScene(AjPGraphXml file, AjPXmlNode node);
+static void 	xml_ClearFile(AjPGraphXml file);
 static void 	xml_UnrefNode(AjPXmlNode node);
 
 static void     xml_clear_nodeTypes(const void *key, void **value, void *cl);
@@ -129,13 +129,13 @@ AjPXmlNode ajXmlNodeNew()
 **
 ** Create a new file and allocate the memory
 **
-** @return [AjPXmlFile] the new file
+** @return [AjPGraphXml] the new file
 ** @@
 *********************************************************************/
 
-AjPXmlFile ajXmlFileNew()
+AjPGraphXml ajXmlFileNew()
 {
-    AjPXmlFile thys;
+    AjPGraphXml thys;
 
     AJNEW0(thys);
 
@@ -173,13 +173,13 @@ void ajXmlNodeDel(AjPXmlNode *thys)
 **
 ** Delete the file
 **
-** @param [d] thys [AjPXmlFile*] the file to delete
+** @param [d] thys [AjPGraphXml*] the file to delete
 **
 ** @return [void] 
 ** @@
 *********************************************************************/
 
-void ajXmlFileDel(AjPXmlFile *thys)
+void ajXmlFileDel(AjPGraphXml *thys)
 {
     if(!thys || !*thys)
 	return;
@@ -205,7 +205,7 @@ void ajXmlFileDel(AjPXmlFile *thys)
 **
 ** sets the max min values of a graph
 **
-** @param [w] file [AjPXmlFile] the file to add the max min values to
+** @param [w] file [AjPGraphXml] the file to add the max min values to
 ** @param [r] xMin [double] the x min value
 ** @param [r] yMin [double] the y min value
 ** @param [r] xMax [double] the x max value
@@ -216,7 +216,7 @@ void ajXmlFileDel(AjPXmlFile *thys)
 ** @@
 *********************************************************************/
 
-AjBool ajXmlSetMaxMin (AjPXmlFile file, double xMin, double yMin, 
+AjBool ajXmlSetMaxMin (AjPGraphXml file, double xMin, double yMin, 
 		       double xMax, double yMax)
 {
     AjPXmlNode minMaxNode;
@@ -277,14 +277,14 @@ AjBool ajXmlSetMaxMin (AjPXmlFile file, double xMin, double yMin,
 **
 ** writes the file 
 **
-** @param [w] file [AjPXmlFile] the file to write
+** @param [w] file [AjPGraphXml] the file to write
 ** @param [r] filename [AjPStr] the filename to write
 **
 ** @return [AjBool] ajTrue if file correctly written
 ** @@
 *********************************************************************/
 
-AjBool ajXmlWriteFile(AjPXmlFile file, AjPStr filename)
+AjBool ajXmlWriteFile(AjPGraphXml file, AjPStr filename)
 {
     return xml_WriteFile(file, filename);
 }
@@ -296,13 +296,13 @@ AjBool ajXmlWriteFile(AjPXmlFile file, AjPStr filename)
 **
 ** writes the file 
 **
-** @param [w] file [AjPXmlFile] the file to write
+** @param [w] file [AjPGraphXml] the file to write
 **
 ** @return [AjBool] ajTrue if file correctly written
 ** @@
 *********************************************************************/
 
-AjBool ajXmlWriteStdout(AjPXmlFile file)
+AjBool ajXmlWriteStdout(AjPGraphXml file)
 {
     return xml_WriteStdout(file);
 }
@@ -314,13 +314,13 @@ AjBool ajXmlWriteStdout(AjPXmlFile file)
 **
 ** Clears the memory allocated to this file
 **
-** @param [w] file [AjPXmlFile] the file to clear
+** @param [w] file [AjPGraphXml] the file to clear
 **
 ** @return [void]
 ** @@
 *********************************************************************/
 
-void ajXmlClearFile(AjPXmlFile file)
+void ajXmlClearFile(AjPGraphXml file)
 {
     xml_ClearFile(file);
 
@@ -334,7 +334,7 @@ void ajXmlClearFile(AjPXmlFile file)
 **
 ** Adds the source to a graph object
 **
-** @param [w] file [AjPXmlFile] the file to add the title to
+** @param [w] file [AjPGraphXml] the file to add the title to
 ** @param [r] title [AjPStr] the title
 **
 ** @return [AjBool] ajTrue if the current Graphics object is valid to 
@@ -342,7 +342,7 @@ void ajXmlClearFile(AjPXmlFile file)
 ** @@
 *********************************************************************/
 
-AjBool ajXmlSetSource(AjPXmlFile file, AjPStr title)
+AjBool ajXmlSetSource(AjPGraphXml file, AjPStr title)
 {
     AjPXmlNode titleNode;
 
@@ -366,7 +366,7 @@ AjBool ajXmlSetSource(AjPXmlFile file, AjPStr title)
 **
 ** Adds a title to a graph object
 **
-** @param [w] file [AjPXmlFile] the file to add the title to
+** @param [w] file [AjPGraphXml] the file to add the title to
 ** @param [r] title [char *] the title
 **
 ** @return [AjBool] ajTrue if the current Graphics object is valid to 
@@ -374,7 +374,7 @@ AjBool ajXmlSetSource(AjPXmlFile file, AjPStr title)
 ** @@
 *********************************************************************/
 
-AjBool ajXmlAddMainTitleC(AjPXmlFile file, char *title)
+AjBool ajXmlAddMainTitleC(AjPGraphXml file, char *title)
 {
     AjPXmlNode graphNode;
     AjPStr titleAltered = NULL;
@@ -403,7 +403,7 @@ AjBool ajXmlAddMainTitleC(AjPXmlFile file, char *title)
 **
 ** Adds a title to a graph object
 **
-** @param [w] file [AjPXmlFile] the file to add the title to
+** @param [w] file [AjPGraphXml] the file to add the title to
 ** @param [r] title [char *] the title
 **
 ** @return [AjBool] ajTrue if the current Graphics object is valid to 
@@ -411,7 +411,7 @@ AjBool ajXmlAddMainTitleC(AjPXmlFile file, char *title)
 ** @@
 *********************************************************************/
 
-AjBool ajXmlAddXTitleC (AjPXmlFile file, char *title)
+AjBool ajXmlAddXTitleC (AjPGraphXml file, char *title)
 {
     AjPXmlNode titleNode;
     AjPStr titleAltered = NULL;
@@ -442,7 +442,7 @@ AjBool ajXmlAddXTitleC (AjPXmlFile file, char *title)
 **
 ** Adds a title to a graph object
 **
-** @param [w] file [AjPXmlFile] the file to add the title to
+** @param [w] file [AjPGraphXml] the file to add the title to
 ** @param [r] title [char *] the title
 **
 ** @return [AjBool] ajTrue if the current Graphics object is valid to
@@ -450,7 +450,7 @@ AjBool ajXmlAddXTitleC (AjPXmlFile file, char *title)
 ** @@
 *********************************************************************/
 
-AjBool ajXmlAddYTitleC(AjPXmlFile file, char *title)
+AjBool ajXmlAddYTitleC(AjPGraphXml file, char *title)
 {
     AjPXmlNode titleNode;
     AjPStr titleAltered = NULL;
@@ -480,7 +480,7 @@ AjBool ajXmlAddYTitleC(AjPXmlFile file, char *title)
 **
 ** Adds a title to a graph object
 **
-** @param [w] file [AjPXmlFile] the file to add the title to
+** @param [w] file [AjPGraphXml] the file to add the title to
 ** @param [r] title [AjPStr] the title
 **
 ** @return [AjBool] ajTrue if the current Graphics object is valid to 
@@ -488,7 +488,7 @@ AjBool ajXmlAddYTitleC(AjPXmlFile file, char *title)
 ** @@
 *********************************************************************/
 
-AjBool ajXmlAddMainTitle(AjPXmlFile file, AjPStr title)
+AjBool ajXmlAddMainTitle(AjPGraphXml file, AjPStr title)
 {
     return ajXmlAddMainTitleC(file, ajStrStr(title));
 }
@@ -500,7 +500,7 @@ AjBool ajXmlAddMainTitle(AjPXmlFile file, AjPStr title)
 **
 ** Adds a title to a graph object
 **
-** @param [w] file [AjPXmlFile] the file to add the title to
+** @param [w] file [AjPGraphXml] the file to add the title to
 ** @param [r] title [AjPStr] the title
 **
 ** @return [AjBool] ajTrue if the current Graphics object is valid to 
@@ -508,7 +508,7 @@ AjBool ajXmlAddMainTitle(AjPXmlFile file, AjPStr title)
 ** @@
 *********************************************************************/
 
-AjBool ajXmlAddXTitle (AjPXmlFile file, AjPStr title)
+AjBool ajXmlAddXTitle (AjPGraphXml file, AjPStr title)
 {
     return ajXmlAddXTitleC(file, ajStrStr(title));
 }
@@ -520,7 +520,7 @@ AjBool ajXmlAddXTitle (AjPXmlFile file, AjPStr title)
 **
 ** Adds a title to a graph object
 **
-** @param [w] file [AjPXmlFile] the file to add the title to
+** @param [w] file [AjPGraphXml] the file to add the title to
 ** @param [r] title [AjPStr] the title
 **
 ** @return [AjBool] ajTrue if the current Graphics object is valid to
@@ -528,7 +528,7 @@ AjBool ajXmlAddXTitle (AjPXmlFile file, AjPStr title)
 ** @@
 *********************************************************************/
 
-AjBool ajXmlAddYTitle(AjPXmlFile file, AjPStr title)
+AjBool ajXmlAddYTitle(AjPGraphXml file, AjPStr title)
 {
     return ajXmlAddYTitleC(file, ajStrStr(title));
 }
@@ -540,7 +540,7 @@ AjBool ajXmlAddYTitle(AjPXmlFile file, AjPStr title)
 **
 ** Adds some text, centered at point given
 **
-** @param [w] file [AjPXmlFile] the file to add the line to
+** @param [w] file [AjPGraphXml] the file to add the line to
 ** @param [r] x [double] the x coordinate
 ** @param [r] y [double] the y coordinate
 ** @param [r] size [double] font size
@@ -553,7 +553,7 @@ AjBool ajXmlAddYTitle(AjPXmlFile file, AjPStr title)
 ** @@
 *********************************************************************/
 
-void ajXmlAddTextCentred(AjPXmlFile file, double x, double y, 
+void ajXmlAddTextCentred(AjPGraphXml file, double x, double y, 
 			 double size, double angle, AjPStr fontFamily,
 			 AjPStr fontStyle, AjPStr text)
 {
@@ -573,7 +573,7 @@ void ajXmlAddTextCentred(AjPXmlFile file, double x, double y,
 **
 ** Adds some text
 **
-** @param [w] file [AjPXmlFile] the file to add the line to
+** @param [w] file [AjPGraphXml] the file to add the line to
 ** @param [r] x [double] the x coordinate
 ** @param [r] y [double] the y coordinate
 ** @param [r] size [double] font size
@@ -586,7 +586,7 @@ void ajXmlAddTextCentred(AjPXmlFile file, double x, double y,
 ** @@
 *********************************************************************/
 
-void ajXmlAddTextC(AjPXmlFile file, double x, double y, double size, 
+void ajXmlAddTextC(AjPGraphXml file, double x, double y, double size, 
 		  double angle, char *fontFamily, char *fontStyle, 
 		  char *text)
 {
@@ -699,7 +699,7 @@ void ajXmlAddTextC(AjPXmlFile file, double x, double y, double size,
 **
 ** Adds some text
 **
-** @param [w] file [AjPXmlFile] the file to add the line to
+** @param [w] file [AjPGraphXml] the file to add the line to
 ** @param [r] x [double] the x coordinate
 ** @param [r] y [double] the y coordinate
 ** @param [r] size [double] font size
@@ -712,7 +712,7 @@ void ajXmlAddTextC(AjPXmlFile file, double x, double y, double size,
 ** @@
 *********************************************************************/
 
-void ajXmlAddText(AjPXmlFile file, double x, double y, double size, 
+void ajXmlAddText(AjPGraphXml file, double x, double y, double size, 
 		  double angle, AjPStr fontFamily, AjPStr fontStyle, 
 		  AjPStr text)
 {
@@ -730,7 +730,7 @@ void ajXmlAddText(AjPXmlFile file, double x, double y, double size,
 **
 ** Adds some text with the justification set
 **
-** @param [w] file [AjPXmlFile] the file to add the line to
+** @param [w] file [AjPGraphXml] the file to add the line to
 ** @param [r] x [double] the x coordinate
 ** @param [r] y [double] the y coordinate
 ** @param [r] size [double] font size
@@ -754,7 +754,7 @@ void ajXmlAddText(AjPXmlFile file, double x, double y, double size,
 ** @@
 *********************************************************************/
 
-void ajXmlAddTextWithCJustify(AjPXmlFile file, double x, double y, 
+void ajXmlAddTextWithCJustify(AjPGraphXml file, double x, double y, 
 			      double size, double angle, 
 			      AjPStr fontFamily, AjPStr fontStyle, 
 			      AjPStr text, AjBool horizontal, 
@@ -831,7 +831,7 @@ void ajXmlAddTextWithCJustify(AjPXmlFile file, double x, double y,
 **
 ** Adds some text with the justification set
 **
-** @param [w] file [AjPXmlFile] the file to add the line to
+** @param [w] file [AjPGraphXml] the file to add the line to
 ** @param [r] x [double] the x coordinate
 ** @param [r] y [double] the y coordinate
 ** @param [r] size [double] font size
@@ -854,7 +854,7 @@ void ajXmlAddTextWithCJustify(AjPXmlFile file, double x, double y,
 ** @return [void]
 ** @@
 *********************************************************************/
-void ajXmlAddTextWithJustify(AjPXmlFile file, double x, double y, 
+void ajXmlAddTextWithJustify(AjPGraphXml file, double x, double y, 
 			     double size, double angle, 
 			     AjPStr fontFamily, AjPStr fontStyle, 
 			     AjPStr text, AjBool horizontal, 
@@ -877,7 +877,7 @@ void ajXmlAddTextWithJustify(AjPXmlFile file, double x, double y,
 ** not fill the arc it is centred. A character of length 1m is size 
 ** 1.784
 **
-** @param [w] file [AjPXmlFile] the file to add the text to
+** @param [w] file [AjPGraphXml] the file to add the text to
 ** @param [r] xCentre [double] the x value of the centre of the 
 ** circle
 ** @param [r] yCentre [double] the y value of the centre of the 
@@ -894,7 +894,7 @@ void ajXmlAddTextWithJustify(AjPXmlFile file, double x, double y,
 ** @@
 *********************************************************************/
 
-void ajXmlAddTextOnArc(AjPXmlFile file, double xCentre, double yCentre,
+void ajXmlAddTextOnArc(AjPGraphXml file, double xCentre, double yCentre,
 		       double startAngle, double endAngle, 
 		       double radius, double size, AjPStr fontFamily, 
 		       AjPStr fontStyle, AjPStr text)
@@ -967,7 +967,7 @@ void ajXmlAddTextOnArc(AjPXmlFile file, double xCentre, double yCentre,
 **
 ** Adds a set of joined lines with the x values equaly spaced
 **
-** @param [w] file [AjPXmlFile] the file to add the line to
+** @param [w] file [AjPGraphXml] the file to add the line to
 ** @param [r] y [float*] pointer to 1st y coordinate
 ** @param [r] numberOfPoints [int] number Of Points
 ** @param [r] startX [float] x start value
@@ -977,7 +977,7 @@ void ajXmlAddTextOnArc(AjPXmlFile file, double xCentre, double yCentre,
 ** @@
 *********************************************************************/
 
-void ajXmlAddJoinedLineSetEqualGapsF(AjPXmlFile file, float *y, 
+void ajXmlAddJoinedLineSetEqualGapsF(AjPGraphXml file, float *y, 
 				     int numberOfPoints, float startX,
 				     float increment)
 {
@@ -1009,7 +1009,7 @@ void ajXmlAddJoinedLineSetEqualGapsF(AjPXmlFile file, float *y,
 **
 ** Adds a set of joined lines
 **
-** @param [w] file [AjPXmlFile] the file to add the line to
+** @param [w] file [AjPGraphXml] the file to add the line to
 ** @param [r] x [float*] pointer to 1st x coordinate
 ** @param [r] y [float*] pointer to 1st y coordinate
 ** @param [r] numberOfPoints [int] number Of Points
@@ -1018,7 +1018,7 @@ void ajXmlAddJoinedLineSetEqualGapsF(AjPXmlFile file, float *y,
 ** @@
 *********************************************************************/
 
-void ajXmlAddJoinedLineSetF(AjPXmlFile file, float *x, float *y, 
+void ajXmlAddJoinedLineSetF(AjPGraphXml file, float *x, float *y, 
 			    int numberOfPoints)
 {
     double *xn;
@@ -1049,7 +1049,7 @@ void ajXmlAddJoinedLineSetF(AjPXmlFile file, float *x, float *y,
 **
 ** Adds a set of joined lines
 **
-** @param [w] file [AjPXmlFile] the file to add the line to
+** @param [w] file [AjPGraphXml] the file to add the line to
 ** @param [r] x [double*] pointer to 1st x coordinate
 ** @param [r] y [double*] pointer to 1st y coordinate
 ** @param [r] numberOfPoints [int] number Of Points
@@ -1058,7 +1058,7 @@ void ajXmlAddJoinedLineSetF(AjPXmlFile file, float *x, float *y,
 ** @@
 *********************************************************************/
 
-void ajXmlAddJoinedLineSet(AjPXmlFile file, double *x, double *y, 
+void ajXmlAddJoinedLineSet(AjPGraphXml file, double *x, double *y, 
 			   int numberOfPoints)
 {
     AjPXmlNode el;
@@ -1095,7 +1095,7 @@ void ajXmlAddJoinedLineSet(AjPXmlFile file, double *x, double *y,
 **
 ** Adds a line
 **
-** @param [w] file [AjPXmlFile] the file to add the line to
+** @param [w] file [AjPGraphXml] the file to add the line to
 ** @param [r] x1 [double] 1st x coordinate
 ** @param [r] y1 [double] 1st y coordinate
 ** @param [r] x2 [double] 2nd x coordinate
@@ -1105,7 +1105,7 @@ void ajXmlAddJoinedLineSet(AjPXmlFile file, double *x, double *y,
 ** @@
 *********************************************************************/
 
-void ajXmlAddLine(AjPXmlFile file, double x1, double y1, double x2, 
+void ajXmlAddLine(AjPGraphXml file, double x1, double y1, double x2, 
 		  double y2)
 {
     AjPXmlNode el;
@@ -1141,7 +1141,7 @@ void ajXmlAddLine(AjPXmlFile file, double x1, double y1, double x2,
 **
 ** Adds a line with floats
 **
-** @param [w] file [AjPXmlFile] the file to add the line to
+** @param [w] file [AjPGraphXml] the file to add the line to
 ** @param [r] x1 [float] 1st x coordinate
 ** @param [r] y1 [float] 1st y coordinate
 ** @param [r] x2 [float] 2nd x coordinate
@@ -1151,7 +1151,7 @@ void ajXmlAddLine(AjPXmlFile file, double x1, double y1, double x2,
 ** @@
 *********************************************************************/
 
-void ajXmlAddLineF(AjPXmlFile file, float x1, float y1, float x2, 
+void ajXmlAddLineF(AjPGraphXml file, float x1, float y1, float x2, 
 		   float y2)
 {
     ajXmlAddLine(file, (double) x1, (double) y1, (double) x2, 
@@ -1167,7 +1167,7 @@ void ajXmlAddLineF(AjPXmlFile file, float x1, float y1, float x2,
 **
 ** Adds a Point
 **
-** @param [w] file [AjPXmlFile] the file to add the point to
+** @param [w] file [AjPGraphXml] the file to add the point to
 ** @param [r] x1 [double] x coordinate
 ** @param [r] y1 [double] y coordinate
 **
@@ -1175,7 +1175,7 @@ void ajXmlAddLineF(AjPXmlFile file, float x1, float y1, float x2,
 ** @@
 *********************************************************************/
 
-void ajXmlAddPoint(AjPXmlFile file, double x1, double y1)
+void ajXmlAddPoint(AjPGraphXml file, double x1, double y1)
 {
     AjPXmlNode el;
     AjPStr coord = NULL;
@@ -1210,7 +1210,7 @@ void ajXmlAddPoint(AjPXmlFile file, double x1, double y1)
 **
 ** Adds a Histogram with each bar the same width, with y axis at 0.
 **
-** @param [w] file [AjPXmlFile] the file to add the line to
+** @param [w] file [AjPGraphXml] the file to add the line to
 ** @param [r] y [float*] the y coordinates, heights of bars
 ** @param [r] numPoints [int] number of bars
 ** @param [r] startX [float] start position of first bar
@@ -1220,7 +1220,7 @@ void ajXmlAddPoint(AjPXmlFile file, double x1, double y1)
 ** @@
 *********************************************************************/
 
-void ajXmlAddHistogramEqualGapsF(AjPXmlFile file, float *y, 
+void ajXmlAddHistogramEqualGapsF(AjPGraphXml file, float *y, 
 				 int numPoints, float startX, 
 				 float xGap)
 {
@@ -1281,7 +1281,7 @@ void ajXmlAddHistogramEqualGapsF(AjPXmlFile file, float *y,
 **
 ** Adds a rectangle
 **
-** @param [w] file [AjPXmlFile] the file to add the line to
+** @param [w] file [AjPGraphXml] the file to add the line to
 ** @param [r] x1 [double*] 1st x coordinate
 ** @param [r] y1 [double*] 1st y coordinate
 ** @param [r] x2 [double*] 2nd x coordinate
@@ -1293,7 +1293,7 @@ void ajXmlAddHistogramEqualGapsF(AjPXmlFile file, float *y,
 ** @@
 *********************************************************************/
 
-void ajXmlAddRectangleSet(AjPXmlFile file, double *x1, double *y1, 
+void ajXmlAddRectangleSet(AjPGraphXml file, double *x1, double *y1, 
 			  double *x2, double *y2, int numPoints, 
 			  AjBool fill)
 {
@@ -1351,7 +1351,7 @@ void ajXmlAddRectangleSet(AjPXmlFile file, double *x1, double *y1,
 **
 ** Adds a rectangle
 **
-** @param [w] file [AjPXmlFile] the file to add the line to
+** @param [w] file [AjPGraphXml] the file to add the line to
 ** @param [r] x1 [double] 1st x coordinate
 ** @param [r] y1 [double] 1st y coordinate
 ** @param [r] x2 [double] 2nd x coordinate
@@ -1362,7 +1362,7 @@ void ajXmlAddRectangleSet(AjPXmlFile file, double *x1, double *y1,
 ** @@
 *********************************************************************/
 
-void ajXmlAddRectangle(AjPXmlFile file, double x1, double y1, 
+void ajXmlAddRectangle(AjPGraphXml file, double x1, double y1, 
 		       double x2, double y2, AjBool fill)
 {
     AjPXmlNode el;
@@ -1447,7 +1447,7 @@ void ajXmlAddRectangle(AjPXmlFile file, double x1, double y1,
 **
 ** Adds a Cylinder
 **
-** @param [w] file [AjPXmlFile] the file to add the Cylinder to
+** @param [w] file [AjPGraphXml] the file to add the Cylinder to
 ** @param [r] x1 [double] 1st x coordinate
 ** @param [r] y1 [double] 1st y coordinate
 ** @param [r] x2 [double] 2nd x coordinate
@@ -1458,7 +1458,7 @@ void ajXmlAddRectangle(AjPXmlFile file, double x1, double y1,
 ** @@
 *********************************************************************/
 
-void ajXmlAddCylinder(AjPXmlFile file, double x1, double y1, 
+void ajXmlAddCylinder(AjPGraphXml file, double x1, double y1, 
 		      double x2, double y2, double width)
 {
     double height;
@@ -1485,7 +1485,7 @@ void ajXmlAddCylinder(AjPXmlFile file, double x1, double y1,
 **
 ** adds a Point Label
 **
-** @param [w] file [AjPXmlFile] the file to add the object to
+** @param [w] file [AjPGraphXml] the file to add the object to
 ** @param [r] angle [double] the angle of label to add
 ** @param [r] xCentre [double] the x value of the centre of the 
 ** circle
@@ -1502,7 +1502,7 @@ void ajXmlAddCylinder(AjPXmlFile file, double x1, double y1,
 ** @@
 *********************************************************************/
 
-AjBool ajXmlAddPointLabelCircle(AjPXmlFile file, double angle, 
+AjBool ajXmlAddPointLabelCircle(AjPGraphXml file, double angle, 
 				double xCentre, double yCentre, 
 				double radius, double length, 
 				double size, AjPStr fontFamily, 
@@ -1552,7 +1552,7 @@ AjBool ajXmlAddPointLabelCircle(AjPXmlFile file, double angle,
 **
 ** adds a Section Label
 **
-** @param [w] file [AjPXmlFile] the file to add the object to
+** @param [w] file [AjPGraphXml] the file to add the object to
 ** @param [r] startAngle [double] the start angle of label to add
 ** @param [r] endAngle [double] the end angle of label to add
 ** @param [r] xCentre [double] the x value of the centre of the 
@@ -1575,7 +1575,7 @@ AjBool ajXmlAddPointLabelCircle(AjPXmlFile file, double angle,
 ** @@
 *********************************************************************/
 
-AjBool ajXmlAddSectionLabelCircle(AjPXmlFile file, double startAngle, 
+AjBool ajXmlAddSectionLabelCircle(AjPGraphXml file, double startAngle, 
 				  double endAngle, double xCentre, 
 				  double yCentre, double radius, 
 				  double width, double labelArmAngle, 
@@ -1752,7 +1752,7 @@ AjBool ajXmlAddSectionLabelCircle(AjPXmlFile file, double startAngle,
 **
 ** adds a Point Label on a linear DNA plot
 **
-** @param [w] file [AjPXmlFile] the file to add the object to
+** @param [w] file [AjPGraphXml] the file to add the object to
 ** @param [r] angle [double] the angle of label to add
 ** @param [r] xPoint [double] the x value of the label
 ** @param [r] yPoint [double] the y value of the label
@@ -1769,7 +1769,7 @@ AjBool ajXmlAddSectionLabelCircle(AjPXmlFile file, double startAngle,
 ** @@
 *********************************************************************/
 
-AjBool ajXmlAddPointLabelLinear(AjPXmlFile file, double angle, 
+AjBool ajXmlAddPointLabelLinear(AjPGraphXml file, double angle, 
 				double xPoint, double yPoint, 
 				double length, 
 				AjBool textParallelToLine, 
@@ -1826,7 +1826,7 @@ AjBool ajXmlAddPointLabelLinear(AjPXmlFile file, double angle,
 **
 ** adds a Section Label to Linear DNA Plot
 **
-** @param [w] file [AjPXmlFile] the file to add the object to
+** @param [w] file [AjPGraphXml] the file to add the object to
 ** @param [r] xStart [double] the start x value of label to add
 ** @param [r] yStart [double] the start y value of label to add
 ** @param [r] xEnd [double] the end x value of label to add
@@ -1846,7 +1846,7 @@ AjBool ajXmlAddPointLabelLinear(AjPXmlFile file, double angle,
 ** @@
 *********************************************************************/
 
-AjBool ajXmlAddSectionLabelLinear(AjPXmlFile file, double xStart, 
+AjBool ajXmlAddSectionLabelLinear(AjPGraphXml file, double xStart, 
 				  double yStart, double xEnd, 
 				  double yEnd, double width, 
 				  double labelArmLength, 
@@ -1994,7 +1994,7 @@ AjBool ajXmlAddSectionLabelLinear(AjPXmlFile file, double xStart,
 **
 ** adds a residue letter in a square
 **
-** @param [w] file [AjPXmlFile] the file to add the object to
+** @param [w] file [AjPGraphXml] the file to add the object to
 ** @param [r] residue [char] residue letter
 ** @param [r] x [float] the x coordinate
 ** @param [r] y [float] the y coordinate
@@ -2003,7 +2003,7 @@ AjBool ajXmlAddSectionLabelLinear(AjPXmlFile file, double xStart,
 ** @@
 *********************************************************************/
 
-AjBool ajXmlAddSquareResidueLinear(AjPXmlFile file, char residue, 
+AjBool ajXmlAddSquareResidueLinear(AjPGraphXml file, char residue, 
 				   float x, float y)
 { 
     float *xCoords;
@@ -2041,7 +2041,7 @@ AjBool ajXmlAddSquareResidueLinear(AjPXmlFile file, char residue,
 **
 ** adds a residue letter in a square
 **
-** @param [w] file [AjPXmlFile] the file to add the object to
+** @param [w] file [AjPGraphXml] the file to add the object to
 ** @param [r] residue [char] residue letter
 ** @param [r] x [float] the x coordinate
 ** @param [r] y [float] the y coordinate
@@ -2050,7 +2050,7 @@ AjBool ajXmlAddSquareResidueLinear(AjPXmlFile file, char residue,
 ** @@
 *********************************************************************/
 
-AjBool ajXmlAddOctagonalResidueLinear(AjPXmlFile file, char residue, 
+AjBool ajXmlAddOctagonalResidueLinear(AjPGraphXml file, char residue, 
 				      float x, float y)
 {
     float *xCoords;
@@ -2096,7 +2096,7 @@ AjBool ajXmlAddOctagonalResidueLinear(AjPXmlFile file, char residue,
 **
 ** adds a residue letter in a square
 **
-** @param [w] file [AjPXmlFile] the file to add the object to
+** @param [w] file [AjPGraphXml] the file to add the object to
 ** @param [r] residue [char] residue letter
 ** @param [r] x [float] the x coordinate
 ** @param [r] y [float] the y coordinate
@@ -2105,7 +2105,7 @@ AjBool ajXmlAddOctagonalResidueLinear(AjPXmlFile file, char residue,
 ** @@
 *********************************************************************/
 
-AjBool ajXmlAddDiamondResidueLinear(AjPXmlFile file, char residue, 
+AjBool ajXmlAddDiamondResidueLinear(AjPGraphXml file, char residue, 
 				    float x, float y)
 {    
     float *xCoords;
@@ -2143,7 +2143,7 @@ AjBool ajXmlAddDiamondResidueLinear(AjPXmlFile file, char residue,
 **
 ** adds a residue letter in a square
 **
-** @param [w] file [AjPXmlFile] the file to add the object to
+** @param [w] file [AjPGraphXml] the file to add the object to
 ** @param [r] residue [char] residue letter
 ** @param [r] x [float] the x coordinate
 ** @param [r] y [float] the y coordinate
@@ -2152,7 +2152,7 @@ AjBool ajXmlAddDiamondResidueLinear(AjPXmlFile file, char residue,
 ** @@
 *********************************************************************/
 
-AjBool ajXmlAddNakedResidueLinear(AjPXmlFile file, char residue, 
+AjBool ajXmlAddNakedResidueLinear(AjPGraphXml file, char residue, 
 				  float x, float y)
 {    
     static char residueString[2];
@@ -2173,7 +2173,7 @@ AjBool ajXmlAddNakedResidueLinear(AjPXmlFile file, char residue,
 **
 ** adds a residue letter in a square
 **
-** @param [w] file [AjPXmlFile] the file to add the object to
+** @param [w] file [AjPGraphXml] the file to add the object to
 ** @param [r] residue [char] residue letter
 ** @param [r] radius [double] the polar radius
 ** @param [r] angle [double] the angle in degrees
@@ -2182,7 +2182,7 @@ AjBool ajXmlAddNakedResidueLinear(AjPXmlFile file, char residue,
 ** @@
 *********************************************************************/
 
-AjBool ajXmlAddSquareResidue(AjPXmlFile file, char residue, 
+AjBool ajXmlAddSquareResidue(AjPGraphXml file, char residue, 
 			     double radius, double angle)
 { 
     float squareSize;
@@ -2229,7 +2229,7 @@ AjBool ajXmlAddSquareResidue(AjPXmlFile file, char residue,
 **
 ** adds a residue letter in a square
 **
-** @param [w] file [AjPXmlFile] the file to add the object to
+** @param [w] file [AjPGraphXml] the file to add the object to
 ** @param [r] residue [char] residue letter
 ** @param [r] radius [double] the polar radius
 ** @param [r] angle [double] the angle in degrees
@@ -2238,7 +2238,7 @@ AjBool ajXmlAddSquareResidue(AjPXmlFile file, char residue,
 ** @@
 *********************************************************************/
 
-AjBool ajXmlAddOctagonalResidue(AjPXmlFile file, char residue, 
+AjBool ajXmlAddOctagonalResidue(AjPGraphXml file, char residue, 
 				double radius, double angle)
 {
     float squareSize;
@@ -2293,7 +2293,7 @@ AjBool ajXmlAddOctagonalResidue(AjPXmlFile file, char residue,
 **
 ** adds a residue letter in a square
 **
-** @param [w] file [AjPXmlFile] the file to add the object to
+** @param [w] file [AjPGraphXml] the file to add the object to
 ** @param [r] residue [char] residue letter
 ** @param [r] radius [double] the polar radius
 ** @param [r] angle [double] the angle in degrees
@@ -2302,7 +2302,7 @@ AjBool ajXmlAddOctagonalResidue(AjPXmlFile file, char residue,
 ** @@
 *********************************************************************/
 
-AjBool ajXmlAddDiamondResidue(AjPXmlFile file, char residue, 
+AjBool ajXmlAddDiamondResidue(AjPGraphXml file, char residue, 
 			      double radius, double angle)
 {    
     float squareSize;
@@ -2349,7 +2349,7 @@ AjBool ajXmlAddDiamondResidue(AjPXmlFile file, char residue,
 **
 ** adds a residue letter in a square
 **
-** @param [w] file [AjPXmlFile] the file to add the object to
+** @param [w] file [AjPGraphXml] the file to add the object to
 ** @param [r] residue [char] residue letter
 ** @param [r] radius [double] the polar radius
 ** @param [r] angle [double] the angle in degrees
@@ -2358,7 +2358,7 @@ AjBool ajXmlAddDiamondResidue(AjPXmlFile file, char residue,
 ** @@
 *********************************************************************/
 
-AjBool ajXmlAddNakedResidue(AjPXmlFile file, char residue, 
+AjBool ajXmlAddNakedResidue(AjPGraphXml file, char residue, 
 			    double radius, double angle)
 {    
     float  x;
@@ -2417,7 +2417,7 @@ float ajXmlFitTextOnLine(float x1, float y1, float x2, float y2,
 **
 ** gets Colour
 **
-** @param [r] file [AjPXmlFile] the file get colour of
+** @param [r] file [AjPGraphXml] the file get colour of
 ** @param [r] r [double] red component
 ** @param [r] g [double] green component
 ** @param [r] b [double] blue component
@@ -2426,7 +2426,7 @@ float ajXmlFitTextOnLine(float x1, float y1, float x2, float y2,
 ** @@
 *********************************************************************/
 
-void ajXmlGetColour(AjPXmlFile file, double r, double g, double b)
+void ajXmlGetColour(AjPGraphXml file, double r, double g, double b)
 {
     r = file->colour[0];
     g = file->colour[1];
@@ -2442,7 +2442,7 @@ void ajXmlGetColour(AjPXmlFile file, double r, double g, double b)
 **
 ** sets Colour
 **
-** @param [w] file [AjPXmlFile] the file to alter
+** @param [w] file [AjPGraphXml] the file to alter
 ** @param [r] r [double] red component
 ** @param [r] g [double] green component
 ** @param [r] b [double] blue component
@@ -2451,7 +2451,7 @@ void ajXmlGetColour(AjPXmlFile file, double r, double g, double b)
 ** @@
 *********************************************************************/
 
-void ajXmlSetColour(AjPXmlFile file, double r, double g, double b)
+void ajXmlSetColour(AjPGraphXml file, double r, double g, double b)
 {
     /* should I make a private function do this? Hardly worth it,*/
     file->colour[0] = r;
@@ -2485,14 +2485,14 @@ void ajXmlSetColour(AjPXmlFile file, double r, double g, double b)
 ** 14 salmon
 ** 15 white (default foreground)
 **
-** @param [w] file [AjPXmlFile] the file to alter
+** @param [w] file [AjPGraphXml] the file to alter
 ** @param [r] colour [ajint] colour
 **
 ** @return [void]
 ** @@
 *********************************************************************/
 
-void ajXmlSetColourFromCode(AjPXmlFile file, ajint colour)
+void ajXmlSetColourFromCode(AjPGraphXml file, ajint colour)
 {
     switch (colour)
     {
@@ -2558,11 +2558,11 @@ void ajXmlSetColourFromCode(AjPXmlFile file, ajint colour)
 **
 ** Sets up the output file 
 **
-** @return [AjPXmlFile] a colection of pointers to the file created
+** @return [AjPGraphXml] a colection of pointers to the file created
 ** @@
 *********************************************************************/
 
-AjPXmlFile ajXmlCreateNewOutputFile()
+AjPGraphXml ajXmlCreateNewOutputFile()
 {
     return xml_CreateNewOutputFile();
 }
@@ -2574,14 +2574,14 @@ AjPXmlFile ajXmlCreateNewOutputFile()
 **
 ** adds a general graphics group
 **
-** @param [w] file [AjPXmlFile] the file to add the object to
+** @param [w] file [AjPGraphXml] the file to add the object to
 ** @param [r] type [AjPStr] the type of graphic to add
 **
 ** @return [void]
 ** @@
 *********************************************************************/
 
-void ajXmlAddGraphic(AjPXmlFile file, AjPStr type)
+void ajXmlAddGraphic(AjPGraphXml file, AjPStr type)
 {
     ajXmlAddGraphicC(file, ajStrStr(type));
 
@@ -2595,14 +2595,14 @@ void ajXmlAddGraphic(AjPXmlFile file, AjPStr type)
 **
 ** adds a general graphics group
 **
-** @param [w] file [AjPXmlFile] the file to add the object to
+** @param [w] file [AjPGraphXml] the file to add the object to
 ** @param [r] type [char *] the type of graphic to add
 **
 ** @return [void]
 ** @@
 *********************************************************************/
 
-void ajXmlAddGraphicC(AjPXmlFile file, char *type)
+void ajXmlAddGraphicC(AjPGraphXml file, char *type)
 {
     AjPXmlNode el = NULL;
 
@@ -2661,7 +2661,7 @@ void ajXmlAddGraphicC(AjPXmlFile file, char *type)
 **
 ** adds an arc
 **
-** @param [w] file [AjPXmlFile] the file to add the max min values to
+** @param [w] file [AjPGraphXml] the file to add the max min values to
 ** @param [r] xCentre [double] the x value of the centre of the 
 ** circle
 ** @param [r] yCentre [double] the y value of the centre of the 
@@ -2674,7 +2674,7 @@ void ajXmlAddGraphicC(AjPXmlFile file, char *type)
 ** @@
 *********************************************************************/
 
-void ajXmlAddArc(AjPXmlFile file, double xCentre, double yCentre, 
+void ajXmlAddArc(AjPGraphXml file, double xCentre, double yCentre, 
 		 double startAngle, double endAngle, double radius)
 {
     double angularExtent;
@@ -2706,7 +2706,7 @@ void ajXmlAddArc(AjPXmlFile file, double xCentre, double yCentre,
 **
 ** adds a circle
 **
-** @param [w] file [AjPXmlFile] the file to add the max min values to
+** @param [w] file [AjPGraphXml] the file to add the max min values to
 ** @param [r] xCentre [float] the x value of the centre of the 
 ** circle
 ** @param [r] yCentre [float] the y value of the centre of the 
@@ -2717,7 +2717,7 @@ void ajXmlAddArc(AjPXmlFile file, double xCentre, double yCentre,
 ** @@
 ******************************************************************************/
 
-void ajXmlAddCircleF(AjPXmlFile file, float xCentre, float yCentre, 
+void ajXmlAddCircleF(AjPGraphXml file, float xCentre, float yCentre, 
 		     float radius)
 {
     ajXmlAddCircle(file, (double) xCentre, (double) yCentre, 
@@ -2733,7 +2733,7 @@ void ajXmlAddCircleF(AjPXmlFile file, float xCentre, float yCentre,
 **
 ** adds a circle
 **
-** @param [w] file [AjPXmlFile] the file to add the max min values to
+** @param [w] file [AjPGraphXml] the file to add the max min values to
 ** @param [r] xCentre [double] the x value of the centre of the 
 ** circle
 ** @param [r] yCentre [double] the y value of the centre of the 
@@ -2744,7 +2744,7 @@ void ajXmlAddCircleF(AjPXmlFile file, float xCentre, float yCentre,
 ** @@
 *********************************************************************/
 
-void ajXmlAddCircle(AjPXmlFile file, double xCentre, double yCentre, 
+void ajXmlAddCircle(AjPGraphXml file, double xCentre, double yCentre, 
 		    double radius)
 {
     AjPStr temp          = NULL;
@@ -2799,7 +2799,7 @@ void ajXmlAddCircle(AjPXmlFile file, double xCentre, double yCentre,
 **
 ** adds an option value pair for the Grout display
 **
-** @param [w] file [AjPXmlFile] the file to add the max min values to
+** @param [w] file [AjPGraphXml] the file to add the max min values to
 ** @param [r] name [AjPStr] name of option
 ** @param [r] value [AjPStr] value of option
 **
@@ -2807,7 +2807,7 @@ void ajXmlAddCircle(AjPXmlFile file, double xCentre, double yCentre,
 ** @@
 *********************************************************************/
 
-void ajXmlAddGroutOption(AjPXmlFile file, AjPStr name, AjPStr value)
+void ajXmlAddGroutOption(AjPGraphXml file, AjPStr name, AjPStr value)
 {
     ajXmlAddGroutOptionC(file, ajStrStr(name), ajStrStr(value));
 
@@ -2821,7 +2821,7 @@ void ajXmlAddGroutOption(AjPXmlFile file, AjPStr name, AjPStr value)
 **
 ** adds an option value pair for the Grout display
 **
-** @param [w] file [AjPXmlFile] the file to add the max min values to
+** @param [w] file [AjPGraphXml] the file to add the max min values to
 ** @param [r] name [char *] name of option
 ** @param [r] value [char *] value of option
 **
@@ -2829,7 +2829,7 @@ void ajXmlAddGroutOption(AjPXmlFile file, AjPStr name, AjPStr value)
 ** @@
 *********************************************************************/
 
-void ajXmlAddGroutOptionC(AjPXmlFile file, char *name, char *value)
+void ajXmlAddGroutOptionC(AjPGraphXml file, char *name, char *value)
 {
     AjPXmlNode headNode  = NULL;
     AjPXmlNode otherNode = NULL;
@@ -2874,7 +2874,7 @@ void ajXmlAddGroutOptionC(AjPXmlFile file, char *name, char *value)
 **
 ** Adds a Cylinder
 **
-** @param [w] file [AjPXmlFile] the file to add the Cylinder to
+** @param [w] file [AjPGraphXml] the file to add the Cylinder to
 ** @param [r] xCentre [double] x coordinate of centre
 ** @param [r] yCentre [double] y coordinate of centre
 ** @param [r] angle [double] angle relative to vertical
@@ -2885,7 +2885,7 @@ void ajXmlAddGroutOptionC(AjPXmlFile file, char *name, char *value)
 ** @@
 *********************************************************************/
 
-static void xml_AddCylinder(AjPXmlFile file, double xCentre, double yCentre, 
+static void xml_AddCylinder(AjPGraphXml file, double xCentre, double yCentre, 
 			    double angle, double height, double width)
 {
     AjPStr translation  = NULL;
@@ -3060,14 +3060,14 @@ static AjBool xml_AngleIsInSecondHalfOfCircle(double angle)
 ** Local Method
 ** 
 **
-** @param [w] file [AjPXmlFile] the file to add the node to
+** @param [w] file [AjPGraphXml] the file to add the node to
 ** @param [r] name [AjPStr] name graphic should be
 **
 ** @return [AjBool] True if graphic type is name
 ** @@
 *********************************************************************/
 
-static AjBool xml_PresentGraphicTypeIs(AjPXmlFile file, AjPStr name)
+static AjBool xml_PresentGraphicTypeIs(AjPGraphXml file, AjPStr name)
 {
     AjBool returnValue    = ajFalse;
     AjPStr attributeValue = NULL;
@@ -3093,14 +3093,14 @@ static AjBool xml_PresentGraphicTypeIs(AjPXmlFile file, AjPStr name)
 ** Local Method
 ** 
 **
-** @param [w] file [AjPXmlFile] the file to add the node to
+** @param [w] file [AjPGraphXml] the file to add the node to
 ** @param [r] name [char *] name graphic should be
 **
 ** @return [AjBool] True if graphic type is name
 ** @@
 *********************************************************************/
 
-static AjBool xml_PresentGraphicTypeIsC(AjPXmlFile file, char *name)
+static AjBool xml_PresentGraphicTypeIsC(AjPGraphXml file, char *name)
 {
     AjBool returnValue    = ajFalse;
     AjPStr attributeValue = NULL;
@@ -3763,7 +3763,7 @@ static AjBool xml_SetPoints(AjPXmlNode passedNode, AjPStr points)
 ** Local Method
 ** Makes a new DOM node and appends it to the parent node
 **
-** @param [w] file [AjPXmlFile] the file to add the node to
+** @param [w] file [AjPGraphXml] the file to add the node to
 ** @param [r] name [AjPStr] name of node
 ** @param [r] parent [AjPXmlNode] parent node to add to
 **
@@ -3771,7 +3771,7 @@ static AjBool xml_SetPoints(AjPXmlNode passedNode, AjPStr points)
 ** @@
 *********************************************************************/
 
-static AjPXmlNode xml_MakeNewNode(AjPXmlFile file, AjPStr name, 
+static AjPXmlNode xml_MakeNewNode(AjPGraphXml file, AjPStr name, 
 				  AjPXmlNode parent)
 {
     return xml_MakeNewNodeC(file, ajStrStr(name), parent);
@@ -3785,7 +3785,7 @@ static AjPXmlNode xml_MakeNewNode(AjPXmlFile file, AjPStr name,
 ** Local Method
 ** Makes a new DOM node and appends it to the parent node, from char*
 **
-** @param [w] file [AjPXmlFile] the file to add the node to
+** @param [w] file [AjPGraphXml] the file to add the node to
 ** @param [r] name [char*] name of node
 ** @param [r] parent [AjPXmlNode] parent node to add to
 **
@@ -3793,7 +3793,7 @@ static AjPXmlNode xml_MakeNewNode(AjPXmlFile file, AjPStr name,
 ** @@
 *********************************************************************/
 
-static AjPXmlNode xml_MakeNewNodeC(AjPXmlFile file, char *name, 
+static AjPXmlNode xml_MakeNewNodeC(AjPGraphXml file, char *name, 
 				  AjPXmlNode parent)
 {
     GdomeException exc;
@@ -3826,12 +3826,12 @@ static AjPXmlNode xml_MakeNewNodeC(AjPXmlFile file, char *name,
 **
 ** Local Method
 ** returns present Colour As String
-** @param [r] file [AjPXmlFile] the file with the present colour
+** @param [r] file [AjPGraphXml] the file with the present colour
 **
 ** @return [AjPStr] the colour
 ** @@
 *********************************************************************/
-static  AjPStr xml_PresentColourAsString(AjPXmlFile file)
+static  AjPStr xml_PresentColourAsString(AjPGraphXml file)
 {
     AjPStr colour = NULL;
     AjPStr temp   = NULL;
@@ -3862,14 +3862,14 @@ static  AjPStr xml_PresentColourAsString(AjPXmlFile file)
 ** Local Method
 ** returns whether this file needs this type of proto Declaration
 **
-** @param [r] file [AjPXmlFile] the file to check
+** @param [r] file [AjPGraphXml] the file to check
 ** @param [r] protoName [char *] the proto name
 **
 ** @return [AjBool] true if this file needs this type of proto Declaration
 ** @@
 *********************************************************************/
 
-static AjBool xml_FileNeedsProtoDeclareC(AjPXmlFile file, char *protoName)
+static AjBool xml_FileNeedsProtoDeclareC(AjPGraphXml file, char *protoName)
 {
     GdomeException exc;
     AjPXmlNode presentNode;
@@ -3925,14 +3925,14 @@ static AjBool xml_FileNeedsProtoDeclareC(AjPXmlFile file, char *protoName)
 ** Local Method
 ** returns whether this file needs this type of proto Declaration
 **
-** @param [r] file [AjPXmlFile] the file to check
+** @param [r] file [AjPGraphXml] the file to check
 ** @param [r] protoName [AjPStr] the proto name
 **
 ** @return [AjBool] true if this file needs this type of proto Declaration
 ** @@
 *********************************************************************/
 
-static AjBool xml_FileNeedsProtoDeclare(AjPXmlFile file, AjPStr protoName)
+static AjBool xml_FileNeedsProtoDeclare(AjPGraphXml file, AjPStr protoName)
 {
 
     return xml_FileNeedsProtoDeclareC(file,ajStrStr(protoName));
@@ -3946,14 +3946,14 @@ static AjBool xml_FileNeedsProtoDeclare(AjPXmlFile file, AjPStr protoName)
 ** Local Method
 ** returns whether this shape is the present colour
 **
-** @param [r] file [AjPXmlFile] the file to check
+** @param [r] file [AjPGraphXml] the file to check
 ** @param [r] shape [AjPXmlNode] the shape to check
 **
 ** @return [AjBool] true if this shape is current colour
 ** @@
 *********************************************************************/
 
-static AjBool xml_IsShapeThisColour(AjPXmlFile file, AjPXmlNode shape)
+static AjBool xml_IsShapeThisColour(AjPGraphXml file, AjPXmlNode shape)
 {
     GdomeException exc;
     GdomeNodeList *listAppearance = NULL;
@@ -4058,7 +4058,7 @@ static AjBool xml_IsShapeThisColour(AjPXmlFile file, AjPXmlNode shape)
 ** Local Method
 ** returns makes a New Shape Node
 **
-** @param [r] file [AjPXmlFile] the file to find the node in
+** @param [r] file [AjPGraphXml] the file to find the node in
 ** @param [r] parentNode [AjPXmlNode] parent node to add to
 ** @param [r] nameReqd [char *] name of node
 **
@@ -4066,7 +4066,7 @@ static AjBool xml_IsShapeThisColour(AjPXmlFile file, AjPXmlNode shape)
 ** @@
 *********************************************************************/
 
-static AjPXmlNode xml_MakeNewShapeNodeC(AjPXmlFile file, 
+static AjPXmlNode xml_MakeNewShapeNodeC(AjPGraphXml file, 
 					AjPXmlNode parentNode, 
 					char *nameReqd)
 {
@@ -4102,7 +4102,7 @@ static AjPXmlNode xml_MakeNewShapeNodeC(AjPXmlFile file,
 ** Local Method
 ** returns makes a New Shape Node
 **
-** @param [r] file [AjPXmlFile] the file to find the node in
+** @param [r] file [AjPGraphXml] the file to find the node in
 ** @param [r] parentNode [AjPXmlNode] parent node to add to
 ** @param [r] nameReqd [AjPStr] name of node
 **
@@ -4110,7 +4110,7 @@ static AjPXmlNode xml_MakeNewShapeNodeC(AjPXmlFile file,
 ** @@
 *********************************************************************/
 
-static AjPXmlNode xml_MakeNewShapeNode(AjPXmlFile file, 
+static AjPXmlNode xml_MakeNewShapeNode(AjPGraphXml file, 
 				       AjPXmlNode parentNode, 
 				       AjPStr nameReqd)
 {
@@ -4125,7 +4125,7 @@ static AjPXmlNode xml_MakeNewShapeNode(AjPXmlFile file,
 **
 ** adds an arc.  Assumes the arc is 0 <= extent < pi
 **
-** @param [w] file [AjPXmlFile] the file to add the max min values to
+** @param [w] file [AjPGraphXml] the file to add the max min values to
 ** @param [r] xCentre [double] the x value of the centre of the circle
 ** @param [r] yCentre [double] the y value of the centre of the circle
 ** @param [r] startAngle [double] the startAngle of the arc
@@ -4136,7 +4136,7 @@ static AjPXmlNode xml_MakeNewShapeNode(AjPXmlFile file,
 ** @@
 *********************************************************************/
 
-static void xml_AddArc(AjPXmlFile file, double xCentre, double yCentre, 
+static void xml_AddArc(AjPGraphXml file, double xCentre, double yCentre, 
 		       double startAngle, double endAngle, double radius)
 {
     double xStart;
@@ -4220,13 +4220,13 @@ static void xml_AddArc(AjPXmlFile file, double xCentre, double yCentre,
 ** Local Method
 ** returns first? node of this type, Makes a new one If Not
 **
-** @param [r] file [AjPXmlFile] the file to find the node in
+** @param [r] file [AjPGraphXml] the file to find the node in
 ** @param [r] nameReqd [AjPStr] name of node
 **
 ** @return [AjPXmlNode] found or new node
 ** @@
 *********************************************************************/
-static AjPXmlNode xml_GetNodeTypeMakeIfNot(AjPXmlFile file, AjPStr nameReqd)
+static AjPXmlNode xml_GetNodeTypeMakeIfNot(AjPGraphXml file, AjPStr nameReqd)
 {
     GdomeException exc;
     AjPXmlNode returnNode  = NULL;
@@ -4495,14 +4495,14 @@ static AjPXmlNode xml_GetNodeTypeMakeIfNot(AjPXmlFile file, AjPStr nameReqd)
 ** Local Method
 ** returns first? node of this type, Makes a new one If Not
 **
-** @param [r] file [AjPXmlFile] the file to find the node in
+** @param [r] file [AjPGraphXml] the file to find the node in
 ** @param [r] nameReqd [char *] name of node
 **
 ** @return [AjPXmlNode] found or new node
 ** @@
 *********************************************************************/
 
-static AjPXmlNode xml_GetNodeTypeMakeIfNotC(AjPXmlFile file, char *nameReqd)
+static AjPXmlNode xml_GetNodeTypeMakeIfNotC(AjPGraphXml file, char *nameReqd)
 {
     AjPStr str     = NULL;
     AjPXmlNode ret = NULL;
@@ -4705,17 +4705,17 @@ static double xml_GetDoubleNo(AjPStr str, int index)
 **
 ** Sets up the output file 
 **
-** @return [AjPXmlFile] a colection of pointers to the file created
+** @return [AjPGraphXml] a colection of pointers to the file created
 ** @@
 *********************************************************************/
 
-static AjPXmlFile xml_CreateNewOutputFile()
+static AjPGraphXml xml_CreateNewOutputFile()
 {
     GdomeException exc;
     GdomeDOMString *name;
     GdomeDOMString *publicId;
     GdomeDOMString *systemId;
-    AjPXmlFile file = NULL;
+    AjPGraphXml file = NULL;
     AjPXmlNode rootElement;
     GdomeDocumentType *docType;
   
@@ -4770,13 +4770,13 @@ static AjPXmlFile xml_CreateNewOutputFile()
 ** Could realy be all part of addGraphic, but it is easyer to read
 ** Private Function
 **
-** @param [w] file [AjPXmlFile] file to add bit to
+** @param [w] file [AjPGraphXml] file to add bit to
 **
 ** @return [void]
 ** @@
 *********************************************************************/
 
-static void xml_AddGraphProto(AjPXmlFile file)
+static void xml_AddGraphProto(AjPGraphXml file)
 {
     AjPXmlNode protoNode;
     AjPXmlNode fieldNode;
@@ -4916,13 +4916,13 @@ static void xml_AddGraphProto(AjPXmlFile file)
 **
 ** Adds the nodes that set up the DNA Plot Proto
 **
-** @param [w] file [AjPXmlFile] file to add bit to
+** @param [w] file [AjPGraphXml] file to add bit to
 **
 ** @return [void]
 ** @@
 *********************************************************************/
 
-static void xml_AddDNAPlotProto(AjPXmlFile file)
+static void xml_AddDNAPlotProto(AjPGraphXml file)
 {
     AjPXmlNode protoNode;
     AjPXmlNode fieldNode;
@@ -4971,13 +4971,13 @@ static void xml_AddDNAPlotProto(AjPXmlFile file)
 ** read
 ** Private Function
 **
-** @param [w] file [AjPXmlFile] file to add common bit to
+** @param [w] file [AjPGraphXml] file to add common bit to
 **
 ** @return [void]
 ** @@
 *********************************************************************/
 
-static void xml_AddCommonBit(AjPXmlFile file)
+static void xml_AddCommonBit(AjPGraphXml file)
 {
     /* remove this */
     /*
@@ -5032,14 +5032,14 @@ static void xml_AddCommonBit(AjPXmlFile file)
 **
 ** writes the file 
 **
-** @param [r] file [AjPXmlFile] the file to write
+** @param [r] file [AjPGraphXml] the file to write
 ** @param [r] filename [AjPStr] the file name
 **
 ** @return [AjBool] ajTrue if file written correctly
 ** @@
 *********************************************************************/
 
-static AjBool xml_WriteFile(AjPXmlFile file, AjPStr filename)
+static AjBool xml_WriteFile(AjPGraphXml file, AjPStr filename)
 {
     GdomeException exc;
 
@@ -5062,13 +5062,13 @@ static AjBool xml_WriteFile(AjPXmlFile file, AjPStr filename)
 **
 ** writes the file 
 **
-** @param [r] file [AjPXmlFile] the file to write
+** @param [r] file [AjPGraphXml] the file to write
 **
 ** @return [AjBool] ajTrue if file writen correctly
 ** @@
 *********************************************************************/
 
-static AjBool xml_WriteStdout(AjPXmlFile file)
+static AjBool xml_WriteStdout(AjPGraphXml file)
 {
     GdomeException exc;
     char *output;
@@ -5099,13 +5099,13 @@ static AjBool xml_WriteStdout(AjPXmlFile file)
 ** Local Method
 ** gets the current Graphic
 **
-** @param [r] file [AjPXmlFile] the file
+** @param [r] file [AjPGraphXml] the file
 **
 ** @return [AjPXmlNode] current Graphic
 ** @@
 *********************************************************************/
 
-static AjPXmlNode xml_GetCurrentGraphic(AjPXmlFile file)
+static AjPXmlNode xml_GetCurrentGraphic(AjPGraphXml file)
 {
     return file->currentGraphic;
 }
@@ -5118,13 +5118,13 @@ static AjPXmlNode xml_GetCurrentGraphic(AjPXmlFile file)
 ** Local Method
 ** gets the current scene
 **
-** @param [r] file [AjPXmlFile] the file
+** @param [r] file [AjPGraphXml] the file
 **
 ** @return [AjPXmlNode] current scene
 ** @@
 *********************************************************************/
 
-static AjPXmlNode xml_GetCurrentScene(AjPXmlFile file)
+static AjPXmlNode xml_GetCurrentScene(AjPGraphXml file)
 {
     return file->currentScene;
 }
@@ -5137,14 +5137,14 @@ static AjPXmlNode xml_GetCurrentScene(AjPXmlFile file)
 ** Local Method
 ** Sets the current graphic to be node
 **
-** @param [w] file [AjPXmlFile] file to write to
+** @param [w] file [AjPGraphXml] file to write to
 ** @param [r] node [AjPXmlNode] the node
 **
 ** @return [void]
 ** @@
 *********************************************************************/
 
-static void xml_SetCurrentGraphic(AjPXmlFile file, AjPXmlNode node)
+static void xml_SetCurrentGraphic(AjPGraphXml file, AjPXmlNode node)
 {
 
     if(file->currentGraphic && 
@@ -5165,14 +5165,14 @@ static void xml_SetCurrentGraphic(AjPXmlFile file, AjPXmlNode node)
 ** Local Method
 ** Sets the current Scene to be node
 **
-** @param [w] file [AjPXmlFile] file to write to
+** @param [w] file [AjPGraphXml] file to write to
 ** @param [r] node [AjPXmlNode] the node
 **
 ** @return [void]
 ** @@
 *********************************************************************/
 
-static void xml_SetCurrentScene(AjPXmlFile file, AjPXmlNode node)
+static void xml_SetCurrentScene(AjPGraphXml file, AjPXmlNode node)
 {
     /* why does this cause proplems, but above does not? */
     /* but above does cause problems, I am not sure why */
@@ -5282,13 +5282,13 @@ static AjPXmlNode xml_GetParent(AjPXmlNode node)
 **
 ** Clears the memory allocated to this file
 **
-** @param [r] file [AjPXmlFile] the file to clear
+** @param [r] file [AjPGraphXml] the file to clear
 **
 ** @return [void]
 ** @@
 *********************************************************************/
 
-static void xml_ClearFile(AjPXmlFile file)
+static void xml_ClearFile(AjPGraphXml file)
 {
     GdomeException exc;
 
@@ -5349,7 +5349,7 @@ void xml_Unused()
 {
     AjPStr str      = NULL;
     double ret;
-    AjPXmlFile file = NULL;
+    AjPGraphXml file = NULL;
     AjPXmlNode node = NULL;
     
     ret = xml_GetLastDouble(str);

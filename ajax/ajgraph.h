@@ -3,7 +3,7 @@ extern "C"
 {
 #endif
 
-/* @source ajGraph.h
+/* @source ajgraph.h
 **
 ** General Plot/Printing routines.
 **
@@ -22,7 +22,6 @@ extern "C"
 ** Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******************************************************************************/
 
-/* temporary include file for graphics to define structure(s) */
 
 #ifndef ajgraph_h
 #define ajgraph_h
@@ -82,25 +81,27 @@ void          ajGraphClose (void);
 void          ajGraphCloseWin (void);
 void          ajGraphColourBack (void);
 void          ajGraphColourFore (void);
-void          ajGraphDataDel(AjPGraphData *thys);
-void          ajGraphDataObjAddLine (AjPGraphData graphs, float x1, float y1,
+void          ajGraphPlpDataAddLine (AjPGraphPlpData graphs,
+				     float x1, float y1,
 				     float x2, float y2, ajint colour);
-void          ajGraphDataObjAddRect (AjPGraphData graphs,
+void          ajGraphPlpDataAddRect (AjPGraphPlpData graphs,
 				     float x1, float y1,
 				     float x2, float y2,
 				     ajint colour, ajint fill);
-void          ajGraphDataObjAddText (AjPGraphData graphs, float x1, float y1,
+void          ajGraphPlpDataAddText (AjPGraphPlpData graphs,
+				     float x1, float y1,
 				     ajint colour, char *text);
-void          ajGraphDataxySetMaxMin (AjPGraphData graphdata, float xmin,
+void          ajGraphPlpDataSetMaxMin (AjPGraphPlpData graphdata, float xmin,
 				      float xmax, float ymin, float ymax);
-void          ajGraphDataxyMaxMin(float *array, ajint npoints, float *min,
+void          ajGraphArrayMaxMin(float *array, ajint npoints, float *min,
 				  float *max);
 
-void          ajGraphDataxySetMaxima(AjPGraphData graphdata, float xmin,
+void          ajGraphPlpDataSetMaxima(AjPGraphPlpData graphdata, float xmin,
 				     float xmax, float ymin, float ymax);
-void          ajGraphDataxySetTypeC(AjPGraphData graphdata, char* type);
+void          ajGraphPlpDataSetTypeC(AjPGraphPlpData graphdata, char* type);
 
-void          ajGraphDataTrace (AjPGraphData thys);
+void          ajGraphPlpDataTrace (AjPGraphPlpData thys);
+void          ajGraphClear(AjPGraph thys);
 void          ajGraphDia (PLFLT x0, PLFLT y0, PLFLT size);
 void          ajGraphDiaFill (PLFLT x0, PLFLT y0, PLFLT size);
 void          ajGraphDots (PLFLT *x1,PLFLT *y1, ajint numofdots);
@@ -114,6 +115,15 @@ void          ajGraphGetOutputDeviceParams(float *xp,float *yp,
 					   ajint *xleng, ajint *yleng,
 					   ajint *xoff,
 					   ajint *yoff);
+AjPStr        ajGraphGetSubTitle(AjPGraph thys);
+char*         ajGraphGetSubTitleC(AjPGraph thys);
+AjPStr        ajGraphGetTitle(AjPGraph thys);
+char*         ajGraphGetTitleC(AjPGraph thys);
+AjPStr        ajGraphGetXTitle(AjPGraph thys);
+char*         ajGraphGetXTitleC(AjPGraph thys);
+AjPStr        ajGraphGetYTitle(AjPGraph thys);
+char*         ajGraphGetYTitleC(AjPGraph thys);
+
 void          ajGraphHoriBars (ajint numofpoints, PLFLT *y,
 				   PLFLT *xmin, PLFLT *xmax);
 ajint         ajGraphInfo(AjPList* files);
@@ -121,6 +131,7 @@ AjStatus      ajGraphInit (char *pgm, ajint argc, char *argv[]);
 AjStatus      ajGraphInitP (char *pgm, ajint argc, char *argv[],
 			    char *package);
 void          ajGraphInitSeq (AjPGraph thys, AjPSeq seq);
+AjBool        ajGraphIsData(AjPGraph thys);
 void          ajGraphLabel (char *x, char *y, char *title, char *subtitle);
 void          ajGraphLabelYRight (char *text);
 void          ajGraphLine (PLFLT x1,PLFLT y1,PLFLT x2,PLFLT y2);
@@ -128,14 +139,13 @@ void          ajGraphLines (PLFLT *x1,PLFLT *y1,PLFLT *x2,PLFLT *y2,
 			       ajint numoflines);
 AjPGraph      ajGraphNew (void);
 void          ajGraphNewPage (AjBool resetdefaults);
-void          ajGraphObjAddLine (AjPGraph graphs, float x1, float y1,
+void          ajGraphAddLine (AjPGraph thys, float x1, float y1,
 				 float x2, float y2, ajint colour);
-void          ajGraphObjAddRect (AjPGraph graphs, float x1, float y1,
+void          ajGraphAddRect (AjPGraph thys, float x1, float y1,
 				 float x2, float y2, ajint colour, ajint fill);
-void          ajGraphObjAddText (AjPGraph graphs, float x1, float y1,
+void          ajGraphAddText (AjPGraph thys, float x1, float y1,
 				 ajint colour, char *text);
-void          ajGraphObjDel(AjPGraph *thys);
-void          ajGraphDataObjDel(AjPGraphData *thys);
+void          ajGraphPlpDataDel(AjPGraphPlpData *thys);
 void          ajGraphOpen (AjPGraph thys, PLFLT xmin, PLFLT xmax,
 			   PLFLT ymin, PLFLT ymax, ajint flags);
 void          ajGraphOpenPlot (AjPGraph thys, ajint numofsets);
@@ -177,76 +187,84 @@ void          ajGraphTriFill (PLFLT x1, PLFLT y1, PLFLT x2, PLFLT y2,
 void          ajGraphUnused(void);
 void          ajGraphVertBars (ajint numofpoints, PLFLT *x,
 			       PLFLT *ymin, PLFLT *ymax);
-void          ajGraphxyAddDataCalcPtr (AjPGraphData graph, ajint numofpoints,
+void          ajGraphPlpDataCalcXY (AjPGraphPlpData graphdata,
+				       ajint numofpoints,
 				       float start, float incr, float* y);
-void          ajGraphxyAddDataPtrPtr (AjPGraphData graph, float *x,float *y);
-ajint         ajGraphxyAddGraph (AjPGraph mult, AjPGraphData graphdata);
-ajint         ajGraphxyReplaceGraph(AjPGraph mult, AjPGraphData graphdata);
-AjPGraphData  ajGraphxyDataNew (void);
-AjPGraphData  ajGraphxyDataNewI (ajint numsets);
-void          ajGraphxyDataSetSubtitle  (AjPGraphData graph,AjPStr title);
-void          ajGraphxyDataSetSubtitleC (AjPGraphData graph,char *title);
-void          ajGraphxyDataSetTitle  (AjPGraphData graph,AjPStr title);
-void          ajGraphxyDataSetTitleC (AjPGraphData graph,char *title);
-void          ajGraphxyDataSetXtitle  (AjPGraphData graphdata,
+void          ajGraphPlpDataSetXY (AjPGraphPlpData graphdata,
+				      float *x,float *y);
+ajint         ajGraphDataAdd (AjPGraph thys, AjPGraphPlpData graphdata);
+ajint         ajGraphDataReplace (AjPGraph thys, AjPGraphPlpData graphdata);
+AjPGraphPlpData  ajGraphPlpDataNew (void);
+AjPGraphPlpData  ajGraphPlpDataNewI (ajint numsets);
+void          ajGraphPlpDataSetSubTitle  (AjPGraphPlpData graphdata,
+					  AjPStr title);
+void          ajGraphPlpDataSetSubTitleC (AjPGraphPlpData graphdata,
+					  char *title);
+void          ajGraphPlpDataSetTitle  (AjPGraphPlpData graphdata,
 				       AjPStr title);
-void          ajGraphxyDataSetXtitleC (AjPGraphData graphdata,
+void          ajGraphPlpDataSetTitleC (AjPGraphPlpData graphdata,
 				       char *title);
-void          ajGraphxyDataSetYtitle  (AjPGraphData graphdata,
+void          ajGraphPlpDataSetXTitle  (AjPGraphPlpData graphdata,
 				       AjPStr title);
-void          ajGraphxyDataSetYtitleC (AjPGraphData graphdata,
+void          ajGraphPlpDataSetXTitleC (AjPGraphPlpData graphdata,
+				       char *title);
+void          ajGraphPlpDataSetYTitle  (AjPGraphPlpData graphdata,
+				       AjPStr title);
+void          ajGraphPlpDataSetYTitleC (AjPGraphPlpData graphdata,
 				       char *title);
 void          ajGraphxyDel (AjPGraph* pmult);
-void          ajGraphxyDisplay (AjPGraph graphs, AjBool closeit );
-AjPGraph      ajGraphxyInitGraphCalcPtr (ajint numofpoints, float start,
+void          ajGraphxyDisplay (AjPGraph thys, AjBool closeit );
+AjPGraph      ObsajGraphxyInitGraphCalcXY (ajint numofpoints, float start,
 					 float incr, float *y);
 AjPGraph      ajGraphxyNewI (ajint numofpoints);
-void          ajGraphxyPrint (AjPGraph graphs) ;
-void          ajGraphxyCheckMaxMin (AjPGraph graphs);
+void          ajGraphxyPrint (AjPGraph thys) ;
+void          ajGraphxyCheckMaxMin (AjPGraph thys);
 AjBool        ajGraphxySet (AjPGraph thys, AjPStr type);
-void          ajGraphxySetCirclePoints (AjPGraph graphs, AjBool set);
-void          ajGraphxySetColour (AjPGraphData graph, ajint colour);
-void          ajGraphxySetFlag (AjPGraph graphs, ajint flag, AjBool istrue);
-void          ajGraphxySetGaps(AjPGraph graphs, AjBool overlap);
-void          ajGraphxySetJoinPoints (AjPGraph graphs, AjBool set);
-void          ajGraphxySetLineType (AjPGraphData graph, ajint type);
-void          ajGraphxySetMaxMin(AjPGraph graphs,float xmin,float xmax,
+void          ajGraphxySetCirclePoints (AjPGraph thys, AjBool set);
+void          ajGraphPlpDataSetColour (AjPGraphPlpData graphdata,
+				       ajint colour);
+void          ajGraphSetFlag (AjPGraph thys, ajint flag, AjBool istrue);
+void          ajGraphxySetGaps(AjPGraph thys, AjBool overlap);
+void          ajGraphxySetJoinPoints (AjPGraph thys, AjBool set);
+void          ajGraphPlpDataSetLineType (AjPGraphPlpData graphdata,
+					 ajint type);
+void          ajGraphxySetMaxMin(AjPGraph thys,float xmin,float xmax,
 				 float ymin,float ymax);
-void          ajGraphxySetOut (AjPGraph mult, AjPStr txt);
-void          ajGraphxySetOutC (AjPGraph mult, char* txt);
-void          ajGraphxySetOverLap (AjPGraph graphs, AjBool overlap);
-void          ajGraphxySetSubtitleDo (AjPGraph graphs, AjBool set);
-void          ajGraphxySetTitleDo (AjPGraph graphs, AjBool set);
-void          ajGraphxySetXBottom (AjPGraph graphs, AjBool set);
-void          ajGraphxySetXLabelTop (AjPGraph graphs, AjBool set);
-void          ajGraphxySetXTick (AjPGraph graphs, AjBool set);
-void          ajGraphxySetXTop (AjPGraph graphs, AjBool set);
-void          ajGraphxySetXEnd (AjPGraph graphs, float val);
-void          ajGraphxySetXGrid (AjPGraph graphs, AjBool set);
-void          ajGraphxySetXInvTicks (AjPGraph graphs, AjBool set);
-void          ajGraphxySetXLabel (AjPGraph graphs, AjBool set);
+void          ajGraphSetOut (AjPGraph thys, AjPStr txt);
+void          ajGraphSetOutC (AjPGraph thys, char* txt);
+void          ajGraphxySetOverLap (AjPGraph thys, AjBool overlap);
+void          ajGraphSetSubTitleDo (AjPGraph thys, AjBool set);
+void          ajGraphSetTitleDo (AjPGraph thys, AjBool set);
+void          ajGraphxySetXBottom (AjPGraph thys, AjBool set);
+void          ajGraphxySetXLabelTop (AjPGraph thys, AjBool set);
+void          ajGraphxySetXTick (AjPGraph thys, AjBool set);
+void          ajGraphxySetXTop (AjPGraph thys, AjBool set);
+void          ajGraphxySetXEnd (AjPGraph thys, float val);
+void          ajGraphxySetXGrid (AjPGraph thys, AjBool set);
+void          ajGraphxySetXInvTicks (AjPGraph thys, AjBool set);
+void          ajGraphxySetXLabel (AjPGraph thys, AjBool set);
 void          ajGraphxySetXRangeII (AjPGraph thys, ajint start, ajint end);
-void          ajGraphxySetXStart (AjPGraph graphs, float val);
-void          ajGraphxySetYLabelLeft (AjPGraph graphs, AjBool set);
-void          ajGraphxySetYLeft (AjPGraph graphs, AjBool set);
-void          ajGraphxySetYRight (AjPGraph graphs, AjBool set);
-void          ajGraphxySetYTick (AjPGraph graphs, AjBool set);
-void          ajGraphxySetYEnd (AjPGraph graphs, float val);
-void          ajGraphxySetYGrid (AjPGraph graphs, AjBool set);
-void          ajGraphxySetYInvTicks (AjPGraph graphs, AjBool set);
-void          ajGraphxySetYLabel (AjPGraph graphs, AjBool set);
+void          ajGraphxySetXStart (AjPGraph thys, float val);
+void          ajGraphxySetYLabelLeft (AjPGraph thys, AjBool set);
+void          ajGraphxySetYLeft (AjPGraph thys, AjBool set);
+void          ajGraphxySetYRight (AjPGraph thys, AjBool set);
+void          ajGraphxySetYTick (AjPGraph thys, AjBool set);
+void          ajGraphxySetYEnd (AjPGraph thys, float val);
+void          ajGraphxySetYGrid (AjPGraph thys, AjBool set);
+void          ajGraphxySetYInvTicks (AjPGraph thys, AjBool set);
+void          ajGraphxySetYLabel (AjPGraph thys, AjBool set);
 void          ajGraphxySetYRangeII (AjPGraph thys, ajint start, ajint end);
-void          ajGraphxySetYStart (AjPGraph graphs, float val);
-void          ajGraphxySubtitle  (AjPGraph graphs, AjPStr title);
-void          ajGraphxySubtitleC (AjPGraph graphs, char *title);
-void          ajGraphxyTitle     (AjPGraph graphs, AjPStr title);
-void          ajGraphxyTitleC    (AjPGraph graphs, char *title);
+void          ajGraphxySetYStart (AjPGraph thys, float val);
+void          ajGraphSetSubTitle  (AjPGraph thys, AjPStr title);
+void          ajGraphSetSubTitleC (AjPGraph thys, char *title);
+void          ajGraphSetTitle     (AjPGraph thys, AjPStr title);
+void          ajGraphSetTitleC    (AjPGraph thys, char *title);
 void          ajGraphxyTrace      (AjPGraph thys);
-void          ajGraphxyXtitle  (AjPGraph graphs, AjPStr title);
-void          ajGraphxyXtitleC (AjPGraph graphs, char *title);
-void          ajGraphxyYtitle  (AjPGraph graphs, AjPStr title);
-void          ajGraphxyYtitleC (AjPGraph graphs, char *title);
-void          ajGraphxySetGaps(AjPGraph graphs, AjBool overlap);
+void          ajGraphSetXTitle  (AjPGraph thys, AjPStr title);
+void          ajGraphSetXTitleC (AjPGraph thys, char *title);
+void          ajGraphSetYTitle  (AjPGraph thys, AjPStr title);
+void          ajGraphSetYTitleC (AjPGraph thys, char *title);
+void          ajGraphxySetGaps(AjPGraph thys, AjBool overlap);
 void          ajGraphPartCircle(PLFLT xcentre, PLFLT ycentre, float radius,
 				PLFLT StartAngle, PLFLT EndAngle);
 PLFLT         *ajComputeCoord(PLFLT xcentre, PLFLT ycentre, PLFLT Radius,
