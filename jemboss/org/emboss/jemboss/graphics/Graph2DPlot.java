@@ -22,6 +22,8 @@
 package org.emboss.jemboss.graphics;
 
 import javax.swing.*;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
@@ -52,6 +54,8 @@ public class Graph2DPlot extends ScrollPanel
   private float ymax = 0;
   
   private StringBuffer graph_data;
+  private Color graph_colour = Color.black;
+  private TextFieldFloat graph_line;
 
   private TextFieldFloat xstart;
   private TextFieldFloat xend;
@@ -397,7 +401,7 @@ public class Graph2DPlot extends ScrollPanel
         bacross.add(Box.createHorizontalGlue());
         xbdown.add(bacross);
         xbdown.add(Box.createVerticalStrut(5));
-
+        
 // height
         bacross = Box.createHorizontalBox();
         TextFieldInt yheight = new TextFieldInt();
@@ -410,7 +414,50 @@ public class Graph2DPlot extends ScrollPanel
         bacross.add(Box.createHorizontalGlue());
         ybdown.add(bacross);
         ybdown.add(Box.createVerticalStrut(5));
+       
+// graph colour
+        Box graphBox = Box.createVerticalBox();
+        bacross = Box.createHorizontalBox();
+        final JButton button_colour = new JButton();
+        button_colour.addActionListener(new ActionListener()
+        {
+          public void actionPerformed(ActionEvent e)
+          {
+            Color newColour= JColorChooser.showDialog(null, "Graph Colour",
+                                                      graph_colour);
+            if(newColour != null)
+            {
+              graph_colour = newColour;
+              button_colour.setBackground(graph_colour);
+            }
+          }
+        });
 
+        final Dimension buttonSize = new Dimension(22,24);
+        button_colour.setBackground(graph_colour);
+        button_colour.setPreferredSize(buttonSize);
+        button_colour.setMaximumSize(buttonSize);
+        bacross.add(button_colour);
+        bacross.add(new JLabel(" Graph Colour "));
+        bacross.add(Box.createHorizontalGlue());
+        graphBox.add(bacross);
+        graphBox.add(Box.createVerticalStrut(5));
+
+// graph line size
+        bacross = Box.createHorizontalBox();
+        if(graph_line == null)
+        {
+          graph_line = new TextFieldFloat();
+          graph_line.setValue(1.f);
+        }
+        graph_line.setPreferredSize(dim);
+        graph_line.setMaximumSize(dim);
+
+        bacross.add(graph_line);
+        bacross.add(new JLabel(" Graph Line Width "));
+        bacross.add(Box.createHorizontalGlue());
+        graphBox.add(bacross);
+        
 // main title label
         Box bdown = Box.createVerticalBox();
         bacross = Box.createHorizontalBox();
@@ -433,13 +480,14 @@ public class Graph2DPlot extends ScrollPanel
         pane.add(bdown, BorderLayout.NORTH);
         pane.add(xbdown, BorderLayout.CENTER);
         pane.add(ybdown, BorderLayout.EAST);
+        pane.add(graphBox, BorderLayout.SOUTH);
 
         Object[] options = { "OK", "APPLY", "CANCEL"};
         int select = 1;
         while(select == 1)
         {
           select = JOptionPane.showOptionDialog(null, pane,
-                                "Axes Options",
+                                "Graph Options",
                                  JOptionPane.YES_NO_CANCEL_OPTION,
                                  JOptionPane.QUESTION_MESSAGE,
                                  null, options, options[0]);
@@ -527,6 +575,7 @@ public class Graph2DPlot extends ScrollPanel
     return menubar;
   }
   
+
   /**
   *
   * Calculate minima and maxima
@@ -914,6 +963,15 @@ public class Graph2DPlot extends ScrollPanel
   private void drawGraphics(Graphics g)
   {
     Graphics2D g2d = (Graphics2D)g;
+    BasicStroke stroke = (BasicStroke)g2d.getStroke();
+
+    if(graph_line == null)
+    {
+      graph_line = new TextFieldFloat();
+      graph_line.setValue(1.f);
+    }
+    g2d.setStroke(new BasicStroke((float)graph_line.getValue()));
+
     int xnum  = emboss_data[0].length;
     
     float xfactor = (getWidth()-(2*xborder))/(float)(xend.getValue()-xstart.getValue());
@@ -951,6 +1009,7 @@ public class Graph2DPlot extends ScrollPanel
       }
     }
     g2d.translate(-xborder, -getHeight()+yborder);
+    g2d.setStroke(stroke);
   }
 
   /**
@@ -961,6 +1020,17 @@ public class Graph2DPlot extends ScrollPanel
   private void drawPoints(Graphics g)
   {
     Graphics2D g2d = (Graphics2D)g;
+
+    g2d.setColor(graph_colour);
+    BasicStroke stroke = (BasicStroke)g2d.getStroke();
+
+    if(graph_line == null)
+    {
+      graph_line = new TextFieldFloat();
+      graph_line.setValue(1.f);
+    }
+    g2d.setStroke(new BasicStroke((float)graph_line.getValue()));
+
     int xnum  = emboss_data[0].length;
 
     float xfactor = (getWidth()-(2*xborder))/(float)(xend.getValue()-xstart.getValue());
@@ -990,6 +1060,8 @@ public class Graph2DPlot extends ScrollPanel
       y1 = y2;
     }
     g2d.translate(-xborder, -getHeight()+yborder);
+
+    g2d.setStroke(stroke);
   }
 
   /**
