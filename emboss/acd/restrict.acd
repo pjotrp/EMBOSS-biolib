@@ -46,6 +46,12 @@ integer: max  [
   information: "Maximum cuts per RE"
 ]
 
+bool: individual  [
+  optional: "N"
+  default: "N"
+  information: "List individual enzymes with their fragments"
+]
+
 bool: single  [
   optional: "N"
   default: "N"
