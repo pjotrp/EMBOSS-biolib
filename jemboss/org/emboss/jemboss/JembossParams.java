@@ -37,7 +37,7 @@ public class JembossParams
 
 /** denotes a server is OK             */
   static public final int SERVER_OK = 0;
-/** denotes a server is giving errors  */ 
+/** denotes a server is giving errors  */
   static public final int SERVER_ERR = 1;
 /** denotes a server is not responding */
   static public final int SERVER_DOWN = 2;
@@ -172,6 +172,11 @@ public class JembossParams
   private static boolean jembossServer = false;
   /** property name for Jemboss java server */
   private String jembossServerName = "jemboss.server";
+
+  /** cygwin */
+  private static boolean cygwin = false;
+  /** property name for Jemboss java server */
+  private String cygwinName = "cygwin";
 
   //EMBOSS directories
   /** plplot library location                            */
@@ -385,7 +390,9 @@ public class JembossParams
       acdDirToParse = jembossSettings.getProperty(acdDirToParseName);
       tmp = jembossSettings.getProperty(jembossServerName);
       jembossServer = new Boolean(tmp).booleanValue();
- 
+         
+      tmp = jembossSettings.getProperty(cygwinName);
+      cygwin = new Boolean(tmp).booleanValue();
       
       tmp = jembossSettings.getProperty(useHTTPSProxyName);
       useHTTPSProxy = new Boolean(tmp).booleanValue();
@@ -713,6 +720,17 @@ public class JembossParams
   {
     return jembossServer;
   }
+
+/**
+*
+*  @return      true if using cygwin
+*
+*/
+  public static boolean isCygwin()
+  {
+    return cygwin;
+  }
+
 
 /**
 *
