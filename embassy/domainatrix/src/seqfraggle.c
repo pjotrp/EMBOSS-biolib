@@ -121,7 +121,7 @@ int main(int argc, char **argv)
 	if((hitlist = embHitlistReadFasta(hitsPtr)))
 	    embHitlistDel(&hitlist);
 	else
-	    ajFatal("Fucking SHIT\n");
+	    ajFatal("Oooops\n");
 
 	while(ajFileReadLine(hitsPtr,&line));
 	
@@ -131,9 +131,6 @@ int main(int argc, char **argv)
 
     ajExit();
 */
-
-
-
 
     /* Start of main application loop                         */
     /* determine median length of sequences in each hits file */
