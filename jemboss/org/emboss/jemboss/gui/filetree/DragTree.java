@@ -98,7 +98,6 @@ public class DragTree extends JTree implements DragGestureListener,
 
 
     //Listen for when a file is selected
-
     MouseListener mouseListener = new MouseAdapter() 
     {
       public void mouseClicked(MouseEvent me) 
@@ -218,26 +217,8 @@ public class DragTree extends JTree implements DragGestureListener,
         if(inputValue != null && !inputValue.equals("") )
         {
           final String path = f.getParent();
-          String fullname   = path+System.getProperty("file.separator")+inputValue;
-          File fnew = new File(fullname);
-          if(fnew.exists())
-          {
-            JOptionPane.showMessageDialog(null, fullname+" alread exists!", 
-                                     "Warning", JOptionPane.ERROR_MESSAGE);
-          }
-          else
-          {
-            f.renameTo(fnew);
-            Runnable deleteFileFromTree = new Runnable()
-            {
-              public void run () 
-              { 
-                deleteObject(node,f.getParentFile().getAbsolutePath());
-                addObject(inputValue,path);
-              };
-            };
-            SwingUtilities.invokeLater(deleteFileFromTree);
-          }
+          String fullname   = path+fs+inputValue;
+          renameFile(f,node,fullname);
         }
         
       }
@@ -260,6 +241,32 @@ public class DragTree extends JTree implements DragGestureListener,
       }
     }
   
+  }
+
+  private void renameFile(final File oldFile, final FileNode oldNode, 
+                          String newFullName)
+  {
+    final File fnew = new File(newFullName);
+    if(fnew.exists())
+    {
+      JOptionPane.showMessageDialog(null, newFullName+" alread exists!",
+                               "Warning", JOptionPane.ERROR_MESSAGE);
+    }
+    else
+    {
+      oldFile.renameTo(fnew);
+      Runnable deleteFileFromTree = new Runnable()
+      {
+        public void run ()
+        {
+          System.out.println("OLDFILE "+oldFile.getParentFile().getAbsolutePath());
+          deleteObject(oldNode,oldFile.getParentFile().getAbsolutePath());
+          addObject(fnew.getName(),fnew.getParent());
+        };
+      };
+      SwingUtilities.invokeLater(deleteFileFromTree);
+    }
+    return;
   }
 
   public void newRoot(String newRoot)
@@ -300,15 +307,36 @@ public class DragTree extends JTree implements DragGestureListener,
   public void drop(DropTargetDropEvent e)
   {
     Transferable t = e.getTransferable();
-
+    Point ploc = e.getLocation();
+    TreePath dropPath = getPathForLocation(ploc.x,ploc.y);
+    
     if(t.isDataFlavorSupported(FileNode.FILENODE))
-       System.out.println("Detected local drop");
+    {
+//     try
+//     {
+//       FileNode fn = (FileNode)t.getTransferData(FileNode.FILENODE);
+//       if(dropPath != null)
+//       {
+//         String dropDir = null;
+//         FileNode fdropPath = (FileNode)dropPath.getLastPathComponent();
+//         if (fdropPath.isLeaf())
+//         {
+//           FileNode pn = (FileNode)fdropPath.getParent();
+//           dropDir = pn.getFile().getAbsolutePath();
+//         }
+//         else
+//           dropDir = fdropPath.getFile().getAbsolutePath();
+//         
+//         String newFullName = dropDir+fs+((File)fn.getUserObject()).getName();
+//         renameFile(fn.getFile(),fn,newFullName);
+//       }
+//     }
+//     catch(Exception ufe){}        
+    }
     else if(t.isDataFlavorSupported(RemoteFileNode.REMOTEFILENODE))
     {
       try
       {
-        Point ploc = e.getLocation();
-        TreePath dropPath = getPathForLocation(ploc.x,ploc.y);
         final RemoteFileNode fn = 
             (RemoteFileNode)t.getTransferData(RemoteFileNode.REMOTEFILENODE);
         if(dropPath != null)
@@ -407,7 +435,7 @@ public class DragTree extends JTree implements DragGestureListener,
 */
   public void dragOver(DropTargetDragEvent e)
   {
-    if (e.isDataFlavorSupported(RemoteFileNode.REMOTEFILENODE))
+    if (e.isDataFlavorSupported(RemoteFileNode.REMOTEFILENODE)) 
     {
       Point ploc = e.getLocation();
       TreePath ePath = getPathForLocation(ploc.x,ploc.y);
@@ -489,7 +517,6 @@ public class DragTree extends JTree implements DragGestureListener,
       {
         if(thiskey.equals(path))
         {
-//        System.out.println("OPEN NODE EQUALS " + thiskey +  " :::: " + path  +  " :::: " + child);
           parentNode = (FileNode)openNodeDir.get(thiskey);
           break;
         }
@@ -505,24 +532,24 @@ public class DragTree extends JTree implements DragGestureListener,
 
     if(parentNode == null)
       return null;
-    else if(!parentNode.isExplored()) 
-    {
-      model = (DefaultTreeModel)getModel();
-      parentNode.explore(openNodeDir);
-      model.nodeStructureChanged(parentNode);
-    }
 
     File newleaf = new File(parentNode.getFile().getAbsolutePath() +
                             fs + child);
-    int index = parentNode.getAnIndex(child);
-    FileNode childNode = new FileNode(newleaf,openNodeDir);
-    model.insertNodeInto(childNode, parentNode, index);
-//  parentNode.add(childNode);
-//  System.out.println("CHILD  " + childNode.getFile().getAbsolutePath() +
-//                     "CHILD  " + child +
-//                     "PARENT " + parentNode.getFile().getAbsolutePath());
 
-   // Make sure the user can see the new node.
+    FileNode childNode = new FileNode(newleaf,openNodeDir);
+    if(parentNode.isExplored()) 
+    {
+      int index = parentNode.getAnIndex(child);
+      model.insertNodeInto(childNode, parentNode, index);
+    }
+    else
+    {
+      parentNode.explore(openNodeDir);
+      model.nodeChanged(parentNode);
+      model.nodeStructureChanged(parentNode);
+    }
+
+    // Make sure the user can see the new node.
     this.scrollPathToVisible(new TreePath(childNode.getPath()));
 
     return childNode;
