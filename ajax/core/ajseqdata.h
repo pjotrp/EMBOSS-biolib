@@ -205,6 +205,7 @@ typedef struct AjSSeq {
   AjEnum Format;
   AjPStr Filename;
   AjPStr Entryname;
+  AjPStr TextPtr;
   float Weight;
   AjPList Acclist;
   AjPStr Seq;

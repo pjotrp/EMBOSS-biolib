@@ -4958,3 +4958,39 @@ char ajStrChar (const AjPStr thys, int pos) {
 ** String functions for now.
 **
 */
+
+int ajStrListToArray(AjPStr str, AjPStr **array)
+{
+    int c;
+    int len;
+    int i;
+    int n;
+    char *p=NULL;
+    char *q=NULL;
+
+    if(!str->Len)
+	return 0;
+
+
+    p = q = ajStrStr(str);
+
+    len = str->Len;
+    for(i=c=n=0;i<len;++i)
+	if(*(p++)=='\n')
+	    ++c;
+    p=q;
+    
+    AJCNEW0(*array,c);
+
+
+    for(i=0;i<c;++i)
+    {
+	while(*q!='\n')
+	    ++q;
+	(*array)[n] = ajStrNew();
+	ajStrAssSubC(&(*array)[n++],p,0,q-p);
+	p = ++q;
+    }
+    
+    return c;
+}

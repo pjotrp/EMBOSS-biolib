@@ -696,6 +696,7 @@ AcdOAttr acdAttrSeqoutall[] = { {"name", VT_STR},
 
 AcdOAttr acdAttrSeq[] = { {"type", VT_STR},
 			  {"features", VT_BOOL},
+			  {"entry", VT_BOOL},
 			  {"comment", VT_STR},
 			  {"corba", VT_STR},
 			  {"style",VT_STR},
@@ -710,6 +711,7 @@ AcdOAttr acdAttrSeqset[] = { {"type", VT_STR},
 
 AcdOAttr acdAttrSeqall[] = { {"type", VT_STR},
 			     {"features", VT_BOOL},
+			     {"entry", VT_BOOL},
 			     {"comment", VT_STR},
 			     {"corba", VT_STR},
 			     {"style",VT_STR},
@@ -4784,7 +4786,7 @@ static void acdSetSeq (AcdPAcd thys) {
   AjBool sprot=ajFalse;
   AjBool slower=ajFalse;
   AjBool supper=ajFalse;
-
+  
   val = ajSeqNew();		/* set the default value */
   seqin = ajSeqinNew();		/* set the default value */
   seqin->multi = ajFalse;
@@ -4824,6 +4826,7 @@ static void acdSetSeq (AcdPAcd thys) {
 
     (void) acdAttrToStr(thys, "type", "", &seqin->Inputtype);
     (void) acdAttrToBool(thys, "features", ajFalse, &seqin->Features);
+    (void) acdAttrToBool(thys, "entry", ajFalse, &seqin->Text);
 
     i = ajStrLen(seqin->Ufo) + ajStrLen(seqin->Ftquery->Formatstr)
       + ajStrLen(seqin->Ftquery->Filename);
@@ -5244,8 +5247,7 @@ static void acdSetSeqall (AcdPAcd thys) {
   AjBool sprot=ajFalse;
   AjBool slower=ajFalse;
   AjBool supper=ajFalse;
-
-
+  
   val = ajSeqallNew();		/* set the default value */
   seqin = val->Seqin;
   seqin->multi = ajTrue;
@@ -5293,6 +5295,8 @@ static void acdSetSeqall (AcdPAcd thys) {
     */
     (void) acdAttrToStr(thys, "type", "", &seqin->Inputtype);
     (void) acdAttrToBool(thys, "features", ajFalse, &seqin->Features);
+    (void) acdAttrToBool(thys, "entry", ajFalse, &seqin->Text);
+
     if (ajStrLen(seqin->Ufo))
       seqin->Features = ajTrue;
 
