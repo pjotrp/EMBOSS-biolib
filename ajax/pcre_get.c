@@ -285,7 +285,7 @@ pcre_get_substring(const char *subject, int *ovector, int stringcount,
 
 /* @func pcre_get_named_substring *********************************************
 **
-/** Copy named captured string to new store
+** Copy named captured string to new store
 **
 ** This function copies a single captured substring, identified by name, into
 ** new store.
