@@ -3088,3 +3088,79 @@ AjBool ajFileTestSkip (AjPStr fullname, AjPStr exc, AjPStr inc,
 
   return ret;
 }
+
+/* @func ajFileTempName ****************************************************
+**
+** Returns an available temporary filename that can be opened for writing
+** Filename will be of the form progname-time.randomnumber
+** Tries 5 times to find a new filename. Returns NULL if not
+** successful or the file cannot be opened for writing.
+** This function returns only the filename, not a file pointer.
+**
+** @param [r] dir [char*] Directory for filename or NULL for current dir (.)
+**                          inc is matched.
+** @return [char*] available filename or NULL if error.
+** @@
+******************************************************************************/
+
+char *ajFileTempName(const char *dir)
+{
+    struct  stat buf;
+    static  AjPStr  dt=NULL;
+    AjPStr  direct;
+    int     retry;
+    AjBool  ok;
+    AjPFile outf;
+    
+    ajRandomSeed();
+
+    if(!dt)
+	dt     = ajStrNew();
+
+    direct = ajStrNew();
+    
+    if(!dir)
+	ajStrAssC(&direct,".");
+    else
+	ajStrAssC(&direct,dir);
+    ajStrAppC(&direct,"/");
+    
+
+    
+    ajFmtPrintS(&dt,"%S%s-%d.%d",direct,ajAcdProgram(),time(0),
+		ajRandomNumber());
+
+    retry = 5;
+    ok    = ajTrue;
+
+    while(!stat(ajStrStr(dt),&buf) && retry)
+    {
+	ajFmtPrintS(&dt,"%S%s-%d.%d",direct,ajAcdProgram(),time(0),
+		    ajRandomNumber());
+	--retry;
+    }
+
+    if(!retry)
+    {
+	ajDebug("Cannot find a unique filename [last try %S]\n",dt);
+	ok = ajFalse;
+    }
+    
+    if(!(outf = ajFileNewOut(dt)))
+    {
+	ajDebug("Cannot write to file %S\n",dt);
+	ok = ajFalse;
+    }
+    else
+    {
+	ajFileClose(&outf);
+	unlink(ajStrStr(dt));
+    }
+    
+    ajStrDel(&direct);
+
+    if(!ok)
+	return NULL;
+
+    return ajStrStr(dt);
+}
