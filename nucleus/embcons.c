@@ -170,11 +170,12 @@ void embConsCalc(AjPSeqset seqset,AjPMatrix cmpmatrix,
 	}
 
 	/* plurality check */
-	if(matching[ajSeqCvtK(cvt,seqcharptr[highindex][k])] >= fplural
+        m1 = ajSeqCvtK(cvt,seqcharptr[highindex][k]);
+	if(matching[m1] >= fplural
 	   && seqcharptr[highindex][k] != '-')
 	    res = seqcharptr[highindex][k];
 
-	if(matching[highindex]<= setcase)
+	if(matching[m1]<= setcase)
 	    res = tolower((int)res);
 
 	if(identity)			/* if just looking for id's */
