@@ -160,6 +160,8 @@ Nucleic acid pattern search
 Search pattern: AAGCTT
 Number of mismatches [0]:
 Output file [hhtetra.fuzznuc]: stdout
+
+
 Human herpesvirus 7 (clone ED132'1.2) telomeric repeat region.
         HHTETRA        1 AAGCTT
 Human herpesvirus 7 (clone ED132'1.2) telomeric repeat region.
@@ -174,6 +176,8 @@ Nucleic acid pattern search
 Search pattern: AAGCTT
 Number of mismatches [0]:
 Output file [hhtetra.fuzznuc]: stdout
+
+
 L46634 Human herpesvirus 7 (clone ED132'1.2) telomeric repeat region.
         HHTETRA        1 AAGCTT
 L46634 Human herpesvirus 7 (clone ED132'1.2) telomeric repeat region.
@@ -187,10 +191,12 @@ Nucleic acid pattern search
 Search pattern: AAGCTT
 Number of mismatches [0]:
 Output file [hhtetra.fuzznuc]: stdout
+
+
 embl-id:HHTETRA         HHTETRA        1 AAGCTT
 embl-id:HHTETRA         HHTETRA     1267 AAGCTT
 
-   This is useful because it tunrs the output into a 'list' file of
+   This is useful because it turns the output into a 'list' file of
    sequence names that can then be read in by other EMBOSS programs when
    a '@' is put at the start of the file.
    
@@ -206,6 +212,8 @@ Nucleic acid pattern search
 Search pattern: AAGCTT
 Number of mismatches [0]:
 Output file [hhtetra.fuzznuc]: stdout
+
+
         HHTETRA        1 AAGCTT
         HHTETRA     1267 AAGCTT
         HHTETRA        1 [AAGCTT]
@@ -264,8 +272,8 @@ Author(s)
    
 History
 
-   Written (2000) - Alan Bleasby '-usa' added (13 March 2001) - Gary
-   Williams
+   Written (2000) - Alan Bleasby
+   '-usa' added (13 March 2001) - Gary Williams
    
 Target users
 
