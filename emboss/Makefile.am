@@ -11,6 +11,7 @@ AM_CFLAGS =
 endif
 endif
 
+
 check_PROGRAMS = ajtest \
 complex corbatest \
 demoalign demofeatures demolist demoreport demosequence demostring demotable \
@@ -51,7 +52,7 @@ shuffleseq sigcleave silent sirna sixpack skipseq \
 splitter stretcher \
 stssearch supermatcher syco \
 textsearch tfextract tfm tfscan \
-tmap tranalign transeq trimest trimseq \
+tmap tranalign transeq trimest trimseq twofeat \
 union vectorstrip \
 water whichdb wobble wordcount wordmatch \
 wossname yank
@@ -212,6 +213,7 @@ tranalign_SOURCES = tranalign.c
 transeq_SOURCES = transeq.c
 trimest_SOURCES = trimest.c
 trimseq_SOURCES = trimseq.c
+twofeat_SOURCES = twofeat.c
 union_SOURCES = union.c
 vectorstrip_SOURCES = vectorstrip.c
 water_SOURCES = water.c
@@ -247,3 +249,5 @@ pkgdatadir=$(prefix)/share/$(PACKAGE)
 #else
 #
 #endif
+
+
