@@ -119,6 +119,7 @@ sub testuse($\@\@) {
     $qpat = qr/const $tdata[*]*/;
     $tc = ${$tcast}[0];
     $tx = ${$tcode}[0];
+    $tc =~ s/^CONST /const /go;
     if ($tc !~ $qpat && $tc ne "const void*") {
 	print "bad category use - parameter1 '$tc' not 'const $tdata'\n";
     }
@@ -196,7 +197,8 @@ if ($ARGV[1]) {$lib = $ARGV[1];}
 foreach $x ("short", "int", "long", "float", "double", "char",
 	    "size_t", "time_t",
 	    "unsigned", "unsigned char",
-	    "unsigned short", "unsigned int", "unsigned long") {
+	    "unsigned short", "unsigned int",
+	    "unsigned long", "unsigned long int") {
     $simpletype{$x} = 1;
 }
 
@@ -530,16 +532,25 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 	    }
 	    else {
 		$curarg = $largs[$acnt];
-		($tcast,$tname) = ($curarg =~ /(\S.*\S)\s+(\S+)/);
-		if (!$tname) {
-		    $tcast = $curarg;
-		    if (!$var && $curarg eq "...") {$var = $tname = "vararg"}
+		if (!defined($curarg)) {
+		    print "bad argument \#$acnt not found in prototype for <$var>\n";
 		}
-		if (!$isprog && ($cast ne $tcast)) {
-		    print "bad cast <$cast> <$tcast>\n";
-		}
-		if (!$isprog && ($var ne $tname)) {
-		    print "bad var <$var> <$tname>\n";
+		else {
+		    ($tcast,$tname) = ($curarg =~ /(\S.*\S)\s+(\S+)/);
+		    if (!$tname) {
+			$tcast = $curarg;
+			if (!$var && $curarg eq "...") {
+			    $var = $tname = "vararg";
+			}
+		    }
+		    $castfix = $cast;
+		    $castfix =~ s/^CONST +//go;
+		    if (!$isprog && ($castfix ne $tcast)) {
+			print "bad cast <$cast> <$tcast>\n";
+		    }
+		    if (!$isprog && ($var ne $tname)) {
+			print "bad var <$var> <$tname>\n";
+		    }
 		}
 	    }
 	    $acnt++;
@@ -584,7 +595,7 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 	    }
 	    elsif ($cast =~ /^const .*[*][*]/) {
 # Tricky - we can be read-only
-# or we can set to any const  char* string (for example)
+# or we can set to any const char* string (for example)
 # e.g. pcre error pointers
 # but can be d (e.g. in ajTableMapDel functions)
 		if ($code !~ /[rwud]/) {
@@ -593,16 +604,29 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 	    }
 	    elsif ($cast =~ /^const /) {
 #If it starts const - except const type ** (see above) - it is const
-		if ($code !~ /r/) {
+# One exception: pcre has a "const int*" array that is set
+		if ($cast =~ /const[^a-z].*[*]/)
+		{
+		    if ($code !~ /[rwud]/) {
+			print "bad \@param '$var' const($cast) but code '$code'\n";
+		    }
+		}
+		elsif ($code !~ /r/) {
 		    print "bad \@param '$var' const but code '$code'\n";
 		}
 	    }
 	    elsif ($cast =~ / const[^a-z]/) {
 # also if it has an internal const
 # For example char* const argv[] is "char* const[]"
-# There could be exceptions - but not yet!
-		if ($code !~ /r/) {
-		    print "bad \@param '$var' const($cast) but code '$code'\n";
+# One exception: pcre has a "register const uschar*" array that is set
+		if ($cast =~ / const[^a-z].*[*]/)
+		{
+		    if ($code !~ /[rwud]/) {
+			print "bad \@param '$var' const($cast) but code '$code'\n";
+		    }
+		}
+		elsif ($code !~ /r/) {
+			print "bad \@param '$var' const($cast) but code '$code'\n";
 		}
 	    }
 	    elsif ($cast =~ / const$/) {
