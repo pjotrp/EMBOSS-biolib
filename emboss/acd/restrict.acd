@@ -115,5 +115,5 @@ report: outfile  [
   parameter: "Y"
   rformat: "table"
   multiple: "Y"
-  taglist: "str:enzyme=Enzyme_name str:site=Restriction_site int:5prime=5' int:3prime=3' int:5primerev=5'rev int:3primerev=3'rev"
+  taglist: "str:enzyme=Enzyme_name str:site=Restriction_site int:5prime int:3prime int:5primerev int:3primerev"
 ]
