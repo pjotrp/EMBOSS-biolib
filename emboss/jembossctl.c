@@ -22,6 +22,8 @@
 ** Boston, MA  02111-1307, USA.
 ********************************************************************/
 
+#ifdef HAVE_JAVA
+
 #include "emboss.h"
 #include <errno.h>
 #include <sys/types.h>
@@ -1759,3 +1761,13 @@ static AjBool jcntl_check_socket_owner(char *pname)
     
     return ajTrue;
 }
+
+
+#else
+#include <stdio.h>
+
+int main()
+{
+    return 0;
+}
+#endif
