@@ -1717,6 +1717,38 @@ AjBool ajStrSubstituteCC(AjPStr *pthis, const char* replace,
   return ret;
 }
   
+/* @func ajStrSubstituteKK ****************************************************
+**
+** Replace all occurrences of character replace with putin in string pthis.
+**
+** @param [uP] pthis [AjPStr*]  Target string.
+** @param [r]  replace [ char] Character to replace.
+** @param [r]  putin [char] Character to insert.
+** @return [AjBool] ajTrue if string was reallocated
+** @@
+******************************************************************************/
+
+AjBool ajStrSubstituteKK(AjPStr *pthis, char replace,
+			 char putin){
+
+  AjBool ret = ajFalse;
+  AjPStr thys;
+  char* cp;
+
+  ret = ajStrMod (pthis);
+  thys = *pthis;
+  cp = thys->Ptr;
+
+  while (*cp) {
+    if (*cp == replace) *cp = putin;
+    cp++;
+  }
+  
+  *pthis = thys;
+
+  return ret;
+}
+  
 /* @func ajStrChomp ***********************************************************
 ** 
 ** Remove start and end white space chars from the String.

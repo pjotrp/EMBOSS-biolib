@@ -86,6 +86,8 @@ extern "C"
 **                        the string object.
 ** @mod ajStrSubstituteCC Replace all occurances of char *text  with
 **                        another char* in the string object.
+** @mod ajStrSubstituteKK Replace all occurances of char text  with
+**                        another char in the string object.
 ** @mod ajStrChomp Removes white space from front and end of string.
 ** @mod ajStrChompC Removes white space from front and end of string.
 ** @mod ajStrChop  Removes the last character from a string
@@ -410,6 +412,8 @@ AjBool     ajStrSubstitute   (AjPStr* pthis, const AjPStr replace,
 			      const AjPStr putin);
 AjBool     ajStrSubstituteCC (AjPStr* pthis, const char* replace,
 			      const char* putin);
+AjBool     ajStrSubstituteKK (AjPStr* pthis, char replace,
+			      char putin);
 AjBool     ajStrSuffix (const AjPStr thys, const AjPStr suff);
 AjBool     ajStrSuffixC (const AjPStr thys, const char* suff);
 AjBool     ajStrSuffixCC (const char *str, const char* suff);
