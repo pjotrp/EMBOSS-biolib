@@ -1,0 +1,20 @@
+# DEMOALIGN application
+# AJAX COMMAND DEFINITION (ACD) FILE
+
+# use "" for missing values - these are required.
+# values in "" are trimmed to single spaces.
+# everything is treated as single tokens delimited by white space
+# (space, tab, newline)
+
+# pmr 22-apr-98
+
+appl: demoalign [
+	doc: "Reads a sequence set, writes an alignment file"
+	groups: "Test"
+]
+
+  seqset: sequence [ param: Y feat: Y]
+
+  align: align [ param: Y
+  ]
+
