@@ -449,7 +449,7 @@ static void remap_CutList (AjPFile outfile,
 	ajint maxcuts)
 {
     PValue value;
-    void **array;		/* array for table */  
+    void **array=NULL;		/* array for table */  
     ajint i;
 
     /* print title */
