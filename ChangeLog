@@ -1,4 +1,11 @@
 Version 3.0.0
+	Profile analysis with gprof indicates that the regular expressions
+	(and the PCRE library) are very inefficient. Wildcards in regular
+	expressions lead to millions of recursive calls to the match
+	function. Although they are very readable for code maintenance,
+	replaced them for EMBL sequence and feature reading to get about a
+	4-fold speedup. Profile analysis will continue up to version 3.0.0
+
 	Feature table updated for nucleotide sequences to
 	EMBL/GenBank/DDBJ version 6.2. A few obsoleted qualifiers.
 
