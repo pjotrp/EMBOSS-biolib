@@ -103,7 +103,7 @@ public class AuthPopup
         public void actionPerformed(ActionEvent e)
         {
           mysettings.setServiceUserName(ufield.getText());
-          mysettings.setServicePasswd(String.valueOf(pfield.getPassword()));
+          mysettings.setServicePasswd(pfield.getPassword());
           exitOnDone = true;
           splashf.dispose();
         }
@@ -145,7 +145,7 @@ public class AuthPopup
 	public void actionPerformed(ActionEvent e)
         {
 	  mysettings.setServiceUserName(ufield.getText());
-	  mysettings.setServicePasswd(String.valueOf(pfield.getPassword()));
+	  mysettings.setServicePasswd(pfield.getPassword());
           exitOnDone = true;
 	  splashf.dispose();
 	}

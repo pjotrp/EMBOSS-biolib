@@ -139,9 +139,12 @@ public class PrivateRequest
            args = new Vector();
          args.addElement(new Parameter("user", String.class,
                     mysettings.getServiceUserName(), null));
+   
+         args.addElement(new Parameter("p",  byte[].class,
+                         mysettings.getServicePasswdByte(), null));
 
-         args.addElement(new Parameter("p", String.class,
-                   mysettings.getServicePasswd(), null));
+//       args.addElement(new Parameter("p", String.class,
+//                 mysettings.getServicePasswd(), null));
        }
        else       //No authorization reqd, so use user name here
        {          //to create own sand box on server
@@ -154,7 +157,7 @@ public class PrivateRequest
      else         //cgi server at HGMP, add authentication headers
      {
        proglistconn.setUserName(mysettings.getServiceUserName());
-       proglistconn.setPassword(mysettings.getServicePasswd());
+       proglistconn.setPassword(new String(mysettings.getServicePasswd()));
      }
 
 
@@ -276,6 +279,7 @@ public class PrivateRequest
 
 
    }
+
 
 /**
 *
