@@ -1,0 +1,160 @@
+
+                              EMBOSS: restover
+     _________________________________________________________________
+   
+                               Program restover
+                                       
+Function
+
+   Finds restriction enzymes that produce a specific overhang
+   
+Description
+
+   **************** EDIT HERE ****************
+   
+Usage
+
+   Here is a sample session with restover:
+
+% restover
+
+   **************** EDIT HERE ****************
+   
+Command line arguments
+
+   Mandatory qualifiers:
+  [-sequence]          seqall     Sequence database USA
+  [-seqcomp]           string     Overlap sequence
+  [-outfile]           outfile    Output file name
+
+   Optional qualifiers: (none)
+   Advanced qualifiers:
+   -min                integer    Minimum cuts per RE
+   -max                integer    Maximum cuts per RE
+   -single             bool       Force single site only cuts
+   -threeprime         bool       3' overhang? (else 5') e.g. BamHI has CTAG
+                                  as a 5' overhang, and ApaI has CCGG as 3'
+                                  overhang.
+   -html               bool       Create HTML output
+   -[no]blunt          bool       Allow blunt end cutters
+   -[no]sticky         bool       Allow sticky end cutters
+   -[no]ambiguity      bool       Allow ambiguous matches
+   -plasmid            bool       Allow circular DNA
+   -[no]commercial     bool       Only enzymes with suppliers
+   -[no]limit          bool       Limits reports to one isoschizomer
+   -preferred          bool       Report preferred isoschizomers
+   -alphabetic         bool       Sort output alphabetically
+   -fragments          bool       Show fragment lengths
+   -name               bool       Show sequence name
+   -datafile           string     Alternative RE data file
+   
+
+   Mandatory qualifiers Allowed values Default
+   [-sequence]
+   (Parameter 1) Sequence database USA Readable sequence(s) Required
+   [-seqcomp]
+   (Parameter 2) Overlap sequence Any string is accepted An empty string
+   is accepted
+   [-outfile]
+   (Parameter 3) Output file name Output file <sequence>.restover
+   Optional qualifiers Allowed values Default
+   (none)
+   Advanced qualifiers Allowed values Default
+   -min Minimum cuts per RE Integer from 1 to 1000 1
+   -max Maximum cuts per RE Integer up to 2000000000 2000000000
+   -single Force single site only cuts Yes/No No
+   -threeprime 3' overhang? (else 5') e.g. BamHI has CTAG as a 5'
+   overhang, and ApaI has CCGG as 3' overhang. Yes/No No
+   -html Create HTML output Yes/No No
+   -[no]blunt Allow blunt end cutters Yes/No Yes
+   -[no]sticky Allow sticky end cutters Yes/No Yes
+   -[no]ambiguity Allow ambiguous matches Yes/No Yes
+   -plasmid Allow circular DNA Yes/No No
+   -[no]commercial Only enzymes with suppliers Yes/No Yes
+   -[no]limit Limits reports to one isoschizomer Yes/No Yes
+   -preferred Report preferred isoschizomers Yes/No No
+   -alphabetic Sort output alphabetically Yes/No No
+   -fragments Show fragment lengths Yes/No No
+   -name Show sequence name Yes/No No
+   -datafile Alternative RE data file Any string is accepted An empty
+   string is accepted
+   
+Input file format
+
+   **************** EDIT HERE ****************
+   
+Output file format
+
+   **************** EDIT HERE ****************
+   
+Data files
+
+   **************** EDIT HERE ****************
+   
+Notes
+
+   None.
+   
+References
+
+   None.
+   
+Warnings
+
+   None.
+   
+Diagnostic Error Messages
+
+   None.
+   
+Exit status
+
+   It always exits with status 0.
+   
+Known bugs
+
+   None.
+   
+See also
+
+   Program name                           Description
+   chaos         Create a chaos game representation plot for a sequence
+   cpgplot       Plot CpG rich areas
+   cpgreport     Reports all CpG rich regions
+   diffseq       Find differences (SNPs) between nearly identical sequences
+   dotmatcher    Displays a thresholded dotplot of two sequences
+   dotpath       Displays a non-overlapping wordmatch dotplot of two sequences
+   dottup        Displays a wordmatch dotplot of two sequences
+   einverted     Finds DNA inverted repeats
+   equicktandem  Finds tandem repeats
+   etandem       Looks for tandem repeats in a nucleotide sequence
+   isochore      Plots isochores in large DNA sequences
+   marscan       Finds MAR/SAR sites in nucleic sequences
+   newcpgreport  Report CpG rich areas
+   newcpgseek    Reports CpG rich regions
+   palindrome    Looks for inverted repeats in a nucleotide sequence
+   polydot       Displays all-against-all dotplots of a set of sequences
+   rebaseextract Extract data from REBASE
+   recode        Remove restriction sites but maintain the same translation
+   redata        Search REBASE for enzyme name, references, suppliers etc
+   remap         Display a sequence with restriction cut sites, translation etc
+   restrict      Finds restriction enzyme cleavage sites
+   showseq       Display a sequence with features, translation etc
+   silent        Silent mutation restriction enzyme scan
+   tfscan        Scans DNA sequences for transcription factors
+   
+Author(s)
+
+   This application was written by Alan Bleasby (ableasby@hgmp.mrc.ac.uk)
+   **************** EDIT HERE ****************
+   
+History
+
+   Written (date) - author. **************** EDIT HERE ****************
+   
+Target users
+
+   This program is intended to be used by everyone and everything, from
+   naive users to embedded scripts.
+   
+Comments
