@@ -360,6 +360,30 @@ public class SectionPanel
           pan.add(checkBox[h]);
           pan.add(lab[nf]);
         }
+        else if(att.startsWith("report"))
+        {
+          // possible report formats
+          fieldOption[h] = new myComboPopup(ReportFormat.getReportFormats());
+          
+          int np = parseAcd.getNumofParams(nf);
+          String def=null;
+          for(int i=0;i<np;i++)
+            if(parseAcd.getParameterAttribute(nf,i).equals("rformat"))
+            {
+              def = parseAcd.getParamValueStr(nf,i);
+              fieldOption[h].setSelectedItem(parseAcd.getParamValueStr(nf,i));
+            }
+
+          Dimension d = fieldOption[h].getPreferredSize();
+          d = new Dimension(150,(int)d.getHeight());
+
+          fieldOption[h].setMaximumSize(d);
+          fieldOption[h].setPreferredSize(d);
+          pan.add(fieldOption[h]);
+
+          pan.add(setLabelText(" Report format ("+def+")",
+                  ReportFormat.getToolTip()));
+        }
         else if(att.startsWith("list") || att.startsWith("select"))
         {
 //        pan.add(Box.createRigidArea(new Dimension(2,30)));
@@ -502,6 +526,9 @@ public class SectionPanel
 
     if(!sl.equals(""))
     {
+      if(!tt.equals(""))
+        tt = tt.replace('\\',' ');
+
       sl = sl.replace('\n',' ');
       String subLabel;
 

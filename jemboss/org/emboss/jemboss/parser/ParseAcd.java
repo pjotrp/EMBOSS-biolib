@@ -527,6 +527,11 @@ public class ParseAcd
         nlist++;
       }
     }
+    else if (dataType.startsWith("report"))
+    {
+      appF.setGuiHandleNumber(nlist);
+      nlist++;
+    }
     else if (dataType.startsWith("range"))
     {
       appF.setGuiHandleNumber(nrange);

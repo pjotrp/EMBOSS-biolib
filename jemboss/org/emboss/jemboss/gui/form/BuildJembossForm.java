@@ -691,6 +691,11 @@ public class BuildJembossForm implements ActionListener
                        parseAcd.getListLabel(j,index));
         }
       }
+      else if ( att.startsWith("report") )
+      {
+        System.out.println(fieldOption[h].getSelectedItem()); 
+        options = options.concat(" -rformat "+fieldOption[h].getSelectedItem());
+      }
       else if ( att.startsWith("bool") && checkBox[h].isVisible()
                                        && checkBox[h].isEnabled())
       {
