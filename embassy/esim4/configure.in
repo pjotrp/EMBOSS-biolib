@@ -78,6 +78,7 @@ else
    AC_MSG_RESULT(no)
 fi
 
+AM_CONDITIONAL(AMPNG, false)
 CHECK_PNGDRIVER
 
 dnl Tests for AIX
