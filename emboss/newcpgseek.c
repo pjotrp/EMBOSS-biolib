@@ -33,9 +33,10 @@
 #include <stdlib.h>
 
 
-void cpgsearch(AjPFile *outf, ajint s, ajint len, char *seq, char *name,
-	       ajint begin, ajint *score);
-void calcgc(ajint from, ajint to, char *p, ajint *dcg, ajint *dgc, ajint *gc);
+static void newcpgseek_cpgsearch(AjPFile *outf, ajint s, ajint len, char *seq,
+				 char *name, ajint begin, ajint *score);
+static void newcpgseek_calcgc(ajint from, ajint to, char *p, ajint *dcg,
+			      ajint *dgc, ajint *gc);
 
 
 /* @prog newcpgseek ***********************************************************
@@ -86,7 +87,8 @@ int main(int argc, char **argv)
 	ajFmtPrintF(outf," Begin    End  Score");
 	ajFmtPrintF(outf,"        CpG  %%CG  CG/GC\n");
 
-	cpgsearch(&outf,0,len,ajStrStr(substr),ajSeqName(seq),begin,&score);
+	newcpgseek_cpgsearch(&outf,0,len,ajStrStr(substr),ajSeqName(seq),
+			     begin,&score);
 	ajFmtPrintF(outf,"-------------------------------------------\n");
 	
 	ajStrDel(&strand);
@@ -101,23 +103,26 @@ int main(int argc, char **argv)
     return 0;
 }
 
-/* @func cpgsearch ************************************************************
+
+
+/* @funcstatic newcpgseek_cpgsearch *****************************************
 **
-** Undocumented.
+** Perform cpg search
 **
-** @param [?] outf [AjPFile*] Undocumented
-** @param [?] from [ajint] Undocumented
-** @param [?] to [ajint] Undocumented
-** @param [?] p [char*] Undocumented
-** @param [?] name [char*] Undocumented
-** @param [?] begin [ajint] Undocumented
-** @param [?] score [ajint*] Undocumented
+** @param [r] outf [AjPFile*] outfile
+** @param [r] from [ajint] start pos
+** @param [r] to [ajint] end pos
+** @param [r] p [char*] sequence
+** @param [r] name [char*] sequence name
+** @param [r] begin [ajint] start in sequence
+** @param [w] score [ajint*] score
 ** @@
 ******************************************************************************/
 
 
-void cpgsearch(AjPFile *outf, ajint from, ajint to, char *p, char *name,
-	       ajint begin, ajint *score)
+static void newcpgseek_cpgsearch(AjPFile *outf, ajint from, ajint to,
+				 char *p, char *name, ajint begin,
+				 ajint *score)
 {
     ajint i;
     ajint c;
@@ -142,7 +147,7 @@ void cpgsearch(AjPFile *outf, ajint from, ajint to, char *p, char *name,
 	if(sum<0) sum=0;
 	if(!sum && ssum)
 	{
-	    calcgc(lsum+1,t+2,p,&dcg,&dgc,&gc);
+	    newcpgseek_calcgc(lsum+1,t+2,p,&dcg,&dgc,&gc);
 	    if(dgc)
 	    {
 		ajFmtPrintF(*outf,"%6d %6d %5d ",lsum+2+z,
@@ -151,16 +156,8 @@ void cpgsearch(AjPFile *outf, ajint from, ajint to, char *p, char *name,
 			    dcg,(float)gc*100.0/(float)(t+1-lsum),
 			    (float)(dcg/dgc));
 	    }
-	    else
-	    {
-/* Don't know what the fuck this is doing here!
-		ajFmtPrintF(*outf,"%6d %6d %5d ",lsum+2+z,t+2+z,
-			    top);
-		ajFmtPrintF(*outf,"     %5d %5.1f    -\n",
-			    dcg,(float)gc*100.0/(float)(t+1-lsum));
-*/
-	    }
-	    cpgsearch(outf,t+2,i,p,name,begin,score);
+
+	    newcpgseek_cpgsearch(outf,t+2,i,p,name,begin,score);
 	    sum=ssum=lsum=t=top=0;
 	}
 	if(sum>top)
@@ -174,7 +171,7 @@ void cpgsearch(AjPFile *outf, ajint from, ajint to, char *p, char *name,
   
     if(sum)
     {
-	calcgc(lsum+1,t+2,p,&dcg,&dgc,&gc);
+	newcpgseek_calcgc(lsum+1,t+2,p,&dcg,&dgc,&gc);
 	if(dgc)
 	{
 	    ajFmtPrintF(*outf,"*%6d %6d %5d ",lsum+2+z,t+2+z,
@@ -183,31 +180,31 @@ void cpgsearch(AjPFile *outf, ajint from, ajint to, char *p, char *name,
 			dcg,(float)gc*100.0/(float)(t+1-lsum),
 			((float)dcg/(float)dgc));
 	}
-	else
-	{
-/*	    ajFmtPrintF(*outf,"%6d %6d %5d ",lsum+2+z,t+2+z,top);
-	    ajFmtPrintF(*outf,"     %5d %5.1f    -\n",dcg,
-			(float)gc*100.0/(float)(t+1-lsum));
-*/
-	}
-	cpgsearch(outf,t+2,to,p,name,begin,score);
+
+	newcpgseek_cpgsearch(outf,t+2,to,p,name,begin,score);
     }
+
+    return;
 }
 
-/* @func calcgc ***************************************************************
+
+
+
+/* @funcstatic newcpgseek_calcgc *********************************************
 **
-** Undocumented.
+** Calculate gc content
 **
-** @param [?] from [ajint] Undocumented
-** @param [?] to [ajint] Undocumented
-** @param [?] p [char*] Undocumented
-** @param [?] dcg [ajint*] Undocumented
-** @param [?] dgc [ajint*] Undocumented
-** @param [?] gc [ajint*] Undocumented
+** @param [r] from [ajint] from
+** @param [r] to [ajint] to
+** @param [r] p [char*] sequence
+** @param [w] dcg [ajint*] number cg
+** @param [w] dgc [ajint*] number gc
+** @param [w] gc [ajint*] number c or g
 ** @@
 ******************************************************************************/
 
-void calcgc(ajint from, ajint to, char *p, ajint *dcg, ajint *dgc, ajint *gc)
+static void newcpgseek_calcgc(ajint from, ajint to, char *p, ajint *dcg,
+			      ajint *dgc, ajint *gc)
 {
 
     ajint i;
@@ -221,4 +218,6 @@ void calcgc(ajint from, ajint to, char *p, ajint *dcg, ajint *dgc, ajint *gc)
 	if(p[i]=='C' && p[i+1]=='G' && c-i) ++*dcg ; 
 	if(p[i]=='G' && p[i+1]=='C' && c-i ) ++*dgc ; 
     }
+
+    return;
 }

@@ -6,8 +6,8 @@ EXTRA_DIST = emboss.default.template
 check_PROGRAMS = ajtest ajtest2 ajtest3 ajtestajnam \
 contacts cluster complex corbatest \
 demofeatures demolist demosequence demostring demotable \
-entrails histogramtest intconv messtest \
-patmattest plplottest proteinmotifsearch \
+entrails histogramtest intconv \
+patmattest proteinmotifsearch \
 seqinfo \
 seqretallfeat seqretfeat seqtofeat \
 swissparse testplot treetypedisplay 
@@ -211,9 +211,7 @@ demosequence_SOURCES = demosequence.c
 demostring_SOURCES = demostring.c
 demotable_SOURCES = demotable.c
 histogramtest_SOURCES = histogramtest.c
-messtest_SOURCES = messtest.c
 patmattest_SOURCES = patmattest.c
-plplottest_SOURCES = plplottest.c
 swissparse_SOURCES = swissparse.c
 seqretallfeat_SOURCES = seqretallfeat.c
 seqretfeat_SOURCES = seqretfeat.c
