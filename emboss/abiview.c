@@ -81,6 +81,7 @@ ajint main (ajint argc, char * argv[])
     ajint nbases;
     ajlong baseO;
     ajlong numBases;
+    ajlong  basePosO;
     ajlong numPoints;
     ajlong dataOffset[4];
 
@@ -140,6 +141,8 @@ ajint main (ajint argc, char * argv[])
     
 
     ajSeqABIReadSeq(fp,baseO,numBases,&nseq);
+    basePosO = ajSeqABIGetBasePosOffset(fp);      /* find PLOC tag & get offset */
+    ajFileSeek(fp,basePosO,SEEK_SET);
     ajSeqABIGetBasePosition(fp,numBases,&basePositions);
 
 
@@ -284,7 +287,7 @@ static AjPGraphData graphDisplay(AjPGraph graphs, AjPInt2d trace,
     AjPGraphData gdata;
 
 
-/* create graph data object */
+    /* create graph data object */
     gdata = ajGraphxyDataNewI(ajShortGet(basePositions,nstop-1)-(*nt));
 
     if(nstart>0)
