@@ -66,9 +66,9 @@ pkgdata2_DATA = kitsch.html lindna.html marscan.html maskfeat.html \
                restrict.html revseq.html scopalign.html scope.html \
                seealso.html seqboot.html seqmatchall.html seqret.html \
                seqretall.html seqretfeat.html seqretset.html \
-               seqretsplit.html showdb.html showfeat.html showorf.html \
-               showseq.html shuffleseq.html sigcleave.html silent.html \
-               splitter.html stretcher.html stssearch.html \
+               seqretsplit.html showalign.html showdb.html showfeat.html \
+               showorf.html showseq.html shuffleseq.html sigcleave.html \
+               silent.html splitter.html stretcher.html stssearch.html \
                supermatcher.html syco.html test_group.html textsearch.html \
                tfextract.html tfm.html tfscan.html tmap.html topo.html \
                transeq.html trimseq.html utils_database_creation_group.html \
