@@ -23,7 +23,7 @@ AM_LDFLAGS = -no-undefined -Wl,--add-stdcall-alias -Wl,--export-all-symbols -Wl,
 endif
 
 
-INCLUDES = $(X_CFLAGS) -I$(srcdir)/ -I/usr/include/gd
+INCLUDES = $(X_CFLAGS) -I$(srcdir)/ -I/usr/include/gd -DPREFIX=\"$(prefix)\" -DEMBOSS_TOP=\"$(EMBOSS_TOP)\"
 LIBS =
 
 PLPLOTSRC = pdfutils.c plargs.c plbox.c plcont.c plcore.c \

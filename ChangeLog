@@ -1,9 +1,10 @@
-Change by Jon Ison
-Thu May  6 15:24:23 BST 2004
-'extension' ACD attribute added for dirlist datatype (ajacd.c edited)
-	
-
 Version 2.9.0
+	Remove need for the definition of PLPLOT_LIB.
+
+	Add configuration for cygwin dlls.
+
+	Allow filenames of the form drive:/filename for cygwin.
+
 	Fixes for list files with sequence ranges in the USAs. The
 	sequence input object is now reset during list processing.
 
@@ -23,7 +24,7 @@ Version 2.9.0
         alignment.  This can be turned off using '-noweight'. 
 
 	New output types in ACD for all input data types, including those
-	for phylogenetics and protein structure data. Initially these rae
+	for phylogenetics and protein structure data. Initially these are
 	a new AjPOutfile type with a defined format (fixed until any of
 	them has a choice).
 
