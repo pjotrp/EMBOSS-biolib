@@ -111,7 +111,7 @@ static ajint pdbSortPdbtospPdb(const void *ptr1, const void *ptr2)
 **  (1) http://www.expasy.ch/cgi-bin/lists?pdbtosp.txt
 ** and returns the data as a list of Pdbtosp objects. 
 **
-** @param [r] inf [AjPFile] Input file  
+** @param [u] inf [AjPFile] Input file  
 **
 ** @return [AjPList] List of Pdbtosp objects. 
 ** @@
@@ -280,14 +280,14 @@ AjPList       ajPdbtospReadAllRawNew(AjPFile inf)
 ** Read a Pdbtosp object from a file in embl-like format (see documentation  
 ** for DOMAINATRIX "pdbtosp" application).
 **
-** @param [r] inf [AjPFile] Input file stream
-** @param [r] entry [AjPStr] Pdb id
+** @param [u] inf [AjPFile] Input file stream
+** @param [r] entry [const AjPStr] Pdb id
 **
 ** @return [AjPPdbtosp] True on success
 ** @@
 ****************************************************************************/
 
-AjPPdbtosp  ajPdbtospReadNew(AjPFile inf, AjPStr entry) 
+AjPPdbtosp  ajPdbtospReadNew(AjPFile inf, const AjPStr entry) 
 {
     AjPPdbtosp ret = NULL;
     
@@ -305,7 +305,7 @@ AjPPdbtosp  ajPdbtospReadNew(AjPFile inf, AjPStr entry)
 ** Read a Pdbtosp object from a file in embl-like format.  Memory for the
 ** object is allocated.
 **
-** @param [r] inf   [AjPFile] Input file stream
+** @param [u] inf   [AjPFile] Input file stream
 ** @param [r] entry [const char*]   Pdb id
 **
 ** @return [AjPPdbtosp] True on success
@@ -383,7 +383,7 @@ AjPPdbtosp ajPdbtospReadCNew(AjPFile inf, const char *entry)
 ** documentation for DOMAINATRIX "pdbtosp" application) and writes a list of 
 ** these objects. It then sorts the list by PDB id.
 **
-** @param [r] inf [AjPFile] Input file stream
+** @param [u] inf [AjPFile] Input file stream
 **
 ** @return [AjPList] List of Pdbtosp objects.
 ** @@
@@ -420,12 +420,12 @@ AjPList  ajPdbtospReadAllNew(AjPFile inf)
 ** documentation for DOMAINATRIX "contacts" application). Takes the chain 
 ** identifier as an integer.
 ** 
-** @param [r] inf     [AjPFile]  Input file stream
+** @param [u] inf     [AjPFile]  Input file stream
 ** @param [r] chn     [ajint]    Chain number
 ** @param [r] mod     [ajint]    Model number
 **
 ** @return [AjPCmap] Pointer to new Cmap object.
-** @category new [AjPAtom] Cmap constructor from reading file in embl-like
+** @category new [AjPCmap] Cmap constructor from reading file in embl-like
 **           format (see documentation for the EMBASSY DOMAINATRIX package).
 ** @@
 ****************************************************************************/
@@ -450,12 +450,12 @@ AjPList  ajPdbtospReadAllNew(AjPFile inf)
 ** documentation for DOMAINATRIX "contacts" application). Takes the chain 
 ** identifier as a character.
 ** 
-** @param [r] inf     [AjPFile]  Input file stream
+** @param [u] inf     [AjPFile]  Input file stream
 ** @param [r] chn     [char]     Chain number
 ** @param [r] mod     [ajint]    Model number
 **
 ** @return [AjPCmap]   Pointer to new Cmap object.
-** @category new [AjPAtom] Cmap constructor from reading file in embl-like
+** @category new [AjPCmap] Cmap constructor from reading file in embl-like
 **              format (see documentation for the EMBASSY DOMAINATRIX package).
 ** @@
 ****************************************************************************/
@@ -481,7 +481,7 @@ AjPCmap ajCmapReadCNew(AjPFile inf, char chn, ajint mod)
 ** usually called by the user, who uses ajCmapReadINew or ajCmapReadCNew 
 ** instead.
 ** 
-** @param [r] inf     [AjPFile]  Input file stream.
+** @param [u] inf     [AjPFile]  Input file stream.
 ** @param [r] mode    [ajint]    Mode, either CMAP_MODE_I (treat chn arg as  
 **                               an integer) or CMAP_MODE_C (treat chn arg as
 **                               a character).
@@ -624,10 +624,10 @@ AjPCmap ajCmapReadNew(AjPFile inf, ajint mode, ajint chn, ajint mod)
 ** Read a Vdwall object from a file in embl-like format (see documentation
 ** for the EMBASSY DOMAINATRIX package).
 ** 
-** @param [r] inf     [AjPFile]  Input file stream
+** @param [u] inf     [AjPFile]  Input file stream
 **
 ** @return [AjPVdwall] Pointer to Vdwall object.
-** @category new [AjPAtom] Vdwall constructor from reading file in embl-like
+** @category new [AjPVdwall] Vdwall constructor from reading file in embl-like
 **              format (see documentation for the EMBASSY DOMAINATRIX package).
 ** @@
 ****************************************************************************/
@@ -708,10 +708,10 @@ AjPVdwall  ajVdwallReadNew(AjPFile inf)
 **
 ** Read heterogen dictionary, the Het object is allocated.
 ** 
-** @param [r] inf [AjPFile]    Pointer to Het file
+** @param [u] inf [AjPFile]    Pointer to Het file
 ** 
 ** @return [AjPHet] Het object.
-** @category new [AjPAtom] Het constructor from reading dictionary of
+** @category new [AjPHet] Het constructor from reading dictionary of
 **                         heterogen groups in clean format (see documentation
 **                         for the EMBASSY DOMAINATRIX package).
 ** @@
@@ -791,7 +791,7 @@ AjPHet  ajHetReadNew(AjPFile inf)
 ** Reads a dictionary of heterogen groups available at 
 ** http://pdb.rutgers.edu/het_dictionary.txt and writes a Het object.
 **
-** @param [r] inf [AjPFile]    Pointer to dictionary
+** @param [u] inf [AjPFile]    Pointer to dictionary
 **
 ** @return [AjPHet] True on success
 ** @category new [AjPHet] Het constructor from reading dictionary of
@@ -890,10 +890,10 @@ AjPHet ajHetReadRawNew(AjPFile inf)
 ** "pdbparse" application) and writes a filled Pdb object. Data for the first
 ** model only is read in.
 **
-** @param [r] inf  [AjPFile] Pointer to clean coordinate file
+** @param [u] inf  [AjPFile] Pointer to clean coordinate file
 **
 ** @return [AjPPdb] Pointer to Pdb object.
-** @category new [AjPAtom] Pdb constructor from reading ccf format file
+** @category new [AjPPdb] Pdb constructor from reading ccf format file
 **                         (retrive data for 1st model only).
 ** @@
 ****************************************************************************/
@@ -1245,7 +1245,7 @@ AjPPdb ajPdbReadFirstModelNew(AjPFile inf)
 ** Reads a clean coordinate file (see documentation for DOMAINATRIX "pdbparse" 
 ** application) and writes a filled Pdb object.
 **
-** @param [r] inf  [AjPFile] Pointer to clean coordinate file
+** @param [u] inf  [AjPFile] Pointer to clean coordinate file
 **
 ** @return [AjPPdb] Pointer to Pdb object.
 ** @category new [AjPPdb] Pdb constructor from reading ccf format file.
@@ -1923,7 +1923,7 @@ AjPPdbtosp ajPdbtospNew(ajint n)
 **
 ** Destructor for atom object.
 **
-** @param [w] ptr [AjPAtom*] Atom object pointer
+** @param [d] ptr [AjPAtom*] Atom object pointer
 **
 ** @return [void]
 ** @category delete [AjPAtom] Default Atom destructor.
@@ -1958,7 +1958,7 @@ void ajAtomDel(AjPAtom *ptr)
 **
 ** Destructor for chain object.
 **
-** @param [w] ptr [AjPChain*] Chain object pointer
+** @param [d] ptr [AjPChain*] Chain object pointer
 **
 ** @return [void]
 ** @category delete [AjPChain] Default Chain destructor.
@@ -1995,7 +1995,7 @@ void ajChainDel(AjPChain *ptr)
 **
 ** Destructor for pdb object.
 **
-** @param [w] ptr [AjPPdb*] Pdb object pointer
+** @param [d] ptr [AjPPdb*] Pdb object pointer
 **
 ** @return [void]
 ** @category delete [AjPPdb] Default Pdb destructor.
@@ -2051,7 +2051,7 @@ void ajPdbDel(AjPPdb *ptr)
 **
 ** Destructor for Hetent object.
 **
-** @param [w] ptr [AjPHetent*] Hetent object pointer
+** @param [d] ptr [AjPHetent*] Hetent object pointer
 **
 ** @return [void]
 ** @category delete [AjPHetent] Default Hetent destructor.
@@ -2088,7 +2088,7 @@ void ajHetentDel(AjPHetent *ptr)
 **
 ** Destructor for Het object.
 **
-** @param [w] ptr [AjPHet*] Het object pointer
+** @param [d] ptr [AjPHet*] Het object pointer
 **
 ** @return [void]
 ** @category delete [AjPHet] Default Het destructor.
@@ -2126,7 +2126,7 @@ void ajHetDel(AjPHet *ptr)
 **
 ** Destructor for Vdwall object.
 **
-** @param [w] ptr [AjPVdwall*] Vdwall object pointer
+** @param [d] ptr [AjPVdwall*] Vdwall object pointer
 **
 ** @return [void]
 ** @category delete [AjPVdwall] Default Vdwall destructor.
@@ -2155,7 +2155,7 @@ void ajVdwallDel(AjPVdwall *ptr)
 **
 ** Destructor for Vdwres object.
 **
-** @param [w] ptr [AjPVdwres*] Vdwres object pointer
+** @param [d] ptr [AjPVdwres*] Vdwres object pointer
 **
 ** @return [void]
 ** @category delete [AjPVdwres] Default Vdwres destructor.
@@ -2187,7 +2187,7 @@ void ajVdwresDel(AjPVdwres *ptr)
 **
 ** Destructor for Cmap object.
 **
-** @param [w] ptr [AjPCmap*] Cmap object pointer
+** @param [d] ptr [AjPCmap*] Cmap object pointer
 **
 ** @return [void]
 ** @category delete [AjPCmap] Default Cmap destructor.
@@ -2221,7 +2221,7 @@ void ajCmapDel(AjPCmap *ptr)
 **
 ** Destructor for Pdbtosp object.
 **
-** @param [w] ptr [AjPPdbtosp*] Pdbtosp object pointer
+** @param [d] ptr [AjPPdbtosp*] Pdbtosp object pointer
 **
 ** @return [void]
 ** @category delete [AjPPdbtosp] Default Pdbtosp destructor.
@@ -2282,13 +2282,13 @@ void ajPdbtospDel(AjPPdbtosp *ptr)
 ** TO ZERO and '.' INSTEAD.
 ** 
 ** @param [w] to   [AjPAtom*]  Atom object pointer
-** @param [r] from [AjPAtom]   Atom object pointer
+** @param [r] from [const AjPAtom]   Atom object pointer
 **
 ** @return [AjBool] True on success
 ** @@
 ****************************************************************************/
 
-AjBool ajAtomCopy(AjPAtom *to, AjPAtom from)
+AjBool ajAtomCopy(AjPAtom *to, const AjPAtom from)
 {
     if(!to)
     {
@@ -2401,13 +2401,13 @@ AjBool ajAtomListCopy(AjPList *to, const AjPList from)
 ** 
 ** 
 ** @param [w] to   [AjPPdb*] Pdb object pointer
-** @param [r] from [AjPPdb]  Pdb object pointer
+** @param [r] from [const AjPPdb]  Pdb object pointer
 **
 ** @return [AjBool] True on success
 ** @@
 ****************************************************************************/
 
-AjBool ajPdbCopy(AjPPdb *to, AjPPdb from)
+AjBool ajPdbCopy(AjPPdb *to, const AjPPdb from)
 {
     ajint x = 0;
     
@@ -2510,7 +2510,7 @@ AjBool ajPdbCopy(AjPPdb *to, AjPPdb from)
 ** allocated if necessary.  If secondary structure assignment was not available
 ** for a residue a '.' is given in the string.
 **
-** @param [r] obj [AjPPdb]  Pdb object
+** @param [r] obj [const AjPPdb]  Pdb object
 ** @param [r] chn [ajint]   Chain number
 ** @param [w] EStrideType [AjPStr *] String to hold secondary structure
 **
@@ -2519,7 +2519,7 @@ AjBool ajPdbCopy(AjPPdb *to, AjPPdb from)
 ** @@
 ****************************************************************************/
 
-ajint  ajPdbGetEStrideType(AjPPdb obj, ajint chn, AjPStr *EStrideType)
+ajint  ajPdbGetEStrideType(const AjPPdb obj, ajint chn, AjPStr *EStrideType)
 {
     AjPAtom tmp    = NULL;
     AjIList iter   = NULL;
@@ -2660,16 +2660,16 @@ AjBool ajPdbChnidToNum(char id, const AjPPdb pdb, ajint *chn)
 ** structures (which of course must first have been sorted). This is a 
 ** case-insensitive search.
 **
-** @param [r] arr [AjPPdbtosp*] Array of AjOPdbtosp objects
-** @param [r] siz [ajint]       Size of array
-** @param [r] id  [AjPStr]      Search term
+** @param [r] arr [const AjPPdbtosp*] Array of AjOPdbtosp objects
+** @param [r] siz [ajint] Size of array
+** @param [r] id  [const AjPStr]      Search term
 **
 ** @return [ajint] Index of first Pdbtosp object found with an PDB code
 ** matching id, or -1 if id is not found.
 ** @@
 ****************************************************************************/
 
-ajint ajPdbtospArrFindPdbid(AjPPdbtosp *arr, ajint siz, const AjPStr id)
+ajint ajPdbtospArrFindPdbid(const AjPPdbtosp *arr, ajint siz, const AjPStr id)
 {
     int l;
     int m;
@@ -2713,14 +2713,14 @@ ajint ajPdbtospArrFindPdbid(AjPPdbtosp *arr, ajint siz, const AjPStr id)
 ** Writes a clean coordinate file for a protein.
 **
 ** @param [w] outf [AjPFile] Output file stream
-** @param [r] obj  [AjPPdb]  Pdb object
+** @param [r] obj  [const AjPPdb]  Pdb object
 **
 ** @return [AjBool] True on success
 ** @category output [AjPPdb] Writes a ccf-format file for a protein.
 ** @@
 ****************************************************************************/
 
-AjBool ajPdbWriteAll(AjPFile outf, AjPPdb obj)
+AjBool ajPdbWriteAll(AjPFile outf, const AjPPdb obj)
 {
     ajint x      = 0;
     ajint y      = 0;
@@ -3048,18 +3048,18 @@ AjBool ajPdbWriteAll(AjPFile outf, AjPPdb obj)
 ** to a single chain.  Coordinates for heterogens are NOT written to file.
 **
 ** @param [w] outf    [AjPFile] Output file stream
-** @param [r] pdb     [AjPPdb]  Pdb object
-** @param [r] segment [AjPStr]  Sequence of segment to print out.
+** @param [r] pdb     [const AjPPdb]  Pdb object
+** @param [r] segment [const AjPStr]  Sequence of segment to print out.
 ** @param [r] chnid   [char]    Chain id of segment
-** @param [r] domain  [AjPStr]  Domain code for segment
+** @param [r] domain  [const AjPStr]  Domain code for segment
 ** @param [w] errf    [AjPFile] Output file stream for error messages
 **
 ** @return [AjBool] True on success
 ** @@
 ** 
 ****************************************************************************/
-AjBool ajPbdWriteSegment(AjPFile outf, AjPPdb pdb, AjPStr segment, 
-			  char chnid, AjPStr domain, AjPFile errf)
+AjBool ajPbdWriteSegment(AjPFile outf, const AjPPdb pdb, const AjPStr segment, 
+			  char chnid, const AjPStr domain, AjPFile errf)
 {
     ajint chn;
     ajint start     = 0;
@@ -3260,7 +3260,7 @@ AjBool ajPbdWriteSegment(AjPFile outf, AjPPdb pdb, AjPStr segment,
 ** Writes the contents of a Het object to file. 
 **
 ** @param [w] outf    [AjPFile]   Output file
-** @param [r] obj     [AjPHet]    Het object
+** @param [r] obj     [const AjPHet]    Het object
 ** @param [r] dogrep  [AjBool]    Flag (True if we are to write <cnt>
 **                                element of the Het object to file).
 **
@@ -3269,7 +3269,7 @@ AjBool ajPbdWriteSegment(AjPFile outf, AjPPdb pdb, AjPStr segment,
 ** @@
 ****************************************************************************/
 
-AjBool ajHetWrite(AjPFile outf, AjPHet obj, AjBool dogrep)
+AjBool ajHetWrite(AjPFile outf, const AjPHet obj, AjBool dogrep)
 {
     ajint i = 0;
     
@@ -3307,15 +3307,15 @@ AjBool ajHetWrite(AjPFile outf, AjPHet obj, AjBool dogrep)
 ** and writes the list out to file in embl-like format (see 
 ** documentation for DOMAINATRIX "pdbtosp" application).
 **
-** @param [r] outf  [AjPFile] Output file   
-** @param [r] list  [AjPList] List of Pdbtosp objects   
+** @param [w] outf  [AjPFile] Output file   
+** @param [r] list  [const AjPList] List of Pdbtosp objects   
 **
 ** @return [AjBool] True of file was written ok.
 ** @@
 **
 ****************************************************************************/
 
-AjBool       ajPdbtospWrite(AjPFile outf, AjPList list)
+AjBool       ajPdbtospWrite(AjPFile outf, const AjPList list)
 {
     AjIList    iter = NULL;
     AjPPdbtosp tmp  = NULL;
@@ -3324,7 +3324,7 @@ AjBool       ajPdbtospWrite(AjPFile outf, AjPList list)
 
     if(!outf || !list)
     {
-	ajWarn("Bad args passed to ajPdbtospWrite");
+	ajWarn("Bad args passed to ajPdbtospWrte");
 	return ajFalse;
     }
     

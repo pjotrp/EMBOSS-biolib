@@ -142,7 +142,7 @@
 
 AjBool embPdbidToSp(const AjPStr pdb, AjPStr *spr, const AjPList list)
 {
-    AjPPdbtosp *arr = NULL;  /* Array derived from list */
+    const AjPPdbtosp *arr = NULL;  /* Array derived from list */
     ajint dim = 0;           /* Size of array */
     ajint idx = 0;           /* Index into array for the Pdb code */
 
@@ -192,7 +192,7 @@ AjBool embPdbidToSp(const AjPStr pdb, AjPStr *spr, const AjPList list)
 
 AjBool embPdbidToAcc(const AjPStr pdb, AjPStr *acc, const AjPList list)
 {
-    AjPPdbtosp *arr = NULL;  /* Array derived from list */
+    const AjPPdbtosp *arr = NULL;  /* Array derived from list */
     ajint dim = 0;           /* Size of array */
     ajint idx = 0;           /* Index into array for the Pdb code */
 

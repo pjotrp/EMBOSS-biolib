@@ -2230,7 +2230,7 @@ AjPCath ajCathNew(ajint n)
 ** required. This is normally called by the ajDomainReadCNew / 
 ** ajDomainReadNew functions.
 **
-** @param [r] chains [ajint] Number of chains (SCOP) or chain segments (CATH)
+** @param [r] n [ajint] Number of chains (SCOP) or chain segments (CATH)
 ** @param [r] type [ajint]  Either ajSCOP (1) or ajCATH (2)
 **
 ** @return [AjPDomain] Pointer to a Domain object
@@ -2878,7 +2878,7 @@ void ajCathDel(AjPCath *ptr)
 **
 ** Copies the contents from one Domain object to another.
 **
-** @param [wD] to   [AjPDomain*] Domain object pointer 
+** @param [w] to   [AjPDomain*] Domain object pointer 
 ** @param [r] from [const AjPDomain]  Domain object 
 **
 ** @return [AjBool] True if copy was successful.
@@ -2920,7 +2920,7 @@ AjBool ajDomainCopy(AjPDomain *to, const AjPDomain from)
 **
 ** Copies the contents from one Cath object to another.
 **
-** @param [wD] to   [AjPCath*] Cath object pointer 
+** @param [w] to   [AjPCath*] Cath object pointer 
 ** @param [r] from [const AjPCath]  Cath object 
 **
 ** @return [AjBool] True if copy was successful.
@@ -2982,7 +2982,7 @@ AjBool ajCathCopy(AjPCath *to, const AjPCath from)
 **
 ** Copies the contents from one Scop object to another.
 **
-** @param [wD] to   [AjPScop*] Scop object pointer 
+** @param [w] to   [AjPScop*] Scop object pointer 
 ** @param [r] from [const AjPScop]  Scop object 
 **
 ** @return [AjBool] True if copy was successful.

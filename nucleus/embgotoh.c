@@ -9,8 +9,8 @@
 **  Journal of Molecular Biology 162:705-708
 **
 ** @author Copyright (C) 2003--2004 Damian Counsell
-** @version $Revision: 1.14 $
-** @modified $Date: 2004/11/26 18:33:08 $
+** @version $Revision: 1.15 $
+** @modified $Date: 2005/01/07 10:48:12 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -182,11 +182,11 @@ void embGotohCellDel(AjPGotohCell* pthis)
 
 /* @func embGotohCellGetArray ************************************************
 **
-** reserves memory for an array of Gotoh cells for summing pair score array
+** Reserves memory for an array of Gotoh cells for summing pair score array
 **
 ** @param [r] ajIntDownSeqLen [ajint] size down
 ** @param [r] ajIntAcrossSeqLen [ajint] size across
-** @return [AjPGotohCell** const] Gotoh cell array address
+** @return [AjPGotohCell**] Gotoh cell array address
 ** @@
 ******************************************************************************/
 
@@ -205,7 +205,8 @@ AjPGotohCell** embGotohCellGetArray(ajint ajIntDownSeqLen,
 	ajIntRow < (ajIntDownSeqLen + enumTraceArrayOffset);
 	ajIntRow++)
     {
-	AJCNEW0(ajpGotohCellGotohScores[ajIntRow],(ajIntAcrossSeqLen + enumTraceArrayOffset));
+	AJCNEW0(ajpGotohCellGotohScores[ajIntRow],
+		(ajIntAcrossSeqLen + enumTraceArrayOffset));
     }
     
     for(ajIntRow = 0;
@@ -254,10 +255,10 @@ AjPGotohCell** embGotohCellGetArray(ajint ajIntDownSeqLen,
 **
 ** Calculates Gotoh cells for summing pair score array
 **
+** @param [w] ajpGotohCellGotohScores [AjPGotohCell**] Gotoh cell array
 ** @param [r] ajpFloat2dPairScores [const AjPFloat2d] Pair score array
 ** @param [r] ajpSeqDown [const AjPSeq] Sequence down
 ** @param [r] ajpSeqAcross [const AjPSeq] Seqeunce across
-** @param [w] ajpGotohCellGotohScores [AjPGotohCell**] Gotoh cell array
 ** @param [r] fGapPenalty [float] Gap penalty
 ** @param [r] fExtensionPenalty [float] Gap extension penalty
 ** @param [r] ajBoolZeroEndPenalty [AjBool] are end gaps free
@@ -268,10 +269,10 @@ AjPGotohCell** embGotohCellGetArray(ajint ajIntDownSeqLen,
 ******************************************************************************/
 
 
-void embGotohCellCalculateSumScore(const AjPFloat2d ajpFloat2dPairScores,
+void embGotohCellCalculateSumScore(AjPGotohCell **ajpGotohCellGotohScores,
+				   const AjPFloat2d ajpFloat2dPairScores,
 				   const AjPSeq ajpSeqDown,
 				   const AjPSeq ajpSeqAcross,
-				   AjPGotohCell **ajpGotohCellGotohScores,
 				   float fGapPenalty,
 				   float fExtensionPenalty,
 				   AjBool ajBoolZeroEndPenalty)
@@ -525,7 +526,7 @@ void embGotohCellCalculateSumScore(const AjPFloat2d ajpFloat2dPairScores,
 **  to the method of Gotoh,  O., "An Improved algorithm for matching
 **  biological sequences." Journal of Molecular Biology 162:705-708
 **
-** @param [r] ajpGotohCellGotohScores [AjPGotohCell **] Gotoh cell array
+** @param [r] ajpGotohCellGotohScores [AjPGotohCell * const *] Gotoh cell array
 ** @param [r] ajpSeqDown [const AjPSeq] Sequence down
 ** @param [r] ajpSeqAcross [const AjPSeq] Sequence across
 ** @param [u] ajpListGotohCellsMaxScoringTrace [AjPList] Trace
@@ -535,7 +536,7 @@ void embGotohCellCalculateSumScore(const AjPFloat2d ajpFloat2dPairScores,
 ** @@
 ******************************************************************************/
 
-ajint embGotohCellBacktrace(AjPGotohCell **ajpGotohCellGotohScores,
+ajint embGotohCellBacktrace(AjPGotohCell * const *ajpGotohCellGotohScores,
 			    const AjPSeq ajpSeqDown,
 			    const AjPSeq ajpSeqAcross,
 			    AjPList ajpListGotohCellsMaxScoringTrace)
@@ -673,8 +674,6 @@ ajint embGotohCellBacktrace(AjPGotohCell **ajpGotohCellGotohScores,
 ** @param [r] ajpMatrixFscoring [const AjPMatrixf] scoring matrix
 ** @param [r] ajpSeqDown [const AjPSeq] first sequence
 ** @param [r] ajpSeqAcross [const AjPSeq] second sequence
-** @param [r] fExtensionPenalty [float] alignment extension penalty
-** @param [r] ajBoolZeroEndPenalty [AjBool] are end gaps free
 **
 ** @return [AjPFloat2d] 2D matrix of pair scores
 ** @@

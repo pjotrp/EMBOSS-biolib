@@ -634,7 +634,7 @@ void         ajVdwresDel(AjPVdwres *ptr);
 /* ======================================================================= */
 AjPAtom      ajAtomNew(void);
 void         ajAtomDel(AjPAtom *ptr);
-AjBool       ajAtomCopy(AjPAtom *to, AjPAtom from);
+AjBool       ajAtomCopy(AjPAtom *to, const AjPAtom from);
 AjBool       ajAtomListCopy(AjPList *to, const AjPList from);
 
 
@@ -656,7 +656,8 @@ void         ajCmapDel(AjPCmap *ptr);
 /* ======================================================================= */
 AjPPdbtosp   ajPdbtospNew(ajint n);
 void         ajPdbtospDel(AjPPdbtosp *ptr);
-ajint        ajPdbtospArrFindPdbid(AjPPdbtosp *arr, ajint siz, const AjPStr id);
+ajint        ajPdbtospArrFindPdbid(const AjPPdbtosp *arr,
+				   ajint siz, const AjPStr id);
 
 
 
@@ -677,16 +678,17 @@ void         ajChainDel(AjPChain *ptr);
 /* ======================================================================= */
 AjPPdb       ajPdbNew(ajint n);
 void         ajPdbDel(AjPPdb *ptr);
-AjBool       ajPdbCopy(AjPPdb *to, AjPPdb from);
+AjBool       ajPdbCopy(AjPPdb *to, const AjPPdb from);
 AjBool       ajPdbChnidToNum(char id, const AjPPdb pdb, ajint *chn);
 
 AjPPdb       ajPdbReadNew(AjPFile inf);
 AjPPdb       ajPdbReadFirstModelNew(AjPFile inf);
-AjBool       ajPdbWriteAll(AjPFile out, AjPPdb obj);
-AjBool       ajPdbWriteSegment(AjPFile outf, AjPPdb pdb, 
-				AjPStr seq, char chn, AjPStr domain, 
-				AjPFile errf);
-ajint        ajPdbGetEStrideType(AjPPdb obj, ajint chn, 
+AjBool       ajPdbWriteAll(AjPFile out, const AjPPdb obj);
+AjBool       ajPdbWriteSegment(AjPFile outf, const AjPPdb pdb, 
+			       const AjPStr seq, char chn,
+			       const AjPStr domain, 
+			       AjPFile errf);
+ajint        ajPdbGetEStrideType(const AjPPdb obj, ajint chn, 
 				 AjPStr *EStrideType);
 
 
@@ -697,7 +699,7 @@ ajint        ajPdbGetEStrideType(AjPPdb obj, ajint chn,
 /* ======================================================================= */
 AjPHet       ajHetReadRawNew(AjPFile inf);
 AjPHet       ajHetReadNew(AjPFile inf);
-AjBool       ajHetWrite(AjPFile outf, AjPHet ptr, AjBool dogrep);
+AjBool       ajHetWrite(AjPFile outf, const AjPHet ptr, AjBool dogrep);
 
 
 
@@ -727,10 +729,10 @@ AjPCmap      ajCmapReadNew(AjPFile inf, ajint mode, ajint chn, ajint mod);
 /* ======================== Pdbtosp object =============================== */
 /* ======================================================================= */
 AjPList      ajPdbtospReadAllRawNew(AjPFile inf);
-AjPPdbtosp   ajPdbtospReadNew(AjPFile inf, AjPStr entry);
+AjPPdbtosp   ajPdbtospReadNew(AjPFile inf, const AjPStr entry);
 AjPPdbtosp   ajPdbtospReadCNew(AjPFile inf, const char *entry);
 AjPList      ajPdbtospReadAllNew(AjPFile inf);
-AjBool       ajPdbtospWrite(AjPFile outf, AjPList list);
+AjBool       ajPdbtospWrite(AjPFile outf, const AjPList list);
 
 
 

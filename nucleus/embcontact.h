@@ -9,20 +9,20 @@ extern "C"
 #ifndef embcontact_h
 #define embcontact_h
 
-/* @data AjPContact **********************************************************
+/* @data EmbPContact **********************************************************
 **
 ** NUCLEUS contact between two residues in a structure (from a cmap file)
 **
 ** Holds attributes of a single contact between two residues in a cmap file
 **
-** AjPContact is implemented as a pointer to a C data structure.
+** EmbPContact is implemented as a pointer to a C data structure.
 **
-** @alias AjSContact
-** @alias AjOContact
+** @alias EmbSContact
+** @alias EmbOContact
 **
-** @new ajContactNew default constructor
+** @new embContactNew default constructor
 **
-** @delete ajContactDel default destructor
+** @delete embContactDel default destructor
 **
 **
 ** @attr ajIntFirstPosition [ajint] position of first residue in contact
@@ -33,31 +33,31 @@ extern "C"
 ******************************************************************************/
 
 
-typedef struct AjContact
+typedef struct EmbSContact
 {
     ajint ajIntFirstPosition;
     ajint ajIntSecondPosition;
     AjPStr ajpStrFirstResType; 
     AjPStr ajpStrSecondResType;
-} AjOContact;
-#define AjPContact AjOContact*
+} EmbOContact;
+#define EmbPContact EmbOContact*
 
 
 
-/* @data AjPCmapHeader ********************************************************
+/* @data EmbPCmapHeader *******************************************************
 **
 ** NUCLEUS header of a cmap file
 **
 ** holds elements of the header text in a cmap file
 **
-** AjPCmapHeader is implemented as a pointer to a C data structure.
+** EmbPCmapHeader is implemented as a pointer to a C data structure.
 **
-** @alias AjSCmapHeader
-** @alias AjOCmapHeader
+** @alias EmbSCmapHeader
+** @alias EmbOCmapHeader
 **
-** @new ajCmapHeaderNew default constructor
+** @new embCmapHeaderNew default constructor
 **
-** @delete ajCmapHeaderDel default destructor
+** @delete embCmapHeaderDel default destructor
 **
 **
 ** @attr ajpStrCmapId [AjPStr] text of protein ID code
@@ -72,7 +72,7 @@ typedef struct AjContact
 
 
 
-typedef struct AjCmapHeader
+typedef struct EmbSCmapHeader
 {
     AjPStr ajpStrCmapId; 
     AjPStr ajpStrCmapDe;
@@ -81,8 +81,8 @@ typedef struct AjCmapHeader
     AjPStr ajpStrCmapCn;
     AjPStr ajpStrCmapIn;
     AjPStr ajpStrCmapSq;
-} AjOCmapHeader;
-#define AjPCmapHeader AjOCmapHeader*
+} EmbOCmapHeader;
+#define EmbPCmapHeader EmbOCmapHeader*
 
 
 
@@ -91,79 +91,79 @@ typedef struct AjCmapHeader
 /* =================== All functions in alphabetical order ================= */
 /* ========================================================================= */
 
-AjPContact ajContactNew (void);
+EmbPContact embContactNew (void);
 
-AjBool embContactWriteScoringMatrix (AjPInt2d ajpInt2dCounts,
+AjBool embContactWriteScoringMatrix (const AjPInt2d ajpInt2dCounts,
 				     AjPFile ajpFileScoringMatrix);
 
 ajint embAjintToScoringMatrixIndex (ajint ajIntResType);
 
 ajint embCharToScoringMatrixIndex (char cResType);
 
-ajint embScoringMatrixIndexToChar (ajint ajIntBlosumIndex);
+ajint  embScoringMatrixIndexToChar (ajint ajIntBlosumIndex);
 
-AjBool embString3ToAjint1 (AjPStr ajpStrThreeLetterCode);
+AjBool embString3ToAjint1 (const AjPStr ajpStrThreeLetterCode);
 
 AjPStr embAjint1ToString3 (ajint ajIntCode);
 
 AjBool embReadCmapFile (AjPFile ajpFileOriginalCmap,
 			ajint ajIntSeqLen,
-			AjPInt2d *pAjPInt2dCmapSummary,
-			AjPCmapHeader *pAjpFileOriginalCmapHeader,
+			AjPInt2d *AjPInt2dCmapSummary,
+			EmbPCmapHeader *pEmbpFileOriginalCmapHeader,
 			AjPInt2d *pAjPInt2dCmapResTypes,
 			AjPInt2d *pAjPInt2dCmapPositions);
 
 AjPStr embReadCmapLine (AjPFile ajpFileOriginalCmap);
 
-ajint embTypeCmapLine (AjPStr ajpStrCmapLine);
+ajint  embTypeCmapLine (const AjPStr ajpStrCmapLine);
 
-AjBool embLoadHeaderLine (AjPStr *pAjpStrCmapLine,
-			  AjPCmapHeader *pAjpHeaderToLoad);
+AjBool embLoadHeaderLine (const AjPStr ajpStrCmapLine,
+			  EmbPCmapHeader embpHeaderToLoad);
 
-AjBool embLoadContactLine (AjPStr *pAjpStrCmapLine,
-			   AjPContact *pAjpContactLoaded);
+AjBool embLoadContactLine (const AjPStr pAjpStrCmapLine,
+			   EmbPContact embpContactLoaded);
 
 AjBool embWriteCmapFile (AjPFile ajpFileCmap,
 			 ajint ajIntSeqLen,
 			 AjPInt2d *pAjPInt2dSummary,
-			 AjPCmapHeader *pAjpFileCmapHeader,
+			 EmbPCmapHeader *pEmbpFileCmapHeader,
 			 AjPInt2d *pAjPInt2dCmapResTypes,
 			 AjPInt2d *pAjPInt2dCmapPositions);
 
 AjBool embWriteUpdatedCmapFile (AjPFile ajpFileUpdatedCmap,
 				ajint ajIntSeqLen,
 				AjPInt2d *pAjPInt2dSummary,
-				AjPCmapHeader *pAjpFileUpdatedCmapHeader,
+				EmbPCmapHeader *pEmbpFileUpdatedCmapHeader,
 				AjPInt2d *pAjPInt2dCmapResTypes,
 				AjPInt2d *pAjPInt2dCmapPositions,
-				AjPMatrixf *pAjpMatrixfContactScoring);
+				const AjPMatrixf ajpMatrixfContactScoring);
 
-AjBool embPrintContact (AjPContact ajpContactToPrint);
+AjBool embPrintContact (const EmbPContact embpContactToPrint);
 
 AjBool embWriteCmapHeader (AjPFile ajpFileUpdatedCmap,
-			   AjPCmapHeader ajpHeaderToWrite);
+			   const EmbPCmapHeader embpHeaderToWrite);
 
-AjBool  embWriteCmapLine (AjPFile ajpFileUpdatedCmap,
-			  AjPStr *pAjpStrLineToWrite);
+AjBool embWriteCmapLine (AjPFile ajpFileUpdatedCmap,
+			 const AjPStr ajpStrLineToWrite);
 
 void embWriteContact (AjPFile ajpFileUpdatedCmap,
-		      AjPContact ajpContactToWrite);
+		      const EmbPContact embpContactToWrite);
 
 void embWriteUpdatedContact (AjPFile ajpFileUpdatedCmap,
-			     AjPContact ajpContactToWrite,
+			     const EmbPContact embpContactToWrite,
 			     float fContactScore);
 
-AjPCmapHeader ajCmapHeaderNew ();
+EmbPCmapHeader embCmapHeaderNew (void);
 
-void ajCmapHeaderDel (AjPCmapHeader *pAjpCmapHeaderToDelete);
+void embCmapHeaderDel (EmbPCmapHeader *pEmbpCmapHeaderToDelete);
 
 AjPInt2d embGetIntMap (ajint ajIntAcrossSeqLen);
 
-AjPInt2d embGetCmapSummary (char *pcSeq);
+AjPInt2d embGetCmapSummary (const char *pcSeq);
 
 
 /* DEBUGGING FUNCTIONS */
-AjBool debug_cmap_header (AjPCmapHeader *pAjpCmapHeader);
+AjBool debug_cmap_header (const EmbPCmapHeader embpCmapHeader);
 
 
 void debug_int_map (AjPInt2d *pAjpInt2dSummary,

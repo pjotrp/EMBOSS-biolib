@@ -6,8 +6,8 @@
 **
 **
 ** @author: Copyright (C) Damian Counsell
-** @version $Revision: 1.27 $
-** @modified $Date: 2004/12/08 17:38:27 $
+** @version $Revision: 1.28 $
+** @modified $Date: 2005/01/07 10:48:36 $
 ** @@
 **
 ** This program is free software; you can redistribute it and/or
@@ -99,7 +99,7 @@ int main(int argc , char **argv)
     AjPFile ajpFileUpdatedCmap = NULL;
     
     /* contact map components */
-    AjPCmapHeader ajpCmapHeader = NULL;
+    EmbPCmapHeader embpCmapHeader = NULL;
     AjPInt2d ajpInt2dCmapSummary = NULL;
     AjPInt2d ajpInt2dCmapResTypes = NULL;
     AjPInt2d ajpInt2dCmapPositions = NULL;
@@ -136,10 +136,10 @@ int main(int argc , char **argv)
     ajpGotohCellGotohScores = embGotohCellGetArray(ajIntDownSeqLen,
 						   ajIntAcrossSeqLen);
 
-    embGotohCellCalculateSumScore(ajpFloat2dPairScores,
+    embGotohCellCalculateSumScore(ajpGotohCellGotohScores,
+				  ajpFloat2dPairScores,
 				  ajpSeqDown,
 				  ajpSeqAcross,
-				  ajpGotohCellGotohScores,
 				  fGapPenalty,
 				  fExtensionPenalty,
 				  ajBoolZeroEndPenalty);
@@ -200,7 +200,7 @@ int main(int argc , char **argv)
 					enumArrayOffset);
     ajpInt2dCmapPositions = embGetIntMap(ajIntAcrossSeqLen +
 					 enumArrayOffset);
-    ajpCmapHeader = ajCmapHeaderNew();
+    embpCmapHeader = embCmapHeaderNew();
 
     /* DDDDEBUGGING */
     if( enumDebugLevel > 2 )
@@ -221,14 +221,14 @@ int main(int argc , char **argv)
     ajBoolOriginalCmapFileRead = embReadCmapFile(ajpFileOriginalCmap,
 						 ajIntAcrossSeqLen,
 						 &ajpInt2dCmapSummary,
-						 &ajpCmapHeader,
+						 &embpCmapHeader,
 						 &ajpInt2dCmapResTypes,
 						 &ajpInt2dCmapPositions);    
 
     /* DDDDEBUGGING DID WE READ THE CMAP FILE? */
     if( enumDebugLevel > 2 )
     {
-	debug_cmap_header(&ajpCmapHeader);
+	debug_cmap_header(&embpCmapHeader);
 	
 	debug_cmap_summary(&ajpInt2dCmapSummary,
 			   ajIntAcrossSeqLen);
@@ -253,7 +253,7 @@ int main(int argc , char **argv)
 	embWriteUpdatedCmapFile(ajpFileUpdatedCmap,
 				ajIntAcrossSeqLen,
 				&ajpInt2dCmapSummary,
-				&ajpCmapHeader,
+				&embpCmapHeader,
 				&ajpInt2dCmapResTypes,
 				&ajpInt2dCmapPositions,
 				&ajpMatrixfContactScoring);
@@ -282,7 +282,7 @@ int main(int argc , char **argv)
 
     /* XXXX YOU NEED SOME CODE HERE TO COMPARE THE PROBABILITIES OF EACH PAIR */
 
-    ajCmapHeaderDel(&ajpCmapHeader);
+    embCmapHeaderDel(&embpCmapHeader);
 
     /* write out "aligned" sequences  */
     ajSeqWrite(ajpSeqoutAligned, ajpSeqDownCopy);

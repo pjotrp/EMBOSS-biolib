@@ -185,9 +185,6 @@ typedef struct AjSScophit
 ** @attr Fold [AjPStr] Fold name
 ** @attr Superfamily [AjPStr] Superfamily name
 ** @attr Family [AjPStr] Family name (SCOP only)
-** @attr Architecture [AjPStr] Architecture name (CATH only)
-** @attr Topology [AjPStr] Topology name (CATH only)
-** @attr Family [AjPStr] Family name (SCOP only)
 ** @attr Sunid_Family [ajint] SCOP sunid for family
 ** @attr width [ajint] Width (residues) of widest part of alignment
 ** @attr N [ajint] No. of sequences in alignment

@@ -137,7 +137,8 @@ typedef struct AjSHit
 **
 ** 
 **
-** @attr  Type          [ajint]     Domain type, either ajSCOP (1) or ajCATH (2).
+** @attr  Type          [ajint]     Domain type, either ajSCOP (1) or
+**                                  ajCATH (2).
 ** @attr  Class         [AjPStr]    SCOP classification.
 ** @attr  Architecture  [AjPStr]    CATH classification.
 ** @attr  Topology      [AjPStr]    CATH classification.
@@ -148,7 +149,7 @@ typedef struct AjSHit
 ** @attr  Sunid_Family  [ajint]     SCOP sunid for family. 
 ** @attr  Priority      [AjBool]    True if the Hitlist is high priority. 
 ** @attr  N             [ajint]     No. of hits. 
-** @attr  hits          [AjPhHit*]  Array of hits. 
+** @attr  hits          [AjPHit*]  Array of hits. 
 **
 ** @new    embHitlistNew Default Hitlist constructor
 ** @delete embHitlistDel Default Hitlist destructor
@@ -156,25 +157,26 @@ typedef struct AjSHit
 ** @input  embHitlistRead Construct Hitlist object from reading the next entry
 **         from a file in embl-like format (see documentation for the 
 **         DOMAINATRIX "seqsearch" application). 
-** @new    embHitlistReadFasta Construct Hitlist object from reading the next entry
+** @new    embHitlistReadFasta Construct Hitlist object from reading
+**         the next entry
 **         from a file in extended FASTA format (see documentation for the 
 **         DOMAINATRIX "seqsearch" application). 
 ** @input  embHitlistReadNode Construct Hitlist object from reading a specific
 **         entry from a file in embl-like format (see documentation for the 
 **         DOMAINATRIX "seqsearch" application). 
-** @new    embHitlistReadNodeFasta Construct Hitlist object from reading a specific
-**         entry from a file in extended FASTA format (see documentation for the 
-**         DOMAINATRIX "seqsearch" application). 
+** @new    embHitlistReadNodeFasta Construct Hitlist object from reading
+**         a specific entry from a file in extended FASTA format
+**         (see documentation for the DOMAINATRIX "seqsearch" application). 
 ** @output embHitlistWrite Write Hitlist to file in embl-like format (see 
 **         documentation for the DOMAINATRIX "seqsearch" application). 
 ** @output embHitlistWriteSubset Write a subset of a Hitlist to file in 
 **         embl-like format (see documentation for the DOMAINATRIX "seqsearch"
 **         application). 
-** @output embHitlistWriteFasta Write Hitlist to file in extended FASTA format (see 
-**         documentation for the DOMAINATRIX "seqsearch" application). 
+** @output embHitlistWriteFasta Write Hitlist to file in extended FASTA format 
+**         (see documentation for the DOMAINATRIX "seqsearch" application). 
 ** @output embHitlistWriteSubsetFasta Write a subset of a Hitlist to file in 
-**         extended FASTA format (see documentation for the DOMAINATRIX "seqsearch"
-**         application). 
+**         extended FASTA format (see documentation for the DOMAINATRIX
+**         "seqsearch" application). 
 ** @output embHitlistWriteHitFasta Write a single Hit from a Hitlist to file 
 **         in extended FASTA format (see documentation for the DOMAINATRIX 
 **         "seqsearch" application). 
@@ -439,7 +441,7 @@ AjPList       embHitlistReadNodeFasta(AjPFile inf,
 				      const AjPStr fam, 
 				      const AjPStr sfam, 
 				      const AjPStr fold, 
-				      AjPStr klass);
+				      const AjPStr klass);
 
 AjBool        embHitlistClassify(const AjPHitlist *hits, 
 				 const AjPList targets, 

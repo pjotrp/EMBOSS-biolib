@@ -75,15 +75,15 @@ AjPFloat2d     embGotohPairScore(const AjPMatrixf ajpMatrixFscoring,
 				 const AjPSeq ajpSeqDown,
 				 const AjPSeq ajpSeqAcross);
 
-void      embGotohCellCalculateSumScore(const AjPFloat2d ajpFloat2dPairScores,
+void      embGotohCellCalculateSumScore(AjPGotohCell **ajpGotohCellGotohScores,
+					const AjPFloat2d ajpFloat2dPairScores,
 					const AjPSeq ajpSeqDown,
 					const AjPSeq ajpSeqAcross,
-					AjPGotohCell **ajpGotohCellGotohScores,
 					float fGapPenalty,
 					float fExtensionPenalty,
 					AjBool ajBoolZeroEndPenalty);
 
-ajint   embGotohCellBacktrace(AjPGotohCell **ajpGotohCellGotohScores,
+ajint   embGotohCellBacktrace(AjPGotohCell * const *ajpGotohCellGotohScores,
 			      const AjPSeq ajpSeqDown,
 			      const AjPSeq ajpSeqAcross,
 			      AjPList ajpListGotohCellsMaxScoringTrace);

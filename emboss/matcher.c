@@ -254,7 +254,7 @@ AjPSeqCvt cvt = NULL;
 
 static void  matcher_Sim(AjPAlign align,
 			const char A[], const char B[],
-			 AjPSeq seq1, AjPSeq seq2, ajint K,
+			 const AjPSeq seq1, const AjPSeq seq2, ajint K,
 			ajint Q, ajint R, ajint beg, ajint beg2, ajint nseq);
 static ajint matcher_BigPass(const char A[], const char B[],
 			     ajint M, ajint N, ajint K,
@@ -362,8 +362,8 @@ int main(int argc, char **argv)
 ** @param [u] align [AjPAlign] Alignment object
 ** @param [r] A [const char*] Sequence A with trailing blank
 ** @param [r] B [const char*] Sequence B with trailing blank
-** @param [r] seq0 [AjPSeq] Sequence A
-** @param [r] seq1 [AjPSeq] Sequence B
+** @param [r] seq0 [const AjPSeq] Sequence A
+** @param [r] seq1 [const AjPSeq] Sequence B
 ** @param [r] K [ajint] Number of best alignments to report
 ** @param [r] Q [ajint] Gap penalty (minus extension penalty)
 ** @param [r] R [ajint] Gap extension penalty
@@ -375,7 +375,7 @@ int main(int argc, char **argv)
 
 static void matcher_Sim(AjPAlign align,
 			const char *A,const char *B,
-			AjPSeq seq0, AjPSeq seq1,ajint K,ajint Q,
+			const AjPSeq seq0, const AjPSeq seq1,ajint K,ajint Q,
 			ajint R, ajint beg0, ajint beg1, ajint nseq)
 {
     ajint endi;
@@ -634,7 +634,7 @@ static ajint matcher_NoCross(ajint numnode)
 ** @param [r] N [ajint] Undocumented
 ** @param [r] K [ajint] Undocumented
 ** @param [r] nseq [ajint] Number of sequences
-** @param [r] numnode [ajint*] Number of alignments in list
+** @param [w] numnode [ajint*] Number of alignments in list
 ** @return [ajint] Undocumented
 ******************************************************************************/
 
@@ -1048,7 +1048,7 @@ static ajint matcher_Locate(const char *A,const char *B,ajint nseq,
 ** @param [r] B [const char*] Undocumented
 ** @param [r] count [ajint] Undocumented
 ** @param [r] nseq [ajint] Number of sequences
-** @param [r] numnode [ajint*] Number of alignments in list
+** @param [w] numnode [ajint*] Number of alignments in list
 ** @return [ajint] Undocumented
 ******************************************************************************/
 
@@ -1156,7 +1156,7 @@ static ajint matcher_SmallPass(const char *A,const char *B,
 
 /* @funcstatic matcher_Addnode ************************************************
 **
-** Undocumented
+** Add a node
 **
 ** @param [r] c [ajint] Undocumented
 ** @param [r] ci [ajint] Undocumented
@@ -1165,7 +1165,7 @@ static ajint matcher_SmallPass(const char *A,const char *B,
 ** @param [r] j [ajint] Undocumented
 ** @param [r] K [ajint] Undocumented
 ** @param [r] cost [ajint] Undocumented
-** @param [r] numnode [ajint*] Undocumented
+** @param [w] numnode [ajint*] NUmber of nodes (updated)
 ** @return [ajint] Undocumented
 ******************************************************************************/
 
@@ -1245,10 +1245,10 @@ static ajint matcher_Addnode(ajint c, ajint ci, ajint cj, ajint i, ajint j,
 
 /* @funcstatic matcher_Findmax ************************************************
 **
-** Undocumented
+** Find maximum node
 **
-** @param [r] numnode [ajint*] Undocumented
-** @return [vertexptr] Undocumented
+** @param [u] numnode [ajint*] Maximum node number
+** @return [vertexptr] Maximum node
 ******************************************************************************/
 
 static vertexptr matcher_Findmax(ajint *numnode)
@@ -1501,21 +1501,21 @@ static ajint matcher_Diff(const char *A,const char *B,
 
 /* @funcstatic matcher_Calcons ************************************************
 **
-** Undocumented
+** Calculate a consensus sequence
 **
 ** @param [r] aa0 [const char*] Undocumented
-** @param [r] seqc0 [const char*] Sequence A alignment output
+** @param [w] seqc0 [char*] Sequence A alignment output
 ** @param [r] n0 [ajint] Undocumented
 ** @param [r] aa1 [const char*] Undocumented
-** @param [r] seqc1 [const char*] Sequence B alignment output
+** @param [w] seqc1 [char*] Sequence B alignment output
 ** @param [r] n1 [ajint] Undocumented
 ** @param [r] res [const ajint*] Undocumented
-** @param [w] min0 [ajint] Undocumented
-** @param [w] min1 [ajint] Undocumented
-** @param [w] max0 [ajint] Undocumented
-** @param [w] max1 [ajint] Undocumented
-** @param [w] nc [ajint*] Undocumented
-** @param [w] nident [ajint*] Undocumented
+** @param [r] min0 [ajint] Undocumented
+** @param [r] min1 [ajint] Undocumented
+** @param [r] max0 [ajint] Undocumented
+** @param [r] max1 [ajint] Undocumented
+** @param [w] nc [ajint*] Number of conserved positions
+** @param [w] nident [ajint*] Number of identical positions
 ** @return [ajint] Undocumented
 ******************************************************************************/
 

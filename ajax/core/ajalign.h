@@ -24,12 +24,9 @@ extern "C"
 ** @other AjPReport Report output
 ** @other AjPFile Input and output files
 **
-** @attr Name [AjPStr] As "Source" for features, usually empty
-** @attr Usa [AjPStr] Name built from input USA, usually empty
 ** @attr Type [AjPStr] "P" Protein or "N" Nucleotide
 ** @attr Formatstr [AjPStr] Report format (-aformat qualifier)
 ** @attr Format [AjEnum] Report format (index number)
-** @attr Extension [AjPStr] Output file extension
 ** @attr File [AjPFile] Output file object
 ** @attr Header [AjPStr] Text to add to header with newlines
 ** @attr SubHeader [AjPStr] Text to add to align subheader with newlines

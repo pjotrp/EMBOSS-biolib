@@ -41,7 +41,7 @@
 
 
 static ajint stretcher_Ealign(const char *A, const char *B,
-			      AjPSeq seq0, AjPSeq seq1, ajint G,
+			      const AjPSeq seq0, const AjPSeq seq1, ajint G,
 			      ajint H,ajint *S, ajint* NC);
 static ajint stretcher_Calcons(const char *aa0, ajint n0,
 			       const char *aa1, ajint n1,
@@ -51,7 +51,7 @@ static ajint stretcher_Align(const char *A, const char *B,
 			     ajint te);
 static ajint stretcher_CheckScore(const unsigned char *A,
 				  const unsigned char *B,
-				  AjPSeq seq0, AjPSeq seq1,
+				  const AjPSeq seq0, const AjPSeq seq1,
 				  ajint *S,ajint *NC);
 
 static ajint *sapp;				/* Current script append ptr */
@@ -297,8 +297,8 @@ static ajint nmax=0;
 **
 ** @param [r] A [const char*] Sequence A with trailing blank
 ** @param [r] B [const char*] Sequence B with trailing blank
-** @param [r] seq0 [AjPSeq] Sequence A
-** @param [r] seq1 [AjPSeq] Sequence B
+** @param [r] seq0 [const AjPSeq] Sequence A
+** @param [r] seq1 [const AjPSeq] Sequence B
 ** @param [r] G [ajint] Gap penalty (minus extension penalty)
 ** @param [r] H [ajint] Gap extension penalty
 ** @param [w] S [ajint*] Result
@@ -307,7 +307,7 @@ static ajint nmax=0;
 ******************************************************************************/
 
 static ajint stretcher_Ealign(const char *A,const char *B,
-			      AjPSeq seq0, AjPSeq seq1, ajint G,
+			      const AjPSeq seq0, const AjPSeq seq1, ajint G,
 			      ajint H,ajint *S,ajint *NC)
 {
     ajint c;
@@ -654,8 +654,8 @@ static ajint stretcher_Calcons(const char *aa0,ajint n0,
 **
 ** @param [r] A [const unsigned char*] Undocumented
 ** @param [r] B [const unsigned char*] Undocumented
-** @param [r] seq0 [AjPSeq] Sequence A
-** @param [r] seq1 [AjPSeq] Sequence B
+** @param [r] seq0 [const AjPSeq] Sequence A
+** @param [r] seq1 [const AjPSeq] Sequence B
 ** @param [w] S [ajint*] Undocumented
 ** @param [w] NC [ajint*] Alignment length returned
 ** @return [ajint] Undocumented
@@ -663,7 +663,7 @@ static ajint stretcher_Calcons(const char *aa0,ajint n0,
 
 static ajint stretcher_CheckScore(const unsigned char *A,
 				  const unsigned char *B,
-				  AjPSeq seq0, AjPSeq seq1,
+				  const AjPSeq seq0, const AjPSeq seq1,
                                   ajint *S,ajint *NC)
 {
     register ajint i;

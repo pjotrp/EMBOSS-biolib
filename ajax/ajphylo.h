@@ -188,6 +188,7 @@ typedef struct AjSPhyloState
 ** @attr BaseBifurcated [AjBool] Rooted 2-way base (a,b)
 ** @attr BaseQuartet [AjBool] Unrooted quartet ((a,b),(c,d));
 ** @attr HasLengths [AjBool] Tree has branch lengths
+** @attr Size [ajint] Number of nodes
 ** @attr Tree [AjPStr] Newick tree string
 ** @@
 ******************************************************************************/

@@ -1624,7 +1624,7 @@ AjPSeq ajSeqNewC(const char* seq, const char* name)
 ** @param [r] len [ajint] Length of the sequence string
 ** @param [r] offset [ajint] Offset at start
 ** @param [r] offend [ajint] Offset at end
-** @param [r] rev [ajBool] Reversed if true (reverses offsets)
+** @param [r] rev [AjBool] Reversed if true (reverses offsets)
 ** @return [AjPSeq] New sequence object.
 ** @@
 ******************************************************************************/
@@ -1703,7 +1703,7 @@ AjPSeq ajSeqNewRangeCI(const char* seq, ajint len,
 ** @param [r] seq [const AjPStr] Sequence string
 ** @param [r] offset [ajint] Offset at start
 ** @param [r] offend [ajint] Offset at end
-** @param [r] rev [ajBool] Reversed if true (reverses offsets)
+** @param [r] rev [AjBool] Reversed if true (reverses offsets)
 ** @return [AjPSeq] New sequence object.
 ** @@
 ******************************************************************************/
@@ -2911,7 +2911,7 @@ void ajSeqReplaceC(AjPSeq thys, const char* seq)
 **
 ** @param [u] seq [AjPSeq] Sequence object to be set.
 ** @param [r] ioff [ajint] Offset from start of original sequence
-** @param [r] iorigend [ajint] Original length, used to calculate the offset
+** @param [r] ioriglen [ajint] Original length, used to calculate the offset
 **                             from the end.
 ** @return [void]
 ** @category modify [AjPSeq] Sets the sequence offset and offend (end offset)
@@ -5778,7 +5778,7 @@ void ajSeqGapStandard(AjPSeq thys, char gapch)
 **
 ** Makes all gaps in a string use a standard gap character
 **
-** @param [w] thys [AjPSeq] Sequence object
+** @param [w] thys [AjPStr] Sequence string
 ** @param [r] gapch [char] Gap character (or '-' if zero)
 ** @return [void]
 ******************************************************************************/

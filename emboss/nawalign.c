@@ -6,8 +6,8 @@
 **
 **
 ** @author: Copyright (C) Damian Counsell
-** @version $Revision: 1.3 $
-** @modified $Date: 2004/11/25 20:22:14 $
+** @version $Revision: 1.4 $
+** @modified $Date: 2005/01/07 10:48:36 $
 ** @@
 **
 ** This program is free software; you can redistribute it and/or
@@ -98,10 +98,10 @@ int main(int argc , char **argv)
     ajpGotohCellGotohScores = embGotohCellGetArray(ajIntDownSeqLen,
 						   ajIntAcrossSeqLen);
 
-    embGotohCellCalculateSumScore(ajpFloat2dPairScores,
+    embGotohCellCalculateSumScore(ajpGotohCellGotohScores,
+				  ajpFloat2dPairScores,
 				  ajpSeqDown,
 				  ajpSeqAcross,
-				  ajpGotohCellGotohScores,
 				  fGapPenalty,
 				  fExtensionPenalty,
 				  ajBoolZeroEndPenalty);

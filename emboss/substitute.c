@@ -6,8 +6,8 @@
 **
 **
 ** @author: Copyright (C) Damian Counsell
-** @version $Revision: 1.13 $
-** @modified $Date: 2004/11/25 20:23:57 $
+** @version $Revision: 1.14 $
+** @modified $Date: 2005/01/07 10:48:36 $
 ** @@
 **
 ** This program is free software; you can redistribute it and/or
@@ -46,6 +46,9 @@ const char cDot = '.';
 #include "emboss.h"
 #include <math.h>
 
+static AjBool is_a_gap(char cTraceElement);
+
+
 /* @prog substitute **********************************************************
 ** 
 ** substitutes match residues from second of two given traces into
@@ -54,21 +57,20 @@ const char cDot = '.';
 **
 ******************************************************************************/
 
-static AjBool is_a_gap(char cTraceElement);
-
-
 int main(int argc , char **argv)
 {
     /* sequence objects and strings */
-    const AjPSeq ajpSeqTraceDown   = NULL; /* query sequence---no structure     */
-    const AjPSeq ajpSeqTraceAcross = NULL; /* template sequence---has structure */
-    AjPStr ajpStrSeqFileName       = NULL; /* name of file containing input seq */
-    AjPSeq ajpSeqSubstituted       = NULL; /* rewritable template seq           */
-    AjPSeqset ajpSeqsetPair        = NULL; /* current pair of sequences         */
-    char *pcTraceDown              = NULL; /* C string of query sequence        */
-    char *pcTraceAcross            = NULL; /* C string of template sequence     */
+    const AjPSeq ajpSeqTraceDown   = NULL; /* query sequence---no structure  */
+    const AjPSeq ajpSeqTraceAcross = NULL; /* template sequence---has
+					      structure */
+    AjPStr ajpStrSeqFileName       = NULL; /* name of file containing
+					      input seq */
+    AjPSeq ajpSeqSubstituted       = NULL; /* rewritable template seq        */
+    AjPSeqset ajpSeqsetPair        = NULL; /* current pair of sequences      */
+    char *pcTraceDown              = NULL; /* C string of query sequence     */
+    char *pcTraceAcross            = NULL; /* C string of template sequence  */
     char *pcSubstitutedSeq         = NULL;
-    AjPSeqout ajpSeqoutSubstituted = NULL; /* substituted output seq object     */
+    AjPSeqout ajpSeqoutSubstituted = NULL; /* substituted output seq object  */
 
     /* sequence characters */
     char cTempTraceDown      = '\0';
@@ -104,7 +106,8 @@ int main(int argc , char **argv)
     
     /* if there aren't two sequences in alignment, bail */ 
     if(ajpSeqsetPair->Size != enumPair)
-	ajFatal("\nThe file %S does not contain exactly one pair of sequence traces!\n",
+	ajFatal("\nThe file %S does not contain exactly one pair of "
+		"sequence traces!\n",
 		ajpSeqsetPair->Filename);
 
     /* read seqset into seqs */
@@ -139,7 +142,7 @@ int main(int argc , char **argv)
 	     * if the next character is not a number
 	     * append a zero otherwise keep same digit
 	     */
-	    if(!isdigit(cQuerySeqName))
+	    if(!isdigit((ajint)cQuerySeqName))
 		cQuerySeqName = '0';
 	}
 	/* if there is no dot, use the whole sequence name */
@@ -170,7 +173,7 @@ int main(int argc , char **argv)
 	     * if the next character is not a number
 	     * append a zero otherwise keep same digit
 	     */
-	    if(!isdigit(cTemplateSeqName))
+	    if(!isdigit((ajint)cTemplateSeqName))
 		cTemplateSeqName = '0';
 	}
 	/* if there is no dot, use the whole sequence name */
@@ -212,7 +215,8 @@ int main(int argc , char **argv)
 	if(enumDebugLevel > 1)
 	{
 	    ajFmtPrint("BEFORE trace count: %d\t", ajIntTraceCount);
-	    ajFmtPrint("BEFORE sequence count: %d\t\n", ajIntSubstitutedSeqCount);
+	    ajFmtPrint("BEFORE sequence count: %d\t\n",
+		       ajIntSubstitutedSeqCount);
 	    ajFmtPrint("BEFORE down (query): %c\t", cTempTraceDown);
 	    ajFmtPrint("BEFORE across (template): %c\t", cTempTraceAcross);
 	    ajFmtPrint("BEFORE substitute: %c\t\n\n", cTempSubstitutedSeq);
@@ -223,12 +227,12 @@ int main(int argc , char **argv)
 	cTempTraceAcross = pcTraceAcross[ajIntTraceCount];
 	    
 	/* discard gaps in template trace */
-	if(isalpha(cTempTraceAcross))
+	if(isalpha((ajint)cTempTraceAcross))
 	{
 	    /* default to keeping current template residue */
 	    cTempSubstitutedSeq = pcTraceAcross[ajIntTraceCount];
 	    /* but substitute corresponding matches or gaps from query trace */
-	    if(isalpha(cTempTraceDown) || is_a_gap(cTempTraceDown))
+	    if(isalpha((ajint)cTempTraceDown) || is_a_gap(cTempTraceDown))
 	    {
 		cTempSubstitutedSeq = pcTraceDown[ajIntTraceCount];
 	    }
@@ -245,7 +249,8 @@ int main(int argc , char **argv)
 	if(enumDebugLevel > 1)
 	{
 	    ajFmtPrint("AFTER trace count: %d\t", ajIntTraceCount);
-	    ajFmtPrint("AFTER sequence count: %d\t\n", ajIntSubstitutedSeqCount);
+	    ajFmtPrint("AFTER sequence count: %d\t\n",
+		       ajIntSubstitutedSeqCount);
 	    ajFmtPrint("AFTER down (query): %c\t", cTempTraceDown);
 	    ajFmtPrint("AFTER across (template): %c\t", cTempTraceAcross);
 	    ajFmtPrint("AFTER substitute: %c\t\n\n", cTempSubstitutedSeq);

@@ -285,11 +285,11 @@ AjPStr ajStrNewS(const AjPStr str)
 
 /* @func ajStrNull ************************************************************
 **
-** Default constructor for a NULL string when no string can be returned.
-** The null string usage pointer is not incremented.
+** Default dummy constructor for a NULL string when no string can be returned.
+** The null string usage pointer is not incremented - so this is not a
+** true constructor.
 **
 ** @return [const AjPStr] Copy of a pointer to the null string
-** @category new [AjPStr] Null string pointer
 ** @@
 ******************************************************************************/
 

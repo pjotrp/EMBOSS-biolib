@@ -650,7 +650,7 @@ AjBool embDmxScopToScophit(const AjPScop source, AjPScophit* target)
 ** corresponding Scop objects from the scop classification file.
 **
 ** @param [r] align     [const AjPScopalg]  Contains a seed alignment.
-** @param [r] scop_arr  [AjPScop const *]    Array of AjPScop objects
+** @param [r] scop_arr  [const AjPScop *]    Array of AjPScop objects
 ** @param [r] scop_dim  [ajint]       Size of array
 ** @param [w] list      [AjPList*]    List of Scop objects.
 ** 

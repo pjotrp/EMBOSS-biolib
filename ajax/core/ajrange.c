@@ -101,7 +101,7 @@ AjPRange ajRangeNewI(ajint n)
 **
 ** Default constructor for AJAX range objects.
 **
-** @param [r] src [AjPRange] Source range
+** @param [r] src [const AjPRange] Source range
 **
 ** @return [AjPRange] Pointer to a range object
 ** @category new [AjPRange] Copy constructor for range objects
@@ -735,7 +735,7 @@ AjBool ajRangeSeqExtractList(const AjPRange thys,
 ** order, the resulting sequence will not be in position order either.
 **
 ** @param [r] thys [const AjPRange] range object
-** @param [r] seq [AjPSeq] Sequence
+** @param [u] seq [AjPSeq] Sequence
 **
 ** @return [AjBool] true if sequence was modified
 ** @category use [AjPRange] Extract substrings defined by range
@@ -787,7 +787,7 @@ AjBool ajRangeSeqExtract(const AjPRange thys, AjPSeq seq)
 ** '  abc de'
 **
 ** @param [r] thys [const AjPRange] range object
-** @param [r] seq [AjPSeq] Sequence to be modified
+** @param [u] seq [AjPSeq] Sequence to be modified
 **
 ** @return [AjBool] true if sequence was modified
 ** @category use [AjPRange] The opposite of ajRangeSeqExtract

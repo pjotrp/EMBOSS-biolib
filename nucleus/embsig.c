@@ -2111,7 +2111,7 @@ AjPList embHitlistReadNodeFasta(AjPFile inf,
 				const AjPStr fam, 
 				const AjPStr sfam, 
 				const AjPStr fold, 
-				AjPStr klass)
+				const AjPStr klass)
 {
     AjPList ret = NULL;
     const AjPStr class   = NULL;
@@ -2633,14 +2633,15 @@ AjBool embHitlistWriteSubsetFasta(AjPFile outf,
 
 
 
-/* @func embHitlistWriteFasta ***********************************************
+/* @func embHitlistWriteHitFasta **********************************************
 **
-** Write contents of a Hitlist object to an output file in embl-like format
+** Write contents of one Hitlist object to an output file in embl-like format
 ** (see documentation for the DOMAINATRIX "seqsearch" application).
 ** Text for Class, Fold, Superfamily and Family is only written if the text
 ** is available.
 ** 
 ** @param [u] outf [AjPFile] Output file stream
+** @param [r] n [ajint] Number of hit
 ** @param [r] obj [const AjPHitlist] Hitlist object
 **
 ** @return [AjBool] True on success
@@ -3171,7 +3172,7 @@ AjPHitlist embSignatureHitsRead(AjPFile inf)
 ** hits are written.
 **
 ** @param [u] outf    [AjPFile]      Output file stream
-** @param [w] sig     [const AjPSignature] Signature object
+** @param [r] sig     [const AjPSignature] Signature object
 ** @param [r] hitlist [const AjPHitlist]   Hitlist objects with hits from scan
 ** @param [r] n       [ajint]        Max. no. false hits to output
 **
@@ -3343,8 +3344,8 @@ AjBool embSignatureHitsWrite(AjPFile outf, const AjPSignature sig,
 ** classification) elements depending on how the SCOP classification 
 ** records of the Hit object and target sequence in question compare.
 **
-** @param [r] hits    [AjPHitlist const *] Pointer to Hitlist object with hits
-** @param [r] targets [const AjPList]     List of AjOHitlist objects with targets
+** @param [r] hits    [const AjPHitlist*] Pointer to Hitlist object with hits
+** @param [r] targets [const AjPList]   List of AjOHitlist objects with targets
 ** @param [r] thresh  [ajint]       Minimum length (residues) of overlap 
 ** required for two hits with the same code to be counted as the same hit.
 **
@@ -3352,7 +3353,8 @@ AjBool embSignatureHitsWrite(AjPFile outf, const AjPSignature sig,
 ** @@
 ****************************************************************************/
 
-AjBool embHitlistClassify(const AjPHitlist *hits, const AjPList targets, ajint thresh)
+AjBool embHitlistClassify(const AjPHitlist *hits, const AjPList targets,
+			  ajint thresh)
 {  
     /*
     ** A list of Hitidx structures is derived from the list of AjOHitlist 

@@ -51,6 +51,7 @@
 ** @attr End [ajint*] End position for each sequence
 ** @attr Len [ajint*] Original length for each sequence
 ** @attr Offset [ajint*] Offset for numbering start of each sequence
+** @attr Offend [ajint*] Offset for numbering end of each sequence
 ** @attr SubOffset [ajint*] Offset of used subsequence within given sequence
 **                          generally for cases where SeqExternal is set
 **                          in the AjPAlign object that includes this
@@ -158,7 +159,8 @@ static void       alignWriteMarkX10(AjPAlign thys);
 static void       alignWriteMatch(AjPAlign thys);
 static void       alignWriteMsf(AjPAlign thys);
 static void       alignWriteScore(AjPAlign thys);
-static void       alignWriteSeqformat(AjPAlign thys, ajint iali, char* sqfmt);
+static void       alignWriteSeqformat(AjPAlign thys, ajint iali,
+				      const char* sqfmt);
 static void       alignWriteSrs(AjPAlign thys);
 static void       alignWriteSrsAny(AjPAlign thys,
 				   ajint imax, AjBool mark);
@@ -408,12 +410,12 @@ static void alignWriteFasta(AjPAlign thys)
 **
 ** @param [u] thys [AjPAlign] Alignment object
 ** @param [r] iali [ajint] Alignment number
-** @param [r] sqfmt [char*] Sequence output format
+** @param [r] sqfmt [const char*] Sequence output format
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void alignWriteSeqformat(AjPAlign thys, ajint iali, char* sqfmt)
+static void alignWriteSeqformat(AjPAlign thys, ajint iali, const char* sqfmt)
 {
     AlignPData* pdata = NULL;
     AlignPData data = NULL;
@@ -3186,7 +3188,7 @@ static ajint alignSeqGapEnd(const AlignPData data, ajint iseq)
 **
 ** @param [r] data [const AlignPData] Alignment data object
 ** @param [r] iseq [ajint] Sequence number
-** @return [ajint] Increment for position counting
+** @return [AjBool] ajTrue if sequence is reversed
 ******************************************************************************/
 
 static AjBool alignSeqRev(const AlignPData data, ajint iseq)
@@ -4165,7 +4167,6 @@ void ajAlignTraceT(const AjPAlign thys, const char* title)
 ** Reports an AjPAlign object to debug output
 **
 ** @param [r] thys [const AjPAlign] alignment object
-** @param [r] title [const char*] Report title
 ** @return [void]
 ******************************************************************************/
 

@@ -1,11 +1,11 @@
 /* @source degapseqrunner application
 **
-** Runs EMBOSS gap removing program on all sequence pairs in given directory and
-**  writes the resulting ungapped sequence pairs into a new directory
+** Runs EMBOSS gap removing program on all sequence pairs in given directory
+** and writes the resulting ungapped sequence pairs into a new directory
 **
 ** @author: Copyright (C) Damian Counsell
-** @version $Revision: 1.2 $
-** @modified $Date: 2004/10/14 18:55:53 $
+** @version $Revision: 1.3 $
+** @modified $Date: 2005/01/07 10:48:36 $
 ** @@
 **
 ** This program is free software; you can redistribute it and/or
@@ -32,7 +32,7 @@ enum constant
     };
 
 
-/* @prog alignrunner.c *******************************************************
+/* @prog degapseqrunner *******************************************************
 ** 
 ** run degapseq program on a directory full of sequence pairs 
 **
@@ -41,7 +41,9 @@ enum constant
 int main( int argc , char **argv )
 {
     ajint ajIntNumberOfSeqPairFiles  = 0;
-    ajint ajIntSeparatorPos          = 0;    /* where does the filename root meet its suffix */
+    ajint ajIntSeparatorPos          = 0;    /* where does the
+						filename root meet its
+						suffix */
 
     /* all unaligned input sequences in directory */
     AjPList ajpListSeqPairFiles      = NULL;
@@ -55,9 +57,12 @@ int main( int argc , char **argv )
     const char *pcCommandLine        = NULL;
     AjPStr ajpStrPathToCommand       = NULL;
     AjPStr ajpStrCommandName         = NULL;
-    AjPStr ajpStrPathToOutFile       = NULL; /*   ...from two alignment progs    */
-    AjPStr ajpStrOutFileSuffix       = NULL; /* filename extension for alignment file         */
-    AjPStr ajpStrCommandLine         = NULL; /* command line given to alignment program       */
+    AjPStr ajpStrPathToOutFile       = NULL; /*   ...from two
+						  alignment progs */
+    AjPStr ajpStrOutFileSuffix       = NULL; /* filename extension for
+						alignment file */
+    AjPStr ajpStrCommandLine         = NULL; /* command line given to
+						alignment program */
 
     const char *pcFileNameSeparator  = ".";
 
@@ -116,7 +121,8 @@ int main( int argc , char **argv )
 		    "%S/%S %S -outseq=%S/%S%S",
 		    ajpStrPathToCommand, ajpStrCommandName,
 		    ajpStrSeqPairFileName,
-		    ajpStrPathToOutFile, ajpStrSeqPairFileNameRoot, ajpStrOutFileSuffix);
+		    ajpStrPathToOutFile, ajpStrSeqPairFileNameRoot,
+		    ajpStrOutFileSuffix);
 	pcCommandLine = ajStrStr(ajpStrCommandLine);
 	system(pcCommandLine);
 	printf("\n%s", pcCommandLine);
