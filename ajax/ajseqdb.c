@@ -4016,7 +4016,6 @@ static AjBool seqAccessBlast(AjPSeqin seqin)
 	    if(!seqCdQryEntry(qry))
 	    {
 		ajDebug("BLAST Entry failed\n");
-		return ajFalse;
 	    }
 	}
 
@@ -4026,10 +4025,8 @@ static AjBool seqAccessBlast(AjPSeqin seqin)
 	    if(!seqCdQryQuery(qry))
 	    {
 		ajDebug("BLAST Query failed\n");
-		return ajFalse;
 	    }
 	}
-	AJFREE(qryd->trgLine);
     }
 
     if(ajListLength(qryd->List))

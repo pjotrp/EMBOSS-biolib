@@ -2493,7 +2493,7 @@ AcdOType acdType[] =
 	 acdAttrOutdata,   acdSetOutdata,   acdQualOutdata,
 	 AJTRUE,  &acdUseOutfile, "Formatted output file" },
     {"outdir",             "output",            acdSecOutput,
-	 acdAttrOutdir,    acdSetOutdir,    NULL,
+	 acdAttrOutdir,    acdSetOutdir,        NULL,
 	 AJTRUE,  &acdUseMisc, "Output directory" },
     {"outdiscrete",        "output",            acdSecOutput,
 	 acdAttrOutdiscrete, acdSetOutdiscrete,    acdQualOutdiscrete,
@@ -8389,6 +8389,8 @@ static void acdSetOutdir(AcdPAcd thys)
 
     thys->Value = val;
     ajStrAssS(&thys->ValStr, reply);
+
+    ajStrDel(&ext);
 
     return;
 }
