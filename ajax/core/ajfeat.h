@@ -42,8 +42,14 @@ void *        ajFeatClearTag(AjPFeature thys, AjPFeattable table,
 void          ajFeatCopy (AjPFeature* pthys, AjPFeature orig);
 void          ajFeatDel(AjPFeature *pthis) ;
 void          ajFeatExit (void);
+ajint         ajFeatGetEnd (AjPFeature thys);
+AjBool        ajFeatGetForward (AjPFeature thys);
+ajint         ajFeatGetFrame (AjPFeature thys);
 ajint         ajFeatGetLocs(AjPStr str, AjPStr **cds, char *type);
 AjBool        ajFeatGetNote (AjPFeature thys, AjPStr name, AjPStr* val);
+AjBool        ajFeatGetNoteI (AjPFeature thys, AjPStr name, ajint count,
+			      AjPStr* val);
+ajint         ajFeatGetStart (AjPFeature thys);
 AjBool        ajFeatGetTag (AjPFeature thys, AjPStr name, ajint num,
 			    AjPStr* val);
 AjPStr        ajFeatGetType (AjPFeature thys);
@@ -56,6 +62,8 @@ AjPFeature    ajFeatNew (AjPFeattable thys,
 			 AjPStr source, AjPStr type,
 			 ajint Start, ajint End,  float score,
 			 char strand, ajint frame);
+AjPFeature    ajFeatNewII (AjPFeattable thys,
+			 ajint Start, ajint End);
 AjPFeature    ajFeatNewProt (AjPFeattable thys,
 			     AjPStr source, AjPStr type,
 			     ajint Start, ajint End,  float score);

@@ -755,6 +755,51 @@ AjPFeature ajFeatNew (AjPFeattable thys,
   return ret;
 }
 
+/* @func ajFeatNewII **********************************************************
+**
+** Simple constructor with only start and end positions
+**
+** User must specify associated 'ajFeattable' to which the new feature
+** is automatically added!
+**
+** @param  [rC]   thys    [AjPFeattable] Pointer to the ajFeattable which
+**                         owns the feature
+** @param  [rNU]  Start    [ajint]  Start position of the feature
+** @param  [rNU]  End      [ajint]  End position of the feature
+** @return [AjPFeature] newly allocated feature object
+** @cre 'table' argument must be a valid ajFeattable
+** @exception 'Mem_Failed' from memory allocation
+** @@
+** Obsolete option
+** @param  [rENU] desc     [AjPStr]      desc of feature feature
+**
+** Not for constructor - rarely used - add later if needed
+** @param  [rNU]  Start2   [ajint]  2nd Start position of the feature
+** @param  [rNU]  End2     [ajint]  2nd End position of the feature
+** 
+******************************************************************************/
+
+AjPFeature ajFeatNewII (AjPFeattable thys,
+		      ajint Start, ajint End) 
+{
+  static AjPStr source = NULL;
+  static AjPStr type = NULL;
+  static float score=0.0;
+  static char strand='.';
+  static ajint frame=0;
+  static ajint flags = 0;
+
+  AjPFeature ret = NULL ; 
+
+  if (!type)
+    type = ajStrNewC("misc_feature");
+ 
+  ret = featFeatNew(thys,source,type,Start,End,score,strand,frame,
+		    0,0,0,NULL, NULL,flags);
+
+  return ret;
+}
+
 /* @func ajFeatNewProt ********************************************************
 **
 ** Constructor - must specify associated 'ajFeattable'
@@ -4221,8 +4266,29 @@ ajint ajFeatGetLocs(AjPStr str, AjPStr **cds, char *type)
 
 AjBool ajFeatGetNote (AjPFeature thys, AjPStr name, AjPStr* val) {
 
+  return ajFeatGetNoteI (thys, name, 0, val);
+
+}
+
+/* @func ajFeatGetNoteI *******************************************************
+**
+** Finds a named note tag (with a * prefix)
+**
+** @param [r] thys [AjPfeature] Feature object
+** @param [r] name [AjPStr] Tag name
+** @param [r] count [ajint] Tag count: zero for any, 1 for first, 2 for second
+** @param [r] val [AjPStr*] Tag value (if found)
+**
+** @return [AjBool] ajTrue on success (feature tag found)
+** @@
+******************************************************************************/
+
+AjBool ajFeatGetNoteI (AjPFeature thys, AjPStr name, ajint count,
+		       AjPStr* val) {
+
   AjIList iter = NULL;
   FeatPTagval    item = NULL ;
+  ajint icount=0;
 
   ajDebug("ajFeatGetNote '%S'\n", name);
   if (thys->Tags) {
@@ -4235,10 +4301,13 @@ AjBool ajFeatGetNote (AjPFeature thys, AjPStr name, AjPStr* val) {
 	if (ajStrChar(item->Value, 0) == '*') {
 	  ajDebug("  testing *name\n");
 	  if (ajStrPrefixCaseCO(ajStrStr(item->Value)+1, name)) {
-	    ajDebug("  found '%S'\n", name);
-	    ajStrAssC (val, ajStrStr(item->Value)+ajStrLen(name)+2);
-	    ajListIterFree(iter);
-	    return ajTrue;
+	    icount++;
+	    ajDebug("  found [%d] '%S'\n", icount, name);
+	    if (icount >= count) {
+	      ajStrAssC (val, ajStrStr(item->Value)+ajStrLen(name)+2);
+	      ajListIterFree(iter);
+	      return ajTrue;
+	    }
 	  }
 	}
       }
@@ -4308,6 +4377,64 @@ AjBool ajFeatGetTag (AjPFeature thys, AjPStr name, ajint num, AjPStr* val) {
 
 AjPStr ajFeatGetType (AjPFeature thys) {
   return thys->Type;
+}
+
+/* @func ajFeatGetStart ******************************************************
+**
+** Returns the start position of a feature object.
+**
+** @param [r] thys [AjPfeature] Feature object
+**
+** @return [ajint] Feature start position
+** @@
+******************************************************************************/
+
+ajint ajFeatGetStart (AjPFeature thys) {
+  return thys->Start;
+}
+
+/* @func ajFeatGetEnd ******************************************************
+**
+** Returns the end position of a feature object.
+**
+** @param [r] thys [AjPfeature] Feature object
+**
+** @return [ajint] Feature end position
+** @@
+******************************************************************************/
+
+ajint ajFeatGetEnd (AjPFeature thys) {
+  return thys->End;
+}
+
+/* @func ajFeatGetForward *****************************************************
+**
+** Returns the direction of a feature object.
+**
+** @param [r] thys [AjPfeature] Feature object
+**
+** @return [AjBool] ajTrue for a forward direction, ajFalse for reverse
+** @@
+******************************************************************************/
+
+AjBool ajFeatGetForward (AjPFeature thys) {
+  if (ajSysItoC(thys->Strand) != '-') return ajTrue;
+
+  return ajFalse;
+}
+
+/* @func ajFeatGetFrame ******************************************************
+**
+** Returns the reading frame of a feature object.
+**
+** @param [r] thys [AjPfeature] Feature object
+**
+** @return [ajint] Feature reading frame (zero for undefined)
+** @@
+******************************************************************************/
+
+ajint ajFeatGetFrame (AjPFeature thys) {
+  return thys->Frame;
 }
 
 /* @func ajFeatGetTrans *******************************************************
@@ -5085,7 +5212,7 @@ AjPStr ajFeatTagSet (AjPFeature thys, AjPStr tag, AjPStr value) {
 
 /* @func ajFeatTagAdd *********************************************************
 **
-** Sets a feature tag value, creating a new features even if one
+** Sets a feature tag value, creating a new feature tag even if one
 ** already exists.
 **
 ** @param [r] thys [AjPFeature] Feature
@@ -5104,7 +5231,7 @@ void ajFeatTagAdd (AjPFeature thys, AjPStr tag, AjPStr value) {
   static AjPStr outtag = NULL;
   char* cp;
 
-  ajDebug ("ajFeatTagSet '%S' '%S' Prot: %B\n", tag, value, thys->Protein);
+  ajDebug ("ajFeatTagAdd '%S' '%S' Prot: %B\n", tag, value, thys->Protein);
 
   featInit();
 
@@ -5117,6 +5244,7 @@ void ajFeatTagAdd (AjPFeature thys, AjPStr tag, AjPStr value) {
     featTagFmt (tmptag,  FeatTagsTableDna, &tmpfmt);
   }
 
+  ajDebug("tag: '%S' format: '%S'\n", tmptag, tmpfmt);
   ajStrAssS (&tmpval, value);
   ajStrAssS (&outtag, tmptag);
 
@@ -5819,21 +5947,33 @@ static AjPStr featTableType (AjPStr type, AjPTable table) {
 static AjPStr featTableTag (AjPStr tag, AjPTable table) {
 
   static AjPStr ret = NULL;
+  static AjPStr emptytag = NULL;
 
-  ret = (AjPStr) ajTableKey (table, tag);
-  if (ret) {
-    /*
+  if (!emptytag)
+    emptytag = ajStrNewC("");
+
+  if (tag) {
+    ret = (AjPStr) ajTableKey (table, tag);
+    if (ret) {
+    
       ajDebug ("featTag '%S' found in internal table as '%S'\n",
+	       tag, ret);
+    
+      return ret;
+    }
+    else  {
+      ret = (AjPStr) ajTableGet (table, emptytag);
+      ajDebug ("featTag '%S' not in internal table %x, default to '%S'\n",
+	       tag, table, ret);
+      /* ajStrTableTrace (table); */
+    }
+  }
+  else {
+    ret = (AjPStr) ajTableGet (table, emptytag);
+    ajDebug ("featTag '%S' use default '%S'\n",
 	     tag, ret);
-    */
-    return ret;
   }
-  else  {
-    ret = (AjPStr) ajTableGet (table, ajStrNew());
-    ajDebug ("featTag '%S' not in internal table %x, default to '%S'\n",
-	     tag, table, ret);
-    /* ajStrTableTrace (table); */
-  }
+
   return ret;
 }
 
@@ -7441,6 +7581,7 @@ static AjPFeattable featTableNew (void) {
 
   return ret;
 }
+
 /* @funcstatic featTableNewS **************************************************
 **
 ** Constructor for a feature table object with a defined name
