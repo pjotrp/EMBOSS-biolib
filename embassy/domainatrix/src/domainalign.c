@@ -1068,8 +1068,7 @@ static void domainalign_tcoffee(AjPDomain domain,
        
        '-outfile' is the clustal format alignment output file */
 
-    ajFmtPrintS(&exec,"t_coffee -in %S -outfile=%S sap_pair", pdbnames, alignc);
-
+    ajFmtPrintS(&exec,"t_coffee -in %S sap_pair > %S", pdbnames, in);
     ajFmtPrint("%S\n", exec);
     system(ajStrStr(exec));  
 
@@ -1128,11 +1127,11 @@ static void domainalign_ProcessTcoffeeFile(AjPStr in, AjPStr align,
     if((domain->Type == ajSCOP))
     {
 	ajFmtPrintF(outf,"# TY   SCOP\n# XX\n");
-	ajFmtPrintF(outf,"CL   %S",domain->Scop->Class);
-	ajFmtPrintSplit(outf,domain->Scop->Fold,"\nXX\nFO   ",75," \t\n\r");
-	ajFmtPrintSplit(outf,domain->Scop->Superfamily,"XX\nSF   ",75," \t\n\r");
-	ajFmtPrintSplit(outf,domain->Scop->Family,"XX\nFA   ",75," \t\n\r");
-	ajFmtPrintF(outf,"XX\n");
+	ajFmtPrintF(outf,"# CL   %S",domain->Scop->Class);
+	ajFmtPrintSplit(outf,domain->Scop->Fold,"\n# XX\n# FO   ",75," \t\n\r");
+	ajFmtPrintSplit(outf,domain->Scop->Superfamily,"# XX\n# SF   ",75," \t\n\r");
+	ajFmtPrintSplit(outf,domain->Scop->Family,"# XX\n# FA   ",75," \t\n\r");
+	ajFmtPrintF(outf,"# XX\n");
     }
     else
     {
@@ -1147,30 +1146,30 @@ static void domainalign_ProcessTcoffeeFile(AjPStr in, AjPStr align,
     if((domain->Type == ajSCOP))
     {
 	if(noden==1) 
-	    ajFmtPrintF(outf,"# SI   %d\n# XX",domain->Scop->Sunid_Class);
+	    ajFmtPrintF(outf,"# SI   %d\n# XX\n",domain->Scop->Sunid_Class);
 	else if(noden==2)
-	    ajFmtPrintF(outf,"# SI   %d\n# XX",domain->Scop->Sunid_Fold);
+	    ajFmtPrintF(outf,"# SI   %d\n# XX\n",domain->Scop->Sunid_Fold);
 	else if(noden==3)
-	    ajFmtPrintF(outf,"# SI   %d\n# XX",domain->Scop->Sunid_Superfamily);
+	    ajFmtPrintF(outf,"# SI   %d\n# XX\n",domain->Scop->Sunid_Superfamily);
 	else if(noden==4) 	
-	    ajFmtPrintF(outf,"# SI   %d\n# XX", domain->Scop->Sunid_Family);
+	    ajFmtPrintF(outf,"# SI   %d\n# XX\n", domain->Scop->Sunid_Family);
 	else
 	    ajFatal("Node number error in domainalign_ProcessStampFile");
     }	
     else
     {
-	if(noden==5) 
-	    ajFmtPrintF(outf,"# SI   %d\n# XX", domain->Cath->Class_Id);
-	else if(noden==6)
-	    ajFmtPrintF(outf,"# SI   %d\n# XX", domain->Cath->Arch_Id);
-	else if(noden==7)
-	    ajFmtPrintF(outf,"# SI   %d\n# XX",domain->Cath->Topology_Id);
-	else if(noden==8)
-	    ajFmtPrintF(outf,"# SI   %d\n# XX",domain->Cath->Superfamily_Id);
-	else if(noden==9)  
-	    ajFmtPrintF(outf,"# SI   %d\n# XX",domain->Cath->Family_Id);
-	else
-	    ajFatal("Node number error in domainalign_ProcessStampFile");
+	    if(noden==5) 
+		ajFmtPrintF(outf,"# SI   %d\n# XX\n", domain->Cath->Class_Id);
+	    else if(noden==6)
+		ajFmtPrintF(outf,"# SI   %d\n# XX\n", domain->Cath->Arch_Id);
+	    else if(noden==7)
+		ajFmtPrintF(outf,"# SI   %d\n# XX\n",domain->Cath->Topology_Id);
+	    else if(noden==8)
+		ajFmtPrintF(outf,"# SI   %d\n# XX\n",domain->Cath->Superfamily_Id);
+	    else if(noden==9)  
+		ajFmtPrintF(outf,"# SI   %d\n# XX\n",domain->Cath->Family_Id);
+	    else
+		ajFatal("Node number error in domainalign_ProcessStampFile");
     }   
 
 
@@ -1192,7 +1191,8 @@ static void domainalign_ProcessTcoffeeFile(AjPStr in, AjPStr align,
        /* Print the number line out as it is */
             else if(ajStrPrefixC(line,"CLUSTAL"))
               continue;
-            
+	    else if(ajStrPrefixC(line," "))
+                ajFmtPrintF(outf,"\n");
         /* write out a block of protein sequences */
         else
         {
