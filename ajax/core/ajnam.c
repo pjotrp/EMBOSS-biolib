@@ -2208,6 +2208,7 @@ static AjBool namValidDatabase(NamPEntry entry)
   ajint j;
   ajint k;
   AjBool ok;
+  AjBool oktype;
   AjPStr* attrs;
   AjBool hasformat=ajFalse;
   AjBool hasmethod=ajFalse;
@@ -2215,8 +2216,8 @@ static AjBool namValidDatabase(NamPEntry entry)
 
   attrs = entry->data;
   if (!attrs)
-  {				/* test: dbempty.rc */
-    namError ("Database '%S' has no attributes", entry->name);
+  {				/* fatal - should be set for all databases */
+    namError ("Database '%S' has no list of valid attributes", entry->name);
     return ajFalse;
   }
 
@@ -2241,19 +2242,24 @@ static AjBool namValidDatabase(NamPEntry entry)
       if (ajStrPrefixCC(namDbAttrs[j].Name, "type"))
       {
 	hastype=ajTrue;
-	ok = ajFalse;
+	oktype = ajFalse;
 	for (k=0; namDbTypes[k].Name; k++)
 	{
 	  if (ajStrMatchCaseC(attrs[j], namDbTypes[k].Name)) 
-	    ok = ajTrue;
+	    oktype = ajTrue;
 	}
-	if (!ok)		/* test: dbunknowns.rc */
+	if (!oktype)		/* test: dbunknowns.rc */
 	  namError ("Database '%S' %s: '%S' unknown\n",
 		    entry->name, namDbAttrs[j].Name, attrs[j]);
       }
     }
   }
   ok = ajTrue;
+  if (!iattr)
+  {				/* test: dbempty.rc */
+    namError ("Database '%S' has no attributes", entry->name);
+    ok = ajFalse;
+  }
   if (!hasformat)		/* test: dbempty.rc */
   {
     namError ("Database '%S' has no format definition", entry->name);
@@ -2287,11 +2293,12 @@ static AjBool namValidResource (NamPEntry entry)
   ajint j;
   AjPStr* attrs;
   AjBool hastype=ajFalse;
+  AjBool ok;
 
   attrs = entry->data;
   if (!attrs)
-  {				/* test: rsempty.rc */
-    namError ("Resource '%S' has no attributes", entry->name);
+  {				/* fatal - should be set for all databases */
+    namError ("Resource '%S' has no list of valid attributes", entry->name);
     return ajFalse;
   }
 
@@ -2303,7 +2310,13 @@ static AjBool namValidResource (NamPEntry entry)
 	hastype=ajTrue;
     }
   }
-  return ajTrue;
+  ok = ajTrue;
+  if (!iattr)
+  {				/* test: dbempty.rc */
+    namError ("Resource '%S' has no attributes", entry->name);
+    ok =  ajFalse;
+  }
+  return ok;
 }
 
 /* @funcstatic namValidVariable ***********************************************
