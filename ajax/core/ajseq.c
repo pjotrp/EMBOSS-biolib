@@ -2008,6 +2008,7 @@ void ajSeqDel(AjPSeq* pthis)
     ajStrDel(&thys->Entryname);
     ajStrDel(&thys->TextPtr);
     ajStrDel(&thys->Seq);
+    AJFREE(thys->Accuracy);
 
     if(thys->Fttable)
 	ajFeattableDel(&thys->Fttable);
@@ -2293,6 +2294,8 @@ void ajSeqClear(AjPSeq thys)
     ajStrClear(&thys->Entryname);
     ajStrClear(&thys->TextPtr);
     ajStrClear(&thys->Seq);
+
+    AJFREE(thys->Accuracy);
 
     thys->Begin = 0;
     thys->End   = 0;

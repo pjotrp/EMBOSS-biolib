@@ -502,6 +502,7 @@ typedef struct AjSSeqin {
 ** @attr Fttable [AjPFeattable] Feature table
 ** @attr Selexdata [AjPSelexdata] Selex data
 ** @attr Stock [AjPStockholmdata] Stockholm data
+** @attr Accuracy [ajint*] Accuracy values (one per base) from base calling
 **
 ** @new ajSeqNew Default constructor
 ** @new ajSeqNewL Constructor with expected maximum size.
@@ -586,6 +587,7 @@ typedef struct AjSSeq {
   AjPFeattable Fttable;
   AjPSelexdata Selexdata;
   AjPStockholmdata Stock;
+  ajint* Accuracy;
 } AjOSeq;
 
 #define AjPSeq AjOSeq*
