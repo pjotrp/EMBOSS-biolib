@@ -406,15 +406,15 @@ significant impact on gene silencing.
 #define NOT_WANTED -100
 
 static void sirna_report(AjPReport report, AjPSeq seq,
-	AjBool poliii, AjBool aa, AjBool tt, AjBool polybase, 
+	AjBool poliii, AjBool aa, AjBool tt, AjBool polybase, AjBool context,
 	AjPSeqout seqout);
 static ajint sirna_begin (AjPSeq seq, AjPReport report, AjBool poliii,
-	AjBool aa, AjBool tt, AjBool polybase);
+	AjBool aa, AjBool tt, AjBool polybase, AjBool context);
 static void sirna_new_value (AjPList list, ajint pos, ajint score, 
 	ajint GCcount);
 static int sirna_compare_score (const void* v1, const void* v2);
 static void sirna_output (AjPList list, AjPFeattable TabRpt, AjPSeq seq,
-	AjPSeqout seqout);
+	AjBool context, AjPSeqout seqout);
 
 /* structure for position, score and GC count at the start of a window */
 typedef struct SValue
@@ -439,6 +439,7 @@ int main(int argc, char **argv)
     AjBool aa;
     AjBool tt;
     AjBool polybase;
+    AjBool context;
     AjPSeqout seqout;
     
     AjPSeq seq=NULL;
@@ -452,12 +453,13 @@ int main(int argc, char **argv)
     aa        = ajAcdGetBool("aa");
     tt        = ajAcdGetBool("tt");
     polybase  = ajAcdGetBool("polybase");
+    context   = ajAcdGetBool("context");
     report    = ajAcdGetReport("outfile");
     seqout    = ajAcdGetSeqoutall ("outseq");
 
     while(ajSeqallNext(seqall, &seq))
     {
-	sirna_report (report, seq, poliii, aa, tt, polybase, seqout);
+	sirna_report (report, seq, poliii, aa, tt, polybase, context, seqout);
     }
 
     ajSeqDel(&seq);
@@ -482,6 +484,7 @@ int main(int argc, char **argv)
 ** @param [r] aa [AjBool] True if want AA at start of region
 ** @param [r] tt [AjBool] True if want TT at end of region
 ** @param [r] polybase [AjBool] True if we allow 4-mers of any base
+** @param [r] context [AjBool] True if we wish to show the 2 bases before the probe region
 ** @param [r] seqout [AjPSeqout] Ouput sequence object
 ** @return [void] 
 ** @@
@@ -489,7 +492,7 @@ int main(int argc, char **argv)
 
 
 static void sirna_report(AjPReport report, AjPSeq seq,
-	AjBool poliii, AjBool aa, AjBool tt, AjBool polybase, 
+	AjBool poliii, AjBool aa, AjBool tt, AjBool polybase, AjBool context,
 	AjPSeqout seqout)
 {
 
@@ -545,7 +548,7 @@ static void sirna_report(AjPReport report, AjPSeq seq,
     TabRpt = ajFeattableNewSeq(seq);
 
 /* get start of CDS region */
-    CDS_begin = sirna_begin(seq, report, poliii, aa, tt, polybase);
+    CDS_begin = sirna_begin(seq, report, poliii, aa, tt, polybase, context);
 
 /* want to get CDS region from feature table */
 /* if no feature table for this sequence, then find longest ORF */
@@ -750,7 +753,7 @@ static void sirna_report(AjPReport report, AjPSeq seq,
     ajListSort(scorelist, sirna_compare_score);
 
 /* now pop off the positive scores and write them to the report object */
-    sirna_output(scorelist, TabRpt, seq, seqout);
+    sirna_output(scorelist, TabRpt, seq, context, seqout);
     ajReportWrite(report, TabRpt, seq);
     ajSeqWriteClose (seqout);
 
@@ -775,11 +778,12 @@ static void sirna_report(AjPReport report, AjPSeq seq,
 ** @param [r] aa [AjBool] True if want AA at start of region
 ** @param [r] tt [AjBool] True if want TT at end of region
 ** @param [r] polybase [AjBool] True if we allow 4-mers of any base
+** @param [r] context [AjBool] True if we wish to show the 2 bases before the probe region
 ** @return [ajint] start of CDS region (using positions starting from 0)
 ** @@
 ******************************************************************************/
 static ajint sirna_begin (AjPSeq seq, AjPReport report, AjBool poliii,
-	AjBool aa, AjBool tt, AjBool polybase)
+	AjBool aa, AjBool tt, AjBool polybase, AjBool context)
 {
   AjPFeattable featab=NULL;	/* input sequence feature table */
   ajint begin=0;
@@ -812,6 +816,9 @@ static ajint sirna_begin (AjPSeq seq, AjPReport report, AjBool poliii,
   if (!polybase) {
     ajStrAppC(&head, "Selecting only siRNA regions with no 4-mers of any base\n");
   } 
+  if (context) {
+    ajStrAppC(&head, "The forward sense sequence shows the first 2 bases of\nthe 23 base region in brackets, this should be ignored\nwhen ordering siRNA probes.\n");
+  }
  
 /* are there any features - find the first CDS feature */
   if (featab && featab->Features) {
@@ -931,12 +938,13 @@ static int sirna_compare_score (const void* v1, const void* v2) {
 ** @param [r] list [AjPList] list of PValue structures
 ** @param [U] TabRpt [AjPFeattable] feature table 
 ** @param [r] seq [AjPSeq] Sequence
+** @param [r] context [AjBool] True if we wish to show the 2 bases before the probe region
 ** @param [r] seqout [AjPSeqout] Ouput sequence object
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void sirna_output (AjPList list, AjPFeattable TabRpt, AjPSeq seq,
+static void sirna_output (AjPList list, AjPFeattable TabRpt, AjPSeq seq, AjBool context,
 			  AjPSeqout seqout) {
 
   AjIList iter;
@@ -949,7 +957,6 @@ static void sirna_output (AjPList list, AjPFeattable TabRpt, AjPSeq seq,
   AjPStr name = ajStrNew();	/* new name of the 23 base sequence */
   AjPStr desc = ajStrNew();	/* new description of 23 base sequence */
   AjPSeq seq23 = NULL;
-  
 
    /* if no hits then ignore much of this routine */
   if (ajListLength(list)) {
@@ -964,7 +971,13 @@ static void sirna_output (AjPList list, AjPFeattable TabRpt, AjPSeq seq,
 	ajFeatTagAdd(gf,  NULL, tmpStr);
 
 /* get the sequences to order */
-        ajStrAssSub(&subseq, ajSeqStr(seq), value->pos+2, value->pos+20);
+	if (context) {
+            /* get the first two characters of the sequence before the siRNA probe region */
+	    ajStrAssC(&subseq, "(");
+	    ajStrAppSub(&subseq, ajSeqStr(seq), value->pos, value->pos+1);
+	    ajStrAppC(&subseq, ")");
+	}
+        ajStrAppSub(&subseq, ajSeqStr(seq), value->pos+2, value->pos+20);
         ajStrToUpper(&subseq);
 	ajStrSubstituteKK(&subseq, 'T', 'U');
         ajStrAppC(&subseq, "dTdT");
@@ -1006,6 +1019,8 @@ static void sirna_output (AjPList list, AjPFeattable TabRpt, AjPSeq seq,
         ajDebug("Write seq23\n");
         ajSeqAllWrite (seqout, seq23);
 
+        /* prepare for re-use */
+        ajStrClear(&subseq);
       }
       (void) ajListIterFree(iter);
   }
