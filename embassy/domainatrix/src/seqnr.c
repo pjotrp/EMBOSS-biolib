@@ -175,12 +175,12 @@
 **  Name of validation file (output) [test.valid.out]: /test_data/scop.all
 **  Name seqnr log file (output) [seqnr.log]: /test_data/seqnr.log
 **  Processing 55074
-**  Warning: Sequence length smaller than overlap limit in embXyzScophitsOverlapAcc
-**  Warning: Sequence length smaller than overlap limit in embXyzScophitsOverlapAcc
+**  Warning: Sequence length smaller than overlap limit in embDmxScophitsOverlapAcc
+**  Warning: Sequence length smaller than overlap limit in embDmxScophitsOverlapAcc
 **  Warning: Zero length sequence in SeqNR
 **  Processing 54894
-**  Warning: Sequence length smaller than overlap limit in embXyzScophitsOverlapAcc
-**  Warning: Sequence length smaller than overlap limit in embXyzScophitsOverlapAcc
+**  Warning: Sequence length smaller than overlap limit in embDmxScophitsOverlapAcc
+**  Warning: Sequence length smaller than overlap limit in embDmxScophitsOverlapAcc
 **  Warning: Zero length sequence in SeqNR
 **  Unix % 
 **  
@@ -570,7 +570,7 @@ int main(int argc, char **argv)
     /* Error handing if Escop.dat was empty */
     if(!scop_dim)
     {
-        ajWarn("Empty list in embXyzScopalgToScop\n");
+        ajWarn("Empty list in embDmxScopalgToScop\n");
 	ajFileClose(&logf);
 	ajFileClose(&inf);
 	if(ajStrChar(*mode, 0) == '2')
@@ -635,8 +635,8 @@ int main(int argc, char **argv)
         /* Construct list of scop objects from the alignment file */
         scop_align = ajListNew();
         
-        if(!embXyzScopalgToScop(align,scop_arr,scop_dim,&scop_align))
-	    ajFatal("embXyzScopalgToScop");
+        if(!embDmxScopalgToScop(align,scop_arr,scop_dim,&scop_align))
+	    ajFatal("embDmxScopalgToScop");
 	
 	/* scop_align must be freed.
 	   scop_align points to data in scop_arr so do NOT free nodes
@@ -648,17 +648,17 @@ int main(int argc, char **argv)
 	   is freed seperately.
 	   Convert this list to a list of Scophit objects.
 	   Must pop famin_hits and free the nodes that are allocated by 
-	   embXyzHitlistToScophits  	 */
+	   embDmxHitlistToScophits  	 */
 
         ajListPushApp(famin_list,famin);
-        embXyzHitlistToScophits(famin_list,&famin_hits);
+        embDmxHitlistToScophits(famin_list,&famin_hits);
 
 
         /* Add the scop objects from the alignment file to the main list */
         while(ajListPop(scop_align,(void **)&tmp_scop))
         {
             align_hit = ajDmxScophitNew(); 
-            embXyzScopToScophit(tmp_scop,&align_hit);
+            embDmxScopToScophit(tmp_scop,&align_hit);
 
 	    if(ajStrMatchC(align_hit->Acc, "Not_available"))
 		ajFmtPrintF(logf, "No swissprot sequence for domain %S from alignment "
@@ -701,7 +701,7 @@ int main(int argc, char **argv)
 	   will have been processed by seqsort.
 
 	   Accession number and start/end point will not be available 
-	   for some alignment sequences - embXyzScophitsOverlapAcc will
+	   for some alignment sequences - embDmxScophitsOverlapAcc will
 	   return ajFalse for these.
 
 	   */
@@ -740,7 +740,7 @@ int main(int argc, char **argv)
 		       hit2->Acc, hit2->Typeobj);  */
 	    
 	    
-	    if(embXyzScophitsOverlapAcc(hit1,hit2,overlap))
+	    if(embDmxScophitsOverlapAcc(hit1,hit2,overlap))
 	    {
 		/*target the hit that is not a SEED  */
 		isseed1 = ajStrMatchC(hit1->Typeobj, "SEED");
@@ -829,7 +829,7 @@ int main(int argc, char **argv)
 
         /* Remove the redundancy from the sequence set */
 /*JISON*/        keep        = ajIntNew();
-        embXyzSeqNR(famin_seqs, &keep, &nsetnr, matrix, gapopen, gapextend, thresh);
+        embDmxSeqNR(famin_seqs, &keep, &nsetnr, matrix, gapopen, gapextend, thresh);
 
         /* clean up famin_seqs */
         iter=ajListIter(famin_seqs);
@@ -908,7 +908,7 @@ int main(int argc, char **argv)
 	   This corresponds to famin_hits before redundant domains and 
 	   hits targetted for removal have been removed (garbage collection).  
 	   
-	   embXyzScophitsAccToHitlist will only write hits to the Hitlist 
+	   embDmxScophitsAccToHitlist will only write hits to the Hitlist 
 	   if an accession number is given.
 	   
 	   Also, any hits that overlap with an alignment sequence with identical 
@@ -921,7 +921,7 @@ int main(int argc, char **argv)
 	   */
 
 	/* famout_valid and iter must be NULL in this context */
-        embXyzScophitsAccToHitlist(famin_hits,&famout_valid,&iter);
+        embDmxScophitsAccToHitlist(famin_hits,&famout_valid,&iter);
         ajListDel(&famin_hits);
         ajListIterFree(iter);
         iter = NULL;
@@ -941,7 +941,7 @@ int main(int argc, char **argv)
 
         /* write a hitlist of the processed scophits */
 	/* famout and iter must be NULL in this context */
-        embXyzScophitsToHitlist(famout_hits,&famout,&iter);
+        embDmxScophitsToHitlist(famout_hits,&famout,&iter);
 	/* famout must be freed */
 	
         ajListIterFree(iter);

@@ -323,10 +323,10 @@ int main(int argc, char **argv)
 		{
 		    /* Remove redundancy from list_seqs*/
 		    if(moden==1)
-			ret=embXyzSeqNR(list_seqs, &keep, &nsetnr, matrix, gapopen, 
+			ret=embDmxSeqNR(list_seqs, &keep, &nsetnr, matrix, gapopen, 
 					   gapextend,thresh);
 		    else
-			ret=embXyzSeqNRRange(list_seqs, &keep, &nsetnr, matrix, gapopen, 
+			ret=embDmxSeqNRRange(list_seqs, &keep, &nsetnr, matrix, gapopen, 
 					   gapextend,threshlow, threshup);		    
 		    if(!ret)
 		    {
@@ -338,7 +338,7 @@ int main(int argc, char **argv)
 			ajFileClose(&scop_outf);	    
 			ajStrDel(&mode[0]);
 			AJFREE(mode);
-			ajFatal("Unexpected embXyzSeqNR error");
+			ajFatal("Unexpected embDmxSeqNR error");
 		    }
 		    
 
@@ -463,10 +463,10 @@ int main(int argc, char **argv)
     {
 	/* Remove redundancy from list_seqs*/
 	if(moden==1)
-	    embXyzSeqNR(list_seqs, &keep, &nsetnr, matrix, gapopen, 
+	    embDmxSeqNR(list_seqs, &keep, &nsetnr, matrix, gapopen, 
 			   gapextend,thresh);		
 	else
-	    embXyzSeqNRRange(list_seqs, &keep, &nsetnr, matrix, gapopen, 
+	    embDmxSeqNRRange(list_seqs, &keep, &nsetnr, matrix, gapopen, 
 				gapextend,threshlow, threshup);		
 
 	/* Write file with SCOP entries that are retained*/

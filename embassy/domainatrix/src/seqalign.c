@@ -82,7 +82,7 @@
 **  
 **  Known bugs & warnings
 **  seqalign uses a temporary file in fasta reather than clustal format and
-**  passes this to clustalw (i..e embXyzScopalgWriteFasta is called).  This
+**  passes this to clustalw (i..e embDmxScopalgWriteFasta is called).  This
 **  was necessary because jalview, used for hand-editing alignments, writes
 **  out a different clustal format file than which clustalw expects, causing
 **  clustalw to fail.  scopalgwriteclustal was writing the clustalw file
@@ -443,7 +443,7 @@ int main(int argc, char **argv)
 		    ajFatal("Could not open %S for writing\n", clustinf1);
 		}
 
-		 embXyzScopalgWriteFasta(align,&outf1);  
+		 embDmxScopalgWriteFasta(align,&outf1);  
 		/* ajDmxScopalgWriteClustal(align,&outf1);   */
 		/*	    ajDmxScopalgWrite(outf1, align);  */
 		ajFileClose(&outf1);
@@ -675,7 +675,7 @@ AjBool seqalign_HitlistsWriteFasta(AjPList *list, AjPFile *outf)
     
     hitslist = ajListNew();
     
-    if(embXyzHitlistToScophits(*list,&hitslist))
+    if(embDmxHitlistToScophits(*list,&hitslist))
     {
 	iter = ajListIter(hitslist);
 	/*

@@ -527,7 +527,7 @@ int main(int argc, char **argv)
 	    ajListPushApp(listin,tmphitlist);
           
 	    /* create a list of scophits to eleminate identical hits */
-	    embXyzHitlistToScophits(listin, &listout);
+	    embDmxHitlistToScophits(listin, &listout);
           
 	    /* sort this list by accession number, then by start, then by end */
 	    ajListSort3(listout,ajDmxScophitCompAcc, ajDmxScophitCompStart, ajDmxScophitCompEnd);
@@ -562,7 +562,7 @@ int main(int argc, char **argv)
 				 (const void *) ajDmxScophitCheckTarget);
           
 	    /* recreate the hitlist for printing */
-	    embXyzScophitsToHitlist(listout,&hitlist,&iter);
+	    embDmxScophitsToHitlist(listout,&hitlist,&iter);
 	    ajListIterFree(iter);
 	    iter =  NULL;
 	    /* END NEW STUFF */

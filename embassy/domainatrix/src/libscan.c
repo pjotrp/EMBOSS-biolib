@@ -975,7 +975,7 @@ AjBool ajDmxHmmSearch(AjPSeqset db, AjPStr hmmfile, AjPList targetlist, AjPStr f
     /* convert the hitlist to scophits so the related hits can be targetted for removal
        in order to calculate an unbiased distribution */
     ajListPushApp(tmplist,hitlist);
-    embXyzHitlistToScophits(tmplist,&scophits);
+    embDmxHitlistToScophits(tmplist,&scophits);
     
 
     /* target for removal hits that have a "TRUE" or "CROSS" classification */
@@ -1031,7 +1031,7 @@ AjBool ajDmxHmmSearch(AjPSeqset db, AjPStr hmmfile, AjPList targetlist, AjPStr f
        scores will have low p-values and low scores will have high (less significant) 
        p-values */
     
-    if(embXyzHitsWrite(outf,sechitlist,maxhits))
+    if(embDmxHitsWrite(outf,sechitlist,maxhits))
         ajFmtPrint("Hits file written ok\n");
     else
         ajFmtPrint("Program crashed!, Check embHitsWrite\n");
@@ -1313,7 +1313,7 @@ AjBool ajDmxProfileSearch(AjPSeqset db, AjPStr profile, float gapopen, float gap
     /* convert the hitlist to scophits so the related hits can be targetted for removal
        in order to calculate an unbiased distribution */
     ajListPushApp(tmplist,hitlist);
-    embXyzHitlistToScophits(tmplist,&scophits);
+    embDmxHitlistToScophits(tmplist,&scophits);
     
 
     /* target for removal hits that have a "TRUE" or "CROSS" classification */
@@ -1366,10 +1366,10 @@ AjBool ajDmxProfileSearch(AjPSeqset db, AjPStr profile, float gapopen, float gap
       thing. Also the subsequent p-value calculations will reflect this i.e. high 
       scores will have low p-values and low scores will have high (less significant) 
       p-values*/
-    if(embXyzHitsWrite(outf,sechitlist,maxhits))
+    if(embDmxHitsWrite(outf,sechitlist,maxhits))
         ajFmtPrint("Hits file written ok\n");
     else
-        ajFmtPrint("Program crashed!, Check embXyzHitsWrite\n");
+        ajFmtPrint("Program crashed!, Check embDmxHitsWrite\n");
 
 
 
@@ -1586,7 +1586,7 @@ AjBool ajDmxSignatureSearch(AjPSeqset db, AjPStr sigfile, AjPMatrixf sub, float 
     /* convert the hitlist to scophits so the related hits can be targetted for removal
        in order to calculate an unbiased distribution */
     ajListPushApp(tmplist,hitlist);
-    embXyzHitlistToScophits(tmplist,&scophits);
+    embDmxHitlistToScophits(tmplist,&scophits);
     
 
     /* target for removal hits that have a "TRUE" or "CROSS" classification */
@@ -1643,10 +1643,10 @@ AjBool ajDmxSignatureSearch(AjPSeqset db, AjPStr sigfile, AjPMatrixf sub, float 
       thing. Also the subsequent p-value calculations will reflect this i.e. high 
       scores will have low p-values and low scores will have high (less significant) 
       p-values*/
-    if(embXyzHitsWrite(outf,sechitlist,maxhits))
+    if(embDmxHitsWrite(outf,sechitlist,maxhits))
         ajFmtPrint("Hits file written ok\n");
     else
-        ajFmtPrint("Program crashed!, Check embXyzHitsWrite\n");
+        ajFmtPrint("Program crashed!, Check embDmxHitsWrite\n");
 
 
     /* push on to the merge list the SCOPHITS  with the p-values calculated */
@@ -3386,17 +3386,17 @@ AjBool ajDmxCombineScophitsPvalues(ajint mode, AjPStr outpath, AjPStr outextn, A
 	    if(((mode==1) && (ajStrMatch(hit->Acc, nexthit->Acc)))  ||
 	       ((mode==2) && (hit->Sunid_Family==nexthit->Sunid_Family)))
 	    {
-		if(embXyzScophitsOverlap(mrghit,nexthit,overlap))
+		if(embDmxScophitsOverlap(mrghit,nexthit,overlap))
 		{
 		    /* Check again to prevent any merging of non-overlapping hits which 
 		       might cause crashes or unpredictable behaviour, e.g. where hit1 
 		       & hit2 do not overlap but hit2 & hit3 do, mrghit still pointing 
 		       to hit1 */
-		    if(embXyzScophitsOverlap(mrghit,nexthit,overlap))
+		    if(embDmxScophitsOverlap(mrghit,nexthit,overlap))
 		    {
 			tmphit = mrghit;
 		       
-			mrghit = embXyzScophitMerge(mrghit,nexthit); 
+			mrghit = embDmxScophitMerge(mrghit,nexthit); 
 			
 			nmod++;		           /* This must be reset to 0 */
 			productP *= nexthit->Pval; /* This must be reset to 0 */
@@ -3514,7 +3514,7 @@ AjBool ajDmxCombineScophitsPvalues(ajint mode, AjPStr outpath, AjPStr outextn, A
 		tmpiter   =NULL;
 
 		/* tmpiter is freed in the function, tmphitlist must be freed here */
-		embXyzScophitsToHitlist(tmplist, &tmphitlist, &tmpiter);
+		embDmxScophitsToHitlist(tmplist, &tmphitlist, &tmpiter);
 		/* CORRECTION tmpiter is *not* freed in the function */
 		/* CORRECTION */  ajListIterFree(tmpiter);
 		
@@ -3522,7 +3522,7 @@ AjBool ajDmxCombineScophitsPvalues(ajint mode, AjPStr outpath, AjPStr outextn, A
 	     
 		embHitlistClassify(&tmphitlist,targetlist,overlap);
 
-		embXyzHitsWrite(outf, tmphitlist,maxhits);
+		embDmxHitsWrite(outf, tmphitlist,maxhits);
 		embHitlistDel(&tmphitlist);
 	    }
 
@@ -3640,14 +3640,14 @@ AjBool ajDmxCombineScophitsPvalues(ajint mode, AjPStr outpath, AjPStr outextn, A
 	tmphitlist=NULL;
 	tmpiter   =NULL;
 	/* tmpiter is freed in the function, tmphitlist must be freed here */
-	embXyzScophitsToHitlist(tmplist, &tmphitlist, &tmpiter);
+	embDmxScophitsToHitlist(tmplist, &tmphitlist, &tmpiter);
 /* CORRECTION tmpiter is not freed in the function */
 /* CORRECTION */ 		ajListIterFree(tmpiter);	
 	tmpiter=NULL;
 	     
 	embHitlistClassify(&tmphitlist,targetlist,overlap);
 
-	embXyzHitsWrite(outf, tmphitlist, maxhits);
+	embDmxHitsWrite(outf, tmphitlist, maxhits);
 	embHitlistDel(&tmphitlist);
     }
     else

@@ -137,9 +137,9 @@
 **  number of overlapping residues required for merging of two hits [10]: 20
 **  Name of scop families file (output) [seqsort.fam]: /data/structure/test_data/scop.fam
 **  Name of ambiguities file (output) [seqsort.oth]: /data/structure/test_data/scop.oth
-**  Warning: Empty list in embXyzScophitsToHitlist
-**  Warning: Empty list in embXyzScophitsToHitlist
-**  Warning: Empty list in embXyzScophitsToHitlist
+**  Warning: Empty list in embDmxScophitsToHitlist
+**  Warning: Empty list in embDmxScophitsToHitlist
+**  Warning: Empty list in embDmxScophitsToHitlist
 **  Unix % 
 **  
 **  All scop hits file with the file extension .hits in directory 
@@ -726,7 +726,7 @@ static AjBool seqsort_PsiblastHitSort(AjPList* famlist, AjPList* supfamlist,
 
     /* Convert the hitslist to a single list of Scophit structures 
        (families list)*/
-    embXyzHitlistToScophits(hitslist,famlist);
+    embDmxHitlistToScophits(hitslist,famlist);
 
 
     
@@ -788,7 +788,7 @@ static AjBool seqsort_PsiblastHitSort(AjPList* famlist, AjPList* supfamlist,
 		   nexthit->Acc, nexthit->Start, nexthit->End, nexthit->Target, nexthit->Target2);
 	*/
 
-	if(embXyzScophitsOverlapAcc(hit,nexthit,sig_overlap))
+	if(embDmxScophitsOverlapAcc(hit,nexthit,sig_overlap))
 	{
 	    /* are the families identical */
 /*	    if(ajStrMatch(hit->Family,nexthit->Family)) */
@@ -799,7 +799,7 @@ static AjBool seqsort_PsiblastHitSort(AjPList* famlist, AjPList* supfamlist,
 		*/
 
 		/* Insert merged hit to the same list and target other 2 for removal */
-		embXyzScophitMergeInsertThis(*famlist,hit,nexthit,iter);
+		embDmxScophitMergeInsertThis(*famlist,hit,nexthit,iter);
 		hit = (AjPScophit)ajListIterNext(iter);
 		continue;
 	    }
@@ -895,7 +895,7 @@ static AjBool seqsort_PsiblastHitSort(AjPList* famlist, AjPList* supfamlist,
 		   nexthit->Acc, nexthit->Start, nexthit->End, nexthit->Target, nexthit->Target2);
 		   */
 
-	if(embXyzScophitsOverlapAcc(hit,nexthit,sig_overlap))
+	if(embDmxScophitsOverlapAcc(hit,nexthit,sig_overlap))
 	{
 	    /* If Target2 is set for either hit then target both
 	       for removal */
@@ -930,14 +930,14 @@ static AjBool seqsort_PsiblastHitSort(AjPList* famlist, AjPList* supfamlist,
 
 		/* Target both hits for removal.  Place a hit corresponding 
 		   to the merging of the two hits into the supfamlist */
-		embXyzScophitMergeInsertOther(*supfamlist,hit,nexthit);
+		embDmxScophitMergeInsertOther(*supfamlist,hit,nexthit);
 
 		
 		/* JISON Also place the merged hit into the family list 
 		   so it can be considered for overlaps, but target it 
 		   for removal */
 		
-		embXyzScophitMergeInsertThisTarget(*famlist,hit,nexthit,iter);
+		embDmxScophitMergeInsertThisTarget(*famlist,hit,nexthit,iter);
 		hit = (AjPScophit)ajListIterNext(iter);
 	    }	
 	    /* are the folds identical */
@@ -951,14 +951,14 @@ static AjBool seqsort_PsiblastHitSort(AjPList* famlist, AjPList* supfamlist,
 
 		/* Target both hits for removal.  Place a hit corresponding 
 		   to the merging of the two hits into the foldlist */
-		embXyzScophitMergeInsertOther(*foldlist,hit,nexthit);    
+		embDmxScophitMergeInsertOther(*foldlist,hit,nexthit);    
 
 
 		/* JISON Also place the merged hit into the family list 
 		   so it can be considered for overlaps, but target it 
 		   for removal */
 		
-		embXyzScophitMergeInsertThisTarget(*famlist,hit,nexthit,iter);
+		embDmxScophitMergeInsertThisTarget(*famlist,hit,nexthit,iter);
 		hit = (AjPScophit)ajListIterNext(iter);
 		continue;
 	    }
@@ -977,9 +977,9 @@ static AjBool seqsort_PsiblastHitSort(AjPList* famlist, AjPList* supfamlist,
 		   and fold list so it can be considered for overlaps, but 
 		   target it for removal */
 		
-		embXyzScophitMergeInsertThisTargetBoth(*famlist,hit,nexthit,iter);
-		embXyzScophitMergeInsertOtherTargetBoth(*supfamlist,hit,nexthit);
-		embXyzScophitMergeInsertOtherTargetBoth(*foldlist,hit,nexthit);
+		embDmxScophitMergeInsertThisTargetBoth(*famlist,hit,nexthit,iter);
+		embDmxScophitMergeInsertOtherTargetBoth(*supfamlist,hit,nexthit);
+		embDmxScophitMergeInsertOtherTargetBoth(*foldlist,hit,nexthit);
 		
 		hit = (AjPScophit)ajListIterNext(iter);
 		continue;
@@ -1068,7 +1068,7 @@ static AjBool seqsort_PsiblastHitSort(AjPList* famlist, AjPList* supfamlist,
 		   nexthit->Acc, nexthit->Start, nexthit->End, nexthit->Target, nexthit->Target2);
 		   */
 
-	if(embXyzScophitsOverlapAcc(hit,nexthit,sig_overlap))
+	if(embDmxScophitsOverlapAcc(hit,nexthit,sig_overlap))
 	{
 	    /* are the superfamilies identical */
 	    if(ajStrMatch(hit->Superfamily,nexthit->Superfamily))
@@ -1078,7 +1078,7 @@ static AjBool seqsort_PsiblastHitSort(AjPList* famlist, AjPList* supfamlist,
 		*/
 
 		/* merge the two hits and then write back to the same list */
-		embXyzScophitMergeInsertThis(*supfamlist,hit,nexthit, iter);
+		embDmxScophitMergeInsertThis(*supfamlist,hit,nexthit, iter);
 		hit = (AjPScophit)ajListIterNext(iter);
 	    }
 	    else
@@ -1166,7 +1166,7 @@ static AjBool seqsort_PsiblastHitSort(AjPList* famlist, AjPList* supfamlist,
 		   nexthit->Acc, nexthit->Start, nexthit->End, nexthit->Target, nexthit->Target2);
 		   */
 
-	if(embXyzScophitsOverlapAcc(hit,nexthit,sig_overlap))
+	if(embDmxScophitsOverlapAcc(hit,nexthit,sig_overlap))
 	{
 	    /* If Target2 is set for either hit then target both
 	       for removal */
@@ -1203,14 +1203,14 @@ static AjBool seqsort_PsiblastHitSort(AjPList* famlist, AjPList* supfamlist,
 		/* target both hits for removal. Place a hit corresponding 
 		   to the merging of the 
 		   two hits into the folds list */
-		embXyzScophitMergeInsertOther(*foldlist,hit,nexthit);
+		embDmxScophitMergeInsertOther(*foldlist,hit,nexthit);
 
 
 		/* JISON Also place the merged hit into the supfam list 
 		   so it can be considered for overlaps, but target it 
 		   for removal */
 		
-		embXyzScophitMergeInsertThisTarget(*supfamlist,hit,nexthit,iter);
+		embDmxScophitMergeInsertThisTarget(*supfamlist,hit,nexthit,iter);
 		hit = (AjPScophit)ajListIterNext(iter);
 		continue;
 	    }
@@ -1229,8 +1229,8 @@ static AjBool seqsort_PsiblastHitSort(AjPList* famlist, AjPList* supfamlist,
 		   so it can be considered for overlaps, but target it 
 		   for removal */
 		
-		embXyzScophitMergeInsertThisTargetBoth(*supfamlist,hit,nexthit,iter);
-		embXyzScophitMergeInsertOtherTargetBoth(*foldlist,hit,nexthit);
+		embDmxScophitMergeInsertThisTargetBoth(*supfamlist,hit,nexthit,iter);
+		embDmxScophitMergeInsertOtherTargetBoth(*foldlist,hit,nexthit);
 		hit = (AjPScophit)ajListIterNext(iter);
 		continue;
 	    }
@@ -1305,7 +1305,7 @@ static AjBool seqsort_PsiblastHitSort(AjPList* famlist, AjPList* supfamlist,
     {
 	/* check if the accession numbers are the same and if there 
 	   is significant overlap */
-	if(embXyzScophitsOverlapAcc(hit,nexthit,sig_overlap))
+	if(embDmxScophitsOverlapAcc(hit,nexthit,sig_overlap))
 	{
 	    /* If Target2 is set for either hit then target both
 	       for removal */
@@ -1322,7 +1322,7 @@ static AjBool seqsort_PsiblastHitSort(AjPList* famlist, AjPList* supfamlist,
 		/* target both hits for removal. Place a hit corresponding 
 		   to the merging of the 
 		   two hits into the folds (same) list */
-		embXyzScophitMergeInsertThis(*foldlist,hit,nexthit, iter);
+		embDmxScophitMergeInsertThis(*foldlist,hit,nexthit, iter);
 		hit = (AjPScophit)ajListIterNext(iter);
 	    }
 	    else
@@ -1340,7 +1340,7 @@ static AjBool seqsort_PsiblastHitSort(AjPList* famlist, AjPList* supfamlist,
 		   so it can be considered for overlaps, but target it 
 		   for removal */
 		
-		embXyzScophitMergeInsertThisTargetBoth(*foldlist,hit,nexthit,iter);
+		embDmxScophitMergeInsertThisTargetBoth(*foldlist,hit,nexthit,iter);
 		hit = (AjPScophit)ajListIterNext(iter);
 		continue;
 	    }
@@ -1471,7 +1471,7 @@ static AjBool seqsort_SwissparseHitSort(AjPList* famlist, AjPList* supfamlist,
     {
 	/* check if the accession numbers are the same and if there is 
 	   significant overlap */
-	if(embXyzScophitsOverlapAcc(hit,nexthit,sig_overlap))
+	if(embDmxScophitsOverlapAcc(hit,nexthit,sig_overlap))
 	{
 	    /* are the superfamilies identical */
 	    if(ajStrMatch(hit->Superfamily,nexthit->Superfamily) && 
@@ -1479,7 +1479,7 @@ static AjBool seqsort_SwissparseHitSort(AjPList* famlist, AjPList* supfamlist,
 	    {
 		/* Target both hits for removal.  Place a hit corresponding 
 		   to the merging of the two hits into the supfamlist */
-		embXyzScophitMergeInsertOther(*supfamlist,hit,nexthit);     
+		embDmxScophitMergeInsertOther(*supfamlist,hit,nexthit);     
 	    }
 	    /* are the folds identical */
 	    else if(ajStrMatch(hit->Fold,nexthit->Fold)&&
@@ -1488,7 +1488,7 @@ static AjBool seqsort_SwissparseHitSort(AjPList* famlist, AjPList* supfamlist,
 	    {
 		/* Target both hits for removal.  Place a hit corresponding 
 		   to the merging of the two hits into the supfamlist */
-		embXyzScophitMergeInsertOther(*foldlist,hit,nexthit);     
+		embDmxScophitMergeInsertOther(*foldlist,hit,nexthit);     
 	    }
 	    else
 	    {
@@ -1534,14 +1534,14 @@ static AjBool seqsort_SwissparseHitSort(AjPList* famlist, AjPList* supfamlist,
     {
 	/*check if the accession numbers are the same and if there is 
 	  significant overlap */
-	if(embXyzScophitsOverlapAcc(hit,nexthit,sig_overlap))
+	if(embDmxScophitsOverlapAcc(hit,nexthit,sig_overlap))
 	{
 	    /* are the superfamilies identical */
 	    if(ajStrMatch(hit->Superfamily,nexthit->Superfamily))
 	    {
 		/* Target both hits for removal.  Place a hit corresponding 
 		   to the merging of the two hits into the supfamlist */
-		embXyzScophitMergeInsertThis(*supfamlist,hit,nexthit,iter);
+		embDmxScophitMergeInsertThis(*supfamlist,hit,nexthit,iter);
 		hit = (AjPScophit)ajListIterNext(iter);
 	    }
 	    /* are the folds identical */
@@ -1551,7 +1551,7 @@ static AjBool seqsort_SwissparseHitSort(AjPList* famlist, AjPList* supfamlist,
 	    {
 		/* Target both hits for removal.  Place a hit corresponding
 		   to the merging of the two hits into the supfamlist */
-		embXyzScophitMergeInsertOther(*foldlist,hit,nexthit);
+		embDmxScophitMergeInsertOther(*foldlist,hit,nexthit);
 	    }
 	    else
 	    {
@@ -1594,14 +1594,14 @@ static AjBool seqsort_SwissparseHitSort(AjPList* famlist, AjPList* supfamlist,
     {
 	/*check if the accession numbers are the same and if there is 
 	  significant overlap */
-	if(embXyzScophitsOverlapAcc(hit,nexthit,sig_overlap))
+	if(embDmxScophitsOverlapAcc(hit,nexthit,sig_overlap))
 	{
 	    /* are the folds identical */
 	    if(ajStrMatch(hit->Fold,nexthit->Fold))
 	    {
 		/* Target both hits for removal.  Place a hit corresponding 
 		   to the merging of the two hits into the supfamlist */
-		embXyzScophitMergeInsertThis(*foldlist,hit,nexthit,iter);
+		embDmxScophitMergeInsertThis(*foldlist,hit,nexthit,iter);
 	    }		
 	    else	
 	    {	
@@ -1655,7 +1655,7 @@ static AjBool seqsort_SwissparseHitSort(AjPList* famlist, AjPList* supfamlist,
     {	
 	/*check if the accession numbers are the same and if there is 
 	  significant overlap */
-	if(embXyzScophitsOverlapAcc(hit,nexthit,sig_overlap))
+	if(embDmxScophitsOverlapAcc(hit,nexthit,sig_overlap))
 	{
 	    /* Check that one of the hits is targetted for removal */
 	    if(!hit->Target && !nexthit->Target)
@@ -1729,7 +1729,7 @@ static AjBool seqsort_SwissparseHitSort(AjPList* famlist, AjPList* supfamlist,
     {	
 	/*check if the accession numbers are the same and if there is 
 	  significant overlap */
-	if(embXyzScophitsOverlapAcc(hit,nexthit,sig_overlap))
+	if(embDmxScophitsOverlapAcc(hit,nexthit,sig_overlap))
 	{
 	    /* Check that one of the hits is targetted for removal */
 	    if(!hit->Target && !nexthit->Target)
@@ -1821,7 +1821,7 @@ static AjBool seqsort_IdentifyMembers(AjPList* list, ajint node,
     {
 	/* check if the accession numbers are the same and if there 
 	   is significant overlap */
-	if(embXyzScophitsOverlapAcc(hit,nexthit,sig_overlap))
+	if(embDmxScophitsOverlapAcc(hit,nexthit,sig_overlap))
 	{
 	    if(node == SEQSORT_FAMILY && 
 /*	       ajStrMatch(hit->Family,nexthit->Family)) */
@@ -1989,7 +1989,7 @@ static AjBool  seqsort_MergeHitSort(AjPList* famlist,AjPList* supfamlist,
     {	
 	/*check if the accession numbers are the same and if there is 
 	  significant overlap */
-	if(embXyzScophitsOverlapAcc(hit,nexthit,sig_overlap))
+	if(embDmxScophitsOverlapAcc(hit,nexthit,sig_overlap))
 	{
 	    /* Check that one of the hits is targetted for removal */
 	    if(!hit->Target && !nexthit->Target)
@@ -2061,7 +2061,7 @@ static AjBool  seqsort_MergeHitSort(AjPList* famlist,AjPList* supfamlist,
     {	
 	/*check if the accession numbers are the same and if there is 
 	  significant overlap */
-	if(embXyzScophitsOverlapAcc(hit,nexthit,sig_overlap))
+	if(embDmxScophitsOverlapAcc(hit,nexthit,sig_overlap))
 	{
 	    /* Check that one of the hits is targetted for removal */
 	    if(!hit->Target && !nexthit->Target)
@@ -2142,7 +2142,7 @@ static AjBool seqsort_WriteOutputFiles(AjPFile fptr1, AjPFile fptr2,
 	return ajFalse;
     
 
-    while((embXyzScophitsToHitlist(foldlist, &hitlist, &iter)))
+    while((embDmxScophitsToHitlist(foldlist, &hitlist, &iter)))
     {
 	embHitlistWrite(fptr1, hitlist);
 	embHitlistDel(&hitlist);
@@ -2156,7 +2156,7 @@ static AjBool seqsort_WriteOutputFiles(AjPFile fptr1, AjPFile fptr2,
 	}
     
 
-    while((embXyzScophitsToHitlist(supfamlist, &hitlist, &iter)))
+    while((embDmxScophitsToHitlist(supfamlist, &hitlist, &iter)))
     {
 	embHitlistWrite(fptr1, hitlist);
 	embHitlistDel(&hitlist);
@@ -2173,7 +2173,7 @@ static AjBool seqsort_WriteOutputFiles(AjPFile fptr1, AjPFile fptr2,
     ajFmtPrint("List length (func) = %d\n", ajListLength(famlist));
     */
     
-    while((embXyzScophitsToHitlist(famlist, &hitlist, &iter)))
+    while((embDmxScophitsToHitlist(famlist, &hitlist, &iter)))
     {
 	/* Hits that could be uniquely assigned to a family are no longer 
 	   written to the validation file */
