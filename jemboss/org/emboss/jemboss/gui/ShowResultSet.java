@@ -24,15 +24,11 @@ package org.emboss.jemboss.gui;
 
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.border.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
-
 import org.apache.regexp.*;
-
-import java.awt.event.*;
 import java.io.*;
 import java.util.*;
+
+import org.emboss.jemboss.gui.filetree.FileEditorDisplay;
 
 /**
 *
@@ -83,7 +79,10 @@ public class ShowResultSet
       } 
       else 
       {
-	JTextArea o1 = new JTextArea((String)reslist.get(thiskey));
+        FileEditorDisplay fed = new FileEditorDisplay(null,thiskey,
+                                             reslist.get(thiskey));
+        JTextPane o1 = fed.getJTextPane();
+//	JTextArea o1 = new JTextArea((String)reslist.get(thiskey));
         o1.setFont(new Font("monospaced", Font.PLAIN, 12));
         o1.setCaretPosition(0);
 	s1.add(o1, BorderLayout.CENTER);
