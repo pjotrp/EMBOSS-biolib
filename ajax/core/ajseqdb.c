@@ -1492,10 +1492,12 @@ static AjBool seqAccessSrswww (AjPSeqin seqin)
     ajNamGetValueC ("httpversion", &httpver);
     ajDebug ("httpver getValueC '%S'\n", httpver);
 
-    ajStrAssC (&httpver, "1.0");
     if (ajStrLen(qry->DbHttpVer))
       ajStrAssS (&httpver, qry->DbHttpVer);
     ajDebug("httpver after qry '%S'\n", httpver);
+
+    if (!ajStrLen(httpver))
+      ajStrAssC (&httpver, "1.0");
 
     if (!ajStrIsFloat(httpver)) {
       ajWarn ("Invalid HTTPVERSION '%S', reset to 1.0", httpver);
@@ -1611,6 +1613,7 @@ static AjBool seqAccessSrswww (AjPSeqin seqin)
     ajStrDel(&proxy);
     ajStrDel(&httpver);
     ajRegFree (&urlexp);
+    ajRegFree (&proxexp);
 
     qry->QryDone = ajTrue;
 
@@ -3356,10 +3359,10 @@ static AjBool seqAccessUrl (AjPSeqin seqin)
     FILE *fp;
 
     ajint proxyPort=0;		/* port for proxy axxess */
-    static AjPStr proxyName=NULL;	/* host for proxy access.*/
-    static AjPStr proxyStr=NULL;
-    static AjPStr proxy=NULL;		/* proxy from variable or query */
-    static AjPStr httpver=NULL;	/* HTTP version 1.0, 1.1, ... */
+    AjPStr proxyName=NULL;	/* host for proxy access.*/
+    AjPStr proxyStr=NULL;
+    AjPStr proxy=NULL;		/* proxy from variable or query */
+    AjPStr httpver=NULL;	/* HTTP version 1.0, 1.1, ... */
 
     AjPSeqQuery qry = seqin->Query;
 
@@ -3386,10 +3389,12 @@ static AjBool seqAccessUrl (AjPSeqin seqin)
     ajNamGetValueC ("httpversion", &httpver);
     ajDebug ("httpver getValueC '%S'\n", httpver);
 
-    ajStrAssC(&httpver, "1.0");
     if (ajStrLen(qry->DbHttpVer))
       ajStrAssS (&httpver, qry->DbHttpVer);
     ajDebug("httpver after qry '%S'\n", httpver);
+
+    if (!ajStrLen(httpver))
+      ajStrAssC (&httpver, "1.0");
 
     if (!ajStrIsFloat(httpver)) {
       ajWarn ("Invalid HTTPVERSION '%S', reset to 1.0", httpver);
@@ -3539,6 +3544,10 @@ static AjBool seqAccessUrl (AjPSeqin seqin)
     ajStrDelReuse (&port);
     ajStrDelReuse (&get);
     ajStrDelReuse (&urlget);
+    ajStrDel(&proxyName);
+    ajStrDel(&proxyStr);
+    ajStrDel(&proxy);
+    ajStrDel(&httpver);
     ajRegFree (&urlexp);
     ajRegFree (&proxexp);
 
