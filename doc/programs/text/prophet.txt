@@ -119,6 +119,19 @@ Unrecognised profile/matrix file format
    then you have probably given prophet a 'simple frequency matrix' and
    not a a GRIBSKOV or HENIKOFF profile produced by prophecy.
    
+   If you see something like:
+   
+Uncaught exception
+Allocation Failed
+raised at prophet.c:147
+
+   then you have run out of memory. This will occur if your sequence
+   and/or your profile are large.
+   
+   prophet
+   allocates space based on the length of the sequence and the size of
+   the profile (8 x seqlen x profilelen)
+   
 Exit status
 
    It exists with a status of 0.
