@@ -97,21 +97,25 @@ public class BuildProgramMenu
     }
     else 
     {
+      String[] env = null;
+      
       if(mysettings.isCygwin())
-        envp = new String[5];  /* environment vars */
+        env = new String[5];  /* environment vars */
       else
-        envp = new String[4];
+        env = new String[4];
       String ps = new String(System.getProperty("path.separator"));
       String embossBin  = mysettings.getEmbossBin();
       String embossPath = mysettings.getEmbossPath();
       embossPath = new String("PATH" + ps +
                       embossPath + ps + embossBin + ps);
-      envp[0] = "PATH=" + embossPath;
-      envp[1] = "PLPLOT_LIB=" + mysettings.getPlplot();
-      envp[2] = "EMBOSS_DATA=" + mysettings.getEmbossData();
-      envp[3] = "HOME=" + System.getProperty("user.home") + fs;
+      env[0] = "PATH=" + embossPath;
+      env[1] = "PLPLOT_LIB=" + mysettings.getPlplot();
+      env[2] = "EMBOSS_DATA=" + mysettings.getEmbossData();
+      env[3] = "HOME=" + System.getProperty("user.home") + fs;
       if(mysettings.isCygwin())
-        envp[4] = "EMBOSSCYGROOT=" + mysettings.getCygwinRoot();
+        env[4] = "EMBOSSCYGROOT=" + mysettings.getCygwinRoot();
+
+      envp = mysettings.getEmbossEnvironmentArray(env);
     }
 
 
