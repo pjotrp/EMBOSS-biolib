@@ -345,8 +345,8 @@ class DragJTable extends JTable implements DragGestureListener,
     this.seqModel = seqModel;
     DragSource dragSource = DragSource.getDefaultDragSource();
     dragSource.createDefaultDragGestureRecognizer(
-           this,                            // component where drag originates
-           DnDConstants.ACTION_COPY,        // actions
+           this,                              // component where drag originates
+           DnDConstants.ACTION_COPY_OR_MOVE,  // actions
            this);
     setDropTarget(new DropTarget(this,this));
   }
@@ -389,7 +389,8 @@ class DragJTable extends JTable implements DragGestureListener,
   {
     if(e.isDataFlavorSupported(RemoteFileNode.REMOTEFILENODE) ||
        e.isDataFlavorSupported(FileNode.FILENODE) ||
-       e.isDataFlavorSupported(DataFlavor.stringFlavor) )
+       e.isDataFlavorSupported(DataFlavor.stringFlavor) ||
+       e.isDataFlavorSupported(SequenceData.SEQUENCEDATA) )
       e.acceptDrag(DnDConstants.ACTION_COPY_OR_MOVE);
   }
 
