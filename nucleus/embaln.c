@@ -1522,11 +1522,11 @@ void embAlignPrintLocal(AjPFile outf, char *a, char *b, AjPStr m, AjPStr n,
     ajStrDel(&fm);
 }
 
-
-
-
-
-
+/* @func embAlignUnused *******************************************************
+**
+** Calls unused functions to avoid warning messages
+**
+******************************************************************************/
 
 void embAlignUnused(void)
 {
@@ -1545,6 +1545,7 @@ void embAlignUnused(void)
     alignPathCalcOld(a,b,lena,lenb,gapopen,gapextend,path,sub,cvt,
 		       compass,show);
 }
+
 /* @func embAlignPathCalcFast *************************************************
 **
 ** Create path matrix for Smith-Waterman and Needleman-Wunsch

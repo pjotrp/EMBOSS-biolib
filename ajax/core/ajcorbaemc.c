@@ -1204,7 +1204,7 @@ const struct CORBA_TypeCode_struct TC_org_biocorba_seqcore_BioEnv_struct = {
 #endif
 CORBA_unsigned_long GNOME_Unknown__classid = 0;
 
-/** @func org_biocorba_seqcore_RequestTooLarge__free **************************
+/* @func org_biocorba_seqcore_RequestTooLarge__free **************************
 **
 ** Undocumented.
 **
@@ -1228,7 +1228,7 @@ org_biocorba_seqcore_RequestTooLarge__free(gpointer mem, gpointer dat,
 }
 
 
-/** @func org_biocorba_seqcore_RequestTooLarge__alloc *************************
+/* @func org_biocorba_seqcore_RequestTooLarge__alloc *************************
 **
 ** Undocumented.
 **
@@ -1251,7 +1251,7 @@ org_biocorba_seqcore_RequestTooLarge__alloc(void)
 }
 
 
-/** @func org_biocorba_seqcore_OutOfRange__free *******************************
+/* @func org_biocorba_seqcore_OutOfRange__free *******************************
 **
 ** Undocumented.
 **
@@ -1275,7 +1275,7 @@ org_biocorba_seqcore_OutOfRange__free(gpointer mem, gpointer dat,
 }
 
 
-/** @func org_biocorba_seqcore_OutOfRange__alloc ******************************
+/* @func org_biocorba_seqcore_OutOfRange__alloc ******************************
 **
 ** Undocumented.
 **
@@ -1297,7 +1297,7 @@ org_biocorba_seqcore_OutOfRange__alloc(void)
 }
 
 
-/** @func org_biocorba_seqcore_EndOfStream__free ******************************
+/* @func org_biocorba_seqcore_EndOfStream__free ******************************
 **
 ** Undocumented.
 **
@@ -1318,7 +1318,7 @@ org_biocorba_seqcore_EndOfStream__free(gpointer mem, gpointer dat,
 }
 
 
-/** @func org_biocorba_seqcore_NeedsUpdate__free ******************************
+/* @func org_biocorba_seqcore_NeedsUpdate__free ******************************
 **
 ** Undocumented.
 **
@@ -1342,7 +1342,7 @@ org_biocorba_seqcore_NeedsUpdate__free(gpointer mem, gpointer dat,
 }
 
 
-/** @func org_biocorba_seqcore_NeedsUpdate__alloc *****************************
+/* @func org_biocorba_seqcore_NeedsUpdate__alloc *****************************
 **
 ** Undocumented.
 **
@@ -1365,7 +1365,7 @@ org_biocorba_seqcore_NeedsUpdate__alloc(void)
 }
 
 
-/** @func org_biocorba_seqcore_DoesNotExist__free *****************************
+/* @func org_biocorba_seqcore_DoesNotExist__free *****************************
 **
 ** Undocumented.
 **
@@ -1389,7 +1389,7 @@ org_biocorba_seqcore_DoesNotExist__free(gpointer mem, gpointer dat,
 }
 
 
-/** @func org_biocorba_seqcore_DoesNotExist__alloc ****************************
+/* @func org_biocorba_seqcore_DoesNotExist__alloc ****************************
 **
 ** Undocumented.
 **
@@ -1412,7 +1412,7 @@ org_biocorba_seqcore_DoesNotExist__alloc(void)
 }
 
 
-/** @func org_biocorba_seqcore_UnableToProcess__free **************************
+/* @func org_biocorba_seqcore_UnableToProcess__free **************************
 **
 ** Undocumented.
 **
@@ -1436,7 +1436,7 @@ org_biocorba_seqcore_UnableToProcess__free(gpointer mem, gpointer dat,
 }
 
 
-/** @func org_biocorba_seqcore_UnableToProcess__alloc *************************
+/* @func org_biocorba_seqcore_UnableToProcess__alloc *************************
 **
 ** Undocumented.
 **
@@ -1474,7 +1474,7 @@ org_biocorba_seqcore_UnableToProcess__alloc(void)
 #define ORBIT_DEF_CORBA_sequence_CORBA_string 1
 
 
-/** @func CORBA_sequence_CORBA_string__free ***********************************
+/* @func CORBA_sequence_CORBA_string__free ***********************************
 **
 ** Undocumented.
 **
@@ -1497,7 +1497,7 @@ CORBA_sequence_CORBA_string__free(gpointer mem, gpointer dat,
 }
 
 
-/** @func CORBA_sequence_CORBA_string__alloc **********************************
+/* @func CORBA_sequence_CORBA_string__alloc **********************************
 **
 ** Undocumented.
 **
@@ -1522,7 +1522,7 @@ CORBA_sequence_CORBA_string__alloc(void)
 }
 
 
-/** @func CORBA_sequence_CORBA_string_allocbuf ********************************
+/* @func CORBA_sequence_CORBA_string_allocbuf ********************************
 **
 ** Undocumented.
 **
@@ -1545,7 +1545,7 @@ CORBA_sequence_CORBA_string_allocbuf(CORBA_unsigned_long len)
 #endif
 
 
-/** @func org_biocorba_seqcore_StringList__free *******************************
+/* @func org_biocorba_seqcore_StringList__free *******************************
 **
 ** Undocumented.
 **
@@ -1564,7 +1564,7 @@ org_biocorba_seqcore_StringList__free(gpointer mem, gpointer dat,
 }
 
 
-/** @func org_biocorba_seqcore_StringList__alloc ******************************
+/* @func org_biocorba_seqcore_StringList__alloc ******************************
 **
 ** Undocumented.
 **
@@ -1594,7 +1594,7 @@ org_biocorba_seqcore_StringList__alloc(void)
 #define ORBIT_DEF_CORBA_sequence_CORBA_long 1
 
 
-/** @func CORBA_sequence_CORBA_long__free *************************************
+/* @func CORBA_sequence_CORBA_long__free *************************************
 **
 ** Undocumented.
 **
@@ -1617,7 +1617,7 @@ CORBA_sequence_CORBA_long__free(gpointer mem, gpointer dat,
 }
 
 
-/** @func CORBA_sequence_CORBA_long__alloc ************************************
+/* @func CORBA_sequence_CORBA_long__alloc ************************************
 **
 ** Undocumented.
 **
@@ -1642,7 +1642,7 @@ CORBA_sequence_CORBA_long__alloc(void)
 }
 
 
-/** @func CORBA_sequence_CORBA_long_allocbuf **********************************
+/* @func CORBA_sequence_CORBA_long_allocbuf **********************************
 **
 ** Undocumented.
 **
@@ -1663,7 +1663,7 @@ CORBA_sequence_CORBA_long_allocbuf(CORBA_unsigned_long len)
 #endif
 
 
-/** @func org_biocorba_seqcore_LongList__free *********************************
+/* @func org_biocorba_seqcore_LongList__free *********************************
 **
 ** Undocumented.
 **
@@ -1682,7 +1682,7 @@ org_biocorba_seqcore_LongList__free(gpointer mem, gpointer dat,
 }
 
 
-/** @func org_biocorba_seqcore_LongList__alloc ********************************
+/* @func org_biocorba_seqcore_LongList__alloc ********************************
 **
 ** Undocumented.
 **
@@ -1712,7 +1712,7 @@ org_biocorba_seqcore_LongList__alloc(void)
 #define ORBIT_DEF_CORBA_sequence_CORBA_string 1
 
 
-/** @func CORBA_sequence_CORBA_string__free ***********************************
+/* @func CORBA_sequence_CORBA_string__free ***********************************
 **
 ** Undocumented.
 **
@@ -1735,7 +1735,7 @@ CORBA_sequence_CORBA_string__free(gpointer mem, gpointer dat,
 }
 
 
-/** @func CORBA_sequence_CORBA_string__alloc **********************************
+/* @func CORBA_sequence_CORBA_string__alloc **********************************
 **
 ** Undocumented.
 **
@@ -1760,7 +1760,7 @@ CORBA_sequence_CORBA_string__alloc(void)
 }
 
 
-/** @func CORBA_sequence_CORBA_string_allocbuf ********************************
+/* @func CORBA_sequence_CORBA_string_allocbuf ********************************
 **
 ** Undocumented.
 **
@@ -1783,7 +1783,7 @@ CORBA_sequence_CORBA_string_allocbuf(CORBA_unsigned_long len)
 #endif
 
 
-/** @func org_biocorba_seqcore_NameValueSet__free *****************************
+/* @func org_biocorba_seqcore_NameValueSet__free *****************************
 **
 ** Undocumented.
 **
@@ -1811,7 +1811,7 @@ org_biocorba_seqcore_NameValueSet__free(gpointer mem, gpointer dat,
 }
 
 
-/** @func org_biocorba_seqcore_NameValueSet__alloc ****************************
+/* @func org_biocorba_seqcore_NameValueSet__alloc ****************************
 **
 ** Undocumented.
 **
@@ -1850,7 +1850,7 @@ org_biocorba_seqcore_NameValueSet__alloc(void)
 #define ORBIT_DEF_CORBA_sequence_org_biocorba_seqcore_NameValueSet 1
 
 
-/** @func CORBA_sequence_org_biocorba_seqcore_NameValueSet__free **************
+/* @func CORBA_sequence_org_biocorba_seqcore_NameValueSet__free **************
 **
 ** Undocumented.
 **
@@ -1875,7 +1875,7 @@ CORBA_sequence_org_biocorba_seqcore_NameValueSet__free(gpointer mem,
 }
 
 
-/** @func CORBA_sequence_org_biocorba_seqcore_NameValueSet__alloc *************
+/* @func CORBA_sequence_org_biocorba_seqcore_NameValueSet__alloc *************
 **
 ** Undocumented.
 **
@@ -1901,7 +1901,7 @@ CORBA_sequence_org_biocorba_seqcore_NameValueSet__alloc(void)
 }
 
 
-/** @func CORBA_sequence_org_biocorba_seqcore_NameValueSet_allocbuf ***********
+/* @func CORBA_sequence_org_biocorba_seqcore_NameValueSet_allocbuf ***********
 **
 ** Undocumented.
 **
@@ -1926,7 +1926,7 @@ CORBA_sequence_org_biocorba_seqcore_NameValueSet_allocbuf(CORBA_unsigned_long
 #endif
 
 
-/** @func org_biocorba_seqcore_NameValueSetList__free *************************
+/* @func org_biocorba_seqcore_NameValueSetList__free *************************
 **
 ** Undocumented.
 **
@@ -1946,7 +1946,7 @@ org_biocorba_seqcore_NameValueSetList__free(gpointer mem, gpointer dat,
 }
 
 
-/** @func org_biocorba_seqcore_NameValueSetList__alloc ************************
+/* @func org_biocorba_seqcore_NameValueSetList__alloc ************************
 **
 ** Undocumented.
 **
@@ -1980,7 +1980,7 @@ CORBA_unsigned_long org_biocorba_seqcore_PrimarySeq__classid = 0;
 #define ORBIT_DEF_CORBA_sequence_org_biocorba_seqcore_PrimarySeq 1
 
 
-/** @func CORBA_sequence_org_biocorba_seqcore_PrimarySeq__free ****************
+/* @func CORBA_sequence_org_biocorba_seqcore_PrimarySeq__free ****************
 **
 ** Undocumented.
 **
@@ -2005,7 +2005,7 @@ CORBA_sequence_org_biocorba_seqcore_PrimarySeq__free(gpointer mem,
 }
 
 
-/** @func CORBA_sequence_org_biocorba_seqcore_PrimarySeq__alloc ***************
+/* @func CORBA_sequence_org_biocorba_seqcore_PrimarySeq__alloc ***************
 **
 ** Undocumented.
 **
@@ -2031,7 +2031,7 @@ CORBA_sequence_org_biocorba_seqcore_PrimarySeq__alloc(void)
 }
 
 
-/** @func CORBA_sequence_org_biocorba_seqcore_PrimarySeq_allocbuf *************
+/* @func CORBA_sequence_org_biocorba_seqcore_PrimarySeq_allocbuf *************
 **
 ** Undocumented.
 **
@@ -2056,7 +2056,7 @@ CORBA_sequence_org_biocorba_seqcore_PrimarySeq_allocbuf(CORBA_unsigned_long
 #endif
 
 
-/** @func org_biocorba_seqcore_PrimarySeqList__free ***************************
+/* @func org_biocorba_seqcore_PrimarySeqList__free ***************************
 **
 ** Undocumented.
 **
@@ -2076,7 +2076,7 @@ org_biocorba_seqcore_PrimarySeqList__free(gpointer mem, gpointer dat,
 }
 
 
-/** @func org_biocorba_seqcore_PrimarySeqList__alloc **************************
+/* @func org_biocorba_seqcore_PrimarySeqList__alloc **************************
 **
 ** Undocumented.
 **
@@ -2108,7 +2108,7 @@ CORBA_unsigned_long org_biocorba_seqcore_Seq__classid = 0;
 #define ORBIT_DEF_CORBA_sequence_org_biocorba_seqcore_Seq 1
 
 
-/** @func CORBA_sequence_org_biocorba_seqcore_Seq__free ***********************
+/* @func CORBA_sequence_org_biocorba_seqcore_Seq__free ***********************
 **
 ** Undocumented.
 **
@@ -2131,7 +2131,7 @@ CORBA_sequence_org_biocorba_seqcore_Seq__free(gpointer mem, gpointer dat,
 }
 
 
-/** @func CORBA_sequence_org_biocorba_seqcore_Seq__alloc **********************
+/* @func CORBA_sequence_org_biocorba_seqcore_Seq__alloc **********************
 **
 ** Undocumented.
 **
@@ -2157,7 +2157,7 @@ CORBA_sequence_org_biocorba_seqcore_Seq__alloc(void)
 }
 
 
-/** @func CORBA_sequence_org_biocorba_seqcore_Seq_allocbuf ********************
+/* @func CORBA_sequence_org_biocorba_seqcore_Seq_allocbuf ********************
 **
 ** Undocumented.
 **
@@ -2180,7 +2180,7 @@ CORBA_sequence_org_biocorba_seqcore_Seq_allocbuf(CORBA_unsigned_long len)
 #endif
 
 
-/** @func org_biocorba_seqcore_SeqList__free **********************************
+/* @func org_biocorba_seqcore_SeqList__free **********************************
 **
 ** Undocumented.
 **
@@ -2200,7 +2200,7 @@ org_biocorba_seqcore_SeqList__free(gpointer mem, gpointer dat,
 }
 
 
-/** @func org_biocorba_seqcore_SeqList__alloc *********************************
+/* @func org_biocorba_seqcore_SeqList__alloc *********************************
 **
 ** Undocumented.
 **
@@ -2216,7 +2216,7 @@ org_biocorba_seqcore_SeqList__alloc(void)
 
 CORBA_unsigned_long org_biocorba_seqcore_FuzzyTypeCode__classid = 0;
 
-/** @func org_biocorba_seqcore_SeqFeaturePosition__free ***********************
+/* @func org_biocorba_seqcore_SeqFeaturePosition__free ***********************
 **
 ** Undocumented.
 **
@@ -2237,7 +2237,7 @@ org_biocorba_seqcore_SeqFeaturePosition__free(gpointer mem, gpointer dat,
 }
 
 
-/** @func org_biocorba_seqcore_SeqFeaturePosition__alloc **********************
+/* @func org_biocorba_seqcore_SeqFeaturePosition__alloc **********************
 **
 ** Undocumented.
 **
@@ -2259,7 +2259,7 @@ org_biocorba_seqcore_SeqFeaturePosition__alloc(void)
 }
 
 
-/** @func org_biocorba_seqcore_SeqFeatureLocation__free ***********************
+/* @func org_biocorba_seqcore_SeqFeatureLocation__free ***********************
 **
 ** Undocumented.
 **
@@ -2280,7 +2280,7 @@ org_biocorba_seqcore_SeqFeatureLocation__free(gpointer mem, gpointer dat,
 }
 
 
-/** @func org_biocorba_seqcore_SeqFeatureLocation__alloc **********************
+/* @func org_biocorba_seqcore_SeqFeatureLocation__alloc **********************
 **
 ** Undocumented.
 **
@@ -2317,7 +2317,7 @@ org_biocorba_seqcore_SeqFeatureLocation__alloc(void)
 #define ORBIT_DEF_CORBA_sequence_org_biocorba_seqcore_SeqFeatureLocation 1
 
 
-/** @func CORBA_sequence_org_biocorba_seqcore_SeqFeatureLocation__free ********
+/* @func CORBA_sequence_org_biocorba_seqcore_SeqFeatureLocation__free ********
 **
 ** Undocumented.
 **
@@ -2342,7 +2342,7 @@ CORBA_sequence_org_biocorba_seqcore_SeqFeatureLocation__free(gpointer mem,
 }
 
 
-/** @func CORBA_sequence_org_biocorba_seqcore_SeqFeatureLocation__alloc *******
+/* @func CORBA_sequence_org_biocorba_seqcore_SeqFeatureLocation__alloc *******
 **
 ** Undocumented.
 **
@@ -2369,7 +2369,7 @@ CORBA_sequence_org_biocorba_seqcore_SeqFeatureLocation__alloc(void)
 }
 
 
-/** @func CORBA_sequence_org_biocorba_seqcore_SeqFeatureLocation_allocbuf *****
+/* @func CORBA_sequence_org_biocorba_seqcore_SeqFeatureLocation_allocbuf *****
 **
 ** Undocumented.
 **
@@ -2391,7 +2391,7 @@ CORBA_sequence_org_biocorba_seqcore_SeqFeatureLocation_allocbuf
 #endif
 
 
-/** @func org_biocorba_seqcore_SeqFeatureLocationList__free *******************
+/* @func org_biocorba_seqcore_SeqFeatureLocationList__free *******************
 **
 ** Undocumented.
 **
@@ -2412,7 +2412,7 @@ org_biocorba_seqcore_SeqFeatureLocationList__free(gpointer mem, gpointer dat,
 }
 
 
-/** @func org_biocorba_seqcore_SeqFeatureLocationList__alloc ******************
+/* @func org_biocorba_seqcore_SeqFeatureLocationList__alloc ******************
 **
 ** Undocumented.
 **
