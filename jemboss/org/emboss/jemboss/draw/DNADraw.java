@@ -42,6 +42,7 @@ public class DNADraw extends ScrollPanel
 
   public static JScrollPane jsp;
   private DNADraw current_dna;
+  private JFrame mainFrame;
 
   private Point location    = new Point(75,75);
   private Dimension border  = new Dimension(150,150);
@@ -70,7 +71,7 @@ public class DNADraw extends ScrollPanel
 
   private int[] reXPositions;
   private int[] reYPositions;
-
+  private boolean close = false;
 
   public DNADraw()
   {
@@ -834,7 +835,13 @@ public class DNADraw extends ScrollPanel
     {
       public void actionPerformed(ActionEvent e)
       {
-        System.exit(0);
+        if(!close)
+          System.exit(0);
+        else
+        {
+          mainFrame.setVisible(false);
+          mainFrame.dispose();
+        }
       }
     });
     fileMenu.add(fileMenuExit);
@@ -986,6 +993,12 @@ public class DNADraw extends ScrollPanel
   }
 
   
+  public void setCloseAndDispose(boolean close, JFrame mainFrame)
+  {
+    this.mainFrame = mainFrame;
+    this.close = close;
+  }
+
   protected Vector getGeneticMarker()
   {
     return block;
