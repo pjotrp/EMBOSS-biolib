@@ -1542,7 +1542,7 @@ AjBool ajFileGetwd (AjPStr* dir) {
 AjBool ajFileDirUp (AjPStr* dir) {
 
   static AjPRegexp direxp = NULL;
-  static AjPStr tmpdir = NULL;
+  AjPStr tmpdir = NULL;
 
   if (!direxp)
     direxp = ajRegCompC ("^(.*/)[^/]+/?$");
@@ -1552,6 +1552,7 @@ AjBool ajFileDirUp (AjPStr* dir) {
     return ajFalse;
 
   ajRegSubI (direxp, 1, dir);
+  ajStrDel(&tmpdir);
   return ajTrue;
 
 }
