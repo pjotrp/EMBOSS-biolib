@@ -129,13 +129,13 @@ AjPFeattabOut ajFeattabOutNewSSF (AjPStr fmt, AjPStr name, char* type,
 AjBool        ajFeattabOutOpen (AjPFeattabOut thys, AjPStr ufo);
 AjBool        ajFeattabOutSet (AjPFeattabOut thys, AjPStr ufo);
 AjPFeattable  ajFeattabRead (AjPFeattabIn ftin) ;
-void          ajFeatTagAdd (AjPFeature thys, AjPStr tag, AjPStr value);
-void          ajFeatTagAddC (AjPFeature thys, const char* tag, AjPStr value);
-void          ajFeatTagAddCC (AjPFeature thys, const char* tag,
+AjBool        ajFeatTagAdd (AjPFeature thys, AjPStr tag, AjPStr value);
+AjBool        ajFeatTagAddC (AjPFeature thys, const char* tag, AjPStr value);
+AjBool        ajFeatTagAddCC (AjPFeature thys, const char* tag,
 			      const char* value);
 AjIList       ajFeatTagIter (AjPFeature thys);
-AjPStr        ajFeatTagSet (AjPFeature thys, AjPStr tag, AjPStr value);
-AjPStr        ajFeatTagSetC (AjPFeature thys, char* tag, AjPStr value);
+AjBool        ajFeatTagSet (AjPFeature thys, AjPStr tag, AjPStr value);
+AjBool        ajFeatTagSetC (AjPFeature thys, char* tag, AjPStr value);
 void          ajFeatTagTrace (AjPFeature thys);
 AjBool        ajFeatTagval (AjIList iter, AjPStr* tagnam,
 			    AjPStr* tagval);
