@@ -769,10 +769,13 @@ AjBool ajSeqRead (AjPSeq thys, AjPSeqin seqin)
 	ajStrDel(&node->Formatstr);
 	AJFREE (node);
 
-/*	if (!seqUsaProcess (thys, seqin))
-	    return ajFalse;
-*/
-	seqUsaProcess (thys, seqin);
+	/* must exit if this fails ... for bad list USAs */
+
+	if (!seqUsaProcess (thys, seqin))
+	    continue;
+
+	/*	seqUsaProcess (thys, seqin);*/
+
 	ret = seqRead (thys, seqin);
 	/* seqUsaRestore(seqin, keepnode);
 	ajDebug("++RESTORE SEQIN '%S' %d..%d(%b) '%S' %d\n",
