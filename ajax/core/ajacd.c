@@ -1016,8 +1016,8 @@ AcdOAttr acdAttrDiscrete[] =
 	 "Number of discrete state values per set"},
     {"size", VT_INT, "1",
 	 "Number of discrete state set"},
-    {"characters", VT_STR, "",
-	 "Allowed discrete state characters (default is any characters)"},
+    {"characters", VT_STR, "01",
+	 "Allowed discrete state characters (default is '01' for binary characters)"},
     {"nullok", VT_BOOL, "N",
 	 "Can accept a null filename as 'no file'"},
     {NULL, VT_NULL, NULL,
@@ -1194,12 +1194,12 @@ AcdOAttr acdAttrOutfile[] =
 	 "Default file name"},
     {"extension", VT_STR, "",
 	 "Default file extension"},
-    {"nullok", VT_BOOL, "N",
-	 "Can accept a null filename as 'no file'"},
-    {"nulldefault", VT_BOOL, "N",
-	 "Defaults to 'no file'"},
     {"append", VT_BOOL, "N",
 	 "Append to an existing file"},
+    {"nulldefault", VT_BOOL, "N",
+	 "Defaults to 'no file'"},
+    {"nullok", VT_BOOL, "N",
+	 "Can accept a null filename as 'no file'"},
     {NULL, VT_NULL, NULL,
 	 NULL}
 };
@@ -1210,8 +1210,8 @@ AcdOAttr acdAttrProperties[] =
 	 "Number of property values per set"},
     {"size", VT_INT, "1",
 	 "Number of property sets"},
-    {"characters", VT_STR, "01",
-	 "Allowed property characters"},
+    {"characters", VT_STR, "",
+	 "Allowed property characters (default is '' for all characters)"},
     {"nullok", VT_BOOL, "N",
 	 "Can accept a null filename as 'no file'"},
     {NULL, VT_NULL, NULL,
@@ -1245,7 +1245,7 @@ AcdOAttr acdAttrReport[] =
     {"taglist", VT_STR, "",
 	 "Extra tag names to report"},
     {"mintags", VT_INT, "0",
-	 "Minimum number extra tags"},
+	 "Minimum number of extra tags"},
     {"multiple", VT_BOOL, "N",
 	 "Multiple sequences in one report"},
     {"precision", VT_INT, "3",
@@ -1421,10 +1421,10 @@ AcdOAttr acdAttrString[] =
 
 AcdOAttr acdAttrTree[] =
 {
-    {"nullok", VT_BOOL, "N",
-	 "Can accept a null filename as 'no file'"},
     {"size", VT_INT, "0",
 	 "Number of trees (0 means any number)"},
+    {"nullok", VT_BOOL, "N",
+	 "Can accept a null filename as 'no file'"},
     {NULL, VT_NULL, NULL,
 	 NULL}
 };
@@ -4858,10 +4858,12 @@ AjPCod ajAcdGetCodon(const char *token)
 **
 ** Understands all attributes and associated qualifiers for this item type.
 **
-** The default value (if filtering is on) is "stdin", but then
-** prompting is turned off.
+** The default value is defined by the DEFCODON macro in the ajacd.c
+** source file. This can be overridden for any codon definition by the
+** "name" attribute.
 **
-** Otherwise there is no default value unles the ACD file has one.
+** Perhaps "name:" should be a requiredc attribute rather than using
+** a hidden internal default.
 **
 ** Various file naming options are defined, but not yet implemented here.
 **
