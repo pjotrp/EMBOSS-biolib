@@ -33,7 +33,7 @@ static AjPStr cirdna_ReadGroup(AjPFile infile, float *From, float *To,
 			       AjPStr *Name2, char *FromSymbol,
 			       char *ToSymbol, AjPStr *Style2,
 			       ajint *NumLabels, ajint *NumNames,
-			       ajint *Color);
+			       ajint *Colour);
 static float cirdna_TextGroup(float TextHeight, float TextLength,
 			      AjPStr *Name2, ajint NumLabels, ajint *NumNames,
 			      AjPStr GroupName, AjPStr *Style2, float *From,
@@ -68,7 +68,8 @@ static void cirdna_DrawGroup(float xDraw, float yDraw, float posblock,
 			     AjPStr GroupName, float OriginAngle,
 			     ajint *NumNames, AjPStr PosTicks,
 			     AjPStr PosBlocks, ajint *Adjust,
-			     ajint InterColor, ajint *Color, AjPStr BlockType);
+			     ajint InterColour, ajint *Colour,
+			     AjPStr BlockType);
 static float cirdna_TextRuler(float Start, float End, ajint GapSize,
 			      float TextLength, float TextHeight,
 			      AjPStr PosTicks, ajint NumGroups,
@@ -86,29 +87,29 @@ static void cirdna_DrawRuler(float xDraw, float yDraw, float Start, float End,
 			     AjBool TickLines, float TextLength,
 			     float TextHeight, float postext,
 			     ajint NumGroups, ajint *NumLabels, float *From,
-			     AjPStr PosTicks, ajint Color);
+			     AjPStr PosTicks, ajint Colour);
 static void cirdna_DrawTicks(float xDraw, float yDraw, float RealLength,
 			     float Radius, float TickHeight, float From,
 			     AjPStr Name2, float OriginAngle,
 			     float TextLength, float TextHeight, float postext,
 			     AjPStr PosTicks, ajint NumNames, ajint Adjust,
-			     ajint Color);
+			     ajint Colour);
 static void cirdna_DrawBlocks(float xDraw, float yDraw, float RealLength,
 			      float Radius, ajint BlockHeight, float From,
 			      float To, AjPStr Name2,
 			      float postext, float OriginAngle,
 			      AjPStr PosBlocks, ajint NumNames, ajint Adjust,
-			      ajint Color, AjPStr BlockType);
+			      ajint Colour, AjPStr BlockType);
 static void cirdna_DrawRanges(float xDraw, float yDraw, float RealLength,
 			      float Radius, float RangeHeight, float From,
 			      float To, char FromSymbol,
 			      char ToSymbol, AjPStr Name2, float OriginAngle,
 			      ajint NumNames, float postext, ajint Adjust,
-			      ajint Color);
+			      ajint Colour);
 static void cirdna_InterBlocks(float xDraw, float yDraw, float RealLength,
 			       float Radius, float BlockHeight, float From,
 			       float To, float OriginAngle,
-			       AjBool InterSymbol, ajint Color);
+			       AjBool InterSymbol, ajint Colour);
 static void cirdna_DrawArrowHeadsOnCurve(float xDraw, float yDraw,
 					 float RealLength, float Height,
 					 float Length, float Radius,
@@ -149,8 +150,8 @@ int main(int argc, char **argv)
     ajint NumLabels[MAXGROUPS];
     ajint NumNames[MAXGROUPS][MAXLABELS];
     ajint NumGroups;
-    ajint InterColor;
-    ajint Color[MAXGROUPS][MAXLABELS];
+    ajint InterColour;
+    ajint Colour[MAXGROUPS][MAXLABELS];
     ajint Adjust[MAXGROUPS][MAXLABELS];
     ajint AdjustMax[MAXGROUPS];
     char FromSymbol[MAXGROUPS][MAXLABELS];
@@ -216,8 +217,8 @@ int main(int argc, char **argv)
 
     /* to draw or not to draw junctions to link blocks */
     InterSymbol = ajAcdGetBool("intersymbol");
-    /* get the color of junctions used to link blocks */
-    InterColor = ajAcdGetInt("intercolor");
+    /* get the colour of junctions used to link blocks */
+    InterColour = ajAcdGetInt("intercolour");
 
     /* to draw or not to draw junctions between ticks */
     InterTicks = ajAcdGetBool("interticks");
@@ -292,7 +293,7 @@ int main(int argc, char **argv)
 	    GroupName[i] = cirdna_ReadGroup(infile, From[i], To[i], Name[i],
 					    FromSymbol[i], ToSymbol[i],
 					    Style[i], &NumLabels[i],
-					    NumNames[i], Color[i]);
+					    NumNames[i], Colour[i]);
 	    i++;
 	}
     }
@@ -426,7 +427,7 @@ int main(int argc, char **argv)
 			 Name[i], FromSymbol[i], ToSymbol[i], Style[i],
 			 InterSymbol, InterTicks, NumLabels[i], GroupName[i],
 			 OriginAngle, NumNames[i], PosTicks, PosBlocks,
-			 Adjust[i], InterColor, Color[i], BlockType);
+			 Adjust[i], InterColour, Colour[i], BlockType);
 	ajStrDel(&GroupName[i]);
     }
 
@@ -677,7 +678,7 @@ static float cirdna_HeightRuler(float Start, float End, ajint GapSize,
 ** @param [?] NumLabels [ajint*] Undocumented
 ** @param [?] From [float*] Undocumented
 ** @param [?] PosTicks [AjPStr] Undocumented
-** @param [?] Color [ajint] Undocumented
+** @param [?] Colour [ajint] Undocumented
 ** @@
 ******************************************************************************/
 
@@ -687,7 +688,7 @@ static void cirdna_DrawRuler(float xDraw, float yDraw, float Start, float End,
 			     AjBool TickLines, float TextLength,
 			     float TextHeight, float postext,
 			     ajint NumGroups, ajint *NumLabels, float *From,
-			     AjPStr PosTicks, ajint Color)
+			     AjPStr PosTicks, ajint Colour)
 {
     ajint i;
     AjPStr string = ajStrNew();
@@ -695,7 +696,7 @@ static void cirdna_DrawRuler(float xDraw, float yDraw, float Start, float End,
     float *xy;
     float Angle;
 
-    ajGraphSetFore(Color);
+    ajGraphSetFore(Colour);
 
     ajGraphCircle( xDraw, yDraw, Radius );
 
@@ -713,7 +714,7 @@ static void cirdna_DrawRuler(float xDraw, float yDraw, float Start, float End,
     if( !cirdna_OverlapTickRuler(NumGroups, NumLabels, From, PosTicks, Start) )
 	cirdna_DrawTicks(xDraw, yDraw, RealLength, Radius, TickHeight, 0,
 			 string, OriginAngle, TextLength, TextHeight, postext,
-			 posticks, 1, 0, Color);
+			 posticks, 1, 0, Colour);
 
     /* draw the ruler's ticks */
     for(i=GapSize; i<End; i+=GapSize) if( i>Start )
@@ -729,7 +730,7 @@ static void cirdna_DrawRuler(float xDraw, float yDraw, float Start, float End,
 	if( !cirdna_OverlapTickRuler(NumGroups, NumLabels, From, PosTicks, i) )
 	    cirdna_DrawTicks(xDraw, yDraw, RealLength, Radius, TickHeight,
 			     i-Start, string, OriginAngle, TextLength,
-			     TextHeight, postext, posticks, 1, 0, Color);
+			     TextHeight, postext, posticks, 1, 0, Colour);
     }
 
     ajStrDel(&string);
@@ -756,7 +757,7 @@ static void cirdna_DrawRuler(float xDraw, float yDraw, float Start, float End,
 ** @param [?] PosTicks [AjPStr] Undocumented
 ** @param [?] NumNames [ajint] Undocumented
 ** @param [?] Adjust [ajint] Undocumented
-** @param [?] Color [ajint] Undocumented
+** @param [?] Colour [ajint] Undocumented
 ** @@
 ******************************************************************************/
 
@@ -765,7 +766,7 @@ static void cirdna_DrawTicks(float xDraw, float yDraw, float RealLength,
 			     AjPStr Name2, float OriginAngle,
 			     float TextLength, float TextHeight, float postext,
 			     AjPStr PosTicks, ajint NumNames, ajint Adjust,
-			     ajint Color)
+			     ajint Colour)
 {
     float Angle;
     float StartAngle;
@@ -778,7 +779,7 @@ static void cirdna_DrawTicks(float xDraw, float yDraw, float RealLength,
     float r2Ticks = r1Ticks+TickHeight;
     AjPStr token;
 
-    ajGraphSetFore(Color);
+    ajGraphSetFore(Colour);
 
     Angle = cirdna_ComputeAngle(RealLength, From, OriginAngle);
 
@@ -840,7 +841,7 @@ static void cirdna_DrawTicks(float xDraw, float yDraw, float RealLength,
 ** @param [?] PosBlocks [AjPStr] Undocumented
 ** @param [?] NumNames [ajint] Undocumented
 ** @param [?] Adjust [ajint] Undocumented
-** @param [?] Color [ajint] Undocumented
+** @param [?] Colour [ajint] Undocumented
 ** @param [?] BlockType [AjPStr] Undocumented
 ** @@
 ******************************************************************************/
@@ -849,7 +850,7 @@ static void cirdna_DrawBlocks(float xDraw, float yDraw, float RealLength,
 			      float Radius, ajint BlockHeight, float From,
 			      float To, AjPStr Name2, float postext,
 			      float OriginAngle, AjPStr PosBlocks,
-			      ajint NumNames, ajint Adjust, ajint Color,
+			      ajint NumNames, ajint Adjust, ajint Colour,
 			      AjPStr BlockType)
 {
     float StartAngle;
@@ -862,7 +863,7 @@ static void cirdna_DrawBlocks(float xDraw, float yDraw, float RealLength,
     StartAngle = cirdna_ComputeAngle(RealLength, From, OriginAngle);
     EndAngle = cirdna_ComputeAngle(RealLength, To, OriginAngle);
 
-    ajGraphSetFore(Color);
+    ajGraphSetFore(Colour);
     if( ajStrCmpCaseCC(ajStrStr(BlockType), "Open")==0 )
     {
 	ajGraphRectangleOnCurve(xDraw, yDraw, r2Blocks, BlockHeight,
@@ -878,7 +879,7 @@ static void cirdna_DrawBlocks(float xDraw, float yDraw, float RealLength,
       ajGraphSetFore(0);
       ajGraphRectangleOnCurve(xDraw, yDraw, r2Blocks, BlockHeight,
 			    StartAngle, EndAngle);
-      ajGraphSetFore(Color);
+      ajGraphSetFore(Colour);
       }
 
     stringLength = cirdna_HorTextPileLengthMax(Name2, NumNames);
@@ -916,7 +917,7 @@ static void cirdna_DrawBlocks(float xDraw, float yDraw, float RealLength,
 ** @param [?] NumNames [ajint] Undocumented
 ** @param [?] postext [float] Undocumented
 ** @param [?] Adjust [ajint] Undocumented
-** @param [?] Color [ajint] Undocumented
+** @param [?] Colour [ajint] Undocumented
 ** @@
 ******************************************************************************/
 
@@ -925,7 +926,7 @@ static void cirdna_DrawRanges(float xDraw, float yDraw, float RealLength,
 			      float To, char FromSymbol, char ToSymbol,
 			      AjPStr Name2, float OriginAngle,
 			      ajint NumNames, float postext, ajint Adjust,
-			      ajint Color)
+			      ajint Colour)
 {
     float StartAngle, EndAngle;
     float stringLength;
@@ -933,7 +934,7 @@ static void cirdna_DrawRanges(float xDraw, float yDraw, float RealLength,
     float rupper = rRanges+(1.0*RangeHeight/2);
     float BoundaryLength;
 
-    ajGraphSetFore(Color);
+    ajGraphSetFore(Colour);
 
     StartAngle = cirdna_ComputeAngle(RealLength, From, OriginAngle);
     EndAngle = cirdna_ComputeAngle(RealLength, To, OriginAngle);
@@ -1008,21 +1009,21 @@ static void cirdna_DrawRanges(float xDraw, float yDraw, float RealLength,
 ** @param [?] To [float] Undocumented
 ** @param [?] OriginAngle [float] Undocumented
 ** @param [?] InterSymbol [AjBool] Undocumented
-** @param [?] Color [ajint] Undocumented
+** @param [?] Colour [ajint] Undocumented
 ** @@
 ******************************************************************************/
 
 static void cirdna_InterBlocks(float xDraw, float yDraw, float RealLength,
 			       float Radius, float BlockHeight, float From,
 			       float To, float OriginAngle,
-			       AjBool InterSymbol, ajint Color)
+			       AjBool InterSymbol, ajint Colour)
 {
     float StartAngle;
     float  EndAngle;
     float r1Inter = Radius+(1.0*BlockHeight/2);
     float r2Inter = r1Inter-BlockHeight;
 
-    ajGraphSetFore(Color);
+    ajGraphSetFore(Colour);
 
     StartAngle = cirdna_ComputeAngle(RealLength, To, OriginAngle);
     EndAngle = cirdna_ComputeAngle(RealLength, From, OriginAngle);
@@ -1351,7 +1352,7 @@ static void cirdna_ReadInput(AjPFile infile, float *Start, float *End)
 ** @param [?] Style2 [AjPStr*] Undocumented
 ** @param [?] NumLabels [ajint*] Undocumented
 ** @param [?] NumNames [ajint*] Undocumented
-** @param [?] Color [ajint*] Undocumented
+** @param [?] Colour [ajint*] Undocumented
 ** @return [AjPStr] Undocumented
 ******************************************************************************/
 
@@ -1360,7 +1361,7 @@ static AjPStr cirdna_ReadGroup(AjPFile infile, float *From, float *To,
 			       AjPStr *Name, char *FromSymbol,
 			       char *ToSymbol, AjPStr *Style2,
 			       ajint *NumLabels, ajint *NumNames,
-			       ajint *Color)
+			       ajint *Colour)
 {
     ajint i;
     ajint j;
@@ -1414,15 +1415,15 @@ static AjPStr cirdna_ReadGroup(AjPFile infile, float *From, float *To,
 			    sscanf( ajStrStr(line), "%s", style );
 			    if( ajStrMatchCaseCC(style, "Tick") )
 				sscanf( ajStrStr(line), "%*s %f %d %*c",
- 				       &From[i], &Color[i] );
+ 				       &From[i], &Colour[i] );
 			    if( ajStrMatchCaseCC(style, "Block") )
 				sscanf( ajStrStr(line), "%*s %f %f %d %*c",
- 				       &To[i], &From[i], &Color[i] );
+ 				       &To[i], &From[i], &Colour[i] );
 			    if( ajStrMatchCaseCC(style, "Range") )
 			     sscanf( ajStrStr(line), "%*s %f %f %c %c %d %*c",
 				    &To[i], &From[i],
  				       &FromSymbol[i], &ToSymbol[i],
- 				       &Color[i] );
+ 				       &Colour[i] );
 			    ajStrAssC(&Style2[i], style);
 			    break;
 			}
@@ -1905,8 +1906,8 @@ static AjBool cirdna_OverlapTickRuler(ajint NumGroups, ajint *NumLabels,
 ** @param [?] PosTicks [AjPStr] Undocumented
 ** @param [?] PosBlocks [AjPStr] Undocumented
 ** @param [?] Adjust [ajint*] Undocumented
-** @param [?] InterColor [ajint] Undocumented
-** @param [?] Color [ajint*] Undocumented
+** @param [?] InterColour [ajint] Undocumented
+** @param [?] Colour [ajint*] Undocumented
 ** @param [?] BlockType [AjPStr] Undocumented
 ** @return [void]
 ******************************************************************************/
@@ -1922,7 +1923,7 @@ static void cirdna_DrawGroup(float xDraw, float yDraw, float posblock,
 			     ajint NumLabels, AjPStr GroupName,
 			     float OriginAngle, ajint *NumNames,
 			     AjPStr PosTicks, AjPStr PosBlocks, ajint *Adjust,
-			     ajint InterColor, ajint *Color, AjPStr BlockType)
+			     ajint InterColour, ajint *Colour, AjPStr BlockType)
 {
     ajint i;
     ajint j;
@@ -1940,7 +1941,7 @@ static void cirdna_DrawGroup(float xDraw, float yDraw, float posblock,
 		cirdna_DrawTicks(xDraw, yDraw, RealLength, Radius, TickHeight,
 				 From[i], Name2[i], OriginAngle, TextLength,
 				 TextHeight, postext, PosTicks, NumNames[i],
-				 Adjust[i], Color[i]);
+				 Adjust[i], Colour[i]);
 		if( InterTicks )
 		    ajGraphCircle( xDraw, yDraw, Radius );
 	    }
@@ -1948,7 +1949,7 @@ static void cirdna_DrawGroup(float xDraw, float yDraw, float posblock,
 		cirdna_DrawTicks(xDraw, yDraw, RealLength, RadiusMax,
 				 TickHeight, From[i], Name2[i], OriginAngle,
 				 TextLength, TextHeight, postext, PosTicks,
-				 NumNames[i], Adjust[i], Color[i]);
+				 NumNames[i], Adjust[i], Colour[i]);
 	}
 
 	if( ajStrMatchCaseC(Style2[i], "Block") )
@@ -1956,7 +1957,7 @@ static void cirdna_DrawGroup(float xDraw, float yDraw, float posblock,
 	    cirdna_DrawBlocks(xDraw, yDraw, RealLength, Radius-posblock,
 			      BlockHeight, From[i], To[i], Name2[i], postext,
 			      OriginAngle, PosBlocks, NumNames[i], Adjust[i],
-			      Color[i], BlockType);
+			      Colour[i], BlockType);
 	    Inter[j++] = i;
 	}
 
@@ -1964,7 +1965,7 @@ static void cirdna_DrawGroup(float xDraw, float yDraw, float posblock,
 	    cirdna_DrawRanges(xDraw, yDraw, RealLength, Radius-posrange,
 			      RangeHeight, From[i], To[i], FromSymbol[i],
 			      ToSymbol[i], Name2[i], OriginAngle, NumNames[i],
-			      postext, Adjust[i], Color[i]);
+			      postext, Adjust[i], Colour[i]);
     }
     NumBlocks = j;
 
@@ -1972,7 +1973,7 @@ static void cirdna_DrawGroup(float xDraw, float yDraw, float posblock,
     for(i=0; i<NumBlocks-1; i++)
 	cirdna_InterBlocks(xDraw, yDraw, RealLength, Radius-posblock,
 			   BlockHeight, From[Inter[i]], To[Inter[i+1]],
-			   OriginAngle, InterSymbol, InterColor);
+			   OriginAngle, InterSymbol, InterColour);
 
     return;
 }

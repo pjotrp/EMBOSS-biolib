@@ -34,12 +34,12 @@ select: intersymbol  [
   information: "type of junctions between blocks"
 ]
 
-integer: intercolor  [
+integer: intercolour  [
   optional: "Y"
   default: "1"
   minimum: "0"
   maximum: "15"
-  information: "color of junctions between blocks (enter a color number)"
+  information: "colour of junctions between blocks (enter a colour number)"
 ]
 
 boolean: interticks  [

@@ -23,7 +23,7 @@ select: blocktype  [
   required: "Y"
   default: "Filled"
   values: "Open;Filled;Outline"
-  information: "type of blocks (enter Open, Filled, or Outline)"
+  information: "type of blocks"
   help: "type of blocks: Open, Filled, or Outline. Option 'Outline' draws filled blocks surrounded by a black border"
 ]
 
