@@ -84,7 +84,7 @@ public class ProgList
              {
                numMenuItems++;
                String progN = line.substring(0,line.indexOf(" ")+1);
-               if(!allProgLines.contains(progN))
+               if(!allProgLines.contains(line))
                {
                  allProgLines.add(line);
                  numProgs++;
