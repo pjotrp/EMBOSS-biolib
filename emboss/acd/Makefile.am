@@ -1,6 +1,6 @@
 
 pkgdata_DATA = codes.english \
-	abiview.acd ajbad.acd ajfeatest.acd ajtest.acd \
+	abiview.acd ajbad.acd ajfeatest.acd ajtest.acd alignwrap.acd \
 	antigenic.acd backtranseq.acd banana.acd biosed.acd \
 	btwisted.acd cai.acd chaos.acd charge.acd checktrans.acd chips.acd \
 	cirdna.acd codcmp.acd coderet.acd \
@@ -11,7 +11,7 @@ pkgdata_DATA = codes.english \
 	demoalign.acd demofeatures.acd demolist.acd \
 	demoreport.acd demosequence.acd \
 	demostring.acd demotable.acd \
-	descseq.acd diffseq.acd \
+	descseq.acd dichet.acd diffseq.acd \
 	digest.acd distmat.acd domainer.acd \
 	dotmatcher.acd dotpath.acd dottup.acd \
 	dreg.acd einverted.acd embossdata.acd embossversion.acd emma.acd \
