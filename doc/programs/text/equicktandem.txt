@@ -69,18 +69,32 @@ Output file format
 
 Data files
 
+   None.
+   
 Notes
 
+   None.
+   
 References
 
+   None.
+   
 Warnings
 
+   None.
+   
 Diagnostic Error Messages
 
+   None.
+   
 Exit status
 
+   It always exits with a status of 0.
+   
 Known bugs
 
+   None.
+   
 See also
 
    Program name                          Description
@@ -106,6 +120,11 @@ See also
    showseq      Display a sequence with features, translation etc
    silent       Silent mutation restriction enzyme scan
    tfscan       Scans DNA sequences for transcription factors
+   
+   equicktandem identifies regions wich are likely to contain tanden
+   repeats. tandem should then be run on those regions to confirm them
+   and to get an accurate specification of the repeats. tandem runs
+   slowly.
    
 Author(s)
 
