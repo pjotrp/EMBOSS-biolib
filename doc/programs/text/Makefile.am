@@ -23,29 +23,29 @@ pkgdata_DATA =  aaindexextract.txt abiview.txt antigenic.txt \
                fdnadist.txt fdnainvar.txt fdnaml.txt fdnamlk.txt \
                fdnamove.txt fdnapars.txt fdnapenny.txt fdollop.txt \
                fdolmove.txt fdolpenny.txt fdrawgram.txt fdrawtree.txt \
-               ffactboot.txt ffactor.txt ffreqboot.txt fgendist.txt \
-               findkm.txt fitch.txt fkitsch.txt fmix.txt fmove.txt \
-               fneighbor.txt fpars.txt fpenny.txt fproml.txt fpromlk.txt \
-               fprotdist.txt fprotpars.txt fraggle.txt freak.txt \
-               frestboot.txt frestdist.txt frestml.txt fretree.txt \
-               fseqboot.txt ftreedist.txt ftreedistpair.txt fuzznuc.txt \
-               fuzzpro.txt fuzztran.txt garnier.txt geecee.txt gendist.txt \
-               getorf.txt helixturnhelix.txt hetparse.txt hmmgen.txt \
-               hmoment.txt iep.txt infoalign.txt infoseq.txt interface.txt \
-               isochore.txt jembossctl.txt kitsch.txt libscan.txt
-pkgdata2_DATA = lindna.txt listor.txt marscan.txt maskfeat.txt maskseq.txt \
-               matcher.txt megamerger.txt merger.txt mix.txt msbar.txt \
-               mse.txt mwcontam.txt mwfilter.txt needle.txt neighbor.txt \
-               newcpgreport.txt newcpgseek.txt newseq.txt noreturn.txt \
-               notseq.txt nthseq.txt octanol.txt oddcomp.txt palindrome.txt \
-               pasteseq.txt patmatdb.txt patmatmotifs.txt pdbparse.txt \
-               pdbtosp.txt penny.txt pepcoil.txt pepinfo.txt pepnet.txt \
-               pepstats.txt pepwheel.txt pepwindow.txt pepwindowall.txt \
-               pestfind.txt plotcon.txt plotorf.txt polydot.txt preg.txt \
-               prettyplot.txt prettyseq.txt primersearch.txt \
-               printsextract.txt profgen.txt profit.txt prophecy.txt \
-               prophet.txt prosextract.txt protdist.txt pscan.txt \
-               rebaseextract.txt recoder.txt redata.txt remap.txt \
+               ffactboot.txt ffactor.txt ffitch.txt ffreqboot.txt \
+               fgendist.txt findkm.txt fitch.txt fkitsch.txt fmix.txt \
+               fmove.txt fneighbor.txt fpars.txt fpenny.txt fproml.txt \
+               fpromlk.txt fprotdist.txt fprotpars.txt fraggle.txt \
+               freak.txt frestboot.txt frestdist.txt frestml.txt \
+               fretree.txt fseqboot.txt ftreedist.txt ftreedistpair.txt \
+               fuzznuc.txt fuzzpro.txt fuzztran.txt garnier.txt geecee.txt \
+               gendist.txt getorf.txt helixturnhelix.txt hetparse.txt \
+               hmmgen.txt hmoment.txt iep.txt infoalign.txt infoseq.txt \
+               interface.txt isochore.txt jembossctl.txt kitsch.txt
+pkgdata2_DATA = libscan.txt lindna.txt listor.txt marscan.txt maskfeat.txt \
+               maskseq.txt matcher.txt megamerger.txt merger.txt mix.txt \
+               msbar.txt mse.txt mwcontam.txt mwfilter.txt needle.txt \
+               neighbor.txt newcpgreport.txt newcpgseek.txt newseq.txt \
+               noreturn.txt notseq.txt nthseq.txt octanol.txt oddcomp.txt \
+               palindrome.txt pasteseq.txt patmatdb.txt patmatmotifs.txt \
+               pdbparse.txt pdbtosp.txt penny.txt pepcoil.txt pepinfo.txt \
+               pepnet.txt pepstats.txt pepwheel.txt pepwindow.txt \
+               pepwindowall.txt pestfind.txt plotcon.txt plotorf.txt \
+               polydot.txt preg.txt prettyplot.txt prettyseq.txt \
+               primersearch.txt printsextract.txt profgen.txt profit.txt \
+               prophecy.txt prophet.txt prosextract.txt protdist.txt \
+               pscan.txt rebaseextract.txt recoder.txt redata.txt remap.txt \
                restml.txt restover.txt restrict.txt revseq.txt rocplot.txt \
                scopalign.txt scope.txt scopnr.txt scopparse.txt scoprep.txt \
                scopreso.txt scopseqs.txt seealso.txt seqalign.txt \
