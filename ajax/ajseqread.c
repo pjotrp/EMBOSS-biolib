@@ -4143,11 +4143,16 @@ static AjBool seqReadGenbank (AjPSeq thys, AjPSeqin seqin)
 
     /* for GCG formatted databases */
 
-    while (ajStrPrefixC(rdline, "WP "))
+    if (ajStrPrefixC(rdline, "WPCOMMENT"))
     {
-	if (!ajFileBuffGet (buff, &rdline))
-	    return ajFalse;
-	bufflines++;
+      ajFileBuffGet (buff, &rdline);
+      bufflines++;
+      ok = ajTrue;
+      while (ok && ajStrPrefixC(rdline, " "))
+      {
+	ajFileBuffGet (buff, &rdline);
+ 	bufflines++;
+      }
     }
 
     /* This loop necessary owing to headers on GB distro files */
