@@ -4,8 +4,13 @@ appl: seqret [
 ]
 
 section: input [ info: "input Section" type: page ]
+bool: feature  [
+  information: "Use feature information"
+]
+
 seqall: sequence  [
   parameter: "Y"
+  features: "$(feature)"
 ]
 
 endsection: input
@@ -20,6 +25,8 @@ endsection: advanced
 section: output [ info: "output Section" type: page ]
 seqoutall: outseq  [
   parameter: "Y"
+  features: "$(feature)"
 ]
 
 endsection: output
+
