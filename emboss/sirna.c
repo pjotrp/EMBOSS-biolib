@@ -741,6 +741,8 @@ static ajint sirna_begin (AjPSeq seq, AjPReport report, AjBool poliii,
   head = ajStrNew();
   head2 = ajStrNew();
 
+  ajDebug("sirna_begin()\n");
+
 /* say something about the options in the report header */
   if (poliii) {
     ajStrAssC(&head, 
@@ -763,36 +765,40 @@ static ajint sirna_begin (AjPSeq seq, AjPReport report, AjBool poliii,
         break;
       }
     }
+    (void) ajListIterFree(iter);
   }
 
 /* if we didn't find a CDS, assume -sbegin is the CDS */
   if (begin == 0) {
     begin = ajSeqBegin(seq)-1;
     if (begin == 0) {
+      ajDebug("begin = 0\n");
       ajFmtPrintS(&head2, "%s%s%s%s",  
       		"No CDS region was found in the feature table.\n",
 		"No CDS region was indicated by setting -sbegin.\n",
 		"There will therefore be no penalty for siRNAs found ",
 		"in the first 100 bases.");
     } else {
-      ajFmtPrintS(&head2, "%s%s%s%d"
+      ajDebug("begin != 0\n");
+      ajFmtPrintS(&head2, "%s%s%s%d",
       		"No CDS region was found in the feature table.\n",
 		"The CDS region is assumed to start at the position ",
 		"given by -sbegin: ",
-		begin+1);    	
+		begin+1);
     }
-/* ajDebug("CDS specified at %d\n", begin); */
+    ajDebug("CDS specified at %d\n", begin);
   } 
 
   ajStrApp(&head, head2);
   ajReportSetHeader (report, head);
+
+  ajDebug("sirna_begin begin=%d\n", begin);
 
 /* tidy up */
   ajFeattableDel(&featab);
   ajStrDel(&type);
   ajStrDel(&head);
   ajStrDel(&head2);
-  (void) ajListIterFree(iter);
 
   return begin;
 }
