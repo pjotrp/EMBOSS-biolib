@@ -15702,7 +15702,7 @@ FP 1 /GNUPLOT/
 FZ > 0
 FI _summary
 FC > 0
-FP 1 /rocplot/
+FP 3 /rocplot/
 FZ > 0
 FI  rocplot.errors
 FC > 0
