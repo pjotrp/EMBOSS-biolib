@@ -4,8 +4,8 @@
 **  writes the resulting alignments into a new directory
 **
 ** @author: Copyright (C) Damian Counsell
-** @version $Revision: 1.8 $
-** @modified $Date: 2004/11/19 17:58:47 $
+** @version $Revision: 1.9 $
+** @modified $Date: 2004/11/25 20:21:43 $
 ** @@
 **
 ** This program is free software; you can redistribute it and/or
@@ -29,8 +29,8 @@
 enum constant
     {
 	enumDebugLevel        =  0,
-	enumQuerySeqIndex     =  0,
-	enumTemplateSeqIndex  =  1,
+	enumTemplateSeqIndex  =  0,
+	enumQuerySeqIndex     =  1,
 	enumCountZero         =  0,
     };
 
@@ -92,6 +92,8 @@ int main( int argc , char **argv )
     char cTemplateSeqName             = '\0';
     AjBool ajBoolTemplateNameRead     = AJFALSE;
     
+    AjBool ajBoolZeroEndPenalty;
+
     char cDot = '.';
 
     embInit("alignrunner", argc, argv);
@@ -110,6 +112,7 @@ int main( int argc , char **argv )
     ajpStrFirstOutfileSuffix = ajAcdGetString("firstoutfilesuffix");
     ajpStrSecondOutfileSuffix = ajAcdGetString("secondoutfilesuffix");
     ajpStrAlignmentFormat = ajAcdGetString("outfileformat");
+    ajBoolZeroEndPenalty = ajAcdGetBool("zeroend");
 
     /* count the number of sequence pairs to be aligned */
     ajIntNumberOfSeqPairFiles = ajListLength(ajpListSeqPairFiles);
@@ -242,19 +245,20 @@ int main( int argc , char **argv )
 	    ajFmtPrintS(&ajpStrFirstCommandLine,
 			"%S%S -asequence asis::%S  -bsequence asis::%S -datafile %S%S -gapopen %2.1f -gapextend %2.1f -outfile %S%S -aformat3 %S",
 			ajpStrPathToCommands, ajpStrFirstCommandName,
-			ajpStrQuerySeq, ajpStrTemplateSeq,
+			ajpStrTemplateSeq, ajpStrQuerySeq,
 			ajpStrPathToScoringMatrix, ajpStrScoringMatrixName,
 			fGapPenalty, fExtensionPenalty,
 			ajpStrFirstPathToOutfile, ajpStrFirstOutfileName,
 			ajpStrAlignmentFormat);
 
 	    ajFmtPrintS(&ajpStrSecondCommandLine,
-			"%S%S -down asis::%S -across asis::%S -substitution %S%S -gapo %2.1f -gape %2.1f -aligned %S%S",
+			"%S%S -down asis::%S -across asis::%S -substitution %S%S -gapo %2.1f -gape %2.1f -aligned %S%S -zeroend %B",
 			ajpStrPathToCommands, ajpStrSecondCommandName,
-			ajpStrQuerySeq, ajpStrTemplateSeq,
+			ajpStrTemplateSeq, ajpStrQuerySeq,
 			ajpStrPathToScoringMatrix, ajpStrScoringMatrixName,
 			fGapPenalty, fExtensionPenalty,
-			ajpStrSecondPathToOutfile, ajpStrSecondOutfileName);
+			ajpStrSecondPathToOutfile, ajpStrSecondOutfileName,
+			ajBoolZeroEndPenalty);
 
 	    /* execute commands */
 	    pcFirstCommandLine = ajStrStr(ajpStrFirstCommandLine);
