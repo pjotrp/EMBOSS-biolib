@@ -30,7 +30,7 @@ import java.io.*;
 * Content of each row in the DragJTable
 *
 */
-public class SequenceData implements Transferable
+public class SequenceData implements Transferable, Serializable
 {
   public String s_name;       //seq location
   public String s_beg;        //seq start
@@ -91,6 +91,17 @@ public class SequenceData implements Transferable
     else throw new UnsupportedFlavorException(d);
   }
 
+// Serializable
+   private void writeObject(java.io.ObjectOutputStream out) throws IOException
+   {
+     out.defaultWriteObject();
+   }
+
+   private void readObject(java.io.ObjectInputStream in)
+     throws IOException, ClassNotFoundException
+   {
+     in.defaultReadObject();
+   }
 
 }
 
