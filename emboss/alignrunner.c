@@ -4,8 +4,8 @@
 **  writes the resulting alignments into a new directory
 **
 ** @author: Copyright (C) Damian Counsell
-** @version $Revision: 1.3 $
-** @modified $Date: 2004/09/08 10:45:59 $
+** @version $Revision: 1.4 $
+** @modified $Date: 2004/09/20 18:18:01 $
 ** @@
 **
 ** This program is free software; you can redistribute it and/or
@@ -70,6 +70,8 @@ int main( int argc , char **argv )
     AjPStr ajpStrScoringMatrixName    = NULL;
     AjPStr ajpStrFirstPathToOutfile   = NULL; /* directories for aligned files... */
     AjPStr ajpStrSecondPathToOutfile  = NULL; /*   ...from two alignment progs    */
+    AjPStr ajpStrRootOutfileName      = NULL; /* stem of name of both aligned output files     */
+    AjPStr ajpStrJoinOutfileName      = NULL; /* connects first part of outfile name to second */
     AjPStr ajpStrFirstOutfileName     = NULL; /* full name of output file of aligned sequences */
     AjPStr ajpStrSecondOutfileName    = NULL; /* full name of output file of aligned sequences */
     AjPStr ajpStrFirstOutfileSuffix   = NULL; /* filename extension for alignment file         */
@@ -107,8 +109,7 @@ int main( int argc , char **argv )
     /* new seqset to store input unaligned sequences */
     ajpSeqsetUnalignedPair = ajSeqsetNew();
     /* new string for alignment command and options to it */
-    ajpStrFirstCommandLine = ajStrNew();
-    ajpStrSecondCommandLine = ajStrNew();
+    ajpStrJoinOutfileName = ajStrNewC("_vs_");
     ajpSeqQuery = ajSeqNew();    
     ajpSeqTemplate = ajSeqNew();
     ajpStrQuerySeq = ajStrNew();    
@@ -118,32 +119,41 @@ int main( int argc , char **argv )
     /* DDDDEBUG */
     for(ajIntCount = 0;ajIntCount < 10;ajIntCount++)
     {
+	ajpStrRootOutfileName = ajStrNew();
+	ajpStrFirstOutfileName = ajStrNew();
+	ajpStrSecondOutfileName = ajStrNew();
+	ajpStrFirstCommandLine = ajStrNew();
+	ajpStrSecondCommandLine = ajStrNew();
+
 	/* DDDDEBUG */
 	ajListPop(ajpListSeqPairFiles, (void **)&ajpStrSeqPairFileName);
 	ajFmtPrint( "%S\n", ajpStrSeqPairFileName);
-
-	ajStrCopy(&ajpStrFirstOutfileName, ajpStrSeqPairFileName);
-	ajStrCopy(&ajpStrSecondOutfileName, ajpStrSeqPairFileName);
-	ajFileNameTrim(&ajpStrFirstOutfileName);
-	ajFileNameTrim(&ajpStrSecondOutfileName);
-	ajFileNameShorten(&ajpStrFirstOutfileName);
-	ajFileNameShorten(&ajpStrSecondOutfileName);
-	ajStrApp(&ajpStrFirstOutfileName, ajpStrFirstOutfileSuffix);
-	ajStrApp(&ajpStrSecondOutfileName, ajpStrSecondOutfileSuffix);
 
 	/* read two unaligned sequences into memory */
 	ajSeqinUsa(&ajpSeqinUnalignedPair, ajpStrSeqPairFileName);
 	ajSeqsetRead(ajpSeqsetUnalignedPair, ajpSeqinUnalignedPair);
 
 	ajpSeqQuery = ajSeqsetGetSeq(ajpSeqsetUnalignedPair, enumQuerySeqIndex);
-	ajpSeqTemplate = ajSeqsetGetSeq(ajpSeqsetUnalignedPair, enumQuerySeqIndex);
+	ajpSeqTemplate = ajSeqsetGetSeq(ajpSeqsetUnalignedPair, enumTemplateSeqIndex);
 
 	ajpStrQuerySeq = ajSeqStr(ajpSeqQuery);
 	ajpStrTemplateSeq = ajSeqStr(ajpSeqTemplate);
 
+	ajStrCopy(&ajpStrRootOutfileName, ajpSeqQuery->Name);
+	ajStrApp(&ajpStrRootOutfileName, ajpStrJoinOutfileName);
+	ajStrApp(&ajpStrRootOutfileName, ajpSeqTemplate->Name);
+/* 	ajFileNameTrim(&ajpStrFirstOutfileName); */
+/* 	ajFileNameTrim(&ajpStrSecondOutfileName); */
+/* 	ajFileNameShorten(&ajpStrFirstOutfileName); */
+/* 	ajFileNameShorten(&ajpStrSecondOutfileName); */
+	ajStrCopy(&ajpStrFirstOutfileName, ajpStrRootOutfileName);
+	ajStrCopy(&ajpStrSecondOutfileName, ajpStrRootOutfileName);	
+	ajStrApp(&ajpStrFirstOutfileName, ajpStrFirstOutfileSuffix);
+	ajStrApp(&ajpStrSecondOutfileName, ajpStrSecondOutfileSuffix);
+
 	/* obtain sequences as modifiable strings */
 	ajFmtPrintS(&ajpStrFirstCommandLine,
-		    "%S/%S -asequence asis::%S  -bsequence asis::%S -datafile %S%S -gapopen %2.1f -gapextend %2.1f -outfile %S/%S -aformat3 %S",
+		    "%S%S -asequence asis::%S  -bsequence asis::%S -datafile %S%S -gapopen %2.1f -gapextend %2.1f -outfile %S%S -aformat3 %S",
 		    ajpStrPathToCommands, ajpStrFirstCommandName,
 		    ajpStrQuerySeq, ajpStrTemplateSeq,
 		    ajpStrPathToScoringMatrix, ajpStrScoringMatrixName,
@@ -152,7 +162,7 @@ int main( int argc , char **argv )
 		    ajpStrAlignmentFormat);
 
 	ajFmtPrintS(&ajpStrSecondCommandLine,
-		    "%S/%S -down asis::%S -across asis::%S -substitution %S%S -gapo %2.1f -gape %2.1f -aligned %S/%S",
+		    "%S%S -down asis::%S -across asis::%S -substitution %S%S -gapo %2.1f -gape %2.1f -aligned %S%S",
 		    ajpStrPathToCommands, ajpStrSecondCommandName,
 		    ajpStrQuerySeq, ajpStrTemplateSeq,
 		    ajpStrPathToScoringMatrix, ajpStrScoringMatrixName,
@@ -165,6 +175,11 @@ int main( int argc , char **argv )
 	system(pcSecondCommandLine);
 	printf("\n%s", pcFirstCommandLine);
  	printf("\n%s", pcSecondCommandLine);
+	ajStrDel(&ajpStrRootOutfileName);
+	ajStrDel(&ajpStrFirstOutfileName);
+	ajStrDel(&ajpStrSecondOutfileName);
+	ajStrDel(&ajpStrFirstCommandLine);
+	ajStrDel(&ajpStrSecondCommandLine);
    }
 
     /*
