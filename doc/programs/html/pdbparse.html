@@ -1,0 +1,1488 @@
+<!--START OF HEADER - DON'T ALTER -->
+
+<HTML>
+<HEAD>
+  <TITLE>
+  EMBOSS: pdbparse
+  </TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" text="#000000">
+
+
+
+<table align=center border=0 cellspacing=0 cellpadding=0>
+<tr><td valign=top>
+<A HREF="/" ONMOUSEOVER="self.status='Go to the EMBOSS home page';return true"><img border=0 src="emboss_icon.jpg" alt="" width=150 height=48></a>
+</td>
+<td align=left valign=middle>
+<b><font size="+6">
+
+pdbparse
+</font></b>
+</td></tr>
+</table>
+<br>&nbsp;
+<p>
+
+
+
+<!--END OF HEADER-->
+
+
+
+
+
+
+<H2>
+    Function
+</H2>
+[an error occurred while processing this directive]
+
+<!--
+DON'T WRITE ANYTHING HERE.
+IT IS DONE FOR YOU.
+-->
+
+
+
+
+<H2>
+    Description
+</H2>
+
+<!-- 
+	This is the main part of the document.
+        This is what the user looks at to find out if this program will do what he wants. 
+        Long description.
+        Why it is useful.
+        When it should/shouldn't be used.
+  -->
+
+
+This program is part of a suite of EMBOSS applications that directly or
+indirectly make use of the protein structure databases pdb and scop.
+This program is part of an experimental analysis pipeline described in an
+accompanying document.  We provide the software in the hope that it will
+be useful.  The applications were designed for specific research purposes
+and may not be useful or reliable in contexts other than the described
+pipeline.  The development of the suite was coordinated by Jon Ison to
+whom enquiries and bug reports should be sent (email jison@hgmp.mrc.ac.uk).
+
+<p>
+
+Global analyses of protein structure require direct access to the
+co-ordinate data held in the Protein Data Bank (Berman et al., 2000).
+However, the text files provided are notoriously difficult to parse
+reliably, the problems arising from errors in individual PDB files and an
+awkward and inconsistent file format, which has evolved over some 30 years
+in a rather ad hoc manner.  A difficult aspect of parsing is determining
+the residue sequence and ensuring that the atomic co-ordinates are assigned
+to the correct position in the sequence in the relevant data structure;
+residue numbers must be treated as strings and a sequential numerical
+numbering scheme is not consistently used.  While extensive validation is
+now performed on deposited data, including comparisons of PDB SEQRES
+records (used to hold the protein sequence) and the sequence derived from
+the co-ordinate records, there is a legacy of PDB files that predate these
+quality control measures.  There is therefore a need for a source of
+protein co-ordinate data that provides fast and convenient access,
+correctly employs a consistent residue numbering scheme.  pdbparse will
+parse pdb files and, where protein co-ordinates are present, generate
+'cleaned up' files of co-ordinate data corresponding to whole pdb files.
+These files contain corrections to some of the errors and inconsistencies
+in the original PDB file, contain minimal bibliographic data, and use a
+highly parsable and self-consistent format.
+
+<p>
+
+Some of tasks and difficulties involved in parsing a PDB file are
+summarised below.
+
+<p>
+
+Identify molecule type (protein, nucleic acid or polysaccharide.)
+- Not clearly indicated.
+
+<p>
+
+Count the number of models and find the start of the co-ordinates for each.
+- MODEL and ENDMDL records may or may not be given for NMR structures with
+a single model only.
+
+<p>
+
+Determine the number and length of each chain.
+- The SEQRES records are awkward to parse and in some cases the listed
+number of residues differs from the indicated number.  SEQRES records do
+not consistently give the sequences for small molecules listed in the ATOM
+records.  Rarely, chains are given in the SEQRES records but are missing
+from the ATOM records.
+
+
+<p>
+
+Extract co-ordinates for individual chains.
+- Certain files do not contain any TER records or have multiple chains that
+are not delimited by TER records.  Multiple TER records are given for a
+single chain where the co-ordinates are for fragments of a protein digest.
+
+<p>
+
+Occasionally, the TER record does not delimit the protein and heterogen
+atoms but is given after the final heterogen atom.  The order of chains in
+the SEQRES records may not agree with the order given in the ATOM records.
+
+<p>
+
+Errors may occur in the use of chain identifiers, especially for N and
+C-terminal residues.
+
+<p>
+
+Extract co-ordinates for non-covalently associated species.
+- Chain identifiers are not consistently used and when present may be
+different to that of the chain to which the group is associated.
+
+<p>
+
+Heterogen atoms are usually listed after the TER record for the appropriate
+chain, but occasionally are listed together after the last chain in the
+structure.
+
+<p>
+
+Determine residue numbering at the N-terminus.
+- N-terminal MET residues and N-terminal blocking groups are often numbered
+zero (rather than 1) but this also occurs for other N-terminal residue.
+In some files, for reasons of alignment, the N-terminal residue is assigned
+a negative number and the residue C-terminal to residue -1 can be numbered
++1 or 0.  Sometimes the indicated starting residue number is either higher
+or lower than that suggested by the SEQRES records.
+
+<p>
+
+Determine the sequence of residues and ensure that the atomic co-ordinates
+are assigned to the correct position in sequence in the relevant data
+structure.   
+- In some cases the residue numbering in the ATOM records does not agree at
+all with the order of residues in the SEQRES records, for example in cases
+where there are co-ordinates for a fragment and residue numbering is
+relative to the full length protein.  Non-sequential and character-based
+numbering systems are used where the numbering is relative to a sequence or
+topological alignment.  For example, insertion codes (characters) are used
+in cases where numbering is given relative to a reference protein and the
+homologue possess certain residue that the reference protein lacks.
+
+<p>
+
+N-terminal MET residues and N-terminal blocking groups listed in the ATOM
+records are frequently missing from the SEQRES records.  Other N and
+C-terminal residues are occasionally ommitted from the SEQRES records.
+
+<p>
+
+Incorrect residue identifiers result in further inconsistencies between
+the ATOM and SEQRES records.
+
+<p>
+
+Process jumps in the residue numbering within the lists of ATOM records.
+- Such jumps arise systematically, for example, in cases where parts of
+the structure could not be refined, or where residue numbering is given
+relative to a reference protein and the homologue lacks a certain residue
+in the reference protein.  Other jumps are the result of errors.
+
+<p>
+
+Process residue numbering for heterogeneous residue positions.
+- Residue numbering for heterogeneous positions, which arise if the
+protein is a naturally occurring mixture or if a residue has been partly
+chemically modified, is not handled consistently.  For example, both
+insertion codes and non-sequential numbers are used.  Further, the
+position of the insertion code is the same as that used in alternative
+residue numbering schemes and in some cases to indicate insertion
+mutations.
+
+<p>
+
+Extract a unique set of co-ordinates for each residue.
+- Occasionally multiple sets of co-ordinates are given for a single atom
+or a whole residue.  This must be distinguished from cases of
+heterogeneity.   
+
+<p>
+
+pdbparse parses every pdb file in a directory and writes a cleaned-up
+protein coordinate file in embl-like format for each one.  The paths and
+extensions for the pdb (input) and protein coordinate (output) files are
+specified by the user.  The user specifies whether the output files have
+the same names as the input files or whether the pdb identifier codes
+(from the pdb files) are used to name the files.  A log file is also
+written.   
+
+
+
+
+
+
+
+
+
+
+
+
+
+<H2>
+    Algorithm
+</H2>
+
+<!-- 
+        Algorithms
+	  Pseudocode/Vague description/Handwaving/web links to useful pages
+  -->
+
+The PDB file is read into memory and the number of unique chains
+(covalently bonded, contiguous sequence of residues) and models (number of
+co-ordinate sets for a single chain) are assigned by reference to the PDB
+SEQRES and MODEL records respectively.  The chain identifiers, molecule
+type, method used to derive the co-ordinates and the resolution of the
+structure (if applicable) are parsed.
+
+<p>
+
+The procedure to determine the correct residue sequence and numbering for a
+chain relies on an alignment between sequences derived from the SEQRES and
+ATOM records of the PDB file ('SEQRES sequence' and 'ATOM sequence' are
+used hereon respectively)  and is described in 5 steps as follows.  (1)
+Each chain is pre-processed so that residue numbering is positive and
+incremental.  Non-sequential or character-based numbering schemes are
+replaced, however any jumps in the residue numbering are preserved.  The
+SEQRES sequence is corrected for any missing N-terminal ACE or MET
+residues.  (2) A feature of PDB files is that the character position used
+to handle heterogeneity is the same as that used in character-based
+numbering schemes.  Those residue positions displaying possible
+heterogeneity or using character-based numbering schemes are noted.  (3)
+The parser attempts to align the SEQRES and ATOM sequences without allowing
+any errors (residue mismatches).  At this stage, the file is presumed to
+use a character-based numbering scheme rather than contain heterogeneity.
+
+<p>
+
+A quick check is made to see whether the ATOM sequence is a sub-string of
+the SEQRES sequence or if the residue numbering agrees with the SEQRES
+sequence.  If no correspondence is found, sequence segments from the ATOM
+sequence are aligned (by string handling) to the SEQRES sequence.
+
+<p>
+
+Overlapping sequence segments of progressively smaller size are used and
+gaps between successive alignments are allowed and in this manner missing
+residues in the ATOM records are detected.  Consider a case where the
+first 50 residues of an ATOM sequence of 100 residues have been
+successfully aligned to residues 11-60 in the SEQRES sequence.  The parser
+would search for an exact match using a sub-string of the ATOM sequence
+that was 50 residues long (positions 51 - 100), then 49 residues
+(positions 51 - 99) and so on until an exact match for a single residue
+(position 51) was found.  The sub-string could be matched to any region in
+the SEQRES sequence beginning from position 61 onwards.  (4) If after
+string alignment an exact match is not found for all positions, step 3 is
+repeated but heterogeneity is presumed rather than an alternative numbering
+scheme.  (5) If an exact match cannot be found for all positions step 3 is
+repeated, but this time mismatches between the SEQRES and ATOM positions
+are allowed.  The "true" residue is taken to be that in the ATOM records.
+For instance, in cases where the lengths of the two sequences are the same
+but the sequences differ, the sequence from the ATOM records is taken to be
+the true sequence.
+
+<p>
+
+The co-ordinates for each chain of every model are then parsed.
+Co-ordinates for a chain are indicated by the presence of an ATOM or HETATM
+record before a TER record and containing the relevant chain identifier.
+For NMR structures, the model number is taken from a count of the MODEL
+records.  In cases where multiple co-ordinates are given for a single atom
+or residue the first set of co-ordinates are taken.  Co-ordinates for
+groups that are non co-valently associated with the protein ("heterogens")
+are parsed and, where possible, the group is assigned to a chain.  Each
+group is assigned a group number that is relative to the chain or the
+protein (for groups that could not be associated with a chain). The HELIX,
+SHEET and TURN pdb records containing the crystallographers secondary
+structure element assignment are also parsed.
+
+<p>
+
+Optionally the parser can be configured to (1) Mask non-amino acid groups
+in protein chains that do not contain a C-alpha atom.  Masked residues will
+not appear in either the CO or SQ records of the clean coordinate file.
+(2) Mask amino acids in protein chains that do not contain a C-alpha atom.
+The amino acid will not appear in the CO record but will still be present
+in the SQ record of the clean coordinate file.  (3) Mask amino acid
+residues in protein chains with a single atom only.  The amino acid will
+appear not appear in the CO record but will still be present in the SQ
+record of the clean coordinate file.
+
+
+
+
+
+
+
+
+
+
+
+
+
+<H2>
+    Usage
+</H2>
+
+<!--  
+	Example usage, as run from the command-line.
+        Many examples illustrating different behaviours is good.
+ -->
+
+[an error occurred while processing this directive]
+
+
+
+<H2>
+    Command line arguments
+</H2>
+
+<table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
+<pre>
+[an error occurred while processing this directive]
+</pre>
+</td></tr></table>
+<P>
+[an error occurred while processing this directive]
+
+<!--
+DON'T WRITE ANYTHING HERE.
+IT IS DONE FOR YOU.
+-->
+
+
+
+
+
+
+
+
+<H2>
+    Input file format
+</H2>
+
+<!-- 
+        This includes example input file formats.
+        This should be a detailed description and example - assume
+        someone will want to parse this file and will want to know what
+        happens in unusual cases - null input, etc. 
+   -->
+
+<b>pdbparse</b> reads any normal sequence USAs.
+
+<p>
+
+[an error occurred while processing this directive]
+
+<p>
+
+An excerpt of a pdb file is shown below.  A detailed explanation of the pdb
+file format is available on the pdb web site:
+
+<p>
+
+http://www.rcsb.org/pdb/info.html#File_Formats_and_Standards
+
+<p>
+
+<pre>
+HEADER    LYASE/LYASE/SIGNALING PROTEIN           16-AUG-99   1CS4
+TITLE     COMPLEX OF GS-ALPHA WITH THE CATALYTIC DOMAINS OF MAMMALIAN
+TITLE    2 ADENYLYL CYCLASE: COMPLEX WITH 2'-DEOXY-ADENOSINE 3'-
+TITLE    3 MONOPHOSPHATE, PYROPHOSPHATE AND MG
+COMPND    MOL_ID: 1;
+COMPND   2 MOLECULE: TYPE V ADENYLATE CYCLASE;
+SOURCE    MOL_ID: 1;
+SOURCE   2 ORGANISM_SCIENTIFIC: CANIS FAMILIARIS;
+KEYWDS    COMPLEX (LYASE/HYDROLASE), HYDROLASE, SIGNAL TRANSDUCING
+KEYWDS   2 PROTEIN, CYCLASE, EFFECTOR ENZYME, LYASE/HYDROLASE COMPLEX
+EXPDTA    X-RAY DIFFRACTION
+AUTHOR    J.J.G.TESMER,C.A.DESSAUER,R.K.SUNAHARA,R.A.JOHNSON,
+AUTHOR   2 A.G.GILMAN,S.R.SPRANG
+REVDAT   2   21-MAR-01 1CS4    3       HETATM REMARK
+REVDAT   1   10-JAN-01 1CS4    0
+JRNL        AUTH   J.J.G.TESMER,C.A.DESSAUER,R.K.SUNAHARA,L.D.MURRAY,
+JRNL        AUTH 2 R.A.JOHNSON,A.G.GILMAN,S.R.SPRANG
+JRNL        TITL   MOLECULAR BASIS FOR P-SITE INHIBITION OF ADENYLYL
+JRNL        TITL 2 CYCLASE
+JRNL        REF    BIOCHEMISTRY                  V.  39 14464 2000
+JRNL        REFN   ASTM BICHAW  US ISSN 0006-2960
+REMARK   1
+REMARK   1 REFERENCE 1
+REMARK   1  AUTH   J.J.G.TESMER,R.K.SUNAHARA,A.G.GILMAN,S.R.SPRANG
+REMARK   1  TITL   CRYSTAL STRUCTURE OF THE CATALYTIC DOMAINS OF
+REMARK   1  TITL 2 ADENYLYL CYCLASE IN A COMPLEX WITH
+REMARK   1  TITL 3 GS(ALPHA)-GTP(GAMMA)S
+REMARK   1  REF    SCIENCE                       V. 278  1907 1997
+REMARK   1  REFN   ASTM SCIEAS  US ISSN 0036-8075
+REMARK   2
+REMARK   2 RESOLUTION. 2.50 ANGSTROMS.
+REMARK 900 RELATED ENTRIES
+REMARK 900 RELATED ID: 1CUL   RELATED DB: PDB
+DBREF  1CS4 A  363   580  SWS    P30803   CYA5_CANFA     363    580
+DBREF  1CS4 B  870  1081  SWS    P26769   CYA2_RAT       870   1081
+DBREF  1CS4 C    1   394  SWS    P04896   GBAS_BOVIN       1    394
+SEQADV 1CS4 MET A  476  SWS  P30803    VAL   476 ENGINEERED
+SEQRES   4 A  225  ALA ASP ILE GLU GLY PHE THR SER LEU ALA SER GLN CYS
+SEQRES   5 A  225  THR ALA GLN GLU LEU VAL MET THR LEU ASN GLU LEU PHE
+SEQRES   6 A  225  ALA ARG PHE ASP LYS LEU ALA ALA GLU ASN HIS CYS LEU
+SEQRES   7 A  225  ARG ILE LYS ILE LEU GLY ASP CYS TYR TYR CYS VAL SER
+HET     MG    396       1
+HET     MG    397       1
+HET     CL    398       1
+HET    GSP   1000      32
+HET    101   1001      22
+HET    FOK   1002      29
+HET    MES   1003      12
+HET    MES   1004      12
+HET    POP   1005       9
+HETNAM      MG MAGNESIUM ION
+HETNAM      CL CHLORIDE ION
+HETNAM     GSP 5'-GUANOSINE-DIPHOSPHATE-MONOTHIOPHOSPHATE
+HETNAM     101 2'-DEOXY-ADENOSINE 3'-MONOPHOSPHATE
+HETNAM     FOK FORSKOLIN
+HETNAM     MES 2-(N-MORPHOLINO)-ETHANESULFONIC ACID
+HETNAM     POP PYROPHOSPHATE 2-
+FORMUL   4   MG    2(MG1 2+)
+FORMUL   6   CL    CL1 1-
+FORMUL   7  GSP    C10 H16 N5 O13 P3 S1
+FORMUL   8  101    C10 H14 N5 O6 P1
+FORMUL   9  FOK    C22 H34 O7
+FORMUL  10  MES    2(C6 H13 N1 O4 S1)
+FORMUL  12  POP    H2 O7 P2 2-
+FORMUL  13  HOH   *77(H2 O1)
+HELIX    1   1 GLY A  399  SER A  405  1                                   7
+HELIX    2   2 THR A  408  ASN A  430  1                                  23
+SHEET    1   A 5 LEU A 433  LEU A 438  0
+SHEET    3   A 5 ILE A 384  ILE A 397 -1  N  SER A 391   O  SER A 446
+SHEET    1  A1 7 LEU A 433  LEU A 438  0     
+SHEET    3  A1 7 ILE A 384  ILE A 397 -1  N  SER A 391   O  SER A 446
+ATOM    164  N   ASP A 396      51.711 -11.782  62.798  1.00 51.17           N
+ATOM    165  CA  ASP A 396      52.810 -11.644  61.848  1.00 54.45           C
+ATOM    166  C   ASP A 396      54.137 -11.314  62.530  1.00 55.11           C
+ATOM    167  O   ASP A 396      54.175 -10.524  63.469  1.00 55.34           O
+ATOM    168  CB  ASP A 396      52.437 -10.555  60.831  1.00 57.50           C
+ATOM    169  CG  ASP A 396      53.460 -10.391  59.729  1.00 61.38           C
+ATOM    170  OD1 ASP A 396      54.316  -9.485  59.841  1.00 65.55           O
+ATOM    171  OD2 ASP A 396      53.390 -11.146  58.736  1.00 63.68           O
+ATOM    172  N   ILE A 397      55.216 -11.941  62.066  1.00 57.14           N
+ATOM    173  CA  ILE A 397      56.546 -11.705  62.624  1.00 59.46           C
+ATOM    174  C   ILE A 397      57.020 -10.305  62.230  1.00 60.12           C
+ATOM    175  O   ILE A 397      56.963  -9.927  61.060  1.00 59.12           O
+ATOM    176  CB  ILE A 397      57.583 -12.722  62.094  1.00 60.84           C
+ATOM    177  CG1 ILE A 397      57.184 -14.163  62.447  1.00 63.12           C
+ATOM    178  CG2 ILE A 397      58.975 -12.384  62.632  1.00 61.24           C
+ATOM    179  CD1 ILE A 397      57.408 -14.554  63.895  1.00 63.92           C
+ATOM    180  N   GLU A 398      57.492  -9.548  63.212  1.00 60.23           N
+ATOM    181  CA  GLU A 398      57.975  -8.198  62.971  1.00 62.14           C
+ATOM    182  C   GLU A 398      59.401  -8.277  62.424  1.00 60.59           C
+ATOM    183  O   GLU A 398      60.244  -8.972  62.987  1.00 61.84           O
+ATOM    184  CB  GLU A 398      57.917  -7.386  64.272  1.00 65.47           C
+ATOM    185  CG  GLU A 398      58.037  -5.874  64.091  1.00 70.25           C
+ATOM    186  CD  GLU A 398      57.588  -5.089  65.324  1.00 72.94           C
+ATOM    187  OE1 GLU A 398      58.262  -5.175  66.377  1.00 70.76           O
+ATOM    188  OE2 GLU A 398      56.555  -4.380  65.232  1.00 74.36           O
+ATOM    189  N   GLY A 399      59.642  -7.608  61.298  1.00 57.58           N
+ATOM    190  CA  GLY A 399      60.956  -7.615  60.681  1.00 56.14           C
+ATOM    191  C   GLY A 399      61.452  -8.993  60.265  1.00 58.03           C
+ATOM    192  O   GLY A 399      62.620  -9.322  60.480  1.00 57.47           O
+ATOM    193  N   PHE A 400      60.576  -9.789  59.649  1.00 58.00           N
+ATOM    194  CA  PHE A 400      60.914 -11.143  59.200  1.00 58.07           C
+ATOM    195  C   PHE A 400      61.995 -11.219  58.117  1.00 58.57           C
+ATOM    196  O   PHE A 400      62.862 -12.091  58.161  1.00 59.44           O
+ATOM    197  CB  PHE A 400      59.657 -11.881  58.734  1.00 59.18           C
+ATOM    198  CG  PHE A 400      59.900 -13.316  58.322  1.00 58.53           C
+ATOM    199  CD1 PHE A 400      60.377 -14.251  59.237  1.00 57.59           C
+ATOM    200  CD2 PHE A 400      59.613 -13.736  57.024  1.00 57.95           C
+ATOM    201  CE1 PHE A 400      60.557 -15.583  58.864  1.00 59.98           C
+ATOM    202  CE2 PHE A 400      59.790 -15.063  56.643  1.00 58.52           C
+ATOM    203  CZ  PHE A 400      60.261 -15.990  57.563  1.00 58.10           C
+ATOM    204  N   THR A 401      61.921 -10.341  57.123  1.00 58.08           N
+ATOM    205  CA  THR A 401      62.916 -10.337  56.055  1.00 56.79           C
+ATOM    206  C   THR A 401      64.304 -10.010  56.634  1.00 57.24           C
+ATOM    207  O   THR A 401      65.320 -10.547  56.187  1.00 55.16           O
+ATOM    208  CB  THR A 401      62.528  -9.348  54.936  1.00 55.59           C
+ATOM    209  OG1 THR A 401      61.204  -9.650  54.473  1.00 54.91           O
+ATOM    210  CG2 THR A 401      63.495  -9.452  53.764  1.00 53.04           C
+ATOM    211  N   SER A 402      64.323  -9.169  57.667  1.00 56.99           N
+ATOM    212  CA  SER A 402      65.558  -8.772  58.342  1.00 58.09           C
+ATOM    213  C   SER A 402      66.138  -9.957  59.121  1.00 59.79           C
+ATOM    214  O   SER A 402      67.341 -10.241  59.058  1.00 58.14           O
+ATOM    215  CB  SER A 402      65.260  -7.617  59.306  1.00 58.37           C
+ATOM    216  OG  SER A 402      66.421  -7.159  59.974  1.00 55.94           O
+ATOM    217  N   LEU A 403      65.253 -10.655  59.828  1.00 60.85           N
+ATOM    218  CA  LEU A 403      65.598 -11.807  60.650  1.00 61.09           C
+ATOM    219  C   LEU A 403      66.147 -12.991  59.843  1.00 62.81           C
+ATOM    220  O   LEU A 403      67.235 -13.495  60.131  1.00 61.33           O
+ATOM    221  CB  LEU A 403      64.370 -12.220  61.457  1.00 60.24           C
+ATOM    222  CG  LEU A 403      64.530 -13.262  62.555  1.00 63.33           C
+ATOM    223  CD1 LEU A 403      65.692 -12.895  63.470  1.00 65.31           C
+ATOM    224  CD2 LEU A 403      63.232 -13.353  63.340  1.00 64.51           C
+ATOM    225  N   ALA A 404      65.398 -13.415  58.826  1.00 65.20           N
+ATOM    226  CA  ALA A 404      65.787 -14.532  57.960  1.00 68.38           C
+ATOM    227  C   ALA A 404      67.007 -14.213  57.094  1.00 70.82           C
+ATOM    228  O   ALA A 404      67.607 -15.105  56.479  1.00 71.80           O
+ATOM    229  CB  ALA A 404      64.616 -14.944  57.079  1.00 66.92           C
+ATOM    230  N   SER A 405      67.354 -12.932  57.042  1.00 72.71           N
+ATOM    231  CA  SER A 405      68.485 -12.447  56.265  1.00 73.57           C
+ATOM    232  C   SER A 405      69.791 -12.628  57.045  1.00 75.23           C
+ATOM    233  O   SER A 405      70.878 -12.568  56.467  1.00 76.00           O
+ATOM    234  CB  SER A 405      68.265 -10.966  55.936  1.00 72.32           C
+ATOM    235  OG  SER A 405      69.156 -10.499  54.945  1.00 70.40           O
+ATOM    236  N   GLN A 406      69.675 -12.875  58.350  1.00 76.83           N
+ATOM    237  CA  GLN A 406      70.837 -13.048  59.223  1.00 78.12           C
+ATOM    238  C   GLN A 406      71.259 -14.494  59.465  1.00 80.42           C
+ATOM    239  O   GLN A 406      72.391 -14.881  59.145  1.00 81.68           O
+ATOM    240  CB  GLN A 406      70.597 -12.354  60.557  1.00 75.97           C
+ATOM    241  CG  GLN A 406      70.317 -10.879  60.416  1.00 78.05           C
+ATOM    242  CD  GLN A 406      70.140 -10.212  61.750  1.00 78.52           C
+ATOM    243  OE1 GLN A 406      71.102 -10.029  62.490  1.00 78.65           O
+ATOM    244  NE2 GLN A 406      68.902  -9.859  62.080  1.00 81.68           N
+ATOM    245  N   CYS A 407      70.360 -15.280  60.051  1.00 81.23           N
+ATOM    246  CA  CYS A 407      70.641 -16.682  60.341  1.00 81.90           C
+ATOM    247  C   CYS A 407      70.484 -17.589  59.118  1.00 80.94           C
+ATOM    248  O   CYS A 407      69.924 -17.187  58.095  1.00 79.51           O
+ATOM    249  CB  CYS A 407      69.767 -17.180  61.498  1.00 83.37           C
+ATOM    250  SG  CYS A 407      67.992 -17.169  61.165  1.00 84.69           S
+ATOM    251  N   THR A 408      70.999 -18.811  59.236  1.00 80.19           N
+ATOM    252  CA  THR A 408      70.929 -19.796  58.161  1.00 79.55           C
+ATOM    253  C   THR A 408      69.486 -20.243  57.912  1.00 78.78           C
+ATOM    254  O   THR A 408      68.644 -20.148  58.803  1.00 78.45           O
+ATOM    255  CB  THR A 408      71.833 -21.015  58.462  1.00 79.73           C
+ATOM    256  OG1 THR A 408      71.645 -22.019  57.457  1.00 81.02           O
+ATOM    257  CG2 THR A 408      71.529 -21.596  59.844  1.00 79.82           C
+ATOM    258  N   ALA A 409      69.200 -20.711  56.699  1.00 77.92           N
+ATOM    259  CA  ALA A 409      67.852 -21.159  56.345  1.00 77.59           C
+ATOM    260  C   ALA A 409      67.379 -22.335  57.200  1.00 78.55           C
+ATOM    261  O   ALA A 409      66.180 -22.525  57.402  1.00 79.07           O
+ATOM    262  CB  ALA A 409      67.782 -21.510  54.870  1.00 77.63           C
+ATOM    263  N   GLN A 410      68.334 -23.115  57.700  1.00 79.69           N
+ATOM    264  CA  GLN A 410      68.060 -24.276  58.545  1.00 79.08           C
+ATOM    265  C   GLN A 410      67.537 -23.818  59.908  1.00 77.23           C
+ATOM    266  O   GLN A 410      66.458 -24.222  60.329  1.00 76.62           O
+ATOM    267  CB  GLN A 410      69.348 -25.102  58.711  1.00 82.32           C
+ATOM    268  CG  GLN A 410      69.228 -26.383  59.543  1.00 84.09           C
+ATOM    269  CD  GLN A 410      70.580 -27.067  59.772  1.00 88.07           C
+ATOM    270  OE1 GLN A 410      71.637 -26.497  59.490  1.00 87.61           O
+ATOM    271  NE2 GLN A 410      70.548 -28.292  60.291  1.00 88.14           N
+ATOM    272  N   GLU A 411      68.299 -22.945  60.565  1.00 76.61           N
+ATOM    273  CA  GLU A 411      67.958 -22.399  61.881  1.00 75.61           C
+ATOM    274  C   GLU A 411      66.599 -21.695  61.903  1.00 72.48           C
+ATOM    275  O   GLU A 411      65.829 -21.860  62.850  1.00 70.94           O
+ATOM    276  CB  GLU A 411      69.059 -21.429  62.325  1.00 80.11           C
+ATOM    277  CG  GLU A 411      68.889 -20.815  63.707  1.00 85.62           C
+ATOM    278  CD  GLU A 411      69.999 -19.818  64.045  1.00 90.46           C
+ATOM    280  OE2 GLU A 411      69.706 -18.811  64.731  1.00 92.20           O
+ATOM    281  N   LEU A 412      66.318 -20.917  60.856  1.00 69.31           N
+ATOM    282  CA  LEU A 412      65.061 -20.174  60.726  1.00 67.35           C
+ATOM    283  C   LEU A 412      63.840 -21.084  60.777  1.00 66.69           C
+ATOM    284  O   LEU A 412      62.876 -20.805  61.493  1.00 64.91           O
+ATOM    285  CB  LEU A 412      65.037 -19.374  59.418  1.00 66.39           C
+ATOM    286  CG  LEU A 412      63.717 -18.675  59.065  1.00 67.30           C
+ATOM    287  CD1 LEU A 412      63.542 -17.406  59.889  1.00 67.03           C
+ATOM    288  CD2 LEU A 412      63.656 -18.357  57.578  1.00 68.24           C
+ATOM    289  N   VAL A 413      63.884 -22.165  60.004  1.00 65.47           N
+ATOM    290  CA  VAL A 413      62.782 -23.113  59.948  1.00 65.09           C
+ATOM    291  C   VAL A 413      62.579 -23.846  61.275  1.00 66.81           C
+ATOM    292  O   VAL A 413      61.457 -24.212  61.621  1.00 65.95           O
+ATOM    293  CB  VAL A 413      62.948 -24.092  58.778  1.00 64.62           C
+ATOM    294  CG1 VAL A 413      61.754 -25.020  58.682  1.00 64.48           C
+ATOM    295  CG2 VAL A 413      63.109 -23.316  57.481  1.00 64.55           C
+ATOM    296  N   MET A 414      63.658 -24.040  62.028  1.00 69.09           N
+ATOM    297  CA  MET A 414      63.557 -24.704  63.325  1.00 71.89           C
+ATOM    298  C   MET A 414      62.815 -23.776  64.288  1.00 70.25           C
+ATOM    299  O   MET A 414      61.939 -24.216  65.034  1.00 70.70           O
+ATOM    300  CB  MET A 414      64.945 -25.045  63.881  1.00 76.81           C
+ATOM    301  CG  MET A 414      65.735 -26.040  63.042  1.00 83.62           C
+ATOM    302  SD  MET A 414      67.404 -26.358  63.684  1.00 91.35           S
+ATOM    303  CE  MET A 414      67.448 -28.177  63.619  1.00 92.43           C
+ATOM    304  N   THR A 415      63.153 -22.488  64.234  1.00 68.43           N
+ATOM    305  CA  THR A 415      62.537 -21.466  65.081  1.00 66.56           C
+ATOM    306  C   THR A 415      61.056 -21.288  64.753  1.00 66.36           C
+ATOM    307  O   THR A 415      60.236 -21.063  65.641  1.00 65.56           O
+ATOM    308  CB  THR A 415      63.253 -20.111  64.923  1.00 65.51           C
+ATOM    309  OG1 THR A 415      64.628 -20.247  65.302  1.00 65.76           O
+ATOM    310  CG2 THR A 415      62.605 -19.060  65.794  1.00 66.85           C
+ATOM    311  N   LEU A 416      60.729 -21.379  63.467  1.00 66.65           N
+ATOM    312  CA  LEU A 416      59.353 -21.239  62.999  1.00 65.89           C
+ATOM    313  C   LEU A 416      58.514 -22.477  63.305  1.00 66.53           C
+ATOM    314  O   LEU A 416      57.352 -22.357  63.690  1.00 67.40           O
+ATOM    315  CB  LEU A 416      59.321 -20.954  61.496  1.00 64.04           C
+ATOM    316  CG  LEU A 416      59.134 -19.521  60.996  1.00 63.11           C
+ATOM    317  CD1 LEU A 416      60.079 -18.547  61.678  1.00 64.09           C
+ATOM    318  CD2 LEU A 416      59.338 -19.507  59.494  1.00 63.76           C
+ATOM    319  N   ASN A 417      59.099 -23.660  63.120  1.00 67.04           N
+ATOM    320  CA  ASN A 417      58.397 -24.918  63.376  1.00 67.09           C
+ATOM    321  C   ASN A 417      58.130 -25.087  64.863  1.00 66.60           C
+ATOM    322  O   ASN A 417      57.105 -25.634  65.258  1.00 66.98           O
+ATOM    323  CB  ASN A 417      59.187 -26.114  62.839  1.00 68.26           C
+ATOM    324  CG  ASN A 417      58.359 -27.393  62.789  1.00 69.42           C
+ATOM    325  OD1 ASN A 417      57.128 -27.354  62.740  1.00 71.71           O
+ATOM    326  ND2 ASN A 417      59.037 -28.534  62.786  1.00 69.52           N
+TER    5650      LEU A 388
+HETATM 5651 MG    MG   396      21.268   2.687  30.885  1.00 42.93          MG
+HETATM 5652 MG    MG   397      56.525  -9.697  58.914  1.00 46.49          MG
+HETATM 5653 CL    CL   398      24.138   0.155  20.056  1.00 39.10          CL
+HETATM 5654  PG  GSP  1000      23.652   3.086  28.951  1.00 49.34           P
+HETATM 5655  O3B GSP  1000      22.508   3.216  27.969  1.00 40.31           O
+HETATM 5656  S1G GSP  1000      25.038   4.394  28.744  1.00 56.58           S
+HETATM 5657  O2G GSP  1000      23.111   3.286  30.325  1.00 53.03           O
+HETATM 5658  O3G GSP  1000      24.387   1.832  28.647  1.00 48.74           O
+HETATM 5659  PB  GSP  1000      21.138   2.622  27.791  1.00 35.52           P
+HETATM 5660  O1B GSP  1000      21.248   1.472  26.859  1.00 40.21           O
+HETATM 5661  O2B GSP  1000      20.552   2.401  29.131  1.00 35.64           O
+HETATM 5662  PA  GSP  1000      19.076   4.412  27.420  1.00 29.38           P
+HETATM 5663  O1A GSP  1000      18.040   3.406  27.751  1.00 32.23           O
+HETATM 5664  O2A GSP  1000      19.382   5.499  28.377  1.00 34.35           O
+HETATM 5665  O3A GSP  1000      20.349   3.694  27.102  1.00 36.36           O
+HETATM 5666  O5* GSP  1000      18.663   5.093  26.040  1.00 31.37           O
+HETATM 5667  C5* GSP  1000      19.357   6.237  25.552  1.00 31.94           C
+HETATM 5668  C4* GSP  1000      18.382   7.282  25.060  1.00 33.17           C
+MASTER      405    0    9   30   30    0    0    6 5843    3  116   66
+END      
+</pre>
+
+
+<H2>
+    Output file format
+</H2>
+
+<!-- 
+        This includes example output file formats.
+        This should be a detailed description and example - assume
+        someone will want to parse this file and will want to know what
+        happens in unusual cases - null output, errors etc. 
+
+        If you wish to include the standard description of the avalable
+	report formats, use:
+<p>
+
+The output is a standard EMBOSS report file. 
+
+<p>
+
+The results can be output in one of several styles by using the
+command-line qualifier <b>-rformat xxx</b>, where 'xxx' is replaced by
+the name of the required format.  The available format names are: embl,
+genbank, gff, pir, swiss, trace, listfile, dbmotif, diffseq, excel,
+feattable, motif, regions, seqtable, simple, srs, table, tagseq
+
+<p>
+
+See:
+<A href="http://www.uk.embnet.org/Software/EMBOSS/Themes/ReportFormats.html">
+http://www.uk.embnet.org/Software/EMBOSS/Themes/ReportFormats.html</A>
+for further information on report formats.
+
+<p>
+
+   -->
+
+<b>pdbparse</b> 
+outputs a graph to the specified graphics device. 
+outputs a report format file. The default format is ...
+
+
+<p>
+
+[an error occurred while processing this directive]
+
+<p>
+
+
+10 records are used in clean co-ordinate files as follows:  
+
+<p>
+
+(1)  ID - the
+4-character PDB identifier code (for domain co-ordinate files generated by
+domainer the 7-character domain identifier code taken from SCOP is given;
+see domainer.c.)  
+
+<p>
+
+(2)  DE - compound information.  Text from the COMPND
+records from the original PDB file is given.  
+
+<p>
+
+(3)  OS - protein source
+information;  text from the SOURCE records from the original PDB file.  
+
+<p>
+
+(4)
+EX - experimental information. The records are as follows (record names are
+given in parentheses): The text 'nmr_or_model' for nuclear  magnetic
+resonance and model structures or 'xray' for structures  determined by
+X-ray crystallography (METHOD).  The resolution of X-ray structures, or '0'
+for structures of type 'nmr_or_model' (RESO).  The number of models (NMOD)
+and number of polypeptide chains (NCHA).  For domain co-ordinate files a 1
+is always given.  Number of groups ("heterogens") non co-valently
+associated with the protein but not assigned to a specific chain (NGRP).
+Following the EX record, the file will have a section
+containing a CN, IN and SQ records for each chain.  
+
+<p>
+
+(5)  CN - chain number.
+The number given in brackets indicates the start of a section of chain-
+specific data.  
+
+<p>
+
+(6)  IN - chain specific data: The PDB chain identifier
+(ID, a '.' is given in cases where a chain identifier was not specified in
+the PDB file or (a '.' is given in domain co-ordinate files where the
+domain is comprised of more than one domain).  The number of amino acid
+residues comprising the chain, or domain for domain coordinate files (NR).
+The number of groups ("heterogens") which are non-covalently associated
+with the chain, excluding water (NL).  Domain co-ordinate files do not
+include co-ordinates for these groups so a value of 0 is always given.
+The number of helices (NH) or beta-strands (NE) in the chain or domain.
+
+
+<p>
+
+(7)  SQ - protein sequence. The number of
+residues is given before AA on the first line.  The protein sequence is
+given on subsequent lines.  
+
+<p>
+
+(8)  CO - co-ordinate data.  The records are
+as follows (column numbers are given in parentheses):  (i) CO is always
+given.  (ii) Model number (always 1  for domain co-ordinate files).  (iii)
+Chain number (always 1 for domain co-ordinate files).  (iv) Group number
+(for heterogens).  (v) Either P (a protein atom), H (a heterogen atom) or
+W (an atom in a water molecule).  (vi) Position of the residue in the
+protein sequence given in the SQ record (for protein atoms) or '.' (for
+heterogens and water).  (vii) Residue number according to the original PDB
+file.  (viii) Secondary structure element type, either 'C' (coil), 'H'
+(helix), 'E' (beta-strand) or 'T' (turn) taken from the PDB file.  (ix)
+Secondary structure element serial number corresponding to columns 8 - 10
+in a HELIX, SHEET or TURN record of a pdb file, or '.' for atoms that do
+not occur in a helix or sheet.  (x) Secondary structure element identifier
+code corresponding to columns 12 - 14 in a HELIX, SHEET or TURN record of
+a pdb file, or '.' for atoms that do not occur in a helix or sheet.  (xi)
+The class of helix, which is an integer from 1-10; 1 - right-handed alpha,
+2 - right-handed omega, 3 - right-handed pi, 4 - right-handed gamma, 5 -
+right-handed 3-10, 6 - left-handed alpha, 7 - left-handed omega, 8 -
+left-handed gamma, 9 - 27 ribbon/helix or 10 - polyproline,  see
+http://www.rcsb.org/pdb/docs/format/pdbguide2.2/guide2.2_frame.html.
+(xii) Secondary structure assignment according to STRIDE, one of 'H' (Alpha
+helix), 'G' (3-10 helix), 'I' (PI-helix), 'E' (Extended conformation), 'B'
+or 'b' (Isolated bridge), 'T' (Turn) or 'C' (Coil, none of the above).
+These data are added to the coordinate file by using pdbplus and a '.'
+will be given for this record in files that have not been processed by
+pdbplus.  (xiii) Secondary structure element number extracted from stride
+assignment.  An 'element' is defined as a run of a user-defined number of
+residues in the 'H', 'G' or 'I' conformation (helical element) or the 'E'
+conformation (beta strand element).  Again,  a '.' will be given if the
+file has not been processed by pdbplus.  (xiv) Single character amino acid
+code or a '.' (for heterogens and water).  (xv) 3-character residue
+identifier code.  (xvi) Atom type.  (xvii-xix) The x, y and z orthogonal
+co-ordinates.  (xx) Occupancy. (xxi) Temperature factor.  (xxii-xxiv) Phi
+and Psi angle and solvent accessible surface area of residue as calculated
+by stride.  These data are added to the coordinate file by using pdbplus
+and will have the value of zero in files that have not been processed by
+pdbplus.  (xxv-xxxv) Accessible surface area according to NACCESS. These
+data are added to the coordinate file by using pdbplus and will have the
+value of zero in files that have not been processed by pdbplus.  Absolute
+and relative measures of residue accessible surface area are given.  The
+absolute accessibility of a residue is the summed accessible surface of
+the atoms in an amino acid residue, whereas the relative accessibility
+is expressed as a percentage relative to the accessibility of the residue
+in an extended ALA-x-ALA tripeptide.  The meaning of the colums are (xxv)
+absolute accessibility of all atoms, (xxvi) relative  accessibility of all
+atoms, (xxxvii) absolute accessibility of all side-chain atoms, (xxxviii)
+relative accessibility of all side-chain atoms, (xxxix) absolute
+accessibility of all main-chain atoms, (xxxx) relative accessibility of
+all main-chain atoms, (xxxxi) absolute accessibility of all non-polar
+side-chain atoms, (xxxxii) relative accessibility of all non-polar
+side-chain atoms, (xxxxiii) absolute accessibility of all polar side-chain
+atoms, (xxxxiv) relative accessibility of all polar side-chain atoms.  The
+NACCESS authors treat alpha carbons as sidechain atoms so that glycine can
+have a sidechain accessibility. They are therefore not included in the
+mainchain.  
+
+<p>
+
+(9)  XX - Used for spacing.  
+
+<p>
+
+(10) // - Given on the last line of the file only.
+
+
+
+
+<H2>
+    Data files
+</H2>
+
+<!-- 
+        Any data files used (e.g. translation table file)
+        This includes example data file formats if they are
+        not obvious.
+
+	If you wish to include the standard description of what data
+	files are and how to use embossdata to inspect and retrieve
+	them, use:
+<p>
+EMBOSS data files are distributed with the application and stored
+in the standard EMBOSS data directory, which is defined
+by the EMBOSS environment variable EMBOSS_DATA.
+
+<p>
+
+To see the available EMBOSS data files, run:
+<p>
+<pre>
+% embossdata -showall
+</pre>
+<p>
+To fetch one of the data files (for example 'Exxx.dat') into your
+current directory for you to inspect or modify, run:
+
+<pre>
+
+% embossdata -fetch -file Exxx.dat
+
+</pre>
+<p>
+
+Users can provide their own data files in their own directories.
+Project specific files can be put in the current directory, or for
+tidier directory listings in a subdirectory called
+".embossdata". Files for all EMBOSS runs can be put in the user's home
+directory, or again in a subdirectory called ".embossdata".
+
+<p>
+The directories are searched in the following order:
+
+<ul>
+   <li> . (your current directory)
+   <li> .embossdata (under your current directory)
+   <li> ~/ (your home directory)
+   <li> ~/.embossdata
+</ul>
+<p>
+
+   -->
+
+**************** 
+EDIT HERE
+**************** 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<H2>
+    Notes
+</H2>
+
+<!-- 
+        Restrictions.
+        Interesting behaviour.
+        Useful things you can do with this program.
+   -->
+
+Records in the clean coordinate file for the number of helices (NH) or
+beta-strands (NE) in a chain and several columns (see 'Output file format'
+below) of the coordinate line record (CO)  are written by pdbparse but will
+have the value of 0.  The program pdbplus can be used to assign values to
+these records.  
+
+
+
+
+
+
+<H2>
+    References
+</H2>
+
+<!-- 
+        Bibliography for methods used.
+   -->
+
+Berman HM, Westbrook J, Feng Z, Gilliland G, Bhat TN, Weissig H,
+Shindyalov IN, Bourne PE  The Protein Data Bank. Nucleic Acids Res.
+2000, 28: 235-242
+
+
+
+
+
+
+
+
+<H2>
+    Warnings
+</H2>
+
+<!-- 
+        Potentially stupid things the program will let you do.
+   -->
+
+pdbparse is not guaranteed to work correctly (or even at all) for files
+where an NMR structure contains multiple models but the models have
+different sequence of residues due to errors.
+
+<p>
+
+pdbparse will not work in cases where a residue number is duplicated AND an
+alternative residue numbering system is used somewhere else in the same
+chain.  If such cases exist they could be parsed by having a variable
+corresponding to oddnum, but just for duplicate residue positions. The new
+variable would get written in the same place as oddnum is written.
+
+<p>
+
+The author does not know whether either of the above cases occur in pdb.
+
+<p>
+
+pdbparse necessarily must hold the entire pdb file and some derived data
+in memory. If an error of the type 'Uncaught exception:  Allocation failed,
+insufficient memory available' is raised then this is probably because
+the memory requirements exceed per-user memory defaults (that are usually
+set quite low). This can easily be unlimited by the sysop in the login
+process. If tcsh is used, then simply type 'unlimit' before pdbparse is
+run.        
+
+
+
+
+
+
+
+<H2>
+    Diagnostic Error Messages
+</H2>
+
+<!-- 
+        Error messages specific to this program, eg:
+        "FATAL xxx" - means you have not set up the xxx data using program <b>prog</b>.<p>
+   -->
+
+The log file may contain the following types of error.
+<p>
+FILE_OPEN      my.file
+my.file could not be opened for reading or writing (the file is ignored)
+</p>
+<p>
+FILE_READ      my.file
+my.file could not be read (the file is ignored)
+</p>
+<p>
+NO_OUTPUT      my.file
+No clean coordinate file was generated for my.file
+This will happen if there was a FILE_READ error on the raw pdb file, or a
+NOSEQRES, NOATOM or NOPROTEINS error when reading the file.
+</p>
+<p>
+FILE_WRITE     my.file
+my.file could not be written (the file is ignored)
+</p>
+<p>
+DUPATOMRES     3
+The file contained duplicate ATOM residues for atoms or whole residues,
+first instance on line 3 (this message is reported once only. Lines for
+duplicate atoms are discarded).
+</p>
+<p>
+NOATOMRESID    123
+No atom or residue identifier specified, first instance on line 123 (this
+message is reported once only. All such lines are discarded).
+</p>
+<p>
+SEQRESLEN      1 (A)
+No indicated length of SEQRES sequence could be found for chain 1 with
+identifier 'A' (the actual length of the sequence is used).
+</p>
+<p>
+SEQRESLENDIF   1 (A)
+Indicated and actual length of SEQRES sequence differs for chain 1 with
+identifier 'A' (the actual length of the sequence is used).
+</p>
+<p>
+SECMISS        123
+One or more records were missing for a secondary structure element on line
+123. This message may appear more than once (the element(s) are discarded).
+</p>
+<p>
+SECBOTH        1 2 ALA 2 ARG 6
+The start and end residues (ALA 2 ARG 6) of a secondary structure element
+as indicated in the HELIX, SHEET or TURN records was not found in the ATOM
+records of chain 1, model 2 (the element is discarded).
+</p>
+<p>
+SECSTART       1 2 ALA 2
+The start residue (ALA 2) of a secondary structure element as indicated in the
+HELIX, SHEET or TURN records was not found in the ATOM records of chain 1,
+model 2 (the element is discarded).
+</p>
+<p>
+SECEND         1 2 ARG 6
+The end residue (ARG 6) of a secondary structure element as indicated in the
+HELIX, SHEET or TURN records was not found in the ATOM records of chain 1,
+model 2 (the element is discarded). 
+</p>
+<p>
+SECCHAIN       A
+Chain A indicated for secondary structure element record not found in PDB
+file (the element is discarded).
+</p>
+<p>
+SECTWOCHN      A   B
+2 chain identifiers (A and B) indicated for a secondary structure element
+(the element is discarded).
+</p>
+<p>
+NOCOMPND
+COMPND records not found
+</p>
+<p>
+NOSOURCE
+SOURCE records not found
+</p>
+<p>
+NOMODEL
+NMR structure with no MODEL records
+</p>
+<p>
+RESOLMOD
+A value for the RESOLUTION record is given but MODEL records are also
+found (an NMR structure or model is presumed).
+</p>
+<p>
+RESOLUNK
+Value for RESOLUTION record not found (the value of 0 is used).
+</p>
+<p>
+NORESOLUTION
+RESOLUTION record not found (an NMR structure or model is presumed).
+</p>
+<p>
+NOSEQRES
+No SEQRES records (the file is not parsed).
+</p>
+<p>
+NOATOM
+No ATOM records (the file is not parsed).
+</p>
+<p>
+CHAINIDS       1 (A) 2 (A)
+Chain identifiers of chains 1 and 2 not unique; 'A' in both cases (the chains
+are discarded).
+</p>
+<p>
+CHAINIDSPC
+Space (' ') and non-space character both used for chain ids.
+</p>
+<p>
+SEQRESNOAA     1 (A)
+No known amino acids in SEQRES records for chain 1 ('A') (the chain is
+discarded).
+</p>
+<p>
+SEQRESFEWAA    1 (A)
+Fewer than the user-specified minimum number of known amino acids in SEQRES
+records for chain 1 ('A') (the chain is discarded).
+</p>
+<p>
+NOPROTEINS
+The file did not contain any chains with at least the user-specified minimum
+number of known amino acids (the file is not parsed).
+</p>
+<p>
+TERNONE
+TER records not found.
+</p>
+<p>
+TERTOOMANY
+Number of TER records is greater than the number of chains; possible digest.
+</p>
+<p>
+TERTOOFEW
+Number of TER records is less than the number of chains.
+</p>
+<p>
+MODELDUP       123
+Duplicate MODEL records on line 123
+</p>
+<p>
+TERMISS        123 124
+Different chains or heterogen groups not separated by TER record between
+lines 123 and 124
+</p>
+<p>
+TERMISSHET     123 124
+A chain is not seperated from its heterogen group by a TER record between
+lines 123 and 124
+                
+TERMISSCHN     123 124
+Two chains are not seperated by TER records between lines 123 and 124
+</p>
+<p>
+ATOMCOL12      123
+Column 12 used for atom type, first instance on line 123 (this message is
+reported once only).
+</p>
+<p>
+CHAINORDER     123
+Chain order in ATOM records is inconsistent with order in SEQRES records,
+for the ATOM record on line 123.
+</p>
+<p>
+ATOMONEONLY    123
+Amino acid residue in protein chain with single atom only on line 123
+(the atom is discarded if masking is specified by the user).
+</p>
+<p>
+ATOMNOCA       123 132
+Amino acid residue with no CA atom whose ATOM records span lines 123 - 132
+(the atoms are discarded if masking is specified by the user).
+</p>
+<p>
+ATOMNONUM      123
+Residue number for atom on line 123 did not have an integer component.
+</p>
+<p>
+ATOMFEWAA      1 (A) 3
+Fewer than the user-specified minimum number of known amino acids in ATOM
+records for chain 1 ('A'), model 3 (the chain is discarded for all models).
+</p>
+<p>
+BADINDEX       1 (A)
+Raw residue numbering from ATOM records does not give index into SEQRES
+sequence.
+</p>
+<p>
+NEGNUM         1 (A) 123
+Negative residue number found for chain 1 ('A') on line 123 (this message is
+reported once only).
+</p>
+<p>
+ZERNUM         1 (A) 123
+Residue number of zero found for chain 1 ('A') on line 123 (this message
+is reported once only).
+</p>
+<p>
+ODDNUM         1 (A) 123
+Possible heterogeneity or alternative residue numbering scheme for chain  1
+('A') on line 123 (this message is reported once only).
+</p>
+<p>
+NONSQNTL       1 (A) 123
+Possible case of non-sequential numbering error for chain1 ('A') on line
+123 (this message is reported once only).
+</p>
+<p>
+HETEROK        1 (A)
+Alignment of ATOM to SEQRES sequence for chain 1 ('A') found by presuming
+an alternative residue numbering scheme.
+</p>
+<p>
+ALTERNOK       1 (A)
+Alignment of ATOM to SEQRES sequence for chain 1 ('A') found by presuming
+one or more instances of heterogeneity.
+</p>
+<p>
+MISSNTERM      1 (A) 3
+SEQRES records appeared to be missing 3 N-terminal residues relative to
+ATOM sequence for chain 1 ('A').
+</p>
+<p>
+MISSCTERM      1 (A) 3
+SEQRES records appeared to be missing 3 C-terminal residues relative to
+ATOM sequence for chain 1 ('A').
+</p>
+<p>
+NOMATCH        1 (A)
+Correspondence between ATOM/SEQRES sequences could not be found for chain 1
+('A') (the raw sequence from the ATOM records is taken to be the true
+sequence).
+</p>
+<p>
+GAPPED         1 (A) 2 ALA 2 ARG 6;    ALA 12 TYR 16
+Residue numbering for chain 1 ('A') was incorrect but was correctd by gap
+insertion but contained 2 cases of mismatch between ATOM and SEQRES residues
+(ALA 2 vs ARG 6and ALA 12 vs TYR 16).
+</p>
+<p>
+GAPPEDOK       1 (A)
+Residue numbering for chain 1 ('A') was incorrect but was correctd by gap
+insertion with no mismatches.
+</p>
+<p>
+MISMATCH         1 (A) 2 ALA 2 ARG 6;    ALA 12 TYR 16
+Residue numbering for chain 1 ('A') was correct but but contained 2 cases of
+mismatch between ATOM and SEQRES residues (ALA 2 vs ARG 6and ALA 12 vs TYR 16).
+</p>
+
+
+
+
+
+
+
+<H2>
+    Exit status
+</H2>
+
+<!-- 
+        Description of the exit status for various error conditions
+   -->
+
+It always exits with status 0.
+
+
+
+
+
+
+
+
+<H2>
+    Known bugs
+</H2>
+
+
+<!-- 
+        Bugs noted but not yet fixed.
+   -->
+
+None.
+
+
+
+
+
+
+
+
+<!--
+<H2>
+    See also
+</H2>
+-->
+[an error occurred while processing this directive]
+<!-- 
+        Add any comments about other associated programs (to prepare
+        data files?) that seealso doesn't find. 
+   -->
+
+<p>
+
+pdbplus, domainer, contacts, interface and funky use protein coordinate
+files as input.
+
+
+
+
+
+
+
+
+<H2>
+    Author(s)
+</H2>
+<!--
+        Who has worked on the program in the past.
+e.g. one of:
+Alan Bleasby (ableasby&nbsp;&copy;&nbsp;rfcgr.mrc.ac.uk)
+<br>
+MRC Rosalind Franklin Centre for Genomics Research
+Wellcome Trust Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
+
+
+Bernd Jagla (bernd&nbsp;&copy;&nbsp;golgi.ski.mskcc.org)
+<br>
+Cellular Biochemistry and Biophysics Program, Rockefeller
+Research Laboratories, Memorial Sloan-Kettering Cancer Center, 1275 York
+Avenue, Box 251,New York, NY 10021.
+
+David Martin (dmartin&nbsp;&copy;&nbsp;rfcgr.mrc.ac.uk)
+<br>
+
+Gos Micklem (gos&nbsp;&copy;&nbsp;ebi.ac.uk)
+<br>
+Informatics Division, European Bioinformatics Institute, Wellcome Trust Genome Campus, Hinxton, Cambridge CB10 1SD, UK
+
+Gary Williams (gwilliam&nbsp;&copy;&nbsp;rfcgr.mrc.ac.uk)
+<br>
+MRC Rosalind Franklin Centre for Genomics Research
+Wellcome Trust Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
+
+
+Ian Longden (il&nbsp;&copy;&nbsp;sanger.ac.uk)
+<br>
+Sanger Institute, Wellcome Trust Genome Campus, Hinxton,
+Cambridge, CB10 1SA, UK.                      
+
+Mark Faller (current e-mail address unknown)
+<br>
+while he was with:
+<br>
+HGMP-RC, Genome Campus, Hinxton, Cambridge CB10 1SB, UK
+
+Michael K. Schuster and Martin Grabner (martin.grabner&nbsp;&copy;&nbsp;univie.ac.at)
+<br>
+from the Austrian National EMBnet node.
+
+
+Michael Schmitz (mschmitz&nbsp;&copy;&nbsp;lbl.gov)
+<br>
+Lawrence Berkeley Labs, USA
+
+Nicolas Tourasse (nicolas.tourasse&nbsp;&copy;&nbsp;biotek.uio.no)
+<br>
+Biotechnology Center of Oslo
+
+Peter Rice (pmr&nbsp;&copy;&nbsp;ebi.ac.uk)
+<br>
+Informatics Division, European Bioinformatics Institute, Wellcome Trust Genome Campus, Hinxton, Cambridge CB10 1SD, UK
+
+Richard Durbin (rd&nbsp;&copy;&nbsp;sanger.ac.uk)
+<br>
+Sanger Institute, Wellcome Trust Genome Campus, Hinxton,
+Cambridge, CB10 1SA, UK.                      
+
+Richard Bruskiewich (current e-mail address unknown)
+<br>
+while he was at:
+<br>
+Sanger Institute, Wellcome Trust Genome Campus, Hinxton,
+Cambridge, CB10 1SA, UK.                      
+
+Rodrigo Lopez (rls&nbsp;&copy;&nbsp;ebi.ac.uk)
+<br>
+European Bioinformatics Institute, Wellcome Trust Genome Campus, Hinxton, Cambridge CB10 1SD, UK
+
+Sinead O'Leary (current e-mail address unknown)
+<br>
+while she was at:
+<br>
+HGMP-RC, Genome Campus, Hinxton, Cambridge CB10 1SB, UK
+
+
+Tim Carver (tcarver&nbsp;&copy;&nbsp;rfcgr.mrc.ac.uk)
+<br>
+MRC Rosalind Franklin Centre for Genomics Research
+Wellcome Trust Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
+
+Thomas Laurent (thomas.laurent&nbsp;&copy;&nbsp;uk.lionbioscience.com)
+<br>
+Lion Bioscience Ltd,
+     Compass House,
+     80-82 Newmarket Road,
+     Cambridge,
+     CB5 8DZ,
+     UK
+
+Val Curwen (vac&nbsp;&copy;&nbsp;sanger.ac.uk)
+<br>
+Sanger Institute, Wellcome Trust Genome Campus, Hinxton,
+Cambridge, CB10 1SA, UK. 
+
+
+   -->
+
+
+Jon Ison (jison&nbsp;&copy;&nbsp;rfcgr.mrc.ac.uk)
+<br>
+MRC Rosalind Franklin Centre for Genomics Research
+Wellcome Trust Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
+
+
+
+
+
+
+
+
+
+
+
+
+
+<H2>
+    History
+</H2>
+
+<!--
+        What changes have been made.
+   -->
+
+Written (2003) - Jon Ison.
+
+<!--
+<p>
+[an error occurred while processing this directive]
+-->
+
+
+
+
+
+
+
+
+
+
+
+
+<H2>
+    Target users
+</H2>
+
+<!--
+        For general users, requested by one user, for EMBOSS site
+        maintainers, for EMBOSS developers etc.
+        eg:
+        "This program is intended to be used by everyone and everything,
+        from naive users to embedded scripts." 
+	Which is easy to include using:
+   -->
+
+This program is intended to be used by everyone and everything, from naive users to embedded scripts.
+
+
+
+
+
+
+
+
+
+
+
+
+</BODY>
+</HTML>
+
