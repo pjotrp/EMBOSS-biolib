@@ -159,6 +159,10 @@ Data files
      * tfvertebrate
      * tfother
        
+   Your EMBOSS administrator will have to run the EMBOSS program
+   tfextract in order to set these files up from the TRANSFAC
+   distribution files.
+   
    EMBOSS data files are distributed with the application and stored in
    the standard EMBOSS data directory, which is defined by the EMBOSS
    environment variable EMBOSS_DATA.
@@ -197,11 +201,18 @@ References
        
 Warnings
 
-   None.
+   Your EMBOSS administrator will have to run the EMBOSS program
+   tfextract in order to set up the data files from the TRANSFAC
+   distribution files.
    
 Diagnostic Error Messages
 
-   None.
+   "EMBOSS An error in tfscan.c at line 82:
+   Either EMBOSS_DATA undefined or TFEXTRACT needs running"
+   
+   This means that you should contact your EMBOSS administrator and ask
+   them to run the tfextract program to set up the TRANSFAC data for
+   EMBOSS.
    
 Exit status
 
@@ -246,6 +257,10 @@ See also
    showseq Display a sequence with features, translation etc
    silent Silent mutation restriction enzyme scan
    wobble Wobble base plot
+   
+   Your EMBOSS administrator will have to run the EMBOSS program
+   tfextract in order to set up the data files from the TRANSFAC
+   distribution files.
    
 Author(s)
 
