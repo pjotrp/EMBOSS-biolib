@@ -26,6 +26,8 @@ import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 import java.awt.*;
 import java.util.StringTokenizer;
+import java.util.Arrays;
+import java.util.Vector;
 import java.io.IOException;
 import java.net.URL;
 import java.io.BufferedReader;
@@ -50,9 +52,19 @@ public class KeywordSearch implements HyperlinkListener
     showSearchResult(res,searchTxt,mysettings);
   }
 
+  /**
+  *
+  * Search the text for matches of keywords
+  * @param searchTxt  	keywords to search for
+  * @param woss		wossname text to search
+  * @param mysettings 	parameters
+  * @param andOperator	true to use AND, false to use OR operator
+  *
+  */
   private String search(String searchTxt, String woss,
                         JembossParams mysettings, boolean andOperator)
   {
+    Vector vres = new Vector();
     StringBuffer res = new StringBuffer();
     boolean found = false;
     try
@@ -84,17 +96,27 @@ public class KeywordSearch implements HyperlinkListener
               res.append("<table border cellpadding=4 bgcolor=\"#FFFFF0\">");
               res.append("<tr><th>Program name</th><th>Description</th></tr>");
             }
+
             found = true;
             String prog = line.substring(0,line.indexOf(" "));
-            res.append("<tr><td><a href=\""+mysettings.getembURL()+prog+
-                     ".html\">"+prog+"</a></td><td>"+
-                     line.substring(line.indexOf(" "))+"</td></tr>");
+            String progHTML = "<tr><td><a href=\""+mysettings.getembURL()+prog+
+                              ".html\">"+prog+"</a></td><td>"+
+                              line.substring(line.indexOf(" "))+"</td></tr>";
+            if(!vres.contains(progHTML))
+              vres.add(progHTML);
           }
         }            
       }
 
       if(found)
+      {
+        Object progOrder[] =  vres.toArray();
+        Arrays.sort(progOrder);
+
+        for(int i=0;i<progOrder.length; i++)
+          res.append(progOrder[i]);
         res.append("</table>");
+      }
       else
         res.append("<b>No matches found.</b>");
     }
@@ -102,6 +124,15 @@ public class KeywordSearch implements HyperlinkListener
     return res.toString();
   }
 
+  /**
+  *
+  * Get the string representation for this search
+  * e.g. given s1 s2, return s1 AND s2
+  * @param searchTxt	search text
+  * @param andOperator 	operator type (AND or OR)
+  * @return string representation for this search
+  *
+  */
   private String getSearchText(String searchTxt, boolean andOperator)
   {
     if(searchTxt.indexOf(" ") == -1)
@@ -120,6 +151,14 @@ public class KeywordSearch implements HyperlinkListener
     return buff.toString();
   }
 
+  /**
+  *
+  * Search a string for matches
+  * @param line		string to search
+  * @param searchTxt	keywords to search for
+  * @return true if matched all keywords
+  *
+  */
   private boolean searchAND(String line, String searchTxt)
   {
     StringTokenizer tok = new StringTokenizer(searchTxt," ");
@@ -132,6 +171,14 @@ public class KeywordSearch implements HyperlinkListener
     return true;
   }
 
+  /**
+  *
+  * Search a string for matches
+  * @param line         string to search
+  * @param searchTxt    keywords to search for
+  * @return true if matched at least one keyword
+  *
+  */
   private boolean searchOR(String line, String searchTxt)
   {
     StringTokenizer tok = new StringTokenizer(searchTxt," ");
@@ -144,7 +191,11 @@ public class KeywordSearch implements HyperlinkListener
     return false;
   }
 
-
+  /**
+  *
+  * Display search results 
+  *
+  */
   private void showSearchResult(String woss, String searchTxt,
                                 JembossParams mysettings)
   {
