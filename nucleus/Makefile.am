@@ -18,7 +18,8 @@ NUCLSRC =  embaln.c embcom.c embcons.c embdata.c embdbi.c \
 	   embest.c embexit.c embgotoh.c embgroup.c embiep.c embindex.c \
 	   embinit.c embmat.c embmisc.c embmol.c \
 	   embnmer.c embpat.c embprop.c embread.c \
-	   embshow.c embword.c embxyz.c
+           embpdbraw.c embdomain.c embsig.c embdmx.c embpdb.c \
+	   embshow.c embword.c 
 
 libnucleus_la_SOURCES = $(NUCLSRC)
 
@@ -29,4 +30,5 @@ include_HEADERS = emboss.h \
 		 embest.h embexit.h embgotoh.h embgroup.h embiep.h embindex.h \
 		 embinit.h embmat.h embmisc.h \
 		 embmol.h embnmer.h embpat.h embprop.h \
-                 embread.h embshow.h embword.h embxyz.h
+                 embpdbraw.h embdomain.h embsig.h embdmx.h embpdb.h \
+                 embread.h embshow.h embword.h 
