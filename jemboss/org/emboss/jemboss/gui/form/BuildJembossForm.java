@@ -731,6 +731,15 @@ public class BuildJembossForm implements ActionListener
         if(inSeq[h].isFileName())                     // file or database
         {
           fn = new String(inSeq[h].getFileChosen());
+          
+          fn = fn.trim();
+          if(fn.indexOf(":")>-1)  // remove unwanted spaces from db entries
+          {
+            int n;
+            while((n = fn.indexOf(" ")) > -1)
+              fn = new String(fn.substring(0,n) + fn.substring(n+1));
+          }
+
           if(withSoap)
             options = filesForSoap(fn,options,val,filesToMove);
           else

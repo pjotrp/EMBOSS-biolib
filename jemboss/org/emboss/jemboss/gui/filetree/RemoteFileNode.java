@@ -21,17 +21,15 @@
 
 package org.emboss.jemboss.gui.filetree;
 
-import java.awt.*;
-import java.awt.event.*;
 import java.awt.datatransfer.*;
-import javax.swing.*;
-import javax.swing.event.*;
 import javax.swing.tree.*;
 import java.io.*;
 import java.util.*;
 
-import uk.ac.mrc.hgmp.embreo.*;
-import uk.ac.mrc.hgmp.embreo.filemgr.*;
+import uk.ac.mrc.hgmp.embreo.EmbreoParams;
+import uk.ac.mrc.hgmp.embreo.EmbreoAuthException;
+import uk.ac.mrc.hgmp.embreo.filemgr.EmbreoFileRoots;
+import uk.ac.mrc.hgmp.embreo.filemgr.EmbreoFileList;
 
 
 public class RemoteFileNode extends DefaultMutableTreeNode 
@@ -39,17 +37,17 @@ public class RemoteFileNode extends DefaultMutableTreeNode
 {
     private boolean explored = false;
     private boolean isDir = false;
-    private EmbreoFileList parentList;
     private String[] childrenNames;
     private String fullname;
     private Vector children;
     private String rootdir;   
-    private EmbreoParams mysettings;
-    private EmbreoFileRoots froots;
+    private transient EmbreoFileList parentList;  // make transient for
+    private transient EmbreoParams mysettings;    // Transferable to work
+    private transient EmbreoFileRoots froots;
 
     private String fs = new String(System.getProperty("file.separator"));
 
-    public static DataFlavor REMOTEFILENODE = 
+    final public static DataFlavor REMOTEFILENODE = 
            new DataFlavor(RemoteFileNode.class, "Remote file");
     static DataFlavor flavors[] = { REMOTEFILENODE, DataFlavor.stringFlavor };
 
@@ -80,7 +78,7 @@ public class RemoteFileNode extends DefaultMutableTreeNode
     public boolean getAllowsChildren() { return isDir; }
     public boolean isLeaf() { return !isDir; }
     public boolean isDirectory() { return isDir; }
-//  public String getFile() { return (String)getUserObject(); }
+    public String getFile() { return (String)getUserObject(); }
     public String getRootDir() { return rootdir; }
     public String getFullName() { return fullname; }
     public boolean isExplored() { return explored; }
@@ -136,6 +134,16 @@ public class RemoteFileNode extends DefaultMutableTreeNode
     } 
 
 // Serializable    
+   private void writeObject(java.io.ObjectOutputStream out) throws IOException 
+   {
+     out.defaultWriteObject();
+   }
+
+   private void readObject(java.io.ObjectInputStream in)
+     throws IOException, ClassNotFoundException 
+   {
+     in.defaultReadObject();
+   }
 
 }
 

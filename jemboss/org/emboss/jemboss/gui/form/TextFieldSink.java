@@ -44,17 +44,18 @@ public class TextFieldSink extends JTextField implements DropTargetListener
   public TextFieldSink() 
   {
 
-    addMouseListener(new MouseAdapter() 
-    {
-      public void mouseClicked(MouseEvent e) 
-      {
-        if(e.getClickCount() == 2) 
-        {
-          pasteText();
-          e.consume();
-        };
-      }
-    });
+//pasting not really needed?
+//    addMouseListener(new MouseAdapter() 
+//    {
+//      public void mouseClicked(MouseEvent e) 
+//      {
+//        if(e.getClickCount() == 2) 
+//        {
+//          pasteText();
+//          e.consume();
+//        };
+//      }
+//    });
     
     setDropTarget(new DropTarget(this,this));
 

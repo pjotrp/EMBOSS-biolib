@@ -20,12 +20,8 @@
 ********************************************************************/
 
 package org.emboss.jemboss.gui.filetree;
-import java.awt.*;
-import java.awt.event.*;
+
 import java.awt.datatransfer.*;
-import java.awt.dnd.*;
-import javax.swing.*;
-import javax.swing.event.*;
 import javax.swing.tree.*;
 import java.io.*;
 import java.util.*;
@@ -149,5 +145,16 @@ class FileNode extends DefaultMutableTreeNode
       else throw new UnsupportedFlavorException(d);
     }
 
+//Serializable
+   private void writeObject(java.io.ObjectOutputStream out) throws IOException
+   {
+     out.defaultWriteObject();
+   }
+
+   private void readObject(java.io.ObjectInputStream in)
+     throws IOException, ClassNotFoundException
+   {
+     in.defaultReadObject();
+   }
 
 }

@@ -32,6 +32,8 @@ import java.io.*;
 import java.util.*;
 
 import org.emboss.jemboss.gui.ResultsMenuBar;
+import uk.ac.mrc.hgmp.embreo.filemgr.EmbreoFileGet;
+import uk.ac.mrc.hgmp.embreo.EmbreoParams;
 
 /**
 *
@@ -44,24 +46,26 @@ public class DragTree extends JTree implements DragGestureListener,
 {
 
   public static DefaultTreeModel model;
-  private String fs = new String(System.getProperty("file.separator"));
   private Hashtable openNodeDir;
+  private EmbreoParams mysettings;
 
+  private String fs = new String(System.getProperty("file.separator"));
   final Cursor cbusy = new Cursor(Cursor.WAIT_CURSOR);
   final Cursor cdone = new Cursor(Cursor.DEFAULT_CURSOR);
 
 
-  public DragTree(final File root, final JFrame f) 
+  public DragTree(final File root, final JFrame f, EmbreoParams mysettings) 
   {
+    this.mysettings = mysettings;
     openNodeDir = new Hashtable();
     DragSource dragSource = DragSource.getDefaultDragSource();
 
-    setDropTarget(new DropTarget(this,this));
     dragSource.createDefaultDragGestureRecognizer(
                this,                             // component where drag originates
                DnDConstants.ACTION_COPY_OR_MOVE, // actions
                this);                            // drag gesture recognizer
 
+    setDropTarget(new DropTarget(this,this));
     model = createTreeModel(root);
     setModel(model);
     createTreeModelListener();
@@ -72,7 +76,8 @@ public class DragTree extends JTree implements DragGestureListener,
 
     //Listen for when a file is selected
 
-    MouseListener mouseListener = new MouseAdapter() {
+    MouseListener mouseListener = new MouseAdapter() 
+    {
       public void mouseClicked(MouseEvent me) 
       {
         if(me.getClickCount() == 2 && isFileSelection()) 
@@ -96,13 +101,11 @@ public class DragTree extends JTree implements DragGestureListener,
         }
       }
     };
-
     this.addMouseListener(mouseListener);
 
-    addTreeExpansionListener(new TreeExpansionListener(){
-      public void treeCollapsed(TreeExpansionEvent e) 
-      {
-      }
+    addTreeExpansionListener(new TreeExpansionListener()
+    {
+      public void treeCollapsed(TreeExpansionEvent e){} 
       public void treeExpanded(TreeExpansionEvent e) 
       {
         TreePath path = e.getPath();
@@ -112,14 +115,15 @@ public class DragTree extends JTree implements DragGestureListener,
 
           if(!node.isExplored()) 
           {  
+            f.setCursor(cbusy);
             model = (DefaultTreeModel)getModel();
             node.explore(openNodeDir);
             model.nodeStructureChanged(node);
+            f.setCursor(cdone);
           }
         }
       }
     });
-
 
   }
 
@@ -142,13 +146,77 @@ public class DragTree extends JTree implements DragGestureListener,
   public void dragEnter(DropTargetDragEvent e)
   {
     if(e.isDataFlavorSupported(RemoteFileNode.REMOTEFILENODE))
-    {
       e.acceptDrag(DnDConstants.ACTION_COPY_OR_MOVE);
-      System.out.println("dragEnter");
-    }
   }
 
-  public void dragExit (DropTargetEvent event) {}
+  public void drop(DropTargetDropEvent e)
+  {
+    Transferable t = e.getTransferable();
+
+    if(t.isDataFlavorSupported(FileNode.FILENODE))
+       System.out.println("Detected local drop");
+    else if(t.isDataFlavorSupported(RemoteFileNode.REMOTEFILENODE))
+    {
+      try
+      {
+        Point ploc = e.getLocation();
+        TreePath dropPath = getPathForLocation(ploc.x,ploc.y);
+        final RemoteFileNode fn = 
+            (RemoteFileNode)t.getTransferData(RemoteFileNode.REMOTEFILENODE);
+        if(dropPath != null)
+        {
+          File dropDest = null;
+          String dropDir = null;
+          FileNode fdropPath = (FileNode)dropPath.getLastPathComponent();
+          if (fdropPath.isLeaf()) 
+          {
+            FileNode pn = (FileNode)fdropPath.getParent();
+            dropDir = pn.getFile().getAbsolutePath();
+            dropDest = new File(dropDir,fn.getFile());
+          } 
+          else 
+          {
+            dropDir = fdropPath.getFile().getAbsolutePath();
+            dropDest = new File(dropDir,fn.getFile());
+          }
+          try
+          {
+            setCursor(cbusy);
+            EmbreoFileGet efg = new EmbreoFileGet(mysettings,fn.getRootDir(),fn.getFullName());
+
+            FileSave fsave = new FileSave(dropDest,efg.contents());
+
+            if(fsave.writeOK() && !fsave.fileExists())
+            {
+              final String ndropDir = dropDir;
+              Runnable updateTheTree = new Runnable() 
+              {
+                public void run () { addObject(fn.getFile(),ndropDir); };
+              };
+              SwingUtilities.invokeLater(updateTheTree);
+            }
+            setCursor(cdone);
+          } 
+          catch (Exception exp) 
+          {
+            System.out.println("DragTree: caught exception");
+          }
+        }
+        e.getDropTargetContext().dropComplete(true);   
+      }
+      catch (Exception exp)
+      {
+        e.rejectDrop();
+      }
+      
+    }
+    else
+    {
+      e.rejectDrop();
+      return;
+    }
+
+  }
 
 /**
 *
@@ -172,16 +240,13 @@ public class DragTree extends JTree implements DragGestureListener,
       }
     }
     else
+    {
       e.rejectDrag();
-    
+    }
   }
 
-  public void dropActionChanged(DropTargetDragEvent event) {}
-
-  public void drop (DropTargetDropEvent event) 
-  {
-    
-  }
+  public void dropActionChanged(DropTargetDragEvent e) {}
+  public void dragExit(DropTargetEvent e){}
 
   public String getFilename()
   {
@@ -194,6 +259,7 @@ public class DragTree extends JTree implements DragGestureListener,
   {
     TreePath path = getLeadSelectionPath();
     FileNode node = (FileNode)path.getLastPathComponent();
+//  System.out.println(node.getFile().getAbsolutePath());
     return node;
   }
 
@@ -250,10 +316,16 @@ public class DragTree extends JTree implements DragGestureListener,
       model.nodeStructureChanged(parentNode);
     }
 
-    File newleaf = new File(child);
+    File newleaf = new File(parentNode.getFile().getAbsolutePath() +
+                            fs + child);
     int index = parentNode.getAnIndex(child);
     FileNode childNode = new FileNode(newleaf,openNodeDir);
     model.insertNodeInto(childNode, parentNode, index);
+    parentNode.add(childNode);
+
+//  System.out.println("CHILD  " + childNode.getFile().getAbsolutePath() +
+//                     "CHILD  " + child +
+//                     "PARENT " + parentNode.getFile().getAbsolutePath());
 
    // Make sure the user can see the new node.
     this.scrollPathToVisible(new TreePath(childNode.getPath()));

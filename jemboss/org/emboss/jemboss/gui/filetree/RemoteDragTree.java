@@ -33,8 +33,11 @@ import java.util.*;
 
 import org.emboss.jemboss.gui.ResultsMenuBar;
 import org.emboss.jemboss.soap.*;
-import uk.ac.mrc.hgmp.embreo.*;
-import uk.ac.mrc.hgmp.embreo.filemgr.*;
+import uk.ac.mrc.hgmp.embreo.EmbreoParams;
+import uk.ac.mrc.hgmp.embreo.EmbreoAuthException;
+import uk.ac.mrc.hgmp.embreo.filemgr.EmbreoFileRoots;
+import uk.ac.mrc.hgmp.embreo.filemgr.EmbreoFileRequest;
+import uk.ac.mrc.hgmp.embreo.filemgr.EmbreoFileGet;
 import org.apache.soap.rpc.*;
 
 /**
@@ -42,7 +45,7 @@ import org.apache.soap.rpc.*;
 * Creates a remote file tree which is a drag source & sink
 *
 */
-public class RemoteDragTree extends JTree implements DragGestureListener,
+class RemoteDragTree extends JTree implements DragGestureListener,
                            DragSourceListener, DropTargetListener 
 {
 
@@ -83,11 +86,13 @@ public class RemoteDragTree extends JTree implements DragGestureListener,
       {
         if(me.getClickCount() == 2 && isFileSelection())
         {
+          setCursor(cbusy);
           RemoteFileNode node = (RemoteFileNode)getLastSelectedPathComponent();
           if(node==null)
             return;
           if(node.isLeaf())
             showFilePane(node.getFullName());
+          setCursor(cdone);
         }
       }
       public void mousePressed(MouseEvent me){}
@@ -103,6 +108,7 @@ public class RemoteDragTree extends JTree implements DragGestureListener,
         TreePath path = e.getPath();
         if(path != null) 
         {
+          setCursor(cbusy);
           RemoteFileNode node = (RemoteFileNode)path.getLastPathComponent();
 
           if(!node.isExplored()) 
@@ -111,6 +117,7 @@ public class RemoteDragTree extends JTree implements DragGestureListener,
             node.explore();
             model.nodeStructureChanged(node);
           }
+          setCursor(cdone);
         }
       }
       public void treeCollapsed(TreeExpansionEvent e){}
@@ -124,19 +131,19 @@ public class RemoteDragTree extends JTree implements DragGestureListener,
     // drag only files 
     if(isFileSelection())
       e.startDrag(DragSource.DefaultCopyDrop, // cursor
-//        new StringSelection(getFilename()), // transferable
                  (Transferable)getNodename(), // transferable data
                                        this); // drag source listener
   }
 
 // Source
   public void dragDropEnd(DragSourceDropEvent e) {}
-  public void dragEnter(DragSourceDropEvent e){} 
-  public void dragEnter(DragSourceDragEvent e){}
+  public void dragEnter(DragSourceDragEvent e) {}
   public void dragExit(DragSourceEvent e) {}
-  public void dragOver(DragSourceDropEvent e) {}
-  public void dragOver(DragSourceDragEvent e){}
+  public void dragOver(DragSourceDragEvent e) {}
   public void dropActionChanged(DragSourceDragEvent e) {}
+//public void dragEnter(DragSourceDropEvent e){}
+//public void dragOver(DragSourceDropEvent e) {}  
+
 
 // Target
   public void dragEnter(DropTargetDragEvent e)
@@ -206,6 +213,35 @@ public class RemoteDragTree extends JTree implements DragGestureListener,
 
   }
 
+/**
+*
+* When a suitable DataFlavor is offered over a remote file
+* node the node is highlighted/selected and the drag
+* accepted. Otherwise the drag is rejected.
+*
+*/
+  public void dragOver(DropTargetDragEvent e)
+  {
+    if (e.isDataFlavorSupported(FileNode.FILENODE))
+    {
+      Point ploc = e.getLocation();
+      TreePath ePath = getPathForLocation(ploc.x,ploc.y);
+      if (ePath == null)
+        e.rejectDrag();
+      else
+      {
+        setSelectionPath(ePath);
+        e.acceptDrag(DnDConstants.ACTION_COPY_OR_MOVE);
+      }
+    }
+    else
+    {
+      e.rejectDrag();
+    }
+  }
+
+  public void dropActionChanged(DropTargetDragEvent e) {}
+  public void dragExit(DropTargetEvent e){}
 
   public byte[] getLocalFile(File name)
   {
@@ -232,35 +268,6 @@ public class RemoteDragTree extends JTree implements DragGestureListener,
     return node;
   }
 
-/**
-*
-* When a suitable DataFlavor is offered over a remote file 
-* node the node is highlighted/selected and the drag
-* accepted. Otherwise the drag is rejected.
-*
-*/
-  public void dragOver(DropTargetDragEvent e) 
-  {
-    if (e.isDataFlavorSupported(FileNode.FILENODE)) 
-    {
-      Point ploc = e.getLocation();
-      TreePath ePath = getPathForLocation(ploc.x,ploc.y);
-      if (ePath == null) 
-        e.rejectDrag();
-      else
-      {
-        setSelectionPath(ePath);
-        e.acceptDrag(DnDConstants.ACTION_COPY_OR_MOVE);
-      }
-    } 
-    else
-    {
-      e.rejectDrag();
-    }
-  }
-
-  public void dropActionChanged(DropTargetDragEvent e) {}
-  public void dragExit(DropTargetEvent e){}
 
 //
   public boolean isFileSelection()
