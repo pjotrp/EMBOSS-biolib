@@ -15658,8 +15658,16 @@ IN 2
 IN 1
 IN
 IN _rocplot
-IN _summary 
+IN _summary
 IN _classplot
+FI stderr
+FC = 13
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 6
+FP 2 /^Processing /
 FI _rocplot       
 FC > 0
 FP 1 /GNUPLOT/
