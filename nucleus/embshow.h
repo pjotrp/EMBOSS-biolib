@@ -98,7 +98,7 @@ typedef struct EmbSShow {
 **    |
 **   etc.
 **
-** @attr type [enum ShowEValtype] Type of information (enumerated list)
+** @attr type [int] Type of information (enumerated list)
 ** @attr info [void*] Information descriptor (set of available descriptors)
 ** @@
 ******************************************************************************/
