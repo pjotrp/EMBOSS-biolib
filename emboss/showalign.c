@@ -112,14 +112,14 @@ int main(int argc, char **argv)
 
     AjPFile outf;
     AjPSeqset seqset = NULL;
-    AjPStr refseq;		/* input name/number of reference sequence */
-    ajint  nrefseq;		/* numeric reference sequence */
-    AjPStr *show;		/* what to show */
-    ajint width;		/* width of displayed sequence line */
-    ajint margin;		/* width of displayed margin on left side */
-    AjPMatrix matrix;		/* scoring matrix structure */
-    ajint **sub;		/* integer scoring matrix */
-    AjPSeqCvt  cvt=0;		/* conversion table for scoring matrix */
+    AjPStr refseq;			/* input name/number of reference sequence */
+    ajint  nrefseq;			/* numeric reference sequence */
+    AjPStr *show;			/* what to show */
+    ajint width;			/* width of displayed sequence line */
+    ajint margin;			/* width of displayed margin on left side */
+    AjPMatrix matrix;			/* scoring matrix structure */
+    ajint **sub;			/* integer scoring matrix */
+    AjPSeqCvt  cvt=0;			/* conversion table for scoring matrix */
     /* True if want to change case based on Similarity */
     AjBool similarcase;
     float identity;
@@ -141,7 +141,8 @@ int main(int argc, char **argv)
     AjOOrder *aorder;			/* the output order array */
     AjBool number;			/* display number line */
     AjBool ruler;			/* display ruler line */
-
+    AjPStr xxx = NULL;
+    
     embInit ("showalign", argc, argv);
 
     seqset = ajAcdGetSeqset ("sequence");
@@ -157,6 +158,7 @@ int main(int argc, char **argv)
     bottom = ajAcdGetBool ("bottom");
     number = ajAcdGetBool ("number");
     ruler = ajAcdGetBool ("ruler");
+
 
     /* html and range formatting parameters */
     html = ajAcdGetBool ("html");
@@ -186,7 +188,9 @@ int main(int argc, char **argv)
     embConsCalc (seqset, matrix, ajSeqsetSize(seqset), ajSeqsetLen(seqset),
 		 fplural, setcase, ident, &cons);
     ajSeqAssSeq(consensus, cons);	/* set the sequence string */
-    ajSeqAssName(consensus, ajStrNewC("Consensus")); /* name the sequence */
+
+    /* name the sequence */
+    ajSeqAssName(consensus, (xxx=ajStrNewC("Consensus")));
 
     /* if margin is given as -1 ensure it is reset to a nice value */
     showalign_NiceMargin(seqset, &margin, docon, nrefseq);
@@ -207,6 +211,8 @@ int main(int argc, char **argv)
     ajFileClose (&outf);
     ajSeqDel(&consensus);
     AJFREE(aorder);
+
+    ajStrDel(&xxx);
 
     ajExit ();
     return 0;
