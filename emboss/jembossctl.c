@@ -3712,7 +3712,7 @@ static time_t jctl_Datestr(AjPStr s)
     if(i==12)
 	i=11;
     
-    tm.tm_mday = i;
+    tm.tm_mon = i;
     tm.tm_sec = sec;
     tm.tm_min = min;
     tm.tm_hour = hr;
