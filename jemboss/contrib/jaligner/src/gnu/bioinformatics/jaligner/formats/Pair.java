@@ -1,6 +1,6 @@
 /**
  * @author Ahmed Moustafa (ahmed at users.sourceforge.net) 
- * $Id: Pair.java,v 1.1 2003/09/09 10:50:32 timc Exp $
+ * $Id: Pair.java,v 1.2 2003/09/10 10:59:22 timc Exp $
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -25,7 +25,7 @@ import gnu.bioinformatics.jaligner.util.Alignment;
  * The simple output format <a href="http://www.hgmp.mrc.ac.uk/Software/EMBOSS/Themes/AlignExamples/align.pair">Pair</a> of the alignment of two sequences.
  *
  * @author Ahmed Moustafa (ahmed at users.sourceforge.net) 
- * @version $Revision: 1.1 $ 
+ * @version $Revision: 1.2 $ 
  */
 
 public class Pair {

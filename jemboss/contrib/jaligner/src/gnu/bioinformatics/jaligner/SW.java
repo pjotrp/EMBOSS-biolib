@@ -1,5 +1,5 @@
 /**
- * $Id: SW.java,v 1.1 2003/09/09 10:47:44 timc Exp $
+ * $Id: SW.java,v 1.2 2003/09/10 10:59:22 timc Exp $
  * @author Ahmed Moustafa (ahmed at users.sourceforge.net)
  * 
  * This program is free software; you can redistribute it and/or
@@ -39,7 +39,7 @@ import java.util.List;
  * and a main method to be called from the command line.
  * 
  * @author Ahmed Moustafa (ahmed at users.sourceforge.net)
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 
 public class SW {

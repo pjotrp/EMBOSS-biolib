@@ -1,5 +1,5 @@
 /**
- * $Id: SmithWaterman.java,v 1.1 2003/09/09 10:49:04 timc Exp $
+ * $Id: SmithWaterman.java,v 1.2 2003/09/10 10:59:22 timc Exp $
  * @author Ahmed Moustafa (ahmed at users.sourceforge.net)
  * 
  * This program is free software; you can redistribute it and/or
@@ -29,7 +29,7 @@ import java.util.List;
  * The basic algorithm is extended to support affine gap penatlies with Gotoh's improvement.
  * 
  * @author Ahmed Moustafa (ahmed at users.sourceforge.net)
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 
 public class SmithWaterman {
@@ -69,7 +69,7 @@ public class SmithWaterman {
 		long start = System.currentTimeMillis ( );
 		
 		byte[] pointers = construct(sequence1, sequence2, matrix, open, extend);
-		Alignment alignment = traceback(sequence1, sequence2, pointers);
+		Alignment alignment = traceback(sequence1, sequence2, pointers, matrix);
 		
 		long end = System.currentTimeMillis ( );
 		
@@ -110,7 +110,7 @@ public class SmithWaterman {
 	 * @param matrix scoring matrix
 	 * @param open open gap penalty
 	 * @param extend extend gap penalty
-	 * @return matrix of pointers (the follow in the traceback step)
+	 * @return matrix of pointers for traceback
 	 */
 	
 	private byte[] construct(final char[] sequence1, final char[] sequence2, final float[][] matrix, final float open, final float extend) {
@@ -124,9 +124,6 @@ public class SmithWaterman {
 		similarity[0] = vertical[0] = horizontal[0] = 0;
 		
 		byte[] pointers = new byte[m * n];
-		
-		int direction;
-		int k = 0;
 		
 		float a, b, c, s, o, e, diagonal = 0;
 		
@@ -147,20 +144,16 @@ public class SmithWaterman {
 					if (a > c) {
 						s = a;
 						pointers[row + j] = DIAGONAL;
-						direction = DIAGONAL;
 					} else {
 						s = c;
 						pointers[row + j] = LEFT;
-						direction = LEFT;
 					}
 				} else if (c > b) {
 					s = c;
 					pointers[row + j] = LEFT;
-					direction = LEFT;
 				} else {
 					s = b;
 					pointers[row + j] = UP;
-					direction = UP;
 				}
 
 				diagonal = similarity[j];
@@ -173,7 +166,6 @@ public class SmithWaterman {
 				}
 			}
 		}
-
 		return pointers;
 	}
 
@@ -184,7 +176,7 @@ public class SmithWaterman {
 	 * @param matrix the scoring matrix
  	 * @param open open gap penalty
 	 * @param extend extend gap penalty
-	 * @return matrix of pointers (the follow in the traceback step)
+	 * @return matrix of pointers for traceback
 	 */
 	private byte[][] constructAll(final char[] sequence1, final char[] sequence2, final float[][] matrix, final float open, final float extend) {
 
@@ -276,7 +268,7 @@ public class SmithWaterman {
 	 * @param pointers matrix of pointers
 	 * @return alignment
 	 */
-	private Alignment traceback(final char[] sequence1, final char[] sequence2, final byte[] pointers) {
+	private Alignment traceback(final char[] sequence1, final char[] sequence2, final byte[] pointers, final float[][] matrix) {
 
 		int maxlen = sequence1.length + sequence2.length;
 		char[] array1 = new char[maxlen];
@@ -295,6 +287,10 @@ public class SmithWaterman {
 		int y = startTracebackCol;
 		int n = sequence2.length + 1;
 		int row = x * n;
+		
+		int direction;
+		
+		int oldx = x, oldy = y;
 
 		// Start the traceback
 		while (x != 0 && y != 0) {
@@ -310,9 +306,12 @@ public class SmithWaterman {
 									c2 = sequence2[y-1];
 									array1[len1++] = c1;
 									array2[len2++] = c2;
-									if (c1 == c2)
+									if (c1 == c2) {
 										identity++;
-									similarity++;
+										similarity++;
+									} else if (matrix[c1][c2] > 0) {
+										similarity++;
+									}
 									x--;
 									y--;
 									row -= n;

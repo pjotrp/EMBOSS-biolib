@@ -1,5 +1,5 @@
 /**
- * $Id: ParserException.java,v 1.1 2003/09/09 10:49:34 timc Exp $
+ * $Id: ParserException.java,v 1.2 2003/09/10 10:59:22 timc Exp $
  * @author Ahmed Moustafa (ahmed at users.sourceforge.net)
  * 
  * This program is free software; you can redistribute it and/or
@@ -23,7 +23,7 @@ package gnu.bioinformatics.jaligner.exceptions;
  * An exception class for problems in parsing sequences.
  *
  * @author Ahmed Moustafa (ahmed at users.sourceforge.net) 
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 
 public class ParserException extends Exception {
@@ -39,21 +39,6 @@ public class ParserException extends Exception {
 	 * @param arg0
 	 */
 	public ParserException(String arg0) {
-		super(arg0);
-	}
-
-	/**
-	 * @param arg0
-	 * @param arg1
-	 */
-	public ParserException(String arg0, Throwable arg1) {
-		super(arg0, arg1);
-	}
-
-	/**
-	 * @param arg0
-	 */
-	public ParserException(Throwable arg0) {
 		super(arg0);
 	}
 }

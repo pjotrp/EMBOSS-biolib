@@ -1,6 +1,6 @@
 /**
  * @author Ahmed Moustafa (ahmed at users.sourceforge.net)
- * $Id: FASTA.java,v 1.1 2003/09/09 10:50:05 timc Exp $
+ * $Id: FASTA.java,v 1.2 2003/09/10 10:59:22 timc Exp $
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -22,7 +22,7 @@ package gnu.bioinformatics.jaligner.formats;
 /**
  * <a href="http://www.ncbi.nlm.nih.gov/BLAST/fasta.html">FASTA</a> format.
  * 
- * @version $Revision: 1.1 $ 
+ * @version $Revision: 1.2 $ 
  * @author Ahmed Moustafa
  */
 

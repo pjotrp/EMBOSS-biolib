@@ -1,6 +1,6 @@
 /**
  * @author Ahmed Moustafa (ahmed at users.sourceforge.net)
- * $Id: Alignment.java,v 1.1 2003/09/09 10:51:26 timc Exp $
+ * $Id: Alignment.java,v 1.2 2003/09/10 10:59:22 timc Exp $
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -26,7 +26,7 @@ import gnu.bioinformatics.jaligner.formats.Pair;
  * It holds the score, the two sequences aligned and the markup line.
  *
  * @author Ahmed Moustafa (ahmed at users.sourceforge.net)
- * @version $Revision: 1.1 $  
+ * @version $Revision: 1.2 $  
  */
 
 public class Alignment {
@@ -55,20 +55,6 @@ public class Alignment {
 		super();
 	}
 
-	/**
-	 * Constructor for Alignment
-	 * @param	score		score of the alignment
-	 * @param	sequence1	1st sequence aligned
-	 * @param	sequence2	2nd sequence aligned
-	 * @param	markup		markup line
-	 */
-	public Alignment(float score, char[] sequence1, char[] sequence2, char[] markup) {
-		this.score = score;
-		this.sequence1	= sequence1;
-		this.sequence2	= sequence2;
-		this.markup		= markup;
-		
-	}
 	/**
 	 * Returns the score of the alignment
 	 * @return	score

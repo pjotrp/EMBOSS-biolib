@@ -1,6 +1,6 @@
 /**
  * @author Ahmed Moustafa (ahmed at users.sourceforge.net)
- * $Id: Matrices.java,v 1.1 2003/09/09 10:51:40 timc Exp $
+ * $Id: Matrices.java,v 1.2 2003/09/10 10:59:22 timc Exp $
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -21,6 +21,8 @@ package gnu.bioinformatics.jaligner.util;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
@@ -30,7 +32,7 @@ import java.util.StringTokenizer;
  * A holder for the scoring matrices (Singleton).
  * 
  * @author Ahmed Moustafa (ahmed at users.sourceforge.net)
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 
 public class Matrices extends HashMap {
@@ -73,66 +75,65 @@ public class Matrices extends HashMap {
 	 * Loads similarity matrix from a Jar or from a file system.
 	 * Puts loaded matrix into the HashMap.
 	 * @param matrix name of scoring matrix
+	 * @throws FileNotFoundException
+	 * @throws IOException
 	 */
-	private void load (String matrix) {
-		try {
-			InputStream is = null;
-			
-			if (new StringTokenizer(matrix, System.getProperty("file.separator")).countTokens() == 1) {
-				// matrix does not include the path
-				// Load the matrix from matrices.jar
-				is = this.getClass().getClassLoader().getResourceAsStream(matrix);
-			} else {
-				// matrix includes the path information
-				// Load the matrix from the file system
-				is = new FileInputStream(matrix); 
-			}
-			
-			char[] acids = new char[SIZE];
-			
-			// Initialize the acids array to null values (ascii = 0)
-			for (int i = 0; i < SIZE; i++) acids[i] = 0;
-			
-			float[][] scores = new float[SIZE][SIZE];
-			
-			BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+	private void load (String matrix) throws FileNotFoundException, IOException {
+		InputStream is = null;
+		
+		if (new StringTokenizer(matrix, System.getProperty("file.separator")).countTokens() == 1) {
+			// matrix does not include the path
+			// Load the matrix from matrices.jar
+			is = this.getClass().getClassLoader().getResourceAsStream(matrix);
+		} else {
+			// matrix includes the path information
+			// Load the matrix from the file system
+			is = new FileInputStream(matrix); 
+		}
+		
+		char[] acids = new char[SIZE];
+		
+		// Initialize the acids array to null values (ascii = 0)
+		for (int i = 0; i < SIZE; i++) acids[i] = 0;
+		
+		float[][] scores = new float[SIZE][SIZE];
+		
+		BufferedReader reader = new BufferedReader(new InputStreamReader(is));
 
-			String line;
-			// Skip the comment lines
-			while ((line = reader.readLine()) != null && line.trim().charAt(0) == COMMENT_STARTER) {
-			}
-					
-			// Read the headers line (the letters of the acids)
-			StringTokenizer tokenizer;
+		String line;
+		// Skip the comment lines
+		while ((line = reader.readLine()) != null && line.trim().charAt(0) == COMMENT_STARTER) {
+		}
+				
+		// Read the headers line (the letters of the acids)
+		StringTokenizer tokenizer;
+		tokenizer = new StringTokenizer ( line.trim( ) );
+		for (int j = 0; tokenizer.hasMoreTokens(); j++) {
+			acids[j] = tokenizer.nextToken().charAt(0);
+		}
+				
+		// Read the scores
+		while ((line = reader.readLine()) != null) {
 			tokenizer = new StringTokenizer ( line.trim( ) );
-			for (int j = 0; tokenizer.hasMoreTokens(); j++) {
-				acids[j] = tokenizer.nextToken().charAt(0);
-			}
-					
-			// Read the scores
-			while ((line = reader.readLine()) != null) {
-				tokenizer = new StringTokenizer ( line.trim( ) );
-				char acid = tokenizer.nextToken().charAt(0);
-				for (int i = 0; i < SIZE; i++) {
-					if (acids[i] != 0) {
-						scores[acid][acids[i]] = Float.parseFloat(tokenizer.nextToken()); 
-					}
+			char acid = tokenizer.nextToken().charAt(0);
+			for (int i = 0; i < SIZE; i++) {
+				if (acids[i] != 0) {
+					scores[acid][acids[i]] = Float.parseFloat(tokenizer.nextToken()); 
 				}
 			}
-				
-			put(matrix, scores);
-		} catch (Exception e) {
-			System.err.println ( e.getMessage() );
-			put(matrix, null);
 		}
+			
+		put(matrix, scores);
 	}
 	
 	/**
 	 * Returns similarity matrix.
 	 * @param matrix name of scoring matrix
 	 * @return similarity matrix
+	 * @throws FileNotFoundException
+	 * @throws IOException
 	 */
-	public float[][] get(String matrix) {
+	public float[][] get(String matrix) throws FileNotFoundException, IOException {
 		if (!containsKey(matrix)) {
 			load(matrix);
 		}
@@ -145,8 +146,10 @@ public class Matrices extends HashMap {
 	 * @param c1 1<sup>st</sup> acid
 	 * @param c2 2<sup>nd</sup> acid
 	 * @return similarity score
+	 * @throws FileNotFoundException
+	 * @throws IOException
 	 */
-	public static float score (String matrix, char c1, char c2) {
+	public static float score (String matrix, char c1, char c2)  throws FileNotFoundException, IOException {
 		Matrices matrices = Matrices.getInstance();
 		float[][] similarity = matrices.get(matrix);
 		return similarity[c1][c2];
