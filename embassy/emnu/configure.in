@@ -29,8 +29,9 @@ AC_CHECK_HEADERS(unistd.h)
 dnl need to do tests as ajax library will have these included hence
 dnl if we want it to compile we have to include the same
 
+if test "${with_x}" != "no" ; then
 LF_EMBOSS_PATH_XLIB
-
+fi
 
 dnl Check for typedefs, structures and compiler characteristics
 AC_C_CONST

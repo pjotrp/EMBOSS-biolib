@@ -74,6 +74,7 @@ then
 	unset ac_cv_lib_gd_gdImageCreateFromPng
 
 
+if test $ALT_ALLINUSR = "0" ; then
 
 #
 # Keep a copy if it fails
@@ -84,9 +85,8 @@ then
 #
 # Set 
 #
-        LDFLAGS="$LDFLAGS -L${ALT_HOME}/lib"
-        CPPFLAGS="$CPPFLAGS -I${ALT_HOME}/include"
-
+        LDFLAGS="${LDFLAGS} -L${ALT_HOME}/lib"
+        CPPFLAGS="$CPPFLAGS -I$ALT_HOME/include"
 #
 # Check for zlib in ALT_HOME
 #
@@ -138,13 +138,7 @@ then
 	  AC_DEFINE(PLD_png)
 	  AM_CONDITIONAL(AMPNG, true)
           if test $ALT_USED = "1" ; then
-#	    echo "ALT_ALLINUSR = $ALT_ALLINUSR"
-	    if test $ALT_ALLINUSR = "0" ; then
-		    echo Using libz, libgd, and/or libpng from ${ALT_HOME}
-	    else
-		LDFLAGS="$ALT_LDFLAGS"
-		CPPFLAGS="$ALT_CPPFLAGS"
-	    fi
+	    echo Using libz, libgd, and/or libpng from ${ALT_HOME}
           else
             LDFLAGS="$ALT_LDFLAGS"
 	    CPPFLAGS="$ALT_CPPFLAGS"
@@ -163,8 +157,23 @@ then
 #       echo LDFLAGS = $LDFLAGS
 #       echo CPPFLAGS = $CPPFLAGS
 
+
 else
-	echo "Directory $ALT_HOME does not exist"
-	exit 0
+	echo "PNG libraries found in standard system locations"
+	AC_DEFINE(PLD_png)
+	AM_CONDITIONAL(AMPNG, true)
+
+	LIBS="$LIBS -lgd -lpng -lz -lm"
+	LDFLAGS=$LDFLAGS
+	CPPFLAGS=$CPPFLAGS
+fi
+
+
+
+else
+        if test $withval != "no"; then
+		echo "Directory $ALT_HOME does not exist"
+		exit 0
+        fi
 fi
 ])

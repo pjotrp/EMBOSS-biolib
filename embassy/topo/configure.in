@@ -47,7 +47,9 @@ AC_FUNC_VPRINTF
 #AC_CHECK_FUNCS(memcpy memmove getcwd gethostname mkfifo socket strcspn strdup strerror strspn strstr strtod strtol)
 AC_CHECK_FUNCS(memmove)
 
+if test "${with_x}" != "no" ; then
 LF_EMBOSS_PATH_XLIB
+fi
 
 dnl Library checks
 AC_CHECK_LIB(m, main)
