@@ -9,7 +9,17 @@ s###########################################################################
 #
 ###########################################################################
 
-# Example entry:
+# This is the qatest.dat file that is used by the scripts/qatest.pl script
+# The script should be run from the directory test/qa
+# Additional input data is expected to be found in the directory test/data
+# If no argument is given to the script it will run through all of the
+# entries in this file. If an argument is supplied it will search for
+# the entry whose ID name matches the argument an drun that one.
+# To run the script and retain the files craeted during the test, use
+# ../../scripts/qatest.pl -kk
+# 
+# 
+# Typical example entry:
 # 
 # ID programname-ex (the ID name of this test)
 # UC text (not used in the QA test - used in the HTML documentation)
@@ -22,12 +32,14 @@ s###########################################################################
 # FC integer (the expected number of lines in the above file)
 # FP /regexp/ (an expected perl regular expression in the above file)
 # FP integer /regexp/ (a regexp that is expected integer number of times)
-# FI stderr ()
+# FI stderr (these are standard checks on the expected error reports)
 # FC = 2
 # FP 0 /Warning: /
 # FP 0 /Error: /
 # FP 0 /Died: /
 # // (marks the end of the entry)
+# 
+
 
 ####################
 # Command line tests
