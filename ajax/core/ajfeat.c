@@ -6233,7 +6233,7 @@ AjBool ajFeatLocToSeq(AjPStr seq, AjPStr line, AjPStr *res, AjPStr usa)
 	while(p[off]>='0' && p[off]<='9')
 	    p[off++]=' ';
     }
-
+    ajRegFree(&exp_ndotn);
     ajStrCleanWhite(&str);
 
     /* Replace any (n) with n */
@@ -6247,7 +6247,7 @@ AjBool ajFeatLocToSeq(AjPStr seq, AjPStr line, AjPStr *res, AjPStr usa)
 	    ++off;
 	p[off++]=' ';
     }
-
+    ajRegFree(&exp_brnbr);
     ajStrCleanWhite(&str);
 
     /* See if its a global complement and remove complement enclosure */
@@ -6275,7 +6275,8 @@ AjBool ajFeatLocToSeq(AjPStr seq, AjPStr line, AjPStr *res, AjPStr usa)
 
 
     /* Replace complement(n-n) with ^n-n */
-    exp_compbrndashnbr = ajRegCompC("complement[(]([0-9]+)[-]([0-9]+)[)]");
+    exp_compbrndashnbr = ajRegCompC("complement[(]([A-Za-z0-9:.]+)[-]([0-9]+)[)]");
+/*    exp_compbrndashnbr = ajRegCompC("complement[(]([0-9]+)[-]([0-9]+)[)]");*/
     p = ajStrStr(str);
     while(ajRegExec(exp_compbrndashnbr,str))
     {
@@ -6288,7 +6289,8 @@ AjBool ajFeatLocToSeq(AjPStr seq, AjPStr line, AjPStr *res, AjPStr usa)
 	p[off++]=' ';
     }
     ajStrCleanWhite(&str);
-
+    ajRegFree(&exp_compbrndashnbr);
+    
 
     /* Check for only one "join" */
     p = ajStrStr(str);
@@ -6308,6 +6310,7 @@ AjBool ajFeatLocToSeq(AjPStr seq, AjPStr line, AjPStr *res, AjPStr usa)
 	ajStrAssSub(&str,str,5,len-2);
 	isjoin=ajTrue;
     }
+    ajRegFree(&exp_joinbr);
     
 
     /* Construct the sequence */
@@ -6335,9 +6338,11 @@ AjBool ajFeatLocToSeq(AjPStr seq, AjPStr line, AjPStr *res, AjPStr usa)
 
 	if(dbentry)
 	{
+	    if(*ajStrStr(token)=='^')
+		ajStrAssC(&token,ajStrStr(token)+1);
 	    if(!featGetUsaSection(&ent,token,&begin,&end,usa))
 	    {
-		ajWarn("Couldn't find embedded entry\n");
+		ajWarn("Couldn't find embedded entry %S\n",token);
 		return ajFalse;
 	    }
 	    ajStrAssSubC(&tmp,ajStrStr(ent),--begin,--end);
@@ -6346,11 +6351,20 @@ AjBool ajFeatLocToSeq(AjPStr seq, AjPStr line, AjPStr *res, AjPStr usa)
 	{
 	    if(sscanf(p,"%d-%d",&begin,&end)!=2)
 	    {
-		ajWarn("LocToSeq: Unpaired range");
-		return ajFalse;
+		if(*p>='0' && *p<='9')
+		{
+		    if(sscanf(p,"%d",&begin)==1)
+			end=begin;
+		    else
+		    {
+			ajWarn("LocToSeq: Unpaired range");
+			return ajFalse;
+		    }
+		}
 	    }
 	    ajStrAssSubC(&tmp,ajStrStr(seq),--begin,--end);
-	}
+       }
+	
 
 	if(docomp)
 	    ajSeqReverseStr(&tmp);
@@ -6542,7 +6556,7 @@ static AjBool featGetUsaSection(AjPStr* thys, AjPStr token, int* begin,
     entry2  = ajStrNew();
     numbers = ajStrNew();
     seq     = ajSeqNew();
-    
+
     handle = ajStrTokenInit(usa,":");
     ajStrToken(&db,&handle,NULL);
     ajStrTokenClear(&handle);
