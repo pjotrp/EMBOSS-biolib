@@ -334,14 +334,21 @@ static AjBool seqAccessEmblcd (AjPSeqin seqin)
     {
 	seqCdQryClose (qry);
 	/* AJB addition */
-	if((qry->Type == QRY_ENTRY) && !seqin->multi)
+        /*
+	 * This was for the old code where seqsets had different
+         * memory handling ... and the reason for the multi
+         * flag in the first place. So far this seems
+         * unnecessary for the revised code but is left here
+         * for a while as a reminder and 'just in case'
+	 */
+/*	if((qry->Type == QRY_ENTRY) && !seqin->multi)
 	{
-	  /* 
 	    if(seqin->Ftquery->Handle)
-	    ajFileBuffClear(seqin->Ftquery->Handle,0); */
-/*	    if(seqin->Ftquery->Handle)
-		ajFileBuffClear(seqin->Ftquery->Handle,0);*/
+	    ajFileBuffClear(seqin->Ftquery->Handle,0);
+	    if(seqin->Ftquery->Handle)
+		ajFileBuffClear(seqin->Ftquery->Handle,0);
 	    AJFREE(qryd);
+*/
 	}
     }
     
@@ -1244,7 +1251,7 @@ static AjBool seqCdQryReuse (AjPSeqQuery qry)
 	return ajFalse;
   
 
-    ajDebug ("qryd->list  %x\n",qryd->List);
+/*    ajDebug ("qryd->list  %x\n",qryd->List);*/
     if (!qryd->List)
     {
 	ajDebug ("query data all finished\n");
