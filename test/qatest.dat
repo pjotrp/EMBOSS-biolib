@@ -1796,8 +1796,8 @@ FC = 2
 FI stdout 
 FZ > 1445
 FP /^# Score: 795\.0\n/
-FP /^ECLACY +1342 gtgaatgaagtcgcttaagcaatcaatgtcggatgcggcgcgacgcttat  +1391\n/
-FP /^ECLACA +1 gtgaatgaagtcgcttaagcaatcaatgtcggatgcggcgcgacgcttat +50\n/
+FP /^ECLACY +1301 +cgcttagcggccccggcccgctttccctgctgcgtcgtcaggtgaatgaa +1350\n/
+FP /^ECLACA +1 +gtgaatgaa +9\n/
 ##
 ## starts with eclacy, ends with eclaca, small overlap
 ##
@@ -1833,10 +1833,10 @@ IN
 FI stderr
 FC = 2
 FI hba_human.needle 
-FZ > 1290
+FZ > 1270
 FP /^# Score: 290\.5\n/
-FP /HBB_HUMAN +2 +HLTPEEKSAVTALWGKV--NVDEVGGEALGRLLVVYPWTQRFFESFGDLS +49\n/
-FP /HBA_HUMAN +50 -----HGSAQVKGHGKKVADALTNAVAHVDDMPNALSALSDLHAHKLRVD +94\n/
+FP /HBB_HUMAN +1 +VHLTPEEKSAVTALWGKV--NVDEVGGEALGRLLVVYPWTQRFFESFGDL +48\n/
+FP /HBA_HUMAN +49 +S-----HGSAQVKGHGKKVADALTNAVAHVDDMPNALSALSDLHAHKLRV +93\n/
 //
 
 ID newcpgreport-ex
@@ -4815,10 +4815,10 @@ IN
 FI stderr
 FC = 2
 FI hba_human.stretcher
-FZ = 1472
+FZ > 1445
 FP /^# Matrix: EBLOSUM62\n/
-FP /^# Gap penalty: 12\n/
-FP /^# Extend penalty: 2\n/
+FP /^# Gap_penalty: 12\n/
+FP /^# Extend_penalty: 2\n/
 FP /^# Identity: +64/148 \(43\.2%\)\n/
 FP /^# Score: 272\n/
 FP /^HBA_HU V-LSPADKTNVKAAWGKVGAHAGEYGAEALERMFLSFPTTKTYFPHF-DL\n/
@@ -4852,8 +4852,8 @@ FZ = 0
 FI supermatcher.error
 FZ = 0
 FI eclac.supermatcher
-FZ > 71350
-FP /^ECLAC +9 /
+FZ > 71230
+FP /^ECLAC +1 /
 FP /^# Score: 37305\.0/
 FP 5 /^# Score: /
 FP /^ECLACY +1451 [acgt]+ +1492\n/
@@ -4924,7 +4924,7 @@ CL wossname
 FI stderr
 FC = 1
 FI stdout
-FZ = 14512
+FZ = 15434
 FP /EMBOSS: wossname/
 FP /Program wossname/
 //
@@ -5168,11 +5168,11 @@ IN
 FI stderr
 FC = 2
 FI hba_human.water 
-FZ > 1200
+FZ > 1175
 FP /^# Score: 293.5\n/
-FP /^HBA_HUMAN +2 +LSPADKTNVKAAWGKVGAHAGEYGAEALERMFLSFPTTKTYFPHF-DLS- +49\n/
-FP /^HBB_HUMAN +3 +LTPEEKSAVTALWGKV--NVDEVGGEALGRLLVVYPWTQRFFESFGDLST +50\n/
-FP /^HBA_HUMAN +50 +----HGSAQVKGHGKKVADALTNAVAHVDDMPNALSALSDLHAHKLRVDP +95\n/
+FP /^HBA_HUMAN +1 +LSPADKTNVKAAWGKVGAHAGEYGAEALERMFLSFPTTKTYFPHF-DLS- +48\n/
+FP /^HBB_HUMAN +1 +LTPEEKSAVTALWGKV--NVDEVGGEALGRLLVVYPWTQRFFESFGDLST +48\n/
+FP /^HBA_HUMAN +49 +----HGSAQVKGHGKKVADALTNAVAHVDDMPNALSALSDLHAHKLRVDP +94\n/
 FP /^# Identity: +63/145 \(43\.4%\)\n/
 FP /^# Similarity: +88/145 \(60.7%\)\n/
 ## Old scores ... check calculation method
