@@ -28,18 +28,37 @@ import java.awt.event.*;
 import org.emboss.jemboss.gui.form.TextFieldInt;
 import org.emboss.jemboss.gui.form.LabelTextBox;
 
+
+/**
+*
+* JFrame to define the colour of residue if identical or 
+* a positive match. 
+*
+*/
 public class PrettyPlotJFrame extends JFrame
                               implements ActionListener
 {
 
+  /** field to define min number of identities */
   private TextFieldInt textInt;
-  private ColourPanel colPane;
+  /** colour panel for identical matches */
+  private ColourPanel idColour;
+  /** colour panel for positive scoring matches */
+  private ColourPanel matchColour;
+  /** graphic sequence panel */
   private GraphicSequenceCollection gsc;
+  /** define if the identities and matches are to be boxed */
   private JCheckBox prettyBox;
 
+
+  /**
+  *
+  * @param gsc	graphic sequence panel
+  *
+  */
   public PrettyPlotJFrame(GraphicSequenceCollection gsc)
   {
-    super("Parameters");
+    super("Colour Matches");
 
     this.gsc = gsc;
     Box bdown = Box.createVerticalBox();
@@ -52,21 +71,37 @@ public class PrettyPlotJFrame extends JFrame
     textInt.setPreferredSize(d);
     bacross.add(textInt);
     LabelTextBox idLabel = new LabelTextBox(
-                "Identity Number","");
+                "Identity Number",
+                "Minimum number of identities in a column");
 
     bacross.add(idLabel);
     bacross.add(Box.createHorizontalGlue());
     bdown.add(bacross);
- 
+    bdown.add(Box.createVerticalStrut(4));
+
+// identity colour
     bacross = Box.createHorizontalBox();
-    colPane = new ColourPanel("Identity Colour", Color.red);
-    bacross.add(colPane);
+    idColour = new ColourPanel("Identity Colour", Color.red);
+    bacross.add(idColour);
     idLabel = new LabelTextBox(
                 "Identity Colour","");
     bacross.add(idLabel);
     bacross.add(Box.createHorizontalGlue());
     bdown.add(bacross);
+    bdown.add(Box.createVerticalStrut(4));
 
+// positive matches colour
+    bacross = Box.createHorizontalBox();
+    matchColour = new ColourPanel("Match Colour", Color.blue);
+    bacross.add(matchColour);
+    idLabel = new LabelTextBox(
+                "Positive Match Colour",
+                "");
+    bacross.add(idLabel);
+    bacross.add(Box.createHorizontalGlue());
+    bdown.add(bacross);
+    
+// box-in the identical and similar matches
     bacross = Box.createHorizontalBox();
     prettyBox = new JCheckBox("Box");
     prettyBox.setSelected(true);
@@ -129,9 +164,22 @@ public class PrettyPlotJFrame extends JFrame
   * @return 	colour
   *
   */
-  public Color getColour()
+  public Color getIDColour()
   {
-    return colPane.getColour();
+    return idColour.getColour();
+  }
+
+
+  /**
+  *
+  * Get the users defined colour to draw positive
+  * match residues
+  * @return     colour
+  *
+  */
+  public Color getMatchColour()
+  {
+    return matchColour.getColour();
   }
 
 
@@ -150,7 +198,7 @@ public class PrettyPlotJFrame extends JFrame
  
   /**
   *
-  *  @param ae          the action event generated
+  *  @param ae	the action event generated
   *
   */
   public void actionPerformed(ActionEvent ae)

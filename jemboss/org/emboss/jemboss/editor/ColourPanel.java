@@ -48,6 +48,7 @@ public class ColourPanel extends JPanel
     super();
     this.col = col;
     setPreferredSize(new Dimension(xsize,ysize));
+    setMaximumSize(new Dimension(xsize,ysize));
 
     ColourMenu cm = new ColourMenu(menu);
     popup = new JPopupMenu();

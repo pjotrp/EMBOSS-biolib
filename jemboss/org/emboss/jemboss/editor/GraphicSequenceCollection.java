@@ -398,7 +398,8 @@ public class GraphicSequenceCollection extends JPanel
     }
   
     if(identical >= prettyPlot.getMinimumIdentity(nseqs))
-      return prettyPlot.getColour();
+      return prettyPlot.getIDColour();
+
     else if(mat != null)
     {
       int matrix[][] = mat.getMatrix();
@@ -413,7 +414,7 @@ public class GraphicSequenceCollection extends JPanel
           {
             int m2 = mat.getMatrixIndex(seq.getResidue(pos));
             if(matrix[m1][m2]>0)
-              return Color.blue;
+              return prettyPlot.getMatchColour();
           }
         }
       } 
