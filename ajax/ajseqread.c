@@ -695,7 +695,6 @@ AjBool ajSeqRead (AjPSeq thys, AjPSeqin seqin)
     AjPStr tmpformat = NULL;
     AjBool ret = ajFalse;
     SeqPListUsa node = NULL;
-    static SeqPListUsa keepnode;
     ajint i;
     static ajint calls = 0;
 
@@ -709,7 +708,6 @@ AjBool ajSeqRead (AjPSeq thys, AjPSeqin seqin)
 	if (ajNamGetValueC("format", &tmpformat))
 	    (void) seqSetInFormat(tmpformat, seqInFormat);
 	ajStrDel(&tmpformat);
-	AJNEW0(keepnode);
 	calls = 1;
     }
 
@@ -731,7 +729,6 @@ AjBool ajSeqRead (AjPSeq thys, AjPSeqin seqin)
 	    ajDebug("++SAVE SEQIN '%S' %d..%d(%b) '%S' %d\n",
 		    seqin->Usa, seqin->Begin, seqin->End, seqin->Rev,
 		    seqin->Formatstr, seqin->Format);
- 	    /* seqUsaSave(keepnode, seqin); */
 	    seqUsaRestore(seqin, node);
 
 	    ajStrDel(&node->Usa);
@@ -762,7 +759,6 @@ AjBool ajSeqRead (AjPSeq thys, AjPSeqin seqin)
 	ajDebug("++SAVE (AGAIN) SEQIN '%S' %d..%d(%b) '%S' %d\n",
 		seqin->Usa, seqin->Begin, seqin->End, seqin->Rev,
 		seqin->Formatstr, seqin->Format);
-	/* seqUsaSave(keepnode, seqin); */
 	seqUsaRestore(seqin, node);
 
 	ajStrDel(&node->Usa);
@@ -777,10 +773,6 @@ AjBool ajSeqRead (AjPSeq thys, AjPSeqin seqin)
 	/*	seqUsaProcess (thys, seqin);*/
 
 	ret = seqRead (thys, seqin);
-	/* seqUsaRestore(seqin, keepnode);
-	ajDebug("++RESTORE SEQIN '%S' %d..%d(%b) '%S' %d\n",
-		seqin->Usa, seqin->Begin, seqin->End, seqin->Rev,
-		seqin->Formatstr, seqin->Format); */
     }
 
     if (!ret)
