@@ -199,7 +199,7 @@ AjBool ajSeqTypeCheck (AjPSeq thys, AjPSeqin seqin) {
   if (seqin->IsProt)
     ajSeqSetProt(thys);
 
-  if (seqin->Query) {
+  if (seqin->Query && ajStrLen(seqin->Query->DbType)) {
     seqTypeSet(thys, seqin->Query->DbType);
   }
 
