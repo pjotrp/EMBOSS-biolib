@@ -84,17 +84,12 @@ Data files
    
 Notes
 
-   If
-   
-   aaindexextract
-   tries to write the data to an unexpected location you can explicitly
-   set the location of the EMBOSS data directory by putting the line:
+   If aaindexextract tries to write the data to an unexpected location
+   you can explicitly set the location of the EMBOSS data directory by
+   putting the line:
    
    ENV EMBOSS_DATA /path/to/the/EMBOSS/data/directory
-   in the EMBOSS
-   
-   emboss.default
-   file.
+   in the EMBOSS emboss.default file.
    
    (Where '/path/to/the/EMBOSS/data/directory' is the location of your
    EMBOSS data as unpacked from the distribution file.)
