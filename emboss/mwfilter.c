@@ -27,6 +27,15 @@
 #define DELETED -1.
 #define MILLION 1000000.
 
+
+typedef struct AjSMwh
+{
+    double exp;
+    double data;
+} AjOMwh,*AjPMwh;
+
+
+
 /*
  *  prototypes
  */
@@ -35,7 +44,7 @@ static void mwfilter_readdata(AjPStr datafile, AjPDouble *rmarray,
 static void mwfilter_readexp(AjPFile inf, AjPDouble *exparray);
 static void mwfilter_noisedel(AjPDouble exparray, ajint expn,
 			      AjPDouble rmarray, ajint rmn,
-			      ajint tol);
+			      ajint tol, AjBool showdel, AjPList dlist);
 static void mwfilter_moddel(AjPDouble exparray, ajint expn,
 			    AjPDouble darray, ajint dn,
 			    ajint tol);
@@ -53,7 +62,9 @@ int main(int argc, char **argv)
 {
     AjPFile inf  = NULL;
     AjPFile outf = NULL;
-
+    AjBool  showdel;
+    AjPList dlist = NULL;
+    
     float tolerance = 0.0;
     
     AjPStr datafile = NULL;
@@ -67,17 +78,21 @@ int main(int argc, char **argv)
     ajint     expn = 0;
 
     ajint i;
+    AjPMwh dptr = NULL;
     
     embInit("mwfilter", argc, argv);
 
     inf       = ajAcdGetInfile("infile");
     tolerance = ajAcdGetFloat("tolerance");
     datafile  = ajAcdGetString("datafile");
+    showdel   = ajAcdGetBool("showdel");
     outf      = ajAcdGetOutfile("outfile");
 
     exparray = ajDoubleNew();
     rmarray  = ajDoubleNew();
     darray   = ajDoubleNew();
+
+    dlist = ajListNew();
 
     /* Get keratin/trypsin & oxymet/oxythr/sodium data */
     mwfilter_readdata(datafile, &rmarray, &darray);
@@ -89,7 +104,7 @@ int main(int argc, char **argv)
     expn = ajDoubleLen(exparray);
     
     /* Delete keratin noise etc */
-    mwfilter_noisedel(exparray,expn,rmarray,rmn,tolerance);
+    mwfilter_noisedel(exparray,expn,rmarray,rmn,tolerance,showdel,dlist);
     mwfilter_arraytidy(exparray,&expn);
 
     /* Delete oxymet & sodium noise etc */
@@ -98,10 +113,25 @@ int main(int argc, char **argv)
 
     for(i=0;i<expn;++i)
 	ajFmtPrintF(outf,"%lf\n",ajDoubleGet(exparray,i));
+
+    if(showdel)
+    {
+	ajFmtPrintF(outf,"\n\nDeleted weights\n\n");
+	while(ajListPop(dlist,(void **)&dptr))
+	{
+	    ajFmtPrintF(outf,"%lf - %lf\n",dptr->exp,dptr->data);
+	    AJFREE(dptr);
+	}
+    }
+    
     
     ajDoubleDel(&exparray);
     ajDoubleDel(&rmarray);
     ajDoubleDel(&darray);
+
+
+    ajListDel(&dlist);
+
     
     ajFileClose(&inf);
     ajFileClose(&outf);
@@ -233,11 +263,13 @@ static void mwfilter_readexp(AjPFile inf, AjPDouble *exparray)
 ** @param [r] rmarray [AjPDouble] keratin/trypsin data etc
 ** @param [r] rmn [ajint] Number of keratin/trypsin peaks
 ** @param [r] tol [ajint] Tolerance (ppm)
+** @param [r] showdel [AjBool] show deleted wts
+** @param [w] dlist [AjPList] list to store deleted weights
 ** @@
 *******************************************************************/
 static void mwfilter_noisedel(AjPDouble exparray, ajint expn,
 			      AjPDouble rmarray, ajint rmn,
-			      ajint tol)
+			      ajint tol, AjBool showdel, AjPList dlist)
 {
     ajint i;
     ajint j;
@@ -246,6 +278,7 @@ static void mwfilter_noisedel(AjPDouble exparray, ajint expn,
     double n;
     double ppmval;
     double mwexp;
+    AjPMwh delwt=NULL;
     
     for(i=0;i<expn;++i)
     {
@@ -258,7 +291,16 @@ static void mwfilter_noisedel(AjPDouble exparray, ajint expn,
 	{
 	    n = ajDoubleGet(rmarray,j);
 	    if(n>mwmin && n<mwmax)
+	    {
 		ajDoublePut(&exparray,i,DELETED);
+		if(showdel)
+		{
+		    AJNEW(delwt);
+		    delwt->exp = mwexp;
+		    delwt->data = n;
+		    ajListPushApp(dlist,(void *)delwt);
+		}
+	    }
 	}
     }
 
@@ -300,6 +342,7 @@ static void mwfilter_arraytidy(AjPDouble exparray, ajint *expn)
 		    ajDoublePut(&exparray,j,v);
 		}
 	    --limit;
+	    --i;
 	}
 
     *expn = n;
