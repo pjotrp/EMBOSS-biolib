@@ -797,7 +797,7 @@ char* ajSysFgets(char *buf, int size, FILE *fp)
         return NULL;
 
     cnt = 0;
-    while((c = getc(fp))!=EOF && c!=0x0d && c!='\n' && cnt!=size-1)
+    while((c = getc(fp))!=EOF && c!='\r' && c!='\n' && cnt!=size-1)
     {
         *(p++) = c;
         ++cnt;
@@ -813,7 +813,16 @@ char* ajSysFgets(char *buf, int size, FILE *fp)
         return buf;
 
     if(c=='\r' || c=='\n')
-        *(p++) = '\n';
+    {
+	if(c=='\r' && cnt<size-2)
+	{
+	    if((c=getc(fp)) == '\n')
+		*(p++) = '\r';
+	    else
+		ungetc(c,fp);
+	}
+	*(p++) = '\n';
+    }
 
     *p = '\0';
 
