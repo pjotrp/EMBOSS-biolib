@@ -1000,6 +1000,7 @@ public class AlignJFrame extends JFrame
               "-print     Print the alignment image. The following 2 flags can be\n"+
               "           used along with the print flag\n"+
               "           -prefix    prefix for image output file.\n"+
+              "           -onePage   fit the alignment to one page.\n"+
               "           -type      png or jpeg (default is jpeg).\n"+
               "           -landscape Print as landscape (the default is portrait).\n"+
               "           -margin    Define the left, right, top and bottom margin\n"+
@@ -1053,6 +1054,7 @@ public class AlignJFrame extends JFrame
       Color colMatchBack = Color.white;
       boolean prettyBox  = true;
       boolean landscape  = false;
+      boolean onePage    = false;
 
       for(int i=0;i<args.length;i++)
       {
@@ -1110,6 +1112,8 @@ public class AlignJFrame extends JFrame
           tmargin = Double.parseDouble(args[i+3]);
           bmargin = Double.parseDouble(args[i+4]);
         }
+        else if(args[i].indexOf("-onePage") > -1)
+          onePage = true;
       }
 
       for(int i=0;i<args.length;i++)
@@ -1197,9 +1201,17 @@ public class AlignJFrame extends JFrame
 
       if(print)
       {
-        PrintAlignmentImage pai = new PrintAlignmentImage(gsc);
-        pai.print(nresiduesPerLine,type,prefix,landscape,
-                  lmargin,rmargin,tmargin,bmargin);
+        if(onePage)
+        {
+          PrintAlignmentImage pai = new PrintAlignmentImage(gsc);
+          pai.print(nresiduesPerLine,type,prefix);
+        }
+        else
+        {
+          PrintAlignmentImage pai = new PrintAlignmentImage(gsc);
+          pai.print(nresiduesPerLine,type,prefix,landscape,
+                    lmargin,rmargin,tmargin,bmargin);
+        }
       }
       if(!show)
         System.exit(0);

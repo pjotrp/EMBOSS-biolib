@@ -1166,6 +1166,25 @@ public class GraphicSequenceCollection extends JPanel
 
   /**
   *
+  * Get the imageable size. This is for fitting the image
+  * to one page.
+  * @return               image size
+  *
+  */
+  public Dimension getImageableSize(int numResPerLine)
+  {
+    SequenceJPanel seq = (SequenceJPanel)graphicSequence.get(0);
+    int residueHeight = seq.getSequenceHeight();
+    int alignHeight   = (graphicSequence.size()+2)*residueHeight;
+    int nalign = Math.round((float)MAXSEQLENGTH/
+                             (float)numResPerLine)*alignHeight;
+    numResPerLine+=2;
+    int width  = (seq.getResidueWidth()*numResPerLine)+getNameWidth();
+    return new Dimension(width,nalign);
+  }
+
+  /**
+  *
   * Get the number residues per line
   * @param format    	format for printing
   * @return		number residues per line	

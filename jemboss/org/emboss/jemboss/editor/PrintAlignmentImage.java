@@ -217,6 +217,43 @@ public class PrintAlignmentImage extends ScrollPanel
 
   /**
   *
+  * Print to a jpeg or png file
+  *
+  */
+  public void print(int nResPerLine, String type,
+                    String filePrefix)
+  {
+    this.nResPerLine = nResPerLine;
+    PrinterJob printerJob = PrinterJob.getPrinterJob();
+    format = new PageFormat();
+
+    Dimension d = gsc.getImageableSize(nResPerLine);
+    double width  = d.getWidth();
+    double height = d.getHeight();
+    Paper paper  = format.getPaper();
+
+    System.out.println("width "+width+"  height "+height);
+    paper.setSize(width,height);
+    paper.setImageableArea(0,0,
+                           width,height);
+    format.setPaper(paper);
+
+    try
+    {
+      RenderedImage rendImage = createAlignmentImage(0);
+      writeImageToFile(rendImage,
+                       new File(filePrefix+"."+type),type);
+    }
+    catch(NoClassDefFoundError ex)
+    {
+      JOptionPane.showMessageDialog(this,
+            "This option requires Java 1.4 or higher.");
+    }
+  }
+
+
+  /**
+  *
   * Provide some options for the image created
   * @param showFileOptions	display file options
   *	
@@ -297,6 +334,7 @@ public class PrintAlignmentImage extends ScrollPanel
     return format;
   }
  
+
   /**
   *
   *  Returns a generated image 
@@ -312,7 +350,6 @@ public class PrintAlignmentImage extends ScrollPanel
     BufferedImage bufferedImage = new BufferedImage(
                                   width,height, 
                                   BufferedImage.TYPE_INT_RGB);
-    
     // Create a graphics contents on the buffered image
     Graphics2D g2d = bufferedImage.createGraphics();
     g2d.setColor(Color.white);
@@ -325,6 +362,7 @@ public class PrintAlignmentImage extends ScrollPanel
  
     return bufferedImage;
   }
+
 
   /**
   *
@@ -506,6 +544,7 @@ public class PrintAlignmentImage extends ScrollPanel
     }catch ( IOException e )
     {
       System.out.println("Java 1.4+ is required");
+      e.printStackTrace();
     }
   }
 
