@@ -922,10 +922,16 @@ public class AlignJFrame extends JFrame
               "-pretty    EMBOSS prettyplot colour scheme. The -matrix flag option\n"+
               "           can be used to define a scoring matrix for identifying\n"+
               "           positive matches.\n"+
-              "           -noBox     switch off box drawing around identical and\n"+
-              "                      positive matches.\n"+
-              "           -colID     define a colour for identities.\n"+
-              "           -colMatch  define a colour for positive matches.\n"+  
+              "           -noBox         switch off box drawing around identical and\n"+
+              "                          positive matches.\n"+
+              "           -colID         define a colour for identities.\n"+
+              "           -minID         define the minimum number of identities. The\n"+
+              "                          default for this is the number of sequences\n"+
+              "                          in the file.\n"+
+              "           -colMatch      define a colour for positive matches.\n"+  
+              "           -colIDBack     define a background colour for identities.\n"+
+              "           -colMatchBack  define a background colour for positive\n"+
+              "                           matches.\n"+
               "           Available colour options:\n"+  
               "           red, blue, cyan, darkGray, gray , green, lightGray,\n"+
               "           magenta , orange, pink, white, yellow, black\n"+     
@@ -937,13 +943,16 @@ public class AlignJFrame extends JFrame
               "           -margin    Define the left, right, top and bottom margin\n"+
               "                      (in cm).\n"+
               "       java org.emboss.jemboss.editor.AlignJFrame file -matrix EBLOSUM62 \\\n"+
-              "                   -noshow -print -margin 0.5 0.5 0.5 0.5\n\n"+
+              "                -noshow -print -margin 0.5 0.5 0.5 0.5\n\n"+
               "-matrix    To define a scoring matrix. Used with the -pretty and -calc\n"+
               "           option.\n"+
               "-list      List the available scoring matrix files.\n\n"+
               "EXAMPLE\n"+
               "java org.emboss.jemboss.editor.AlignJFrame file -matrix EBLOSUM80 \\\n"+
-              "                             -pretty -noshow -id -print -type png\n");
+              "                             -pretty -noshow -id -print -type png\n\n"+
+              "java org.emboss.jemboss.editor.AlignJFrame file -matrix EPAM250 \\\n"+
+              "                -pretty -colIDBack black -colID white -print \\\n"+
+              "                -margin 0.5 0.5 0.5 0.0 -noshow\n");
           System.exit(0);
         }
       }
@@ -983,10 +992,13 @@ public class AlignJFrame extends JFrame
       float plu = wgt/2.f;
       float cas = wgt/2.f;
       int ident = 0;
-      Color colID    = Color.red;
-      Color colMatch = Color.blue;
-      boolean prettyBox = true;
-      boolean landscape = false;
+      int minID = gsc.getNumberSequences();
+      Color colID        = Color.red;
+      Color colMatch     = Color.blue;
+      Color colIDBack    = Color.white;
+      Color colMatchBack = Color.white;
+      boolean prettyBox  = true;
+      boolean landscape  = false;
 
       for(int i=0;i<args.length;i++)
       {
@@ -1003,8 +1015,18 @@ public class AlignJFrame extends JFrame
           cas = Float.parseFloat(args[i+1]);
         else if(args[i].indexOf("-numid") > -1)
           ident = Integer.parseInt(args[i+1]);
-        else if(args[i].indexOf("-colID") > -1)
-          colID = resolveColor(args,i+1);
+        else if(args[i].indexOf("-colIDBack") > -1)
+        {
+          Color col = resolveColor(args,i+1);
+          if(col != null)
+            colIDBack = col;
+        }
+        else if(args[i].indexOf("-colMatchBack") > -1)
+        {
+          Color col = resolveColor(args,i+1);
+          if(col != null)
+            colMatchBack = col;
+        }
         else if(args[i].indexOf("-colMatch") > -1)
         {
           Color col = resolveColor(args,i+1);
@@ -1017,6 +1039,8 @@ public class AlignJFrame extends JFrame
           if(col != null)
             colID = col;
         }
+        else if(args[i].indexOf("-minID") > -1)
+          minID = Integer.parseInt(args[i+1]);
         else if(args[i].indexOf("-noBox") > -1)
           prettyBox = false;
         else if(args[i].indexOf("-font") > -1)
@@ -1089,9 +1113,9 @@ public class AlignJFrame extends JFrame
           nresiduesPerLine = Integer.parseInt(args[i+1]);
         else if(args[i].indexOf("-pretty")  > -1)          
         {
-          int minID = gsc.getNumberSequences();
           PrettyPlotJFrame pretty = new PrettyPlotJFrame(minID,
-                                     colID,colMatch,prettyBox);
+                                     colID,colMatch,
+                                     colIDBack,colMatchBack,prettyBox);
           gsc.setPrettyPlot(true,pretty);
           gsc.setDrawBoxes(false);
           gsc.setDrawColor(false);

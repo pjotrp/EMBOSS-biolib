@@ -442,6 +442,20 @@ public class GraphicSequenceCollection extends JPanel
     return Color.black;
   }
 
+
+  /**
+  *
+  * Determine the colour of a residue background
+  *
+  */
+  protected Color getPrettyBackground(Color textColour)
+  {
+    if(textColour.equals(prettyPlot.getIDColour()))
+      return prettyPlot.getIDBackgroundColour();
+    else
+      return prettyPlot.getMatchBackgroundColour();
+  }
+
  
   /**
   *

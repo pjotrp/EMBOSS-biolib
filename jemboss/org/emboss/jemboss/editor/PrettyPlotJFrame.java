@@ -45,6 +45,10 @@ public class PrettyPlotJFrame extends JFrame
   private ColourPanel idColour;
   /** colour panel for positive scoring matches */
   private ColourPanel matchColour;
+  /** colour panel for identical matches background */
+  private ColourPanel idColourBackground;
+  /** colour panel for positive scoring matches background */
+  private ColourPanel matchColourBackground;
   /** graphic sequence panel */
   private GraphicSequenceCollection gsc;
   /** define if the identities and matches are to be boxed */
@@ -57,12 +61,17 @@ public class PrettyPlotJFrame extends JFrame
   *
   */
   public PrettyPlotJFrame(int minID, Color colID, Color colMatch,
+                          Color colIDBack, Color colMatchBack,
                           boolean lboxPretty)
   {
     textInt = new TextFieldInt();
     textInt.setText(Integer.toString(minID));
     idColour = new ColourPanel("Identity Colour",colID);
     matchColour = new ColourPanel("Match Colour",colMatch);
+    idColourBackground = new ColourPanel("Identity Background Colour",
+                                         colIDBack);
+    matchColourBackground = new ColourPanel("Match Background Colour",
+                                             colMatchBack);
     prettyBox = new JCheckBox();
     prettyBox.setSelected(lboxPretty);
   }
@@ -106,6 +115,17 @@ public class PrettyPlotJFrame extends JFrame
     bdown.add(bacross);
     bdown.add(Box.createVerticalStrut(4));
 
+// identity colour background
+    bacross = Box.createHorizontalBox();
+    idColourBackground = new ColourPanel("Identity Background Colour", Color.white);
+    bacross.add(idColourBackground);
+    idLabel = new LabelTextBox(
+                "Identity Background Colour","");
+    bacross.add(idLabel);
+    bacross.add(Box.createHorizontalGlue());
+    bdown.add(bacross);
+    bdown.add(Box.createVerticalStrut(4));
+
 // positive matches colour
     bacross = Box.createHorizontalBox();
     matchColour = new ColourPanel("Match Colour", Color.blue);
@@ -116,7 +136,18 @@ public class PrettyPlotJFrame extends JFrame
     bacross.add(idLabel);
     bacross.add(Box.createHorizontalGlue());
     bdown.add(bacross);
-    
+
+// positive matches colour background
+    bacross = Box.createHorizontalBox();
+    matchColourBackground = new ColourPanel("Match Background Colour", Color.white);
+    bacross.add(matchColourBackground);
+    idLabel = new LabelTextBox(
+                "Positive Match Background Colour",
+                "");
+    bacross.add(idLabel);
+    bacross.add(Box.createHorizontalGlue());
+    bdown.add(bacross);
+ 
 // box-in the identical and similar matches
     bacross = Box.createHorizontalBox();
     prettyBox = new JCheckBox("Box");
@@ -188,6 +219,19 @@ public class PrettyPlotJFrame extends JFrame
 
   /**
   *
+  * Get the users defined background colour to draw identical
+  * residues
+  * @return     colour
+  *
+  */
+  public Color getIDBackgroundColour()
+  {
+    return idColourBackground.getColour();
+  }
+
+
+  /**
+  *
   * Get the users defined colour to draw positive
   * match residues
   * @return     colour
@@ -196,6 +240,19 @@ public class PrettyPlotJFrame extends JFrame
   public Color getMatchColour()
   {
     return matchColour.getColour();
+  }
+
+
+  /**
+  *
+  * Get the users defined background colour to draw positive
+  * match residues
+  * @return     colour
+  *
+  */
+  public Color getMatchBackgroundColour()
+  {
+    return matchColourBackground.getColour();
   }
 
 

@@ -353,7 +353,8 @@ public class SequenceJPanel extends JPanel
 
         String res = seqS.substring(i,i+1);
         if(prettyPlot)
-          leftResidue = prettyDraw(i,ipos,istop,res,seqHeight,leftResidue,g);
+          leftResidue = prettyDraw(i,ipos,istop,res,seqHeight,
+                                   resWidth,leftResidue,g);
         
         g.drawString(res, 
                      ipos+boundWidth4,
@@ -384,16 +385,23 @@ public class SequenceJPanel extends JPanel
   * @param ipos		x position
   * @param res		residue
   * @param seqHeight	sequence height
+  * @param resWidth     sequence width
   * @param leftResidue	true if the left residue is an identical match
   * @param g		graphics
   *
   */
   private boolean prettyDraw(int i, int ipos, int istop, String res,
-                             int seqHeight, boolean leftResidue, Graphics g)
+                             int seqHeight, int resWidth, 
+                             boolean leftResidue, Graphics g)
   {
     String sName = seq.getName();
     GraphicSequenceCollection gsc = (GraphicSequenceCollection)viewPane;
     Color col = gsc.getColor(res,i,sName);
+    Color colBackground = gsc.getPrettyBackground(col);
+
+    g.setColor(colBackground);
+    g.fillRect(ipos,0,resWidth,seqHeight);
+
     if(!col.equals(Color.black) && gsc.isPrettyBox())
     {
       // draw left line of cell
@@ -423,6 +431,8 @@ public class SequenceJPanel extends JPanel
     }
     else
       leftResidue = false;
+
+
     g.setColor(col);
     return leftResidue;
   }
@@ -818,7 +828,7 @@ public class SequenceJPanel extends JPanel
       if(drawColorBox)
       {
         g2d.setColor(getColor(seqS.substring(i,i+1)));
-        g2d.fillRect((i-istart)*(resWidth)+MAXSEQNAME,0,resWidth,seqHeight);
+        g2d.fillRect(ipos,0,resWidth,seqHeight);
       }
       g2d.setColor(Color.black);
       if(drawBlackBox)
@@ -829,7 +839,8 @@ public class SequenceJPanel extends JPanel
       {
         String res = seqS.substring(i,i+1);
         if(prettyPlot)
-          leftResidue = prettyDraw(i,ipos,istop,res,seqHeight,leftResidue,g2d);
+          leftResidue = prettyDraw(i,ipos,istop,res,seqHeight,
+                                   resWidth,leftResidue,g2d);
 
         g2d.drawString(res,
                       ((i-istart)*resWidth)+boundWidth4+MAXSEQNAME,
