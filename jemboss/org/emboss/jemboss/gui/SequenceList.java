@@ -230,6 +230,30 @@ public class SequenceList extends JFrame
 
   }
 
+
+  private int getDefaultRow()
+  {
+    int nrow = seqModel.getRowCount();
+    for(int i =0;i<nrow;i++)
+    {
+      Boolean isDef = (Boolean)seqModel.getValueAt(i,
+                        SequenceListTableModel.COL_DEF);
+      if(isDef.booleanValue())
+        return i;
+    }
+    return -1;
+  }
+
+  public String getDefaultSequenceName()
+  {
+    int ndef = getDefaultRow();
+    if(ndef<0)
+      return null;
+
+    return (String)seqModel.getValueAt(ndef,
+             SequenceListTableModel.COL_NAME);
+  }
+
 //class PopupListener extends MouseAdapter 
 //{
 //  public void mousePressed(MouseEvent e) {
@@ -305,6 +329,7 @@ class DragJTable extends JTable implements DragGestureListener,
     return (Boolean)seqModel.getValueAt(row,
                   SequenceListTableModel.COL_LIST);
   }
+
 
 // drop sink
   public void dragEnter(DropTargetDragEvent e)
@@ -420,6 +445,12 @@ class SequenceData
     s_listFile = lis;
     s_remote = remote;
   }
+
+  public String getSequenceName()
+  {
+    return s_name;
+  }
+
 }
 
 
