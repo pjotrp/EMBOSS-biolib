@@ -23,6 +23,8 @@ you would like to see this viewer software provide.
 <ul>
 <li><b><a href="#Load">Loading Sequences</a></b>
 <li><b><a href="#Edit">Editing Functions</a></b>
+<li><b><a href="#Lock">Locking Sequences</a></b>
+<li><b><a href="#Trim">Locking Sequences</a></b>
 <li><b><a href="#Colour">Colour Schemes</a></b>
 <li><b><a href="#Score">Scoring Matrix</a></b>
 <li><b><a href="#Cons">Consensus Sequence</a></b>
@@ -49,6 +51,19 @@ be removed by dragging to the left. Sequences can be deleted
 from the the viewer by right mouse clicking on the sequence
 and selecting "Delete" from the pop up menu.
 
+<a NAME="Lock">
+<p>Sequences can be locked by selecting the name on the right
+hand side of the alignment and clicking the 'Lock' button.
+When gaps are then introduced into one of these sequences
+the gap will also appear in those sequence in this group of
+locked sequences. The lock can be switched off with the
+'Unlock' button or 'Unlock All Sequences' in the 'Edit' menu.
+
+<a NAME="Trim">
+<p>Also under the 'Edit' menu there is an utility to 
+trim the ends of sequences. This can be used to tidy up
+the termini of an alignment.
+ 
 <a NAME="Colour"><h2>Colour Schemes</h2></a>
 There are various colour schemes for the residues these
 can be found under the View menu. The residues
@@ -61,7 +76,8 @@ select from.
 <p>
 Alternatively sequences can be coloured based on their
 identities and their positive matches. The positive matches
-are defined by the scoring matrix selected.
+are defined by the scoring matrix selected. This method is based
+on the EMBOSS program prettyplot colour scheme.
 
 <a NAME="Score"><h2>Scoring Matrix</h2></a>
 The are used to calculate scores in the consensus. A different
