@@ -389,7 +389,8 @@ typedef struct EmbSBtCache
 
 
 
-EmbPBtcache embBtreeCacheNewC(const char *file, const char *mode,
+EmbPBtcache embBtreeCacheNewC(const char *file, const char *ext,
+			      const char *idir, const char *mode,
 			      ajint pagesize, ajint order, ajint fill,
 			      ajint level, ajint cachesize);
 EmbPBtpage  embBtreeCacheRead(EmbPBtcache cache, ajlong pageno);
@@ -408,9 +409,12 @@ void     embBtreeInsertId(EmbPBtcache cache, const EmbPBtId id);
 void     embBtreeIdDel(EmbPBtId *thys);
 EmbPBtId embBtreeIdNew(void);
 EmbPBtId embBtreeIdFromKey(EmbPBtcache cache, const char *key);
-void     embBtreeWriteParams(const EmbPBtcache cache, const char *fn);
-void     embBtreeReadParams(const char *fn, ajint *order, ajint *nperbucket,
-			    ajint *pagesize, ajint *level, ajint *cachesize);
+void     embBtreeWriteParams(const EmbPBtcache cache, const char *fn,
+			     const char *ext, const char *idir);
+void     embBtreeReadParams(const char *fn, const char *ext,
+			    const char *idir, ajint *order,
+			    ajint *nperbucket, ajint *pagesize, ajint *level,
+			    ajint *cachesize);
 void     embBtreeCacheSync(EmbPBtcache cache);
 
 AjBool   embBtreeDeleteId(EmbPBtcache cache, const EmbPBtId id);
@@ -422,7 +426,7 @@ EmbPBtpage embBtreeFindInsertW(EmbPBtcache cache, const char *key);
 EmbPBtId   embBtreeIdFromKeyW(EmbPBtcache cache, EmbPBtWild wild);
 AjBool     embBtreeReplaceId(EmbPBtcache cache, const EmbPBtId rid);
 
-AjPStr*    embBtreeReadEntries(const char *filename);
+AjPStr*    embBtreeReadEntries(const char *filename, const char *indexdir);
 void       embBtreeInsertDupId(EmbPBtcache cache, EmbPBtId id);
 AjPList    embBtreeDupFromKey(EmbPBtcache cache, const char *key);
 

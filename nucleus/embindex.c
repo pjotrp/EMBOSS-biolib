@@ -109,6 +109,8 @@ static void       btreeReadLeaf(EmbPBtcache cache, EmbPBtpage page,
 ** Open a b+tree index file and initialise a cache object
 **
 ** @param [r] file [const char *] name of file
+** @param [r] ext [const char *] extension of file
+** @param [r] idir [const char *] index file directory
 ** @param [r] mode [const char *] opening mode
 ** @param [r] pagesize [ajint] pagesize
 ** @param [r] order [ajint] Tree order
@@ -120,7 +122,8 @@ static void       btreeReadLeaf(EmbPBtcache cache, EmbPBtpage page,
 ** @@
 ******************************************************************************/
 
-EmbPBtcache embBtreeCacheNewC(const char *file, const char *mode,
+EmbPBtcache embBtreeCacheNewC(const char *file, const char *ext,
+			      const char *idir, const char *mode,
 			      ajint pagesize, ajint order, ajint fill,
 			      ajint level, ajint cachesize)
 {
@@ -135,10 +138,9 @@ EmbPBtcache embBtreeCacheNewC(const char *file, const char *mode,
 
     AjPStr fn = NULL;
 
-
-    fn = ajStrNewC(file);
-    ajStrAppC(&fn,".btx");
-
+    fn = ajStrNew();
+    ajFmtPrintS(&fn,"%s/%s.%s",idir,file,ext);
+    
     fp = fopen(fn->Ptr,mode);
     if(!fp)
 	return NULL;
@@ -2767,19 +2769,22 @@ EmbPBtId embBtreeIdFromKey(EmbPBtcache cache, const char *key)
 ** Write B+ tree parameters to file
 **
 ** @param [r] cache [const EmbPBtcache] cache
-** @param [r] fn [const char *] file
+** @param [r] fn [const char *] file name
+** @param [r] ext [const char *] index file extension name
+** @param [r] idir [const char *] index file directory
 **
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void embBtreeWriteParams(const EmbPBtcache cache, const char *fn)
+void embBtreeWriteParams(const EmbPBtcache cache, const char *fn,
+			 const char *ext, const char *idir)
 {
     AjPStr  fname = NULL;
     AjPFile outf  = NULL;
-    
-    fname = ajStrNewC(fn);
-    ajStrAppC(&fname,".param");
+
+    fname = ajStrNew();
+    ajFmtPrintS(&fname,"%s/%s.p%s",idir,fn,ext);
 
     if(!(outf = ajFileNewOut(fname)))
 	ajFatal("Cannot open param file %S\n",fname);
@@ -2804,6 +2809,8 @@ void embBtreeWriteParams(const EmbPBtcache cache, const char *fn)
 ** Read B+ tree parameters from file
 **
 ** @param [r] fn [const char *] file
+** @param [r] ext [const char *] file extension
+** @param [r] idir [const char *] index directory
 ** @param [w] order [ajint*] tree order
 ** @param [w] nperbucket [ajint*] bucket fill
 ** @param [w] pagesize [ajint*] size of pages
@@ -2814,16 +2821,19 @@ void embBtreeWriteParams(const EmbPBtcache cache, const char *fn)
 ** @@
 ******************************************************************************/
 
-void embBtreeReadParams(const char *fn, ajint *order, ajint *nperbucket,
-			ajint *pagesize, ajint *level, ajint *cachesize)
+void embBtreeReadParams(const char *fn, const char *ext,
+			const char *idir, ajint *order,
+			ajint *nperbucket, ajint *pagesize, ajint *level,
+			ajint *cachesize)
 {
     AjPStr fname = NULL;
     AjPStr line = NULL;
     AjPFile inf  = NULL;
     
     line  = ajStrNew();
-    fname = ajStrNewC(fn);
-    ajStrAppC(&fname,".param");
+
+    fname = ajStrNew();
+    ajFmtPrintS(&fname,"%s/%s.p%s",idir,fn,ext);
 
     if(!(inf = ajFileNewIn(fname)))
 	ajFatal("Cannot open param file %S\n",fname);
@@ -5895,12 +5905,13 @@ AjBool embBtreeReplaceId(EmbPBtcache cache, const EmbPBtId rid)
 ** Read B+ tree entries from file
 **
 ** @param [r] filename [const char*] file name
+** @param [r] indexdir [const char*] index file directory
 **
 ** @return [AjPStr*] array of database filenames
 ** @@
 ******************************************************************************/
 
-AjPStr* embBtreeReadEntries(const char *filename)
+AjPStr* embBtreeReadEntries(const char *filename, const char *indexdir)
 {
     AjPStr line = NULL;
     AjPStr fn   = NULL;
@@ -5913,8 +5924,9 @@ AjPStr* embBtreeReadEntries(const char *filename)
 
     line = ajStrNew();
     list = ajListNew();
-    
-    fn = ajStrNewC(filename);
+
+    fn = ajStrNew();
+    ajFmtPrintS(&fn,"%s/%s",indexdir,filename);
     
     ajStrAppC(&fn,".ent");
     
