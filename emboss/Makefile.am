@@ -10,7 +10,7 @@ entrails histogramtest intconv messtest \
 patmattest plplottest proteinmotifsearch \
 seqinfo \
 seqretallfeat seqretfeat seqtofeat \
-simplesw swissparse testplot treetypedisplay 
+swissparse testplot treetypedisplay 
 
 bin_PROGRAMS = abiview acdc antigenic \
 backtranseq banana btwisted \
@@ -214,7 +214,6 @@ histogramtest_SOURCES = histogramtest.c
 messtest_SOURCES = messtest.c
 patmattest_SOURCES = patmattest.c
 plplottest_SOURCES = plplottest.c
-simplesw_SOURCES = simplesw.c
 swissparse_SOURCES = swissparse.c
 seqretallfeat_SOURCES = seqretallfeat.c
 seqretfeat_SOURCES = seqretfeat.c
