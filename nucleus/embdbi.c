@@ -20,7 +20,9 @@
 
 #include "emboss.h"
 #include <dirent.h>
+#include <sys/types.h>
 #include <sys/wait.h>
+#include <errno.h>
 
 
 
@@ -540,6 +542,7 @@ void embDbiSysCmd(AjPStr cmdstr)
     char** arglist = NULL;
     char* pgm;
     pid_t pid;
+    pid_t retval;
     ajint status;
 
     ajDebug("forking '%S'", cmdstr);
@@ -555,7 +558,12 @@ void embDbiSysCmd(AjPStr cmdstr)
 	execvp(pgm, arglist);
 	return;
     }
-    while(wait(&status)!=pid);
+    while((retval=waitpid(pid,&status,WNOHANG))!=pid)
+    {
+	if(retval == -1)
+	    if(errno != EINTR)
+		break;
+    }
 
     ajSysArgListFree(&arglist);
     ajCharFree(pgm);
