@@ -44,8 +44,6 @@
 #define DEFDLIST  "."
 #define DEFBLOSUM "EBLOSUM62"
 #define DEFDNA    "EDNAFULL"
-#define DEFCPDB   "1azu"
-#define DEFSCOP   "d3sdha"
 
 #define ACD_SEQ_BEGIN 0
 #define	ACD_SEQ_END 1
@@ -633,7 +631,6 @@ static void      acdPrintCalcAttr(const AjPFile outf, const AjBool full,
 static void      acdProcess(void);
 static void      acdPromptAlign(AcdPAcd thys);
 static void      acdPromptCodon(AcdPAcd thys);
-static void      acdPromptCpdb(AcdPAcd thys);
 static void      acdPromptDirlist(AcdPAcd thys);
 static void      acdPromptFeat(AcdPAcd thys);
 static void      acdPromptFeatout(AcdPAcd thys);
@@ -642,7 +639,6 @@ static void      acdPromptGraph(AcdPAcd thys);
 static void      acdPromptInfile(AcdPAcd thys);
 static void      acdPromptOutfile(AcdPAcd thys);
 static void      acdPromptReport(AcdPAcd thys);
-static void      acdPromptScop(AcdPAcd thys);
 static void      acdPromptSeq(AcdPAcd thys);
 static void      acdPromptSeqout(AcdPAcd thys);
 static void      acdPromptTree(AcdPAcd thys);
@@ -783,8 +779,6 @@ static void acdHelpValidInt(const AcdPAcd thys, AjPStr* str);
 static void acdHelpValidList(const AcdPAcd thys, AjPStr* str);
 static void acdHelpValidMatrix(const AcdPAcd thys, AjPStr* str);
 static void acdHelpValidOut(const AcdPAcd thys, AjPStr* str);
-static void acdHelpValidCpdb(const AcdPAcd thys, AjPStr* str);
-static void acdHelpValidScop(const AcdPAcd thys, AjPStr* str);
 static void acdHelpValidRange(const AcdPAcd thys, AjPStr* str);
 static void acdHelpValidRegexp(const AcdPAcd thys, AjPStr* str);
 static void acdHelpValidSelect(const AcdPAcd thys, AjPStr* str);
@@ -802,8 +796,6 @@ static void acdHelpExpectIn(const AcdPAcd thys, AjPStr* str);
 static void acdHelpExpectInt(const AcdPAcd thys, AjPStr* str);
 static void acdHelpExpectMatrix(const AcdPAcd thys, AjPStr* str);
 static void acdHelpExpectOut(const AcdPAcd thys, AjPStr* str);
-static void acdHelpExpectCpdb(const AcdPAcd thys, AjPStr* str);
-static void acdHelpExpectScop(const AcdPAcd thys, AjPStr* str);
 static void acdHelpExpectRange(const AcdPAcd thys, AjPStr* str);
 static void acdHelpExpectRegexp(const AcdPAcd thys, AjPStr* str);
 static void acdHelpExpectSeq(const AcdPAcd thys, AjPStr* str);
@@ -841,8 +833,6 @@ static void acdSetMatrix(AcdPAcd thys);
 static void acdSetMatrixf(AcdPAcd thys);
 static void acdSetOutdir(AcdPAcd thys);
 static void acdSetOutfile(AcdPAcd thys);
-static void acdSetCpdb(AcdPAcd thys);
-static void acdSetScop(AcdPAcd thys);
 static void acdSetProperties(AcdPAcd thys);
 static void acdSetRange(AcdPAcd thys);
 static void acdSetRegexp(AcdPAcd thys);
@@ -1053,13 +1043,7 @@ AcdOAttr acdAttrCodon[] =
 	 NULL}
 };
 
-AcdOAttr acdAttrCpdb[] =
-{
-    {"name", VT_STR, "1azu",
-	 "Default cleaned PDB entry"},
-    {NULL, VT_NULL, NULL,
-	 NULL}
-};
+
 
 AcdOAttr acdAttrDatafile[] =
 {
@@ -1373,13 +1357,7 @@ AcdOAttr acdAttrReport[] =
 	 NULL}
 };
 
-AcdOAttr acdAttrScop[] =
-{
-    {"name", VT_STR, "d3sdha",
-	 "SCOP entry name"},
-    {NULL, VT_NULL, NULL,
-	 NULL}
-};
+
 
 AcdOAttr acdAttrSec[] =
 {
@@ -2085,9 +2063,6 @@ AcdOType acdType[] =
     {"codon",	           "input",            acdSecInput,
 	 acdAttrCodon,     acdSetCodon,        NULL,
 	 AJTRUE,  &acdUseData, "Codon usage file in EMBOSS data path" },
-    {"cpdb",	           "input",            acdSecInput,
-	 acdAttrCpdb,      acdSetCpdb,         NULL,
-	 AJFALSE, &acdUseData, "Cleaned PDB file in EMBOSS data path" },
     {"datafile",           "input",            acdSecInput,
 	 acdAttrDatafile,  acdSetDatafile,     NULL,
 	 AJFALSE, &acdUseData, "Data file" },
@@ -2154,9 +2129,6 @@ AcdOType acdType[] =
     {"report",             "output",           acdSecOutput,
 	 acdAttrReport,    acdSetReport,       acdQualReport,
 	 AJTRUE,  &acdUseReport, "Report output file" },
-    {"scop",	           "input",            acdSecInput,
-	 acdAttrScop,      acdSetScop,         NULL,
-	 AJFALSE, &acdUseData, "Scop entry in EMBOSS data path" },
     {"selection",          "selection",        NULL,
 	 acdAttrSelect,    acdSetSelect,       NULL,
 	 AJFALSE, &acdUseMisc, "Choose from selection list of values" },
@@ -2245,8 +2217,6 @@ AcdOValid acdValue[] =
     {"dirlist",   acdHelpValidDirlist,  acdHelpExpectDirlist},
     {"filelist",  acdHelpValidFilelist, acdHelpExpectFilelist},
     {"list",      acdHelpValidList,     NULL},
-    {"cpdb",      acdHelpValidCpdb,     acdHelpExpectCpdb},
-    {"scop",      acdHelpValidScop,     acdHelpExpectScop},
     {"select",    acdHelpValidSelect,   NULL},
     {"graph",     acdHelpValidGraph,    acdHelpExpectGraph},
     {"xygraph",   acdHelpValidGraph,    acdHelpExpectGraph},
@@ -5179,109 +5149,6 @@ static void acdSetCodon(AcdPAcd thys)
 
 
 
-
-/* @func ajAcdGetCpdb *********************************************************
-**
-** Returns an item of type Pdb as defined in a named ACD item.
-** Called by the application after all ACD values have been set,
-** and simply returns what the ACD item already has.
-**
-** @param [r] token [const char*] Text token name
-** @return [AjPPdb] Cpdb object.
-** @cre failure to find an item with the right name and type aborts.
-** @@
-******************************************************************************/
-
-AjPPdb ajAcdGetCpdb(const char *token)
-{
-    return acdGetValue(token, "cpdb");
-}
-
-
-
-
-/* @funcstatic acdSetCpdb *****************************************************
-**
-** Using the definition in the ACD file, and any values for the
-** item or its associated qualifiers provided on the command line,
-** prompts the user if necessary (and possible) and
-** sets the actual value for an ACD outfile item.
-**
-** Understands all attributes and associated qualifiers for this item type.
-**
-** The default value (if filtering is on) is "stdin", but then
-** prompting is turned off.
-**
-** Otherwise there is no default value unles the ACD file has one.
-**
-** Various file naming options are defined, but not yet implemented here.
-**
-** @param [u] thys [AcdPAcd] ACD item.
-** @return [void]
-** @@
-******************************************************************************/
-
-static void acdSetCpdb(AcdPAcd thys)
-{
-    AjPPdb val;
-    AjPFile inf = NULL;
-    AjPStr name = NULL;
-
-    AjBool required = ajFalse;
-    AjBool ok       = ajFalse;
-
-    static AjPStr defreply = NULL;
-    static AjPStr reply    = NULL;
-    ajint itry;
-    
-    
-    acdAttrResolve(thys, "name", &name);
-    if(!ajStrLen(name))
-	ajStrAssC(&name,DEFCPDB);
-    
-    required = acdIsRequired(thys);
-    acdReplyInit(thys, ajStrStr(name), &defreply);
-    acdPromptCpdb(thys);
-    
-    for(itry=acdPromptTry; itry && !ok; itry--)
-    {
-	ok = ajTrue;	   /* accept the default if nothing changes */
-
-	ajStrAss(&reply, defreply);
-
-	if(required)
-	    acdUserGet(thys, &reply);
-
-	if(ajStrLen(reply))
-	{
-	    if((inf=ajFileNewIn(reply)))
-	    {
-		if(val=(AjPPdb)embPdbReadNew(inf))
-		    ajFileClose(&inf);
-		else
-		{
-		    acdBadVal(thys, required,
-			      "Unable to read clean PDB file '%S'", reply);
-		    ok = ajFalse;
-		}
-	    }
-	}
-	else
-	{
-	    acdBadVal(thys, required, "Cleaned PDB file is required");
-	    ok = ajFalse;
-	}
-    }
-    
-    if(!ok)
-	acdBadRetry(thys);
-    
-    thys->Value = val;
-    ajStrAssS(&thys->ValStr, reply);
-    
-    ajStrDel(&name);
-    return;
-}
 
 
 
@@ -8280,110 +8147,6 @@ static void acdSetReport(AcdPAcd thys)
 }
 
 
-
-
-/* @func ajAcdGetScop *********************************************************
-**
-** Returns an item of type Scop as defined in a named ACD item.
-** Called by the application after all ACD values have been set,
-** and simply returns what the ACD item already has.
-**
-** @param [r] token [const char*] Text token name
-** @return [AjPScop] Scop object.
-** @cre failure to find an item with the right name and type aborts.
-** @@
-******************************************************************************/
-
-AjPScop ajAcdGetScop(const char *token)
-{
-    return acdGetValue(token, "scop");
-}
-
-
-
-
-/* @funcstatic acdSetScop *****************************************************
-**
-** Using the definition in the ACD file, and any values for the
-** item or its associated qualifiers provided on the command line,
-** prompts the user if necessary (and possible) and
-** sets the actual value for an ACD outfile item.
-**
-** Understands all attributes and associated qualifiers for this item type.
-**
-** The default value (if filtering is on) is "stdin", but then
-** prompting is turned off.
-**
-** Otherwise there is no default value unles the ACD file has one.
-**
-** Various file naming options are defined, but not yet implemented here.
-**
-** @param [u] thys [AcdPAcd] ACD item.
-** @return [void]
-** @@
-******************************************************************************/
-
-static void acdSetScop(AcdPAcd thys)
-{
-    AjPScop val;
-    
-    AjPFile inf = NULL;
-    AjPStr name = NULL;
-
-    AjBool required = ajFalse;
-    AjBool ok       = ajFalse;
-
-    static AjPStr defreply = NULL;
-    static AjPStr reply    = NULL;
-    ajint itry;
-    
-    
-    acdAttrResolve(thys, "name", &name);
-    if(!ajStrLen(name))
-	ajStrAssC(&name,DEFSCOP);
-    
-    required = acdIsRequired(thys);
-    acdReplyInit(thys, ajStrStr(name), &defreply);
-    acdPromptScop(thys);
-    
-    for(itry=acdPromptTry; itry && !ok; itry--)
-    {
-	ok = ajTrue;	   /* accept the default if nothing changes */
-
-	ajStrAss(&reply, defreply);
-
-	if(required)
-	    acdUserGet(thys, &reply);
-
-	if(ajStrLen(reply))
-	{
-	    ajFileDataNewC(ajESCOP,&inf);
-	    if(!inf)
-		ok = ajFalse;
-	    else if((!(val = (AjPScop) embScopReadNew(inf,reply))))
-	    {
-		acdBadVal(thys, required,
-			  "Unable to read clean PDB file '%S'", reply);
-		ok = ajFalse;
-		ajFileClose(&inf);
-	    }
-	}
-	else
-	{
-	    acdBadVal(thys, required, "Scop entry is required");
-	    ok = ajFalse;
-	}
-    }
-    
-    if(!ok)
-	acdBadRetry(thys);
-    
-    thys->Value = val;
-    ajStrAssS(&thys->ValStr, reply);
-    
-    ajStrDel(&name);
-    return;
-}
 
 
 
@@ -11495,38 +11258,7 @@ static void acdHelpValidFeatout(const AcdPAcd thys, AjPStr* str)
 
 
 
-/* @funcstatic acdHelpValidCpdb ***********************************************
-**
-** Generates valid description for a clean pdb type.
-**
-** @param [r] thys [const AcdPAcd] ACD object
-** @param [r] str [AjPStr*] Help text (if any) generated
-** @return [void]
-** @@
-******************************************************************************/
 
-static void acdHelpValidCpdb(const AcdPAcd thys, AjPStr* str)
-{
-    return;
-}
-
-
-
-
-/* @funcstatic acdHelpValidScop ***********************************************
-**
-** Generates valid description for a scop type.
-**
-** @param [r] thys [const AcdPAcd] ACD object
-** @param [r] str [AjPStr*] Help text (if any) generated
-** @return [void]
-** @@
-******************************************************************************/
-
-static void acdHelpValidScop(const AcdPAcd thys, AjPStr* str)
-{
-    return;
-}
 
 
 
@@ -12060,52 +11792,6 @@ static void acdHelpExpectFilelist(const AcdPAcd thys, AjPStr* str)
 }
 
 
-
-
-/* @funcstatic acdHelpExpectCpdb **********************************************
-**
-** Generates expected value description for a clean pdb file type.
-**
-** @param [r] thys [const AcdPAcd] ACD object
-** @param [r] str [AjPStr*] Help text (if any) generated
-** @return [void]
-** @@
-******************************************************************************/
-
-static void acdHelpExpectCpdb(const AcdPAcd thys, AjPStr* str)
-{
-    acdAttrResolve(thys, "name", str);
-    if(ajStrLen(*str))
-	return;
-
-    ajStrAssC(str, DEFCPDB);
-
-    return;
-}
-
-
-
-
-/* @funcstatic acdHelpExpectScop **********************************************
-**
-** Generates expected value description for a scop type.
-**
-** @param [r] thys [const AcdPAcd] ACD object
-** @param [r] str [AjPStr*] Help text (if any) generated
-** @return [void]
-** @@
-******************************************************************************/
-
-static void acdHelpExpectScop(const AcdPAcd thys, AjPStr* str)
-{
-    acdAttrResolve(thys, "name", str);
-    if(ajStrLen(*str))
-	return;
-
-    ajStrAssC(str, DEFSCOP);
-
-    return;
-}
 
 
 
@@ -17099,59 +16785,6 @@ static void acdPromptFeat(AcdPAcd thys)
 
 
 
-
-/* @funcstatic acdPromptCpdb **************************************************
-**
-** Sets the default prompt for this ACD object to be a clean PDB file
-**
-** @param [r] thys [AcdPAcd] Current ACD object.
-** @return [void]
-** @@
-******************************************************************************/
-
-static void acdPromptCpdb(AcdPAcd thys)
-{
-    AjPStr *prompt;
-
-    if(!thys->DefStr)
-	return;
-
-    prompt = &thys->DefStr[DEF_PROMPT];
-    if(ajStrLen(*prompt))
-	return;
-
-    ajFmtPrintS(&thys->StdPrompt, "Clean PDB file");
-
-    return;
-}
-
-
-
-
-/* @funcstatic acdPromptScop **************************************************
-**
-** Sets the default prompt for this ACD object to be a scop entry
-**
-** @param [r] thys [AcdPAcd] Current ACD object.
-** @return [void]
-** @@
-******************************************************************************/
-
-static void acdPromptScop(AcdPAcd thys)
-{
-    AjPStr *prompt;
-
-    if(!thys->DefStr)
-	return;
-
-    prompt = &thys->DefStr[DEF_PROMPT];
-    if(ajStrLen(*prompt))
-	return;
-
-    ajFmtPrintS(&thys->StdPrompt, "Scop entry");
-
-    return;
-}
 
 
 
