@@ -699,11 +699,11 @@ static void diffseq_DiffList(const AjPList matchlist, AjPList difflist,
     PosPDiff diff = NULL;                /* Difference object */
     ajint i;
     ajint j;
-    char *seqc1;
-    char *seqc2;
+    const char *seqc1;
+    const char *seqc2;
     
-    seqc1 = ajSeqCharCopy(seq1);
-    seqc2 = ajSeqCharCopy(seq2);
+    seqc1 = ajSeqChar(seq1);
+    seqc2 = ajSeqChar(seq2);
 
     *over1start = -1;                        /* flag for no matches found */
 
@@ -901,12 +901,6 @@ static void diffseq_FeatSetCDSFrame(const AjPFeattable ftab)
 #define FEATFLAG_START_UNSURE     0x4000  /* unsure position - SwissProt '?' */
 #define FEATFLAG_END_UNSURE       0x8000  /* unsure position - SwissProt '?' */
 
-    AjPStr codon_start = NULL;  /* name and value of tags of the feature */
-        
-        
-                        ajStrAssC(&codon_start, "codon_start");
-                          
-
     unsure = ajFalse;
 
     if(!ftab)
@@ -1055,6 +1049,8 @@ static void diffseq_FeatSetCDSFrame(const AjPFeattable ftab)
         prevstart = ajFeatGetStart(gf);
         prevend = ajFeatGetEnd(gf);
     }
+
+    ajListIterFree(&iter);
 
     return;
 }
