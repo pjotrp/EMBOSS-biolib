@@ -45,6 +45,16 @@ typedef struct SeqSMsfItem
   AjPStr Seq;
 } SeqOMsfItem, *SeqPMsfItem;
 
+typedef struct SeqSListUsa
+{
+  ajint Begin;
+  ajint End;
+  AjBool Rev;
+  ajint Format;
+  AjPStr Formatstr;
+  AjPStr Usa;
+} SeqOListUsa, *SeqPListUsa;
+
 enum fmtcode {FMT_OK, FMT_NOMATCH, FMT_BADTYPE, FMT_FAIL};
 
 static AjBool     seqReadAbi (AjPSeq thys, AjPSeqin seqin);
@@ -112,7 +122,10 @@ static AjBool     seqReadTreecon (AjPSeq thys, AjPSeqin seqin);
 static AjBool     seqSetInFormat (AjPStr format, SeqPInFormat inform);
 static void       seqSetName (AjPStr* name, AjPStr str);
 
+static void       seqUsaListTrace (AjPList list);
 static AjBool     seqUsaProcess (AjPSeq thys, AjPSeqin seqin);
+void              seqUsaRestore (AjPSeqin seqin, SeqPListUsa node);
+void              seqUsaSave (SeqPListUsa node, AjPSeqin seqin);
 
 /* static data that needs the function definitions and so must come later */
 
@@ -270,7 +283,7 @@ void ajSeqinDel (AjPSeqin* pthis)
     ajStrDel(&thys->Desc);
     ajStrDel(&thys->Doc);
 
-    ajListstrFree(&thys->List);
+    ajListFree(&thys->List);
 
     ajStrDel(&thys->Usa);
     ajStrDel(&thys->Ufo);
@@ -443,17 +456,21 @@ void ajSeqinUsa (AjPSeqin* pthis, AjPStr Usa)
 AjBool ajSeqAllRead (AjPSeq thys, AjPSeqin seqin)
 {
     AjBool ret = ajFalse;
+
+
+    if (!seqin->Filebuff) {	/* First call. No file open yet ... */
+      if (!seqUsaProcess (thys, seqin))	/* ... so process the USA */
+	return ajFalse;		/* if this fails, we read no sequence at all */
+    }
   
-    if (!seqin->Filebuff)
-	if (!seqUsaProcess (thys, seqin))
-	    return ajFalse;
-  
-    ret = seqRead (thys, seqin);
-    if (ret)
+    ret = seqRead (thys, seqin); /* read the sequence */
+
+    if (ret)			/* clone any specified DB or entryname */
     {
 	(void) ajStrSet (&thys->Db, seqin->Db);
 	(void) ajStrSet (&thys->Entryname, seqin->Entryname);
-	if (!ajStrLen(thys->Type))
+
+	if (!ajStrLen(thys->Type)) /* make sure the type is set */
 	    ajSeqType (thys);
     }
 
@@ -663,7 +680,8 @@ AjBool ajSeqRead (AjPSeq thys, AjPSeqin seqin)
 {
     AjPStr tmpformat = NULL;
     AjBool ret = ajFalse;
-    AjPStr usa = NULL;
+    SeqPListUsa node = NULL;
+    static SeqPListUsa keepnode;
     ajint i;
     static ajint calls = 0;
 
@@ -677,6 +695,7 @@ AjBool ajSeqRead (AjPSeq thys, AjPSeqin seqin)
 	if (ajNamGetValueC("format", &tmpformat))
 	    (void) seqSetInFormat(tmpformat, seqInFormat);
 	ajStrDel(&tmpformat);
+	AJNEW0(keepnode);
 	calls = 1;
     }
 
@@ -689,11 +708,16 @@ AjBool ajSeqRead (AjPSeq thys, AjPSeqin seqin)
     else
     {
 	/* (b) if we have a list, try the next USA in the list */
-	if (ajListstrLength (seqin->List))
+	if (ajListLength (seqin->List))
 	{
-	    (void) ajListstrPop (seqin->List, &usa);
-	    ajSeqinUsa (&seqin, usa);
-	    ajStrDel(&usa);
+	    (void) ajListPop (seqin->List, (void**) &node);
+	    ajSeqinUsa (&seqin, node->Usa);
+	    seqUsaSave(keepnode, seqin);
+	    seqUsaRestore(seqin, node);
+
+	    ajStrDel(&node->Usa);
+	    AJFREE (node);
+
 	    ajDebug("ajSeqRead: open list, try '%S'\n", seqin->Usa);
 	}
 	else
@@ -709,18 +733,23 @@ AjBool ajSeqRead (AjPSeq thys, AjPSeqin seqin)
 
     ret = seqRead (thys, seqin);
   
-    while (!ret && ajListstrLength (seqin->List))
+    while (!ret && ajListLength (seqin->List))
     {
 	/* Failed, but we have a list still - keep trying it */
-	(void) ajListstrPop (seqin->List, &usa);
-	ajSeqinUsa (&seqin, usa);
-	ajStrDel(&usa);
+	(void) ajListPop (seqin->List, (void**) &node);
+	ajSeqinUsa (&seqin, node->Usa);
+	seqUsaSave(keepnode, seqin);
+	seqUsaRestore(seqin, node);
+
+	ajStrDel(&node->Usa);
+	AJFREE (node);
 
 /*	if (!seqUsaProcess (thys, seqin))
 	    return ajFalse;
 */
 	seqUsaProcess (thys, seqin);
 	ret = seqRead (thys, seqin);
+	seqUsaRestore(seqin, keepnode);
     }
 
     if (!ret)
@@ -769,6 +798,8 @@ AjBool ajSeqRead (AjPSeq thys, AjPSeqin seqin)
 ** that can be opened.
 ** Anything left is an entryname spec.
 **
+** Read all the sequences until done
+**
 ** Return the results in the AjPSeqset object.
 **
 ** @param [w] thys [AjPSeqset] Sequence set returned.
@@ -781,10 +812,8 @@ AjBool ajSeqsetRead (AjPSeqset thys, AjPSeqin seqin)
 {
     AjPSeq seq;
     AjPList setlist;
-    AjIList iter;
 
     ajint iseq = 0;
-    ajint i;
 
     seq = ajSeqNew();
 
@@ -831,37 +860,124 @@ AjBool ajSeqsetRead (AjPSeqset thys, AjPSeqin seqin)
     if (!iseq)
 	return ajFalse;
 
-    thys->Size = iseq;
-    thys->Seq = AJCALLOC0(iseq, sizeof(AjPSeq));
-    thys->Seqweight = AJCALLOC0(iseq, sizeof(float));
+    /* convert the list of sequences into a seqset structure */
 
-    i = 0;
-    iter = ajListIter (setlist);
-    while ((seq = ajListIterNext(iter)))
-    {
-	if (!i)
-	{
-	    thys->EType = seq->EType;
-	    (void) ajStrAss (&thys->Type, seq->Type);
-	    thys->Format = seq->Format;
-	    (void) ajStrAss (&thys->Formatstr, seq->Formatstr);
-	    (void) ajStrAss (&thys->Filename, seq->Filename);
-	    (void) ajStrAss (&thys->Full, seq->Full);
-	}
-	thys->Seqweight[i] = seq->Weight;
-	thys->Seq[i] = seq;
-	thys->Totweight += seq->Weight;
-	if (ajSeqLen(seq) > thys->Len)
-	    thys->Len = ajSeqLen(seq);
-	i++;
-    }
-    ajListIterFree(iter);
+    ajSeqsetFromList (thys, setlist);
+
     ajListFree (&setlist);
 
-    /* convert the list of sequences into a seqset structure */
     ajDebug ("ajSeqsetRead total %d sequences\n", iseq);
 
     return ajTrue;
+}
+
+/* @func ajSeqsetFromList *****************************************************
+**
+** Builds a sequence set from a list of sequences
+**
+** @param [w] thys [AjPSeqset] Sequence set
+** @param [r] list [AjPList] List of sequence objects
+** @return [ajint] Number of sequences in the set.
+******************************************************************************/
+
+ajint ajSeqsetFromList (AjPSeqset thys, AjPList list)
+{
+
+  ajint i;
+  AjIList iter;
+  AjPSeq seq;
+
+  thys->Size = ajListLength(list);
+  thys->Seq = AJCALLOC0(thys->Size, sizeof(AjPSeq));
+  thys->Seqweight = AJCALLOC0(thys->Size, sizeof(float));
+
+  i = 0;
+  iter = ajListIter (list);
+  while ((seq = ajListIterNext(iter)))
+  {
+    if (!i)
+    {
+      thys->EType = seq->EType;
+      (void) ajStrAss (&thys->Type, seq->Type);
+      thys->Format = seq->Format;
+      (void) ajStrAss (&thys->Formatstr, seq->Formatstr);
+      (void) ajStrAss (&thys->Filename, seq->Filename);
+      (void) ajStrAss (&thys->Full, seq->Full);
+    }
+    thys->Seqweight[i] = seq->Weight;
+    thys->Seq[i] = seq;
+    thys->Totweight += seq->Weight;
+    if (ajSeqLen(seq) > thys->Len)
+      thys->Len = ajSeqLen(seq);
+    i++;
+  }
+  ajListIterFree(iter);
+
+  return thys->Size;
+}
+
+/* @func ajSeqsetFromPair *****************************************************
+**
+** Builds a sequence set from a pair of sequences
+**
+** @param [w] thys [AjPSeqset] Sequence set
+** @param [r] seqa [AjPSeq] Sequence 1
+** @param [r] seqb [AjPSeq] Sequence 2
+** @return [ajint] Number of sequences in the set.
+******************************************************************************/
+
+ajint ajSeqsetFromPair (AjPSeqset thys, AjPSeq seqa, AjPSeq seqb)
+{
+
+  (void) ajSeqsetApp (thys, seqa);
+  (void) ajSeqsetApp (thys, seqb);
+
+  return thys->Size;
+}
+
+/* @func ajSeqsetApp *****************************************************
+**
+** Adds a sequence to a sequence set
+**
+** @param [w] thys [AjPSeqset] Sequence set
+** @param [r] seq [AjPSeq] Sequence
+** @return [ajint] Number of sequences in the set.
+******************************************************************************/
+
+ajint ajSeqsetApp (AjPSeqset thys, AjPSeq seq)
+{
+  ajint iseq;
+
+  iseq = thys->Size;
+
+  ajDebug ("ajSeqsetApp '%S' size %d len %d add '%S' len %d\n",
+	   thys->Full, thys->Size, thys->Len,
+	   seq->Full, ajSeqLen(seq));
+
+  thys->Size ++;
+  AJCRESIZE(thys->Seq, thys->Size);
+  AJCRESIZE(thys->Seqweight, thys->Size);
+
+  if (!iseq)
+  {
+    thys->EType = seq->EType;
+    (void) ajStrSet (&thys->Type, seq->Type);
+    thys->Format = seq->Format;
+    (void) ajStrSet (&thys->Formatstr, seq->Formatstr);
+    (void) ajStrSet (&thys->Filename, seq->Filename);
+    (void) ajStrSet (&thys->Full, seq->Full);
+  }
+
+  thys->Seqweight[iseq] = seq->Weight;
+  thys->Seq[iseq] = ajSeqNewS(seq);
+  thys->Totweight += seq->Weight;
+  if (ajSeqLen(seq) > thys->Len)
+    thys->Len = ajSeqLen(seq);
+
+  ajDebug ("result '%S' size %d len\n",
+	   thys->Full, thys->Size, thys->Len);
+
+  return thys->Size;
 }
 
 /* @funcstatic seqReadFmt ****************************************************
@@ -4724,12 +4840,80 @@ static AjBool seqUsaProcess (AjPSeq thys, AjPSeqin seqin)
     return accstat;
 }
 
+/* @funcstatic seqUsaRestore **************************************************
+**
+** Restores a sequence input specification from a SeqPListUsa node
+**
+** @param [w] seqin [AjPSeqin] Sequence input object
+** @param [r] node [SeqPListUsa] Usa list node
+******************************************************************************/
+
+void seqUsaRestore (AjPSeqin seqin, SeqPListUsa node) {
+  seqin->Begin = node->Begin;
+  seqin->End = node->End;
+  seqin->Rev = node->Rev;
+  seqin->Format = node->Format;
+  ajStrAssS(&seqin->Formatstr, node->Formatstr);
+
+  return;
+}
+
+/* @funcstatic seqUsaSave *****************************************************
+**
+** Saves a sequence input specification in a SeqPListUsa node
+**
+** @param [r] node [SeqPListUsa] Usa list node
+** @param [w] seqin [AjPSeqin] Sequence input object
+******************************************************************************/
+
+void seqUsaSave (SeqPListUsa node, AjPSeqin seqin) {
+  node->Begin = seqin->Begin;
+  node->End = seqin->End;
+  node->Rev = seqin->Rev;
+  node->Format = seqin->Format;
+  ajStrAssS(&node->Formatstr, seqin->Formatstr);
+
+  return;
+}
+
+/* @funcstatic seqUsaListTrace ************************************************
+**
+** Traces the nodes in a USA list
+**
+** @param [r] list [AjPList] The USA list
+**
+******************************************************************************/
+
+static void seqUsaListTrace (AjPList list) {
+  AjIList iter;
+  SeqPListUsa node;
+  ajint i=0;
+
+  iter = ajListIter(list);
+
+  ajDebug ("SeqUsaListTrace %d nodes\n", ajListLength(list));
+  while (ajListIterMore(iter)) {
+    node = (SeqPListUsa) ajListIterNext(iter);
+    ajDebug ("%3d: '%S' %4d..%d (%b)\n",
+	     ++i, node->Usa, node->Begin, node->End, node->Rev);
+  }
+  ajListIterFree(iter);
+  ajDebug("...Done...\n");
+}
+
 /* @funcstatic seqListProcess *************************************************
 **
-** Precesses a file of USAs.
-** This function is called by, and calls, seqUsaprocess. There is
+** Processes a file of USAs.
+** This function is called by, and calls, seqUsaProcess. There is
 ** a depth check to avoid infinite loops, for example where a list file
 ** refers to itself.
+**
+** This function produces a list (AjPList) of USAs with all list references
+** expanded into lists of USAs.
+**
+** Because USAs in a list can have their own begin, end and reverse settings
+** the prior setting are stored with each USA in the list node so that they
+** can be restored after.
 **
 ** @param [r] seq [AjPSeq] Sequence
 ** @param [r] seqin [AjPSeqin] Sequence input
@@ -4744,9 +4928,9 @@ static AjBool seqListProcess (AjPSeq seq, AjPSeqin seqin, AjPStr listfile)
     AjPFile file = NULL;
     AjPStr rdline = NULL;
     AjPStr token = NULL;
-    AjPStr usa = NULL;			/* not static - could be recursive */
     static AjPStrTok handle = NULL;
     AjBool ret = ajFalse;
+    SeqPListUsa node = NULL;
 
     static ajint depth = 0;
     static ajint MAXDEPTH = 16;
@@ -4756,10 +4940,10 @@ static AjBool seqListProcess (AjPSeq seq, AjPSeqin seqin, AjPStr listfile)
     if (depth > MAXDEPTH)
 	ajFatal ("USA List too deep");
 
-    if (!ajListstrLength(seqin->List))
-	seqin->List = ajListstrNew();
+    if (!ajListLength(seqin->List))
+	seqin->List = ajListNew();
 
-    list = ajListstrNew();
+    list = ajListNew();
 
     file = ajFileNewIn(listfile);
     if (!file)
@@ -4778,7 +4962,10 @@ static AjBool seqListProcess (AjPSeq seq, AjPSeqin seqin, AjPStr listfile)
 	    ajDebug ("Line  '%S'\ntoken '%S'\n", rdline, token);
 	    if (ajStrLen(token))
 	    {
-		ajListstrPushApp(list, token);
+	        AJNEW0 (node);
+		ajStrAssS(&node->Usa, token);
+		seqUsaSave(node, seqin);
+		ajListPushApp(list, node);
 	    }
 	    token = NULL;
 	}
@@ -4787,27 +4974,28 @@ static AjBool seqListProcess (AjPSeq seq, AjPSeqin seqin, AjPStr listfile)
     ajStrDel (&rdline);
 
     ajDebug("Trace seqin->List\n");
-    ajListstrTrace (seqin->List);
+    seqUsaListTrace (seqin->List);
     ajDebug("Trace new list\n");
-    ajListstrTrace (list);
-    ajListstrPushList (seqin->List, &list);
+    seqUsaListTrace (list);
+    ajListPushList (seqin->List, &list);
 
     ajDebug("Trace combined seqin->List\n");
-    ajListstrTrace (seqin->List);
+    seqUsaListTrace (seqin->List);
 
     /* now try the first item on the list */
     /* this can descend recursively if it is also a list */
     /* which is why we check the depth above */
 
-    if (ajListstrPop (seqin->List, &usa))
+    if (ajListPop (seqin->List, (void**) &node))
     {
-	ajSeqinUsa (&seqin, usa);
+	ajSeqinUsa (&seqin, node->Usa);
+	ajStrDel (&node->Usa);
+	AJFREE (node);
 	ajDebug ("descending with usa '%S'\n", seqin->Usa);
 	ret = seqUsaProcess (seq, seqin);
     }
 
     (void) ajStrTokenReset (&handle);
-    ajStrDel (&usa);
     depth--;
     return ret;
 }
@@ -5118,14 +5306,15 @@ static AjBool seqQueryMatch (AjPSeq thys, AjPSeqQuery query)
     AjPStr accstr;
     AjBool ok = ajFalse;
 
-    ajDebug ("seqQueryMatch '%S' '%S'\n", thys->Name, query->Id);
+    ajDebug ("seqQueryMatch '%S' '%S' (%S)\n",
+	     thys->Name, query->Id, query->Acc);
 
     ajStrAssS (&thys->Entryname, thys->Name);
 
     if (!query)
 	return ajTrue;
 
-    if (query->Fpos != NULLFPOS)	/* if fpos read something, that's fine */
+    if (query->Fpos != NULLFPOS)     /* if fpos read something, that's fine */
 	return ajTrue;
 
     if (ajStrLen(query->Id))
@@ -5135,25 +5324,23 @@ static AjBool seqQueryMatch (AjPSeq thys, AjPSeqQuery query)
 
 	ajDebug ("id test failed\n");
 	tested = ajTrue;
+	ok = ajFalse;
     }
 
     if (!ajStrLen(query->Acc))
     {
-	ajDebug ("No accession number for sequence\n");
-	return ajTrue;
+	ajDebug ("No accession number to test\n");
+	ok = ajFalse;
     }
-
-    /* accession number test - check the entire list */
-
-    if (ajListLength(thys->Acclist))
-    {
+    else if (ajListLength(thys->Acclist))
+    {			   /* accession number test - check the entire list */
 	iter = ajListIter (thys->Acclist);
 	while (ajListIterMore(iter))
 	{
 	    accstr = ajListIterNext(iter);
-	    /*      ajDebug ("... try accession '%S' '%S'\n", accstr,
-		    query->Acc);
-	    */
+	    ajDebug ("... try accession '%S' '%S'\n", accstr,
+		     query->Acc);
+	    
 	    if (ajStrMatchWild (accstr, query->Acc))
 	    {
 		ok = ajTrue;
@@ -5162,14 +5349,13 @@ static AjBool seqQueryMatch (AjPSeq thys, AjPSeqQuery query)
 	}
 	tested = ajTrue;
 	ajDebug ("acc test failed\n");
-    }
-
-    if (tested)
 	ajListIterFree(iter);
+    }
 
     if (!tested)		/* nothing to test, so accept it anyway */
 	return ajTrue;
 
+    ajDebug ("result: %B\n", ok);
     return ok;
 }
 
@@ -5304,7 +5490,7 @@ static void seqQryWildComp (void)
 **
 ** Parse an NCBI format fasta line. Return id acc and description
 **
-** @param [r] str [AjPStr]   fasta line.
+** @param [r] instr [AjPStr]   fasta line.
 ** @param [w] id [AjPStr*]   id.
 ** @param [w] acc [AjPStr*]  accession number.
 ** @param [w] desc [AjPStr*] description.
@@ -5312,13 +5498,16 @@ static void seqQryWildComp (void)
 ** @@
 ******************************************************************************/
 
-AjBool ajSeqParseFasta(AjPStr str, AjPStr* id, AjPStr* acc, AjPStr* desc)
+AjBool ajSeqParseFasta(AjPStr instr, AjPStr* id, AjPStr* acc, AjPStr* desc)
 {
     static AjPStrTok handle = NULL;
     static AjPStr token = NULL;
+    static AjPStr str = NULL;
     AjBool ok = ajFalse;
 
-    ajDebug("ajSeqParseFasta '%S'\n", str);
+    ajDebug("ajSeqParseFasta '%S'\n", instr);
+
+    ajStrAssS (&str, instr);
 
     if (!ajStrPrefixC(str, ">"))
       return ajFalse;
@@ -5363,14 +5552,14 @@ AjBool ajSeqParseFasta(AjPStr str, AjPStr* id, AjPStr* acc, AjPStr* desc)
 ** to what can really happen. Sadly,' real files' also includes
 ** internal IDs in blast databases reformatted by formatdb.
 **
-** @param [r] str [AjPStr]   fasta line.
+** @param [r] instr [AjPStr]   fasta line.
 ** @param [w] id [AjPStr*]   id.
 ** @param [w] acc [AjPStr*]  accession number.
 ** @param [w] desc [AjPStr*] description.
 ** @return [AjBool] ajTrue if ncbi format
 ** @@
 ******************************************************************************/
-AjBool ajSeqParseNcbi(AjPStr str, AjPStr* id, AjPStr* acc, AjPStr* desc)
+AjBool ajSeqParseNcbi(AjPStr instr, AjPStr* id, AjPStr* acc, AjPStr* desc)
 {
     static AjPStrTok idhandle = NULL;
     static AjPStrTok handle = NULL;
@@ -5379,6 +5568,7 @@ AjBool ajSeqParseNcbi(AjPStr str, AjPStr* id, AjPStr* acc, AjPStr* desc)
     static AjPStr prefix = NULL;
     static AjPStr token = NULL;
     static AjPStr numtoken = NULL;
+    static AjPStr str = NULL;
     char *q;
     ajint  i;
     ajint  nt;
@@ -5413,24 +5603,38 @@ AjBool ajSeqParseNcbi(AjPStr str, AjPStr* id, AjPStr* acc, AjPStr* desc)
     **   (prefix - remove)
     */
 
-    (void) ajDebug("ajSeqParseNcbi '%S'\n", str);
-    (void) ajDebug ("id test %B %B\n",
+     (void) ajDebug("ajSeqParseNcbi '%S'\n", instr); 
+
+     ajStrAssS (&str, instr);
+
+    /* (void) ajDebug ("id test %B %B\n",
 		    !strchr(MAJSTRSTR(str), (ajint)'|'),
-		    (*MAJSTRSTR(str)!='>'));
+		    (*MAJSTRSTR(str)!='>')); */
 
     /* Line must start with '>', and include '|' bar, hopefully in the ID */
 
-    if(!strchr(MAJSTRSTR(str),(ajint)'|') || *MAJSTRSTR(str)!='>') {
+    if(*MAJSTRSTR(str)!='>') {
 	return ajFalse;
     }
+
+    /* pick out the ID */
 
     (void) ajStrTokenAss(&idhandle,str,"> \t\r\n");
     (void) ajStrToken(&idstr, &idhandle, NULL);
     (void) ajStrToken(&reststr, &idhandle, "\r\n");
     (void) ajStrTokenReset(&idhandle);
+
+    /* check we have an ID */
+
     if (!ajStrLen(idstr)) {
-      (void) ajDebug ("No ID string found\n");
+      /* (void) ajDebug ("No ID string found\n"); */
       return ajFalse;
+    }
+
+    /* NCBI ids always have | somewhere. Else we try a simple FASTA format */
+
+    if(!strchr(MAJSTRSTR(idstr),(ajint)'|')) {
+	return ajSeqParseFasta (str, id, acc, desc);
     }
 
     (void) ajStrTokenAss(&handle,idstr,"|");
@@ -5438,23 +5642,27 @@ AjBool ajSeqParseNcbi(AjPStr str, AjPStr* id, AjPStr* acc, AjPStr* desc)
     (void) ajStrToken(&prefix, &handle, NULL);
     q = MAJSTRSTR(prefix);
 
+    /* (void) ajDebug (" idstr: '%S'\n", idstr); */
+    /* (void) ajDebug ("prefix: '%S'\n", prefix); */
+
     if(!strncmp(q,"gi",2))
     {
-        (void) ajDebug("gi prefix\n");
+      /* (void) ajDebug("gi prefix\n"); */
 	(void) ajStrToken(&token, &handle, NULL);
 	if (! ajStrToken(&prefix, &handle, NULL)) {
 	  /* we only have a gi prefix */
-	  (void) ajDebug("*only* gi prefix\n");
+	  /* (void) ajDebug("*only* gi prefix\n"); */
 	  (void) ajStrAssS(id, token);
 	  (void) ajStrAssC(acc, "");
 	  (void) ajStrAssS (desc, reststr);
-	  (void) ajDebug ("found pref: '%S' id: '%S', acc: '%S' desc: '%S'\n",
-			  prefix, *id, *acc, *desc);
+	  /* (void) ajDebug ("found pref: '%S' id: '%S', acc: '%S' desc: '%S'\n",
+	     prefix, *id, *acc, *desc); */
 	  return ajTrue;
 	}
 
 	/* otherwise we continue to parse the rest */
 	q = MAJSTRSTR(prefix);
+	/* (void) ajDebug("continue with '%S'\n", prefix); */
     }
 
 
@@ -5465,21 +5673,22 @@ AjBool ajSeqParseNcbi(AjPStr str, AjPStr* id, AjPStr* acc, AjPStr* desc)
    
     if(!strncmp(MAJSTRSTR(idstr),"gnl|BL_ORD_ID|",14))
     {
-        (void) ajDebug("gnl|BL_ORD_ID stripping\n");
+      /* (void) ajDebug("gnl|BL_ORD_ID stripping\n"); */
 	(void) ajStrToken(&token, &handle, NULL); /* BL_ORD_ID */
 	(void) ajStrToken(&numtoken, &handle, NULL); /* number */
 	(void) ajStrInsertC(&reststr, 0, ">");
-	if(ajSeqParseFasta(reststr,id,acc,desc)) {
-	  (void) ajDebug("ajSeqParseFasta success\n");
-	  (void) ajDebug ("found pref: '%S' id: '%S', acc: '%S' desc: '%S'\n",
-			  prefix, *id, *acc, *desc);
+
+	if(ajSeqParseNcbi(reststr,id,acc,desc)) {
+	  /* (void) ajDebug("ajSeqParseFasta success\n"); */
+	  /* (void) ajDebug ("found pref: '%S' id: '%S', acc: '%S' desc: '%S'\n",
+	    prefix, *id, *acc, *desc); */
 	  return ajTrue;
 	}
-        (void) ajDebug("ajSeqParseFasta failed - use the gnl id\n");
+        /* (void) ajDebug("ajSeqParseFasta failed - use the gnl id\n"); */
 	(void) ajStrAss(id,numtoken);
 	(void) ajStrAssC(acc,"");
-	(void) ajDebug ("found pref: '%S' id: '%S', acc: '%S' desc: '%S'\n",
-			prefix, *id, *acc, *desc);
+	/* (void) ajDebug ("found pref: '%S' id: '%S', acc: '%S' desc: '%S'\n",
+	  prefix, *id, *acc, *desc); */
 	return ajTrue;
     }
 
@@ -5488,31 +5697,31 @@ AjBool ajSeqParseNcbi(AjPStr str, AjPStr* id, AjPStr* acc, AjPStr* desc)
 
     if(!strcmp(q,"bbs") || !strcmp(q,"lcl"))
     {
-        (void) ajDebug("bbs or lcl prefix\n");
+      /* (void) ajDebug("bbs or lcl prefix\n"); */
 	(void) ajStrToken(id, &handle, NULL);
 	(void) ajStrAssC(acc,"");
 	(void) ajStrAssS(desc, reststr);
-	(void) ajDebug ("found pref: '%S' id: '%S', acc: '%S' desc: '%S'\n",
-			prefix, *id, *acc, *desc);
+	/* (void) ajDebug ("found pref: '%S' id: '%S', acc: '%S' desc: '%S'\n",
+	  prefix, *id, *acc, *desc); */
 	return ajTrue;
     }
     
     if(!strcmp(q,"gnl") || !strcmp(q,"pat"))
     {
-        (void) ajDebug("gnl or pat or pdb prefix\n");
+      /* (void) ajDebug("gnl or pat or pdb prefix\n"); */
 	(void) ajStrToken(&token, &handle, NULL);
 	(void) ajStrToken(id, &handle, NULL);
 	(void) ajStrAssC(acc,""); /* no accession number */
 	(void) ajStrAssS(desc, reststr);
-	(void) ajDebug ("found pref: '%S' id: '%S', acc: '%S' desc: '%S'\n",
-			prefix, *id, *acc, *desc);
+	/* (void) ajDebug ("found pref: '%S' id: '%S', acc: '%S' desc: '%S'\n",
+	  prefix, *id, *acc, *desc); */
 	return ajTrue;
     }
     
 	
     if(!strcmp(q,"pdb"))
     {
-        (void) ajDebug("gnl or pat or pdb prefix\n");
+      /* (void) ajDebug("gnl or pat or pdb prefix\n"); */
 	(void) ajStrToken(id, &handle, NULL);
 	if (ajStrToken(&token, &handle, NULL)) {
 	  /* chain identifier to append */
@@ -5520,8 +5729,8 @@ AjBool ajSeqParseNcbi(AjPStr str, AjPStr* id, AjPStr* acc, AjPStr* desc)
 	}
 	(void) ajStrAssC(acc,""); /* no accession number */
 	(void) ajStrAssS(desc, reststr);
-	(void) ajDebug ("found pref: '%S' id: '%S', acc: '%S' desc: '%S'\n",
-			prefix, *id, *acc, *desc);
+	/* (void) ajDebug ("found pref: '%S' id: '%S', acc: '%S' desc: '%S'\n",
+	  prefix, *id, *acc, *desc); */
 	return ajTrue;
     }
     
@@ -5529,38 +5738,38 @@ AjBool ajSeqParseNcbi(AjPStr str, AjPStr* id, AjPStr* acc, AjPStr* desc)
     if(!strcmp(q,"gb") || !strcmp(q,"emb") || !strcmp(q,"dbj")
        || !strcmp(q,"sp") || !strcmp(q,"ref"))
     {
-        (void) ajDebug("gb,emb,dbj,sp,ref prefix\n");
+      /* (void) ajDebug("gb,emb,dbj,sp,ref prefix\n"); */
 	(void) ajStrToken(acc, &handle, NULL);
 	if (!ajStrToken(id, &handle, NULL)) {
 	  /* no ID, reuse accession */
 	  (void) ajStrAssS (id, *acc);
 	}
 	(void) ajStrAssS(desc, reststr);
-	(void) ajDebug ("found pref: '%S' id: '%S', acc: '%S' desc: '%S'\n",
-			prefix, *id, *acc, *desc);
+	/* (void) ajDebug ("found pref: '%S' id: '%S', acc: '%S' desc: '%S'\n",
+	  prefix, *id, *acc, *desc); */
 	return ajTrue;
     }
 
 
     if(!strcmp(q,"pir") || !strcmp(q,"prf"))
     {
-        (void) ajDebug("pir,prf prefix\n");
+      /* (void) ajDebug("pir,prf prefix\n"); */
 	(void) ajStrToken(id, &handle, NULL);
 	(void) ajStrAssS(desc, reststr);
 	(void) ajStrAssC(acc, "");
-	(void) ajDebug ("found pref: '%S' id: '%S', acc: '%S' desc: '%S'\n",
-			prefix, *id, *acc, *desc);
+	/* (void) ajDebug ("found pref: '%S' id: '%S', acc: '%S' desc: '%S'\n",
+	  prefix, *id, *acc, *desc); */
 	return ajTrue;
     }
 
 
   /* else assume that the last two barred tokens contain [acc]|id */
 
-  (void) ajDebug("No prefix accepted - try the last 2 fields\n");
+    /* (void) ajDebug("No prefix accepted - try the last 2 fields\n"); */
 
   nt = ajStrTokenCount(&idstr,"|");
 
-  (void) ajDebug ("Barred tokens - %d found\n", nt);
+  /* (void) ajDebug ("Barred tokens - %d found\n", nt); */
 
   if(nt < 2)
     return ajFalse;
@@ -5572,20 +5781,20 @@ AjBool ajSeqParseNcbi(AjPStr str, AjPStr* id, AjPStr* acc, AjPStr* desc)
       (void) ajStrToken(&token, &handle, NULL);
   
   (void) ajStrToken (&token, &handle, NULL);
-  (void) ajDebug ("token acc: '%S'\n", token);
+  /* (void) ajDebug ("token acc: '%S'\n", token); */
   if (ajIsAccession(token))
     (void) ajStrAss(acc,token);
 
   (void) ajStrToken (&token, &handle, " \n\t\r");
-  (void) ajDebug ("token id: '%S'\n", token);
+  /* (void) ajDebug ("token id: '%S'\n", token); */
 
   (void) ajStrAss(id,token);
 
   (void) ajStrToken (&token, &handle, "\n\r");
   (void) ajStrAss (desc, token);
 
-  (void) ajDebug ("found pref: '%S' id: '%S', acc: '%S' desc: '%S'\n",
-		  prefix, *id, *acc, *desc);
+  /* (void) ajDebug ("found pref: '%S' id: '%S', acc: '%S' desc: '%S'\n",
+     prefix, *id, *acc, *desc); */
   return ajTrue;
 }
 
