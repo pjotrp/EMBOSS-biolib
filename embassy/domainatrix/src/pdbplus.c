@@ -213,6 +213,8 @@ int main(ajint argc, char **argv)
     AjPList  cpdblist    = NULL;  /* List of filenames in in_EMBLpdbpath.   */
     AjIList  iter        = NULL;
 
+    AjBool   done_naccess= ajFalse;
+    AjBool   done_stride = ajFalse;
     AjBool   found       = ajFalse;
     AjPAtom  temp_atom   = NULL;  /* Pointer to Atom object.                */
     AjPPdb   pdb_old     = NULL;  /* Pointer to PDB object - without new
@@ -450,7 +452,13 @@ int main(ajint argc, char **argv)
 		ajXyzPdbDel(&pdb); 
 		continue; 
 	    } 
+	    else
+	      ajFmtPrintF(errf, "%s%S\n//\n", 
+			  "stride output for: ", pdb_name); 
+
 	    
+	    done_stride = ajFalse;
+
 	    /* Parse STRIDE output from temp output file a line at a time. */
 	    while(ajFileReadLine(tempf,&line))
 	    {       
@@ -503,6 +511,7 @@ int main(ajint argc, char **argv)
 			if((ajStrMatch(res_num, temp_atom->Pdb) && 
 			    ajStrMatch(res, temp_atom->Id3)))
 			{
+                       	    done_stride = ajTrue;
 			    found = ajTrue;
 			    temp_atom->eStrideType = ss;
 			    temp_atom->Phi  = ph;
@@ -521,6 +530,18 @@ int main(ajint argc, char **argv)
 		} /* End of if ASG loop. */ 
 	    } /* End of while line loop. */
 	    
+
+	    if(done_stride)
+	      ajFmtPrintF(errf, "%s%S\n//\n", 
+			  "stride data for: ", pdb_name); 
+	    else
+	      {
+		ajFmtPrintF(errf, "%s%S\n//\n", 
+			    "no stride data for: ", pdb_name); 
+		ajWarn("%s%S\n//\n", "no stride data for: ", pdb_name);
+	      }
+
+
 	    /* Close STRIDE temp file. & tidy up. */
 	    ajFileClose(&tempf);
 
@@ -571,7 +592,12 @@ int main(ajint argc, char **argv)
 		ajXyzPdbDel(&pdb); 
 		continue; 
 	    }	 
+	    else
+	      ajFmtPrintF(errf, "%s%S\n//\n", 
+			  "naccess output for: ", pdb_name); 
 
+
+	    done_naccess = ajFalse;
 	    /* Parse NACCESS output from temp output file a line at a time. */	    
 	    while(ajFileReadLine(tempf,&line))
 	    {       
@@ -633,6 +659,7 @@ int main(ajint argc, char **argv)
 			    ajStrMatch(res, temp_atom->Id3)))
                         {
 			    found = ajTrue;
+			    done_naccess = ajTrue;
 			    temp_atom->all_abs  = f1;
 			    temp_atom->all_rel  = f2;
 			    temp_atom->side_abs = f3;
@@ -658,6 +685,16 @@ int main(ajint argc, char **argv)
 		} 
 	    } 
 	    
+	    if(done_naccess)
+	      ajFmtPrintF(errf, "%s%S\n//\n", 
+			  "naccess data for: ", pdb_name); 
+	    else
+	      {
+		ajFmtPrintF(errf, "%s%S\n//\n", 
+			    "no naccess data for: ", pdb_name); 
+		ajWarn("%s%S\n//\n", "no naccess data for: ", pdb_name);
+	      }
+
 	    /* Remove temporary file (naccess output files). */
 	    ajFileClose(&tempf);
 	    
