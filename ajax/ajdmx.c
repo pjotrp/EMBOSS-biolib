@@ -1483,3 +1483,25 @@ ajint ajDmxScopalgGetseqs(AjPScopalg thys, AjPStr **arr)
     return thys->N;
 }
 
+
+/* @func ajDmxDummyFunction ***************************************************
+**
+** Dummy function to catch all unused functions defined in the ajdmx
+** source file.
+**
+** @return [void]
+**
+******************************************************************************/
+
+void ajDmxDummyFunction(void)
+{
+    AjPStr str=NULL;
+    float f=0.0;
+    char c;
+
+    return;
+}
+
+
+
+

@@ -53,7 +53,7 @@
 /* ================= Prototypes for private functions ==================== */
 /* ======================================================================= */
 
-static ajint  ajPdbSortPdbtospPdb(const void *ptr1, const void *ptr2);
+static ajint  pdbSortPdbtospPdb(const void *ptr1, const void *ptr2);
 
 
 
@@ -62,7 +62,7 @@ static ajint  ajPdbSortPdbtospPdb(const void *ptr1, const void *ptr2);
 /* ========================== private functions ========================== */
 /* ======================================================================= */
 
-/* @func ajPdbSortPdbtospPdb ***********************************************
+/* @funcstatic pdbSortPdbtospPdb **********************************************
 **
 ** Function to sort Pdbtosp objects by Pdb element. Usually called by 
 ** ajPdbtospReadAllNew.
@@ -76,7 +76,7 @@ static ajint  ajPdbSortPdbtospPdb(const void *ptr1, const void *ptr2);
 ** @@
 ****************************************************************************/
 
-static ajint ajPdbSortPdbtospPdb(const void *ptr1, const void *ptr2)
+static ajint pdbSortPdbtospPdb(const void *ptr1, const void *ptr2)
 {
     AjPPdbtosp p = NULL;
     AjPPdbtosp q = NULL;
@@ -3025,7 +3025,7 @@ AjPVdwall  ajVdwallReadNew(AjPFile inf)
 {
     AjPCmap ret = NULL;
     
-    if(ret=ajCmapReadNew(inf, CMAP_MODE_I, chn, mod))
+    if((ret=ajCmapReadNew(inf, CMAP_MODE_I, chn, mod)))
 	return NULL;
 
     return ret;
@@ -3278,7 +3278,7 @@ AjPList       ajPdbtospReadAllRawNew(AjPFile inf)
 		tmp->Acc = (AjPStr *) ajListToArray(acclist, 
 						    (void ***) &tmp->Acc);
 		tmp->Spr = (AjPStr *) ajListToArray(sprlist, 
-						    (void ***) &tmp->Spr);		
+						    (void ***) &tmp->Spr);
 		ajListPushApp(ret, (void *)tmp);
 		
 		
@@ -3500,7 +3500,7 @@ AjPList  ajPdbtospReadAllNew(AjPFile inf)
     while(ptr = ajPdbtospReadCNew(inf, "*"))
 	ajListPush(ret, (void *) ptr);
 
-    ajListSort(ret, ajPdbSortPdbtospPdb);
+    ajListSort(ret, pdbSortPdbtospPdb);
     
     return ret;
 }

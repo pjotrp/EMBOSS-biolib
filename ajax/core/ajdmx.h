@@ -121,6 +121,7 @@ typedef struct AjSScopalg
 
 
 
+void          ajDmxDummyFunction(void);
 
 
 /* ======================================================================= */
