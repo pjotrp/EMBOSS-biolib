@@ -34,7 +34,6 @@ AjBool getnakaidata(AjPFile file, float matrix[]){
   char *ptr;
 
 
-
   if(!file)
     return 0;
 
@@ -54,6 +53,8 @@ AjBool getnakaidata(AjPFile file, float matrix[]){
       line = 1;
     else if(line == 1){
       line++;
+      ajStrClean(&buffer);
+      
       token = ajStrTokenInit(buffer,ajStrStr(delim));
 
       ajStrToken(&buf2,&token,ajStrStr(delim));
@@ -90,7 +91,10 @@ AjBool getnakaidata(AjPFile file, float matrix[]){
     }
     else if(line == 2){
       line++;
+
+      ajStrClean(&buffer);
       token = ajStrTokenInit(buffer,ajStrStr(delim));
+
       ajStrToken(&buf2,&token,ajStrStr(delim));
       ajStrToFloat(buf2,&matrix[11]);
 
