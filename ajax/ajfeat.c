@@ -491,6 +491,7 @@ static AjPRegexp EmblRegexNext        = NULL;
 static AjPRegexp EmblRegexTv          = NULL;
 static AjPRegexp EmblRegexTvRest      = NULL;
 static AjPRegexp EmblRegexTvTag       = NULL;
+static AjPRegexp EmblRegexTvTagBrace  = NULL;
 static AjPRegexp EmblRegexTvTagQuote  = NULL;
 static AjPRegexp EmblRegexTvTagQuote2 = NULL;
 static AjPRegexp EmblRegexOperIn      = NULL;
@@ -3539,6 +3540,14 @@ static AjPFeature featEmblProcess(AjPFeattable thys, AjPStr feature,
 		}
 		ajStrQuoteStrip(&val);
 	    }
+	    else if(ajRegExec(EmblRegexTvTagBrace, *tags)) /* /tag=(aa, bb) */
+	    {
+		ajRegSubI(EmblRegexTvTagBrace, 1, &tag);
+		ajRegSubI(EmblRegexTvTagBrace, 2, &val);
+		ajStrCleanWhite(&val);
+		ajRegPost(EmblRegexTvTagBrace, &tmpstr);
+		ajStrAssS(tags, tmpstr);
+	    }
 	    else
 	    {
 		ajRegSubI(EmblRegexTvTag, 1, &tag);
@@ -3892,8 +3901,7 @@ static AjBool featRegInitEmbl(void)
 								   of
 								   new
 								   feature */
-    EmblRegexNext = ajRegCompC("^..    +([^/]*)(/.*)?");  /* start of
-							     new
+    EmblRegexNext = ajRegCompC("^..    +([^/]*)(/.*)?");  /* continued
 							     feature */
     /* oper()  internal but can be complement((a.b)..(c.d)) */
     EmblRegexOperIn = ajRegCompC("^([a-zA-Z_]+)[(]("
@@ -3918,6 +3926,10 @@ static AjBool featRegInitEmbl(void)
     EmblRegexTvTagQuote = ajRegCompC("^ */([^/\"= ]+)=(\"[^\"]*\")");
  
     EmblRegexTvTagQuote2 = ajRegCompC("^(\"[^\"]*\")"); /* more string */
+
+   /* Genbank uses (value, value) with a space but no quotes for cons_splice */
+    EmblRegexTvTagBrace = ajRegCompC("^ */([^/\"= ]+)="
+				     "(\\([^\\(\\)]*(\\([^\\)]*\\))?\\))");
 
     FeatInitEmbl = ajTrue;
 
@@ -7514,6 +7526,7 @@ static AjBool featTagSpecialAllCitation(AjPStr* pval)
 static AjBool featTagSpecialAllCodon(AjPStr* pval)
 {
     static AjPRegexp exp = NULL;
+    static AjPRegexp badexp = NULL;
 
     static AjPStr seqstr = NULL;
     static AjPStr aastr  = NULL;
@@ -7521,12 +7534,23 @@ static AjBool featTagSpecialAllCodon(AjPStr* pval)
 
     if(!exp)
 	exp = ajRegCompC("^[(]seq:\"([acgt][acgt][acgt])\",aa:([^)]+)[)]$");
+    if(!badexp)		       /* sometimes fails to quote sequence */
+	badexp = ajRegCompC("^[(]seq:([acgt][acgt][acgt]),aa:([^)]+)[)]$");
 
     if(ajRegExec(exp, *pval))
     {
 	ret = ajTrue;
 	ajRegSubI(exp, 1, &seqstr);
 	ajRegSubI(exp, 2, &aastr);
+    }
+
+    else if(ajRegExec(badexp, *pval))
+    {
+	ret = ajTrue;
+	ajRegSubI(badexp, 1, &seqstr);
+	ajRegSubI(badexp, 2, &aastr);
+	ajFmtPrintS(pval, "(seq:\"%S\",aa:%S)",seqstr, aastr);
+	ajWarn("unquoted /codon value corrected to '%S'", *pval);
     }
 
     if(!ret)
@@ -7561,16 +7585,57 @@ static AjBool featTagSpecialAllConssplice(AjPStr* pval)
 
     static AjPStr begstr = NULL;
     static AjPStr endstr = NULL;
+    AjBool islower = ajFalse;
     AjBool ret = ajFalse;
 
     if(!exp)
-	exp = ajRegCompC("^[(]5'site:([YyEeSsNnOo]+),3'site:([YyEeSsNnOo]+)[)]$");
+	exp = ajRegCompC("^[(]5'site:([A-Za-z]+),3'site:([A-Za-z]+)[)]$");
 
     if(ajRegExec(exp, *pval))
     {
 	ret = ajTrue;
 	ajRegSubI(exp, 1, &begstr);
 	ajRegSubI(exp, 2, &endstr);
+	switch (ajStrChar(begstr, 0))
+	{
+	case 'y':
+	    islower = ajTrue;
+	case 'Y':
+	    if (!ajStrMatchCaseC(begstr, "yes")) ret = ajFalse;
+	    break;
+	case 'n':
+	    islower = ajTrue;
+	case 'N':
+	    if (!ajStrMatchCaseC(begstr, "no")) ret = ajFalse;
+	    break;
+	case 'a':
+	    islower = ajTrue;
+	case 'A':
+	    if (!ajStrMatchCaseC(begstr, "absent")) ret = ajFalse;
+	    break;
+	default:
+	    ret = ajFalse;
+	}
+	switch (ajStrChar(endstr, 0))
+	{
+	case 'y':
+	    islower = ajTrue;
+	case 'Y':
+	    if (!ajStrMatchCaseC(endstr, "yes")) ret = ajFalse;
+	    break;
+	case 'n':
+	    islower = ajTrue;
+	case 'N':
+	    if (!ajStrMatchCaseC(endstr, "no")) ret = ajFalse;
+	    break;
+	case 'a':
+	    islower = ajTrue;
+	case 'A':
+	    if (!ajStrMatchCaseC(endstr, "absent")) ret = ajFalse;
+	    break;
+	default:
+	    ret = ajFalse;
+	}
     }
 
     if(!ret)
@@ -7579,6 +7644,13 @@ static AjBool featTagSpecialAllConssplice(AjPStr* pval)
 	ajWarn("bad /cons_splice value '%S'",   *pval);
     }
 
+    if (islower)
+    {
+	ajStrToUpper(&begstr);
+	ajStrToUpper(&endstr);
+	ajFmtPrintS(pval, "(5'site:%S,3'site:%S)", begstr, endstr);
+	ajWarn("bad /cons_splice value corrected to '%S'", *pval);
+    }
     return ret;
 }
 
@@ -7672,6 +7744,9 @@ static AjBool featTagSpecialAllRptunit(AjPStr* pval)
 static AjBool featTagSpecialAllTranslexcept(AjPStr* pval)
 {
     static AjPRegexp exp = NULL;
+    static AjPRegexp badexp = NULL;
+    static AjPRegexp compexp = NULL;
+    static AjPRegexp badcompexp = NULL;
 
     static AjPStr begstr = NULL;
     static AjPStr endstr = NULL;
@@ -7680,6 +7755,14 @@ static AjBool featTagSpecialAllTranslexcept(AjPStr* pval)
 
     if(!exp)
 	exp = ajRegCompC("^[(]pos:([0-9]+)[.][.]([0-9]+),aa:([^)]+)[)]$");
+    if(!badexp)				/* start position only */
+	badexp = ajRegCompC("^[(]pos:([0-9]+),aa:([^)]+)[)]$");
+    if(!compexp)
+	compexp = ajRegCompC("^[(]pos:complement\\(([0-9]+)[.][.]([0-9]+)\\),"
+			     "aa:([^)]+)[)]$");
+    if(!badcompexp)
+	badcompexp = ajRegCompC("^[(]pos:complement\\(([0-9]+)\\),"
+			     "aa:([^)]+)[)]$");
 
     if(ajRegExec(exp, *pval))
     {
@@ -7687,6 +7770,29 @@ static AjBool featTagSpecialAllTranslexcept(AjPStr* pval)
 	ajRegSubI(exp, 1, &begstr);
 	ajRegSubI(exp, 2, &endstr);
 	ajRegSubI(exp, 3, &aastr);
+    }
+    else if(ajRegExec(compexp, *pval))
+    {
+	ret = ajTrue;
+	ajRegSubI(compexp, 1, &begstr);
+	ajRegSubI(compexp, 2, &endstr);
+	ajRegSubI(compexp, 3, &aastr);
+    }
+
+/* Can have single base (or 2 base) positions where trailing As are
+   added as post-processing in some species */
+
+    else if(ajRegExec(badexp, *pval))
+    {
+	ret = ajTrue;
+	ajRegSubI(badexp, 1, &begstr);
+	ajRegSubI(badexp, 2, &aastr);
+    }
+    else if(ajRegExec(badcompexp, *pval))
+    {
+	ret = ajTrue;
+	ajRegSubI(badcompexp, 1, &begstr);
+	ajRegSubI(badcompexp, 2, &aastr);
     }
 
     if(!ret)
@@ -7808,6 +7914,7 @@ static AjBool featTagSpecialAllReplace (AjPStr* pval)
 {
     static AjPRegexp exp = NULL;
     static AjPStr seqstr = NULL;
+    static AjPStr tmpstr = NULL;
     AjBool ret = ajFalse;
 
     /* n is used in old_sequence */
@@ -7828,6 +7935,7 @@ static AjBool featTagSpecialAllReplace (AjPStr* pval)
        ajStrChar(*pval, 0), ajStrChar(*pval, -1));
        */
 
+    ajStrAssS(&tmpstr, *pval);
     ajStrCleanWhite(pval);   /* remove wrapping spaces in long seq. */
 
     if(ajRegExec(exp, *pval))
@@ -7838,8 +7946,8 @@ static AjBool featTagSpecialAllReplace (AjPStr* pval)
 
     if(!ret)
     {
-	ajDebug("bad /replace value '%S'\n", *pval);
-	ajWarn("bad /replace value '%S'",   *pval);
+	ajDebug("bad /replace value '%S'\n", tmpstr);
+	ajWarn("bad /replace value '%S'",   tmpstr);
     }
 
     return ret;
@@ -8554,15 +8662,15 @@ static void featDumpEmbl(AjPFeature feat, const AjPStr location,
 		    ajFmtPrintAppS (&outstr, "=%S\n", tmpval);
 
 		break;
-	    case CASE2('T','E') :	/* no space, no quotes, wrap at margin */
+	    case CASE2('T','E') :     /* no space, no quotes, wrap at margin */
 		/* ajDebug("case text\n"); */
 		ajStrCleanWhite(&tmpval);
 		ajFmtPrintAppS(&outstr, "=%S\n", tmpval);
 		break;
-	    case CASE2('V','O') :	/* no value, so an error here */
+	    case CASE2('V','O') :	     /* no value, so an error here */
 		ajDebug("case void\n");
 		break;
-	    case CASE2('Q','T') :	/* escape quotes, wrap at space */
+	    case CASE2('Q','T') :	   /* escape quotes, wrap at space */
 		/* ajDebug("case qtext\n"); */
 		featTagQuoteEmbl(&tmpval);
 		ajFmtPrintAppS(&outstr, "=%S\n", tmpval);
