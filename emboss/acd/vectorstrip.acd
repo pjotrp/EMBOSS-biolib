@@ -75,7 +75,7 @@ section: output [
 
   outfile: outfile  [
     parameter: "Y"
-    knowntype: "Vectorstrip output"
+    knowntype: "vectorstrip output"
   ]
 
   seqoutall: outseq  [
