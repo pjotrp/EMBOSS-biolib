@@ -148,7 +148,8 @@ typedef struct AjSScop
     AjPStr SeqSpr;	
     ajint  Startd;      
     ajint  Endd;        
-} AjOScop,*AjPScop;
+} AjOScop;
+#define AjPScop AjOScop*
 
 
 
@@ -246,7 +247,8 @@ typedef struct AjSCath
     AjPStr SeqSpr;	
     ajint  Startd;      
     ajint  Endd;   
-} AjOCath, *AjPCath;
+} AjOCath;
+#define AjPCath AjOCath*
 
 
 
@@ -283,14 +285,18 @@ typedef struct AjSCath
 ** @other  ajDomainDCFType Assertains type of domains (ajSCOP or ajCATH) in a 
 **         DCF file.
 ** @assign ajDomainCopy Replicates a Domain object.
-** @attr   ajDomainGetId Returns domain id, either DomainID element (Cath object)
-** or Entry (Scop object).
-** @attr   ajDomainGetSeqPdb Returns the PDB sequence from a Domain object.
-** @attr   ajDomainGetSeqSpr Returns the swissprot sequence from a Domain object.
-** @attr   ajDomainGetPdb Returns the PDB identifier code corresponding to the 
-** @attr   ajDomainGetAcc Returns the accession number corresponding to the domain. 
-** @attr   ajDomainGetSpr Returns the swissprot code corresponding to the domain.
-** @attr   ajDomainGetN  Returns no. chains or chain segments in a domain, 
+** @cast   ajDomainGetId Returns domain id, either DomainID element
+**                      (Cath object) or Entry (Scop object).
+** @cast   ajDomainGetSeqPdb Returns the PDB sequence from a Domain object.
+** @cast   ajDomainGetSeqSpr Returns the swissprot sequence from a
+**                           Domain object.
+** @cast   ajDomainGetPdb Returns the PDB identifier code corresponding to the
+**                        domain 
+** @cast   ajDomainGetAcc Returns the accession number corresponding to the
+**                        domain. 
+** @cast   ajDomainGetSpr Returns the swissprot code corresponding to the
+**                        domain.
+** @cast   ajDomainGetN  Returns no. chains or chain segments in a domain, 
 ** either NSegment element (Cath domains) or N element (Scop domains).
 **
 **
@@ -302,7 +308,8 @@ typedef struct AjSDomain
     ajint   Type;
     AjPScop Scop;
     AjPCath Cath;
-} AjODomain,*AjPDomain;
+} AjODomain;
+#define AjPDomain AjODomain*
 
 
 
