@@ -120,10 +120,11 @@ int main(int argc, char **argv)
     
     while(ajSeqallNext(seqall,&seq))
     {
+	ajSeqTrim(seq);
 	if(!ftable)
 	    ftable = ajFeattableNewSeq(seq);
 	
-	ajSeqTrim(seq);
+
 	ajSeqToUpper(seq);
 	seqstr = ajSeqStr(seq);
 	len    = ajStrLen(seqstr);
@@ -626,28 +627,24 @@ static void tcode_report(AjPReport report, AjPInt from, AjPInt to,
     ajint i;
     float fval=0.;
     AjPStr coding = NULL;
-    
+
+    AjPStr source = NULL;
+    AjPStr type   = NULL;
+    char   strand = '.';
 
     tmpstr = ajStrNew();
     coding = ajStrNew();
-
+    type   = ajStrNewC("misc_feature");
+    source = ajStrNew();
+    
     ajFmtPrintS(&tmpstr,"Fickett TESTCODE statistic");
     ajReportSetHeader(report,tmpstr);
 
 
     for(i=0;i<npoints;++i)
     {
-	feat = ajFeatNewII(ftable,ajSeqBegin(seq),ajSeqEnd(seq));
-	ajFmtPrintS(&tmpstr,"*Startpos %d",ajIntGet(from,i));
-	ajFeatTagAdd(feat,NULL,tmpstr);
-
-	ajFmtPrintS(&tmpstr,"*Endpos %d",ajIntGet(to,i));
-	ajFeatTagAdd(feat,NULL,tmpstr);
-
-	fval = ajFloatGet(testcodes,i);
-	ajFmtPrintS(&tmpstr,"*Testcode %.2f",fval);
-	ajFeatTagAdd(feat,NULL,tmpstr);
-
+	feat = ajFeatNew(ftable,source,type,ajIntGet(from,i),ajIntGet(to,i),
+			 ajFloatGet(testcodes,i),strand,0);
 
 	if(fval < 0.74)
 	    ajFmtPrintS(&coding,"*Estimation Non-coding");
@@ -664,6 +661,8 @@ static void tcode_report(AjPReport report, AjPInt from, AjPInt to,
 
     ajStrDel(&tmpstr);
     ajStrDel(&coding);
+    ajStrDel(&source);
+    ajStrDel(&type);
     
     return;
 }
