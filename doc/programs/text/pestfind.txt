@@ -492,7 +492,8 @@ See also
 Author(s)
 
    This application was written by Michael K. Schuster and Martin
-   Grabner, (gm@bcc.univie.ac.at) from the Austrian National EMBnet node.
+   Grabner, (martin.grabner@univie.ac.at) from the Austrian National
+   EMBnet node.
    
    Original program 'pestfind' by Scott Rogers and Martin Rechsteiner
    (C)1986.
