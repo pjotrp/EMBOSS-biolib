@@ -55,7 +55,7 @@ string: swissfile  [
   information: "Name of file containing sorted swissparse results"
 ]
 
-string: outfile  [
+outfile: outfile  [
   parameter: "Y"
   prompt: "Name of output file"
 ]

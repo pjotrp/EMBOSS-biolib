@@ -59,7 +59,7 @@ int main(int argc, char **argv)
     AjPStr file2        = NULL;     /* input file 2 in mode 3 */
 
     AjPStr      *mode   =NULL;      /* Mode of operation from acd*/
-    AjPStr      outfile = NULL;     /* Name of the output file */
+/*  AjPStr      outfile = NULL; */  /* Name of the output file */
     AjPFile     outf    = NULL;     /* File pointer for output file */
     
 
@@ -70,7 +70,8 @@ int main(int argc, char **argv)
     embInit("seqsort",argc,argv);
     mode     = ajAcdGetList("mode");
     sig_overlap = ajAcdGetInt("overlap");
-    outfile = ajAcdGetString("outfile");
+/*  outfile = ajAcdGetString("outfile"); */
+    outf = ajAcdGetOutfile("outfile");
 
 
     if(ajStrChar(*mode, 0) == '1')
@@ -91,13 +92,13 @@ int main(int argc, char **argv)
 
 
     /* Write output file */
-    if((outf=ajFileNewOut(outfile))==NULL)
+/*    if((outf=ajFileNewOut(outfile))==NULL)
 	ajWarn("Could not open output file for writing");
     else	
-    {
+    { */
 	seqsort_WriteOutputFile(outf, famlist, supfamlist, foldlist);
 	ajFileClose(&outf);
-    }
+/*    } */
     
     
 	    
@@ -115,7 +116,7 @@ int main(int argc, char **argv)
     ajStrDel(&swissextn);
     ajStrDel(&file1);
     ajStrDel(&file2);
-    ajStrDel(&outfile);
+/*    ajStrDel(&outfile); */
     
     ajExit();
 
