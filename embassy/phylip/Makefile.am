@@ -2,7 +2,7 @@
 
 SUBDIRS = src emboss_acd
 
-EXTRA_DIST = depcomp
+EXTRA_DIST = depcomp ltmain.sh
 
 # tar to pick up the other directories
 # then remove any CVS subdirectories
