@@ -1931,7 +1931,8 @@ static void seqWriteSwiss (AjPSeqout outseq) {
 
   static SeqPSeqFormat sf=NULL;
   ajint mw;
-  ajuint crc;
+/*  ajuint crc; old 32-bit crc */
+  unsigned long long crc;
   static AjPStr ftfmt = NULL;
   AjIList it;
   AjPStr cur;
@@ -2057,11 +2058,21 @@ static void seqWriteSwiss (AjPSeqout outseq) {
   }
 
 
-  crc = ajSeqCrc (outseq->Seq);
+/*  crc = ajSeqCrc (outseq->Seq);    old 32-bit crc*/
+  crc = ajSp64Crc(outseq->Seq);
   mw = (ajint) (0.5+ajSeqMW (outseq->Seq));
+
+  /* old 32-bit crc
   (void) ajFmtPrintF (outseq->File,
 	       "SQ   SEQUENCE %5d AA; %6d MW;  %08X CRC32;\n",
 	       ajStrLen(outseq->Seq), mw, crc);
+  */
+
+  (void) ajFmtPrintF (outseq->File,
+	       "SQ   SEQUENCE %5d AA; %6d MW;  %08X",
+	       ajStrLen(outseq->Seq), mw, (crc>>32)&0xffffffff);
+  (void) ajFmtPrintF (outseq->File,
+	       "%08X CRC64;\n",crc&0xffffffff);
 
   seqSeqFormat(ajStrLen(outseq->Seq), &sf);
   (void) strcpy (sf->endstr, "\n//");
