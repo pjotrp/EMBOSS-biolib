@@ -351,6 +351,11 @@ int main(int argc, char **argv)
     AjPList  clalist=NULL;
     AjPList  deslist=NULL;
 
+    AjBool   outputall=ajFalse;
+    AjBool   nooutput=ajFalse;
+    char     chn;
+    
+    
     ajint  dim=0;  /* Dimension of array */
     ajint  idx=0;  /* Index into array */
     ajint  i=0;
@@ -366,6 +371,7 @@ int main(int argc, char **argv)
     inf1  =  ajAcdGetInfile("infilea");
     inf2  =  ajAcdGetInfile("infileb");
     outf  =  ajAcdGetOutfile("outfile");
+    outputall  =  ajAcdGetBool("outputall");
     
 
 
@@ -396,6 +402,23 @@ int main(int argc, char **argv)
 
     while(ajListPop(clalist, (void **)&cla))
     {
+	if(!outputall)
+	{
+	    if(cla->N > 1)
+	    {
+		chn=cla->Chain[0];
+		for(nooutput=ajFalse, i=1;i<cla->N;i++)
+		    if(chn != cla->Chain[i])
+		    {
+			nooutput=ajTrue;
+			break;
+		    }
+		if(nooutput)
+		    continue;
+	    }
+	}
+	
+
 	ajFmtPrintF(outf,"ID   %S\nXX\n",cla->Entry);
 	ajFmtPrintF(outf,"EN   %S\nXX\n",cla->Pdb);
 	ajFmtPrintF(outf,"SI   %d CL; %d FO; %d SF; %d FA; %d DO; %d SO; %d DD;\nXX\n",	
