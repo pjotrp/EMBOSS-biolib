@@ -28,7 +28,7 @@ L-CALID
 GIPREFIX
 >gi|123456|gb|G67890|GIGENBANK gi and genbank together
 GIGENBANK
->gi|234567|sp|P01234|SWISS_PRT gi and swissprot together
+>gi|234567|sp|P01234|GISWISS_PRT gi and swissprot together
 GISWISSPR-T
 >gnl|BL_ORD_ID|0 blast formatdb prefix for simple names
 BLAST
