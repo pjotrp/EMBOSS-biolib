@@ -24,6 +24,9 @@ HMMERSRC = alphabet.c core_algorithms.c debug.c emit.c emulation.c \
 	   revcomp.c selex.c sqerror.c sqio.c sre_ctype.c sre_math.c \
 	   sre_string.c stack.c translate.c types.c weight.c
 
+noinst_HEADERS = config.h funcs.h globals.h gnuregex.h sqfuncs.h \
+	squid.h structs.h version.h
+
 libhmmer_la_SOURCES = $(HMMERSRC)
 
 libhmmer_la_LDFLAGS = -version-info 2:1:1
