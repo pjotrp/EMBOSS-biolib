@@ -141,6 +141,10 @@ void        ajFileBuffTrace (const AjPFileBuff thys);
 void        ajFileBuffTraceFull (const AjPFileBuff thys, size_t nlines,
 				 size_t nfree);
 void        ajFileClose (AjPFile *pthis);
+void        ajFileDataDirNew (const AjPStr tfile, const AjPStr dir,
+			      AjPFile *fnew);
+void        ajFileDataDirNewC(const char *s, const char* d,
+			      AjPFile *f);
 void        ajFileDataNew (const AjPStr filename, AjPFile *newfileptr);
 void        ajFileDataNewC(const char *s, AjPFile *f);
 void        ajFileDataNewWrite(const AjPStr tfile, AjPFile *fnew);

@@ -609,7 +609,7 @@ void ajFileDataNew(const AjPStr tfile, AjPFile *fnew)
     if(tfile == NULL) return;
 
     (void) ajStrAss(&bname, tfile);
-    ajDebug ("ajFileDataNew trying '%S'\n", fname);
+    ajDebug ("ajFileDataNew trying '%S'\n", bname);
     if(ajFileStat(&bname, AJ_FILE_R))
     {
 	*fnew = ajFileNewIn(bname);
@@ -737,6 +737,122 @@ void ajFileDataNewC(const char *s, AjPFile *f)
     t=ajStrNewC(s);
     ajFileDataNew(t,f);
     ajStrDel(&t);
+    
+    return;
+}
+
+
+/* @func ajFileDataDirNew ****************************************************
+**
+** Returns an allocated AjFileInNew pointer (AjPFile) if file exists
+** in the EMBOSS/data/(dir) directory, or is found in the usual directories
+** by ajFileDataNew
+**
+** @param [r] tfile [const AjPStr] Filename in AjStr.
+** @param [r] dir [const AjPStr] Data directory name in AjStr.
+** @param [w] fnew [AjPFile*] file pointer.
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajFileDataDirNew(const AjPStr tfile, const AjPStr dir, AjPFile *fnew)
+{
+    AjPStr fname = NULL;	/* file name to try opening */
+    AjPStr pname = NULL;	/* package name (e.g. EMBOSS) */
+
+    if(ajNamGetValueC("DATA", &fname))
+    {
+    
+        (void) ajFileDirFix(&fname);
+	if (ajStrLen(dir))
+	{
+	    (void) ajStrApp(&fname,dir);
+	    (void) ajFileDirFix(&fname);
+	}
+	(void) ajStrApp(&fname,tfile);
+	ajDebug ("ajFileDataDirNew trying '%S'\n", fname);
+	if(ajFileStat(&fname, AJ_FILE_R))
+	{
+	    *fnew = ajFileNewIn(fname);
+	    ajStrDelReuse(&fname);
+	    return;
+	}
+    }
+    
+    if(ajNamRootInstall(&fname)) /* just EMBOSS/data under installation */
+    {
+        (void) ajNamRootPack(&pname);	/* just EMBOSS */
+	(void) ajFileDirFix(&fname);
+	(void) ajStrAppC(&fname,"share/");
+	(void) ajStrApp(&fname,pname);
+	(void) ajStrAppC(&fname,"/data/");
+	if (ajStrLen(dir))
+	{
+	    (void) ajStrApp(&fname,dir);
+	    (void) ajFileDirFix(&fname);
+	}
+	(void) ajStrApp(&fname,tfile);
+	ajDebug ("ajFileDataDirNew trying '%S'\n", fname);
+	if(ajFileStat(&fname, AJ_FILE_R))
+	{
+	    *fnew = ajFileNewIn(fname);
+	    ajStrDelReuse(&pname);
+	    ajStrDelReuse(&fname);
+	    return;
+	}
+    }
+    
+    if(ajNamRoot(&fname))	/* just emboss/data under source */
+    {
+    
+	(void) ajStrAppC(&fname,"/data/");
+	if (ajStrLen(dir))
+	{
+	    (void) ajStrApp(&fname,dir);
+	    (void) ajFileDirFix(&fname);
+	}
+	(void) ajStrApp(&fname,tfile);
+	ajDebug ("ajFileDataDirNew trying '%S'\n", fname);
+	if(ajFileStat(&fname, AJ_FILE_R))
+	{
+	    *fnew = ajFileNewIn(fname);
+	    ajStrDelReuse(&pname);
+	    ajStrDelReuse(&fname);
+	    return;
+	}
+    }
+    
+    ajStrDelReuse(&pname);
+    ajStrDelReuse(&fname);
+
+    *fnew = NULL;
+
+    return ajFileDataNew(tfile, fnew);
+}
+
+/* @func ajFileDataDirNewC ***************************************************
+**
+** Returns an allocated AjFileInNew pointer (AjPFile) if file exists
+** in the EMBOSS/data/(dir) directory, or is found in the usual directories
+** by ajFileDataNew
+**
+** @param [r] tfile [const AjPStr] Filename in AjStr.
+** @param [r] dir [const AjPStr] Data directory name in AjStr.
+** @param [w] fnew [AjPFile*] file pointer.
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajFileDataDirNewC(const char *s, const char* d, AjPFile *f)
+{
+    AjPStr t;
+    AjPStr u;
+
+    t=ajStrNewC(s);
+    u=ajStrNewC(d);
+    ajFileDataDirNew(t,u,f);
+    ajStrDel(&t);
+    ajStrDel(&u);
     
     return;
 }

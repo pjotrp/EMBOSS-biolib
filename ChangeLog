@@ -1,5 +1,11 @@
 Version 2.5.0
 
+	aaindexextract (new) reads AAINDEX database and writes each entry
+	to data/AAINDEX directory. New function ajFileDataDirNew to read
+	data files from a named directory. Ned ACd datafile attribute
+	'directory' passed to ajFileDataDirNew. AAINDEX directory defined
+	for pepwindow and pepwindowall.
+	
 	palindrome can now read in multiple sequences
 
         palindrome now does not print a '|' in an alignment where there

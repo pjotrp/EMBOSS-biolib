@@ -84,6 +84,7 @@ static AjPStr acdExpTmpstr = NULL;
 static AjPStr acdLogFName = NULL;
 static AjPFile acdLogFile = NULL;
 static AjPList acdSecList = NULL;
+static AjPList acdSecPromptList = NULL;
 
 static AjPStr acdPrettyFName = NULL;
 static AjPFile acdPrettyFile = NULL;
@@ -112,7 +113,7 @@ enum AcdEValtype {VT_APPL, VT_STR, VT_WORD,
 /* Attribute value types as text for use in logging report */
 
 static char* acdValNames[] = {"application", "string", "word",
-			      "bool", "integer", "float",
+			      "boolean", "integer", "float",
 			      NULL};
 
 /* attribute structure */
@@ -121,6 +122,7 @@ typedef struct AcdSAttr
 {	
   char *Name;
   enum AcdEValtype Type;
+  char *Help;
 } AcdOAttr, *AcdPAttr;
 
 
@@ -188,16 +190,32 @@ typedef struct AcdSAcd
 
 /* general type structure */
 
+typedef struct AcdSSection
+{
+  char* Name;
+  char* Description;
+  char* Type;
+} AcdOSection, *AcdPSection;
+
+AcdOSection acdSecInput[] = {{"input", "input Section", "page"},
+			     {NULL, NULL, NULL}};
+AcdOSection acdSecOutput[] = {{"output", "output Section", "page"},
+			     {NULL, NULL, NULL}};
+AcdOSection acdSecRequired[] = {{"required", "required Section", "page"},
+			     {NULL, NULL, NULL}};
+AcdOSection acdSecAdvanced[] = {{"advanced", "advanced Section", "page"},
+			     {NULL, NULL, NULL}};
+
 typedef struct AcdSType
 {
   char* Name;			/* type name */
+  char* Group;			/* group name */
+  AcdPSection Section;		/* section */
   AcdPAttr Attr;		/* type-specific attributes */
   void (*TypeSet)(AcdPAcd thys); /* function to set value and prompt user */
   AcdPQual Quals;		/* type-specific associated qualifiers */
   char* Valid;			/* Valid data help message */
 } AcdOType, *AcdPType;
-
-
 
 static AjBool* acdParamSet;
 
@@ -555,22 +573,23 @@ enum AcdEDef { DEF_DEFAULT,
 	       DEF_NEEDED
 };
 
-AcdOAttr acdAttrDef[] = { {"default", VT_STR}, /* default value */
-			  {"prompt", VT_STR}, /* prompt */
-			  {"information", VT_STR}, /* info for menus etc. */
-			  {"code", VT_STR}, /* code for prompt */
-			  {"help", VT_STR}, /* text for help+docs */
-			  {"required", VT_BOOL}, /* prompt if missing? */
-			  {"optional", VT_BOOL}, /* required with -options */
-			  {"missing", VT_BOOL}, /* allow with no value? */
-			  {"parameter", VT_BOOL}, /* accept as a parameter */
-			  {"valid", VT_STR}, /* help: allowed values  */
-			  {"expected", VT_STR}, /* help: expected value  */
-			  {"comment", VT_STR}, /* comment for AppLab  */
-			  {"corba", VT_STR}, /* corba spec for AppLab  */
-			  {"style", VT_STR}, /* style for AppLab  */
-			  {"needed", VT_BOOL}, /* include in GUI form */
-			  {NULL, VT_NULL}
+AcdOAttr acdAttrDef[] = {
+  {"default", VT_STR, "default value"},
+  {"prompt", VT_STR, "prompt"},
+  {"information", VT_STR, "info for menus etc."},
+  {"code", VT_STR, "code for prompt"},
+  {"help", VT_STR, "text for help+docs"},
+  {"required", VT_BOOL, "prompt if missing?"},
+  {"optional", VT_BOOL, "required with -options"},
+  {"missing", VT_BOOL, "allow with no value?"},
+  {"parameter", VT_BOOL, "accept as a parameter"},
+  {"valid", VT_STR, "help: allowed values"},
+  {"expected", VT_STR, "help: expected value"},
+  {"comment", VT_STR, "comment for AppLab"},
+  {"corba", VT_STR, "corba spec for AppLab"},
+  {"style", VT_STR, "style for AppLab"},
+  {"needed", VT_BOOL, "include in GUI form"},
+  {NULL, VT_NULL, NULL}
 };
 
 /* Type-specific attributes
@@ -580,212 +599,279 @@ AcdOAttr acdAttrDef[] = { {"default", VT_STR}, /* default value */
 AcdOAttr acdAttrXxxx[] = {
 			 {NULL, VT_NULL} };
 
-AcdOAttr acdAttrAppl[] = { {"documentation", VT_STR},
-			   {"groups", VT_STR},
-			   {"gui", VT_STR},
-			   {"batch", VT_STR},
-			   {"cpu", VT_STR},
-			   {"comment", VT_STR},
-			   {NULL, VT_NULL} };
+AcdOAttr acdAttrAppl[] = {
+  {"documentation", VT_STR, ""},
+  {"groups", VT_STR, ""},
+  {"gui", VT_STR, ""},
+  {"batch", VT_STR, ""},
+  {"cpu", VT_STR, ""},
+  {"comment", VT_STR, ""},
+  {NULL, VT_NULL, NULL}
+};
 
-AcdOAttr acdAttrAlign[] = { {"name", VT_STR},
-			    {"aextension", VT_STR},
-			    {"type", VT_STR},
-			    {"taglist", VT_STR}, /* extra tags to report */
-			    {"minseqs", VT_INT}, /* min number extra tags */
-			    {"maxseqs", VT_INT}, /* min number extra tags */
-			    {"multiple", VT_BOOL},
-			    {NULL, VT_NULL} };
+AcdOAttr acdAttrAlign[] = {
+  {"name", VT_STR, "file name"},
+  {"aextension", VT_STR, "file extension"},
+  {"type", VT_STR, "protein or nucleotide"},
+  {"taglist", VT_STR, "extra tags to report"},
+  {"minseqs", VT_INT, "min number of extra tags"},
+  {"maxseqs", VT_INT, "max number of extra tags"},
+  {"multiple", VT_BOOL, ""},
+  {NULL, VT_NULL, NULL}
+};
 
-AcdOAttr acdAttrArray[] = { {"minimum", VT_FLOAT},
-			    {"maximum", VT_FLOAT},
-			    {"increment", VT_FLOAT},
-			    {"precision", VT_INT},
-			    {"warnrange", VT_BOOL},
-			    {"size", VT_INT},
-			    {"sum", VT_FLOAT},
-			    {"tolerance", VT_FLOAT},
-			  {NULL, VT_NULL} };
+AcdOAttr acdAttrArray[] = {
+  {"minimum", VT_FLOAT, ""},
+  {"maximum", VT_FLOAT, ""},
+  {"increment", VT_FLOAT, ""},
+  {"precision", VT_INT, ""},
+  {"warnrange", VT_BOOL, ""},
+  {"size", VT_INT, ""},
+  {"sum", VT_FLOAT, ""},
+  {"tolerance", VT_FLOAT, ""},
+  {NULL, VT_NULL, NULL}
+};
 
 AcdOAttr acdAttrBool[] = {
-			  {NULL, VT_NULL} };
+  {NULL, VT_NULL, NULL}
+};
 
-AcdOAttr acdAttrCodon[] = { {"name", VT_STR},
-			    {NULL, VT_NULL} };
+AcdOAttr acdAttrCodon[] = {
+  {"name", VT_STR, ""},
+  {NULL, VT_NULL, NULL}
+};
 
 
-AcdOAttr acdAttrDirectory[] = { {"fullpath", VT_BOOL},
-				{"nullok", VT_BOOL},
-				{NULL, VT_NULL} };
+AcdOAttr acdAttrDirectory[] = {
+  {"fullpath", VT_BOOL, ""},
+  {"nullok", VT_BOOL, ""},
+  {NULL, VT_NULL, NULL}
+};
 
-AcdOAttr acdAttrDirlist[] = { {"fullpath", VT_BOOL},
-			      {"nullok", VT_BOOL},
-			      {NULL, VT_NULL} };
+AcdOAttr acdAttrDirlist[] = {
+  {"fullpath", VT_BOOL, ""},
+  {"nullok", VT_BOOL, ""},
+  {NULL, VT_NULL, NULL}
+};
 
 AcdOAttr acdAttrEndsec[] = {
-			   {NULL, VT_NULL} };
+  {NULL, VT_NULL, NULL}
+};
 
-AcdOAttr acdAttrFeat[] = { {"name", VT_STR},
-			   {"extension", VT_STR},
-			   {NULL, VT_NULL} };
+AcdOAttr acdAttrFeat[] = {
+  {"name", VT_STR, ""},
+  {"extension", VT_STR, ""},
+  {NULL, VT_NULL, NULL}
+};
 
-AcdOAttr acdAttrFeatout[] = { {"name", VT_STR},
-			      {"extension", VT_STR},
-			      {NULL, VT_NULL} };
+AcdOAttr acdAttrFeatout[] = {
+  {"name", VT_STR, ""},
+  {"extension", VT_STR, ""},
+  {NULL, VT_NULL, NULL}
+};
 
-AcdOAttr acdAttrFilelist[] = { {"nullok", VT_BOOL},
-			      {NULL, VT_NULL} };
+AcdOAttr acdAttrFilelist[] = {
+  {"nullok", VT_BOOL, ""},
+  {NULL, VT_NULL, NULL}
+};
 
-AcdOAttr acdAttrFloat[] = { {"minimum", VT_FLOAT},
-			    {"maximum", VT_FLOAT},
-			    {"increment", VT_FLOAT},
-			    {"precision", VT_INT},
-			    {"warnrange", VT_BOOL},
-			    {NULL, VT_NULL} };
+AcdOAttr acdAttrFloat[] = {
+  {"minimum", VT_FLOAT, ""},
+  {"maximum", VT_FLOAT, ""},
+  {"increment", VT_FLOAT, ""},
+  {"precision", VT_INT, ""},
+  {"warnrange", VT_BOOL, ""},
+  {NULL, VT_NULL, NULL}
+};
 
-AcdOAttr acdAttrGraph[] = { {"type", VT_STR},
-			    {"gtitle",VT_STR},
-			    {"gsubtitle",VT_STR},
-			    {"gxtitle",VT_STR}, 
-			    {"gytitle",VT_STR}, 
-			    {"goutfile",VT_STR},
-			    {NULL, VT_NULL} };
+AcdOAttr acdAttrGraph[] = {
+  {"type", VT_STR, ""},
+  {"gtitle",VT_STR, ""},
+  {"gsubtitle",VT_STR, ""},
+  {"gxtitle",VT_STR, ""}, 
+  {"gytitle",VT_STR, ""}, 
+  {"goutfile",VT_STR, ""},
+  {NULL, VT_NULL, NULL}
+};
 
-AcdOAttr acdAttrGraphxy[] = { {"type", VT_STR},
-			      {"gtitle",VT_STR},
-			      {"gsubtitle",VT_STR},
-			      {"gxtitle",VT_STR},
-			      {"gytitle",VT_STR}, 
-			      {"goutfile",VT_STR},
-			      {"multiple", VT_INT},
-			      {NULL, VT_NULL} };
+AcdOAttr acdAttrGraphxy[] = {
+  {"type", VT_STR, ""},
+  {"gtitle",VT_STR, ""},
+  {"gsubtitle",VT_STR, ""},
+  {"gxtitle",VT_STR, ""},
+  {"gytitle",VT_STR, ""}, 
+  {"goutfile",VT_STR, ""},
+  {"multiple", VT_INT, ""},
+  {NULL, VT_NULL, NULL}
+};
 
-AcdOAttr acdAttrInt[] = { {"minimum", VT_INT},
-			  {"maximum", VT_INT},
-			  {"increment", VT_INT},
-			  {"warnrange", VT_BOOL},
-			  {NULL, VT_NULL} };
+AcdOAttr acdAttrInt[] = {
+  {"minimum", VT_INT, ""},
+  {"maximum", VT_INT, ""},
+  {"increment", VT_INT, ""},
+  {"warnrange", VT_BOOL, ""},
+  {NULL, VT_NULL, NULL}
+};
 
-AcdOAttr acdAttrDatafile[] = { {"name", VT_STR},
-			       {"extension", VT_STR},
-			       {"type", VT_STR},
-			       {"nullok", VT_BOOL},
-			       {NULL, VT_NULL} };
+AcdOAttr acdAttrDatafile[] = {
+  {"name", VT_STR, ""},
+  {"extension", VT_STR, ""},
+  {"directory", VT_STR, ""},
+  {"type", VT_STR, ""},
+  {"nullok", VT_BOOL, ""},
+  {NULL, VT_NULL, NULL}
+};
 
-AcdOAttr acdAttrInfile[] = { {"name", VT_STR},
-			     {"extension", VT_STR},
-			     {"type", VT_STR},
-			     {"nullok", VT_BOOL},
-			     {NULL, VT_NULL} };
+AcdOAttr acdAttrInfile[] = {
+  {"name", VT_STR, ""},
+  {"extension", VT_STR, ""},
+  {"type", VT_STR, ""},
+  {"nullok", VT_BOOL, ""},
+  {NULL, VT_NULL, NULL}
+};
 
-AcdOAttr acdAttrList[] = { {"minimum", VT_INT},
-			   {"maximum", VT_INT},
-			   {"button", VT_BOOL},
-			   {"casesensitive", VT_BOOL},
-			   {"header", VT_STR},
-			   {"delimiter", VT_STR},
-			   {"codedelimiter", VT_STR},
-			   {"values", VT_STR},
-			   {NULL, VT_NULL} };
+AcdOAttr acdAttrList[] = {
+  {"minimum", VT_INT, ""},
+  {"maximum", VT_INT, ""},
+  {"button", VT_BOOL, ""},
+  {"casesensitive", VT_BOOL, ""},
+  {"header", VT_STR, ""},
+  {"delimiter", VT_STR, ""},
+  {"codedelimiter", VT_STR, ""},
+  {"values", VT_STR, ""},
+  {NULL, VT_NULL, NULL}
+};
 
-AcdOAttr acdAttrMatrix[] = { {"pname", VT_STR},
-			   {"nname", VT_STR},
-			   {"protein", VT_BOOL},
-			   {NULL, VT_NULL} };
+AcdOAttr acdAttrMatrix[] = {
+  {"pname", VT_STR, ""},
+  {"nname", VT_STR, ""},
+  {"protein", VT_BOOL, ""},
+  {NULL, VT_NULL, NULL}
+};
 
-AcdOAttr acdAttrMatrixf[] = { {"pname", VT_STR},
-			    {"nname", VT_STR},
-			    {"protein", VT_BOOL},
-			    {NULL, VT_NULL} };
+AcdOAttr acdAttrMatrixf[] = {
+  {"pname", VT_STR, ""},
+  {"nname", VT_STR, ""},
+  {"protein", VT_BOOL, ""},
+  {NULL, VT_NULL, NULL}
+};
 
-AcdOAttr acdAttrOutfile[] = { {"name", VT_STR},
-			      {"extension", VT_STR},
-			      {"type", VT_STR},
-			      {"nullok", VT_BOOL},
-			      {"append", VT_BOOL},
-			      {NULL, VT_NULL} };
+AcdOAttr acdAttrOutfile[] = {
+  {"name", VT_STR, ""},
+  {"extension", VT_STR, ""},
+  {"type", VT_STR, ""},
+  {"nullok", VT_BOOL, ""},
+  {"append", VT_BOOL, ""},
+  {NULL, VT_NULL, NULL}
+};
 
-AcdOAttr acdAttrCpdb[] = { {"name", VT_STR},
-			    {NULL, VT_NULL} };
+AcdOAttr acdAttrCpdb[] = {
+  {"name", VT_STR, ""},
+  {NULL, VT_NULL, NULL}
+};
 
-AcdOAttr acdAttrScop[] = { {"name", VT_STR},
-			    {NULL, VT_NULL} };
-
+AcdOAttr acdAttrScop[] = {
+  {"name", VT_STR, ""},
+  {NULL, VT_NULL, NULL}
+};
 
 AcdOAttr acdAttrRange[] = { 
-			    {NULL, VT_NULL} };
+  {NULL, VT_NULL, NULL}
+};
 
+AcdOAttr acdAttrRegexp[] = {
+  {"minlength", VT_INT, ""},
+  {"maxlength", VT_INT, ""},
+  {"upper", VT_BOOL, ""},
+  {"lower", VT_BOOL, ""},
+  {NULL, VT_NULL, NULL}
+};
 
-AcdOAttr acdAttrRegexp[] = { {"minlength", VT_INT},
-			     {"maxlength", VT_INT},
-			     {"upper", VT_BOOL},
-			     {"lower", VT_BOOL},
-			     {NULL, VT_NULL} };
+AcdOAttr acdAttrReport[] = {
+  {"name", VT_STR, ""},
+  {"rextension", VT_STR, ""},
+  {"type", VT_STR, ""},
+  {"taglist", VT_STR, "extra tags to report "},
+  {"mintags", VT_INT, "min number extra tags"},
+  {"multiple", VT_BOOL, ""},
+  {"precision", VT_INT, "score precision"},
+  {NULL, VT_NULL, NULL}
+};
 
-AcdOAttr acdAttrReport[] = { {"name", VT_STR},
-			     {"rextension", VT_STR},
-			     {"type", VT_STR},
-			     {"taglist", VT_STR}, /* extra tags to report */
-			     {"mintags", VT_INT}, /* min number extra tags */
-			     {"multiple", VT_BOOL},
-			     {"precision", VT_INT},/*score precision */
-			     {NULL, VT_NULL} };
+AcdOAttr acdAttrSec[] = {
+  {"info", VT_STR, ""},
+  {"type", VT_STR, "member of list in acdSetSec"},
+  {"comment", VT_STR, ""},
+  {"border", VT_INT, ""},
+  {"side", VT_STR, "member of list in acdSetSec"},
+  {"folder", VT_STR, ""},
+  {NULL, VT_NULL, NULL}
+};
 
-AcdOAttr acdAttrSec[] = { {"info", VT_STR},
-			   {"type", VT_STR}, /* list in acdSetSec */
-			   {"comment", VT_STR},
-			   {"border", VT_INT},
-			   {"side", VT_STR},    /* list in acdSetSec */
-			   {"folder", VT_STR},
-			   {NULL, VT_NULL} };
+AcdOAttr acdAttrSelect[] = {
+  {"minimum", VT_INT, ""},
+  {"maximum", VT_INT, ""},
+  {"button", VT_BOOL, ""},
+  {"casesensitive", VT_BOOL, ""},
+  {"header", VT_STR, ""},
+  {"delimiter", VT_STR, ""},
+  {"values", VT_STR, ""},
+  {NULL, VT_NULL, NULL}
+};
 
-AcdOAttr acdAttrSelect[] = { {"minimum", VT_INT},
-			     {"maximum", VT_INT},
-			     {"button", VT_BOOL},
-			     {"casesensitive", VT_BOOL},
-			     {"header", VT_STR},
-			     {"delimiter", VT_STR},
-			     {"values", VT_STR},
-			     {NULL, VT_NULL} };
+AcdOAttr acdAttrSeqout[] = {
+  {"name", VT_STR, ""},
+  {"extension", VT_STR, ""},
+  {"features", VT_BOOL, ""},
+  {NULL, VT_NULL, NULL}
+};
 
-AcdOAttr acdAttrSeqout[] = { {"name", VT_STR},
-			     {"extension", VT_STR},
-			     {"features", VT_BOOL},
-			     {NULL, VT_NULL} };
+AcdOAttr acdAttrSeqoutset[] = {
+  {"name", VT_STR, ""},
+  {"extension", VT_STR, ""},
+  {"features", VT_BOOL, ""},
+  {NULL, VT_NULL, NULL}
+};
 
-AcdOAttr acdAttrSeqoutset[] = { {"name", VT_STR},
-				{"extension", VT_STR},
-				{"features", VT_BOOL},
-				{NULL, VT_NULL} };
+AcdOAttr acdAttrSeqoutall[] = {
+  {"name", VT_STR, ""},
+  {"extension", VT_STR, ""},
+  {"features", VT_BOOL, ""},
+  {NULL, VT_NULL, NULL}
+};
 
-AcdOAttr acdAttrSeqoutall[] = { {"name", VT_STR},
-				{"extension", VT_STR},
-				{"features", VT_BOOL},
-				{NULL, VT_NULL} };
+AcdOAttr acdAttrSeq[] = {
+  {"type", VT_STR, ""},
+  {"features", VT_BOOL, ""},
+  {"entry", VT_BOOL, ""},
+  {NULL, VT_NULL, NULL}
+};
 
-AcdOAttr acdAttrSeq[] = { {"type", VT_STR},
-			  {"features", VT_BOOL},
-			  {"entry", VT_BOOL},
-			  {NULL, VT_NULL} };
+AcdOAttr acdAttrSeqset[] = {
+  {"type", VT_STR, ""},
+  {"features", VT_BOOL, ""},
+  {NULL, VT_NULL, NULL}
+};
 
-AcdOAttr acdAttrSeqset[] = { {"type", VT_STR},
-			     {"features", VT_BOOL},
-			     {NULL, VT_NULL} };
+AcdOAttr acdAttrSeqall[] = {
+  {"type", VT_STR, ""},
+  {"features", VT_BOOL, ""},
+  {"entry", VT_BOOL, ""},
+  {NULL, VT_NULL, NULL}
+};
 
-AcdOAttr acdAttrSeqall[] = { {"type", VT_STR},
-			     {"features", VT_BOOL},
-			     {"entry", VT_BOOL},
-			     {NULL, VT_NULL} };
-
-AcdOAttr acdAttrString[] = { {"minlength", VT_INT},
-			     {"maxlength", VT_INT},
-			     {"pattern", VT_STR},
-       			     {"upper", VT_BOOL},
-			     {"lower", VT_BOOL},
-		     {NULL, VT_NULL} };
+AcdOAttr acdAttrString[] = {
+  {"minlength", VT_INT, ""},
+  {"maxlength", VT_INT, ""},
+  {"pattern", VT_STR, ""},
+  {"upper", VT_BOOL, ""},
+  {"lower", VT_BOOL, ""},
+  {NULL, VT_NULL, NULL}
+};
 
 AcdOAttr acdAttrVar[] = {
-                          {NULL, VT_NULL} };
+  {NULL, VT_NULL, NULL}
+};
 
 typedef struct AcdSKey
 {
@@ -810,6 +896,7 @@ AcdOKey acdKeywords[] =
   {"endsection",  ENDSEC_STAGE, acdAttrEndsec, acdSetEndsec},
   {NULL, BAD_STAGE} };
 
+
 /* Type-specific associated qualifiers which can be used positionally
 ** or numbered if tied to a parameter */
 
@@ -818,21 +905,21 @@ AcdOKey acdKeywords[] =
 AcdOQual acdQualAppl[] =	/* careful: index numbers used in*/
 				/* acdSetQualAppl */
 {
-  {"auto",       "N",      "bool", "turn off prompts"},
-  {"stdout",     "N",      "bool", "write standard output"},
-  {"filter",     "N",      "bool", "read standard input, write standard output"},
+  {"auto",       "N",      "boolean", "turn off prompts"},
+  {"stdout",     "N",      "boolean", "write standard output"},
+  {"filter",     "N",      "boolean", "read standard input, write standard output"},
                                   /* after auto and stdout so it can replace */
-  {"options",    "N",      "bool", "prompt for required and optional values"},
-  {"debug",      "N",      "bool", "write debug output to program.dbg"},
-  {"acdlog",     "N",      "bool", "write ACD processing log to program.acdlog"},
-  {"acdpretty",  "N",      "bool", "rewrite ACD file as program.acdpretty"},
-  {"acdtable",   "N",      "bool", "write HTML table of options"},
-  {"help",       "N",      "bool", "report command line options. More information on associated and general qualifiers can be found with -help -verbose"},
-  {"verbose",    "N",      "bool", "report some/full command line options"},
-  {"warning",    "Y",      "bool", "report warnings"},
-  {"error",      "Y",      "bool", "report errors"},
-  {"fatal",      "Y",      "bool", "report fatal errors"},
-  {"die",        "N",      "bool", "report deaths"},
+  {"options",    "N",      "boolean", "prompt for required and optional values"},
+  {"debug",      "N",      "boolean", "write debug output to program.dbg"},
+  {"acdlog",     "N",      "boolean", "write ACD processing log to program.acdlog"},
+  {"acdpretty",  "N",      "boolean", "rewrite ACD file as program.acdpretty"},
+  {"acdtable",   "N",      "boolean", "write HTML table of options"},
+  {"help",       "N",      "boolean", "report command line options. More information on associated and general qualifiers can be found with -help -verbose"},
+  {"verbose",    "N",      "boolean", "report some/full command line options"},
+  {"warning",    "Y",      "boolean", "report warnings"},
+  {"error",      "Y",      "boolean", "report errors"},
+  {"fatal",      "Y",      "boolean", "report fatal errors"},
+  {"die",        "N",      "boolean", "report deaths"},
   {NULL, NULL, NULL, NULL} };
 
 AcdOQual acdQualAlign[] =
@@ -841,21 +928,21 @@ AcdOQual acdQualAlign[] =
   {"aopenfile",  "",       "string", "alignment file name"},
   {"aextension", "",       "string", "file name extension"},
   {"aname",      "",       "string", "base file name"},
-  {"awidth",     "",       "int",    "alignment width"},
-  {"aaccshow",   "",       "bool",   "show accession number in the header"},
-  {"adesshow",   "",       "bool",   "show description in the header"},
-  {"ausashow",   "",       "bool",   "show the full USA in the alignment"},
-  {"aglobal",    "",       "bool",   "show the full sequence in alignment"},
+  {"awidth",     "",       "integer",    "alignment width"},
+  {"aaccshow",   "",       "boolean",   "show accession number in the header"},
+  {"adesshow",   "",       "boolean",   "show description in the header"},
+  {"ausashow",   "",       "boolean",   "show the full USA in the alignment"},
+  {"aglobal",    "",       "boolean",   "show the full sequence in alignment"},
   {NULL, NULL, NULL, NULL} };
 
 AcdOQual acdQualFeat[] =
 {
   {"fformat",    "",       "string",  "features format"},
   {"fopenfile",  "",       "string",  "features file name"},
-  {"fask",       "",       "bool",    "prompt for begin/end/reverse"},
+  {"fask",       "",       "boolean",    "prompt for begin/end/reverse"},
   {"fbegin",     "",       "integer", "first base used"},
   {"fend",       "",       "integer", "last base used, def=max length"},
-  {"freverse",   "",       "bool",    "reverse (if DNA)"},
+  {"freverse",   "",       "boolean",    "reverse (if DNA)"},
   {NULL, NULL, NULL, NULL} };
 
 AcdOQual acdQualFeatout[] =
@@ -864,7 +951,7 @@ AcdOQual acdQualFeatout[] =
   {"ofopenfile",  "",       "string", "features file name"},
   {"ofextension", "",       "string", "file name extension"},
   {"ofname",      "",       "string", "base file name"},
-  {"ofsingle",    "",       "bool",   "separate file for each entry"},
+  {"ofsingle",    "",       "boolean",   "separate file for each entry"},
   {NULL, NULL, NULL, NULL} };
 
 AcdOQual acdQualReport[] =
@@ -873,22 +960,22 @@ AcdOQual acdQualReport[] =
   {"ropenfile",  "",       "string", "report file name"},
   {"rextension", "",       "string", "file name extension"},
   {"rname",      "",       "string", "base file name"},
-  {"raccshow",   "",       "bool",   "show accession number in the report"},
-  {"rdesshow",   "",       "bool",   "show description in the report"},
-  {"rusashow",   "",       "bool",   "show the full USA in the report"},
+  {"raccshow",   "",       "boolean",   "show accession number in the report"},
+  {"rdesshow",   "",       "boolean",   "show description in the report"},
+  {"rusashow",   "",       "boolean",   "show the full USA in the report"},
   {NULL, NULL, NULL, NULL} };
 
 AcdOQual acdQualSeq[] =
 {
   {"sbegin",     "", "integer", "first base used"},
   {"send",       "", "integer", "last base used, def=seq length"},
-  {"sreverse",   "", "bool",    "reverse (if DNA)"},
-  /*  {"sprompt",    "", "bool",    "prompt for begin/end/reverse"}, */
-  {"sask",       "", "bool",    "ask for begin/end/reverse"},
-  {"snucleotide", "", "bool",    "sequence is nucleotide"},
-  {"sprotein",   "", "bool",    "sequence is protein"},
-  {"slower",     "", "bool",    "make lower case"},
-  {"supper",     "", "bool",    "make upper case"},
+  {"sreverse",   "", "boolean",    "reverse (if DNA)"},
+  /*  {"sprompt",    "", "boolean",    "prompt for begin/end/reverse"}, */
+  {"sask",       "", "boolean",    "ask for begin/end/reverse"},
+  {"snucleotide", "", "boolean",    "sequence is nucleotide"},
+  {"sprotein",   "", "boolean",    "sequence is protein"},
+  {"slower",     "", "boolean",    "make lower case"},
+  {"supper",     "", "boolean",    "make upper case"},
   {"sformat",    "", "string",  "input sequence format"},
   {"sopenfile",  "", "string",  "input filename"},
   {"sdbname",    "", "string",  "database name"},
@@ -902,13 +989,13 @@ AcdOQual acdQualSeqset[] =
 {
   {"sbegin",     "", "integer", "first base used"},
   {"send",       "", "integer", "last base used, def=seq length"},
-  {"sreverse",   "", "bool",    "reverse (if DNA)"},
-  /*  {"sprompt",    "", "bool",    "prompt for begin/end/reverse"}, */
-  {"sask",       "", "bool",    "ask for begin/end/reverse"},
-  {"snucleotide", "", "bool",    "sequence is nucleotide"},
-  {"sprotein",   "", "bool",    "sequence is protein"},
-  {"slower",     "", "bool",    "make lower case"},
-  {"supper",     "", "bool",    "make upper case"},
+  {"sreverse",   "", "boolean",    "reverse (if DNA)"},
+  /*  {"sprompt",    "", "boolean",    "prompt for begin/end/reverse"}, */
+  {"sask",       "", "boolean",    "ask for begin/end/reverse"},
+  {"snucleotide", "", "boolean",    "sequence is nucleotide"},
+  {"sprotein",   "", "boolean",    "sequence is protein"},
+  {"slower",     "", "boolean",    "make lower case"},
+  {"supper",     "", "boolean",    "make upper case"},
   {"sformat",    "", "string",  "input sequence format"},
   {"sopenfile",  "", "string",  "input filename"},
   {"sdbname",    "", "string",  "database name"},
@@ -922,13 +1009,13 @@ AcdOQual acdQualSeqall[] =
 {
   {"sbegin",     "", "integer", "first base used"},
   {"send",       "", "integer", "last base used, def=seq length"},
-  {"sreverse",   "", "bool",    "reverse (if DNA)"},
-  /*  {"sprompt",    "", "bool",    "prompt for begin/end/reverse"}, */
-  {"sask",       "", "bool",    "ask for begin/end/reverse"},
-  {"snucleotide", "", "bool",    "sequence is nucleotide"},
-  {"sprotein",   "", "bool",    "sequence is protein"},
-  {"slower",     "", "bool",    "make lower case"},
-  {"supper",     "", "bool",    "make upper case"},
+  {"sreverse",   "", "boolean",    "reverse (if DNA)"},
+  /*  {"sprompt",    "", "boolean",    "prompt for begin/end/reverse"}, */
+  {"sask",       "", "boolean",    "ask for begin/end/reverse"},
+  {"snucleotide", "", "boolean",    "sequence is nucleotide"},
+  {"sprotein",   "", "boolean",    "sequence is protein"},
+  {"slower",     "", "boolean",    "make lower case"},
+  {"supper",     "", "boolean",    "make upper case"},
   {"sformat",    "", "string",  "input sequence format"},
   {"sopenfile",  "", "string",  "input filename"},
   {"sdbname",    "", "string",  "database name"},
@@ -944,7 +1031,7 @@ AcdOQual acdQualSeqout[] =
   {"osextension", "",      "string",  "file name extension"},
   {"osname",     "",       "string",  "base file name"},
   {"osdbname",   "",       "string",  "database name to add"},
-  {"ossingle",   "",       "bool",    "separate file for each entry"},
+  {"ossingle",   "",       "boolean",    "separate file for each entry"},
   {"oufo",       "",       "string",  "UFO features"},
   {"offormat",   "",       "string",  "features format"},
   {"ofname",     "",       "string",  "features file name"},
@@ -956,7 +1043,7 @@ AcdOQual acdQualSeqoutset[] =
   {"osextension", "",      "string",  "file name extension"},
   {"osname",     "",       "string",  "base file name"},
   {"osdbname",   "",       "string",  "database name to add"},
-  {"ossingle",   "",       "bool",    "separate file for each entry"},
+  {"ossingle",   "",       "boolean",    "separate file for each entry"},
   {"oufo",       "",       "string",  "UFO features"},
   {"offormat",   "",       "string",  "features format"},
   {"ofname",     "",       "string",  "features file name"},
@@ -968,7 +1055,7 @@ AcdOQual acdQualSeqoutall[] =
   {"osextension", "",      "string",  "file name extension"},
   {"osname",     "",       "string",  "base file name"},
   {"osdbname",   "",       "string",  "database name to add"},
-  {"ossingle",   "",       "bool",    "separate file for each entry"},
+  {"ossingle",   "",       "boolean",    "separate file for each entry"},
   {"oufo",       "",       "string",  "UFO features"},
   {"offormat",   "",       "string",  "features format"},
   {"ofname",     "",       "string",  "features file name"},
@@ -976,7 +1063,7 @@ AcdOQual acdQualSeqoutall[] =
 
 AcdOQual acdQualGraph[] =
 {
-  {"gprompt",   "", "bool",    "graph prompting"},
+  {"gprompt",   "", "boolean",    "graph prompting"},
   {"gtitle",    "", "string",  "graph title"},
   {"gsubtitle", "", "string",  "graph subtitle"},
   {"gxtitle",   "", "string",  "graph x axis title"},
@@ -988,7 +1075,7 @@ AcdOQual acdQualGraph[] =
 
 AcdOQual acdQualGraphxy[] =
 {
-  {"gprompt",   "", "bool",    "graph prompting"},
+  {"gprompt",   "", "boolean",    "graph prompting"},
   {"gtitle",    "", "string",  "graph title"},
   {"gsubtitle", "", "string",  "graph subtitle"},
   {"gxtitle",   "", "string",  "graph x axis title"},
@@ -1017,71 +1104,103 @@ AcdOQual acdQualGraphxy[] =
 
 AcdOType acdType[] =
 {
-  {"align",       acdAttrAlign,     acdSetAlign,
-   acdQualAlign,    "Alignment file" },
-  {"array",       acdAttrArray,     acdSetArray,
-   NULL,             "List of numbers" },
-  {"bool",        acdAttrBool,      acdSetBool,
-   NULL,             "Yes/No" },
-  {"codon",	  acdAttrCodon,     acdSetCodon,
-   NULL,             "Codon usage file in EMBOSS data path" },
-  {"datafile",    acdAttrDatafile,  acdSetDatafile,
-   NULL,             "Data file" },
-  {"directory",   acdAttrDirectory, acdSetDirectory,
-   NULL,             "Directory" },
-  {"dirlist",	  acdAttrDirlist,     acdSetDirlist,
-   NULL,             "Directory with files" },
-  {"features",    acdAttrFeat,      acdSetFeat,
-   acdQualFeat,      "Readable feature table" },
-  {"featout",     acdAttrFeatout,   acdSetFeatout,
-   acdQualFeatout,   "Writeable feature table" },
-  {"filelist",	  acdAttrFilelist,     acdSetFilelist,
-   NULL,             "Comma-separated file list" },
-  {"float",       acdAttrFloat,     acdSetFloat,
-   NULL,             "Floating point number" },
-  {"graph",       acdAttrGraph,     acdSetGraph,
-   acdQualGraph,     "Graph device" },
-  {"xygraph",     acdAttrGraphxy,   acdSetGraphxy,
-   acdQualGraphxy,   "Graph device" },
-  {"infile",      acdAttrInfile,    acdSetInfile,
-   NULL,             "Input file" },
-  {"integer",     acdAttrInt,       acdSetInt,
-   NULL,             "Integer" },
-  {"list",        acdAttrList,      acdSetList,
-   NULL,             "Choose from menu list of values" },
-  {"matrix",      acdAttrMatrix,    acdSetMatrix,
-   NULL,             "Comparison matrix file in EMBOSS data path" },
-  {"matrixf",     acdAttrMatrixf,   acdSetMatrixf,
-   NULL,             "Comparison matrix file in EMBOSS data path" },
-  {"outfile",     acdAttrOutfile,   acdSetOutfile,
-   NULL,             "Output file" },
-  {"cpdb",	  acdAttrCpdb,     acdSetCpdb,
-   NULL,             "Cleaned PDB file in EMBOSS data path" },
-  {"scop",	  acdAttrScop,     acdSetScop,
-   NULL,             "Scop entry in EMBOSS data path" },
-  {"range",	  acdAttrRange,     acdSetRange,
-   NULL,             "Sequence range" },
-  {"regexp",	  acdAttrRegexp,     acdSetRegexp,
-   NULL,             "Regular expression pattern" },
-  {"report",      acdAttrReport,     acdSetReport,
-   acdQualReport,    "Report file" },
-  {"select",      acdAttrSelect,    acdSetSelect,
-   NULL,             "Choose from selection list of values" },
-  {"sequence",    acdAttrSeq,       acdSetSeq,
-   acdQualSeq,       "Readable sequence" },
-  {"seqset",      acdAttrSeqset,    acdSetSeqset,
-   acdQualSeqset,    "Readable sequences" },
-  {"seqall",      acdAttrSeqall,    acdSetSeqall,
-   acdQualSeqall,    "Readable sequence(s)" },
-  {"seqout",      acdAttrSeqout,    acdSetSeqout,
-   acdQualSeqout,    "Writeable sequence" },
-  {"seqoutset",   acdAttrSeqoutset, acdSetSeqoutset,
-   acdQualSeqoutset, "Writeable sequences" },
-  {"seqoutall",   acdAttrSeqoutall, acdSetSeqoutall,
-   acdQualSeqoutall, "Writeable sequence(s)" },
-  {"string",      acdAttrString,    acdSetString,
-   NULL,             "String value" },
-  {NULL, NULL, NULL, NULL, NULL}
+  {"align",       "output",           acdSecOutput,
+   acdAttrAlign,  acdSetAlign,        acdQualAlign,
+   "Alignment file" },
+  {"array",       NULL,               NULL,
+   acdAttrArray,     acdSetArray,     NULL,
+   "List of numbers" },
+  {"boolean",     NULL,               NULL,
+   acdAttrBool,      acdSetBool,      NULL,
+   "Yes/No" },
+  {"codon",	  "input",            acdSecInput,
+   acdAttrCodon,     acdSetCodon,     NULL,
+   "Codon usage file in EMBOSS data path" },
+  {"cpdb",	  "input",            acdSecInput,
+   acdAttrCpdb,     acdSetCpdb,       NULL,
+   "Cleaned PDB file in EMBOSS data path" },
+  {"datafile",    "input",            NULL,
+   acdAttrDatafile,  acdSetDatafile,  NULL,
+   "Data file" },
+  {"directory",   "input",            acdSecInput,
+   acdAttrDirectory, acdSetDirectory, NULL,
+   "Directory" },
+  {"dirlist",	  "input",            acdSecInput,
+   acdAttrDirlist,     acdSetDirlist, NULL,
+   "Directory with files" },
+  {"features",    "input",            acdSecInput,
+   acdAttrFeat,      acdSetFeat,      acdQualFeat,
+   "Readable feature table" },
+  {"featout",     "output",           acdSecOutput,
+   acdAttrFeatout,   acdSetFeatout,   acdQualFeatout,
+   "Writeable feature table" },
+  {"filelist",	  NULL,               NULL,
+   acdAttrFilelist,  acdSetFilelist,  NULL,
+   "Comma-separated file list" },
+  {"float",       NULL,               NULL,
+   acdAttrFloat,     acdSetFloat,     NULL,
+   "Floating point number" },
+  {"graph",       "graph",            acdSecOutput,
+   acdAttrGraph,     acdSetGraph,     acdQualGraph,
+   "Graph device" },
+  {"infile",      "input",            acdSecInput,
+   acdAttrInfile,  acdSetInfile,      NULL,
+   "Input file" },
+  {"integer",     NULL,               NULL,
+   acdAttrInt,       acdSetInt,       NULL,
+   "Integer" },
+  {"list",        "selection",        NULL,
+   acdAttrList,      acdSetList,      NULL,
+   "Choose from menu list of values" },
+  {"matrix",      "input",            acdSecInput,
+   acdAttrMatrix,    acdSetMatrix,    NULL,
+   "Comparison matrix file in EMBOSS data path" },
+  {"matrixf",     "input",            acdSecInput,
+   acdAttrMatrixf,   acdSetMatrixf,   NULL,
+   "Comparison matrix file in EMBOSS data path" },
+  {"outfile",     "output",           acdSecOutput,
+   acdAttrOutfile,   acdSetOutfile,   NULL,
+   "Output file" },
+  {"range",	  NULL,               NULL,
+   acdAttrRange,     acdSetRange,     NULL,
+   "Sequence range" },
+  {"regexp",	  "input",            acdSecInput,
+   acdAttrRegexp,     acdSetRegexp,   NULL,
+   "Regular expression pattern" },
+  {"report",      "output",           acdSecOutput,
+   acdAttrReport,     acdSetReport,   acdQualReport,
+   "Report file" },
+  {"scop",	  "input",            acdSecInput,
+   acdAttrScop,     acdSetScop,       NULL,
+   "Scop entry in EMBOSS data path" },
+  {"selection",   "selection",        NULL,
+   acdAttrSelect,    acdSetSelect,    NULL,
+   "Choose from selection list of values" },
+  {"sequence",    "input",            acdSecInput,
+   acdAttrSeq,       acdSetSeq,       acdQualSeq,
+   "Readable sequence" },
+  {"seqall",      "input",            acdSecInput,
+   acdAttrSeqall,    acdSetSeqall,    acdQualSeqall,
+   "Readable sequence(s)" },
+  {"seqout",      "output",           acdSecOutput,
+   acdAttrSeqout,    acdSetSeqout,    acdQualSeqout,
+   "Writeable sequence" },
+  {"seqoutall",   "output",           acdSecOutput,
+   acdAttrSeqoutall, acdSetSeqoutall, acdQualSeqoutall,
+   "Writeable sequence(s)" },
+  {"seqoutset",   "output",           acdSecOutput,
+   acdAttrSeqoutset, acdSetSeqoutset, acdQualSeqoutset,
+   "Writeable sequences" },
+  {"seqset",      "input",            acdSecInput,
+   acdAttrSeqset,    acdSetSeqset,    acdQualSeqset,
+   "Readable sequences" },
+  {"string",      NULL,               NULL,
+   acdAttrString,    acdSetString,    NULL,
+   "String value" },
+  {"xygraph",     "graph",            acdSecOutput,
+   acdAttrGraphxy,   acdSetGraphxy,   acdQualGraphxy,
+   "Graph device" },
+  {NULL, NULL, NULL, NULL, NULL, NULL, NULL}
 };
 
 typedef struct AcdSValid
@@ -1161,6 +1280,7 @@ AjStatus ajAcdInitP (char *pgm, ajint argc, char *argv[], char *package)
    
     acdProgram = ajStrNewC (pgm);
     acdSecList = ajListstrNew();
+    acdSecPromptList = ajListstrNew();
 
     ajDebug ("testing acdprompts");
     if (ajNamGetValueC ("acdprompts", &tmpstr))
@@ -1407,6 +1527,7 @@ static void acdParse (AjPStr text)
     char whiteplus[] = " \t\n\r:=";
     AjBool done=ajFalse;
     AjPStr secname = NULL;
+    ajint* secprompt = NULL;
 
     tokenhandle = ajStrTokenInit (text, whiteplus);
   
@@ -1625,6 +1746,9 @@ static void acdParse (AjPStr text)
 	    ajListstrLength(acdSecList));
 
     if (ajListstrLength(acdSecList)) {
+      while (ajListPop(acdSecPromptList, (void*) &secprompt)) {
+	AJFREE (secprompt);
+      }
       while (ajListstrPop(acdSecList, &secname)) {
 	ajDebug("Section '%S' has no endsection\n", secname);
 	ajErr("Section '%S' has no endsection", secname);
@@ -1640,6 +1764,8 @@ static void acdParse (AjPStr text)
     (void) ajStrDelReuse (&acdvalue);
     (void) ajStrDelReuse (&acdtoken);
     (void) ajStrTokenClear (&tokenhandle);
+    (void) ajListstrDel (&acdSecList);
+    (void) ajListDel (&acdSecPromptList);
 
     return;
 }
@@ -1966,6 +2092,7 @@ static AcdPAcd acdNewSec (AjPStr name)
     static ajint firstcall = 1;
     static ajint ikey;
     AjPStr secname=NULL;
+    ajint* secprompt = NULL;
 
     if (firstcall)
     {
@@ -1981,6 +2108,10 @@ static AcdPAcd acdNewSec (AjPStr name)
 
     ajStrAssS(&secname, name);
     ajListstrPush (acdSecList, secname);
+
+    AJNEW0(secprompt);
+    ajListPush (acdSecPromptList, secprompt);
+
     ajDebug("acdNewSec acdSecList push '%S' new length %d\n",
 	    secname, ajListstrLength(acdSecList));
 
@@ -2002,6 +2133,7 @@ static AcdPAcd acdNewEndsec (AjPStr name)
     static ajint firstcall = 1;
     static ajint ikey;
     AjPStr secname=NULL;
+    ajint* secprompt=NULL;
 
     if (firstcall)
     {
@@ -2019,8 +2151,9 @@ static AcdPAcd acdNewEndsec (AjPStr name)
 
     else {
       ajListstrPop (acdSecList, &secname);
-      ajDebug("Pop from acdSecList '%S' new length %d\n",
-	      secname, ajListstrLength(acdSecList));
+      ajListPop (acdSecPromptList, (void*) &secprompt);
+      ajDebug("Pop from acdSecList '%S' (%d) new length %d\n",
+	      secname, *secprompt, ajListstrLength(acdSecList));
 
       if (!ajStrMatch(name, secname)) {
 	ajDebug("Bad endsection '%S'\nCurrent section is '%S\n'",
@@ -2028,6 +2161,7 @@ static AcdPAcd acdNewEndsec (AjPStr name)
 	ajFatal("Bad endsection '%S'\nCurrent section is '%S'", name, secname);
       }
       ajStrDel(&secname);
+      AJFREE (secprompt);
     }
 
     acd = acdNewAcdKey(name, name, ikey);
@@ -2577,7 +2711,7 @@ static ajint acdFindTypeC (char* type)
     {
 	if (!strcmp (type, acdType[i].Name))
 	    return i;
-	if (strncmp (acdType[i].Name, type, ilen))
+	if (!strncmp (acdType[i].Name, type, ilen))
 	{
 	    ifound++;
 	    j = i;
@@ -3398,7 +3532,7 @@ AjBool ajAcdGetBool (char *token)
 {
     AjBool* val;
 
-    val = acdGetValue (token, "bool");
+    val = acdGetValue (token, "boolean");
     return *val;
 }
 
@@ -3728,6 +3862,7 @@ static void acdSetDatafile (AcdPAcd thys)
     AjBool nullok;
     static AjPStr name = NULL;
     static AjPStr ext = NULL;
+    static AjPStr dir = NULL;
 
     static AjPStr datafname = NULL;
 
@@ -3735,6 +3870,7 @@ static void acdSetDatafile (AcdPAcd thys)
 
     (void) acdAttrResolve (thys, "name", &name);
     (void) acdAttrResolve (thys, "extension", &ext);
+    (void) acdAttrResolve (thys, "directory", &dir);
 
     (void) acdAttrToBool (thys, "nullok", ajFalse, &nullok);
     acdLog ("nullok: %B\n", nullok);
@@ -3747,7 +3883,7 @@ static void acdSetDatafile (AcdPAcd thys)
     for (itry=acdPromptTry; itry && !ok; itry--)
     {
 
-	ok = ajTrue;			/* accept the default if nothing changes */
+	ok = ajTrue;		/* accept the default if nothing changes */
 
 	(void) ajStrAssS (&reply, defreply);
 
@@ -3756,7 +3892,7 @@ static void acdSetDatafile (AcdPAcd thys)
 
 	if (ajStrLen(reply))
 	{
-	    ajFileDataNew(reply, &val);
+	    ajFileDataDirNew(reply, dir, &val);
 	    if (!val)
 	    {
 		acdBadVal (thys, required,
@@ -5765,7 +5901,7 @@ static void acdSetReport (AcdPAcd thys)
 
 AjPStr* ajAcdGetSelect (char *token) {
 
-  return acdGetValue (token, "select");
+  return acdGetValue (token, "selection");
 }
 
 /* @func ajAcdGetSelectI ******************************************************
@@ -7652,7 +7788,7 @@ static void acdHelpAppend (AcdPAcd thys, AjPStr *str, char flag) {
     defstr = nullstr;
 
   (void) ajStrAssC (&nostr, "");
-  if (acdIsQtype(thys) && ajStrMatchCC("bool", acdType[thys->Type].Name)) {
+  if (acdIsQtype(thys) && ajStrMatchCC("boolean", acdType[thys->Type].Name)) {
     if (ajStrToBool(defstr, &boolval) && boolval)
       (void) ajStrAssC (&nostr, "[no]");
     defstr = nullstr;
@@ -8822,7 +8958,7 @@ static void acdHelpTable (AcdPAcd thys, AjPList tablist, char flag) {
     defstr = nullstr;
 
   (void) ajStrAssC (&nostr, "");
-  if (acdIsQtype(thys) && ajStrMatchCC("bool", acdType[thys->Type].Name)) {
+  if (acdIsQtype(thys) && ajStrMatchCC("boolean", acdType[thys->Type].Name)) {
     if (ajStrToBool(defstr, &boolval)) {
       if (boolval)
 	(void) ajStrAssC (&nostr, "[no]");
@@ -11401,7 +11537,7 @@ static ajint acdIsQual (char* arg, char* arg2, ajint *iparam, AjPStr *pqual,
     ** or can be followed by a valid Bool value
     */
 
-    if (!strcmp(acdType[acdListCurr->Type].Name, "bool")) {
+    if (!strcmp(acdType[acdListCurr->Type].Name, "boolean")) {
       if (acdValIsBool(arg2)) {	/* bool value, accept */
 	ajDebug("acdValIsBool -%s '%s'\n", arg, arg2); 
 	gotvalue = ajTrue;
@@ -13777,7 +13913,7 @@ void ajAcdPrintType (AjPFile outf, AjBool full) {
   ajFmtPrintF (outf, "\n");
   ajFmtPrintF (outf, "# ACD Types\n");
   ajFmtPrintF (outf, "# Name\n");
-  ajFmtPrintF (outf, "#     Attribute    Type\n");
+  ajFmtPrintF (outf, "#     Attribute    Type       Comment\n");
   ajFmtPrintF (outf, "#     Qualifier    Type       Default Helptext\n");
   ajFmtPrintF (outf, "AcdType {\n");
 
@@ -13790,6 +13926,7 @@ void ajAcdPrintType (AjPFile outf, AjBool full) {
       for (attr=pat->Attr; attr->Name; attr++) {
 	ajFmtPrintF (outf, "      %-12s", attr->Name);
 	ajFmtPrintF (outf, " %-10s", acdValNames[attr->Type]);
+	ajFmtPrintF (outf, " \"%s\"", attr->Help);
 	ajFmtPrintF (outf, "\n");
        }
      ajFmtPrintF (outf, "    }\n");
@@ -13849,18 +13986,21 @@ void ajAcdExit (AjBool silent) {
   static AjBool staySilent=AJFALSE;
 
   if (silent) staySilent = ajTrue;
+  if (acdDoHelp) staySilent = ajTrue;
 
   if (staySilent) return;
 
   /* turn off the warnings for now ... comment out this line to enable them */
-  /* the problem is that some programs have conditionals arouns the */
+  /* the problem is that some programs have conditionals around the */
   /* ajAcdGet calls so they can sometimes fail to use values, even where */
   /* the test cases say they are fine. */
   /* also some ACD files (showdb for example) use values, */
   /* but in some cases (showdb with all booleans on the command line) */
   /* the value is not needed */
 
+  /*
   if (!staySilent) return;
+  */
 
   for (pa=acdList; pa; pa=pa->Next) {
     if (pa->Assoc) continue;
