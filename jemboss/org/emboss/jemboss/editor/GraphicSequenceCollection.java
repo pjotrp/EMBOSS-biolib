@@ -1290,10 +1290,17 @@ public class GraphicSequenceCollection extends JPanel
     {
       Enumeration enum = graphicSequence.elements();
       SequenceJPanel gs = null;
+      int iend;
+
       while(enum.hasMoreElements())
       {
+        iend = i+numResPerLine;
+        if(iend > istop)
+          iend = istop;
+
         gs = (SequenceJPanel)(enum.nextElement());
-        gs.getSequencePrintGraphic(g2d,getNameWidth(),i,i+numResPerLine);
+        gs.getSequencePrintGraphic(g2d,getNameWidth(),i,iend);
+//                                 i+numResPerLine);
         gs.getNamePrintGraphic(g2d);
         g2d.translate(0,gs.getSequenceHeight());
       }
