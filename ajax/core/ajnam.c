@@ -213,7 +213,7 @@ static void   namDebugDatabase (AjPStr* dbattr);
 static void   namDebugResource (AjPStr* dbattr);
 static void   namDebugVariables (void);
 static void   namDebugMaster (ajint which);
-static void   namEntryDelete (NamPEntry entry);
+static void   namEntryDelete (NamPEntry* pentry);
 static void   namError (char* fmt, ...);
 static void   namListParse (AjPList listwords, AjPList listcount,
 			    AjPFile file);
@@ -237,15 +237,16 @@ static AjBool namVarResolve (AjPStr* var);
 **
 ** Deletes a variable, database, or resource entry from the internal table.
 **
-** @param [P] entry [NamPEntry] The entry to be deleted.
+** @param [P] pentry [NamPEntry*] The entry to be deleted.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void namEntryDelete (NamPEntry entry) {
+static void namEntryDelete (NamPEntry* pentry) {
 
   ajint j;
   AjPStr* attrs;
+  NamPEntry entry = *pentry;
 
   ajStrDel(&entry->name);
   ajStrDel(&entry->value);
@@ -258,8 +259,6 @@ static void namEntryDelete (NamPEntry entry) {
     AJFREE(entry->data);
   }
   if(entry->type == TYPE_RESOURCE){
-    ajStrDel(&entry->name);
-    ajStrDel(&entry->value);
     attrs = entry->data;
     for (j=0; namRsAttrs[j].Name; j++) {
       ajStrDel(&attrs[j]);
@@ -267,8 +266,6 @@ static void namEntryDelete (NamPEntry entry) {
     AJFREE(entry->data);
   }
   else if(entry->type == TYPE_ENV){
-    ajStrDel(&entry->name);
-    ajStrDel(&entry->value);
   }
   AJFREE(entry);
 
@@ -293,7 +290,7 @@ static void namListMasterDelete (void) {
   for (i = 0; array[i]; i += 2) {
     AJFREE(array[i]);		/* the key */
     fnew = (NamPEntry) array[i+1];
-    namEntryDelete (fnew);
+    namEntryDelete (&fnew);
   }
   AJFREE(array);
 
@@ -1163,14 +1160,11 @@ static void namListParse (AjPList listwords, AjPList listcount,
       namUser("saving type %d name '%S' value '%S' line:%d\n",
 	      namParseType, name, value, namLine);
       AJNEW0(fnew);
-      fnew->name = 0;
-      fnew->value = 0;
       tabname = ajCharNew(name);
       fnew->name = name;
       name = 0;
       fnew->value = value;
       value = 0;
-      fnew->scope = 0;
       fnew->type = namParseType;
 
       if(namParseType == TYPE_DB)
@@ -1189,16 +1183,16 @@ static void namListParse (AjPList listwords, AjPList listcount,
       /* be very careful that everything in the table */
       /* is not about to be deallocated - so do not use "name" here */
 
-      entry = ajTablePut (namMasterTable, tabname, fnew);
+      entry = ajTableGet (namMasterTable, tabname);
       if (entry)
       {  /* it existed so over write previous table entry */
 	namUser ("%S: replaced previous definition of '%S'\n",
 		 namRootStr,
 		 entry->name);
-	namEntryDelete (entry);
-	AJFREE (tabname);
+	namEntryDelete (&entry);
       }
 
+      entry = ajTablePut (namMasterTable, tabname, fnew);
       saveit = ajFalse;
       namParseType = 0;
       db_input = -1;
@@ -1758,6 +1752,7 @@ AjBool ajNamDbTest (AjPStr dbname) {
   data = ajTableGet(namMasterTable, ajStrStr(dbname));
   if (!data)
     return ajFalse;
+
   if (data->type != TYPE_DB)
     return ajFalse;
 
