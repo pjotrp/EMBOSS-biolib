@@ -662,7 +662,7 @@ public class ResultsMenuBar extends JMenuBar
     }
     catch(ClassCastException cce) 
     {
-      try
+      try    //standalone results
       {
         JPanel panel = (JPanel)rtb.getSelectedComponent();
         JScrollPane jsp = (JScrollPane)(panel.getComponent(0));
@@ -691,7 +691,19 @@ public class ResultsMenuBar extends JMenuBar
     {
       JScrollPane jsp = (JScrollPane)(rtb.getComponentAt(index));
       return (JTextComponent)(jsp.getViewport().getView());
-    } catch(ClassCastException cce) {}
+    } catch(ClassCastException cce) 
+    {
+      try    //standalone results
+      {
+        JPanel panel = (JPanel)rtb.getComponentAt(index);
+        JScrollPane jsp = (JScrollPane)(panel.getComponent(0));
+        ScrollPanel panel2 = (ScrollPanel)jsp.getViewport().getView();
+        return (JTextPane)panel2.getComponent(0);
+      }
+      catch(ClassCastException cce2)
+      {
+      }
+    }
     
     return null;
   }
