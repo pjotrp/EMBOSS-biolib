@@ -97,15 +97,15 @@ public class SequenceJPanel extends JPanel
   *
   */
   public SequenceJPanel(Sequence seq, JComponent viewPane,
-                        boolean drawSequence,
-                        boolean drawBlackBox, boolean drawColorBox,
-                        Hashtable colorTable, int fontSize, int ypad)
+                        boolean drawSequence, boolean drawBlackBox,
+                        boolean drawColorBox, Hashtable colorTable,
+                        int fontSize, int ypad)
   {
     this.drawSequence = drawSequence;
     this.drawBlackBox = drawBlackBox;
     this.drawColorBox = drawColorBox;
     this.viewPane = viewPane;
-    this.seq = seq;
+    this.seq  = seq;
     this.ypad = ypad;
 
     if(colorTable != null)
@@ -270,9 +270,9 @@ public class SequenceJPanel extends JPanel
     super.paintComponent(g);
     g.setFont(font);
     FontMetrics metrics = g.getFontMetrics();
-    boundWidth = metrics.stringWidth("A");
+    boundWidth  = metrics.stringWidth("A");
     boundWidth2 = boundWidth/2;
-    resWidth = metrics.stringWidth("A")+boundWidth;
+    resWidth  = metrics.stringWidth("A")+boundWidth;
     seqHeight = resWidth;
     String sName = null;
     if(drawSequence)
@@ -315,6 +315,7 @@ public class SequenceJPanel extends JPanel
                           font.getSize()+3);
     }
 
+    boolean leftResidue = false;
 // draw 
     for(int i=istart;i<istop;i++)
     {
@@ -336,8 +337,8 @@ public class SequenceJPanel extends JPanel
 
         String res = seqS.substring(i,i+1);
         if(prettyPlot)
-          g.setColor(((GraphicSequenceCollection)viewPane)
-                                   .getColor(res,i,sName));
+          leftResidue = prettyDraw(i,ipos,res,seqHeight,leftResidue,g);
+        
         g.drawString(res, 
                      ipos+boundWidth2,
                      seqHeight-boundWidth2);
@@ -358,6 +359,56 @@ public class SequenceJPanel extends JPanel
         g.drawRect(ipos,0,resWidth,seqHeight);
       }
     }
+  }
+
+
+  /**
+  *
+  * @param i		residue number
+  * @param ipos		x position
+  * @param res		residue
+  * @param seqHeight	sequence height
+  * @param leftResidue	true if the left residue is an identical match
+  * @param g		graphics
+  *
+  */
+  private boolean prettyDraw(int i, int ipos, String res,
+                             int seqHeight, boolean leftResidue, Graphics g)
+  {
+    String sName = seq.getName();
+    GraphicSequenceCollection gsc = (GraphicSequenceCollection)viewPane;
+    Color col = gsc.getColor(res,i,sName);
+    if(!col.equals(Color.black) && gsc.isPrettyBox())
+    {
+      // draw left line of cell
+      if(!leftResidue)
+        g.drawLine(ipos,0,ipos,seqHeight);
+      leftResidue = true;
+
+      if(i+2 > seq.getLength())
+        g.drawLine(ipos+resWidth,0,ipos+resWidth,seqHeight);     
+      else
+      {
+        String resRight = seq.getSequence().substring(i+1,i+2);
+        Color rightCol = gsc.getColor(resRight,i+1,sName);
+        // draw right line of cell
+        if(rightCol.equals(Color.black))
+          g.drawLine(ipos+resWidth,0,ipos+resWidth,seqHeight);
+      }
+
+      // decide to draw top &/or bottom lines of cell
+      int upAndDown = gsc.testUpAndDown(i,seq);
+
+//    System.out.println(i+" upAndDown = "+upAndDown+" name "+sName);
+      if(upAndDown == 1 || upAndDown == 3)
+        g.drawLine(ipos,0,ipos+resWidth,0);
+      if(upAndDown == 2 || upAndDown == 3)
+        g.drawLine(ipos,seqHeight-1,ipos+resWidth,seqHeight-1);
+    }
+    else
+      leftResidue = false;
+    g.setColor(col);
+    return leftResidue;
   }
 
   /**
@@ -734,9 +785,11 @@ public class SequenceJPanel extends JPanel
         istop = seqLength;
     }
 
+    boolean leftResidue = false;
     FontMetrics metrics = getFontMetrics(font);
     for(int i=istart;i<istop;i++)
     {
+      int ipos = (i-istart)*(resWidth)+MAXSEQNAME;
       if(drawColorBox)
       {
         g2d.setColor(getColor(seqS.substring(i,i+1)));
@@ -751,8 +804,8 @@ public class SequenceJPanel extends JPanel
       {
         String res = seqS.substring(i,i+1);
         if(prettyPlot)
-          g2d.setColor(((GraphicSequenceCollection)viewPane)
-                                   .getColor(res,i,sName));
+          leftResidue = prettyDraw(i,ipos,res,seqHeight,leftResidue,g2d);
+
         g2d.drawString(res,
                       ((i-istart)*resWidth)+boundWidth2+MAXSEQNAME,
                       seqHeight-boundWidth2);

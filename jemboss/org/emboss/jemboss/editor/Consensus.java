@@ -25,6 +25,7 @@ import java.util.Vector;
 import java.util.Hashtable;
 import java.util.Enumeration;
 
+
 /**
 *
 * Calculate a consensus using the same method as 'cons'

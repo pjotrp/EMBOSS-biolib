@@ -252,6 +252,19 @@ public class Sequence
     this.protein = protein;
   }
 
+
+  /**
+  *
+  * Set the sequence weight
+  * @param 	sequence weight
+  *
+  */
+  public void setWeight(float wt)
+  {
+    this.wt = wt;
+  }
+
+
   /**
   *
   * Get the sequence type

@@ -31,6 +31,7 @@ import java.net.URL;
 import org.emboss.jemboss.gui.sequenceChooser.SequenceFilter;
 import org.emboss.jemboss.gui.filetree.FileEditorDisplay;
 import org.emboss.jemboss.gui.ScrollPanel;
+import org.emboss.jemboss.gui.Browser;
 
 /**
 *  
@@ -46,6 +47,7 @@ public class AlignJFrame extends JFrame
   protected JScrollPane jspSequence; // Sequence scrollpane
   protected GraphicSequenceCollection gsc;
   private Matrix mat;
+  private PrettyPlotJFrame ppj = null;
   protected JTextField statusField = new JTextField();
   private File sequenceFile = null;
   private Cursor cbusy = new Cursor(Cursor.WAIT_CURSOR);
@@ -67,6 +69,7 @@ public class AlignJFrame extends JFrame
       openMethod(vseqs);
   }
 
+
   /**
   *
   * @param seqFile	sequence file
@@ -82,6 +85,7 @@ public class AlignJFrame extends JFrame
     setTitle("Jemboss Alignment Viewer    :: "+
               sequenceFile.getName());
   }
+
 
   /**
   *
@@ -99,10 +103,12 @@ public class AlignJFrame extends JFrame
     setTitle("Jemboss Alignment Viewer    :: "+name);
   }
 
+
   public AlignJFrame()
   {
     this(false);
   }
+
 
   /**
   *
@@ -162,7 +168,7 @@ public class AlignJFrame extends JFrame
           sequenceFile = sr.getSequenceFile();
           openMethod(sr.getSequenceVector());
           calculateCons.setText("Calculate consensus");
-          calculatePlotCon.setText("Calculate Consensus plot");
+          calculatePlotCon.setText("Calculate consensus plot");
           setTitle("Jemboss Alignment Viewer    :: "+
                     sequenceFile.getName());
         }
@@ -316,8 +322,9 @@ public class AlignJFrame extends JFrame
     colourMenus(viewMenu);
    
 //pretty plot
-    final JCheckBoxMenuItem pretty = new JCheckBoxMenuItem("Pretty Plot");
+    final JMenuItem pretty = new JMenuItem("Identical Matches");
     viewMenu.add(pretty);
+    viewMenu.add(new JSeparator());
 
 //draw black box
     final JCheckBoxMenuItem drawBoxes = new JCheckBoxMenuItem("Draw boxes",false);
@@ -345,11 +352,9 @@ public class AlignJFrame extends JFrame
     {
       public void actionPerformed(ActionEvent e)
       {
-        gsc.setPrettyPlot(pretty.isSelected());
-        gsc.setDrawBoxes(!pretty.isSelected());
-        drawBoxes.setSelected(!pretty.isSelected());
-        gsc.setDrawColor(!pretty.isSelected());
-        drawColorBox.setSelected(!pretty.isSelected());
+        if(ppj == null)
+          ppj = new PrettyPlotJFrame(gsc);
+        ppj.setVisible(true);
       }
     });
     menuBar.add(viewMenu);
@@ -359,20 +364,24 @@ public class AlignJFrame extends JFrame
     menuBar.add(calculateMenu);
 
 // consensus sequence
+    final ConsensusOptions options = new ConsensusOptions();
     calculateCons.addActionListener(new ActionListener()
     {
       public void actionPerformed(ActionEvent e)
       {
         setCursor(cbusy);
         gsc.deleteSequence("Consensus");
-        Consensus conseq = new Consensus(mat,
-                    gsc.getSequenceCollection(),1.f,1.f,1);
+        Consensus conseq = new Consensus(mat,   
+                    gsc.getSequenceCollection(),
+                    options.getPlurality(),
+                    options.getCase(),
+                    options.getIdentity());
 
         int fontSize = gsc.getFontSize();
         gsc.addSequence(conseq.getConsensusSequence(),true,5,fontSize);
 
         if(pretty.isSelected())
-          gsc.setPrettyPlot(pretty.isSelected());
+          gsc.setPrettyPlot(pretty.isSelected(),ppj);
 
         Dimension dpane = gsc.getPanelSize();
         gsc.setPreferredSize(dpane);
@@ -383,6 +392,18 @@ public class AlignJFrame extends JFrame
       }
     });
     calculateMenu.add(calculateCons);
+
+    JMenuItem consOptions = new JMenuItem("Set consensus options...");
+    consOptions.addActionListener(new ActionListener()
+    {
+      public void actionPerformed(ActionEvent e)
+      {
+        options.setVisible(true);
+      }
+    });
+    calculateMenu.add(consOptions);
+
+    calculateMenu.add(new JSeparator());
 
 // consensus plot
     calculatePlotCon.addActionListener(new ActionListener()
@@ -441,28 +462,17 @@ public class AlignJFrame extends JFrame
     {
       public void actionPerformed(ActionEvent e)
       {
+        ClassLoader cl = this.getClass().getClassLoader();
         try
         {
-          ClassLoader cl = this.getClass().getClassLoader();
-          URL inURL = cl.getResource("resources/readmeAlign.txt");
-          JTextPane textURL = new JTextPane();
-          ScrollPanel pscroll = new ScrollPanel(new BorderLayout());
-          JScrollPane rscroll = new JScrollPane(pscroll);
-          rscroll.getViewport().setBackground(Color.white);
-          textURL.setPage(inURL);
-          textURL.setEditable(false);
-          pscroll.add(textURL);
-          JOptionPane jop = new JOptionPane();
-          Dimension d = new Dimension(450,200);
-          rscroll.setPreferredSize(d);
-          JOptionPane.showMessageDialog(null,rscroll,
-                              "Jemboss Alignment Help",
-                              JOptionPane.PLAIN_MESSAGE);
+          URL inURL = cl.getResource("resources/readmeAlign.html");
+          new Browser(inURL,"resources/readmeAlign.html");
         }
         catch (Exception ex)
         {
-          System.out.println("Didn't find resources/" +
-                             "readmeAlign.txt");
+          JOptionPane.showMessageDialog(null,
+                              "Jemboss Alignment Viewer Guide not found!",
+                              "Error", JOptionPane.ERROR_MESSAGE);
         }
       }
     });

@@ -89,6 +89,7 @@ public class ColourJFrame extends JFrame
     setSize(70,150);
   }
 
+
   /**
   *
   * Set the colour scheme to display
@@ -112,7 +113,9 @@ public class ColourJFrame extends JFrame
       residueField.setPreferredSize(new Dimension(20,20));
       residueField.setMaximumSize(new Dimension(20,20));
       XBox.add(residueField);
-      ColourPanel colPane = new ColourPanel(res,(Color)colourTable.get(res));
+      ResidueColourPanel colPane = new ResidueColourPanel(
+                             res,
+                             (Color)colourTable.get(res));
       XBox.add(colPane);
       YBox.add(XBox);
     }
@@ -120,6 +123,7 @@ public class ColourJFrame extends JFrame
 
     jspColour.getViewport().setViewPosition(new Point(0,0));
   }
+
 
   /**
   *
@@ -132,19 +136,16 @@ public class ColourJFrame extends JFrame
     return colourTable;
   }
 
+
+
   /**
   *
   * Colour panel for each individual residue in the pallette
   *
   */
-  class ColourPanel extends JPanel
-                        implements ActionListener
+  class ResidueColourPanel extends ColourPanel
   {
-    private Color col;
     private String res;
-    private int xsize = 20;
-    private int ysize = 20;
-    private JPopupMenu popup;
 
     /**
     *
@@ -152,19 +153,12 @@ public class ColourJFrame extends JFrame
     * @param col 	colour of residue
     *
     */
-    public ColourPanel(String res,Color col)
+    public ResidueColourPanel(String res,Color col)
     {
-      super();
-      this.col = col;
+      super(res+" Colour",col);
       this.res = res;
-      setPreferredSize(new Dimension(xsize,ysize));
-
-      ColourMenu cm = new ColourMenu(res+" Colour");
-      popup = new JPopupMenu();
-      addMouseListener(new PopupListener());
-      cm.addActionListener(this);
-      popup.add(cm);
     }
+
 
     /**
     *
@@ -180,48 +174,6 @@ public class ColourJFrame extends JFrame
       colourTable.remove(res);
       colourTable.put(res,col);
       align.repaintSequences(colourTable);
-    }
-
-    /**
-    *
-    * Override paintComponent 
-    * @param g	graphics
-    *
-    */
-    public void paintComponent(Graphics g)
-    {
-// let UI delegate paint first (incl. background filling)
-      super.paintComponent(g);
-      g.setColor(col);
-      g.fillRect(0,0,xsize,ysize);
-      g.setColor(Color.black);
-      g.drawRect(0,0,xsize,ysize);
-    }
-
-
-    /**
-    *
-    * Popup listener
-    *
-    */
-    class PopupListener extends MouseAdapter
-    {
-      public void mousePressed(MouseEvent e)
-      {
-        maybeShowPopup(e);
-      }
-
-      public void mouseReleased(MouseEvent e)
-      {
-        maybeShowPopup(e);
-      }
-
-      private void maybeShowPopup(MouseEvent e)
-      {
-        if(e.isPopupTrigger())
-          popup.show(e.getComponent(),
-                  e.getX(), e.getY());
-      }
     }
   }
 

@@ -40,8 +40,7 @@ public class GraphicSequenceCollection extends JPanel
 {
 
   /** Vector of sequences removed from panel */
-  private Vector removedSeqs = 
-                     new Vector(); 
+  private Vector removedSeqs = new Vector();
   /** Vector containing Sequence objects     */
   protected Vector seqs;             
   /** Vector containing graphical sequences  */
@@ -82,6 +81,8 @@ public class GraphicSequenceCollection extends JPanel
   private boolean prettPlot = false;
   /** gap between sequences and consensus plot */
   private int plotConStrut = 20;
+  /** pretty plot values */
+  private PrettyPlotJFrame prettyPlot;
 
 
   /**
@@ -133,9 +134,7 @@ public class GraphicSequenceCollection extends JPanel
 
 // draw residue/base numbering
     if(drawNumber)
-    {
       drawNumber();
-    }
 
 // draw names and sequences 
     Enumeration enum = seqs.elements();
@@ -150,9 +149,9 @@ public class GraphicSequenceCollection extends JPanel
     
     int xfill = getNameWidth();
     seqNamePanel.setPreferredSize(new Dimension(xfill,2000));
-
   }
  
+
   /**
   *
   * @param seqs         vector of sequences
@@ -183,6 +182,19 @@ public class GraphicSequenceCollection extends JPanel
   {
     return seqs;
   }
+
+
+  /**
+  *
+  * Get the number of sequences
+  * @return     vector of Sequences
+  *
+  */
+  protected int getNumberSequences()
+  {
+    return seqs.size();
+  }
+
 
   /**
   *
@@ -347,6 +359,7 @@ public class GraphicSequenceCollection extends JPanel
     numberDraw.setMaximumSize(new Dimension(slen,(int)actual.getHeight()));
   }
 
+
   /**
   *
   * Determine the colour of a residue at a given position. If
@@ -360,7 +373,10 @@ public class GraphicSequenceCollection extends JPanel
   */
   protected Color getColor(String s, int pos, String seqName)
   {
-    int identical = 0;
+    if(s.equals("-") || s.equals("."))
+      return Color.black;
+
+    int identical = 1;
     int nseqs = 0;
     Enumeration enum = seqs.elements();
     while(enum.hasMoreElements())
@@ -375,11 +391,67 @@ public class GraphicSequenceCollection extends JPanel
       }
     }
   
-    if(identical+1 == nseqs)
-      return Color.red;
+    if(identical >= prettyPlot.getMinimumIdentity(nseqs))
+      return prettyPlot.getColour();
 
     return Color.black;
   }
+
+ 
+  /**
+  *
+  * Determine if the identities are to be boxed
+  * @return 	true if to draw boxes
+  *
+  */ 
+  protected boolean isPrettyBox()
+  {
+    return prettyPlot.isPrettyBox();
+  }
+
+  
+  /**
+  *
+  * 
+  *
+  */
+  protected int testUpAndDown(int pos, Sequence seq)
+  {
+    int seqIndex = seqs.indexOf(seq);
+
+    int testUp = -1;
+    if(seqIndex == 0)
+      testUp = 1;
+    else
+    {
+      Sequence seqUp = (Sequence)seqs.get(seqIndex-1);
+      String res = seqUp.getSequence().substring(pos,pos+1);
+      Color col = getColor(res,pos,seqUp.getName());
+      if(col.equals(Color.black))
+        testUp = 1;
+    }
+
+    int testDown = -1;
+    if(seqIndex+1 == seqs.size())
+      testDown= 1;
+    else
+    {
+      Sequence seqDown = (Sequence)seqs.get(seqIndex+1);
+      String res = seqDown.getSequence().substring(pos,pos+1);
+      Color col = getColor(res,pos,seqDown.getName());
+      if(col.equals(Color.black))
+        testDown = 1;
+    }
+
+    if(testUp > -1 && testDown > -1)
+      return 3;
+    else if(testDown > -1)
+      return 2;
+    else if(testUp > -1)
+      return 1;
+    return -1;
+  }
+
 
   /**
   *
@@ -942,8 +1014,9 @@ public class GraphicSequenceCollection extends JPanel
   * @param bpretty	true if displaying as prettyplot
   *
   */
-  public void setPrettyPlot(boolean bpretty)
+  public void setPrettyPlot(boolean bpretty, PrettyPlotJFrame prettyPlot)
   {
+    this.prettyPlot = prettyPlot;
     Enumeration enum = graphicSequence.elements();
     while(enum.hasMoreElements())
       ((SequenceJPanel)(enum.nextElement())).setPrettyPlot(bpretty);

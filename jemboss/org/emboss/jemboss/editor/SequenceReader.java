@@ -190,7 +190,7 @@ public class SequenceReader
     seqs = new Vector();
 //  BufferedReader in = null;
     String seqString = "";
-
+    
     try
     {
 //    in = new BufferedReader(new FileReader(seqFile));
@@ -242,7 +242,7 @@ public class SequenceReader
     {
 //    in = new BufferedReader(new FileReader(seqFile));
       String line;
-      Sequence seq;
+      Sequence seq = null;
       String type = null;
       String bit;
       StringTokenizer st;
@@ -279,10 +279,10 @@ public class SequenceReader
               seqIndex.put(name,new Integer(num));
               num++;
             }
+            else if(bit.startsWith("Weight:"))
+              seq.setWeight(Float.parseFloat(st.nextToken().trim()));
             else if(bit.startsWith("Type:"))
-            {
               type = st.nextToken(" ").trim();
-            }
           }
         }
         else      // read the MSF sequences
