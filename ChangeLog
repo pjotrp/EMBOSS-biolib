@@ -1,9 +1,16 @@
 Version 2.5.1
 
+	Wordmatch alignments save the entire sequence but use part only.
+	Fixed all alignment formats to work with these by adding a
+	SubOffset attribute.
+	
 	Duplicate IDs fix. The database indexing programs skipped
 	duplicate IDs but did not reset the size of the entryname index
 	file so some queries could fail to find the later IDs in the
-	databases.
+	databases. Duplicate IDs are illegal for -nosystemsort (no easy
+	way to correct because entry numbers are stored internally). For
+	the default case duplicate IDs are merged even if they are
+	different. REFSEQ is the main problem area.
 	
 	Writing data files used EMBOSS_DATA, or by default the install
 	directory. Earlier versions, if not installed, could write to the
