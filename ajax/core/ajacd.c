@@ -900,6 +900,7 @@ AcdOAttr acdAttrSeq[] = {
   {"type", VT_STR, "Input sequence type (protein, gapprotein, etc.)"},
   {"features", VT_BOOL, "Read features if any default:N"},
   {"entry", VT_BOOL, "Read whole entry text default:N"},
+  {"nullok", VT_BOOL, "Can accept a null filename as 'no file' default:N"},
   {NULL, VT_NULL, NULL}
 };
 
@@ -907,6 +908,7 @@ AcdOAttr acdAttrSeqall[] = {
   {"type", VT_STR, "Input sequence type (protein, gapprotein, etc.)"},
   {"features", VT_BOOL, "Read features if any default:N"},
   {"entry", VT_BOOL, "Read whole entry text default:N"},
+  {"nullok", VT_BOOL, "Can accept a null filename as 'no file' default:N"},
   {NULL, VT_NULL, NULL}
 };
 
@@ -934,6 +936,7 @@ AcdOAttr acdAttrSeqoutset[] = {
 AcdOAttr acdAttrSeqset[] = {
   {"type", VT_STR, "Input sequence type (protein, gapprotein, etc.)"},
   {"features", VT_BOOL, "Read features if any default:N"},
+  {"nullok", VT_BOOL, "Can accept a null filename as 'no file' default:N"},
   {NULL, VT_NULL, NULL}
 };
 
@@ -6221,6 +6224,8 @@ static void acdSetSeq (AcdPAcd thys) {
   AjBool sprompt=ajFalse;
   AjBool snuc=ajFalse;
   AjBool sprot=ajFalse;
+  AjBool nullok=ajFalse;
+  
 
   val = ajSeqNew();		/* set the default value */
   seqin = ajSeqinNew();		/* set the default value */
@@ -6229,6 +6234,7 @@ static void acdSetSeq (AcdPAcd thys) {
 
   (void) acdQualToBool (thys, "snucleotide", ajFalse, &snuc, &defreply);
   (void) acdQualToBool (thys, "sprotein", ajFalse, &sprot, &defreply);
+  (void) acdAttrToBool (thys, "nullok", ajFalse, &nullok);
 
   required = acdIsRequired(thys);
   (void) acdInFilename (&infname);
@@ -6243,6 +6249,10 @@ static void acdSetSeq (AcdPAcd thys) {
 
     if (required)
      (void) acdUserGet (thys, &reply);
+
+    if(!ajStrLen(reply))
+	if(nullok)
+	    continue;
 
     ajSeqinUsa (&seqin, reply);
 
@@ -6474,7 +6484,8 @@ static void acdSetSeqset (AcdPAcd thys) {
   AjBool sprompt=ajFalse;
   AjBool snuc=ajFalse;
   AjBool sprot=ajFalse;
-
+  AjBool nullok=ajFalse;
+  
   val = ajSeqsetNew();		/* set the default value */
   seqin = ajSeqinNew();		/* set the default value */
 
@@ -6482,6 +6493,7 @@ static void acdSetSeqset (AcdPAcd thys) {
 
   (void) acdQualToBool (thys, "snucleotide", ajFalse, &snuc, &defreply);
   (void) acdQualToBool (thys, "sprotein", ajFalse, &sprot, &defreply);
+  (void) acdAttrToBool (thys, "nullok", ajFalse, &nullok);
 
   required = acdIsRequired(thys);
   (void) acdInFilename (&infname);
@@ -6496,6 +6508,12 @@ static void acdSetSeqset (AcdPAcd thys) {
 
     if (required)
      (void) acdUserGet (thys, &reply);
+
+
+    if(!ajStrLen(reply))
+	if(nullok)
+	    continue;
+
 
     ajSeqinUsa (&seqin, reply);
 
@@ -6712,7 +6730,8 @@ static void acdSetSeqall (AcdPAcd thys) {
   static AjPStr promptreply = NULL;
   static AjPStr tmpstr = NULL;
   ajint itry;
-
+  AjBool nullok=ajFalse;
+  
   static AjPStr infname = NULL;
 
   ajint sbegin=0;
@@ -6729,6 +6748,7 @@ static void acdSetSeqall (AcdPAcd thys) {
 
   (void) acdQualToBool (thys, "snucleotide", ajFalse, &snuc, &defreply);
   (void) acdQualToBool (thys, "sprotein", ajFalse, &sprot, &defreply);
+  (void) acdAttrToBool (thys, "nullok", ajFalse, &nullok);
 
   required = acdIsRequired(thys);
   (void) acdInFilename (&infname);
@@ -6743,6 +6763,10 @@ static void acdSetSeqall (AcdPAcd thys) {
 
     if (required)
      (void) acdUserGet (thys, &reply);
+
+    if(!ajStrLen(reply))
+	if(nullok)
+	    continue;
 
     ajSeqinUsa (&seqin, reply);
 
