@@ -24,7 +24,7 @@ einverted embossdata embossversion emma emowse entret \
 equicktandem est2genome etandem extractseq \
 findkm freak fuzznuc fuzzpro fuzztran \
 garnier geecee getorf helixturnhelix hmoment \
-iep infoalign infoseq isochore lindna \
+iep infoalign infoseq isochore lindna listor \
 marscan maskfeat maskseq matcher megamerger merger msbar \
 needle newcpgreport newcpgseek newseq \
 noreturn notseq nrscope nthseq \
@@ -114,6 +114,7 @@ infoseq_SOURCES = infoseq.c
 intconv_SOURCES = intconv.c
 isochore_SOURCES = isochore.c
 lindna_SOURCE = lindna.c
+listor_SOURCE = listor.c
 marscan_SOURCE = marscan.c
 maskfeat_SOURCES = maskfeat.c
 maskseq_SOURCES = maskseq.c
