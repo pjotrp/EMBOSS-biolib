@@ -10,12 +10,9 @@ Function
    
 Description
 
-   profit
-   takes a simple frequency matrix produced by
-   
-   prophecy
-   and searches with this to find matches in the input sequence(s) you
-   are searching.
+   profit takes a simple frequency matrix produced by prophecy and
+   searches with this to find matches in the input sequence(s) you are
+   searching.
    
    Scores for the matches are calculated from the simple frequency
    matrix. It is the sum of scores at each position of the matrix.
@@ -23,10 +20,8 @@ Description
    A 'simple frequency matrix' is simply a count of the number of times
    any particular amino acid occurs at each position in the alignment
    used to create it. Simple frequency matrices are created using the
-   program
-   
-   prophecy
-   with the option '-type F' to create the correct type of matrix.
+   program prophecy with the option '-type F' to create the correct type
+   of matrix.
    
    The resulting matrix is moved to each position in the sequence(s) you
    are searching. At each position in the sequence, the frequencies of
@@ -66,9 +61,7 @@ Enter a name for the profile [mymatrix]:
 Enter threshold reporting percentage [75]:
 Output file [outfile.prophecy]:
 
-(Search using
-profit
-)
+(Search using profit)
 % profit
 Scan a sequence or database with a matrix or profile
 Profile or matrix file: outfile.prophecy
@@ -99,10 +92,8 @@ Command line arguments
    
 Input file format
 
-   It reads a simple frequency matrix produced by
-   
-   prophecy
-   and searches one or more sequences.
+   It reads a simple frequency matrix produced by prophecy and searches
+   one or more sequences.
    
 Output file format
 
