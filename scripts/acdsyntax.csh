@@ -1,6 +1,6 @@
 #!/bin/csh
 
-../emboss/entrails -full entrails-full.txt 
+../emboss/entrails -auto -full entrails-full.txt 
 grep 'ajNamGetValue' ../ajax/*.c >! acdsyntax.getvalue
 ../scripts/acdstats.pl >! acdsyntax.acdstats 
 ../scripts/acdsyntax.pl entrails-full.txt 
