@@ -172,6 +172,8 @@ Graph type [x11]:
 
    click here for result (1st page only)
    
+   Bending is shown in a solid line, curvature is show in a dotted line.
+   
 Command line arguments
 
    Mandatory qualifiers (* if not always prompted):
