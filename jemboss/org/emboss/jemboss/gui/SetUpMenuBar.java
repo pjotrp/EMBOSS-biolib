@@ -233,8 +233,9 @@ public class SetUpMenuBar
                                       
           JTextPane textURL = new JTextPane();
 
-          JPanel pscroll = new JPanel(new BorderLayout());
+          ScrollPanel pscroll = new ScrollPanel(new BorderLayout());
           JScrollPane rscroll = new JScrollPane(pscroll);
+          rscroll.getViewport().setBackground(Color.white);
           textURL.setPage(inURL);
           textURL.setEditable(false);
           pscroll.add(textURL);

@@ -72,7 +72,7 @@ public class BuildProgramMenu
 *  @param  String current working directory (local)
 *  @param  String location of the ACD directory
 *  @param  JFrame Jemboss frame
-*  @param  AuthPopup splash frame
+*  @param  Dimension form pane dimension
 *
 */
   public BuildProgramMenu(final JPanel p1, final JPanel p2, 
@@ -80,7 +80,8 @@ public class BuildProgramMenu
            final String embossBin, final String envp[],
            final JembossParams mysettings, final boolean withSoap,
            final String cwd, final String acdDirToParse,
-           final SetUpMenuBar mainMenu, final JFrame f)
+           final SetUpMenuBar mainMenu, final JFrame f,
+           final Dimension jform)
   {
   
     final Cursor cbusy = new Cursor(Cursor.WAIT_CURSOR);
@@ -433,7 +434,6 @@ public class BuildProgramMenu
         ImageIcon jlo = new ImageIcon(
                   cl.getResource("images/Jemboss_logo_large.gif"));
         JLabel jlablogo = new JLabel(jlo); 
-        jlablogo.setPreferredSize(new Dimension(300,360));  //centre's logo
         JPanel pFront = new JPanel();
         pFront.setBackground(Color.white);
         pFront.add(jlablogo);
@@ -443,6 +443,8 @@ public class BuildProgramMenu
         Dimension d = new Dimension(pwidth,100);
         pform.setPreferredSize(d);
         pform.setMinimumSize(d);
+        jlablogo.setPreferredSize(jform);
+
         p2.add(pFront);
 
         progList.setSelectionBackground(Color.cyan);
