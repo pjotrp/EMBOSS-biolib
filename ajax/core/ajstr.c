@@ -1968,6 +1968,28 @@ AjBool ajStrRev (AjPStr* pthis) {
 }
 
 
+/* @func ajStrQuote *************************************************************
+** Makes sure a string is quoted (with double quotes)
+**
+** @param [rw] s [AjPStr *] string
+**
+** @return [void]
+** @@
+******************************************************************************/
+void ajStrQuote(AjPStr *s) {
+
+  if (ajStrChar(*s, 0) != '"') {
+    ajStrInsertC (s, 0, "\"");
+  }
+
+  /* careful: could be an empty string that is now '"' */
+  /* this is the only way to have a length of 1 */
+
+  if ((*s)->Len == 1 || ajStrChar(*s, -1) != '"') {
+    ajStrAppK(s, '"');
+  }
+}
+
 /* @func ajStrRandom ************************************************************
 **
 ** Returns randomised string in place

@@ -188,7 +188,7 @@ typedef struct AjSStr {
   char *Ptr;
 } AjOStr, *AjPStr;
 
-/* @data AjPStrIter *******************************************************
+/* @data AjIStr *******************************************************
 **
 ** String iterator, used to test iterator functionality.
 **
@@ -379,6 +379,7 @@ AjBool     ajStrPrefixCaseC (const AjPStr thys, const char* pref);
 AjBool     ajStrPrefixCaseCC (const char *str, const char* pref);
 AjBool     ajStrPrefixCaseCO (const char* thys, const AjPStr pref);
 AjBool     ajStrPrefixCO (const char *str, const AjPStr thys);
+void       ajStrQuote(AjPStr *s);
 void       ajStrRandom(AjPStr *s);
 AjBool     ajStrReplace  (AjPStr* pthis, ajint pos1,
 			  const AjPStr overwrite, ajint len);
