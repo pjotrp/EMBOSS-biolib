@@ -13861,22 +13861,6 @@ FP 1 /^>/
 //
 
 
-ID union-feat
-AP union
-CL -feature -source -osf embl
-IN ../../data/union.embl
-IN
-FI stderr
-FC = 2
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-FI entry1.embl
-FZ = 447
-FP 1 /^>/
-//
-
-
 ID vectorstrip-ex
 AP vectorstrip
 CL @../../data/vecseqs.list
@@ -15782,10 +15766,10 @@ FP 0 /Died: /
 FI complex.ujtable
 FZ = 0
 FI hs989235.complex
-FZ = 3658
+FZ = 3806
 FP /^ +10 +HSHT +1658 +0[.]7314 +\n/
 FI hs989235.fasta
-FZ = 536690
+FZ = 540075
 FP 44 /^>/
 //
 
