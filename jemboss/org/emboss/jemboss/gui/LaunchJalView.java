@@ -30,6 +30,7 @@ import java.awt.event.*;
 import org.emboss.jemboss.gui.form.TextFieldSink;
 import jalview.AlignFrame;
 import jalview.MailProperties;
+import jalview.PIDColourScheme;
 
 public class LaunchJalView extends JFrame
 {
@@ -89,7 +90,17 @@ public class LaunchJalView extends JFrame
     {
       public void actionPerformed(ActionEvent e)
       {
-        new AlignFrame(null,tfs.getText(),"File",(String)format.getSelectedItem());
+//      new AlignFrame(null,tfs.getText(),"File",(String)format.getSelectedItem());
+        String args[] = { 
+          tfs.getText(),                      //alignment file
+          "File",
+          (String)format.getSelectedItem(),   //format 
+          "-mail",
+          "mercury.hgmp.mrc.ac.uk"            //mail server
+        };
+        AlignFrame af = AlignFrame.parseArgs(args);
+        af.setSize(700,500);
+        af.show();
         setVisible(false);
       }
     });
@@ -99,8 +110,8 @@ public class LaunchJalView extends JFrame
     jp.add(bdown, BorderLayout.CENTER);
 
     pack();
-    setLocation( (int)((getWidth())/2),
-                 (int)((getHeight())/2) );
+    setLocation( (int)((getWidth())/4),
+                 (int)((getHeight())/4) );
 
     setVisible(true);      
   }
