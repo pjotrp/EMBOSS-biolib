@@ -157,7 +157,7 @@ public class Wizard
   }
 
 
-  protected DNADraw getDNADraw()
+  public DNADraw getDNADraw()
   {
     return dna;
   }
