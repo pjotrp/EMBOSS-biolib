@@ -1185,7 +1185,7 @@ AjPSeq ajSeqNewS (AjPSeq seq)
 **
 ** Creates and initialises a Stockholm object.
 **
-** @param [r] n [ajint] Number of sequences
+** @param [r] i [ajint] Number of sequences
 ** @return [AjPStockholm] New sequence object.
 ** @@
 ******************************************************************************/
@@ -1422,12 +1422,11 @@ AjPSelex ajSelexNew(ajint n)
 **
 ** Creates and initialises a selex #=SQ line object.
 **
-** @param [r] n [ajint] Number of sequences
 ** @return [AjPSelexdata] New sequence object.
 ** @@
 ******************************************************************************/
 
-AjPSelexdata ajSelexdataNew()
+AjPSelexdata ajSelexdataNew(void)
 {
     AjPSelexdata thys=NULL;
     
@@ -1518,7 +1517,7 @@ void ajSeqDel (AjPSeq* pthis)
 **
 ** Deletes a Selex object.
 **
-** @param [wP] pthis [AjPSelexSQ*] Selex #=SQ object
+** @param [wP] thys [AjPSelexSQ*] Selex #=SQ object
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -1546,7 +1545,7 @@ void ajSelexSQDel(AjPSelexSQ *thys)
 **
 ** Deletes a Selex object.
 **
-** @param [wP] pthis [AjPSelex*] Selex object
+** @param [wP] thys [AjPSelex*] Selex object
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -1594,7 +1593,7 @@ void ajSelexDel(AjPSelex *thys)
 **
 ** Deletes a Selex data object.
 **
-** @param [wP] pthis [AjPSelexdata*] Selex data object
+** @param [wP] thys [AjPSelexdata*] Selex data object
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -3282,7 +3281,7 @@ AjPSeqout ajSeqoutNew (void)
 **
 ** Creates a new sequence output object using a preopened file.
 **
-** @param [R] file [AjPFile;
+** @param [R] file [AjPFile] Open file object
 ** @return [AjPSeqout] New sequence output object.
 ** @@
 ******************************************************************************/
@@ -3713,3 +3712,32 @@ void ajSeqGapStandard (AjPSeq thys, char gapch) {
 
   return;
 }
+
+/* @func ajSeqFill ****************************************************
+**
+** Fills a single sequence with gaps up to a specified length.
+**
+** @param [P] seq [AjPSeq] Sequence object to be set.
+** @param [P] len [ajint] Length to pad fill to.
+** @return [ajint] Number of gaps inserted
+** @@
+******************************************************************************/
+
+ajint ajSeqFill (AjPSeq seq, ajint len)
+{
+    ajint ilen;
+
+    ajDebug ("ajSeqFill (len: %d -> ilen:%d)\n", ajSeqLen(seq), ilen);
+
+    if (ajSeqLen(seq) < len)
+    {
+      ilen = len - ajSeqLen(seq);
+      ajStrFill (&seq->Seq, len, '-');
+    }
+
+    ajDebug ("      result: (len: %d added: %d\n",
+	     ajSeqLen(seq), ilen);
+
+    return ilen;
+}
+
