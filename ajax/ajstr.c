@@ -2135,11 +2135,19 @@ AjBool ajStrToLower (AjPStr* pthis) {
 ** @@
 ******************************************************************************/
 
-void ajCharToLower (char* txt) {
-
+void ajCharToLower (char* txt)
+{
   char* cp = txt;
-  while (*cp) {
-    *cp = ajSysItoC(tolower((int) *cp));
+  while (*cp)
+  {
+  /*
+   *  AJB: The ajSysItoC function was there as some really fussy compilers
+   *  complained about casting int to char. However, for conversion of
+   *  large databases its too much of an overhead. Think about a macro
+   *  later. In the meantime revert to the standard system call
+   *    *cp = ajSysItoC(tolower((int) *cp));
+   */
+    *cp = (char)tolower((int) *cp);
     cp++;
   }
 
@@ -2177,11 +2185,19 @@ AjBool ajStrToUpper (AjPStr* pthis) {
 ** @@
 ******************************************************************************/
 
-void ajCharToUpper (char* txt) {
-
+void ajCharToUpper (char* txt)
+{
   char* cp = txt;
-  while (*cp) {
-    *cp = ajSysItoC(toupper((int) *cp));
+  while (*cp)
+  {
+  /*
+   *  AJB: The ajSysItoC function was there as some really fussy compilers
+   *  complained about casting int to char. However, for conversion of
+   *  large databases its too much of an overhead. Think about a macro
+   *  later. In the meantime revert to the standard system call
+   *    *cp = ajSysItoC(toupper((int) *cp));
+   */
+    *cp = (char) toupper((int) *cp);
     cp++;
   }
 
