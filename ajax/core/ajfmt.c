@@ -1745,8 +1745,16 @@ static ajint ajFmtVscan(char *thys,const char *fmt,va_list ap)
 	
 	/* If *q isn't '%' then it must match *p */
 	if(*q != '%')
+	{
 	    if(*q!=*p)
 		break;
+	    else
+	    {
+		++p;
+		++q;
+		continue;
+	    }
+	}
 	
 	/* Check for %% */
 	if(*(++q)=='%')
