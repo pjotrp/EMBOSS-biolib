@@ -24,7 +24,7 @@ libnucleus_la_SOURCES = $(NUCLSRC)
 
 libnucleus_la_LDFLAGS =  -version-info 1:0:1
 
-noinst_HEADERS = emboss.h \
+include_HEADERS = emboss.h \
 		 embaln.h embcom.h embcons.h embdata.h embdbi.h \
 		 embest.h embexit.h embgotoh.h embgroup.h embiep.h embindex.h \
 		 embinit.h embmat.h embmisc.h \

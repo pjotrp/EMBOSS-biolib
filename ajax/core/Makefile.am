@@ -39,7 +39,7 @@ pcre.c pcre_study.c pcreposix.c
 
 AJAXGSRC = ajgraph.c ajhist.c
 
-noinst_HEADERS = ajax.h ajarch.h ajdefine.h \
+include_HEADERS = ajax.h ajarch.h ajdefine.h \
 ajacd.h ajalign.h ajarr.h ajassert.h \
 ajbase.h ajcall.h ajcod.h \
 ajdan.h ajexcept.h ajfeat.h ajfeatdata.h ajfile.h ajfmt.h \
