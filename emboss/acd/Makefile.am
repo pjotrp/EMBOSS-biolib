@@ -44,7 +44,7 @@ pkgdata2_DATA =	megamerger.acd merger.acd msbar.acd \
 	seqretallfeat.acd seqretset.acd seqretsingle.acd \
 	seqretsplit.acd seqsearch.acd seqsort.acd seqwords.acd showalign.acd \
 	showdb.acd showfeat.acd showorf.acd showseq.acd shuffleseq.acd \
-	sigcleave.acd siggen.acd sigscan.acd sigplot.acd silent.acd \
+	sigcleave.acd siggen.acd sigscan.acd sigplot.acd silent.acd sixpack.acd \
 	skipseq.acd splitter.acd \
 	stretcher.acd stssearch.acd supermatcher.acd syco.acd \
 	testplot.acd textsearch.acd tfextract.acd tfm.acd \
