@@ -163,6 +163,24 @@ section: additional [
     information: "Genetic code to use"
   ]
 
+  list: frame  [
+    additional: "Y"
+    default: "6"
+    minimum: "1"
+    maximum: "6"
+    header: "Translation frames"
+    values: "1:1, 2:2, 3:3, F:Forward three frames, -1:-1, -2:-2,
+                 -3:-3, R:Reverse three frames, 6:All six frames"
+    delimiter: ","
+    codedelimiter: ":"
+    information: "Frame(s) to translate"
+    help: "This allows you to specify the frames that are translated.
+           If you are not displaying cut sites on the reverse sense, then
+           the reverse sense translations will not be displayed even if
+           you have requested frames 4, 5 or 6.
+           By default, all six frames will be displayed."
+  ]
+						                     
 endsection: additional
 
 section: output [

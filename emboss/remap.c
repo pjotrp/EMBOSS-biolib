@@ -52,7 +52,7 @@ static void rebase_RenamePreferred(AjPList list, AjPTable table,
 				   AjPList newlist);
 static void remap_RestrictPreferred(AjPList l, AjPTable t);
 static AjBool remap_Ambiguous(AjPStr str);
-
+static void remap_GetFrames(AjPStr *framelist, AjBool *frames);
 
 
 /* @datastatic PValue *********************************************************
@@ -111,6 +111,9 @@ int main(int argc, char **argv)
     AjBool flat;
     EmbPMatMatch mm = NULL;
 
+    AjPStr *framelist;
+    AjBool frames[6];   /* frames to be translated 1 to 3, -1 to -3 */
+	 
     /* stuff for tables and lists of enzymes and hits */
     ajint default_mincuts = 1;
     ajint default_maxcuts = 2000000000;
@@ -155,7 +158,8 @@ int main(int argc, char **argv)
     reverse     = ajAcdGetBool("reverse");
     cutlist     = ajAcdGetBool("cutlist");
     flat        = ajAcdGetBool("flatreformat");
-
+    framelist   = ajAcdGetList("frame");
+    
     /*  restriction enzyme stuff */
     mincuts    = ajAcdGetInt("mincuts");
     maxcuts    = ajAcdGetInt("maxcuts");
@@ -179,7 +183,9 @@ int main(int argc, char **argv)
     /* read the local file of enzymes names */
     remap_read_file_of_enzyme_names(&enzymes);
 
-
+    /* get the frames to be translated */
+    remap_GetFrames(framelist, frames);
+	 
     while(ajSeqallNext(seqall, &seq))
     {
 	/* get begin and end positions */
@@ -286,33 +292,40 @@ int main(int argc, char **argv)
 	    embShowAddRE(ss, -1, restrictlist, flat);
 	}
 
+
 	if(translation)
 	{
 	    if(reverse)
 		embShowAddBlank(ss);
-	    
-	    embShowAddTran(ss, trnTable, 1, threeletter,
-			   numberseq, NULL, orfminsize,
-			   AJFALSE, AJFALSE, AJFALSE, AJFALSE);
-	    embShowAddTran(ss, trnTable, 2, threeletter,
-			   numberseq, NULL, orfminsize,
-			   AJFALSE, AJFALSE, AJFALSE, AJFALSE);
-	    embShowAddTran(ss, trnTable, 3, threeletter,
-			   numberseq, NULL, orfminsize,
-			   AJFALSE, AJFALSE, AJFALSE, AJFALSE);
+
+            if(frames[0])	    
+	      embShowAddTran(ss, trnTable, 1, threeletter,
+			     numberseq, NULL, orfminsize,
+			     AJFALSE, AJFALSE, AJFALSE, AJFALSE);
+            if(frames[1])
+	      embShowAddTran(ss, trnTable, 2, threeletter,
+			     numberseq, NULL, orfminsize,
+			     AJFALSE, AJFALSE, AJFALSE, AJFALSE);
+            if(frames[2])
+	      embShowAddTran(ss, trnTable, 3, threeletter,
+			     numberseq, NULL, orfminsize,
+			     AJFALSE, AJFALSE, AJFALSE, AJFALSE);
 	    
 	    if(reverse)
 	    {
 		embShowAddTicks(ss);
-		embShowAddTran(ss, trnTable, -3, threeletter,
-			       numberseq, NULL, orfminsize,
-			       AJFALSE, AJFALSE, AJFALSE, AJFALSE);
-		embShowAddTran(ss, trnTable, -2, threeletter,
-			       numberseq, NULL, orfminsize,
-			       AJFALSE, AJFALSE, AJFALSE, AJFALSE);
-		embShowAddTran(ss, trnTable, -1, threeletter,
-			       numberseq, NULL, orfminsize,
-			       AJFALSE, AJFALSE, AJFALSE, AJFALSE);
+                if(frames[5])
+		  embShowAddTran(ss, trnTable, -3, threeletter,
+			         numberseq, NULL, orfminsize,
+			         AJFALSE, AJFALSE, AJFALSE, AJFALSE);
+                if(frames[4])
+		  embShowAddTran(ss, trnTable, -2, threeletter,
+			         numberseq, NULL, orfminsize,
+			         AJFALSE, AJFALSE, AJFALSE, AJFALSE);
+                if(frames[3])
+		  embShowAddTran(ss, trnTable, -1, threeletter,
+			         numberseq, NULL, orfminsize,
+			         AJFALSE, AJFALSE, AJFALSE, AJFALSE);
 	    }
 	}
 
@@ -1287,4 +1300,67 @@ static AjBool remap_Ambiguous(AjPStr str)
     }
 
     return ajFalse;
+}
+
+/* @funcstatic remap_GetFrames **********************************************
+**
+** Converts the list of frame numbers into a boolean vector.
+** Frame numbers are ordered in the vector as:
+** 1, 2, 3 -1, -2, -3
+**
+** @param [r] framelist [AjPStr*] list of frame numbers
+** @param [u] frames [AjBool*] Boolean vector
+** @return [void]
+** @@
+******************************************************************************/
+
+static void remap_GetFrames(AjPStr *framelist, AjBool *frames)
+{
+    int i;
+
+    /* reset the vector */
+    for(i=0; i<6; i++)
+        frames[i] = ajFalse;
+
+
+    for(i=0; framelist[i]; i++)
+    {
+        if(ajStrMatchC(framelist[i], "1"))
+            frames[0] = ajTrue;
+	else if(ajStrMatchC(framelist[i], "2"))
+            frames[1] = ajTrue;
+	else if(ajStrMatchC(framelist[i], "3"))
+            frames[2] = ajTrue;
+	else if(ajStrMatchC(framelist[i], "-1"))
+            frames[3] = ajTrue;
+	else if(ajStrMatchC(framelist[i], "-2"))
+            frames[4] = ajTrue;
+	else if(ajStrMatchC(framelist[i], "-3"))
+            frames[5] = ajTrue;
+	else if(ajStrMatchC(framelist[i], "F"))
+	{
+            frames[0] = ajTrue;
+            frames[1] = ajTrue;
+            frames[2] = ajTrue;
+        }
+	else if(ajStrMatchC(framelist[i], "R"))
+	{
+            frames[3] = ajTrue;
+            frames[4] = ajTrue;
+            frames[5] = ajTrue;
+        }
+	else if(ajStrMatchC(framelist[i], "6"))
+	{
+            frames[0] = ajTrue;
+            frames[1] = ajTrue;
+            frames[2] = ajTrue;
+            frames[3] = ajTrue;
+            frames[4] = ajTrue;
+            frames[5] = ajTrue;
+	}
+	else
+	    ajErr("Unknown frame: '%S'", framelist[i]);
+    }
+
+    return;
 }
