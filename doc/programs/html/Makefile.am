@@ -30,15 +30,16 @@ pkgdata_DATA =  abiview0.gif banana0.gif chaos0.gif cpgplot0.gif \
                eneighbor.html entret.html enzyme_kinetics_group.html \
                epenny.html eprotdist.html eprotpars.html equicktandem.html \
                erestml.html eseqboot.html est2genome.html etandem.html \
-               extractseq.html factor.html feature_tables_group.html \
-               findkm.html fitch.html freak.html fuzznuc.html fuzzpro.html \
-               fuzztran.html garnier.html geecee.html gendist.html \
-               getorf.html groups.html helixturnhelix.html hmoment.html \
-               iep.html index.html infoalign.html information_group.html
-pkgdata2_DATA = infoseq.html isochore.html kitsch.html lindna.html \
-               listor.html marscan.html maskfeat.html maskseq.html \
-               matcher.html megamerger.html menus_group.html merger.html \
-               mix.html msbar.html mse.html needle.html neighbor.html \
+               extractfeat.html extractseq.html factor.html \
+               feature_tables_group.html findkm.html fitch.html freak.html \
+               fuzznuc.html fuzzpro.html fuzztran.html garnier.html \
+               geecee.html gendist.html getorf.html groups.html \
+               helixturnhelix.html hmoment.html iep.html index.html \
+               infoalign.html information_group.html infoseq.html
+pkgdata2_DATA = isochore.html kitsch.html lindna.html listor.html \
+               marscan.html maskfeat.html maskseq.html matcher.html \
+               megamerger.html menus_group.html merger.html mix.html \
+               msbar.html mse.html needle.html neighbor.html \
                newcpgreport.html newcpgseek.html newseq.html noreturn.html \
                notseq.html nrscope.html nthseq.html \
                nucleic_2d_structure_group.html \
