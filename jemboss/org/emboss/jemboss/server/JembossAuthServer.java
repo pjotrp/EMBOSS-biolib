@@ -586,13 +586,13 @@ public class JembossAuthServer
     }
     else      //batch or background
     {
-//    JembossAuthThread jt = new JembossAuthThread(
-//                       userName,passwd,
-//                       embossCommand,environ,project);
-//    jt.start();
 
+// COMMENT THIS LINE TO USE QUEUEING SOFTWARE
       boolean lforkB = aj.forkBatch(userName,passwd,environ,
                                     embossCommand,project);
+
+// UNCOMMENT THIS LINE TO USE QUEUEING SOFTWARE
+//    runAsBatch(aj,userName,passwd,project,embossCommand)
 
       result.add("msg");
       result.add("");
