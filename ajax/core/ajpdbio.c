@@ -300,7 +300,7 @@ typedef struct AjSPdbfile
     ajint      nlines;   
     AjPStr    *lines;    
     ajint     *linetype; 
-    ajint     *chnn;     
+    ajint     *chnn;
     ajint     *gpn;         
     ajint     *modn;    
     ajint     *resni;   
@@ -3738,6 +3738,12 @@ static AjBool NumberChains(AjPPdbfile *pdbfile, AjPFile logf)
 ** type are parsed for each atom.  Optionally, amino acids or groups in 
 ** protein chains with a single atom only are also discarded.
 **
+** 
+** Checks whether chains from the ATOM records contain at least the user-defined
+** threshold number of amino acid residues. If not then the chain is discarded 
+** (chainok array is set to ajFalse). If NO chains with sufficient residues 
+** are found, a "NOPROTEINS" error is generated and ajFalse is returned.
+** 
 ** Writes the x,y,z,o,b and atype elements of a Pdbfile object.  The linetype,
 ** and possibly seqres, seqresful and nres arrays are modified.
 ** 
@@ -3803,6 +3809,8 @@ static AjBool MaskChains(AjPPdbfile *pdbfile, AjPFile logf,
     char   tmp=' ';             
     AjBool odd=ajFalse;         /* Whether the current residue / group
 				   is of unknown type */
+    AjBool ok =ajFalse;         /* True if the file, after processing by this function, is found
+				   to contain at least one chain for which chainok == ajTrue */
     
     
 
@@ -4002,51 +4010,51 @@ static AjBool MaskChains(AjPPdbfile *pdbfile, AjPFile logf,
 	    }
 
 	}
-}
-	/* Ensure that C-terminal residues are masked if necessary */
-/*	else if( ((*pdbfile)->linetype[i]==PDBPARSE_TER)||
-		((*pdbfile)->linetype[i]==PDBPARSE_ENDMDL)) 
+    }
+    /* Ensure that C-terminal residues are masked if necessary */
+    /*	else if( ((*pdbfile)->linetype[i]==PDBPARSE_TER)||
+	((*pdbfile)->linetype[i]==PDBPARSE_ENDMDL)) 
 	{*/
-	    if(noca)
-	    {
-		odd = (!(BaseAa3ToAa1(&tmp, (*pdbfile)->rtype[lastatm-1])));
-		
+    if(noca)
+    {
+	odd = (!(BaseAa3ToAa1(&tmp, (*pdbfile)->rtype[lastatm-1])));
+	
+	
+	if((camask  && odd) ||
+	   (camask1 && !odd))
+	    for(j=firstatm; j<=lastatm; j++)
+		(*pdbfile)->linetype[j]=PDBPARSE_IGNORE; 
+	
+	/* Remove residues from SEQRES records */
+	if((camask  && odd))
+	    ajStrSubstitute(&(*pdbfile)->seqresful[(*pdbfile)->chnn[firstatm]-1], 
+			    (*pdbfile)->rtype[firstatm], sub);
+	
+	if(firstatm == lastatm)
+	{		
+	    ajFmtPrintF(logf, "%-15s%d\n", "ATOMNOCA", firstatm+1);
+	}	
 
-		if((camask  && odd) ||
-		   (camask1 && !odd))
-		    for(j=firstatm; j<=lastatm; j++)
-			(*pdbfile)->linetype[j]=PDBPARSE_IGNORE; 
-
-		    /* Remove residues from SEQRES records */
-		if((camask  && odd))
-		    ajStrSubstitute(&(*pdbfile)->seqresful[(*pdbfile)->chnn[firstatm]-1], 
-				    (*pdbfile)->rtype[firstatm], sub);
-
-		if(firstatm == lastatm)
-{		    ajFmtPrintF(logf, "%-15s%d\n", "ATOMNOCA", firstatm+1);
-		    
-		}
-
-		else
-		    ajFmtPrintF(logf, "%-15s%d %d\n", "ATOMNOCA", 
-				firstatm+1, lastatm+1);
-	    }
-
-/*	}	 */
+	else
+	    ajFmtPrintF(logf, "%-15s%d %d\n", "ATOMNOCA", 
+			firstatm+1, lastatm+1);
+    }
+    
+    /*	}	 */
 
 
 
 
 
     /* Write the new (masked) seqres sequences if necessary */
-if(camask)
+    if(camask)
     {
 	for(i=0;i<(*pdbfile)->nchains;i++)
 	{	
 	    tmpseq=ajStrNew();	 
-	
+	    
 	    if(!SeqresToSequence((*pdbfile)->seqresful[i], 
-					&tmpseq, camask, &lenful))
+				 &tmpseq, camask, &lenful))
 	    {
 		ajFatal("Sequence conversion error in "
 			"FirstPass\nEmail jison@hgmp.mrc.ac.uk\n");
@@ -4126,13 +4134,29 @@ if(camask)
     }
     
 
-
-    /* Tidy up and return */
+    /* Tidy up  */
     AJFREE(chainok);
     ajStrDel(&aa3);
     ajStrDel(&lastrn);
     ajStrDel(&sub);
 
+
+    /* Report problems with non-protein chains */
+    for(i=0;i<(*pdbfile)->nchains; i++)
+	if((*pdbfile)->chainok[i])
+	{
+	    ok = ajTrue;
+	    break;
+	}		
+    
+    /* Return now if no protein chains are found */
+    if(!ok)
+    {
+	ajWarn("No protein chains found in raw pdb file");
+	ajFmtPrintF(logf, "%-15s\n", "NOPROTEINS");
+	return ajFalse;
+    }
+    
     return ajTrue;
 }
 
@@ -6295,6 +6319,9 @@ static void diagnostic(AjPPdbfile *pdbfile, ajint n)
 /* @funcstatic  PdbfileToPdb ************************************************
 **
 ** Reads data from a Pdbfile object and writes a Pdb object.
+** Chains that did not contain at least the user-defined threshold number of
+** amino acid residues are discarded, i.e. are NOT copied and will NOT appear
+** in the output file that is eventually generated.
 ** 
 **
 ** @param [w] ret     [AjPPdb *]     Pdb object pointer
@@ -6305,9 +6332,16 @@ static void diagnostic(AjPPdbfile *pdbfile, ajint n)
 ****************************************************************************/
 static AjBool PdbfileToPdb(AjPPdb *ret, AjPPdbfile pdb)
 {
-    ajint i=0;				/* Loop counter */
-    ajint j=0;				/* Loop counter */
-    AjPAtom atm=NULL;			/* Atom object */
+    ajint i=0;			  /* Loop counter */
+    ajint idx=0;                  /* Index into chain array */
+    ajint j=0;			  /* Loop counter */
+    AjPAtom atm=NULL;		  /* Atom object */
+    ajint nchn=0;                   /* No. chains that have min. no. of aa's */
+    AjPInt lookup;                /* Array of chain numbers for chains in 
+				     ret for all chains in pdb.A '0' is 
+				     given for chains with < threshold no.
+				     of aa's */
+				     
     
 
 
@@ -6318,47 +6352,62 @@ static AjBool PdbfileToPdb(AjPPdb *ret, AjPPdbfile pdb)
 	return ajFalse;
     }
 
-    if( !(*ret))
+    if((*ret))
     {
 	ajWarn("Bad arg's passed to PdbfileToPdb");
 	return ajFalse;
     }
     
+    
+    lookup = ajIntNewL(pdb->nchains);
+    ajIntPut(&lookup, pdb->nchains-1, 0);
+    for(nchn=0, i=0;i<pdb->nchains;i++)
+	if((pdb)->chainok[i])
+	{
+	    nchn++;
+	    ajIntPut(&lookup, i, nchn);
+	}
+    
+    *ret=ajPdbNew(nchn);
+    (*ret)->Nchn = nchn;
+    
+
     ajStrAssS(&((*ret)->Pdb), pdb->pdbid);
     ajStrAssS(&((*ret)->Compnd), pdb->compnd);
     ajStrAssS(&((*ret)->Source), pdb->source);    
     (*ret)->Method = pdb->method;
     (*ret)->Reso   = pdb->reso;
     (*ret)->Nmod   = pdb->modcnt;
-    (*ret)->Nchn   = pdb->nchains;
     (*ret)->Ngp    = pdb->ngroups;
-
+    /*    (*ret)->Nchn   = pdb->nchains; */
 
     for(i=0; i<pdb->ngroups; i++)
 	ajChararrPut(&((*ret)->gpid), i, ajChararrGet(pdb->gpid, i));
     
 
-    for(i=0;i<pdb->nchains;i++)
+    for(idx=-1, i=0;i<pdb->nchains;i++)
     {
-	(*ret)->Chains[i]->Id   = ajChararrGet((pdb)->chid, i);
-
-
-	if(!(pdb)->chainok[i])
+	if((pdb)->chainok[i])
+	    idx++;
+	else
 	    continue;
 	
+	(*ret)->Chains[idx]->Id   = ajChararrGet((pdb)->chid, i);
+
+
 	/* These counts are no longer made from the PDB records. They 
 	   are only made if the file is annotated with stride secondary
 	   structure info by using pdbstride */
 	/*
-	(*ret)->Chains[i]->numHelices = (pdb)->numHelices[i];
-	(*ret)->Chains[i]->numStrands = (pdb)->numStrands[i];
-	(*ret)->Chains[i]->numSheets  = (pdb)->numSheets[i];
-	(*ret)->Chains[i]->numTurns   = (pdb)->numTurns[i];
+	(*ret)->Chains[idx]->numHelices = (pdb)->numHelices[i];
+	(*ret)->Chains[idx]->numStrands = (pdb)->numStrands[i];
+	(*ret)->Chains[idx]->numSheets  = (pdb)->numSheets[i];
+	(*ret)->Chains[idx]->numTurns   = (pdb)->numTurns[i];
 	*/
 
-	(*ret)->Chains[i]->Nres = (pdb)->nres[i];
-	(*ret)->Chains[i]->Nlig = (pdb)->nligands[i];
-	ajStrAssS(&((*ret)->Chains[i]->Seq), (pdb)->seqres[i]);
+	(*ret)->Chains[idx]->Nres = (pdb)->nres[i];
+	(*ret)->Chains[idx]->Nlig = (pdb)->nligands[i];
+	ajStrAssS(&((*ret)->Chains[idx]->Seq), (pdb)->seqres[i]);
     }
     
     
@@ -6377,7 +6426,11 @@ static AjBool PdbfileToPdb(AjPPdb *ret, AjPPdbfile pdb)
 	    atm = ajAtomNew();
 
 	    atm->Mod = (pdb)->modn[j];
-	    atm->Chn = (pdb)->chnn[j];
+	    /* atm->Chn = (pdb)->chnn[j]; */
+	    atm->Chn = ajIntGet(lookup, (pdb)->chnn[j]-1);
+	    
+	    
+
 	    atm->Gpn = (pdb)->gpn[j];
 
 	    if((pdb)->linetype[j]==PDBPARSE_COORDHET)
@@ -6420,13 +6473,19 @@ static AjBool PdbfileToPdb(AjPPdb *ret, AjPPdbfile pdb)
 	    else if((pdb)->linetype[j]==PDBPARSE_COORDWAT)
 		ajListPushApp((*ret)->Water, atm);
 	    else
-		ajListPushApp((*ret)->Chains[(pdb)->chnn[j]-1]->Atoms, 
-			      atm);
+	    {
+		if((pdb)->chainok[(pdb)->chnn[j]-1])
+		    /* ajListPushApp((*ret)->Chains[(pdb)->chnn[j]-1]->Atoms, atm); */
+		    ajListPushApp((*ret)->Chains[ajIntGet(lookup, (pdb)->chnn[j]-1)-1]->Atoms, atm); 
+		else
+		    ajAtomDel(&atm);
+	    }
+	    
 	}
 	else continue;
     }
     
-    
+    ajIntDel(&lookup);
     return ajTrue;
 }	
 
@@ -6905,16 +6964,11 @@ AjPPdb ajPdbReadRawNew(AjPFile inf, AjPStr pdbid, ajint min_chain_size,
     
 
 
-/*    printf("1.\n");
-    fflush(stdout); */
-    
     /* Write pdbfile structure */
     if(!(pdbfile=ReadLines(inf)))
     {
 	return NULL;
     }
-/*    printf(".1\n");
-    fflush(stdout);  */
     
     /* Allocate Elements object */
     elms = ElementsNew(0); 
@@ -6924,9 +6978,6 @@ AjPPdb ajPdbReadRawNew(AjPFile inf, AjPStr pdbid, ajint min_chain_size,
     ajStrToLower(&(pdbfile->pdbid));
     
     
-/*        printf("2.\n");
-    fflush(stdout);   */
-
     /* Initial read of pdb file, read sequences for chains from 
        SEQRES records, mark lines up to ignore or as coordinate 
        lines, assigning initial residue numbers, read bibliographic
@@ -6938,17 +6989,11 @@ AjPPdb ajPdbReadRawNew(AjPFile inf, AjPStr pdbid, ajint min_chain_size,
 	return NULL;
     }
 
-/*        printf(".2\n");
-    fflush(stdout);   */
-    
     /*DIAGNOSTIC
       diagnostic(&pdbfile, 0);        
       diagnostic(&pdbfile, 1);*/
     
     
-/*        printf("3.\n");
-    fflush(stdout);   */
-
     /* Check that SEQRES records contain protein chains. Check 
        that chain id's are unique */
     if(!CheckChains(&pdbfile, logf, min_chain_size))
@@ -6958,11 +7003,6 @@ AjPPdb ajPdbReadRawNew(AjPFile inf, AjPStr pdbid, ajint min_chain_size,
 	return NULL;
     }
 
-/*    printf(".3\n");
-    fflush(stdout);  
-
-    printf("4.\n");
-    fflush(stdout);   */
 
     /* Check for correct number of TER records. Mask unwanted TER
        records */
@@ -6973,11 +7013,6 @@ AjPPdb ajPdbReadRawNew(AjPFile inf, AjPStr pdbid, ajint min_chain_size,
 	return NULL;
     }
 
-/*    printf(".4\n");
-    fflush(stdout);
-
-    printf("5.\n");
-    fflush(stdout);   */
 
     /* Assign model and chain number to each coordinate line. Mark
        up non-protein coordinates */
@@ -6988,17 +7023,9 @@ AjPPdb ajPdbReadRawNew(AjPFile inf, AjPStr pdbid, ajint min_chain_size,
 	return NULL;
     }
 
-/*    printf(".5\n");
-    fflush(stdout);
-
-    printf("6.\n");
-    fflush(stdout);   */
-
-
-
-
     /* Mask any ATOM or HETATM records with chain id's of chains of
-       non-proteins or chains that have non-unique id's (chainok==ajFalse)
+       non-proteins or chains that have non-unique id's (chainok==ajFalse).
+       Check that ATOM records contain protein chains.
        */
     if(!MaskChains(&pdbfile, logf, min_chain_size, camask, 
 			    camask1, atommask))
@@ -7009,18 +7036,12 @@ AjPPdb ajPdbReadRawNew(AjPFile inf, AjPStr pdbid, ajint min_chain_size,
 
     }
 
-/*    printf(".6\n");
-    fflush(stdout);    */
-
     /* DIAGNOSTIC      
     diagnostic(&pdbfile, 0);        
     diagnostic(&pdbfile, 1);      */
   
     
    
-/*    printf("7.\n");
-    fflush(stdout);        */
-
     /* Standardise residue numbering */
     if(!StandardiseNumbering(&pdbfile, logf))
     {
@@ -7028,13 +7049,6 @@ AjPPdb ajPdbReadRawNew(AjPFile inf, AjPStr pdbid, ajint min_chain_size,
 	ElementsDel(&elms);
 	return NULL;
     }
-
-/*        printf(".7\n");
-    fflush(stdout);
-    
-    
-    printf("8.\n");
-    fflush(stdout);    */
 
 
     /* Find correct residue numbering */
@@ -7045,13 +7059,6 @@ AjPPdb ajPdbReadRawNew(AjPFile inf, AjPStr pdbid, ajint min_chain_size,
 	return NULL;
     }
 
-/*        printf(".8\n");
-    fflush(stdout); 
-      
-        printf("9.\n");
-    fflush(stdout);   */
-
-
     if(!WriteElementData(&pdbfile, logf, elms))
     {
 	PdbfileDel(&pdbfile);
@@ -7061,18 +7068,8 @@ AjPPdb ajPdbReadRawNew(AjPFile inf, AjPStr pdbid, ajint min_chain_size,
 
     ElementsDel(&elms);
 
-/*        printf(".9\n");
-    fflush(stdout);    */
-    
-    
-    /* Create Pdb object to hold parsed data*/
-    ret=ajPdbNew(pdbfile->nchains);
-    
-    
-/*        printf("10.\n");
-    fflush(stdout);    */
-
-    /* Copy data from Pdbfile object to Pdb object */
+    /* Copy data from Pdbfile object to Pdb object.
+       PdbfileToPdb creates the Pdb object (ret) */
     if(!PdbfileToPdb(&ret, pdbfile))
     {
 	PdbfileDel(&pdbfile);
@@ -7080,10 +7077,6 @@ AjPPdb ajPdbReadRawNew(AjPFile inf, AjPStr pdbid, ajint min_chain_size,
 	return NULL;	
     }
 
-/*        printf(".10\n");
-    fflush(stdout);    */
-    
-    
     /* Tidy up and return */
     PdbfileDel(&pdbfile);
     
