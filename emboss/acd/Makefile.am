@@ -7,7 +7,8 @@ pkgdata_DATA = codes.english \
 	complex.acd compseq.acd cons.acd corbatest.acd \
 	cpgplot.acd cpgreport.acd cusp.acd cutgextract.acd cutseq.acd \
 	dan.acd dbiblast.acd dbifasta.acd dbiflat.acd \
-	dbigcg.acd demofeatures.acd demolist.acd demosequence.acd \
+	dbigcg.acd degapseq.acd \
+	demofeatures.acd demolist.acd demosequence.acd \
 	demostring.acd demotable.acd descseq.acd diffseq.acd \
 	digest.acd domainer.acd dotmatcher.acd dotpath.acd dottup.acd \
 	dreg.acd einverted.acd embossdata.acd embossversion.acd emma.acd \
