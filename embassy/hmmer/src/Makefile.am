@@ -7,6 +7,15 @@ bin_PROGRAMS = ehmmcalibrate ehmmconvert ehmmemit ehmmfetch ehmmindex \
 
 INCLUDES = -IINCLUDE -I../../../ajax
 
+if ISSHARED
+if ISAIXIA64
+AM_CFLAGS = -Wl,-bdynamic -Wl,-brtl -L../../../ajax/.libs -lajax
+else
+AM_CFLAGS =
+endif
+endif
+
+
 HMMERSRC = alphabet.c core_algorithms.c debug.c emit.c emulation.c \
 	   histogram.c hmmio.c mathsupport.c masks.c misc.c \
 	   modelmakers.c plan7.c plan9.c prior.c threads.c tophits.c \

@@ -8,6 +8,14 @@ bin_PROGRAMS = meme
 
 INCLUDES = -IINCLUDE -I../../../ajax
 
+if ISSHARED
+if ISAIXIA64
+AM_CFLAGS = -Wl,-bdynamic -Wl,-brtl -L../../../ajax/.libs -lajax
+else
+AM_CFLAGS =
+endif
+endif
+
 MEMESRC = clock.c display.c em.c init.c meme_util.c seq2theta.c \
 	shorten.c starts.c prior.c split.c align.c justlike.c \
 	oops.c tcm.c zoops.c banner.c logs.c palindrome.c gamma.c \
