@@ -5,8 +5,8 @@
 **
 **
 ** @author: Copyright (C) Damian Counsell
-** @version $Revision: 1.3 $
-** @modified $Date: 2004/10/26 14:16:33 $
+** @version $Revision: 1.4 $
+** @modified $Date: 2004/11/17 18:03:36 $
 ** @@
 **
 ** This program is free software; you can redistribute it and/or
@@ -27,7 +27,7 @@
 enum constant
     {
 	enumCountZero  = 0,
-	enumDebugLevel = 2
+	enumDebugLevel = 0
     };
 
 #include "emboss.h"
@@ -76,7 +76,10 @@ int main(int argc , char **argv)
     /* count the number of sequence pairs to be aligned */
     ajIntSeqPairFilesInPairDir = ajListLength(ajpListPairFiles);
 
-    ajFmtPrint("\nfirst: %d\tsecond: %d\n\n", ajIntSeqPairFilesInPairDir);
+    if(enumDebugLevel)
+    {
+	ajFmtPrint("\najIntSeqPairFilesInPairDir: %d\n\n", ajIntSeqPairFilesInPairDir);
+    }
 
     /* loop over pair files in alignment directory */
     while(ajListPop(ajpListPairFiles, (void **)&ajpStrPairFileName))
@@ -118,8 +121,6 @@ int main(int argc , char **argv)
 	pcCommandLine  = ajStrStr(ajpStrCommandLine);
 
 	system(pcCommandLine);
-
-	printf("\n%s", "Hello?!");
 
 	/* DDDDEBUG */
 	if(enumDebugLevel)
