@@ -36,7 +36,7 @@
 /* ============================ private data ============================= */
 /* ======================================================================= */
 
-/* @data AjPElement ********************************************************
+/* @datastatic AjPElement *****************************************************
 **
 ** Nucleus Element object.
 **
@@ -50,38 +50,43 @@
 ** The variables have the following meaning (column numbers refer to the pdb 
 ** file):
 **
-** elementNum;    Serial number of the element (columns 8 - 10) 
-** elementId;     Element identifier (columns 12 - 14) 
-** elementType;   Element type COIL ('C'), HELIX ('H'), SHEET ('E') or TURN 
-**                ('T') 
-** initResName;   Name of first residue in each element (columns 
-**	    	  16 - 18 (HELIX & TURN) or 18 - 20 (SHEET) ) 
-** initSeqNum;    Residue number (including insertion code) of first 
-**		  residue in each element (columns 22 - 26 (HELIX), 23 - 
-**                27 (SHEET) or 21 - 25 (TURN) )
-** endResName;    Name of last residue in each element (columns 28 - 30 
-**                (HELIX), 29 - 31 (SHEET) or  27 - 29 (TURN) ) 
-** endSeqNum;     Residue number (including insertion code) of 
-**		  last residue in each element (columns 34 - 38 (HELIX and 
-**                SHEET) or 32 - 36 (TURN)  )
-** chainId;       Chain identifiers for chains containing the elements (column 
-**                20 (HELIX & TURN) or 22 (SHEET) )
-** helixClass;    Classes of helices (columns 39 - 40), an int from 1-10 from
-**		  http://www.rcsb.org/pdb/docs/format/pdbguide2.2/guide2.2_frame.html 
-** 
-** TYPE OF HELIX             CLASS NUMBER (COLUMNS 39 - 40)
-** --------------------------------------------------------------
-** Right-handed alpha (default)                1
-** Right-handed omega                          2
-** Right-handed pi                             3
-** Right-handed gamma                          4
-** Right-handed 310                            5
-** Left-handed alpha                           6
-** Left-handed omega                           7
-** Left-handed gamma                           8
-** 27 ribbon/helix                             9
-** Polyproline                                10
+** TYPE OF HELIX             CLASS NUMBER (COLUMNS 39 - 40)<br>
+** --------------------------------------------------------------<br>
+** Right-handed alpha (default)                1<br>
+** Right-handed omega                          2<br>
+** Right-handed pi                             3<br>
+** Right-handed gamma                          4<br>
+** Right-handed 310                            5<br>
+** Left-handed alpha                           6<br>
+** Left-handed omega                           7<br>
+** Left-handed gamma                           8<br>
+** 27 ribbon/helix                             9<br>
+** Polyproline                                10<br>
 **
+** @attr elementNum [ajint]    Serial number of the element (columns 8 - 10) 
+** @attr elementId [AjPStr]    Element identifier (columns 12 - 14) 
+** @attr elementType [char]    Element type COIL ('C'), HELIX ('H'),
+**                             SHEET ('E') or TURN ('T') 
+** @attr initResName [AjPStr]  Name of first residue in each element (columns 
+**	    	               16 - 18 (HELIX & TURN) or 18 - 20 (SHEET) ) 
+** @attr initSeqNum [AjPStr]   Residue number (including insertion code) 
+**		               of first residue in each element
+**                             (columns 22 - 26 (HELIX), 23 - 27 (SHEET)
+**                             or 21 - 25 (TURN) )
+** @attr endResName [AjPStr]   Name of last residue in each element
+**                             (columns 28 - 30 (HELIX), 29 - 31 (SHEET)
+**                             or  27 - 29 (TURN) ) 
+** @attr endSeqNum [AjPStr]    Residue number (including insertion code) of 
+**		               last residue in each element
+**                             (columns 34 - 38 (HELIX and SHEET)
+**                             or 32 - 36 (TURN)  )
+** @attr chainId [char]        Chain identifiers for chains containing the
+**                             elements (column 20 (HELIX & TURN)
+**                             or 22 (SHEET) )
+** @attr helixClass [ajint]    Classes of helices (columns 39 - 40),
+**                             an int from 1-10 from
+**	   http://www.rcsb.org/pdb/docs/format/pdbguide2.2/guide2.2_frame.html 
+** 
 ** @@
 ****************************************************************************/
 typedef struct AjSElement
@@ -102,7 +107,7 @@ typedef struct AjSElement
 
 
 
-/* @data AjPElements *******************************************************
+/* @datastatic AjPElements ****************************************************
 **
 ** Nucleus Elements object.
 **
@@ -115,9 +120,9 @@ typedef struct AjSElement
 **
 ** The variables have the following meaning:
 **
-**  n     Total no. of secondary structure elements (helices, strands or 
-**        turns) 
-** *elms  Array of Element objects 
+** @attr n [ajint] Total no. of secondary structure elements
+**                       (helices, strands or turns) 
+** @attr elms [AjPElement*] Array of Element objects 
 ** @@
 ****************************************************************************/
 typedef struct AjSElements
@@ -131,7 +136,7 @@ AjOElements, *AjPElements;
 
 
 
-/* @data AjPPdbfile ********************************************************
+/* @datastatic AjPPdbfile *****************************************************
 **
 ** Nucleus Pdbfile object.
 **
@@ -145,106 +150,120 @@ AjOElements, *AjPElements;
 **
 ** The variables have the following meaning:
 **
-** Following are for each pdb file
-**  pdbid;       4 character pdb id code 
-**  tercnt;      The number of TER records in the pdb file 
-**  toofewter;   True if the file contained too few TER records 
-**  modcnt;      The number of MODEL records in the pdb file (does not count
-**	         duplicate MODEL records that are masked out)
-**  nomod;       True if the file contained no MODEL records 
-**  compnd;      Text from COMPND records 
-**  source;      Text from SOURCE records 
-**  reso;        Resolution of structure 
-**  method;      Structural method,  either ajXRAY or ajNMR 
-**  ngroups;     Number of groups (non-protein groups that could not be
-**	         associated with a chain in the SEQRES section 
-**  gpid;        Array of chain (group) id's for groups that cannot be 
-**	         associated with a chain in the SEQRES section 
-**  idxfirst;    Index in <lines> of first ATOM, HETATM or MODEL line 
+** @attr pdbid [AjPStr]       4 character pdb id code 
+** @attr tercnt [ajint]       The number of TER records in the pdb file 
+** @attr toofewter [AjBool]   True if the file contained too few TER records 
+** @attr modcnt [ajint]       The number of MODEL records in the pdb file
+**	                      (does not count duplicate MODEL records
+**                            that are masked out)
+** @attr nomod [AjBool]       True if the file contained no MODEL records 
+** @attr compnd [AjPStr]      Text from COMPND records 
+** @attr source [AjPStr]      Text from SOURCE records 
+** @attr reso [float]         Resolution of structure 
+** @attr method [ajint]       Structural method,  either ajXRAY or ajNMR 
+** @attr ngroups [ajint]      Number of groups (non-protein groups that
+**                            could not be associated with a chain in the
+**                            SEQRES section 
+** @attr gpid [AjPChar]       Array of chain (group) id's for groups that
+**                            cannot be associated with a chain in the SEQRES
+**                            section 
+** @attr idxfirst [ajint]     Index in <lines> of first ATOM, HETATM or MODEL
+**                            line 
 **
-** Following are for each chain
-**  nchains;     Number of chains (from SEQRES record) 
-** *seqres;      Array of sequences taken from the SEQRES records
-** *seqresful;   Array of sequences using 3 letter codes taken from the 
-**               SEQRES records
-** *nres;        Number of residues in each chain 
-** *chainok;     Array of flags which are True if a chain in the SEQRES
-**	         record contains >= minimum no. of amino acids and has a 
-**	         unique chain identifier
-** *resn1ok;     Bool's for each chain which are TRUE if resn1 was 
-**	         used to derive resni, i.e. gave correct alignment to 
-**	         seqres sequence.  If False then resn2 was used. 
-** *nligands;    Number of ligands for each chain 
-** *numHelices;  No. of helices in each chain 
-** *numStrands;  No. of strands in each chain 
-** *numSheets;   No. of sheets in each chain 
-** *numTurns;    No. of turns in each chain 
-**  chid;        Array of chain id's for chains from SEQRES records
+** @attr nchains [ajint]      Number of chains (from SEQRES record)
+**                            for sizes of following attribute arrays
+** @attr seqres [AjPStr*]     Array of sequences taken from the SEQRES records
+** @attr seqresful [AjPStr*]  Array of sequences using 3 letter codes taken
+**                            from the SEQRES records
+** @attr nres [ajint*]        Number of residues in each chain 
+** @attr chainok [AjBool*]    Array of flags which are True if a chain in the
+**                            SEQRES record contains >= minimum no. of amino
+**                            acids and has a  unique chain identifier
+** @attr resn1ok [AjBool*]    Bool's for each chain which are TRUE if resn1
+**                            was used to derive resni, i.e. gave correct
+**                            alignment t seqres sequence.
+**                            If False then resn2 was used. 
+** @attr nligands [ajint*]    Number of ligands for each chain 
+** @attr numHelices [ajint*]  No. of helices in each chain 
+** @attr numStrands [ajint*]  No. of strands in each chain 
+** @attr numSheets [ajint*]   No. of sheets in each chain 
+** @attr numTurns [ajint*]    No. of turns in each chain 
+** @attr chid [AjPChar]       Array of chain id's for chains from SEQRES
+**                            records
 ** 
-** Following are for each line in the pdb file
-**  nlines;     Number of lines in the pdb file 
-** *lines;      Array of lines in the pdb file 
-** *linetype;   Array of int's describing the lines, have values
-**	        of PDBPARSE_IGNORE (do not consider this line when parsing 
-**	        coordinates from the file), PDBPARSE_COORD (coordinate line
-**	        (ATOM or HETATM record) for protein atoms, PDBPARSE_COORDHET
-**              (coordinate line for non-protein atoms), PDBPARSE_COORDGP 
-**              (oordinate line for groups that could not be associated 
-**              with a SEQRES chain), PDBPARSE_COORDWAT (oordinate line for 
-**              water), PDBPARSE_TER (it is a TER record) or PDBPARSE_MODEL 
-**              (it is a MODEL record).
-** *chnn;       Array of chain numbers for each PDBPARSE_COORD & 
-**              PDBPARSE_COORDHET line.
-** *gpn;        Array of group numbers for each line. Each group 
-**	        (heterogen) is given a group number, that is either 
-**	        relative to a chain or the whole file (for groups that could 
-**              not be associated with a chain from the SEQRES records) 
-** *modn;       Array of model numbers for each PDBPARSE_COORD line 
+** @attr nlines [ajint]       Number of lines in the pdb file and size of the
+**                            following arrays
+** @attr lines [AjPStr*]      Array of lines in the pdb file 
+** @attr linetype [ajint*]    Array of int's describing the lines, have values
+**	                      of PDBPARSE_IGNORE (do not consider this line
+**	                      when parsing coordinates from the file),
+**                            PDBPARSE_COORD (coordinate line (ATOM or HETATM
+**                            record) for protein atoms, PDBPARSE_COORDHET
+**                            (coordinate line for non-protein atoms), 
+**                            PDBPARSE_COORDGP (oordinate line for groups
+**                            that could not be associated with a SEQRES
+                              chain), PDBPARSE_COORDWAT (oordinate line for 
+**                            water), PDBPARSE_TER (it is a TER record) or
+**                            PDBPARSE_MODEL (it is a MODEL record).
+** @attr chnn [ajint*]        Array of chain numbers for each PDBPARSE_COORD & 
+**                            PDBPARSE_COORDHET line.
+** @attr gpn [ajint*]         Array of group numbers for each line. Each group 
+**	                      (heterogen) is given a group number, that is
+**                            either relative to a chain or the whole file
+**                            (for groups that could  not be associated with
+**                            a chain from the SEQRES records) 
+** @attr modn [ajint*]        Array of model numbers for each PDBPARSE_COORD
+**                            line 
 **
-** *resni;     Residue numbers for each PDBPARSE_COORD line.
-**	       These give the correct index into the <seqres> sequences 
-** *resn1;     Array of residue numbers for each PDBPARSE_COORD line.
-**	       This is pdbn converted to a sequential integer where 
-**	       alternative residue numbering is presumed for lines 
-**	       where line[26] is used (residues for which  oddnum==True
-**	       are considered).
-** *resn2;     Array of residue numbers for each PDBPARSE_COORD line.
-**	       This is pdbn converted to a sequential integer where 
-**	       heterogeneity is presumed for lines where line[26] is 
-**	       used (residues where oddnum==True are ignored).
-** *pdbn;      Array with a residue number for each line
-**	       for which <cooord> == ajTrue. This is the original residue
-**	       number string (including insertion code) from the pdb file
-** *oddnum;    Bool's for each line which are TRUE for duplicate residues of 
-**	       heterogenous positions (e.g. if 2 different residues
-**	       are both numbered '8' or one is '8' and the other '8A'
-**    	       for example then <oddnum> would be set True for the second
-**	       residue. Heterogeneity is indicated by a character in 
-**             position lines[26] (the same position used to indicate 
-**	       alternative residue numbering schemes).    
-**  *atype;    Atom type for each line 
-**  *rtype;    Residue type for each line 
-**  *x;        x-coordinate for each line 
-**  *y;        y-coordinate for each line 
-**  *z;        z-coordinate for each line 
-**  *o;        occupancy for each line 
-**  *b;        thermal factor for each line 
+** @attr resni [ajint*]       Residue numbers for each PDBPARSE_COORD line.
+**	                      These give the correct index into the 'seqres'
+**                            sequences 
+** @attr resn1 [ajint*]       Array of residue numbers for each PDBPARSE_COORD
+**                            line. This is pdbn converted to a sequential 
+**	                      integer where alternative residue numbering is 
+**	                      presumed for lines where line[26] is used
+**	                      (residues for which oddnum==True are considered).
+** @attr resn2 [ajint*]       Array of residue numbers for each PDBPARSE_COORD
+**	                      line. This is pdbn converted to a sequential 
+**	                      integer where heterogeneity is presumed for 
+**	                      lines where line[26] is used (residues where
+**                            oddnum==True are ignored).
+** @attr pdbn [AjPStr*]       Array with a residue number for each line
+**	                      for which <cooord> == ajTrue. This is the
+**	                      original residue number string (including
+**                            insertion code) from the pdb file
+** @attr oddnum [AjBool*]     Bool's for each line which are TRUE for
+**                            duplicate residues of heterogenous positions
+**	                      (e.g. if 2 different residues are both numbered
+**                            '8' or one is '8' and the other '8A'
+**    	                      for example then <oddnum> would be set True for
+**	                      the second residue. Heterogeneity is indicated 
+**                            by a character in position lines[26] (the same 
+**	                      position used to indicate alternative residue
+**                            numbering schemes).    
+** @attr atype [AjPStr*]      Atom type for each line 
+** @attr rtype [AjPStr*]      Residue type for each line 
+** @attr x [float*]           x-coordinate for each line 
+** @attr y [float*]           y-coordinate for each line 
+** @attr z [float*]           z-coordinate for each line 
+** @attr o [float*]           occupancy for each line 
+** @attr b [float*]           thermal factor for each line 
 **
-**  *elementNum;   Serial number of the secondary structure element (columns 
-**                 8 - 10) 
-**  *elementId;    Secondary structure element identifier (columns 12 - 14) 
-**  *elementType;  Secondary structure element type COIL ('C'), HELIX ('H'), 
-**                 SHEET ('E') or TURN ('T') 
-**  *helixClass;   Classes of helices (columns 39 - 40)  from 
+** @attr elementNum [ajint*]  Serial number of the secondary structure element 
+**                            (columns 8 - 10) 
+** @attr elementId [AjPStr*]  Secondary structure element identifier (columns
+**                            12 - 14) 
+** @attr elementType [char*]  Secondary structure element type COIL ('C'), 
+**                            HELIX ('H'), SHEET ('E') or TURN ('T') 
+** @attr helixClass [ajint*]   Classes of helices (columns 39 - 40)  from 
 **	 http://www.rcsb.org/pdb/docs/format/pdbguide2.2/guide2.2_frame.html 
-**                 (see below). Has a value of 0 (printed out as '.') for 
-**                 non-helical elements.
+**                             (see below). Has a value of 0 (printed out as 
+**                             '.') for non-helical elements.
 ** @@
-****************************************************************************/
+******************************************************************************/
 
 typedef struct AjSPdbfile
 {
-    /* Following are for each file */
     AjPStr    pdbid;    
     ajint     tercnt;   
     AjBool    toofewter;   
@@ -259,7 +278,6 @@ typedef struct AjSPdbfile
     ajint     idxfirst;   
 
 
-    /* Following are for each chain */
     ajint     nchains;    
     AjPStr    *seqres;      
     AjPStr    *seqresful;      
@@ -274,7 +292,6 @@ typedef struct AjSPdbfile
     AjPChar    chid;	  
 
 
-    /* Following are for each line */
     ajint      nlines;   
     AjPStr    *lines;    
     ajint     *linetype; 
@@ -995,7 +1012,7 @@ static AjBool WriteAtomChain(AjPFile outf, AjPPdb pdb, ajint mod, ajint chn,
 
 
 
-/* @func WriteAtomDomain ****************************************************
+/* @funcstatic WriteAtomDomain ************************************************
 **
 ** Writes coordinates for a SCOP domain to an output file in pdb format (ATOM 
 ** records).  Coordinates are taken from a Pdb structure, domain definition is 
@@ -2225,7 +2242,7 @@ static AjPPdbfile PdbfileNew(ajint nlines, ajint nchains)
 
 
 
-/* @funcstatic  FirstPass ***************************************************
+/* @funcstatic FirstPass ******************************************************
 **
 ** The initial read of the pdb file as held in the <lines> array of a Pdbfile 
 ** object. Bibliographic information is parsed, the number of chains 
@@ -2278,9 +2295,10 @@ static AjPPdbfile PdbfileNew(ajint nlines, ajint nchains)
 **
 ** @param [w] pdbfile  [AjPPdbfile*]  Pdbfile object pointer
 ** @param [r] logf     [AjPFile]       Pointer to log file (build diagnostics)
-** @param [W] elms     [AjPElements*] Elements object pointer    
+** @param [w] elms     [AjPElements*] Elements object pointer    
 ** @param [r] camask   [AjBool]        Whether to mask non-amino acid residues 
-** within protein chains which do not have a C-alpha atom.
+**                                    within protein chains which do not
+**                                    have a C-alpha atom.
 ** 
 ** @return [AjBool]  True if file was parsed, False otherwise
 ** @@
@@ -2291,8 +2309,8 @@ static AjBool FirstPass(AjPPdbfile *pdbfile, AjPFile logf, AjPElements *elms,
     ajint    i=0;		       /* Loop counter */
     ajint    j=0;		       /* Loop counter */
     ajint    k=0;		       /* Loop counter */
-    AjBool   donefirstatom=ajFalse;    /* Flag for finding first ATOM or HETATM 
-				          line */
+    AjBool   donefirstatom=ajFalse;    /* Flag for finding first ATOM or 
+				          HETATM line */
     char     pdbn[6];		       /* Residue number */
     AjBool   resolfound=ajFalse;       /* Flag for finding RESOLUTION record */
     AjBool   seqresfound=ajFalse;      /* Flag for finding SEQRES record */
@@ -3702,7 +3720,7 @@ static AjBool NumberChains(AjPPdbfile *pdbfile, AjPFile logf)
 
 
 
-/* @funcstatic  MaskChains **************************************************
+/* @funcstatic MaskChains *****************************************************
 **
 ** Reads a Pdbfile object and checks to see whether the ATOM records for 
 ** each chain contain sufficient amino acids. Any chains with insufficient 
@@ -3730,16 +3748,19 @@ static AjBool NumberChains(AjPPdbfile *pdbfile, AjPFile logf)
 ** 
 ** @param [w] pdbfile    [AjPPdbfile*] Pdbfile object pointer
 ** @param [r] logf       [AjPFile]     Pointer to log file (build diagnostics)
-** @param [r] min_chain_size  [ajint  ]     Min. no. of amino acids in a chain
-** @param [r] camask          [AjBool]      Whether to mask non-amino acid 
-** residues within protein chains which do not have a C-alpha atom (remove them
-** from the seqres sequence and set the linetype array for the lines 
-** to PDBPARSE_IGNORE).
-** @param [r] camask1         [AjBool]  Whether to mask amino acid residues
-** within protein chains which do not have a C-alpha atom (set the linetype 
-** array for the lines to PDBPARSE_IGNORE).
-** @param [r] atommask        [AjBool]  Whether to mask residues or groups 
-** with a single atom only.
+** @param [r] min_chain_size  [ajint]  Min. no. of amino acids in a chain
+** @param [r] camask          [AjBool] Whether to mask non-amino acid 
+**                                     residues within protein chains which 
+**                                     do not have a C-alpha atom (remove them
+**                                     from the seqres sequence and set the 
+**                                     linetype array for the lines 
+**                                     to PDBPARSE_IGNORE).
+** @param [r] camask1         [AjBool]  Whether to mask amino acid residues 
+**                                     within protein chains which do not have 
+**                                     a C-alpha atom (set the linetype 
+**                                     array for the lines to PDBPARSE_IGNORE).
+** @param [r] atommask        [AjBool] Whether to mask residues or groups 
+**                                     with a single atom only.
 ** 
 ** @return [AjBool]  True on success, False otherwise
 ** @@
@@ -4615,7 +4636,7 @@ static AjBool StandardiseNumbering(AjPPdbfile *pdbfile, AjPFile logf)
 
 
 
-/* @funcstatic  AlignNumbering **********************************************
+/* @funcstatic AlignNumbering *************************************************
 **
 ** Reads a Pdbfile object and determines for each chain a set of residue 
 ** numbers (the resni array) that give the correct index into the full length 
@@ -6174,16 +6195,16 @@ static AjBool AlignNumbering(AjPPdbfile *pdbfile, AjPFile logf, ajint lim)
 
 
 
-/* @funcstatic diagnostic  **************************************************
+/* #funcstatic diagnostic  **************************************************
 **
 ** For printing out diagnostics for pdbparse build
 ** 
 **
-** @param [r] pdbfile [AjPPdbfile*]  Pdbfile object pointer
-** @param [r] n       [ajint ]        Flag for controlling output
+** #param [r] pdbfile [AjPPdbfile*]  Pdbfile object pointer
+** #param [r] n       [ajint ]        Flag for controlling output
 ** 
-** @return [AjBool]  True on success, False otherwise
-** @@
+** #return [AjBool]  True on success, False otherwise
+** ##
 ****************************************************************************/
 /*THIS_DIAGNOSTIC 
 static void diagnostic(AjPPdbfile *pdbfile, ajint n)
@@ -6408,15 +6429,15 @@ static AjBool PdbfileToPdb(AjPPdb *ret, AjPPdbfile pdb)
 
 
 
-/* @funcstatic  PdbfileFindLine *********************************************
+/* @funcstatic PdbfileFindLine ************************************************
 **
 ** Returns the line number of the first instance of a line with a specified 
 ** residue and chain number. 	
 ** 
 ** @param [r] pdb     [AjPPdbfile] Pdbfile object pointer
-** @param [r] chn     [ajint      ] Chain number
-** @param [r] which   [ajint      ] 0 or 1, refer to resn1 or resn2 residue
-** @param [r] pos     [ajint      ] Residue number
+** @param [r] chn     [ajint] Chain number
+** @param [r] which   [ajint] 0 or 1, refer to resn1 or resn2 residue
+** @param [r] pos     [ajint] Residue number
 ** 
 ** @return [ajint]  Line number (index, i.e. starts from 0).
 ** @@
@@ -6508,9 +6529,9 @@ static AjBool PdbfileChain(char id, AjPPdbfile pdb, ajint *chn)
 ** Reads the secondary structure information from an Elements object 
 ** and writes equivalent variables in an Pdbfile object.
 ** 
-** @param [W] pdbfile [AjPPdbfile *] Pdbfile object pointer
-** @param [r] logf    [AjPFile      ] Pointer to log file (build diagnostics)
-** @param [r] elms    [AjPElements ] Elements object pointer
+** @param [w] pdbfile [AjPPdbfile*] Pdbfile object pointer
+** @param [r] logf    [AjPFile] Pointer to log file (build diagnostics)
+** @param [r] elms    [AjPElements] Elements object pointer
 ** 
 ** @return [AjBool]  True on success, False otherwise
 ** @@

@@ -46,9 +46,9 @@ extern "C"
 ** and or manipulated by the EMBOSS applications seqsearch, seqsort, and 
 ** sigscan.
 **
+** AjPHit is implemented as a pointer to a C data structure.
 **
-** Variables are described below:
-** Basic variables defining the hit.
+**
 ** @attr  Seq	   [AjPStr]  Sequence as string.
 ** @attr  Start    [ajint]   Start of sequence or signature alignment relative
 **	           	     to full length swissprot sequence, this is an 
@@ -63,7 +63,6 @@ extern "C"
 ** @attr  Eval     [float]   E-value of hit 
 ** @attr  Pval     [float]   p-value of hit 
 **  
-** Variables for classifying the hit.
 ** @attr  Typeobj  [AjPStr]  Primary (objective) classification of hit.
 ** @attr  Typesbj  [AjPStr]  Secondary (subjective) classification of hit 
 ** @attr  Model    [AjPStr]  String for model type if used (HMM, Gribskov etc) 
@@ -73,8 +72,6 @@ extern "C"
 ** @attr  Target   [AjBool]  Used for garbage collection.
 ** @attr  Target2  [AjBool]  Also used for garbage collection.
 ** @attr  Priority [AjBool]  Also used for garbage collection.
-**
-** AjPHit is implemented as a pointer to a C data structure.
 **
 ** 
 ** Functions that use this object are described below:
@@ -90,8 +87,8 @@ extern "C"
 ** @use    embMatchScore Sort Hit objects by Score element.
 ** @use    embMatchinvScore Sort (inverted order) Hit objects by Score 
 **         element.
-** @attr   embHitsOverlap Checks for overlap between two Hit objects.
-** @other  embHitlistRead
+** @use    embHitsOverlap Checks for overlap between two Hit objects.
+** @other  embHitlistRead Read a hitlist object from a file
 ** @other  embSignatureReadNew Read signature from file & constructor for 
 **         object.
 ** @other  embSignatureWrite Write signature to file.
@@ -176,28 +173,17 @@ typedef struct AjSHit
 **
 ** Variables are described below:
 ** @attr  Class         [AjPStr]    SCOP classification.
-** @attr  Fold;         [AjPStr]    SCOP classification.
-** @attr  Superfamily;  [AjPStr]    SCOP classification.
-** @attr  Family;       [AjPStr]    SCOP classification.
-** @attr  Model;        [AjPStr]    SCOP classification.
-** @attr  Sunid_Family; [ajint]     SCOP sunid for family. 
-** @attr  Priority;     [AjBool]    True if the Hitlist is high priority. 
+** @attr  Fold         [AjPStr]    SCOP classification.
+** @attr  Superfamily  [AjPStr]    SCOP classification.
+** @attr  Family       [AjPStr]    SCOP classification.
+** @attr  Model        [AjPStr]    SCOP classification.
+** @attr  Sunid_Family [ajint]     SCOP sunid for family. 
+** @attr  Priority     [AjBool]    True if the Hitlist is high priority. 
 ** @attr  N             [ajint]     No. of hits. 
-** @attr  hits;         [AjPhHit*]  Array of hits. 
+** @attr  hits         [AjPHit*]  Array of hits. 
 **
 ** AjPHitlist is implemented as a pointer to a C data structure.
 **
-** 
-** Functions that use this object are described below:
-** @new
-** @delete
-** @ass
-** @mod
-** @use 
-** @attr
-** @cast
-** @other
-** @io
 ** 
 **
 ** @alias AjSHitlist
@@ -238,17 +224,6 @@ typedef struct AjSHitlist
 ** AjPSigpos is implemented as a pointer to a C data structure.
 **
 ** 
-** Functions that use this object are described below:
-** @new
-** @delete
-** @ass
-** @mod
-** @use 
-** @attr
-** @cast
-** @other
-** @io
-** 
 **
 ** @alias AjSSigpos
 ** @alias AjOSigpos
@@ -276,8 +251,8 @@ typedef struct AJSSigpos
 ** the gap arrays (gsiz and grfq) being filled in order of increasing gap 
 ** size.
 **
+** AjPSigdat is implemented as a pointer to a C data structure.
 **
-** Variables are described below:
 ** @attr  nres [ajint]    No. diff. types of residue
 ** @attr  rids [AjPChar]  Residue id's 
 ** @attr  rfrq [AjPInt]   Residue frequencies 
@@ -287,20 +262,6 @@ typedef struct AJSSigpos
 ** @attr  gfrq [AjPInt]   Frequencies of gaps of each size
 ** @attr  wsiz [ajint]    Window size for this gap 
 **
-** AjPSigdat is implemented as a pointer to a C data structure.
-**
-** 
-** Functions that use this object are described below:
-** @new
-** @delete
-** @ass
-** @mod
-** @use 
-** @attr
-** @cast
-** @other
-** @io
-** 
 **
 ** @alias AjSSigdat
 ** @alias AjOSigdat
@@ -326,8 +287,8 @@ typedef struct AJSSigdat
 **
 ** Ajax Signature object.
 **
+** AjPSignature is implemented as a pointer to a C data structure.
 **
-** Variables are described below:
 ** @attr  Class        [AjPStr]      SCOP classification.
 ** @attr  Fold         [AjPStr]      SCOP classification.
 ** @attr  Superfamily  [AjPStr]      SCOP classification.
@@ -337,21 +298,6 @@ typedef struct AJSSigdat
 ** @attr  pos          [AjPSigpos*]  Array of derived data for puropses of 
 **                                   alignment.
 ** @attr  dat          [AjPSigdat*]  Array of empirical data.
-**
-** AjPSignature is implemented as a pointer to a C data structure.
-**
-** 
-** Functions that use this object are described below:
-** @new
-** @delete
-** @ass
-** @mod
-** @use 
-** @attr
-** @cast
-** @other
-** @io
-** 
 **
 ** @alias AjSSignature
 ** @alias AjOSignature
@@ -381,7 +327,7 @@ AjPSignature  embSignatureNew(ajint n);
 void          embSignatureDel(AjPSignature *ptr);
 AjPSignature  embSignatureReadNew(AjPFile inf);
 AjBool        embSignatureWrite(AjPFile outf, AjPSignature obj);
-AjBool        embSignatureCompile(AjPSignature *S, float gapo, float gape, 	
+AjBool        embSignatureCompile(AjPSignature *S, float gapo, float gape,
 				  AjPMatrixf matrix);
 AjBool        embSignatureAlignSeq(AjPSignature S, AjPSeq seq, AjPHit *hit, 
 				   ajint nterm);

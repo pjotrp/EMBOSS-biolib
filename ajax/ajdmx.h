@@ -51,6 +51,31 @@ extern "C"
 ** @alias AjSScophit
 ** @alias AjOScophit
 **
+** @attr Class [AjPStr] Class name
+** @attr Fold [AjPStr] Fold name
+** @attr Superfamily [AjPStr] Superfamily name
+** @attr Family [AjPStr] Family name
+** @attr Sunid_Family [ajint] SCOP sunid for family
+** @attr Seq [AjPStr] Sequence as string
+** @attr Start [ajint] Start of sequence or signature alignment 
+**			     relative to full length swissprot sequence
+** @attr End [ajint] End of sequence or signature alignment relative 
+**			     to full length swissprot sequence
+** @attr Acc [AjPStr] Accession number of sequence entry
+** @attr Spr [AjPStr] Swissprot code of sequence entry
+** @attr Typeobj [AjPStr] Bibliographic information ... objective
+** @attr Typesbj [AjPStr] Bibliographic information ... subjective
+** @attr Model [AjPStr] String for model type (HMM, Gribskov etc)
+** @attr Group [AjPStr] 'REDUNDANT' or 'NON_REDUNDANT'
+** @attr Rank [ajint] Rank order of hit
+** @attr Score [float] Score of hit
+** @attr Eval [float] E-value of hit
+** @attr Pval [float] p-value of hit
+** @attr Alg [AjPStr] Alignment, e.g. of a signature to the sequence
+** @attr Target [AjBool] True if the Scophit is targetted for removal 
+**			     from a list of Scophit objects
+** @attr Target2 [AjBool] Also used for garbage collection
+** @attr Priority [AjBool] True if the Scop hit is high priority
 ** @@
 ****************************************************************************/
 
@@ -60,28 +85,24 @@ typedef struct AjSScophit
     AjPStr    Fold;
     AjPStr    Superfamily;
     AjPStr    Family;
-    ajint     Sunid_Family; /* SCOP sunid for family */
-    AjPStr    Seq;	  /* Sequence as string */
-    ajint     Start;      /* Start of sequence or signature alignment 
-			     relative to full length swissprot sequence */
-    ajint     End;        /* End of sequence or signature alignment relative 
-			     to full length swissprot sequence */
-    AjPStr    Acc;        /* Accession number of sequence entry  */
-    AjPStr    Spr;        /* Swissprot code of sequence entry */
-    AjPStr    Typeobj;    /* Bibliographic information ... objective*/ 
-    AjPStr    Typesbj;    /* Bibliographic information ... subjective */ 
-    AjPStr    Model;      /* String for model type (HMM, Gribskov etc) */
-    AjPStr    Group;      /* 'REDUNDANT' or 'NON_REDUNDANT' */
-    ajint     Rank;       /* Rank order of hit */	
-    float     Score;      /* Score of hit */
-    float     Eval;       /* E-value of hit */
-    float     Pval;       /* p-value of hit */
-    AjPStr    Alg;        /* Alignment, e.g. of a signature to the 
-			     sequence */
-    AjBool    Target;     /* True if the Scophit is targetted for removal 
-			     from a list of Scophit objects */
-    AjBool    Target2;    /* Also used for garbage collection */
-    AjBool    Priority;   /* True if the Scop hit is high priority. */
+    ajint     Sunid_Family;
+    AjPStr    Seq;
+    ajint     Start;
+    ajint     End;
+    AjPStr    Acc;
+    AjPStr    Spr;
+    AjPStr    Typeobj;
+    AjPStr    Typesbj;
+    AjPStr    Model;
+    AjPStr    Group;
+    ajint     Rank;
+    float     Score;
+    float     Eval;
+    float     Pval;
+    AjPStr    Alg;
+    AjBool    Target;
+    AjBool    Target2;
+    AjBool    Priority;
 } AjOScophit, *AjPScophit;
 
 
@@ -100,6 +121,19 @@ typedef struct AjSScophit
 ** @alias AjSScopalg
 ** @alias AjOScopalg
 **
+** @attr Class [AjPStr] Class name
+** @attr Fold [AjPStr] Fold name
+** @attr Superfamily [AjPStr] Superfamily name
+** @attr Family [AjPStr] Family name
+** @attr Sunid_Family [ajint] SCOP sunid for family
+** @attr width [ajint] Width (residues) of widest part of alignment
+** @attr N [ajint] No. of sequences in alignment
+** @attr Codes [AjPStr*] Array of domain id codes of sequences
+** @attr Seqs [AjPStr*] Array of sequences
+** @attr Post_similar [AjPStr] Post_similar line from alignment
+** @attr Positions [AjPStr] Array of integers from 'Position' line in 
+**			      alignment, used for manual specification of 
+**			      signature positions
 ** @@
 ****************************************************************************/
 typedef struct AjSScopalg
@@ -108,15 +142,13 @@ typedef struct AjSScopalg
     AjPStr   Fold;
     AjPStr   Superfamily;
     AjPStr   Family;
-    ajint    Sunid_Family; /* SCOP sunid for family */
-    ajint    width;        /* Width (residues) of widest part of alignment */
-    ajint    N;            /* No. of sequences in alignment */
-    AjPStr  *Codes;        /* Array of domain id codes of sequences */
-    AjPStr  *Seqs;         /* Array of sequences */
-    AjPStr   Post_similar; /* Post_similar line from alignment */
-    AjPStr   Positions;    /* Array of integers from 'Position' line in 
-			      alignment, used for manual specification of 
-			      signature positions */
+    ajint    Sunid_Family;
+    ajint    width;
+    ajint    N;
+    AjPStr  *Codes;
+    AjPStr  *Seqs;
+    AjPStr   Post_similar;
+    AjPStr   Positions;
 } AjOScopalg, *AjPScopalg;
 
 

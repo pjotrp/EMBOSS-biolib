@@ -296,14 +296,15 @@ void ajDmxScopalgDel(AjPScopalg *pthis)
 ** Read a list of Scophit structures and returns a pointer to a duplicate 
 ** of the list. 
 ** 
-** @param [r] ptr  [AjPList]  List of Scophit objects
+** @param [r] ptr [AjPList]  List of Scophit objects
 **
 ** @return [AjPList] True on success (list was duplicated ok)
 ** @@
+**
+** Should modify this eventually to fit "standard" method for assignment
+** functions, i.e. pass in the pointer as the first argument
+**
 ****************************************************************************/
-
-/* Should modify this eventually to fit "standard" method for assignment 
-   functions, i.e. pass in the pointer as the first argument */
 
 AjPList ajDmxScophitListCopy(AjPList ptr)
 {

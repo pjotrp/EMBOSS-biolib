@@ -101,13 +101,13 @@ extern "C"
 **         equivalent swissprot identifier code.
 ** @use    embScopToAcc  Read a scop identifier code and writes the 
 **         equivalent accession number.
-** @attr   ajScopArrFindScopid Binary search for Entry element over array 
+** @use    ajScopArrFindScopid Binary search for Entry element over array 
 **         of Scop objects. 
-** @attr   ajScopArrFindSunid Binary search for Sunid_Family element over 
+** @use    ajScopArrFindSunid Binary search for Sunid_Family element over 
 **         array of Scop objects. 
-** @attr   ajScopArrFindPdbid Binary search for Pdb element over array of
+** @use    ajScopArrFindPdbid Binary search for Pdb element over array of
 **         Scop objects. 
-** @attr   ajCathArrFindPdbid Binary search for Pdb element over array of
+** @use    ajCathArrFindPdbid Binary search for Pdb element over array of
 **         Cath objects. 
 ** @other  ajScopReadAllNew Construct list of Scop objects from reading dcf
 **         format file.
@@ -170,8 +170,6 @@ typedef struct AjSScop
 **
 ** Holds cath database data
 **
-**
-** Variables are described below:
 ** @attr DomainID       [AjPStr]  Domain identifer code        
 ** @attr Pdb            [AjPStr]  Corresponding pdb identifer code
 ** @attr Class          [AjPStr]  CATH class name as an AjPStr
@@ -190,19 +188,6 @@ typedef struct AjSScop
 ** @attr Family_Id      [ajint]   CATH family no. as an ajint 
 ** @attr NIFamily_Id    [ajint]   CATH near identical family no. as an ajint 
 ** @attr IFamily_Id     [ajint]   CATH identical family no. as an ajint 
-**
-** 
-** Functions that use this object are described below:
-** @new
-** @delete
-** @ass
-** @mod
-** @use 
-** @attr
-** @cast
-** @other
-** @io
-** 
 **
 ** @alias AjSCath
 ** @alias AjOCath
@@ -223,7 +208,7 @@ typedef struct AjSCath
     char    Chain;          
     
     ajint   NSegment;       
-    AjPStr *Start;        /* String used instead of int as need to use '.' */      
+    AjPStr *Start;
     AjPStr *End;          
     
     ajint   Class_Id;        

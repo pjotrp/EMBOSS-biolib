@@ -45,30 +45,28 @@
 /* ============================ private data ============================= */
 /* ======================================================================= */
 
-/* @data AjPScopcla ********************************************************
+/* @datastatic AjPScopcla *****************************************************
 **
-** Nucleus Scopcla object.
+** local Scopcla object.
 **
 ** Holds scop database data from raw file (dir.cla.scop.txt from SCOP authors)
 **
-** The variables have the following meaning:
-**
-**  AjPStr Entry           Domain identifer code. 
-**  AjPStr Pdb             Corresponding pdb identifier code.
-**  AjPStr Sccs            Scop compact classification string.
-**  ajint  Class           SCOP sunid for class 
-**  ajint  Fold            SCOP sunid for fold 
-**  ajint  Superfamily     SCOP sunid for superfamily 
-**  ajint  Family          SCOP sunid for family 
-**  ajint  Domain          SCOP sunid for domain   
-**  ajint  Source          SCOP sunid for species 
-**  ajint  Domdat          SCOP sunid for domain data
-**  ajint  N               No. chains from which this domain is comprised 
-**  char   *Chain          Chain identifiers 
-**  AjPStr *Start          PDB residue number of first residue in domain 
-**  AjPStr *End            PDB residue number of last residue in domain 
-**
 ** AjPScopcla is implemented as a pointer to a C data structure.
+**
+** @attr Entry [AjPStr]      Domain identifer code. 
+** @attr Pdb [AjPStr]        Corresponding pdb identifier code.
+** @attr Sccs [AjPStr]       Scop compact classification string.
+** @attr Class [ajint]       SCOP sunid for class 
+** @attr Fold[ajint]         SCOP sunid for fold 
+** @attr Superfamily [ajint] SCOP sunid for superfamily 
+** @attr Family [ajint]      SCOP sunid for family 
+** @attr Domain [ajint]      SCOP sunid for domain   
+** @attr Source [ajint]      SCOP sunid for species 
+** @attr Domdat [ajint]      SCOP sunid for domain data
+** @attr N [ajint]           No. chains from which this domain is comprised 
+** @attr Chain [char*]       Chain identifiers 
+** @attr Start [AjPStr*]     PDB residue number of first residue in domain 
+** @attr End [AjPStr*]       PDB residue number of last residue in domain 
 **
 ** @alias AjSScopcla
 ** @alias AjOScopcla
@@ -100,23 +98,21 @@ typedef struct AjSScopcla
 
 
 
-/* @data AjPScopdes ********************************************************
+/* @datastatic AjPScopdes *****************************************************
 **
 ** Nucleus Scopdes object.
 **
 ** Holds SCOP database data from raw file (dir.des.scop.txt from SCOP authors)
 **
-** The variables have the following meaning:
-**
-**  ajint  Sunid    SCOP sunid for node.
-**  AjPStr Type     Type of node, either 'px' (domain data), 'cl' (class),
-**                  'cf' (fold), 'sf' (superfamily), 'fa' (family), 'dm' 
-**                  (domain) or 'sp' (species).
-**  AjPStr Sccs     Scop compact classification string.
-**  AjPStr Entry    Domain identifer code (or '-' if Type!='px').
-**  AjPStr Desc     Description in english of the node.
-**
 ** AjPScopdes is implemented as a pointer to a C data structure.
+**
+** @attr Sunid [ajint]  SCOP sunid for node.
+** @attr Type [AjPStr]  Type of node, either 'px' (domain data), 'cl' (class),
+**                      'cf' (fold), 'sf' (superfamily), 'fa' (family), 'dm' 
+**                      (domain) or 'sp' (species).
+** @attr Sccs [AjPStr]  Scop compact classification string.
+** @attr Entry [AjPStr] Domain identifer code (or '-' if Type!='px').
+** @attr Desc [AjPStr]  Description in english of the node.
 **
 ** @alias AjSScopdes
 ** @alias AjOScopdes
@@ -137,7 +133,7 @@ typedef struct AjSScopdes
 
 
 
-/*@data AjPCathDom**********************************************************
+/*@datastatic AjPCathDom*******************************************************
 **
 ** Nucleus CathDom object
 **
@@ -146,10 +142,10 @@ typedef struct AjSScopdes
 **
 ** The variables have the following meaning:
 **
-**  AjPStr DomainID 	   ID for protein containing 2 or more domains
-**  AjPStr *Start 	   PDB residue number of first residue in segment
-**  AjPStr *End 	   PDB residue number of last residue in segment
-**  ajint  NSegment 	   No. of chain segments domain is comprised of
+** @attr DomainID [AjPStr] ID for protein containing 2 or more domains
+** @attr Start [AjPStr*]   PDB residue number of first residue in segment
+** @attr End [AjPStr*]      PDB residue number of last residue in segment
+** @attr NSegment [ajint]  No. of chain segments domain is comprised of
 **  
 **  @alias AjSCathDom
 **  @alias AjOCathDom
@@ -169,7 +165,7 @@ typedef struct AjSCathDom
 
 
 
-/*@data AjPCathName*********************************************************
+/*@datastatic AjPCathName******************************************************
 **
 ** Nucleus CathName object
 **
@@ -178,8 +174,8 @@ typedef struct AjSCathDom
 **
 ** The variables have the following meaning:
 **
-**  AjPStr Id 	           Classification Id 
-**  AjPStr Desc 	   Description of level in CATH hierarchy
+** @attr Id [AjPStr]   Classification Id 
+** @attr Desc [AjPStr] Description of level in CATH hierarchy
 **  
 **  @alias AjSCathName
 **  @alias AjOCathName
@@ -773,7 +769,7 @@ static ajint domainScopdesCompSunid(const void *scop1, const void *scop2)
 ** case-insensitive search.
 **
 ** @param [r] id  [AjPStr]       Search term
-** @param [r] arr [AjPCathDom*] Array of CathDom objects
+** @param [r] arr [AjPCathName*] Array of CathName objects
 ** @param [r] siz [ajint]        Size of array
 **
 ** @return [ajint] Index of first CathName object found with an CATH Id code
@@ -901,7 +897,7 @@ static AjPCathDom domainCathDomNew(ajint nsegments)
 **
 ** Destructor for CathDom object. 
 **
-** @param [w] ptr [AjPCathDom*] 
+** @param [w] ptr [AjPCathDom*] Cathdom object
 **
 ** @return [void] 
 ** @@
@@ -2460,10 +2456,10 @@ AjPList  ajCathReadAllNew(AjPFile inf)
 ** Reads the CATH parsable files (dir.cla.scop.txt & dir.des.scop.txt) and 
 ** writes a list of Cath objects.
 **
-** @param [r] cathf   [AjPFile] 
-** @param [r] domf    [AjPFile]  
-** @param [r] namesf  [AjPFile]  
-** @param [r] logf    [AjPFile]  
+** @param [r] cathf   [AjPFile] Cath class file
+** @param [r] domf    [AjPFile] Cath domain file
+** @param [r] namesf  [AjPFile] Output file
+** @param [r] logf    [AjPFile] Log file
 **
 ** @return [AjPList] List of Scop objects.
 ** @@
@@ -3430,11 +3426,11 @@ AjPList  ajScopReadAllNew(AjPFile inf)
 /* @func ajScopReadAllRawNew ***********************************************
 **
 ** Reads the SCOP parsable files (dir.cla.scop.txt & dir.des.scop.txt) and 
-** writes a list of Scop objects.
+** creates a list of Scop objects.
 **
-** @param [r] claf      [AjPFile] 
-** @param [r] desf      [AjPStr]  
-** @param [r] outputall [AjPStr]  
+** @param [r] claf      [AjPFile] Scop class file
+** @param [r] desf      [AjPFile] Scop description file
+** @param [r] outputall [AjBool] Output all chains
 **
 ** @return [AjPList] List of Scop objects.
 ** @@

@@ -32,7 +32,7 @@
 /* ============================ private data ============================= */
 /* ======================================================================= */
 
-/* @data EmbPHitidx *********************************************************
+/* @datastatic EmbPHitidx *****************************************************
 **
 ** Nucleus Hitidx object.
 **
@@ -43,17 +43,20 @@
 ** @alias EmbSHitidx
 ** @alias EmbOHitidx
 **
+** @attr Id [AjPStr] Identifier
+** @attr hptr [AjPHit] Pointer to AjPHit structure
+** @attr lptr [AjPHitlist]Pointer to AjPHitlist structure 
 ** @@
 ****************************************************************************/
 typedef struct EmbSHitidx
 {  
-    AjPStr      Id;        /* Identifier */  
-    AjPHit      hptr;      /* Pointer to AjPHit structure*/
-    AjPHitlist  lptr;      /* Pointer to AjPHitlist structure*/
+    AjPStr      Id;
+    AjPHit      hptr;
+    AjPHitlist  lptr;
 }EmbOHitidx, *EmbPHitidx;
 
 
-/* @data EmbPSigcell ********************************************************
+/* @datastatic EmbPSigcell ****************************************************
 **
 ** Nucleus Sigcell object.
 **
@@ -64,13 +67,16 @@ typedef struct EmbSHitidx
 ** @alias EmbSSigcell
 ** @alias EmbOSigcell
 **
+** @attr val [float] Value for this cell
+** @attr prev [ajint] Index in path matrix of prev. highest value
+** @attr visited [AjBool] ajTrue if this cell has been visited
 ** @@
 ****************************************************************************/
 typedef struct EmbSSigcell
 {
-    float  val;            /* Value for this cell */
-    ajint  prev;           /* Index in path matrix of prev. highest value */
-    AjBool visited;        /* == ajTrue if this cell has been visited */
+    float  val;
+    ajint  prev;
+    AjBool visited;
 } EmbOSigcell, *EmbPSigcell;
 
 

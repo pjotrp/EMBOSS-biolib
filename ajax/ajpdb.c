@@ -168,7 +168,7 @@ AjPChain ajChainNew(void)
 ** is required. This is normally called by the functions that read PDB 
 ** files or clean coordinate files (see embpdb.c & embpdbraw.c).
 **
-** @param [r] chains [ajint] Number of chains in this pdb file
+** @param [r] n [ajint] Number of chains in this pdb file
 **
 ** @return [AjPPdb] Pointer to a pdb object
 ** @@
@@ -847,8 +847,8 @@ AjBool ajAtomCopy(AjPAtom *to, AjPAtom from)
 ** Read a list of Atom structures and writes a copy of the list.  The 
 ** data are copied and the list is created if necessary.
 ** 
-** @param [r] from     [AjPList]   List of Atom objects to read
 ** @param [w] to       [AjPList *] List of Atom objects to write
+** @param [r] from     [AjPList]   List of Atom objects to read
 **
 ** @return [AjBool] True if list was copied ok.
 ** @@
@@ -3211,7 +3211,7 @@ AjPCmap ajCmapReadNew(AjPFile inf, ajint mode, ajint chn, ajint mod)
 **  (1) http://www.expasy.ch/cgi-bin/lists?pdbtosp.txt
 ** and returns the data as a list of Pdbtosp objects. 
 **
-** @param [r] inf    [AjPFile]     
+** @param [r] inf [AjPFile] Input file  
 **
 ** @return [AjPList] List of Pdbtosp objects. 
 ** @@
@@ -3525,8 +3525,8 @@ AjPList  ajPdbtospReadAllNew(AjPFile inf)
 ** and writes the list out to file in embl-like format (see 
 ** documentation for DOMAINATRIX "pdbtosp" application).
 **
-** @param [r] out   [AjPFile]     
-** @param [r] list  [AjPList]     
+** @param [r] outf  [AjPFile] Output file   
+** @param [r] list  [AjPList] List of Pdbtosp objects   
 **
 ** @return [AjBool] True of file was written ok.
 ** @@

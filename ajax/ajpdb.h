@@ -44,9 +44,10 @@ extern "C"
 **
 ** Holds protein atom data
 **
+** AjPAtom is implemented as a pointer to a C data structure.
 **
 ** Variables are described below:
-** Variables for coordinate and related data.
+** 
 ** @attr  Mod     [ajint]  Model number.
 ** @attr  Chn     [ajint]  Chain number. 
 ** @attr  Gpn     [ajint]  Group number. 
@@ -87,7 +88,6 @@ extern "C"
 **                              STRIDE).
 **
 ** 
-** Variables for data derived by using the NACCESS program.
 ** @attr  all_abs   [float]  Absolute accessibility, all atoms. 
 ** @attr  all_rel   [float]  Relative accessibility, all atoms. 
 ** @attr  side_abs  [float]  Absolute accessibility, atoms in sidechain. 
@@ -157,14 +157,14 @@ extern "C"
 **          accession number.
 ** @use     embPdbidToScop Writes a list of scop identifier codes for the 
 **          domains that a Pdb object contains.
-** @attr    ajPdbChnidToNum Finds the chain number for a given chain 
+** @use    ajPdbChnidToNum Finds the chain number for a given chain 
 **          identifier.
-** @attr    ajPdbtospArrFindPdbid Binary search for Pdb element over array
+** @use     ajPdbtospArrFindPdbid Binary search for Pdb element over array
 **          of Pdbtosp objects. 
-** @attr    embPdbToIdx Reads a Pdb object and writes an integer which gives
+** @use    embPdbToIdx Reads a Pdb object and writes an integer which gives
 **          the index into the protein sequence for a residue with a 
 **          specified pdb residue number and a specified chain number.
-** @attr    embVdwRad Returns the van der Waals radius of an atom.
+** @use    embVdwRad Returns the van der Waals radius of an atom.
 ** @other   ajPdbWriteDomainRecordRaw Writes lines to a pdb format file for 
 **          a domain.
 ** @other   ajPdbWriteRecordRaw Writes lines to a pdb format file for a
@@ -203,8 +203,6 @@ extern "C"
 ** 
 ** 
 ** 
-**
-** AjPAtom is implemented as a pointer to a C data structure.
 **
 ** @alias AjSAtom
 ** @alias AjOAtom
@@ -262,6 +260,8 @@ typedef struct AjSAtom
 **
 ** Holds protein chain data
 **
+** AjPChain is implemented as a pointer to a C data structure.
+**
 **
 ** Variables are described below:
 ** @attr  Id          [char]     Chain id, ('.' if one wasn't specified in 
@@ -281,19 +281,6 @@ typedef struct AjSAtom
 **                               associated with a chain.
 **
 ** 
-** Functions that use this object are described below:
-** @new
-** @delete
-** @ass
-** @mod
-** @use 
-** @attr
-** @cast
-** @other
-** @io
-** 
-**
-** AjPChain is implemented as a pointer to a C data structure.
 **
 ** @alias AjSChain
 ** @alias AjOChain
@@ -322,6 +309,8 @@ typedef struct AjSChain
 **
 ** Holds arrays describing pdb data
 **
+** AjPPdb is implemented as a pointer to a C data structure.
+**
 **
 ** Variables are described below:
 ** @attr  Pdb     [AjPStr]  PDB code.
@@ -331,7 +320,7 @@ typedef struct AjSChain
 ** @attr  Reso    [float]   Resolution of an XRAY structure or 0. 
 ** @attr  Nmod    [ajint]   No. of models (always 1 for XRAY structures).
 ** @attr  Nchn    [ajint]   No. polypeptide chains.
-** @attr  Chains  [AjPStr]  Array of pointers to AjSChain structures.
+** @attr  Chains  [AjPChain*]  Array of pointers to AjSChain structures.
 ** @attr  Ngp     [ajint]   No. groups that could not be uniquely 
 **                          associated with a chain in the SEQRES records.
 ** @attr  gpid    [AjPChar] Array of chain (group) id's for groups that 
@@ -340,20 +329,6 @@ typedef struct AjSChain
 **                          be uniquely associated with a chain.
 ** @attr  Water   [AjPList] List of Atom objects for water molecules.
 **
-** AjPPdb is implemented as a pointer to a C data structure.
-**
-** 
-** Functions that use this object are described below:
-** @new
-** @delete
-** @ass
-** @mod
-** @use 
-** @attr
-** @cast
-** @other
-** @io
-** 
 ** 
 ** @alias AjSPdb
 ** @alias AjOPdb
@@ -387,6 +362,8 @@ typedef struct AjSPdb
 **
 ** Holds a single entry from a dictionary of heterogen groups.
 **
+** AjPHetent is implemented as a pointer to a C data structure.
+**
 **
 ** Variables are described below:
 ** @attr  abv [AjPStr]  3-letter abbreviation of heterogen.
@@ -396,20 +373,6 @@ typedef struct AjSPdb
 **                      directory.
 ** 
 ** 
-** Functions that use this object are described below:
-** @new
-** @delete
-** @ass
-** @mod
-** @use 
-** @attr
-** @cast
-** @other
-** @io
-**
-** 
-** AjPHetent is implemented as a pointer to a C data structure.
-**
 ** @alias AjSHetent
 ** @alias AjOHetent
 **
@@ -432,25 +395,11 @@ typedef struct AjSHetent
 ** Ajax Het object.
 ** Holds a dictionary of heterogen groups.
 **
+** AjPHet is implemented as a pointer to a C data structure.
 **
 ** Variables are described below:
 ** @attr  n        [ajint]     Number of entries.
-** @attr  entries  [AjPHetent] Array of entries. 
-**
-** AjPHet is implemented as a pointer to a C data structure.
-**
-** 
-** Functions that use this object are described below:
-** @new
-** @delete
-** @ass
-** @mod
-** @use 
-** @attr
-** @cast
-** @other
-** @io
-** 
+** @attr  entries  [AjPHetent*] Array of entries. 
 **
 ** @alias AjSHet
 ** @alias AjOHet
@@ -473,28 +422,15 @@ typedef struct AjSHet
 **
 ** Holds the Van der Waals radius for atoms in a residue 
 **
-** Variables are described below:
+** AjPVdwres is implemented as a pointer to a C data structure.
+**
 ** @attr  Id1  [char]   Standard residue identifier or 'X' for unknown.
 ** @attr  Id3  [AjPStr] 3 character residue identifier.
 ** @attr  N    [ajint]  Nummber of atoms in residue. 
-** @attr  Atm  [AjPStr] Array of atom identifiers.
-** @attr  Rad  [float]  Array of van der Waals radii.
+** @attr  Atm  [AjPStr*] Array of atom identifiers.
+** @attr  Rad  [float*]  Array of van der Waals radii.
 ** 
-** AjPVdwres is implemented as a pointer to a C data structure.
-**
 ** 
-** Functions that use this object are described below:
-** @new
-** @delete
-** @ass
-** @mod
-** @use 
-** @attr
-** @cast
-** @other
-** @io
-** 
-**
 ** @alias AjSVdwres
 ** @alias AjOVdwres
 **
@@ -519,25 +455,11 @@ typedef struct AjSVdwres
 **
 ** Holds the Van der Waals radii for all types of protein atoms
 **
-** Variables are described below:
-** @attr  N    [ajint]      Number of residues.
-** @attr  Res  [AjPVdwres]  Array of Vdwres structures.
-** 
 ** AjPVdwall is implemented as a pointer to a C data structure.
 **
+** @attr  N    [ajint]      Number of residues.
+** @attr  Res  [AjPVdwres*]  Array of Vdwres structures.
 ** 
-** Functions that use this object are described below:
-** @new
-** @delete
-** @ass
-** @mod
-** @use 
-** @attr
-** @cast
-** @other
-** @io
-** 
-**
 ** @alias AjSVdwall
 ** @alias AjOVdwall
 **
@@ -559,28 +481,14 @@ typedef struct AjSVdwall
 **
 ** Holds a contact map and associated data for a protein domain / chain.
 **
-** Variables are described below:
+** AjPCmap is implemented as a pointer to a C data structure.
+**
 ** @attr  Id    [AjPStr]   Protein id code. 
 ** @attr  Seq   [AjPStr]   The sequence of the domain or chain. 
 ** @attr  Mat   [AjPInt2d] Contact map. 
 ** @attr  Dim   [ajint]    Dimension of contact map. 
 ** @attr  Ncon  [ajint]    No. of contacts (1's in contact map). 
 ** 
-** AjPCmap is implemented as a pointer to a C data structure.
-**
-** 
-** Functions that use this object are described below:
-** @new
-** @delete
-** @ass
-** @mod
-** @use 
-** @attr
-** @cast
-** @other
-** @io
-** 
-**
 ** @alias AjSCmap
 ** @alias AjOCmap
 **
@@ -605,27 +513,13 @@ typedef struct AjSCmap
 **
 ** Holds swissprot codes and accession numbers for a PDB code.
 **
-** Variables are described below:
+** AjPPdbtosp is implemented as a pointer to a C data structure.
+**
 ** @attr  Pdb  [AjPStr]   PDB code
 ** @attr  n    [ajint]    No. entries for this pdb code 
 ** @attr  Acc  [AjPStr*]  Accession numbers 
 ** @attr  Spr  [AjPStr*]  Swissprot codes 
 ** 
-** AjPPdbtosp is implemented as a pointer to a C data structure.
-**
-** 
-** Functions that use this object are described below:
-** @new
-** @delete
-** @ass
-** @mod
-** @use 
-** @attr
-** @cast
-** @other
-** @io
-** 
-**
 ** @alias AjSPdbtosp
 ** @alias AjOPdbtosp
 **
