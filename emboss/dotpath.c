@@ -230,8 +230,13 @@ int main(int argc, char **argv)
 
 static void dotpath_drawPlotlines(void **x, void *cl)
 {
-    EmbPWordMatch p  = (EmbPWordMatch)*x;
-    PLFLT x1,y1,x2,y2;
+    EmbPWordMatch p;
+    PLFLT x1;
+    PLFLT y1;
+    PLFLT x2;
+    PLFLT y2;
+
+    p  = (EmbPWordMatch)*x;
 
     x1 = x2 = ((*p).seq1start)+1;
     y1 = y2 = (PLFLT)((*p).seq2start)+1;

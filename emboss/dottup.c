@@ -23,11 +23,14 @@
 
 #include "emboss.h"
 
+
+
+
 static void dottup_drawPlotlines(void **x, void *cl);
 static void dottup_plotMatches(AjPList list);
 static void dottup_stretchplot(AjPGraph graph, AjPList matchlist, AjPSeq seq1,
-			AjPSeq seq2, ajint begin1, ajint begin2, ajint end1,
-			ajint end2);
+			       AjPSeq seq2, ajint begin1, ajint begin2,
+			       ajint end1, ajint end2);
 
 
 
@@ -43,13 +46,15 @@ int main(int argc, char **argv)
     AjPSeq seq1;
     AjPSeq seq2;
     ajint wordlen;
-    AjPTable seq1MatchTable=0;
-    AjPList matchlist=NULL;
-    AjPGraph graph = NULL;
-    AjPGraph xygraph = NULL;
+    AjPTable seq1MatchTable = 0;
+    AjPList matchlist = NULL;
+    AjPGraph graph    = NULL;
+    AjPGraph xygraph  = NULL;
     AjBool boxit;
-    /* Different ticks as they need to be different for x and y due to
-       length of string being important on x */
+    /*
+    ** Different ticks as they need to be different for x and y due to
+    ** length of string being important on x
+    */
     ajint acceptableticksx[]=
     {
 	1,10,50,100,500,1000,1500,10000,
@@ -61,11 +66,14 @@ int main(int argc, char **argv)
 	500000,1000000,5000000
     };
     ajint numbofticks = 10;
-    float xmargin,ymargin;
-    float ticklen,tickgap;
-    float onefifth=0.0;
+    float xmargin;
+    float ymargin;
+    float ticklen;
+    float tickgap;
+    float onefifth = 0.0;
     ajint i;
-    float k,max;
+    float k;
+    float max;
     char ptr[10];
     ajint begin1;
     ajint begin2;
@@ -75,13 +83,13 @@ int main(int argc, char **argv)
 
     ajGraphInit("dottup", argc, argv);
 
-    wordlen = ajAcdGetInt ("wordsize");
-    seq1 = ajAcdGetSeq ("asequence");
-    seq2 = ajAcdGetSeq ("bsequence");
-    graph = ajAcdGetGraph ("graph");
-    boxit = ajAcdGetBool("boxit");
+    wordlen = ajAcdGetInt("wordsize");
+    seq1    = ajAcdGetSeq("asequence");
+    seq2    = ajAcdGetSeq("bsequence");
+    graph   = ajAcdGetGraph("graph");
+    boxit   = ajAcdGetBool("boxit");
     stretch = ajAcdGetBool("stretch");
-    xygraph = ajAcdGetGraphxy ("xygraph");
+    xygraph = ajAcdGetGraphxy("xygraph");
 
     begin1 = ajSeqBegin(seq1);
     begin2 = ajSeqBegin(seq2);
@@ -91,7 +99,7 @@ int main(int argc, char **argv)
     ajSeqTrim(seq1);
     ajSeqTrim(seq2);
 
-    embWordLength (wordlen);
+    embWordLength(wordlen);
     if(embWordGetTable(&seq1MatchTable, seq1))
 	matchlist = embWordBuildMatchTable(&seq1MatchTable, seq2, ajTrue);
 
@@ -106,7 +114,7 @@ int main(int argc, char **argv)
 	return 0;
     }
 
-    /* We get  here only if stretch is false */
+    /* only get here if stretch is false */
 
     max= ajSeqLen(seq1);
     if(ajSeqLen(seq2) > max)
@@ -117,90 +125,95 @@ int main(int argc, char **argv)
     ajGraphOpenWin(graph, 0.0-ymargin,(max*1.35)+ymargin,
 		   0.0-xmargin,(float)max+xmargin);
 
-    ajGraphTextMid (max*0.5,(ajSeqLen(seq2))+(xmargin*0.5),
-		    ajStrStr(graph->title));
+    ajGraphTextMid(max*0.5,(ajSeqLen(seq2))+(xmargin*0.5),
+		   ajStrStr(graph->title));
     ajGraphSetCharSize(0.5);
 
     if(matchlist)
 	dottup_plotMatches(matchlist);
+
     if(boxit)
     {
-	ajGraphRect( 0.0,0.0,(float)ajSeqLen(seq1),(float)ajSeqLen(seq2));
-	i=0;
+	ajGraphRect(0.0,0.0,(float)ajSeqLen(seq1),(float)ajSeqLen(seq2));
+	i = 0;
 	while(acceptableticksx[i]*numbofticks < ajSeqLen(seq1))
 	    i++;
 
 	if(i<=13)
 	    tickgap = acceptableticksx[i];
 	else
-	    /*	tickgap = acceptableticksx[13];  bugfixed AJB 26/7/00 */
 	    tickgap = acceptableticksx[10];
+
 	ticklen = xmargin*0.1;
 	onefifth  = xmargin*0.2;
-	ajGraphTextMid ((ajSeqLen(seq1))*0.5,0.0-(onefifth*3),
+	ajGraphTextMid((ajSeqLen(seq1))*0.5,0.0-(onefifth*3),
 			ajStrStr(graph->yaxis));
+
 	if(ajSeqLen(seq2)/ajSeqLen(seq1) > 10 )
-	{		     /* a lot smaller then just label start and end */
+	{
+	    /* a lot smaller then just label start and end */
 	    ajGraphLine(0.0,0.0,0.0,0.0-ticklen);
 	    sprintf(ptr,"%d",ajSeqOffset(seq1));
-	    ajGraphTextMid ( 0.0,0.0-(onefifth),ptr);
+	    ajGraphTextMid( 0.0,0.0-(onefifth),ptr);
 
 	    ajGraphLine((float)(ajSeqLen(seq1)),0.0,
 			(float)ajSeqLen(seq1),0.0-ticklen);
 	    sprintf(ptr,"%d",ajSeqLen(seq1)+ajSeqOffset(seq1));
-	    ajGraphTextMid ( (float)ajSeqLen(seq1),0.0-(onefifth),ptr);
+	    ajGraphTextMid((float)ajSeqLen(seq1),0.0-(onefifth),ptr);
 	    
 	}
 	else
-	{
 	    for(k=0.0;k<ajSeqLen(seq1);k+=tickgap)
 	    {
 		ajGraphLine(k,0.0,k,0.0-ticklen);
 		sprintf(ptr,"%d",(ajint)k+ajSeqOffset(seq1));
-		ajGraphTextMid ( k,0.0-(onefifth),ptr);
+		ajGraphTextMid( k,0.0-(onefifth),ptr);
 	    }
-	}
 
-
-	i=0;
+	i = 0;
 	while(acceptableticks[i]*numbofticks < ajSeqLen(seq2))
 	    i++;
 
-	tickgap = acceptableticks[i];
-	ticklen = ymargin*0.1;
+	tickgap   = acceptableticks[i];
+	ticklen   = ymargin*0.1;
 	onefifth  = ymargin*0.2;
 	ajGraphTextLine(0.0-(onefifth*4),(ajSeqLen(seq2))*0.5,
 			0.0-(onefifth*4),(float)ajSeqLen(seq2),
 			ajStrStr(graph->xaxis),0.5);
+
 	if(ajSeqLen(seq1)/ajSeqLen(seq2) > 10 )
-	{		    /* a lot smaller then just label start and end */
+	{
+	    /* a lot smaller then just label start and end */
 	    ajGraphLine(0.0,0.0,0.0-ticklen,0.0);
 	    sprintf(ptr,"%d",ajSeqOffset(seq2));
-	    ajGraphTextEnd ( 0.0-(onefifth),0.0,ptr);
+	    ajGraphTextEnd( 0.0-(onefifth),0.0,ptr);
 
 	    ajGraphLine(0.0,(float)ajSeqLen(seq2),0.0-ticklen,
 			(float)ajSeqLen(seq2));
 	    sprintf(ptr,"%d",ajSeqLen(seq2)+ajSeqOffset(seq2));
-	    ajGraphTextEnd ( 0.0-(onefifth),(float)ajSeqLen(seq2),ptr);
+	    ajGraphTextEnd( 0.0-(onefifth),(float)ajSeqLen(seq2),ptr);
 	}
 	else
-	{
 	    for(k=0.0;k<ajSeqLen(seq2);k+=tickgap)
 	    {
 		ajGraphLine(0.0,k,0.0-ticklen,k);
 		sprintf(ptr,"%d",(ajint)k+ajSeqOffset(seq2));
-		ajGraphTextEnd ( 0.0-(onefifth),k,ptr);
+		ajGraphTextEnd( 0.0-(onefifth),k,ptr);
 	    }
-	}
     }
+
     ajGraphClose();
 
     if(matchlist)
 	embWordMatchListDelete(&matchlist); /* free the match structures */
 
     ajExit();
+
     return 0;
 }
+
+
+
 
 #ifndef NO_PLOT
 
@@ -216,11 +229,17 @@ int main(int argc, char **argv)
 
 static void dottup_drawPlotlines(void **x, void *cl)
 {
-    EmbPWordMatch p  = (EmbPWordMatch)*x;
-    PLFLT x1,y1,x2,y2;
+    EmbPWordMatch p;
+    PLFLT x1;
+    PLFLT y1;
+    PLFLT x2;
+    PLFLT y2;
+
+    p  = (EmbPWordMatch)*x;
 
     x1 = x2 = ((*p).seq1start)+1;
     y1 = y2 = (PLFLT)((*p).seq2start)+1;
+
     x2 += (*p).length;
     y2 += (PLFLT)(*p).length;
 
@@ -253,9 +272,6 @@ static void dottup_plotMatches(AjPList list)
 
 
 
-
-
-
 /* @funcstatic dottup_stretchplot *********************************************
 **
 ** Undocumented.
@@ -273,19 +289,19 @@ static void dottup_plotMatches(AjPList list)
 ******************************************************************************/
 
 static void dottup_stretchplot(AjPGraph graph, AjPList matchlist, AjPSeq seq1,
-			AjPSeq seq2, ajint begin1, ajint begin2, ajint end1,
-			ajint end2)
+			       AjPSeq seq2, ajint begin1, ajint begin2,
+			       ajint end1, ajint end2)
 {
-    EmbPWordMatch wmp=NULL;
+    EmbPWordMatch wmp = NULL;
     float xa[1];
     float ya[2];
-    AjPGraphData gdata=NULL;
-    AjPStr tit=NULL;
+    AjPGraphData gdata = NULL;
+    AjPStr tit = NULL;
     float x1;
     float y1;
     float x2;
     float y2;
-    AjIList iter=NULL;
+    AjIList iter = NULL;
 
     tit = ajStrNew();
     ajFmtPrintS(&tit,"%S",graph->title);

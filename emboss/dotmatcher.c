@@ -337,13 +337,13 @@ int main(int argc, char **argv)
 	if(i<=13)
 	    tickgap = acceptableticksx[i];
 	else
-	    /*  tickgap = acceptableticksx[13]; bugfixed AJB 26/7/00 */
 	    tickgap = acceptableticksx[10];
 	ticklen   = xmargin*0.1;
 	onefifth  = xmargin*0.2;
 
 	if(ajSeqLen(seq2)/ajSeqLen(seq) > 10 )
-	{	      /* alot smaller then just label start and end */
+	{
+	    /* alot smaller then just label start and end */
 	    ajGraphLine(0.0,0.0,0.0,0.0-ticklen);
 	    sprintf(ptr,"%d",b1-1);
 	    ajGraphTextMid( 0.0,0.0-(onefifth),ptr);
@@ -371,7 +371,8 @@ int main(int argc, char **argv)
 	onefifth  = ymargin*0.02;
 
 	if(ajSeqLen(seq)/ajSeqLen(seq2) > 10 )
-	{	      /* alot smaller then just label start and end */
+	{
+	    /* alot smaller then just label start and end */
 	    ajGraphLine(0.0,0.0,0.0-ticklen,0.0);
 	    sprintf(ptr,"%d",b2-1);
 	    ajGraphTextEnd( 0.0-(onefifth),0.0,ptr);
