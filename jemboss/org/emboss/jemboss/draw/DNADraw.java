@@ -40,7 +40,7 @@ public class DNADraw extends ScrollPanel
                      DragSourceListener, DropTargetListener
 {
 
-  private static JScrollPane jsp;
+  public static JScrollPane jsp;
   private DNADraw current_dna;
 
   private Point location    = new Point(75,75);
