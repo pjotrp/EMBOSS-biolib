@@ -2513,7 +2513,12 @@ static AcdEStage acdStage(const AjPStr token)
 	i++;
     }
     if(ifound == 1)
+    {
+	if (acdDoValid)
+	    acdWarn("Ambiguous stage '%S'", token);
 	return j;
+    }
+
     if(ifound > 1)
     {					/* test ambigtype.acd */
 	acdError("ambiguous acd type %S (%S)", token, ambigList);
@@ -3783,7 +3788,11 @@ static AcdPAcd acdFindAssoc(const AcdPAcd thys, const AjPStr name,
 
 
     if(ifound == 1)
+    {
+	if (acdDoValid)
+	    acdWarn("Ambiguous associated qualifier '%S'", name);
 	return ret;
+    }
     if(ifound > 1)
     {
 	ajWarn("Ambiguous name/token '%S' (%S)", name, ambigList);
@@ -3841,8 +3850,11 @@ static AcdPAcd acdTestAssoc(const AcdPAcd thys, const AjPStr name,
     }
 
     if(ifound == 1)
+    {
+	if (acdDoValid)
+	    acdWarn("Ambiguous associated qualifier '%S'", name);
 	return ret;
-
+    }
     return NULL;
 }
 
@@ -9289,7 +9301,7 @@ static void acdSetSeqall(AcdPAcd thys)
 	okend = acdQualToSeqend(thys, "send", 0, &seqin->End, &tmpstr);
 	okrev = acdQualToBool(thys, "sreverse",
 			      ajFalse, &seqin->Rev, &tmpstr);
-	
+
 	if(snuc)
 	    ajSeqinSetNuc(seqin);
 	
@@ -9300,7 +9312,6 @@ static void acdSetSeqall(AcdPAcd thys)
 	    seqin->Features = ajTrue;
 	
 	ok = ajSeqAllRead(seq, seqin);
-
 	if(!ok)
 	    acdBadVal(thys, required,
 		      "Unable to read sequence '%S'", reply);
@@ -9320,7 +9331,7 @@ static void acdSetSeqall(AcdPAcd thys)
     if(seqin->Begin)
     {
 	okbeg = ajTrue;
-	val->Begin = seqin->Begin;
+	val->Begin = seq->Begin = seqin->Begin;
     }
     
     for(itry=acdPromptTry; itry && !okbeg; itry--)
@@ -9350,7 +9361,7 @@ static void acdSetSeqall(AcdPAcd thys)
     if(seqin->End)
     {
 	okend = ajTrue;
-	val->End = seqin->End;
+	val->End = seq->End = seqin->End;
     }
     
     for(itry=acdPromptTry; itry && !okend; itry--)
@@ -9382,7 +9393,7 @@ static void acdSetSeqall(AcdPAcd thys)
 	if(seqin->Rev)
 	{
 	    okrev = ajTrue;
-	    val->Rev = seqin->Rev;
+	    val->Rev = seq->Rev = seqin->Rev;
 	}
 
 	for(itry=acdPromptTry; itry && !okrev; itry--)
@@ -10638,6 +10649,8 @@ static void* acdGetValueNum(const char *token, const char* type, ajint pnum)
 	acdLog("found %S [%d] '%S'\n",
 	       ret->Name, ret->PNum, ret->ValStr);
 	ret->Used |= USED_GET;
+	if (acdDoValid)
+	    acdWarn("Ambiguous qualifier '%S'", token);
 	return ret->Value;
     }
 
@@ -12753,7 +12766,11 @@ static ajint acdFindAttr(const AcdPAttr attr, const AjPStr attrib)
     }
 
     if(ifound == 1)
+    {
+	if (acdDoValid)
+	    acdWarn("Ambiguous attribute '%S'", attrib);
 	return j;
+    }
 
     if(ifound > 1)
     {
@@ -12801,8 +12818,11 @@ static ajint acdFindAttrC(const AcdPAttr attr, const char* attrib)
 	}
 
     if(ifound == 1)
+    {
+	if (acdDoValid)
+	    acdWarn("Ambiguous attribute '%s'", attrib);
 	return j;
-
+    }
     if(ifound > 1)
     {
 	ajWarn("ambiguous attribute %s (%S)", attrib, ambigList);
@@ -14791,6 +14811,8 @@ static AjBool acdExpCase(AjPStr* result, const AjPStr str)
 		       testvar);
 	    }
 	    acdLog("%S ~= %S : '%S'\n", testvar, acdExpTmpstr, *result);
+	    if (acdDoValid)
+		acdWarn("Ambiguous case expression '%S'", testvar);
 	    return ajTrue;
 	}
 
@@ -15817,8 +15839,11 @@ static AcdPAcd acdFindItem(const AjPStr item, ajint number)
     }
 
     if(ifound == 1)
+    {
+	if (acdDoValid)
+	    acdWarn("Ambiguous item '%S'", item);
 	return ret;
-
+    }
     if(ifound > 1)
     {
 	ajWarn("ambiguous item %S (%S)", item, ambigList);
@@ -15951,6 +15976,8 @@ static AcdPAcd acdFindQual(const AjPStr qual, const AjPStr noqual,
 	acdListCurr = ret;
 	if(isparam)
 	    *iparam = ret->PNum;
+	if (acdDoValid)
+	    acdWarn("Ambiguous qualifier '%S'", qual);
 	return ret;
     }
 
@@ -16136,6 +16163,8 @@ static AcdPAcd acdFindQualMaster(const AjPStr qual, const AjPStr noqual,
     if(ifound == 1)
     {
 	acdListCurr = ret;
+	if (acdDoValid)
+	    acdWarn("Ambiguous associated qualifier '%S_%S'", qual, master);
 	return ret;
     }
 
@@ -16221,6 +16250,8 @@ static AcdPAcd acdFindQualAssoc(const AcdPAcd thys,
     if(ifound == 1)
     {
 	acdListCurr = ret;
+	if (acdDoValid)
+	    acdWarn("Ambiguous associated qualifier '%S'", qual);
 	return acdListCurr;
     }
 
