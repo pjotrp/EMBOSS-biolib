@@ -49,7 +49,7 @@ string: database
 [ 
       param: Y
       information: "Name of BLAST-indexed database to search"
-      def: "swissprot"
+      default: "swissprot"
 ]
 endsection: input
 
