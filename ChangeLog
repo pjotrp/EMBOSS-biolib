@@ -1,4 +1,40 @@
 Version 2.9.0
+	Optional outputs have a new behaviour. With nulldefault defined,
+	an output is, by default, turned off and will return a NULL value
+	to the calling program if nullok is set. Setting the value to ""
+	on the command lne will now ask for the standard filename to be
+	generated. The "missing" attribute, if defined, allows simply
+	-qualname on the commandline to request the default filename,
+	although care must be taken to avoid anything following the
+	qualifier appearing to be a filename. This means the qualifier
+	must be last on the commandline, or must be followed by another
+	qualifier.
+
+	Indexing programs dbifasta and dbiflat no longer store the source
+	directory in the division.lkp file - directory is specified in the
+	database definition. This was only done originally to share index
+	files with "efetch" at the Sanger Centre. With index files and
+	data files in the same direwctory (as for efetch) it is not needed.
+
+	All ACD files revised for new acdvalid checks.
+
+	New ACD section "additional" added for qualifiers with
+	additional:"Y" defined. These have been put in the "advanced"
+	section until now. Acdvalid checks that these qualidfiers are in
+	the appropriate section.
+
+	Acdvalid now checks that qualifiers are in the expected
+	section. All input qualifiers (including cfile and datafile) aer
+	now in the input section, all output qualifiers are in the output
+	section. All (remaining) standard, addional and advanced
+	qualifiers are in the "required" "additional" and "advanced"
+	sections.
+
+	New ACD type "toggle" added. This is the same as "boolean" but is
+	allowed in any section by "acdvalid" checks. Toggle is to be used
+	for ACD qualifiers that "toggle" (turn on or off) other
+	qualifiers. An example in many ACD files would be "-plot".
+	
 	Cirdna and lindna now dynamically allocate memory. For simplicity
 	they do still have an upper limit for the number of groups and
 	labels per group, but no longer have static arrays.
