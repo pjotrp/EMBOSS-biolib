@@ -549,11 +549,26 @@ Q) I am trying to compile PNG support into EMBOSS on our CTU Unix system.  This
  specific versions for our unix version?
 
 A) You should be able to compile them from the source on just about any
-Unix platform. 
+   Unix platform. 
 
   http://www.info-zip.org/pub/infozip/zlib/
   http://libpng.sourceforge.net/
   http://www.boutell.com/gd/
+
+
+Q) I get error messages when I try to display X11 on my PC.
+   I am running the Hummingbird Exceed X11 emulator.
+
+A) The Hummingbird Exceed X11 emulator (and maybe other systems) use the
+   'TrueColor' display by default. 
+   You should change the configuration settings so that it uses 'PseudoColor'.
+   In version 6.1 of Hummingbird Exceed, this is done by clicking on the
+   Exceed section of the Windows 98 tool bar at the bottom of the screen.
+   Select 'Tools', then 'Configuration', then Screen Definition.
+   A window will appear.
+   In the 'Server Visual' popup menu on the left, select 'PseudoColor'.
+   Click on 'OK'.
+
 
 
 
