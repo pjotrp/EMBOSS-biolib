@@ -116,12 +116,15 @@ int main(int argc, char **argv)
     seqout = ajAcdGetSeqoutall ("outseq");
     vec = ajAcdGetBool("vectorfile");
     besthits = ajAcdGetBool("besthits");
+    fiveprime = ajAcdGetString("linkerA");
+    threeprime = ajAcdGetString("linkerB");
+    vectorfile = ajAcdGetInfile("vectors");
+
     vectorlist = ajListNew();
 
     /* data from command line or file? */
     if(vec == AJTRUE)
     {
-	vectorfile = ajAcdGetInfile("vectors");
 	vectorstrip_read_vector_data(vectorfile, &vectorlist);
     }
     else
@@ -130,8 +133,6 @@ int main(int argc, char **argv)
 	AjPStr name = NULL;
 	name = ajStrNewC("no_name");
 
-	fiveprime = ajAcdGetString("linkerA");
-	threeprime = ajAcdGetString("linkerB");
 	vectorstrip_initialise_vector(&v, name, fiveprime, threeprime);
 	ajListPushApp (vectorlist, v);
 	ajStrDel(&name);
