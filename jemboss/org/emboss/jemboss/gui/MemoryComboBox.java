@@ -29,7 +29,12 @@ import java.util.Vector;
 import javax.swing.*;
 import javax.swing.event.*;
 
-
+/**
+*
+* Extends <code>JComboBox<code> to add and store new
+* elements
+*
+*/
 public class MemoryComboBox extends JComboBox 
 {
 
@@ -52,6 +57,12 @@ public class MemoryComboBox extends JComboBox
 
   }
 
+  /**
+  * 
+  * Add an element to the combobox
+  * @param item		element to add
+  *
+  */
   public void add(String item)
   {
     removeItem(item);
@@ -60,7 +71,6 @@ public class MemoryComboBox extends JComboBox
     if (getItemCount() > MAX_MEM_LEN)
       removeItemAt(getItemCount()-1);
   }
-
 
 }
 

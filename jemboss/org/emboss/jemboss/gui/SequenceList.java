@@ -442,7 +442,7 @@ class DragJTable extends JTable implements DragGestureListener,
   *
   * Determine if a row in the table contains a list file
   * @param row	row in the table
-  * @retrun 	true if row contains a list file
+  * @return 	true if row contains a list file
   *
   */
   public Boolean isListFile(int row)
