@@ -387,6 +387,8 @@ void ajListAppend(AjPList thys, AjPListNode morenodes)
 {
     AjPListNode more = morenodes;
         
+    assert (thys);
+
     listNodesTrace(morenodes);
 
     more->Next->Prev = thys->Last;
@@ -422,6 +424,8 @@ void ajListPushApp(AjPList thys, void* x)
        penultimate node, so we use the dummy node and make a new dummy node
        instead */
     AjPListNode tmp=NULL;
+
+    assert (thys);
 
     if(!thys->Count)
     {
@@ -700,6 +704,9 @@ void ajListReverse(AjPList thys)
     AjPListNode head = thys->Last;
     AjPListNode savenext;
     AjPListNode node;
+
+    if (!thys)
+        return;
 
     if (thys->Count <= 1)
 	return;
@@ -1047,6 +1054,8 @@ AjBool ajListFind(AjPList thys, AjBool apply(void** x, void* cl), void* cl)
 {
     AjPListNode list;
 
+    assert (thys);
+
     assert(apply);
 
     for ( list = thys->First; list->Next; list = list->Next)
@@ -1071,6 +1080,8 @@ AjBool ajListstrFind (AjPList thys, AjBool apply(AjPStr* x, void* cl),
 		      void* cl)
 {
     AjPListNode list;
+
+    assert (thys);
 
     assert(apply);
 
