@@ -336,38 +336,78 @@ public class RemoteDragTree extends JTree implements DragGestureListener,
 
         if(inputValue != null && !inputValue.equals("") )
         {
-          final RemoteFileNode pnn = pn;
+//        final RemoteFileNode pnn = pn;
           String newfile   = parent+"/"+inputValue;
+          rename(rootPath,fn,parent,inputValue,node);
+//        Vector params = new Vector();
+//        params.addElement("fileroot=" + rootPath);
+//        params.addElement(fn);
+//        params.addElement(newfile);
 
-          Vector params = new Vector();
-          params.addElement("fileroot=" + rootPath);
-          params.addElement(fn);
-          params.addElement(newfile);
-
-          try
-          {
-            setCursor(cbusy);
-            PrivateRequest gReq = new PrivateRequest(mysettings,
-                                   "EmbreoFile","rename",params);
-            setCursor(cdone);
-            Runnable deleteFileFromTree = new Runnable()
-            {
-              public void run () 
-              { 
-                addObject(pnn,inputValue,false);
-                deleteObject(node,fn); 
-              };
-            };
-            SwingUtilities.invokeLater(deleteFileFromTree);
-          }
-          catch (JembossSoapException jse)
-          {
-            setCursor(cdone);
-          }
+//        try
+//        {
+//          setCursor(cbusy);
+//          PrivateRequest gReq = new PrivateRequest(mysettings,
+//                                 "EmbreoFile","rename",params);
+//          setCursor(cdone);
+//          Runnable deleteFileFromTree = new Runnable()
+//          {
+//            public void run () 
+//            { 
+//              addObject(pnn,inputValue,false);
+//              deleteObject(node,fn); 
+//            };
+//          };
+//          SwingUtilities.invokeLater(deleteFileFromTree);
+//        }
+//        catch (JembossSoapException jse)
+//        {
+//          setCursor(cdone);
+//        }
 
         }
       }
     }
+  }
+
+  /**
+  *
+  * Rename a node from the tree
+  * @param rootPath		root path
+  * @param fullname		full name of node to rename
+  * @param pathToNewFile	path to new file
+  * @param newfile		new file name
+  * @param node			node to rename
+  *
+  */
+  private void rename(String rootPath, final String fullname, String pathToNewFile,
+                      final String newfile, final RemoteFileNode node)
+  {
+    Vector params = new Vector();
+    params.addElement("fileroot=" + rootPath);
+    params.addElement(fullname);
+    params.addElement(pathToNewFile+"/"+newfile);
+    try
+    {
+      setCursor(cbusy);
+      PrivateRequest gReq = new PrivateRequest(mysettings,
+                             "EmbreoFile","rename",params);
+      setCursor(cdone);
+      Runnable deleteFileFromTree = new Runnable()
+      {
+        public void run ()
+        {
+          addObject((RemoteFileNode)node.getParent(),newfile,false);
+          deleteObject(node,fullname);
+        };
+      };
+      SwingUtilities.invokeLater(deleteFileFromTree);
+    }
+    catch (JembossSoapException jse)
+    {
+      setCursor(cdone);
+    }
+
   }
 
   /**
@@ -420,7 +460,8 @@ public class RemoteDragTree extends JTree implements DragGestureListener,
 // Target
   public void dragEnter(DropTargetDragEvent e)
   {
-    if(e.isDataFlavorSupported(FileNode.FILENODE))
+    if(e.isDataFlavorSupported(FileNode.FILENODE) ||
+       e.isDataFlavorSupported(RemoteFileNode.REMOTEFILENODE))
       e.acceptDrag(DnDConstants.ACTION_COPY_OR_MOVE);
   }
 
@@ -429,7 +470,27 @@ public class RemoteDragTree extends JTree implements DragGestureListener,
     Transferable t = e.getTransferable();
 
     if(t.isDataFlavorSupported(RemoteFileNode.REMOTEFILENODE))
-       System.out.println("Detected local drop");
+    {
+      try
+      {
+        Point ploc = e.getLocation();
+        TreePath dropPath = getPathForLocation(ploc.x,ploc.y);
+        System.out.println("Detected local drop");
+        if(dropPath != null)
+        {
+          RemoteFileNode fn =
+            (RemoteFileNode)t.getTransferData(RemoteFileNode.REMOTEFILENODE);
+
+          String dropDest = null;
+          RemoteFileNode fdropPath = (RemoteFileNode)dropPath.getLastPathComponent();
+          String dropRoot = fdropPath.getRootDir();
+          rename(fn.getRootDir(),fn.getFullName(),fdropPath.getPathName(),
+                   fn.getFile(), fn);
+
+        }
+      }
+      catch(Exception ex){}
+    }
     else if(t.isDataFlavorSupported(FileNode.FILENODE))
     {
       try
@@ -515,10 +576,27 @@ public class RemoteDragTree extends JTree implements DragGestureListener,
         e.acceptDrag(DnDConstants.ACTION_COPY_OR_MOVE);
       }
     }
-    else
+    else if(e.isDataFlavorSupported(RemoteFileNode.REMOTEFILENODE))
     {
-      e.rejectDrag();
+      Point ploc = e.getLocation();
+      TreePath ePath = getPathForLocation(ploc.x,ploc.y);
+      if (ePath == null)
+      {
+        e.rejectDrag();
+        return;
+      }
+      RemoteFileNode node = (RemoteFileNode)ePath.getLastPathComponent();
+      if(!node.isDirectory())
+        e.rejectDrag();
+      else
+      {
+        setSelectionPath(ePath);
+        e.acceptDrag(DnDConstants.ACTION_COPY_OR_MOVE);
+      }
     }
+    else
+      e.rejectDrag();
+
   }
 
   public void dropActionChanged(DropTargetDragEvent e) {}
