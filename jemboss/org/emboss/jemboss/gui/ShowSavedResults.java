@@ -54,6 +54,8 @@ public class ShowSavedResults
   private JTextArea aboutRes; 
   private JScrollPane aboutScroll;
   private JScrollPane ss;
+  private JPanel resButtonStatus;
+  private JTextField statusField;
   private JMenuBar resMenu = new JMenuBar();
   private ImageIcon rfii;
 
@@ -71,6 +73,15 @@ public class ShowSavedResults
     resMenu.setLayout(new FlowLayout(FlowLayout.LEFT,10,1));
     ClassLoader cl = this.getClass().getClassLoader();
     rfii = new ImageIcon(cl.getResource("images/Refresh_button.gif"));
+
+//results status
+    resButtonStatus = new JPanel(new BorderLayout());
+    Border loweredbevel = BorderFactory.createLoweredBevelBorder();
+    Border raisedbevel = BorderFactory.createRaisedBevelBorder();
+    Border compound = BorderFactory.createCompoundBorder(raisedbevel,loweredbevel);
+    statusField = new JTextField();
+    statusField.setBorder(compound);
+    statusField.setEditable(false);
   }
 
 
@@ -248,10 +259,8 @@ public class ShowSavedResults
                                                        "delete_saved_results");
 	      savedResFrame.setCursor(cdone);
 	       
-	      JOptionPane.showMessageDialog(savedResFrame,"Result set\n"
-				    +reslist.getCurrent()+
-	  			    "\nhas been successfully deleted");
-	      
+              statusField.setText("Deleted " +reslist.getCurrent() + "  results set");
+     
 	      // clean up the list so they can't see it any more
 	        
 	      reslist.setCurrent(null);
@@ -273,11 +282,13 @@ public class ShowSavedResults
       });
       resButtonPanel.add(delResButton);
       resButtonPanel.add(showResButton);
+      resButtonStatus.add(resButtonPanel, BorderLayout.CENTER);
+      resButtonStatus.add(statusField, BorderLayout.SOUTH);
       savedResFrame.getContentPane().add(ss,BorderLayout.WEST);
       savedResFrame.getContentPane().add(aboutScroll,BorderLayout.CENTER);
-      savedResFrame.getContentPane().add(resButtonPanel,BorderLayout.SOUTH);
-      savedResFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+      savedResFrame.getContentPane().add(resButtonStatus,BorderLayout.SOUTH);
       savedResFrame.pack();
+      
       savedResFrame.setVisible(true);
     } 
     catch (JembossSoapException eae) 
@@ -451,10 +462,7 @@ public class ShowSavedResults
             JembossProcess jp = epr.getResult(epr.getCurrent());
             epr.removeResult(jp);
 
-
-	    JOptionPane.showMessageDialog(savedResFrame,"Result set\n"
-                         +epr.getCurrent()+
-			 "\nhas been successfully deleted");
+            statusField.setText("Deleted " + epr.getCurrent() + "  results set");
 	    epr.setCurrent(null);
 	    
 	    // clean up the list so they can't see it any more
@@ -475,9 +483,12 @@ public class ShowSavedResults
     });
     resButtonPanel.add(delResButton);
     resButtonPanel.add(showResButton);
+    resButtonStatus.add(resButtonPanel, BorderLayout.CENTER);
+    resButtonStatus.add(statusField, BorderLayout.SOUTH);
+
     savedResFrame.getContentPane().add(ss,BorderLayout.WEST);
     savedResFrame.getContentPane().add(aboutScroll,BorderLayout.CENTER);
-    savedResFrame.getContentPane().add(resButtonPanel,BorderLayout.SOUTH);
+    savedResFrame.getContentPane().add(resButtonStatus,BorderLayout.SOUTH);
     savedResFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     savedResFrame.pack();
     savedResFrame.setVisible(true);
