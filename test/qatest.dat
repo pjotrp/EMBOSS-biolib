@@ -4546,7 +4546,7 @@ FI test.out
 FP 1 /^>/
 FP /^>NM_012488[.]1 NM_012488[.]1 /
 FP /^REFSEQ$/
-FZ = 306
+FZ = 70
 //
 
 ID seqret-ncbi-lcl
