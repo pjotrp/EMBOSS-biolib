@@ -438,8 +438,9 @@ IN
 FI stderr
 FC = 2
 FI paamir.dan
-FP / 1      20 64\.9   70\.0 .* ggtaccgctggccgagcatc *\n/
-FP / 2      21 63\.7   65\.0 .* gtaccgctggccgagcatct *\n/
+FZ = 170146
+FP / +1 +20 +64\.9 +70\.0 .* ggtaccgctggccgagcatc *\n/
+FP / +2 +21 +63\.7 +65\.0 .* gtaccgctggccgagcatct *\n/
 FC = 2164
 //
 
@@ -1694,7 +1695,7 @@ IN
 FI stderr
 FC = 11
 FI opsd_human.digest
-FP /^    246     248 346\.378    K      E      AEK\s*\n/
+FP /^    246     248    346\.378 K      E      AEK\s*\n/
 FP /yields 14 fragments/
 FC = 33
 //
@@ -1787,7 +1788,7 @@ CL tembl:AF129756 tembl:AP000504 -word 20 -graph ps
 FI af129756.dotpath
 FZ = 0
 FI dotpath.ps
-FZ > 17100
+FZ > 16800
 FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 1\n/
 FI stderr
@@ -1962,11 +1963,12 @@ IN tembl:hhtetra
 IN
 IN
 IN
+IN
 FI stderr
 FC = 2
 FI hhtetra.qtan
-FZ = 36
-FP /^   339        191        935  6 124\n/
+FZ = 509
+FP /^ +191     935     339      6    124\n/
 //
 
 ID est2genome-ex
@@ -2117,13 +2119,14 @@ IN
 FI stderr
 FC = 2
 FI hhtetra.tan
-FZ = 245
-FC = 5
-FP /^   120        793        936  6  24  93.8 acccta\n/
-FP /^    90        283        420  6  23  84.8 taaccc\n/
-FP /^    38        432        485  6   9  90.7 ccctaa\n/
-FP /^    26        494        529  6   6  94.4 ccctaa\n/
-FP /^    24        568        597  6   5 100.0 aaccct\n/
+FZ = 811
+FC = 28
+FP /^# HitCount: 5\n/
+FP /^    793     936     120      6     24     93.8 acccta   \n/
+FP /^    793     936     120      6     24     93.8 acccta   \n/
+FP /^    432     485      38      6      9     90.7 ccctaa   \n/
+FP /^    494     529      26      6      6     94.4 ccctaa   \n/
+FP /^    568     597      24      6      5    100.0 aaccct   \n/
 //
 
 ID extractseq-ex
@@ -2210,9 +2213,10 @@ IN
 FI stderr
 FC = 2
 FI hhtetra.fuzznuc
-FZ = 64
-FP /^        HHTETRA        1 AAGCTT\n/
-FP /^        HHTETRA     1267 AAGCTT\n/
+FZ = 545
+FP /^# HitCount: 2\n/
+FP /^      1       6        . aagctt\n/
+FP /^   1267    1272        . aagctt\n/
 //
 
 ID fuzzpro-ex
@@ -2224,9 +2228,10 @@ IN
 FI stderr
 FC = 2
 FI 100k_rat.fuzzpro
-FP /^     ACT2_FUGRU    53 YVGDEAQSKRG\n/
-FP 3 /^     ACT._FUGRU    53 YVGDEAQSKRG\n/
-FP 3 /^     ACT._FUGRU    55 YVGDEAQSKRG\n/
+FP 6 /^# HitCount: 1\n/
+FP /^     53      63        . YVGDEAQSKRG\n/
+FP 3 /^     53      63        . YVGDEAQSKRG\n/
+FP 3 /^     55      65        . YVGDEAQSKRG\n/
 //
 
 ID fuzztran-ex
@@ -2241,13 +2246,14 @@ IN
 FI stderr
 FC = 31
 FI rnops.fuzztran
-FZ = 279
-FP /^          RNOPS  1      919 RA\n/
-FP /^          RNOPS  2      752 RA\n/
-FP /^          RNOPS  3       72 RA\n/
-FP 6 /^          RNOPS  1 +\d+ RA\n/
-FP 2 /^          RNOPS  2 +\d+ RA\n/
-FP 1 /^          RNOPS  3 +\d+ RA\n/
+FZ = 1112
+FP /^# HitCount: 9\n/
+FP /^    919     924       2        .      1    307    308 RA         \n/
+FP /^    752     757       2        .      2    251    252 RA         \n/
+FP /^     72      77       2        .      3     24     25 RA         \n/
+FP 6 /^.* 1 +\d+ +\d+ RA +\n/
+FP 2 /^.* 2 +\d+ +\d+ RA +\n/
+FP 1 /^.* 3 +\d+ +\d+ RA +\n/
 //
 
 ID feat-embl
@@ -3026,13 +3032,11 @@ IN
 FI stderr
 FC = 2
 FI 100k_rat.patmatdb 
-FZ = 855
-FP /^Number of matches found in HD_FUGRU = 1\n/
-FP /^Length of the sequence = 3148 basepairs\n/
-FP /^Length of match = 4\n/
-FP /^Start of match = position 1037 of sequence\n/
-FP /^End of match = position 1040 of sequence\n/
-FP /^patmatDB of HD_FUGRU from 1037 to 1040 using pattern ST\[TY\]S\n/
+FZ = 1260
+FP /^# Sequence: HD_FUGRU     from: 1   to: 3148\n# HitCount: 1\n/
+FP /^Length = 4\n/
+FP /^Start = position 1038 of sequence\n/
+FP /^End = position 1041 of sequence\n/
 FP /^STPASSTTSSAVDP\n/
 //
 
@@ -3046,12 +3050,12 @@ IN
 FI stderr
 FC = 2
 FI opsd_human.patmatmotifs
-FP /^Number of matches found in this Sequence = 1\n/
-FP /^Length of the sequence = 348 basepairs\n/
-FP /^Start of match = position 123 of sequence\n/
-FP /^End of match = position 139 of sequence\n/
-FP /^Length of motif = 17\n/
-FP /^patmatmotifs of G_PROTEIN_RECEP_F1_1 with OPSD_HUMAN from 123 to 139\n/
+FP /^# HitCount: 2\n/
+FP /^# Motif: OPSIN\n# Count: 1\n/
+FP /^Start = position 123 of sequence\n/
+FP /^End = position 139 of sequence\n/
+FP /^Length = 17\n/
+FP /^Motif = G_PROTEIN_RECEP_F1_1\n/
 FP /^TLGGEIALWSLVVLAIERYVVVCKPMS\n/
 //
 
@@ -3508,8 +3512,8 @@ IN
 FI stderr
 FC = 2
 FI hsfau.restrict
-FP /^HSFAU\s+11\s+14\s+0[.]000\s+TaqI\s+TCGA\s+11\s+13\s+[.]\s+[.]+\s+\n/
-FP /^HSFAU\s+125\s+135\s+0[.]000\s+Hin4I\s+GAYNNNNNVTC\s+116\s+111\s+148\s+143\s+\n/
+FP /^\s+11\s+14\s+0\s+TaqI\s+TCGA\s+11\s+13\s+[.]\s+[.]\n/
+FP /^\s+125\s+135\s+0\s+Hin4I\s+GAYNNNNNVTC\s+116\s+111\s+148\s+143\n/
 //
 
 ID revseq-ex
@@ -4475,10 +4479,11 @@ ID seqret-outusa-debug
 AP seqret
 CL -auto ../../data/dna.embl debug::test.out
 FI test.out
-FZ = 830
+FZ = 847
 FP /^  Name: 'EMBL'\n/
 FP /^  Accession: 'E10002'\n/
 FP /^  SeqVersion: 'E10002.34'\n/
+FP /^  GI Version: ''\n/
 FP /^  Description: 'EMBL FORMAT DNA SEQUENCE'\n/
 FP /^  Keywordlist: \(2\)\n/
 FP /^    'DNA binding protein'\n/
@@ -4508,10 +4513,11 @@ ID seqret-out-debug
 AP seqret
 CL -auto ../../data/dna.embl test.out -osf debug
 FI test.out
-FZ = 823
+FZ = 840
 FP /^  Name: 'EMBL'\n/
 FP /^  Accession: 'E10002'\n/
 FP /^  SeqVersion: 'E10002.34'\n/
+FP /^  GI Version: ''\n/
 FP /^  Description: 'EMBL FORMAT DNA SEQUENCE'\n/
 FP /^  Keywordlist: \(2\)\n/
 FP /^    'DNA binding protein'\n/
@@ -4917,7 +4923,7 @@ ID seqret-outmultiusa-debug
 AP seqret
 CL -auto ../../data/dna.m-embl debug::test.out
 FI test.out
-FZ = 2051
+FZ = 2102
 FP 3 /^  Name: 'FASTAM[1-3]'\n/
 FP 3 /^  Accession: 'F3000[1-3]'\n/
 FP /^  Entryname: 'FASTAM3'\n/
@@ -4933,7 +4939,7 @@ ID seqret-outmulti-debug
 AP seqret
 CL -auto ../../data/dna.m-embl test.out -osf debug
 FI test.out
-FZ = 2030
+FZ = 2081
 FP 3 /^  Name: 'FASTAM[1-3]'\n/
 FP 3 /^  Accession: 'F3000[1-3]'\n/
 FP /^  Entryname: 'FASTAM3'\n/
@@ -6187,7 +6193,7 @@ AP seqret
 CL ../../data/testids.ncbi:REF_12345 test.out -auto
 FI test.out
 FP 1 /^>/
-FP /^>REF_12345 NP_007225[.]1/
+FP /^>REF_12345 NP_007225[.]1 /
 FP /^REFSEQ$/
 FZ = 54
 //
