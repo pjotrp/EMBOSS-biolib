@@ -1561,15 +1561,15 @@ static AcdOAttr acdCalcDistances[] =
 static AcdOAttr acdCalcFeat[] =
 {
     {"fbegin", VT_INT, "(0 if unspecified)",
-	 "The beginning position of the selection of the feature table"},
+	 "Start of the features to be used"},
     {"fend", VT_INT, "(0 if unspecified)",
-	 "The end position of the selection of the feature table"},
+	 "End of the features to be used"},
     {"flength", VT_INT, "",
-	 "Total length of sequence (fsize is features count)"},
+	 "Total length of sequence (fsize is feature count)"},
     {"fprotein", VT_BOOL, "",
-	 "Boolean, indicates if feature table is protein"},
+	 "Feature table is protein"},
     {"fnucleic", VT_BOOL, "",
-	 "Boolean, indicates if feature table is DNA"},
+	 "Feature table is nucleotide"},
     {"fname", VT_STR, "",
 	 "The name of the feature table"},
     {"fsize", VT_STR, "",
@@ -1617,17 +1617,17 @@ static AcdOAttr acdCalcRegexp[] =
 static AcdOAttr acdCalcSeq[] =
 {
     {"begin", VT_INT, "",
-	 "The beginning of the selection of the sequence"},
+	 "Start of the sequence used"},
     {"end", VT_INT, "",
-	 "The end of the selection of the sequence"},
+	 "End of the sequence used"},
     {"length", VT_INT,"",
-	  "The total length of the sequence"},
+	  "Total length of the sequence"},
     {"protein", VT_BOOL, "",
 	 "Boolean, indicates if sequence is protein"},
     {"nucleic", VT_BOOL, "",
 	 "Boolean, indicates if sequence is DNA"},
     {"name", VT_STR, "",
-	 "The name/ID/accession # of the sequence"},
+	 "The name/ID/accession of the sequence"},
     {NULL, VT_NULL, NULL,
 	 NULL}
 };
@@ -1635,17 +1635,17 @@ static AcdOAttr acdCalcSeq[] =
 static AcdOAttr acdCalcSeqall[] =
 {
     {"begin", VT_INT, "",
-	 "The beginning of the selection of the sequence"},
+	 "Start of the first sequence used"},
     {"end", VT_INT, "",
-	 "The end of the selection of the sequence"},
+	 "End of the first sequence used"},
     {"length", VT_INT, "",
-	 "The total length of the sequence"},
+	 "Total length of the first sequence"},
     {"protein", VT_BOOL, "",
 	 "Boolean, indicates if sequence is protein"},
     {"nucleic", VT_BOOL, "",
 	 "Boolean, indicates if sequence is DNA"},
     {"name", VT_STR, "",
-	 "The name/ID/accession # of the sequence"},
+	 "The name/ID/accession of the sequence"},
     {NULL, VT_NULL, NULL,
 	 NULL}
 };
@@ -1808,8 +1808,8 @@ AcdOQual acdQualFeat[] =
     {"fformat",    "",  "string",  "Features format"},
     {"fopenfile",  "",  "string",  "Features file name"},
     {"fask",       "N", "boolean", "Prompt for begin/end/reverse"},
-    {"fbegin",     "0", "integer", "First position used"},
-    {"fend",       "0", "integer", "Last position used, def=max length"},
+    {"fbegin",     "0", "integer", "Start of the features to be used"},
+    {"fend",       "0", "integer", "End of the features to be used"},
     {"freverse",   "N", "boolean", "Reverse (if DNA)"},
     {NULL, NULL, NULL, NULL}
 };
@@ -1870,8 +1870,8 @@ AcdOQual acdQualReport[] =
 
 AcdOQual acdQualSeq[] =
 {
-    {"sbegin",     "0", "integer", "First base used"},
-    {"send",       "0", "integer", "Last base used, def=seq length"},
+    {"sbegin",     "0", "integer", "Start of the sequence to be used"},
+    {"send",       "0", "integer", "End of the sequence to be used"},
     {"sreverse",   "N", "boolean", "Reverse (if DNA)"},
     {"sask",       "N", "boolean", "Ask for begin/end/reverse"},
     {"snucleotide","N", "boolean", "Sequence is nucleotide"},
@@ -1890,8 +1890,8 @@ AcdOQual acdQualSeq[] =
 
 AcdOQual acdQualSeqset[] =
 {
-    {"sbegin",     "0", "integer", "First base used"},
-    {"send",       "0", "integer", "Last base used, def=seq length"},
+    {"sbegin",     "0", "integer", "Start of each sequence to be used"},
+    {"send",       "0", "integer", "End of each sequence to be used"},
     {"sreverse",   "N", "boolean", "Reverse (if DNA)"},
     {"sask",       "N", "boolean", "Ask for begin/end/reverse"},
     {"snucleotide","N", "boolean", "Sequence is nucleotide"},
@@ -1910,8 +1910,8 @@ AcdOQual acdQualSeqset[] =
 
 AcdOQual acdQualSeqsetall[] =
 {
-    {"sbegin",     "0", "integer", "First base used"},
-    {"send",       "0", "integer", "Last base used, def=seq length"},
+    {"sbegin",     "0", "integer", "Start of each sequence to be used"},
+    {"send",       "0", "integer", "End of each sequence to be used"},
     {"sreverse",   "N", "boolean", "Reverse (if DNA)"},
     {"sask",       "N", "boolean", "Ask for begin/end/reverse"},
     {"snucleotide","N", "boolean", "Sequence is nucleotide"},
@@ -1930,8 +1930,8 @@ AcdOQual acdQualSeqsetall[] =
 
 AcdOQual acdQualSeqall[] =
 {
-    {"sbegin",     "0", "integer", "First base used"},
-    {"send",       "0", "integer", "Last base used, def=seq length"},
+    {"sbegin",     "0", "integer", "Start of each sequence to be used"},
+    {"send",       "0", "integer", "End of each sequence to be used"},
     {"sreverse",   "N", "boolean", "Reverse (if DNA)"},
     {"sask",       "N", "boolean", "Ask for begin/end/reverse"},
     {"snucleotide","N", "boolean", "Sequence is nucleotide"},
