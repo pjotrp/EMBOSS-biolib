@@ -2259,7 +2259,7 @@ void ajSeqMakeUsa (AjPSeq thys, AjPSeqin seqin)
     if (ajStrLen(tmpstr) > 3)
       ajStrApp (&thys->Usa, tmpstr);
 
-    ajStrDelReuse(&tmpstr);
+    ajStrDel(&tmpstr);
     ajDebug ("      result: <%S>\n",
 	     thys->Usa);
 
