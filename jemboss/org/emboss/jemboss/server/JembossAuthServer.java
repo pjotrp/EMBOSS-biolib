@@ -601,9 +601,24 @@ public class JembossAuthServer
 
     String ls = System.getProperty("line.separator");
 //create description file & input files
-    String descript = "EMBOSS run details for"+appl+ls+ls+
-                      "Parameters Used: "+embossCommand+ls+
-                      "Started at "+dat+ls+ls+"Input files:"+ls;
+    StringBuffer descript = new StringBuffer();
+    descript.append("EMBOSS run details for");
+    descript.append(appl);
+    descript.append(ls);
+    descript.append(ls);
+    descript.append("Parameters Used: ");
+    descript.append(embossCommand);
+    descript.append(ls);
+    descript.append("Started at ");
+    descript.append(dat);
+    descript.append(ls);
+    descript.append(ls);
+    descript.append("Input files:");
+    descript.append(ls);
+
+//  String descript = "EMBOSS run details for"+appl+ls+ls+
+//                    "Parameters Used: "+embossCommand+ls+
+//                    "Started at "+dat+ls+ls+"Input files:"+ls;
 
 //write input files to project directory
     Vector inFileNames = new Vector();
@@ -611,7 +626,10 @@ public class JembossAuthServer
     {
       String thiskey = (String)e.nextElement();  // file name
       inFileNames.add(thiskey);
-      descript = descript.concat(project+fs+thiskey+ls);
+      descript.append(project);
+      descript.append(fs);
+      descript.append(thiskey);
+      descript.append(ls);
 
       ok = false;
       try
@@ -635,7 +653,7 @@ public class JembossAuthServer
       aj.setErrStd();
       ok = aj.putFile(userName,passwd,environ,
            new String(project + fs + ".desc"),
-           descript.getBytes());
+           descript.toString().getBytes());
     }
     catch(Exception exp){}
 
@@ -748,22 +766,31 @@ public class JembossAuthServer
   private void runAsPBSBatch(Ajax aj, String userName, byte[] passwd,
                               String project, String embossCommand)
   {
-    String scriptIt = "#PBS -j oe\n";
-    scriptIt = scriptIt.concat("#PBS -S /bin/sh\n");
-//  scriptIt = scriptIt.concat("#PBS -N"+appl+"\n");
-    scriptIt = scriptIt.concat(environ.replace(' ','\n'));
-    scriptIt = scriptIt.concat("\nexport PATH\n");
-    scriptIt = scriptIt.concat("export PLPLOT_LIB\n");
-    scriptIt = scriptIt.concat("export EMBOSS_DATA\n");
-    scriptIt = scriptIt.concat("cd "+project+"\n"+embossCommand+"\n");
-    scriptIt = scriptIt.concat("date > "+project+"/.finished\n");
+    StringBuffer scriptIt = new StringBuffer();
+    scriptIt.append("#PBS -j oe\n");
+    scriptIt.append("#PBS -S /bin/sh\n");
+    scriptIt.append(environ.replace(' ','\n'));
+    scriptIt.append("\nexport PATH\n");
+    scriptIt.append("export PLPLOT_LIB\n");
+    scriptIt.append("export EMBOSS_DATA\n");
+    scriptIt.append("cd "+project+"\n"+embossCommand+"\n");
+    scriptIt.append("date > "+project+"/.finished\n");
+
+//  String scriptIt = "#PBS -j oe\n";
+//  scriptIt = scriptIt.concat("#PBS -S /bin/sh\n");
+//  scriptIt = scriptIt.concat(environ.replace(' ','\n'));
+//  scriptIt = scriptIt.concat("\nexport PATH\n");
+//  scriptIt = scriptIt.concat("export PLPLOT_LIB\n");
+//  scriptIt = scriptIt.concat("export EMBOSS_DATA\n");
+//  scriptIt = scriptIt.concat("cd "+project+"\n"+embossCommand+"\n");
+//  scriptIt = scriptIt.concat("date > "+project+"/.finished\n");
 
     String scriptFile = new String(project+fs+".scriptfile");
     boolean ok = false;
     try
     {
       ok = aj.putFile(userName,passwd,environ,scriptFile,
-                      scriptIt.getBytes());
+                      scriptIt.toString().getBytes());
     }
     catch(Exception exp){}
 
