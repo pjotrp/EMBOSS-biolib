@@ -904,10 +904,8 @@ AjBool embPdbAtomIndexCCA(AjPPdb pdb, char chn, AjPInt *idx, ajint *nres)
 ** are 'H' (STRIDE 'H', 'G' or 'I'), 'E' (STRIDE 'E', 'B' or 'b') and 'C'
 ** (STRIDE 'T' or 'C'). The string is allocated if necessary.
 **
-** @param [r] pdb [AjPPdb]  Pdb object
-** @param [r] chn [char]    Chain identifier
-** @param [w] idx [AjPInt*] Index array
-** @param [r] nres [ajint*] Array length 
+** @param [w] to [AjPStr*]  String to write
+** @param [r] to [AjPStr]  String to read
 **
 ** @return [AjBool] True on succcess
 ** @@
