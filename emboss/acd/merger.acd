@@ -49,8 +49,6 @@ seqout: outseq  [
 
 align: outfile  [
   parameter: "Y"
-#  extension: "merger"
-#  default: "stdout"
   information: "Output alignment and explanation"
   aformat: "simple"
   minseqs: "2"
