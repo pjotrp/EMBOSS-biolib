@@ -497,7 +497,6 @@ public class JembossAuthServer
     while(enum.hasMoreElements())
     {
       String thiskey = (String)enum.nextElement().toString();
-      String filec = (String)inFiles.get(thiskey);
       descript = descript.concat(project+fs+thiskey+ls);
 
       ok = false;
@@ -505,7 +504,7 @@ public class JembossAuthServer
       {
         ok = aj.putFile(userName,passwd,environ,
                  new String(project+fs+thiskey),
-                 filec.getBytes());
+                 (byte[])inFiles.get(thiskey));
       }
       catch(Exception exp){}
 
@@ -1013,6 +1012,12 @@ public class JembossAuthServer
 //  appendToLogFile("userAuth STDERR "+aj.getErrStd(),errorLog);  //DEBUG
        
     return true;
+  }
+
+
+  public final Object clone() throws java.lang.CloneNotSupportedException
+  {
+    throw new java.lang.CloneNotSupportedException();
   }
 
 }

@@ -905,29 +905,13 @@ public class BuildJembossForm implements ActionListener
     {                                  
       MakeFileSafe sf = new MakeFileSafe(fn);
       sfn = sf.getSafeFileName();
-      if ((new File(fn)).exists())    // read & add to transfer list
+
+      File inFile = new File(fn);
+      if(inFile.exists() && inFile.canRead() 
+                         && inFile.isFile())    // read & add to transfer list
       {
-        File inFile = new File(fn);
-        if (inFile.exists() && inFile.canRead() && inFile.isFile())
-        {
-          try
-          {
-            BufferedReader in = new BufferedReader(new FileReader(inFile));
-            String text = "";
-            String line;
-            while((line = in.readLine()) != null)
-              text = text.concat(line+"\n");
-            in.close();
- 
-            filesToMove.put(sfn,text);
-          } catch (IOException e) {}
-          options = options.concat(" -" + val + " " +  sfn);
-        }
-        else
-        {
-//        System.out.println("Ignoring invalid local file "+fn);
-          options = options.concat(" -" + val + " " +  fn);
-        }
+        filesToMove.put(sfn,getLocalFile(inFile));
+        options = options.concat(" -" + val + " " +  sfn);
       }
       else     //presume remote
       {
@@ -938,6 +922,26 @@ public class BuildJembossForm implements ActionListener
 
     return options;
   }
+
+
+  public byte[] getLocalFile(File name)
+  {
+    byte[] b = null;
+    try
+    {
+      long s = name.length();
+      b = new byte[(int)s];
+      FileInputStream fi = new FileInputStream(name);
+      fi.read(b);
+      fi.close();
+    }
+    catch (IOException ioe)
+    {
+      System.out.println("Cannot read file: " + name);
+    }
+    return b;
+  }
+
 
 /**
 *
