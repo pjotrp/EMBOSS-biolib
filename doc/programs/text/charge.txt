@@ -13,6 +13,13 @@ Description
    of the charges of the amino acids within a window of specified length
    as the window is moved along the sequence.
    
+Algorithm
+
+   charge uses the column "charge" from the datafile Eamino.dat. It gives
+   the residues 'D' and 'E' a charge of -1, 'K' and 'R' a charge of +1,
+   and the residue 'H' a charge of +0.5. Then it calculates the mean
+   charge across -window (default is 5).
+   
 Usage
 
    Here is a sample session with charge
@@ -73,9 +80,6 @@ Command line arguments
    -filter              boolean    Read standard input, write standard output
    -options             boolean    Prompt for required and optional values
    -debug               boolean    Write debug output to program.dbg
-   -acdlog              boolean    Write ACD processing log to program.acdlog
-   -acdpretty           boolean    Rewrite ACD file as program.acdpretty
-   -acdtable            boolean    Write HTML table of options
    -verbose             boolean    Report some/full command line options
    -help                boolean    Report command line options. More
                                   information on associated and general

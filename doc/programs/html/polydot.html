@@ -103,11 +103,10 @@ IT IS DONE FOR YOU.
 
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
-   Mandatory qualifiers (* if not always prompted):
+   Mandatory qualifiers:
   [-sequences]         seqset     File containing a sequence alignment
    -wordsize           integer    Word size
-*  -graph              graph      Graph type
-*  -outfile            outfile    Output file name
+   -graph              graph      Graph type
 
    Optional qualifiers:
    -[no]boxit          boolean    Draw a box around each dotplot
@@ -116,8 +115,6 @@ IT IS DONE FOR YOU.
    -ext                string     Extension for feature file
 
    Advanced qualifiers:
-   -data               boolean    Output the match data to a file instead of
-                                  plotting it
    -gap                integer    This specifies the size of the gap that is
                                   used to separate the individual dotplots in
                                   the display. The size is measured in
@@ -148,8 +145,6 @@ IT IS DONE FOR YOU.
    -gytitle             string     Graph y axis title
    -goutfile            string     Output file for non interactive displays
    -gdirectory          string     Output directory
-  "-outfile" related qualifiers
-   -odirectory          string     Output directory
 
    General qualifiers:
    -auto                boolean    Turn off prompts
@@ -157,9 +152,6 @@ IT IS DONE FOR YOU.
    -filter              boolean    Read standard input, write standard output
    -options             boolean    Prompt for required and optional values
    -debug               boolean    Write debug output to program.dbg
-   -acdlog              boolean    Write ACD processing log to program.acdlog
-   -acdpretty           boolean    Rewrite ACD file as program.acdpretty
-   -acdtable            boolean    Write HTML table of options
    -verbose             boolean    Report some/full command line options
    -help                boolean    Report command line options. More
                                   information on associated and general
@@ -202,13 +194,6 @@ IT IS DONE FOR YOU.
 <td><i>EMBOSS_GRAPHICS</i> value, or x11</td>
 </tr>
 
-<tr>
-<td>-outfile</td>
-<td>Output file name</td>
-<td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.polydot</td>
-</tr>
-
 <tr bgcolor="#FFFFCC">
 <th align="left" colspan=2>Optional qualifiers</th>
 <th align="left">Allowed values</th>
@@ -247,13 +232,6 @@ IT IS DONE FOR YOU.
 <th align="left" colspan=2>Advanced qualifiers</th>
 <th align="left">Allowed values</th>
 <th align="left">Default</th>
-</tr>
-
-<tr>
-<td>-data</td>
-<td>Output the match data to a file instead of plotting it</td>
-<td>Boolean value Yes/No</td>
-<td>No</td>
 </tr>
 
 <tr>

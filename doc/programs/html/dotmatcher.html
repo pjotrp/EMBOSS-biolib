@@ -131,11 +131,8 @@ IT IS DONE FOR YOU.
    Mandatory qualifiers (* if not always prompted):
   [-asequence]         sequence   Sequence USA
   [-bsequence]         sequence   Sequence USA
-*  -data               boolean    Output the match data to a file instead of
-                                  plotting it
 *  -graph              graph      Graph type
 *  -xygraph            xygraph    Graph type
-*  -outfile            outfile    Display as data
 
    Optional qualifiers:
    -windowsize         integer    window size over which to test threshhold
@@ -199,8 +196,6 @@ IT IS DONE FOR YOU.
    -gytitle             string     Graph y axis title
    -goutfile            string     Output file for non interactive displays
    -gdirectory          string     Output directory
-  "-outfile" related qualifiers
-   -odirectory          string     Output directory
 
    General qualifiers:
    -auto                boolean    Turn off prompts
@@ -208,9 +203,6 @@ IT IS DONE FOR YOU.
    -filter              boolean    Read standard input, write standard output
    -options             boolean    Prompt for required and optional values
    -debug               boolean    Write debug output to program.dbg
-   -acdlog              boolean    Write ACD processing log to program.acdlog
-   -acdpretty           boolean    Rewrite ACD file as program.acdpretty
-   -acdtable            boolean    Write HTML table of options
    -verbose             boolean    Report some/full command line options
    -help                boolean    Report command line options. More
                                   information on associated and general
@@ -247,13 +239,6 @@ IT IS DONE FOR YOU.
 </tr>
 
 <tr>
-<td>-data</td>
-<td>Output the match data to a file instead of plotting it</td>
-<td>Boolean value Yes/No</td>
-<td>No</td>
-</tr>
-
-<tr>
 <td>-graph</td>
 <td>Graph type</td>
 <td>EMBOSS has a list of known devices, including postscript, ps, hpgl, hp7470, hp7580, meta, colourps, cps, xwindows, x11, tektronics, tekt, tek4107t, tek, none, null, text, data, xterm, png</td>
@@ -265,13 +250,6 @@ IT IS DONE FOR YOU.
 <td>Graph type</td>
 <td>EMBOSS has a list of known devices, including postscript, ps, hpgl, hp7470, hp7580, meta, colourps, cps, xwindows, x11, tektronics, tekt, tek4107t, tek, none, null, text, data, xterm, png</td>
 <td><i>EMBOSS_GRAPHICS</i> value, or x11</td>
-</tr>
-
-<tr>
-<td>-outfile</td>
-<td>Display as data</td>
-<td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.dotmatcher</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">

@@ -137,9 +137,6 @@ IT IS DONE FOR YOU.
    -filter              boolean    Read standard input, write standard output
    -options             boolean    Prompt for required and optional values
    -debug               boolean    Write debug output to program.dbg
-   -acdlog              boolean    Write ACD processing log to program.acdlog
-   -acdpretty           boolean    Rewrite ACD file as program.acdpretty
-   -acdtable            boolean    Write HTML table of options
    -verbose             boolean    Report some/full command line options
    -help                boolean    Report command line options. More
                                   information on associated and general
@@ -429,10 +426,19 @@ Maximum_score_at at "*"
 The data files are stored in the standard EMBOSS data directory. The
 names are:
 
+<p>
+
 <ul>
    <li> Ehth.dat          matrix file
    <li> Ehth87.dat        1987 shorter matrix file
 </ul>
+
+<p>
+
+The old (1987) data has a motif length of 20 residues, whilst the default
+data (Ehth.dat) has a motif length of 22 residues. 
+
+<p>
 
 With care these can be replaced to suit your data sets. If the files are
 placed in the following directories they will be used in preference to

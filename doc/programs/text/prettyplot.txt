@@ -41,9 +41,9 @@ Created prettyplot.ps
    
 Command line arguments
 
-   Mandatory qualifiers (* if not always prompted):
+   Mandatory qualifiers:
   [-msf]               seqset     File containing a sequence alignment
-*  -graph              graph      Graph type
+   -graph              graph      Graph type
 
    Optional qualifiers:
    -residuesperline    integer    The number of residues to be displayed on
@@ -100,9 +100,7 @@ Command line arguments
    -showscore          integer    Print residue scores
    -portrait           boolean    Set page to Portrait
 
-   Advanced qualifiers:
-   -data               boolean    Output as a data file
-
+   Advanced qualifiers: (none)
    Associated qualifiers:
   "-msf" related qualifiers
    -sbegin1             integer    First base used
@@ -135,9 +133,6 @@ Command line arguments
    -filter              boolean    Read standard input, write standard output
    -options             boolean    Prompt for required and optional values
    -debug               boolean    Write debug output to program.dbg
-   -acdlog              boolean    Write ACD processing log to program.acdlog
-   -acdpretty           boolean    Rewrite ACD file as program.acdpretty
-   -acdtable            boolean    Write HTML table of options
    -verbose             boolean    Report some/full command line options
    -help                boolean    Report command line options. More
                                   information on associated and general
@@ -212,7 +207,7 @@ Command line arguments
    -showscore Print residue scores Any integer value -1
    -portrait Set page to Portrait Boolean value Yes/No No
    Advanced qualifiers Allowed values Default
-   -data Output as a data file Boolean value Yes/No No
+   (none)
    
 Input file format
 

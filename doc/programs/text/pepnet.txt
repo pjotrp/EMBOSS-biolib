@@ -38,9 +38,9 @@ Created pepnet.ps
    
 Command line arguments
 
-   Mandatory qualifiers (* if not always prompted):
+   Mandatory qualifiers:
   [-sequence]          sequence   Sequence USA
-*  -graph              graph      Graph type
+   -graph              graph      Graph type
 
    Optional qualifiers (* if not always prompted):
 *  -squares            string     By default the aliphatic residues ILVM are
@@ -57,8 +57,6 @@ Command line arguments
                                   other markup that you may have specified
                                   using the qualifiers '-squares', '-diamonds'
                                   and '-octags'.
-   -data               boolean    Output the data to a file instead of
-                                  plotting it
 
    Associated qualifiers:
   "-sequence" related qualifiers
@@ -92,9 +90,6 @@ Command line arguments
    -filter              boolean    Read standard input, write standard output
    -options             boolean    Prompt for required and optional values
    -debug               boolean    Write debug output to program.dbg
-   -acdlog              boolean    Write ACD processing log to program.acdlog
-   -acdpretty           boolean    Rewrite ACD file as program.acdpretty
-   -acdtable            boolean    Write HTML table of options
    -verbose             boolean    Report some/full command line options
    -help                boolean    Report command line options. More
                                   information on associated and general
@@ -124,8 +119,6 @@ Command line arguments
    as squares and all other residues are unmarked. This overrides any
    other markup that you may have specified using the qualifiers
    '-squares', '-diamonds' and '-octags'. Boolean value Yes/No No
-   -data Output the data to a file instead of plotting it Boolean value
-   Yes/No No
    
 Input file format
 

@@ -126,15 +126,12 @@ IT IS DONE FOR YOU.
 
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
-   Mandatory qualifiers (* if not always prompted):
+   Mandatory qualifiers:
   [-sequence]          sequence   Sequence USA
-*  -graph              graph      Graph type
-*  -outfile            outfile    Output file name
+   -graph              graph      Graph type
 
    Optional qualifiers: (none)
-   Advanced qualifiers:
-   -data               boolean    Display as data
-
+   Advanced qualifiers: (none)
    Associated qualifiers:
   "-sequence" related qualifiers
    -sbegin1             integer    First base used
@@ -160,8 +157,6 @@ IT IS DONE FOR YOU.
    -gytitle             string     Graph y axis title
    -goutfile            string     Output file for non interactive displays
    -gdirectory          string     Output directory
-  "-outfile" related qualifiers
-   -odirectory          string     Output directory
 
    General qualifiers:
    -auto                boolean    Turn off prompts
@@ -169,9 +164,6 @@ IT IS DONE FOR YOU.
    -filter              boolean    Read standard input, write standard output
    -options             boolean    Prompt for required and optional values
    -debug               boolean    Write debug output to program.dbg
-   -acdlog              boolean    Write ACD processing log to program.acdlog
-   -acdpretty           boolean    Rewrite ACD file as program.acdpretty
-   -acdtable            boolean    Write HTML table of options
    -verbose             boolean    Report some/full command line options
    -help                boolean    Report command line options. More
                                   information on associated and general
@@ -207,13 +199,6 @@ IT IS DONE FOR YOU.
 <td><i>EMBOSS_GRAPHICS</i> value, or x11</td>
 </tr>
 
-<tr>
-<td>-outfile</td>
-<td>Output file name</td>
-<td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.chaos</td>
-</tr>
-
 <tr bgcolor="#FFFFCC">
 <th align="left" colspan=2>Optional qualifiers</th>
 <th align="left">Allowed values</th>
@@ -231,10 +216,7 @@ IT IS DONE FOR YOU.
 </tr>
 
 <tr>
-<td>-data</td>
-<td>Display as data</td>
-<td>Boolean value Yes/No</td>
-<td>No</td>
+<td colspan=4>(none)</td>
 </tr>
 
 </table>

@@ -288,9 +288,6 @@ Command line arguments
    -filter              boolean    Read standard input, write standard output
    -options             boolean    Prompt for required and optional values
    -debug               boolean    Write debug output to program.dbg
-   -acdlog              boolean    Write ACD processing log to program.acdlog
-   -acdpretty           boolean    Rewrite ACD file as program.acdpretty
-   -acdtable            boolean    Write HTML table of options
    -verbose             boolean    Report some/full command line options
    -help                boolean    Report command line options. More
                                   information on associated and general
@@ -902,7 +899,7 @@ Hin4I     HindII    HindIII   KpnI      MaeII     NotI
    recognition site of the restriction enzyme, which is indicated by a
    row of '=' characters. The cut site if pointed to by a '>' or '<'
    character and if the cut site is not within or imemdiately adjacent to
-   the recognition site, they are linked by a row or '.' characters.
+   the recognition site, they are linked by a row of '.' characters.
    
    The name of the enzyme is displayed above (or below when the reverse
    sense site if displayed) the recognition site. The name of the enzyme

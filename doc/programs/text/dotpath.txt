@@ -55,12 +55,11 @@ Created dotpath.ps
    
 Command line arguments
 
-   Mandatory qualifiers (* if not always prompted):
+   Mandatory qualifiers:
   [-asequence]         sequence   Sequence USA
   [-bsequence]         sequence   Sequence USA
    -wordsize           integer    Word size
-*  -graph              graph      Graph type
-*  -outfile            outfile    Output file name
+   -graph              graph      Graph type
 
    Optional qualifiers:
    -overlaps           boolean    Displays the overlapping matches (in red) as
@@ -68,10 +67,7 @@ Command line arguments
                                   matches
    -[no]boxit          boolean    Draw a box around dotplot
 
-   Advanced qualifiers:
-   -data               boolean    Output the match data to a file instead of
-                                  plotting it
-
+   Advanced qualifiers: (none)
    Associated qualifiers:
   "-asequence" related qualifiers
    -sbegin1             integer    First base used
@@ -113,8 +109,6 @@ Command line arguments
    -gytitle             string     Graph y axis title
    -goutfile            string     Output file for non interactive displays
    -gdirectory          string     Output directory
-  "-outfile" related qualifiers
-   -odirectory          string     Output directory
 
    General qualifiers:
    -auto                boolean    Turn off prompts
@@ -122,9 +116,6 @@ Command line arguments
    -filter              boolean    Read standard input, write standard output
    -options             boolean    Prompt for required and optional values
    -debug               boolean    Write debug output to program.dbg
-   -acdlog              boolean    Write ACD processing log to program.acdlog
-   -acdpretty           boolean    Rewrite ACD file as program.acdpretty
-   -acdtable            boolean    Write HTML table of options
    -verbose             boolean    Report some/full command line options
    -help                boolean    Report command line options. More
                                   information on associated and general
@@ -145,14 +136,12 @@ Command line arguments
    postscript, ps, hpgl, hp7470, hp7580, meta, colourps, cps, xwindows,
    x11, tektronics, tekt, tek4107t, tek, none, null, text, data, xterm,
    png EMBOSS_GRAPHICS value, or x11
-   -outfile Output file name Output file <sequence>.dotpath
    Optional qualifiers Allowed values Default
    -overlaps Displays the overlapping matches (in red) as well as the
    minimal set of non-overlapping matches Boolean value Yes/No No
    -[no]boxit Draw a box around dotplot Boolean value Yes/No Yes
    Advanced qualifiers Allowed values Default
-   -data Output the match data to a file instead of plotting it Boolean
-   value Yes/No No
+   (none)
    
 Input file format
 

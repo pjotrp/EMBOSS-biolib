@@ -134,13 +134,12 @@ Created plotcon.ps
 
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
-   Mandatory qualifiers (* if not always prompted):
+   Mandatory qualifiers:
   [-msf]               seqset     File containing a sequence alignment
    -winsize            integer    Number of columns to average alignment
                                   quality over. The larger this value is, the
                                   smoother the plot will be.
-*  -graph              xygraph    Graph type
-*  -outfile            outfile    Display as data
+   -graph              xygraph    Graph type
 
    Optional qualifiers:
    -scorefile          matrix     This is the scoring matrix file used when
@@ -150,10 +149,7 @@ Created plotcon.ps
                                   files are found in the 'data' directory of
                                   the EMBOSS installation.
 
-   Advanced qualifiers:
-   -data               boolean    Output the match data to a file instead of
-                                  plotting it
-
+   Advanced qualifiers: (none)
    Associated qualifiers:
   "-msf" related qualifiers
    -sbegin1             integer    First base used
@@ -179,8 +175,6 @@ Created plotcon.ps
    -gytitle             string     Graph y axis title
    -goutfile            string     Output file for non interactive displays
    -gdirectory          string     Output directory
-  "-outfile" related qualifiers
-   -odirectory          string     Output directory
 
    General qualifiers:
    -auto                boolean    Turn off prompts
@@ -188,9 +182,6 @@ Created plotcon.ps
    -filter              boolean    Read standard input, write standard output
    -options             boolean    Prompt for required and optional values
    -debug               boolean    Write debug output to program.dbg
-   -acdlog              boolean    Write ACD processing log to program.acdlog
-   -acdpretty           boolean    Rewrite ACD file as program.acdpretty
-   -acdtable            boolean    Write HTML table of options
    -verbose             boolean    Report some/full command line options
    -help                boolean    Report command line options. More
                                   information on associated and general
@@ -232,13 +223,6 @@ Created plotcon.ps
 <td><i>EMBOSS_GRAPHICS</i> value, or x11</td>
 </tr>
 
-<tr>
-<td>-outfile</td>
-<td>Display as data</td>
-<td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.plotcon</td>
-</tr>
-
 <tr bgcolor="#FFFFCC">
 <th align="left" colspan=2>Optional qualifiers</th>
 <th align="left">Allowed values</th>
@@ -259,10 +243,7 @@ Created plotcon.ps
 </tr>
 
 <tr>
-<td>-data</td>
-<td>Output the match data to a file instead of plotting it</td>
-<td>Boolean value Yes/No</td>
-<td>No</td>
+<td colspan=4>(none)</td>
 </tr>
 
 </table>

@@ -9,6 +9,10 @@ Function
    
 Description
 
+   Signal peptides mediate translocation across the ER membrane in
+   eukaryotes. In prokaryotes signal peptides mediate translocation
+   across the inner and outer membranes.
+   
    sigcleave predicts the site of cleavage between a signal sequence and
    the mature exported protein. The predictive accuracy is estimated to
    be around 75-80% for both prokaryotic and eukaryotic proteins.
@@ -16,6 +20,26 @@ Description
    sigcleave uses the method of von Heijne as modified by von Heijne in
    his later book where treatment of positions -1 and -3 in the matrix is
    slightly altered (see references).
+   
+  Why isn't there a cutoff to eliminate internal sites?
+  
+   The program predicts cleavage sites inside the whole protein. Apart
+   from the N-terminal sites, the other sites are not biologically
+   relevant. Why isn't there a cutoff to eliminate internal sites?
+   
+   The answer is partly because these sites can be relevant in some
+   biological cases (additional pre-processing for example), but mostly
+   because ...
+   
+   There is one thing in bioinformatics you can not be certain of ... the
+   start of a protein sequence. The end is easy to predict. The start
+   depends on promoters, transcriptional controls, splicing, etc.
+   
+   Most importantly, sigcleave is not perfect - you should check the
+   results and decide whether you like the prediction.
+   
+   Also, remember you can put -send 50 on the command line to make sure
+   it only checks the first 50 residues.
    
 Usage
 
@@ -77,9 +101,6 @@ Command line arguments
    -filter              boolean    Read standard input, write standard output
    -options             boolean    Prompt for required and optional values
    -debug               boolean    Write debug output to program.dbg
-   -acdlog              boolean    Write ACD processing log to program.acdlog
-   -acdpretty           boolean    Rewrite ACD file as program.acdpretty
-   -acdtable            boolean    Write HTML table of options
    -verbose             boolean    Report some/full command line options
    -help                boolean    Report command line options. More
                                   information on associated and general
