@@ -391,7 +391,7 @@ int main(int argc, char **argv, char **env)
 
     ajFmtError("..%s..\n\n", ajStrStr( cmd));
     ajDebug("Executing '%S'\n", cmd);
-    ajSystemEnv(&cmd, env);
+    ajSystemEnv(cmd, env);
 
 
     /* produce alignment file only if one was produced */
@@ -432,14 +432,14 @@ int main(int argc, char **argv, char **env)
 	    ajFmtPrintF(dend_outfile, "%s\n", ajStrStr( line));
 
 	ajFileClose(&tmp_dendfile);
-	ajSysUnlink(&tmp_dendfilename);
+	ajSysUnlink(tmp_dendfilename);
     }
 
 
-    ajSysUnlink( &tmpFilename);
+    ajSysUnlink( tmpFilename);
 
     if(!only_dend)
-	ajSysUnlink(&tmp_aln_outfile);
+	ajSysUnlink(tmp_aln_outfile);
 
     ajExit();
 

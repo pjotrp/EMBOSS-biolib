@@ -196,16 +196,16 @@ int main(int argc, char **argv)
 **
 ** Undocumented.
 **
-** @param [?] graph [AjPGraph] Undocumented
-** @param [?] limit [ajint] Undocumented
-** @param [?] x [float*] Undocumented
-** @param [?] y [float*] Undocumented
-** @param [?] ymax [float] Undocumented
-** @param [?] colour [ajint] Undocumented
-** @param [?] angle [ajint] Undocumented
-** @param [?] window [ajint] Undocumented
-** @param [?] baseline [float] Undocumented
-** @param [?] sname [char*] Sequence name
+** @param [r] graph [AjPGraph] Undocumented
+** @param [r] limit [ajint] Undocumented
+** @param [r] x [float*] Undocumented
+** @param [r] y [float*] Undocumented
+** @param [r] ymax [float] Undocumented
+** @param [r] colour [ajint] Undocumented
+** @param [r] angle [ajint] Undocumented
+** @param [r] window [ajint] Undocumented
+** @param [r] baseline [float] Undocumented
+** @param [r] sname [char*] Sequence name
 ** @@
 ******************************************************************************/
 
@@ -264,10 +264,10 @@ static void hmoment_addgraph(AjPGraph graph, ajint limit, float *x, float *y,
 **
 ** Undocumented.
 **
-** @param [?] p [char*] Undocumented
-** @param [?] pos [int] Undocumented
-** @param [?] window [int] Undocumented
-** @param [?] angle [ajint] Undocumented
+** @param [r] p [char*] Undocumented
+** @param [r] pos [int] Undocumented
+** @param [r] window [int] Undocumented
+** @param [r] angle [ajint] Undocumented
 ** @return [float] Undocumented
 ** @@
 ******************************************************************************/

@@ -132,7 +132,7 @@ int main(int argc, char **argv)
 **
 ** Undocumented.
 **
-** @param [?] inf [AjPFile] Undocumented
+** @param [u] inf [AjPFile] Undocumented
 ** @return [AjPTable] Undocumented
 ** @@
 ******************************************************************************/

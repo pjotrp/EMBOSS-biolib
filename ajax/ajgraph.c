@@ -6351,12 +6351,12 @@ static AjBool GraphTracearg(char *name, va_list args)
 ** @param [r] pgm [char*] Application name, used as the name of the ACD file
 ** @param [r] argc [ajint] Number of arguments provided on the command line,
 **        usually passsed as-is by the calling application.
-** @param [r] argv [char* []] Actual arguments as an array of text.
+** @param [r] argv [char* const[]] Actual arguments as an array of text.
 ** @return [AjStatus] Always returns ajStatusOK or aborts.
 ** @@
 ******************************************************************************/
 
-AjStatus ajGraphInit(char *pgm, ajint argc, char *argv[])
+AjStatus ajGraphInit(char *pgm, ajint argc, char * const argv[])
 {
     ajNamInit("emboss");
 
@@ -6382,13 +6382,13 @@ AjStatus ajGraphInit(char *pgm, ajint argc, char *argv[])
 ** @param [r] pgm [char*] Application name, used as the name of the ACD file
 ** @param [r] argc [ajint] Number of arguments provided on the command line,
 **        usually passsed as-is by the calling application.
-** @param [r] argv [char* []] Actual arguments as an array of text.
+** @param [r] argv [char* const[]] Actual arguments as an array of text.
 ** @param [r] package [char*] Package name, used to find the ACD file
 ** @return [AjStatus] Always returns ajStatusOK or aborts.
 ** @@
 ******************************************************************************/
 
-AjStatus ajGraphInitP(char *pgm, ajint argc, char *argv[], char *package)
+AjStatus ajGraphInitP(char *pgm, ajint argc, char *const argv[], char *package)
 {
     ajNamInit("emboss");
 

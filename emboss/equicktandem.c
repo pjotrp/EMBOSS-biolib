@@ -199,8 +199,8 @@ int main(int argc, char **argv)
 ** Prints the original output format, but simply returns if the
 ** output file is NULL.
 **
-** @param [?] outf [AjPFile] Undocumented
-** @param [?] begin [ajint] Undocumented
+** @param [u] outf [AjPFile] Undocumented
+** @param [r] begin [ajint] Undocumented
 ** @@
 ******************************************************************************/
 
@@ -227,8 +227,8 @@ static void equicktandem_print(AjPFile outf, ajint begin)
 **
 ** Saves a result as a feature.
 **
-** @param [?] tab [AjPFeattable] Undocumented
-** @param [?] begin [ajint] Undocumented
+** @param [r] tab [AjPFeattable] Undocumented
+** @param [r] begin [ajint] Undocumented
 ** @@
 ******************************************************************************/
 

@@ -1120,7 +1120,7 @@ static void primers_write_primer(AjPFile outfile, char *tag, AjPStr pos,
     ajStrToFloat(tm, &tmfloat);
     ajStrToFloat(gc, &gcfloat);
     comma = ajStrFindC(pos, ",");
-    ajStrAss(&start, pos);
+    ajStrAssS(&start, pos);
     ajStrCut(&start, comma, ajStrLen(start)-1);
     ajStrToInt(start, &startint);
     ajStrCut(&pos, 0, comma);

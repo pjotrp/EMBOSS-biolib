@@ -61,12 +61,12 @@ static ajlong regTotal     = 0;
 **
 ** Compiles a regular expression.
 **
-** @param [r] exp [AjPStr] Regular expression string.
+** @param [r] exp [const AjPStr] Regular expression string.
 ** @return [AjPRegexp] Compiled regular expression.
 ** @@
 ******************************************************************************/
 
-AjPRegexp ajRegComp(AjPStr exp)
+AjPRegexp ajRegComp(const AjPStr exp)
 {
     return ajRegCompC(ajStrStr(exp));
 }
@@ -118,12 +118,12 @@ AjPRegexp ajRegCompC(const char* exp)
 **
 ** Compiles a case-insensitive regular expression.
 **
-** @param [r] exp [AjPStr] Regular expression string.
+** @param [r] exp [const AjPStr] Regular expression string.
 ** @return [AjPRegexp] Compiled regular expression.
 ** @@
 ******************************************************************************/
 
-AjPRegexp ajRegCompCase(AjPStr exp)
+AjPRegexp ajRegCompCase(const AjPStr exp)
 {
     return ajRegCompCaseC(ajStrStr(exp));
 }
@@ -275,13 +275,13 @@ AjBool ajRegExecC(AjPRegexp prog, const char* str)
 **
 ** This information is normally lost during processing.
 **
-** @param [r] rp [AjPRegexp] Compiled regular expression.
+** @param [r] rp [const AjPRegexp] Compiled regular expression.
 ** @return [ajint] Offset of match from start of string.
 **               -1 if the string and the expression do not match.
 ** @@
 ******************************************************************************/
 
-ajint ajRegOffset(AjPRegexp rp)
+ajint ajRegOffset(const AjPRegexp rp)
 {
     return (rp->ovector[0]);
 }
@@ -297,14 +297,14 @@ ajint ajRegOffset(AjPRegexp rp)
 **
 ** This information is normally lost during processing.
 **
-** @param [r] rp [AjPRegexp] Compiled regular expression.
+** @param [r] rp [const AjPRegexp] Compiled regular expression.
 ** @param [r] isub [ajint] Substring number.
 ** @return [ajint] Offset of match from start of string.
 **               -1 if the string and the expression do not match.
 ** @@
 ******************************************************************************/
 
-ajint ajRegOffsetI(AjPRegexp rp, ajint isub)
+ajint ajRegOffsetI(const AjPRegexp rp, ajint isub)
 {
     if(isub < 1)
 	ajErr("Invalid substring number %d", isub);;
@@ -322,13 +322,13 @@ ajint ajRegOffsetI(AjPRegexp rp, ajint isub)
 **
 ** After a successful comparison, returns the length of a substring.
 **
-** @param [r] rp [AjPRegexp] Compiled regular expression.
+** @param [r] rp [const AjPRegexp] Compiled regular expression.
 ** @param [r] isub [ajint] Substring number.
 ** @return [ajint] Substring length, or 0 if not found.
 ** @@
 ******************************************************************************/
 
-ajint ajRegLenI(AjPRegexp rp, ajint isub)
+ajint ajRegLenI(const AjPRegexp rp, ajint isub)
 {
     ajint istart;
     ajint iend;
@@ -355,13 +355,13 @@ ajint ajRegLenI(AjPRegexp rp, ajint isub)
 **
 ** After a successful match, returns the remainder of the string.
 **
-** @param [r] rp [AjPRegexp] Compiled regular expression.
+** @param [r] rp [const AjPRegexp] Compiled regular expression.
 ** @param [w] post [AjPStr*] String to hold the result.
 ** @return [AjBool] ajTrue on success.
 ** @@
 ******************************************************************************/
 
-AjBool ajRegPost(AjPRegexp rp, AjPStr* post)
+AjBool ajRegPost(const AjPRegexp rp, AjPStr* post)
 {
     if(rp->ovector[1])
     {
@@ -384,13 +384,13 @@ AjBool ajRegPost(AjPRegexp rp, AjPStr* post)
 ** string data. This in turn is part of the original string. If this
 ** changes then the results are undefined.
 **
-** @param [r] rp [AjPRegexp] Compiled regular expression.
+** @param [r] rp [const AjPRegexp] Compiled regular expression.
 ** @param [w] post [const char**] Character string to hold the result.
 ** @return [AjBool] ajTrue on success.
 ** @@
 ******************************************************************************/
 
-AjBool ajRegPostC(AjPRegexp rp, const char** post)
+AjBool ajRegPostC(const AjPRegexp rp, const char** post)
 {
     if(rp->ovector[1])
     {
@@ -410,13 +410,13 @@ AjBool ajRegPostC(AjPRegexp rp, const char** post)
 **
 ** After a successful match, returns the string before the match.
 **
-** @param [r] rp [AjPRegexp] Compiled regular expression.
+** @param [r] rp [const AjPRegexp] Compiled regular expression.
 ** @param [w] dest [AjPStr*] String to hold the result.
 ** @return [AjBool] ajTrue on success.
 ** @@
 ******************************************************************************/
 
-AjBool ajRegPre(AjPRegexp rp, AjPStr* dest)
+AjBool ajRegPre(const AjPRegexp rp, AjPStr* dest)
 {
     ajint ilen;
 
@@ -444,7 +444,7 @@ AjBool ajRegPre(AjPRegexp rp, AjPStr* dest)
 **
 ** After a successful match, returns a substring.
 **
-** @param [r] rp [AjPRegexp] Compiled regular expression.
+** @param [r] rp [const AjPRegexp] Compiled regular expression.
 ** @param [r] isub [ajint] Substring number.
 ** @param [w] dest [AjPStr*] String to hold the result.
 ** @return [AjBool] ajTrue if a substring was defined
@@ -453,7 +453,7 @@ AjBool ajRegPre(AjPRegexp rp, AjPStr* dest)
 ** @@
 ******************************************************************************/
 
-AjBool ajRegSubI(AjPRegexp rp, ajint isub, AjPStr* dest)
+AjBool ajRegSubI(const AjPRegexp rp, ajint isub, AjPStr* dest)
 {
     ajint ilen;
     ajint istart;
@@ -499,7 +499,7 @@ AjBool ajRegSubI(AjPRegexp rp, ajint isub, AjPStr* dest)
 **
 ** Clears and frees a compiled regular expression.
 **
-** @param [w] pexp [AjPRegexp*] Compiled regular expression.
+** @param [d] pexp [AjPRegexp*] Compiled regular expression.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -544,12 +544,12 @@ void ajRegFree(AjPRegexp* pexp)
 **
 ** Traces a compiled regular expression with debug calls.
 **
-** @param [r] exp [AjPRegexp] Compiled regular expression.
+** @param [r] exp [const AjPRegexp] Compiled regular expression.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajRegTrace(AjPRegexp exp)
+void ajRegTrace(const AjPRegexp exp)
 {
     ajint isub;
     ajint ilen;

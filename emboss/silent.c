@@ -328,7 +328,7 @@ static AjPList silent_mismatch(AjPStr sstr, AjPList relist, AjPStr* tailstr,
 	    continue;
 	}
 	ajStrToUpper(&rlp->site);   /* convert all RS to upper case */
-	ajStrAss(&str,rlp->site);      /* str now holds RS patterns */
+	ajStrAssS(&str,rlp->site);      /* str now holds RS patterns */
 
 	patlist = ajListNew();
         if(!embPatClassify(&str,&dummy,&dummy,&dummy,&dummy,&dummy,&dummy,0))

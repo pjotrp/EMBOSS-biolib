@@ -123,14 +123,13 @@ AjBool embDmxScophitsToHitlist(AjPList in, AjPHitlist *out, AjIList *iter)
     ** list, otherwise it will read from the current position.
     */
     if(!(*iter))
-	*iter=ajListIter(in);
+	*iter=ajListIterRead(in);
 
 
     if(!((scoptmp=(AjPScophit)ajListIterNext(*iter))))
     {
 	ajWarn("Empty list in embDmxScophitsToHitlist");
-	ajListIterFree(*iter);	
-	*iter = NULL;
+	ajListIterFree(iter);	
 	return ajFalse;
     }
 
@@ -341,14 +340,13 @@ AjBool embDmxScophitsAccToHitlist(AjPList in, AjPHitlist *out, AjIList *iter)
     ** list, otherwise it will read from the current position.
     */
     if(!(*iter))
-	*iter=ajListIter(in);
+	*iter=ajListIterRead(in);
 
 
     if(!((scoptmp=(AjPScophit)ajListIterNext(*iter))))
     {
 	ajWarn("Empty list in embDmxScophitsToHitlist");
-	ajListIterFree(*iter);	
-	*iter=NULL;
+	ajListIterFree(iter);	
 	return ajFalse;
     }
 
@@ -369,8 +367,7 @@ AjBool embDmxScophitsAccToHitlist(AjPList in, AjPHitlist *out, AjIList *iter)
 	{
 	    ajWarn("List with no Scophits with Acc in "
 		   "embDmxScophitsAccToHitlist");
-	    ajListIterFree(*iter);	
-	    *iter = NULL;
+	    ajListIterFree(iter);	
 	    return ajFalse;
 	}
     }
@@ -530,7 +527,7 @@ AjBool embDmxHitsWrite(AjPFile outf, AjPHitlist hits, ajint maxhits)
     ajFmtPrintF(outf,"XX\n");
     
 
-    iter=ajListIter(outlist);
+    iter=ajListIterRead(outlist);
     while((hit=(AjPScophit) ajListIterNext(iter)))
     {
 	if(cnt==maxhits)
@@ -550,7 +547,7 @@ AjBool embDmxHitsWrite(AjPFile outf, AjPHitlist hits, ajint maxhits)
 	x++;
     }
     
-    ajListIterFree(iter);
+    ajListIterFree(&iter);
     ajListDel(&outlist);
     ajListDel(&tmplist);
     
@@ -668,7 +665,7 @@ AjBool embDmxScopalgToScop(AjPScopalg align, AjPScop *scop_arr,
 	ajStrToUpper(&entry_up);
 	
 	
-        if((idx = ajScopArrFindScopid(entry_up,scop_arr,scop_dim))==-1)
+        if((idx = ajScopArrFindScopid(scop_arr,scop_dim,entry_up))==-1)
         {
 	    ajStrDel(&entry_up);
 	    return ajFalse;
@@ -1139,44 +1136,6 @@ AjBool embDmxScophitMergeInsertThisTargetBoth(AjPList list, AjPScophit hit1,
 
 
 
-/* @func embDmxScopalgWriteFasta ********************************************
-**
-** Writes a Scopalg object to a specified file in FASTA format (just the 
-** alignment without the SCOP classification information).
-**
-** @param [r] align      [AjPScopalg]  A list Hitlist structures.
-** @param [w] outf       [AjPFile *]     Outfile file pointer
-** 
-** @return [AjBool] True on success (a file has been written)
-** @@
-****************************************************************************/
-AjBool embDmxScopalgWriteFasta(AjPScopalg align, AjPFile* outf)
-{
-    ajint i;
-    
-    /*Check args*/
-    if(!align)
-    {
-	ajWarn("Null args passed to ajDmxScopalgWriteClustal ");
-	return ajFalse;
-    }
-    
-    /* remove i from the print statement before commiting
-    ajFmtPrintF(*outf,"CLUSTALW\n\n");
-    ajFmtPrintF(*outf, "\n");*/ 
-
-    for(i=0;i<align->N;++i)
-    	ajFmtPrintF(*outf,">%S_%d\n%S\n",align->Codes[i],i,align->Seqs[i]);
-    ajFmtPrintF(*outf,"\n");
-    ajFmtPrintF(*outf,"\n"); 
-    
-    return ajTrue;
-}	
-
-
-
-
-
 /* @func embDmxSeqNR ********************************************************
 **
 ** Reads a list of AjPSeq's and writes an array describing the redundancy in
@@ -1220,7 +1179,7 @@ AjBool embDmxSeqNR(AjPList input, AjPInt *keep, ajint *nset,
     char  *p;
     char  *q;
 
-    float **sub;
+    AjFloatArray *sub;
     float id   = 0.;	  /* Passed as arg but not used here */
     float sim  = 0.;
     float idx  = 0.;	  /* Passed as arg but not used here */
@@ -1686,7 +1645,7 @@ AjBool embDmxHitlistToScophits(AjPList in, AjPList *out)
     }
 
     /* Create list iterator and new list */
-    iter = ajListIter(in);	
+    iter = ajListIterRead(in);	
     
 
     /* Iterate through the list of Hitlist pointers */
@@ -1730,7 +1689,7 @@ AjBool embDmxHitlistToScophits(AjPList in, AjPList *out)
     }	
     
 
-    ajListIterFree(iter);	
+    ajListIterFree(&iter);	
 
     return ajTrue;
 }

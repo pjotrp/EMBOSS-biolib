@@ -26,8 +26,8 @@
 
 
 
-static ajint trimest_get_tail(AjPSeq seq, ajint direction, ajint minlength,
-			      ajint mismatches);
+static ajint trimest_get_tail(const AjPSeq seq, ajint direction,
+			      ajint minlength, ajint mismatches);
 
 static void trimest_tolower(AjPStr *string, ajint start, ajint end);
 
@@ -70,7 +70,7 @@ int main(int argc, char **argv)
     while(ajSeqallNext(seqall, &seq))
     {
         /* get sequence description */
-        ajStrAss(&desc, ajSeqGetDesc(seq));
+        ajStrAssS(&desc, ajSeqGetDesc(seq));
 
         /* get positions to cut in 5' poly-T and 3' poly-A tails */
 	if(fiveprime)
@@ -78,7 +78,7 @@ int main(int argc, char **argv)
 	tail3 = trimest_get_tail(seq, 3, minlength, mismatches);
 
 	/* get a COPY of the sequence string */
-	ajStrAss(&str, ajSeqStr(seq));
+	ajStrAssS(&str, ajSeqStr(seq));
 
         /* cut off longest of 3' or 5' tail */
 	if(tail5 > tail3)
@@ -136,7 +136,7 @@ int main(int argc, char **argv)
 **
 ** Trim sequence
 **
-** @param [r] seq [AjPSeq] sequence
+** @param [r] seq [const AjPSeq] sequence
 ** @param [r] direction [ajint] 5 = 5' end, 3 = 3' end
 ** @param [r] minlength [ajint] minimum length of tail to cut
 ** @param [r] mismatches [ajint] max allowed contiguous mismatches in tail
@@ -144,8 +144,8 @@ int main(int argc, char **argv)
 ** @@
 ******************************************************************************/
 
-static ajint trimest_get_tail(AjPSeq seq, ajint direction, ajint minlength,
-	ajint mismatches)
+static ajint trimest_get_tail(const AjPSeq seq, ajint direction,
+			      ajint minlength, ajint mismatches)
 {
     char t;
     char *s;
@@ -217,7 +217,7 @@ static ajint trimest_get_tail(AjPSeq seq, ajint direction, ajint minlength,
 **
 ** Change a part of a string to lowercase
 **
-** @param [r] string [AjPStr *] string to change
+** @param [u] string [AjPStr *] string to change
 ** @param [r] start [ajint] start of region of string to change
 ** @param [r] end   [ajint] end of region of string to change
 ** @return [void] 

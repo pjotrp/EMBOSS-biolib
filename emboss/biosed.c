@@ -23,8 +23,9 @@
 #include "emboss.h"
 
 
-static void biosed_replace(AjPStr *substr, AjPStr target, AjPStr replace);
-static void biosed_delete(AjPStr *substr, AjPStr target);
+static void biosed_replace(AjPStr *substr,
+			   const AjPStr target, const AjPStr replace);
+static void biosed_delete(AjPStr *substr, const AjPStr target);
 
 
 
@@ -101,14 +102,15 @@ int main(int argc, char **argv)
 ** Generic (unoptimised) replacement of all matching string subsections
 **
 ** @param [w] substr [AjPStr *] sequence
-** @param [r] target [AjPStr] target pattern
-** @param [r] replace [AjPStr] replacement subsequence
+** @param [r] target [const AjPStr] target pattern
+** @param [r] replace [const AjPStr] replacement subsequence
 **
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void biosed_replace(AjPStr *substr, AjPStr target, AjPStr replace)
+static void biosed_replace(AjPStr *substr,
+			   const AjPStr target, const AjPStr replace)
 {
     AjPStr str = NULL;
     AjPStr tmp = NULL;
@@ -157,13 +159,13 @@ static void biosed_replace(AjPStr *substr, AjPStr target, AjPStr replace)
 ** Generic (unoptimised) delete of all matching string subsections
 **
 ** @param [w] substr [AjPStr*] sequence
-** @param [r] target [AjPStr] target pattern
+** @param [r] target [const AjPStr] target pattern
 **
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void biosed_delete(AjPStr *substr, AjPStr target)
+static void biosed_delete(AjPStr *substr, const AjPStr target)
 {
     AjPStr str = NULL;
     char   *p  = NULL;

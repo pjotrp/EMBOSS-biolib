@@ -34,10 +34,10 @@
 
 
 
-static void cpgreport_cpgsearch(AjPFile *outf, ajint s, ajint len, char *seq,
+static void cpgreport_cpgsearch(AjPFile outf, ajint s, ajint len, char *seq,
 				char *name, ajint begin, ajint *score,
 				AjPFeattabOut featout,
-				AjPFeattable *feattable);
+				AjPFeattable feattable);
 static void cpgreport_calcgc(ajint from, ajint to, char *p, ajint *dcg,
 			     ajint *dgc, ajint *gc);
 
@@ -77,6 +77,9 @@ int main(int argc, char **argv)
 
     while(ajSeqallNext(seqall, &seq))
     {
+	if (!feattable)
+	    feattable = ajFeattableNewDna(ajSeqGetName(seq));
+
 	begin = ajSeqallBegin(seqall);
 	end   = ajSeqallEnd(seqall);
 
@@ -92,8 +95,8 @@ int main(int argc, char **argv)
 	ajFmtPrintF(outf,"Sequence              Begin    End Score");
 	ajFmtPrintF(outf,"        CpG   %%CG  CG/GC\n");
 
-	cpgreport_cpgsearch(&outf,0,len,ajStrStr(substr),ajSeqName(seq),
-			    begin,&score,featout,&feattable);
+	cpgreport_cpgsearch(outf,0,len,ajStrStr(substr),ajSeqName(seq),
+			    begin,&score,featout,feattable);
 	ajStrDel(&strand);
     }
 
@@ -118,22 +121,22 @@ int main(int argc, char **argv)
 **
 ** Undocumented.
 **
-** @param [?] outf [AjPFile*] Undocumented
-** @param [?] from [ajint] Undocumented
-** @param [?] to [ajint] Undocumented
-** @param [?] p [char*] Undocumented
-** @param [?] name [char*] Undocumented
-** @param [?] begin [ajint] Undocumented
-** @param [?] score [ajint*] Undocumented
-** @param [?] featout [AjPFeattabOut] Undocumented
-** @param [?] feattable [AjPFeattable*] Undocumented
+** @param [u] outf [AjPFile] Undocumented
+** @param [r] from [ajint] Undocumented
+** @param [r] to [ajint] Undocumented
+** @param [r] p [char*] Undocumented
+** @param [r] name [char*] Undocumented
+** @param [r] begin [ajint] Undocumented
+** @param [r] score [ajint*] Undocumented
+** @param [r] featout [AjPFeattabOut] Undocumented
+** @param [r] feattable [AjPFeattable] Undocumented
 ** @@
 ******************************************************************************/
 
-static void cpgreport_cpgsearch(AjPFile *outf, ajint from, ajint to, char *p,
+static void cpgreport_cpgsearch(AjPFile outf, ajint from, ajint to, char *p,
 				char *name, ajint begin, ajint *score,
 				AjPFeattabOut featout,
-				AjPFeattable *feattable)
+				AjPFeattable feattable)
 {
     ajint i;
     ajint c;
@@ -148,7 +151,6 @@ static void cpgreport_cpgsearch(AjPFile *outf, ajint from, ajint to, char *p,
     ajint dcg;
     ajint dgc;
     ajint gc;
-    static AjPStr name2  = NULL;
     static AjPStr source = NULL;
     static AjPStr type   = NULL;
     char  strand = '+';
@@ -156,12 +158,8 @@ static void cpgreport_cpgsearch(AjPFile *outf, ajint from, ajint to, char *p,
     AjPFeature feature;
     float score2 = 0.0;
 
-    if(!name2)
+    if(!source)
     {
-      ajStrAssC(&name2,name);
-
-      *feattable = ajFeattableNewDna(name2);
-
       ajStrAssC(&source,"cpgreport");
       ajStrAssC(&type,"misc_feature");
     }
@@ -182,27 +180,27 @@ static void cpgreport_cpgsearch(AjPFile *outf, ajint from, ajint to, char *p,
 	    if(dgc)
 	    {
 	        score2 = (float) top;
-	        feature = ajFeatNew(*feattable, source, type,
+	        feature = ajFeatNew(feattable, source, type,
 				    lsum+2+z,t+2+z,
 				    score2, strand, frame) ;
 		if(!feature)
 		    ajDebug("Error feature not added to feature table");
 
-		ajFmtPrintF(*outf,"%-20.20s %6d %6d %5d ",name,lsum+2+z,
+		ajFmtPrintF(outf,"%-20.20s %6d %6d %5d ",name,lsum+2+z,
 			    t+2+z,top);
-		ajFmtPrintF(*outf,"     %5d %5.1f %6.2f\n",
+		ajFmtPrintF(outf,"     %5d %5.1f %6.2f\n",
 			    dcg,(float)gc*100.0/(float)(t+1-lsum),
 			    (float)(dcg/dgc));
 	    }
 	    else
 	    {
 		score2   = (float) top;
-		feature = ajFeatNew(*feattable, source, type,
+		feature = ajFeatNew(feattable, source, type,
 				    lsum+2+z,t+2+z,
 				    score2, strand, frame) ;
-		ajFmtPrintF(*outf,"%-20s %6d %6d %5d ",name,lsum+2+z,t+2+z,
+		ajFmtPrintF(outf,"%-20s %6d %6d %5d ",name,lsum+2+z,t+2+z,
 			    top);
-		ajFmtPrintF(*outf,"     %5d %5.1f    -\n",
+		ajFmtPrintF(outf,"     %5d %5.1f    -\n",
 			    dcg,(float)gc*100.0/(float)(t+1-lsum));
 	    }
 	    cpgreport_cpgsearch(outf,t+2,i,p,name,begin,score,featout,
@@ -226,25 +224,25 @@ static void cpgreport_cpgsearch(AjPFile *outf, ajint from, ajint to, char *p,
 	cpgreport_calcgc(lsum+1,t+2,p,&dcg,&dgc,&gc);
 	if(dgc)
 	{
-	    ajFmtPrintF(*outf,"%-20s %6d %6d %5d ",name,lsum+2+z,t+2+z,
+	    ajFmtPrintF(outf,"%-20s %6d %6d %5d ",name,lsum+2+z,t+2+z,
 			top);
-	    ajFmtPrintF(*outf,"     %5d %5.1f %6.2f\n",
+	    ajFmtPrintF(outf,"     %5d %5.1f %6.2f\n",
 			dcg,(float)gc*100.0/(float)(t+1-lsum),
 			((float)dcg/(float)dgc));
 	    score2   = (float) top;
 	    /*score2 = ajFmtPrintS(&score2,"%d.0",top);*/
-	    feature  = ajFeatNew(*feattable, source, type,
+	    feature  = ajFeatNew(feattable, source, type,
 				 lsum+2+z,t+2+z,
 				 score2, strand, frame);
 	}
 	else
 	{
-	    ajFmtPrintF(*outf,"%-20s %6d %6d %5d ",name,lsum+2+z,t+2+z,top);
-	    ajFmtPrintF(*outf,"     %5d %5.1f    -\n",dcg,
+	    ajFmtPrintF(outf,"%-20s %6d %6d %5d ",name,lsum+2+z,t+2+z,top);
+	    ajFmtPrintF(outf,"     %5d %5.1f    -\n",dcg,
 			(float)gc*100.0/(float)(t+1-lsum));
 	    score2   = (float) top;
 	    /*score2 = ajFmtPrintS(&score2,"%d.0",top);*/
-	    feature  = ajFeatNew(*feattable, source, type,
+	    feature  = ajFeatNew(feattable, source, type,
 				 lsum+2+z,t+2+z,
 				 score2, strand, frame);
 	}
@@ -262,12 +260,12 @@ static void cpgreport_cpgsearch(AjPFile *outf, ajint from, ajint to, char *p,
 **
 ** Undocumented.
 **
-** @param [?] from [ajint] Undocumented
-** @param [?] to [ajint] Undocumented
-** @param [?] p [char*] Undocumented
-** @param [?] dcg [ajint*] Undocumented
-** @param [?] dgc [ajint*] Undocumented
-** @param [?] gc [ajint*] Undocumented
+** @param [r] from [ajint] Undocumented
+** @param [r] to [ajint] Undocumented
+** @param [r] p [char*] Undocumented
+** @param [r] dcg [ajint*] Undocumented
+** @param [r] dgc [ajint*] Undocumented
+** @param [r] gc [ajint*] Undocumented
 ** @@
 ******************************************************************************/
 

@@ -80,10 +80,11 @@ static AjBool     seqTypeFix(AjPSeq thys, ajint itype);
 static AjBool     seqTypeFixReg(AjPSeq thys, ajint itype, char fixchar);
 static void       seqTypeSet(AjPSeq thys, const AjPStr Type);
 static AjBool     seqTypeStopTrimS(AjPStr* pthys);
-static char       seqTypeTest(AjPStr thys, AjPRegexp badchars);
+static char       seqTypeTest(const AjPStr thys, AjPRegexp badchars);
 static AjBool     seqTypeTestI(AjPSeq thys, ajint itype);
 static AjPRegexp  seqTypeCharAny(void);
 static AjPRegexp  seqTypeCharAnyGap(void);
+static AjPRegexp  seqTypeCharDnaGap(void);
 static AjPRegexp  seqTypeCharNuc(void);
 static AjPRegexp  seqTypeCharNucGap(void);
 static AjPRegexp  seqTypeCharNucPure(void);
@@ -92,9 +93,11 @@ static AjPRegexp  seqTypeCharProtAny(void);
 static AjPRegexp  seqTypeCharProtGap(void);
 static AjPRegexp  seqTypeCharProtPure(void);
 static AjPRegexp  seqTypeCharProtStop(void);
+static AjPRegexp  seqTypeCharRnaGap(void);
 
 static AjPRegexp seqtypeRegAny      = NULL;
 static AjPRegexp seqtypeRegAnyGap   = NULL;
+static AjPRegexp seqtypeRegDnaGap   = NULL;
 static AjPRegexp seqtypeRegNuc      = NULL;
 static AjPRegexp seqtypeRegNucGap   = NULL;
 static AjPRegexp seqtypeRegNucPure  = NULL;
@@ -103,6 +106,7 @@ static AjPRegexp seqtypeRegProtAny  = NULL;
 static AjPRegexp seqtypeRegProtGap  = NULL;
 static AjPRegexp seqtypeRegProtPure = NULL;
 static AjPRegexp seqtypeRegProtStop = NULL;
+static AjPRegexp seqtypeRegRnaGap   = NULL;
 
 
 
@@ -130,8 +134,8 @@ char seqCharNuc[]       = "ACGTUacgtuBDHKMNRSVWXYbdhkmnrsvwxy?";
 char seqCharNucPure[]   = "ACGTUacgtu";
 char seqCharNucAmbig[]  = "BDHKMNRSVWXYbdhkmnrsvwxy?";
 char seqCharGap[]       = ".~Oo-";	/* phylip uses O */
-char seqCharNucDNA[]    = "Tt";
-char seqCharNucRNA[]    = "Uu";
+char seqCharNucDna[]    = "ACGTacgtBDHKMNRSVWXYbdhkmnrsvwxy?";
+char seqCharNucRna[]    = "ACGUacguBDHKMNRSVWXYbdhkmnrsvwxy?";
 char seqCharGapany[]    = ".~Oo-";	/* phylip uses O */
 char seqCharGapdash[]   = "-";
 char seqCharGapdot[]    = ".";
@@ -157,31 +161,31 @@ static SeqOType seqType[] =
     {"gapany",         AJTRUE,  AJTRUE,  ISANY,  "?",    "X",
 	 seqTypeCharAnyGap,
 	 "any valid sequence with gaps"}, /* reset type */
-    {"dna",            AJFALSE, AJTRUE,  ISNUC,  "?XUu", "NNTt",
-	 seqTypeCharAny,
+    {"dna",            AJFALSE, AJTRUE,  ISNUC,  "?XxUu", "NNNTt",
+	 seqTypeCharNuc,
 	 "DNA sequence"},
     {"puredna",        AJFALSE, AJFALSE, ISNUC,  "Uu", "Tt",
 	 seqTypeCharNucPure,
 	 "DNA sequence, bases ACGT only"},
-    {"gapdna",         AJTRUE,  AJTRUE,  ISNUC,  "?XUu", "NNTt",
+    {"gapdna",         AJTRUE,  AJTRUE,  ISNUC,  "?XxUu", "NNNTt",
 	 seqTypeCharNucGap,
 	 "DNA sequence with gaps"},
-    {"rna",            AJFALSE, AJTRUE,  ISNUC,  "?XTt", "NNUu",
+    {"rna",            AJFALSE, AJTRUE,  ISNUC,  "?XxTt", "NNNUu",
 	 seqTypeCharAny,
 	 "RNA sequence"},
     {"purerna",        AJFALSE, AJFALSE, ISNUC,  "Tt", "Uu",
 	 seqTypeCharNucPure,
 	 "RNA sequence, bases ACGU only"},
-    {"gaprna",         AJTRUE,  AJTRUE,  ISNUC,  "?XTt", "NNUu",
+    {"gaprna",         AJTRUE,  AJTRUE,  ISNUC,  "?XxTt", "NNNUu",
 	 seqTypeCharNucGap,
 	 "RNA sequence with gaps"},
-    {"nucleotide",     AJFALSE, AJTRUE,  ISNUC,  "?X",   "NN",
+    {"nucleotide",     AJFALSE, AJTRUE,  ISNUC,  "?Xx",   "NNN",
 	 seqTypeCharNuc,
 	 "nucleotide sequence"},
     {"purenucleotide", AJFALSE, AJFALSE, ISNUC,  NULL,  NULL,
 	 seqTypeCharNucPure,
 	 "nucleotide sequence, bases ACGTU only"},
-    {"gapnucleotide",  AJTRUE,  AJTRUE,  ISNUC,  "?X",   "NN",
+    {"gapnucleotide",  AJTRUE,  AJTRUE,  ISNUC,  "?Xx",   "NNN",
 	 seqTypeCharNucGap,
 	 "nucleotide sequence with gaps"},
     {"protein",        AJFALSE, AJTRUE,  ISPROT, "?*",  "XX",
@@ -209,49 +213,6 @@ static SeqOType seqType[] =
 	 NULL,
 	 NULL}
 };
-
-
-
-
-/* @func ajSeqTypeTest ********************************************************
-**
-** Tests the type of a sequence is compatible with a defined type.
-** If the type can have gaps, also tests for gap characters.
-** Used only for testing, so never writes any error message
-**
-** @param [u] thys [AjPSeq] Sequence string
-** @param [r] Type [AjPStr] Sequence type
-** @return [AjBool] ajTrue if compatible.
-** @@
-******************************************************************************/
-
-AjBool ajSeqTypeTest(AjPSeq thys, AjPStr Type)
-{
-    ajint itype = -1;
-
-    /*ajDebug("testing sequence '%S' type '%S'\n",
-      ajSeqStr(thys), Type);*/
-
-    if(!ajStrLen(Type)) 	   /* nothing given - anything goes */
-    {
-	ajSeqGap(thys, seqGap, 0);
-	return ajTrue;
-    }
-
-    if(!seqFindType(Type, &itype))
-    {
-	ajErr("Sequence type '%S' unknown", Type);
-	return ajFalse;
-    }
-
-    ajDebug("ajSeqTypeTest type '%s' found (%s)\n",
-	    seqType[itype].Name, seqType[itype].Desc);
-
-    if(seqTypeTestI(thys, itype))
-	return ajTrue;
-
-    return seqTypeFix(thys, itype);
-}
 
 
 
@@ -487,12 +448,12 @@ static void seqTypeSet(AjPSeq thys, const AjPStr Type)
 ** Used for input validation - writes error message if the type check fails
 **
 ** @param [u] pthys [AjPStr*] Sequence string
-** @param [r] type_name [AjPStr] Sequence type
+** @param [r] type_name [const AjPStr] Sequence type
 ** @return [AjBool] ajTrue if compatible.
 ** @@
 ******************************************************************************/
 
-AjBool ajSeqTypeCheckS(AjPStr* pthys, AjPStr type_name)
+AjBool ajSeqTypeCheckS(AjPStr* pthys, const AjPStr type_name)
 {
     /*    AjPStr tmpstr = NULL; */
     AjPRegexp badchars;
@@ -684,154 +645,106 @@ AjBool ajSeqTypeCheckIn(AjPSeq thys, const AjPSeqin seqin)
 
 
 
-/* @func ajSeqTypeAnyS ********************************************************
+
+/* @func ajSeqTypeDnaS *****************************************************
 **
-** Checks sequence type for any valid sequence character (but no gaps)
+** Checks sequence type for DNA without gaps.
 **
-** @param [r] pthys [AjPStr*] Sequence string (not changed at present)
-** @return [char] bad character if found, or null.
-** @@
-******************************************************************************/
-
-char ajSeqTypeAnyS(AjPStr* pthys)
-{
-    ajDebug("seqTypeAnyS test\n");
-
-    return seqTypeTest(*pthys, seqTypeCharAny());
-}
-
-
-
-
-/* @func ajSeqTypeDnaS ********************************************************
+** RNA and DNA codes are accepted as is.
 **
-** Checks sequence type for DNA.
-**
-** RNA codes are accepted but are converted to DNA.
-**
-** @param [r] pthys [AjPStr*] Sequence string
+** @param [r] pthys [const AjPStr] Sequence string (unchanged at present)
 ** @return [char] invalid character if any.
 ** @@
 ******************************************************************************/
 
-char ajSeqTypeDnaS(AjPStr* pthys)
+char ajSeqTypeDnaS(const AjPStr pthys)
 {
+    char ret;
     ajDebug("seqTypeDnaS test\n");
 
-    ajStrConvertCC(pthys, seqCharNucRNA, seqCharNucDNA);
+    ret = seqTypeTest(pthys, seqTypeCharNuc());
+    if (ret)
+	return ret;
 
-    return seqTypeTest(*pthys, seqTypeCharNuc());
+    return seqTypeTest(pthys, seqTypeCharDnaGap());
 }
 
 
 
 
-/* @func ajSeqTypeRnaS ********************************************************
+/* @func ajSeqTypeRnaS *****************************************************
 **
-** Checks sequence type for RNA.
+** Checks sequence type for Rna without gaps
 **
-** DNA codes are accepted but are converted to RNA.
+** RNA codes are accepted as is.
 **
-** @param [r] pthys [AjPStr*] Sequence string
+** @param [r] pthys [const AjPStr] Sequence string (unchanged at present)
 ** @return [char] invalid character if any.
 ** @@
 ******************************************************************************/
 
-char ajSeqTypeRnaS(AjPStr* pthys)
+char ajSeqTypeRnaS(const AjPStr pthys)
 {
+    char ret;
     ajDebug("seqTypeRnaS test\n");
 
-    ajStrConvertCC(pthys, seqCharNucDNA, seqCharNucRNA);
+    ret = seqTypeTest(pthys, seqTypeCharNuc());
+    if (ret)
+	return ret;
 
-    return seqTypeTest(*pthys, seqTypeCharNuc());
+    return seqTypeTest(pthys, seqTypeCharRnaGap());
 }
 
 
 
 
-/* @func ajSeqTypePurednaS ****************************************************
+/* @func ajSeqTypeGapdnaS *****************************************************
 **
-** Checks sequence type for pure (unambiguous) DNA.
+** Checks sequence type for Dna with gaps
 **
-** RNA codes are accepted but are converted to DNA.
+** DNA codes are accepted as is.
 **
-** @param [r] pthys [AjPStr*] Sequence string
+** @param [r] pthys [const AjPStr] Sequence string (unchanged at present)
 ** @return [char] invalid character if any.
 ** @@
 ******************************************************************************/
 
-char ajSeqTypePurednaS(AjPStr *pthys)
+char ajSeqTypeGapdnaS(const AjPStr pthys)
 {
-    ajDebug("seqTypePurednaS test\n");
+    char ret;
+    ajDebug("seqTypeGapdnaS test\n");
 
-    ajStrConvertCC(pthys, seqCharNucRNA, seqCharNucDNA);
+    ret = seqTypeTest(pthys, seqTypeCharNucGap());
+    if (ret)
+	return ret;
 
-    return seqTypeTest(*pthys, seqTypeCharNucPure());
+    return seqTypeTest(pthys, seqTypeCharDnaGap());
 }
 
 
 
 
-/* @func ajSeqTypePurernaS ****************************************************
+/* @func ajSeqTypeGaprnaS *****************************************************
 **
-** Checks sequence type for pure (unambiguous) RNA.
+** Checks sequence type for Rna with gaps
 **
-** DNA codes are accepted but are converted to RNA.
+** RNA codes are accepted as is.
 **
-** @param [r] pthys [AjPStr*] Sequence string
+** @param [r] pthys [const AjPStr] Sequence string (unchanged at present)
 ** @return [char] invalid character if any.
 ** @@
 ******************************************************************************/
 
-char ajSeqTypePurernaS(AjPStr* pthys)
+char ajSeqTypeGaprnaS(const AjPStr pthys)
 {
-    ajDebug("seqTypePurernaS test\n");
+    char ret;
+    ajDebug("seqTypeGaprnaS test\n");
 
-    ajStrConvertCC(pthys, seqCharNucDNA, seqCharNucRNA);
+    ret = seqTypeTest(pthys, seqTypeCharNucGap());
+    if (ret)
+	return ret;
 
-    return seqTypeTest(*pthys, seqTypeCharNucPure());
-}
-
-
-
-
-/* @func ajSeqTypeNucS ********************************************************
-**
-** Checks sequence type for nucleotide.
-**
-** RNA and DNA codes are accepted as is.
-**
-** @param [r] pthys [AjPStr*] Sequence string (unchanged at present)
-** @return [char] invalid character if any.
-** @@
-******************************************************************************/
-
-char ajSeqTypeNucS(AjPStr* pthys)
-{
-    ajDebug("seqTypeNuc test\n");
-
-    return seqTypeTest(*pthys, seqTypeCharNuc());
-}
-
-
-
-
-/* @func ajSeqTypePurenucS ****************************************************
-**
-** Checks sequence type for pure (unambiguous) nucleotide.
-**
-** RNA and DNA codes are accepted as is.
-**
-** @param [r] pthys [AjPStr*] Sequence string (unchanged at present)
-** @return [char] invalid character if any.
-** @@
-******************************************************************************/
-
-char ajSeqTypePurenucS(AjPStr* pthys)
-{
-    ajDebug("seqTypePurenucS test\n");
-
-    return seqTypeTest(*pthys, seqTypeCharNucPure());
+    return seqTypeTest(pthys, seqTypeCharRnaGap());
 }
 
 
@@ -843,108 +756,16 @@ char ajSeqTypePurenucS(AjPStr* pthys)
 **
 ** RNA and DNA codes are accepted as is.
 **
-** @param [r] pthys [AjPStr*] Sequence string (unchanged at present)
+** @param [r] pthys [const AjPStr] Sequence string (unchanged at present)
 ** @return [char] invalid character if any.
 ** @@
 ******************************************************************************/
 
-char ajSeqTypeGapnucS(AjPStr* pthys)
+char ajSeqTypeGapnucS(const AjPStr pthys)
 {
     ajDebug("seqTypeGapnucS test\n");
 
-    return seqTypeTest(*pthys, seqTypeCharNucGap());
-}
-
-
-
-
-/* @func ajSeqTypeGapdnaS *****************************************************
-**
-** Checks sequence type for DNA with gaps.
-**
-** RNA codes are accepted an converted to DNA.
-**
-** @param [r] pthys [AjPStr*] Sequence string (unchanged at present)
-** @return [char] invalid character if any.
-** @@
-******************************************************************************/
-
-char ajSeqTypeGapdnaS(AjPStr* pthys)
-{
-    ajDebug("seqTypeGapdnaS test\n");
-
-    ajStrConvertCC(pthys, seqCharNucRNA, seqCharNucDNA);
-
-    return seqTypeTest(*pthys, seqTypeCharNucGap());
-}
-
-
-
-
-/* @func ajSeqTypeGaprnaS *****************************************************
-**
-** Checks sequence type for RNA with gaps.
-**
-** DNA codes are accepted an converted to RNA.
-**
-** @param [r] pthys [AjPStr*] Sequence string
-** @return [char] invalid character if any.
-** @@
-******************************************************************************/
-
-char ajSeqTypeGaprnaS(AjPStr* pthys)
-{
-    ajDebug("seqTypeGaprnaS test\n");
-
-    ajStrConvertCC(pthys, seqCharNucDNA, seqCharNucRNA);
-
-    return seqTypeTest(*pthys, seqTypeCharNucGap());
-}
-
-
-
-
-/* @func ajSeqTypeProtS *******************************************************
-**
-** Checks sequence type for protein.
-**
-** A stop at the end is allowed (but is removed).
-**
-** @param [r] pthys [AjPStr*] Sequence string
-** @return [char] invalid character if any.
-** @@
-******************************************************************************/
-
-char ajSeqTypeProtS(AjPStr* pthys)
-{
-    ajDebug("seqTypeProtS test\n");
-
-    seqTypeStopTrimS(pthys);
-
-    return seqTypeTest(*pthys, seqTypeCharProt());
-}
-
-
-
-
-/* @func ajSeqTypePureprotS ***************************************************
-**
-** Checks sequence type for (unambiguous) protein.
-**
-** A stop at the end is allowed (but is removed).
-**
-** @param [r] pthys [AjPStr*] Sequence string
-** @return [char] invalid character if any.
-** @@
-******************************************************************************/
-
-char ajSeqTypePureprotS(AjPStr* pthys)
-{
-    ajDebug("seqTypePureprotS test\n");
-
-    seqTypeStopTrimS(pthys);
-
-    return seqTypeTest(*pthys, seqTypeCharProtPure());
+    return seqTypeTest(pthys, seqTypeCharNucGap());
 }
 
 
@@ -956,60 +777,16 @@ char ajSeqTypePureprotS(AjPStr* pthys)
 **
 ** Stop codes are replaced with gaps.
 **
-** @param [r] pthys [AjPStr*] Sequence string (unchanged at present)
+** @param [r] pthys [const AjPStr] Sequence string (unchanged at present)
 ** @return [char] invalid character if any.
 ** @@
 ******************************************************************************/
 
-char ajSeqTypeAnyprotS(AjPStr* pthys)
+char ajSeqTypeAnyprotS(const AjPStr pthys)
 {
     ajDebug("seqTypeAnyprotS test\n");
 
-    return seqTypeTest(*pthys, seqTypeCharProtAny());
-}
-
-
-
-
-/* @func ajSeqTypeGapprotS ****************************************************
-**
-** Checks sequence type for protein with gaps.
-**
-** Stop codes are replaced with gaps.
-**
-** @param [r] pthys [AjPStr*] Sequence string
-** @return [char] invalid character if any.
-** @@
-******************************************************************************/
-
-char ajSeqTypeGapprotS(AjPStr *pthys)
-{
-    ajDebug("seqTypeGapprotS test\n");
-
-    ajStrConvertCC(pthys, seqCharProtStop, "-");
-
-    return seqTypeTest(*pthys, seqTypeCharProtGap());
-}
-
-
-
-
-/* @func ajSeqTypeStopprotS ***************************************************
-**
-** Checks sequence type for protein.
-**
-** Stops ('*') are allowed so this could be a 3 frame translation of DNA.
-**
-** @param [r] pthys [AjPStr*] Sequence string
-** @return [char] invalid character if any.
-** @@
-******************************************************************************/
-
-char ajSeqTypeStopprotS(AjPStr* pthys)
-{
-    ajDebug("seqTypeStopprotS test\n");
-
-    return seqTypeTest(*pthys, seqTypeCharProtStop());
+    return seqTypeTest(pthys, seqTypeCharProtAny());
 }
 
 
@@ -1021,16 +798,16 @@ char ajSeqTypeStopprotS(AjPStr* pthys)
 **
 ** Stops ('*') are allowed so this could be a 3 frame translation of DNA.
 **
-** @param [r] pthys [AjPStr*] Sequence string (unchanged at present)
+** @param [r] pthys [const AjPStr] Sequence string (unchanged at present)
 ** @return [char] invalid character if any.
 ** @@
 ******************************************************************************/
 
-char ajSeqTypeGapanyS(AjPStr* pthys)
+char ajSeqTypeGapanyS(const AjPStr pthys)
 {
     ajDebug("seqTypeGapanyS test\n");
 
-    return seqTypeTest(*pthys, seqTypeCharAnyGap());
+    return seqTypeTest(pthys, seqTypeCharAnyGap());
 }
 
 
@@ -1202,6 +979,7 @@ static AjBool seqTypeStopTrimS(AjPStr* pthys)
 **
 ** @param [u] thys [AjPSeq] Sequence object
 ** @return [void]
+ ** @category modify [AjPSeq] Sets sequence to be nucleotide
 ** @@
 ******************************************************************************/
 
@@ -1221,6 +999,7 @@ void ajSeqSetNuc(AjPSeq thys)
 **
 ** @param [u] thys [AjPSeq] Sequence object
 ** @return [void]
+** @category modify [AjPSeq] Sets sequence to be protein
 ** @@
 ******************************************************************************/
 
@@ -1278,6 +1057,7 @@ void ajSeqsetSetProt(AjPSeqset thys)
 **
 ** @param [u] thys [AjPSeq] Sequence object
 ** @return [void]
+** @category modify [AjPSeq] Sets the sequence type
 ** @@
 ******************************************************************************/
 
@@ -1315,12 +1095,12 @@ void ajSeqType(AjPSeq thys)
 ** Prints the seqType definitions.
 ** For EMBOSS entrails output
 **
-** @param [r] outf [const AjPFile] Output file
+** @param [u] outf [AjPFile] Output file
 ** @param [r] full [AjBool] Full output
 ** @return [void]
 ******************************************************************************/
 
-void ajSeqPrintType(const AjPFile outf, AjBool full)
+void ajSeqPrintType(AjPFile outf, AjBool full)
 {
     ajint i;
 
@@ -1357,13 +1137,13 @@ void ajSeqPrintType(const AjPFile outf, AjBool full)
 **
 ** Returns an invalid character for failure, or a null character for success.
 **
-** @param [r] thys [AjPStr] Sequence string
-** @param [r] badchars [AjPRegexp] Regular expression for
+** @param [r] thys [const AjPStr] Sequence string
+** @param [u] badchars [AjPRegexp] Regular expression for
 **                                 sequence characters disallowed
 ** @return [char] invalid character if any.
 ******************************************************************************/
 
-static char seqTypeTest(AjPStr thys, AjPRegexp badchars)
+static char seqTypeTest(const AjPStr thys, AjPRegexp badchars)
 {
     AjPStr tmpstr = NULL;
     char ret = '\0';
@@ -1530,6 +1310,60 @@ static AjPRegexp seqTypeCharNucPure(void)
     }
 
     return seqtypeRegNucPure;
+}
+
+
+
+
+/* @funcstatic seqTypeCharDnaGap **********************************************
+**
+** Returns regular expression to test for DNA bases with gaps
+**
+** @return [AjPRegexp] valid characters
+******************************************************************************/
+
+static AjPRegexp seqTypeCharDnaGap(void)
+{
+    AjPStr regstr = NULL;
+
+    if(!seqtypeRegDnaGap)
+    {
+	regstr = ajStrNewL(256);
+	ajFmtPrintS(&regstr, "([^%s%s%s]+)",
+		    seqCharNucDna,
+		    seqCharGap);
+	seqtypeRegDnaGap = ajRegComp(regstr);
+	ajStrDel(&regstr);
+    }
+
+    return seqtypeRegDnaGap;
+}
+
+
+
+
+/* @funcstatic seqTypeCharRnaGap **********************************************
+**
+** Returns regular expression to test for RNA bases with gaps
+**
+** @return [AjPRegexp] valid characters
+******************************************************************************/
+
+static AjPRegexp seqTypeCharRnaGap(void)
+{
+    AjPStr regstr = NULL;
+
+    if(!seqtypeRegRnaGap)
+    {
+	regstr = ajStrNewL(256);
+	ajFmtPrintS(&regstr, "([^%s%s%s]+)",
+		    seqCharNucRna,
+		    seqCharGap);
+	seqtypeRegRnaGap = ajRegComp(regstr);
+	ajStrDel(&regstr);
+    }
+
+    return seqtypeRegRnaGap;
 }
 
 

@@ -28,12 +28,9 @@
 ** Quoted strings converted to words with underscores
 ** Allow '' to be '
 **
-**
-** 
-**
 ******************************************************************************/
 
-static char* nexusCharactersDataTypes[] = {
+static const char* nexusCharactersDataTypes[] = {
     "standard",
     "dna",
     "rna",
@@ -43,7 +40,7 @@ static char* nexusCharactersDataTypes[] = {
     NULL
 };
 
-static char* nexusCharactersStatesFormat[] = {
+static const char* nexusCharactersStatesFormat[] = {
     "statespresent",
     "individuals",
     "count",
@@ -51,7 +48,7 @@ static char* nexusCharactersStatesFormat[] = {
     NULL
 };
 
-static char* nexusUnalignedDataTypes[] = {
+static const char* nexusUnalignedDataTypes[] = {
     "standard",
     "dna",
     "rna",
@@ -60,7 +57,7 @@ static char* nexusUnalignedDataTypes[] = {
     NULL
 };
 
-static char* nexusAssumptionsDefType[] = {
+static const char* nexusAssumptionsDefType[] = {
     "unord",
     "ord",
     "irrev",
@@ -73,19 +70,19 @@ static char* nexusAssumptionsDefType[] = {
     NULL
 };
 
-static char* nexusAssumptionsPolyTCount[] = {
+static const char* nexusAssumptionsPolyTCount[] = {
     "minsteps",
     "maxsteps",
     NULL
 };
 
-static char* nexusAssumptionsGapMode[] = {
+static const char* nexusAssumptionsGapMode[] = {
     "missing",
     "newstate",
     NULL
 };
 
-static char* nexusDistancesTriangle[] = {
+static const char* nexusDistancesTriangle[] = {
     "lower",
     "upper",
     "both",
@@ -93,7 +90,7 @@ static char* nexusDistancesTriangle[] = {
 };
 
 static AjBool               nexusBlockSave(AjPNexus thys, AjPList list,
-					  AjPStr blockname);
+					  const AjPStr blockname);
 static AjBool              nexusCommand(AjPList list, AjPStr* command,
 					AjPStr* cmdstr);
 static void                nexusAssumptionsDel(AjPNexusAssumptions* pthys);
@@ -134,14 +131,15 @@ static AjBool              nexusGetStr(AjPStr src, AjPRegexp exp,
 				       ajint isub, AjPStr* dest);
 static ajint               nexusGetArray(AjPStr src, AjPRegexp exp,
 					 ajint isub, AjPStr** dest);
-static AjBool              nexusVocab(char* title, AjPStr src, char** vocab);
+static AjBool              nexusVocab(const char* title, const AjPStr src,
+				      const char* vocab[]);
 static AjBool              nexusSetSequences(AjPNexus thys);
 
 /* @func ajNexusParse *********************************************************
 **
 ** Parses a nexus buffered file
 **
-** @param [r] buff [AjPFileBuff] Input buffered file
+** @param [u] buff [AjPFileBuff] Input buffered file
 ** @return [AjPNexus] Nexus data object
 ** @@
 ******************************************************************************/
@@ -273,6 +271,7 @@ AjPNexus ajNexusParse(AjPFileBuff buff)
 ** Constructor for AjPNexus
 **
 ** @return [AjPNexus] New AjPNexus object
+** @category new [AjPNexus] Default constructor
 ******************************************************************************/
 
 AjPNexus ajNexusNew(void)
@@ -290,6 +289,7 @@ AjPNexus ajNexusNew(void)
 ** Constructor for AjPNexusTaxa
 **
 ** @return [AjPNexusTaxa] New AjPNexusTaxa object
+** @category new [AjPNexusTaxa] Default constructor
 ******************************************************************************/
 
 static AjPNexusTaxa nexusTaxaNew(void)
@@ -307,6 +307,7 @@ static AjPNexusTaxa nexusTaxaNew(void)
 ** Constructor for AjPNexusCharacters
 **
 ** @return [AjPNexusCharacters] New AjPNexusCharacters object
+** @category new [AjPNexusCharacters] Default constructor
 ******************************************************************************/
 
 static AjPNexusCharacters nexusCharactersNew(void)
@@ -332,6 +333,7 @@ static AjPNexusCharacters nexusCharactersNew(void)
 ** Constructor for AjPNexusUnaligned
 **
 ** @return [AjPNexusUnaligned] New AjPNexusUnaligned object
+** @category new [AjPNexusUnaligned] Default constructor
 ******************************************************************************/
 
 static AjPNexusUnaligned nexusUnalignedNew(void)
@@ -355,6 +357,7 @@ static AjPNexusUnaligned nexusUnalignedNew(void)
 ** Constructor for AjPNexusDistances
 **
 ** @return [AjPNexusDistances] New AjPNexusDistances object
+** @category new [AjPNexusDistances] Default constructor
 ******************************************************************************/
 
 static AjPNexusDistances nexusDistancesNew(void)
@@ -378,6 +381,7 @@ static AjPNexusDistances nexusDistancesNew(void)
 ** Constructor for AjPNexusSets
 **
 ** @return [AjPNexusSets] New AjPNexusSets object
+** @category new [AjPNexusSets] Default constructor
 ******************************************************************************/
 
 static AjPNexusSets nexusSetsNew(void)
@@ -395,6 +399,7 @@ static AjPNexusSets nexusSetsNew(void)
 ** Constructor for AjPNexusAssumptions
 **
 ** @return [AjPNexusAssumptions] New AjPNexusAssumptions object
+** @category new [AjPNexusAssumptions] Default constructor
 ******************************************************************************/
 
 static AjPNexusAssumptions nexusAssumptionsNew(void)
@@ -415,6 +420,7 @@ static AjPNexusAssumptions nexusAssumptionsNew(void)
 ** Constructor for AjPNexusCodons
 **
 ** @return [AjPNexusCodons] New AjPNexusCodons object
+** @category new [AjPNexusCodons] Default constructor
 ******************************************************************************/
 
 static AjPNexusCodons nexusCodonsNew(void)
@@ -432,6 +438,7 @@ static AjPNexusCodons nexusCodonsNew(void)
 ** Constructor for AjPNexusTrees
 **
 ** @return [AjPNexusTrees] New AjPNexusTrees object
+** @category new [AjPNexusTrees] Default constructor
 ******************************************************************************/
 
 static AjPNexusTrees nexusTreesNew(void)
@@ -449,6 +456,7 @@ static AjPNexusTrees nexusTreesNew(void)
 ** Constructor for AjPNexusNotes
 **
 ** @return [AjPNexusNotes] New AjPNexusNotes object
+** @category new [AjPNexusNotes] Default constructor
 ******************************************************************************/
 
 static AjPNexusNotes nexusNotesNew(void)
@@ -468,6 +476,7 @@ static AjPNexusNotes nexusNotesNew(void)
 **
 ** @param [d] pthys [AjPNexus*] AjPNexus object
 ** @return [void]
+** @category delete [AjPNexus] Default destructor
 ******************************************************************************/
 
 void ajNexusDel(AjPNexus* pthys)
@@ -497,6 +506,7 @@ void ajNexusDel(AjPNexus* pthys)
 **
 ** @param [d] pthys [AjPNexusTaxa*] AjPNexusTaxa object
 ** @return [void]
+** @category delete [AjPNexusTaxa] Default destructor
 ******************************************************************************/
 
 static void nexusTaxaDel(AjPNexusTaxa* pthys)
@@ -516,6 +526,7 @@ static void nexusTaxaDel(AjPNexusTaxa* pthys)
 **
 ** @param [d] pthys [AjPNexusCharacters*] AjPNexusCharacters object
 ** @return [void]
+** @category delete [AjPNexusCharacters] Default destructor
 ******************************************************************************/
 
 static void nexusCharactersDel(AjPNexusCharacters* pthys)
@@ -535,6 +546,7 @@ static void nexusCharactersDel(AjPNexusCharacters* pthys)
 **
 ** @param [d] pthys [AjPNexusUnaligned*] AjPNexusUnaligned object
 ** @return [void]
+** @category delete [AjPNexusUnaligned] Default destructor
 ******************************************************************************/
 
 static void nexusUnalignedDel(AjPNexusUnaligned* pthys)
@@ -554,6 +566,7 @@ static void nexusUnalignedDel(AjPNexusUnaligned* pthys)
 **
 ** @param [d] pthys [AjPNexusDistances*] AjPNexusDistances object
 ** @return [void]
+** @category delete [AjPNexusDistances] Default destructor
 ******************************************************************************/
 
 static void nexusDistancesDel(AjPNexusDistances* pthys)
@@ -573,6 +586,7 @@ static void nexusDistancesDel(AjPNexusDistances* pthys)
 **
 ** @param [d] pthys [AjPNexusSets*] AjPNexusSets object
 ** @return [void]
+** @category delete [AjPNexusSets] Default destructor
 ******************************************************************************/
 
 static void nexusSetsDel(AjPNexusSets* pthys)
@@ -592,6 +606,7 @@ static void nexusSetsDel(AjPNexusSets* pthys)
 **
 ** @param [d] pthys [AjPNexusAssumptions*] AjPNexuAssumptionss object
 ** @return [void]
+** @category delete [AjPNexusAssumptions] Default destructor
 ******************************************************************************/
 
 static void nexusAssumptionsDel(AjPNexusAssumptions* pthys)
@@ -611,6 +626,7 @@ static void nexusAssumptionsDel(AjPNexusAssumptions* pthys)
 **
 ** @param [d] pthys [AjPNexusCodons*] AjPNexusCodons object
 ** @return [void]
+** @category delete [AjPNexusCodons] Default destructor
 ******************************************************************************/
 
 static void nexusCodonsDel(AjPNexusCodons* pthys)
@@ -630,6 +646,7 @@ static void nexusCodonsDel(AjPNexusCodons* pthys)
 **
 ** @param [d] pthys [AjPNexusTrees*] AjPNexusTrees object
 ** @return [void]
+** @category delete [AjPNexusTrees] Default destructor
 ******************************************************************************/
 
 static void nexusTreesDel(AjPNexusTrees* pthys)
@@ -649,6 +666,7 @@ static void nexusTreesDel(AjPNexusTrees* pthys)
 **
 ** @param [d] pthys [AjPNexusNotes*] AjPNexusNotes object
 ** @return [void]
+** @category delete [AjPNexusNotes] Default destructor
 ******************************************************************************/
 
 static void nexusNotesDel(AjPNexusNotes* pthys)
@@ -670,11 +688,12 @@ static void nexusNotesDel(AjPNexusNotes* pthys)
 **
 ** @param [w] thys [AjPNexus] Nexus object
 ** @param [w] list [AjPList] List of block records
-** @param [r] blockname [AjPStr] kBlock name
+** @param [r] blockname [const AjPStr] Block name
 ** @return [AjBool] ajTrue on success
 ******************************************************************************/
 
-static AjBool nexusBlockSave(AjPNexus thys, AjPList list, AjPStr blockname)
+static AjBool nexusBlockSave(AjPNexus thys, AjPList list,
+			     const AjPStr blockname)
 {
     if (ajStrMatchCaseC(blockname, "taxa"))
     {
@@ -737,7 +756,7 @@ static AjBool nexusBlockSave(AjPNexus thys, AjPList list, AjPStr blockname)
 **
 ** Finds the next command and command string in a block
 **
-** @param [r] list [AjPList] List of block records
+** @param [u] list [AjPList] List of block records
 ** @param [w] command [AjPStr*] Command name
 ** @param [w] cmdstr [AjPStr*] Command kstring
 ** @return [AjBool] ajTrue on success
@@ -799,7 +818,7 @@ static AjBool nexusCommand(AjPList list, AjPStr* command, AjPStr* cmdstr)
 ** Parses Nexus commands for a Taxa block
 **
 ** @param [w] thys [AjPNexus] Nexus object
-** @param [w] list [AjPList] List of block records
+** @param [u] list [AjPList] List of block records
 ** @return [AjBool] ajTrue on success
 ******************************************************************************/
 
@@ -868,7 +887,7 @@ static AjBool nexusParseTaxa(AjPNexus thys, AjPList list)
 ** Parses Nexus commands for a Characters block
 **
 ** @param [w] thys [AjPNexus] Nexus object
-** @param [w] list [AjPList] List of block records
+** @param [u] list [AjPList] List of block records
 ** @param [r] newtaxa [AjBool] If true, set NewTaxa
 ** @return [AjBool] ajTrue on success
 ******************************************************************************/
@@ -1051,7 +1070,7 @@ static AjBool nexusParseCharacters(AjPNexus thys, AjPList list, AjBool newtaxa)
 ** Parses Nexus commands for a Unaligned block
 **
 ** @param [w] thys [AjPNexus] Nexus object
-** @param [w] list [AjPList] List of block records
+** @param [u] list [AjPList] List of block records
 ** @return [AjBool] ajTrue on success
 ******************************************************************************/
 
@@ -1140,7 +1159,7 @@ static AjBool nexusParseUnaligned(AjPNexus thys, AjPList list)
 ** Parses Nexus commands for a Distances block
 **
 ** @param [w] thys [AjPNexus] Nexus object
-** @param [w] list [AjPList] List of block records
+** @param [u] list [AjPList] List of block records
 ** @return [AjBool] ajTrue on success
 ******************************************************************************/
 
@@ -1241,7 +1260,7 @@ static AjBool nexusParseDistances(AjPNexus thys, AjPList list)
 ** Parses Nexus commands for a Sets block
 **
 ** @param [w] thys [AjPNexus] Nexus object
-** @param [w] list [AjPList] List of block records
+** @param [u] list [AjPList] List of block records
 ** @return [AjBool] ajTrue on success
 ******************************************************************************/
 
@@ -1297,7 +1316,7 @@ static AjBool nexusParseSets(AjPNexus thys, AjPList list)
 ** Parses Nexus commands for a Assumptions block
 **
 ** @param [w] thys [AjPNexus] Nexus object
-** @param [w] list [AjPList] List of block records
+** @param [u] list [AjPList] List of block records
 ** @return [AjBool] ajTrue on success
 ******************************************************************************/
 
@@ -1385,7 +1404,7 @@ static AjBool nexusParseAssumptions(AjPNexus thys, AjPList list)
 ** Parses Nexus commands for a Codons block
 **
 ** @param [w] thys [AjPNexus] Nexus object
-** @param [w] list [AjPList] List of block records
+** @param [u] list [AjPList] List of block records
 ** @return [AjBool] ajTrue on success
 ******************************************************************************/
 
@@ -1430,7 +1449,7 @@ static AjBool nexusParseCodons(AjPNexus thys, AjPList list)
 ** Parses Nexus commands for a Trees block
 **
 ** @param [w] thys [AjPNexus] Nexus object
-** @param [w] list [AjPList] List of block records
+** @param [u] list [AjPList] List of block records
 ** @return [AjBool] ajTrue on success
 ******************************************************************************/
 
@@ -1470,7 +1489,7 @@ static AjBool nexusParseTrees(AjPNexus thys, AjPList list)
 ** Parses Nexus commands for a Notes block
 **
 ** @param [w] thys [AjPNexus] Nexus object
-** @param [w] list [AjPList] List of block records
+** @param [u] list [AjPList] List of block records
 ** @return [AjBool] ajTrue on success
 ******************************************************************************/
 
@@ -1511,7 +1530,7 @@ static AjBool nexusParseNotes(AjPNexus thys, AjPList list)
 ** Appends to an existing array to handle multiple commands
 **
 ** @param [w] src [AjPStr] Command string
-** @param [r] exp [AjPRegexp] Compiled regular expression for parsing
+** @param [u] exp [AjPRegexp] Compiled regular expression for parsing
 ** @param [r] isub [ajint] Substring number to extract
 ** @param [w] dest [AjPStr**] Array generated
 ** @return [ajint] Number of strings returned
@@ -1548,7 +1567,7 @@ static ajint nexusGetArray(AjPStr src, AjPRegexp exp, ajint isub,
 ** Gets a string from a parsed nexus command
 **
 ** @param [w] src [AjPStr] Command string
-** @param [r] exp [AjPRegexp] Compiled regular expression for parsing
+** @param [u] exp [AjPRegexp] Compiled regular expression for parsing
 ** @param [r] isub [ajint] Substring number to extract
 ** @param [w] dest [AjPStr*] String generated
 ** @return [AjBool] ajTrue on success
@@ -1569,7 +1588,7 @@ static AjBool nexusGetStr(AjPStr src, AjPRegexp exp, ajint isub, AjPStr* dest)
 ** Gets a single character from a parsed nexus command
 **
 ** @param [w] src [AjPStr] Command string
-** @param [r] exp [AjPRegexp] Compiled regular expression for parsing
+** @param [u] exp [AjPRegexp] Compiled regular expression for parsing
 ** @param [r] isub [ajint] Substring number to extract
 ** @param [w] dest [char*] String generated
 ** @return [AjBool] ajTrue on success
@@ -1597,7 +1616,7 @@ static AjBool nexusGetChar(AjPStr src, AjPRegexp exp, ajint isub, char* dest)
 ** Gets an integer from a parsed nexus command
 **
 ** @param [w] src [AjPStr] Command string
-** @param [r] exp [AjPRegexp] Compiled regular expression for parsing
+** @param [u] exp [AjPRegexp] Compiled regular expression for parsing
 ** @param [r] isub [ajint] Substring number to extract
 ** @param [w] dest [ajint*] Integer generated
 ** @return [AjBool] ajTrue on success
@@ -1620,7 +1639,7 @@ static AjBool nexusGetInt(AjPStr src, AjPRegexp exp, ajint isub, ajint* dest)
 ** We know name is found, we test for the "no" part.
 **
 ** @param [w] src [AjPStr] Command string
-** @param [r] exp [AjPRegexp] Compiled regular expression for parsing
+** @param [u] exp [AjPRegexp] Compiled regular expression for parsing
 ** @param [r] isub [ajint] Substring number to extract
 ** @param [w] dest [AjBool*] Boolean generated
 ** @return [AjBool] ajTrue on success
@@ -1646,13 +1665,14 @@ static AjBool nexusGetBool(AjPStr src, AjPRegexp exp, ajint isub, AjBool* dest)
 **
 ** Tests a string against a controlled vocabulary
 **
-** @param [r] title [char*] Vocabulary title
-** @param [r] src [AjPStr] String to be tested
-** @param [r] vocab [char**] List of known values, ending in a NULL
+** @param [r] title [const char*] Vocabulary title
+** @param [r] src [const AjPStr] String to be tested
+** @param [r] vocab [const char* []] List of known values, ending in a NULL
 ** @return [AjBool] ajTrue on success
 ******************************************************************************/
 
-static AjBool nexusVocab(char* title, AjPStr src, char** vocab)
+static AjBool nexusVocab(const char* title, const AjPStr src,
+			 const char* vocab[])
 {
     ajint i;
 
@@ -1671,11 +1691,11 @@ static AjBool nexusVocab(char* title, AjPStr src, char** vocab)
 **
 ** Reports the contents of a Nexus object to the debug file
 **
-** @param [r] thys [AjPNexus] nexus object
+** @param [r] thys [const AjPNexus] nexus object
 ** @return [void]
 ******************************************************************************/
 
-void ajNexusTrace(AjPNexus thys)
+void ajNexusTrace(const AjPNexus thys)
 {
     ajint i;
 
@@ -2094,11 +2114,11 @@ void ajNexusTrace(AjPNexus thys)
 **
 ** Returns the taxa as a string array
 **
-** @param [r] thys [AjPNexus] Nexus object
+** @param [r] thys [const AjPNexus] Nexus object
 ** @return [AjPStr*] taxa string array, NULL terminated, read only
 ******************************************************************************/
 
-AjPStr* ajNexusGetTaxa(AjPNexus thys)
+AjPStr* ajNexusGetTaxa(const AjPNexus thys)
 {
     if (thys->Taxa)
 	return thys->Taxa->TaxLabels;
@@ -2110,12 +2130,12 @@ AjPStr* ajNexusGetTaxa(AjPNexus thys)
 **
 ** Returns the number of taxa
 **
-** @param [r] thys [AjPNexus] Nexus object
+** @param [r] thys [const AjPNexus] Nexus object
 ** @return [ajint] Number of taxa
 ** @@
 ******************************************************************************/
 
-ajint ajNexusGetNtaxa(AjPNexus thys)
+ajint ajNexusGetNtaxa(const AjPNexus thys)
 {
     if (thys->Taxa)
 	return thys->Taxa->Ntax;
@@ -2127,9 +2147,10 @@ ajint ajNexusGetNtaxa(AjPNexus thys)
 **
 ** Returns the sequences from the character matrix as a string array.
 **
-** Sequences are in the same order as the taxa returned by ajNexusGetTaxa
+** Sequences are in the same order as the taxa returned by ajNexusGetTaxa.
+** Sequences may need to be set if not already done.
 **
-** @param [r] thys [AjPNexus] Nexus object
+** @param [u] thys [AjPNexus] Nexus object
 ** @return [AjPStr*] taxa string array, NULL terminated, read only
 ******************************************************************************/
 
@@ -2146,7 +2167,7 @@ AjPStr* ajNexusGetSequences(AjPNexus thys)
 **
 ** Sets the sequences from the character matrix as a string array
 **
-** @param [r] thys [AjPNexus] Nexus object
+** @param [u] thys [AjPNexus] Nexus object
 ** @return [AjBool] ajTrue on success
 ******************************************************************************/
 
@@ -2221,7 +2242,7 @@ static AjBool nexusSetSequences(AjPNexus thys)
 		continue;
 	    ajRegSubI(word, 0, &taxlabel);
 	    ajRegPost(word, &tmpstr);
-	    ajStrAss(&rdline, tmpstr);
+	    ajStrAssS(&rdline, tmpstr);
 
 	    if (!havetaxa)
 	    {
@@ -2253,7 +2274,7 @@ static AjBool nexusSetSequences(AjPNexus thys)
 	    ajStrApp(&seqstr, tmpstr);
 	    ajTablePut(seqtab, taxlabel, seqstr); /* just to make sure */
 	    ajRegPost(word, &tmpstr);
-	    ajStrAss(&rdline, tmpstr);
+	    ajStrAssS(&rdline, tmpstr);
 	}
     }
 

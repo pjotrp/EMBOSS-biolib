@@ -52,7 +52,7 @@ int main(int argc, char **argv)
 
     AjPFile outfile;
 
-    AjPStr usa;
+    const AjPStr usa;
     AjPStr name;
     AjPStr acc;
     AjPStr gi;
@@ -227,7 +227,7 @@ int main(int argc, char **argv)
 	{
 	    AjPStr seqstr ;
 	    seqstr = ajSeqStr(seq);
-	    pgc = ajMeltGC(&seqstr,length);
+	    pgc = ajMeltGC(seqstr,length);
 	    pgc *= 100;			/* percentage */
 	}
 	desc = ajSeqGetDesc(seq);

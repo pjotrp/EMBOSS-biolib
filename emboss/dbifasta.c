@@ -295,7 +295,7 @@ int main(int argc, char **argv)
 **
 ** Returns next database entry as an EmbPEntry object
 **
-** @param [r] libr [AjPFile] Database file
+** @param [u] libr [AjPFile] Database file
 ** @param [r] ifile [ajint] File number.
 ** @param [r] idformat [AjPStr] type of id line
 ** @param [r] exp [AjPRegexp] Regular expression for id parsing
@@ -304,8 +304,8 @@ int main(int argc, char **argv)
 ** @param [r] fields [AjPStr*] Field names to be indexed
 ** @param [w] maxFieldLen [ajint*] Maximum field token length
 ** @param [w] maxidlen [ajint*] Maximum entry ID length
-** @param [r] elistfile [AjPFile] entry file
-** @param [r] alistfile [AjPFile*] field data files array
+** @param [u] elistfile [AjPFile] entry file
+** @param [u] alistfile [AjPFile*] field data files array
 ** @return [EmbPEntry] Entry data object.
 ** @@
 ******************************************************************************/
@@ -454,14 +454,14 @@ static AjPRegexp dbifasta_getExpr(AjPStr idformat, ajint *type)
 **
 ** Parse the ID, accession from a FASTA format sequence
 **
-** @param [r] libr [AjPFile] Input database file
+** @param [u] libr [AjPFile] Input database file
 ** @param [w] dpos [ajint*] Byte offset
 ** @param [w] id [AjPStr*] ID
 ** @param [w] fdlist [AjPList*] Lists of field tokens
 ** @param [w] maxFieldLen [ajint*] Maximum field token length
 ** @param [r] exp [AjPRegexp] regular expression
 ** @param [r] type [ajint] type of id line
-** @param [r] alistfile [AjPFile*] field data files array
+** @param [u] alistfile [AjPFile*] field data files array
 ** @param [r] systemsort [AjBool] If ajTrue use system sort, else internal sort
 ** @param [r] fields [AjPStr*] Field names to be indexed
 ** @return [AjBool] ajTrue on success.
@@ -548,17 +548,17 @@ static AjBool dbifasta_ParseFasta(AjPFile libr, ajint* dpos,
     {
     case FASTATYPE_SIMPLE:
 	ajRegSubI(exp,1,id);
-	ajStrAss(&tmpac,*id);
+	ajStrAssS(&tmpac,*id);
 	ajRegPost(exp, &tmpdes);
 	break;
     case FASTATYPE_DBID:
 	ajRegSubI(exp,1,id);
-	ajStrAss(&tmpac,*id);
+	ajStrAssS(&tmpac,*id);
 	ajRegPost(exp, &tmpdes);
 	break;
     case FASTATYPE_GCGID:
 	ajRegSubI(exp,1,id);
-	ajStrAss(&tmpac,*id);
+	ajStrAssS(&tmpac,*id);
 	ajRegPost(exp, &tmpdes);
 	break;
     case FASTATYPE_NCBI:

@@ -508,12 +508,12 @@ int main(int argc, char **argv)
 ** that the height and the length of all strings are at most TextHeight and
 **  TextLength, respectively
 **
-** @param [?] Start [float] Undocumented
-** @param [?] End [float] Undocumented
-** @param [?] GapSize [ajint] Undocumented
-** @param [?] TextLength [float] Undocumented
-** @param [?] TextHeight [float] Undocumented
-** @param [?] TextOri [char] Undocumented
+** @param [r] Start [float] Undocumented
+** @param [r] End [float] Undocumented
+** @param [r] GapSize [ajint] Undocumented
+** @param [r] TextLength [float] Undocumented
+** @param [r] TextHeight [float] Undocumented
+** @param [r] TextOri [char] Undocumented
 ** @return [float] Undocumented
 ** @@
 ******************************************************************************/
@@ -576,12 +576,12 @@ static float lindna_TextRuler(float Start, float End, ajint GapSize,
 **
 ** compute the ruler's height
 **
-** @param [?] Start [float] Undocumented
-** @param [?] End [float] Undocumented
-** @param [?] GapSize [ajint] Undocumented
-** @param [?] postext [float] Undocumented
-** @param [?] TickHeight [float] Undocumented
-** @param [?] TextOri [char] Undocumented
+** @param [r] Start [float] Undocumented
+** @param [r] End [float] Undocumented
+** @param [r] GapSize [ajint] Undocumented
+** @param [r] postext [float] Undocumented
+** @param [r] TickHeight [float] Undocumented
+** @param [r] TextOri [char] Undocumented
 ** @return [float] Undocumented
 ** @@
 ******************************************************************************/
@@ -632,22 +632,22 @@ static float lindna_HeightRuler(float Start, float End, ajint GapSize,
 **
 ** draw a ruler
 **
-** @param [?] xDraw [float] Undocumented
-** @param [?] yDraw [float] Undocumented
-** @param [?] Start [float] Undocumented
-** @param [?] End [float] Undocumented
-** @param [?] ReduceCoef [float] Undocumented
-** @param [?] TickHeight [float] Undocumented
-** @param [?] DrawLength [float] Undocumented
-** @param [?] RealLength [float] Undocumented
-** @param [?] Border [float] Undocumented
-** @param [?] GapSize [ajint] Undocumented
-** @param [?] TickLines [AjBool] Undocumented
-** @param [?] TextLength [float] Undocumented
-** @param [?] TextHeight [float] Undocumented
-** @param [?] postext [float] Undocumented
-** @param [?] TextOri [char] Undocumented
-** @param [?] Colour [ajint] Undocumented
+** @param [r] xDraw [float] Undocumented
+** @param [r] yDraw [float] Undocumented
+** @param [r] Start [float] Undocumented
+** @param [r] End [float] Undocumented
+** @param [r] ReduceCoef [float] Undocumented
+** @param [r] TickHeight [float] Undocumented
+** @param [r] DrawLength [float] Undocumented
+** @param [r] RealLength [float] Undocumented
+** @param [r] Border [float] Undocumented
+** @param [r] GapSize [ajint] Undocumented
+** @param [r] TickLines [AjBool] Undocumented
+** @param [r] TextLength [float] Undocumented
+** @param [r] TextHeight [float] Undocumented
+** @param [r] postext [float] Undocumented
+** @param [r] TextOri [char] Undocumented
+** @param [r] Colour [ajint] Undocumented
 ** @@
 ******************************************************************************/
 
@@ -711,18 +711,18 @@ static void lindna_DrawRuler(float xDraw, float yDraw, float Start, float End,
 **
 ** draw a Tick
 **
-** @param [?] xDraw [float] Undocumented
-** @param [?] yDraw [float] Undocumented
-** @param [?] TickHeight [float] Undocumented
-** @param [?] From [float] Undocumented
-** @param [?] Name [AjPStr] Undocumented
-** @param [?] TextLength [float] Undocumented
-** @param [?] TextHeight [float] Undocumented
-** @param [?] postext [float] Undocumented
-** @param [?] TextOri [char] Undocumented
-** @param [?] NumNames [ajint] Undocumented
-** @param [?] Adjust [ajint] Undocumented
-** @param [?] Colour [ajint] Undocumented
+** @param [r] xDraw [float] Undocumented
+** @param [r] yDraw [float] Undocumented
+** @param [r] TickHeight [float] Undocumented
+** @param [r] From [float] Undocumented
+** @param [r] Name [AjPStr] Undocumented
+** @param [r] TextLength [float] Undocumented
+** @param [r] TextHeight [float] Undocumented
+** @param [r] postext [float] Undocumented
+** @param [r] TextOri [char] Undocumented
+** @param [r] NumNames [ajint] Undocumented
+** @param [r] Adjust [ajint] Undocumented
+** @param [r] Colour [ajint] Undocumented
 ** @@
 ******************************************************************************/
 
@@ -764,19 +764,19 @@ static void lindna_DrawTicks(float xDraw, float yDraw, float TickHeight,
 **
 **  draw a Block
 **
-** @param [?] xDraw [float] Undocumented
-** @param [?] yDraw [float] Undocumented
-** @param [?] BlockHeight [float] Undocumented
-** @param [?] TextHeight [float] Undocumented
-** @param [?] From [float] Undocumented
-** @param [?] To [float] Undocumented
-** @param [?] Name [AjPStr] Undocumented
-** @param [?] postext [float] Undocumented
-** @param [?] TextOri [char] Undocumented
-** @param [?] NumNames [ajint] Undocumented
-** @param [?] Adjust [ajint] Undocumented
-** @param [?] Colour [ajint] Undocumented
-** @param [?] BlockType [AjPStr] Undocumented
+** @param [r] xDraw [float] Undocumented
+** @param [r] yDraw [float] Undocumented
+** @param [r] BlockHeight [float] Undocumented
+** @param [r] TextHeight [float] Undocumented
+** @param [r] From [float] Undocumented
+** @param [r] To [float] Undocumented
+** @param [r] Name [AjPStr] Undocumented
+** @param [r] postext [float] Undocumented
+** @param [r] TextOri [char] Undocumented
+** @param [r] NumNames [ajint] Undocumented
+** @param [r] Adjust [ajint] Undocumented
+** @param [r] Colour [ajint] Undocumented
+** @param [r] BlockType [AjPStr] Undocumented
 ** @@
 ******************************************************************************/
 
@@ -837,21 +837,21 @@ static void lindna_DrawBlocks(float xDraw, float yDraw, float BlockHeight,
 **
 ** draw a Range
 **
-** @param [?] xDraw [float] Undocumented
-** @param [?] yDraw [float] Undocumented
-** @param [?] RangeHeight [float] Undocumented
-** @param [?] From [float] Undocumented
-** @param [?] To [float] Undocumented
-** @param [?] Name [AjPStr] Undocumented
-** @param [?] FromSymbol [char] Undocumented
-** @param [?] ToSymbol [char] Undocumented
-** @param [?] TextLength [float] Undocumented
-** @param [?] TextHeight [float] Undocumented
-** @param [?] postext [float] Undocumented
-** @param [?] TextOri [char] Undocumented
-** @param [?] NumNames [ajint] Undocumented
-** @param [?] Adjust [ajint] Undocumented
-** @param [?] Colour [ajint] Undocumented
+** @param [r] xDraw [float] Undocumented
+** @param [r] yDraw [float] Undocumented
+** @param [r] RangeHeight [float] Undocumented
+** @param [r] From [float] Undocumented
+** @param [r] To [float] Undocumented
+** @param [r] Name [AjPStr] Undocumented
+** @param [r] FromSymbol [char] Undocumented
+** @param [r] ToSymbol [char] Undocumented
+** @param [r] TextLength [float] Undocumented
+** @param [r] TextHeight [float] Undocumented
+** @param [r] postext [float] Undocumented
+** @param [r] TextOri [char] Undocumented
+** @param [r] NumNames [ajint] Undocumented
+** @param [r] Adjust [ajint] Undocumented
+** @param [r] Colour [ajint] Undocumented
 ** @@
 ******************************************************************************/
 
@@ -935,13 +935,13 @@ static void lindna_DrawRanges(float xDraw, float yDraw, float RangeHeight,
 **
 ** draw an InterBlock
 **
-** @param [?] xDraw [float] Undocumented
-** @param [?] yDraw [float] Undocumented
-** @param [?] BlockHeight [float] Undocumented
-** @param [?] From [float] Undocumented
-** @param [?] To [float] Undocumented
-** @param [?] InterSymbol [AjPStr] Undocumented
-** @param [?] Colour [ajint] Undocumented
+** @param [r] xDraw [float] Undocumented
+** @param [r] yDraw [float] Undocumented
+** @param [r] BlockHeight [float] Undocumented
+** @param [r] From [float] Undocumented
+** @param [r] To [float] Undocumented
+** @param [r] InterSymbol [AjPStr] Undocumented
+** @param [r] Colour [ajint] Undocumented
 ** @@
 ******************************************************************************/
 
@@ -987,11 +987,11 @@ static void lindna_InterBlocks(float xDraw, float yDraw, float BlockHeight,
 **
 ** draw arrowheads on a line
 **
-** @param [?] xDraw [float] Undocumented
-** @param [?] yDraw [float] Undocumented
-** @param [?] Height [float] Undocumented
-** @param [?] Length [float] Undocumented
-** @param [?] Way [ajint] Undocumented
+** @param [r] xDraw [float] Undocumented
+** @param [r] yDraw [float] Undocumented
+** @param [r] Height [float] Undocumented
+** @param [r] Length [float] Undocumented
+** @param [r] Way [ajint] Undocumented
 ** @@
 ******************************************************************************/
 
@@ -1024,11 +1024,11 @@ static void lindna_DrawArrowHeadsOnLine(float xDraw, float yDraw, float Height,
 **
 ** draw brackets on a line
 **
-** @param [?] xDraw [float] Undocumented
-** @param [?] yDraw [float] Undocumented
-** @param [?] Height [float] Undocumented
-** @param [?] Length [float] Undocumented
-** @param [?] Way [ajint] Undocumented
+** @param [r] xDraw [float] Undocumented
+** @param [r] yDraw [float] Undocumented
+** @param [r] Height [float] Undocumented
+** @param [r] Length [float] Undocumented
+** @param [r] Way [ajint] Undocumented
 ** @@
 ******************************************************************************/
 
@@ -1063,9 +1063,9 @@ static void lindna_DrawBracketsOnLine(float xDraw, float yDraw, float Height,
 **
 ** draw bars on a line
 **
-** @param [?] xDraw [float] Undocumented
-** @param [?] yDraw [float] Undocumented
-** @param [?] Height [float] Undocumented
+** @param [r] xDraw [float] Undocumented
+** @param [r] yDraw [float] Undocumented
+** @param [r] Height [float] Undocumented
 ** @@
 ******************************************************************************/
 
@@ -1087,11 +1087,11 @@ static void lindna_DrawBarsOnLine(float xDraw, float yDraw, float Height)
 **
 ** write a pile of horizontal text strings
 **
-** @param [?] x [float] Undocumented
-** @param [?] y [float] Undocumented
-** @param [?] Name [AjPStr] Undocumented
-** @param [?] postext [float] Undocumented
-** @param [?] NumNames [ajint] Undocumented
+** @param [r] x [float] Undocumented
+** @param [r] y [float] Undocumented
+** @param [r] Name [AjPStr] Undocumented
+** @param [r] postext [float] Undocumented
+** @param [r] NumNames [ajint] Undocumented
 ** @@
 ******************************************************************************/
 
@@ -1131,8 +1131,8 @@ static void lindna_HorTextPile(float x, float y, AjPStr Name, float postext,
 **
 ** compute the height of a pile of horizontal text strings
 **
-** @param [?] postext [float] Undocumented
-** @param [?] NumNames [ajint] Undocumented
+** @param [r] postext [float] Undocumented
+** @param [r] NumNames [ajint] Undocumented
 ** @return [float] Undocumented
 ** @@
 ******************************************************************************/
@@ -1160,11 +1160,11 @@ static float lindna_HorTextPileHeight(float postext, ajint NumNames)
 **
 ** write a pile of vertical text strings
 **
-** @param [?] x [float] Undocumented
-** @param [?] y [float] Undocumented
-** @param [?] Name [AjPStr] Undocumented
-** @param [?] postext [float] Undocumented
-** @param [?] NumNames [ajint] Undocumented
+** @param [r] x [float] Undocumented
+** @param [r] y [float] Undocumented
+** @param [r] Name [AjPStr] Undocumented
+** @param [r] postext [float] Undocumented
+** @param [r] NumNames [ajint] Undocumented
 ** @@
 ******************************************************************************/
 
@@ -1200,9 +1200,9 @@ static void lindna_VerTextPile(float x, float y, AjPStr Name, float postext,
 **
 ** compute the height of a pile of vertical text strings
 **
-** @param [?] Name [AjPStr] Undocumented
-** @param [?] postext [float] Undocumented
-** @param [?] NumNames [ajint] Undocumented
+** @param [r] Name [AjPStr] Undocumented
+** @param [r] postext [float] Undocumented
+** @param [r] NumNames [ajint] Undocumented
 ** @return [float] Undocumented
 ** @@
 ******************************************************************************/
@@ -1236,11 +1236,11 @@ static float lindna_VerTextPileHeight(AjPStr Name, float postext,
 **
 ** write a sequence of vertical text strings
 **
-** @param [?] x [float] Undocumented
-** @param [?] y [float] Undocumented
-** @param [?] Name [AjPStr] Undocumented
-** @param [?] postext [float] Undocumented
-** @param [?] NumNames [ajint] Undocumented
+** @param [r] x [float] Undocumented
+** @param [r] y [float] Undocumented
+** @param [r] Name [AjPStr] Undocumented
+** @param [r] postext [float] Undocumented
+** @param [r] NumNames [ajint] Undocumented
 ** @@
 ******************************************************************************/
 
@@ -1278,9 +1278,9 @@ static void lindna_VerTextSeq(float x, float y, AjPStr Name, float postext,
 ** compute the height of a sequence of vertical text strings
 ** (this is the height of the longest string)
 **
-** @param [?] Name [AjPStr] Undocumented
-** @param [?] postext [float] Undocumented
-** @param [?] NumNames [ajint] Undocumented
+** @param [r] Name [AjPStr] Undocumented
+** @param [r] postext [float] Undocumented
+** @param [r] NumNames [ajint] Undocumented
 ** @return [float] Undocumented
 ** @@
 ******************************************************************************/
@@ -1315,9 +1315,9 @@ static float lindna_VerTextSeqHeightMax(AjPStr Name, float postext,
 **
 ** read the beginning of the input file
 **
-** @param [?] infile [AjPFile] Undocumented
-** @param [?] Start [float*] Undocumented
-** @param [?] End [float*] Undocumented
+** @param [u] infile [AjPFile] Undocumented
+** @param [r] Start [float*] Undocumented
+** @param [r] End [float*] Undocumented
 ** @@
 ******************************************************************************/
 
@@ -1346,18 +1346,18 @@ static void lindna_ReadInput(AjPFile infile, float *Start, float *End)
 **
 ** read a group
 **
-** @param [?] infile [AjPFile] Undocumented
-** @param [?] maxlabels [ajint] Undocumented
-** @param [?] From [float*] Undocumented
-** @param [?] To [float*] Undocumented
-** @param [?] Name [AjPStr*] Undocumented
-** @param [?] FromSymbol [char*] Undocumented
-** @param [?] ToSymbol [char*] Undocumented
-** @param [?] Style [AjPStr*] Undocumented
-** @param [?] TextOri [char*] Undocumented
-** @param [?] NumLabels [ajint*] Undocumented
-** @param [?] NumNames [ajint*] Undocumented
-** @param [?] Colour [ajint*] Undocumented
+** @param [u] infile [AjPFile] Undocumented
+** @param [r] maxlabels [ajint] Undocumented
+** @param [r] From [float*] Undocumented
+** @param [r] To [float*] Undocumented
+** @param [r] Name [AjPStr*] Undocumented
+** @param [r] FromSymbol [char*] Undocumented
+** @param [r] ToSymbol [char*] Undocumented
+** @param [r] Style [AjPStr*] Undocumented
+** @param [r] TextOri [char*] Undocumented
+** @param [r] NumLabels [ajint*] Undocumented
+** @param [r] NumNames [ajint*] Undocumented
+** @param [r] Colour [ajint*] Undocumented
 ** @return [AjPStr] Undocumented
 ** @@
 ******************************************************************************/
@@ -1491,14 +1491,14 @@ static AjPStr lindna_ReadGroup(AjPFile infile, ajint maxlabels,
 ** the height and the length of all strings are at most TextHeight and
 ** TextLength, respectively
 **
-** @param [?] Margin [float] Undocumented
-** @param [?] TextHeight [float] Undocumented
-** @param [?] TextLength [float] Undocumented
-** @param [?] Name [AjPStr*] Undocumented
-** @param [?] TextOri [char*] Undocumented
-** @param [?] NumLabels [ajint] Undocumented
-** @param [?] NumNames [ajint*] Undocumented
-** @param [?] GroupName [AjPStr] Undocumented
+** @param [r] Margin [float] Undocumented
+** @param [r] TextHeight [float] Undocumented
+** @param [r] TextLength [float] Undocumented
+** @param [r] Name [AjPStr*] Undocumented
+** @param [r] TextOri [char*] Undocumented
+** @param [r] NumLabels [ajint] Undocumented
+** @param [r] NumNames [ajint*] Undocumented
+** @param [r] GroupName [AjPStr] Undocumented
 ** @return [float] Undocumented
 ** @@
 ******************************************************************************/
@@ -1548,18 +1548,18 @@ static float lindna_TextGroup(float Margin, float TextHeight, float TextLength,
 **
 ** compute the height of a group depending on what's in it
 **
-** @param [?] posblock [float] Undocumented
-** @param [?] posrange [float] Undocumented
-** @param [?] postext [float] Undocumented
-** @param [?] TickHeight [float] Undocumented
-** @param [?] BlockHeight [float] Undocumented
-** @param [?] RangeHeight [float] Undocumented
-** @param [?] Name [AjPStr*] Undocumented
-** @param [?] Style [AjPStr*] Undocumented
-** @param [?] TextOri [char*] Undocumented
-** @param [?] NumLabels [ajint] Undocumented
-** @param [?] NumNames [ajint*] Undocumented
-** @param [?] Adjust [ajint] Undocumented
+** @param [r] posblock [float] Undocumented
+** @param [r] posrange [float] Undocumented
+** @param [r] postext [float] Undocumented
+** @param [r] TickHeight [float] Undocumented
+** @param [r] BlockHeight [float] Undocumented
+** @param [r] RangeHeight [float] Undocumented
+** @param [r] Name [AjPStr*] Undocumented
+** @param [r] Style [AjPStr*] Undocumented
+** @param [r] TextOri [char*] Undocumented
+** @param [r] NumLabels [ajint] Undocumented
+** @param [r] NumNames [ajint*] Undocumented
+** @param [r] Adjust [ajint] Undocumented
 ** @return [float] Undocumented
 ** @@
 ******************************************************************************/
@@ -1640,13 +1640,13 @@ static float lindna_HeightGroup(float posblock, float posrange, float postext,
 **
 ** find whether horizontal text strings overlap within a group
 **
-** @param [?] Name [AjPStr*] Undocumented
-** @param [?] Style [AjPStr*] Undocumented
-** @param [?] TextOri [char*] Undocumented
-** @param [?] NumLabels [ajint] Undocumented
-** @param [?] From [float*] Undocumented
-** @param [?] To [float*] Undocumented
-** @param [?] Adjust [ajint*] Undocumented
+** @param [r] Name [AjPStr*] Undocumented
+** @param [r] Style [AjPStr*] Undocumented
+** @param [r] TextOri [char*] Undocumented
+** @param [r] NumLabels [ajint] Undocumented
+** @param [r] From [float*] Undocumented
+** @param [r] To [float*] Undocumented
+** @param [r] Adjust [ajint*] Undocumented
 ** @return [ajint] Undocumented
 ** @@
 ******************************************************************************/
@@ -1784,34 +1784,34 @@ static ajint lindna_OverlapTextGroup(AjPStr *Name, AjPStr *Style,
 **
 ** draw a group
 **
-** @param [?] xDraw [float] Undocumented
-** @param [?] yDraw [float] Undocumented
-** @param [?] Border [float] Undocumented
-** @param [?] posblock [float] Undocumented
-** @param [?] posrange [float] Undocumented
-** @param [?] postext [float] Undocumented
-** @param [?] DrawLength [float] Undocumented
-** @param [?] TickHeight [float] Undocumented
-** @param [?] BlockHeight [float] Undocumented
-** @param [?] RangeHeight [float] Undocumented
-** @param [?] TextLength [float] Undocumented
-** @param [?] TextHeight [float] Undocumented
-** @param [?] From [float*] Undocumented
-** @param [?] To [float*] Undocumented
-** @param [?] Name [AjPStr*] Undocumented
-** @param [?] FromSymbol [char*] Undocumented
-** @param [?] ToSymbol [char*] Undocumented
-** @param [?] Style [AjPStr*] Undocumented
-** @param [?] InterSymbol [AjPStr] Undocumented
-** @param [?] InterTicks [AjBool] Undocumented
-** @param [?] TextOri [char*] Undocumented
-** @param [?] NumLabels [ajint] Undocumented
-** @param [?] NumNames [ajint*] Undocumented
-** @param [?] GroupName [AjPStr] Undocumented
-** @param [?] Adjust [ajint*] Undocumented
-** @param [?] InterColour [ajint] Undocumented
-** @param [?] Colour [ajint*] Undocumented
-** @param [?] BlockType [AjPStr] Undocumented
+** @param [r] xDraw [float] Undocumented
+** @param [r] yDraw [float] Undocumented
+** @param [r] Border [float] Undocumented
+** @param [r] posblock [float] Undocumented
+** @param [r] posrange [float] Undocumented
+** @param [r] postext [float] Undocumented
+** @param [r] DrawLength [float] Undocumented
+** @param [r] TickHeight [float] Undocumented
+** @param [r] BlockHeight [float] Undocumented
+** @param [r] RangeHeight [float] Undocumented
+** @param [r] TextLength [float] Undocumented
+** @param [r] TextHeight [float] Undocumented
+** @param [r] From [float*] Undocumented
+** @param [r] To [float*] Undocumented
+** @param [r] Name [AjPStr*] Undocumented
+** @param [r] FromSymbol [char*] Undocumented
+** @param [r] ToSymbol [char*] Undocumented
+** @param [r] Style [AjPStr*] Undocumented
+** @param [r] InterSymbol [AjPStr] Undocumented
+** @param [r] InterTicks [AjBool] Undocumented
+** @param [r] TextOri [char*] Undocumented
+** @param [r] NumLabels [ajint] Undocumented
+** @param [r] NumNames [ajint*] Undocumented
+** @param [r] GroupName [AjPStr] Undocumented
+** @param [r] Adjust [ajint*] Undocumented
+** @param [r] InterColour [ajint] Undocumented
+** @param [r] Colour [ajint*] Undocumented
+** @param [r] BlockType [AjPStr] Undocumented
 ** @@
 ******************************************************************************/
 

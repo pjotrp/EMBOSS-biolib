@@ -168,13 +168,13 @@ int main(int argc, char **argv)
 **
 ** Undocumented.
 **
-** @param [?] l [AjPList*] Undocumented
-** @param [?] hits [ajint] Undocumented
-** @param [?] sc [AjBool] Undocumented
-** @param [?] thits [ajint] Undocumented
-** @param [?] report [AjPReport] Report object
-** @param [?] tab [AjPFeattable] Feature table
-** @param [?] seq [AjPSeq] Sequence
+** @param [r] l [AjPList*] Undocumented
+** @param [r] hits [ajint] Undocumented
+** @param [r] sc [AjBool] Undocumented
+** @param [r] thits [ajint] Undocumented
+** @param [r] report [AjPReport] Report object
+** @param [r] tab [AjPFeattable] Feature table
+** @param [r] seq [AjPSeq] Sequence
 ** @@
 ******************************************************************************/
 

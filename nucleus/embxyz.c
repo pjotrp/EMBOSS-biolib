@@ -38,12 +38,12 @@
 ** 
 ** The set output will always contain at least 1 sequence.
 ** 
-** @param [r] input  [AjPList]    List of ajPSeq's 
+** @param [r] input  [const AjPList]    List of ajPSeq's 
 ** @param [w] keep   [AjPInt*]    0: rejected (redundant) sequence, 1: the 
                                   sequence was retained
 ** @param [w] nset   [ajint*]     Number of sequences in nr set (no. of 1's in
 **                                the keep array)
-** @param [r] matrix    [AjPMatrixf] Residue substitution matrix
+** @param [r] matrix    [const AjPMatrixf] Residue substitution matrix
 ** @param [r] gapopen   [float]      Gap insertion penalty
 ** @param [r] gapextend [float]      Gap extension penalty
 ** @param [r] thresh    [float]      Threshold residue id. for "redundancy"
@@ -52,8 +52,8 @@
 ** @@
 ******************************************************************************/
 
-AjBool embXyzSeqsetNR(AjPList input, AjPInt *keep, ajint *nset,
-		      AjPMatrixf matrix, float gapopen, float gapextend,
+AjBool embXyzSeqsetNR(const AjPList input, AjPInt *keep, ajint *nset,
+		      const AjPMatrixf matrix, float gapopen, float gapextend,
 		      float thresh)
 {
     ajint start1  = 0;	  /* Start of seq 1, passed as arg but not used */
@@ -270,12 +270,12 @@ AjBool embXyzSeqsetNR(AjPList input, AjPInt *keep, ajint *nset,
 ** similarity to others in the set (the shortest sequence of the current pair
 ** will be discarded).
 **
-** @param [r] input  [AjPList]    List of ajPSeq's
+** @param [r] input  [const AjPList]    List of ajPSeq's
 ** @param [w] keep   [AjPInt*]    0: rejected (redundant) sequence, 1: the
                                   sequence was retained
 ** @param [w] nset   [ajint*]     Number of sequences in nr set (no. of 1's in
 **                                the keep array)
-** @param [r] matrix    [AjPMatrixf] Residue substitution matrix
+** @param [r] matrix    [const AjPMatrixf] Residue substitution matrix
 ** @param [r] gapopen   [float]      Gap insertion penalty
 ** @param [r] gapextend [float]      Gap extension penalty
 ** @param [r] thresh1    [float]    Threshold lower limit
@@ -284,9 +284,10 @@ AjBool embXyzSeqsetNR(AjPList input, AjPInt *keep, ajint *nset,
 ** @return [AjBool] ajTrue on success
 ** @@
 ******************************************************************************/
-AjBool embXyzSeqsetNRRange(AjPList input, AjPInt *keep, ajint *nset,
-		      AjPMatrixf matrix, float gapopen, float gapextend,
-		      float thresh1, float thresh2)
+AjBool embXyzSeqsetNRRange(const AjPList input, AjPInt *keep, ajint *nset,
+			   const AjPMatrixf matrix,
+			   float gapopen, float gapextend,
+			   float thresh1, float thresh2)
 {
     ajint start1 = 0;	/* Start of seq 1, passed as arg but not used */
     ajint start2 = 0;	/* Start of seq 2, passed as arg but not used */

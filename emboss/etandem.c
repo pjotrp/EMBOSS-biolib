@@ -127,7 +127,7 @@ static EtandemPCons etandem_consCreate(void)
 **
 ** Undocumented.
 **
-** @param [?] cons [EtandemPCons] Undocumented
+** @param [r] cons [EtandemPCons] Undocumented
 ** @@
 ******************************************************************************/
 
@@ -161,9 +161,9 @@ static EtandemPCons reportRoot = &reportRootStruct;
 ** Undocumented.
 **
 ** @param [r] tab [AjPFeattable] Feature table
-** @param [r] outfile [AjPFile] Output file (null unless original output
+** @param [u] outfile [AjPFile] Output file (null unless original output
 **                              is needed)
-** @param [?] a [EtandemPCons] Undocumented
+** @param [r] a [EtandemPCons] Undocumented
 ** @@
 ******************************************************************************/
 
@@ -237,7 +237,7 @@ static void etandem_basicReport(AjPFeattable tab, AjPFile outfile,
 **
 ** Undocumented.
 **
-** @param [?] a [EtandemPCons] Undocumented
+** @param [r] a [EtandemPCons] Undocumented
 ** @@
 ******************************************************************************/
 
@@ -277,7 +277,7 @@ static void etandem_report(EtandemPCons a)
 ** Undocumented.
 **
 ** @param [r] tab [AjPFeattable] Feature table
-** @param [r] outfile [AjPFile] Output file (null unless original output
+** @param [u] outfile [AjPFile] Output file (null unless original output
 **                              is needed)
 ** @@
 ******************************************************************************/

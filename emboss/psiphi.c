@@ -190,7 +190,7 @@ int main( int argc , char **argv )
 
     /* obtain iterator for list of atoms in chain */
     ajIteratorAtomList = 
-	ajListIter(ajpPdbCleanStructure->Chains[ajIntChainIndex]->Atoms);
+	ajListIterRead(ajpPdbCleanStructure->Chains[ajIntChainIndex]->Atoms);
 
     /* obtain sequence from residues in chain */
     ajpSeqCleanChain =
@@ -385,7 +385,7 @@ int main( int argc , char **argv )
     ajFeattableDel(&ajpFeattableTorsionAngles);
 
     /* delete the atom list */
-    ajListIterFree(ajIteratorAtomList);
+    ajListIterFree(&ajIteratorAtomList);
 
     /* close the input file */
     ajFileClose(&ajpFileCleanProteinStructure);
@@ -613,27 +613,27 @@ static float phi (AjPAtom* arrayOfAjpatomsWindow)
     ajp3dVector3To4 = aj3dVectorNew();
 
     /* calculate PHI angle for current window */
-    aj3dVectorBetweenPoints(arrayOfAjpatomsWindow[EPrimeCarbonPrevious]->X,
+    aj3dVectorBetweenPoints(ajp3dVector1To2,
+			    arrayOfAjpatomsWindow[EPrimeCarbonPrevious]->X,
 			    arrayOfAjpatomsWindow[EPrimeCarbonPrevious]->Y,
 			    arrayOfAjpatomsWindow[EPrimeCarbonPrevious]->Z,
 			    arrayOfAjpatomsWindow[ENitrogenCurrent]->X,
 			    arrayOfAjpatomsWindow[ENitrogenCurrent]->Y,
-			    arrayOfAjpatomsWindow[ENitrogenCurrent]->Z,
-			    ajp3dVector1To2);
-    aj3dVectorBetweenPoints(arrayOfAjpatomsWindow[EAlphaCarbonCurrent]->X,
+			    arrayOfAjpatomsWindow[ENitrogenCurrent]->Z);
+    aj3dVectorBetweenPoints(ajp3dVector3To2,
+			    arrayOfAjpatomsWindow[EAlphaCarbonCurrent]->X,
 			    arrayOfAjpatomsWindow[EAlphaCarbonCurrent]->Y,
 			    arrayOfAjpatomsWindow[EAlphaCarbonCurrent]->Z,
 			    arrayOfAjpatomsWindow[ENitrogenCurrent]->X,
 			    arrayOfAjpatomsWindow[ENitrogenCurrent]->Y,
-			    arrayOfAjpatomsWindow[ENitrogenCurrent]->Z, 
-			    ajp3dVector3To2);
-    aj3dVectorBetweenPoints(arrayOfAjpatomsWindow[EAlphaCarbonCurrent]->X,
+			    arrayOfAjpatomsWindow[ENitrogenCurrent]->Z);
+    aj3dVectorBetweenPoints(ajp3dVector3To4,
+			    arrayOfAjpatomsWindow[EAlphaCarbonCurrent]->X,
 			    arrayOfAjpatomsWindow[EAlphaCarbonCurrent]->Y,
 			    arrayOfAjpatomsWindow[EAlphaCarbonCurrent]->Z,
 			    arrayOfAjpatomsWindow[EPrimeCarbonCurrent]->X,
 			    arrayOfAjpatomsWindow[EPrimeCarbonCurrent]->Y,
-			    arrayOfAjpatomsWindow[EPrimeCarbonCurrent]->Z, 
-			    ajp3dVector3To4);
+			    arrayOfAjpatomsWindow[EPrimeCarbonCurrent]->Z);
 		
     fPhiTorsionAngle = -1.0 *
 	aj3dVectorDihedralAngle(ajp3dVector1To2,
@@ -673,29 +673,29 @@ static float psi (AjPAtom* arrayOfAjpatomsWindow)
     ajp3dVector3To4 = aj3dVectorNew();
 
     /* calculate PSI angle for current window */
-    aj3dVectorBetweenPoints(arrayOfAjpatomsWindow[ENitrogenCurrent]->X,
+    aj3dVectorBetweenPoints(ajp3dVector1To2,
+			    arrayOfAjpatomsWindow[ENitrogenCurrent]->X,
 			    arrayOfAjpatomsWindow[ENitrogenCurrent]->Y,
 			    arrayOfAjpatomsWindow[ENitrogenCurrent]->Z,
 			    arrayOfAjpatomsWindow[EAlphaCarbonCurrent]->X,
 			    arrayOfAjpatomsWindow[EAlphaCarbonCurrent]->Y,
-			    arrayOfAjpatomsWindow[EAlphaCarbonCurrent]->Z,
-			    ajp3dVector1To2);
+			    arrayOfAjpatomsWindow[EAlphaCarbonCurrent]->Z);
 		
-    aj3dVectorBetweenPoints(arrayOfAjpatomsWindow[EPrimeCarbonCurrent]->X,
+    aj3dVectorBetweenPoints(ajp3dVector3To2,
+			    arrayOfAjpatomsWindow[EPrimeCarbonCurrent]->X,
 			    arrayOfAjpatomsWindow[EPrimeCarbonCurrent]->Y,
 			    arrayOfAjpatomsWindow[EPrimeCarbonCurrent]->Z,
 			    arrayOfAjpatomsWindow[EAlphaCarbonCurrent]->X,
 			    arrayOfAjpatomsWindow[EAlphaCarbonCurrent]->Y,
-			    arrayOfAjpatomsWindow[EAlphaCarbonCurrent]->Z, 
-			    ajp3dVector3To2);
+			    arrayOfAjpatomsWindow[EAlphaCarbonCurrent]->Z);
 		
-    aj3dVectorBetweenPoints(arrayOfAjpatomsWindow[EPrimeCarbonCurrent]->X,
+    aj3dVectorBetweenPoints(ajp3dVector3To4,
+			    arrayOfAjpatomsWindow[EPrimeCarbonCurrent]->X,
 			    arrayOfAjpatomsWindow[EPrimeCarbonCurrent]->Y,
 			    arrayOfAjpatomsWindow[EPrimeCarbonCurrent]->Z,
 			    arrayOfAjpatomsWindow[ENitrogenNext]->X,
 			    arrayOfAjpatomsWindow[ENitrogenNext]->Y,
-			    arrayOfAjpatomsWindow[ENitrogenNext]->Z, 
-			    ajp3dVector3To4);
+			    arrayOfAjpatomsWindow[ENitrogenNext]->Z);
     fPsiTorsionAngle = -1.0 *
 	aj3dVectorDihedralAngle(ajp3dVector1To2,
 				ajp3dVector3To2,

@@ -225,7 +225,7 @@ int main(int argc, char **argv)
 ** @param [r] isDNA [AjBool] Undocumented
 ** @param [r] isproduct [AjBool] Undocumented
 ** @param [r] dothermo [AjBool] Undocumented
-** @param [r] outf [AjPFile] Undocumented
+** @param [u] outf [AjPFile] Undocumented
 ** @param [r] doplot [AjBool] Undocumented
 ** @param [r] xa [float[]] Undocumented
 ** @param [r] ta [float[]] Undocumented
@@ -269,7 +269,7 @@ static void dan_findgc(AjPStr *strand, ajint begin, ajint end, ajint window,
 	    ajStrAssC(&type,"dna");
 	else
 	    ajStrAssC(&type,"rna");
-	ajMeltInit(&type, window);
+	ajMeltInit(type, window);
 	ajStrDel(&type);
     }
 
@@ -285,12 +285,12 @@ static void dan_findgc(AjPStr *strand, ajint begin, ajint end, ajint window,
 	ajStrAssSubC(&substr, ajStrStr(*strand), ibegin, iend);
 
 	xa[*np]  = (float)(i+1);
-	ta[*np]  = ajTm(&substr, (iend-ibegin)+1, shift, salt, dna, isDNA);
-	cga[*np] = 100.0 * ajMeltGC(&substr, window);
+	ta[*np]  = ajTm(substr, (iend-ibegin)+1, shift, salt, dna, isDNA);
+	cga[*np] = 100.0 * ajMeltGC(substr, window);
 
 	if(dothermo)
 	{
-	    DeltaG = -1. * ajMeltEnergy(&substr, (iend-ibegin)+1, shift, isDNA,
+	    DeltaG = -1. * ajMeltEnergy(substr, (iend-ibegin)+1, shift, isDNA,
 					ajFalse, &DeltaH, &DeltaS);
 
 	    DeltaH = -1. * DeltaH;
@@ -410,7 +410,7 @@ static void dan_reportgc(AjPReport report, AjPSeq seq, AjPFeattable TabRpt,
 	    ajStrAssC(&type,"dna");
 	else
 	    ajStrAssC(&type,"rna");
-	ajMeltInit(&type, window);
+	ajMeltInit(type, window);
 	ajStrDel(&type);
     }
 
@@ -426,12 +426,12 @@ static void dan_reportgc(AjPReport report, AjPSeq seq, AjPFeattable TabRpt,
 	ajStrAssSub(&substr, ajSeqStr(seq), ibegin, iend);
 
 	xa[*np]  = (float)(i+1);
-	ta[*np]  = ajTm(&substr, (iend-ibegin)+1, shift, salt, dna, isDNA);
-	cga[*np] = 100.0 * ajMeltGC(&substr, window);
+	ta[*np]  = ajTm(substr, (iend-ibegin)+1, shift, salt, dna, isDNA);
+	cga[*np] = 100.0 * ajMeltGC(substr, window);
 
 	if(dothermo)
 	{
-	    DeltaG = -1. * ajMeltEnergy(&substr, (iend-ibegin)+1, shift, isDNA,
+	    DeltaG = -1. * ajMeltEnergy(substr, (iend-ibegin)+1, shift, isDNA,
 					ajFalse, &DeltaH, &DeltaS);
 
 	    DeltaH = -1. * DeltaH;
@@ -488,10 +488,10 @@ static void dan_reportgc(AjPReport report, AjPSeq seq, AjPFeattable TabRpt,
 **
 ** Undocumented.
 **
-** @param [?] xa [float*] Undocumented
-** @param [?] ta [float*] Undocumented
-** @param [?] tpa [float*] Undocumented
-** @param [?] cga [float*] Undocumented
+** @param [r] xa [float*] Undocumented
+** @param [r] ta [float*] Undocumented
+** @param [r] tpa [float*] Undocumented
+** @param [r] cga [float*] Undocumented
 ** @@
 ******************************************************************************/
 
@@ -512,16 +512,16 @@ static void dan_unfmall(float *xa, float *ta, float *tpa, float *cga)
 **
 ** Undocumented.
 **
-** @param [?] seq [AjPSeq*] Undocumented
-** @param [?] xa [float*] Undocumented
-** @param [?] ta [float*] Undocumented
-** @param [?] cga [float*] Undocumented
-** @param [?] tpa [float*] Undocumented
-** @param [?] npoints [ajint] Undocumented
-** @param [?] ibegin [ajint] Undocumented
-** @param [?] iend [ajint] Undocumented
-** @param [?] graphs [AjPGraph] Undocumented
-** @param [?] mintemp [float] Undocumented
+** @param [r] seq [AjPSeq*] Undocumented
+** @param [r] xa [float*] Undocumented
+** @param [r] ta [float*] Undocumented
+** @param [r] cga [float*] Undocumented
+** @param [r] tpa [float*] Undocumented
+** @param [r] npoints [ajint] Undocumented
+** @param [r] ibegin [ajint] Undocumented
+** @param [r] iend [ajint] Undocumented
+** @param [r] graphs [AjPGraph] Undocumented
+** @param [r] mintemp [float] Undocumented
 ** @@
 ******************************************************************************/
 

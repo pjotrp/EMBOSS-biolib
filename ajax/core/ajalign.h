@@ -14,10 +14,11 @@ extern "C"
 **
 ** @new ajAlignNew Default constructor
 ** @delete ajAlignDel Default destructor
-** @set ajAlignReset Resets ready for reuse.
-** @use ajAlignWrite Master alignment output routine
-** @use ajAlignWriteHeader Master header output routine
-** @use ajAlignWriteTail Master footer output routine
+** @modify ajAlignReset Resets ready for reuse.
+** @output ajAlignWrite Master alignment output routine
+** @output ajAlignWriteHeader Master header output routine
+** @output ajAlignWriteTail Master footer output routine
+**
 ** @other AjPSeqout Sequence output
 ** @other AjPFeatout Feature output
 ** @other AjPReport Report output
@@ -89,6 +90,10 @@ typedef struct AjSAlign {
 #define AjPAlign AjOAlign*
 
 void         ajAlignClose (AjPAlign thys);
+AjBool       ajAlignConsStats(AjPSeqset thys, AjPMatrix mymatrix,
+			      AjPStr *cons, ajint* retident, 
+			      ajint* retsim, ajint* retgap,
+			      ajint* retlen);
 AjBool       ajAlignDefine (AjPAlign pthys, AjPSeqset seqset);
 AjBool       ajAlignDefineSS (AjPAlign pthys,
 			      AjPSeq seqa, AjPSeq seqb);
@@ -100,7 +105,7 @@ AjBool       ajAlignOpen (AjPAlign thys, const AjPStr name);
 AjBool       ajAlignFindFormat (const AjPStr format, ajint* iformat);
 AjBool       ajAlignFormatDefault (AjPStr* pformat);
 AjPAlign     ajAlignNew (void);
-void         ajAlignPrintFormat (const AjPFile outf, AjBool full);
+void         ajAlignPrintFormat (AjPFile outf, AjBool full);
 void         ajAlignReset (AjPAlign thys);
 void         ajAlignSetExternal (AjPAlign thys, AjBool external);
 void         ajAlignSetHeader (AjPAlign thys, const AjPStr header);
@@ -137,7 +142,7 @@ AjBool       ajAlignValid (AjPAlign thys);
 void         ajAlignWrite (AjPAlign thys);
 void         ajAlignWriteClose (AjPAlign thys);
 void         ajAlignWriteHeader (AjPAlign thys);
-void         ajAlignWriteTail (AjPAlign thys);
+void         ajAlignWriteTail (const AjPAlign thys);
 
 #endif
 

@@ -46,11 +46,7 @@ static ajint tableMaxNum = 0;
 static ajint tableMaxMem = 0;
 
 
-
-
-static void tableStrPrint(const void* key, void** value, void* cl);
-static void tableStrPrintC(const void* key, void** value, void* cl);
-static void tableStrDel(const void* key, void** value, void* cl);
+static void tableStrDel(const void** key, void** value, void* cl);
 
 
 
@@ -135,7 +131,7 @@ AjPTable ajTableNewL(ajint size,
 ** @param [fN] hash [ajuint function] function for hashing keys
 **
 ** @return [AjPTable] new table.
-**
+** @category new [AjPTable] Creates a table.
 ** @@
 **
 ******************************************************************************/
@@ -204,6 +200,8 @@ AjPTable ajTableNew(ajint hint,
 ** @param [r] key   [const void*] key to find.
 ** @return [void*]  value associated with key
 ** @error NULL if key not found in table.
+** @category cast [AjPTable] Returns the value for a given
+**                key.
 ** @@
 ******************************************************************************/
 
@@ -267,8 +265,10 @@ void * ajTableKey(const AjPTable table, const void *key)
 **
 ** Writes debug messages to trace the contents of a table.
 **
-** @param [u] table [const AjPTable] Table
+** @param [r] table [const AjPTable] Table
 ** @return [void]
+** @category output [AjPTable] Writes debug messages to trace the
+**                contents of a table.
 ** @@
 ******************************************************************************/
 
@@ -311,7 +311,7 @@ void ajTableTrace(const AjPTable table)
 ** Writes debug messages to trace the contents of a table,
 ** assuming all keys and values are strings.
 **
-** @param [u] table [const AjPTable] Table
+** @param [r] table [const AjPTable] Table
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -361,8 +361,10 @@ void ajStrTableTrace(const AjPTable table)
 **
 ** @param [u] table [AjPTable] Table to add to
 ** @param [r] key [const void*] key
-** @param [r] value [void*] value of key
+** @param [u] value [void*] value of key
 ** @return [void*] previous value if key exists, NULL if not.
+** @category modify [AjPTable] Adds or updates a value for a given
+**                key.
 ** @@
 ******************************************************************************/
 
@@ -411,6 +413,8 @@ void * ajTablePut(AjPTable table, const void *key, void *value)
 **
 ** @param [r] table [const AjPTable] Table to be applied.
 ** @return [ajint] number of key-value pairs.
+** @category cast [AjPTable] Returns the number of keys in a
+**                table.
 ** @@
 ******************************************************************************/
 
@@ -428,12 +432,21 @@ ajint ajTableLength(const AjPTable table)
 /* @func ajTableMap **********************************************************
 **
 ** calls function 'apply' for each key-value in table
-** in an unspecified order.
+** in an unspecified order. The table keys should not be modified by
+** function 'apply' although values canbe updated.
+**
+** See ajTableMapDel for a function that can delete.
+**
+** Note: because of the properties of C it is difficult to check these
+**       are being called correctly. This is because the apply function
+**       uses void* arguments.
 **
 ** @param [u] table [AjPTable] Table.
 ** @param [f] apply [void function] function to be applied
-** @param [r] cl [void*] Standard. Usually NULL. To be passed to apply
+** @param [u] cl [void*] Standard. Usually NULL. To be passed to apply
 ** @return [void]
+** @category modify [AjPTable] Calls a function for each key/value
+**                in a table.
 ** @@
 ******************************************************************************/
 
@@ -464,6 +477,50 @@ void ajTableMap(AjPTable table,
 
 
 
+/* @func ajTableMapDel *****************************************************
+**
+** calls function 'apply' for each key-value in table
+** in an unspecified order.
+**
+** Keys in the table can be deleted - for example a function to delete
+** a table entry. See ajTableMapfor a function that is read-only
+**
+** @param [u] table [AjPTable] Table.
+** @param [f] apply [void function] function to be applied
+** @param [u] cl [void*] Standard. Usually NULL. To be passed to apply
+** @return [void]
+** @category modify [AjPTable] Calls a function for each key/value
+**                in a table.
+** @@
+******************************************************************************/
+
+void ajTableMapDel(AjPTable table,
+		void apply(const void **key, void **value, void *cl),
+		void *cl)
+{
+    ajint i;
+    ajuint stamp;
+    struct binding *p;
+
+    if(!table)
+	return;
+    if(!apply)
+	return;
+
+    stamp = table->timestamp;
+    for(i = 0; i < table->size; i++)
+	for(p = table->buckets[i]; p; p = p->link)
+	{
+	    apply(&p->key, &p->value, cl);
+	    assert(table->timestamp == stamp);
+	}
+
+    return;
+}
+
+
+
+
 /* @func ajTableRemove ********************************************************
 **
 ** removes the key-value pair from table and returns the removed
@@ -474,6 +531,8 @@ void ajTableMap(AjPTable table,
 ** @param [r] key [const void*] key to be removed
 ** @return [void*] removed value.
 ** @error NULL if key not found.
+** @category modify [AjPTable] Removes a key/value pair from a
+**                table, and returns the value.
 ** @@
 ******************************************************************************/
 
@@ -514,13 +573,16 @@ void * ajTableRemove(AjPTable table, const void *key)
 ** elements and the corresponding values appear in the following
 ** odd-numbered elements; element 2N is end.
 **
-** @param [r] table [AjPTable] Table
-** @param [r] end  [void*] end terminator
+** @param [r] table [const AjPTable] Table
+** @param [u] end  [void*] end terminator, usually NULL
 ** @return [void**] pointer to first element in array.
+** @category cast [AjPTable] Creates an array to hold each key
+**                value pair in pairs of array elements. The last
+**                element is null.
 ** @@
 ******************************************************************************/
 
-void ** ajTableToarray(AjPTable table, void *end)
+void ** ajTableToarray(const AjPTable table, void *end)
 {
     ajint i;
     ajint j = 0;
@@ -549,10 +611,12 @@ void ** ajTableToarray(AjPTable table, void *end)
 
 /* @func ajTableFree **********************************************************
 **
-** deallocates and clears a Table.
+** Deallocates and clears a Table.
 **
-** @param [u] table [AjPTable*] Table (by reference)
+** @param [d] table [AjPTable*] Table (by reference)
 ** @return [void]
+** @category delete [AjPTable] Deallocates and clears a
+**                table.
 ** @@
 ******************************************************************************/
 
@@ -877,44 +941,27 @@ ajint ajStrTableCmp(const void* x, const void* y)
 **
 ** Print function for a table with a string key.
 **
-** @param [r] table [AjPTable] Table.
+** @param [r] table [const AjPTable] Table.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajStrTablePrint(AjPTable table)
+void ajStrTablePrint(const AjPTable table)
 {
-    ajTableMap(table, tableStrPrint, NULL);
+    ajint i;
+    struct binding *p;
+
+    if(!table)
+	return;
+    for(i = 0; i < table->size; i++)
+	for(p = table->buckets[i]; p; p = p->link)
+	{
+	    ajUser("key '%S' value '%S'", (AjPStr) p->key, (AjPStr) p->value);
+	}
 
     return;
 }
 
-
-
-
-/* @funcstatic tableStrPrint **************************************************
-**
-** Print function for entries in a table with a string key.
-**
-** @param [r] key [const void*] Standard argument. Table key.
-** @param [r] value [void**] Standard argument. Table item.
-** @param [r] cl [void*] Standard argument. Usually NULL.
-** @return [void]
-** @@
-******************************************************************************/
-
-static void tableStrPrint(const void* key, void** value, void* cl)
-{
-    AjPStr keystr;
-    AjPStr valstr;
-
-    keystr = (AjPStr) key;
-    valstr = (AjPStr) *value;
-
-    ajUser("key '%S' value '%S'", keystr, valstr);
-
-    return;
-}
 
 
 
@@ -923,41 +970,23 @@ static void tableStrPrint(const void* key, void** value, void* cl)
 **
 ** Print function for a table with a character string key.
 **
-** @param [r] table [AjPTable] Table.
+** @param [r] table [const AjPTable] Table.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajStrTablePrintC(AjPTable table)
+void ajStrTablePrintC(const AjPTable table)
 {
-    ajTableMap(table, tableStrPrintC, NULL);
+    ajint i;
+    struct binding *p;
 
-    return;
-}
-
-
-
-
-/* @funcstatic tableStrPrintC *************************************************
-**
-** Print function for entries in a table with a character string key.
-**
-** @param [r] key [const void*] Standard argument. Table key.
-** @param [r] value [void**] Standard argument. Table item.
-** @param [r] cl [void*] Standard argument. Usually NULL.
-** @return [void]
-** @@
-******************************************************************************/
-
-static void tableStrPrintC(const void* key, void** value, void* cl)
-{
-    char* keystr;
-    char* valstr;
-
-    keystr = (char*) key;
-    valstr = (char*) *value;
-
-    ajUser("key '%s' value '%s'", keystr, valstr);
+    if(!table)
+	return;
+    for(i = 0; i < table->size; i++)
+	for(p = table->buckets[i]; p; p = p->link)
+	{
+	    ajUser("key '%s' value '%s'", (char*) p->key, (char*) p->value);
+	}
 
     return;
 }
@@ -971,7 +1000,7 @@ static void tableStrPrintC(const void* key, void** value, void* cl)
 ** in the table are real, and not just copies of pointers. Otherwise
 ** a call to ajTableFree is enough.
 **
-** @param [r] ptable [AjPTable*] Table
+** @param [d] ptable [AjPTable*] Table
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -981,7 +1010,7 @@ void ajStrTableFree(AjPTable* ptable)
     if(!*ptable)
 	return;
 
-    ajTableMap(*ptable, tableStrDel, NULL);
+    ajTableMapDel(*ptable, tableStrDel, NULL);
 
     ajTableFree(ptable);
 
@@ -995,23 +1024,26 @@ void ajStrTableFree(AjPTable* ptable)
 **
 ** Delete an entry in a string table.
 **
-** @param [r] key [const void*] Standard argument. Table key.
-** @param [r] value [void**] Standard argument. Table item.
-** @param [r] cl [void*] Standard argument. Usually NULL.
+** @param [d] key [const void**] Standard argument. Table key.
+** @param [d] value [void**] Standard argument. Table item.
+** @param [u] cl [void*] Standard argument. Usually NULL.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void tableStrDel(const void* key, void** value, void* cl)
+static void tableStrDel(const void** key, void** value, void* cl)
 {
-    AjPStr* p;
-    AjPStr  q;
+    AjPStr p;
+    AjPStr q;
 
-    p = (AjPStr*) value;
-    q = (AjPStr) key;
+    p = (AjPStr) *value;
+    q = (AjPStr) *key;
 
-    ajStrDel(p);
+    ajStrDel(&p);
     ajStrDel(&q);
+
+    *key = NULL;
+    *value = NULL;
 
     return;
 }

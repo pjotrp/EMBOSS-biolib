@@ -1310,14 +1310,14 @@ populate_program_menus(AjPList plist, ITEM **ip)
     char *buffer;
 
 /* iterate through the programs list to get the longest name */
-    giter = ajListIter(plist);
+    giter = ajListIterRead(plist);
     while ((gl = ajListIterNext(giter)) != NULL) {
         if (ajStrLen(gl->name) > namelen) namelen = ajStrLen(gl->name);
     }
-    ajListIterFree(giter);
+    ajListIterFree(&giter);
 
 /* iterate through the programs list populating the items */
-    giter = ajListIter(plist);
+    giter = ajListIterRead(plist);
     while ((gl = ajListIterNext(giter)) != NULL) {
     	if (ajStrLen(gl->doc) + namelen + 2 > COLS) {
 /* doc is longer than max length - copy string to buffer then truncate */
@@ -1330,7 +1330,7 @@ populate_program_menus(AjPList plist, ITEM **ip)
             *ip++ = new_item(ajStrStr(gl->name), ajStrStr(gl->doc));
         }
     }
-    ajListIterFree(giter);
+    ajListIterFree(&giter);
 
 /* +++ debug to see if a blank line at the end of a menu is destructive */
 /* *ip++ = new_item(" ", ""); */
@@ -1361,7 +1361,7 @@ populate_menu(int type, WINDOW *w, ITEM *item)
     switch (type) {
     case GROUPS_MENU:
 /* add on space for 7 extra options plus null at end */
-ajDebug("starting malloc() for %d items (+8)\n", ajListLength(glist));
+	ajDebug("starting malloc() for %d items (+8)\n", ajListLength(glist));
         items = (ITEM **)malloc(sizeof(ITEM *)*(ajListLength(glist)+8));
         ip = items;
         *ip++ = new_item("EXIT", "");
@@ -1377,16 +1377,16 @@ ajDebug("starting malloc() for %d items (+8)\n", ajListLength(glist));
         *ip++ = new_item("SEARCH FOR PROGRAMS", "");
         *ip++ = new_item(" ", "");
 /* iterate through the groups list */
-ajDebug("starting iteration through groups list\n");
-        giter = ajListIter(glist);
+	ajDebug("starting iteration through groups list\n");
+        giter = ajListIterRead(glist);
         while ((gl = ajListIterNext(giter)) != NULL) {
-ajDebug("Next list node: %S\n", gl->name);
+	    ajDebug("Next list node: %S\n", gl->name);
             *ip = new_item(ajStrStr(gl->name), "");
 /* set item usrptr to the programs list for this group */
             set_item_userptr(*ip, (void *)gl->progs);
             ip++;
         }
-        ajListIterFree(giter);
+        ajListIterFree(&giter);
         *ip = (ITEM *) 0;  
     	break;
 
@@ -1462,7 +1462,7 @@ we should delete the old list */
 	exit(1);
     }
 
-ajDebug("returning from populate_menu()\n");
+    ajDebug("returning from populate_menu()\n");
     return items;
 }
 /*****************************************************************************/
@@ -1479,40 +1479,40 @@ start_menu(int type, WINDOW *w, MENU **menu, ITEM *item)
 
 #define HEIGHT LINES-4
 
-ajDebug("starting populate_menu\n");
+    ajDebug("starting populate_menu\n");
     items = populate_menu(type, w, item);
 
 /* make the menu with some nice options */
-ajDebug("starting new_menu\n");
+    ajDebug("starting new_menu\n");
     m = new_menu(items);
-ajDebug("starting set_menu_mark()\n");    
+    ajDebug("starting set_menu_mark()\n");    
     set_menu_mark(m, ">");	/* nice pointer for the menu mark string */
 /* wrap around to the other end of the menu */
-ajDebug("starting menu_opts_off()\n");    
+    ajDebug("starting menu_opts_off()\n");    
     menu_opts_off(m, O_NONCYCLIC);
-ajDebug("after menu_opts_off()\n");    
+    ajDebug("after menu_opts_off()\n");    
 /* if displaying the menu in two columns, go to the end before starting
 the second column */
-ajDebug("starting menu_opts_off()\n");    
+    ajDebug("starting menu_opts_off()\n");    
 /* 5 Dec 2000 - we seem to have a crash here when using the curses library 
     menu_opts_off(m, O_ROWMAJOR);
 */    
-ajDebug("after menu_opts_off()\n");    
+    ajDebug("after menu_opts_off()\n");    
 
-ajDebug("starting set_menu_format with HEIGHT=%d\n", HEIGHT);
+    ajDebug("starting set_menu_format with HEIGHT=%d\n", HEIGHT);
 /* if this is a GROUPS_MENU, make it two columns, else 1 column */
     set_menu_format(m, HEIGHT, (type==GROUPS_MENU) ? 2 : 1);	
-ajDebug("starting set_menu_win\n");
+    ajDebug("starting set_menu_win\n");
     set_menu_win(m, w);
-ajDebug("starting keypad\n");
+    ajDebug("starting keypad\n");
     keypad(w, TRUE);
 /* position menu 1 line down from top of screen */
-ajDebug("starting set_menu_sub\n");
+    ajDebug("starting set_menu_sub\n");
     set_menu_sub(m, derwin(w, HEIGHT, COLS, 1, 0));
 
-ajDebug("starting post_menu\n");
+    ajDebug("starting post_menu\n");
     post_menu(m);
-ajDebug("starting wrefresh\n");
+    ajDebug("starting wrefresh\n");
     wrefresh(w);
     
 
@@ -2867,16 +2867,17 @@ run_form_menu(int type, FORM *form, MENU **pmenu)
 /* debug */
 /*FILE *F = fopen("debug.file", "w");*/
 
-ajDebug("running display_help()\n");
+    ajDebug("running display_help()\n");
 /* display help and set up the mouse active areas */
     display_help(type, w, &list);
 
-ajDebug("running set_field_buffer()\n");
+    ajDebug("running set_field_buffer()\n");
 /* initial positioning of cursor on form field - put first menu item
 (usually EXIT) in the form field and move the cursor to the start of the
 field so that the first keypress of a printable character will clear the
 field */
-    set_field_buffer(current_field(form), 0, item_name(current_item(*pmenu))); /* copy menu item to form field */
+    set_field_buffer(current_field(form), 0, /* copy menu item to form field */
+		     item_name(current_item(*pmenu)));
     form_driver(form, REQ_BEG_FIELD);
     pos_form_cursor(form);	/* reposition cursor on form */
     wrefresh(w);
@@ -3033,15 +3034,15 @@ do_form_menu(int type, ITEM *item)
 
     w = newwin(LINES, COLS, 0, 0);
     title_line(type, w);
-ajDebug("starting form\n");
+    ajDebug("starting form\n");
     start_form(type, w, &form);
-ajDebug("starting menu\n");
+    ajDebug("starting menu\n");
     start_menu(type, w, &menu, item);
 
-ajDebug("about to run_form_menu()\n");
+    ajDebug("about to run_form_menu()\n");
     run_form_menu(type, form, &menu);
 
-ajDebug("ending form\n");
+    ajDebug("ending form\n");
     end_form(form);
     end_menu(menu);
     delwin(w);

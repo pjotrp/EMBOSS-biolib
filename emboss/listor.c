@@ -186,7 +186,7 @@ int main(int argc, char **argv)
 **
 ** Writes out USA of a sequence to a file
 **
-** @param [r] list [AjPFile] Output file
+** @param [u] list [AjPFile] Output file
 ** @param [r] Operator [ajint] logical operation to perform
 ** @param [r] seq1 [AjPSeqset] first seqset
 ** @param [r] seq2 [AjPSeqset] second seqset
@@ -248,7 +248,7 @@ static void listor_Output(AjPFile list, ajint Operator, AjPSeqset seq1,
 **
 ** Writes out USA of a sequence to a file
 **
-** @param [r] list [AjPFile] Output file
+** @param [u] list [AjPFile] Output file
 ** @param [r] seqset [AjPSeqset] seqset
 ** @param [r] i [ajint] index into seqset for the sequence to write
 ** @return [void]

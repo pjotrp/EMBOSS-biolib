@@ -169,8 +169,8 @@ int main(int argc, char **argv)
 **
 ** Undocumented.
 **
-** @param [?] line [AjPStr*] Undocumented
-** @param [?] pos [ajint] Undocumented
+** @param [r] line [AjPStr*] Undocumented
+** @param [r] pos [ajint] Undocumented
 ** @@
 ******************************************************************************/
 
@@ -205,8 +205,8 @@ static void intconv_modLineInt(AjPStr *line, ajint pos)
 **
 ** Undocumented.
 **
-** @param [?] line [AjPStr*] Undocumented
-** @param [?] pos [ajint] Undocumented
+** @param [r] line [AjPStr*] Undocumented
+** @param [r] pos [ajint] Undocumented
 ** @@
 ******************************************************************************/
 

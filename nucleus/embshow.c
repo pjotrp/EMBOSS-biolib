@@ -232,7 +232,7 @@ void embShowDel(EmbPShow* pthis)
     thys = *pthis;
 
     /* free the descriptors */
-    iter = ajListIter(thys->list);
+    iter = ajListIterRead(thys->list);
 
     while((infostruct = ajListIterNext(iter)) != NULL)
     {
@@ -287,7 +287,7 @@ void embShowDel(EmbPShow* pthis)
 	AJFREE(infostruct);
     }
 
-    ajListIterFree(iter);
+    ajListIterFree(&iter);
 
     /* we have already freed the descriptors, so use ajListDel here */
     while(ajListPop(thys->list,(void **)&ptr));
@@ -863,12 +863,12 @@ void embShowPrint(AjPFile out, EmbPShow thys)
 
 	/* throw a formfeed if we would go over the length of the page */
 	count = 0;
-	liter = ajListIter(lines);
+	liter = ajListIterRead(lines);
 	while((line = ajListIterNext(liter)) != NULL)
 	    if(ajStrLen(line))
 		if(ajStrStr(line)[ajStrLen(line)-1] == '\n')
 		    count++;
-	ajListIterFree(liter);
+	ajListIterFree(&liter);
 
 	/* thys->length is zero if we have an indefinite page length */
 	if(thys->length && (count+line_no > thys->length) &&
@@ -906,11 +906,11 @@ static void showPrintLines(AjPFile out, AjPList lines)
     ajDebug("showPrintLines\n");
 
     /* iterate through the lines and print them */
-    liter = ajListIter(lines);
+    liter = ajListIterRead(lines);
     while((str = ajListIterNext(liter)) != NULL)
 	ajFmtPrintF(out, "%S", str);
 
-    ajListIterFree(liter);
+    ajListIterFree(&liter);
 
     return;
 }
@@ -955,7 +955,7 @@ static void showFillLines(AjPList lines, EmbPShow thys, ajint pos)
     ajDebug("showFillLines\n");
 
     /* iterate through the descriptors filling out the lines */
-    diter = ajListIter(thys->list);
+    diter = ajListIterRead(thys->list);
 
     while((infostruct = ajListIterNext(diter)) != NULL)
     {
@@ -1005,7 +1005,7 @@ static void showFillLines(AjPList lines, EmbPShow thys, ajint pos)
 			   "showFillLines: %d",type);
 	}
     }
-    ajListIterFree(diter);
+    ajListIterFree(&diter);
 
     return;
 }
@@ -1188,7 +1188,7 @@ void embShowColourRange(AjPStr * line, AjPRange colour, ajint pos)
     ajint value;                        /* code for type of overlap of
 					   range with line */
     AjPStr html = NULL;
-    AjPStr col;
+    AjPStr col = NULL;
 
     nr = ajRangeNumber(colour);
 
@@ -1672,7 +1672,7 @@ static void showFillTran(EmbPShow thys, AjPList lines, EmbPShowTran info,
 	    framepad = 0;
 	    seqstr = ajSeqStrCopy(thys->seq);
 	    temp = ajStrNew();
-	    ajRangeStrExtract(&temp, info->regions, seqstr);
+	    ajRangeStrExtract(info->regions, seqstr, &temp);
 	    ajStrDel(&seqstr);
 	    seq = ajSeqNew();
 	    ajSeqReplace(seq, temp);
@@ -1698,7 +1698,7 @@ static void showFillTran(EmbPShow thys, AjPList lines, EmbPShowTran info,
 	    **  now put in spaces to align the translation to the
 	    **  sequence ranges
 	    */
-	    ajRangeStrStuff(&temp, info->regions, ajSeqStr(tran));
+	    ajRangeStrStuff(info->regions, ajSeqStr(tran), &temp);
 	    ajSeqReplace(tran, temp);
 	    ajStrClear(&temp);
 	}
@@ -1968,7 +1968,7 @@ static void showFillREupright(EmbPShow thys, AjPList lines, EmbPShowRE info,
     {
 	info->sitelist = ajListNew();
 
-	miter = ajListIter(info->matches);
+	miter = ajListIterRead(info->matches);
 	while((m = ajListIterNext(miter)) != NULL)
 	{
 	    /* store the first cut site in this sense */
@@ -2000,14 +2000,14 @@ static void showFillREupright(EmbPShow thys, AjPList lines, EmbPShowRE info,
 	    }
 	}
 
-	ajListIterFree(miter);
+	ajListIterFree(&miter);
 	ajListSort(info->sitelist, showFillREuprightSort);
     }
 
     ajStrAssC(&tick, "|");		/* a useful string */
 
     /* iterate through the site list */
-    siter = ajListIter(info->sitelist);
+    siter = ajListIterRead(info->sitelist);
     while((s = ajListIterNext(siter)) != NULL)
     {
 	cut = s->pos;
@@ -2071,7 +2071,7 @@ static void showFillREupright(EmbPShow thys, AjPList lines, EmbPShowRE info,
 	    }
 	}
     }
-    ajListIterFree(siter);
+    ajListIterFree(&siter);
 
 
     /* convert base line ticks to forward or reverse slashes */
@@ -2091,7 +2091,7 @@ static void showFillREupright(EmbPShow thys, AjPList lines, EmbPShowRE info,
     if(info->sense == 1) ajListstrReverse(linelist);
 
     /* iterate through the lines and print them */
-    liter = ajListIter(linelist);
+    liter = ajListIterRead(linelist);
     while((line = ajListIterNext(liter)) != NULL)
     {
 	/* output to the lines list */
@@ -2104,7 +2104,7 @@ static void showFillREupright(EmbPShow thys, AjPList lines, EmbPShowRE info,
 	/* end the output line */
 	ajListstrPushApp(lines, ajFmtStr("\n"));
     }
-    ajListIterFree(liter);
+    ajListIterFree(&liter);
 
     while(ajListstrPop(linelist,&sajb));
 
@@ -2188,7 +2188,7 @@ static void showFillREflat(EmbPShow thys, AjPList lines, EmbPShowRE info,
     linelist = ajListstrNew();
 
     /* iterate through the list */
-    miter = ajListIter(info->matches);
+    miter = ajListIterRead(info->matches);
     while((m = ajListIterNext(miter)) != NULL)
     {
 	/* get the start and end positions */
@@ -2331,7 +2331,7 @@ static void showFillREflat(EmbPShow thys, AjPList lines, EmbPShowRE info,
 		*/
 		if(base < pos)
 		{
-		    ajStrAss(&namestr, m->cod);
+		    ajStrAssS(&namestr, m->cod);
 		    ajStrAppC(&namestr, claimchar);
 		    ajStrAppC(&namestr, claimchar);
 
@@ -2368,7 +2368,7 @@ static void showFillREflat(EmbPShow thys, AjPList lines, EmbPShowRE info,
 		*/
 		if(base > pos+thys->width-1)
 		{
-		    ajStrAss(&namestr, m->cod);
+		    ajStrAssS(&namestr, m->cod);
 		    ajStrAppC(&namestr, claimchar);
 		    ajStrAppC(&namestr, claimchar);
 
@@ -2398,7 +2398,7 @@ static void showFillREflat(EmbPShow thys, AjPList lines, EmbPShowRE info,
 		*/
 		if(base < pos)
 		{
-		    ajStrAss(&namestr, m->cod);
+		    ajStrAssS(&namestr, m->cod);
 		    ajStrAppC(&namestr, claimchar);
 		    ajStrAppC(&namestr, claimchar);
 
@@ -2491,7 +2491,7 @@ static void showFillREflat(EmbPShow thys, AjPList lines, EmbPShowRE info,
 	    ajStrDel(&sitestr);
 	}
     }
-    ajListIterFree(miter);
+    ajListIterFree(&miter);
 
 
     /*
@@ -2503,7 +2503,7 @@ static void showFillREflat(EmbPShow thys, AjPList lines, EmbPShowRE info,
 	ajListstrReverse(linelist);
 
     /* iterate through the lines and print them */
-    liter = ajListIter(linelist);
+    liter = ajListIterRead(linelist);
     while((line = ajListIterNext(liter)) != NULL)
     {
 	/*
@@ -2527,7 +2527,7 @@ static void showFillREflat(EmbPShow thys, AjPList lines, EmbPShowRE info,
 	ajListstrPushApp(lines, line);
 	ajListstrPushApp(lines, ajFmtStr("\n"));
     }
-    ajListIterFree(liter);
+    ajListIterFree(&liter);
 
 
     while(ajListstrPop(linelist,&sajb));
@@ -2616,7 +2616,7 @@ static void showFillFT(EmbPShow thys, AjPList lines, EmbPShowFT info,
     /* iterate through the features */
     if(info->feat->Features)
     {
-	iter = ajListIter(info->feat->Features) ;
+	iter = ajListIterRead(info->feat->Features) ;
 	while(ajListIterMore(iter))
 	{
 	    gf = ajListIterNext(iter) ;
@@ -2639,7 +2639,7 @@ static void showFillFT(EmbPShow thys, AjPList lines, EmbPShowFT info,
 
 	    /* prepare name string */
 	    namestr = ajStrNew();
-	    ajStrAss(&namestr,  gf->Type);
+	    ajStrAssS(&namestr,  gf->Type);
 
 	    /* add tags to namestr*/
 	    showAddTags(&namestr, gf, ajTrue);
@@ -2770,11 +2770,11 @@ static void showFillFT(EmbPShow thys, AjPList lines, EmbPShowFT info,
 	    ajStrDel(&namestr);
 	    ajStrDel(&linestr);
 	}
-	ajListIterFree(iter);
+	ajListIterFree(&iter);
     }
 
     /* iterate through the lines and print them */
-    liter = ajListIter(linelist);
+    liter = ajListIterRead(linelist);
     while((line = ajListIterNext(liter)) != NULL)
     {
 	/*
@@ -2805,7 +2805,7 @@ static void showFillFT(EmbPShow thys, AjPList lines, EmbPShowFT info,
 	/* end output line */
 	ajListstrPushApp(lines, ajFmtStr("\n"));
     }
-    ajListIterFree(liter);
+    ajListIterFree(&liter);
 
 
     while(ajListstrPop(linelist,&sajb));
@@ -3005,7 +3005,7 @@ static void showFillNote(EmbPShow thys, AjPList lines, EmbPShowNote info,
     }
 
     /* iterate through the lines and print them */
-    liter = ajListIter(linelist);
+    liter = ajListIterRead(linelist);
     while((line = ajListIterNext(liter)) != NULL)
     {
 	/*  convert claim characters in the line to spaces as these were
@@ -3035,7 +3035,7 @@ static void showFillNote(EmbPShow thys, AjPList lines, EmbPShowNote info,
 	/* end output line */
 	ajListstrPushApp(lines, ajFmtStr("\n"));
     }
-    ajListIterFree(liter);
+    ajListIterFree(&liter);
 
 
     while(ajListstrPop(linelist,&sajb));
@@ -3150,7 +3150,7 @@ static void showAddTags(AjPStr *tagsout, AjPFeature feat, AjBool values)
 		ajFmtPrintAppS(tagsout, " %S", tagnam);
 	}
 
-    ajListIterFree(titer);
+    ajListIterFree(&titer);
 
     ajStrDel(&tagval);
     ajStrDel(&tagnam);

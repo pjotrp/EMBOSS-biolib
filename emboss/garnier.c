@@ -432,13 +432,13 @@ int main(int argc, char **argv)
 **
 ** Undocumented.
 **
-** @param [?] outf [AjPFile] Undocumented
-** @param [?] from [ajint] Undocumented
-** @param [?] to [ajint] Undocumented
-** @param [?] seq [char*] Undocumented
-** @param [?] name [char*] Undocumented
-** @param [?] begin [ajint] Undocumented
-** @param [?] Idc [ajint] Undocumented
+** @param [u] outf [AjPFile] Undocumented
+** @param [r] from [ajint] Undocumented
+** @param [r] to [ajint] Undocumented
+** @param [r] seq [char*] Undocumented
+** @param [r] name [char*] Undocumented
+** @param [r] begin [ajint] Undocumented
+** @param [r] Idc [ajint] Undocumented
 ** @@
 ******************************************************************************/
 
@@ -608,14 +608,14 @@ static void garnier_do(AjPFile outf, ajint from, ajint to, char *seq,
 **
 ** Undocumented.
 **
-** @param [?] report [AjPReport] Undocumented
-** @param [?] TabRpt [AjPFeattable] Undocumented
-** @param [?] seqobj [AjPSeq] Undocumented
-** @param [?] from [ajint] Undocumented
-** @param [?] to [ajint] Undocumented
-** @param [?] seq [char*] Undocumented
-** @param [?] begin [ajint] Undocumented
-** @param [?] Idc [ajint] Undocumented
+** @param [r] report [AjPReport] Undocumented
+** @param [r] TabRpt [AjPFeattable] Undocumented
+** @param [r] seqobj [AjPSeq] Undocumented
+** @param [r] from [ajint] Undocumented
+** @param [r] to [ajint] Undocumented
+** @param [r] seq [char*] Undocumented
+** @param [r] begin [ajint] Undocumented
+** @param [r] Idc [ajint] Undocumented
 ** @@
 ******************************************************************************/
 
@@ -831,9 +831,9 @@ static void garnier_report(AjPReport report, AjPFeattable TabRpt,
 **
 ** Undocumented.
 **
-** @param [?] input [char*] Undocumented
-** @param [?] map [ajint*] Undocumented
-** @param [?] n [ajint] Undocumented
+** @param [r] input [char*] Undocumented
+** @param [r] map [ajint*] Undocumented
+** @param [r] n [ajint] Undocumented
 ** @@
 ******************************************************************************/
 

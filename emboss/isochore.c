@@ -73,7 +73,7 @@ static AjPFltarr isochore_FltarrNew0(size_t size);
 
 
 
-/* @program isochore **********************************************************
+/* @prog isochore *************************************************************
 **
 **
 ** Calculates the G+C content of a DNA sequence
@@ -243,7 +243,7 @@ int main(int argc, char **argv)
 **
 ** Undocumented.
 **
-** @param [?] size [size_t] Undocumented
+** @param [r] size [size_t] Undocumented
 ** @return [AjPFltarr] Undocumented
 ** @@
 ******************************************************************************/

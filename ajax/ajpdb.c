@@ -110,6 +110,7 @@ static ajint pdbSortPdbtospPdb(const void *ptr1, const void *ptr2)
 ** This is normally called by the ajChainNew function.
 **
 ** @return [AjPAtom] Pointer to an atom object
+** @category new [AjPAtom] Default Atom constructor.
 ** @@
 ****************************************************************************/
 
@@ -144,6 +145,7 @@ AjPAtom ajAtomNew(void)
 **
 ** @return [AjPChain] Pointer to a chain object
 ** @@
+** @category new [AjPChain] Default Chain constructor.
 ****************************************************************************/
 
 AjPChain ajChainNew(void)
@@ -171,6 +173,7 @@ AjPChain ajChainNew(void)
 ** @param [r] n [ajint] Number of chains in this pdb file
 **
 ** @return [AjPPdb] Pointer to a pdb object
+** @category new [AjPPdb] Default Pdb constructor.
 ** @@
 ****************************************************************************/
 
@@ -206,6 +209,7 @@ AjPPdb ajPdbNew(ajint n)
 ** Hetent object constructor. 
 **
 ** @return [AjPHetent] Pointer to a Hetent object
+** @category new [AjPHetent] Default Hetent constructor.
 ** @@
 ****************************************************************************/
 
@@ -234,6 +238,7 @@ AjPHetent ajHetentNew(void)
 ** @param [r] n [ajint] Number of entries in dictionary.
 ** 
 ** @return [AjPHet] Pointer to a Het object
+** @category new [AjPHet] Default Het constructor.
 ** @@
 ****************************************************************************/
 
@@ -273,6 +278,7 @@ AjPHet ajHetNew(ajint n)
 ** @param  [r] n [ajint]  Number of residues
 **
 ** @return [AjPVdwall] Pointer to a Vdwall object
+** @category new [AjPVdwall] Default Vdwall constructor.
 ** @@
 ****************************************************************************/
 
@@ -303,6 +309,7 @@ AjPVdwall ajVdwallNew(ajint n)
 ** @param  [r] n [ajint]  Number of atoms
 **
 ** @return [AjPVdwres] Pointer to a Vdwres object
+** @category new [AjPVdwres] Default Vdwres constructor.
 ** @@
 ****************************************************************************/
 
@@ -342,6 +349,7 @@ AjPVdwres  ajVdwresNew(ajint n)
 **
 ** @return [AjPCmap] Pointer to a Cmap object
 ** 
+** @category new [AjPCmap] Default Cmap constructor.
 ** @@
 ****************************************************************************/
 
@@ -384,6 +392,7 @@ AjPCmap ajCmapNew(ajint n)
 ** @param [r] n [ajint] Number of entries
 **
 ** @return [AjPPdbtosp] Pointer to a Pdbtosp object
+** @category new [AjPPdbtosp] Default Pdbtosp constructor.
 ** @@
 ****************************************************************************/
 
@@ -436,6 +445,7 @@ AjPPdbtosp ajPdbtospNew(ajint n)
 ** @param [w] ptr [AjPAtom*] Atom object pointer
 **
 ** @return [void]
+** @category delete [AjPAtom] Default Atom destructor.
 ** @@
 ****************************************************************************/
 
@@ -470,6 +480,7 @@ void ajAtomDel(AjPAtom *ptr)
 ** @param [w] ptr [AjPChain*] Chain object pointer
 **
 ** @return [void]
+** @category delete [AjPChain] Default Chain destructor.
 ** @@
 ****************************************************************************/
 
@@ -506,6 +517,7 @@ void ajChainDel(AjPChain *ptr)
 ** @param [w] ptr [AjPPdb*] Pdb object pointer
 **
 ** @return [void]
+** @category delete [AjPPdb] Default Pdb destructor.
 ** @@
 ****************************************************************************/
 
@@ -561,6 +573,7 @@ void ajPdbDel(AjPPdb *ptr)
 ** @param [w] ptr [AjPHetent*] Hetent object pointer
 **
 ** @return [void]
+** @category delete [AjPHetent] Default Hetent destructor.
 ** @@
 ****************************************************************************/
 
@@ -597,6 +610,7 @@ void ajHetentDel(AjPHetent *ptr)
 ** @param [w] ptr [AjPHet*] Het object pointer
 **
 ** @return [void]
+** @category delete [AjPHet] Default Het destructor.
 ** @@
 ****************************************************************************/
 
@@ -634,6 +648,7 @@ void ajHetDel(AjPHet *ptr)
 ** @param [w] ptr [AjPVdwall*] Vdwall object pointer
 **
 ** @return [void]
+** @category delete [AjPVdwall] Default Vdwall destructor.
 ** @@
 ****************************************************************************/
 
@@ -662,6 +677,7 @@ void ajVdwallDel(AjPVdwall *ptr)
 ** @param [w] ptr [AjPVdwres*] Vdwres object pointer
 **
 ** @return [void]
+** @category delete [AjPVdwres] Default Vdwres destructor.
 ** @@
 ****************************************************************************/
 
@@ -693,6 +709,7 @@ void ajVdwresDel(AjPVdwres *ptr)
 ** @param [w] ptr [AjPCmap*] Cmap object pointer
 **
 ** @return [void]
+** @category delete [AjPCmap] Default Cmap destructor.
 ** @@
 ****************************************************************************/
 
@@ -726,6 +743,7 @@ void ajCmapDel(AjPCmap *ptr)
 ** @param [w] ptr [AjPPdbtosp*] Pdbtosp object pointer
 **
 ** @return [void]
+** @category delete [AjPPdbtosp] Default Pdbtosp destructor.
 ** @@
 ****************************************************************************/
 
@@ -848,13 +866,13 @@ AjBool ajAtomCopy(AjPAtom *to, AjPAtom from)
 ** data are copied and the list is created if necessary.
 ** 
 ** @param [w] to       [AjPList *] List of Atom objects to write
-** @param [r] from     [AjPList]   List of Atom objects to read
+** @param [r] from     [const AjPList]   List of Atom objects to read
 **
 ** @return [AjBool] True if list was copied ok.
 ** @@
 ****************************************************************************/
 
-AjBool ajAtomListCopy(AjPList *to, AjPList from)
+AjBool ajAtomListCopy(AjPList *to, const AjPList from)
 {
 /* AjPList ret  = NULL; */
    AjIList iter = NULL;
@@ -873,7 +891,7 @@ AjBool ajAtomListCopy(AjPList *to, AjPList from)
        *to=ajListNew();
     
    /* Initialise the iterator */
-   iter=ajListIter(from);
+   iter=ajListIterRead(from);
     
    /* Iterate through the list of Atom objects */
    while((hit=(AjPAtom)ajListIterNext(iter)))
@@ -887,7 +905,7 @@ AjBool ajAtomListCopy(AjPList *to, AjPList from)
    }
 
 
-   ajListIterFree(iter);
+   ajListIterFree(&iter);
    return ajTrue; 
 }
 
@@ -1091,16 +1109,16 @@ AjBool ajPdbChnidToNum(char id, AjPPdb pdb, ajint *chn)
 ** structures (which of course must first have been sorted). This is a 
 ** case-insensitive search.
 **
-** @param [r] id  [AjPStr]      Search term
 ** @param [r] arr [AjPPdbtosp*] Array of AjOPdbtosp objects
 ** @param [r] siz [ajint]       Size of array
+** @param [r] id  [AjPStr]      Search term
 **
 ** @return [ajint] Index of first Pdbtosp object found with an PDB code
 ** matching id, or -1 if id is not found.
 ** @@
 ****************************************************************************/
 
-ajint ajPdbtospArrFindPdbid(AjPStr id, AjPPdbtosp *arr, ajint siz)
+ajint ajPdbtospArrFindPdbid(AjPPdbtosp *arr, ajint siz, AjPStr id)
 {
     int l;
     int m;
@@ -1147,6 +1165,7 @@ ajint ajPdbtospArrFindPdbid(AjPStr id, AjPPdbtosp *arr, ajint siz)
 ** @param [r] obj  [AjPPdb]  Pdb object
 **
 ** @return [AjBool] True on success
+** @category output [AjPPdb] Writes a ccf-format file for a protein.
 ** @@
 ****************************************************************************/
 
@@ -1233,7 +1252,7 @@ AjBool ajPdbWriteAll(AjPFile outf, AjPPdb obj)
 	for(y=0;y<obj->Nchn;y++)
 	{
 	    /* Print out chain-specific coordinates */
-	    iter=ajListIter(obj->Chains[y]->Atoms);
+	    iter=ajListIterRead(obj->Chains[y]->Atoms);
 	    while(ajListIterMore(iter))
 	    {
 		tmp=(AjPAtom)ajListIterNext(iter);
@@ -1346,11 +1365,11 @@ AjBool ajPdbWriteAll(AjPFile outf, AjPPdb obj)
 		    }
 		}
 	    }
-	    ajListIterFree(iter);			
+	    ajListIterFree(&iter);			
 	} 	
 
 	/* Print out group-specific coordinates for this model */
-	iter=ajListIter(obj->Groups);
+	iter=ajListIterRead(obj->Groups);
 	while(ajListIterMore(iter))
 	{
 	    tmp=(AjPAtom)ajListIterNext(iter);
@@ -1402,11 +1421,11 @@ AjBool ajPdbWriteAll(AjPFile outf, AjPPdb obj)
 
 	    }
 	}
-	ajListIterFree(iter);			
+	ajListIterFree(&iter);			
 
 
 	/* Print out water-specific coordinates for this model */
-	iter=ajListIter(obj->Water);
+	iter=ajListIterRead(obj->Water);
 	while(ajListIterMore(iter))
 	{
 	    tmp=(AjPAtom)ajListIterNext(iter);
@@ -1457,7 +1476,7 @@ AjBool ajPdbWriteAll(AjPFile outf, AjPPdb obj)
 			    tmp->pol_rel);
 	    }
 	}
-	ajListIterFree(iter);			
+	ajListIterFree(&iter);			
     }
     ajFmtPrintF(outf, "//\n");    
 
@@ -1476,6 +1495,7 @@ AjBool ajPdbWriteAll(AjPFile outf, AjPPdb obj)
 ** @param [r] inf  [AjPFile] Pointer to clean coordinate file
 **
 ** @return [AjPPdb] Pointer to Pdb object.
+** @category new [AjPPdb] Pdb constructor from reading ccf format file.
 ** @@
 ****************************************************************************/
 
@@ -1552,7 +1572,7 @@ AjPPdb ajPdbReadNew(AjPFile inf)
 		ajStrApp (&destr, token);
 	    }
 	    else
-		ajStrAss (&destr, token);
+		ajStrAssS(&destr, token);
 	    continue;
 	}
 
@@ -1571,7 +1591,7 @@ AjPPdb ajPdbReadNew(AjPFile inf)
 		ajStrApp (&osstr, token);
 	    }
 	    else
-		ajStrAss (&osstr, token);
+		ajStrAssS(&osstr, token);
 	    continue;
 	}
 	
@@ -1821,6 +1841,8 @@ AjPPdb ajPdbReadNew(AjPFile inf)
 ** @param [r] inf  [AjPFile] Pointer to clean coordinate file
 **
 ** @return [AjPPdb] Pointer to Pdb object.
+** @category new [AjPAtom] Pdb constructor from reading ccf format file
+**                         (retrive data for 1st model only).
 ** @@
 ****************************************************************************/
 
@@ -1897,7 +1919,7 @@ AjPPdb ajPdbReadFirstModelNew(AjPFile inf)
 		ajStrApp (&destr, token);
 	    }
 	    else
-		ajStrAss (&destr, token);
+		ajStrAssS(&destr, token);
 	    continue;
 	}
 
@@ -1916,7 +1938,7 @@ AjPPdb ajPdbReadFirstModelNew(AjPFile inf)
 		ajStrApp (&osstr, token);
 	    }
 	    else
-		ajStrAss (&osstr, token);
+		ajStrAssS(&osstr, token);
 	    continue;
 	}
 	
@@ -2166,548 +2188,6 @@ AjPPdb ajPdbReadFirstModelNew(AjPFile inf)
 
 
 
-/* @func ajPbdWriteAll *****************************************************
-**
-** Writes a clean coordinate file for a protein.
-**
-** @param [w] outf [AjPFile] Output file stream
-** @param [r] obj  [AjPPdb]  Pdb object
-**
-** @return [AjBool] True on success
-** @@
-****************************************************************************/
-
-AjBool ajPbdWriteAll(AjPFile outf, AjPPdb obj)
-{
-    ajint x      = 0;
-    ajint y      = 0;
-    AjIList iter = NULL;
-    AjPAtom tmp  = NULL;
-    
-    /* Write the header information */
-
-    ajFmtPrintF(outf, "%-5s%S\n", "ID", obj->Pdb);
-    ajFmtPrintF(outf, "XX\n");
-
-    ajFmtPrintSplit(outf,obj->Compnd,"DE   ",75," \t\r\n");
-    ajFmtPrintF(outf, "XX\n");
-
-    ajFmtPrintSplit(outf,obj->Source,"OS   ",75," \t\r\n");
-    ajFmtPrintF(outf, "XX\n");
-
-    ajFmtPrintF(outf, "%-5sMETHOD ", "EX");
-    if(obj->Method == ajXRAY)
-	ajFmtPrintF(outf, "xray; ");	
-    else
-	ajFmtPrintF(outf, "nmr_or_model; ");		
-    ajFmtPrintF(outf, "RESO %.2f; NMOD %d; NCHN %d; NLIG %d;\n", obj->Reso,
-		obj->Nmod, obj->Nchn, obj->Ngp);
-
-
-    /* Write chain-specific information */
-    for(x=0;x<obj->Nchn;x++)
-    { 
-	ajFmtPrintF(outf, "XX\n");	
-	ajFmtPrintF(outf, "%-5s[%d]\n", 
-		    "CN", 
-		    x+1);	
-	ajFmtPrintF(outf, "XX\n");	
- 
-	ajFmtPrintF(outf, "%-5s", "IN");
-
-	if(obj->Chains[x]->Id == ' ')
-	    ajFmtPrintF(outf, "ID %c; ", '.');
-	else
-	    ajFmtPrintF(outf, "ID %c; ", obj->Chains[x]->Id);
-
-	
-	/*
-	ajFmtPrintF(outf, "NR %d; NL %d; NH %d; NE %d; NS %d; NT %d;\n", 
-		    obj->Chains[x]->Nres,
-		    obj->Chains[x]->Nlig,
-		    obj->Chains[x]->numHelices, 
-		    obj->Chains[x]->numStrands, 
-		    obj->Chains[x]->numSheets, 
-		    obj->Chains[x]->numTurns);
-		    */
-
-	ajFmtPrintF(outf, "NRES %d; NL %d; NH %d; NE %d;\n", 
-		    obj->Chains[x]->Nres,
-		    obj->Chains[x]->Nlig,
-		    obj->Chains[x]->numHelices, 
-		    obj->Chains[x]->numStrands);
-
-	/*
-	ajFmtPrintF(outf, "%-5sID %c; NR %d; NH %d; NW %d;\n", 
-		    "IN", 
-		    obj->Chains[x]->Id,
-		    obj->Chains[x]->Nres,
-		    obj->Chains[x]->Nhet,
-		    obj->Chains[x]->Nwat);
-		    */
-	ajFmtPrintF(outf, "XX\n");	
-	ajSeqWriteXyz(outf, obj->Chains[x]->Seq, "SQ");
-    }
-    ajFmtPrintF(outf, "XX\n");	
-
-    /* printf("NCHN: %d   NMOD: %d\n", obj->Nchn, obj->Nmod); */
-    
-    
-
-    /* Write coordinate list */
-    for(x=1;x<=obj->Nmod;x++)
-    {
-	for(y=0;y<obj->Nchn;y++)
-	{
-	    /* Print out chain-specific coordinates */
-	    iter=ajListIter(obj->Chains[y]->Atoms);
-	    while(ajListIterMore(iter))
-	    {
-		tmp=(AjPAtom)ajListIterNext(iter);
-		if(tmp->Mod>x)
-		    break;
-		else if(tmp->Mod!=x)
-		    continue;
-		else	
-		{
-		    if(tmp->Type=='H')
-			ajFmtPrintF(outf, "%-5s%-5d%-5d%-5d%-5c%-6c%-6S%-5c"
-				    "%-5c%-5c%-5c%-5c%-5c%-2c"
-				    "%6S    %-4S"
-				    "%8.3f%9.3f%9.3f%8.2f%8.2f%8.2f%8.2f"
-				    "%8.2f%8.2f%8.2f%8.2f%8.2f%8.2f%8.2f"
-				    "%8.2f%8.2f%8.2f%8.2f\n", 
-				    "CO", 
-				    tmp->Mod, 
-				    tmp->Chn, 
-				    tmp->Gpn, 
-				    tmp->Type, 
-				    '.',
-				    tmp->Pdb, 
-				    '.', 
-				    '.', 
-				    '.', 
-				    '.', 
-				    '.', 
-				    '.', 
-				    tmp->Id1,
-				    tmp->Id3,
-				    tmp->Atm, 
-				    tmp->X, 
-				    tmp->Y, 
-				    tmp->Z,
-				    tmp->O,
-				    tmp->B, 
-				    tmp->Phi,
-				    tmp->Psi,
-				    tmp->Area, 
-				    tmp->all_abs, 
-				    tmp->all_rel, 
-				    tmp->side_abs, 
-				    tmp->side_rel, 
-				    tmp->main_abs, 
-				    tmp->main_rel, 
-				    tmp->npol_abs, 
-				    tmp->npol_rel, 
-				    tmp->pol_abs, 
-				    tmp->pol_rel);
-		    else
-		    {
-			ajFmtPrintF(outf, "%-5s%-5d%-5d%-5c%-5c%-6d%-6S%-5c", 
-				    "CO", 
-				    tmp->Mod, 
-				    tmp->Chn, 
-				    '.',
-				    tmp->Type, 
-				    tmp->Idx, 
-				    tmp->Pdb,
-				    tmp->eType);
-			
-			if(tmp->eNum != 0)
-			    ajFmtPrintF(outf, "%-5d", tmp->eNum);
-			else
-			    ajFmtPrintF(outf, "%-5c", '.');
-
-
-			ajFmtPrintF(outf, "%-5S", tmp->eId);
-
-			if(tmp->eType == 'H')
-			    ajFmtPrintF(outf, "%-5d", tmp->eClass);
-			else
-			    ajFmtPrintF(outf, "%-5c", '.');
-
-
-			ajFmtPrintF(outf, "%-5c", tmp->eStrideType);
-			if(tmp->eStrideNum != 0)
-			    ajFmtPrintF(outf, "%-5d", tmp->eStrideNum);
-			else
-			    ajFmtPrintF(outf, "%-5c", '.');
-
-
-
-			ajFmtPrintF(outf, "%-2c%6S    %-4S%8.3f%9.3f%9.3f"
-				    "%8.2f%8.2f%8.2f%8.2f%8.2f%8.2f%8.2f"
-				    "%8.2f%8.2f%8.2f%8.2f%8.2f%8.2f%8.2f"
-				    "%8.2f\n", 
-				    tmp->Id1, 
-				    tmp->Id3,
-				    tmp->Atm, 
-				    tmp->X, 
-				    tmp->Y, 
-				    tmp->Z,
-				    tmp->O,
-				    tmp->B,
-				    tmp->Phi,
-				    tmp->Psi,
-				    tmp->Area, 
-				    tmp->all_abs, 
-				    tmp->all_rel, 
-				    tmp->side_abs, 
-				    tmp->side_rel, 
-				    tmp->main_abs, 
-				    tmp->main_rel, 
-				    tmp->npol_abs, 
-				    tmp->npol_rel, 
-				    tmp->pol_abs, 
-				    tmp->pol_rel);
-		    }
-		}
-	    }
-	    ajListIterFree(iter);			
-	} 	
-
-	/* Print out group-specific coordinates for this model */
-	iter=ajListIter(obj->Groups);
-	while(ajListIterMore(iter))
-	{
-	    tmp=(AjPAtom)ajListIterNext(iter);
-	    if(tmp->Mod>x)
-		break;
-	    else if(tmp->Mod!=x)
-		continue;
-	    else	
-	    {
-		ajFmtPrintF(outf, "%-5s%-5d%-5c%-5d%-5c%-6c%-6S%-5c%-5c%-5c"
-			    "%-5c%-5c%-5c%-2c"
-			    "%6S    %-4S"
-			    "%8.3f%9.3f%9.3f%8.2f%8.2f%8.2f%8.2f%8.2f%8.2f"
-			    "%8.2f%8.2f%8.2f%8.2f%8.2f%8.2f%8.2f%8.2f%8.2f\n", 
-			    "CO", 
-			    tmp->Mod, 
-			    '.',
-			    tmp->Gpn, 
-			    tmp->Type, 
-			    '.', 
-			    tmp->Pdb, 
-			    '.', 
-			    '.', 
-			    '.', 
-			    '.', 
-			    '.', 
-			    '.',
-			    tmp->Id1,
-			    tmp->Id3,
-			    tmp->Atm, 
-			    tmp->X, 
-			    tmp->Y, 
-			    tmp->Z,
-			    tmp->O,
-			    tmp->B,
-			    tmp->Phi,
-			    tmp->Psi,
-			    tmp->Area, 
-			    tmp->all_abs, 
-			    tmp->all_rel, 
-			    tmp->side_abs, 
-			    tmp->side_rel, 
-			    tmp->main_abs, 
-			    tmp->main_rel, 
-			    tmp->npol_abs, 
-			    tmp->npol_rel, 
-			    tmp->pol_abs, 
-			    tmp->pol_rel);
-
-	    }
-	}
-	ajListIterFree(iter);			
-
-
-	/* Print out water-specific coordinates for this model */
-	iter=ajListIter(obj->Water);
-	while(ajListIterMore(iter))
-	{
-	    tmp=(AjPAtom)ajListIterNext(iter);
-	    if(tmp->Mod>x)
-		break;
-	    else if(tmp->Mod!=x)
-		continue;
-	    else	
-	    {
-		ajFmtPrintF(outf, "%-5s%-5d%-5c%-5c%-5c%-6c%-6S%-5c%-5c"
-			    "%-5c%-5c%-5c%-5c%-2c"
-			    "%6S    %-4S"
-			    "%8.3f%9.3f%9.3f%8.2f%8.2f%8.2f%8.2f%8.2f%8.2f"
-			    "%8.2f%8.2f%8.2f%8.2f%8.2f%8.2f%8.2f%8.2f%8.2f\n",
-			    "CO", 
-			    tmp->Mod, 
-			    '.', 
-			    '.', 
-			    tmp->Type, 
-			    '.', 
-			    tmp->Pdb, 
-			    '.', 
-			    '.', 
-			    '.', 
-			    '.',
-			    '.', 
-			    '.',
-			    tmp->Id1,
-			    tmp->Id3,
-			    tmp->Atm, 
-			    tmp->X, 
-			    tmp->Y, 
-			    tmp->Z,
-			    tmp->O,
-			    tmp->B, 
-			    tmp->Phi,
-			    tmp->Psi,
-			    tmp->Area, 
-			    tmp->all_abs, 
-			    tmp->all_rel, 
-			    tmp->side_abs, 
-			    tmp->side_rel, 
-			    tmp->main_abs, 
-			    tmp->main_rel, 
-			    tmp->npol_abs, 
-			    tmp->npol_rel, 
-			    tmp->pol_abs, 
-			    tmp->pol_rel);
-	    }
-	}
-	ajListIterFree(iter);			
-    }
-    ajFmtPrintF(outf, "//\n");    
-
-
-    return ajTrue;
-}
-
-
-
-
-
-/* @func ajPbdWriteSegment *************************************************
-**
-** Writes a clean coordinate file for a segment, e.g. a domain. The segment 
-** corresponds to a sequence that is passed to the function.
-** In the clean coordinate file, the coordinates are presented as belonging
-** to a single chain.  Coordinates for heterogens are NOT written to file.
-**
-** @param [w] outf    [AjPFile] Output file stream
-** @param [r] pdb     [AjPPdb]  Pdb object
-** @param [r] segment [AjPStr]  Sequence of segment to print out.
-** @param [r] chnid   [char]    Chain id of segment
-** @param [r] domain  [AjPStr]  Domain code for segment
-** @param [w] errf    [AjPFile] Output file stream for error messages
-**
-** @return [AjBool] True on success
-** @@
-** 
-****************************************************************************/
-AjBool ajPbdWriteSegment(AjPFile outf, AjPPdb pdb, AjPStr segment, 
-			  char chnid, AjPStr domain, AjPFile errf)
-{
-    ajint chn;
-    ajint start     = 0;
-    ajint end       = 0;
-    char  id;
-    
-    AjIList  iter        = NULL;
-    AjPAtom  atm         = NULL;
-    AjPAtom  atm2        = NULL;
-    AjBool   found_start = ajFalse;
-    AjBool   found_end   = ajFalse;    
-
-
-   
-    /* Check for unknown or zero-length chain */
-    if(!ajPdbChnidToNum(chnid, pdb, &chn))
-    {
-	ajWarn("Chain incompatibility error in "
-	       "ajPbdWriteSegment");			
-		
-	ajFmtPrintF(errf, "//\n%S\nERROR Chain incompatibility "
-		    "error in ajPbdWriteDomain\n", domain);
-	return ajFalse;
-    }
-    else if(pdb->Chains[chn-1]->Nres==0)
-    {		
-	ajWarn("Chain length zero");			
-	    
-	ajFmtPrintF(errf, "//\n%S\nERROR Chain length zero\n", 
-		    domain);
-	return ajFalse;
-    }
-    
-    /* Check if segment exists in this chain */
-    if((start = ajStrFind(pdb->Chains[chn-1]->Seq, segment)) == -1)
-    {
-	ajWarn("Domain not found in ajPbdWriteSegment");
-	ajFmtPrintF(errf, "//\n%S\nERROR Domain not found "
-		    "in ajPbdWriteSegment\n", domain);
-	return ajFalse;
-    }
-    else	
-    {
-	/* Residue numbers start at 1 ! */
-	start++;
-	end = start + MAJSTRLEN(segment) - 1;
-    }  	  
-    
-    
-    /* Write header info. to domain coordinate file */
-    ajFmtPrintF(outf, "%-5s%S\n", "ID", domain);
-    ajFmtPrintF(outf, "XX\n");
-    ajFmtPrintF(outf, "%-5sCo-ordinates for domain %S\n", 
-		"DE", domain);
-    ajFmtPrintF(outf, "XX\n");
-    ajFmtPrintF(outf, "%-5sDomain defined from sequence segment\n", 
-		"OS");
-    ajFmtPrintF(outf, "XX\n");
-    ajFmtPrintF(outf, "%-5sMETHOD ", "EX");
-    if(pdb->Method == ajXRAY)
-	ajFmtPrintF(outf, "xray; ");	
-    else
-	ajFmtPrintF(outf, "nmr_or_model; ");		
-    /* The NCHN and NMOD are hard-coded to 1 for domain files */
-    ajFmtPrintF(outf, "RESO %.2f; NMOD 1; NCHN 1; NLIG 0;\n", 
-		pdb->Reso);
-    
-
-    id = pdb->Chains[chn-1]->Id;
-    if(id == ' ')
-	id = '.';
-
-    
-    /* Write sequence to domain coordinate file */
-    ajFmtPrintF(outf, "XX\n");	
-    ajFmtPrintF(outf, "%-5s[1]\n", "CN");	
-    ajFmtPrintF(outf, "XX\n");	
-    
-    ajFmtPrintF(outf, "%-5sID %c; NRES %d; NL 0; NH 0; NE 0;\n", 
-		"IN", 
-		id,
-		MAJSTRLEN(segment));
-    ajFmtPrintF(outf, "XX\n");	
-    ajSeqWriteXyz(outf, segment, "SQ");
-    ajFmtPrintF(outf, "XX\n");	
-    
-    
-    /* Write co-ordinates list to domain coordinate file */        
-    ajPdbChnidToNum(chnid, pdb, &chn);
-    
-    /* Initialise the iterator */
-    iter = ajListIter(pdb->Chains[chn-1]->Atoms);
-    
-    
-    /* Iterate through the list of atoms */
-    while((atm=(AjPAtom)ajListIterNext(iter)))
-    {
-	if(atm->Mod!=1)
-	    break;
-	if(atm->Type!='P')
-	    continue;
-	if(!found_start)
-	{
-	    if(atm->Idx == start)
-		found_start = ajTrue;	
-	    else		
-		continue;
-	}	
-	if(!found_end)
-	{
-	    if(atm->Idx == end)
-		found_end = ajTrue;     
-	}
-	/*  The end position has been found, and the current atom no longer
-	 ** belongs to this final residue.
-	 */
-	else if(atm->Idx != end && found_end)
-	    break;
-	    
-	    
-	/* Print out coordinate line */
-	ajFmtPrintF(outf, "%-5s%-5d%-5d%-5c%-5c%-6d%-6S%-5c",
-		    "CO", 
-		    atm->Mod,		/* It will always be 1 */
-		    1,			/* chn number is always given as 1 */
-		    '.',
-		    atm->Type, 
-		    atm->Idx-start+1, 
-		    atm->Pdb, 
-		    atm->eType);
-	if(atm->eNum != 0)
-	    ajFmtPrintF(outf, "%-5d", atm->eNum);
-	else
-	    ajFmtPrintF(outf, "%-5c", '.');
-	ajFmtPrintF(outf, "%-5S", atm->eId);
-
-	if(atm->eType == 'H')
-	    ajFmtPrintF(outf, "%-5d", atm->eClass);
-	else
-	    ajFmtPrintF(outf, "%-5c", '.');
-
-
-	ajFmtPrintF(outf, "%-5c", atm->eStrideType);
-	if(atm->eStrideNum != 0)
-	    ajFmtPrintF(outf, "%-5d", atm->eStrideNum);
-	else
-	    ajFmtPrintF(outf, "%-5c", '.');
-
-	ajFmtPrintF(outf, "%-2c%6S    %-4S%8.3f%9.3f%9.3f%8.2f%8.2f"
-		    "%8.2f%8.2f%8.2f%8.2f%8.2f%8.2f%8.2f%8.2f%8.2f"
-		    "%8.2f%8.2f%8.2f%8.2f\n", 
-		    atm->Id1, 
-		    atm->Id3,
-		    atm->Atm, 
-		    atm->X, 
-		    atm->Y, 
-		    atm->Z, 
-		    atm->O, 
-		    atm->B,
-		    atm->Phi,
-		    atm->Psi,
-		    atm->Area, 
-		    atm->all_abs, 
-		    atm->all_rel, 
-		    atm->side_abs, 
-		    atm->side_rel, 
-		    atm->main_abs, 
-		    atm->main_rel, 
-		    atm->npol_abs, 
-		    atm->npol_rel, 
-		    atm->pol_abs, 
-		    atm->pol_rel);
-	    
-	    
-	/* Assign pointer for this chain */
-	atm2 = atm;
-    }
-    
-    ajListIterFree(iter);			
-    
-    
-    
-    /* Write last line in file */
-    ajFmtPrintF(outf, "//\n");    
-    
-    
-    return ajTrue;
-}
-
-
-
-
 /* @func ajHetReadRawNew ***************************************************
 **
 ** Reads a dictionary of heterogen groups available at 
@@ -2716,6 +2196,8 @@ AjBool ajPbdWriteSegment(AjPFile outf, AjPPdb pdb, AjPStr segment,
 ** @param [r] inf [AjPFile]    Pointer to dictionary
 **
 ** @return [AjPHet] True on success
+** @category new [AjPHet] Het constructor from reading dictionary of
+**                        heterogen groups in raw format.
 ** @@
 ****************************************************************************/
 
@@ -2811,6 +2293,9 @@ AjPHet ajHetReadRawNew(AjPFile inf)
 ** @param [r] inf [AjPFile]    Pointer to Het file
 ** 
 ** @return [AjPHet] Het object.
+** @category new [AjPAtom] Het constructor from reading dictionary of
+**                         heterogen groups in clean format (see documentation
+**                         for the EMBASSY DOMAINATRIX package).
 ** @@
 ****************************************************************************/
 
@@ -2894,6 +2379,7 @@ AjPHet  ajHetReadNew(AjPFile inf)
 **                                element of the Het object to file).
 **
 ** @return [AjBool] True on success
+** @category output [AjPHet] Write Het object to file in clean
 ** @@
 ****************************************************************************/
 
@@ -2931,6 +2417,8 @@ AjBool ajHetWrite(AjPFile outf, AjPHet obj, AjBool dogrep)
 ** @param [r] inf     [AjPFile]  Input file stream
 **
 ** @return [AjPVdwall] Pointer to Vdwall object.
+** @category new [AjPAtom] Vdwall constructor from reading file in embl-like
+**              format (see documentation for the EMBASSY DOMAINATRIX package).
 ** @@
 ****************************************************************************/
 
@@ -3018,6 +2506,8 @@ AjPVdwall  ajVdwallReadNew(AjPFile inf)
 ** @param [r] mod     [ajint]    Model number
 **
 ** @return [AjPCmap] Pointer to new Cmap object.
+** @category new [AjPAtom] Cmap constructor from reading file in embl-like
+**           format (see documentation for the EMBASSY DOMAINATRIX package).
 ** @@
 ****************************************************************************/
 
@@ -3046,6 +2536,8 @@ AjPVdwall  ajVdwallReadNew(AjPFile inf)
 ** @param [r] mod     [ajint]    Model number
 **
 ** @return [AjPCmap]   Pointer to new Cmap object.
+** @category new [AjPAtom] Cmap constructor from reading file in embl-like
+**              format (see documentation for the EMBASSY DOMAINATRIX package).
 ** @@
 ****************************************************************************/
 
@@ -3077,6 +2569,8 @@ AjPCmap ajCmapReadCNew(AjPFile inf, char chn, ajint mod)
 ** @param [r] mod     [ajint]    Model number.
 **
 ** @return [AjPCmap] True on success (an object read)
+** @category new [AjPCmap] Cmap constructor from reading file in embl-like
+**              format (see documentation for the EMBASSY DOMAINATRIX package).
 ** @@
 ****************************************************************************/
 
@@ -3225,8 +2719,6 @@ AjPList       ajPdbtospReadAllRawNew(AjPFile inf)
     AjPStr     pdb     =NULL;   /* PDB identifier */
     AjPStr     spr     =NULL;   /* Swissprot identifier */
     AjPStr     acc     =NULL;   /* Accession number */
-    AjPStr     pspr    =NULL;   /* Swissprot identifier pointer */
-    AjPStr     pacc    =NULL;   /* Accession number pointer */
     AjPStr     line    =NULL;   /* Line from file */
     AjPStr     token   =NULL;   /* Token from line */
     AjPStr     subtoken=NULL;   /* Token from line */
@@ -3284,10 +2776,8 @@ AjPList       ajPdbtospReadAllRawNew(AjPFile inf)
 		tmp = ajPdbtospNew(0);
 		ajStrAssS(&tmp->Pdb, pdb);
 		tmp->n = n;
-		tmp->Acc = (AjPStr *) ajListToArray(acclist, 
-						    (void ***) &tmp->Acc);
-		tmp->Spr = (AjPStr *) ajListToArray(sprlist, 
-						    (void ***) &tmp->Spr);
+		ajListToArray(acclist, (void ***) &tmp->Acc);
+		ajListToArray(sprlist, (void ***) &tmp->Spr);
 		ajListPushApp(ret, (void *)tmp);
 		
 		
@@ -3356,8 +2846,8 @@ AjPList       ajPdbtospReadAllRawNew(AjPFile inf)
     tmp = ajPdbtospNew(0);
     ajStrAssS(&tmp->Pdb, pdb);
     tmp->n = n;
-    tmp->Acc = (AjPStr *) ajListToArray(acclist, (void ***) &tmp->Acc);
-    tmp->Spr = (AjPStr *) ajListToArray(sprlist, (void ***) &tmp->Spr);	  
+    ajListToArray(acclist, (void ***) &tmp->Acc);
+    ajListToArray(sprlist, (void ***) &tmp->Spr);	  
     ajListPushApp(ret, (void *)tmp);
     ajListstrDel(&acclist);
     ajListstrDel(&sprlist);		
@@ -3546,7 +3036,7 @@ AjBool       ajPdbtospWrite(AjPFile outf, AjPList list)
 	return ajFalse;
     }
     
-    iter = ajListIter(list);
+    iter = ajListIterRead(list);
     
     while((tmp=(AjPPdbtosp)ajListIterNext(iter)))
     {

@@ -110,7 +110,7 @@ int main(int argc, char **argv)
         for(try=0; try<attempts; try++)
 	{
 	    /* get a copy of the sequence string */
-	    ajStrAss(&str, ajSeqStr(seq));
+	    ajStrAssS(&str, ajSeqStr(seq));
 
 	    /* do the mutation operations */
 	    for(i=0; i<count; i++)
@@ -505,7 +505,7 @@ static void msbar_Move(AjPStr *str, ajint start, ajint end, ajint destination)
 {
     AjPStr mov = NULL;
 
-    ajStrAss(&mov, *str);
+    ajStrAssS(&mov, *str);
     ajStrSub(&mov, start, end);
     ajStrInsert(str, destination, mov);
     ajStrDel(&mov);

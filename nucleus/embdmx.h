@@ -71,7 +71,6 @@ AjBool        embDmxScophitMergeInsertOtherTargetBoth(AjPList list,
 AjBool        embDmxScophitMergeInsertOtherTarget(AjPList list, 
 						  AjPScophit hit1, 
 						  AjPScophit hit2);
-AjBool        embDmxScopalgWriteFasta(AjPScopalg align, AjPFile* outf);
 AjBool        embDmxSeqNR(AjPList input, AjPInt *keep, ajint *nset,
 			  AjPMatrixf matrix, float gapopen, float gapextend,
 			  float thresh);

@@ -3,7 +3,7 @@
 
 
 
-static void ajiest_kim (AjPStr seqout_name, AjPSeq subseq);
+static void ajtest_kim (const AjPStr seqout_name, const AjPSeq subseq);
 
 /* @prog ajtest ***************************************************************
 **
@@ -42,15 +42,15 @@ int main(int argc, char **argv)
 
 /* @funcstatic ajtest_kim *****************************************************
 **
-** Test for Kim Ritherford's reported problem
+** Test for Kim Rutherford's reported problem
 **
-** @param [r] seqout_name [AjPStr] Seqout name
-** @param [r] subseq [AjPSeq] Subsequence
+** @param [r] seqout_name [const AjPStr] Seqout name
+** @param [r] subseq [const AjPSeq] Subsequence
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void ajtest_kim (AjPStr seqout_name, AjPSeq subseq)
+static void ajtest_kim (const AjPStr seqout_name, const AjPSeq subseq)
 {
     AjPFile seqout_file = ajFileNewOut(seqout_name);
     AjPSeqout named_seqout = ajSeqoutNewF(seqout_file);

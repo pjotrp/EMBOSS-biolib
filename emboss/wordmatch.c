@@ -92,7 +92,7 @@ int main(int argc, char **argv)
 	if(outf)
 	    embWordMatchListPrint(outf, matchlist);
 
-	iter = ajListIter(matchlist) ;
+	iter = ajListIterRead(matchlist) ;
 	while(embWordMatchIter(iter, &start1, &start2, &len))
 	{
 	    ajAlignDefineSS(align, seq1, seq2);
@@ -101,7 +101,7 @@ int main(int argc, char **argv)
 			       start1, start1 + 1, start1 + len,
 			       start2, start2 + 1, start2 + len);
 	}
-	ajListIterFree(iter) ;
+	ajListIterFree(&iter) ;
 
 	embWordMatchListConvToFeat(matchlist,&Tab1,&Tab2,seq1, seq2);
 

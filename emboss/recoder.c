@@ -331,7 +331,7 @@ static AjPList recoder_rematch(AjPStr sstr, AjPList relist, AjPStr* tailstr,
        	     continue;
         }
         ajStrToUpper(&rlp->site);          /* RS to upper case */
-        ajStrAss(&str,rlp->site);          /* str holds RS pat */
+        ajStrAssS(&str,rlp->site);          /* str holds RS pat */
 
 	patlist = ajListNew();             /* list for matches */
 

@@ -536,14 +536,14 @@ int main(int argc, char **argv)
 ** provided that the height and the length of all strings are at
 ** most TextHeight and TextLength, respectively
 **
-** @param [?] Start [float] Undocumented
-** @param [?] End [float] Undocumented
-** @param [?] GapSize [ajint] Undocumented
-** @param [?] TextLength [float] Undocumented
-** @param [?] TextHeight [float] Undocumented
-** @param [?] PosTicks [AjPStr] Undocumented
-** @param [?] NumGroups [ajint] Undocumented
-** @param [?] NumLabels [ajint*] Undocumented
+** @param [r] Start [float] Undocumented
+** @param [r] End [float] Undocumented
+** @param [r] GapSize [ajint] Undocumented
+** @param [r] TextLength [float] Undocumented
+** @param [r] TextHeight [float] Undocumented
+** @param [r] PosTicks [AjPStr] Undocumented
+** @param [r] NumGroups [ajint] Undocumented
+** @param [r] NumLabels [ajint*] Undocumented
 ** @return [float] Undocumented
 ** @@
 ******************************************************************************/
@@ -604,13 +604,13 @@ static float cirdna_TextRuler(float Start, float End, ajint GapSize,
 ** compute the character size that fits all elements of the ruler provided
 ** that the height and the length of all strings are multiplied by TextCoef
 **
-** @param [?] Start [float] Undocumented
-** @param [?] End [float] Undocumented
-** @param [?] GapSize [ajint] Undocumented
-** @param [?] TextCoef [float] Undocumented
-** @param [?] PosTicks [AjPStr] Undocumented
-** @param [?] NumGroups [ajint] Undocumented
-** @param [?] NumLabels [ajint*] Undocumented
+** @param [r] Start [float] Undocumented
+** @param [r] End [float] Undocumented
+** @param [r] GapSize [ajint] Undocumented
+** @param [r] TextCoef [float] Undocumented
+** @param [r] PosTicks [AjPStr] Undocumented
+** @param [r] NumGroups [ajint] Undocumented
+** @param [r] NumLabels [ajint*] Undocumented
 ** @return [float] Undocumented
 ** @@
 ******************************************************************************/
@@ -683,14 +683,14 @@ static float cirdna_TextRulerStr(float Start, float End, ajint GapSize,
 **
 ** compute the ruler's height
 **
-** @param [?] Start [float] Undocumented
-** @param [?] End [float] Undocumented
-** @param [?] GapSize [ajint] Undocumented
-** @param [?] postext [float] Undocumented
-** @param [?] TickHeight [float] Undocumented
-** @param [?] PosTicks [AjPStr] Undocumented
-** @param [?] NumGroups [ajint] Undocumented
-** @param [?] NumLabels [ajint*] Undocumented
+** @param [r] Start [float] Undocumented
+** @param [r] End [float] Undocumented
+** @param [r] GapSize [ajint] Undocumented
+** @param [r] postext [float] Undocumented
+** @param [r] TickHeight [float] Undocumented
+** @param [r] PosTicks [AjPStr] Undocumented
+** @param [r] NumGroups [ajint] Undocumented
+** @param [r] NumLabels [ajint*] Undocumented
 ** @return [float] Undocumented
 ** @@
 ******************************************************************************/
@@ -752,24 +752,24 @@ static float cirdna_HeightRuler(float Start, float End, ajint GapSize,
 **
 ** draw a ruler
 **
-** @param [?] xDraw [float] Undocumented
-** @param [?] yDraw [float] Undocumented
-** @param [?] Start [float] Undocumented
-** @param [?] End [float] Undocumented
-** @param [?] RealLength [float] Undocumented
-** @param [?] Radius [float] Undocumented
-** @param [?] TickHeight [float] Undocumented
-** @param [?] OriginAngle [float] Undocumented
-** @param [?] GapSize [ajint] Undocumented
-** @param [?] TickLines [AjBool] Undocumented
-** @param [?] TextLength [float] Undocumented
-** @param [?] TextHeight [float] Undocumented
-** @param [?] postext [float] Undocumented
-** @param [?] NumGroups [ajint] Undocumented
-** @param [?] NumLabels [ajint*] Undocumented
-** @param [?] From [float**] Undocumented
-** @param [?] PosTicks [AjPStr] Undocumented
-** @param [?] Colour [ajint] Undocumented
+** @param [r] xDraw [float] Undocumented
+** @param [r] yDraw [float] Undocumented
+** @param [r] Start [float] Undocumented
+** @param [r] End [float] Undocumented
+** @param [r] RealLength [float] Undocumented
+** @param [r] Radius [float] Undocumented
+** @param [r] TickHeight [float] Undocumented
+** @param [r] OriginAngle [float] Undocumented
+** @param [r] GapSize [ajint] Undocumented
+** @param [r] TickLines [AjBool] Undocumented
+** @param [r] TextLength [float] Undocumented
+** @param [r] TextHeight [float] Undocumented
+** @param [r] postext [float] Undocumented
+** @param [r] NumGroups [ajint] Undocumented
+** @param [r] NumLabels [ajint*] Undocumented
+** @param [r] From [float**] Undocumented
+** @param [r] PosTicks [AjPStr] Undocumented
+** @param [r] Colour [ajint] Undocumented
 ** @@
 ******************************************************************************/
 
@@ -843,21 +843,21 @@ static void cirdna_DrawRuler(float xDraw, float yDraw, float Start, float End,
 **
 ** draw a Tick
 **
-** @param [?] xDraw [float] Undocumented
-** @param [?] yDraw [float] Undocumented
-** @param [?] RealLength [float] Undocumented
-** @param [?] Radius [float] Undocumented
-** @param [?] TickHeight [float] Undocumented
-** @param [?] From [float] Undocumented
-** @param [?] Name2 [AjPStr] Undocumented
-** @param [?] OriginAngle [float] Undocumented
-** @param [?] TextLength [float] Undocumented
-** @param [?] TextHeight [float] Undocumented
-** @param [?] postext [float] Undocumented
-** @param [?] PosTicks [AjPStr] Undocumented
-** @param [?] NumNames [ajint] Undocumented
-** @param [?] Adjust [ajint] Undocumented
-** @param [?] Colour [ajint] Undocumented
+** @param [r] xDraw [float] Undocumented
+** @param [r] yDraw [float] Undocumented
+** @param [r] RealLength [float] Undocumented
+** @param [r] Radius [float] Undocumented
+** @param [r] TickHeight [float] Undocumented
+** @param [r] From [float] Undocumented
+** @param [r] Name2 [AjPStr] Undocumented
+** @param [r] OriginAngle [float] Undocumented
+** @param [r] TextLength [float] Undocumented
+** @param [r] TextHeight [float] Undocumented
+** @param [r] postext [float] Undocumented
+** @param [r] PosTicks [AjPStr] Undocumented
+** @param [r] NumNames [ajint] Undocumented
+** @param [r] Adjust [ajint] Undocumented
+** @param [r] Colour [ajint] Undocumented
 ** @@
 ******************************************************************************/
 
@@ -931,21 +931,21 @@ static void cirdna_DrawTicks(float xDraw, float yDraw, float RealLength,
 **
 ** draw a Block
 **
-** @param [?] xDraw [float] Undocumented
-** @param [?] yDraw [float] Undocumented
-** @param [?] RealLength [float] Undocumented
-** @param [?] Radius [float] Undocumented
-** @param [?] BlockHeight [ajint] Undocumented
-** @param [?] From [float] Undocumented
-** @param [?] To [float] Undocumented
-** @param [?] Name2 [AjPStr] Undocumented
-** @param [?] postext [float] Undocumented
-** @param [?] OriginAngle [float] Undocumented
-** @param [?] PosBlocks [AjPStr] Undocumented
-** @param [?] NumNames [ajint] Undocumented
-** @param [?] Adjust [ajint] Undocumented
-** @param [?] Colour [ajint] Undocumented
-** @param [?] BlockType [AjPStr] Undocumented
+** @param [r] xDraw [float] Undocumented
+** @param [r] yDraw [float] Undocumented
+** @param [r] RealLength [float] Undocumented
+** @param [r] Radius [float] Undocumented
+** @param [r] BlockHeight [ajint] Undocumented
+** @param [r] From [float] Undocumented
+** @param [r] To [float] Undocumented
+** @param [r] Name2 [AjPStr] Undocumented
+** @param [r] postext [float] Undocumented
+** @param [r] OriginAngle [float] Undocumented
+** @param [r] PosBlocks [AjPStr] Undocumented
+** @param [r] NumNames [ajint] Undocumented
+** @param [r] Adjust [ajint] Undocumented
+** @param [r] Colour [ajint] Undocumented
+** @param [r] BlockType [AjPStr] Undocumented
 ** @@
 ******************************************************************************/
 
@@ -1008,21 +1008,21 @@ static void cirdna_DrawBlocks(float xDraw, float yDraw, float RealLength,
 **
 ** draw a Range
 **
-** @param [?] xDraw [float] Undocumented
-** @param [?] yDraw [float] Undocumented
-** @param [?] RealLength [float] Undocumented
-** @param [?] Radius [float] Undocumented
-** @param [?] RangeHeight [float] Undocumented
-** @param [?] From [float] Undocumented
-** @param [?] To [float] Undocumented
-** @param [?] FromSymbol [char] Undocumented
-** @param [?] ToSymbol [char] Undocumented
-** @param [?] Name2 [AjPStr] Undocumented
-** @param [?] OriginAngle [float] Undocumented
-** @param [?] NumNames [ajint] Undocumented
-** @param [?] postext [float] Undocumented
-** @param [?] Adjust [ajint] Undocumented
-** @param [?] Colour [ajint] Undocumented
+** @param [r] xDraw [float] Undocumented
+** @param [r] yDraw [float] Undocumented
+** @param [r] RealLength [float] Undocumented
+** @param [r] Radius [float] Undocumented
+** @param [r] RangeHeight [float] Undocumented
+** @param [r] From [float] Undocumented
+** @param [r] To [float] Undocumented
+** @param [r] FromSymbol [char] Undocumented
+** @param [r] ToSymbol [char] Undocumented
+** @param [r] Name2 [AjPStr] Undocumented
+** @param [r] OriginAngle [float] Undocumented
+** @param [r] NumNames [ajint] Undocumented
+** @param [r] postext [float] Undocumented
+** @param [r] Adjust [ajint] Undocumented
+** @param [r] Colour [ajint] Undocumented
 ** @@
 ******************************************************************************/
 
@@ -1109,16 +1109,16 @@ static void cirdna_DrawRanges(float xDraw, float yDraw, float RealLength,
 **
 ** draw an InterBlock
 **
-** @param [?] xDraw [float] Undocumented
-** @param [?] yDraw [float] Undocumented
-** @param [?] RealLength [float] Undocumented
-** @param [?] Radius [float] Undocumented
-** @param [?] BlockHeight [float] Undocumented
-** @param [?] From [float] Undocumented
-** @param [?] To [float] Undocumented
-** @param [?] OriginAngle [float] Undocumented
-** @param [?] InterSymbol [AjBool] Undocumented
-** @param [?] Colour [ajint] Undocumented
+** @param [r] xDraw [float] Undocumented
+** @param [r] yDraw [float] Undocumented
+** @param [r] RealLength [float] Undocumented
+** @param [r] Radius [float] Undocumented
+** @param [r] BlockHeight [float] Undocumented
+** @param [r] From [float] Undocumented
+** @param [r] To [float] Undocumented
+** @param [r] OriginAngle [float] Undocumented
+** @param [r] InterSymbol [AjBool] Undocumented
+** @param [r] Colour [ajint] Undocumented
 ** @@
 ******************************************************************************/
 
@@ -1151,9 +1151,9 @@ static void cirdna_InterBlocks(float xDraw, float yDraw, float RealLength,
 **
 ** compute the angle knowing the length
 **
-** @param [?] RealLength [float] Undocumented
-** @param [?] Length [float] Undocumented
-** @param [?] OriginAngle [float] Undocumented
+** @param [r] RealLength [float] Undocumented
+** @param [r] Length [float] Undocumented
+** @param [r] OriginAngle [float] Undocumented
 ** @return [float] Undocumented
 ** @@
 ******************************************************************************/
@@ -1177,15 +1177,15 @@ static float cirdna_ComputeAngle(float RealLength, float Length,
 **
 ** draw arrowheads on a curve
 **
-** @param [?] xDraw [float] Undocumented
-** @param [?] yDraw [float] Undocumented
-** @param [?] RealLength [float] Undocumented
-** @param [?] Height [float] Undocumented
-** @param [?] Length [float] Undocumented
-** @param [?] Radius [float] Undocumented
-** @param [?] Angle [float] Undocumented
-** @param [?] OriginAngle [float] Undocumented
-** @param [?] Way [ajint] Undocumented
+** @param [r] xDraw [float] Undocumented
+** @param [r] yDraw [float] Undocumented
+** @param [r] RealLength [float] Undocumented
+** @param [r] Height [float] Undocumented
+** @param [r] Length [float] Undocumented
+** @param [r] Radius [float] Undocumented
+** @param [r] Angle [float] Undocumented
+** @param [r] OriginAngle [float] Undocumented
+** @param [r] Way [ajint] Undocumented
 ** @@
 ******************************************************************************/
 
@@ -1240,15 +1240,15 @@ static void cirdna_DrawArrowHeadsOnCurve(float xDraw, float yDraw,
 **
 ** draw brackets on a curve
 **
-** @param [?] xDraw [float] Undocumented
-** @param [?] yDraw [float] Undocumented
-** @param [?] RealLength [float] Undocumented
-** @param [?] Height [float] Undocumented
-** @param [?] Length [float] Undocumented
-** @param [?] Radius [float] Undocumented
-** @param [?] Angle [float] Undocumented
-** @param [?] OriginAngle [float] Undocumented
-** @param [?] Way [ajint] Undocumented
+** @param [r] xDraw [float] Undocumented
+** @param [r] yDraw [float] Undocumented
+** @param [r] RealLength [float] Undocumented
+** @param [r] Height [float] Undocumented
+** @param [r] Length [float] Undocumented
+** @param [r] Radius [float] Undocumented
+** @param [r] Angle [float] Undocumented
+** @param [r] OriginAngle [float] Undocumented
+** @param [r] Way [ajint] Undocumented
 ** @@
 ******************************************************************************/
 
@@ -1302,11 +1302,11 @@ static void cirdna_DrawBracketsOnCurve(float xDraw, float yDraw,
 **
 ** draw bars on a curve
 **
-** @param [?] xDraw [float] Undocumented
-** @param [?] yDraw [float] Undocumented
-** @param [?] Height [float] Undocumented
-** @param [?] Radius [float] Undocumented
-** @param [?] Angle [float] Undocumented
+** @param [r] xDraw [float] Undocumented
+** @param [r] yDraw [float] Undocumented
+** @param [r] Height [float] Undocumented
+** @param [r] Radius [float] Undocumented
+** @param [r] Angle [float] Undocumented
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -1335,14 +1335,14 @@ static void cirdna_DrawBarsOnCurve(float xDraw, float yDraw,
 **
 ** write a pile of horizontal text strings
 **
-** @param [?] x [float] Undocumented
-** @param [?] y [float] Undocumented
-** @param [?] Radius [float] Undocumented
-** @param [?] StartAngle [float] Undocumented
-** @param [?] EndAngle [float] Undocumented
-** @param [?] Name2 [AjPStr] Undocumented
-** @param [?] postext [float] Undocumented
-** @param [?] NumNames [ajint] Undocumented
+** @param [r] x [float] Undocumented
+** @param [r] y [float] Undocumented
+** @param [r] Radius [float] Undocumented
+** @param [r] StartAngle [float] Undocumented
+** @param [r] EndAngle [float] Undocumented
+** @param [r] Name2 [AjPStr] Undocumented
+** @param [r] postext [float] Undocumented
+** @param [r] NumNames [ajint] Undocumented
 ** @@
 ******************************************************************************/
 
@@ -1382,8 +1382,8 @@ static void cirdna_HorTextPile(float x, float y, float Radius,
 **
 ** compute the height of a pile of horizontal text strings
 **
-** @param [?] postext [float] Undocumented
-** @param [?] NumNames [ajint] Undocumented
+** @param [r] postext [float] Undocumented
+** @param [r] NumNames [ajint] Undocumented
 ** @return [float] Undocumented
 ** @@
 ******************************************************************************/
@@ -1412,8 +1412,8 @@ static float cirdna_HorTextPileHeight(float postext, ajint NumNames)
 ** compute the maximum length of a pile of horizontal text strings
 ** (this is the length of the longest string)
 **
-** @param [?] Name2 [AjPStr] Undocumented
-** @param [?] NumNames [ajint] Undocumented
+** @param [r] Name2 [AjPStr] Undocumented
+** @param [r] NumNames [ajint] Undocumented
 ** @return [float] Undocumented
 ** @@
 ******************************************************************************/
@@ -1448,9 +1448,9 @@ static float cirdna_HorTextPileLengthMax(AjPStr Name2, ajint NumNames)
 **
 ** read the beginning of the input file
 **
-** @param [?] infile [AjPFile] Undocumented
-** @param [?] Start [float*] Undocumented
-** @param [?] End [float*] Undocumented
+** @param [u] infile [AjPFile] Undocumented
+** @param [r] Start [float*] Undocumented
+** @param [r] End [float*] Undocumented
 ** @@
 ******************************************************************************/
 
@@ -1481,17 +1481,17 @@ static void cirdna_ReadInput(AjPFile infile, float *Start, float *End)
 **
 ** read a group
 **
-** @param [?] infile [AjPFile] Undocumented
-** @param [?] maxlabels [ajint] Undocumented
-** @param [?] From [float*] Undocumented
-** @param [?] To [float*] Undocumented
-** @param [?] Name [AjPStr*] Undocumented
-** @param [?] FromSymbol [char*] Undocumented
-** @param [?] ToSymbol [char*] Undocumented
-** @param [?] Style2 [AjPStr*] Undocumented
-** @param [?] NumLabels [ajint*] Undocumented
-** @param [?] NumNames [ajint*] Undocumented
-** @param [?] Colour [ajint*] Undocumented
+** @param [u] infile [AjPFile] Undocumented
+** @param [r] maxlabels [ajint] Undocumented
+** @param [r] From [float*] Undocumented
+** @param [r] To [float*] Undocumented
+** @param [r] Name [AjPStr*] Undocumented
+** @param [r] FromSymbol [char*] Undocumented
+** @param [r] ToSymbol [char*] Undocumented
+** @param [r] Style2 [AjPStr*] Undocumented
+** @param [r] NumLabels [ajint*] Undocumented
+** @param [r] NumNames [ajint*] Undocumented
+** @param [r] Colour [ajint*] Undocumented
 ** @return [AjPStr] Undocumented
 ******************************************************************************/
 
@@ -1626,17 +1626,17 @@ static AjPStr cirdna_ReadGroup(AjPFile infile, ajint maxlabels,
 **  provided that the height and the length of all strings are at most
 **  TextHeight and TextLength, respectively
 **
-** @param [?] TextHeight [float] Undocumented
-** @param [?] TextLength [float] Undocumented
-** @param [?] Name [AjPStr*] Undocumented
-** @param [?] NumLabels [ajint] Undocumented
-** @param [?] NumNames [ajint*] Undocumented
-** @param [?] GroupName [AjPStr] Undocumented
-** @param [?] Style2 [AjPStr*] Undocumented
-** @param [?] From [float*] Undocumented
-** @param [?] To [float*] Undocumented
-** @param [?] BlockHeight [float] Undocumented
-** @param [?] PosTicks [AjPStr] Undocumented
+** @param [r] TextHeight [float] Undocumented
+** @param [r] TextLength [float] Undocumented
+** @param [r] Name [AjPStr*] Undocumented
+** @param [r] NumLabels [ajint] Undocumented
+** @param [r] NumNames [ajint*] Undocumented
+** @param [r] GroupName [AjPStr] Undocumented
+** @param [r] Style2 [AjPStr*] Undocumented
+** @param [r] From [float*] Undocumented
+** @param [r] To [float*] Undocumented
+** @param [r] BlockHeight [float] Undocumented
+** @param [r] PosTicks [AjPStr] Undocumented
 ** @return [float] Undocumented
 ******************************************************************************/
 static float cirdna_TextGroup(float TextHeight, float TextLength,
@@ -1689,16 +1689,16 @@ static float cirdna_TextGroup(float TextHeight, float TextLength,
 **  compute the character size that fits all elements of a group provided that
 **  the height and the length of all strings are multiplied by TextCoef
 **
-** @param [?] Name2 [AjPStr*] Undocumented
-** @param [?] NumLabels [ajint] Undocumented
-** @param [?] NumNames [ajint*] Undocumented
-** @param [?] GroupName [AjPStr] Undocumented
-** @param [?] TextCoef [float] Undocumented
-** @param [?] Style2 [AjPStr*] Undocumented
-** @param [?] From [float*] Undocumented
-** @param [?] To [float*] Undocumented
-** @param [?] BlockHeight [float] Undocumented
-** @param [?] PosTicks [AjPStr] Undocumented
+** @param [r] Name2 [AjPStr*] Undocumented
+** @param [r] NumLabels [ajint] Undocumented
+** @param [r] NumNames [ajint*] Undocumented
+** @param [r] GroupName [AjPStr] Undocumented
+** @param [r] TextCoef [float] Undocumented
+** @param [r] Style2 [AjPStr*] Undocumented
+** @param [r] From [float*] Undocumented
+** @param [r] To [float*] Undocumented
+** @param [r] BlockHeight [float] Undocumented
+** @param [r] PosTicks [AjPStr] Undocumented
 ** @return [float] Undocumented
 ******************************************************************************/
 static float cirdna_TextGroupStr(AjPStr *Name2, ajint NumLabels,
@@ -1758,19 +1758,19 @@ static float cirdna_TextGroupStr(AjPStr *Name2, ajint NumLabels,
 **
 ** compute the height of a group depending on what's in it
 **
-** @param [?] posblock [float] Undocumented
-** @param [?] posrange [float] Undocumented
-** @param [?] postext [float] Undocumented
-** @param [?] TickHeight [float] Undocumented
-** @param [?] BlockHeight [float] Undocumented
-** @param [?] RangeHeight [float] Undocumented
-** @param [?] Name2 [AjPStr*] Undocumented
-** @param [?] Style2 [AjPStr*] Undocumented
-** @param [?] NumLabels [ajint] Undocumented
-** @param [?] NumNames [ajint*] Undocumented
-** @param [?] PosTicks [AjPStr] Undocumented
-** @param [?] PosBlocks [AjPStr] Undocumented
-** @param [?] Adjust [ajint] Undocumented
+** @param [r] posblock [float] Undocumented
+** @param [r] posrange [float] Undocumented
+** @param [r] postext [float] Undocumented
+** @param [r] TickHeight [float] Undocumented
+** @param [r] BlockHeight [float] Undocumented
+** @param [r] RangeHeight [float] Undocumented
+** @param [r] Name2 [AjPStr*] Undocumented
+** @param [r] Style2 [AjPStr*] Undocumented
+** @param [r] NumLabels [ajint] Undocumented
+** @param [r] NumNames [ajint*] Undocumented
+** @param [r] PosTicks [AjPStr] Undocumented
+** @param [r] PosBlocks [AjPStr] Undocumented
+** @param [r] Adjust [ajint] Undocumented
 ** @return [float] Undocumented
 ******************************************************************************/
 
@@ -1846,15 +1846,15 @@ static float cirdna_HeightGroup(float posblock, float posrange, float postext,
 **
 ** find whether horizontal text strings overlap within a group
 **
-** @param [?] Name2 [AjPStr*] Undocumented
-** @param [?] Style2 [AjPStr*] Undocumented
-** @param [?] NumLabels [ajint] Undocumented
-** @param [?] From [float*] Undocumented
-** @param [?] To [float*] Undocumented
-** @param [?] Start [float] Undocumented
-** @param [?] End [float] Undocumented
-** @param [?] PosTicks [AjPStr] Undocumented
-** @param [?] Adjust [ajint*] Undocumented
+** @param [r] Name2 [AjPStr*] Undocumented
+** @param [r] Style2 [AjPStr*] Undocumented
+** @param [r] NumLabels [ajint] Undocumented
+** @param [r] From [float*] Undocumented
+** @param [r] To [float*] Undocumented
+** @param [r] Start [float] Undocumented
+** @param [r] End [float] Undocumented
+** @param [r] PosTicks [AjPStr] Undocumented
+** @param [r] Adjust [ajint*] Undocumented
 ** @return [ajint] Undocumented
 ******************************************************************************/
 
@@ -2005,11 +2005,11 @@ static ajint cirdna_OverlapTextGroup(AjPStr *Name2, AjPStr *Style2,
 **
 ** find whether group ticks and ruler's ticks overlap
 **
-** @param [?] NumGroups [ajint] Undocumented
-** @param [?] NumLabels [ajint*] Undocumented
-** @param [?] From [float**] Undocumented
-** @param [?] PosTicks [AjPStr] Undocumented
-** @param [?] RulerTick [ajint] Undocumented
+** @param [r] NumGroups [ajint] Undocumented
+** @param [r] NumLabels [ajint*] Undocumented
+** @param [r] From [float**] Undocumented
+** @param [r] PosTicks [AjPStr] Undocumented
+** @param [r] RulerTick [ajint] Undocumented
 ** @return [AjBool] Undocumented
 ******************************************************************************/
 
@@ -2046,37 +2046,37 @@ static AjBool cirdna_OverlapTickRuler(ajint NumGroups, ajint *NumLabels,
 **
 ** draw a group
 **
-** @param [?] xDraw [float] Undocumented
-** @param [?] yDraw [float] Undocumented
-** @param [?] posblock [float] Undocumented
-** @param [?] posrange [float] Undocumented
-** @param [?] postext [float] Undocumented
-** @param [?] TickHeight [float] Undocumented
-** @param [?] BlockHeight [float] Undocumented
-** @param [?] RangeHeight [float] Undocumented
-** @param [?] RealLength [float] Undocumented
-** @param [?] TextLength [float] Undocumented
-** @param [?] TextHeight [float] Undocumented
-** @param [?] Radius [float] Undocumented
-** @param [?] RadiusMax [float] Undocumented
-** @param [?] From [float*] Undocumented
-** @param [?] To [float*] Undocumented
-** @param [?] Name2 [AjPStr*] Undocumented
-** @param [?] FromSymbol [char*] Undocumented
-** @param [?] ToSymbol [char*] Undocumented
-** @param [?] Style2 [AjPStr*] Undocumented
-** @param [?] InterSymbol [AjBool] Undocumented
-** @param [?] InterTicks [AjBool] Undocumented
-** @param [?] NumLabels [ajint] Undocumented
-** @param [?] GroupName [AjPStr] Undocumented
-** @param [?] OriginAngle [float] Undocumented
-** @param [?] NumNames [ajint*] Undocumented
-** @param [?] PosTicks [AjPStr] Undocumented
-** @param [?] PosBlocks [AjPStr] Undocumented
-** @param [?] Adjust [ajint*] Undocumented
-** @param [?] InterColour [ajint] Undocumented
-** @param [?] Colour [ajint*] Undocumented
-** @param [?] BlockType [AjPStr] Undocumented
+** @param [r] xDraw [float] Undocumented
+** @param [r] yDraw [float] Undocumented
+** @param [r] posblock [float] Undocumented
+** @param [r] posrange [float] Undocumented
+** @param [r] postext [float] Undocumented
+** @param [r] TickHeight [float] Undocumented
+** @param [r] BlockHeight [float] Undocumented
+** @param [r] RangeHeight [float] Undocumented
+** @param [r] RealLength [float] Undocumented
+** @param [r] TextLength [float] Undocumented
+** @param [r] TextHeight [float] Undocumented
+** @param [r] Radius [float] Undocumented
+** @param [r] RadiusMax [float] Undocumented
+** @param [r] From [float*] Undocumented
+** @param [r] To [float*] Undocumented
+** @param [r] Name2 [AjPStr*] Undocumented
+** @param [r] FromSymbol [char*] Undocumented
+** @param [r] ToSymbol [char*] Undocumented
+** @param [r] Style2 [AjPStr*] Undocumented
+** @param [r] InterSymbol [AjBool] Undocumented
+** @param [r] InterTicks [AjBool] Undocumented
+** @param [r] NumLabels [ajint] Undocumented
+** @param [r] GroupName [AjPStr] Undocumented
+** @param [r] OriginAngle [float] Undocumented
+** @param [r] NumNames [ajint*] Undocumented
+** @param [r] PosTicks [AjPStr] Undocumented
+** @param [r] PosBlocks [AjPStr] Undocumented
+** @param [r] Adjust [ajint*] Undocumented
+** @param [r] InterColour [ajint] Undocumented
+** @param [r] Colour [ajint*] Undocumented
+** @param [r] BlockType [AjPStr] Undocumented
 ** @return [void]
 ******************************************************************************/
 

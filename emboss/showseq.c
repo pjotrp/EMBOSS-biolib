@@ -250,7 +250,7 @@ int main(int argc, char **argv)
 	    else
 	    {
 		descriptionline = ajStrNew();
-		ajStrAss(&descriptionline, ajSeqGetDesc(seq));
+		ajStrAssS(&descriptionline, ajSeqGetDesc(seq));
 		ajStrWrap(&descriptionline, width+margin);
 		ajFmtPrintF(outfile, "%S\n", descriptionline);
 		ajStrDel(&descriptionline);
@@ -581,7 +581,7 @@ static void showseq_FeatureFilter(AjPFeattable featab, AjPFeattable newfeatab,
     /* foreach feature in the feature table */
     if(featab)
     {
-	iter = ajListIter(featab->Features);
+	iter = ajListIterRead(featab->Features);
 	while(ajListIterMore(iter))
 	{
 	    gf = (AjPFeature)ajListIterNext(iter);
@@ -599,7 +599,7 @@ static void showseq_FeatureFilter(AjPFeattable featab, AjPFeattable newfeatab,
 	    else
 	    	ajFeatDel(&newgf);
 	}
-	ajListIterFree(iter);
+	ajListIterFree(&iter);
     }
 
     return;
@@ -752,7 +752,7 @@ static AjBool showseq_MatchPatternTags(AjPFeature gf, AjPFeature newgf,
         if(!stricttags)
             ajFeatTagAdd(newgf, tagnam, tagval);
     }
-    ajListIterFree(titer);
+    ajListIterFree(&titer);
 
     return val;
 }

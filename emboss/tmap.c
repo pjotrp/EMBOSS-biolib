@@ -362,8 +362,8 @@ static void tmap_refpos2(ajint refnr, ajint poss)
 **
 ** Returns 1 if so, otherwise 0
 **
-** @param [?] pos [ajint] Undocumented
-** @param [?] nr [ajint] Undocumented
+** @param [r] pos [ajint] Undocumented
+** @param [r] nr [ajint] Undocumented
 ** @return [ajint] Undocumented
 ** @@
 ******************************************************************************/
@@ -481,8 +481,8 @@ static void tmap_present3p(ajint antal, ajint *npos, ajint *cpos,
     ajint calcgap;
     ajint calclen;
 
-    ajSeqsetConsStats(seqset, NULL, &cons,
-		      &calcid, &calcsim, &calcgap, &calclen);
+    ajAlignConsStats(seqset, NULL, &cons,
+		     &calcid, &calcsim, &calcgap, &calclen);
 
     ajStrAssC(&hdr, "");
     ajReportSetHeader(report, hdr);
@@ -991,11 +991,11 @@ static float tmap_summa1(ajint start, ajint stopp, float *parameter)
 **
 ** Checks if segment already in TM vector
 **
-** @param [?] start [ajint*] Undocumented
-** @param [?] stopp [ajint*] Undocumented
-** @param [?] max [ajint] Undocumented
-** @param [?] starttmp [ajint] Undocumented
-** @param [?] stopptmp [ajint] Undocumented
+** @param [r] start [ajint*] Undocumented
+** @param [r] stopp [ajint*] Undocumented
+** @param [r] max [ajint] Undocumented
+** @param [r] starttmp [ajint] Undocumented
+** @param [r] stopptmp [ajint] Undocumented
 ** @return [ajint] Undocumented
 ** @@
 ******************************************************************************/

@@ -2203,7 +2203,7 @@ static AjBool jctl_do_deletedir(char *buf, int uid, int gid)
     }
 
 #else
-    ajSystem(&cmnd);
+    ajSystem(cmnd);
 #endif
 
     ajStrDel(&cmnd);

@@ -24,8 +24,10 @@ extern "C"
 ** @alias AjSFeattabIn
 ** @alias AjOFeattabIn
 **
-** @new    ajFeatUfoProcess Constructor based upon a 'UFO' and file mode (rwa)
-** @delete ajFeattabInClose Destructor, closes file and releases resources
+** @new    ajFeattabInNew Constructor
+** @new    ajFeattabInNewSS Constructor with format, name and type
+** @new    ajFeattabInNewSSF Constructor with format, name, type and input file
+** @delete ajFeattabInDel Destructor
 **
 ** @attr Ufo [AjPStr] Original UFO
 ** @attr Formatstr [AjPStr] Input format name
@@ -58,8 +60,10 @@ typedef struct AjSFeattabIn {
 ** @alias AjSFeattabOut
 ** @alias AjOFeattabOut
 **
-** @new    ajFeatUfoProcess Constructor based upon a 'UFO' and file mode (rwa)
-** @delete ajFeattabOutClose Destructor, closes file and releases resources
+** @new    ajFeattabOutNew Constructor
+** @new    ajFeattabOutNewSSF Constructor with format, name, type and
+**                            output file
+** @delete ajFeattabOutDel Destructor
 **
 ** @attr Ufo [AjPStr] Original output UFO
 ** @attr Formatstr [AjPStr] Output format name
@@ -101,9 +105,9 @@ typedef struct AjSFeattabOut {
 ** @alias AjOFeattable
 **
 ** @new    ajFeattableNew        Constructor
-** @delete ajFeattabDel          Default destructor
-** @mod    ajFeattabAdd          Adds an AjPFeature to a set
-** @mod    ajFeaturesRead        Reads in a feature set in a specified format
+** @delete ajFeattableDel        Default destructor
+** @modify ajFeattableAdd        Adds an AjPFeature to a set
+** @input  ajFeatRead            Reads in a feature set in a specified format
 **
 ** @attr Seqid [AjPStr] Sequence name
 ** @attr Type [AjPStr] Sequence type: P or N
@@ -157,26 +161,30 @@ typedef struct AjSFeattable {
 ** @alias AjOFeature
 **
 ** @new    ajFeatNew             Constructor - must specify the associated
-**                               (non-null) AjPFeattable?
-** @new    ajFeatNewFromTPS      Constructor: given type, position & score,
-**                               assumes default Source
-** @new    ajFeatNewFromPS       Constructor: given position & score,
-**                               assumes default Source and Type
+**                               (non-null) AjPFeattable
+** @new    ajFeatNewII           Simple constructor with only start and end
+**                               positions
+** @new    ajFeatNewIIRev        Simple constructor with only start and end
+**                               positions, sets feature to be
+**                               on the reverse strand
+** @new    ajFeatNewProt         Protein-specific constructor -
+**                               must specify the associated
+**                               (non-null) AjPFeattable
 ** @delete ajFeatDel             Default destructor
 ** @assign ajFeatCopy            Copy constructor
-** @set    ajFeatSetSource       Sets the name of the analysis which
+** @modify ajFeatSetSource       Sets the name of the analysis which
 **                               ascertained the feature
-** @set    ajFeatSetType         Sets the type of feature (e.g. exon, etc.)
-** @set    ajFeatSetScore        Sets the score associated with the feature,
+** @modify ajFeatSetType         Sets the type of feature (e.g. exon, etc.)
+** @modify ajFeatSetScore        Sets the score associated with the feature,
 **                               if any
-** @set    ajFeatSetTagValue     Sets a specified tag for a feature and any
+** @modify ajFeatSetTagValue     Sets a specified tag for a feature and any
 **                               (optional) value associated with it
 **                               If a value is unspecified (NULL), then the
 **                               current value associated with the tag
 **                               if returned. If a new value is specified,
 **                               the old value is returned.
-** @set    ajFeatClearTags       Clears all tags (except Source and Type tag)
-** @set    ajFeatAddSubFeature   Adds a subsidiary AjFeature to the feature
+** @modify ajFeatClearTags       Clears all tags (except Source and Type tag)
+** @modify ajFeatAddSubFeature   Adds a subsidiary AjFeature to the feature
 ** @cast   ajFeatSource          Returns the name of the analysis which
 **                               ascertained the feature
 ** @cast   ajFeatType            Returns the type of feature (e.g. exon, etc.)
@@ -189,7 +197,7 @@ typedef struct AjSFeattable {
 **                               type tags
 ** @cast   ajFeatSubFeatures     Returns the AjPFeattable of subfeatures of
 **                               the feature
-** @mod    ajFeatFromLine        Parses in a string, in a specified feature
+** @modify ajFeatFromLine        Parses in a string, in a specified feature
 **                               format
 ** @use    ajFeatDumpString      Dumps the feature to a string, in a
 **                               specified format

@@ -174,7 +174,7 @@ int main(int argc, char **argv)
 	q = p+base;
 	ajStrAssC(&tmp,q);
 
-	ajCodCalcGribskov(&cdup, tmp);
+	ajCodCalcGribskov(cdup, tmp);
 	startp = (w/2)+base;
 	for(i=0,pos=base;i<count;++i,pos+=3)
 	{

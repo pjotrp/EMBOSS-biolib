@@ -77,6 +77,26 @@ typedef ajint AjMask;
 
 typedef ajint AjInt4;		/* 4 bytes integer */
 
+/* @datatype AjIntArray *******************************************************
+**
+** Array of integers
+**
+** @attr typedef [int*] Value
+** @@
+******************************************************************************/
+
+typedef int* AjIntArray;
+
+/* @datatype AjFloatArray *****************************************************
+**
+** Array of floats
+**
+** @attr typedef [float*] Value
+** @@
+******************************************************************************/
+
+typedef float* AjFloatArray;
+
 #define AJAXLONGDOUBLE double
 
 #define AJBOOL(b) (b ? "TRUE" : "FALSE")

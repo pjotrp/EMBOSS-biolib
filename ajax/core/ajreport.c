@@ -56,7 +56,7 @@ typedef struct ReportSFormat
     AjBool Nuc;
     AjBool Prot;
     void (*Write) (AjPReport outrpt,
-		   AjPFeattable ftable, AjPSeq seq);
+		   const AjPFeattable ftable, const AjPSeq seq);
 } ReportOFormat;
 
 #define ReportPFormat ReportOFormat*
@@ -64,51 +64,51 @@ typedef struct ReportSFormat
 
 
 
-static void reportWriteEmbl(AjPReport outrpt, AjPFeattable ftable,
-			    AjPSeq seq);
-static void reportWriteGenbank(AjPReport outrpt, AjPFeattable ftable,
-			       AjPSeq seq);
-static void reportWriteGff(AjPReport outrpt, AjPFeattable ftable,
-			   AjPSeq seq);
-static void reportWritePir(AjPReport outrpt, AjPFeattable ftable,
-			   AjPSeq seq);
-static void reportWriteSwiss(AjPReport outrpt, AjPFeattable ftable,
-			     AjPSeq seq);
+static void reportWriteEmbl(AjPReport outrpt, const AjPFeattable ftable,
+			    const AjPSeq seq);
+static void reportWriteGenbank(AjPReport outrpt, const AjPFeattable ftable,
+			       const AjPSeq seq);
+static void reportWriteGff(AjPReport outrpt, const AjPFeattable ftable,
+			   const AjPSeq seq);
+static void reportWritePir(AjPReport outrpt, const AjPFeattable ftable,
+			   const AjPSeq seq);
+static void reportWriteSwiss(AjPReport outrpt,const  AjPFeattable ftable,
+			     const AjPSeq seq);
 
-static void reportWriteTrace(AjPReport outrpt, AjPFeattable ftable,
-			     AjPSeq seq);
-static void reportWriteListFile(AjPReport outrpt, AjPFeattable ftable,
-				AjPSeq seq);
+static void reportWriteTrace(AjPReport outrpt, const AjPFeattable ftable,
+			     const AjPSeq seq);
+static void reportWriteListFile(AjPReport outrpt, const AjPFeattable ftable,
+				const AjPSeq seq);
 
-static void reportWriteDbMotif(AjPReport outrpt, AjPFeattable ftable,
-			       AjPSeq seq);
-static void reportWriteDiffseq(AjPReport outrpt, AjPFeattable ftable,
-			       AjPSeq seq);
-static void reportWriteDraw(AjPReport outrpt, AjPFeattable ftable,
-			   AjPSeq seq);
-static void reportWriteExcel(AjPReport outrpt, AjPFeattable ftable,
-			     AjPSeq seq);
-static void reportWriteFeatTable(AjPReport outrpt, AjPFeattable ftable,
-				 AjPSeq seq);
-static void reportWriteMotif(AjPReport outrpt, AjPFeattable ftable,
-			     AjPSeq seq);
-static void reportWriteNameTable(AjPReport outrpt, AjPFeattable ftable,
-				  AjPSeq seq);
-static void reportWriteRegions(AjPReport outrpt, AjPFeattable ftable,
-			       AjPSeq seq);
-static void reportWriteSeqTable(AjPReport outrpt, AjPFeattable ftable,
-				AjPSeq seq);
-static void reportWriteSimple(AjPReport outrpt, AjPFeattable ftable,
-			      AjPSeq seq);
-static void reportWriteSrs(AjPReport outrpt, AjPFeattable ftable,
-			   AjPSeq seq);
-static void reportWriteSrsFlags(AjPReport outrpt, AjPFeattable ftable,
-				AjPSeq seq, AjBool withSeq);
-static void reportWriteTable(AjPReport outrpt, AjPFeattable ftable,
-			     AjPSeq seq);
+static void reportWriteDbMotif(AjPReport outrpt, const AjPFeattable ftable,
+			       const AjPSeq seq);
+static void reportWriteDiffseq(AjPReport outrpt, const AjPFeattable ftable,
+			       const AjPSeq seq);
+static void reportWriteDraw(AjPReport outrpt, const AjPFeattable ftable,
+			   const AjPSeq seq);
+static void reportWriteExcel(AjPReport outrpt, const AjPFeattable ftable,
+			     const AjPSeq seq);
+static void reportWriteFeatTable(AjPReport outrpt, const AjPFeattable ftable,
+				 const AjPSeq seq);
+static void reportWriteMotif(AjPReport outrpt, const AjPFeattable ftable,
+			     const AjPSeq seq);
+static void reportWriteNameTable(AjPReport outrpt, const AjPFeattable ftable,
+				 const AjPSeq seq);
+static void reportWriteRegions(AjPReport outrpt, const AjPFeattable ftable,
+			       const AjPSeq seq);
+static void reportWriteSeqTable(AjPReport outrpt, const AjPFeattable ftable,
+				const AjPSeq seq);
+static void reportWriteSimple(AjPReport outrpt, const AjPFeattable ftable,
+			      const AjPSeq seq);
+static void reportWriteSrs(AjPReport outrpt, const AjPFeattable ftable,
+			   const AjPSeq seq);
+static void reportWriteSrsFlags(AjPReport outrpt, const AjPFeattable ftable,
+				const AjPSeq seq, AjBool withSeq);
+static void reportWriteTable(AjPReport outrpt, const AjPFeattable ftable,
+			     const AjPSeq seq);
 
-static void reportWriteTagseq(AjPReport outrpt, AjPFeattable ftable,
-			      AjPSeq seq);
+static void reportWriteTagseq(AjPReport outrpt, const AjPFeattable ftable,
+			      const AjPSeq seq);
 
 static char* reportCharname(const AjPReport thys);
 
@@ -159,14 +159,15 @@ static ReportOFormat reportFormat[] =
 **
 ** Writes a report in Trace format
 **
-** @param [r] thys [AjPReport] Report object
-** @param [r] ftable [AjPFeattable] Feature table object
-** @param [r] seq [AjPSeq] Sequence object
+** @param [u] thys [AjPReport] Report object
+** @param [r] ftable [const AjPFeattable] Feature table object
+** @param [r] seq [const AjPSeq] Sequence object
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void reportWriteTrace(AjPReport thys, AjPFeattable ftable, AjPSeq seq)
+static void reportWriteTrace(AjPReport thys, const AjPFeattable ftable,
+			     const AjPSeq seq)
 {
     ajReportWriteHeader(thys, ftable, seq);
 
@@ -184,14 +185,15 @@ static void reportWriteTrace(AjPReport thys, AjPFeattable ftable, AjPSeq seq)
 **
 ** Writes a report in EMBL format
 **
-** @param [r] thys [AjPReport] Report object
-** @param [r] ftable [AjPFeattable] Feature table object
-** @param [r] seq [AjPSeq] Sequence object
+** @param [u] thys [AjPReport] Report object
+** @param [r] ftable [const AjPFeattable] Feature table object
+** @param [r] seq [const AjPSeq] Sequence object
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void reportWriteEmbl(AjPReport thys, AjPFeattable ftable, AjPSeq seq)
+static void reportWriteEmbl(AjPReport thys,
+			    const AjPFeattable ftable, const AjPSeq seq)
 {
     static AjPStr ftfmt = NULL;
 
@@ -217,14 +219,15 @@ static void reportWriteEmbl(AjPReport thys, AjPFeattable ftable, AjPSeq seq)
 **
 ** Writes a report in Genbank format
 **
-** @param [r] thys [AjPReport] Report object
-** @param [r] ftable [AjPFeattable] Feature table object
-** @param [r] seq [AjPSeq] Sequence object
+** @param [u] thys [AjPReport] Report object
+** @param [r] ftable [const AjPFeattable] Feature table object
+** @param [r] seq [const AjPSeq] Sequence object
 ** @return [void]const 
 ** @@
 ******************************************************************************/
 
-static void reportWriteGenbank(AjPReport thys, AjPFeattable ftable, AjPSeq seq)
+static void reportWriteGenbank(AjPReport thys,
+			       const AjPFeattable ftable, const AjPSeq seq)
 {
     static AjPStr ftfmt = NULL;
 
@@ -250,14 +253,15 @@ static void reportWriteGenbank(AjPReport thys, AjPFeattable ftable, AjPSeq seq)
 **
 ** Writes a report in GFF format
 **
-** @param [r] thys [AjPReport] Report object
-** @param [r] ftable [AjPFeattable] Feature table object
-** @param [r] seq [AjPSeq] Sequence object
+** @param [u] thys [AjPReport] Report object
+** @param [r] ftable [const AjPFeattable] Feature table object
+** @param [r] seq [const AjPSeq] Sequence object
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void reportWriteGff(AjPReport thys, AjPFeattable ftable, AjPSeq seq)
+static void reportWriteGff(AjPReport thys,
+			   const AjPFeattable ftable, const AjPSeq seq)
 {
     static AjPStr ftfmt = NULL;
 
@@ -281,14 +285,15 @@ static void reportWriteGff(AjPReport thys, AjPFeattable ftable, AjPSeq seq)
 **
 ** Writes a report in PIR format
 **
-** @param [r] thys [AjPReport] Report object
-** @param [r] ftable [AjPFeattable] Feature table object
-** @param [r] seq [AjPSeq] Sequence object
+** @param [u] thys [AjPReport] Report object
+** @param [r] ftable [const AjPFeattable] Feature table object
+** @param [r] seq [const AjPSeq] Sequence object
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void reportWritePir(AjPReport thys, AjPFeattable ftable, AjPSeq seq)
+static void reportWritePir(AjPReport thys,
+			   const AjPFeattable ftable, const AjPSeq seq)
 {
     static AjPStr ftfmt = NULL;
 
@@ -312,14 +317,15 @@ static void reportWritePir(AjPReport thys, AjPFeattable ftable, AjPSeq seq)
 **
 ** Writes a report in SwissProt format
 **
-** @param [r] thys [AjPReport] Report object
-** @param [r] ftable [AjPFeattable] Feature table object
-** @param [r] seq [AjPSeq] Sequence object
+** @param [u] thys [AjPReport] Report object
+** @param [r] ftable [const AjPFeattable] Feature table object
+** @param [r] seq [const AjPSeq] Sequence object
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void reportWriteSwiss(AjPReport thys, AjPFeattable ftable, AjPSeq seq)
+static void reportWriteSwiss(AjPReport thys,
+			     const AjPFeattable ftable, const AjPSeq seq)
 {
     static AjPStr ftfmt = NULL;
 
@@ -360,14 +366,15 @@ static void reportWriteSwiss(AjPReport thys, AjPFeattable ftable, AjPSeq seq)
 ** Tags reported: <br>
 **   all tags reported as name = value
 **
-** @param [r] thys [AjPReport] Report object
-** @param [r] ftable [AjPFeattable] Feature table object
-** @param [r] seq [AjPSeq] Sequence object
+** @param [u] thys [AjPReport] Report object
+** @param [r] ftable [const AjPFeattable] Feature table object
+** @param [r] seq [const AjPSeq] Sequence object
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void reportWriteDbMotif(AjPReport thys, AjPFeattable ftable, AjPSeq seq)
+static void reportWriteDbMotif(AjPReport thys,
+			       const AjPFeattable ftable, const AjPSeq seq)
 {
     AjPFile outf;
     AjIList iterft     = NULL;
@@ -394,7 +401,7 @@ static void reportWriteDbMotif(AjPReport thys, AjPFeattable ftable, AjPSeq seq)
     
     ntags = ajReportLists(thys, &tagtypes, &tagnames, &tagprints, &tagsizes);
     
-    iterft = ajListIter(ftable->Features);
+    iterft = ajListIterRead(ftable->Features);
     while(ajListIterMore(iterft))
     {
 	feature = (AjPFeature)ajListIterNext(iterft);
@@ -440,7 +447,7 @@ static void reportWriteDbMotif(AjPReport thys, AjPFeattable ftable, AjPSeq seq)
     ajStrDel(&subseq);
     ajStrDel(&tagval);
     
-    ajListIterFree(iterft);
+    ajListIterFree(&iterft);
     
     ajReportWriteTail(thys, ftable, seq);
     
@@ -482,14 +489,15 @@ static void reportWriteDbMotif(AjPReport thys, AjPFeattable ftable, AjPSeq seq)
 **
 ** Tags reported: None
 **
-** @param [r] thys [AjPReport] Report object
-** @param [r] ftable [AjPFeattable] Feature table object
-** @param [r] seq [AjPSeq] Sequence object
+** @param [u] thys [AjPReport] Report object
+** @param [r] ftable [const AjPFeattable] Feature table object
+** @param [r] seq [const AjPSeq] Sequence object
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void reportWriteDiffseq(AjPReport thys, AjPFeattable ftable, AjPSeq seq)
+static void reportWriteDiffseq(AjPReport thys,
+			       const AjPFeattable ftable, const AjPSeq seq)
 {
     AjPFile outf;
     AjIList iterft     = NULL;
@@ -535,7 +543,7 @@ static void reportWriteDiffseq(AjPReport thys, AjPFeattable ftable, AjPSeq seq)
     
     ajReportWriteHeader(thys, ftable, seq);
     
-    iterft = ajListIter(ftable->Features);
+    iterft = ajListIterRead(ftable->Features);
     while(ajListIterMore(iterft))
     {
 	feature = (AjPFeature)ajListIterNext(iterft);
@@ -618,7 +626,7 @@ static void reportWriteDiffseq(AjPReport thys, AjPFeattable ftable, AjPSeq seq)
     ajStrDel(&tagval);
     ajStrDel(&jname);
     
-    ajListIterFree(iterft);
+    ajListIterFree(&iterft);
 
     return;
 }
@@ -650,14 +658,15 @@ static void reportWriteDiffseq(AjPReport thys, AjPFeattable ftable, AjPSeq seq)
 **
 ** Tags reported:
 **
-** @param [r] thys [AjPReport] Report object
-** @param [r] ftable [AjPFeattable] Feature table object
-** @param [r] seq [AjPSeq] Sequence object
+** @param [u] thys [AjPReport] Report object
+** @param [r] ftable [const AjPFeattable] Feature table object
+** @param [r] seq [const AjPSeq] Sequence object
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void reportWriteDraw(AjPReport thys, AjPFeattable ftable, AjPSeq seq)
+static void reportWriteDraw(AjPReport thys,
+			    const AjPFeattable ftable, const AjPSeq seq)
 {
     AjPFile outf;
     AjIList iterft     = NULL;
@@ -708,7 +717,7 @@ static void reportWriteDraw(AjPReport thys, AjPFeattable ftable, AjPSeq seq)
     ajFmtPrintF(outf, "\n"); 
     ajFmtPrintF(outf, "group\n");
     
-    iterft = ajListIter(ftable->Features);
+    iterft = ajListIterRead(ftable->Features);
     while(ajListIterMore(iterft))
     {
 	feature = (AjPFeature)ajListIterNext(iterft);
@@ -763,7 +772,7 @@ static void reportWriteDraw(AjPReport thys, AjPFeattable ftable, AjPSeq seq)
     ajStrDel(&subseq);
     ajStrDel(&tagval);
     
-    ajListIterFree(iterft);
+    ajListIterFree(&iterft);
 
     return;
 }
@@ -792,14 +801,15 @@ static void reportWriteDraw(AjPReport thys, AjPFeattable ftable, AjPSeq seq)
 **
 ** Tags reported: All defined tags
 **
-** @param [r] thys [AjPReport] Report object
-** @param [r] ftable [AjPFeattable] Feature table object
-** @param [r] seq [AjPSeq] Sequence object
+** @param [u] thys [AjPReport] Report object
+** @param [r] ftable [const AjPFeattable] Feature table object
+** @param [r] seq [const AjPSeq] Sequence object
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void reportWriteExcel(AjPReport thys, AjPFeattable ftable, AjPSeq seq)
+static void reportWriteExcel(AjPReport thys,
+			     const AjPFeattable ftable, const AjPSeq seq)
 {
     AjPFile outf;
     AjIList iterft     = NULL;
@@ -835,7 +845,7 @@ static void reportWriteExcel(AjPReport thys, AjPFeattable ftable, AjPSeq seq)
 	ajFmtPrintF(outf, "\t%S", tagprints[j]);
     ajFmtPrintF(outf, "\n");
     
-    iterft = ajListIter(ftable->Features);
+    iterft = ajListIterRead(ftable->Features);
     while(ajListIterMore(iterft))
     {
 	feature = (AjPFeature)ajListIterNext(iterft);
@@ -870,7 +880,7 @@ static void reportWriteExcel(AjPReport thys, AjPFeattable ftable, AjPSeq seq)
     ajStrDel(&tmpstr);
     ajStrDel(&tagval);
     
-    ajListIterFree(iterft);
+    ajListIterFree(&iterft);
 
     return;
 }
@@ -899,15 +909,15 @@ static void reportWriteExcel(AjPReport thys, AjPFeattable ftable, AjPSeq seq)
 **
 ** Tags reported: All
 **
-** @param [r] thys [AjPReport] Report object
-** @param [r] ftable [AjPFeattable] Feature table object
-** @param [r] seq [AjPSeq] Sequence object
+** @param [u] thys [AjPReport] Report object
+** @param [r] ftable [const AjPFeattable] Feature table object
+** @param [r] seq [const AjPSeq] Sequence object
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void reportWriteFeatTable(AjPReport thys, AjPFeattable ftable,
-				 AjPSeq seq)
+static void reportWriteFeatTable(AjPReport thys,const  AjPFeattable ftable,
+				 const AjPSeq seq)
 {
     AjPFile outf;
     AjIList iterft     = NULL;
@@ -928,7 +938,7 @@ static void reportWriteFeatTable(AjPReport thys, AjPFeattable ftable,
     
     ntags = ajReportLists(thys, &tagtypes, &tagnames, &tagprints, &tagsizes);
     
-    iterft = ajListIter(ftable->Features);
+    iterft = ajListIterRead(ftable->Features);
     while(ajListIterMore(iterft))
     {
 	feature = (AjPFeature)ajListIterNext(iterft);
@@ -964,7 +974,7 @@ static void reportWriteFeatTable(AjPReport thys, AjPFeattable ftable,
     ajStrDel(&subseq);
     ajStrDel(&tagval);
     
-    ajListIterFree(iterft);
+    ajListIterFree(&iterft);
 
     return;
 }
@@ -987,15 +997,15 @@ static void reportWriteFeatTable(AjPReport thys, AjPFeattable ftable,
 **
 ** Tags reported: None
 **
-** @param [r] thys [AjPReport] Report object
-** @param [r] ftable [AjPFeattable] Feature table object
-** @param [r] seq [AjPSeq] Sequence object
+** @param [u] thys [AjPReport] Report object
+** @param [r] ftable [const AjPFeattable] Feature table object
+** @param [r] seq [const AjPSeq] Sequence object
 ** @return [void]
 ** @@
 ******************************************************************************/
 
 static void reportWriteListFile(AjPReport thys,
-				AjPFeattable ftable, AjPSeq seq)
+				const AjPFeattable ftable, const AjPSeq seq)
 {
     AjPFile outf;
     AjIList iterft     = NULL;
@@ -1011,7 +1021,7 @@ static void reportWriteListFile(AjPReport thys,
 
     ajReportWriteHeader(thys, ftable, seq);
 
-    iterft = ajListIter(ftable->Features);
+    iterft = ajListIterRead(ftable->Features);
     while(ajListIterMore(iterft))
     {
 	feature = (AjPFeature)ajListIterNext(iterft);
@@ -1047,7 +1057,7 @@ static void reportWriteListFile(AjPReport thys,
 
     ajReportWriteTail(thys, ftable, seq);
 
-    ajListIterFree(iterft);
+    ajListIterFree(&iterft);
     ajStrDel(&subseq);
     ajStrDel(&tmpstr);
 
@@ -1079,14 +1089,15 @@ static void reportWriteListFile(AjPReport thys,
 **
 ** Tags reported: All
 **
-** @param [r] thys [AjPReport] Report object
-** @param [r] ftable [AjPFeattable] Feature table object
-** @param [r] seq [AjPSeq] Sequence object
+** @param [u] thys [AjPReport] Report object
+** @param [r] ftable [const AjPFeattable] Feature table object
+** @param [r] seq [const AjPSeq] Sequence object
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void reportWriteMotif(AjPReport thys, AjPFeattable ftable, AjPSeq seq)
+static void reportWriteMotif(AjPReport thys,
+			     const AjPFeattable ftable, const AjPSeq seq)
 {
     AjPFile outf;
     AjIList iterft     = NULL;
@@ -1123,7 +1134,7 @@ static void reportWriteMotif(AjPReport thys, AjPFeattable ftable, AjPSeq seq)
 	    break;
 	}
     
-    iterft = ajListIter(ftable->Features);
+    iterft = ajListIterRead(ftable->Features);
     while(ajListIterMore(iterft))
     {
 	feature = (AjPFeature)ajListIterNext(iterft);
@@ -1190,7 +1201,7 @@ static void reportWriteMotif(AjPReport thys, AjPFeattable ftable, AjPSeq seq)
     ajStrDel(&tmpstr);
     ajStrDel(&tagval);
     
-    ajListIterFree(iterft);
+    ajListIterFree(&iterft);
 
     return;
 }
@@ -1219,15 +1230,15 @@ static void reportWriteMotif(AjPReport thys, AjPFeattable ftable, AjPSeq seq)
 **
 ** Tags reported:
 **
-** @param [r] thys [AjPReport] Report object
-** @param [r] ftable [AjPFeattable] Feature table object
-** @param [r] seq [AjPSeq] Sequence object
+** @param [u] thys [AjPReport] Report object
+** @param [r] ftable [const AjPFeattable] Feature table object
+** @param [r] seq [const AjPSeq] Sequence object
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void reportWriteNameTable(AjPReport thys, AjPFeattable ftable,
-				 AjPSeq seq)
+static void reportWriteNameTable(AjPReport thys, const AjPFeattable ftable,
+				 const AjPSeq seq)
 {
     AjPFile outf;
     AjIList iterft     = NULL;
@@ -1272,7 +1283,7 @@ static void reportWriteNameTable(AjPReport thys, AjPFeattable ftable,
     }
     ajFmtPrintF(outf, "\n");
     
-    iterft = ajListIter(ftable->Features);
+    iterft = ajListIterRead(ftable->Features);
     while(ajListIterMore(iterft))
     {
 	feature =(AjPFeature)ajListIterNext(iterft);
@@ -1308,7 +1319,7 @@ static void reportWriteNameTable(AjPReport thys, AjPFeattable ftable,
     ajStrDel(&subseq);
     ajStrDel(&tagval);
     
-    ajListIterFree(iterft);
+    ajListIterFree(&iterft);
     return;
 }
 
@@ -1332,15 +1343,15 @@ static void reportWriteNameTable(AjPReport thys, AjPFeattable ftable,
 **
 ** Tags reported: All
 **
-** @param [r] thys [AjPReport] Report object
-** @param [r] ftable [AjPFeattable] Feature table object
-** @param [r] seq [AjPSeq] Sequence object
+** @param [u] thys [AjPReport] Report object
+** @param [r] ftable [const AjPFeattable] Feature table object
+** @param [r] seq [const AjPSeq] Sequence object
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void reportWriteRegions(AjPReport thys, AjPFeattable ftable,
-			       AjPSeq seq)
+static void reportWriteRegions(AjPReport thys, const AjPFeattable ftable,
+			       const AjPSeq seq)
 {
     AjPFile outf;
     AjIList iterft     = NULL;
@@ -1366,7 +1377,7 @@ static void reportWriteRegions(AjPReport thys, AjPFeattable ftable,
     
     ntags = ajReportLists(thys, &tagtypes, &tagnames, &tagprints, &tagsizes);
     
-    iterft = ajListIter(ftable->Features);
+    iterft = ajListIterRead(ftable->Features);
     while(ajListIterMore(iterft))
     {
 	feature = (AjPFeature)ajListIterNext(iterft);
@@ -1403,7 +1414,7 @@ static void reportWriteRegions(AjPReport thys, AjPFeattable ftable,
     ajStrDel(&tagstr);
     ajStrDel(&tagval);
     
-    ajListIterFree(iterft);
+    ajListIterFree(&iterft);
 
     return;
 }
@@ -1432,15 +1443,15 @@ static void reportWriteRegions(AjPReport thys, AjPFeattable ftable,
 **
 ** Tags reported: All
 **
-** @param [r] thys [AjPReport] Report object
-** @param [r] ftable [AjPFeattable] Feature table object
-** @param [r] seq [AjPSeq] Sequence object
+** @param [u] thys [AjPReport] Report object
+** @param [r] ftable [const AjPFeattable] Feature table object
+** @param [r] seq [const AjPSeq] Sequence object
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void reportWriteSeqTable(AjPReport thys, AjPFeattable ftable,
-				AjPSeq seq)
+static void reportWriteSeqTable(AjPReport thys, const AjPFeattable ftable,
+				const AjPSeq seq)
 {
     AjPFile outf;
     AjIList iterft     = NULL;
@@ -1480,7 +1491,7 @@ static void reportWriteSeqTable(AjPReport thys, AjPFeattable ftable,
     }
     ajFmtPrintF(outf, " Sequence\n");
     
-    iterft = ajListIter(ftable->Features);
+    iterft = ajListIterRead(ftable->Features);
     while(ajListIterMore(iterft))
     {
 	feature = (AjPFeature)ajListIterNext(iterft);
@@ -1519,7 +1530,7 @@ static void reportWriteSeqTable(AjPReport thys, AjPFeattable ftable,
     ajStrDel(&subseq);
     ajStrDel(&tagval);
     
-    ajListIterFree(iterft);
+    ajListIterFree(&iterft);
 
     return;
 }
@@ -1546,14 +1557,15 @@ static void reportWriteSeqTable(AjPReport thys, AjPFeattable ftable,
 **
 ** Tags reported: All
 **
-** @param [r] thys [AjPReport] Report object
-** @param [r] ftable [AjPFeattable] Feature table object
-** @param [r] seq [AjPSeq] Sequence object
+** @param [u] thys [AjPReport] Report object
+** @param [r] ftable [const AjPFeattable] Feature table object
+** @param [r] seq [const AjPSeq] Sequence object
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void reportWriteSimple(AjPReport thys, AjPFeattable ftable, AjPSeq seq)
+static void reportWriteSimple(AjPReport thys,
+			      const AjPFeattable ftable, const AjPSeq seq)
 {
     static AjBool withSeq = AJFALSE;
 
@@ -1583,14 +1595,15 @@ static void reportWriteSimple(AjPReport thys, AjPFeattable ftable, AjPSeq seq)
 **
 ** Tags reported: All
 **
-** @param [r] thys [AjPReport] Report object
-** @param [r] ftable [AjPFeattable] Feature table object
-** @param [r] seq [AjPSeq] Sequence object
+** @param [u] thys [AjPReport] Report object
+** @param [r] ftable [const AjPFeattable] Feature table object
+** @param [r] seq [const AjPSeq] Sequence object
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void reportWriteSrs(AjPReport thys, AjPFeattable ftable, AjPSeq seq)
+static void reportWriteSrs(AjPReport thys,
+			   const AjPFeattable ftable, const AjPSeq seq)
 {
     static AjBool withSeq = AJTRUE;
 
@@ -1620,16 +1633,16 @@ static void reportWriteSrs(AjPReport thys, AjPFeattable ftable, AjPSeq seq)
 **
 ** Tags reported: All
 **
-** @param [r] thys [AjPReport] Report object
-** @param [r] ftable [AjPFeattable] Feature table object
-** @param [r] seq [AjPSeq] Sequence object
+** @param [u] thys [AjPReport] Report object
+** @param [r] ftable [const AjPFeattable] Feature table object
+** @param [r] seq [const AjPSeq] Sequence object
 ** @param [r] withSeq [AjBool] If ajTrue, includes the sequence in the output.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void reportWriteSrsFlags(AjPReport thys, AjPFeattable ftable,
-				AjPSeq seq, AjBool withSeq)
+static void reportWriteSrsFlags(AjPReport thys, const AjPFeattable ftable,
+				const AjPSeq seq, AjBool withSeq)
 {
     AjPFile outf;
     AjIList iterft     = NULL;
@@ -1655,7 +1668,7 @@ static void reportWriteSrsFlags(AjPReport thys, AjPFeattable ftable,
     
     ntags = ajReportLists(thys, &tagtypes, &tagnames, &tagprints, &tagsizes);
     
-    iterft = ajListIter(ftable->Features);
+    iterft = ajListIterRead(ftable->Features);
     while(ajListIterMore(iterft))
     {
 	feature = (AjPFeature)ajListIterNext(iterft);
@@ -1706,7 +1719,7 @@ static void reportWriteSrsFlags(AjPReport thys, AjPFeattable ftable,
     ajStrDel(&subseq);
     ajStrDel(&tagval);
     
-    ajListIterFree(iterft);
+    ajListIterFree(&iterft);
 
     return;
 }
@@ -1736,14 +1749,15 @@ static void reportWriteSrsFlags(AjPReport thys, AjPFeattable ftable,
 **
 ** Tags reported:
 **
-** @param [r] thys [AjPReport] Report object
-** @param [r] ftable [AjPFeattable] Feature table object
-** @param [r] seq [AjPSeq] Sequence object
+** @param [u] thys [AjPReport] Report object
+** @param [r] ftable [const AjPFeattable] Feature table object
+** @param [r] seq [const AjPSeq] Sequence object
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void reportWriteTable(AjPReport thys, AjPFeattable ftable, AjPSeq seq)
+static void reportWriteTable(AjPReport thys,
+			     const AjPFeattable ftable, const AjPSeq seq)
 {
     AjPFile outf;
     AjIList iterft     = NULL;
@@ -1787,7 +1801,7 @@ static void reportWriteTable(AjPReport thys, AjPFeattable ftable, AjPSeq seq)
     }
     ajFmtPrintF(outf, "\n");
     
-    iterft = ajListIter(ftable->Features);
+    iterft = ajListIterRead(ftable->Features);
     while(ajListIterMore(iterft))
     {
 	feature = (AjPFeature)ajListIterNext(iterft);
@@ -1830,7 +1844,7 @@ static void reportWriteTable(AjPReport thys, AjPFeattable ftable, AjPSeq seq)
     ajStrDel(&subseq);
     ajStrDel(&tagval);
     
-    ajListIterFree(iterft);
+    ajListIterFree(&iterft);
 
     return;
 }
@@ -1857,14 +1871,15 @@ static void reportWriteTable(AjPReport thys, AjPFeattable ftable, AjPSeq seq)
 **
 ** Tags reported:
 **
-** @param [r] thys [AjPReport] Report object
-** @param [r] ftable [AjPFeattable] Feature table object
-** @param [r] seq [AjPSeq] Sequence object
+** @param [u] thys [AjPReport] Report object
+** @param [r] ftable [const AjPFeattable] Feature table object
+** @param [r] seq [const AjPSeq] Sequence object
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void reportWriteTagseq(AjPReport thys, AjPFeattable ftable, AjPSeq seq)
+static void reportWriteTagseq(AjPReport thys,
+			      const AjPFeattable ftable, const AjPSeq seq)
 {
     AjPFile outf;
     AjIList iterft     = NULL;
@@ -1912,7 +1927,7 @@ static void reportWriteTagseq(AjPReport thys, AjPFeattable ftable, AjPSeq seq)
     for(i=0; i < seqend-9; i+=10)
 	ajFmtPrintAppS(&seqnumber, "    .%5d", i+10);
     
-    iterft = ajListIter(ftable->Features);
+    iterft = ajListIterRead(ftable->Features);
     while(ajListIterMore(iterft))
     {
 	feature = (AjPFeature)ajListIterNext(iterft);
@@ -1960,7 +1975,7 @@ static void reportWriteTagseq(AjPReport thys, AjPFeattable ftable, AjPSeq seq)
     
     ajStrDel(&substr);
     ajStrDel(&seqnumber);
-    ajListIterFree(iterft);
+    ajListIterFree(&iterft);
 
     return;
 }
@@ -1974,6 +1989,7 @@ static void reportWriteTagseq(AjPReport thys, AjPFeattable ftable, AjPSeq seq)
 **
 ** @param [d] pthys [AjPReport*] Report object reference
 ** @return [void]
+** @category delete [AjPReport] Default destructor
 ** @@
 ******************************************************************************/
 
@@ -2026,7 +2042,7 @@ void ajReportDel(AjPReport* pthys)
 **
 ** Opens a new report file
 **
-** @param [r] thys [AjPReport] Report object
+** @param [u] thys [AjPReport] Report object
 ** @param [r] name [const AjPStr] File name
 ** @return [AjBool] ajTrue on success
 ** @@
@@ -2118,7 +2134,7 @@ AjBool ajReportFindFormat(const AjPStr format, ajint* iformat)
 **
 ** Sets the tag list for a report
 **
-** @param [r] thys [AjPReport] Report object
+** @param [u] thys [AjPReport] Report object
 ** @param [r] taglist [const AjPStr] Tag names list
 ** @param [r] mintags [ajint] Minimum number of tags to use in report
 **                            (used to check there are enough tags listed)
@@ -2191,8 +2207,9 @@ AjBool ajReportSetTags(AjPReport thys, const AjPStr taglist, ajint mintags)
 **
 ** Checks the format works with the number of tags.
 ** Checks the format works with the type (protein or nucleotide).
+** Sets the format if not already defined.
 **
-** @param [r] thys [AjPReport] Report object
+** @param [u] thys [AjPReport] Report object
 ** @return [AjBool] ajTrue on success
 ** @@
 ******************************************************************************/
@@ -2235,6 +2252,7 @@ AjBool ajReportValid(AjPReport thys)
 ** Constructor for a report object
 **
 ** @return [AjPReport] New report object
+** @category new [AjPReport] Default constructor
 ** @@
 ******************************************************************************/
 
@@ -2265,14 +2283,15 @@ AjPReport ajReportNew(void)
 **
 ** Writes a feature report
 **
-** @param [r] thys [AjPReport] Report object
-** @param [r] ftable [AjPFeattable] Feature table object
-** @param [r] seq [AjPSeq] Sequence object
+** @param [u] thys [AjPReport] Report object
+** @param [r] ftable [const AjPFeattable] Feature table object
+** @param [r] seq [const AjPSeq] Sequence object
 ** @return [void]
+** @category output [AjPReport] Master sequence output routine
 ** @@
 ******************************************************************************/
 
-void ajReportWrite(AjPReport thys, AjPFeattable ftable, AjPSeq seq)
+void ajReportWrite(AjPReport thys, const AjPFeattable ftable, const AjPSeq seq)
 {
     ajDebug("ajReportWrite\n");		/* add ftable name and size */
 
@@ -2300,7 +2319,7 @@ void ajReportWrite(AjPReport thys, AjPFeattable ftable, AjPSeq seq)
 **
 ** Closes a feature report
 **
-** @param [r] thys [AjPReport] Report object
+** @param [u] thys [AjPReport] Report object
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -2361,16 +2380,17 @@ ajint ajReportLists(const AjPReport thys, AjPStr** types, AjPStr** names,
 
 /* @func ajReportWriteHeader **************************************************
 **
-** Writes a feature report header
+** Writes a feature report header and updates internal counters.
 **
-** @param [r] thys [AjPReport] Report object
+** @param [u] thys [AjPReport] Report object
 ** @param [r] ftable [const AjPFeattable] Feature table object
-** @param [r] seq [AjPSeq] Sequence object
+** @param [r] seq [const AjPSeq] Sequence object
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajReportWriteHeader(AjPReport thys, const AjPFeattable ftable, AjPSeq seq)
+void ajReportWriteHeader(AjPReport thys,
+			 const AjPFeattable ftable, const AjPSeq seq)
 {
     AjPFile outf;
     AjPStr tmpstr    = NULL;
@@ -2398,8 +2418,8 @@ void ajReportWriteHeader(AjPReport thys, const AjPFeattable ftable, AjPSeq seq)
 	if(ajListLength(thys->FileNames))
 	{
 	    i = 0;
-	    itername = ajListIter(thys->FileNames);
-	    itertype = ajListIter(thys->FileTypes);
+	    itername = ajListIterRead(thys->FileNames);
+	    itertype = ajListIterRead(thys->FileTypes);
 	    ajFmtPrintF(outf, "# Additional_files: %d\n",
 			ajListLength(thys->FileNames));
 	    while(ajListIterMore(itername) && ajListIterMore(itertype))
@@ -2408,8 +2428,8 @@ void ajReportWriteHeader(AjPReport thys, const AjPFeattable ftable, AjPSeq seq)
 		tmptype = (AjPStr)ajListIterNext(itertype);
 		ajFmtPrintF(outf, "# %d: %S (%S)\n", ++i, tmpname, tmptype);
 	    }
-	    ajListIterFree(itername);
-	    ajListIterFree(itertype);
+	    ajListIterFree(&itername);
+	    ajListIterFree(&itertype);
 	}
 
 	if(!doSingle || thys->Multi)
@@ -2469,14 +2489,15 @@ void ajReportWriteHeader(AjPReport thys, const AjPFeattable ftable, AjPSeq seq)
 **
 ** Writes a feature report tail
 **
-** @param [r] thys [AjPReport] Report object
+** @param [r] thys [const AjPReport] Report object
 ** @param [r] ftable [const AjPFeattable] Feature table object
-** @param [r] seq [AjPSeq] Sequence object
+** @param [r] seq [const AjPSeq] Sequence object
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajReportWriteTail(AjPReport thys, const AjPFeattable ftable, AjPSeq seq)
+void ajReportWriteTail(const AjPReport thys,
+		       const AjPFeattable ftable, const AjPSeq seq)
 {
     AjPFile outf;
     AjPStr tmpstr   = NULL;
@@ -2519,7 +2540,7 @@ void ajReportWriteTail(AjPReport thys, const AjPFeattable ftable, AjPSeq seq)
 **
 ** Defines a feature report header
 **
-** @param [r] thys [AjPReport] Report object
+** @param [u] thys [AjPReport] Report object
 ** @param [r] header [const AjPStr] Report header with embedded newlines
 ** @return [void]
 ** @@
@@ -2539,7 +2560,7 @@ void ajReportSetHeader(AjPReport thys, const AjPStr header)
 **
 ** Defines a feature report header
 **
-** @param [r] thys [AjPReport] Report object
+** @param [u] thys [AjPReport] Report object
 ** @param [r] header [const char*] Report header with embedded newlines
 ** @return [void]
 ** @@
@@ -2559,7 +2580,7 @@ void ajReportSetHeaderC(AjPReport thys, const char* header)
 **
 ** Defines a feature report tail
 **
-** @param [r] thys [AjPReport] Report object
+** @param [u] thys [AjPReport] Report object
 ** @param [r] tail [const AjPStr] Report tail with embedded newlines
 ** @return [void]
 ** @@
@@ -2579,7 +2600,7 @@ void ajReportSetTail(AjPReport thys, const AjPStr tail)
 **
 ** Defines a feature report tail
 **
-** @param [r] thys [AjPReport] Report object
+** @param [u] thys [AjPReport] Report object
 ** @param [r] tail [const char*] Report tail with embedded newlines
 ** @return [void]
 ** @@
@@ -2599,7 +2620,7 @@ void ajReportSetTailC(AjPReport thys, const char* tail)
 **
 ** Sets the report type (if it is not set already)
 **
-** @param [r] thys [AjPReport] Report object
+** @param [u] thys [AjPReport] Report object
 ** @param [r] ftable [const AjPFeattable] Feature table object
 ** @param [r] seq [const AjPSeq] Sequence object
 ** @return [void]
@@ -2670,11 +2691,11 @@ static char* reportCharname(const AjPReport thys)
 ** report object (derived from the ACD and command line -rusa option)
 **
 ** @param [r] thys [const AjPReport] Report object
-** @param [r] seq [AjPSeq] Sequence object
-** @return [AjPStr] Sequence name for this report
+** @param [r] seq [const AjPSeq] Sequence object
+** @return [const AjPStr] Sequence name for this report
 ******************************************************************************/
 
-AjPStr ajReportSeqName(const AjPReport thys, AjPSeq seq)
+const AjPStr ajReportSeqName(const AjPReport thys, const AjPSeq seq)
 {
     if(thys->Showusa)
 	return ajSeqGetUsa(seq);
@@ -2689,13 +2710,13 @@ AjPStr ajReportSeqName(const AjPReport thys, AjPSeq seq)
 **
 ** Adds an extra file name and description to the report
 **
-** @param [r] thys [AjPReport] Report object
-** @param [r] file [const AjPFile] File
+** @param [u] thys [AjPReport] Report object
+** @param [u] file [AjPFile] File
 ** @param [r] type [const AjPStr] Type (simple text description)
 ** @return [void]
 ******************************************************************************/
 
-void ajReportFileAdd(AjPReport thys, const AjPFile file, const AjPStr type)
+void ajReportFileAdd(AjPReport thys, AjPFile file, const AjPStr type)
 {
     AjPStr tmpname = NULL;
     AjPStr tmptype = NULL;
@@ -2721,13 +2742,13 @@ void ajReportFileAdd(AjPReport thys, const AjPFile file, const AjPStr type)
 **
 ** Reports the internal data structures
 **
-** @param [r] outf [const AjPFile] Output file
+** @param [u] outf [AjPFile] Output file
 ** @param [r] full [AjBool] Full report (usually ajFalse)
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajReportPrintFormat(const AjPFile outf, AjBool full)
+void ajReportPrintFormat(AjPFile outf, AjBool full)
 {
     ajint i = 0;
 
@@ -2766,7 +2787,6 @@ void ajReportDummyFunction(void)
 
     reportWriteDraw(report, ftable, seq);
 }
-
 
 
 

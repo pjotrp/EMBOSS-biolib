@@ -150,7 +150,7 @@ int main(int argc, char **argv)
 	    else
 	    {
 		descriptionline = ajStrNew();
-		ajStrAss(&descriptionline, ajSeqGetDesc(seq));
+		ajStrAssS(&descriptionline, ajSeqGetDesc(seq));
 		ajStrWrap(&descriptionline, 80);
 		ajFmtPrintF(outfile, "%S\n", descriptionline);
 		ajStrDel(&descriptionline);
@@ -297,7 +297,7 @@ static void showfeat_ShowFeatSeq(AjPFile outfile, AjPSeq seq, ajint beg,
             join = ajTrue;
 	/* else - no sort */
 
-	iter = ajListIter(feat->Features) ;
+	iter = ajListIterRead(feat->Features) ;
 
 	while(ajListIterMore(iter))
 	{
@@ -367,8 +367,8 @@ static void showfeat_ShowFeatSeq(AjPFile outfile, AjPSeq seq, ajint beg,
 		/* reset the strings for the new line */
 		ajStrClear(&lineout);
 		ajStrAppKI(&lineout, ' ', width);
-		ajStrAss(&sourceout, gf->Source);
-		ajStrAss(&typeout, gf->Type);
+		ajStrAssS(&sourceout, gf->Source);
+		ajStrAssS(&typeout, gf->Type);
 		strandout = gf->Strand;
 		ajStrClear(&tagsout);
 		ajStrClear(&posout);
@@ -417,25 +417,28 @@ static void showfeat_ShowFeatSeq(AjPFile outfile, AjPSeq seq, ajint beg,
             {
                 ajRangeValues(annotation, count, &rstart, &rend);
 
-	        /* check that the feature is within the range we wish to display */
+	    /* check that the feature is within the range we wish to
+               display */
 	        if(beg+1 > rend || end+1 < rstart)
 		    continue;
 
                 /* get the annotation text */                 
                 ajRangeText(annotation, count, &ann_text);
 
-                /* don't start a new line if collapse and previous text is the same */
+           /* don't start a new line if collapse and previous text is
+              the same */
                 if (!collapse || ajStrCmpCase(ann_text, typeout)) {
 		    if(gotoutput)
-                        showfeat_FeatOut(outfile, lineout, strandout, sourceout,
-				     posout, typeout, tagsout, width, strand,
-				     source, type, tags, position);
+                        showfeat_FeatOut(outfile, lineout, strandout,
+					 sourceout, posout,
+					 typeout, tagsout, width, strand,
+					 source, type, tags, position);
 
 		    /* reset the strings for the new line */
 		    ajStrClear(&lineout);
 		    ajStrAppKI(&lineout, ' ', width);
 		    ajStrAssC(&sourceout, "Annotation");
-                    ajStrAss(&typeout, ann_text);
+                    ajStrAssS(&typeout, ann_text);
 		    strandout = '\0';
 		    ajStrClear(&tagsout);
 		    ajStrClear(&posout);
@@ -452,14 +455,15 @@ static void showfeat_ShowFeatSeq(AjPFile outfile, AjPSeq seq, ajint beg,
 	    }
 	    /* print out any last line */
 	    if(gotoutput)
-	        showfeat_FeatOut(outfile, lineout, strandout, sourceout, posout,
-			     typeout, tagsout, width, strand, source, type,
-			     tags, position);
+	        showfeat_FeatOut(outfile, lineout, strandout,
+				 sourceout, posout,
+				 typeout, tagsout, width, strand, source, type,
+				 tags, position);
 
             ajStrDel(&ann_text);
         }
 
-	ajListIterFree(iter) ;
+	ajListIterFree(&iter) ;
 
     }
 
@@ -888,7 +892,7 @@ static AjBool showfeat_MatchPatternTags(AjPFeature feat, AjPStr tpattern,
             }	
         }
     }
-    ajListIterFree(titer);
+    ajListIterFree(&titer);
 
      /*
      ** If no match, then clear the tagstmp string

@@ -28,10 +28,13 @@
 static void compseq_readexpfreq(AjPTable *exptable, AjPFile infile,
 				 ajint size);
 static void compseq_makebigarray(ajulong no_elements, ajulong **bigarray);
-static double compseq_getexpfreqnuc(AjPStr dispseq, ajint word,
-	ajulong *calcfreq_array, ajulong calcfreq_total);
-static double compseq_getexpfreqprot(AjPStr dispseq, ajint word,
-	AjBool ignorebz, ajulong *calcfreq_array, ajulong calcfreq_total);
+static double compseq_getexpfreqnuc(const AjPStr dispseq, ajint word,
+				    ajulong *calcfreq_array,
+				    ajulong calcfreq_total);
+static double compseq_getexpfreqprot(const AjPStr dispseq, ajint word,
+				     AjBool ignorebz,
+				     const ajulong *calcfreq_array,
+				     ajulong calcfreq_total);
 
 
 
@@ -434,8 +437,9 @@ static void compseq_makebigarray(ajulong no_elements, ajulong **bigarray)
 ** Read the expected frequencies of words from a file produced by a
 ** previous run of this program. 
 **
-** @param [w] exptable [AjPTable*] Table of words and their expected frequencies
-** @param [r] infile [AjPFile] Input file holding expected frequencies
+** @param [w] exptable [AjPTable*] Table of words and their
+**                                 expected frequencies
+** @param [u] infile [AjPFile] Input file holding expected frequencies
 ** @param [r] size [ajint] Size of word expected (used for validation)
 ** @return [void] 
 ** @@
@@ -543,13 +547,13 @@ static void compseq_readexpfreq(AjPTable *exptable, AjPFile infile,
 }
 
 
-/* @funcstatic compseq_getexpfreqnuc ********************************************
+/* @funcstatic compseq_getexpfreqnuc ******************************************
 **
 ** Using the observed counts of single bases in the sequence this
 ** calculates the expected frequency of a word of one or more bases
 ** as the product of the single base frequencies.
 **
-** @param [r] dispseq [AjPStr] sequence of word
+** @param [r] dispseq [const AjPStr] sequence of word
 ** @param [r] word [ajint] word length
 ** @param [r] calcfreq_array [ajulong *] array of counts of single bases
 ** @param [r] calcfreq_total [ajulong] number of bases counted
@@ -557,7 +561,7 @@ static void compseq_readexpfreq(AjPTable *exptable, AjPFile infile,
 ** @@
 ******************************************************************************/
 
-static double compseq_getexpfreqnuc(AjPStr dispseq, ajint word,
+static double compseq_getexpfreqnuc(const AjPStr dispseq, ajint word,
 	ajulong *calcfreq_array, ajulong calcfreq_total)
 {
     ajint i;
@@ -590,30 +594,31 @@ static double compseq_getexpfreqnuc(AjPStr dispseq, ajint word,
 }
 
 
-/* @funcstatic compseq_getexpfreqprot ********************************************
+/* @funcstatic compseq_getexpfreqprot *****************************************
 **
 ** Using the observed counts of single residues in the sequence this
 ** calculates the expected frequency of a word of one or more residues
 ** by simply summing the single residue frequencies.
 **
-** @param [r] dispseq [AjPStr] sequence of word
+** @param [r] dispseq [const AjPStr] sequence of word
 ** @param [r] word [ajint] word length
 ** @param [r] ignorebz [AjBool] True if ignoring B and Z residues
-** @param [r] calcfreq_array [ajulong *] array of counts of single bases
+** @param [r] calcfreq_array [const ajulong *] array of counts of single bases
 ** @param [r] calcfreq_total [ajulong] number of bases counted
 ** @return [double] Calculated expected frequency of this word
 ** @@
 ******************************************************************************/
 
 
-static double compseq_getexpfreqprot(AjPStr dispseq, ajint word,
-	AjBool ignorebz, ajulong *calcfreq_array, ajulong calcfreq_total)
+static double compseq_getexpfreqprot(const AjPStr dispseq, ajint word,
+				     AjBool ignorebz,
+				     const ajulong *calcfreq_array,
+				     ajulong calcfreq_total)
 {
-
+    double result;
     ajint i;
     ajint offset = 0;
     char *s;
-    double result;
     AjBool otherflag;
     
     result = 1.0;

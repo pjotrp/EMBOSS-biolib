@@ -316,7 +316,7 @@ static void restrict_printHits(AjPFile *outf, AjPList *l, AjPStr *name,
 	    value = ajTableGet(table,m->cod);
 
 	    if(value)
-		ajStrAss(&m->cod,value);
+		ajStrAssS(&m->cod,value);
 	}
 
 

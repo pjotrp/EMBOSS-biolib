@@ -713,14 +713,14 @@ int main(int argc, char **argv)
 	
 	/* DIAGNOSTICS 
 	ajFmtPrint("\n\n\nContents of famin_hits list\n");
-	iter= ajListIter(famin_hits);
+	iter= ajListIterRead(famin_hits);
 	while((hit1=(AjPScophit)ajListIterNext(iter)))
 	    ajFmtPrint("%S (%d-%d, %S, %B %B)\n", 
 		       hit1->Acc, hit1->Start, hit1->End, hit1->Typeobj, hit1->Target, hit1->Target2);
-	ajListIterFree(iter);
+	ajListIterFree(&iter);
 	*/
 
-	iter = ajListIter(famin_hits);
+	iter = ajListIterRead(famin_hits);
 	hit1 = (AjPScophit)ajListIterNext(iter);
 	   
 	while((hit2=(AjPScophit)ajListIterNext(iter)))
@@ -787,25 +787,25 @@ int main(int argc, char **argv)
 	    hit1 = hit2;
 	}
 	   
-	ajListIterFree(iter);
+	ajListIterFree(&iter);
 	iter=NULL;
 
 	/* DIAGNOSTICS
 	printf("\n\n");
-	iter = ajListIter(famin_hits);
+	iter = ajListIterRead(famin_hits);
 	while((hit2=(AjPScophit)ajListIterNext(iter)))
 	{
 	    ajFmtPrint("%S (%B)\n", hit2->Acc, hit2->Target2);
 	}
 	printf("\n\n");
-	ajListIterFree(iter);
+	ajListIterFree(&iter);
 	iter=NULL;
 	*/
 
 
 
 	/* Construct a sequence set from the main list of Scophit's */
-        iter = ajListIter(famin_hits);        
+        iter = ajListIterRead(famin_hits);        
         while((tmp_hit=(AjPScophit)ajListIterNext(iter)))
         {
 	    /* Do not want to include domains from the alignment that 
@@ -819,7 +819,7 @@ int main(int argc, char **argv)
             ajListPushApp(famin_seqs,tmp_seq);
 	    /* famin_seqs must be popped and the nodes freed */
         }
-        ajListIterFree(iter);
+        ajListIterFree(&iter);
         iter=NULL;
 	
 
@@ -832,15 +832,15 @@ int main(int argc, char **argv)
         embDmxSeqNR(famin_seqs, &keep, &nsetnr, matrix, gapopen, gapextend, thresh);
 
         /* clean up famin_seqs */
-        iter=ajListIter(famin_seqs);
+        iter=ajListIterRead(famin_seqs);
         while((tmp_seq=(AjPSeq)ajListIterNext(iter)))
             ajSeqDel(&tmp_seq);
-        ajListIterFree(iter);
+        ajListIterFree(&iter);
         ajListDel(&famin_seqs);
 	
 
         /* Create a list of Scophit objects that has been processed */
-        for(iter = ajListIter(famin_hits), i = 0;
+        for(iter = ajListIterRead(famin_hits), i = 0;
 	    (tmp_hit = (AjPScophit)ajListIterNext(iter));i++)
         {
 	    /* Redundancy will not have been calculated for domains from the alignment that
@@ -886,19 +886,19 @@ int main(int argc, char **argv)
 
 /*JISON*/        ajIntDel(&keep);
 	
-        ajListIterFree(iter);
+        ajListIterFree(&iter);
         iter = NULL;
 
 
 	/* DIAGNOSTICS
 	printf("\n\n");
-	iter = ajListIter(famin_hits);
+	iter = ajListIterRead(famin_hits);
 	while((hit2=(AjPScophit)ajListIterNext(iter)))
 	{
 	    ajFmtPrint("%S (%B)\n", hit2->Acc, hit2->Target2);
 	}
 	printf("\n\n");
-	ajListIterFree(iter);
+	ajListIterFree(&iter);
 	iter=NULL;
 	*/
 
@@ -923,7 +923,7 @@ int main(int argc, char **argv)
 	/* famout_valid and iter must be NULL in this context */
         embDmxScophitsAccToHitlist(famin_hits,&famout_valid,&iter);
         ajListDel(&famin_hits);
-        ajListIterFree(iter);
+        ajListIterFree(&iter);
         iter = NULL;
 
 	/* Write validation file */
@@ -944,23 +944,23 @@ int main(int argc, char **argv)
         embDmxScophitsToHitlist(famout_hits,&famout,&iter);
 	/* famout must be freed */
 	
-        ajListIterFree(iter);
+        ajListIterFree(&iter);
         iter = NULL;
 
         /* free the nodes in famout_hits and the list itself  */
-        iter=ajListIter(famout_hits);
+        iter=ajListIterRead(famout_hits);
         while((tmp_hit=(AjPScophit)ajListIterNext(iter)))
             ajDmxScophitDel(&tmp_hit);
-        ajListIterFree(iter);
+        ajListIterFree(&iter);
         ajListDel(&famout_hits);
 
 
 	/* We are now done with the main list of Scophit's. Memory in tmp_list 
 	   can also be freed*/
-        iter=ajListIter(tmp_list);
+        iter=ajListIterRead(tmp_list);
         while((tmp_hit=(AjPScophit)ajListIterNext(iter)))
             ajDmxScophitDel(&tmp_hit);
-        ajListIterFree(iter);
+        ajListIterFree(&iter);
         ajListDel(&tmp_list);
 	iter=NULL;
 
@@ -1007,10 +1007,10 @@ int main(int argc, char **argv)
     ajStrDel(&exec);
     
 
-    iter=ajListIter(scop_list);
+    iter=ajListIterRead(scop_list);
     while((tmp_scop=(AjPScop)ajListIterNext(iter)))
         ajScopDel(&tmp_scop);
-    ajListIterFree(iter);
+    ajListIterFree(&iter);
     ajListDel(&scop_list);
     ajListDel(&tmp_list);
     

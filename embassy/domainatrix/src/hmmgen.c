@@ -327,7 +327,7 @@ int main(int argc, char **argv)
             /* open up a file and write out the alignment in CLUSTAL format */
             seqsinf = ajFileNewOut(seqsin);
           
-            ajDmxScopalgWriteClustal2(scopalg,&seqsinf);
+            ajDmxScopalgWriteClustal2(scopalg,seqsinf);
           
 	    ajDmxScopalgDel(&scopalg);
 	    

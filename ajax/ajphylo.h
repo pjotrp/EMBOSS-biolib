@@ -205,28 +205,30 @@ typedef struct AjSPhyloTree
 
 void           ajPhyloDistDel (AjPPhyloDist* pthis);
 AjPPhyloDist   ajPhyloDistNew (void);
-AjPPhyloDist   ajPhyloDistRead (AjPStr filename, ajint size, AjBool missing);
-void           ajPhyloDistTrace (AjPPhyloDist thys);
+AjPPhyloDist   ajPhyloDistRead (const AjPStr filename, ajint size,
+				AjBool missing);
+void           ajPhyloDistTrace (const AjPPhyloDist thys);
 
 void           ajPhyloFreqDel (AjPPhyloFreq* pthis);
 AjPPhyloFreq   ajPhyloFreqNew (void);
-AjPPhyloFreq   ajPhyloFreqRead (AjPStr filename, AjBool contchar,
+AjPPhyloFreq   ajPhyloFreqRead (const AjPStr filename, AjBool contchar,
 				AjBool genedata, AjBool indiv);
-void           ajPhyloFreqTrace (AjPPhyloFreq thys);
+void           ajPhyloFreqTrace (const AjPPhyloFreq thys);
 
 void           ajPhyloPropDel (AjPPhyloProp* pthis);
-ajint          ajPhyloPropGetSize (AjPPhyloProp thys);
+ajint          ajPhyloPropGetSize (const AjPPhyloProp thys);
 AjPPhyloProp   ajPhyloPropNew (void);
-AjPPhyloProp   ajPhyloPropRead (AjPStr filename, AjPStr propchars,
-			       ajint len, ajint size);
+AjPPhyloProp   ajPhyloPropRead (const AjPStr filename, const AjPStr propchars,
+				ajint len, ajint size);
 
 void           ajPhyloStateDel (AjPPhyloState* pthis);
 AjPPhyloState  ajPhyloStateNew (void);
-AjPPhyloState* ajPhyloStateRead (AjPStr filename, AjPStr statechars);
+AjPPhyloState* ajPhyloStateRead (const AjPStr filename,
+				 const AjPStr statechars);
 
 void           ajPhyloTreeDel (AjPPhyloTree* pthis);
 AjPPhyloTree   ajPhyloTreeNew (void);
-AjPPhyloTree*  ajPhyloTreeRead (AjPStr filename, ajint size);
+AjPPhyloTree*  ajPhyloTreeRead (const AjPStr filename, ajint size);
 
 #endif
 

@@ -92,7 +92,7 @@ int main(int argc, char **argv)
 	    end = ajSeqLen(seq)-1;
 
 	/* get a COPY of the sequence string */
-	ajStrAss(&str, ajSeqStr(seq));
+	ajStrAssS(&str, ajSeqStr(seq));
 
 	ajStrSub(&str, start, end);
 	ajSeqReplace(seq, str);
@@ -121,7 +121,7 @@ int main(int argc, char **argv)
 ** @param [r] window [ajint] window size
 ** @param [r] percent [float] % ambiguity in window
 ** @param [r] strict [AjBool] trim off all IUPAC ambiguity codes, not just X, N
-** @param [?] star [AjBool] trim off asterisks in proteins
+** @param [r] star [AjBool] trim off asterisks in proteins
 ** @return [ajint] position to trim to or -1
 **                 or ajSeqLen(seq) if no bad characters were found
 ** @@

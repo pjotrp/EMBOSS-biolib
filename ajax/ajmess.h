@@ -139,8 +139,8 @@ ajint             ajMessErrorCount (void);
 
 #include <setjmp.h>
 
-jmp_buf*          ajMessCatchCrash (jmp_buf* ) ;
-jmp_buf*          ajMessCatchError (jmp_buf* ) ;
+const jmp_buf*          ajMessCatchCrash (const jmp_buf* ) ;
+const jmp_buf*          ajMessCatchError (const jmp_buf* ) ;
 char*             ajMessCaughtMessage (void) ;
 
   /* if a setjmp() stack context is set using ajMessCatch*() then rather than

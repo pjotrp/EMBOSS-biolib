@@ -187,7 +187,7 @@ AjPList embDbiFileList(AjPStr dir, AjPStr wildfile, AjBool trim)
     tmp = ajStrNewC(ajStrStr(wwildfile));
 
     if(ajStrLen(dir))
-	ajStrAss(&dirfix, dir);
+	ajStrAssS(&dirfix, dir);
     else
 	ajStrAssC(&dirfix, "./");
 
@@ -296,7 +296,7 @@ AjPList embDbiFileListExc(AjPStr dir, AjPStr wildfile, AjPStr exclude)
 	    dir, wildfile, exclude);
 
     if(ajStrLen(dir))
-	ajStrAss(&dirfix, dir);
+	ajStrAssS(&dirfix, dir);
     else
 	ajStrAssC(&dirfix, "./");
 
@@ -566,7 +566,7 @@ void embDbiSysCmd(AjPStr cmdstr)
     }
 
     ajSysArgListFree(&arglist);
-    ajCharFree(pgm);
+    ajCharFree(&pgm);
 
     return;
 }
@@ -581,7 +581,7 @@ void embDbiSysCmd(AjPStr cmdstr)
 ** @param [r] file [AjPFile] Output file
 ** @param [r] filesize [ajint] File size (if known, can be rewritten)
 ** @param [r] recordcnt [ajint] Number of records
-** @retyurn [void]
+** @return [void]
 ******************************************************************************/
 
 void embDbiHeaderSize(AjPFile file, ajint filesize, ajint recordcnt)
@@ -1066,7 +1066,7 @@ ajint embDbiSortWriteEntry(AjPFile entFile, ajint maxidlen,
 	ajStrToInt(tmpstr, &filenum);
 	embDbiWriteEntryRecord(entFile, maxidlen, idstr,
 			       rpos, spos, filenum);
-	ajStrAss (&lastidstr, idstr);
+	ajStrAssS(&lastidstr, idstr);
 	idcnt++;
     }
     ajFileClose(&esortfile);

@@ -2180,7 +2180,7 @@ AjBool embHitlistClassify(AjPHitlist *hits, AjPList targets, ajint thresh)
 
 
     /* Create list & list iterator & other memory */
-    itert   = ajListIter(targets);
+    itert   = ajListIterRead(targets);
     idxlist = ajListNew();
     tmpstr  = ajStrNew();
     
@@ -2372,7 +2372,7 @@ AjBool embHitlistClassify(AjPHitlist *hits, AjPList targets, ajint thresh)
 	embHitidxDel(&ptri);	
     ajListDel(&idxlist);
     AJFREE(idxarr);
-    ajListIterFree(itert);
+    ajListIterFree(&itert);
     ajStrDel(&tmpstr);
 
     return ajTrue;

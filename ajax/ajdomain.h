@@ -90,17 +90,11 @@ extern "C"
 ** @new    ajCathReadNew Cath constructor from reading dcf format file.
 ** @delete ajScopDel Default Scop destructor.
 ** @delete ajCathDel Default Cath destructor.
-** @ass    ajScopCopy Replicates a Scop object.
+** @assign ajScopCopy Replicates a Scop object.
 ** @use    ajScopMatchSunid Sort Scop objects by Sunid_Family element.
 ** @use    ajScopMatchScopid Sort Scop objects by Entry element.
 ** @use    ajScopMatchPdbId Sort Scop objects by Pdb element.
 ** @use    ajCathMatchPdbId Sort Cath objects by Pdb element.
-** @use    embScopToPdbid  Read a scop identifier code and writes the 
-**         equivalent PDB identifier code.
-** @use    embScopToSp  Read a scop identifier code and writes the 
-**         equivalent swissprot identifier code.
-** @use    embScopToAcc  Read a scop identifier code and writes the 
-**         equivalent accession number.
 ** @use    ajScopArrFindScopid Binary search for Entry element over array 
 **         of Scop objects. 
 ** @use    ajScopArrFindSunid Binary search for Sunid_Family element over 
@@ -229,24 +223,24 @@ void ajDomainDummyFunction(void);
 /* ======================================================================= */
 AjPScop  ajScopNew(ajint n);
 void     ajScopDel(AjPScop *ptr);
-AjBool   ajScopCopy(AjPScop *to, AjPScop from);
+AjBool   ajScopCopy(AjPScop *to, const AjPScop from);
 
-ajint    ajScopArrFindScopid(AjPStr id, AjPScop *arr, ajint siz);
-ajint    ajScopArrFindSunid(ajint id, AjPScop *arr, ajint siz);
-ajint    ajScopArrFindPdbid(AjPStr id, AjPScop *arr, ajint siz);
+ajint    ajScopArrFindScopid(const AjPScop *arr, ajint siz, const AjPStr id);
+ajint    ajScopArrFindSunid(const AjPScop *arr, ajint siz, ajint id);
+ajint    ajScopArrFindPdbid(const AjPScop *arr, ajint siz, const AjPStr id);
 
 ajint    ajScopMatchScopid(const void *hit1, const void *hit2);
 ajint    ajScopMatchPdbId(const void *hit1, const void *hit2);
 ajint    ajScopMatchSunid(const void *entry1, const void *entry2);
 
-AjPScop  ajScopReadCNew(AjPFile inf, char *entry);
-AjPScop  ajScopReadNew(AjPFile inf, AjPStr entry);
+AjPScop  ajScopReadCNew(AjPFile inf, const char *entry);
+AjPScop  ajScopReadNew(AjPFile inf, const AjPStr entry);
 AjPList  ajScopReadAllNew(AjPFile inf); 
 AjPList  ajScopReadAllRawNew(AjPFile claf, AjPFile desf, AjBool outputall);
-AjBool   ajScopWrite(AjPFile outf, AjPScop obj);
+AjBool   ajScopWrite(AjPFile outf, const AjPScop obj);
 
-AjBool   ajPdbWriteDomain(AjPFile outf, AjPPdb pdb,
-			   AjPScop scop, AjPFile errf);
+AjBool   ajPdbWriteDomain(AjPFile outf, const AjPPdb pdb,
+			   const AjPScop scop, AjPFile errf);
 
 
 
@@ -259,15 +253,15 @@ AjBool   ajPdbWriteDomain(AjPFile outf, AjPPdb pdb,
 AjPCath   ajCathNew(ajint n);
 void      ajCathDel(AjPCath *ptr);
 
-ajint     ajCathArrFindPdbid(AjPStr id, AjPCath *arr, ajint siz);
+ajint     ajCathArrFindPdbid(const AjPCath *arr, ajint siz, const AjPStr id);
 ajint     ajCathMatchPdbid(const void *hit1, const void *hit2);
 
-AjPCath   ajCathReadCNew(AjPFile inf, char *entry);
-AjPCath   ajCathReadNew(AjPFile inf, AjPStr entry);
+AjPCath   ajCathReadCNew(AjPFile inf, const char *entry);
+AjPCath   ajCathReadNew(AjPFile inf, const AjPStr entry);
 AjPList   ajCathReadAllNew(AjPFile inf); 
 AjPList   ajCathReadAllRawNew(AjPFile cathf, AjPFile domf, 
 			      AjPFile namesf, AjPFile logf);
-AjBool    ajCathWrite(AjPFile outf, AjPCath obj);
+AjBool    ajCathWrite(AjPFile outf, const AjPCath obj);
 
 
 #endif

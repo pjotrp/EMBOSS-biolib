@@ -314,8 +314,8 @@ int main(int argc, char **argv)
 **
 ** Undocumented.
 **
-** @param [?] max [ajint] Undocumented
-** @param [?] imax [ajint] Undocumented
+** @param [r] max [ajint] Undocumented
+** @param [r] imax [ajint] Undocumented
 ** @@
 ******************************************************************************/
 

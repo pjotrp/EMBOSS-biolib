@@ -56,16 +56,16 @@ AjBool       ajSeqParseNcbi(const AjPStr str, AjPStr* id, AjPStr* acc,
 			    AjPStr* sv, AjPStr* gi, AjPStr* desc);
 void         ajSeqQueryClear (AjPSeqQuery thys);
 void         ajSeqQueryDel (AjPSeqQuery *pthis);
-AjBool       ajSeqQueryIs (AjPSeqQuery qry);
+AjBool       ajSeqQueryIs (const AjPSeqQuery qry);
 AjPSeqQuery  ajSeqQueryNew (void);
 void         ajSeqQueryStarclear (AjPSeqQuery qry);
 void         ajSeqQueryTrace (const AjPSeqQuery qry);
-AjBool       ajSeqQueryWild (AjPSeqQuery qry);
-void         ajSeqPrintInFormat (const AjPFile outf, AjBool full);
+AjBool       ajSeqQueryWild (const AjPSeqQuery qry);
+void         ajSeqPrintInFormat (AjPFile outf, AjBool full);
 AjBool       ajSeqRead (AjPSeq thys, AjPSeqin seqin);
 ajint        ajSeqsetApp (AjPSeqset thys, const AjPSeq seq);
 AjBool       ajSeqsetGetFromUsa(const AjPStr thys, AjPSeqset *seq);
-AjBool       ajSeqsetFromList (AjPSeqset thys, AjPList list);
+AjBool       ajSeqsetFromList (AjPSeqset thys, const AjPList list);
 ajint        ajSeqsetFromPair (AjPSeqset thys,
 			       const AjPSeq seqa, const AjPSeq seqb);
 AjBool       ajSeqsetallRead (AjPList thys, AjPSeqin seqin);

@@ -426,7 +426,7 @@ int main(int argc, char **argv)
 
 	if(list)
 	{
-	    iter = ajListIter(list);
+	    iter = ajListIterRead(list);
 	    while((ppt = ajListIterNext(iter)))
 	    {
 		x1 = ppt->x1+b1-1;
@@ -435,7 +435,7 @@ int main(int argc, char **argv)
 		y2 = ppt->y2+b2-1;
 		ajGraphAddLine(xygraph,x1,y1,x2,y2,0);
 	    }
-	    ajListIterFree(iter);
+	    ajListIterFree(&iter);
 	}
 
 	ajGraphPlpDataSetXY(gdata,xa,ya);
@@ -473,11 +473,11 @@ int main(int argc, char **argv)
 **
 ** Undocumented.
 **
-** @param [?] l [AjPList*] Undocumented
-** @param [?] x1 [float] Undocumented
-** @param [?] y1 [float] Undocumented
-** @param [?] x2 [float] Undocumented
-** @param [?] y2 [float] Undocumented
+** @param [u] l [AjPList*] Undocumented
+** @param [r] x1 [float] Undocumented
+** @param [r] y1 [float] Undocumented
+** @param [r] x2 [float] Undocumented
+** @param [r] y2 [float] Undocumented
 ** @param [r] stretch [AjBool] Do a stretch plot
 ** @return [void]
 ** @@

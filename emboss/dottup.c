@@ -28,8 +28,9 @@
 
 static void dottup_drawPlotlines(void **x, void *cl);
 static void dottup_plotMatches(AjPList list);
-static void dottup_stretchplot(AjPGraph graph, AjPList matchlist, AjPSeq seq1,
-			       AjPSeq seq2, ajint begin1, ajint begin2,
+static void dottup_stretchplot(AjPGraph graph, const AjPList matchlist,
+			       const AjPSeq seq1, const AjPSeq seq2,
+			       ajint begin1, ajint begin2,
 			       ajint end1, ajint end2);
 
 
@@ -255,7 +256,7 @@ static void dottup_drawPlotlines(void **x, void *cl)
 **
 ** Undocumented.
 **
-** @param [?] list [AjPList] Undocumented
+** @param [r] list [AjPList] Undocumented
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -276,20 +277,21 @@ static void dottup_plotMatches(AjPList list)
 **
 ** Undocumented.
 **
-** @param [?] graph [AjPGraph] Undocumented
-** @param [?] matchlist [AjPList] Undocumented
-** @param [?] seq1 [AjPSeq] Undocumented
-** @param [?] seq2 [AjPSeq] Undocumented
-** @param [?] begin1 [ajint] Undocumented
-** @param [?] begin2 [ajint] Undocumented
-** @param [?] end1 [ajint] Undocumented
-** @param [?] end2 [ajint] Undocumented
+** @param [u] graph [AjPGraph] Undocumented
+** @param [r] matchlist [const AjPList] Undocumented
+** @param [r] seq1 [const AjPSeq] Undocumented
+** @param [r] seq2 [const AjPSeq] Undocumented
+** @param [r] begin1 [ajint] Undocumented
+** @param [r] begin2 [ajint] Undocumented
+** @param [r] end1 [ajint] Undocumented
+** @param [r] end2 [ajint] Undocumented
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void dottup_stretchplot(AjPGraph graph, AjPList matchlist, AjPSeq seq1,
-			       AjPSeq seq2, ajint begin1, ajint begin2,
+static void dottup_stretchplot(AjPGraph graph, const AjPList matchlist,
+			       const AjPSeq seq1, const AjPSeq seq2,
+			       ajint begin1, ajint begin2,
 			       ajint end1, ajint end2)
 {
     EmbPWordMatch wmp = NULL;
@@ -332,7 +334,7 @@ static void dottup_stretchplot(AjPGraph graph, AjPList matchlist, AjPSeq seq1,
 
     if(matchlist)
     {
-	iter = ajListIter(matchlist);
+	iter = ajListIterRead(matchlist);
 	while((wmp = ajListIterNext(iter)))
 	{
 	    x1 = x2 = (float) (wmp->seq1start + begin1);
@@ -341,7 +343,7 @@ static void dottup_stretchplot(AjPGraph graph, AjPList matchlist, AjPSeq seq1,
 	    y2 += (float) wmp->length-1;
 	    ajGraphAddLine(graph,x1,y1,x2,y2,0);
 	}
-	ajListIterFree(iter);
+	ajListIterFree(&iter);
     }
 
     ajGraphPlpDataSetXY(gdata,xa,ya);

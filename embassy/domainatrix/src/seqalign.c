@@ -443,9 +443,9 @@ int main(int argc, char **argv)
 		    ajFatal("Could not open %S for writing\n", clustinf1);
 		}
 
-		 embDmxScopalgWriteFasta(align,&outf1);  
-		/* ajDmxScopalgWriteClustal(align,&outf1);   */
-		/*	    ajDmxScopalgWrite(outf1, align);  */
+		 ajDmxScopalgWriteFasta(align,outf1);  
+		/* ajDmxScopalgWriteClustal(align, outf1);   */
+		/*	    ajDmxScopalgWrite(align, outf1);  */
 		ajFileClose(&outf1);
 	    } 
 	    
@@ -456,7 +456,8 @@ int main(int argc, char **argv)
 	    /* extract the relavent family or superfamily or etc.. into a 
 	       list of Hitlist objects. */
 
-	    if(!(tmp_list = embHitlistReadNode(scopin, fam, sfam, fold, class)))
+	    if(!(tmp_list = embHitlistReadNode(scopin, fam, sfam,
+					       fold, class)))
 	    {
 		ajWarn("Hitlist not found in Scop hits file");
 		
@@ -469,16 +470,17 @@ int main(int argc, char **argv)
 		ajFileClose(&alnf);
 		
 
-		/* Rewind the scop families input file, write scop families output file.  
-		   The Typeobj element of the hits used in the alignment are given as SEED */
+		/* Rewind the scop families input file, write scop
+		   families output file.  The Typeobj element of the
+		   hits used in the alignment are given as SEED */
 		ajFileSeek(scopin,0,SEEK_SET);
 
 		continue;
 	    }
 	    /* tmp_list will only ever contain one Hitlist */
-	    iter = ajListIter(tmp_list);
+	    iter = ajListIterRead(tmp_list);
 	    temphl = (AjPHitlist)ajListIterNext(iter);
-	    ajListIterFree(iter);
+	    ajListIterFree(&iter);
 
 	    if((temphl->N == 1) || (temphl->N ==0))
 	    {
@@ -653,7 +655,7 @@ int main(int argc, char **argv)
 ** Scophit structures and then writes the sequences to a file in FASTA
 ** format.
 **
-** @param [r] list      [AjPList *]    A list Hitlist structures.
+** @param [d] list      [AjPList *]    A list Hitlist structures.
 ** @param [w] outf      [AjPFile *]    Outfile file pointer
 ** 
 ** @return [AjBool] True on success (a file has been written)
@@ -677,7 +679,7 @@ AjBool seqalign_HitlistsWriteFasta(AjPList *list, AjPFile *outf)
     
     if(embDmxHitlistToScophits(*list,&hitslist))
     {
-	iter = ajListIter(hitslist);
+	iter = ajListIterRead(hitslist);
 	/*
 	** iterate through the list and write out the accession number
 	** and sequence to outf in FASTA format.
@@ -689,7 +691,7 @@ AjBool seqalign_HitlistsWriteFasta(AjPList *list, AjPFile *outf)
 	    ajFmtPrintF(*outf,"%S\n",hit->Seq);
 	    ajDmxScophitDel(&hit);
 	}	
-	ajListIterFree(iter);
+	ajListIterFree(&iter);
 	ajListDel(&hitslist);
     }		
     

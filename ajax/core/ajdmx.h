@@ -162,9 +162,9 @@ void          ajDmxDummyFunction(void);
 AjPScophit    ajDmxScophitNew(void);
 void          ajDmxScophitDel(AjPScophit *pthis);
 void          ajDmxScophitDelWrap(const void  **ptr);
-AjPList       ajDmxScophitListCopy(AjPList ptr);
+AjPList       ajDmxScophitListCopy(const AjPList ptr);
 
-AjBool        ajDmxScophitCheckTarget(AjPScophit ptr);
+AjBool        ajDmxScophitCheckTarget(const AjPScophit ptr);
 AjBool        ajDmxScophitTarget(AjPScophit *h);
 AjBool        ajDmxScophitTarget2(AjPScophit *h);
 AjBool        ajDmxScophitTargetLowPriority(AjPScophit *h);
@@ -180,9 +180,10 @@ ajint         ajDmxScophitCompSunid(const void *entry1, const void *entry2);
 ajint         ajDmxScophitCompScore(const void *hit1, const void *hit2); 
 ajint         ajDmxScophitCompPval(const void *hit1, const void *hit2); 
 
-AjBool        ajDmxScopSeqFromSunid(ajint id, AjPStr *seq, AjPList list);
-AjBool        ajDmxScophitsWrite(AjPFile outf, AjPList list);
-AjBool        ajDmxScophitCopy(AjPScophit *to, AjPScophit from);
+AjBool        ajDmxScopSeqFromSunid(ajint id, AjPStr *seq,
+				    const AjPList list);
+AjBool        ajDmxScophitsWrite(AjPFile outf, const AjPList list);
+AjBool        ajDmxScophitCopy(AjPScophit *to, const AjPScophit from);
 
 
 
@@ -192,12 +193,13 @@ AjBool        ajDmxScophitCopy(AjPScophit *to, AjPScophit from);
 /* ========================== Scopalg object ============================= */
 /* ======================================================================= */
 AjBool        ajDmxScopalgRead(AjPFile inf, AjPScopalg *thys);
-AjBool        ajDmxScopalgWrite(AjPFile outf, AjPScopalg scop);
-AjBool        ajDmxScopalgWriteClustal(AjPScopalg align, AjPFile* outf);
-AjBool        ajDmxScopalgWriteClustal2(AjPScopalg align, AjPFile* outf);
+AjBool        ajDmxScopalgWrite(const AjPScopalg scop, AjPFile outf);
+AjBool        ajDmxScopalgWriteClustal(const AjPScopalg align, AjPFile outf);
+AjBool        ajDmxScopalgWriteClustal2(const AjPScopalg align, AjPFile outf);
+AjBool        ajDmxScopalgWriteFasta(const AjPScopalg align, AjPFile outf);
 AjPScopalg    ajDmxScopalgNew(ajint n);
 void          ajDmxScopalgDel(AjPScopalg *pthis);
-ajint         ajDmxScopalgGetseqs(AjPScopalg thys, AjPStr **arr);
+ajint         ajDmxScopalgGetseqs(const AjPScopalg thys, AjPStr **arr);
 
 
 

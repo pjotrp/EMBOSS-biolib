@@ -157,7 +157,7 @@ static void transeq_GetRegions(AjPRange regions, AjPSeq seq)
 
     newstr = ajStrNew();
 
-    ajRangeStrExtract(&newstr, regions, ajSeqStr(seq));
+    ajRangeStrExtract(regions, ajSeqStr(seq), &newstr);
     ajSeqReplace(seq, newstr);
 
     ajStrDel(&newstr);

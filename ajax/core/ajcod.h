@@ -39,26 +39,26 @@ typedef struct AjSCod
 } AjOCod, *AjPCod;
 
 
-void    ajCodBacktranslate(AjPStr *b, AjPStr a, AjPCod thys);
+void    ajCodBacktranslate(AjPStr *b, const AjPStr a, const AjPCod thys);
 ajint   ajCodBase(ajint c);
-double  ajCodCai(AjPCod cod, AjPStr str);
-void    ajCodCalcGribskov(AjPCod *nrm, AjPStr s);
-double  ajCodCalcCai(AjPCod *thys);
-double  *ajCodCaiW(AjPCod cod);
-double  ajCodCalcNc(AjPCod *thys);
+double  ajCodCai(const AjPCod cod, const AjPStr str);
+double* ajCodCaiW(const AjPCod cod);
+void    ajCodCalcGribskov(AjPCod thys, const AjPStr s);
+double  ajCodCalcCai(const AjPCod thys);
+double  ajCodCalcNc(const AjPCod thys);
 void    ajCodCalculateUsage(AjPCod *thys, ajint c);
 void    ajCodClear(AjPCod *thys);
-void    ajCodComp(ajint *NA, ajint *NC, ajint *NG, ajint *NT, char *str);
-void    ajCodCountTriplets(AjPCod *thys, AjPStr s, ajint *c);
+void    ajCodComp(ajint *NA, ajint *NC, ajint *NG, ajint *NT, const char *str);
+void    ajCodCountTriplets(AjPCod *thys, const AjPStr s, ajint *c);
 void    ajCodDel (AjPCod *thys);
-AjPCod  ajCodDup (AjPCod thys);
-ajint     ajCodIndexC(char *codon);
-ajint     ajCodIndex(AjPStr s);
+AjPCod  ajCodDup (const AjPCod thys);
+ajint   ajCodIndex(const AjPStr s);
+ajint   ajCodIndexC(const char *codon);
 AjPCod	ajCodNew(void);
-AjBool  ajCodRead(AjPStr fn, AjPCod *thys);
+AjBool  ajCodRead(AjPCod thys, const AjPStr fn);
 void    ajCodSetBacktranslate(AjPCod *thys);
 char*   ajCodTriplet(ajint idx);
-void 	ajCodWrite(AjPFile outf, AjPCod thys);
+void 	ajCodWrite( const AjPCod thys, AjPFile outf);
 
 #endif
 

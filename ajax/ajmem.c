@@ -347,12 +347,12 @@ float* ajMemArrF(size_t size)
 **
 ** Prints a summary of memory usage with debug calls
 **
-** @param [r] title [char*] Title for this summary
+** @param [r] title [const char*] Title for this summary
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajMemStat(char* title)
+void ajMemStat(const char* title)
 {
     static ajlong statAlloc       = 0;
     static ajlong statCount       = 0;

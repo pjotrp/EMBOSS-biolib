@@ -214,8 +214,8 @@ int main(int argc, char **argv)
 **
 ** Undocumented.
 **
-** @param [?] finf [AjPFile] Undocumented
-** @param [?] freqs [AjPDouble*] Undocumented
+** @param [u] finf [AjPFile] Undocumented
+** @param [r] freqs [AjPDouble*] Undocumented
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -252,9 +252,9 @@ static void emowse_read_freqs(AjPFile finf, AjPDouble *freqs)
 **
 ** Undocumented.
 **
-** @param [?] thys [double] Undocumented
-** @param [?] given [double] Undocumented
-** @param [?] range [double] Undocumented
+** @param [r] thys [double] Undocumented
+** @param [r] given [double] Undocumented
+** @param [r] range [double] Undocumented
 ** @return [AjBool] Undocumented
 ** @@
 ******************************************************************************/
@@ -278,8 +278,8 @@ static AjBool emowse_molwt_outofrange(double thys, double given, double range)
 **
 ** Undocumented.
 **
-** @param [?] inf [AjPFile] Undocumented
-** @param [?] data [EmbPMdata**] Undocumented
+** @param [u] inf [AjPFile] Undocumented
+** @param [r] data [EmbPMdata**] Undocumented
 ** @return [ajint] Undocumented
 ** @@
 ******************************************************************************/
@@ -374,17 +374,17 @@ static ajint emowse_hit_sort(const void *a, const void *b)
 **
 ** Undocumented.
 **
-** @param [?] data [EmbPMdata*] Undocumented
-** @param [?] dno [ajint] Undocumented
-** @param [?] flist [AjPList] Undocumented
-** @param [?] nfrags [ajint] Undocumented
-** @param [?] tol [double] Undocumented
-** @param [?] seq [AjPSeq] Undocumented
-** @param [?] hlist [AjPList*] Undocumented
-** @param [?] partials [double] Undocumented
-** @param [?] cmw [double] Undocumented
-** @param [?] rno [ajint] Undocumented
-** @param [?] freqs [AjPDouble] Undocumented
+** @param [r] data [EmbPMdata*] Undocumented
+** @param [r] dno [ajint] Undocumented
+** @param [r] flist [AjPList] Undocumented
+** @param [r] nfrags [ajint] Undocumented
+** @param [r] tol [double] Undocumented
+** @param [r] seq [AjPSeq] Undocumented
+** @param [r] hlist [AjPList*] Undocumented
+** @param [r] partials [double] Undocumented
+** @param [r] cmw [double] Undocumented
+** @param [r] rno [ajint] Undocumented
+** @param [r] freqs [AjPDouble] Undocumented
 ** @@
 ******************************************************************************/
 
@@ -566,16 +566,16 @@ static void emowse_match(EmbPMdata* data, ajint dno, AjPList flist,
 **
 ** Undocumented.
 **
-** @param [?] actmw [double] Undocumented
-** @param [?] maxmw [double] Undocumented
-** @param [?] minmw [double] Undocumented
-** @param [?] frags [EmbPMolFrag*] Undocumented
-** @param [?] fno [ajint] Undocumented
-** @param [?] bestmw [double*] Undocumented
-** @param [?] index [ajint*] Undocumented
-** @param [?] thys [ajint] Undocumented
-** @param [?] seq [AjPSeq] Undocumented
-** @param [?] data [EmbPMdata*] Undocumented
+** @param [r] actmw [double] Undocumented
+** @param [r] maxmw [double] Undocumented
+** @param [r] minmw [double] Undocumented
+** @param [r] frags [EmbPMolFrag*] Undocumented
+** @param [r] fno [ajint] Undocumented
+** @param [r] bestmw [double*] Undocumented
+** @param [r] index [ajint*] Undocumented
+** @param [r] thys [ajint] Undocumented
+** @param [r] seq [AjPSeq] Undocumented
+** @param [r] data [EmbPMdata*] Undocumented
 ** @return [ajint] Undocumented
 ** @@
 ******************************************************************************/
@@ -721,11 +721,11 @@ static ajint emowse_get_index(double actmw, double maxmw, double minmw,
 **
 ** Undocumented.
 **
-** @param [?] bidx [ajint] Undocumented
-** @param [?] thys [ajint] Undocumented
-** @param [?] seq [AjPSeq] Undocumented
-** @param [?] data [EmbPMdata*] Undocumented
-** @param [?] frags [EmbPMolFrag*] Undocumented
+** @param [r] bidx [ajint] Undocumented
+** @param [r] thys [ajint] Undocumented
+** @param [r] seq [AjPSeq] Undocumented
+** @param [r] data [EmbPMdata*] Undocumented
+** @param [r] frags [EmbPMolFrag*] Undocumented
 ** @return [ajint] Undocumented
 ** @@
 ******************************************************************************/
@@ -801,7 +801,7 @@ static ajint emowse_seq_comp(ajint bidx, ajint thys, AjPSeq seq,
 **
 ** Undocumented.
 **
-** @param [?] s [char*] Undocumented
+** @param [r] s [char*] Undocumented
 ** @@
 ******************************************************************************/
 
@@ -843,8 +843,8 @@ static void emowse_mreverse(char *s)
 **
 ** Undocumented.
 **
-** @param [?] substr [AjPStr] Undocumented
-** @param [?] s [char*] Undocumented
+** @param [r] substr [AjPStr] Undocumented
+** @param [r] s [char*] Undocumented
 ** @return [AjBool] Undocumented
 ** @@
 ******************************************************************************/
@@ -900,9 +900,9 @@ static AjBool emowse_seq_search(AjPStr substr, char *s)
 **
 ** Undocumented.
 **
-** @param [?] seq [char*] Undocumented
-** @param [?] pat [char*] Undocumented
-** @param [?] term [AjBool] Undocumented
+** @param [r] seq [char*] Undocumented
+** @param [r] pat [char*] Undocumented
+** @param [r] term [AjBool] Undocumented
 ** @return [AjBool] Undocumented
 ** @@
 ******************************************************************************/
@@ -1001,8 +1001,8 @@ static AjBool emowse_msearch(char *seq, char *pat, AjBool term)
 **
 ** Undocumented.
 **
-** @param [?] substr [AjPStr] Undocumented
-** @param [?] s [char*] Undocumented
+** @param [r] substr [AjPStr] Undocumented
+** @param [r] s [char*] Undocumented
 ** @return [AjBool] Undocumented
 ** @@
 ******************************************************************************/
@@ -1113,9 +1113,9 @@ static AjBool emowse_comp_search(AjPStr substr, char *s)
 **
 ** Undocumented.
 **
-** @param [?] orc [AjPStr*] Undocumented
-** @param [?] s [char*] Undocumented
-** @param [?] pos [ajint] Undocumented
+** @param [r] orc [AjPStr*] Undocumented
+** @param [r] s [char*] Undocumented
+** @param [r] pos [ajint] Undocumented
 ** @return [ajint] Undocumented
 ** @@
 ******************************************************************************/
@@ -1147,10 +1147,10 @@ static ajint emowse_get_orc(AjPStr *orc, char *s, ajint pos)
 **
 ** Undocumented.
 **
-** @param [?] outf [AjPFile] Undocumented
-** @param [?] hlist [AjPList] Undocumented
-** @param [?] dno [ajint] Undocumented
-** @param [?] data [EmbPMdata*] Undocumented
+** @param [u] outf [AjPFile] Undocumented
+** @param [r] hlist [AjPList] Undocumented
+** @param [r] dno [ajint] Undocumented
+** @param [r] data [EmbPMdata*] Undocumented
 ** @@
 ******************************************************************************/
 
@@ -1187,17 +1187,17 @@ static void emowse_print_hits(AjPFile outf, AjPList hlist, ajint dno,
 
     ajFmtPrintF(outf,"\n");
 
-    iter = ajListIter(hlist);
+    iter = ajListIterRead(hlist);
     c    = 0;
     while(ajListIterMore(iter))
     {
 	hits = (PHits) ajListIterNext(iter);
 	ajFmtPrintF(outf,"%-3d %-13S%-62.62S\n",++c,hits->name,hits->desc);
     }
-    ajListIterFree(iter);
+    ajListIterFree(&iter);
 
 
-    iter = ajListIter(hlist);
+    iter = ajListIterRead(hlist);
     c    = 0;
     while(ajListIterMore(iter))
     {
@@ -1276,7 +1276,7 @@ static void emowse_print_hits(AjPFile outf, AjPList hlist, ajint dno,
 	AJFREE(hits);
     }
 
-    ajListIterFree(iter);
+    ajListIterFree(&iter);
     ajStrDel(&substr);
     ajFloatDel(&nmarray);
 

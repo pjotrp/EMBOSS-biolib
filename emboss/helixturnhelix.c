@@ -223,8 +223,8 @@ int main(int argc, char **argv)
 **
 ** Undocumented.
 **
-** @param [?] matrix [AjPInt2d*] Undocumented
-** @param [?] eightyseven [AjBool] Undocumented
+** @param [r] matrix [AjPInt2d*] Undocumented
+** @param [r] eightyseven [AjBool] Undocumented
 ** @return [ajint] Undocumented
 ** @@
 ******************************************************************************/
@@ -288,7 +288,7 @@ static ajint hth_readNab(AjPInt2d *matrix,AjBool eightyseven)
 	while((*p!='\n') && (*p<'A' || *p>'Z'))
 	    ++p;
 
-	cols = ajStrTokenCount(&line,ajStrStr(delim));
+	cols = ajStrTokenCount(line,ajStrStr(delim));
 
 	if(pass)
 	{
@@ -383,12 +383,12 @@ static ajint hth_readNab(AjPInt2d *matrix,AjBool eightyseven)
 **
 ** Undocumented.
 **
-** @param [?] ajb [AjPList*] Undocumented
-** @param [?] n [ajint] Undocumented
-** @param [?] minsd [float] Undocumented
-** @param [?] lastcol [ajint] Undocumented
-** @param [?] eightyseven [AjBool] Undocumented
-** @param [?] outf [AjPFile] Undocumented
+** @param [r] ajb [AjPList*] Undocumented
+** @param [r] n [ajint] Undocumented
+** @param [r] minsd [float] Undocumented
+** @param [r] lastcol [ajint] Undocumented
+** @param [r] eightyseven [AjBool] Undocumented
+** @param [u] outf [AjPFile] Undocumented
 ** @@
 ******************************************************************************/
 
@@ -462,10 +462,10 @@ static void hth_print_hits(AjPList *ajb, ajint n, float minsd, ajint lastcol,
 **
 ** Undocumented.
 **
-** @param [?] ajb [AjPList*] Undocumented
-** @param [?] lastcol [ajint] Undocumented
-** @param [?] report [AjPReport] Undocumented
-** @param [?] TabRpt [AjPFeattable] Undocumented
+** @param [r] ajb [AjPList*] Undocumented
+** @param [r] lastcol [ajint] Undocumented
+** @param [r] report [AjPReport] Undocumented
+** @param [r] TabRpt [AjPFeattable] Undocumented
 ** @return [void]
 ** @@
 ******************************************************************************/

@@ -218,7 +218,7 @@ int main(int argc, char **argv)
 	ajListSort(dbnames, ajStrCmp);
 
 	/* iterate through the dbnames list */
-	iter = ajListIter(dbnames);
+	iter = ajListIterRead(dbnames);
 
 	/* write out protein databases */
 	while((dbname = ajListIterNext(iter)) != NULL)
@@ -236,8 +236,8 @@ int main(int argc, char **argv)
 
 
 	/* reset the iterator */
-	ajListIterFree(iter);
-	iter = ajListIter(dbnames);
+	ajListIterFree(&iter);
+	iter = ajListIterRead(dbnames);
 
 	/* now write out nucleic databases */
 	while((dbname = ajListIterNext(iter)) != NULL)
@@ -255,7 +255,7 @@ int main(int argc, char **argv)
 		ajFatal("The database '%S' does not exist", dbname);
 	}
 
-	ajListIterFree(iter);
+	ajListIterFree(&iter);
     }
     
     /* end the HTML table */
@@ -433,7 +433,7 @@ static AjPStr showdb_GetFields(AjPStr dbname)
 
     query = ajSeqQueryNew();
 
-    ajStrAss(&query->DbName, dbname);
+    ajStrAssS(&query->DbName, dbname);
     ajNamDbData(query);
     ajStrAssS(&str, query->DbFields);
 

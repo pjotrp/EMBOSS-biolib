@@ -6,13 +6,14 @@ extern "C"
 #ifndef embxyz_h
 #define embxyz_h
 
-AjBool embXyzSeqsetNR(AjPList input, AjPInt *keep, ajint *nset,
-		      AjPMatrixf matrix, float gapopen, float gapextend,
+AjBool embXyzSeqsetNR(const AjPList input, AjPInt *keep, ajint *nset,
+		      const AjPMatrixf matrix, float gapopen, float gapextend,
 		      float thresh);
 
-AjBool embXyzSeqsetNRRange(AjPList input, AjPInt *keep, ajint *nset,
-		      AjPMatrixf matrix, float gapopen, float gapextend,
-		      float thresh1, float thresh2);
+AjBool embXyzSeqsetNRRange(const AjPList input, AjPInt *keep, ajint *nset,
+			   const AjPMatrixf matrix,
+			   float gapopen, float gapextend,
+			   float thresh1, float thresh2);
 
 #endif
 

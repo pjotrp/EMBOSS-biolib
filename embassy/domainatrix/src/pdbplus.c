@@ -392,7 +392,7 @@ int main(ajint argc, char **argv)
 		    **   to the line is found. 
 		    */
 
-		    iter = ajListIter(pdb->Chains[chain_num]->Atoms);
+		    iter = ajListIterRead(pdb->Chains[chain_num]->Atoms);
 		    found = ajFalse; 
 		    while((temp_atom = (AjPAtom)ajListIterNext(iter)))
 		    {
@@ -415,7 +415,7 @@ int main(ajint argc, char **argv)
 			/* Matching atoms not found yet. */       
 			    continue;	
 		    }
-		    ajListIterFree(iter);
+		    ajListIterFree(&iter);
 		} /* End of if ASG loop. */ 
 	    } /* End of while line loop. */
 	    
@@ -538,7 +538,7 @@ int main(ajint argc, char **argv)
 		    **   ajBool found switches to true when first atom 
 		    **   corresponding to the line is found. 
 		    */
-		    iter = ajListIter(pdb->Chains[chain_num]->Atoms);
+		    iter = ajListIterRead(pdb->Chains[chain_num]->Atoms);
 
 		    found = ajFalse; 
 		    while((temp_atom = (AjPAtom)ajListIterNext(iter)))
@@ -571,7 +571,7 @@ int main(ajint argc, char **argv)
 			       move on to next atom. */
 			    continue;	 
 		    }
-		    ajListIterFree(iter);
+		    ajListIterFree(&iter);
 		} 
 	    } 
 	    

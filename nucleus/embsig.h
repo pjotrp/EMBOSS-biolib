@@ -74,62 +74,13 @@ extern "C"
 ** @attr  Priority [AjBool]  Also used for garbage collection.
 **
 ** 
-** Functions that use this object are described below:
-** @new    embSignatureNew Default Signature constructor
-** @new    embHitlistNew Default Hitlist constructor
 ** @new    embHitNew Default Hit constructor
-** @new    embSignatureNew Default Signature constructor
-** @delete embHitlistDel Default Hitlist destructor
 ** @delete embHitDel Default Hit destructor
-** @delete embSignatureDel Default Signature destructor
-** @ass    embHitMerge Create new Hit from merging two Hit objects
-** @use    embHitlistMatchFold Sort Hitlist objects by Fold element
+** @assign embHitMerge Create new Hit from merging two Hit objects
 ** @use    embMatchScore Sort Hit objects by Score element.
 ** @use    embMatchinvScore Sort (inverted order) Hit objects by Score 
 **         element.
 ** @use    embHitsOverlap Checks for overlap between two Hit objects.
-** @other  embHitlistRead Read a hitlist object from a file
-** @other  embSignatureReadNew Read signature from file & constructor for 
-**         object.
-** @other  embSignatureWrite Write signature to file.
-** @other  embHitlistRead Construct Hitlist object from reading the next entry
-**         from a file in embl-like format (see documentation for the 
-**         DOMAINATRIX "seqsearch" application). 
-** @other  embHitlistReadNode Construct Hitlist object from reading a specific
-**         entry from a file in embl-like format (see documentation for the 
-**         DOMAINATRIX "seqsearch" application). 
-** @other  embHitlistWrite Write Hitlist to file in embl-like format (see 
-**         documentation for the DOMAINATRIX "seqsearch" application). 
-** @other  embHitlistWriteSubset Write a subset of a Hitlist to file in 
-**         embl-like format (see documentation for the DOMAINATRIX "seqsearch"
-**         application). 
-** @other  embSignatureReadNew Construct a Signature object from reading a 
-**         file in embl-like format (see documentation for the DOMAINATRIX
-**         "sigscan" application).
-** @other  embSignatureWrite Write a Signature object to a file in embl-like 
-**         format (see documentation for the DOMAINATRIX "sigscan" 
-**         application).
-** @other  embSignatureHitsRead Construct a Hitlist object from reading a 
-**         signature hits file (see documentation for the DOMAINATRIX 
-**         "sigscan" application). 
-** @other  embSignatureHitsWrite Writes a list of Hit objects to a 
-**         signature hits file (see documentation for the DOMAINATRIX 
-**         "sigscan" application). 
-** @other  embHitlistClassify Classifies a list of signature-sequence hits 
-**         (held in a Hitlist object) according to list of target sequences 
-**         (a list of Hitlist objects).
-** @other  embSignatureCompile Compiles a Signature object.  The signature 
-**         must first have been allocated by using the embSignatureNew 
-**         function.
-** @other  embSignatureAlignSeq Performs an alignment of a signature to a 
-**         protein sequence. The signature must have first been compiled by 
-**         calling embSignatureCompile.  Write a Hit object with the result.
-** @other  embSignatureAlignSeqall Performs an alignment of a signature to
-**         protein sequences. The signature must have first been compiled by 
-**         calling embSignatureCompile.  Write a list of Hit objects with 
-**         the result.
-**
-**
 **
 ** @alias AjSHit
 ** @alias AjOHit
@@ -170,8 +121,11 @@ typedef struct AjSHit
 ** Holds an array of hit structures and associated SCOP classification 
 ** records.
 **
+** AjPHitlist is implemented as a pointer to a C data structure.
 **
-** Variables are described below:
+** @alias AjSHitlist
+** @alias AjOHitlist
+**
 ** @attr  Class         [AjPStr]    SCOP classification.
 ** @attr  Fold         [AjPStr]    SCOP classification.
 ** @attr  Superfamily  [AjPStr]    SCOP classification.
@@ -182,13 +136,24 @@ typedef struct AjSHit
 ** @attr  N             [ajint]     No. of hits. 
 ** @attr  hits         [AjPHit*]  Array of hits. 
 **
-** AjPHitlist is implemented as a pointer to a C data structure.
-**
-** 
-**
-** @alias AjSHitlist
-** @alias AjOHitlist
-**
+** @new    embHitlistNew Default Hitlist constructor
+** @delete embHitlistDel Default Hitlist destructor
+** @use    embHitlistMatchFold Sort Hitlist objects by Fold element
+** @output  embHitlistWrite Write Hitlist to file in embl-like format (see 
+**         documentation for the DOMAINATRIX "seqsearch" application). 
+** @output  embHitlistWriteSubset Write a subset of a Hitlist to file in 
+**         embl-like format (see documentation for the DOMAINATRIX "seqsearch"
+**         application). 
+** @use  embHitlistClassify Classifies a list of signature-sequence hits 
+**         (held in a Hitlist object) according to list of target sequences 
+**         (a list of Hitlist objects).
+** @input  embHitlistRead Read a hitlist object from a file
+** @other  embHitlistRead Construct Hitlist object from reading the next entry
+**         from a file in embl-like format (see documentation for the 
+**         DOMAINATRIX "seqsearch" application). 
+** @cast  embHitlistReadNode Construct Hitlist object from reading a specific
+**         entry from a file in embl-like format (see documentation for the 
+**         DOMAINATRIX "seqsearch" application). 
 ** @@
 ****************************************************************************/
 
@@ -253,6 +218,9 @@ typedef struct AJSSigpos
 **
 ** AjPSigdat is implemented as a pointer to a C data structure.
 **
+** @alias AjSSigdat
+** @alias AjOSigdat
+**
 ** @attr  nres [ajint]    No. diff. types of residue
 ** @attr  rids [AjPChar]  Residue id's 
 ** @attr  rfrq [AjPInt]   Residue frequencies 
@@ -262,10 +230,34 @@ typedef struct AJSSigpos
 ** @attr  gfrq [AjPInt]   Frequencies of gaps of each size
 ** @attr  wsiz [ajint]    Window size for this gap 
 **
-**
-** @alias AjSSigdat
-** @alias AjOSigdat
-**
+** @new    embSignatureNew Default Signature constructor
+** @new    embSignatureNew Default Signature constructor
+** @delete embSignatureDel Default Signature destructor
+** @output embSignatureWrite Write signature to file.
+** @input  embSignatureReadNew Read signature from file & constructor for 
+**         object.
+** @input  embSignatureReadNew Construct a Signature object from reading a 
+**         file in embl-like format (see documentation for the DOMAINATRIX
+**         "sigscan" application).
+** @output  embSignatureWrite Write a Signature object to a file in embl-like 
+**         format (see documentation for the DOMAINATRIX "sigscan" 
+**         application).
+** @input  embSignatureHitsRead Construct a Hitlist object from reading a 
+**         signature hits file (see documentation for the DOMAINATRIX 
+**         "sigscan" application). 
+** @output  embSignatureHitsWrite Writes a list of Hit objects to a 
+**         signature hits file (see documentation for the DOMAINATRIX 
+**         "sigscan" application). 
+** @modify  embSignatureCompile Compiles a Signature object.  The signature 
+**         must first have been allocated by using the embSignatureNew 
+**         function.
+** @use  embSignatureAlignSeq Performs an alignment of a signature to a 
+**         protein sequence. The signature must have first been compiled by 
+**         calling embSignatureCompile.  Write a Hit object with the result.
+** @use  embSignatureAlignSeqall Performs an alignment of a signature to
+**         protein sequences. The signature must have first been compiled by 
+**         calling embSignatureCompile.  Write a list of Hit objects with 
+**         the result.
 ** @@
 ****************************************************************************/
 typedef struct AJSSigdat

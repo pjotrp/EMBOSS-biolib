@@ -295,8 +295,8 @@ int main(int argc, char **argv)
 **
 ** Undocumented.
 **
-** @param [?] arr [float*] Undocumented
-** @param [?] number [ajint] Undocumented
+** @param [r] arr [float*] Undocumented
+** @param [r] number [ajint] Undocumented
 ** @return [float] Undocumented
 ** @@
 ******************************************************************************/
@@ -320,9 +320,9 @@ static float findkm_summation(float *arr, ajint number)
 **
 ** Undocumented.
 **
-** @param [?] arr1 [float*] Undocumented
-** @param [?] arr2 [float*] Undocumented
-** @param [?] number [ajint] Undocumented
+** @param [r] arr1 [float*] Undocumented
+** @param [r] arr2 [float*] Undocumented
+** @param [r] number [ajint] Undocumented
 ** @return [float] Undocumented
 ** @@
 ******************************************************************************/
@@ -345,8 +345,8 @@ static float findkm_multisum(float *arr1, float *arr2, ajint number)
 **
 ** Undocumented.
 **
-** @param [?] arr [float*] Undocumented
-** @param [?] number [ajint] Undocumented
+** @param [r] arr [float*] Undocumented
+** @param [r] number [ajint] Undocumented
 ** @return [float] Undocumented
 ** @@
 ******************************************************************************/
@@ -372,8 +372,8 @@ static float findkm_findmax(float *arr, ajint number)
 **
 ** Undocumented.
 **
-** @param [?] arr [float*] Undocumented
-** @param [?] number [ajint] Undocumented
+** @param [r] arr [float*] Undocumented
+** @param [r] number [ajint] Undocumented
 ** @return [float] Undocumented
 ** @@
 ******************************************************************************/

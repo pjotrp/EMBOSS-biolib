@@ -92,9 +92,9 @@ void embPropAminoRead(AjPFile mfptr)
 	while(*p && (*p<'A' || *p>'Z'))
 	    ++p;
 
-	cols = ajStrTokenCount(&line,ajStrStr(delim));
+	cols = ajStrTokenCount(line,ajStrStr(delim));
 	EmbPropTable[ajAZToInt(toupper((ajint)*p))] =
-	    ajArrDoubleLine(&line,ajStrStr(delim),cols,2,cols);
+	    ajArrDoubleLine(line,ajStrStr(delim),cols,2,cols);
     }
 
 

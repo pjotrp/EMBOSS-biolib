@@ -736,18 +736,18 @@ int main(int argc, char **argv)
     }
 
     /* clean up scoplist */
-    iter = ajListIter(scoplist);
+    iter = ajListIterRead(scoplist);
     while((entry = (AjPScop)ajListIterNext(iter)))
 	ajScopDel(&entry);
     ajListDel(&scoplist);
-    ajListIterFree(iter);
+    ajListIterFree(&iter);
 
     /* clean up mrglist */
-    iter = ajListIter(mrglist);
+    iter = ajListIterRead(mrglist);
     while((delscophit = (AjPScophit)ajListIterNext(iter)))
 	ajDmxScophitDel(&delscophit);
     ajListDel(&mrglist);
-    ajListIterFree(iter);
+    ajListIterFree(&iter);
 
 
     /* clean up variables */
@@ -1050,14 +1050,14 @@ static AjBool libscan_HmmSearch(AjPSeqset db, AjPStr hmmfile,
     
 
     /* target for removal hits that have a "TRUE" or "CROSS" classification */
-    iter = ajListIter(scophits);
+    iter = ajListIterRead(scophits);
     while((scop = (AjPScophit)ajListIterNext(iter)))
     {   
         if(ajStrMatchC(scop->Typesbj,"TRUE") ||
 	   ajStrMatchC(scop->Typesbj,"CROSS"))
             ajDmxScophitTarget(&scop);  
     }
-    ajListIterFree(iter);
+    ajListIterFree(&iter);
     
 
     /* need garbage collection here - CORRECTION BY RAND 
@@ -1113,7 +1113,7 @@ static AjBool libscan_HmmSearch(AjPSeqset db, AjPStr hmmfile,
     
 
     /* push on to the merge list the SCOPHITS  with the p-values calculated */
-    iter = ajListIter(listhits);
+    iter = ajListIterRead(listhits);
     while((mhit = (AjPHit)ajListIterNext(iter)))
     {
         newscop = ajDmxScophitNew();
@@ -1134,7 +1134,7 @@ static AjBool libscan_HmmSearch(AjPSeqset db, AjPStr hmmfile,
         ajListPushApp(*mrglist,(AjPScophit) newscop);
 
     }
-    ajListIterFree(iter); 
+    ajListIterFree(&iter); 
 
     /* clean up tmplist / hitlist */
     /* Set N to zero so that the nodes in the list are not freed, 
@@ -1147,28 +1147,28 @@ static AjBool libscan_HmmSearch(AjPSeqset db, AjPStr hmmfile,
     ajListDel(&tmplist);
 
     /* clean up scophits */
-    iter = ajListIter(scophits);
+    iter = ajListIterRead(scophits);
     while((scop = (AjPScophit)ajListIterNext(iter)))
         ajDmxScophitDel(&scop);
     ajListDel(&scophits);
-    ajListIterFree(iter);
+    ajListIterFree(&iter);
 
     /* Clean up listhits */
-    iter = ajListIter(listhits);
+    iter = ajListIterRead(listhits);
     while((hit = (AjPHit)ajListIterNext(iter)))
         embHitDel(&hit);
     ajListDel(&listhits);
-    ajListIterFree(iter);
+    ajListIterFree(&iter);
 
     /* Clean up hits array */
     AJFREE(hits);
 
     /* clean up pointlist */
-    iter = ajListIter(pointlist);
+    iter = ajListIterRead(pointlist);
     while((delpoint = (LibscanPCoord)ajListIterNext(iter)))
         libscan_CoordDel(&delpoint);
     ajListDel(&pointlist);
-    ajListIterFree(iter);
+    ajListIterFree(&iter);
 
    
     /* clean up variables */
@@ -1398,14 +1398,14 @@ static AjBool libscan_ProfileSearch(AjPSeqset db, AjPStr profile,
     
 
     /* target for removal hits that have a "TRUE" or "CROSS" classification */
-    iter = ajListIter(scophits);
+    iter = ajListIterRead(scophits);
     while((scop = (AjPScophit)ajListIterNext(iter)))
     {   
         if(ajStrMatchC(scop->Typesbj,"TRUE") ||
 	   ajStrMatchC(scop->Typesbj,"CROSS")) 
             ajDmxScophitTarget(&scop);  
     }
-    ajListIterFree(iter);
+    ajListIterFree(&iter);
 
     /* need garbage collection here */
 /*CORRECTION*/    ajListGarbageCollect(scophits, ajDmxScophitDelWrap,
@@ -1460,7 +1460,7 @@ static AjBool libscan_ProfileSearch(AjPSeqset db, AjPStr profile,
 
 
     /* push on to the merge list the SCOPHITS  with the p-values calculated */
-    iter = ajListIter(listhits);
+    iter = ajListIterRead(listhits);
     while((mhit = (AjPHit)ajListIterNext(iter)))
     {
         newscop = ajDmxScophitNew();
@@ -1481,7 +1481,7 @@ static AjBool libscan_ProfileSearch(AjPSeqset db, AjPStr profile,
 
         ajListPushApp(*mrglist,(AjPScophit) newscop);
     }
-    ajListIterFree(iter);
+    ajListIterFree(&iter);
 
 
     /* Set N to zero so that the nodes in the list are not freed, 
@@ -1493,29 +1493,29 @@ static AjBool libscan_ProfileSearch(AjPSeqset db, AjPStr profile,
     ajListDel(&tmplist);
 
     /* clean up scophits */
-    iter = ajListIter(scophits);
+    iter = ajListIterRead(scophits);
     while((scop = (AjPScophit)ajListIterNext(iter)))
         ajDmxScophitDel(&scop);
     ajListDel(&scophits);
-    ajListIterFree(iter);
+    ajListIterFree(&iter);
 
 
     /* Free listhits nodes */
-    iter = ajListIter(listhits);
+    iter = ajListIterRead(listhits);
     while((hit = (AjPHit)ajListIterNext(iter)))
 	embHitDel(&hit);      
     ajListDel(&listhits);
-    ajListIterFree(iter); 
+    ajListIterFree(&iter); 
 
     /* Clean up hits array */
     AJFREE(hits);
 
     /* clean up pointlist */
-    iter = ajListIter(pointlist);
+    iter = ajListIterRead(pointlist);
     while((delpoint = (LibscanPCoord)ajListIterNext(iter)))
         libscan_CoordDel(&delpoint);
     ajListDel(&pointlist);
-    ajListIterFree(iter);
+    ajListIterFree(&iter);
 
    
     /* clean up variables */
@@ -1678,14 +1678,14 @@ static AjBool libscan_SignatureSearch(AjPSeqset db, AjPStr sigfile,
     
 
     /* target for removal hits that have a "TRUE" or "CROSS" classification */
-    iter = ajListIter(scophits);
+    iter = ajListIterRead(scophits);
     while((scop = (AjPScophit)ajListIterNext(iter)))
     {   
         if(ajStrMatchC(scop->Typesbj,"TRUE") ||
 	   ajStrMatchC(scop->Typesbj,"CROSS")) 
             ajDmxScophitTarget(&scop);  
     }
-    ajListIterFree(iter);
+    ajListIterFree(&iter);
 
 
     /* need garbage collection here */
@@ -1742,7 +1742,7 @@ static AjBool libscan_SignatureSearch(AjPSeqset db, AjPStr sigfile,
 
 
     /* push on to the merge list the SCOPHITS  with the p-values calculated */
-    iter = ajListIter(listhits);
+    iter = ajListIterRead(listhits);
     while((mhit = (AjPHit)ajListIterNext(iter)))
     {
 
@@ -1763,14 +1763,14 @@ static AjBool libscan_SignatureSearch(AjPSeqset db, AjPStr sigfile,
 
         ajListPushApp(*mrglist,(AjPScophit) newscop);
     }
-    ajListIterFree(iter); 
+    ajListIterFree(&iter); 
     
     /* clean up scophits */
-    iter = ajListIter(scophits);
+    iter = ajListIterRead(scophits);
     while((scop = (AjPScophit)ajListIterNext(iter)))
         ajDmxScophitDel(&scop);
     ajListDel(&scophits);
-    ajListIterFree(iter);
+    ajListIterFree(&iter);
 
 
     /* Set N to zero so that the nodes in the list are not freed, 
@@ -1782,21 +1782,21 @@ static AjBool libscan_SignatureSearch(AjPSeqset db, AjPStr sigfile,
     ajListDel(&tmplist);	
 
     /* Clean up listhits nodes */
-    iter = ajListIter(listhits);
+    iter = ajListIterRead(listhits);
     while((hit = (AjPHit)ajListIterNext(iter)))
         embHitDel(&hit);	
     ajListDel(&listhits);
-    ajListIterFree(iter); 
+    ajListIterFree(&iter); 
 
     /* Clean up hits array */
     AJFREE(hits);
 
     /* clean up pointlist */
-    iter = ajListIter(pointlist);
+    iter = ajListIterRead(pointlist);
     while((delpoint = (LibscanPCoord)ajListIterNext(iter)))
         libscan_CoordDel(&delpoint);
     ajListDel(&pointlist);
-    ajListIterFree(iter);
+    ajListIterFree(&iter);
 
     embSignatureDel(&sig);
     ajFileClose(&sigin);
@@ -2202,7 +2202,7 @@ static AjBool libscan_HmmLibScan(AjPSeq seq, AjPStr hmmpath, AjPStr hmmextn,
     ajStrAssS(&outfile,seq->Name);
     ajStrApp(&outfile,hmmoutextn);  
     
-    iter = ajListIter(modelnames);
+    iter = ajListIterRead(modelnames);
     /*Start of main application loop*/   
     while((hmmfile = (AjPStr)ajListIterNext(iter)))
     {     
@@ -2305,7 +2305,7 @@ static AjBool libscan_HmmLibScan(AjPSeq seq, AjPStr hmmpath, AjPStr hmmextn,
         ajSysUnlink(&hmmoutfname);      
     }
 
-    ajListIterFree(iter);
+    ajListIterFree(&iter);
     
     /* CALCULATE THE DISTRIBUTION WITH THE TRUE HITS AND CROSS HITS
        REMOVED FROM THE LIST */
@@ -2341,17 +2341,17 @@ static AjBool libscan_HmmLibScan(AjPSeq seq, AjPStr hmmpath, AjPStr hmmextn,
 	AJFREE(hits);
 
 	/* push on to the merge list the hits with the p-values calculated */
-	iter = ajListIter(familyhits);
+	iter = ajListIterRead(familyhits);
 	while((mhit = (AjPScophit)ajListIterNext(iter)))
 	    ajListPushApp(*mrglist,(AjPScophit) mhit);
-	ajListIterFree(iter); 
+	ajListIterFree(&iter); 
 	ajListDel(&familyhits);
 	   
 	/* delete and clean up pointlist */
-	iter=ajListIter(pointlist);
+	iter=ajListIterRead(pointlist);
 	while((delpoint=(LibscanPCoord)ajListIterNext(iter)))
 	    libscan_CoordDel(&delpoint);
-	ajListIterFree(iter);
+	ajListIterFree(&iter);
 	ajListDel(&pointlist);   
     }
        
@@ -2360,24 +2360,24 @@ static AjBool libscan_HmmLibScan(AjPSeq seq, AjPStr hmmpath, AjPStr hmmextn,
     ajSysUnlink(&hmmoutfname);
     
     /* delete and clean up tmplist */
-    iter=ajListIter(tmplist);
+    iter=ajListIterRead(tmplist);
     while((hit=(AjPScophit)ajListIterNext(iter)))
         ajDmxScophitDel(&hit);
-    ajListIterFree(iter);
+    ajListIterFree(&iter);
     ajListDel(&tmplist);
     
     /* delete and clean up pointlist */
-    iter=ajListIter(pointlist);
+    iter=ajListIterRead(pointlist);
     while((delpoint=(LibscanPCoord)ajListIterNext(iter)))
         libscan_CoordDel(&delpoint);
-    ajListIterFree(iter);
+    ajListIterFree(&iter);
     ajListDel(&pointlist);      
     
     /* delete and clean up modelnames */
-    iter=ajListIter(modelnames);
+    iter=ajListIterRead(modelnames);
     ajStrDel(&tmpname);    while((tmpname=(AjPStr)ajListIterNext(iter)))
         ajStrDel(&tmpname);
-    ajListIterFree(iter);
+    ajListIterFree(&iter);
     ajListDel(&modelnames); 
 
 
@@ -2529,7 +2529,7 @@ static AjBool libscan_ProfileLibScan(AjPSeq seq, AjPStr path, AjPStr extn,
     ajStrAssS(&outfile,seq->Name);
     ajStrApp(&outfile,profoutextn);
 
-    iter = ajListIter(modelnames);
+    iter = ajListIterRead(modelnames);
     /*Start of main application loop*/   
     while((profile = (AjPStr)ajListIterNext(iter)))
     {
@@ -2614,7 +2614,7 @@ static AjBool libscan_ProfileLibScan(AjPSeq seq, AjPStr path, AjPStr extn,
         ajFileClose(&inf);
         ajSysUnlink(&profileoutfname);  
     }   
-    ajListIterFree(iter);
+    ajListIterFree(&iter);
 
 
     /* CALCULATE THE DISTRIBUTION WITH THE TRUE HITS AND CROSS HITS
@@ -2651,35 +2651,35 @@ static AjBool libscan_ProfileLibScan(AjPSeq seq, AjPStr path, AjPStr extn,
 	AJFREE(hits);
 
 	/* push on to the merge list the hits with the p-values calculated */
-	iter = ajListIter(familyhits);
+	iter = ajListIterRead(familyhits);
 	while((mhit = (AjPScophit)ajListIterNext(iter)))
 	    ajListPushApp(*mrglist,(AjPScophit) mhit);
-	ajListIterFree(iter); 
+	ajListIterFree(&iter); 
 	ajListDel(&familyhits);
 	ajSysUnlink(&profileinfname);
 	
 	
 	/* delete and clean up pointlist */
-	iter=ajListIter(pointlist);
+	iter=ajListIterRead(pointlist);
 	while((delpoint=(LibscanPCoord)ajListIterNext(iter)))
 	    libscan_CoordDel(&delpoint);
-	ajListIterFree(iter);
+	ajListIterFree(&iter);
 	ajListDel(&pointlist);  
     }
     
     /* delete and clean up tmplist */
-    iter=ajListIter(tmplist);
+    iter=ajListIterRead(tmplist);
     while((hit=(AjPScophit)ajListIterNext(iter)))
         ajDmxScophitDel(&hit);
-    ajListIterFree(iter);
+    ajListIterFree(&iter);
     ajListDel(&tmplist);
     
     
     /* delete and clean up modelnames */
-    iter=ajListIter(modelnames);
+    iter=ajListIterRead(modelnames);
     ajStrDel(&tmpname);    while((tmpname=(AjPStr)ajListIterNext(iter)))
         ajStrDel(&tmpname);
-    ajListIterFree(iter);
+    ajListIterFree(&iter);
     ajListDel(&modelnames); 
 /*CORRECTION*/    ajStrDel(&class);
     ajStrDel(&tmpname);
@@ -2773,7 +2773,7 @@ static AjBool libscan_SignatureLibScan(AjPSeq seq, AjPStr path, AjPStr extn,
     ajStrAssS(&outfile,seq->Name);
     ajStrApp(&outfile,sigoutextn);
 
-    iter = ajListIter(modelnames);
+    iter = ajListIterRead(modelnames);
     while((sigfile=(AjPStr)ajListIterNext(iter)))
     {
 	 sigin  = ajFileNewIn(sigfile);
@@ -2839,7 +2839,7 @@ static AjBool libscan_SignatureLibScan(AjPSeq seq, AjPStr path, AjPStr extn,
         ajFileClose(&sigin); 
 
     }
-    ajListIterFree(iter);
+    ajListIterFree(&iter);
 
     /* CALCULATE THE DISTRIBUTION WITH THE TRUE HITS AND CROSS HITS
        REMOVED FROM THE LIST */
@@ -2876,35 +2876,35 @@ static AjBool libscan_SignatureLibScan(AjPSeq seq, AjPStr path, AjPStr extn,
     	AJFREE(hits);
 	
 	/* push on to the merge list the hits with the p-values calculated */
-	iter = ajListIter(familyhits);
+	iter = ajListIterRead(familyhits);
 	while((mhit = (AjPScophit)ajListIterNext(iter)))
 	    ajListPushApp(*mrglist,(AjPScophit) mhit);
-	ajListIterFree(iter);
+	ajListIterFree(&iter);
 
 	/*CORRECTION*/	ajListDel(&familyhits);
 	
 
 	/* delete and clean up pointlist */
-	iter=ajListIter(pointlist);
+	iter=ajListIterRead(pointlist);
 	while((delpoint=(LibscanPCoord)ajListIterNext(iter)))
 	    libscan_CoordDel(&delpoint);
-	ajListIterFree(iter);
+	ajListIterFree(&iter);
 	ajListDel(&pointlist); 
 
     }
     
     /* delete and clean up tmplist */
-    iter=ajListIter(tmplist);
+    iter=ajListIterRead(tmplist);
     while((hit=(AjPScophit)ajListIterNext(iter)))
         ajDmxScophitDel(&hit);
-    ajListIterFree(iter);
+    ajListIterFree(&iter);
     ajListDel(&tmplist);
 
     /* delete and clean up modelnames */
-    iter=ajListIter(modelnames);
+    iter=ajListIterRead(modelnames);
     while((tmpname=(AjPStr)ajListIterNext(iter)))
         ajStrDel(&tmpname);
-    ajListIterFree(iter);
+    ajListIterFree(&iter);
     ajListDel(&modelnames); 
 
     ajStrDel(&outfile);
@@ -3531,7 +3531,7 @@ static AjBool libscan_CombineScophitsPvalues(ajint mode, AjPStr outpath,
 	ajFatal("Unknown mode in libscan_CombineScophitsPvalues");
     
     
-    iter   = ajListIter(mrglist);
+    iter   = ajListIterRead(mrglist);
     hit    = (AjPScophit)ajListIterNext(iter);
     mrghit = ajDmxScophitNew();
     ajDmxScophitCopy(&mrghit, hit);
@@ -3648,14 +3648,14 @@ static AjBool libscan_CombineScophitsPvalues(ajint mode, AjPStr outpath,
 	    }    		
 	    
 	    /* write the new p-values back into newlist 
-	    iter2   = ajListIter(newlist);
+	    iter2   = ajListIterRead(newlist);
 	    i=0;
 	    while((tmphit2=(AjPScophit)ajListIterNext(iter2)))
 	    {
 		tmphit2->Pval = arr[i]->Pval;
 		i++;
 	    } 
-	    ajListIterFree(iter2); */
+	    ajListIterFree(&iter2); */
 	    AJFREE(arr);
 	    arr=NULL;
 	    
@@ -3683,7 +3683,7 @@ static AjBool libscan_CombineScophitsPvalues(ajint mode, AjPStr outpath,
                    be freed here */
 		embDmxScophitsToHitlist(tmplist, &tmphitlist, &tmpiter);
 		/* CORRECTION tmpiter is *not* freed in the function */
-		/* CORRECTION */  ajListIterFree(tmpiter);
+		/* CORRECTION */  ajListIterFree(&tmpiter);
 		
 		tmpiter=NULL;
 	     
@@ -3707,7 +3707,7 @@ static AjBool libscan_CombineScophitsPvalues(ajint mode, AjPStr outpath,
 	    ajFileClose(&outf);
 
 	    /* clean up newlist */
-	    iter2 = ajListIter(newlist);
+	    iter2 = ajListIterRead(newlist);
 
 	    while((tmphit2 = (AjPScophit)ajListIterNext(iter2)))
 	    {
@@ -3716,22 +3716,22 @@ static AjBool libscan_CombineScophitsPvalues(ajint mode, AjPStr outpath,
 
 	    ajListDel(&newlist);
 	    newlist = ajListNew();
-	    ajListIterFree(iter2);
+	    ajListIterFree(&iter2);
 
 
             /* clean up tmplist */
-            iter2 = ajListIter(tmplist);
+            iter2 = ajListIterRead(tmplist);
             while((tmphit2 = (AjPScophit)ajListIterNext(iter2)))
                 ajDmxScophitDel(&tmphit2);
             ajListDel(&tmplist);
             tmplist = ajListNew();
-            ajListIterFree(iter2);
+            ajListIterFree(&iter2);
 	}
 
 	hit=nexthit;	
     }
 
-/*CORRECTION*/    	ajListIterFree(iter);		
+/*CORRECTION*/    	ajListIterFree(&iter);		
 
     /* Process the last part of the list */
     /* THIS CODE BLOCK IS IDENTICAL TO THE ONE ABOVE */
@@ -3778,14 +3778,14 @@ static AjBool libscan_CombineScophitsPvalues(ajint mode, AjPStr outpath,
     }    		
     
     /* write the new p-values back into newlist 
-    iter2   = ajListIter(tmplist);
+    iter2   = ajListIterRead(tmplist);
     i=0;
     while((tmphit2=(AjPScophit)ajListIterNext(iter2)))
     {
 	tmphit2->Pval = tmphit1->Pval;
 	i++;
     } 
-    ajListIterFree(iter2);*/
+    ajListIterFree(&iter2);*/
     AJFREE(arr);
     
     /* Write the output file. For mode 1 this will be a signature hits file and 
@@ -3809,7 +3809,7 @@ static AjBool libscan_CombineScophitsPvalues(ajint mode, AjPStr outpath,
 	/* tmpiter is freed in the function, tmphitlist must be freed here */
 	embDmxScophitsToHitlist(tmplist, &tmphitlist, &tmpiter);
 /* CORRECTION tmpiter is not freed in the function */
-/* CORRECTION */ 		ajListIterFree(tmpiter);	
+/* CORRECTION */ 		ajListIterFree(&tmpiter);	
 	tmpiter=NULL;
 	     
 	embHitlistClassify(&tmphitlist,targetlist,overlap);
@@ -3823,29 +3823,29 @@ static AjBool libscan_CombineScophitsPvalues(ajint mode, AjPStr outpath,
         /*sort the list before printing */
         ajListSort(tmplist,ajDmxScophitCompPval);
 	ajDmxScophitsWrite(outf, tmplist);
-	/* CORRECTION ajListIterFree(iter);   */
+	/* CORRECTION ajListIterFree(&iter);   */
     }
     
     ajStrDel(&outfile);
     ajFileClose(&outf);
     
     /* clean up newlist */
-    iter2 = ajListIter(newlist);
+    iter2 = ajListIterRead(newlist);
     while((tmphit2 = (AjPScophit)ajListIterNext(iter2)))
 	ajDmxScophitDel(&tmphit2);
     ajListDel(&newlist);
-    ajListIterFree(iter2);
+    ajListIterFree(&iter2);
     
 
 
     /* clean up tmplist */
-    iter2 = ajListIter(tmplist);
+    iter2 = ajListIterRead(tmplist);
     while((tmphit2 = (AjPScophit)ajListIterNext(iter2)))
         ajDmxScophitDel(&tmphit2);
     ajListDel(&tmplist);
-    ajListIterFree(iter2);
+    ajListIterFree(&iter2);
     
-    ajListIterFree(iter);
+    ajListIterFree(&iter);
 
     return ajTrue;
 }
@@ -4121,7 +4121,7 @@ static AjBool libscan_SunidToScopInfo (ajint sunid, AjPStr *family,
         return ajFalse;
     }
 
-    if( (idx = ajScopArrFindSunid(sunid, arr, dim))==-1)
+    if( (idx = ajScopArrFindSunid(arr, dim, sunid))==-1)
     {
         AJFREE(arr);
         return ajFalse;

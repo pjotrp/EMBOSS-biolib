@@ -59,8 +59,8 @@ int main(int argc, char **argv)
 
     while(ajSeqallNext(seqall, &seq))
     {
-	ajStrAss(&name, ajSeqGetName(seq));
-	ajStrAss(&acc, ajSeqGetAcc(seq));
+	ajStrAssS(&name, ajSeqGetName(seq));
+	ajStrAssS(&acc, ajSeqGetAcc(seq));
 
 	if(embMiscMatchPattern(name, pattern) ||
 	    embMiscMatchPattern(acc, pattern))

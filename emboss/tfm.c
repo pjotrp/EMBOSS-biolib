@@ -26,7 +26,7 @@
 
 
 static void tfm_FindAppDocRoot(AjPStr* docroot);
-static AjBool tfm_FindAppDoc(AjPStr program, AjBool html, AjPStr* path);
+static AjBool tfm_FindAppDoc(const AjPStr program, AjBool html, AjPStr* path);
 
 
 
@@ -84,7 +84,7 @@ int main(int argc, char **argv)
 		ajStrAssC(&pager,"more");
 	}
 	ajFmtPrintS(&cmd,"%S %S",pager,path);
-	ajSystem(&cmd);
+	ajSystem(cmd);
     }
     else
     {
@@ -166,14 +166,14 @@ static void tfm_FindAppDocRoot(AjPStr* docroot)
 **
 ** return the path to the program documentation html or text file
 **
-** @param [r] program [AjPStr] program name
+** @param [r] program [const AjPStr] program name
 ** @param [r] html [AjBool] whether html required
 ** @param [w] path [AjPStr*] returned path
 ** @return [AjBool] success
 ** @@
 ******************************************************************************/
 
-static AjBool tfm_FindAppDoc(AjPStr program, AjBool html, AjPStr* path)
+static AjBool tfm_FindAppDoc(const AjPStr program, AjBool html, AjPStr* path)
 {
     AjPStr docroot = NULL;
 
@@ -184,14 +184,14 @@ static AjBool tfm_FindAppDoc(AjPStr program, AjBool html, AjPStr* path)
     if(html)
     {
 	ajStrAppC(&docroot, "html/");
-	ajStrAss(path, docroot);
+	ajStrAssS(path, docroot);
 	ajStrApp(path, program);
 	ajStrAppC(path, ".html");
     }
     else
     {
 	ajStrAppC(&docroot, "text/");
-	ajStrAss(path, docroot);
+	ajStrAssS(path, docroot);
 	ajStrApp(path, program);
 	ajStrAppC(path, ".txt");
     }
@@ -199,7 +199,7 @@ static AjBool tfm_FindAppDoc(AjPStr program, AjBool html, AjPStr* path)
     ajStrDel(&docroot);
 
     /* does the file exist and is it readable? */
-    if(ajFileStat(path, AJ_FILE_R))
+    if(ajFileStat(*path, AJ_FILE_R))
 	return ajTrue;
 
     return ajFalse;

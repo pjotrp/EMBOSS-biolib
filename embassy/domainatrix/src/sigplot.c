@@ -953,7 +953,8 @@ int main(int argc, char **argv)
 /*	    printf("done sigplot_SeedIdCalc\n"); */
 
 	    /* Call sigplot_HitIdCalc */
-	    sigplot_HitIdCalc(seedlist, hitlist, alg, matrixout, submat, gapopen, gapextn,
+	    sigplot_HitIdCalc(seedlist, hitlist, alg, matrixout,
+			      submat, gapopen, gapextn,
 			      &codes, rank);
 
 /*	    printf("done sigplot_HitIdCalc\n"); */
@@ -982,16 +983,18 @@ int main(int argc, char **argv)
 	    
 
 	    /*delete and clean up seedlist */
-	    iter=ajListIter(seedlist);
-	    iter2=ajListIter(hitlist);
+	    iter=ajListIterRead(seedlist);
 	    while((seed_seq=(AjPSeq)ajListIterNext(iter)))
 		ajSeqDel(&seed_seq);
+	    ajListIterFree(&iter);
+	    ajListDel(&seedlist);
+
+	    iter2=ajListIterRead(hitlist);
 	    while((hit_seq=(AjPSeq)ajListIterNext(iter2)))
 		ajSeqDel(&hit_seq);
-	    ajListIterFree(iter);
-	    ajListIterFree(iter2);
-	    ajListDel(&seedlist);
+	    ajListIterFree(&iter2);
 	    ajListDel(&hitlist);
+
 	    ajSeqDel(&seed_seq);
 	    ajSeqDel(&hit_seq);
 	    ajStrDel(&mat);	    

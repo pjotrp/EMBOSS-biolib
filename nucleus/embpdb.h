@@ -90,7 +90,7 @@ AjBool       embPdbListHeterogens(AjPPdb pdb, AjPList *list_heterogens,
 				  AjPFile logf );
 AjBool       embPdbidToSp(AjPStr pdb, AjPStr *spr, AjPList list);
 AjBool       embPdbidToAcc(AjPStr pdb, AjPStr *acc, AjPList list);
-AjBool       embPdbidToScop(AjPPdb pdb, AjPList list_allscop, 
+AjBool       embPdbidToScop(AjPPdb pdb, const AjPList list_allscop, 
 			    AjPList *list_pdbscopids);
 float        embVdwRad(AjPAtom atm, AjPVdwall vdw);
 

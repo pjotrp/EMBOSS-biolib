@@ -48,9 +48,9 @@ static void remap_DelTable(AjPTable * table);
 static void remap_read_file_of_enzyme_names(AjPStr *enzymes);
 static int remap_ajStrCmpCase(const void* str1, const void* str2);
 static void remap_ajStrDel(void** str, void* cl);
-static void rebase_RenamePreferred(AjPList list, AjPTable table, 
+static void rebase_RenamePreferred(const AjPList list, AjPTable table, 
 				   AjPList newlist);
-static void remap_RestrictPreferred(AjPList l, AjPTable t);
+static void remap_RestrictPreferred(const AjPList l, AjPTable t);
 static AjBool remap_Ambiguous(AjPStr str);
 static void remap_GetFrames(AjPStr *framelist, AjBool *frames);
 
@@ -214,7 +214,7 @@ int main(int argc, char **argv)
 	    else
 	    {
 		descriptionline = ajStrNew();
-		ajStrAss(&descriptionline, ajSeqGetDesc(seq));
+		ajStrAssS(&descriptionline, ajSeqGetDesc(seq));
 		ajStrWrap(&descriptionline, width+margin);
 		ajFmtPrintF(outfile, "%S\n", descriptionline);
 		ajStrDel(&descriptionline);
@@ -434,7 +434,7 @@ static void remap_RemoveMinMax(AjPList restrictlist,
     if(ajListLength(restrictlist))
     {
         /* count the enzymes */
-	miter = ajListIter(restrictlist);
+	miter = ajListIterRead(restrictlist);
 	while((m = ajListIterNext(miter)) != NULL)
 	{
 	    ajStrAssS(&key, m->cod);
@@ -454,7 +454,7 @@ static void remap_RemoveMinMax(AjPList restrictlist,
 	    else
 		value->count++;
 	}
-	ajListIterFree(miter);
+	ajListIterFree(&miter);
 
 
 	/* now remove enzymes from restrictlist if <mincuts | >maxcuts */
@@ -468,7 +468,7 @@ static void remap_RemoveMinMax(AjPList restrictlist,
                 embMatMatchDel(&m);
             }
 	}
-	ajListIterFree(miter);
+	ajListIterFree(&miter);
     }
 
     ajStrDel(&key);
@@ -706,7 +706,7 @@ static void remap_NoCutList(AjPFile outfile, AjPTable hittable,
         while(ajStrToken(&code, &tok, tokens))
         {
             cutname = ajStrNew();
-            ajStrAss(&cutname, code);
+            ajStrAssS(&cutname, code);
             ajListstrPushApp(cutlist, cutname);
         }
         ajStrTokenClear(&tok);
@@ -878,7 +878,7 @@ static void remap_NoCutList(AjPFile outfile, AjPTable hittable,
     ajListSort(nocutlist, remap_ajStrCmpCase);
     ajListSort(cutlist, remap_ajStrCmpCase);
 
-    citer = ajListIter(cutlist);
+    citer = ajListIterRead(cutlist);
     niter = ajListIter(nocutlist);
 
     /*
@@ -918,8 +918,8 @@ static void remap_NoCutList(AjPFile outfile, AjPTable hittable,
 	    nocutname = (AjPStr)ajListIterNext(niter);
     }
 
-    ajListIterFree(citer);
-    ajListIterFree(niter);
+    ajListIterFree(&citer);
+    ajListIterFree(&niter);
     ajListstrFree(&cutlist);
 
 
@@ -939,7 +939,7 @@ static void remap_NoCutList(AjPFile outfile, AjPTable hittable,
 	ajFmtPrintF(outfile, "<PRE>");
 
     /*  ajListSort(nocutlist, ajStrCmp);*/
-    niter = ajListIter(nocutlist);
+    niter = ajListIterRead(nocutlist);
     i = 0;
     while((nocutname = (AjPStr)ajListIterNext(niter)) != NULL)
     {
@@ -951,7 +951,7 @@ static void remap_NoCutList(AjPFile outfile, AjPTable hittable,
 	    i = 0;
 	}
     }
-    ajListIterFree(niter);
+    ajListIterFree(&niter);
 
 
     /* end the output */
@@ -1141,14 +1141,14 @@ static void remap_ajStrDel(void** str, void* cl)
 ** If a match is found then the value of the table entry is appended
 ** to the output list, else the old string name is appended to the output list.
 **
-** @param [r] list [AjPList] Inout list of strings
+** @param [r] list [const AjPList] Inout list of strings
 ** @param [r] table [AjPTable] Table of replacements
 ** @param [u] newlist [AjPList] Returned new list of strings
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void rebase_RenamePreferred(AjPList list, AjPTable table, 
+static void rebase_RenamePreferred(const AjPList list, AjPTable table, 
 				   AjPList newlist) 
 {
     AjIList iter = NULL;
@@ -1156,7 +1156,7 @@ static void rebase_RenamePreferred(AjPList list, AjPTable table,
     AjPStr value = NULL;
     AjPStr name  = NULL;
 
-    iter = ajListIter(list);
+    iter = ajListIterRead(list);
                
     while((key = (AjPStr)ajListIterNext(iter)))
     {
@@ -1179,7 +1179,7 @@ static void rebase_RenamePreferred(AjPList list, AjPTable table,
         ajListstrPushApp(newlist, name);
     }
                       
-    ajListIterFree(iter);
+    ajListIterFree(&iter);
 
     return; 
 }
@@ -1197,14 +1197,14 @@ static void rebase_RenamePreferred(AjPList list, AjPTable table,
 ** will be change to a name of B and isoschizomer list of "A, X, C"
 ** If the old name is not in the isoschizomer list, it will be added to it.
 **
-** @param [u] l [AjPList] list of EmbPMatMatch hits
+** @param [u] l [const AjPList] list of EmbPMatMatch hits
 ** @param [r] t [AjPTable] table from embossre.equ file
 **
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void remap_RestrictPreferred(AjPList l, AjPTable t)
+static void remap_RestrictPreferred(const AjPList l, AjPTable t)
 {
     AjIList iter   = NULL;
     EmbPMatMatch m = NULL;
@@ -1217,7 +1217,7 @@ static void remap_RestrictPreferred(AjPList l, AjPTable t)
     char tokens[] = " ,";
     AjPStr code = NULL;
 
-    iter = ajListIter(l);
+    iter = ajListIterRead(l);
     
     while((m = (EmbPMatMatch)ajListIterNext(iter)))
     {
@@ -1259,14 +1259,14 @@ static void remap_RestrictPreferred(AjPList l, AjPTable t)
 		    m->iso, newiso);
 
 	    /* replace the old iso string with the new one */
-	    ajStrAss(&m->iso, newiso);
+	    ajStrAssS(&m->iso, newiso);
 
 	    /* rename the enzyme to the prototype name */
     	    ajStrAssS(&m->cod, value);
     	}
     }
     
-    ajListIterFree(iter);     
+    ajListIterFree(&iter);     
     ajStrDel(&newiso);
     ajStrDel(&code);
 

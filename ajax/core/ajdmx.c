@@ -218,7 +218,7 @@ void ajDmxScophitDel(AjPScophit *pthis)
 **
 ** Wrapper to destructor for Scophit object for use with generic functions.
 **
-** @param [w] ptr [const void **] Object pointer
+** @param [d] ptr [const void **] Object pointer
 **
 ** @return [void]
 ** @@
@@ -243,8 +243,7 @@ void ajDmxScophitDelWrap(const void  **ptr)
 **
 ** Destructor for Scopalg object.
 **
-** @param [w] pthis [AjPScopalg*] Scopalg object pointer
-**
+** @param [d] pthis [AjPScopalg*] Scopalg object pointer
 ** @return [void]
 ** @@
 ****************************************************************************/
@@ -296,7 +295,7 @@ void ajDmxScopalgDel(AjPScopalg *pthis)
 ** Read a list of Scophit structures and returns a pointer to a duplicate 
 ** of the list. 
 ** 
-** @param [r] ptr [AjPList]  List of Scophit objects
+** @param [r] ptr [const AjPList]  List of Scophit objects
 **
 ** @return [AjPList] True on success (list was duplicated ok)
 ** @@
@@ -306,7 +305,7 @@ void ajDmxScopalgDel(AjPScopalg *pthis)
 **
 ****************************************************************************/
 
-AjPList ajDmxScophitListCopy(AjPList ptr)
+AjPList ajDmxScophitListCopy(const AjPList ptr)
 {
     AjPList ret    = NULL;
     AjIList iter   = NULL;
@@ -324,7 +323,7 @@ AjPList ajDmxScophitListCopy(AjPList ptr)
     ret = ajListNew();
     
     /* Initialise the iterator */
-    iter = ajListIter(ptr);
+    iter = ajListIterRead(ptr);
     
     /* Iterate through the list of Scophit objects */
     while((hit=(AjPScophit)ajListIterNext(iter)))
@@ -337,7 +336,7 @@ AjPList ajDmxScophitListCopy(AjPList ptr)
 	ajListPushApp(ret,new);
     }
 
-    ajListIterFree(iter);
+    ajListIterFree(&iter);
 
     return ret;
 }
@@ -351,13 +350,13 @@ AjPList ajDmxScophitListCopy(AjPList ptr)
 ** Copies the contents from one Scophit object to another.
 **
 ** @param [w] to   [AjPScophit*] Scophit object pointer 
-** @param [r] from [AjPScophit]  Scophit object 
+** @param [r] from [const AjPScophit]  Scophit object 
 **
 ** @return [AjBool] True if copy was successful.
 ** @@
 ****************************************************************************/
 
-AjBool ajDmxScophitCopy(AjPScophit *to, AjPScophit from)
+AjBool ajDmxScophitCopy(AjPScophit *to, const AjPScophit from)
 {
     /* Check args */
     if(!(*to) || !from)
@@ -407,7 +406,7 @@ AjBool ajDmxScophitCopy(AjPScophit *to, AjPScophit from)
 **
 ** Sets the Target element of a Scophit object to True if its Priority is low.
 **
-** @param [r] h  [AjPScophit *]     Pointer to Scophit object
+** @param [u] h  [AjPScophit *]     Pointer to Scophit object
 **
 ** @return [AjBool] True on success. False otherwise.
 ** @@
@@ -436,7 +435,7 @@ AjBool ajDmxScophitTargetLowPriority(AjPScophit *h)
 **
 ** Sets the Target2 element of a Scophit object to True.
 **
-** @param [r] h  [AjPScophit *]     Pointer to Scophit object
+** @param [u] h  [AjPScophit *]     Pointer to Scophit object
 **
 ** @return [AjBool] True on success. False otherwise.
 ** @@
@@ -464,7 +463,7 @@ AjBool ajDmxScophitTarget2(AjPScophit *h)
 **
 ** Sets the Target element of a Scophit object to True.
 **
-** @param [r] h  [AjPScophit *]     Pointer to Scophit object
+** @param [u] h  [AjPScophit *]     Pointer to Scophit object
 **
 ** @return [AjBool] True on success. False otherwise.
 ** @@
@@ -502,14 +501,14 @@ AjBool ajDmxScophitTarget(AjPScophit *h)
 **
 ** Checks to see if the Target element of a Scophit object == ajTrue.
 **
-** @param [r] ptr [AjPScophit] Scophit object pointer
+** @param [r] ptr [const AjPScophit] Scophit object pointer
 **
 ** @return [AjBool] Returns ajTrue if the Target element of the Scophit 
 ** object == ajTrue, returns ajFalse otherwise.
 ** @@
 ****************************************************************************/
 
-AjBool ajDmxScophitCheckTarget(AjPScophit ptr)
+AjBool ajDmxScophitCheckTarget(const AjPScophit ptr)
 {
     return ptr->Target;
 }
@@ -862,20 +861,20 @@ ajint ajDmxScophitCompFold(const void *hit1, const void *hit2)
 ** is available.
 ** 
 ** @param [w] outf [AjPFile] Output file stream
-** @param [r] list [AjPList] List object
+** @param [r] list [const AjPList] List object
 **
 ** @return [AjBool] True on success
 ** @@
 ****************************************************************************/
 
-AjBool ajDmxScophitsWrite(AjPFile outf, AjPList list)
+AjBool ajDmxScophitsWrite(AjPFile outf, const AjPList list)
 {
 
     AjIList iter = NULL;
     
     AjPScophit thys = NULL;
     
-    iter = ajListIter(list);
+    iter = ajListIterRead(list);
     
 
     while((thys = (AjPScophit)ajListIterNext(iter)))
@@ -939,7 +938,7 @@ AjBool ajDmxScophitsWrite(AjPFile outf, AjPList list)
         ajFmtPrintF(outf, "//\n");
     }
 
-    ajListIterFree(iter);
+    ajListIterFree(&iter);
     
 
     return ajTrue;
@@ -953,7 +952,7 @@ AjBool ajDmxScophitsWrite(AjPFile outf, AjPList list)
 **
 ** Read a Scopalg object from a file (see scopalign.c documentation).
 ** 
-** @param [r] inf      [AjPFile] Input file stream
+** @param [u] inf      [AjPFile] Input file stream
 ** @param [w] thys     [AjPScopalg*]  Scopalg object
 **
 ** @return [AjBool] True if the file contained any data, even an empty 
@@ -1210,7 +1209,7 @@ AjBool ajDmxScopalgRead(AjPFile inf, AjPScopalg *thys)
 
 /* @func ajDmxScopalgWrite **************************************************
 **
-** Write a Scopalg object to file in clusta format annotated with Scop 
+** Write a Scopalg object to file in clustal format annotated with Scop 
 ** classification as below:
 **
 **
@@ -1233,14 +1232,14 @@ AjBool ajDmxScopalgRead(AjPFile inf, AjPScopalg *thys)
 **
 **
 ** 
-** @param [r] outf [AjPFile]     Output file stream
-** @param [r] scop [AjPScopalg]  Scopalg object
+** @param [r] scop [const AjPScopalg]  Scopalg object
+** @param [u] outf [AjPFile]     Output file stream
 **
 ** @return [AjBool] True on success (an alignment was written)
 ** @@
 ****************************************************************************/
 
-AjBool ajDmxScopalgWrite(AjPFile outf, AjPScopalg scop)
+AjBool ajDmxScopalgWrite(const AjPScopalg scop, AjPFile outf)
 {
     /* Could modify scopalign.c to use this function now it is done */
 
@@ -1308,32 +1307,32 @@ AjBool ajDmxScopalgWrite(AjPFile outf, AjPScopalg scop)
 ** Writes a Scopalg object to a specified file in CLUSTAL format (just the 
 ** alignment without the SCOP classification information).
 **
-** @param [r] align      [AjPScopalg]  Scopalg object
-** @param [w] outf       [AjPFile *]   Outfile file pointer
+** @param [r] align      [const AjPScopalg]  Scopalg object
+** @param [u] outf       [AjPFile]   Outfile file pointer
 ** 
 ** @return [AjBool] True on success (a file has been written)
 ** @@
 ****************************************************************************/
 
-AjBool ajDmxScopalgWriteClustal(AjPScopalg align, AjPFile* outf)
+AjBool ajDmxScopalgWriteClustal(const AjPScopalg align, AjPFile outf)
 {
     ajint i;
     
     /* Check args */
     if(!align)
     {
-	ajWarn("Null args passed to ajDmxScopalgWriteClustal ");
+	ajWarn("Null args passed to ajDmxScopalgWriteClustal");
 	return ajFalse;
     }
     
     /* remove i from the print statement before commiting */
-    ajFmtPrintF(*outf,"CLUSTALW\n\n");
-    ajFmtPrintF(*outf, "\n"); 
+    ajFmtPrintF(outf,"CLUSTALW\n\n");
+    ajFmtPrintF(outf, "\n"); 
 
     for(i=0;i<align->N;++i)
-    	ajFmtPrintF(*outf,"%S_%d   %S\n",align->Codes[i],i,align->Seqs[i]);
-    ajFmtPrintF(*outf,"\n");
-    ajFmtPrintF(*outf,"\n"); 
+    	ajFmtPrintF(outf,"%S_%d   %S\n",align->Codes[i],i,align->Seqs[i]);
+    ajFmtPrintF(outf,"\n");
+    ajFmtPrintF(outf,"\n"); 
     
     return ajTrue;
 }	
@@ -1347,30 +1346,68 @@ AjBool ajDmxScopalgWriteClustal(AjPScopalg align, AjPFile* outf)
 ** Writes a Scopalg object to a specified file in CLUSTAL format (just the 
 ** alignment without the SCOP classification information).
 **
-** @param [r] align      [AjPScopalg]  Scopalg object.
-** @param [w] outf       [AjPFile *]   Outfile file pointer.
+** @param [r] align      [const AjPScopalg]  Scopalg object.
+** @param [u] outf       [AjPFile]   Outfile file pointer.
 ** 
 ** @return [AjBool] True on success (a file has been written)
 ** @@
 ****************************************************************************/
 
-AjBool ajDmxScopalgWriteClustal2(AjPScopalg align, AjPFile* outf)
+AjBool ajDmxScopalgWriteClustal2(const AjPScopalg align, AjPFile outf)
 {
     ajint i;
     
     /* Check args */
     if(!align)
     {
-	ajWarn("Null args passed to ajDmxScopalgWriteClustal ");
+	ajWarn("Null args passed to ajDmxScopalgWriteClustal2");
 	return ajFalse;
     }
     
     /* remove i from the print statement before commiting */
-    ajFmtPrintF(*outf, "\n"); 
+    ajFmtPrintF(outf, "\n"); 
 
     for(i=0;i<align->N;++i)
-    	ajFmtPrintF(*outf,"%S_%d   %S\n",align->Codes[i],i,align->Seqs[i]);
-    ajFmtPrintF(*outf,"\n");
+    	ajFmtPrintF(outf,"%S_%d   %S\n",align->Codes[i],i,align->Seqs[i]);
+    ajFmtPrintF(outf,"\n");
+    
+    return ajTrue;
+}	
+
+
+
+
+
+/* @func ajDmxScopalgWriteFasta ********************************************
+**
+** Writes a Scopalg object to a specified file in FASTA format (just the 
+** alignment without the SCOP classification information).
+**
+** @param [r] align      [const AjPScopalg]  A list Hitlist structures.
+** @param [u] outf       [AjPFile]     Outfile file pointer
+** 
+** @return [AjBool] True on success (a file has been written)
+** @@
+****************************************************************************/
+AjBool ajDmxScopalgWriteFasta(const AjPScopalg align, AjPFile outf)
+{
+    ajint i;
+    
+    /*Check args*/
+    if(!align)
+    {
+	ajWarn("Null args passed to ajDmxScopalgWriteFasta");
+	return ajFalse;
+    }
+    
+    /* remove i from the print statement before commiting
+    ajFmtPrintF(*outf,"CLUSTALW\n\n");
+    ajFmtPrintF(*outf, "\n");*/ 
+
+    for(i=0;i<align->N;++i)
+    	ajFmtPrintF(outf,">%S_%d\n%S\n",align->Codes[i],i,align->Seqs[i]);
+    ajFmtPrintF(outf,"\n");
+    ajFmtPrintF(outf,"\n"); 
     
     return ajTrue;
 }	
@@ -1399,14 +1436,14 @@ AjBool ajDmxScopalgWriteClustal2(AjPScopalg align, AjPFile* outf)
 ** 
 ** @param [r] id   [ajint]    Search term
 ** @param [w] seq  [AjPStr*]  Result sequence
-** @param [r] list [AjPList]  Sorted list of Scop objects
+** @param [r] list [const AjPList]  Sorted list of Scop objects
 **
 ** @return [AjBool]  True if a swissprot identifier code was found for the
 **                   Pdb code.
 ** @@
 ****************************************************************************/
 
-AjBool ajDmxScopSeqFromSunid(ajint id, AjPStr *seq, AjPList list)
+AjBool ajDmxScopSeqFromSunid(ajint id, AjPStr *seq, const AjPList list)
 {
     AjPScop *arr = NULL;  /* Array derived from list */
     ajint dim =0;         /* Size of array */
@@ -1425,7 +1462,7 @@ AjBool ajDmxScopSeqFromSunid(ajint id, AjPStr *seq, AjPList list)
         return ajFalse;
     }
 
-    if((idx = ajScopArrFindSunid(id, arr, dim))==-1)
+    if((idx = ajScopArrFindSunid(arr, dim, id))==-1)
     {
         AJFREE(arr);
         return ajFalse;
@@ -1451,13 +1488,13 @@ AjBool ajDmxScopSeqFromSunid(ajint id, AjPStr *seq, AjPList list)
 ** Read a Scopalg object and writes an array of AjPStr containing the 
 ** sequences without gaps.
 ** 
-** @param [r] thys     [AjPScopalg]  Scopalg object
-** @param [w] arr      [AjPStr **]   Array of AjPStr 
+** @param [r] thys     [const AjPScopalg]  Scopalg object
+** @param [wD] arr      [AjPStr **]   Array of AjPStr 
 **
 ** @return [ajint] Number of sequences read
 ** @@
 ****************************************************************************/
-ajint ajDmxScopalgGetseqs(AjPScopalg thys, AjPStr **arr)
+ajint ajDmxScopalgGetseqs(const AjPScopalg thys, AjPStr **arr)
 {
     ajint i;
         
@@ -1498,7 +1535,6 @@ void ajDmxDummyFunction(void)
 {
     return;
 }
-
 
 
 

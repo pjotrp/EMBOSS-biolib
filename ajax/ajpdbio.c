@@ -468,7 +468,7 @@ static AjBool WriteSeqresChain(AjPFile errf, AjPFile outf, AjPPdb pdb,
     tmp2 = ajStrNew();
 
 
-    iter=ajListIter(pdb->Chains[chn-1]->Atoms);	
+    iter=ajListIterRead(pdb->Chains[chn-1]->Atoms);	
 
 
     /* Iterate through list of atoms */
@@ -502,7 +502,7 @@ static AjBool WriteSeqresChain(AjPFile errf, AjPFile outf, AjPPdb pdb,
 
 		    ajStrDel(&tmp1);
 		    ajStrDel(&tmp2);
-		    ajListIterFree(iter);	
+		    ajListIterFree(&iter);	
 
 		    return ajFalse;
 		}
@@ -527,7 +527,7 @@ static AjBool WriteSeqresChain(AjPFile errf, AjPFile outf, AjPPdb pdb,
 	    { 
 		ajStrDel(&tmp1);
 		ajStrDel(&tmp2);
-		ajListIterFree(iter);	
+		ajListIterFree(&iter);	
 		ajWarn("Index out of range in WriteSeqresChain");
 		ajFmtPrintF(errf, "//\n%S\nERROR Index out of range "
 			    "in WriteSeqresChain\n", pdb->Pdb);
@@ -555,7 +555,7 @@ static AjBool WriteSeqresChain(AjPFile errf, AjPFile outf, AjPPdb pdb,
     /* Tidy up */
     ajStrDel(&tmp1);
     ajStrDel(&tmp2);
-    ajListIterFree(iter);	
+    ajListIterFree(&iter);	
 
     return ajTrue;
 }
@@ -618,7 +618,7 @@ static AjBool WriteSeqresDomain(AjPFile errf, AjPFile outf, AjPPdb pdb,
 	/* Check for error in chain id */
 	if(!ajPdbChnidToNum(scop->Chain[z], pdb, &chn))
 	{
-	    ajListIterFree(iter);			
+	    ajListIterFree(&iter);			
 	    ajStrDel(&tmp1);
 	    ajStrDel(&tmp2);
 	    ajStrDel(&tmpstr);
@@ -635,7 +635,7 @@ static AjBool WriteSeqresDomain(AjPFile errf, AjPFile outf, AjPPdb pdb,
 
 
 	/* Intitialise iterator for list of atoms */
-	iter=ajListIter(pdb->Chains[chn-1]->Atoms);	
+	iter=ajListIterRead(pdb->Chains[chn-1]->Atoms);	
 	
 
 	/* Start of chain not specified */
@@ -717,7 +717,7 @@ static AjBool WriteSeqresDomain(AjPFile errf, AjPFile outf, AjPPdb pdb,
 		    if(!ajBaseAa1ToAa3(ajStrChar(pdb->Chains[chn-1]->Seq, x), 
 				   &tmp2))
 		    {
-			ajListIterFree(iter);			
+			ajListIterFree(&iter);			
 			ajStrDel(&tmp1);
 			ajStrDel(&tmp2);
 			ajStrDel(&tmpstr);
@@ -779,7 +779,7 @@ static AjBool WriteSeqresDomain(AjPFile errf, AjPFile outf, AjPPdb pdb,
 	/* Domain start specified but not found */
 	if(!found_start && !nostart)
 	{
-	    ajListIterFree(iter);			
+	    ajListIterFree(&iter);			
 	    ajStrDel(&tmp1);
 	    ajStrDel(&tmp2);
 	    ajStrDel(&tmpstr);
@@ -794,7 +794,7 @@ static AjBool WriteSeqresDomain(AjPFile errf, AjPFile outf, AjPPdb pdb,
 	/* Domain end specified but not found */
 	if(!found_end && !noend)
 	{
-	    ajListIterFree(iter);			
+	    ajListIterFree(&iter);			
 	    ajStrDel(&tmp1);
 	    ajStrDel(&tmp2);
 	    ajStrDel(&tmpstr);
@@ -820,7 +820,7 @@ static AjBool WriteSeqresDomain(AjPFile errf, AjPFile outf, AjPPdb pdb,
 		    ajStrDel(&tmp2);
 		    ajStrDel(&tmpstr);
 
-		    ajListIterFree(iter);	
+		    ajListIterFree(&iter);	
     		    ajWarn("Index out of range in WriteSeqresDomain");
 		    ajFmtPrintF(errf, "//\n%S\nERROR Index out of "
 				"range in WriteSeqresDomain\n", 
@@ -835,7 +835,7 @@ static AjBool WriteSeqresDomain(AjPFile errf, AjPFile outf, AjPPdb pdb,
 		}	
 	}
 
-	ajListIterFree(iter);	 		
+	ajListIterFree(&iter);	 		
     }
     
 
@@ -903,7 +903,7 @@ static AjBool WriteAtomChain(AjPFile outf, AjPPdb pdb, ajint mod, ajint chn,
     
 
     doneter = ajFalse;
-    iter = ajListIter(pdb->Chains[chn-1]->Atoms);	
+    iter = ajListIterRead(pdb->Chains[chn-1]->Atoms);	
 
     while((atm=(AjPAtom)ajListIterNext(iter)))
 	if(atm->Mod==mod)
@@ -1003,7 +1003,7 @@ static AjBool WriteAtomChain(AjPFile outf, AjPPdb pdb, ajint mod, ajint chn,
 		    " ");
 	doneter=ajTrue;
     }
-    ajListIterFree(iter);				    
+    ajListIterFree(&iter);				    
 
     return ajTrue;
 }
@@ -1068,7 +1068,7 @@ static AjBool WriteAtomDomain(AjPFile errf, AjPFile outf, AjPPdb pdb,
 	/* Check for chain error */
 	if(!ajPdbChnidToNum(scop->Chain[z], pdb, &chn))
 	    {
-		ajListIterFree(iter);	
+		ajListIterFree(&iter);	
 		ajWarn("Chain incompatibility error in "
 		       "WriteAtomDomain");		
 		ajFmtPrintF(errf, "//\n%S\nERROR Chain incompatibility "
@@ -1079,8 +1079,8 @@ static AjBool WriteAtomDomain(AjPFile errf, AjPFile outf, AjPPdb pdb,
 	    }
 	
 	
-	/* Iteratre up to the correct model */
-	iter=ajListIter(pdb->Chains[chn-1]->Atoms);	
+	/* Iterate up to the correct model */
+	iter=ajListIterRead(pdb->Chains[chn-1]->Atoms);	
 	
 	while((atm = (AjPAtom)ajListIterNext(iter)))
 	    if(atm->Mod==mod)
@@ -1228,7 +1228,7 @@ static AjBool WriteAtomDomain(AjPFile errf, AjPFile outf, AjPPdb pdb,
 	/* Diagnostic if start was specified but not found */
 	if(!found_start && !nostart)
 	    {
-		ajListIterFree(iter);	
+		ajListIterFree(&iter);	
 		ajWarn("Domain start not found in WriteAtomDomain");
 		ajFmtPrintF(errf, "//\n%S\nERROR Domain start not "
 			    "found in WriteAtomDomain\n", scop->Entry);
@@ -1240,7 +1240,7 @@ static AjBool WriteAtomDomain(AjPFile errf, AjPFile outf, AjPPdb pdb,
 	/* Diagnostic if end was specified but not found */
 	if(!found_end && !noend)
 	    {
-		ajListIterFree(iter);	
+		ajListIterFree(&iter);	
 		ajWarn("Domain end not found in WriteAtomDomain");		
 		ajFmtPrintF(errf, "//\n%S\nERROR Domain end not "
 			    "found in WriteAtomDomain\n", scop->Entry);
@@ -1249,7 +1249,7 @@ static AjBool WriteAtomDomain(AjPFile errf, AjPFile outf, AjPPdb pdb,
 	    }
 	
 	
-	ajListIterFree(iter);	
+	ajListIterFree(&iter);	
     }
     
 
@@ -1365,7 +1365,7 @@ static AjBool WriteHeterogen(AjPFile outf, AjPPdb pdb, ajint mod)
 	return ajFalse;
     
 
-        iter=ajListIter(pdb->Groups);	
+    iter=ajListIterRead(pdb->Groups);	
 
     while((atm = (AjPAtom)ajListIterNext(iter)))
 	if(atm->Mod==mod)
@@ -1415,7 +1415,7 @@ static AjBool WriteHeterogen(AjPFile outf, AjPPdb pdb, ajint mod)
     }
 
     
-    ajListIterFree(iter);				    
+    ajListIterFree(&iter);				    
 
     return ajTrue;
 }
@@ -3132,11 +3132,11 @@ static AjBool CheckChains(AjPPdbfile *pdbfile, AjPFile logf,
 
 	aacnt=0;
 	iter=ajStrIter((*pdbfile)->seqres[i]);
-	if(toupper(ajStrIterGetK(iter)) != 'X')
+	if(toupper((int) ajStrIterGetK(iter)) != 'X')
 	    ++aacnt;
 	
 	while(ajStrIterNext(iter))
-	    if(toupper(ajStrIterGetK(iter)) != 'X')
+	    if(toupper((int) ajStrIterGetK(iter)) != 'X')
 		if(++aacnt >= min_chain_size)
 		    break;
 
@@ -6494,7 +6494,7 @@ static AjBool PdbfileChain(char id, AjPPdbfile pdb, ajint *chn)
    
     for(a=0;a<pdb->nchains;a++)
     {
-	if(toupper(ajChararrGet(pdb->chid, a)) == toupper(id))
+	if(toupper((int) ajChararrGet(pdb->chid, a)) == toupper((int) id))
 	{
 	    *chn=a+1;
 	    return ajTrue;

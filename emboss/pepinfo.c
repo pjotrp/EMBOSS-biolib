@@ -185,7 +185,7 @@ int main(int argc, char **argv)
 	embDataListRead(aa_props, aa_properties);
 
 	/* Get first table from properties list of tables */
-	listIter = ajListIter(aa_props);
+	listIter = ajListIterRead(aa_props);
 
 	/* calculate plot */
 	for(i = 0; i < 9; i++)
@@ -291,7 +291,7 @@ int main(int argc, char **argv)
 	embDataListRead(aa_hydro, aa_hydropathy);
 
 	/* Get first table from properties list */
-	listIter = ajListIter(aa_hydro);
+	listIter = ajListIterRead(aa_hydro);
 
 	/* calculate plot */
 	for(i=0; i < 3; i++)

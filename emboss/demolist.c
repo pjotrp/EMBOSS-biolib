@@ -98,7 +98,7 @@ int main(int argc, char **argv)
     ajUser("\nOutput via the ajListIter method \nSorted by source");
 
     /* Print out the list using the iterator */
-    iter = ajListIter(list);
+    iter = ajListIterRead(list);
     while(ajListIterMore(iter))
     {
 	gffnew = (gffptr) ajListIterNext (iter) ;
@@ -106,7 +106,7 @@ int main(int argc, char **argv)
 	       gffnew->type,gffnew->start,gffnew->end,gffnew->score);
     }
 
-    ajListIterFree(iter);
+    ajListIterFree(&iter);
 
 
 
@@ -247,7 +247,7 @@ static void  demolist_freegff (void **x, void *cl)
 ** Not important to understand for demo but this function
 ** merely passes back a gff struct
 **
-** @param [?] line [AjPStr] Undocumented
+** @param [r] line [AjPStr] Undocumented
 ** @return [gffptr] Undocumented
 ** @@
 ******************************************************************************/

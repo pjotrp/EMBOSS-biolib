@@ -732,23 +732,23 @@ static AjBool seqsort_PsiblastHitSort(AjPList* famlist, AjPList* supfamlist,
     
     /* DIAGNOSTIC       
     ajFmtPrint("\n\n\nContents of FAMILIES list\n");
-    iter= ajListIter(*famlist);
+    iter= ajListIterRead(*famlist);
     while((hit=(AjPScophit)ajListIterNext(iter)))
 	ajFmtPrint("%S (%d-%d, %B %B)\n", 
 		   hit->Acc, hit->Start, hit->End, hit->Target, hit->Target2);
-    ajListIterFree(iter);
+    ajListIterFree(&iter);
     ajFmtPrint("\nContents of SUPERFAMILIES list\n");
-    iter= ajListIter(*supfamlist);
+    iter= ajListIterRead(*supfamlist);
     while((hit=(AjPScophit)ajListIterNext(iter)))
 	ajFmtPrint("%S (%d-%d, %B %B)\n", 
 		   hit->Acc, hit->Start, hit->End, hit->Target, hit->Target2);
-    ajListIterFree(iter);
+    ajListIterFree(&iter);
     ajFmtPrint("\nContents of FOLDS list\n");
-    iter= ajListIter(*foldlist);
+    iter= ajListIterRead(*foldlist);
     while((hit=(AjPScophit)ajListIterNext(iter)))
 	ajFmtPrint("%S (%d-%d, %B %B)\n", 
 		   hit->Acc, hit->Start, hit->End, hit->Target, hit->Target2);
-    ajListIterFree(iter);
+    ajListIterFree(&iter);
     */
 
     
@@ -760,7 +760,7 @@ static AjBool seqsort_PsiblastHitSort(AjPList* famlist, AjPList* supfamlist,
     /** FIGURE A.3 Identify members of families (merge overlapping hits)  **/
     /***********************************************************************/
 
-    iter=ajListIter(*famlist); 
+    iter=ajListIterRead(*famlist); 
 
     /* sort list, first by Family, then by Accession number, and 
        finally by Start */
@@ -827,7 +827,7 @@ static AjBool seqsort_PsiblastHitSort(AjPList* famlist, AjPList* supfamlist,
 	    hit = nexthit;
 	}
     }
-    ajListIterFree(iter);
+    ajListIterFree(&iter);
 
 
 
@@ -850,23 +850,23 @@ static AjBool seqsort_PsiblastHitSort(AjPList* famlist, AjPList* supfamlist,
 
     /* DIAGNOSTIC
     ajFmtPrint("\n\n\nContents of FAMILIES list\n");
-    iter= ajListIter(*famlist);
+    iter= ajListIterRead(*famlist);
     while((hit=(AjPScophit)ajListIterNext(iter)))
 	ajFmtPrint("%S (%d-%d, %B %B)\n", 
 		   hit->Acc, hit->Start, hit->End, hit->Target, hit->Target2);
-    ajListIterFree(iter);
+    ajListIterFree(&iter);
     ajFmtPrint("\nContents of SUPERFAMILIES list\n");
-    iter= ajListIter(*supfamlist);
+    iter= ajListIterRead(*supfamlist);
     while((hit=(AjPScophit)ajListIterNext(iter)))
 	ajFmtPrint("%S (%d-%d, %B %B)\n", 
 		   hit->Acc, hit->Start, hit->End, hit->Target, hit->Target2);
-    ajListIterFree(iter);
+    ajListIterFree(&iter);
     ajFmtPrint("\nContents of FOLDS list\n");
-    iter= ajListIter(*foldlist);
+    iter= ajListIterRead(*foldlist);
     while((hit=(AjPScophit)ajListIterNext(iter)))
 	ajFmtPrint("%S (%d-%d, %B %B)\n", 
 		   hit->Acc, hit->Start, hit->End, hit->Target, hit->Target2);
-    ajListIterFree(iter);
+    ajListIterFree(&iter);
     */
 
 
@@ -881,7 +881,7 @@ static AjBool seqsort_PsiblastHitSort(AjPList* famlist, AjPList* supfamlist,
     /***********************************************************************/      
     
 
-    iter= ajListIter(*famlist);
+    iter= ajListIterRead(*famlist);
     
     /* get the first node in the list, only once */
     hit = (AjPScophit)ajListIterNext(iter); 
@@ -1014,29 +1014,29 @@ static AjBool seqsort_PsiblastHitSort(AjPList* famlist, AjPList* supfamlist,
 
     
     /* the iterator */
-    ajListIterFree(iter);
+    ajListIterFree(&iter);
 
 
 
     /* DIAGNOSTIC 
     ajFmtPrint("\n\n\nContents of FAMILIES list\n");
-    iter= ajListIter(*famlist);
+    iter= ajListIterRead(*famlist);
     while((hit=(AjPScophit)ajListIterNext(iter)))
 	ajFmtPrint("%S (%d-%d, %B %B)\n", 
 		   hit->Acc, hit->Start, hit->End, hit->Target, hit->Target2);
-    ajListIterFree(iter);
+    ajListIterFree(&iter);
     ajFmtPrint("\nContents of SUPERFAMILIES list\n");
-    iter= ajListIter(*supfamlist);
+    iter= ajListIterRead(*supfamlist);
     while((hit=(AjPScophit)ajListIterNext(iter)))
 	ajFmtPrint("%S (%d-%d, %B %B)\n", 
 		   hit->Acc, hit->Start, hit->End, hit->Target, hit->Target2);
-    ajListIterFree(iter);
+    ajListIterFree(&iter);
     ajFmtPrint("\nContents of FOLDS list\n");
-    iter= ajListIter(*foldlist);
+    iter= ajListIterRead(*foldlist);
     while((hit=(AjPScophit)ajListIterNext(iter)))
 	ajFmtPrint("%S (%d-%d, %B %B)\n", 
 		   hit->Acc, hit->Start, hit->End, hit->Target, hit->Target2);
-    ajListIterFree(iter);
+    ajListIterFree(&iter);
     */
 
 
@@ -1048,7 +1048,7 @@ static AjBool seqsort_PsiblastHitSort(AjPList* famlist, AjPList* supfamlist,
     /** FIGURE A.5 Identify members of superfamilies (merge overlapping hits) */
     /**************************************************************************/
 
-    iter= ajListIter(*supfamlist);
+    iter= ajListIterRead(*supfamlist);
     
     /* sort list, first by superfamily, then by accession number and 
        finally by the start */
@@ -1116,29 +1116,29 @@ static AjBool seqsort_PsiblastHitSort(AjPList* famlist, AjPList* supfamlist,
     ajListSort3(*supfamlist, ajDmxScophitCompAcc, ajDmxScophitCompStart,        	
 		ajDmxScophitCompSfam);
     
-    ajListIterFree(iter);
+    ajListIterFree(&iter);
 
 
     /* DIAGNOSTIC 
 
     ajFmtPrint("\n\n\nContents of FAMILIES list\n");
-    iter= ajListIter(*famlist);
+    iter= ajListIterRead(*famlist);
     while((hit=(AjPScophit)ajListIterNext(iter)))
 	ajFmtPrint("%S (%d-%d, %B %B)\n", 
 		   hit->Acc, hit->Start, hit->End, hit->Target, hit->Target2);
-    ajListIterFree(iter);
+    ajListIterFree(&iter);
     ajFmtPrint("\nContents of SUPERFAMILIES list\n");
-    iter= ajListIter(*supfamlist);
+    iter= ajListIterRead(*supfamlist);
     while((hit=(AjPScophit)ajListIterNext(iter)))
 	ajFmtPrint("%S (%d-%d, %B %B)\n", 
 		   hit->Acc, hit->Start, hit->End, hit->Target, hit->Target2);
-    ajListIterFree(iter);
+    ajListIterFree(&iter);
     ajFmtPrint("\nContents of FOLDS list\n");
-    iter= ajListIter(*foldlist);
+    iter= ajListIterRead(*foldlist);
     while((hit=(AjPScophit)ajListIterNext(iter)))
 	ajFmtPrint("%S (%d-%d, %B %B)\n", 
 		   hit->Acc, hit->Start, hit->End, hit->Target, hit->Target2);
-    ajListIterFree(iter);
+    ajListIterFree(&iter);
     */
 
     
@@ -1151,7 +1151,7 @@ static AjBool seqsort_PsiblastHitSort(AjPList* famlist, AjPList* supfamlist,
     printf("\n\nIDENTIFYING MEMBERS OF SUPERFAMILIES (remove fold members from superfamily list)\n");
     */
 
-    iter= ajListIter(*supfamlist);
+    iter= ajListIterRead(*supfamlist);
     
     /* get the first node in the list, only once */
     hit = (AjPScophit)ajListIterNext(iter);                     
@@ -1256,30 +1256,30 @@ static AjBool seqsort_PsiblastHitSort(AjPList* famlist, AjPList* supfamlist,
     ajListSort3(*supfamlist, ajDmxScophitCompSfam, ajDmxScophitCompAcc, 
 		ajDmxScophitCompStart);
     
-    ajListIterFree(iter);
+    ajListIterFree(&iter);
 
 
 
     /* DIAGNOSTIC 
 
     ajFmtPrint("\n\n\nContents of FAMILIES list\n");
-    iter= ajListIter(*famlist);
+    iter= ajListIterRead(*famlist);
     while((hit=(AjPScophit)ajListIterNext(iter)))
 	ajFmtPrint("%S (%d-%d, %B %B)\n", 
 		   hit->Acc, hit->Start, hit->End, hit->Target, hit->Target2);
-    ajListIterFree(iter);
+    ajListIterFree(&iter);
     ajFmtPrint("\nContents of SUPERFAMILIES list\n");
-    iter= ajListIter(*supfamlist);
+    iter= ajListIterRead(*supfamlist);
     while((hit=(AjPScophit)ajListIterNext(iter)))
 	ajFmtPrint("%S (%d-%d, %B %B)\n", 
 		   hit->Acc, hit->Start, hit->End, hit->Target, hit->Target2);
-    ajListIterFree(iter);
+    ajListIterFree(&iter);
     ajFmtPrint("\nContents of FOLDS list\n");
-    iter= ajListIter(*foldlist);
+    iter= ajListIterRead(*foldlist);
     while((hit=(AjPScophit)ajListIterNext(iter)))
 	ajFmtPrint("%S (%d-%d, %B %B)\n", 
 		   hit->Acc, hit->Start, hit->End, hit->Target, hit->Target2);
-    ajListIterFree(iter);
+    ajListIterFree(&iter);
     */
 
     
@@ -1292,7 +1292,7 @@ static AjBool seqsort_PsiblastHitSort(AjPList* famlist, AjPList* supfamlist,
     printf("\n\nIDENTIFYING MEMBERS OF FOLDS (merge overlapping hits)\n");
     */
 
-    iter= ajListIter(*foldlist);
+    iter= ajListIterRead(*foldlist);
     
     /* sort list, first by fold, then by accession number and 
        finally by the start */
@@ -1358,28 +1358,28 @@ static AjBool seqsort_PsiblastHitSort(AjPList* famlist, AjPList* supfamlist,
     ajListSort3(*foldlist, ajDmxScophitCompSfam, ajDmxScophitCompAcc, 
 		ajDmxScophitCompStart);
     
-    ajListIterFree(iter);
+    ajListIterFree(&iter);
 
     
     /* DIAGNOSTIC 
     ajFmtPrint("\n\n\nContents of FAMILIES list\n");
-    iter= ajListIter(*famlist);
+    iter= ajListIterRead(*famlist);
     while((hit=(AjPScophit)ajListIterNext(iter)))
 	ajFmtPrint("%S (%d-%d, %B %B)\n", 
 		   hit->Acc, hit->Start, hit->End, hit->Target, hit->Target2);
-    ajListIterFree(iter);
+    ajListIterFree(&iter);
     ajFmtPrint("\nContents of SUPERFAMILIES list\n");
-    iter= ajListIter(*supfamlist);
+    iter= ajListIterRead(*supfamlist);
     while((hit=(AjPScophit)ajListIterNext(iter)))
 	ajFmtPrint("%S (%d-%d, %B %B)\n", 
 		   hit->Acc, hit->Start, hit->End, hit->Target, hit->Target2);
-    ajListIterFree(iter);
+    ajListIterFree(&iter);
     ajFmtPrint("\nContents of FOLDS list\n");
-    iter= ajListIter(*foldlist);
+    iter= ajListIterRead(*foldlist);
     while((hit=(AjPScophit)ajListIterNext(iter)))
 	ajFmtPrint("%S (%d-%d, %B %B)\n", 
 		   hit->Acc, hit->Start, hit->End, hit->Target, hit->Target2);
-    ajListIterFree(iter);
+    ajListIterFree(&iter);
     */
 
     /* clean up */
@@ -1454,7 +1454,7 @@ static AjBool seqsort_SwissparseHitSort(AjPList* famlist, AjPList* supfamlist,
     /** and fold members from family list)	            	      **/ 
     /*******************************************************************/
     
-    iter = ajListIter(*famlist);
+    iter = ajListIterRead(*famlist);
     
     /* sort list, first by Family, then by Accession number and finally 
        by the Start */
@@ -1513,7 +1513,7 @@ static AjBool seqsort_SwissparseHitSort(AjPList* famlist, AjPList* supfamlist,
     ajListSort3(*famlist, ajDmxScophitCompSunid, ajDmxScophitCompAcc, 
 		ajDmxScophitCompStart); 
     
-    ajListIterFree(iter);
+    ajListIterFree(&iter);
     
     
     
@@ -1522,7 +1522,7 @@ static AjBool seqsort_SwissparseHitSort(AjPList* famlist, AjPList* supfamlist,
     /** hits and fold members from superfamily list)			**/ 
     /*********************************************************************/
     
-    iter = ajListIter(*supfamlist);
+    iter = ajListIterRead(*supfamlist);
     /* sort list, first by superfamily, then by accession number and 
        finally by the start */
     ajListSort3(*supfamlist, ajDmxScophitCompSfam, ajDmxScophitCompAcc, 
@@ -1574,7 +1574,7 @@ static AjBool seqsort_SwissparseHitSort(AjPList* famlist, AjPList* supfamlist,
     ajListSort3(*supfamlist, ajDmxScophitCompSfam, ajDmxScophitCompAcc, 
 		ajDmxScophitCompStart);
     
-    ajListIterFree(iter);
+    ajListIterFree(&iter);
     
     
     /***********************************************************************/
@@ -1582,7 +1582,7 @@ static AjBool seqsort_SwissparseHitSort(AjPList* famlist, AjPList* supfamlist,
     /** members from folds list)					  **/ 
     /***********************************************************************/
     
-    iter = ajListIter(*foldlist);
+    iter = ajListIterRead(*foldlist);
     /* sort list, first by fold, then by accession number and finally by 
        the start */
     ajListSort3(*foldlist, ajDmxScophitCompFold, ajDmxScophitCompAcc, 
@@ -1624,7 +1624,7 @@ static AjBool seqsort_SwissparseHitSort(AjPList* famlist, AjPList* supfamlist,
     ajListSort3(*foldlist, ajDmxScophitCompFold, ajDmxScophitCompAcc, 
 		ajDmxScophitCompStart);
     
-    ajListIterFree(iter);
+    ajListIterFree(&iter);
     
     
     /*******************************************************************************/
@@ -1648,7 +1648,7 @@ static AjBool seqsort_SwissparseHitSort(AjPList* famlist, AjPList* supfamlist,
     ajListSort3(*supfamlist, ajDmxScophitCompSfam, ajDmxScophitCompAcc, 
 		ajDmxScophitCompStart);;
     
-    iter = ajListIter(*supfamlist);
+    iter = ajListIterRead(*supfamlist);
     
     hit  = (AjPScophit)ajListIterNext(iter);
     while((nexthit=(AjPScophit)ajListIterNext(iter)))
@@ -1683,7 +1683,7 @@ static AjBool seqsort_SwissparseHitSort(AjPList* famlist, AjPList* supfamlist,
     ajListSort3(*supfamlist, ajDmxScophitCompSfam, ajDmxScophitCompAcc, 
 		ajDmxScophitCompStart);
     
-    ajListIterFree(iter);
+    ajListIterFree(&iter);
     
     
     /*******************************************************************/
@@ -1717,7 +1717,7 @@ static AjBool seqsort_SwissparseHitSort(AjPList* famlist, AjPList* supfamlist,
 
     }
 
-    iter = ajListIter(*foldlist);
+    iter = ajListIterRead(*foldlist);
 
     /* sort list, first by superfamily, then by accession number and 
        finally by the start */
@@ -1757,7 +1757,7 @@ static AjBool seqsort_SwissparseHitSort(AjPList* famlist, AjPList* supfamlist,
     ajListSort3(*foldlist, ajDmxScophitCompFold, ajDmxScophitCompAcc, 
 		ajDmxScophitCompStart);
 
-    ajListIterFree(iter);
+    ajListIterFree(&iter);
    
     /* clean up */
     ajListDel(&hitslist);
@@ -1811,7 +1811,7 @@ static AjBool seqsort_IdentifyMembers(AjPList* list, ajint node,
 		    ajDmxScophitCompStart);
 	
 
-    iter = ajListIter(*list); 
+    iter = ajListIterRead(*list); 
 
     /* get the first node in the list, only once */
     hit = (AjPScophit)ajListIterNext(iter);  
@@ -1877,7 +1877,7 @@ static AjBool seqsort_IdentifyMembers(AjPList* list, ajint node,
 
 
     /* Tidy up and return */
-    ajListIterFree(iter);
+    ajListIterFree(&iter);
     ajDmxScophitDel(&hit);
     ajDmxScophitDel(&nexthit);
     
@@ -1983,7 +1983,7 @@ static AjBool  seqsort_MergeHitSort(AjPList* famlist,AjPList* supfamlist,
 		ajDmxScophitCompStart);
     
     
-    iter = ajListIter(*supfamlist);
+    iter = ajListIterRead(*supfamlist);
     hit  = (AjPScophit)ajListIterNext(iter);
     while((nexthit=(AjPScophit)ajListIterNext(iter)))
     {	
@@ -2018,7 +2018,7 @@ static AjBool  seqsort_MergeHitSort(AjPList* famlist,AjPList* supfamlist,
     ajListSort3(*supfamlist, ajDmxScophitCompSfam, ajDmxScophitCompAcc, 
 		ajDmxScophitCompStart);
 
-    ajListIterFree(iter);
+    ajListIterFree(&iter);
     
     
     /***********************************************************************/
@@ -2050,7 +2050,7 @@ static AjBool  seqsort_MergeHitSort(AjPList* famlist,AjPList* supfamlist,
 	ajListPushApp(*foldlist,tmp);        
     }   
 
-    iter = ajListIter(*foldlist);
+    iter = ajListIterRead(*foldlist);
     /* sort list, first by superfamily, then by accession number and 
        finally by the start */
     ajListSort3(*foldlist, ajDmxScophitCompFold, ajDmxScophitCompAcc, 
@@ -2088,7 +2088,7 @@ static AjBool  seqsort_MergeHitSort(AjPList* famlist,AjPList* supfamlist,
 	
     ajListSort3(*foldlist, ajDmxScophitCompFold, 
 		ajDmxScophitCompAcc, ajDmxScophitCompStart);
-    ajListIterFree(iter);
+    ajListIterFree(&iter);
 
       
     /* clean up */
@@ -2151,7 +2151,7 @@ static AjBool seqsort_WriteOutputFiles(AjPFile fptr1, AjPFile fptr2,
 
     if(iter)
 	{
-	    ajListIterFree(iter);
+	    ajListIterFree(&iter);
 	    iter=NULL;
 	}
     
@@ -2165,7 +2165,7 @@ static AjBool seqsort_WriteOutputFiles(AjPFile fptr1, AjPFile fptr2,
 
     if(iter)
     {
-	ajListIterFree(iter);
+	ajListIterFree(&iter);
 	iter=NULL;
     }
 
@@ -2188,7 +2188,7 @@ static AjBool seqsort_WriteOutputFiles(AjPFile fptr1, AjPFile fptr2,
     }
     if(iter)
     {
-	ajListIterFree(iter);
+	ajListIterFree(&iter);
 	iter=NULL;
     }
     
@@ -2297,7 +2297,7 @@ AjBool seqsort_HitlistToThreeScophits(AjPList in, AjPList *fam, AjPList *sfam,
     }
 
     /* Create list iterator and new list */
-    iter = ajListIter(in);	
+    iter = ajListIterRead(in);	
     
 
     /* Iterate through the list of Hitlist pointers */
@@ -2352,7 +2352,7 @@ AjBool seqsort_HitlistToThreeScophits(AjPList in, AjPList *fam, AjPList *sfam,
     }	
     
 
-    ajListIterFree(iter);	
+    ajListIterFree(&iter);	
 
     return ajTrue;
 }

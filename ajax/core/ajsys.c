@@ -153,7 +153,7 @@ AjBool ajSysWhich(AjPStr *s)
     {
 	ajFmtPrintS(&fname,"%s/%S",p,tname);
 
-	if(ajFileStat(&fname, AJ_FILE_X))
+	if(ajFileStat(fname, AJ_FILE_X))
 	{
 	    ajStrClear(s);
 	    ajStrSet(s,fname);
@@ -182,12 +182,12 @@ AjBool ajSysWhich(AjPStr *s)
 ** finds a user-EXECUTABLE file of the same name. Reentrant.
 **
 ** @param [u] s [AjPStr*] Filename in AjStr, replaced by full pathname
-** @param [u] env [char**] Environment
+** @param [r] env [char* const[]] Environment
 ** @return [AjBool] True if executable found, false otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ajSysWhichEnv(AjPStr *s, char **env)
+AjBool ajSysWhichEnv(AjPStr *s, char * const env[])
 {
     ajint count;
     char *p;
@@ -261,7 +261,7 @@ AjBool ajSysWhichEnv(AjPStr *s, char **env)
     
     
     ajFmtPrintS(&fname,"%s/%S",p,tname);
-    while(!ajFileStat(&fname, AJ_FILE_X))
+    while(!ajFileStat(fname, AJ_FILE_X))
     {
 	if((p = ajSysStrtokR(NULL,":",&save,&buf))==NULL)
 	{
@@ -296,12 +296,12 @@ AjBool ajSysWhichEnv(AjPStr *s, char **env)
 **
 ** The exec'd program is passed a new argv array in argptr
 **
-** @param [r] cl [AjPStr*] The command line
+** @param [r] cl [const AjPStr] The command line
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajSystem(AjPStr *cl)
+void ajSystem(const AjPStr cl)
 {
     pid_t pid;
     pid_t retval;
@@ -312,7 +312,7 @@ void ajSystem(AjPStr *cl)
 
     AjPStr pname = NULL;
 
-    if(!ajSysArglist(*cl, &pgm, &argptr))
+    if(!ajSysArglist(cl, &pgm, &argptr))
 	return;
 
     pname = ajStrNew();
@@ -368,13 +368,13 @@ void ajSystem(AjPStr *cl)
 ** Note that the environment is passed through unaltered. The exec'd
 ** program is passed a new argv array
 **
-** @param [r] cl [AjPStr*] The command line
-** @param [r] env [char**] The environment
+** @param [r] cl [const AjPStr] The command line
+** @param [r] env [char* const[]] The environment
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajSystemEnv(AjPStr *cl, char **env)
+void ajSystemEnv(const AjPStr cl, char * const env[])
 {
     pid_t pid;
     pid_t retval;
@@ -385,7 +385,7 @@ void ajSystemEnv(AjPStr *cl, char **env)
 
     AjPStr pname = NULL;
 
-    if(!ajSysArglist(*cl, &pgm, &argptr))
+    if(!ajSysArglist(cl, &pgm, &argptr))
 	return;
 
     pname = ajStrNew();
@@ -433,14 +433,14 @@ void ajSystemEnv(AjPStr *cl, char **env)
 **
 ** Deletes a file or link
 **
-** @param [r] s [AjPStr*] Filename in AjStr.
+** @param [r] s [const AjPStr] Filename in AjStr.
 ** @return [AjBool] true if deleted false otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ajSysUnlink(AjPStr *s)
+AjBool ajSysUnlink(const AjPStr s)
 {
-    if(!unlink(ajStrStr(*s)))
+    if(!unlink(ajStrStr(s)))
 	return ajTrue;
 
     return ajFalse;
@@ -751,8 +751,8 @@ char* ajSysStrtok(const char *s, const char *t)
 **
 ** @param [r] s [const char *] source string
 ** @param [r] t [const char *] delimiter string
-** @param [r] ptrptr [char **] ptr save
-** @param [r] buf [AjPStr *] result buffer
+** @param [u] ptrptr [char **] ptr save
+** @param [w] buf [AjPStr *] result buffer
 **
 ** @return [char*] pointer or NULL
 ** @@
@@ -796,7 +796,7 @@ char* ajSysStrtokR(const char *s, const char *t, char **ptrptr, AjPStr *buf)
 **
 ** @param [w] buf [char *] buffer
 ** @param [r] size [int] maximum length to read
-** @param [r] fp [FILE *] stream
+** @param [u] fp [FILE *] stream
 **
 ** @return [char*] buf or NULL
 ** @@

@@ -132,7 +132,7 @@ void ajLogInfo(void)
 **
 ** Returns the user's userid
 **
-** @param [r] dest [AjPStr*] String to return result
+** @param [w] dest [AjPStr*] String to return result
 ** @return [AjBool] ajTrue on success
 ** @@
 ******************************************************************************/

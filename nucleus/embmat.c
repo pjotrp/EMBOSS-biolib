@@ -162,16 +162,16 @@ AjBool embMatProtReadInt(AjPFile *fp, EmbPMatPrints *s)
     AJNEW0 (*s);
 
     (*s)->cod = ajStrNew();
-    ajStrAss(&(*s)->cod,line);
+    ajStrAssS(&(*s)->cod,line);
 
     ajFileReadLine(*fp,&line);
     (*s)->acc = ajStrNew();
-    ajStrAss(&(*s)->acc,line);
+    ajStrAssS(&(*s)->acc,line);
     ajFileReadLine(*fp,&line);
     ajStrToInt(line,&(*s)->n);
     ajFileReadLine(*fp,&line);
     (*s)->tit = ajStrNew();
-    ajStrAss(&(*s)->tit,line);
+    ajStrAssS(&(*s)->tit,line);
 
     AJCNEW((*s)->len, (*s)->n);
     AJCNEW((*s)->max, (*s)->n);

@@ -32,7 +32,7 @@ static void infoalign_OutputFloat(AjPFile outfile, float num, AjBool html,
 				   AjBool after);
 static void infoalign_OutputInt(AjPFile outfile, ajint num, AjBool html,
 				 AjBool after);
-static void infoalign_OutputStr(AjPFile outfile, AjPStr str, AjBool html,
+static void infoalign_OutputStr(AjPFile outfile, const AjPStr str, AjBool html,
 				 AjBool after, ajint minlength);
 static void infoalign_Compare(AjPSeq ref, AjPSeq seq, ajint **sub,
 			      AjPSeqCvt cvt, ajint *seqlength,
@@ -95,7 +95,7 @@ int main(int argc, char **argv)
 
     AjPFile outfile;
 
-    AjPStr usa;
+    const AjPStr usa;
     AjPStr name;
     AjPStr altusa;			/* default name when the real name
 					   is not known */
@@ -410,7 +410,7 @@ int main(int argc, char **argv)
 ** then add a TAB after it, else ensure that the last data item has no
 ** characters after it.
 **
-** @param [r] outfile [AjPFile] output file handle
+** @param [u] outfile [AjPFile] output file handle
 ** @param [r] num [float] number to be printed
 ** @param [r] html [AjBool] True if want it formatted as an HTML table
 **                          data item
@@ -447,7 +447,7 @@ static void infoalign_OutputFloat(AjPFile outfile, float num, AjBool html,
 ** then add a TAB after it, else ensure that the last data item has no
 ** characters after it.
 **
-** @param [r] outfile [AjPFile] output file handle
+** @param [u] outfile [AjPFile] output file handle
 ** @param [r] num [ajint] number to be printed
 ** @param [r] html [AjBool] True if want it formatted as an HTML table
 **                          data item
@@ -483,8 +483,8 @@ static void infoalign_OutputInt(AjPFile outfile, ajint num, AjBool html,
 ** then try to format it within a minimum length field.
 ** If it is longer than this field, just add a TAB.
 **
-** @param [r] outfile [AjPFile] output file handle
-** @param [r] str [AjPStr] string to be printed
+** @param [u] outfile [AjPFile] output file handle
+** @param [r] str [const AjPStr] string to be printed
 ** @param [r] html [AjBool] True if want it formatted as an HTML table
 **                          data item
 ** @param [r] after [AjBool] True if we want to output more columns
@@ -495,7 +495,7 @@ static void infoalign_OutputInt(AjPFile outfile, ajint num, AjBool html,
 ** @@
 ******************************************************************************/
 
-static void infoalign_OutputStr(AjPFile outfile, AjPStr str, AjBool html,
+static void infoalign_OutputStr(AjPFile outfile, const AjPStr str, AjBool html,
 				 AjBool after, ajint minlength)
 {
     AjPStr marginfmt;

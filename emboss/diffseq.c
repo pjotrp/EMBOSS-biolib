@@ -202,7 +202,7 @@ static void diffseq_WordMatchListConvDiffToFeat(AjPList list,
     ajStrAssC(&replace,"replace");
     score = 1.0;
 
-    iter = ajListIter(list);
+    iter = ajListIterRead(list);
     while(ajListIterMore(iter))
     {
 	EmbPWordMatch p =(EmbPWordMatch) ajListIterNext(iter) ;
@@ -299,7 +299,7 @@ static void diffseq_WordMatchListConvDiffToFeat(AjPList list,
 
     }
 
-    ajListIterFree(iter);
+    ajListIterFree(&iter);
     ajStrDel(&source);
     ajStrDel(&type);
     ajStrDel(&note);
@@ -322,7 +322,7 @@ static void diffseq_WordMatchListConvDiffToFeat(AjPList list,
 **
 ** Obsolete. Not used unless outfile is reenabled.
 **
-** @param [r] outfile [AjPFile] output file
+** @param [u] outfile [AjPFile] output file
 ** @param [r] feat [AjPFeature] Feature to be processed
 ** @param [r] values [AjBool] display values of tags
 **
@@ -356,7 +356,7 @@ static void diffseq_AddTags(AjPFile outfile, AjPFeature feat, AjBool values)
 		ajFmtPrintF(outfile, " %S", tagnam);
 	}
 
-    ajListIterFree(titer);
+    ajListIterFree(&titer);
     ajFmtPrintF(outfile, "\n");
 
     return;
@@ -397,7 +397,7 @@ static void diffseq_AddTagsRpt(AjPStr* strval, AjPFeature feat, AjBool values)
 		ajFmtPrintAppS(strval, " %S", tagnam);
 	}
 
-    ajListIterFree(titer);
+    ajListIterFree(&titer);
 
     return;
 }
@@ -412,7 +412,7 @@ static void diffseq_AddTagsRpt(AjPStr* strval, AjPFeature feat, AjBool values)
 **
 ** Obsolete. Only called if outfile is defined
 **
-** @param [r] outfile [AjPFile] Output file containing report.
+** @param [u] outfile [AjPFile] Output file containing report.
 ** @param [r] feat [AjPFeattable] Feature table to search
 ** @param [r] start [ajint] Start position of region (in human coordinates)
 ** @param [r] end [ajint] End position of region (in human coordinates)
@@ -438,7 +438,7 @@ static void diffseq_Features(AjPFile outfile, AjPFeattable feat, ajint start,
 
     if(feat->Features)
     {
-	iter = ajListIter(feat->Features);
+	iter = ajListIterRead(feat->Features);
 	while(ajListIterMore(iter))
 	{
 	    gf = ajListIterNext(iter);
@@ -456,7 +456,7 @@ static void diffseq_Features(AjPFile outfile, AjPFeattable feat, ajint start,
 			ajFeatGetStart(gf), ajFeatGetEnd(gf));
 	    diffseq_AddTags(outfile, gf, ajTrue);
 	}
-	ajListIterFree(iter);
+	ajListIterFree(&iter);
     }
 
     return;
@@ -492,7 +492,7 @@ static void diffseq_FeaturesRpt(char* typefeat, AjPFeature rf,
 
     if(feat->Features)
     {
-	iter = ajListIter(feat->Features);
+	iter = ajListIterRead(feat->Features);
 	while(ajListIterMore(iter))
 	{
 	    gf = ajListIterNext(iter);
@@ -512,7 +512,7 @@ static void diffseq_FeaturesRpt(char* typefeat, AjPFeature rf,
 	    diffseq_AddTagsRpt(&tmp, gf, ajTrue);
 	    ajFeatTagAdd(rf, NULL,  tmp);
 	}
-	ajListIterFree(iter) ;
+	ajListIterFree(&iter) ;
     }
 
     ajStrDel(&tmp);
@@ -532,7 +532,7 @@ static void diffseq_FeaturesRpt(char* typefeat, AjPFeature rf,
 ** @param [r] matchlist [AjPList] List of minimal non-overlapping matches
 ** @param [r] seq1 [AjPSeq] Sequence to be diff'd.
 ** @param [r] seq2 [AjPSeq] Sequence to be diff'd.
-** @param [r] outfile [AjPFile] Output file containing report.
+** @param [u] outfile [AjPFile] Output file containing report.
 ** @param [r] columns [AjBool] format in columns
 ** @return [void]
 ** @@
@@ -590,7 +590,7 @@ static void diffseq_diff(AjPList matchlist, AjPSeq seq1, AjPSeq seq2, AjPFile
     ajFmtPrintF(outfile, "# Report of diffseq of: %S and %S\n\n",
 		name1, name2);
     
-    iter = ajListIter(matchlist);
+    iter = ajListIterRead(matchlist);
     while(ajListIterMore(iter))
     {
 	p = (EmbPWordMatch) ajListIterNext(iter) ;
@@ -713,7 +713,7 @@ static void diffseq_diff(AjPList matchlist, AjPSeq seq1, AjPSeq seq2, AjPFile
 
     }
     
-    ajListIterFree(iter);
+    ajListIterFree(&iter);
     
     /* end of overlapping region */
     if(p)
@@ -828,7 +828,7 @@ static void diffseq_diffrpt(AjPList matchlist, AjPSeq seq1, AjPSeq seq2,
 		ajSeqBegin(seq2), ajSeqEnd(seq2));
     
     
-    iter = ajListIter(matchlist);
+    iter = ajListIterRead(matchlist);
     while(ajListIterMore(iter))
     {
 	p = (EmbPWordMatch) ajListIterNext(iter) ;
@@ -923,7 +923,7 @@ static void diffseq_diffrpt(AjPList matchlist, AjPSeq seq1, AjPSeq seq2,
 
     }
     
-    ajListIterFree(iter);
+    ajListIterFree(&iter);
     
     /* end of overlapping region */
     if(p)

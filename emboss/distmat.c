@@ -197,7 +197,7 @@ int main (int argc, char * argv[])
 
     /* free allocated memory */
     for(i=0;i<nseqs;i++)
-	ajCharFree(seqcharptr[i]);
+	ajCharFree(&seqcharptr[i]);
     AJFREE(seqcharptr);
 
     if(method == 0 || method == 1 || method == 4 )
@@ -1414,7 +1414,7 @@ static char** distmat_getSeq(AjPSeqset seqset, ajint nseqs, ajint mlen,
 **
 ** Output the distance matrix
 **
-** @param [r] outf [AjPFile] Output file
+** @param [u] outf [AjPFile] Output file
 ** @param [r] nseqs [ajint] Number of sequences
 ** @param [r] mlen [ajint] Length
 ** @param [r] seqset [AjPSeqset] Sequence set object

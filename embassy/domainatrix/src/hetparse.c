@@ -382,7 +382,7 @@ static AjBool        hetparse_HetScan(AjPStr path, AjPStr extn, AjPHet ptr)
 
 		/* Initialise iterator to iterate through the list 
 		   <listhet> */
-		iter=ajListIter(listhet);
+		iter=ajListIterRead(listhet);
 
 		foundhet=ajFalse;
 
@@ -408,7 +408,7 @@ static AjBool        hetparse_HetScan(AjPStr path, AjPStr extn, AjPHet ptr)
 		
 		
 		/* Free the list iterator */
-		ajListIterFree(iter);
+		ajListIterFree(&iter);
 	    }
 	}
 	
@@ -417,7 +417,7 @@ static AjBool        hetparse_HetScan(AjPStr path, AjPStr extn, AjPHet ptr)
 	
 	/* Compare list of heterogens from this file to our dictionary */
 	/* Initialise iterator to iterate through the list <listhet> */
-	iter=ajListIter(listhet);
+	iter=ajListIterRead(listhet);
 
 	/* Iterate through the list, make <hettemp> point to the current node */		
 	while((hettemp=(AjPStr)ajListIterNext(iter)))
@@ -438,10 +438,10 @@ static AjBool        hetparse_HetScan(AjPStr path, AjPStr extn, AjPHet ptr)
 	/* Close file and tidy up */
 	ajFileClose(&fptr);
 	ajStrDel(&fname);
-	ajListIterFree(iter);
+	ajListIterFree(&iter);
 	
 	/* Free the list and its contents */
-	iter=ajListIter(listhet);
+	iter=ajListIterRead(listhet);
 
 	while((hettemp=(AjPStr)ajListIterNext(iter)))
 	    ajStrDel(&hettemp);
@@ -449,7 +449,7 @@ static AjBool        hetparse_HetScan(AjPStr path, AjPStr extn, AjPHet ptr)
 	ajListstrDel(&listhet);
 
 	/* Free the list iterator */
-	ajListIterFree(iter);
+	ajListIterFree(&iter);
     }
 
 

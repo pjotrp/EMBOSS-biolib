@@ -492,19 +492,19 @@ int main(int argc, char **argv)
 **
 ** Undocumented.
 **
-** @param [?] ofile [AjPFile] Undocumented
-** @param [?] genome [AjPSeq] Undocumented
-** @param [?] est [AjPSeq] Undocumented
-** @param [?] ge [EmbPEstAlign] Undocumented
-** @param [?] match [ajint] Undocumented
-** @param [?] mismatch [ajint] Undocumented
-** @param [?] gap_penalty [ajint] Undocumented
-** @param [?] intron_penalty [ajint] Undocumented
-** @param [?] splice_penalty [ajint] Undocumented
-** @param [?] minscore [ajint] Undocumented
-** @param [?] align [ajint] Undocumented
-** @param [?] width [ajint] Undocumented
-** @param [?] reverse [ajint] Undocumented
+** @param [u] ofile [AjPFile] Undocumented
+** @param [r] genome [AjPSeq] Undocumented
+** @param [r] est [AjPSeq] Undocumented
+** @param [r] ge [EmbPEstAlign] Undocumented
+** @param [r] match [ajint] Undocumented
+** @param [r] mismatch [ajint] Undocumented
+** @param [r] gap_penalty [ajint] Undocumented
+** @param [r] intron_penalty [ajint] Undocumented
+** @param [r] splice_penalty [ajint] Undocumented
+** @param [r] minscore [ajint] Undocumented
+** @param [r] align [ajint] Undocumented
+** @param [r] width [ajint] Undocumented
+** @param [r] reverse [ajint] Undocumented
 ** @@
 ******************************************************************************/
 

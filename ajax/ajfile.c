@@ -50,7 +50,7 @@ static AjPRegexp fileDirExp = NULL;
 static AjPRegexp fileFilenameExp = NULL;
 
 static void   fileBuffInit(AjPFileBuff thys);
-static void   fileBuffLineAdd(AjPFileBuff thys, AjPStr line);
+static void   fileBuffLineAdd(AjPFileBuff thys, const AjPStr line);
 static void   fileBuffLineDel(AjPFileBuff thys);
 static AjBool fileBuffLineNext(AjPFileBuff thys);
 static void   fileClose(AjPFile thys);
@@ -90,6 +90,7 @@ static DIR*   fileOpenDir(AjPStr *dir);
 **
 ** @param [r] name [const AjPStr] File name.
 ** @return [AjPOutfile] New output file object.
+** @category new [AjPOutfile] Default constructor for an output file
 ** @@
 ******************************************************************************/
 
@@ -135,6 +136,7 @@ AjPOutfile ajOutfileNew(const AjPStr name)
 **
 ** @param [r] name [const AjPStr] Directory name
 ** @return [AjPDir] New directory object.
+** @category new [AjPDir] Default constructor for a directory
 ** @@
 ******************************************************************************/
 
@@ -160,6 +162,7 @@ AjPDir ajDirNew(const AjPStr name)
 ** @param [r] name [const AjPStr] Directory name
 ** @param [r] ext [const AjPStr] File extension
 ** @return [AjPDir] New directory object.
+** @category new [AjPDir] Directory constructor with extension
 ** @@
 ******************************************************************************/
 
@@ -186,6 +189,7 @@ AjPDir ajDirNewS(const AjPStr name, const AjPStr ext)
 ** @param [r] prefix [const AjPStr] Filename prefix
 ** @param [r] ext [const AjPStr] Filename extension
 ** @return [AjPDir] New directory object.
+** @category new [AjPDir] Directory constructor with prefix and extension
 ** @@
 ******************************************************************************/
 
@@ -212,6 +216,7 @@ AjPDir ajDirNewSS(const AjPStr name, const AjPStr prefix, const AjPStr ext)
 **
 ** @param [r] name [const AjPStr] Directory name
 ** @return [AjPDir] New directory object.
+** @category new [AjPDir] Default constructor for an output directory
 ** @@
 ******************************************************************************/
 
@@ -236,6 +241,7 @@ AjPDir ajDiroutNew(const AjPStr name)
 ** @param [r] name [const AjPStr] Directory name
 ** @param [r] ext [const AjPStr] File extension
 ** @return [AjPDir] New directory object.
+** @category new [AjPDir] Output directory constructor with extension
 ** @@
 ******************************************************************************/
 
@@ -262,6 +268,8 @@ AjPDir ajDiroutNewS(const AjPStr name, const AjPStr ext)
 ** @param [r] prefix [const AjPStr] Filename prefix
 ** @param [r] ext [const AjPStr] File extension
 ** @return [AjPDir] New directory object.
+** @category new [AjPDir] Output directory constructor with prefix
+**                        and extension
 ** @@
 ******************************************************************************/
 
@@ -341,6 +349,7 @@ AjPStr ajDirExt(const AjPDir thys)
 ** Creates a new file object.
 **
 ** @return [AjPFile] New file object.
+** @category new [AjPFile] Default constructor for an input file
 ** @@
 ******************************************************************************/
 
@@ -374,6 +383,7 @@ AjPFile ajFileNew(void)
 **
 ** @param [r] name [const AjPStr] Command string.
 ** @return [AjPFile] New file object.
+** @category new [AjPFile] Constructor using output from a forked command
 ** @@
 ******************************************************************************/
 
@@ -456,6 +466,7 @@ AjPFile ajFileNewInPipe(const AjPStr name)
 **
 ** @param [r] name [const AjPStr] File name.
 ** @return [AjPFile] New file object.
+** @category new [AjPFile] Constructor using a filename for an input file
 ** @@
 ******************************************************************************/
 
@@ -588,8 +599,9 @@ AjPFile ajFileNewInC(const char *name)
 **
 ** Creates a new file object with a list of input files.
 **
-** @param [r] list [AjPList] List of input filenames as strings.
+** @param [u] list [AjPList] List of input filenames as strings.
 ** @return [AjPFile] New file object.
+** @category new [AjPFile] Constructor using an AjPList of filenames
 ** @@
 ******************************************************************************/
 
@@ -635,6 +647,9 @@ AjPFile ajFileNewInList(AjPList list)
 **
 ** @param [r] name [const AjPStr] File name.
 ** @return [AjPFile] New file object.
+** @category new [AjPFile] Default constructor using a filename for an
+**                         output file to be opened for appending records
+**                         to the end of the file
 ** @@
 ******************************************************************************/
 
@@ -673,6 +688,8 @@ AjPFile ajFileNewApp(const AjPStr name)
 **
 ** @param [r] name [const AjPStr] File name.
 ** @return [AjPFile] New file object.
+** @category new [AjPFile] Default constructor using a filename for an
+**                         output file
 ** @@
 ******************************************************************************/
 
@@ -892,7 +909,7 @@ AjPFile ajFileNewOutDir(const AjPDir dir, const AjPStr name)
 ** 'stdout' and 'stderr' are special names for standard output and
 ** standard error respectively which need no directory.
 **
-** @param [r] pname [AjPStr*] File name.
+** @param [u] pname [AjPStr*] File name, returned with directory prefix
 ** @param [rN] dir [const AjPStr] Directory (optional, can be empty or NULL).
 ** @return [AjBool] ajTrue if the filename was changed
 ** @@
@@ -960,8 +977,10 @@ AjBool ajFileHasDir(const AjPStr name)
 **
 ** Creates a new file object from an open C file.
 **
-** @param [r] file [FILE*] C file.
+** @param [u] file [FILE*] C file.
 ** @return [AjPFile] New file object.
+** @category new [AjPFile] Constructor using an existing open file,
+**                         for example stdin or stdout
 ** @@
 ******************************************************************************/
 
@@ -1005,8 +1024,9 @@ AjPFile ajFileNewF(FILE* file)
 **
 ** Close and free an outfile object.
 **
-** @param [w] pthis [AjPOutfile*] Output file.
+** @param [d] pthis [AjPOutfile*] Output file.
 ** @return [void]
+** @category delete [AjPOutfile] Close file and descruct
 ** @@
 ******************************************************************************/
 
@@ -1034,8 +1054,9 @@ void ajOutfileClose(AjPOutfile* pthis)
 **
 ** Close and free an outfile object.
 **
-** @param [w] pthis [AjPOutfile*] Output file.
+** @param [d] pthis [AjPOutfile*] Output file.
 ** @return [void]
+** @category delete [AjPOutfile] Default destructor
 ** @@
 ******************************************************************************/
 
@@ -1058,8 +1079,9 @@ void ajOutfileDel(AjPOutfile* pthis)
 **
 ** Close and free a directory object.
 **
-** @param [w] pthis [AjPDir*] Directory object.
+** @param [d] pthis [AjPDir*] Directory object.
 ** @return [void]
+** @category delete [AjPDir] Default destructor
 ** @@
 ******************************************************************************/
 
@@ -1083,8 +1105,9 @@ void ajDirDel(AjPDir* pthis)
 **
 ** Close and free a directory object.
 **
-** @param [w] pthis [AjPDir*] Directory object.
+** @param [d] pthis [AjPDir*] Directory object.
 ** @return [void]
+** @category delete [AjPDir] Default destructor for output directory
 ** @@
 ******************************************************************************/
 
@@ -1111,8 +1134,9 @@ void ajDiroutDel(AjPDir* pthis)
 **
 ** Close and free a file object.
 **
-** @param [w] pthis [AjPFile*] File.
+** @param [d] pthis [AjPFile*] File.
 ** @return [void]
+** @category delete [AjPFile] Default destructor
 ** @@
 ******************************************************************************/
 
@@ -1140,8 +1164,9 @@ void ajFileClose(AjPFile* pthis)
 **
 ** Closes and deletes an output file object.
 **
-** @param [r] pthis [AjPFile*] Output file.
+** @param [d] pthis [AjPFile*] Output file.
 ** @return [void]
+** @category delete [AjPFile] Destructor and writes file closing message at end
 ** @@
 ******************************************************************************/
 
@@ -1256,7 +1281,7 @@ void ajFileDataNew(const AjPStr tfile, AjPFile *fnew)
     
     ajStrAssS(&bname, tfile);
     ajDebug("ajFileDataNew trying '%S'\n", bname);
-    if(ajFileStat(&bname, AJ_FILE_R))
+    if(ajFileStat(bname, AJ_FILE_R))
     {
 	*fnew = ajFileNewIn(bname);
 	ajStrDelReuse(&bname);
@@ -1266,7 +1291,7 @@ void ajFileDataNew(const AjPStr tfile, AjPFile *fnew)
     ajStrAssC(&fname, ".embossdata/");
     ajStrApp(&fname, bname);
     ajDebug("ajFileDataNew trying '%S'\n", fname);
-    if(ajFileStat(&fname, AJ_FILE_R))
+    if(ajFileStat(fname, AJ_FILE_R))
     {
 	*fnew = ajFileNewIn(fname);
 	ajStrDelReuse(&bname);
@@ -1282,7 +1307,7 @@ void ajFileDataNew(const AjPStr tfile, AjPFile *fnew)
 	ajStrAppC(&hname,"/");
 	ajStrApp(&hname,bname);
 	ajDebug("ajFileDataNew trying '%S'\n", hname);
-	if(ajFileStat(&hname, AJ_FILE_R))
+	if(ajFileStat(hname, AJ_FILE_R))
 	{
 	    *fnew = ajFileNewIn(hname);
 	    ajStrDel(&hname);
@@ -1295,7 +1320,7 @@ void ajFileDataNew(const AjPStr tfile, AjPFile *fnew)
 	ajStrAppC(&hname,"/.embossdata/");
 	ajStrApp(&hname,bname);
 	ajDebug("ajFileDataNew trying '%S'\n", hname);
-	if(ajFileStat(&hname, AJ_FILE_R))
+	if(ajFileStat(hname, AJ_FILE_R))
 	{
 	    *fnew = ajFileNewIn(hname);
 	    ajStrDel(&hname);
@@ -1311,7 +1336,7 @@ void ajFileDataNew(const AjPStr tfile, AjPFile *fnew)
         ajFileDirFix(&fname);
 	ajStrApp(&fname,bname);
 	ajDebug("ajFileDataNew trying '%S'\n", fname);
-	if(ajFileStat(&fname, AJ_FILE_R))
+	if(ajFileStat(fname, AJ_FILE_R))
 	{
 	    *fnew = ajFileNewIn(fname);
 	    ajStrDelReuse(&bname);
@@ -1330,7 +1355,7 @@ void ajFileDataNew(const AjPStr tfile, AjPFile *fnew)
 	ajStrAppC(&fname,"/data/");
 	ajStrApp(&fname,bname);
 	ajDebug("ajFileDataNew trying '%S'\n", fname);
-	if(ajFileStat(&fname, AJ_FILE_R))
+	if(ajFileStat(fname, AJ_FILE_R))
 	{
 	    *fnew = ajFileNewIn(fname);
 	    ajStrDelReuse(&bname);
@@ -1345,7 +1370,7 @@ void ajFileDataNew(const AjPStr tfile, AjPFile *fnew)
 	ajStrAppC(&fname,"/data/");
 	ajStrApp(&fname,bname);
 	ajDebug("ajFileDataNew trying '%S'\n", fname);
-	if(ajFileStat(&fname, AJ_FILE_R))
+	if(ajFileStat(fname, AJ_FILE_R))
 	{
 	    *fnew = ajFileNewIn(fname);
 	    ajStrDelReuse(&bname);
@@ -1419,7 +1444,7 @@ void ajFileDataDirNew(const AjPStr tfile, const AjPStr dir, AjPFile *fnew)
 	}
 	ajStrApp(&fname,tfile);
 	ajDebug("ajFileDataDirNew trying '%S'\n", fname);
-	if(ajFileStat(&fname, AJ_FILE_R))
+	if(ajFileStat(fname, AJ_FILE_R))
 	{
 	    *fnew = ajFileNewIn(fname);
 	    ajStrDelReuse(&fname);
@@ -1443,7 +1468,7 @@ void ajFileDataDirNew(const AjPStr tfile, const AjPStr dir, AjPFile *fnew)
 	}
 	ajStrApp(&fname,tfile);
 	ajDebug("ajFileDataDirNew trying '%S'\n", fname);
-	if(ajFileStat(&fname, AJ_FILE_R))
+	if(ajFileStat(fname, AJ_FILE_R))
 	{
 	    *fnew = ajFileNewIn(fname);
 	    ajStrDelReuse(&pname);
@@ -1463,7 +1488,7 @@ void ajFileDataDirNew(const AjPStr tfile, const AjPStr dir, AjPFile *fnew)
 	}
 	ajStrApp(&fname,tfile);
 	ajDebug("ajFileDataDirNew trying '%S'\n", fname);
-	if(ajFileStat(&fname, AJ_FILE_R))
+	if(ajFileStat(fname, AJ_FILE_R))
 	{
 	    *fnew = ajFileNewIn(fname);
 	    ajStrDelReuse(&pname);
@@ -1535,7 +1560,7 @@ void ajFileDataDirNewC(const char *s, const char* d, AjPFile *f)
 ** Resets the end-of-file flag End for cases where end-of-file was
 ** reached and then we seek back somewhere in the file.
 **
-** @param [r] thys [AjPFile] File.
+** @param [u] thys [AjPFile] File.
 ** @param [r] offset [ajlong] Offset
 ** @param [r] wherefrom [ajint] Start of offset, as defined for 'fseek'.
 ** @return [ajint] Result of 'fseek'
@@ -1570,13 +1595,13 @@ ajint ajFileSeek(AjPFile thys, ajlong offset, ajint wherefrom)
 ** @param [w] ptr [void*] Buffer for output.
 ** @param [r] element_size [size_t] Number of bytes per element.
 ** @param [r] count [size_t] Number of elements to read.
-** @param [r] thys [const AjPFile] Input file.
+** @param [u] thys [AjPFile] Input file.
 ** @return [size_t] Return value from 'fread'
 ** @@
 ******************************************************************************/
 
 size_t ajFileRead(void* ptr, size_t element_size, size_t count,
-		  const AjPFile thys)
+		  AjPFile thys)
 {
     return fread(ptr, element_size, count, thys->fp);
 }
@@ -1589,13 +1614,13 @@ size_t ajFileRead(void* ptr, size_t element_size, size_t count,
 ** Binary read of an unsigned integer from an input file object using
 ** the C 'fread' function. Converts from a specified endianism.
 **
-** @param [r] thys [const AjPFile] Input file.
+** @param [u] thys [AjPFile] Input file.
 ** @param [r] Bigendian [AjBool] Big endian or not.
 ** @return [ajuint] Converted integer value
 ** @@
 ******************************************************************************/
 
-ajuint ajFileReadUint(const AjPFile thys, AjBool Bigendian)
+ajuint ajFileReadUint(AjPFile thys, AjBool Bigendian)
 {
     static ajint called  = 0;
     static AjBool bigend = AJFALSE;
@@ -1627,15 +1652,15 @@ ajuint ajFileReadUint(const AjPFile thys, AjBool Bigendian)
 **
 ** Binary write to an output file object using the C 'fwrite' function.
 **
-** @param [r] thys [const AjPFile] Output file.
-** @param [w] ptr [const void*] Buffer for output.
+** @param [u] thys [AjPFile] Output file.
+** @param [r] ptr [const void*] Buffer for output.
 ** @param [r] element_size [size_t] Number of bytes per element.
 ** @param [r] count [size_t] Number of elements to write.
 ** @return [size_t] Return value from 'fwrite'
 ** @@
 ******************************************************************************/
 
-size_t ajFileWrite(const AjPFile thys, const void* ptr,
+size_t ajFileWrite(AjPFile thys, const void* ptr,
 		   size_t element_size, size_t count)
 {
     return fwrite(ptr, element_size, count, thys->fp);
@@ -1649,7 +1674,7 @@ size_t ajFileWrite(const AjPFile thys, const void* ptr,
 ** Given a file object that includes a list of input files, closes the
 ** current input file and opens the next one.
 **
-** @param [r] thys [AjPFile] File object.
+** @param [u] thys [AjPFile] File object.
 ** @return [AjBool] ajTrue on success.
 ** @@
 ******************************************************************************/
@@ -1697,13 +1722,13 @@ AjBool ajFileNext(AjPFile thys)
 **
 ** Reopens a file with a new name.
 **
-** @param [r] thys [AjPFile] Input file.
-** @param [r] name [AjPStr] name of file.
+** @param [u] thys [AjPFile] Input file.
+** @param [r] name [const AjPStr] name of file.
 ** @return [FILE*] copy of file pointer
 ** @@
 ******************************************************************************/
 
-FILE* ajFileReopen(AjPFile thys, AjPStr name)
+FILE* ajFileReopen(AjPFile thys, const AjPStr name)
 {
     ajStrAssS(&thys->Name, name);
     return freopen(ajStrStr(thys->Name), "r", thys->fp);
@@ -1716,7 +1741,7 @@ FILE* ajFileReopen(AjPFile thys, AjPStr name)
 **
 ** Reads a line from the input file, removing any trailing newline.
 **
-** @param [r] thys [AjPFile] Input file.
+** @param [u] thys [AjPFile] Input file.
 ** @param [w] pdest [AjPStr*] Buffer to hold the current line.
 ** @return [AjBool] ajTrue on success.
 ** @@
@@ -1734,10 +1759,12 @@ AjBool ajFileReadLine(AjPFile thys, AjPStr* pdest)
 **
 ** Reads a line from a file and removes any trailing newline.
 **
-** @param [r] thys [AjPFile] Input file.
+** @param [u] thys [AjPFile] Input file.
 ** @param [w] pdest [AjPStr*] Buffer to hold the current line.
 ** @param [w] fpos [ajlong*] File position before the read.
 ** @return [AjBool] ajTrue on success.
+** @category modify [AjPFile] Reads a record from a file and removes
+**                            newline characters
 ** @@
 ******************************************************************************/
 
@@ -1775,9 +1802,11 @@ AjBool ajFileGetsTrimL(AjPFile thys, AjPStr* pdest, ajlong* fpos)
 **
 ** Reads a line from a file and removes any trailing newline.
 **
-** @param [r] thys [AjPFile] Input file.
+** @param [u] thys [AjPFile] Input file.
 ** @param [w] pdest [AjPStr*] Buffer to hold the current line.
 ** @return [AjBool] ajTrue on success.
+** @category modify [AjPFile] Reads a record from a file and removes
+**                            newline characters
 ** @@
 ******************************************************************************/
 
@@ -1815,9 +1844,10 @@ AjBool ajFileGetsTrim(AjPFile thys, AjPStr* pdest)
 **
 ** Reads a line from a file and returns the initial file position.
 **
-** @param [r] thys [AjPFile] Input file.
+** @param [u] thys [AjPFile] Input file.
 ** @param [w] pdest [AjPStr*] Buffer to hold the current line.
 ** @return [AjBool] ajTrue on success.
+** @category modify [AjPFile] Reads a record from a file
 ** @@
 ******************************************************************************/
 
@@ -1835,10 +1865,11 @@ AjBool ajFileGets(AjPFile thys, AjPStr* pdest)
 **
 ** Reads a line from a file.
 **
-** @param [r] thys [AjPFile] Input file.
+** @param [u] thys [AjPFile] Input file.
 ** @param [w] pdest [AjPStr*] Buffer to hold the current line.
 ** @param [w] fpos [ajlong*] File position before the read.
 ** @return [AjBool] ajTrue on success.
+** @category modify [AjPFile] Reads a record from a file
 ** @@
 ******************************************************************************/
 
@@ -1922,12 +1953,12 @@ AjBool ajFileGetsL(AjPFile thys, AjPStr* pdest, ajlong* fpos)
 ** Turns off system buffering of an output file, for example to allow
 ** debug output to appear even in the event of a program abort.
 **
-** @param [r] thys [const AjPFile] File object.
+** @param [u] thys [AjPFile] File object.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajFileUnbuffer(const AjPFile thys)
+void ajFileUnbuffer(AjPFile thys)
 {
     setbuf(thys->fp, NULL);
 
@@ -1941,7 +1972,7 @@ void ajFileUnbuffer(const AjPFile thys)
 **
 ** Reads a record from a file and appends it to the user supplied buffer.
 **
-** @param [r] thys [AjPFile] Input file.
+** @param [u] thys [AjPFile] Input file.
 ** @param [w] pbuff [AjPStr*] Buffer to hold results.
 ** @return [AjBool] ajTrue on success.
 ** @@
@@ -1970,12 +2001,12 @@ AjBool ajFileReadAppend(AjPFile thys, AjPStr* pbuff)
 **
 ** Writes a header record to the output file.
 **
-** @param [r] thys [const AjPFile] Output file.
+** @param [u] thys [AjPFile] Output file.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajFileOutHeader(const AjPFile thys)
+void ajFileOutHeader(AjPFile thys)
 {
     ajFmtPrintF(thys, "Standard output header ...\n");
 
@@ -2457,6 +2488,7 @@ ajint ajFileBuffSize(void)
 **
 ** @param [r] thys [const AjPFile] File.
 ** @return [const char*] Filename as a C character string.
+** @category cast [AjPFile] Returns the filename as char
 ** @@
 ******************************************************************************/
 
@@ -2492,13 +2524,13 @@ AjPStr ajFileGetName(const AjPFile thys)
 ** Returns true if file exists and is read or write or executable by the user
 ** as determined by AJ_FILE_R AJ_FILE_W AJ_FILE_X file modes
 **
-** @param [r] fname [AjPStr*] Filename.
+** @param [r] fname [const AjPStr] Filename.
 ** @param [r] mode [ajint] file mode.
 ** @return [AjBool] ajTrue on success
 ** @@
 ******************************************************************************/
 
-AjBool ajFileStat(AjPStr *fname, ajint mode)
+AjBool ajFileStat(const AjPStr fname, ajint mode)
 {
 #if defined(AJ_IRIXLF)
     struct stat64 buf;
@@ -2507,9 +2539,9 @@ AjBool ajFileStat(AjPStr *fname, ajint mode)
 #endif
 
 #if defined(AJ_IRIXLF)
-    if(!stat64(ajStrStr(*fname), &buf))
+    if(!stat64(ajStrStr(fname), &buf))
 #else
-	if(!stat(ajStrStr(*fname), &buf))
+	if(!stat(ajStrStr(fname), &buf))
 #endif
 	    if((ajuint)buf.st_mode & mode)
 		return ajTrue;
@@ -2524,12 +2556,12 @@ AjBool ajFileStat(AjPStr *fname, ajint mode)
 **
 ** Returns the length of a file
 **
-** @param [r] fname [AjPStr] Filename.
+** @param [r] fname [const AjPStr] Filename.
 ** @return [ajlong] length or -1 if file doesn't exist
 ** @@
 ******************************************************************************/
 
-ajlong ajFileLength(AjPStr fname)
+ajlong ajFileLength(const AjPStr fname)
 {
 #if defined(AJ_IRIXLF)
     struct stat64 buf;
@@ -2636,6 +2668,7 @@ AjBool ajFileStdin(const AjPFile file)
 **
 ** @param [r] thys [const AjPFile] File.
 ** @return [FILE*] C file pointer for the file.
+** @category cast [AjPFile] Returns the equivalent C file pointer
 ** @@
 ******************************************************************************/
 
@@ -2651,7 +2684,7 @@ FILE* ajFileFp(const AjPFile thys)
 **
 ** Tests whether we have reached end of file already
 **
-** @param [u] thys [const AjPFile] File
+** @param [r] thys [const AjPFile] File
 ** @return [AjBool] ajTrue if we already set end-of-file
 ** @@
 ******************************************************************************/
@@ -2692,6 +2725,7 @@ AjBool ajFileEof(const AjPFile thys)
 **
 ** @param [r] name [const AjPStr] File name.
 ** @return [AjPFileBuff] New buffered file object.
+** @category new [AjPFileBuff] Default constructor for a named input file
 ** @@
 ******************************************************************************/
 
@@ -2712,6 +2746,7 @@ AjPFileBuff ajFileBuffNewIn(const AjPStr name)
 ** Creates a new buffered input file object with an undefined file.
 **
 ** @return [AjPFileBuff] New buffered file object.
+** @category new [AjPFileBuff] Default constructor for an input file
 ** @@
 ******************************************************************************/
 
@@ -2731,7 +2766,7 @@ AjPFileBuff ajFileBuffNew(void)
 **
 ** Creates a new buffered input file object from an open file.
 **
-** @param [r] file [AjPFile] File object to be buffered.
+** @param [u] file [AjPFile] File object to be buffered.
 ** @return [AjPFileBuff] New buffered file object.
 ** @@
 ******************************************************************************/
@@ -2763,7 +2798,7 @@ AjPFileBuff ajFileBuffNewFile(AjPFile file)
 ** whatever was there before, but we do need to clear the buffer
 **
 ** @param [w] pthys [AjPFileBuff*] Buffered file object.
-** @param [r] file [AjPFile] File object to be buffered.
+** @param [u] file [AjPFile] File object to be buffered.
 ** @return [AjBool] ajTrue on success
 ** @@
 ******************************************************************************/
@@ -2834,6 +2869,7 @@ static void fileBuffInit(AjPFileBuff thys)
 **
 ** @param [r] data [const AjPStr] One line of buffered data.
 ** @return [AjPFileBuff] New buffered file object.
+** @category new [AjPFileBuff] Constructor using a line of buffered data
 ** @@
 ******************************************************************************/
 
@@ -2865,8 +2901,10 @@ AjPFileBuff ajFileBuffNewS(const AjPStr data)
 **
 ** Creates a new buffered input file from an already open C file.
 **
-** @param [r] fp [FILE*] Open C file.
+** @param [u] fp [FILE*] Open C file.
 ** @return [AjPFileBuff] New buffered file object.
+** @category new [AjPFileBuff] Constructor using an existing open file,
+**                             for example stdin or stdout.
 ** @@
 ******************************************************************************/
 
@@ -2893,6 +2931,8 @@ AjPFileBuff ajFileBuffNewF(FILE* fp)
 ** @param [r] dir [const AjPStr] Directory
 ** @param [r] wildfile [const AjPStr] Wildcard filename.
 ** @return [AjPFileBuff] New buffered file object.
+** @category new [AjPFileBuff] Constructor using a directory and
+**                             wildcard filename
 ** @@
 ******************************************************************************/
 
@@ -3217,8 +3257,9 @@ AjPFile ajFileNewDC(const AjPStr dir, const char* filename)
 **
 ** Creates a new buffered file object from a list of filenames.
 **
-** @param [r] list [AjPList] List of filenames as strings.
+** @param [u] list [AjPList] List of filenames as strings.
 ** @return [AjPFileBuff] New buffered file object.
+** @category new [AjPFileBuff] Constructor using a list of filenames
 ** @@
 ******************************************************************************/
 
@@ -3255,8 +3296,9 @@ AjPFileBuff ajFileBuffNewInList(AjPList list)
 **
 ** Destructor for a buffered file object.
 **
-** @param [w] pthis [AjPFileBuff*] Buffered file object.
+** @param [d] pthis [AjPFileBuff*] Buffered file object.
 ** @return [void]
+** @category delete [AjPFileBuff] Default destructor
 ** @@
 ******************************************************************************/
 
@@ -3314,9 +3356,10 @@ void ajFileBuffDel(AjPFileBuff* pthis)
 ** exhausted, sets end of file and returns. If end of file was already set,
 ** looks for another file to open.
 **
-** @param [r] thys [AjPFileBuff] Buffered input file.
+** @param [u] thys [AjPFileBuff] Buffered input file.
 ** @param [w] pdest [AjPStr*] Buffer to hold results.
 ** @return [AjBool] ajTrue if data was read.
+** @category modify [AjPFileBuff] Reads a line from a buffered file.
 ** @@
 ******************************************************************************/
 
@@ -3339,11 +3382,13 @@ AjBool ajFileBuffGet(AjPFileBuff thys, AjPStr* pdest)
 ** exhausted, sets end of file and returns. If end of file was already set,
 ** looks for another file to open.
 **
-** @param [r] thys [AjPFileBuff] Buffered input file.
+** @param [u] thys [AjPFileBuff] Buffered input file.
 ** @param [w] pdest [AjPStr*] Buffer to hold results.
 ** @param [r] store [AjBool] append if true
 ** @param [w] astr [AjPStr*] string to append to
 ** @return [AjBool] ajTrue if data was read.
+** @category modify [AjPFileBuff] Reads a line from a buffered file
+**                                with append.
 ** @@
 ******************************************************************************/
 
@@ -3376,12 +3421,14 @@ AjBool ajFileBuffGetStore(AjPFileBuff thys, AjPStr* pdest,
 ** exhausted, sets end of file and returns. If end of file was already set,
 ** looks for another file to open.
 **
-** @param [r] thys [AjPFileBuff] Buffered input file.
+** @param [u] thys [AjPFileBuff] Buffered input file.
 ** @param [w] pdest [AjPStr*] Buffer to hold results.
 ** @param [w] fpos [ajlong*] File position before the read.
 ** @param [r] store [AjBool] append if true
 ** @param [w] astr [AjPStr*] string to append to
 ** @return [AjBool] ajTrue if data was read.
+** @category modify [AjPFileBuff] Reads a line from a buffered file
+**                                with append.
 ** @@
 ******************************************************************************/
 
@@ -3412,7 +3459,7 @@ AjBool ajFileBuffGetStoreL(AjPFileBuff thys, AjPStr* pdest,
 ** exhausted, sets end of file and returns. If end of file was already set,
 ** looks for another file to open.
 **
-** @param [r] thys [AjPFileBuff] Buffered input file.
+** @param [u] thys [AjPFileBuff] Buffered input file.
 ** @param [w] pdest [AjPStr*] Buffer to hold results.
 ** @param [w] fpos [ajlong*] File position before the read.
 ** @return [AjBool] ajTrue if data was read.
@@ -3504,9 +3551,11 @@ AjBool ajFileBuffGetL(AjPFileBuff thys, AjPStr* pdest, ajlong* fpos)
 ** angle brackets, plus any TITLE. This seems to be enough to make HTML
 ** output readable.
 **
-** @param [r] thys [AjPFileBuff] Buffered file with data loaded
+** @param [u] thys [AjPFileBuff] Buffered file with data loaded
 **                                     in the buffer.
 ** @return [void]
+** @category modify [AjPFileBuff] Processes data in the file buffer,
+**                                removing HTML tokens
 ** @@
 ******************************************************************************/
 
@@ -3800,37 +3849,6 @@ void ajFileBuffStripHtml(AjPFileBuff thys)
 
 
 
-/* @func ajFileBuffLoad *******************************************************
-**
-** Reads all input lines from a file into the buffer.
-**
-** Intended for cases where the file data must be preprocessed before
-** being seen by the sequence reading routines. The first case was
-** for stripping HTML tagsafter reading via HTTP.
-**
-** @param [r] thys [AjPFileBuff] Buffered file.
-** @return [void]
-** @@
-******************************************************************************/
-
-void ajFileBuffLoad(AjPFileBuff thys)
-{
-    static AjPStr rdline = NULL;
-    AjBool stat = ajTrue;
-
-    while(stat)
-	stat = ajFileBuffGet(thys, &rdline);
-
-    ajFileBuffReset(thys);
-
-    /*ajFileBuffTrace(thys);*/
-
-    return;
-}
-
-
-
-
 /* @func ajFileBuffLoadC ******************************************************
 **
 ** Adds a line to the buffer.
@@ -3839,7 +3857,7 @@ void ajFileBuffLoad(AjPFileBuff thys)
 ** being seen by the sequence reading routines. The first case was
 ** for stripping HTML tags after reading via HTTP.
 **
-** @param [r] thys [AjPFileBuff] Buffered file.
+** @param [u] thys [AjPFileBuff] Buffered file.
 ** @param [r] line [const char*] Line of input.
 ** @return [void]
 ** @@
@@ -3870,7 +3888,7 @@ void ajFileBuffLoadC(AjPFileBuff thys, const char* line)
 ** being seen by the sequence reading routines. The first case was
 ** for stripping HTML tags after reading via HTTP.
 **
-** @param [r] thys [AjPFileBuff] Buffered file.
+** @param [u] thys [AjPFileBuff] Buffered file.
 ** @param [r] line [const AjPStr] Line of input.
 ** @return [void]
 ** @@
@@ -3897,7 +3915,7 @@ void ajFileBuffLoadS(AjPFileBuff thys, const AjPStr line)
 **
 ** Tests whether we have reached end of file already
 **
-** @param [u] thys [const AjPFileBuff] File buffer
+** @param [r] thys [const AjPFileBuff] File buffer
 ** @return [AjBool] ajTrue if we already set end-of-file
 ** @@
 ******************************************************************************/
@@ -3915,7 +3933,7 @@ AjBool ajFileBuffEof(const AjPFileBuff thys)
 ** Tests whether the file is exhausted. This means end of file is reached
 ** and the buffer is empty
 **
-** @param [u] thys [const AjPFileBuff] File buffer
+** @param [r] thys [const AjPFileBuff] File buffer
 ** @return [AjBool] ajTrue if we already set end-of-file
 ** @@
 ******************************************************************************/
@@ -3945,6 +3963,8 @@ AjBool ajFileBuffEnd(const AjPFileBuff thys)
 **
 ** @param [u] thys [AjPFileBuff] File buffer
 ** @return [void]
+** @category modify [AjPFileBuff] Resets so the next read uses the first
+**                                buffered line
 ** @@
 ******************************************************************************/
 
@@ -4095,6 +4115,8 @@ void ajFileBuffFreeClear(AjPFileBuff thys)
 ** @param [u] thys [AjPFileBuff] File buffer
 ** @param [r] lines [ajint] Number of lines to retain. -1 deletes everything.
 ** @return [void]
+** @category modify [AjPFileBuff] Deletes unwanted old lines from the buffer
+**                              but can keep the most recent line(s) for reuse.
 ** @@
 ******************************************************************************/
 
@@ -4223,7 +4245,7 @@ void ajFileBuffClear(AjPFileBuff thys, ajint lines)
 **
 ** @param [u] thys [AjPFileBuff] File buffer
 ** @param [r] lines [ajint] Number of lines to retain. -1 deletes everything.
-** @param [r] rdline [AjPStr] Last line of input.
+** @param [r] rdline [const AjPStr] Last line of input.
 **                            Used to count characters to be saved
 ** @param [r] store [AjBool] append if true
 ** @param [w] astr [AjPStr*] string to append to
@@ -4232,7 +4254,7 @@ void ajFileBuffClear(AjPFileBuff thys, ajint lines)
 ******************************************************************************/
 
 void ajFileBuffClearStore(AjPFileBuff thys, ajint lines,
-			   AjPStr rdline, AjBool store, AjPStr *astr)
+			   const AjPStr rdline, AjBool store, AjPStr *astr)
 {
     ajFileBuffClear(thys, lines);
     if(store && ajStrLen(rdline))
@@ -4249,8 +4271,9 @@ void ajFileBuffClearStore(AjPFileBuff thys, ajint lines,
 ** Sets file to be unbuffered. If it already has buffered data, we have to
 ** first run down the buffer.
 **
-** @param [r] thys [AjPFileBuff] Buffered file object.
+** @param [u] thys [AjPFileBuff] Buffered file object.
 ** @return [AjBool] ajTrue if the file was unbuffered before
+** @category modify [AjPFileBuff] Turns off input buffering.
 ** @@
 ******************************************************************************/
 
@@ -4274,7 +4297,7 @@ AjBool ajFileBuffNobuff(AjPFileBuff thys)
 ** Sets file to be buffered. If it already has buffered data, we have to
 ** first run down the buffer.
 **
-** @param [r] thys [AjPFileBuff] Buffered file object.
+** @param [u] thys [AjPFileBuff] Buffered file object.
 ** @return [AjBool] ajTrue if the file was unbuffered before
 ** @@
 ******************************************************************************/
@@ -4294,28 +4317,6 @@ AjBool ajFileBuffBuff(AjPFileBuff thys)
 }
 
 
-/* @func ajFileBuffIsBuffered *************************************************
-** Tests whether an input file is buffered.
-**
-** @param [r] thys [AjPFileBuff] Buffered file object.
-** @return [AjBool] ajTrue if the file was unbuffered before
-** @@
-******************************************************************************/
-
-AjBool ajFileBuffIsBuffered(AjPFileBuff thys)
-{
-    if(!thys)
-	return ajFalse;
-
-    if(thys->Nobuff)
-	return ajFalse;
-
-    return ajTrue;
-}
-
-
-
-
 /* ==================================================================== */
 /* ======================== Operators ==================================*/
 /* ==================================================================== */
@@ -4330,12 +4331,50 @@ AjBool ajFileBuffIsBuffered(AjPFileBuff thys)
 
 
 
+/* @func ajFileBuffEmpty ******************************************************
+**
+** Tests whether a file buffer is empty.
+**
+** @param [r] thys [const AjPFileBuff] Buffered file.
+** @return [AjBool] ajTrue if the buffer is empty.
+** @category use [AjPFileBuff] Tests whether a file buffer is empty.
+** @@
+******************************************************************************/
+
+AjBool ajFileBuffEmpty(const AjPFileBuff thys)
+{
+    ajDebug("ajFileBuffEmpty Size: %d Pos: %d End: %b Handle: %d "
+	     "Fp: %x List; %d\n",
+	     thys->Size, thys->Pos, thys->File->End, thys->File->Handle,
+	     thys->File->fp, ajListstrLength(thys->File->List));
+
+    if(thys->Pos < thys->Size)
+	return ajFalse;
+
+    /* not open */
+    if(!thys->File->fp || !thys->File->Handle)
+	return ajTrue;
+
+    if(thys->File->End && !ajListstrLength(thys->File->List))
+        /* EOF and done */
+	return ajTrue;
+
+    ajDebug("ajFileBuffEmpty false\n");
+
+    return ajFalse;
+}
+
+
+
+
 /* @func ajFileBuffTrace ******************************************************
 **
 ** Writes debug messages to indicate the contents of a buffered file.
 **
 ** @param [r] thys [const AjPFileBuff] Buffered file.
 ** @return [void]
+** @category use [AjPFileBuff] Writes debug messages to indicate the
+**                             contents of a buffered file.
 ** @@
 ******************************************************************************/
 
@@ -4380,6 +4419,8 @@ void ajFileBuffTrace(const AjPFileBuff thys)
 ** @param [r] nlines [size_t] Maximum number of lines to trace.
 ** @param [r] nfree [size_t] Maximum number of free lines to trace.
 ** @return [void]
+** @category use [AjPFileBuff] Writes debug messages to show the full
+**                              contents of a buffered file.
 ** @@
 ******************************************************************************/
 
@@ -4489,6 +4530,30 @@ void ajFileBuffPrint(const AjPFileBuff thys, const char* title)
 
 
 
+/* @func ajFileBuffIsBuffered *************************************************
+**
+** Tests whether an input file is buffered.
+**
+** @param [r] thys [const AjPFileBuff] Buffered file object.
+** @return [AjBool] ajTrue if the file was unbuffered before
+** @category cast [AjPFileBuff] Tests for input buffering.
+** @@
+******************************************************************************/
+
+AjBool ajFileBuffIsBuffered(const AjPFileBuff thys)
+{
+    if(!thys)
+	return ajFalse;
+
+    if(thys->Nobuff)
+	return ajFalse;
+
+    return ajTrue;
+}
+
+
+
+
 /* @func ajFileBuffFp *********************************************************
 **
 ** Returns the C file pointer for an open buffered file.
@@ -4512,6 +4577,8 @@ FILE* ajFileBuffFp(const AjPFileBuff thys)
 **
 ** @param [r] thys [const AjPFileBuff] Buffered file.
 ** @return [AjPFile] File object.
+** @category cast [AjPFileBuff] Returns the equivalent AjPFile without
+**                              the buffer access.
 ** @@
 ******************************************************************************/
 
@@ -4523,36 +4590,40 @@ AjPFile ajFileBuffFile(const AjPFileBuff thys)
 
 
 
-/* @func ajFileBuffEmpty ******************************************************
+/* @section Buffered File Inputs **********************************************
 **
-** Tests whether a file buffer is empty.
+** These functions read the contents of a buffered file object
 **
-** @param [r] thys [const AjPFileBuff] Buffered file.
-** @return [AjBool] ajTrue if the buffer is empty.
+******************************************************************************/
+
+/* @func ajFileBuffLoad *******************************************************
+**
+** Reads all input lines from a file into the buffer.
+**
+** Intended for cases where the file data must be preprocessed before
+** being seen by the sequence reading routines. The first case was
+** for stripping HTML tagsafter reading via HTTP.
+**
+** @param [u] thys [AjPFileBuff] Buffered file.
+** @return [void]
+** @category input [AjPFileBuff] Reads all input lines from a file into
+**                                the buffer.
 ** @@
 ******************************************************************************/
 
-AjBool ajFileBuffEmpty(const AjPFileBuff thys)
+void ajFileBuffLoad(AjPFileBuff thys)
 {
-    ajDebug("ajFileBuffEmpty Size: %d Pos: %d End: %b Handle: %d "
-	     "Fp: %x List; %d\n",
-	     thys->Size, thys->Pos, thys->File->End, thys->File->Handle,
-	     thys->File->fp, ajListstrLength(thys->File->List));
+    static AjPStr rdline = NULL;
+    AjBool stat = ajTrue;
 
-    if(thys->Pos < thys->Size)
-	return ajFalse;
+    while(stat)
+	stat = ajFileBuffGet(thys, &rdline);
 
-    /* not open */
-    if(!thys->File->fp || !thys->File->Handle)
-	return ajTrue;
+    ajFileBuffReset(thys);
 
-    if(thys->File->End && !ajListstrLength(thys->File->List))
-        /* EOF and done */
-	return ajTrue;
+    /*ajFileBuffTrace(thys);*/
 
-    ajDebug("ajFileBuffEmpty false\n");
-
-    return ajFalse;
+    return;
 }
 
 
@@ -4562,7 +4633,7 @@ AjBool ajFileBuffEmpty(const AjPFileBuff thys)
 **
 ** Sets the directory part of a filename
 **
-** @param [r] filename [AjPStr*] Filename.
+** @param [u] filename [AjPStr*] Filename.
 ** @param [r] dir [const AjPDir] Directory
 ** @param [r] name [const AjPStr] Base filename
 ** @return [AjBool] ajTrue if the replacement succeeded.
@@ -4594,7 +4665,7 @@ AjBool ajFileNameDir(AjPStr* filename, const AjPDir dir, const AjPStr name)
 **
 ** Sets the directory part of a filename
 **
-** @param [r] filename [AjPStr*] Filename.
+** @param [u] filename [AjPStr*] Filename.
 ** @param [r] dir [const AjPStr] New directory
 ** @return [AjBool] ajTrue if the replacement succeeded.
 ** @@
@@ -4615,7 +4686,7 @@ AjBool ajFileNameDirSet(AjPStr* filename, const AjPStr dir)
 **
 ** Sets the directory part of a filename
 **
-** @param [r] filename [AjPStr*] Filename.
+** @param [u] filename [AjPStr*] Filename.
 ** @param [r] dir [const char*] Directory
 ** @return [AjBool] ajTrue if the replacement succeeded.
 ** @@
@@ -4659,7 +4730,7 @@ AjBool ajFileNameDirSetC(AjPStr* filename, const char* dir)
 **
 ** Replaces the extension part of a filename
 **
-** @param [r] filename [AjPStr*] Filename.
+** @param [u] filename [AjPStr*] Filename.
 ** @param [r] extension [const AjPStr] New file extension
 ** @return [AjBool] ajTrue if the replacement succeeded.
 ** @@
@@ -4680,7 +4751,7 @@ AjBool ajFileNameExt(AjPStr* filename, const AjPStr extension)
 **
 ** Replaces the extension part of a filename
 **
-** @param [r] filename [AjPStr*] Filename.
+** @param [u] filename [AjPStr*] Filename.
 ** @param [r] extension [const char*] New file extension
 ** @return [AjBool] ajTrue if the replacement succeeded.
 ** @@
@@ -4733,23 +4804,23 @@ AjBool ajFileNameExtC(AjPStr* filename, const char* extension)
 **
 ** Recursively scan through a directory
 **
-** @param [r] path [AjPStr] Directory to scan
-** @param [r] filename [AjPStr] Filename to search for (or NULL)
+** @param [r] path [const AjPStr] Directory to scan
+** @param [r] filename [const AjPStr] Filename to search for (or NULL)
 ** @param [w] result [AjPList *] List for matching filenames
 ** @param [r] show [AjBool] Print all files found if set
 ** @param [r] dolist [AjBool] Store all filenames in a list (if set)
 ** @param [w] list [AjPList *] List for dolist results
-** @param [r] rlist [AjPList] List of directories to ignore
+** @param [u] rlist [AjPList] List of directories to ignore
 ** @param [r] recurs [AjBool] Do recursion
-** @param [w] outf [const AjPFile] File for "show" results (or NULL)
+** @param [u] outf [AjPFile] File for "show" results (or NULL)
 **
 ** @return [ajint] number of entries in list
 ** @@
 ******************************************************************************/
 
-ajint ajFileScan(AjPStr path, AjPStr filename, AjPList *result,
+ajint ajFileScan(const AjPStr path, const AjPStr filename, AjPList *result,
 		 AjBool show, AjBool dolist, AjPList *list,
-		 AjPList rlist, AjBool recurs, const AjPFile outf)
+		 AjPList rlist, AjBool recurs, AjPFile outf)
 {
     AjPList dirs = NULL;
     AjIList iter = NULL;
@@ -4828,7 +4899,7 @@ ajint ajFileScan(AjPStr path, AjPStr filename, AjPList *result,
 	ajStrAppC(&s,dp->d_name);
 
 	/* Its a directory */
-	if(ajFileStat(&s,AJ_FILE_DIR))
+	if(ajFileStat(s,AJ_FILE_DIR))
 	{
 	    if(!recurs)
 		continue;
@@ -4837,7 +4908,7 @@ ajint ajFileScan(AjPStr path, AjPStr filename, AjPList *result,
 	    if(rlist)
 	    {
 		flag = ajFalse;
-		iter = ajListIter(rlist);
+		iter = ajListIterRead(rlist);
 		while(ajListIterMore(iter))
 		{
 		    t = ajListIterNext(iter);
@@ -4847,17 +4918,17 @@ ajint ajFileScan(AjPStr path, AjPStr filename, AjPList *result,
 			break;
 		    }
 		}
-		ajListIterFree(iter);
+		ajListIterFree(&iter);
 		if(flag)
 		    continue;
 	    }
 
-	    if(!ajFileStat(&s,AJ_FILE_R) || !ajFileStat(&s,AJ_FILE_X))
+	    if(!ajFileStat(s,AJ_FILE_R) || !ajFileStat(s,AJ_FILE_X))
 		continue;
 	    t = ajStrNewC(ajStrStr(s));
 	    ajListPushApp(dirs,(void *)t);
 	}
-	else if(ajFileStat(&s,AJ_FILE_R))
+	else if(ajFileStat(s,AJ_FILE_R))
 	{
 	    if(filename)
 		if(ajStrMatchWildCC(dp->d_name,ajStrStr(filename)))
@@ -4907,9 +4978,9 @@ ajint ajFileScan(AjPStr path, AjPStr filename, AjPList *result,
 ** out files, and the inclusion list is then used to add selected
 ** files again.
 **
-** @param [r] fullname [AjPStr] File to test
-** @param [r] exc [AjPStr] List of wildcard names to exclude
-** @param [r] inc [AjPStr] List of wildcard names to include
+** @param [r] fullname [const AjPStr] File to test
+** @param [r] exc [const AjPStr] List of wildcard names to exclude
+** @param [r] inc [const AjPStr] List of wildcard names to include
 ** @param [r] keep [AjBool] Default to keep if ajTrue, else skip unless
 **                          inc is matched.
 ** @param [r] ignoredirectory [AjBool] Delete directory from name
@@ -4918,8 +4989,9 @@ ajint ajFileScan(AjPStr path, AjPStr filename, AjPList *result,
 ** @@
 ******************************************************************************/
 
-AjBool ajFileTestSkip(AjPStr fullname, AjPStr exc, AjPStr inc,
-		       AjBool keep, AjBool ignoredirectory)
+AjBool ajFileTestSkip(const AjPStr fullname,
+		      const AjPStr exc, const AjPStr inc,
+		      AjBool keep, AjBool ignoredirectory)
 {
     AjBool ret = keep;
 
@@ -5087,13 +5159,13 @@ char* ajFileTempName(const char *dir)
 **
 ** Writes a single byte to a binary file
 **
-** @param [r] thys [const AjPFile] Output file
+** @param [u] thys [AjPFile] Output file
 ** @param [r] ch [char] Character
 ** @return [ajint] Return value from fwrite
 ** @@
 ******************************************************************************/
 
-ajint ajFileWriteByte(const AjPFile thys, char ch)
+ajint ajFileWriteByte(AjPFile thys, char ch)
 {
     return fwrite(&ch, 1, 1, ajFileFp(thys));
 }
@@ -5105,14 +5177,14 @@ ajint ajFileWriteByte(const AjPFile thys, char ch)
 **
 ** Writes a text string to a binary file
 **
-** @param [r] thys [const AjPFile] Output file
-** @param [r] str [char*] Text string
+** @param [u] thys [AjPFile] Output file
+** @param [r] str [const char*] Text string
 ** @param [r] len [ajint] Length (padded) to use in the file
 ** @return [ajint] Return value from fwrite
 ** @@
 ******************************************************************************/
 
-ajint ajFileWriteChar(const AjPFile thys, char* str, ajint len)
+ajint ajFileWriteChar(AjPFile thys, const char* str, ajint len)
 {
     static char buf[256];
     ajint i;
@@ -5133,13 +5205,13 @@ ajint ajFileWriteChar(const AjPFile thys, char* str, ajint len)
 **
 ** Writes a 2 byte integer to a binary file, with the correct byte orientation
 **
-** @param [r] thys [const AjPFile] Output file
+** @param [u] thys [AjPFile] Output file
 ** @param [r] i [short] Integer
 ** @return [ajint] Return value from fwrite
 ** @@
 ******************************************************************************/
 
-ajint ajFileWriteInt2(const AjPFile thys, short i)
+ajint ajFileWriteInt2(AjPFile thys, short i)
 {
     short j;
 
@@ -5157,13 +5229,13 @@ ajint ajFileWriteInt2(const AjPFile thys, short i)
 **
 ** Writes a 4 byte integer to a binary file, with the correct byte orientation
 **
-** @param [r] thys [const AjPFile] Output file
+** @param [u] thys [AjPFile] Output file
 ** @param [r] i [ajint] Integer
 ** @return [ajint] Return value from fwrite
 ** @@
 ******************************************************************************/
 
-ajint ajFileWriteInt4(const AjPFile thys, ajint i)
+ajint ajFileWriteInt4(AjPFile thys, ajint i)
 {
     ajint j;
 
@@ -5182,13 +5254,13 @@ ajint ajFileWriteInt4(const AjPFile thys, ajint i)
 **
 ** Writes an 8 byte long to a binary file, with the correct byte orientation
 **
-** @param [r] thys [const AjPFile] Output file
+** @param [u] thys [AjPFile] Output file
 ** @param [r] l [ajlong] Integer
 ** @return [ajint] Return value from fwrite
 ** @@
 ******************************************************************************/
 
-ajint ajFileWriteInt8(const AjPFile thys, ajlong l)
+ajint ajFileWriteInt8(AjPFile thys, ajlong l)
 {
     ajlong j;
 
@@ -5207,14 +5279,14 @@ ajint ajFileWriteInt8(const AjPFile thys, ajlong l)
 **
 ** Writes a string to a binary file
 **
-** @param [r] thys [const AjPFile] Output file
-** @param [r] str [AjPStr] String
+** @param [u] thys [AjPFile] Output file
+** @param [r] str [const AjPStr] String
 ** @param [r] len [ajint] Length (padded) to use in the file
 ** @return [ajint] Return value from fwrite
 ** @@
 ******************************************************************************/
 
-ajint ajFileWriteStr(const AjPFile thys, AjPStr str, ajint len)
+ajint ajFileWriteStr(AjPFile thys, const AjPStr str, ajint len)
 {
     static char buf[256];
     ajint i;
@@ -5332,7 +5404,7 @@ AjBool ajFileBuffStripHtmlPre(AjPFileBuff thys)
 ** a list
 **
 ** @param [r] srcfile [const AjPStr] filename, wildfilename or listfilename
-** @param [w] list [AjPList] result filename list
+** @param [u] list [AjPList] result filename list
 ** @param [u] recurs [ajint *] recursion level counter
 **
 ** @return [void]
@@ -5413,18 +5485,18 @@ static void fileListRecurs(const AjPStr srcfile, AjPList list, ajint *recurs)
 
 
 
-/* @func ajFileFileList  ******************************************************
+/* @func ajFileFileList *******************************************************
 **
 ** Return a list of files that match a comma-separated string of
 ** filenames which can include wildcards or listfiles
 **
-** @param [r] files [AjPStr] comma-separated filename list
+** @param [r] files [const AjPStr] comma-separated filename list
 **
 ** @return [AjPList] or NULL if no files were specified
 ** @@
 ******************************************************************************/
 
-AjPList ajFileFileList(AjPStr files)
+AjPList ajFileFileList(const AjPStr files)
 {
     AjPStr *fstr = NULL;
     ajint  ncl;
@@ -5460,11 +5532,11 @@ AjPList ajFileFileList(AjPStr files)
 ** Appends a line to a buffer.
 **
 ** @param [u] thys [AjPFileBuff] File buffer
-** @param [r] line [AjPStr] Line
+** @param [r] line [const AjPStr] Line
 ** @return [void]
 ******************************************************************************/
 
-static void fileBuffLineAdd(AjPFileBuff thys, AjPStr line)
+static void fileBuffLineAdd(AjPFileBuff thys, const AjPStr line)
 {
     if(thys->Free)
     {

@@ -232,7 +232,7 @@ static ajint octanol_getwhitewimbleydata(AjPFile file, float matrix[],
 	    continue;
 
 	token = ajStrTokenInit(buffer,ajStrStr(delim));
-	cols = ajStrTokenCount(&buffer,ajStrStr(delim));
+	cols = ajStrTokenCount(buffer,ajStrStr(delim));
 	ajDebug("number of cols = %d\n",cols);
 
 	ajStrToken(&buf2,&token,ajStrStr(delim)); /* get AA char code */

@@ -256,7 +256,7 @@ static void dotpath_drawPlotlines(void **x, void *cl)
 **
 ** Undocumented.
 **
-** @param [?] list [AjPList] Undocumented
+** @param [r] list [AjPList] Undocumented
 ** @return [void]
 ** @@
 ******************************************************************************/

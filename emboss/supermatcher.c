@@ -325,7 +325,7 @@ static void supermatcher_matchListOrder(void **x,void *cl)
     offset = (*p).seq1start-(*p).seq2start;
 
     /* iterate through ordered list to find if it exists already*/
-    listIter = ajListIter(ordered);
+    listIter = ajListIterRead(ordered);
 
     while(!ajListIterDone( listIter))
     {
@@ -337,11 +337,11 @@ static void supermatcher_matchListOrder(void **x,void *cl)
 	    con->total+= (*p).length;
 	    con->count++;
 	    ajListPushApp(con->list,p);
-	    ajListIterFree(listIter);
+	    ajListIterFree(&listIter);
 	    return;
 	}
     }
-    ajListIterFree(listIter);
+    ajListIterFree(&listIter);
 
     /* not found so add it */
     AJNEW(c);

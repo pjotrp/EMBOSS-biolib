@@ -28,7 +28,7 @@ typedef struct EmbSMolFrag
 
 
 
-ajint embMolGetFrags(AjPStr thys, ajint rno, AjPList *l);
+ajint embMolGetFrags(const AjPStr thys, ajint rno, AjPList *l);
 
 
 

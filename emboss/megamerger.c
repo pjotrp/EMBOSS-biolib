@@ -102,7 +102,7 @@ int main(int argc, char **argv)
 ** @param [r] seq1 [AjPSeq] Sequence to be merged.
 ** @param [r] seq2 [AjPSeq] Sequence to be merged.
 ** @param [r] seqout [AjPSeqout] Output merged sequence
-** @param [r] outfile [AjPFile] Output file containing report.
+** @param [u] outfile [AjPFile] Output file containing report.
 ** @param [r] prefer [AjBool] If TRUE, use the first sequence when there
 **                            is a mismatch
 ** @return [void]
@@ -138,7 +138,7 @@ static void megamerger_Merge(AjPList matchlist, AjPSeq seq1, AjPSeq seq2,
     ajFmtPrintF(outfile, "# Report of megamerger of: %s and %s\n\n",
 		ajSeqName(seq1), ajSeqName(seq2));
 
-    iter = ajListIter(matchlist);
+    iter = ajListIterRead(matchlist);
     while(ajListIterMore(iter))
     {
 	p = (EmbPWordMatch) ajListIterNext(iter);
@@ -186,7 +186,7 @@ static void megamerger_Merge(AjPList matchlist, AjPSeq seq1, AjPSeq seq2,
 				ajSeqName(seq1), p->seq1start);
 		    ajStrAssSub(&tmp, s1, 0, p->seq1start-1);
 		    ajStrToUpper(&tmp);
-		    ajStrAss(&seqstr, tmp);
+		    ajStrAssS(&seqstr, tmp);
 
 		}
 		else
@@ -196,7 +196,7 @@ static void megamerger_Merge(AjPList matchlist, AjPSeq seq1, AjPSeq seq2,
 				p->seq2start);
 		    ajStrAssSub(&tmp, s2, 0, p->seq2start-1);
 		    ajStrToUpper(&tmp);
-		    ajStrAss(&seqstr, tmp);
+		    ajStrAssS(&seqstr, tmp);
 
 		}
 	    }
@@ -344,7 +344,7 @@ static void megamerger_Merge(AjPList matchlist, AjPSeq seq1, AjPSeq seq2,
 
     ajStrDel(&tmp);
     ajStrDel(&seqstr);
-    ajListIterFree(iter);
+    ajListIterFree(&iter);
 
     return;
 }

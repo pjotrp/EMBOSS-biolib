@@ -24,14 +24,10 @@ typedef struct SeqSAccess SeqSAccess;
 ** (Uniform Sequence Address). The syntax is currently related to that
 ** used by SRS release 5.1.
 **
-** @new ajSeqQueryNew Default constructor
-** @delete ajSeqQueryDel Default destructor
-** @set ajSeqQueryClear Clears all contents
-** @set seqQueryMatch Compares an AjPSeq to a query.
-** @set ajSeqQueryStarclear Clears fully wild elements of a query because
-**                          empty elements are the same.
-** @cast seqQueryWild Tests whether a query includes wildcards
-** @cast seqQueryIs Tests whether a query has been defined
+** @alias AjSSeqQuery
+** @alias AjOSeqQuery
+** @other AjPSeqset Sequence sets
+** @other AjPSeqall Sequence streams
 **
 ** @attr DbName [AjPStr] Database name
 ** @attr DbType [AjPStr] Database type
@@ -58,6 +54,15 @@ typedef struct SeqSAccess SeqSAccess;
 ** @attr QryDone [AjBool] Has the query been done yet
 ** @attr Access [SeqSAccess*] Access function : see ajseqread.h
 ** @attr QryData [void*] Private data for access function
+**
+** @new ajSeqQueryNew Default constructor
+** @delete ajSeqQueryDel Default destructor
+** @modify ajSeqQueryClear Clears all contents
+** @use seqQueryMatch Compares an AjPSeq to a query.
+** @modify ajSeqQueryStarclear Clears fully wild elements of a query because
+**                          empty elements are the same.
+** @cast seqQueryWild Tests whether a query includes wildcards
+** @cast seqQueryIs Tests whether a query has been defined
 ** @@
 ******************************************************************************/
 
@@ -340,12 +345,12 @@ typedef struct AjSStockholmdata
 **
 ** @new ajSeqinNew Default constructor
 ** @delete ajSeqinDel Default destructor
-** @set ajSeqinUsa Resets using a new USA
-** @set ajSeqinClear Resets ready for reuse.
-** @set ajSeqinSetRange Sets a sequence range for all input sequences
-** @use ajSeqRead Reading a sequence.
-** @use ajSeqsetRead Reading a sequence set.
-** @use ajSeqAllRead Reading a sequence stream.
+** @modify ajSeqinUsa Resets using a new USA
+** @modify ajSeqinClear Resets ready for reuse.
+** @modify ajSeqinSetRange Sets a sequence range for all input sequences
+** @modify ajSeqRead Reading a sequence.
+** @modify ajSeqsetRead Reading a sequence set.
+** @modify ajSeqAllRead Reading a sequence stream.
 ** @other AjPSeq Sequences
 ** @other AjPSeqset Sequence sets
 ** @other AjPSeqall Sequence streams
@@ -460,53 +465,6 @@ typedef struct AjSSeqin {
 ** Sequence features can also be stored, but for efficiency reasons
 ** features are turned off by default.
 **
-** @new ajSeqNew Default constructor
-** @new ajSeqNewL Constructor with expected maximum size.
-** @new ajSeqNewS Constructor with sequence object to be cloned.
-** @delete ajSeqDel Default destructor
-** @set ajSeqRead Master sequence input, calls specific functions for
-**                file access type and sequence format.
-** @set ajSeqAllRead Master sequence stream input, reads first sequence
-**                   from an open input stream.
-** @set ajSeqallNext Master sequence stream input, reads next sequence
-**                   from an open input stream.
-** @set ajSeqMod Sets a sequence as modifiable by making its sequence
-**               into a unique AjPStr.
-** @set ajSeqReplace Replaces a sequence with a string containing a modified
-**                   version.
-** @set ajSeqReplaceC Replaces a sequence with a char* containing a modified
-**                   version.
-** @set ajSeqSetRange Sets a sequence using specified start and end positions.
-** @set ajSeqType Sets the sequence type
-** @set ajSeqSetNuc Sets sequence to be nucleotide
-** @set ajSeqSetProt Sets sequence to be protein
-** @set ajSeqToLower Converts a sequence to lower case
-** @set ajSeqToUpper Converts a sequence to upper case
-** @set ajSeqReverse Reverse complements a nucleotide sequence
-** @set ajSeqReverseStr Reverse complements a nucleotide sequence as an AjPStr
-** @set ajSeqRevOnly Reverses a sequence (does not complement)
-** @set ajSeqCompOnly Complements a nucleotide sequence (does not reverse)
-** @set ajSeqCompOnlyStr Complements a nucleotide sequence AjPStr
-**                       (does not reverse)
-** @cast ajSeqChar Returns the actual char* holding the sequence.
-** @cast ajSeqCharCopy Returns a copy of the sequence as char*.
-** @cast ajSeqCharCopyL Returns a copy of the sequence as char* with
-**                      a specified minimum reserved length.
-** @cast ajSeqStr Returns the actual AjPStr holding the sequence.
-** @cast ajSeqCopyStr Returns a copy of the AjPStr holding the sequence.
-** @cast ajSeqName Returns the sequence name as char*
-** @cast ajSeqLen Returns the sequence length
-** @cast ajSeqBegin Returns the sequence start position
-** @cast ajSeqEnd Returns the sequence end position
-** @cast ajSeqCheckGcg Calculates the GCG checksum for a sequence.
-** @use ajSeqWrite Writes a sequence out.
-** @use ajSeqIsNuc tests whether a sequence is nucleotide
-** @use ajSeqIsProt tests whether a sequence is protein
-** @use ajSeqNum Converts a sequence to numbers
-** @use ajSeqTrace Reports the contents of a sequence
-** @other AjPSeqset Sequence sets
-** @other AjPSeqall Sequence streams
-**
 ** @attr Name [AjPStr] Name (ID)
 ** @attr Acc [AjPStr] Accession number (primary only)
 ** @attr Sv [AjPStr] SeqVersion number
@@ -542,6 +500,54 @@ typedef struct AjSSeqin {
 ** @attr Seq [AjPStr] The sequence
 ** @attr Selexdata [AjPSelexdata] Selex data
 ** @attr Stock [AjPStockholmdata] Stockholm data
+**
+** @new ajSeqNew Default constructor
+** @new ajSeqNewL Constructor with expected maximum size.
+** @new ajSeqNewS Constructor with sequence object to be cloned.
+** @delete ajSeqDel Default destructor
+** @input ajSeqRead Master sequence input, calls specific functions for
+**                file access type and sequence format.
+** @input ajSeqAllRead Master sequence stream input, reads first sequence
+**                   from an open input stream.
+** @input ajSeqallNext Master sequence stream input, reads next sequence
+**                   from an open input stream.
+** @modify ajSeqMod Sets a sequence as modifiable by making its sequence
+**               into a unique AjPStr.
+** @modify ajSeqReplace Replaces a sequence with a string containing a modified
+**                   version.
+** @modify ajSeqReplaceC Replaces a sequence with a char* containing a modified
+**                   version.
+** @modify ajSeqSetRange Sets a sequence using specified start and end
+**                       positions.
+** @modify ajSeqType Sets the sequence type
+** @modify ajSeqSetNuc Sets sequence to be nucleotide
+** @modify ajSeqSetProt Sets sequence to be protein
+** @modify ajSeqToLower Converts a sequence to lower case
+** @modify ajSeqToUpper Converts a sequence to upper case
+** @modify ajSeqReverse Reverse complements a nucleotide sequence
+** @modify ajSeqReverseStr Reverse complements a nucleotide sequence as an
+**                         AjPStr
+** @modify ajSeqRevOnly Reverses a sequence (does not complement)
+** @modify ajSeqCompOnly Complements a nucleotide sequence (does not reverse)
+** @modify ajSeqCompOnlyStr Complements a nucleotide sequence AjPStr
+**                       (does not reverse)
+** @cast ajSeqChar Returns the actual char* holding the sequence.
+** @cast ajSeqCharCopy Returns a copy of the sequence as char*.
+** @cast ajSeqCharCopyL Returns a copy of the sequence as char* with
+**                      a specified minimum reserved length.
+** @cast ajSeqStr Returns the actual AjPStr holding the sequence.
+** @cast ajSeqCopyStr Returns a copy of the AjPStr holding the sequence.
+** @cast ajSeqName Returns the sequence name as char*
+** @cast ajSeqLen Returns the sequence length
+** @cast ajSeqBegin Returns the sequence start position
+** @cast ajSeqEnd Returns the sequence end position
+** @cast ajSeqCheckGcg Calculates the GCG checksum for a sequence.
+** @cast ajSeqNum Converts a sequence to numbers
+** @use ajSeqIsNuc tests whether a sequence is nucleotide
+** @use ajSeqIsProt tests whether a sequence is protein
+** @output ajSeqWrite Writes a sequence out.
+** @output ajSeqTrace Reports the contents of a sequence
+**
 ** @@
 ******************************************************************************/
 typedef struct AjSSeq {
@@ -598,19 +604,8 @@ typedef struct AjSSeq {
 ** Sequence set features can also be stored, but for efficiency reasons
 ** features are turned off by default.
 **
-** @new ajSeqsetNew Default constructor
-** @delete none Typically left until the program ends so there
-**              is no destructor used.
-** @set ajSeqsetRead Master input routine for a sequence set
-** @set ajSeqsetToLower Converts a sequence set to lower case
-** @set ajSeqsetToUpper Converts a sequence set to upper case
-** @cast ajSeqsetLen Returns the maximum length of a sequence set
-** @cast ajSeqsetSize Returns the number of sequences in a sequence set
-** @cast ajSeqsetName Returns the name of a sequence in a set
-** @cast ajSeqsetSeq Returns the char* pointer to a sequence in a set
-** @cast ajSeqsetIsNuc Tests whether the sequence set is nucleotide
-** @cast ajSeqsetIsProt Tests whether the sequence set is protein
-** @use ajSeqsetWrite Writes out all sequences in a set
+** @alias AjSSeqset
+** @alias AjOSeqset
 ** @other AjPSeq Sequences
 ** @other AjPSeqall Sequence streams
 **
@@ -631,6 +626,19 @@ typedef struct AjSSeq {
 ** @attr Ufo [AjPStr] UFO for re-reading
 ** @attr Seq [AjPSeq*] Sequence array (see Size)
 ** @attr Seqweight [float*] Sequence weights (see also AjPSeq)
+**
+** @new ajSeqsetNew Default constructor
+** @delete ajSeqsetDel Default destructor
+** @input ajSeqsetRead Master input routine for a sequence set
+** @modify ajSeqsetToLower Converts a sequence set to lower case
+** @modify ajSeqsetToUpper Converts a sequence set to upper case
+** @cast ajSeqsetLen Returns the maximum length of a sequence set
+** @cast ajSeqsetSize Returns the number of sequences in a sequence set
+** @cast ajSeqsetName Returns the name of a sequence in a set
+** @cast ajSeqsetSeq Returns the char* pointer to a sequence in a set
+** @cast ajSeqsetIsNuc Tests whether the sequence set is nucleotide
+** @cast ajSeqsetIsProt Tests whether the sequence set is protein
+** @output ajSeqsetWrite Writes out all sequences in a set
 ** @@
 ******************************************************************************/
 
@@ -666,9 +674,8 @@ typedef struct AjSSeqset {
 ** same input by also inheriting the AjPSeqin input object.
 **
 ** @new ajSeqallNew Default constructor
-** @delete none Typically left until the program ends so there
-**              is no destructor used.
-** @set ajSeqallNext Master sequence stream input.
+** @delete ajSeqallDel Default destructor
+** @modify ajSeqallNext Master sequence stream input.
 ** @other AjPSeq Sequences
 ** @other AjPSeqin Sequence input
 ** @other AjPSeqset Sequence sets

@@ -399,10 +399,10 @@ int main(int argc, char **argv)
     for(x=0; x<numfiles; x++)    
     {
 	ajFmtPrintF(errf, ">>>>>  FILE %d >>>>>\n", x);
-	iter = ajListIter(hitslists[x]);
+	iter = ajListIterRead(hitslists[x]);
 	while((tmphit = (AjPHitdata)ajListIterNext(iter)))
 	    ajFmtPrintF(errf, "%S\n", tmphit->Class);
-	ajListIterFree(iter);
+	ajListIterFree(&iter);
 	ajFmtPrintF(errf, "\n\n\n");    	
     }	
     ajFmtPrintF(errf, "NUMBER OF RELATIVES\n");
@@ -821,7 +821,7 @@ AjBool rocplot_read_hits_files(int mode, int multimode, int datamode,
 
     
     /* Memory is NOT freed before the ajFatal below */
-    iter = ajListIter(hitsfiles);
+    iter = ajListIterRead(hitsfiles);
     while((hitsfile = (AjPStr)ajListIterNext(iter)))
     {
 	/* Create the list of file names only from full paths */
@@ -943,7 +943,7 @@ AjBool rocplot_read_hits_files(int mode, int multimode, int datamode,
 
 	filecnt++;
     }   
-    ajListIterFree(iter);
+    ajListIterFree(&iter);
 
     /* Create array of file names only */
     ajListToArray(tmpnames, (void***)hitsnames);
@@ -1072,16 +1072,16 @@ static AjBool rocplot_hit_is_unique(AjPHitdata  hit, AjPList mrglist,
     AjIList     iter      = NULL;    
     AjPHitdata  tmphit    = NULL; 
 
-    iter = ajListIter(mrglist);
+    iter = ajListIterRead(mrglist);
     while((tmphit = (AjPHitdata)ajListIterNext(iter)))
     {
 	if(rocplot_overlap(tmphit, hit, thresh))
 	{
-	    ajListIterFree(iter);
+	    ajListIterFree(&iter);
 	    return ajFalse;
 	}
     }
-    ajListIterFree(iter);
+    ajListIterFree(&iter);
     return ajTrue;
 }
 
@@ -1219,7 +1219,7 @@ static AjBool rocplot_calcdata(int mode, int multimode, int datamode,
 
     AJCNEW0(iters, numfiles);
     for(x=0; x<numfiles; x++)    
-	iters[x]=ajListIter(hitslists[x]);
+	iters[x]=ajListIterRead(hitslists[x]);
     
     /* Make hitcnt array safe for calls to ajIntGet */
     for(x=0; x<numfiles; x++)	    
@@ -1444,7 +1444,7 @@ static AjBool rocplot_calcdata(int mode, int multimode, int datamode,
     AJFREE(done);
     
     for(x=0; x<numfiles; x++)
-	ajListIterFree(iters[x]);
+	ajListIterFree(&iters[x]);
     AJFREE(iters);
 
     return ajTrue;

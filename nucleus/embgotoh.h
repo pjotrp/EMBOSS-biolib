@@ -26,8 +26,6 @@ extern "C"
 **
 ** @delete ajGotohDel default destructor
 **
-** @ass ajGotohNull set all components to zero
-**
 ** @use embGotohCellCalculateSumScore fill in alignment array of ajGotohCells
 ** @use embGotohCellBacktrace find highest scoring path through array of
 ** ajGotohCells
@@ -59,7 +57,7 @@ typedef struct AjGotohCell
 /* =================== All functions in alphabetical order ================= */
 /* ========================================================================= */
 
-/* ajgotoh.h() $Date: 2004/02/18 19:22:04 $                        DJC Oct03 */
+/* ajgotoh.h() $Date: 2004/05/06 15:09:43 $                        DJC Oct03 */
 
 AjPGotohCell **embGotohCellGetArray(ajint ajIntDownSeqLen,
 				    ajint ajIntCrossSeqLen);

@@ -392,7 +392,7 @@ static ajint sigcleave_readSig(AjPFloat2d *matrix,AjBool prokaryote)
 	while((*p!='\n') && (*p<'A' || *p>'Z'))
 	    ++p;
 
-	cols = ajStrTokenCount(&line,ajStrStr(delim));
+	cols = ajStrTokenCount(line,ajStrStr(delim));
 
 	if(pass)
 	{

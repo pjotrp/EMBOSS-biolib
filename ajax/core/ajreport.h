@@ -12,11 +12,9 @@ extern "C"
 **
 ** Holds definition of feature report output.
 **
-** @new ajReportNew Default constructor
-** @delete ajReportDel Default destructor
-** @set ajReportClear Resets ready for reuse.
-** @use ajReportWrite Master sequence output routine
-** @use ajReportNewOut Opens an output file for sequence writing.
+** @alias AjSReport
+** @alias AjOReport
+**
 ** @other AjPSeqout Sequence output
 ** @other AjPFile Input and output files
 **
@@ -43,6 +41,10 @@ extern "C"
 ** @attr Multi [AjBool] if true, assume >1 sequence
 ** @attr Mintags [ajint] Minimum number of tags to report
 ** @attr Count [ajint] Number of sequences reported so far
+**
+** @new ajReportNew Default constructor
+** @delete ajReportDel Default destructor
+** @output ajReportWrite Master sequence output routine
 ** @@
 ******************************************************************************/
 
@@ -78,7 +80,7 @@ void         ajReportClose (AjPReport pthys);
 void         ajReportDel (AjPReport* pthys);
 void         ajReportDummyFunction(void);
 void         ajReportFileAdd (AjPReport thys,
-			      const AjPFile file, const AjPStr type);
+			      AjPFile file, const AjPStr type);
 AjBool       ajReportFindFormat (const AjPStr format, ajint* iformat);
 AjBool       ajReportFormatDefault (AjPStr* pformat);
 ajint        ajReportLists (const AjPReport thys,
@@ -86,8 +88,8 @@ ajint        ajReportLists (const AjPReport thys,
 			    AjPStr** prints, ajint** tagsizes);
 AjPReport    ajReportNew (void);
 AjBool       ajReportOpen (AjPReport thys, const AjPStr name);
-void         ajReportPrintFormat (const AjPFile outf, AjBool full);
-AjPStr       ajReportSeqName (const AjPReport thys, AjPSeq seq);
+void         ajReportPrintFormat (AjPFile outf, AjBool full);
+const AjPStr ajReportSeqName (const AjPReport thys, const AjPSeq seq);
 void         ajReportSetHeader (AjPReport thys, const AjPStr header);
 void         ajReportSetHeaderC (AjPReport thys, const char* header);
 AjBool       ajReportSetTags (AjPReport thys,
@@ -99,12 +101,12 @@ void         ajReportSetType (AjPReport thys,
 void         ajReportTrace (const AjPReport thys);
 AjBool       ajReportValid (AjPReport thys);
 void         ajReportWrite (AjPReport thys,
-			    AjPFeattable ftable,  AjPSeq seq);
+			    const AjPFeattable ftable,  const AjPSeq seq);
 void         ajReportWriteClose (AjPReport thys);
 void         ajReportWriteHeader (AjPReport thys,
-				  const AjPFeattable ftable, AjPSeq seq);
-void         ajReportWriteTail (AjPReport thys,
-				const AjPFeattable ftable, AjPSeq seq);
+				  const AjPFeattable ftable, const AjPSeq seq);
+void         ajReportWriteTail (const AjPReport thys,
+				const AjPFeattable ftable, const AjPSeq seq);
 
 #endif
 

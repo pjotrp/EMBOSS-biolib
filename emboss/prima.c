@@ -312,7 +312,7 @@ int main(int argc, char **argv)
     {
 	ajStrAssSubC(&p1,ajStrStr(substr),targetstart-begin,targetend-begin);
 
-	prodGC = ajMeltGC(&substr,seqlen);
+	prodGC = ajMeltGC(substr,seqlen);
 	prodTm = ajProdTm(prodGC,saltconc,seqlen);
 
 	if(prodGC<minprodGCcont || prodGC>maxprodGCcont)
@@ -354,7 +354,7 @@ int main(int argc, char **argv)
 
 	    v1 = endpos-startpos+1;
 	    ajStrAssSubC(&p1,ajStrStr(substr),startpos,endpos);
-	    prodGC = ajMeltGC(&p1,v1);
+	    prodGC = ajMeltGC(p1,v1);
 	    prodTm = ajProdTm(prodGC,saltconc,v1);
 
 	    if(prodGC<minprodGCcont || prodGC>maxprodGCcont)
@@ -692,7 +692,7 @@ static void prima_testproduct(AjPStr seqstr, ajint startpos, ajint endpos,
 	if(primerTm<minprimerTm || primerTm>maxprimerTm)
 	    continue;
 
-	primGCcont = ajMeltGC(&substr, thisplen);
+	primGCcont = ajMeltGC(substr, thisplen);
 
 	/* If GC content out of range ignore rest of loop iteration */
 	if(primGCcont<minpmGCcont || primGCcont>maxpmGCcont)
@@ -739,7 +739,7 @@ static void prima_testproduct(AjPStr seqstr, ajint startpos, ajint endpos,
 	if(primerTm<minprimerTm || primerTm>maxprimerTm)
 	    continue;
 
-	primGCcont = ajMeltGC(&substr, thisplen);
+	primGCcont = ajMeltGC(substr, thisplen);
 	/* If GC content out of range ignore rest of loop iteration */
 	if(primGCcont<minpmGCcont || primGCcont>maxpmGCcont)
 	    continue;
@@ -1189,7 +1189,7 @@ static void prima_testtarget(AjPStr seqstr, AjPStr revstr, ajint targetstart,
 	    if(primerTm <minprimerTm || primerTm>maxprimerTm)
 		continue;
 
-	    primGCcont= ajMeltGC(&fstr, thisplen);
+	    primGCcont= ajMeltGC(fstr, thisplen);
 	    if(primGCcont< minpmGCcont || primGCcont >maxpmGCcont)
 		continue;
 
@@ -1260,7 +1260,7 @@ static void prima_testtarget(AjPStr seqstr, AjPStr revstr, ajint targetstart,
 		if(primerTm <minprimerTm || primerTm>maxprimerTm)
 		    continue;
 
-		primGCcont= ajMeltGC(&rstr, thisplen);
+		primGCcont= ajMeltGC(rstr, thisplen);
 		if(primGCcont< minpmGCcont || primGCcont >maxpmGCcont)
 		    continue;
 
@@ -1323,7 +1323,7 @@ static void prima_testtarget(AjPStr seqstr, AjPStr revstr, ajint targetstart,
     }
 
     ajStrAssSubC(&str1,ajStrStr(seqstr),forstart+flen,revstart-1);
-    prodgc = ajMeltGC(&str1,revstart-(forstart+flen));
+    prodgc = ajMeltGC(str1,revstart-(forstart+flen));
 
 
 

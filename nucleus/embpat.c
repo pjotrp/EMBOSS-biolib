@@ -250,6 +250,7 @@ EmbPPatMatch embPatMatchFindC(AjPStr regexp, char *sptr)
     ajint i;
     char *ptr;
     AjBool nterm = ajFalse;
+    AjPListNode node;
 
     if(*regexp->Ptr == '^')
 	nterm  = ajTrue;
@@ -267,8 +268,10 @@ EmbPPatMatch embPatMatchFindC(AjPStr regexp, char *sptr)
 	AJNEW(len);
 	*len = ajRegLenI(regcomp,0);
 	*pos +=sptr-ptr;
-	ajListAppend(poslist, ajListNodesNew(pos, NULL));
-	ajListAppend(lenlist, ajListNodesNew(len, NULL));
+	node = ajListNodesNew(pos, NULL);
+	ajListAppend(poslist, &node);
+	node = ajListNodesNew(len, NULL);
+	ajListAppend(lenlist, &node);
 	sptr += posi+1;
 	if(nterm)
 	    break;
@@ -283,22 +286,22 @@ EmbPPatMatch embPatMatchFindC(AjPStr regexp, char *sptr)
 	AJCNEW(results->len, results->number);
 
 	i = 0;
-	iter = ajListIter(poslist);
+	iter = ajListIterRead(poslist);
 	while(ajListIterMore(iter))
 	{
 	    results->start[i] = *(ajint *) ajListIterNext(iter);
 	    i++;
 	}
-	ajListIterFree(iter);
+	ajListIterFree(&iter);
 
 	i = 0;
-	iter = ajListIter(lenlist);
+	iter = ajListIterRead(lenlist);
 	while(ajListIterMore(iter))
 	{
 	    results->len[i] = *(ajint *) ajListIterNext(iter);
 	    i++;
 	}
-	ajListIterFree(iter);
+	ajListIterFree(&iter);
 
 	ajListMap(poslist,patStringFree, NULL);
 	ajListMap(lenlist,patStringFree, NULL);
@@ -462,7 +465,7 @@ AjPStr embPatPrositeToRegExp(AjPStr *s)
 	return t;
 
     c = ajStrNew();
-    ajStrAss(&c, *s);
+    ajStrAssS(&c, *s);
     ajStrToUpper(&c);
     ajStrClean(&c);
     ch[1]='\0';
@@ -3098,7 +3101,7 @@ void embPatRestrictPreferred(AjPList l, AjPTable t)
     EmbPMatMatch m = NULL;
     AjPStr value   = NULL;
 
-    iter = ajListIter(l);
+    iter = ajListIterRead(l);
 
     while((m = (EmbPMatMatch)ajListIterNext(iter)))
     {
@@ -3107,7 +3110,7 @@ void embPatRestrictPreferred(AjPList l, AjPTable t)
 	    ajStrAssS(&m->cod,value);
     }
 
-    ajListIterFree(iter);
+    ajListIterFree(&iter);
 
     return;
 }
@@ -3165,7 +3168,7 @@ ajint embPatRestrictRestrict(AjPList *l, ajint hits, AjBool isos,
     if(hits)
     {
 	ajListPop(*l,(void **)&m);
-	ajStrAss(&ps,m->cod);
+	ajStrAssS(&ps,m->cod);
 	ajListPush(*l,(void *)m);
     }
 
@@ -3178,7 +3181,7 @@ ajint embPatRestrictRestrict(AjPList *l, ajint hits, AjBool isos,
 	}
 	else
 	{
-	    ajStrAss(&ps,m->cod);
+	    ajStrAssS(&ps,m->cod);
 	    ajListPush(*l,(void *)m);
 	    ajListSort(tlist,embPatRestrictStartCompare);
 	    ajListSort(tlist,embPatRestrictCutCompare);

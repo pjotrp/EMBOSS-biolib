@@ -565,7 +565,7 @@ int main(int argc, char **argv)
 	ajFmtPrintF(outf, "       from positions %d to %d and sorted by "
 		    "%S.\n\n", begin, end, sorder);
     }
-    itrlst = ajListIter(reslst);
+    itrlst = ajListIterRead(reslst);
     while(ajListIterMore(itrlst))
     {
 	pstdat = (PestfindPData) ajListIterNext(itrlst);
@@ -619,7 +619,7 @@ int main(int argc, char **argv)
 	ajFmtPrintF(outf, "---------+---------+");
 	ajFmtPrintF(outf, "\n\n");
 	ajListSort(reslst, pestfind_compare_position);
-	itrlst = ajListIter(reslst);
+	itrlst = ajListIterRead(reslst);
 	i = 0;
 	while(i <= seqlen)
 	{
@@ -700,7 +700,7 @@ int main(int argc, char **argv)
     ajGraphPlpDataAddText(plot, (float) 0 + 2, (float) trshld + 2,
 			  AQUAMARINE, ajStrStr(map));
     ajListSort(reslst, pestfind_compare_position);
-    itrlst = ajListIter(reslst);
+    itrlst = ajListIterRead(reslst);
     while(ajListIterMore(itrlst))
     {
 	pstdat = (PestfindPData) ajListIterNext(itrlst);
@@ -748,7 +748,7 @@ int main(int argc, char **argv)
     ajGraphxyDel(&graph);
     
     /* clean-up and destruction */
-    itrlst = ajListIter(reslst);
+    itrlst = ajListIterRead(reslst);
     while(ajListIterMore(itrlst))
     {
 	pstdat = (PestfindPData) ajListIterNext(itrlst);
@@ -762,7 +762,7 @@ int main(int argc, char **argv)
     ajStrDel(&str);		/* Delete the sequence string. */
     ajStrDel(&substr);		/* Delete the sequence sub-string. */
     ajStrDel(&sorder);		/* Delete the sort order string. */
-    ajListIterFree(itrlst);	/* Delete the result list iterator. */
+    ajListIterFree(&itrlst);	/* Delete the result list iterator. */
     ajStrIterFree(&itrbeg); 	/* Delete the iterator of the outer loop. */
     ajStrIterFree(&itrend); 	/* Delete the iterator of the inner loop. */
     

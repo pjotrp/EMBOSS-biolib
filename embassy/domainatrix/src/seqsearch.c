@@ -533,7 +533,7 @@ int main(int argc, char **argv)
 	    ajListSort3(listout,ajDmxScophitCompAcc, ajDmxScophitCompStart, ajDmxScophitCompEnd);
           
 	    /* eleminate identical hits */
-	    iter=ajListIter(listout); 
+	    iter=ajListIterRead(listout); 
           
 	    /* get the first node in the list, only once */
 	    hit = (AjPScophit)ajListIterNext(iter);
@@ -553,7 +553,7 @@ int main(int argc, char **argv)
 		    hit = nexthit;
 	    }             
 
-	    ajListIterFree(iter);
+	    ajListIterFree(&iter);
 	    iter =  NULL;
      
 	    /* The end of the list been reached */
@@ -563,7 +563,7 @@ int main(int argc, char **argv)
           
 	    /* recreate the hitlist for printing */
 	    embDmxScophitsToHitlist(listout,&hitlist,&iter);
-	    ajListIterFree(iter);
+	    ajListIterFree(&iter);
 	    iter =  NULL;
 	    /* END NEW STUFF */
 
@@ -593,18 +593,18 @@ int main(int argc, char **argv)
 		ajFileClose(&psif); 
 
 		/* free up listin */
-		iter=ajListIter(listin); 
+		iter=ajListIterRead(listin); 
 		while((tmphitlist=(AjPHitlist)ajListIterNext(iter)))
 		    embHitlistDel(&tmphitlist);
 		ajListDel(&listin);
-		ajListIterFree(iter);
+		ajListIterFree(&iter);
 		
 		/* free up listout */
-		iter=ajListIter(listout); 
+		iter=ajListIterRead(listout); 
 		while((hit=(AjPScophit)ajListIterNext(iter)))
 		    ajDmxScophitDel(&hit);
 		ajListDel(&listout);
-		ajListIterFree(iter);
+		ajListIterFree(&iter);
 
 		continue;       
 	    }       
@@ -616,18 +616,18 @@ int main(int argc, char **argv)
 	    ajFileClose(&families);
 
 	    /* free up listin */
-	    iter=ajListIter(listin); 
+	    iter=ajListIterRead(listin); 
 	    while((tmphitlist=(AjPHitlist)ajListIterNext(iter)))
 		embHitlistDel(&tmphitlist);
 	    ajListDel(&listin);
-	    ajListIterFree(iter);
+	    ajListIterFree(&iter);
           
 	    /* free up listout */
-	    iter=ajListIter(listout); 
+	    iter=ajListIterRead(listout); 
 	    while((hit=(AjPScophit)ajListIterNext(iter)))
 		ajDmxScophitDel(&hit);
 	    ajListDel(&listout);
-	    ajListIterFree(iter);
+	    ajListIterFree(&iter);
 
 	    /* Free memory etc*/
 	    embHitlistDel(&hitlist);

@@ -31,8 +31,8 @@ void   ajNamListDatabases(void); /* test routine */
 void   ajNamListListDatabases (AjPList dbnames);
 void   ajNamListListResources (AjPList dbnames);
 void   ajNamListOrigin (void);
-void   ajNamPrintDbAttr (const AjPFile outf, AjBool full);
-void   ajNamPrintRsAttr (const AjPFile outf, AjBool full);
+void   ajNamPrintDbAttr (AjPFile outf, AjBool full);
+void   ajNamPrintRsAttr (AjPFile outf, AjBool full);
 AjBool ajNamResolve (AjPStr* name);
 AjBool ajNamRoot (AjPStr* root);
 AjBool ajNamRootBase (AjPStr* rootbase);

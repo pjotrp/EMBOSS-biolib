@@ -19,7 +19,6 @@ int main (int argc, char **argv)
     ajint frame   = 0;
     AjBool sortbytype;
     AjBool sortbystart;
-    AjBool tracedict;
     AjPFeature feature;
     AjPFeattabOut output = NULL;
     ajint i;

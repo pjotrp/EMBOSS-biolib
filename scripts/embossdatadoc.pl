@@ -1,21 +1,30 @@
-#!/usr/local/bin/perl
+#!/usr/local/bin/perl -w
 
 use English;
 $pubout = "public";
-$locout = "local";
+$local = "local";
 $infile = "";
 $lib = "unknown";
 @lattrs = ();
+
+
+sub srsref {
+    return "<a href=\"/srs6bin/cgi-bin/wgetz?-e+[EFUNC-ID:$_[0]]\">$_[0]</a>";
+}
+sub srsdref {
+    return "<a href=\"/srs6bin/cgi-bin/wgetz?-e+[EDATA-ID:$_[0]]\">$_[0]</a>";
+}
 
 if ($ARGV[0]) {$infile = $ARGV[0];}
 if ($ARGV[1]) {$lib = $ARGV[1];}
 
 $source = "";
 $lasttoken = "";
+$intable = 0;
 
 if ($infile) {
     ($file) = ($infile =~ /([^\/]+)$/);
-    ($dummy, $dir, $pubout, $ext) = ($infile =~ /^(([^\/.]*)\/)*([^\/.]+)(\.\S+)?$/);
+    (undef, $dir, $pubout, $ext) = ($infile =~ /^(([^\/.]*)\/)*([^\/.]+)(\.\S+)?$/);
     $local = $pubout;
     if ($dir) {$lib = $dir}
     if ($ext eq ".h") { $exttype = "include"}
@@ -31,10 +40,11 @@ else {
 }
 
 open (HTML, ">$pubout.html");
-open (HTMLB, ">$pubout_static.html");
+open (HTMLB, ">$local\_static.html");
 open (SRS, ">$pubout.srsdata");
 
 $title = "$infile";
+$OFILE = HTML;
 
 print HTML  "<html><head><title>$title</title></head><body bgcolor=\"#ffffff\">\n";
 print HTMLB  "<html><head><title>$title</title></head><body bgcolor=\"#ffffff\">\n";
@@ -42,9 +52,36 @@ print HTMLB  "<html><head><title>$title</title></head><body bgcolor=\"#ffffff\">
 print HTML  "<h1>$pubout</h1>\n";
 print HTMLB  "<h1>$pubout</h1>\n";
 
-foreach $x ("new", "delete", "del", "ass", "mod", "use", "set", "cast", "use", "other", "alias", "attr", "cc") {
+foreach $x ("new", "delete", "assign", "modify", "use", "cast",
+	    "input", "output", "other",
+	    "alias", "attr", "cc") {
     $tables{$x} = 1;
 }
+
+foreach $x ("new", "delete", "assign", "modify", "use", "cast",
+	    "input", "output", "iterate") {
+    $tables{$x} = 1;
+}
+
+foreach $x ("del", "ass", "set", "mod") {
+    $tables{$x} = 2;
+}
+
+foreach $x ("other", "alias", "attr", "cc", "iterator") {
+    $tables{$x} = 3;
+}
+
+foreach $x ("author", "version", "modified", "source", "plus", "funclist",
+	    "prog", "macro", "func", "funcstatic", "param", "return",
+	    "see", "error", "cre", "ure", "exception", "cc",
+	    "category") {
+    $functoken{$x} = 1;
+}
+
+%obsolete = ( "del" => "delete",
+	      "ass" => "assign",
+	      "set" => "assign",
+	      "mod" => "modify");
 
 ##############################################################
 ## $source is the entire source file as a string with newlines
@@ -59,16 +96,21 @@ while ($source =~ m"[\/][*][^*]*[*]+([^\/*][^*]*[*]+)*[\/]"gos) {
     $rest = $POSTMATCH;
 
     ($cc) = ($ccfull =~ /^..\s*(.*\S)*\s*..$/gos);
-    $cc =~ s/[* ]*\n[* ]*/\n/gos;
+    if (defined($cc)) {
+	$cc =~ s/[* ]*\n[* ]*/\n/gos;
+    }
+    else {
+	$cc = "";
+    }
 
     $type = "";
-    $acnt = 0;
-    $rtype = "";
-    @largs = ();
     while ($cc =~ m/@((\S+)([^@]+))/gos) {
 	$data = $1;
 	$token = $2;
 
+	if (defined($tables{$token}) && $tables{$token} == 2) {
+	    print "Obsolete token $lasttoken - use $obsolete{$token}\n";
+	}
 	if ($token ne $lasttoken) {
 	    if ($tables{$lasttoken}) {print $OFILE "</table>\n"}
 	    $intable = 0;
@@ -115,9 +157,9 @@ while ($source =~ m"[\/][*][^*]*[*]+([^\/*][^*]*[*]+)*[\/]"gos) {
 		$dattr =~ s/^\s+//gos;
 		$dattr =~ s/\s+$//gos;
 		$dattr =~ s/\s+/ /gos;
-		$dattr =~ s/ ([*]+)/\1 /gos;
+		$dattr =~ s/ ([*]+)/$1 /gos;
 		push @lattrs, $dattr;
-		if ($dcc ne "") {
+		if (defined($dcc) && $dcc ne "") {
 		    $icc++;
 		}
 	    }
@@ -126,7 +168,7 @@ while ($source =~ m"[\/][*][^*]*[*]+([^\/*][^*]*[*]+)*[\/]"gos) {
 	    }
 	}
 
-	if ($token eq "datastatic")  {
+	elsif ($token eq "datastatic")  {
 	    $nattr = 0;
 	    $OFILE = HTMLB;
 	    $type = $token;
@@ -168,7 +210,7 @@ while ($source =~ m"[\/][*][^*]*[*]+([^\/*][^*]*[*]+)*[\/]"gos) {
 		$dattr =~ s/\s+/ /gos;
 		$dattr =~ s/ [*]/* /gos;
 		push @lattrs, $dattr;
-		if ($dcc ne "") {
+		if (defined($dcc) && $dcc ne "") {
 		    $icc++;
 		}
 	    }
@@ -177,7 +219,7 @@ while ($source =~ m"[\/][*][^*]*[*]+([^\/*][^*]*[*]+)*[\/]"gos) {
 	    }
 	}
 
-	if ($token eq "datatype")  {
+	elsif ($token eq "datatype")  {
 	    $nattr = 0;
 	    $OFILE = HTMLB;
 	    $type = $token;
@@ -215,139 +257,239 @@ while ($source =~ m"[\/][*][^*]*[*]+([^\/*][^*]*[*]+)*[\/]"gos) {
 
 	}
 
-	if ($token eq "new")  {
-	    if (!$intable) {
-		print $OFILE "<h3>Constructor(s)</h3>\n";
-		print $OFILE "<p><table border=3>\n";
-		print $OFILE "<tr><th>Name</th><th>Description</th></tr>\n";
-		$intable = 1;
-	    }
-	    ($fname,$prest) = ($data =~ m/\S+\s*(\S*)\s*(.*)/gos);
-	    
-	    $drest = $prest;
-	    $drest =~ s/\n\n+$/\n/gos;
-	    $drest =~ s/\n\n\n+/\n\n/gos;
-	    $drest =~ s/\n([^\n])/\nND $1/gos;
-	    $drest =~ s/\n\n/\nND\n/gos;
-	    print SRS "NN $fname\n";
-	    print SRS "ND $drest";
-	    print SRS "NX\n";
+	elsif (defined($tables{$token}) && $tables{$token} == 1) {
+	    if ($token eq "new")  {
+		if (!$intable) {
+		    print $OFILE "<h3>Constructor(s)</h3>\n";
+		    print $OFILE "<p><table border=3>\n";
+		    print $OFILE "<tr><th>Name</th><th>Description</th></tr>\n";
+		    $intable = 1;
+		}
+		($fname,$prest) = ($data =~ m/\S+\s*(\S*)\s*(.*)/gos);
 
-	    if (!$prest) {print "bad new spec '$fname', no description\n"}
-	    print $OFILE "<tr><td>".srsref($fname)."</td><td>$prest</td></tr>\n";
+		$drest = $prest;
+		$drest =~ s/\n\n+$/\n/gos;
+		$drest =~ s/\n\n\n+/\n\n/gos;
+		$drest =~ s/\n([^\n])/\nND $1/gos;
+		$drest =~ s/\n\n/\nND\n/gos;
+		print SRS "NN $fname\n";
+		print SRS "ND $drest";
+		print SRS "NX\n";
+
+		$docrest = $prest;
+		$docrest =~ s/\s+/ /gos;
+
+		if (!$prest) {print "bad new spec '$fname', no description\n"}
+		print $OFILE "<tr><td>".srsref($fname)."</td><td>$prest</td></tr>\n";
+	    }
+
+	    elsif ($token eq "delete" || $token eq "del")  {
+		if (!$intable) {
+		    print $OFILE "<h3>Destructor(s)</h3>\n";
+		    print $OFILE "<p><table border=3>\n";
+		    print $OFILE "<tr><th>Name</th><th>Description</th></tr>\n";
+		    $intable = 1;
+		}
+		($fname,$prest) = ($data =~ m/\S+\s*(\S*)\s*(.*)/gos);
+
+		$drest = $prest;
+		$drest =~ s/\n\n+$/\n/gos;
+		$drest =~ s/\n\n\n+/\n\n/gos;
+		$drest =~ s/\n([^\n])/\nDD $1/gos;
+		$drest =~ s/\n\n/\nDD\n/gos;
+		print SRS "DN $fname\n";
+		print SRS "DD $drest";
+		print SRS "DX\n";
+
+		$docrest = $prest;
+		$docrest =~ s/\s+/ /gos;
+
+		if (!$prest) {print "bad delete spec '$fname', no description\n"}
+		print $OFILE "<tr><td>".srsref($fname)."</td><td>$prest</td></tr>\n";
+	    }
+
+	    elsif ($token eq "use")  {
+		if (!$intable) {
+		    print $OFILE "<h3>Operator(s)</h3>\n";
+		    print $OFILE "<p><table border=3>\n";
+		    print $OFILE "<tr><th>Name</th><th>Description</th></tr>\n";
+		    $intable = 1;
+		}
+		($fname,$prest) = ($data =~ m/\S+\s*(\S*)\s*(.*)/gos);
+
+		$drest = $prest;
+		$drest =~ s/\n\n+$/\n/gos;
+		$drest =~ s/\n\n\n+/\n\n/gos;
+		$drest =~ s/\n([^\n])/\nOD $1/gos;
+		$drest =~ s/\n\n/\nOD\n/gos;
+		print SRS "ON $fname\n";
+		print SRS "OD $drest";
+		print SRS "OX\n";
+
+		$docrest = $prest;
+		$docrest =~ s/\s+/ /gos;
+
+		if (!$prest) {print "bad use spec '$fname', no description\n"}
+		print $OFILE "<tr><td>".srsref($fname)."</td><td>$prest</td></tr>\n";
+	    }
+
+	    elsif ($token eq "assign" || $token eq "ass" || $token eq "set")  {
+		if (!$intable) {
+		    print $OFILE "<h3>Assignment(s)</h3>\n";
+		    print $OFILE "<p><table border=3>\n";
+		    print $OFILE "<tr><th>Name</th><th>Description</th></tr>\n";
+		    $intable = 1;
+		}
+		($fname,$prest) = ($data =~ m/\S+\s*(\S*)\s*(.*)/gos);
+
+		$drest = $prest;
+		$drest =~ s/\n\n+$/\n/gos;
+		$drest =~ s/\n\n\n+/\n\n/gos;
+		$drest =~ s/\n([^\n])/\nED $1/gos;
+		$drest =~ s/\n\n/\nED\n/gos;
+		print SRS "EN $fname\n";
+		print SRS "ED $drest";
+		print SRS "EX\n";
+
+		$docrest = $prest;
+		$docrest =~ s/\s+/ /gos;
+
+		if (!$prest) {print "bad assignment spec '$fname', no description\n"}
+		print $OFILE "<tr><td>".srsref($fname)."</td><td>$prest</td></tr>\n";
+	    }
+
+	    elsif ($token eq "modify" || $token eq "mod")  {
+		if (!$intable) {
+		    print $OFILE "<h3>Modifier(s)</h3>\n";
+		    print $OFILE "<p><table border=3>\n";
+		    print $OFILE "<tr><th>Name</th><th>Description</th></tr>\n";
+		    $intable = 1;
+		}
+		($fname,$prest) = ($data =~ m/\S+\s*(\S*)\s*(.*)/gos);
+
+		$drest = $prest;
+		$drest =~ s/\n\n+$/\n/gos;
+		$drest =~ s/\n\n\n+/\n\n/gos;
+		$drest =~ s/\n([^\n])/\nMD $1/gos;
+		$drest =~ s/\n\n/\nMD\n/gos;
+		print SRS "MN $fname\n";
+		print SRS "MD $drest";
+		print SRS "MX\n";
+
+		$docrest = $prest;
+		$docrest =~ s/\s+/ /gos;
+
+		if (!$prest) {print "bad modifier spec '$fname', no description\n"}
+		print $OFILE "<tr><td>".srsref($fname)."</td><td>$prest</td></tr>\n";
+	    }
+
+	    elsif ($token eq "cast")  {
+		if (!$intable) {
+		    print $OFILE "<h3>Cast(s)</h3>\n";
+		    print $OFILE "<p><table border=3>\n";
+		    print $OFILE "<tr><th>Name</th><th>Description</th></tr>\n";
+		    $intable = 1;
+		}
+		($fname,$prest) = ($data =~ m/\S+\s*(\S*)\s*(.*)/gos);
+
+		$drest = $prest;
+		$drest =~ s/\n\n+$/\n/gos;
+		$drest =~ s/\n\n\n+/\n\n/gos;
+		$drest =~ s/\n([^\n])/\nCD $1/gos;
+		$drest =~ s/\n\n/\nCD\n/gos;
+		print SRS "CN $fname\n";
+		print SRS "CD $drest";
+		print SRS "CX\n";
+
+		$docrest = $prest;
+		$docrest =~ s/\s+/ /gos;
+
+		if (!$prest) {print "bad cast spec '$fname', no description\n"}
+		print $OFILE "<tr><td>".srsref($fname)."</td><td>$prest</td></tr>\n";
+	    }
+
+	    elsif ($token eq "input")  {
+		if (!$intable) {
+		    print $OFILE "<h3>Input</h3>\n";
+		    print $OFILE "<p><table border=3>\n";
+		    print $OFILE "<tr><th>Name</th><th>Description</th></tr>\n";
+		    $intable = 1;
+		}
+		($fname,$prest) = ($data =~ m/\S+\s*(\S*)\s*(.*)/gos);
+
+		$drest = $prest;
+		$drest =~ s/\n\n+$/\n/gos;
+		$drest =~ s/\n\n\n+/\n\n/gos;
+		$drest =~ s/\n([^\n])/\nJD $1/gos;
+		$drest =~ s/\n\n/\nJD\n/gos;
+		print SRS "JN $fname\n";
+		print SRS "JD $drest";
+		print SRS "JX\n";
+
+		$docrest = $prest;
+		$docrest =~ s/\s+/ /gos;
+
+		if (!$prest) {print "bad input spec '$fname', no description\n"}
+		print $OFILE "<tr><td>".srsref($fname)."</td><td>$prest</td></tr>\n";
+	    }
+
+	    elsif ($token eq "output")  {
+		if (!$intable) {
+		    print $OFILE "<h3>Output</h3>\n";
+		    print $OFILE "<p><table border=3>\n";
+		    print $OFILE "<tr><th>Name</th><th>Description</th></tr>\n";
+		    $intable = 1;
+		}
+		($fname,$prest) = ($data =~ m/\S+\s*(\S*)\s*(.*)/gos);
+
+		$drest = $prest;
+		$drest =~ s/\n\n+$/\n/gos;
+		$drest =~ s/\n\n\n+/\n\n/gos;
+		$drest =~ s/\n([^\n])/\nPD $1/gos;
+		$drest =~ s/\n\n/\nPD\n/gos;
+		print SRS "PN $fname\n";
+		print SRS "PD $drest";
+		print SRS "PX\n";
+
+		$docrest = $prest;
+		$docrest =~ s/\s+/ /gos;
+
+		if (!$prest) {print "bad output spec '$fname', no description\n"}
+		print $OFILE "<tr><td>".srsref($fname)."</td><td>$prest</td></tr>\n";
+	    }
+	    elsif ($token eq "iterate")  {
+		if (!$intable) {
+		    print $OFILE "<h3>Output</h3>\n";
+		    print $OFILE "<p><table border=3>\n";
+		    print $OFILE "<tr><th>Name</th><th>Description</th></tr>\n";
+		    $intable = 1;
+		}
+		($fname,$prest) = ($data =~ m/\S+\s*(\S*)\s*(.*)/gos);
+
+		$drest = $prest;
+		$drest =~ s/\n\n+$/\n/gos;
+		$drest =~ s/\n\n\n+/\n\n/gos;
+		$drest =~ s/\n([^\n])/\nLD $1/gos;
+		$drest =~ s/\n\n/\nLD\n/gos;
+		print SRS "LN $fname\n";
+		print SRS "LD $drest";
+		print SRS "LX\n";
+
+		$docrest = $prest;
+		$docrest =~ s/\s+/ /gos;
+
+		if (!$prest) {print "bad iterate spec '$fname', no description\n"}
+		print $OFILE "<tr><td>".srsref($fname)."</td><td>$prest</td></tr>\n";
+	    }
+	    else {
+		print "bad category token '$token' - no validation\n";
+	    }
+	    $docrest =~ s/^\s+//gos;
+	    $docrest =~ s/\s+$//gos;
+	    print "category $token [$name] $fname $pubout $lib : $docrest\n";
 	}
 
-	if ($token eq "delete" || $token eq "del")  {
-	    if (!$intable) {
-		print $OFILE "<h3>Destructor(s)</h3>\n";
-		print $OFILE "<p><table border=3>\n";
-		print $OFILE "<tr><th>Name</th><th>Description</th></tr>\n";
-		$intable = 1;
-	    }
-	    ($fname,$prest) = ($data =~ m/\S+\s*(\S*)\s*(.*)/gos);
-
-	    $drest = $prest;
-	    $drest =~ s/\n\n+$/\n/gos;
-	    $drest =~ s/\n\n\n+/\n\n/gos;
-	    $drest =~ s/\n([^\n])/\nDD $1/gos;
-	    $drest =~ s/\n\n/\nDD\n/gos;
-	    print SRS "DN $fname\n";
-	    print SRS "DD $drest";
-	    print SRS "DX\n";
-
-	    if (!$prest) {print "bad delete spec '$fname', no description\n"}
-	    print $OFILE "<tr><td>".srsref($fname)."</td><td>$prest</td></tr>\n";
-	}
-
-	if ($token eq "use")  {
-	    if (!$intable) {
-		print $OFILE "<h3>Operator(s)</h3>\n";
-		print $OFILE "<p><table border=3>\n";
-		print $OFILE "<tr><th>Name</th><th>Description</th></tr>\n";
-		$intable = 1;
-	    }
-	    ($fname,$prest) = ($data =~ m/\S+\s*(\S*)\s*(.*)/gos);
-
-	    $drest = $prest;
-	    $drest =~ s/\n\n+$/\n/gos;
-	    $drest =~ s/\n\n\n+/\n\n/gos;
-	    $drest =~ s/\n([^\n])/\nOD $1/gos;
-	    $drest =~ s/\n\n/\nOD\n/gos;
-	    print SRS "ON $fname\n";
-	    print SRS "OD $drest";
-	    print SRS "OX\n";
-
-	    if (!$prest) {print "bad use spec '$fname', no description\n"}
-	    print $OFILE "<tr><td>".srsref($fname)."</td><td>$prest</td></tr>\n";
-	}
-
-	if ($token eq "ass" || $token eq "set")  {
-	    if (!$intable) {
-		print $OFILE "<h3>Assignment(s)</h3>\n";
-		print $OFILE "<p><table border=3>\n";
-		print $OFILE "<tr><th>Name</th><th>Description</th></tr>\n";
-		$intable = 1;
-	    }
-	    ($fname,$prest) = ($data =~ m/\S+\s*(\S*)\s*(.*)/gos);
-
-	    $drest = $prest;
-	    $drest =~ s/\n\n+$/\n/gos;
-	    $drest =~ s/\n\n\n+/\n\n/gos;
-	    $drest =~ s/\n([^\n])/\nED $1/gos;
-	    $drest =~ s/\n\n/\nED\n/gos;
-	    print SRS "EN $fname\n";
-	    print SRS "ED $drest";
-	    print SRS "EX\n";
-
-	    if (!$prest) {print "bad assignment spec '$fname', no description\n"}
-	    print $OFILE "<tr><td>".srsref($fname)."</td><td>$prest</td></tr>\n";
-	}
-
-	if ($token eq "mod")  {
-	    if (!$intable) {
-		print $OFILE "<h3>Modifier(s)</h3>\n";
-		print $OFILE "<p><table border=3>\n";
-		print $OFILE "<tr><th>Name</th><th>Description</th></tr>\n";
-		$intable = 1;
-	    }
-	    ($fname,$prest) = ($data =~ m/\S+\s*(\S*)\s*(.*)/gos);
-
-	    $drest = $prest;
-	    $drest =~ s/\n\n+$/\n/gos;
-	    $drest =~ s/\n\n\n+/\n\n/gos;
-	    $drest =~ s/\n([^\n])/\nMD $1/gos;
-	    $drest =~ s/\n\n/\nMD\n/gos;
-	    print SRS "MN $fname\n";
-	    print SRS "MD $drest";
-	    print SRS "MX\n";
-
-	    if (!$prest) {print "bad modifier spec '$fname', no description\n"}
-	    print $OFILE "<tr><td>".srsref($fname)."</td><td>$prest</td></tr>\n";
-	}
-
-	if ($token eq "cast")  {
-	    if (!$intable) {
-		print $OFILE "<h3>Cast(s)</h3>\n";
-		print $OFILE "<p><table border=3>\n";
-		print $OFILE "<tr><th>Name</th><th>Description</th></tr>\n";
-		$intable = 1;
-	    }
-	    ($fname,$prest) = ($data =~ m/\S+\s*(\S*)\s*(.*)/gos);
-
-	    $drest = $prest;
-	    $drest =~ s/\n\n+$/\n/gos;
-	    $drest =~ s/\n\n\n+/\n\n/gos;
-	    $drest =~ s/\n([^\n])/\nCD $1/gos;
-	    $drest =~ s/\n\n/\nCD\n/gos;
-	    print SRS "CN $fname\n";
-	    print SRS "CD $drest";
-	    print SRS "CX\n";
-
-	    if (!$prest) {print "bad cast spec '$fname', no description\n"}
-	    print $OFILE "<tr><td>".srsref($fname)."</td><td>$prest</td></tr>\n";
-	}
-
-	if ($token eq "other")  {
+	elsif ($token eq "other")  {
 	    if (!$intable) {
 		print $OFILE "<h3>Other related data structure(s)</h3>\n";
 		print $OFILE "<p><table border=3>\n";
@@ -366,11 +508,14 @@ while ($source =~ m"[\/][*][^*]*[*]+([^\/*][^*]*[*]+)*[\/]"gos) {
 	    print SRS "RD $drest";
 	    print SRS "RX\n";
 
+	    $docrest = $prest;
+	    $docrest =~ s/\s+/ /gos;
+
 	    if (!$prest) {print "bad other spec '$fname', no description\n"}
 	    print $OFILE "<tr><td>".srsdref($fname)."</td><td>$prest</td></tr>\n";
 	}
 
-	if ($token eq "alias")  {
+	elsif ($token eq "alias")  {
 	    if (!$intable) {
 		print $OFILE "<h3>Alias name(s)</h3>\n";
 		print $OFILE "<p><table border=3>\n";
@@ -382,8 +527,8 @@ while ($source =~ m"[\/][*][^*]*[*]+([^\/*][^*]*[*]+)*[\/]"gos) {
 	    $drest = $prest;
 	    $drest =~ s/\n\n+$/\n/gos;
 	    $drest =~ s/\n\n\n+/\n\n/gos;
-	    $drest =~ s/\n([^\n])/\nRD $1/gos;
-	    $drest =~ s/\n\n/\nRD\n/gos;
+	    $drest =~ s/\n([^\n])/\nTD $1/gos;
+	    $drest =~ s/\n\n/\nTD\n/gos;
 	    $drest =~ s/^$/\n/gos;
 	    print SRS "TN $fname\n";
 	    print SRS "TD $drest";
@@ -393,7 +538,30 @@ while ($source =~ m"[\/][*][^*]*[*]+([^\/*][^*]*[*]+)*[\/]"gos) {
 	    print $OFILE "<tr><td>".srsdref($fname)."</td><td>$prest</td></tr>\n";
 	}
 
-	if ($token eq "attr")  {
+	elsif ($token eq "iterator")  {
+	    if (!$intable) {
+		print $OFILE "<h3>Iterator name(s)</h3>\n";
+		print $OFILE "<p><table border=3>\n";
+		print $OFILE "<tr><th>Name</th><th>Description</th></tr>\n";
+		$intable = 1;
+	    }
+	    ($fname,$prest) = ($data =~ m/\S+\s*(\S*)\s*(.*)/gos);
+
+	    $drest = $prest;
+	    $drest =~ s/\n\n+$/\n/gos;
+	    $drest =~ s/\n\n\n+/\n\n/gos;
+	    $drest =~ s/\n([^\n])/\nKD $1/gos;
+	    $drest =~ s/\n\n/\nKD\n/gos;
+	    $drest =~ s/^$/\n/gos;
+	    print SRS "KN $fname\n";
+	    print SRS "KD $drest";
+	    print SRS "KX\n";
+
+	    ###if (!$prest) {print "bad iterator spec '$fname', no description\n"}
+	    print $OFILE "<tr><td>".srsdref($fname)."</td><td>$prest</td></tr>\n";
+	}
+
+	elsif ($token eq "attr")  {
 	    $nattr++;
 	    if (!$intable) {
 		print $OFILE "<h3>Attributes</h3>\n";
@@ -454,8 +622,37 @@ while ($source =~ m"[\/][*][^*]*[*]+([^\/*][^*]*[*]+)*[\/]"gos) {
 	    print $OFILE "<tr><td>".srsdref($aname)."</td><td>$prest</td></tr>\n";
 	}
 
-	if ($token eq "@")  {
-	    break;
+	elsif ($token eq "section")  {
+	    ;
+	}
+
+	elsif ($token eq "@")  {
+	    last;
+	}
+
+	elsif ($token =~ /[^a-z]/)  {# acd function
+	    ;
+	}
+
+	elsif ($token eq "not")  { # acd function
+	    ;
+	}
+
+	elsif ($token eq "pasteur.fr")  { # email address
+	    ;
+	}
+
+	elsif ($token eq "sanger")  { # email address
+	    ;
+	}
+
+	elsif (defined($functoken{$token}))  {
+	    ;
+	}
+
+	else  {
+	    print  "bad unrecognized token \@$token\n";
+	    print STDERR "Unrecognized token \@$token in $pubout\n";
 	}
 
 	$lasttoken = $token;
@@ -464,7 +661,7 @@ while ($source =~ m"[\/][*][^*]*[*]+([^\/*][^*]*[*]+)*[\/]"gos) {
 	print "=============================\n";
 	print SRS "//\n";
 
-	($body,$a,$apart,$c) = ($rest =~ /((.*?\n([\s\{][^\n]*\n)*\S[^;]*;[^\n]*\n)([\s\n]*[\#]define\s+\S+\s+\S+[*]\s*?\n)?)/gos);
+	($body,undef,undef,undef) = ($rest =~ /((.*?\n([\s\{][^\n]*\n)*\S[^;]*;[^\n]*\n)([\s\n]*[\#]define\s+\S+\s+\S+[*]\s*?\n)?)/gos);
 	$body =~ s/^\s+//m;
 ##    print "SRS:\n$body\n";
 ##    print "a: $a\n";
@@ -485,10 +682,3 @@ print HTML "</body></html>\n";
 print HTMLB "</body></html>\n";
 close HTML;
 close HTMLB;
-
-sub srsref {
-    return "<a href=\"/srs6bin/cgi-bin/wgetz?-e+[EFUNC-ID:$_[0]]\">$_[0]</a>";
-}
-sub srsdref {
-    return "<a href=\"/srs6bin/cgi-bin/wgetz?-e+[EDATA-ID:$_[0]]\">$_[0]</a>";
-}

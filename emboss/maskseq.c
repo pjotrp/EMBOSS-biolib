@@ -63,9 +63,9 @@ int main(int argc, char **argv)
     ** ToLower the regions, else replace with maskseq
     */
     if(tolower || ajStrLen(maskchar) == 0 || ajStrMatchC(maskchar, " "))
-    	ajRangeStrToLower(&str, regions);
+    	ajRangeStrToLower(regions, &str);
     else
-        ajRangeStrMask(&str, regions, maskchar);
+        ajRangeStrMask(regions, maskchar, &str);
     
     ajSeqReplace(seq, str);
     ajSeqWrite(seqout, seq);

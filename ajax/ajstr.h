@@ -30,8 +30,10 @@ extern "C"
 **
 ** AjPStr is implemented as a pointer to a C data structure.
 **
+** @alias AjPPStr
 ** @alias AjSStr
 ** @alias AjOStr
+** @iterator AjIStr
 **
 ** @new ajStrNew Default constructor
 ** @new ajStrNewC Constructor with char* text
@@ -39,83 +41,76 @@ extern "C"
 ** @new ajStrNewCL Constructor with char* text and reserved size
 ** @new ajStrNewCIL Constructor with char* text, length and reserved size
 ** @new ajStrDup Duplicates an existing string (with increased reference count)
-** @new ajCharNew    Constructor for a new C text string with a given string
-** @new ajCharNewC   Constructor for a new C text string with a text value
-** @new ajCharNewL   Constructor for a new empty C text string with
-**                   a given length
-** @new ajCharNewLS  Constructor for a new C text string with a given
-**                   string and length.
 **
 ** @delete ajStrDel Default destructor
-** @delete ajCharFree Deletes a C text string
 **
-** @ass ajStrClear Clears all contents
-** @ass ajStrSet   If empty, initialize with a copy of a string object
-** @ass ajStrSetC  If empty, initialize with a copy of a char* text
-** @ass ajStrAss   Assignment with a copy of a string object
-** @ass ajStrAssC  Assignment with char* text.
-** @ass ajStrAssI  Assignment with a copy of a string object and a maximum
+** @assign ajStrSet   If empty, initialize with a copy of a string object
+** @assign ajStrSetC  If empty, initialize with a copy of a char* text
+** @assign ajStrAss   Assignment with a copy of a string object
+** @assign ajStrAssC  Assignment with char* text.
+** @assign ajStrAssI  Assignment with a copy of a string object and a maximum
 **                 length.
-** @ass ajStrAssL  Assignment with a copy of a string object and a minimum
+** @assign ajStrAssL  Assignment with a copy of a string object and a minimum
 **                 reserved size.
-** @ass ajStrAssCI  Assignment with char* text and a maximum
+** @assign ajStrAssCI  Assignment with char* text and a maximum
 **                 length.
-** @ass ajStrAssCL  Assignment with a char* text and a minimum
+** @assign ajStrAssCL  Assignment with a char* text and a minimum
 **                 reserved size.
-** @ass ajStrAssSub Assignment with a substring of a string object
-** @ass ajStrAssSubC Assignment with a substring of a char* text
+** @assign ajStrAssSub Assignment with a substring of a string object
+** @assign ajStrAssSubC Assignment with a substring of a char* text
 **
-** @ass ajStrFromBool Creates a string representation of an AjBool
-** @ass ajStrFromInt  Creates a string representation of an int
-** @ass ajStrFromLong Creates a string representation of a ajlong int
-** @ass ajStrFromFloat Creates a string representation of a float
-** @ass ajStrFromDouble Creates a string representation of a double
-** @ass ajStrFromDoubleE Creates a string representation (exp) of a double
+** @assign ajStrFromBool Creates a string representation of an AjBool
+** @assign ajStrFromInt  Creates a string representation of an int
+** @assign ajStrFromLong Creates a string representation of a ajlong int
+** @assign ajStrFromFloat Creates a string representation of a float
+** @assign ajStrFromDouble Creates a string representation of a double
+** @assign ajStrFromDoubleE Creates a string representation (exp) of a double
 **
-** @mod ajStrApp   Appends a string object
-** @mod ajStrAppC  Appends a char* text
-** @mod ajStrAppK  Appends a char
-** @mod ajStrAppSub Appends a substring
-** @mod ajStrInsert  Inserts string object text within a string.
-** @mod ajStrInsertC Inserts char* text within a string.
-** @mod ajStrTruncate Removes characters beyond a given position.
-** @mod ajStrReplace  Replace remainder of string with char* text.
-** @mod ajStrReplaceC Replace remainder of string with string object text.
-** @mod ajStrJoin  Replace remainder of string with remainder of second string.
-** @mod ajStrJoinC Replace remainder of string with remainder of char* text.
-** @mod ajStrSubstitute   Replace all occurances of one string with another in
+** @modify ajStrClear Clears all contents
+** @modify ajStrApp   Appends a string object
+** @modify ajStrAppC  Appends a char* text
+** @modify ajStrAppK  Appends a char
+** @modify ajStrAppSub Appends a substring
+** @modify ajStrInsert  Inserts string object text within a string.
+** @modify ajStrInsertC Inserts char* text within a string.
+** @modify ajStrTruncate Removes characters beyond a given position.
+** @modify ajStrReplace Replace remainder of string with string object text.
+** @modify ajStrReplaceC  Replace remainder of string with char* text.
+** @modify ajStrJoin  Replace remainder of string with remainder of second string.
+** @modify ajStrJoinC Replace remainder of string with remainder of char* text.
+** @modify ajStrSubstitute   Replace all occurances of one string with another in
 **                        the string object.
-** @mod ajStrSubstituteCC Replace all occurances of char *text  with
+** @modify ajStrSubstituteCC Replace all occurances of char *text  with
 **                        another char* in the string object.
-** @mod ajStrSubstituteKK Replace all occurances of char text  with
+** @modify ajStrSubstituteKK Replace all occurances of char text  with
 **                        another char in the string object.
-** @mod ajStrChompEnd Removes white space from end of string.
-** @mod ajStrChomp Removes white space from front and end of string.
-** @mod ajStrChompC Removes white space from front and end of string.
-** @mod ajStrChop  Removes the last character from a string
-** @mod ajStrTrim  Removes a number of characters from start of end of a string
-** @mod ajStrTrimC Removes a set of characters from start of end of a string
-** @mod ajStrTrimEndC Removes a set of characters from end of a string
-** @mod ajStrCut Removes a range of character positions from a string
-** @mod ajStrMask Masks out a range of characters from a string
-** @mod ajStrRev Reverses the order of characters in a string
-** @mod ajStrSub Reduces string to a substring of itself.
-** @mod ajStrMod  Make certain a string is modifiable by checking it has no
+** @modify ajStrChompEnd Removes white space from end of string.
+** @modify ajStrChomp Removes white space from front and end of string.
+** @modify ajStrChompC Removes white space from front and end of string.
+** @modify ajStrChop  Removes the last character from a string
+** @modify ajStrTrim  Removes a number of characters from start of end of a string
+** @modify ajStrTrimC Removes a set of characters from start of end of a string
+** @modify ajStrTrimEndC Removes a set of characters from end of a string
+** @modify ajStrCut Removes a range of character positions from a string
+** @modify ajStrMask Masks out a range of characters from a string
+** @modify ajStrRev Reverses the order of characters in a string
+** @modify ajStrSub Reduces string to a substring of itself.
+** @modify ajStrMod  Make certain a string is modifiable by checking it has no
 **                other references, or by making a new real copy of the string.
-** @mod ajStrModL Make certain a string is modifiable, and big enough for its
+** @modify ajStrModL Make certain a string is modifiable, and big enough for its
 **                intended purpose.
-** @mod ajStrConvert   Replaces one set of characters with another set,
+** @modify ajStrConvert   Replaces one set of characters with another set,
 **                     defined as two string objects
-** @mod ajStrConvertCC Replaces one set of characters with another set,
+** @modify ajStrConvertCC Replaces one set of characters with another set,
 **                     defined as two char* texts.
-** @mod ajStrToLower  Converts a string to lower case.
-** @mod ajCharToLower Converts a C text string to lower case.
-** @mod ajStrToUpper  Converts a string to upper case.
-** @mod ajCharToUpper Converts a C text string to upper case.
-** @mod ajStrClean   Remove excess whitespace from a string
-** @mod ajStrCleanWhite Remove all whitespace from a string
-** @mod ajStrFix  Reset string length when some nasty caller may have edited it
-** @mod ajStrFixI Reset string length when some nasty caller may have edited it
+** @modify ajStrToLower  Converts a string to lower case.
+** @modify ajStrToUpper  Converts a string to upper case.
+** @modify ajStrClean   Remove excess whitespace from a string
+** @modify ajStrCleanWhite Remove all whitespace from a string
+** @modify ajStrFix  Reset string length when some nasty caller may have edited it
+** @modify ajStrFixI Reset string length when some nasty caller may have edited it
+** @modify ajStrWildPrefix Tests for wildcard characters and terminates the
+**                      string at the first wild character (if any).
 **
 ** @use ajStrFind   Find
 ** @use ajStrFindC  Find
@@ -128,26 +123,17 @@ extern "C"
 ** @use ajStrNCmpO String compare
 ** @use ajStrNCmpC String compare
 ** @use ajStrCmpCase String case insensitive compare
-** @use ajStrCmpCaseCC String case insensitive compare
 **
 ** @use ajStrMatch       Test for matching strings
 ** @use ajStrMatchC      Test for matching strings
-** @use ajStrMatchCC     Test for matching strings
 ** @use ajStrMatchCase   Test for matching strings
 ** @use ajStrMatchCaseC  Test for matching strings
-** @use ajStrMatchCaseCC Test for matching strings
 ** @use ajStrMatchWild   Test for matching strings with wildcards
 ** @use ajStrMatchWildC  Test for matching strings with wildcards
-** @use ajStrMatchWildCC Test for matching strings with wildcards
-** @use ajStrMatchWildCO Test for matching strings with wildcards
-** @use ajStrWildPrefix Tests for wildcard characters and terminates the
-**                      string at the first wild character (if any).
 ** @use ajStrIsWild Tests whether a string contains standard wildcard
 **                  characters '*' or '?'
 ** @use ajStrCheck Tests a string has a valid internal structure
-** @use ajStrTrace Writes a debug report on a string
-** @use ajStrExit Prints a summary of string usage with debug calls
-**
+** @output ajStrTrace Writes a debug report on a string
 ** @cast ajStrStr Returns char* text.
 **                Note: this should be treated as a constant as it is a
 **                pointer to the actual data to avoid excessive memory
@@ -156,15 +142,9 @@ extern "C"
 ** @cast ajStrSize Returns string reserved bytes (including trailing null)
 ** @cast ajStrRef Returns string reference count
 ** @cast ajStrPos String position
-** @cast ajStrBool    Returns a static C text string with a Yes/No value
-**                   from an AjBool
-** @cast ajStrYN      Returns a static C text string with a Y/N 1 character
-**                   value from an AjBool
 ** @cast ajStrTok  Returns a static next string from token parsing of a string
 **                 with the previous delimiter set
 ** @cast ajStrTokC Returns a static next string from token parsing of a
-**                 string with a new delimiter set
-** @cast ajStrTokCC Returns a static next string from token parsing of a
 **                 string with a new delimiter set
 ** @cast ajStrIsBool returns true if the string is a valid AjBool
 ** @cast ajStrIsInt returns true if the string is a valid int
@@ -181,7 +161,6 @@ extern "C"
 ** @cast ajStrRoom Returns the additional space available in a string
 ** @cast ajStrPos Converts a string position into a true position
 ** @cast ajStrPosI Converts a string position into a true position
-** @cast ajCharPos Converts a string position into a true position
 **
 ** @other AjPSeq uses AjPStr to store most values
 ** @other AjPStrTok parses AjPStr with delimiters
@@ -203,6 +182,7 @@ typedef struct AjSStr {
   char *Ptr;
 } AjOStr;
 #define AjPStr AjOStr*
+typedef AjPStr* AjPPStr;
 
 /* @data AjIStr ***************************************************************
 **
@@ -212,13 +192,13 @@ typedef struct AjSStr {
 **
 ** @delete ajStrIterFree Destructor for a string iterator
 **
-** @mod ajStrIterNext Steps to the next iteration
+** @modify ajStrIterNext Steps to the next iteration
 **
 ** @cast ajStrIterBegin returns result of first iteration
 ** @cast ajStrIterEnd   returns result of last iteration
 ** @cast ajStrIterDone  Tests whether iteration is complete
-** @cast ajStrIterGetCC   returns the character from the iterator
-** @cast ajStrIterGetC   returns the character* from the iterator
+** @cast ajStrIterGetK  returns the character from the iterator
+** @cast ajStrIterGetC  returns the character* from the iterator
 **
 ** @attr Start [char*] Starting string pointer
 ** @attr End [char*] Final string pointer (NULL character position)
@@ -240,17 +220,6 @@ typedef struct AjSStrIter {
 ** require a set of characters to be skipped, but some functions use a string
 ** delimiter instead.
 **
-** @new ajStrTokenInit Generates a string token parser object
-** @delete ajStrTokenClear Destroys a string token parser
-** @use ajStrToken Parse a string with a set of unwanted characters and
-**                 return the next token.
-**
-**                 Parsing is initialized with ajStrTokenInit
-** @use ajStrDelim Parse a string with a string delimiter and return the
-**                 next token.
-**
-**                 Parsing is initialized with ajStrTokenInit
-**
 ** @attr String [AjPStr] String
 ** @attr Delim [AjPStr] Delimiter set for ajStrToken
 ** @attr Pos [ajint] Position in string
@@ -270,7 +239,7 @@ typedef struct AjSStrTok {
 /* =================== All functions in alphabetical order ================= */
 /* ========================================================================= */
 
-char*      ajCharFree (char* txt);
+void       ajCharFree (char** txt);
 char*      ajCharNewC (ajint len, const char* txt);
 char*      ajCharNew (const AjPStr thys);
 char*      ajCharNewL (ajint len);
@@ -446,7 +415,7 @@ AjBool     ajStrSetC  (AjPStr* pthis, const char* str);
 ajint      ajStrSize (const AjPStr thys);
 #define    MAJSTRSIZE(str) str->Res
 #define    MAJSTRSUBK(str,pos,c) str->Ptr[pos]=c
-void       ajStrStat (char* title);
+void       ajStrStat (const char* title);
 char*      ajStrStr (const AjPStr thys);
 #define    MAJSTRSTR(str) str->Ptr
 AjBool     ajStrSub (AjPStr* pthis, ajint begin, ajint len);
@@ -473,19 +442,19 @@ AjBool     ajStrToken (AjPStr* pthis, AjPStrTok *ptoken, const char *delim);
 AjBool     ajStrTokenAss (AjPStrTok *ptok, const AjPStr thys,
 			  const char *delim);
 void       ajStrTokenClear (AjPStrTok *token);
-ajint      ajStrTokenCount(AjPStr *line, const char *delim);
-ajint      ajStrTokenCountR(AjPStr* line, const char *delim);
+ajint      ajStrTokenCount(const AjPStr line, const char *delim);
+ajint      ajStrTokenCountR(const AjPStr line, const char *delim);
 AjPStrTok  ajStrTokenInit (const AjPStr thys, const char *delim);
 void       ajStrTokenReset (AjPStrTok* ptok);
 AjBool     ajStrTokenRest (AjPStr* pthis, AjPStrTok* ptoken);
-void       ajStrTokenTrace (AjPStrTok tok);
+void       ajStrTokenTrace (const AjPStrTok tok);
 AjBool     ajStrToLong (const AjPStr thys, ajlong* result);
 AjBool     ajStrToLower (AjPStr* pthis);
 AjBool     ajStrToTitle (AjPStr* pthis);
 AjBool     ajStrToUpper (AjPStr* pthis);
 void       ajStrTrace (const AjPStr thys);
 void       ajStrTraceChars (const AjPStr thys);
-void       ajStrTraceT (const AjPStr thys, char* title);
+void       ajStrTraceT (const AjPStr thys, const char* title);
 AjBool     ajStrTrim  (AjPStr* pthis, ajint num);
 AjBool     ajStrTrimC (AjPStr* pthis, const char* chars);
 AjBool     ajStrTrimEndC (AjPStr* pthis, const char* chars);

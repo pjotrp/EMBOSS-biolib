@@ -217,7 +217,7 @@ static AjBool pepwindowall_getnakaidata(AjPFile file, float matrix[])
 	    line++;
             ajStrClean(&buffer);
 	    token = ajStrTokenInit(buffer,ajStrStr(delim));
-	    cols = ajStrTokenCount(&buffer,ajStrStr(delim));
+	    cols = ajStrTokenCount(buffer,ajStrStr(delim));
 	    ajDebug("num of cols = %d\n",cols);
 
 	    ajStrToken(&buf2,&token,ajStrStr(delim));
@@ -257,7 +257,7 @@ static AjBool pepwindowall_getnakaidata(AjPFile file, float matrix[])
 	    line++;
 	    ajStrClean(&buffer);
 	    token = ajStrTokenInit(buffer,ajStrStr(delim));
-	    cols  = ajStrTokenCount(&buffer,ajStrStr(delim));
+	    cols  = ajStrTokenCount(buffer,ajStrStr(delim));
 	    ajStrToken(&buf2,&token,ajStrStr(delim));
 	    ajStrToFloat(buf2,&matrix[11]);
 

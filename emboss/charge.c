@@ -33,7 +33,7 @@
 static void  charge_addgraph(AjPGraph graph, ajint limit, float *x,
 			     float *y, float ymax, float ymin,
 			     ajint window, char *sname);
-static AjPFloat charge_read_amino(AjPFile* fp);
+static AjPFloat charge_read_amino(AjPFile fp);
 
 
 
@@ -93,7 +93,8 @@ int main(int argc, char **argv)
     outf  = ajAcdGetOutfile("outfile");
     graph = ajAcdGetGraphxy("graph");
 
-    chg = charge_read_amino(&cdata);
+    chg = charge_read_amino(cdata);
+    ajFileClose(&cdata);
 
     str = ajStrNew();
 
@@ -174,8 +175,6 @@ int main(int argc, char **argv)
 
     ajStrDel(&str);
 
-    ajFileClose(&cdata);
-
     ajExit();
 
     return 0;
@@ -187,14 +186,14 @@ int main(int argc, char **argv)
 **
 ** Undocumented.
 **
-** @param [?] graph [AjPGraph] graph object
-** @param [?] limit [ajint] range
-** @param [?] x [float*] x co-ords
-** @param [?] y [float*] y co-ords
-** @param [?] ymax [float] max y value
-** @param [?] ymin [float] max x value
-** @param [?] window [ajint] window
-** @param [?] sname [char*] sequence name
+** @param [r] graph [AjPGraph] graph object
+** @param [r] limit [ajint] range
+** @param [r] x [float*] x co-ords
+** @param [r] y [float*] y co-ords
+** @param [r] ymax [float] max y value
+** @param [r] ymin [float] max x value
+** @param [r] window [ajint] window
+** @param [r] sname [char*] sequence name
 ** @@
 ******************************************************************************/
 
@@ -252,12 +251,12 @@ static void charge_addgraph(AjPGraph graph, ajint limit, float *x,
 **
 ** Undocumented.
 **
-** @param [?] fp [AjPFile*] Undocumented
+** @param [u] fp [AjPFile] Undocumented
 ** @return [AjPFloat] Undocumented
 ** @@
 ******************************************************************************/
 
-static AjPFloat charge_read_amino(AjPFile* fp)
+static AjPFloat charge_read_amino(AjPFile fp)
 {
     AjPStr   line;
     AjPFloat chg = NULL;
@@ -269,7 +268,7 @@ static AjPFloat charge_read_amino(AjPFile* fp)
     chg  = ajFloatNew();
 
 
-    while(ajFileReadLine(*fp,&line))
+    while(ajFileReadLine(fp,&line))
     {
 	if(*ajStrStr(line)=='#' || !ajStrLen(line))
 	    continue;
@@ -279,7 +278,6 @@ static AjPFloat charge_read_amino(AjPFile* fp)
 	ajFloatPut(&chg,idx,v);
     }
 
-    ajFileClose(fp);
     ajStrDel(&line);
 
     return chg;

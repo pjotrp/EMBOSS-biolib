@@ -200,7 +200,7 @@ static void extractfeat_FeatSeqExtract(AjPSeq seq, AjPSeqout seqout,
         describeout = ajStrNew();
 
 
-	iter = ajListIter(featab->Features);
+	iter = ajListIterRead(featab->Features);
 	while(ajListIterMore(iter))
 	{
 	    gf = ajListIterNext(iter) ;
@@ -295,7 +295,7 @@ static void extractfeat_FeatSeqExtract(AjPSeq seq, AjPSeqout seqout,
 	    
 	    /* get 'type' name of feature */
 	    if(single || parent)
-	    	ajStrAss(&type, gf->Type);
+	    	ajStrAssS(&type, gf->Type);
 	    
 	    /*
 	    ** if single or parent, get 'before' + 'after' sequence
@@ -333,9 +333,9 @@ static void extractfeat_FeatSeqExtract(AjPSeq seq, AjPSeqout seqout,
 			ajStrLen(featseq));
             }
 	    else
-            	ajStrAss(&featseq, tmpseq);
+            	ajStrAssS(&featseq, tmpseq);
 	}
-	ajListIterFree(iter) ;
+	ajListIterFree(&iter) ;
 	
 	/*
 	** write out any previous sequence(s)
@@ -388,7 +388,7 @@ static void extractfeat_GetFeatseq(AjPSeq seq, AjPFeature gf, AjPStr
     if(!sense)
     	ajSeqReverseStr(&tmp);
 
-    ajStrAss(gfstr, tmp);
+    ajStrAssS(gfstr, tmp);
 
     ajStrDel(&tmp);
 
@@ -958,7 +958,7 @@ static AjBool extractfeat_MatchPatternTags(AjPFeature feat, AjPStr tpattern,
             break;
         }
     }
-    ajListIterFree(titer);
+    ajListIterFree(&titer);
 
     return val;
 }
@@ -1014,7 +1014,7 @@ static AjBool extractfeat_MatchPatternDescribe(AjPFeature feat,
             }
         }	
     }
-    ajListIterFree(titer);
+    ajListIterFree(&titer);
 
     if(val)
         ajStrAppC(strout, ") ");

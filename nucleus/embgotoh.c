@@ -9,8 +9,8 @@
 **  Journal of Molecular Biology 162:705-708
 **
 ** @author Copyright (C) 2003--2004 Damian Counsell
-** @version $Revision: 1.7 $
-** @modified $Date: 2004/05/05 16:38:47 $
+** @version $Revision: 1.8 $
+** @modified $Date: 2004/05/06 15:09:43 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -72,6 +72,7 @@ enum constant
 ** Default constructor for NUCLEUS Gotoh alignment table cell.
 **
 ** @return [AjPGotohCell] Pointer to an AjPGotohCell
+** @category new [AjPGotohCell] default constructor
 ** @@
 ******************************************************************************/
 
@@ -98,6 +99,8 @@ AjPGotohCell embGotohCellNew(void)
 ** @param [r] ajBoolIsIndel [AjBool] does cell correspond to an indel?
 **
 ** @return [AjPGotohCell] pointer to an initialized Gotoh cell
+** @category new [AjPGotohCell] constructor initializing values of
+**                attributes
 ** @@
 ******************************************************************************/
 
@@ -145,6 +148,7 @@ AjPGotohCell embGotohCellCreate(ajint ajIntRow, ajint ajIntColumn,
 ** @param  [w] pthis [AjPGotohCell*] Pointer to the Gotoh cell to be deleted.
 **         The pointer is always deleted.
 ** @return [void]
+** @category delete [AjPGotohCell] default destructor
 ** @@
 ******************************************************************************/
 
@@ -251,6 +255,8 @@ AjPGotohCell** embGotohCellGetArray(ajint ajIntDownSeqLen,
 ** @param [r] fGapPenalty [float] Gap penalty
 ** @param [r] fExtensionPenalty [float] Gap extension penalty
 ** @return [void]
+** @category use [AjPGotohCell] fill in alignment array of
+**                ajGotohCells
 ** @@
 ******************************************************************************/
 
@@ -452,6 +458,8 @@ void embGotohCellCalculateSumScore(AjPFloat2d ajpFloat2dPairScores,
 ** @param [r] ajpSeqAcross [AjPSeq] Sequence across
 ** @param [r] ajpListGotohCellsMaxScoringTrace [AjPList] Trace
 ** @return [ajint] length of alignment
+** @category use [AjPGotohCell] find highest scoring path through
+**                array of ajGotohCells
 ** @@
 ******************************************************************************/
 
@@ -761,7 +769,7 @@ ajint embGotohReadOffBacktrace(AjPList ajpListGotohCellsMaxScoringTrace,
   AjPStr strDownTrace = NULL;
   AjPStr strAcrossTrace = NULL;
 
-  ajListIterBacktrace = ajListIter(ajpListGotohCellsMaxScoringTrace);
+  ajListIterBacktrace = ajListIterRead(ajpListGotohCellsMaxScoringTrace);
 
   ajIntAlignment = 0;
 

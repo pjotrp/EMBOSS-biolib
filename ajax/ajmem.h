@@ -28,7 +28,7 @@ void *ajMemResize(void *ptr, ajlong nbytes,
 ajint *ajMemArrB (size_t size);
 ajint *ajMemArrI (size_t size);
 float *ajMemArrF (size_t size);
-void ajMemStat (char* title);
+void ajMemStat (const char* title);
 void ajMemExit (void);
 
 #define AJALLOC(nbytes) \

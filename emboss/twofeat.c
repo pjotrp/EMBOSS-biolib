@@ -339,7 +339,7 @@ static void twofeat_rippledown(AjPFeattable tabA, AjPFeattable tabB,
     if(tabA && tabA->Features)
     {
         /* For all features in tabA ... */
-    	iterA = ajListIter(tabA->Features);
+    	iterA = ajListIterRead(tabA->Features);
     	while(ajListIterMore(iterA))
     	{
     	    gfA = ajListIterNext(iterA);
@@ -349,7 +349,7 @@ static void twofeat_rippledown(AjPFeattable tabA, AjPFeattable tabB,
             /* For all features in tabB ... */
             if(tabB && tabB->Features) 
             {
-   	        iterB = ajListIter(tabB->Features);
+   	        iterB = ajListIterRead(tabB->Features);
                 while(ajListIterMore(iterB))
                 {
                     gfB = ajListIterNext(iterB);
@@ -366,10 +366,10 @@ static void twofeat_rippledown(AjPFeattable tabA, AjPFeattable tabB,
                         /* push details on hitlist */
                         ajListPush(hitlist, detail);
                 }
-                ajListIterFree(iterB);
+                ajListIterFree(&iterB);
             }
 	}
-	ajListIterFree(iterA);
+	ajListIterFree(&iterA);
     }
 
     /* Put hits in outtab */
@@ -414,10 +414,10 @@ static void twofeat_sort_hits(AjPList hitlist, AjBool twoout, AjPStr
 
     	
     ajStrAssC(&source,"twofeat");
-    ajStrAss(&type, typeout);
+    ajStrAssS(&type, typeout);
 
 
-    iter = ajListIter(hitlist);
+    iter = ajListIterRead(hitlist);
     while(ajListIterMore(iter))
     {
         detail = ajListIterNext(iter);
@@ -459,7 +459,7 @@ static void twofeat_sort_hits(AjPList hitlist, AjBool twoout, AjPStr
         /* delete hit */
         twofeat_HitsDel(&detail);
     }
-    ajListIterFree(iter);
+    ajListIterFree(&iter);
     
     return;
 }
@@ -506,7 +506,7 @@ static void twofeat_find_features(AjPSeq seq, AjPFeattable tab,
     /* For all features... */
     if(seqtab && seqtab->Features) 
     {
-    	iter = ajListIter(seqtab->Features);
+    	iter = ajListIterRead(seqtab->Features);
     	while(ajListIterMore(iter))
     	{
     	    gf = ajListIterNext(iter);
@@ -527,14 +527,13 @@ static void twofeat_find_features(AjPSeq seq, AjPFeattable tab,
 		**  gfcopy = ajFeatNew(tab, gf->Source, gf->Type, gf->Start,
 		** gf->End, gf->Score, gf->Strand, gf->Frame);
 		*/
-		gfcopy = NULL;	   /* force a new object to be made */
-		ajFeatCopy(&gfcopy, gf);
+		gfcopy = ajFeatCopy(gf);
 		ajFeattableAdd(tab, gfcopy);
 
 		/* ajFeatTrace(gfcopy); */
 	    }
 	}
-	ajListIterFree(iter);
+	ajListIterFree(&iter);
     }
 
     ajDebug("(In twofeat_find_features) No of hits in tab: %d\n",
@@ -664,7 +663,7 @@ static AjBool twofeat_MatchPatternTags(AjPFeature feat, AjPStr tpattern,
             break;
         }
     }
-    ajListIterFree(titer);
+    ajListIterFree(&titer);
     
     return val;
 }

@@ -55,13 +55,13 @@ void embDataListDel(AjPList data)
    AjIList iter;
    AjPTable table;
 
-   iter = ajListIter(data);
+   iter = ajListIterRead(data);
    while(ajListIterMore(iter))
    {
       table = ajListIterNext(iter);
       ajTableFree(&table);
    }
-   ajListIterFree(iter);
+   ajListIterFree(&iter);
    ajListFree(&data);
 
    return;
@@ -181,7 +181,7 @@ void embDataListRead(AjPList data, AjPFile pfile)
 	 /* check for end of data block*/
 	 if(! ajStrCmpC(key, endOfData))
 	     break;
-         iter = ajListIter(data);
+         iter = ajListIterRead(data);
          while(ajListIterMore(iter))
          {
             ptable = ajListIterNext(iter);
@@ -196,7 +196,7 @@ void embDataListRead(AjPList data, AjPFile pfile)
    ajStrDel(&tmp);
    ajStrDel(&line);
    ajStrTokenClear(&tokens);
-   ajListIterFree(iter);
+   ajListIterFree(&iter);
 
    return;
 }
@@ -232,7 +232,7 @@ void embDataListGetTables(AjPList fullList, AjPList returnList,
    AjIList iter;
    AjPTable table;
 
-   iter = ajListIter(fullList);
+   iter = ajListIterRead(fullList);
    while(ajListIterMore(iter))
    {
       table = ajListIterNext(iter);
@@ -240,7 +240,7 @@ void embDataListGetTables(AjPList fullList, AjPList returnList,
       required >>= 1;
    }
 
-   ajListIterFree(iter);
+   ajListIterFree(&iter);
 
    return;
 }
@@ -273,7 +273,7 @@ AjPTable embDataListGetTable(AjPList fullList, ajuint required)
    AjIList iter;
    AjPTable returnTable = NULL;
 
-   iter = ajListIter(fullList);
+   iter = ajListIterRead(fullList);
    while(ajListIterMore(iter))
    {
       returnTable = ajListIterNext(iter);
@@ -283,7 +283,7 @@ AjPTable embDataListGetTable(AjPList fullList, ajuint required)
    }
 
 
-   ajListIterFree(iter);
+   ajListIterFree(&iter);
 
    return returnTable;
 }

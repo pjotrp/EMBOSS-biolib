@@ -307,7 +307,7 @@ static void restover_printHits(AjPSeq seq, AjPStr seqcmp, AjPFile *outf,
 	{
 	    value=ajTableGet(table,m->cod);
 	    if(value)
-		ajStrAss(&m->cod,value);
+		ajStrAssS(&m->cod,value);
 	}
 
 	if(m->cut2 >= m->cut1)

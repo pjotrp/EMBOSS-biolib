@@ -71,8 +71,8 @@ AjPStr        ajAcdGetString (const char *token);
 AjBool        ajAcdGetToggle (const char *token);
 AjPPhyloTree* ajAcdGetTree (const char *token);
 AjPPhyloTree  ajAcdGetTreeI (const char *token, ajint num);
-AjStatus      ajAcdInit (const char *pgm, ajint argc, char *argv[]);
-AjStatus      ajAcdInitP (const char *pgm, ajint argc, char *argv[],
+AjStatus      ajAcdInit (const char *pgm, ajint argc, char * const argv[]);
+AjStatus      ajAcdInitP (const char *pgm, ajint argc, char * const argv[],
 			  const char *package);
 void          ajAcdPrintType (AjPFile outf, AjBool full);
 void          ajAcdPrintQual(AjPFile outf, AjBool full);

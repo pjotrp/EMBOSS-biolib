@@ -961,7 +961,7 @@ int main(ajint argc, char **argv)
 
                 /* Now checks entire sequence for residues lacking CA */
                 /* and corrects atom_idex aray accordingly            */
-		/*      iter = ajListIter(pdb->Chains[idn-1]->Atoms);           
+		/*      iter = ajListIterRead(pdb->Chains[idn-1]->Atoms);           
 			atom = (AjPAtom)ajListIterNext(iter);
 			ajStrAss(&tempres, atom->Id3);
 			if(ajStrMatchC(atom->Atm, "CA"))
@@ -987,7 +987,7 @@ int main(ajint argc, char **argv)
 			noca[x]=ajTrue;
 			}               
 			
-			ajListIterFree(iter);
+			ajListIterFree(&iter);
 			*/
 
                 /* Make noca ajFalse to keep following */

@@ -566,8 +566,8 @@ int main(int argc, char **argv)
 ** @param [r] fields [AjPStr*] Field names to be indexed
 ** @param [w] maxFieldLen [ajint*] Maximum token length for each field
 ** @param [w] maxidlen [ajint*] Maximum entry ID length
-** @param [r] elistfile [AjPFile] entry file
-** @param [r] alistfile [AjPFile*] field data files array
+** @param [u] elistfile [AjPFile] entry file
+** @param [u] alistfile [AjPFile*] field data files array
 ** @return [EmbPEntry] Entry data object.
 ** @@
 ******************************************************************************/
@@ -965,7 +965,7 @@ static AjBool dbiblast_blastopenlib(AjPStr name, AjBool usesrc,
 ** Parses an NCBI style header from the BLAST header table.
 **
 ** @param [r] line [AjPStr] Input line
-** @param [w] alistfile [AjPFile*] List of field temporary files
+** @param [u] alistfile [AjPFile*] List of field temporary files
 ** @param [r] systemsort [AjBool] If ajTrue, use the system sort utility,
 **                                else sort in memory
 ** @param [w] fields [AjPStr*] Field names
@@ -1125,7 +1125,7 @@ static AjBool dbiblast_parseNcbi(AjPStr line, AjPFile* alistfile,
 ** Parses a GCG style header from the BLAST header table.
 **
 ** @param [r] line [AjPStr] Input line
-** @param [r] alistfile [AjPFile*] field data files array
+** @param [u] alistfile [AjPFile*] field data files array
 ** @param [r] systemsort [AjBool] If ajTrue use system sort, else internal sort
 ** @param [r] fields [AjPStr*] Field names to be indexed
 ** @param [r] db [PBlastDb] Database object
@@ -1215,7 +1215,7 @@ static AjBool dbiblast_parseGcg(AjPStr line, AjPFile* alistfile,
 ** Parses a plain header from the BLAST header table.
 **
 ** @param [r] line [AjPStr] Input line
-** @param [r] alistfile [AjPFile*] field data files array
+** @param [u] alistfile [AjPFile*] field data files array
 ** @param [r] systemsort [AjBool] If ajTrue use system sort, else internal sort
 ** @param [r] fields [AjPStr*] Field names to be indexed
 ** @param [r] db [PBlastDb] Database object
@@ -1304,7 +1304,7 @@ static AjBool dbiblast_parseSimple(AjPStr line, AjPFile* alistfile,
 ** Parses a simple FASTA ID from the BLAST header table.
 **
 ** @param [r] line [AjPStr] Input line
-** @param [r] alistfile [AjPFile*] field data files array
+** @param [u] alistfile [AjPFile*] field data files array
 ** @param [r] systemsort [AjBool] If ajTrue use system sort, else internal sort
 ** @param [r] fields [AjPStr*] Field names to be indexed
 ** @param [r] db [PBlastDb] Database object
@@ -1378,7 +1378,7 @@ static AjBool dbiblast_parseId(AjPStr line, AjPFile* alistfile,
 ** Parses an unknown type ID from the BLAST header table.
 **
 ** @param [r] line [AjPStr] Input line
-** @param [r] alistfile [AjPFile*] field data files array
+** @param [u] alistfile [AjPFile*] field data files array
 ** @param [r] systemsort [AjBool] If ajTrue use system sort, else internal sort
 ** @param [r] fields [AjPStr*] Field names to be indexed
 ** @param [r] db [PBlastDb] Database object

@@ -162,7 +162,7 @@ AjBool embPdbidToSp(AjPStr pdb, AjPStr *spr, AjPList list)
     }
 
 
-    if( (idx = ajPdbtospArrFindPdbid(pdb, arr, dim))==-1)
+    if( (idx = ajPdbtospArrFindPdbid(arr, dim, pdb))==-1)
 	return ajFalse;
     else
     {
@@ -212,7 +212,7 @@ AjBool embPdbidToAcc(AjPStr pdb, AjPStr *acc, AjPList list)
     }
 
 
-    if( (idx = ajPdbtospArrFindPdbid(pdb, arr, dim))==-1)
+    if( (idx = ajPdbtospArrFindPdbid(arr, dim, pdb))==-1)
     {
 	AJFREE(arr);
 	return ajFalse;
@@ -236,7 +236,7 @@ AjBool embPdbidToAcc(AjPStr pdb, AjPStr *acc, AjPList list)
 ** contains.  The domain data is taken from a list of scop objects.
 **
 ** @param [r] pdb             [AjPPdb]   Pointer to pdb object
-** @param [r] list_allscop    [AjPList]  Pointer to SCOP list of SCOP 
+** @param [r] list_allscop    [const AjPList]  Pointer to SCOP list of SCOP 
 **                                       classification objects  
 ** @param [w] list_pdbscopids [AjPList*] Pointer to list of scop domain ids
 **                                       in the current pdb object
@@ -245,7 +245,7 @@ AjBool embPdbidToAcc(AjPStr pdb, AjPStr *acc, AjPList list)
 ** @@
 ****************************************************************************/
 
-AjBool embPdbidToScop(AjPPdb pdb, AjPList list_allscop,
+AjBool embPdbidToScop(AjPPdb pdb, const AjPList list_allscop,
 		      AjPList *list_pdbscopids)
 {
   
@@ -255,7 +255,7 @@ AjBool embPdbidToScop(AjPPdb pdb, AjPList list_allscop,
     AjPStr tmpDomId = NULL;
     ajint found     = 0;
 
-    iter=ajListIter(list_allscop);
+    iter=ajListIterRead(list_allscop);
 
 
     while((ptr=(AjPScop)ajListIterNext(iter)))
@@ -272,7 +272,7 @@ AjBool embPdbidToScop(AjPPdb pdb, AjPList list_allscop,
 	    found = 1;
 	}
     }
-    ajListIterFree(iter);
+    ajListIterFree(&iter);
     ajStrDel(&tmpPdbId);
     ajStrDel(&tmpDomId);
   
@@ -472,7 +472,7 @@ AjBool embPdbToIdx(ajint *idx, AjPPdb pdb, AjPStr res, ajint chn)
     
 
     /* Initialise the iterator */
-    iter=ajListIter(pdb->Chains[chn-1]->Atoms);
+    iter=ajListIterRead(pdb->Chains[chn-1]->Atoms);
 
 
     /* Iterate through the list of atoms */
@@ -494,14 +494,14 @@ AjBool embPdbToIdx(ajint *idx, AjPPdb pdb, AjPStr res, ajint chn)
 	/* If we have found the residue */
 	if(ajStrMatch(res, atm->Pdb))
 	{
-	    ajListIterFree(iter);		
+	    ajListIterFree(&iter);		
 	    *idx = atm->Idx;
 	    return ajTrue;
 	}
     }
         
     ajWarn("Residue number not found in embPdbToIdx");
-    ajListIterFree(iter);		
+    ajListIterFree(&iter);		
 
     return ajFalse;
 }
@@ -598,7 +598,7 @@ AjBool embPdbListHeterogens(AjPPdb pdb, AjPList *list_heterogens,
       {
 	  prev_gpn=-100000;	   /* Reset prev_gpn for each chain */
 	  /* initialise iterator for pdb->Chains[i]->Atoms */
-	  iter=ajListIter(pdb->Chains[i]->Atoms);
+	  iter=ajListIterRead(pdb->Chains[i]->Atoms);
 	  /* Iterate through list of Atom objects */
 	  while((hetat=(AjPAtom)ajListIterNext(iter)))
 	  {		
@@ -627,7 +627,7 @@ AjBool embPdbListHeterogens(AjPPdb pdb, AjPList *list_heterogens,
 	  } /* End of list iteration loop */
 
 	  /* Free list iterator */
-	  ajListIterFree(iter);
+	  ajListIterFree(&iter);
 	    
       } /* End of chain for loop */
 
@@ -692,7 +692,7 @@ AjBool embPdbAtomIndexI(AjPPdb pdb, ajint chn, AjPInt *idx)
     
 
     /* Initialise the iterator */
-    iter=ajListIter(pdb->Chains[chn-1]->Atoms);
+    iter=ajListIterRead(pdb->Chains[chn-1]->Atoms);
 
 
     /* Iterate through the list of atoms */
@@ -722,11 +722,11 @@ AjBool embPdbAtomIndexI(AjPPdb pdb, ajint chn, AjPInt *idx)
     if(resn==0)
     {
 	ajWarn("Chain not found in embPdbAtomIndexI");
-	ajListIterFree(iter);		
+	ajListIterFree(&iter);		
 	return ajFalse;
     }
     	
-    ajListIterFree(iter);		
+    ajListIterFree(&iter);		
 
     return ajTrue;
 }
@@ -808,7 +808,7 @@ AjBool embPdbAtomIndexICA(AjPPdb pdb, ajint chn, AjPInt *idx, ajint *nres)
     
 
     /* Initialise the iterator */
-    iter=ajListIter(pdb->Chains[chn-1]->Atoms);
+    iter=ajListIterRead(pdb->Chains[chn-1]->Atoms);
 
 
     /* Iterate through the list of atoms */
@@ -839,13 +839,13 @@ AjBool embPdbAtomIndexICA(AjPPdb pdb, ajint chn, AjPInt *idx, ajint *nres)
     if(resn==0)
     {
 	ajWarn("Chain not found in embPdbAtomIndexICA");
-	ajListIterFree(iter);		
+	ajListIterFree(&iter);		
 	return ajFalse;
     }
     	
     *nres=resn;
     
-    ajListIterFree(iter);		
+    ajListIterFree(&iter);		
 
     return ajTrue;
 }

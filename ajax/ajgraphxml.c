@@ -100,8 +100,8 @@ static void 	xml_SetCurrentScene(AjPGraphXml file, AjPXmlNode node);
 static void 	xml_ClearFile(AjPGraphXml file);
 static void 	xml_UnrefNode(AjPXmlNode node);
 
-static void     xml_clear_nodeTypes(const void *key, void **value, void *cl);
-static void     xml_deltablenode(const void *key, void **value, void *cl);
+static void     xml_clear_nodeTypes(const void **key, void **value, void *cl);
+static void     xml_deltablenode(const void **key, void **value, void *cl);
 
 
 
@@ -187,7 +187,7 @@ void ajXmlFileDel(AjPGraphXml *thys)
 
     if((*thys)->nodeTypes)
     {
-	ajTableMap((*thys)->nodeTypes,xml_clear_nodeTypes,NULL);
+	ajTableMapDel((*thys)->nodeTypes,xml_clear_nodeTypes,NULL);
 	ajTableFree(&(*thys)->nodeTypes);
     }
 
@@ -4594,7 +4594,7 @@ static int xml_GetLastInt(AjPStr str)
     int value;
     AjPStr token = NULL;
 
-    count = ajStrTokenCount(&str, " ");
+    count = ajStrTokenCount(str, " ");
     token = ajStrTok(str);
 
     for(i = count - 1; i >= 1; --i)
@@ -4635,7 +4635,7 @@ static double xml_GetLastDouble(AjPStr str)
     double value;
     AjPStr token = NULL;
 
-    count = ajStrTokenCount(&str, " ");
+    count = ajStrTokenCount(str, " ");
     token = ajStrTok(str);
 
     for(i = count - 1; i >= 1; --i)
@@ -4674,7 +4674,7 @@ static double xml_GetDoubleNo(AjPStr str, int index)
     double value;
     AjPStr token = NULL;
 
-    count = ajStrTokenCount(&str, " ");
+    count = ajStrTokenCount(str, " ");
     token = ajStrTok(str);
 
     if(index>count)
@@ -5371,7 +5371,7 @@ void xml_Unused()
 **
 ** Clear primary table allocation for colourtable
 **
-** @param [r] key [const void*] Standard argument, table key.
+** @param [r] key [const void**] Standard argument, table key.
 ** @param [r] value [void**] Standard argument, table data item.
 ** @param [r] cl [void*] Standard argument, usually NULL
 **
@@ -5379,15 +5379,18 @@ void xml_Unused()
 ** @@
 *********************************************************************/
 
-static void xml_clear_nodeTypes(const void *key, void **value, void *cl)
+static void xml_clear_nodeTypes(const void **key, void **value, void *cl)
 {
     AjPTable table = (AjPTable) *value;
-    AjPStr skey = (AjPStr) key;
+    AjPStr skey = (AjPStr) *key;
     
     ajStrDel(&skey);
-    ajTableMap(table,xml_deltablenode,NULL);
+    ajTableMapDel(table,xml_deltablenode,NULL);
 
     ajTableFree(&table);
+
+    *key = NULL;
+    *value = NULL;
 
     return;
 }
@@ -5399,7 +5402,7 @@ static void xml_clear_nodeTypes(const void *key, void **value, void *cl)
 **
 ** Clear secondary (XmlNode) table allocation for colourtable subtables
 **
-** @param [r] key [const void*] Standard argument, table key.
+** @param [r] key [void**] Standard argument, table key.
 ** @param [r] value [void**] Standard argument, table data item.
 ** @param [r] cl [void*] Standard argument, usually NULL
 **
@@ -5407,16 +5410,19 @@ static void xml_clear_nodeTypes(const void *key, void **value, void *cl)
 ** @@
 *********************************************************************/
 
-static void xml_deltablenode(const void *key, void **value, void *cl)
+static void xml_deltablenode(const void **key, void **value, void *cl)
 {
     AjPXmlNode node;
     AjPStr skey;
 
     node = (AjPXmlNode) *value;
-    skey = (AjPStr) key;
+    skey = (AjPStr) *key;
 
     ajStrDel(&skey);
     ajXmlNodeDel(&node);
+
+    *key = NULL;
+    *value = NULL;
 
     return;
 }

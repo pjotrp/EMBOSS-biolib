@@ -185,17 +185,17 @@ int main(int argc, char **argv)
 **
 ** Undocumented.
 **
-** @param [?] substr [AjPStr*] Undocumented
-** @param [?] begin [ajint] Undocumented
-** @param [?] len [ajint] Undocumented
-** @param [?] window [ajint] Undocumented
-** @param [?] shift [ajint] Undocumented
-** @param [?] obsexp [float*] Undocumented
-** @param [?] xypc [float*] Undocumented
-** @param [?] bases [AjPStr*] Undocumented
-** @param [?] obsexpmax [float*] Undocumented
-** @param [?] plstart [ajint*] Undocumented
-** @param [?] plend [ajint*] Undocumented
+** @param [r] substr [AjPStr*] Undocumented
+** @param [r] begin [ajint] Undocumented
+** @param [r] len [ajint] Undocumented
+** @param [r] window [ajint] Undocumented
+** @param [r] shift [ajint] Undocumented
+** @param [r] obsexp [float*] Undocumented
+** @param [r] xypc [float*] Undocumented
+** @param [r] bases [AjPStr*] Undocumented
+** @param [r] obsexpmax [float*] Undocumented
+** @param [r] plstart [ajint*] Undocumented
+** @param [r] plend [ajint*] Undocumented
 ** @@
 ******************************************************************************/
 
@@ -255,12 +255,12 @@ static void cpgplot_findbases(AjPStr *substr, ajint begin, ajint len,
 **
 ** Undocumented.
 **
-** @param [?] seq [char*] Undocumented
-** @param [?] bases [char*] Undocumented
-** @param [?] window [ajint] Undocumented
-** @param [?] cx [float*] Undocumented
-** @param [?] cy [float*] Undocumented
-** @param [?] cxpy [float*] Undocumented
+** @param [r] seq [char*] Undocumented
+** @param [r] bases [char*] Undocumented
+** @param [r] window [ajint] Undocumented
+** @param [r] cx [float*] Undocumented
+** @param [r] cy [float*] Undocumented
+** @param [r] cxpy [float*] Undocumented
 ** @@
 ******************************************************************************/
 
@@ -321,19 +321,19 @@ static void cpgplot_countbases(char *seq, char *bases, ajint window,
 **    % composition is over 50% and the calculated Obs/Exp ratio is over 0.6
 **    and the conditions hold for a minimum of 200 bases.
 **
-** @param [?] outf [AjPFile] Undocumented
-** @param [?] obsexp [float*] Undocumented
-** @param [?] xypc [float*] Undocumented
-** @param [?] thresh [AjBool*] Undocumented
-** @param [?] begin [ajint] Undocumented
-** @param [?] len [ajint] Undocumented
-** @param [?] shift [ajint] Undocumented
-** @param [?] bases [char*] Undocumented
-** @param [?] name [char*] Undocumented
-** @param [?] minlen [ajint] Undocumented
-** @param [?] minobsexp [float] Undocumented
-** @param [?] minpc [float] Undocumented
-** @param [?] featout [AjPFeattabOut] Undocumented
+** @param [u] outf [AjPFile] Undocumented
+** @param [r] obsexp [float*] Undocumented
+** @param [r] xypc [float*] Undocumented
+** @param [r] thresh [AjBool*] Undocumented
+** @param [r] begin [ajint] Undocumented
+** @param [r] len [ajint] Undocumented
+** @param [r] shift [ajint] Undocumented
+** @param [r] bases [char*] Undocumented
+** @param [r] name [char*] Undocumented
+** @param [r] minlen [ajint] Undocumented
+** @param [r] minobsexp [float] Undocumented
+** @param [r] minpc [float] Undocumented
+** @param [r] featout [AjPFeattabOut] Undocumented
 ** @@
 ******************************************************************************/
 
@@ -411,15 +411,15 @@ static void cpgplot_identify(AjPFile outf, float *obsexp, float *xypc,
 **
 ** Undocumented.
 **
-** @param [?] outf [AjPFile] Undocumented
-** @param [?] thresh [AjBool*] Undocumented
-** @param [?] bases [char*] Undocumented
-** @param [?] name [char*] Undocumented
-** @param [?] minobsexp [float] Undocumented
-** @param [?] minpc [float] Undocumented
-** @param [?] minlen [ajint] Undocumented
-** @param [?] begin [ajint] Undocumented
-** @param [?] len [ajint] Undocumented
+** @param [u] outf [AjPFile] Undocumented
+** @param [r] thresh [AjBool*] Undocumented
+** @param [r] bases [char*] Undocumented
+** @param [r] name [char*] Undocumented
+** @param [r] minobsexp [float] Undocumented
+** @param [r] minpc [float] Undocumented
+** @param [r] minlen [ajint] Undocumented
+** @param [r] begin [ajint] Undocumented
+** @param [r] len [ajint] Undocumented
 ** @@
 ******************************************************************************/
 
@@ -482,21 +482,21 @@ static void cpgplot_reportislands(AjPFile outf, AjBool *thresh, char *bases,
 **
 ** Undocumented.
 **
-** @param [?] seq [char*] Undocumented
-** @param [?] begin [ajint] Undocumented
-** @param [?] len [ajint] Undocumented
-** @param [?] shift [ajint] Undocumented
-** @param [?] obsexp [float*] Undocumented
-** @param [?] xypc [float*] Undocumented
-** @param [?] thresh [AjBool*] Undocumented
-** @param [?] bases [char*] Undocumented
-** @param [?] obsexpmax [float] Undocumented
-** @param [?] plstart [ajint] Undocumented
-** @param [?] plend [ajint] Undocumented
-** @param [?] doobsexp [AjBool] Undocumented
-** @param [?] docg [AjBool] Undocumented
-** @param [?] dopc [AjBool] Undocumented
-** @param [?] graphs [AjPGraph] Undocumented
+** @param [r] seq [char*] Undocumented
+** @param [r] begin [ajint] Undocumented
+** @param [r] len [ajint] Undocumented
+** @param [r] shift [ajint] Undocumented
+** @param [r] obsexp [float*] Undocumented
+** @param [r] xypc [float*] Undocumented
+** @param [r] thresh [AjBool*] Undocumented
+** @param [r] bases [char*] Undocumented
+** @param [r] obsexpmax [float] Undocumented
+** @param [r] plstart [ajint] Undocumented
+** @param [r] plend [ajint] Undocumented
+** @param [r] doobsexp [AjBool] Undocumented
+** @param [r] docg [AjBool] Undocumented
+** @param [r] dopc [AjBool] Undocumented
+** @param [r] graphs [AjPGraph] Undocumented
 ** @@
 ******************************************************************************/
 
@@ -641,11 +641,11 @@ static void cpgplot_plotit(char *seq, ajint begin, ajint len, ajint shift,
 **
 ** Undocumented.
 **
-** @param [?] featout [AjPFeattabOut] Undocumented
-** @param [?] thresh [AjBool*] Undocumented
-** @param [?] seqname [char*] Undocumented
-** @param [?] begin [ajint] Undocumented
-** @param [?] len [ajint] Undocumented
+** @param [r] featout [AjPFeattabOut] Undocumented
+** @param [r] thresh [AjBool*] Undocumented
+** @param [r] seqname [char*] Undocumented
+** @param [r] begin [ajint] Undocumented
+** @param [r] len [ajint] Undocumented
 ** @@
 ******************************************************************************/
 

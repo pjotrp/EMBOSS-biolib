@@ -46,9 +46,6 @@ AjOError AjErrorLevel =
 
 AjPTable errorTable = 0;
 
-static jmp_buf *errorJmpBuf = 0;
-static jmp_buf *crashJmpBuf = 0;
-
 static ajint errorCount = 0;
 
 static char *messErrorFile;
@@ -75,7 +72,7 @@ static char* messGetFilename(const char *path);
 ** Includes filename and line number in the source code that invokes it.
 ** Newline is added automatically at the end of the format string.
 **
-** @param [r] format [char*] Format
+** @param [r] format [const char*] Format
 ** @param [v] [...] Variable length argument list
 ** @return [void]
 ** @@
@@ -87,7 +84,7 @@ static char* messGetFilename(const char *path);
 ** Includes filename and line number in the source code that invokes it.
 ** Newline is added automatically at the end of the format string.
 **
-** @param [r] format [char*] Format
+** @param [r] format [const char*] Format
 ** @param [v] [...] Variable length argument list
 ** @return [void]
 ** @@
@@ -232,7 +229,7 @@ static AjMessOutRoutine	 warningRoutine = 0;
 **
 ** Sets a function to process beeps
 **
-** @param [r] func [AjMessVoidRoutine] Function to be registered
+** @param [f] func [AjMessVoidRoutine] Function to be registered
 ** @return [AjMessVoidRoutine] Previously defined function
 ** @@
 ******************************************************************************/
@@ -254,7 +251,7 @@ AjMessVoidRoutine ajMessRegBeep(AjMessVoidRoutine func)
 **
 ** Sets a function to write messages
 **
-** @param [r] func [AjMessOutRoutine] Function to be registered
+** @param [f] func [AjMessOutRoutine] Function to be registered
 ** @return [AjMessOutRoutine] Previously defined function
 ** @@
 ******************************************************************************/
@@ -276,7 +273,7 @@ AjMessOutRoutine ajMessRegOut(AjMessOutRoutine func)
 **
 ** Sets a function to dump data
 **
-** @param [r] func [AjMessOutRoutine] Function to be registered
+** @param [f] func [AjMessOutRoutine] Function to be registered
 ** @return [AjMessOutRoutine] Previously defined function
 ** @@
 ******************************************************************************/
@@ -298,7 +295,7 @@ AjMessOutRoutine ajMessRegDump(AjMessOutRoutine func)
 **
 ** Sets a function to report errors
 **
-** @param [r] func [AjMessOutRoutine] Function to be registered
+** @param [f] func [AjMessOutRoutine] Function to be registered
 ** @return [AjMessOutRoutine] Previously defined function
 ** @@
 ******************************************************************************/
@@ -320,7 +317,7 @@ AjMessOutRoutine ajMessRegErr(AjMessOutRoutine func)
 **
 ** Sets a function to exit
 **
-** @param [r] func [AjMessOutRoutine] Function to be registered
+** @param [f] func [AjMessOutRoutine] Function to be registered
 ** @return [AjMessOutRoutine] Previously defined function
 ** @@
 ******************************************************************************/
@@ -341,7 +338,7 @@ AjMessOutRoutine ajMessRegExit(AjMessOutRoutine func)
 **
 ** Sets a function to crash
 **
-** @param [r] func [AjMessOutRoutine] Function to be registered
+** @param [f] func [AjMessOutRoutine] Function to be registered
 ** @return [AjMessOutRoutine] Previously defined function
 ** @@
 ******************************************************************************/
@@ -363,7 +360,7 @@ AjMessOutRoutine ajMessRegCrash(AjMessOutRoutine func)
 **
 ** Sets a function to print warnings
 **
-** @param [r] func [AjMessOutRoutine] Function to be registered
+** @param [f] func [AjMessOutRoutine] Function to be registered
 ** @return [AjMessOutRoutine] Previously defined function
 ** @@
 ******************************************************************************/
@@ -588,9 +585,6 @@ void ajErr(const char *format, ...)
     {
 	AJAXFORMATSTRING(args, format, mesg_buf, prefix);
 
-	if(errorJmpBuf) /* throw back up to the function that registered it */
-	    longjmp(*errorJmpBuf, 1);
-
 	messDump(mesg_buf);
 
 	if(errorRoutine)
@@ -628,9 +622,6 @@ void ajVErr(const char *format, va_list args)
     ++errorCount;
 
     AJAXVFORMATSTRING(args, format, mesg_buf, prefix);
-
-    if(errorJmpBuf) /* throw back up to the function that registered it */
-	longjmp(*errorJmpBuf, 1);
 
     messDump(mesg_buf);
 
@@ -674,9 +665,6 @@ void ajDie(const char *format, ...)
     {
 	AJAXFORMATSTRING(args, format, mesg_buf, prefix);
 
-	if(errorJmpBuf) /* throw back up to the function that registered it */
-	    longjmp(*errorJmpBuf, 1);
-
 	messDump(mesg_buf);
 
 	if(errorRoutine)
@@ -719,9 +707,6 @@ void ajVDie(const char *format, va_list args)
 
     AJAXVFORMATSTRING(args, format, mesg_buf, prefix);
 
-    if(errorJmpBuf) /* throw back up to the function that registered it */
-	longjmp(*errorJmpBuf, 1);
-
     messDump(mesg_buf);
 
     if(errorRoutine)
@@ -758,9 +743,6 @@ void ajWarn(const char *format, ...)
     {
 	AJAXFORMATSTRING(args, format, mesg_buf, prefix);
 
-	if(errorJmpBuf) /* throw back up to the function that registered it */
-	    longjmp(*errorJmpBuf, 1);
-
 	messDump(mesg_buf);
 
 	if(warningRoutine)
@@ -794,9 +776,6 @@ void ajVWarn(const char *format, va_list args)
     char *mesg_buf = NULL;
 
     AJAXVFORMATSTRING(args, format, mesg_buf, prefix);
-
-    if(errorJmpBuf) /* throw back up to the function that registered it */
-	longjmp(*errorJmpBuf, 1);
 
     messDump(mesg_buf);
 
@@ -900,11 +879,6 @@ void ajMessCrashFL(const char *format, ...)
     {
 	AJAXFORMATSTRING(args, format, mesg_buf, prefix);
 
-
-	if(crashJmpBuf) /* throw back up to the function that registered it */
-	    longjmp(*crashJmpBuf, 1);
-
-
 	messDump(mesg_buf);
 
 	if(crashRoutine)
@@ -966,11 +940,6 @@ void ajMessVCrashFL(const char *format, va_list args)
     
     AJAXVFORMATSTRING(args, format, mesg_buf, prefix);
     
-    
-    if(crashJmpBuf)	/* throw back up to the function that registered it */
-	longjmp(*crashJmpBuf, 1);
-    
-    
     messDump(mesg_buf);
     
     if(crashRoutine)
@@ -984,57 +953,6 @@ void ajMessVCrashFL(const char *format, va_list args)
 
     return;
 }
-
-
-/* @func ajMessCatchError *****************************************************
-**
-** Redirects error call
-**
-** If a setjmp() stack context is set using ajMessCatchError() then rather
-** than exiting or giving an error message, ajErr() will
-** longjmp() back to the context.
-**
-** @param [r] fnew [jmp_buf*] Jump buffer new
-** @return [jmp_buf*] Jump buffer old
-** @@
-******************************************************************************/
-
-jmp_buf* ajMessCatchError(jmp_buf* fnew)
-{
-    jmp_buf* old;
-
-    old = errorJmpBuf;
-    errorJmpBuf = fnew;
-
-    return old;
-}
-
-
-
-
-/* @func ajMessCatchCrash *****************************************************
-**
-** Redirects crash call
-**
-** If a setjmp() stack context is set using ajMessCatchCrash() then rather
-** than exiting or giving an error message, ajMessCrash() will
-** longjmp() back to the context.
-**
-** @param [r] fnew [jmp_buf*] Jump buffer new
-** @return [jmp_buf*] Jump buffer old
-** @@
-******************************************************************************/
-
-jmp_buf* ajMessCatchCrash(jmp_buf* fnew)
-{
-    jmp_buf* old;
-
-    old = crashJmpBuf;
-    crashJmpBuf = fnew;
-
-    return old;
-}
-
 
 
 
@@ -1119,7 +1037,7 @@ char* ajMessSysErrorText(void)
 **                                 (vsprintf returns number of bytes written
 **                                  _minus_ terminating NULL)
 **
-** @param [r] args [va_list] Variable length argument list
+** @param [v] args [va_list] Variable length argument list
 ** @param [r] format [const char*] Format string
 ** @param [r] prefix [const char*] Message prefix
 ** @return [char*] Formatted message text

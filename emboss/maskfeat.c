@@ -111,13 +111,13 @@ static void maskfeat_FeatSeqMask(AjPSeq seq, AjPStr type,
     /* get the feature table of the sequence */
     feat = ajSeqGetFeat(seq);
 
-    ajStrAss(&str, ajSeqStr(seq));
+    ajStrAssS(&str, ajSeqStr(seq));
 
     /* For all features... */
 
     if(feat && feat->Features)
     {
-	iter = ajListIter(feat->Features) ;
+	iter = ajListIterRead(feat->Features) ;
 	while(ajListIterMore(iter))
 	{
 	    gf = ajListIterNext(iter) ;
@@ -135,7 +135,7 @@ static void maskfeat_FeatSeqMask(AjPSeq seq, AjPStr type,
 	    ajStrTokenClear( &tokens);
 	    ajStrDel(&key);
 	}
-	ajListIterFree(iter);
+	ajListIterFree(&iter);
     }
 
     ajSeqReplace(seq, str);

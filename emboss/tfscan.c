@@ -27,7 +27,7 @@
 
 
 
-static void tfscan_print_hits(AjPStr name, AjPList *l, ajint hits,
+static void tfscan_print_hits(const AjPStr name, AjPList *l, ajint hits,
 			      AjPFile outf, ajint begin, ajint end,
 			      AjPTable t, AjPSeq seq, ajint minlength,
 			      AjPTable btable);
@@ -199,10 +199,10 @@ int main(int argc, char **argv)
 **
 ** Print matches to transcription factor sites
 **
-** @param [r] name [AjPStr] name of test sequence
+** @param [r] name [const AjPStr] name of test sequence
 ** @param [w] l [AjPList*] list of hits
 ** @param [r] hits [ajint] number of hits
-** @param [w] outf [AjPFile] output file
+** @param [u] outf [AjPFile] output file
 ** @param [r] begin [ajint] sequence start
 ** @param [r] end [ajint] sequence end
 ** @param [r] t [AjPTable] table of accession numbers
@@ -212,7 +212,7 @@ int main(int argc, char **argv)
 ** @@
 ******************************************************************************/
 
-static void tfscan_print_hits(AjPStr name, AjPList *l,
+static void tfscan_print_hits(const AjPStr name, AjPList *l,
 			      ajint hits, AjPFile outf,
 			      ajint begin, ajint end, AjPTable t,
 			      AjPSeq seq, ajint minlength, AjPTable btable)
