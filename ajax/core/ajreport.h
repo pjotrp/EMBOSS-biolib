@@ -56,10 +56,10 @@ ajint        ajReportLists (AjPReport thys, AjPStr** types, AjPStr** names,
 AjPReport    ajReportNew (void);
 AjPStr       ajReportSeqName (AjPReport thys, AjPSeq seq);
 void         ajReportSetHeader (AjPReport thys, AjPStr header);
-void         ajReportSetHeaderC (AjPReport thys, char* header);
+void         ajReportSetHeaderC (AjPReport thys, const char* header);
 AjBool       ajReportSetTags (AjPReport thys, AjPStr taglist, ajint mintags);
 void         ajReportSetTail (AjPReport thys, AjPStr tail);
-void         ajReportSetTailC (AjPReport thys, char* tail);
+void         ajReportSetTailC (AjPReport thys, const char* tail);
 void         ajReportSetType (AjPReport thys, AjPFeattable ftable, AjPSeq seq);
 void         ajReportWriteTail (AjPReport thys, AjPFeattable ftable,
 				AjPSeq seq);

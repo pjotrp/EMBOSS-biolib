@@ -1231,6 +1231,13 @@ static void reportWriteSrsFlags (AjPReport thys,
     ilen = iend - istart + 1;
     score = feature->Score;
     ajStrAssSub(&subseq, ajSeqStr(seq), istart-1, iend-1);
+
+    /* blank line before each feature */
+    /* don't write at the end, because tail always starts with a blank line */
+
+    if (ift)
+      ajFmtPrintF (outf, "\n");
+
     ift++;
 
     ajFmtPrintF (outf, "Feature: %d\n", ift);
@@ -1255,7 +1262,6 @@ static void reportWriteSrsFlags (AjPReport thys,
 	ajFmtPrintF (outf, "%S: .\n", tagprints[j]); /* missing value '.' for now */
       }
     }
-    ajFmtPrintF (outf, "\n");
   }
 
   ajReportWriteTail (thys, ftable, seq);
@@ -1895,10 +1901,10 @@ void ajReportWriteTail (AjPReport thys, AjPFeattable ftable, AjPSeq seq) {
   }
 
   if (!doSingle || thys->Multi) {
-    ajFmtPrintF (outf, "#---------------------------------------\n\n");
+    ajFmtPrintF (outf, "#---------------------------------------\n");
   }
   else {
-    ajFmtPrintF (outf, "########################################\n\n");
+    ajFmtPrintF (outf, "########################################\n");
   }
 
   return;
@@ -1926,12 +1932,12 @@ void ajReportSetHeader (AjPReport thys, AjPStr header) {
 ** Defines a feature report header
 **
 ** @param [R] thys [AjPReport] Report object
-** @param [R] header [char*] Report header with embedded newlines
+** @param [R] header [const char*] Report header with embedded newlines
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajReportSetHeaderC (AjPReport thys, char* header) {
+void ajReportSetHeaderC (AjPReport thys, const char* header) {
 
   ajStrAssC (&thys->Header, header);
 
@@ -1960,12 +1966,12 @@ void ajReportSetTail (AjPReport thys, AjPStr tail) {
 ** Defines a feature report tail
 **
 ** @param [R] thys [AjPReport] Report object
-** @param [R] tail [char*] Report tail with embedded newlines
+** @param [R] tail [const char*] Report tail with embedded newlines
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajReportSetTailC (AjPReport thys, char* tail) {
+void ajReportSetTailC (AjPReport thys, const char* tail) {
 
   ajStrAssC (&thys->Tail, tail);
 
