@@ -325,12 +325,13 @@ foreach $dir (@dirs) {
 # intercalate prompts and answers
     @pr = ();
     foreach $line (@prompts) {
-        push @pr, split /([^\s]: )/, $line;
+        push @pr, split /([^\s]+: )/, $line;
     }
     foreach $line (@pr) {
         $USAGE .= qq|$line|;
 # change ':'s in warning messages so that they don't look like prompts
 # although if we get a warning, things are probably going badly wrong anyway
+#print "prompt=$line\n";
         $line =~ s/Warning:/Warning :/;
         $line =~ s/Error:/Error :/;
         $line =~ s/Fatal:/Fatal :/;
@@ -338,6 +339,7 @@ foreach $dir (@dirs) {
 #print "$line\n";
         if ($line =~ /[^\s]: $/) {
             $ans = shift @answers;
+#print "prompt=$line\n";
 #print "ans=$ans\n";
             $USAGE .= "$bold$ans$unbold\n";
         }
