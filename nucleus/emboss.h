@@ -26,5 +26,6 @@
 #include "embdmx.h"
 #include "embindex.h"
 #include "embgotoh.h"
+#include "embcontact.h"
 
 #endif
