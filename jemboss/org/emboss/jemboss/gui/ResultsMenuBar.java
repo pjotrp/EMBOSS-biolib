@@ -106,9 +106,11 @@ public class ResultsMenuBar extends JMenuBar
             org.emboss.jemboss.Jemboss.tree.addObject(fileSelected,pathSelected,null);
           }
           catch(NullPointerException npe){}
-          DragTree ltree = org.emboss.jemboss.gui.SetUpMenuBar.getLocalDragTree();
+//        DragTree ltree = org.emboss.jemboss.gui.SetUpMenuBar.getLocalDragTree();
+          DragTree ltree = org.emboss.jemboss.gui.filetree.LocalAndRemoteFileTreeFrame.getLocalDragTree();
           if(ltree!=null)
             ltree.addObject(fileSelected,pathSelected,null);
+
         }
       }
     });
