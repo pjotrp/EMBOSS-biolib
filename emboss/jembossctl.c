@@ -1202,8 +1202,9 @@ static AjBool jctl_do_listfiles(char *buf, int uid, int gid,AjPStr *retlist)
     DIR  *dirp;
     struct dirent *dp;
     struct stat sbuf;
+    AjPList list=NULL;
+    AjPStr  tstr=NULL;
     
-
     dir     = ajStrNew();
     full    = ajStrNew();
 
@@ -1259,6 +1260,8 @@ static AjBool jctl_do_listfiles(char *buf, int uid, int gid,AjPStr *retlist)
 
     ajFileDirFix(&dir);
 
+    list = ajListNew();
+    
     for(dp=readdir(dirp);dp;dp=readdir(dirp))
     {
 	if(*(dp->d_name)=='.')
@@ -1269,10 +1272,22 @@ static AjBool jctl_do_listfiles(char *buf, int uid, int gid,AjPStr *retlist)
 
 	if(sbuf.st_mode & S_IFREG)
 	{
-	    ajStrAppC(retlist,dp->d_name);
-	    ajStrAppC(retlist,"\n");
+	    tstr = ajStrNew();
+	    ajStrAppC(&tstr,dp->d_name);
+	    ajListPush(list,(void *)tstr);
 	}
     }
+
+    ajListSort(list,ajStrCmp);
+    
+    while(ajListPop(list,(void **)&tstr))
+    {
+	ajStrApp(retlist,tstr);
+	ajStrAppC(retlist,"\n");
+	ajStrDel(&tstr);
+    }
+    
+    ajListFree(&list);
     
     ajStrDel(&full);
     ajStrDel(&dir);
@@ -1302,6 +1317,8 @@ static AjBool jctl_do_listdirs(char *buf, int uid, int gid,AjPStr *retlist)
     DIR  *dirp;
     struct dirent *dp;
     struct stat sbuf;
+    AjPList list=NULL;
+    AjPStr  tstr=NULL;
     
 
     dir     = ajStrNew();
@@ -1359,6 +1376,8 @@ static AjBool jctl_do_listdirs(char *buf, int uid, int gid,AjPStr *retlist)
 
     ajFileDirFix(&dir);
 
+    list = ajListNew();
+
     for(dp=readdir(dirp);dp;dp=readdir(dirp))
     {
 	if(*(dp->d_name)=='.')
@@ -1369,11 +1388,23 @@ static AjBool jctl_do_listdirs(char *buf, int uid, int gid,AjPStr *retlist)
 
 	if(sbuf.st_mode & S_IFDIR)
 	{
-	    ajStrAppC(retlist,dp->d_name);
-	    ajStrAppC(retlist,"\n");
+	    tstr = ajStrNew();
+	    ajStrAppC(&tstr,dp->d_name);
+	    ajListPush(list,(void *)tstr);
 	}
     }
     
+    ajListSort(list,ajStrCmp);
+    
+    while(ajListPop(list,(void **)&tstr))
+    {
+	ajStrApp(retlist,tstr);
+	ajStrAppC(retlist,"\n");
+	ajStrDel(&tstr);
+    }
+    
+    ajListFree(&list);
+
     ajStrDel(&full);
     ajStrDel(&dir);
     return ajTrue;
@@ -1445,11 +1476,10 @@ static AjBool jctl_do_getfile(char *buf, int uid, int gid,
     if(stat(ajStrStr(file),&sbuf)==-1)
     {
 	fprintf(stderr,"stat error (get file)\n");
-	ajStrDel(&file);
-	return ajFalse;
+	n = *size = 0;
     }
-
-    n = *size = sbuf.st_size;
+    else
+	n = *size = sbuf.st_size;
 
 
     message = ajStrNew();
@@ -1466,7 +1496,7 @@ static AjBool jctl_do_getfile(char *buf, int uid, int gid,
     {
 	ajStrDel(&file);
 	ajStrDel(&message);
-	return ajTrue;
+	return ajFalse;
     }
     
     if(!(*fbuf=(unsigned char*)malloc(n)))
