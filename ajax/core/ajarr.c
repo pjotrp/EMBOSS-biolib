@@ -93,6 +93,8 @@ AjPInt ajIntNewL(ajint size)
 {
     AjPInt thys;
 
+    size = ajRound(size,RESERVED_SIZE);
+
     AJNEW0(thys);
     thys->Ptr = AJALLOC0(size*sizeof(ajint));
     thys->Len = 0;
@@ -360,6 +362,8 @@ AjPFloat ajFloatNewL(ajint size)
 {
     AjPFloat thys;
 
+    size = ajRound(size,RESERVED_SIZE);
+
     AJNEW0(thys);
     thys->Ptr = AJALLOC0(size*sizeof(float));
     thys->Len = 0;
@@ -576,6 +580,8 @@ AjPDouble ajDoubleNew(void)
 AjPDouble ajDoubleNewL(ajint size)
 {
     AjPDouble thys;
+
+    size = ajRound(size,RESERVED_SIZE);
 
     AJNEW0(thys);
     thys->Ptr = AJALLOC0(size*sizeof(double));
@@ -794,6 +800,8 @@ AjPShort ajShortNewL(ajint size)
 {
     AjPShort thys;
 
+    size = ajRound(size,RESERVED_SIZE);
+
     AJNEW0(thys);
     thys->Ptr = AJALLOC0(size*sizeof(short));
     thys->Len = 0;
@@ -1010,6 +1018,8 @@ AjPLong ajLongNew(void)
 AjPLong ajLongNewL(ajint size)
 {
     AjPLong thys;
+
+    size = ajRound(size,RESERVED_SIZE);
 
     AJNEW0(thys);
     thys->Ptr = AJALLOC0(size*sizeof(ajlong));
@@ -1508,6 +1518,7 @@ AjPInt2d ajInt2dNewL(ajint size)
     AjPInt2d thys;
     ajint i;
     
+    size = ajRound(size,RESERVED_SIZE);
 
     AJNEW0(thys);
     thys->Ptr = AJALLOC0(size*sizeof(AjPInt*));
@@ -1794,7 +1805,8 @@ AjPInt3d ajInt3dNewL(ajint size)
 {
     AjPInt3d thys;
     ajint i;
-    
+
+    size = ajRound(size,RESERVED_SIZE);    
 
     AJNEW0(thys);
     thys->Ptr = AJALLOC0(size*sizeof(AjPInt2d*));
@@ -2109,7 +2121,8 @@ AjPFloat2d ajFloat2dNewL(ajint size)
 {
     AjPFloat2d thys;
     ajint i;
-    
+
+    size = ajRound(size,RESERVED_SIZE);
 
     AJNEW0(thys);
     thys->Ptr = AJALLOC0(size*sizeof(AjPFloat*));
@@ -2397,6 +2410,7 @@ AjPFloat3d ajFloat3dNewL(ajint size)
     AjPFloat3d thys;
     ajint i;
     
+    size = ajRound(size,RESERVED_SIZE);
 
     AJNEW0(thys);
     thys->Ptr = AJALLOC0(size*sizeof(AjPFloat2d*));
@@ -2712,6 +2726,7 @@ AjPDouble2d ajDouble2dNewL(ajint size)
     AjPDouble2d thys;
     ajint i;
     
+    size = ajRound(size,RESERVED_SIZE);
 
     AJNEW0(thys);
     thys->Ptr = AJALLOC0(size*sizeof(AjPDouble*));
@@ -2999,6 +3014,7 @@ AjPDouble3d ajDouble3dNewL(ajint size)
     AjPDouble3d thys;
     ajint i;
     
+    size = ajRound(size,RESERVED_SIZE);
 
     AJNEW0(thys);
     thys->Ptr = AJALLOC0(size*sizeof(AjPDouble2d*));
@@ -3314,6 +3330,7 @@ AjPShort2d ajShort2dNewL(ajint size)
     AjPShort2d thys;
     ajint i;
     
+    size = ajRound(size,RESERVED_SIZE);
 
     AJNEW0(thys);
     thys->Ptr = AJALLOC0(size*sizeof(AjPShort*));
@@ -3601,6 +3618,7 @@ AjPShort3d ajShort3dNewL(ajint size)
     AjPShort3d thys;
     ajint i;
     
+    size = ajRound(size,RESERVED_SIZE);
 
     AJNEW0(thys);
     thys->Ptr = AJALLOC0(size*sizeof(AjPShort2d*));
@@ -3916,6 +3934,7 @@ AjPLong2d ajLong2dNewL(ajint size)
     AjPLong2d thys;
     ajint i;
     
+    size = ajRound(size,RESERVED_SIZE);
 
     AJNEW0(thys);
     thys->Ptr = AJALLOC0(size*sizeof(AjPLong*));
@@ -4203,6 +4222,7 @@ AjPLong3d ajLong3dNewL(ajint size)
     AjPLong3d thys;
     ajint i;
     
+    size = ajRound(size,RESERVED_SIZE);
 
     AJNEW0(thys);
     thys->Ptr = AJALLOC0(size*sizeof(AjPLong2d*));
