@@ -22,6 +22,47 @@ extern "C"
 ** @use ajSeqsetWrite Master sequence set output routine
 ** @use ajSeqFileNewOut Opens an output file for sequence writing.
 ** @other AjPSeq Sequences
+**
+** @attr Name [AjPStr] Name (ID)
+** @attr Acc [AjPStr] Accession number (primary only)
+** @attr Sv [AjPStr] SeqVersion number
+** @attr Gi [AjPStr] GI NCBI version number
+** @attr Tax [AjPStr] Main taxonomy (species)
+** @attr Desc [AjPStr] One-line description
+** @attr Type [AjPStr] Type N or P
+** @attr EType [AjEnum] unused, obsolete
+** @attr Outputtype [AjPStr] Output sequence known type
+** @attr Db [AjPStr] Database name from input
+** @attr Setdb [AjPStr] Database name from command line
+** @attr Full [AjPStr] Full name
+** @attr Date [AjPStr] Date
+** @attr Doc [AjPStr] Obsolete - see TextPtr
+** @attr Rev [AjBool] true: to be reverse-complemented
+** @attr Offset [ajint] offset from start
+** @attr Usa [AjPStr] USA fo re-reading
+** @attr Ufo [AjPStr] UFO for re-reading
+** @attr Fttable [AjPFeattable] Feature table
+** @attr Ftquery [AjPFeattabOut] Feature table output
+** @attr FtFormat [AjPStr] Feature output format (if not in UFO)
+** @attr FtFilename [AjPStr] Feature output filename (if not in UFO)
+** @attr Informatstr [AjPStr] Input format
+** @attr Formatstr [AjPStr] Output format
+** @attr Format [AjEnum] Output format index
+** @attr Filename [AjPStr] Output filename (if not in USA)
+** @attr Directory [AjPStr] Output firectory
+** @attr Entryname [AjPStr] Entry name
+** @attr Acclist [AjPList] Secondary accessions
+** @attr Keylist [AjPList] Keyword list
+** @attr Taxlist [AjPList] Taxonomy list (just species for now)
+** @attr Seq [AjPStr] The sequence
+** @attr File [AjPFile] Output file
+** @attr Knownfile [AjPFile] Already open output file (we don't close this one)
+** @attr Single [AjBool] If true, single sequence in each file (-ossingle)
+** @attr Features [AjBool] If true, save features with sequence or in file
+** @attr Extension [AjPStr] File extension
+** @attr Count [ajint] Number of sequences
+** @attr Savelist [AjPList] Previous sequences saved for later output
+**                          (e.g. MSF format)
 ** @@
 ******************************************************************************/
 
@@ -59,7 +100,7 @@ typedef struct AjSSeqout {
   AjPList Taxlist;
   AjPStr Seq;
   AjPFile File;
-  AjPFile Knownfile;		/* File provided externally */
+  AjPFile Knownfile;
   AjBool Single;
   AjBool Features;
   AjPStr Extension;

@@ -32,17 +32,25 @@ extern "C"
 ** @cast ajFileName Returns the filename as char*
 ** @cast ajFileFp Returns the equivalent C file pointer
 ** @other AjPFileBuff Buffered input file.
+**
+** @attr fp [FILE*] C file pointer
+** @attr Handle [ajint] AJAX file number 0 if unused
+** @attr Name [AjPStr] File name as used when opening
+** @attr List [AjPList] List of file names (first is open)
+** @attr End [AjBool] True if EOF has been reached
+** @attr Buff [AjPStr] Buffer for latest line read
+** @attr Pid [pid_t] Process PID if any
 ** @@
 ******************************************************************************/
 
 typedef struct AjSFile {
-  FILE *fp;			/* C file pointer */
-  ajint Handle;			/* AJAX file number 0 if unused */
-  AjPStr Name;			/* File name */
-  AjPList List;			/* List of file names (first is open) */
-  AjBool End;			/* True if EOF has been reached */
-  AjPStr Buff;			/* Buffer for latest line read */
-  pid_t Pid;		        /* Process PID is any */
+  FILE *fp;
+  ajint Handle;
+  AjPStr Name;
+  AjPList List;
+  AjBool End;
+  AjPStr Buff;
+  pid_t Pid;
 } AjOFile;
 
 #define AjPFile AjOFile*
@@ -53,13 +61,17 @@ typedef struct AjSFile {
 ** This does not use the AjPList objects.
 **
 ** This is a substructure of the AjPFileBuff object.
+**
+** @attr Line [AjPStr] String : this line
+** @attr Next [struct AjSFileBuffList*] Next line in the list, NULL for last
+** @attr Fpos [ajlong] File offset for start of this line
 ** @@
 ******************************************************************************/
 
 typedef struct AjSFileBuffList {
-  AjPStr Line;			/* String : this line*/
-  struct AjSFileBuffList* Next;	/* Next line in the list, NULL for last */
-  ajlong Fpos;			/* File offset for start of this line */
+  AjPStr Line;
+  struct AjSFileBuffList* Next;
+  ajlong Fpos;
 } AjOFileBuffList;
 
 #define AjPFileBuffList AjOFileBuffList*
@@ -95,22 +107,35 @@ typedef struct AjSFileBuffList {
 **                      of a buffered file.
 ** @cast ajFileBuffFp Returns the equivalent C file pointer
 ** @other AjPFile Simple input file.
+**
+** @attr File [AjPFile] The input file - data to be buffered
+** @attr Lines [AjPFileBuffList] All lines ... where the data really is
+** @attr Curr [AjPFileBuffList] Current line in Lines list
+** @attr Prev [AjPFileBuffList] Previous line (points to Curr for delete)
+** @attr Last [AjPFileBuffList] Last line for quick appending
+** @attr Free [AjPFileBuffList] Free list of lines for reuse
+** @attr Freelast [AjPFileBuffList] Last free line for quick append
+** @attr Nobuff [AjBool] if true, do not buffer the file
+** @attr Pos [ajint] Position in list
+** @attr Size [ajint] Size of list
+** @attr FreeSize [ajint] Size of free list
+** @attr Fpos [ajlong] File position in File
 ** @@
 ******************************************************************************/
 
 typedef struct AjSFileBuff {
-  AjPFile File;			/* The input file - data to be buffered */
-  AjPFileBuffList Lines;	/* All lines ... where the data really is */
-  AjPFileBuffList Curr;		/* Current line in Lines list */
-  AjPFileBuffList Prev;		/* Previous line (points to Curr for delete) */
-  AjPFileBuffList Last;		/* Last line for quick appending */
-  AjPFileBuffList Free;		/* Free list of lines for reuse */
-  AjPFileBuffList Freelast;	/* Last free line for quick append*/
-  AjBool Nobuff;		/* if true, do not buffer the file */
-  ajint Pos;			/* Position in list */
-  ajint Size;			/* Size of list */
-  ajint FreeSize;		/* Size of free list */
-  ajlong Fpos;			/* File pointer in File */
+  AjPFile File;
+  AjPFileBuffList Lines;
+  AjPFileBuffList Curr;
+  AjPFileBuffList Prev;
+  AjPFileBuffList Last;
+  AjPFileBuffList Free;
+  AjPFileBuffList Freelast;
+  AjBool Nobuff;
+  ajint Pos;
+  ajint Size;
+  ajint FreeSize;
+  ajlong Fpos;
 } AjOFileBuff;
 
 #define AjPFileBuff AjOFileBuff*
@@ -122,13 +147,19 @@ typedef struct AjSFileBuff {
 **
 ** @new ajDirNew Default constructor for a directory
 ** @new ajDiroutNew Default constructor for an output directory
+**
+** @attr Name [AjPStr] Path
+** @attr Prefix [AjPStr] Default filename prefix
+** @attr Extension [AjPStr] Default file extension
+** @attr Output [AjBool] True if to be used for output
 ** @@
 ******************************************************************************/
 
 typedef struct AjSDir {
-  AjPStr Name;			/* Path */
-  AjPStr Extension;		/* Default file extension */
-  AjBool Output;		/* True if to be used for output */
+  AjPStr Name;
+  AjPStr Prefix;
+  AjPStr Extension;
+  AjBool Output;
 } AjODir;
 
 #define AjPDir AjODir*
@@ -139,8 +170,12 @@ AjPStr      ajDirExt(const AjPDir thys);
 AjPStr      ajDirName(const AjPDir thys);
 AjPDir      ajDirNew (const AjPStr name);
 AjPDir      ajDirNewS (const AjPStr name, const AjPStr ext);
+AjPDir      ajDirNewSS (const AjPStr name, const AjPStr prefix,
+			const AjPStr ext);
 AjPDir      ajDiroutNew (const AjPStr name);
 AjPDir      ajDiroutNewS (const AjPStr name, const AjPStr ext);
+AjPDir      ajDiroutNewSS (const AjPStr name, const AjPStr prefix,
+			   const AjPStr ext);
 
 void        ajFileBuffClear (AjPFileBuff thys, ajint lines);
 void        ajFileBuffClearStore (AjPFileBuff thys, ajint lines,

@@ -55,14 +55,19 @@ extern "C"
 **                     a Stop codon or something else
 ** @use ajTrnStartStopC Checks whether a const char * codon is
 **                      a Start codon, a Stop codon or something else
+**
+** @attr FileName [AjPStr] name of file that held the data
+** @attr Title [AjPStr] title of data read from file
+** @attr GC [char[15][15][15]] genetic codon table
+** @attr Starts [char[15][15][15]] initiation site table
 ** @@
 ******************************************************************************/
 
 typedef struct AjSTrn {
-  AjPStr FileName;		/* name of file that held the data */
-  AjPStr Title;			/* title of data read from file */
-  char GC[15][15][15];		/* genetic codon table */
-  char Starts[15][15][15];	/* initiation site table */
+  AjPStr FileName;
+  AjPStr Title;
+  char GC[15][15][15];
+  char Starts[15][15][15];
 } AjOTrn, *AjPTrn;
 
 

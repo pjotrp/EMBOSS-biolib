@@ -17,7 +17,7 @@ extern "C"
 ** @alias AjSXmlNode
 ** @alias AjOXmlNode
 **
-** @attr theNode [GdomeNode] Undocumented
+** @attr theNode [GdomeNode*] Undocumented
 ******************************************************************************/
 
 typedef struct AjSXmlNode
@@ -33,8 +33,8 @@ typedef struct AjSXmlNode
 ** @alias AjOXmlFile
 ** @alias AjPGraphXml
 **
-** @attr domimpl [GdomeDOMImplementation *] Undocumented
-** @attr doc [GdomeDocument *] Undocumented
+** @attr domimpl [GdomeDOMImplementation*] Undocumented
+** @attr doc [GdomeDocument*] Undocumented
 ** @attr currentGraphic [AjPXmlNode] Undocumented
 ** @attr currentScene [AjPXmlNode] Undocumented
 ** @attr colour [double[3]] Undocumented

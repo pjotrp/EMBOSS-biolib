@@ -14,13 +14,16 @@ enum AjEListType {ajEListAny, ajEListStr};
 **
 ** Substructure of AjPList
 **
+** @attr Next [struct AjSListNode*] next item
+** @attr Prev [struct AjSListNode*] previous item
+** @attr Item [void*] data value
 ** @@
 ******************************************************************************/
 
 typedef struct AjSListNode {
-	struct AjSListNode* Next;	/* next item */
-	struct AjSListNode* Prev;       /* previous item */
-	void *Item;		/* data */
+	struct AjSListNode* Next;
+	struct AjSListNode* Prev;
+	void *Item;
 } AjOListNode;
 
 #define AjPListNode AjOListNode*
@@ -87,12 +90,17 @@ typedef struct AjSListNode {
 ** @use ajListstrTrace Traces through an AjPStr list and validates it
 ** @use ajListIterTrace Traces a list iterator.
 ** @use ajListstrIterTrace Traces an AjPStr list iterator.
+**
+** @attr First [AjPListNode] first node
+** @attr Last [AjPListNode] dummy last node
+** @attr Count [ajint] Number of nodes
+** @attr Type [AjEnum] List type (any, string, etc.)
 ** @@
 ******************************************************************************/
 
 typedef struct AjSList {
-  AjPListNode First;	/* first node */
-  AjPListNode Last;	/* dummy last node */
+  AjPListNode First;
+  AjPListNode Last;
   ajint Count;
   AjEnum Type;
 } AjOList;
@@ -103,6 +111,12 @@ typedef struct AjSList {
 **
 ** AJAX list iterator data structure
 **
+**
+** @attr Head [AjPList] Head of list
+** @attr Here [AjPListNode] Current list node
+** @attr Orig [AjPListNode] First list node
+** @attr Dir [AjBool] Direction of last iterative move
+** @@
 ******************************************************************************/
 
 typedef struct AjSIList {

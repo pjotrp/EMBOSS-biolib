@@ -16,6 +16,9 @@ extern "C"
 ** Holds a character array with additional data.
 ** The length is known and held internally.
 **
+** Saves on length calculation, and allows growth in reserved memory without
+** changing the pointer in the calling routine.
+**
 ** AjPChar is implemented as a pointer to a C data structure.
 **
 ** @alias AjSChar
@@ -27,6 +30,10 @@ extern "C"
 ** @ass    ajCharGet Retrieve a character from an array
 ** @mod    ajCharPut Load a character array element
 ** @cast   ajCharChar Retrieve internal pointer
+**
+** @attr Res [ajint] Reserved space in case of extension
+** @attr Len [ajint] Actual length used
+** @attr Ptr [char*] Array of characters
 ** @@
 ******************************************************************************/
 
@@ -56,6 +63,10 @@ typedef struct AjSChar {
 ** @ass    ajIntGet Retrieve an integer from an array
 ** @mod    ajIntPut Load an integer array element
 ** @cast   ajIntInt Retrieve internal pointer
+**
+** @attr Res [ajint] Reserved space in case of extension
+** @attr Len [ajint] Actual length used
+** @attr Ptr [ajint*] Array of integers
 ** @@
 ******************************************************************************/
 
@@ -85,6 +96,10 @@ typedef struct AjSInt {
 ** @ass    ajInt2dGet Retrieve an integer from an array
 ** @mod    ajInt2dPut Load an integer array element
 ** @cast   ajInt2dInt Retrieve internal pointer
+**
+** @attr Res [ajint] Reserved space in case of extension
+** @attr Len [ajint] Actual length used
+** @attr Ptr [AjPInt*] Array of integer arrays
 ** @@
 ******************************************************************************/
 
@@ -114,6 +129,10 @@ typedef struct AjSInt2d {
 ** @ass    ajInt3dGet Retrieve an integer from an array
 ** @mod    ajInt3dPut Load an integer array element
 ** @cast   ajInt3dInt Retrieve internal pointer
+**
+** @attr Res [ajint] Reserved space in case of extension
+** @attr Len [ajint] Actual length used
+** @attr Ptr [AjPInt2d*] Array of 2d integer arrays
 ** @@
 ******************************************************************************/
 
@@ -143,6 +162,10 @@ typedef struct AjSInt3d {
 ** @ass    ajFloatGet Retrieve a float from an array
 ** @mod    ajFloatPut Load a float array element
 ** @cast   ajFloatFloat Retrieve internal pointer
+**
+** @attr Res [ajint] Reserved space in case of extension
+** @attr Len [ajint] Actual length used
+** @attr Ptr [float*] Array of floats
 ** @@
 ******************************************************************************/
 
@@ -172,6 +195,10 @@ typedef struct AjSFloat {
 ** @ass    ajFloat2dGet Retrieve a float from an array
 ** @mod    ajFloat2dPut Load a float array element
 ** @cast   ajFloat2dFloat Retrieve internal pointer
+**
+** @attr Res [ajint] Reserved space in case of extension
+** @attr Len [ajint] Actual length used
+** @attr Ptr [AjPFloat*] Array of float arrays
 ** @@
 ******************************************************************************/
 
@@ -201,6 +228,10 @@ typedef struct AjSFloat2d {
 ** @ass    ajFloat3dGet Retrieve a float from an array
 ** @mod    ajFloat3dPut Load a float array element
 ** @cast   ajFloat3dFloat Retrieve internal pointer
+**
+** @attr Res [ajint] Reserved space in case of extension
+** @attr Len [ajint] Actual length used
+** @attr Ptr [AjPFloat2d*] Array of 2d float arrays
 ** @@
 ******************************************************************************/
 
@@ -230,6 +261,10 @@ typedef struct AjSFloat3d {
 ** @ass    ajDoubleGet Retrieve a double from an array
 ** @mod    ajDoublePut Load a double array element
 ** @cast   ajDoubleDouble Retrieve internal pointer
+**
+** @attr Res [ajint] Reserved space in case of extension
+** @attr Len [ajint] Actual length used
+** @attr Ptr [double*] Array of doubles
 ** @@
 ******************************************************************************/
 
@@ -259,6 +294,10 @@ typedef struct AjSDouble {
 ** @ass    ajDouble2dGet Retrieve a double from an array
 ** @mod    ajDouble2dPut Load a double array element
 ** @cast   ajDouble2dDouble Retrieve internal pointer
+**
+** @attr Res [ajint] Reserved space in case of extension
+** @attr Len [ajint] Actual length used
+** @attr Ptr [AjPDouble*] Array of double arrays
 ** @@
 ******************************************************************************/
 
@@ -288,6 +327,10 @@ typedef struct AjSDouble2d {
 ** @ass    ajDouble3dGet Retrieve a double from an array
 ** @mod    ajDouble3dPut Load a double array element
 ** @cast   ajDouble3dDouble Retrieve internal pointer
+**
+** @attr Res [ajint] Reserved space in case of extension
+** @attr Len [ajint] Actual length used
+** @attr Ptr [AjPDouble2d*] Array of 2d double arrays
 ** @@
 ******************************************************************************/
 
@@ -317,6 +360,10 @@ typedef struct AjSDouble3d {
 ** @ass    ajShortGet Retrieve a short from an array
 ** @mod    ajShortPut Load a short array element
 ** @cast   ajShortShort Retrieve internal pointer
+**
+** @attr Res [ajint] Reserved space in case of extension
+** @attr Len [ajint] Actual length used
+** @attr Ptr [short*] Array of shorts
 ** @@
 ******************************************************************************/
 
@@ -346,6 +393,10 @@ typedef struct AjSShort {
 ** @ass    ajShort2dGet Retrieve a short from an array
 ** @mod    ajShort2dPut Load a short array element
 ** @cast   ajShort2dShort Retrieve internal pointer
+**
+** @attr Res [ajint] Reserved space in case of extension
+** @attr Len [ajint] Actual length used
+** @attr Ptr [AjPShort*] Array of short arrays
 ** @@
 ******************************************************************************/
 
@@ -375,6 +426,10 @@ typedef struct AjSShort2d {
 ** @ass    ajShort3dGet Retrieve a short from an array
 ** @mod    ajShort3dPut Load a short array element
 ** @cast   ajShort3dShort Retrieve internal pointer
+**
+** @attr Res [ajint] Reserved space in case of extension
+** @attr Len [ajint] Actual length used
+** @attr Ptr [AjPShort2d*] Array of 2d short arrays
 ** @@
 ******************************************************************************/
 
@@ -404,6 +459,10 @@ typedef struct AjSShort3d {
 ** @ass    ajLongGet Retrieve a ajlong from an array
 ** @mod    ajLongPut Load a ajlong array element
 ** @cast   ajLongLong Retrieve internal pointer
+**
+** @attr Res [ajint] Reserved space in case of extension
+** @attr Len [ajint] Actual length used
+** @attr Ptr [ajlong*] Array of longs
 ** @@
 ******************************************************************************/
 
@@ -433,6 +492,10 @@ typedef struct AjSLong {
 ** @ass    ajLong2dGet Retrieve a ajlong from an array
 ** @mod    ajLong2dPut Load a ajlong array element
 ** @cast   ajLong2dLong Retrieve internal pointer
+**
+** @attr Res [ajint] Reserved space in case of extension
+** @attr Len [ajint] Actual length used
+** @attr Ptr [AjPLong*] Array of long arrays
 ** @@
 ******************************************************************************/
 
@@ -462,6 +525,10 @@ typedef struct AjSLong2d {
 ** @ass    ajLong3dGet Retrieve a ajlong from an array
 ** @mod    ajLong3dPut Load a ajlong array element
 ** @cast   ajLong3dLong Retrieve internal pointer
+**
+** @attr Res [ajint] Reserved space in case of extension
+** @attr Len [ajint] Actual length used
+** @attr Ptr [AjPLong2d*] Array of 2d long arrays
 ** @@
 ******************************************************************************/
 

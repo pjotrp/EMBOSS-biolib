@@ -31,16 +31,21 @@ extern "C"
 ** @use ajRangeOverlaps Detect overlaps of a set of ranges to a seq region
 ** @use ajRangeOrdered Test if ranges are in ascending non-overlapping order
 ** @use ajRangeDefault Test if the default range has been set
+**
+** @attr n [ajint] Number of ranges
+** @attr start [ajint*] From positions
+** @attr end [ajint*] End positions
+** @attr text [AjPStr*] Associated text for each range
 ** @@
 ******************************************************************************/
 
 
 typedef struct AjSRange
 {
-    ajint n;			/* Number of ranges */
-    ajint *start;			/* From positions   */
-    ajint *end;                   /* End positions    */
-    AjPStr *text;		/* Associated text for each range */
+    ajint n;
+    ajint *start;
+    ajint *end;
+    AjPStr *text;
 } AjORange,*AjPRange;
 
 

@@ -23,6 +23,10 @@ extern AjPStr acdProgram;
 **
 ** Ajax error message levels object
 **
+** @attr warning [AjBool] Display ajWarn messages 
+** @attr error [AjBool] Display ajErr messages 
+** @attr fatal [AjBool] Display ajFatal messages 
+** @attr die [AjBool] Display ajDie messages 
 ** @@
 ******************************************************************************/
 typedef struct AjSError
