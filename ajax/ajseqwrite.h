@@ -1,4 +1,3 @@
-/*  Last edited: Apr  6 15:34 2000 (pmr) */
 #ifdef __cplusplus
 extern "C"
 {
@@ -76,6 +75,7 @@ void         ajSeqoutUsa (AjPSeqout* pthis, AjPStr Usa);
 void         ajSeqsetWrite (AjPSeqout seqout, AjPSeqset seq);
 void         ajSeqWrite (AjPSeqout seqout, AjPSeq seq);
 void         ajSeqWriteClose (AjPSeqout outseq);
+void         ajSeqWriteCdb (AjPFile outf, AjPStr seq);
 
 #endif
 

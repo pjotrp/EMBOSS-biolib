@@ -2753,3 +2753,45 @@ void ajSeqoutTrace (AjPSeqout seq) {
     ajDebug( "  Features OFF\n");
     
 }
+
+/* @funcstatic ajSeqWriteCdb ************************************************
+**
+** Writes a Cdb sequence in SWISSPROT format.
+**
+** @param [w] outf [AjPFile] output stream
+** @param [r] seq [AjPStr] sequence
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajSeqWriteCdb (AjPFile outf, AjPStr seq)
+{
+    AjPSeqout outseq=NULL;
+    
+    static SeqPSeqFormat sf=NULL;
+    int mw;
+    unsigned int crc;
+
+    outseq = ajSeqoutNew();
+
+    outseq->File = outf;
+    ajStrAssS(&outseq->Seq,seq);
+    
+    crc = ajSeqCrc (outseq->Seq);
+    mw = (int) (0.5+ajSeqMW (outseq->Seq));
+    (void) ajFmtPrintF (outseq->File,
+			"SQ   SEQUENCE %5d AA; %6d MW;  %08X CRC32;\n",
+			ajStrLen(outseq->Seq), mw, crc);
+
+    seqSeqFormat(ajStrLen(outseq->Seq), &sf);
+    (void) strcpy (sf->endstr, "\n//");
+    sf->tab = 4;
+    sf->spacer = 11;
+    sf->width = 60;
+
+    seqWriteSeq (outseq, sf);
+
+    ajSeqoutDel(&outseq);
+
+    return;
+}
