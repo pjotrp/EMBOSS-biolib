@@ -3,7 +3,7 @@
 
 
 appl: preg [
-	doc: "regular expression search of a protein sequence"
+	doc: "Regular expression search of a protein sequence"
 	groups: "Protein:Motifs"
 ]
 
