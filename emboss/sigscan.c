@@ -33,7 +33,7 @@
 ** pairsub duringa signature:sequence match.  An (optionally grouped) scop 
 ** families file can be provided in which case a classification of hits is 
 ** provided in the signature hits output file. See documentation for the EMBOSS
-** application blasts for an explanation of the scop families file and groups 
+** application psiblasts for an explanation of the scop families file and groups 
 ** for information on how to group it.
 ** 
 ** Excerpts from a signature hits (Figure 1) are shown. The records used 
