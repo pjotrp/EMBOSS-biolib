@@ -235,6 +235,7 @@ int main(int argc, char **argv)
 
     EmbPentry entry;
     EmbPac acnum=NULL;
+    EmbPac acnumtmp=NULL;
     char* lastac=NULL;
 
     PBlastDb db=NULL;
@@ -346,7 +347,7 @@ int main(int argc, char **argv)
     AJCNEW0(divfiles, nfiles);
 
     if (systemsort)
-	acnum = embDbiAcnumNew();
+	acnum = acnumtmp = embDbiAcnumNew();
 
     for (ifile=0; ifile<nfiles; ifile++)
     {
@@ -713,6 +714,16 @@ int main(int argc, char **argv)
     ajDebug ("finished...\n%7d files\n%7d entries\n%7d acnum.trg\n%7d "
 	     "acnum.hit\n",nfiles, nid, iac, nac);
 
+    ajRegFree(&datexp);
+    ajRegFree(&idsrtexp);
+    ajRegFree(&acsrtexp);
+    ajRegFree(&acsrt2exp);
+
+    /* Peter. Probably needs more work here */
+    if(acnumtmp)
+	AJFREE(acnumtmp);
+    ajListDel(&inlist);
+
     ajExit ();
     return 0;
 }
@@ -1030,6 +1041,10 @@ static AjBool dbiblast_blastopenlib (AjPStr name, PBlastDb* pdb)
     ajDebug("table file src    starts at %d\n", ret->TopSrc);
     ajDebug("table file hdr    starts at %d\n", ret->TopHdr);
     ajDebug("table file amb    starts at %d\n", ret->TopAmb);
+
+    ajStrDel(&hname);
+    ajStrDel(&sname);
+    ajStrDel(&tname);
 
     return ajTrue;
 }
