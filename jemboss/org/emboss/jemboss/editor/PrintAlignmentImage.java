@@ -266,7 +266,7 @@ public class PrintAlignmentImage extends ScrollPanel
       topMargin  = 0;
     }
     paper.setImageableArea(leftMargin,topMargin,
-                           imageWidth,imageHeight);
+                           imageWidth,imageHeight+imageHeight);
     format.setPaper(paper);
 
     try
@@ -432,28 +432,11 @@ public class PrintAlignmentImage extends ScrollPanel
     double imageWidth  = d.getWidth();
     double imageHeight = d.getHeight();
     Paper paper  = format.getPaper();
-                                                                                                                               
-//  if(leftMargin > 0.d)
-//  {
-//    leftMargin  = leftMargin*72;
-//    topMargin   = topMargin*72;
-//    rightMargin = rightMargin*72;
-//    btmMargin   = btmMargin*72;
-//    paper.setSize(imageWidth+(leftMargin+rightMargin),
-//                  imageHeight+(topMargin+btmMargin));
-//  }
-//  else
-//  {
-//    paper.setSize(imageWidth,imageHeight);
-//    leftMargin = 0;
-//    topMargin  = 0;
-//  }
- 
+
     paper.setSize(imageWidth,imageHeight);
-    paper.setImageableArea(0,0,imageWidth,imageHeight);
+    paper.setImageableArea(0.d,0.d,imageWidth,imageHeight+imageHeight);
     format.setPaper(paper);
-                                                                                              
-//  showOptions(false);
+
     statusField.setText(pageIndex+"1 of 1 page(s)");
     final JFrame f = new JFrame("Print Preview");
     JPanel jpane = (JPanel)f.getContentPane();

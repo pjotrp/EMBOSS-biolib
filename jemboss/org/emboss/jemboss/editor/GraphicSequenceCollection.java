@@ -697,6 +697,7 @@ public class GraphicSequenceCollection extends JPanel
   }
 
 
+
   /**
   *
   *  Add a sequence to the sequence collection display and
@@ -721,7 +722,6 @@ public class GraphicSequenceCollection extends JPanel
     Box XBox = new Box(BoxLayout.X_AXIS);
     XBox.add(gs);
     XBox.add(Box.createHorizontalGlue());
-//  seqBox.add(Box.createVerticalStrut(5));
     seqBox.add(XBox);
     gs.setToolTipText("");   //enable tooltip display
 
@@ -1177,9 +1177,14 @@ public class GraphicSequenceCollection extends JPanel
   {
     SequenceJPanel seq = (SequenceJPanel)graphicSequence.get(0);
     int residueHeight = seq.getSequenceHeight();
-    int alignHeight   = (graphicSequence.size()+2)*residueHeight;
+    int alignHeight   = (graphicSequence.size()+1)*residueHeight;
     int nalign = Math.round(((float)MAXSEQLENGTH/
                              (float)numResPerLine)+.5f)*alignHeight;
+//  System.out.println("nalign "+
+//                     Math.round(((float)MAXSEQLENGTH/(float)numResPerLine)+.5f)+
+//                     "  alignHeight "+alignHeight+"  nalign "+nalign+" 
+//                     residueHeight "+residueHeight+ 
+//                     "  graphicSequence.size()+1 "+(graphicSequence.size()+1));
     int width  = (seq.getResidueWidth()*(numResPerLine+2))+getNameWidth();
     return new Dimension(width,nalign);
   }
@@ -1353,10 +1358,12 @@ public class GraphicSequenceCollection extends JPanel
   public static void main(String args[])
   {
     Vector seqs = new Vector();
-    seqs.add(new Sequence("","ACCaaaaaaaaaaaaaaaaaaaaTAGAtTAT"+
+    seqs.add(new Sequence("Seq1","ACCaaaaaaaaaaaaaaaaaaaaTAGAtTAT"+
              "ACCaaaaaaaaaaaaaaaaaaaaTAGAtTAT"+
              "ACCaaaaaaaaaaaaaaaaaaaaTAGAtTAT"));
-
+    seqs.add(new Sequence("Seq2","ACCaaaaaaaaaaaaaaaaaaaaTAGAtTAT"+
+             "ACCaaaaaaaaaaaaaaaaaaaaTAGAtTAT"+
+             "ACCaaaaaaaaaaaaaaaaaaaaTAGAtTAT"));
 
     JScrollPane jspSequence = new JScrollPane();
     GraphicSequenceCollection gsc = new GraphicSequenceCollection(
@@ -1390,8 +1397,7 @@ public class GraphicSequenceCollection extends JPanel
 
   protected void addAnnotationSequence(Sequence s)
   {
-    int fontSize = getFontSize();
-    addSequence(s,true,5,fontSize);
+    addSequence(s,true,0,getFontSize());
   }
 
 }

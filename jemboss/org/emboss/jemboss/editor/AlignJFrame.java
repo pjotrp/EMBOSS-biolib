@@ -547,7 +547,7 @@ public class AlignJFrame extends JFrame
                     options.getIdentity());
 
         int fontSize = gsc.getFontSize();
-        gsc.addSequence(conseq.getConsensusSequence(),true,5,fontSize);
+        gsc.addSequence(conseq.getConsensusSequence(),true,0,fontSize);
 
 //      if(pretty.isSelected())
 //        gsc.setPrettyPlot(pretty.isSelected(),ppj);
