@@ -22,7 +22,7 @@ AJAXSRC = ajacd.c ajalign.c ajarr.c ajassert.c \
 ajbase.c \
 ajcall.c ajcod.c \
 ajdan.c ajexcept.c \
-ajfeat.c ajfile.c ajfmt.c ajjava.c ajlist.c \
+ajfeat.c ajfile.c ajfmt.c ajgraphxml.c ajjava.c ajlist.c \
 ajmath.c ajmatrices.c ajmem.c ajmess.c ajnam.c \
 ajposreg.c ajrange.c ajreg.c ajreport.c \
 ajseq.c ajseqabi.c ajseqdb.c ajseqread.c ajseqtype.c ajseqwrite.c \
@@ -38,7 +38,7 @@ noinst_HEADERS = ajax.h ajarch.h ajdefine.h \
 ajacd.h ajalign.h ajarr.h ajassert.h \
 ajbase.h ajcall.h ajcod.h \
 ajdan.h ajexcept.h ajfeat.h ajfeatdata.h ajfile.h ajfmt.h \
-ajgraph.h ajgraphstruct.h ajhist.h ajjava.h ajlist.h \
+ajgraph.h ajgraphxml.h ajgraphstruct.h ajhist.h ajjava.h ajlist.h \
 ajmath.h ajmatrices.h ajmem.h ajmess.h ajnam.h \
 ajposreg.h ajrange.h ajreg.h ajreport.h \
 ajseq.h ajseqabi.h ajseqdata.h ajseqdb.h ajseqread.h ajseqtype.h ajseqwrite.h \

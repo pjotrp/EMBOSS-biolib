@@ -64,6 +64,7 @@ extern "C"
 #include "ajacd.h"
 #include "ajcall.h"
 #include "ajjava.h"
+#include "ajgraphxml.h"
 
 #endif
 

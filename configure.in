@@ -6,7 +6,7 @@ dnl Process this file with autoconf to produce a configure script.
 #CC=cc
 
 AC_INIT(ajax/ajacd.c)
-AM_INIT_AUTOMAKE(EMBOSS, 2.7.1)
+AM_INIT_AUTOMAKE(EMBOSS, 2.8.0)
 
 
 dnl Use libtool to make a shared library.
@@ -67,6 +67,7 @@ CHECK_JAVA
 CHECK_JAVAOS
 CHECK_PNGDRIVER
 CHECK_AUTH
+CHECK_GROUT
 
 #dnl Test if --enable-corba is given
 #AC_ARG_ENABLE(corba,
