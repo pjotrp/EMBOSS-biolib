@@ -16,7 +16,15 @@ AC_ARG_WITH(java,
   AC_MSG_RESULT(yes)
   ALT_HOME="$withval"
   ALT_HOME="${ALT_HOME} -DHAVE_JAVA"
+  AC_CHECK_PROG(havejavac,javac,"yes","no")
+  if test "${havejavac}" != yes ; then
+  echo "Error: Either JAVA not installed or 'javac' not in your PATH"
+  exit 1
+  fi
+  AC_SUBST(DOING_JAVA)
+  DOING_JAVA=yes
 else
+  DOING_JAVA=no
   AC_MSG_RESULT(no)
 
 fi], [
