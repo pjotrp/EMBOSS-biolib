@@ -296,8 +296,59 @@ public class ServerSetup extends JTabbedPane
 
     client.add(jpWest, BorderLayout.WEST);
     client.add(jpCenter, BorderLayout.CENTER);
-
+                                                                               
     addTab("Client properties",client);
+
+    if(!withSoap)
+    {
+      JPanel proxy = new JPanel(new BorderLayout());
+      gl = new GridLayout(5,1,6,6);
+      jpWest = new JPanel(gl);
+      jpCenter = new JPanel(gl);
+                                                                               
+      useBrowserProxy = new JCheckBox("Use proxy settings for HTTP "+
+                                    "browser connection",
+                                    myset.isBrowserProxy());
+                                                                               
+      jpWest.add(new JLabel(""));
+      jpCenter.add(new JLabel(""));
+                                                                               
+      jpWest.add(new JLabel(""));
+      jpCenter.add(useBrowserProxy);
+                                                                               
+      JLabel lab = new JLabel("Proxy ");
+      jpWest.add(lab);
+      Vector proxyBrowserNameSettings = new Vector();
+      if(System.getProperty("http.proxyHost") != null)
+        proxyBrowserNameSettings.add(System.getProperty("http.proxyHost"));
+      proxyBrowserName = new MemoryComboBox(proxyBrowserNameSettings);
+        jpCenter.add(proxyBrowserName);
+                                                                               
+      lab = new JLabel("Proxy Port   ");
+      jpWest.add(lab);
+      Vector proxyBrowserPortSettings = new Vector();
+      if(System.getProperty("http.proxyPort") != null)
+        proxyBrowserPortSettings.add(System.getProperty("http.proxyPort"));
+      proxyBrowserPort = new MemoryComboBox(proxyBrowserPortSettings);
+      jpCenter.add(proxyBrowserPort);
+                                                                               
+      proxyBrowserName.setEnabled(useBrowserProxy.isSelected());
+      proxyBrowserPort.setEnabled(useBrowserProxy.isSelected());
+                                                                               
+      useBrowserProxy.addActionListener(new ActionListener()
+      {
+        public void actionPerformed(ActionEvent e)
+        {
+          proxyBrowserName.setEnabled(useBrowserProxy.isSelected());
+          proxyBrowserPort.setEnabled(useBrowserProxy.isSelected());
+        }
+      });
+      proxy.add(jpWest, BorderLayout.WEST);
+      proxy.add(jpCenter, BorderLayout.CENTER);
+
+      addTab("Browser Proxies",proxy);
+    }
+
   }
 
   /**
