@@ -256,6 +256,8 @@ int main(ajint argc, char **argv)
 	       NULL, NULL, ajFalse, NULL); 
 
 
+    ajStrDel(&temp);
+
     /*Start of main application loop*/
     while(ajListPop(list,(void **)&temp))
     {
@@ -264,6 +266,7 @@ int main(ajint argc, char **argv)
         {
             ajFileClose(&fptr_alg);
             ajWarn("Could not open alignment file");
+	    ajStrDel(&temp);
             continue;       
         }
 
@@ -359,6 +362,8 @@ int main(ajint argc, char **argv)
         AJFREE(cmaps);
         ajXyzScorealgDel(&scores); 
 	ajXyzScopalgDel(&alg);
+
+	ajStrDel(&temp);
     }
 
  
@@ -373,7 +378,6 @@ int main(ajint argc, char **argv)
     ajStrDel(&con_extn);
     ajStrDel(&con_name);
     ajStrDel(&pair_mat);
-    ajStrDel(&temp);
 
     ajFileClose(&fptr_alg);
     ajFileClose(&fptr_con);
@@ -1401,6 +1405,7 @@ AjBool siggen_CalcSeqpos(AjPScopalg alg, AjPInt2d *seq_pos)
 	    
 	    ajStrIterNext(iter);                                   
 	}
+	ajStrIterFree(&iter);
     }
         
 

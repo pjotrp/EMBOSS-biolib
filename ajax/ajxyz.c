@@ -4628,7 +4628,7 @@ AjBool   ajXyzScopalgRead(AjPFile inf, AjPScopalg *thys)
 	}	
     }
 
-
+    ajStrDel(&seq1);
     
     if(!cnt)
     {
@@ -4655,30 +4655,24 @@ AjBool   ajXyzScopalgRead(AjPFile inf, AjPScopalg *thys)
     
     /* Assign sequences and free memory */
     for(x=0; x<cnt; x++)
-	{
-	    ajStrAssS(&(*thys)->Seqs[x],arr_seqs[x]); 
-	    AJFREE(arr_seqs[x]);
-	}
+    {
+	ajStrAssS(&(*thys)->Seqs[x],arr_seqs[x]); 
+	ajStrDel(&arr_seqs[x]);
 
-
+    }
+    AJFREE(arr_seqs);
+    
 
     /* Assign width */
     (*thys)->width = ajStrLen((*thys)->Seqs[0]);
 
 
-
-
-
-
-
-    /* Free array */
-    AJFREE(arr_seqs);
-
-
-
-
     for(x=0; ajListstrPop(list_codes,&codetmp); x++)
-	ajStrAssS(&(*thys)->Codes[x],codetmp); 	 
+    {
+	ajStrAssS(&(*thys)->Codes[x],codetmp);
+	ajStrDel(&codetmp);
+    }
+    
 /*JC	ajStrAssS(&(*thys)->Codes[x],arr_seqs[x]); 	 */
 
 
