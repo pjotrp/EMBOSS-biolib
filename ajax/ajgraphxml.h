@@ -150,6 +150,7 @@ void 	ajXmlAddCircleF(AjPXmlFile file, float xCentre, float yCentre,
 void 	ajXmlAddArc(AjPXmlFile file, double xCentre, double yCentre,
 		    double startAngle, double endAngle, double radius);
 void 	ajXmlAddGroutOption(AjPXmlFile file, AjPStr name, AjPStr value);
+void 	ajXmlAddGroutOptionC(AjPXmlFile file, char *name, char *value);
 
 
 #endif

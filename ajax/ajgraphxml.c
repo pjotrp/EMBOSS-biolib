@@ -56,7 +56,6 @@ static GdomeNode* 	xml_GetNode(AjPXmlNode node);
 static GdomeElement* 	xml_GetNodeElement(AjPXmlNode node);
 static AjPXmlNode 	xml_GetParent(AjPXmlNode node);
 
-static void 	xml_AddGroutOption(AjPXmlFile file, AjPStr name, AjPStr value);
 static void 	xml_AddCylinder(AjPXmlFile file, double xCentre,
 				double yCentre, double angle, double height,
 				double width);
@@ -2659,25 +2658,25 @@ void ajXmlAddCircle(AjPXmlFile file, double xCentre, double yCentre,
 *********************************************************************/
 void ajXmlAddGroutOption(AjPXmlFile file, AjPStr name, AjPStr value)
 {
-    xml_AddGroutOption(file, name, value);
+    ajXmlAddGroutOptionC(file, ajStrStr(name), ajStrStr(value));
     return;
 }
 
 
 
 
-/* @func xml_AddGroutOption  ****************************************
+/* @func ajXmlAddGroutOptionC  ****************************************
 **
 ** adds an option value pair for the Grout display
 **
 ** @param [w] file [AjPXmlFile] the file to add the max min values to
-** @param [r] name [AjPStr] name of option
-** @param [r] value [AjPStr] value of option
+** @param [r] name [char *] name of option
+** @param [r] value [char *] value of option
 **
 ** @return [void]
 ** @@
 *********************************************************************/
-void xml_AddGroutOption(AjPXmlFile file, AjPStr name, AjPStr value)
+void ajXmlAddGroutOptionC(AjPXmlFile file, char *name, char *value)
 {
     AjPXmlNode headNode = NULL;
     AjPXmlNode otherNode = NULL;
@@ -2704,8 +2703,8 @@ void xml_AddGroutOption(AjPXmlFile file, AjPStr name, AjPStr value)
     
     xml_UnrefNode(otherNode);
     otherNode = xml_MakeNewNodeC(file, "meta", headNode);
-    xml_SetAttributeC(otherNode, "name", ajStrStr(name));
-    xml_SetAttributeC(otherNode, "content", ajStrStr(value));
+    xml_SetAttributeC(otherNode, "name", name);
+    xml_SetAttributeC(otherNode, "content", value);
 
     xml_UnrefNode(otherNode);
     xml_UnrefNode(headNode);
@@ -5093,11 +5092,20 @@ static void xml_ClearFile(AjPXmlFile file)
 {
     GdomeException exc;
 
-    ajXmlNodeDel(&file->currentGraphic);
-    ajXmlNodeDel(&file->currentScene);
-    /*  gdome_di_freeDoc (file->domimpl, file->doc, &exc);*/
-    gdome_doc_unref (file->doc, &exc); 
+
+    if(file->currentGraphic == file->currentScene)
+	ajXmlNodeDel(&file->currentGraphic);
+    else
+    {
+	ajXmlNodeDel(&file->currentGraphic);
+	ajXmlNodeDel(&file->currentScene);
+    }
+
+
+/*    gdome_di_freeDoc (file->domimpl, file->doc, &exc);*/
+    gdome_doc_unref (file->doc, &exc);
     gdome_di_unref (file->domimpl, &exc);
+    
     ajXmlFileDel(&file);
 
     return;
