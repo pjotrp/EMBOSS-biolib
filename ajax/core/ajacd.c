@@ -4969,7 +4969,6 @@ static void acdSetGraph (AcdPAcd thys)
     static AjPStr reply = NULL;
     ajint itry;
     static AjPStr title = NULL;
-    AjPStr name = ajStrNewC("GRAPHICS");
     static AjPStr gdev = NULL;
 
     /*   ajint multi;
@@ -4981,7 +4980,7 @@ static void acdSetGraph (AcdPAcd thys)
 
     required = acdIsRequired(thys);
 
-    if(ajNamGetValueC (ajStrStr(name),&gdev))
+    if(ajNamGetValueC ("GRAPHICS",&gdev))
 	(void) acdReplyInit (thys, ajStrStr(gdev), &defreply);
     else
 	(void) acdReplyInit (thys, "x11", &defreply);
@@ -5037,7 +5036,6 @@ static void acdSetGraph (AcdPAcd thys)
 
     (void) call ("ajGraphTrace",val);
 
-    ajStrDel (&name);
 #endif
     return;
 }
@@ -5075,7 +5073,6 @@ static void acdSetGraphxy (AcdPAcd thys)
 {
 #ifndef GROUT
     AjPGraph val;
-    AjPStr name = ajStrNewC("GRAPHICS");
     static AjPStr gdev = NULL;
 
     AjBool required = ajFalse;
@@ -5099,7 +5096,7 @@ static void acdSetGraphxy (AcdPAcd thys)
        }
        */
 
-    if(ajNamGetValueC(ajStrStr(name),&gdev))
+    if(ajNamGetValueC("GRAPHICS",&gdev))
 	(void) acdReplyInit (thys, ajStrStr(gdev), &defreply);
     else
 	(void) acdReplyInit (thys, "x11", &defreply);
@@ -5153,7 +5150,6 @@ static void acdSetGraphxy (AcdPAcd thys)
 
     (void) call("ajGraphTrace",val);
 
-    ajStrDel(&name);
 #endif
 
     return;
