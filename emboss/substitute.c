@@ -6,8 +6,8 @@
 **
 **
 ** @author: Copyright (C) Damian Counsell
-** @version $Revision: 1.9 $
-** @modified $Date: 2004/09/28 11:53:19 $
+** @version $Revision: 1.10 $
+** @modified $Date: 2004/10/14 19:07:26 $
 ** @@
 **
 ** This program is free software; you can redistribute it and/or
@@ -49,6 +49,7 @@ int main(int argc , char **argv)
     /* sequence objects and strings */
     const AjPSeq ajpSeqTraceAcross = NULL; /* template sequence---has structure */
     const AjPSeq ajpSeqTraceDown   = NULL; /* query sequence---no structure     */
+    AjPStr ajpStrSeqFileName       = NULL; /* name of file containing input seq */
     AjPSeq ajpSeqSubstituted       = NULL; /* rewritable template seq           */
     AjPSeqset ajpSeqsetPair        = NULL; /* current pair of sequences         */
     char *pcTraceAcross            = NULL; /* C string of template sequence     */
@@ -86,13 +87,18 @@ int main(int argc , char **argv)
     ajpSeqTraceDown = ajSeqsetGetSeq(ajpSeqsetPair,
 				     enumQuerySeqIndex);
 
+    /* read name of file containing seqset into string object */
+    ajpStrSeqFileName = ajStrNewS(ajpSeqsetPair->Filename);
+    ajFileNameShorten(&ajpStrSeqFileName);
+    ajFileNameTrim(&ajpStrSeqFileName);
+
     /* substitute all matches into a new version of the template sequence */
-    ajpSeqSubstituted = ajSeqNewS(ajpSeqTraceDown);
+    ajpSeqSubstituted = ajSeqNewS(ajpSeqTraceAcross);
     pcSubstitutedSeq  = ajSeqCharCopy(ajpSeqTraceAcross);
 
     /* copy the original traces into character strings */
-    pcTraceDown   = ajSeqCharCopy(ajpSeqTraceDown);
     pcTraceAcross = ajSeqCharCopy(ajpSeqTraceAcross);
+    pcTraceDown   = ajSeqCharCopy(ajpSeqTraceDown);
 
     ajIntSubstitutedSeqCount = 0;
 
@@ -159,8 +165,20 @@ int main(int argc , char **argv)
     if(enumDebugLevel)
 	ajFmtPrint("\n%S\n", ajpStrSubstitutedSeq);
 
+    /* DDDDEBUG */
+    if(enumDebugLevel)
+	ajFmtPrint("FFFFileName: %S\tFFFF\n", ajpStrSeqFileName);
+
+    ajSeqAssName(ajpSeqSubstituted, (const AjPStr)ajpStrSeqFileName);
     ajSeqAssSeq(ajpSeqSubstituted, (const AjPStr)ajpStrSubstitutedSeq);
-	
+
+    /* DDDDEBUG */
+    if(enumDebugLevel)
+    {
+	ajFmtPrint("FFFSeqName: %S\tFFFF\n", ajpSeqSubstituted->Name);
+	ajFmtPrint("FFFSeqSeq: %S\tFFFF\n", ajpSeqSubstituted->Seq);
+    }
+    
     /* write out "aligned" sequences  */
     ajSeqWrite(ajpSeqoutSubstituted, ajpSeqSubstituted);
 	
