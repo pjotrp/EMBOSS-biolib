@@ -413,7 +413,8 @@ output_auth_xml()
 check_libs()
 {
   USER_CONFIG=$1
- 
+  PLATFORM=$2
+
   if [ "$USER_CONFIG" = "" ]; then
     DIR="/usr"
   else
@@ -424,8 +425,21 @@ check_libs()
   echo "Inspecting $DIR"
  
 # test for libpng
+  WARN="false"
   if (test ! -f $DIR/include/png.h ) || 
      ( (test ! -f $DIR/lib/libpng.a) && (test ! -f $DIR/lib/libpng.so) ); then
+    WARN="true"
+    if(test $PLATFORM = "macos"); then
+      if (test -f /usr/local/include/png.h ); then
+         WARN="false"
+         echo "...found libpng (/usr/local/)"
+      fi
+    fi   
+  else
+    echo "...found libpng ($DIR)"
+  fi
+
+  if (test $WARN = "true"); then
     echo
     echo "--------------------------------------------------------------"
     echo
@@ -440,13 +454,24 @@ check_libs()
     echo
     echo "--------------------------------------------------------------"
     read
-  else
-    echo "...found libpng"
   fi
 
 # test for gd
+  WARN="false"
   if (test ! -f $DIR/include/gd.h) ||
      ( (test ! -f $DIR/lib/libgd.a) && (test ! -f $DIR/lib/libgd.so) ); then
+    WARN="true"
+    if(test $PLATFORM = "macos"); then
+      if (test -f /usr/local/include/gd.h); then
+         WARN="false"
+          echo "...found libgd (/usr/local)"
+      fi
+    fi
+  else
+    echo "...found libgd ($DIR)"
+  fi
+
+  if (test $WARN = "true"); then
     echo
     echo "--------------------------------------------------------------"
     echo
@@ -460,18 +485,24 @@ check_libs()
     echo
     echo "--------------------------------------------------------------"
     read
-  else
-    echo "...found libgd"
-  fi
+  fi 
 
 # test for zlib which can be either in /usr/lib or $DIR/lib
-  if ( (test ! -f /usr/lib/libz.a) && (test ! -f $DIR/lib/libz.a) );then
+  WARN="false"
+  if ( ((test ! -f /usr/lib/libz.a) || (test ! -f $DIR/lib/libz.so)) &&
+       ((test ! -f /usr/lib/libz.dylib) && (test ! -f /usr/local/lib/libz.dylib)) ); then
+    WARN="true"
+  else
+    echo "...found zlib"
+  fi
+
+  if (test $WARN = "true"); then
     echo
     echo "--------------------------------------------------------------"
     echo
     echo "WARNING! The script has detected that zlib is not"
     echo "installed"
-    echo 
+    echo
     echo "Download zlib from"
     echo "       http://www.info-zip.org/pub/infozip/zlib/"
     echo
@@ -479,10 +510,7 @@ check_libs()
     echo
     echo "--------------------------------------------------------------"
     read
-  else
-    echo "...found zlib"
   fi
-
 }
 
 
@@ -943,7 +971,7 @@ echo "Enter any other EMBOSS configuration options (e.g. --with-pngdriver=pathna
 echo "or press return to leave blank):"
 read USER_CONFIG
 
-check_libs "$USER_CONFIG"
+check_libs "$USER_CONFIG" $PLATFORM
 
 echo "$USER_CONFIG" >> $RECORD
 #
