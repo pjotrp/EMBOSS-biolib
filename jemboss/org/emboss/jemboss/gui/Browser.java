@@ -26,19 +26,21 @@ package org.emboss.jemboss.gui;
 import javax.swing.*;
 import javax.swing.event.*;
 import java.awt.*;
+import java.awt.geom.*;
 import java.awt.event.*;
 import java.net.*;
 import java.io.*;
 import java.util.Vector;
 import org.emboss.jemboss.JembossParams;
 
+
 /**
 *
 * Jemboss web browser
 *
 */
-public class Browser extends JFrame implements HyperlinkListener, 
-                                 ActionListener 
+public class Browser extends JFrame
+                     implements HyperlinkListener, ActionListener
 {
 
   /** URL cache combo field */
@@ -51,6 +53,17 @@ public class Browser extends JFrame implements HyperlinkListener,
   private Cursor cbusy = new Cursor(Cursor.WAIT_CURSOR);
   /** done cursor */
   private Cursor cdone = new Cursor(Cursor.DEFAULT_CURSOR);
+  /** Help topics */
+  private String topics[] = { "About Jemboss",
+                              "User Guide",
+                              "File Manager", 
+                              "Results Manager", 
+                              "Sequence List", 
+                              "Jemboss Alignment Editor"};
+  /** JList spLeft */
+  private JList spLeft;
+  /** JSplitPane sp */
+  private JSplitPane sp;
 
   /**
   *
@@ -64,6 +77,7 @@ public class Browser extends JFrame implements HyperlinkListener,
   {
     this(initialURL,name,false,"",mysettings);
   }
+
 
   /**
   *
@@ -201,9 +215,31 @@ public class Browser extends JFrame implements HyperlinkListener,
     });
     fileMenu.add(closeMenu);
 
+    // view
+    JMenu viewMenu = new JMenu("View");
+    viewMenu.setMnemonic(KeyEvent.VK_V);
+    menuBar.add(viewMenu);
+    JCheckBoxMenuItem sideTopics = new JCheckBoxMenuItem(
+                                       "Display help topics");
+    sideTopics.setSelected(true);
+    sideTopics.setAccelerator(KeyStroke.getKeyStroke(
+              KeyEvent.VK_L, ActionEvent.CTRL_MASK));
+    sideTopics.addActionListener(new ActionListener()
+    {
+      public void actionPerformed(ActionEvent e)
+      {
+        if(sp.getDividerLocation() > 5)
+          sp.setDividerLocation(0);
+        else
+          sp.setDividerLocation(100);
+      }
+    });
+    viewMenu.add(sideTopics);
+
     // jemboss logo button
     ClassLoader cl = this.getClass().getClassLoader();
-    ImageIcon jem = new ImageIcon(cl.getResource("images/Jemboss_logo_small.gif"));
+    ImageIcon jem = new ImageIcon(cl.getResource(
+                               "images/Jemboss_logo_small.gif"));
     JIconButton jembossButton = new JIconButton(jem);
     jembossButton.addActionListener(this);
     jembossButton.setActionCommand("JEMBOSS");
@@ -215,15 +251,69 @@ public class Browser extends JFrame implements HyperlinkListener,
     int urlFieldHeight = (int)urlField.getPreferredSize().getHeight();
     urlField.addActionListener(this);
 
+// Icon tool bar
+    // Back JButton
+    JButton backBt = new JButton()
+    {
+      public void paintComponent(Graphics g)
+      {
+        super.paintComponent(g);
+        Graphics2D g2 = (Graphics2D)g;
+
+        g2.setColor(new Color(0,128,0));
+        g2.fill(Browser.makeTriangle(4,12,14,22,14,12));
+        g2.fill(Browser.makeRect(14,12,14,16,18,16,18,12));
+        g2.setColor(Color.green);
+        g2.fill(Browser.makeTriangle(4,12,14,2,14,12));
+        g2.fill(Browser.makeRect(14,12,14,8,18,8,18,12));
+        setSize(22,24);
+      }
+    };
+    Dimension dBut = new Dimension(22,24);
+    backBt.setPreferredSize(dBut);
+    backBt.setMaximumSize(dBut);
+    backBt.setPreferredSize(new Dimension(15,15));
+    backBt.setActionCommand("BACK");
+    backBt.addActionListener(this);
+
+    // Forward JButton
+    JButton fwdBt = new JButton()
+    {
+      public void paintComponent(Graphics g)
+      {
+        super.paintComponent(g);
+        BasicStroke stroke = new BasicStroke(4.0f);
+        Graphics2D g2 = (Graphics2D)g;
+
+        g2.setColor(new Color(0,128,0));
+        g2.fill(Browser.makeTriangle(8,12,8,22,18,12));
+        g2.fill(Browser.makeRect(4,12,4,16,8,16,8,12));
+        g2.setColor(Color.green);
+        g2.fill(Browser.makeTriangle(8,12,8,2,18,12));
+        g2.fill(Browser.makeRect(4,12,4,8,8,8,8,12));
+        setSize(22,24);
+      }
+    };
+    fwdBt.setPreferredSize(dBut);
+    fwdBt.setMaximumSize(dBut);
+    fwdBt.setActionCommand("FWD");
+    fwdBt.addActionListener(this);
+
+    toolBarIcon.add(backBt);
+    toolBarIcon.add(fwdBt);
     toolBarIcon.add(jembossButton);
+
     toolBarURL.add(urlLabel);
     toolBarURL.add(urlField);
 
     setJMenuBar(menuBar);
-    getContentPane().add(toolBarURL, BorderLayout.NORTH);
-    getContentPane().add(toolBarIcon, BorderLayout.SOUTH);
+   
+    JPanel toolBars = new JPanel(new BorderLayout());
+    toolBars.add(toolBarIcon, BorderLayout.NORTH);
+    toolBars.add(toolBarURL, BorderLayout.SOUTH);
+    getContentPane().add(toolBars, BorderLayout.NORTH);
 
-    int urlFieldWidth  = (int)toolBarURL.getPreferredSize().getWidth(); 
+    int urlFieldWidth  = (int)toolBarURL.getPreferredSize().getWidth();
     Dimension d = new Dimension(urlFieldWidth,urlFieldHeight);
     urlField.setMaximumSize(d);
 
@@ -231,7 +321,6 @@ public class Browser extends JFrame implements HyperlinkListener,
     int iconBarHeight = jem.getIconHeight();
     d = new Dimension(iconBarWidth,iconBarHeight);
     toolBarIcon.setPreferredSize(d);
-
   }
 
 
@@ -244,14 +333,14 @@ public class Browser extends JFrame implements HyperlinkListener,
   {
     Dimension screenSize = getToolkit().getScreenSize();
     int width  = screenSize.width * 5 / 10;
-    int height = screenSize.height * 6 / 10;
-    setBounds(width/5, height/6, width, height);
+    int height = screenSize.height * 7 / 10;
+    setBounds(width/5, height/7, width, height);
   }
 
 
   /**
   *
-  * Add the html pane to a scrollpane and set the
+  * Add the html pane to a scrollpane, list and splitpane and set the
   * size of the html pane
   *
   */
@@ -259,13 +348,98 @@ public class Browser extends JFrame implements HyperlinkListener,
   {
     htmlPane.setEditable(false);
     htmlPane.setCaretPosition(0);
+    
+    final ClassLoader cl = this.getClass().getClassLoader();
+
+    final JList list = new JList(topics); 
+    list.addListSelectionListener(new ListSelectionListener()
+    {
+      public void valueChanged(ListSelectionEvent e)
+      {
+	String selectedValue = (String)list.getSelectedValue();
+        URL inURL = null;
+	if(selectedValue.equals("File Manager"))
+	  inURL = cl.getResource("resources/filemgr.html");
+        else if(selectedValue.equals("About Jemboss"))
+          inURL = cl.getResource("resources/readme.html");
+        else if(selectedValue.equals("Jemboss Alignment Editor"))
+          inURL = cl.getResource("resources/readmeAlign.html");
+	else if(selectedValue.equals("Sequence List"))
+          inURL = cl.getResource("resources/seqList.html");
+	else if (selectedValue.equals("User Guide"))
+        {
+	  try
+          {
+	    inURL = new URL("http://www.rfcgr.mrc.ac.uk/Software/EMBOSS/Jemboss/guide.html");
+	  }
+	  catch(MalformedURLException me){}
+	}
+ 
+        if(inURL != null)
+        {
+          try
+          {
+            htmlPane.setPage(inURL);
+            if(!urlField.isItem(inURL))
+              urlField.add(inURL);
+            else
+              urlField.setSelectedItem(inURL);
+          }
+          catch(IOException ioe)
+          {
+            setCursor(cdone);
+            warnUser("Can't follow link to " + inURL );
+          }
+	}
+      }
+    });
+
+    Box bacross = Box.createHorizontalBox();
+    bacross.add(Box.createHorizontalGlue());
+    JButton listClose = new JButton()
+    {
+      public void paintComponent(Graphics g)
+      {
+        super.paintComponent(g);
+        BasicStroke stroke = new BasicStroke(2.0f);
+        Graphics2D g2 = (Graphics2D) g;
+
+        g2.setStroke(stroke);
+        g2.setColor(Color.gray);
+        g2.drawLine(4,5,9,10);
+        g2.drawLine(9,5,4,10);
+
+        g2.setColor(Color.black);
+        g2.drawLine(4,4,9,9);
+        g2.drawLine(9,3,3,9);
+        setSize(15,15);
+      }
+    };
+    listClose.addActionListener(this);
+    listClose.setActionCommand("CLOSE");
+    listClose.setPreferredSize(new Dimension(15,15));
+    bacross.add(listClose);
+
+
+    JPanel leftPane = new JPanel(new BorderLayout());
+    JScrollPane leftScroll = new JScrollPane(list);
+    leftPane.add(bacross, BorderLayout.NORTH);
+    leftPane.add(leftScroll, BorderLayout.CENTER);
+    leftScroll.getViewport().setBackground(Color.white);
+ 
+
+    sp = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
+		        leftPane, htmlPane);
+    sp.setDividerSize(8);
+    sp.setDividerLocation(100);
+    sp.setOneTouchExpandable(true);
     JScrollPane scrollPane = new JScrollPane(htmlPane);
-   
+    sp.add(scrollPane);
+
     // ensures html wraps properly
     htmlPane.setPreferredSize(getPreferredSize());
-    getContentPane().add(scrollPane, BorderLayout.CENTER);
+    getContentPane().add(sp, BorderLayout.CENTER);   
   }
-
 
   /**
   *
@@ -311,11 +485,16 @@ public class Browser extends JFrame implements HyperlinkListener,
       if(index > -1 && index < urlField.getItemCount())
         url = urlField.getURLAt(index);
     }
-
+    else if (event.getActionCommand().equals("CLOSE"))
+    {
+      setCursor(cdone);
+      sp.setDividerLocation(0);
+      return;
+    }
     try
     {
       htmlPane.setPage(url);
-      
+    
       if(!urlField.isItem(url))
         urlField.add(url);
       else
@@ -328,6 +507,7 @@ public class Browser extends JFrame implements HyperlinkListener,
     }
     setCursor(cdone);
   }
+
 
 
   /**
@@ -374,6 +554,46 @@ public class Browser extends JFrame implements HyperlinkListener,
 
   /**
   *
+  * Use to draw a triangle Shape.
+  *
+  */
+  public static GeneralPath makeTriangle
+       (float a1, float b1, float a2, float b2, float a3, float b3)
+  {
+    GeneralPath path = new GeneralPath(GeneralPath.WIND_NON_ZERO);
+
+    path.moveTo(a1,b1);
+    path.lineTo(a2,b2);
+    path.lineTo(a3,b3);
+    path.closePath();
+
+    return path;
+  }
+
+
+  /**
+  *
+  * Use to draw a rectangle Shape.
+  *
+  */
+  public static GeneralPath makeRect(float a1, float b1,
+       float a2, float b2, float a3, float b3, float a4, float b4)
+  {
+    GeneralPath path = new GeneralPath(GeneralPath.WIND_NON_ZERO);
+
+    path.moveTo(a1,b1);
+    path.lineTo(a2,b2);
+    path.lineTo(a3,b3);
+    path.lineTo(a4,b4);
+    path.closePath();
+
+    return path;
+  }
+
+
+
+  /**
+  *
   * Jemboss icon button
   *
   */
@@ -389,7 +609,7 @@ public class Browser extends JFrame implements HyperlinkListener,
   }
 
 
-  public static void main(String arg[])
+  public static void main(String args[])
   {
     ClassLoader cl = ClassLoader.getSystemClassLoader();
     try
@@ -397,17 +617,10 @@ public class Browser extends JFrame implements HyperlinkListener,
       URL inURL = cl.getResource("resources/seqList.html");
       new Browser(inURL,"resources/seqList.html");
     }
-    catch (MalformedURLException mex)
-    {
-      System.out.println("Didn't find resources/seqList.html");
-    }
-    catch (IOException iex)
+    catch (Exception iex)
     {
       System.out.println("Didn't find resources/seqList.html");
     }
   }
 
-
 }
-
-

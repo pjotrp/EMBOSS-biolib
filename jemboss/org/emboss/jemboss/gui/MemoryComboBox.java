@@ -59,6 +59,8 @@ public class MemoryComboBox extends JComboBox
     order = new Vector();
     for(int i=0;i<v.size();i++)
       order.add(v.get(i));
+
+    setFont(new Font(null,Font.PLAIN,12));
   }
 
 
