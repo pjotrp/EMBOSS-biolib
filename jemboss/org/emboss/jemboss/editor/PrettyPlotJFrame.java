@@ -42,13 +42,13 @@ public class PrettyPlotJFrame extends JFrame
   /** field to define min number of identities */
   private TextFieldInt textInt;
   /** colour panel for identical matches */
-  private ColourPanel idColour;
+  private JColorChooser idColour;
   /** colour panel for positive scoring matches */
-  private ColourPanel matchColour;
+  private JColorChooser matchColour;
   /** colour panel for identical matches background */
-  private ColourPanel idColourBackground;
+  private JColorChooser idColourBackground;
   /** colour panel for positive scoring matches background */
-  private ColourPanel matchColourBackground;
+  private JColorChooser matchColourBackground;
   /** graphic sequence panel */
   private GraphicSequenceCollection gsc;
   /** define if the identities and matches are to be boxed */
@@ -66,12 +66,10 @@ public class PrettyPlotJFrame extends JFrame
   {
     textInt = new TextFieldInt();
     textInt.setText(Integer.toString(minID));
-    idColour = new ColourPanel("Identity Colour",colID);
-    matchColour = new ColourPanel("Match Colour",colMatch);
-    idColourBackground = new ColourPanel("Identity Background Colour",
-                                         colIDBack);
-    matchColourBackground = new ColourPanel("Match Background Colour",
-                                             colMatchBack);
+    idColour = new JColorChooser(colID);
+    matchColour = new JColorChooser(colMatch);
+    idColourBackground = new JColorChooser(colIDBack);
+    matchColourBackground = new JColorChooser(colMatchBack);
     prettyBox = new JCheckBox();
     prettyBox.setSelected(lboxPretty);
   }
@@ -106,8 +104,24 @@ public class PrettyPlotJFrame extends JFrame
 
 // identity colour
     bacross = Box.createHorizontalBox();
-    idColour = new ColourPanel("Identity Colour", Color.red);
-    bacross.add(idColour);
+    idColour = new JColorChooser(Color.red);
+    final JButton idButton = new JButton("");   
+    final JDialog dialog = JColorChooser.createDialog(idButton,
+                                        "Pick a Color",
+                                        true,
+                                        idColour,
+                                        null, null);
+
+    idButton.setBackground(Color.red);
+    idButton.addActionListener(new ActionListener()
+    {
+      public void actionPerformed(ActionEvent e)
+      {
+        dialog.show();
+        idButton.setBackground(idColour.getColor());
+      }
+    });
+    bacross.add(idButton);
     idLabel = new LabelTextBox(
                 "Identity Colour","");
     bacross.add(idLabel);
@@ -117,8 +131,24 @@ public class PrettyPlotJFrame extends JFrame
 
 // identity colour background
     bacross = Box.createHorizontalBox();
-    idColourBackground = new ColourPanel("Identity Background Colour", Color.white);
-    bacross.add(idColourBackground);
+    idColourBackground = new JColorChooser(Color.white);
+    final JButton idBackButton = new JButton("");
+    final JDialog dialogID = JColorChooser.createDialog(idBackButton,
+                                        "Pick a Color",
+                                        true,
+                                        idColourBackground,
+                                        null, null);
+                                                                                             
+    idBackButton.setBackground(Color.white);                                                       
+    idBackButton.addActionListener(new ActionListener()
+    {
+      public void actionPerformed(ActionEvent e)
+      {
+        dialogID.show();
+        idBackButton.setBackground(idColourBackground.getColor());
+      }
+    });
+    bacross.add(idBackButton);
     idLabel = new LabelTextBox(
                 "Identity Background Colour","");
     bacross.add(idLabel);
@@ -128,8 +158,24 @@ public class PrettyPlotJFrame extends JFrame
 
 // positive matches colour
     bacross = Box.createHorizontalBox();
-    matchColour = new ColourPanel("Match Colour", Color.blue);
-    bacross.add(matchColour);
+    matchColour = new JColorChooser(Color.blue);
+    final JButton matchButton = new JButton("");
+    final JDialog dialogMatch = JColorChooser.createDialog(matchButton,
+                                        "Pick a Color",
+                                        true,
+                                        matchColour,
+                                        null, null);
+                                                                                             
+    matchButton.setBackground(Color.blue);
+    matchButton.addActionListener(new ActionListener()
+    {
+      public void actionPerformed(ActionEvent e)
+      {
+        dialogMatch.show();
+        matchButton.setBackground(matchColour.getColor());
+      }
+    });
+    bacross.add(matchButton);
     idLabel = new LabelTextBox(
                 "Positive Match Colour",
                 "");
@@ -139,8 +185,24 @@ public class PrettyPlotJFrame extends JFrame
 
 // positive matches colour background
     bacross = Box.createHorizontalBox();
-    matchColourBackground = new ColourPanel("Match Background Colour", Color.white);
-    bacross.add(matchColourBackground);
+    matchColourBackground = new JColorChooser(Color.white);
+    final JButton matchBackButton = new JButton("");
+    final JDialog dialogMatchBack = JColorChooser.createDialog(matchButton,
+                                        "Pick a Color",
+                                        true,
+                                        matchColourBackground,
+                                        null, null);
+                                                                                             
+    matchBackButton.setBackground(Color.white);
+    matchBackButton.addActionListener(new ActionListener()
+    {
+      public void actionPerformed(ActionEvent e)
+      {
+        dialogMatchBack.show();
+        matchBackButton.setBackground(matchColour.getColor());
+      }
+    });
+    bacross.add(matchBackButton);
     idLabel = new LabelTextBox(
                 "Positive Match Background Colour",
                 "");
@@ -213,7 +275,7 @@ public class PrettyPlotJFrame extends JFrame
   */
   public Color getIDColour()
   {
-    return idColour.getColour();
+    return idColour.getColor();
   }
 
 
@@ -226,7 +288,7 @@ public class PrettyPlotJFrame extends JFrame
   */
   public Color getIDBackgroundColour()
   {
-    return idColourBackground.getColour();
+    return idColourBackground.getColor();
   }
 
 
@@ -239,7 +301,7 @@ public class PrettyPlotJFrame extends JFrame
   */
   public Color getMatchColour()
   {
-    return matchColour.getColour();
+    return matchColour.getColor();
   }
 
 
@@ -252,7 +314,7 @@ public class PrettyPlotJFrame extends JFrame
   */
   public Color getMatchBackgroundColour()
   {
-    return matchColourBackground.getColour();
+    return matchColourBackground.getColor();
   }
 
 
