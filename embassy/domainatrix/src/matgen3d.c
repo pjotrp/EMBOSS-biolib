@@ -116,27 +116,25 @@ int main(ajint argc, char **argv)
     ajNamInit("emboss");
     ajAcdInitP("matgen3d",argc,argv,"DOMAINATRIX"); 
     
-    ccfdir = ajAcdGetDirectory("ccfdir");
-    ClassFptr=ajAcdGetInfile("dcfinfile");
-    logf=ajAcdGetOutfile("logf");
-    SCMatrixOut=ajAcdGetOutfile("scmatrix");
-    Calclogf=ajAcdGetOutfile("calclogf");
-    mode=ajAcdGetList("mode");
+    ccfdir      = ajAcdGetDirectory("ccfdir");
+    ClassFptr   = ajAcdGetInfile("dcfinfile");
+    logf        = ajAcdGetOutfile("logf");
+    SCMatrixOut = ajAcdGetOutfile("scmatrix");
+    Calclogf    = ajAcdGetOutfile("calclogf");
+    mode        = ajAcdGetList("mode");
     
     /*Assigns the 1d/3d option*/
-    ajFmtScanS(mode[0], "%d", &option);
-    
+    ajFmtScanS(mode[0], "%d", &option);   
+        
     msg=ajStrNew();
     label=ajStrNew();
 
     
     /*Read the Scop classification file and create a list of SCOP objects*/
-    
     if(!(list_allscop = ajScopReadAllNew(ClassFptr)))
-    {
 	ajFatal("Error reading SCOP classification file\n");
-    }
-    
+
+
     ajFmtPrintF(SCMatrixOut, "# 3D-1D Scoring matrix created by matgen3d\n");
     ajFmtPrintF(SCMatrixOut, "# ajAtomEnv%d\n", option);
     
@@ -161,6 +159,7 @@ int main(ajint argc, char **argv)
     ajListIterFree(&ScopIter);  
     
     /*Initialise NUMENVx26 Matrix*/
+
 
 
     /*Dummy call to function just to get the number of environments. */
@@ -190,7 +189,7 @@ int main(ajint argc, char **argv)
 	    notopened++;
 	    ajFmtPrintS(&msg, "Could not open for reading %S", ScopName);
 	    ajFmtPrintF(logf, "WARN\tCould not open for reading %S\n", ScopName);
-	    ajWarn(ajStrStr(msg));
+/*	    ajWarn(ajStrStr(msg)); */
 	    ajStrDel(&ScopName);
 	    continue;
 	}	
@@ -200,6 +199,7 @@ int main(ajint argc, char **argv)
 	    ajFmtPrintS(&msg, "Error reading coordinate file");
 	    ajFmtPrintF(logf, "WARN\tError reading coordinate file\n");
 	    ajWarn(ajStrStr(msg));
+	    ajStrDel(&ScopName);
 	    ajFileClose(&DCorFptr);
 	    continue;
 	}
@@ -363,15 +363,14 @@ int main(ajint argc, char **argv)
   
     /* free scop classification*/
     while(ajListPop(list_allscop,(void **)&scoptemp))
-    {
 	ajScopDel(&scoptemp);
-    }
+
+    
     ajListDel(&list_allscop);
 
     ajStrDel(&msg);
     ajStrDel(&label);
     ajListstrDel(&ListScopIDs);
-    ajStrDel(&tmpID);
     ajStrDel(&BEnv);
     ajInt2dDel(&CountMatrix);
     ajFloat2dDel(&SCRMatrix);
@@ -379,7 +378,10 @@ int main(ajint argc, char **argv)
     /*Free ACD stuff*/
     ajFileClose(&logf);
     ajFileClose(&SCMatrixOut);
-  
+    ajFileClose(&ClassFptr);
+    ajFileClose(&Calclogf);
+
+
     ajExit();
     return 0;
 }
@@ -593,6 +595,7 @@ float   CalcScoringMatrix(AjPFile calclogf,
 
     return min;
 }
+
 
 
 
