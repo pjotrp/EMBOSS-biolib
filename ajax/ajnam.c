@@ -1441,10 +1441,9 @@ static void namListParse(AjPList listwords, AjPList listcount,
 ** Returns true if the name is a valid database name.
 ** 
 ** Database names must start with a letter, and have 1 or more letters,
-** numbers or underscores. No othr characters are permitted.
+** numbers or underscores. No other characters are permitted.
 **
 ** @param [r] name [const AjPStr] character string to find in getenv list
-** @param [w] value [AjPStr*] String for the value.
 ** @return [AjBool] True if name was defined.
 ** @@
 **
