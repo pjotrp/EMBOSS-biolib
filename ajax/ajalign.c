@@ -938,7 +938,6 @@ static void alignWriteScore (AjPAlign thys) {
   ajint iali;
   AlignPData* pdata;
   AlignPData data;
-  ajint i;
   
   nali = ajListToArray (thys->Data, (void***) &pdata);
 
