@@ -238,6 +238,12 @@ static void checktrans_dumptofeat(AjPFeattabOut featout, ajint from, ajint to,
     AjPFeature feature;
     float score = 0.0;
   
+    name = ajStrNew();
+    desc = ajStrNew();
+    source = ajStrNew();
+    type = ajStrNew();
+
+
     ajStrAssC(&name,seqname);
   
     feattable = ajFeattableNewProt(name);
@@ -272,6 +278,11 @@ static void checktrans_dumptofeat(AjPFeattabOut featout, ajint from, ajint to,
     ajFeatSortByStart(feattable);
     ajFeaturesWrite (featout, feattable);
     ajFeattabDel(&feattable);
+
+    ajStrDel(&name);
+    ajStrDel(&desc);
+    ajStrDel(&source);
+    ajStrDel(&type);
 
     return;
 }
