@@ -43,11 +43,8 @@
 
 
 #include <errno.h>
-#include <sys/socket.h>
-#include <sys/un.h>
 #include <fcntl.h>
 #include <ctype.h>
-#include <sys/uio.h>
 #include <sys/ioctl.h>
 
 
@@ -62,7 +59,7 @@
 #define AJ_OUTBUF 10000		/* Socket buffer size */
 #define AJNOTFOUND -999		/* Error flag         */
 
-
+#define TIMEOUT 30
 
 #if defined (__SVR4) && defined (__sun)
 #include <sys/filio.h>
@@ -140,43 +137,38 @@ static void java_tidy_command2(AjPStr *uniq, AjPStr *cl, AjPStr *clemboss,
 			       char *buf);
 static void java_tidy_command3(AjPStr *uniq, AjPStr *cl, AjPStr *clemboss,
 			       AjPStr *dir, AjPStr *envi, AjPStr *prog,
-			       char *buf, char *cuniq, int sockdes,
+			       char *buf, int *commpipe,
 			       int *outpipe, int *errpipe);
 
 
-static AjPStr java_uniqueName(AjPStr username, ajint command);
 
-static ajint java_send_auth(int conndes, char *cuser, char *cpass,
+static ajint java_send_auth(int tchan, int rchan, char *cuser, char *cpass,
 			    AjPStr *errstd);
-static ajint java_emboss_fork(int conndes,char *cuser,char *cpass,
+static ajint java_emboss_fork(int tchan,char *cuser,char *cpass,
 			      AjPStr clemboss, AjPStr enviro, AjPStr dir,
 			      char *buf, AjPStr *errstd);
-static ajint java_make_dir(int conndes, char *cuser, char *cpass, AjPStr dir,
+static ajint java_make_dir(int tchan, char *cuser, char *cpass, AjPStr dir,
 			   char *buf, AjPStr *errstd);
-static ajint java_delete_file(int conndes, char *cuser, char *cpass,
+static ajint java_delete_file(int tchan, char *cuser, char *cpass,
 			      AjPStr ufile, char *buf, AjPStr *errstd);
-static ajint java_delete_dir(int conndes, char *cuser, char *cpass, AjPStr dir,
+static ajint java_delete_dir(int tchan, char *cuser, char *cpass, AjPStr dir,
 			     char *buf, AjPStr *errstd);
-static ajint java_list_files(int conndes, char *cuser, char *cpass, AjPStr dir,
+static ajint java_list_files(int tchan, char *cuser, char *cpass, AjPStr dir,
 			     char *buf, AjPStr *errstd);
-static ajint java_list_dirs(int conndes, char *cuser, char *cpass, AjPStr dir,
+static ajint java_list_dirs(int tchan, char *cuser, char *cpass, AjPStr dir,
 			    char *buf, AjPStr *errstd);
-static ajint java_get_file(int conndes, char *cuser, char *cpass, AjPStr file,
-			   char *buf, unsigned char **fbuf,int *size,
-			   AjPStr *errstd);
-static ajint java_put_file(int conndes,char *cuser,char *cpass,AjPStr file,
-			   char *buf,unsigned char *fbuf,int size,
-			   AjPStr *errstd);
+static ajint java_get_file(int tchan, int rchan, char *cuser, char *cpass,
+			   AjPStr file, char *buf, unsigned char **fbuf,
+			   int *size, AjPStr *errstd);
+static ajint java_put_file(int tchan, int rchan, char *cuser, char *cpass,
+			   AjPStr file, char *buf, unsigned char *fbuf,
+			   int size, AjPStr *errstd);
 
 static void java_wait_for_term(int pid,AjPStr *outstd, AjPStr *errstd,
 			       int *outpipe, int *errpipe, char *buf);
 static void java_wait_for_file(int pid,AjPStr *outstd, AjPStr *errstd,
 			       int *outpipe, int *errpipe, char *buf,
 			       unsigned char *fbuf,int size);
-
-static int java_recv(int sock, char *buf, int blen, int seconds,
-		     AjPStr *errstd);
-static int java_send(int sock,char *buf,int len);
 
 static int java_jembossctl(ajint command, AjPStr username, AjPStr password,
 			   AjPStr environment,
@@ -188,6 +180,13 @@ static int java_jembossctl(ajint command, AjPStr username, AjPStr password,
 static AjBool ajJavaGetSeqFromUsa (AjPStr thys, AjPSeq *seq);
 static AjBool ajJavaGetSeqsetFromUsa (AjPStr thys, AjPSeqset *seq);
 
+
+static int java_pipe_write(int tchan, char *buf, int n, int seconds,
+			   AjPStr *errstd);
+static int java_pipe_read(int rchan, char *buf, int n, int seconds,
+			  AjPStr *errstd);
+static int java_snd(int tchan,char *buf,int len,AjPStr *errstd);
+static int java_rcv(int rchan, char *buf, AjPStr *errstd);
 
 
 
@@ -542,7 +541,6 @@ static AjBool java_pass(AjPStr username, AjPStr password, ajint *uid,
     }
     
     
-
     pwd = getpwnam_r(ajStrStr(username),&presult,buf,R_BUFFER);
     
     if(!pwd)
@@ -551,7 +549,7 @@ static AjBool java_pass(AjPStr username, AjPStr password, ajint *uid,
 	AJFREE(sbuf);
         return ajFalse;
     }
-    
+
     
     *uid = pwd->pw_uid;
     *gid = pwd->pw_gid;
@@ -1005,7 +1003,6 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_fork
     AjPStr cl=NULL;
     AjPStr envi=NULL;
     AjPStr dir=NULL;
-    AjPStrTok handle=NULL;
     
 
     char **argp=NULL;
@@ -1024,11 +1021,11 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_fork
     AjPStr outstd=NULL;
     AjPStr errstd=NULL;
     int retval=0;
+    char *save;
 
-/*
     if(!uid || !gid)
 	return (unsigned char)ajFalse;
-*/
+
     if(uid<UIDLIMIT)
 	return (unsigned char)ajFalse;
     if(gid<GIDLIMIT)
@@ -1051,9 +1048,7 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_fork
     (*env)->ReleaseStringUTFChars(env,commandline,sptr);
 
 
-    handle = ajStrTokenInit(cl," \t\n");
-    ajStrToken(&prog,&handle,NULL);
-    ajStrTokenClear(&handle);
+    ajSysStrtokR(ajStrStr(cl)," \t\n",&save,&prog);
     
 
     sptr = (char *) (*env)->GetStringUTFChars(env,environment,0);
@@ -1071,10 +1066,15 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_fork
     if(!ajSysWhichEnv(&prog,envp))
 	return (unsigned char)ajFalse;
 
-    pipe(outpipe);
-    pipe(errpipe);
+    while(pipe(outpipe)==-1);
+    while(pipe(errpipe)==-1);
 
+#if defined (__SVR4) && defined (__sun)
+    pid = fork1();
+#else
     pid = fork();
+#endif
+
     if(pid == -1)
 	return (unsigned char)ajFalse;
     
@@ -1217,69 +1217,31 @@ static char **make_array(AjPStr str)
 {
     int n;
     char **ptr=NULL;
-    AjPStrTok handle;
-    AjPStr token;
+    AjPStr buf;
+    char   *save=NULL;
     
-    token = ajStrNew();
+    buf = ajStrNew();
     
-    n = ajStrTokenCount(&str," \t\n");
+    n = ajStrTokenCountR(&str," \t\n");
 
     AJCNEW0(ptr,n+1);
 
     ptr[n] = NULL;
 
     n = 0;
-    
-    handle = ajStrTokenInit(str," \t\n");
-    while(ajStrToken(&token,&handle,NULL))
-	ptr[n++] = ajCharNew(token);
 
-    ajStrTokenClear(&handle);
-    ajStrDel(&token);
+    if(!ajSysStrtokR(ajStrStr(str)," \t\n",&save,&buf))
+	return ptr;
+    ptr[n++] = ajCharNew(buf);
+    
+    while(ajSysStrtokR(NULL," \t\n",&save,&buf))
+	ptr[n++] = ajCharNew(buf);
+
+    ajStrDel(&buf);
     
     return ptr;
 }
 
-
-
-
-/* @funcstatic java_uniqueName ********************************************
-**
-** Construct a unique name for the jembossctl socket
-**
-** @param [r] username [AjPStr] username
-** @param [r] command [ajint] command type
-**
-** @return [AjPStr] unique name
-******************************************************************************/
-
-static AjPStr java_uniqueName(AjPStr username, ajint command)
-{
-    AjPStr pipename=NULL;
-    struct timeval tv;
-    struct stat buf;
-    int count = 0;
-    
-    if(gettimeofday(&tv,NULL))
-	return NULL;
-    
-    pipename = ajStrNew();
-
-    do
-    {
-	if(count++ == 10)
-	{
-	    ajStrDel(&pipename);
-	    return NULL;
-	}
-	ajFmtPrintS(&pipename,"%s/jb-%S-%d-%Ld-%Ld-%d",TMPSOCK,username,
-		    ajRandomNumber(),tv.tv_sec,tv.tv_usec,command);
-    }
-    while(stat(ajStrStr(pipename),&buf)!=-1);
-    
-
-    return pipename;
-}
 
 
 /* @funcstatic java_send_auth ********************************************
@@ -1294,7 +1256,7 @@ static AjPStr java_uniqueName(AjPStr username, ajint command)
 ** @return [ajint] 0=success -1=failure
 ******************************************************************************/
 
-static ajint java_send_auth(int conndes, char *cuser, char *cpass,
+static ajint java_send_auth(int tchan, int rchan, char *cuser, char *cpass,
 			    AjPStr *errstd)
 {
     AjPStr cmnd=NULL;
@@ -1305,20 +1267,23 @@ static ajint java_send_auth(int conndes, char *cuser, char *cpass,
 
     ajFmtPrintS(&cmnd,"%d %s %s",COMM_AUTH,cuser,cpass);
 
-    if(java_send(conndes,ajStrStr(cmnd),ajStrLen(cmnd)+1) < 0)
+    if(java_snd(tchan,ajStrStr(cmnd),ajStrLen(cmnd)+1,errstd)<0)
     {
 	ajStrAppC(errstd,"Error sending (java_send_auth)\n");
 	ajStrDel(&cmnd);
 	return -1;
     }
 
-    n = java_recv(conndes,&c,1,30,errstd);
+
+    n = java_rcv(rchan,(char *)&c,errstd);
     if(n==-1)
     {
 	ajStrAppC(errstd,"Error receiving (java_send_auth)\n");
 	ajStrDel(&cmnd);
 	return -1;
     }
+
+
 
     ajStrDel(&cmnd);
 
@@ -1349,7 +1314,7 @@ static ajint java_send_auth(int conndes, char *cuser, char *cpass,
 ** @return [ajint] 0=success -1=failure
 ******************************************************************************/
 
-static ajint java_emboss_fork(int conndes,char *cuser,char *cpass,
+static ajint java_emboss_fork(int tchan, char *cuser,char *cpass,
 			      AjPStr clemboss, AjPStr envi, AjPStr dir,
 			      char *buf, AjPStr *errstd)
 {
@@ -1366,7 +1331,7 @@ static ajint java_emboss_fork(int conndes,char *cuser,char *cpass,
     sprintf(p,"%s",ajStrStr(dir));
     n = (p-buf) + ajStrLen(dir) +1;
 
-    if(java_send(conndes,buf,n) < 0)
+    if(java_snd(tchan,buf,n,errstd) < 0)
     {
 	ajStrAppC(errstd,"Sending error (java_emboss_fork)\n");
 	return -1;
@@ -1390,7 +1355,7 @@ static ajint java_emboss_fork(int conndes,char *cuser,char *cpass,
 ** @return [ajint] 0=success -1=failure
 ******************************************************************************/
 
-static ajint java_make_dir(int conndes,char *cuser,char *cpass,AjPStr dir,
+static ajint java_make_dir(int tchan,char *cuser,char *cpass,AjPStr dir,
 			   char *buf, AjPStr *errstd)
 {
     char *p=NULL;
@@ -1402,7 +1367,7 @@ static ajint java_make_dir(int conndes,char *cuser,char *cpass,AjPStr dir,
     sprintf(p,"%s",ajStrStr(dir));
     n = (p-buf) + ajStrLen(dir) +1;
 
-    if(java_send(conndes,buf,n) < 0)
+    if(java_snd(tchan,buf,n,errstd) < 0)
     {
 	ajStrAppC(errstd,"Sending error (java_make_dir)\n");
 	return -1;
@@ -1427,8 +1392,8 @@ static ajint java_make_dir(int conndes,char *cuser,char *cpass,AjPStr dir,
 ** @return [ajint] 0=success -1=failure
 ******************************************************************************/
 
-static ajint java_delete_file(int conndes,char *cuser,char *cpass,AjPStr ufile,
-			 char *buf, AjPStr *errstd)
+static ajint java_delete_file(int tchan,char *cuser,char *cpass,AjPStr ufile,
+			      char *buf, AjPStr *errstd)
 {
     char *p=NULL;
     int n;
@@ -1439,7 +1404,7 @@ static ajint java_delete_file(int conndes,char *cuser,char *cpass,AjPStr ufile,
     sprintf(p,"%s",ajStrStr(ufile));
     n = (p-buf) + ajStrLen(ufile) +1;
 
-    if(java_send(conndes,buf,n) < 0)
+    if(java_snd(tchan,buf,n,errstd) < 0)
     {
 	ajStrAppC(errstd,"Sending error (java_delete_file)\n");
 	return -1;
@@ -1463,7 +1428,7 @@ static ajint java_delete_file(int conndes,char *cuser,char *cpass,AjPStr ufile,
 ** @return [ajint] 0=success -1=failure
 ******************************************************************************/
 
-static ajint java_delete_dir(int conndes,char *cuser,char *cpass,AjPStr dir,
+static ajint java_delete_dir(int tchan,char *cuser,char *cpass,AjPStr dir,
 			     char *buf, AjPStr *errstd)
 {
     char *p=NULL;
@@ -1475,7 +1440,7 @@ static ajint java_delete_dir(int conndes,char *cuser,char *cpass,AjPStr dir,
     sprintf(p,"%s",ajStrStr(dir));
     n = (p-buf) + ajStrLen(dir) +1;
 
-    if(java_send(conndes,buf,n) < 0)
+    if(java_snd(tchan,buf,n,errstd) < 0)
     {
 	ajStrAppC(errstd,"Sending error (java_delete_dir)\n");
 	return -1;
@@ -1499,7 +1464,7 @@ static ajint java_delete_dir(int conndes,char *cuser,char *cpass,AjPStr dir,
 ** @return [ajint] 0=success -1=failure
 ******************************************************************************/
 
-static ajint java_list_files(int conndes,char *cuser,char *cpass,AjPStr dir,
+static ajint java_list_files(int tchan,char *cuser,char *cpass,AjPStr dir,
 			     char *buf, AjPStr *errstd)
 {
     char *p=NULL;
@@ -1511,7 +1476,7 @@ static ajint java_list_files(int conndes,char *cuser,char *cpass,AjPStr dir,
     sprintf(p,"%s",ajStrStr(dir));
     n = (p-buf) + ajStrLen(dir) +1;
 
-    if(java_send(conndes,buf,n) < 0)
+    if(java_snd(tchan,buf,n,errstd) < 0)
     {
 	ajStrAppC(errstd,"Sending error (java_list_files)\n");
 	return -1;
@@ -1536,7 +1501,7 @@ static ajint java_list_files(int conndes,char *cuser,char *cpass,AjPStr dir,
 ** @return [ajint] 0=success -1=failure
 ******************************************************************************/
 
-static ajint java_list_dirs(int conndes,char *cuser,char *cpass,AjPStr dir,
+static ajint java_list_dirs(int tchan,char *cuser,char *cpass,AjPStr dir,
 			    char *buf, AjPStr *errstd)
 {
     char *p=NULL;
@@ -1548,7 +1513,7 @@ static ajint java_list_dirs(int conndes,char *cuser,char *cpass,AjPStr dir,
     sprintf(p,"%s",ajStrStr(dir));
     n = (p-buf) + ajStrLen(dir) +1;
 
-    if(java_send(conndes,buf,n) < 0)
+    if(java_snd(tchan,buf,n,errstd) < 0)
     {
 	ajStrAppC(errstd,"Sending error (java_list_dirs)\n");
 	return -1;
@@ -1575,9 +1540,9 @@ static ajint java_list_dirs(int conndes,char *cuser,char *cpass,AjPStr dir,
 ** @return [ajint] 0=success -1=failure
 ******************************************************************************/
 
-static ajint java_get_file(int conndes,char *cuser,char *cpass,AjPStr file,
-			   char *buf,unsigned char **fbuf,int *size,
-			   AjPStr *errstd)
+static ajint java_get_file(int tchan,int rchan,char *cuser,char *cpass,
+			   AjPStr file, char *buf,unsigned char **fbuf,
+			   int *size, AjPStr *errstd)
 {
     char *p=NULL;
     int n;
@@ -1589,14 +1554,14 @@ static ajint java_get_file(int conndes,char *cuser,char *cpass,AjPStr file,
     sprintf(p,"%s",ajStrStr(file));
     n = (p-buf) + ajStrLen(file) +1;
 
-    if(java_send(conndes,buf,n) < 0)
+    if(java_snd(tchan,buf,n,errstd) < 0)
     {
 	ajStrAppC(errstd,"Sending error (java_get_file)\n");
 	return -1;
     }
 
 
-    rlen = java_recv(conndes,buf,JBUFFLEN,30,errstd);
+    rlen = java_rcv(rchan,buf,errstd);
     if(rlen==-1)
     {
 	ajStrAppC(errstd,"Reading error (java_get_file)\n");
@@ -1638,8 +1603,8 @@ static ajint java_get_file(int conndes,char *cuser,char *cpass,AjPStr file,
 ** @return [ajint] 0=success -1=failure
 ******************************************************************************/
 
-static ajint java_put_file(int conndes,char *cuser,char *cpass,AjPStr file,
-			   char *buf,unsigned char *fbuf,int size,
+static ajint java_put_file(int tchan,int rchan,char *cuser,char *cpass,
+			   AjPStr file, char *buf,unsigned char *fbuf,int size,
 			   AjPStr *errstd)
 {
     char *p=NULL;
@@ -1654,14 +1619,14 @@ static ajint java_put_file(int conndes,char *cuser,char *cpass,AjPStr file,
     n = (p-buf) + ajStrLen(file) +1;
 
     /* send command */
-    if(java_send(conndes,buf,n) < 0)
+    if(java_snd(tchan,buf,n,errstd) < 0)
     {
 	ajStrAppC(errstd,"Sending error (java_put_file)\n");
 	return -1;
     }
 
 
-    rlen = java_recv(conndes,buf,2,30,errstd);
+    rlen = java_rcv(rchan,buf,errstd);
     if(rlen==-1)
     {
 	ajStrAppC(errstd,"Socket Recv error 2\n");
@@ -1673,14 +1638,14 @@ static ajint java_put_file(int conndes,char *cuser,char *cpass,AjPStr file,
 
     /* Send file size */
     n = sprintf(buf,"%d",size);
-    if(java_send(conndes,buf,n+1) < 0)
+    if(java_snd(tchan,buf,n+1,errstd) < 0)
     {
 	ajStrAppC(errstd,"Sending error (java_put_file)\n");
 	return -1;
     }
     
 
-    rlen = java_recv(conndes,buf,2,30,errstd);
+    rlen = java_rcv(rchan,buf,errstd);
     if(rlen==-1)
     {
 	ajStrAppC(errstd,"Socket Recv error 2\n");
@@ -1692,7 +1657,7 @@ static ajint java_put_file(int conndes,char *cuser,char *cpass,AjPStr file,
     while(pos+JBUFFLEN < size)
     {
  	memcpy((void *)buf,(const void *)&fbuf[pos],JBUFFLEN);
-	if(java_send(conndes,buf,JBUFFLEN) < 0)
+	if(java_snd(tchan,buf,JBUFFLEN,errstd) < 0)
 	{
 	    ajStrAppC(errstd,"Sending error (java_put_file)\n");
 	    return -1;
@@ -1703,7 +1668,7 @@ static ajint java_put_file(int conndes,char *cuser,char *cpass,AjPStr file,
 	if(size-pos)
 	{
 	    memcpy((void *)buf,(const void *)&fbuf[pos],size-pos);
-	    if(java_send(conndes,buf,size-pos) < 0)
+	    if(java_snd(tchan,buf,size-pos,errstd) < 0)
 	    {
 		ajStrAppC(errstd,"Sending error (java_put_file)\n");
 		return -1;
@@ -1736,6 +1701,15 @@ static void java_wait_for_term(int pid,AjPStr *outstd, AjPStr *errstd,
     int nread=0;
     int  status;
     int retval=0;
+    unsigned long block=0;
+    
+
+    block = 1;
+    if(ioctl(outpipe[0],FIONBIO,&block)==-1)
+	return;
+
+    if(ioctl(errpipe[0],FIONBIO,&block)==-1)
+	return;
 
 
 
@@ -1803,6 +1777,14 @@ static void java_wait_for_term(int pid,AjPStr *outstd, AjPStr *errstd,
     }
 
 
+    block = 0;
+    if(ioctl(outpipe[0],FIONBIO,&block)==-1)
+	return;
+
+    if(ioctl(errpipe[0],FIONBIO,&block)==-1)
+	return;
+
+
     return;
 }
 
@@ -1833,6 +1815,16 @@ static void java_wait_for_file(int pid,AjPStr *outstd, AjPStr *errstd,
     int  status;
     int retval=0;
     unsigned char *ptr;
+    unsigned long block=0;
+    
+
+    block = 1;
+    if(ioctl(outpipe[0],FIONBIO,&block)==-1)
+	return;
+
+    if(ioctl(errpipe[0],FIONBIO,&block)==-1)
+	return;
+
 
     ptr = fbuf;
 
@@ -1903,6 +1895,12 @@ static void java_wait_for_file(int pid,AjPStr *outstd, AjPStr *errstd,
     if(ptr-fbuf != size)
 	ajStrAppC(errstd,"\nIncomplete file read\n");
 
+    block = 0;
+    if(ioctl(outpipe[0],FIONBIO,&block)==-1)
+	return;
+
+    if(ioctl(errpipe[0],FIONBIO,&block)==-1)
+	return;
 
     return;
 }
@@ -1941,32 +1939,16 @@ static int java_jembossctl(ajint command, AjPStr username, AjPStr password,
     AjPStr clemboss=NULL;
     AjPStr envi=NULL;
 
-    struct timeval tv;
-    long   then;
-    long   now;
     int    i=0;
     
     
     char *cuser=NULL;
     char *cpass=NULL;
-    char *cuniq=NULL;
+
     char *buff=NULL;
     int size=0;
-    
 
-    /* Socket stuff */
-    int sockdes;		/* Initial socket descriptor   */
-    int conndes;		/* Connected socket descriptor */
-    
-    struct sockaddr_un here;
-    struct sockaddr_un there;
-    int nlen;
     int rlen=0;
-#if defined (_AIX)
-    unsigned long tlen=0;
-#else
-    int tlen=0;
-#endif
 
     char **argp=NULL;
     char **envp=NULL;
@@ -1974,15 +1956,13 @@ static int java_jembossctl(ajint command, AjPStr username, AjPStr password,
 
     int  outpipe[2];
     int  errpipe[2];
+    int  commpipe[2];
+    int  tchan;
+    int  rchan;
     
     int retval=0;
 
 
-    uniq = java_uniqueName(username,command);
-    if(!uniq)
-	return -1;
-    
-    cuniq = ajStrStr(uniq);
     cuser = ajStrStr(username);
     cpass = ajStrStr(password);
 
@@ -1993,8 +1973,6 @@ static int java_jembossctl(ajint command, AjPStr username, AjPStr password,
     prog     = ajStrNew();
 
 
-    ajRandomSeed();
-    
     if(!(buff=(char*)malloc(JBUFFLEN)))
     {
 	ajStrAppC(errstd,"Malloc error\n");
@@ -2003,51 +1981,6 @@ static int java_jembossctl(ajint command, AjPStr username, AjPStr password,
     }
     
 
-    
-    /* Get socket descriptor */
-    sockdes = socket(AF_UNIX,SOCK_STREAM,0);
-    if(sockdes==-1)
-    {
-	ajStrAppC(errstd,"No socket descriptor\n");
-	java_tidy_command2(&uniq,&cl,&clemboss,&dir,&envi,&prog,buff);
-	return -1;
-    }
-    
-
-    /* Process might not return so set non-blocking */
-    fcntl(sockdes,F_SETFL,O_NONBLOCK);
-
-
-    /* Bind to socket */
-    unlink(ajStrStr(uniq));
-
-    here.sun_family = AF_UNIX;
-    strcpy(here.sun_path,ajStrStr(uniq));
-#if defined (__ppc__) || defined (_AIX)
-    nlen = here.sun_len = sizeof(here) - sizeof(here.sun_path) +
-      strlen(here.sun_path);
-#else
-    nlen = ajStrLen(uniq) + sizeof(here.sun_family);
-#endif
-    if(bind(sockdes,(struct sockaddr*)&here,nlen)==-1)
-    {
-	ajStrAppC(errstd,"Bind error\n");
-	close(sockdes);
-	unlink(cuniq);
-	java_tidy_command2(&uniq,&cl,&clemboss,&dir,&envi,&prog,buff);
-	return -1;
-    }
-    
-
-    /* Set socket listening */
-    if(listen(sockdes,10)==-1)
-    {
-	ajStrAppC(errstd,"Listen error\n");
-	close(sockdes);
-	unlink(cuniq);
-	java_tidy_command2(&uniq,&cl,&clemboss,&dir,&envi,&prog,buff);
-	return -1;
-    }
     
     /* Set environment for execve */
     ajStrAssS(&envi,environment);
@@ -2058,30 +1991,39 @@ static int java_jembossctl(ajint command, AjPStr username, AjPStr password,
     if(!ajSysWhichEnv(&prog,envp))
     {
 	ajStrAppC(errstd,"Cannot locate jembossctl\n");
-	close(sockdes);
-	unlink(cuniq);
 	java_tidy_command2(&uniq,&cl,&clemboss,&dir,&envi,&prog,buff);
 	return -1;
     }
 
     /* Setup commandline */
-    ajFmtPrintS(&cl,"jembossctl %s",cuniq);
+    ajFmtPrintS(&cl,"jembossctl");
     argp = make_array(cl);
     
-    pipe(outpipe);
-    pipe(errpipe);
+    while(pipe(outpipe)==-1);
+    while(pipe(errpipe)==-1);
+    while(pipe(commpipe)==-1);
+    tchan = commpipe[1];
+    rchan = outpipe[0];
+    
 
+#if defined (__SVR4) && defined (__sun)
+    pid = fork1();
+#else
     pid = fork();
+#endif
     if(pid == -1)
     {
 	ajStrAppC(errstd,"Fork error\n");
-	java_tidy_command3(&uniq,&cl,&clemboss,&dir,&envi,&prog,buff,cuniq,
-			   sockdes,outpipe,errpipe);
+	java_tidy_command3(&uniq,&cl,&clemboss,&dir,&envi,&prog,buff,
+			   commpipe,outpipe,errpipe);
 	return -1;
     }
 
+
+
     if(!pid)			/* Child (doit suid prog) */
     {
+	dup2(commpipe[0],0);
 	dup2(outpipe[1],1);
 	dup2(errpipe[1],2);
 	if(execve(ajStrStr(prog),argp,envp) == -1)
@@ -2090,6 +2032,8 @@ static int java_jembossctl(ajint command, AjPStr username, AjPStr password,
 	    exit(-1);
 	}
     }
+
+
 
     /* Don't need the env or commline for the parent */
     i = 0;
@@ -2104,134 +2048,77 @@ static int java_jembossctl(ajint command, AjPStr username, AjPStr password,
     /* End of fork code */
 
 
-
-    /* Wait for a connection with timeout of 30 seconds */
-    /* Success if jembossctl says OK across the socket  */
-    if(gettimeofday(&tv,NULL))
-    {
-	ajStrAppC(errstd,"Gettimeofday error\n");
-	java_tidy_command3(&uniq,&cl,&clemboss,&dir,&envi,&prog,buff,cuniq,
-			   sockdes,outpipe,errpipe);
-	return -1;
-    }
-    then = tv.tv_sec;
-    
-    tlen = sizeof(there);
-    while((conndes=accept(sockdes,(struct sockaddr*)&there,&tlen))==-1)
-    {
-	if(errno==EINTR)
-	    continue;
-	
-	if(errno!=EAGAIN)
-	{
-	    ajFmtPrintS(errstd,"Not EAGAIN Errno=%d\n",errno);
-	    break;
-	}
-	
-
-	if(gettimeofday(&tv,NULL))
-	{
-	    ajStrAppC(errstd,"Gettimeofday error\n");
-	    java_tidy_command3(&uniq,&cl,&clemboss,&dir,&envi,&prog,buff,cuniq,
-			       sockdes,outpipe,errpipe);
-	    return -1;
-	}
-	now = tv.tv_sec;
-	if(now-then >= 30)
-	{
-	    ajStrAppC(errstd,"Timeout error\n");
-	    java_tidy_command3(&uniq,&cl,&clemboss,&dir,&envi,&prog,buff,cuniq,
-			       sockdes,outpipe,errpipe);
-	    return -1;
-	}
-
-    }
-    
-    if(!conndes)
-    {
-	ajStrAppC(errstd,"Server connect error\n");
-	java_tidy_command3(&uniq,&cl,&clemboss,&dir,&envi,&prog,buff,cuniq,
-			   sockdes,outpipe,errpipe);
-	return -1;
-    }
-
-
     *buff = '\0';
-    rlen = java_recv(conndes,buff,2,30,errstd);
+    rlen = java_rcv(rchan,buff,errstd);
     if(rlen==-1)
     {
-	ajStrAppC(errstd,"Socket Recv error 1\n");
-	java_tidy_command3(&uniq,&cl,&clemboss,&dir,&envi,&prog,buff,cuniq,
-			   sockdes,outpipe,errpipe);
-	close(conndes);
+	ajStrAppC(errstd,"Pipe Recv error 1\n");
+	java_tidy_command3(&uniq,&cl,&clemboss,&dir,&envi,&prog,buff,
+			   commpipe,outpipe,errpipe);
 	return -1;
     }
-
 
     if(rlen<2 || strncmp(buff,"OK",2))
     {
 	ajStrAppC(errstd,"Incorrect ACK error\n");
-	java_tidy_command3(&uniq,&cl,&clemboss,&dir,&envi,&prog,buff,cuniq,
-			   sockdes,outpipe,errpipe);
-	close(conndes);
+	java_tidy_command3(&uniq,&cl,&clemboss,&dir,&envi,&prog,buff,
+			   commpipe,outpipe,errpipe);
 	return -1;
     }
 
 
 
-
-    
-
-    /* At this point socket comms are active and commands can be sent */
+    /* At this point pipe comms are active and commands can be sent */
 
     switch(command)
     {
     case COMM_AUTH:
-	retval = java_send_auth(conndes,cuser,cpass,errstd);
+	retval = java_send_auth(tchan,rchan,cuser,cpass,errstd);
 	java_wait_for_term(pid,outstd,errstd,outpipe,errpipe,buff);
 	break;
 
     case EMBOSS_FORK:
 	ajStrAssS(&clemboss,str1);
 	ajStrAssS(&dir,str2);
-	retval = java_emboss_fork(conndes,cuser,cpass,clemboss,envi,dir,buff,
+	retval = java_emboss_fork(tchan,cuser,cpass,clemboss,envi,dir,buff,
 				  errstd);
 	java_wait_for_term(pid,outstd,errstd,outpipe,errpipe,buff);
 	break;
 
     case MAKE_DIRECTORY:
 	ajStrAssS(&dir,str1);
-	retval = java_make_dir(conndes,cuser,cpass,dir,buff,errstd);
+	retval = java_make_dir(tchan,cuser,cpass,dir,buff,errstd);
 	java_wait_for_term(pid,outstd,errstd,outpipe,errpipe,buff);
 	break;
 
     case DELETE_FILE:
 	ajStrAssS(&dir,str1);
-	retval = java_delete_file(conndes,cuser,cpass,dir,buff,errstd);
+	retval = java_delete_file(tchan,cuser,cpass,dir,buff,errstd);
 	java_wait_for_term(pid,outstd,errstd,outpipe,errpipe,buff);
 	break;
 
     case DELETE_DIR:
 	ajStrAssS(&dir,str1);
-	retval = java_delete_dir(conndes,cuser,cpass,dir,buff,errstd);
+	retval = java_delete_dir(tchan,cuser,cpass,dir,buff,errstd);
 	java_wait_for_term(pid,outstd,errstd,outpipe,errpipe,buff);
 	break;
 
     case LIST_FILES:
 	ajStrAssS(&dir,str1);
-	retval = java_list_files(conndes,cuser,cpass,dir,buff,errstd);
+	retval = java_list_files(tchan,cuser,cpass,dir,buff,errstd);
 	java_wait_for_term(pid,outstd,errstd,outpipe,errpipe,buff);
 	break;
 
     case LIST_DIRS:
 	ajStrAssS(&dir,str1);
-	retval = java_list_dirs(conndes,cuser,cpass,dir,buff,errstd);
+	retval = java_list_dirs(tchan,cuser,cpass,dir,buff,errstd);
 	java_wait_for_term(pid,outstd,errstd,outpipe,errpipe,buff);
 	break;
 
     case GET_FILE:
 	ajStrAssS(&dir,str1);
-	retval = java_get_file(conndes,cuser,cpass,dir,buff,fbuf,&size,errstd);
+	retval = java_get_file(tchan,rchan,cuser,cpass,dir,buff,fbuf,&size,
+			       errstd);
 	java_wait_for_file(pid,outstd,errstd,outpipe,errpipe,buff,*fbuf,size);
 	*fsize = size;
 	break;
@@ -2239,7 +2126,8 @@ static int java_jembossctl(ajint command, AjPStr username, AjPStr password,
     case PUT_FILE:
 	ajStrAssS(&dir,str1);
 	size = *fsize;
-	retval = java_put_file(conndes,cuser,cpass,dir,buff,*fbuf,size,errstd);
+	retval = java_put_file(tchan,rchan,cuser,cpass,dir,buff,*fbuf,size,
+			       errstd);
 	java_wait_for_term(pid,outstd,errstd,outpipe,errpipe,buff);
 	break;
 	
@@ -2248,9 +2136,9 @@ static int java_jembossctl(ajint command, AjPStr username, AjPStr password,
     }
     
 
-    java_tidy_command3(&uniq,&cl,&clemboss,&dir,&envi,&prog,buff,cuniq,
-		       sockdes,outpipe,errpipe);
-    close(conndes);
+    java_tidy_command3(&uniq,&cl,&clemboss,&dir,&envi,&prog,buff,
+		       commpipe,outpipe,errpipe);
+
 
     return retval;
 }
@@ -2332,12 +2220,12 @@ static void java_tidy_command2(AjPStr *uniq, AjPStr *cl, AjPStr *clemboss,
 
 static void java_tidy_command3(AjPStr *uniq, AjPStr *cl, AjPStr *clemboss,
 			       AjPStr *dir, AjPStr *envi, AjPStr *prog,
-			       char *buf, char *cuniq, int sockdes,
+			       char *buf, int *commpipe,
 			       int *outpipe, int *errpipe)
 {
     
-    close(sockdes);
-    unlink(cuniq);
+    close(commpipe[0]);
+    close(commpipe[1]);
     close(outpipe[0]);
     close(outpipe[1]);
     close(errpipe[0]);
@@ -3478,94 +3366,219 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_putFile
 
 
 
-/* @func java_recv **************************************************
+/* @funcstatic java_pipe_write ************************************************
 **
-** Non-blocking socket receive
+** Write a byte stream down a file desriptor (unblocked)
 **
-** @param [r] sock [int] open socket
-** @param [w] buf [char*] buffer for receive
-** @param [r] blen [int] number of bytes to attempt receiving
-** @param [r] seconds [int] timeout in seconds
-** @param [w] errstd [AjPStr] error msgs for stderr
+** @param [w] tchan [int] file descriptor
+** @param [r] buf [char *] buffer to write
+** @param [r] n [int] number of bytes to write
+** @param [r] seconds [int] time-out
+** @param [w] errstd [AjPStr*] stderr
 **
-** @return [int] Number of bytes received or -1 on error
+** @return [int] 0=success  -1=failure
 ** @@
 ******************************************************************************/
 
-static int java_recv(int sock, char *buf, int blen, int seconds,
-		     AjPStr *errstd)
+static int java_pipe_write(int tchan, char *buf, int n, int seconds,
+			   AjPStr *errstd)
 {
-    struct timeval t;
-    unsigned long block=0;
     fd_set fdr;
-    int ret;
-    int len;
+    fd_set fdw;
+    struct timeval tfd;
+    int  written;
+    int  sent=0;
+    int  ret=0;
+    char *p;
+    unsigned long block=0;
     
+
     block = 1;
-    if(ioctl(sock,FIONBIO,&block)==-1)
+    if(ioctl(tchan,FIONBIO,&block)==-1)
     {
-	ajFmtPrintS(errstd,"jctl_read Cannot set non-blocking\n");
+	ajStrAppC(errstd,"Cannot unblock\n");
 	return -1;
     }
-
-    t.tv_sec  = seconds;
-    t.tv_usec = 0;
-    FD_ZERO(&fdr);
-    FD_SET(sock,&fdr);
     
-    ret = select(sock+1,&fdr,NULL,NULL,&t);
-    
-    if(!ret || ret==-1)
-    {
-	ajFmtPrintS(errstd,"jctl_recv: Timeout\n");
-	return -1;
-    }
 
-
-    while((len = recv(sock,buf,blen,0)) < 0 && errno==EINTR);
-    if(len==-1)
+    p = buf;
+    written = 0;
+    while(written!=n)
     {
-	ajFmtPrintS(errstd,"jctl_recv: recv error %d\n",errno);
-	return -1;
-    }
+	/* Check pipe is writeable */
+	tfd.tv_sec  = seconds;
+	tfd.tv_usec = 0;
+	FD_ZERO(&fdw);
+	FD_SET(tchan,&fdw);
+	fdr = fdw;
 	
+	ret = select(tchan+1,&fdr,&fdw,NULL,&tfd);
+	if(!ret || ret==-1)
+	{
+	    ajStrAppC(errstd,"java_pipe_write timeout\n");
+	    return -1;
+	}
+	if(FD_ISSET(tchan,&fdw))
+	{
+	    while((sent=write(tchan,p,n-(p-buf)))==-1 && errno==EINTR);
+	    if(sent == -1)
+	    {
+		ajStrAppC(errstd,"java_pipe_write send error\n");
+		return -1;
+	    }
+	    written += sent;
+	    p += sent;
+	}
+    }
+
 
     block = 0;
-    if(ioctl(sock,FIONBIO,&block)==-1)
+    if(ioctl(tchan,FIONBIO,&block)==-1)
     {
-	ajFmtPrintS(errstd,"jctl_read Cannot set blocking\n");
+	ajStrAppC(errstd,"Cannot block\n");
 	return -1;
     }
-
-
-    return len;
-}
-
-
-
-/* @func java_send **************************************************
-**
-** A send that retries on interrupt
-**
-** @param [r] sock [int] open socket
-** @param [w] buf [char*] data buffer
-** @param [r] len [int] number of bytes to attempt sending
-**
-** @return [int] 0=sucess  -1=failure
-** @@
-******************************************************************************/
-
-static int java_send(int sock,char *buf,int len)
-{
-    int ret=0;
-    
-    while((ret=send(sock,buf,len,0)==-1) && errno==EINTR);
-    if(ret==-1)
-	return -1;
 
     return 0;
 }
 
 
-#endif
 
+/* @funcstatic java_pipe_read ************************************************
+**
+** Read a byte stream from a file desriptor (unblocked)
+**
+** @param [w] rchan [int] file descriptor
+** @param [r] buf [char *] buffer for read
+** @param [r] n [int] number of bytes to read
+** @param [r] seconds [int] time-out
+** @param [w] errstd [AjPStr*] stderr
+**
+** @return [int] 0=success  -1=failure
+** @@
+******************************************************************************/
+
+static int java_pipe_read(int rchan, char *buf, int n, int seconds,
+			  AjPStr *errstd)
+{
+    fd_set fdr;
+    fd_set fdw;
+    struct timeval tfd;
+    int  sum;
+    int  got=0;
+    int  ret=0;
+    char *p;
+    unsigned long block=0;
+    
+
+    block = 1;
+    if(ioctl(rchan,FIONBIO,&block)==-1)
+    {
+	ajStrAppC(errstd,"Cannot unblock\n");
+	return -1;
+    }
+
+    p = buf;
+    sum = 0;
+    while(sum!=n)
+    {
+	/* Check pipe is readable */
+	tfd.tv_sec  = seconds;
+	tfd.tv_usec = 0;
+	FD_ZERO(&fdr);
+	FD_SET(rchan,&fdr);
+	fdw = fdr;
+	
+	ret = select(rchan+1,&fdr,&fdw,NULL,&tfd);
+	if(!ret || ret==-1)
+	{
+	    ajStrAppC(errstd,"java_pipe_read timeout\n");
+	    return -1;
+	}
+	if(FD_ISSET(rchan,&fdr))
+	{
+	    while((got=read(rchan,p,n-(p-buf)))==-1 && errno==EINTR);
+	    if(got == -1)
+	    {
+		ajStrAppC(errstd,"java_pipe_read read error\n");
+		return -1;
+	    }
+	    sum += got;
+	    p += got;
+	}
+    }
+
+    block = 0;
+    if(ioctl(rchan,FIONBIO,&block)==-1)
+    {
+	ajStrAppC(errstd,"Cannot unblock\n");
+	return -1;
+    }
+
+    return 0;
+}
+
+
+
+/* @funcstatic java_snd ************************************************
+**
+** Mimic socket write using pipes
+**
+** @param [w] tchan [int] file descriptor
+** @param [r] buf [char *] buffer to write
+** @param [r] len [int] number of bytes to write
+** @param [w] errstd [AjPStr*] stderr
+**
+** @return [int] 0=success  -1=failure
+** @@
+******************************************************************************/
+
+static int java_snd(int tchan,char *buf,int len,AjPStr *errstd)
+{
+
+    if(java_pipe_write(tchan,(char *)&len,sizeof(int),TIMEOUT,errstd)==-1)
+    {
+	ajStrAppC(errstd,"java_snd error\n");
+	return -1;
+    }
+    if(java_pipe_write(tchan,buf,len,TIMEOUT,errstd)==-1)
+    {
+	ajStrAppC(errstd,"java_snd error\n");
+	return -1;
+    }
+
+    return 0;
+}
+
+/* @funcstatic java_rcv ************************************************
+**
+** Mimic socket read using pipes
+**
+** @param [r] rchan [int] file descriptor
+** @param [r] buf [char *] buffer to write
+** @param [w] errstd [AjPStr*] stderr
+**
+** @return [int] 0=success  -1=failure
+** @@
+******************************************************************************/
+
+static int java_rcv(int rchan, char *buf, AjPStr *errstd)
+{
+    int len;
+    
+    if(java_pipe_read(rchan,(char *)&len,sizeof(int),TIMEOUT,errstd)==-1)
+    {
+	ajStrAppC(errstd,"java_rcv error\n");
+	return -1;
+    }
+    if(java_pipe_read(rchan,buf,len,TIMEOUT,errstd)==-1)
+    {
+	ajStrAppC(errstd,"java_rcv error\n");
+	return -1;
+    }
+
+    return len;
+}
+
+
+#endif
