@@ -68,7 +68,7 @@ AjPRegexp ajRegComp (AjPStr exp) {
     regAlloc += sizeof(ret);
     regCount ++;
     regTotal ++;
-    ajDebug("ajRegComp %x size %d regexp '%s'\n",
+    ajDebug("ajRegComp %x size %d regexp '%S'\n",
 	    ret, (int) sizeof(ret), exp);
   }
   return ret;
@@ -434,8 +434,8 @@ void ajRegSubC (AjPRegexp rp, const char* source, AjPStr* dest) {
 void ajRegFree (AjPRegexp* pexp) {
   if (!pexp) return;
   if (!*pexp) return;
-  ajDebug("ajRegFree %x size regexp %d\n", **pexp,
-	  (ajint) sizeof(**pexp));
+  ajDebug("ajRegFree %x size regexp %d\n", *pexp,
+	  (ajint) sizeof(*pexp));
   regFreeCount += 1;
   regFree += sizeof(**pexp);
   regTotal --;
