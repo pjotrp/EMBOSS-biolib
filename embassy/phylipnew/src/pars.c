@@ -9,7 +9,7 @@
 
 #define MAXNUMTREES     1000000  /* bigger than number of user trees can be */
 
-AjPSeqset* seqsets = NULL;
+AjPPhyloState* disc = NULL;
 AjPPhyloProp phyloweight = NULL;
 AjPPhyloTree* phylotrees = NULL;
 
@@ -371,7 +371,7 @@ void doinit()
 {
   /* initializes variables */
 
-  inputnumbersseq(seqsets[0], &spp, &chars, &nonodes, 1);
+  inputnumbersstate(disc[0], &spp, &chars, &nonodes, 1);
 /*  getoptions();*/
   if (printdata)
     fprintf(outfile, "%2ld species, %3ld  sites\n\n", spp, chars);
@@ -423,7 +423,7 @@ void doinput()
 
   if (justwts) {
     if (firstset)
-      discrete_inputdata(seqsets[0], chars);
+      discrete_inputdata(disc[0], chars);
     for (i = 0; i < chars; i++)
       weight[i] = 1;
     inputweightsstr(phyloweight->Str[0], chars, weight, &weights);
@@ -436,8 +436,8 @@ void doinput()
       printweights(outfile, 0, chars, weight, "Sites");
   } else {
     if (!firstset)
-      samenumspseq(seqsets[ith-1], &chars, ith);
-    discrete_inputdata(seqsets[ith-1], chars);
+      samenumspstate(disc[ith-1], &chars, ith);
+    discrete_inputdata(disc[ith-1], chars);
     for (i = 0; i < chars; i++)
       weight[i] = 1;
     if (weights) {

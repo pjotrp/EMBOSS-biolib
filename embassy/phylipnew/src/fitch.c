@@ -11,7 +11,6 @@
 #define delta           0.01      /* a not quite so small number */
 #define MAXNUMTREES     1000000 /* a number bigger than conceivable numtrees */
 
-AjPSeqset* seqsets = NULL;
 AjPPhyloDist phylodist = NULL;
 AjPPhyloTree* phylotrees = NULL;
 
@@ -332,7 +331,7 @@ void doinit()
 {
   /* initializes variables */
 
-  inputnumbers2seq(seqsets[0],&spp, &nonodes2, 2);
+  inputnumbers2seq(phylodist,&spp, &nonodes2, 2);
 /*  getoptions();*/
   alloctree(&curtree.nodep, nonodes2);
   allocd(nonodes2, curtree.nodep);
@@ -358,7 +357,7 @@ void inputoptions()
 {
   /* print options information */
   if (!firstset)
-    samenumspseq2(seqsets[ith-1], ith);
+    samenumspseq2(phylodist, ith);
   fprintf(outfile, "\nFitch-Margoliash method version %s\n\n",VERSION);
   if (minev)
     fprintf(outfile, "Minimum evolution method option\n\n");

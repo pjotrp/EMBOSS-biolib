@@ -9,7 +9,6 @@
 
 #define epsilonk         0.000001   /* a very small but not too small number */
 
-AjPSeqset* seqsets = NULL;
 AjPPhyloDist phylodist = NULL;
 AjPPhyloTree* phylotrees = NULL;
 
@@ -247,7 +246,7 @@ void doinit()
 {
   /* initializes variables */
 
-  inputnumbers2seq(seqsets[0], &spp, &nonodes, 1);
+  inputnumbers2seq(phylodist, &spp, &nonodes, 1);
 /*  getoptions();*/
   alloctree(&curtree.nodep, nonodes);
   allocd(nonodes, curtree.nodep);
@@ -266,7 +265,7 @@ void inputoptions()
 {
   /* print options information */
   if (!firstset)
-    samenumspseq2(seqsets[ith-1], ith);
+    samenumspseq2(phylodist, ith);
   fprintf(outfile, "\nFitch-Margoliash method ");
   fprintf(outfile, "with contemporary tips, version %s\n\n",VERSION);
   if (minev)

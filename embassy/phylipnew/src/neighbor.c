@@ -8,7 +8,6 @@
    Permission is granted to copy and use this program provided no fee is
    charged for it and provided that this copyright notice is not removed. */
 
-AjPSeqset* seqsets = NULL;
 AjPPhyloDist phylodist = NULL;
 
 #ifndef OLDC
@@ -230,7 +229,7 @@ void doinit()
   /* initializes variables */
   node *p;
 
-  inputnumbers2seq(seqsets[0], &spp, &nonodes2, 2);
+  inputnumbers2seq(phylodist, &spp, &nonodes2, 2);
   nonodes2 += (njoin ? 0 : 1);
 /*  getoptions();*/
   alloctree(&curtree.nodep, nonodes2+1);
@@ -246,7 +245,7 @@ void inputoptions()
   /* read options information */
 
   if (ith != 1)
-    samenumspseq2(seqsets[ith-1], ith);
+    samenumspseq2(phylodist, ith);
   putc('\n', outfile);
   if (njoin)
     fprintf(outfile, " Neighbor-joining method\n");
