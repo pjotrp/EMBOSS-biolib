@@ -72,6 +72,7 @@ sub runtest ($) {
   my $ppcmd = "";
   my $qqcmd = "";
   my %testfile = ();
+  my %outfile = ();
 
 # these are globals, used by the caller
 
@@ -701,7 +702,6 @@ while (<IN>) {
 
 # clear any global hashes befoire defining the next test
 
-    undef %outfile;
     undef %outfilepatt;
     undef %pattest;
     undef %patcount;
