@@ -137,8 +137,6 @@ int main(int argc, char **argv)
     AjBool     ok      =ajFalse;/* True if "____  _" has been found and we can start
 				  parsing */
     AjBool     done_1st=ajFalse;/* True if the first line of data has been parsed*/
-    char      *ptr     =NULL;
-    
     
     
 
