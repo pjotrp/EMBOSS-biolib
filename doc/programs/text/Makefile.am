@@ -13,7 +13,7 @@ pkgdata_DATA =  SITE-DIRECTED.txt abiview.txt antigenic.txt backtranseq.txt \
                ednamlk.txt ednapars.txt ednapenny.txt edollop.txt \
                edolpenny.txt efactor.txt efitch.txt egendist.txt \
                einverted.txt ekitsch.txt embossdata.txt embossversion.txt \
-               emix.txt emma.txt emnu.txt emowse.txt eneighbor.txt \
+               emix.txt emma.txt emowse.txt eneighbor.txt \
                entret.txt epenny.txt eprotdist.txt eprotpars.txt \
                equicktandem.txt erestml.txt eseqboot.txt est2genome.txt \
                etandem.txt extractseq.txt factor.txt findkm.txt fitch.txt \
