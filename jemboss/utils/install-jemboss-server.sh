@@ -490,6 +490,9 @@ echo "(y/n) [y]?"
 read PNGSUPPORT
 
 PNG=""
+if [ "$PNGSUPPORT" = "" ]; then
+  PNG="--with-pngdriver=$EMBOSS_INSTALL/share/EMBOSS"
+fi
 if [ "$PNGSUPPORT" = "y" ]; then
   PNG="--with-pngdriver=$EMBOSS_INSTALL/share/EMBOSS"
 fi
@@ -526,7 +529,7 @@ cd $EMBOSS_DOWNLOAD
 ./configure --with-java=$JAVA_INCLUDE \
             --with-javaos=$JAVA_INCLUDE_OS \
             --with-thread=$PLATFORM \
-            --prefix=$EMBOSS_INSTALL $JEMBOSS_SERVER_AUTH $USER_CONFIG
+            --prefix=$EMBOSS_INSTALL $JEMBOSS_SERVER_AUTH $PNG $USER_CONFIG
 
 make
 
