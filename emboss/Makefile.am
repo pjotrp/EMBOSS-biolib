@@ -10,7 +10,7 @@ entrails histogramtest intconv \
 patmattest \
 psiblasts \
 seqinfo \
-seqretallfeat seqtofeat \
+seqtofeat \
 sigscan \
 testplot treetypedisplay 
 
@@ -38,7 +38,7 @@ prettyplot prettyseq prima primersearch printsextract \
 profit prophecy prophet \
 prosextract pscan \
 rebaseextract recoder redata remap restover restrict revseq scope \
-seealso seqmatchall seqret seqretall seqretset seqretsplit \
+seealso seqmatchall seqret seqretall seqretallfeat seqretset seqretsplit \
 showalign showdb showfeat showorf showseq \
 shuffleseq sigcleave siggen silent splitter scopalign stretcher \
 stssearch supermatcher swissparse syco \
