@@ -364,7 +364,7 @@ int i, lenght;
 	total = 0.0;
 	lenght = 0;
 
-	protein = (type <= PROTEIN ) ? true : false;
+	protein = (type <= PROTEIN ) ? 1 : 0;
 
 	names = ( protein ) ? pNames : nNames;  /* Point to correct string */
 	w = ( protein ) ? pW : nW ;             /* point to correct table  */

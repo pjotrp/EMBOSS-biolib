@@ -63,7 +63,7 @@ char newString[512];
 int length;
 Boolean start;
 
-	start = true;
+	start = 1;
 
 /* 
 ** Read one line
@@ -79,7 +79,7 @@ Get:	if ( gets(newString) == NULL ) { printf("\n"); exit(0);}
 	length = strlen(newString);
 	if ( length > 0 ) {
 	  if ( start ) *string = '\0';            /* Write over existing */
-	  start = false;
+	  start = 0;
 	  if( newString[length-1] == '-' ) {      /* Continuation character */
 	    newString[length-1] = '\0';           /* Process and get more   */
 	    strcat(string, newString);
@@ -107,15 +107,15 @@ Boolean GetBoolean(char *prompt, Boolean def)
 {
 char string[256];
 
-	while(true) {
+	while(1) {
 	  strcpy(string,BooleanToStr(def,0));
 	  StrToUpper(StrCollapse(GetInput(prompt,string)));
-	  if ( *string == 'Y' ) return(true);
-	  if ( *string == 'N' ) return(false);
-	  if ( *string == 'T' ) return(true);
-	  if ( *string == 'F' ) return(false);
-	  if ( *string == '1' ) return(true);
-	  if ( *string == '0' ) return(false);
+	  if ( *string == 'Y' ) return(1);
+	  if ( *string == 'N' ) return(0);
+	  if ( *string == 'T' ) return(1);
+	  if ( *string == 'F' ) return(0);
+	  if ( *string == '1' ) return(1);
+	  if ( *string == '0' ) return(0);
 	  printf("\n You must answer YES or NO. Try again: ");
 
 	}
@@ -249,7 +249,7 @@ Boolean reverse;
 
 	*begin = ( seq->length ) ? 1 : 0;
 	*end = seq->length;
-	reverse = false;
+	reverse = 0;
 
 	*begin = GetInteger("\n                  Begin", *begin, *begin, seq->length);
 
@@ -259,11 +259,11 @@ Boolean reverse;
 
 	*end = GetInteger(format, *end, *begin, seq->length);
 
-	if ((*begin != 1) || *end != seq->length) seq->circular = false;
+	if ((*begin != 1) || *end != seq->length) seq->circular = 0;
 
 	if ( seq->type >= DNA ) {
-	  if (GetBoolean("  From reverse strand",false)) {
-	    reverse = true;
+	  if (GetBoolean("  From reverse strand",0)) {
+	    reverse = 1;
 	  }
 	}
 

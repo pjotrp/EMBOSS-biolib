@@ -109,7 +109,7 @@ char errMsg[80];
 	if ( (seqFile = fopen(tempLine, "r")) == NULL) {
 	  sprintf(errMsg,"Failed to open database file: %s",tempLine);
 	  PostError(1,errMsg);
-	  return(false);
+	  return(0);
 	}
 
 	strcpy(tempLine,dbPathName);
@@ -117,7 +117,7 @@ char errMsg[80];
 	if ( (refFile = fopen(tempLine, "r")) == NULL) {
 	  sprintf(errMsg,"Failed to open database file: %s",tempLine);
 	  PostError(1,errMsg);
-	  return(false);
+	  return(0);
 	}
 
 	dbSEQFile = fileno(seqFile);
@@ -133,7 +133,7 @@ char errMsg[80];
 	if ( (offsetFile = fopen(tempLine, "r")) == NULL) {
 	  sprintf(errMsg,"Failed to open GCG database file: %s",tempLine);
 	  PostError(1,errMsg);
-	  return(false);
+	  return(0);
 	}
 
 	strcpy(tempLine,dbPathName);
@@ -141,7 +141,7 @@ char errMsg[80];
 	if ( (namesFile = fopen(tempLine, "r")) == NULL) {
 	  sprintf(errMsg,"Failed to open GCG database file: %s",tempLine);
 	  PostError(1,errMsg);
-	  return(false);
+	  return(0);
 	}
 	codeLength = 12;
 	gcgOffset = fileno(offsetFile);
@@ -150,7 +150,7 @@ char errMsg[80];
 	NextCode = NextGCGCode;
 	SetDBPointers = LookupGCG;
 
-	return(true);
+	return(1);
 
 } /* End of OpenDBFiles */
 
@@ -164,11 +164,11 @@ char errMsg[80];
 
 static char *NextGCGCode(void)
 {
-static Boolean initialized = false;
+static Boolean initialized = 0;
 static char code[20];
 
 	if (!initialized) {
-	  initialized = true;
+	  initialized = 1;
 	  rewind(namesFile);
 	}
 
@@ -177,7 +177,7 @@ static char code[20];
 	  return(code);
 	}
 
-	initialized = false;
+	initialized = 0;
 	return(NULL);
 
 }  /* End of NextGCGCode */
@@ -218,13 +218,13 @@ static Boolean LookupGCG(SeqSpec *spec)
     fseek(seqFile, seqOffset-512, SEEK_SET);
     fseek(refFile, refOffset-512, SEEK_SET);
     
-    return(true);
+    return(1);
   }
   
   sprintf(errMsg, "Code \"%s\" not found in %s index.",
 	  spec->code,spec->file);
   PostError(1,errMsg);
-  return(false);
+  return(0);
   
 } /* End of LookupGCG */
 

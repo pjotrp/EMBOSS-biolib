@@ -58,9 +58,9 @@ SeqSpec *temp;
 	temp->file = NULL;
 	temp->frag = NULL;
 	temp->options = NULL;
-	temp->isUser = false;
-	temp->isWildCode = false;
-	temp->isWildFile = false;
+	temp->isUser = 0;
+	temp->isWildCode = 0;
+	temp->isWildFile = 0;
 	temp->format = UNDEF;
 	
 	return(temp);
@@ -150,7 +150,7 @@ static int defSeqFormat = UNDEF;
 */
 
 	if ( defSeqFormat == UNDEF ) {          
-	  if ( GetOSSymbol("CKitSeqFormat",tempStr) == false )
+	  if ( GetOSSymbol("CKitSeqFormat",tempStr) == 0 )
 	    strcpy(tempStr, "GCG");
 
 	  defSeqFormat = EncodeFormat(StrToUpper(tempStr));
@@ -195,21 +195,21 @@ static int defSeqFormat = UNDEF;
 	if ( line[0] == '@' ) {
 	  spec->file = CALLOC(strlen(line)+1,char);
 	  strcpy(spec->file, line);
-	  spec->isWildCode = true;
-	  spec->isWildFile = true;
+	  spec->isWildCode = 1;
+	  spec->isWildFile = 1;
 	} else {
 	  spec->code = CodeSpec(line);
 	  spec->file =  FileSpec(line,defaultDB);
 	  spec->frag =  FragSpec(line);
 	  spec->isUser = IsUser(line);
 
-	  spec->isWildCode = false;
-	  if ( strchr(spec->code, '*') ) spec->isWildCode = true;
-	  if ( strchr(spec->code, '%') ) spec->isWildCode = true;
+	  spec->isWildCode = 0;
+	  if ( strchr(spec->code, '*') ) spec->isWildCode = 1;
+	  if ( strchr(spec->code, '%') ) spec->isWildCode = 1;
 
-	  spec->isWildFile = false;
-	  if ( strchr(spec->file, '*') ) spec->isWildFile = true;
-	  if ( strchr(spec->file, '%') ) spec->isWildFile = true;
+	  spec->isWildFile = 0;
+	  if ( strchr(spec->file, '*') ) spec->isWildFile = 1;
+	  if ( strchr(spec->file, '%') ) spec->isWildFile = 1;
 	}
 /* ajDebug("MakeSeqSpec line= %s, defaultDB = %s\n",line,defaultDB); */
 /*
@@ -217,7 +217,7 @@ static int defSeqFormat = UNDEF;
 ** PIR, exit now.
 */
 
-	if ( spec->isUser == false ) {
+	if ( spec->isUser == 0 ) {
 	  spec->format = PIR;
 	  StrToUpper(spec->code);
 /*	  ajDebug("spec->format = PIR\n"); */
@@ -322,9 +322,9 @@ static Boolean IsUser(char *spec)
 
 {
 	while ( *spec && *spec != '/' )
-	  if ( *spec++ == '=' ) return(true);
+	  if ( *spec++ == '=' ) return(1);
 
-	return(false);
+	return(0);
 
 }  /* End of IsUser */
 

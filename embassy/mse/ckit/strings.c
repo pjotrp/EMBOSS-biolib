@@ -160,9 +160,9 @@ char *pPos, *sPos;
 Boolean StrIsBlank(char *String )
 {
 	while ( *String )
-	  if ( isspace((int)*String++) == false ) return(false);
+	  if ( isspace((int)*String++) == 0 ) return(0);
 
-	return(true);
+	return(1);
 
 } /* End of StrIsBlank */
 
@@ -368,7 +368,7 @@ char *cPos;
 ** by returning true.
 */
 
-	if ( strcmp(Pattern, "*") == 0 ) return(true);
+	if ( strcmp(Pattern, "*") == 0 ) return(1);
 
 #ifdef VMS
 
@@ -388,8 +388,8 @@ char *cPos;
 
 	Status = STR$MATCH_WILD(&StringDesc, &PatternDesc);
 
-	if ( Status == STR$_MATCH ) return( true );
-	return( false );
+	if ( Status == STR$_MATCH ) return( 1 );
+	return( 0 );
 
 #else
 
@@ -411,28 +411,28 @@ char *cPos;
 	  if ( *Pattern == '*' ) {
 	    for(Pattern++; *Pattern == '*'; Pattern++)
 	      ;
-	    if ( *Pattern == '\0' ) return(true);
+	    if ( *Pattern == '\0' ) return(1);
 
 	    strcpy(SubStr, Pattern);
 	    if ( (cPos = strchr(SubStr, '%')) ) *cPos = '\0';
 	    if ( (cPos = strchr(SubStr, '*')) ) *cPos = '\0';
 
-	    if ( (cPos = StrIndex(SubStr, String)) == 0 ) return(false);
+	    if ( (cPos = StrIndex(SubStr, String)) == 0 ) return(0);
 	    String = cPos;
 
 	  } else if ( *Pattern == '%' ) {
-	    if ( *String == '\0') return(false);
+	    if ( *String == '\0') return(0);
 	    Pattern++;
 	    String++;
 
 	  } else {
-	    if ( *Pattern != *String ) return(false);
+	    if ( *Pattern != *String ) return(0);
 	    Pattern++;
 	    String++;
 	  }
 	}
 
-	return(true);
+	return(1);
 #endif
 
 }

@@ -50,7 +50,7 @@ SeqEntry *temp;
 	temp->title = NULL;
 	temp->desc = NULL;
 	temp->type = UNDEF;
-	temp->circular = false;
+	temp->circular = 0;
 	temp->checkSum = 0;
 	temp->length = 0;
 	temp->mem = NULL;

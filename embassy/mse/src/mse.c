@@ -21,7 +21,6 @@
 #include <string.h>
 #include "mse.h"         /* MSE global variables and definitions  */
 
-
 extern long DeGap(char * strand);
 
 
@@ -49,7 +48,7 @@ void LoadSeqWithseqset(AjPSeqset seqset){
     seq = ajSeqsetSeq (seqset, i);
     Strand = i+1;
 
-    OkToEdit[Strand] = true;
+    OkToEdit[Strand] = 1;
 
     Seq[Strand].Mem = CALLOC(strlen(seq)+1,char);
     strcpy(Seq[Strand].Mem,seq);
@@ -66,7 +65,7 @@ void LoadSeqWithseqset(AjPSeqset seqset){
       Seq[Strand].ReMap = XFORM;
     }
 
-    Seq[Strand].Circular = false;
+    Seq[Strand].Circular = 0;
     Seq[Strand].Format = DefFormat;
 
     tempname = ajSeqsetName(seqset,i);
@@ -83,12 +82,12 @@ void LoadSeqWithseqset(AjPSeqset seqset){
     strcpy(Seq[Strand].Desc,"");
     /*    Seq[Strand].ReMap = XFORM;*/
     Seq[Strand].Offset = 0;
-    Seq[Strand].Modified = false;
-    Seq[Strand].Reversed = false;
-    Seq[Strand].Locked = false;
-    Seq[Strand].Anchored = false;
+    Seq[Strand].Modified = 0;
+    Seq[Strand].Reversed = 0;
+    Seq[Strand].Locked = 0;
+    Seq[Strand].Anchored = 0;
   }
-  OkToEdit[Strand+1] = false;
+  OkToEdit[Strand+1] = 0;
   Strand = 1;
 }
 
@@ -225,7 +224,7 @@ Loop:
 	  case CMOVE:        DoMove(Start, Finish);             break;
 	    /*	  case CMSF:         DoMSF(ArgStr);                     break;*/
 	  case CNAME:        DoName(ArgStr);
-	                     Seq[Strand].Modified = true;       break;
+	                     Seq[Strand].Modified = 1;       break;
 	  case CNEITHER:     DoNeither(); break;
 	  case CNOANCHOR:    DoNoAnchor(Start, Finish);         break;
 	  case COFFSET:      DoOffset(Start);                   break;
@@ -239,7 +238,7 @@ Loop:
 	  case CSEQ:         DoSeq();                           break;
 	  case CSORT:        DoSort(Start, Finish, ArgStr);     break;
 	  case CTITLE:       DoTitle(ArgStr);
-	                     Seq[Strand].Modified = true;       break;
+	                     Seq[Strand].Modified = 1;       break;
 	  case CTYPE:        DoType(Start, Finish, ArgStr);     break;
 	  case CUNLOCK:      DoUnLock(Start, Finish);           break;
 	  case CUNIQUE:      DoUnique(ArgStr);                  break;
@@ -283,7 +282,7 @@ char *temp;
 /* Initialize all strands */
 
 	for ( i=0; i<=NOS; i++ )
-	  OkToEdit[i] = false;
+	  OkToEdit[i] = 0;
 	  
 	LinePos = 1;
 	Strand = 1;
@@ -323,7 +322,7 @@ void DoScreen()
 char OneLine[132];
 int i;
 unsigned int Keystroke;
-static int Gold=false;
+static int Gold=0;
 static int Dir=ADVANCE;
 static int Rep=1;
 static char LastChar=EOS;
@@ -332,7 +331,7 @@ static char LastChar=EOS;
   
 	Rep = 1;
 
-	while ( true ) {
+	while ( 1 ) {
 
 	  Strand = LIMIT(1, Strand, NOS);
 	  if( LinePos < 1 ) LinePos = 1;
@@ -361,27 +360,27 @@ Parse:
 
 	    case KEY_RIGHT:
 	      LinePos += Rep;
-	      ReDoBar[Strand] = true;
+	      ReDoBar[Strand] = 1;
 	      Rep = 1;
 	      break;
 
 	    case KEY_LEFT:
 	      LinePos -= Rep;
-	      ReDoBar[Strand] = true;
+	      ReDoBar[Strand] = 1;
 	      Rep = 1;
 	      break;
 
             case KEY_UP:
-	      ReDoBar[Strand]=true;
+	      ReDoBar[Strand]=1;
 	      Strand = LIMIT(1,Strand+Rep,NOS);
-	      ReDoBar[Strand]=true;
+	      ReDoBar[Strand]=1;
 	      Rep = 1;
 	      break;
 
 	    case KEY_DOWN:
-	      ReDoBar[Strand]=true;
+	      ReDoBar[Strand]=1;
 	      Strand = LIMIT(1,Strand-Rep,NOS);
-	      ReDoBar[Strand]=true;
+	      ReDoBar[Strand]=1;
 	      Rep = 1;
 	      break;
 
@@ -419,7 +418,7 @@ Parse:
               getstr(OneLine);
               if ( StrIsBlank(StrCollapse(OneLine)) )
 	        strcpy(OneLine,FindSeq);
-	      if ( StrIsBlank(OneLine) == false ) 
+	      if ( StrIsBlank(OneLine) == 0 ) 
                 DoFind( Strand, NOS, OneLine );
 	      ShowText("");
 	      Rep = 1;
@@ -488,14 +487,14 @@ Parse:
             case KEY_NPAGE:
 	    case '>':
 	      LinePos += Rep*__Cols;
-	      ReDoBar[Strand] = true;
+	      ReDoBar[Strand] = 1;
 	      Rep = 1;
 	      break;
 
             case KEY_PPAGE:
 	    case '<':
 	      LinePos -= Rep*__Cols;
-	      ReDoBar[Strand] = true;
+	      ReDoBar[Strand] = 1;
 	      Rep = 1;
 	      break;
 /*
@@ -504,7 +503,7 @@ Parse:
 
 	  case 'H' /*SMG$K_TRM_PF1*/:
 	      Keystroke = getch();
-	      Gold = true;
+	      Gold = 1;
 	      goto Parse;
 
 /*
@@ -526,16 +525,16 @@ Parse:
 	      for ( i=1; i<=Rep; i++) {
 	        if ( Gold ) {
 	          if ( Seq[Strand].Locked ) 
-	            Seq[Strand].Locked = false;
+	            Seq[Strand].Locked = 0;
 	          else
 	            Seq[Strand].Locked = OkToEdit[Strand];
 	        } else {
 	          if ( Seq[Strand].Anchored ) 
-	            Seq[Strand].Anchored = false;
+	            Seq[Strand].Anchored = 0;
 	          else
 	            Seq[Strand].Anchored = OkToEdit[Strand];
 	        }
-	        ReDoBar[Strand] = true;
+	        ReDoBar[Strand] = 1;
 	        if (i !=Rep ) {
 	         Strand = (Dir == ADVANCE) ?  Strand+1 : Strand-1;
 	         Strand = LIMIT(1,Strand,NOS);
@@ -549,14 +548,14 @@ Parse:
 */
 
 	  case KEY_BEG/*SMG$K_TRM_KP0*/:
-	      ReDoBar[Strand] = true;
+	      ReDoBar[Strand] = 1;
 	      if ( LinePos > Seq[Strand].Offset+1 )
 	        Strand = (Dir == ADVANCE) ?  Strand   : Strand-1  ;
 	      else if (LinePos <= Seq[Strand].Offset)
 	        Strand = (Dir == ADVANCE) ?  Strand+1 : Strand ;
 	      Strand = LIMIT(1,Strand+(Rep*-Dir),NOS);
 	      LinePos = Seq[Strand].Offset + 1;
-	      ReDoBar[Strand] = true;
+	      ReDoBar[Strand] = 1;
 	      Rep=1;
 	      break;
 
@@ -565,7 +564,7 @@ Parse:
 */
 
 	  case KEY_C1/*SMG$K_TRM_KP1*/:
-	      ReDoBar[Strand] = true;
+	      ReDoBar[Strand] = 1;
 	      LinePos += 10*Rep*Dir;
 	      Rep=1;
 	      break;
@@ -575,14 +574,14 @@ Parse:
 */
 
 	    case '@':
-	      ReDoBar[Strand] = true;
+	      ReDoBar[Strand] = 1;
 	      if ( LinePos > Seq[Strand].Offset+Seq[Strand].Length+1 )
 	        Strand = (Dir == ADVANCE) ?  Strand   : Strand-1  ;
 	      else if (LinePos <= Seq[Strand].Offset+Seq[Strand].Length)
 	        Strand = (Dir == ADVANCE) ?  Strand+1 : Strand ;
 	      Strand = LIMIT(1,Strand+(Rep*-Dir),NOS);
 	      LinePos = Seq[Strand].Offset + Seq[Strand].Length + 1;
-	      ReDoBar[Strand] = true;
+	      ReDoBar[Strand] = 1;
 	      Rep=1;
 	      break;
 
@@ -591,7 +590,7 @@ Parse:
 */
 
 	  case KEY_C3/*SMG$K_TRM_KP3*/:
-	      ReDoBar[Strand] = true;
+	      ReDoBar[Strand] = 1;
 	      LinePos += 1*Dir;
 	      Rep=1;
 	      break;
@@ -602,9 +601,9 @@ Parse:
 
 	  case '#' /*SMG$K_TRM_KP4*/:
 	      if ( Gold ) {
-	        for ( Strand=1; OkToEdit[Strand] == false && Strand < NOS; )
+	        for ( Strand=1; OkToEdit[Strand] == 0 && Strand < NOS; )
 	          Strand++;
-	        ReDoBar[Strand]=true;
+	        ReDoBar[Strand]=1;
 	      } else
 	        Dir = ADVANCE;
 	      Rep=1;
@@ -616,9 +615,9 @@ Parse:
 
 	    case KEY_B2:
 	      if ( Gold ) {
-	        for ( Strand=NOS; OkToEdit[Strand] == false && Strand > 1; )
+	        for ( Strand=NOS; OkToEdit[Strand] == 0 && Strand > 1; )
 	          Strand--;
-	        ReDoBar[Strand]=true;
+	        ReDoBar[Strand]=1;
 	      } else
 	        Dir = BACKUP;
 	      Rep=1;
@@ -654,9 +653,9 @@ Parse:
 */
 
 	  case '%'/*SMG$K_TRM_KP8*/:
-	      ReDoBar[Strand] = true;
+	      ReDoBar[Strand] = 1;
 	      Strand = LIMIT(1,Strand+(-1*7*Rep*Dir),NOS);
-	      ReDoBar[Strand] = true;
+	      ReDoBar[Strand] = 1;
 	      Rep=1;
 	      break;
 
@@ -706,11 +705,11 @@ Parse:
 	    case CNTRLR:
 	      /*clear();*/
 	      for(i=0;i<=NROWS;i++){
-		ReDoSeq[i] = true;
-		ReDoBar[i]= true;
+		ReDoSeq[i] = 1;
+		ReDoBar[i]= 1;
 	      }
 
-	      ReDoBar[Strand] = true;
+	      ReDoBar[Strand] = 1;
 	      DoRedraw();
 	      Rep = 1;
 	      break;
@@ -736,7 +735,7 @@ Parse:
 	    case '7':
 	    case '8':
 	    case '9':
-              if ( isdigit((int)LastChar) == false ) Rep = 0;
+              if ( isdigit((int)LastChar) == 0 ) Rep = 0;
 	      Rep = 10*Rep + (Keystroke - '0');
 	      sprintf(OneLine," %d",Rep);
 	      ShowError(OneLine);
@@ -792,7 +791,7 @@ Parse:
 	      }
 	  }
 	  LastChar = Keystroke;
-	  Gold = false;
+	  Gold = 0;
 	}
 
 } /* End of DoScreen */
@@ -838,12 +837,12 @@ Boolean ReDoSeqs, Scroll;
 	  NumberScale(MARK1+2, 0, __Cols, 10, 4, NewEdge, 10);
 	  ScrEdge = NewEdge;
 	  for ( i=BotStrand; i<=NROWS/*BotStrand+6*/; i++)
-	    ReDoSeq[i] = true;
+	    ReDoSeq[i] = 1;
 	}
 
 /* (3) Generate consensus sequence based on plurality */
 
-	ReDoSeqs = false;
+	ReDoSeqs = 0;
 	for ( i=BotStrand; i<=/*BotStrand+6*/NROWS; i++)
 	  ReDoSeqs |= ReDoSeq[i];
 	
@@ -856,10 +855,10 @@ Boolean ReDoSeqs, Scroll;
 	  refresh();
 	  
 	  for (i=BotStrand; i<BotStrand+NROWS; i++)
-	    ReDoSeq[i] = true;
+	    ReDoSeq[i] = 1;
 	}
 
-	if ( DoPlurality == false ) {
+	if ( DoPlurality == 0 ) {
 	  move(2,0);
 	  clrtoeol();
 	}
@@ -867,27 +866,27 @@ Boolean ReDoSeqs, Scroll;
 
 /* (4) Have we moved out of the current window, i.e. up or down? */
 
-	Scroll = false;
+	Scroll = 0;
 	if ( Strand < BotStrand ) {                   /* Moved off the bottom */
 	  if ( (BotStrand - Strand) < NROWS ) {
 	   NScroll = BotStrand-Strand;
 	   Dir = /*SMG$M_UP*/1;
-	   Scroll = true;
+	   Scroll = 1;
 	  }
 	  for( i=Strand; i<BotStrand; i++ ) {
-	    ReDoSeq[i] = true;
-	    ReDoBar[i] = true;
+	    ReDoSeq[i] = 1;
+	    ReDoBar[i] = 1;
 	  }
 	  BotStrand = Strand;
 	} else if ( Strand > BotStrand+(NROWS-1) ) {          /* Moved of the top */
 	  if ( (Strand - BotStrand) <= NROWS+5 ) {
 	    NScroll = Strand-BotStrand-(NROWS-1);
 	    Dir = /*SMG$M_DOWN*/0;
-	    Scroll = true;
+	    Scroll = 1;
 	  }
 	  for ( i=Strand; i>BotStrand+(NROWS-1); i--) {
-	    ReDoSeq[i] = true;
-	    ReDoBar[i] = true;
+	    ReDoSeq[i] = 1;
+	    ReDoBar[i] = 1;
 	  }
 	  BotStrand = Strand - (NROWS-1);
 	}
@@ -898,8 +897,8 @@ Boolean ReDoSeqs, Scroll;
 	  ajDebug("NScroll = %d\n",NScroll);
 	if ( Scroll ){
 	  for ( i=BotStrand; i<=BotStrand+(NROWS-1); i++ ) {
-	    ReDoSeq[i]= true;
-	    ReDoBar[i]= true;
+	    ReDoSeq[i]= 1;
+	    ReDoBar[i]= 1;
 	  }
 	  if(Dir){
 	    scrl(NScroll);
@@ -910,7 +909,7 @@ Boolean ReDoSeqs, Scroll;
 	    refresh();
 	  }
 	}
-	if ( Select ) ReDoSeq[SelectStr] = true;
+	if ( Select ) ReDoSeq[SelectStr] = 1;
 
 	for ( i=BotStrand; i<=BotStrand+(NROWS-1); i++ ) {
 	  if ( ReDoSeq[i] ) {
@@ -940,7 +939,7 @@ Boolean ReDoSeqs, Scroll;
 	      }
 	    }
 	  }
-	  ReDoSeq[i] = false;
+	  ReDoSeq[i] = 0;
 	}
 
 	if ( Scroll ) refresh();
@@ -961,7 +960,7 @@ Boolean ReDoSeqs, Scroll;
 	    NumberScale(MARK2+2, 5, (__Cols-9), 7, 0, 0, ScaleLen/10);
 	    ScrScaleLen = ScaleLen;
 	    for ( i = BotStrand; i<=BotStrand+(NROWS-1); i++ )
-	      ReDoBar[i] = true;
+	      ReDoBar[i] = 1;
 	  }
 	}
 
@@ -986,7 +985,7 @@ Boolean ReDoSeqs, Scroll;
 	    clrtoeol();
 	    sprintf(OneNum,"%3.3d",i);
 	    addstr(OneNum);
-	    if (  OkToEdit[i] == true ) {
+	    if (  OkToEdit[i] == 1 ) {
 	      if ( Seq[i].Anchored ) mvaddch(MARK2-(i-BotStrand),3, 'A');
 	      if ( Seq[i].Locked )   mvaddch(MARK2-(i-BotStrand),4, 'L');
 	      if ( Seq[i].Modified ) mvaddch(MARK2-(i-BotStrand),5, 'M');
@@ -1002,7 +1001,7 @@ Boolean ReDoSeqs, Scroll;
 	      if ( ScrBarPos < 1 ) ScrBarPos = 1;
 	      mvaddch((int)(MARK2-(Strand-BotStrand)), (int)(6+ScrBarPos), '#' );
 	    }
-	    ReDoBar[i] = false;
+	    ReDoBar[i] = 0;
 	  }
 	}
 	refresh();
@@ -1067,7 +1066,7 @@ void DrawBar(int Row, int Col, int Length, Boolean Protein, Boolean Reversed)
 static char Bar[255];
 char LeftChar, RightChar;
 int i;
-static int Init=true;
+static int Init=1;
 /*--------------------------------------*/
 ajDebug("Draw Bar called  - R=%d C=%d  Len-%d\n",Row,Col,Length); 
 
@@ -1075,7 +1074,7 @@ ajDebug("Draw Bar called  - R=%d C=%d  Len-%d\n",Row,Col,Length);
 	  for ( i=0; i<=253; i++)
 	    Bar[i] = '-';
 	  Bar[254] = EOS;
-	  /*  Init = false;*/
+	  /*  Init = 0;*/
 	}
 
 	if ( Protein ) {
@@ -1264,13 +1263,13 @@ int s;
 	Seq[s].Strand = NULL;
 	Seq[s].Length = 0;
 	Seq[s].Offset = 0;
-	Seq[s].Modified = false;
-	OkToEdit[s] = false;
-	Seq[s].Reversed = false;
-	Seq[s].Anchored = false;
-	Seq[s].Locked   = false;
-	ReDoSeq[s] = true;
-	ReDoBar[s] = true;
+	Seq[s].Modified = 0;
+	OkToEdit[s] = 0;
+	Seq[s].Reversed = 0;
+	Seq[s].Anchored = 0;
+	Seq[s].Locked   = 0;
+	ReDoSeq[s] = 1;
+	ReDoBar[s] = 1;
 	Seq[s].ReMap = PLAIN;
 
 }  /* End of EdInit */
@@ -1287,7 +1286,7 @@ void DoDelete(int Start, int Finish)
 int s, f;
 /*---------------------------*/
 
-	if ( OkToEdit[Strand] == false ) {
+	if ( OkToEdit[Strand] == 0 ) {
 	  ShowError("Can't DELETE symbols. No strand on this line.");
 	  return;
 	}
@@ -1337,10 +1336,10 @@ int s, f;
 	f = LIMIT(0,AJMAX(Start,Finish), NOS);
 
 	for( ;s <= f; s++ ) {
-	  if ( OkToEdit[s] == false ) continue;
+	  if ( OkToEdit[s] == 0 ) continue;
 	  DeGap(Seq[s].Mem);
-	  ReDoSeq[s] = true;
-	  ReDoBar[s] = true;
+	  ReDoSeq[s] = 1;
+	  ReDoBar[s] = 1;
 	}
 
 }  /* End of DoDegap */
@@ -1364,7 +1363,7 @@ int l, r, i, Shift;
 	   return;
 	}
 
-	if ( OkToEdit[Strand] == false ) {
+	if ( OkToEdit[Strand] == 0 ) {
 	  ShowError("Can't REVERSE complement. No strand on this line.");
 	  return;
 	}
@@ -1386,8 +1385,8 @@ int l, r, i, Shift;
 	                + (Seq[l].Offset+Seq[l].Length) - (Seq[i].Offset+Seq[i].Length)
 	                + (Seq[l].Offset - Seq[i].Offset);
 	      RevComp(Seq[i].Mem, Seq[i].Type);
-	      ReDoSeq[i] = true;
-	      ReDoBar[i] = true;
+	      ReDoSeq[i] = 1;
+	      ReDoBar[i] = 1;
 	      Seq[i].Reversed= !Seq[i].Reversed;
 	    }
 	  }
@@ -1399,8 +1398,8 @@ int l, r, i, Shift;
 	  i = Start;
 /*	  RevComp(&Seq[i].Strand[1], 1, Seq[i].Length, Seq[i].Type>DNA);*/
 	  RevComp(Seq[i].Mem, Seq[i].Type);
-	  ReDoSeq[i] = true;
-	  ReDoBar[i] = true;
+	  ReDoSeq[i] = 1;
+	  ReDoBar[i] = 1;
 	  Seq[i].Reversed = !Seq[i].Reversed;
 	}
 
@@ -1417,16 +1416,16 @@ void DoDNA(int s)
 {
 	if ( s == NOADDR ) s = Strand;
 	if ( Seq[s].Type == PROTEIN ) return;
-	if ( OkToEdit[s] == false ) {
+	if ( OkToEdit[s] == 0 ) {
 	  ShowError("Can't convert symbols to DNA. No strand on this line.");
 	  return;
 	}
 
 	RNAtoDNA(&Seq[s].Strand[1]);
 	Seq[s].Type = DNA;
-	Seq[s].Modified = true;
+	Seq[s].Modified = 1;
 
-	ReDoSeq[s] = true;
+	ReDoSeq[s] = 1;
 
 } /* End of DoDNA */
 
@@ -1441,16 +1440,16 @@ void DoRNA(int s)
 {
 	if ( s == NOADDR ) s= Strand;
 	if ( Seq[s].Type == PROTEIN ) return;
-	if ( OkToEdit[s] == false ) {
+	if ( OkToEdit[s] == 0 ) {
 	  ShowError("Can't convert symbols to RNA. No strand on this line.");
 	  return;
 	}
 
 	DNAtoRNA(&Seq[s].Strand[1]);
 	Seq[s].Type = RNA;
-	Seq[s].Modified = true;
+	Seq[s].Modified = 1;
 
-	ReDoSeq[s] = true;
+	ReDoSeq[s] = 1;
 
 }/* End of DoRNA */
 
@@ -1465,7 +1464,7 @@ void DoLower(int s,int f)
 {
 int i,j;
 
-	if ( OkToEdit[Strand] == false ) {
+	if ( OkToEdit[Strand] == 0 ) {
 	  ShowError("Can't do lower case. No strand on this line.");
 	  return;
 	}
@@ -1488,7 +1487,7 @@ int i,j;
 	}
 
 	DoCancel();
-	ReDoSeq[Strand] = true;	
+	ReDoSeq[Strand] = 1;	
 
 }/* End of DoLower */
 
@@ -1503,7 +1502,7 @@ void DoUpper(int s, int f)
 {
 int i,j;
 
-	if ( OkToEdit[Strand] == false ) {
+	if ( OkToEdit[Strand] == 0 ) {
 	  ShowError("Can't do upper case. No strand on this line.");
 	  return;
 	}
@@ -1527,7 +1526,7 @@ int i,j;
 	}
 
 	DoCancel();
-	ReDoSeq[Strand] = true;	
+	ReDoSeq[Strand] = 1;	
 
 }/* End of DoUpper */
 
@@ -1548,7 +1547,7 @@ void DoSelect(int Start, int Finish)
 	  return;
 	}
 
-	if ( OkToEdit[Strand] == false ) {
+	if ( OkToEdit[Strand] == 0 ) {
 	  ShowError("Can't SELECT symbols. No strand on this line.");
 	  return;
 	}
@@ -1559,7 +1558,7 @@ void DoSelect(int Start, int Finish)
 
 	SelectPos = Start;
 	SelectStr = Strand;
-	Select = true;
+	Select = 1;
 	if ( Start < Finish)
 	  LinePos = Seq[Strand].Offset + Finish + 1;
 	else if ( Start > Finish )
@@ -1582,7 +1581,7 @@ char OneLine[132];
 int Start, Finish;
 	
 /*---------------------------------------*/
-	if ( Select == false ) {
+	if ( Select == 0 ) {
 	  ShowError("No Select Range");
 	  return;
 	}
@@ -1624,10 +1623,10 @@ int Start, Finish;
 	}
 
 	SelectStr = -1;
-	Select = false;
+	Select = 0;
 	DoDelete(Start, Finish);
-	ReDoSeq[Strand] = true;
-	ReDoBar[Strand] = true;
+	ReDoSeq[Strand] = 1;
+	ReDoBar[Strand] = 1;
 
 } /* End of DoRemove */
 
@@ -1645,7 +1644,7 @@ int f;
 int i;
 /*--------------------------------*/
 
-	if ( OkToEdit[Strand] == false ) {
+	if ( OkToEdit[Strand] == 0 ) {
 	  ShowError ("Can't INSERT symbols here. No Strand on line.");
 	  return;
 	}
@@ -1673,9 +1672,9 @@ int i;
 	  InsertSymbol(Strand, Start+i, IncSeq[i]);
 
 	LinePos += f;
-	Seq[Strand].Modified = true;
-	ReDoSeq[Strand] = true;
-	ReDoBar[Strand] = true;
+	Seq[Strand].Modified = 1;
+	ReDoSeq[Strand] = 1;
+	ReDoBar[Strand] = 1;
 
 } /* End of DoInsert */
 
@@ -1688,9 +1687,9 @@ int i;
 void DoCancel()
 
 {
-	Select = false;
+	Select = 0;
 	SelectStr = -1;
-	ReDoSeq[Strand] = true;
+	ReDoSeq[Strand] = 1;
 
 }  /* End of DoCancel */
 
@@ -1712,9 +1711,9 @@ void DoMatches(char *ArgStr)
 	}
 
 	DiffAttr  = _NORMAL;
-	DoPlurality = true;
-	unique = false;
-	ReDoSeq[Strand] = true;
+	DoPlurality = 1;
+	unique = 0;
+	ReDoSeq[Strand] = 1;
 
 } /* End of DoMatches */
 
@@ -1735,9 +1734,9 @@ void DoDifferences(char *ArgStr)
 	}
 
 	MatchAttr = _NORMAL;
-	DoPlurality = true;
-	unique = false;
-	ReDoSeq[Strand] = true;
+	DoPlurality = 1;
+	unique = 0;
+	ReDoSeq[Strand] = 1;
 
 } /* End of DoDifferences */
 
@@ -1760,8 +1759,8 @@ void DoUnique(char *ArgStr)
 	}
 
 	MatchAttr = _NORMAL;
-	unique = true;
-	ReDoSeq[Strand] = true;
+	unique = 1;
+	ReDoSeq[Strand] = 1;
 
 } /* End of DoUnique */
 
@@ -1778,10 +1777,10 @@ int i;
 
 	MatchAttr = _NORMAL;
 	DiffAttr  = _NORMAL;
-	DoPlurality = false;
-	unique = false;
+	DoPlurality = 0;
+	unique = 0;
 	for ( i=0; i<=NOS; i++)
-	  ReDoSeq[i] = true;
+	  ReDoSeq[i] = 1;
 
 } /* End of DoNeither */
 
@@ -1812,23 +1811,23 @@ Boolean Switch;
 
 /*-- Use strand 0 as temporary  */
 
-	Switch = true;
-	if (s >= f) Switch = false;
+	Switch = 1;
+	if (s >= f) Switch = 0;
 
 /* Push empty strand off to the right */
 
 	for ( i=1; i<=NOS; i++)
-	  if ( OkToEdit[i] == false ) Seq[i].Offset = 100000*Dir;
+	  if ( OkToEdit[i] == 0 ) Seq[i].Offset = 100000*Dir;
 
 	Scope = f - 1;
 	while ( Switch ) {
-	  Switch = false;
+	  Switch = 0;
 	  for ( i=s; i<=Scope; i++) {
 	    if ( Seq[i].Offset*Dir > Seq[i+1].Offset*Dir ) {
 	      DoMove(i,0);
 	      DoMove(i+1,i);
 	      DoMove(0,i+1);
-	      Switch = true;
+	      Switch = 1;
 	    }
 	  }
 	  Scope--;
@@ -1837,9 +1836,9 @@ Boolean Switch;
 /* restore empty strands */
 
 	for ( i=1; i<=NOS; i++) {
-	  if ( OkToEdit[i] == false ) Seq[i].Offset = 0;
-	  ReDoSeq[i] = true;
-	  ReDoBar[i] = true;
+	  if ( OkToEdit[i] == 0 ) Seq[i].Offset = 0;
+	  ReDoSeq[i] = 1;
+	  ReDoBar[i] = 1;
 	}
 
 
@@ -1885,8 +1884,8 @@ int i,j;
         j = LIMIT(1,AJMAX(Start, Finish),NOS);
 
 	while( i <= j ) {
-	  Seq[i].Anchored = false;
-	  ReDoBar[i] = true;
+	  Seq[i].Anchored = 0;
+	  ReDoBar[i] = 1;
 	  i++;
 	}
 
@@ -1932,8 +1931,8 @@ int i,j;
         j = LIMIT(1,AJMAX(Start, Finish),NOS);
 
 	while( i <= j ) {
-	  Seq[i].Locked = false;
-	  ReDoBar[i] = true;
+	  Seq[i].Locked = 0;
+	  ReDoBar[i] = 1;
 	  i++;
 	}
 
@@ -2034,7 +2033,7 @@ char OneLine[132];
   Format = EncodeFormat(InLine);
   
   for ( ;s <= f; s++ ) {
-  if ( OkToEdit[s] == false ) continue;
+  if ( OkToEdit[s] == 0 ) continue;
   Seq[s].Format = Format;
   
   switch (Seq[s].Format) {
@@ -2055,12 +2054,12 @@ char OneLine[132];
   sprintf(name,"%s.RAW",Seq[s].Code); 
   }
   
-  Seq[s].IsUser = true;
+  Seq[s].IsUser = 1;
   Seq[s].Name = REALLOC(Seq[s].Name, strlen(name)+1, char);
   strcpy(Seq[s].Name,name);
   if ( s == Strand ) DoName(name);   ?? Redisplay current ??
-  Seq[s].Modified = true;
-  ReDoBar[s] = true;
+  Seq[s].Modified = 1;
+  ReDoBar[s] = 1;
   }
   
   }?? End of DoFormat ??
@@ -2096,7 +2095,7 @@ char InLine[132], Prompt[128];
 	Type = EncodeType(InLine);
 	
 	for ( ;s <= f; s++ ) {
-	  if ( OkToEdit[s] == false ) continue;
+	  if ( OkToEdit[s] == 0 ) continue;
 	  switch ( Type ) {
 	    case PROTEIN:
 	    case FRAGMENT:
@@ -2105,8 +2104,8 @@ char InLine[132], Prompt[128];
 	      Seq[s].ReMap = XFORM;
 	  }
 	  Seq[s].Type = Type;
-	  ReDoBar[s] = true;
-	  Seq[s].Modified = true;
+	  ReDoBar[s] = 1;
+	  Seq[s].Modified = 1;
 	}
 
 }/* End of DoType */
@@ -2125,7 +2124,7 @@ int Tuple, Shift;
 int NewMeld;
 /*-------------------------------------------------------------------*/
 
-	if ( OkToEdit[Strand] == false ) {
+	if ( OkToEdit[Strand] == 0 ) {
 	  for (i=1; i<=NOS; i++ )
 	    if ( OkToEdit[i] ) break;
 	  Strand = i;
@@ -2145,13 +2144,13 @@ int NewMeld;
 	  Seq[Frag].Offset = 1000000;
 	  DoAnchor(Frag,Frag);
 	  for (i=1; i<=NOS; i++ )
-	    if ( Seq[i].Offset>0 && Seq[i].Anchored == false )
+	    if ( Seq[i].Offset>0 && Seq[i].Anchored == 0 )
 	      NewMeld = AJMAX(NewMeld, Seq[i].Offset+Seq[i].Length);
 	  NewMeld += 50;
 	  GelFind(Frag, Tuple, Shift);
 
 	  for (i=1; i<=NOS; i++) {
-	    if ( Seq[i].Anchored == false ) continue;
+	    if ( Seq[i].Anchored == 0 ) continue;
 	    if ( Seq[i].Offset <= Seq[Frag].Offset ) Strand=i;	    	    
 	  }
 
@@ -2163,7 +2162,7 @@ int NewMeld;
 	DoLock(1,NOS);
 	DoDifferences(" ");
 	for (i=1; i<=NOS; i++ )
-	  ReDoSeq[i] = ReDoBar[i] = true;
+	  ReDoSeq[i] = ReDoBar[i] = 1;
 
 	UpDate();
 
@@ -2225,14 +2224,14 @@ Boolean NextPool(int *Frag)
 int i;
 
 	for ( i = *Frag; i <= NOS+1; i++ ) {
-	  if ( i == NOS+1 ) return(false);
-	  if ( OkToEdit[i] == false )   continue;  /* Empty Frags */
+	  if ( i == NOS+1 ) return(0);
+	  if ( OkToEdit[i] == 0 )   continue;  /* Empty Frags */
 	  if ( Seq[i].Offset != 0 )         continue;  /* Aligned Frags */
 	  *Frag = i;
-	  return(true);
+	  return(1);
 	}
 	
-	return(false);
+	return(0);
 } /* End of NextPool */
 /************************************************************************/
 /************************************************************************/
@@ -2280,16 +2279,16 @@ Boolean Bad, NotContig, AGroup;
 	*/
 
 	for (i=1; i<=NOS; i++ )
-	  if ( OkToEdit[i] == false ) Seq[i].Offset = 0;
+	  if ( OkToEdit[i] == 0 ) Seq[i].Offset = 0;
 
 	if ( Start == Strand && Finish == Strand && Seq[Strand].Anchored ){
 	  s = 1;
 	  f = NOS;
-	  AGroup = true;
+	  AGroup = 1;
 	} else {
 	  s = LIMIT(1,AJMIN(Start,Finish),NOS);
 	  f = LIMIT(1,AJMAX(Start,Finish),NOS);
-	  AGroup = false;
+	  AGroup = 0;
 	}
 
 	/*
@@ -2298,12 +2297,12 @@ Boolean Bad, NotContig, AGroup;
 	*/
 
 	for (i=s; i<=f; i++ ) {
-	  if (OkToEdit[i] == false) continue;
-	  if (Seq[i].Anchored == false && AGroup == true) continue;
+	  if (OkToEdit[i] == 0) continue;
+	  if (Seq[i].Anchored == 0 && AGroup == 1) continue;
 	  if ( Seq[i].Type == PROTEIN)
 	    ShowError("Can't MELD protein sequences! Ignoring it in the Meld.");
 	  Seq[i].Offset += 10000000;
-	  Seq[i].Anchored = false;
+	  Seq[i].Anchored = 0;
 	}
 
 	/*
@@ -2331,7 +2330,7 @@ Boolean Bad, NotContig, AGroup;
 	DoCopy(Name,0);
 	dispose(Seq[0].Mem);
 
-	Seq[0].Reversed = false;
+	Seq[0].Reversed = 0;
 
 	Seq[0].Size = Right-Left+512;
 	if ( (Seq[0].Mem = CALLOC(Seq[0].Size,char)) == NULL ) {
@@ -2350,15 +2349,15 @@ Boolean Bad, NotContig, AGroup;
 	** not contiguous then put everything back and delete the meld.
 	*/
 
-	NotContig = false;
-	Bad = false;
+	NotContig = 0;
+	Bad = 0;
 	NumBad = 0;
 	for ( ptr=Seq[0].Mem; *ptr; ptr++ ) {
-	  if ( *ptr == SPACE ) NotContig = true;
+	  if ( *ptr == SPACE ) NotContig = 1;
 	  if ( *ptr == '.'|| *ptr == 'N' ) {
 	    *ptr = 'N';
             NumBad++;
-	    Bad = true;
+	    Bad = 1;
 	  }
 	}
 
@@ -2440,16 +2439,16 @@ Boolean Bad, NotContig, AGroup;
 	  sprintf(OutLine, "Write meld into [%s] ? ",MeldName);
 	  ShowText(OutLine);
 	  getstr(OneLine);
-	  if ( StrIsBlank(OneLine) == false ) strcpy(MeldName,OneLine);
+	  if ( StrIsBlank(OneLine) == 0 ) strcpy(MeldName,OneLine);
 	}
 	Strand = Name;
 	DoName(MeldName);
 
 	Seq[Name].Offset = Left - 10000001;
-	Seq[Name].Modified = true;
-	OkToEdit[Name] = true;
-	ReDoSeq[Name] = true;
-	ReDoBar[Name] = true;
+	Seq[Name].Modified = 1;
+	OkToEdit[Name] = 1;
+	ReDoSeq[Name] = 1;
+	ReDoBar[Name] = 1;
 
 } /* End of DoMeld */
 
@@ -2511,9 +2510,9 @@ Seq[Strand].Length = f-s+1;
 	Seq[Strand].Mem  = sChar;
 	Seq[Strand].Mem[f] = fChar;
 
-	Seq[Strand].IsUser = true;
-	Seq[Strand].Modified = false;
-	ReDoBar[Strand] = true;
+	Seq[Strand].IsUser = 1;
+	Seq[Strand].Modified = 0;
+	ReDoBar[Strand] = 1;
 
 	/* delete SeqOut */
 
@@ -2552,7 +2551,7 @@ int p,n;*/
  if(Mod){ ?? if modified as user if they want to save ??
    ShowText("Sequences modified do you wish to continue [N]");
    getstr(OutFName);
-   if ( StrIsBlank(OutFName)==false) return;
+   if ( StrIsBlank(OutFName)==0) return;
    if(OutFName[0]!='Y' || OutFName[0]!='y') 
      return;
      }
@@ -2560,7 +2559,7 @@ int p,n;*/
 /*
 	if ( StrIsBlank(FName) ) {
 	 if ( StrIsBlank(FOSSName) ) {
-	   for ( i=1; OkToEdit[i]==false && i < NOS; i++ )
+	   for ( i=1; OkToEdit[i]==0 && i < NOS; i++ )
 	     ;
 	   strcpy(FOSSName, Seq[1].Code);
 	   NewFileType(FOSSName, ".FOSS");
@@ -2568,7 +2567,7 @@ int p,n;*/
 	 sprintf(OutLine, "Name of the output FOSS file [%s] ? ", FOSSName);
 	 ShowText(OutLine);
 	 getstr(OutFName);
-	 if ( StrIsBlank(OutFName)==false) strcpy(FOSSName, OutFName);
+	 if ( StrIsBlank(OutFName)==0) strcpy(FOSSName, OutFName);
 	} else
 	  strcpy(FOSSName,FName);
 
@@ -2592,7 +2591,7 @@ int p,n;*/
 	        default:
 	         strcpy(Seq[i].Name,Seq[i].File);
 	      }
-	      Seq[i].IsUser = true;
+	      Seq[i].IsUser = 1;
 	    }
 
 	    SeqOut.options =  CALLOC(100,char);
@@ -2650,18 +2649,18 @@ int CmdMatch( char *cmdstr, char *string )
 int pos;
 
 /*-------------------------------------*/
-	if ( strlen(string) > strlen(cmdstr) ) return(false);
+	if ( strlen(string) > strlen(cmdstr) ) return(0);
 
 	pos = 0;
 	while ( (toupper(cmdstr[pos]) == toupper(string[pos]) ) && string[pos] )
   	     pos++;
 
-	if ( string[pos] ) return(false);
+	if ( string[pos] ) return(0);
 
 	if ( islower((int)cmdstr[pos]) || cmdstr[pos] == EOS ) 
-	   return(true);
+	   return(1);
 	else
-	   return(false);
+	   return(0);
 
 } /* End of cmdmatch */
 
@@ -2685,17 +2684,17 @@ Boolean DoAll;
 OkToEdit[i]*/
 
         ajDebug("1) base = %c Line= %d %s\n",Base,Line,Seq[Line].Mem);
-	if ( OkToEdit[Line] == false ) return 0;
+	if ( OkToEdit[Line] == 0 ) return 0;
 	ajDebug("2) base = %c Line= %d %s\n",Base,Line,Seq[Line].Mem);
 
 	if ( Seq[Line].Anchored ) {
 	   Start = 1;
 	   Finish = NOS;
-	   DoAll = false;
+	   DoAll = 0;
 	} else {
 	   Start = Line;
 	   Finish = Line;
-	   DoAll = true;
+	   DoAll = 1;
 	}
 	
 	RefPos = Seq[Line].Offset + SeqPos;
@@ -2732,10 +2731,10 @@ OkToEdit[i]*/
 	        *(sPos+1) = *sPos;
 	      *fPos = Base;
 	      Seq[Line].Length++;
-	      if ( Base != '-' ) Seq[Line].Modified = true;
+	      if ( Base != '-' ) Seq[Line].Modified = 1;
 	    }
-	    ReDoSeq[Line] = true;
-	    ReDoBar[Line] = true;
+	    ReDoSeq[Line] = 1;
+	    ReDoBar[Line] = 1;
 	  }
 	}
 
@@ -2761,16 +2760,16 @@ char *ptr;
 ** we have to scan all of the strand's anchored Flags.
 */
 
-	if ( OkToEdit[Line] == false ) return;
+	if ( OkToEdit[Line] == 0 ) return;
 
 	if ( Seq[Line].Anchored ) {
 	   Start = 1;
 	   Finish = NOS;
-	   DoAll = false;
+	   DoAll = 0;
 	} else {
 	   Start = Line;
 	   Finish = Line;
-	   DoAll = true;
+	   DoAll = 1;
 	}
 	
 /*
@@ -2791,7 +2790,7 @@ char *ptr;
 	    } else if ( RefPos <= Seq[Line].Offset+Seq[Line].Length ) {
 	      i = RefPos - Seq[Line].Offset;
 	      if ( Seq[Line].Locked && Seq[Line].Strand[i] != GAP ) continue;
-	      if ( Seq[Line].Strand[i] != '-') Seq[Line].Modified = true;
+	      if ( Seq[Line].Strand[i] != '-') Seq[Line].Modified = 1;
 	      for ( ; Seq[Line].Strand[i]; i++)
 	        Seq[Line].Strand[i] = Seq[Line].Strand[i+1];
 	      Seq[Line].Length--;
@@ -2804,8 +2803,8 @@ char *ptr;
 	        Seq[Line].Strand = ptr-1;
 	      }
 	    }
-	    ReDoSeq[Line] = true;
-	    ReDoBar[Line] = true;
+	    ReDoSeq[Line] = 1;
+	    ReDoBar[Line] = 1;
 	  }
 	}
 
@@ -2830,10 +2829,10 @@ int s, f;
 	f = LIMIT(0,AJMAX(Start,Finish), NOS);
 
 	for( ;s <= f; s++ ) {
-	  if ( OkToEdit[s] == false ) continue;
+	  if ( OkToEdit[s] == 0 ) continue;
 	  EdInit(s);
-	  ReDoSeq[s] = true;
-	  ReDoBar[s] = true;
+	  ReDoSeq[s] = 1;
+	  ReDoBar[s] = 1;
 	}
 
 } /* End of DoEliminate */
@@ -2896,8 +2895,8 @@ void DoCopy( int from, int to )
 
 	OkToEdit[to] = OkToEdit[from];
 
-	ReDoSeq[from]  = ReDoBar[from] = true;
-	ReDoSeq[to] = ReDoBar[from] = true;
+	ReDoSeq[from]  = ReDoBar[from] = 1;
+	ReDoSeq[to] = ReDoBar[from] = 1;
 
 } /* End of DoCopy */
 
@@ -2955,7 +2954,7 @@ void DoMove( int from, int to )
 	Seq[to].ReMap = Seq[from].ReMap;
 
 	OkToEdit[to] = OkToEdit[from];
-	ReDoSeq[to] = ReDoBar[from] = true;
+	ReDoSeq[to] = ReDoBar[from] = 1;
 
 	EdInit(from);
 
@@ -2986,7 +2985,7 @@ ajDebug("DoOpen entered\n");
 	  i--;
 	}
 
-   OkToEdit[Strand] = true;
+   OkToEdit[Strand] = 1;
    Seq[Strand].Mem = CALLOC(1,char);
    strcpy(Seq[Strand].Mem,"");
    Seq[Strand].Length = 0;
@@ -3000,7 +2999,7 @@ ajDebug("DoOpen entered\n");
      Seq[Strand].Type = DNA;
      Seq[Strand].ReMap = XFORM;
    }
-   Seq[Strand].Circular = false;
+   Seq[Strand].Circular = 0;
    Seq[Strand].Format = DefFormat;
    
    Seq[Strand].Name = CALLOC(1,char);
@@ -3015,10 +3014,10 @@ ajDebug("DoOpen entered\n");
     strcpy(Seq[Strand].Desc,"");
     /*    Seq[Strand].ReMap = XFORM;*/
     Seq[Strand].Offset = 0;
-    Seq[Strand].Modified = false;
-    Seq[Strand].Reversed = false;
-    Seq[Strand].Locked = false;
-    Seq[Strand].Anchored = false;
+    Seq[Strand].Modified = 0;
+    Seq[Strand].Reversed = 0;
+    Seq[Strand].Locked = 0;
+    Seq[Strand].Anchored = 0;
 
 } /* End of DoOpen */
 
@@ -3052,15 +3051,15 @@ int i, s, diff;
 	    if ( Seq[i].Anchored ){
     	      Seq[i].Offset = Seq[i].Offset + diff;
 	      if ( Seq[i].Offset<0 ) Seq[i].Offset = 0;
-	      ReDoSeq[i] = true;
-	      ReDoBar[i] = true;
+	      ReDoSeq[i] = 1;
+	      ReDoBar[i] = 1;
 	    }
 	  }
 	} else {
     	  Seq[Strand].Offset =  Seq[Strand].Offset + diff;
 	  if ( Seq[Strand].Offset<0 ) Seq[Strand].Offset = 0;
-	  ReDoSeq[Strand] = true;
-	  ReDoBar[Strand] = true;
+	  ReDoSeq[Strand] = 1;
+	  ReDoBar[Strand] = 1;
 	}
 
 } /* End of DoOffset  */
@@ -3084,8 +3083,8 @@ char WildName[132], DefSeqSpec[132], *cPos;
 char OneLine[132], Prompt[132], ErrMsg[256], Options[256];
 int Trys, TooManyErrors;
 int LineLen, i, j, k, Row;
-Boolean error=false;
-static Boolean FirstTime=true, OneSpec;
+Boolean error=0;
+static Boolean FirstTime=1, OneSpec;
 
 	WildSpec = NewSeqSpec();
 
@@ -3130,7 +3129,7 @@ TryAgain:
 	}
 
 	while ( SeqIn = NextSeqEntry(WildSpec) ) {
-	  if ( error == false ) {
+	  if ( error == 0 ) {
 	    ToInternal(Start,SeqIn);
 	    Seq[Start].Offset = LinePos-1;
 	  } else {
@@ -3142,7 +3141,7 @@ TryAgain:
 	    goto LoopBot;
 	  }
 
-	  OkToEdit[Start] = true;
+	  OkToEdit[Start] = 1;
 	  Strand = Start;
 	  strcpy(Options,StrToUpper(SeqIn->spec->options));
 	  if ( StrIndex("/LOC",Options) ) DoLock(Start,Start);
@@ -3170,8 +3169,8 @@ TryAgain:
 
 	  DoName( Seq[Start].Name );
 	  DoTitle( Seq[Start].Title );
-	  ReDoSeq[Start] = true;
-	  ReDoBar[Start] = true;
+	  ReDoSeq[Start] = 1;
+	  ReDoBar[Start] = 1;
 	  Strand = Start;
 
 LoopBot:
@@ -3220,7 +3219,7 @@ char ErrMsg[256];
 	Seq[Strand].Size = 512;
 	Seq[Strand].Strand = Seq[Strand].Mem-1;
 	Seq[Strand].Type = DNA;
-	Seq[Strand].Circular = false;
+	Seq[Strand].Circular = 0;
 	Seq[Strand].Format = DefFormat;
 	Seq[Strand].Name = CALLOC(1,char);
 	Seq[Strand].Code = CALLOC(1,char);
@@ -3229,17 +3228,17 @@ char ErrMsg[256];
 	Seq[Strand].Desc = CALLOC(1,char);
 	Seq[Strand].ReMap = XFORM;
 	Seq[Strand].Offset = SeqPos;
-	Seq[Strand].Modified = true;
-	Seq[Strand].Reversed = false;
-	Seq[Strand].Locked = false;
-	Seq[Strand].Anchored = false;
+	Seq[Strand].Modified = 1;
+	Seq[Strand].Reversed = 0;
+	Seq[Strand].Locked = 0;
+	Seq[Strand].Anchored = 0;
 	
 
 	DoName("");
 	DoTitle("");
 	DoType(Strand,Strand,"");
-	ReDoSeq[Start] = true;
-	ReDoBar[Start] = true;
+	ReDoSeq[Start] = 1;
+	ReDoBar[Start] = 1;
 
 }
 
@@ -3424,7 +3423,7 @@ char name[128];
 	mvaddstr(0,(__Cols-4), "WIBR");
 	mvaddstr(0, (__Cols-strlen(Seq[Strand].Name))/2, Seq[Strand].Name);
 
-	OkToEdit[Strand] = true;
+	OkToEdit[Strand] = 1;
 	ShowText(" ");
 
 } /* End of DoName */
@@ -3509,10 +3508,10 @@ int i;
 	  if ( OkToEdit[i] && (Seq[i].Format == NBRF) ) {
 	    sprintf(Seq[i].Name,"%s=%s", Seq[i].Code, OutFName);
 	    if ( i == Strand) DoName(Seq[i].Name);
-	    Seq[i].IsUser = true;
-	    Seq[i].Modified = true;
-	    ReDoSeq[i] = true;
-	    ReDoBar[i] = true;
+	    Seq[i].IsUser = 1;
+	    Seq[i].Modified = 1;
+	    ReDoSeq[i] = 1;
+	    ReDoBar[i] = 1;
 	  }
 
 } ?? End of DoMSF ??
@@ -3548,7 +3547,7 @@ FILE *OutFile;
 	strcpy(OutFName, InLine);
 	if ( StrIsBlank(OutFName) ) {
 	  if ( StrIsBlank(FOSSName) ) { 
-	    for ( i=1; OkToEdit[i]==false; i++ )
+	    for ( i=1; OkToEdit[i]==0; i++ )
 	     ;
 	    strcpy(OutFName, Seq[i].Code);
 	    NewFileType(OutFName, ".lis");
@@ -3559,7 +3558,7 @@ FILE *OutFile;
 	  sprintf(OutLine,"Write hardcopy to which file [%s] ? ",OutFName);
 	  ShowText(OutLine);	
 	  getstr(OutLine);
-	  if ( StrIsBlank(OutLine) == false ) strcpy(OutFName, OutLine);
+	  if ( StrIsBlank(OutLine) == 0 ) strcpy(OutFName, OutLine);
 	}
 
 	if ( (OutFile = fopen(OutFName, "w")) == NULL ) {
@@ -3577,11 +3576,11 @@ FILE *OutFile;
 
 	ShowText("Show differences from the Plurality [Yes]?");
 	getstr(OutLine);
-        if ( StrIsBlank(OutLine) == false )
+        if ( StrIsBlank(OutLine) == 0 )
         {
-	  if ( toupper(OutLine[0]) == 'N' ) Diff = false;
+	  if ( toupper(OutLine[0]) == 'N' ) Diff = 0;
 	else
-	 Diff = true;
+	 Diff = 1;
         }
 
 /*
@@ -3705,7 +3704,7 @@ FILE *OutFile;
 	  for (i=0; i<256; i++)
 	    Consensus[i] = EOS;
 
-	  if ( true /*Diff*/ ) {
+	  if ( 1 /*Diff*/ ) {
 	    Plurality(Start, Start+NOut-1, Consensus);
 	    StrTruncate(Consensus);
 	    fprintf(OutFile,"Plurality  ");
@@ -3994,7 +3993,7 @@ void DoFind(int Start, int Finish, char *Pattern )
 	f = LIMIT(1,AJMAX(Start,Finish),NOS);
 
 	for ( i=s; i<=f; i++ ) {
-	  if ( OkToEdit[i] == false ) continue;
+	  if ( OkToEdit[i] == 0 ) continue;
 	  if ( i == s && s == Strand ) {
 	    if ( (Loc = StrIndex(OneLine, &Seq[i].Strand[SeqPos+1])) ) {
 	      LinePos = Seq[i].Offset + (Loc - &Seq[i].Strand[1]) + 1;
@@ -4012,7 +4011,7 @@ void DoFind(int Start, int Finish, char *Pattern )
 	RevComp(OneLine, Seq[1].Type);
 
 	for ( i=s; i<=f; i++ ) {
-	  if ( OkToEdit[i] == false ) continue;
+	  if ( OkToEdit[i] == 0 ) continue;
 	  if ( Seq[i].Type < DNA ) continue;
 	  if ( i == s && s == Strand ) {
 	    if ( (Loc = StrIndex(OneLine, &Seq[i].Strand[SeqPos+1])) ) {
@@ -4550,7 +4549,7 @@ Boolean NoPrompt, NoSymbol;
  MakeSeqSpec(Spec, Temp, DefaultDB);
  ajDebug("Temp = %s DEfaultDB=%s\n",Temp,DefaultDB);
  
- if ( Spec->isUser == false && StrIsBlank(Spec->file) )
+ if ( Spec->isUser == 0 && StrIsBlank(Spec->file) )
    strcpy(Spec->file, DefaultDB);
  
  strcpy(Line,Temp);
@@ -4629,11 +4628,11 @@ void ToInternal(int i, SeqEntry *SeqIn)
 	Seq[i].Size = SeqIn->size;
 	Seq[i].Strand = SeqIn->strand;
 	Seq[i].ReMap = PLAIN;
-	Seq[i].Anchored = false;
+	Seq[i].Anchored = 0;
 	Seq[i].Offset = 0;
-	Seq[i].Modified = false;
-	Seq[i].Reversed = false;
-	Seq[i].Locked = false;
+	Seq[i].Modified = 0;
+	Seq[i].Reversed = 0;
+	Seq[i].Locked = 0;
 
 } /* End of ToInternal */
 

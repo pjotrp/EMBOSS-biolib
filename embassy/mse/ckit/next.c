@@ -43,7 +43,7 @@ int main()
 {
 SeqSpec *wildSpec;
 SeqEntry *seq;
-Boolean ask = true;
+Boolean ask = 1;
 
 /* 
 ** These variables are used by the NEXT program for reporting
@@ -71,7 +71,7 @@ printf("\n%ld,%ld",begin,end);
 	  if ( ask ) {
 	    ;
 	    ;
-	    ask = false;
+	    ask = 0;
 	  }
 
           /*

@@ -73,7 +73,7 @@ Boolean SetDataBase(char *dbName)
 char translation[256], dbLogical[256];
 char errMsg[80];
 static char currentDB[256];
-static Boolean dbIsOpen=false;
+static Boolean dbIsOpen=0;
 
 /*
 ** If this Database is the Current one and it is open, quit now, doing
@@ -81,7 +81,7 @@ static Boolean dbIsOpen=false;
 */
 
 	if ( (strcmp(dbName, currentDB)==0) && dbIsOpen )
-          return(true);
+          return(1);
 
 /*
 **  VMS Implementation
@@ -114,9 +114,9 @@ static Boolean dbIsOpen=false;
 	  dbIndex = PIR;
 	  if( OpenPIRDatabase(translation) ) {
 	    strcpy(currentDB, dbName);
-	    dbIsOpen = true;
-	    return(true);
-	  } else return(false);
+	    dbIsOpen = 1;
+	    return(1);
+	  } else return(0);
 	}
 
 /*
@@ -130,9 +130,9 @@ static Boolean dbIsOpen=false;
 	  dbIndex = PIR;
 	  if( OpenPIRDatabase(translation) ) {
 	    strcpy(currentDB, dbName);
-	    dbIsOpen = true;
-	    return(true);
-	  } else return(false);
+	    dbIsOpen = 1;
+	    return(1);
+	  } else return(0);
 	}
 
 /*
@@ -146,9 +146,9 @@ static Boolean dbIsOpen=false;
 	  dbIndex = PIR;
 	  if( OpenPIRDatabase(translation) ) {
 	    strcpy(currentDB, dbName);
-	    dbIsOpen = true;
-	    return(true);
-	  } else return(false);
+	    dbIsOpen = 1;
+	    return(1);
+	  } else return(0);
 	}
 /*
 ** Finally, look for GCG Names & Offset files.
@@ -159,14 +159,14 @@ static Boolean dbIsOpen=false;
 	  dbIndex = GCG;
 	  if( OpenGCGDatabase(translation) ) {
 	    strcpy(currentDB, dbName);
-	    dbIsOpen = true;
-	    return(true);
-	  } else return(false);
+	    dbIsOpen = 1;
+	    return(1);
+	  } else return(0);
 	}
 
 	sprintf(errMsg, "Logical pointer for database \"%s\" is not defined",dbName);
 	PostError(1,errMsg);
-	return(false);
+	return(0);
 
 } /* End of SetDatabase */
 

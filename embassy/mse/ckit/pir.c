@@ -119,13 +119,13 @@ long line[8];
 	if ( (seqFile = fopen(tempLine, "r")) == NULL) {
 	  sprintf(errMsg,"Failed to open database file: %s",tempLine);
 	  PostError(1,errMsg);
-	  return(false);
+	  return(0);
 	}
 
 	strcpy(tempLine,dbPathName);
 	strcat(tempLine,".ref");
 	if ( (refFile = fopen(tempLine, "r")) == NULL)
-	  return(false);
+	  return(0);
 
 	dbSEQFile = fileno(seqFile);
 	dbREFFile = fileno(refFile);
@@ -157,12 +157,12 @@ long line[8];
         strcpy(tempLine,dbPathName);
         strcat(tempLine,".inx");
         if ( (indexFile = fopen(tempLine, "r")) == NULL)
-          return(false);
+          return(0);
 
 
         dbINXFile = fileno(indexFile);
 
-	if ( fread(line, sizeof(long), 8,indexFile) == 0) return(false);
+	if ( fread(line, sizeof(long), 8,indexFile) == 0) return(0);
 
 	dbType     = line[0];
 	dbFormat   = line[1];
@@ -175,7 +175,7 @@ long line[8];
 /*	ajDebug("OpenPIRDatabase %d %d %d %d %d %d %d\n",dbType,dbFormat,
 	entries,codeLength,prime,seqOffset,hashOffset);
 */
-	return(true);
+	return(1);
 
 } /* End of OpenPIRDatabase */
 
@@ -191,7 +191,7 @@ long line[8];
 static char *NextPIRCode(void)
 {
 #define ERROR -1
-static Boolean initialized=false;
+static Boolean initialized=0;
 static unsigned char buffer[512];
 static char *cPos;
 static char *recordEnd;
@@ -199,7 +199,7 @@ static int record=0;
 	
 	if (!initialized) {
 	  record = 0;
-	  initialized = true;
+	  initialized = 1;
 	  cPos = recordEnd = (char*)buffer;
 	}
 
@@ -219,7 +219,7 @@ loop:	cPos += codeLength+2;
 	cPos = (char*)buffer - codeLength;
 	goto loop;
 
-end:	initialized = false;
+end:	initialized = 0;
 	return(NULL);
 
 }  /* End of NextPIRCode */
@@ -271,7 +271,7 @@ static Boolean LookupPIR(SeqSpec* spec)
 ** If we get to here, the code was not found in the INX bucket.
 */
 
-	return(false);
+	return(0);
 
 } /* End of LookupPIR */
 
@@ -297,12 +297,12 @@ static Boolean SeekISN(int isn)
 int locs[64][2];
 
 	fseek(indexFile, (seqOffset+((isn-1)/64))*512, SEEK_SET);
-	if ( fread(locs,sizeof(char), 512, indexFile) == 0 ) return(false);
+	if ( fread(locs,sizeof(char), 512, indexFile) == 0 ) return(0);
 
 	fseek(seqFile, (long)locs[(isn-1)%64][0]-512, SEEK_SET);
 	fseek(refFile, (long)locs[(isn-1)%64][1]-512, SEEK_SET);
 
-	return(true);
+	return(1);
 
 } /* End of SeekISN */
 

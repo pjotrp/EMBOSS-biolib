@@ -84,12 +84,12 @@ SeqSpec *thisSpec;
 	thisSpec = NewSeqSpec();
 
 	if ( wildName->file[0] == '@' ) {
-	  if ( NextIndSpec(wildName, thisSpec) == false ) return(NULL);
+	  if ( NextIndSpec(wildName, thisSpec) == 0 ) return(NULL);
 	} else {
 	  if ( wildName->isUser ) {
-	    if ( NextUserSpec(wildName, thisSpec) == false ) return(NULL);
+	    if ( NextUserSpec(wildName, thisSpec) == 0 ) return(NULL);
 	  } else {
-	    if ( NextDBSpec(wildName, thisSpec) == false ) return(NULL);
+	    if ( NextDBSpec(wildName, thisSpec) == 0 ) return(NULL);
 	  }
 	}
 
@@ -112,7 +112,7 @@ static Boolean NextIndSpec(SeqSpec *indSpec, SeqSpec *thisSpec)
 	char *cPos, line[256];
 	int i;
 
-	static SeqSpec tempSpec = {NULL,NULL,NULL,NULL,false,false,false,UNDEF};
+	static SeqSpec tempSpec = {NULL,NULL,NULL,NULL,0,0,0,UNDEF};
 
 	static char options[5][80], currIndFName[256];
 	static int depth;
@@ -134,7 +134,7 @@ static Boolean NextIndSpec(SeqSpec *indSpec, SeqSpec *thisSpec)
 	  if ( indSpec->file) strcpy(currIndFName, indSpec->file);
 	  if ( indSpec->options) strcpy(options[depth],indSpec->options);
 	  if ( (file[depth] = fopen(&indSpec->file[1], "r")) == NULL )
-	    return(false);
+	    return(0);
 	  while ( fgets(line, 255, file[depth]) )
 	    if ( StrIndex("..", line) ) break;
 	  if ( feof(file[depth]) ) rewind(file[depth]);
@@ -149,10 +149,10 @@ NextSeqSpec:
 
 	if ( tempSpec.isUser ) {
 	  if ( NextUserSpec(&tempSpec, thisSpec) )
-	    return(true);
+	    return(1);
 	} else {
 	  if ( NextDBSpec(&tempSpec, thisSpec) )
-	    return(true);
+	    return(1);
 	}
 /*
 ** Get a line from the indirect file(s), goto NextSeqSpec until it
@@ -199,7 +199,7 @@ NextLine:
 **  of the FOSS files are finished.
 */
 	currIndFName[0] = '\0';
-	return(false);
+	return(0);
 }
 /* End of NextIndSpec */
 
@@ -225,14 +225,14 @@ extern Boolean SetDataBase(char *, char *);              /* ReadEntry.c */
 
 	if ( strcmp(wildName->code, currCode) ||
 	     strcmp(wildName->file, currDB) )  {    /* New WildName */
-	  if ( SetDataBase(wildName->file, errMsg) == false ) return(false);
+	  if ( SetDataBase(wildName->file, errMsg) == 0 ) return(0);
 	  strcpy(currCode,wildName->code);
 	  strcpy(currDB,wildName->file);
 	} else {
-	  if ( wildName->isWildCode == false ) {
+	  if ( wildName->isWildCode == 0 ) {
 	    currCode[0] = '\0';
 	    currDB[0] = '\0';
-	    return(false);
+	    return(0);
 	  }
 	}
 
@@ -247,7 +247,7 @@ extern Boolean SetDataBase(char *, char *);              /* ReadEntry.c */
 	  }
 	  currCode[0] = '\0';
 	  currDB[0] = '\0';
-	  return(false);
+	  return(0);
 	} else 
 	  cPos = wildName->code;
 
@@ -279,11 +279,11 @@ Match:
 	  strcpy(thisSpec->options, wildName->options);
 	}
 
-	thisSpec->isUser = false;
-	thisSpec->isWildCode = false;
-	thisSpec->isWildFile = false;
+	thisSpec->isUser = 0;
+	thisSpec->isWildCode = 0;
+	thisSpec->isWildFile = 0;
 	thisSpec->format = PIR;
-	return(true);
+	return(1);
 }
 /* End of NextDBSpec */
 
@@ -321,7 +321,7 @@ Match:
 static Boolean NextUserSpec(SeqSpec *wildName, SeqSpec *thisSpec)
 
 {
-	return false;    
+	return 0;    
 #if COMMENTED_OUT
 static char code[256];
 static char file[256];
@@ -351,30 +351,30 @@ int seqFormat;
 	  strcpy(code, wildName->code);
 	  isWildCode = wildName->isWildCode;
 	  format = wildName->format;
-	  badFileName = true;
+	  badFileName = 1;
 	  NextVMSFile("", file);  /* Flush NextVMSFile */
 
         NextFile:
 	  if ( NextVMSFile(wildName->file, file) ) {
-	    badFileName = false;
+	    badFileName = 0;
 	    if ( strcmp(file, currFName) != 0 ) {
 	      strcpy(currFName, file);	  
 	      if ( userFile ) fclose(userFile);
 	      if ( (userFile = fopen(file, "r")) == 0 )
-	        badFileName = true;  /* Cannot open */
+	        badFileName = 1;  /* Cannot open */
 	    }
 	  } else {
 	    if ( badFileName ) {
 	        sprintf(temp, "File \"%s\" not found.", wildName->file);
 	        PostError(1,temp);
-	        return(false);
+	        return(0);
 	    }
 	    currCode[0]='\0';
 	    currFile[0]='\0';
-	    return(false);
+	    return(0);
 	  }
 	}
-	if ( badFileName ) return(false);
+	if ( badFileName ) return(0);
 
 /*
 ** Using the current file name obtained in the section above.  Run down
@@ -400,10 +400,10 @@ int seqFormat;
 	    strcpy(thisSpec->options, wildName->options);
 	  }
 	  thisSpec->format = wildName->format;
-	  thisSpec->isUser = true;
-	  thisSpec->isWildCode = false;
-	  thisSpec->isWildFile = false;
-	  return(true);
+	  thisSpec->isUser = 1;
+	  thisSpec->isWildCode = 0;
+	  thisSpec->isWildFile = 0;
+	  return(1);
 	}
 	goto NextFile;
 #endif

@@ -102,7 +102,7 @@ extern char *StrChange(), *DecodeType(int), *GetTime();
 	  case GCG:
 	    doText = (seq->text != NULL); break;
 	  default:
-	    doText = false; break;
+	    doText = 0; break;
 	}
 
 /*
@@ -146,10 +146,10 @@ extern char *StrChange(), *DecodeType(int), *GetTime();
 
 	if ( (inFile = fopen(outFName, "r")) ) {
 	  if ( !(outFile = fopen(outFName, "w")) ) goto Error;
-	  twoFiles = true;
+	  twoFiles = 1;
 	} else {
 	  if ( !(outFile = fopen(outFName, "w")) ) goto Error;
-	  twoFiles = false;
+	  twoFiles = 0;
 	}
 
 /*
@@ -478,7 +478,7 @@ char *pChr;
 	  strcat(fileName, type);
 	}
 
-	return(true);
+	return(1);
 
 }  /* End of NewFileType */
 /****  SetOSSymbol  *********************************************************
@@ -508,7 +508,7 @@ Boolean SetOSSymbol(char *symbol, char *value)
 *****************************************************************************/
 Boolean GetOSSymbol(char *symbol, char *value)
 {
-  return(false);
+  return(0);
 	
 
 } /* End of GetOSSymbol */
@@ -648,7 +648,7 @@ Boolean TransName(char* translation, char* logicalName)
 {
 
         strcpy(translation,logicalName);
-	return(true);
+	return(1);
 
 }
   
