@@ -28,7 +28,7 @@ Usage
 
 % mwfilter 
 Filter noisy molwts from mass spec output
-Input file: ../../data/molwts.dat
+Molecular weight file input: ../../data/molwts.dat
 ppm tolerance [50.0]: 
 Output file [molwts.mwfilter]: 
    
@@ -46,7 +46,7 @@ Command line arguments
    -showdel            boolean    Output deleted mwts
 
    Advanced qualifiers:
-   -datafile           string     Data file of noisy molecular weights
+   -datafile           datafile   Data file of noisy molecular weights
 
    Associated qualifiers:
   "-outfile" related qualifiers
@@ -80,8 +80,7 @@ Command line arguments
    Optional qualifiers Allowed values Default
    -showdel Output deleted mwts Boolean value Yes/No No
    Advanced qualifiers Allowed values Default
-   -datafile Data file of noisy molecular weights Any string is accepted
-   Emwfilter.dat
+   -datafile Data file of noisy molecular weights Data file Emwfilter.dat
    
 Input file format
 

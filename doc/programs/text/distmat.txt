@@ -200,12 +200,12 @@ Output file [pax.distmat]:
 Command line arguments
 
    Mandatory qualifiers (* if not always prompted):
-  [-msf]               seqset     File containing a sequence alignment.
+  [-sequence]          seqset     File containing a sequence alignment.
 *  -nucmethod          menu       Multiple substitution correction methods for
                                   nucleotides.
 *  -protmethod         menu       Multiple substitution correction methods for
                                   proteins.
-  [-outf]              outfile    Enter a name for the distance matrix
+  [-outfile]           outfile    Output file name
 
    Optional qualifiers (* if not always prompted):
 *  -ambiguous          boolean    Option to use the abiguous codes in the
@@ -228,7 +228,7 @@ Command line arguments
 
    Advanced qualifiers: (none)
    Associated qualifiers:
-  "-msf" related qualifiers
+  "-sequence" related qualifiers
    -sbegin1             integer    First base used
    -send1               integer    Last base used, def=seq length
    -sreverse1           boolean    Reverse (if DNA)
@@ -244,7 +244,7 @@ Command line arguments
    -ufo1                string     UFO features
    -fformat1            string     Features format
    -fopenfile1          string     Features file name
-  "-outf" related qualifiers
+  "-outfile" related qualifiers
    -odirectory2         string     Output directory
 
    General qualifiers:
@@ -267,7 +267,7 @@ Command line arguments
    
 
    Mandatory qualifiers Allowed values Default
-   [-msf]
+   [-sequence]
    (Parameter 1) File containing a sequence alignment. Readable sequences
    Required
    -nucmethod Multiple substitution correction methods for nucleotides.
@@ -283,9 +283,8 @@ Command line arguments
    1 (Jukes-Cantor)
    2 (Kimura Protein)
    0
-   [-outf]
-   (Parameter 2) Enter a name for the distance matrix Output file
-   <sequence>.distmat
+   [-outfile]
+   (Parameter 2) Output file name Output file <sequence>.distmat
    Optional qualifiers Allowed values Default
    -ambiguous Option to use the abiguous codes in the calculation of the
    Jukes-Cantor method or if the sequences are proteins. Boolean value

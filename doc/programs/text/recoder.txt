@@ -30,9 +30,9 @@ Usage
 
 % recoder 
 Remove restriction sites but maintain the same translation
-Input sequence: tembl:hsfau
+Nucleic acid sequence: tembl:hsfau
 Comma separated enzyme list [all]: EcoRII
-Output file [hsfau.recoder]: 
+Results file name [hsfau.recoder]: 
    
    Go to the input files for this example
    Go to the output files for this example

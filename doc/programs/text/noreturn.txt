@@ -44,7 +44,7 @@ Output file [abc.noreturn]:
 Command line arguments
 
    Mandatory qualifiers:
-  [-infile]            infile     (no help text) infile value
+  [-infile]            infile     Input file
   [-outfile]           outfile    Output file name
 
    Optional qualifiers: (none)
@@ -74,7 +74,7 @@ Command line arguments
 
    Mandatory qualifiers Allowed values Default
    [-infile]
-   (Parameter 1) (no help text) infile value Input file Required
+   (Parameter 1) Input file Input file Required
    [-outfile]
    (Parameter 2) Output file name Output file <sequence>.noreturn
    Optional qualifiers Allowed values Default

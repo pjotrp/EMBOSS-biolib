@@ -31,7 +31,7 @@ Reports STOP codons and ORF statistics of a protein
 Input sequence(s): ../../data/paamir.pep
 Minimum ORF Length to report [100]: 
 Output file [paamir_1.checktrans]: 
-Output sequence [paamir_1.fasta]: 
+Sequence file to hold output ORF sequences [paamir_1.fasta]: 
    
    Go to the input files for this example
    Go to the output files for this example
@@ -41,7 +41,7 @@ Command line arguments
    Mandatory qualifiers:
   [-sequence]          seqall     Sequence database USA
    -orfml              integer    Minimum ORF Length to report
-  [-report]            outfile    Output file name
+  [-outfile]           outfile    Output file name
    -outseq             seqoutall  Sequence file to hold output ORF sequences
 
    Optional qualifiers:
@@ -75,7 +75,7 @@ Command line arguments
    -ufo1                string     UFO features
    -fformat1            string     Features format
    -fopenfile1          string     Features file name
-  "-report" related qualifiers
+  "-outfile" related qualifiers
    -odirectory2         string     Output directory
   "-outseq" related qualifiers
    -osformat            string     Output seq format
@@ -119,7 +119,7 @@ Command line arguments
    [-sequence]
    (Parameter 1) Sequence database USA Readable sequence(s) Required
    -orfml Minimum ORF Length to report Integer 1 or more 100
-   [-report]
+   [-outfile]
    (Parameter 2) Output file name Output file <sequence>.checktrans
    -outseq Sequence file to hold output ORF sequences Writeable
    sequence(s) <sequence>.format
@@ -192,7 +192,7 @@ DQPGQGVADAAPWLGRARGAPAPVAGSDEAARADPEDRSGVAGKRAVRLSDPGRPEQ
   File: paamir_1.gff
   
 ##gff-version 2.0
-##date 2003-05-22
+##date 2003-06-05
 ##Type Protein PAAMIR_1
 PAAMIR_1        checktrans      misc_feature    278     634     0.000   +
 .       Sequence "PAAMIR_1.1"

@@ -372,12 +372,12 @@ Output file [outfile.distmat]:
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
    Mandatory qualifiers (* if not always prompted):
-  [-msf]               seqset     File containing a sequence alignment.
+  [-sequence]          seqset     File containing a sequence alignment.
 *  -nucmethod          menu       Multiple substitution correction methods for
                                   nucleotides.
 *  -protmethod         menu       Multiple substitution correction methods for
                                   proteins.
-  [-outf]              outfile    Enter a name for the distance matrix
+  [-outfile]           outfile    Output file name
 
    Optional qualifiers (* if not always prompted):
 *  -ambiguous          boolean    Option to use the abiguous codes in the
@@ -400,7 +400,7 @@ Output file [outfile.distmat]:
 
    Advanced qualifiers: (none)
    Associated qualifiers:
-  "-msf" related qualifiers
+  "-sequence" related qualifiers
    -sbegin1             integer    First base used
    -send1               integer    Last base used, def=seq length
    -sreverse1           boolean    Reverse (if DNA)
@@ -416,7 +416,7 @@ Output file [outfile.distmat]:
    -ufo1                string     UFO features
    -fformat1            string     Features format
    -fopenfile1          string     Features file name
-  "-outf" related qualifiers
+  "-outfile" related qualifiers
    -odirectory2         string     Output directory
 
    General qualifiers:
@@ -449,7 +449,7 @@ Output file [outfile.distmat]:
 </tr>
 
 <tr>
-<td>[-msf]<br>(Parameter 1)</td>
+<td>[-sequence]<br>(Parameter 1)</td>
 <td>File containing a sequence alignment.</td>
 <td>Readable sequences</td>
 <td><b>Required</b></td>
@@ -470,8 +470,8 @@ Output file [outfile.distmat]:
 </tr>
 
 <tr>
-<td>[-outf]<br>(Parameter 2)</td>
-<td>Enter a name for the distance matrix</td>
+<td>[-outfile]<br>(Parameter 2)</td>
+<td>Output file name</td>
 <td>Output file</td>
 <td><i>&lt;sequence&gt;</i>.distmat</td>
 </tr>

@@ -24,7 +24,7 @@ Usage
 
 % printsextract 
 Extract data from PRINTS
-Input file: ../../data/prints.test
+Full pathname of prints.dat: ../../data/prints.test
    
    Go to the input files for this example
    Go to the output files for this example

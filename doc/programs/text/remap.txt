@@ -56,7 +56,7 @@ Display a sequence with restriction cut sites, translation etc..
 Input sequence(s): tembl:eclac
 Comma separated enzyme list [all]: taqi,bsu6i,acii,bsski
 Minimum recognition site length [4]: 
-Output file [eclac.remap]: 
+Output sequence details to a file [eclac.remap]: 
    
    Go to the input files for this example
    Go to the output files for this example
@@ -75,7 +75,7 @@ Display a sequence with restriction cut sites, translation etc..
 Input sequence(s): tembl:eclac
 Comma separated enzyme list [all]: 
 Minimum recognition site length [4]: 
-Output file [eclac.remap]: 
+Output sequence details to a file [eclac.remap]: 
    
    Go to the output files for this example
    
@@ -93,7 +93,7 @@ Display a sequence with restriction cut sites, translation etc..
 Input sequence(s): tembl:eclac
 Comma separated enzyme list [all]: 
 Minimum recognition site length [4]: 
-Output file [eclac.remap]: 
+Output sequence details to a file [eclac.remap]: 
    
    Go to the output files for this example
    
@@ -109,7 +109,7 @@ Display a sequence with restriction cut sites, translation etc..
 Input sequence(s): tembl:eclac
 Comma separated enzyme list [all]: 
 Minimum recognition site length [4]: 
-Output file [eclac.remap]: 
+Output sequence details to a file [eclac.remap]: 
    
    Go to the output files for this example
    

@@ -50,7 +50,7 @@ Usage
 
 % cons 
 Creates a consensus from multiple alignments
-Input sequence set: ../../data/dna.msf
+File containing a sequence alignment.: ../../data/dna.msf
 Output sequence [dna.fasta]: aligned.cons
    
    Go to the input files for this example
@@ -59,7 +59,7 @@ Output sequence [dna.fasta]: aligned.cons
 Command line arguments
 
    Mandatory qualifiers:
-  [-msf]               seqset     File containing a sequence alignment.
+  [-sequence]          seqset     File containing a sequence alignment.
   [-outseq]            seqout     Output sequence USA
 
    Optional qualifiers:
@@ -88,7 +88,7 @@ Command line arguments
 
    Advanced qualifiers: (none)
    Associated qualifiers:
-  "-msf" related qualifiers
+  "-sequence" related qualifiers
    -sbegin1             integer    First base used
    -send1               integer    Last base used, def=seq length
    -sreverse1           boolean    Reverse (if DNA)
@@ -136,7 +136,7 @@ Command line arguments
    
 
    Mandatory qualifiers Allowed values Default
-   [-msf]
+   [-sequence]
    (Parameter 1) File containing a sequence alignment. Readable sequences
    Required
    [-outseq]

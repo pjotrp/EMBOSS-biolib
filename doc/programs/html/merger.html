@@ -156,10 +156,10 @@ IT IS DONE FOR YOU.
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
    Mandatory qualifiers:
-  [-seqa]              sequence   Sequence USA
-  [-seqb]              sequence   Sequence USA
+  [-asequence]         sequence   Sequence USA
+  [-bsequence]         sequence   Sequence USA
   [-outseq]            seqout     Output sequence USA
-  [-outfile]           align      Output alignment and explanation
+  [-outfile]           align      Output alignment file name
 
    Optional qualifiers:
    -datafile           matrixf    This is the scoring matrix file used when
@@ -173,7 +173,7 @@ IT IS DONE FOR YOU.
 
    Advanced qualifiers: (none)
    Associated qualifiers:
-  "-seqa" related qualifiers
+  "-asequence" related qualifiers
    -sbegin1             integer    First base used
    -send1               integer    Last base used, def=seq length
    -sreverse1           boolean    Reverse (if DNA)
@@ -189,7 +189,7 @@ IT IS DONE FOR YOU.
    -ufo1                string     UFO features
    -fformat1            string     Features format
    -fopenfile1          string     Features file name
-  "-seqb" related qualifiers
+  "-bsequence" related qualifiers
    -sbegin2             integer    First base used
    -send2               integer    Last base used, def=seq length
    -sreverse2           boolean    Reverse (if DNA)
@@ -259,14 +259,14 @@ IT IS DONE FOR YOU.
 </tr>
 
 <tr>
-<td>[-seqa]<br>(Parameter 1)</td>
+<td>[-asequence]<br>(Parameter 1)</td>
 <td>Sequence USA</td>
 <td>Readable sequence</td>
 <td><b>Required</b></td>
 </tr>
 
 <tr>
-<td>[-seqb]<br>(Parameter 2)</td>
+<td>[-bsequence]<br>(Parameter 2)</td>
 <td>Sequence USA</td>
 <td>Readable sequence</td>
 <td><b>Required</b></td>
@@ -281,7 +281,7 @@ IT IS DONE FOR YOU.
 
 <tr>
 <td>[-outfile]<br>(Parameter 4)</td>
-<td>Output alignment and explanation</td>
+<td>Output alignment file name</td>
 <td>Alignment output file</td>
 <td>&nbsp;</td>
 </tr>
@@ -649,7 +649,7 @@ agcttccggccagcgccagcccgcccatggtaaccaccggcagagcggtcgac
 <pre>
 ########################################
 # Program:  merger
-# Rundate:  Thu May 22 10:36:05 2003
+# Rundate:  Thu Jun 05 11:46:15 2003
 # Align_format: simple
 # Report_file: eclacy.out2
 ########################################

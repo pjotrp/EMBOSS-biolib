@@ -204,7 +204,7 @@ Output file format
   
 ########################################
 # Program: antigenic
-# Rundate: Thu May 22 10:21:52 2003
+# Rundate: Thu Jun 05 11:34:10 2003
 # Report_format: motif
 # Report_file: act1_fugru.antigenic
 ########################################
@@ -313,7 +313,7 @@ Max_score_pos at "*"
   File: act1_fugru.antigenic
   
 ##gff-version 2.0
-##date 2003-05-22
+##date 2003-06-05
 ##Type Protein ACT1_FUGRU
 ACT1_FUGRU      antigenic       site    214     222     1.207   +       .
 Sequence "ACT1_FUGRU.1" ; note "*pos 218"

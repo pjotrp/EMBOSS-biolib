@@ -33,7 +33,7 @@ Command line arguments
 
    Mandatory qualifiers: (none)
    Optional qualifiers:
-   -outfile            outfile    Output file
+   -outfile            outfile    Output file name
 
    Advanced qualifiers: (none)
    Associated qualifiers:
@@ -59,11 +59,11 @@ Command line arguments
    -die                 boolean    Report deaths
    
 
-   Mandatory qualifiers  Allowed values Default
+   Mandatory qualifiers      Allowed values Default
    (none)
-   Optional qualifiers   Allowed values Default
-   -outfile Output file  Output file    stdout
-   Advanced qualifiers   Allowed values Default
+   Optional qualifiers       Allowed values Default
+   -outfile Output file name Output file    stdout
+   Advanced qualifiers       Allowed values Default
    (none)
    
 Input file format

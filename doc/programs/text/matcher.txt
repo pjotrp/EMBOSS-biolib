@@ -58,8 +58,8 @@ Output alignment [hba_human.matcher]:
 Command line arguments
 
    Mandatory qualifiers:
-  [-sequencea]         sequence   Sequence USA
-  [-sequenceb]         sequence   Sequence USA
+  [-asequence]         sequence   Sequence USA
+  [-bsequence]         sequence   Sequence USA
   [-outfile]           align      Output alignment file name
 
    Optional qualifiers:
@@ -100,7 +100,7 @@ Command line arguments
 
    Advanced qualifiers: (none)
    Associated qualifiers:
-  "-sequencea" related qualifiers
+  "-asequence" related qualifiers
    -sbegin1             integer    First base used
    -send1               integer    Last base used, def=seq length
    -sreverse1           boolean    Reverse (if DNA)
@@ -116,7 +116,7 @@ Command line arguments
    -ufo1                string     UFO features
    -fformat1            string     Features format
    -fopenfile1          string     Features file name
-  "-sequenceb" related qualifiers
+  "-bsequence" related qualifiers
    -sbegin2             integer    First base used
    -send2               integer    Last base used, def=seq length
    -sreverse2           boolean    Reverse (if DNA)
@@ -164,9 +164,9 @@ Command line arguments
    
 
    Mandatory qualifiers Allowed values Default
-   [-sequencea]
+   [-asequence]
    (Parameter 1) Sequence USA Readable sequence Required
-   [-sequenceb]
+   [-bsequence]
    (Parameter 2) Sequence USA Readable sequence Required
    [-outfile]
    (Parameter 3) Output alignment file name Alignment output file
@@ -451,7 +451,7 @@ Output file format
   
 ########################################
 # Program:  matcher
-# Rundate:  Thu May 22 10:34:26 2003
+# Rundate:  Thu Jun 05 11:45:30 2003
 # Align_format: markx0
 # Report_file: hba_human.matcher
 ########################################
@@ -501,7 +501,7 @@ HBB_HU ENFRLLGNVLVCVLAHHFGKEFTPPVQAAYQKVVAGVANALAHKY
   
 ########################################
 # Program:  matcher
-# Rundate:  Thu May 22 10:34:26 2003
+# Rundate:  Thu Jun 05 11:45:30 2003
 # Align_format: markx0
 # Report_file: hba_human.matcher
 ########################################

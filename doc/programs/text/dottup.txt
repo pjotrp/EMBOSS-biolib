@@ -53,8 +53,8 @@ Created dottup.ps
 Command line arguments
 
    Mandatory qualifiers (* if not always prompted):
-  [-sequencea]         sequence   Sequence USA
-  [-sequenceb]         sequence   Sequence USA
+  [-asequence]         sequence   Sequence USA
+  [-bsequence]         sequence   Sequence USA
    -wordsize           integer    Word size
 *  -data               boolean    Output the match data to a file instead of
                                   plotting it
@@ -69,7 +69,7 @@ Command line arguments
    -stretch            boolean    Use non-proportional axes
 
    Associated qualifiers:
-  "-sequencea" related qualifiers
+  "-asequence" related qualifiers
    -sbegin1             integer    First base used
    -send1               integer    Last base used, def=seq length
    -sreverse1           boolean    Reverse (if DNA)
@@ -85,7 +85,7 @@ Command line arguments
    -ufo1                string     UFO features
    -fformat1            string     Features format
    -fopenfile1          string     Features file name
-  "-sequenceb" related qualifiers
+  "-bsequence" related qualifiers
    -sbegin2             integer    First base used
    -send2               integer    Last base used, def=seq length
    -sreverse2           boolean    Reverse (if DNA)
@@ -140,9 +140,9 @@ Command line arguments
    
 
    Mandatory qualifiers Allowed values Default
-   [-sequencea]
+   [-asequence]
    (Parameter 1) Sequence USA Readable sequence Required
-   [-sequenceb]
+   [-bsequence]
    (Parameter 2) Sequence USA Readable sequence Required
    -wordsize Word size Integer 2 or more 10
    -data Output the match data to a file instead of plotting it Boolean

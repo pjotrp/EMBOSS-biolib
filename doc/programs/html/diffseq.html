@@ -112,7 +112,7 @@ Find differences between nearly identical sequences
 % <b>diffseq tembl:ap000504 tembl:af129756 </b>
 Find differences between nearly identical sequences
 Word size [10]: <b></b>
-Output report file [ap000504.diffseq]: <b></b>
+Output report [ap000504.diffseq]: <b></b>
 
 </pre></td></tr></table><p>
 <p>
@@ -158,7 +158,7 @@ IT IS DONE FOR YOU.
                                   improve the resolution of nearby
                                   differences, but the program will go much
                                   slower.
-   -outfile            report     Output report file
+  [-outfile]           report     Output report file name
 
    Optional qualifiers:
    -afeatout           featout    File for output of first sequence's normal
@@ -208,14 +208,14 @@ IT IS DONE FOR YOU.
    -fformat2            string     Features format
    -fopenfile2          string     Features file name
   "-outfile" related qualifiers
-   -rformat             string     Report format
-   -rname               string     Base file name
-   -rextension          string     File name extension
-   -rdirectory          string     Output directory
-   -raccshow            boolean    Show accession number in the report
-   -rdesshow            boolean    Show description in the report
-   -rscoreshow          boolean    Show the score in the report
-   -rusashow            boolean    Show the full USA in the report
+   -rformat3            string     Report format
+   -rname3              string     Base file name
+   -rextension3         string     File name extension
+   -rdirectory3         string     Output directory
+   -raccshow3           boolean    Show accession number in the report
+   -rdesshow3           boolean    Show description in the report
+   -rscoreshow3         boolean    Show the score in the report
+   -rusashow3           boolean    Show the full USA in the report
   "-afeatout" related qualifiers
    -offormat            string     Output feature format
    -ofopenfile          string     Features file name
@@ -283,8 +283,8 @@ IT IS DONE FOR YOU.
 </tr>
 
 <tr>
-<td>-outfile</td>
-<td>Output report file</td>
+<td>[-outfile]<br>(Parameter 3)</td>
+<td>Output report file name</td>
 <td>Report output file</td>
 <td>&nbsp;</td>
 </tr>
@@ -628,7 +628,7 @@ By default <b>diffseq</b> writes a 'diffseq' report file.
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
 ##gff-version 2.0
-##date 2003-05-22
+##date 2003-06-05
 ##Type DNA AF129756
 AF129756	diffseq	conflict	6882	6882	1.000	+	.	Sequence "AF129756.1" ; note "SNP in AP000504" ; replace "a"
 AF129756	diffseq	conflict	7830	7830	1.000	+	.	Sequence "AF129756.2" ; note "SNP in AP000504" ; replace "g"
@@ -738,7 +738,7 @@ AF129756	diffseq	conflict	103855	103855	1.000	+	.	Sequence "AF129756.105" ; note
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
 ##gff-version 2.0
-##date 2003-05-22
+##date 2003-06-05
 ##Type DNA AP000504
 AP000504	diffseq	conflict	847	847	1.000	+	.	Sequence "AP000504.1" ; note "SNP in AF129756" ; replace "t"
 AP000504	diffseq	conflict	1795	1795	1.000	+	.	Sequence "AP000504.2" ; note "SNP in AF129756" ; replace "a"
@@ -849,7 +849,7 @@ AP000504	diffseq	conflict	97827	97827	1.000	+	.	Sequence "AP000504.105" ; note "
 <pre>
 ########################################
 # Program: diffseq
-# Rundate: Thu May 22 14:44:04 2003
+# Rundate: Thu Jun 05 11:37:39 2003
 # Report_format: diffseq
 # Report_file: ap000504.diffseq
 # Additional_files: 2

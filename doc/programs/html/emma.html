@@ -590,14 +590,14 @@ of your sequences between each bootstrap sample.
 Multiple alignment program - interface to ClustalW program
 Input sequence(s): <b>../../data/globins.fasta</b>
 Output sequence [hbb_human.aln]: <b></b>
-Output file [hbb_human.dnd]: <b></b>
-..clustalw -infile=00024615A -outfile=00024615B -align -type=protein -output=gcg -pwmatrix=blosum -pwgapopen=10.000 -pwgapext=0.100 -newtree=00024615C -matrix=blosum -gapopen=10.000 -gapext=5.000 -gapdist=8 -hgapresidues=GPSNDQEKR -maxdiv=30..
+Dendogram output filename [hbb_human.dnd]: <b></b>
+..clustalw -infile=00007602A -outfile=00007602B -align -type=protein -output=gcg -pwmatrix=blosum -pwgapopen=10.000 -pwgapext=0.100 -newtree=00007602C -matrix=blosum -gapopen=10.000 -gapext=5.000 -gapdist=8 -hgapresidues=GPSNDQEKR -maxdiv=30..
 
 
 
 
 
- CLUSTAL W (1.82) Multiple Sequence Alignments
+ CLUSTAL W (1.83) Multiple Sequence Alignments
 
 
 
@@ -633,7 +633,7 @@ Sequences (4:7) Aligned. Score:  12
 Sequences (5:6) Aligned. Score:  21
 Sequences (5:7) Aligned. Score:  7
 Sequences (6:7) Aligned. Score:  11
-Guide tree        file created:   [00024615C]
+Guide tree        file created:   [00007602C]
 Start of Multiple Alignment
 There are 6 groups
 Aligning...
@@ -647,7 +647,7 @@ Sequence:5     Score:865
 Sequence:6     Score:797
 Sequence:7     Score:1044
 Alignment Score 4164
-GCG-Alignment file created      [00024615B]
+GCG-Alignment file created      [00007602B]
 
 </pre></td></tr></table><p>
 <p>
@@ -736,9 +736,9 @@ IT IS DONE FOR YOU.
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
    Mandatory qualifiers:
-  [-inseqs]            seqall     Sequence database USA
-  [-outseq]            seqoutset  The sequence alignment output filename
-  [-dendoutfile]       outfile    The dendogram output filename
+  [-sequence]          seqall     Sequence database USA
+  [-outseq]            seqoutset  Output sequence set USA
+  [-dendoutfile]       outfile    Dendogram output filename
 
    Optional qualifiers (* if not always prompted):
    -onlydend           boolean    only produce dendrogram file
@@ -928,7 +928,7 @@ IT IS DONE FOR YOU.
    -prot               boolean    Do not change this value
 
    Associated qualifiers:
-  "-inseqs" related qualifiers
+  "-sequence" related qualifiers
    -sbegin1             integer    First base used
    -send1               integer    Last base used, def=seq length
    -sreverse1           boolean    Reverse (if DNA)
@@ -989,7 +989,7 @@ IT IS DONE FOR YOU.
 </tr>
 
 <tr>
-<td>[-inseqs]<br>(Parameter 1)</td>
+<td>[-sequence]<br>(Parameter 1)</td>
 <td>Sequence database USA</td>
 <td>Readable sequence(s)</td>
 <td><b>Required</b></td>
@@ -997,14 +997,14 @@ IT IS DONE FOR YOU.
 
 <tr>
 <td>[-outseq]<br>(Parameter 2)</td>
-<td>The sequence alignment output filename</td>
+<td>Output sequence set USA</td>
 <td>Writeable sequences</td>
 <td><i>&lt;sequence&gt;</i>.<i>format</i></td>
 </tr>
 
 <tr>
 <td>[-dendoutfile]<br>(Parameter 3)</td>
-<td>The dendogram output filename</td>
+<td>Dendogram output filename</td>
 <td>Output file</td>
 <td><i>&lt;sequence&gt;</i>.emma</td>
 </tr>
@@ -1218,7 +1218,7 @@ We also supply an identity matrix which gives a score of 1.0 to two identical am
 <td>-prot</td>
 <td>Do not change this value</td>
 <td>Boolean value Yes/No</td>
-<td>@($(insist) ? @(!$(inseqs.protein)):$(inseqs.protein))</td>
+<td>@($(insist) ? @(!$(sequence.protein)):$(sequence.protein))</td>
 </tr>
 
 </table>

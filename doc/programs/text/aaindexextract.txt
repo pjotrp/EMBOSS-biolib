@@ -34,7 +34,7 @@ Full pathname of file aaindex1: ~/aaindex1
 Command line arguments
 
    Mandatory qualifiers:
-  [-inf]               infile     Full pathname of file aaindex1
+  [-infile]            infile     Full pathname of file aaindex1
 
    Optional qualifiers: (none)
    Advanced qualifiers: (none)
@@ -59,7 +59,7 @@ Command line arguments
    
 
    Mandatory qualifiers Allowed values Default
-   [-inf]
+   [-infile]
    (Parameter 1) Full pathname of file aaindex1 Input file Required
    Optional qualifiers Allowed values Default
    (none)

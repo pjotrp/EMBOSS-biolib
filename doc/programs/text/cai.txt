@@ -40,7 +40,7 @@ Command line arguments
 
    Mandatory qualifiers:
   [-seqall]            seqall     Sequence database USA
-   -cfile              codon      Codon usage file
+   -cfile              codon      Codon usage table name
   [-outfile]           outfile    Output file name
 
    Optional qualifiers: (none)
@@ -87,7 +87,7 @@ Command line arguments
    Mandatory qualifiers Allowed values Default
    [-seqall]
    (Parameter 1) Sequence database USA Readable sequence(s) Required
-   -cfile Codon usage file Codon usage file in EMBOSS data path
+   -cfile Codon usage table name Codon usage file in EMBOSS data path
    Eyeastcai.cut
    [-outfile]
    (Parameter 2) Output file name Output file <sequence>.cai

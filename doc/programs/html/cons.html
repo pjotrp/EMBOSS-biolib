@@ -115,7 +115,7 @@ is in lower-case.
 
 % <b>cons </b>
 Creates a consensus from multiple alignments
-Input sequence set: <b>../../data/dna.msf</b>
+File containing a sequence alignment.: <b>../../data/dna.msf</b>
 Output sequence [dna.fasta]: <b>aligned.cons</b>
 
 </pre></td></tr></table><p>
@@ -148,7 +148,7 @@ Output file [outfile.cons]: aligned.cons
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
    Mandatory qualifiers:
-  [-msf]               seqset     File containing a sequence alignment.
+  [-sequence]          seqset     File containing a sequence alignment.
   [-outseq]            seqout     Output sequence USA
 
    Optional qualifiers:
@@ -177,7 +177,7 @@ Output file [outfile.cons]: aligned.cons
 
    Advanced qualifiers: (none)
    Associated qualifiers:
-  "-msf" related qualifiers
+  "-sequence" related qualifiers
    -sbegin1             integer    First base used
    -send1               integer    Last base used, def=seq length
    -sreverse1           boolean    Reverse (if DNA)
@@ -235,7 +235,7 @@ Output file [outfile.cons]: aligned.cons
 </tr>
 
 <tr>
-<td>[-msf]<br>(Parameter 1)</td>
+<td>[-sequence]<br>(Parameter 1)</td>
 <td>File containing a sequence alignment.</td>
 <td>Readable sequences</td>
 <td><b>Required</b></td>

@@ -251,7 +251,7 @@ Output file format
   
 ########################################
 # Program: etandem
-# Rundate: Thu May 22 10:28:47 2003
+# Rundate: Thu Jun 05 11:45:01 2003
 # Report_format: table
 # Report_file: hhtetra.tan
 ########################################

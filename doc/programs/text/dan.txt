@@ -28,7 +28,8 @@ Enter window size [20]:
 Enter Shift Increment [1]: 
 Enter DNA concentration (nM) [50.]: 
 Enter salt concentration (mM) [50.]: 
-Output report [paamir.dan]: 
+If a plot is not being produced then data on the melting point etc. in each win
+dow along the sequence is output to the file. [paamir.dan]: 
    
    Go to the input files for this example
    Go to the output files for this example
@@ -392,7 +393,7 @@ Output file format
   
 ########################################
 # Program: dan
-# Rundate: Thu May 22 10:22:02 2003
+# Rundate: Thu Jun 05 11:34:24 2003
 # Report_format: seqtable
 # Report_file: paamir.dan
 ########################################

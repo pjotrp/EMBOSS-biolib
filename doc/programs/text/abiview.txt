@@ -24,7 +24,7 @@ Usage
 
 % abiview -graph cps 
 Reads ABI file and display the trace
-Input file: ../../data/abiview.abi
+ABI trace file: ../../data/abiview.abi
 Output sequence [abiview.fasta]: 
 
 Created abiview.ps
@@ -35,8 +35,8 @@ Created abiview.ps
 Command line arguments
 
    Mandatory qualifiers:
-  [-fname]             infile     Name of the ABI trace file
-  [-outseq]            seqout     Sequence file
+  [-infile]            infile     ABI trace file
+  [-outseq]            seqout     Output sequence USA
    -graph              xygraph    Graph type
 
    Optional qualifiers:
@@ -94,10 +94,10 @@ Command line arguments
    
 
    Mandatory qualifiers Allowed values Default
-   [-fname]
-   (Parameter 1) Name of the ABI trace file Input file Required
+   [-infile]
+   (Parameter 1) ABI trace file Input file Required
    [-outseq]
-   (Parameter 2) Sequence file Writeable sequence <sequence>.format
+   (Parameter 2) Output sequence USA Writeable sequence <sequence>.format
    -graph Graph type EMBOSS has a list of known devices, including
    postscript, ps, hpgl, hp7470, hp7580, meta, colourps, cps, xwindows,
    x11, tektronics, tekt, tek4107t, tek, none, null, text, data, xterm,

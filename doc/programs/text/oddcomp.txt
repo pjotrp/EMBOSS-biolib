@@ -57,9 +57,9 @@ Usage
 % oddcomp 
 Finds protein sequence regions with a biased composition
 Input sequence(s): tsw:*
-Input file: ../../data/oddcomp.comp
+'compseq' file to use for expected word frequencies: ../../data/oddcomp.comp
 Window size to consider (e.g. 30 aa) [30]: 
-Output file [100k_rat.oddcomp]: out.odd
+This is the results file. [100k_rat.oddcomp]: out.odd
    
    Go to the input files for this example
    Go to the output files for this example

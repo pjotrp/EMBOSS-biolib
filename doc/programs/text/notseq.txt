@@ -93,7 +93,7 @@ Command line arguments
   [-outseq]            seqoutall  Output sequence(s) USA
 
    Optional qualifiers:
-   -junkout            seqoutall  This file collects the sequences which you
+   -junkoutseq         seqoutall  This file collects the sequences which you
                                   have excluded from the main output file of
                                   sequences.
 
@@ -126,7 +126,7 @@ Command line arguments
    -offormat3           string     Features format
    -ofname3             string     Features file name
    -ofdirectory3        string     Output directory
-  "-junkout" related qualifiers
+  "-junkoutseq" related qualifiers
    -osformat            string     Output seq format
    -osextension         string     File name extension
    -osname              string     Base file name
@@ -176,8 +176,9 @@ Command line arguments
    (Parameter 3) Output sequence(s) USA Writeable sequence(s)
    <sequence>.format
    Optional qualifiers Allowed values Default
-   -junkout This file collects the sequences which you have excluded from
-   the main output file of sequences. Writeable sequence(s) /dev/null
+   -junkoutseq This file collects the sequences which you have excluded
+   from the main output file of sequences. Writeable sequence(s)
+   /dev/null
    Advanced qualifiers Allowed values Default
    (none)
    

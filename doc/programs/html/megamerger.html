@@ -152,11 +152,11 @@ IT IS DONE FOR YOU.
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
    Mandatory qualifiers:
-  [-seqa]              sequence   Sequence USA
-  [-seqb]              sequence   Sequence USA
+  [-asequence]         sequence   Sequence USA
+  [-bsequence]         sequence   Sequence USA
    -wordsize           integer    Word size
   [-outseq]            seqout     Output sequence USA
-  [-report]            outfile    Output report
+  [-outfile]           outfile    Output file name
 
    Optional qualifiers:
    -prefer             boolean    When a mismatch between the two sequence is
@@ -173,7 +173,7 @@ IT IS DONE FOR YOU.
 
    Advanced qualifiers: (none)
    Associated qualifiers:
-  "-seqa" related qualifiers
+  "-asequence" related qualifiers
    -sbegin1             integer    First base used
    -send1               integer    Last base used, def=seq length
    -sreverse1           boolean    Reverse (if DNA)
@@ -189,7 +189,7 @@ IT IS DONE FOR YOU.
    -ufo1                string     UFO features
    -fformat1            string     Features format
    -fopenfile1          string     Features file name
-  "-seqb" related qualifiers
+  "-bsequence" related qualifiers
    -sbegin2             integer    First base used
    -send2               integer    Last base used, def=seq length
    -sreverse2           boolean    Reverse (if DNA)
@@ -216,7 +216,7 @@ IT IS DONE FOR YOU.
    -offormat3           string     Features format
    -ofname3             string     Features file name
    -ofdirectory3        string     Output directory
-  "-report" related qualifiers
+  "-outfile" related qualifiers
    -odirectory4         string     Output directory
 
    General qualifiers:
@@ -250,14 +250,14 @@ IT IS DONE FOR YOU.
 </tr>
 
 <tr>
-<td>[-seqa]<br>(Parameter 1)</td>
+<td>[-asequence]<br>(Parameter 1)</td>
 <td>Sequence USA</td>
 <td>Readable sequence</td>
 <td><b>Required</b></td>
 </tr>
 
 <tr>
-<td>[-seqb]<br>(Parameter 2)</td>
+<td>[-bsequence]<br>(Parameter 2)</td>
 <td>Sequence USA</td>
 <td>Readable sequence</td>
 <td><b>Required</b></td>
@@ -278,8 +278,8 @@ IT IS DONE FOR YOU.
 </tr>
 
 <tr>
-<td>[-report]<br>(Parameter 4)</td>
-<td>Output report</td>
+<td>[-outfile]<br>(Parameter 4)</td>
+<td>Output file name</td>
 <td>Output file</td>
 <td><i>&lt;sequence&gt;</i>.megamerger</td>
 </tr>

@@ -59,7 +59,7 @@ Output alignment [hba_human.water]:
 Command line arguments
 
    Mandatory qualifiers:
-  [-sequencea]         sequence   Sequence USA
+  [-asequence]         sequence   Sequence USA
   [-seqall]            seqall     Sequence database USA
    -gapopen            float      The gap open penalty is the score taken away
                                   when a gap is created. The best value
@@ -96,7 +96,7 @@ Command line arguments
    -[no]brief          boolean    Brief identity and similarity
 
    Associated qualifiers:
-  "-sequencea" related qualifiers
+  "-asequence" related qualifiers
    -sbegin1             integer    First base used
    -send1               integer    Last base used, def=seq length
    -sreverse1           boolean    Reverse (if DNA)
@@ -160,7 +160,7 @@ Command line arguments
    
 
    Mandatory qualifiers Allowed values Default
-   [-sequencea]
+   [-asequence]
    (Parameter 1) Sequence USA Readable sequence Required
    [-seqall]
    (Parameter 2) Sequence database USA Readable sequence(s) Required
@@ -440,7 +440,7 @@ Output file format
   
 ########################################
 # Program:  water
-# Rundate:  Thu May 22 11:00:10 2003
+# Rundate:  Thu Jun 05 11:57:44 2003
 # Align_format: srspair
 # Report_file: hba_human.water
 ########################################

@@ -64,7 +64,9 @@ Window shift increment [1]:
 Minimum length of an island [200]: 
 Minimum observed/expected [0.6]: 
 Minimum percentage [50.]: 
-Output file [rnu68037.cpgplot]: 
+This sets the name of the file holding the report of the input sequence name, C
+pG island parameters and the output details of any CpG islands that are found.
+[rnu68037.cpgplot]: 
 
 Created cpgplot.ps
    
@@ -352,7 +354,7 @@ RNU68037 from 1 to 1218
   File: rnu68037.gff
   
 ##gff-version 2.0
-##date 2003-05-22
+##date 2003-06-05
 ##Type DNA RNU68037
 RNU68037        cpgplot misc_feature    104     509     0.000   +       .
 Sequence "RNU68037.1"

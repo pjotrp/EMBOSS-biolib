@@ -60,7 +60,7 @@ Type of first feature [*]: polyA_signal
 Type of second feature [*]: polyA_site
 The minimum distance between the features [0]: 10
 The maximum distance between the features [0]: 50
-Output report [hsfau.twofeat]: 
+Output feature report [hsfau.twofeat]: 
    
    Go to the input files for this example
    Go to the output files for this example
@@ -78,7 +78,7 @@ Type of first feature [*]: polyA_signal
 Type of second feature [*]: polyA_site
 The minimum distance between the features [0]: 10
 The maximum distance between the features [0]: 50
-Output report [hsfau.twofeat]: 
+Output feature report [hsfau.twofeat]: 
    
    Go to the output files for this example
    
@@ -616,7 +616,7 @@ Output file format
   
 ########################################
 # Program: twofeat
-# Rundate: Thu May 22 10:59:08 2003
+# Rundate: Thu Jun 05 11:57:42 2003
 # Report_format: table
 # Report_file: hsfau.twofeat
 ########################################
@@ -637,6 +637,14 @@ Output file format
   
   File: hsfau.twofeat
   
+##gff-version 2.0
+##date 2003-06-05
+##Type DNA HSFAU
+HSFAU   EMBL    polyA_signal    484     489     0.000   +       .       Sequenc
+e "HSFAU.6"
+HSFAU   EMBL    polyA_site      509     509     0.000   +       .       Sequenc
+e "HSFAU.7" ; FeatFlags "0x40"
+   
 Data files
 
    None.

@@ -96,7 +96,7 @@ It also writes out the sequence to an output sequence file.
 
 % <b>abiview -graph cps </b>
 Reads ABI file and display the trace
-Input file: <b>../../data/abiview.abi</b>
+ABI trace file: <b>../../data/abiview.abi</b>
 Output sequence [abiview.fasta]: <b></b>
 
 Created abiview.ps
@@ -138,8 +138,8 @@ Graph type [x11]:
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
    Mandatory qualifiers:
-  [-fname]             infile     Name of the ABI trace file
-  [-outseq]            seqout     Sequence file
+  [-infile]            infile     ABI trace file
+  [-outseq]            seqout     Output sequence USA
    -graph              xygraph    Graph type
 
    Optional qualifiers:
@@ -207,15 +207,15 @@ Graph type [x11]:
 </tr>
 
 <tr>
-<td>[-fname]<br>(Parameter 1)</td>
-<td>Name of the ABI trace file</td>
+<td>[-infile]<br>(Parameter 1)</td>
+<td>ABI trace file</td>
 <td>Input file</td>
 <td><b>Required</b></td>
 </tr>
 
 <tr>
 <td>[-outseq]<br>(Parameter 2)</td>
-<td>Sequence file</td>
+<td>Output sequence USA</td>
 <td>Writeable sequence</td>
 <td><i>&lt;sequence&gt;</i>.<i>format</i></td>
 </tr>

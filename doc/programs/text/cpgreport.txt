@@ -255,7 +255,7 @@ RNU68037               1183   1193    26          2  72.7   2.00
   File: rnu68037.gff
   
 ##gff-version 2.0
-##date 2003-05-22
+##date 2003-06-05
 ##Type DNA RNU68037
 RNU68037        cpgreport       misc_feature    12      13      17.000  +
 .       Sequence "RNU68037.1"

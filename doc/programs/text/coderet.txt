@@ -115,7 +115,7 @@ Command line arguments
 
    Mandatory qualifiers:
   [-seqall]            seqall     Sequence database USA
-  [-seqout]            seqout     Output sequence USA
+  [-outseq]            seqout     Output sequence USA
 
    Optional qualifiers: (none)
    Advanced qualifiers:
@@ -140,7 +140,7 @@ Command line arguments
    -ufo1                string     UFO features
    -fformat1            string     Features format
    -fopenfile1          string     Features file name
-  "-seqout" related qualifiers
+  "-outseq" related qualifiers
    -osformat2           string     Output seq format
    -osextension2        string     File name extension
    -osname2             string     Base file name
@@ -174,7 +174,7 @@ Command line arguments
    Mandatory qualifiers Allowed values Default
    [-seqall]
    (Parameter 1) Sequence database USA Readable sequence(s) Required
-   [-seqout]
+   [-outseq]
    (Parameter 2) Output sequence USA Writeable sequence <sequence>.format
    Optional qualifiers Allowed values Default
    (none)

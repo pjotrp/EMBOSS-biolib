@@ -45,8 +45,8 @@ Usage
 % sixpack 
 Display a DNA sequence with 6-frame translation and ORFs
 Input sequence: tembl:paamir
-Output file [paamir.sixpack]: 
-Output sequence [paamir.fasta]: 
+Output sequence details to a file [paamir.sixpack]: 
+Output ORFs to a file [paamir.fasta]: 
    
    Go to the input files for this example
    Go to the output files for this example

@@ -24,7 +24,7 @@ Usage
 
 % mwcontam 
 Shows molwts that match across a set of files
-Comma-separated file list: ../../data/mw1.dat,../../data/mw2.dat,../../data/mw3
+Comma separated file list: ../../data/mw1.dat,../../data/mw2.dat,../../data/mw3
 .dat
 ppm tolerance [50.0]: 
 Output file [outfile.mwcontam]: 

@@ -45,7 +45,7 @@ Output report [amic_pseae.garnier]:
 Command line arguments
 
    Mandatory qualifiers:
-  [-sequencea]         seqall     Sequence database USA
+  [-sequence]          seqall     Sequence database USA
   [-outfile]           report     Output report file name
 
    Optional qualifiers: (none)
@@ -53,7 +53,7 @@ Command line arguments
    -idc                integer    idc param
 
    Associated qualifiers:
-  "-sequencea" related qualifiers
+  "-sequence" related qualifiers
    -sbegin1             integer    First base used
    -send1               integer    Last base used, def=seq length
    -sreverse1           boolean    Reverse (if DNA)
@@ -99,7 +99,7 @@ Command line arguments
    
 
    Mandatory qualifiers Allowed values Default
-   [-sequencea]
+   [-sequence]
    (Parameter 1) Sequence database USA Readable sequence(s) Required
    [-outfile]
    (Parameter 2) Output report file name Report output file
@@ -218,7 +218,7 @@ Output file format
   
 ########################################
 # Program: garnier
-# Rundate: Thu May 22 10:33:00 2003
+# Rundate: Thu Jun 05 11:45:14 2003
 # Report_format: tagseq
 # Report_file: amic_pseae.garnier
 ########################################

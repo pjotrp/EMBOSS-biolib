@@ -31,7 +31,7 @@ Usage
 
 % lindna -graph cps 
 Draws linear maps of DNA constructs
-Input file [inputfile]: ../../data/data.linp
+input file containing mapping data [inputfile]: ../../data/data.linp
 do you want a ruler [Y]: 
       1 : Open
       2 : Filled
@@ -47,7 +47,7 @@ Command line arguments
 
    Mandatory qualifiers:
    -graphout           graph      Graph type
-   -inputfile          infile     input file containing mapping data
+  [-infile]            infile     input file containing mapping data
    -[no]ruler          boolean    do you want a ruler
    -blocktype          selection  type of blocks: Open, Filled, or Outline.
                                   Option 'Outline' draws filled blocks
@@ -121,7 +121,8 @@ Command line arguments
    postscript, ps, hpgl, hp7470, hp7580, meta, colourps, cps, xwindows,
    x11, tektronics, tekt, tek4107t, tek, none, null, text, data, xterm,
    png EMBOSS_GRAPHICS value, or x11
-   -inputfile input file containing mapping data Input file inputfile
+   [-infile]
+   (Parameter 1) input file containing mapping data Input file inputfile
    -[no]ruler do you want a ruler Boolean value Yes/No Yes
    -blocktype type of blocks: Open, Filled, or Outline. Option 'Outline'
    draws filled blocks surrounded by a black border Choose from selection

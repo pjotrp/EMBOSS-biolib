@@ -57,7 +57,7 @@ Command line arguments
 
    Optional qualifiers: (none)
    Advanced qualifiers:
-   -cfile              codon      Codon usage file
+   -cfile              codon      Codon usage table name
    -[no]sum            boolean    Sum codons over all sequences
 
    Associated qualifiers:
@@ -107,7 +107,8 @@ Command line arguments
    Optional qualifiers Allowed values Default
    (none)
    Advanced qualifiers Allowed values Default
-   -cfile Codon usage file Codon usage file in EMBOSS data path Ehum.cut
+   -cfile Codon usage table name Codon usage file in EMBOSS data path
+   Ehum.cut
    -[no]sum Sum codons over all sequences Boolean value Yes/No Yes
    
 Input file format

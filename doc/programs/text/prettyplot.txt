@@ -20,7 +20,7 @@ Usage
 
 % prettyplot -resbreak=10 -boxcol -consensus -plurality=3 
 Displays aligned sequences, with colouring and boxing
-Input sequence set: ../../data/globins.msf
+Sequences file to be read in: ../../data/globins.msf
 Graph type [x11]: cps
 
 Created prettyplot.ps
@@ -101,7 +101,7 @@ Command line arguments
    -portrait           boolean    Set page to Portrait
 
    Advanced qualifiers:
-   -data               boolean    (no help text) boolean value
+   -data               boolean    Output as a data file
 
    Associated qualifiers:
   "-msf" related qualifiers
@@ -212,7 +212,7 @@ Command line arguments
    -showscore Print residue scores Any integer value -1
    -portrait Set page to Portrait Boolean value Yes/No No
    Advanced qualifiers Allowed values Default
-   -data (no help text) boolean value Boolean value Yes/No No
+   -data Output as a data file Boolean value Yes/No No
    
 Input file format
 

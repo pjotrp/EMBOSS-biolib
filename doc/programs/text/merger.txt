@@ -81,10 +81,10 @@ Output alignment [eclacy.out2]:
 Command line arguments
 
    Mandatory qualifiers:
-  [-seqa]              sequence   Sequence USA
-  [-seqb]              sequence   Sequence USA
+  [-asequence]         sequence   Sequence USA
+  [-bsequence]         sequence   Sequence USA
   [-outseq]            seqout     Output sequence USA
-  [-outfile]           align      Output alignment and explanation
+  [-outfile]           align      Output alignment file name
 
    Optional qualifiers:
    -datafile           matrixf    This is the scoring matrix file used when
@@ -98,7 +98,7 @@ Command line arguments
 
    Advanced qualifiers: (none)
    Associated qualifiers:
-  "-seqa" related qualifiers
+  "-asequence" related qualifiers
    -sbegin1             integer    First base used
    -send1               integer    Last base used, def=seq length
    -sreverse1           boolean    Reverse (if DNA)
@@ -114,7 +114,7 @@ Command line arguments
    -ufo1                string     UFO features
    -fformat1            string     Features format
    -fopenfile1          string     Features file name
-  "-seqb" related qualifiers
+  "-bsequence" related qualifiers
    -sbegin2             integer    First base used
    -send2               integer    Last base used, def=seq length
    -sreverse2           boolean    Reverse (if DNA)
@@ -173,14 +173,14 @@ Command line arguments
    
 
    Mandatory qualifiers Allowed values Default
-   [-seqa]
+   [-asequence]
    (Parameter 1) Sequence USA Readable sequence Required
-   [-seqb]
+   [-bsequence]
    (Parameter 2) Sequence USA Readable sequence Required
    [-outseq]
    (Parameter 3) Output sequence USA Writeable sequence <sequence>.format
    [-outfile]
-   (Parameter 4) Output alignment and explanation Alignment output file
+   (Parameter 4) Output alignment file name Alignment output file
    Optional qualifiers Allowed values Default
    -datafile This is the scoring matrix file used when comparing
    sequences. By default it is the file 'EBLOSUM62' (for proteins) or the
@@ -541,7 +541,7 @@ agcttccggccagcgccagcccgcccatggtaaccaccggcagagcggtcgac
   
 ########################################
 # Program:  merger
-# Rundate:  Thu May 22 10:36:05 2003
+# Rundate:  Thu Jun 05 11:46:15 2003
 # Align_format: simple
 # Report_file: eclacy.out2
 ########################################

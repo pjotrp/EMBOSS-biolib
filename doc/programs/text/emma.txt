@@ -501,9 +501,9 @@ Usage
 Multiple alignment program - interface to ClustalW program
 Input sequence(s): ../../data/globins.fasta
 Output sequence [hbb_human.aln]: 
-Output file [hbb_human.dnd]: 
-..clustalw -infile=00024615A -outfile=00024615B -align -type=protein -output=gc
-g -pwmatrix=blosum -pwgapopen=10.000 -pwgapext=0.100 -newtree=00024615C -matrix
+Dendogram output filename [hbb_human.dnd]: 
+..clustalw -infile=00007602A -outfile=00007602B -align -type=protein -output=gc
+g -pwmatrix=blosum -pwgapopen=10.000 -pwgapext=0.100 -newtree=00007602C -matrix
 =blosum -gapopen=10.000 -gapext=5.000 -gapdist=8 -hgapresidues=GPSNDQEKR -maxdi
 v=30..
 
@@ -511,7 +511,7 @@ v=30..
 
 
 
- CLUSTAL W (1.82) Multiple Sequence Alignments
+ CLUSTAL W (1.83) Multiple Sequence Alignments
 
 
 
@@ -547,7 +547,7 @@ Sequences (4:7) Aligned. Score:  12
 Sequences (5:6) Aligned. Score:  21
 Sequences (5:7) Aligned. Score:  7
 Sequences (6:7) Aligned. Score:  11
-Guide tree        file created:   [00024615C]
+Guide tree        file created:   [00007602C]
 Start of Multiple Alignment
 There are 6 groups
 Aligning...
@@ -561,7 +561,7 @@ Sequence:5     Score:865
 Sequence:6     Score:797
 Sequence:7     Score:1044
 Alignment Score 4164
-GCG-Alignment file created      [00024615B]
+GCG-Alignment file created      [00007602B]
    
    Go to the input files for this example
    Go to the output files for this example
@@ -569,9 +569,9 @@ GCG-Alignment file created      [00024615B]
 Command line arguments
 
    Mandatory qualifiers:
-  [-inseqs]            seqall     Sequence database USA
-  [-outseq]            seqoutset  The sequence alignment output filename
-  [-dendoutfile]       outfile    The dendogram output filename
+  [-sequence]          seqall     Sequence database USA
+  [-outseq]            seqoutset  Output sequence set USA
+  [-dendoutfile]       outfile    Dendogram output filename
 
    Optional qualifiers (* if not always prompted):
    -onlydend           boolean    only produce dendrogram file
@@ -761,7 +761,7 @@ Command line arguments
    -prot               boolean    Do not change this value
 
    Associated qualifiers:
-  "-inseqs" related qualifiers
+  "-sequence" related qualifiers
    -sbegin1             integer    First base used
    -send1               integer    Last base used, def=seq length
    -sreverse1           boolean    Reverse (if DNA)
@@ -811,14 +811,13 @@ Command line arguments
    
 
    Mandatory qualifiers Allowed values Default
-   [-inseqs]
+   [-sequence]
    (Parameter 1) Sequence database USA Readable sequence(s) Required
    [-outseq]
-   (Parameter 2) The sequence alignment output filename Writeable
-   sequences <sequence>.format
+   (Parameter 2) Output sequence set USA Writeable sequences
+   <sequence>.format
    [-dendoutfile]
-   (Parameter 3) The dendogram output filename Output file
-   <sequence>.emma
+   (Parameter 3) Dendogram output filename Output file <sequence>.emma
    Optional qualifiers Allowed values Default
    -onlydend only produce dendrogram file Boolean value Yes/No No
    -dend select if you want to do alignment using an old dendrogram
@@ -974,7 +973,7 @@ Command line arguments
    from 0 to 100 30
    Advanced qualifiers Allowed values Default
    -prot Do not change this value Boolean value Yes/No @($(insist) ?
-   @(!$(inseqs.protein)):$(inseqs.protein))
+   @(!$(sequence.protein)):$(sequence.protein))
    
 Input file format
 

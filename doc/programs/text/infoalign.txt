@@ -40,7 +40,8 @@ Usage
 
 % infoalign ../../data/globins.msf 
 Information on a multiple sequence alignment
-Output file [globins.infoalign]: 
+If you enter the name of a file here then this program will write the sequence
+details into that file. [globins.infoalign]: 
    
    Go to the input files for this example
    Go to the output files for this example
@@ -52,7 +53,8 @@ Output file [globins.infoalign]:
 
 % infoalign ../../data/globins.msf -nousa 
 Information on a multiple sequence alignment
-Output file [globins.infoalign]: 
+If you enter the name of a file here then this program will write the sequence
+details into that file. [globins.infoalign]: 
    
    Go to the output files for this example
    
@@ -63,7 +65,8 @@ Output file [globins.infoalign]:
 
 % infoalign ../../data/globins.msf -only -name -seqlength 
 Information on a multiple sequence alignment
-Output file [globins.infoalign]: 
+If you enter the name of a file here then this program will write the sequence
+details into that file. [globins.infoalign]: 
    
    Go to the output files for this example
    
@@ -75,7 +78,8 @@ Output file [globins.infoalign]:
 
 % infoalign ../../data/globins.msf -only -name -gapcount -diffcount 
 Information on a multiple sequence alignment
-Output file [globins.infoalign]: 
+If you enter the name of a file here then this program will write the sequence
+details into that file. [globins.infoalign]: 
    
    Go to the output files for this example
    
@@ -86,7 +90,8 @@ Output file [globins.infoalign]:
 
 % infoalign ../../data/globins.msf -only -name -gaps 
 Information on a multiple sequence alignment
-Output file [globins.infoalign]: 
+If you enter the name of a file here then this program will write the sequence
+details into that file. [globins.infoalign]: 
    
    Go to the output files for this example
    
@@ -97,7 +102,8 @@ Output file [globins.infoalign]:
 
 % infoalign ../../data/globins.msf -html 
 Information on a multiple sequence alignment
-Output file [globins.infoalign]: 
+If you enter the name of a file here then this program will write the sequence
+details into that file. [globins.infoalign]: 
    
    Go to the output files for this example
    
@@ -108,7 +114,8 @@ Output file [globins.infoalign]:
 
 % infoalign ../../data/globins.msf -refseq 1 
 Information on a multiple sequence alignment
-Output file [globins.infoalign]: 
+If you enter the name of a file here then this program will write the sequence
+details into that file. [globins.infoalign]: 
    
    Go to the output files for this example
    

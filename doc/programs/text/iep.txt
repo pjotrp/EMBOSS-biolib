@@ -38,7 +38,7 @@ Output file [laci_ecoli.iep]:
 Command line arguments
 
    Mandatory qualifiers (* if not always prompted):
-  [-sequencea]         seqall     Sequence database USA
+  [-sequence]          seqall     Sequence database USA
 *  -graph              xygraph    Graph type
 *  -outfile            outfile    Output file name
 
@@ -51,7 +51,7 @@ Command line arguments
    -[no]report         boolean    Write results to a file
 
    Associated qualifiers:
-  "-sequencea" related qualifiers
+  "-sequence" related qualifiers
    -sbegin1             integer    First base used
    -send1               integer    Last base used, def=seq length
    -sreverse1           boolean    Reverse (if DNA)
@@ -98,7 +98,7 @@ Command line arguments
    
 
    Mandatory qualifiers Allowed values Default
-   [-sequencea]
+   [-sequence]
    (Parameter 1) Sequence database USA Readable sequence(s) Required
    -graph Graph type EMBOSS has a list of known devices, including
    postscript, ps, hpgl, hp7470, hp7580, meta, colourps, cps, xwindows,

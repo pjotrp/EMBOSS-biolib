@@ -215,7 +215,7 @@ Output file format
   
 ########################################
 # Program: fuzzpro
-# Rundate: Thu May 22 10:28:53 2003
+# Rundate: Thu Jun 05 11:45:09 2003
 # Report_format: seqtable
 # Report_file: 100k_rat.fuzzpro
 ########################################
