@@ -1,6 +1,6 @@
 appl: tcode [
-  documentation: "Fickett TESTCODE statistic"
-  groups: "Nucleic:Motifs"
+  documentation: "Fickett TESTCODE statistic to identify protein-coding DNA"
+  groups: "Nucleic:Gene finding"
 ]
 
 section: input [ info: "input Section" type: page ]
