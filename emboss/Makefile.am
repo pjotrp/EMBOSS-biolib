@@ -5,7 +5,7 @@ EXTRA_DIST = emboss.default.template
 
 if ISSHARED
 if ISAIXIA64
-AM_CFLAGS = -Wl,-bdynamic -Wl,-brtl
+AM_CFLAGS = -Wl,-bdynamic -Wl,-brtl -L../ajax/.libs -lajax
 else
 AM_CFLAGS =
 endif
