@@ -193,7 +193,7 @@ public class JembossServer
 */
   public Vector show_help(String applName)
   {
-    String command = embossBin.concat("tfm " + applName + " -nomore");
+    String command = embossBin.concat("tfm " + applName + " -html -nomore");
     RunEmbossApplication rea = new RunEmbossApplication(command,envp,null);
     String helptext = "";
     if(rea.isProcessStdout())
