@@ -1747,6 +1747,22 @@ FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 1\n/
 //
 
+ID dotmatcher-stretch
+AP dotmatcher
+CL tsw:hba_human tsw:hbb_human -xygraph ps -stretch
+IN
+FI stderr
+FC = 2
+##
+## why is this output file created?
+##
+FI hba_human.dotmatcher
+FZ = 0
+FI dotmatcher.ps
+FP /^%%Title: PLplot Graph\n/
+FP /^%%Pages: 1\n/
+//
+
 ID dotpath-ex
 AP dotpath
 ##
@@ -1761,9 +1777,44 @@ FI stderr
 FC = 1
 //
 
+ID dotpath-graph
+AP dotpath
+##
+## timeout 60 seconds on original test system
+##
+TI 400
+CL tembl:AF129756 tembl:AP000504 -word 20 -graph ps
+FI af129756.dotpath
+FZ = 0
+FI dotpath.ps
+FZ > 17100
+FP /^%%Title: PLplot Graph\n/
+FP /^%%Pages: 1\n/
+FI stderr
+FC = 2
+//
+
 ID dottup-ex
 AP dottup
 CL tembl:eclac tembl:eclaci -wordsize=6 -gtitle="eclaci vs eclac" -graph ps
+IN
+FI dottup.ps
+FZ > 66990
+FP /^%%Title: PLplot Graph\n/
+FP /^%%Pages: 1\n/
+FI stderr
+FC = 2
+##
+##we do not really want the eclac.dottup file by default
+##
+FI eclac.dottup
+FZ = 0
+//
+
+ID dottup-stretch
+AP dottup
+CL tembl:eclac tembl:eclaci -wordsize=6 -gtitle="eclaci vs eclac" -xygraph ps
+CL -stretch
 IN
 FI dottup.ps
 FZ > 66990
@@ -2636,6 +2687,75 @@ FP /^tcctgctcctagaagctaaactctccagacttagtcttctgaattc\n/
 
 ID merger-ex
 AP merger
+IN tembl:eclacy
+IN tembl:eclaca
+IN
+IN
+FI stderr
+FC = 2
+FI stdout 
+FZ > 1445
+FP /^# Score: 795\.0\n/
+FP /^ECLACY +1301 +cgcttagcggccccggcccgctttccctgctgcgtcgtcaggtgaatgaa +1350\n/
+FP /^ECLACA +1 +gtgaatgaa +9\n/
+##
+## starts with eclacy, ends with eclaca, small overlap
+##
+FI eclacy.fasta
+FZ = 3291
+FP /^ttccagctgagcgccggtcgctaccattaccagttggtctggtgtcaaaaataataataa\n/
+FP /^agcttccggccagcgccagcccgcccatggtaaccaccggcagagcggtcgac\n/
+//
+
+ID merger-aformat-srspair
+AP merger
+CL -aformat srspair
+IN tembl:eclacy
+IN tembl:eclaca
+IN
+IN
+FI stderr
+FC = 2
+FI stdout 
+FZ > 1445
+FP /^# Score: 795\.0\n/
+FP /^ECLACY +1301 +cgcttagcggccccggcccgctttccctgctgcgtcgtcaggtgaatgaa +1350\n/
+FP /^ECLACA +1 +gtgaatgaa +9\n/
+##
+## starts with eclacy, ends with eclaca, small overlap
+##
+FI eclacy.fasta
+FZ = 3291
+FP /^ttccagctgagcgccggtcgctaccattaccagttggtctggtgtcaaaaataataataa\n/
+FP /^agcttccggccagcgccagcccgcccatggtaaccaccggcagagcggtcgac\n/
+//
+
+ID merger-aformat-markx0
+AP merger
+CL -af markx0
+IN tembl:eclacy
+IN tembl:eclaca
+IN
+IN
+FI stderr
+FC = 2
+FI stdout 
+FZ > 1445
+FP /^# Score: 795\.0\n/
+FP /^ECLACY +cgcttagcggccccggcccgctttccctgctgcgtcgtcaggtgaatgaa\n/
+FP /^ECLACA +gtgaatgaa\n/
+##
+## starts with eclacy, ends with eclaca, small overlap
+##
+FI eclacy.fasta
+FZ = 3291
+FP /^ttccagctgagcgccggtcgctaccattaccagttggtctggtgtcaaaaataataataa\n/
+FP /^agcttccggccagcgccagcccgcccatggtaaccaccggcagagcggtcgac\n/
+//
+
+ID merger-aformat-pair
+AP merger
+CL -aformat pair
 IN tembl:eclacy
 IN tembl:eclaca
 IN
@@ -5557,7 +5677,6 @@ FP 1 /^Error: /
 //
 
 ID seqret-query-direct-deswordstart
-CC testing word matching for DES ... fails for now
 AP seqret
 CL -auto -out test.out -osf embl embl::../../embl/rod.dat:DES:Mus
 FI test.out
@@ -5567,17 +5686,15 @@ FP 1 /^ID/
 //
 
 ID seqret-query-direct-deswordmid
-CC testing word matching for DES ... fails for now
 AP seqret
 CL -auto -out test.out -osf embl embl::../../embl/rod.dat:DES:mrna
 FI test.out
-FZ = 2396
+FZ = 5457
 FP /^ID   RNOPS /
-FP 1 /^ID/
+FP 3 /^ID/
 //
 
 ID seqret-query-direct-deswordend
-CC testing word matching for DES ... fails for now
 AP seqret
 CL -auto -out test.out -osf embl embl::../../embl/rod.dat:DES:receptor
 FI test.out
