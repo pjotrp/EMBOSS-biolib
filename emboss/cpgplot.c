@@ -166,7 +166,7 @@ int main(int argc, char **argv)
     if(mult)
     {
 	ajGraphCloseWin();
-	ajGraphxyDel(mult);
+	ajGraphxyDel(&mult);
     }
 
     ajSeqDel(&seq);
@@ -546,6 +546,7 @@ static void cpgplot_plotit(char *seq, ajint begin, ajint len, ajint shift,
 
 	ajGraphxyAddDataCalcPtr(tmGraph2,len,(float)begin,1.0,obsexp);
 	ajGraphxyAddGraph(graphs,tmGraph2);
+	tmGraph2 = NULL;
     }
 
     if(dopc)
@@ -578,6 +579,7 @@ static void cpgplot_plotit(char *seq, ajint begin, ajint len, ajint shift,
 
 	ajGraphxyAddDataCalcPtr(tmGraph3,len,(float)begin,1.0,xypc);
 	ajGraphxyAddGraph(graphs,tmGraph3);
+	tmGraph3 = NULL;
     }
 
     if(docg)
@@ -614,6 +616,7 @@ static void cpgplot_plotit(char *seq, ajint begin, ajint len, ajint shift,
 
 	ajGraphxyAddDataCalcPtr(tmGraph,len,(float)begin,1.0,tmp);
 	ajGraphxyAddGraph(graphs,tmGraph);
+	tmGraph = NULL;
     }
 
 

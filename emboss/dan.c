@@ -191,7 +191,7 @@ int main(int argc, char **argv)
     if(mult)
     {
 	ajGraphCloseWin();
-	ajGraphxyDel(mult);
+	ajGraphxyDel(&mult);
     }
 
     ajSeqDel(&seq);
