@@ -187,6 +187,26 @@ public class GraphicSequenceCollection extends JPanel
 
   /**
   *
+  * Get the consensus sequence
+  * @return     consensus sequence
+  *
+  */
+  protected Sequence getConsensusSequence()
+  {
+    Enumeration enum = seqs.elements();
+    while(enum.hasMoreElements())
+    {
+      Sequence s = (Sequence)enum.nextElement();
+      String name = s.getName();
+      if(name.equals("Consensus"))
+        return s;
+    }
+    return null;
+  }
+
+
+  /**
+  *
   * Get the number of sequences
   * @return     vector of Sequences
   *
@@ -1027,10 +1047,16 @@ public class GraphicSequenceCollection extends JPanel
   */
   public void setColorScheme(Hashtable colourTable)
   {
-    this.colorScheme = colourTable;
+    this.colorScheme  = colourTable;
+    this.drawColorBox = true;
+
     Enumeration enum = graphicSequence.elements();
     while(enum.hasMoreElements())
-      ((SequenceJPanel)(enum.nextElement())).setColorScheme(colourTable);
+    {
+      SequenceJPanel sjp = (SequenceJPanel)enum.nextElement();
+      sjp.setColorScheme(colourTable);
+      sjp.setDrawColor(drawColorBox);
+    }
   }
  
   /** 

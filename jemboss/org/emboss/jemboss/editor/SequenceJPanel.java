@@ -596,7 +596,7 @@ public class SequenceJPanel extends JPanel
     if(drawNumber)
       return;
     this.drawColorBox = drawColorBox;
-    paintComponent(getGraphics());
+//  paintComponent(getGraphics());
   }
 
   /**
@@ -642,6 +642,7 @@ public class SequenceJPanel extends JPanel
   public void setColorScheme(Hashtable colorHash)
   {
     this.colorTable = colorHash;
+    setPrettyPlot(false);
 //  paintComponent(getGraphics());
   }
 

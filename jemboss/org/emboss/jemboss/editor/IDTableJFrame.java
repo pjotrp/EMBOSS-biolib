@@ -85,9 +85,18 @@ public class IDTableJFrame extends JFrame
               len1 = len2;
 
             for(int p=0;p<len1;p++)
-              if(s1.getResidueAt(p).equals(
-                 s2.getResidueAt(p)))
-                id++;
+            {
+              try
+              {
+                if(s1.getResidueAt(p).equals(
+                   s2.getResidueAt(p)))
+                  id++;
+              }
+              catch(StringIndexOutOfBoundsException outBounds)
+              {
+                System.out.println("Sequences have different length!");
+              }
+            }
 
             float percent = Math.round((float)id/(float)len1*10000.f);
             rowData[i][j+1] = new Float(percent/100.f);

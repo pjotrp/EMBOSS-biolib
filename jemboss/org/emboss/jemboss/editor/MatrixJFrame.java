@@ -85,10 +85,30 @@ public class MatrixJFrame extends JFrame
 //
     final Object matKeys[] = mat.getKeyNames();
     final JList list = new JList(matKeys);
+
+    MouseListener mouseListener = new MouseAdapter()
+    {
+      public void mouseClicked(MouseEvent e)
+      {
+        if(e.getClickCount() < 2)
+          return;
+
+        setCursor(cbusy);
+        String selMat = (String)list.getSelectedValue();
+        mat = new Matrix("resources/resources.jar",
+                         selMat);
+        statusField.setText("Current matrix: "+selMat);
+        setMatrix(mat);
+        alignFrame.setMatrix(mat);
+        setCursor(cdone);
+      }
+    };
+    list.addMouseListener(mouseListener);
     JScrollPane jspList = new JScrollPane(list);
+
     JPanel jp = new JPanel(new BorderLayout());
     jp.add(jspList,BorderLayout.CENTER);
-    JButton matButt= new JButton("Select");
+    JButton matButt= new JButton("Set");
     matButt.addActionListener(new ActionListener()
     {
       public void actionPerformed(ActionEvent e)
@@ -105,6 +125,7 @@ public class MatrixJFrame extends JFrame
     });
     jp.add(matButt,BorderLayout.SOUTH);
     mainPane.add(jp,BorderLayout.EAST);
+
     setSize(500,400);
   }
 
@@ -121,7 +142,6 @@ public class MatrixJFrame extends JFrame
     fed.setCaretPosition(0);
     mScroll.setViewportView(fed);
     setTitle(mat.getCurrentMatrixName());
-//  pack();
   }
 }
 

@@ -187,6 +187,18 @@ public class AlignJFrame extends JFrame
     });
     fileMenu.add(saveAsMenu);
 
+    JMenuItem saveConsMenu = new JMenuItem("Save Consensus");
+    saveConsMenu.addActionListener(new ActionListener()
+    {
+      public void actionPerformed(ActionEvent e)
+      { 
+        Vector v = new Vector();
+        v.add(gsc.getConsensusSequence());
+        new SequenceSaver(v);
+      }
+    });
+    fileMenu.add(saveConsMenu);
+
   
 // print
     JMenu printMenu = new JMenu("Print");
@@ -381,8 +393,8 @@ public class AlignJFrame extends JFrame
         int fontSize = gsc.getFontSize();
         gsc.addSequence(conseq.getConsensusSequence(),true,5,fontSize);
 
-        if(pretty.isSelected())
-          gsc.setPrettyPlot(pretty.isSelected(),ppj);
+//      if(pretty.isSelected())
+//        gsc.setPrettyPlot(pretty.isSelected(),ppj);
 
         Dimension dpane = gsc.getPanelSize();
         gsc.setPreferredSize(dpane);

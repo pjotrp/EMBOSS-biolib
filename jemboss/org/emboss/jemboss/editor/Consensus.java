@@ -125,7 +125,7 @@ public class Consensus
 
     String nocon = "-";
     if(((Sequence)seqs.get(0)).isProtein())
-      nocon = "X";
+      nocon = "x";
 
     String res = "";
 
@@ -182,7 +182,8 @@ public class Consensus
       {
         if( score[i] > max ||
            (score[i] == max &&
-            getResidue(seqs,highindex,k).equals("-") ))
+             (getResidue(seqs,highindex,k).equals("-") ||
+              getResidue(seqs,highindex,k).equals(".")) ))
         {
           highindex = i;
           max       = score[i];
@@ -259,7 +260,9 @@ public class Consensus
         {
           s1 = getResidue(seqs,i,k); 
           m1 = mat.getMatrixIndex(s1);
-          if(matchingmaxindex == m1)
+
+          if(matchingmaxindex == m1 
+             && !s1.equals("-") && !s1.equals("."))
             j++;
         }
         if(j<identity)
