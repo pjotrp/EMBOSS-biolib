@@ -1,5 +1,5 @@
 appl: sixpack [
-  documentation: "Display a DNA sequence in both direction with its translation"
+  documentation: "Display a DNA sequence in both directions with its translation"
   groups: "Display, Nucleic:Gene finding, Nucleic:Translation"
 ]
 
