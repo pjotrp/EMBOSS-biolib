@@ -794,9 +794,11 @@ public class BuildJembossForm implements ActionListener
           }
           else
           { 
-            String fna[] = inSeq[h].getArrayListFile();
-            for(int i=0;i<fna.length;i++)
-              options = options.concat(" -" + val + " " +  fna[i]);
+            String fna = System.getProperty("user.dir")+
+                         System.getProperty("file.separator")+"seq.list";
+
+            boolean ok = inSeq[h].writeListFile(fna);
+            options = options.concat(" -" + val + " list::" +  fna);
           }
         } 
         else                                               // cut 'n paste
