@@ -375,6 +375,8 @@ static void restover_printHits(AjPSeq seq, AjPStr seqcmp, AjPFile *outf,
 	    /*	       ajFmtPrintF(*outf,"%d\t%d",m->cut3,m->cut4);*/
 	}
 	ajStrDel(&overhead);
+
+	embMatMatchDel(&m);
     }
     
     
@@ -413,7 +415,7 @@ static void restover_printHits(AjPSeq seq, AjPStr seqcmp, AjPFile *outf,
 	AJFREE(fa);
 	AJFREE(fx);
     }
-    
+
     
     ajListDel(l);
     ajStrDel(&ps);
