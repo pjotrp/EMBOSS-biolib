@@ -2546,8 +2546,8 @@ AjBool ajStrCut(AjPStr* pthis, ajint begin, ajint end)
     iend = strPosI(thys, ibegin, end) + 1;
     ilen = iend - ibegin;
 
-    ajDebug("ajStrCut %d %d len: %d ibegin: %d iend: %d\n",
-	     begin, end, thys->Len, ibegin, iend);
+    /*ajDebug("ajStrCut %d %d len: %d ibegin: %d iend: %d\n",
+	     begin, end, thys->Len, ibegin, iend);*/
 
     irest = thys->Len - iend + 1;
     if(irest > 0)
