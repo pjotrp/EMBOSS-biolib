@@ -81,6 +81,28 @@ public class AlignFormat
     cp.setPreferredSize(d);
   }
 
+
+  /**
+  *
+  * @param def		default format
+  * @param lpair	true if pairwise alignment format
+  *
+  */
+  public AlignFormat(String def, boolean lpair)
+  {
+    this.def   = def;
+    this.lpair = lpair;
+    cp = new JembossComboPopup(getAlignFormats(lpair));
+    cp.setSelectedItem(def);
+                                                                                
+    Dimension d = cp.getPreferredSize();
+    d = new Dimension(150,(int)d.getHeight());
+                                                                                
+    cp.setMaximumSize(d);
+    cp.setPreferredSize(d);
+  }
+
+
   /**
   *
   * Get the combo-popup component for alignment formats
