@@ -961,11 +961,14 @@ Input file format
    must be one sequence per line.
    
    An example is the file 'fred' which contains:
-     _________________________________________________________________
-   
-   opsd_abyko.fasta sw:opsd_xenla sw:opsd_c* @another_list
-     _________________________________________________________________
-   
+  __________________________________________________________________________
+
+opsd_abyko.fasta
+sw:opsd_xenla
+sw:opsd_c*
+@another_list
+  __________________________________________________________________________
+
    This List files contains:
    
      * opsd_abyko.fasta - this is the name of a sequence file. The file
