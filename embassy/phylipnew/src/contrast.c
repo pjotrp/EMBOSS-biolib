@@ -943,7 +943,8 @@ int main(int argc, Char *argv[])
   emboss_getoptions("fcontrast", argc, argv);
   /*openfile(&infile,INFILE,"input data","r",argv[0],infilename);*/
   /*openfile(&intree,INTREE,"input tree", "r",argv[0],intreename);*/
-  openfile(&outfile,OUTFILE,"output", "w",argv[0],&outfilename);
+  embossoutfile = ajAcdGetOutfile("outfile");
+  emboss_openfile(embossoutfile,&outfile,&outfilename);
   ibmpc = IBMCRT;
   ansi = ANSICRT;
   reg = true;

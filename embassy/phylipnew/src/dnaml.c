@@ -164,6 +164,9 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
     AjPStr gammamethod = NULL;
     ajint i;
     double probsum;
+    AjPFloat vals;
+    AjPFloat rvals;
+    AjPFloat pvals;
 
   ctgry = false;
   rctgry = false;
@@ -262,8 +265,10 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
     if (!invar)
 	invarfrac = 0.0;
 
-    initcatn(&categs);
-    initrcatn(&rcategs);
+    categs = ajAcdGetInt("ncategories");
+    emboss_initcatn(&categs);
+    rcategs = ajAcdGetInt("nhmmcategories");
+    emboss_initcatn(&rcategs);
 
     if (categs > 1)
 	ctgry = true;
@@ -280,11 +285,14 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
 	rrate[0]   = 1.0;
 	probcat[0] = 1.0;
     }
-    initcategs(categs, rate);
-    initrcategs(rcategs, rrate);
+    vals = ajAcdGetArray("rates");
+    emboss_initcategs(vals, categs, rate);
 
+    rvals = ajAcdGetArray("hmmrates");
+    emboss_initcategs(rvals, rcategs, rrate);
 
-    initprobcat(rcategs, &probsum, probcat);
+    pvals = ajAcdGetArray("hmmprobabilities");
+    probsum = emboss_initprobcat(pvals, rcategs, probcat);
     if (rctgry)
     {
 	if (gama)
@@ -313,6 +321,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
     improve = ajAcdGetBool("improve");
     hypstate = ajAcdGetBool("hypstate");
     freqsfrom = ajAcdGetBool("freqsfrom");
+    inseed = ajAcdGetInt("seed");
 
     /* init functions for standard ajAcdGet */
 
@@ -2249,7 +2258,7 @@ void maketree()
     treestr = ajStrStr(phylotrees[0]->Tree);
     inittable_for_usertree (treestr);
     if (numtrees > 2)
-      initseed(&inseed, &inseed0, seed);
+      emboss_initseed(inseed, &inseed0, seed);
     l0gl = (double *) Malloc(numtrees * sizeof(double));
     l0gf = (double **) Malloc(numtrees * sizeof(double *));
     for (i=0; i < numtrees; ++i)
@@ -2528,7 +2537,8 @@ int main(int argc, Char *argv[])
   emboss_getoptions("fdnaml",argc,argv);
   progname = argv[0];
   /*openfile(&infile,INFILE,"input file","r",argv[0],infilename);*/
-  openfile(&outfile,OUTFILE,"output file","w",argv[0],&outfilename);
+  embossoutfile = ajAcdGetOutfile("outfile");
+  emboss_openfile(embossoutfile, &outfile,&outfilename);
   mulsets = false;
   datasets = 1;
   firstset = true;
@@ -2543,7 +2553,8 @@ int main(int argc, Char *argv[])
   if (weights || justwts)
     openfile(&weightfile,WEIGHTFILE,"weights file","r",argv[0],weightfilename);
 */
-  openfile(&outtree,OUTTREE,"output tree file","w",argv[0],&outtreename);
+  embossouttree = ajAcdGetOutfile("outtreefile");
+  emboss_openfile(embossouttree,&outtree,&outtreename);
   if (!outtree)
       trout = false;
   for (ith = 1; ith <= datasets; ith++) {

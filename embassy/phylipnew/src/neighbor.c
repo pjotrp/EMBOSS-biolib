@@ -571,13 +571,15 @@ int main(int argc, Char *argv[])
   init(argc, argv);
   emboss_getoptions("fneighbor",argc,argv);
   /*openfile(&infile,INFILE,"input file", "r",argv[0],infilename);*/
-  openfile(&outfile,OUTFILE,"output file", "w",argv[0],&outfilename);
+  embossoutfile = ajAcdGetOutfile("outfile");
+  emboss_openfile(embossoutfile,&outfile,&outfilename);
   ibmpc = IBMCRT;
   ansi = ANSICRT;
   mulsets = false;
   datasets = 1;
   doinit();
-  openfile(&outtree,OUTTREE,"output tree file", "w",argv[0],&outtreename);
+  embossouttree = ajAcdGetOutfile("outtreefile");
+  emboss_openfile(embossouttree,&outtree,&outtreename);
   if (!outtree) trout = false;
   ith = 1;
   while (ith <= datasets) {

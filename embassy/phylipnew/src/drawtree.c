@@ -25,6 +25,7 @@ AjPPhyloTree* phylotrees;
 
 typedef enum {fixed, radial, along, middle} labelorient;
 FILE        *plotfile;
+AjPFile embossplotfile;
 const char  *pltfilename;
 long        nextnode,  strpwide, strpdeep,
             strptop, strpbottom,  payge, numlines,hpresolution;
@@ -2447,7 +2448,8 @@ void setup_environment(int argc, Char *argv[])
 
 
   printf("DRAWTREE from PHYLIP version %s\n", VERSION);
-  openfile(&plotfile,PLOTFILE,"plot file", "w",argv[0],&pltfilename);
+  embossplotfile = ajAcdGetOutfile("plotfile");
+  emboss_openfile(embossplotfile,&plotfile,&pltfilename);
   /*openfile(&intree,INTREE,"input tree file", "r",argv[0],NULL);*/
   printf("Reading tree ... \n");
   firsttree = true;

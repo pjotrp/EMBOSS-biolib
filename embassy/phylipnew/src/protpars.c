@@ -280,12 +280,44 @@ void setup()
 void emboss_getoptions(char *pgm, int argc, char *argv[])
 {
     AjStatus retval;
- 
+    AjPSeqset s;
+    AjPSeq q;
+    ajint i;
+    ajint j;
+
+    jumble = false;
+    njumble = 1;
+    outgrno = 1;
+    outgropt = false;
+    thresh = false;
+    trout = true;
+    usertree = false;
+    weights = false;
+    whichcode = universal;
+    printdata = false;
+    progress = true;
+    treeprint = true;
+    stepbox = false;
+    ancseq = false;
+    interleaved = true;
     /* initialize global variables */
 
     ajNamInit("emboss");
     retval =  ajAcdInitP (pgm, argc, argv, "PHYLIP");
 
+    seqsets = ajAcdGetSeqsetall("sequences");
+    j = 0;
+    for(j=0;seqsets[j];j++)
+    {
+	s = seqsets[j];
+	ajDebug ("New set\n");
+	for(i=0;i<ajSeqsetSize(s);i++)
+	{
+	    q = ajSeqsetGetSeq(s,i);
+	    ajDebug("  %d %d %S\n", i, ajSeqLen(q), ajSeqStr(q));
+	}
+	ajDebug ("Done set\n");
+    }
     /* ajAcdGet */
 
     /* init functions for standard ajAcdGet */
@@ -645,7 +677,7 @@ void doinit()
 {
   /* initializes variables */
 
-  inputnumbersseq(seqsets[ith-1], &spp, &chars, &nonodes, 1);
+  inputnumbersseq(seqsets[0], &spp, &chars, &nonodes, 1);
 /*  getoptions();*/
   if (printdata)
     fprintf(outfile, "%2ld species, %3ld  sites\n\n", spp, chars);
@@ -1822,6 +1854,7 @@ void maketree()
         protpostorder(root);
         evaluate(root);
         printree(root, 1.0);
+	emboss_printtree(root, "printtree protpars a");
         describe();
         for (j = 1; j < (spp); j++)
           protre_move(&treenode[j], &dummy);
@@ -1844,6 +1877,7 @@ void maketree()
       protpostorder(root);
       evaluate(root);
       printree(root, 1.0);
+      emboss_printtree(root, "printtree protpars b");
       describe();
       which++;
     }
@@ -1870,7 +1904,8 @@ int main(int argc, Char *argv[])
   emboss_getoptions("fprotpars",argc,argv);
   progname = argv[0];
   /*openfile(&infile,INFILE,"input file", "r",argv[0],infilename);*/
-  openfile(&outfile,OUTFILE,"output file", "w",argv[0],&outfilename);
+  embossoutfile = ajAcdGetOutfile("outfile");
+  emboss_openfile(embossoutfile,&outfile,&outfilename);
 
   ibmpc = IBMCRT;
   ansi = ANSICRT;
@@ -1885,7 +1920,8 @@ int main(int argc, Char *argv[])
   if (weights || justwts)
     openfile(&weightfile,WEIGHTFILE,"weights file","r",argv[0],weightfilename);
 */
-  openfile(&outtree,OUTTREE,"output tree file", "w",argv[0],&outtreename);
+  embossouttree = ajAcdGetOutfile("outtreefile");
+  emboss_openfile(embossouttree,&outtree,&outtreename);
   if (!outtree) trout = false;
   for (ith = 1; ith <= msets; ith++) {
     doinput();

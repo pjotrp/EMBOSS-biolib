@@ -164,6 +164,8 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
     ajNamInit("emboss");
     retval =  ajAcdInitP (pgm, argc, argv, "PHYLIP");
 
+    embossouttree = ajAcdGetOutfile("outtreefile");
+    emboss_openfile(embossouttree, &outtree, &outtreename);
     /* ajAcdGet */
 
     /* init functions for standard ajAcdGet */
@@ -1614,9 +1616,9 @@ void undo()
 void treewrite(boolean done)
 {
   /* write out tree to a file */
-  Char ch;
+  /*Char ch;*/
 
-  treeoptions(waswritten, &ch, &outtree, outtreename, progname);
+  /*treeoptions(waswritten, &ch, &outtree, outtreename, progname);*/
   if (!done)
     dnamove_printree();
   if (waswritten && ch != 'A' && ch != 'R')
@@ -1872,7 +1874,8 @@ int main(int argc, Char *argv[])
   strcpy(outtreename,OUTTREE);
 */
   /*openfile(&infile,infilename,"input file", "r",argv[0],infilename);*/
-  openfile(&outtree,OUTTREE,"output file", "w",argv[0],&outtreename);
+  embossouttree = ajAcdGetOutfile("outtreefile");
+  emboss_openfile(embossouttree,&outtree,&outtreename);
 
   garbage = NULL;
   screenlines = 24;

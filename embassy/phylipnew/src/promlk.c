@@ -352,6 +352,8 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
 
     /* ajAcdGet */
 
+    inseed = ajAcdGetInt("seed");
+
     /* init functions for standard ajAcdGet */
 
     /* cleanup for clashing options */
@@ -2698,7 +2700,7 @@ void maketree()
   } else {
     /*openfile(&intree, INTREE, "input tree file", "r", progname, intreename);*/
     if (numtrees > 2)
-      initseed(&inseed, &inseed0, seed);
+      emboss_initseed(inseed, &inseed0, seed);
     l0gl = (double *)Malloc(numtrees * sizeof(double));
     l0gf = (double **)Malloc(numtrees * sizeof(double *));
     for (i=0;i<numtrees;++i)
@@ -2842,7 +2844,8 @@ int main(int argc, Char *argv[])
   emboss_getoptions("fpromlk",argc,argv);
   progname = argv[0];
   /*openfile(&infile, INFILE, "input file", "r", argv[0], infilename);*/
-  openfile(&outfile, OUTFILE, "output file", "w", argv[0], &outfilename);
+  embossoutfile = ajAcdGetOutfile("outfile");
+  emboss_openfile(embossoutfile,&outfile, &outfilename);
 
   ibmpc = IBMCRT;
   ansi = ANSICRT;
@@ -2851,7 +2854,8 @@ int main(int argc, Char *argv[])
   firstset = true;
   doinit();
 
-  openfile(&outtree,OUTTREE,"output tree file","w",argv[0],&outtreename);
+  embossouttree = ajAcdGetOutfile("outtreefile");
+  emboss_openfile(embossouttree,&outtree,&outtreename);
   if (!outtree) trout = false;
 /*
   if (ctgry)

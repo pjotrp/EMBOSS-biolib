@@ -350,7 +350,8 @@ int main(int argc, Char *argv[])
   init(argc, argv);
   emboss_getoptions("fgendist",argc,argv);
   /*openfile(&infile,INFILE,"input file", "r",argv[0],infilename);*/
-  openfile(&outfile,OUTFILE,"output file", "w",argv[0],&outfilename);
+  embossoutfile = ajAcdGetOutfile("outfile");
+  emboss_openfile(embossoutfile,&outfile,&outfilename);
 
   ibmpc = IBMCRT;
   ansi = ANSICRT;

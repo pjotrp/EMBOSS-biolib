@@ -822,7 +822,8 @@ int main(int argc, Char *argv[])
   init(argc,argv);
   emboss_getoptions("fdnainvar",argc,argv);
   /*openfile(&infile,INFILE,"input file", "r",argv[0],infilename);*/
-  openfile(&outfile,OUTFILE,"output file", "w",argv[0],&outfilename);
+  embossoutfile = ajAcdGetOutfile("outfile");
+  emboss_openfile(embossoutfile, &outfile,&outfilename);
   fprintf(outfile,
 	  "\nNucleic acid sequence Invariants method, version %s\n\n",
 	  VERSION);

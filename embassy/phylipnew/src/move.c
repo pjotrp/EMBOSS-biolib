@@ -72,7 +72,8 @@ void   treeconstruct(void);
 /*function prototypes */
 #endif
  
-char infilename[FNMLNGTH],intreename[FNMLNGTH],outtreename[FNMLNGTH], weightfilename[FNMLNGTH], ancfilename[FNMLNGTH], mixfilename[FNMLNGTH], factfilename[FNMLNGTH];
+char infilename[FNMLNGTH],intreename[FNMLNGTH],weightfilename[FNMLNGTH], ancfilename[FNMLNGTH], mixfilename[FNMLNGTH], factfilename[FNMLNGTH];
+const char* outtreename;
 node *root;
 long outgrno, screenlines, col, treelines, leftedge, topedge,
   vmargin, hscroll, vscroll, scrollinc, screenwidth, farthest;
@@ -129,6 +130,8 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
 
     /* ajAcdGet */
 
+    embossouttree = ajAcdGetOutfile("outtreefile");
+    emboss_openfile(embossouttree,&outtree,&outtreename);
     /* init functions for standard ajAcdGet */
 
     /* cleanup for clashing options */
@@ -1343,9 +1346,9 @@ void undo()
 void treewrite(boolean done)
 {
   /* write out tree to a file */
-  Char ch;
+  /*Char ch;*/
 
-  treeoptions(waswritten, &ch, &outtree, outtreename, progname);
+  /*treeoptions(waswritten, &ch, &outtree, outtreename, progname);*/
   if (!done)
     move_printree();
   if (waswritten && ch == 'N')
@@ -1604,9 +1607,6 @@ int main(int argc, Char *argv[])
   init(argc, argv);
   emboss_getoptions("fmove",argc,argv);
   progname = argv[0];
-  strcpy(infilename,INFILE);
-  strcpy(intreename,INTREE);
-  strcpy(outtreename,OUTTREE);
   /*openfile(&infile,infilename,"input file", "r",argv[0],infilename);*/
 
   screenlines = 24;

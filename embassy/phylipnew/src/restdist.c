@@ -620,7 +620,8 @@ int main(int argc, Char *argv[])
   emboss_getoptions("frestdist",argc,argv);
   progname = argv[0];
   /*openfile(&infile,INFILE,"input data file","r",argv[0],infilename);*/
-  openfile(&outfile,OUTFILE,"output file","w",argv[0],&outfilename);
+  embossoutfile = ajAcdGetOutfile("outfile");
+  emboss_openfile(embossoutfile,&outfile,&outfilename);
   ibmpc = IBMCRT;
   ansi = ANSICRT;
   mulsets = false;

@@ -2713,7 +2713,8 @@ void treewrite(boolean *done)
   else
       rooted = false;
 
-  openfile(&outtree,OUTTREE,"output tree file","w","retree",&outtreename);
+  embossouttree = ajAcdGetOutfile("outtreefile");
+  emboss_openfile(embossouttree,&outtree,&outtreename);
   if (nexus) {
     fprintf(outtree, "#NEXUS\n");
     fprintf(outtree, "BEGIN TREES\n");

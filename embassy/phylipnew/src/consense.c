@@ -425,7 +425,8 @@ int main(int argc, Char *argv[])
   /*getoptions();*/
   emboss_getoptions("fconsense",argc,argv);
   /*openfile(&intree, INTREE, "input tree file", "r", argv[0], intreename);*/
-  openfile(&outfile, OUTFILE, "output file", "w", argv[0], &outfilename);
+  embossoutfile = ajAcdGetOutfile("outfile");
+  emboss_openfile(embossoutfile, &outfile, &outfilename);
   fprintf(outfile, "\nMajority-rule and strict consensus tree");
   fprintf(outfile, " program, version %s\n\n", VERSION);
 
@@ -433,8 +434,11 @@ int main(int argc, Char *argv[])
   maxgrp = 32767;   /* initial size of set hash table */
   lasti  = -1;
 
-  if (trout) 
-    openfile(&outtree, OUTTREE, "output tree file", "w", argv[0],&outtreename);
+  if (trout)
+  {
+      embossouttree = ajAcdGetOutfile("outtreefile");
+      emboss_openfile(embossouttree, &outtree, &outtreename);
+  }
 
   if (prntsets)
     fprintf(outfile, "Species in order: \n\n");

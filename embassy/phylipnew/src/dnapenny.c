@@ -786,7 +786,8 @@ int main(int argc, Char *argv[])
   /* Reads in the number of species, number of characters,
      options and data.  Then finds all most parsimonious trees */
   /*openfile(&infile,INFILE,"input file", "r",argv[0],infilename);*/
-  openfile(&outfile,OUTFILE,"output file", "w",argv[0],&outfilename);
+   embossoutfile = ajAcdGetOutfile("outfile");
+  emboss_openfile(embossoutfile,&outfile,&outfilename);
 
   ibmpc = IBMCRT;
   ansi = ANSICRT;
@@ -799,7 +800,8 @@ int main(int argc, Char *argv[])
   if (weights || justwts)
     openfile(&weightfile,WEIGHTFILE,"weights file","r",argv[0],weightfilename);
 */
-  openfile(&outtree,OUTTREE,"output tree file", "w",argv[0],&outtreename);
+   embossouttree = ajAcdGetOutfile("outtreefile");
+  emboss_openfile(embossouttree,&outtree,&outtreename);
   if (!outtree) trout = false;
   for (ith = 1; ith <= msets; ith++) {
     doinput();

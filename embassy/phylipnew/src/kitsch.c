@@ -948,7 +948,8 @@ int main(int argc, Char *argv[])
      construct the tree */
   progname = argv[0];
   /*openfile(&infile,INFILE,"input file","r",argv[0],infilename);*/
-  openfile(&outfile,OUTFILE,"output file","w",argv[0],&outfilename);
+  embossoutfile = ajAcdGetOutfile("outfile");
+  emboss_openfile(embossoutfile,&outfile,&outfilename);
 
   ibmpc = IBMCRT;
   ansi = ANSICRT;
@@ -956,7 +957,8 @@ int main(int argc, Char *argv[])
   firstset = true;
   datasets = 1;
   doinit();
-  openfile(&outtree,OUTTREE,"output tree file","w",argv[0],&outtreename);
+  embossouttree = ajAcdGetOutfile("outtreefile");
+  emboss_openfile(embossouttree,&outtree,&outtreename);
   if (!outtree) trout = true;
   for (ith = 1; ith <= datasets; ith++) {
     if (datasets > 1) {

@@ -135,7 +135,11 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
     if(contchars)
 	all = false;
   
-    initjumble(&inseed, &inseed0, seed, &njumble);
+    njumble = ajAcdGetInt("jumble");
+    inseed = ajAcdGetInt("seed");
+    emboss_initseed(inseed, &inseed0, seed);
+
+    outgrno = ajAcdGetInt("outgroup");
 
     progress = ajAcdGetBool("progress");
 	
@@ -311,7 +315,7 @@ void doinit()
   /* initializes variables */
 
   inputnumbersfreq(phylofreq, &spp, &loci, &nonodes2, 2);
-    initoutgroup(&outgrno, spp);
+    emboss_initoutgroup(&outgrno, spp);
     if (outgrno > 0)
 	outgropt = true;
     else
@@ -1382,7 +1386,8 @@ int main(int argc, Char *argv[])
   progname = argv[0];
   emboss_getoptions("fcontml", argc, argv);
   /*openfile(&infile,INFILE,"input file", "r",argv[0],infilename);*/
-  openfile(&outfile,OUTFILE,"output file", "w",argv[0],&outfilename);
+  embossoutfile = ajAcdGetOutfile("outfile");
+  emboss_openfile(embossoutfile, &outfile,&outfilename);
   fprintf(outfile, "\nContinuous character Maximum Likelihood");
   fprintf(outfile, " method version %s\n\n",VERSION);
   ibmpc = IBMCRT;
@@ -1391,7 +1396,8 @@ int main(int argc, Char *argv[])
   firstset = true;
   datasets = 1;
   doinit();
-  openfile(&outtree,OUTTREE,"output tree file", "w",argv[0],&outtreename);
+  embossouttree = ajAcdGetOutfile("outtreefile");
+  emboss_openfile(embossouttree, &outtree,&outtreename);
   if (!outtree)
       trout = false;
   for (ith = 1; ith <= datasets; ith++) {

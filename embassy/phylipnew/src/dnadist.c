@@ -73,6 +73,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
     ajint numwts = 0; 
     AjBool usegama = ajFalse;
     AjPStr gammamethod = NULL;
+    AjPFloat vals;
 
     ctgry = false;
     categs = 1;
@@ -198,8 +199,10 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
     /* init functions for standard ajAcdGet */
 
     initratio(&ttratio);
-    initcatn(&categs);
-    initcategs(categs, rate);
+    categs = ajAcdGetInt("ncategories");
+    emboss_initcatn(&categs);
+    vals = ajAcdGetArray("rates");
+    emboss_initcategs(vals,categs, rate);
 
     /* cleanup for clashing options */
 
@@ -1443,7 +1446,8 @@ int main(int argc, Char *argv[])
   init(argc, argv);
   emboss_getoptions("fdnadist",argc,argv);
   /*openfile(&infile,INFILE,"input file","r",argv[0],infilename);*/
-  openfile(&outfile,OUTFILE,"output file","w",argv[0],&outfilename);
+  embossoutfile = ajAcdGetOutfile("outfile");
+  emboss_openfile(embossoutfile,&outfile,&outfilename);
 
   ibmpc = IBMCRT;
   ansi = ANSICRT;

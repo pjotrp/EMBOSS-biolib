@@ -11,6 +11,7 @@
 #define gap 0.5    /* distance in character heights between the end
                       of a branch and the start of the name */
 FILE *plotfile;
+AjPFile embossplotfile;
 const char *pltfilename;
 char trefilename[FNMLNGTH];
 char *progname;
@@ -1440,8 +1441,8 @@ void setup_environment(Char *argv[], boolean *canbeplotted)
 #endif
 
   
-
-  openfile(&plotfile,PLOTFILE,"plot file", "w",argv[0],&pltfilename);
+  embossplotfile = ajAcdGetOutfile("plotfile");
+  emboss_openfile(embossplotfile,&plotfile,&pltfilename);
   /*openfile(&intree,INTREE,"input tree file", "r",argv[0],trefilename);*/
   
   printf("DRAWGRAM from PHYLIP version %s\n",VERSION);

@@ -41,6 +41,8 @@ void   bootwrite(void);
 
 
 FILE *outcatfile, *outweightfile;
+AjPFile embossoutcatfile;
+AjPFile embossoutweightfile;
 Char infilename[FNMLNGTH], catfilename[FNMLNGTH],
    weightfilename[FNMLNGTH];
 const char* outfilename;
@@ -795,9 +797,10 @@ void doinput(int argc, Char *argv[])
                "w",argv[0],outweightfilename);
   else {
     if (weights)*/
-      openfile(&outweightfile,"outweights","output weight file",
-               "w",argv[0],&outweightfilename);
-    openfile(&outfile,OUTFILE,"output data file","w",argv[0],&outfilename);
+  embossoutweightfile = ajAcdGetOutfile("outweightfile");
+      emboss_openfile(embossoutweightfile,&outweightfile,&outweightfilename);
+  embossoutfile = ajAcdGetOutfile("outfile");
+    emboss_openfile(embossoutfile,&outfile,&outfilename);
   /*}*/
   inputoptions();
   seqboot_inputdatarest(phylorest);

@@ -149,12 +149,15 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
 
     /* init functions for standard ajAcdGet */
 
-    initjumble(&inseed, &inseed0, seed, &njumble);
+    njumble = ajAcdGetInt("jumble");
+    inseed = ajAcdGetInt("seed");
+    emboss_initseed(inseed, &inseed0, seed);
     ancseq = ajAcdGetBool("ancseq");
     stepbox = ajAcdGetBool("stepbox");
     treeprint = ajAcdGetBool("drawtree");
     printdata = ajAcdGetBool("printdata");
     progress = ajAcdGetBool("progress");
+    outgrno = ajAcdGetInt("outgroup");
 
     /* cleanup for clashing options */
 
@@ -396,7 +399,7 @@ void doinit()
   /* initializes variables */
 
   inputnumbersseq(seqsets[0], &spp, &chars, &nonodes, 1);
-  initoutgroup(&outgrno, spp);
+  emboss_initoutgroup(&outgrno, spp);
   if (outgrno > 0)
       outgropt = true;
   else
@@ -1110,9 +1113,9 @@ void maketree()
       }
     }
   } else {
-    /*openfile(&intree, INTREE, "input tree file", "r", progname, intreename);*/
+      /*openfile(&intree, INTREE, "input tree file", "r", progname, intreename);*/
     if (numtrees > 2)
-      initseed(&inseed, &inseed0, seed);
+      emboss_initseed(inseed, &inseed0, seed);
     if (treeprint) {
       fprintf(outfile, "User-defined tree");
       if (numtrees > 1)
@@ -1194,7 +1197,8 @@ int main(int argc, Char *argv[])
 #endif
   init(argc, argv);
   emboss_getoptions("fdnacomp",argc,argv);
-  openfile(&outfile,OUTFILE,"output file", "w",argv[0],&outfilename);
+  embossoutfile = ajAcdGetOutfile("outfile");
+  emboss_openfile(embossoutfile,&outfile,&outfilename);
   mulsets = false;
   garbage = NULL;
   grbg = NULL;
@@ -1203,9 +1207,10 @@ int main(int argc, Char *argv[])
   msets = 1;
   firstset = true;
   doinit();
-  if (weights || justwts)
-    openfile(&weightfile,WEIGHTFILE,"weights file","r",argv[0],&weightfilename);
-  openfile(&outtree,OUTTREE,"output tree file", "w",argv[0],&outtreename);
+  /*if (weights || justwts)*/
+    /*openfile(&weightfile,WEIGHTFILE,"weights file","r",argv[0],&weightfilename);*/
+  embossouttree = ajAcdGetOutfile("outtreefile");
+  emboss_openfile(embossouttree,&outtree,&outtreename);
   if (!outtree)
       trout = false;
 

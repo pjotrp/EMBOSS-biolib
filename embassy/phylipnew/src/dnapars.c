@@ -100,6 +100,8 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
     ajNamInit("emboss");
     retval =  ajAcdInitP (pgm, argc, argv, "PHYLIP");
 
+    inseed = ajAcdGetInt("seed");
+
     /* ajAcdGet */
 
     /* init functions for standard ajAcdGet */
@@ -1471,7 +1473,7 @@ void maketree()
   } else {
     /*openfile(&intree,INTREE,"input tree", "r",progname,intreename);*/
     if (numtrees > 2)
-      initseed(&inseed, &inseed0, seed);
+      emboss_initseed(inseed, &inseed0, seed);
     if (numtrees > MAXNUMTREES) {
       printf("\nERROR: number of input trees is read incorrectly from %s\n",
         intreename);
@@ -1612,7 +1614,8 @@ int main(int argc, Char *argv[])
   emboss_getoptions("fdnapars",argc,argv);
   progname = argv[0];
   /*openfile(&infile,INFILE,"input file", "r",argv[0],infilename);*/
-  openfile(&outfile,OUTFILE,"output file", "w",argv[0],&outfilename);
+   embossoutfile = ajAcdGetOutfile("outfile");
+  emboss_openfile(embossoutfile,&outfile,&outfilename);
 
   ibmpc = IBMCRT;
   ansi = ANSICRT;
@@ -1625,7 +1628,8 @@ int main(int argc, Char *argv[])
   if (weights || justwts)
     openfile(&weightfile,WEIGHTFILE,"weights file","r",argv[0],weightfilename);
 */
-  openfile(&outtree,OUTTREE,"output tree file", "w",argv[0],&outtreename);
+   embossouttree = ajAcdGetOutfile("outtreefile");
+  emboss_openfile(embossouttree,&outtree,&outtreename);
   if (!outtree)
       trout = false;
   for (ith = 1; ith <= msets; ith++) {

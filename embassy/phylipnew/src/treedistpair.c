@@ -994,7 +994,8 @@ int main(int argc, Char *argv[])
   init(argc, argv);
   emboss_getoptions("ftreedist",argc,argv);
   /*openfile(&intree, INTREE, "input tree file", "r", argv[0], intreename);*/
-  openfile(&outfile, OUTFILE, "output file", "w", argv[0], &outfilename);
+  embossoutfile = ajAcdGetOutfile("outfile");
+  emboss_openfile(embossoutfile,&outfile,&outfilename);
 
   /* Initialize option-based variables, then ask for changes regarding
      their values. */

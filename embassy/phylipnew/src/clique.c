@@ -173,6 +173,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
     progress = ajAcdGetBool("progress");
     printcomp = ajAcdGetBool("matrixout");
     treeprint = ajAcdGetBool("drawtree");
+    outgrno = ajAcdGetInt("outgroup");
     Cliqmin = ajAcdGetInt("minclique");
     if (Cliqmin < 1) {
 	Clmin = true;
@@ -1499,10 +1500,12 @@ int main(int argc, Char *argv[])
   init(argc, argv);
   emboss_getoptions("fclique",argc,argv);
 /*  openfile(&infile,INFILE,"input file", "r",argv[0],infilename);*/
-  openfile(&outfile,OUTFILE,"output file", "w",argv[0],&outfilename);
-  openfile(&outtree,OUTTREE,"output tree file", "w",argv[0],&outtreename);
+  embossoutfile = ajAcdGetOutfile("outfile");
+  embossouttree = ajAcdGetOutfile("outtreefile");
+  emboss_openfile(embossoutfile,&outfile,&outfilename);
+  emboss_openfile(embossouttree, &outtree,&outtreename);
   doinit();
-  initoutgroup(&outgrno, spp);
+  emboss_initoutgroup(&outgrno, spp);
   if (outgrno > 0)
     outgropt = true;
   else

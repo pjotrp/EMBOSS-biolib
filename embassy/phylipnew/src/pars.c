@@ -97,6 +97,8 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
 
     /* ajAcdGet */
 
+    inseed = ajAcdGetInt("seed");
+
     /* init functions for standard ajAcdGet */
 
     /* cleanup for clashing options */
@@ -1472,7 +1474,7 @@ void maketree()
       exxit(-1);
     }
     if (numtrees > 2)
-      initseed(&inseed, &inseed0, seed);
+      emboss_initseed(inseed, &inseed0, seed);
     if (treeprint) {
       fprintf(outfile, "User-defined tree");
       if (numtrees > 1)
@@ -1566,7 +1568,8 @@ int main(int argc, Char *argv[])
   init(argc, argv);
   emboss_getoptions("fpars",argc,argv);
   /*openfile(&infile,INFILE,"input file", "r",argv[0],infilename);*/
-  openfile(&outfile,OUTFILE,"output file", "w",argv[0],&outfilename);
+   embossoutfile = ajAcdGetOutfile("outfile");
+  emboss_openfile(embossoutfile,&outfile,&outfilename);
 
   ibmpc = IBMCRT;
   ansi = ANSICRT;
@@ -1579,7 +1582,8 @@ int main(int argc, Char *argv[])
   if (weights || justwts)
     openfile(&weightfile,WEIGHTFILE,"weights file","r",argv[0],weightfilename);
 */
-  openfile(&outtree,OUTTREE,"output tree file", "w",argv[0],&outtreename);
+   embossouttree = ajAcdGetOutfile("outtreefile");
+  emboss_openfile(embossouttree,&outtree,&outtreename);
   if (!outtree) trout = false;
   for (ith = 1; ith <= msets; ith++) {
     if (msets > 1 && !justwts) {

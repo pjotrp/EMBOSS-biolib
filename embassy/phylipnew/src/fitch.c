@@ -1102,7 +1102,8 @@ int main(int argc, Char *argv[])
   emboss_getoptions("ffitch",argc,argv);
   progname = argv[0];
   /*openfile(&infile,INFILE,"input file","r",argv[0],infilename);*/
-  openfile(&outfile,OUTFILE,"output file","w",argv[0],&outfilename);
+  embossoutfile = ajAcdGetOutfile("outfile");
+  emboss_openfile(embossoutfile,&outfile,&outfilename);
 
   ibmpc = IBMCRT;
   ansi = ANSICRT;
@@ -1110,7 +1111,8 @@ int main(int argc, Char *argv[])
   datasets = 1;
   firstset = true;
   doinit();
-  openfile(&outtree,OUTTREE,"output tree file","w",argv[0],&outtreename);
+  embossouttree = ajAcdGetOutfile("outtreefile");
+  emboss_openfile(embossouttree,&outtree,&outtreename);
   if (!outtree) trout = false;
   for (i=0;i<spp;++i){
     enterorder[i]=0;}
