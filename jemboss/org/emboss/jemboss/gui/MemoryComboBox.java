@@ -98,6 +98,23 @@ public class MemoryComboBox extends JComboBox
       return true;
   }
 
+
+  /**
+  *
+  * Determine if a forward page is stored
+  * @return     true if a forward page available
+  *
+  */
+  protected boolean isForwardPage()
+  {
+    int currentIndex = order.indexOf(getSelectedItem());
+    if(currentIndex < order.size()-1)
+      return true;
+    else 
+      return false;
+  }
+
+
   /**
   *
   * Determine if item is in the JComboBox

@@ -68,6 +68,10 @@ public class Browser extends JFrame
   private JMenuItem backMenu;
   /** Back button option */
   private JButton backBt;
+  /** Forward menu option */
+  private JMenuItem fwdMenu;
+  /** Forward button option */
+  private JButton fwdBt;
 
   /**
   *
@@ -198,7 +202,7 @@ public class Browser extends JFrame
     fileMenu.add(backMenu);
     backMenu.setEnabled(false);
 
-    JMenuItem fwdMenu = new JMenuItem("Forward");
+    fwdMenu = new JMenuItem("Forward");
     fwdMenu.setAccelerator(KeyStroke.getKeyStroke(
               KeyEvent.VK_F, ActionEvent.CTRL_MASK));
     fwdMenu.setActionCommand("FWD");
@@ -289,7 +293,7 @@ public class Browser extends JFrame
     backBt.setEnabled(false);
 
     // Forward JButton
-    JButton fwdBt = new JButton()
+    fwdBt = new JButton()
     {
       public void paintComponent(Graphics g)
       {
@@ -316,6 +320,7 @@ public class Browser extends JFrame
     fwdBt.setMaximumSize(dBut);
     fwdBt.setActionCommand("FWD");
     fwdBt.addActionListener(this);
+    fwdBt.setEnabled(false);
 
     toolBarIcon.add(backBt);
     toolBarIcon.add(fwdBt);
@@ -412,6 +417,9 @@ public class Browser extends JFrame
           }
           backMenu.setEnabled(urlField.isBackPage());
           backBt.setEnabled(urlField.isBackPage());
+  
+          fwdMenu.setEnabled(urlField.isForwardPage());
+          fwdBt.setEnabled(urlField.isForwardPage());
 	}
       }
     });
@@ -524,6 +532,9 @@ public class Browser extends JFrame
 
       backMenu.setEnabled(urlField.isBackPage());
       backBt.setEnabled(urlField.isBackPage());
+
+      fwdMenu.setEnabled(urlField.isForwardPage());
+      fwdBt.setEnabled(urlField.isForwardPage());
     }
     catch(IOException ioe)
     {
