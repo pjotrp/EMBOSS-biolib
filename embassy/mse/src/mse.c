@@ -2485,6 +2485,10 @@ SeqEntry *SeqOut;
 
 	fChar = Seq[Strand].Mem[f];
 	Seq[Strand].Mem[f] = EOS;
+
+Seq[Strand].Length = f-s+1;
+
+
 	sChar = Seq[Strand].Mem;
 	Seq[Strand].Mem  = &(Seq[Strand].Mem[s-1]);
 
