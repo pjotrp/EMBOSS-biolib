@@ -2243,7 +2243,6 @@ IN
 IN
 IN
 IN
-IN
 FI stderr
 FC = 2
 FP 0 /Warning: /
@@ -5378,7 +5377,6 @@ FP 0 /Died: /
 ID dottup-ex
 AP dottup
 CL tembl:eclac tembl:eclaci -wordsize=6 -gtitle="eclaci vs eclac" -graph cps
-IN
 FI stdout
 FZ = 18
 FP /^Created dottup.ps\n/
@@ -16094,7 +16092,6 @@ IN ../../data/swnew
 IN 1
 IN 0.001
 IN 100
-IN
 IN
 IN
 IN
