@@ -19,13 +19,17 @@
 *
 ********************************************************************/
 
-
 package org.emboss.jemboss.gui.form;
 
 import java.util.Vector;
 import javax.swing.*;
 import javax.swing.plaf.basic.*;
 
+/**
+*
+* Creates a scrolling JComboBox
+*
+*/
 public class JembossComboPopup extends JComboBox
 {
   
@@ -33,7 +37,7 @@ public class JembossComboPopup extends JComboBox
   *
   *  Creates a JComboBox that contains the elements in 
   *  the specified array.
-  *  @param items an array of objects to insert into the combo box
+  *  @param items 	array of objects to insert into the combo box
   *
   */
   public JembossComboPopup(Object[] items)
@@ -43,6 +47,13 @@ public class JembossComboPopup extends JComboBox
     setBorder(BorderFactory.createEtchedBorder());
   }
 
+  /**
+  *
+  *  Creates a JComboBox that contains the elements in
+  *  the vextor
+  *  @param items       vector of objects to insert into the combo box
+  *
+  */
   public JembossComboPopup(Vector items)
   {
     super(items);
