@@ -4515,7 +4515,9 @@ AjBool ajSeqGetFromUsa (AjPStr thys, AjBool protein, AjPSeq *seq)
 AjBool ajSeqABITest(AjPFile fp)
 {   
 
-    char pabi[4];
+    char pabi[5];
+
+    pabi[4] = '\0'; 
 
     if(ajFileRead((void *)pabi,4,1,fp))
     {
