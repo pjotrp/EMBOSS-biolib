@@ -849,7 +849,7 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_fork
     argp = make_array(cl);
     envp = make_array(envi);
 
-    if(!ajSysWhich(&prog))
+    if(!ajSysWhichEnv(&prog,envp))
 	return (unsigned char)ajFalse;
 
     pipe(outpipe);
