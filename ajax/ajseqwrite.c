@@ -472,6 +472,8 @@ static void seqWriteNcbi (AjPSeqout outseq) {
     (void) ajFmtPrintF (outseq->File, ">gnl|");
   if (ajStrLen(outseq->Db))
     (void) ajFmtPrintF (outseq->File, "%S|", outseq->Db);
+  else if (ajStrLen(outseq->Setdb))
+    (void) ajFmtPrintF (outseq->File, "%S|", outseq->Setdb);
   else
     (void) ajFmtPrintF (outseq->File, "unk|");
 
