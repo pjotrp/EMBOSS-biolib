@@ -1,0 +1,369 @@
+
+                                 pestfind 
+                                      
+   
+   
+Function
+
+   Finds PEST motifs as potential proteolytic cleavage sites
+   
+Description
+
+   pestfind finds PEST domains in a protein sequence.
+   
+   Proteins with intracellular half-lives of less than two hours are
+   found to contain regions rich in proline, glutamic acid, serine and
+   threonine (P, E, S and T). These so called PEST regions are generally
+   flanked by clusters of positively charged amino acids.
+   
+   pestfind identifies possible PEST regions in a protein sequence using
+   the Molecular fraction of the P, E, S and T components, and the
+   hydrophobicity index of the region.
+   
+Algorithm
+
+   The algorithm comprises first selecting all portions of a submitted
+   sequence which correspond to the following Perl regular expression:
+   
+                    /([HKRhkr]|^\w)(\w*?)([HKRhkr]|\w$)/
+                                      
+   Or in English, the following sequence of conditions:
+   
+     * Either one of the residues H, K and R or the first residue in the
+       sequence
+     * The shortest sequence of residues excluding H, K and R
+     * Either one of the residues H, K and R or the last residue in the
+       sequence
+       
+   This isolates all of the initial candidate sequences. Following this
+   selection, a set of inflexible rules are applied. First, the candidate
+   sequence must be of at least the length specified at execution
+   (default is 10 AAs). Next, the sequence must conform to the following
+   Perl regular expression:
+   
+                       /P/ && /(?:D|E)/ && /(?:S|T)/
+                                      
+   Or in English, the following sequence of conditions:
+   
+     * Any residues including at least one P
+     * Any residues including at least either one D or one E
+     * Any residues including at least either one S or one T
+       
+   Once these conditions are met, we are left with a set of all candidate
+   sequences from which we select the suitable members using the PEST
+   SCORE algorithm. Since this gives us an arbitary cut off point, it is
+   possible to ask for all candidate sequences with their PEST scores.
+   PEST Scores are derived from two factors, the Molecular Fraction of
+   the D, P, E, S and T components of the candidate and it's hydrophobic
+   index.
+   
+   The PEDST molecular fraction is given by the following equation:
+   
+                         PEDST = 100 * (S - E) / T
+                                      
+   S = Total molecular weights of the P, E, D, S and T components of the
+   candidate sequence
+   E = Sum of the molecular weights of a single E, P and T Molecule (327)
+   T = Total molecular weights of all amino acids within the candidate
+   sequence
+   
+   The Hydrophobic index is given by the following equation:
+   
+                        HI = sum x=aa {H(x) * F(x)}
+                                      
+   H(x) = Hydrophobicity of amino acid (x)
+   F(x) = Molar fraction of amino acid (x) within candidate sequence
+   
+   The PEST score is calculated from the PEDST molar fraction and the
+   hydrophobic index from the following equation:
+   
+              PEST Score = -1 * ((HI * 0.5) - (PEDST * 0.55))
+                                      
+   A score in excess of the cut-off is recorded as a potential PEST
+   sequence, so a low hydrophobicity index and a high PEDST score is most
+   desirable.
+   
+Usage
+
+   Here is a sample session with pestfind
+   
+
+% pestfind -graph cps 
+Finds PEST motifs as potential proteolytic cleavage sites
+Enter input sequence: ../../data/exu2_drops.embl
+Enter window length [10]: 
+Sort order of results
+      1 : length
+      2 : position
+      3 : score
+Select sort order of results [score]: 
+Enter output filename [exu2_drops.pestfind]: 
+
+Created pestfind.ps
+   
+   Go to the input files for this example
+   Go to the output files for this example
+   
+Command line arguments
+
+   Mandatory qualifiers:
+  [-sequence]          sequence   Protein sequence USA to be analysed.
+   -window             integer    Minimal distance between positively charged
+                                  amino acids.
+   -order              selection  Results may be sorted by length, position
+                                  and score.
+   -outfile            outfile    Name of file to which results will be
+                                  written.
+   -graph              xygraph    Graph type
+
+   Optional qualifiers:
+   -threshold          float      Threshold value to discriminate weak from
+                                  potential PEST motifs.
+   -aadata             string     File of amino acid properties and molecular
+                                  masses.
+
+   Advanced qualifiers:
+   -[no]potential      boolean    Decide whether potential PEST motifs should
+                                  be printed.
+   -[no]poor           boolean    Decide whether poor PEST motifs should be
+                                  printed.
+   -invalid            boolean    Decide whether invalid PEST motifs should be
+                                  printed.
+   -[no]map            boolean    Decide whether PEST motifs should be mapped
+                                  to sequence.
+
+   General qualifiers:
+  -help                boolean    Report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   
+
+   Mandatory qualifiers Allowed values Default
+   [-sequence]
+   (Parameter 1) Protein sequence USA to be analysed. Readable sequence
+   Required
+   -window Minimal distance between positively charged amino acids.
+   Integer 2 or more 10
+   -order Results may be sorted by length, position and score. Choose
+   from selection list of values score
+   -outfile Name of file to which results will be written. Output file
+   <sequence>.pestfind
+   -graph Graph type EMBOSS has a list of known devices, including
+   postscript, ps, hpgl, hp7470, hp7580, meta, colourps, cps, xwindows,
+   x11, tektronics, tekt, tek4107t, tek, none, null, text, data, xterm,
+   png EMBOSS_GRAPHICS value, or x11
+   Optional qualifiers Allowed values Default
+   -threshold Threshold value to discriminate weak from potential PEST
+   motifs. Number from -55.00 to 55.00 +5.0
+   -aadata File of amino acid properties and molecular masses. Any string
+   is accepted Eamino.dat
+   Advanced qualifiers Allowed values Default
+   -[no]potential Decide whether potential PEST motifs should be printed.
+   Boolean value Yes/No Yes
+   -[no]poor Decide whether poor PEST motifs should be printed. Boolean
+   value Yes/No Yes
+   -invalid Decide whether invalid PEST motifs should be printed. Boolean
+   value Yes/No No
+   -[no]map Decide whether PEST motifs should be mapped to sequence.
+   Boolean value Yes/No Yes
+   
+Input file format
+
+   pestfind reads any normal sequence USAs.
+   
+  Input files for usage example
+  
+  File: ../../data/exu2_drops.embl
+  
+ID   EXU2_DROPS     STANDARD;      PRT;   477 AA.
+AC   Q24617;
+DT   01-NOV-1997 (Rel. 35, Created)
+DT   01-NOV-1997 (Rel. 35, Last sequence update)
+DT   01-NOV-1997 (Rel. 35, Last annotation update)
+DE   Maternal exuperantia 2 protein.
+GN   EXU2.
+OS   Drosophila pseudoobscura (Fruit fly).
+OC   Eukaryota; Metazoa; Arthropoda; Tracheata; Hexapoda; Insecta;
+OC   Pterygota; Neoptera; Endopterygota; Diptera; Brachycera; Muscomorpha;
+OC   Ephydroidea; Drosophilidae; Drosophila.
+OX   NCBI_TaxID=7237;
+RN   [1]
+RP   SEQUENCE FROM N.A.
+RX   MEDLINE=94350208; PubMed=8070663;
+RA   Luk S.K.-S., Kilpatrick M., Kerr K., Macdonald P.M.;
+RT   "Components acting in localization of bicoid mRNA are conserved among
+RT   Drosophila species.";
+RL   Genetics 137:521-530(1994).
+CC   -!- FUNCTION: ENSURES THE PROPER LOCALIZATION OF THE MRNA OF THE
+CC       BICOID GENE TO THE ANTERIOR REGIONS OF THE OOCYTE THUS PLAYING
+CC       A FUNDAMENTAL ROLE IN THE ESTABLISHMENT OF THE POLARITY OF THE
+CC       OOCYTE. MAY BIND THE BCD MRNA (BY SIMILARITY).
+CC   --------------------------------------------------------------------------
+CC   This SWISS-PROT entry is copyright. It is produced through a collaboration
+CC   between  the Swiss Institute of Bioinformatics  and the  EMBL outstation -
+CC   the European Bioinformatics Institute.  There are no  restrictions on  its
+CC   use  by  non-profit  institutions as long  as its content  is  in  no  way
+CC   modified and this statement is not removed.  Usage  by  and for commercial
+CC   entities requires a license agreement (See http://www.isb-sib.ch/announce/
+CC   or send an email to license@isb-sib.ch).
+CC   --------------------------------------------------------------------------
+DR   EMBL; L22553; AAA28523.1; -.
+DR   FlyBase; FBgn0014783; Dpse\exu2.
+KW   Developmental protein; RNA-binding.
+FT   DOMAIN      249    271       GLU/SER/PRO/THR-RICH (PEST REGION).
+SQ   SEQUENCE   477 AA;  53194 MW;  8B5334A77DB9467B CRC64;
+     MVSAISEDSA SATASGQCEV VKEELPAGNY ILVAVEIDTT GRRLIDEIVQ LAGYTSKGNF
+     QQYIMPYMNL NQAARQRHQI RVISIGFYRM LKSMQTYKII KSKSEVAALM DFLNWLETLL
+     AKQPNKEGIV MLYHDDRKFI PYMILEALKK YSLIDRFNRS VKAFANTCPM AKTFLGKHGI
+     KNCGLRKLSM LLAKSKDGNS TKEDEHENPE GNSSITDNSG HKNQKQGAFE GSANVRAKMV
+     YEMALQLIES ESTESPESFE SPESSESSEA EVKLLNAVRP FSQLLSSTIL ELKDQNHSLG
+     RQNSFRPVFL NYFRTTLNYR VRAVKYRIGL AEHGFTLKSL KAIWSDKRKP GLELVLTAID
+     SLKTEETAEL LDLLDSYYDP SKTTIKPRCK RSGNGTRRRN RAKGAASSKN GAIGAGGDNS
+     VPDSATKPGG RPRRKRNNIR NNILGPQNTE KGSPKAEMKT STPKSMSIKP PSEFADI
+//
+   
+Output file format
+
+   pestfind outputs a graph to the specified graphics device. outputs a
+   report format file. The default format is ...
+   
+  Output files for usage example
+  
+  File: exu2_drops.pestfind
+  
+PEST-find: Finds PEST motifs as potential proteolytic cleavage sites.
+
+     8 PEST motifs were identified in EXU2_DROPS
+       from positions 1 to 477 and sorted by score.
+
+Potential PEST motif with 34 amino acids between position 238 and 273.
+   238 KMVYEMALQLIESESTESPESFESPESSESSEAEVK 273
+       DEPST: 54.20 % (w/w)
+       Hydrophobicity index: 38.12
+       PEST score: 10.75
+
+Potential PEST motif with 14 amino acids between position 206 and 221.
+   206 HENPEGNSSITDNSGH 221
+       DEPST: 35.59 % (w/w)
+       Hydrophobicity index: 26.81
+       PEST score: 6.17
+
+Poor PEST motif with 18 amino acids between position 363 and 382.
+   363 KTEETAELLDLLDSYYDPSK 382
+       PEST score: 2.90
+
+Poor PEST motif with 17 amino acids between position 409 and 427.
+   409 KNGAIGAGGDNSVPDSATK 427
+       PEST score: -9.60
+
+Poor PEST motif with 19 amino acids between position 22 and 42.
+    22 KEELPAGNYILVAVEIDTTGR 42
+       PEST score: -10.92
+
+Poor PEST motif with 10 amino acids between position 440 and 451.
+   440 RNNILGPQNTEK 451
+       PEST score: -15.67
+
+Poor PEST motif with 13 amino acids between position 279 and 293.
+   279 RPFSQLLSSTILELK 293
+       PEST score: -16.51
+
+Poor PEST motif with 13 amino acids between position 349 and 363.
+   349 KPGLELVLTAIDSLK 363
+       PEST score: -19.67
+
+
+       ---------+---------+---------+---------+---------+---------+
+
+     1 MVSAISEDSASATASGQCEVVKEELPAGNYILVAVEIDTTGRRLIDEIVQLAGYTSKGNF 60
+                             OOOOOOOOOOOOOOOOOOO
+
+    61 QQYIMPYMNLNQAARQRHQIRVISIGFYRMLKSMQTYKIIKSKSEVAALMDFLNWLETLL 120
+
+
+   121 AKQPNKEGIVMLYHDDRKFIPYMILEALKKYSLIDRFNRSVKAFANTCPMAKTFLGKHGI 180
+
+
+   181 KNCGLRKLSMLLAKSKDGNSTKEDEHENPEGNSSITDNSGHKNQKQGAFEGSANVRAKMV 240
+                                 ++++++++++++++                  ++
+
+   241 YEMALQLIESESTESPESFESPESSESSEAEVKLLNAVRPFSQLLSSTILELKDQNHSLG 300
+       ++++++++++++++++++++++++++++++++       OOOOOOOOOOOOO
+
+   301 RQNSFRPVFLNYFRTTLNYRVRAVKYRIGLAEHGFTLKSLKAIWSDKRKPGLELVLTAID 360
+                                                        OOOOOOOOOOO
+
+   361 SLKTEETAELLDLLDSYYDPSKTTIKPRCKRSGNGTRRRNRAKGAASSKNGAIGAGGDNS 420
+       OO OOOOOOOOOOOOOOOOOO                            OOOOOOOOOOO
+
+   421 VPDSATKPGGRPRRKRNNIRNNILGPQNTEKGSPKAEMKTSTPKSMSIKPPSEFADI 477
+       OOOOOO              OOOOOOOOOO
+
+       Symbols   PEST motifs
+       +++++++   potential
+       OOOOOOO   poor
+   
+  Graphics File: pestfind.ps
+  
+   [pestfind results]
+   
+Data files
+
+   None.
+   
+Notes
+
+   None.
+   
+References
+
+   None.
+   
+Warnings
+
+   None.
+   
+Diagnostic Error Messages
+
+   None.
+   
+Exit status
+
+   It always exits with status 0.
+   
+Known bugs
+
+   None.
+   
+See also
+
+    Program name                        Description
+   antigenic      Finds antigenic sites in proteins
+   digest         Protein proteolytic enzyme or reagent cleavage digest
+   fuzzpro        Protein pattern search
+   fuzztran       Protein pattern search after translation
+   helixturnhelix Report nucleic acid binding motifs
+   oddcomp        Finds protein sequence regions with a biased composition
+   patmatdb       Search a protein sequence with a motif
+   patmatmotifs   Search a PROSITE motif database with a protein sequence
+   pepcoil        Predicts coiled coil regions
+   preg           Regular expression search of a protein sequence
+   pscan          Scans proteins using PRINTS
+   sigcleave      Reports protein signal cleavage sites
+   
+Author(s)
+
+   This application was written by Michael K. Schuster, Department of
+   Medical Biochemistry, University Vienna (martin.grabner@univie.ac.at)
+   
+History
+
+   This is based on the algorithm used in the QuickBasic program by
+   Rodgers et al.
+   
+   Written (November 2002) - Michael K. Schuster
+   
+Target users
+
+   This program is intended to be used by everyone and everything, from
+   naive users to embedded scripts.
