@@ -36,7 +36,7 @@ public class JembossAuthServer
 {
 
 //SOAP results directory
-  private String tmproot = new String("/tmp/soap/");
+  private String tmproot = new String("/tmp/SOAP/emboss/");
   private String logFile = new String(tmproot+"/jemboss.log");
   private String errorLog = new String(tmproot+"/jemboss_error.log");
 
