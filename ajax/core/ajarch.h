@@ -10,7 +10,7 @@ extern "C"
 #include <sys/types.h>
 #include <stdio.h>
 
-#if !defined(AJ_Linux64) && !defined(AJ_Solaris64) && !defined(AJ_IRIX64)
+#if !defined(AJ_LinuxLF) && !defined(AJ_SolarisLF) && !defined(AJ_IRIXLF)
 typedef int ajint;
 typedef long ajlong;
 typedef unsigned int ajuint;
@@ -20,7 +20,7 @@ typedef unsigned long ajulong;
 #endif
 
 
-#ifdef AJ_Linux64
+#ifdef AJ_LinuxLF
 typedef int ajint;
 typedef long long ajlong;
 typedef unsigned int ajuint;
@@ -30,7 +30,7 @@ typedef unsigned long long ajulong;
 #endif
 
 
-#ifdef AJ_Solaris64
+#ifdef AJ_SolarisLF
 typedef int ajint;
 typedef off_t ajlong;
 typedef unsigned int ajuint;
@@ -41,7 +41,7 @@ typedef unsigned long ajulong;
 #define fseek(a,b,c) fseeko(a,b,c)
 #endif
 
-#ifdef AJ_IRIX64
+#ifdef AJ_IRIXLF
 typedef int ajint;
 typedef off64_t ajlong;
 typedef unsigned int ajuint;
