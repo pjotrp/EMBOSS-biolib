@@ -544,6 +544,9 @@ public class SectionPanel
     Box bylabP = new Box(BoxLayout.Y_AXIS);
     Box bxlabP = new Box(BoxLayout.X_AXIS);
 
+    JPanel jTitle = new JPanel(new BorderLayout());
+    jTitle.setBackground(Color.white);
+
     final ApplicationNamePanel namePanel = new ApplicationNamePanel(
                                               appName,10,18,18);
     bxlabP.add(namePanel);
@@ -551,14 +554,15 @@ public class SectionPanel
     bylabP.add(bxlabP);
 
     JLabel labP = new JLabel(des);
-    labP.setForeground(Color.black);
     labP.setFont(labfont);
     bxlabP = new Box(BoxLayout.X_AXIS);
     bxlabP.add(Box.createHorizontalStrut(10));
     bxlabP.add(labP);
     bxlabP.add(Box.createHorizontalGlue());
     bylabP.add(bxlabP);
-    p3.add(bylabP, BorderLayout.NORTH);
+
+    jTitle.add(bylabP, BorderLayout.WEST);
+    p3.add(jTitle, BorderLayout.NORTH);
 
 //  appName = parseAcd.getParamValueStr(nf,0).toUpperCase();
 //  Box bylabP = new Box(BoxLayout.Y_AXIS);
