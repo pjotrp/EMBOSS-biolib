@@ -282,6 +282,162 @@ IT IS DONE FOR YOU.
 <P>
 
 <table border cellspacing=0 cellpadding=3 bgcolor="#f5f5ff">
+<tr bgcolor="#FFFFD0">
+<th align="left" colspan=2>Mandatory qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td>[-sequence]<br>(Parameter 1)</td>
+<td>Sequence USA</td>
+<td>Readable sequence</td>
+<td><b>Required</b></td>
+</tr>
+
+<tr>
+<td>[-targetrange]<br>(Parameter 2)</td>
+<td>Specify a Target Range?</td>
+<td>Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-targetstart</td>
+<td>Target start position.</td>
+<td>Any integer value</td>
+<td>Start of sequence</td>
+</tr>
+
+<tr>
+<td>-targetend</td>
+<td>Target end position.</td>
+<td>Any integer value</td>
+<td>End of sequence</td>
+</tr>
+
+<tr>
+<td>-minprimertm</td>
+<td>Minimum Primer Tm (deg Celsius)</td>
+<td>Any integer value</td>
+<td>53</td>
+</tr>
+
+<tr>
+<td>-maxprimertm</td>
+<td>Maximum Primer Tm (deg Celsius)</td>
+<td>Any integer value</td>
+<td>58</td>
+</tr>
+
+<tr>
+<td>-minprodlen</td>
+<td>Minimum product length</td>
+<td>Any integer value</td>
+<td>100</td>
+</tr>
+
+<tr>
+<td>-maxprodlen</td>
+<td>Maximum product length</td>
+<td>Any integer value</td>
+<td>300</td>
+</tr>
+
+<tr>
+<td>[-outf]<br>(Parameter 3)</td>
+<td>Output file name</td>
+<td>Output file</td>
+<td><i>&lt;sequence&gt;</i>.prima</td>
+</tr>
+
+<tr bgcolor="#FFFFD0">
+<th align="left" colspan=2>Optional qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td colspan=4>(none)</td>
+</tr>
+
+<tr bgcolor="#FFFFD0">
+<th align="left" colspan=2>Advanced qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td>-overlap</td>
+<td>Minimum overlap of sequences</td>
+<td>Any integer value</td>
+<td>50</td>
+</tr>
+
+<tr>
+<td>-minprimerlen</td>
+<td>Minimum primer length</td>
+<td>Any integer value</td>
+<td>18</td>
+</tr>
+
+<tr>
+<td>-maxprimerlen</td>
+<td>Maximum primer length</td>
+<td>Any integer value</td>
+<td>22</td>
+</tr>
+
+<tr>
+<td>-minpmgccont</td>
+<td>Minimum primer GC fraction</td>
+<td>Number from 0.300 to 0.700</td>
+<td>.40</td>
+</tr>
+
+<tr>
+<td>-maxpmgccont</td>
+<td>Maximum primer GC fraction</td>
+<td>Number from 0.300 to 0.700</td>
+<td>.55</td>
+</tr>
+
+<tr>
+<td>-minprodgccont</td>
+<td>Minimum product GC fraction</td>
+<td>Number from 0.300 to 0.700</td>
+<td>.40</td>
+</tr>
+
+<tr>
+<td>-maxprodgccont</td>
+<td>Maximum product GC fraction</td>
+<td>Number from 0.300 to 0.700</td>
+<td>.55</td>
+</tr>
+
+<tr>
+<td>-saltconc</td>
+<td>Salt concentration (mM)</td>
+<td>Number from 1.000 to 100.000</td>
+<td>50</td>
+</tr>
+
+<tr>
+<td>-dnaconc</td>
+<td>DNA concentration (mM)</td>
+<td>Number from 1.000 to 100.000</td>
+<td>50</td>
+</tr>
+
+<tr>
+<td>-list</td>
+<td>Force list-style output</td>
+<td>Yes/No</td>
+<td>No</td>
+</tr>
+
+</table>
 
 
 
@@ -484,7 +640,7 @@ None.
     See also
 </H2>
 -->
-<a name=See also><h2>See also</h2></a>
+<h2><a name="See also">See also</a></h2>
 <table border cellpadding=4 bgcolor="#FFFFF0">
 <tr><th>Program name</th><th>Description</th></tr>
 <tr><td><a href="primersearch.html">primersearch</a></td><td>Searches DNA sequences for matches with primer pairs</td></tr>

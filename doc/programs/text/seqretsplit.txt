@@ -77,6 +77,17 @@ Command line arguments
                                   qualifiers can be found with -help -verbose
    
 
+   Mandatory qualifiers Allowed values Default
+   [-sequence]
+   (Parameter 1) Sequence database USA Readable sequence(s) Required
+   [-outseq]
+   (Parameter 2) Output sequence(s) USA Writeable sequence(s)
+   <sequence>.format
+   Optional qualifiers Allowed values Default
+   (none)
+   Advanced qualifiers Allowed values Default
+   -firstonly Read one sequence and stop Yes/No No
+   
 Input file format
 
    Normal sequence USA.
@@ -151,6 +162,7 @@ See also
    seqretall    Reads and writes (returns) a set of sequences one at a time
    seqretset    Reads and writes (returns) a set of sequences all at once
    splitter     Split a sequence into (overlapping) smaller sequences
+   swissparse   Retrieves sequences from swissprot using keyword search
    trimseq      Trim ambiguous bits off the ends of sequences
    vectorstrip  Strips out DNA between a pair of vector sequences
    

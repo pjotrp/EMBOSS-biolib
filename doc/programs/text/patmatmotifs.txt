@@ -99,6 +99,20 @@ Command line arguments
                                   qualifiers can be found with -help -verbose
    
 
+   Mandatory qualifiers Allowed values Default
+   [-sequence]
+   (Parameter 1) Sequence USA Readable sequence Required
+   [-outfile]
+   (Parameter 2) Output file name Output file <sequence>.patmatmotifs
+   Optional qualifiers Allowed values Default
+   -full Provide full documentation for matching patterns Yes/No No
+   -[no]prune Ignore simple patterns. If this is true then these simple
+   post-translational modification sites are not reported: myristyl,
+   asn_glycosylation, camp_phospho_site, pkc_phospho_site,
+   ck2_phospho_site, and tyr_phospho_site. Yes/No Yes
+   Advanced qualifiers Allowed values Default
+   (none)
+   
 Input file format
 
    A protein sequence USA.

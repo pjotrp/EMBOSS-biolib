@@ -109,6 +109,45 @@ Command line arguments
                                   qualifiers can be found with -help -verbose
    
 
+   Mandatory qualifiers Allowed values Default
+   [-sequence]
+   (Parameter 1) Sequence database USA Readable sequence(s) Required
+   -window The percentage CG content and the Observed frequency of CG is
+   calculated within a window whose size is set by this parameter. The
+   window is moved down the sequence and these statistics are calculated
+   at each postition that the window is moved to. Integer 1 or more 100
+   -shift This determines the number of bases that the window is moved
+   each time after values of the percentage CG content and the Observed
+   frequency of CG are calculated within the window. Integer 1 or more 1
+   -minlen This sets the minimum length that a CpG island has to be
+   before it is reported. Integer 1 or more 200
+   -minoe This sets the minimum average observed to expected ratio of C
+   plus G to CpG in a set of 10 windows that are required before a CpG
+   island is reported. Number from 0.000 to 10.000 0.6
+   -minpc This sets the minimum average percentage of G plus C a set of
+   10 windows that are required before a CpG island is reported. Number
+   from 0.000 to 100.000 50.
+   [-outfile]
+   (Parameter 2) This sets the name of the file holding the report of the
+   input sequence name, CpG island parameters and the output details of
+   any CpG islands that are found. Output file <sequence>.cpgplot
+   [-graph]
+   (Parameter 3) Graph type EMBOSS has a list of known devices, including
+   postscript, ps, hpgl, hp7470, hp7580, meta, colourps, cps, xwindows,
+   x11, tektronics, tekt, tek4107t, tek, none, null, text, data, xterm
+   EMBOSS_GRAPHICS value, or x11
+   Optional qualifiers Allowed values Default
+   (none)
+   Advanced qualifiers Allowed values Default
+   -[no]obsexp If this is set to true then the graph of the observed to
+   expected ratio of C plus G to CpG within a window is displayed. Yes/No
+   Yes
+   -[no]cg If this is set to true then the graph of the regions which
+   have been determined to be CpG islands is displayed. Yes/No Yes
+   -[no]pc If this is set to true then the graph of the percentage C plus
+   G within a window is displayed. Yes/No Yes
+   -featout File for output features Writeable feature table unknown.gff
+   
 Input file format
 
    Any DNA sequence USA.

@@ -70,6 +70,36 @@ Command line arguments
                                   qualifiers can be found with -help -verbose
    
 
+   Mandatory qualifiers Allowed values Default
+   [-sequence]
+   (Parameter 1) Sequence database USA Readable sequence(s) Required
+   [-seqcomp]
+   (Parameter 2) Overlap sequence Any string is accepted An empty string
+   is accepted
+   [-outfile]
+   (Parameter 3) Output file name Output file <sequence>.restover
+   Optional qualifiers Allowed values Default
+   (none)
+   Advanced qualifiers Allowed values Default
+   -min Minimum cuts per RE Integer from 1 to 1000 1
+   -max Maximum cuts per RE Integer up to 2000000000 2000000000
+   -single Force single site only cuts Yes/No No
+   -threeprime 3' overhang? (else 5') e.g. BamHI has CTAG as a 5'
+   overhang, and ApaI has CCGG as 3' overhang. Yes/No No
+   -html Create HTML output Yes/No No
+   -[no]blunt Allow blunt end cutters Yes/No Yes
+   -[no]sticky Allow sticky end cutters Yes/No Yes
+   -[no]ambiguity Allow ambiguous matches Yes/No Yes
+   -plasmid Allow circular DNA Yes/No No
+   -[no]commercial Only enzymes with suppliers Yes/No Yes
+   -[no]limit Limits reports to one isoschizomer Yes/No Yes
+   -preferred Report preferred isoschizomers Yes/No No
+   -alphabetic Sort output alphabetically Yes/No No
+   -fragments Show fragment lengths Yes/No No
+   -name Show sequence name Yes/No No
+   -datafile Alternative RE data file Any string is accepted An empty
+   string is accepted
+   
 Input file format
 
    It reads in a normal DNA sequence USA.

@@ -228,6 +228,91 @@ Command line arguments
                                   qualifiers can be found with -help -verbose
    
 
+   Mandatory qualifiers Allowed values Default
+   [-sequence]
+   (Parameter 1) The sequence alignment to be displayed. Readable
+   sequences Required
+   [-outfile]
+   (Parameter 2) If you enter the name of a file here then this program
+   will write the sequence details into that file. Output file stdout
+   Optional qualifiers Allowed values Default
+   -refseq If you give the number in the alignment or the name of a
+   sequence, it will be taken to be the reference sequence. The reference
+   sequence is always show in full and is the one against which all the
+   other sequences are compared. If this is set to 0 then the consensus
+   sequence will be used as the reference sequence. By default the
+   consensus sequence is used as the reference sequence. Any string is
+   accepted 0
+   -[no]bottom If this is true then the refernce sequence is displayed at
+   the bottom of the alignment as well as at the top. Yes/No Yes
+   -show What to show
+   A (All of the sequences)
+   I (Identities between the sequences)
+   N (Non-identities between the sequences)
+   S (Similarities between the sequences)
+   D (Dissimilarities between the sequences)
+   N
+   -order Output order of the sequences
+   I (Input order - no change)
+   A (Alphabetical order of the names)
+   S (Similarity to the reference sequence)
+   I
+   -[no]similarcase If this is set True, then when -show is set to
+   'Similarities' or 'Non-identities' and a residue is similar but not
+   identical to the reference sequence residue, it will be changed to
+   lower-case. If -show is set to 'All' then non-identical, non-similar
+   residues will be changed to lower-case. If this is False then no
+   change to the case of the residues is made on the basis of their
+   similarity to the reference sequence. Yes/No Yes
+   -matrix Similarity scoring Matrix file Comparison matrix file in
+   EMBOSS data path EBLOSUM62 for protein
+   EDNAFULL for DNA
+   -[no]consensus If this is true then the consensus line is displayed at
+   the bottom. Yes/No Yes
+   Advanced qualifiers Allowed values Default
+   -uppercase Regions to put in uppercase. If this is left blank, then
+   the sequence case is left alone. A set of regions is specified by a
+   set of pairs of positions. The positions are integers. They are
+   separated by any non-digit, non-alpha character. Examples of region
+   specifications are: 24-45, 56-78 1:45, 67=99;765..888
+   1,5,8,10,23,45,57,99 Sequence range If this is left blank, then the
+   sequence case is left alone.
+   -[no]number If this option is true then a line giving the positions in
+   the alignment is displayed every 10 characters above the alignment.
+   Yes/No Yes
+   -[no]ruler If this option is true then a ruler line marking every 5th
+   and 10th character in the alignment is displayed. Yes/No Yes
+   -width Width of sequence to display Integer 1 or more 60
+   -margin This sets the length of the left-hand margin for sequence
+   names. If the margin is set at 0 then no margin and no names are
+   displayed. If the margin is set to a value that is less than the
+   length of a sequence name then the sequence name is displayed
+   truncated to the length of the margin. If the margin is set to -1 then
+   the minimum margin width that will allow all the sequence names to be
+   displayed in full plus a space at the end of the name will
+   automatically be selected. Integer -1 or more -1
+   -[no]names Set this to be false if you do not wish to display the ID
+   name of the sequences Yes/No Yes
+   -html Use HTML formatting Yes/No No
+   -highlight Regions to colour if formatting for HTML. If this is left
+   blank, then the sequence is left alone. A set of regions is specified
+   by a set of pairs of positions. The positions are integers. They are
+   followed by any valid HTML font colour. Examples of region
+   specifications are: 24-45 blue 56-78 orange 1-100 green 120-156 red A
+   file of ranges to colour (one range per line) can be specified as
+   '@filename'. Sequence range full sequence
+   -plurality Set a cut-off for the % of positive scoring matches below
+   which there is no consensus. The default plurality is taken as 50% of
+   the total weight of all the sequences in the alignment. Number from
+   0.000 to 100.000 50.0
+   -setcase Sets the threshold for the scores of the positive matches
+   above which the consensus is is upper-case and below which the
+   consensus is in lower-case. Any integer value 0
+   -identity Provides the facility of setting the required number of
+   identities at a position for it to give a consensus. Therefore, if
+   this is set to 100% only columns of identities contribute to the
+   consensus. Number from 0.000 to 100.000 0.0
+   
 Input file format
 
    showalign reads in a set of aligned protein or nucleic sequences.

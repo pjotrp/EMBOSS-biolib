@@ -195,6 +195,36 @@ Command line arguments
                                   qualifiers can be found with -help -verbose
    
 
+   Mandatory qualifiers Allowed values Default
+   [-sequence]
+   (Parameter 1) Sequence USA Readable sequence Required
+   [-targetrange]
+   (Parameter 2) Specify a Target Range? Yes/No No
+   -targetstart Target start position. Any integer value Start of
+   sequence
+   -targetend Target end position. Any integer value End of sequence
+   -minprimertm Minimum Primer Tm (deg Celsius) Any integer value 53
+   -maxprimertm Maximum Primer Tm (deg Celsius) Any integer value 58
+   -minprodlen Minimum product length Any integer value 100
+   -maxprodlen Maximum product length Any integer value 300
+   [-outf]
+   (Parameter 3) Output file name Output file <sequence>.prima
+   Optional qualifiers Allowed values Default
+   (none)
+   Advanced qualifiers Allowed values Default
+   -overlap Minimum overlap of sequences Any integer value 50
+   -minprimerlen Minimum primer length Any integer value 18
+   -maxprimerlen Maximum primer length Any integer value 22
+   -minpmgccont Minimum primer GC fraction Number from 0.300 to 0.700 .40
+   -maxpmgccont Maximum primer GC fraction Number from 0.300 to 0.700 .55
+   -minprodgccont Minimum product GC fraction Number from 0.300 to 0.700
+   .40
+   -maxprodgccont Maximum product GC fraction Number from 0.300 to 0.700
+   .55
+   -saltconc Salt concentration (mM) Number from 1.000 to 100.000 50
+   -dnaconc DNA concentration (mM) Number from 1.000 to 100.000 50
+   -list Force list-style output Yes/No No
+   
 Input file format
 
    Nucleic acid sequence USA.

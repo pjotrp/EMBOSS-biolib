@@ -1,0 +1,174 @@
+
+                              EMBOSS: sigscan
+     _________________________________________________________________
+   
+                                Program sigscan
+                                       
+Function
+
+   Scans a sparse protein signature against swissprot
+   
+Description
+
+   **************** EDIT HERE ****************
+   
+Usage
+
+   Here is a sample session with sigscan:
+
+% sigscan
+
+   **************** EDIT HERE ****************
+   
+Command line arguments
+
+   Mandatory qualifiers:
+  [-sigin]             infile     Name of signature file for input
+  [-database]          seqall     Name of sequence database to search
+  [-targetf]           infile     Name of (optionally grouped) scop families
+                                  file for input
+  [-thresh]            integer    Minimum length (residues) of overlap
+                                  required for two hits with the same code to
+                                  be counted as the same hit.
+  [-sub]               matrixf    Residue substitution matrix
+  [-gapo]              float      The gap insertion penalty is the score taken
+                                  away when a gap is created. The best value
+                                  depends on the choice of comparison matrix.
+                                  The default value assumes you are using the
+                                  EBLOSUM62 matrix for protein sequences, and
+                                  the EDNAMAT matrix for nucleotide sequences.
+  [-gape]              float      The gap extension, penalty is added to the
+                                  standard gap penalty for each base or
+                                  residue in the gap. This is how long gaps
+                                  are penalized. Usually you will expect a few
+                                  long gaps rather than many short gaps, so
+                                  the gap extension penalty should be lower
+                                  than the gap penalty. An exception is where
+                                  one or both sequences are single reads with
+                                  possible sequencing errors in which case you
+                                  would expect many single base gaps. You can
+                                  get this result by setting the gap open
+                                  penalty to zero (or very low) and using the
+                                  gap extension penalty to control gap
+                                  scoring.
+   -nterm              list       Select number
+  [-nhits]             integer    Number of hits to output
+  [-hitsf]             outfile    Name of signature hits file for output
+  [-alignf]            outfile    Name of signature alignments file for output
+
+   Optional qualifiers: (none)
+   Advanced qualifiers: (none)
+   General qualifiers:
+  -help                bool       report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   
+
+   Mandatory qualifiers Allowed values Default
+   [-sigin]
+   (Parameter 1) Name of signature file for input Input file test.sig
+   [-database]
+   (Parameter 2) Name of sequence database to search Readable sequence(s)
+   ./test.seq
+   [-targetf]
+   (Parameter 3) Name of (optionally grouped) scop families file for
+   input Input file test.fam
+   [-thresh]
+   (Parameter 4) Minimum length (residues) of overlap required for two
+   hits with the same code to be counted as the same hit. Any integer
+   value 20
+   [-sub]
+   (Parameter 5) Residue substitution matrix Comparison matrix file in
+   EMBOSS data path ./EBLOSUM62
+   [-gapo]
+   (Parameter 6) The gap insertion penalty is the score taken away when a
+   gap is created. The best value depends on the choice of comparison
+   matrix. The default value assumes you are using the EBLOSUM62 matrix
+   for protein sequences, and the EDNAMAT matrix for nucleotide
+   sequences. Floating point number from 1.0 to 100.0 10.0 for any
+   sequence
+   [-gape]
+   (Parameter 7) The gap extension, penalty is added to the standard gap
+   penalty for each base or residue in the gap. This is how long gaps are
+   penalized. Usually you will expect a few long gaps rather than many
+   short gaps, so the gap extension penalty should be lower than the gap
+   penalty. An exception is where one or both sequences are single reads
+   with possible sequencing errors in which case you would expect many
+   single base gaps. You can get this result by setting the gap open
+   penalty to zero (or very low) and using the gap extension penalty to
+   control gap scoring. Floating point number from 0.0 to 10.0 0.5 for
+   any sequence
+   -nterm Select number
+   1 (Align anywhere and allow only complete signature-sequence fit)
+   2 (Align anywhere and allow partial signature-sequence fit)
+   3 (Use empirical gaps only)
+   1
+   [-nhits]
+   (Parameter 8) Number of hits to output Any integer value 100
+   [-hitsf]
+   (Parameter 9) Name of signature hits file for output Output file
+   test.hits
+   [-alignf]
+   (Parameter 10) Name of signature alignments file for output Output
+   file test.align
+   Optional qualifiers Allowed values Default
+   (none)
+   Advanced qualifiers Allowed values Default
+   (none)
+   
+Input file format
+
+   **************** EDIT HERE ****************
+   
+Output file format
+
+   **************** EDIT HERE ****************
+   
+Data files
+
+   **************** EDIT HERE ****************
+   
+Notes
+
+   None.
+   
+References
+
+   None.
+   
+Warnings
+
+   None.
+   
+Diagnostic Error Messages
+
+   None.
+   
+Exit status
+
+   It always exits with status 0.
+   
+Known bugs
+
+   None.
+   
+See also
+
+   Program name             Description
+   siggen       Generates a sparse protein signature
+   
+Author(s)
+
+   This application was written by Alan Bleasby (ableasby@hgmp.mrc.ac.uk)
+   **************** EDIT HERE ****************
+   
+History
+
+   Written (date) - author. **************** EDIT HERE ****************
+   
+Target users
+
+   This program is intended to be used by everyone and everything, from
+   naive users to embedded scripts.
+   
+Comments

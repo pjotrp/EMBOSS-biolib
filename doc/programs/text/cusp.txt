@@ -43,6 +43,17 @@ Command line arguments
                                   qualifiers can be found with -help -verbose
    
 
+   Mandatory qualifiers Allowed values Default
+   [-sequence]
+   (Parameter 1) Sequence database USA Readable sequence(s) Required
+   [-outfile]
+   (Parameter 2) Output file name Output file <sequence>.cusp
+   Optional qualifiers Allowed values Default
+   (none)
+   Advanced qualifiers Allowed values Default
+   -cfile Codon usage table name Codon usage file in EMBOSS data path
+   Ehum.cut
+   
 Input file format
 
 Output file format

@@ -95,6 +95,59 @@ Command line arguments
                                   qualifiers can be found with -help -verbose
    
 
+   Mandatory qualifiers Allowed values Default
+   [-sequence]
+   (Parameter 1) Sequence database USA Readable sequence(s) Required
+   [-outseq]
+   (Parameter 2) Output sequence(s) USA Writeable sequence(s)
+   <sequence>.format
+   Optional qualifiers Allowed values Default
+   -frame Frame(s) to translate
+   1  (1)
+   2  (2)
+   3  (3)
+   F  (Forward three frames)
+   -1 (-1)
+   -2 (-2)
+   -3 (-3)
+   R  (Reverse three frames)
+   6  (All six frames)
+   1
+   -table Code to use
+   0 (Standard)
+   1 (Standard (with alternative initiation codons))
+   2 (Vertebrate Mitochondrial)
+   3 (Yeast Mitochondrial)
+   4 (Mold, Protozoan, Coelenterate Mitochondrial and
+   Mycoplasma/Spiroplasma)
+   5 (Invertebrate Mitochondrial)
+   6 (Ciliate Macronuclear and Dasycladacean)
+   9 (Echinoderm Mitochondrial)
+   10 (Euplotid Nuclear)
+   11 (Bacterial)
+   12 (Alternative Yeast Nuclear)
+   13 (Ascidian Mitochondrial)
+   14 (Flatworm Mitochondrial)
+   15 (Blepharisma Macronuclear)
+   16 (Chlorophycean Mitochondrial)
+   21 (Trematode Mitochondrial)
+   22 (Scenedesmus obliquus)
+   23 (Thraustochytrium Mitochondrial)
+   0
+   -regions Regions to translate. If this is left blank, then the
+   complete sequence is translated. A set of regions is specified by a
+   set of pairs of positions. The positions are integers. They are
+   separated by any non-digit, non-alpha character. Examples of region
+   specifications are: 24-45, 56-78 1:45, 67=99;765..888
+   1,5,8,10,23,45,57,99 Note: you should not try to use this option with
+   any other frame than the default, -frame=1 Sequence range Whole
+   sequence
+   -trim This removes all X and * characters from the right end of the
+   translation. The trimming process starts at the end and continues
+   until the next character is not a X or a * Yes/No No
+   Advanced qualifiers Allowed values Default
+   (none)
+   
 Input file format
 
    The input sequence can be one or more nucleic acid sequences.

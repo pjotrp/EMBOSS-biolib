@@ -99,6 +99,55 @@ Command line arguments
                                   qualifiers can be found with -help -verbose
    
 
+   Mandatory qualifiers Allowed values Default
+   [-sequence]
+   (Parameter 1) Sequence database USA Readable sequence(s) Required
+   -windowsize The values of melting point and other thermodynamic
+   properties of the sequence are determined by taking a short length of
+   sequence known as a window and determining the properties of the
+   sequence in that window. The window is incrementally moved along the
+   sequence with the properties being calcualted at each new position.
+   Integer from 1 to 100 20
+   -shiftincrement This is the amount by which the window is moved at
+   each increment in order to find the melting point and other properties
+   along the sequence. Integer 1 or more 1
+   -dnaconc Enter DNA concentration (nM) Number from 1.000 to 100000.000
+   50.
+   -saltconc Enter salt concentration (mM) Number from 1.000 to 1000.000
+   50.
+   -mintemp Enter a minimum value for the temperature scale (y-axis) of
+   the plot. Number from 0.000 to 150.000 55.
+   -graph Graph type EMBOSS has a list of known devices, including
+   postscript, ps, hpgl, hp7470, hp7580, meta, colourps, cps, xwindows,
+   x11, tektronics, tekt, tek4107t, tek, none, null, text, data, xterm
+   EMBOSS_GRAPHICS value, or x11
+   -formamide This specifies the percent formamide to be used in
+   calculations (it is ignored unless -product is used). Number from
+   0.000 to 100.000 0.
+   -mismatch This specifies the percent mismatch to be used in
+   calculations (it is ignored unless -product is used). Number from
+   0.000 to 100.000 0.
+   -prodlen This specifies the product length to be used in calculations
+   (it is ignored unless -product is used). Any integer value Window size
+   (20)
+   -outfile If a plot is not being produced then data on the melting
+   point etc. in each window along the sequence is output to the file.
+   Output file <sequence>.dan
+   Optional qualifiers Allowed values Default
+   -temperature If -thermo has been specified then this specifies the
+   temperature at which to calculate the DeltaG, DeltaH and DeltaS
+   values. Number from 0.000 to 100.000 25.
+   Advanced qualifiers Allowed values Default
+   -plot If this is not specified then the file of output data is
+   produced, else a plot of the melting point along the sequence is
+   produced. Yes/No No
+   -rna This specifies that the sequence is an RNA sequnce and not a DNA
+   sequence. Yes/No No
+   -product This prompts for percent formamide, percent of mismatches
+   allowed and product length. Yes/No No
+   -thermo Output the DeltaG, DeltaH and DeltaS values of the sequence
+   windows to the output data file. Yes/No No
+   
 Input file format
 
    Any DNA or RNA sequence USA.

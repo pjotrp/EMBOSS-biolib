@@ -101,6 +101,31 @@ Command line arguments
                                   qualifiers can be found with -help -verbose
    
 
+   Mandatory qualifiers Allowed values Default
+   [-sequence]
+   (Parameter 1) Sequence database USA Readable sequence(s) Required
+   [-outseq]
+   (Parameter 2) Output sequence(s) USA Writeable sequence(s)
+   <sequence>.format
+   Optional qualifiers Allowed values Default
+   -window This determines the size of the region that is considered when
+   deciding whether the percentage of ambiguity is greater than the
+   threshold. A value of 5 means that a region of 5 letters in the
+   sequence is shifted along the sequence from the ends and trimming is
+   done only if there is a greater or equal percentage of ambiguity than
+   the threshold percentage. Any integer value 1
+   -percent This is the threshold of the percentage ambiguity in the
+   window required in order to trim a sequence. Any integer value 100.0
+   -strict In nucleic sequences, trim off not only N's and X's, but also
+   the nucleotide IUPAC ambiguity codes M, R, W, S, Y, K, V, H, D and B.
+   In protein sequences, trim off not only X's but also B and Z. Yes/No
+   No
+   -star In protein sequences, trim off not only X's, but also the *'s
+   Yes/No No
+   Advanced qualifiers Allowed values Default
+   -[no]left Trim at the start Yes/No Yes
+   -[no]right Trim at the end Yes/No Yes
+   
 Input file format
 
    Normal sequence.
@@ -161,6 +186,7 @@ See also
    seqretset    Reads and writes (returns) a set of sequences all at once
    seqretsplit  Reads and writes (returns) sequences in individual files
    splitter     Split a sequence into (overlapping) smaller sequences
+   swissparse   Retrieves sequences from swissprot using keyword search
    vectorstrip  Strips out DNA between a pair of vector sequences
    
 Author(s)

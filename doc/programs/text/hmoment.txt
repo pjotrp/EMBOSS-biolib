@@ -72,6 +72,23 @@ Command line arguments
                                   qualifiers can be found with -help -verbose
    
 
+   Mandatory qualifiers Allowed values Default
+   [-seqall]
+   (Parameter 1) Sequence database USA Readable sequence(s) Required
+   -graph Graph type EMBOSS has a list of known devices, including
+   postscript, ps, hpgl, hp7470, hp7580, meta, colourps, cps, xwindows,
+   x11, tektronics, tekt, tek4107t, tek, none, null, text, data, xterm
+   EMBOSS_GRAPHICS value, or x11
+   -outfile Output file name Output file <sequence>.hmoment
+   Optional qualifiers Allowed values Default
+   -window Window Any integer value 10
+   -bangle Beta sheet angle (degrees) Any integer value 160
+   Advanced qualifiers Allowed values Default
+   -plot Produce graphic Yes/No No
+   -aangle Alpha helix angle (degrees) Any integer value 100
+   -baseline Graph marker line Any integer value 0.35
+   -double Plot two graphs Yes/No No
+   
 Input file format
 
    hmoment reads in a protein sequence.

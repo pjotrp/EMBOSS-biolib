@@ -72,6 +72,24 @@ Command line arguments
                                   qualifiers can be found with -help -verbose
    
 
+   Mandatory qualifiers Allowed values Default
+   [-sequencea]
+   (Parameter 1) Sequence USA Readable sequence Required
+   [-graph]
+   (Parameter 2) Graph type EMBOSS has a list of known devices, including
+   postscript, ps, hpgl, hp7470, hp7580, meta, colourps, cps, xwindows,
+   x11, tektronics, tekt, tek4107t, tek, none, null, text, data, xterm
+   EMBOSS_GRAPHICS value, or x11
+   Optional qualifiers Allowed values Default
+   -datafile White-Wimley data file (Ewhite-wimley.dat) Data file
+   Ewhite-wimley.dat
+   -width window size Integer from 1 to 200 19
+   -octanolplot Display the octanol plot Yes/No No
+   -interfaceplot Display the interface plot Yes/No No
+   -[no]differenceplot Do not display the difference plot Yes/No Yes
+   Advanced qualifiers Allowed values Default
+   (none)
+   
 Input file format
 
    Any protein sequence.

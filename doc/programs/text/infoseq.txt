@@ -83,6 +83,27 @@ Command line arguments
                                   qualifiers can be found with -help -verbose
    
 
+   Mandatory qualifiers Allowed values Default
+   [-sequence]
+   (Parameter 1) Sequence database USA Readable sequence(s) Required
+   Optional qualifiers Allowed values Default
+   -outfile If you enter the name of a file here then this program will
+   write the sequence details into that file. Output file stdout
+   -html Format output as an HTML table Yes/No No
+   Advanced qualifiers Allowed values Default
+   -only This is a way of shortening the command line if you only want a
+   few things to be displayed. Instead of specifying: '-nohead -noname
+   -noacc -notype -nopgc -nodesc' to get only the length output, you can
+   specify '-only -length' Yes/No No
+   -heading Display column headings Yes/No @(!$(only))
+   -usa Display the USA of the sequence Yes/No @(!$(only))
+   -name Display 'name' column Yes/No @(!$(only))
+   -accession Display 'accession' column Yes/No @(!$(only))
+   -type Display 'type' column Yes/No @(!$(only))
+   -length Display 'length' column Yes/No @(!$(only))
+   -pgc Display 'percent GC content' column Yes/No @(!$(only))
+   -description Display 'description' column Yes/No @(!$(only))
+   
 Input file format
 
    Any sequence(s).
@@ -202,6 +223,7 @@ See also
    seqretsplit Reads and writes (returns) sequences in individual files
    showdb Displays information on the currently available databases
    splitter Split a sequence into (overlapping) smaller sequences
+   swissparse Retrieves sequences from swissprot using keyword search
    textsearch Search sequence documentation text. SRS and Entrez are
    faster!
    tfm Displays a program's help documentation manual

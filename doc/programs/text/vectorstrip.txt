@@ -273,6 +273,30 @@ Command line arguments
                                   qualifiers can be found with -help -verbose
    
 
+   Mandatory qualifiers Allowed values Default
+   [-sequence]
+   (Parameter 1) Sequence database USA Readable sequence(s) Required
+   [-[no]vectorfile]
+   (Parameter 2) Are your vector sequences in a file? Yes/No Yes
+   [-vectors]
+   (Parameter 3) Name of vectorfile Input file Required
+   -linkera 5' sequence Any string is accepted An empty string is
+   accepted
+   -linkerb 3' sequence Any string is accepted An empty string is
+   accepted
+   -mismatch Max allowed % mismatch Any integer value 10
+   -[no]besthits Show only the best hits (minimise mismatches)? Yes/No
+   Yes
+   [-outf]
+   (Parameter 4) Output file name Output file <sequence>.vectorstrip
+   [-outseq]
+   (Parameter 5) Output sequence(s) USA Writeable sequence(s)
+   <sequence>.format
+   Optional qualifiers Allowed values Default
+   (none)
+   Advanced qualifiers Allowed values Default
+   (none)
+   
 Input file format
 
    Each line should contain the name of the vector, the 5' pattern and
@@ -289,7 +313,6 @@ pBS_KS+ GGGTACCGGGCCCCCCC       TCGAGGTCGACGGTA
 pLITMUS GATATCCTGCAGGAATTCC     TCGAGACCGTACGTGCG
 
    The sequence files used in the examples above are:
-   
     1. seqs.list
 bluescript.seq
 litmus.seq
@@ -409,6 +432,7 @@ See also
    seqretset    Reads and writes (returns) a set of sequences all at once
    seqretsplit  Reads and writes (returns) sequences in individual files
    splitter     Split a sequence into (overlapping) smaller sequences
+   swissparse   Retrieves sequences from swissprot using keyword search
    trimseq      Trim ambiguous bits off the ends of sequences
    
 Author(s)

@@ -67,6 +67,26 @@ Command line arguments
                                   qualifiers can be found with -help -verbose
    
 
+   Mandatory qualifiers Allowed values Default
+   [-sequence]
+   (Parameter 1) Sequence database USA Readable sequence(s) Required
+   [-outseq]
+   (Parameter 2) Output sequence(s) USA Writeable sequence(s)
+   <sequence>.format
+   -regions Regions to extract. A set of regions is specified by a set of
+   pairs of positions. The positions are integers. They are separated by
+   any non-digit, non-alpha character. Examples of region specifications
+   are: 24-45, 56-78 1:45, 67=99;765..888 1,5,8,10,23,45,57,99 Sequence
+   range Whole sequence
+   Optional qualifiers Allowed values Default
+   -separate If this is set true then each specified region is written
+   out as a separate sequence. The name of the sequence is created from
+   the name of the original sequence with the start and end positions of
+   the range appended with underscore characters between them, eg: XYZ
+   region 2 to 34 is written as: XYZ_2_34 Yes/No No
+   Advanced qualifiers Allowed values Default
+   (none)
+   
 Input file format
 
    Normal sequence.
@@ -191,6 +211,7 @@ See also
    seqretset    Reads and writes (returns) a set of sequences all at once
    seqretsplit  Reads and writes (returns) sequences in individual files
    splitter     Split a sequence into (overlapping) smaller sequences
+   swissparse   Retrieves sequences from swissprot using keyword search
    trimseq      Trim ambiguous bits off the ends of sequences
    vectorstrip  Strips out DNA between a pair of vector sequences
    

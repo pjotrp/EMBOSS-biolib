@@ -62,6 +62,27 @@ Command line arguments
                                   qualifiers can be found with -help -verbose
    
 
+   Mandatory qualifiers Allowed values Default
+   [-sequence]
+   (Parameter 1) Sequence USA Readable sequence Required
+   -graph Graph type EMBOSS has a list of known devices, including
+   postscript, ps, hpgl, hp7470, hp7580, meta, colourps, cps, xwindows,
+   x11, tektronics, tekt, tek4107t, tek, none, null, text, data, xterm
+   EMBOSS_GRAPHICS value, or x11
+   Optional qualifiers Allowed values Default
+   -squares By default the aliphatic residues ILVM are marked with
+   squares. Any string is accepted ILVM
+   -diamonds By default the residues DENQST are marked with diamonds. Any
+   string is accepted DENQST
+   -octags By default the positively charged residues HKR are marked with
+   octagons. Any string is accepted HKR
+   Advanced qualifiers Allowed values Default
+   -amphipathic If this is true then the residues ACFGILMVWY are marked
+   as squares and all other residues are unmarked. This overrides any
+   other markup that you may have specified using the qualifiers
+   '-squares', '-diamonds' and '-octags'. Yes/No No
+   -data Output the data to a file instead of plotting it Yes/No No
+   
 Input file format
 
    Any protein sequence USA.

@@ -47,6 +47,22 @@ Command line arguments
                                   qualifiers can be found with -help -verbose
    
 
+   Mandatory qualifiers Allowed values Default
+   [-asequence]
+   (Parameter 1) Sequence USA Readable sequence Required
+   [-bsequence]
+   (Parameter 2) Sequence USA Readable sequence Required
+   [-outfile]
+   (Parameter 3) Output file name Output file <sequence>.wordmatch
+   -wordsize Word size Integer 2 or more 4
+   Optional qualifiers Allowed values Default
+   (none)
+   Advanced qualifiers Allowed values Default
+   -afeatout File for output of normal tab delimted gff's Writeable
+   feature table unknown.gff
+   -bfeatout File for output of normal tab delimted gff's Writeable
+   feature table unknown.gff
+   
 Input file format
 
    Any two sequence USAs of the same type (DNA or protein).

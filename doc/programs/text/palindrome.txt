@@ -56,6 +56,22 @@ Command line arguments
                                   qualifiers can be found with -help -verbose
    
 
+   Mandatory qualifiers Allowed values Default
+   [-insequence]
+   (Parameter 1) Sequence USA Readable sequence Required
+   -minpallen Enter minimum length of palindrome Integer 1 or more 10
+   -maxpallen Enter maximum length of palindrome Any integer value 100
+   -gaplimit Enter maximum gap between repeated regions Integer 0 or more
+   100
+   -nummismatches Number of mismatches allowed Positive integer 0
+   [-outfile]
+   (Parameter 2) Output file name Output file <sequence>.palindrome
+   -[no]overlap Report overlapping matches Yes/No Yes
+   Optional qualifiers Allowed values Default
+   (none)
+   Advanced qualifiers Allowed values Default
+   (none)
+   
 Input file format
 
    The input for palindrome is a nucleotide sequence.
@@ -143,7 +159,6 @@ Notes
 References
 
    Some references on inverted repeats:
-   
     1. Pearson CE, Zorbas H, Price GB, Zannis-Hadjopoulos M Inverted
        repeats, stem-loops, and cruciforms: significance for initiation
        of DNA replication. J Cell Biochem 1996 Oct;63(1):1-22

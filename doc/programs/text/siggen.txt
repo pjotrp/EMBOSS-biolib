@@ -1,0 +1,149 @@
+
+                               EMBOSS: siggen
+     _________________________________________________________________
+   
+                                Program siggen
+                                       
+Function
+
+   Generates a sparse protein signature
+   
+Description
+
+   **************** EDIT HERE ****************
+   
+Usage
+
+   Here is a sample session with siggen:
+
+% siggen
+
+   **************** EDIT HERE ****************
+   
+Command line arguments
+
+   Mandatory qualifiers:
+  [-algpath]           string     Location of alignment files for input
+  [-algextn]           string     Extension of alignment files for input
+  [-conpath]           string     Location of contact files for input
+  [-conextn]           string     Extension of contact files
+  [-sparsity]          integer    % sparsity of signature
+  [-randomize]         bool       Generate a randomized signature
+  [-datafile]          matrixf    Substitution matrix to be used
+  [-[no]scoreseq]      bool       Score alignment on basis of residue
+                                  conservation
+  [-[no]scorencon]     bool       Score alignment on basis of number of
+                                  contacts
+  [-[no]scoreccon]     bool       Score alignment on basis of conservation of
+                                  contacts
+  [-scoreboth]         bool       Score alignment on a combined measure of
+                                  number and conservation of contacts
+  [-[no]postsim]       bool       Ignore alignment postitions with
+                                  post_similar value of 0
+  [-sigfile]           outfile    Name of signature file for output
+
+   Optional qualifiers: (none)
+   Advanced qualifiers: (none)
+   General qualifiers:
+  -help                bool       report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   
+
+   Mandatory qualifiers Allowed values Default
+   [-algpath]
+   (Parameter 1) Location of alignment files for input Any string is
+   accepted ./
+   [-algextn]
+   (Parameter 2) Extension of alignment files for input Any string is
+   accepted .align
+   [-conpath]
+   (Parameter 3) Location of contact files for input Any string is
+   accepted ./
+   [-conextn]
+   (Parameter 4) Extension of contact files Any string is accepted .con
+   [-sparsity]
+   (Parameter 5) % sparsity of signature Any integer value 10
+   [-randomize]
+   (Parameter 6) Generate a randomized signature Yes/No No
+   [-datafile]
+   (Parameter 7) Substitution matrix to be used Comparison matrix file in
+   EMBOSS data path ./EBLOSUM62
+   [-[no]scoreseq]
+   (Parameter 8) Score alignment on basis of residue conservation Yes/No
+   Yes
+   [-[no]scorencon]
+   (Parameter 9) Score alignment on basis of number of contacts Yes/No
+   Yes
+   [-[no]scoreccon]
+   (Parameter 10) Score alignment on basis of conservation of contacts
+   Yes/No Yes
+   [-scoreboth]
+   (Parameter 11) Score alignment on a combined measure of number and
+   conservation of contacts Yes/No No
+   [-[no]postsim]
+   (Parameter 12) Ignore alignment postitions with post_similar value of
+   0 Yes/No Yes
+   [-sigfile]
+   (Parameter 13) Name of signature file for output Output file sig.sig
+   Optional qualifiers Allowed values Default
+   (none)
+   Advanced qualifiers Allowed values Default
+   (none)
+   
+Input file format
+
+   **************** EDIT HERE ****************
+   
+Output file format
+
+   **************** EDIT HERE ****************
+   
+Data files
+
+   **************** EDIT HERE ****************
+   
+Notes
+
+   None.
+   
+References
+
+   None.
+   
+Warnings
+
+   None.
+   
+Diagnostic Error Messages
+
+   None.
+   
+Exit status
+
+   It always exits with status 0.
+   
+Known bugs
+
+   None.
+   
+See also
+
+   Program name                    Description
+   sigscan      Scans a sparse protein signature against swissprot
+   
+Author(s)
+
+   This application was written by Alan Bleasby (ableasby@hgmp.mrc.ac.uk)
+   **************** EDIT HERE ****************
+   
+History
+
+   Written (date) - author. **************** EDIT HERE ****************
+   
+Target users
+
+   This program is intended to be used by everyone and everything, from
+   naive users to embedded scripts.
+   
+Comments

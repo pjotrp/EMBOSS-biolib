@@ -47,6 +47,22 @@ Command line arguments
                                   qualifiers can be found with -help -verbose
    
 
+   Mandatory qualifiers Allowed values Default
+   [-sequence]
+   (Parameter 1) Sequence USA Readable sequence Required
+   [-outseq]
+   (Parameter 2) Output sequence USA Writeable sequence <sequence>.format
+   -from This is the start position (inclusive) of the section of the
+   sequence that you wish to remove. Any integer value Start of sequence
+   (0)
+   -to This is the end position (inclusive) of the section of the
+   sequence that you wish to remove. Any integer value End of sequence
+   (0)
+   Optional qualifiers Allowed values Default
+   (none)
+   Advanced qualifiers Allowed values Default
+   (none)
+   
 Input file format
 
    Single sequence.
@@ -105,6 +121,7 @@ See also
    seqretset    Reads and writes (returns) a set of sequences all at once
    seqretsplit  Reads and writes (returns) sequences in individual files
    splitter     Split a sequence into (overlapping) smaller sequences
+   swissparse   Retrieves sequences from swissprot using keyword search
    trimseq      Trim ambiguous bits off the ends of sequences
    vectorstrip  Strips out DNA between a pair of vector sequences
    

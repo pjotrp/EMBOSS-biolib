@@ -60,6 +60,17 @@ Command line arguments
                                   qualifiers can be found with -help -verbose
    
 
+   Mandatory qualifiers Allowed values Default
+   [-seqall]
+   (Parameter 1) Sequence database USA Readable sequence(s) Required
+   [-outfile]
+   (Parameter 2) Output file name Output file <sequence>.chips
+   Optional qualifiers Allowed values Default
+   (none)
+   Advanced qualifiers Allowed values Default
+   -cfile Codon usage file Codon usage file in EMBOSS data path Ehum.cut
+   -window Averaging window Any integer value 30
+   
 Input file format
 
    A nucleic acid sequence USA.

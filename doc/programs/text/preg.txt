@@ -121,6 +121,19 @@ Command line arguments
                                   qualifiers can be found with -help -verbose
    
 
+   Mandatory qualifiers Allowed values Default
+   [-sequence]
+   (Parameter 1) Sequence database USA Readable sequence(s) Required
+   [-outfile]
+   (Parameter 2) Output file name Output file <sequence>.preg
+   [-pattern]
+   (Parameter 3) Regular expression pattern Any regular epression pattern
+   is accepted Required
+   Optional qualifiers Allowed values Default
+   (none)
+   Advanced qualifiers Allowed values Default
+   (none)
+   
 Input file format
 
    Any protein sequence.

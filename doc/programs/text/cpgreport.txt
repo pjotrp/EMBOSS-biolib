@@ -57,6 +57,19 @@ Command line arguments
                                   qualifiers can be found with -help -verbose
    
 
+   Mandatory qualifiers Allowed values Default
+   [-sequence]
+   (Parameter 1) Sequence database USA Readable sequence(s) Required
+   -score This sets the score for each CG sequence found. A value of 17
+   is more sensitive, but 28 has also been used with some success.
+   Integer from 1 to 200 17
+   [-outfile]
+   (Parameter 2) Output file name Output file <sequence>.cpgreport
+   Optional qualifiers Allowed values Default
+   (none)
+   Advanced qualifiers Allowed values Default
+   -featout File for output features Writeable feature table unknown.gff
+   
 Input file format
 
    Any DNA sequence USA.

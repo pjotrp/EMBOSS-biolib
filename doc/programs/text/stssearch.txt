@@ -43,6 +43,18 @@ Command line arguments
                                   qualifiers can be found with -help -verbose
    
 
+   Mandatory qualifiers Allowed values Default
+   [-sequences]
+   (Parameter 1) Sequence database USA Readable sequence(s) Required
+   [-primers]
+   (Parameter 2) Primer file Input file Required
+   [-out]
+   (Parameter 3) Output file name Output file <sequence>.stssearch
+   Optional qualifiers Allowed values Default
+   (none)
+   Advanced qualifiers Allowed values Default
+   (none)
+   
 Input file format
 
    Here is the primer input file for the example run:

@@ -52,6 +52,23 @@ Command line arguments
                                   qualifiers can be found with -help -verbose
    
 
+   Mandatory qualifiers Allowed values Default
+   [-sequencea]
+   (Parameter 1) Sequence database USA Readable sequence(s) Required
+   -graph Graph type EMBOSS has a list of known devices, including
+   postscript, ps, hpgl, hp7470, hp7580, meta, colourps, cps, xwindows,
+   x11, tektronics, tekt, tek4107t, tek, none, null, text, data, xterm
+   EMBOSS_GRAPHICS value, or x11
+   -outfile Output file name Output file <sequence>.iep
+   Optional qualifiers Allowed values Default
+   (none)
+   Advanced qualifiers Allowed values Default
+   -plot Plot charge vs pH Yes/No No
+   -[no]report Write results to a file Yes/No Yes
+   -step pH step value Number from 0.010 to 1.000 .5
+   -amino Number of N-termini Any integer value 1
+   -[no]termini Include charge at N and C terminus Yes/No Yes
+   
 Input file format
 
    Any protein sequence USA.

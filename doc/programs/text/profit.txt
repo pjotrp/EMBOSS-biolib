@@ -83,6 +83,18 @@ Command line arguments
                                   qualifiers can be found with -help -verbose
    
 
+   Mandatory qualifiers Allowed values Default
+   [-infile]
+   (Parameter 1) Profile or matrix file Input file Required
+   [-sequence]
+   (Parameter 2) Sequence database USA Readable sequence(s) Required
+   [-outfile]
+   (Parameter 3) Output file name Output file <sequence>.profit
+   Optional qualifiers Allowed values Default
+   (none)
+   Advanced qualifiers Allowed values Default
+   (none)
+   
 Input file format
 
    It reads a simple frequency matrix produced by prophecy and searches

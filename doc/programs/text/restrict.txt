@@ -79,6 +79,42 @@ Command line arguments
                                   qualifiers can be found with -help -verbose
    
 
+   Mandatory qualifiers Allowed values Default
+   [-sequence]
+   (Parameter 1) Sequence database USA Readable sequence(s) Required
+   -sitelen Minimum recognition site length Integer from 2 to 20 4
+   -enzymes The name 'all' reads in all enzyme names from the REBASE
+   database. You can specify enzymes by giving their names with commas
+   between then, such as: 'HincII,hinfI,ppiI,hindiii'. The case of the
+   names is not important. You can specify a file of enzyme names to read
+   in by giving the name of the file holding the enzyme names with a '@'
+   character in front of it, for example, '@enz.list'. Blank lines and
+   lines starting with a hash character or '!' are ignored and all other
+   lines are concatenated together with a comma character ',' and then
+   treated as the list of enzymes to search for. An example of a file of
+   enzyme names is: ! my enzymes HincII, ppiII ! other enzymes hindiii
+   HinfI PpiI Any string is accepted all
+   [-outfile]
+   (Parameter 2) Output file name Output file <sequence>.restrict
+   Optional qualifiers Allowed values Default
+   (none)
+   Advanced qualifiers Allowed values Default
+   -min Minimum cuts per RE Integer from 1 to 1000 1
+   -max Maximum cuts per RE Integer up to 2000000000 2000000000
+   -single Force single site only cuts Yes/No No
+   -[no]blunt Allow blunt end cutters Yes/No Yes
+   -[no]sticky Allow sticky end cutters Yes/No Yes
+   -[no]ambiguity Allow ambiguous matches Yes/No Yes
+   -plasmid Allow circular DNA Yes/No No
+   -[no]commercial Only enzymes with suppliers Yes/No Yes
+   -[no]limit Limits reports to one isoschizomer Yes/No Yes
+   -preferred Report preferred isoschizomers Yes/No No
+   -alphabetic Sort output alphabetically Yes/No No
+   -fragments Show fragment lengths Yes/No No
+   -name Show sequence name Yes/No No
+   -datafile Alternative RE data file Any string is accepted An empty
+   string is accepted
+   
 Input file format
 
    The input sequence can be one or more DNA sequences.

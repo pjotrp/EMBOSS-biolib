@@ -194,6 +194,18 @@ Command line arguments
                                   qualifiers can be found with -help -verbose
    
 
+   Mandatory qualifiers Allowed values Default
+   [-seqall]
+   (Parameter 1) Sequence database USA Readable sequence(s) Required
+   [-seqout]
+   (Parameter 2) Output sequence USA Writeable sequence <sequence>.format
+   Optional qualifiers Allowed values Default
+   (none)
+   Advanced qualifiers Allowed values Default
+   -[no]cds Extract CDS sequences Yes/No Yes
+   -[no]mrna Extract mrna sequences Yes/No Yes
+   -[no]translation Extract translated sequences Yes/No Yes
+   
 Input file format
 
    USA of one or more nucleic sequences having CDS, mRNA or translation
@@ -260,6 +272,7 @@ See also
    showfeat     Show features of a sequence
    showorf      Pretty output of DNA translations
    showseq      Display a sequence with features, translation etc
+   swissparse   Retrieves sequences from swissprot using keyword search
    transeq      Translate nucleic acid sequences
    
 Author(s)

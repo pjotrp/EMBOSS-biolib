@@ -167,6 +167,232 @@ IT IS DONE FOR YOU.
 <P>
 
 <table border cellspacing=0 cellpadding=3 bgcolor="#f5f5ff">
+<tr bgcolor="#FFFFD0">
+<th align="left" colspan=2>Mandatory qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td>[-msf]<br>(Parameter 1)</td>
+<td>File containing a sequence alignment</td>
+<td>Readable sequences</td>
+<td><b>Required</b></td>
+</tr>
+
+<tr>
+<td>-graph</td>
+<td>Graph type</td>
+<td>EMBOSS has a list of known devices, including postscript, ps, hpgl, hp7470, hp7580, meta, colourps, cps, xwindows, x11, tektronics, tekt, tek4107t, tek, none, null, text, data, xterm</td>
+<td><i>EMBOSS_GRAPHICS</i> value, or x11</td>
+</tr>
+
+<tr bgcolor="#FFFFD0">
+<th align="left" colspan=2>Optional qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td>-residuesperline</td>
+<td>The number of residues to be displayed on each line</td>
+<td>Any integer value</td>
+<td>50</td>
+</tr>
+
+<tr>
+<td>-resbreak</td>
+<td>Residues before a space</td>
+<td>Integer 1 or more</td>
+<td>Same as -residuesperline to give no breaks</td>
+</tr>
+
+<tr>
+<td>-[no]ccolours</td>
+<td>Colour residues by their consensus value.</td>
+<td>Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr>
+<td>-cidentity</td>
+<td>Colour to display identical residues (RED)</td>
+<td>Any string is accepted</td>
+<td>RED</td>
+</tr>
+
+<tr>
+<td>-csimilarity</td>
+<td>Colour to display similar residues (GREEN)</td>
+<td>Any string is accepted</td>
+<td>GREEN</td>
+</tr>
+
+<tr>
+<td>-cother</td>
+<td>Colour to display other residues (BLACK)</td>
+<td>Any string is accepted</td>
+<td>BLACK</td>
+</tr>
+
+<tr>
+<td>-docolour</td>
+<td>Colour residues by table oily, amide etc.</td>
+<td>Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-[no]title</td>
+<td>Do not display the title</td>
+<td>Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr>
+<td>-shade</td>
+<td>Set to BPLW for normal shading
+so for pair = 1.5,1.0,0.5 and shade = BPLW
+Residues score Colour
+1.5 or over....... BLACK (B)
+1.0 to 1.5 ....... BROWN (P)
+0.5 to 1.0 ....... WHEAT (L)
+under 0.5 ....... WHITE (W)
+The only four letters allowed are BPLW, in any order.</td>
+<td>Any string is accepted</td>
+<td><i>An empty string is accepted</i></td>
+</tr>
+
+<tr>
+<td>-pair</td>
+<td>Values to represent identical similar related</td>
+<td>Any string is accepted</td>
+<td>1.5,1.0,0.5</td>
+</tr>
+
+<tr>
+<td>-identity</td>
+<td>Only match those which are identical in all sequences.</td>
+<td>Integer 0 or more</td>
+<td>0</td>
+</tr>
+
+<tr>
+<td>-[no]box</td>
+<td>Display prettyboxes</td>
+<td>Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr>
+<td>-boxcol</td>
+<td>Colour the background in the boxes</td>
+<td>Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-boxcolval</td>
+<td>Colour to be used for background. (GREY)</td>
+<td>Any string is accepted</td>
+<td>GREY</td>
+</tr>
+
+<tr>
+<td>-consensus</td>
+<td>Display the consensus</td>
+<td>Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-[no]name</td>
+<td>Display the sequence names</td>
+<td>Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr>
+<td>-maxnamelen</td>
+<td>Margin size for the sequence name.</td>
+<td>Any integer value</td>
+<td>10</td>
+</tr>
+
+<tr>
+<td>-[no]number</td>
+<td>Display the residue number</td>
+<td>Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr>
+<td>-[no]listoptions</td>
+<td>Display the date and options used</td>
+<td>Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr>
+<td>-plurality</td>
+<td>Plurality check value (totweight/2)</td>
+<td>Any integer value</td>
+<td>Half the total sequence weighting</td>
+</tr>
+
+<tr>
+<td>-[no]collision</td>
+<td>Allow collisions in calculating consensus</td>
+<td>Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr>
+<td>-alternative</td>
+<td>Use alternative collisions routine
+0) Normal collision check. (default)
+1) checks identical scores with the max score found. So if any other residue matches the identical score then a collision has occurred.
+2) If another residue has a greater than or equal to matching score and these do not match then a collision has occurred.
+3) Checks all those not in the current consensus.If any of these give a top score for matching or identical scores then a collision has occured.</td>
+<td>Integer from 0 to 3</td>
+<td>0</td>
+</tr>
+
+<tr>
+<td>-portrait</td>
+<td>Set page to Portrait</td>
+<td>Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-matrixfile</td>
+<td>Matrix file</td>
+<td>Comparison matrix file in EMBOSS data path</td>
+<td>EBLOSUM62 for protein<br>EDNAFULL for DNA</td>
+</tr>
+
+<tr>
+<td>-showscore</td>
+<td>Print residue scores</td>
+<td>Any integer value</td>
+<td>-1</td>
+</tr>
+
+<tr bgcolor="#FFFFD0">
+<th align="left" colspan=2>Advanced qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td>-data</td>
+<td>(no help text) bool value</td>
+<td>Yes/No</td>
+<td>No</td>
+</tr>
+
+</table>
 
 
 
@@ -261,7 +487,7 @@ plplot.
     See also
 </H2>
 -->
-<a name=See also><h2>See also</h2></a>
+<h2><a name="See also">See also</a></h2>
 <table border cellpadding=4 bgcolor="#FFFFF0">
 <tr><th>Program name</th><th>Description</th></tr>
 <tr><td><a href="abiview.html">abiview</a></td><td>Reads ABI file and display the trace</td></tr>

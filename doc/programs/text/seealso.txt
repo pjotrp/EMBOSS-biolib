@@ -66,7 +66,7 @@ Command line arguments
                                   be a hyperlink to the URL:
                                   http://www.uk.embnet.org/Software/EMBOSS/Apps
 /
-                                  programname.shtml
+                                  programname.html
                                   then if you enter
                                   http://www.uk.embnet.org/Software/EMBOSS/Apps
 /
@@ -80,8 +80,8 @@ Command line arguments
                                   be a hyperlink to the URL:
                                   http://www.uk.embnet.org/Software/EMBOSS/Apps
 /
-                                  programname.shtml
-                                  then if you enter '.shtml' here, the second
+                                  programname.html
+                                  then if you enter '.html' here, the second
                                   half of the URL after the program name will
                                   be set.
    -groups             bool       If you use this option, then only the group
@@ -149,7 +149,7 @@ Command line arguments
    the program names into hyper-links by setting this to be the first
    half of the URL. For example, if you wish the program name to be a
    hyperlink to the URL: http://www.uk.embnet.org/Software/EMBOSS/Apps/
-   programname.shtml then if you enter
+   programname.html then if you enter
    http://www.uk.embnet.org/Software/EMBOSS/Apps/ here, then the first
    half of the URL before the program name will be set. Any string is
    accepted An empty string is accepted
@@ -157,7 +157,7 @@ Command line arguments
    the program names into hyper-links by setting this to be the second
    half of the URL. For example, if you wish the program name to be a
    hyperlink to the URL: http://www.uk.embnet.org/Software/EMBOSS/Apps/
-   programname.shtml then if you enter '.shtml' here, the second half of
+   programname.html then if you enter '.html' here, the second half of
    the URL after the program name will be set. Any string is accepted An
    empty string is accepted
    -groups If you use this option, then only the group names will output

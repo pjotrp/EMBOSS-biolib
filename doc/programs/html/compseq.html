@@ -164,6 +164,91 @@ IT IS DONE FOR YOU.
 <P>
 
 <table border cellspacing=0 cellpadding=3 bgcolor="#f5f5ff">
+<tr bgcolor="#FFFFD0">
+<th align="left" colspan=2>Mandatory qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td>[-sequence]<br>(Parameter 1)</td>
+<td>Sequence database USA</td>
+<td>Readable sequence(s)</td>
+<td><b>Required</b></td>
+</tr>
+
+<tr>
+<td>[-word]<br>(Parameter 2)</td>
+<td>This is the size of word (n-mer) to count.
+Thus if you want to count codon frequencies, you should enter 3 here.</td>
+<td>Integer from 1 to 20</td>
+<td>2</td>
+</tr>
+
+<tr>
+<td>[-outfile]<br>(Parameter 3)</td>
+<td>This is the results file.</td>
+<td>Output file</td>
+<td><i>&lt;sequence&gt;</i>.compseq</td>
+</tr>
+
+<tr bgcolor="#FFFFD0">
+<th align="left" colspan=2>Optional qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td>-infile</td>
+<td>This is a file previously produced by 'compseq' that can be used to set the expected frequencies of words in this analysis.
+The word size in the current run must be the same as the one in this results file. Obviously, you should use a file produced from protein sequences if you are counting protein sequence word frequencies, and you must use one made from nucleotide frequencies if you and analysing a nucleotide sequence.</td>
+<td>Input file</td>
+<td><b>Required</b></td>
+</tr>
+
+<tr>
+<td>-[no]zerocount</td>
+<td>You can make the output results file much smaller if you do not display the words with a zero count.</td>
+<td>Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr>
+<td>-frame</td>
+<td>The normal behaviour of 'compseq' is to count the frequencies of all words that occur by moving a window of length 'word' up by one each time.
+This option allows you to move the window up by the length of the word each time, skipping over the intervening words.
+You can count only those words that occur in a single frame of the word by setting this value to a number other than zero.
+If you set it to 1 it will only count the words in frame 1, 2 will only count the words in frame 2 and so on.</td>
+<td>Integer 0 or more</td>
+<td>0</td>
+</tr>
+
+<tr>
+<td>-[no]ignorebz</td>
+<td>The amino acid code B represents Asparagine or Aspartic acid and the code Z represents Glutamine or Glutamic acid.
+These are not commonly used codes and you may wish not to count words containing them, just noting them in the count of 'Other' words.</td>
+<td>Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr>
+<td>-reverse</td>
+<td>Set this to be true if you also wish to also count words in the reverse complement of a nucleic sequence.</td>
+<td>Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr bgcolor="#FFFFD0">
+<th align="left" colspan=2>Advanced qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td colspan=4>(none)</td>
+</tr>
+
+</table>
 
 
 
@@ -328,7 +413,7 @@ amounts of memory.
     See also
 </H2>
 -->
-<a name=See also><h2>See also</h2></a>
+<h2><a name="See also">See also</a></h2>
 <table border cellpadding=4 bgcolor="#FFFFF0">
 <tr><th>Program name</th><th>Description</th></tr>
 <tr><td><a href="backtranseq.html">backtranseq</a></td><td>Back translate a protein sequence</td></tr>

@@ -48,6 +48,18 @@ Command line arguments
                                   qualifiers can be found with -help -verbose
    
 
+   Mandatory qualifiers Allowed values Default
+   [-seqall]
+   (Parameter 1) Sequence database USA Readable sequence(s) Required
+   -cfile Codon usage file Codon usage file in EMBOSS data path
+   Eyeastcai.cut
+   [-outfile]
+   (Parameter 2) Output file name Output file <sequence>.cai
+   Optional qualifiers Allowed values Default
+   (none)
+   Advanced qualifiers Allowed values Default
+   (none)
+   
 Input file format
 
    cai reads a nucleic acid sequence of a gene.

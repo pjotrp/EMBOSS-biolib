@@ -230,6 +230,43 @@ Command line arguments
                                   qualifiers can be found with -help -verbose
    
 
+   Mandatory qualifiers Allowed values Default
+   [-msf]
+   (Parameter 1) File containing a sequence alignment. Readable sequences
+   Required
+   -nucmethod Multiple substitution correction methods for nucleotides.
+   0 (Uncorrected)
+   1 (Jukes-Cantor)
+   2 (Kimura)
+   3 (Tamura)
+   4 (Tajima-Nei)
+   5 (Jin-Nei Gamma)
+   0
+   -protmethod Multiple substitution correction methods for proteins.
+   0 (Uncorrected)
+   1 (Jukes-Cantor)
+   2 (Kimura Protein)
+   0
+   [-outf]
+   (Parameter 2) Enter a name for the distance matrix Output file
+   <sequence>.distmat
+   Optional qualifiers Allowed values Default
+   -ambiguous Option to use the abiguous codes in the calculation of the
+   Jukes-Cantor method or if the sequences are proteins. Yes/No No
+   -gapweight Option to weight gaps in the uncorrected (nucleotide) and
+   Jukes-Cantor distance methods. Any integer value 0.
+   -position Choose base positions to analyse in each codon i.e. 123 (all
+   bases), 12 (the first two bases), 1, 2, or 3 individual bases. Any
+   integer value 123
+   -calculatea This will force the calculation of the a-parameter in the
+   Jin-Nei Gamma distance calculation, otherwise the default is 1.0 (see
+   -parametera option). Yes/No No
+   -parametera User defined a parameter to be use in the Jin-Nei Gamma
+   distance calculation. The suggested value to be used is 1.0 [Jin et
+   al.] and this is the default. Any integer value 1.0
+   Advanced qualifiers Allowed values Default
+   (none)
+   
 Input file format
 
    It reads in a normal multiple sequence alignment file.

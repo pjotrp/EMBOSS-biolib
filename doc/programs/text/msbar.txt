@@ -113,6 +113,48 @@ Command line arguments
                                   qualifiers can be found with -help -verbose
    
 
+   Mandatory qualifiers Allowed values Default
+   [-sequence]
+   (Parameter 1) Sequence database USA Readable sequence(s) Required
+   [-outseq]
+   (Parameter 2) Output sequence(s) USA Writeable sequence(s)
+   <sequence>.format
+   -count Number of times to perform the mutation operations Integer 0 or
+   more 1
+   -point Types of point mutations to perform
+   0 (None)
+   1 (Any of the following)
+   2 (Insertions)
+   3 (Deletions)
+   4 (Changes)
+   5 (Duplications)
+   6 (Moves)
+   0
+   -codon Types of codon mutations to perform. These are only done if the
+   sequence is nucleic.
+   0 (None)
+   1 (Any of the following)
+   2 (Insertions)
+   3 (Deletions)
+   4 (Changes)
+   5 (Duplications)
+   6 (Moves)
+   0
+   -block Types of block mutations to perform
+   0 (None)
+   1 (Any of the following)
+   2 (Insertions)
+   3 (Deletions)
+   4 (Changes)
+   5 (Duplications)
+   6 (Moves)
+   0
+   Optional qualifiers Allowed values Default
+   -inframe Do 'codon' and 'block' operations in frame Yes/No No
+   Advanced qualifiers Allowed values Default
+   -minimum Minimum size for a block mutation Integer 0 or more 1
+   -maximum Maximum size for a block mutation Any integer value 10
+   
 Input file format
 
    Any sequence USA.

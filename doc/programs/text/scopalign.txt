@@ -169,8 +169,8 @@ Known bugs
    
 See also
 
-   Program name              Description
-   stamps       Generate alignments for SCOP families
+   Program name                   Description
+   contacts     Reads coordinate files and writes contact files
    
 Author(s)
 

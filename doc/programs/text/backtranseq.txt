@@ -58,6 +58,17 @@ Command line arguments
                                   qualifiers can be found with -help -verbose
    
 
+   Mandatory qualifiers Allowed values Default
+   [-sequence]
+   (Parameter 1) Sequence USA Readable sequence Required
+   [-outfile]
+   (Parameter 2) Output sequence USA Writeable sequence <sequence>.format
+   Optional qualifiers Allowed values Default
+   -cfile Codon usage table name Codon usage file in EMBOSS data path
+   Ehum.cut
+   Advanced qualifiers Allowed values Default
+   (none)
+   
 Input file format
 
    Any DNA sequence USA.

@@ -131,6 +131,23 @@ Command line arguments
                                   qualifiers can be found with -help -verbose
    
 
+   Mandatory qualifiers Allowed values Default
+   [-seqa]
+   (Parameter 1) Sequence USA Readable sequence Required
+   [-seqb]
+   (Parameter 2) Sequence USA Readable sequence Required
+   [-outseq]
+   (Parameter 3) Output sequence USA Writeable sequence <sequence>.format
+   -report Output alignment and explanation Output file stdout
+   Optional qualifiers Allowed values Default
+   -datafile Matrix file Comparison matrix file in EMBOSS data path
+   EBLOSUM62 for protein
+   EDNAFULL for DNA
+   -gapopen Gap opening penalty Number from 1.000 to 100.000 50.0
+   -gapextend Gap extension penalty Number from 0.100 to 10.000 5
+   Advanced qualifiers Allowed values Default
+   (none)
+   
 Input file format
 
 Output file format

@@ -79,6 +79,26 @@ Command line arguments
                                   qualifiers can be found with -help -verbose
    
 
+   Mandatory qualifiers Allowed values Default
+   [-sequence]
+   (Parameter 1) Sequence database USA Readable sequence(s) Required
+   [-outseq]
+   (Parameter 2) Output sequence USA Writeable sequence <sequence>.format
+   Optional qualifiers Allowed values Default
+   -type By default any feature in the feature table with a type starting
+   'repeat' is masked. You can set this to be any feature type you wish
+   to mask. See http://www3.ebi.ac.uk/Services/WebFeat/ for a list of the
+   EMBL feature types and see Appendix A of the Swissprot user manual in
+   http://www.expasy.ch/txt/userman.txt for a list of the Swissprot
+   feature types. The type may be wildcarded by using '*'. If you wish to
+   mask more than one type, separate their names with spaces or commas,
+   eg: *UTR repeat* Any string is accepted repeat*
+   -maskchar Character to use when masking. Default is 'X' for protein
+   sequences, 'N' for nucleic sequences. Any string is accepted 'X' for
+   protein, 'N' for nucleic
+   Advanced qualifiers Allowed values Default
+   (none)
+   
 Input file format
 
    It reads in a sequence USA. You can optionally specify a GFF feature
@@ -189,6 +209,7 @@ See also
    seqretsplit  Reads and writes (returns) sequences in individual files
    showfeat     Show features of a sequence
    splitter     Split a sequence into (overlapping) smaller sequences
+   swissparse   Retrieves sequences from swissprot using keyword search
    trimseq      Trim ambiguous bits off the ends of sequences
    vectorstrip  Strips out DNA between a pair of vector sequences
    

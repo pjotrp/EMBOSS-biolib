@@ -52,6 +52,15 @@ Command line arguments
                                   qualifiers can be found with -help -verbose
    
 
+   Mandatory qualifiers Allowed values Default
+   [-sequencea]
+   (Parameter 1) Sequence USA Readable sequence Required
+   -outfile Output file name Output file <sequence>.pepstats
+   Optional qualifiers Allowed values Default
+   (none)
+   Advanced qualifiers Allowed values Default
+   -[no]termini Include charge at N and C terminus Yes/No Yes
+   
 Input file format
 
    Normal protein sequence USA.

@@ -332,6 +332,32 @@ Command line arguments
                                   qualifiers can be found with -help -verbose
    
 
+   Mandatory qualifiers Allowed values Default
+   [-sequences]
+   (Parameter 1) Sequence database USA Readable sequence(s) Required
+   [-infile]
+   (Parameter 2) Name of molecular weight data file Input file Required
+   -weight Whole sequence molwt Any integer value 0
+   -outfile Output file name Output file <sequence>.emowse
+   Optional qualifiers Allowed values Default
+   (none)
+   Advanced qualifiers Allowed values Default
+   -enzyme Enzyme or reagent
+   1 (Trypsin)
+   2 (Lys-C)
+   3 (Arg-C)
+   4 (Asp-N)
+   5 (V8-bicarb)
+   6 (V8-phosph)
+   7 (Chymotrypsin)
+   8 (CNBr)
+   1
+   -pcrange Allowed whole sequence weight variability Integer from 0 to
+   75 25
+   -frequencies Frequencies file Any string is accepted Efreqs.dat
+   -tolerance (no help text) float value Number from 0.100 to 1.000 0.1
+   -partials Partials factor Number from 0.100 to 1.000 0.4
+   
 Input file format
 
    The input file is a list of molecular weights of the peptide
@@ -385,7 +411,7 @@ mw seq(...) comp(...)
 
 
 
-Sequence information
+  Sequence information
 
 The sequence information should be given in standard
 One-character code. It should be preceded by a prefix
@@ -432,8 +458,8 @@ qualifiers. An example for a peptide with the actual
 sequence ACDEFGHI might look like:
 12345 seq(n-AC[DE]) seq(c-HI)
 
-Composition Information
-
+  Composition Information
+  
    Composition should consist of a number, followed by the corresponding
    amino acid between square brackets. For example
 comp(2[H]0[M]3[DE]*[K])
@@ -446,22 +472,22 @@ Output file format
    The emowse search program outputs a listing file containing the
    following information.
    
-Specified search parameters
-
+  Specified search parameters
+  
    Includes all specified parameters such as digest reagent, specified
    error tolerance, specified intact protein Mw and Mw filter percentage.
    All supplied peptide Mws are listed in descending order, followed by
    the total number of entries scanned during the search.
    
-Short 'hit' listing
-
+  Short 'hit' listing
+  
    The top 50 scoring proteins are then listed in descending order,
    details include the sequence ID name and brief text identifiers.
    Details are limited to the top 50 scores as a deliberate compromise to
    keep the result listings as short as possible.
    
-Detailed 'hit' listing
-
+  Detailed 'hit' listing
+  
    The top 50 entries are then listed in more detail.The first line
    includes the sequence ID name, the emowse search score (typically a
    few powers of 10), the 'hit' protein Mw and finally an 'accuracy'
@@ -989,8 +1015,8 @@ References
    Proteins by Peptide-Mass Fingerprinting'. Current Biology (1993), vol
    3, 327-332.
    
-General references
-
+  General references
+  
     1. Barber M, Bordoli RS, Sedgwick RD, Tyler AN: Fast atom bombardment
        of solids: a new ion source for mass spectrometry. J Chem Soc Chem
        Commun 1981, 7: 325-327.

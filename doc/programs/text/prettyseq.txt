@@ -54,6 +54,20 @@ Command line arguments
                                   qualifiers can be found with -help -verbose
    
 
+   Mandatory qualifiers Allowed values Default
+   [-sequence]
+   (Parameter 1) Sequence USA Readable sequence Required
+   -range Range(s) to translate Sequence range Whole sequence
+   [-outfile]
+   (Parameter 2) Output file name Output file <sequence>.prettyseq
+   Optional qualifiers Allowed values Default
+   -[no]ruler Add a ruler Yes/No Yes
+   -[no]plabel Number translations Yes/No Yes
+   -[no]nlabel Number DNA sequence Yes/No Yes
+   Advanced qualifiers Allowed values Default
+   -cfile Codon usage file Codon usage file in EMBOSS data path Ehum.cut
+   -width Width of screen Integer 10 or more 60
+   
 Input file format
 
    You can specifiy a file of ranges to extract by giving the '-range'

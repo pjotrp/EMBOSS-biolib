@@ -62,6 +62,27 @@ Command line arguments
                                   qualifiers can be found with -help -verbose
    
 
+   Mandatory qualifiers Allowed values Default
+   [-sequences]
+   (Parameter 1) File containing a sequence alignment Readable sequences
+   Required
+   -wordsize Word size Integer 2 or more 6
+   -graph Graph type EMBOSS has a list of known devices, including
+   postscript, ps, hpgl, hp7470, hp7580, meta, colourps, cps, xwindows,
+   x11, tektronics, tekt, tek4107t, tek, none, null, text, data, xterm
+   EMBOSS_GRAPHICS value, or x11
+   -outfile Output file name Output file <sequence>.polydot
+   Optional qualifiers Allowed values Default
+   -[no]boxit Draw a box around each dotplot Yes/No Yes
+   -dumpfeat Dump all matches as feature files Yes/No No
+   -format format to Dump out as Any string is accepted gff
+   -ext Extension for feature file Any string is accepted gff
+   Advanced qualifiers Allowed values Default
+   -data Output the match data to a file instead of plotting it Yes/No No
+   -gap This specifies the size of the gap that is used to separate the
+   individual dotplots in the display. The size is measured in residues,
+   as displayed in the output. Integer 0 or more 10
+   
 Input file format
 
    It reads in a set of nucleic or protein sequences.
