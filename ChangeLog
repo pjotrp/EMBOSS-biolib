@@ -1,4 +1,41 @@
 Version 2.7.0
+	Until now, the ACD file syntax has allowed name=value syntax and
+	the use of {} () and even <> for quoted strings just in case they
+	needed both ' and " characters. These are now removed. We believe
+	no ACD files were using this syntax.
+
+	valgrind.pl is a new addition to the script directory that runs
+	valgrind memory leak tests under linux. the tests are a copy of
+	those in purify.pl - they may one day move to a separate file.
+
+	EMBOSS feature output now copies (where available) the name of the
+	input sequence as the filename, so filenames match more closely to
+	the sequence ouptut. For example, "seqret -feat tembl:paamir" will
+	now create 2 files called paamir.fasta and paamir.gff where the
+	feature file previously was called 'unknown.gff'
+
+	EMBOSS feature output defaults (as before) to GFF format, but the
+	default format can now be set by variable EMBOSS_OUTFEATFORMAT
+
+	All EMBOSS output files now have a default output directory
+	(required by some webservices implementations that run in
+	the 'wrong'default directory). Variable EMBOSS_OUTDIRECTORY
+	if set becomes the default output directory for outfile, align,
+	report, graph, sequence and feature output.
+
+	The output directory can also be set from the command line (or as
+	an ACD attribute) using the associated qualifier -odirectory
+	(outfile), -rdirectory (report) -adirectory (align) -gdirectory
+	(Graph and graphxy) -osdirectory (sequence) or -ofdirectory
+	(featout).
+
+	The "g*"" attributes for graph and graphxy in ACD have been deleted as
+	they have the same name (and function) as existing associated
+	qualifiers - and can still be used with these names in ACD files.
+	Duplicate ACD attribute and associated qualifier functions exist
+	in many ACD types, but usually have different names and so are
+	left for compatibility purposes.
+	
 	emboss.default and ~/.embossrc configuration files now have
 	extensive error messages reporting filename and line number.
 	showdb has additional validation for all database definitions.
@@ -6,11 +43,11 @@ Version 2.7.0
 	all programs.
 
 	ajnam.c has debugging turned on by environment variable
-	EMBOSS_NAMDEBUG (boolean). This processing happens before
-	command line option -debug has taken effect. The output goes to
-	standard error.
+	EMBOSS_NAMDEBUG (boolean). This processing (of emboss.default and
+	~/.embossrc) happens before command line option -debug has taken
+	effect. The output goes to standard error.
 
-	Function ajFmtVPrintS is a missing complement to ajFmtPrintS
+	Function ajFmtVPrintS is a previously missing complement to ajFmtPrintS
 
 	EMBL/Genbank feature tables updated to FTv5.0
 
