@@ -318,6 +318,21 @@ public class JembossServer
     showdbOut.add("showdb");
     showdbOut.add(rea.getProcessStdout());
      
+    // find available matrices
+    String dataFile[] = (new File(embossData)).list(new FilenameFilter()
+    {
+      public boolean accept(File dir, String name)
+      {
+        File fileName = new File(dir, name);
+        return !fileName.isDirectory();
+      };
+    });
+    String matrices ="";
+    for(int i=0;i<dataFile.length;i++)
+      matrices=matrices.concat(dataFile[i]+"\n");
+    showdbOut.add("matrices");
+    showdbOut.add(matrices);
+
     return showdbOut;
   }
 
