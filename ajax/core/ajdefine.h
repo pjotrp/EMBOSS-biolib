@@ -134,6 +134,8 @@ static const ajint ajNMR  = 1;    /* Structure was determined by NMR or is a mod
 static const ajint ajPDB  = 0;    /* Use original PDB residue numbering                */
 static const ajint ajIDX  = 1;    /* Use corrected residue numbering                   */
 #define ajESCOP "Escop.dat" /* Scop data file */
+#define ajSCOP 1
+#define ajCATH 2
 
 
 
