@@ -401,7 +401,7 @@ CL tembl:paamir gatta2.seq -from=10 -to=12
 FI stderr
 FC = 1
 FI gatta2.seq
-FZ = 2291
+FZ = 2293
 FP /^ggtaccgctcgagcatctgctcgatcaccaccagccgggcgacgggaactgcacgatcta\n/
 //
 
@@ -411,7 +411,7 @@ CL tembl:paamir -from=1 -to=20 -out=jsh.seq
 FI stderr
 FC = 1
 FI jsh.seq
-FZ = 2273
+FZ = 2275
 FP /^tgctcgatcaccaccagccgggcgacgggaactgcacgatctacctggcgagcctggagc\n/
 //
 
@@ -423,8 +423,8 @@ IN
 FI stderr
 FC = 2
 FI starta.seq
-FZ = 90
-FP /\A>PAAMIR X13776 .* regulation\Z/
+FZ = 92
+FP /\A>PAAMIR X13776[.]1 .* regulation\Z/
 //
 
 ID dan-ex
@@ -462,7 +462,11 @@ FI paamir.dan
 FZ = 0
 //
 
-ID dbiblast-ex
+#############################################
+# The qapblast database(s)
+#############################################
+
+ID dbiblast-ex-keep
 DL keep
 AP dbiblast
 IN swnew
@@ -587,7 +591,190 @@ FP 2 />N/
 FP 2 />/
 //
 
-ID dbifasta-ex
+#############################################
+# The qapblastsplit database(s)
+#############################################
+
+ID dbiblast-split-keep
+DL keep
+AP dbiblast
+IN swsplit
+IN ../../data
+IN swsplit.*.pin
+IN
+IN
+IN P
+IN
+FI stderr
+FC = 8
+FI acnum.hit
+FZ = 336
+FP /\A.{300}\006/
+FI acnum.trg
+FZ = 480
+FP /\A.{308}O42493\000/
+FI division.lkp
+FZ = 420
+FP /\A.{300}\001\000swsplit.00.pin\000/
+FI entrynam.idx
+FZ = 498
+FP /\A.{300}CO9_FUGRU\000/
+//
+
+ID dbiblast-split-idfirst
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qapblastsplit-id:CO9_FUGRU test.out -auto
+FI test.out
+FZ = 649
+FP 1 />CO9_FUGRU /
+FP 1 />/
+//
+
+ID dbiblast-split-idsecond
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qapblastsplit-id:E2BB_FUGRU test.out -auto
+FI test.out
+FZ = 473
+FP 1 />E2BB_FUGRU /
+FP 1 />/
+//
+
+ID dbiblast-split-last
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qapblastsplit-id:TM21_FUGRU test.out -auto
+FI test.out
+FZ = 287
+FP 1 />TM21_FUGRU /
+FP 1 />/
+//
+
+ID dbiblast-split-nextlast
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qapblastsplit-id:ODO2_FUGRU test.out -auto
+FI test.out
+FZ = 569
+FP 1 />ODO2_FUGRU /
+FP 1 />/
+//
+
+ID dbiblast-split-acfirst
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qapblastsplit-acc:P53450 test.out -auto
+FI test.out
+FZ = 435
+FP 1 />FOS_FUGRU P53450 /
+FP 1 />/
+//
+
+ID dbiblast-split-acsecond
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qapblastsplit-acc:P79755 test.out -auto
+FI test.out
+FZ = 649
+FP 1 />CO9_FUGRU P79755 /
+FP 1 />/
+//
+
+ID dbiblast-split-aclast
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qapblastsplit-acc:Q90515 test.out -auto
+FI test.out
+FZ = 287
+FP 1 />TM21_FUGRU Q90515 /
+FP 1 />/
+//
+
+ID dbiblast-split-all
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qapblastsplit:* test.out -auto
+FI test.out
+FZ = 4474
+FP 1 />TM21_FUGRU Q90515 /
+FP 9 />/
+//
+
+ID dbiblast-split-wild
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qapblastsplit:n* test.out -auto
+FI test.out
+FZ = 516
+FP 2 />N/
+FP 2 />/
+//
+
+ID dbiblast-split-exc
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qapblastsplitexc:CO9_FUGRU test.out -auto
+FI test.out
+FZ = 649
+FP 1 />CO9_FUGRU /
+FP 1 />/
+//
+
+ID dbiblast-split-excfail
+ER 1
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qapblastsplitexc:FABP_FUGRU test.out -auto
+FI test.out
+FZ = 0
+FI stderr
+FZ = 87
+FP /Error: BLAST Entry failed/
+FP /Error: Unable to read sequence 'qapblastsplitexc:FABP_FUGRU'/
+//
+
+ID dbiblast-split-inc
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qapblastsplitinc:FABP_FUGRU test.out -auto
+FI test.out
+FZ = 175
+FP 1 />FABP_FUGRU /
+FP 1 />/
+//
+
+ID dbiblast-split-incfail
+ER 1
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qapblastsplitinc:CO9_FUGRU test.out -auto
+FI test.out
+FZ = 0
+FI stderr
+FZ = 86
+FP /Error: BLAST Entry failed/
+FP /Error: Unable to read sequence 'qapblastsplitinc:CO9_FUGRU'/
+//
+
+#############################################
+# The qanfasta database
+#############################################
+
+ID dbifasta-ex-keep
 DL keep
 AP dbifasta
 IN idacc
@@ -679,7 +866,11 @@ FP 2 />R/
 FP 2 />/
 //
 
-ID dbifasta-swiss
+#############################################
+# The qapfasta database
+#############################################
+
+ID dbifasta-swiss-keep
 DL keep
 AP dbifasta
 IN idacc
@@ -771,7 +962,11 @@ FP 2 />N/
 FP 2 />/
 //
 
-ID dbifasta-worm
+#############################################
+# The qawfasta database
+#############################################
+
+ID dbifasta-worm-keep
 DL keep
 AP dbifasta
 IN simple
@@ -873,7 +1068,11 @@ FP 15 /^>Z[^\n]+\n[^>]/
 FP 15 /^>/
 //
 
-ID dbiflat-ex
+#############################################
+# The qanflat database
+#############################################
+
+ID dbiflat-ex-keep
 DL keep
 AP dbiflat
 IN EMBL
@@ -904,7 +1103,7 @@ PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL qanflat-id:rnops test.out -auto
 FI test.out
-FZ = 1565
+FZ = 1567
 FP /\A>RNOPS /
 FP 1 />/
 //
@@ -915,7 +1114,7 @@ PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL qanflat-id:MMAM test.out -auto
 FI test.out
-FZ = 471
+FZ = 473
 FP 1 />MMAM /
 FP 1 />/
 //
@@ -926,7 +1125,7 @@ PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL qanflat-id:RNOPS test.out -auto
 FI test.out
-FZ = 1565
+FZ = 1567
 FP 1 />RNOPS /
 FP 1 />/
 //
@@ -937,7 +1136,7 @@ PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL qanflat-id:RNU68037 test.out -auto
 FI test.out
-FZ = 1318
+FZ = 1320
 FP 1 />RNU68037 /
 FP 1 />/
 //
@@ -948,7 +1147,7 @@ PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL qanflat-id:RNOPS test.out -auto
 FI test.out
-FZ = 1565
+FZ = 1567
 FP 1 />RNOPS /
 FP 1 />/
 //
@@ -959,7 +1158,7 @@ PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL qanflat:* test.out -auto
 FI test.out
-FZ = 3354
+FZ = 3360
 FP 1 />RNOPS /
 FP 3 />/
 //
@@ -970,7 +1169,7 @@ PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL qanflat:r* test.out -auto
 FI test.out
-FZ = 2883
+FZ = 2887
 FP 1 />RNOPS /
 FP 2 />/
 //
@@ -981,7 +1180,7 @@ PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL tembl-id:AB000095 test.out -auto
 FI test.out
-FZ = 2540
+FZ = 2542
 FP 1 />AB000095 /
 FP 1 />/
 //
@@ -992,7 +1191,7 @@ PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL tembl-id:AB000360 test.out -auto
 FI test.out
-FZ = 2683
+FZ = 2685
 FP 1 />AB000360 /
 FP 1 />/
 //
@@ -1003,7 +1202,7 @@ PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL tembl-id:XLRHODOP test.out -auto
 FI test.out
-FZ = 1775
+FZ = 1777
 FP 1 />XLRHODOP /
 FP 1 />/
 //
@@ -1014,7 +1213,7 @@ PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL tembl-id:XL23808 test.out -auto
 FI test.out
-FZ = 4874
+FZ = 4876
 FP 1 />XL23808 /
 FP 1 />/
 //
@@ -1025,7 +1224,7 @@ PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL tembl-acc:V00451 test.out -auto
 FI test.out
-FZ = 6255
+FZ = 6261
 FP 3 />GM/
 FP 3 />/
 //
@@ -1036,7 +1235,7 @@ PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL tembl:* test.out -auto
 FI test.out
-FZ = 531716
+FZ = 531797
 FP 3 />GM/
 FP 41 />/
 //
@@ -1047,12 +1246,16 @@ PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL tembl:h* test.out -auto
 FI test.out
-FZ = 154559
+FZ = 154591
 FP 5 />HSF/
 FP 16 />/
 //
 
-ID dbiflat-swiss
+#############################################
+# The qapflat database
+#############################################
+
+ID dbiflat-swiss-keep
 DL keep
 AP dbiflat
 IN
@@ -1143,7 +1346,61 @@ FP 1 />ODO2_FUGRU /
 FP 1 />/
 //
 
-ID dbigcg-ex
+ID dbiflat-swiss-exc
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qapflatexc-id:CO9_FUGRU test.out -auto
+FI test.out
+FZ = 649
+FP 1 />CO9_FUGRU /
+FP 1 />/
+//
+
+ID dbiflat-swiss-excfail
+ER 1
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qapflatexc-id:FOS_FUGRU test.out -auto
+FI test.out
+FZ = 0
+FI stderr
+FZ = 101
+FP /Error: Database Entry 'FOS_FUGRU' not found/
+FP /Error: Unable to read sequence 'qapflatexc-id:FOS_FUGRU'/
+//
+
+ID dbiflat-swiss-inc
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qapflatinc-id:FOS_FUGRU test.out -auto
+FI test.out
+FZ = 435
+FP 1 />FOS_FUGRU /
+FP 1 />/
+//
+
+ID dbiflat-swiss-incfail
+ER 1
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qapflatinc-id:CO9_FUGRU test.out -auto
+FI test.out
+FZ = 0
+FI stderr
+FZ = 101
+FP /Error: Database Entry 'CO9_FUGRU' not found/
+FP /Error: Unable to read sequence 'qapflatinc-id:CO9_FUGRU'/
+//
+
+#############################################
+# The qangcg database(s)
+#############################################
+
+ID dbigcg-ex-keep
 DL keep
 TI 120
 AP dbigcg
@@ -1186,7 +1443,7 @@ PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL qangcg-id:AB000095 test.out -auto
 FI test.out
-FZ = 2540
+FZ = 2542
 FP 1 />AB000095 /
 FP 1 />/
 //
@@ -1197,7 +1454,7 @@ PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL qangcg-id:AB009062 test.out -auto
 FI test.out
-FZ = 592
+FZ = 594
 FP 1 />AB009062 /
 FP 1 />/
 //
@@ -1208,7 +1465,7 @@ PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL qangcg-id:XLRHODOP test.out -auto
 FI test.out
-FZ = 1775
+FZ = 1777
 FP 1 />XLRHODOP /
 FP 1 />/
 //
@@ -1219,7 +1476,7 @@ PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL qangcg:L07770 test.out -auto
 FI test.out
-FZ = 1775
+FZ = 1777
 FP 1 />XLRHODOP /
 FP 1 />/
 //
@@ -1230,7 +1487,7 @@ PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL qangcg-id:XL23808 test.out -auto
 FI test.out
-FZ = 4874
+FZ = 4876
 FP 1 />XL23808 /
 FP 1 />/
 //
@@ -1241,7 +1498,7 @@ PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL qangcg-id:CEY39B6 test.out -auto
 FI test.out
-FZ = 362909
+FZ = 362911
 FP 1 />CEY39B6 /
 FP 1 />/
 //
@@ -1252,7 +1509,7 @@ PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL qangcg-id:PFMAL4P1 test.out -auto
 FI test.out
-FZ = 399265
+FZ = 399267
 FP 1 />PFMAL4P1 /
 FP 1 />/
 //
@@ -1263,7 +1520,7 @@ PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL qangcg-id:AC017364 test.out -auto
 FI test.out
-FZ = 3799
+FZ = 3801
 FP 1 />AC017364 /
 FP 1 />/
 //
@@ -1274,7 +1531,7 @@ PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL qangcg-id:PFMAL4P3 test.out -auto
 FI test.out
-FZ = 326442
+FZ = 326444
 FP 1 />PFMAL4P3 /
 FP 1 />/
 //
@@ -1285,7 +1542,7 @@ PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL qangcg-id:ECUW67 test.out -auto
 FI test.out
-FZ = 378729
+FZ = 378731
 FP 1 />ECUW67 /
 FP 1 />/
 //
@@ -1296,7 +1553,7 @@ PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL qangcg:* test.out -auto
 FI test.out
-FZ = 2145025
+FZ = 2145073
 FP 1 />XL23808 /
 FP 40 />/
 //
@@ -1307,10 +1564,64 @@ PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL qangcg:h* test.out -auto
 FI test.out
-FZ = 77385
+FZ = 77403
 FP 13 />H/
 FP 13 />/
 //
+
+ID dbigcg-exc
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qangcgexc-id:hsfau test.out -auto
+FI test.out
+FZ = 560
+FP 1 /\A>HSFAU /
+FP 1 />/
+//
+
+ID dbigcg-excfail
+ER 1
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qangcgexc-id:eclac test.out -auto
+FI test.out
+FZ = 0
+FI stderr
+FZ = 52
+FP 1 /Error: /
+FP /Error: Unable to read sequence 'qangcgexc-id:eclac'/
+//
+
+ID dbigcg-inc
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qangcginc-id:eclac test.out -auto
+FI test.out
+FZ = 7676
+FP 1 /\A>ECLAC /
+FP 1 />/
+//
+
+ID dbigcg-incfail
+ER 1
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qangcginc-id:hsfau test.out -auto
+FI test.out
+FZ = 0
+FI stderr
+FZ = 52
+FP 1 /Error: /
+FP /Error: Unable to read sequence 'qangcginc-id:hsfau'/
+//
+
+##################################################################
+# end of database access tests
+##################################################################
 
 ID degapseq-ex
 AP degapseq
@@ -1589,7 +1900,7 @@ IN
 FI stderr
 FC = 2
 FI hsfau.entret
-FZ = 2806
+FZ = 2868
 FP /^FT   CDS             57\.\.458\n/
 FP /^\/\/\Z/
 //
@@ -1710,7 +2021,7 @@ CL tembl:hsfau result.seq -regions '10-20'
 FI stderr
 FC = 1
 FI result.seq
-FZ = 45
+FZ = 47
 FP /^ctcgactccat\n/
 //
 
@@ -1720,7 +2031,7 @@ CL tembl:hsfau result2.seq -regions '10-20 30-45 533-537'
 FI stderr
 FC = 1
 FI result2.seq
-FZ = 61
+FZ = 63
 FP /^ctcgactccatagctgggaccgccgtt\n/
 //
 
@@ -1731,6 +2042,7 @@ FI stderr
 FC = 1
 FI stdout
 FC = 8
+FZ = 447
 FP /^atgcagctctttg[^\n]+ccaggaaacg/
 FP /^cccacctttggcaagaagaagggccccaatgccaactcttaa\n/
 //
@@ -1742,6 +2054,7 @@ FI stderr
 FC = 1
 FI stdout
 FC = 13
+FZ = 564
 FP /^>HSFAU1_782_856/
 FP /atgcagctctttgtccgcgcccaggagctacacaccttcgaggtgaccggccaggaaacg\ngtcgcccagatcaag/
 FP /gtaaagtccatggttccctggcccgtgctggaaaagtgagaggtcagactcctaag/
@@ -1919,7 +2232,7 @@ ID feat-swiss
 AP seqret
 CL -feat tsw:laci_ecoli sw::test.out -auto
 FI test.out
-FZ = 1031
+FZ = 1234
 FP /^FT   DNA_BIND      6     25       H-T-H MOTIF\.\n/
 FP /^FT   HELIX        32     44\n/
 //
@@ -2190,7 +2503,7 @@ IN
 FI stderr
 FC = 3
 FI ab000360.fasta
-FZ = 2683
+FZ = 2685
 FP /^>AB000360 /
 FP /^NNNNNNNNNNNNNNNNaaagtcacttctttctacccttttcaatgtgctaatgctctttt\n/
 //
@@ -2256,7 +2569,7 @@ FP /^AF129756 overlap starts at 6036\n/
 ## silly example - output is identical to af129756
 ##
 FI ap000504.merged
-FZ = 187842
+FZ = 187844
 FP /^gaattctctccctcccatctgtggctgagattaaagatctgcacctgaagcactgaagaa\n/
 FP /^tcctgctcctagaagctaaactctccagacttagtcttctgaattc\n/
 //
@@ -2278,7 +2591,7 @@ FP /^ECLACA +1 +gtgaatgaa +9\n/
 ## starts with eclacy, ends with eclaca, small overlap
 ##
 FI eclacy.fasta
-FZ = 3289
+FZ = 3291
 FP /^ttccagctgagcgccggtcgctaccattaccagttggtctggtgtcaaaaataataataa\n/
 FP /^agcttccggccagcgccagcccgcccatggtaaccaccggcagagcggtcgac\n/
 //
@@ -2296,7 +2609,7 @@ FC = 26
 ##
 ## hard to test - different changes each time
 FI eclac.fasta 
-FZ = 7676
+FZ = 7678
 FP /^>ECLAC J01636/
 //
 
@@ -2445,8 +2758,8 @@ IN
 FI stderr
 FC = 2
 FI eclac.fasta
-FZ = 1940
-FP /^>ECLACA X51872 Escherichia coli lacA gene/
+FZ = 1942
+FP /^>ECLACA X51872.1 Escherichia coli lacA gene/
 //
 
 ID octanol-ex
@@ -2767,31 +3080,6 @@ FP / 121 AGGAGAGGAAACGGatgggatcgcaccaggagcggccgctgatcggcctgctgttctccg 180\n/
 FP / 1               M  G  S  H  Q  E  R  P  L  I  G  L  L  F  S  E 16\n/
 //
 
-ID prima-ex
-AP prima
-IN tembl:eclaci
-IN
-IN
-IN
-IN
-IN
-IN
-TI 120
-FI stderr
-FC = 2
-FI eclaci.prima 
-FZ = 1597
-FP /^3 pairs found\n/
-FP /^ +10 AGTCAATTCAGGGTGGTGAA +29\s+154 ATGTAATTCAGCTCCGCCAT +173\n/
-FP /Tm  56\.24 C  \(GC 50\.00%\)\s+Tm  57\.14 C  \(GC 50\.00%\)\n/
-FP /Tma:    40\.56 C\s+Tma:    40\.83 C\n/
-FP /Product GC: 53\.23%\n/
-FP /Product Tm: 55\.12 C\n/
-FP /Length:     124\n/
-FP /^ +266 TTGTCGCGGCGATTAAATCTC +286\s+510 GTACCGTCTTCATGGGAGAAA +530\n/
-FP /^ +477 TGTCTCTGACCAGACACCC +495\s+728 GGAACGATGCCCTCATTCA +746\n/
-//
-
 ID primersearch-ex
 AP primersearch
 CL tembl:z52466
@@ -3050,7 +3338,7 @@ CL tembl:hsfau hsfau.rev
 FI stderr
 FC = 1
 FI hsfau.rev
-FZ = 560
+FZ = 562
 FP /^gtcccagctaccgcgaagatggagtcgagaaagaggaa\n/
 //
 
@@ -3060,7 +3348,7 @@ CL tembl:hsfau hsfau.rev -norev
 FI stderr
 FC = 1
 FI hsfau.rev
-FZ = 560
+FZ = 562
 FP /^agattattttttcggtgaatcaagtcagtttttttttt\n/
 //
 
@@ -3070,7 +3358,7 @@ CL tembl:hsfau hsfau.rev -nocomp
 FI stderr
 FC = 1
 FI hsfau.rev
-FZ = 560
+FZ = 562
 FP /^cagggtcgatggcgcttctacctcagctctttctcctt\n/
 //
 
@@ -3151,28 +3439,28 @@ ID seqret-dbacfilelast
 AP seqret
 CL -auto tembl-acc:U23808 test.out
 FI test.out
-FP 1 /\A>XL23808 U23808 /
+FP 1 /\A>XL23808 U23808.1 /
 //
 
 ID seqret-dbacfirst
 AP seqret
 CL -auto tembl-acc:AB000095 test.out
 FI test.out
-FP 1 /\A>AB000095 AB000095 /
+FP 1 /\A>AB000095 AB000095.1 /
 //
 
 ID seqret-dbacnextlast
 AP seqret
 CL -auto tembl-acc:Z52466 test.out
 FI test.out
-FP 1 /\A>HSA203YC1 Z52466 /
+FP 1 /\A>HSA203YC1 Z52466.1 /
 //
 
 ID seqret-dbaclast
 AP seqret
 CL -auto tembl-acc:Z69719 test.out
 FI test.out
-FP 1 /\A>HSNFG9 Z69719 /
+FP 1 /\A>HSNFG9 Z69719.1 /
 //
 
 ID seqret-inlist-good
@@ -4007,10 +4295,22 @@ ID seqret-outusa-debug
 AP seqret
 CL -auto ../../data/dna.embl debug::test.out
 FI test.out
-FZ = 548
+FZ = 830
 FP /^  Name: 'EMBL'\n/
 FP /^  Accession: 'E10002'\n/
+FP /^  SeqVersion: 'E10002.34'\n/
 FP /^  Description: 'EMBL FORMAT DNA SEQUENCE'\n/
+FP /^  Keywordlist: \(2\)\n/
+FP /^    'DNA binding protein'\n/
+FP /^    'repressor'\n/
+FP /^  Taxonomy: 'Escherichia coli'\n/
+FP /^  Taxlist: \(6\)\n/
+FP /^    'Escherichia coli'\n/
+FP /^    'Bacteria'\n/
+FP /^    'Proteobacteria'\n/
+FP /^    'gamma subdivision'\n/
+FP /^    'Enterobacteriaceae'\n/
+FP /^    'Escherichia'\n/
 FP /^  Type: 'N'\n/
 FP /^  Usa: 'debug::test.out'\n/
 FP /^  Input format: 'embl'\n/
@@ -4028,10 +4328,22 @@ ID seqret-out-debug
 AP seqret
 CL -auto ../../data/dna.embl test.out -osf debug
 FI test.out
-FZ = 541
+FZ = 823
 FP /^  Name: 'EMBL'\n/
 FP /^  Accession: 'E10002'\n/
+FP /^  SeqVersion: 'E10002.34'\n/
 FP /^  Description: 'EMBL FORMAT DNA SEQUENCE'\n/
+FP /^  Keywordlist: \(2\)\n/
+FP /^    'DNA binding protein'\n/
+FP /^    'repressor'\n/
+FP /^  Taxonomy: 'Escherichia coli'\n/
+FP /^  Taxlist: \(6\)\n/
+FP /^    'Escherichia coli'\n/
+FP /^    'Bacteria'\n/
+FP /^    'Proteobacteria'\n/
+FP /^    'gamma subdivision'\n/
+FP /^    'Enterobacteriaceae'\n/
+FP /^    'Escherichia'\n/
 FP /^  Type: 'N'\n/
 FP /^  Usa: 'test.out'\n/
 FP /^  Input format: 'embl'\n/
@@ -4049,10 +4361,15 @@ ID seqret-outusa-embl
 AP seqret
 CL -auto ../../data/dna.embl embl::test.out
 FI test.out
-FZ = 307
+FZ = 469
 FP /^ID   EMBL       standard; DNA; UNC; 100 BP\.\n/
 FP /^AC   E10002;\n/
+FP /^SV   E10002.34\n/
 FP /^DE   EMBL FORMAT DNA SEQUENCE\n/
+FP /^KW   DNA binding protein; repressor.\n/
+FP /^OS   Escherichia coli\n/
+FP /^OC   Bacteria; Proteobacteria; gamma subdivision; Enterobacteriaceae;\n/
+FP /^OC   Escherichia.\n/
 FP /^SQ   Sequence 100 BP; 25 A; 25 C; 25 G; 25 T; 0 other;\n/
 FP /^     acgtacgtac gtacgtacgt acgtacgtac gtacgtacgt acgtacgtac gtacgtacgt        60\n/
 //
@@ -4061,10 +4378,15 @@ ID seqret-out-embl
 AP seqret
 CL -auto ../../data/dna.embl test.out -osf embl
 FI test.out
-FZ = 307
+FZ = 469
 FP /^ID   EMBL       standard; DNA; UNC; 100 BP\.\n/
 FP /^AC   E10002;\n/
+FP /^SV   E10002.34\n/
 FP /^DE   EMBL FORMAT DNA SEQUENCE\n/
+FP /^KW   DNA binding protein; repressor.\n/
+FP /^OS   Escherichia coli\n/
+FP /^OC   Bacteria; Proteobacteria; gamma subdivision; Enterobacteriaceae;\n/
+FP /^OC   Escherichia.\n/
 FP /^SQ   Sequence 100 BP; 25 A; 25 C; 25 G; 25 T; 0 other;\n/
 FP /^     acgtacgtac gtacgtacgt acgtacgtac gtacgtacgt acgtacgtac gtacgtacgt        60\n/
 //
@@ -4091,8 +4413,8 @@ ID seqret-outusa-fasta
 AP seqret
 CL -auto ../../data/dna.embl fasta::test.out
 FI test.out
-FZ = 140
-FP /^>EMBL E10002 EMBL FORMAT DNA SEQUENCE\n/
+FZ = 143
+FP /^>EMBL E10002.34 EMBL FORMAT DNA SEQUENCE\n/
 FP /^acgtacgtacgtacgtacgtacgtacgtacgtacgtacgtacgtacgtacgtacgtacgt\n/
 //
 
@@ -4100,8 +4422,8 @@ ID seqret-out-fasta
 AP seqret
 CL -auto ../../data/dna.embl test.out -osf fasta
 FI test.out
-FZ = 140
-FP /^>EMBL E10002 EMBL FORMAT DNA SEQUENCE\n/
+FZ = 143
+FP /^>EMBL E10002.34 EMBL FORMAT DNA SEQUENCE\n/
 FP /^acgtacgtacgtacgtacgtacgtacgtacgtacgtacgtacgtacgtacgtacgtacgt\n/
 //
 
@@ -4147,10 +4469,16 @@ ID seqret-outusa-genbank
 AP seqret
 CL -auto ../../data/dna.embl genbank::test.out
 FI test.out
-FZ = 262
+FZ = 489
 FP /^LOCUS       EMBL\n/
-FP /^ACCESSION   E10002\n/
 FP /^DEFINITION  EMBL FORMAT DNA SEQUENCE\n/
+FP /^ACCESSION   E10002\n/
+FP /^VERSION     E10002.34\n/
+FP /^KEYWORDS    DNA binding protein; repressor.\n/
+FP /^SOURCE      Escherichia coli.\n/
+FP /^  ORGANISM  Escherichia coli\n/
+FP /^            Bacteria; Proteobacteria; gamma subdivision; Enterobacteriaceae;\n/
+FP /^            Escherichia.\n/
 FP /^BASE COUNT       25 a     25 c     25 g     25 t\n/
 FP /^ORIGIN\n/
 FP /^       1  acgtacgtac gtacgtacgt acgtacgtac gtacgtacgt acgtacgtac gtacgtacgt\n/
@@ -4160,10 +4488,16 @@ ID seqret-out-genbank
 AP seqret
 CL -auto ../../data/dna.embl test.out -osf genbank
 FI test.out
-FZ = 262
+FZ = 489
 FP /^LOCUS       EMBL\n/
-FP /^ACCESSION   E10002\n/
 FP /^DEFINITION  EMBL FORMAT DNA SEQUENCE\n/
+FP /^ACCESSION   E10002\n/
+FP /^VERSION     E10002.34\n/
+FP /^KEYWORDS    DNA binding protein; repressor.\n/
+FP /^SOURCE      Escherichia coli.\n/
+FP /^  ORGANISM  Escherichia coli\n/
+FP /^            Bacteria; Proteobacteria; gamma subdivision; Enterobacteriaceae;\n/
+FP /^            Escherichia.\n/
 FP /^BASE COUNT       25 a     25 c     25 g     25 t\n/
 FP /^ORIGIN\n/
 FP /^       1  acgtacgtac gtacgtacgt acgtacgtac gtacgtacgt acgtacgtac gtacgtacgt\n/
@@ -4219,8 +4553,8 @@ ID seqret-outusa-ncbi
 AP seqret
 CL -auto ../../data/dna.embl ncbi::test.out
 FI test.out
-FZ = 150
-FP /^>gnl\|unk\|EMBL \(E10002\) EMBL FORMAT DNA SEQUENCE\n/
+FZ = 153
+FP /^>gnl\|unk\|EMBL \(E10002.34\) EMBL FORMAT DNA SEQUENCE\n/
 FP /^acgtacgtacgtacgtacgtacgtacgtacgtacgtacgt\n/
 //
 
@@ -4228,8 +4562,8 @@ ID seqret-out-ncbi
 AP seqret
 CL -auto ../../data/dna.embl test.out -osf ncbi
 FI test.out
-FZ = 150
-FP /^>gnl\|unk\|EMBL \(E10002\) EMBL FORMAT DNA SEQUENCE\n/
+FZ = 153
+FP /^>gnl\|unk\|EMBL \(E10002.34\) EMBL FORMAT DNA SEQUENCE\n/
 FP /^acgtacgtacgtacgtacgtacgtacgtacgtacgtacgt\n/
 //
 
@@ -4259,10 +4593,15 @@ ID seqret-outusa-swiss
 AP seqret
 CL -auto ../../data/dna.embl swiss::test.out
 FI test.out
-FZ = 307
+FZ = 469
 FP /^ID   EMBL       standard; DNA; UNC; 100 BP\.\n/
 FP /^AC   E10002;\n/
+FP /^SV   E10002.34\n/
 FP /^DE   EMBL FORMAT DNA SEQUENCE\n/
+FP /^KW   DNA binding protein; repressor.\n/
+FP /^OS   Escherichia coli\n/
+FP /^OC   Bacteria; Proteobacteria; gamma subdivision; Enterobacteriaceae;\n/
+FP /^OC   Escherichia.\n/
 FP /^SQ   Sequence 100 BP; 25 A; 25 C; 25 G; 25 T; 0 other;\n/
 FP /^     acgtacgtac gtacgtacgt acgtacgtac gtacgtacgt acgtacgtac gtacgtacgt        60\n/
 //
@@ -4271,10 +4610,15 @@ ID seqret-out-swiss
 AP seqret
 CL -auto ../../data/dna.embl test.out -osf swiss
 FI test.out
-FZ = 307
+FZ = 469
 FP /^ID   EMBL       standard; DNA; UNC; 100 BP\.\n/
 FP /^AC   E10002;\n/
+FP /^SV   E10002.34\n/
 FP /^DE   EMBL FORMAT DNA SEQUENCE\n/
+FP /^KW   DNA binding protein; repressor.\n/
+FP /^OS   Escherichia coli\n/
+FP /^OC   Bacteria; Proteobacteria; gamma subdivision; Enterobacteriaceae;\n/
+FP /^OC   Escherichia.\n/
 FP /^SQ   Sequence 100 BP; 25 A; 25 C; 25 G; 25 T; 0 other;\n/
 FP /^     acgtacgtac gtacgtacgt acgtacgtac gtacgtacgt acgtacgtac gtacgtacgt        60\n/
 //
@@ -4393,7 +4737,7 @@ ID seqret-outmultiusa-debug
 AP seqret
 CL -auto ../../data/dna.m-embl debug::test.out
 FI test.out
-FZ = 1886
+FZ = 2051
 FP 3 /^  Name: 'FASTAM[1-3]'\n/
 FP 3 /^  Accession: 'F3000[1-3]'\n/
 FP /^  Entryname: 'FASTAM3'\n/
@@ -4409,7 +4753,7 @@ ID seqret-outmulti-debug
 AP seqret
 CL -auto ../../data/dna.m-embl test.out -osf debug
 FI test.out
-FZ = 1865
+FZ = 2030
 FP 3 /^  Name: 'FASTAM[1-3]'\n/
 FP 3 /^  Accession: 'F3000[1-3]'\n/
 FP /^  Entryname: 'FASTAM3'\n/
@@ -4973,6 +5317,505 @@ FP /^FASTAM2\n/
 FP /^ACGTACGTACGTACGTACGT----ACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTTGCAACGTACGT\n/
 //
 
+#####################################################
+# Test the query part of USAs
+#####################################################
+
+ID seqret-query-direct-fail
+ER 1
+AP seqret
+CL -auto -out test.out -osf embl embl::../../embl/rod.dat:bad:MMAM
+FI test.out
+FZ = 0
+FI stderr
+FZ = 137
+FP /Error: Unknown query field 'bad' in USA '../../embl/rod.dat:bad:MMAM'/
+FP /Error: Unable to read sequence 'embl::../../embl/rod.dat:bad:MMAM'/
+FP 2 /Error: /
+//
+
+ID seqret-query-direct-name
+AP seqret
+CL -auto -out test.out -osf embl embl::../../embl/rod.dat:MMAM
+FI test.out
+FZ = 969
+FP /^ID   MMAM /
+FP 1 /^ID/
+//
+
+ID seqret-query-direct-name2
+AP seqret
+CL -auto -out test.out -osf embl embl::../../embl/rod.dat:RNOPS
+FI test.out
+FZ = 2396
+FP /^ID   RNOPS /
+FP 1 /^ID/
+//
+
+ID seqret-query-direct-namefail
+ER 1
+AP seqret
+CL -auto -out test.out -osf embl embl::../../embl/rod.dat:FAIL
+FI test.out
+FZ = 0
+FI stderr
+FZ = 63
+FP 1 /^Error: /
+FP /^Error: Unable to read sequence 'embl::../../embl/rod.dat:FAIL'/
+//
+
+ID seqret-query-direct-id
+AP seqret
+CL -auto -out test.out -osf embl embl::../../embl/rod.dat:id:MMAM
+FI test.out
+FZ = 969
+FP /^ID   MMAM /
+FP 1 /^ID/
+//
+
+ID seqret-query-direct-id2
+AP seqret
+CL -auto -out test.out -osf embl embl::../../embl/rod.dat:ID:RNOPS
+FI test.out
+FZ = 2396
+FP /^ID   RNOPS /
+FP 1 /^ID/
+//
+
+ID seqret-query-direct-idfail
+ER 1
+AP seqret
+CL -auto -out test.out -osf embl embl::../../embl/rod.dat:ID:FAIL
+FI test.out
+FZ = 0
+FI stderr
+FZ = 66
+FP /^Error: Unable to read sequence 'embl::../../embl/rod.dat:ID:FAIL'/
+FP 1 /^Error: /
+//
+
+ID seqret-query-direct-acc
+AP seqret
+CL -auto -out test.out -osf embl embl::../../embl/rod.dat:ACC:L48662
+FI test.out
+FZ = 969
+FP /^ID   MMAM /
+FP 1 /^ID/
+//
+
+ID seqret-query-direct-acc2
+AP seqret
+CL -auto -out test.out -osf embl embl::../../embl/rod.dat:ACC:Z46957
+FI test.out
+FZ = 2396
+FP /^ID   RNOPS /
+FP 1 /^ID/
+//
+
+ID seqret-query-direct-accfail
+ER 1
+AP seqret
+CL -auto -out test.out -osf embl embl::../../embl/rod.dat:ACC:Z99999
+FI test.out
+FZ = 0
+FI stderr
+FZ = 69
+FP /^Error: Unable to read sequence 'embl::../../embl/rod.dat:ACC:Z99999'/
+FP 1 /^Error: /
+//
+
+ID seqret-query-direct-accfail2
+ER 1
+AP seqret
+CL -auto -out test.out -osf embl embl::../../embl/rod.dat:ACC:99999Z
+FI test.out
+FZ = 0
+FI stderr
+FZ = 69
+FP /^Error: Unable to read sequence 'embl::../../embl/rod.dat:ACC:99999Z'/
+FP 1 /^Error: /
+//
+
+ID seqret-query-direct-sv
+AP seqret
+CL -auto -out test.out -osf embl embl::../../embl/rod.dat:SV:L48662*
+FI test.out
+FZ = 969
+FP /^ID   MMAM /
+FP 1 /^ID/
+//
+
+ID seqret-query-direct-sv2
+AP seqret
+CL -auto -out test.out -osf embl embl::../../embl/rod.dat:SV:Z46957.1
+FI test.out
+FZ = 2396
+FP /^ID   RNOPS /
+FP 1 /^ID/
+//
+
+ID seqret-query-direct-svfail
+ER 1
+AP seqret
+CL -auto -out test.out -osf embl embl::../../embl/rod.dat:SV:Z99999.1
+FI test.out
+FZ = 0
+FI stderr
+FZ = 70
+FP /^Error: Unable to read sequence 'embl::../../embl/rod.dat:SV:Z99999.1'/
+FP 1 /^Error: /
+//
+
+ID seqret-query-direct-des
+AP seqret
+CL -auto -out test.out -osf embl embl::../../embl/rod.dat:DES:*receptor*
+FI test.out
+FZ = 2092
+FP /^ID   RNU68037 /
+FP 1 /^ID/
+//
+
+ID seqret-query-direct-des2
+AP seqret
+CL -auto -out test.out -osf embl embl::../../embl/rod.dat:DES:*norvegicus*
+FI test.out
+FZ = 4488
+FP /^ID   RNOPS /
+FP 2 /^ID/
+//
+
+ID seqret-query-direct-desfail
+ER 1
+AP seqret
+CL -auto -out test.out -osf embl embl::../../embl/rod.dat:DES:lynam
+FI test.out
+FZ = 0
+FI stderr
+FZ = 68
+FP /^Error: Unable to read sequence 'embl::../../embl/rod.dat:DES:lynam'/
+FP 1 /^Error: /
+//
+
+ID seqret-query-direct-deswordstart
+CC testing word matching for DES ... fails for now
+AP seqret
+CL -auto -out test.out -osf embl embl::../../embl/rod.dat:DES:Mus
+FI test.out
+FZ = 969
+FP /^ID   MMAM /
+FP 1 /^ID/
+//
+
+ID seqret-query-direct-deswordmid
+CC testing word matching for DES ... fails for now
+AP seqret
+CL -auto -out test.out -osf embl embl::../../embl/rod.dat:DES:mrna
+FI test.out
+FZ = 2396
+FP /^ID   RNOPS /
+FP 1 /^ID/
+//
+
+ID seqret-query-direct-deswordend
+CC testing word matching for DES ... fails for now
+AP seqret
+CL -auto -out test.out -osf embl embl::../../embl/rod.dat:DES:receptor
+FI test.out
+FZ = 2092
+FP /^ID   RNU68037 /
+FP 1 /^ID/
+//
+
+ID seqret-query-direct-key
+AP seqret
+CL -auto -out test.out -osf embl embl::../../embl/rod.dat:KEY:rhodopsin
+FI test.out
+FZ = 2396
+FP /^ID   RNOPS /
+FP 1 /^ID/
+//
+
+ID seqret-query-direct-keyfail
+ER 1
+AP seqret
+CL -auto -out test.out -osf embl embl::../../embl/rod.dat:KEY:CHAIN
+FI test.out
+FZ = 0
+FI stderr
+FZ = 68
+FP /^Error: Unable to read sequence 'embl::../../embl/rod.dat:KEY:CHAIN'/
+FP 1 /^Error: /
+//
+
+ID seqret-query-direct-org
+AP seqret
+CL -auto -out test.out -osf embl embl::../../embl/rod.dat:ORG:Mus\*
+FI test.out
+FZ = 969
+FP /^ID   MMAM /
+FP 1 /^ID/
+//
+
+ID seqret-query-direct-org2
+AP seqret
+CL -auto -out test.out -osf embl embl::../../embl/rod.dat:ORG:Rattus\*
+FI test.out
+FZ = 4488
+FP /^ID   RNOPS /
+FP /^ID   RNU68037 /
+FP 2 /^ID/
+//
+
+ID seqret-query-direct-org3
+AP seqret
+CL -auto -out test.out -osf embl embl::../../embl/rod.dat:ORG:Rodentia
+FI test.out
+FZ = 5457
+FP /^ID   MMAM /
+FP /^ID   RNOPS /
+FP /^ID   RNU68037 /
+FP 3 /^ID/
+//
+
+ID seqret-query-direct-orgfail
+ER 1
+AP seqret
+CL -auto -out test.out -osf embl embl::../../embl/rod.dat:ORG:HOMO
+FI test.out
+FZ = 0
+FI stderr
+FZ = 67
+FP /^Error: Unable to read sequence 'embl::../../embl/rod.dat:ORG:HOMO'/
+FP 1 /^Error: /
+//
+
+ID seqret-query-srs-badfield
+ER 1
+CC No need for a local SRS installation - fails at USA processing
+CC Reports bad filename because 'bad' is an unknown field
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL -auto -out test.out -osf embl qasrs-bad:AB000095
+FI test.out
+FZ = 0
+FI stderr
+FZ = 135
+FP /^Error: USA 'qasrs-bad:AB000095' query field 'bad' not defined for database 'qasrs'/
+FP /^Error: Unable to read sequence 'qasrs-bad:AB000095'/
+FP 2 /^Error: /
+//
+
+ID seqret-query-srs-badfield2
+ER 1
+CC No need for a local SRS installation - fails at USA processing
+CC Reports bad filename because 'key' is not defined in 'fields' for qasrs
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL -auto -out test.out -osf embl qasrs-key:AB000095
+FI test.out
+FZ = 0
+FI stderr
+FZ = 135
+FP /^Error: USA 'qasrs-key:AB000095' query field 'key' not defined for database 'qasrs'/
+FP /^Error: Unable to read sequence 'qasrs-key:AB000095'/
+FP 2 /^Error: /
+//
+
+ID seqret-query-srs-id
+CC Requires a local SRS installation
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL -auto -out test.out -osf embl qasrs-ID:AB000095
+FI test.out
+FZ = 3664
+FP /^ID   AB000095 /
+FP 1 /^ID /
+//
+
+ID seqret-query-srs-acc
+CC Requires a local SRS installation
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL -auto -out test.out -osf embl qasrs-ACC:AB000095
+FI test.out
+FZ = 3664
+FP /^ID   AB000095 /
+FP 1 /^ID /
+//
+
+ID seqret-query-srs-sv
+CC Requires a local SRS installation
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL -auto -out test.out -osf embl qasrs-SV:AB000095.1
+FI test.out
+FZ = 3664
+FP /^ID   AB000095 /
+FP 1 /^ID /
+//
+
+ID seqret-query-srs-name
+CC Requires a local SRS installation
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL -auto -out test.out -osf embl qasrs:AB000095
+FI test.out
+FZ = 3664
+FP /^ID   AB000095 /
+FP 1 /^ID /
+//
+
+ID seqret-query-srs-fail
+CC Requires a local SRS installation
+ER 1
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL -auto -out test.out -osf embl qasrs-id:OLD
+FI test.out
+FZ = 0
+FI stderr
+FZ = 46
+FP /^Error: Unable to read sequence 'qasrs-id:OLD'/
+FP 1 /^Error: /
+//
+
+ID seqret-query-srsfasta-id
+CC Requires a local SRS installation
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL -auto -out test.out -osf embl qasrsfasta-ID:AB000095
+FI test.out
+FZ = 3348
+FP /^ID   AB000095 /
+FP 1 /^ID /
+//
+
+ID seqret-query-srsfasta-acc
+CC Requires a local SRS installation
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL -auto -out test.out -osf embl qasrsfasta-ACC:AB000095
+FI test.out
+FZ = 3348
+FP /^ID   AB000095 /
+FP 1 /^ID /
+//
+
+ID seqret-query-srsfasta-sv
+CC Requires a local SRS installation
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL -auto -out test.out -osf embl qasrsfasta-SV:AB000095.1
+FI test.out
+FZ = 3348
+FP /^ID   AB000095 /
+FP 1 /^ID /
+//
+
+ID seqret-query-srsfasta-name
+CC Requires a local SRS installation
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL -auto -out test.out -osf embl qasrsfasta:AB000095
+FI test.out
+FZ = 3348
+FP /^ID   AB000095 /
+FP 1 /^ID /
+//
+
+ID seqret-query-srsfasta-fail
+CC Requires a local SRS installation
+ER 1
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL -auto -out test.out -osf embl qasrsfasta-id:OLD
+FI test.out
+FZ = 0
+FI stderr
+FZ = 51
+FP /^Error: Unable to read sequence 'qasrsfasta-id:OLD'/
+FP 1 /^Error: /
+//
+
+ID seqret-query-srswww-id
+AP seqret
+CC Requires http access to EBI SRS server
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL -auto -out test.out -osf embl qasrswww-ID:AB000095
+FI test.out
+FZ = 3664
+FP /^ID   AB000095 /
+FP 1 /^ID /
+//
+
+ID seqret-query-srswww-acc
+AP seqret
+CC Requires http access to EBI SRS server
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL -auto -out test.out -osf embl qasrswww-ACC:AB000095
+FI test.out
+FZ = 3664
+FP /^ID   AB000095 /
+FP 1 /^ID /
+//
+
+ID seqret-query-srswww-sv
+AP seqret
+CC Requires http access to EBI SRS server
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL -auto -out test.out -osf embl qasrswww-SV:AB000095.1
+FI test.out
+FZ = 3664
+FP /^ID   AB000095 /
+FP 1 /^ID /
+//
+
+ID seqret-query-srswww-name
+AP seqret
+CC Requires http access to EBI SRS server
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL -auto -out test.out -osf embl qasrswww:AB000095
+FI test.out
+FZ = 3664
+FP /^ID   AB000095 /
+FP 1 /^ID /
+//
+
+ID seqret-query-srswww-fail
+ER 1
+AP seqret
+CC Requires http access to EBI SRS server
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL -auto -out test.out -osf embl qasrswww-id:OLD
+FI test.out
+FZ = 0
+FI stderr
+FZ = 49
+FP /^Error: Unable to read sequence 'qasrswww-id:OLD'/
+FP 1 /^Error: /
+//
+
+####################################################
+# End of query USA tests
+####################################################
+
 ID seqretset-ex
 AP infoalign
 CL -auto tembl:eclac* -out test.out
@@ -4994,8 +5837,9 @@ ID seqretall-ex
 AP seqret
 CL -auto tembl:eclac* test.out -osf fasta
 FI test.out
-FZ = 15608
+FZ = 15618
 FP 5 /^>ECLAC/
+FP 5 /^>/
 //
 
 ID seqretall-ex1
@@ -5016,19 +5860,19 @@ IN
 FI stderr
 FC = 2
 FI hsfau.fasta
-FZ = 560
+FZ = 562
 FP /^>HSFAU /
 FI hsfau1.fasta
-FZ = 2086
+FZ = 2088
 FP /^>HSFAU1 /
 FI hsferg1.fasta
-FZ = 569
+FZ = 571
 FP /^>HSFERG1 /
 FI hsferg2.fasta
-FZ = 1202
+FZ = 1204
 FP /^>HSFERG2 /
 FI hsfos.fasta
-FZ = 6376
+FZ = 6378
 FP /^>HSFOS /
 //
 
@@ -5303,9 +6147,9 @@ IN
 FI stderr
 FC = 2
 FI stdout 
-FZ = 844
+FZ = 841
 FP /\|=+\| 2167\n/
-FP 3 /    misc_feature\n/
+FP 2 /    misc_feature\n/
 FP /-> source\n/
 //
 
@@ -5349,7 +6193,7 @@ FC = 2
 ## hard to test - randomised but same length
 ##
 FI mmam.fasta 
-FZ = 942
+FZ = 946
 FP /^>MMAM/
 //
 
@@ -5693,7 +6537,7 @@ CL tembl:hsfau hsfau.seq
 FI stderr
 FC = 1
 FI hsfau.seq
-FZ = 572
+FZ = 574
 FP /poly-A tail removed/
 //
 
@@ -5704,7 +6548,7 @@ CL tembl:hsfau hsfau.seq -window 1 -percent 100
 FI stderr
 FC = 1
 FI hsfau.seq
-FZ = 560
+FZ = 562
 FP /^>HSFAU /
 //
 
@@ -5714,7 +6558,7 @@ CL tembl:hsfau hsfau.seq -window 5 -percent 40
 FI stderr
 FC = 1
 FI hsfau.seq
-FZ = 560
+FZ = 562
 FP /^>HSFAU /
 //
 
@@ -5724,7 +6568,7 @@ CL tembl:hsfau hsfau.seq -window 20 -percent 80
 FI stderr
 FC = 1
 FI hsfau.seq
-FZ = 560
+FZ = 562
 FP /^>HSFAU /
 //
 
@@ -5734,7 +6578,7 @@ CL tembl:hsfau hsfau.seq -window 20 -percent 10
 FI stderr
 FC = 1
 FI hsfau.seq
-FZ = 560
+FZ = 562
 FP /^>HSFAU /
 //
 
@@ -5744,7 +6588,7 @@ CL tembl:hsfau hsfau.seq -window 20 -percent 50 -strict
 FI stderr
 FC = 1
 FI hsfau.seq
-FZ = 560
+FZ = 562
 FP /^>HSFAU /
 //
 
@@ -5754,7 +6598,7 @@ CL tembl:hsfau hsfau.seq -window 1 -percent 100 -star
 FI stderr
 FC = 1
 FI hsfau.seq
-FZ = 560
+FZ = 562
 FP /^>HSFAU /
 //
 
@@ -5764,7 +6608,7 @@ CL tembl:hsfau hsfau.seq -window 20 -percent 50 -noright
 FI stderr
 FC = 1
 FI hsfau.seq
-FZ = 560
+FZ = 562
 FP /^>HSFAU /
 //
 
