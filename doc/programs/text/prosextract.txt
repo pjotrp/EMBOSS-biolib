@@ -97,12 +97,11 @@ Known bugs
 
 See also
 
-    Program name                        Description
+    Program name         Description
    aaindexextract Extract data from AAINDEX
    cutgextract    Extract data from CUTG
    printsextract  Extract data from PRINTS
    rebaseextract  Extract data from REBASE
-   scope          Convert raw scop classification file to embl-like format
    tfextract      Extract data from TRANSFAC
    
 Author(s)

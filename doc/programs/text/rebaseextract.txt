@@ -245,7 +245,6 @@ See also
    printsextract Extract data from PRINTS
    prosextract Builds the PROSITE motif database for patmatmotifs to
    search
-   scope Convert raw scop classification file to embl-like format
    tfextract Extract data from TRANSFAC
    
 Author(s)
