@@ -407,9 +407,9 @@ significant impact on gene silencing.
 
 static void sirna_report(AjPReport report, AjPSeq seq,
 	AjBool poliii, AjBool aa, AjBool tt, AjBool polybase, 
-	AjBool control, AjPSeqout seqout);
+	AjPSeqout seqout);
 static ajint sirna_begin (AjPSeq seq, AjPReport report, AjBool poliii,
-	AjBool aa, AjBool tt, AjBool polybase, AjBool control);
+	AjBool aa, AjBool tt, AjBool polybase);
 static void sirna_new_value (AjPList list, ajint pos, ajint score, 
 	ajint GCcount);
 static int sirna_compare_score (const void* v1, const void* v2);
@@ -439,7 +439,6 @@ int main(int argc, char **argv)
     AjBool aa;
     AjBool tt;
     AjBool polybase;
-    AjBool control;
     AjPSeqout seqout;
     
     AjPSeq seq=NULL;
@@ -453,13 +452,12 @@ int main(int argc, char **argv)
     aa        = ajAcdGetBool("aa");
     tt        = ajAcdGetBool("tt");
     polybase  = ajAcdGetBool("polybase");
-    control   = ajAcdGetBool("control");
     report    = ajAcdGetReport("outfile");
     seqout    = ajAcdGetSeqoutall ("outseq");
 
     while(ajSeqallNext(seqall, &seq))
     {
-	sirna_report (report, seq, poliii, aa, tt, polybase, control, seqout);
+	sirna_report (report, seq, poliii, aa, tt, polybase, seqout);
     }
 
     ajSeqDel(&seq);
@@ -484,7 +482,6 @@ int main(int argc, char **argv)
 ** @param [r] aa [AjBool] True if want AA at start of region
 ** @param [r] tt [AjBool] True if want TT at end of region
 ** @param [r] polybase [AjBool] True if we allow 4-mers of any base
-** @param [r] control [AjBool] True if want to make control probes
 ** @param [r] seqout [AjPSeqout] Ouput sequence object
 ** @return [void] 
 ** @@
@@ -493,7 +490,7 @@ int main(int argc, char **argv)
 
 static void sirna_report(AjPReport report, AjPSeq seq,
 	AjBool poliii, AjBool aa, AjBool tt, AjBool polybase, 
-	AjBool control, AjPSeqout seqout)
+	AjPSeqout seqout)
 {
 
     AjPFeattable TabRpt=NULL;	/* output feature table for report */
@@ -548,19 +545,7 @@ static void sirna_report(AjPReport report, AjPSeq seq,
     TabRpt = ajFeattableNewSeq(seq);
 
 /* get start of CDS region */
-    CDS_begin = sirna_begin(seq, report, poliii, aa, tt, polybase, control);
-
-/*
-   if we want to make the control data then
-   take the sequence and scramble it
-*/
-    if (control) {
-      ajStrAss(&newstr, ajSeqStr(seq));
-      ajRandomSeed();
-      ajStrRandom(&newstr);
-      ajSeqReplace(seq, newstr);
-    }
-
+    CDS_begin = sirna_begin(seq, report, poliii, aa, tt, polybase);
 
 /* want to get CDS region from feature table */
 /* if no feature table for this sequence, then find longest ORF */
@@ -790,12 +775,11 @@ static void sirna_report(AjPReport report, AjPSeq seq,
 ** @param [r] aa [AjBool] True if want AA at start of region
 ** @param [r] tt [AjBool] True if want TT at end of region
 ** @param [r] polybase [AjBool] True if we allow 4-mers of any base
-** @param [r] control [AjBool] True if want to make control probes
 ** @return [ajint] start of CDS region (using positions starting from 0)
 ** @@
 ******************************************************************************/
 static ajint sirna_begin (AjPSeq seq, AjPReport report, AjBool poliii,
-	AjBool aa, AjBool tt, AjBool polybase, AjBool control)
+	AjBool aa, AjBool tt, AjBool polybase)
 {
   AjPFeattable featab=NULL;	/* input sequence feature table */
   ajint begin=0;
@@ -815,9 +799,6 @@ static ajint sirna_begin (AjPSeq seq, AjPReport report, AjBool poliii,
   ajDebug("sirna_begin()\n");
 
 /* say something about the options in the report header */
-  if (control) {
-    ajStrAssC(&head, "NOTE: THIS IS CONTROL DATA!\n");
-  }
   if (poliii) {
     ajStrAppC(&head, 
     	"Selecting only regions suitable for PolIII expression vectors\n");
