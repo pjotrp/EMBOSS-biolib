@@ -348,7 +348,7 @@ dnl Test if --enable-debug given
 AC_ARG_ENABLE(warnings,
 [  --enable-warnings          warnings (-Wall option on compiler)])
 if test "${enable_warnings}" = "yes" ; then
-  CFLAGS="$CFLAGS -Wall"
+  CFLAGS="$CFLAGS -Wall -fno-strict-aliasing"
 fi          
 
 dnl Set extra needed compiler flags
