@@ -1996,6 +1996,7 @@ void ajSeqDel(AjPSeq* pthis)
     ajStrDel(&thys->Tax);
     ajStrDel(&thys->Type);
     ajStrDel(&thys->Db);
+    ajStrDel(&thys->Setdb);
     ajStrDel(&thys->Full);
     ajStrDel(&thys->Date);
     ajStrDel(&thys->Desc);
