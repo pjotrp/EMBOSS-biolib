@@ -473,6 +473,39 @@ AjBool ajFeattabOutOpen (AjPFeattabOut thys, AjPStr ufo) {
   return ajTrue;
 }
 
+/* @func ajFeattabOutFile ***************************************************
+**
+** Returns the name of a feature output file
+**
+** @param [r] thys [AjPFeattabOut] Features table output object
+** @return [AjPFile] File object
+** @@
+******************************************************************************/
+
+AjPFile ajFeattabOutFile (AjPFeattabOut thys) {
+
+  ajDebug("ajFeattabOutFile\n");
+  return thys->Handle;
+}
+
+/* @func ajFeattabOutFilename ***********************************************
+**
+** Returns the name of a feature output file
+**
+** @param [r] thys [AjPFeattabOut] Features table output object
+** @return [AjPStr] Filename
+** @@
+******************************************************************************/
+
+AjPStr ajFeattabOutFilename (AjPFeattabOut thys) {
+
+  ajDebug("ajFeattabOutFilename\n");
+  if (ajStrLen(thys->Filename))
+    return thys->Filename;
+
+  return NULL;
+}
+
 /* @func ajFeattabOutIsOpen ***************************************************
 **
 ** Checks whether feature output file has already been opened
@@ -4325,7 +4358,12 @@ AjBool ajFeatGetNoteI (AjPFeature thys, AjPStr name, ajint count,
 	    icount++;
 	    ajDebug("  found [%d] '%S'\n", icount, name);
 	    if (icount >= count) {
-	      ajStrAssC (val, ajStrStr(item->Value)+ajStrLen(name)+2);
+	      if (ajStrLen(item->Value) > (ajStrLen(name)+1)) {
+		ajStrAssC (val, ajStrStr(item->Value)+ajStrLen(name)+2);
+	      }
+	      else {		/* no value */
+		ajStrAssC (val, "");
+	      }
 	      ajListIterFree(iter);
 	      return ajTrue;
 	    }

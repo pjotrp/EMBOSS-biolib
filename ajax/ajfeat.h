@@ -106,6 +106,8 @@ AjPFeattabIn  ajFeattabInNewSS (AjPStr fmt, AjPStr name, char* type);
 AjPFeattabIn  ajFeattabInNewSSF (AjPStr fmt, AjPStr name, char* type,
 				 AjPFileBuff buff);
 void          ajFeattabOutDel( AjPFeattabOut* pthis);
+AjPFile       ajFeattabOutFile (AjPFeattabOut thys);
+AjPStr        ajFeattabOutFilename (AjPFeattabOut thys);
 AjBool        ajFeattabOutIsOpen (AjPFeattabOut thys);
 AjPFeattabOut ajFeattabOutNew (void);
 AjPFeattabOut ajFeattabOutNewSSF (AjPStr fmt, AjPStr name, char* type,
