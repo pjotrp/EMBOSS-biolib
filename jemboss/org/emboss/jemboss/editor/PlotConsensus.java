@@ -17,18 +17,6 @@
 *  @author: Copyright (C) Tim Carver
 *
 *
-* Average similarity calculation:
-*
-* Av. Sim. =       sum( Mij*wi + Mji*w2  )
-*            -----------------------------------
-*               (Nseq*Wsize)*((Nseq-1)*Wsize)
-*
-*     sum   - over column*window size
-*     M     - matrix comparison table
-*     i,j   - wrt residue i or j
-*     Nseq  - no. of sequences in the alignment
-*     Wsize - window size
-*
 ***************************************************************/
 
 package org.emboss.jemboss.editor;
@@ -40,16 +28,41 @@ import java.util.Enumeration;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+*
+* Plot the average similarity, calculated by:
+*
+* <p> Av. Sim. =    sum( Mij*wi + Mji*w2  ) / 
+*              ( (Nseq*Wsize)*((Nseq-1)*Wsize) )
+*
+* <p>   sum   - over column*window size
+* <br>  M     - matrix comparison table
+* <br>  i,j   - wrt residue i or j
+* <br>  Nseq  - no. of sequences in the alignment
+* <br>  Wsize - window size
+*
+*/
 public class PlotConsensus extends JPanel
 {
 
+  /** sum of scores for each column */
   private float[] sumscore;
+  /** number of graph bins making up the seq length */
   private int numbins;
   private int interval;
   private float ymin = 0.f;
   private float ymax = 0.f;
   private GraphicSequenceCollection viewPane = null;
 
+  /**
+  *
+  * @param matrixFile	scoring matrix file
+  * @param seqs		vector of the Sequence objects
+  * @param winsize	window size
+  * @param interval 	
+  * @param viewPane	graphical sequence view
+  *
+  */
   public PlotConsensus(File matrixFile, Vector seqs, int winsize,
                        int interval, GraphicSequenceCollection viewPane)
   {
@@ -60,6 +73,14 @@ public class PlotConsensus extends JPanel
     createPlot(mat,seqs,winsize);
   }
 
+  /**
+  *
+  * @param matrixFile   scoring matrix file
+  * @param seqs         vector of the Sequence objects
+  * @param winsize      window size
+  * @param interval     
+  * 
+  */
   public PlotConsensus(File matrixFile, Vector seqs, int winsize,
                        int interval)
   {   
@@ -68,6 +89,15 @@ public class PlotConsensus extends JPanel
     createPlot(mat,seqs,winsize);
   }
  
+  /**
+  *
+  * @param matrixJar		jar file containing matrix
+  * @param matrixFilename     	scoring matrix file
+  * @param seqs           	vector of the Sequence objects
+  * @param winsize        	window size
+  * @param interval     
+  * 
+  */
   public PlotConsensus(String matrixJar, String matrixFileName,
                        Vector seqs, int winsize,
                        int interval)
@@ -76,6 +106,15 @@ public class PlotConsensus extends JPanel
                                  winsize,interval);
   }
 
+  /**
+  *
+  * @param mat     	scoring matrix
+  * @param seqs     	vector of the Sequence objects
+  * @param winsize   	window size
+  * @param interval     
+  * @param viewPane	graphical sequence view
+  * 
+  */
   public PlotConsensus(Matrix mat, Vector seqs, int winsize,
                        int interval, GraphicSequenceCollection viewPane)
   {
@@ -85,6 +124,14 @@ public class PlotConsensus extends JPanel
   }
 
  
+  /**
+  *
+  * @param mat          scoring matrix
+  * @param seqs         vector of the Sequence objects
+  * @param winsize      window size
+  * @param interval     
+  * 
+  */
   public PlotConsensus(Matrix mat,
                        Vector seqs, int winsize,
                        int interval)
@@ -93,12 +140,19 @@ public class PlotConsensus extends JPanel
     createPlot(mat,seqs,winsize);
   }
 
+  /**
+  *
+  * Create the consensus plot
+  * @param mat 		scoring matrix
+  * @param seqs         vector of the Sequence objects
+  * @param winsize      window size
+  *
+  */
   private void createPlot(Matrix mat, Vector seqs, int winsize)
   {
     int matrix[][] = mat.getMatrix();
     int numseq = seqs.size();
 
-//  int lenseq = ((Sequence)seqs.get(0)).getLength();
     int mseq = getMaxSequenceLength(seqs);
     int matsize = mat.getIDimension();
     numbins = mseq;
@@ -168,11 +222,11 @@ public class PlotConsensus extends JPanel
                       (int)(ymax-ymin+1)*interval));
   }
 
-/**
-*
-* Returns the residue of the sequence i at position k
-*
-*/
+  /**
+  *
+  * Returns the residue of the sequence i at position k
+  *
+  */
   public String getResidue(Vector seqs, int i, int k)
   {
     String res = "-";
