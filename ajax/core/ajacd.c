@@ -867,6 +867,7 @@ AcdOAttr acdAttrFloat[] =
 AcdOAttr acdAttrGraph[] =
 {
     {"standardtype", VT_STR, "(Not used by ACD) Standard named graph type"},
+    {"nullok", VT_BOOL, "Can accept a null graph type as 'no graph' default:N"},
     {NULL, VT_NULL, NULL}
 };
 
@@ -874,6 +875,7 @@ AcdOAttr acdAttrGraphxy[] =
 {
     {"standardtype", VT_STR, "(Not used by ACD) Standard named graph type"},
     {"multiple", VT_INT, "Number of graphs default:1"},
+    {"nullok", VT_BOOL, "Can accept a null graph type as 'no graph' default:N"},
     {NULL, VT_NULL, NULL}
 };
 
@@ -1046,6 +1048,7 @@ AcdOAttr acdAttrString[] =
     {"pattern", VT_STR, "Regular expression for validation default:''"},
     {"upper", VT_BOOL, "Convert to upper case default:N"},
     {"lower", VT_BOOL, "Convert to lower case default:N"},
+    {"standardtype", VT_STR, "Standard string type"},
     {NULL, VT_NULL, NULL}
 };
 
@@ -1172,10 +1175,13 @@ AcdOQual acdQualAppl[] =	/* careful: index numbers used in*/
     {"options",    "N", "boolean", "Prompt for required and optional values"},
     {"debug",      "N", "boolean", "Write debug output to program.dbg"},
     /* deprecated - to be removed in a future version */
-    {"acdlog",     "N", "boolean", "Write ACD processing log "
-                                   "to program.acdlog"},
-    {"acdpretty",  "N", "boolean", "Rewrite ACD file as program.acdpretty"},
-    {"acdtable",   "N", "boolean", "Write HTML table of options"},
+	/* removed in 2.8.0
+//    {"acdlog",     "N", "boolean", "Write ACD processing log "
+                                     "to program.acdlog"},
+//    {"acdpretty",  "N", "boolean", "Rewrite ACD file as program.acdpretty"},
+//    {"acdtable",   "N", "boolean", "Write HTML table of options"},
+    */
+
     /* end of deprecated set */
     {"verbose",    "N", "boolean", "Report some/full command line options"},
     {"help",       "N", "boolean", "Report command line options. "
@@ -1587,7 +1593,7 @@ AjStatus ajAcdInitP (char *pgm, ajint argc, char *argv[], char *package)
     
     acdProgram = ajStrNewC (pgm);
     acdSecList = ajListstrNew();
-    
+
     acdLog ("testing acdprompts");
     if (ajNamGetValueC ("acdprompts", &tmpstr))
     {
@@ -1597,8 +1603,12 @@ AjStatus ajAcdInitP (char *pgm, ajint argc, char *argv[], char *package)
 	if (acdPromptTry < 1) acdPromptTry = 1;
 	acdLog ("acdPromptTry %d", acdPromptTry);
     }
-    ajStrDel(&tmpstr);
     
+    if (ajNamGetValueC ("acdlog", &tmpstr))
+	ajStrToBool(tmpstr, &acdDoLog);
+
+    ajStrDel(&tmpstr);
+
     /* pre-parse the command line for special options */
     
     acdArgsScan (argc, argv);
@@ -3336,7 +3346,8 @@ static AjBool acdReplyInit (AcdPAcd thys, char *defval, AjPStr* reply)
     if (thys->DefStr)
     {
 	def = thys->DefStr[DEF_DEFAULT];
-	if (ajStrLen(def))
+	acdLog("acdReplyInit '%S' : '%S'\n", thys->Name, def);
+	if (ajStrLen(def) || thys->Defined)
 	{
 	    (void) ajStrAssS(reply, def);
 	    (void) acdVarResolve(reply);
@@ -4504,8 +4515,11 @@ static void acdSetDirectory (AcdPAcd thys)
 	else
 	{
 	    if (!nullok)
-		acdBadVal (thys, required, "Input file is required");
-	    ok = ajFalse;
+	    {
+		acdBadVal (thys, required,
+			   "Input file is required");
+		ok = ajFalse;
+	    }
 	}
     }
     if (!ok)
@@ -4571,9 +4585,7 @@ static void acdSetDirlist (AcdPAcd thys)
     val = NULL;
     
     (void) acdAttrToBool (thys, "fullpath", ajFalse, &dopath);
-    acdLog ("nullok: %B\n", nullok);
     (void) acdAttrToBool (thys, "nullok", ajFalse, &nullok);
-    acdLog ("nullok: %B\n", nullok);
     
     required = acdIsRequired(thys);
     (void) acdReplyInit (thys, ".", &defreply);
@@ -4603,8 +4615,11 @@ static void acdSetDirlist (AcdPAcd thys)
 	else
 	{
 	    if (!nullok)
-		acdBadVal (thys, required, "Input file is required");
-	    ok = ajFalse;
+	    {
+		acdBadVal (thys, required,
+			   "Input file is required");
+		ok = ajFalse;
+	    }
 	}
     }
     if (!ok)
@@ -4999,7 +5014,8 @@ static void acdSetFilelist (AcdPAcd thys)
 	{
 	    if (!nullok)
 	    {
-		acdBadVal (thys, required, "File list is required");
+		acdBadVal (thys, required,
+			   "File list is required");
 		ok = ajFalse;
 	    }
 	}
@@ -5160,7 +5176,7 @@ AjPGraph ajAcdGetGraph (char *token)
 static void acdSetGraph (AcdPAcd thys)
 {
 #ifndef GROUT
-    AjPGraph val;
+    AjPGraph val = NULL;
     
     AjBool required = ajFalse;
     AjBool ok = ajFalse;
@@ -5169,7 +5185,8 @@ static void acdSetGraph (AcdPAcd thys)
     ajint itry;
     static AjPStr title = NULL;
     static AjPStr gdev = NULL;
-    
+    AjBool nullok = ajFalse;
+
     /*   ajint multi;
 	 
 	 (void) acdAttrToInt (thys, "multi", 1, &multi);
@@ -5179,6 +5196,7 @@ static void acdSetGraph (AcdPAcd thys)
     
     required = acdIsRequired(thys);
     
+    (void) acdAttrToBool (thys, "nullok", ajFalse, &nullok);
     if(ajNamGetValueC ("GRAPHICS",&gdev))
 	(void) acdReplyInit (thys, ajStrStr(gdev), &defreply);
     else
@@ -5186,15 +5204,20 @@ static void acdSetGraph (AcdPAcd thys)
     
     acdPromptGraph (thys);
     
-    val = call ("ajGraphNew");
-    
     for (itry=acdPromptTry; itry && !ok; itry--)
     {
+	ok = ajTrue;
+
 	(void) ajStrAssS (&reply, defreply);
 
 	if (required)
 	    (void) acdUserGet (thys, &reply);
 
+	if (!ajStrLen(reply) && nullok)	/* valid no graph type */
+	    break;
+
+	if (!val)
+	    val = call ("ajGraphNew");
 	(void) call ("ajGraphSet",val, reply,&ok);
 	if (!ok)
 	{
@@ -5208,34 +5231,36 @@ static void acdSetGraph (AcdPAcd thys)
     
     thys->Value = val;
     (void) ajStrAssC (&thys->ValStr, "graph definition");
-    
-    if (acdGetValueAssoc (thys, "gtitle", &title))
-	(void) call ("ajGraphxyTitle",val,title);
-    
-    if (acdGetValueAssoc (thys, "gsubtitle", &title))
-	(void) call ("ajGraphxySubtitle",val,title);
-    
-    if (acdGetValueAssoc (thys, "gxtitle", &title))
-	(void) call ("ajGraphxyXtitle",val,title);
-    
-    if (acdGetValueAssoc (thys, "gytitle", &title))
-	(void) call ("ajGraphxyYtitle",val,title);
-    
-    if (acdGetValueAssoc (thys, "goutfile", &title))
-	(void) call ("ajGraphxySetOutputFile",val,title);
-    
-    if (acdGetValueAssoc (thys, "gdirectory", &title))
-	(void) call ("ajGraphxySetOutputDir",val,title);
-    else
+    if (val)
     {
-	ajStrAssC(&title, "");
-	if (acdOutDirectory(&title))
+	if (acdGetValueAssoc (thys, "gtitle", &title))
+	    (void) call ("ajGraphxyTitle",val,title);
+    
+	if (acdGetValueAssoc (thys, "gsubtitle", &title))
+	    (void) call ("ajGraphxySubtitle",val,title);
+    
+	if (acdGetValueAssoc (thys, "gxtitle", &title))
+	    (void) call ("ajGraphxyXtitle",val,title);
+    
+	if (acdGetValueAssoc (thys, "gytitle", &title))
+	    (void) call ("ajGraphxyYtitle",val,title);
+    
+	if (acdGetValueAssoc (thys, "goutfile", &title))
+	    (void) call ("ajGraphxySetOutputFile",val,title);
+    
+	if (acdGetValueAssoc (thys, "gdirectory", &title))
 	    (void) call ("ajGraphxySetOutputDir",val,title);
+	else
+	{
+	    ajStrAssC(&title, "");
+	    if (acdOutDirectory(&title))
+		(void) call ("ajGraphxySetOutputDir",val,title);
+	}
+    
+    
+	(void) call ("ajGraphTrace",val);
     }
-    
-    
-    (void) call ("ajGraphTrace",val);
-    
+
 #endif
     return;
 }
@@ -5524,7 +5549,6 @@ static void acdSetInfile (AcdPAcd thys)
     val = NULL;				/* set the default value */
     
     (void) acdAttrToBool (thys, "nullok", ajFalse, &nullok);
-    acdLog ("nullok: %B\n", nullok);
     
     required = acdIsRequired(thys);
     (void) acdInFilename (&infname);
@@ -5951,12 +5975,10 @@ static void acdSetOutfile (AcdPAcd thys)
     (void) acdGetValueAssoc(thys, "odirectory", &dir);
     
     (void) acdAttrToBool (thys, "nullok", ajFalse, &nullok);
-    acdLog ("nullok: %B\n", nullok);
     (void) acdAttrToBool (thys, "append", ajFalse, &append);
-    acdLog ("append: %B\n", append);
     
     required = acdIsRequired(thys);
-    if (nullok)
+    if (nullok)				/* do not make up a filename */
     {
 	(void) acdReplyInit (thys, "", &defreply);
     }
@@ -6659,9 +6681,8 @@ static void acdSetSeq (AcdPAcd thys)
 	if (required)
 	    (void) acdUserGet (thys, &reply);
 	
-	if(!ajStrLen(reply))
-	    if(nullok)
-		continue;
+	if(!ajStrLen(reply) && nullok)
+	    break;
 	
 	ajSeqinUsa (&seqin, reply);
 	
@@ -6929,9 +6950,8 @@ static void acdSetSeqset (AcdPAcd thys)
 	    (void) acdUserGet (thys, &reply);
 	
 	
-	if(!ajStrLen(reply))
-	    if(nullok)
-		continue;
+	if(!ajStrLen(reply) && nullok)
+	    break;;
 
 	ajSeqinUsa (&seqin, reply);
 	
@@ -7198,9 +7218,8 @@ static void acdSetSeqall (AcdPAcd thys)
 	if (required)
 	    (void) acdUserGet (thys, &reply);
 	
-	if(!ajStrLen(reply))
-	    if(nullok)
-		continue;
+	if(!ajStrLen(reply) && nullok)
+	    break;
 	
 	ajSeqinUsa (&seqin, reply);
 	
@@ -8052,6 +8071,8 @@ static void* acdGetValue (char *token, char* type)
     acdTokenToLower (cp, &pnum);
 
     ret = acdGetValueNum (cp, type, pnum);
+
+    acdLog ("acdGetValue '%s' result %x\n", token, ret);
 
     (void) ajCharFree (cp);
     return ret;
@@ -12214,9 +12235,11 @@ static void acdArgsScan (ajint argc, char *argv[])
 	if (!strcmp(argv[i], "-auto"))     acdAuto = ajTrue;
 
 	/* deprecated - to be removed in a future version */
-	if (!strcmp(argv[i], "-acdlog"))   acdDoLog = ajTrue;
-	if (!strcmp(argv[i], "-acdpretty"))  acdDoPretty = ajTrue;
-	if (!strcmp(argv[i], "-acdtable")) acdDoTable = ajTrue;
+/* removed in 2.8.0
+//	if (!strcmp(argv[i], "-acdlog"))   acdDoLog = ajTrue;
+//	if (!strcmp(argv[i], "-acdpretty"))  acdDoPretty = ajTrue;
+//	if (!strcmp(argv[i], "-acdtable")) acdDoTable = ajTrue;
+*/
 	/* end of deprecated set */
 
 	if (!strcmp(argv[i], "-warning"))   AjErrorLevel.warning = ajTrue;
@@ -14451,17 +14474,19 @@ static AjBool acdSetQualAppl (AcdPAcd thys, AjBool val)
 		break;
 		
 		/* deprecated - to be removed in a future version */
-	    case 5: acdDoLog    = setval; break;
-	    case 6: acdDoPretty = setval; break;
-	    case 7: acdDoTable    = setval; break;
+/* removed in 2.8.0
+//	    case 5: acdDoLog    = setval; break;
+//	    case 6: acdDoPretty = setval; break;
+//	    case 7: acdDoTable    = setval; break;
+*/
 		/* end of deprecated set */
 		
-	    case 8: acdVerbose  = setval; break;
-	    case 9: acdDoHelp   = setval; break;
-	    case 10: AjErrorLevel.warning = setval; break;
-	    case 11: AjErrorLevel.error   = setval; break;
-	    case 12: AjErrorLevel.fatal   = setval; break;
-	    case 13: AjErrorLevel.die     = setval; break;
+	    case 5: acdVerbose  = setval; break;
+	    case 6: acdDoHelp   = setval; break;
+	    case 7: AjErrorLevel.warning = setval; break;
+	    case 8: AjErrorLevel.error   = setval; break;
+	    case 9: AjErrorLevel.fatal   = setval; break;
+	    case 10: AjErrorLevel.die     = setval; break;
 	    }
 	    return ajTrue;
 	}
