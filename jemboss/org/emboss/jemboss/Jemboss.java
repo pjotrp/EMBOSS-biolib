@@ -32,7 +32,7 @@ import org.emboss.jemboss.gui.startup.*;    // splash window
 import org.emboss.jemboss.gui.filetree.*;   // local files
 import uk.ac.mrc.hgmp.embreo.*;             // SOAP settings
 import org.emboss.jemboss.gui.*;            // Jemboss graphics
-import org.emboss.jemboss.soap.*;
+import org.emboss.jemboss.soap.*;           // results manager
 
 /**
 *
@@ -42,7 +42,7 @@ import org.emboss.jemboss.soap.*;
 *       such as the HGMP, which runs the Jemboss server.
 *
 */
-public class Jemboss 
+public class Jemboss implements ActionListener
 {
 
 // system properties
@@ -61,7 +61,6 @@ public class Jemboss
   private String homeDirectory = new String(
                        System.getProperty("user.home") + fs);
 
-
 // Swing components
   private JFrame f;
   private JSplitPane pmain;
@@ -71,7 +70,9 @@ public class Jemboss
   private JPanel p2;
   private JPanel p3;
   public static DragTree tree;
- 
+  private JButton extend;
+  private JScrollPane scrollTree;
+
 /** environment variables */
   private String[] envp = new String[4];
 
@@ -83,6 +84,10 @@ public class Jemboss
 
 /** to manage the pending results */
   public static PendingResults resultsManager;
+
+/** Jemboss window dimension */
+  public static Dimension jdim;
+  public static Dimension jdimExtend;
 
 
   public Jemboss ()
@@ -104,128 +109,123 @@ public class Jemboss
       envp[2] = "EMBOSS_DATA=" + embossData;
       envp[3] = "HOME=" + homeDirectory;
     }
-    else
-    {
-      splashing = new Splash(mysettings,3);
-      resultsManager = new PendingResults(mysettings);
-    }
-    f = new JFrame("Jemboss");
-    File root  = new File(System.getProperty("user.home"));
-// make the local file manager
-    tree = new DragTree(root, f);
-    JScrollPane scrollTree = new JScrollPane(tree);
 
-    p1 = new JPanel(new BorderLayout());
-    p2 = new JPanel(new GridLayout());
+    f = new JFrame("Jemboss");
+// make the local file manager
+    tree = new DragTree( new File(System.getProperty("user.home")), f);
+    scrollTree = new JScrollPane(tree);
+
+    p1 = new JPanel(new BorderLayout());   // menu panel
+    p2 = new JPanel(new GridLayout());     // emboss form pain
+    p3 = new JPanel(new BorderLayout());   // filemanager panel
+
     JScrollPane scrollProgForm = new JScrollPane(p2);
 
+    JPanel pwork = new JPanel(new BorderLayout());
     JPanel pform = new JPanel(new BorderLayout());
+
     pform.add(scrollProgForm, BorderLayout.CENTER);
+    pwork.add(pform, BorderLayout.CENTER);
+    pwork.add(p3, BorderLayout.EAST);
 
-    if(withSoap)
-      pform.add(resultsManager.statusPanel(f),BorderLayout.SOUTH);
+    JMenuBar btmMenu = new JMenuBar();
 
-    p3 = new JPanel(new BorderLayout());
-    p3.add(scrollTree, BorderLayout.CENTER);
-    
+// button to extend window
+    extend = new JButton(">>");
+    extend.setBorder(BorderFactory.createMatteBorder(1,5,1,1,Color.black));
+    extend.addActionListener(this);
+    extend.setToolTipText("Open and close file manager.");
     Dimension d = f.getToolkit().getScreenSize();
-    if(d.getWidth()<1024)
-      scrollTree.setPreferredSize(new Dimension(130,500));
+    if(withSoap)
+    {
+      splashing = new Splash(mysettings,3);   //splash frame
+      resultsManager = new PendingResults(mysettings);
+      btmMenu.add(resultsManager.statusPanel(f));
+    }
     else
-      scrollTree.setPreferredSize(new Dimension(180,540));
-   
+    {
+      btmMenu.add(Box.createHorizontalGlue());
+      btmMenu.add(Box.createHorizontalStrut(5));
+    }
+    btmMenu.add(extend);
+    pform.add(btmMenu,BorderLayout.SOUTH);
+
     pmain = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
-                                  p1,pform);
-  
-    ptree = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,pmain,p3);
+                                  p1,pwork);
     pmain.setOneTouchExpandable(true);
-    ptree.setOneTouchExpandable(true);
 
-    f.getContentPane().add(ptree);     // by default returns JPanel container
-
+// set window dimensions, dependent on screen size
     if(d.getWidth()<1024)
-      pmain.setPreferredSize(new Dimension(465,500));
+    {
+      jdim = new Dimension(615,500);
+      jdimExtend = new Dimension(795,500);
+      pmain.setPreferredSize(jdim);
+      scrollTree.setPreferredSize(new Dimension(180,500));
+    }
     else
-      pmain.setPreferredSize(new Dimension(525,540));
+    {
+      jdim = new Dimension(700,540);
+      jdimExtend = new Dimension(880,540);
+      pmain.setPreferredSize(jdim);
+      scrollTree.setPreferredSize(new Dimension(180,540));
+    }
 
-    f.setBackground(Color.white);
+// setup the top menu bar
     new SetUpMenuBar(mysettings, f, envp, cwd, withSoap);
 
+// add Jemboss Logo
+    JembossLogo jlogo = new JembossLogo(120,145,55);
     JPanel pFront = new JPanel(new BorderLayout());
+    pFront.add(jlogo,BorderLayout.CENTER);
     p2.add(pFront);
     pFront.setBackground(Color.white);
-
-    
-//  Box bacross = new Box(BoxLayout.X_AXIS);
-//  bacross.add(Box.createHorizontalStrut(10));
-//  bacross.add(new JLabel(getFrontHTMLPage()));
     Box bacross = new Box(BoxLayout.Y_AXIS);
-    bacross.add(new JembossLogo(120,145,55));
-
+    bacross.add(jlogo);
     pFront.add(bacross,BorderLayout.CENTER);
 
-//  JLabel lload = new JLabel(getLoadingHTMLPage());
-//  p1.add(lload, BorderLayout.CENTER);
-
+// add to Jemboss main frame and locate it center left of screen
+    f.getContentPane().add(pmain);
     f.pack();
     f.setLocation(0,((int)d.getHeight()-f.getHeight())/2);
-    ptree.setDividerLocation(1.0);  // hide file tree on start-up
 
     new BuildProgramMenu(p1,p2,scrollProgForm,embossBin,envp,mysettings,
-                           withSoap,cwd,acdDirToParse,f,splashing);
+                         withSoap,cwd,acdDirToParse,f,splashing);
 
     f.addWindowListener(new winExit());
 
   }
 
 
-/**
+/*
 *
-*  Sets html front page
-*  @return HTML as a String
+*  Action events Exit, Help, GO, & Show results
+*
 *
 */
-  private String getFrontHTMLPage()
+  public void actionPerformed(ActionEvent ae)
   {
-    String fp = new String("<html>" +
-       "<body text=\"#000000\" bgcolor=\"#FF262D\" link=\"#0000EE\" vlink=\"#551A8B\"" +
-       "alink=\"#FF0000\">"+
-       "<b><font color=\"#FFFFFF\"><font size=+4></font></font></b>&nbsp;<b><font color=\"#" +
-       "FFFFFF\"><font size=+4></font></font></b>" +
-       "<center>" +
-       "<p><b><tt><font color=\"#FFFFFF\"><font size=+4>J<br>" +
-       "E<br>M<br>B<br>O<br>S<br>S<br>" +
-       "</font></font></tt></b><br>&nbsp;<br>&nbsp;" +
-       "<p><b><font color=\"#FFFFFF\"><font size=+2>HGMP-RC</b></font>" +
-       "<br><b><font color=\"#FFFFFF\"><font size=+2>Cambridge</b></font>" +
-       "<br><b><font color=\"#FFFFFF\"><font size=+2>UK</font></b></center>" +
-       "</body></html>");
+    final Cursor cbusy = new Cursor(Cursor.WAIT_CURSOR);
+    final Cursor cdone = new Cursor(Cursor.DEFAULT_CURSOR);
 
-    return fp;
+    if( ae.getActionCommand().startsWith("<<"))
+    {
+      Dimension d = new Dimension(0,0);
+      p3.remove(0);
+      extend.setBorder(BorderFactory.createMatteBorder(1, 5, 1, 1, Color.black));
+      extend.setText(">>");
+      pmain.setPreferredSize(jdim);
+      f.pack();
+    }
+    else
+    {
+      p3.add(scrollTree, BorderLayout.CENTER);
+      extend.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 5, Color.black));
+      extend.setText("<<");
+      pmain.setPreferredSize(jdimExtend);
+      f.pack();
+    }
+
   }
-
-
-
-/**
-*
-*  Sets html loading page
-*  @return HTML as a String
-*  
-*/
-  private String getLoadingHTMLPage()
-  {
-     String fp = new String("<html>" +
-       "<body text=\"#000000\"" +
-       "alink=\"#FF0000\">&nbsp;<center>"+
-       "<p><b><tt><font color=\"#FFFFFF\"><font size=+1>Loading</font></font></tt></b>" +
-       "<br><b><tt><font color=\"#FFFFFF\"><font size=+1>Jemboss</font></font></tt></b><b><tt>" +
-       "<font color=\"#FFFFFF\"><font size=+1></font></font></tt></b><p><b><tt><br><br><br>" +
-       "<font color=\"#FFFFFF\"><font size=+1>Please Wait...</font></font></tt></b><br><br>" +
-       "<font color=\"#FFFFFF\"></font></center></b></body></html>");
-
-    return fp;
-  }
-
 
 /**
 *
