@@ -1763,8 +1763,7 @@ AjBool ajSeqIsProt (AjPSeq thys) {
 ** The current definition is one or two alpha characters, followed
 ** by a string of digits and a minimum length of 6.
 **
-** This may need evision in future is Swiss-Prot adopts its planned
-** new accession number format.
+** Revised for new Swiss-Prot accession number format AnXXXn
 **
 ** @param [P] accnum [AjPStr] String to be tested
 ** @return [AjBool] ajTrue if the string is a possible accession number.
@@ -1773,26 +1772,62 @@ AjBool ajSeqIsProt (AjPSeq thys) {
 
 AjBool ajIsAccession (AjPStr accnum) {
 
-  ajint i = ajStrLen(accnum);
-  char *cp = ajStrStr(accnum);
+  ajint i;
+  char *cp;
 
+  if (!accnum)
+    return ajFalse;
+
+  i = ajStrLen(accnum);
   if (i < 6)
     return ajFalse;
 
+  cp = ajStrStr(accnum);
+
+  /* must have an alphabetic start */
+
   if (!isalpha((ajint)*cp++))
     return ajFalse;
-  if (isalpha((ajint)*cp))
+
+  /* two choices for the next character */
+
+  if (isalpha((ajint)*cp)) {	/* EMBL/GenBank AAnnnnnn */
     cp++;
 
-  while(*cp)
-  {
-    if(isdigit((int)*cp) || *cp=='.')
-       ++cp;
-    else
-       return ajFalse;
+    while(*cp)			/* optional trailing .version */
+      {
+	if(isdigit((ajint)*cp) || *cp=='.')
+	  ++cp;
+	else
+	  return ajFalse;
+      }
+    return ajTrue;
+  }
+  else if (isdigit((ajint)*cp)) { /* EMBL/GenBank old Annnnn */
+    cp++;			/* or SWISS AnXXXn */
+
+    for (i=0; i<3; i++) {
+      if (isalpha((ajint)*cp) || isdigit((ajint)*cp))
+	cp++;
+      else
+	return ajFalse;
+    }
+
+    if (!isdigit((ajint)*cp)) {
+      return ajFalse;
+    }
+
+    while(*cp)			/* optional trailing .version */
+      {
+	if(isdigit((ajint)*cp) || *cp=='.')
+	  ++cp;
+	else
+	  return ajFalse;
+      }
+    return ajTrue;
   }
 
-  return ajTrue;
+  return ajFalse;
 }
 
 
