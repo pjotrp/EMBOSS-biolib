@@ -182,17 +182,70 @@ Output sequence [hbb_human.fasta]: <b>mydata.seq</b>
                                   sequences.
 
    Advanced qualifiers: (none)
+   Associated qualifiers:
+  "-sequence" related qualifiers
+   -sbegin1             integer    First base used
+   -send1               integer    Last base used, def=seq length
+   -sreverse1           boolean    Reverse (if DNA)
+   -sask1               boolean    Ask for begin/end/reverse
+   -snucleotide1        boolean    Sequence is nucleotide
+   -sprotein1           boolean    Sequence is protein
+   -slower1             boolean    Make lower case
+   -supper1             boolean    Make upper case
+   -sformat1            string     Input sequence format
+   -sopenfile1          string     Input filename
+   -sdbname1            string     Database name
+   -sid1                string     Entryname
+   -ufo1                string     UFO features
+   -fformat1            string     Features format
+   -fopenfile1          string     Features file name
+  "-outseq" related qualifiers
+   -osformat3           string     Output seq format
+   -osextension3        string     File name extension
+   -osname3             string     Base file name
+   -osdirectory3        string     Output directory
+   -osdbname3           string     Database name to add
+   -ossingle3           boolean    Separate file for each entry
+   -oufo3               string     UFO features
+   -offormat3           string     Features format
+   -ofname3             string     Features file name
+   -ofdirectory3        string     Output directory
+  "-junkout" related qualifiers
+   -osformat            string     Output seq format
+   -osextension         string     File name extension
+   -osname              string     Base file name
+   -osdirectory         string     Output directory
+   -osdbname            string     Database name to add
+   -ossingle            boolean    Separate file for each entry
+   -oufo                string     UFO features
+   -offormat            string     Features format
+   -ofname              string     Features file name
+   -ofdirectory         string     Output directory
+
    General qualifiers:
-  -help                boolean    Report command line options. More
+   -auto                boolean    Turn off prompts
+   -stdout              boolean    Write standard output
+   -filter              boolean    Read standard input, write standard output
+   -options             boolean    Prompt for required and optional values
+   -debug               boolean    Write debug output to program.dbg
+   -acdlog              boolean    Write ACD processing log to program.acdlog
+   -acdpretty           boolean    Rewrite ACD file as program.acdpretty
+   -acdtable            boolean    Write HTML table of options
+   -verbose             boolean    Report some/full command line options
+   -help                boolean    Report command line options. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
+   -warning             boolean    Report warnings
+   -error               boolean    Report errors
+   -fatal               boolean    Report fatal errors
+   -die                 boolean    Report deaths
 
 
 </pre>
 </td></tr></table>
 <P>
-<table border cellspacing=0 cellpadding=3 bgcolor="#f5f5ff">
-<tr bgcolor="#FFFFD0">
+<table border cellspacing=0 cellpadding=3 bgcolor="#ccccff">
+<tr bgcolor="#FFFFCC">
 <th align="left" colspan=2>Mandatory qualifiers</th>
 <th align="left">Allowed values</th>
 <th align="left">Default</th>
@@ -225,7 +278,7 @@ a file containing a list of sequence names can be specified by giving the file n
 <td><i>&lt;sequence&gt;</i>.<i>format</i></td>
 </tr>
 
-<tr bgcolor="#FFFFD0">
+<tr bgcolor="#FFFFCC">
 <th align="left" colspan=2>Optional qualifiers</th>
 <th align="left">Allowed values</th>
 <th align="left">Default</th>
@@ -238,7 +291,7 @@ a file containing a list of sequence names can be specified by giving the file n
 <td>/dev/null</td>
 </tr>
 
-<tr bgcolor="#FFFFD0">
+<tr bgcolor="#FFFFCC">
 <th align="left" colspan=2>Advanced qualifiers</th>
 <th align="left">Allowed values</th>
 <th align="left">Default</th>
@@ -651,16 +704,9 @@ None.
         Who has worked on the program in the past.
    -->
 
-This application was written by Gary Williams <a
-href="mailto:gwilliam@hgmp.mrc.ac.uk">(gwilliam@hgmp.mrc.ac.uk)</a>
-
-
-
-
-
-
-
-
+Gary Williams (gwilliam&nbsp;&copy;&nbsp;hgmp.mrc.ac.uk)
+<br>
+HGMP-RC, Genome Campus, Hinxton, Cambridge CB10 1SB, UK
 
 
 
@@ -687,28 +733,7 @@ Gary Williams
 
 <!--
 <p>
-<table border cellspacing=0 cellpadding=3 bgcolor="#FFFFCC">
-<tr><th>Date</th><th>Editor</th><th>Comment</th></tr>
-<tr><td>2001/01/09</td><td>gwilliam</td><td>ACD file: Created</td></tr>
-<tr><td>2001/01/09</td><td>gwilliam</td><td>Program: notseq.c</td></tr>
-<tr><td>2001/01/10</td><td>gwilliam</td><td>ACD file: changed back to junkout</td></tr>
-<tr><td>2001/01/10</td><td>gwilliam</td><td>ACD file: changed junkseq to notout</td></tr>
-<tr><td>2001/01/10</td><td>gwilliam</td><td>Program: changed back to junkout</td></tr>
-<tr><td>2001/01/16</td><td>ajb</td><td>Program: Bad return value</td></tr>
-<tr><td>2001/02/10</td><td>ajb</td><td>Program: ajint mods</td></tr>
-<tr><td>2001/02/15</td><td>ajb</td><td>Program: main line alterations</td></tr>
-<tr><td>2001/04/27</td><td>rice</td><td>Program: embpat compares replace static clone</td></tr>
-<tr><td>2001/05/10</td><td>gwilliam</td><td>ACD file: groups changed</td></tr>
-<tr><td>2001/06/04</td><td>rice</td><td>Program: @prog headers generated from acd files</td></tr>
-<tr><td>2001/06/24</td><td>ajb</td><td>Program: function rename</td></tr>
-<tr><td>2001/10/29</td><td>ajb</td><td>ACD file: acdpretty version</td></tr>
-<tr><td>2002/02/13</td><td>rice</td><td>ACD file: ACD section and endsection added by Thomas Laurent</td></tr>
-<tr><td>2002/06/13</td><td>gwilliam</td><td>ACD file: added list files of names</td></tr>
-<tr><td>2002/06/13</td><td>gwilliam</td><td>Program: added list files of names</td></tr>
-<tr><td>2002/08/22</td><td>rice</td><td>Program: cleanup spaces, long lines, and header comments</td></tr>
-<tr><td>2002/11/05</td><td>rice</td><td>Program: ajDie to ajFatal</td></tr>
-</table>
-
+[an error occurred while processing this directive]
 -->
 
 

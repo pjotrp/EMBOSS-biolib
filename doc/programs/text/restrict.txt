@@ -76,10 +76,50 @@ Command line arguments
    -fragments          boolean    Show fragment lengths
    -name               boolean    Show sequence name
 
+   Associated qualifiers:
+  "-sequence" related qualifiers
+   -sbegin1             integer    First base used
+   -send1               integer    Last base used, def=seq length
+   -sreverse1           boolean    Reverse (if DNA)
+   -sask1               boolean    Ask for begin/end/reverse
+   -snucleotide1        boolean    Sequence is nucleotide
+   -sprotein1           boolean    Sequence is protein
+   -slower1             boolean    Make lower case
+   -supper1             boolean    Make upper case
+   -sformat1            string     Input sequence format
+   -sopenfile1          string     Input filename
+   -sdbname1            string     Database name
+   -sid1                string     Entryname
+   -ufo1                string     UFO features
+   -fformat1            string     Features format
+   -fopenfile1          string     Features file name
+  "-outfile" related qualifiers
+   -rformat2            string     Report format
+   -rname2              string     Base file name
+   -rextension2         string     File name extension
+   -rdirectory2         string     Output directory
+   -raccshow2           boolean    Show accession number in the report
+   -rdesshow2           boolean    Show description in the report
+   -rscoreshow2         boolean    Show the score in the report
+   -rusashow2           boolean    Show the full USA in the report
+
    General qualifiers:
-  -help                boolean    Report command line options. More
+   -auto                boolean    Turn off prompts
+   -stdout              boolean    Write standard output
+   -filter              boolean    Read standard input, write standard output
+   -options             boolean    Prompt for required and optional values
+   -debug               boolean    Write debug output to program.dbg
+   -acdlog              boolean    Write ACD processing log to program.acdlog
+   -acdpretty           boolean    Rewrite ACD file as program.acdpretty
+   -acdtable            boolean    Write HTML table of options
+   -verbose             boolean    Report some/full command line options
+   -help                boolean    Report command line options. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
+   -warning             boolean    Report warnings
+   -error               boolean    Report errors
+   -fatal               boolean    Report fatal errors
+   -die                 boolean    Report deaths
    
 
    Mandatory qualifiers Allowed values Default
@@ -238,7 +278,7 @@ Output file format
   
 ########################################
 # Program: restrict
-# Rundate: Thu Nov 07 14:42:26 2002
+# Rundate: Tue Apr 22 13:34:39 2003
 # Report_format: table
 # Report_file: hsfau.restrict
 ########################################
@@ -272,9 +312,9 @@ rimerev
        .
      71      81        0 Bsc4I       CCNNNNNNNGG          77     74         .
        .
-     73      76        0 HhaI        GCGC                 75     73         .
-       .
      73      76        0 Hin6I       GCGC                 73     75         .
+       .
+     73      76        0 HhaI        GCGC                 75     73         .
        .
      77      81        0 BssKI       CCNGG                76     81         .
        .
@@ -286,11 +326,11 @@ rimerev
        .
     105     108        0 BshI        GGCC                106    106         .
        .
+    107     111        0 EcoRII      CCWGG               106    111         .
+       .
     107     117        0 Bsc4I       CCNNNNNNNGG         113    110         .
        .
     107     111        0 BssKI       CCNGG               106    111         .
-       .
-    107     111        0 EcoRII      CCWGG               106    111         .
        .
     122     132        0 Bsc4I       CCNNNNNNNGG         128    125         .
        .
@@ -310,9 +350,9 @@ rimerev
        .
     190     193        0 Hin6I       GCGC                190    192         .
        .
-    192     195        0 Hin6I       GCGC                192    194         .
-       .
     192     195        0 HhaI        GCGC                194    192         .
+       .
+    192     195        0 Hin6I       GCGC                192    194         .
        .
     197     201        0 BssKI       CCNGG               196    201         .
        .
@@ -338,9 +378,9 @@ rimerev
        .
     263     266        0 AciI        CCGC                263    265         .
        .
-    293     297        0 BssKI       CCNGG               292    297         .
-       .
     293     297        0 EcoRII      CCWGG               292    297         .
+       .
+    293     297        0 BssKI       CCNGG               292    297         .
        .
     296     299        0 BshI        GGCC                297    297         .
        .
@@ -434,7 +474,8 @@ See also
    
 Author(s)
 
-   This application was written by Alan Bleasby (ableasby@hgmp.mrc.ac.uk)
+   Alan Bleasby (ableasby © hgmp.mrc.ac.uk)
+   HGMP-RC, Genome Campus, Hinxton, Cambridge CB10 1SB, UK
    
 History
 

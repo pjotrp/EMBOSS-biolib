@@ -156,17 +156,51 @@ Graph type [x11]:
    Advanced qualifiers:
    -separate           boolean    Separate the trace graphs for the 4 bases
 
+   Associated qualifiers:
+  "-outseq" related qualifiers
+   -osformat2           string     Output seq format
+   -osextension2        string     File name extension
+   -osname2             string     Base file name
+   -osdirectory2        string     Output directory
+   -osdbname2           string     Database name to add
+   -ossingle2           boolean    Separate file for each entry
+   -oufo2               string     UFO features
+   -offormat2           string     Features format
+   -ofname2             string     Features file name
+   -ofdirectory2        string     Output directory
+  "-graph" related qualifiers
+   -gprompt             boolean    Graph prompting
+   -gtitle              string     Graph title
+   -gsubtitle           string     Graph subtitle
+   -gxtitle             string     Graph x axis title
+   -gytitle             string     Graph y axis title
+   -goutfile            string     Output file for non interactive displays
+   -gdirectory          string     Output directory
+
    General qualifiers:
-  -help                boolean    Report command line options. More
+   -auto                boolean    Turn off prompts
+   -stdout              boolean    Write standard output
+   -filter              boolean    Read standard input, write standard output
+   -options             boolean    Prompt for required and optional values
+   -debug               boolean    Write debug output to program.dbg
+   -acdlog              boolean    Write ACD processing log to program.acdlog
+   -acdpretty           boolean    Rewrite ACD file as program.acdpretty
+   -acdtable            boolean    Write HTML table of options
+   -verbose             boolean    Report some/full command line options
+   -help                boolean    Report command line options. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
+   -warning             boolean    Report warnings
+   -error               boolean    Report errors
+   -fatal               boolean    Report fatal errors
+   -die                 boolean    Report deaths
 
 
 </pre>
 </td></tr></table>
 <P>
-<table border cellspacing=0 cellpadding=3 bgcolor="#f5f5ff">
-<tr bgcolor="#FFFFD0">
+<table border cellspacing=0 cellpadding=3 bgcolor="#ccccff">
+<tr bgcolor="#FFFFCC">
 <th align="left" colspan=2>Mandatory qualifiers</th>
 <th align="left">Allowed values</th>
 <th align="left">Default</th>
@@ -193,7 +227,7 @@ Graph type [x11]:
 <td><i>EMBOSS_GRAPHICS</i> value, or x11</td>
 </tr>
 
-<tr bgcolor="#FFFFD0">
+<tr bgcolor="#FFFFCC">
 <th align="left" colspan=2>Optional qualifiers</th>
 <th align="left">Allowed values</th>
 <th align="left">Default</th>
@@ -241,7 +275,7 @@ Graph type [x11]:
 <td>GATC</td>
 </tr>
 
-<tr bgcolor="#FFFFD0">
+<tr bgcolor="#FFFFCC">
 <th align="left" colspan=2>Advanced qualifiers</th>
 <th align="left">Allowed values</th>
 <th align="left">Default</th>
@@ -584,8 +618,9 @@ None.
         Who has worked on the program in the past.
    -->
 
-This application was written by Tim Carver <a
-href="mailto:tcarver@hgmp.mrc.ac.uk">(tcarver@hgmp.mrc.ac.uk)</a>
+Tim Carver (tcarver&nbsp;&copy;&nbsp;hgmp.mrc.ac.uk)
+<br>
+HGMP-RC, Genome Campus, Hinxton, Cambridge CB10 1SB, UK
 
 
 
@@ -614,36 +649,7 @@ Written (January 2001) - Tim Carver
 
 <!--
 <p>
-<table border cellspacing=0 cellpadding=3 bgcolor="#FFFFCC">
-<tr><th>Date</th><th>Editor</th><th>Comment</th></tr>
-<tr><td>2001/01/18</td><td>timc</td><td>ACD file: ABI viewer</td></tr>
-<tr><td>2001/01/18</td><td>timc</td><td>Program: ABI viewer</td></tr>
-<tr><td>2001/01/19</td><td>timc</td><td>Program: Removed unused vars</td></tr>
-<tr><td>2001/01/20</td><td>ajb</td><td>Program: Converted to use library deletes</td></tr>
-<tr><td>2001/01/20</td><td>ajb</td><td>Program: Wall</td></tr>
-<tr><td>2001/01/22</td><td>ajb</td><td>Program: text fix</td></tr>
-<tr><td>2001/01/22</td><td>gwilliam</td><td>ACD file: added groups</td></tr>
-<tr><td>2001/02/02</td><td>timc</td><td>ACD file: Added in -bases and -sequence optional qualifiers</td></tr>
-<tr><td>2001/02/02</td><td>timc</td><td>Program: Added in -bases and -sequence optional qualifiers</td></tr>
-<tr><td>2001/02/10</td><td>ajb</td><td>Program: ajint mods</td></tr>
-<tr><td>2001/02/14</td><td>timc</td><td>Program: James Bonfield bug fix</td></tr>
-<tr><td>2001/02/15</td><td>ajb</td><td>Program: main line alterations</td></tr>
-<tr><td>2001/02/16</td><td>timc</td><td>Program: Patch for -graph data option</td></tr>
-<tr><td>2001/04/27</td><td>rice</td><td>Program: cleanup doc headers for EFUNC</td></tr>
-<tr><td>2001/05/10</td><td>gwilliam</td><td>ACD file: groups changed</td></tr>
-<tr><td>2001/06/04</td><td>rice</td><td>Program: @prog headers generated from acd files</td></tr>
-<tr><td>2001/06/25</td><td>ajb</td><td>Program: function rename</td></tr>
-<tr><td>2001/07/12</td><td>ajb</td><td>Program: Removed hello msg</td></tr>
-<tr><td>2001/07/12</td><td>ajb</td><td>Program: memory fix for 'separate' flag</td></tr>
-<tr><td>2001/07/12</td><td>ajb</td><td>Program: memory leak fix</td></tr>
-<tr><td>2001/10/29</td><td>ajb</td><td>ACD file: acdpretty version</td></tr>
-<tr><td>2002/02/13</td><td>rice</td><td>ACD file: ACD section and endsection added by Thomas Laurent</td></tr>
-<tr><td>2002/07/29</td><td>timc</td><td>ACD file: startbase and endbase flags and infile data type used</td></tr>
-<tr><td>2002/07/29</td><td>timc</td><td>Program: message change in ajFatal</td></tr>
-<tr><td>2002/07/29</td><td>timc</td><td>Program: startbase and endbase flags and infile data type used</td></tr>
-<tr><td>2002/08/22</td><td>rice</td><td>Program: cleanup spaces, long lines, and header comments</td></tr>
-</table>
- 
+[an error occurred while processing this directive] 
 -->
 
 

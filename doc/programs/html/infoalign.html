@@ -206,6 +206,30 @@ Output file [globins.infoalign]: <b></b>
 </pre></td></tr></table><p>
 <p>
 <a href="#output.7">Go to the output files for this example</a><p><p>
+<p>
+<b>Example 8</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>infoalign -auto tembl:eclac* -out test.out </b>
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.8">Go to the input files for this example</a><br><a href="#output.8">Go to the output files for this example</a><p><p>
+<p>
+<b>Example 9</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>infoalign -auto tembl:eclacz -out test.out </b>
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.9">Go to the input files for this example</a><br><a href="#output.9">Go to the output files for this example</a><p><p>
 
 
 
@@ -272,17 +296,50 @@ Output file [globins.infoalign]: <b></b>
    -change             boolean    Display % number of changed positions
    -description        boolean    Display 'description' column
 
+   Associated qualifiers:
+  "-sequence" related qualifiers
+   -sbegin1             integer    First base used
+   -send1               integer    Last base used, def=seq length
+   -sreverse1           boolean    Reverse (if DNA)
+   -sask1               boolean    Ask for begin/end/reverse
+   -snucleotide1        boolean    Sequence is nucleotide
+   -sprotein1           boolean    Sequence is protein
+   -slower1             boolean    Make lower case
+   -supper1             boolean    Make upper case
+   -sformat1            string     Input sequence format
+   -sopenfile1          string     Input filename
+   -sdbname1            string     Database name
+   -sid1                string     Entryname
+   -ufo1                string     UFO features
+   -fformat1            string     Features format
+   -fopenfile1          string     Features file name
+  "-outfile" related qualifiers
+   -odirectory2         string     Output directory
+
    General qualifiers:
-  -help                boolean    Report command line options. More
+   -auto                boolean    Turn off prompts
+   -stdout              boolean    Write standard output
+   -filter              boolean    Read standard input, write standard output
+   -options             boolean    Prompt for required and optional values
+   -debug               boolean    Write debug output to program.dbg
+   -acdlog              boolean    Write ACD processing log to program.acdlog
+   -acdpretty           boolean    Rewrite ACD file as program.acdpretty
+   -acdtable            boolean    Write HTML table of options
+   -verbose             boolean    Report some/full command line options
+   -help                boolean    Report command line options. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
+   -warning             boolean    Report warnings
+   -error               boolean    Report errors
+   -fatal               boolean    Report fatal errors
+   -die                 boolean    Report deaths
 
 
 </pre>
 </td></tr></table>
 <P>
-<table border cellspacing=0 cellpadding=3 bgcolor="#f5f5ff">
-<tr bgcolor="#FFFFD0">
+<table border cellspacing=0 cellpadding=3 bgcolor="#ccccff">
+<tr bgcolor="#FFFFCC">
 <th align="left" colspan=2>Mandatory qualifiers</th>
 <th align="left">Allowed values</th>
 <th align="left">Default</th>
@@ -302,7 +359,7 @@ Output file [globins.infoalign]: <b></b>
 <td><i>&lt;sequence&gt;</i>.infoalign</td>
 </tr>
 
-<tr bgcolor="#FFFFD0">
+<tr bgcolor="#FFFFCC">
 <th align="left" colspan=2>Optional qualifiers</th>
 <th align="left">Allowed values</th>
 <th align="left">Default</th>
@@ -329,7 +386,7 @@ Output file [globins.infoalign]: <b></b>
 <td>No</td>
 </tr>
 
-<tr bgcolor="#FFFFD0">
+<tr bgcolor="#FFFFCC">
 <th align="left" colspan=2>Advanced qualifiers</th>
 <th align="left">Allowed values</th>
 <th align="left">Default</th>
@@ -533,6 +590,125 @@ LGB2_LUPLU IVIKKEMNDAA~~~
 </pre>
 </td></tr></table><p>
 
+<a name="input.8"></a>
+<h3>Input files for usage example 8</h3>
+
+'tembl:eclac*' is a sequence entry in the example nucleic acid database 'tembl'
+<p>
+
+<a name="input.9"></a>
+<h3>Input files for usage example 9</h3>
+<p><h3>Database entry: tembl:eclacz</h3>
+<table width="90%"><tr><td bgcolor="#FFCCFF">
+<pre>
+ID   ECLACZ     standard; DNA; PRO; 3078 BP.
+XX
+AC   V00296;
+XX
+SV   V00296.1
+XX
+DT   13-JUL-1983 (Rel. 03, Created)
+DT   06-MAR-1996 (Rel. 47, Last updated, Version 4)
+XX
+DE   E. coli gene lacZ coding for beta-galactosidase (EC 3.2.1.23).
+XX
+KW   galactosidase.
+XX
+OS   Escherichia coli
+OC   Bacteria; Proteobacteria; gamma subdivision; Enterobacteriaceae;
+OC   Escherichia.
+XX
+RN   [1]
+RP   1-3078
+RX   MEDLINE; 84028567.
+RA   Kalnins A., Otto K., Ruether U., Mueller-Hill B.;
+RT   "Sequence of the lacZ gene of Escherichia coli";
+RL   EMBO J. 2:593-597(1983).
+XX
+RN   [2]
+RX   MEDLINE; 87275876.
+RA   Zell R., Fritz H.J.;
+RT   "DNA mismatch-repair in Escherichia coli counteracting the hydrolytic
+RT   deamination of 5-methyl-cytosine residues";
+RL   EMBO J. 6:1809-1815(1987).
+XX
+DR   SWISS-PROT; P00722; BGAL_ECOLI.
+XX
+CC   Data kindly reviewed (18-MAY-1983) by U. Ruether
+XX
+FH   Key             Location/Qualifiers
+FH
+FT   source          1..3078
+FT                   /db_xref="taxon:562"
+FT                   /organism="Escherichia coli"
+FT   CDS             &lt;1..3072
+FT                   /db_xref="SWISS-PROT:P00722"
+FT                   /note="galactosidase"
+FT                   /transl_table=11
+FT                   /protein_id="CAA23573.1"
+FT                   /translation="TMITDSLAVVLQRRDWENPGVTQLNRLAAHPPFASWRNSEEARTD
+FT                   RPSQQLRSLNGEWRFAWFPAPEAVPESWLECDLPEADTVVVPSNWQMHGYDAPIYTNVT
+FT                   YPITVNPPFVPTENPTGCYSLTFNVDESWLQEGQTRIIFDGVNSAFHLWCNGRWVGYGQ
+FT                   DSRLPSEFDLSAFLRAGENRLAVMVLRWSDGSYLEDQDMWRMSGIFRDVSLLHKPTTQI
+FT                   SDFHVATRFNDDFSRAVLEAEVQMCGELRDYLRVTVSLWQGETQVASGTAPFGGEIIDE
+
+
+<font color=red>  [Part of this file has been deleted for brevity]</font>
+
+     gaggcccgca ccgatcgccc ttcccaacag ttgcgcagcc tgaatggcga atggcgcttt       180
+     gcctggtttc cggcaccaga agcggtgccg gaaagctggc tggagtgcga tcttcctgag       240
+     gccgatactg tcgtcgtccc ctcaaactgg cagatgcacg gttacgatgc gcccatctac       300
+     accaacgtaa cctatcccat tacggtcaat ccgccgtttg ttcccacgga gaatccgacg       360
+     ggttgttact cgctcacatt taatgttgat gaaagctggc tacaggaagg ccagacgcga       420
+     attatttttg atggcgttaa ctcggcgttt catctgtggt gcaacgggcg ctgggtcggt       480
+     tacggccagg acagtcgttt gccgtctgaa tttgacctga gcgcattttt acgcgccgga       540
+     gaaaaccgcc tcgcggtgat ggtgctgcgt tggagtgacg gcagttatct ggaagatcag       600
+     gatatgtggc ggatgagcgg cattttccgt gacgtctcgt tgctgcataa accgactaca       660
+     caaatcagcg atttccatgt tgccactcgc tttaatgatg atttcagccg cgctgtactg       720
+     gaggctgaag ttcagatgtg cggcgagttg cgtgactacc tacgggtaac agtttcttta       780
+     tggcagggtg aaacgcaggt cgccagcggc accgcgcctt tcggcggtga aattatcgat       840
+     gagcgtggtg gttatgccga tcgcgtcaca ctacgtctga acgtcgaaaa cccgaaactg       900
+     tggagcgccg aaatcccgaa tctctatcgt gcggtggttg aactgcacac cgccgacggc       960
+     acgctgattg aagcagaagc ctgcgatgtc ggtttccgcg aggtgcggat tgaaaatggt      1020
+     ctgctgctgc tgaacggcaa gccgttgctg attcgaggcg ttaaccgtca cgagcatcat      1080
+     cctctgcatg gtcaggtcat ggatgagcag acgatggtgc aggatatcct gctgatgaag      1140
+     cagaacaact ttaacgccgt gcgctgttcg cattatccga accatccgct gtggtacacg      1200
+     ctgtgcgacc gctacggcct gtatgtggtg gatgaagcca atattgaaac ccacggcatg      1260
+     gtgccaatga atcgtctgac cgatgatccg cgctggctac cggcgatgag cgaacgcgta      1320
+     acgcgaatgg tgcagcgcga tcgtaatcac ccgagtgtga tcatctggtc gctggggaat      1380
+     gaatcaggcc acggcgctaa tcacgacgcg ctgtatcgct ggatcaaatc tgtcgatcct      1440
+     tcccgcccgg tgcagtatga aggcggcgga gccgacacca cggccaccga tattatttgc      1500
+     ccgatgtacg cgcgcgtgga tgaagaccag cccttcccgg ctgtgccgaa atggtccatc      1560
+     aaaaaatggc tttcgctacc tggagagacg cgcccgctga tcctttgcga atacgcccac      1620
+     gcgatgggta acagtcttgg cggtttcgct aaatactggc aggcgtttcg tcagtatccc      1680
+     cgtttacagg gcggcttcgt ctgggactgg gtggatcagt cgctgattaa atatgatgaa      1740
+     aacggcaacc cgtggtcggc ttacggcggt gattttggcg atacgccgaa cgatcgccag      1800
+     ttctgtatga acggtctggt ctttgccgac cgcacgccgc atccagcgct gacggaagca      1860
+     aaacaccagc agcagttttt ccagttccgt ttatccgggc aaaccatcga agtgaccagc      1920
+     gaatacctgt tccgtcatag cgataacgag ctcctgcact ggatggtggc gctggatggt      1980
+     aagccgctgg caagcggtga agtgcctctg gatgtcgctc cacaaggtaa acagttgatt      2040
+     gaactgcctg aactaccgca gccggagagc gccgggcaac tctggctcac agtacgcgta      2100
+     gtgcaaccga acgcgaccgc atggtcagaa gccgggcaca tcagcgcctg gcagcagtgg      2160
+     cgtctggcgg aaaacctcag tgtgacgctc cccgccgcgt cccacgccat cccgcatctg      2220
+     accaccagcg aaatggattt ttgcatcgag ctgggtaata agcgttggca atttaaccgc      2280
+     cagtcaggct ttctttcaca gatgtggatt ggcgataaaa aacaactgct gacgccgctg      2340
+     cgcgatcagt tcacccgtgc accgctggat aacgacattg gcgtaagtga agcgacccgc      2400
+     attgacccta acgcctgggt cgaacgctgg aaggcggcgg gccattacca ggccgaagca      2460
+     gcgttgttgc agtgcacggc agatacactt gctgatgcgg tgctgattac gaccgctcac      2520
+     gcgtggcagc atcaggggaa aaccttattt atcagccgga aaacctaccg gattgatggt      2580
+     agtggtcaaa tggcgattac cgttgatgtt gaagtggcga gcgatacacc gcatccggcg      2640
+     cggattggcc tgaactgcca gctggcgcag gtagcagagc gggtaaactg gctcggatta      2700
+     gggccgcaag aaaactatcc cgaccgcctt actgccgcct gttttgaccg ctgggatctg      2760
+     ccattgtcag acatgtatac cccgtacgtc ttcccgagcg aaaacggtct gcgctgcggg      2820
+     acgcgcgaat tgaattatgg cccacaccag tggcgcggcg acttccagtt caacatcagc      2880
+     cgctacagtc aacagcaact gatggaaacc agccatcgcc atctgctgca cgcggaagaa      2940
+     ggcacatggc tgaatatcga cggtttccat atggggattg gtggcgacga ctcctggagc      3000
+     ccgtcagtat cggcggaatt ccagctgagc gccggtcgct accattacca gttggtctgg      3060
+     tgtcaaaaat aataataa                                                    3078
+//
+</pre>
+</td></tr></table><p>
+
 
 
 
@@ -733,6 +909,30 @@ msf::../../data/globins.msf:HBA_HORSE	HBA_HORSE     144	147	2	3	54	18	72	62.5000
 msf::../../data/globins.msf:MYG_PHYCA	MYG_PHYCA     157	161	3	4	34	22	101	78.343948	
 msf::../../data/globins.msf:GLB5_PETMA	GLB5_PETMA    151	153	1	2	26	27	98	82.781456	
 msf::../../data/globins.msf:LGB2_LUPLU	LGB2_LUPLU    153	153	0	0	21	28	104	86.274513	
+</pre>
+</td></tr></table><p>
+
+<a name="output.8"></a>
+<h3>Output files for usage example 8</h3>
+<p><h3>File: test.out</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+# USA             Name        SeqLen	AlignLen	Gaps	GapLen	Ident	Similar	Differ	% Change	Description
+tembl-id:ECLAC    ECLAC         7477	7477	0	0	65	0	7412	99.130669	E.coli lactose operon with lacI, lacZ, lacY and lacA genes.
+tembl-id:ECLACA   ECLACA        1832	1832	0	0	71	0	1761	96.124451	Escherichia coli lacA gene for thiogalactoside transacetylase
+tembl-id:ECLACI   ECLACI        1113	1113	0	0	67	0	1046	93.980232	E. coli laci gene (codes for the lac repressor).
+tembl-id:ECLACY   ECLACY        1500	1500	0	0	68	0	1432	95.466667	E. coli lacY gene (codes for lactose permease).
+tembl-id:ECLACZ   ECLACZ        3078	3078	0	0	72	0	3006	97.660820	E. coli gene lacZ coding for beta-galactosidase (EC 3.2.1.23).
+</pre>
+</td></tr></table><p>
+
+<a name="output.9"></a>
+<h3>Output files for usage example 9</h3>
+<p><h3>File: test.out</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+# USA             Name        SeqLen	AlignLen	Gaps	GapLen	Ident	Similar	Differ	% Change	Description
+tembl-id:ECLACZ   ECLACZ        3078	3078	0	0	0	0	3078	100.000000	E. coli gene lacZ coding for beta-galactosidase (EC 3.2.1.23).
 </pre>
 </td></tr></table><p>
 
@@ -992,19 +1192,9 @@ None.
         Who has worked on the program in the past.
    -->
 
-This application was written by Gary Williams <a
-href="mailto:gwilliam@hgmp.mrc.ac.uk">(gwilliam@hgmp.mrc.ac.uk)</a>
-
-
-
-
-
-
-
-
-
-
-
+Gary Williams (gwilliam&nbsp;&copy;&nbsp;hgmp.mrc.ac.uk)
+<br>
+HGMP-RC, Genome Campus, Hinxton, Cambridge CB10 1SB, UK
 
 
 
@@ -1022,27 +1212,7 @@ Written (June 2001) - Gary Williams
 
 <!--
 <p>
-<table border cellspacing=0 cellpadding=3 bgcolor="#FFFFCC">
-<tr><th>Date</th><th>Editor</th><th>Comment</th></tr>
-<tr><td>2001/06/11</td><td>gwilliam</td><td>ACD file: Makefile.am</td></tr>
-<tr><td>2001/06/11</td><td>gwilliam</td><td>Program: Makefile.am</td></tr>
-<tr><td>2001/06/12</td><td>rice</td><td>Program: cleanup unused variables</td></tr>
-<tr><td>2001/06/24</td><td>ajb</td><td>Program: function rename</td></tr>
-<tr><td>2001/07/11</td><td>ajb</td><td>Program: Memory leak fix</td></tr>
-<tr><td>2001/07/16</td><td>gwilliam</td><td>Program: tidy up comment</td></tr>
-<tr><td>2001/07/27</td><td>rice</td><td>ACD file: cleaned up info for -only to make sense in GUIs</td></tr>
-<tr><td>2001/10/09</td><td>gwilliam</td><td>Program: corrected html tags</td></tr>
-<tr><td>2001/10/29</td><td>ajb</td><td>ACD file: acdpretty version</td></tr>
-<tr><td>2002/02/12</td><td>rice</td><td>Program: documentation additions/corrections</td></tr>
-<tr><td>2002/02/13</td><td>rice</td><td>ACD file: ACD section and endsection added by Thomas Laurent</td></tr>
-<tr><td>2002/02/13</td><td>rice</td><td>Program: final documentation additions/corrections</td></tr>
-<tr><td>2002/03/06</td><td>rice</td><td>Program: fill the input set in case it is not aligned</td></tr>
-<tr><td>2002/05/31</td><td>gwilliam</td><td>ACD file: changed output from stdout to file</td></tr>
-<tr><td>2002/07/03</td><td>gwilliam</td><td>ACD file: help added for matrix qualifier</td></tr>
-<tr><td>2002/08/22</td><td>rice</td><td>Program: cleanup spaces, long lines, and header comments</td></tr>
-<tr><td>2003/01/16</td><td>rice</td><td>Program: compiler warnings tolower and toupper</td></tr>
-</table>
-
+[an error occurred while processing this directive]
 -->
 
 

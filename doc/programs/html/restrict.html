@@ -136,18 +136,58 @@ IT IS DONE FOR YOU.
    -fragments          boolean    Show fragment lengths
    -name               boolean    Show sequence name
 
+   Associated qualifiers:
+  "-sequence" related qualifiers
+   -sbegin1             integer    First base used
+   -send1               integer    Last base used, def=seq length
+   -sreverse1           boolean    Reverse (if DNA)
+   -sask1               boolean    Ask for begin/end/reverse
+   -snucleotide1        boolean    Sequence is nucleotide
+   -sprotein1           boolean    Sequence is protein
+   -slower1             boolean    Make lower case
+   -supper1             boolean    Make upper case
+   -sformat1            string     Input sequence format
+   -sopenfile1          string     Input filename
+   -sdbname1            string     Database name
+   -sid1                string     Entryname
+   -ufo1                string     UFO features
+   -fformat1            string     Features format
+   -fopenfile1          string     Features file name
+  "-outfile" related qualifiers
+   -rformat2            string     Report format
+   -rname2              string     Base file name
+   -rextension2         string     File name extension
+   -rdirectory2         string     Output directory
+   -raccshow2           boolean    Show accession number in the report
+   -rdesshow2           boolean    Show description in the report
+   -rscoreshow2         boolean    Show the score in the report
+   -rusashow2           boolean    Show the full USA in the report
+
    General qualifiers:
-  -help                boolean    Report command line options. More
+   -auto                boolean    Turn off prompts
+   -stdout              boolean    Write standard output
+   -filter              boolean    Read standard input, write standard output
+   -options             boolean    Prompt for required and optional values
+   -debug               boolean    Write debug output to program.dbg
+   -acdlog              boolean    Write ACD processing log to program.acdlog
+   -acdpretty           boolean    Rewrite ACD file as program.acdpretty
+   -acdtable            boolean    Write HTML table of options
+   -verbose             boolean    Report some/full command line options
+   -help                boolean    Report command line options. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
+   -warning             boolean    Report warnings
+   -error               boolean    Report errors
+   -fatal               boolean    Report fatal errors
+   -die                 boolean    Report deaths
 
 
 </pre>
 </td></tr></table>
 <P>
 
-<table border cellspacing=0 cellpadding=3 bgcolor="#f5f5ff">
-<tr bgcolor="#FFFFD0">
+<table border cellspacing=0 cellpadding=3 bgcolor="#ccccff">
+<tr bgcolor="#FFFFCC">
 <th align="left" colspan=2>Mandatory qualifiers</th>
 <th align="left">Allowed values</th>
 <th align="left">Default</th>
@@ -190,7 +230,7 @@ PpiI</td>
 <td>&nbsp;</td>
 </tr>
 
-<tr bgcolor="#FFFFD0">
+<tr bgcolor="#FFFFCC">
 <th align="left" colspan=2>Optional qualifiers</th>
 <th align="left">Allowed values</th>
 <th align="left">Default</th>
@@ -200,7 +240,7 @@ PpiI</td>
 <td colspan=4>(none)</td>
 </tr>
 
-<tr bgcolor="#FFFFD0">
+<tr bgcolor="#FFFFCC">
 <th align="left" colspan=2>Advanced qualifiers</th>
 <th align="left">Allowed values</th>
 <th align="left">Default</th>
@@ -445,7 +485,7 @@ By default <b>restrict</b> writes a 'table' report file.
 <pre>
 ########################################
 # Program: restrict
-# Rundate: Thu Nov 07 14:42:26 2002
+# Rundate: Tue Apr 22 13:34:39 2003
 # Report_format: table
 # Report_file: hsfau.restrict
 ########################################
@@ -472,16 +512,16 @@ By default <b>restrict</b> writes a 'table' report file.
      44      48        0 BceAI       ACGGC                25     27         .         .
      71      74        0 AciI        CCGC                 71     73         .         .
      71      81        0 Bsc4I       CCNNNNNNNGG          77     74         .         .
-     73      76        0 HhaI        GCGC                 75     73         .         .
      73      76        0 Hin6I       GCGC                 73     75         .         .
+     73      76        0 HhaI        GCGC                 75     73         .         .
      77      81        0 BssKI       CCNGG                76     81         .         .
      77      81        0 EcoRII      CCWGG                76     81         .         .
      94      97        0 TaqI        TCGA                 94     96         .         .
     103     106        0 BsiSI       CCGG                103    105         .         .
     105     108        0 BshI        GGCC                106    106         .         .
+    107     111        0 EcoRII      CCWGG               106    111         .         .
     107     117        0 Bsc4I       CCNNNNNNNGG         113    110         .         .
     107     111        0 BssKI       CCNGG               106    111         .         .
-    107     111        0 EcoRII      CCWGG               106    111         .         .
     122     132        0 Bsc4I       CCNNNNNNNGG         128    125         .         .
     125     135        0 Hin4I       GAYNNNNNVTC         116    111       148       143
     146     150        0 Bse1I       ACTGG               151    149         .         .
@@ -491,8 +531,8 @@ By default <b>restrict</b> writes a 'table' report file.
     182     186        0 EcoRII      CCWGG               181    186         .         .
     190     193        0 HhaI        GCGC                192    190         .         .
     190     193        0 Hin6I       GCGC                190    192         .         .
-    192     195        0 Hin6I       GCGC                192    194         .         .
     192     195        0 HhaI        GCGC                194    192         .         .
+    192     195        0 Hin6I       GCGC                192    194         .         .
     197     201        0 BssKI       CCNGG               196    201         .         .
     197     201        0 EcoRII      CCWGG               196    201         .         .
     209     212        0 BshI        GGCC                210    210         .         .
@@ -505,8 +545,8 @@ By default <b>restrict</b> writes a 'table' report file.
     248     252        0 EcoRII      CCWGG               247    252         .         .
     261     264        0 BshI        GGCC                262    262         .         .
     263     266        0 AciI        CCGC                263    265         .         .
-    293     297        0 BssKI       CCNGG               292    297         .         .
     293     297        0 EcoRII      CCWGG               292    297         .         .
+    293     297        0 BssKI       CCNGG               292    297         .         .
     296     299        0 BshI        GGCC                297    297         .         .
     335     338        0 BshI        GGCC                336    336         .         .
     380     383        0 AciI        CCGC                377    379         .         .
@@ -642,8 +682,10 @@ None.
 </H2>
 
 
-This application was written by Alan Bleasby <a
-href="mailto:ableasby@hgmp.mrc.ac.uk">(ableasby@hgmp.mrc.ac.uk)</a>
+Alan Bleasby (ableasby&nbsp;&copy;&nbsp;hgmp.mrc.ac.uk)
+<br>
+HGMP-RC, Genome Campus, Hinxton, Cambridge CB10 1SB, UK
+
 
 <H2>
     History
@@ -654,35 +696,7 @@ Completed 16th April 1999
 
 <!--
 <p>
-<table border cellspacing=0 cellpadding=3 bgcolor="#FFFFCC">
-<tr><th>Date</th><th>Editor</th><th>Comment</th></tr>
-<tr><td>2000/09/19</td><td>ajb</td><td>ACD file: First ever bioperl cvs for emboss</td></tr>
-<tr><td>2000/09/19</td><td>ajb</td><td>ACD file: branches:  1.1.1;</td></tr>
-<tr><td>2000/09/19</td><td>ajb</td><td>Program: First ever bioperl cvs for emboss</td></tr>
-<tr><td>2000/09/19</td><td>ajb</td><td>Program: branches:  1.1.1;</td></tr>
-<tr><td>2000/10/01</td><td>ajb</td><td>Program: Memory leak fixes and friendly warnings</td></tr>
-<tr><td>2001/02/10</td><td>ajb</td><td>Program: ajint mods</td></tr>
-<tr><td>2001/02/15</td><td>ajb</td><td>Program: main line alterations</td></tr>
-<tr><td>2001/02/19</td><td>ajb</td><td>Program: blunt sticky fix</td></tr>
-<tr><td>2001/05/10</td><td>gwilliam</td><td>ACD file: groups changed</td></tr>
-<tr><td>2001/06/04</td><td>rice</td><td>Program: @prog headers generated from acd files</td></tr>
-<tr><td>2001/06/05</td><td>rice</td><td>Program: missing @func headers</td></tr>
-<tr><td>2001/06/23</td><td>ajb</td><td>Program: function renaming</td></tr>
-<tr><td>2001/07/15</td><td>ajb</td><td>Program: Altered sort sense</td></tr>
-<tr><td>2001/10/08</td><td>ajb</td><td>Program: add hit count to header</td></tr>
-<tr><td>2001/10/08</td><td>rice</td><td>ACD file: conversion to report output</td></tr>
-<tr><td>2001/10/08</td><td>rice</td><td>Program: conversion to report output</td></tr>
-<tr><td>2001/10/29</td><td>ajb</td><td>ACD file: acdpretty version</td></tr>
-<tr><td>2001/10/31</td><td>rice</td><td>ACD file: avoid single quotes in report tags - for parsers</td></tr>
-<tr><td>2001/10/31</td><td>rice</td><td>Program: cleanup feature table for purify</td></tr>
-<tr><td>2001/12/24</td><td>ajb</td><td>Program: purify blitz</td></tr>
-<tr><td>2002/02/13</td><td>rice</td><td>ACD file: ACD section and endsection added by Thomas Laurent</td></tr>
-<tr><td>2002/02/13</td><td>rice</td><td>Program: final documentation additions/corrections</td></tr>
-<tr><td>2002/04/04</td><td>rice</td><td>ACD file: precision 0 for report</td></tr>
-<tr><td>2002/08/22</td><td>rice</td><td>Program: cleanup spaces, long lines, and header comments</td></tr>
-<tr><td>2002/11/05</td><td>rice</td><td>Program: ajDie to ajFatal</td></tr>
-</table>
-
+[an error occurred while processing this directive]
 -->
 
 <H2>

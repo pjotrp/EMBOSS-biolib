@@ -27,60 +27,20 @@ Usage
    
 
 % checktrans 
-Reports STOP codons and ORF statistics of a protein
-Input sequence(s): ../../data/paamir.pep
-Minimum ORF Length to report [100]: 
-Output file [paamir_1.checktrans]: 
-Output sequence [paamir_1.fasta]: 
+Error: File /packages/emboss_dev/gwilliam/emboss/emboss/emboss/acd/checktrans.a
+cd line 11: ../../data/paamir.pep
+Expected ':' not found after 'min:1'
    
    Go to the input files for this example
-   Go to the output files for this example
    
 Command line arguments
 
-   Mandatory qualifiers:
-  [-sequence]          seqall     Sequence database USA
-   -orfml              integer    Minimum ORF Length to report
-  [-report]            outfile    Output file name
-   -outseq             seqoutall  Sequence file to hold output ORF sequences
-
-   Optional qualifiers:
-   -[no]addlast        boolean    An asterisk in the protein sequence
-                                  indicates the position of a STOP codon.
-                                  Checktrans assumes that all ORFs end in a
-                                  STOP codon. Forcing the sequence to end with
-                                  an asterisk, if there is not one there
-                                  already, makes checktrans treat the end as a
-                                  potential ORF. If an asterisk is added, it
-                                  is not included in the reported count of
-                                  STOPs.
-
-   Advanced qualifiers:
-   -featout            featout    File for output features
-
-   General qualifiers:
-  -help                boolean    Report command line options. More
-                                  information on associated and general
-                                  qualifiers can be found with -help -verbose
+Error: File /packages/emboss_dev/gwilliam/emboss/emboss/emboss/acd/checktrans.a
+cd line 11: Expected ':' not found after 'min:1'
    
-
-   Mandatory qualifiers Allowed values Default
-   [-sequence]
-   (Parameter 1) Sequence database USA Readable sequence(s) Required
-   -orfml Minimum ORF Length to report Integer 1 or more 100
-   [-report]
-   (Parameter 2) Output file name Output file <sequence>.checktrans
-   -outseq Sequence file to hold output ORF sequences Writeable
-   sequence(s) <sequence>.format
-   Optional qualifiers Allowed values Default
-   -[no]addlast An asterisk in the protein sequence indicates the
-   position of a STOP codon. Checktrans assumes that all ORFs end in a
-   STOP codon. Forcing the sequence to end with an asterisk, if there is
-   not one there already, makes checktrans treat the end as a potential
-   ORF. If an asterisk is added, it is not included in the reported count
-   of STOPs. Boolean value Yes/No Yes
-   Advanced qualifiers Allowed values Default
-   -featout File for output features Writeable feature table unknown.gff
+   Error: File
+   /packages/emboss_dev/gwilliam/emboss/emboss/emboss/acd/checktrans.acd
+   line 11: Expected ':' not found after 'min:1'
    
 Input file format
 
@@ -112,39 +72,6 @@ Output file format
    This program writes three files: the ORF report file
    (paamir_1.checktrans), the output sequence file (paamir_1.fasta) and
    the feature file (paamir_1.out3) which is in GFF format by default.
-   
-  Output files for usage example
-  
-  File: paamir_1.checktrans
-  
-
-
-CHECKTRANS of PAAMIR_1 from 1 to 724
-
-        ORF#    Pos     Len     ORF Range       Sequence name
-
-        7       635     357     278-634 PAAMIR_1_7
-
-        Total STOPS:     7
-   
-
-  File: paamir_1.fasta
-  
->PAAMIR_1_7
-PPARRRWRRWRVTWQRGRWWSRLTSPASIRPPAGPSSRPAMVSSRRTRPSPPGPRRPTGR
-PCCSAAPRRPQATGGWKTCSGTCTTSTSTRHRGRSGWSARTTTAACLRASRKSMRAACSR
-SAGSRPNRFAPTLMSSCITSTTGPPAWAGDRSHERQLAARQPARVAGAGPQPAGGGQRRP
-GLAADPHRLFGAPVLAAAGSLRRAGGRGLHQHFPEWPPRRDRCAARRRDSAHYPGGAGGV
-RKPRGALADHRAGVPRRDHPAARCPPGAACAGIGAAHQRGNGEAEAEDRAAPGPHRRPGP
-DQPGQGVADAAPWLGRARGAPAPVAGSDEAARADPEDRSGVAGKRAVRLSDPGRPEQ
-   
-  File: paamir_1.out3
-  
-##gff-version 2.0
-##date 2002-11-07
-##Type Protein PAAMIR_1
-PAAMIR_1        checktrans      misc_feature    278     634     0.000   +
-.       Sequence "PAAMIR_1.1"
    
    The ORF report file gives the numeric count of the ORF, the position
    of the terminating STOP codon, the length of the ORF, its start and
@@ -206,12 +133,14 @@ See also
        
 Author(s)
 
-   This application was written by Rodrigo Lopez (rls@ebi.ac.uk) European
-   Bioinformatics Institute, Wellcome Trust Genome Campus, Hinxton,
-   Cambridge, CB10 1SD, UK.
+   This application was written by Rodrigo Lopez (rls © ebi.ac.uk)
+   European Bioinformatics Institute, Wellcome Trust Genome Campus,
+   Hinxton, Cambridge CB10 1SD, UK
    
-   It was rewritten by Gary Williams(gwilliam@hgmp.mrc.ac.uk) to output
-   the sequence data to a single file in the conventional EMBOSS style.
+   Gary Williams (gwilliam © hgmp.mrc.ac.uk)
+   HGMP-RC, Genome Campus, Hinxton, Cambridge CB10 1SB, UK
+   to output the sequence data to a single file in the conventional
+   EMBOSS style.
    
 History
 

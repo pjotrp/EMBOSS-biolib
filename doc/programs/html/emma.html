@@ -591,7 +591,7 @@ Multiple alignment program - interface to ClustalW program
 Input sequence(s): <b>../../data/globins.fasta</b>
 Output sequence [hbb_human.aln]: <b></b>
 Output file [hbb_human.dnd]: <b></b>
-..clustalw -infile=16255A -outfile=16255B -align -type=protein -output=gcg -pwmatrix=blosum -pwgapopen=10.000 -pwgapext=0.100 -newtree=16255C -matrix=blosum -gapopen=10.000 -gapext=5.000 -gapdist=8 -hgapresidues=GPSNDQEKR -maxdiv=30..
+..clustalw -infile=00027518A -outfile=00027518B -align -type=protein -output=gcg -pwmatrix=blosum -pwgapopen=10.000 -pwgapext=0.100 -newtree=00027518C -matrix=blosum -gapopen=10.000 -gapext=5.000 -gapdist=8 -hgapresidues=GPSNDQEKR -maxdiv=30..
 
 
 
@@ -633,7 +633,7 @@ Sequences (4:7) Aligned. Score:  12
 Sequences (5:6) Aligned. Score:  21
 Sequences (5:7) Aligned. Score:  7
 Sequences (6:7) Aligned. Score:  11
-Guide tree        file created:   [16255C]
+Guide tree        file created:   [00027518C]
 Start of Multiple Alignment
 There are 6 groups
 Aligning...
@@ -647,7 +647,7 @@ Sequence:5     Score:865
 Sequence:6     Score:797
 Sequence:7     Score:1044
 Alignment Score 4164
-GCG-Alignment file created      [16255B]
+GCG-Alignment file created      [00027518B]
 
 </pre></td></tr></table><p>
 <p>
@@ -927,18 +927,62 @@ IT IS DONE FOR YOU.
    Advanced qualifiers:
    -prot               boolean    Do not change this value
 
+   Associated qualifiers:
+  "-inseqs" related qualifiers
+   -sbegin1             integer    First base used
+   -send1               integer    Last base used, def=seq length
+   -sreverse1           boolean    Reverse (if DNA)
+   -sask1               boolean    Ask for begin/end/reverse
+   -snucleotide1        boolean    Sequence is nucleotide
+   -sprotein1           boolean    Sequence is protein
+   -slower1             boolean    Make lower case
+   -supper1             boolean    Make upper case
+   -sformat1            string     Input sequence format
+   -sopenfile1          string     Input filename
+   -sdbname1            string     Database name
+   -sid1                string     Entryname
+   -ufo1                string     UFO features
+   -fformat1            string     Features format
+   -fopenfile1          string     Features file name
+  "-outseq" related qualifiers
+   -osformat2           string     Output seq format
+   -osextension2        string     File name extension
+   -osname2             string     Base file name
+   -osdirectory2        string     Output directory
+   -osdbname2           string     Database name to add
+   -ossingle2           boolean    Separate file for each entry
+   -oufo2               string     UFO features
+   -offormat2           string     Features format
+   -ofname2             string     Features file name
+   -ofdirectory2        string     Output directory
+  "-dendoutfile" related qualifiers
+   -odirectory3         string     Output directory
+
    General qualifiers:
-  -help                boolean    Report command line options. More
+   -auto                boolean    Turn off prompts
+   -stdout              boolean    Write standard output
+   -filter              boolean    Read standard input, write standard output
+   -options             boolean    Prompt for required and optional values
+   -debug               boolean    Write debug output to program.dbg
+   -acdlog              boolean    Write ACD processing log to program.acdlog
+   -acdpretty           boolean    Rewrite ACD file as program.acdpretty
+   -acdtable            boolean    Write HTML table of options
+   -verbose             boolean    Report some/full command line options
+   -help                boolean    Report command line options. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
+   -warning             boolean    Report warnings
+   -error               boolean    Report errors
+   -fatal               boolean    Report fatal errors
+   -die                 boolean    Report deaths
 
 
 </pre>
 </td></tr></table>
 <P>
 
-<table border cellspacing=0 cellpadding=3 bgcolor="#f5f5ff">
-<tr bgcolor="#FFFFD0">
+<table border cellspacing=0 cellpadding=3 bgcolor="#ccccff">
+<tr bgcolor="#FFFFCC">
 <th align="left" colspan=2>Mandatory qualifiers</th>
 <th align="left">Allowed values</th>
 <th align="left">Default</th>
@@ -965,7 +1009,7 @@ IT IS DONE FOR YOU.
 <td><i>&lt;sequence&gt;</i>.emma</td>
 </tr>
 
-<tr bgcolor="#FFFFD0">
+<tr bgcolor="#FFFFCC">
 <th align="left" colspan=2>Optional qualifiers</th>
 <th align="left">Allowed values</th>
 <th align="left">Default</th>
@@ -1164,7 +1208,7 @@ We also supply an identity matrix which gives a score of 1.0 to two identical am
 <td>30</td>
 </tr>
 
-<tr bgcolor="#FFFFD0">
+<tr bgcolor="#FFFFCC">
 <th align="left" colspan=2>Advanced qualifiers</th>
 <th align="left">Allowed values</th>
 <th align="left">Default</th>
@@ -1652,8 +1696,13 @@ None.
 </H2>
 
 
-This application was written by Mark Faller <a
-href="mailto:mfaller@hgmp.mrc.ac.uk">(mfaller@hgmp.mrc.ac.uk)</a>
+Mark Faller (current e-mail address unknown)
+<br>
+while he was with:
+<br>
+HGMP-RC, Genome Campus, Hinxton, Cambridge CB10 1SB, UK
+
+
 
 <H2>
     History
@@ -1664,38 +1713,7 @@ Completed  18 February 1999
 
 <!--
 <p>
-<table border cellspacing=0 cellpadding=3 bgcolor="#FFFFCC">
-<tr><th>Date</th><th>Editor</th><th>Comment</th></tr>
-<tr><td>2000/09/19</td><td>ajb</td><td>ACD file: First ever bioperl cvs for emboss</td></tr>
-<tr><td>2000/09/19</td><td>ajb</td><td>ACD file: branches:  1.1.1;</td></tr>
-<tr><td>2000/09/19</td><td>ajb</td><td>Program: First ever bioperl cvs for emboss</td></tr>
-<tr><td>2000/09/19</td><td>ajb</td><td>Program: branches:  1.1.1;</td></tr>
-<tr><td>2000/10/01</td><td>ajb</td><td>Program: Memory leak fixes and friendly warnings</td></tr>
-<tr><td>2000/10/24</td><td>ajb</td><td>Program: single sequence crash fix</td></tr>
-<tr><td>2001/02/10</td><td>ajb</td><td>Program: ajint mods</td></tr>
-<tr><td>2001/02/15</td><td>ajb</td><td>Program: main line alterations</td></tr>
-<tr><td>2001/03/12</td><td>gwilliam</td><td>ACD file: much more help added</td></tr>
-<tr><td>2001/03/13</td><td>gwilliam</td><td>ACD file: fixed line breaks in help</td></tr>
-<tr><td>2001/05/10</td><td>gwilliam</td><td>ACD file: groups changed</td></tr>
-<tr><td>2001/06/04</td><td>rice</td><td>Program: @prog headers generated from acd files</td></tr>
-<tr><td>2001/06/05</td><td>rice</td><td>Program: missing @func headers</td></tr>
-<tr><td>2001/06/06</td><td>rice</td><td>Program: @func header fix</td></tr>
-<tr><td>2001/06/25</td><td>ajb</td><td>Program: function rename</td></tr>
-<tr><td>2001/10/29</td><td>ajb</td><td>ACD file: acdpretty version</td></tr>
-<tr><td>2001/11/21</td><td>ajb</td><td>ACD file: Extensive acd changes</td></tr>
-<tr><td>2001/11/21</td><td>ajb</td><td>ACD file: Ooops. Put tmpprot back</td></tr>
-<tr><td>2001/11/21</td><td>ajb</td><td>ACD file: Removed tmpprot. Not used</td></tr>
-<tr><td>2001/11/21</td><td>ajb</td><td>Program: Extensive acd changes</td></tr>
-<tr><td>2001/11/22</td><td>ajb</td><td>ACD file: Removed -options perversity</td></tr>
-<tr><td>2001/11/23</td><td>ajb</td><td>ACD file: temporary fix</td></tr>
-<tr><td>2002/02/13</td><td>rice</td><td>ACD file: ACD section and endsection added by Thomas Laurent</td></tr>
-<tr><td>2002/02/20</td><td>timc</td><td>ACD file: gui/batch/cpu</td></tr>
-<tr><td>2002/03/25</td><td>rice</td><td>ACD file: -unweighted is never used</td></tr>
-<tr><td>2002/03/25</td><td>rice</td><td>Program: -unweighted is never used</td></tr>
-<tr><td>2002/04/24</td><td>rice</td><td>ACD file: use type:frame for nested sections</td></tr>
-<tr><td>2002/08/22</td><td>rice</td><td>Program: cleanup spaces, long lines, and header comments</td></tr>
-</table>
-
+[an error occurred while processing this directive]
 -->
 
 <H2>
