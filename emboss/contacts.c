@@ -86,7 +86,7 @@
 ** be used for side-chain only contacts, MM will be used for main-chain only 
 ** contacts, and there will probably be several other forms of contact too.
 ** 
-** domainer generates a log file an excerpt of which is shown (Figure 2). If 
+** contacts generates a log file an excerpt of which is shown (Figure 2). If 
 ** there is a problem in processing a coordinate file, three lines containing 
 ** the record '//', the scop domain or pdb identifier code and an error message 
 ** respectively are written. The text 'WARN  file open error filename',
