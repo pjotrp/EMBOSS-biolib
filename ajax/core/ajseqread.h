@@ -44,6 +44,7 @@ void         ajSeqinSetRange (AjPSeqin seqin, int ibegin, int iend);
 void         ajSeqinUsa (AjPSeqin* pthis, AjPStr Usa);
 void         ajSeqPrintInFormat (AjPFile outf, AjBool full);
 AjBool       ajSeqRead (AjPSeq thys, AjPSeqin seqin);
+AjBool       ajSeqABIRead(AjPStr s);
 AjBool       ajSeqsetRead (AjPSeqset thys, AjPSeqin seqin);
 
 #endif

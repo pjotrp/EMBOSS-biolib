@@ -104,7 +104,6 @@ AjPPdb ajPdbNew(int chains, int models)
 AjPChain ajChainNew(int models)
 {
   AjPChain ret=NULL;
-  int val;
   
   AJNEW0(ret);
 
@@ -355,15 +354,11 @@ AjBool ajCpdbRead(AjPStr name, AjPPdb *thys)
     float reso=0.0;
     int   nmod=0;
     int   ncha=0;
-    int   i=0;
     int   nc=0;
     int   mod=0;
     int   chn=0;
-    int   offset=0;        
     int   last_chn=0;
     int   last_mod=0;
-    int   val;
-    int   x;
     int   done_first_co_line=0;
     
 

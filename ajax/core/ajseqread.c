@@ -47,7 +47,6 @@ typedef struct SeqSMsfItem
 
 static AjBool     seqReadAbi (AjPSeq thys, AjPSeqin seqin);
 static AjBool     seqABISampleName(AjPFile fp, AjPStr *sample);
-static AjBool     seqABIRead(AjPStr s);
 static AjBool     seqABITest(AjPFile fp);
 static AjBool     seqABIReadSeq(AjPFile fp,long int baseO,long int numBases,
 				AjPStr* nseq);
@@ -4522,7 +4521,7 @@ AjBool ajSeqGetFromUsa (AjPStr thys, AjBool protein, AjPSeq *seq)
 }
 
 
-/* @funcstatic seqABIRead *****************************************************
+/* @func ajSeqABIRead *****************************************************
 **
 ** Read ABI file
 **
@@ -4531,16 +4530,13 @@ AjBool ajSeqGetFromUsa (AjPStr thys, AjBool protein, AjPSeq *seq)
 ** @return [AjBool] ajTrue on success
 ** @@
 ******************************************************************************/
-static AjBool seqABIRead(AjPStr s)
+AjBool ajSeqABIRead(AjPStr s)
 {
     AjPFile fp;
     
-    int  i;
-    int  j;
     AjPInt2d  trace=NULL;
     AjPShort  basePositions=NULL;
     long int baseO;
-    long int baseOff;
     long int basePosO;
     long int fwo_;
     long int primerPosition;
@@ -4551,7 +4547,10 @@ static AjBool seqABIRead(AjPStr s)
     long int dataOffset[4];
     
     short int primerPos;
-    short int sigC,sigA,sigG,sigT;
+    short int sigC=0;
+    short int sigA=0;
+    short int sigG=0;
+    short int sigT=0;
 
     AjPStr nseq;
     AjPStr machine;
@@ -4695,7 +4694,6 @@ static AjBool seqABIReadSeq(AjPFile fp,long int baseO,long int numBases,
 static AjBool seqABIMachineName(AjPFile fp,AjPStr machine)
 {
     long int mchn;
-    char buff;
     const long MCHNtag = ((long) ((((('M'<<8)+'C')<<8)+'H')<<8)+'N');
     unsigned char l;
 
@@ -5175,7 +5173,8 @@ static AjBool seqABIGetFlag(AjPFile fp, long int flagLabel,
                Instance == (long int)flagInstance));
 
     for (i=2; i<=word; i++) {
-        if (!seqReadABIInt4(fp, val)) AJFALSE;
+        if (!seqReadABIInt4(fp, val))
+	    return ajFalse;
     }
 
     return AJTRUE;
@@ -5227,7 +5226,8 @@ static AjBool seqABIGetFlagF(AjPFile fp, long int flagLabel,
                Instance == (long int)flagInstance));
 
     for (i=2; i<=word; i++) {
-        if (!seqABIReadFloat4(fp, val)) AJFALSE;
+        if (!seqABIReadFloat4(fp, val))
+	    return AJFALSE;
     }
 
     return AJTRUE;
