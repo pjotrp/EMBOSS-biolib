@@ -1863,13 +1863,15 @@ void ajListGarbageCollect(AjPList list, void (*destruct)(const void **),
 {
     AjIList iter=NULL;
     void    *ret;
+    const void **rret;
     
 
     iter = ajListIter(list);
     while((ret=ajListIterNext(iter)))
 	if(compar(ret))
 	{
-	    destruct(&ret);
+	    rret = (const void **)&ret;
+	    destruct(rret);
 	    ajListRemove(iter);
 	}
     
