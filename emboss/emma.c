@@ -363,7 +363,7 @@ int main(int argc, char **argv, char **env)
     return 0;
 }
 
-* @func getUniqueFileName ****************************************************
+/* @func getUniqueFileName ****************************************************
 **
 ** routine to return a name of a unique file; the  unique file name is the
 ** process id
