@@ -202,7 +202,8 @@ output_auth_xml()
   echo ' id="EmbreoFile">' >> $XML_FILE1
   echo ' <isd:provider type="java"' >> $XML_FILE1
   echo '  scope="Request"' >> $XML_FILE1
-  echo '  methods="directory_shortls embreo_roots get_file put_file">' >> $XML_FILE1
+  echo '  methods="directory_shortls embreo_roots get_file put_file' >> $XML_FILE1
+  echo '  delFile mkdir rename">' >> $XML_FILE1
   echo '  <isd:java class="'$FIL_CLASS'"' >> $XML_FILE1
   echo '  static="false"/>' >> $XML_FILE1
   echo ' </isd:provider>' >>$XML_FILE1
@@ -687,6 +688,7 @@ else
       read VAL
     done
 
+    echo "Please wait, starting tomcat......."
     ./tomstart
     sleep 45
     OPT_PROP1="-Djava.protocol.handler.pkgs=com.sun.net.ssl.internal.www.protocol"
