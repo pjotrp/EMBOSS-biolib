@@ -1055,9 +1055,9 @@ AcdOQual acdQualGraph[] =
   {"gsubtitle", "",  "string",  "Graph subtitle"},
   {"gxtitle",   "",  "string",  "Graph x axis title"},
   {"gytitle",   "",  "string",  "Graph y axis title"},
-  {"grtitle",   "",  "string",  "Graph right axis title"},
   /*
   {"gpages",    "0", "integer", "Number of pages"},
+  {"grtitle",   "",  "string",  "Graph right axis title"},
   */
   {"goutfile",  "",  "string",  "Output file for non interactive displays"},
   {NULL, NULL, NULL, NULL} };
@@ -1069,8 +1069,8 @@ AcdOQual acdQualGraphxy[] =
   {"gsubtitle", "",  "string",  "Graph subtitle"},
   {"gxtitle",   "",  "string",  "Graph x axis title"},
   {"gytitle",   "",  "string",  "Graph y axis title"},
-  {"grtitle",   "",  "string",  "Graph right axis title"},
   /*
+  {"grtitle",   "",  "string",  "Graph right axis title"},
   {"gpages",    "0", "integer", "Number of pages"},
   {"gsets",     "0", "integer", "Number of sets"},
   */
