@@ -172,7 +172,7 @@ public class SectionPanel
     {
       TitledBorder title;
       title = BorderFactory.createTitledBorder(etched, 
-                parseAcd.getInfoParamValue(nf),
+                parseAcd.getInfoParamValue(nf).toLowerCase(),
                 TitledBorder.LEFT,TitledBorder.TOP,
                 new Font("SansSerif", Font.BOLD, 13),
                 Color.blue);
