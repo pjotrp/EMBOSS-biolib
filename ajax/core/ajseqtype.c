@@ -124,12 +124,13 @@ char seqCharProtX[]     = "Xx";
 char seqCharNuc[]       = "ACGTUacgtuBDHKMNRSVWXYbdhkmnrsvwxy";
 char seqCharNucPure[]   = "ACGTUacgtu";
 char seqCharNucAmbig[]  = "BDHKMNRSVWXYbdhkmnrsvwxy";
-char seqCharGap[]       = ".~Oo-";	/* phylip uses O */
+char seqCharGap[]       = ".~Oo?-";	/* phylip uses O and ? */
 char seqCharNucDNA[]    = "Tt";
 char seqCharNucRNA[]    = "Uu";
-char seqCharGapany[]    = ".~Oo-";	/* phylip uses O */
+char seqCharGapany[]    = ".~Oo?-";	/* phylip uses O and ? */
 char seqCharGapdash[]   = "-";
 char seqCharGapdot[]    = ".";
+char seqCharGapqry[]    = "?";
 char seqGap = '-';		/* the (only) EMBOSS gap character */
 char seqCharGapTest[]   = " .~Oo-";   /* phylip uses O - don't forget space */
 

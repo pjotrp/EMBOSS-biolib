@@ -3550,7 +3550,7 @@ static AjBool seqReadPhylip(AjPSeq thys, AjPSeqin seqin)
 	    return ajFalse;
 	bufflines++;
 
-	ajDebug("first line:\n'%S'\n", rdline);
+	ajDebug("first line:\n'%-20.20S'\n", rdline);
 
 	if(!ajRegExec(topexp, rdline))
 	{				/* first line test */
@@ -3582,6 +3582,7 @@ static AjBool seqReadPhylip(AjPSeq thys, AjPSeqin seqin)
 	    {
 		ajDebug("FAIL (not headexp): '%S'\n", rdline);
 		ajFileBuffReset(buff);
+		AJFREE(seqin->Data);
 		return ajFalse;
 	    }
 	    AJNEW0(phyitem);
@@ -3596,6 +3597,7 @@ static AjBool seqReadPhylip(AjPSeq thys, AjPSeqin seqin)
 	    {
 		ajDebug("Phylip format: sequence %S header size %d exceeded\n",
 			phyitem->Name, len);
+		AJFREE(seqin->Data);
 		return ajFalse;
 	    }
 	    ajTablePut(phytable, phyitem->Name, phyitem);
@@ -3606,12 +3608,16 @@ static AjBool seqReadPhylip(AjPSeq thys, AjPSeqin seqin)
 	    {
 		if(ilen != maxlen)
 		{
+		    ajDebug("phylip format length mismatch in header "
+			    "iseq: %d jseq: %d ilen: %d maxlen: %d",
+			    iseq, jseq, ilen, maxlen);
 		    ajWarn("phylip format length mismatch in header");
+		    AJFREE(seqin->Data);
 		    return ajFalse;
 		}
 	    }
 	    jseq++;
-	    ajDebug("first set %d: '%S'\n", jseq, rdline);
+	    ajDebug("first set %d: (%d) '%-20.20S'\n", jseq, ilen, rdline);
 
 	    if(jseq < iseq)
 	    {
@@ -5723,7 +5729,7 @@ static ajint seqAppend(AjPStr* pseq, const AjPStr line)
     ajint i = 0;
 
     if(!seqexp)
-	seqexp = ajRegCompC("[A-Za-z*.~-]+");
+	seqexp = ajRegCompC("[A-Za-z*.~?-]+");
 
     cp = ajStrStr(line);
     while(cp && ajRegExecC(seqexp, cp))
