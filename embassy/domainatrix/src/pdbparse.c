@@ -5070,6 +5070,7 @@ static AjBool pdbparse_AlignNumbering(AjPPdbfile *pdbfile, AjPFile logf, ajint l
     
     char     aa1=' ';		/* Amino acid single character code*/
     ajint    c=0;		/* No. of current chain */
+    ajint   lastc=-10000;	/* No. of last chain */
     
     AjBool   done=ajFalse;	/* True if we have found the correct residue 
 				   numbering */
@@ -5195,6 +5196,25 @@ static AjBool pdbparse_AlignNumbering(AjPPdbfile *pdbfile, AjPFile logf, ajint l
 	    else
 		c=(*pdbfile)->chnn[i]-1;
 	       
+	    if(c!=lastc)
+	    {
+		last1=-10000;
+		last2=-10000;
+		lastc=c;
+
+/* This is to cope for cases like this:
+pdb1l9u.ent
+ATOM  17792  N   TYR N  93     264.918 167.501 193.579  1.00 25.00           N  
+ATOM  17793  CA  TYR N  93     263.683 167.732 192.831  1.00 25.00           C  
+ATOM  17794  C   TYR N  93     263.296 169.198 192.627  1.00 25.00           C  
+TER   17795      TYR N  93                                                      
+ATOM  17796  N   SER Q  93     256.325 247.158 183.880  1.00 25.00           N  
+ATOM  17797  CA  SER Q  93     257.567 246.508 183.379  1.00 25.00           C  
+ATOM  17798  C   SER Q  93     257.240 245.493 182.291  1.00 25.00           C  
+ATOM  17799  N   ASP Q  94     256.041 244.922 182.367  1.00 25.00           N  
+*/
+	    }
+
 
 /*	    ajFmtPrint("%S\n", (*pdbfile)->lines[i]); */
 	    
@@ -5770,6 +5790,7 @@ static AjBool pdbparse_AlignNumbering(AjPPdbfile *pdbfile, AjPFile logf, ajint l
 		{
 		    ajStrAssSubC(&substr, atm_ptr, 0, siz_substr-1);
 		    
+
 		    if((loc_ptr = (char *) strstr(seqres_ptr, 
 						  ajStrStr(substr)))==NULL)
 		    {
@@ -5795,8 +5816,10 @@ static AjBool pdbparse_AlignNumbering(AjPPdbfile *pdbfile, AjPFile logf, ajint l
 			
 			for(k=0, y=atm_idx, z=seqres_idx; k<siz_substr; k++, 
 			    y++, z++)
-			    ajIntPut(&idx[i], y, z+1);
-
+			    {	
+				ajIntPut(&idx[i], y, z+1);
+			    }
+			
 			
 			
 			/*Mark up last SEQRES residue as having been done */
@@ -5855,14 +5878,14 @@ static AjBool pdbparse_AlignNumbering(AjPPdbfile *pdbfile, AjPFile logf, ajint l
 		    		    
 		    
 
-		    /*DIAGNOSTIC		     printf("STEP5 OK\n");  */
+		    /*DIAGNOSTIC		     printf("STEP5 OK\n");   */
 		    
 		    done=ajTrue;
 		    break;
 		}
 
 
-		/*DIAGNOSTIC		 printf("STEP5 **NOT** OK\n"); */
+		/*DIAGNOSTIC		 printf("STEP5 **NOT** OK\n");  */
 
 		/* Otherwise, agreement could not be found */
 
