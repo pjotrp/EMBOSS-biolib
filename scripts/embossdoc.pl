@@ -5,7 +5,7 @@ $locout = "local";
 $infile = "";
 $lib = "unknown";
 
-%test = ("func" => 1, "funcstatic" => 1);
+%test = ("func" => 1, "funcstatic" => 1, "prog" => 1);
 
 if ($ARGV[0]) {$infile = $ARGV[0];}
 if ($ARGV[1]) {$lib = $ARGV[1];}
@@ -37,7 +37,13 @@ print HTMLB "<html><head><title>$title</title></head><body bgcolor=\"#ffffff\">\
 print HTML  "<h1>$file</h1>\n";
 print HTMLB "<h1>$file</h1>\n";
 
-$lastfsect = $laststatfsect = "";
+$sect = $lastfsect = $laststatfsect = "";
+
+##############################################################
+## $source is the entire source file as a string with newlines
+## step through each comment
+## looking for extended JavaDoc style formatting
+##############################################################
 
 while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
   $ccfull = $&;
@@ -50,12 +56,13 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
   $acnt = 0;
   $rtype = "";
   $ismacro = 0;
+  $isprog = 0;
   @largs = ();
   while ($cc =~ m/@((\S+)([^@]+))/gos) {
     $data = $1;
     $token = $2;
-#    print "<$token>\n";
-#    print "$data\n";
+    #print "<$token>\n";
+    #print "$data\n";
 
     if ($token eq "section")  {
       $OFILE = HTML;
@@ -70,8 +77,10 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
       print "Section $sect\n";
     }
 
-    if ($token eq "func")  {
+    if ($token eq "func" || $token eq "prog")  {
       $ismacro = 0;
+      $isprog = 0;
+      if ($token eq "prog") {$isprog = 1}
       $OFILE = HTML;
       if ($sect NE $lastfsect) {
         print $OFILE "<hr><h2><a name=\"$sect\">\n";
@@ -83,6 +92,7 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
       ($name, $frest) = ($data =~ /\S+\s+(\S+)\s*(.*)/gos);
       ($ftype,$fname, $fargs) =
 	  $rest =~ /^\s*([^\(\)]*\S)\s+(\S+)\s*[\(]\s*([^{]*)[)]\s*[\{]/os;
+      if ($isprog && $fname eq "main") {$fname = $pubout}
       print "Function $name\n";
       print $OFILE "<hr><h3><a name=\"$name\">\n";
       print $OFILE "Function</a> ".srsref($name)."</h3>\n";
@@ -102,6 +112,7 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
       $ftype =~ s/ \*/\*/gos;
       $fname =~ s/^[(]//gos;
       $fname =~ s/[)]$//gos;
+      if ($isprog && $ftype ne "int") {print "bad main type (not int)\n"}
       if (!$ftype) {print "bad function definition\n"}
       if ($fname ne $name) {print "bad function name <$name> <$fname>\n"}
       if (!$frest) {print "bad function '$name', no description\n"}
@@ -136,6 +147,7 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 
     if ($token eq "funcstatic")  {
       $ismacro = 0;
+      $isprog = 0;
       $OFILE = HTMLB;
       if ($sect NE $laststatfsect) {
         print $OFILE "<hr><h2><a name=\"$sect\">\n";
@@ -257,10 +269,10 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 	  $tcast = $curarg;
 	  if (!$var && $curarg eq "...") {$var = $tname = "vararg"}
       }
-      if (!$ismacro && ($cast ne $tcast)) {
+      if (!$ismacro && !$isprog && ($cast ne $tcast)) {
 	print "bad cast <$cast> <$tcast>\n";
       }
-      if (!$ismacro && ($var ne $tname)) {
+      if (!$ismacro && !$isprog && ($var ne $tname)) {
 	print "bad var <$var> <$tname>\n";
       }
       $acnt++;
@@ -288,8 +300,12 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 	$intable = 1;
       }
       ($rtype, $rrest) = ($data =~ /\S+\s+\[([^\]]+)\]\s*(.*)/gos);
-      if (!$ismacro && $rtype ne $ftype) {print "bad return type <$rtype> <$ftype>\n"}
-      if (!$rrest && $rtype ne "void") {print "bad \@return [$rtype], no description\n"}
+      if (!$ismacro && !$isprog && $rtype ne $ftype) {
+	print "bad return type <$rtype> <$ftype>\n";
+      }
+      if (!$rrest && $rtype ne "void") {
+	print "bad \@return [$rtype], no description\n";
+      }
       $rrest =~ s/>/\&gt;/gos;
       $rrest =~ s/</\&lt;/gos;
       print $OFILE "<tr><td>\&nbsp;</td><td>RETURN</td><td>$rtype</td><td>$rrest</td></tr>\n";
@@ -333,9 +349,19 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
     }
     print SRS "//\n";
 
+##############################################################
+## do we want to save what follows the comment?
+## Yes, for functions (and static functions) and main programs
+## $rest is what follows the comment
+##############################################################
+
     if ($test{$type}) {
-	($body) = ($rest =~ /(.*?\n\}[^\n]*\n)/gos);
+
+# body is the code up to a '}' at the start of a line
+
+	($body) = ($rest =~ /(.*?\n\}[^\n]*\n)/os);
 	print SRS $body;
+
     }
   }
 
