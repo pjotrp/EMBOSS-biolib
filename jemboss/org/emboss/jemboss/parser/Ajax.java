@@ -67,6 +67,10 @@ public class Ajax
   public synchronized native boolean delFile(String username,
                byte[] password, String environment,
                String filename);
+  public synchronized native boolean renameFile(String username,
+               byte[] password, String environment,
+               String filename, String filename2);
+
   public synchronized native boolean delDir(String username,
                byte[] password, String environment,
                String directory);
