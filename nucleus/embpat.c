@@ -1,6 +1,7 @@
 /* @source embpat.c
 **
 ** General routines for pattern matching.
+** Copyright (C) Alan Bleasby 1999
 **
 ** This program is free software; you can redistribute it and/or
 ** modify it under the terms of the GNU General Public License
@@ -23,6 +24,9 @@
 #include "stdlib.h"
 #include "limits.h"
 
+
+
+
 static void   patRestrictPushHit(EmbPPatRestrict *enz, AjPList *l, ajint pos,
 				 ajint begin, ajint len, AjBool forward);
 
@@ -40,6 +44,9 @@ static AjBool patOUBrute(char *seq, char *pat, ajint spos,
 			 ajint omm, ajint level, AjPList *l, AjBool carboxyl,
 			 ajint begin, ajint *count, AjPStr *name, ajint st);
 
+
+
+
 /* @funcstatic patStringFree **************************************************
 **
 ** Free a pattern structure, through an ajListMap call
@@ -50,11 +57,17 @@ static AjBool patOUBrute(char *seq, char *pat, ajint spos,
 ** @@
 ******************************************************************************/
 
-static void patStringFree(void **x, void *cl) {
-  ajint **ptr = (ajint **)x;
+static void patStringFree(void **x, void *cl)
+{
+    ajint **ptr = (ajint **)x;
 
-  AJFREE(*ptr);
+    AJFREE(*ptr);
+
+    return;
 }
+
+
+
 
 /* @func embPatSeqCreateRegExp ************************************************
 **
@@ -67,9 +80,13 @@ static void patStringFree(void **x, void *cl) {
 ** @return [AjPStr] the new regular expression.
 ******************************************************************************/
 
-AjPStr embPatSeqCreateRegExp(AjPStr thys, AjBool protein) {
-  return embPatSeqCreateRegExpC(ajStrStr(thys), protein);
+AjPStr embPatSeqCreateRegExp(AjPStr thys, AjBool protein)
+{
+    return embPatSeqCreateRegExpC(ajStrStr(thys), protein);
 }
+
+
+
 
 /* @func embPatSeqCreateRegExpC ***********************************************
 **
@@ -82,51 +99,64 @@ AjPStr embPatSeqCreateRegExp(AjPStr thys, AjBool protein) {
 ** @return [AjPStr] the new regular expression.
 ******************************************************************************/
 
-AjPStr embPatSeqCreateRegExpC(char *ptr, AjBool protein) {
+AjPStr embPatSeqCreateRegExpC(char *ptr, AjBool protein)
+{
+    char *nucpatternmatch[] =
+    {
+	"[Aa]", "[CcGgTtUu]", "[Cc]", "[AaGgTtUu]",
+	"", "", "[Gg]", "[AaCcTtUu]",
+	"", "", "", "",
+	"[AaCc]", "[A-Za-z]", "", "",
+	"", "[AaGg]", "[GgCc]", "[TtUu]",
+	"[TtUu]","[AaCcGg]", "[AaTtUu]", "[A-Za-z]",
+	"[CTU]", ""
+    };
 
-  char *nucpatternmatch[] = {
-    "[Aa]", "[CcGgTtUu]", "[Cc]", "[AaGgTtUu]", /* abcd */
-    "", "", "[Gg]", "[AaCcTtUu]", /* efgh */
-    "", "", "", "",		/* ijkl */
-    "[AaCc]", "[A-Za-z]", "", "", /* mnop */
-    "", "[AaGg]", "[GgCc]", "[TtUu]", /* qrst */
-    "[TtUu]","[AaCcGg]", "[AaTtUu]", "[A-Za-z]", /* uvwx */
-    "[CTU]", "" };		/* yz */
+    char *protpatternmatch[] =
+    {
+	"[Aa]","[DdNn]","[Cc]","[Dd]",
+	"[Ee]","[Ff]","[Gg]","[AaCcTtUu]",
+	"[Ii]","","[Kk]","[Ll]",
+	"[Mm]","[A-Za-z]","","[Pp]",
+	"[Qq]","[Rr]","[Ss]","[Tt]",
+	"[Uu]","[Vv]","[Ww]","[A-Za-z]",
+	"[Yy]","[EeQq]"
+    };
+
+    AjPStr regexp  = 0;
+    ajint match;
+    char match2[2] = "";
 
 
-  char *protpatternmatch[] = { "[Aa]","[DdNn]","[Cc]","[Dd]", /* abcd */
-			       "[Ee]","[Ff]","[Gg]","[AaCcTtUu]", /* efgh */
-			       "[Ii]","","[Kk]","[Ll]",	/* ijkl */
-			       "[Mm]","[A-Za-z]","","[Pp]", /* mnop */
-			       "[Qq]","[Rr]","[Ss]","[Tt]", /* qrst */
-			       "[Uu]","[Vv]","[Ww]","[A-Za-z]",	/* uvwx */
-			       "[Yy]","[EeQq]" }; /* yz */
-  AjPStr regexp = 0;
-  ajint match;
-  char match2[2] ="";
+    regexp = ajStrNewL(strlen(ptr) * 4); /* just a rough guess */
 
+    while(*ptr != '\0')
+    {
+	if((*ptr > 64 && *ptr < 91) || (*ptr > 96 && *ptr < 123))
+	{
+	    if(*ptr > 91)
+		match = ((ajint) *ptr) - 97;
+	    else
+		match = ((ajint) *ptr) - 65;
 
-  regexp = ajStrNewL(strlen(ptr) * 4); /* just a rough guess */
-
-  while(*ptr != '\0'){
-    if((*ptr > 64 && *ptr < 91) || (*ptr > 96 && *ptr < 123)){
-      if(*ptr > 91)
-	match = ((ajint) *ptr) - 97;
-      else
-	match = ((ajint) *ptr) - 65;
-      if(protein)
-	(void) ajStrAppC(&regexp,protpatternmatch[match]);
-      else
-	(void) ajStrAppC(&regexp,nucpatternmatch[match]);
+	    if(protein)
+		ajStrAppC(&regexp,protpatternmatch[match]);
+	    else
+		ajStrAppC(&regexp,nucpatternmatch[match]);
+	}
+	else
+	{
+	    match2[0] = *ptr;
+	    ajStrAppC(&regexp,match2);
+	}
+	ptr++;
     }
-    else{
-      match2[0] = *ptr;
-      (void) ajStrAppC(&regexp,match2);
-    }
-    ptr++;
-  }
-  return regexp;
+
+    return regexp;
 }
+
+
+
 
 /* @func embPatSeqMatchFind ***************************************************
 **
@@ -139,9 +169,13 @@ AjPStr embPatSeqCreateRegExpC(char *ptr, AjBool protein) {
 **
 ******************************************************************************/
 
-EmbPPatMatch embPatSeqMatchFind(AjPSeq seq, AjPStr reg){
-  return embPatSeqMatchFindC(seq, ajStrStr(reg));
+EmbPPatMatch embPatSeqMatchFind(AjPSeq seq, AjPStr reg)
+{
+    return embPatSeqMatchFindC(seq, ajStrStr(reg));
 }
+
+
+
 
 /* @func embPatSeqMatchFindC **************************************************
 **
@@ -154,36 +188,42 @@ EmbPPatMatch embPatSeqMatchFind(AjPSeq seq, AjPStr reg){
 **
 ******************************************************************************/
 
-EmbPPatMatch embPatSeqMatchFindC(AjPSeq seq, char *reg){
-  AjPStr regexp = NULL;
-  AjBool protein;
-  EmbPPatMatch results;
+EmbPPatMatch embPatSeqMatchFindC(AjPSeq seq, char *reg)
+{
+    AjPStr regexp = NULL;
+    AjBool protein;
+    EmbPPatMatch results;
 
-  protein = ajSeqIsProt(seq);
+    protein = ajSeqIsProt(seq);
 
-  regexp = embPatSeqCreateRegExpC(reg,protein);
+    regexp  = embPatSeqCreateRegExpC(reg,protein);
+    results = embPatMatchFind(regexp, ajSeqStr(seq));
 
-  results = embPatMatchFind(regexp, ajSeqStr(seq));
+    ajStrDel(&regexp);
 
-  ajStrDel(&regexp);
-
-  return results;
-
+    return results;
 }
+
+
+
 
 /* @func embPatMatchFind ******************************************************
 **
 ** Find all the regular expression matches of reg in the string string.
 **
 ** @param [r] regexp [AjPStr] Regular expression string.
-** @param [r] string   [AjPStr] String to be searched.
+** @param [r] string [AjPStr] String to be searched.
 **
 ** @return [EmbPPatMatch] Results of the pattern matching.
 **
 ******************************************************************************/
-EmbPPatMatch embPatMatchFind(AjPStr regexp, AjPStr string){
-  return embPatMatchFindC(regexp, ajStrStr(string));
+
+EmbPPatMatch embPatMatchFind(AjPStr regexp, AjPStr string)
+{
+    return embPatMatchFindC(regexp, ajStrStr(string));
 }
+
+
 
 
 /* @func embPatMatchFindC *****************************************************
@@ -197,64 +237,79 @@ EmbPPatMatch embPatMatchFind(AjPStr regexp, AjPStr string){
 **
 ******************************************************************************/
 
-EmbPPatMatch embPatMatchFindC(AjPStr regexp, char *sptr){
-  AjPRegexp regcomp = NULL;
-  EmbPPatMatch results;
-  AjPList poslist = ajListNew();
-  AjPList lenlist = ajListNew();
-  AjIList iter;
-  ajint *pos,*len,posi,i;
-  char *ptr = sptr;
-  regcomp = ajRegComp(regexp);
+EmbPPatMatch embPatMatchFindC(AjPStr regexp, char *sptr)
+{
+    AjPRegexp regcomp = NULL;
+    EmbPPatMatch results;
+    AjPList poslist = ajListNew();
+    AjPList lenlist = ajListNew();
+    AjIList iter;
+    ajint *pos;
+    ajint *len;
+    ajint posi;
+    ajint i;
+    char *ptr;
 
-  AJNEW(results);
+    regcomp = ajRegComp(regexp);
 
-  while(*sptr != '\0' && ajRegExecC(regcomp,sptr)){
-    /*    ajRegTrace(regcomp);*/
-    AJNEW (pos);
-    *pos = posi = ajRegOffset(regcomp);
-    AJNEW (len);
-    *len = ajRegLenI(regcomp,0);
-    *pos +=sptr-ptr;
-    ajListAppend(poslist, ajListNodesNew(pos, NULL));
-    ajListAppend(lenlist, ajListNodesNew(len, NULL));
-    sptr += posi+1;
-  }
+    ptr = sptr;
 
-  ajRegFree(&regcomp);
-  results->number  = ajListLength(poslist);
-  if(results->number){
-    AJCNEW(results->start, results->number);
-    AJCNEW(results->len, results->number);
+    AJNEW(results);
 
-    i=0;
-    iter=ajListIter(poslist);
-    while (ajListIterMore(iter)) {
-      results->start[i] = *(ajint *) ajListIterNext (iter);
-      i++;
+    while(*sptr != '\0' && ajRegExecC(regcomp,sptr))
+    {
+	AJNEW(pos);
+	*pos = posi = ajRegOffset(regcomp);
+	AJNEW(len);
+	*len = ajRegLenI(regcomp,0);
+	*pos +=sptr-ptr;
+	ajListAppend(poslist, ajListNodesNew(pos, NULL));
+	ajListAppend(lenlist, ajListNodesNew(len, NULL));
+	sptr += posi+1;
     }
-    ajListIterFree (iter);
 
-    i=0;
-    iter=ajListIter(lenlist);
-    while (ajListIterMore(iter)) {
-      results->len[i] = *(ajint *) ajListIterNext (iter);
-      i++;
+    ajRegFree(&regcomp);
+    results->number  = ajListLength(poslist);
+    if(results->number)
+    {
+	AJCNEW(results->start, results->number);
+	AJCNEW(results->len, results->number);
+
+	i = 0;
+	iter = ajListIter(poslist);
+	while(ajListIterMore(iter))
+	{
+	    results->start[i] = *(ajint *) ajListIterNext(iter);
+	    i++;
+	}
+	ajListIterFree(iter);
+
+	i = 0;
+	iter = ajListIter(lenlist);
+	while(ajListIterMore(iter))
+	{
+	    results->len[i] = *(ajint *) ajListIterNext(iter);
+	    i++;
+	}
+	ajListIterFree(iter);
+
+	ajListMap(poslist,patStringFree, NULL);
+	ajListMap(lenlist,patStringFree, NULL);
+	ajListFree(&poslist);
+	ajListFree(&lenlist);
+
     }
-    ajListIterFree (iter);
+    else
+    {
+	ajListFree(&poslist);
+	ajListFree(&lenlist);
+    }
 
-    ajListMap(poslist,patStringFree, NULL);
-    ajListMap(lenlist,patStringFree, NULL);
-    ajListFree(&poslist);
-    ajListFree(&lenlist);
-
-  }
-  else{
-    ajListFree(&poslist);
-    ajListFree(&lenlist);
-  }
-  return results;
+    return results;
 }
+
+
+
 
 /* @func  embPatMatchGetLen****************************************************
 **
@@ -267,12 +322,16 @@ EmbPPatMatch embPatMatchFindC(AjPStr regexp, char *sptr){
 **
 ******************************************************************************/
 
-ajint embPatMatchGetLen(EmbPPatMatch data, ajint index){
+ajint embPatMatchGetLen(EmbPPatMatch data, ajint index)
+{
+    if(data->number <= index || index < 0)
+	return -1;
 
-  if(data->number <= index || index < 0)
-    return -1;
-  return data->len[index];
+    return data->len[index];
 }
+
+
+
 
 /* @func  embPatMatchGetEnd****************************************************
 **
@@ -285,12 +344,16 @@ ajint embPatMatchGetLen(EmbPPatMatch data, ajint index){
 **
 ******************************************************************************/
 
-ajint embPatMatchGetEnd(EmbPPatMatch data, ajint index){
+ajint embPatMatchGetEnd(EmbPPatMatch data, ajint index)
+{
+    if(data->number <= index || index < 0)
+	return -1;
 
-  if(data->number <= index || index < 0)
-    return -1;
-  return data->len[index]+data->start[index]-1;
+    return data->len[index]+data->start[index]-1;
 }
+
+
+
 
 /* @func   embPatMatchGetNumber************************************************
 **
@@ -302,10 +365,13 @@ ajint embPatMatchGetEnd(EmbPPatMatch data, ajint index){
 **
 ******************************************************************************/
 
-ajint embPatMatchGetNumber(EmbPPatMatch data){
-
+ajint embPatMatchGetNumber(EmbPPatMatch data)
+{
   return data->number;
 }
+
+
+
 
 /* @func  embPatMatchGetStart**************************************************
 **
@@ -319,12 +385,16 @@ ajint embPatMatchGetNumber(EmbPPatMatch data){
 **
 ******************************************************************************/
 
-ajint embPatMatchGetStart(EmbPPatMatch data, ajint index){
+ajint embPatMatchGetStart(EmbPPatMatch data, ajint index)
+{
+    if(data->number <= index || index < 0)
+	return -1;
 
-  if(data->number <= index || index < 0)
-    return -1;
-  return data->start[index];
+    return data->start[index];
 }
+
+
+
 
 /* @func embPatMatchDel *******************************************************
 **
@@ -334,19 +404,27 @@ ajint embPatMatchGetStart(EmbPPatMatch data, ajint index){
 ** @return [void]
 ******************************************************************************/
 
-void embPatMatchDel(EmbPPatMatch* pthis){
-  EmbPPatMatch thys = pthis ? *pthis : 0;
+void embPatMatchDel(EmbPPatMatch* pthis)
+{
+    EmbPPatMatch thys;
 
-  if (!pthis) return;
-  if (!*pthis) return;
+    thys = pthis ? *pthis : 0;
 
-  if(thys->number){
-    AJFREE(thys->start);
-    AJFREE(thys->len);
-  }
-  AJFREE(*pthis);
+    if(!pthis)
+	return;
+
+    if(!*pthis)
+	return;
+
+    if(thys->number)
+    {
+	AJFREE(thys->start);
+	AJFREE(thys->len);
+    }
+    AJFREE(*pthis);
+
+    return;
 }
-
 
 
 
@@ -362,9 +440,13 @@ void embPatMatchDel(EmbPPatMatch* pthis){
 ** @return [AjPStr] the new regular expression.
 ******************************************************************************/
 
-AjPStr embPatPosSeqCreateRegExp(AjPStr thys, AjBool protein) {
-  return embPatPosSeqCreateRegExpC(ajStrStr(thys), protein);
+AjPStr embPatPosSeqCreateRegExp(AjPStr thys, AjBool protein)
+{
+    return embPatPosSeqCreateRegExpC(ajStrStr(thys), protein);
 }
+
+
+
 
 /* @func embPatPosSeqCreateRegExpC ********************************************
 **
@@ -383,6 +465,8 @@ AjPStr embPatPosSeqCreateRegExpC(char *ptr, AjBool protein)
 }
 
 
+
+
 /* @func embPatPosSeqMatchFind ************************************************
 **
 ** Find all the regular expression matches of reg in the string string.
@@ -394,9 +478,13 @@ AjPStr embPatPosSeqCreateRegExpC(char *ptr, AjBool protein)
 **
 ******************************************************************************/
 
-EmbPPatMatch embPatPosSeqMatchFind(AjPSeq seq, AjPStr reg){
-  return embPatPosSeqMatchFindC(seq, ajStrStr(reg));
+EmbPPatMatch embPatPosSeqMatchFind(AjPSeq seq, AjPStr reg)
+{
+    return embPatPosSeqMatchFindC(seq, ajStrStr(reg));
 }
+
+
+
 
 /* @func embPatPosSeqMatchFindC ***********************************************
 **
@@ -409,22 +497,24 @@ EmbPPatMatch embPatPosSeqMatchFind(AjPSeq seq, AjPStr reg){
 **
 ******************************************************************************/
 
-EmbPPatMatch embPatPosSeqMatchFindC(AjPSeq seq, char *reg){
-  AjPStr regexp = NULL;
-  AjBool protein;
-  EmbPPatMatch results;
+EmbPPatMatch embPatPosSeqMatchFindC(AjPSeq seq, char *reg)
+{
+    AjPStr regexp = NULL;
+    AjBool protein;
+    EmbPPatMatch results;
 
-  protein = ajSeqIsProt(seq);
+    protein = ajSeqIsProt(seq);
 
-  regexp = embPatPosSeqCreateRegExpC(reg,protein);
+    regexp  = embPatPosSeqCreateRegExpC(reg,protein);
+    results = embPatPosMatchFind(regexp, ajSeqStr(seq));
 
-  results = embPatPosMatchFind(regexp, ajSeqStr(seq));
+    ajStrDel(&regexp);
 
-  ajStrDel(&regexp);
-
-  return results;
-
+    return results;
 }
+
+
+
 
 /* @func embPatPosMatchFind ***************************************************
 **
@@ -436,9 +526,13 @@ EmbPPatMatch embPatPosSeqMatchFindC(AjPSeq seq, char *reg){
 ** @return [EmbPPatMatch] Results of the pattern matching.
 **
 ******************************************************************************/
-EmbPPatMatch embPatPosMatchFind(AjPStr regexp, AjPStr string){
-  return embPatPosMatchFindC(regexp, ajStrStr(string));
+
+EmbPPatMatch embPatPosMatchFind(AjPStr regexp, AjPStr string)
+{
+    return embPatPosMatchFindC(regexp, ajStrStr(string));
 }
+
+
 
 
 /* @func embPatPosMatchFindC **************************************************
@@ -452,64 +546,80 @@ EmbPPatMatch embPatPosMatchFind(AjPStr regexp, AjPStr string){
 **
 ******************************************************************************/
 
-EmbPPatMatch embPatPosMatchFindC(AjPStr regexp, char *sptr){
-  AjPPosRegexp regcomp = NULL;
-  EmbPPatMatch results = NULL;
-  AjPList poslist = ajListNew();
-  AjPList lenlist = ajListNew();
-  AjIList iter;
-  ajint *pos,*len,posi,i;
-  char *ptr = sptr;
-  regcomp = ajPosRegComp(regexp);
+EmbPPatMatch embPatPosMatchFindC(AjPStr regexp, char *sptr)
+{
+    AjPPosRegexp regcomp = NULL;
+    EmbPPatMatch results = NULL;
+    AjPList poslist;
+    AjPList lenlist;
+    AjIList iter;
+    ajint *pos;
+    ajint *len;
+    ajint posi;
+    ajint i;
+    char *ptr;
 
-  AJNEW(results);
+    poslist = ajListNew();
+    lenlist = ajListNew();
+    ptr     = sptr;
+    regcomp = ajPosRegComp(regexp);
 
-  while(*sptr != '\0' && ajPosRegExecC(regcomp,sptr)){
-    /*    ajPosRegTrace(regcomp);*/
-    AJNEW (pos);
-    *pos = posi = ajPosRegOffset(regcomp);
-    AJNEW (len);
-    *len = ajPosRegLenI(regcomp,0);
-    *pos +=sptr-ptr;
-    ajListAppend(poslist, ajListNodesNew(pos, NULL));
-    ajListAppend(lenlist, ajListNodesNew(len, NULL));
-    sptr += posi+1;
-  }
+    AJNEW(results);
 
-  ajPosRegFree(&regcomp);
-  results->number  = ajListLength(poslist);
-  if(results->number){
-    AJCNEW(results->start, results->number);
-    AJCNEW(results->len, results->number);
-
-    i=0;
-    iter=ajListIter(poslist);
-    while (ajListIterMore(iter)) {
-      results->start[i] = *(ajint *) ajListIterNext (iter);
-      i++;
+    while(*sptr != '\0' && ajPosRegExecC(regcomp,sptr))
+    {
+	AJNEW(pos);
+	*pos = posi = ajPosRegOffset(regcomp);
+	AJNEW(len);
+	*len = ajPosRegLenI(regcomp,0);
+	*pos +=sptr-ptr;
+	ajListAppend(poslist, ajListNodesNew(pos, NULL));
+	ajListAppend(lenlist, ajListNodesNew(len, NULL));
+	sptr += posi+1;
     }
-    ajListIterFree (iter);
 
-    i=0;
-    iter=ajListIter(lenlist);
-    while (ajListIterMore(iter)) {
-      results->len[i] = *(ajint *) ajListIterNext (iter);
-      i++;
+    ajPosRegFree(&regcomp);
+    results->number  = ajListLength(poslist);
+    if(results->number)
+    {
+	AJCNEW(results->start, results->number);
+	AJCNEW(results->len, results->number);
+
+	i = 0;
+	iter=ajListIter(poslist);
+	while(ajListIterMore(iter))
+	{
+	    results->start[i] = *(ajint *) ajListIterNext(iter);
+	    i++;
+	}
+	ajListIterFree(iter);
+
+	i = 0;
+	iter = ajListIter(lenlist);
+	while(ajListIterMore(iter))
+	{
+	    results->len[i] = *(ajint *) ajListIterNext(iter);
+	    i++;
+	}
+	ajListIterFree(iter);
+
+	ajListMap(poslist,patStringFree, NULL);
+	ajListMap(lenlist,patStringFree, NULL);
+	ajListFree(&poslist);
+	ajListFree(&lenlist);
+
     }
-    ajListIterFree (iter);
+    else
+    {
+	ajListFree(&poslist);
+	ajListFree(&lenlist);
+    }
 
-    ajListMap(poslist,patStringFree, NULL);
-    ajListMap(lenlist,patStringFree, NULL);
-    ajListFree(&poslist);
-    ajListFree(&lenlist);
-
-  }
-  else{
-    ajListFree(&poslist);
-    ajListFree(&lenlist);
-  }
-  return results;
+    return results;
 }
+
+
+
 
 /* @func  embPatPosMatchGetLen*************************************************
 **
@@ -526,6 +636,8 @@ ajint embPatPosMatchGetLen(EmbPPatMatch data, ajint index)
 {
     return embPatMatchGetLen(data,index);
 }
+
+
 
 
 /* @func  embPatPosMatchGetEnd*************************************************
@@ -565,6 +677,7 @@ ajint embPatPosMatchGetNumber(EmbPPatMatch data)
 
 
 
+
 /* @func  embPatPosMatchGetStart***********************************************
 **
 ** Returns the start position from the posix pattern match structure for
@@ -583,6 +696,8 @@ ajint embPatPosMatchGetStart(EmbPPatMatch data, ajint index)
 }
 
 
+
+
 /* @func embPatPosMatchDel ****************************************************
 **
 ** Free all the memory from a posix pattern match search.
@@ -594,7 +709,10 @@ ajint embPatPosMatchGetStart(EmbPPatMatch data, ajint index)
 void embPatPosMatchDel(EmbPPatMatch* pthis)
 {
     embPatMatchDel(pthis);
+
+    return;
 }
+
 
 
 
@@ -614,110 +732,125 @@ AjPStr embPatPrositeToRegExp(AjPStr *s)
     AjBool isct;
 
     char   *p;
-    static char *aa="ACDEFGHIKLMNPQRSTVWY";
+    static char *aa = "ACDEFGHIKLMNPQRSTVWY";
     static char ch[2];
     ajint len;
     ajint i;
 
-    t = ajStrNewC("");
-    len=ajStrLen(*s);
-    if(!len) return t;
+    t   = ajStrNewC("");
+    len = ajStrLen(*s);
+    if(!len)
+	return t;
 
     c = ajStrNew();
-    (void) ajStrAss(&c, *s);
-    (void) ajStrToUpper(&c);
-    (void) ajStrClean(&c);
+    ajStrAss(&c, *s);
+    ajStrToUpper(&c);
+    ajStrClean(&c);
     ch[1]='\0';
 
     p = ajStrStr(c);
     for(i=isnt=isct=0;i<len;++i)
     {
-	if(p[i]=='>') isct=1;
-	if(p[i]=='<') isnt=1;
+	if(p[i]=='>')
+	    isct = 1;
+
+	if(p[i]=='<')
+	    isnt = 1;
     }
-    if(isnt) (void) ajStrAppC(&t,"^");
+
+    if(isnt)
+	ajStrAppC(&t,"^");
 
     while(*p)
     {
 	if(*p=='?')
 	{
-	    (void) ajStrAppC(&t,"[^#]");
+	    ajStrAppC(&t,"[^#]");
 	    ++p;
 	    continue;
 	}
 
 	if(*p=='X')
 	{
-	    (void) ajStrAppC(&t,"[^BJOUXZ]");
+	    ajStrAppC(&t,"[^BJOUXZ]");
 	    ++p;
 	    continue;
 	}
+
 	if(*p=='(')
 	{
 	    ++p;
-	    (void) ajStrAppC(&t,"{");
+	    ajStrAppC(&t,"{");
 	    while(*p != ')')
 	    {
 		if(!*p)
 		    ajFatal("Unmatched '(' in %s\n",ajStrStr(*s));
+
 		if(*p=='<' || *p=='>')
 		{
 		    ++p;
 		    continue;
 		}
+
 		*ch= *p;
-		(void) ajStrAppC(&t,ch);
+		ajStrAppC(&t,ch);
 		++p;
 	    }
-	    (void) ajStrAppC(&t,"}");
+	    ajStrAppC(&t,"}");
 	    ++p;
 	    continue;
 	}
+
 	if(*p=='[')
 	{
 	    while(*p != ']')
 	    {
 		if(!*p)
 		    ajFatal("Unmatched '[' in %s\n",ajStrStr(*s));
+
 		if(*p=='<' || *p=='>')
 		{
 		    ++p;
 		    continue;
 		}
-		*ch= *p;
-		(void) ajStrAppC(&t,ch);
+		*ch = *p;
+		ajStrAppC(&t,ch);
 		++p;
 	    }
-	    /*if(*(p+1)!='(')*/ (void) ajStrAppC(&t,"]");
+
+	    ajStrAppC(&t,"]");
 	    ++p;
 	    continue;
 	}
+
 	if(*p=='{')
 	{
 	    ++p;
-	    (void) ajStrAppC(&t,"[^");
+	    ajStrAppC(&t,"[^");
 	    while(*p != '}')
 	    {
 		if(!*p)
 		    ajFatal("Unmatched '{' in %s\n",ajStrStr(*s));
+
 		if(*p=='<' || *p=='>')
 		{
 		    ++p;
 		    continue;
 		}
-		*ch= *p;
-		(void) ajStrAppC(&t,ch);
+		*ch = *p;
+		ajStrAppC(&t,ch);
 		++p;
 	    }
-	    /*if(*(p+1)!='(')*/ (void) ajStrAppC(&t,"]");
+
+	    ajStrAppC(&t,"]");
 	    ++p;
 	    continue;
 	}
 
 	if(strchr(aa,*p))
 	{
-	    *ch= *p;
-	    (void) ajStrAppC(&t,ch);
+	    *ch = *p;
+	    ajStrAppC(&t,ch);
 	    ++p;
 	    continue;
 	}
@@ -727,11 +860,15 @@ AjPStr embPatPrositeToRegExp(AjPStr *s)
 	++p;
     }
 
-    if(isct) (void) ajStrAppC(&t,"$");
-    (void) ajStrAssC(&c,ajStrStr(t));
+    if(isct)
+	ajStrAppC(&t,"$");
+
+    ajStrAssC(&c,ajStrStr(t));
     ajStrDel(&t);
+
     return c;
 }
+
 
 
 
@@ -746,7 +883,7 @@ EmbPPatRestrict embPatRestrictNew(void)
 {
     EmbPPatRestrict thys;
 
-    AJNEW0 (thys);
+    AJNEW0(thys);
 
     thys->cod  = ajStrNew();
     thys->pat  = ajStrNew();
@@ -781,7 +918,9 @@ void embPatRestrictDel(EmbPPatRestrict *thys)
     ajStrDel(&(*thys)->meth);
     ajStrDel(&(*thys)->sou);
     ajStrDel(&(*thys)->sup);
-    AJFREE (*thys);
+    AJFREE(*thys);
+
+    return;
 }
 
 
@@ -800,14 +939,15 @@ AjBool embPatRestrictReadEntry(EmbPPatRestrict *re, AjPFile *inf)
 {
     AjPStr line;
     AjBool ret;
-    char   *p=NULL;
-    ajint    i;
+    char *p = NULL;
+    ajint i;
 
     line = ajStrNew();
     while((ret=ajFileReadLine(*inf,&line)))
     {
 	p = ajStrStr(line);
-	if(!(!*p || *p=='#' || *p=='!')) break;
+	if(!(!*p || *p=='#' || *p=='!'))
+	    break;
     }
 
     if(!ret)
@@ -817,26 +957,26 @@ AjBool embPatRestrictReadEntry(EmbPPatRestrict *re, AjPFile *inf)
     }
 
 
-    p=ajSysStrtok(p,"\t \n");
-    (void) ajStrAssC(&(*re)->cod,p);
-    p=ajSysStrtok(NULL,"\t \n");
-    (void) ajStrAssC(&(*re)->pat,p);
-    (void) ajStrAssC(&(*re)->bin,p);
+    p = ajSysStrtok(p,"\t \n");
+    ajStrAssC(&(*re)->cod,p);
+    p = ajSysStrtok(NULL,"\t \n");
+    ajStrAssC(&(*re)->pat,p);
+    ajStrAssC(&(*re)->bin,p);
 
-    p=ajSysStrtok(NULL,"\t \n");
-    (void) sscanf(p,"%d",&(*re)->len);
-    p=ajSysStrtok(NULL,"\t \n");
-    (void) sscanf(p,"%d",&(*re)->ncuts);
-    p=ajSysStrtok(NULL,"\t \n");
-    (void) sscanf(p,"%d",&(*re)->blunt);
-    p=ajSysStrtok(NULL,"\t \n");
-    (void) sscanf(p,"%d",&(*re)->cut1);
-    p=ajSysStrtok(NULL,"\t \n");
-    (void) sscanf(p,"%d",&(*re)->cut2);
-    p=ajSysStrtok(NULL,"\t \n");
-    (void) sscanf(p,"%d",&(*re)->cut3);
-    p=ajSysStrtok(NULL,"\t \n");
-    (void) sscanf(p,"%d",&(*re)->cut4);
+    p = ajSysStrtok(NULL,"\t \n");
+    sscanf(p,"%d",&(*re)->len);
+    p = ajSysStrtok(NULL,"\t \n");
+    sscanf(p,"%d",&(*re)->ncuts);
+    p = ajSysStrtok(NULL,"\t \n");
+    sscanf(p,"%d",&(*re)->blunt);
+    p = ajSysStrtok(NULL,"\t \n");
+    sscanf(p,"%d",&(*re)->cut1);
+    p = ajSysStrtok(NULL,"\t \n");
+    sscanf(p,"%d",&(*re)->cut2);
+    p = ajSysStrtok(NULL,"\t \n");
+    sscanf(p,"%d",&(*re)->cut3);
+    p = ajSysStrtok(NULL,"\t \n");
+    sscanf(p,"%d",&(*re)->cut4);
 
     for(i=0,p=ajStrStr((*re)->bin);i<(*re)->len;++i)
 	*(p+i)=ajAZToBinC(*(p+i));
@@ -845,6 +985,7 @@ AjBool embPatRestrictReadEntry(EmbPPatRestrict *re, AjPFile *inf)
 
     return ajTrue;
 }
+
 
 
 
@@ -864,7 +1005,7 @@ AjBool embPatRestrictReadEntry(EmbPPatRestrict *re, AjPFile *inf)
 ******************************************************************************/
 
 static void patRestrictPushHit(EmbPPatRestrict *enz, AjPList *l, ajint pos,
-			      ajint begin, ajint len, AjBool forward)
+			       ajint begin, ajint len, AjBool forward)
 {
 
     EmbPMatMatch hit;
@@ -886,57 +1027,84 @@ static void patRestrictPushHit(EmbPPatRestrict *enz, AjPList *l, ajint pos,
 	hit->start = pos+begin;
 	hit->cut1 = pos+begin+(*enz)->cut1-1;
 	hit->cut2 = pos+begin+(*enz)->cut2-1;
-	if(hit->cut1>len+begin-1) hit->cut1-=len;
-	if(hit->cut2>len+begin-1) hit->cut2-=len;
+	if(hit->cut1>len+begin-1)
+	    hit->cut1-=len;
 
- 	if((*enz)->cut1<1) ++hit->cut1;
-	if((*enz)->cut2<1) ++hit->cut2;
+	if(hit->cut2>len+begin-1)
+	    hit->cut2-=len;
 
-	if(hit->cut1<1) hit->cut1+=len;
-	if(hit->cut2<1) hit->cut2+=len;
+ 	if((*enz)->cut1<1)
+	    ++hit->cut1;
+
+	if((*enz)->cut2<1)
+	    ++hit->cut2;
+
+	if(hit->cut1<1)
+	    hit->cut1+=len;
+
+	if(hit->cut2<1)
+	    hit->cut2+=len;
 
 
 	if((*enz)->ncuts == 4)
 	{
 	    hit->cut3 = pos+begin+(*enz)->cut3-1;
 	    hit->cut4 = pos+begin+(*enz)->cut4-1;
-	    if(hit->cut3>len+begin-1) hit->cut3-=len;
-	    if(hit->cut4>len+begin-1) hit->cut4-=len;
+
+	    if(hit->cut3>len+begin-1)
+		hit->cut3-=len;
+
+	    if(hit->cut4>len+begin-1)
+		hit->cut4-=len;
 	}
 	else hit->cut3 = hit->cut4 = 0;
     }
     else
     {
-	hit->forward=0;
+	hit->forward = 0;
 	hit->start = len+begin-pos-1;
-	hit->cut1 = len+begin-pos-(*enz)->cut1-1;
-	hit->cut2 = len+begin-pos-(*enz)->cut2-1;
+	hit->cut1  = len+begin-pos-(*enz)->cut1-1;
+	hit->cut2  = len+begin-pos-(*enz)->cut2-1;
 
-	if((*enz)->cut1<1) --hit->cut1;
-	if((*enz)->cut2<1) --hit->cut2;
+	if((*enz)->cut1<1)
+	    --hit->cut1;
 
-	if(hit->cut1<1) hit->cut1+=len;
-	if(hit->cut2<1) hit->cut2+=len;
+	if((*enz)->cut2<1)
+	    --hit->cut2;
 
-	if(hit->cut1>len+begin-1) hit->cut1-=len;
-	if(hit->cut2>len+begin-1) hit->cut2-=len;
+	if(hit->cut1<1)
+	    hit->cut1+=len;
+
+	if(hit->cut2<1)
+	    hit->cut2+=len;
+
+	if(hit->cut1>len+begin-1)
+	    hit->cut1-=len;
+
+	if(hit->cut2>len+begin-1)
+	    hit->cut2-=len;
 
 	if((*enz)->ncuts == 4)
 	{
 	    hit->cut3 = len+begin-pos-(*enz)->cut3-1;
 	    hit->cut4 = len+begin-pos-(*enz)->cut4-1;
-	    if(hit->cut3<0) hit->cut3+=len;
-	    if(hit->cut4<0) hit->cut4+=len;
+
+	    if(hit->cut3<0)
+		hit->cut3+=len;
+
+	    if(hit->cut4<0)
+		hit->cut4+=len;
 	}
-	else hit->cut3 = hit->cut4 = 0;
+	else
+	    hit->cut3 = hit->cut4 = 0;
 
 	/* Reverse them to refer to forward strand */
-	v=hit->cut1;
-	hit->cut1=hit->cut2;
-	hit->cut2=v;
-	v=hit->cut3;
-	hit->cut3=hit->cut4;
-	hit->cut4=v;
+	v = hit->cut1;
+	hit->cut1 = hit->cut2;
+	hit->cut2 = v;
+	v = hit->cut3;
+	hit->cut3 = hit->cut4;
+	hit->cut4 = v;
     }
 
     ajListPush(*l,(void *) hit);
@@ -968,15 +1136,15 @@ static void patRestrictPushHit(EmbPPatRestrict *enz, AjPList *l, ajint pos,
 ******************************************************************************/
 
 ajint embPatRestrictScan(EmbPPatRestrict *enz, AjPStr *substr, AjPStr *binstr,
-		       AjPStr *revstr, AjPStr *binrev, ajint len,
-		       AjBool ambiguity, AjBool plasmid, ajint min,
-		       ajint max, ajint begin, AjPList *l)
+			 AjPStr *revstr, AjPStr *binrev, ajint len,
+			 AjBool ambiguity, AjBool plasmid, ajint min,
+			 ajint max, ajint begin, AjPList *l)
 {
     ajint limit;
     ajint i;
     ajint j;
     ajint hits;
-    ajint rhits=0;
+    ajint rhits = 0;
     char *p;
     char *q;
     char *t;
@@ -984,13 +1152,15 @@ ajint embPatRestrictScan(EmbPPatRestrict *enz, AjPStr *substr, AjPStr *binstr,
     ajint  maxcut;
     AjBool forward;
     ajint  v;
-    AjPList tx=NULL;
-    AjPList ty=NULL;
-    EmbPMatMatch m=NULL;
-    EmbPMatMatch z=NULL;
+    AjPList tx     = NULL;
+    AjPList ty     = NULL;
+    EmbPMatMatch m = NULL;
+    EmbPMatMatch z = NULL;
 
-    if(plasmid) limit=len;
-    else limit=len-(*enz)->len+1;
+    if(plasmid)
+	limit=len;
+    else
+	limit=len-(*enz)->len+1;
 
     mincut=AJMIN((*enz)->cut1,(*enz)->cut2);
     if((*enz)->ncuts==4)
@@ -998,6 +1168,7 @@ ajint embPatRestrictScan(EmbPPatRestrict *enz, AjPStr *substr, AjPStr *binstr,
 	mincut=AJMIN(mincut,(*enz)->cut3);
 	mincut=AJMIN(mincut,(*enz)->cut4);
     }
+
     maxcut=AJMAX((*enz)->cut1,(*enz)->cut2);
     if((*enz)->ncuts==4)
     {
@@ -1020,8 +1191,10 @@ ajint embPatRestrictScan(EmbPPatRestrict *enz, AjPStr *substr, AjPStr *binstr,
 	    for(j=0,q=t;j<(*enz)->len;++j,++q)
 	    {
 		v=*(p+i+j);
-		if(!(*q & v) || v==15) break;
+		if(!(*q & v) || v==15)
+		    break;
 	    }
+
 	    if(j==(*enz)->len && !plasmid && (i+(*enz)->cut1>=len ||
 					      i+(*enz)->cut2>=len))
 		continue;
@@ -1034,15 +1207,17 @@ ajint embPatRestrictScan(EmbPPatRestrict *enz, AjPStr *substr, AjPStr *binstr,
 
 	}
 
-	forward=ajFalse;
-	p=ajStrStr(*binrev);
+	forward = ajFalse;
+	p = ajStrStr(*binrev);
 	for(i=0;i<limit;++i)
 	{
 	    for(j=0,q=t;j<(*enz)->len;++j,++q)
 	    {
-		v=*(p+i+j);
-		if(!(*q & v) || v==15) break;
+		v = *(p+i+j);
+		if(!(*q & v) || v==15)
+		    break;
 	    }
+
 	    if(j==(*enz)->len && !plasmid && (i+(*enz)->cut1>=len ||
 					      i+(*enz)->cut2>=len))
 		continue;
@@ -1066,11 +1241,14 @@ ajint embPatRestrictScan(EmbPPatRestrict *enz, AjPStr *substr, AjPStr *binstr,
 	    for(j=0,q=t;j<(*enz)->len;++j,++q)
 	    {
 		v=*(p+i+j);
-		if(*q != v || v=='N') break;
+		if(*q != v || v=='N')
+		    break;
 	    }
+
 	    if(j==(*enz)->len && !plasmid && (i+(*enz)->cut1>=len ||
 					      i+(*enz)->cut2>=len))
 		continue;
+
 	    if(j==(*enz)->len && (plasmid || i+mincut+1>0) && i<limit)
 	    {
 		++hits;
@@ -1079,18 +1257,20 @@ ajint embPatRestrictScan(EmbPPatRestrict *enz, AjPStr *substr, AjPStr *binstr,
 
 	}
 
-	forward=ajFalse;
-	p=ajStrStr(*revstr);
+	forward = ajFalse;
+	p = ajStrStr(*revstr);
 	for(i=0;i<limit;++i)
 	{
 	    for(j=0,q=t;j<(*enz)->len;++j,++q)
 	    {
-		v=*(p+i+j);
-		if(*q != v || v=='N') break;
+		v = *(p+i+j);
+		if(*q != v || v=='N')
+		    break;
 	    }
 	    if(j==(*enz)->len && !plasmid && (i+(*enz)->cut1>=len ||
 					      i+(*enz)->cut2>=len))
 		continue;
+
 	    if(j==(*enz)->len && (plasmid || i+mincut+1>0) && i<limit)
 	    {
 		++hits;
@@ -1105,24 +1285,22 @@ ajint embPatRestrictScan(EmbPPatRestrict *enz, AjPStr *substr, AjPStr *binstr,
 	ajListSort(tx,embPatRestrictCutCompare);
 	for(i=0,rhits=0,v=0;i<hits;++i)
 	{
-	    (void) ajListPop(tx,(void **)&m);
+	    ajListPop(tx,(void **)&m);
 	    if(m->cut1 != v)
 	    {
-		(void) ajListPush(ty,(void *)m);
+		ajListPush(ty,(void *)m);
 		++rhits;
 		v = m->cut1;
 	    }
 	    else
 	    {
 		if(i)
-		{
 		    if(m->forward)
 		    {
 			ajListPop(ty,(void **)&z);
 			ajListPush(ty,(void *)m);
 			m=z;
 		    }
-		}
 		embMatMatchDel(&m);
 	    }
 	}
@@ -1138,7 +1316,7 @@ ajint embPatRestrictScan(EmbPPatRestrict *enz, AjPStr *substr, AjPStr *binstr,
 	{
 	    while(ajListPop(ty,(void **)&m))
 		ajListPush(*l,(void *)m);
-	    hits=rhits;
+	    hits = rhits;
 	}
     }
 
@@ -1169,19 +1347,22 @@ void embPatKMPInit(AjPStr *pat, ajint len, ajint *next)
     ajint t;
     char *p;
 
-    p=ajStrStr(*pat);
-    t=len-1;
+    p = ajStrStr(*pat);
+    t = len-1;
 
-    i=0;
+    i = 0;
     k = -1;
     next[0] = -1;
     while(i<t)
     {
-	while(k>-1 && p[i]!=p[k]) k=next[k];
+	while(k>-1 && p[i]!=p[k])
+	    k = next[k];
 	++i;
 	++k;
-	if(p[i]==p[k]) next[i]=next[k];
-	else next[i]=k;
+	if(p[i]==p[k])
+	    next[i] = next[k];
+	else
+	    next[i] = k;
     }
 
     return;
@@ -1216,16 +1397,19 @@ ajint embPatKMPSearch(AjPStr *str, AjPStr *pat,
     p = ajStrStr(*str);
     q = ajStrStr(*pat);
 
-    i=start;
-    j=0;
+    i = start;
+    j = 0;
     while(i<slen && j<plen)
     {
-	while(j>=0 && p[i]!=q[j]) j=next[j];
+	while(j>=0 && p[i]!=q[j])
+	    j = next[j];
 	++i;
 	++j;
     }
 
-    if(j==plen) return i-plen;
+    if(j==plen)
+	return i-plen;
+
     return -1;
 }
 
@@ -1249,11 +1433,14 @@ void embPatBMHInit(AjPStr *pat, ajint len, ajint *skip)
     ajint t;
     char *p;
 
-    p=ajStrStr(*pat);
+    p = ajStrStr(*pat);
 
-    t=len-1;
-    for(i=0;i<AJALPHA;++i) skip[i]=t;
-    for(i=0;i<t;++i) skip[(ajint)p[i]]=t-i;
+    t = len-1;
+    for(i=0;i<AJALPHA;++i)
+	skip[i] = t;
+
+    for(i=0;i<t;++i)
+	skip[(ajint)p[i]] = t-i;
 
     return;
 }
@@ -1287,13 +1474,14 @@ ajint embPatBMHSearch(AjPStr *str, AjPStr *pat,
 {
     ajint i;
     ajint j;
-    ajint k=0;
+    ajint k = 0;
     char *p;
     char *q;
     AjBool flag;
     ajint count;
 
-    if(left && start) return 0;
+    if(left && start)
+	return 0;
 
     p = ajStrStr(*str);
     q = ajStrStr(*pat);
@@ -1301,41 +1489,44 @@ ajint embPatBMHSearch(AjPStr *str, AjPStr *pat,
     flag = ajTrue;
     count = 0;
 
-    i=start+(plen-1);
-    j=plen-1;
+    i = start+(plen-1);
+    j = plen-1;
 
     while(flag)
     {
 	while(j>=0 && i<slen)
 	{
-	    k=i;
+	    k = i;
 	    while(j>=0 && p[k]==q[j])
 	    {
 		--k;
 		--j;
 	    }
+
 	    if(j>=0)
 	    {
-		i+=skip[(ajint)p[i]];
-		j=plen-1;
+		i += skip[(ajint)p[i]];
+		j = plen-1;
 	    }
 	}
 
 	if(j<0)
 	{
-	    if(left && k+1) return 0;
+	    if(left && k+1)
+		return 0;
+
 	    if(!right || (right && k+1+plen==slen))
 	    {
 		++count;
 		embPatPushHit(*l,name,k+1,plen,begin,0);
 	    }
-	    i=start+(plen-1)+k+2;
-	    j=plen-1;
+	    i = start+(plen-1)+k+2;
+	    j = plen-1;
 
 	}
-	else flag=ajFalse;
+	else
+	    flag=ajFalse;
     }
-
 
     return count;
 }
@@ -1363,19 +1554,20 @@ void embPatBYPInit(AjPStr *pat, ajint len, EmbPPatBYPNode offset, ajint *buf)
     char *p;
     EmbPPatBYPNode op;
 
-    p=ajStrStr(*pat);
+    p = ajStrStr(*pat);
 
     for(i=0;i<AJALPHA;++i)
     {
 	offset[i].offset = -1;
-	offset[i].next = NULL;
-	buf[i]=len;
+	offset[i].next   = NULL;
+	buf[i] = len;
     }
 
     for(i=0,j=AJALPHA>>1;i<len;++i,++p)
     {
-	buf[i]=AJALPHA;
-	if(offset[(ajint)*p].offset == -1) offset[(ajint)*p].offset = len-i-1;
+	buf[i] = AJALPHA;
+	if(offset[(ajint)*p].offset == -1)
+	    offset[(ajint)*p].offset = len-i-1;
 	else
 	{
 	    op=offset[(ajint)*p].next;
@@ -1387,6 +1579,7 @@ void embPatBYPInit(AjPStr *pat, ajint len, EmbPPatBYPNode offset, ajint *buf)
 
     return;
 }
+
 
 
 
@@ -1406,11 +1599,11 @@ void embPatBYPInit(AjPStr *pat, ajint len, EmbPPatBYPNode offset, ajint *buf)
 ******************************************************************************/
 
 void embPatPushHit(AjPList l, AjPStr *name, ajint pos, ajint plen,
-		 ajint begin, ajint mm)
+		   ajint begin, ajint mm)
 {
     EmbPMatMatch hit;
 
-    AJNEW0 (hit);
+    AJNEW0(hit);
 
     hit->seqname = ajStrNewC(ajStrStr(*name));
     hit->len = plen;
@@ -1450,8 +1643,8 @@ void embPatPushHit(AjPList l, AjPStr *name, ajint pos, ajint plen,
 ******************************************************************************/
 
 ajint embPatBYPSearch(AjPStr *str, AjPStr *name, ajint begin, ajint slen,
-		   ajint plen, ajint mm, EmbPPatBYPNode offset, ajint *buf,
-		   AjPList l, AjBool amino, AjBool carboxyl, AjPStr pat)
+		      ajint plen, ajint mm, EmbPPatBYPNode offset, ajint *buf,
+		      AjPList l, AjBool amino, AjBool carboxyl, AjPStr pat)
 {
     char *p;
     char *q;
@@ -1460,23 +1653,25 @@ ajint embPatBYPSearch(AjPStr *str, AjPStr *name, ajint begin, ajint slen,
     EmbPPatBYPNode off;
     ajint count;
 
-    p=ajStrStr(*str);
+    p = ajStrStr(*str);
     ajStrToUpper(&pat);
-    q=ajStrStr(pat);
+    q = ajStrStr(pat);
 
     count = mm;
     for(i=0;i<plen;++i)
 	if(*q++!=*p++)
 	    if(--count<0)
 		break;
+
     if(count>=0)
     {
 	embPatPushHit(l,name,0,plen,begin,mm-count);
-	count=1;
+	count = 1;
     }
-    else count=0;
+    else
+	count = 0;
 
-    p=ajStrStr(*str);
+    p = ajStrStr(*str);
 
     for(i=0;i<slen;++i)
     {
@@ -1486,9 +1681,12 @@ ajint embPatBYPSearch(AjPStr *str, AjPStr *name, ajint begin, ajint slen,
 	    for(off=off->next;off!=NULL;off=off->next)
 		buf[(i+off->offset)&AJMOD256]--;
 	}
+
 	if(buf[i&AJMOD256]<=mm)
 	{
-	    if(amino && i-plen+1!=0) return count; /* pmr: was return 0 */
+	    if(amino && i-plen+1!=0)
+		return count;
+
 	    if(!carboxyl || (carboxyl && i+1==slen))
 	    {
 		++count;
@@ -1496,11 +1694,13 @@ ajint embPatBYPSearch(AjPStr *str, AjPStr *name, ajint begin, ajint slen,
 	    }
 	}
 
-	buf[i&AJMOD256]=plen;
+	buf[i&AJMOD256] = plen;
     }
 
     return count;
 }
+
+
 
 
 /* @funcstatic patAminoCarboxyl ***********************************************
@@ -1521,9 +1721,10 @@ static void patAminoCarboxyl(AjPStr *s, AjBool *amino, AjBool *carboxyl)
     char *p;
     char c[2];
 
-    t=ajStrNewC("");
-    p=ajStrStr(*s);
-    c[1]='\0';
+    t = ajStrNewC("");
+    p = ajStrStr(*s);
+
+    c[1] = '\0';
 
     while(*p)
     {
@@ -1532,27 +1733,32 @@ static void patAminoCarboxyl(AjPStr *s, AjBool *amino, AjBool *carboxyl)
 	    ++p;
 	    continue;
 	}
+
 	if(*p=='<')
 	{
-	    *amino=ajTrue;
-	    ++p;
-	    continue;
-	}
-	if(*p=='>')
-	{
-	    *carboxyl=ajTrue;
+	    *amino = ajTrue;
 	    ++p;
 	    continue;
 	}
 
-	*c=*p;
-	(void) ajStrAppC(&t,c);
+	if(*p=='>')
+	{
+	    *carboxyl = ajTrue;
+	    ++p;
+	    continue;
+	}
+
+	*c = *p;
+	ajStrAppC(&t,c);
 	++p;
     }
-    (void) ajStrAssC(s,ajStrStr(t));
+    ajStrAssC(s,ajStrStr(t));
     ajStrDel(&t);
+
     return;
 }
+
+
 
 
 /* @funcstatic patParenTest ***************************************************
@@ -1570,8 +1776,8 @@ static AjBool patParenTest(char *p, AjBool *repeat, AjBool *range)
 {
     ajint i;
 
-    *repeat=ajTrue;
-    p=p+2;
+    *repeat = ajTrue;
+    p = p+2;
     if(sscanf(p,"%d",&i)!=1)
     {
 	ajWarn("Illegal pattern. Missing repeat number");
@@ -1580,16 +1786,19 @@ static AjBool patParenTest(char *p, AjBool *repeat, AjBool *range)
 
     while(*p)
     {
-	if(*p==')') break;
+	if(*p==')')
+	    break;
+
 	if(*p=='('||*p=='['||*p=='{'||*p=='}'||*p==']' ||
 	   isalpha((ajint)*p))
 	{
 	    ajWarn("Illegal pattern. Nesting not allowed");
 	    return ajFalse;
 	}
+
 	if(*p==',')
 	{
-	    *range=ajTrue;
+	    *range = ajTrue;
 	    ++p;
 	    if(sscanf(p,"%d",&i)!=1)
 	    {
@@ -1600,13 +1809,16 @@ static AjBool patParenTest(char *p, AjBool *repeat, AjBool *range)
 	}
 	++p;
     }
+
     if(!*p)
     {
 	ajWarn("Illegal pattern. Missing parenthesis");
 	return ajFalse;
     }
+
     return ajTrue;
 }
+
 
 
 
@@ -1629,37 +1841,46 @@ static AjBool patExpandRepeat(AjPStr *s)
     ajint i;
     char c[2];
 
-    t=ajStrNewC("");
-    p=ajStrStr(*s);
-    c[1]='\0';
+    t = ajStrNewC("");
+    p = ajStrStr(*s);
+
+    c[1] = '\0';
 
     while(*p)
     {
 	if(*p=='[' || *p=='{')
 	{
-	    q=p;
-	    while(!(*p==']' || *p=='}')) ++p;
-	    if(*(p+1)!='(') count=1;
-	    else (void) sscanf(p+2,"%d",&count);
+	    q = p;
+	    while(!(*p==']' || *p=='}'))
+		++p;
+
+	    if(*(p+1)!='(')
+		count = 1;
+	    else
+		sscanf(p+2,"%d",&count);
+
 	    if(count<=0)
 	    {
 		ajWarn("Illegal pattern. Bad repeat count");
 		return ajFalse;
 	    }
+
 	    for(i=0;i<count;++i)
 	    {
-		p=q;
+		p = q;
 		while(!(*p==']'||*p=='}'))
 		{
-		    *c=*p;
-		    (void) ajStrAppC(&t,c);
+		    *c = *p;
+		    ajStrAppC(&t,c);
 		    ++p;
 		}
-		*c=*p;
-		(void) ajStrAppC(&t,c);
+		*c = *p;
+		ajStrAppC(&t,c);
 	    }
+
 	    if(*(p+1)=='(')
-		while(*p!=')') ++p;
+		while(*p!=')')
+		    ++p;
 
 	    ++p;
 	    continue;
@@ -1667,28 +1888,35 @@ static AjBool patExpandRepeat(AjPStr *s)
 
 	if(*p=='(')
 	{
-	    (void) sscanf(p+1,"%d",&count);
+	    sscanf(p+1,"%d",&count);
 	    if(count<=0)
 	    {
 		ajWarn("Illegal pattern. Bad range number");
 		return ajFalse;
 	    }
-	    *c=*(p-1);
-	    for(i=1;i<count;++i) (void) ajStrAppC(&t,c);
-	    while(*p!=')') ++p;
+
+	    *c = *(p-1);
+	    for(i=1;i<count;++i)
+		ajStrAppC(&t,c);
+
+	    while(*p!=')')
+		++p;
 	    ++p;
 	    continue;
 	}
 
-	*c=*p;
-	(void) ajStrAppC(&t,c);
+	*c = *p;
+	ajStrAppC(&t,c);
 	++p;
     }
 
-    (void) ajStrAssC(s,ajStrStr(t));
+    ajStrAssC(s,ajStrStr(t));
     ajStrDel(&t);
+
     return ajTrue;
 }
+
+
 
 
 /* @funcstatic patIUBTranslate ************************************************
@@ -1703,83 +1931,93 @@ static AjBool patExpandRepeat(AjPStr *s)
 static void patIUBTranslate(AjPStr *pat)
 {
     AjPStr t;
-    char   *p;
-    char   c[2];
+    char *p;
+    char c[2];
 
-    t=ajStrNewC(ajStrStr(*pat));
-    p=ajStrStr(t);
-    (void) ajStrClear(pat);
+    t = ajStrNewC(ajStrStr(*pat));
+    p = ajStrStr(t);
+    ajStrClear(pat);
     c[1]='\0';
 
     while(*p)
     {
 	if(*p=='B')
 	{
-	    (void) ajStrAppC(pat,"[TGC]");
+	    ajStrAppC(pat,"[TGC]");
 	    ++p;
 	    continue;
 	}
+
 	if(*p=='D')
 	{
-	    (void) ajStrAppC(pat,"[TGA]");
+	    ajStrAppC(pat,"[TGA]");
 	    ++p;
 	    continue;
 	}
+
 	if(*p=='H')
 	{
-	    (void) ajStrAppC(pat,"[TCA]");
+	    ajStrAppC(pat,"[TCA]");
 	    ++p;
 	    continue;
 	}
+
 	if(*p=='K')
 	{
-	    (void) ajStrAppC(pat,"[TG]");
+	    ajStrAppC(pat,"[TG]");
 	    ++p;
 	    continue;
 	}
+
 	if(*p=='M')
 	{
-	    (void) ajStrAppC(pat,"[CA]");
+	    ajStrAppC(pat,"[CA]");
 	    ++p;
 	    continue;
 	}
+
 	if(*p=='R')
 	{
-	    (void) ajStrAppC(pat,"[GA]");
+	    ajStrAppC(pat,"[GA]");
 	    ++p;
 	    continue;
 	}
+
 	if(*p=='S')
 	{
-	    (void) ajStrAppC(pat,"[GC]");
+	    ajStrAppC(pat,"[GC]");
 	    ++p;
 	    continue;
 	}
+
 	if(*p=='V')
 	{
-	    (void) ajStrAppC(pat,"[GCA]");
+	    ajStrAppC(pat,"[GCA]");
 	    ++p;
 	    continue;
 	}
+
 	if(*p=='W')
 	{
-	    (void) ajStrAppC(pat,"[TA]");
+	    ajStrAppC(pat,"[TA]");
 	    ++p;
 	    continue;
 	}
+
 	if(*p=='Y')
 	{
-	    (void) ajStrAppC(pat,"[TC]");
+	    ajStrAppC(pat,"[TC]");
 	    ++p;
 	    continue;
 	}
-	*c=*p;
-	(void) ajStrAppC(pat,c);
+
+	*c = *p;
+	ajStrAppC(pat,c);
 	++p;
     }
 
-
     ajStrDel(&t);
+
     return;
 }
 
@@ -1804,8 +2042,8 @@ static void patIUBTranslate(AjPStr *pat)
 ******************************************************************************/
 
 AjBool embPatClassify(AjPStr *pat, AjBool *amino, AjBool *carboxyl,
-		     AjBool *fclass, AjBool *ajcompl, AjBool *dontcare,
-		     AjBool *range, AjBool protein)
+		      AjBool *fclass, AjBool *ajcompl, AjBool *dontcare,
+		      AjBool *range, AjBool protein)
 {
     char *p;
     AjBool repeat;
@@ -1815,13 +2053,13 @@ AjBool embPatClassify(AjPStr *pat, AjBool *amino, AjBool *carboxyl,
 
     repeat=*amino=*carboxyl=*fclass=*ajcompl=*dontcare=*range=ajFalse;
 
-    (void) ajStrClean(pat);
+    ajStrClean(pat);
     patAminoCarboxyl(pat,amino,carboxyl);
 
     ajDebug("cleaned pat '%S' amino %b carboxyl %b\n",
 	    *pat, *amino, *carboxyl);
 
-    (void) ajStrToUpper(pat);
+    ajStrToUpper(pat);
 
     if(!protein)
     {
@@ -1829,23 +2067,27 @@ AjBool embPatClassify(AjPStr *pat, AjBool *amino, AjBool *carboxyl,
 	ajDebug("IUB translated pat '%S'\n", *pat);
     }
 
-    p=ajStrStr(*pat);
+    p = ajStrStr(*pat);
 
     while(*p)
     {
 	if(isalpha((ajint)*p))
 	{
-	    if( (*p=='X' && protein) || (*p=='N' && !protein))
+	    if((*p=='X' && protein) || (*p=='N' && !protein))
 	    {
 		*p='?';
-		*dontcare=ajTrue;
+		*dontcare = ajTrue;
 	    }
 
 	    if(*(p+1)=='(')
 	    {
-		if(!patParenTest(p,&repeat,range)) return ajFalse;
-		while(*p!=')') ++p;
+		if(!patParenTest(p,&repeat,range))
+		    return ajFalse;
+
+		while(*p!=')')
+		    ++p;
 	    }
+
 	    ++p;
 	    continue;
 	}
@@ -1854,21 +2096,25 @@ AjBool embPatClassify(AjPStr *pat, AjBool *amino, AjBool *carboxyl,
 
 	if(*p=='[')
 	{
-	    *fclass=ajTrue;
+	    *fclass = ajTrue;
 	    ++p;
 	    while(*p)
 	    {
-		if(*p==']')break;
+		if(*p==']')
+		    break;
+
 		if(*p=='('||*p=='['||*p=='{'||*p=='}'||*p==')')
 		{
 		    ajWarn("Illegal pattern. Nesting not allowed");
 		    return ajFalse;
 		}
+
 		if(!isalpha((ajint)*p))
 		{
 		    ajWarn("Illegal pattern. Non alpha character");
 		    return ajFalse;
 		}
+
 		if((protein&&*p=='X')||(!protein&&*p=='N'))
 		{
 		    ajWarn("Illegal pattern. Dontcare in []");
@@ -1877,6 +2123,7 @@ AjBool embPatClassify(AjPStr *pat, AjBool *amino, AjBool *carboxyl,
 
 		++p;
 	    }
+
 	    if(!*p)
 	    {
 		ajWarn("Illegal pattern. Missing ]");
@@ -1885,8 +2132,11 @@ AjBool embPatClassify(AjPStr *pat, AjBool *amino, AjBool *carboxyl,
 
 	    if(*(p+1)=='(')
 	    {
-		if(!patParenTest(p,&repeat,range)) return ajFalse;
-		while(*p!=')') ++p;
+		if(!patParenTest(p,&repeat,range))
+		    return ajFalse;
+
+		while(*p!=')')
+		    ++p;
 	    }
 
 	    ++p;
@@ -1895,21 +2145,25 @@ AjBool embPatClassify(AjPStr *pat, AjBool *amino, AjBool *carboxyl,
 
 	if(*p=='{')
 	{
-	    *ajcompl=ajTrue;
+	    *ajcompl = ajTrue;
 	    ++p;
 	    while(*p)
 	    {
-		if(*p=='}')break;
+		if(*p=='}')
+		    break;
+
 		if(*p=='('||*p=='['||*p=='{'||*p==']'||*p==')')
 		{
 		    ajWarn("Illegal pattern. Nesting not allowed");
 		    return ajFalse;
 		}
+
 		if(!isalpha((ajint)*p))
 		{
 		    ajWarn("Illegal pattern. Non alpha character");
 		    return ajFalse;
 		}
+
 		if((protein&&*p=='X')||(!protein&&*p=='N'))
 		{
 		    ajWarn("Illegal pattern. Dontcare in {}");
@@ -1918,6 +2172,7 @@ AjBool embPatClassify(AjPStr *pat, AjBool *amino, AjBool *carboxyl,
 
 		++p;
 	    }
+
 	    if(!*p)
 	    {
 		ajWarn("Illegal pattern. Missing }");
@@ -1926,8 +2181,11 @@ AjBool embPatClassify(AjPStr *pat, AjBool *amino, AjBool *carboxyl,
 
 	    if(*(p+1)=='(')
 	    {
-		if(!patParenTest(p,&repeat,range)) return ajFalse;
-		while(*p!=')') ++p;
+		if(!patParenTest(p,&repeat,range))
+		    return ajFalse;
+
+		while(*p!=')')
+		    ++p;
 	    }
 
 	    ++p;
@@ -1943,14 +2201,14 @@ AjBool embPatClassify(AjPStr *pat, AjBool *amino, AjBool *carboxyl,
     if(repeat && !*range)
     {
 	ajDebug("testing repeat expansion\n");
-	if(!patExpandRepeat(pat)) return ajFalse;
+	if(!patExpandRepeat(pat))
+	    return ajFalse;
+
 	ajDebug("repeats expanded pat '%S'\n", *pat);
     }
 
     return ajTrue;
 }
-
-
 
 
 
@@ -1975,8 +2233,10 @@ void embPatSOInit(AjPStr *pat, ajuint *table, ajuint *limit)
 	ajFatal("Pattern too ajlong for Shift-OR search");
 
 
-    for(i=0;i<AJALPHA2;++i) table[i] = ~0;
-    *limit=0;
+    for(i=0;i<AJALPHA2;++i)
+	table[i] = ~0;
+
+    *limit = 0;
     for(i=1,p=ajStrStr(*pat);*p;i<<=AJBPS,++p)
     {
 	table[(ajint)*p] &= ~i;
@@ -1984,7 +2244,11 @@ void embPatSOInit(AjPStr *pat, ajuint *table, ajuint *limit)
     }
 
     *limit = ~(*limit>>AJBPS);
+
+    return;
 }
+
+
 
 
 /* @func embPatSOSearch *******************************************************
@@ -2006,8 +2270,8 @@ void embPatSOInit(AjPStr *pat, ajuint *table, ajuint *limit)
 ******************************************************************************/
 
 ajint embPatSOSearch(AjPStr *str, AjPStr *name, ajuint first, ajint begin,
-		  ajint plen, ajuint *table, ajuint limit, AjPList l,
-		  AjBool amino, AjBool carboxyl)
+		     ajint plen, ajuint *table, ajuint limit, AjPList l,
+		     AjBool amino, AjBool carboxyl)
 {
     register ajuint state;
     register ajuint initial;
@@ -2018,22 +2282,26 @@ ajint embPatSOSearch(AjPStr *str, AjPStr *name, ajuint first, ajint begin,
     ajint matches;
     ajint slen;
 
-    p=q=ajStrStr(*str);
-    slen = ajStrLen(*str);
+    p = q = ajStrStr(*str);
+    slen  = ajStrLen(*str);
     matches = 0;
     initial = ~0;
 
     do
     {
-	while(*p && *p != first) ++p;
+	while(*p && *p != first)
+	    ++p;
+
 	state = initial;
 	do
 	{
 	    state = (state<<AJBPS) | table[(ajint)*p];
 	    if(state < limit)
 	    {
-		pos=(p-q)-plen+1;
-		if(amino && pos) return matches; /* pmr: was return 0 */
+		pos = (p-q)-plen+1;
+		if(amino && pos)
+		    return matches;
+
 		if(!carboxyl || (carboxyl && pos==slen-plen))
 		{
 		    ++matches;
@@ -2048,7 +2316,6 @@ ajint embPatSOSearch(AjPStr *str, AjPStr *name, ajuint first, ajint begin,
 
     return matches;
 }
-
 
 
 
@@ -2074,32 +2341,37 @@ void embPatBYGCInit(AjPStr *pat, ajint *m, ajuint *table,
     ajuint shift;
     ajint i;
 
-    p=q=ajStrStr(*pat);
+    p = q = ajStrStr(*pat);
     initval = ~0;
-    shift = 1;
-    *m=0;
-    *limit=0;
+    shift   = 1;
+    *m = 0;
+    *limit  = 0;
 
     while(*p)
     {
-	if(*p=='?') initval &= ~shift;
+	if(*p=='?')
+	    initval &= ~shift;
 	else if(*p=='{')
 	{
 	    initval &= ~shift;
-	    while(*p!='}') ++p;
+	    while(*p!='}')
+		++p;
 	}
-	else if(*p=='[') while(*p!=']') ++p;
+	else if(*p=='[')
+	    while(*p!=']')
+		++p;
 	++p;
 	++*m;
 	*limit |= shift;
 	shift<<=AJBPS;
     }
 
-    for(i=0;i<AJALPHA2;++i) table[i]=initval;
+    for(i=0;i<AJALPHA2;++i)
+	table[i] = initval;
 
-    p=q;
+    p = q;
 
-    shift=1;
+    shift = 1;
     while(*p)
     {
 	if(*p=='{')
@@ -2107,7 +2379,7 @@ void embPatBYGCInit(AjPStr *pat, ajint *m, ajuint *table,
 	    ++p;
 	    while(*p!='}')
 	    {
-		table[(ajint)*p]|=shift;
+		table[(ajint)*p] |= shift;
 		++p;
 	    }
 	}
@@ -2116,18 +2388,23 @@ void embPatBYGCInit(AjPStr *pat, ajint *m, ajuint *table,
 	    ++p;
 	    while(*p!=']')
 	    {
-		table[(ajint)*p]&=~shift;
+		table[(ajint)*p] &= ~shift;
 		++p;
 	    }
 	}
-	else if(*p!='?') table[(ajint)*p]&=~shift;
+	else if(*p!='?')
+	    table[(ajint)*p] &= ~shift;
 
-	shift<<=AJBPS;
+	shift <<= AJBPS;
 	++p;
     }
 
     *limit = ~(*limit>>AJBPS);
+
+    return;
 }
+
+
 
 
 /* @func embPatBYGSearch ******************************************************
@@ -2163,8 +2440,8 @@ ajint embPatBYGSearch(AjPStr *str, AjPStr *name, ajint begin, ajint plen,
     ajDebug("embPatBYGSearch begin:%d plen:%d limit:%u amino:%b carboxyl:%b\n",
 	    begin, plen, limit, amino, carboxyl);
 
-    p=q=ajStrStr(*str);
-    slen = ajStrLen(*str);
+    p = q = ajStrStr(*str);
+    slen  = ajStrLen(*str);
     matches = 0;
     initial = ~0;
 
@@ -2181,7 +2458,9 @@ ajint embPatBYGSearch(AjPStr *str, AjPStr *name, ajint begin, ajint plen,
 	    if(state < limit)
 	    {
 		pos=(p-q)-plen+1;
-		if(amino && pos) return matches; /* pmr: was return 0 */
+		if(amino && pos)
+		    return matches;
+
 		if(!carboxyl || (carboxyl && pos==slen-plen))
 		{
 		    ++matches;
@@ -2223,21 +2502,26 @@ void embPatTUInit(AjPStr *pat, ajint **skipm, ajint m, ajint k)
 
     ajint ready[AJALPHA];
 
-    p=ajStrStr(*pat);
+    p = ajStrStr(*pat);
 
     for(i=0;i<AJALPHA;++i)
     {
-	ready[i]=m;
-	for(j=m-k-1;j<m;++j) skipm[j][i]=m-k-1;
+	ready[i] = m;
+	for(j=m-k-1;j<m;++j)
+	    skipm[j][i] = m-k-1;
     }
 
     for(j=m-2;j>-1;--j)
     {
-	x=AJMAX(j+1,m-k-1);
-	for(i=ready[(ajint)p[j]]-1;i>=x;--i) skipm[i][(ajint)p[j]]=i-j;
-	ready[(ajint)p[j]]=x;
+	x = AJMAX(j+1,m-k-1);
+	for(i=ready[(ajint)p[j]]-1;i>=x;--i)
+	    skipm[i][(ajint)p[j]] = i-j;
+	ready[(ajint)p[j]] = x;
     }
+
+    return;
 }
+
 
 
 
@@ -2274,28 +2558,34 @@ ajint embPatTUSearch(AjPStr *pat, AjPStr *text, ajint slen,
     char *q;
     ajint  matches;
 
-    p=ajStrStr(*pat);
-    q=ajStrStr(*text);
+    p = ajStrStr(*pat);
+    q = ajStrStr(*text);
 
-    matches=0;
+    matches = 0;
 
-    i=m-1;
+    i = m-1;
     while(i<slen)
     {
-	h=i;
-	j=m-1;
-	skip=m-k;
-	mm=0;
+	h = i;
+	j = m-1;
+	skip = m-k;
+	mm = 0;
 	while(j>-1 && mm<=k)
 	{
-	    if(j>=m-k-1) skip=AJMIN(skip,(ajint)skipm[j][(ajint)q[h]]);
-	    if(q[h]!=p[j]) ++mm;
+	    if(j>=m-k-1)
+		skip = AJMIN(skip,(ajint)skipm[j][(ajint)q[h]]);
+
+	    if(q[h]!=p[j])
+		++mm;
 	    --h;
 	    --j;
 	}
+
 	if(mm<=k)
 	{
-	    if(amino && h+1) return matches; /* pmr: was return 0 */
+	    if(amino && h+1)
+		return matches;
+
 	    if(!carboxyl || (carboxyl && h+1==slen-m))
 	    {
 		++matches;
@@ -2304,8 +2594,10 @@ ajint embPatTUSearch(AjPStr *pat, AjPStr *text, ajint slen,
 	}
 	i+=skip;
     }
+
     return matches;
 }
+
 
 
 
@@ -2334,80 +2626,93 @@ void embPatTUBInit(AjPStr *pat, ajint **skipm, ajint m, ajint k, ajint plen)
     ajint flag;
     ajint ready[AJALPHA];
 
-    p=ajStrStr(*pat);
+    p = ajStrStr(*pat);
 
     for(i=0;i<AJALPHA;++i)
     {
-	ready[i]=m;
-	for(j=m-k-1;j<m;++j) skipm[j][i]=m-k-1;
+	ready[i] = m;
+	for(j=m-k-1;j<m;++j)
+	    skipm[j][i] = m-k-1;
     }
 
-    p+=plen-1;
+    p += plen-1;
     if(*p=='}' || *p==']')
     {
-	while(*p!='{' && *p!='[') --p;
+	while(*p!='{' && *p!='[')
+	    --p;
 	--p;
     }
-    else --p;
+    else
+	--p;
 
     for(j=m-2;j>-1;--j)
     {
-	x=AJMAX(j+1,m-k-1);
+	x = AJMAX(j+1,m-k-1);
 	if(*p=='?')
 	{
 	    for(z='A';z<='Z';++z)
 	    {
-		for(i=ready[z]-1;i>=x;--i) skipm[i][z]=i-j;
-		ready[z]=x;
+		for(i=ready[z]-1;i>=x;--i)
+		    skipm[i][z] = i-j;
+		ready[z] = x;
 	    }
 	    --p;
 	    continue;
 	}
+
 	if(*p==']')
 	{
 	    --p;
 	    while(*p!='[')
 	    {
-		for(i=ready[(ajint)*p]-1;i>=x;--i) skipm[i][(ajint)*p]=i-j;
-		ready[(ajint)*p]=x;
+		for(i=ready[(ajint)*p]-1;i>=x;--i)
+		    skipm[i][(ajint)*p] = i-j;
+		ready[(ajint)*p] = x;
 		--p;
 	    }
 	    --p;
 	    continue;
 	}
+
 	if(*p=='}')
 	{
 	    s=--p;
 	    for(z='A';z<='Z';++z)
 	    {
-		q=s;
-		flag=0;
+		q    = s;
+		flag = 0;
 		while(*q!='{')
 		{
 		    if(*q==z)
 		    {
-			flag=1;
+			flag = 1;
 			break;
 		    }
 		    --q;
 		}
+
 		if(!flag)
 		{
-		    for(i=ready[z]-1;i>=x;--i) skipm[i][z]=i-j;
-		    ready[z]=x;
+		    for(i=ready[z]-1;i>=x;--i)
+			skipm[i][z] = i-j;
+		    ready[z] = x;
 		}
 	    }
-	    while(*p!='{') --p;
+	    while(*p!='{')
+		--p;
 	    --p;
 	    continue;
 	}
 
-	for(i=ready[(ajint)*p]-1;i>=x;--i) skipm[i][(ajint)*p]=i-j;
-	ready[(ajint)*p]=x;
+	for(i=ready[(ajint)*p]-1;i>=x;--i)
+	    skipm[i][(ajint)*p] = i-j;
+	ready[(ajint)*p] = x;
 	--p;
     }
 
+    return;
 }
+
 
 
 
@@ -2449,52 +2754,59 @@ ajint embPatTUBSearch(AjPStr *pat,AjPStr *text, ajint slen,
     ajint  a;
     ajint  flag;
 
-    s=ajStrStr(*pat);
-    q=ajStrStr(*text);
+    s = ajStrStr(*pat);
+    q = ajStrStr(*text);
 
-    matches=0;
+    matches = 0;
 
-    i=m-1;
+    i = m-1;
     while(i<slen)
     {
-	h=i;
-	j=m-1;
+	h = i;
+	j = m-1;
 	p = s+plen-1;
-	skip=m-k;
-	mm=0;
+	skip = m-k;
+	mm = 0;
 	while(j>-1 && mm<=k)
 	{
-	    if(j>=m-k-1) skip=AJMIN(skip,skipm[j][(ajint)q[(ajint)h]]);
-	    a=q[h];
+	    if(j>=m-k-1)
+		skip = AJMIN(skip,skipm[j][(ajint)q[(ajint)h]]);
+	    a = q[h];
 	    if(*p!='?')
 	    {
 		if(*p==']')
 		{
-		    flag=0;
+		    flag = 0;
 		    --p;
 		    while(*p!='[')
 		    {
-			if(a==*p) flag=1;
+			if(a==*p)
+			    flag = 1;
 			--p;
 		    }
-		    if(!flag) ++mm;
+
+		    if(!flag)
+			++mm;
 		}
 		else if(*p=='}')
 		{
-		    flag=0;
+		    flag = 0;
 		    --p;
 		    while(*p!='{')
 		    {
-			if(a==*p) flag=1;
+			if(a==*p)
+			    flag=1;
 			--p;
 		    }
-		    if(flag) ++mm;
+
+		    if(flag)
+			++mm;
 		}
 		else
-		{
-		    if(a!=*p) ++mm;
-		}
+		    if(a!=*p)
+			++mm;
 	    }
+
 	    --p;
 	    --h;
 	    --j;
@@ -2502,17 +2814,22 @@ ajint embPatTUBSearch(AjPStr *pat,AjPStr *text, ajint slen,
 
 	if(mm<=k)
 	{
-	    if(amino && h+1) return matches; /* pmr: was return 0 */
+	    if(amino && h+1)
+		return matches;
+
 	    if(!carboxyl || (carboxyl && h+1==slen-m))
 	    {
 		++matches;
 		embPatPushHit(l,name,h+1,m,begin,mm);
 	    }
 	}
-	i+=skip;
+
+	i += skip;
     }
+
     return matches;
 }
+
 
 
 
@@ -2530,10 +2847,14 @@ static AjBool patBruteClass(char *p, char c)
 {
     char *s;
 
-    s=p+1;
-    while(*s!=']') if(*s++==c) return ajTrue;
+    s = p+1;
+    while(*s!=']')
+	if(*s++==c)
+	    return ajTrue;
+
     return ajFalse;
 }
+
 
 
 
@@ -2551,10 +2872,14 @@ static AjBool patBruteCompl(char *p, char c)
 {
     char *s;
 
-    s=p+1;
-    while(*s!='}') if(*s++==c) return ajFalse;
+    s = p+1;
+    while(*s!='}')
+	if(*s++==c)
+	    return ajFalse;
+
     return ajTrue;
 }
+
 
 
 
@@ -2579,26 +2904,29 @@ static AjBool patBruteIsRange(char *t, ajint *x, ajint *y)
 	{
 	    if(sscanf(t+2,"%d,%d",x,y)!=2)
 	    {
-		(void) sscanf(t+2,"%d",x);
+		sscanf(t+2,"%d",x);
 		*y=*x;
 	    }
 
 	    return ajTrue;
 	}
+
 	return ajFalse;
     }
 
-    u=t;
+    u = t;
 
     if(*t=='[')
     {
-	while(*u!=']') ++u;
+	while(*u!=']')
+	    ++u;
+
 	if(*(u+1)=='(')
 	{
 	    if(sscanf(u+2,"%d,%d",x,y)!=2)
 	    {
-		(void) sscanf(u+2,"%d",x);
-		*y=*x;
+		sscanf(u+2,"%d",x);
+		*y = *x;
 	    }
 
 	    return ajTrue;
@@ -2606,19 +2934,23 @@ static AjBool patBruteIsRange(char *t, ajint *x, ajint *y)
 	return ajFalse;
     }
 
-    while(*u!='}') ++u;
+    while(*u!='}')
+	++u;
+
     if(*(u+1)=='(')
     {
 	if(sscanf(u+2,"%d,%d",x,y)!=2)
 	{
-	    (void) sscanf(u+2,"%d",x);
-	    *y=*x;
+	    sscanf(u+2,"%d",x);
+	    *y = *x;
 	}
 
 	return ajTrue;
     }
+
     return ajFalse;
 }
+
 
 
 
@@ -2634,24 +2966,34 @@ static AjBool patBruteIsRange(char *t, ajint *x, ajint *y)
 
 static AjBool patBruteCharMatch(char *t, char c)
 {
-    if(!c) return ajFalse;
+    if(!c)
+	return ajFalse;
 
-    if(*t=='?') return ajTrue;
+    if(*t=='?')
+	return ajTrue;
 
     if(*t>='A' && *t<='Z')
     {
-	if(*t==c) return ajTrue;
-	return ajFalse;
-    }
-    if(*t=='[')
-    {
-	if(patBruteClass(t,c)) return ajTrue;
+	if(*t==c)
+	    return ajTrue;
+
 	return ajFalse;
     }
 
-    if(patBruteCompl(t,c)) return ajTrue;
+    if(*t=='[')
+    {
+	if(patBruteClass(t,c))
+	    return ajTrue;
+
+	return ajFalse;
+    }
+
+    if(patBruteCompl(t,c))
+	return ajTrue;
+
     return ajFalse;
 }
+
 
 
 
@@ -2668,18 +3010,24 @@ static AjBool patBruteCharMatch(char *t, char c)
 static ajint patBruteNextPatChar(char *t, ajint ppos)
 {
     if(t[ppos]=='{')
-	while(t[ppos]!='}') ++ppos;
+	while(t[ppos]!='}')
+	    ++ppos;
+
     if(t[ppos]=='[')
-	while(t[ppos]!=']') ++ppos;
+	while(t[ppos]!=']')
+	    ++ppos;
     ++ppos;
+
     if(t[ppos]=='(')
     {
-	while(t[ppos]!=')') ++ppos;
+	while(t[ppos]!=')')
+	    ++ppos;
 	++ppos;
     }
 
     return ppos;
 }
+
 
 
 
@@ -2720,43 +3068,54 @@ static AjBool patOUBrute(char *seq, char *pat, ajint spos,
 
     while(pat[ppos])
     {
-	t=pat+ppos;
-	if(!seq[spos]) return ajFalse;
+	t = pat+ppos;
+	if(!seq[spos])
+	    return ajFalse;
 
 	if(!patBruteIsRange(t,&x,&y))
 	{
-	    if(!patBruteCharMatch(t,seq[spos])) --mm;
-	    if(mm<0) return ajFalse;
-	    ppos=patBruteNextPatChar(pat,ppos);
+	    if(!patBruteCharMatch(t,seq[spos]))
+		--mm;
+
+	    if(mm<0)
+		return ajFalse;
+
+	    ppos = patBruteNextPatChar(pat,ppos);
 	    ++spos;
 	    continue;
 	}
 
 	for(i=0;i<x;++i)
 	{
-	    if(!patBruteCharMatch(t,seq[spos++])) --mm;
-	    if(mm<0 || !seq[spos-1]) return ajFalse;
+	    if(!patBruteCharMatch(t,seq[spos++]))
+		--mm;
+
+	    if(mm<0 || !seq[spos-1])
+		return ajFalse;
 	}
 
 	ppos=patBruteNextPatChar(pat,ppos);
 	for(i=0;i<y-x;++i)
 	{
-	    (void) patOUBrute(seq,pat,spos,ppos,mm,omm,level,l,carboxyl,
-			      begin,count,name,st);
-	    if(!patBruteCharMatch(t,seq[spos])) return ajFalse;
+	    patOUBrute(seq,pat,spos,ppos,mm,omm,level,l,carboxyl,
+		       begin,count,name,st);
+	    if(!patBruteCharMatch(t,seq[spos]))
+		return ajFalse;
+
 	    ++spos;
 	}
     }
 
     if(!carboxyl || (carboxyl && !seq[spos]))
     {
-	*count+=1;
-	embPatPushHit(*l,name,st,spos-st/*+1*/,begin,omm-mm);
+	*count += 1;
+	embPatPushHit(*l,name,st,spos-st,begin,omm-mm);
 
     }
 
     return ajTrue;
 }
+
 
 
 
@@ -2777,7 +3136,7 @@ static AjBool patOUBrute(char *seq, char *pat, ajint spos,
 ******************************************************************************/
 
 ajint embPatBruteForce(AjPStr *seq, AjPStr *pat, AjBool amino, AjBool carboxyl,
-		    AjPList *l, ajint begin, ajint mm, AjPStr *name)
+		       AjPList *l, ajint begin, ajint mm, AjPStr *name)
 {
     char *s;
     char *p;
@@ -2787,26 +3146,28 @@ ajint embPatBruteForce(AjPStr *seq, AjPStr *pat, AjBool amino, AjBool carboxyl,
     ajint  count;
 
 
-    sum=count=0;
+    sum=count = 0;
     s = ajStrStr(*seq);
     p = ajStrStr(*pat);
 
     if(amino)
     {
-	(void) patOUBrute(s,p,0,0,mm,mm,1,l,carboxyl,begin,&count,name,0);
+	patOUBrute(s,p,0,0,mm,mm,1,l,carboxyl,begin,&count,name,0);
 	return count;
     }
 
-    len=strlen(s);
+    len = strlen(s);
     for(i=0;i<len;++i)
     {
-	(void) patOUBrute(s,p,i,0,mm,mm,1,l,carboxyl,begin,&count,name,i);
-	sum+=count;
-	count=0;
+	patOUBrute(s,p,i,0,mm,mm,1,l,carboxyl,begin,&count,name,i);
+	sum += count;
+	count = 0;
     }
 
     return sum;
 }
+
+
 
 
 /* @func  embPatVariablePattern ***********************************************
@@ -2827,12 +3188,12 @@ ajint embPatBruteForce(AjPStr *seq, AjPStr *pat, AjBool amino, AjBool carboxyl,
 ** @@
 ******************************************************************************/
 
-ajint embPatVariablePattern (AjPStr *pattern, AjPStr opattern, AjPStr text,
+ajint embPatVariablePattern(AjPStr *pattern, AjPStr opattern, AjPStr text,
 			  AjPStr patname, AjPList l, ajint mode,
 			  ajint mismatch, ajint begin)
 {
     ajint plen;
-    ajint slen=0;
+    ajint slen = 0;
 
     AjBool amino;
     AjBool carboxyl;
@@ -2850,11 +3211,11 @@ ajint embPatVariablePattern (AjPStr *pattern, AjPStr opattern, AjPStr text,
 
     EmbOPatBYPNode off[AJALPHA];
 
-    ajuint *sotable=NULL;
+    ajuint *sotable = NULL;
     ajuint solimit;
 
     EmbPPatMatch ppm;
-    AjPStr	   regexp;
+    AjPStr regexp;
 
     ajint **skipm;
 
@@ -2867,19 +3228,19 @@ ajint embPatVariablePattern (AjPStr *pattern, AjPStr opattern, AjPStr text,
     plen = ajStrLen(*pattern);
 
     /*
-     *  Select type of search depending on pattern
-     */
+    **  Select type of search depending on pattern
+    */
 
     if(!range && !dontcare && !fclass && !ajcompl && !mismatch && plen>4)
     {
 	/* Boyer Moore Horspool is the choice for ajlong exact patterns */
 	plen = ajStrLen(*pattern);
-	AJCNEW (buf, AJALPHA);
+	AJCNEW(buf, AJALPHA);
 	embPatBMHInit(pattern,plen,buf);
-	hits=embPatBMHSearch(&text,pattern,ajStrLen(text),
-			    ajStrLen(*pattern),buf,0,amino,carboxyl,&l,
-			    &patname,begin);
-        AJFREE (buf);
+	hits = embPatBMHSearch(&text,pattern,ajStrLen(text),
+			       ajStrLen(*pattern),buf,0,amino,carboxyl,&l,
+			       &patname,begin);
+        AJFREE(buf);
 	return hits;
     }
 
@@ -2887,12 +3248,12 @@ ajint embPatVariablePattern (AjPStr *pattern, AjPStr opattern, AjPStr text,
     {
 	/* Baeza-Yates Perleberg for exact patterns plus don't cares */
 	plen = ajStrLen(*pattern);
-	AJCNEW (buf, AJALPHA);
+	AJCNEW(buf, AJALPHA);
 	embPatBYPInit(pattern,plen,off,buf);
-	hits=embPatBYPSearch(&text,&patname,begin,
-			    ajStrLen(text),plen,mismatch,off,buf,l,
-			    amino,carboxyl,opattern);
-	AJFREE (buf);
+	hits = embPatBYPSearch(&text,&patname,begin,
+			       ajStrLen(text),plen,mismatch,off,buf,l,
+			       amino,carboxyl,opattern);
+	AJFREE(buf);
 	return hits;
     }
 
@@ -2900,38 +3261,38 @@ ajint embPatVariablePattern (AjPStr *pattern, AjPStr opattern, AjPStr text,
     if(!range && !dontcare && !fclass && !ajcompl && !mismatch)
     {
 	/* Shift-OR is the choice for small exact patterns */
-	AJCNEW (sotable, AJALPHA2);
-	(void) embPatSOInit(pattern,sotable,&solimit);
-	hits=embPatSOSearch(&text,&patname,*ajStrStr(*pattern),
-			   begin,plen,sotable,solimit,l,
-			   amino,carboxyl);
-	AJFREE (sotable);
+	AJCNEW(sotable, AJALPHA2);
+	embPatSOInit(pattern,sotable,&solimit);
+	hits = embPatSOSearch(&text,&patname,*ajStrStr(*pattern),
+			      begin,plen,sotable,solimit,l,
+			      amino,carboxyl);
+	AJFREE(sotable);
 	return hits;
     }
 
 
-    /* Next get m, the real pattern length                                  */
+    /* Next get m, the real pattern length */
     /* May as well set up a class search as well tho' it needs free's later */
-    AJCNEW (sotable, AJALPHA2);
+    AJCNEW(sotable, AJALPHA2);
     embPatBYGCInit(pattern,&m,sotable,&solimit);
 
 
     if(!range && (fclass || ajcompl) && !mismatch && m<=AJWORD)
     {
 	/*
-	 *  Baeza-Yates Gonnet for classes and dontcares.
-	 *  No mismatches or ranges. Patterns less than (e.g.) 32
-	 *  Uses Shift-OR search engine
-         */
-	AJFREE (sotable);
-	AJCNEW (sotable, AJALPHA2);
+	**  Baeza-Yates Gonnet for classes and dontcares.
+	**  No mismatches or ranges. Patterns less than (e.g.) 32
+	**  Uses Shift-OR search engine
+        */
+	AJFREE(sotable);
+	AJCNEW(sotable, AJALPHA2);
 	embPatBYGCInit(pattern,&m,sotable,&solimit);
-	plen=m;
-	hits=embPatBYGSearch(&text,&patname,
-			   begin,plen,sotable,solimit,l,
-			   amino,carboxyl);
-	/*	tidy = (void *) sotable;*/
-	AJFREE (sotable);
+	plen = m;
+	hits = embPatBYGSearch(&text,&patname,
+			       begin,plen,sotable,solimit,l,
+			       amino,carboxyl);
+
+	AJFREE(sotable);
 	return hits;
     }
 
@@ -2940,28 +3301,28 @@ ajint embPatVariablePattern (AjPStr *pattern, AjPStr opattern, AjPStr text,
     if(!mismatch && (range || m>AJWORD))
     {
 	/*
-	 *  Henry Spencer for ranges and simple classes longer than
-         *  e.g. 32. No mismatches allowed
-         */
-	AJFREE (sotable);
-	regexp=embPatPrositeToRegExp(&opattern);
-	ppm=embPatPosMatchFind(regexp,text);
-	n=embPatPosMatchGetNumber(ppm);
+	**  Henry Spencer for ranges and simple classes longer than
+        **  e.g. 32. No mismatches allowed
+        **/
+	AJFREE(sotable);
+	regexp = embPatPrositeToRegExp(&opattern);
+	ppm = embPatPosMatchFind(regexp,text);
+	n = embPatPosMatchGetNumber(ppm);
 	for(i=0;i<n;++i)
 	{
-	    start=embPatPosMatchGetStart(ppm,i);
-	    end=embPatPosMatchGetEnd(ppm,i);
+	    start = embPatPosMatchGetStart(ppm,i);
+	    end   = embPatPosMatchGetEnd(ppm,i);
 	    if(amino && start)
 	    {
-		n=0;
+		n = 0;
 		break;
 	    }
 	    if(!carboxyl || (carboxyl && start==slen-(end-start+1)))
 		embPatPushHit(l,&patname,start,end-start+1,
-			     begin,0);
+			      begin,0);
 	}
 	embPatMatchDel(&ppm);
-	hits=n;
+	hits = n;
 	ajStrDel(&regexp);
 	return hits;
     }
@@ -2971,29 +3332,34 @@ ajint embPatVariablePattern (AjPStr *pattern, AjPStr opattern, AjPStr text,
     {
 	/* Try a Tarhio-Ukkonen-Bleasby         */
 
-	AJFREE (sotable);
+	AJFREE(sotable);
 
-	AJCNEW (skipm, m);
+	AJCNEW(skipm, m);
 	for(i=0;i<m;++i)
-	    AJCNEW (skipm[i], AJALPHA);
+	    AJCNEW(skipm[i], AJALPHA);
 
 	embPatTUBInit(pattern,skipm,m,mismatch,plen);
 	hits = embPatTUBSearch(pattern,&text,ajStrLen(text),skipm,
 			      m,mismatch,begin,
 			      l,amino,carboxyl,&patname,plen);
-	for(i=0;i<m;++i) AJFREE (skipm[i]);
-	AJFREE (skipm);
+	for(i=0;i<m;++i)
+	    AJFREE(skipm[i]);
+
+	AJFREE(skipm);
 	return hits;
     }
 
     /*
-     *  No choice left but to do a Bleasby recursive brute force
-     */
+    **  No choice left but to do a Bleasby recursive brute force
+    */
     hits = embPatBruteForce(&text,pattern,amino,carboxyl,&l,
-			   begin,mismatch,&patname);
-    AJFREE (sotable);
+			    begin,mismatch,&patname);
+    AJFREE(sotable);
+
     return hits;
 }
+
+
 
 
 /* @func embPatRestrictPreferred ********************************************
@@ -3009,9 +3375,9 @@ ajint embPatVariablePattern (AjPStr *pattern, AjPStr opattern, AjPStr text,
 
 void embPatRestrictPreferred(AjPList l, AjPTable t)
 {
-    AjIList iter = NULL;
+    AjIList iter   = NULL;
     EmbPMatMatch m = NULL;
-    AjPStr value = NULL;
+    AjPStr value   = NULL;
 
     iter = ajListIter(l);
 
@@ -3026,6 +3392,8 @@ void embPatRestrictPreferred(AjPList l, AjPTable t)
 
     return;
 }
+
+
 
 
 /* @func embPatRestrictRestrict ***********************************************
@@ -3047,33 +3415,33 @@ void embPatRestrictPreferred(AjPList l, AjPTable t)
 ** @@
 ******************************************************************************/
 
-ajint embPatRestrictRestrict (AjPList *l, ajint hits, AjBool isos,
+ajint embPatRestrictRestrict(AjPList *l, ajint hits, AjBool isos,
 	AjBool alpha)
 {
-    EmbPMatMatch m=NULL;
-    EmbPMatMatch archetype=NULL; /* archetype of a set of isoschizomers */
-    AjPStr  ps=NULL;
-    AjPList tlist=NULL;
-    AjPList newlist=NULL;
+    EmbPMatMatch m  = NULL;
+    EmbPMatMatch archetype = NULL; /* archetype of a set of isoschizomers */
+    AjPStr  ps      = NULL;
+    AjPList tlist   = NULL;
+    AjPList newlist = NULL;
 
     ajint i;
     ajint v;
-    ajint tc=0;
-    ajint nc=0;
-    ajint cut1=0;
+    ajint tc   = 0;
+    ajint nc   = 0;
+    ajint cut1 = 0;
     ajint cut2;
     ajint cut3;
     ajint cut4;
-    ajint pos=0;
+    ajint pos  = 0;
 
-    ps=ajStrNew();
-    tlist=ajListNew();
-    newlist=ajListNew();
+    ps      = ajStrNew();
+    tlist   = ajListNew();
+    newlist = ajListNew();
 
 
     /* Remove Mirrors for each enzyme separately */
     ajListSort(*l,embPatRestrictNameCompare);
-    tc=nc=0;
+    tc = nc = 0;
 
     if(hits)
     {
@@ -3095,7 +3463,7 @@ ajint embPatRestrictRestrict (AjPList *l, ajint hits, AjBool isos,
 	    ajListPush(*l,(void *)m);
 	    ajListSort(tlist,embPatRestrictStartCompare);
 	    ajListSort(tlist,embPatRestrictCutCompare);
-	    cut1=cut2=INT_MAX;
+	    cut1 = cut2 = INT_MAX;
 	    for(i=0;i<tc;++i)
 	    {
 		ajListPop(tlist,(void **)&m);
@@ -3108,12 +3476,13 @@ ajint embPatRestrictRestrict (AjPList *l, ajint hits, AjBool isos,
 		else
 		    embMatMatchDel(&m);
 	    }
-	    tc=0;
+	    tc = 0;
 	}
     }
     ajListSort(tlist,embPatRestrictStartCompare);
     ajListSort(tlist,embPatRestrictCutCompare);
-    cut1=cut2=INT_MAX;
+
+    cut1 = cut2 = INT_MAX;
     for(i=0;i<tc;++i)
     {
 	ajListPop(tlist,(void **)&m);
@@ -3128,62 +3497,71 @@ ajint embPatRestrictRestrict (AjPList *l, ajint hits, AjBool isos,
     }
 
 
-    hits=nc;
+    hits = nc;
     ajListDel(l);
     ajListDel(&tlist);
-    *l=ajListNew();
-    tlist=ajListNew();
+    *l    = ajListNew();
+    tlist = ajListNew();
 
 
     if(!isos)
     {
-	/* Now remove Isoschizomers         */
-	/* Keep only first alphabetical one */
+	/* Keep only first alpjabetical isoschizomer */
 	ajListSort(newlist,embPatRestrictStartCompare);
 	if(hits)
 	{
 	    ajListPop(newlist,(void **)&m);
-	    pos=m->start;
+	    pos = m->start;
 	    ajListPush(newlist,(void *)m);
 	}
-	tc=nc=0;
+	tc = nc =0;
 
 	while(ajListPop(newlist,(void **)&m))
 	{
 	    if(pos==m->start)
 	    {
-/* push groups of RE's that share the same start position onto tlist to
-be checked later to see if they are isoschizomers */
+		/*
+		** push groups of RE's that share the same start
+		** position onto tlist to
+		** be checked later to see if they are isoschizomers
+		*/
 		ajListPush(tlist,(void *)m);
 		++tc;
 	    }
 	    else
 	    {
-		pos=m->start;
+		pos = m->start;
 
 		ajListPush(newlist,(void *)m);
 
 		/*
-		 * Now for list of all enz's which cut at same pos
-		 *  sorted by Name
-		 */
+		** Now for list of all enz's which cut at same pos
+		**  sorted by Name
+		*/
 		ajListSort(tlist,embPatRestrictNameCompare);
 
 		/*
-		 * Now loop rejecting, for each left in the list,
-		 * anything similar
-		 */
-/* check for isoschizomers in the group sharing the previous 'pos' here */
+		** Now loop rejecting, for each left in the list,
+		** anything similar
+		*/
+
+		/*
+		** check for isoschizomers in the group sharing the
+		** previous 'pos' here
+		*/
 		while(tc)
 		{
 		    ajListPop(tlist,(void **)&m);
-		    cut1=m->cut1;
-		    cut2=m->cut2;
-		    cut3=m->cut3;
-		    cut4=m->cut4;
+		    cut1 = m->cut1;
+		    cut2 = m->cut2;
+		    cut3 = m->cut3;
+		    cut4 = m->cut4;
 		    ajStrAssC(&ps,ajStrStr(m->pat));
-/* first one of the group is not an isoschizomer, by definition, so
-   return it */
+
+		    /*
+		    ** first one of the group is not an isoschizomer,
+		    ** by definition, so return it
+		    */
 		    ajListPush(*l,(void *)m);
 		    archetype = m;
 		    ++nc;
@@ -3203,17 +3581,21 @@ be checked later to see if they are isoschizomers */
 
 			else
 			{
-/* same cut sites and pattern at the RE just pushed onto 'l', so is an
-isoschizomer - add its name to the archetype's list of isoschizomers and
-delete */
-			    if (ajStrLen(archetype->iso) > 0) {
+			    /*
+			    ** same cut sites and pattern at the RE just
+			    ** pushed onto 'l', so is an
+			    **isoschizomer - add its name to the
+			    ** archetype's list of isoschizomers and
+			    ** delete
+			    */
+			    if(ajStrLen(archetype->iso) > 0)
 			        ajStrAppC(&archetype->iso, ",");
-			    }
+
 			    ajStrApp(&archetype->iso, m->cod);
 			    embMatMatchDel(&m);
 			}
 		    }
-		    tc=v;
+		    tc = v;
 		}
 	    }
 	}
@@ -3224,13 +3606,15 @@ delete */
 	while(tc)
 	{
 	    ajListPop(tlist,(void **)&m);
-	    cut1=m->cut1;
-	    cut2=m->cut2;
-	    cut3=m->cut3;
-	    cut4=m->cut4;
+	    cut1 = m->cut1;
+	    cut2 = m->cut2;
+	    cut3 = m->cut3;
+	    cut4 = m->cut4;
 	    ajStrAssC(&ps,ajStrStr(m->pat));
-/* first one of the group is not an isoschizomer, by definition, so
-   return it */
+	    /*
+	    ** first one of the group is not an isoschizomer,
+	    ** by definition, so return it
+	    */
 	    ajListPush(*l,(void *)m);
 	    archetype = m;
 	    ++nc;
@@ -3249,27 +3633,29 @@ delete */
 		}
 		else
 		{
-/* same cut sites and pattern as the RE just pushed onto 'l', so is an
-isoschizomer - add its name to the archetype's list of isoschizomers and
-delete */
-		    if (ajStrLen(archetype->iso) > 0) {
+		    /*
+		    ** same cut sites and pattern as the RE
+		    ** just pushed onto 'l', so is an
+		    ** isoschizomer - add its name to the archetype's
+		    ** list of isoschizomers and
+		    ** delete
+		    */
+		    if(ajStrLen(archetype->iso) > 0)
 		        ajStrAppC(&archetype->iso, ",");
-		    }
+
 		    ajStrApp(&archetype->iso, m->cod);
 		    embMatMatchDel(&m);
 		}
 	    }
-	    tc=v;
+	    tc = v;
 	}
-	hits=nc;
+	hits = nc;
 	ajListDel(&tlist);
 	ajListDel(&newlist);
 
     }
     else
-	*l=newlist;
-
-
+	*l = newlist;
 
 
     /* Finally sort on position of recognition sequence and print */
@@ -3282,7 +3668,6 @@ delete */
 
     return hits;
 }
-
 
 
 
@@ -3304,6 +3689,9 @@ ajint embPatRestrictStartCompare(const void *a, const void *b)
     return (*(EmbPMatMatch *)a)->start - (*(EmbPMatMatch *)b)->start;
 }
 
+
+
+
 /* @func embPatRestrictCutCompare *********************************************
 **
 ** Sort restriction site hits on the basis of cut position
@@ -3321,6 +3709,9 @@ ajint embPatRestrictCutCompare(const void *a, const void *b)
     return (*(EmbPMatMatch *)a)->cut1 - (*(EmbPMatMatch *)b)->cut1;
 }
 
+
+
+
 /* @func embPatRestrictNameCompare ********************************************
 **
 ** Sort restriction site hits on the basis of enzyme name
@@ -3335,9 +3726,11 @@ ajint embPatRestrictCutCompare(const void *a, const void *b)
 
 ajint embPatRestrictNameCompare(const void *a, const void *b)
 {
-    return strcmp (ajStrStr((*(EmbPMatMatch *)a)->cod),
-		   ajStrStr((*(EmbPMatMatch *)b)->cod));
+    return strcmp(ajStrStr((*(EmbPMatMatch *)a)->cod),
+		  ajStrStr((*(EmbPMatMatch *)b)->cod));
 }
+
+
 
 
 /* @func embPatRestrictMatch **************************************************
@@ -3365,12 +3758,12 @@ ajint embPatRestrictNameCompare(const void *a, const void *b)
 ******************************************************************************/
 
 ajint embPatRestrictMatch(AjPSeq seq, ajint begin, ajint end, AjPFile enzfile,
-			AjPStr enzymes, ajint sitelen, AjBool plasmid,
-			AjBool ambiguity, ajint min, ajint max, AjBool blunt,
-			AjBool sticky, AjBool commercial, AjPList *l)
+			  AjPStr enzymes, ajint sitelen, AjBool plasmid,
+			  AjBool ambiguity, ajint min, ajint max, AjBool blunt,
+			  AjBool sticky, AjBool commercial, AjPList *l)
 {
     AjBool hassup;
-    AjBool isall=ajTrue;
+    AjBool isall = ajTrue;
     AjPStr  name;
     AjPStr  strand;
     AjPStr  substr;
@@ -3412,6 +3805,7 @@ ajint embPatRestrictMatch(AjPSeq seq, ajint begin, ajint end, AjPFile enzfile,
 	    ajStrCleanWhite(&ea[i]);
 	    ajStrToUpper(&ea[i]);
 	}
+
 	if(ajStrMatchCaseC(ea[0],"all"))
 	    isall = ajTrue;
 	else
@@ -3420,27 +3814,27 @@ ajint embPatRestrictMatch(AjPSeq seq, ajint begin, ajint end, AjPFile enzfile,
 
 
 
-    (void) ajFileSeek(enzfile,0L,0);
+    ajFileSeek(enzfile,0L,0);
     *l = ajListNew();
-    (void) ajStrAssC(&name,ajSeqName(seq));
+    ajStrAssC(&name,ajSeqName(seq));
     strand = ajSeqStr(seq);
     ajStrToUpper(&strand);
-    (void) ajStrAssSubC(&substr,ajStrStr(strand),begin-1,end-1);
+    ajStrAssSubC(&substr,ajStrStr(strand),begin-1,end-1);
     len = plen = ajStrLen(substr);
-    (void) ajStrAssSubC(&revstr,ajStrStr(strand),begin-1,end-1);
+    ajStrAssSubC(&revstr,ajStrStr(strand),begin-1,end-1);
     ajSeqReverseStr(&revstr);
 
-    (void) ajStrAssC(&binstr,ajStrStr(substr));
-    (void) ajStrAssC(&binrev,ajStrStr(revstr));
+    ajStrAssC(&binstr,ajStrStr(substr));
+    ajStrAssC(&binrev,ajStrStr(revstr));
 
     if(plasmid)
     {
 	plen <<= 1;
-	(void) ajStrAppC(&substr,ajStrStr(substr));
-	(void) ajStrAppC(&binstr,ajStrStr(binstr));
+	ajStrAppC(&substr,ajStrStr(substr));
+	ajStrAppC(&binstr,ajStrStr(binstr));
 
-	(void) ajStrAppC(&revstr,ajStrStr(revstr));
-	(void) ajStrAppC(&binrev,ajStrStr(binrev));
+	ajStrAppC(&revstr,ajStrStr(revstr));
+	ajStrAppC(&binrev,ajStrStr(binrev));
     }
 
     q = ajStrStr(binrev);
@@ -3455,16 +3849,27 @@ ajint embPatRestrictMatch(AjPSeq seq, ajint begin, ajint end, AjPFile enzfile,
     hits = 0;
     while(embPatRestrictReadEntry(&enz,&enzfile))
     {
-	if(!enz->ncuts) continue;
-	if(enz->len < sitelen) continue;
-	if(!blunt && enz->blunt) continue;
-	if(!sticky && !enz->blunt) continue;
+	if(!enz->ncuts)
+	    continue;
+
+	if(enz->len < sitelen)
+	    continue;
+
+	if(!blunt && enz->blunt)
+	    continue;
+
+	if(!sticky && !enz->blunt)
+	    continue;
 
 	p = ajStrStr(enz->pat);
-	if(*p>='A' && *p<='Z') hassup = ajTrue;
-	else hassup=ajFalse;
 
-	if(!hassup && isall && commercial) continue;
+	if(*p>='A' && *p<='Z')
+	    hassup = ajTrue;
+	else
+	    hassup = ajFalse;
+
+	if(!hassup && isall && commercial)
+	    continue;
 
 	ajStrToUpper(&enz->pat);
 
@@ -3473,7 +3878,8 @@ ajint embPatRestrictMatch(AjPSeq seq, ajint begin, ajint end, AjPFile enzfile,
 	    for(i=0;i<ne;++i)
 		if(ajStrMatchCase(ea[i],enz->cod))
 		    break;
-	    if(i==ne) continue;
+	    if(i==ne)
+		continue;
 	}
 
 	hits += embPatRestrictScan(&enz,&substr,&binstr,&revstr,&binrev,len,
@@ -3485,7 +3891,7 @@ ajint embPatRestrictMatch(AjPSeq seq, ajint begin, ajint end, AjPFile enzfile,
     for(i=0;i<ne;++i)
 	ajStrDel(&ea[i]);
     if(ne)
-	AJFREE (ea);
+	AJFREE(ea);
 
     ajStrDel(&name);
     ajStrDel(&substr);
@@ -3496,6 +3902,8 @@ ajint embPatRestrictMatch(AjPSeq seq, ajint begin, ajint end, AjPFile enzfile,
 
     return hits;
 }
+
+
 
 
 /* @func embPatGetType ********************************************************
@@ -3514,16 +3922,16 @@ ajint embPatRestrictMatch(AjPSeq seq, ajint begin, ajint end, AjPFile enzfile,
 ******************************************************************************/
 
 ajint embPatGetType(AjPStr *pattern, ajint mismatch, AjBool protein, ajint *m,
-		  AjBool *left, AjBool *right)
+		    AjBool *left, AjBool *right)
 {
     AjBool fclass;
     AjBool compl;
     AjBool dontcare;
     AjBool range;
-    ajint    plen;
-    ajint    type;
-    char   *p;
-    char   *q;
+    ajint plen;
+    ajint type;
+    char *p;
+    char *q;
 
 
     if(!embPatClassify(pattern,left,right,&fclass,&compl,&dontcare,
@@ -3550,8 +3958,8 @@ ajint embPatGetType(AjPStr *pattern, ajint mismatch, AjBool protein, ajint *m,
     type = 0;
 
     /*
-     *  Select type of search depending on pattern
-     */
+    **  Select type of search depending on pattern
+    */
 
     if(!range && !dontcare && !fclass && !compl && !mismatch && plen>AJWORD)
     {
@@ -3600,13 +4008,15 @@ ajint embPatGetType(AjPStr *pattern, ajint mismatch, AjBool protein, ajint *m,
     else if((mismatch && range) || !type)
     {
 	/*
-         *  No choice left but to do a Bleasby recursive brute force
-         */
+        **  No choice left but to do a Bleasby recursive brute force
+        */
 	type = 7;
     }
 
     return type;
 }
+
+
 
 
 /* @func embPatCompile ********************************************************
@@ -3635,8 +4045,7 @@ void embPatCompile(ajint type, AjPStr pattern, AjPStr opattern, ajint* plen,
 		   ajint* solimit, ajint* m, AjPStr* regexp, ajint*** skipm,
 		   ajint mismatch)
 {
-    ajint i=0;
-
+    ajint i = 0;
 
     *plen = ajStrLen(pattern);
 
@@ -3677,6 +4086,8 @@ void embPatCompile(ajint type, AjPStr pattern, AjPStr opattern, ajint* plen,
 
     return;
 }
+
+
 
 
 /* @func embPatFuzzSearch *****************************************************
@@ -3723,18 +4134,21 @@ void embPatFuzzSearch(ajint type, ajint begin, AjPStr pattern,
 
     ajDebug("embPatFuzzSearch type %d\n", type);
 
-    switch (type)
+    switch(type)
     {
     case 1:
-	*hits=embPatBMHSearch(&text,&pattern,ajStrLen(text),
+	*hits = embPatBMHSearch(&text,&pattern,ajStrLen(text),
 			      ajStrLen(pattern),buf,0,left,right,l,
 			      &name,begin);
 	*tidy = (void *) buf;
 	break;
 
     case 2:
-	for(i=0;i<AJALPHA;++i) buf[i]=plen;
-	for(i=0;i<plen;++i) buf[i]=AJALPHA;
+	for(i=0;i<AJALPHA;++i)
+	    buf[i] = plen;
+
+	for(i=0;i<plen;++i)
+	    buf[i] = AJALPHA;
 	*hits=embPatBYPSearch(&text,&name,begin,
 			      ajStrLen(text),plen,mismatch,off,buf,*l,
 			      left,right,opattern);
@@ -3742,30 +4156,30 @@ void embPatFuzzSearch(ajint type, ajint begin, AjPStr pattern,
 	break;
 
     case 3:
-	*hits=embPatSOSearch(&text,&name,*ajStrStr(pattern),
-			     begin,plen,sotable,solimit,*l,
+	*hits = embPatSOSearch(&text,&name,*ajStrStr(pattern),
+			       begin,plen,sotable,solimit,*l,
 			     left,right);
 	*tidy = (void *) sotable;
 	break;
 
     case 4:
-	plen=m;
-	*hits=embPatBYGSearch(&text,&name,
-			      begin,plen,sotable,solimit,*l,
-			      left,right);
+	plen  = m;
+	*hits = embPatBYGSearch(&text,&name,
+				begin,plen,sotable,solimit,*l,
+				left,right);
 	*tidy = (void *) sotable;
 	break;
 
     case 5:
-	ppm=embPatPosMatchFind(regexp,text);
-	n=embPatPosMatchGetNumber(ppm);
+	ppm = embPatPosMatchFind(regexp,text);
+	n   = embPatPosMatchGetNumber(ppm);
 	for(i=0;i<n;++i)
 	{
-	    start=embPatPosMatchGetStart(ppm,i);
-	    end=embPatPosMatchGetEnd(ppm,i);
+	    start = embPatPosMatchGetStart(ppm,i);
+	    end   = embPatPosMatchGetEnd(ppm,i);
 	    if(left && start)
 	    {
-		n=0;
+		n = 0;
 		break;
 	    }
 	    if(!right || (right && start==ajStrLen(text)-
@@ -3775,7 +4189,7 @@ void embPatFuzzSearch(ajint type, ajint begin, AjPStr pattern,
 
 	}
 	embPatMatchDel(&ppm);
-	*hits=n;
+	*hits = n;
 	break;
 
     case 6:
