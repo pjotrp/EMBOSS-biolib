@@ -3802,6 +3802,14 @@ static void fileListRecurs(AjPStr file, AjPList list, ajint *recurs)
 	if(inf)
 	    ajFileClose(&inf);
     }
+    else if(ajStrPrefixC(file,"list::"))
+    {
+	if((inf=ajFileNewInC(ajStrStr(file)+6)))
+	    while(ajFileReadLine(inf,&line))
+		fileListRecurs(line,list,recurs);
+	if(inf)
+	    ajFileClose(&inf);
+    }
     else
     {
 	ptr = ajStrNewC(ajStrStr(file));
