@@ -33,7 +33,7 @@ WINDOW *Display;
 
 typedef struct MSEinternal MSEinternal;
 struct MSEinternal {
-     char* Code;      /* Code word, if used by the foramt               */
+     char* Code;      /* Code word, if used by the format               */
      char* File;      /* File with pathname or database name            */
   Boolean IsUser;         /* TRUE if this is a user-entry sequence          */
       int Format;         /* Sequence format for user-entry file            */
@@ -134,7 +134,7 @@ enum keydef {
  CSEQ,CCOM,CFORMAT,CTEXT,CREVERSE,CDNA,CRNA,CNAME,CTITLE,CTYPE,CSELECT,CREMOVE,
  CINSERT,CCANCEL,CMOVE,CELIMINATE,CCOPY,COFFSET,CMATCHES,CDIFFERENCES,CNEITHER, 
  CHARDCOPY,CANCHOR,CNOANCHOR,CSORT,CLOCK,CUNLOCK,COPEN,CMSF,CCONSENSUS,CUPPER,
- CLOWER,CDEGAP,CMELD,CALNED,CGELALIGN,CUNIQUE,CCREATE,CSAVE
+ CLOWER,CDEGAP,CMELD,CALNED,CGELALIGN,CUNIQUE,CCREATE,CSAVE,CDOWN,CUP
 };
 
 
@@ -200,7 +200,7 @@ void GelFind(int Frag, int Tuple, int Shift);
 Boolean NextPool(int *Frag);
 void DoMeld(int Start, int Finish, char *ArgStr);
 void DoWrite(int Start, int Finish, char *FName);
-void DoExit(char *FName);
+void DoExit(char *FName, AjPSeqout seqout);
 int CmdMatch(char *cmdstr, char *string);
 int InsertSymbol(int Line, int Pos, char Base);
 void DeleteSymbol(int Line, int Pos);

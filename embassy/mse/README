@@ -3,7 +3,7 @@ Installation.
 1) Go to the emboss directory 
 cd EMBOSS-0.0.4
 
-2) make new directory embassy if it does not exisat already.
+2) make new directory embassy if it does not exist already.
 mkdir embassy
 
 3) Go into that directory

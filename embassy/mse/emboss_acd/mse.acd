@@ -30,9 +30,8 @@ section: output [
   type: "page"
 ]
 
-outdir: tmpdir  [
-  default: "/tmp"
-  information: "Temp directory"
+seqoutset: outseq  [
+  parameter: "Y"
 ]
 
 endsection: output

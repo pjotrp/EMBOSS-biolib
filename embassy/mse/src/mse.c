@@ -34,7 +34,6 @@ extern long DeGap(char * strand);
 /*FILE *debug;*/
 int DEFAULTFORMAT;
 /*AjPStr FORMATSTR=NULL;*/
-AjPStr tmpdir = NULL;
 char **envptr;
 
 
@@ -98,39 +97,36 @@ void LoadSeqWithseqset(AjPSeqset seqset){
   Strand = 1;
 }
 
-void DoSave(char *FName)
+void DoSave(char *FName, AjPSeqout outseq)
 {
   char OutLine[256], OutFName[256];
   int i=0;
   AjPSeq seqnew;
-  AjPSeqout outseq;
   AjPStr ajname;
-  
+  AjPSeqout myoutseq;
+ 
   if ( StrIsBlank(FName) ) {
-    sprintf(OutLine,"Save as file [%s]",FOSSName);
-    strcpy(OutFName,FOSSName);
-    ShowText(OutLine);
-    getstr(OutFName);
-    if ( StrIsBlank(OutFName)) strcpy(OutFName,FOSSName);
+      myoutseq = outseq;
   }
   else{
     strcpy(OutFName,FName);
-  }    
-  ajname = ajStrNewC(OutFName);
+    ajname = ajStrNewC(OutFName);
       
-  outseq = ajSeqoutNew();
-  outseq->Format = DEFAULTFORMAT;
-  ajSeqFileNewOut(outseq, ajname);
+    myoutseq = ajSeqoutNew();
+    myoutseq->Format = DEFAULTFORMAT;
+    ajSeqFileNewOut(outseq, ajname);
+  }    
   for(i=1;i<NOS && OkToEdit[i]; i++){
-    seqnew = ajSeqNew();
-    ajSeqAssNameC(seqnew,Seq[i].Name);
-    ajSeqAssSeqC(seqnew,Seq[i].Mem);
-    ajSeqAllWrite(outseq, seqnew);
+    seqnew = ajSeqNewC(Seq[i].Mem, Seq[i].Name);
+    ajSeqAssDescC(seqnew, Seq[i].Desc);
+    ajSeqAllWrite(myoutseq, seqnew);
     ajSeqDel(&seqnew);
   }
 
   ajSeqWriteClose(outseq);
-  ajSeqoutDel(&outseq);
+  if ( !StrIsBlank(FName) ) {
+    ajSeqoutDel(&myoutseq);
+  }
   
   sprintf(OutLine,"Sequences written to %s",OutFName);
   ShowText(OutLine);
@@ -168,6 +164,7 @@ char ComStr[132], ArgStr[132];
 int Com;
 int Start=0, Finish=0;
 AjPSeqset seqset;
+AjPSeqout outseq;
 /*
 ** Setup screen control package, keypad and MSE, check for in-line arguments
 */
@@ -177,7 +174,7 @@ AjPSeqset seqset;
 
 	seqset = ajAcdGetSeqset("sequence");
 
-	tmpdir = ajAcdGetOutdirName("tmpdir");
+	outseq = ajAcdGetSeqoutset("outseq");
 
         envptr = env;
 
@@ -208,8 +205,10 @@ Loop:
 
 	Com = GetCmd(&Start, &Finish, ComStr, ArgStr);
 
+        ajDebug("GetCmd returns Com:%d Start:%d Finish:%d ComStr '%s' ArgStr '%s'\n",
+		Com, Start, Finish, ComStr, ArgStr);
 	switch (Com) {
-	  case CSAVE:        DoSave(ArgStr);                    break;
+	  case CSAVE:        DoSave(ArgStr, outseq);            break;
 	    /*	  case CALNED:       DoAlned(ArgStr);                   break;*/
 	  case CANCHOR:      DoAnchor(Start, Finish);           break;
 	  case CCANCEL:      DoCancel();                        break;
@@ -219,8 +218,14 @@ Loop:
 	  case CDIFFERENCES: DoDifferences(ArgStr);             break;
 	  case CDNA:         DoDNA(Start);                      break;
 	    /*	  case CEDIT:        DoEdit(ArgStr,Start);              break;*/
+	  case CDOWN:        ReDoBar[Strand]=1;
+	                     if(Start == NOADDR)
+				 Strand = LIMIT(1,Strand-1,NOS);
+			     else
+				 Strand = LIMIT(1,Strand-Start,NOS);
+	                     ReDoBar[Strand]=1;                 break;
 	  case CELIMINATE:   DoEliminate(Start, Finish);        break;
- 	  case CEXIT:        DoExit(ArgStr);                    break;
+ 	  case CEXIT:        DoExit(ArgStr, outseq);            break;
 	  case CFIND:        DoFind(Start, Finish, ArgStr);     break;
 	  case CFORMAT:      DoFormat(ArgStr);                  break;
 	  case CGO:          LinePos = Seq[Strand].Offset+Start;break;
@@ -235,12 +240,12 @@ Loop:
 	  case CMOVE:        DoMove(Start, Finish);             break;
 	    /*	  case CMSF:         DoMSF(ArgStr);                     break;*/
 	  case CNAME:        DoName(ArgStr);
-	                     Seq[Strand].Modified = 1;       break;
-	  case CNEITHER:     DoNeither(); break;
+	                     Seq[Strand].Modified = 1;          break;
+	  case CNEITHER:     DoNeither();                       break;
 	  case CNOANCHOR:    DoNoAnchor(Start, Finish);         break;
 	  case COFFSET:      DoOffset(Start);                   break;
 	  case COPEN:        DoOpen();                          break;
-	  case CCQUIT:        DoQuit();                          break;
+	  case CCQUIT:       DoQuit();                          break;
 	  case CREDRAW:      DoRedraw();                        break;
 	  case CREMOVE:      DoRemove();                        break;
 	  case CREVERSE:     DoReverse(Start);                  break;
@@ -249,10 +254,16 @@ Loop:
 	  case CSEQ:         DoSeq();                           break;
 	  case CSORT:        DoSort(Start, Finish, ArgStr);     break;
 	  case CTITLE:       DoTitle(ArgStr);
-	                     Seq[Strand].Modified = 1;       break;
+	                     Seq[Strand].Modified = 1;          break;
 	  case CTYPE:        DoType(Start, Finish, ArgStr);     break;
 	  case CUNLOCK:      DoUnLock(Start, Finish);           break;
 	  case CUNIQUE:      DoUnique(ArgStr);                  break;
+	  case CUP:          ReDoBar[Strand]=1;
+	                     if(Start == NOADDR)
+				 Strand = LIMIT(1,Strand+1,NOS);
+			     else
+				 Strand = LIMIT(1,Strand+Start,NOS);
+	                     ReDoBar[Strand]=1;                 break;
 	  case CUPPER:       DoUpper(Start, Finish);            break;
 	  case CWRITE:       DoWrite(Start, Finish, ArgStr);    break;
   	}
@@ -368,8 +379,12 @@ static char LastChar=EOS;
 
 Parse:
 
+	  ajDebug("Keystroke: %02x\n", Keystroke);
 	  switch ( Keystroke ) {
 
+	    case EOF:
+	      CleanUp();		/* never returns */
+	      break;
 	    case KEY_RIGHT:
 	      LinePos += Rep;
 	      ReDoBar[Strand] = 1;
@@ -1131,6 +1146,7 @@ char *cPos, *tPos;
 	ShowText("Command: ");
 
 	getstr(OneLine);
+        ajDebug("GetCmd line '%s'\n", OneLine);
 	ShowError(" ");
 
 	*Start = NOADDR;
@@ -1205,6 +1221,7 @@ char *cPos, *tPos;
 	else if ( CmdMatch("DEGap",ComStr) )          return(CDEGAP);
 	else if ( CmdMatch("DELete",ComStr) )         return(CDELETE);
 	else if ( CmdMatch("DNa",ComStr) )            return(CDNA);
+	else if ( CmdMatch("DOwn",ComStr) )           return(CDOWN);
 	/*	else if ( CmdMatch("EDIt",ComStr) )           return(CEDIT);*/
 	else if ( CmdMatch("ELiminate",ComStr) )      return(CELIMINATE);
 	else if ( CmdMatch("EXit",ComStr) )           return(CEXIT);
@@ -1238,7 +1255,8 @@ char *cPos, *tPos;
 	else if ( CmdMatch("TItle",ComStr) )          return(CTITLE);
 	else if ( CmdMatch("TYpe",ComStr) )           return(CTYPE);
 	else if ( CmdMatch("UNlock",ComStr) )         return(CUNLOCK);
-	else if ( CmdMatch("UPper",ComStr) )          return(CUPPER);
+	else if ( CmdMatch("UP",ComStr) )             return(CUP);
+	else if ( CmdMatch("UPPer",ComStr) )          return(CUPPER);
 	else if ( CmdMatch("Write",ComStr) )          return(CWRITE);
 	else if ( (*Start != NOADDR || *Finish != NOADDR) &&
 		  ComStr[0]==EOS  && ArgStr[0]==EOS  ) {
@@ -1972,7 +1990,7 @@ Boolean Mod = 0;
    }
  }
 
- if(Mod){ /* if modified as user if they want to save */
+ if(Mod){ /* if modified ask user if they want to save */
    ShowText("Sequences modified do you wish to continue exiting [N]");
    getstr(OutFName);
    if(OutFName[0]!='Y' &&  OutFName[0]!='y') 
@@ -2510,7 +2528,7 @@ SeqEntry *SeqOut;
 	fChar = Seq[Strand].Mem[f];
 	Seq[Strand].Mem[f] = EOS;
 
-Seq[Strand].Length = f-s+1;
+        Seq[Strand].Length = f-s+1;
 
 
 	sChar = Seq[Strand].Mem;
@@ -2542,9 +2560,11 @@ Seq[Strand].Length = f-s+1;
 **
 **************************************************************************/
 
-void DoExit( char *FName )
+void DoExit( char *FName, AjPSeqout outseq )
 
 {
+    int i;
+
   /*char OutLine[256], OutFName[256];
 SeqSpec SeqOut;
 int i;
@@ -2562,7 +2582,7 @@ int p,n;*/
    }
  }
 
- if(Mod){ ?? if modified as user if they want to save ??
+ if(Mod){ ?? if modified ask user if they want to save ??
    ShowText("Sequences modified do you wish to continue [N]");
    getstr(OutFName);
    if ( StrIsBlank(OutFName)==0) return;
@@ -2644,6 +2664,12 @@ int p,n;*/
 	fclose(OutFile);
 
 */
+        DoSave(FName, outseq);
+        for ( i=1; i<=NOS; i++ ) {
+	    if(Seq[i].Modified){
+		Seq[i].Modified = 0;
+	    }
+	}
 	DoQuit();
 
 } /* End of DoExit */
@@ -3501,20 +3527,19 @@ int formatnumber;
 **  as a result of duplicate codewords.
 **
 **************************************************************************/
-/*
+
 void DoMSF(char *ArgStr)
 
 {
-char OutFName[256], Code[256];
+char OutFName[256];
 int i;
-??--------------------------------------------??
 
 	strcpy(OutFName, ArgStr);
 	if ( StrIsBlank(OutFName) ) {
 	  ShowText("Write all sequence entries to which file? ");
 	  getstr(OutFName);
 	}
-	StrCollapse(StrToUpper(OutFName));
+	StrCollapse(StrToLower(OutFName));
 
 	if ( StrIsBlank(OutFName) ) return;
 
@@ -3528,8 +3553,7 @@ int i;
 	    ReDoBar[i] = 1;
 	  }
 
-} ?? End of DoMSF ??
-*/
+}
 
 /****  DoHardCopy  ********************************************************
 **
@@ -4084,7 +4108,7 @@ void DoHelp(int Start)
 "[n]?            - Display help starting at page [n], VT200's also use HELP key",
 "   !            - Display status of current sequence, same as \"SEQ\" command",
 "   Control-W    - Redraw the screen (also Control-R)",
-"   Control-Z    - Switch to Command Mode",
+"   :            - Switch to Command Mode (also Control-Z)",
 
 "",
 ""
@@ -4349,7 +4373,7 @@ void DoHelp(int Start)
    ajDebug("Help page %d of %d\n",Page,Pages);
    for (i=0; i<22; i++)
      printw("%s\n",HelpMsg[Page-1][i]);
-     printw("\n     [Help page %d of %d.  Press RETURN for more help. SPACE to quit.] ",
+   printw("\n     [Help page %d of %d.  Press RETURN for more help. SPACE to quit.] ",
 	  Page, Pages);
    c = getch();;
    if ( (char)c != '\n' ) break;
@@ -4364,9 +4388,7 @@ void DoHelp(int Start)
  if(okay){
    if(scr_restore(ajStrStr(whereto))==ERR)
      ajDebug("scr_restore ERR \n");
-   else
-     ajDebug("scr_restore '%S' 0kay \n", whereto);
- 
+   else 
    ajStrInsertC(&whereto,0,"rm ");
    ajSystemEnv(whereto, envptr);
  }
