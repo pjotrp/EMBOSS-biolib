@@ -123,7 +123,7 @@ public class Splash
 	public void actionPerformed(ActionEvent e)
         {
 	  mysettings.setServiceUserName(ufield.getText());
-	  mysettings.setServicePasswd(pfield.getText());
+	  mysettings.setServicePasswd(String.valueOf(pfield.getPassword()));
 	  if (mysettings.getUseX11()) 
           {
 	    mysettings.setX11display(xfield.getText());
