@@ -54,8 +54,8 @@ public class JembossAuthServer
   private File tmprootDir = new File(tmproot);
 
   private String[] envp = 
-  {
-    "PATH=" + embossPath + ps + embossBin,
+  {                                         //embossBin first in path-
+    "PATH=" + embossBin + ps + embossPath,  //JNI speedup
     "PLPLOT_LIB=" + plplot,
     "EMBOSS_DATA=" + embossData,
     "HOME=" + homeDirectory
@@ -370,10 +370,10 @@ public class JembossAuthServer
     int stdIndex = embossCommand.indexOf(" stdout ");
     if(stdIndex > -1)
     {
-//    String startCmd = embossCommand.substring(0,stdIndex+7);
-//    String endCmd = embossCommand.substring(stdIndex+8);
-//    embossCommand = startCmd.concat("file ");
-//    embossCommand = embossCommand.concat(endCmd);
+      String startCmd = embossCommand.substring(0,stdIndex+7);
+      String endCmd = embossCommand.substring(stdIndex+8);
+      embossCommand = startCmd.concat("file ");
+      embossCommand = embossCommand.concat(endCmd);
     }
 
     Enumeration enum = inFiles.keys();
