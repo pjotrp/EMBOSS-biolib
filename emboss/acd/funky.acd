@@ -2,6 +2,9 @@ appl:funky
 [
   documentation: "Reads clean coordinate files and writes file of protein-heterogen contact data."
   groups: "Utils:Database creation"
+  gui: "yes"
+  batch: "yes"
+  cpu: "high"
 ]
 
 

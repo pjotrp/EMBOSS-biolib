@@ -31,7 +31,6 @@ endsection: input
 section: required [ info: "required Section" type: page ]
 integer: thresh  
 [
-  parameter: "Y"
   required:  "Y"
   prompt: "Percentage of median length for definition of fragments"
   default: "50"

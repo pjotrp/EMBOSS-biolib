@@ -2,6 +2,9 @@ appl: scopseqs
 [
   documentation: "Adds pdb and swissprot sequence records to a scop classification file."
   groups: "Utils:Database creation"
+  gui: "yes"
+  batch: "yes"
+  cpu: "medium"
 ]
 
 

@@ -2,6 +2,9 @@ appl: sigplot
 [
         doc: "Generates data files of signature performance"
         groups: "PROTEIN:3D STRUCTURE"
+	gui: "yes"
+	batch: "no"
+	cpu: "low"
 ]
 
 
