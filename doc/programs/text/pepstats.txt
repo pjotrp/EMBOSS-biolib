@@ -20,11 +20,17 @@ Description
      * for each type of amino acid: number, molar percent, DayhoffStat
      * for each physico-chemical class of amino acid: number, molar
        percent
+     * probability of protein solubility in E. coli
        
    DayhoffStat is the amino acid's Dayhoff statistic divided by the molar
    percent. The Dayhoff statistic is the amino acid's relative occurence
    per 1000 aa normalised to 100 by rls@ebi.ac.uk (original work from
    1993)
+   
+   The protein solubility gives an idea if the protein will be expressed
+   from E. coli in the cytosol or in inclusion bodies. This might
+   correlate with the quality of protein crystals and therefore be of
+   interest for high throughput protein crystallography (reference 1).
    
 Usage
 
@@ -43,11 +49,11 @@ Command line arguments
 
    Optional qualifiers: (none)
    Advanced qualifiers:
-   -[no]termini        bool       Include charge at N and C terminus
+   -[no]termini        boolean    Include charge at N and C terminus
    -aadata             string     Molecular weight data for amino acids
 
    General qualifiers:
-  -help                bool       report command line options. More
+  -help                boolean    Report command line options. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
    
@@ -74,9 +80,10 @@ Output file format
    
 PEPSTATS of LACI_ECOLI from 1 to 360
 
-Molecular weight = 38563.98             Residues = 360
+Molecular weight = 38563.97             Residues = 360
 Average Residue Weight  = 107.122       Charge   = 1.5
 Isoelectric Point = 6.8820
+Probability of insolubility = 0.670
 
 Residue         Number          Mole%           DayhoffStat
 A = Ala         44              12.222          1.421
@@ -99,7 +106,7 @@ S = Ser         33              9.167           1.310
 T = Thr         19              5.278           0.865
 V = Val         34              9.444           1.431
 W = Trp         2               0.556           0.427
-X = Xxx         0               0.000           0.000
+X = Xaa         0               0.000           0.000
 Y = Tyr         8               2.222           0.654
 Z = Glx         0               0.000           0.000
 
@@ -143,8 +150,8 @@ Notes
    
 References
 
-   None.
-   
+    1. Harrison, R.G. inNovations 11 (Novagen house journal)
+       
 Warnings
 
    None.
