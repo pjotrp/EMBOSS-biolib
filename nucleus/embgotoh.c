@@ -9,8 +9,8 @@
 **  Journal of Molecular Biology 162:705-708
 **
 ** @author Copyright (C) 2003--2004 Damian Counsell
-** @version $Revision: 1.11 $
-** @modified $Date: 2004/06/23 10:26:18 $
+** @version $Revision: 1.12 $
+** @modified $Date: 2004/06/23 13:17:59 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -186,13 +186,13 @@ void embGotohCellDel(AjPGotohCell* pthis)
 **
 ** @param [r] ajIntDownSeqLen [ajint] size down
 ** @param [r] ajIntAcrossSeqLen [ajint] size across
-** @return [AjPGotohCell**] Gotoh cell array address
+** @return [AjPGotohCell** const] Gotoh cell array address
 ** @@
 ******************************************************************************/
 
 
-AjPGotohCell** embGotohCellGetArray(ajint ajIntDownSeqLen,
-				    ajint ajIntAcrossSeqLen)
+AjPGotohCell** const embGotohCellGetArray(ajint ajIntDownSeqLen,
+					  ajint ajIntAcrossSeqLen)
 {
   ajint ajIntRow;
   ajint ajIntColumn;
@@ -257,7 +257,7 @@ AjPGotohCell** embGotohCellGetArray(ajint ajIntDownSeqLen,
 ** @param [r] ajpFloat2dPairScores [const AjPFloat2d] Pair score array
 ** @param [r] ajpSeqDown [const AjPSeq] Sequence down
 ** @param [r] ajpSeqAcross [const AjPSeq] Seqeunce across
-** @param [w] ajpGotohCellGotohScores [AjPGotohCell**] Gotoh cell array
+** @param [w] ajpGotohCellGotohScores [AjPGotohCell** const] Gotoh cell array
 ** @param [r] fGapPenalty [float] Gap penalty
 ** @param [r] fExtensionPenalty [float] Gap extension penalty
 ** @return [void]
@@ -270,7 +270,7 @@ AjPGotohCell** embGotohCellGetArray(ajint ajIntDownSeqLen,
 void embGotohCellCalculateSumScore(const AjPFloat2d ajpFloat2dPairScores,
 				   const AjPSeq ajpSeqDown,
 				   const AjPSeq ajpSeqAcross,
-				   AjPGotohCell **ajpGotohCellGotohScores,
+				   AjPGotohCell const **ajpGotohCellGotohScores,
 				   float fGapPenalty,
 				   float fExtensionPenalty)
 {
