@@ -57,6 +57,7 @@ sub runtest ($) {
 
   my ($testdef) = @_;		# we pass in the full definition
   # print $testdef;
+  my $idir = 0;
   my $ifile = 0;
   my $ipatt = 0;
   my $ret = 0;
@@ -73,6 +74,8 @@ sub runtest ($) {
   my $qqcmd = "";
   my %testfile = ();
   my %outfile = ();
+  my %testdir = ();
+  my %outdir = ();
 
 # these are globals, used by the caller
 
@@ -120,6 +123,21 @@ sub runtest ($) {
     elsif ($line =~ /^CL\s+(.*)/) {
       if ($cmdline ne "") {$cmdline .= " "}
       $cmdline .= $1;
+    }
+
+# directoryname - must be unique
+
+    elsif ($line =~ /^DI\s+(\S+)/) {
+      $dirname = $1;
+      if (defined($outdir{$dirname})) {
+	$testerr = "$retcode{20} $testid/$dirname\n";
+	print STDERR $testerr;
+	print LOG $testerr;
+	return 16;
+      }
+      $outdir{$dirname} = $idir;
+      print LOG "Known directory [$idir] <$1>\n";
+      $idir++;
     }
 
 # filename - must be unique
@@ -297,8 +315,27 @@ sub runtest ($) {
 
     $testfile{$file} = 1;
 
+# Special processing for directories
+
+    if (-d $file) {
+      if (!defined($outdir{$file})){ # not in test definition
+	$testerr = "$retcode{21} <$testid/$file>\n";
+	print STDERR $testerr;
+	print LOG $testerr;
+	chdir ("..");
+	return 21;
+      }
+      else {			# test the directory
+	$d =  $outdir{$file};
+	print LOG "directory [$d] <$file>\n";
+# DC number of files
+# DP filename(s)
+      }
+      next;
+    }
+
 # stdout and stderr are present (system call creates them)
-# and expected to be empty unless the test definition say otherwise
+# and expected to be empty unless the test definition says otherwise
 # this tests they are empty if they are not defined
 # otherwise they fall through to normal file testing
 
@@ -600,6 +637,9 @@ $SIG{ALRM} = sub { print STDERR "+++ timeout handler\n"; die "qatest timeout" };
 	    "16" => "Duplicate filename definition",
 	    "17" => "No patterns to test file contents",
 	    "18" => "File not found",
+	    "19" => "Directory not found",
+	    "20" => "Duplicate directory definition",
+	    "21" => "Not empty directory",
             "99" => "Testing"
 );
 
