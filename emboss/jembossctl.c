@@ -72,6 +72,8 @@ static AjBool jctl_do_fork(char *buf, int uid, int gid);
 static AjBool jctl_do_batch(char *buf, int uid, int gid);
 static AjBool jctl_do_directory(char *buf, int uid, int gid);
 static AjBool jctl_do_deletefile(char *buf, int uid, int gid);
+static AjBool jctl_do_seq(char *buf, int uid, int gid);
+static AjBool jctl_do_seqset(char *buf, int uid, int gid);
 static AjBool jctl_do_renamefile(char *buf, int uid, int gid);
 static AjBool jctl_do_deletedir(char *buf, int uid, int gid);
 static AjBool jctl_do_listfiles(char *buf, int uid, int gid, AjPStr *retlist);
@@ -91,6 +93,9 @@ static AjBool jctl_initgroups(char *buf, int gid);
 static void jctl_zero(char *buf);
 static time_t jctl_Datestr(AjPStr s);
 static int    jctl_date(const void* str1, const void* str2);
+
+static AjBool jctl_GetSeqFromUsa(AjPStr thys, AjPSeq *seq);
+static AjBool jctl_GetSeqsetFromUsa(AjPStr thys, AjPSeqset *seq);
 
 
 #include <pwd.h>
@@ -345,6 +350,21 @@ int main(int argc, char **argv)
 	ok = jctl_up(ajStrStr(tstr),&uid,&gid,&home);
 	if(ok)
 	    ok = jctl_do_renamefile(cbuf,uid,gid);
+	break;
+
+
+    case SEQ_ATTRIB:
+	ajStrAssC(&tstr,cbuf);
+	ok = jctl_up(ajStrStr(tstr),&uid,&gid,&home);
+	if(ok)
+	    ok = jctl_do_seq(cbuf,uid,gid);
+	break;
+
+    case SEQSET_ATTRIB:
+	ajStrAssC(&tstr,cbuf);
+	ok = jctl_up(ajStrStr(tstr),&uid,&gid,&home);
+	if(ok)
+	    ok = jctl_do_seqset(cbuf,uid,gid);
 	break;
 
     default:
@@ -1781,6 +1801,173 @@ static AjBool jctl_do_deletefile(char *buf, int uid, int gid)
 
 
 
+/* @funcstatic jctl_do_seq *******************************************
+**
+** Get sequence attributes (top level)
+**
+** @param [w] buf [char*] socket buffer
+** @param [w] uid [int] uid
+** @param [w] gid [int] gid
+**
+** @return [AjBool] true if success
+******************************************************************************/
+
+static AjBool jctl_do_seq(char *buf, int uid, int gid)
+{
+    AjPStr usa = NULL;
+    char *p=NULL;
+    AjPSeq seq = NULL;
+    AjBool ok;
+    
+    usa    = ajStrNew();
+
+    if(!jctl_initgroups(buf,gid))
+    {
+	fprintf(stderr,"Initgroups failure (do_seq)\n");
+	ajStrDel(&usa);
+	return ajFalse;
+    }
+
+    /* Skip over authentication stuff */
+    p=buf;
+    while(*p)
+	++p;
+    ++p;
+
+    /* retrieve user file */
+    ajStrAssC(&usa,p);
+
+    jctl_zero(buf);
+
+    if(setgid(gid)==-1)
+    {
+	fprintf(stderr,"setgid error (seq attr)\n");
+	ajStrDel(&usa);
+	return ajFalse;
+    }
+    if(setuid(uid)==-1)
+    {
+	fprintf(stderr,"setuid error (seq attr)\n");
+	ajStrDel(&usa);
+	return ajFalse;
+    }
+
+/*    
+ *  Might need a kludge for stupid solaris so leave this code here
+    if(!jctl_chdir(ajStrStr(usa)))
+    {
+	fprintf(stderr,"setuid error (seq attr)\n");
+	ajStrDel(&usa);
+	return ajFalse;
+    }
+*/
+
+    seq = ajSeqNew();
+
+    ok = jctl_GetSeqFromUsa(usa,&seq);
+    if(ok)
+	fprintf(stdout,"%d %f %d",(int)ajSeqLen(seq),seq->Weight,
+		(int)ajSeqIsNuc(seq));
+    else
+	fprintf(stdout,"0 0.0 0");
+    fflush(stdout);
+
+
+    ajStrDel(&usa);    
+    ajSeqDel(&seq);
+
+    if(!ok)
+	return ajFalse;
+
+    return ajTrue;
+}
+
+
+
+/* @funcstatic jctl_do_seqset *******************************************
+**
+** Get seqset attributes (top level)
+**
+** @param [w] buf [char*] socket buffer
+** @param [w] uid [int] uid
+** @param [w] gid [int] gid
+**
+** @return [AjBool] true if success
+******************************************************************************/
+
+static AjBool jctl_do_seqset(char *buf, int uid, int gid)
+{
+    AjPStr usa = NULL;
+    char *p=NULL;
+    AjBool ok;
+    AjPSeqset seq = NULL;
+    
+
+    usa    = ajStrNew();
+    seq    = ajSeqsetNew();
+    
+    if(!jctl_initgroups(buf,gid))
+    {
+	fprintf(stderr,"Initgroups failure (do_seqset)\n");
+	ajStrDel(&usa);
+	return ajFalse;
+    }
+
+    /* Skip over authentication stuff */
+    p=buf;
+    while(*p)
+	++p;
+    ++p;
+
+    /* retrieve user file */
+    ajStrAssC(&usa,p);
+
+    jctl_zero(buf);
+
+    if(setgid(gid)==-1)
+    {
+	fprintf(stderr,"setgid error (seqset attrib)\n");
+	ajStrDel(&usa);
+	return ajFalse;
+    }
+    if(setuid(uid)==-1)
+    {
+	fprintf(stderr,"setuid error (seqset attrib)\n");
+	ajStrDel(&usa);
+	return ajFalse;
+    }
+
+    /*
+     *  Leave this code here for now in case of Solaris usual stupidity
+    if(!jctl_chdir(ajStrStr(usa)))
+    {
+	fprintf(stderr,"setuid error (seqset attrib)\n");
+	ajStrDel(&ufile);
+	return ajFalse;
+    }
+    */
+
+
+    ok = jctl_GetSeqsetFromUsa(usa,&seq);
+    if(ok)
+	fprintf(stdout,"%d %f %d",(int)ajSeqsetLen(seq),
+		ajSeqsetTotweight(seq),(int)ajSeqsetIsNuc(seq));
+    else
+	fprintf(stdout,"0 0.0 0");
+    fflush(stdout);
+    
+
+    ajStrDel(&usa);    
+    ajSeqsetDel(&seq);
+
+    if(!ok)
+	return ajFalse;
+    
+    return ajTrue;
+}
+
+
+
 /* @funcstatic jctl_do_renamefile *******************************************
 **
 ** Rename a user file
@@ -2958,7 +3145,7 @@ static AjBool jctl_check_buffer(char *buf, int mlen)
     if(sscanf(buf,"%d",&command)!=1)
 	return ajFalse;
 
-    if(command<COMM_AUTH || command>RENAME_FILE)
+    if(command<COMM_AUTH || command>SEQSET_ATTRIB)
 	return ajFalse;
 
     if(command==COMM_AUTH)
@@ -3528,6 +3715,73 @@ static int jctl_date(const void* str1, const void* str2)
     
     return (int)(jctl_Datestr(*b) - jctl_Datestr(*a));
 }
+
+
+
+/* @funcstatic jctl_GetSeqFromUsa ********************************************
+**
+** Return a sequence given a USA
+**
+** @param [r] thys [AjPStr] usa
+** @param [w] seq [AjPSeq*] sequence
+** @return [AjBool] ajTrue on success
+******************************************************************************/
+
+static AjBool jctl_GetSeqFromUsa(AjPStr thys, AjPSeq *seq)
+{
+    AjPSeqin seqin;
+    AjBool ok;
+  
+    ajNamInit("emboss");
+  
+    seqin = ajSeqinNew();
+    seqin->multi = ajFalse;
+    seqin->Text  = ajFalse;
+  
+    ajSeqinUsa (&seqin, thys);
+    ok = ajSeqRead(*seq, seqin);
+    ajSeqinDel (&seqin);
+
+    if(!ok)
+	return ajFalse;
+
+    return ajTrue;
+}
+
+
+
+/* @funcstatic jctl_GetSeqsetFromUsa *****************************************
+**
+** Return a seqset given a usa
+**
+** @param [r] thys [AjPStr] usa
+** @param [w] seq [AjPSeqset*] seqset
+** @return [AjBool] ajTrue on success
+******************************************************************************/
+
+static AjBool jctl_GetSeqsetFromUsa(AjPStr thys, AjPSeqset *seq)
+{
+    AjPSeqin seqin;
+    AjBool ok;
+  
+    ajNamInit("emboss");
+  
+    seqin = ajSeqinNew();
+    seqin->multi = ajTrue;
+    seqin->Text  = ajFalse;
+  
+    ajSeqinUsa (&seqin, thys);
+    ok = ajSeqsetRead(*seq, seqin);
+    ajSeqinDel (&seqin);
+
+
+    if(!ok)
+	return ajFalse;
+
+    return ajTrue;
+}
+
+
 
 
 #else
