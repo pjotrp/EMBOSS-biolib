@@ -2157,7 +2157,7 @@ AjPSignature  siggen_SigSelect(AjPScopalg alg, AjPScorealg scores,
     for(x=0; x<sig->npos;x++)
     {
 
-        ajSortIntIncI((ajint *) ajIntInt(sig->dat[x]->gsiz), 
+        ajSortTwoIntIncI((ajint *) ajIntInt(sig->dat[x]->gsiz), 
                       (ajint *) ajIntInt(sig->dat[x]->gfrq),  
                       sig->dat[x]->ngap);
         ajSortIntInc((ajint *) ajIntInt(sig->dat[x]->gsiz), sig->dat[x]->ngap);
