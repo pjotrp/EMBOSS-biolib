@@ -1,0 +1,8 @@
+appl: ehmmindex [
+        doc: "Index an HMM database"
+        groups: "HMM"
+]
+
+
+
+infile: infile [ param: Y ]

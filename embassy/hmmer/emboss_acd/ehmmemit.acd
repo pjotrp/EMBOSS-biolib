@@ -1,0 +1,24 @@
+appl: ehmmemit [
+        doc: "Extract HMM sequences"
+        groups: "HMM"
+]
+
+
+infile: infile [
+	param: Y
+]
+
+bool: selex [ req: N def: N info: "Output in selex format"
+]
+
+bool: consensus [ req: N def: N info: "Output consensus sequence"
+]
+
+int: number [ req: N def: 10 info: "Number of sequences to produce"
+]
+
+int: seed [ req: N def: 0 min: 0 info: "Random seed"
+]
+
+outfile: outfile [ param: Y
+]

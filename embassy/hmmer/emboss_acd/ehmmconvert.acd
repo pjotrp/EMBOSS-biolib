@@ -1,0 +1,31 @@
+appl: ehmmconvert [
+        doc: "Convert between HMM formats"
+        groups: "HMM"
+]
+
+
+infile: infile [
+	param: Y
+]
+
+list: format [
+	req: N
+	default: "A"
+	minimum: "1"
+	maximum: "1"
+	values: "A:ascii,B:binary,G:gcg,X:xsw"
+	delimiter: ","
+	codedelim: ":"
+	header: "HMM format"
+	prompt: "Select format"
+	button: "Y"
+]
+
+bool: append [ req: N def: N info: "Append to file"
+]
+
+bool: force [ req: N def: N info: "Force overwriting"
+]
+
+outfile: outfile [ param: Y
+]

@@ -1,0 +1,26 @@
+appl: ehmmalign [
+        doc: "Align sequences with an HMM"
+        groups: "HMM"
+]
+
+
+infile: hmmfile [
+	param: Y
+	info: "HMM file"
+]
+
+seqset: sequences [
+	param: Y
+]
+
+string: mapali [ req: N def: "" info: "Map alignment"
+]
+
+string: withali [ req: N def: "" info: "Heuristic alignment"
+]
+
+bool: matchonly [ req: N def: N info: "Only show match state alignment symbols"
+]
+
+outfile: outfile [ param: Y
+]

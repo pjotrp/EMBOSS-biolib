@@ -1,0 +1,15 @@
+appl: ehmmfetch [
+        doc: "Extract HMM from a database"
+        groups: "HMM"
+]
+
+
+
+string: database [ param: Y info: "Database name"
+]
+
+string: consensus [ param: Y info: "Entry name"
+]
+
+outfile: outfile [ param: Y
+]

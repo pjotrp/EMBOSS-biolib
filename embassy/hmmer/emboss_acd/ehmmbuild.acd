@@ -1,0 +1,118 @@
+appl: ehmmbuild [
+        doc: "Build HMM"
+        groups: "HMM"
+]
+
+
+seqset: sequences [
+	param: Y
+]
+
+list: strategy [
+	req: N
+	default: "L"
+	minimum: "1"
+	maximum: "1"
+	values: "M:multiple,L:local,G:global"
+	delimiter: ","
+	codedelim: ":"
+	header: "Local/Global preference"
+	prompt: "Select preference"
+	button: "Y"
+]
+
+string: name [ req: N def: "Ehmm" info: "Name for the HMM"
+]
+
+string: resave [ req: N def: "" info: "Resave selex file"
+]
+
+bool: append [ req: N def: N info: "Append to file"
+]
+
+bool: force [ req: N def: N info: "Force overwriting"
+]
+
+bool: amino [ req: N def: N info: "Treat as protein"
+]
+
+bool: nucleic [ req: N def: N info: "Treat as dna"
+]
+
+float: archpri [ req: N def: 0.85 info: "Architecture prior"
+]
+
+bool: binary [ req: N def: N info: "Write HMM as binary"
+]
+
+string: cfile [ req: N def: "" info: "Emission and transition count file"
+]
+
+list: cstrategy [
+	req: N
+	default: "F"
+	minimum: "1"
+	maximum: "1"
+	values: "F:Fast,H:Hand"
+	delimiter: ","
+	codedelim: ":"
+	header: "Fast or by hand"
+	prompt: "Select strategy"
+	button: "Y"
+]
+
+bool: fast [ req: N def: N info: "Work in fast mode"
+]
+
+float: gapmax [ req: N def: 0.5 info: "Fast mode control"
+]
+
+bool: hand [ req: N def: N info: "specify model by hand"
+]
+
+float: idlevel [ req: N def: 0.62 info: "Cutoff ID threhold"
+]
+
+bool: efficiency [ req: N def: Y info: "Be efficient"
+]
+
+string: null [ req: N def: "" info: "NULL model file"
+]
+
+string: pam [ req: N def: "" info: "PAM file"
+]
+
+float: pamweight [ req: N def: 20.0 info: "Weighting for PAM"
+]
+
+string: prior [ req: N def: "" info: "Prior file"
+]
+
+float: swentry [ req: N def: 0.5
+	info: "Probability control for local entries"
+]
+
+float: swexit [ req: N def: 0.5
+	info: "Probability control for exits"
+]
+
+bool: more [ req: N def: N info: "Verbosity"
+]
+
+list: weighting [
+	req: N
+	default: "G"
+	minimum: "1"
+	maximum: "1"
+	values: "B:Blosum,G:Gerstein/Sonnhammer/Chothia,K:Krogh/Mitchison,N:None,V:Voronoi"
+	delimiter: ","
+	codedelim: ":"
+	header: "Weighting method"
+	prompt: "Select weighting"
+	button: "Y"
+]
+
+
+
+outfile: outfile [ param: Y
+]

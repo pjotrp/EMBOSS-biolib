@@ -1,0 +1,53 @@
+appl: ehmmpfam [
+        doc: "Align single sequence with an HMM"
+        groups: "HMM"
+]
+
+
+seqall: sequences [
+	param: Y
+]
+
+string: hmmfile [
+	param: Y
+	info: "HMM file"
+]
+
+bool: nucleic [ req: N def: N info: "Force nucleic comparison"
+]
+
+int: nalign [ req: N def: 100 info: "Number of alignments"
+]
+
+float: evalue [ req: N def: 10. info: "E-value cutoff"
+]
+
+float: hitcut [ req: N def: -1000000. info: "Hit score cutoff"
+]
+
+int: dbsize [ req: N def: 59021 info: "Calc E-value for DB size n"
+]
+
+int: cpu [ req: N def: 0 info: "Number of CPUs"
+]
+
+float: dome [ req: N def: 1000000. info: "E-value domain cutoff"
+]
+
+float: domt [ req: N def: -1000000. info: "Hit score domain cutoff"
+]
+
+bool: forward [ req: N def: N info: "Use forward algorithm"
+]
+
+bool: nulltwo [ req: N def: N info: "Turn off second null model"
+]
+
+bool: pvm [ req: N def: N info: "Use parallel virtual machine"
+]
+
+bool: xnu [ req: N def: N info: "Use XNU filtering"
+]
+
+outfile: outfile [ param: Y
+]

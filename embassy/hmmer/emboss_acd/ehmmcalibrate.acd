@@ -1,0 +1,39 @@
+appl: ehmmcalibrate [
+        doc: "Calibrate a hidden Markov model"
+        groups: "HMM"
+]
+
+
+infile: infile [
+	param: Y
+]
+
+
+int: cpu [ req: N def: 0 info: "Number of CPUs"
+]
+
+int: fixed [ req: N def:0 min: 0
+    info: "Length fix for random sequences"
+]
+
+string: histogram [ req: N def: ""
+    info: "Name for histogram file"
+]
+
+float: mean [ req: N def: 350. info: "Mean length of synthetic sequences"
+]
+
+int: num [ req: N def: 5000 info: "Number of synthetic sequences"
+]
+
+bool: pvm [ req: N def: N info: "Run on parallel virtual machines"
+]
+
+float: sd [ req: N def: 350. info: "Standard deviation of syntheic sequences"
+]
+
+int: seed [ req: N def: 0 min: 0 info: "Random seed"
+]
+
+outfile: outfile [ param: Y
+]

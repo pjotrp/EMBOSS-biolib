@@ -1,0 +1,18 @@
+appl: ealistat [
+        doc: "Statistics for multiple alignment files"
+        groups: "HMM"
+]
+
+
+infile: infile [
+	param: Y
+]
+
+bool: additional [ req: N def: N info: "Show additional information"
+]
+
+bool: fast [ req: N def: N info: "Use sampling method"
+]
+
+outfile: outfile [ param: Y
+]
