@@ -1,4 +1,8 @@
 Version 2.8.0
+	Align formats: Added "tcoffee" as a valid -aformat which writes a
+	T-Coffee library file suitable for input as -in=Lfilename to
+	T-Coffee.
+
 	Pepstats: added molar extinction coefficient and extinction
 	coefficient at 1mg/ml for A280.
 
@@ -6,8 +10,8 @@ Version 2.8.0
 	standard nexus files. Later releases will accept nexus format for
 	other input data.
 
-	Jackknifer, Mega, Treecon formats parsed, at least in their EMBOSS
-	output forms.
+	Jackknifer, Mega, Treecon and fitch formats parsed, at least in
+	their EMBOSS output forms.
 
 	Underscores are allowed in accession numbers and sequence versions
 	to handle REFSEQ fasta format entries.
