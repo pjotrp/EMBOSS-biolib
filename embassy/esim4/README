@@ -1,0 +1,39 @@
+Emboss problems mail emboss-bug@sanger.ac.uk
+
+Installation from .tar file.
+
+
+1) Go to the emboss directory 
+cd EMBOSS-x.x.x
+
+2) make new directory embassy if it does not exist already.
+mkdir embassy
+
+3) Go into that directory
+cd embassy
+
+4) unzip and untar the file
+gunzip ESIM4.tar.gz
+tar xvf ESIM4.tar
+
+5) go into the esim4 directory
+cd ESIM4
+
+6) configure and compile
+./configure (use same options as you used to compile emboss)
+make
+make install
+
+7. To build a regular (nonEMBOSS) version go to the source directory and do:
+
+gmake altMakefile
+
+which will produce a file "sim4".
+
+
+This distribution of sim4/esim4 built and ran with both gcc and the
+SUNpro compiler on Solaris 8.
+
+
+
+

@@ -1,0 +1,92 @@
+Thu Oct 10 23:40:39 EDT 2001
+Xtend1.c:
+     $Id: VERSION,v 1.1 2002/02/25 09:33:49 hgmp Exp $
+
+Xtend1.h:
+     $Id: VERSION,v 1.1 2002/02/25 09:33:49 hgmp Exp $
+
+align.c:
+     $Id: VERSION,v 1.1 2002/02/25 09:33:49 hgmp Exp $
+
+align.h:
+     $Id: VERSION,v 1.1 2002/02/25 09:33:49 hgmp Exp $
+
+args.c:
+     $Id: VERSION,v 1.1 2002/02/25 09:33:49 hgmp Exp $
+
+args.h:
+     $Id: VERSION,v 1.1 2002/02/25 09:33:49 hgmp Exp $
+
+charvec.c:
+
+charvec.h:
+
+discrim.c:
+     $Id: VERSION,v 1.1 2002/02/25 09:33:49 hgmp Exp $
+
+discrim.h:
+     $Id: VERSION,v 1.1 2002/02/25 09:33:49 hgmp Exp $
+
+dna.c:
+     $Id: VERSION,v 1.1 2002/02/25 09:33:49 hgmp Exp $
+
+dna.h:
+     $Id: VERSION,v 1.1 2002/02/25 09:33:49 hgmp Exp $
+
+encoding.c:
+     $Id: VERSION,v 1.1 2002/02/25 09:33:49 hgmp Exp $
+
+encoding.h:
+
+libc.h:
+     $Id: VERSION,v 1.1 2002/02/25 09:33:49 hgmp Exp $
+
+misc.c:
+     $Id: VERSION,v 1.1 2002/02/25 09:33:49 hgmp Exp $
+
+misc.h:
+     $Id: VERSION,v 1.1 2002/02/25 09:33:49 hgmp Exp $
+
+poly.c:
+     $Id: VERSION,v 1.1 2002/02/25 09:33:49 hgmp Exp $
+
+poly.h:
+
+prnt.c:
+     $Id: VERSION,v 1.1 2002/02/25 09:33:49 hgmp Exp $
+
+prnt.h:
+     $Id: VERSION,v 1.1 2002/02/25 09:33:49 hgmp Exp $
+
+psublast.h:
+     $Id: VERSION,v 1.1 2002/02/25 09:33:49 hgmp Exp $
+
+seq.c:
+     $Id: VERSION,v 1.1 2002/02/25 09:33:49 hgmp Exp $
+
+seq.h:
+     $Id: VERSION,v 1.1 2002/02/25 09:33:49 hgmp Exp $
+
+seq_read.c:
+     $Id: VERSION,v 1.1 2002/02/25 09:33:49 hgmp Exp $
+
+sim4.h:
+     $Id: VERSION,v 1.1 2002/02/25 09:33:49 hgmp Exp $
+
+sim4.init.c:
+     $Id: VERSION,v 1.1 2002/02/25 09:33:49 hgmp Exp $
+
+sim4b1.c:
+     $Id: VERSION,v 1.1 2002/02/25 09:33:49 hgmp Exp $
+
+sim4b1.h:
+     $Id: VERSION,v 1.1 2002/02/25 09:33:49 hgmp Exp $
+
+splice.c:
+     $Id: VERSION,v 1.1 2002/02/25 09:33:49 hgmp Exp $
+
+splice.h:
+     $Id: VERSION,v 1.1 2002/02/25 09:33:49 hgmp Exp $
+
+types.h:
+     $Id: VERSION,v 1.1 2002/02/25 09:33:49 hgmp Exp $

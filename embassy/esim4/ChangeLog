@@ -1,0 +1,22 @@
+v1.0.1
+23 Jan 2001
+GWW
+Changed configure.in to add -lmenu -lform to the LIBS
+
+
+v1.0.2
+23 Jan 2001
+GWW
+Changed configure.in back and added -lmenu -lform -lX11 to source/Makefile.am
+
+v1.0.3
+24 Jan 2001
+GWW
+Alan tidied up lots of stuff for configure and made the m4 directory
+
+v1.0.4
+9 Feb 2001
+GWW
+Blocked the menu from recursively running 'emenu'
+Bug fix reported by Flavio Licciulli (BARI) implemented to stop crashing
+	when the description in the menus is too long
