@@ -51,7 +51,6 @@ import uk.ac.mrc.hgmp.embreo.EmbreoAuthException;
 public class SectionPanel
 {
 
-  private String sectionName;
   private TextFieldSink textf[];
   private TextFieldInt textInt[];
   private TextFieldFloat textFloat[];
@@ -68,7 +67,7 @@ public class SectionPanel
   private ParseAcd parseAcd;
   private int numofFields;
   private int nf;
-  private boolean jni = true;
+//private boolean jni = true;
   public static int ajaxLength;
   public static float ajaxWeight;
   public static boolean ajaxProtein;
@@ -148,10 +147,12 @@ public class SectionPanel
     this.f = f;
 
 //using JNI?
-    jni = AdvancedOptions.prefjni.isSelected();
+//  jni = AdvancedOptions.prefjni.isSelected();
     nf = nff;
 
     String att = parseAcd.getParameterAttribute(nf,0).toLowerCase();
+
+//set the ACD title
     if(att.startsWith("appl"))
     {
       setAppTitle(des,p3);
@@ -370,7 +371,8 @@ public class SectionPanel
         section.add(Box.createVerticalStrut(10));
       }
 
-      if(jni)
+//using jni?
+      if(AdvancedOptions.prefjni.isSelected())
         checkDependents(section);
       nf++;
       if(nf<numofFields)
@@ -593,7 +595,7 @@ public class SectionPanel
           att.startsWith("sequence") ) 
       {
         Box left = new Box(BoxLayout.X_AXIS);
-        JButton upload = new JButton("LOAD ATTRIBUTES FOR THIS SEQUENCE");
+        JButton upload = new JButton("LOAD SEQUENCE ATTRIBUTES");
 
         upload.setToolTipText(
                 "After entering your sequence above, click here. This\n" +
