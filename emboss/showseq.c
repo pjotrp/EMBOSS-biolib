@@ -111,7 +111,6 @@ int main(int argc, char **argv)
     AjBool plasmid;
     AjBool commercial;
     AjBool limit;
-    AjBool equiv;
     AjPFile   enzfile=NULL;
     AjPFile   equfile=NULL;
     AjPTable  retable=NULL;
@@ -163,7 +162,6 @@ int main(int argc, char **argv)
     commercial = ajAcdGetBool ("commercial");
     limit = ajAcdGetBool ("limit");
     enzymes = ajAcdGetString ("enzymes");
-    equiv = ajAcdGetBool("preferred");
 
     /* feature filter criteria */
     matchsource = ajAcdGetString ("matchsource");
@@ -277,11 +275,11 @@ int main(int argc, char **argv)
 	    ajFileDataNewC(ENZDATA, &enzfile);
 	    if(!enzfile)
 		ajFatal("Cannot locate enzyme file. Run REBASEEXTRACT");
-	    if (equiv)
+	    if (limit)
 	    {
 		ajFileDataNewC(EQUDATA,&equfile);
 		if (!equfile)
-		    equiv=ajFalse;
+		    limit=ajFalse;
 		else
 		    showseq_read_equiv(&equfile, &retable);
 	    }
@@ -292,9 +290,13 @@ int main(int argc, char **argv)
 				       maxcuts, blunt, sticky, commercial,
 				       &restrictlist);
 	    if (hits)
+	    {
 		/* this bit is lifted from printHits */
 		(void) embPatRestrictRestrict(&restrictlist, hits, !limit,
 					      ajFalse);
+		if(limit)
+		    embPatRestrictPreferred(restrictlist,retable);
+	    }
 
 	    /* tidy up */
 	    ajFileClose(&enzfile);

@@ -25,6 +25,7 @@ integer: sitelen  [
   maximum: "20"
   default: "4"
   information: "Minimum recognition site length"
+  help: "This sets the minimum length of the restriction enzyme recognition site. Any enzymes with sites shorter than this will be ignored."
 ]
 
 endsection: required
@@ -36,6 +37,7 @@ integer: mincuts  [
   maximum: "1000"
   default: "1"
   information: "Minimum cuts per RE"
+  help: "This sets the minimum number of cuts for any restriction enzyme that will be considered. Any enzymes that cut fewer times than this will be ignored."
 ]
 
 integer: maxcuts  [
@@ -44,42 +46,49 @@ integer: maxcuts  [
   maximum: "2000000000"
   default: "2000000000"
   information: "Maximum cuts per RE"
+  help: "This sets the maximum number of cuts for any restriction enzyme that will be considered. Any enzymes that cut more times than this will be ignored."
 ]
 
 bool: single  [
   optional: "Y"
   default: "N"
   information: "Force single site only cuts"
+  help: "If this is set then this forces the values of the mincuts and maxcuts qualifiers to both be 1. Any other value you may have set them to will be ignored."
 ]
 
 bool: blunt  [
   optional: "Y"
   default: "Y"
   information: "Allow blunt end cutters"
+  help: "This allows those enzymes which cut at the same position on the forward and reverse strands to be considered."
 ]
 
 bool: sticky  [
   optional: "Y"
   default: "Y"
   information: "Allow sticky end cutters"
+  help: "This allows those enzymes which cut at different positions on the forward and reverse strands, leaving an overhang, to be considered."
 ]
 
 bool: ambiguity  [
   optional: "Y"
   default: "Y"
   information: "Allow ambiguous matches"
+  help: "This allows those enzymes which have one or more 'N' ambiguity codes in their pattern to be considered"
 ]
 
 bool: plasmid  [
   optional: "Y"
   default: "N"
   information: "Allow circular DNA"
+  help: "If this is set then this allows searches for restriction enzyme recognition site and cut postions that span the end of the sequence to be considered."
 ]
 
 bool: commercial  [
   optional: "Y"
   default: "Y"
   information: "Only enzymes with suppliers"
+  help: "If this is set, then only those enzymes with a commercial supplier will be searched for.  This qualifier is ignored if you have specified an explicit list of enzymes to search for, rather than searching through 'all' the enzymes in the REBASE database.  It is assumed that, if you are asking for an explicit enzyme, then you probably know where to get it from and so all enzymes names that you have asked to be searched for, and which cut, will be reported whether or not they have a commercial supplier."
 ]
 
 list: table  [
@@ -91,7 +100,7 @@ list: table  [
   values: "0:Standard; 1:Standard (with alternative initiation codons); 2:Vertebrate Mitochondrial; 3:Yeast Mitochondrial; 4:Mold, Protozoan, Coelenterate Mitochondrial and Mycoplasma/Spiroplasma; 5:Invertebrate Mitochondrial; 6:Ciliate Macronuclear and Dasycladacean; 9:Echinoderm Mitochondrial; 10:Euplotid Nuclear; 11:Bacterial; 12:Alternative Yeast Nuclear; 13:Ascidian Mitochondrial; 14:Flatworm Mitochondrial; 15:Blepharisma Macronuclear; 16:Chlorophycean Mitochondrial; 21:Trematode Mitochondrial; 22:Scenedesmus obliquus; 23:Thraustochytrium Mitochondrial"
   delimiter: ";"
   codedelimiter: ":"
-  prompt: "Code to use"
+  prompt: "Genetic code to use"
 ]
 
 endsection: advanced
@@ -102,45 +111,46 @@ outfile: outfile  [
   information: "Output sequence details to a file"
   help: "If you enter the name of a file here then this program will write the sequence details into that file."
 ]
+
 bool: cutlist  [
   optional: "Y"
   default: "Y"
   prompt: "List the enzymes that cut"
+  help: "This produces lists in the output of the enzymes that cut, those that cut but are excluded because that cut fewer times than mincut or more times than maxcut and those enzymes that do not cut."
 ]
 
 bool: flatreformat  [
   optional: "Y"
   default: "N"
   prompt: "Display RE sites in flat format"
+  help: "This changes the output format to one where the recognition site is indicated by a row of '===' characters and the cut site is pointed to by a '>' character in the forward sense, or a '<' in the reverse sense strand."
 ]
 
 bool: limit  [
   optional: "Y"
   default: "Y"
   information: "Limits reports to one isoschizomer"
-]
-
-bool: preferred  [
-  optional: "Y"
-  default: "N"
-  information: "Report preferred isoschizomers"
+  help: "This limits the reporting of enzymes to just one enzyme from each group of isoschizomers. The enzyme chosen to represent an isoschizomer group is the prototype indicated in the data file 'embossre.equ', which is created by the program 'rebaseextract'. If you prefer different prototypes to be used, make a copy of embossre.equ in your home directory and edit it. If this value is set to be false then all of the input enzymes will be reported. You might like to set this to false if you are supplying an explicit set of enzymes rather than searching 'all' of them."
 ]
 
 bool: translation  [
   default: "Y"
   information: "Display translation"
+  help: "This displays the 6-frame translations of the sequence in the output."
 ]
 
 bool: reverse  [
   default: "Y"
   information: "Display cut sites and translation of reverse sense"
+  help: "This displays the cut sites and translation of the reverse sense."
 ]
 
 integer: orfminsize  [
   default: "0"
   minimum: "0"
   information: "Minimum size of ORFs"
-  help: "Minimum size of Open Reading Frames (ORFs) to display in the translations."
+  help: "This sets the minimum size of Open Reading Frames (ORFs) to display in the translations. All other translation regions are masked by changing the amino acids to '-' characters."
+  expected: "If this value is left as 0 then all of the translation is shown."
 ]
 
 range: uppercase  [

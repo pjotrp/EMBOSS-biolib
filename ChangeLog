@@ -1,4 +1,7 @@
 Version 2.7.0
+	Tightened up on reporting of isoschizomer groups in 'showseq -limit'
+	and 'remap -limit'. 
+
         Added embPatRestrictPreferred.
 
 	Added -individual option to RESTRICT. This gives the fragment
