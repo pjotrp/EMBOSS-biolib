@@ -514,14 +514,12 @@ public class JembossAuthServer
       }
       catch(Exception exp){} 
  
-//    appendToLogFile("forkEmboss "+name+" STDERR "+aj.getErrStd(),errorLog);  //DEBUG
-//    System.out.println("STDOUT \n"+aj.getOutStd());
-//    System.out.println("STDERR \n"+aj.getErrStd());
-
       result.add("msg");
       if(!lfork || !aj.getErrStd().equals(""))
       {
-        result.add("Fork process in run_prog failed on server");
+        result.add("stderr");
+        result.add("stderr");
+        result.add("ERROR REPORTED\n"+aj.getErrStd());
         appendToLogFile("Fork process failed "+embossCommand,errorLog);
       }
       else
