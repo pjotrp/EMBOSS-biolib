@@ -15,7 +15,23 @@ done
 
 PATH=$PATH:$JAVA_HOME/bin/ ; export PATH
 
-jar cf Jemboss.jar images/* org/emboss/jemboss/*class resources/*.jar resources/version resources/jemboss.properties resources/readme.txt org/emboss/jemboss/*/*class org/emboss/jemboss/*/*/*class 
+#
+# Wrap client.keystore for JNLP 
+
+if [ -f "resources/client.keystore" ]; then
+  echo
+  echo "Create client.jar to contain client.keystore."
+  cd resources
+  jar cf client.jar client.keystore
+  cd ..
+fi
+
+#
+# Create Jemboss jar file
+
+jar cf Jemboss.jar images/* org/emboss/jemboss/*class resources/*.jar \
+        resources/version resources/jemboss.properties resources/readme.txt \
+        org/emboss/jemboss/*/*class org/emboss/jemboss/*/*/*class 
 mv Jemboss.jar jnlp
 cp lib/*jar jnlp
 cp images/Jemboss_logo_large.gif jnlp
