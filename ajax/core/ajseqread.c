@@ -3948,12 +3948,11 @@ AjBool ajSeqParseNcbi(AjPStr str, AjPStr* id, AjPStr* acc, AjPStr* desc)
 {
     static AjPStrTok handle = NULL;
     static AjPStr token=NULL;
-    char *p;
     char *q;
     int  i;
     int  nt;
     
-    if(!(p=strchr((q=AJSTRSTR(str)),(int)'|')) || *AJSTRSTR(str)!='>')
+    if(!strchr((q=AJSTRSTR(str)),(int)'|') || *AJSTRSTR(str)!='>')
 	return ajFalse;
 
     (void) ajStrTokenAss(&handle,str,"| \r");

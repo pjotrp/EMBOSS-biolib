@@ -1149,14 +1149,10 @@ static int gcgappent (AjPFile libr, AjPFile libs, AjPStr* libstr) {
   /* keep reading until we reach the end of entry
    and return the extra number of bases*/
 
-  static AjPStr gcgtype = NULL;
-  int rblock;
   static AjPStr reflibstr = NULL;
   static AjPStr seqlibstr = NULL;
   static AjPStr testlibstr = NULL;
   int ilen;
-  int applen=0;
-  long thislen;
   static AjPStr tmpstr = NULL;
 
   AjBool isend;
