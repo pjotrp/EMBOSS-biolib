@@ -67,6 +67,7 @@ static void jctl_fork_tidy(AjPStr *cl, AjPStr *prog, AjPStr *enviro,
 			   AjPStr *dir, AjPStr *outstd, AjPStr *errstd);
 static AjBool jctl_check_buffer(char *buf, int mlen);
 static AjBool jcntl_check_socket_owner(char *pname);
+static AjBool jctl_chdir(char *file);
 
 
 #include <pwd.h>
@@ -991,7 +992,14 @@ static AjBool jctl_do_directory(char *buf, int uid, int gid)
 	fprintf(stderr,"setuid error (mkdir)\n");
 	return ajFalse;
     }
-    
+
+    if(!jctl_chdir(ajStrStr(dir)))
+    {
+	ajStrDel(&dir);
+	fprintf(stderr,"chdir error (mkdir)\n");
+	return ajFalse;
+    }
+
 
     if(mkdir(ajStrStr(dir),0711)==-1)
     {
@@ -1052,6 +1060,12 @@ static AjBool jctl_do_deletefile(char *buf, int uid, int gid)
 	return ajFalse;
     }
     
+    if(!jctl_chdir(ajStrStr(ufile)))
+    {
+	fprintf(stderr,"setuid error (delete file)\n");
+	ajStrDel(&ufile);
+	return ajFalse;
+    }
 
     if(unlink(ajStrStr(ufile))==-1)
     {
@@ -1110,6 +1124,12 @@ static AjBool jctl_do_deletedir(char *buf, int uid, int gid)
 	return ajFalse;
     }
     
+    if(chdir(ajStrStr(dir))==-1)
+    {
+	fprintf(stderr,"chdir error (delete directory)\n");
+	ajStrDel(&dir);
+	return ajFalse;
+    }
 
     cmnd = ajStrNew();
     ajFmtPrintS(&cmnd,"rm -rf %S",dir);
@@ -1177,6 +1197,13 @@ static AjBool jctl_do_listfiles(char *buf, int uid, int gid,AjPStr *retlist)
 	fprintf(stderr,"setuid error (list files)\n");
 	ajStrDel(&dir);
 	ajStrDel(&full);
+	return ajFalse;
+    }
+
+    if(chdir(ajStrStr(dir))==-1)
+    {
+	fprintf(stderr,"chdir error (list files)\n");
+	ajStrDel(&dir);
 	return ajFalse;
     }
     
@@ -1263,7 +1290,14 @@ static AjBool jctl_do_listdirs(char *buf, int uid, int gid,AjPStr *retlist)
 	ajStrDel(&full);
 	return ajFalse;
     }
-    
+    if(chdir(ajStrStr(dir))==-1)
+    {
+	fprintf(stderr,"setuid error (list dirs)\n");
+	ajStrDel(&dir);
+	ajStrDel(&full);
+	return ajFalse;
+    }
+
 
     if(!(dirp=opendir(ajStrStr(dir))))
     {
@@ -1342,9 +1376,9 @@ static AjBool jctl_do_getfile(char *buf, int uid, int gid,
 	ajStrDel(&file);
 	return ajFalse;
     }
-    if(setuid(uid)==-1)
+    if(!jctl_chdir(ajStrStr(file)))
     {
-	fprintf(stderr,"setuid error (get file)\n");
+	fprintf(stderr,"chdir error (get file)\n");
 	ajStrDel(&file);
 	return ajFalse;
     }
@@ -1563,9 +1597,12 @@ static AjBool jctl_do_putfile(char *buf, int uid, int gid, int sockdes)
 	ajStrDel(&message);
 	return ajFalse;
     }
-
-    
-
+    if(!jctl_chdir(ajStrStr(file)))
+    {
+	fprintf(stderr,"chdir error (put file)\n");
+	ajStrDel(&file);
+	return ajFalse;
+    }
 
 
     if((fd=open(ajStrStr(file),O_CREAT|O_WRONLY|O_TRUNC,0600))<0)
@@ -1759,6 +1796,36 @@ static AjBool jcntl_check_socket_owner(char *pname)
     if(!(sbuf.st_mode & S_IFSOCK))
 	return ajFalse;
     
+    return ajTrue;
+}
+
+
+/* @funcstatic jctl_chdir ****************************************************
+**
+** If a filename is given (e.g. delete) then first chdir to the directory
+**
+** @param [r] file [char*] file name
+**
+** @return [AjBool] true if sane
+******************************************************************************/
+static AjBool jctl_chdir(char *file)
+{
+    char *p;
+    AjPStr str=NULL;
+    int ret;
+    
+    str = ajStrNew();
+    if(!(p=strrchr(file,(int)'/')))
+	ajStrAssC(&str,".");
+    else
+	ajStrAssSubC(&str,file,0,p-file);
+
+    ret = chdir(ajStrStr(str));
+    ajStrDel(&str);
+
+    if(ret==-1)
+	return ajFalse;
+
     return ajTrue;
 }
 
