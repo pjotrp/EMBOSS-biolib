@@ -274,8 +274,8 @@ static void cvt_d(ajint code, VALIST ap, int put(int c, void* cl), void* cl,
 	hval = (ajlong) va_arg(VA_V(ap),ajlong);
 	val  = hval;
 #else
-	val = (long) va_arg(VA_V(ap), long);
-	ajDebug("Warning: Use of %%Ld on a 32 bit model");
+	val = (long) va_arg(VA_V(ap), ajlong);
+	/*ajDebug("Warning: Use of %%Ld on a 32 bit model");*/
 #endif
     }
     else if(flags['h'])
@@ -371,8 +371,8 @@ static void cvt_u(ajint code, VALIST ap, int put(int c, void* cl), void* cl,
 #if defined(HAVE64)
 	hm = va_arg(VA_V(ap), ajulong);
 #else
-	m  = va_arg(VA_V(ap), unsigned long);
-	ajDebug("Warning: Use of %%L on 32 bit model");
+	m  = (unsigned long) va_arg(VA_V(ap), ajulong);
+	/*ajDebug("Warning: Use of %%L on 32 bit model");*/
 #endif
     }
     else
@@ -438,8 +438,8 @@ static void cvt_o(ajint code, VALIST ap, int put(int c, void* cl), void* cl,
 #if defined(HAVE64)
 	hm = (ajulong) va_arg(VA_V(ap), ajulong);
 #else
-	m = va_arg(VA_V(ap), unsigned long);
-	ajDebug("Warning: Use of %%Lo on a 32 bit model");
+	m = (unsigned long) va_arg(VA_V(ap), ajulong);
+	/*ajDebug("Warning: Use of %%Lo on a 32 bit model");*/
 #endif
     }
     else
@@ -519,8 +519,8 @@ static void cvt_x(ajint code, VALIST ap, int put(int c, void* cl), void* cl,
 #if defined(HAVE64)
 	hm = va_arg(VA_V(ap), ajulong);
 #else
-	m = va_arg(VA_V(ap), unsigned long);
-	ajDebug("Warning: Use of %%Lx on a 32 bit model");
+	m = (unsigned long) va_arg(VA_V(ap), ajulong);
+	/*ajDebug("Warning: Use of %%Lx on a 32 bit model");*/
 #endif
     }
     else
@@ -2416,7 +2416,7 @@ static void scvt_d(const char *fmt, char **pos, VALIST ap, ajint width,
 		val = hval;
 		sscanf(ajStrStr(t),"%ld",&n);
 		hn = n;
-		ajDebug("Warning: Use of %%Ld on a 32 bit model");
+		/*ajDebug("Warning: Use of %%Ld on a 32 bit model");*/
 #endif
 	    }
 	    if(flag=='h')
@@ -2505,7 +2505,7 @@ static void scvt_x(const char *fmt, char **pos, VALIST ap, ajint width,
 		if(sscanf(ajStrStr(t),"%lx",&n)!=1)
 		    return;
 		hn = n;
-		ajDebug("Warning: Use of %%Lx on a 32 bit model");
+		/*ajDebug("Warning: Use of %%Lx on a 32 bit model");*/
 #endif
 	    }
 
@@ -2725,7 +2725,7 @@ static void scvt_o(const char *fmt, char **pos, VALIST ap, ajint width,
 		if(sscanf(ajStrStr(t),"%lo",&n)!=1)
 		    return;
 		hn = n;
-		ajDebug("Warning: Use of %%Lo on a 32 bit model");
+		/*ajDebug("Warning: Use of %%Lo on a 32 bit model");*/
 #endif
 	    }
 
@@ -2817,7 +2817,7 @@ static void scvt_u(const char *fmt, char **pos, VALIST ap, ajint width,
 		if(sscanf(ajStrStr(t),"%lu",&n)!=1)
 		    return;
 		hn = n;
-		ajDebug("Warning: Use of %%Lu on a 32 bit model");
+		/*ajDebug("Warning: Use of %%Lu on a 32 bit model");*/
 #endif
 	    }
 
