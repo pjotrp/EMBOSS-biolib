@@ -1473,6 +1473,11 @@ void ajSeqClear (AjPSeq thys)
     (void) ajStrClear (&thys->Entryname);
     (void) ajStrClear (&thys->TextPtr);
     (void) ajStrClear (&thys->Seq);
+
+    thys->Begin=0;
+    thys->End=0;
+    thys->Rev = ajFalse;
+
     while(ajListstrPop(thys->Acclist,&ptr))
 	ajStrDel(&ptr);
 
