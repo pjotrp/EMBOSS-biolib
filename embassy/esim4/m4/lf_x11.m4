@@ -34,7 +34,7 @@ dnl distribution terms that you use for the rest of that program.
 # LF_PATH_XLIB exists we do not get duplication errors!!!!!
 
 
-AC_DEFUN(LF_EMBOSS_PATH_XLIB,[
+AC_DEFUN([LF_EMBOSS_PATH_XLIB],[
   CXXFLAGS="$CXXFLAGS $X_CFLAGS"
   XLIB="$X_LIBS -lX11 $X_EXTRA_LIBS"
   AC_SUBST(XLIB)

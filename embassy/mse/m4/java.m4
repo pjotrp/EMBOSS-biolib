@@ -4,7 +4,7 @@ dnl Need to specify --with-java and --with-javajni
 dnl @author Alan Bleasby (ableasby@hgmp.mrc.ac.uk)
 dnl
 
-AC_DEFUN(CHECK_JAVA,
+AC_DEFUN([CHECK_JAVA],
 #
 # Handle user hints
 #
@@ -50,7 +50,7 @@ fi
 
 
 
-AC_DEFUN(CHECK_JAVAOS,
+AC_DEFUN([CHECK_JAVAOS],
 #
 # Handle user hints
 #
@@ -86,7 +86,7 @@ fi
 
 
 
-AC_DEFUN(CHECK_AUTH,
+AC_DEFUN([CHECK_AUTH],
 #
 # Handle user authorisation
 #
@@ -122,7 +122,9 @@ AC_ARG_WITH(auth,
 	  if test "$withval" = "hpuxshadow" ; then
 		ALT_AUTHTYPE="-DHPUX_SHADOW"
 	  fi
+if test "`uname`" != "IRIX64" && test "`uname`" != "IRIX" ; then
 	  AC_CHECK_LIB(crypt, main, LDFLAGS="$LDFLAGS -lcrypt",LDFLAGS="$LDFLAGS")
+fi
 	  AC_CHECK_LIB(pam, main, LDFLAGS="$LDFLAGS -lpam",LDFLAGS="$LDFLAGS")
 else
   AC_MSG_RESULT(no)
@@ -158,7 +160,7 @@ fi
 
 
 
-AC_DEFUN(CHECK_THREADS,
+AC_DEFUN([CHECK_THREADS],
 #
 # Handle jemboss threading options
 #
@@ -176,6 +178,12 @@ AC_ARG_WITH(thread,
 		LIBS="$LIBS -lpthread"
 	  fi
 
+	  if test "$withval" = "freebsd" ; then
+	        CFLAGS="$CFLAGS -D_THREAD_SAFE -pthread" 
+		LDFLAGS="$LDFLAGS"
+		LIBS="$LIBS -lc_r"
+	  fi
+
 	  if test "$withval" = "linux" ; then
 	        CFLAGS="$CFLAGS -D_REENTRANT" 
 		LDFLAGS="$LDFLAGS -lpthread"
@@ -183,7 +191,7 @@ AC_ARG_WITH(thread,
 	  fi
 
 	  if test "$withval" = "solaris" ; then
-	        CFLAGS="$CFLAGS -D_POSIX_C_SOURCE=199506L -D__EXTENSIONS__" 
+	        CFLAGS="$CFLAGS -D_POSIX_C_SOURCE=199506L" 
 		LDFLAGS="$LDFLAGS -lpthread"
 		LIBS="$LIBS -lpthread"
 	  fi

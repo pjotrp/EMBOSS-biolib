@@ -1,4 +1,4 @@
-AC_DEFUN(CHECK_GROUT,
+AC_DEFUN([CHECK_GROUT],
 #
 # Handle GROUT flags
 #

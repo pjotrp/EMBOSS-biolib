@@ -1,4 +1,4 @@
-AC_DEFUN(CHECK_SGI,
+AC_DEFUN([CHECK_SGI],
 #
 # Handle SGI compiler flags
 #
