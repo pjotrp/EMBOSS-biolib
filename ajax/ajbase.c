@@ -238,3 +238,35 @@ void ajBaseInit(void)
 
     aj_base_I = ajTrue;
 }
+
+
+/* @func ajBaseAa1ToAa3 **********************************************************
+**
+** Writes an AjPStr with a amino acid 3 letter code
+** JCI - This should probably be an emb function and might replace the use 
+** of embPropCharToThree &  embPropIntToThree
+**
+** @param [w] aa3  [AjPStr *] AjPStr object
+** @param [r] char [aa1]    Single letter identifier of amino acid
+**
+** @return [AjBool] True on succcess
+** @@
+******************************************************************************/
+AjBool  ajBaseAa1ToAa3(char aa1, AjPStr *aa3)
+{
+    int idx;
+    
+    static char *tab[]=
+    {
+	"ALA\0","ASX\0","CYS\0","ASP\0","GLU\0","PHE\0","GLY\0","HIS\0",
+	"ILE\0","---\0","LYS\0","LEU\0","MET\0","ASN\0","---\0","PRO\0",
+	"GLN\0","ARG\0","SER\0","THR\0","---\0","VAL\0","TRP\0","XAA\0",
+	"TYR\0","GLX\0" 
+    };
+
+    if((idx=ajAZToInt(aa1))==27)
+	return ajFalse;
+
+    ajStrAssC(aa3, tab[idx]);
+    return ajTrue;
+}

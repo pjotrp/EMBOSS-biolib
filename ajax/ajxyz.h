@@ -135,42 +135,47 @@ typedef struct AjSScop
 
 
 
-AjPAtom  ajAtomNew(void);
-void     ajAtomDel(AjPAtom *thys);
-AjPChain ajChainNew(void);
-void     ajChainDel(AjPChain *thys);
-AjPPdb   ajPdbNew(int chains);
-void     ajPdbDel(AjPPdb *thys);
-void     ajScopDel(AjPScop *pthis);
-AjPScop  ajScopNew(int n);
+AjPAtom  ajXyzAtomNew(void);
+void     ajXyzAtomDel(AjPAtom *thys);
+AjPChain ajXyzChainNew(void);
+void     ajXyzChainDel(AjPChain *thys);
+AjPPdb   ajXyzPdbNew(int chains);
+void     ajXyzPdbDel(AjPPdb *thys);
+void     ajXyzScopDel(AjPScop *pthis);
+AjPScop  ajXyzScopNew(int n);
 
-AjBool   ajScopRead(AjPFile inf, AjPStr entry, AjPScop *thys);
-AjBool   ajScopReadC(AjPFile inf, char *entry, AjPScop *thys);
-void     ajScopWrite(AjPFile outf, AjPScop thys);
+AjBool   ajXyzScopRead(AjPFile inf, AjPStr entry, AjPScop *thys);
+AjBool   ajXyzScopReadC(AjPFile inf, char *entry, AjPScop *thys);
+void     ajXyzScopWrite(AjPFile outf, AjPScop thys);
 
-AjBool   ajCpdbRead(AjPFile inf, AjPPdb *thys);
-AjBool   ajCpdbWriteAll(AjPFile out, AjPPdb thys);
-AjBool   ajCpdbWriteDomain(AjPFile errf, AjPFile outf, AjPPdb pdb, AjPScop scop);
+AjBool   ajXyzCpdbRead(AjPFile inf, AjPPdb *thys);
+AjBool   ajXyzCpdbWriteAll(AjPFile out, AjPPdb thys);
+AjBool   ajXyzCpdbWriteDomain(AjPFile errf, AjPFile outf, AjPPdb pdb,
+			      AjPScop scop);
 
-AjBool   ajPdbWriteAll(AjPFile errf, AjPFile outf, AjPPdb pdb);
-AjBool   ajPdbWriteDomain(AjPFile errf, AjPFile outf, AjPPdb pdb, AjPScop scop); 
+AjBool   ajXyzPdbWriteAll(AjPFile errf, AjPFile outf, AjPPdb pdb);
+AjBool   ajXyzPdbWriteDomain(AjPFile errf, AjPFile outf, AjPPdb pdb,
+			     AjPScop scop); 
 
-AjBool   ajPrintPdbSeqresChain(AjPFile errf, AjPFile outf, AjPPdb pdb, int chn);
-AjBool   ajPrintPdbSeqresDomain(AjPFile errf, AjPFile outf, AjPPdb pdb, AjPScop scop);
-AjBool   ajPrintPdbAtomChain(AjPFile outf, AjPPdb pdb, int mod, int chn);
-AjBool   ajPrintPdbAtomDomain(AjPFile errf, AjPFile outf, AjPPdb pdb, AjPScop scop, int mod);
-AjBool   ajPrintPdbText(AjPFile outf, AjPStr str, char *prefix, int len, char *delim);
-AjBool   ajPrintPdbHeader(AjPFile outf, AjPPdb pdb);
-AjBool   ajPrintPdbHeaderScop(AjPFile outf, AjPScop scop);
-AjBool   ajPrintPdbTitle(AjPFile outf, AjPPdb pdb);
-AjBool   ajPrintPdbCompnd(AjPFile outf, AjPPdb pdb);
-AjBool   ajPrintPdbSource(AjPFile outf, AjPPdb pdb);
-AjBool   ajPrintPdbEmptyRemark(AjPFile outf, AjPPdb pdb);
-AjBool   ajPrintPdbResolution(AjPFile outf, AjPPdb pdb);
+AjBool   ajXyzPrintPdbSeqresChain(AjPFile errf, AjPFile outf, AjPPdb pdb,
+				  int chn);
+AjBool   ajXyzPrintPdbSeqresDomain(AjPFile errf, AjPFile outf, AjPPdb pdb,
+				   AjPScop scop);
+AjBool   ajXyzPrintPdbAtomChain(AjPFile outf, AjPPdb pdb, int mod, int chn);
+AjBool   ajXyzPrintPdbAtomDomain(AjPFile errf, AjPFile outf, AjPPdb pdb,
+				 AjPScop scop, int mod);
+AjBool   ajXyzPrintPdbText(AjPFile outf, AjPStr str, char *prefix, int len,
+			   char *delim);
+AjBool   ajXyzPrintPdbHeader(AjPFile outf, AjPPdb pdb);
+AjBool   ajXyzPrintPdbHeaderScop(AjPFile outf, AjPScop scop);
+AjBool   ajXyzPrintPdbTitle(AjPFile outf, AjPPdb pdb);
+AjBool   ajXyzPrintPdbCompnd(AjPFile outf, AjPPdb pdb);
+AjBool   ajXyzPrintPdbSource(AjPFile outf, AjPPdb pdb);
+AjBool   ajXyzPrintPdbEmptyRemark(AjPFile outf, AjPPdb pdb);
+AjBool   ajXyzPrintPdbResolution(AjPFile outf, AjPPdb pdb);
 
-AjBool   ajPdbChain(char id, AjPPdb pdb, int *chn);
-void     ajScopToPdb(AjPStr scop, AjPStr *pdb);
-AjBool   ajAa1ToAa3(char aa1, AjPStr *aa3);
+AjBool   ajXyzPdbChain(char id, AjPPdb pdb, int *chn);
+void     ajXyzScopToPdb(AjPStr scop, AjPStr *pdb);
 
 #endif
 

@@ -59,7 +59,7 @@
 **
 ******************************************************************************/
 
-/* @func ajPdbNew ************************************************************
+/* @func ajXyzPdbNew ************************************************************
 **
 ** Pdb object constructor. Fore-knowledge of the number of chains 
 ** is required. This is normally called by the Cpdb reading
@@ -71,7 +71,7 @@
 ** @@
 ******************************************************************************/
 
-AjPPdb ajPdbNew(int chains)
+AjPPdb ajXyzPdbNew(int chains)
 {
     AjPPdb ret=NULL;
     int i;
@@ -85,21 +85,21 @@ AjPPdb ajPdbNew(int chains)
 
     AJCNEW0(ret->Chains,chains);
     for(i=0;i<chains;++i)
-	ret->Chains[i] = ajChainNew();
+	ret->Chains[i] = ajXyzChainNew();
     
     return ret;
 }
 
-/* @func ajChainNew ***********************************************************
+/* @func ajXyzChainNew ***********************************************************
 **
 ** Chain object constructor. 
-** This is normally called by the ajPdbNew function
+** This is normally called by the ajXyzPdbNew function
 **
 ** @return [AjPChain] Pointer to a chain object
 ** @@
 ******************************************************************************/
 
-AjPChain ajChainNew(void)
+AjPChain ajXyzChainNew(void)
 {
   AjPChain ret=NULL;
   
@@ -111,16 +111,16 @@ AjPChain ajChainNew(void)
   return ret;
 }
 
-/* @func ajAtomNew ***********************************************************
+/* @func ajXyzAtomNew ***********************************************************
 **
 ** Constructor for atom co-ordinates.
-** This is normally called by the ajChainNew function
+** This is normally called by the ajXyzChainNew function
 **
 ** @return [AjPAtom] Pointer to an atom object
 ** @@
 ******************************************************************************/
 
-AjPAtom ajAtomNew(void)
+AjPAtom ajXyzAtomNew(void)
 {
     AjPAtom ret=NULL;
 
@@ -133,7 +133,7 @@ AjPAtom ajAtomNew(void)
     return ret;
 }
 
-/* @func ajScopNew ***********************************************************
+/* @func ajXyzScopNew ***********************************************************
 **
 ** Scop object constructor. Fore-knowledge of the number of chains is 
 ** required.
@@ -144,7 +144,7 @@ AjPAtom ajAtomNew(void)
 ** @@
 ******************************************************************************/
 
-AjPScop ajScopNew(int chains)
+AjPScop ajXyzScopNew(int chains)
 {
 
     AjPScop ret = NULL;
@@ -186,7 +186,7 @@ AjPScop ajScopNew(int chains)
 
 
 
-/* @func ajPdbDel ***********************************************************
+/* @func ajXyzPdbDel ***********************************************************
 **
 ** Destructor for pdb object.
 **
@@ -196,7 +196,7 @@ AjPScop ajScopNew(int chains)
 ** @@
 ******************************************************************************/
 
-void ajPdbDel(AjPPdb *thys)
+void ajXyzPdbDel(AjPPdb *thys)
 {
     AjPPdb pthis = *thys;
     
@@ -213,14 +213,14 @@ void ajPdbDel(AjPPdb *thys)
     ajStrDel(&pthis->Source);
     
     for(i=0;i<nc;++i)
-	ajChainDel(&pthis->Chains[i]);
+	ajXyzChainDel(&pthis->Chains[i]);
     AJFREE(pthis);
 
     return;
 }
 
 
-/* @func ajChainDel ***********************************************************
+/* @func ajXyzChainDel ***********************************************************
 **
 ** Destructor for chain object.
 **
@@ -230,7 +230,7 @@ void ajPdbDel(AjPPdb *thys)
 ** @@
 ******************************************************************************/
 
-void ajChainDel(AjPChain *thys)
+void ajXyzChainDel(AjPChain *thys)
 {
     AjPChain pthis = *thys;
     AjPAtom atm=NULL;
@@ -239,7 +239,7 @@ void ajChainDel(AjPChain *thys)
 	return;
     
     while(ajListPop(pthis->Atoms,(void **)&atm))
-	ajAtomDel(&atm);
+	ajXyzAtomDel(&atm);
 
     ajListDel(&pthis->Atoms);
 
@@ -248,7 +248,7 @@ void ajChainDel(AjPChain *thys)
     return;
 }
 
-/* @func ajAtomDel ***********************************************************
+/* @func ajXyzAtomDel ***********************************************************
 **
 ** Destructor for atom co-ordinates.
 **
@@ -258,7 +258,7 @@ void ajChainDel(AjPChain *thys)
 ** @@
 ******************************************************************************/
 
-void ajAtomDel(AjPAtom *thys)
+void ajXyzAtomDel(AjPAtom *thys)
 {
     AjPAtom pthis = *thys;
 
@@ -274,7 +274,7 @@ void ajAtomDel(AjPAtom *thys)
     return;
 }
 
-/* @func ajScopDel ***********************************************************
+/* @func ajXyzScopDel ***********************************************************
 **
 ** Destructor for scop object.
 **
@@ -284,7 +284,7 @@ void ajAtomDel(AjPAtom *thys)
 ** @@
 ******************************************************************************/
 
-void ajScopDel(AjPScop *thys)
+void ajXyzScopDel(AjPScop *thys)
 {
     AjPScop pthis = *thys;
     
@@ -326,7 +326,7 @@ void ajScopDel(AjPScop *thys)
 /* ======================== Exported functions ======================== */
 /* ==================================================================== */
 
-/* @func ajCpdbRead ***********************************************************
+/* @func ajXyzCpdbRead ***********************************************************
 **
 ** Reads a Cpdb database entry and returns a filled Pdb object.
 ** Needs modifying to return ajFalse in case of bad format etc
@@ -338,7 +338,7 @@ void ajScopDel(AjPScop *thys)
 ** @@
 ******************************************************************************/
 
-AjBool ajCpdbRead(AjPFile inf, AjPPdb *thys)
+AjBool ajXyzCpdbRead(AjPFile inf, AjPPdb *thys)
 {
     int         nmod =0;
     int         ncha =0;
@@ -464,7 +464,7 @@ AjBool ajCpdbRead(AjPFile inf, AjPPdb *thys)
 	    
 	    ajStrToInt(token,&ncha);
 
-	    *thys = ajPdbNew(ncha);
+	    *thys = ajXyzPdbNew(ncha);
 
 	    ajStrAssS(&(*thys)->Pdb,idstr);
 	    ajStrAssS(&(*thys)->Compnd,destr);
@@ -598,7 +598,7 @@ AjBool ajCpdbRead(AjPFile inf, AjPPdb *thys)
 
 
 
-/* @func ajCpdbWriteDomain ***************************************************
+/* @func ajXyzCpdbWriteDomain ***************************************************
 **
 ** Write domain-specific contents of a Pdb object to an output file in cpdb 
 ** format
@@ -615,7 +615,7 @@ AjBool ajCpdbRead(AjPFile inf, AjPPdb *thys)
 ** @@
 ** 
 ******************************************************************************/
-AjBool ajCpdbWriteDomain(AjPFile errf, AjPFile outf, AjPPdb pdb, AjPScop scop)
+AjBool ajXyzCpdbWriteDomain(AjPFile errf, AjPFile outf, AjPPdb pdb, AjPScop scop)
 {
     /*rn_mod is a modifier to the residue number to give correct residue
       numbering for the domain*/
@@ -652,13 +652,13 @@ AjBool ajCpdbWriteDomain(AjPFile errf, AjPFile outf, AjPPdb pdb, AjPScop scop)
     
     /* Check for unknown or zero-length chains*/
     for(z=0;z<scop->N;z++)
-	if(!ajPdbChain(scop->Chain[z], pdb, &chn))
+	if(!ajXyzPdbChain(scop->Chain[z], pdb, &chn))
 	{
 	    ajWarn("Chain incompatibility error in "
-		   "ajCpdbWriteDomain");			
+		   "ajXyzCpdbWriteDomain");			
 		
 	    ajFmtPrintF(errf, "//\n%S\nERROR Chain incompatibility "
-			"error in ajCpdbWriteDomain\n", scop->Entry);
+			"error in ajXyzCpdbWriteDomain\n", scop->Entry);
 	    ajStrDel(&seq);
 	    ajStrDel(&tmpseq);
 	    return ajFalse;
@@ -702,7 +702,7 @@ AjBool ajCpdbWriteDomain(AjPFile errf, AjPFile outf, AjPPdb pdb, AjPScop scop)
     {	
 	/* Unknown or zero length chains have already been checked for
 	   so no additional checking is needed here */
-	ajPdbChain(scop->Chain[z], pdb, &chn);
+	ajXyzPdbChain(scop->Chain[z], pdb, &chn);
 	
 
 	/* Initialise the iterator*/
@@ -789,9 +789,9 @@ AjBool ajCpdbWriteDomain(AjPFile errf, AjPFile outf, AjPPdb pdb, AjPScop scop)
 	    ajStrDel(&seq);
 	    ajStrDel(&tmpseq);
 	    ajListIterFree(iter);	
-	    ajWarn("Domain start not found in ajCpdbWriteDomain");
+	    ajWarn("Domain start not found in ajXyzCpdbWriteDomain");
 	    ajFmtPrintF(errf, "//\n%S\nERROR Domain start not found "
-			"in in ajCpdbWriteDomain\n", scop->Entry);
+			"in in ajXyzCpdbWriteDomain\n", scop->Entry);
 	    return ajFalse;
 	}
 	
@@ -802,9 +802,9 @@ AjBool ajCpdbWriteDomain(AjPFile errf, AjPFile outf, AjPPdb pdb, AjPScop scop)
 	    ajStrDel(&seq);
 	    ajStrDel(&tmpseq);
 	    ajListIterFree(iter);	
-	    ajWarn("Domain end not found in ajCpdbWriteDomain");
+	    ajWarn("Domain end not found in ajXyzCpdbWriteDomain");
 	    ajFmtPrintF(errf, "//\n%S\nERROR Domain end not found "
-			"in ajCpdbWriteDomain\n", scop->Entry);
+			"in ajXyzCpdbWriteDomain\n", scop->Entry);
 	    return ajFalse;
 	}
 	
@@ -853,7 +853,7 @@ AjBool ajCpdbWriteDomain(AjPFile errf, AjPFile outf, AjPPdb pdb, AjPScop scop)
 	/* Unknown or zero length chains have already been checked for
 	   so no additional checking is needed here */
 
-	ajPdbChain(scop->Chain[z], pdb, &chn);
+	ajXyzPdbChain(scop->Chain[z], pdb, &chn);
 	
 	
 	/* Initialise the iterator*/
@@ -971,7 +971,7 @@ AjBool ajCpdbWriteDomain(AjPFile errf, AjPFile outf, AjPPdb pdb, AjPScop scop)
 
 
 
-/* @func ajCpdbWriteAll ******************************************************
+/* @func ajXyzCpdbWriteAll ******************************************************
 **
 ** Write contents of a Pdb object to an output file in cpdb format
 **
@@ -982,7 +982,7 @@ AjBool ajCpdbWriteDomain(AjPFile errf, AjPFile outf, AjPPdb pdb, AjPScop scop)
 ** @@
 ******************************************************************************/
 
-AjBool ajCpdbWriteAll(AjPFile outf, AjPPdb thys)
+AjBool ajXyzCpdbWriteAll(AjPFile outf, AjPPdb thys)
 {
     int         x;
     int         y;
@@ -1081,7 +1081,7 @@ AjBool ajCpdbWriteAll(AjPFile outf, AjPPdb thys)
 
 
 
-/* @func ajPdbChain **********************************************************
+/* @func ajXyzPdbChain **********************************************************
 **
 ** Finds the chain number for a given chain in a pdb structure
 **
@@ -1092,7 +1092,7 @@ AjBool ajCpdbWriteAll(AjPFile outf, AjPPdb thys)
 ** @return [AjBool] True on succcess
 ** @@
 ******************************************************************************/
-AjBool ajPdbChain(char id, AjPPdb pdb, int *chn)
+AjBool ajXyzPdbChain(char id, AjPPdb pdb, int *chn)
 {
     int a;
     
@@ -1118,44 +1118,7 @@ AjBool ajPdbChain(char id, AjPPdb pdb, int *chn)
 
 
 
-
-/* @func ajAa1ToAa3 **********************************************************
-**
-** Writes an AjPStr with a amino acid 3 letter code
-** JCI - This should probably be an emb function and might replace the use 
-** of embPropCharToThree &  embPropIntToThree
-**
-** @param [w] aa3  [AjPStr *] AjPStr object
-** @param [r] char [aa1]    Single letter identifier of amino acid
-**
-** @return [AjBool] True on succcess
-** @@
-******************************************************************************/
-AjBool  ajAa1ToAa3(char aa1, AjPStr *aa3)
-{
-    int idx;
-    
-    static char *tab[]=
-    {
-	"ALA\0","ASX\0","CYS\0","ASP\0","GLU\0","PHE\0","GLY\0","HIS\0",
-	"ILE\0","---\0","LYS\0","LEU\0","MET\0","ASN\0","---\0","PRO\0",
-	"GLN\0","ARG\0","SER\0","THR\0","---\0","VAL\0","TRP\0","XAA\0",
-	"TYR\0","GLX\0" 
-    };
-
-    if((idx=ajAZToInt(aa1))==27)
-	return ajFalse;
-
-    ajStrAssC(aa3, tab[idx]);
-    return ajTrue;
-}
-
-
-
-
-
-
-/* @func ajPrintPdbText ******************************************************
+/* @func ajXyzPrintPdbText ******************************************************
 **
 ** Writes pdb-formatted text to an output file
 **
@@ -1168,7 +1131,7 @@ AjBool  ajAa1ToAa3(char aa1, AjPStr *aa3)
 ** @return [AjBool] True on succcess
 ** @@
 ******************************************************************************/
-AjBool  ajPrintPdbText(AjPFile outf, AjPStr str, char *prefix, int len, 
+AjBool  ajXyzPrintPdbText(AjPFile outf, AjPStr str, char *prefix, int len, 
 		       char *delim)
 {
     int        n      = 0;
@@ -1232,7 +1195,7 @@ AjBool  ajPrintPdbText(AjPFile outf, AjPStr str, char *prefix, int len,
 
 
 
-/* @func ajPrintPdbAtomDomain ************************************************
+/* @func ajXyzPrintPdbAtomDomain ************************************************
 **
 ** Writes the ATOM records for a domain to an output file in pdb format using 
 ** data from a Pdb structure and a Scop structure
@@ -1246,7 +1209,7 @@ AjBool  ajPrintPdbText(AjPFile outf, AjPStr str, char *prefix, int len,
 ** @return [AjBool] True on succcess
 ** @@
 ******************************************************************************/
-AjBool ajPrintPdbAtomDomain(AjPFile errf, AjPFile outf, AjPPdb pdb, 
+AjBool ajXyzPrintPdbAtomDomain(AjPFile errf, AjPFile outf, AjPPdb pdb, 
 			    AjPScop scop, int mod)
 {
     /*rn_mod is a modifier to the residue number to give correct residue 
@@ -1257,7 +1220,7 @@ AjBool ajPrintPdbAtomDomain(AjPFile errf, AjPFile outf, AjPPdb pdb,
     int      z;
     int      finalrn     =0;
     int      chn;
-    char     id;
+    char     id='\0';
 
     AjBool   found_start =ajFalse;
     AjBool   found_end   =ajFalse;
@@ -1273,12 +1236,12 @@ AjBool ajPrintPdbAtomDomain(AjPFile errf, AjPFile outf, AjPPdb pdb,
     for(z=0;z<scop->N;z++,found_start=ajFalse, found_end=ajFalse)
     {
 	/* Check for chain error*/
-	if(!ajPdbChain(scop->Chain[z], pdb, &chn))
+	if(!ajXyzPdbChain(scop->Chain[z], pdb, &chn))
 	    {
 		ajListIterFree(iter);	
-		ajWarn("Chain incompatibility error in ajPrintPdbAtomDomain");		
+		ajWarn("Chain incompatibility error in ajXyzPrintPdbAtomDomain");		
 		ajFmtPrintF(errf, "//\n%S\nERROR Chain incompatibility "
-			    "error in ajPrintPdbAtomDomain\n", scop->Entry);
+			    "error in ajXyzPrintPdbAtomDomain\n", scop->Entry);
 		return ajFalse;
 	    }
 	
@@ -1385,9 +1348,9 @@ AjBool ajPrintPdbAtomDomain(AjPFile errf, AjPFile outf, AjPPdb pdb,
 	if(!found_start && !nostart)
 	    {
 		ajListIterFree(iter);	
-		ajWarn("Domain start not found in ajPrintPdbAtomDomain");		
+		ajWarn("Domain start not found in ajXyzPrintPdbAtomDomain");		
 		ajFmtPrintF(errf, "//\n%S\nERROR Domain start not "
-			    "found in ajPrintPdbAtomDomain\n", scop->Entry);
+			    "found in ajXyzPrintPdbAtomDomain\n", scop->Entry);
 		return ajFalse;
 	    }
 	
@@ -1396,9 +1359,9 @@ AjBool ajPrintPdbAtomDomain(AjPFile errf, AjPFile outf, AjPPdb pdb,
 	if(!found_end && !noend)
 	    {
 		ajListIterFree(iter);	
-		ajWarn("Domain end not found in ajPrintPdbAtomDomain");		
+		ajWarn("Domain end not found in ajXyzPrintPdbAtomDomain");		
 		ajFmtPrintF(errf, "//\n%S\nERROR Domain end not "
-			    "found in ajPrintPdbAtomDomain\n", scop->Entry);
+			    "found in ajXyzPrintPdbAtomDomain\n", scop->Entry);
 		return ajFalse;
 	    }
 	
@@ -1427,7 +1390,7 @@ AjBool ajPrintPdbAtomDomain(AjPFile errf, AjPFile outf, AjPPdb pdb,
 
 
 
-/* @func ajPrintPdbAtomChain *************************************************
+/* @func ajXyzPrintPdbAtomChain *************************************************
 **
 ** Writes the ATOM records for a chain to an output file in pdb format using 
 ** data from a Pdb structure 
@@ -1440,7 +1403,7 @@ AjBool ajPrintPdbAtomDomain(AjPFile errf, AjPFile outf, AjPPdb pdb,
 ** @return [AjBool] True on succcess
 ** @@
 ******************************************************************************/
-AjBool ajPrintPdbAtomChain(AjPFile outf, AjPPdb pdb, int mod, int chn)
+AjBool ajXyzPrintPdbAtomChain(AjPFile outf, AjPPdb pdb, int mod, int chn)
 {
     AjBool   doneter=ajFalse;
     AjIList  iter=NULL;
@@ -1533,7 +1496,7 @@ AjBool ajPrintPdbAtomChain(AjPFile outf, AjPPdb pdb, int mod, int chn)
 
 
 
-/* @func ajPrintPdbSeqresDomain **********************************************
+/* @func ajXyzPrintPdbSeqresDomain **********************************************
 **
 ** Writes the SEQRES record for a domain to an output file in pdb format using 
 ** data from a Pdb structure and a Scop structure
@@ -1546,7 +1509,7 @@ AjBool ajPrintPdbAtomChain(AjPFile outf, AjPPdb pdb, int mod, int chn)
 ** @return [AjBool] True on succcess
 ** @@
 ******************************************************************************/
-AjBool ajPrintPdbSeqresDomain(AjPFile errf, AjPFile outf, AjPPdb pdb, 
+AjBool ajXyzPrintPdbSeqresDomain(AjPFile errf, AjPFile outf, AjPPdb pdb, 
 			      AjPScop scop)
 {
     int      last_rn=0;  
@@ -1580,16 +1543,16 @@ AjBool ajPrintPdbSeqresDomain(AjPFile errf, AjPFile outf, AjPPdb pdb,
 	last_rn=0)
     {
 	/*Check for error in chain id*/
-	if(!ajPdbChain(scop->Chain[z], pdb, &chn))
+	if(!ajXyzPdbChain(scop->Chain[z], pdb, &chn))
 	    {
 		ajListIterFree(iter);			
 		ajStrDel(&tmp1);
 		ajStrDel(&tmp2);
 		ajWarn("Chain incompatibility error in "
-		       "ajPrintPdbSeqresDomain");		
+		       "ajXyzPrintPdbSeqresDomain");		
 
 		ajFmtPrintF(errf, "//\n%S\nERROR Chain incompatibility "
-			    "error in ajPrintPdbSeqresDomain\n", 
+			    "error in ajXyzPrintPdbSeqresDomain\n", 
 			    scop->Entry);
 
 		return ajFalse;
@@ -1651,16 +1614,16 @@ AjBool ajPrintPdbSeqresDomain(AjPFile errf, AjPFile outf, AjPPdb pdb,
 		for(x=last_rn; x<this_rn-1; x++)
 		{	
 		    /* Check that position x is in range for the sequence*/
-		    if(!ajAa1ToAa3(ajStrChar(pdb->Chains[chn-1]->Seq, x), 
+		    if(!ajBaseAa1ToAa3(ajStrChar(pdb->Chains[chn-1]->Seq, x), 
 				   &tmp2))
 		    {
 			ajListIterFree(iter);			
 			ajStrDel(&tmp1);
 			ajStrDel(&tmp2);
 			ajWarn("Index out of range in "
-			       "ajPrintPdbSeqresDomain");		
+			       "ajXyzPrintPdbSeqresDomain");		
 			ajFmtPrintF(errf, "//\n%S\nERROR Index out of range "
-				    "in ajPrintPdbSeqresDomain\n", scop->Entry);
+				    "in ajXyzPrintPdbSeqresDomain\n", scop->Entry);
 			return ajFalse;
 		    }
 		    else
@@ -1701,9 +1664,9 @@ AjBool ajPrintPdbSeqresDomain(AjPFile errf, AjPFile outf, AjPPdb pdb,
 	    ajListIterFree(iter);			
 	    ajStrDel(&tmp1);
 	    ajStrDel(&tmp2);
-	    ajWarn("Domain start not found in ajPrintPdbSeqresDomain");		
+	    ajWarn("Domain start not found in ajXyzPrintPdbSeqresDomain");		
 	    ajFmtPrintF(errf, "//\n%S\nERROR Domain start not found "
-			"in ajPrintPdbSeqresDomain\n", scop->Entry);
+			"in ajXyzPrintPdbSeqresDomain\n", scop->Entry);
 	    return ajFalse;
 	}
 	
@@ -1714,9 +1677,9 @@ AjBool ajPrintPdbSeqresDomain(AjPFile errf, AjPFile outf, AjPPdb pdb,
 	    ajListIterFree(iter);			
 	    ajStrDel(&tmp1);
 	    ajStrDel(&tmp2);
-	    ajWarn("Domain end not found in ajPrintPdbSeqresDomain");		
+	    ajWarn("Domain end not found in ajXyzPrintPdbSeqresDomain");		
 	    ajFmtPrintF(errf, "//\n%S\nERROR Domain end not found "
-			"in ajPrintPdbSeqresDomain\n", scop->Entry);
+			"in ajXyzPrintPdbSeqresDomain\n", scop->Entry);
 	    return ajFalse;
 	}
 
@@ -1726,15 +1689,15 @@ AjBool ajPrintPdbSeqresDomain(AjPFile errf, AjPFile outf, AjPPdb pdb,
 	if(noend)
 	{	    
 	    for(x=last_rn; x<pdb->Chains[chn-1]->Nres; x++)    
-		if(!ajAa1ToAa3(ajStrChar(pdb->Chains[chn-1]->Seq, x), 
+		if(!ajBaseAa1ToAa3(ajStrChar(pdb->Chains[chn-1]->Seq, x), 
 			       &tmp2))
 		{	 
 		    ajStrDel(&tmp1);
 		    ajStrDel(&tmp2);
 		    ajListIterFree(iter);	
-		    ajWarn("Index out of range in ajPrintPdbSeqresDomain");		
+		    ajWarn("Index out of range in ajXyzPrintPdbSeqresDomain");		
 		    ajFmtPrintF(errf, "//\n%S\nERROR Index out of "
-				"range in ajPrintPdbSeqresDomain\n", 
+				"range in ajXyzPrintPdbSeqresDomain\n", 
 				scop->Entry);
 		    return ajFalse;
 		}
@@ -1785,7 +1748,7 @@ AjBool ajPrintPdbSeqresDomain(AjPFile errf, AjPFile outf, AjPPdb pdb,
 
 
 
-/* @func ajPrintPdbSeqresChain ***********************************************
+/* @func ajXyzPrintPdbSeqresChain ***********************************************
 **
 ** Writes the SEQRES record for a chain to an output file in pdb format using 
 ** data from a Pdb structure
@@ -1798,7 +1761,7 @@ AjBool ajPrintPdbSeqresDomain(AjPFile errf, AjPFile outf, AjPPdb pdb,
 ** @return [AjBool] True on succcess
 ** @@
 ******************************************************************************/
-AjBool ajPrintPdbSeqresChain(AjPFile errf, AjPFile outf, AjPPdb pdb, 
+AjBool ajXyzPrintPdbSeqresChain(AjPFile errf, AjPFile outf, AjPPdb pdb, 
 			     int chn)
 {
     int      last_rn =0;  
@@ -1837,13 +1800,13 @@ AjBool ajPrintPdbSeqresChain(AjPFile errf, AjPFile outf, AjPPdb pdb,
 	    for(x=last_rn; x<this_rn-1; x++)
 	    {	
 		/* Check that position x is in range for the sequence*/
-		if(!ajAa1ToAa3(ajStrChar(pdb->Chains[chn-1]->Seq, x), 
+		if(!ajBaseAa1ToAa3(ajStrChar(pdb->Chains[chn-1]->Seq, x), 
 				&tmp2))
 		    {
-			ajWarn("Index out of range in ajPrintPdbSeqresChain");		
+			ajWarn("Index out of range in ajXyzPrintPdbSeqresChain");		
 
 			ajFmtPrintF(errf, "//\n%S\nERROR Index out "
-				    "of range in ajPrintPdbSeqresChain\n", 
+				    "of range in ajXyzPrintPdbSeqresChain\n", 
 				    pdb->Pdb);
 
 			ajStrDel(&tmp1);
@@ -1869,14 +1832,14 @@ AjBool ajPrintPdbSeqresChain(AjPFile errf, AjPFile outf, AjPPdb pdb,
     
     /*Assign sequence for residues missing from end of linked list*/
     for(x=last_rn; x<pdb->Chains[chn-1]->Nres; x++)
-	if(!ajAa1ToAa3(ajStrChar(pdb->Chains[chn-1]->Seq, x), &tmp2))
+	if(!ajBaseAa1ToAa3(ajStrChar(pdb->Chains[chn-1]->Seq, x), &tmp2))
 	    { 
 		ajStrDel(&tmp1);
 		ajStrDel(&tmp2);
 		ajListIterFree(iter);	
-		ajWarn("Index out of range in ajPrintPdbSeqresChain");		
+		ajWarn("Index out of range in ajXyzPrintPdbSeqresChain");		
 		ajFmtPrintF(errf, "//\n%S\nERROR Index out of range "
-			    "in ajPrintPdbSeqresChain\n", pdb->Pdb);
+			    "in ajXyzPrintPdbSeqresChain\n", pdb->Pdb);
 		return ajFalse;
 	    }
     
@@ -1910,7 +1873,7 @@ AjBool ajPrintPdbSeqresChain(AjPFile errf, AjPFile outf, AjPPdb pdb,
 
 
 
-/* @func ajPrintPdbResolution ************************************************
+/* @func ajXyzPrintPdbResolution ************************************************
 **
 ** Writes the Reso element of a Pdb structure to an output file in pdb format
 **
@@ -1920,7 +1883,7 @@ AjBool ajPrintPdbSeqresChain(AjPFile errf, AjPFile outf, AjPPdb pdb,
 ** @return [AjBool] True on succcess
 ** @@
 ******************************************************************************/
-AjBool ajPrintPdbResolution(AjPFile outf, AjPPdb pdb)
+AjBool ajXyzPrintPdbResolution(AjPFile outf, AjPPdb pdb)
 {
     if(pdb && outf)
     {
@@ -1936,7 +1899,7 @@ AjBool ajPrintPdbResolution(AjPFile outf, AjPPdb pdb)
 
 
 
-/* @func ajPrintPdbEmptyRemark ***********************************************
+/* @func ajXyzPrintPdbEmptyRemark ***********************************************
 **
 ** Writes an empty REMARK record to an output file in pdb format
 **
@@ -1946,7 +1909,7 @@ AjBool ajPrintPdbResolution(AjPFile outf, AjPPdb pdb)
 ** @return [AjBool] True on succcess
 ** @@
 ******************************************************************************/
-AjBool ajPrintPdbEmptyRemark(AjPFile outf, AjPPdb pdb)
+AjBool ajXyzPrintPdbEmptyRemark(AjPFile outf, AjPPdb pdb)
 {
     if(pdb && outf)
     {
@@ -1962,7 +1925,7 @@ AjBool ajPrintPdbEmptyRemark(AjPFile outf, AjPPdb pdb)
 
 
 
-/* @func ajPrintPdbSource ****************************************************
+/* @func ajXyzPrintPdbSource ****************************************************
 **
 ** Writes the Source element of a Pdb structure to an output file in pdb 
 ** format
@@ -1973,11 +1936,11 @@ AjBool ajPrintPdbEmptyRemark(AjPFile outf, AjPPdb pdb)
 ** @return [AjBool] True on succcess
 ** @@
 ******************************************************************************/
-AjBool ajPrintPdbSource(AjPFile outf, AjPPdb pdb)
+AjBool ajXyzPrintPdbSource(AjPFile outf, AjPPdb pdb)
 {
     if(pdb && outf)
     {
-	ajPrintPdbText(outf,pdb->Source,"SOURCE     ", 68," \t\r\n");
+	ajXyzPrintPdbText(outf,pdb->Source,"SOURCE     ", 68," \t\r\n");
 	return ajTrue;
     }
     else
@@ -1988,7 +1951,7 @@ AjBool ajPrintPdbSource(AjPFile outf, AjPPdb pdb)
 
 
 
-/* @func ajPrintPdbCompnd ****************************************************
+/* @func ajXyzPrintPdbCompnd ****************************************************
 **
 ** Writes the Compnd element of a Pdb structure to an output file in pdb 
 ** format
@@ -1999,11 +1962,11 @@ AjBool ajPrintPdbSource(AjPFile outf, AjPPdb pdb)
 ** @return [AjBool] True on succcess
 ** @@
 ******************************************************************************/
-AjBool ajPrintPdbCompnd(AjPFile outf, AjPPdb pdb)
+AjBool ajXyzPrintPdbCompnd(AjPFile outf, AjPPdb pdb)
 {
     if(pdb && outf)
     {
-	ajPrintPdbText(outf,pdb->Compnd,"COMPND     ", 
+	ajXyzPrintPdbText(outf,pdb->Compnd,"COMPND     ", 
 		       68," \t\r\n");
 	return ajTrue;
     }
@@ -2015,7 +1978,7 @@ AjBool ajPrintPdbCompnd(AjPFile outf, AjPPdb pdb)
 
 
 
-/* @func ajPrintPdbTitle ****************************************************
+/* @func ajXyzPrintPdbTitle ****************************************************
 **
 ** Writes a TITLE record to an output file in pdb format
 ** The text is hard-coded.
@@ -2026,7 +1989,7 @@ AjBool ajPrintPdbCompnd(AjPFile outf, AjPPdb pdb)
 ** @return [AjBool] True on succcess
 ** @@
 ******************************************************************************/
-AjBool ajPrintPdbTitle(AjPFile outf, AjPPdb pdb)
+AjBool ajXyzPrintPdbTitle(AjPFile outf, AjPPdb pdb)
 {
     if(pdb && outf)
     {
@@ -2045,7 +2008,7 @@ AjBool ajPrintPdbTitle(AjPFile outf, AjPPdb pdb)
 
 
 
-/* @func ajPrintPdbHeader ****************************************************
+/* @func ajXyzPrintPdbHeader ****************************************************
 **
 ** Writes the Pdb element of a Pdb structure to an output file in pdb format
 **
@@ -2055,7 +2018,7 @@ AjBool ajPrintPdbTitle(AjPFile outf, AjPPdb pdb)
 ** @return [AjBool] True on succcess
 ** @@
 ******************************************************************************/
-AjBool ajPrintPdbHeader(AjPFile outf, AjPPdb pdb)
+AjBool ajXyzPrintPdbHeader(AjPFile outf, AjPPdb pdb)
 {
     if(pdb && outf)
     {
@@ -2072,7 +2035,7 @@ AjBool ajPrintPdbHeader(AjPFile outf, AjPPdb pdb)
 
 
 
-/* @func ajPrintPdbHeaderScop ************************************************
+/* @func ajXyzPrintPdbHeaderScop ************************************************
 **
 ** Writes the Entry element of a Scop structure to an output file in pdb 
 ** format
@@ -2083,7 +2046,7 @@ AjBool ajPrintPdbHeader(AjPFile outf, AjPPdb pdb)
 ** @return [AjBool] True on succcess
 ** @@
 ******************************************************************************/
-AjBool ajPrintPdbHeaderScop(AjPFile outf, AjPScop scop)
+AjBool ajXyzPrintPdbHeaderScop(AjPFile outf, AjPScop scop)
 {
     if(scop && outf)
     {
@@ -2099,7 +2062,7 @@ AjBool ajPrintPdbHeaderScop(AjPFile outf, AjPScop scop)
 
 
 
-/* @func ajPdbWriteDomain ****************************************************
+/* @func ajXyzPdbWriteDomain ****************************************************
 **
 ** Calls functions to write domain-specific contents of a Pdb object to an 
 ** output file in pdb format
@@ -2112,7 +2075,7 @@ AjBool ajPrintPdbHeaderScop(AjPFile outf, AjPScop scop)
 ** @return [AjBool] True on succcess
 ** @@
 ******************************************************************************/
-AjBool   ajPdbWriteDomain(AjPFile errf, AjPFile outf, AjPPdb pdb, AjPScop scop)
+AjBool   ajXyzPdbWriteDomain(AjPFile errf, AjPFile outf, AjPPdb pdb, AjPScop scop)
 {
     int z;     /* A counter */
     int chn;   /* No. of the chain in the pdb structure */
@@ -2120,13 +2083,13 @@ AjBool   ajPdbWriteDomain(AjPFile errf, AjPFile outf, AjPPdb pdb, AjPScop scop)
 
     /* Check for errors in chain identifier and length*/
     for(z=0;z<scop->N;z++)
-	if(!ajPdbChain(scop->Chain[z], pdb, &chn))
+	if(!ajXyzPdbChain(scop->Chain[z], pdb, &chn))
 	{
 	    ajWarn("Chain incompatibility error in "
-		   "ajPdbWriteDomain");			
+		   "ajXyzPdbWriteDomain");			
 		
 	    ajFmtPrintF(errf, "//\n%S\nERROR Chain incompatibility error "
-			"in ajPdbWriteDomain\n", scop->Entry);
+			"in ajXyzPdbWriteDomain\n", scop->Entry);
 		
 	    return ajFalse;
 	}
@@ -2141,19 +2104,19 @@ AjBool   ajPdbWriteDomain(AjPFile errf, AjPFile outf, AjPPdb pdb, AjPScop scop)
     
 
     /* Write bibliographic info.*/
-    ajPrintPdbHeaderScop(outf, scop);
-    ajPrintPdbTitle(outf, pdb);
-    ajPrintPdbCompnd(outf, pdb);
-    ajPrintPdbSource(outf, pdb);
-    ajPrintPdbEmptyRemark(outf, pdb);
-    ajPrintPdbResolution(outf, pdb);
-    ajPrintPdbEmptyRemark(outf, pdb);
+    ajXyzPrintPdbHeaderScop(outf, scop);
+    ajXyzPrintPdbTitle(outf, pdb);
+    ajXyzPrintPdbCompnd(outf, pdb);
+    ajXyzPrintPdbSource(outf, pdb);
+    ajXyzPrintPdbEmptyRemark(outf, pdb);
+    ajXyzPrintPdbResolution(outf, pdb);
+    ajXyzPrintPdbEmptyRemark(outf, pdb);
     
 
     /* Write SEQRES records*/
-    if(!ajPrintPdbSeqresDomain(errf, outf, pdb, scop))
+    if(!ajXyzPrintPdbSeqresDomain(errf, outf, pdb, scop))
     {
-	ajWarn("Error writing file in ajPdbWriteDomain"); 
+	ajWarn("Error writing file in ajXyzPdbWriteDomain"); 
 	return ajFalse;
     } 
 
@@ -2164,9 +2127,9 @@ AjBool   ajPdbWriteDomain(AjPFile errf, AjPFile outf, AjPPdb pdb, AjPScop scop)
 
 
     /* Write ATOM/HETATM records*/
-    if(!ajPrintPdbAtomDomain(errf, outf, pdb, scop, 1))
+    if(!ajXyzPrintPdbAtomDomain(errf, outf, pdb, scop, 1))
     {
-	ajWarn("Error writing file in ajPdbWriteDomain"); 
+	ajWarn("Error writing file in ajXyzPdbWriteDomain"); 
 	return ajFalse;
     }  
 
@@ -2187,7 +2150,7 @@ AjBool   ajPdbWriteDomain(AjPFile errf, AjPFile outf, AjPPdb pdb, AjPScop scop)
 
 
 
-/* @func ajPdbWriteAll *******************************************************
+/* @func ajXyzPdbWriteAll *******************************************************
 **
 ** Calls functions to write contents of a Pdb object to an output file in pdb 
 ** format
@@ -2199,27 +2162,27 @@ AjBool   ajPdbWriteDomain(AjPFile errf, AjPFile outf, AjPPdb pdb, AjPScop scop)
 ** @return [AjBool] True on succcess
 ** @@
 ******************************************************************************/
-AjBool   ajPdbWriteAll(AjPFile errf, AjPFile outf, AjPPdb pdb)
+AjBool   ajXyzPdbWriteAll(AjPFile errf, AjPFile outf, AjPPdb pdb)
 {
     int x;
     int y;
     
 
     /* Write bibliographic info.*/
-    ajPrintPdbHeader(outf, pdb);
-    ajPrintPdbTitle(outf, pdb);
-    ajPrintPdbCompnd(outf, pdb);
-    ajPrintPdbSource(outf, pdb);
-    ajPrintPdbEmptyRemark(outf, pdb);
-    ajPrintPdbResolution(outf, pdb);
-    ajPrintPdbEmptyRemark(outf, pdb);
+    ajXyzPrintPdbHeader(outf, pdb);
+    ajXyzPrintPdbTitle(outf, pdb);
+    ajXyzPrintPdbCompnd(outf, pdb);
+    ajXyzPrintPdbSource(outf, pdb);
+    ajXyzPrintPdbEmptyRemark(outf, pdb);
+    ajXyzPrintPdbResolution(outf, pdb);
+    ajXyzPrintPdbEmptyRemark(outf, pdb);
     
     
     /* Write SEQRES records*/
     for(x=0;x<pdb->Nchn;x++)
-	if(!ajPrintPdbSeqresChain(errf, outf, pdb, x+1))
+	if(!ajXyzPrintPdbSeqresChain(errf, outf, pdb, x+1))
 	{
-	    ajWarn("Error writing file in ajPdbWriteAll"); 
+	    ajWarn("Error writing file in ajXyzPdbWriteAll"); 
 	    return ajFalse;
 	}
 
@@ -2234,9 +2197,9 @@ AjBool   ajPdbWriteAll(AjPFile errf, AjPFile outf, AjPPdb pdb)
 	
 	/* Write ATOM/HETATM records*/
 	for(x=0;x<pdb->Nchn;x++)
-	    if(!ajPrintPdbAtomChain(outf, pdb, y+1, x+1))
+	    if(!ajXyzPrintPdbAtomChain(outf, pdb, y+1, x+1))
 	    {
-		ajWarn("Error writing file in ajPdbWriteAll"); 
+		ajWarn("Error writing file in ajXyzPdbWriteAll"); 
 		return ajFalse;
 	    }
 	
@@ -2259,7 +2222,7 @@ AjBool   ajPdbWriteAll(AjPFile errf, AjPFile outf, AjPPdb pdb)
 
 
 
-/* @func ajScopWrite ******************************************************
+/* @func ajXyzScopWrite ******************************************************
 **
 ** Write contents of a Scop object to an output file
 **
@@ -2270,7 +2233,7 @@ AjBool   ajPdbWriteAll(AjPFile errf, AjPFile outf, AjPPdb pdb)
 ** @@
 ******************************************************************************/
 
-void ajScopWrite(AjPFile outf, AjPScop thys)
+void ajXyzScopWrite(AjPFile outf, AjPScop thys)
 {
     int i;
 
@@ -2304,7 +2267,7 @@ void ajScopWrite(AjPFile outf, AjPScop thys)
 
 
 
-/* @func ajScopRead *********************************************************
+/* @func ajXyzScopRead *********************************************************
 **
 ** Read a Scop object from a file
 **
@@ -2316,9 +2279,9 @@ void ajScopWrite(AjPFile outf, AjPScop thys)
 ** @@
 ******************************************************************************/
 
-AjBool ajScopRead(AjPFile inf, AjPStr entry, AjPScop *thys)
+AjBool ajXyzScopRead(AjPFile inf, AjPStr entry, AjPScop *thys)
 {
-    return ajScopReadC(inf,ajStrStr(entry),thys);
+    return ajXyzScopReadC(inf,ajStrStr(entry),thys);
 }
 
 
@@ -2326,7 +2289,7 @@ AjBool ajScopRead(AjPFile inf, AjPStr entry, AjPScop *thys)
 
 
 
-/* @func ajScopReadC ******************************************************
+/* @func ajXyzScopReadC ******************************************************
 **
 ** Read a Scop object from a file
 **
@@ -2338,7 +2301,7 @@ AjBool ajScopRead(AjPFile inf, AjPStr entry, AjPScop *thys)
 ** @@
 ******************************************************************************/
 
-AjBool ajScopReadC(AjPFile inf, char *entry, AjPScop *thys)
+AjBool ajXyzScopReadC(AjPFile inf, char *entry, AjPScop *thys)
 {
     static AjPRegexp exp1 =NULL;
     static AjPRegexp exp2 =NULL;
@@ -2469,7 +2432,7 @@ AjBool ajScopReadC(AjPFile inf, char *entry, AjPScop *thys)
 	else if(ajStrPrefixC(line,"NC"))
 	{
 	    ajStrToInt(str,&n);
-	    (*thys) = ajScopNew(n);
+	    (*thys) = ajXyzScopNew(n);
 	    ajStrAssS(&(*thys)->Entry,xentry);
 	    ajStrAssS(&(*thys)->Pdb,pdb);
 	    ajStrAssS(&(*thys)->Source,source);
@@ -2501,16 +2464,13 @@ AjBool ajScopReadC(AjPFile inf, char *entry, AjPScop *thys)
 	ok = ajFileReadLine(inf,&line);
     }
     
-    /* JCI Removed this so it can read the last entry in the file */
-/*    if(!ok)
-	return ajFalse; */
     
     return ajTrue;
 }
 
 
 
-/* @func ajScopToPdb *********************************************************
+/* @func ajXyzScopToPdb *********************************************************
 **
 ** Read a scop identifier code and writes the equivalent pdb identifier code
 **
@@ -2520,7 +2480,7 @@ AjBool ajScopReadC(AjPFile inf, char *entry, AjPScop *thys)
 ** @return [void]
 ** @@
 ******************************************************************************/
-void   ajScopToPdb(AjPStr scop, AjPStr *pdb)
+void   ajXyzScopToPdb(AjPStr scop, AjPStr *pdb)
 {
     ajStrAssSub(pdb, scop, 1, 4);
 }

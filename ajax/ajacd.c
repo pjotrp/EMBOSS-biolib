@@ -4753,7 +4753,7 @@ static void acdSetCpdb (AcdPAcd thys)
 	{
 	    if((inf=ajFileNewIn(reply)))
 	    {
-		if (ajCpdbRead(inf,&val))
+		if (ajXyzCpdbRead(inf,&val))
 		    ajFileClose(&inf);
 		else
 		{
@@ -4857,7 +4857,7 @@ static void acdSetScop (AcdPAcd thys)
 	    ajFileDataNewC(ajESCOP,&inf);
 	    if(!inf)
 		ok = ajFalse;
-	    else if (!ajScopRead(inf,reply,&val))
+	    else if (!ajXyzScopRead(inf,reply,&val))
 	    {
 		acdBadVal (thys, required,
 			   "Unable to read clean PDB file '%S'", reply);

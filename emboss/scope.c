@@ -172,7 +172,7 @@ int main(int argc, char**argv)
 	n = ajStrTokenCount(&chains,",");
 
 
-	scop = ajScopNew(n);
+	scop = ajXyzScopNew(n);
 
 	ajStrToUpper(&entry);
 	ajStrAssS(&scop->Entry,entry);
@@ -250,8 +250,8 @@ int main(int argc, char**argv)
 	}
 	ajStrTokenClear(&bhandle);
 	
-	ajScopWrite(outf,scop);
-	ajScopDel(&scop);
+	ajXyzScopWrite(outf,scop);
+	ajXyzScopDel(&scop);
     }
     /* End of main application loop */    
 

@@ -169,7 +169,7 @@ int main(int argc, char **argv)
 
     
     /* Start of main application loop */
-    while((ajScopReadC(scop_inf, "*", &scop)))
+    while((ajXyzScopReadC(scop_inf, "*", &scop)))
     {
 	/* If we are on to a new family*/
 	if(ajStrMatch(last_fam, scop->Family)==ajFalse)
@@ -213,7 +213,7 @@ int main(int argc, char **argv)
 			(scop_tmp=(AjPScop)ajListIterNext(iter));
 			x++)
 			if(ajIntGet(keep,x))
-			    ajScopWrite(scop_outf, scop_tmp);
+			    ajXyzScopWrite(scop_outf, scop_tmp);
 		    ajListIterFree(iter);	
 
 
@@ -241,7 +241,7 @@ int main(int argc, char **argv)
 		/* Free up the scop list and create a new one*/
 		iter=ajListIter(list_scop);
 		while((scop_tmp=(AjPScop)ajListIterNext(iter)))
-		    ajScopDel(&scop_tmp);
+		    ajXyzScopDel(&scop_tmp);
 		ajListIterFree(iter);	
 		ajListDel(&list_scop);	    
 
@@ -279,20 +279,20 @@ int main(int argc, char **argv)
 	    ajFmtPrintS(&msg, "Could not open dpdb file %S", dpdb_name);
 	    ajWarn(ajStrStr(msg));
 	    ajFileClose(&dpdb_inf); 
-	    ajScopDel(&scop);
+	    ajXyzScopDel(&scop);
 	    continue;
 	}
 
 
 	/*Read the coordinate file for the domain*/
-	if(!ajCpdbRead(dpdb_inf, &pdb))
+	if(!ajXyzCpdbRead(dpdb_inf, &pdb))
 	{
 	    ajFmtPrintF(errf, "ERROR %S file read error\n", dpdb_name);
 	    ajFmtPrintS(&msg, "Error reading dpdb file %S", dpdb_name);
 	    ajWarn(ajStrStr(msg));
 	    ajFileClose(&dpdb_inf);
-	    ajScopDel(&scop);
-	    ajPdbDel(&pdb);
+	    ajXyzScopDel(&scop);
+	    ajXyzPdbDel(&pdb);
 	    continue;
 	}
 	else
@@ -310,7 +310,7 @@ int main(int argc, char **argv)
 
 
 	/* Free the pdb structure */
-	ajPdbDel(&pdb);
+	ajXyzPdbDel(&pdb);
 	
 
 	/* Add the current scop structure to the list */
@@ -351,7 +351,7 @@ int main(int argc, char **argv)
 	    (scop_tmp=(AjPScop)ajListIterNext(iter));
 	    x++)
 	    if(ajIntGet(keep,x))
-		ajScopWrite(scop_outf, scop_tmp);
+		ajXyzScopWrite(scop_outf, scop_tmp);
 	ajListIterFree(iter);	
     
 
@@ -378,7 +378,7 @@ int main(int argc, char **argv)
     /* Free up the scop list */
     iter=ajListIter(list_scop);
     while((scop_tmp=(AjPScop)ajListIterNext(iter)))
-	ajScopDel(&scop_tmp);
+	ajXyzScopDel(&scop_tmp);
     ajListIterFree(iter);	
     ajListDel(&list_scop);	    
     

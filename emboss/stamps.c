@@ -126,7 +126,7 @@ int main(int argc, char **argv)
 
 
     /* Start of main application loop*/
-    while((ajScopReadC(scopf, "*", &scop)))
+    while((ajXyzScopReadC(scopf, "*", &scop)))
     {
 	/* A new family */
 	if(ajStrMatch(last_fam, scop->Family)==ajFalse)
