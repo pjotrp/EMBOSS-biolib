@@ -6,8 +6,8 @@
 **
 **
 ** @author: Copyright (C) Damian Counsell
-** @version $Revision: 1.29 $
-** @modified $Date: 2005/01/19 18:10:22 $
+** @version $Revision: 1.30 $
+** @modified $Date: 2005/01/21 17:29:12 $
 ** @@
 **
 ** This program is free software; you can redistribute it and/or
@@ -226,11 +226,6 @@ int main(int argc , char **argv)
     }
 
     /* XXXX EVERYTHING FROM HERE IS TO DO WITH ALIGNMENT MODIFICATION */
-   
-    /* XXXX HARD-CODED FILENAME IS USED BELOW */
-    ajpStrUpdatedCmapFile =
-	ajStrNewC("/users/damian/EMBOSS/emboss/emboss/emboss/SADtest/test1.con");
-    ajpFileUpdatedCmap = ajFileNewOut(ajpStrUpdatedCmapFile);
     
     /* read in original contact map */ 
     ajBoolOriginalCmapFileRead =
@@ -240,6 +235,13 @@ int main(int argc , char **argv)
 			&embpCmapHeader,
 			&ajpInt2dCmapResTypes,
 			&ajpInt2dCmapPositions);    
+
+    ajFileClose(&ajpFileOriginalCmap);
+
+    /* XXXX HARD-CODED FILENAME IS USED BELOW */
+    ajpStrUpdatedCmapFile =
+	ajStrNewC("/users/damian/EMBOSS/emboss/emboss/emboss/SADtest/test1.con");
+    ajpFileUpdatedCmap = ajFileNewOut(ajpStrUpdatedCmapFile);
 
     /*
      * write unsubstituted contact arrays
@@ -255,6 +257,27 @@ int main(int argc , char **argv)
 				&ajpInt2dCmapPositions,
 				ajpMatrixfContactScoring);
 
+    ajFileClose(&ajpFileUpdatedCmap);
+
+    /* XXXX HARD-CODED FILENAME IS USED BELOW */
+    ajpFileUpdatedCmap = ajFileNewIn(ajpStrUpdatedCmapFile);
+    
+    /*
+     * read in updated contact map and
+     *  revise according to alignment
+     *
+     */ 
+    ajBoolUpdatedCmapFileRead =
+	embReadAndReviseCmapFile(ajpFileUpdatedCmap,
+				 ajIntAcrossSeqLen,
+				 &ajpInt2dCmapSummary,
+				 &embpCmapHeader,
+				 &ajpInt2dCmapResTypes,
+				 &ajpInt2dCmapPositions,
+				 pcUpdatedSeqAcross);    
+
+    ajFileClose(&ajpFileUpdatedCmap);
+
     /* XXXX HARD-CODED FILENAME IS USED BELOW */
     ajpStrSubstitutedCmapFile =
 	ajStrNewC("/users/damian/EMBOSS/emboss/emboss/emboss/SADtest/test2.con");
@@ -267,20 +290,6 @@ int main(int argc , char **argv)
 	embGetIntMap(ajIntAcrossSeqLen + enumArrayOffset);
     ajpInt2dSubstitutedCmapPositions =
 	embGetIntMap(ajIntAcrossSeqLen + enumArrayOffset);
-    
-    /*
-     * read in updated contact map and
-     *  revise according to alignment
-     *
-     */ 
-    ajBoolUpdatedCmapFileRead =
-	embReadAndReviseCmapFile(ajpFileOriginalCmap,
-				 pcUpdatedSeqAcross,
-				 ajIntAcrossSeqLen,
-				 &ajpInt2dSubstitutedCmapSummary,
-				 &embpCmapHeader,
-				 &ajpInt2dSubstitutedCmapResTypes,
-				 &ajpInt2dSubstitutedCmapPositions);    
 
     /*
      * write SUBSTITUTED contact arrays
