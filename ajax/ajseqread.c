@@ -1647,7 +1647,7 @@ static AjBool seqReadClustal (AjPSeq thys, AjPSeqin seqin)
 	blankexp = ajRegCompC ("^[ \t\n\r]*$");
 
     if (!markexp)
-	markexp = ajRegCompC ("^[ \t\n]"); /* space or empty line */
+	markexp = ajRegCompC ("^[ \t\n\r]"); /* space or empty line */
 
     if (!seqexp)
 	seqexp = ajRegCompC ("^([^ \t\n\r]+)");
