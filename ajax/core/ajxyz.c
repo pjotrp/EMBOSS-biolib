@@ -1190,7 +1190,10 @@ AjBool ajXyzSignatureRead(AjPFile inf, AjPSignature *thys)
     ajint  nres           =0;   /* No. residues for a sig. position*/
     ajint  ngap           =0;   /* No. gaps for a sig. position*/
     ajint  wsiz           =0;   /* Windows size for a sig. position*/
-
+    ajint  v1             =0;
+    ajint  v2             =0;
+    char   c1             ='\0';
+    
     
     /*CHECK ARG'S */
     if(!inf)
@@ -1296,9 +1299,9 @@ AjBool ajXyzSignatureRead(AjPFile inf, AjPSignature *thys)
 		{
 		    if(!(ok = ajFileReadLine(inf,&line)))
 			break;
-		    ajFmtScanS(line, "%*s %c %*c %d", 
-			       &(*thys)->dat[n-1]->rids[i], 
-			       &(*thys)->dat[n-1]->rfrq[i]);
+		    ajFmtScanS(line, "%*s %c %*c %d", &c1,&v2);
+		    ajChararrPut(&(*thys)->dat[n-1]->rids,i,c1);
+		    ajIntPut(&(*thys)->dat[n-1]->rfrq,i,v2);
 		}
 		if(!ok) break;
 	       
@@ -1312,9 +1315,9 @@ AjBool ajXyzSignatureRead(AjPFile inf, AjPSignature *thys)
 		{
 		    if(!(ok = ajFileReadLine(inf,&line)))
 			break;
-		    ajFmtScanS(line, "%*s %d %*c %d", 
-			       &(*thys)->dat[n-1]->gsiz[i], 
-			       &(*thys)->dat[n-1]->gfrq[i]);
+		    ajFmtScanS(line, "%*s %d %*c %d", &v1,&v2);
+		    ajIntPut(&(*thys)->dat[n-1]->gsiz,i,v1);
+		    ajIntPut(&(*thys)->dat[n-1]->gfrq,i,v2);
 		}
 		if(!ok) break;
 	    }
@@ -1618,8 +1621,8 @@ AjBool        ajXyzSignatureAlignSeq(AjPSignature S, AjPSeq seq, AjPHit *hit,
 	AJCNEW(path, dim);
 
 	/* CREATE ALIGNMENT AND PROTEIN SEQUENCE STRINGS */
-	alg = AJALLOC(nres*sizeof(char));
-	p = AJALLOC(nres*sizeof(char));
+	alg = AJALLOC((nres*sizeof(char))+1);
+	p = AJALLOC((nres*sizeof(char))+1);
     }	
     else 
     {
@@ -1630,8 +1633,8 @@ AjBool        ajXyzSignatureAlignSeq(AjPSignature S, AjPSeq seq, AjPHit *hit,
 	/* CREATE ALIGNMENT AND PROTEIN SEQUENCE STRINGS */
 	if((nres) > (ajint) sizeof(alg)/sizeof(char))
 	{
-	    AJCRESIZE(alg, nres);
-	    AJCRESIZE(p, nres);
+	    AJCRESIZE(alg, nres+1);
+	    AJCRESIZE(p, nres+1);
 	}
     }
 
@@ -2115,7 +2118,7 @@ AjBool ajXyzSignatureAlignSeqall(AjPSignature sig, AjPSeqall db, ajint n,
 
     /* Memory allocation*/
     listhits = ajListNew();
-    seq=ajSeqNew();    
+/*    seq=ajSeqNew();    */
 
 printf("2\n");
     fflush(stdout);
