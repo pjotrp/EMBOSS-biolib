@@ -50,7 +50,7 @@ prosextract pscan psiphi\
 rebaseextract recoder redata remap restover restrict revseq \
 seealso seqmatchall seqret seqretsplit \
 showalign showdb showfeat showorf showseq \
-shuffleseq sideshowblob sigcleave silent sirna sixpack skipseq \
+shuffleseq sigcleave silent sirna sixpack skipseq \
 splitter stretcher \
 stssearch supermatcher syco \
 tcode textsearch tfextract tfm tfscan \
