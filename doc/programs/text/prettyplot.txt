@@ -141,7 +141,7 @@ Command line arguments
    -portrait Set page to Portrait Yes/No No
    -matrixfile Matrix file Comparison matrix file in EMBOSS data path
    EBLOSUM62 for protein
-   EDNAMAT for DNA
+   EDNAFULL for DNA
    -showscore Print residue scores Any integer value -1
    Advanced qualifiers Allowed values Default
    -data (no help text) bool value Yes/No No

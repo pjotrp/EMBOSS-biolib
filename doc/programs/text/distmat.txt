@@ -347,8 +347,7 @@ Known bugs
    
 See also
 
-   Program name                    Description
-   distances    Creates a distance matrix from multiple alignments
+   Program name Description
    
 Author(s)
 

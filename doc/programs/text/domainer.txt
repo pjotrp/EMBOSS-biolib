@@ -361,6 +361,7 @@ See also
 
    Program name                          Description
    nrscope      Converts redundant EMBL-format SCOP file to non-redundant one
+   scopalign    Generate alignments for SCOP families
    scope        Convert raw scop classification file to embl-like format
    stamps       Generate alignments for SCOP families
    

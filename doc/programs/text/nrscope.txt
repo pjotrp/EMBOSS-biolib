@@ -275,6 +275,7 @@ See also
 
    Program name                       Description
    domainer     Build domain coordinate files
+   scopalign    Generate alignments for SCOP families
    scope        Convert raw scop classification file to embl-like format
    stamps       Generate alignments for SCOP families
    

@@ -140,11 +140,13 @@ Known bugs
 See also
 
    Program name Description
+   charge Protein charge plot
    checktrans Reports STOP codons and ORF statistics of a protein
    sequence
    digest Protein proteolytic enzyme or reagent cleavage digest
    garnier Predicts protein secondary structure
    helixturnhelix Report nucleic acid binding motifs
+   hmoment Hydrophobic moment calculation
    iep Calculates the isoelectric point of a protein
    octanol Displays protein hydropathy
    pepcoil Predicts coiled coil regions
