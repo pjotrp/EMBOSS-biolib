@@ -160,7 +160,7 @@ typedef struct SeqSListUsa
 
 
 
-enum fmtcode {FMT_OK, FMT_NOMATCH, FMT_BADTYPE, FMT_FAIL, FMT_EOF};
+enum fmtcode {FMT_OK, FMT_NOMATCH, FMT_BADTYPE, FMT_FAIL, FMT_EOF, FMT_EMPTY};
 
 
 
@@ -1484,6 +1484,9 @@ static ajint seqReadFmt(AjPSeq thys, AjPSeqin seqin,
 		}
 	    }
 
+	    if (!ajStrLen(thys->Seq))	/* empty sequence string! */
+		return FMT_EMPTY;
+
 	    if(ajSeqTypeCheckIn(thys, seqin))
 	    {
 		/* ajSeqinTrace(seqin); */
@@ -1607,6 +1610,9 @@ static AjBool seqRead(AjPSeq thys, AjPSeqin seqin)
 	    case FMT_EOF:
 		ajDebug("seqRead: (d1) seqReadFmt stat == EOF *failed*\n");
 		return ajFalse;			/* EOF and unbuffered */
+	    case FMT_EMPTY:
+		ajDebug("seqRead: (e1) seqReadFmt stat==EMPTY try again\n");
+		break;
 	    default:
 		ajDebug("unknown code %d from seqReadFmt\n", stat);
 	    }
@@ -1645,6 +1651,9 @@ static AjBool seqRead(AjPSeq thys, AjPSeqin seqin)
 	case FMT_EOF:
 	    ajDebug("seqRead: (d2) seqReadFmt stat == EOF *try again*\n");
 	    break;		     /* simply end-of-file */
+	case FMT_EMPTY:
+	    ajDebug("seqRead: (e2) seqReadFmt stat == EMPTY *try again*\n");
+	    break;
 	default:
 	    ajDebug("unknown code %d from seqReadFmt\n", stat);
 	}
@@ -1677,6 +1686,9 @@ static AjBool seqRead(AjPSeq thys, AjPSeqin seqin)
 	case FMT_EOF:
 	    ajDebug("seqRead: (d3) seqReadFmt stat == EOF *failed*\n");
 	    return ajFalse;			/* we already tried again */
+	case FMT_EMPTY:
+	    ajDebug("seqRead: (e3) seqReadFmt stat == EMPTY *try again*\n");
+	    break;
 	default:
 	    ajDebug("unknown code %d from seqReadFmt\n", stat);
 	}
