@@ -7732,7 +7732,7 @@ static void acdHelpValidFloat (AcdPAcd thys, AjPStr* str) {
     if (fmin != -FLT_MAX)
       ajFmtPrintS (str, "Number %.*f or more", iprec, fmin);
     else
-      ajFmtPrintS (str, "Any integer value");
+      ajFmtPrintS (str, "Any numeric value");
   }
 
   return;
