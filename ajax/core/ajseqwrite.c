@@ -2784,7 +2784,7 @@ void ajSeqWriteCdb (AjPFile outf, AjPStr seq)
 			ajStrLen(outseq->Seq), mw, crc);
 
     seqSeqFormat(ajStrLen(outseq->Seq), &sf);
-    (void) strcpy (sf->endstr, "\n//");
+    (void) strcpy (sf->endstr, "");
     sf->tab = 4;
     sf->spacer = 11;
     sf->width = 60;
