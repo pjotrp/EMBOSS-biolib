@@ -1,0 +1,86 @@
+                     JAligner: Pairwise Sequence Alignment
+
+     _________________________________________________________________
+
+   JAligner is a Java implementation of algorithms for pairwise alignment
+   of biological sequences e.g. Smith-Waterman and Needleman-Wunsch.
+
+   Currently, only Smith-Waterman algorithm is implemented, it is
+   extended to support affine gap penalties with Gotoh improvement to
+   maintain the O(n2) time complexity of the original Smith-Waterman
+   algorithm.
+
+  Usage
+
+   java -classpath jaligner.jar:matrices.jar
+   gnu.bioinformatics.jaligner.SW s1.fasta s2.fasta -m matrix -o open -e
+   extend -a -f jaligner.out
+   where
+
+   s1.fasta the location of the 1^st sequence in [1]FASTA format.
+   s2.fasta the location of the 2^nd sequence in [2]FASTA format.
+   -m matrix the name of the scoring matrix,
+   optional, the default value is BLOSUM62
+   -o open the open gap penalty,
+   optional, the default value is 10.0
+   -e extend the extend gap penalty,
+   optional, the default value is 0.5
+   -a all the possible alignments with the same maximum score
+   -f jaligner.out the output file name
+   optional, the default is the standard output (the console)
+
+      [1] http://www.ncbi.nlm.nih.gov/BLAST/fasta.html
+      [2] http://www.ncbi.nlm.nih.gov/BLAST/fasta.html
+
+  Examples
+
+   (Command line)
+     * java -classpath jaligner.jar:matrices.jar
+       gnu.bioinformatics.jaligner.SW s1.fasta s2.fasta -m BLOSUM90 -o 11
+       -e 1
+     * java -jar gnu.bioinformatics.jaligner.SW s1.fasta s2.fasta -m
+       /home/ahmed/mymatrix
+
+  Formats
+
+    Input
+
+   Currently, [3]FASTA is the only supported input format.
+
+      [3] http://www.ncbi.nlm.nih.gov/BLAST/fasta.html
+
+    Output
+
+   Currently, [4]Pair is the only supported output format.
+
+      [4] http://www.hgmp.mrc.ac.uk/Software/EMBOSS/Themes/AlignExamples/align.pair
+
+  Notes
+
+     * In the command line, if -jar is used (i.e. java -jar
+       gnu.bioinformatics.jaligner.SW as in the 2^nd example), all the
+       user defined class paths will be disregarded by JVM (including
+       matrices.jar), and in this case, the path to the scoring matrix
+       has to be defined by the -m option.
+     * For large sequences e.g. 10KB, JVM needs to know that, to reserve
+       more heap, by passing the -Xm options, for example java -Xms2048m
+       -Xmx2048m
+     * To use a user-defined scoring matrix i.e. not included in
+       matrices.jar, the matrix name in the arguments should be the full
+       path to the user-defined scoring matrix e.g. /home/ahmed/mymatrix,
+       then it is not required to include matrices.jar in the classpath.
+
+  References
+
+     * [5]Identification of common molecular subsequences (PDF)
+     * [6]Advanced Dynamic Programming Tutorial
+
+      [5] http://poweredge.stanford.edu/BioinformaticsArchive/ClassicArticlesArchive/smithandwaterman1981.pdf
+      [6] http://www.sbc.su.se/~per/molbioinfo2001/dynprog/adv_dynamic.html
+
+  Author
+
+   Ahmed Moustafa (ahmed at users dot sf dot net)
+
+     _________________________________________________________________
+
