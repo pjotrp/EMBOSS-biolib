@@ -5978,7 +5978,8 @@ void ajSeqQueryDel (AjPSeqQuery* pthis)
     ajStrDel(&thys->Directory);
     ajStrDel(&thys->Filename);
     ajStrDel(&thys->Application);
-
+    ajStrDel(&thys->QryString);
+    
     AJFREE(*pthis);
 
     return;
