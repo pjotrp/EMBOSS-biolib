@@ -238,10 +238,10 @@ static void dottup_drawPlotlines(void *x, void *cl)
 
     p  = (EmbPWordMatch)x;
 
-    x1 = x2 = (p->seq1start)+1;
-    y1 = y2 = (PLFLT)(p->seq2start)+1;
+    x1 = x2 = (PLFLT)(p->seq1start);
+    y1 = y2 = (PLFLT)(p->seq2start);
 
-    x2 += p->length;
+    x2 += (PLFLT)p->length;
     y2 += (PLFLT)p->length;
 
     ajGraphLine(x1, y1, x2, y2);
