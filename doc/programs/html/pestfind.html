@@ -250,15 +250,22 @@ Created pestfind.ps
   [-sequence]          sequence   Protein sequence USA to be analysed.
    -window             integer    Minimal distance between positively charged
                                   amino acids.
-   -order              selection  Results may be sorted by length, position
-                                  and score.
+   -order              selection  Name of the output file which holds the
+                                  results of the analysis. Results may be
+                                  sorted by length, position and score.
    -outfile            outfile    Name of file to which results will be
                                   written.
    -graph              xygraph    Graph type
 
    Optional qualifiers:
    -threshold          float      Threshold value to discriminate weak from
-                                  potential PEST motifs.
+                                  potential PEST motifs. Valid PEST motifs are
+                                  discriminated into 'poor' and 'potential'
+                                  motifs depending on this threshold score. By
+                                  default, the default value is set to +5.0
+                                  based on experimental data. Alterations are
+                                  not recommended since significance is a
+                                  matter of biology, not mathematics.
    -aadata             string     File of amino acid properties and molecular
                                   masses.
 
@@ -304,7 +311,7 @@ Created pestfind.ps
 
 <tr>
 <td>-order</td>
-<td>Results may be sorted by length, position and score.</td>
+<td>Name of the output file which holds the results of the analysis. Results may be sorted by length, position and score.</td>
 <td>Choose from selection list of values</td>
 <td>score</td>
 </tr>
@@ -331,7 +338,7 @@ Created pestfind.ps
 
 <tr>
 <td>-threshold</td>
-<td>Threshold value to discriminate weak from potential PEST motifs.</td>
+<td>Threshold value to discriminate weak from potential PEST motifs. Valid PEST motifs are discriminated into 'poor' and 'potential' motifs depending on this threshold score. By default, the default value is set to +5.0 based on experimental data. Alterations are not recommended since significance is a matter of biology, not mathematics.</td>
 <td>Number from -55.00 to 55.00</td>
 <td>+5.0</td>
 </tr>
