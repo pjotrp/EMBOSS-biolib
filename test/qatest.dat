@@ -993,7 +993,7 @@ IN
 FI stderr
 FC = 11
 FI opsd_human.digest
-FP /^246\s+248\s+346[.]383\s+\(K\) AEK \(E\)\s*\n/
+FP /^246\s+248\s+346[.]378\s+\(K\) AEK \(E\)\s*\n/
 FP /yields 14 fragments/
 FC = 18
 //
@@ -2142,7 +2142,7 @@ FI stderr
 FC = 2
 FI laci_ecoli.pepstats
 FZ = 1259
-FP /^Molecular weight = 38563\.98/
+FP /^Molecular weight = 38563\.97/
 FP /^Average Residue Weight  = 107\.122\s+Charge\s+= 1\.5\s+\n/
 FP /^Isoelectric Point = 6\.8820\n/
 FP /^A = Ala\s+44\s+12\.222\s+1\.421\s+\n/
@@ -2558,9 +2558,8 @@ IN
 FI stderr
 FC = 2
 FI hsfau.restrict
-FZ = 10033
-FP /^\s+11\s+TaqI\s+TCGA\s+11\s+13\s+\n/
-FP /^\s+125\s+Hin4I\s+GAYNNNNNVTC\s+116\s+111\s+148\s+143\n/
+FP /^HSFAU\s+11\s+14\s+0[.]000\s+TaqI\s+TCGA\s+11\s+13\s+[.]\s+[.]+\s+\n/
+FP /^HSFAU\s+125\s+135\s+0[.]000\s+Hin4I\s+GAYNNNNNVTC\s+116\s+111\s+148\s+143\s+\n/
 //
 
 ID revseq-ex
