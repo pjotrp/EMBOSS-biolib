@@ -57,6 +57,9 @@
 #define	ACD_SEQ_WEIGHT 6
 #define	ACD_SEQ_COUNT 7
 
+#define USED_GET 1
+#define USED_ACD 2
+
 /*static AjBool acdDebug = 0;*/
 /*static AjBool acdDebugSet = 0;*/
 /*static AjPStr acdProgram = NULL;*/
@@ -174,6 +177,7 @@ typedef struct AcdSAcd
   AjPStr* SetStr;
   AjPStr* DefStr;		/* default attrib values */
   AjBool Defined;		/* set when defined by user */
+  ajint Used;
   AjBool Assoc;
   struct AcdSAcd* AssocQuals;
   AjPStr OrigStr;
@@ -7245,6 +7249,9 @@ static void* acdGetValueNum (char *token, char* type, ajint pnum) {
       if (pa->PNum == pnum) {
 	acdLog ("found %S [%d] '%S'\n",
 		pa->Name, pa->PNum, pa->ValStr);
+	if (pa->Used & USED_GET)
+	  ajWarn("ACD token '%S' used more than once", pa->Name);
+	pa->Used |= USED_GET;
 	return pa->Value;
       }
       else if (!pnum) {		/* matches any if unique, so count them */
@@ -7264,6 +7271,7 @@ static void* acdGetValueNum (char *token, char* type, ajint pnum) {
       ajFatal ("Token %s is not of type %s\n", token, type);
     acdLog ("found %S [%d] '%S'\n",
 		   ret->Name, ret->PNum, ret->ValStr);
+    ret->Used |= USED_GET;
     return ret->Value;
   }
 
@@ -11802,6 +11810,7 @@ static AjBool acdGetAttr (AjPStr* result, AjPStr name, AjPStr attrib) {
     (void) ajStrDelReuse (&tempstr);
     ajDebug ("no attribute name, use valstr for %S '%S'\n",
        pa->Name, *result);
+    pa->Used |= USED_ACD;
     return ajTrue;
   }
 
@@ -13657,9 +13666,50 @@ static AjBool acdVocabCheck (AjPStr str, char** vocab) {
   return ajFalse;
 }
 
+/* @func ajAcdExit ***********************************************************
+**
+** Reports any unused ACD values
+**
+** Cleans up feature table internal memory
+**
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajAcdExit (AjBool silent) {
+
+  AcdPAcd pa;
+  static AjBool staySilent=AJFALSE;
+
+  if (silent) staySilent = ajTrue;
+
+  if (staySilent) return;
+
+  /* turn off the warnings for now ... comment out this line to enable them */
+  /* the problem is that some programs have conditionals arouns the */
+  /* ajAcdGet calls so they can sometimes fail to use values, even where */
+  /* the test cases say they are fine. */
+  /* also some ACD files (showdb for example) use values, */
+  /* but in some cases (showdb with all booleans on the command line) */
+  /* the value is not needed */
+
+  if (!staySilent) return;
+
+  for (pa=acdList; pa; pa=pa->Next) {
+    if (pa->Assoc) continue;
+    if (pa->Level != ACD_PARAM && pa->Level != ACD_QUAL) continue;
+    if (!pa->Used) {
+      ajWarn ("ACD qualifier never used: %S = '%S' (assoc %B)",
+	      pa->Name, pa->ValStr, pa->Assoc);
+    }
+
+  }
+
+  return;
+}
 
 /*
- *  In case people want -errorlevel=wraning,noerror,fatal
+ *  In case people want -errorlevel=warning,noerror,fatal
  *
 //static void acdParseErrorLevel(AjPStr str)
 //{
