@@ -2,7 +2,7 @@
 SUBDIRS = acd data
 
 check_PROGRAMS = ajtest ajtest2 ajtest3 ajtestajnam \
-cluster corbatest \
+cluster complex corbatest \
 demofeatures demolist demosequence demostring demotable \
 entrails histogramtest intconv messtest \
 patmattest plplottest proteinmotifsearch \
@@ -12,7 +12,7 @@ simplesw stamps testplot treetypedisplay
 
 bin_PROGRAMS = abiview acdc antigenic \
 backtranseq banana btwisted \
-chaos checktrans chips cirdna codcmp coderet complex \
+chaos checktrans chips cirdna codcmp coderet \
 compseq cons cpgplot cpgreport cusp cutseq \
 dan dbiblast dbifasta dbiflat dbigcg \
 descseq diffseq digest domainer dotmatcher dotpath dottup dreg \
