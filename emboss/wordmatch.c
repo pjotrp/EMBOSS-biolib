@@ -71,8 +71,8 @@ int main(int argc, char **argv)
 
     ajAlignSetExternal(align, ajTrue);
 
-    seq1out  =  ajAcdGetFeatout("afeatout");
-    seq2out  =  ajAcdGetFeatout("bfeatout");
+    seq1out  =  ajAcdGetFeatout("aoutfeat");
+    seq2out  =  ajAcdGetFeatout("boutfeat");
 
     embWordLength(wordlen);
     if(embWordGetTable(&seq1MatchTable, seq1))
