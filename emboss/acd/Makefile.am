@@ -4,7 +4,7 @@ pkgdata_DATA = codes.english \
 	antigenic.acd backtranseq.acd banana.acd biosed.acd \
 	btwisted.acd cai.acd chaos.acd charge.acd checktrans.acd chips.acd \
 	cirdna.acd codcmp.acd coderet.acd \
-	complex.acd compseq.acd cons.acd contacts.acd corbatest.acd \
+	complex.acd coordenew.acd compseq.acd cons.acd contacts.acd corbatest.acd \
 	cpgplot.acd cpgreport.acd cusp.acd cutgextract.acd cutseq.acd \
 	dan.acd dbiblast.acd dbifasta.acd dbiflat.acd \
 	dbigcg.acd degapseq.acd \
@@ -20,7 +20,7 @@ pkgdata_DATA = codes.english \
 	freak.acd fuzznuc.acd fuzzpro.acd fuzztran.acd \
 	garnier.acd geecee.acd getorf.acd helixturnhelix.acd hmoment.acd \
 	histogramtest.acd iep.acd infoalign.acd infoseq.acd isochore.acd \
-	lindna.acd listor.acd marscan.acd maskfeat.acd maskseq.acd \
+	interface.acd lindna.acd listor.acd marscan.acd maskfeat.acd maskseq.acd \
 	matcher.acd swissparse.acd
 pkgdata2_DATA =	megamerger.acd merger.acd msbar.acd \
 	mwfilter.acd needle.acd \

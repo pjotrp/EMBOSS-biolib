@@ -14,7 +14,7 @@ endif
 check_PROGRAMS = ajtest \
 complex corbatest \
 demoalign demofeatures demolist demoreport demosequence demostring demotable \
-entrails histogramtest intconv \
+entrails funky histogramtest intconv \
 patmattest \
 prima primers \
 seqinfo seqretsingle \
@@ -24,7 +24,7 @@ testplot treetypedisplay
 bin_PROGRAMS = abiview acdc alignwrap antigenic \
 backtranseq banana biosed btwisted \
 cai chaos charge checktrans chips cirdna codcmp coderet \
-contacts compseq cons cpgplot cpgreport cusp cutgextract cutseq \
+contacts coordenew compseq cons cpgplot cpgreport cusp cutgextract cutseq \
 dan dbiblast dbifasta dbiflat dbigcg \
 degapseq descseq dichet diffseq digest distmat domainer \
 dotmatcher dotpath dottup dreg \
@@ -32,7 +32,7 @@ einverted embossdata embossversion emma emowse entret \
 equicktandem est2genome etandem extractfeat extractseq \
 findkm freak fuzznuc fuzzpro fuzztran \
 garnier geecee getorf helixturnhelix hmoment \
-iep infoalign infoseq isochore lindna listor \
+iep infoalign infoseq interface isochore lindna listor \
 marscan maskfeat maskseq matcher megamerger merger msbar \
 mwfilter \
 needle newcpgreport newcpgseek newseq \
@@ -74,6 +74,7 @@ cirdna_SOURCES = cirdna.c
 codcmp_SOURCES = codcmp.c
 coderet_SOURCES = coderet.c
 complex_SOURCES = complex.c
+coordenew_SOURCES = coordenew.c
 compseq_SOURCES = compseq.c
 cons_SOURCES = cons.c
 contacts_SOURCES = contacts.c
@@ -102,6 +103,7 @@ embossdata_SOURCES = embossdata.c
 emma_SOURCES = emma.c
 emowse_SOURCES = emowse.c
 entrails_SOURCES = entrails.c
+funky_SOURCES = funky.c
 entret_SOURCES = entret.c
 equicktandem_SOURCES = equicktandem.c
 est2genome_SOURCES = est2genome.c
@@ -123,6 +125,7 @@ iep_SOURCES = iep.c
 infoalign_SOURCES = infoalign.c
 infoseq_SOURCES = infoseq.c
 intconv_SOURCES = intconv.c
+interface_SOURCES = interface.c
 isochore_SOURCES = isochore.c
 lindna_SOURCE = lindna.c
 listor_SOURCE = listor.c
