@@ -51,7 +51,7 @@ void init(int argc, char** argv)
    * anything done at the beginig for every program should be done here */ 
  
   /* set up signal handler for 
-   * segfault,floating point exception, illeagal instruction, bad pipe, bus error
+   * segfault,floating point exception, illegal instruction, bad pipe, bus error
    * there are more signals that can cause a crash, but these are the most common
    * even these aren't found on all machines.  */
 }
@@ -806,9 +806,9 @@ void inputnumbersstate(AjPPhyloState state,
     *nonodes = *spp * 2 - n;
 }
 
-void inputnumbers2seq(AjPSeqset seqset, long *spp, long *nonodes, long n)
+void inputnumbers2seq(AjPPhyloDist dist, long *spp, long *nonodes, long n)
 {
-  *spp = ajSeqsetSize(seqset);
+  *spp = dist->Size;
   fprintf(outfile, "\n%4ld Populations\n", *spp);
   *nonodes = *spp * 2 - n;
 }  /* inputnumbers2seq */
@@ -848,7 +848,7 @@ void samenumspseq(AjPSeqset set, long *chars, long ith)
   *chars = set->Len;
 } /* samenumspstate */
 
-void samenumspseq2(AjPSeqset set, long ith)
+void samenumspseq2(AjPPhyloDist set, long ith)
 {
   /* check if spp is same as the first set in other data sets */
 
@@ -1991,7 +1991,8 @@ void addelement2(node *q, Char *ch, long *parens, char **treestr,
   }
   else if ((*ch) == ';') {
     (*trweight) = 1.0 ;
-    ajWarn("WARNING: tree weight set to 1.0");
+    /* the ajWarn should be for multiple trees as input */
+    /* ajWarn("WARNING: tree weight set to 1.0");*/
   }
   else
     (*haslengths) = ((*haslengths) && q == NULL);
@@ -2008,6 +2009,7 @@ void addelement2(node *q, Char *ch, long *parens, char **treestr,
   if ((*ch) == ':') {
     processlength(&valyew, &divisor, ch,
        &minusread, treestr, parens);
+    printf("processlength valyew:%f divisor:%f q: %p\n", valyew, divisor, q);
     if (q != NULL) {
       if (!minusread)
         q->oldlen = valyew / divisor;

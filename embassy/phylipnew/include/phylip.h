@@ -22,6 +22,11 @@
 #include <stdlib.h>
 #include "ajax.h"
 
+typedef struct EmbossSTreeNode {
+    AjPStr Name;
+} EmbossOTreeNode;
+#define EmbossPTreeNode EmbossOTreeNode*
+
 #ifdef WIN32
 #include <windows.h>
 
@@ -603,11 +608,11 @@ void   inputnumbersseq2(AjPSeqset seqset,
                       long *, long *, long n);
 void   inputnumbersfreq(AjPPhyloFreq, long *, long *, long *, long);
 void   inputnumbersstate(AjPPhyloState, long *, long *, long *, long);
-void   inputnumbers2seq(AjPSeqset, long *, long *, long n);
+void   inputnumbers2seq(AjPPhyloDist, long *, long *, long n);
 void   samenumspfreq(AjPPhyloFreq, long *, long);
 void   samenumspstate(AjPPhyloState, long *, long);
 void   samenumspseq(AjPSeqset, long *, long);
-void   samenumspseq2(AjPSeqset, long);
+void   samenumspseq2(AjPPhyloDist, long);
 void   initnameseq(AjPSeqset, long);
 void   initnamedist(AjPPhyloDist, long);
 void   initnamestate(AjPPhyloState, long);
