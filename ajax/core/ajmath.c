@@ -30,9 +30,9 @@ static void spcrc64calctab(unsigned long long *crctab);
 ** @return [ajint] Result.
 ******************************************************************************/
 
-ajint ajRound (ajint i, ajint round) {
-
-  return round * ((ajint)(i+round-1)/round);
+ajint ajRound (ajint i, ajint round)
+{
+    return round * ((ajint)(i+round-1)/round);
 }
 
 
@@ -45,34 +45,34 @@ ajint ajRound (ajint i, ajint round) {
 ** @return [float] Result.
 ******************************************************************************/
 
-float ajRoundF (float a, ajint nbits) {
+float ajRoundF (float a, ajint nbits)
+{
+    double w, x, y, z, b, c;
+    ajint i;
+    ajint bitsused;
 
-  double w, x, y, z, b, c;
-  ajint i;
-  ajint bitsused;
+    bitsused = FLT_MANT_DIG - nbits; /* save 16 bits for cumulative error */
+    /* usually leave 8 bits */
+    if (bitsused < 8) bitsused = 8;
 
-  bitsused = FLT_MANT_DIG - nbits; /* save 16 bits for cumulative error */
-                                /* usually leave 8 bits */
-  if (bitsused < 8) bitsused = 8;
+    x = frexp (a, &i);			/* a is between 0.5 and 1.0 */
+    /* i is the power of two */
 
-  x = frexp (a, &i);            /* a is between 0.5 and 1.0 */
-                                /* i is the power of two */
+    /* multiply by 2**n, convert to an integer, divide again */
+    /* so we only keep n (or whatever) bits */
 
-  /* multiply by 2**n, convert to an integer, divide again */
-  /* so we only keep n (or whatever) bits */
+    y = ldexp(x, bitsused);		/* multiply by 2**n */
+    z = modf(y, &w);		/* change to an integer + remainder */
+    if (z > 0.5) w += 1.0;		/* round up ?*/
+    if (z < -0.5) w -= 1.0;		/* round down? */
 
-  y = ldexp(x, bitsused);       /* multiply by 2**n */
-  z = modf(y, &w);              /* change to an integer + remainder */
-  if (z > 0.5) w += 1.0;        /* round up ?*/
-  if (z < -0.5) w -= 1.0;       /* round down? */
+    b = ldexp (w, -bitsused);		/* divide by 2**n */
+    c = ldexp(b, i);	     /* divide by the original power of two */
 
-  b = ldexp (w, -bitsused);     /* divide by 2**n */
-  c = ldexp(b, i);              /* divide by the original power of two */
+    /*  ajDebug ("\najRoundF (%.10e) c: %.10e bitsused: %d\n", a, c, bitsused);
+	ajDebug ("       x: %f i: %d y: %f w: %.1f\n", x, i, y, w);*/
 
-  /*  ajDebug ("\najRoundF (%.10e) c: %.10e bitsused: %d\n", a, c, bitsused);
-      ajDebug ("       x: %f i: %d y: %f w: %.1f\n", x, i, y, w);*/
-
-  return (float) c;
+    return (float) c;
 }
 
 
