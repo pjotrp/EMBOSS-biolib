@@ -7,10 +7,14 @@
 24 Jan 2001 - version 1.0.3 
 	Alan tidied up lots of stuff for configure and made the m4 directory
 
-v1.0.4
-9 Feb 2001
+
+9 Feb 2001 - version 1.0.4
 GWW
 Blocked the menu from recursively running 'emenu'
 Bug fix reported by Flavio Licciulli (BARI) implemented to stop crashing
         when the description in the menus is too long
 
+29 Nov 2001 - version 1.0.5
+GWW
+Minor changes to match EMBOSS library changes.
+No change in functionality to emnu.

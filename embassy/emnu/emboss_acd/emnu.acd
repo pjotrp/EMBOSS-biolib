@@ -5,6 +5,7 @@
 appl: emnu [
 	doc: "Simple menu of EMBOSS applications"
 	group: "menus"
+	gui: N
 ]
 
   bool:	morefiles [

@@ -54,13 +54,16 @@ passed through.
 24 Oct 2000 - turned off option O_BS_OVERLOAD on forms to prevent
 crashing when deleting first character of the field
 
+29 Nov 2001 - minor change to match the new parameters of 
+embGrpGetProgGroups
+
 */
 
 /* the name of this program */
 #define PROGRAM_NAME "emnu"
 
 /* the version of this program */
-#define PROGRAM_VERSION "1.0.4"
+#define PROGRAM_VERSION "1.0.5"
 
 
 #include "emboss.h"
@@ -3069,7 +3072,12 @@ main (int argc, char * argv[], char **env) {
 /* get the groups and program information - both EMBOSS and EMBASSY */
     glist = ajListNew();
     alpha  = ajListNew();
-    embGrpGetProgGroups (glist, alpha, env, ajTrue, ajTrue, explode, ajFalse);
+/* don't want to put colons in group names,
+**  don't want to ignore applications that don't work in GUIs 
+**  (emnu is not a GUI!)
+*/
+    embGrpGetProgGroups (glist, alpha, env, ajTrue, ajTrue, explode, 
+    	ajFalse, ajFalse);
 
 
 /* we must initialize the curses data structure only once */

@@ -1,4 +1,4 @@
-Emboss problems mail emboss-bug@sanger.ac.uk
+Emboss problems mail emboss-bug@embnet.org
 
 Installation from .tar file.
 
@@ -13,14 +13,14 @@ mkdir embassy
 cd embassy
 
 4) unzip and untar the file
-gunzip EMNU-1.0.4.tar.gz
-tar xvf EMNU-1.0.4.tar
+gunzip EMNU-1.0.5.tar.gz
+tar xvf EMNU-1.0.5.tar
 
 5) go into the emnu directory
-cd EMNU-1.0.4
+cd EMNU-1.0.5
 
 6) configure and compile
-./configure (use same options as you used to compile emboss)
+./configure (See the INSTALL file for options specifying curses or ncurses)
 make
 make install
 
