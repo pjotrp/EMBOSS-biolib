@@ -29,7 +29,7 @@ endsection: required
 section: advanced [ info: "advanced Section" type: page ]
 list: things  [
   required: "@($(format) == 0)"
-  default: "B N T S A F"
+  default: "B,N,T,S,A,F"
   minimum: "1"
   maximum: "100"
   header: "Specify your own things to display"
