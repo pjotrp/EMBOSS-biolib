@@ -5195,8 +5195,11 @@ AjPSeqall ajAcdGetSeqall (char *token) {
 ** Associated qualifiers "-sformat", "-sdbname", "-sopenfile", "-sid"
 ** are applied to the USA before reading the sequence.
 **
-** Associated qualifiers "-supper", "-slower" and "-sask" are applied
+** Associated qualifier "-sask" is applied
 ** after reading.
+**
+** Associated qualifiers "-supper", "-slower" are applied
+** globally
 **
 ** Associated qualifiers "-sbegin", "-send" and "-sreverse"
 ** are applied as appropriate, with prompting for values,
@@ -5250,6 +5253,13 @@ static void acdSetSeqall (AcdPAcd thys) {
 
   (void) acdQualToBool (thys, "snucleotide", ajFalse, &snuc, &defreply);
   (void) acdQualToBool (thys, "sprotein", ajFalse, &sprot, &defreply);
+  (void) acdQualToBool (thys, "supper", ajFalse, &supper, &defreply);
+  (void) acdQualToBool (thys, "slower", ajFalse, &slower, &defreply);
+
+  if(slower)
+      seqin->Lower = ajTrue;
+  if(supper)
+      seqin->Upper = ajTrue;
 
   if (snuc)
     ajSeqinSetNuc (seqin);
@@ -5299,8 +5309,6 @@ static void acdSetSeqall (AcdPAcd thys) {
 
   (void) acdInFileSave(ajSeqallGetName(val)); /* save the sequence name */
 
-  (void) acdQualToBool (thys, "supper", ajFalse, &supper, &defreply);
-  (void) acdQualToBool (thys, "slower", ajFalse, &slower, &defreply);
   (void) acdQualToBool (thys, "sask", ajFalse, &sprompt, &defreply);
 
   /* now process the begin, end and reverse options */
@@ -5354,10 +5362,7 @@ static void acdSetSeqall (AcdPAcd thys) {
 		 sbegin, send, ajStrBool(sreverse));
   
   ajSeqallSetRange(val, sbegin, send);
-  if (slower)
-    (void) ajStrToLower (&seq->Seq);
-  if (supper)
-    (void) ajStrToUpper (&seq->Seq);
+
   if (sreverse)
     ajSeqallReverse (val);
   

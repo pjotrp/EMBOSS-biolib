@@ -109,6 +109,9 @@ typedef struct AjSSeqin {
   AjBool IsNuc;
   AjBool IsProt;
   AjBool multi;
+  AjBool Lower;
+  AjBool Upper;
+  AjBool Text;
   int Count;
   int Filecount;
   long Fpos;

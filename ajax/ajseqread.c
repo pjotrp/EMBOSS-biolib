@@ -174,6 +174,9 @@ AjPSeqin ajSeqinNew (void) {
   pthis->Search = ajTrue;
   pthis->Single = ajFalse;
   pthis->Features = ajFalse;
+  pthis->Upper = ajFalse;
+  pthis->Lower = ajFalse;
+  pthis->Text  = ajFalse;
   pthis->Count = 0;
   pthis->Filecount = 0;
   pthis->Query = ajSeqQueryNew();
@@ -730,7 +733,7 @@ AjBool ajSeqsetRead (AjPSeqset thys, AjPSeqin seqin) {
 **
 ** Tests whether a sequence can be read using the specified format.
 ** Then tests whether the sequence matches sequence query criteria
-** and checks any specified type.
+** and checks any specified type. Applies upper and lower case
 **
 ** @param [r] thys [AjPSeq] Sequence object
 ** @param [r] seqin [AjPSeqin] Sequence input object
@@ -780,6 +783,10 @@ static int seqReadFmt (AjPSeq thys, AjPSeqin seqin,
 	    if (ajSeqTypeCheck(thys, seqin))
 	    {
 		ajSeqinTrace (seqin);
+		if(seqin->Upper)
+		    ajSeqToUpper(thys);
+		if(seqin->Lower)
+		    ajSeqToLower(thys);
 		return 0;
 	    }
 	    else
