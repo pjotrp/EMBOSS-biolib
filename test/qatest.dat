@@ -27,6 +27,8 @@ FC = 2
 
 ID acdc-0001
 AP acdc
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
 CL qatest tembl:paamir tembl:paamir x.x -auto
 FI x.x
 FZ = 0
@@ -38,6 +40,8 @@ FZ = 0
 
 ID acdc-0002
 AP acdc
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
 CL qatest tembl:paamir tembl:paamir x.x -aint 5 -auto
 FI x.x
 FZ = 0
@@ -49,6 +53,8 @@ FZ = 0
 
 ID acdc-0003
 AP acdc
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
 CL qatest tembl:paamir tembl:paamir x.x -ai 5 -auto
 FI x.x
 FZ = 0
@@ -60,15 +66,8 @@ FZ = 0
 
 ID acdc-0004
 AP acdc
-CL qatest tembl:paamir tembl:paamir x.x -a 5 -auto
-ER 1
-FI stderr
-FP /ambiguous qualifier a /
-FP 1 /Warning:/
-//
-
-ID acdc-0005
-AP acdc
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
 CL qatest tembl:paamir -sbegin 5 -send 1000 tembl:paamir x.x -auto
 FI x.x
 FZ = 0
@@ -79,9 +78,24 @@ FZ = 0
 //
 
 
+ID acdc-0005
+AP acdc
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+CL qatest tembl:paamir tembl:paamir -sbegin 5 -send 1000 x.x -auto
+FI x.x
+FZ = 0
+FI paamir.fasta
+FZ = 0
+FI paamir.out2
+FZ = 0
+//
+
 ID acdc-0006
 AP acdc
-CL qatest tembl:paamir tembl:paamir -sbegin 5 -send 1000 x.x -auto
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+CL qatest -sbegin 5 -send 1000 tembl:paamir tembl:paamir x.x -auto
 FI x.x
 FZ = 0
 FI paamir.fasta
@@ -92,7 +106,9 @@ FZ = 0
 
 ID acdc-0007
 AP acdc
-CL qatest -sbegin 5 -send 1000 tembl:paamir tembl:paamir x.x -auto
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+CL qatest tembl:paamir tembl:paamir x.x -sbegin 5 -send 1000  -auto
 FI x.x
 FZ = 0
 FI paamir.fasta
@@ -103,17 +119,8 @@ FZ = 0
 
 ID acdc-0008
 AP acdc
-CL qatest tembl:paamir tembl:paamir x.x -sbegin 5 -send 1000  -auto
-FI x.x
-FZ = 0
-FI paamir.fasta
-FZ = 0
-FI paamir.out2
-FZ = 0
-//
-
-ID acdc-0009
-AP acdc
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
 CL qatest tembl:paamir tembl:paamir x.x
 CL  -sbegin_asequence 5 -send_asequence 1000 -auto
 FI x.x
@@ -124,8 +131,10 @@ FI paamir.out2
 FZ = 0
 //
 
-ID acdc-0010
+ID acdc-0009
 AP acdc
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
 CL qatest tembl:paamir tembl:paamir x.x -sbegin_as 5 -send_as 1000  -auto
 FI x.x
 FZ = 0
@@ -135,51 +144,51 @@ FI paamir.out2
 FZ = 0
 //
 
-ID acdc-0011
+ID acdc-0010
 AP acdc
-CL qatest tembl:paamir tembl:paamir x.x -sbegin_a 5 -send_a 1000 
-ER 1
-FI stderr
-FP / ambiguous master qualifier for sbegin_a /
-FP /Died: unknown qualifier -sbegin_a\n/
-FP 1 /Warning:/
-//
-
-ID acdc-0012
-AP acdc
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
 CL qatest -acdpretty
 FI qatest.acdpretty
-FZ = 743
+FZ = 821
 FP 3 /^string:/
-FP 11 /^[a-z]+: /
+FP 12 /^[a-z]+: /
 //
 
-ID acdc-0013
+ID acdc-0011
 AP acdc
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
 CL qatest -help
 FI stderr
-FZ = 826
+FZ = 896
 FP 3 / qualifiers:\n/
 FP 4 / qualifiers:/
 FP 1 /^ +\[-asequence\] +sequence +Sequence USA\n/
 FP 1 /^ +\[-bsequence\] +sequence +Sequence USA\n/
 FP 2 /^ +\[-.sequence\] +sequence +Sequence USA\n/
+FP /   [-]testalen           string     asequence length \.\.\.\n/
 FP 0 /Warning:/
 //
 
-ID acdc-0014
+ID acdc-0012
 AP acdc
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
 CL qatest -help -verbose
 FI stderr
-FZ = 4020
-FP 27 /   boolean /
+FZ = 4145
+FP 29 /   boolean /
 FP  6 /   integer /
 FP 28 /   string /
+FP /   [-]testalen           string     asequence length \.\.\.\n/
 FP 0 /Warning:/
 //
 
-ID acdc-0015
+ID acdc-0013
 AP acdc
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
 CL qatest tembl:paamir tembl:paamir x.x -debug
 IN
 IN
@@ -202,6 +211,971 @@ FP 2 /^Memory usage /
 ####################
 # ACD parsing errors
 ####################
+
+ID acd-nofile
+AP acdc
+ER 1
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+CL nofile
+FI stderr
+FZ > 0
+FP 0 /^Warning:/
+FP /Error: File ../../acd/nofile.acd line 0: ACD file not opened\n/
+//
+
+ID acd-noappl
+AP acdc
+ER 1
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+CL noappl
+FI stderr
+FZ > 0
+FP 0 /^Warning:/
+FP /Error: File .*noappl.acd line 4: Application definition required at start\n/
+//
+
+ID acd-noleftq
+AP acdc
+ER 1
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+CL noleftq
+FI stderr
+FZ > 0
+FP 0 /^Warning:/
+FP /Error: File .*noleftq.acd line 7: \(output\) Failed to find '\[' for section output\n/
+//
+
+ID acd-noleftsec
+AP acdc
+ER 1
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+CL noleftsec
+FI stderr
+FZ > 0
+FP 0 /^Warning:/
+FP /Error: File .*noleftsec.acd line 5: \(output\) Failed to find '\[' for section output\n/
+//
+
+ID acd-noleftappl
+AP acdc
+ER 1
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+CL noleftappl
+FI stderr
+FZ > 0
+FP 0 /^Warning:/
+FP /Error: File .*noleftappl.acd line 3: \(noleftappl\) Failed to find '\[' for application noleftappl\n/
+//
+
+ID acd-noendsec
+AP acdc
+ER 1
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+CL noendsec
+FI stderr
+FZ > 0
+FP 0 /^Warning:/
+FP /Error: Section 'output' has no endsection\n/
+FP /Error: Section 'input' has no endsection\n/
+FP 2 /Error: Section '.*' has no endsection\n/
+FP /Error: File .*noendsec.acd line 13: Unclosed sections in ACD file\n/
+//
+
+ID acd-noquote
+AP acdc
+ER 1
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+CL noquote
+FI stderr
+FZ > 0
+FP 0 /^Warning:/
+FP /Error: File .*noquote.acd line 5: \(outtest\) Unexpected end of file, no closing quote\n/
+//
+
+ID acd-novalue
+AP acdc
+ER 1
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+CL novalue
+FI stderr
+FZ > 0
+FP 0 /^Warning:/
+FP /Error: File .*novalue.acd line 5: \(outtest\) Unexpected end of file, attribute value not found\n/
+//
+
+ID acd-badstage
+AP acdc
+ER 1
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+CL badstage
+FI stderr
+FZ > 0
+FP 0 /^Warning:/
+FP /Error: File .*badstage.acd line 5: Unrecognized token 'dingsbum'\n/
+//
+
+ID acd-calcparam
+AP acdc
+ER 1
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+CL calcparam
+FI stderr
+FZ > 0
+FP 0 /^Warning:/
+FP /Error: File .*calcparam.acd line 22: [(]outtest[)] 'parameter' attribute cannot use a variable. It is used .* been set\n/
+//
+
+ID acd-noapplname
+AP acdc
+ER 1
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+CL noapplname
+FI stderr
+FZ > 0
+FP 0 /^Warning:/
+FP /Error: File .*noapplname.acd line 3: Bad or missing application name '\['\n/
+//
+
+ID acd-badapplname
+AP acdc
+ER 1
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+CL badapplname
+FI stderr
+FZ > 0
+FP 0 /^Warning:/
+FP /Error: File .*badapplname.acd line 3: Bad or missing application name 'run[*]123'\n/
+//
+
+ID acd-noqualname
+AP acdc
+ER 1
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+CL noqualname
+FI stderr
+FZ > 0
+FP 0 /^Warning:/
+FP /Error: File .*noqualname.acd line 5: Bad or missing qualifier alphabetic name '\['\n/
+//
+
+ID acd-badqualname
+AP acdc
+ER 1
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+CL badqualname
+FI stderr
+FZ > 0
+FP 0 /^Warning:/
+FP /Error: File .*badqualname.acd line 5: Bad or missing qualifier alphabetic name 'sequence1'\n/
+//
+
+ID acd-badalias
+AP acdc
+ER 1
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+CL badalias
+FI stderr
+FZ > 0
+FP 0 /^Warning:/
+FP /Error: File .*badalias.acd line 5: Bad syntax qualifier alias name 'file2'\n/
+//
+
+ID acd-nocolon
+AP acdc
+ER 1
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+CL nocolon
+FI stderr
+FZ > 0
+FP 0 /^Warning:/
+FP /Error: File .*nocolon.acd line 5: Expected ':' not found after 'param'\n/
+//
+
+ID acd-badendsec
+AP acdc
+ER 1
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+CL badendsec
+FI stderr
+FZ > 0
+FP 0 /^Warning:/
+FP /Error: File .*badendsec.acd line 14: Bad endsection 'fred', current section is 'output'\n/
+//
+
+ID acd-endsecextra
+AP acdc
+ER 1
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+CL endsecextra
+FI stderr
+FZ > 0
+FP 0 /^Warning:/
+FP /Error: File .*endsecextra.acd line 18: Bad endsection 'fred', not in a section\n/
+//
+
+ID acd-dupname
+AP acdc
+ER 1
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+CL dupname
+FI stderr
+FZ > 0
+FP 0 /^Warning:/
+FP /Error: File .*dupname.acd line 14: \(outtest\) Name 'outtest' not unique\n/
+//
+
+ID acd-dupalias
+AP acdc
+ER 1
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+CL dupalias
+FI stderr
+FZ > 0
+FP 0 /^Warning:/
+FP /Error: File .*dupalias.acd line 14: \(output\) Name\/Alias 'outtest'\/'output' not unique\n/
+//
+
+ID acd-ambigtype
+AP acdc
+ER 1
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+CL ambigtype
+FI stderr
+FZ > 0
+FP 0 /^Warning:/
+FP /Error: File .*ambigtype.acd line 16: ambiguous acd type seqo \(seqout,seqoutall,seqoutset\)\n/
+//
+
+ID acd-ambigvar
+AP acdc
+ER 1
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+CL ambigvar tembl:paamir -auto
+FI stderr
+FZ > 0
+FP 1 /^Warning:/
+FP /Error: File .*ambigvar.acd line 9: Failed to resolve variable 'seq'\n/
+FP /Warning: ambiguous item seq \(sequence,seqmod\)\n/
+//
+
+ID acd-undefvar
+AP acdc
+ER 1
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+CL undefvar tembl:paamir -auto
+FI stderr
+FZ > 0
+FP 0 /^Warning:/
+FP /Error: File .*undefvar.acd line 7: Variable 'seqmod' not yet defined\n/
+//
+
+ID acd-leftend
+AP acdc
+ER 1
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+CL leftend
+FI stderr
+FZ > 0
+FP 0 /^Warning:/
+FP /Error: File .*leftend.acd line 5: \(outtest\) End of file looking for '\]'\n/
+//
+
+ID acd-valend
+AP acdc
+ER 1
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+CL valend
+FI stderr
+FZ > 0
+FP 0 /^Warning:/
+FP /Error: File .*valend.acd line 5: \(outtest\) End of file looking for '\]'\n/
+//
+
+ID acd-noattname
+AP acdc
+ER 1
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+CL noattname
+FI stderr
+FZ > 0
+FP 0 /^Warning:/
+FP /Error: File .*noattname.acd line 5: \(outtest\) Bad or missing attribute name 'requ1red'\n/
+//
+
+ID acd-dupassoc
+AP acdc
+ER 1
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+CL dupassoc
+FI stderr
+FZ > 0
+FP 0 /^Warning:/
+FP /Error: File .*dupassoc.acd line 5: \(sbegin\) Associated qualifier 'sbegin' clashes with 'sbegin' in ACD file\n/
+//
+
+ID acd-dupassoc2
+AP acdc
+ER 1
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+CL dupassoc2
+FI stderr
+FZ > 0
+FP 0 /^Warning:/
+FP /Error: File .*dupassoc2.acd line 5: \(mybool\) Associated qualifier 'sbegin' clashes with 'mybool'\/'sbegin' in ACD file\n/
+//
+
+ID acd-wrongattr
+AP acdc
+ER 1
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+CL wrongattr
+FI stderr
+FZ > 0
+FP 0 /^Warning:/
+FP /Error: File .*wrongattr.acd line 7: \(outtest\) Attribute 'wanted' unknown\n/
+//
+
+ID acd-ambigdefattr
+AP acdc
+ER 1
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+CL ambigdefattr tembl:paamir
+FI stderr
+FZ > 0
+FP 0 /^Warning:/
+FP /Error: File .*ambigdefattr.acd line 7: \(outtest\) 'o' matches attribute 'optional' and associated qualifier 'odirectory'\n/
+//
+
+ID acd-ambigassoc
+AP acdc
+ER 1
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+CL ambigassoc
+FI stderr
+FZ > 0
+FP 1 /^Warning:/
+FP /Warning: Ambiguous name/token 'f' \(fformat,fopenfile\)\n/
+FP /Error: File .*ambigassoc.acd line 8: \(asequence\) Attribute or qualifier 'f' ambiguous\n/
+//
+
+ID acd-mixedcase
+AP acdpretty
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+CL mixedcase
+FI stderr
+FZ > 0
+FP 1 /^Warning:/
+FP /Warning: File .*mixedcase.acd line 16: Automatically converting 'testA' to lower case\n/
+FP 0 /^Error:/
+FI mixedcase.acdpretty
+FZ > 0
+FP /: testa /
+//
+
+ID acd-testarray
+AP acdc
+ER 1
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+CL testarray
+FI stderr
+FZ > 0
+FP 0 /^Warning:/
+FP 1 /^Error: .*testarray.acd line 8: \(numlist\) Array attribute size: 0 less than 1/
+//
+
+## Command line validation tests
+## Handling of associated qualifiers
+
+ID acdc-badqual
+AP acdc
+ER 1
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+CL testassoc tembl:eclaci tembl:paamir -sbegin_a 10
+IN
+IN
+FI stderr
+FZ > 0
+FP 1 /^Warning:/
+FP /Warning: Ambiguous master qualifier 'a' in sbegin_a \(auto,acdlog,acdpretty,acdtable,asequence\)/
+FP /Died: Unknown qualifier -sbegin_a/
+//
+
+ID acdc-ambigqual
+AP acdc
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+CL qatest tembl:paamir tembl:paamir x.x -a 5 -auto
+ER 1
+FI stderr
+FP /Warning: ambiguous qualifier 'a' \(auto,acdlog,acdpretty,acdtable,asequence,aint\)/
+FP 1 /Warning:/
+FP /Died: Unknown qualifier -a\n/
+//
+
+ID acdc-missing
+AP acdc
+## . as a parameter is a missing value treated as an empty string
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+CL qatest tembl:paamir . x.x
+ER 1
+FI stderr
+FP 0 /Warning:/
+FP /Error: Unable to read sequence ''\n/
+FP /Died: qatest terminated: Bad value for '-bsequence' and no prompt\n/
+//
+
+ID acdc-noprefixvalue
+AP acdc
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+CL qatest tembl:paamir tembl:paamir x.x -auto -nologic=Y
+ER 1
+FI stderr
+FP 0 /Warning:/
+FP /Died: 'no' prefix used with value for '-nologic=Y'\n/
+//
+
+ID acdc-noprefixbad
+AP acdc
+## no nullok attribute for this type
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+CL qatest tembl:paamir tembl:paamir x.x -auto -nooutdir
+ER 1
+FI stderr
+FP 0 /Warning:/
+FP /Died: 'no' prefix invalid for '-nooutdir'\n/
+//
+
+ID acdc-noprefixbad2
+AP acdc
+## nullok attribute is false
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+CL qatest tembl:paamir tembl:paamir x.x -auto -notestalen
+ER 1
+FI stderr
+FP 0 /Warning:/
+FP /Died: 'no' prefix invalid for '-notestalen'\n/
+//
+
+ID acdc-novalue
+AP acdc
+## nullok attribute is false
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+CL qatest tembl:paamir tembl:paamir x.x -auto -testalen
+ER 1
+FI stderr
+FP 0 /Warning:/
+FP /Died: Value required for '-testalen'\n/
+//
+
+ID acdc-novalue2
+AP acdc
+## nullok attribute is false
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+CL qatest tembl:paamir tembl:paamir x.x -auto -testalen -testblen
+ER 1
+FI stderr
+FP 0 /Warning:/
+FP /Died: Value required for '-testalen' before '-testblen'\n/
+//
+
+ID acdc-codebad
+AP acdc
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+PP EMBOSS_LANGUAGE=bad
+PP export EMBOSS_LANGUAGE
+CL qatest -help
+ER 1
+FI stderr
+FP 0 /Warning:/
+FP /Died: Bad format in codes file ../../acd/codes.bad after 'defbool "Yes or No"'\n/
+//
+
+ID acdc-codemissing
+AP acdc
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+PP EMBOSS_LANGUAGE=missing
+PP export EMBOSS_LANGUAGE
+CL qatest -help
+FI stderr
+FP 1 /Warning:/
+FP /Warning: Code file ..\/..\/acd\/codes.missing not found\n/
+//
+
+ID acdc-testassoc
+AP acdc
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+CL testassoc tembl:eclaci tembl:paamir
+IN
+IN
+FI stderr
+FZ > 0
+FP 0 /^Warning:/
+FP /Asequence end 1113:/
+FP /Bsequence end 2167:/
+//
+
+ID acdc-testassoc2
+AP acdc
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+## -send at the start should work on both sequences
+CL testassoc -send -1001 tembl:eclaci tembl:paamir
+IN
+IN
+FI stderr
+FZ > 0
+FP 0 /^Warning:/
+FP /Asequence end 113:/
+FP /Bsequence end 1167:/
+//
+
+ID acdc-testassoc3
+AP acdc
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+## -send after first sequence should work on first sequence
+CL testassoc tembl:eclaci -send -1001 tembl:paamir
+IN
+IN
+FI stderr
+FZ > 0
+FP 0 /^Warning:/
+FP /Asequence end 113:/
+FP /Bsequence end 2167:/
+//
+
+ID acdc-testassoc4
+AP acdc
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+## -send after second sequence should work on second sequence
+CL testassoc tembl:eclaci tembl:paamir -send -1001
+IN
+IN
+FI stderr
+FZ > 0
+FP 0 /^Warning:/
+FP /Asequence end 1113:/
+FP /Bsequence end 1167:/
+//
+
+ID acdc-testassoc5
+AP acdc
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+## -send after another qualifier should work on all sequences
+CL testassoc tembl:eclaci tembl:paamir -testc "fred" -send -1001
+IN
+IN
+FI stderr
+FZ > 0
+FP 0 /^Warning:/
+FP /Asequence end 113:/
+FP /Bsequence end 1167:/
+//
+
+ID acdc-testassoc6
+AP acdc
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+## Numbered -send for first sequence
+CL testassoc tembl:eclaci tembl:paamir -testc "fred" -send1 -1001
+IN
+IN
+FI stderr
+FZ > 0
+FP 0 /^Warning:/
+FP /Asequence end 113:/
+FP /Bsequence end 2167:/
+//
+
+ID acdc-testassoc7
+AP acdc
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+## Numbered -send for first sequence
+CL testassoc  -send1 -1001 tembl:eclaci tembl:paamir -testc "fred"
+IN
+IN
+FI stderr
+FZ > 0
+FP 0 /^Warning:/
+FP /Asequence end 113:/
+FP /Bsequence end 2167:/
+//
+
+ID acdc-testassoc8
+AP acdc
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+## Numbered -send for first sequence
+CL testassoc  tembl:eclaci tembl:paamir -send1 -1001 -testc "fred"
+IN
+IN
+FI stderr
+FZ > 0
+FP 0 /^Warning:/
+FP /Asequence end 113:/
+FP /Bsequence end 2167:/
+//
+
+ID acdc-testassoc9
+AP acdc
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+## Numbered -sformat for first sequence makes -send global
+CL testassoc  tembl:eclaci tembl:paamir -sformat1 embl -send -1001 -testc "fred"
+IN
+IN
+FI stderr
+FZ > 0
+FP 0 /^Warning:/
+FP /Asequence end 113:/
+FP /Bsequence end 1167:/
+//
+
+ID acdc-toomanyparam
+AP acdc
+ER 1
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+## Numbered -sformat for first sequence makes -send global
+CL testassoc  tembl:eclaci tembl:paamir tembl:hsfos
+IN
+IN
+FI stderr
+FZ > 0
+FP 0 /^Warning:/
+FP /^Error: Argument 'tembl:hsfos' : Too many parameters 3\/2\n/
+//
+
+ID acdc-alignbadformat
+AP acdc
+ER 1
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+CL testalign -aformat fred
+IN
+FI stderr
+FZ > 0
+FP 0 /^Warning:/
+FP /Error: Unknown alignment format 'fred'\n/
+FP /Died: Alignment option -test: Validation failed\n/
+//
+
+ID acdc-alignbadminseq
+AP acdc
+ER 1
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+CL testalign
+IN
+FI stderr
+FZ > 0
+FP 0 /^Warning:/
+FP /Error: Alignment format specifies at least 2 sequences, alignment has only 0\n/
+FP /Died: Alignment option -test: Validation failed\n/
+//
+
+ID acdc-alignbadmaxseq
+AP acdc
+ER 1
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+CL testalignpair
+IN
+FI stderr
+FZ > 0
+FP 0 /^Warning:/
+FP /Error: Alignment format specifies at most 2 sequences, alignment has 3\n/
+FP /Died: Alignment option -test: Validation failed\n/
+//
+
+ID acdc-alignbadwidth
+AP acdc
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+CL testalignok -awidth 9
+IN
+FI stderr
+FZ > 0
+FP 1 /^Warning:/
+FP /^Warning: Alignment width \(-awidth=9\) too narrow, reset to 10\n/
+FP 0 /Error: \n/
+FI outfile.testalignok
+FZ = 0
+//
+
+ID acdc-listambig1
+AP acdc
+ER 1
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+CL testlist 
+IN f
+FI stderr
+FZ > 0
+FP 0 /^Warning:/
+FP /Error: 'f' is ambiguous \(fa,four,fb,five\)\n/
+//
+
+ID acdc-listambig2
+AP acdc
+ER 1
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+CL testlist 
+IN t
+FI stderr
+FZ > 0
+FP 0 /^Warning:/
+FP /Error: 't' is ambiguous \(two,three\)\n/
+//
+
+ID acdc-listbad
+AP acdc
+ER 1
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+CL testlist 
+IN x
+FI stderr
+FZ > 0
+FP 0 /^Warning:/
+FP /Error: 'x' is not a valid menu option\n/
+FP /Accepted short codes are: a,b,c,fa,fb\n/
+//
+
+ID acdc-listmax
+AP acdc
+ER 1
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+CL testlist 
+IN a,b,c,four
+FI stderr
+FZ > 0
+FP 0 /^Warning:/
+FP /Error: Menu allows no more than 3 values\n/
+FP /Error: Bad menu option 'a,b,c,four'\n/
+//
+
+ID acdc-listmin
+AP acdc
+ER 1
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+CL testlist 
+IN 
+FI stderr
+FZ > 0
+FP 0 /^Warning:/
+FP /Error: Menu needs 1 value\n/
+FP /Error: Bad menu option ''\n/
+//
+
+ID acdc-reportbadformat
+AP acdc
+ER 1
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+CL testreport -rformat fred
+IN 
+FI stderr
+FZ > 0
+FP 0 /^Warning:/
+FP /Error: Unknown report format 'fred'\n/
+FP /Died: Report option -test: Validation failed\n/
+//
+
+ID acdc-reportbadtagnum
+AP acdc
+ER 1
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+CL testreport
+IN 
+FI stderr
+FZ > 0
+FP 0 /^Warning:/
+FP /Error: Report specifies 4 tags, has only 3\n/
+FP /Died: Report option -test: Validation failed\n/
+//
+
+ID acdc-reportbadtaglist
+AP acdc
+ER 1
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+CL testreporttags
+IN 
+FI stderr
+FZ > 0
+FP 0 /^Warning:/
+FP /Error: Bad report taglist at ' str s=String'\n/
+FP /Error: File .*testreporttags.acd line 8: \(test\) Bad tag list for report\n/
+//
+
+ID acdc-selectambig
+AP acdc
+ER 1
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+CL testselect
+IN f
+FI stderr
+FZ > 0
+FP 0 /^Warning:/
+FP /Error: 'f' is ambiguous \(four,five\)\n/
+FP /Error: Bad select option 'f'\n/
+//
+
+ID acdc-selectbad
+AP acdc
+ER 1
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+CL testselect
+IN x
+FI stderr
+FZ > 0
+FP 0 /^Warning:/
+FP /Error: 'x' is not a valid selection list option\n/
+FP /Accepted values are: one,two,three,four,five\n/
+//
+
+ID acdc-selectmax
+AP acdc
+ER 1
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+CL testselect
+IN one,two,thr,four
+FI stderr
+FZ > 0
+FP 0 /^Warning:/
+FP /Error: Selection list allows no more than 3 values\n/
+FP /Error: Bad select option 'one,two,thr,four'\n/
+//
+
+ID acdc-selectmax2
+AP acdc
+ER 1
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+CL testselect 
+IN 1,2,3,4
+FI stderr
+FZ > 0
+FP 0 /^Warning:/
+FP /Error: Selection list allows no more than 3 values\n/
+FP /Error: Bad select option '1,2,3,4'\n/
+//
+
+ID acdc-selectmin
+AP acdc
+ER 1
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+CL testselect
+IN 
+FI stderr
+FZ > 0
+FP 0 /^Warning:/
+FP /Error: Selection list needs 1 value\n/
+FP /Error: Bad select option ''\n/
+//
+
+ID acdc-retry
+AP acdc
+ER 1
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+PP EMBOSS_ACDPROMPTS=2
+PP export EMBOSS_ACDPROMPTS
+CL testselect
+IN 6
+IN 7
+FI stderr
+FZ > 0
+FP 0 /^Warning:/
+FP 2 /Error: Bad select option '[1-9]'\n/
+FP /Died: testselect terminated: Bad value for '-test' and no more retries\n/
+//
+
+ID acdc-badadvanced
+AP acdc
+ER 1
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+PP EMBOSS_ACDPROMPTS=2
+PP export EMBOSS_ACDPROMPTS
+CL testselect -testnum fred
+IN 5
+FI stderr
+FZ > 0
+FP 0 /^Warning:/
+FP /Error: Invalid integer value 'fred'\n/
+FP /Died: testselect terminated: Bad value for '-testnum' and no prompt\n/
+//
+
+ID acdc-badauto
+AP acdc
+ER 1
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+PP EMBOSS_ACDPROMPTS=2
+PP export EMBOSS_ACDPROMPTS
+CL testselect -test 6 -auto
+FI stderr
+FZ > 0
+FP 0 /^Warning:/
+FP 1 /Error: Bad select option '[1-9]'\n/
+FP /Died: testselect terminated: Bad value for '-test' with -auto defined\n/
+//
 
 ##########################
 # .embossrc parsing errors
@@ -1341,7 +2315,7 @@ FP 2 />N/
 FP 2 />/
 //
 
-ID dbiblast-split-exc
+ID dbiblast-split-testexc
 AP seqret
 PP EMBOSSRC=../..
 PP export EMBOSSRC
@@ -1352,20 +2326,20 @@ FP 1 />CO9_FUGRU /
 FP 1 />/
 //
 
-ID dbiblast-split-excfail
+ID dbiblast-split-testexcfail
 ER 1
 AP seqret
 PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL qapblastsplitexc:FABP_FUGRU test.out -auto
 FI stderr
-FZ = 159
-FP /Error: BLAST Entry failed/
+FZ = 131
+FP 1 /Error: /
 FP /Error: Unable to read sequence 'qapblastsplitexc:FABP_FUGRU'/
 FP 0 /Warning:/
 //
 
-ID dbiblast-split-inc
+ID dbiblast-split-testinc
 AP seqret
 PP EMBOSSRC=../..
 PP export EMBOSSRC
@@ -1376,15 +2350,15 @@ FP 1 />FABP_FUGRU /
 FP 1 />/
 //
 
-ID dbiblast-split-incfail
+ID dbiblast-split-testincfail
 ER 1
 AP seqret
 PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL qapblastsplitinc:CO9_FUGRU test.out -auto
 FI stderr
-FZ = 158
-FP /Error: BLAST Entry failed/
+FZ = 130
+FP 1 /Error: /
 FP /Error: Unable to read sequence 'qapblastsplitinc:CO9_FUGRU'/
 FP 0 /Warning:/
 //
@@ -2181,7 +3155,7 @@ FP 1 />ODO2_FUGRU /
 FP 1 />/
 //
 
-ID dbiflat-swiss-exc
+ID dbiflat-swiss-testexc
 AP seqret
 PP EMBOSSRC=../..
 PP export EMBOSSRC
@@ -2192,20 +3166,20 @@ FP 1 />CO9_FUGRU /
 FP 1 />/
 //
 
-ID dbiflat-swiss-excfail
+ID dbiflat-swiss-testexcfail
 ER 1
 AP seqret
 PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL qapflatexc-id:FOS_FUGRU test.out -auto
 FI stderr
-FZ = 173
-FP /Error: Database Entry 'FOS_FUGRU' not found/
+FZ = 127
+FP 1 /Error: /
 FP /Error: Unable to read sequence 'qapflatexc-id:FOS_FUGRU'/
 FP 0 /Warning:/
 //
 
-ID dbiflat-swiss-inc
+ID dbiflat-swiss-testinc
 AP seqret
 PP EMBOSSRC=../..
 PP export EMBOSSRC
@@ -2216,15 +3190,15 @@ FP 1 />FOS_FUGRU /
 FP 1 />/
 //
 
-ID dbiflat-swiss-incfail
+ID dbiflat-swiss-testincfail
 ER 1
 AP seqret
 PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL qapflatinc-id:CO9_FUGRU test.out -auto
 FI stderr
-FZ = 173
-FP /Error: Database Entry 'CO9_FUGRU' not found/
+FZ = 127
+FP 1 /Error: /
 FP /Error: Unable to read sequence 'qapflatinc-id:CO9_FUGRU'/
 FP 0 /Warning:/
 //
@@ -2430,7 +3404,6 @@ FP 13 />H/
 FP 13 />/
 //
 
-## name changed from dbigcg-exc to stop documentation script finding it
 ID dbigcg-testexc
 AP seqret
 PP EMBOSSRC=../..
@@ -2442,7 +3415,6 @@ FP 1 /\A>HSFAU /
 FP 1 />/
 //
 
-## name changed from dbigcg-excfail to stop documentation script finding it
 ID dbigcg-testexcfail
 ER 1
 AP seqret
@@ -2450,13 +3422,13 @@ PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL qangcgexc-id:eclac test.out -auto
 FI stderr
-FZ = 124
+FZ = 122
 FP 1 /Error: /
 FP /Error: Unable to read sequence 'qangcgexc-id:eclac'/
 FP 0 /Warning:/
 //
 
-ID dbigcg-inc
+ID dbigcg-testinc
 AP seqret
 PP EMBOSSRC=../..
 PP export EMBOSSRC
@@ -2467,14 +3439,14 @@ FP 1 /\A>ECLAC /
 FP 1 />/
 //
 
-ID dbigcg-incfail
+ID dbigcg-testincfail
 ER 1
 AP seqret
 PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL qangcginc-id:hsfau test.out -auto
 FI stderr
-FZ = 124
+FZ = 122
 FP 1 /Error: /
 FP /Error: Unable to read sequence 'qangcginc-id:hsfau'/
 FP 0 /Warning:/
@@ -3027,7 +3999,7 @@ FP 49 />C/
 FP 49 />/
 //
 
-ID dbigcg-pir-exc
+ID dbigcg-pir-testexc
 AP seqret
 PP EMBOSSRC=../..
 PP export EMBOSSRC
@@ -3038,20 +4010,20 @@ FP 1 /\A>S11172 /
 FP 1 />/
 //
 
-ID dbigcg-pir-excfail
+ID dbigcg-pir-testexcfail
 ER 1
 AP seqret
 PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL qapirexc-id:cchu test.out -auto
 FI stderr
-FZ = 122
+FZ = 120
 FP 1 /Error: /
 FP /Error: Unable to read sequence 'qapirexc-id:cchu'/
 FP 0 /Warning:/
 //
 
-ID dbigcg-pir-inc
+ID dbigcg-pir-testinc
 AP seqret
 PP EMBOSSRC=../..
 PP export EMBOSSRC
@@ -3062,14 +4034,14 @@ FP 1 /\A>CCHU /
 FP 1 />/
 //
 
-ID dbigcg-pir-incfail
+ID dbigcg-pir-testincfail
 ER 1
 AP seqret
 PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL qapirinc-id:S11172 test.out -auto
 FI stderr
-FZ = 124
+FZ = 122
 FP 1 /Error: /
 FP /Error: Unable to read sequence 'qapirinc-id:S11172'/
 FP 0 /Warning:/
@@ -5336,7 +6308,7 @@ PP export EMBOSS_DATA
 CL tsw:hba_human -datafile fail780101
 IN ps
 FI stderr
-FC = 4
+FC = 3
 FP /^Error: Unable to open data file 'fail780101' for input\n/
 FP 0 /Warning:/
 //
@@ -5961,8 +6933,8 @@ ID seqret-inlist-ugly
 AP seqret
 CL -auto @../../data/ugly.list test.out -osf embl
 FI stderr
-FZ = 41
-FP /^Error: Database Query 'eclacj' not found\n/
+FZ = 46
+FP /^Error: Unable to read sequence 'tembl:eclacj'\n/
 FP 0 /Warning:/
 FI test.out
 FP 2 /^ID   .* BP\.\n/
@@ -6677,7 +7649,7 @@ AP seqret
 CL -auto stdin test.out -osf embl
 ER 1
 FI stderr
-FZ = 111
+FZ = 109
 FP /Error: Unable to read sequence 'stdin'/
 FP 0 /Warning:/
 //
@@ -7844,7 +8816,7 @@ ER 1
 AP seqret
 CL -auto -out test.out -osf embl embl::../../embl/rod.dat:bad:MMAM
 FI stderr
-FZ = 209
+FZ = 207
 FP /Error: Unknown query field 'bad' in USA '../../embl/rod.dat:bad:MMAM'/
 FP /Error: Unable to read sequence 'embl::../../embl/rod.dat:bad:MMAM'/
 FP 2 /Error: /
@@ -7874,7 +8846,7 @@ ER 1
 AP seqret
 CL -auto -out test.out -osf embl embl::../../embl/rod.dat:FAIL
 FI stderr
-FZ = 135
+FZ = 133
 FP 1 /^Error: /
 FP /^Error: Unable to read sequence 'embl::../../embl/rod.dat:FAIL'/
 FP 0 /Warning:/
@@ -7903,7 +8875,7 @@ ER 1
 AP seqret
 CL -auto -out test.out -osf embl embl::../../embl/rod.dat:ID:FAIL
 FI stderr
-FZ = 138
+FZ = 136
 FP /^Error: Unable to read sequence 'embl::../../embl/rod.dat:ID:FAIL'/
 FP 1 /^Error: /
 FP 0 /Warning:/
@@ -7932,7 +8904,7 @@ ER 1
 AP seqret
 CL -auto -out test.out -osf embl embl::../../embl/rod.dat:ACC:Z99999
 FI stderr
-FZ = 141
+FZ = 139
 FP /^Error: Unable to read sequence 'embl::../../embl/rod.dat:ACC:Z99999'/
 FP 1 /^Error: /
 FP 0 /Warning:/
@@ -7943,7 +8915,7 @@ ER 1
 AP seqret
 CL -auto -out test.out -osf embl embl::../../embl/rod.dat:ACC:99999Z
 FI stderr
-FZ = 141
+FZ = 139
 FP /^Error: Unable to read sequence 'embl::../../embl/rod.dat:ACC:99999Z'/
 FP 1 /^Error: /
 FP 0 /Warning:/
@@ -7972,7 +8944,7 @@ ER 1
 AP seqret
 CL -auto -out test.out -osf embl embl::../../embl/rod.dat:SV:Z99999.1
 FI stderr
-FZ = 142
+FZ = 140
 FP /^Error: Unable to read sequence 'embl::../../embl/rod.dat:SV:Z99999.1'/
 FP 1 /^Error: /
 FP 0 /Warning:/
@@ -8001,7 +8973,7 @@ ER 1
 AP seqret
 CL -auto -out test.out -osf embl embl::../../embl/rod.dat:DES:lynam
 FI stderr
-FZ = 140
+FZ = 138
 FP /^Error: Unable to read sequence 'embl::../../embl/rod.dat:DES:lynam'/
 FP 1 /^Error: /
 FP 0 /Warning:/
@@ -8048,7 +9020,7 @@ ER 1
 AP seqret
 CL -auto -out test.out -osf embl embl::../../embl/rod.dat:KEY:CHAIN
 FI stderr
-FZ = 140
+FZ = 138
 FP /^Error: Unable to read sequence 'embl::../../embl/rod.dat:KEY:CHAIN'/
 FP 1 /^Error: /
 FP 0 /Warning:/
@@ -8089,7 +9061,7 @@ ER 1
 AP seqret
 CL -auto -out test.out -osf embl embl::../../embl/rod.dat:ORG:HOMO
 FI stderr
-FZ = 139
+FZ = 137
 FP /^Error: Unable to read sequence 'embl::../../embl/rod.dat:ORG:HOMO'/
 FP 1 /^Error: /
 FP 0 /Warning:/
@@ -8104,7 +9076,7 @@ PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL -auto -out test.out -osf embl qasrs-bad:AB000095
 FI stderr
-FZ = 207
+FZ = 205
 FP /^Error: USA 'qasrs-bad:AB000095' query field 'bad' not defined for database 'qasrs'/
 FP /^Error: Unable to read sequence 'qasrs-bad:AB000095'/
 FP 2 /^Error: /
@@ -8120,7 +9092,7 @@ PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL -auto -out test.out -osf embl qasrs-key:AB000095
 FI stderr
-FZ = 207
+FZ = 205
 FP /^Error: USA 'qasrs-key:AB000095' query field 'key' not defined for database 'qasrs'/
 FP /^Error: Unable to read sequence 'qasrs-key:AB000095'/
 FP 2 /^Error: /
@@ -8183,7 +9155,7 @@ PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL -auto -out test.out -osf embl qasrs-id:OLD
 FI stderr
-FZ = 118
+FZ = 114
 FP /^Error: Unable to read sequence 'qasrs-id:OLD'/
 FP 1 /^Error: /
 FP 1 /^Died: /
@@ -8246,7 +9218,7 @@ PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL -auto -out test.out -osf embl qasrsfasta-id:OLD
 FI stderr
-FZ = 123
+FZ = 121
 FP /^Error: Unable to read sequence 'qasrsfasta-id:OLD'/
 FP 1 /^Error: /
 FP 1 /^Died: /
@@ -8309,7 +9281,7 @@ PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL -auto -out test.out -osf embl qasrswww-id:OLD
 FI stderr
-FZ = 121
+FZ = 119
 FP /^Error: Unable to read sequence 'qasrswww-id:OLD'/
 FP 1 /^Error: /
 FP 0 /Warning:/
@@ -9847,6 +10819,8 @@ FP /^# Similarity: +88/145 \(60.7%\)\n/
 
 ID whichdb-ex
 AP whichdb
+PP EMBOSSRC=../../rc
+PP export EMBOSSRC
 TI 300
 IN hsfau1
 IN
@@ -10156,7 +11130,7 @@ CL 'http://www.uk.embnet.org/Software/EMBOSS/Apps/'
 CL -postlink '.html' -out wossname.html
 IN
 FI stderr
-FC = 2
+FC = 1
 FP 0 /Warning:/
 FI wossname.html
 FP /<a href="http:\/\/www\.uk\.embnet\.org\/Software\/EMBOSS\/Apps\/abiview\.html"/
@@ -11181,6 +12155,8 @@ FP /^%%Pages: 1\n/
 
 ID acd-calc-feat
 AP acdc
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
 CL qatestcalcfeat ../../data/feat.emft
 IN
 IN
@@ -11203,6 +12179,8 @@ FP 1 /FSize \[81\]: /
 
 ID acd-calc-regexp
 AP acdc
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
 CL qatestcalcregexp "abc[def] ghi"
 IN
 FI stderr
@@ -11213,6 +12191,8 @@ FP 1 /Length \[12\]: /
 
 ID acd-calc-seq
 AP acdc
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
 CL qatestcalcseq tembl:paamir
 IN
 IN
@@ -11233,6 +12213,8 @@ FP 1 /Nucleic \[Y\]: /
 
 ID acd-calc-seqall
 AP acdc
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
 CL qatestcalcseqall tembl:eclac*
 IN
 IN
@@ -11253,6 +12235,8 @@ FP 1 /Nucleic \[Y\]: /
 
 ID acd-calc-seqset
 AP acdc
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
 CL qatestcalcseqset tembl:eclac*
 IN
 IN
@@ -11277,6 +12261,8 @@ FP 1 /Count \[5\]: /
 
 ID acd-calc-string
 AP acdc
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
 CL qatestcalcstring "abc def"
 IN
 FI stderr
