@@ -35,7 +35,7 @@ ssl_print_notes()
    echo "A) EDIT the java.security file"
  fi
 
- echo "   adding/changing the provider line:"
+ echo "   adding/changing the provider line (usually provider 2 or 3):"
  echo "   security.provider.2=com.sun.net.ssl.internal.ssl.Provider"
  echo
  echo "B) COPY & PASTE THE FOLLOWING INTO (changing port number if required) "$TOMCAT_ROOT/conf/server.xml
@@ -484,21 +484,10 @@ cp $SOAP_ROOT/webapps/soap.war $TOMCAT_ROOT/webapps
 #
 #
 #
-#echo "Use the following for png support:"
-#echo "--with-pngdriver=$EMBOSS_INSTALL/share/EMBOSS"
-#echo "(y/n) [y]?"
-#read PNGSUPPORT
-
-PNG=""
-#if [ "$PNGSUPPORT" = "" ]; then
-#  PNG="--with-pngdriver=$EMBOSS_INSTALL/share/EMBOSS"
-#fi
-#if [ "$PNGSUPPORT" = "y" ]; then
-#  PNG="--with-pngdriver=$EMBOSS_INSTALL/share/EMBOSS"
-#fi
 
 USER_CONFIG=""
-echo "Enter any other configuration options (or press return to leave blank):"
+echo "Enter any other configuration options (e.g. --with-pngdriver=pathname"
+echo "or press return to leave blank):"
 read USER_CONFIG
 
 #
@@ -519,7 +508,7 @@ echo "./configure --with-java=$JAVA_INCLUDE \\"
 echo "            --with-javaos=$JAVA_INCLUDE_OS \\"
 echo "            --with-thread=$PLATFORM \\"
 echo "            --prefix=$EMBOSS_INSTALL $JEMBOSS_SERVER_AUTH \\"
-echo "              $PNG $USER_CONFIG"
+echo "            $USER_CONFIG"
 echo
 sleep 3
 
@@ -529,7 +518,7 @@ cd $EMBOSS_DOWNLOAD
 ./configure --with-java=$JAVA_INCLUDE \
             --with-javaos=$JAVA_INCLUDE_OS \
             --with-thread=$PLATFORM \
-            --prefix=$EMBOSS_INSTALL $JEMBOSS_SERVER_AUTH $PNG $USER_CONFIG
+            --prefix=$EMBOSS_INSTALL $JEMBOSS_SERVER_AUTH $USER_CONFIG
 
 make
 
@@ -636,6 +625,8 @@ if [ "$SSL" != "y" ]; then
 
   if [ "$DEPLOYSERVICE" = "y" ]; then
     ./tomstart
+    echo
+    echo "Please wait, starting tomcat......."
     sleep 25
     deploy_auth_services $JEMBOSS/lib JembossAuthServer.xml http://$LOCALHOST:$PORT/ $JAVA_HOME "" ""
     deploy_auth_services $JEMBOSS/lib JembossFileAuthServer.xml http://$LOCALHOST:$PORT/ $JAVA_HOME "" ""
