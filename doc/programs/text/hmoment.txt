@@ -23,17 +23,19 @@ Description
    When proteins of known three-dimensional structure are examined, it is
    found that sequences that form alpha helices tend to have, on average,
    a strong periodicity in the hydrophobicity of af 3.6 residues, the
-   period of the alpha helix. Similarly, many sequences that form strands
-   of beta sheets tend to have a periodicity in their hydrophobicity of
-   about 2.3 residues, the period typical of beta structure. This means
-   that many protein sequences tend to form the periodic structure that
+   period of the alpha helix. The angle of rotation per residue in alpha
+   helices is 100 degrees. Similarly, many sequences that form strands of
+   beta sheets tend to have a periodicity in their hydrophobicity of
+   about 2.3 residues, the period typical of beta structure. The angle of
+   rotation per residue in beta sheets is 160 degrees. This means that
+   many protein sequences tend to form the periodic structure that
    maximizes their amphiphilicity.
    
-   The hydrophobiicty is measured within a moving window using the method
-   of Eisenberg et al. The default angle of 100 degrees is used for the
-   alpha-helix results and the default of 160 degrees is used for the
-   beta-sheet results. These angles can be changed if required using the
-   appropriate options.
+   The hydrophobic moment is measured within a moving window using the
+   method of Eisenberg et al. The default angle of 100 degrees is used
+   for the alpha-helix results and the default of 160 degrees is used for
+   the beta-sheet results. These angles can be changed if required using
+   the appropriate options.
    
    hmoment can plot two graphs when the option '-double' is given, one
    for the alpha helix moment and one for the beta sheet moment.
@@ -89,14 +91,15 @@ Input file format
 Output file format
 
    With the '-plot' option hmoment displays a graphical plot of the
-   hydrophobicity of the specified alpha helix angle. With the '-plot
-   -double' options it also displays the beta-sheet hydrophobicity.
+   hydrophobic moment of the specified alpha helix angle. With the '-plot
+   -double' options it also displays the beta-sheet hydrophobic moment.
    
    Otherwise it writes out a files containing the two columns separated
    by space or TAB characters. The first column is the position of the
-   start of the window that the hydrophobicity was calculated in. The
-   second is the hydrophobicity. (If the option '-double' is given then
-   the beta-sheet angle hydrophobicity is given as a third column.)
+   start of the window that the hydrophobic moment was calculated in. The
+   second is the hydrophobic moment ('uH'). (If the option '-double' is
+   given then the beta-sheet angle hydrophobicity is given as a third
+   column.)
    
    The ouput of the above is example follows:
      _________________________________________________________________
@@ -104,7 +107,7 @@ Output file format
 HMOMENT of HBB_HUMAN from 1 to 146
 
 Window: 10 Angle: 100 Max uH: 0.714
-Position        Angle
+Position        uH
 1               0.091
 2               0.216
 3               0.208
