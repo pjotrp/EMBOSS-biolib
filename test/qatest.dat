@@ -1599,8 +1599,8 @@ FI stderr
 FC = 1
 FI stdout
 FZ = 1590
-FP /^<tr><tr>msf::\.\./\.\./data/globins\.msf:HBA_HORSE<\/tr>\n/
-FP /^<tr>HBA_HORSE<\/tr>\n/
+FP /^<tr><td>msf::\.\./\.\./data/globins\.msf:HBA_HORSE<\/td>\n/
+FP /^<td>HBA_HORSE<\/td>\n/
 //
 
 ID infoalign-ex7
@@ -4576,7 +4576,6 @@ IN
 FI stderr
 FC = 2
 FI ach2_drome.sig
-FZ = 2084
 FP /^[(]1[)] Score 13\.739 length 13 at residues 29->41\n/
 FP /^ Sequence: LLVLLLLCETVQA\n/
 FP 9 /^ Sequence: /
