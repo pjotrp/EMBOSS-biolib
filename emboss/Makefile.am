@@ -19,7 +19,7 @@ descseq diffseq digest domainer dotmatcher dotpath dottup dreg \
 einverted embossdata emma emowse entret \
 equicktandem est2genome etandem extractseq \
 findkm freak fuzznuc fuzzpro fuzztran \
-garnier geecee getorf helixturnhelix \
+garnier geecee getorf helixturnhelix hmoment \
 iep infoseq isochore lindna \
 marscan maskfeat maskseq matcher megamerger merger msbar \
 needle newcpgreport newcpgseek newseq \
@@ -96,6 +96,7 @@ garnier_SOURCES = garnier.c
 geecee_SOURCES = geecee.c
 getorf_SOURCES = getorf.c
 helixturnhelix_SOURCES = helixturnhelix.c
+hmoment_SOURCES = hmoment.c
 iep_SOURCES = iep.c
 infoseq_SOURCES = infoseq.c
 intconv_SOURCES = intconv.c
