@@ -436,7 +436,7 @@ static ajint matcherSim (AjPAlign align,
 
 	ajAlignDefine (align, seqset);
 
-	ajAlignSetGapI(align, Q, R);
+	ajAlignSetGapI(align, Q+R, R);
 	ajAlignSetScoreI(align, score);
 	ajAlignSetMatrixInt (align, matrix);
 	ajAlignSetRange (align, min0+1, max0, min1+1, max1);
