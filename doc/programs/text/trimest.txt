@@ -64,15 +64,6 @@ Command line arguments
                                   than there must be at least this length of
                                   poly-A tail before the mismatch for the
                                   mismatch to be considered part of the tail.
-   -[no]reverse        bool       When a poly-T region at the 5' end of the
-                                  sequence is found and removed, it is likely
-                                  that the sequence is in the reverse sense.
-                                  This option will change the sequence to the
-                                  forward sense when it is written out. If
-                                  this option is not set, then the sense will
-                                  not be changed.
-
-   Advanced qualifiers:
    -mismatches         integer    If there are this number or fewer contiguous
                                   non-A bases in a poly-A tail then, if there
                                   are '-minlength' 'A' bases before them,
@@ -87,15 +78,20 @@ Command line arguments
                                   of GCAAAAGAAAA would be removed; There are
                                   at least -minlength A's preceeding the last
                                   'G', so it is part of the tail.
-   -[no]fiveprime      bool       If this is set true, then the 5' end of the
+   -[no]reverse        bool       When a poly-T region at the 5' end of the
+                                  sequence is found and removed, it is likely
+                                  that the sequence is in the reverse sense.
+                                  This option will change the sequence to the
+                                  forward sense when it is written out. If
+                                  this option is not set, then the sense will
+                                  not be changed.
+
+   Advanced qualifiers:
+   -[no]fiveprime      bool       If this is set true, then the 5' end of teh
                                   sequence is inspected for poly-T tails.
                                   These will be removed if they are longer
                                   than any 3' poly-A tails. If this is false,
                                   then the 5' end is ignored.
-   -[no]signal         bool       If this is set true, then there must be a
-                                  AAUAAA poly-A signal within 11 to 30 bases
-                                  upstream of the poly-A tail. If there is no
-                                  such signal, the poly-A tail is not removed
 
    General qualifiers:
   -help                bool       report command line options. More
@@ -115,12 +111,6 @@ Command line arguments
    than there must be at least this length of poly-A tail before the
    mismatch for the mismatch to be considered part of the tail. Integer 1
    or more 4
-   -[no]reverse When a poly-T region at the 5' end of the sequence is
-   found and removed, it is likely that the sequence is in the reverse
-   sense. This option will change the sequence to the forward sense when
-   it is written out. If this option is not set, then the sense will not
-   be changed. Yes/No Yes
-   Advanced qualifiers Allowed values Default
    -mismatches If there are this number or fewer contiguous non-A bases
    in a poly-A tail then, if there are '-minlength' 'A' bases before
    them, they will be considered part of the tail and removed . For
@@ -130,14 +120,17 @@ Command line arguments
    considered to be part of the tail). The terminal 9 bases of
    GCAAAAGAAAA would be removed; There are at least -minlength A's
    preceeding the last 'G', so it is part of the tail. Integer 0 or more
-   0
-   -[no]fiveprime If this is set true, then the 5' end of the sequence is
+   1
+   -[no]reverse When a poly-T region at the 5' end of the sequence is
+   found and removed, it is likely that the sequence is in the reverse
+   sense. This option will change the sequence to the forward sense when
+   it is written out. If this option is not set, then the sense will not
+   be changed. Yes/No Yes
+   Advanced qualifiers Allowed values Default
+   -[no]fiveprime If this is set true, then the 5' end of teh sequence is
    inspected for poly-T tails. These will be removed if they are longer
    than any 3' poly-A tails. If this is false, then the 5' end is
    ignored. Yes/No Yes
-   -[no]signal If this is set true, then there must be a AAUAAA poly-A
-   signal within 11 to 30 bases upstream of the poly-A tail. If there is
-   no such signal, the poly-A tail is not removed Yes/No Yes
    
 Input file format
 
