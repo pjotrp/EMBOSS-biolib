@@ -296,7 +296,7 @@ Author(s)
    
 History
 
-   Written (date) - author. **************** EDIT HERE ****************
+   Written (March 2001) - Alan Bleasby.
    
 Target users
 
