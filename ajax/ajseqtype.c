@@ -189,7 +189,7 @@ static SeqOType seqType[] =
 	 "protein sequence"},
     {"pureprotein",    AJFALSE, AJFALSE, ISPROT, NULL,  NULL,
 	 seqTypeCharProtPure,
-	 "protein sequence without BZ U or X"},
+	 "protein sequence without BZ U X or *"},
     {"stopprotein",    AJFALSE, AJTRUE,  ISPROT, "?",   "X",
 	 seqTypeCharProtStop,
 	 "protein sequence with a possible stop"},
@@ -323,7 +323,7 @@ static AjBool seqTypeTestI(AjPSeq thys, ajint itype)
     }
 
     ajRegSubI(badchars, 1, &tmpstr);
-    ajDebug("Sequence must be %s,\n found bad character '%c'\n",
+    ajDebug("seqTypeTestI: Sequence must be %s: found bad character '%c'\n",
 	    seqType[itype].Desc, ajStrChar(tmpstr, 0));
     ajStrDel(&tmpstr);
 
@@ -551,7 +551,7 @@ AjBool ajSeqTypeCheckS(AjPStr* pthys, AjPStr type_name)
        if(!ajRegExec(badchars,(*pthys)->Seq))
        {
        ajRegSubI(badchars, 1, &tmpstr);
-       ajErr("Sequence must be %s,\n found bad character '%c'",
+       ajErr("ajSeqTypeCheckS: Sequence must be %s: found bad character '%c'",
        seqType[itype].Desc, ajStrChar(tmpstr, 0));
        ajStrDel(&tmpstr);
        return ajFalse;
@@ -602,12 +602,14 @@ AjBool ajSeqTypeCheckIn(AjPSeq thys, const AjPSeqin seqin)
     if(!ajStrLen(Type))		   /* nothing given - anything goes */
     {
 	ajSeqGap(thys, seqGap, 0);
+	ajDebug("ajSeqTypeCheckIn: OK - no type, gaps converted to '-'\n");
 	return ajTrue;
     }
     
     if(!seqFindType(Type, &itype))
     {
 	ajErr("Sequence type '%S' unknown", Type);
+	ajDebug("ajSeqTypeCheckIn: rejected - unknown type\n");
 	return ajFalse;
     }
 
@@ -628,12 +630,14 @@ AjBool ajSeqTypeCheckIn(AjPSeq thys, const AjPSeqin seqin)
     if(seqType[itype].Type == ISPROT && !ajSeqIsProt(thys))
     {
 	ajErr("Sequence is not a protein\n");
+	ajDebug("ajSeqTypeCheckIn: rejected - not a protein\n");
 	return ajFalse;
     }
 
     if(seqType[itype].Type == ISNUC && !ajSeqIsNuc(thys))
     {
 	ajErr("Sequence is not nucleic\n");
+	ajDebug("ajSeqTypeCheckIn: rejected - not nucleic\n");
 	return ajFalse;
     }
 
@@ -641,6 +645,7 @@ AjBool ajSeqTypeCheckIn(AjPSeq thys, const AjPSeqin seqin)
     badchars = seqType[itype].Badchars();
     if(!ajRegExec(badchars, thys->Seq))
     {
+	ajDebug("ajSeqTypeCheckIn: bad characters test passed, convert\n");
 	if(seqType[itype].ConvertFrom)
 	{
 	    ajDebug("Convert '%s' to '%s'\n",
@@ -650,21 +655,29 @@ AjBool ajSeqTypeCheckIn(AjPSeq thys, const AjPSeqin seqin)
 			   seqType[itype].ConvertFrom,
 			   seqType[itype].ConvertTo);
 	}
+	ajDebug("ajSeqTypeCheckIn: OK - no badchars\n");
 	return ajTrue;
     }
 
     if(seqTypeFix(thys, itype))		/* this will reuse badchars */
+    {
+	ajDebug("ajSeqTypeCheckIn: OK - type fixed\n");
 	return ajTrue;
-
-    if(!ajRegExec(badchars, thys->Seq)) /* must check again */
+    }
+    if(ajRegExec(badchars, thys->Seq)) /* must check again */
     {
 	ajRegSubI(badchars, 1, &tmpstr);
-	ajErr("Sequence must be %s,\n found bad character '%c'",
+	ajErr("ajSeqTypeCheckIn: Sequence must be %s: "
+	      "found bad character '%c'",
 	      seqType[itype].Desc, ajStrChar(tmpstr, 0));
 	ajStrDel(&tmpstr);
+	ajDebug("ajSeqTypeCheckIn: rejected - still had badchars\n");
 	return ajFalse;
     }
 
+    ajDebug("ajSeqTypeCheckIn: OK - fixed finally\n");
+    ajDebug("Final sequence '%S' type '%S' IsNuc %B IsProt %B\n",
+	    thys->Seq, seqin->Inputtype, seqin->IsNuc, seqin->IsProt);
     return ajTrue;
 }
 
