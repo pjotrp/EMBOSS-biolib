@@ -440,6 +440,14 @@ static void antigenic_dumptoFeat(ajint nhits, AjPInt hp, AjPInt hpos,
     score = 0.0;
 
 
+    val = ajStrNew();
+    name = ajStrNew();
+    source = ajStrNew();
+    type = ajStrNew();
+    tag = ajStrNew();
+    
+
+
     (void) ajStrAssC(&name,seqname);
 
     feattable = ajFeattableNewProt(name);
@@ -458,7 +466,7 @@ static void antigenic_dumptoFeat(ajint nhits, AjPInt hp, AjPInt hpos,
 	iend = istart + ajIntGet(hlen,k)-1;
 
 	score = ajFloatGet(hwt,k);
-	/*(void) ajFmtPrintS(&score,"%.3f",ajFloatGet(hwt,k));*/
+
 	feature = ajFeatureNew(feattable, source, type,
 			       istart+begin, iend+begin, score, strand, frame,
 			       desc , 0, 0) ;    
@@ -470,14 +478,12 @@ static void antigenic_dumptoFeat(ajint nhits, AjPInt hp, AjPInt hpos,
 	      
 		if(!new)
 		{
-		    val = ajStrNew();
 		    (void) ajFmtPrintS(&val,"max score at %d",m);
 		    (void) ajFeatTagSet(feature,tag,val);
 		    new++;
 		}
 		else
 		{
-		    val = ajStrNew();
 		    (void) ajFmtPrintS(&val,",%d",m);
 		    (void) ajFeatTagSet(feature,tag,val);	    
 		}
@@ -493,6 +499,7 @@ static void antigenic_dumptoFeat(ajint nhits, AjPInt hp, AjPInt hpos,
     ajStrDel(&source);
     ajStrDel(&type);
     ajStrDel(&tag);
-
+    ajStrDel(&val);
+    
     return;
 }
