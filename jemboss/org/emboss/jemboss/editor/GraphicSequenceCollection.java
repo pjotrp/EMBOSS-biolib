@@ -53,7 +53,8 @@ public class GraphicSequenceCollection extends JPanel
   /** Consensus plot  */
   private PlotConsensus pc = null; 
   private int hgt;
-  private int len; 
+  private int len;
+  /** longest sequence length */ 
   private int MAXSEQLENGTH = 0;
   /** number of residues on each line for print */
   private int numResiduePerLine = 0;   
@@ -280,7 +281,7 @@ public class GraphicSequenceCollection extends JPanel
 
   /**
   *
-  *  Remove the consensus plot from the sequence editor
+  * Remove the consensus plot from the sequence editor
   *
   */
   protected void deleteConsensusPlot()
@@ -288,12 +289,23 @@ public class GraphicSequenceCollection extends JPanel
     plotconsSeqBox.removeAll();
   }
 
+  /**
+  *
+  * Set the longest sequence length
+  * @param max 	longest sequence length
+  *
+  */
   protected void setMaxSequenceLength(int max)
   {
     if(max > MAXSEQLENGTH)
       MAXSEQLENGTH = max;
   }
 
+  /**
+  *
+  * Calculate the longest sequence length
+  *
+  */
   private void setMaxSeqLength()
   {
     MAXSEQLENGTH = 0;
@@ -306,11 +318,23 @@ public class GraphicSequenceCollection extends JPanel
     }
   }
 
+  /**
+  *
+  * Get the longest sequence length
+  * @return 	longest sequence length
+  *
+  */
   public int getMaxSeqLength()
   {
     return MAXSEQLENGTH;
   }
 
+  /**
+  *
+  * Set the sequence name JButton selection
+  * @param 	true to select or false to deselect
+  *
+  */
   protected void setSequenceSelection(boolean b)
   {
     Enumeration enum = graphicName.elements();
@@ -322,6 +346,11 @@ public class GraphicSequenceCollection extends JPanel
     }
   }
 
+  /**
+  *
+  * Set the size of the sequence number panel
+  *
+  */
   private void setNumberSize()
   {
     Dimension actual = numberDraw.getMaximumSize();
@@ -329,6 +358,17 @@ public class GraphicSequenceCollection extends JPanel
     numberDraw.setMaximumSize(new Dimension(slen,(int)actual.getHeight()));
   }
 
+  /**
+  *
+  * Determine the colour of a residue at a given position. If
+  * the residues at that position in all the sequences are identical
+  * then return red otherwise return black.
+  * @param s		residue at position pos
+  * @param pos		residue position
+  * @param seqName	sequence name
+  * @return 	red if all identical otherwise return black
+  *
+  */
   protected Color getColor(String s, int pos, String seqName)
   {
     int identical = 0;
@@ -352,6 +392,12 @@ public class GraphicSequenceCollection extends JPanel
     return Color.black;
   }
 
+  /**
+  *
+  * Remove a sequence from the editor display
+  * @param name		name of sequence to remove
+  *
+  */
   private Sequence removeSequence(String name)
   {
     boolean removed = false;
@@ -384,11 +430,13 @@ public class GraphicSequenceCollection extends JPanel
     return seq;
   }
 
-/**
-*
-*  Delete a sequence from the sequence collection display
-*  and resize the sequence panel display
-*/
+  /**
+  *
+  *  Delete a sequence from the sequence collection display
+  *  and resize the sequence panel display
+  *  @param name	name of sequence to remove
+  *
+  */
   protected void deleteSequence(String name)
   {
     removeSequence(name);
@@ -402,12 +450,24 @@ public class GraphicSequenceCollection extends JPanel
     setJScrollPaneViewportView();
   }
 
+  /**
+  *
+  * Move a sequence to a new position
+  * @param name		name of sequence to remove
+  * @param i		new position in the sequence editor
+  *
+  */
   protected void moveSequence(String name, int i)
   {
     Sequence seq = removeSequence(name);
     addSequence(seq,true,0,0,i);
   }
 
+  /**
+  *
+  * Sorts the sequences and displays them by their id's
+  *
+  */
   protected void idSort()
   {
     int nseqs = 0;
@@ -439,13 +499,18 @@ public class GraphicSequenceCollection extends JPanel
       moveSequence(seqName[i],i);
   }
 
-/**
-*
-*  Add a sequence at a particular index to the sequence 
-*  collection display and to the collection of sequences 
-*  (seqs) with a specified y-padding.
-*
-*/
+  /**
+  *
+  *  Add a sequence at a particular index to the sequence 
+  *  collection display and to the collection of sequences 
+  *  (seqs) with a specified y-padding.
+  *  @param seq			sequence to add to the editor display
+  *  @param addToSequences	true to add seq to the vector of sequences
+  *  @param ypad		sequence panel height padding
+  *  @param fontSize		font size
+  *  @param index		sequence index
+  *
+  */
   protected void addSequence(Sequence seq, boolean addToSequences, 
                              int ypad, int fontSize, int index)
   {
@@ -481,13 +546,17 @@ public class GraphicSequenceCollection extends JPanel
   }
 
 
-/**
-*
-*  Add a sequence to the sequence collection display and
-*  to the collection of sequences (seqs) with a specified
-*  y-padding.
-*
-*/
+  /**
+  *
+  *  Add a sequence to the sequence collection display and
+  *  to the collection of sequences (seqs) with a specified
+  *  y-padding.
+  *  @param seq                 sequence to add to the editor display
+  *  @param addToSequences      true to add seq to the vector of sequences
+  *  @param ypad                sequence panel height padding
+  *  @param fontSize            font size
+  *
+  */
   protected void addSequence(Sequence seq, boolean addToSequences,
                              int ypad, int fontSize)
   {
@@ -520,11 +589,12 @@ public class GraphicSequenceCollection extends JPanel
   }
 
 
-/**
-*
-* Get the sequence view size
-*
-*/
+  /**
+  *
+  * Get the sequence view size
+  * @return 	sequence view dimension
+  *
+  */
   public Dimension getViewSize()
   {
     hgt = 1;
@@ -546,11 +616,12 @@ public class GraphicSequenceCollection extends JPanel
     return new Dimension(len,hgt);
   }
 
-/**
-*
-* Get the sequence name view size
-*
-*/
+  /**
+  *
+  * Get the sequence name view size
+  * @return	sequence name dimension
+  *
+  */
   public Dimension getNameViewSize()
   {
     int hgtName = getNameHeight();
@@ -558,12 +629,24 @@ public class GraphicSequenceCollection extends JPanel
     return new Dimension(lenName,hgtName);
   }
 
+  /**
+  *
+  * Get the sequence view size
+  * @return     sequence view dimension
+  *
+  */
   public Dimension getPanelSize()
   {
     getViewSize();
     return new Dimension(len,hgt);
   }
 
+  /**
+  *
+  * Get the sequence name panel height 
+  * @return     sequence name panel height
+  *
+  */
   public int getNameHeight()
   {
     int hgtName = 0;
@@ -574,6 +657,12 @@ public class GraphicSequenceCollection extends JPanel
     return hgtName;
   }
 
+  /**
+  *
+  * Get the sequence name panel width
+  * @return     sequence name panel width
+  *
+  */
   public int getNameWidth()
   {
     int lenName = 0;
@@ -587,17 +676,35 @@ public class GraphicSequenceCollection extends JPanel
     return lenName;
   }
  
+  /**
+  *
+  * Set the sequence name panel width
+  * @param x	sequence name panel  width
+  *
+  */
   public void setNamePanelWidth(int x)
   {
     seqNamePanel.setPreferredSize(new Dimension(x,1000));
   }
 
+  /**
+  *
+  * Get the sequence panel height
+  * @return     sequence panel height
+  *
+  */
   public int getPanelHeight()
   {
     getViewSize();
     return hgt;
   }
 
+  /**
+  *
+  * Get the sequence panel width
+  * @return     sequence panel width
+  *
+  */
   public int getPanelWidth()
   {
 //  getNameViewSize();
@@ -605,11 +712,24 @@ public class GraphicSequenceCollection extends JPanel
     return len;
   }
 
+  /**
+  *
+  * Get the vector containing the SequenceJPanel objects
+  * @return	vector containing the SequenceJPanel objects
+  *
+  */
   public Vector getGraphicSequence()
   {
     return graphicSequence;
   }
 
+  /**
+  *
+  * Draw the boxes around the residues of each sequence
+  * @param	true to draw boxes, false not to display
+  *		boxes
+  *
+  */
   public void setDrawBoxes(boolean drawBlackBox)
   {
     this.drawBlackBox = drawBlackBox;
@@ -619,6 +739,13 @@ public class GraphicSequenceCollection extends JPanel
     setJScrollPaneViewportView();
   }
 
+  /**
+  *
+  * Draw the residue colours in each sequence
+  * @param      true to display colour, false not to display
+  *             colour
+  *
+  */
   public void setDrawColor(boolean drawColorBox)
   {
     this.drawColorBox = drawColorBox;
@@ -628,6 +755,12 @@ public class GraphicSequenceCollection extends JPanel
     setJScrollPaneViewportView();
   }
 
+  /**
+  *
+  * Set the font size of the sequences in the editor
+  * @param	font size to use
+  *
+  */
   public void setFontSizeForCollection(int fs)
   {
     Enumeration enum = graphicSequence.elements();
@@ -667,24 +800,31 @@ public class GraphicSequenceCollection extends JPanel
     setJScrollPaneViewportView();
   }
 
+  /**
+  *
+  * Get the font size used to display the sequences in the
+  * editor
+  * return 	font size
+  *
+  */
   public int getFontSize()
   {
     return ((SequenceJPanel)graphicSequence.get(0)).getFontSize();
   }
 
-/**
-*
-* Search sequences for a pattern and highlight matches. Set the
-* viewport to that position.
-*
-* @param String pat pattern to match 
-* @param int oldResPosition if this is a repeat of a search
-*        this is the position the old search finished at
-* @param boolean wrapAround true if the search should wrap
-*        around the sequences
-* @return int the matching position found (or -1 if none found)
-*
-*/
+  /**
+  *
+  * Search sequences for a pattern and highlight matches. Set the
+  * viewport to that position.
+  *
+  * @param String pat pattern to match 
+  * @param int oldResPosition if this is a repeat of a search
+  *        this is the position the old search finished at
+  * @param boolean wrapAround true if the search should wrap
+  *        around the sequences
+  * @return int the matching position found (or -1 if none found)
+  *
+  */
   public int findPattern(String pat, int oldResPosition,
                          boolean wrapAround)
   {
@@ -737,17 +877,17 @@ public class GraphicSequenceCollection extends JPanel
     return newResPos+1;
   }
 
-/**
-*
-* Search the sequences for the position in that matches
-* the given pattern to search for. 
-*
-* @param int startSearch position at which the search is started
-* @param String pat is the pattern to search
-* @return int position in a sequence that next matches the pattern
-*         (or -1 if none found)
-*
-*/
+  /**
+  *
+  * Search the sequences for the position in that matches
+  * the given pattern to search for. 
+  *
+  * @param int startSearch position at which the search is started
+  * @param String pat is the pattern to search
+  * @return int position in a sequence that next matches the pattern
+  *         (or -1 if none found)
+  *
+  */
   private int searchSequences(int startSearch, String pat)
   {
     int newResPos = 0;
@@ -770,18 +910,18 @@ public class GraphicSequenceCollection extends JPanel
     return newResPos;
   }
 
-/**
-*
-* Locate the center of a vieport view that contains the
-* defined position to display
-*
-* @param int newResPos position in the sequence to display
-* @param int viewWidth width of the viewport
-* @param String pat matching pattern
-* @return int position to set the viewport to so that the
-*         pattern is displayed in the middle of it 
-*
-*/
+  /**
+  *
+  * Locate the center of a vieport view that contains the
+  * defined position to display
+  *
+  * @param int newResPos position in the sequence to display
+  * @param int viewWidth width of the viewport
+  * @param String pat matching pattern
+  * @return int position to set the viewport to so that the
+  *         pattern is displayed in the middle of it 
+  *
+  */
   private int findMiddle(int newResPos, int viewWidth, String pat)
   {
     int mid;
@@ -793,6 +933,12 @@ public class GraphicSequenceCollection extends JPanel
     return mid;
   }
 
+  /** 
+  *
+  * Set the colour scheme to use
+  * @param colourTable	colour scheme as a hashtable
+  *
+  */
   public void setColorScheme(Hashtable colourTable)
   {
     this.colorScheme = colourTable;
@@ -801,6 +947,12 @@ public class GraphicSequenceCollection extends JPanel
       ((SequenceJPanel)(enum.nextElement())).setColorScheme(colourTable);
   }
  
+  /** 
+  *
+  * Display the sequences as per emboss prettyplot colours
+  * @param bpretty	true if displaying as prettyplot
+  *
+  */
   public void setPrettyPlot(boolean bpretty)
   {
     Enumeration enum = graphicSequence.elements();
@@ -808,26 +960,54 @@ public class GraphicSequenceCollection extends JPanel
       ((SequenceJPanel)(enum.nextElement())).setPrettyPlot(bpretty);
   }
  
+  /**
+  *
+  * Force display in the viewport
+  *
+  */
   public void setJScrollPaneViewportView()
   {
     jspSequence.setViewportView(this);
   }
 
+  /**
+  *
+  * Get the number of pages to print the alignment in
+  * a given format
+  * @param format	format for printing
+  * @return		number of pages
+  *
+  */
   public int getNumberPages(PageFormat format)
   {
     return getNumberPages(format,getResiduesPerLine(format));
   }
 
+  /**
+  *
+  * Get the number of pages to print the alignment in
+  * a given format and with a given number of residues per line
+  * @param format         format for printing
+  * @param numResPerLine  number of residues per line
+  * @return               number of pages
+  *
+  */
   public int getNumberPages(PageFormat format, int numResPerLine)
   {
     double pageHeight = format.getImageableHeight();
     int residueWidth  = ((SequenceJPanel)graphicSequence.get(0)).getSequenceHeight();
-//  int numResPerLine = getResiduesPerLine(format);
     int nblockPerPage = (int)(pageHeight/((graphicSequence.size()+2)*residueWidth));
     int npage         = MAXSEQLENGTH/(nblockPerPage*numResPerLine)+1;
     return npage;
   }
 
+  /**
+  *
+  * Get the number residues per line
+  * @param format    	format for printing
+  * @return		number residues per line	
+  *
+  */
   public int getResiduesPerLine(PageFormat format)
   {
     double pwidth = format.getImageableWidth()-(double)getNameWidth();
@@ -835,16 +1015,31 @@ public class GraphicSequenceCollection extends JPanel
     return (int)(pwidth/(double)residueWidth);
   }
 
+  /**
+  *
+  * Get the number residues per page
+  * @param format         format for printing
+  * @param numResPerLine  number residues per line        
+  * @return 		  number residues per page
+  *
+  */
   public int getResiduesPerPage(PageFormat format, int numResPerLine)
   {
     double pageHeight = format.getImageableHeight();
     int residueWidth  = ((SequenceJPanel)graphicSequence.get(0)).getSequenceHeight();
-//  int numResPerLine = getResiduesPerLine(format);
     int nblockPerPage = (int)(pageHeight/(residueWidth*(graphicSequence.size()+2)));
     return nblockPerPage*numResPerLine;
   }
 
-
+  /**
+  *
+  * Used to print the sequence alignment
+  * @param g		graphics
+  * @param format	page format
+  * @param pageIndex 	page number to print
+  * @throws PrinterException
+  *
+  */
   public int print(Graphics g, PageFormat format, int pageIndex) 
                                              throws PrinterException
   {
@@ -853,11 +1048,25 @@ public class GraphicSequenceCollection extends JPanel
     return Printable.PAGE_EXISTS;
   }
 
+  /**
+  *
+  * Set the number of residues per line to user setting
+  * @param numResiduePerLine 	number of residues per line
+  *
+  */
   protected void setNumberOfResiduesPerLine(int numResiduePerLine)
   {
     this.numResiduePerLine = numResiduePerLine;
   }
 
+  /**
+  *
+  * Draws the sequences for printing
+  * @param g2d		graphics
+  * @param format	page format
+  * @param pageIndex	page number to print
+  *
+  */
   public void drawSequences(Graphics2D g2d, PageFormat format, 
                             int pageIndex)
   {
@@ -865,15 +1074,21 @@ public class GraphicSequenceCollection extends JPanel
     drawSequences(g2d,format,pageIndex,numResPerLine);
   }
 
+  /**
+  *
+  * Draws the sequences for printing
+  * @param g2d          	graphics
+  * @param format       	page format
+  * @param pageIndex    	page number to print
+  * @param numResPerLine 	number of residues per line
+  */
   public void drawSequences(Graphics2D g2d, PageFormat format, 
                             int pageIndex, int numResPerLine)
   {
     // move origin from the corner of the Paper to the corner of imageable area
     g2d.translate(format.getImageableX(), format.getImageableY());
 
-//  int numResPerLine = getResiduesPerLine(format);
     int resPerPage  = getResiduesPerPage(format,numResPerLine);
-
     int istart = resPerPage*pageIndex;
     int istop  = istart+resPerPage;
 
@@ -897,27 +1112,53 @@ public class GraphicSequenceCollection extends JPanel
   }
 
 //scrollable interface methods
+
+  /**
+  *
+  * Override for scrollable interface 
+  *
+  */
   public Dimension getPreferredScrollableViewportSize()
   {
     return getPreferredSize();
   }
 
+  /**
+  *
+  * Override for scrollable interface 
+  *
+  */
   public boolean getScrollableTracksViewportHeight()
   {
     return false;
   }
 
+  /**
+  *
+  * Override for scrollable interface 
+  *
+  */
   public boolean getScrollableTracksViewportWidth()
   {
     return false;
   }
 
+  /**
+  *
+  * Override for scrollable interface 
+  *
+  */
   public int getScrollableBlockIncrement(Rectangle r,
                     int orientation, int direction)
   {
     return 60;
   }
 
+  /**
+  *
+  * Override for scrollable interface 
+  *
+  */
   public int getScrollableUnitIncrement(Rectangle r,
                     int orientation, int direction)
   {
