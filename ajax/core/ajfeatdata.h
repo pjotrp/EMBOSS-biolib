@@ -53,15 +53,17 @@ typedef struct AjSFeattabIn {
 ******************************************************************************/
 
 typedef struct AjSFeattabOut {
-  AjPStr        Ufo;		/* Original output UFO */
-  AjPStr        Formatstr;	/* Output format name */
-  ajint         Format;		/* Output format enum */
-  AjPStr        Filename;	/* Output filename */
-  AjPStr        Directory;	/* Output directory */
-  AjPStr        Seqid;		/* Output entryname */
-  AjPStr        Type;		/* Type N or P */
-  AjPFile       Handle ;	/* Output file */
-  AjPStr        Seqname ;	/* name of AjPSeq assoc. with feature table */
+  AjPStr        Ufo;			/* Original output UFO */
+  AjPStr        Formatstr;		/* Output format name */
+  ajint         Format;			/* Output format enum */
+  AjPStr        Filename;		/* Output filename */
+  AjPStr        Directory;		/* Output directory */
+  AjPStr        Seqid;			/* Output entryname */
+  AjPStr        Type;			/* Type N or P */
+  AjPFile       Handle;			/* Output file */
+  AjPStr        Seqname;	        /* AjPSeq assoc. with feature table */
+  AjPStr        Basename;		/* Basename for output file */
+  AjBool        Local;			/* Opened as a local file */
 }  AjOFeattabOut, *AjPFeattabOut ;
 
 
@@ -89,6 +91,7 @@ typedef struct AjSFeattable {
   ajint             Start;      /* First position used (like sequence begin) */
   ajint             End;        /* Last position used (like sequence end) */
   ajint             Len;        /* Maximum length */
+  ajint             Offset;     /* Offset when trimmed */
   ajint             Groups;	/* Number of current group being added */
 }  AjOFeattable, *AjPFeattable ;
 
