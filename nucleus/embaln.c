@@ -40,7 +40,7 @@
 ** @param [w] path [float *] path matrix
 ** @param [r] sub [float **] substitution matrix from AjPMatrixf
 ** @param [r] cvt [AjPSeqCvt] Conversion array for AjPMatrixf
-** @param [w] compass [int *] Path direction pointer array
+** @param [w] compass [ajint *] Path direction pointer array
 ** @param [r] show [AjBool] Display path matrix
 ** 
 ** Optimised to keep a maximum value to avoid looping down or left
@@ -206,7 +206,7 @@ void embAlignPathCalc(char *a, char *b, ajint lena, ajint lenb, float gapopen,
 ** @param [w] path [float *] path matrix
 ** @param [r] sub [float **] substitution matrix from AjPMatrixf
 ** @param [r] cvt [AjPSeqCvt] Conversion array for AjPMatrixf
-** @param [w] compass [int *] Path direction pointer array
+** @param [w] compass [ajint *] Path direction pointer array
 ** @param [r] show [AjBool] Display path matrix
 ** 
 ** @return [void]
@@ -383,10 +383,10 @@ static void alignPathCalcOld(char *a, char *b, ajint lena, ajint lenb,
 ** @param [r] lena [ajint] length of first sequence
 ** @param [r] lenb [ajint] length of second sequence
 ** @param [r] gapopen [float] gap opening coefficient
-** @param [r] compass [int*] Path direction pointer array
+** @param [r] compass [ajint*] Path direction pointer array
 ** @param [r] gapextend [float] gap extension coefficient
-** @param [w] start1 [int *] start of alignment in first sequence
-** @param [w] start2 [int *] start of alignment in second sequence
+** @param [w] start1 [ajint *] start of alignment in first sequence
+** @param [w] start2 [ajint *] start of alignment in second sequence
 ** 
 ** @return [float] Maximum path axis score
 ** @@
@@ -551,7 +551,7 @@ float embAlignScoreNWMatrix(float *path, AjPSeq a, AjPSeq b, float **fmatrix,
 ** Nucleotides or proteins as needed.
 **
 ** @param [r] path [float *] path matrix
-** @param [r] compass [int *] Path direction pointer array
+** @param [r] compass [ajint *] Path direction pointer array
 ** @param [r] gapopen [float] gap opening penalty
 ** @param [r] gapextend [float] gap extension penalty
 ** @param [r] a [AjPSeq] first sequence
@@ -560,8 +560,8 @@ float embAlignScoreNWMatrix(float *path, AjPSeq a, AjPSeq b, float **fmatrix,
 ** @param [r] lenb [ajint] length of second sequence
 ** @param [r] sub [float **] substitution matrix from AjPMatrixf
 ** @param [r] cvt [AjPSeqCvt] Conversion array for AjPMatrixf
-** @param [w] start1 [int *] start of alignment in first sequence
-** @param [w] start2 [int *] start of alignment in second sequence
+** @param [w] start1 [ajint *] start of alignment in first sequence
+** @param [w] start2 [ajint *] start of alignment in second sequence
 ** 
 ** @return [float] Score of best matching segment
 ******************************************************************************/
@@ -708,7 +708,7 @@ float embAlignScoreSWMatrix(float *path, ajint *compass, float gapopen,
 ** Nucleotides or proteins as needed.
 **
 ** @param [r] path [float *] path matrix
-** @param [r] compass [int *] Path direction pointer array
+** @param [r] compass [ajint *] Path direction pointer array
 ** @param [r] gapopen [float] gap opening penalty
 ** @param [r] gapextend [float] gap extension penalty
 ** @param [r] a [AjPSeq] first sequence
@@ -719,8 +719,8 @@ float embAlignScoreSWMatrix(float *path, ajint *compass, float gapopen,
 ** @param [r] lenb [ajint] length of second sequence
 ** @param [r] sub [float **] substitution matrix from AjPMatrixf
 ** @param [r] cvt [AjPSeqCvt] Conversion array for AjPMatrixf
-** @param [w] start1 [int *] start of alignment in first sequence
-** @param [w] start2 [int *] start of alignment in second sequence
+** @param [w] start1 [ajint *] start of alignment in first sequence
+** @param [w] start2 [ajint *] start of alignment in second sequence
 ** 
 ** @return [void]
 ******************************************************************************/
@@ -881,12 +881,12 @@ void embAlignWalkSWMatrix(float *path, ajint *compass, float gapopen,
 ** @param [w] n [AjPStr *] alignment for second sequence
 ** @param [r] lena [ajint] length of first sequence
 ** @param [r] lenb [ajint] length of second sequence
-** @param [w] start1 [int *] start of alignment in first sequence
-** @param [w] start2 [int *] start of alignment in second sequence
+** @param [w] start1 [ajint *] start of alignment in first sequence
+** @param [w] start2 [ajint *] start of alignment in second sequence
 ** @param [r] gapopen [float] gap open penalty
 ** @param [r] gapextend [float] gap extension penalty
 ** @param [r] cvt [AjPSeqCvt] Conversion array for AjPMatrixf
-** @param [r] compass [int *] Path direction pointer array
+** @param [r] compass [ajint *] Path direction pointer array
 ** @param [r] sub [float **] substitution matrix from AjPMatrixf
 ** 
 ** @return [void]
@@ -1555,7 +1555,7 @@ void embAlignUnused(void)
 ** @param [w] path [float *] path matrix
 ** @param [r] sub [float **] substitution matrix from AjPMatrixf
 ** @param [r] cvt [AjPSeqCvt] Conversion array for AjPMatrixf
-** @param [w] compass [int *] Path direction pointer array
+** @param [w] compass [ajint *] Path direction pointer array
 ** @param [r] show [AjBool] Display path matrix
 ** @param [r] width [ajint] width of path matrix
 ** 
@@ -1568,7 +1568,7 @@ void embAlignUnused(void)
 ******************************************************************************/
 void embAlignPathCalcFast(char *a, char *b, ajint lena, ajint lenb, float gapopen,
 		     float gapextend, float *path, float **sub, AjPSeqCvt cvt,
-		     ajint *compass, AjBool show,int width)
+		     ajint *compass, AjBool show, ajint width)
 {
     ajint xpos;
     ajint i;
@@ -1713,7 +1713,7 @@ void embAlignPathCalcFast(char *a, char *b, ajint lena, ajint lenb, float gapope
 ** Nucleotides or proteins as needed.
 **
 ** @param [r] path [float *] path matrix
-** @param [r] compass [int *] Path direction pointer array
+** @param [r] compass [ajint *] Path direction pointer array
 ** @param [r] gapopen [float] gap opening penalty
 ** @param [r] gapextend [float] gap extension penalty
 ** @param [r] a [AjPSeq] first sequence
@@ -1722,16 +1722,17 @@ void embAlignPathCalcFast(char *a, char *b, ajint lena, ajint lenb, float gapope
 ** @param [r] lenb [ajint] length of second sequence
 ** @param [r] sub [float **] substitution matrix from AjPMatrixf
 ** @param [r] cvt [AjPSeqCvt] Conversion array for AjPMatrixf
-** @param [w] start1 [int *] start of alignment in first sequence
-** @param [w] start2 [int *] start of alignment in second sequence
+** @param [w] start1 [ajint *] start of alignment in first sequence
+** @param [w] start2 [ajint *] start of alignment in second sequence
 ** @param [r] width [ajint] width of path matrix
 ** 
 ** @return [float] Score of best matching segment
 ******************************************************************************/
 float embAlignScoreSWMatrixFast(float *path, ajint *compass, float gapopen,
-                          float gapextend,  AjPSeq a, AjPSeq b,
-                          ajint lena, ajint lenb, float **sub,
-                          AjPSeqCvt cvt, ajint *start1, ajint *start2,int width)
+				float gapextend,  AjPSeq a, AjPSeq b,
+				ajint lena, ajint lenb, float **sub,
+				AjPSeqCvt cvt, ajint *start1, ajint *start2,
+				ajint width)
 {
     ajint i;
     ajint j;
@@ -1887,7 +1888,7 @@ float embAlignScoreSWMatrixFast(float *path, ajint *compass, float gapopen,
 ** Nucleotides or proteins as needed.
 **
 ** @param [r] path [float *] path matrix
-** @param [r] compass [int *] Path direction pointer array
+** @param [r] compass [ajint *] Path direction pointer array
 ** @param [r] gapopen [float] gap opening penalty
 ** @param [r] gapextend [float] gap extension penalty
 ** @param [r] a [AjPSeq] first sequence
@@ -1898,17 +1899,18 @@ float embAlignScoreSWMatrixFast(float *path, ajint *compass, float gapopen,
 ** @param [r] lenb [ajint] length of second sequence
 ** @param [r] sub [float **] substitution matrix from AjPMatrixf
 ** @param [r] cvt [AjPSeqCvt] Conversion array for AjPMatrixf
-** @param [w] start1 [int *] start of alignment in first sequence
-** @param [w] start2 [int *] start of alignment in second sequence
+** @param [w] start1 [ajint *] start of alignment in first sequence
+** @param [w] start2 [ajint *] start of alignment in second sequence
 ** @param [r] width [ajint] width of path matrix
 ** 
 ** @return [void]
 ******************************************************************************/
 
 void embAlignWalkSWMatrixFast(float *path, ajint *compass, float gapopen,
-			 float gapextend, AjPSeq a, AjPSeq b, AjPStr *m,
-			 AjPStr *n, ajint lena, ajint lenb, float **sub,
-			 AjPSeqCvt cvt, ajint *start1, ajint *start2,int width)
+			      float gapextend, AjPSeq a, AjPSeq b, AjPStr *m,
+			      AjPStr *n, ajint lena, ajint lenb, float **sub,
+			      AjPSeqCvt cvt, ajint *start1, ajint *start2,
+			      ajint width)
 {
     ajint i;
     ajint j;
@@ -2060,7 +2062,7 @@ void embAlignWalkSWMatrixFast(float *path, ajint *compass, float gapopen,
 ** @param [r] gapextend [float] gap extension coefficient
 ** @param [w] path [float *] path matrix
 ** @param [r] fmatrix [float **] profile matrix
-** @param [w] compass [int *] Path direction pointer array
+** @param [w] compass [ajint *] Path direction pointer array
 ** @param [r] show [AjBool] Display path matrix
 ** 
 ** @return [void]
@@ -2190,15 +2192,15 @@ void embAlignProfilePathCalc(char *a, ajint mlen, ajint slen, float gapopen,
 ** Nucleotides or proteins as needed.
 **
 ** @param [r] path [float *] path matrix
-** @param [r] compass [int *] Path direction pointer array
+** @param [r] compass [ajint *] Path direction pointer array
 ** @param [r] gapopen [float] gap opening coeff
 ** @param [r] gapextend [float] gap extension coeff
 ** @param [r] b [AjPStr] second sequence
 ** @param [r] clen [ajint] length of consensus sequence
 ** @param [r] slen [ajint] length of test sequence
 ** @param [r] fmatrix [float **] profile
-** @param [w] start1 [int *] start of alignment in consensus sequence
-** @param [w] start2 [int *] start of alignment in test sequence
+** @param [w] start1 [ajint *] start of alignment in consensus sequence
+** @param [w] start2 [ajint *] start of alignment in test sequence
 ** 
 ** @return [float] profile alignment score
 ******************************************************************************/
@@ -2327,7 +2329,7 @@ float embAlignScoreProfileMatrix(float *path, ajint *compass, float gapopen,
 ** Nucleotides or proteins as needed.
 **
 ** @param [r] path [float *] path matrix
-** @param [r] compass [int *] Path direction pointer array
+** @param [r] compass [ajint *] Path direction pointer array
 ** @param [r] gapopen [float] gap opening coeff
 ** @param [r] gapextend [float] gap extension coeff
 ** @param [r] cons [AjPStr] consensus sequence
@@ -2337,8 +2339,8 @@ float embAlignScoreProfileMatrix(float *path, ajint *compass, float gapopen,
 ** @param [r] clen [ajint] length of consensus sequence
 ** @param [r] slen [ajint] length of test sequence
 ** @param [r] fmatrix [float **] profile
-** @param [w] start1 [int *] start of alignment in consensus sequence
-** @param [w] start2 [int *] start of alignment in test sequence
+** @param [w] start1 [ajint *] start of alignment in consensus sequence
+** @param [w] start2 [ajint *] start of alignment in test sequence
 ** 
 ** @return [void]
 ******************************************************************************/
