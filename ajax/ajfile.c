@@ -3418,7 +3418,6 @@ ajint ajFileBuffStripSrs(AjPFileBuff thys)
     AjPFileBuffList lastptr=NULL;
     
     AjBool found;
-    AjPStr tmp=NULL;
     
     found = ajFalse;
     lptr = thys->Curr;
