@@ -2623,7 +2623,7 @@ ajint ajStrRFindC (const AjPStr thys, const char* text) {
 }
 /* @func ajStrCmp ************************************************************
 ** 
-** Compares the value of two strings for use in sorting
+** Compares the value of two strings for use in sorting (e.g. ajListSort)
 **
 ** @param [r] str1 [const void*] First string
 ** @param [r] str2 [const void*] Second string
@@ -2641,7 +2641,7 @@ ajint ajStrCmp (const void* str1, const void* str2) {
 
 /* @func ajStrCmpO ************************************************************
 ** 
-** Compares the value of two strings for use in sorting
+** Compares the value of two strings for use in sorting (e.g. ajListSort)
 **
 ** @param [r] thys [const AjPStr] First string
 ** @param [r] anoth [const AjPStr] Second string
@@ -2809,7 +2809,7 @@ ajint ajStrCmpCaseCC (const char* str1, const char* str2) {
 **
 ** @param [r] thys [const AjPStr] String
 ** @param [r] str [const AjPStr] Second String
-** @return [AjBool] ajTrue if the strings have the same length and content
+** @return [AjBool] ajTrue if two complete strings are the same
 ** @@
 ******************************************************************************/
 
@@ -2830,7 +2830,7 @@ AjBool ajStrMatch (const AjPStr thys, const AjPStr str) {
 **
 ** @param [r] thys [const AjPStr] String
 ** @param [r] text [const char*] Text
-** @return [AjBool] ajTrue if the strings have the same length and content
+** @return [AjBool] ajTrue if two complete strings are the same
 ** @@
 ******************************************************************************/
 
@@ -2847,11 +2847,11 @@ AjBool ajStrMatchC (const AjPStr thys, const char* text) {
 
 /* @func ajStrMatchCC *********************************************************
 **
-** Simple test for matching two tezt values.
+** Simple test for matching two text values.
 **
 ** @param [r] thys [const char*] String
 ** @param [r] text [const char*] Text
-** @return [AjBool] ajTrue if the strings have the same length and content
+** @return [AjBool] ajTrue if Text completely matches the start of String
 ** @@
 ******************************************************************************/
 
@@ -2871,7 +2871,7 @@ AjBool ajStrMatchCC (const char* thys, const char* text) {
 **
 ** @param [r] thys [const AjPStr] String
 ** @param [r] str [const AjPStr] Second String
-** @return [AjBool] ajTrue if the strings have the same length and content
+** @return [AjBool] ajTrue if two strings are exactly the same excluding case
 ** @@
 ******************************************************************************/
 
@@ -2889,7 +2889,7 @@ AjBool ajStrMatchCase (const AjPStr thys, const AjPStr str) {
 **
 ** @param [r] thys [const AjPStr] String
 ** @param [r] text [const char*] Text
-** @return [AjBool] ajTrue if the strings have the same length and content
+** @return [AjBool] ajTrue if two strings are exactly the same excluding case
 ** @@
 ******************************************************************************/
 
@@ -2907,7 +2907,7 @@ AjBool ajStrMatchCaseC (const AjPStr thys, const char* text) {
 **
 ** @param [r] thys [const char*] String
 ** @param [r] text [const char*] Text
-** @return [AjBool] ajTrue if the strings have the same length and content
+** @return [AjBool] ajTrue if two strings are exactly the same excluding case
 ** @@
 ******************************************************************************/
 
@@ -2934,7 +2934,7 @@ AjBool ajStrMatchCaseCC (const char* thys, const char* text) {
 **
 ** @param [r] thys [const AjPStr] String
 ** @param [r] wild [const AjPStr] Wildcard string
-** @return [AjBool] ajTrue if the strings have the same length and content
+** @return [AjBool] ajTrue if two strings match
 ** @@
 ******************************************************************************/
 
@@ -2949,7 +2949,7 @@ AjBool ajStrMatchWild (const AjPStr thys, const AjPStr wild) {
 **
 ** @param [r] thys [const AjPStr] String
 ** @param [r] text [const char*] Wildcard text
-** @return [AjBool] ajTrue if the strings have the same length and content
+** @return [AjBool] ajTrue if the strings match
 ** @@
 ******************************************************************************/
 
@@ -2964,7 +2964,7 @@ AjBool ajStrMatchWildC (const AjPStr thys, const char* text) {
 **
 ** @param [r] str [const char*] String
 ** @param [r] text [const char*] Text
-** @return [AjBool] ajTrue if the strings have the same length and content
+** @return [AjBool] ajTrue if the strings match
 ** @@
 ******************************************************************************/
 
@@ -3100,7 +3100,7 @@ ajint ajStrCmpWildCC (const char* str, const char* text) {
 **
 ** @param [r] str [const char*] String
 ** @param [r] wild [const AjPStr] Wildcard text
-** @return [AjBool] ajTrue if the strings have the same length and content
+** @return [AjBool] ajTrue if the strings match
 ** @@
 ******************************************************************************/
 
