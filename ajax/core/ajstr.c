@@ -1751,7 +1751,7 @@ AjBool ajStrChop (AjPStr* pthis) {
 ** Removes the characters from the start or end of a string
 **
 ** @param [uP] pthis [AjPStr*] string
-** @param [r] num [ajint] Number of characters to delete for the start (if
+** @param [r] num [ajint] Number of characters to delete from the start (if
 **            positive) or the end (if negative)
 ** @return [AjBool] ajTrue if string was reallocated
 ** @@
