@@ -26,8 +26,6 @@
 
 /* declare functions */
 
-static int sixpack_ajStrCmpCase (const void* str1, const void* str2);
-
 static int sixpack_findorfs(AjPSeqout *outseq, AjPFile *outf, ajint s,
 			    ajint len, char *seq, char *name, ajint orfml, 
 			    AjBool addedasterisk, AjBool firstorf, ajint frame, 
@@ -47,7 +45,6 @@ int main(int argc, char **argv)
 {
 
   ajint begin, end, pepbegin, pepend, peplen;
-  AjPSeqall seqall;
   AjPSeq seq;
   AjPSeq pep;
   AjPStr pepseq = NULL;
@@ -240,39 +237,6 @@ int main(int argc, char **argv)
 
   ajExit ();
   return 0;
-}
-
-
-/* @funcstatic sixpack_ajStrCmpCase *********************************************
-**
-** Compares the value of two strings for use in sorting (e.g. ajListSort)
-** Case Independent!
-**
-** @param [r] str1 [const void*] First string
-** @param [r] str2 [const void*] Second string
-** @return [int] -1 if first string should sort before second, +1 if the
-**         second string should sort first. 0 if they are identical
-**         in length and content.
-** @@
-******************************************************************************/
-
-static int sixpack_ajStrCmpCase (const void* str1, const void* str2) {
-  const char* cp;
-  const char* cq;
-
-  for (cp = (*(AjPStr*)str1)->Ptr, cq = (*(AjPStr*)str2)->Ptr;
-       *cp && *cq;
-       cp++, cq++) {
-    if (toupper((ajint) *cp) != toupper((ajint) *cq)) {
-      if (toupper((ajint) *cp) > toupper((ajint) *cq)) return 1;
-      else return -1;
-    }
-  }
-
-  if (*cp) return 1;
-  if (*cq) return -1;
-  return 0;
-
 }
 
 
