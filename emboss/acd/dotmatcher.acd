@@ -27,7 +27,7 @@ integer: windowsize  [
 integer: threshold  [
   optional: "Y"
   information: "threshold"
-  default: "24"
+  default: "23"
   minimum: "0"
 ]
 
