@@ -3285,7 +3285,7 @@ AjBool   ajXyzHitlistRead(AjPFile inf, char *delim, AjPHitlist *thys)
 	}
 	else if(ajStrPrefixC(line,"NS"))
 	{
-	    ajFmtScanS(line, "NS[%d", &nset);
+	    ajFmtScanS(line, "NS%d", &nset);
 
 
 	    /* Create hitlist structure */
