@@ -126,13 +126,12 @@ public class SetUpMenuBar
     prefsMenu.add(showAdvOpt);
     prefsMenu.addSeparator();
 
+    final ServerSetup ss = new ServerSetup(mysettings);
     JMenuItem serverSettings = new JMenuItem("Server Settings");
     serverSettings.addActionListener(new ActionListener()
     {
       public void actionPerformed(ActionEvent e)
       {
-        ServerSetup ss = new ServerSetup(mysettings);
-
         int sso = JOptionPane.showConfirmDialog(f,ss,"Server Settings",
                              JOptionPane.OK_CANCEL_OPTION,
                              JOptionPane.PLAIN_MESSAGE,null);
