@@ -3766,13 +3766,13 @@ static time_t jctl_Datestr(AjPStr s)
     p = ajStrStr(tmp);
     while(*p)
     {
-	if(*p == '_')
+	if(*p == '_' || *p==':')
 	    *p=' ';
 	++p;
     }
 
     mon = ajStrNew();
-    if(ajFmtScanS(tmp,"%*s %*s %S %d %d:%d:%d %*s %d",&mon,&day,&hr,&min,
+    if(ajFmtScanS(tmp,"%*s %*s %S %d %d %d %d %*s %d",&mon,&day,&hr,&min,
 		  &sec,&yr) !=  6)
     {
 	ajStrDel(&mon);
