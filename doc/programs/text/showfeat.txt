@@ -116,7 +116,7 @@ Command line arguments
                                   '|', eg:
                                   pax* | 10
    -sort               list       Sort features by Type, Start or Source, or
-                                  don't sort
+                                  Nosort (don't sort - use input order)
 
    Advanced qualifiers:
    -html               bool       Use HTML formatting
@@ -240,7 +240,8 @@ Command line arguments
    feature tag valueyou wish to show. The tag value may be wildcarded by
    using '*'. If you wish to show more than one tag value, separate their
    names with the character '|', eg: pax* | 10 Any string is accepted *
-   -sort Sort features by Type, Start or Source, or don't sort
+   -sort Sort features by Type, Start or Source, or Nosort (don't sort -
+   use input order)
    source (Sort by Source)
    start  (Sort by Start position)
    type   (Sort by Type)
