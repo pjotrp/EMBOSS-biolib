@@ -543,7 +543,7 @@ public class AlignJFrame extends JFrame
   * @param colScheme 	name of colour scheme
   *
   */
-  private void colourScheme(String colScheme)
+  protected void colourScheme(String colScheme)
   {
     String status = statusField.getText();
     int ncol = status.indexOf("Colour Scheme: ");
