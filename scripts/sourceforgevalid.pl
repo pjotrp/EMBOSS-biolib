@@ -24,19 +24,32 @@
 	    "www.hgmp.mrc.ac.uk/Software/EMBOSS/Apps/index.html" => "emboss.sourceforge.net/apps/"
 	    );
 
+%ignorelref = ("serializedForm" => "JavaApi",
+		"serialized_methods" => "JavaApi",
+		"readObject(java.io.ObjectInputStream)" => "JavaApi",
+		"writeObject(java.io.ObjectOutputStream)" => "JavaApi",
+		);
 sub processfile($$) {
     my ($filename,$path) = @_;
     my $fullname = "$path/$filename";
     print "Process file $fullname\n";
+    my $lpath = $path;
+
+    if ($path =~ /(.*)\/inc\/?/) {$lpath = $1}
 
     my %iref=();
     my %lref=();
 
     open (IN, "$fullname") || die "Cannot open $fullname";
+    $head = 0;
     while (<IN>) {
-	if (/name=\"([^\"]+)\"/ig) {
+	if (/<head/) {$head=1}
+	if (/<\/head/) {$head=0}
+	if (/name=\"([^\"]+)\"/ig && !$head) {
 	    #print "  Local name '$1'\n";
-	    if (defined($lref{$1})) { print "+ Duplicate name \#$1\n"}
+	    if (defined($lref{$1}) && !defined($ignorelref{$1})) {
+		print "+ Duplicate name \#$1\n";
+	    }
 	    $lref{$1}=1;
 	}
 	if (/(href|src)=\"http:\/\/([^\"]+)\"/ig) {
@@ -75,7 +88,7 @@ sub processfile($$) {
 		if (-e ".$href") {$ok=1}
 	    }
 	    else {
-		if (-e "$path/$href") {$ok=1}
+		if (-e "$lpath/$href") {$ok=1}
 	    }
 	    if (!$ok) {
 		print "+  Bad local href: '$href'\n";
@@ -83,7 +96,7 @@ sub processfile($$) {
 		    $fullpath = ".$href";
 		}
 		else {
-		    $fullpath = "$path/$href";
+		    $fullpath = "$lpath/$href";
 		    $fullpath =~ s/\/[^\/]+\/[.].//g;
 		}
 		print "+       Not found: '$fullpath'\n";
@@ -94,6 +107,10 @@ sub processfile($$) {
     close IN;
     foreach $x (keys(%iref)) {
 	if (!defined($lref{$x})) {
+	    if ($filename =~ /[.]usage$/) {
+		    if($x =~ /^input[.]\d+$/) {next}
+		    if($x =~ /^output[.]\d+$/) {next}
+	    }
 	    print "+ Bad internal href: '\#$x'\n";
 	    $badinternal{"$path/$filename\#$x"}++;
 	}
