@@ -14,30 +14,38 @@ endif
 
 check_PROGRAMS = acdlog ajtest \
 complex corbatest \
-demoalign demofeatures demolist demoreport demosequence demostring demotable \
+demoalign demofeatures demolist demoreport \
+demosequence demostring demotable \
 entrails giep histogramtest intconv \
 kmrsplitter kmrunion \
 newcoils \
 patmattest \
 prima primers \
-seqinfo seqretall seqretallfeat seqretset seqretsingle seqrettype \
+seqinfo seqretall seqretallfeat \
+seqretset seqretsingle seqrettype \
 testplot treetypedisplay
 
 bin_PROGRAMS = aaindexextract abiview \
 acdc acdpretty acdtable acdtrace acdvalid \
 antigenic \
 backtranseq banana biosed btwisted \
-cai chaos charge checktrans chips cirdna codcmp coderet \
-compseq cons cpgplot cpgreport cusp cutgextract cutseq \
+cai chaos charge checktrans chips \
+cirdna codcmp coderet \
+compseq cons cpgplot cpgreport \
+cusp cutgextract cutseq \
 dan dbiblast dbifasta dbiflat dbigcg \
 degapseq descseq diffseq digest distmat \
 dotmatcher dotpath dottup dreg \
-einverted embossdata embossversion emma emowse entret \
-epestfind eprimer3 equicktandem est2genome etandem extractfeat extractseq \
+einverted embossdata embossversion emma \
+emowse entret epestfind eprimer3 \
+equicktandem est2genome etandem \
+extractfeat extractseq \
 findkm freak fuzznuc fuzzpro fuzztran \
 garnier geecee getorf helixturnhelix hmoment \
-iep infoalign infoseq isochore jembossctl lindna listor \
-marscan maskfeat maskseq matcher megamerger merger msbar \
+iep infoalign infoseq isochore \
+jembossctl lindna listor \
+marscan maskfeat maskseq \
+matcher megamerger merger msbar \
 mwcontam mwfilter \
 needle newcpgreport newcpgseek newseq \
 noreturn notseq nthseq \
@@ -48,18 +56,21 @@ pepwheel pepwindow pepwindowall \
 plotcon plotorf polydot preg \
 prettyplot prettyseq primersearch printsextract \
 profit prophecy prophet \
-prosextract pscan psiphi\
-rebaseextract recoder redata remap restover restrict revseq \
+prosextract pscan psiphi \
+rebaseextract recoder redata remap  \
+restover restrict revseq \
 seealso seqmatchall seqret seqretsplit \
 showalign showdb showfeat showorf showseq \
-shuffleseq sigcleave silent sirna sixpack skipseq \
-splitter stretcher \
+shuffleseq sigcleave silent sirna sixpack \
+skipseq splitter stretcher \
 stssearch supermatcher syco \
 tcode textsearch tfextract tfm tfscan \
-tmap tranalign transeq trimest trimseq twofeat \
+tmap tranalign transeq \
+trimest trimseq twofeat \
 union vectorstrip \
-water whichdb wobble wordcount wordmatch \
-wossname yank
+water whichdb wobble wordcount \
+wordmatch wossname \
+yank
 
 INCLUDES = -I$(top_srcdir)/nucleus -I$(top_srcdir)/ajax -I$(top_srcdir)/plplot
 
