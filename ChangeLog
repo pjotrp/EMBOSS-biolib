@@ -1,4 +1,11 @@
 Version 2.5.0
+	Updated source code docs for EFUNC and EDATA. Corrected all bad
+	headers. efunc.out has no errors. efunc.check only reports
+	'missing headers' for duplicated function names (#ifdef code)
+	which is a known 'feature'.
+
+	Updated source code to fix most lines over 80 bytes.
+	
 	Calculated ACD attributes now QA tested. Feature attributes will
 	be correctly set, although none are used in the ACD files at present.
 	
