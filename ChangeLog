@@ -1,6 +1,50 @@
 Version 2.4.0
 
-        Two access methods "file" and "offset" were defined as valid in
+	Report format "table" is the default for several applications. In
+	this format, the sequence USA has been removed because it already
+	appears in the sequenec header part of the report. A new format
+	"-rformat nametable" will produce the previous report output for
+	users who are relying on parsing it.
+
+	Output files defined with the "nullok" attribute in ACD are not
+	created unless requested. The file name and extension are ignored.
+	It is possible to add a new associated qualifier to control this
+	behaviour, but its use may be confusing with more than one output
+	file.
+	
+	Precision attribute for report score (default is 3). Other
+	floating point report values are written as strings by the
+	original application so their precision is defined in the
+	code. The score is a float, as part of the internal (GFF) feature
+	structure.  A zero value produces an integer score (strictly, it
+	uses %.0f as the format)
+	
+	Report output for equicktandem and etandem, with -origfile to
+	write the original output format for sites (Sanger for example)
+	who still require it. By default, the origfile output file is
+	not created.
+
+	Report output for patmatdb and patmatmotifs. For patmatmotifs the
+	prosite documentation appears in the report footer, with the
+	addition of the motif name and the number of matches in the
+	sequence.
+
+	Report headers and footers automatically trim last newline.
+	
+	Reports in -rformat SeqTable right-align numbers.
+
+	Report output for marscan (-rformat GFF by default)
+
+	Report output for fuzztran (-rformat table with the translation
+	included as a report field). Using -rformat seqtable with fuzztran
+	now also shows the original DNA sequence.
+	
+	Report output for fuzznuc and fuzzpro (-rformat SeqTable by default)
+
+	New report qualifiers -raccshow to include accession in header
+	and -rdesshow to include description in header
+	
+	Two access methods "file" and "offset" were defined as valid in
 	database definitions, but are really reserved for simple file reading.
 	They are removed from the database access methods list.
 
@@ -9,7 +53,7 @@ Version 2.4.0
 	mechanism). Both are removed from the database access methods list,
 	and the source code is commented out.
 	
-        SRS, SRSFASTA and SRSWWW database access can read all entries This
+	SRS, SRSFASTA and SRSWWW database access can read all entries This
 	is not recommended for SRSWWW access because it will read
 	everything into memory - all of EMBL for example - then strip out
 	HTML tags before reading. For SRS it is not recommended because
@@ -79,7 +123,7 @@ Version 2.4.0
 	can be set to 'sv des org key' for SRS databases. 
 
 	USAs check the query field against the database 'fields'
-	definition.  ID and ACC are always allowed. dbname:name still
+	definition. ID and ACC are always allowed. dbname:name still
 	searches ID and ACC (no change from previous version)
 
 	USAs with a filename can include the new query fields. The syntax is
@@ -87,31 +131,31 @@ Version 2.4.0
 	syntax is because empro.dat-id:eclaci looks like a filename ending
 	in -id)
 
-        Application 'tranalign' added. 
-        This aligns nucleic coding regions based on a set of aligned proteins.
+	Application 'tranalign' added. 
+	This aligns nucleic coding regions based on a set of aligned proteins.
 
 	
 Version 2.3.1
 
-        est2genome fixed for large alignments (over 40Mbase for
-        est * genomic sequence length)
-        sequence reading for ABI files fixed (and selex files tested)
-        genbank feature input working
-        pepinfo PNG output larger to make the text readable (only affects
-        PNG output)
+	est2genome fixed for large alignments (over 40Mbase for
+	est * genomic sequence length)
+	sequence reading for ABI files fixed (and selex files tested)
+	genbank feature input working
+	pepinfo PNG output larger to make the text readable (only affects
+	PNG output)
 	empty sequence file input fails gracefully
 	empty sequence input fails gracefully (and only needs one
 	^D from stdin)
 	
 Version 2.3.0
 
-        Seqretall, seqretallfeat and seqretset moved to 'make check'.
-        Seqret has all the functionality of the above.
+	Seqretall, seqretallfeat and seqretset moved to 'make check'.
+	Seqret has all the functionality of the above.
 	Fix for NBRF accession number reading (ajseqread.c)
 	Whichdb program added.
 	Fix for dbifasta and wormpep
 	Fix for problem reading plain format sequences by primer3.
-        Primer3 renamed eprimer3 to avoid conflicts with the Whitehead's
+	Primer3 renamed eprimer3 to avoid conflicts with the Whitehead's
 	primer3 version 3.0.6.
 	transeq's '-frame' can have a list of values, as: '-frame=1,2,3'
 	Non-existent files in lists are again ignored
