@@ -1,19 +1,25 @@
-#!/usr/local/bin/perl -w
+#!/usr/bin/perl -w
 
 # This is a utility to create the usage, input and output
 # example HTML include files for the EMBOSS application documentation.
 #
-# The 'scripts/qatest.pl' script should be run with the argument '-kk' 
-# before makeexample.pl is run in order to create the example usage,
-# input and output files.
-
-
-
+# Can now run from any directory, with pre and post processing of the test
+# environment done by using the standard test script
+#
+# Uses the qatest.dat file to find and run tests. No need to create
+# all the test results first
+#
+# Cleans up the qa test directory on success
+#
+# Skips bad tests with a log message - these should be fixed!
+#
+# The 'scripts/qatest.pl' script will be run with the argument '-kk' 
+# to create the example usage, input and output files.
 
 use File::Basename;
 
 
-
+open (LOG,">>makeexample.log") || die "Cannot append to makeexample.log";
 
 ###################################################################
 #
@@ -24,11 +30,14 @@ use File::Basename;
 #$url = "http://www.uk.embnet.org/Software/EMBOSS/Apps/";
 
 # where the qa directories are
-$qa = "/packages/emboss_dev/$ENV{'USER'}/emboss/emboss/test/qa/";
+$qatop = "/homes/pmr/hgmp/test";
+$scripts = "/homes/pmr/hgmp/scripts";
+$embassy = "";
 
 # where the web pages and include files live
-$docdir = "/data/www/Software/EMBOSS/Apps/";
-$incdir = "/data/www/Software/EMBOSS/Apps/inc";
+$doctop = "/homes/pmr/hgmp/doc/sourceforge/";
+$docdir = "$doctop/apps/";
+$incdir = "$doctop/apps/inc/";
 
 
 # some HTML
@@ -38,15 +47,16 @@ $unbold = "</b>";
 
 # maximum number of lines of a file to be displayed
 $MaxLines = 100;
+%testok = ();
 
 # names of test databases
 @testdbs = (
-	'tsw',
-	'tswnew',
-	'twp',
-	'tembl',
-	'tpir',
-);
+	    'tsw',
+	    'tswnew',
+	    'twp',
+	    'tembl',
+	    'tpir',
+	    );
 
 # colours for backgrounds of usage examples, input and output files
 # these colours should work on all PCs/Macs/UNIX web browsers
@@ -72,36 +82,65 @@ $OUTPUT = "";
 ###################################################################
 # get the name of the application
 if ($#ARGV != 0) {
-	print "Name of the program >";
-	$application = <STDIN>;
+    print "Name of the program >";
+    $application = <STDIN>;
 } else {
-	$application = $ARGV[0];
+    $application = $ARGV[0];
 }
 chomp $application;
-if (!defined $application || $application eq "") {die "No program specified\n";}
+if (!defined $application || $application eq "") {
+    die "No program specified\n";
+}
+
+print LOG "\n";
+print LOG "Doing $application\n";
 
 ###################################################################
 # check for any qa '*-ex' example directories
-@dirs = glob("$qa/$application-ex*");
 
-# if there are none, look for '*-keep' directories
-if ($#dirs == -1) {
-    @dirs = glob("$qa/$application-keep");
+@dirs=();
+@dirk=();
+
+open (QATEST, "$qatop/qatest.dat") || die "Cannot open $qatop/qatest.dat";
+$expex = qr/^$application[-]ex/;
+$expkeep = qr/^$application[-]keep$/;
+while (<QATEST>) {
+    if (/^ID +(\S+)/) {
+	$idqa = $1;
+	if ($idqa =~ /$expex/) {push @dirs, $idqa};
+	if ($idqa =~ /$expkeep/) {push @dirk, $idqa};
+    }
 }
 
 # are there any results directories?
+if ($#dirs == -1) {push @dirs, @dirk}
 if ($#dirs == -1) {
-    errorexit("No qa results directories were found for $application");
+    errorexit("No qa tests were found for $application");
 }
 
 # sort the directory names
 @dirs = sort @dirs;
 
+chdir ("$qatop/qa");
+
 ###################################################################
 # get next example directory
 $count = 0;
-foreach $dir (@dirs) {
-    print "Doing $dir\n";
+foreach $dotest (@dirs) {
+    $dir = "$dotest/";
+    print "Doing test $dotest\n";
+    print LOG "Doing test $dotest\n";
+    # run the test with -kk
+    open (TEST,"$scripts/qatest.pl -kk $dotest 2>&1|");
+    $testok{$dotest} = 0;
+    while (<TEST>) {
+	if (/^Tests total: 1 pass: 1 fail: 0$/) {$testok{$dotest}=1}
+    }
+    if (!$testok{$dotest}) {
+	print LOG "Test $dotest failed\n";
+	print "Test $dotest failed\n";
+	next;
+    }
     $count++;
 
 ###################################################################
@@ -133,6 +172,8 @@ foreach $dir (@dirs) {
     @answers = <ANSWERS>;
     close (ANSWERS);
 
+    @saveanswers = @answers;
+
 ###################################################################
 # read in 'stdout' file of results written to screen
     $resultsfile = "$dir/stdout";
@@ -154,6 +195,11 @@ foreach $dir (@dirs) {
         if ($line =~ /^UC\s+(.+)/) {$usagecomment .= "$1 ";}
         if ($line =~ /^IC\s+(.+)/) {$inputcomment .= "$1 ";}
         if ($line =~ /^OC\s+(.+)/) {$outputcomment .= "$1 ";}
+        if ($line =~ /^AB\s+(.+)/) {
+	    $embassy .= "$1 ";
+	    $docdir = "$doctop/embassy/$1";
+	    $incdir = "$docdir/inc";
+	}
     }
 
 ###################################################################
@@ -193,10 +239,10 @@ foreach $dir (@dirs) {
         if ($f =~ /^-/) {next;}
 # split on '::' to get files embedded in a format::file USA
         if ($f =~ /\:\:/) {
-print "CL line=$f\n";
+	    print "CL line=$f\n";
             @fm = split /\:\:/, $f;
             $f = pop @fm;
-print "CL f=$f\n";
+	    print "CL f=$f\n";
         }
 # deal with '@' in list files
         $f =~ s/\@//;
@@ -213,8 +259,9 @@ print "CL f=$f\n";
 #print "displaying infile=$f\n";
                 push @infiles, $f;
             }
-        } else {
-           push @inusas, $f; 
+        }
+	else {
+	    push @inusas, $f; 
         }
     }
 
@@ -243,8 +290,9 @@ print "CL f=$f\n";
 #print "displaying infile=$f\n";
                     push @infiles, $f;
                 }
-            } else {
-               push @inusas, $line; 
+            }
+	    else {
+		push @inusas, $line; 
             }
         }
     }
@@ -268,34 +316,39 @@ print "CL f=$f\n";
                 if (-f "$dir/$f" && ! -d "$dir/$f") {
 # we assume all files in the *-ex directory are output files
 # check for '.' or '/' at start of path
-                    if ($f =~ /^\./ || $f =~ m#^\/#)  {push @infiles, $f;}
-                } else {
-                   push @inusas, $line; 
-                }
-            }
-        }
+                    if ($f =~ /^\./ || $f =~ m#^\/#)  {
+			push @infiles, $f;
+		    }
+		}
+		else {
+		    push @inusas, $line; 
+		}
+	    }
+	}
     }
 
 ###################################################################
 # see if we use the test databases anywhere in the command line or answers
     foreach $f (@answers, split (/\s|\>|\<|\=/, $commandline)) {
-        chomp $f;
-        @d = split (/\:/, $f);
-        foreach $d (@d) {
-            if ($d =~ /\*/) {next;}
-            if (grep /^$d$/, @testdbs) {
+	chomp $f;
+	@d = split (/\:/, $f);
+	foreach $d (@d) {
+	    if ($d =~ /\*/) {next;}
+	    if ($d =~ /[\[]/ && $d !~ /[\[].*[\]]/ ) {next}
+	    if (grep /^$d$/, @testdbs) {
 # check we have not made any other comments about this test database
-                if (! grep /$d/, @testdbsoutput) {
-                    if ($d eq "tembl") {
-                        $type = "nucleic acid";
-                    } else {
-                        $type = "protein";
-                    }
-                    $testdbcomment .= "\n'$f' is a sequence entry in the example $type database '$d'\n$p\n";
-                    push @testdbsoutput, $d;
-                }
+		if (! grep /$d/, @testdbsoutput) {
+		    if ($d eq "tembl") {
+			$type = "nucleic acid";
+		    }
+		    else {
+			$type = "protein";
+		    }
+		    $testdbcomment .= "\n'$f' is a sequence entry in the example $type database '$d'\n$p\n";
+		    push @testdbsoutput, $d;
+		}
 	    }
-        }
+	}
     }
 
 
@@ -305,14 +358,15 @@ print "CL f=$f\n";
 
 # example count
     if ($count == 1) {
-        $USAGE .= qq|<b>Here is a sample session with $application</b>\n$p\n|;
-    } else {
-        $USAGE .= qq|$p\n<b>Example $count</b>\n$p\n|;
+	$USAGE .= qq|<b>Here is a sample session with $application</b>\n$p\n|;
+    }
+    else {
+	$USAGE .= qq|$p\n<b>Example $count</b>\n$p\n|;
     }
 
 # usage comment
     if ($usagecomment ne "") {
-        $USAGE .= qq|$usagecomment\n$p\n|;
+	$USAGE .= qq|$usagecomment\n$p\n|;
     }
 
 # blank line
@@ -321,37 +375,54 @@ print "CL f=$f\n";
 # start table (light cyan)
     $USAGE .= qq|<table width="90%"><tr><td bgcolor="$usagecolour"><pre>\n\n|;
 
-# application name and command line
-    print "Doing:\n% $application $commandline\n";
+# application name and command line (we just use the test results)
+#    print "Doing: \% $application $commandline\n";
     $USAGE .= qq|% $bold$application $commandline$unbold\n|;
 
 # intercalate prompts and answers
     @pr = ();
     foreach $line (@prompts) {
-        push @pr, split /([^\s]+: )/, $line;
+	push @pr, split /([^\s]+: )/, $line;
     }
     foreach $line (@pr) {
-        $USAGE .= qq|$line|;
+	$USAGE .= qq|$line|;
 # change ':'s in warning messages so that they don't look like prompts
 # although if we get a warning, things are probably going badly wrong anyway
 #print "prompt=$line\n";
-        $line =~ s/Warning:/Warning :/;
-        $line =~ s/Error:/Error :/;
-        $line =~ s/Fatal:/Fatal :/;
+	$line =~ s/Warning:/Warning :/;
+	$line =~ s/Error:/Error :/;
+	$line =~ s/Fatal:/Fatal :/;
+
+# We also get warnings from blastpgp in some domainatrix apps
+	$line =~ s/WARNING:/WARNING :/;
+	$line =~ s/posFindAlignmentDimensions:/posFindAlignmentDimensions :/;
+	$line =~ s/posProcessAlignment:/posProcessAlignment :/;
 # print the answer in bold
 #print "$line\n";
-        if ($line =~ /[^\s]: $/) {
-            $ans = shift @answers;
+	if ($line =~ /[^\s]: $/) {
+	    $ans = shift @answers;
 #print "prompt=$line\n";
 #print "ans=$ans\n";
-            $USAGE .= "$bold$ans$unbold\n";
-        }
+	    if (!defined($ans)) {
+		$ians = $#saveanswers - $#answers;
+		print STDERR "application '$application' \@answers[$ians] undefined\n";
+#		$ians = 0;
+#		foreach $sa (@saveanswers) {
+#		    $ians++;
+#		    print STDERR "\$saveanswers[$ians] = '$sa'\n";
+#		}
+		$ans = "\n";
+	    }
+	    $USAGE .= "$bold$ans$unbold\n";
+	}
     }
 
 # have we used all of our answers?
     if ($#answers != -1) {
-        print "WARNING **** 
-application '$application' example $count hasn't used", $#answers+1, "answers\n";
+	print "WARNING **** 
+application '$application' example $count hasn't used ", $#answers+1, " answers\n";
+	print LOG "WARNING **** 
+test $dotest hasn't used ", $#answers+1, " answers\n";
     }
 
 # display any results found in the 'stdout' file
@@ -371,7 +442,7 @@ application '$application' example $count hasn't used", $#answers+1, "answers\n"
 ###################################################################
 
 # If the command line of answers contain tembl, tsw etc.
-# add a command about these being test databases.
+# add a comment about these being test databases.
 # only add this comment once
     $I = $testdbcomment;
 
@@ -383,49 +454,48 @@ application '$application' example $count hasn't used", $#answers+1, "answers\n"
 #print "input file=$file\n";
 
 # if this some sort of binary file?
-        if (checkBinary("$dir/$file")) {
-
-            $I .= $p . "<h3>File: $file</h3>\n";
-            $I .= $p . "This file contains non-printing characters and so cannot be displayed here.\n";
+	if (checkBinary("$dir/$file")) {
+	    $I .= $p . "<h3>File: $file</h3>\n";
+	    $I .= $p . "This file contains non-printing characters and so cannot be displayed here.\n";
 
 # normal file that can be displayed
-        } else {
+	}
+	else {
 
 # has the name has been used before
-            if (! grep /^$file$/, @inputfilesshown) { 
-                push @inputfilesshown, $file;
+	    if (! grep /^$file$/, @inputfilesshown) { 
+		push @inputfilesshown, $file;
 
 # no - contruct new display of file
 # add example number to the list of examples that use this file
-                $I .= displayFile($file, "$dir/$file", $inputcolour);
-            }
-        }
+		$I .= displayFile($file, "$dir/$file", $inputcolour);
+	    }
+	}
     }
 
 # the @inusas list of inputs are possible USAs, but have not been checked.
 # see if they have a ':' in them and display using entret.
 # If it has an '*' then ignore it,
     foreach $f (@inusas) {
-        if ($f =~ /\:/ && $f !~ /\*/ && $f !~ /http\:/) {
+	if ($f =~ /\:/ && $f !~ /\*/ && $f !~ /http\:/) {
 # has the name has been used before
-            if (! grep /^$f$/, @inputfilesshown) { 
-                push @inputfilesshown, $f;
-
-                $I .= displayEntry($f, $inputcolour);
-            }
-        }
+	    if (! grep /^$f$/, @inputfilesshown) { 
+		push @inputfilesshown, $f;
+		$I .= displayEntry($f, $inputcolour);
+	    }
+	}
     }
 
 
 # If any new files were output for this example, 
     if (length $I) {
-        $INPUT .= qq|\n<a name="input.$count"></a>\n<h3>Input files for usage example |;
-        if ($count > 1) {$INPUT .= "$count";}
-        $INPUT .= "</h3>\n";
-        $INPUT .= $I;
+	$INPUT .= qq|\n<a name="input.$count"></a>\n<h3>Input files for usage example |;
+	if ($count > 1) {$INPUT .= "$count";}
+	$INPUT .= "</h3>\n";
+	$INPUT .= $I;
 
 # add a link from the usage
-        $USAGE .= qq|<a href="#input.$count">Go to the input files for this example</a><br>|;
+	$USAGE .= qq|<a href="#input.$count">Go to the input files for this example</a><br>|;
     }
 
 
@@ -443,81 +513,82 @@ application '$application' example $count hasn't used", $#answers+1, "answers\n"
     foreach $path (@outfiles) {
 #print "output file=$path\n";
 
-        $file = basename($path);
+	$file = basename($path);
 
 # if this a .gif, .ps or .png graphics file?
-        if ($file =~ /\.gif$|\.ps$|\.png$/) {
+	if ($file =~ /\.gif$|\.ps$|\.png$/) {
 
 # convert .ps file to gif
-            $giffile = "";
-            $origfile = $file;
-            if ($file =~ /\.ps$/) {
-                $giffile = $file;
-                $giffile =~ s/\.ps/.gif/;
+	    $giffile = "";
+	    $origfile = $file;
+	    if ($file =~ /\.ps$/) {
+		$giffile = $file;
+		$giffile =~ s/\.ps/.gif/;
 # add -delay to see the first page of an animated gif for 10 mins
-		system("2>&1 /usr/local/bin/convert -delay 65535 -rotate '-90<' $path $giffile >/dev/null");
-                $file = $giffile;
-                $path = $giffile;
-            }
+		system("2>&1 /sw/arch/bin/convert -delay 65535 -rotate '-90<' $path $giffile >/dev/null");
+		$file = $giffile;
+		$path = $giffile;
+	    }
 
 # rename file to be unique - application name . example count . given file name
 	    $newfile = "$application.$count.$file";
-            system("cp $path $docdir/$newfile");
-            chmod 0664, "$docdir/$newfile";
+	    system("cp $path $docdir/$newfile");
+	    chmod 0664, "$docdir/$newfile";
 
 # tidy up
-            if ($giffile ne "") {
-                unlink $giffile;
-            }
+	    if ($giffile ne "") {
+		unlink $giffile;
+	    }
 
 # display the graphics file
-            $O .= $p . "<h3>Graphics File: $origfile</h3>\n";
-            $O .= $p . qq|<img src="$newfile" alt="[$application results]">\n|;
+	    $O .= $p . "<h3>Graphics File: $origfile</h3>\n";
+	    $O .= $p . qq|<img src="$newfile" alt="[$application results]">\n|;
 
 # if this some other binary file?
-        } elsif (checkBinary($path)) {
-
-            $O .= $p . "<h3>File: $file</h3>\n";
-            $O .= $p . "This file contains non-printing characters and so cannot be displayed here.\n";
+	}
+	elsif (checkBinary($path)) {
+	    $O .= $p . "<h3>File: $file</h3>\n";
+	    $O .= $p . "This file contains non-printing characters and so cannot be displayed here.\n";
 
 # normal file that can be displayed
-        } else {
+	}
+	else {
 
 # has the name has been used before (match to end of path in @outputfilesshown)
-            @o = grep /$file$/, @outputfilesshown;
-            if ($#o == -1) { 
-                push @outputfilesshown, $path;
+	    @o = grep /$file$/, @outputfilesshown;
+	    if ($#o == -1) { 
+		push @outputfilesshown, $path;
 
 # no - contruct new display of file
 #print "displaying $file\n";
-                $O .= displayFile($file, $path, $outputcolour);
-            } else {
+		$O .= displayFile($file, $path, $outputcolour);
+	    }
+	    else {
 # do a diff of the two files
-                $ofile = pop @o;
-                system ("diff  $ofile $path> diff.tmp");
-                if ( -s "diff.tmp" ) {
+		$ofile = pop @o;
+		system ("diff  $ofile $path> diff.tmp");
+		if ( -s "diff.tmp" ) {
 # it is a different file
-                    $O .= displayFile($file, $path, $outputcolour);
-                }
-                unlink "diff.tmp";
-            }
-        }
+		    $O .= displayFile($file, $path, $outputcolour);
+		}
+		unlink "diff.tmp";
+	    }
+	}
     }
 
 # If any new files were output for this example, 
     if (length $O) {
-        $OUTPUT .= qq|\n<a name="output.$count"></a>\n<h3>Output files for usage example |;
-        if ($count > 1) {$OUTPUT .= "$count";}
-        $OUTPUT .= "</h3>\n";
-        $OUTPUT .= $O;
+	$OUTPUT .= qq|\n<a name="output.$count"></a>\n<h3>Output files for usage example |;
+	if ($count > 1) {$OUTPUT .= "$count";}
+	$OUTPUT .= "</h3>\n";
+	$OUTPUT .= $O;
 
 # add a link from the usage
-        $USAGE .= qq|<a href="#output.$count">Go to the output files for this example</a>$p|;
+	$USAGE .= qq|<a href="#output.$count">Go to the output files for this example</a>$p|;
     }
 
 # force a blank line to be at the end of the usage
     $USAGE .= "$p\n";
-
 }
 
 ###################################################################
@@ -533,6 +604,13 @@ writeOutput($OUTPUT);
 #print OUT "OUTPUT = \n$OUTPUT";
 #close(OUT);
 
+foreach $dotest (@dirs) {
+    if ($testok{$dotest}) {
+	system ("rm -rf $dotest");
+    }
+}
+
+close LOG;
 exit(0);
 
 ###################################################################
@@ -556,7 +634,7 @@ sub errorexit {
     writeUsage($usage);
     writeInput($input);
     writeOutput($output);
-
+    
     print "$msg\n";
     exit 1;
 }
@@ -625,14 +703,15 @@ sub displayEntry {
 
 # if the 'file name' contains 'http:' then ignore it :-)
     if ($usa =~ /http\:/) {
-      return $res;
+	return $res;
     }
 
 # if the USA has a single ':', use entret, else it is a file and we use seqret
     if ($usa !~ /\:\:/ && $usa =~ /\:/) {
-       system ("entret $usa z.z -auto");
-    } elsif ($usa =~ /\:\:/) {
-       system ("seqret $usa z.z -auto");
+	system ("entret $usa z.z -auto");
+    }
+    elsif ($usa =~ /\:\:/) {
+	system ("seqret $usa z.z -auto");
     }
 
     $res = displayFile($usa, "z.z", $colour);
@@ -663,14 +742,15 @@ sub displayFile {
 
 # if the 'file name' contains 'http:' then ignore it :-)
     if ($file =~ /http\:/) {
-      return $result;
+	return $result;
     }
 
 # if the file has the name 'z.z' (used by displayEntry) then say in the
 # title that it is a database entry rather than a file
     if ($path eq "z.z") {
         $result = $p . "<h3>Database entry: $file</h3>\n";
-    } else {
+    }
+    else {
         $result = $p . "<h3>File: $file</h3>\n";
     }
 
@@ -704,8 +784,8 @@ sub displayFile {
         for ($count = $#lines - $MaxLines/2; $count <= $#lines; $count++) {
             $result .= $lines[$count];
         }
-
-    } else {
+    }
+    else {
         $result .= join "", @lines;
     }
 
