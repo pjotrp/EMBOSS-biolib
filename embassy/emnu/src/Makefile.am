@@ -2,8 +2,6 @@
 
 bin_PROGRAMS = emnu
 
-FLAGS=
-
 INCLUDES = -I../../../plplot -I../../../nucleus -I../../../ajax
 
 if ISSHARED
@@ -16,7 +14,7 @@ endif
 
 emnu_SOURCES = emnu.c 
 
-LDADD = ../../../plplot/libplplot.la ../../../ajax/libajax.la ../../../nucleus/libnucleus.la -lmenu -lform $(XLIB)
+LDADD = ../../../nucleus/libnucleus.la ../../../ajax/libajax.la ../../../plplot/libplplot.la -lmenu -lform $(XLIB)
 
 
 

@@ -3,8 +3,6 @@
 
 bin_PROGRAMS = topo
 
-FLAGS=-lX11
-
 INCLUDES = -I../h -I../../../ajax -I../../../plplot
 
 
@@ -21,6 +19,6 @@ topo_SOURCES = topo.c
 
 noinst_HEADERS = common.h
 
-LDADD = ../../../plplot/libplplot.la ../../../ajax/libajax.la $(XLIB)
+LDADD = ../../../nucleus/libnucleus.la ../../../ajax/libajax.la ../../../plplot/libplplot.la $(XLIB)
 
 

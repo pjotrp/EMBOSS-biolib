@@ -3,8 +3,6 @@
 
 bin_PROGRAMS = mse
 
-FLAGS=-lX11
-
 INCLUDES = -I../h -I../../../ajax
 
 if ISSHARED
@@ -17,4 +15,4 @@ endif
 
 mse_SOURCES = mse.c 
 
-LDADD = ../ckit/libckit.la ../../../plplot/libplplot.la ../../../ajax/libajax.la $(XLIB)
+LDADD = ../ckit/libckit.la ../../../nucleus/libnucleus.la ../../../ajax/libajax.la ../../../plplot/libplplot.la $(XLIB)

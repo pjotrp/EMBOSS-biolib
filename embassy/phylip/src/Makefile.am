@@ -43,4 +43,4 @@ eseqboot_SOURCES = seqboot.c
 eneighbor_SOURCES = neighbor.c
 
 
-LDADD = ../../../plplot/libplplot.la ../../../ajax/libajax.la $(XLIB)
+LDADD = ../../../nucleus/libnucleus.la ../../../ajax/libajax.la ../../../plplot/libplplot.la $(XLIB)

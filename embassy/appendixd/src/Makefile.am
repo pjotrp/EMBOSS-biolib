@@ -3,8 +3,6 @@
 
 bin_PROGRAMS = crystalball
 
-FLAGS=
-
 INCLUDES = -I../../../nucleus -I../../../ajax -I../../../plplot
 
 
@@ -19,7 +17,7 @@ endif
 
 crystalball_SOURCES = crystalball.c 
 
-LDADD = ../../../plplot/libplplot.la ../../../ajax/libajax.la ../../../nucleus/libnucleus.la  $(XLIB)
+LDADD = ../../../nucleus/libnucleus.la ../../../ajax/libajax.la ../../../plplot/libplplot.la $(XLIB)
 
 
 
