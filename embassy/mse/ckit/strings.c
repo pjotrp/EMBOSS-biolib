@@ -17,7 +17,7 @@
    char  *StrCollapse(char *String);
    char  *StrCompress(char *String);
    char  *StrIndex(char *Pattern, char *String);
-Boolean  StrIsBlank(char *String);
+Boolean  StrIsBlank(const char *String);
    char  *StrToLower(char *String );
    char  *StrToUpper(char *String );
    char  *StrChange(char *String, char Before, char After);
@@ -157,7 +157,7 @@ char *pPos, *sPos;
 **
 *****************************************************************************/
 
-Boolean StrIsBlank(char *String )
+Boolean StrIsBlank(const char *String )
 {
 	while ( *String )
 	  if ( isspace((int)*String++) == 0 ) return(0);

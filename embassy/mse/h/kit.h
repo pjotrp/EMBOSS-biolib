@@ -78,7 +78,7 @@ extern    char *NextToken(char *string, char *cPos, char *token, char *sep);
 extern    char *StrCollapse(char *string);
 extern    char *StrCompress(char *string);
 extern    char *StrIndex(char *pattern, char *string);
-extern Boolean  StrIsBlank(char *string);
+extern Boolean  StrIsBlank(const char *string);
 extern    char *StrToLower(char *string );
 extern    char *StrToUpper(char *string );
 extern    char *StrChange(char *string, char before, char after);

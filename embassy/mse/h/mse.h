@@ -222,13 +222,13 @@ void DoFind(int Start, int Finish, char *Pattern);
 void DoHelp(int Start);
 void DoRedraw(void);
 void CleanUp(void);
-void ShowText(char *OneLine);
+void ShowText(const char *OneLine);
 void DrawScale(int Row, int Col, int Width, int Divs, int Offset);
 void NumberScale(int Row, int Col, int Width, int Divs, int Offset, int Start, int Step);
 SeqSpec *Get_SeqSpec(char *Line, SeqSpec *Spec, char *Prompt, char *DCLSymbol);
 int Get_Integer(char *Prompt, int Val, int Low, int High);
 void MakeScreen(void);
-void ShowError(char *errMsg);
+void ShowError(const char *errMsg);
 void ToInternal(int strand, SeqEntry *SeqIn);
 void FromInternal(int strand, SeqEntry *SeqOut);
 /* End of Include File for MSE */

@@ -118,6 +118,7 @@ void DoSave(char *FName, AjPSeqout outseq)
   }    
   for(i=1;i<NOS && OkToEdit[i]; i++){
     seqnew = ajSeqNewC(Seq[i].Mem, Seq[i].Name);
+    ajSeqAssEntryC(seqnew, Seq[i].Name);
     ajSeqAssDescC(seqnew, Seq[i].Desc);
     ajSeqAllWrite(myoutseq, seqnew);
     ajSeqDel(&seqnew);
@@ -994,7 +995,7 @@ Boolean ReDoSeqs, Scroll;
 	}
 
 /*
-** (7) Redraw the Sequence bars, postion the global cursor if need be.
+** (7) Redraw the Sequence bars, position the global cursor if need be.
 */
 
 	if ( Scroll ) {
@@ -2495,61 +2496,71 @@ void DoWrite( int Start, int Finish, char *FName )
 
 {
 
-int s, f;
-char OneLine[132], OutSpec[132];
-char *sChar, fChar;
+    int s, f;
+    AjPStr OneLine=NULL;
+    char *sChar, fChar;
 
-SeqEntry *SeqOut;
+    AjPSeq seqnew;
+    AjPStr ajname;
+    AjPSeqout myoutseq;
 
-/*-------------------------------------------*/
+    ajDebug("DoWrite FName '%s' Seq.Name '%s'\n",
+	    FName, Seq[Strand].Name);
 
-	if ( !OkToEdit[Strand] ) {
-	  ShowError("Can't WRITE out this sequence. No strand on this line.");
-	  return;
-	}
+    /*-------------------------------------------*/
 
-	DoName(FName);
-	strcpy(OutSpec,Seq[Strand].Name);
+    if ( !OkToEdit[Strand] ) {
+	ShowError("Can't WRITE out this sequence. No strand on this line.");
+	return;
+    }
 
-	s = Start;
-	f = Finish;
-	if ( s == NOADDR ) s = 1;
-	if ( f == NOADDR ) f = Seq[Strand].Length;
-	if ( f > Seq[Strand].Length ) f = Seq[Strand].Length;
-	if ( s > f ) {
-	  ShowError("Start position exceeds finish position.");
-	  return;
-	}
-	if ( s<1 || f<1 ) {
-	   ShowError("Negative sequence postition given");
-	   return;
-	}
+    s = Start;
+    f = Finish;
+    if ( s == NOADDR ) s = 1;
+    if ( f == NOADDR ) f = Seq[Strand].Length;
+    if ( f > Seq[Strand].Length ) f = Seq[Strand].Length;
+    if ( s > f ) {
+	ShowError("Start position exceeds finish position.");
+	return;
+    }
+    if ( s<1 || f<1 ) {
+	ShowError("Negative sequence position given");
+	return;
+    }
 
-	fChar = Seq[Strand].Mem[f];
-	Seq[Strand].Mem[f] = EOS;
+    fChar = Seq[Strand].Mem[f];
+    Seq[Strand].Mem[f] = EOS;
 
-        Seq[Strand].Length = f-s+1;
+    Seq[Strand].Length = f-s+1;
 
 
-	sChar = Seq[Strand].Mem;
-	Seq[Strand].Mem  = &(Seq[Strand].Mem[s-1]);
+    sChar = Seq[Strand].Mem;
+    Seq[Strand].Mem  = &(Seq[Strand].Mem[s-1]);
 
-	SeqOut = NewSeqEntry();
-	FromInternal(Strand, SeqOut);
+    ajname = ajStrNewC(FName);
 
-	WriteSeq(OutSpec, SeqOut, Seq[Strand].Format);
+    myoutseq = ajSeqoutNew();
+    myoutseq->Format = DEFAULTFORMAT;
+    ajSeqFileNewOut(myoutseq, ajname);
 
-	Seq[Strand].Mem  = sChar;
-	Seq[Strand].Mem[f] = fChar;
+    seqnew = ajSeqNewC(Seq[Strand].Mem, Seq[Strand].Name);
+    ajSeqAssEntryC(seqnew, Seq[Strand].Name);
+    ajSeqAssDescC(seqnew, Seq[Strand].Desc);
+    ajSeqWrite(myoutseq, seqnew);
 
-	Seq[Strand].IsUser = 1;
-	Seq[Strand].Modified = 0;
-	ReDoBar[Strand] = 1;
+    Seq[Strand].Mem  = sChar;
+    Seq[Strand].Mem[f] = fChar;
 
-	/* delete SeqOut */
+    Seq[Strand].IsUser = 1;
+    Seq[Strand].Modified = 0;
+    ReDoBar[Strand] = 1;
 
-	sprintf(OneLine," \"%s\",  %d residues written.", OutSpec, f-s+1);
-	ShowError(OneLine);
+    ajFmtPrintS(&OneLine," \"%s\",  %d residues written to %F.",
+	    Seq[Strand].Name, f-s+1, myoutseq->File);
+    ShowText(ajStrStr(OneLine));
+
+    ajSeqDel(&seqnew);
+    ajSeqoutDel(&myoutseq);
 
 } /* End of DoWrite */
 
@@ -2561,7 +2572,6 @@ SeqEntry *SeqOut;
 **************************************************************************/
 
 void DoExit( char *FName, AjPSeqout outseq )
-
 {
     int i;
 
@@ -4445,7 +4455,7 @@ void CleanUp()
 **
 ***************************************************************************/
 
-void ShowText(char *OneLine)
+void ShowText(const char *OneLine)
 
 {
 	move(MARK2+4,0);
@@ -4465,7 +4475,7 @@ void ShowText(char *OneLine)
 **
 *****************************************************************************/
 
-void ShowError(char *OneLine)
+void ShowError(const char *OneLine)
 
 {
 	move(MARK2+5, 0);
