@@ -58,6 +58,7 @@ typedef struct AlignSFormat {
 static void    alignConsStats(AjPAlign thys, ajint iali, AjPStr *cons,
 			      ajint* retident, ajint* retsim, ajint* retgap,
 			      ajint* retlen);
+static AlignPData alignData (AjPAlign thys, ajint iali);
 static void    alignDataDel (AlignPData* pthys);
 static void    alignDiff (AjPStr* pmark, AjPStr seq);
 static ajint   alignLen (AjPAlign thys, ajint iali);
@@ -378,8 +379,6 @@ static void alignWriteMark (AjPAlign thys, ajint iali, ajint markx)
 
   ajint maxout = thys->Width+50; /* alignment with plus names+numbers */
 
-  static ajint smin0;
-  static ajint  smin1;
   static AjPStr cons = NULL;
 
   ajint llen = thys->Width;
@@ -431,12 +430,17 @@ static void alignWriteMark (AjPAlign thys, ajint iali, ajint markx)
     ajint smark[4] = {-10000,-10000,-10000,-10000}; /* BIT WEIRD THIS */
     char *seqc0 = NULL;
     char *seqc1 = NULL;
+    AlignPData data;
 
     AjPFile outf = thys->File;
     ajint calcid;
     ajint calcsim;
     ajint calcgap;
     ajint calclen;
+    ajint sbegin0;
+    ajint sbegin1;
+
+    ajDebug("alignWriteMark\n");
 
     for (i=0; i < 3; i++)
     {
@@ -452,6 +456,7 @@ static void alignWriteMark (AjPAlign thys, ajint iali, ajint markx)
 
     seq = alignSeq(thys, 0, iali);
     seq2 = alignSeq(thys, 1, iali);
+    data = alignData(thys, iali);
 
     name0= ajSeqName(seq);
     name1= ajSeqName(seq2);
@@ -461,6 +466,14 @@ static void alignWriteMark (AjPAlign thys, ajint iali, ajint markx)
     n0 = ajSeqLen(seq);
     max0=nc;
     max1=nc;
+    min0=data->Offset[0] + data->Start[0];
+    min1=data->Offset[1] + data->Start[1];
+    sbegin0=data->Start[0];
+    sbegin1=data->Start[1];
+    ioff0=data->Offset[0];
+    ioff1=data->Offset[1];
+
+    ajDebug("min0:%d min1:%d\n", min0, min1);
 
     alignConsStats(thys, iali, &cons, &calcid, &calcgap, &calcsim, &calclen);
     ajAlignSetStats (thys, iali, nc, calcid, calcsim, calcgap, NULL);
@@ -492,8 +505,7 @@ static void alignWriteMark (AjPAlign thys, ajint iali, ajint markx)
        ioff0=smin0-smins;
        ioff1=smin1-smins;
        */
-    ioff0=smin0;
-    ioff1=smin1;
+
 
     if (markx==4)
 	return;
@@ -620,7 +632,7 @@ static void alignWriteMark (AjPAlign thys, ajint iali, ajint markx)
 	    else
 		ll1 = ajTrue;
 
-	    qqoff = ajSeqBegin(seq) - 1 + (ajlong)(ioff0-del0);
+	    qqoff = sbegin0 - 1 + (ajlong)(ioff0-del0);
 	    if (cl0 && qqoff%10 == 9)
 	    {
 		sprintf(&cline[0][i],"%8ld",(long)qqoff+1l);
@@ -639,7 +651,7 @@ static void alignWriteMark (AjPAlign thys, ajint iali, ajint markx)
 		cline[0][i+8]=' ';
 	    }
       
-	    lloff = ajSeqBegin(seq2)-1 + /*loffset +*/ (ajlong)(ioff1-del1);
+	    lloff = sbegin1-1 + /*loffset +*/ (ajlong)(ioff1-del1);
 	    if (cl1 && lloff%10 == 9)
 	    {
 		sprintf(&cline[1][i],"%8ld",(long)lloff+1l);
@@ -820,7 +832,7 @@ static void alignWriteSimple (AjPAlign thys) {
 
     ajDebug ("# AliData [%d] len %d \n", iali, ilen);
     for (iseq=0; iseq < nseq; iseq++) {
-      ipos[iseq]=data->Offset[iseq];
+      ipos[iseq]=data->Offset[iseq] + data->Start[iseq];
       ajDebug ("#   Seq[%d]'%S'\n",
 	       iseq, ajSeqStr(data->Seq[iseq]));
     }
@@ -2090,6 +2102,29 @@ static AjPSeq alignSeq (AjPAlign thys, ajint iseq, ajint iali) {
   AJFREE (pdata);
 
   return data->Seq[iseq];
+}
+
+/* @funcstatic alignData *****************************************************
+**
+** Returns the nth data structure for an alignment
+**
+** @param [r] thys [AjPAlign] Alignment object
+** @param [r] iali [ajint] Alignment number
+** @return [AlignPData] Pointer to the internal alignment structure
+******************************************************************************/
+
+static AlignPData alignData (AjPAlign thys, ajint iali) {
+
+  AlignPData* pdata;
+  AlignPData data;
+  ajint nali;
+  
+  nali = ajListToArray (thys->Data, (void***) &pdata);
+  data = pdata[iali];
+
+  AJFREE (pdata);
+
+  return data;
 }
 
 /* @funcstatic alignLen ******************************************************
