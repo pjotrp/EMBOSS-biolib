@@ -5403,7 +5403,7 @@ FC = 1
 FP /^Created dottup1.dat\n/
 FI dottup1.dat
 FC = 2283
-FP /^Line x1 5250.000000 y1 394.000000 x2 5261.000000 y2 405.000000 colour 0\n/
+FP /^Line x1 5287.000000 y1 624.000000 x2 5298.000000 y2 635.000000 colour 0\n/
 FI stderr
 FC = 1
 FP 0 /Warning: /
@@ -8622,7 +8622,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI eclac.remap
-FZ = 1838
+FZ = 1848
 FP /^\s+Hin6I\s+2\s+HinP1I,HspAI\n/
 //
 
@@ -8647,7 +8647,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI eclac.remap
-FZ = 2047
+FZ = 2057
 FP /^\s+TaqI\s+1\s+\n/
 //
 
@@ -8669,7 +8669,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI eclac.remap
-FZ = 1919
+FZ = 1929
 FP /^\s+Hin6I\s+2\s+HinP1I,HspAI\n/
 //
 
@@ -8688,13 +8688,12 @@ FP 0 /Error: /
 FP 0 /Died: /
 FI hsfau.restover
 FZ = 1122
-FP /^# Number of hits with any overlap: 53\n/
+FP /^# Number of hits with any overlap: 54\n/
 FP /^\s+11\s+TaqI\s+TCGA\s+11\s+13\s+\n/
 //
 
 ID restrict-ex
 AP restrict
-## split export EMBOSS_DATA=../rebaseextract-keep/ into two statements
 PP EMBOSS_DATA=../rebaseextract-keep/
 PP export EMBOSS_DATA
 IN tembl:hsfau
@@ -8716,7 +8715,6 @@ UC This gives the lengths of the restriction fragments produced by
 UC cutting with all of the specified enzymes.
 AP restrict
 CL -fragments
-## split export EMBOSS_DATA=../rebaseextract-keep/ into two statements
 PP EMBOSS_DATA=../rebaseextract-keep/
 PP export EMBOSS_DATA
 IN tembl:hsfau
@@ -8739,7 +8737,6 @@ UC This gives the lengths of the restriction fragments created by
 UC cutting with just one of each of the specified enzymes in turn.
 AP restrict
 CL -solofragment
-## split export EMBOSS_DATA=../rebaseextract-keep/ into two statements
 PP EMBOSS_DATA=../rebaseextract-keep/
 PP export EMBOSS_DATA
 IN tembl:hsfau
@@ -8755,6 +8752,26 @@ FI hsfau.restrict
 FP /^\s+11\s+14\s+TaqI\s+TCGA\s+11\s+13\s+[.]\s+[.]\n/
 FP /^\s+125\s+135\s+Hin4I\s+GAYNNNNNVTC\s+116\s+111\s+148\s+143\n/
 FP /^#\s+3\s+13\s+25\s+33\s+37\s+114/
+//
+
+ID restrict-nonpal
+UC Tests non-palindromic sites
+AP restrict
+CL -enzymes BseYI
+PP EMBOSS_DATA=../rebaseextract-keep/
+PP export EMBOSS_DATA
+IN asis:GCTGGGTTTCCCAGC 
+IN
+IN
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI asis.restrict
+FP /^\s+6\s+1\s+BseYI\s+CCCAGC\s+1\s+5\s+[.]\s+[.]\n/
+FP /^\s+10\s+15\s+BseYI\s+\CCCAGC\s+10\s+14\s+[.]\s+[.]\n/
 //
 
 ID revseq-ex
@@ -12895,6 +12912,25 @@ FI ach2_drome.sig
 FP /^[(]1[)] Score 13\.739 length 13 at residues 29->41\n/
 FP /^ Sequence: LLVLLLLCETVQA\n/
 FP 9 /^ Sequence: /
+//
+
+ID sigcleave-multi
+AP sigcleave
+IN tsw:a*
+IN
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI act1_fugru.sig
+FP /^[(]1[)] Score 13\.739 length 13 at residues 29->41\n/
+FP /^ Sequence: LLVLLLLCETVQA\n/
+FP 25 /^ Sequence: /
+FP 2 /^# No scores over 3.50\n/
+FP 12 /^# Reporting scores over 3.50\n/
+FP 12 /^# Sequence: /
 //
 
 ID silent-ex
