@@ -158,10 +158,14 @@ static AjBool  siggen_ScoreNcon(AjPScopalg alg, AjPScorealg *scores,
 static AjBool  siggen_ScoreCcon(AjPScopalg alg, AjPScorealg *scores,
 				AjPCmap *cmaps, 
 				AjPInt2d seq_pos);
+/*
 static AjBool  siggen_ScoreNCCon(AjPScopalg alg, AjPScorealg *scores,
 				 AjPCmap *cmaps,  
 				 AjPInt2d seq_pos);
+*/
+/*
 static AjBool  siggen_ScoreCombined(AjPScorealg *scores);
+*/
 static AjPSignature  siggen_SigSelect(AjPScopalg alg, AjPScorealg scores, 
 				      AjPInt2d seq_pos, ajint sig_sparse);
 static AjBool siggen_CalcSeqpos(AjPScopalg alg, AjPInt2d *seq_pos);
@@ -169,9 +173,11 @@ static AjBool siggen_ScoreAlignment(AjPScorealg *scores, AjPScopalg alg,
 				    AjPCmap *cmaps, 
 				    AjPMatrixf  mat, AjBool *ace,
 				    AjPInt2d seq_pos);
+/*
 static AjBool  siggen_ScoreNcon_Filter(AjPScopalg alg, AjPScorealg *scores,
 				       AjPCmap *cmaps, 
-				       AjPInt2d seq_pos);                  
+				       AjPInt2d seq_pos);
+*/
 static AjBool siggen_Con_Thresh(AjPScopalg alg, AjPScorealg *scores,
 				AjPCmap *cmaps, ajint conthresh,
 				AjBool *ace, AjPInt2d seq_pos);
@@ -1429,14 +1435,14 @@ static AjBool  siggen_ScoreCcon(AjPScopalg alg, AjPScorealg *scores,
  ** @return [AjBool] True on succcess
  ** @@
  ******************************************************************************/
+/*
 static AjBool  siggen_ScoreNCCon(AjPScopalg alg, AjPScorealg *scores,
 				 AjPCmap *cmaps,  
 				 AjPInt2d seq_pos)
 {
-    /*JC added to stop make bitching */
     return ajFalse;
 }
-
+*/
 
 
 
@@ -1453,12 +1459,12 @@ static AjBool  siggen_ScoreNCCon(AjPScopalg alg, AjPScorealg *scores,
  ** @return [AjBool] True on succcess
  ** @@
  *****************************************************************************/
+/*
 static AjBool  siggen_ScoreCombined(AjPScorealg *scores)
 {
-    /*JC added to stop make bitching */
     return ajFalse;
 }
-
+*/
 
 
 
