@@ -109,7 +109,8 @@ AjPFile ajFileNewInPipe (const AjPStr name) {
 
   AJNEW0(thys);
   (void) ajStrAssS (&tmpname, name);
-  (void) ajStrTrim (&tmpname, -1);
+  if (ajStrChar(tmpname, -1) == '|')	/* pipe character at end */
+    (void) ajStrTrim (&tmpname, -1);
   if (pipe(pipefds) < 0)
     ajFatal("pipe create failed");
   pid = fork();  /* negative return indicates failure */
@@ -155,7 +156,7 @@ AjPFile ajFileNewInPipe (const AjPStr name) {
 **
 ** Creates a new file object to read a named file.
 **
-** If the filename begins with a pipe character then a pipe is opened
+** If the filename ends with a pipe character then a pipe is opened
 ** using ajFileNewInPipe.
 **
 ** @param [r] name [const AjPStr] File name.
