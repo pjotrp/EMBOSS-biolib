@@ -1,4 +1,7 @@
 Version 2.4.0
+        New Jemboss authorising server code. This uses a new set-uid
+	program (jembossctl) to perform tasks as the user.
+
 	New alignment output format "match" for wordmatch, reports the
 	length, sequence names, and range in each sequence.
 
