@@ -45,13 +45,13 @@ import org.apache.soap.rpc.*;
 * Creates a remote file tree which is a drag source & sink
 *
 */
-class RemoteDragTree extends JTree implements DragGestureListener,
+public class RemoteDragTree extends JTree implements DragGestureListener,
                            DragSourceListener, DropTargetListener 
 {
 
   public static DefaultTreeModel model;
-  private EmbreoParams mysettings; 
-  private EmbreoFileRoots froots;
+  private static EmbreoParams mysettings; 
+  private static EmbreoFileRoots froots;
 
   private String fs = new String(System.getProperty("file.separator"));
   final Cursor cbusy = new Cursor(Cursor.WAIT_CURSOR);
@@ -361,10 +361,8 @@ class RemoteDragTree extends JTree implements DragGestureListener,
 * @param the file name
 *
 */
-  public void showFilePane(String filename)
+  public static void showFilePane(String filename)
   {
-    setCursor(cbusy);
-
     try
     {
       JFrame ffile = new JFrame(filename);
@@ -383,11 +381,8 @@ class RemoteDragTree extends JTree implements DragGestureListener,
       ffile.setSize(450,400);
       ffile.setVisible(true);
     }
-    catch(EmbreoAuthException eae)
-    {
-      setCursor(cdone);
-    }
-    setCursor(cdone);
+    catch(EmbreoAuthException eae){}
+    
   }
 
 
