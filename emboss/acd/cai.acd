@@ -22,7 +22,6 @@ section: required [
 
   codon: cfile  [
     required: "Y"
-    information: "Codon usage file"
     default: "Eyeastcai.cut"
   ]
 
@@ -35,6 +34,7 @@ section: output [
 
   outfile: outfile  [
     parameter: "Y"
+    standardtype: "cai output"
   ]
 
 endsection: output

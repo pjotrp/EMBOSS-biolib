@@ -50,6 +50,7 @@ section: output [
 
   outfile: outfile  [
     required: "@(!$(plot))"
+    standardtype: "charge output"
   ]
 
 endsection: output

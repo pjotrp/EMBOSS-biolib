@@ -40,10 +40,10 @@ section: output [
 
   outfile: outfile  [
     parameter: "Y"
+    standardtype: "cpgreport output"
   ]
 
   featout: featout  [
-    information: "feature file for output"
     help: "File for output features"
     type: "nucleotide"
   ]

@@ -44,7 +44,7 @@ section: output [
   type: "page"
 ]
 
-  seqout: seqout  [
+  seqout: outseq [
     parameter: "Y"
     type: "protein"
   ]

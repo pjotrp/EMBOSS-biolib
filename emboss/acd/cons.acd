@@ -9,7 +9,7 @@ section: input [
   type: "page"
 ]
 
-  seqset: msf  [
+  seqset: sequence  [
     parameter: "Y"
     type: "gapany"
     help: "File containing a sequence alignment."

@@ -86,6 +86,7 @@ section: output [
     help: "This sets the name of the file holding the report of the
            input sequence name, CpG island parameters and the output details
            of any CpG islands that are found."
+    standardtype: "cpgplot output"
   ]
 
   xygraph: graph  [
@@ -115,7 +116,6 @@ section: output [
   ]
 
   featout: featout  [
-    information: "feature file for output"
     help: "File for output features"
     type: "nucleotide"
   ]

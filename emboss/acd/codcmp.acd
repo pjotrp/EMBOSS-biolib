@@ -27,6 +27,7 @@ section: output [
 
   outfile: outfile  [
     parameter: "Y"
+    standardtype: "codcmp output"
   ]
 
 endsection: output

@@ -8,10 +8,11 @@ section: input [
   type: "page"
 ]
 
-  infile: fname  [
+  infile: infile  [
     parameter: "Y"
     default: ""
-    information: "Name of the ABI trace file"
+    information: "ABI trace file"
+    standardtype: "abi trace"
   ]
 
 endsection: input
@@ -23,7 +24,6 @@ section: output [
 
   seqout: outseq  [
     parameter: "Y"
-    information: "Sequence file"
     type: "dna"
   ]
 

@@ -5,8 +5,10 @@ application: ajtest [
 
 seqall: sequence  [
   parameter: "Y"
+  type: "any"
 ]
 
-seqset: seqset  [
+seqset: bsequence  [
   parameter: "Y"
+  type: "any"
 ]

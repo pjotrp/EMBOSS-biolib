@@ -21,7 +21,6 @@ section: advanced [
 ]
 
   codon: cfile  [
-    information: "Codon usage file"
   ]
 
   boolean: sum  [
@@ -38,6 +37,7 @@ section: output [
 
   outfile: outfile  [
     parameter: "Y"
+    standardtype: "chips output"
   ]
 
 endsection: output

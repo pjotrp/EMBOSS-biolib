@@ -16,8 +16,9 @@ integer: orfml  [
   information: "Minimum ORF Length to report"
 ]
 
-outfile: report  [
+outfile: outfile  [
   parameter: "Y"
+  standardtype: "checktrans output"
 ]
 
 seqoutall: outseq  [

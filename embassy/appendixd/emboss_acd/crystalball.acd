@@ -1,7 +1,7 @@
 application: crystalball [
   documentation: "Answers every drug discovery question you
                   have about this sequence."
-  groups: "AppendixD"
+  groups: "Test"
 ]
 
 section: input [
@@ -11,6 +11,7 @@ section: input [
 
   sequence: sequence  [
     parameter: "Y"
+    type: "any"
   ]
 
 endsection: input
@@ -80,6 +81,7 @@ section: output [
 
   outfile: outfile  [
     parameter: "Y"
+    standardtype: "crystalball output"
   ]
 
 endsection: output

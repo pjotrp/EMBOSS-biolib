@@ -53,6 +53,7 @@ section: output [
   outfile: outfile  [
     optional: "Y"
     default: "banana.profile"
+    standardtype: "banana output"
   ]
 
 endsection: output

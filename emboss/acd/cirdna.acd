@@ -7,10 +7,11 @@ graph: graphout  [
   required: "Y"
 ]
 
-infile: inputfile  [
-  required: "Y"
+infile: infile  [
+  parameter: "Y"
   default: "inputfile"
   information: "input file containing mapping data"
+  standardtype: "lindna mapping commands"
 ]
 
 boolean: ruler  [

@@ -11,9 +11,10 @@ section: input [
   type: "page"
 ]
 
-  infile: inf  [
+  infile: infile  [
     parameter: "Y"
-    prompt: "Full pathname of file aaindex1"
+    information: "Full pathname of file aaindex1"
+    standardtype: "aaindex database"
   ]
 
 endsection: input
