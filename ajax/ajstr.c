@@ -346,6 +346,41 @@ char* ajCharNewLS (size_t size, const AjPStr thys) {
   return cp;
 }
 
+/* #funcstatic ajCharNewBuffC ********************************************
+**
+** OBSOLETE: used in the EMBOSS DBI programs, replaced by ajNewCharC
+**
+** Constructor for a text string from an AjPStr, using a large buffer
+** to reduce the number of mallocs.
+**
+** #param [r] str [char*] Text object
+** #param [r] i [ajint] Length
+** #return [char*] New text string.
+******************************************************************************/
+
+/*
+static char* newcharCI (char* str, ajint i) {
+
+  static char* buffer = NULL;
+  static ajint ipos=0;
+  static ajint imax=0;
+
+  char* ret;
+
+  if ((ipos+i) > imax) {
+    AJCNEW(buffer, 1000000);
+    ajDebug ("newchar need more memory ipos: %d i: %d  imax: %d buffer: %x\n",
+	     ipos, i, imax, buffer);
+    imax = 1000000;
+    ipos = 0;
+  }
+  ret = &buffer[ipos];
+  strncpy (ret, str, i);
+  ipos += i;
+  return ret;
+}
+*/
+
 /* @funcstatic strNewNew ****************************************************
 **
 ** Internal constructor for modifiable AJAX strings. Used by all the string

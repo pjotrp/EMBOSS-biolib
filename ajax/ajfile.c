@@ -781,16 +781,16 @@ ajuint ajFileReadUint (const AjPFile thys, AjBool Bigendian) {
 **
 ** Binary write to an output file object using the C 'fwrite' function.
 **
+** @param [r] thys [const AjPFile] Output file.
 ** @param [w] ptr [const void*] Buffer for output.
 ** @param [r] element_size [size_t] Number of bytes per element.
 ** @param [r] count [size_t] Number of elements to write.
-** @param [r] thys [const AjPFile] Output file.
 ** @return [size_t] Return value from 'fwrite'
 ** @@
 ******************************************************************************/
 
-size_t ajFileWrite (const void* ptr, size_t element_size, size_t count,
-		   const AjPFile thys) {
+size_t ajFileWrite (const AjPFile thys, const void* ptr,
+		    size_t element_size, size_t count) {
   return fwrite (ptr, element_size, count, thys->fp);
 }
 
@@ -3177,4 +3177,95 @@ char* ajFileTempName(const char *dir)
 	return NULL;
 
     return ajStrStr(dt);
+}
+
+/* @func ajFileWriteByte ********************************************
+**
+** Writes a single byte to a binary file
+**
+** @param [r] thys [AjPFile] Output file
+** @param [r] ch [char] Character
+** @return [ajint] Return value from fwrite
+** @@
+******************************************************************************/
+
+ajint ajFileWriteByte (AjPFile thys, char ch) {
+  return fwrite (&ch, 1, 1, ajFileFp(thys));
+}
+
+/* @func ajFileWriteChar ********************************************
+**
+** Writes a text string to a binary file
+**
+** @param [r] thys [AjPFile] Output file
+** @param [r] str [char*] Text string
+** @param [r] len [ajint] Length (padded) to use in the file
+** @return [ajint] Return value from fwrite
+** @@
+******************************************************************************/
+
+ajint ajFileWriteChar (AjPFile thys, char* str, ajint len) {
+  static char buf[256];
+  ajint i = strlen(str);
+
+  strcpy(buf, str);
+  if (i < len)
+    memset (&buf[i], '\0', len-i);
+
+  return fwrite (buf, len, 1, ajFileFp(thys));
+}
+
+/* @func ajFileWriteInt2 ********************************************
+**
+** Writes a 2 byte integer to a binary file, with the correct byte orientation
+**
+** @param [r] thys [AjPFile] Output file
+** @param [r] i [short] Integer
+** @return [ajint] Return value from fwrite
+** @@
+******************************************************************************/
+
+ajint ajFileWriteInt2 (AjPFile thys, short i) {
+  short j = i;
+  if (ajUtilBigendian())ajUtilRev2(&j);
+    
+  return fwrite (&j, 2, 1, ajFileFp(thys));
+}
+
+/* @func ajFileWriteInt4 ********************************************
+**
+** Writes a 4 byte integer to a binary file, with the correct byte orientation
+**
+** @param [r] thys [AjPFile] Output file
+** @param [r] i [ajint] Integer
+** @return [ajint] Return value from fwrite
+** @@
+******************************************************************************/
+
+ajint ajFileWriteInt4 (AjPFile thys, ajint i) {
+  ajint j=i;
+
+  if (ajUtilBigendian())ajUtilRev4(&j);
+  return fwrite (&j, 4, 1, ajFileFp(thys));
+}
+
+/* @func ajFileWriteStr ********************************************
+**
+** Writes a string to a binary file
+**
+** @param [r] thys [AjPFile] Output file
+** @param [r] str [AjPStr] String
+** @param [r] len [ajint] Length (padded) to use in the file
+** @return [ajint] Return value from fwrite
+** @@
+******************************************************************************/
+
+ajint ajFileWriteStr (AjPFile thys, AjPStr str, ajint len) {
+  static char buf[256];
+  ajint i = ajStrLen(str);
+  strcpy(buf, ajStrStr(str));
+  if (i < len)
+    memset (&buf[i], '\0', len-i);
+
+  return fwrite (buf, len, 1, ajFileFp(thys));
 }
