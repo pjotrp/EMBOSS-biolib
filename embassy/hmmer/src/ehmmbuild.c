@@ -12,7 +12,7 @@
  * SRE, Mon Nov 18 12:41:29 1996
  *
  * main() for HMM construction from an alignment.
- * RCS $Id: ehmmbuild.c,v 1.2 2004/03/11 17:57:30 rice Exp $
+ * RCS $Id: ehmmbuild.c,v 1.3 2004/04/05 15:01:37 rice Exp $
  * Modified for EMBOSS by Alan Bleasby (ISMB 2001)
  */
 
@@ -188,7 +188,6 @@ int main(int argc, char **argv)
     AjPFile  rsname=NULL;
     AjPFile  cfname=NULL;
     AjBool  ajappend=ajFalse;
-    AjBool  ajforce=ajFalse;
     AjBool  ajamino=ajFalse;
     AjBool  ajnucleic=ajFalse;
     AjBool  ajbinary=ajFalse;
@@ -258,7 +257,6 @@ int main(int argc, char **argv)
     ajFileClose(&rsname);
 
     ajappend = ajAcdGetBool("append");
-    ajforce  = ajAcdGetBool("force");
   
     if(ajappend)
 	do_append=TRUE;
