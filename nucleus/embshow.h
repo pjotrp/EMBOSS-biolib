@@ -104,7 +104,7 @@ typedef struct EmbSShow {
 ******************************************************************************/
 
 typedef struct EmbSShowInfo {
-  enum ShowEValtype type;
+  int type;
   void * info;
 } EmbOShowInfo;
 #define EmbPShowInfo EmbOShowInfo*
