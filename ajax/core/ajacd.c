@@ -788,10 +788,10 @@ static AcdOExpList explist[] =
     {"or", acdExpOr},
     {"and", acdExpAnd},
     {"cond", acdExpCond},
+    {"oneof", acdExpOneof},
     {"case", acdExpCase},
     {"filename", acdExpFilename},
     {"exists", acdExpExists},
-    {"oneof", acdExpOneof},
     {NULL, NULL}
 };
 
@@ -15221,7 +15221,6 @@ static AjBool acdFunResolve(AjPStr* result, const AjPStr str)
 
     for(i = 0; explist[i].Name; i++)
     {
-	/* ajDebug("try using '%s'\n", explist[i].Name); */
 	/* Calling funclist acdexplist() */
 
 	if(explist[i].Func(result, str))
@@ -16112,12 +16111,11 @@ static AjBool acdExpOneof(AjPStr* result, const AjPStr str)
     static AjPRegexp caseexp = NULL;
     static AjPRegexp listexp = NULL;
     
-    if(!caseexp)		    /* value = (case : value,  ...) */
+    if(!caseexp)		    /* value = ( vala | valb | valc} ) */
 	caseexp = ajRegCompC("^[ \t]*([A-Za-z0-9+-]+)[ \t]*"
 			     "([!=])[=][ \t]*[{]");
     if(!listexp)			/* case : value */
-	listexp = ajRegCompC("^[ \t]*([^| \t]+)[ \t]*[|]+"
-			     "[ \t]*([^| \t,]+)[ \t,]*[}]");
+	listexp = ajRegCompC("^[ \t]*([^| \t]+)[ \t]*[|}]");
     
     if(ajRegExec(caseexp, str))
     {
