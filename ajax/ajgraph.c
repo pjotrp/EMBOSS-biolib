@@ -1054,7 +1054,7 @@ void ajGraphOpenWin(AjPGraph thys, float xmin, float xmax,
 
 	if( ajStrLen(thys->plplot->title) <=1)
 	{
-	    ajtime = ajTimeToday();
+	    ajtime = ajTimeTodayF("day");
 	    ajFmtPrintAppS(&thys->plplot->title,"%s (%D)",
 			   ajAcdProgram(),ajtime);
 	    ajTimeDel(&ajtime);
