@@ -1,4 +1,4 @@
-/* @source domaine application
+/* @source domainer application
 **
 ** Extract domains from clean PDB files
 ** @author: Copyright (C) Jon Ison (jison@hgmp.mrc.ac.uk)
@@ -19,7 +19,7 @@
 ** You should have received a copy of the GNU General Public License
 ** along with this program; if not, write to the Free Software
 ** Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-******************************************************************************/
+******************************************************************************
 ** 
 ** 
 ** 
@@ -249,7 +249,7 @@ int main(int argc, char **argv)
 	ajStrAss(&pdbscop_name, pdbscop_path);
 	ajStrApp(&pdbscop_name, scop->Entry);
 	ajStrToLower(&pdbscop_name);
-	ajStrAppC(&pdbscop_name, pdb_extn);
+	ajStrAppC(&pdbscop_name, ajStrStr(pdb_extn));
 	if(!(pdbscop_outf=ajFileNewOut(pdbscop_name)))
 	{
 	    ajFmtPrintS(&msg, "Could not open for writing pdbscop file %S", 
