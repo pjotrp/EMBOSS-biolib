@@ -69,6 +69,7 @@
 #define AJNOTFOUND -999
 
 #define UIDLIMIT 0              /* Temporarily zero for testing */
+#define GIDLIMIT 0
 
 static void empty_core_dump(void);
 #ifndef NO_AUTH
@@ -816,9 +817,16 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_fork
     AjPStr outstd=NULL;
     AjPStr errstd=NULL;
     int retval=0;
-    
 
-    if(uid<UIDLIMIT || gid<UIDLIMIT)
+
+/*  To be uncommented later
+    if(!uid || !gid)
+	return (unsigned char)ajFalse;
+*/
+
+    if(uid<UIDLIMIT)
+	return (unsigned char)ajFalse;
+    if(gid<GIDLIMIT)
 	return (unsigned char)ajFalse;
 
     AJCNEW0(buf,AJ_OUTBUF+1);
@@ -873,7 +881,8 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_fork
 	    exit(-1);
 	if(setuid(uid)==-1)
 	    exit(-1);
-	chdir(ajStrStr(dir));
+	if(chdir(ajStrStr(dir))==-1)
+	    exit(-1);
 	if(execve(ajStrStr(prog),argp,envp) == -1)
 	    exit(-1);
     }
