@@ -981,7 +981,7 @@ static void namListParse (AjPList listwords, AjPList listcount,
         {			/* So if keyword type has been set */
 	  if(ajStrChar(curword, 0) == '\'')
 	  {			   /* is there a quote? If so expect the */
-	                           /* same at the end. No ()[] etc yet here*/
+	                           /* same at the end. No ()[] etc here*/
 	    quoteopen = quoteclose = '\'';
 	  }
 	  else if (ajStrChar(curword, 0) == '\"')
@@ -1033,7 +1033,7 @@ static void namListParse (AjPList listwords, AjPList listcount,
         {			/* So if keyword type has been set */
 	  if(ajStrChar(curword, 0) == '\'')
 	  {			   /* is there a quote? If so expect the */
-	                           /* same at the end. No ()[] etc yet here*/
+	                           /* same at the end. No ()[] etc here */
 	    quoteopen = quoteclose = '\'';
 	  }
 	  else if (ajStrChar(curword, 0) == '\"')
