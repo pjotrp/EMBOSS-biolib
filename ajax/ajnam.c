@@ -2310,6 +2310,9 @@ AjBool ajNamSetControl (char* optionName) {
     namDoValid = ajTrue;
     return ajTrue;
   }
+  ajDie("Unknown ajNamSetControl control option '%s'", optionName);
+
+  return ajFalse;
 }
 
 /* @func ajNamUnused **********************************************************
