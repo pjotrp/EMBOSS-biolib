@@ -39,7 +39,7 @@ float: thresh
 	def: 1.0
 ]
 
-infile: vdwf
+string: vdwf
 [ 
 	param: Y
 	prompt: "Name of data file with van der Waals radii"

@@ -174,7 +174,8 @@ int main(ajint argc, char **argv)
     AjPFile    con_outf      =NULL;     /* contact output file pointer */
     AjPFile    logf          =NULL;     /* log file pointer*/
     AjPFile    vdwf          =NULL;     /* van der Waals file pointer*/
-
+    AjPStr     vdwfstr       =NULL;
+    
     AjPPdb     pdb           =NULL;
 
     AjPList    list          =NULL;       
@@ -206,7 +207,7 @@ int main(ajint argc, char **argv)
     con_extn      = ajAcdGetString("conextn");
     logf          = ajAcdGetOutfile("conerrf");
     thresh        = ajAcdGetFloat("thresh");
-    vdwf          = ajAcdGetInfile("vdwf");
+    vdwfstr       = ajAcdGetString("vdwf");
 
 
     /* Check directories*/
@@ -232,6 +233,10 @@ int main(ajint argc, char **argv)
 
 
     /* Allocate and read Vdwall object */
+    ajFileDataNew(vdwfstr,&vdwf);
+    if(!vdwf)
+	ajFatal("Cannot open %S",vdwfstr);
+
     if(!ajXyzVdwallRead(vdwf, &vdw))
 	ajFatal("Error reading vdw radii file\n");
 
@@ -333,7 +338,8 @@ int main(ajint argc, char **argv)
     ajStrDel(&con_name);
     ajStrDel(&msg);
     ajStrDel(&temp);
-
+    ajStrDel(&vdwfstr);
+    
     ajFileClose(&cpdb_inf);
     ajFileClose(&con_outf);
     ajFileClose(&logf);
