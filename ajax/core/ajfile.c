@@ -2524,6 +2524,7 @@ void ajFileBuffStripHtml (const AjPFileBuff thys) {
   AjBool doChunk = ajFalse;
   ajint ichunk;
   ajint chunkSize;
+  ajint iline;
   AjPStr nullLine=NULL;
   AjPStr saveLine=NULL;
   AjPStr hexstr=NULL;
@@ -2533,12 +2534,12 @@ void ajFileBuffStripHtml (const AjPFileBuff thys) {
   httpexp = ajRegCompC("^HTTP/");
   nullexp = ajRegCompC("^\r?\n?$");
   chunkexp = ajRegCompC("^Transfer-Encoding: +chunked");
-  hexexp = ajRegCompC("^([0-9a-fA-F]+)\r?\n?$");
+  hexexp = ajRegCompC("^([0-9a-fA-F]+) *\r?\n?$");
   ncbiexp = ajRegCompC("^Entrez Reports\n$");
   ncbiexp2 = ajRegCompC("^----------------\n$");
   srsdbexp = ajRegCompC("^([A-Za-z0-9_-]+)(:)([A-Za-z0-9_-]+)");
 
-  
+
   plist = thys->Curr;
   i = 0;
 
@@ -2573,6 +2574,8 @@ void ajFileBuffStripHtml (const AjPFileBuff thys) {
     ajStrDel(&chlist->Line);
     plist = chlist = thys->Lines = thys->Curr = chlist->Next;
     if (!ajRegExec(hexexp, chlist->Line)) {
+      ajDebug("Bad chunk (a), expect chunk size got '%S'\n",
+	      chlist->Line);
       ajFatal("Bad chunk data from HTTP server, expect chunk size got '%S'",
 	      chlist->Line);
     }
@@ -2582,46 +2585,86 @@ void ajFileBuffStripHtml (const AjPFileBuff thys) {
     plist = chlist = thys->Lines = thys->Curr = chlist->Next;
     chlast = NULL;
     ichunk = 0;
+    iline = 0;
     while (chunkSize) {
+      iline++;
       /* get the chunk size - zero is the end */
       /* process the chunk */
       ichunk += ajStrLen(chlist->Line);
+
+      ajDebug ("++input line [%d] ichunk=%x:%x:%S",
+	       iline, ichunk, ajStrLen(chlist->Line), chlist->Line);
       if (ichunk >= chunkSize) {
-	if (ichunk == chunkSize) {
-	  ajStrAssC(&saveLine, "");
+	if (ichunk == chunkSize) { /* end-of-chunk at end-of-line */
+	  ajDebug("# ichunk %x == %x chunkSize\n", ichunk, chunkSize);
 	  chlast = chlist;
 	  chlist = chlist->Next;
+	  ajStrAssC(&saveLine, "");
 	}
-	else {
+	else {		   /* end-of-chunk in mid-line, patch up the input */
+	  ajDebug("# ichunk %x >> %x chunkSize\n", ichunk, chunkSize);
+	  ajDebug("join ichunk:%d chunkSize:%d 0..%d\n",
+		  ichunk, chunkSize, -(ichunk-chunkSize));
+	  ajDebug("orig chlist->Line %d '%S'\n",
+		  ajStrLen(chlist->Line), chlist->Line);
 	  ajStrAssSub(&saveLine, chlist->Line, 0, -(ichunk-chunkSize));
 	  ajStrSub(&chlist->Line, -(ichunk-chunkSize), -1);
-	  ajDebug("join saveLine %d '%S' chlist->Line %d '%S'\n",
-		  ajStrLen(saveLine), saveLine,
+	  ajDebug("... saveLine %d '%S'\n",
+		  ajStrLen(saveLine), saveLine);
+	  ajDebug("... chlist->Line %d '%S'\n",
 		  ajStrLen(chlist->Line), chlist->Line);
 	}
-	if (!ajRegExec(nullexp, chlist->Line))
+
+	/* skip a blank line */
+
+	if (!ajRegExec(nullexp, chlist->Line)) {
+	  ajDebug("Bad chunk (b), expect blank line got '%S'",
+		  chlist->Line);
 	  ajFatal("Bad chunk data from HTTP server, expect blank line got '%S'",
 		  chlist->Line);
+	}
 	pdellist = chlist;
 	if (chlast) {
 	  chlast->Next = chlist->Next;
 	  chlist = chlast->Next;
+	  thys->Size--;
 	}
+
+	/** read the next chunk size */
+
 	if (!ajRegExec(hexexp, chlist->Line)) {
+	  ajDebug("Bad chunk (c), expect chunk size got '%S'\n",
+		  chlist->Line);
 	  ajFatal("Bad chunk data from HTTP server, expect chunk size got '%S'",
 		  chlist->Line);
 	}
 	ajRegSubI(hexexp, 1, &hexstr);
 	ajStrToHex(hexstr, &chunkSize);
 	ichunk = 0;
-	ajDebug ("## %4x %S", ichunk, chlist->Line);
+	ajDebug ("## %4x:%S", chunkSize, chlist->Line);
       }
-      if (ajStrLen(saveLine)) {
-	ajStrInsert(&chlist->Line, 0, saveLine);
-	ajStrAssC(&saveLine, "");
+      ajDebug("chlist time saveLine %x len:%d\n",
+	      saveLine, ajStrLen(saveLine));
+      if (saveLine) {
+	if (ajStrLen(saveLine)) { /* preserve the line split by chunksize */
+	  ajStrInsert(&chlist->Line, 0, saveLine);
+	  ajDebug("new chlist->Line '%S'\n", chlist->Line);
+	  chlast = chlist;
+	  chlist = chlist->Next;
+	}
+	else {			/* just a chunksize, skip */
+	  if (chlist && chunkSize) {
+	    chlast->Next = chlist->Next;
+	    chlist = chlast->Next;
+	    thys->Size--;
+	  }
+	}
+	ajStrDel(&saveLine);
       }
-      chlast = chlist;
-      chlist = chlist->Next;
+      else {
+	chlast = chlist;
+	chlist = chlist->Next;
+      }
     }
   }
 
@@ -3121,11 +3164,15 @@ void ajFileBuffTraceFull (const AjPFileBuff thys, size_t nlines,
   line = thys->Lines;
   for (i=1; line && (i <= nlines); i++) {
     if (line == thys->Curr)
-      ajDebug ("*Line %x %d: %8ld <%-20S>\n",
-	       line->Line, i, line->Fpos, line->Line);
+      ajDebug ("*Line %x %d: %5d %5d <%-20S>\n",
+	       line->Line, i,
+	       ajStrLen(line->Line), strlen(ajStrStr(line->Line)),
+	       line->Line);
     else
-      ajDebug (" Line %x %d: %8ld <%-20S>\n",
-	       line->Line, i, line->Fpos, line->Line);
+      ajDebug (" Line %x %d: %5d %5d <%-20S>\n",
+	       line->Line, i,
+	       ajStrLen(line->Line), strlen(ajStrStr(line->Line)),
+	       line->Line);
     line = line->Next;
   }
   line = thys->Free;
