@@ -4848,8 +4848,6 @@ PLFLT *xy1, *xy2;
 char *text;
 
 text = (char *)AJALLOC( 1000*sizeof(char) );
-xy1 = (float *)AJALLOC( 2*sizeof(float) );
-xy2 = (float *)AJALLOC( 2*sizeof(float) );
 
 numchar = strlen(Text);
 for(i=0; i<numchar; i++) {
@@ -4858,10 +4856,11 @@ for(i=0; i<numchar; i++) {
   strcpy(text, Text);
   text[i+1] = '\0';
   ajGraphDrawTextOnLine(xy1[0], xy1[1], xy2[0], xy2[1], &text[i], just);
+  AJFREE(xy1); 
+  AJFREE(xy2); 
+
 }
 AJFREE(text);
-AJFREE(xy1); 
-AJFREE(xy2); 
 }
 
 /* @func ajGraphDrawTextOnCurve *************************************
@@ -4916,15 +4915,18 @@ void ajGraphRectangleOnCurve(PLFLT xcentre, PLFLT ycentre, PLFLT Radius, PLFLT B
   ajGraphPartCircle(xcentre, ycentre, r1Blocks, StartAngle, EndAngle);
   ajGraphPartCircle(xcentre, ycentre, r2Blocks, StartAngle, EndAngle);
   
-  xy1 = (float *)AJALLOC( 2*sizeof(float) );
-  xy2 = (float *)AJALLOC( 2*sizeof(float) );
-  
   xy1 = ajComputeCoord(xcentre, ycentre, r1Blocks, StartAngle);
   xy2 = ajComputeCoord(xcentre, ycentre, r2Blocks, StartAngle);
   ajGraphDrawLine( xy1[0], xy1[1], xy2[0], xy2[1] );
+  AJFREE(xy1);
+  AJFREE(xy2);
   xy1 = ajComputeCoord(xcentre, ycentre, r1Blocks, EndAngle);
   xy2 = ajComputeCoord(xcentre, ycentre, r2Blocks, EndAngle);
   ajGraphDrawLine( xy1[0], xy1[1], xy2[0], xy2[1] );
+  AJFREE(xy1);
+  AJFREE(xy2);
+
+  return;
 }
 
 
