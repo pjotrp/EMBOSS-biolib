@@ -27,8 +27,12 @@ import javax.swing.*;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
 import java.net.URL;
+import org.apache.regexp.*;
 
 import java.util.Hashtable;
+import java.util.Arrays;
+import java.util.Comparator;
+
 import java.awt.event.*;
 import java.io.*;
 import org.emboss.jemboss.parser.ParseAcd;
@@ -598,6 +602,7 @@ public class BuildJembossForm implements ActionListener
           };
         });
 
+        Arrays.sort(pngFiles, new NameComparator());
         for(int i=0;i<pngFiles.length;i++)
         {
           if(pngFiles[i].endsWith(".dat"))
@@ -605,7 +610,9 @@ public class BuildJembossForm implements ActionListener
             Graph2DPlot gp = new Graph2DPlot();
             rscroll = new JScrollPane(gp);
             rscroll.getViewport().setBackground(Color.white);
-            gp.setFileData(new String((byte [])getLocalFile(new File(pngFiles[i]))));
+         
+            gp.setFileData(new String((byte [])getLocalFile(new File(pngFiles[i]))),
+                           pngFiles[i]);
             fresults.add(pngFiles[i],rscroll);
 //          setJMenuBar(gp.getMenuBar(false, this));
           }
@@ -640,7 +647,6 @@ public class BuildJembossForm implements ActionListener
     res.setVisible(true);
   }
 
-  
   /**
   *
   * Set the menu bar based on the title of the
@@ -1202,6 +1208,56 @@ public class BuildJembossForm implements ActionListener
       }
 
     }
+  }
+
+
+  public class NameComparator implements Comparator
+  {
+    public int compare(Object o1, Object o2) 
+    {
+      int obj1 = findInt((String)o1);
+      int obj2 = findInt((String)o2);     
+      if(obj1 < obj2)
+        return -1;
+      else if(obj1 > obj2)
+        return 1;
+      return 0;
+    }
+    
+    public boolean equals(Object obj)
+    {
+      return ((Object)this).equals(obj);
+    } 
+
+    /**
+    *
+    * Find the number in a string expression
+    * @param exp  string expression
+    * @return     number in a string expression or -1 
+    *             if none found
+    *
+    */
+    private int findInt(String exp)
+    {
+
+      RECompiler rec = new RECompiler();
+      try
+      {
+        REProgram  rep = rec.compile("^(.*?)([:digit:]+)");
+        RE regexp = new RE(rep);
+        if(regexp.match(exp))
+        {
+          int ia = (new Integer(regexp.getParen(2))).intValue();
+          return ia;
+        }
+      }
+      catch (RESyntaxException rese)
+      {
+        System.out.println("RESyntaxException ");
+      }
+      return -1;
+    }
+
   }
 
 }
