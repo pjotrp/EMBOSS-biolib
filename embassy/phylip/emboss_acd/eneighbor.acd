@@ -1,6 +1,5 @@
 appl: eneighbor [
-    doc: "estimates phylogenies from distance matrix data using the
-    Neighbor-Joining method or the UPGMA method of clustering"
+    doc: "Phylogenies from distance matrix by N-J or UPGMA method"
     group: "phylip"
    ]
 
