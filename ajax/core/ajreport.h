@@ -33,17 +33,31 @@ typedef struct AjSReport {
   AjPStr Filename;
   AjPStr Extension;
   AjPFile File;
+  AjPList Tagnames;
+  AjPList Tagprints;
+  AjPList Tagtypes;
+  ajint Mintags;
+  AjPStr Header;
+  AjBool Showusa;
 } AjOReport, *AjPReport;
 
 void         ajReportDel (AjPReport* pthys);
-AjBool       ajReportHeadSeq (AjPReport thys, AjPSeq seq);
 AjBool       ajReportOpen (AjPReport thys, AjPStr name);
 AjBool       ajReportFindFormat (AjPStr format, ajint* iformat);
 AjBool       ajReportFormatDefault (AjPStr* pformat);
+ajint        ajReportLists (AjPReport thys, AjPStr** types, AjPStr** names,
+			    AjPStr** prints);
 AjPReport    ajReportNew (void);
+void         ajReportSetHeader (AjPReport thys, AjPStr header);
+void         ajReportSetHeaderC (AjPReport thys, char* header);
+AjBool       ajReportSetTags (AjPReport thys, AjPStr taglist, ajint mintags);
+void         ajReportSetType (AjPReport thys, AjPFeattable ftable, AjPSeq seq);
 void         ajReportTrace (AjPReport thys);
-void         ajReportWrite (AjPReport thys, AjPFeattable ftable);
+AjBool       ajReportValid (AjPReport thys);
+void         ajReportWrite (AjPReport thys, AjPFeattable ftable, AjPSeq seq);
 void         ajReportWriteClose (AjPReport thys);
+void         ajReportWriteHeader (AjPReport thys, AjPFeattable ftable,
+				  AjPSeq seq);
 
 #endif
 
