@@ -34,7 +34,8 @@ import java.util.Hashtable;
 *
 */
 
-public class ParseAcd{
+public class ParseAcd
+{
 
   private Application current;
   private int numofFields = 0;
@@ -209,7 +210,7 @@ public class ParseAcd{
           else if ( ttype == java.io.StreamTokenizer.TT_NUMBER) 
           {
 //           System.out.println(" ATTR " + attr + " NVALUE " + nvalue);
-//           appF[numofFields].setParam(numofParams, attr, nvalue);
+             appF[numofFields].setParam(numofParams, attr, nvalue);
           }
 
         } while (attr != null);
