@@ -2477,7 +2477,7 @@ void ajCharToUpper (char* txt)
 ** Remove excess whitespace from a string
 **
 ** Leading/trailing whitespace removed. Multiple spaces replaced by
-** singles spaces.
+** single spaces.
 **
 ** @param [rw] s [AjPStr *] String to clean.
 ** @return [AjBool] ajTrue if string was reallocated
