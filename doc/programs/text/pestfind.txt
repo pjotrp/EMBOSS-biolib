@@ -224,8 +224,7 @@ SQ   SEQUENCE   477 AA;  53194 MW;  8B5334A77DB9467B CRC64;
    
 Output file format
 
-   pestfind outputs a graph to the specified graphics device. outputs a
-   report format file. The default format is ...
+   pestfind outputs a graph to the specified graphics device.
    
   Output files for usage example
   
