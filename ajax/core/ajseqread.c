@@ -6137,22 +6137,26 @@ void ajSeqQueryDel (AjPSeqQuery* pthis)
     ajDebug("ajSeqQueryDel db:'%S' id:'%S'\n", thys->DbName, thys->Id);
 
     ajStrDel(&thys->DbName);
+    ajStrDel(&thys->DbType);
     ajStrDel(&thys->Id);
     ajStrDel(&thys->Acc);
-    ajStrDel(&thys->Sv);
     ajStrDel(&thys->Des);
-    ajStrDel(&thys->Org);
     ajStrDel(&thys->Key);
+    ajStrDel(&thys->Org);
+    ajStrDel(&thys->Sv);
     ajStrDel(&thys->Method);
     ajStrDel(&thys->Formatstr);
     ajStrDel(&thys->IndexDir);
     ajStrDel(&thys->Directory);
     ajStrDel(&thys->Filename);
-    ajStrDel(&thys->Application);
-    ajStrDel(&thys->QryString);
-
+    ajStrDel(&thys->Exclude);
+    ajStrDel(&thys->DbFields);
+    ajStrDel(&thys->DbProxy);
+    ajStrDel(&thys->DbHttpVer);
     ajStrDel(&thys->Field);
-
+    ajStrDel(&thys->QryString);
+    ajStrDel(&thys->Application);
+ 
     if(thys->QryData)
     {
       if (thys->Access->AccessFree)
