@@ -35,9 +35,9 @@ Show
 
 All		ALw
 Identical	A..
-Non-id		..W
+Non-id		.lW
 Similar		Al.
-Dissimilar	.lW
+Dissimilar	..W
 
 
 
@@ -68,11 +68,11 @@ static void Convert (AjPSeqset seqset, AjPStr *show, AjBool similarcase,
 static void MakeAll (AjPSeq ref, AjPSeq seq, ajint **sub, AjPSeqCvt cvt,
 	AjBool similarcase);
 static void MakeIdentity (AjPSeq ref, AjPSeq seq);
-static void MakeDissimilar (AjPSeq ref, AjPSeq seq, ajint **sub,
+static void MakeNonidentity (AjPSeq ref, AjPSeq seq, ajint **sub,
 	AjPSeqCvt cvt, AjBool similarcase);
 static void MakeSimilar (AjPSeq ref, AjPSeq seq, ajint **sub,
 	AjPSeqCvt cvt, AjBool similarcase);
-static void MakeNonidentity (AjPSeq ref, AjPSeq seq, ajint **sub,
+static void MakeDissimilar (AjPSeq ref, AjPSeq seq, ajint **sub,
 	AjPSeqCvt cvt);
 static void Order(AjPStr *order, AjPSeqset seqset, AjPSeq consensus,
 	ajint nrefseq, ajint **sub, AjPSeqCvt cvt, AjOOrder *aorder);
@@ -310,13 +310,13 @@ static void Convert (AjPSeqset seqset, AjPStr *show, AjBool similarcase,
         MakeIdentity(ref, seq);
         break;
       case 'N':		/* Non-identities */
-        MakeNonidentity (ref, seq, sub, cvt);
+        MakeNonidentity (ref, seq, sub, cvt, similarcase);
         break;
       case 'S':		/* Similarities */
         MakeSimilar (ref, seq, sub, cvt, similarcase);
         break;
       case 'D':		/* Dissimilarities */
-        MakeDissimilar (ref, seq, sub, cvt, similarcase);
+        MakeDissimilar (ref, seq, sub, cvt);
         break;
       default:
         ajFatal("Unknown option for '-show': %S", show[0]);
@@ -410,7 +410,7 @@ static void MakeIdentity (AjPSeq ref, AjPSeq seq)
   }
 }
 
-/* @funcstatic MakeDissimilar ********************************************
+/* @funcstatic MakeNonidentity ********************************************
 **
 ** Convert 'seq' to '.'s where identical to 'ref'
 ** Change case to lowercase where similar as given by scoring matrix.
@@ -425,7 +425,7 @@ static void MakeIdentity (AjPSeq ref, AjPSeq seq)
 ** @@
 ******************************************************************************/
 
-static void MakeDissimilar (AjPSeq ref, AjPSeq seq, ajint **sub,
+static void MakeNonidentity (AjPSeq ref, AjPSeq seq, ajint **sub,
 	AjPSeqCvt cvt, AjBool similarcase)
 {
 	
@@ -520,7 +520,7 @@ static void MakeSimilar (AjPSeq ref, AjPSeq seq, ajint **sub,
 }
 
 
-/* @funcstatic MakeNonidentity ********************************************
+/* @funcstatic MakeDissimilar ********************************************
 **
 ** Convert 'seq' to '.'s where identical or similar to 'ref', as defined by
 ** similarity scoring matrix.
@@ -533,7 +533,7 @@ static void MakeSimilar (AjPSeq ref, AjPSeq seq, ajint **sub,
 ** @@
 ******************************************************************************/
 
-static void MakeNonidentity (AjPSeq ref, AjPSeq seq, ajint **sub,
+static void MakeDissimilar (AjPSeq ref, AjPSeq seq, ajint **sub,
 	AjPSeqCvt cvt)
 {
 	
