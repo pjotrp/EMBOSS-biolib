@@ -4121,10 +4121,12 @@ AjBool embSignatureCompile(AjPSignature *S, float gapo, float gape,
 		{
 		    div+=(ajIntGet((*S)->dat[x]->efrq, y));
 		
+		    /* Environments are rows and residue identities are columns. */
 		    (*S)->pos[x]->subs[z] += 
 			(ajIntGet((*S)->dat[x]->efrq, y)) * 
-			    sub[ajSeqCvtK(cvt,(char)((ajint)'A'+z))]
-				[ajSeqCvtKS(cvt, (*S)->dat[x]->eids[y])];
+			    sub[ajSeqCvtKSRow(cvt, (*S)->dat[x]->eids[y])]
+				[ajSeqCvtK(cvt,(char)((ajint)'A'+z))];
+
 		}
 		(*S)->pos[x]->subs[z] /= div;
 	    }
