@@ -32,7 +32,7 @@ plotcon plotorf polydot preg \
 prettyplot prettyseq prima primersearch printsextract \
 profit prophecy prophet \
 prosextract pscan \
-rebaseextract recode redata remap restrict revseq \
+rebaseextract recode redata remap restover restrict revseq \
 seealso seqmatchall seqret seqretall seqretset seqretsplit \
 showdb showfeat showorf showseq \
 shuffleseq sigcleave silent splitter stretcher \
@@ -148,6 +148,7 @@ rebaseextract_SOURCES = rebaseextract.c
 recode_SOURCES = recode.c
 redata_SOURCES = redata.c
 remap_SOURCES = remap.c
+restover_SOURCES = restover.c
 restrict_SOURCES = restrict.c
 revseq_SOURCES = revseq.c
 seealso_SOURCES = seealso.c

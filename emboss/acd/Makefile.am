@@ -28,7 +28,7 @@ pkgdata_DATA = codes.english emboss.default \
 	primersearch.acd printsextract.acd profit.acd prophecy.acd \
 	prophet.acd prosextract.acd proteinmotifsearch.acd pscan.acd \
 	rebaseextract.acd recode.acd redata.acd remap.acd \
-	restrict.acd revseq.acd scope.acd seealso.acd \
+	restover.acd restrict.acd revseq.acd scope.acd seealso.acd \
 	seqinfo.acd seqmatchall.acd seqret.acd seqretall.acd \
 	seqretallfeat.acd seqretfeat.acd seqretset.acd \
 	seqretsplit.acd seqrettype.acd seqtofeat.acd showdb.acd \
