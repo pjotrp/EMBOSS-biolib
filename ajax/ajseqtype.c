@@ -35,7 +35,7 @@ enum ProtNuc {ISANY=0, ISNUC=1, ISPROT=2};
 ** gap conversion is a separate attribute, along with case convserion
 */
 
-static AjBool     seqFindType (AjPStr typename, ajint* typenum);
+static AjBool     seqFindType (AjPStr type_name, ajint* typenum);
 static void       seqGapSL (AjPStr* seq, char gapc, char padc, ajint ilen);
 static AjBool     seqTypeFix (AjPSeq thys, ajint itype);
 static AjBool     seqTypeFixReg (AjPSeq thys, ajint itype, char fixchar);
@@ -413,29 +413,29 @@ static void seqTypeSet (AjPSeq thys, AjPStr Type)
 ** Used for input validation - writes error message if the type check fails
 **
 ** @param [P] pthys [AjPStr*] Sequence string
-** @param [P] type [AjPStr] Sequence type
+** @param [P] type_name [AjPStr] Sequence type
 ** @return [AjBool] ajTrue if compatible.
 ** @@
 ******************************************************************************/
 
-AjBool ajSeqTypeCheckS (AjPStr* pthys, AjPStr type)
+AjBool ajSeqTypeCheckS (AjPStr* pthys, AjPStr type_name)
 {
 
 /*    AjPStr tmpstr = NULL; */
     AjPRegexp badchars;
     ajint itype = -1;
 
-    /* ajDebug ("ajSeqTypeCheckS type '%S' seq '%S'\n", type, *pthys); */
+    /* ajDebug ("ajSeqTypeCheckS type '%S' seq '%S'\n", type_name, *pthys); */
 
-    if (!ajStrLen(type))	   /* nothing given - anything goes */
+    if (!ajStrLen(type_name))	   /* nothing given - anything goes */
     {
 	ajSeqGapS (pthys, seqGap);
 	return ajTrue;
     }
 
-     if (!seqFindType (type, &itype))
+     if (!seqFindType (type_name, &itype))
     {
-	ajErr ("Sequence type '%S' unknown", type);
+	ajErr ("Sequence type '%S' unknown", type_name);
 	return ajFalse;
     }
 
@@ -1421,20 +1421,20 @@ static AjPRegexp seqTypeCharProtStop (void)
 **
 ** Returns sequence type index and ajTrue if type was found
 **
-** @param [R] typename [AjPStr] Sequence type
+** @param [R] type_name [AjPStr] Sequence type
 ** @param [W] typenum [ajint*] Sequence type index
 ** @return [AjBool] ajTrue if sequence type was found
 **
 ******************************************************************************/
 
-static AjBool seqFindType (AjPStr typename, ajint* typenum)
+static AjBool seqFindType (AjPStr type_name, ajint* typenum)
 {
     ajint i;
     ajint itype = -1;
 
     for (i = 0; seqType[i].Name; i++)
     {
-	if (ajStrMatchCaseC(typename, seqType[i].Name))
+	if (ajStrMatchCaseC(type_name, seqType[i].Name))
 	{
 	    itype = i;
 	    break;
@@ -1455,15 +1455,15 @@ static AjBool seqFindType (AjPStr typename, ajint* typenum)
 **
 ** Returns ajTrue is sequence type can be a protein (or 'any')
 **
-** @param [R] typename [AjPStr] Sequence type
+** @param [R] type_name [AjPStr] Sequence type
 ** @return [AjBool] ajTrue if sequence can be protein
 **
 ******************************************************************************/
 
-AjBool ajSeqTypeIsProt (AjPStr typename)
+AjBool ajSeqTypeIsProt (AjPStr type_name)
 {
     ajint itype;
-    if (seqFindType(typename, &itype))
+    if (seqFindType(type_name, &itype))
     {
 	switch (seqType[itype].Type)
 	{
@@ -1480,15 +1480,15 @@ AjBool ajSeqTypeIsProt (AjPStr typename)
 **
 ** Returns ajTrue is sequence type can be a nucleotide (or 'any')
 **
-** @param [R] typename [AjPStr] Sequence type
+** @param [R] type_name [AjPStr] Sequence type
 ** @return [AjBool] ajTrue if sequence can be nucleotide
 **
 ******************************************************************************/
 
-AjBool ajSeqTypeIsNuc (AjPStr typename)
+AjBool ajSeqTypeIsNuc (AjPStr type_name)
 {
     ajint itype;
-    if (seqFindType(typename, &itype))
+    if (seqFindType(type_name, &itype))
     {
 	switch (seqType[itype].Type)
 	{
@@ -1505,15 +1505,15 @@ AjBool ajSeqTypeIsNuc (AjPStr typename)
 **
 ** Returns ajTrue is sequence type can be a protein or nucleotide
 **
-** @param [R] typename [AjPStr] Sequence type
+** @param [R] type_name [AjPStr] Sequence type
 ** @return [AjBool] ajTrue if sequence can be protein or nucleotide
 **
 ******************************************************************************/
 
-AjBool ajSeqTypeIsAny (AjPStr typename)
+AjBool ajSeqTypeIsAny (AjPStr type_name)
 {
     ajint itype;
-    if (seqFindType(typename, &itype))
+    if (seqFindType(type_name, &itype))
     {
 	switch (seqType[itype].Type)
 	{

@@ -20,9 +20,9 @@ char         ajSeqTypeGapnucS (AjPStr* pthys);
 char         ajSeqTypeAnyprotS (AjPStr* pthys);
 char         ajSeqTypeGapprotS (AjPStr* pthys);
 char         ajSeqTypeGaprnaS (AjPStr* pthys);
-AjBool       ajSeqTypeIsAny (AjPStr typename);
-AjBool       ajSeqTypeIsNuc (AjPStr typename);
-AjBool       ajSeqTypeIsProt (AjPStr typename);
+AjBool       ajSeqTypeIsAny (AjPStr type_name);
+AjBool       ajSeqTypeIsNuc (AjPStr type_name);
+AjBool       ajSeqTypeIsProt (AjPStr type_name);
 char         ajSeqTypeNucS (AjPStr* pthys);
 char         ajSeqTypeProtS (AjPStr* pthys);
 char         ajSeqTypePurednaS (AjPStr* pthys);
@@ -33,7 +33,7 @@ char         ajSeqTypeRnaS (AjPStr* pthys);
 char         ajSeqTypeStopprotS (AjPStr* pthys);
 void         ajSeqType (AjPSeq thys);
 AjBool       ajSeqTypeCheckIn (AjPSeq thys, AjPSeqin seqin);
-AjBool       ajSeqTypeCheckS (AjPStr* pthys, AjPStr type);
+AjBool       ajSeqTypeCheckS (AjPStr* pthys, AjPStr type_name);
 
 #endif
 
