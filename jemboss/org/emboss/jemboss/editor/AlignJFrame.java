@@ -841,12 +841,20 @@ public class AlignJFrame extends JFrame
               "           size\n"+
               "           base\n\n"+
               "           java org/emboss/jemboss/editor/AlignJFrame file -color size\n\n"+
-              "-id        Print a percentage ID pair table.\n"+
+              "-id        Display a percentage ID pair table.\n"+
               "-noshow    Turns of the alignment display.\n"+
               "-nres      Number of residues to each line is a print out.\n"+
               "-pretty    Prettyplot colour scheme.\n"+
-              "-print     Print the alignment image.\n"+
-              "-list      List the available scoring matrix files.\n");
+              "-print     Print the alignment image. The following 2 flags can be\n"+
+              "           used along with the print flag\n"+
+              "           -prefix    prefix for image file.\n"+
+              "           -type      png or jpeg (default is jpeg).\n"+
+              "-matrix    To define a scoring matrix. Used with the -pretty and -calc\n"+
+              "           option.\n"+
+              "-list      List the available scoring matrix files.\n\n"+
+              "EXAMPLE\n"+
+              "java org/emboss/jemboss/editor/AlignJFrame file -matrix EBLOSUM80 \\\n"+
+              "                             -pretty -noshow -id -print -type png\n");
           System.exit(0);
         }
       }
@@ -863,6 +871,8 @@ public class AlignJFrame extends JFrame
         gsc.setMatrix(mat);
       }
 
+      String prefix = "output";
+      String type   = "jpeg";
       boolean show  = true;
       boolean print = false;
       int nresiduesPerLine = 20;
@@ -918,6 +928,13 @@ public class AlignJFrame extends JFrame
               cas = Float.parseFloat(args[j+1]);
             else if(args[j].indexOf("-numid") > -1)
               ident = Integer.parseInt(args[j+1]);
+            else if(args[j].indexOf("-matrix") > -1)
+            {
+              mat = new Matrix("resources/resources.jar",
+                           args[i+1]);
+              gsc.setMatrix(mat);
+              statusField.setText("Current matrix: "+args[i+1]);
+            }
           }
           Consensus conseq = new Consensus(mat,
                     gsc.getSequenceCollection(),
@@ -966,12 +983,23 @@ public class AlignJFrame extends JFrame
           pai.printPreview();
           show = true;
         }
+        else if(args[i].indexOf("-type")  > -1)
+        {
+          if( args[i+1].equalsIgnoreCase("png") ||
+              args[i+1].equalsIgnoreCase("jpeg") )
+            type = args[i+1];
+          else
+            System.out.println("UNKOWN PRINT FORMAT: "+args[i+1]+
+                               " reverting to default format "+type);
+        }
+        else if(args[i].indexOf("-prefix")  > -1)
+          prefix = args[i+1];
       }
 
       if(print)
       {
         PrintAlignmentImage pai = new PrintAlignmentImage(gsc);
-        pai.print(nresiduesPerLine,"jpeg","output");
+        pai.print(nresiduesPerLine,type,prefix);
       }
       if(!show)
         System.exit(0);
