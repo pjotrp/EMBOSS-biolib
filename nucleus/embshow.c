@@ -1692,10 +1692,10 @@ static void showFillTran(EmbPShow thys, AjPList lines, EmbPShowTran info,
 
     if (info->showframe)
       {
-      frame = info->frame;
-      if (frame < 0)
-	frame = 3 - frame;
-      (void) ajListstrPushApp(lines, ajFmtStr("\tF%d", frame));
+	frame = info->frame;
+	if (frame < 0)
+	  frame = 3 - frame;
+	(void) ajListstrPushApp(lines, ajFmtStr("%4s%d", "F", frame));
       }
 
     /* end the output line */
