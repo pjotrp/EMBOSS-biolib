@@ -61,7 +61,7 @@ AjBool embXyzSeqsetNR(AjPList input, AjPInt *keep, ajint *nset,
 
     float     **sub;
     float       id       =0.;	/*Passed as arg but not used here*/
-    float       sim      =0.;	/*Passed as arg but not used here*/
+    float       sim      =0.;	
     float       idx      =0.;	/*Passed as arg but not used here*/
     float       simx     =0.;	/*Passed as arg but not used here*/
     float      *path;
