@@ -457,12 +457,14 @@ public class SectionPanel
         sl = sl.substring(stop+1,sl.length());
         l.setFont(labfont);
         l.setForeground(labelColor);
-        l.setToolTipText(tt);
+        if(!tt.equals(""))
+          l.setToolTipText(tt);
       }
       l = new JLabel(" " + sl);
       l.setFont(labfont);
       l.setForeground(labelColor);
-      l.setToolTipText(tt);
+      if(!tt.equals(""))
+        l.setToolTipText(tt);
       blab.add(l);
     }
 
