@@ -837,17 +837,17 @@ public class ParseAcd{
 */
   protected String formatHelpText(String help) 
   {
-    String helpText = "<html><b><font size=3>";
+    String helpText = "";
     int start = 0;
     int stop;
 
     help = help.replace('\n',' ');
     while((stop = help.indexOf(' ',55))>0)
     {
-      helpText = helpText.concat("&nbsp;" + help.substring(start,stop) + "<BR>");   
+      helpText = helpText.concat(help.substring(start,stop) + "\n");   
       help = help.substring(stop+1,help.length());
     }
-    helpText = helpText.concat("&nbsp;" + help);
+    helpText = helpText.concat(help);
 
     return helpText;
   }

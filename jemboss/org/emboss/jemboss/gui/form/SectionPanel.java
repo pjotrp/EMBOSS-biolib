@@ -127,6 +127,7 @@ public class SectionPanel
   {
 
     // sets the delay for dismissing tooltips
+    MultiLineToolTipUI.initialize();
     ToolTipManager toolTipManager = ToolTipManager.sharedInstance();
     toolTipManager.setDismissDelay(80000);  
     Border etched = BorderFactory.createEtchedBorder();
