@@ -6,8 +6,8 @@
 **
 **
 ** @author Copyright (C) 2004 Damian Counsell
-** @version $Revision: 1.2 $
-** @modified $Date: 2004/12/06 18:03:36 $
+** @version $Revision: 1.3 $
+** @modified $Date: 2004/12/08 17:22:24 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -42,7 +42,7 @@
 
 enum constant
     {
-	enumDebugLevel        =  0,
+	enumDebugLevel        =  3,
 	enumFirstResType      =  0,
 	enumFirstResTypeIndex =  0,
 	enumNoCmapLine        =  0,
@@ -345,12 +345,16 @@ ajint embAjintToScoringMatrixIndex(ajint ajIntResType)
 
     /* default to out-of-range value */
     if ((ajIntResType < 0) || (ajIntResType > 27))
-	ajIntScoringMatrixIndex = 28;
+	ajIntScoringMatrixIndex = enumNoResTypeMatch;
     else
     {
-	ajIntLookUpArrayIndex = (ajIntResType - enumArrayOffset);
-	ajIntScoringMatrixIndex = ajIntArrayLookUp[ajIntLookUpArrayIndex];
+	ajIntLookUpArrayIndex = (ajIntResType);
+	ajIntScoringMatrixIndex = ajIntArrayLookUp[ajIntLookUpArrayIndex] + enumArrayOffset;
     }
+
+    if( enumDebugLevel )
+	ajFmtPrint( "\n ajIntResType: %d, ajIntScoringMatrixIndex: %d"
+		    , ajIntResType, ajIntScoringMatrixIndex );
     
     return ajIntScoringMatrixIndex;
 }
@@ -1156,12 +1160,16 @@ AjBool embWriteUpdatedCmapFile (AjPFile ajpFileUpdatedCmap,
     AjPMatrixf ajpMatrixfContactScoring = NULL;
     float** floatArray2dScoring = NULL;
     float fContactScore;
+
     /* dereference pointers to original pointers */
     ajpMatrixfContactScoring = *pAjpMatrixfContactScoring;
     ajpCmapHeader = *pAjpCmapHeader;
     ajpInt2dCmapSummary = *pAjpInt2dCmapSummary;
     ajpInt2dCmapResTypes = *pAjpInt2dCmapResTypes;
-    ajpInt2dCmapPositions = *pAjpInt2dCmapPositions;    
+    ajpInt2dCmapPositions = *pAjpInt2dCmapPositions;
+
+    /* convert the input float AjpMatrix to a 2D array of scores */ 
+    floatArray2dScoring = ajMatrixfArray(ajpMatrixfContactScoring);
 
     /* check file passed to function is usable */	
     if(!ajpFileUpdatedCmap)
@@ -1172,7 +1180,7 @@ AjBool embWriteUpdatedCmapFile (AjPFile ajpFileUpdatedCmap,
 
     /* write header to file */
     ajBoolUpdatedCmapFileWritten = embWriteCmapHeader(ajpFileUpdatedCmap,
-						     ajpCmapHeader);
+						      ajpCmapHeader);
 
     /* reserve memory for current contact object */
     ajpContact = ajContactNew();
@@ -1235,12 +1243,21 @@ AjBool embWriteUpdatedCmapFile (AjPFile ajpFileUpdatedCmap,
 		ajpContact->ajpStrFirstResType  = ajpStrFirstResType;
 		ajpContact->ajpStrSecondResType = ajpStrSecondResType;
 
-		/* convert the input float AjpMatrix to a 2D array of scores */ 
-		floatArray2dScoring = ajMatrixfArray(ajpMatrixfContactScoring);
-
 		/* get probability of two residues contact each other */
 		ajIntScoreRow = embAjintToScoringMatrixIndex(ajIntFirstResType);
+		if (ajIntScoreRow == enumNoResTypeMatch )
+		{	
+		    ajDie("non-existent residue row value!");	
+		    return ajFalse;
+		}
+		
 		ajIntScoreColumn = embAjintToScoringMatrixIndex(ajIntSecondResType);
+		if (ajIntScoreColumn == enumNoResTypeMatch )
+		{	
+		    ajDie("non-existent residue column value!");	
+		    return ajFalse;
+		}
+
 		fContactScore =
 		    (float)(floatArray2dScoring[ajIntScoreRow][ajIntScoreColumn]);
 		
