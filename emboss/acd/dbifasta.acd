@@ -91,12 +91,6 @@ section: advanced [
     knowntype: "filename wildcard"
   ]
 
-  directory: indexdirectory  [
-    default: "."
-    information: "Index directory"
-    knowntype: "output directory"
-  ]
-
   integer: maxindex  [
     default: "0"
     minimum: "0"
@@ -122,3 +116,16 @@ section: advanced [
   ]
 
 endsection: advanced
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  outdir: indexdirectory  [
+    default: "."
+    information: "Index directory"
+    knowntype: "output directory"
+  ]
+
+endsection: output
