@@ -37,8 +37,8 @@ pkgdata2_DATA = jembossctl.txt kitsch.txt lindna.txt listor.txt marscan.txt \
                psiblasts.txt rebaseextract.txt recode.txt recoder.txt \
                redata.txt remap.txt restml.txt restover.txt restrict.txt \
                revseq.txt scopalign.txt scope.txt scopparse.txt seealso.txt \
-               seqboot.txt seqmatchall.txt seqret.txt seqretall.txt \
-               seqretallfeat.txt seqretfeat.txt seqretset.txt \
+               seqboot.txt seqmatchall.txt seqnr.txt seqret.txt \
+               seqretall.txt seqretallfeat.txt seqretfeat.txt seqretset.txt \
                seqretsplit.txt showalign.txt showdb.txt showfeat.txt \
                showorf.txt showseq.txt shuffleseq.txt sigcleave.txt \
                siggen.txt sigscan.txt silent.txt splitter.txt stamps.txt \
