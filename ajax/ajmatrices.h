@@ -59,6 +59,9 @@ AjBool     ajMatrixfSeqNum (AjPMatrixf thys, AjPSeq seq, AjPStr* numseq);
 AjBool     ajMatrixfRead (AjPMatrixf* matrix, AjPStr filename) ;
 ajint      ajMatrixfSize (AjPMatrixf thys);
 
+AjBool     ajSeqsetConsStats(AjPSeqset thys, AjPMatrix mymatrix, AjPStr *cons,
+		             ajint* retident, ajint* retsim, ajint* retgap,
+			     ajint* retlen);
 
 #endif
 
