@@ -140,66 +140,71 @@ public class SequenceList extends JFrame
     {
       public void actionPerformed(ActionEvent e)
       {
-        setCursor(cbusy);
+
         int row = table.getSelectedRow();
         String fn = table.getFileName(row);
-        if(table.isListFile(row).booleanValue())
-          fn = "list::"+fn;
+
+        if(!fn.equals("") && fn!=null)
+        {
+          setCursor(cbusy);
+          if(table.isListFile(row).booleanValue())
+            fn = "list::"+fn;
         
-        String fc = AjaxUtil.getFileOrDatabaseForAjax(fn,
+          String fc = AjaxUtil.getFileOrDatabaseForAjax(fn,
                       BuildProgramMenu.getDatabaseList(),
                       null,withSoap);
         
-        boolean ok = false;
-        int ajaxLength=0;
-        float ajaxWeight;
-        boolean ajaxProtein;
+          boolean ok = false;
+          int ajaxLength=0;
+          float ajaxWeight;
+          boolean ajaxProtein;
 
-        if(!withSoap && fc!=null)    //Ajax without SOAP
-        {
-          Ajax aj = new Ajax();
-          ok = aj.seqType(fc);
-          if(ok)
+          if(!withSoap && fc!=null)    //Ajax without SOAP
           {
-            ajaxLength  = aj.length;
-            ajaxWeight  = aj.weight;
-            ajaxProtein = aj.protein;
-          }
-        }
-        else if(fc!=null)    //Ajax with SOAP
-        {
-          try
-          {  
-            CallAjax ca = new CallAjax(fc,"sequence",mysettings);
-            if(ca.getStatus().equals("0"))
+            Ajax aj = new Ajax();
+            ok = aj.seqType(fc);
+            if(ok)
             {
-              ajaxLength  = ca.getLength();
-              ajaxWeight  = ca.getWeight();
-              ajaxProtein = ca.isProtein();
-              ok = true;
+              ajaxLength  = aj.length;
+              ajaxWeight  = aj.weight;
+              ajaxProtein = aj.protein;
             }
           }
-          catch (EmbreoAuthException eae)
+          else if(fc!=null)    //Ajax with SOAP
           {
-            System.out.println("Call to Ajax library failed");
-            setCursor(cdone);
+            try
+            {  
+              CallAjax ca = new CallAjax(fc,"sequence",mysettings);
+              if(ca.getStatus().equals("0"))
+              {
+                ajaxLength  = ca.getLength();
+                ajaxWeight  = ca.getWeight();
+                ajaxProtein = ca.isProtein();
+                ok = true;
+              }
+            }
+            catch (EmbreoAuthException eae)
+            {
+              System.out.println("Call to Ajax library failed");
+              setCursor(cdone);
+            }
           }
-        }
 
-        if(!ok && fc!=null)                       //Ajax failed
-          JOptionPane.showMessageDialog(null,
-                   "Sequence not found." +
-                   "\nCheck the sequence entered.",
-                   "Error Message", JOptionPane.ERROR_MESSAGE);
-        else
-        {
-          seqModel.setValueAt(new Integer(1),row,
+          if(!ok && fc!=null)                       //Ajax failed
+            JOptionPane.showMessageDialog(null,
+                     "Sequence not found." +
+                     "\nCheck the sequence entered.",
+                     "Error Message", JOptionPane.ERROR_MESSAGE);
+          else
+          {
+            seqModel.setValueAt(new Integer(1),row,
                       SequenceListTableModel.COL_BEG);
-          seqModel.setValueAt(new Integer(ajaxLength),row,
+            seqModel.setValueAt(new Integer(ajaxLength),row,
                       SequenceListTableModel.COL_END);
-          table.repaint();
+            table.repaint();
+          }
+          setCursor(cdone);
         }
-        setCursor(cdone);
       }
     });
     toolMenu.add(ajaxSeq);
