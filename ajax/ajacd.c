@@ -1063,10 +1063,10 @@ AcdOQual acdQualAppl[] =	/* careful: index numbers used in*/
   {"acdlog",     "N", "boolean", "Write ACD processing log to program.acdlog"},
   {"acdpretty",  "N", "boolean", "Rewrite ACD file as program.acdpretty"},
   {"acdtable",   "N", "boolean", "Write HTML table of options"},
+  {"verbose",    "N", "boolean", "Report some/full command line options"},
   {"help",       "N", "boolean", "Report command line options. "
    "More information on associated and general qualifiers "
    "can be found with -help -verbose"},
-  {"verbose",    "N", "boolean", "Report some/full command line options"},
   {"warning",    "Y", "boolean", "Report warnings"},
   {"error",      "Y", "boolean", "Report errors"},
   {"fatal",      "Y", "boolean", "Report fatal errors"},
@@ -13234,6 +13234,7 @@ static AjBool acdSetQualAppl (AcdPAcd thys, AjBool val) {
 	(void) ajFmtPrintS (&setstr, "%S", thys->Name);
 	if (ajNamGetValue(setstr, &valstr)) {
 	  (void) ajStrToBool(valstr, &setval);
+	  ajDebug ("Appl qualifier variable %S = %b\n", setstr, setval);
 	  acdLog ("Appl qualifier variable %S = %b\n", setstr, setval);
 	}
 	else			/* nothing found, use the default value */
@@ -13260,8 +13261,8 @@ static AjBool acdSetQualAppl (AcdPAcd thys, AjBool val) {
       case 5: acdDoLog    = setval; break;
       case 6: acdDoPretty = setval; break;
       case 7: acdTable    = setval; break;
-      case 8: acdDoHelp   = setval; break;
-      case 9: acdVerbose  = setval; break;
+      case 8: acdVerbose  = setval; break;
+      case 9: acdDoHelp   = setval; break;
       case 10: AjErrorLevel.warning = setval; break;
       case 11: AjErrorLevel.error   = setval; break;
       case 12: AjErrorLevel.fatal   = setval; break;
