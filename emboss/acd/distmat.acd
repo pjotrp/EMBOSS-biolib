@@ -53,7 +53,7 @@ appl: distmat [
   ]
 
   bool: ambiguous [
-        opt: "@(@(@(!$(msf.protein)) & $(nucmethod)==1) |
+        opt: "@(@(@(!$(msf.protein)) & @($(nucmethod)==1)) |
                 @($(msf.protein) & @($(protmethod)!=2)))"
         def: N
         info: "Use the abiguous codes in the calculation."
