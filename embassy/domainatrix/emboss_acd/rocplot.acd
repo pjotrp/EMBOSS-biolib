@@ -37,21 +37,19 @@ endsection: input
 
 
 
-section: standard 
+section: required
 [
-  information: "Standard section"
+  information: "Required section"
   type: "page"
 ]
 
 list: mode  
 [
   standard:      "Y"
-  values:        "1: Single input file mode, 2: Multiple input file mode"
+  values:        "1:Single input file mode;2:Multiple input file mode"
   default:       "1"
   minimum:       "1"
   maximum:       "2"
-  delimiter:     ","
-  codedelimiter: ":"
   button:        "Y"
   header:        "Available modes"
   information:   "Select mode of operation"
@@ -80,14 +78,12 @@ list: mode
 list: multimode  
 [
   standard:      "@($(mode)==2)"
-  values:        "1: Do not combine data (multiple ROC curves in single ROC 
-	          plot, multiple classification plots), 2: Combine data 
+  values:        "1:Do not combine data (multiple ROC curves in single ROC 
+	          plot, multiple classification plots);2:Combine data 
 		  (single ROC curve, single classification plot)"
   default:       "1"
   minimum:       "1"
   maximum:       "2"
-  delimiter:     ","
-  codedelimiter: ":"
   button:        "Y"
   header:        "Available modes"
   information:   "Select mode of operation"
@@ -111,7 +107,7 @@ list: multimode
 list: datamode  
 [
   standard:      "@(@($(mode)==2) & @($(multimode)==2))"
-  values:        "1: Single list of known true relatives, 2: Multiple lists of
+  values:        "1:Single list of known true relatives;2:Multiple lists of
                   known true relatives"
   default:       "1"
   minimum:       "1"
@@ -152,7 +148,7 @@ integer: thresh
   default:       10 
 ]
 
-endsection: standard
+endsection: required
 
 
 
