@@ -4330,7 +4330,7 @@ void ajFileBuffFreeClear(AjPFileBuff thys)
     if(!thys)
 	return;
 
-    ajDebug("ajFileBuffFreeClear %x\n", thys->Free);
+    /*ajDebug("ajFileBuffFreeClear %x\n", thys->Free);*/
 
     while(thys->Free)
     {
@@ -4371,7 +4371,7 @@ void ajFileBuffClear(AjPFileBuff thys, ajint lines)
     ajint first;
     ajint ifree = 0;
     
-    ajDebug("ajFileBuffClear (%d) Nobuff: %B\n", lines, thys->Nobuff);
+    /*ajDebug("ajFileBuffClear (%d) Nobuff: %B\n", lines, thys->Nobuff);*/
     /*FileBuffTraceFull(thys, thys->Size, 100);*/
     if(!thys)
 	return;

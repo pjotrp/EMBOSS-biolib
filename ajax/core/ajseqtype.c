@@ -560,9 +560,9 @@ AjBool ajSeqTypeCheckIn(AjPSeq thys, const AjPSeqin seqin)
     
     AjPStr Type;
     
-    ajDebug("testing sequence '%s' '%S' type '%S' IsNuc %B IsProt %B\n",
+    /*ajDebug("testing sequence '%s' '%S' type '%S' IsNuc %B IsProt %B\n",
 	    ajSeqName(thys), thys->Seq,
-	    seqin->Inputtype, seqin->IsNuc, seqin->IsProt);
+	    seqin->Inputtype, seqin->IsNuc, seqin->IsProt);*/
 
     Type = seqin->Inputtype; /* ACD file had a predefined seq type */
     
@@ -1181,7 +1181,7 @@ static char seqTypeTest(const AjPStr thys, AjPRegexp badchars)
     if(!ajStrLen(thys))
 	return ret;
 
-    ajDebug("seqTypeTest, Sequence '%S'\n", thys);
+    /*ajDebug("seqTypeTest, Sequence '%S'\n", thys);*/
     if(!ajRegExec(badchars, thys))
 	return ret;
 
