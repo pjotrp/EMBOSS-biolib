@@ -141,22 +141,21 @@ int main(int argc, char **argv)
 
     while(ajSeqallNext(seq1,&a))
     {
-	if(!m)
-	    m=ajStrNewL(1+ajSeqLen(a));
+	m=ajStrNewL(1+ajSeqLen(a));
 
 	lena = ajSeqLen(a);
 
+	ajDebug ("Read '%S'\n", ajSeqGetName (a));
+
 	if(!embWordGetTable(&seq1MatchTable, a)) /* get table of words */
-	    ajFmtPrintF(errorf,
-			"Could not generate table for %s there ignoring\n",
+	    ajErr("Could not generate table for %s\n",
 			ajSeqName(a)); 
 
 	for(k=0;k<ajSeqsetSize(seq2);k++)
 	{
 	    b = ajSeqsetGetSeq (seq2, k);
 	    lenb = ajSeqLen(b);
-	    if(!n)
-		n=ajStrNewL(1+ajSeqLen(b));
+	    n=ajStrNewL(1+ajSeqLen(b));
 	  
 	    ajDebug ("Processing '%S'\n", ajSeqGetName (b));
 	    p = ajSeqChar(a);
@@ -166,23 +165,33 @@ int main(int argc, char **argv)
 	    ajStrAssC(&n,"");
 	  
 	  
-	    if(!supermatcher_findstartpoints(&seq1MatchTable,b,a,&start1,
-					     &start2,&end1,&end2,width))
+	    if(!supermatcher_findstartpoints(&seq1MatchTable,b,a,
+					     &start1, &start2,
+					     &end1, &end2,
+					     width))
 	    {
 		start1 =0; end1= lena-1;
-		start2 = (ajint)(width/2); end2= lenb-1;
+		start2 = (ajint)(width/2);
+		end2= lenb-1;
+
 		ajFmtPrintF(errorf,
-			    "Could not find suitable start points for "
-			    "%s vs %s. Therefore ignoring\n",
+			    "No wordmatch start points for "
+			    "%s vs %s. No alignment\n",
 			    ajSeqName(a),ajSeqName(b));
+		ajStrDel(&n);
 		continue;
 	    }
+	    ajDebug("++ %S v %S end1: %d start1: %d\n",
+		    ajSeqGetName (a), ajSeqGetName (b), end1, start1);
+
 	    if(end1-start1 > oldmax)
 	    {
 		oldmax = ((end1-start1)+1)*width;
 		AJRESIZE(path,oldmax*width*sizeof(float));
 		AJRESIZE(compass,oldmax*width*sizeof(ajint));
+		ajDebug("++ resize to oldmax: %d\n", oldmax);
 	    }
+
 	    for(i=0;i<((end1-start1)+1)*width;i++)
 		path[i] = 0.0;
 	  
@@ -219,15 +228,15 @@ int main(int argc, char **argv)
 				   score,1,sub,cvt,ajSeqName(a),ajSeqName(b),
 				   begina,beginb);
 	    }
+	    ajStrDel(&n);
 	}
       
 	embWordFreeTable(seq1MatchTable); /* free table of words */
 	seq1MatchTable=0;
 
-    }
+	ajStrDel(&m);
 
-    ajStrDel(&n);
-    ajStrDel(&m);
+    }
 
     ajExit();
     return 0;
@@ -373,11 +382,14 @@ static ajint supermatcher_findstartpoints(AjPTable *seq1MatchTable,AjPSeq b,
   
     if(!matchlist)
 	return 0;
-    else if(!matchlist->Count)
+    else if(!matchlist->Count) {
+        embWordMatchListDelete(&matchlist);
 	return 0;
+    }
   
   
     /* order and add if the gap is gapmax or less */
+
     /* create list header bit*/
     ordered = ajListNew();
   
@@ -389,7 +401,7 @@ static ajint supermatcher_findstartpoints(AjPTable *seq1MatchTable,AjPSeq b,
 
     ajListMap(ordered,supermatcher_removelists, NULL);
     ajListFree(&ordered);
-    embWordMatchListDelete(matchlist);	/* free the match structures */
+    embWordMatchListDelete(&matchlist);	/* free the match structures */
   
   
     hwidth = (ajint) width/2;
@@ -408,8 +420,13 @@ static ajint supermatcher_findstartpoints(AjPTable *seq1MatchTable,AjPSeq b,
     }
     *end1=*start1;
     *end2=*start2;
-    while(*end1<amax && *end2<bmax)
+
+    ajDebug ("++ end1 %d -> %d end2 %d -> %d\n", *end1, amax, *end2, bmax);
+    while(*end1<amax && *end2<bmax) {
 	(*end1)++; (*end2)++;
+    }
+
+    ajDebug ("++ end1 %d end2 %d\n", *end1, *end2);
 
 
     ajDebug ("supermatcher_findstartpoints has %d..%d [%d] %d..%d [%d]\n",
