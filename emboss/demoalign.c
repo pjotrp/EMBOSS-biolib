@@ -33,14 +33,34 @@ int main(int argc, char **argv)
 
     AjPSeqset seqset;
     AjPAlign align;
+    AjPMatrix imat;
+    AjPMatrixf fmat;
+    AjBool dofloat;
 
     embInit ("demoalign", argc, argv);
 
     seqset = ajAcdGetSeqset ("sequence");
-    align = ajAcdGetAlign ("align");
+    align = ajAcdGetAlign ("outfile");
+    fmat = ajAcdGetMatrixf ("floatmatrix");
+    imat = ajAcdGetMatrix ("intmatrix");
+    dofloat = ajAcdGetBool ("dofloat");
+
+    ajSeqsetFill (seqset);
 
     ajAlignDefine (align, seqset);
-    ajAlignWrite (align, seqset);
+    if (dofloat) {
+      ajAlignSetMatrixFloat(align, fmat);
+      ajAlignSetGapR(align, 5.0, -0.3);
+    }
+    else {
+      ajAlignSetMatrixInt(align, imat);
+      ajAlignSetGapI(align, 9, -1);
+    }
+
+    ajAlignWrite (align);
+    ajAlignClose (align);
+
+    ajAlignDel(&align);
 
     ajExit ();
     return 0;

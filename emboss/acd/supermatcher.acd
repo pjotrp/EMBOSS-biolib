@@ -37,33 +37,36 @@ float: gapextend  [
   expected: "0.5 for any sequence type"
 ]
 
-outfile: outfile  [
+align: outfile  [
   required: "Y"
+  aformat: "simple"
+  minseq: 2
+  maxseq: 2
 ]
 
 outfile: errorfile  [
   optional: "Y"
   default: "supermatcher.error"
-  information: "Error file to be written too"
+  information: "Error file to be written to"
 ]
 
-bool: showinternals  [
-  optional: "Y"
-  default: "N"
-  information: "Show internals"
-]
+#bool: showinternals  [
+#  optional: "Y"
+#  default: "N"
+#  information: "Show internals"
+#]
 
-bool: scoreonly  [
-  optional: "Y"
-  default: "N"
-  information: "Calculate score only"
-]
+#bool: scoreonly  [
+#  optional: "Y"
+#  default: "N"
+#  information: "Calculate score only"
+#]
 
-bool: showalign  [
-  optional: "Y"
-  default: "Y"
-  information: "Show alignment"
-]
+#bool: showalign  [
+#  optional: "Y"
+#  default: "Y"
+#  information: "Show alignment"
+#]
 
 integer: width  [
   optional: "Y"

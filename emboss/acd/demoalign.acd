@@ -8,6 +8,23 @@ seqset: sequence  [
   features: "Y"
 ]
 
-align: align  [
+align: outfile [
   parameter: "Y"
+  aformat: "SRS"
+]
+
+matrixf: floatmatrix [
+  optional: "Y"
+  help: "Matrix file"
+  protein: "$(sequence.protein)"
+]
+
+matrix: intmatrix [
+  optional: "Y"
+  help: "Matrix file"
+  protein: "$(sequence.protein)"
+]
+
+bool: dofloat [
+  prompt: "Use floating point matrix"
 ]

@@ -53,13 +53,16 @@ bool: fasta  [
   help: "Output overlap as fasta sequences"
 ]
 
-outfile: outfile  [
+align: outfile  [
   parameter: "Y"
+  aformat: "srspair"
+  minseq: 2
+  maxseq: 2
 ]
 
-bool: showinternals  [
-  optional: "Y"
-  default: "N"
-  information: "Show internals"
-  help: "Show debugging information on the internal state of the search."
-]
+#bool: showinternals  [
+#  optional: "Y"
+#  default: "N"
+#  information: "Show internals"
+#  help: "Show debugging information on the internal state of the search."
+#]

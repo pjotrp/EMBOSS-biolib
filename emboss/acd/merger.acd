@@ -39,8 +39,9 @@ float: gapextend  [
   default: "5"
 ]
 
-outfile: report  [
+align: outfile  [
   required: "Y"
   default: "stdout"
   information: "Output alignment and explanation"
+  aformat: "simple"
 ]

@@ -13,8 +13,12 @@ sequence: sequenceb  [
   type: "@($(sequencea.protein) ? protein : nucleotide)"
 ]
 
-outfile: outfile  [
+align: outfile  [
   parameter: "Y"
+  aformat: "markx0"
+  minseq: 2
+  maxseq: 2
+  aglobal: "Y"
 ]
 
 matrix: datafile  [
@@ -41,19 +45,19 @@ integer: gaplength  [
   expected: "2 for protein, 4 for nucleic"
 ]
 
-integer: markx  [
-  optional: "Y"
-  help: "alternative displays"
-  default: "0"
-  maximum: "10"
-  valid: "Positive integer up to 10"
-]
+#integer: markx  [
+#  optional: "Y"
+#  help: "alternative displays"
+#  default: "0"
+#  maximum: "10"
+#  valid: "Positive integer up to 10"
+#]
 
-integer: length  [
-  optional: "Y"
-  help: "number per line"
-  default: "60"
-  minimum: "1"
-  maximum: "200"
-  valid: "Positive integer"
-]
+#integer: length  [
+#  optional: "Y"
+#  help: "number per line"
+#  default: "60"
+#  minimum: "1"
+#  maximum: "200"
+#  valid: "Positive integer"
+#]
