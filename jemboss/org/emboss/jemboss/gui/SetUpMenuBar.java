@@ -43,6 +43,7 @@ public class SetUpMenuBar
 
   public static SequenceList seqList;
   public static LocalAndRemoteFileTreeFrame localAndRemoteTree = null;
+  private ServerSetup ss = null;
 
   public SetUpMenuBar(final JembossParams mysettings, final JFrame f,
                       final String envp[], final String cwd,
@@ -149,12 +150,13 @@ public class SetUpMenuBar
     prefsMenu.add(showAdvOpt);
     prefsMenu.addSeparator();
 
-    final ServerSetup ss = new ServerSetup(mysettings);
     JMenuItem serverSettings = new JMenuItem("Settings");
     serverSettings.addActionListener(new ActionListener()
     {
       public void actionPerformed(ActionEvent e)
       {
+        if(ss == null)
+          ss = new ServerSetup(mysettings);
         int sso = JOptionPane.showConfirmDialog(f,ss,"Jemboss Settings",
                              JOptionPane.OK_CANCEL_OPTION,
                              JOptionPane.PLAIN_MESSAGE,null);
