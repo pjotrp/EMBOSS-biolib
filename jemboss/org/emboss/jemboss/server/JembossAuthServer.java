@@ -344,7 +344,7 @@ public class JembossAuthServer
 
     if(!verifyUser(aj,userName,passwd,result))
       return result;
- 
+
     // remember the original uid & uid
     int sgid = aj.getgid();
     int suid = aj.getuid();
@@ -460,8 +460,8 @@ public class JembossAuthServer
       boolean lfork = aj.fork(embossCommand,environ,project,
                                              aj.uid,aj.gid);
 
-      System.out.println("STDOUT \n"+aj.outStd);
-      System.out.println("STDERR \n"+aj.errStd);
+//    System.out.println("STDOUT \n"+aj.outStd);
+//    System.out.println("STDERR \n"+aj.errStd);
 
       result.add("msg");
       if(!lfork)
@@ -531,14 +531,6 @@ public class JembossAuthServer
     if(!verifyUser(aj,userName,passwd,ssr))
       return ssr;
 
-// remember the original uid & uid
-    int sgid = aj.getgid();
-    int suid = aj.getuid();
-
-// change to user id
-    if(!changeUser(aj,ssr,userName,aj.uid,aj.gid))
-      return ssr;
-
     tmproot = tmproot.concat(userName+fs); 
     project = tmproot.concat(project);
     File projectDir = new File(project);
@@ -550,10 +542,6 @@ public class JembossAuthServer
 
     ssr.add("msg");
     ssr.add("OK");
-
-    aj.setegid(sgid);
-    aj.seteuid(suid);
-
 
     return ssr;
   }
@@ -578,14 +566,6 @@ public class JembossAuthServer
     if(!verifyUser(aj,userName,passwd,dsr))
       return dsr;
 
-// remember the original uid & uid
-    int sgid = aj.getgid();
-    int suid = aj.getuid();
-
-// change to user id
-    if(!changeUser(aj,dsr,userName,aj.uid,aj.gid))
-      return dsr;
-
     tmproot = tmproot.concat(userName+fs);
     project = tmproot.concat(project);
     File projectDir = new File(project);
@@ -600,9 +580,6 @@ public class JembossAuthServer
     dsr.add("0");
     dsr.add("msg");
     dsr.add("Results deleted successfully.");
-
-    aj.setegid(sgid);
-    aj.seteuid(suid);
 
     return dsr;
   }
@@ -621,14 +598,6 @@ public class JembossAuthServer
     Ajax aj = new Ajax();
     Vector lsr = new Vector();
     if(!verifyUser(aj,userName,passwd,lsr))
-      return lsr;
-
-// remember the original uid & uid
-    int sgid = aj.getgid();
-    int suid = aj.getuid();
-
-// change to user id
-    if(!changeUser(aj,lsr,userName,aj.uid,aj.gid))
       return lsr;
 
     tmproot = tmproot.concat(userName+fs);
@@ -675,9 +644,6 @@ public class JembossAuthServer
 
     lsr.add("list");
     lsr.add(list);
-
-    aj.setegid(sgid);
-    aj.seteuid(suid);
 
     return lsr;
   }
@@ -797,14 +763,6 @@ public class JembossAuthServer
     if(!verifyUser(aj,userName,passwd,vans))
       return vans;
 
-    // remember the original uid & uid
-    int sgid = aj.getgid();
-    int suid = aj.getuid();
-
-    // change to user id
-    if(!changeUser(aj,vans,userName,aj.uid,aj.gid))
-      return vans;
-
     tmproot = tmproot.concat(userName+fs);
 
     Enumeration enum = resToQuery.keys();
@@ -841,9 +799,6 @@ public class JembossAuthServer
       }
     }
 
-    aj.setegid(sgid);
-    aj.seteuid(suid);
-
     return vans;
   }
 
@@ -852,7 +807,7 @@ public class JembossAuthServer
                             String passwd, Vector res)
   {
 
-    if(!aj.userInfo(userName,passwd))
+    if(userName == null || passwd == null)
     {
       System.out.println("Failed Authorisation "+userName);
       res.add("msg");
@@ -861,6 +816,16 @@ public class JembossAuthServer
       res.add("1");
       return false;
     }
+    else if(!aj.userInfo(userName,passwd))
+    {
+      System.out.println("Failed Authorisation "+userName);
+      res.add("msg");
+      res.add("Failed Authorisation "+userName);
+      res.add("status");
+      res.add("1");
+      return false;
+    }
+    System.out.println("verifyUser");
     return true;
   }
 
