@@ -1,4 +1,4 @@
-#!/usr/local/bin/perl -w
+#!/usr/bin/perl -w
 
 # This is a utility to aid prople who wish to edit the html
 # documentation for an application.  It is somewhat more friendly than
