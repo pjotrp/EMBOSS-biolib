@@ -194,23 +194,23 @@ AjBool ajRegExec(AjPRegexp prog, const AjPStr str)
     int startoffset = 0;
     int options     = 0;
     int status      = 0;
-    char msgbuf[1024];
 
     status = pcre_exec(prog->pcre, prog->extra, ajStrStr(str), ajStrLen(str),
 		       startoffset, options, prog->ovector, 3*prog->ovecsize);
+
     if(status >= 0)
     {
 	prog->orig = ajStrStr(str);
-	/* ajRegTrace(prog); */
 	if(status == 0)
 	    ajWarn("ajRegExec too many substrings");
 	return ajTrue;
     }
 
-    if(status < -1)
-    {
-	pcre_regerror(status, (const regex_t *)prog->pcre, msgbuf, 1024);
-	ajWarn("ajRegExec problem status %d '%s'", status, msgbuf);
+    if(status < -1)		    /* -1 is a simple fail to match */
+    {				/* others are recursion limits etc. */
+	ajDebug("ajRegExec returned unexpected status '%d'\n", status);
+	prog->orig = ajStrStr(str);	/* needed for the trace */
+	ajRegTrace(prog);
     }
 
     prog->orig = NULL;
@@ -240,23 +240,23 @@ AjBool ajRegExecC(AjPRegexp prog, const char* str)
     int startoffset = 0;
     int options     = 0;
     int status      = 0;
-    char msgbuf[1024];
 
     status = pcre_exec(prog->pcre, prog->extra, str, strlen(str),
 		       startoffset, options, prog->ovector, 3*prog->ovecsize);
+
     if(status >= 0)
     {
 	prog->orig = str;
-	/* ajRegTrace(prog); */
 	if(status == 0)
 	    ajWarn("ajRegExecC too many substrings");
 	return ajTrue;
     }
 
-    if(status < -1)
-    {
-	pcre_regerror(status, (const regex_t *)prog->pcre, msgbuf, 1024);
-	ajWarn("ajRegExecC problem status %d '%s'", status, msgbuf);
+    if(status < -1)		    /* -1 is a simple fail to match */
+    {				/* others are recursion limits etc. */
+	ajDebug("ajRegExecC returned unexpected status '%d'\n", status);
+	prog->orig = str;		/* needed for the trace */
+	ajRegTrace(prog);
     }
 
     prog->orig = NULL;
@@ -424,7 +424,7 @@ AjBool ajRegPre(AjPRegexp rp, AjPStr* dest)
     ajStrModL(dest, ilen+1);
     if(ilen)
     {
-	strncpy((*dest)->Ptr, rp->orig, ilen);
+	memmove((*dest)->Ptr, rp->orig, ilen);
 	(*dest)->Len = ilen;
 	(*dest)->Ptr[ilen] = '\0';
 
@@ -483,7 +483,7 @@ AjBool ajRegSubI(AjPRegexp rp, ajint isub, AjPStr* dest)
     ilen = rp->ovector[iend] - rp->ovector[istart];
     ajStrModL(dest, ilen+1);
     if(ilen)
-	strncpy((*dest)->Ptr, &rp->orig[rp->ovector[istart]], ilen);
+	memmove((*dest)->Ptr, &rp->orig[rp->ovector[istart]], ilen);
     (*dest)->Len = ilen;
     (*dest)->Ptr[ilen] = '\0';
 
@@ -559,15 +559,31 @@ void ajRegTrace(AjPRegexp exp)
     static AjPStr str = NULL;
 
     ajDebug("  REGEXP trace\n");
+    if (!exp->orig)
+	ajDebug("original string not saved - unable to trace string values\n");
+
     for(isub=0; isub < exp->ovecsize; isub++)
     {
 	istart = 2*isub;
 	iend   = istart+1;
+	if (!exp->orig) {
+	    if(!isub)
+	    {
+		ajDebug("original string from %d .. %d\n",
+			exp->ovector[istart], exp->ovector[iend]);
+	    }
+	    else
+	    {
+		ajDebug("substring %2d from %d .. %d\n",
+			isub, exp->ovector[istart], exp->ovector[iend]);
+	    }
+	    continue;
+	}
 	if(exp->ovector[iend] >= exp->ovector[istart])
 	{
 	    ilen = exp->ovector[iend] - exp->ovector[istart];
 	    ajStrModL(&str, ilen+1);
-	    strncpy(str->Ptr, &exp->orig[exp->ovector[istart]], ilen);
+	    memmove(str->Ptr, &exp->orig[exp->ovector[istart]], ilen);
 	    str->Len = ilen;
 	    str->Ptr[ilen] = '\0';
 	    if(!isub)
