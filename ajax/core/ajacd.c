@@ -1475,7 +1475,7 @@ AjStatus ajAcdInitP (char *pgm, ajint argc, char *argv[], char *package)
 	if (acdPromptTry < 1) acdPromptTry = 1;
 	ajDebug ("acdPromptTry %d", acdPromptTry);
     }
-    (void) ajStrDelReuse(&tmpstr);
+    (void) ajStrDel(&tmpstr);
 
     /* pre-parse the command line for special options */
 
@@ -1551,15 +1551,15 @@ AjStatus ajAcdInitP (char *pgm, ajint argc, char *argv[], char *package)
 	}
     }
     ajFileClose (&acdFile);
-    (void) ajStrDelReuse (&acdLine);
-    (void) ajStrDelReuse (&acdFName);
+    (void) ajStrDel (&acdLine);
+    (void) ajStrDel(&acdFName);
 
     /* Parse the input to set the initial definitions */
 
     /* (void) ajStrStat ("before acdParse"); */
     acdParse (acdText);
     /* (void) ajStrStat ("after acdParse"); */
-    (void) ajStrDelReuse (&acdText);
+    (void) ajStrDel (&acdText);
 
     /* Fill in incomplete information like parameter numbers */
 
@@ -1600,6 +1600,10 @@ AjStatus ajAcdInitP (char *pgm, ajint argc, char *argv[], char *package)
       ajNamDebugDatabases();
       ajNamDebugEnvironmentals();
     */
+
+    ajStrDel(&acdRoot);
+    ajStrDel(&acdRootInst);
+    ajStrDel(&acdPack);
 
     return ajStatusOK;
 }
@@ -6809,7 +6813,7 @@ static void acdSetSeqall (AcdPAcd thys) {
   if (!ok)
     acdBadRetry (thys);
 
-/*  ajSeqinDel (&seqin);*/
+/*  commentedout__ajSeqinDel (&seqin);*/
 
   (void) acdInFileSave(ajSeqallGetName(val)); /* save the sequence name */
 
@@ -14327,7 +14331,7 @@ void ajAcdExit (AjBool silent) {
   if (acdDoHelp) staySilent = ajTrue;
   if (acdDoPretty) staySilent = ajTrue;
 
-  if (staySilent) return;
+  if (!staySilent) {
 
   /* turn off the warnings for now ... comment out this line to enable them */
   /* the problem is that some programs have conditionals around the */
@@ -14341,14 +14345,15 @@ void ajAcdExit (AjBool silent) {
   if (!staySilent) return;
   */
 
-  for (pa=acdList; pa; pa=pa->Next) {
-    if (pa->Assoc) continue;
-    if (pa->Level != ACD_PARAM && pa->Level != ACD_QUAL) continue;
-    if (!pa->Used) {
-      ajDebug ("ACD qualifier never used: %S = '%S' (assoc %B)",
-	       pa->Name, pa->ValStr, pa->Assoc);
-    }
+    for (pa=acdList; pa; pa=pa->Next) {
+      if (pa->Assoc) continue;
+      if (pa->Level != ACD_PARAM && pa->Level != ACD_QUAL) continue;
+      if (!pa->Used) {
+	ajDebug ("ACD qualifier never used: %S = '%S' (assoc %B)",
+		 pa->Name, pa->ValStr, pa->Assoc);
+      }
 
+    }
   }
 
   return;
