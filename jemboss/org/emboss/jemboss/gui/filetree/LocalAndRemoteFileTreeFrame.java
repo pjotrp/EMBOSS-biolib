@@ -15,7 +15,6 @@
 *  Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 *  Boston, MA  02111-1307, USA.
 *
-*  based on EmbreoViewPanel
 *
 *  @author: Copyright (C) Tim Carver
 *
@@ -44,12 +43,23 @@ public class LocalAndRemoteFileTreeFrame extends JFrame
     super();
     try
     {  
-      RemoteFileTreePanel rtree = new RemoteFileTreePanel(mysettings);
+      RemoteFileTreePanel rtree = new RemoteFileTreePanel(mysettings,false);
       DragTree ltree = new DragTree(new File(System.getProperty("user.home")), 
-                                                             this, mysettings);
+                                                           this, mysettings);
       JScrollPane scrollTree = new JScrollPane(ltree);   
       Dimension d = rtree.getPreferredSize();
       scrollTree.setPreferredSize(d);
+      JPanel jp = new JPanel(new BorderLayout());
+
+      JMenuBar menuBar = new JMenuBar();
+      JComboBox rootSelect = rtree.getRootSelect();
+      Dimension d1 = rootSelect.getPreferredSize();
+      rootSelect.setMaximumSize(d);
+
+      d = new Dimension((int)d.getWidth(),(int)d1.getHeight());
+      menuBar.add(Box.createHorizontalGlue());
+      menuBar.add(rootSelect);
+      setJMenuBar(menuBar);
       JSplitPane treePane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
                                            scrollTree,rtree);
       getContentPane().add(treePane);
