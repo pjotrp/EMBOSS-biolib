@@ -717,8 +717,16 @@ AjBool ajStrAssS (AjPStr* pthis, const AjPStr str) {
   AjPStr thys = *pthis;
 
   if (!str) {			/* no source string */
-    *pthis = ajStrNew();
-    return ajTrue;
+      if(!pthis)
+      {
+	  *pthis = ajStrNew();
+          return ajTrue;
+      }
+      else
+      {
+	  ajStrAssC(pthis,"");
+	  return ajFalse;
+      }
   }
 
   ret = ajStrModL (pthis, str->Len+1); /* minimum reserved size, may be more */
