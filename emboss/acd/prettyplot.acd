@@ -149,7 +149,7 @@ section: advanced [
   float: plurality  [
     additional: "Y"
     information: "Plurality check value (totweight/2)"
-    default: "@( $(msf.totweight) / 2)"
+    default: "@( $(sequences.totweight) / 2)"
     expected: "Half the total sequence weighting"
   ]
 
