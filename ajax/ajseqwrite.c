@@ -589,6 +589,9 @@ void ajSeqWrite(AjPSeqout outseq, const AjPSeq seq)
     if(outseq->Single)
 	seqFileReopen(outseq);
     
+    if (outseq->Knownfile && !outseq->File)
+	outseq->File = outseq->Knownfile;
+    
     /* Calling funclist seqOutFormat() */
     seqOutFormat[outseq->Format].Write(outseq);
     outseq->Count++;
