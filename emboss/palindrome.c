@@ -85,7 +85,7 @@ int main(int argc, char **argv)
 
     embInit("palindrome", argc, argv);
 
-/*   minGap = 0; */
+    /*   minGap = 0; */
     sequence = ajAcdGetSeq( "insequence");
     minLen = ajAcdGetInt( "minpallen");
     maxLen = ajAcdGetInt( "maxpallen");
@@ -97,7 +97,7 @@ int main(int argc, char **argv)
     beginPos = ajSeqBegin( sequence );
     endPos = ajSeqEnd( sequence );
 
-/* write header to file */
+    /* write header to file */
 
     ajFmtPrintF( outfile, "Palindromes of:  %s \n", ajSeqName( sequence));
     ajFmtPrintF( outfile, "Sequence length is: %d \n", ajSeqLen( sequence));
@@ -111,7 +111,7 @@ int main(int argc, char **argv)
     ajFmtPrintF( outfile, "\n\n\n");
     ajFmtPrintF( outfile, "Palindromes:\n");
 
-/* check sequence is of type nucleotide else return error */
+    /* check sequence is of type nucleotide else return error */
     if (!ajSeqIsNuc( sequence))
     {
 	ajFmtPrintF( outfile, "Error, sequence must be a nucleotide sequence");
@@ -119,12 +119,12 @@ int main(int argc, char **argv)
     }
 
 
-/* set vars in readiness to enter loop */
+    /* set vars in readiness to enter loop */
     seqstr = ajStrNewC(ajSeqChar( sequence));
     begin = beginPos - 1;
     end = endPos - 1;
 
-/* loop to look for inverted repeats */
+    /* loop to look for inverted repeats */
     for (current = begin; current < end; current++)
     {
 	iend = current + 2*(maxLen) + maxGap;
@@ -159,22 +159,16 @@ int main(int argc, char **argv)
 	    count -=mismatchAtEnd;
 	    gap = rev - current - count - count + 1;
 
-/* Find out if we have found reverse repeat long enough*/
-/*
-** Gary Williams - 30 Aug 2001
-** stopped reporting of repeats longer than maxLen
-** these were formed by the repeat extending into the maxGap region.
-**	    if (count >= minLen && gap <= maxGap)
-*/
-	    if (count >= minLen && count <= maxLen && gap <= maxGap) 
+            /* Find out if we have found reverse repeat long enough*/
+	    if (count >= minLen && gap <= maxGap)
 	    {
-/* create new palindrome struct to hold new palindrome data */ 
+                /* create new palindrome struct to hold new palindrome data */ 
 		ppal = palindrome_New(current,(current+count),rev,(rev-count));
 
-/*
- *  if it is our first palindrome find then save it as start
- *  of palindrome list
- */
+                /*
+                 *  if it is our first palindrome find then save it as start
+                 *  of palindrome list
+                 */
 		if (pfirstpal == NULL)
 		{
 		    pfirstpal = ppal;
@@ -182,7 +176,7 @@ int main(int argc, char **argv)
 		}
 		else
 		{
-/* check this isn't a subset of a palindrome already found */
+                   /* check this isn't a subset of a palindrome already found */
 		    pnext = pfirstpal;
 		    found = AJFALSE;
 		    while (pnext != NULL)
@@ -209,7 +203,7 @@ int main(int argc, char **argv)
 			pnext = pnext->next;
 		    }
 
-/* if new palindrome add to end of list */
+                    /* if new palindrome add to end of list */
 		    if (!found)
 		    {
 			plastpal->next = ppal;
@@ -224,7 +218,7 @@ int main(int argc, char **argv)
 
 
 
-/*Print out palindromes*/
+    /*Print out palindromes*/
     ppal = pfirstpal;
     while (ppal != NULL)
     {
@@ -233,7 +227,7 @@ int main(int argc, char **argv)
     }
 
 
-/*free memory used for palindrome list*/
+    /*free memory used for palindrome list*/
     ppal = pfirstpal;
     while (ppal != NULL)
     {
