@@ -1,4 +1,7 @@
 Version 2.8.0
+	acdpretty now writes the name of the output file to standard
+	output. For example "Created seqret.acdpretty".
+
 	The ACD qualifiers -acdpretty -acdtable and -acdlog are
 	removed. Programs acdpretty and acdtable do the first two tasks
 	(in the same way as before). To turn on the acdlog file, use

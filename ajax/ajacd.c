@@ -15457,6 +15457,7 @@ static void acdPretty (char *fmt, ...)
 	    (void) ajFmtPrintS (&acdPrettyFName, "%S.acdpretty", acdProgram);
 	    acdPrettyFile = ajFileNewOut (acdPrettyFName);
 	    ajFileUnbuffer(acdPrettyFile);
+	    ajFmtPrint("Created %S\n", acdPrettyFName);
 	}
     }
 
