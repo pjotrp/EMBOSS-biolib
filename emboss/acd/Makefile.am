@@ -22,6 +22,7 @@ pkgdata_DATA = codes.english groups.standard knowntypes.standard \
 	freak.acd fuzznuc.acd fuzzpro.acd fuzztran.acd \
 	garnier.acd geecee.acd getorf.acd helixturnhelix.acd hmoment.acd \
 	histogramtest.acd iep.acd infoalign.acd infoseq.acd isochore.acd \
+	kmrsplitter.acd kmrnuion.acd \
 	lindna.acd listor.acd \
 	marscan.acd maskfeat.acd maskseq.acd \
 	matcher.acd 

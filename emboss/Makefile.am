@@ -16,6 +16,7 @@ check_PROGRAMS = acdlog ajtest \
 complex corbatest \
 demoalign demofeatures demolist demoreport demosequence demostring demotable \
 entrails giep histogramtest intconv \
+kmrsplitter kmrunion \
 newcoils \
 patmattest \
 prima primers \
@@ -143,7 +144,6 @@ merger_SOURCES = merger.c
 mwcontam_SOURCES = mwcontam.c
 mwfilter_SOURCES = mwfilter.c
 needle_SOURCES = needle.c
-newcoils_SOURCES = newcoils.c
 newcpgreport_SOURCES = newcpgreport.c
 newcpgseek_SOURCES = newcpgseek.c
 newseq_SOURCES = newseq.c
@@ -239,6 +239,9 @@ demotable_SOURCES = demotable.c
 entrails_SOURCES = entrails.c
 histogramtest_SOURCES = histogramtest.c
 intconv_SOURCES = intconv.c
+kmrsplitter_SOURCES = kmrsplitter.c
+kmrunion_SOURCES = kmrunion.c
+newcoils_SOURCES = newcoils.c
 patmattest_SOURCES = patmattest.c
 prima_SOURCES = prima.c
 primers_SOURCES = primers.c
