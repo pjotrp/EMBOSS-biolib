@@ -32,7 +32,7 @@ static void cpgplot_findbases(AjPStr *substr, ajint begin, ajint len,
 			      ajint *plstart, ajint *plend);
 
 static void cpgplot_countbases(char *seq, char *bases, ajint window,
-			       ajint *cx, ajint *cy, ajint *cxpy);
+			       float *cx, float *cy, float *cxpy);
 
 static void cpgplot_identify(AjPFile outf, float *obsexp, float *xypc,
 			     AjBool *thresh, ajint begin, ajint len,
@@ -194,9 +194,7 @@ static void cpgplot_findbases(AjPStr *substr, ajint begin, ajint len,
 			      float *xypc, AjPStr *bases, float *obsexpmax,
 			      ajint *plstart, ajint *plend)
 {
-    ajint cxpy;
-    ajint cx;
-    ajint cy;
+    float cxpy;
     float cxf;
     float cyf;
     float windowf;
@@ -221,12 +219,10 @@ static void cpgplot_findbases(AjPStr *substr, ajint begin, ajint len,
     {
 	j = i+offset;
 	p = ajStrStr(*substr) + i;
-	cpgplot_countbases(p, q, window, &cx, &cy, &cxpy);
+	cpgplot_countbases(p, q, window, &cxf, &cyf, &cxpy);
 	
-	obs = (float) cxpy;
-	exp = ((float)(cx*cy))/windowf;
-	cxf=(float)cx;
-	cyf=(float)cy;
+	obs = cxpy;
+	exp = (cxf*cyf)/windowf;
 	if(!exp) obsexp[j]=0.0;
 	else
 	{
@@ -249,16 +245,16 @@ static void cpgplot_findbases(AjPStr *substr, ajint begin, ajint len,
 ** @param [?] seq [char*] Undocumented
 ** @param [?] bases [char*] Undocumented
 ** @param [?] window [ajint] Undocumented
-** @param [?] cx [ajint*] Undocumented
-** @param [?] cy [ajint*] Undocumented
-** @param [?] cxpy [ajint*] Undocumented
+** @param [?] cx [float*] Undocumented
+** @param [?] cy [float*] Undocumented
+** @param [?] cxpy [float*] Undocumented
 ** @@
 ******************************************************************************/
 
 
 
 static void cpgplot_countbases(char *seq, char *bases, ajint window,
-			       ajint *cx, ajint *cy, ajint *cxpy)
+			       float *cx, float *cy, float *cxpy)
 {
     ajint i;
     
@@ -267,7 +263,7 @@ static void cpgplot_countbases(char *seq, char *bases, ajint window,
     ajint codea;
     ajint codeb;
 
-    *cxpy = *cx = *cy = 0;
+    *cxpy = *cx = *cy = 0.;
 
     codex = ajAZToBin(bases[0]);
     codey = ajAZToBin(bases[1]);
@@ -278,12 +274,22 @@ static void cpgplot_countbases(char *seq, char *bases, ajint window,
     {
 	codea=codeb;
 	codeb=ajAZToBin(seq[i+1]);
-	if(codea && !(codea & (15-codex)))
-	{
-	    ++*cx;
-	    if(codeb && !(codeb & (15-codey))) ++*cxpy;
-	}
-	if(codea && !(codea & (15-codey))) ++*cy;
+
+        if(!(15-codea))   /* look for abiguity code 'N' */
+        {
+          *cx = *cx + 0.25;
+          if(!(15-codeb)) 
+             *cxpy = *cxpy + 0.0625; 
+        } 
+        else 
+        {
+          if(codea && !(codea & (15-codex)))
+          {
+            ++*cx;
+            if(codeb && !(codeb & (15-codey))) ++*cxpy;
+          }
+          if(codea && !(codea & (15-codey))) ++*cy;
+        }
     }
 
     return;
