@@ -1,5 +1,7 @@
 Version 2.5.0
 
+	Added modified Harrison solubility probability to PEPSTATS
+	
 	ACD attributes now have descriptions in the ajacd.c code which are
 	reported by 'entrails'. All ACD attributes have been checked by
 	inspection of the code to note those which are used/unused by ACD.
