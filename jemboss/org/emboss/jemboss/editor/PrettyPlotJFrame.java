@@ -63,14 +63,15 @@ public class PrettyPlotJFrame extends JFrame
   * @param 
   *
   */
-  public PrettyPlotJFrame(int minID, Color colID, Color colMatch,
+  public PrettyPlotJFrame(int minID, float plurality, 
+                          Color colID, Color colMatch,
                           Color colIDBack, Color colMatchBack,
                           boolean lboxPretty)
   {
     textInt = new TextFieldInt();
     textInt.setText(Integer.toString(minID));
     textFloat = new TextFieldFloat();
-    textFloat.setValue(0.d);
+    textFloat.setValue(plurality);
     idColour = new JColorChooser(colID);
     matchColour = new JColorChooser(colMatch);
     idColourBackground = new JColorChooser(colIDBack);
@@ -108,9 +109,11 @@ public class PrettyPlotJFrame extends JFrame
     bdown.add(Box.createVerticalStrut(4));
 
 // match threshold
+   
     bacross = Box.createHorizontalBox();
     textFloat = new TextFieldFloat();
-    textFloat.setValue(0.d);
+    textFloat.setValue(AlignJFrame.getTotalWeight(
+                       gsc.getSequenceCollection())/2);
     textFloat.setPreferredSize(d);
     bacross.add(textFloat);
     LabelTextBox floatLabel = new LabelTextBox(

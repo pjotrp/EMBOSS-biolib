@@ -444,16 +444,7 @@ public class AlignJFrame extends JFrame
         setCursor(cbusy);
         gsc.deleteSequence("Consensus");
 
-        float wgt = 0.f;
-        Vector vseq = gsc.getSequenceCollection();
-        Enumeration enum = vseq.elements();
-        while(enum.hasMoreElements())
-        {
-          Sequence s = (Sequence)enum.nextElement();
-          if(!s.getName().equals("Consensus"))
-            wgt+=s.getWeight();
-        }
-
+        float wgt = getTotalWeight(gsc.getSequenceCollection());
         float plu = 0.f;
         try
         {
@@ -504,14 +495,7 @@ public class AlignJFrame extends JFrame
         {
           Vector vseq = gsc.getSequenceCollection();
           Enumeration enum = vseq.elements();
-          float wgt = 0.f;
-          while(enum.hasMoreElements())
-          {
-            Sequence s = (Sequence)enum.nextElement();
-            if(!s.getName().equals("Consensus"))
-              wgt+=s.getWeight();
-          }
-
+          float wgt = getTotalWeight(gsc.getSequenceCollection());
           options.setCase(wgt/2.f);
           options.setPlurality(wgt/2.f);
           options.setGraphicSequenceCollection(gsc);
@@ -631,6 +615,22 @@ public class AlignJFrame extends JFrame
     setLocation( (int)(dScreen.getWidth()-getWidth())/3,
                  (int)(dScreen.getHeight()-getHeight())/3 );
   }
+
+
+  public static float getTotalWeight(Vector vseq)
+  {
+    float wgt = 0.f;
+    vseq = gsc.getSequenceCollection();
+    Enumeration enum = vseq.elements();
+    while(enum.hasMoreElements())
+    {
+      Sequence s = (Sequence)enum.nextElement();
+      if(!s.getName().equals("Consensus"))
+        wgt+=s.getWeight();
+    }
+    return wgt;
+  }
+
 
   /**
   *
@@ -987,6 +987,9 @@ public class AlignJFrame extends JFrame
               "           -minID         define the minimum number of identities. The\n"+
               "                          default for this is the number of sequences\n"+
               "                          in the file.\n"+
+              "           -match         define a threshold value for the number of\n"+
+              "                          positive matches, the default is half the\n"+
+              "                          total wgt.\n"+
               "           -colMatch      define a colour for positive matches.\n"+  
               "           -colIDBack     define a background colour for identities.\n"+
               "           -colMatchBack  define a background colour for positive\n"+
@@ -1034,16 +1037,7 @@ public class AlignJFrame extends JFrame
       boolean print = false;
       int nresiduesPerLine = 0;
 
-      float wgt = 0.f;
-      Vector vseq = gsc.getSequenceCollection();
-      Enumeration enum = vseq.elements();
-      while(enum.hasMoreElements())
-      {
-        Sequence s = (Sequence)enum.nextElement();
-        if(!s.getName().equals("Consensus"))
-          wgt+=s.getWeight();
-      }
-
+      float wgt = getTotalWeight(gsc.getSequenceCollection());
       double lmargin = -0.5;  // left margin
       double rmargin = -0.5;  // right margin
       double tmargin = -0.5;  // top margin
@@ -1052,6 +1046,7 @@ public class AlignJFrame extends JFrame
       float cas = wgt/2.f;
       int ident = 0;
       int minID = gsc.getNumberSequences();
+      float match = wgt/2.f;
       Color colID        = Color.red;
       Color colMatch     = Color.blue;
       Color colIDBack    = Color.white;
@@ -1070,6 +1065,8 @@ public class AlignJFrame extends JFrame
         }
         else if(args[i].indexOf("-plu") > -1)
           plu = Float.parseFloat(args[i+1]);
+        else if(args[i].indexOf("-match") > -1)
+          match = Float.parseFloat(args[i+1]);
         else if(args[i].indexOf("-case") > -1)
           cas = Float.parseFloat(args[i+1]);
         else if(args[i].indexOf("-numid") > -1)
@@ -1173,8 +1170,8 @@ public class AlignJFrame extends JFrame
         else if(args[i].indexOf("-pretty")  > -1)          
         {
           PrettyPlotJFrame pretty = new PrettyPlotJFrame(minID,
-                                     colID,colMatch,
-                                     colIDBack,colMatchBack,prettyBox);
+                  match,colID,colMatch,
+                  colIDBack,colMatchBack,prettyBox);
           gsc.setPrettyPlot(true,pretty);
           gsc.setDrawBoxes(false);
           gsc.setDrawColor(false);
