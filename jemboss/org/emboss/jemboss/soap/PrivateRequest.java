@@ -253,8 +253,14 @@ public class PrivateRequest
 	  Vector vans = (Vector)progvalue;
 
 	  int n = vans.size();
-	  for(int j=0;j<n;j+=2) //assumes it's even sized
+	  for(int j=0;j<n;j+=2)  //assumes it's even sized
+          {
+            if(vans.get(j).equals("msg"))
+              if(((String)vans.get(j+1)).startsWith("Failed Authorisation"))
+                throw new JembossSoapException("Authentication Failed");
+
 	    proganswer.put(vans.get(j),vans.get(j+1));
+          }
         }
       }
 
