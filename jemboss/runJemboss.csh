@@ -1,9 +1,13 @@
 #!/bin/csh -f
-setenv CLASSPATH :lib/soap.jar:lib/xerces.jar:lib/mail.jar:lib/activation.jar:lib/jakarta-regexp-1.2.jar:lib/jalview.jar:lib/jnet.jar:lib/jcert.jar:lib/jsse.jar:.:
+#
+# 
+#
+setenv LIB ./lib
+setenv CLASSPATH :$LIB/soap.jar:$LIB/xerces.jar:$LIB/mail.jar:$LIB/activation.jar:$LIB/jakarta-regexp-1.2.jar:$LIB/jalview.jar:$LIB/jnet.jar:$LIB/jcert.jar:$LIB/jsse.jar:.:
 #
 #Commented vars are required for standalone use
 #
-#setenv EMBOSS_INSTALL /usr/local/lib
+#setenv EMBOSS_INSTALL /packages/emboss/STABLE/lib
 #setenv LD_LIBRARY_PATH $EMBOSS_INSTALL
 #
 #For MacOSX:
@@ -11,5 +15,8 @@ setenv CLASSPATH :lib/soap.jar:lib/xerces.jar:lib/mail.jar:lib/activation.jar:li
 #
 #For HPUX:
 #setenv SHLIB_PATH $EMBOSS_INSTALL/lib
-
-java org/emboss/jemboss/Jemboss &
+#
+#Add local to run as 'standalone':
+#java org.emboss.jemboss.Jemboss local &
+#
+java org.emboss.jemboss.Jemboss &
