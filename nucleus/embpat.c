@@ -3452,6 +3452,7 @@ ajint embPatGetType(AjPStr *pattern, ajint mismatch, AjBool protein, ajint *m,
     ajint    plen;
     ajint    type;
     char   *p;
+    char   *q;
     
 
     if(!embPatClassify(pattern,left,right,&fclass,&compl,&dontcare,
@@ -3508,7 +3509,13 @@ ajint embPatGetType(AjPStr *pattern, ajint mismatch, AjBool protein, ajint *m,
     }
     else if(!mismatch && (range || *m>AJWORD))
     {
-	type = 5;
+        q = ajStrStr(*pattern);
+	while(*q && *q!='?')
+	    ++q;
+	if(*q=='?')
+	    type=7;
+	else
+	    type = 5;
     }
     else if(mismatch && !range && (fclass || compl))
     {
