@@ -9,12 +9,13 @@ pkgdata2_DATA = isochore0.gif lindna.gif octanol0.gif pepinfo1.gif \
                alignment_group.html alignment_local_group.html \
                alignment_multiple_group.html antigenic.html \
                assorted_group.html backtranseq.html banana.html \
-               btwisted.html cai.html chaos.html checktrans.html chips.html \
-               cirdna.html clique.html codcmp.html coderet.html \
-               coding_regions_group.html comparison_group.html compseq.html \
-               cons.html consense.html contml.html contrast.html \
-               cpg_islands_group.html cpgplot.html cpgreport.html cusp.html \
-               cutseq.html dan.html database_entry_extraction_group.html \
+               btwisted.html cai.html chaos.html charge.html \
+               checktrans.html chips.html cirdna.html clique.html \
+               codcmp.html coderet.html coding_regions_group.html \
+               comparison_group.html compseq.html cons.html consense.html \
+               contml.html contrast.html cpg_islands_group.html \
+               cpgplot.html cpgreport.html cusp.html cutseq.html dan.html \
+               database_entry_extraction_group.html \
                database_indexing_group.html database_information_group.html \
                dbiblast.html dbifasta.html dbiflat.html dbigcg.html \
                degapseq.html descseq.html diffseq.html digest.html \
