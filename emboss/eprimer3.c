@@ -164,8 +164,8 @@ int main(int argc, char **argv, char **env)
   AjPStr    result = NULL;
   AjPStr    strand = NULL;
   AjPStr    substr = NULL;
-  AjPSeq    seq = NULL;
-  ajint     begin;
+  AjPSeq    seq    = NULL;
+  ajint     begin  = 0;
   ajint     end;
   FILE *    stream;
   AjPStr    taskstr = NULL;
