@@ -38,6 +38,8 @@ public class AdvancedOptions extends JPanel
   public static JComboBox jobMgr;
   public static JTextField mailServer;
   public static String cwd = System.getProperty("user.home");
+  private static JTextField userHome = new JTextField();
+
   private String time[] = new String[6];
 
   public AdvancedOptions()
@@ -96,7 +98,6 @@ public class AdvancedOptions extends JPanel
     bleft.add(Box.createHorizontalGlue());
     bdown.add(bleft);
 
-    final JTextField userHome = new JTextField();                 
     userHome.setText(cwd);
     bleft =  Box.createHorizontalBox();
     bleft.add(userHome);
@@ -151,6 +152,11 @@ public class AdvancedOptions extends JPanel
     this.add(bdown);
   }
 
+
+  public static String getHomeDirectory()
+  {
+    return userHome.getText();
+  }
 }
 
 
