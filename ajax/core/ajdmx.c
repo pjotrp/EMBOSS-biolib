@@ -1298,20 +1298,29 @@ AjBool ajDmxScophitsWrite(AjPFile outf, const AjPList list)
 	
         if(MAJSTRLEN(thys->Fold))
         {
-	    ajFmtPrintSplit(outf,thys->Fold,"XX\nFO   ",75," \t\n\r");
+	    ajFmtPrintSplit(outf,thys->Fold,"FO   ",75," \t\n\r");
 	    ajFmtPrintF(outf, "XX\n");
+
+	    /* ajFmtPrintSplit(outf,thys->Fold,"XX\nFO   ",75," \t\n\r");
+	       ajFmtPrintF(outf, "XX\n"); */
 	}
 	
         if(MAJSTRLEN(thys->Superfamily))
-        {
-	    ajFmtPrintSplit(outf,thys->Superfamily,"XX\nSF   ",75," \t\n\r");
+        { 
+	    ajFmtPrintSplit(outf,thys->Superfamily,"SF   ",75," \t\n\r");
 	    ajFmtPrintF(outf, "XX\n");
+
+	    /* ajFmtPrintSplit(outf,thys->Superfamily,"XX\nSF   ",75," \t\n\r");
+	       ajFmtPrintF(outf, "XX\n"); */
 	}
 	
         if(MAJSTRLEN(thys->Family))
         {
-	    ajFmtPrintSplit(outf,thys->Family,"XX\nFA   ",75," \t\n\r");
+	    ajFmtPrintSplit(outf,thys->Family,"FA   ",75," \t\n\r");
 	    ajFmtPrintF(outf, "XX\n");
+
+	    /* ajFmtPrintSplit(outf,thys->Family,"XX\nFA   ",75," \t\n\r");
+	       ajFmtPrintF(outf, "XX\n"); */
 	}
 	
         if(MAJSTRLEN(thys->Family))
@@ -1425,22 +1434,41 @@ AjBool ajDmxScopalgWrite(const AjPScopalg scop, AjPFile outf)
     if(scop->Type == ajSCOP)
     {
 	ajFmtPrintF(outf,"# TY   SCOP\n# XX\n");
-	ajFmtPrintF(outf,"# CL   %S",scop->Class);
+	ajFmtPrintF(outf,"# CL   %S\n# XX\n",scop->Class);
+
+	ajFmtPrintSplit(outf,scop->Fold,"# FO   ",75," \t\n\r");
+	ajFmtPrintF(outf, "# XX\n");
+	ajFmtPrintSplit(outf,scop->Superfamily,"# SF   ",75," \t\n\r");
+	ajFmtPrintF(outf, "# XX\n");
+	ajFmtPrintSplit(outf,scop->Family,"# FA   ",75," \t\n\r");
+	ajFmtPrintF(outf, "# XX\n");
+
+	/* 
 	ajFmtPrintSplit(outf,scop->Fold,"\nXX\n# FO   ",75," \t\n\r");
 	ajFmtPrintSplit(outf,scop->Superfamily,"# XX\n# SF   ",75," \t\n\r");
 	ajFmtPrintSplit(outf,scop->Family,"# XX\n# FA   ",75," \t\n\r");
-	ajFmtPrintF(outf,"# XX\n");
-	ajFmtPrintF(outf,"# SI   %d\nXX",scop->Sunid_Family);
+	ajFmtPrintF(outf,"# XX\n"); */
+
+	ajFmtPrintF(outf,"# SI   %d\n# XX",scop->Sunid_Family);
     }
     else
     {
 	ajFmtPrintF(outf,"# TY   CATH\n# XX\n");
-	ajFmtPrintF(outf,"# CL   %S",scop->Class);
-	ajFmtPrintSplit(outf,scop->Architecture,"\nXX\n# AR   ",75," \t\n\r");
+	ajFmtPrintF(outf,"# CL   %S\n# XX\n",scop->Class);
+
+	ajFmtPrintSplit(outf,scop->Architecture,"# AR   ",75," \t\n\r");
+	ajFmtPrintF(outf, "# XX\n");
+	ajFmtPrintSplit(outf,scop->Topology,"# TP   ",75," \t\n\r");
+	ajFmtPrintF(outf, "# XX\n");
+	ajFmtPrintSplit(outf,scop->Superfamily,"# SF   ",75," \t\n\r");
+	ajFmtPrintF(outf, "# XX\n");
+
+	/* ajFmtPrintSplit(outf,scop->Architecture,"\nXX\n# AR   ",75," \t\n\r");
 	ajFmtPrintSplit(outf,scop->Topology,"# XX\n# TP   ",75," \t\n\r");
 	ajFmtPrintSplit(outf,scop->Superfamily,"# XX\n# SF   ",75," \t\n\r");
-	ajFmtPrintF(outf,"# XX\n");
-	ajFmtPrintF(outf,"# SI   %d\nXX",scop->Sunid_Family);
+	ajFmtPrintF(outf,"# XX\n"); */
+
+	ajFmtPrintF(outf,"# SI   %d\n# XX",scop->Sunid_Family);
     }
     
 

@@ -4166,12 +4166,24 @@ AjBool ajCathWrite(AjPFile outf, const AjPCath obj)
     ajStrToUpper(&tmp);
     ajFmtPrintF(outf,"EN   %S\nXX\n",tmp);
     ajFmtPrintF(outf,"TY   CATH\nXX\n");    
+
+    ajFmtPrintF(outf,"CL   %S\n",obj->Class);
+    ajFmtPrintF(outf, "XX\n");
+    ajFmtPrintSplit(outf,obj->Architecture,"AR   ",75," \t\n\r");
+    ajFmtPrintF(outf, "XX\n");
+    ajFmtPrintSplit(outf,obj->Topology,"TP   ",75," \t\n\r");
+    ajFmtPrintF(outf, "XX\n");
+    ajFmtPrintSplit(outf,obj->Superfamily,"SF   ",75," \t\n\r");
+    ajFmtPrintF(outf, "XX\n");
+    ajFmtPrintF(outf,"NR   %d\n",obj->Length);
+
+    /*
     ajFmtPrintF(outf,"CL   %S",obj->Class);
     ajFmtPrintSplit(outf,obj->Architecture,"\nXX\nAR   ",75," \t\n\r");
     ajFmtPrintSplit(outf,obj->Topology,"XX\nTP   ",75," \t\n\r");
     ajFmtPrintSplit(outf,obj->Superfamily,"XX\nSF   ",75," \t\n\r");
-
     ajFmtPrintF(outf,"XX\nNR   %d\n",obj->Length);
+    */
 
     if(ajStrLen(obj->SeqPdb))
     {
