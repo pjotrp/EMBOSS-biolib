@@ -614,6 +614,8 @@ AjBool embPdbListHeterogens(AjPPdb pdb, AjPList *list_heterogens,
 		  {
 		      n=(ajListToArray(GrpAtmList, (void ***) &AtmArray));
 		      ajListPushApp(*list_heterogens, AtmArray);
+		      /* So that ajListToArray doesn't try and free the non-NULL pointer */
+		      AtmArray=NULL;
 		      ajIntPut(siz_heterogens, arr_count, n);
 		      (*nhet)++;
 		      ajListDel(&GrpAtmList);
@@ -635,6 +637,8 @@ AjBool embPdbListHeterogens(AjPPdb pdb, AjPList *list_heterogens,
       {
 	  n=(ajListToArray(GrpAtmList, (void ***) &AtmArray));
 	  ajListPushApp(*list_heterogens, AtmArray);
+	  /* So that ajListToArray doesn't try and free the non-NULL pointer */
+	  AtmArray=NULL; 
 	  ajIntPut(siz_heterogens, arr_count, n);
 	  (*nhet)++;
 	  ajListDel(&GrpAtmList);
@@ -890,8 +894,42 @@ AjBool embPdbAtomIndexCCA(AjPPdb pdb, char chn, AjPInt *idx, ajint *nres)
 
 
 
+/* @func embStrideToThree ***************************************************
+**
+** Reads a string that contains an 8-state STRIDE secondary structure 
+** assignment and writes a string with the corresponding 3-state assignment.
+** The 8 states used in STRIDE are 'H' (alpha helix), 'G' (3-10 helix), 
+** 'I' (Pi-helix), 'E' (extended conformation), 'B' or 'b' (isolated bridge),
+** 'T' (turn) or 'C' (coil, i.e. none of the above).  The 3 states used
+** are 'H' (STRIDE 'H', 'G' or 'I'), 'E' (STRIDE 'E', 'B' or 'b') and 'C'
+** (STRIDE 'T' or 'C'). The string is allocated if necessary.
+**
+** @param [r] pdb [AjPPdb]  Pdb object
+** @param [r] chn [char]    Chain identifier
+** @param [w] idx [AjPInt*] Index array
+** @param [r] nres [ajint*] Array length 
+**
+** @return [AjBool] True on succcess
+** @@
+****************************************************************************/
+AjBool       embStrideToThree(AjPStr *to, AjPStr from)
+{
+    if(!from)
+    {
+	ajWarn("Bad args passed to embStrideToThree");
+	return ajFalse;
+    }
+    else
+	ajStrAssS(to, from);
 
+    ajStrSubstituteKK(to, 'G', 'H');
+    ajStrSubstituteKK(to, 'I', 'H');
+    ajStrSubstituteKK(to, 'B', 'E');
+    ajStrSubstituteKK(to, 'b', 'E');
+    ajStrSubstituteKK(to, 'T', 'C');
 
+    return ajTrue;
+}
 
 
 

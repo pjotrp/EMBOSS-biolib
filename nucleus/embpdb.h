@@ -93,7 +93,7 @@ AjBool       embPdbidToAcc(AjPStr pdb, AjPStr *acc, AjPList list);
 AjBool       embPdbidToScop(AjPPdb pdb, const AjPList list_allscop, 
 			    AjPList *list_pdbscopids);
 float        embVdwRad(AjPAtom atm, AjPVdwall vdw);
-
+AjBool       embStrideToThree(AjPStr *to, AjPStr from);
 
 
 

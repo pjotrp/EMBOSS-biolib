@@ -44,24 +44,12 @@
 **
 ** AjPElement is implemented as a pointer to a C data structure.
 **
+**
+**
 ** @alias AjSElement
 ** @alias AjOElement
 **
-** The variables have the following meaning (column numbers refer to the pdb 
-** file):
 **
-** TYPE OF HELIX             CLASS NUMBER (COLUMNS 39 - 40)<br>
-** --------------------------------------------------------------<br>
-** Right-handed alpha (default)                1<br>
-** Right-handed omega                          2<br>
-** Right-handed pi                             3<br>
-** Right-handed gamma                          4<br>
-** Right-handed 310                            5<br>
-** Left-handed alpha                           6<br>
-** Left-handed omega                           7<br>
-** Left-handed gamma                           8<br>
-** 27 ribbon/helix                             9<br>
-** Polyproline                                10<br>
 **
 ** @attr elementNum [ajint]    Serial number of the element (columns 8 - 10) 
 ** @attr elementId [AjPStr]    Element identifier (columns 12 - 14) 
@@ -85,7 +73,20 @@
 **                             or 22 (SHEET) )
 ** @attr helixClass [ajint]    Classes of helices (columns 39 - 40),
 **                             an int from 1-10 from
-**	   http://www.rcsb.org/pdb/docs/format/pdbguide2.2/guide2.2_frame.html 
+** http://www.rcsb.org/pdb/docs/format/pdbguide2.2/guide2.2_frame.html<br>
+** 
+** TYPE OF HELIX             CLASS NUMBER (COLUMNS 39 - 40)<br>
+** --------------------------------------------------------------<br>
+** Right-handed alpha (default)                1<br>
+** Right-handed omega                          2<br>
+** Right-handed pi                             3<br>
+** Right-handed gamma                          4<br>
+** Right-handed 310                            5<br>
+** Left-handed alpha                           6<br>
+** Left-handed omega                           7<br>
+** Left-handed gamma                           8<br>
+** 27 ribbon/helix                             9<br>
+** Polyproline                                10<br>
 ** 
 ** @@
 ****************************************************************************/
@@ -115,14 +116,17 @@ typedef struct AjSElement
 **
 ** AjPElements is implemented as a pointer to a C data structure.
 **
+**
+**
 ** @alias AjSElements
 ** @alias AjOElements
 **
-** The variables have the following meaning:
+**
 **
 ** @attr n [ajint] Total no. of secondary structure elements
 **                       (helices, strands or turns) 
 ** @attr elms [AjPElement*] Array of Element objects 
+**
 ** @@
 ****************************************************************************/
 typedef struct AjSElements
@@ -144,11 +148,12 @@ AjOElements, *AjPElements;
 **
 ** AjPPdbfile is implemented as a pointer to a C data structure.
 **
+**
+**
 ** @alias AjSPdbfile
 ** @alias AjOPdbfile
 **
 **
-** The variables have the following meaning:
 **
 ** @attr pdbid [AjPStr]       4 character pdb id code 
 ** @attr tercnt [ajint]       The number of TER records in the pdb file 
@@ -1079,7 +1084,7 @@ static AjBool WriteAtomDomain(AjPFile errf, AjPFile outf, AjPPdb pdb,
 	    }
 	
 	
-	/* Iterate up to the correct model */
+	/* Iteratre up to the correct model */
 	iter=ajListIterRead(pdb->Chains[chn-1]->Atoms);	
 	
 	while((atm = (AjPAtom)ajListIterNext(iter)))
@@ -1365,7 +1370,7 @@ static AjBool WriteHeterogen(AjPFile outf, AjPPdb pdb, ajint mod)
 	return ajFalse;
     
 
-    iter=ajListIterRead(pdb->Groups);	
+        iter=ajListIterRead(pdb->Groups);	
 
     while((atm = (AjPAtom)ajListIterNext(iter)))
 	if(atm->Mod==mod)
@@ -7263,12 +7268,6 @@ AjBool  ajPdbWriteDomainRecordRaw(ajint mode, AjPPdb pdb, ajint mod,
 }
 
 
-
-
-
-/**************************************************************/
-/* The following functions are called by ajPdbWriteRecordRaw */
-/**************************************************************/
 
 /* @func ajPdbWriteRecordRaw ************************************************
 **

@@ -43,9 +43,15 @@ extern "C"
 **
 ** Holds scop database data
 **
+** AjPScop is implemented as a pointer to a C data structure.
 **
 **
-** Variables are described below:
+**
+** @alias AjSScop
+** @alias AjOScop
+**
+**
+**
 ** @attr Entry              [AjPStr]  Domain identifer code.
 ** @attr Pdb                [AjPStr]  Corresponding pdb identifier code.
 ** @attr Class              [AjPStr]  SCOP class name as an AjPStr.
@@ -80,45 +86,35 @@ extern "C"
 **
 **
 **
-**
-** Functions that use this object are described below:
 ** @new    ajScopNew Scop default constructor.
-** @new    ajScopReadNew Scop constructor from reading dcf format file.
-** @new    ajScopReadCNew Cath constructor from reading dcf format file.
-** @new    ajCathNew Cath default constructor.
-** @new    ajCathReadCNew Cath constructor from reading dcf format file.
-** @new    ajCathReadNew Cath constructor from reading dcf format file.
+** @input  ajScopReadNew Scop constructor from reading dcf format file.
+** @input  ajScopReadCNew Scop constructor from reading dcf format file.
 ** @delete ajScopDel Default Scop destructor.
-** @delete ajCathDel Default Cath destructor.
 ** @assign ajScopCopy Replicates a Scop object.
 ** @use    ajScopMatchSunid Sort Scop objects by Sunid_Family element.
 ** @use    ajScopMatchScopid Sort Scop objects by Entry element.
 ** @use    ajScopMatchPdbId Sort Scop objects by Pdb element.
-** @use    ajCathMatchPdbId Sort Cath objects by Pdb element.
+** @use    embScopToPdbid  Read a scop identifier code and writes the 
+**         equivalent PDB identifier code.
+** @use    embScopToSp  Read a scop identifier code and writes the 
+**         equivalent swissprot identifier code.
+** @use    embScopToAcc  Read a scop identifier code and writes the 
+**         equivalent accession number.
 ** @use    ajScopArrFindScopid Binary search for Entry element over array 
 **         of Scop objects. 
 ** @use    ajScopArrFindSunid Binary search for Sunid_Family element over 
 **         array of Scop objects. 
 ** @use    ajScopArrFindPdbid Binary search for Pdb element over array of
 **         Scop objects. 
-** @use    ajCathArrFindPdbid Binary search for Pdb element over array of
-**         Cath objects. 
-** @other  ajScopReadAllNew Construct list of Scop objects from reading dcf
+** @input  ajScopReadAllNew Construct list of Scop objects from reading dcf
 **         format file.
-** @other  ajScopReadAllRawNew Construct list of Scop objects from reading 
+** @input  ajScopReadAllRawNew Construct list of Scop objects from reading 
 **         raw SCOP parsable files.
-** @other  ajCathReadAllNew Construct list of Cath objects from reading dcf
-**         format file.
-** @other  ajCathReadAllRawNew Construct list of Cath objects from reading 
-**         raw CATH parsable files.
-** @other  ajScopWrite Write Scop object to dcf format file.
-** @other  ajCathWrite Write Cath object to dcf format file.
-**
-**
-** AjPScop is implemented as a pointer to a C data structure.
-**
-** @alias AjSScop
-** @alias AjOScop
+** @output ajScopWrite Write Scop object to dcf format file.
+** @output ajPdbWriteDomain Writes a ccf format file for a SCOP domain.
+** @output ajPdbWriteDomainRaw Writes a pdb-format file for a SCOP domain.
+** @output ajPdbWriteDomainRecordRaw Writes lines to a pdb format file for 
+**         a domain.
 **
 ** @@
 ****************************************************************************/
@@ -164,6 +160,15 @@ typedef struct AjSScop
 **
 ** Holds cath database data
 **
+** AjPScop is implemented as a pointer to a C data structure.
+**
+**
+**
+** @alias AjSCath
+** @alias AjOCath
+**
+**
+**
 ** @attr DomainID       [AjPStr]  Domain identifer code        
 ** @attr Pdb            [AjPStr]  Corresponding pdb identifer code
 ** @attr Class          [AjPStr]  CATH class name as an AjPStr
@@ -183,9 +188,21 @@ typedef struct AjSScop
 ** @attr NIFamily_Id    [ajint]   CATH near identical family no. as an ajint 
 ** @attr IFamily_Id     [ajint]   CATH identical family no. as an ajint 
 **
-** @alias AjSCath
-** @alias AjOCath
 **
+** 
+** @new    ajCathNew Default Cath constructor
+** @input  ajCathReadCNew Cath constructor from reading dcf format file.
+** @input  ajCathReadNew Cath constructor from reading dcf format file.
+** @delete ajCathDel Default Cath destructor
+** @use    ajCathArrFindPdbid Binary search for Pdb element over array of
+**         Cath objects. 
+** @use    ajCathMatchPdbId Sort Cath objects by Pdb element.
+** @input  ajCathReadAllNew Construct list of Cath objects from reading dcf
+**         format file.
+** @input  ajCathReadAllRawNew Construct list of Cath objects from reading 
+**         raw CATH parsable files.
+** @other  ajCathWrite Write Cath object to dcf format file.
+** 
 ** @@
 ****************************************************************************/
 
@@ -202,7 +219,7 @@ typedef struct AjSCath
     char    Chain;          
     
     ajint   NSegment;       
-    AjPStr *Start;
+    AjPStr *Start;      
     AjPStr *End;          
     
     ajint   Class_Id;        
@@ -240,7 +257,7 @@ AjPList  ajScopReadAllRawNew(AjPFile claf, AjPFile desf, AjBool outputall);
 AjBool   ajScopWrite(AjPFile outf, const AjPScop obj);
 
 AjBool   ajPdbWriteDomain(AjPFile outf, const AjPPdb pdb,
-			   const AjPScop scop, AjPFile errf);
+	        	   const AjPScop scop, AjPFile errf);
 
 
 
@@ -269,3 +286,4 @@ AjBool    ajCathWrite(AjPFile outf, const AjPCath obj);
 #ifdef __cplusplus
 }
 #endif
+

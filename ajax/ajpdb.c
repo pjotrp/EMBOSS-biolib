@@ -1020,6 +1020,73 @@ AjBool ajPdbCopy(AjPPdb *to, AjPPdb from)
 ****************************************************************************/
 
 
+/* @func ajPdbGetEStrideType ************************************************
+**
+** Reads a Pdb object and writes a string with the secondary structure. The
+** string that is written is the same length as the full-length chain 
+** (regardless of whether coordinates for a residue were available or not) 
+** therefore it can be indexed into using residue numbers.  The string is 
+** allocated if necessary.
+**
+** @param [r] obj [AjPPdb]  Pdb object
+** @param [r] chn [ajint]   Chain number
+** @param [w] EStrideType [AjPStr *] String to hold secondary structure
+**
+** @return [ajint] Length (residues) of array that was written or -1 (for 
+**                 an error)
+** @@
+****************************************************************************/
+
+ajint  ajPdbGetEStrideType(AjPPdb obj, ajint chn, AjPStr *EStrideType)
+{
+    AjPAtom tmp    = NULL;
+    AjIList iter   = NULL;
+    ajint idx      = 0;
+    ajint last_res = -10000;
+    
+
+    if(!obj || !EStrideType || (chn<1))
+    {
+	ajWarn("Bad args passed to ajPdbGetEStrideType");
+	return -1;
+    }
+    if(chn > obj->Nchn)
+    {
+	ajWarn("chn arg in ajPdbGetEStrideType exceeds no. chains");
+	return -1;
+    }
+    else 
+	idx = chn-1;
+    
+
+    if(!(*EStrideType))
+	*EStrideType = ajStrNewL(obj->Chains[idx]->Nres);
+    else
+    {
+	ajStrDel(EStrideType);
+	*EStrideType = ajStrNewL(obj->Chains[idx]->Nres);
+    }
+        
+
+    iter=ajListIterRead(obj->Chains[idx]->Atoms);
+    while((tmp=(AjPAtom)ajListIterNext(iter)))
+    {
+	/* New residue */
+	if(tmp->Idx != last_res)
+	{
+	    (*EStrideType)->Ptr[tmp->Idx-1] = tmp->eStrideType;
+	    last_res = tmp->Idx;
+	}
+	else
+	    continue;
+    }
+    
+
+    ajListIterFree(&iter);
+    return obj->Chains[idx]->Nres;
+}
+
+
 
 
 
@@ -2182,6 +2249,219 @@ AjPPdb ajPdbReadFirstModelNew(AjPFile inf)
     ajStrDel(&xstr);
 
     return ret;
+}
+
+
+
+
+
+/* @func ajPbdWriteSegment *************************************************
+**
+** Writes a clean coordinate file for a segment, e.g. a domain. The segment 
+** corresponds to a sequence that is passed to the function.
+** In the clean coordinate file, the coordinates are presented as belonging
+** to a single chain.  Coordinates for heterogens are NOT written to file.
+**
+** @param [w] outf    [AjPFile] Output file stream
+** @param [r] pdb     [AjPPdb]  Pdb object
+** @param [r] segment [AjPStr]  Sequence of segment to print out.
+** @param [r] chnid   [char]    Chain id of segment
+** @param [r] domain  [AjPStr]  Domain code for segment
+** @param [w] errf    [AjPFile] Output file stream for error messages
+**
+** @return [AjBool] True on success
+** @@
+** 
+****************************************************************************/
+AjBool ajPbdWriteSegment(AjPFile outf, AjPPdb pdb, AjPStr segment, 
+			  char chnid, AjPStr domain, AjPFile errf)
+{
+    ajint chn;
+    ajint start     = 0;
+    ajint end       = 0;
+    char  id;
+    
+    AjIList  iter        = NULL;
+    AjPAtom  atm         = NULL;
+    AjPAtom  atm2        = NULL;
+    AjBool   found_start = ajFalse;
+    AjBool   found_end   = ajFalse;    
+
+
+   
+    /* Check for unknown or zero-length chain */
+    if(!ajPdbChnidToNum(chnid, pdb, &chn))
+    {
+	ajWarn("Chain incompatibility error in "
+	       "ajPbdWriteSegment");			
+		
+	ajFmtPrintF(errf, "//\n%S\nERROR Chain incompatibility "
+		    "error in ajPbdWriteDomain\n", domain);
+	return ajFalse;
+    }
+    else if(pdb->Chains[chn-1]->Nres==0)
+    {		
+	ajWarn("Chain length zero");			
+	    
+	ajFmtPrintF(errf, "//\n%S\nERROR Chain length zero\n", 
+		    domain);
+	return ajFalse;
+    }
+    
+    /* Check if segment exists in this chain */
+    if((start = ajStrFind(pdb->Chains[chn-1]->Seq, segment)) == -1)
+    {
+	ajWarn("Domain not found in ajPbdWriteSegment");
+	ajFmtPrintF(errf, "//\n%S\nERROR Domain not found "
+		    "in ajPbdWriteSegment\n", domain);
+	return ajFalse;
+    }
+    else	
+    {
+	/* Residue numbers start at 1 ! */
+	start++;
+	end = start + MAJSTRLEN(segment) - 1;
+    }  	  
+    
+    
+    /* Write header info. to domain coordinate file */
+    ajFmtPrintF(outf, "%-5s%S\n", "ID", domain);
+    ajFmtPrintF(outf, "XX\n");
+    ajFmtPrintF(outf, "%-5sCo-ordinates for domain %S\n", 
+		"DE", domain);
+    ajFmtPrintF(outf, "XX\n");
+    ajFmtPrintF(outf, "%-5sDomain defined from sequence segment\n", 
+		"OS");
+    ajFmtPrintF(outf, "XX\n");
+    ajFmtPrintF(outf, "%-5sMETHOD ", "EX");
+    if(pdb->Method == ajXRAY)
+	ajFmtPrintF(outf, "xray; ");	
+    else
+	ajFmtPrintF(outf, "nmr_or_model; ");		
+    /* The NCHN and NMOD are hard-coded to 1 for domain files */
+    ajFmtPrintF(outf, "RESO %.2f; NMOD 1; NCHN 1; NLIG 0;\n", 
+		pdb->Reso);
+    
+
+    id = pdb->Chains[chn-1]->Id;
+    if(id == ' ')
+	id = '.';
+
+    
+    /* Write sequence to domain coordinate file */
+    ajFmtPrintF(outf, "XX\n");	
+    ajFmtPrintF(outf, "%-5s[1]\n", "CN");	
+    ajFmtPrintF(outf, "XX\n");	
+    
+    ajFmtPrintF(outf, "%-5sID %c; NRES %d; NL 0; NH 0; NE 0;\n", 
+		"IN", 
+		id,
+		MAJSTRLEN(segment));
+    ajFmtPrintF(outf, "XX\n");	
+    ajSeqWriteXyz(outf, segment, "SQ");
+    ajFmtPrintF(outf, "XX\n");	
+    
+    
+    /* Write co-ordinates list to domain coordinate file */        
+    ajPdbChnidToNum(chnid, pdb, &chn);
+    
+    /* Initialise the iterator */
+    iter = ajListIterRead(pdb->Chains[chn-1]->Atoms);
+    
+    
+    /* Iterate through the list of atoms */
+    while((atm=(AjPAtom)ajListIterNext(iter)))
+    {
+	if(atm->Mod!=1)
+	    break;
+	if(atm->Type!='P')
+	    continue;
+	if(!found_start)
+	{
+	    if(atm->Idx == start)
+		found_start = ajTrue;	
+	    else		
+		continue;
+	}	
+	if(!found_end)
+	{
+	    if(atm->Idx == end)
+		found_end = ajTrue;     
+	}
+	/*  The end position has been found, and the current atom no longer
+	 ** belongs to this final residue.
+	 */
+	else if(atm->Idx != end && found_end)
+	    break;
+	    
+	    
+	/* Print out coordinate line */
+	ajFmtPrintF(outf, "%-5s%-5d%-5d%-5c%-5c%-6d%-6S%-5c",
+		    "CO", 
+		    atm->Mod,		/* It will always be 1 */
+		    1,			/* chn number is always given as 1 */
+		    '.',
+		    atm->Type, 
+		    atm->Idx-start+1, 
+		    atm->Pdb, 
+		    atm->eType);
+	if(atm->eNum != 0)
+	    ajFmtPrintF(outf, "%-5d", atm->eNum);
+	else
+	    ajFmtPrintF(outf, "%-5c", '.');
+	ajFmtPrintF(outf, "%-5S", atm->eId);
+
+	if(atm->eType == 'H')
+	    ajFmtPrintF(outf, "%-5d", atm->eClass);
+	else
+	    ajFmtPrintF(outf, "%-5c", '.');
+
+
+	ajFmtPrintF(outf, "%-5c", atm->eStrideType);
+	if(atm->eStrideNum != 0)
+	    ajFmtPrintF(outf, "%-5d", atm->eStrideNum);
+	else
+	    ajFmtPrintF(outf, "%-5c", '.');
+
+	ajFmtPrintF(outf, "%-2c%6S    %-4S%8.3f%9.3f%9.3f%8.2f%8.2f"
+		    "%8.2f%8.2f%8.2f%8.2f%8.2f%8.2f%8.2f%8.2f%8.2f"
+		    "%8.2f%8.2f%8.2f%8.2f\n", 
+		    atm->Id1, 
+		    atm->Id3,
+		    atm->Atm, 
+		    atm->X, 
+		    atm->Y, 
+		    atm->Z, 
+		    atm->O, 
+		    atm->B,
+		    atm->Phi,
+		    atm->Psi,
+		    atm->Area, 
+		    atm->all_abs, 
+		    atm->all_rel, 
+		    atm->side_abs, 
+		    atm->side_rel, 
+		    atm->main_abs, 
+		    atm->main_rel, 
+		    atm->npol_abs, 
+		    atm->npol_rel, 
+		    atm->pol_abs, 
+		    atm->pol_rel);
+	    
+	    
+	/* Assign pointer for this chain */
+	atm2 = atm;
+    }
+    
+    ajListIterFree(&iter);			
+    
+    
+    
+    /* Write last line in file */
+    ajFmtPrintF(outf, "//\n");    
+    
+    
+    return ajTrue;
 }
 
 

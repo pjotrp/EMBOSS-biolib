@@ -244,6 +244,7 @@ void ajDmxScophitDelWrap(const void  **ptr)
 ** Destructor for Scopalg object.
 **
 ** @param [d] pthis [AjPScopalg*] Scopalg object pointer
+**
 ** @return [void]
 ** @@
 ****************************************************************************/
@@ -853,6 +854,47 @@ ajint ajDmxScophitCompFold(const void *hit1, const void *hit2)
 /* ========================== Input & Output ============================= */
 /* ======================================================================= */
 
+/* @func ajDmxScopalgGetseqs ************************************************
+**
+** Read a Scopalg object and writes an array of AjPStr containing the 
+** sequences without gaps.
+** 
+** @param [r] thys     [const AjPScopalg]  Scopalg object
+** @param [w] arr      [AjPStr **]   Array of AjPStr 
+**
+** @return [ajint] Number of sequences read
+** @@
+****************************************************************************/
+ajint ajDmxScopalgGetseqs(const AjPScopalg thys, AjPStr **arr)
+{
+    ajint i;
+        
+    /* Check args */
+    if(!thys)
+    {
+	ajWarn("Null args passed to ajDmxScopalgGetseqs");
+	return 0;
+    }
+    
+    
+    *arr = (AjPStr *) AJCALLOC0(thys->N, sizeof(AjPStr));
+    
+    for(i=0;i<thys->N;++i)
+    {
+	(*arr)[i] = ajStrNew();
+
+	ajStrAssS(&((*arr)[i]), thys->Seqs[i]);
+	
+	ajStrDegap(&((*arr)[i]));
+	
+    }
+
+    return thys->N;
+}
+
+
+
+
 /* @func ajDmxScophitsWrite *************************************************
 **
 ** Write contents of a list of Scophits to an output file in embl-like format
@@ -1209,7 +1251,7 @@ AjBool ajDmxScopalgRead(AjPFile inf, AjPScopalg *thys)
 
 /* @func ajDmxScopalgWrite **************************************************
 **
-** Write a Scopalg object to file in clustal format annotated with Scop 
+** Write a Scopalg object to file in clusta format annotated with Scop 
 ** classification as below:
 **
 **
@@ -1432,7 +1474,7 @@ AjBool ajDmxScopalgWriteFasta(const AjPScopalg align, AjPFile outf)
 ** Writes a sequence corresponding to a Scop domain given a Sunid for the 
 ** domain. The sequence is taken from one of a list of Scop objects that is
 ** provided.  The swissprot sequence is taken in priority over the pdb 
-** sequence
+** sequence.
 ** 
 ** @param [r] id   [ajint]    Search term
 ** @param [w] seq  [AjPStr*]  Result sequence
@@ -1482,46 +1524,6 @@ AjBool ajDmxScopSeqFromSunid(ajint id, AjPStr *seq, const AjPList list)
 
 
 
-
-/* @func ajDmxScopalgGetseqs ************************************************
-**
-** Read a Scopalg object and writes an array of AjPStr containing the 
-** sequences without gaps.
-** 
-** @param [r] thys     [const AjPScopalg]  Scopalg object
-** @param [wD] arr      [AjPStr **]   Array of AjPStr 
-**
-** @return [ajint] Number of sequences read
-** @@
-****************************************************************************/
-ajint ajDmxScopalgGetseqs(const AjPScopalg thys, AjPStr **arr)
-{
-    ajint i;
-        
-    /* Check args */
-    if(!thys)
-    {
-	ajWarn("Null args passed to ajDmxScopalgGetseqs");
-	return 0;
-    }
-    
-    
-    *arr = (AjPStr *) AJCALLOC0(thys->N, sizeof(AjPStr));
-    
-    for(i=0;i<thys->N;++i)
-    {
-	(*arr)[i] = ajStrNew();
-
-	ajStrAssS(&((*arr)[i]), thys->Seqs[i]);
-	
-	ajStrDegap(&((*arr)[i]));
-	
-    }
-
-    return thys->N;
-}
-
-
 /* @func ajDmxDummyFunction ***************************************************
 **
 ** Dummy function to catch all unused functions defined in the ajdmx
@@ -1535,6 +1537,7 @@ void ajDmxDummyFunction(void)
 {
     return;
 }
+
 
 
 

@@ -38,8 +38,9 @@ extern "C"
 
 
 
-
-
+/*****************************************************************************/
+/* These functions are NOT YET DOCUMENTED in the appropriate data structures */
+/*****************************************************************************/
 AjBool        embDmxHitlistToScophits(AjPList in, AjPList *out);
 AjBool        embDmxScophitsToHitlist(AjPList in, AjPHitlist *out, 
 				      AjIList *iter);

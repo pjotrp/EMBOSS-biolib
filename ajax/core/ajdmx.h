@@ -48,6 +48,8 @@ extern "C"
 **
 ** AjPScophit is implemented as a pointer to a C data structure.
 **
+**
+**
 ** @alias AjSScophit
 ** @alias AjOScophit
 **
@@ -58,9 +60,9 @@ extern "C"
 ** @attr Sunid_Family [ajint] SCOP sunid for family
 ** @attr Seq [AjPStr] Sequence as string
 ** @attr Start [ajint] Start of sequence or signature alignment 
-**			     relative to full length swissprot sequence
+**	 relative to full length swissprot sequence
 ** @attr End [ajint] End of sequence or signature alignment relative 
-**			     to full length swissprot sequence
+**	 to full length swissprot sequence
 ** @attr Acc [AjPStr] Accession number of sequence entry
 ** @attr Spr [AjPStr] Swissprot code of sequence entry
 ** @attr Typeobj [AjPStr] Bibliographic information ... objective
@@ -73,9 +75,50 @@ extern "C"
 ** @attr Pval [float] p-value of hit
 ** @attr Alg [AjPStr] Alignment, e.g. of a signature to the sequence
 ** @attr Target [AjBool] True if the Scophit is targetted for removal 
-**			     from a list of Scophit objects
+**	 from a list of Scophit objects
 ** @attr Target2 [AjBool] Also used for garbage collection
 ** @attr Priority [AjBool] True if the Scop hit is high priority
+** 
+** 
+** 
+** @new   ajDmxScophitNew Default Scophit object constructor. 
+** @del   ajDmxScophitDel Default Scophit object destructor. 
+** @del   ajDmxScophitDelWrap Wrapper to destructor for Scophit object for use
+**        with generic functions.
+** @ass   ajDmxScophitListCopy Reads a list of Scophit structures and returns
+**        a pointer to a duplicate of the list. 
+** @use   ajDmxScophitCheckTarget Checks to see if the Target element of a 
+**        Scophit object == ajTrue.
+** @mod   ajDmxScophitTarget Sets the Target element of a Scophit object to 
+**        True.
+** @mod   ajDmxScophitTarget2 Sets the Target2 element of a Scophit object to 
+**        True.
+** @mod   ajDmxScophitTargetLowPriority  Sets the Target element of a Scophit 
+**        object to True if its Priority is low.
+** @use   ajDmxScophitCompSpr Function to sort Scophit object by Spr element. 
+** @use   ajDmxScophitCompStart  Function to sort Scophit object by Spr 
+**        element.
+** @use   ajDmxScophitCompEnd  Function to sort Scophit object by End element. 
+** @use   ajDmxScophitCompFold  Function to sort Scophit object by Fold 
+**        element.
+** @use   ajDmxScophitCompSfam  Function to sort Scophit object by Superfamily 
+**        element. 
+** @use   ajDmxScophitCompFam  Function to sort Scophit object by Family 
+**        element. 
+** @use   ajDmxScophitCompAcc  Function to sort Scophit objects by Acc element.
+** @use   ajDmxScophitCompSunid  Function to sort Scophit objects by Sunid 
+**        element. 
+** @use   ajDmxScophitCompScore  Function to sort Scophit objects by Score 
+**        element. 
+** @use   ajDmxScophitCompPval  Function to sort Scophit objects by Pval 
+**        element.
+** @use   ajDmxScopSeqFromSunid  Writes a sequence corresponding to a Scop 
+**        domain given a Sunid for the domain. The sequence is taken from one
+**        of a list of Scop objects that is provided.  
+** @output ajDmxScophitsWrite Write contents of a list of Scophits to an output
+**        file.
+** @ass   ajDmxScophitCopy Copies the contents from one Scophit object to 
+**        another.
 ** @@
 ****************************************************************************/
 
@@ -118,6 +161,8 @@ typedef struct AjSScophit
 **
 ** AjPScopalg is implemented as a pointer to a C data structure.
 **
+**
+**
 ** @alias AjSScopalg
 ** @alias AjOScopalg
 **
@@ -134,6 +179,25 @@ typedef struct AjSScophit
 ** @attr Positions [AjPStr] Array of integers from 'Position' line in 
 **			      alignment, used for manual specification of 
 **			      signature positions
+**
+**
+**
+** @input ajDmxScopalgRead Read a Scopalg object from a file.
+** @output ajDmxScopalgWrite Write a Scopalg object to file in clustal format
+**        annotated with SCOP classification info.
+** @output ajDmxScopalgWriteClustal Writes a Scopalg object to file in clustal
+**        format (just the alignment without the SCOP classification 
+**        information).
+** @output ajDmxScopalgWriteClustal2 Writes a Scopalg object to file in clustal
+**        format (just the alignment without the SCOP classification 
+**        information).
+** @output ajDmxScopalgWriteFasta Writes a Scopalg object to file in clustal
+**        format (just the alignment without the SCOP classification 
+**        information).
+** @new   ajDmxScopalgNew Scopalg object constructor.
+** @del   ajDmxScopalgDel Scopalg object destructor.
+** @input ajDmxScopalgGetseqs Read a Scopalg object and writes an array of 
+**        AjPStr containing the sequences without gaps.
 ** @@
 ****************************************************************************/
 typedef struct AjSScopalg
@@ -180,8 +244,7 @@ ajint         ajDmxScophitCompSunid(const void *entry1, const void *entry2);
 ajint         ajDmxScophitCompScore(const void *hit1, const void *hit2); 
 ajint         ajDmxScophitCompPval(const void *hit1, const void *hit2); 
 
-AjBool        ajDmxScopSeqFromSunid(ajint id, AjPStr *seq,
-				    const AjPList list);
+AjBool        ajDmxScopSeqFromSunid(ajint id, AjPStr *seq, const AjPList list);
 AjBool        ajDmxScophitsWrite(AjPFile outf, const AjPList list);
 AjBool        ajDmxScophitCopy(AjPScophit *to, const AjPScophit from);
 
