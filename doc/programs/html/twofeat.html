@@ -80,7 +80,7 @@ them.  You can specify the type of overlap allowed: Any type of overlap
 or no overlap is allowed, Overlap required, No overlaps are allowed,
 Overlap required but one feature must not be completely within the
 other, Feature A must be completely enclosed within feature B, Feature B
-must be completely enclosed within feature A.  You can specify thet the
+must be completely enclosed within feature A.  You can specify that the
 distance should be measured from the nearest ends of the two features,
 From the left ends, From right ends, From the furthest ends.  You can
 specify that the features should be in any sense, in the same sense or
@@ -157,13 +157,13 @@ Output report [hsfau.twofeat]: <b></b>
 <p>
 <b>Example 2</b>
 <p>
-The -twoout option makes the output report give the pairs of features found. 
+The -twoout option makes the output report give the pairs of features found. The ouput report format type has been changed to display the full original pairs of faetures in GFF format. 
 <p>
 
 <p>
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
-% <b>twofeat -twoout tembl:hsfau </b>
+% <b>twofeat -twoout -rformat gff tembl:hsfau </b>
 Finds neighbouring pairs of features in sequences
 Type of first feature [*]: <b>polyA_signal</b>
 Type of second feature [*]: <b>polyA_site</b>
@@ -812,25 +812,11 @@ outputs a report format file. The default format is <b>table</b>
 <p><h3>File: hsfau.twofeat</h3>
 <table width="90%"><tr><td bgcolor="#DDFFDD">
 <pre>
-########################################
-# Program: twofeat
-# Rundate: Thu Jan 09 13:16:01 2003
-# Report_format: table
-# Report_file: hsfau.twofeat
-########################################
-
-#=======================================
-#
-# Sequence: HSFAU     from: 1   to: 518
-# HitCount: 2
-#=======================================
-
-  Start     End   Score starta   enda startb   endb
-    484     489   0.000      .      .      .      .
-    509     509   0.000      .      .      .      .
-
-#---------------------------------------
-#---------------------------------------
+##gff-version 2.0
+##date 2003-01-09
+##Type DNA HSFAU
+HSFAU	EMBL	polyA_signal	484	489	0.000	+	.	Sequence "HSFAU.6"
+HSFAU	EMBL	polyA_site	509	509	0.000	+	.	Sequence "HSFAU.7" ; FeatFlags "0x40"
 </pre>
 </td></tr></table><p>
 
