@@ -140,6 +140,18 @@ public class RemoteDragTree extends JTree implements DragGestureListener,
 
   }
 
+
+  /**
+  *
+  * This is used to refresh the file manager
+  *
+  */
+  public void refreshRoot()
+  {
+    model = createTreeModel(" ");
+    setModel(model);
+  }
+
   /**
   *
   * Popup menu actions
@@ -165,7 +177,7 @@ public class RemoteDragTree extends JTree implements DragGestureListener,
 
     if(source.getText().equals("Refresh"))
     {
-//    newRoot(System.getProperty("user.home"));
+      refreshRoot();
     }
     else if(source.getText().equals("New Folder..."))
     {
@@ -507,8 +519,11 @@ public class RemoteDragTree extends JTree implements DragGestureListener,
 
   private DefaultTreeModel createTreeModel(String root) 
   {
-    RemoteFileNode rootNode = new RemoteFileNode(mysettings,froots,root,null,null);
+    setCursor(cbusy);
+    RemoteFileNode rootNode = new RemoteFileNode(mysettings,froots,
+                                                   root,null,null);
     rootNode.explore();
+    setCursor(cdone);
     return new DefaultTreeModel(rootNode);
   }
 
