@@ -1026,7 +1026,8 @@ AjBool ajPdbCopy(AjPPdb *to, AjPPdb from)
 ** string that is written is the same length as the full-length chain 
 ** (regardless of whether coordinates for a residue were available or not) 
 ** therefore it can be indexed into using residue numbers.  The string is 
-** allocated if necessary.
+** allocated if necessary.  If secondary structure assignment was not available
+** for a residue a '.' is given in the string.
 **
 ** @param [r] obj [AjPPdb]  Pdb object
 ** @param [r] chn [ajint]   Chain number
@@ -1058,15 +1059,17 @@ ajint  ajPdbGetEStrideType(AjPPdb obj, ajint chn, AjPStr *EStrideType)
     else 
 	idx = chn-1;
     
-
+    /* +1 is for the NULL */
     if(!(*EStrideType))
-	*EStrideType = ajStrNewL(obj->Chains[idx]->Nres);
+	*EStrideType = ajStrNewL(obj->Chains[idx]->Nres+1);
     else
     {
 	ajStrDel(EStrideType);
-	*EStrideType = ajStrNewL(obj->Chains[idx]->Nres);
+	*EStrideType = ajStrNewL(obj->Chains[idx]->Nres+1);
     }
-        
+    
+    /* Set all positions to . */
+    ajStrAppKI(EStrideType,  (const char) ".", obj->Chains[idx]->Nres);   
 
     iter=ajListIterRead(obj->Chains[idx]->Atoms);
     while((tmp=(AjPAtom)ajListIterNext(iter)))
