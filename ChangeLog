@@ -1,23 +1,27 @@
+	Transeq now has the option '-clean' that converts all '*'
+	characters to 'X's.  This may be useful because not all programs
+	accept protein sequences containing '*' characters. 
+
 Version 2.6.0
 
         Showdb now can display the presence of any of the extra sv, des,
 	org, and key search fields that can be used to index and search in
 	databases. 
 
-	Added twofeat - Finds neighbouring pairs of features in sequences
+	Added twofeat - Finds neighbouring pairs of features in sequences.
 
 	Extractfeat - added option (-featinname) to include the name of
 	the feature as part of the ID name of the sequence that is
 	written out. 
 
-	Added sirna - designs siRNA probes in mRNA
+	Added sirna - designs siRNA probes in mRNA.
 
-	Sigcleave sorts results highest score first
+	Sigcleave sorts results highest score first.
 
 	Helixturnhelix sorts results highest score first and reports the
-	score position as an integer
+	score position as an integer.
 
-	Added pestfind
+	Added pestfind.
 
 	Moved the following programs into the "domainatrix" embassy
 	package:
@@ -27,7 +31,7 @@ Version 2.6.0
 	 seqsort, seqwords, siggen, sigplot, sigscan
 	
 	Palindrome no longer reports palindromes that are only composed
-	of N's
+	of N's.
 
 	Msbar can now check that the result doesn't match a set of
 	input other sequences.  For example you could specify that it
