@@ -150,6 +150,68 @@ IT IS DONE FOR YOU.
 <P>
 
 <table border cellspacing=0 cellpadding=3 bgcolor="#f5f5ff">
+<tr bgcolor="#FFFFD0">
+<th align="left" colspan=2>Mandatory qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td>[-sequence]<br>(Parameter 1)</td>
+<td>Sequence database USA</td>
+<td>Readable sequence(s)</td>
+<td><b>Required</b></td>
+</tr>
+
+<tr>
+<td>[-infile]<br>(Parameter 2)</td>
+<td>Profile or matrix file</td>
+<td>Input file</td>
+<td><b>Required</b></td>
+</tr>
+
+<tr>
+<td>-gapopen</td>
+<td>Gap opening coefficient</td>
+<td>Any integer value</td>
+<td>1.0</td>
+</tr>
+
+<tr>
+<td>-gapextend</td>
+<td>Gap extension coefficient</td>
+<td>Any integer value</td>
+<td>1.0</td>
+</tr>
+
+<tr>
+<td>[-outfile]<br>(Parameter 3)</td>
+<td>Output file name</td>
+<td>Output file</td>
+<td><i>&lt;sequence&gt;</i>.prophet</td>
+</tr>
+
+<tr bgcolor="#FFFFD0">
+<th align="left" colspan=2>Optional qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td colspan=4>(none)</td>
+</tr>
+
+<tr bgcolor="#FFFFD0">
+<th align="left" colspan=2>Advanced qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td colspan=4>(none)</td>
+</tr>
+
+</table>
 
 
 
@@ -170,6 +232,44 @@ The output of the above example follows:
 <p>
 
 <pre>
+Local: Consensus vs 100K_RAT
+Score: 161.00
+
+Consensus       1        DEV.G.GEALG.RLLVVYPWTQ                        19      
+                         |:: : ::||| ||:  ||::|
+100K_RAT        479      DPLPAHRQALGERLY..YPRVQ                        498     
+Local: Consensus vs 104K_THEPA
+Score: 138.25
+
+Consensus       1        D.EVGGEAL.GRLLVVY.PWTQR                       20      
+                         : ||:::|  |  :|:: |::::
+104K_THEPA      160      KYEVETHAKNGANMVTFIPRNGH                       182     
+Local: Consensus vs 108_LYCES
+Score: 107.50
+
+Consensus       1        DEVGGEAL.GRLLV.VYP..WTQ                       19      
+                         ::::| :: :::|| : |  :|:
+108_LYCES       43       ASLTGLNVCAPFLVPGSPTASTE                       65      
+Local: Consensus vs 10KD_VIGUN
+Score: 153.25
+
+Consensus       1        DE.V.GGEA.LGRLLV.VY..P.WT                     18      
+                         :| | ::|| ::  || :|  | :|
+10KD_VIGUN      20       QEVVVQSEAKTCENLVDTYRGPCFT                     44      
+Local: Consensus vs 110K_PLAKN
+Score: 123.00
+
+Consensus       1        DEVGGEALGRLLV..VYPW.TQ                        19      
+                         || ::::::  :|  | :  ||
+110K_PLAKN      55       DENDEDEMTEQMVEEVADHITQ                        76      
+Local: Consensus vs 11S3_HELAN
+Score: 156.50
+
+Consensus       1        D..EV.GGEALGRLLVVY.PWTQR                      20      
+                         :  || ::|| : :  :: :::|:
+11S3_HELAN      41       EPIEVIQAEAGV.VTEIWDAYDQQ                      63      
+
+etc.
 </pre>
 
 <H2>
