@@ -7285,6 +7285,25 @@ FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 1\n/
 //
 
+ID octanol-nodiff
+AP octanol
+CL -nodiff
+IN tsw:opsd_human
+IN ps
+FI stdout
+FZ = 19
+FP /^Created octanol.ps\n/
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI octanol.ps
+FZ = 17968
+FP /^%%Title: PLplot Graph\n/
+FP /^%%Pages: 1\n/
+//
+
 ID oddcomp-ex
 UC To search for entries in swissprot with at least 1 SR AND at least 2 RS:
 CC test.comp input file missing
