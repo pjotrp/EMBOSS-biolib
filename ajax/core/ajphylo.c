@@ -1048,7 +1048,7 @@ void ajPhyloFreqTrace(const AjPPhyloFreq thys)
 
 /* @func ajPhyloPropRead ******************************************************
 **
-** reads phyloegenetic properties (weights, factors, ancestral states)
+** Reads phylogenetic properties (weights, factors, ancestral states)
 ** from a file
 **
 ** @param [r] filename [const AjPStr] input filename
@@ -1115,15 +1115,18 @@ AjPPhyloProp ajPhyloPropRead(const AjPStr filename, const AjPStr propchars,
 	    return NULL;
 	dosize = 1;
 	ilen = ajStrLen(token);
-	if(ilen > len)
+	if(ilen != len)
 	{
-	    ajErr("Bad properties file '%S':"
+	    ajErr("Bad properties string (not valid filename) '%S':"
 		  " read %d properties, expected %d",
 		  filename, ilen, len);
 	    return NULL;
 	}
 	AJCNEW0(ret->Str, 2);
 	ajStrAssS(&ret->Str[0], token);
+
+	ret->Size = 1;
+	ret->Len = ilen;
     }
 
     else				/* read data from the file */
@@ -1173,10 +1176,10 @@ AjPPhyloProp ajPhyloPropRead(const AjPStr filename, const AjPStr propchars,
 	ajFileClose(&propfile);
 	ajListToArray(proplist, (void***) &props);
 	ret->Str = (AjPStr*) props;
-    }
 
-    ret->Size = ajListLength(proplist);;
-    ret->Len = len;
+	ret->Size = ajListLength(proplist);;
+	ret->Len = len;
+    }
 
     ajListDel(&proplist);
 
@@ -1210,7 +1213,7 @@ ajint ajPhyloPropGetSize(const AjPPhyloProp thys)
 **
 ** Reports phylogenetic property data to the debug file
 **
-** @param [r] thys [const AjPPhyloDist] Phylogenetic frequencies object
+** @param [r] thys [const AjPPhyloProp] Phylogenetic frequencies object
 ** @return [void]
 ******************************************************************************/
 
@@ -1584,11 +1587,12 @@ AjPPhyloTree* ajPhyloTreeRead(const AjPStr filename, ajint size)
     
     return ret;
 }
-/* @func ajPhyloStateTrace ****************************************************
+
+/* @func ajPhyloTreeTrace ****************************************************
 **
 ** Reports phylogenetic discrete state data to the debug file
 **
-** @param [r] thys [const AjPPhylotree] Phylogenetic discrete states object
+** @param [r] thys [const AjPPhyloTree] Phylogenetic discrete states object
 ** @return [void]
 ******************************************************************************/
 
