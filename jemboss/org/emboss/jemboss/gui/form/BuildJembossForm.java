@@ -88,16 +88,15 @@ public class BuildJembossForm implements ActionListener
   private String helptext = "";
   private boolean withSoap;
   private JFrame f;
-  private JPanel p2;
+  private ScrollPanel p2;
   private String embossBin;
 
   private int numofFields;
   private JembossParams mysettings;
-
   
   public BuildJembossForm(String appDescription, String db[],
         final String applName, String[] envp, String cwd, String embossBin,
-        String acdText, final boolean withSoap, JPanel p2, 
+        String acdText, final boolean withSoap, ScrollPanel p2, 
         final JembossParams mysettings, final JFrame f)
   {
 
@@ -394,8 +393,9 @@ public class BuildJembossForm implements ActionListener
       if(advSectionBox.isVisible())
       {
         advSectionBox.setVisible(false);
-        p2.setVisible(false);
-        p2.setVisible(true);
+// this does weird stuff to the scroll bar with java1.4.1 on linux 
+//      p2.setVisible(false);
+//      p2.setVisible(true);
       }
       else
       {
