@@ -1,0 +1,53 @@
+application: contactcount [
+  documentation: "counts specific versus non-specific contacts in a directory of cleaned protein chain contact files"
+  groups: "protein: 3D structure"
+]
+
+section: input [
+  information: "input section"
+  type: "page"
+]
+
+  dirlist: cmapdir [
+    parameter: "Y"
+    default: "."
+    information: "directory of cleaned-chain contact files"
+  ]
+
+  outfile: dummyfile [
+    parameter: "Y"
+    default: "./dummy.dat"
+    information: "dummy output file"
+  ]
+endsection: input
+
+section: required [
+  information: "required section"
+  type: "page"
+]
+
+endsection: required
+
+
+section: advanced [
+  information: "advanced section"
+  type: "page"
+]
+
+endsection: advanced
+
+section: output [
+  information: "output Section"
+  type: "page"
+]
+
+  report: outfile [
+    parameter: "Y"
+    rformat: "table"
+    multiple: "N"
+    precision: "1"
+    prompt: "counts file for output"
+    taglist: "int:count1 float:count2"
+  ]
+
+endsection: output
