@@ -155,6 +155,11 @@ int main(int argc, char **argv)
 		    ajGraphRect(xstart,ystart,
 				xstart+(float)ajSeqLen(seq1),
 				ystart+(float)ajSeqLen(seq2));
+		if(boxit && text)
+		    ajFmtPrintF(outf,"Rectangle x1 %f y1 %f x2 %f y2 %f"
+				" colour 0\n",xstart,ystart,
+				xstart+(float)ajSeqLen(seq1),
+				ystart+(float)ajSeqLen(seq2));
 
 		matchlist = embWordBuildMatchTable(&seq1MatchTable, seq2,
 						   ajTrue);
