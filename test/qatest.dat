@@ -9461,7 +9461,7 @@ FP 1 /^           10\n/
 FP 1 /^ AFULL AACCGG\n/
 FP 1 /^ BFULL AACGGG\n/
 FP 1 /^             \n/
-FC = 33
+FC = 31
 //
 
 ID align-matcher-srspair
@@ -9502,7 +9502,7 @@ FP 1 /^ AFULL AACCGG\n/
 FP 1 /^       ::: ::\n/
 FP 1 /^ BFULL AACGGG\n/
 FP 1 /^             \n/
-FC = 33
+FC = 31
 //
 
 ID align-matcher-markx1
