@@ -184,31 +184,33 @@ if ($ans !~ /^y/) {
     die "Exiting.\n";   
 } else {
 
+    chdir $cvsdoc;
+
 # create the new text output
-    if (!-e "$cvsdoc/text/$application.txt") {
-      system "lynx -dump -nolist $url/$application.html > $cvsdoc/text/$application.txt";
-      chmod 0664, "$cvsdoc/text/$application.txt";
-      system "cvs add -m'documentation created' $cvsdoc/text/$application.txt";
+    if (!-e "text/$application.txt") {
+      system "lynx -dump -nolist $url/$application.html > text/$application.txt";
+      chmod 0664, "text/$application.txt";
+      system "cvs add -m'documentation created' text/$application.txt";
     } else {
-      system "lynx -dump -nolist $url/$application.html > $cvsdoc/text/$application.txt";
-      chmod 0664, "$cvsdoc/text/$application.txt";
+      system "lynx -dump -nolist $url/$application.html > text/$application.txt";
+      chmod 0664, "text/$application.txt";
     }
-    system "cvs commit -m'documentation created' $cvsdoc/text/$application.txt";
+    system "cvs commit -m'documentation created' text/$application.txt";
     print "$application.txt *created*\n";
 
 # create the new html output
-    if (!-e "$cvsdoc/html/$application.html") {
-      system "lynx -source $url/$application.html > $cvsdoc/html/$application.html";
-      chmod 0664, "$cvsdoc/html/$application.html";
-      system "cvs add -m'documentation created' $cvsdoc/html/$application.html";
+    if (!-e "html/$application.html") {
+      system "lynx -source $url/$application.html > html/$application.html";
+      chmod 0664, "html/$application.html";
+      system "cvs add -m'documentation created' html/$application.html";
     } else {
-      system "lynx -source $url/$application.html > $cvsdoc/html/$application.html";
-      chmod 0664, "$cvsdoc/html/$application.html";
+      system "lynx -source $url/$application.html > html/$application.html";
+      chmod 0664, "html/$application.html";
     }
 # change ../emboss_icon.gif and ../index.html to current directory
-    system "perl -p -i -e 's#\.\.\/index.html#index.html#g;' $cvsdoc/html/$application.html";
-    system "perl -p -i -e 's#\.\.\/emboss_icon.gif#emboss_icon.gif#g;' $cvsdoc/html/$application.html";
-    system "cvs commit -m'documentation created' $cvsdoc/html/$application.html";
+    system "perl -p -i -e 's#\.\.\/index.html#index.html#g;' html/$application.html";
+    system "perl -p -i -e 's#\.\.\/emboss_icon.gif#emboss_icon.gif#g;' html/$application.html";
+    system "cvs commit -m'documentation created' html/$application.html";
     print "$application.html *created*\n";
 }
 print "Done.\n";
