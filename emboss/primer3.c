@@ -45,7 +45,7 @@ static void primer3_send_int(FILE * stream, char * tag, ajint value);
 static void primer3_send_float(FILE * stream, char * tag, float value);
 static void primer3_send_bool(FILE * stream, char * tag, AjBool value);
 static void primer3_send_string(FILE * stream, char * tag, AjPStr value);
-/* static void primer3_send_stringC(FILE * stream, char * tag, char * value); */
+static void primer3_send_stringC(FILE * stream, char * tag, const char * value);
 static void primer3_send_end(FILE * stream);
 static void primer3_report (AjPFile outfile, AjPStr output, ajint numreturn);
 static void primer3_output_report(AjPFile outfile, AjPTable table, 
@@ -348,7 +348,11 @@ int main(int argc, char **argv, char **env)
 	primer3_send_int(stream, "PRIMER_NUM_RETURN", num_return);
 	primer3_send_int(stream, "PRIMER_FIRST_BASE_INDEX", first_base_index);
 	primer3_send_bool(stream, "PRIMER_PICK_ANYWAY", pick_anyway);
-        /* +++ mispriming library - should this be a string, not an infile? */	
+        /* mispriming library may not have been specified */
+        if (mispriming_library) {
+          primer3_send_stringC(stream, "PRIMER_MISPRIMING_LIBRARY", 
+          	ajFileName(mispriming_library));
+        }
 	primer3_send_float(stream, "PRIMER_MAX_MISPRIMING", max_mispriming);
 	primer3_send_float(stream, "PRIMER_PAIR_MAX_MISPRIMING", pair_max_mispriming);
 	primer3_send_int(stream, "PRIMER_GC_CLAMP", gc_clamp);
@@ -389,7 +393,11 @@ int main(int argc, char **argv, char **env)
 	primer3_send_float(stream, "PRIMER_INTERNAL_OLIGO_SELF_ANY", internal_oligo_self_any);
 	primer3_send_float(stream, "PRIMER_INTERNAL_OLIGO_SELF_END", internal_oligo_self_end);
 	primer3_send_int(stream, "PRIMER_INTERNAL_OLIGO_MAX_POLY_X", internal_oligo_max_poly_x);
-        /* +++ mispriming library - should this be a string, not an infile? */
+        /* internal oligo mishybridising library may not have been specified */
+        if (internal_oligo_mishyb_library) {
+          primer3_send_stringC(stream, "PRIMER_INTERNAL_OLIGO_MISHYB_LIBRARY", 
+		ajFileName(internal_oligo_mishyb_library));
+        }
 	primer3_send_float(stream, "PRIMER_INTERNAL_OLIGO_MAX_MISHYB", internal_oligo_max_mishyb);
 
 
@@ -654,8 +662,7 @@ static void primer3_send_string(FILE * stream, char * tag, AjPStr value)
 ** @return [void] 
 **          
 *************************************************************************/
-/* NOT USED
-static void primer3_send_stringC(FILE * stream, char * tag, char * value)
+static void primer3_send_stringC(FILE * stream, char * tag, const char * value)
 {
 
   AjPStr str=ajStrNew();
@@ -667,7 +674,7 @@ static void primer3_send_stringC(FILE * stream, char * tag, char * value)
 
   ajStrDel(&str);
 }
-*/
+
 /* @funcstatic primer3_start_write *******************************************
 **
 ** Open a file descriptor as a stream to pipe to primer3_core
