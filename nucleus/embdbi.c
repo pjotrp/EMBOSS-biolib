@@ -193,6 +193,9 @@ AjPList embDbiFileList (AjPStr dir, AjPStr wildfile, AjBool trim) {
 
   while(ajListPop(l,(void *)&t))
       ajStrDel(&t);
+
+  ajListDel(&l);
+  
   ajStrDel(&s);
   ajStrDel(&tmp);
 
