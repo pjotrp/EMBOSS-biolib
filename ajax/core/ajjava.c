@@ -48,6 +48,7 @@
 #include <sys/ioctl.h>
 
 #ifdef __hpux
+#include <signal.h>
 #include <stropts.h>
 #endif
 
@@ -2571,6 +2572,9 @@ static int java_jembossctl(ajint command, AjPStr username, AjPStr password,
 
 	if(n==-1 || !c)
 	    ajStrAppC(errstd,"Error receiving (java_batch)\n");
+#ifdef __hpux
+	signal(SIGCLD,SIG_IGN);
+#endif
 	break;
 
     default:
