@@ -9,6 +9,10 @@
 #
 ###########################################################################
 
+####################
+# Command line tests
+####################
+
 ID acdc-ex
 AP acdc
 CL antigenic
@@ -194,6 +198,160 @@ FI qatest.dbg
 FP / acdDebug Yes /
 FP 2 /^Memory usage /
 //
+
+####################
+# ACD parsing errors
+####################
+
+##########################
+# .embossrc parsing errors
+##########################
+
+ID nam-badsummary
+AP showdb
+ER 1
+PP EMBOSSRC=../../rc
+PP export EMBOSSRC
+PP EMBOSS_BADFILE=../../rc/badsummary.rc
+PP export EMBOSS_BADFILE
+FI stderr
+FZ > 0
+FP /Error: File .*\.embossrc line 2: Error\(s\) found in included file .*badsummary.rc\n/
+FP /Died: Error\(s\) in configuration files\n/
+//
+
+ID nam-badtype
+AP showdb
+ER 1
+PP EMBOSSRC=../../rc
+PP export EMBOSSRC
+PP EMBOSS_BADFILE=../../rc/badtype.rc
+PP export EMBOSS_BADFILE
+FI stderr
+FZ > 0
+FP /Error: File .*badtype.rc line 1: Invalid definition type 'this'\n/
+FP /Error: File .*badtype.rc line 1: Invalid definition type 'badtype'\n/
+FP /Error: File .*\.embossrc line 2: Error\(s\) found in included file .*badtype.rc\n/
+//
+
+ID nam-badset
+AP showdb
+ER 1
+PP EMBOSSRC=../../rc
+PP export EMBOSSRC
+PP EMBOSS_BADFILE=../../rc/badset.rc
+PP export EMBOSS_BADFILE
+FI stderr
+FZ > 0
+FP /Error: File .*badset.rc line 7: Unexpected end of file in SET definition\n/
+//
+
+ID nam-baddb
+AP showdb
+ER 1
+PP EMBOSSRC=../../rc
+PP export EMBOSSRC
+PP EMBOSS_BADFILE=../../rc/baddb.rc
+PP export EMBOSS_BADFILE
+FI stderr
+FZ > 0
+FP /Error: File .*baddb.rc line 3: Unexpected end of file in DBNAME definition\n/
+//
+
+ID nam-badresattr
+AP showdb
+ER 1
+PP EMBOSSRC=../../rc
+PP export EMBOSSRC
+PP EMBOSS_BADFILE=../../rc/badresattr.rc
+PP export EMBOSS_BADFILE
+FI stderr
+FZ > 0
+FP /Error: File .*badresattr.rc line 3: Bad attribute 'badattr' for resource 'badresource'\n/
+//
+
+ID nam-badinclude
+AP showdb
+ER 1
+PP EMBOSSRC=../../rc
+PP export EMBOSSRC
+PP EMBOSS_BADFILE=../../rc/badinclude.rc
+PP export EMBOSS_BADFILE
+FI stderr
+FZ > 0
+FP /Error: File .*\.embossrc line 2: Failed to open include file '[$]emboss_badfile'\n/
+//
+
+ID nam-includeagain
+AP showdb
+ER 1
+PP EMBOSSRC=../../rc
+PP export EMBOSSRC
+PP EMBOSS_BADFILE=../../rc/includeagain.rc
+PP export EMBOSS_BADFILE
+FI stderr
+FZ > 0
+FP /Error: File .*includeagain.rc line 3: [$]emboss_badfile already read .. skipping\n/
+//
+
+ID nam-dbempty
+AP showdb
+ER 1
+PP EMBOSSRC=../../rc
+PP export EMBOSSRC
+PP EMBOSS_BADFILE=../../rc/dbempty.rc
+PP export EMBOSS_BADFILE
+FI stderr
+FZ > 0
+FP /Error: File .*dbempty.rc line 3: Database 'empty' has no attributes\n/
+FP /Error: File .*dbempty.rc line 3: Database 'empty' has no format definition\n/
+FP /Error: File .*dbempty.rc line 3: Database 'empty' has no type definition\n/
+FP /Error: File .*dbempty.rc line 3: Database 'empty' has no access method definition\n/
+//
+
+ID nam-dbunknowns
+AP showdb
+ER 1
+PP EMBOSSRC=../../rc
+PP export EMBOSSRC
+PP EMBOSS_BADFILE=../../rc/dbunknowns.rc
+PP export EMBOSS_BADFILE
+FI stderr
+FZ > 0
+FP /Error: File .*dbunknowns.rc line 4: Database 'unknowns' format: 'noformat' unknown\n/
+FP /Error: File .*dbunknowns.rc line 4: Database 'unknowns' method: 'notknown' unknown\n/
+FP /Error: File .*dbunknowns.rc line 4: Database 'unknowns' type: 'nosuchtype' unknown\n/
+//
+
+ID nam-rsempty
+AP showdb
+ER 1
+PP EMBOSSRC=../../rc
+PP export EMBOSSRC
+PP EMBOSS_BADFILE=../../rc/rsempty.rc
+PP export EMBOSS_BADFILE
+FI stderr
+FZ > 0
+FP /Error: File .*rsempty.rc line 3: Resource 'empty' has no attributes\n/
+//
+
+ID nam-dbnoquote
+AP showdb
+ER 1
+PP EMBOSSRC=../../rc
+PP export EMBOSSRC
+PP EMBOSS_BADFILE=../../rc/dbnoquote.rc
+PP export EMBOSS_BADFILE
+FI stderr
+FZ > 0
+FP /Error: File .*dbnoquote.rc line 4: '\]' found, unclosed quotes in 'unclosed single quotes'\n/
+FP /Error: File .*dbnoquote.rc line 8: '\]' found, unclosed quotes in 'unclosed double quotes'\n/
+FP /Error: File .*dbnoquote.rc line 12: '\]' found, unclosed quotes in 'unclosed mixed quotes''\n/
+//
+
+###################
+# Main applications
+###################
 
 ID aaindexextract-keep
 AP aaindexextract
