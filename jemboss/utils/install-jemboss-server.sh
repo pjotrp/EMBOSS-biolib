@@ -215,22 +215,22 @@ output_auth_xml()
   
 }
 
-#echo
-#echo
-#echo "--------------------------------------------------------------"
-#echo " "
-#echo "         Type of installation [1] :"
-#echo "         (1) CLIENT-SERVER"
-#echo "         (2) STANDALONE"
-#echo " "
-#echo "--------------------------------------------------------------"
-#read INSTALL_TYPE
-#if [ "$INSTALL_TYPE" != "1" ]; then
-#  if [ "$INSTALL_TYPE" != "2" ]; then
-#    INSTALL_TYPE="1"
-#  fi
-#fi
-#clear
+echo
+echo
+echo "--------------------------------------------------------------"
+echo " "
+echo "         Type of installation [1] :"
+echo "         (1) CLIENT-SERVER"
+echo "         (2) STANDALONE"
+echo " "
+echo "--------------------------------------------------------------"
+read INSTALL_TYPE
+if [ "$INSTALL_TYPE" != "1" ]; then
+  if [ "$INSTALL_TYPE" != "2" ]; then
+    INSTALL_TYPE="1"
+  fi
+fi
+clear
 
 echo
 echo "--------------------------------------------------------------"
@@ -244,10 +244,14 @@ echo
 echo "Before running this script you should download the latest:"
 echo
 echo "(1) EMBOSS release (contains Jemboss) ftp://ftp.hgmp.mrc.ac.uk/pub/EMBOSS/"
-echo "(2) Tomcat release http://jakarta.apache.org/site/binindex.html"
-echo "(3) SOAP release   http://xml.apache.org/dist/soap/"  
+
+if [ $INSTALL_TYPE = "1" ]; then
+  echo "(2) Tomcat release http://jakarta.apache.org/site/binindex.html"
+  echo "(3) SOAP release   http://xml.apache.org/dist/soap/"
+fi
+  
 echo
-echo "Have all these been downloaded (y/n)? "
+echo "Has the above been downloaded (y/n)? "
 read DOWNLOADED
 
 if [ "$DOWNLOADED" != "y" ]; then
@@ -257,8 +261,39 @@ if [ "$DOWNLOADED" != "y" ]; then
 fi
 
 
+RECORD="install.record"
+if [ -f "$RECORD" ]; then
+  mv $RECORD $RECORD.old
+fi
+
+echo "$DOWNLOADED" > $RECORD
+ 
+PLATTMP=`uname`
+
+case $PLATTMP in
+  Linux)
+    PLATTMP="1"
+    ;;
+  AIX)
+    PLATTMP="2"
+    ;;
+  IRIX)
+    PLATTMP="3"
+    ;;
+  HP-UX)
+    PLATTMP="4"
+    ;;
+  SunOS)
+    PLATTMP="5"
+    ;;
+  *)
+    PLATTMP="1"
+    ;;
+esac
+
+
 echo 
-echo "Select your platform from 1-6:"
+echo "Select your platform from 1-6 [$PLATTMP]:"
 echo "(1)  linux"
 echo "(2)  aix"
 echo "(3)  irix"
@@ -266,6 +301,12 @@ echo "(4)  hp-ux"
 echo "(5)  solaris"
 echo "(6)  macosX"
 read PLAT
+
+if [ "$PLAT" = "" ]; then
+  PLAT=$PLATTMP
+fi
+
+echo "$PLAT" >> $RECORD
 
 AIX="n"
 MACOSX="n"
@@ -288,54 +329,61 @@ else
   exit 1
 fi
 
+if [ $INSTALL_TYPE = "1" ]; then
 #
 # localhost name
 #
-echo
-echo "Enter IP of server machine [localhost]:"
-read LOCALHOST
+  echo
+  echo "Enter IP of server machine [localhost]:"
+  read LOCALHOST
 
-if [ "$LOCALHOST" = "" ]; then
-  LOCALHOST=localhost
-fi
+  if [ "$LOCALHOST" = "" ]; then
+    LOCALHOST=localhost
+  fi
 
-
+  echo "$LOCALHOST" >> $RECORD
 #
 # SSL
 #
-echo
-echo "Enter if you want the Jemboss (SOAP) server to use"
-echo "data encryption with Secure Socket Layer (y,n) [y]?"
-read SSL
+  echo
+  echo "Enter if you want the Jemboss (SOAP) server to use"
+  echo "data encryption with Secure Socket Layer (y,n) [y]?"
+  read SSL
 
-if [ "$SSL" = "" ]; then
-  SSL="y"
-fi
+  if [ "$SSL" = "" ]; then
+    SSL="y"
+  fi
 
-JSSE_HOME=""
+  echo "$SSL" >> $RECORD
 
-if [ $SSL = "y" ]; then
-  PORT=8443
-else
-  PORT=8080
-fi
+  JSSE_HOME=""
 
-#
-# PORT
-#
-USER_PORT=""
-echo
-echo "Enter port number [$PORT]:"
-read USER_PORT
-
-if [ "$USER_PORT" = "" ]; then
   if [ $SSL = "y" ]; then
     PORT=8443
   else
     PORT=8080
   fi
-else
-  PORT=$USER_PORT
+
+#
+# PORT
+#
+  USER_PORT=""
+  echo
+  echo "Enter port number [$PORT]:"
+  read USER_PORT
+
+  if [ "$USER_PORT" = "" ]; then
+    if [ $SSL = "y" ]; then
+      PORT=8443
+    else
+      PORT=8080
+    fi
+  else
+    PORT=$USER_PORT
+  fi
+
+  echo "$PORT" >> $RECORD
+
 fi
 
 #
@@ -349,6 +397,9 @@ do
   echo "Enter java (1.3 or above) location (/usr/java/jdk1.3.1/): "
   read JAVA_HOME
 done
+
+
+echo "$JAVA_HOME" >> $RECORD
 
 #
 # add java bin to path
@@ -389,6 +440,8 @@ else
     echo "Problems finding java include libraries!"
     exit 1
   fi
+
+  echo "$JAVA_INCLUDE" >> $RECORD
 fi
 
 #
@@ -402,6 +455,8 @@ do
   read EMBOSS_DOWNLOAD
 done
 
+echo "$EMBOSS_DOWNLOAD" >> $RECORD
+
 echo "Enter where EMBOSS should be installed [/usr/local/emboss]: "
 read EMBOSS_INSTALL
 
@@ -409,9 +464,16 @@ if [ "$EMBOSS_INSTALL" = "" ]; then
   EMBOSS_INSTALL=/usr/local/emboss
 fi
 
-echo "Enter URL for emboss documentation for application "
-echo "[http://www.uk.embnet.org/Software/EMBOSS/Apps/]:"
-read EMBOSS_URL
+echo "$EMBOSS_INSTALL" >> $RECORD
+
+if [ $INSTALL_TYPE = "1" ]; then
+  echo "Enter URL for emboss documentation for application "
+  echo "[http://www.uk.embnet.org/Software/EMBOSS/Apps/]:"
+  read EMBOSS_URL
+
+  echo "$EMBOSS_URL" >> $RECORD
+fi
+
 if [ "$EMBOSS_URL" = "" ]; then
   EMBOSS_URL="http://www.uk.embnet.org/Software/EMBOSS/Apps/"
 fi
@@ -422,8 +484,15 @@ fi
 JSSE_HOME=$EMBOSS_INSTALL/share/EMBOSS/jemboss
 JEMBOSS_SERVER_AUTH=""
 AUTH=y
-echo "Enter if you want Jemboss to use unix authorisation (y/n) [y]? "
-read AUTH
+
+if [ $INSTALL_TYPE = "1" ]; then
+  echo "Enter if you want Jemboss to use unix authorisation (y/n) [y]? "
+  read AUTH
+
+  echo "$AUTH" >> $RECORD
+else
+  AUTH="n"
+fi
 
 if [ "$AUTH" = "" ]; then
   AUTH="y"
@@ -435,6 +504,8 @@ if [ "$AUTH" = "y" ]; then
   echo "Provide the UID of the account (non-priveleged) to run Tomcat,"
   echo "it has to be greater than 100 [506]:"
   read UUID
+
+  echo "$UUID" >> $RECORD
 
   if [ "$UUID" = "" ]; then
     UUID="506"
@@ -461,6 +532,8 @@ if [ "$AUTH" = "y" ]; then
 
   read AUTH_TYPE
   
+  echo "$AUTH_TYPE" >> $RECORD
+
   if [ "$AUTH_TYPE" = "1" ]; then
     JEMBOSS_SERVER_AUTH=" --with-auth=shadow"
   elif [ "$AUTH_TYPE" = "2" ]; then
@@ -481,31 +554,36 @@ if [ "$AUTH" = "y" ]; then
 fi
  
 
+if [ $INSTALL_TYPE = "1" ]; then
 #
 #
 # Tomcat
 #
-TOMCAT_ROOT=0
+  TOMCAT_ROOT=0
 
-while [ ! -d "$TOMCAT_ROOT/webapps" ]
-do
-  echo "Enter Tomcat root directory (e.g. /usr/local/jakarta-tomcat-4.x.x)"
-  read TOMCAT_ROOT
-done
+  while [ ! -d "$TOMCAT_ROOT/webapps" ]
+  do
+    echo "Enter Tomcat root directory (e.g. /usr/local/jakarta-tomcat-4.x.x)"
+    read TOMCAT_ROOT
+  done
+  echo "$TOMCAT_ROOT" >> $RECORD
 
 #
 # SOAP
 #
-SOAP_ROOT=0
+  SOAP_ROOT=0
 
-while [ ! -f "$SOAP_ROOT/webapps/soap.war" ]
-do
-  echo "Enter SOAP root directory (e.g. /usr/local/soap-2_x)"
-  read SOAP_ROOT
-done
+  while [ ! -f "$SOAP_ROOT/webapps/soap.war" ]
+  do
+    echo "Enter SOAP root directory (e.g. /usr/local/soap-2_x)"
+    read SOAP_ROOT
+  done
 
-cp $SOAP_ROOT/webapps/soap.war $TOMCAT_ROOT/webapps
+  echo "$SOAP_ROOT" >> $RECORD
 
+  cp $SOAP_ROOT/webapps/soap.war $TOMCAT_ROOT/webapps
+
+fi
 #
 #
 #
@@ -515,6 +593,7 @@ echo "Enter any other configuration options (e.g. --with-pngdriver=pathname"
 echo "or press return to leave blank):"
 read USER_CONFIG
 
+echo "$USER_CONFIG" >> $RECORD
 #
 #
 if [ "$AIX" = "y" ]; then
@@ -581,6 +660,15 @@ cd $WORK_DIR
 
 if [ "$PLATFORM" = "hpux" ]; then
   ln -s $EMBOSS_INSTALL/lib/libajax.sl $EMBOSS_INSTALL/lib/libajax.so
+fi
+
+
+#
+# Exit if standalone compilation
+
+make_jemboss_properties $EMBOSS_INSTALL $LOCALHOST $AUTH $SSL $PORT $EMBOSS_URL
+if [ $INSTALL_TYPE = "2" ]; then
+  exit 0
 fi
 
 #
@@ -786,7 +874,7 @@ echo
 echo "--------------------------------------------------------------"
 echo "--------------------------------------------------------------"
 echo
-make_jemboss_properties $EMBOSS_INSTALL $LOCALHOST $AUTH $SSL $PORT $EMBOSS_URL
+#make_jemboss_properties $EMBOSS_INSTALL $LOCALHOST $AUTH $SSL $PORT $EMBOSS_URL
 
 echo
 if [ "$SSL" = "y" ]; then
