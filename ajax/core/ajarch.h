@@ -10,6 +10,11 @@ extern "C"
 #include <sys/types.h>
 #include <stdio.h>
 
+#if defined(AJ_Linux64) || defined(AJ_Solaris64) || defined(AJ_IRIX64) \
+   || defined(AJ_OSF164)
+#define HAVE64
+#endif
+
 #if !defined(AJ_LinuxLF) && !defined(AJ_SolarisLF) && !defined(AJ_IRIXLF)
 typedef int ajint;
 typedef long ajlong;
@@ -21,6 +26,7 @@ typedef unsigned long ajulong;
 
 
 #ifdef AJ_LinuxLF
+#define HAVE64
 typedef int ajint;
 typedef long long ajlong;
 typedef unsigned int ajuint;
@@ -31,6 +37,7 @@ typedef unsigned long long ajulong;
 
 
 #ifdef AJ_SolarisLF
+#define HAVE64
 typedef int ajint;
 typedef off_t ajlong;
 typedef unsigned int ajuint;
@@ -42,6 +49,7 @@ typedef unsigned long ajulong;
 #endif
 
 #ifdef AJ_IRIXLF
+#define HAVE64
 typedef int ajint;
 typedef off64_t ajlong;
 typedef unsigned int ajuint;

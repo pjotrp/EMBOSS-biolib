@@ -24,6 +24,9 @@ typedef void (*Fmt_T)(ajint code, VALIST ap,
 	int put(int c, void *cl), void *cl,
 	ajuint flags[256], ajint width, ajint precision);
 
+typedef void (*Fmt_S)(char *fmt, char **pos, VALIST ap, int width,
+		      AjBool convert, AjBool *ok);
+
 extern void ajFmtFmt (int put(int c, void *cl), void *cl,
 	const char *fmt, ...);
 extern void ajFmtVfmt(int put(int c, void *cl), void *cl,
@@ -62,6 +65,10 @@ extern AjPStr ajFmtPrintS(AjPStr *pthis, const char *fmt, ...) ;
 extern AjPStr ajFmtPrintAppS(AjPStr *pthis, const char *fmt, ...) ;
 ajint ajFmtVfmtCL(char* buf, ajint size, const char* fmt,
 	va_list ap);
+
+ajint ajFmtScanS(AjPStr thys, const char* fmt, ...);
+
+
 #endif
 
 #ifdef __cplusplus
