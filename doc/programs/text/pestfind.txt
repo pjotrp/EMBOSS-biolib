@@ -11,7 +11,7 @@ Description
 
    pestfind allows rapid and objective identification of PEST motifs in
    protein target sequences. Briefly, the PEST hypothesis was based on a
-   literature survey that combined both, information on protein stability
+   literature survey that combined both information on protein stability
    as well as protein primary sequence information. Initially, the study
    relied on 12 short-lived proteins with well-known properties [1], but
    was continually extended later [2,3]. The initial group of proteins
@@ -504,12 +504,6 @@ History
    Rodgers et al.
    
    Written (March 2002).
-   
-   Date Editor Comment
-   2002/11/21 hgmp ACD file: Add pestfind
-   2002/11/21 hgmp Program: Add pestfind
-   2002/12/02 gwilliam ACD file: Expanded the help documentation
-   slightly, based on the authors docs
    
 Target users
 

@@ -228,59 +228,6 @@ History
 
    Completed December 1999
    
-   Date Editor Comment
-   2000/09/19 ajb ACD file: First ever bioperl cvs for emboss
-   2000/09/19 ajb ACD file: branches: 1.1.1;
-   2000/09/19 ajb Program: First ever bioperl cvs for emboss
-   2000/09/19 ajb Program: branches: 1.1.1;
-   2000/09/28 ajb Program: Code cleanup
-   2000/10/14 ajb ACD file: Senger format inconsistencies
-   2001/02/10 ajb Program: ajint mods
-   2001/02/15 ajb Program: main line alterations
-   2001/02/25 ajb Program: AIX fcntl mod
-   2001/04/27 rice Program: DBI functions to embdbi.c
-   2001/04/27 rice Program: comment out stripncbi header for EFUNC
-   2001/05/10 gwilliam ACD file: groups changed
-   2001/06/01 rice Program: embDbiFileList fix
-   2001/06/04 rice Program: @prog headers generated from acd files
-   2001/06/07 rice Program: embDbiFileList extra AjBool trim for dbiblast
-   and dbigcg
-   2001/06/25 ajb Program: function rename
-   2001/07/11 rice Program: (assumed) insignificant correction to ac
-   index offset for first record
-   2001/07/12 ajb Program: Memory leaks fixed
-   2001/10/29 ajb ACD file: acdpretty version
-   2001/11/22 rice Program: commented out debug msgs - too many for a
-   large database indexing run
-   2002/02/12 rice Program: remove commented out stripncbu function
-   2002/02/13 rice ACD file: ACD section and endsection added by Thomas
-   Laurent
-   2002/02/20 timc ACD file: gui/batch/cpu
-   2002/02/25 rice Program: remove whitespace from database name
-   2002/03/05 rice Program: Make sure id is upper case ... accnum was
-   already fixed for GCG but id was 'forgotten'
-   2002/03/05 rice Program: One more accnum to upper case ... just in
-   case
-   2002/03/05 rice Program: Ooops. Fix accessions the right way
-   2002/03/21 rice Program: ajSeqParseFasta and ajSeqParseNcbi return
-   SeqVersion too
-   2002/03/27 hgmp Program: Adding GI as another SeqVersion like Sv
-   2002/05/07 rice ACD file: new index fields, maxindex length, no
-   -staden
-   2002/05/07 rice Program: DBI programs use embDbi functions, generate
-   new indices des,seqvn,keyword,taxon. Index token lengths.
-   2002/05/12 ajb Program: Uninitialised variable
-   2002/05/12 ajb Program: suffix leak
-   2002/05/20 rice ACD file: max 3 fields (only 3 defined anyway)
-   2002/05/27 rice Program: Purify for >1 database, clan up for wildcard
-   filenaming
-   2002/08/06 rice Program: function docs update
-   2002/08/22 rice Program: cleanup spaces, long lines, and header
-   comments
-   2002/08/28 rice Program: duplicate IDs reduce size of entrynam file,
-   and fatal for in-memory sort
-   2002/08/29 rice Program: @datastatic definitions for typedef structs
-   
 Target users
 
    This program is intended to be used by administrators responsible for

@@ -1,4 +1,6 @@
 
+   S
+   
                                   etandem 
                                       
    
@@ -285,8 +287,6 @@ Authors
 History
 
    Completed 25 May 1999
-   
-   [an error occurred while processing this directive]
    
 Target
 

@@ -161,14 +161,6 @@ History
 
    Written (March 2002) - Peter Rice.
    
-   Date Editor Comment
-   2002/03/13 rice ACD file: yank and union applications
-   2002/03/13 rice Program: yank and union applications
-   2002/03/14 gwilliam ACD file: doc line typo corrected
-   2002/07/12 rice Program: program documentation
-   2002/08/22 rice Program: cleanup spaces, long lines, and header
-   comments
-   
 Target users
 
    This program is intended to be used by everyone and everything, from

@@ -653,13 +653,6 @@ History
 
    Written (2002) - Gary Williams
    
-      Date     Editor                     Comment
-   2003/01/09 gwilliam ACD file: changed default report type to table
-   2003/01/09 gwilliam ACD file: default of -twoout is now N
-   2003/01/09 gwilliam ACD file: new
-   2003/01/09 gwilliam Program: new
-   2003/01/19 ajb      Program: uninitialised variable warning
-   
 Target users
 
    This program is intended to be used by everyone and everything, from

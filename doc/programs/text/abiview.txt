@@ -188,40 +188,6 @@ History
 
    Written (January 2001) - Tim Carver
    
-   Date Editor Comment
-   2001/01/18 timc ACD file: ABI viewer
-   2001/01/18 timc Program: ABI viewer
-   2001/01/19 timc Program: Removed unused vars
-   2001/01/20 ajb Program: Converted to use library deletes
-   2001/01/20 ajb Program: Wall
-   2001/01/22 ajb Program: text fix
-   2001/01/22 gwilliam ACD file: added groups
-   2001/02/02 timc ACD file: Added in -bases and -sequence optional
-   qualifiers
-   2001/02/02 timc Program: Added in -bases and -sequence optional
-   qualifiers
-   2001/02/10 ajb Program: ajint mods
-   2001/02/14 timc Program: James Bonfield bug fix
-   2001/02/15 ajb Program: main line alterations
-   2001/02/16 timc Program: Patch for -graph data option
-   2001/04/27 rice Program: cleanup doc headers for EFUNC
-   2001/05/10 gwilliam ACD file: groups changed
-   2001/06/04 rice Program: @prog headers generated from acd files
-   2001/06/25 ajb Program: function rename
-   2001/07/12 ajb Program: Removed hello msg
-   2001/07/12 ajb Program: memory fix for 'separate' flag
-   2001/07/12 ajb Program: memory leak fix
-   2001/10/29 ajb ACD file: acdpretty version
-   2002/02/13 rice ACD file: ACD section and endsection added by Thomas
-   Laurent
-   2002/07/29 timc ACD file: startbase and endbase flags and infile data
-   type used
-   2002/07/29 timc Program: message change in ajFatal
-   2002/07/29 timc Program: startbase and endbase flags and infile data
-   type used
-   2002/08/22 rice Program: cleanup spaces, long lines, and header
-   comments
-   
 Target users
 
    This program is intended to be used by everyone and everything, from

@@ -174,18 +174,6 @@ History
 
    Written (Jan 2002) - Alan Bleasby.
    
-   Date Editor Comment
-   2002/01/27 ajb ACD file: whichdb added
-   2002/01/27 ajb Program: whichdb added
-   2002/01/28 gwilliam ACD file: Changed group from Edit to Information
-   2002/05/12 ajb Program: Turn off new error message
-   2002/07/24 rice ACD file: default output file for -noget
-   2002/08/22 rice Program: cleanup spaces, long lines, and header
-   comments
-   2002/08/30 rice ACD file: -showall to watch attempted databases
-   2002/08/30 rice Program: -showall to watch attempted databases
-   2002/10/31 timc ACD file: gui batch cpu flags
-   
 Target users
 
    This program is intended to be used by everyone and everything, from

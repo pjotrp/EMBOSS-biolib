@@ -538,39 +538,6 @@ Completed 7th July 1999.
 Modified 27th July 1999 - tweaking scoring.
 Modified 22 Oct 2000 - added ID and Similarity scores.
 
-   Date Editor Comment
-   2000/09/19 ajb ACD file: First ever bioperl cvs for emboss
-   2000/09/19 ajb ACD file: branches: 1.1.1;
-   2000/09/19 ajb Program: First ever bioperl cvs for emboss
-   2000/09/19 ajb Program: branches: 1.1.1;
-   2000/10/10 gwilliam ACD file: added some help
-   2000/10/24 ajb ACD file: percent id added to alignments
-   2000/10/24 ajb Program: percent id added to alignments
-   2001/02/10 ajb Program: ajint mods
-   2001/02/11 ajb Program: Memory test
-   2001/02/15 ajb Program: main line alterations
-   2001/03/01 gwilliam ACD file: changed default DNA matrix from EDNAMAT
-   to EDNAFULL
-   2001/05/10 gwilliam ACD file: groups changed
-   2001/06/04 rice Program: @prog headers generated from acd files
-   2001/10/29 ajb ACD file: acdpretty version
-   2001/11/22 rice ACD file: align output replaces outfile
-   2001/11/22 rice Program: align output replaces outfile
-   2001/12/24 ajb Program: purify blitz
-   2002/01/11 rice Program: alignment output with begin and end
-   2002/02/12 rice ACD file: option fasta not needed (or used) with align
-   output, use -aff fasta instead
-   2002/02/12 rice Program: option fasta not needed (or used) with align
-   output, use -aff fasta instead
-   2002/02/20 timc ACD file: gui/batch/cpu
-   2002/05/20 rice ACD file: Allow gaps in sequences
-   2002/05/20 rice ACD file: Allow stops in protein sequences
-   2002/07/03 gwilliam ACD file: help added for matrix qualifier
-   2002/08/22 rice Program: cleanup spaces, long lines, and header
-   comments
-   2002/09/02 rice ACD file: -brief replaces and reimplements -similarity
-   2002/09/02 rice Program: -brief replaces and reimplements -similarity
-   
 Target users
 
    This program is intended to be used by everyone and everything, from

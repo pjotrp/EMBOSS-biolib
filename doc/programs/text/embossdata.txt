@@ -1010,29 +1010,6 @@ Author(s)
    
 History
 
-   Date Editor Comment
-   2000/09/19 ajb ACD file: First ever bioperl cvs for emboss
-   2000/09/19 ajb ACD file: branches: 1.1.1;
-   2000/09/19 ajb Program: First ever bioperl cvs for emboss
-   2000/09/19 ajb Program: branches: 1.1.1;
-   2000/10/04 ajb Program: Fixed for install directory
-   2000/11/06 ajb Program: Code tidy
-   2001/02/10 ajb Program: ajint mods
-   2001/02/15 ajb Program: main line alterations
-   2001/05/10 gwilliam ACD file: groups changed
-   2001/06/04 rice Program: @prog headers generated from acd files
-   2001/06/05 rice Program: missing @func headers
-   2001/06/25 ajb Program: function rename
-   2001/10/29 ajb ACD file: acdpretty version
-   2002/02/13 rice ACD file: ACD section and endsection added by Thomas
-   Laurent
-   2002/03/15 gwilliam ACD file: added REBASE to reject list
-   2002/07/31 rice ACD file: AAINDEX directory added
-   2002/08/06 rice ACD file: match previous behaviour for -reject
-   2002/08/22 rice Program: cleanup spaces, long lines, and header
-   comments
-   2002/11/05 rice Program: ajDie to ajFatal
-   
 Target users
 
    This program is intended to be used by everyone and everything, from

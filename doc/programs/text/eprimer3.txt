@@ -1282,18 +1282,6 @@ History
    To avoid the conflict, the EMBOSS program was renamed 'eprimer3'.
    eprimer3 was released in version 2.3.0 of EMBOSS
    
-   Date Editor Comment
-   2002/02/07 gwilliam ACD file: primer3 renamed eprimer3
-   2002/02/07 gwilliam Program: primer3 renamed eprimer3
-   2002/02/13 rice ACD file: ACD sections for eprimer3 from old
-   primer3.acd
-   2002/02/13 rice Program: final documentation additions/corrections
-   2002/04/24 rice ACD file: use type:frame for nested sections
-   2002/07/30 rice Program: ajStrCut length-1
-   2002/08/22 rice Program: cleanup spaces, long lines, and header
-   comments
-   2003/01/14 rice Program: Avoid overwriting strings in tables
-   
 Target users
 
    This program is intended to be used by everyone and everything, from

@@ -178,15 +178,6 @@ History
 
    Written (July 2002) - Alan Bleasby.
    
-   Date Editor Comment
-   2002/07/01 ajb ACD file: mwcontam
-   2002/07/01 ajb Program: mwcontam
-   2002/07/02 ajb ACD file: Modified for filelist datatype
-   2002/07/02 ajb Program: Modified for filelist datatype
-   2002/08/06 rice Program: function docs update
-   2002/08/22 rice Program: cleanup spaces, long lines, and header
-   comments
-   
 Target users
 
    This program is intended to be used by everyone and everything, from

@@ -203,18 +203,6 @@ History
 
    Written (Jan 2002) - Alan Bleasby.
    
-   Date Editor Comment
-   2001/12/08 ajb ACD file: Mass spec data filter
-   2001/12/08 ajb Program: Mass spec data filter
-   2002/01/10 gwilliam ACD file: changed hard output name to extension
-   2002/02/13 rice ACD file: ACD section and endsection added by Thomas
-   Laurent
-   2002/07/01 ajb ACD file: -showdel added
-   2002/07/01 ajb Program: -showdel added
-   2002/08/06 rice Program: function docs update
-   2002/08/22 rice Program: cleanup spaces, long lines, and header
-   comments
-   
 Target users
 
    This program is intended to be used by everyone and everything, from

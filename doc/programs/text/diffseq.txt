@@ -1157,45 +1157,6 @@ History
    Written 15th Aug 2000 - Gary Williams.
    18th Aug 2000 - Added writing out GFF files of the mismatched regions
    
-   Date Editor Comment
-   2000/09/19 ajb ACD file: First ever bioperl cvs for emboss
-   2000/09/19 ajb ACD file: branches: 1.1.1;
-   2000/09/19 ajb Program: First ever bioperl cvs for emboss
-   2000/09/19 ajb Program: branches: 1.1.1;
-   2000/09/28 ajb Program: Code cleanup
-   2000/10/09 gwilliam ACD file: spelling error
-   2001/01/28 gwilliam Program: bomb-proofing for case of no matching
-   regions
-   2001/02/10 ajb Program: ajint mods
-   2001/02/15 ajb Program: main line alterations
-   2001/05/10 gwilliam ACD file: groups changed
-   2001/06/01 rice Program: AjPFeat changes
-   2001/06/04 rice Program: @prog headers generated from acd files
-   2001/06/05 rice Program: missing @func headers
-   2001/06/25 ajb Program: function rename
-   2001/06/28 rice Program: embWordMatchListDelete should delete original
-   pointer
-   2001/07/12 ajb Program: Memory leaks fixed
-   2001/07/12 rice Program: ajfeat function name cleanup
-   2001/08/25 rice Program: Minor memory leak (2 temp. strings)
-   2001/08/25 rice Program: Uses ajSeqCopyFeat
-   2001/10/08 rice ACD file: conversion to report output
-   2001/10/08 rice Program: conversion to report output
-   2001/10/29 ajb ACD file: acdpretty version
-   2001/10/31 rice Program: feature fiels added to report header
-   2001/12/24 ajb Program: purify blitz
-   2002/02/13 rice ACD file: ACD section and endsection added by Thomas
-   Laurent
-   2002/02/13 rice Program: final documentation additions/corrections
-   2002/02/20 timc ACD file: gui/batch/cpu
-   2002/05/12 ajb Program: tmpstr leak
-   2002/05/20 rice ACD file: Allow stops in protein sequences
-   2002/06/28 gwilliam Program: dont display SNP summary for proteins
-   2002/08/14 gwilliam ACD file: help added to -wordsize
-   2002/08/22 rice Program: cleanup spaces, long lines, and header
-   comments
-   2002/11/07 gwilliam ACD file: minor change to documentation line
-   
 Target users
 
    This program is intended to be used by everyone and everything, from

@@ -318,30 +318,6 @@ History
 
    16 August 2000 - Val Curwen - Written.
    
-   Date Editor Comment
-   2000/09/19 ajb ACD file: First ever bioperl cvs for emboss
-   2000/09/19 ajb ACD file: branches: 1.1.1;
-   2000/09/19 ajb Program: First ever bioperl cvs for emboss
-   2000/09/19 ajb Program: branches: 1.1.1;
-   2000/09/28 ajb Program: Code cleanup
-   2001/02/10 ajb Program: ajint mods
-   2001/02/15 ajb Program: main line alterations
-   2001/04/27 rice Program: cleanup doc headers for EFUNC
-   2001/05/10 gwilliam ACD file: groups changed
-   2001/06/04 rice Program: @prog headers generated from acd files
-   2001/06/19 ajb Program: function name binge
-   2001/06/19 ajb Program: function name binge
-   2001/07/03 ajb Program: purify
-   2001/10/29 ajb ACD file: acdpretty version
-   2002/02/13 rice ACD file: ACD section and endsection added by Thomas
-   Laurent
-   2002/02/13 rice Program: final documentation additions/corrections
-   2002/04/24 rice ACD file: use type:frame for nested sections
-   2002/08/22 rice Program: cleanup spaces, long lines, and header
-   comments
-   2002/08/28 ajb Program: Altered position of AcdGets to avoid warnings
-   of non-use
-   
 Target users
 
    This program is intended to be used by everyone and everything, from

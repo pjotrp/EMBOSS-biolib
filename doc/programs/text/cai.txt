@@ -233,20 +233,6 @@ History
 
    Written (March 2001) - Alan Bleasby.
    
-   Date Editor Comment
-   2001/03/11 ajb ACD file: cai
-   2001/03/11 ajb Program: cai
-   2001/04/05 gwilliam ACD file: changed documentation line
-   2001/05/10 gwilliam ACD file: groups changed
-   2001/06/04 rice Program: @prog headers generated from acd files
-   2001/10/29 ajb ACD file: acdpretty version
-   2002/02/13 rice ACD file: ACD section and endsection added by Thomas
-   Laurent
-   2002/04/16 rice Program: include sequence name in output (input is
-   seqall)
-   2002/08/22 rice Program: cleanup spaces, long lines, and header
-   comments
-   
 Target users
 
    This program is intended to be used by everyone and everything, from

@@ -635,36 +635,6 @@ Author(s)
    
 History
 
-   Date Editor Comment
-   2000/09/19 ajb ACD file: First ever bioperl cvs for emboss
-   2000/09/19 ajb ACD file: branches: 1.1.1;
-   2000/09/19 ajb Program: First ever bioperl cvs for emboss
-   2000/09/19 ajb Program: branches: 1.1.1;
-   2000/10/01 ajb Program: Memory leak fixes and friendly warnings
-   2001/02/10 ajb Program: ajint mods
-   2001/04/27 rice Program: estgenome using AjPSeq, removing redundant
-   functions
-   2001/05/10 gwilliam ACD file: groups changed
-   2001/06/05 rice Program: missing @func headers
-   2001/06/12 rice Program: Bad comment - caused skip of memory resize
-   2001/06/12 rice Program: fix to bad comment fix
-   2001/06/25 ajb Program: function rename
-   2001/10/29 ajb ACD file: acdpretty version
-   2002/01/10 rice Program: do not ajSeqDel the ajSeqallNext temp seq
-   2002/02/12 rice Program: documentation additions/corrections
-   2002/02/13 rice ACD file: ACD section and endsection added by Thomas
-   Laurent
-   2002/02/20 timc ACD file: gui/batch/cpu
-   2002/03/06 rice ACD file: outfile param not just required
-   2002/03/07 rice Program: cleanup comments (program description for
-   example
-   2002/03/15 rice ACD file: help text for threshold
-   2002/03/25 rice Program: write output for mode=forward and
-   mode=reverse
-   2002/05/13 rice Program: removed duplicate ajAcdGetInt call
-   2002/08/22 rice Program: cleanup spaces, long lines, and header
-   comments
-   
 Target users
 
    This program is intended to be used by everyone and everything, from

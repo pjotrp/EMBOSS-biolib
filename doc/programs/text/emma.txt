@@ -1305,38 +1305,6 @@ History
 
    Completed 18 February 1999
    
-   Date Editor Comment
-   2000/09/19 ajb ACD file: First ever bioperl cvs for emboss
-   2000/09/19 ajb ACD file: branches: 1.1.1;
-   2000/09/19 ajb Program: First ever bioperl cvs for emboss
-   2000/09/19 ajb Program: branches: 1.1.1;
-   2000/10/01 ajb Program: Memory leak fixes and friendly warnings
-   2000/10/24 ajb Program: single sequence crash fix
-   2001/02/10 ajb Program: ajint mods
-   2001/02/15 ajb Program: main line alterations
-   2001/03/12 gwilliam ACD file: much more help added
-   2001/03/13 gwilliam ACD file: fixed line breaks in help
-   2001/05/10 gwilliam ACD file: groups changed
-   2001/06/04 rice Program: @prog headers generated from acd files
-   2001/06/05 rice Program: missing @func headers
-   2001/06/06 rice Program: @func header fix
-   2001/06/25 ajb Program: function rename
-   2001/10/29 ajb ACD file: acdpretty version
-   2001/11/21 ajb ACD file: Extensive acd changes
-   2001/11/21 ajb ACD file: Ooops. Put tmpprot back
-   2001/11/21 ajb ACD file: Removed tmpprot. Not used
-   2001/11/21 ajb Program: Extensive acd changes
-   2001/11/22 ajb ACD file: Removed -options perversity
-   2001/11/23 ajb ACD file: temporary fix
-   2002/02/13 rice ACD file: ACD section and endsection added by Thomas
-   Laurent
-   2002/02/20 timc ACD file: gui/batch/cpu
-   2002/03/25 rice ACD file: -unweighted is never used
-   2002/03/25 rice Program: -unweighted is never used
-   2002/04/24 rice ACD file: use type:frame for nested sections
-   2002/08/22 rice Program: cleanup spaces, long lines, and header
-   comments
-   
 Target users
 
    This program is intended to be used by everyone and everything, from

@@ -653,19 +653,6 @@ History
 
    Written (November 2002) - Gary Williams.
    
-   Date Editor Comment
-   2002/11/27 gwilliam ACD file: add
-   2002/11/27 gwilliam Program: added
-   2002/12/02 gwilliam ACD file: changed defaults for -aa and -poliii
-   2002/12/02 gwilliam Program: fixed multi-line strings
-   2002/12/05 gwilliam Program: bug corrected in sirna_begin
-   2002/12/11 gwilliam ACD file: added sequence output, -control,
-   -polybase etc
-   2002/12/11 gwilliam Program: added sequence output, -control,
-   -polybase etc
-   2003/01/10 gwilliam ACD file: removed -control
-   2003/01/10 gwilliam Program: removed -control
-   
 Target users
 
    This program is intended to be used by everyone and everything, from

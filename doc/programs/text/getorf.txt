@@ -498,31 +498,6 @@ History
    November 2002 - added indication of ORFs that cross the breakpoint at
    position 1 in circular genomes.
    
-   Date Editor Comment
-   2000/09/19 ajb ACD file: First ever bioperl cvs for emboss
-   2000/09/19 ajb ACD file: branches: 1.1.1;
-   2000/09/19 ajb Program: First ever bioperl cvs for emboss
-   2000/09/19 ajb Program: branches: 1.1.1;
-   2001/01/16 gwilliam ACD file: new code tables added
-   2001/01/16 gwilliam ACD file: new codes added
-   2001/02/10 ajb Program: ajint mods
-   2001/02/15 ajb Program: main line alterations
-   2001/02/22 ajb Program: reverse numbering fixes
-   2001/05/10 gwilliam ACD file: groups changed
-   2001/06/04 rice Program: @prog headers generated from acd files
-   2001/06/05 rice Program: missing @func headers
-   2001/06/24 ajb Program: function rename
-   2001/10/29 ajb ACD file: acdpretty version
-   2002/02/13 rice ACD file: ACD section and endsection added by Thomas
-   Laurent
-   2002/08/06 rice Program: function docs update
-   2002/08/22 rice Program: cleanup spaces, long lines, and header
-   comments
-   2002/11/07 gwilliam Program: tidied up reporting of circular genome
-   positions & added indication of reverse sense ORFs
-   2002/11/07 gwilliam Program: tidied up reporting of circular genome
-   positions & added indication of reverse sense ORFs
-   
 Target users
 
    This program is intended to be used by everyone and everything, from

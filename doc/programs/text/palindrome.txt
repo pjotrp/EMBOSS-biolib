@@ -387,39 +387,6 @@ History
 
    Written (1999) - Mark Faller.
    
-   Date Editor Comment
-   2000/09/19 ajb ACD file: First ever bioperl cvs for emboss
-   2000/09/19 ajb ACD file: branches: 1.1.1;
-   2000/09/19 ajb Program: First ever bioperl cvs for emboss
-   2000/09/19 ajb Program: branches: 1.1.1;
-   2000/10/01 ajb Program: Memory leak fixes and friendly warnings
-   2000/10/14 ajb ACD file: Senger format inconsistencies
-   2001/02/10 ajb Program: ajint mods
-   2001/02/15 ajb Program: main line alterations
-   2001/05/10 gwilliam ACD file: groups changed
-   2001/06/04 rice Program: @prog headers generated from acd files
-   2001/06/05 rice Program: missing @func headers
-   2001/06/24 ajb Program: function rename
-   2001/06/24 ajb Program: function rename
-   2001/07/11 ajb Program: Memory leak fix
-   2001/08/31 gwilliam Program: fixed bug where repeats gt max length are
-   reported
-   2001/08/31 gwilliam Program: restored to original - bug fix didnt work
-   2001/10/29 ajb ACD file: acdpretty version
-   2002/01/28 ajb Program: Made to recognise maxLen limit
-   2002/02/13 rice ACD file: ACD section and endsection added by Thomas
-   Laurent
-   2002/07/04 gwilliam Program: do not print a | where there is a
-   mismatch
-   2002/07/12 gwilliam ACD file: change input from sequence to seqall
-   2002/07/12 gwilliam Program: change input from sequence to seqall
-   2002/07/19 gwilliam Program: fixed bug when reading multiple sequences
-   2002/08/06 rice Program: function docs update
-   2002/08/22 rice Program: cleanup spaces, long lines, and header
-   comments
-   2002/11/08 gwilliam Program: suppress reporting of palindromes of just
-   Ns
-   
 Target users
 
    This program is intended to be used by everyone and everything, from
