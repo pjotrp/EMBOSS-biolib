@@ -173,8 +173,12 @@ RNU68037 from 51 to 1168
    
 Data files
 
+   None.
+   
 Notes
 
+   None.
+   
 References
 
    The original program was described in:
@@ -184,14 +188,20 @@ References
    
 Warnings
 
+   None.
+   
 Diagnostic Error Messages
 
+   None.
+   
 Exit status
 
    0 if successful.
    
 Known bugs
 
+   None.
+   
 See also
 
    Program name                          Description
