@@ -72,16 +72,18 @@ public class LabelTextBox extends Box
         sl = sl.substring(stop+1,sl.length());
         l.setFont(SectionPanel.labfont);
         l.setForeground(SectionPanel.labelColor);
-//      if(!tt.equals(""))
-//        l.setToolTipText(tt);
+        if(!tt.equals(""))
+          l.setToolTipText(tt);
       }
       l = new JLabel(" " + sl);
       l.setFont(SectionPanel.labfont);
       l.setForeground(SectionPanel.labelColor);
-//    if(!tt.equals(""))
-//      l.setToolTipText(tt);
       if(!tt.equals(""))
-        setToolTipText(tt);
+        l.setToolTipText(tt);
+
+// not supported in java1.3
+//    if(!tt.equals(""))
+//      setToolTipText(tt);
 
       add(l);
     }
