@@ -5004,6 +5004,50 @@ ajint ajGraphInfo(AjPList* files)
   return i;
 }
 
+
+/* @func ajGraphFillRectangleOnCurve ***********************************
+**
+** Draw a rectangle along a curve and fill it with the current pen colour/style.
+**
+** @param  [r] xcentre [PLFLT] x coor for centre.
+** @param  [r] ycentre [PLFLT] y coor for centre.
+** @param  [r] Radius  [PLFLT] radius of the circle.
+** @param  [r] BoxHeight [PLFLT] The height of the rectangle in user coordinates.
+** @param  [r] StartAngle [PLFLT] angle of the start of the rectangle.
+** @param  [r] EndAngle [PLFLT] angle of the end of the rectangle.
+** @return [void]
+** @@
+*********************************************************************/
+void ajGraphFillRectangleOnCurve(PLFLT xcentre, PLFLT ycentre, PLFLT Radius,
+				 PLFLT BoxHeight, PLFLT StartAngle,
+				 PLFLT EndAngle)
+{
+  PLFLT angle;
+  ajint i;
+  PLFLT x[4];
+  PLFLT y[4];
+  ajint numofpoints;
+  PLFLT r1Blocks = Radius;
+  PLFLT r2Blocks = r1Blocks+BoxHeight;
+
+  for(i=0, angle=StartAngle; angle<EndAngle; angle++, i++)
+  {
+    x[0]=xcentre + ( r1Blocks*(float)cos(ajDegToRad(angle)) );
+    y[0]=ycentre + ( r1Blocks*(float)sin(ajDegToRad(angle)) );
+    x[1]=xcentre + ( r2Blocks*(float)cos(ajDegToRad(angle)) );
+    y[1]=ycentre + ( r2Blocks*(float)sin(ajDegToRad(angle)) );
+    x[2]=xcentre + ( r2Blocks*(float)cos(ajDegToRad(angle+1)) );
+    y[2]=ycentre + ( r2Blocks*(float)sin(ajDegToRad(angle+1)) );
+    x[3]=xcentre + ( r1Blocks*(float)cos(ajDegToRad(angle+1)) );
+    y[3]=ycentre + ( r1Blocks*(float)sin(ajDegToRad(angle+1)) );
+    numofpoints = 4;
+    ajGraphPolyFill(numofpoints, x, y);
+  }
+
+  return;
+}
+
+
 /* @func ajGraphUnused **************************************************
 **
 ** Unused functions to avoid compiler warnings
