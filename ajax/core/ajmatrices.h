@@ -11,6 +11,7 @@ extern "C"
 ** AJAX data structure for sequence comparison matrices with integer values
 **
 ** @alias AjSMatrix
+** @alias AjOMatrix
 ******************************************************************************/
 
 typedef struct AjSMatrix {
@@ -27,6 +28,7 @@ typedef struct AjSMatrix {
 ** point values
 **
 ** @alias AjSMatrixf
+** @alias AjOMatrixf
 ******************************************************************************/
 
 typedef struct AjSMatrixf {
