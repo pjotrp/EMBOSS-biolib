@@ -410,6 +410,24 @@ A) If you have SRS installed (so you have local SRS index files) you will
    (Peter Rice 9 Jan 2001)
 
 
+Q: I am not getting full static files even when I configure with
+   --disable-shared
+
+A: This most often happens when using GNU LD. If both shared and
+   static versions of a library exist then GNU LD will take the
+   shared library as preferred. The root of this problem is libtool.
+   You can, however, force complete static images by adding a
+   definition to your "make" line: 
+
+   make "LDFLAGS=-Wl,-static"
+
+   This is a real swine as it should be the job of the autoconfiguration
+   stuff to provide an option for this. I'll see if I can bend it in an
+   idle moment. At the moment it'll only cause problems on cats-cradle
+   cross-mounted systems such as occur in Norway.
+
+   (Alan Bleasby 14 Feb 2001)
+
 
 
 SECTION C - Graphics
