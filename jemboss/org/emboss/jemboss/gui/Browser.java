@@ -282,7 +282,6 @@ public class Browser extends JFrame
       public void paintComponent(Graphics g)
       {
         super.paintComponent(g);
-        BasicStroke stroke = new BasicStroke(4.0f);
         Graphics2D g2 = (Graphics2D)g;
 
         g2.setColor(new Color(0,128,0));
