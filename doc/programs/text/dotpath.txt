@@ -294,6 +294,11 @@ See also
    This program is closely based on dottup with the addition of by
    default displaying only the minimal set of non-overlapping matches.
    
+   This program uses the same algorithm as diffseq for finding a minimal
+   set of very good matches between two sequences. diffseq may be more
+   convenient if you are looking at the differences between two nearly
+   identical sequences.
+   
 Author(s)
 
    This application was written by Gary Williams
