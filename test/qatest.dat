@@ -2506,7 +2506,7 @@ IN
 FI stderr
 FC = 2
 FI eclac.remap 
-FZ = 888
+FZ = 1064
 FP /^# Enzymes that cut.*\n(\s+\S+\s+1\s+\n){4}\n/
 FP /^# Enzymes that do not cut.*\n\n/
 FP /^\s+AciI\s+1\s+\n/
@@ -2526,7 +2526,7 @@ IN
 FI stderr
 FC = 2
 FI eclac.remap
-FZ = 7325
+FZ = 7573
 FP /^\s+AspLEI\s+2\s+BstHHI,CfoI,HhaI\n/
 //
 
