@@ -37,7 +37,7 @@
 **  
 **  NOTES
 **  
-****************************************************************************/
+******************************************************************************/
 
 
 
@@ -47,12 +47,25 @@
 #include "emboss.h"
 
 
-ajint StrBinSearchDomain(AjPStr id, AjPStr *arr, ajint siz);
-ajint StrComp(const void *str1, const void *str2);
+
+
+/******************************************************************************
+**
+** PROTOTYPES  
+**
+******************************************************************************/
+ajint StrBinSearchDomain(AjPStr id, 
+			 AjPStr *arr, 
+			 ajint siz);
+
+ajint StrComp(const void *str1, 
+	      const void *str2);
 
 
 
-/* @prog domainreso *************************************************************
+
+
+/* @prog domainreso ***********************************************************
 **
 ** Removes low resolution domains from a DCF file (domain
 ** classification file).
@@ -61,27 +74,28 @@ ajint StrComp(const void *str1, const void *str2);
 int main(ajint argc, char **argv)
 {
 
-    AjPList     cpdb_path     = NULL;    /* Location of coordinate files for input */
-    AjPStr      cpdb_name     = NULL;    /* Name of coordinate file                */
-    AjPStr      temp          = NULL;    /* temp string                            */
-    AjPStr      temp2         = NULL;    /* temp string                            */
-    AjPList     entry        = NULL;     /* List of pdb codes with resolution      */
-                                         /* ABOVE the threshold                    */
-    AjPStr     *entryarr      = NULL;    /* entry as an array                      */
+    AjPList     cpdb_path  = NULL; /* Location of coordinate files for input */
+    AjPStr      cpdb_name  = NULL; /* Name of coordinate file                */
+    AjPStr      temp       = NULL; /* temp string                            */
+    AjPStr      temp2      = NULL; /* temp string                            */
+    AjPList     entry      = NULL; /* List of pdb codes with resolution      */
+                                   /* ABOVE the threshold                    */
+    AjPStr     *entryarr   = NULL; /* entry as an array                      */
     
 
-    AjPFile     fptr_cpdb     = NULL;    /* Pointer to current coordinate file     */
-    AjPFile     dcfin       = NULL;    /* DCF input file                   */
-    AjPFile     dcfout      = NULL;    /* DCF output file              */
+    AjPFile     fptr_cpdb  = NULL; /* Pointer to current coordinate file     */
+    AjPFile     dcfin      = NULL; /* DCF input file                         */
+    AjPFile     dcfout     = NULL; /* DCF output file                        */
 
-    AjPPdb      pdb           = NULL;    /* Pdb object pointer                     */    
-    AjPDomain   domain        = NULL;    /* Domain structure                       */
+    AjPPdb      pdb        = NULL; /* Pdb object pointer                     */    
+    AjPDomain   domain     = NULL; /* Domain structure                       */
  
 
-    float       threshold     = 0.0;     /* Resolution threshold                   */
-    ajint       num           = 0;       /* number of nodes in list                */
+    float       threshold  = 0.0;  /* Resolution threshold                   */
+    ajint       num        = 0;    /* number of nodes in list                */
 
-    ajint     type = 0;   /* Type of domain (ajSCOP or ajCATH) in the DCF file */
+    ajint       type       = 0;    /* Type of domain (ajSCOP or ajCATH) in 
+				      the DCF file                           */
 
 
     
@@ -92,37 +106,36 @@ int main(ajint argc, char **argv)
     ajAcdInitP("domainreso",argc,argv,"DOMAINATRIX"); 
     cpdb_path     = ajAcdGetDirlist("cpdbpath");    
     threshold     = ajAcdGetFloat("threshold");
-    dcfin       = ajAcdGetInfile("dcfin");
-    dcfout      = ajAcdGetOutfile("dcfout");
+    dcfin         = ajAcdGetInfile("dcfin");
+    dcfout        = ajAcdGetOutfile("dcfout");
 
 
 
 
     
-    /* Allocate strings etc */
+    /* Allocate strings etc. */
     cpdb_name     = ajStrNew();
     temp          = ajStrNew();
 
-    /* Create list  */
+    /* Create list . */
     entry    = ajListNew();
 
 
-    /* Create list of files in CPDB directory */
+    /* Create list of files in CPDB directory. */
     
 
     /* Determine number of nodes on list    */
     num = ajListLength(cpdb_path);
-/*    printf("Number of cpdb files in directory = %d\n", num);*/
 
 
 
 /*
- domainreso reads a directory of clean coordinate files file, creates a list of the files, then
- reads every list entry and extracts the resolution of the structure.  If 
- the value is less than a threshold (user defined) then the domain identifier
- is pushed onto a list.  The DCF file (domain classification file) is then read and domain identifiers
- compared to those on the list, if found then the domain structure data is written 
- the new DCF file.    
+ domainreso reads a directory of clean coordinate files file, creates a list 
+ of the files, then reads every list entry and extracts the resolution of the 
+ structure.  If the value is less than a threshold (user defined) then the 
+ domain identifier is pushed onto a list.  The DCF file (domain classification 
+ file) is then read and domain identifiers compared to those on the list, if 
+ found then the domain structure data is written the new DCF file.    
 */
 
 
@@ -134,23 +147,26 @@ int main(ajint argc, char **argv)
     /* ABOVE the threshold.                                   */
     while(ajListPop(cpdb_path,(void **)&temp))
     {
-        /* Open coordinate file */
+        /* Open coordinate file. */
         if((fptr_cpdb=ajFileNewIn(temp))==NULL)
         {
 	    ajWarn("Could not open cpdb file");
             ajStrDel(&temp);
             continue;       
         }
+	ajFmtPrint("%S\n", temp);
+	fflush(stdout);
+	
+	
 
-
-        /* Read coordinate data file */ 
+        /* Read coordinate data file. */ 
 	pdb = ajPdbReadNew(fptr_cpdb);
         
 
-        /* Check if resolution is above threshold */
+        /* Check if resolution is above threshold. */
         if(pdb->Reso > threshold)
 	{
-	    /* assign ID to list */
+	    /* assign ID to list. */
 	    temp2=ajStrNew();
 	    ajStrAssS(&temp2, pdb->Pdb);
 	    ajListPush(entry, (AjPStr) temp2);
@@ -162,29 +178,28 @@ int main(ajint argc, char **argv)
 	ajStrDel(&temp);
     }
     num = ajListLength(entry);
-/*    printf("Number of cpdb files with > threshold resolution = %d\n", num); */
     
 
-    /* Sort the list of pdb codes & convert to an array */
+    /* Sort the list of pdb codes & convert to an array. */
     ajListSort(entry, StrComp);
     ajListToArray(entry, (void ***)&entryarr);
     
     
-    /* Read DCF file and compare IDs to those in list          */
-    /* if not present then write domain structure data to output  */
+    /* Read DCF file and compare IDs to those in list          
+     if not present then write domain structure data to output. . */
     while((domain=(ajDomainReadCNew(dcfin, "*", type))))
     {
 	/* DOMAIN id not found in the list of domains with resolution 
-	   above the threshold, so include it in the output file */
+	   above the threshold, so include it in the output file. */
 	if((StrBinSearchDomain(ajDomainGetId(domain), entryarr, num))==-1)
 	    ajDomainWrite(dcfout, domain);
 
-        /* Delete domain structure */
+        /* Delete domain structure. */
         ajDomainDel(&domain);
     }
 
 
-    /* Tidy up */
+    /* Tidy up. */
     ajStrDel(&cpdb_name);
     ajFileClose(&dcfout);
     ajFileClose(&dcfin);
@@ -192,7 +207,7 @@ int main(ajint argc, char **argv)
     AJFREE(entryarr);
     
   
-    /* Return */
+    /* Return. */
     ajExit();
     return 0;
 }
@@ -201,7 +216,7 @@ int main(ajint argc, char **argv)
 
 
 
-/* @func StrBinSearchDomain *************************************************
+/* @funcstatic StrBinSearchDomain *********************************************
 **
 ** Performs a binary search for a DOMAIN domain code over an array of AjPStr
 ** (which of course must first have been sorted, e.g. by StrComp). This is a 
@@ -215,7 +230,9 @@ int main(ajint argc, char **argv)
 ** matching id, or -1 if id is not found.
 ** @@
 ******************************************************************************/
-ajint StrBinSearchDomain(AjPStr id, AjPStr *arr, ajint siz)
+static ajint StrBinSearchDomain(AjPStr id, 
+				AjPStr *arr,
+				ajint siz)
 {
     int l;
     int m;
@@ -243,7 +260,7 @@ ajint StrBinSearchDomain(AjPStr id, AjPStr *arr, ajint siz)
 
 
 
-/* @func StrComp *******************************************************
+/* @funcstatic StrComp ********************************************************
 **
 ** Function to sort strings.
 **
@@ -255,7 +272,8 @@ ajint StrBinSearchDomain(AjPStr id, AjPStr *arr, ajint siz)
 ** @@
 ******************************************************************************/
 
-ajint StrComp(const void *str1, const void *str2)
+static ajint StrComp(const void *str1,
+		     const void *str2)
 {
     AjPStr p = NULL;
     AjPStr q = NULL;

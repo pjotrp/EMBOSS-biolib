@@ -38,19 +38,41 @@
 **  
 **  NOTES
 **  
-****************************************************************************/
+******************************************************************************/
 
 
 
 
 #include "emboss.h"
 
-void seqfraggle_getlengths(AjPHitlist hitlist, ajint *num_hits, AjPInt *seq_len_sort, AjPInt *seq_len, AjPInt *seq_ok);
-void seqfraggle_getlengths_other(AjPStr temp,  AjPSeqset *seqset, ajint *num_hits, AjPInt *seq_len_sort, AjPInt *seq_len, AjPInt *seq_ok);
 
 
 
-/* @prog seqfraggle *******************************************************
+
+/******************************************************************************
+**
+** PROTOTYPES  
+**
+******************************************************************************/
+static void seqfraggle_getlengths(AjPHitlist hitlist, 
+			   ajint *num_hits, 
+			   AjPInt *seq_len_sort, 
+			   AjPInt *seq_len, 
+			   AjPInt *seq_ok);
+
+static void seqfraggle_getlengths_other(AjPStr temp,
+				 AjPSeqset *seqset, 
+				 ajint *num_hits, 
+				 AjPInt *seq_len_sort, 
+				 AjPInt *seq_len, 
+				 AjPInt *seq_ok);
+
+
+
+
+
+
+/* @prog seqfraggle ***********************************************************
 **
 ** Removes fragments from DHF files (domain hits files) or other files of 
 ** sequences.
@@ -58,85 +80,59 @@ void seqfraggle_getlengths_other(AjPStr temp,  AjPSeqset *seqset, ajint *num_hit
 ******************************************************************************/
 int main(int argc, char **argv)
 {
-    AjPList      dhfin          = NULL;  /* Hits files for input                   */
-    AjPDir       dhfout         = NULL;  /* Hits files for output                  */
+    AjPList      dhfin      = NULL;  /* Hits files for input.                */
+    AjPDir       dhfout     = NULL;  /* Hits files for output.               */
 
-    AjPStr      temp            = NULL;  /* Temp string                            */
-    AjPStr      temp2           = NULL;  /* Temp string                            */
-    AjPStr      exec            = NULL;  /* The UNIX command line to be executed   */    
+    AjPStr      temp        = NULL;  /* Temp string.                         */
+    AjPStr      temp2       = NULL;  /* Temp string.                         */
+    AjPStr      exec        = NULL;  /* The UNIX command line to be executed.*/    
 
-    ajint       thresh          = 0;     /* Threshold for definition of fragments  */
-    ajint       x               = 0;     /* Loop counters                          */
-    ajint       y               = 0;     /* Loop counters                          */
-    ajint       median          = 0;     /* Median length of sequence hits         */
-    ajint       mid             = 0;     /* Middle value of seq_len array          */
-    ajint       num_hits        = 0;     /* Number of hits in file                 */
+    ajint       thresh      = 0;     /* Threshold for definition of fragments*/
+    ajint       x           = 0;     /* Loop counters.                       */
+    ajint       y           = 0;     /* Loop counters.                       */
+    ajint       median      = 0;     /* Median length of sequence hits.      */
+    ajint       mid         = 0;     /* Middle value of seq_len array.       */
+    ajint       num_hits    = 0;     /* Number of hits in file.              */
 
-    float       score           = 0.0;   /* Float for storing length/median value  */
+    float       score       = 0.0;   /* Float for storing length/median value*/
     
     
-    AjPInt      seq_len_sort    = NULL;  /* Array to hold length of each hit seq   */
-    AjPInt      seq_len         = NULL;  /* Array to hold sorted lengths           */
-    AjPInt      seq_ok          = NULL;  /* Array indicating if length is > thresh 
-					    If seq_ok array element == 1 then the 
-					    sequence is output  */
+    AjPInt      seq_len_sort= NULL;  /* Array to hold length of each hit seq.*/
+    AjPInt      seq_len     = NULL;  /* Array to hold sorted lengths.        */
+    AjPInt      seq_ok      = NULL;  /* Array indicating if length is > thresh 
+					If seq_ok array element == 1 then the 
+					sequence is output.                  */
 
-    AjPFile     hitsPtr         = NULL;  /* Pointer to hits file                   */
-    AjPFile     dhfoutPtr      = NULL;  /* Pointer to hits output file            */
+    AjPFile     hitsPtr     = NULL;  /* Pointer to hits file.                */
+    AjPFile     dhfoutPtr   = NULL;  /* Pointer to hits output file.         */
      
-    AjPHitlist  hitlist         = NULL;  /* Hitlist structure                      */
+    AjPHitlist  hitlist     = NULL;  /* Hitlist structure.                   */
 
-    AjPSeqset   seqset          = NULL;
-    AjPSeqout   seqout          = NULL;
-    const AjPSeq      tmpseq          = NULL;
+    AjPSeqset   seqset      = NULL;
+    AjPSeqout   seqout      = NULL;
+    const AjPSeq tmpseq     = NULL;
 
 
     
 
-    /* Assign strings and list */
+    /* Assign strings and list. */
     exec         = ajStrNew();
 
 
-    /* Read data from acd */
+    /* Read data from acd. */
     ajNamInit("emboss");
     ajAcdInitP("seqfraggle",argc,argv,"DOMAINATRIX"); 
     dhfin      = ajAcdGetDirlist("dhfin");
     dhfout     = ajAcdGetDirectory("dhfout");
     thresh      = ajAcdGetInt("thresh");
     
-/*
-    line    = ajStrNew();
+
+
+    /* Start of main application  loop.                        */
+    /* Determine median length of sequences in each hits file. */
     while(ajListPop(dhfin,(void **)&temp))
     {
-        if((hitsPtr=ajFileNewIn(temp))==NULL)
-        {
-            ajFileClose(&hitsPtr);
-            ajWarn("Could not open hits file %S", temp);
-            ajStrDel(&temp); 
-            continue;       
-        }
-
-        ajFmtPrint("Processing %S\n", temp);
-
-	if((hitlist = embHitlistReadFasta(hitsPtr)))
-	    embHitlistDel(&hitlist);
-	else
-	    ajFatal("Oooops\n");
-
-	while(ajFileReadLine(hitsPtr,&line));
-	
-	ajFileClose(&hitsPtr);
-    }
-    ajStrDel(&line);
-
-    ajExit();
-*/
-
-    /* Start of main application loop                         */
-    /* determine median length of sequences in each hits file */
-    while(ajListPop(dhfin,(void **)&temp))
-    {
-        /* Open hits file */
+        /* Open hits file. */
         if((hitsPtr=ajFileNewIn(temp))==NULL)
         {
             ajWarn("Could not open hits file %S", temp);
@@ -147,13 +143,15 @@ int main(int argc, char **argv)
         ajFmtPrint("Processing %S\n", temp);
 
 	if((hitlist = embHitlistReadFasta(hitsPtr)))
-	    seqfraggle_getlengths(hitlist, &num_hits, &seq_len_sort, &seq_len, &seq_ok);
+	    seqfraggle_getlengths(hitlist, &num_hits, &seq_len_sort, &seq_len, 
+				  &seq_ok);
 	else
-	    seqfraggle_getlengths_other(temp, &seqset, &num_hits, &seq_len_sort, &seq_len, &seq_ok);
+	    seqfraggle_getlengths_other(temp, &seqset, &num_hits, &seq_len_sort, 
+					&seq_len, &seq_ok);
 
 	
 	/* if num_hits > 1 then seq_len_sort, seq_len & seq_ok all have to be freed.
-	   seqset ALWAYS has to be freed */
+	   seqset ALWAYS has to be freed. */
 	
 	if(!num_hits)
 	{
@@ -170,20 +168,22 @@ int main(int argc, char **argv)
 
         if(num_hits > 1)
         {
-            /* Calculate median length */
-            /* Reorder seq_len_sort array into ascending order */
+            /* Calculate median length. 
+	       Reorder seq_len_sort array into ascending order. */
             for(x=0;x<num_hits;x++)
                 ajSortIntInc((ajint *) ajIntInt(seq_len_sort), num_hits);
 
         
-            /* If num_hits == even then the median = average of middle two values */
+            /* If num_hits == even then the median = average of middle two 
+	       values. */
             if((num_hits % 2) == 0)
             {
                 mid = (num_hits / 2);
-                median = (((ajIntGet(seq_len_sort, mid-1)) + (ajIntGet(seq_len_sort, mid))) / 2); 
+                median = (((ajIntGet(seq_len_sort, mid-1))
+			   + (ajIntGet(seq_len_sort, mid))) / 2); 
             }
 
-            /* else if num == odd number, then median = middle value */ 
+            /* else if num == odd number, then median = middle value. */ 
             else
             {
                 mid = (num_hits / 2);
@@ -192,7 +192,7 @@ int main(int argc, char **argv)
         
 
             y = 0;
-            /* Create array of 1's and 0's */
+            /* Create array of 1's and 0's. */
             for(x=0;x<num_hits;x++)
             {
                 score = ((((float)ajIntGet(seq_len, x) / (float)median)) * 100);
@@ -208,7 +208,7 @@ int main(int argc, char **argv)
 	
 	
 
-	/* Create output file */
+	/* Create output file. */
 	if(hitlist)
 	{
 	    ajStrAssS(&temp2, temp);
@@ -225,7 +225,7 @@ int main(int argc, char **argv)
 	}
 
 
-	/* Write output file */
+	/* Write output file. */
 	if(hitlist)
 	{
 	    if(num_hits > 1)
@@ -255,7 +255,7 @@ int main(int argc, char **argv)
 	}
 
 
-	/* Close input and output files and tidy up */
+	/* Close input and output files and tidy up. */
 	if(seq_len)
 	    ajIntDel(&seq_len);
 	if(seq_len_sort)
@@ -276,25 +276,40 @@ int main(int argc, char **argv)
     }
     
 
-    /* Tidy up */
-    /* Delete strings and list */
+    /* Memory magagement. */
     ajListDel(&dhfin);
     ajDirDel(&dhfout);
     ajStrDel(&exec);
 
 
-    /* Return */
+    /* Return. */
     ajExit();
     return 0;
 }
 
 
 
-
-void seqfraggle_getlengths(AjPHitlist hitlist, ajint *num_hits, AjPInt *seq_len_sort, AjPInt *seq_len, AjPInt *seq_ok)
+/* @funcstatic seqfraggle_getlengths ******************************************
+**
+** Gets lengths of sequences.
+**
+** @param [r] hitlist      [AjPHitlist]  Input sequence file name.
+** @param [w] num_hits     [ajint *]     Number of sequences. 
+** @param [w] seq_len_sort [AjPInt *]    Lengths of sequences (sorted).
+** @param [w] seq_len      [AjPInt *]    Lengths of sequences.
+** @param [w] seq_ok       [AjPInt *]    Whether length is permitted.
+**
+** @return [void]
+** @@
+******************************************************************************/
+static void seqfraggle_getlengths(AjPHitlist hitlist, 
+				  ajint *num_hits, 
+				  AjPInt *seq_len_sort, 
+				  AjPInt *seq_len, 
+				  AjPInt *seq_ok)
 {
-    ajint       len             = 0;     /* length of sequence hit                 */
-    ajint       x               = 0;     /* Loop counters                          */
+    ajint len = 0;     /* Length of sequence hit                 */
+    ajint x   = 0;     /* Loop counters                          */
 
 
     *num_hits = hitlist->N;
@@ -327,19 +342,40 @@ void seqfraggle_getlengths(AjPHitlist hitlist, ajint *num_hits, AjPInt *seq_len_
 
 
 
+/* @funcstatic seqfraggle_getlengths_other ************************************
+**
+** Gets lengths of sequences.
+**
+** @param [r] temp         [AjPStr]      Input sequence file name.
+** @param [w] seqset       [AjPSeqset *] Sequences.
+** @param [w] num_hits     [ajint *]     Number of sequences. 
+** @param [w] seq_len_sort [AjPInt *]    Lengths of sequences (sorted).
+** @param [w] seq_len      [AjPInt *]    Lengths of sequences.
+** @param [w] seq_ok       [AjPInt *]    Whether length is permitted.
+**
+** @return [void]
+** @@
+******************************************************************************/
 
-void seqfraggle_getlengths_other(AjPStr temp,  AjPSeqset *seqset, ajint *num_hits, AjPInt *seq_len_sort, AjPInt *seq_len, AjPInt *seq_ok)
+static void seqfraggle_getlengths_other(AjPStr temp,  
+				 AjPSeqset *seqset,
+				 ajint *num_hits,
+				 AjPInt *seq_len_sort,
+				 AjPInt *seq_len,
+				 AjPInt *seq_ok)
 {
-    ajint           len       = 0;        /* length of sequence hit                 */
-    ajint           x         = 0;        /* Loop counters                          */
+    ajint           len       = 0;        /* Length of sequence hit          */
+    ajint           x         = 0;        /* Loop counters                   */
     AjPSeqin        seqin     = NULL;
     const AjPSeq    tmpseq    = NULL;
     
   
 
-    /* Read sequence set (rather than domain hits file) */
+    /* Read sequence set (rather than domain hits file). 
+       Set the filename via the USA. ajSeqsetRead interprets it to find the 
+       filename. */
+
     *seqset = ajSeqsetNew();
-    /* Set the filename via the USA. ajSeqsetRead interprets it to find the filename. */
     seqin  = ajSeqinNew();
     ajSeqinUsa(&seqin, temp);
     if(!(ajSeqsetRead(*seqset, seqin)))

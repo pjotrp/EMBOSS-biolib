@@ -37,10 +37,7 @@
 **  
 **  NOTES
 **  
-****************************************************************************/
-
-
-
+******************************************************************************/
 
 
 
@@ -50,11 +47,28 @@
 #include "emboss.h"
 
 
-void domainnr_diagnostic(AjPFile errf, AjPDomain domain, ajint noden);
-void domainnr_writelast(AjPDomain domain, ajint noden, AjPStr *last_node, ajint *last_nodeid);
 
 
-/* @prog domainnr **************************************************************
+/******************************************************************************
+**
+** PROTOTYPES  
+**
+******************************************************************************/
+static void domainnr_diagnostic(AjPFile errf,
+				AjPDomain domain, 
+				ajint noden);
+
+static void domainnr_writelast(AjPDomain domain, 
+			       ajint noden, 
+			       AjPStr *last_node, 
+			       ajint *last_nodeid);
+
+
+
+
+
+
+/* @prog domainnr *************************************************************
 **
 ** Removes redundant domains from a DCF file (domain classification file). 
 ** The file must contain domain sequence information, which can be added by 
@@ -64,42 +78,44 @@ void domainnr_writelast(AjPDomain domain, ajint noden, AjPStr *last_node, ajint 
 
 int main(int argc, char **argv)
 {
-    ajint        x         = 0;
-    ajint        nset      = 0;	 /*No. proteins in our  set*/
-    ajint        nsetnr    = 0;	 /*No. proteins in the non-redundant set */
-    ajint        nfam      = 0;	 /* Counter of domain families */
+    ajint      x         = 0;
+    ajint      nset      = 0;	 /* No. proteins in our  set.                */
+    ajint      nsetnr    = 0;	 /* No. proteins in the non-redundant set.   */
+    ajint      nfam      = 0;	 /* Counter of domain families.              */
 
-    float      gapopen=0.0;		 /* Gap insertion penalty*/
-    float      gapextend=0.0;	 /* Gap extension penalty*/
-    float      thresh=0.0;		 /* Threshold for non-redundancy (single value)*/
-    float      threshlow=0.0;	 /* Threshold for non-redundancy (lower limit)*/
-    float      threshup=0.0;	 /* Threshold for non-redundancy (upper limit)*/
+    float      gapopen   = 0.0;	 /* Gap insertion penalty.                   */
+    float      gapextend = 0.0;	 /* Gap extension penalty.                   */
+    float      thresh    = 0.0;	 /* Threshold for non-redundancy (single value)*/
+    float      threshlow = 0.0;	 /* Threshold for non-redundancy (lower limit)*/
+    float      threshup  = 0.0;	 /* Threshold for non-redundancy (upper limit)*/
 
-    ajint     last_nodeid=    0; /* Domain id (e.g. SCOP Sunid) of last node that was processed */
-    AjPStr    last_node   = NULL; /* Last node that was processed*/
-    AjPStr    msg        = NULL; /* String used for messages */
+    ajint      last_nodeid=  0;  /* Domain id (e.g. SCOP Sunid) of last node 
+				    that was processed.                      */
+    AjPStr     last_node = NULL; /* Last node that was processed.            */
+    AjPStr     msg       = NULL; /* String used for messages.                */
 
-    AjPFile   domain_inf   = NULL; /* File pointer for original domain file */
-    AjPFile   domain_outf  = NULL; /* File pointer for domain output file */
-    AjPFile   red_outf   = NULL; /* File pointer for redundant sequences file */
-    AjPFile   errf       = NULL;
+    AjPFile    domain_inf= NULL; /* File pointer for original domain file.   */
+    AjPFile    domain_outf= NULL;/* File pointer for domain output file.     */
+    AjPFile    red_outf  = NULL; /* File pointer for redundant sequences file.*/
+    AjPFile    errf      = NULL;
 
-    AjPList    list_seqs = NULL; /* List of sequences for a family*/
-    AjPList    list_domain = NULL; /* List of domain structures for a family*/
-    AjIList    iter      = NULL; /* Iterator for domain list */    
-    AjPInt     keep      = NULL; /*1: This sequence was kept after */
-                                 /*redundancy removal, 0: it was discarded*/
-    AjPSeq     seq       = NULL; /* A temporary pointer*/
-    AjPMatrixf matrix;		 /* Substitution matrix*/
-    AjPDomain   domain       = NULL; /* Pointer to domain structure */
-    AjPDomain   domain_tmp   = NULL; /* Pointer to domain structure */
-    AjPStr      *mode   =NULL;      /* Mode of operation from acd*/
-    ajint     moden      =0;     /* Program mode as int 1: use single threshold
+    AjPList    list_seqs = NULL; /* List of sequences for a family.          */
+    AjPList    list_domain = NULL;/* List of domain structures for a family. */
+    AjIList    iter      = NULL; /* Iterator for domain list.                */    
+    AjPInt     keep      = NULL; /*1: This sequence was kept after.          */
+                                 /* redundancy removal, 0: it was discarded. */
+    AjPSeq     seq       = NULL; /* A temporary pointer.                     */
+    AjPMatrixf matrix    = NULL; /* Substitution matrix.                     */
+    AjPDomain  domain    = NULL; /* Pointer to domain structure.             */
+    AjPDomain  domain_tmp= NULL; /* Pointer to domain structure.             */
+    AjPStr    *mode      = NULL; /* Mode of operation from acd.              */
+    ajint      moden     = 0;    /* Program mode as int 1: use single threshold
 				    value to remove redundancy, 2: use lower and
 				    upper limit to remove redundancy */
 
-    AjPStr      *node   =NULL;      /* Node of redundancy removal */
-    ajint     noden      =0;     /*1: Class (SCOP), 2: Fold (SCOP) etc, see ACD file */
+    AjPStr      *node   =NULL;   /* Node of redundancy removal.              */
+    ajint     noden      =0;     /*1: Class (SCOP), 2: Fold (SCOP) etc, see 
+				   ACD file */
     char *nodes[]=
     {
 	"Classes", "Folds", "Superfamilies", "Families", "Classes", 
@@ -109,22 +125,23 @@ int main(int argc, char **argv)
     
     AjBool    ret=ajFalse;
     AjBool    retain = ajFalse; /*Whether to retain redundant sequences and
-				  write them to an output file */
+				  write them to an output file.              */
     ajint     type = 0;   /* Type of domain (ajSCOP or ajCATH) in the DCF file */
 
 
+
+
+
     
-    /* Initialise strings etc */
+    /* Initialise strings etc & last_node with a value that is not in a DCF 
+       file */
     msg       = ajStrNew();
     last_node  = ajStrNew();
     keep = ajIntNew();  	    
-
-    
-    
-
-
-    /* Initialise last_node with a value that is not in a DCF file */
     ajStrAssC(&last_node,"!!!!!");
+
+
+
 
     
     /* Read data from acd */
@@ -153,24 +170,20 @@ int main(int argc, char **argv)
 	    threshup     = ajAcdGetFloat("threshup");
 	}
     if(retain)
-    {
 	red_outf = ajAcdGetOutfile("redout");
-    }    
-
 
 
     
-    /* Convert the selected node to an integer */
+    /* Convert the selected node to an integer. */
     if(!(ajStrToInt(node[0], &noden)))
-    {
 	ajFatal("Could not parse ACD node option");
-    }
       
 
 
-    /* Write header of log file */
-    /* Replace hard-coded 'FAMILIES' with appropriate string when */
-    /* redundancy removal is implemented for any node in DCF file */
+    /* Write header of log file.
+       Replace hard-coded 'FAMILIES' with appropriate string when. 
+       redundancy removal is implemented for any node in DCF file. 
+       */
     ajFmtPrintF(errf, "%s are non-redundant\n"
 		"%.0f%% redundancy threshold\n", nodes[noden-1], thresh); 
 
@@ -179,43 +192,42 @@ int main(int argc, char **argv)
     type = ajDomainDCFType(domain_inf);
 
  
-    /* Start of main application loop */
+    /* Start of main application loop. */
     while((domain=(ajDomainReadCNew(domain_inf, "*", type))))
     {
 	/* If we are on to a new family*/
-/*	if(ajStrMatch(last_node, domain->Family)==ajFalse) */
-/*	if( last_nodeid !=  domain->Sunid_Family) */
-    if(((domain->Type == ajSCOP) &&
-       (((noden==1) && (last_nodeid !=  domain->Scop->Sunid_Class))      || 
-       ((noden==2) && (last_nodeid !=  domain->Scop->Sunid_Fold))        || 
-       ((noden==3) && (last_nodeid !=  domain->Scop->Sunid_Superfamily)) || 
-       ((noden==4) && (last_nodeid !=  domain->Scop->Sunid_Family))))       ||
-       ((domain->Type == ajCATH) &&
-       (((noden==5) && (last_nodeid !=  domain->Cath->Class_Id))         || 
-	((noden==6) && (last_nodeid !=  domain->Cath->Arch_Id))          || 
-	((noden==7) && (last_nodeid !=  domain->Cath->Topology_Id))      || 
-	((noden==8) && (last_nodeid !=  domain->Cath->Superfamily_Id))   || 
-	((noden==9) && (last_nodeid !=  domain->Cath->Family_Id)))))
+	if(((domain->Type == ajSCOP) &&
+	    (((noden==1) && (last_nodeid !=  domain->Scop->Sunid_Class))      || 
+	     ((noden==2) && (last_nodeid !=  domain->Scop->Sunid_Fold))        || 
+	     ((noden==3) && (last_nodeid !=  domain->Scop->Sunid_Superfamily)) || 
+	     ((noden==4) && (last_nodeid !=  domain->Scop->Sunid_Family))))       ||
+	   ((domain->Type == ajCATH) &&
+	    (((noden==5) && (last_nodeid !=  domain->Cath->Class_Id))         || 
+	     ((noden==6) && (last_nodeid !=  domain->Cath->Arch_Id))          || 
+	     ((noden==7) && (last_nodeid !=  domain->Cath->Topology_Id))      || 
+	     ((noden==8) && (last_nodeid !=  domain->Cath->Superfamily_Id))   || 
+	     ((noden==9) && (last_nodeid !=  domain->Cath->Family_Id)))))
 	{
-	    /* If we have done the first family*/
+	    /* If we have done the first family. */
 	    if(nfam)
 	    {
 		/* If the family does not have any members*/
 		if(!nset)
 		{
-		    /* Write diagnostic */
+		    /* Write diagnostic. */
         	    ajWarn("Empty node - should never happen\n"); 
 		}
-		/* Last family had members, so remove redundancy*/
+		/* Last family had members, so remove redundancy. */
 		else
 		{
-		    /* Remove redundancy from list_seqs*/
+		    /* Remove redundancy from list_seqs. */
 		    if(moden==1)
-			ret=embDmxSeqNR(list_seqs, &keep, &nsetnr, matrix, gapopen, 
-					   gapextend,thresh, ajFalse);
+			ret=embDmxSeqNR(list_seqs, &keep, &nsetnr, matrix, 
+					gapopen, gapextend,thresh, ajFalse);
 		    else
-			ret=embDmxSeqNRRange(list_seqs, &keep, &nsetnr, matrix, gapopen, 
-					   gapextend,threshlow, threshup, ajFalse);		    
+			ret=embDmxSeqNRRange(list_seqs, &keep, &nsetnr, matrix, 
+					     gapopen, gapextend,threshlow, 
+					     threshup, ajFalse);		    
 
 
 		    if(!ret)
@@ -236,7 +248,7 @@ int main(int argc, char **argv)
 		    }
 		    
 
-		    /* Write file with domain entries that are retained*/
+		    /* Write file with domain entries that are retained. */
 		    for(iter=ajListIterRead(list_domain), x=0;
 			(domain_tmp=(AjPDomain)ajListIterNext(iter));
 			x++)
@@ -247,7 +259,7 @@ int main(int argc, char **argv)
 		    ajListIterFree(&iter);	
 
 
-		    /* Write diagnostic */
+		    /* Write diagnostic. */
  		    ajFmtPrintF(errf, "Retained\n");
 		    for(iter=ajListIterRead(list_domain), x=0;
 			(domain_tmp=(AjPDomain)ajListIterNext(iter));
@@ -269,15 +281,15 @@ int main(int argc, char **argv)
 		    ajListIterFree(&iter);	
 
 		    
-		    /* Write diagnostic */
+		    /* Write diagnostic. */
 		    domainnr_diagnostic(errf, domain, noden);
 		}
-		/* Intitiliase counter for number in family*/
+		/* Intitiliase counter for number in family. */
 		nset=0;
 
 
 
-		/* Free up the domain list and create a new one*/
+		/* Free up the domain list and create a new one. */
 		iter=ajListIterRead(list_domain);
 		while((domain_tmp=(AjPDomain)ajListIterNext(iter)))
 		    ajDomainDel(&domain_tmp);
@@ -285,7 +297,7 @@ int main(int argc, char **argv)
 		ajListDel(&list_domain);	    
 
 
-		/* Free up the seqs list and create a new one*/
+		/* Free up the seqs list and create a new one. */
 		iter=ajListIterRead(list_seqs);
 		while((seq=(AjPSeq)ajListIterNext(iter)))
 		    ajSeqDel(&seq);
@@ -294,81 +306,76 @@ int main(int argc, char **argv)
 	    }
 	    else
 	    {
-		/* We have not done the first family*/
-		/* Write diagnostic */
+		/* We have not done the first family. 
+		   Write diagnostic. */
 		domainnr_diagnostic(errf, domain, noden);
 	    }
 	    
 	    
-	    /* Write the current family to last_node*/
+	    /* Write the current family to last_node. */
 	    domainnr_writelast(domain, noden, &last_node, &last_nodeid);
 	    
-	    /*Create new list for domain and seqs*/
+	    /* Create new list for domain and seqs. */
 	    list_seqs = ajListNew();
 	    list_domain = ajListNew();
 
 	    
-	    /* Increment counter for number of families*/
+	    /* Increment counter for number of families. */
 	    nfam++;
 	}
-	/* Write diagnostic */
+	/* Write diagnostic. */
 	ajFmtPrint("%S\n", ajDomainGetId(domain));
 	
 
 
 		
-	/*Add a new sequence to the list - only ever one chain (chain 0) 
-	  for domain files */
+	/* Add a new sequence to the list - only ever one chain (chain 0) 
+	   for domain files. */
 	nset++;
 	seq=ajSeqNew();
 
-	/* pdb sequence has priority */
+	/* pdb sequence has priority. */
         if((ajStrLen(ajDomainGetSeqPdb(domain)))==0)
-        {
             ajStrAssS(&seq->Seq, ajDomainGetSeqSpr(domain));
-        }
-        
         else
-        {
             ajStrAssS(&seq->Seq, ajDomainGetSeqPdb(domain));
-        }
 
 	ajStrAssS(&seq->Name, ajDomainGetPdb(domain));
 	ajListPushApp(list_seqs,seq);	
 
 
-	/* Add the current domain structure to the list */
+	/* Add the current domain structure to the list. */
 	ajListPushApp(list_domain,domain);	
     }
-    /* End of main application loop */
-
-
-
-
-    /*Close the domain input file*/
+    /* End of main application loop. */
+    
+    
+    
+    
+    /* Close the domain input file. */
     ajFileClose(&domain_inf);	
     
     
-    /* Process the last family*/
-    /* If the family does not have any members*/
+    /* Process the last family. 
+       If the family does not have any members */
     if(!nset)
     {
-	/* Write diagnostic */
+	/* Write diagnostic. */
 	ajFmtPrint("WARN  Empty node\n");
 	ajFmtPrintF(errf, "WARN  Empty node\n");
     }
-    /* Last family had members, so remove redundancy*/
+    /* Last family had members, so remove redundancy. */
     else
     {
-	/* Remove redundancy from list_seqs*/
+	/* Remove redundancy from list_seqs. */
 	if(moden==1)
 	    embDmxSeqNR(list_seqs, &keep, &nsetnr, matrix, gapopen, 
-			   gapextend,thresh, ajFalse);		
+			gapextend,thresh, ajFalse);		
 	else
 	    embDmxSeqNRRange(list_seqs, &keep, &nsetnr, matrix, gapopen, 
-				gapextend,threshlow, threshup, ajFalse);		
+			     gapextend,threshlow, threshup, ajFalse);		
 
-	/* Write file with domain entries that are retained*/
+	/* Write file with domain entries that are retained. */
 	for(iter=ajListIterRead(list_domain), x=0;
 	    (domain_tmp=(AjPDomain)ajListIterNext(iter));
 	    x++)
@@ -380,7 +387,7 @@ int main(int argc, char **argv)
     
 
 
-	/* Write diagnostic */
+	/* Write diagnostic. */
 	ajFmtPrintF(errf, "Retained\n");
 	for(iter=ajListIterRead(list_domain), x=0;
 	    (domain_tmp=(AjPDomain)ajListIterNext(iter));
@@ -396,8 +403,8 @@ int main(int argc, char **argv)
 		ajFmtPrintF(errf, "%S\n", ajDomainGetId(domain_tmp));
 	ajListIterFree(&iter);	
     }
-
-    /* Free up the domain list */
+    
+    /* Free up the domain list. */
     iter=ajListIterRead(list_domain);
     while((domain_tmp=(AjPDomain)ajListIterNext(iter)))
 	ajDomainDel(&domain_tmp);
@@ -405,7 +412,7 @@ int main(int argc, char **argv)
     ajListDel(&list_domain);	    
     
     
-    /* Free up the seqs list */
+    /* Free up the seqs list. */
     iter=ajListIterRead(list_seqs);
     while((seq=(AjPSeq)ajListIterNext(iter)))
 	ajSeqDel(&seq);
@@ -413,7 +420,7 @@ int main(int argc, char **argv)
     ajListDel(&list_seqs);	    
     
     
-    /* Tidy up*/
+    /* Tidy up. */
     ajMatrixfDel(&matrix);
     ajIntDel(&keep);	
     ajStrDel(&last_node);
@@ -426,8 +433,8 @@ int main(int argc, char **argv)
     AJFREE(mode);
     ajStrDel(&node[0]);
     AJFREE(node);
-
-    /* Bye Bye */
+    
+    /* Bye Bye. */
     ajExit();
     return 0;
 }
@@ -436,13 +443,13 @@ int main(int argc, char **argv)
 
 
 
-/* @func domainnr_diagnostic   **********************************************
+/* @funcstatic domainnr_diagnostic   ******************************************
 **
 ** Writes diagnostics messages to file.
 **
 ** @@
-****************************************************************************/
-void domainnr_diagnostic(AjPFile errf, AjPDomain domain, ajint noden)
+******************************************************************************/
+static void domainnr_diagnostic(AjPFile errf, AjPDomain domain, ajint noden)
 {
     if(noden==1) 
     {
@@ -487,20 +494,21 @@ void domainnr_diagnostic(AjPFile errf, AjPDomain domain, ajint noden)
     } 
     else if (noden==9)
     {
-	/* There is no text describing the CATH families */
+	/* There is no text describing the CATH families. */
 	ajFmtPrintF(errf, "// %d\n", domain->Cath->Family_Id);
 	ajFmtPrint("// %d\n",domain->Cath->Family_Id);
     } 
 }
 
 
-/* @func domainnr_writelast *************************************************
+/* @funcstatic domainnr_writelast *********************************************
 **
 ** House-keeping function.
 **
 ** @@
-****************************************************************************/
-void domainnr_writelast(AjPDomain domain, ajint noden, AjPStr *last_node, ajint *last_nodeid)
+******************************************************************************/
+static void domainnr_writelast(AjPDomain domain, ajint noden, AjPStr *last_node, 
+			       ajint *last_nodeid)
 {
     if(noden==1) 
     {
@@ -544,7 +552,7 @@ void domainnr_writelast(AjPDomain domain, ajint noden, AjPStr *last_node, ajint 
     } 
     else if (noden==9)
     {
-	/* There is no text describing the CATH families */
+	/* There is no text describing the CATH families. */
 	ajFmtPrintS(last_node, "%d", domain->Cath->Family_Id);
 	*last_nodeid = domain->Cath->Family_Id;
     } 

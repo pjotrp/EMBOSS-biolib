@@ -1,7 +1,7 @@
 /* @source domainalign application
 **
-** Generates structure-based sequence alignments for nodes in a DCF
-** file (domain classification file).
+** Generates DAF files (domain alignment files) of structure-based sequence 
+** alignments for nodes in a DCF file (domain classification file).
 **
 ** @author: Copyright (C) Ranjeeva Ranasinghe (rranasin@hgmp.mrc.ac.uk)
 ** @author: Copyright (C) Jon Ison (jison@hgmp.mrc.ac.uk)
@@ -21,7 +21,6 @@
 ** along with this program; if not, write to the Free Software
 ** Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 **
-
 *******************************************************************************
 ** 
 **  DOMAINALIGN documentation
@@ -39,8 +38,7 @@
 **  Implement futher alignment options, e.g. TCOFFEE.
 **  Implement proper residue number positions in alignment ('0' is given on 
 **  each side of the sequence currently).
-****************************************************************************/
-
+******************************************************************************/
 
 
 
@@ -51,15 +49,32 @@
 #define MODE_STAMP    1
 #define MODE_TCOFFEE  2
 
-static void domainalign_ProcessStampFile(AjPStr in, AjPStr out, AjPDomain domain, ajint noden, 
+
+
+
+/******************************************************************************
+**
+** PROTOTYPES  
+**
+******************************************************************************/
+static void domainalign_ProcessStampFile(AjPStr in, 
+					 AjPStr out, 
+					 AjPDomain domain, 
+					 ajint noden, 
 					 AjPFile logf);
-void domainalign_writelast(AjPDomain domain, ajint noden, AjPStr *last_node, ajint *last_nodeid);
-void domainalign_writeid(AjPDomain domain, ajint noden, 
+
+static void domainalign_writelast(AjPDomain domain, ajint noden, 
+			   AjPStr *last_node, 
+			   ajint *last_nodeid);
+
+static void domainalign_writeid(AjPDomain domain, ajint noden, 
 			 AjPDir daf, AjPDir super, 
 			 AjPStr *align, AjPStr *alignc);
-void domainalign_writesid(AjPDomain domain, ajint noden, 
+
+static void domainalign_writesid(AjPDomain domain, ajint noden, 
 			  AjPStr *id);
-void domainalign_stamp(AjPDomain prevdomain, 
+
+static void domainalign_stamp(AjPDomain prevdomain, 
 		       AjPDomain domain, 
 		       AjPDir    daf, 
 		       AjPDir    super,
@@ -85,8 +100,10 @@ static void domainalign_keepsinglets(AjPDomain domain,
 				     AjPDir    singlets, 
 				     AjPFile logf);
 
-static void domainalign_ProcessTcoffeeFile(AjPStr in, AjPStr out, 
-					   AjPDomain domain,  ajint noden, 
+static void domainalign_ProcessTcoffeeFile(AjPStr in, 
+					   AjPStr out, 
+					   AjPDomain domain,
+					   ajint noden, 
 					   AjPFile logf);
 
 static void domainalign_tcoffee(AjPDomain domain, 
@@ -98,59 +115,66 @@ static void domainalign_tcoffee(AjPDomain domain,
 				AjPFile   logf);			 
 
 
-/* @prog domainalign *******************************************************
+
+
+
+/* @prog domainalign **********************************************************
 **
-** Generates structure-based sequence alignments for nodes in a DCF
-** file (domain classification file).
+** Generates DAF files (domain alignment files) structure-based sequence 
+** alignments for nodes in a DCF file (domain classification file).
 **
 ******************************************************************************/
 
 int main(int argc, char **argv)
 {
-    ajint     famn      = 0;	/* Counter for the families */
-    ajint     nset      = 0;	/* No. entries in family */
+    ajint     famn      = 0;	 /* Counter for the families.                */
+    ajint     nset      = 0;	 /* No. entries in family.                   */
     
-    ajint     last_nodeid = 0;   /* SCOP Sunid of last family that was processed */
-    AjPStr    last_node  = NULL; /* Last family that was processed */
-    AjPStr    exec       = NULL; /* The UNIX command line to be executed*/
-    AjPStr    out        = NULL; /* Name of stamp alignment file */
-    AjPStr    align      = NULL; /* Name of sequence alignment file */
-    AjPStr    alignc     = NULL; /* Name of structure alignment file */
-    AjPStr    log        = NULL; /* Name of STAMP log file */
-    AjPStr    dom        = NULL; /* Name of file containing single domain*/
-    AjPStr    set        = NULL; /* Name of file containing set of domains*/
-    AjPStr    scan       = NULL; /* Name of temp. file used by STAMP*/
-    AjPStr    sort       = NULL; /* Name of temp. file used by STAMP*/
-    AjPStr    name       = NULL; /* Base name of STAMP temp files */
-    AjPStr    pdbnames   = NULL; /* Names of domain pdb files to be passed to TCOFFEEE */
-    AjPDir    pdb        = NULL; /* Path of domain coordinate files (pdb format 
-				    input) */
-    AjPDir    daf       = NULL; /* Path of sequence alignment files for output */
-    AjPDir    super      = NULL; /* Path of structure alignment files for output */
-    AjPDir    singlets   = NULL; /* Path of FASTA singlet sequence files for output */
-    AjPStr    temp1      = NULL; /* A temporary string */
+    ajint     last_nodeid = 0;   /* SCOP Sunid of last family that was 
+				    processed.                               */
+    AjPStr    last_node  = NULL; /* Last family that was processed.          */
+    AjPStr    exec       = NULL; /* The UNIX command line to be executed.    */
+    AjPStr    out        = NULL; /* Name of stamp alignment file.            */
+    AjPStr    align      = NULL; /* Name of sequence alignment file.         */
+    AjPStr    alignc     = NULL; /* Name of structure alignment file.        */
+    AjPStr    log        = NULL; /* Name of STAMP log file.                  */
+    AjPStr    dom        = NULL; /* Name of file containing single domain.   */
+    AjPStr    set        = NULL; /* Name of file containing set of domains.  */
+    AjPStr    scan       = NULL; /* Name of temp. file used by STAMP.        */
+    AjPStr    sort       = NULL; /* Name of temp. file used by STAMP.        */
+    AjPStr    name       = NULL; /* Base name of STAMP temp files.           */
+    AjPStr    pdbnames   = NULL; /* Names of domain pdb files to be passed to
+				    TCOFFEEE.                                */
+    AjPDir    pdb        = NULL; /* Path of domain coordinate files (pdb 
+				    format input).                           */
+    AjPDir    daf        = NULL; /* Path of sequence alignment files for output. */
+    AjPDir    super      = NULL; /* Path of structure alignment files for output. */
+    AjPDir    singlets   = NULL; /* Path of FASTA singlet sequence files for output. */
+    AjPStr    temp1      = NULL; /* A temporary string.                      */
 
-    AjPFile   dcfin    = NULL; /* File pointer for original Escop.dat file */
-    AjPFile   domf       = NULL; /* File pointer for single domain file */
-    AjPFile   setf       = NULL; /* File pointer for domain set file */
-    AjPFile   logf       = NULL; /* Log file */
+    AjPFile   dcfin      = NULL; /* File pointer for original Escop.dat file.*/
+    AjPFile   domf       = NULL; /* File pointer for single domain file.     */
+    AjPFile   setf       = NULL; /* File pointer for domain set file.        */
+    AjPFile   logf       = NULL; /* Log file. */
 
-    AjPDomain   domain     = NULL; /* Pointer to domain structure */
-    AjPDomain   prevdomain = NULL; /* Pointer to previous domain structure */
+    AjPDomain domain     = NULL; /* Pointer to domain structure.             */
+    AjPDomain prevdomain = NULL; /* Pointer to previous domain structure.    */
 
-    ajint     type = 0;   /* Type of domain (ajSCOP or ajCATH) in the DCF file */
+    ajint     type       = 0;    /* Type of domain (ajSCOP or ajCATH) in the 
+				    DCF file.                                */
 
-    AjPStr      *node   =NULL;      /* Node of redundancy removal */
-    ajint     noden      =0;     /*1: Class (SCOP), 2: Fold (SCOP) etc, see ACD file */
+    AjPStr   *node       = NULL; /* Node of redundancy removal.              */
+    ajint     noden      = 0;    /*1: Class (SCOP), 2: Fold (SCOP) etc, see 
+				   ACD file.                                 */
 
-    AjPStr      *mode   =NULL;      /* Mode of operation from acd*/
-    ajint     moden      =0;     /* Program mode, 1: MODE_STAMP, 2: MODE_TCOFFEE (not
-				    yet implemented) */
-    AjBool    keepsinglets = ajFalse; /*Whether to retain redundant sequences and
-				  write them to an output file */
+    AjPStr   *mode       = NULL; /* Mode of operation from acd*/
+    ajint     moden      = 0;    /* Program mode, 1: MODE_STAMP, 2: MODE_TCOFFEE (not
+				    yet implemented). */
+    AjBool    keepsinglets= ajFalse; /*Whether to retain redundant sequences and
+				       write them to an output file.         */
 
-    AjPStr    temp      = NULL;	/* A temporary string */
-    AjPStr    cmd       = NULL; /* the command line to execute t-coffee*/
+    AjPStr    temp      = NULL;	/* A temporary string.                       */
+    AjPStr    cmd       = NULL; /* The command line to execute t-coffee.     */
 
 
 
@@ -173,7 +197,10 @@ int main(int argc, char **argv)
     cmd      = ajStrNew();
     pdbnames = ajStrNew();
 
-    /* Read data from acd */
+
+
+
+    /* Read data from acd. */
     ajNamInit("emboss");
     ajAcdInitP("domainalign",argc,argv,"DOMAINATRIX");
     dcfin       = ajAcdGetInfile("dcfin");
@@ -187,19 +214,19 @@ int main(int argc, char **argv)
     logf          = ajAcdGetOutfile("logf");
    
 
-    /* Convert the selected node and mode to an integer */
+    /* Convert the selected node and mode to an integer. */
     if(!(ajStrToInt(node[0], &noden)))
 	ajFatal("Could not parse ACD node option");
     if(!(ajStrToInt(mode[0], &moden)))
 	ajFatal("Could not parse ACD node option");
 
 
-    /* Initialise random number generator for naming of temp. files*/
+    /* Initialise random number generator for naming of temp. files. */
     ajRandomSeed();
     ajStrAssC(&name, ajFileTempName(NULL));
 
 
-    /* Create names for temp. files*/
+    /* Create names for temp. files. */
     ajStrAssS(&log, name);	
     ajStrAppC(&log, ".log");
     ajStrAssS(&dom, name);	
@@ -214,12 +241,12 @@ int main(int argc, char **argv)
     ajStrAppC(&out, ".out");
 
 
-    /* Initialise last_node with something that is not in SCOP*/
+    /* Initialise last_node with something that is not in SCOP. */
     ajStrAssC(&last_node,"!!!!!");
     
     
 
-    /* Open STAMP domain set file*/
+    /* Open STAMP domain set file. */
     if(moden == MODE_STAMP)
     {
 	if(!(setf=ajFileNewOut(set)))
@@ -227,21 +254,14 @@ int main(int argc, char **argv)
     }
     
 
-    /* Get domain type */
+    /* Get domain type. */
     type = ajDomainDCFType(dcfin);
 
 
-    /* Start of main application loop*/
+    /* Start of main application loop. */
     while((domain=(ajDomainReadCNew(dcfin, "*", type))))
     {
-	/* 
-	   ajFmtPrint("\n\n\n\n domain = %S\n nodeid = %d\n last_nodeid = %d\n\n\n\n", 
-	   ajDomainGetId(domain), 
-	   domain->Scop->Sunid_Family, 
-	   last_nodeid);  */
-
-
-	/* A new family */
+	/* A new family. */
 	if(((domain->Type == ajSCOP) &&
 	    (((noden==1) && (last_nodeid !=  domain->Scop->Sunid_Class))       || 
 	     ((noden==2) && (last_nodeid !=  domain->Scop->Sunid_Fold))        || 
@@ -254,24 +274,22 @@ int main(int argc, char **argv)
 	     ((noden==8) && (last_nodeid !=  domain->Cath->Superfamily_Id))    || 
 	     ((noden==9) && (last_nodeid !=  domain->Cath->Family_Id)))))
 	{
-	    /* If we have done the first family*/
+	    /* If we have done the first family. */
 	    if(famn)
 	    {
-		ajFmtPrint("\nProcessing node %d\n", last_nodeid);
 
 		/* Create the output file for the alignment - the name will
-		   be the same as the Sunid for the DOMAIN family */
+		   be the same as the Sunid for the DOMAIN family. */
 		domainalign_writeid(prevdomain, noden, daf, super, &align, &alignc);
 
 		if(moden == MODE_STAMP)
 		{
-		    /*Close domain set file*/
+		    /* Close domain set file. */
 		    ajFileClose(&setf);	
 
-		    /* Call STAMP */
-		    /* ajFmtPrint("\n***** FIRST CALL\n"); */
+		    /* Call STAMP. */
 		    
-		    /* Family with 2 or more entries */
+		    /* Family with 2 or more entries. */
 		    if(nset > 1)
 		    {
 			domainalign_stamp(prevdomain, 
@@ -295,32 +313,32 @@ int main(int argc, char **argv)
 					  logf);
 		    }
 		    
-		    else if(keepsinglets) /* singlet family */	
+		    else if(keepsinglets) /* Singlet family. */	
 			domainalign_keepsinglets(prevdomain, noden, singlets, logf);
 			
 
-		    /* Open STAMP domain set file */
+		    /* Open STAMP domain set file. */
 		    if(!(setf=ajFileNewOut(set)))
 			ajFatal("Could not open domain set file\n");
 		}
 		else
 		{
-		    /* Call TCOFEE */
+		    /* Call TCOFEE. */
 		    if(nset > 1)
 			domainalign_tcoffee(prevdomain, out, align, alignc, pdbnames, noden, logf);
-		    else if(keepsinglets) /* singlet family */	
+		    else if(keepsinglets) /* Singlet family. */	
 			domainalign_keepsinglets(prevdomain, noden, singlets, logf);
 		}
 
-		/* Set the number of members of the new family to zero */
+		/* Set the number of members of the new family to zero. */
 		nset = 0;
 
-		/* Clear TCOFFEE argument */    
+		/* Clear TCOFFEE argument. */    
 		ajStrClear(&pdbnames);
 	    }	
 	    
 	    
-	    /* Open, write and close STAMP domain file*/
+	    /* Open, write and close STAMP domain file. */
 	    if(moden == MODE_STAMP)
 	    {
 		if(!(domf=ajFileNewOut(dom)))
@@ -332,15 +350,15 @@ int main(int argc, char **argv)
 	    }
 	    
 	    
-	    /* Copy current family name to last_node*/
+	    /* Copy current family name to last_node. */
 	    domainalign_writelast(domain, noden, &last_node, &last_nodeid);
 	    
-	    /* Copy current domain pointer to prevdomain */
+	    /* Copy current domain pointer to prevdomain. */
 	    ajDomainDel(&prevdomain);
 	    prevdomain=NULL;
 	    ajDomainCopy(&prevdomain, domain);
 
-	    /* Increment family counter*/
+	    /* Increment family counter. */
 	    famn++;
 	}
 	
@@ -348,10 +366,10 @@ int main(int argc, char **argv)
 	ajStrAssS(&temp, ajDomainGetId(domain));
 	ajStrToLower(&temp);
 
-	/* Write STAMP domain set file*/
+	/* Write STAMP domain set file. */
 	if(moden == MODE_STAMP)
 	    ajFmtPrintF(setf, "%S %S { ALL }\n", temp, temp);
-	/* Write TCOFFEE argument */    
+	/* Write TCOFFEE argument. */    
 	else
 	{
 	    ajStrApp(&pdbnames, ajDirName(pdb));
@@ -363,11 +381,11 @@ int main(int argc, char **argv)
 	
 	ajDomainDel(&domain);
 
-	/* Increment number of members in family */
+	/* Increment number of members in family. */
 	nset++;
     }
     
-    /* End of main application loop*/
+    /* End of main application loop. */
     domain=prevdomain;
     
 
@@ -376,19 +394,19 @@ int main(int argc, char **argv)
 
 
     /* Create the output file for the alignment - the name will
-       be the same as the Sunid for the DOMAIN family */
+       be the same as the Sunid for the DOMAIN family. */
     domainalign_writeid(prevdomain, noden, daf, super, &align, &alignc);
 
 
 
-    /* Code to process last family */
+    /* Code to process last family. */
     if(moden == MODE_STAMP)
     {
-	/*Close domain set file*/
+	/*Close domain set file. */
 	ajFileClose(&setf);	
 
 		
-	/*    ajFmtPrint("\n***** SECOND CALL\n"); */
+	/*    ajFmtPrint("\n***** SECOND CALL\n");. */
 	if(nset > 1)
 	{
 	    domainalign_stamp(prevdomain, 
@@ -412,21 +430,23 @@ int main(int argc, char **argv)
 			      logf);
 	}
 	
-	else if(keepsinglets) /* singlet family */	
+	else if(keepsinglets) /* Singlet family. */	
 	    domainalign_keepsinglets(prevdomain, noden, singlets, logf);
 			
     }
     else
     {
-	/* Call TCOFEE */
+	/* Call TCOFEE. */
 	if(nset > 1)
-	    domainalign_tcoffee(prevdomain, out, align, alignc, pdbnames, noden, logf);
-	else if(keepsinglets) /* singlet family */	
+	    domainalign_tcoffee(prevdomain, out, align, alignc, 
+				pdbnames, noden, logf);
+	else if(keepsinglets) /* Singlet family. */	
 	    domainalign_keepsinglets(prevdomain, noden, singlets, logf);
     }
 
 
-    /* Remove all temporary files */
+    /* Remove all temporary files. */
+/*
     ajFmtPrintS(&temp, "rm %S", log);
     ajSystem(temp);
     ajFmtPrintS(&temp, "rm %S", dom);
@@ -443,7 +463,7 @@ int main(int argc, char **argv)
     ajStrAppC(&temp, ".mat");
     ajFmtPrintS(&temp1, "rm %S", temp);
     ajSystem(temp1);
-      
+  */    
 
     
 
@@ -474,10 +494,12 @@ int main(int argc, char **argv)
     AJFREE(mode);
     ajFileClose(&logf);
     
-    /* Bye Bye */
     ajExit();
     return 0;
 }
+
+
+
 
 
 
@@ -569,48 +591,53 @@ int main(int argc, char **argv)
 **
 ** @param [r] in  [AjPStr] Name of input file
 ** @param [r] out [AjPStr] Name of output file
-** @param [r] domain [AjPDomain] DOMAIN structure with DOMAIN classification records
+** @param [r] domain [AjPDomain] DOMAIN structure with DOMAIN classification
+**                               records
+** @param [r] noden [ajint] Node number.
+** @param [r] logf [AjPFile] Log file.
 **
 ** @return [void]
 ** @@
-*****************************************************************************/
+******************************************************************************/
 
-static void domainalign_ProcessStampFile(AjPStr in, AjPStr out,
-					 AjPDomain domain, ajint noden, 
+static void domainalign_ProcessStampFile(AjPStr in, 
+					 AjPStr out,
+					 AjPDomain domain, 
+					 ajint noden, 
 					 AjPFile logf)
 {
-    AjPFile  outf = NULL;  /* Output file pointer */
-    AjPFile   inf = NULL;  /* Input file pointer */
-    AjPStr  temp1 = NULL;  /* Temporary string */
-    AjPStr  temp2 = NULL;  /* Temporary string */
-    AjPStr  temp3 = NULL;  /* Temporary string */
-    AjPStr   line = NULL;  /* Line of text from input file */
+    AjPFile  outf = NULL;  /* Output file pointer.          */
+    AjPFile   inf = NULL;  /* Input file pointer.           */
+    AjPStr  temp1 = NULL;  /* Temporary string.             */
+    AjPStr  temp2 = NULL;  /* Temporary string.             */
+    AjPStr  temp3 = NULL;  /* Temporary string.             */
+    AjPStr   line = NULL;  /* Line of text from input file. */
     ajint     blk = 1;     /* Count of the current block in the input file.
-			     Block 1 is the numbering and protein sequences, 
-			     Block 2 is the secondary structure, 
-			     Block 3 is the Very/Less/Post similar records*/
+			      Block 1 is the numbering and protein sequences, 
+			      Block 2 is the secondary structure, 
+			      Block 3 is the Very/Less/Post similar records*/
     AjBool     ok = ajFalse;
     
     
-    /* Initialise strings */
+    /* Initialise strings. */
     line    = ajStrNew();
     temp1    = ajStrNew();
     temp2    = ajStrNew();
     temp3    = ajStrNew();
 
 
-    /* Open input and output files */
+    /* Open input and output files. */
     if(!(inf=ajFileNewIn(in)))
 	ajFatal("Could not open input file in domainalign_ProcessStampFile");
     
 
 
 
-    /* Start of code for reading input file */
-    /*Ignore everything up to first line beginning with 'Number'*/
+    /* Start of code for reading input file. 
+       Ignore everything up to first line beginning with 'Number'. */
     while((ajFileReadLine(inf,&line)))
     {
-	/* ajFileReadLine will trim the tailing \n */
+	/* ajFileReadLine will trim the tailing \n. */
 	if((ajStrChar(line, 1)=='\0'))
 	{
 	    ok = ajTrue;
@@ -620,10 +647,10 @@ static void domainalign_ProcessStampFile(AjPStr in, AjPStr out,
     
     
     
-    /* Read rest of input file */
+    /* Read rest of input file. */
     if(ok)
     {
-	/*Write DOMAIN classification records to file*/
+	/* Write DOMAIN classification records to file. */
 	if(!(outf=ajFileNewOut(out)))
 	    ajFatal("Could not open output file in domainalign_ProcessStampFile");
 
@@ -679,7 +706,7 @@ static void domainalign_ProcessStampFile(AjPStr in, AjPStr out,
 
 	while((ajFileReadLine(inf,&line)))
 	{
-	    /* Increment counter for block of file */
+	    /* Increment counter for block of file. */
 	    if((ajStrChar(line, 1)=='\0'))
 	    {
 		blk++;
@@ -691,64 +718,65 @@ static void domainalign_ProcessStampFile(AjPStr in, AjPStr out,
 
 
 
-	    /* Block of numbering line and protein sequences */
+	    /* Block of numbering line and protein sequences. */
 	    if(blk==1)
 	    {
-		/* Print the number line out as it is */
+		/* Print the number line out as it is. */
 		if(ajStrPrefixC(line,"Number"))
 		    ajFmtPrintF(outf,"\n# %7S %S\n"," ", line);
 		else
 		{
-		    /* Read only the 7 characters of the domain identifier code in */
+		    /* Read only the 7 characters of the domain identifier code in. */
 		    ajFmtScanS(line, "%S", &temp1);
 		    ajStrAssSub(&temp2, temp1, 0, 6);
 
 
-		    /* Read the sequence */
+		    /* Read the sequence. */
 		    ajStrAssSub(&temp3, line, 13, 69);
 		    ajStrConvertCC(&temp3, " ", "X");
 		    ajFmtPrintF(logf, "Replaced ' ' in STAMP alignment with 'X'\n");
 		    ajStrToUpper(&temp3);
 		
 
-		    /* Write domain id code and sequence out */
+		    /* Write domain id code and sequence out. */
 		    ajFmtPrintF(outf,"%-15S%7d %S%7d\n",
 				temp2, 0, temp3, 0);
 		}
 	    }
-	    /* Secondary structure filled with '????' (unwanted) */
+	    /* Secondary structure filled with '????' (unwanted). */
 	    else if(blk==2)
 	    {
 		continue;
 	    }
-	    /* Similarity lines */
+	    /* Similarity lines. */
 	    else
 	    {
 		if(ajStrPrefixC(line,"Post"))
 		{
-		    /* Read the sequence */
+		    /* Read the sequence. */
 		    ajStrAssSub(&temp3, line, 13, 69);
 
-		    /* Write post similar line out */
+		    /* Write post similar line out. */
 		    ajFmtPrintF(outf,"%-15s%7s %S\n","# Post_similar", " ", temp3);
 		}
-		/* Ignore Very and Less similar lines */
+		/* Ignore Very and Less similar lines. */
 		else continue;
 	    }
 	}
     }
-    else /* ok == ajFalse */
+    else /* ok == ajFalse. */
     {
 	ajWarn("\n***********************************************\n"
 	       "* STAMP was called but output file was EMPTY! *\n"
 	       "*   NO OUTPUT FILE GENERATED FOR THIS NODE.   *\n"
 	       "***********************************************\n");
-	ajFmtPrintF(logf, "STAMP called but output file empty.  No output file for this node!");
+	ajFmtPrintF(logf, "STAMP called but output file empty.  "
+		    "No output file for this node!");
     }
     
 
 
-    /* Clean up and close input and output files */
+    /* Clean up and close input and output files. */
     ajFileClose(&outf);
     ajFileClose(&inf);
     ajStrDel(&line);
@@ -757,7 +785,7 @@ static void domainalign_ProcessStampFile(AjPStr in, AjPStr out,
     ajStrDel(&temp3);
     
 
-    /* All done */
+    /* All done. */
     return;
 }
 
@@ -765,13 +793,23 @@ static void domainalign_ProcessStampFile(AjPStr in, AjPStr out,
 
 
 
-/* @func domainalign_writelast *************************************************
+/* @funcstatic domainalign_writelast ******************************************
 **
 ** House-keeping function.
 **
+** @param [r] domain [AjPDomain]    Domain.
+** @param [r] noden  [ajint]        Node number.
+** @param [r] last_node [AjPStr *]  Last node.  
+** @param [r] last_nodeid [ajint *] Id of last node.
+** 
+** @return [void]
+** 
 ** @@
 ****************************************************************************/
-void domainalign_writelast(AjPDomain domain, ajint noden, AjPStr *last_node, ajint *last_nodeid)
+static void domainalign_writelast(AjPDomain domain, 
+				  ajint noden, 
+				  AjPStr *last_node, 
+				  ajint *last_nodeid)
 {
     if(noden==1) 
     {
@@ -815,7 +853,7 @@ void domainalign_writelast(AjPDomain domain, ajint noden, AjPStr *last_node, aji
     } 
     else if (noden==9)
     {
-	/* There is no text describing the CATH families */
+	/* There is no text describing the CATH families. */
 	ajFmtPrintS(last_node, "%d", domain->Cath->Family_Id);
 	*last_nodeid = domain->Cath->Family_Id;
     } 
@@ -823,15 +861,27 @@ void domainalign_writelast(AjPDomain domain, ajint noden, AjPStr *last_node, aji
 
 
 
-/* @func domainalign_writeid *************************************************
+/* @funcstatic domainalign_writeid ********************************************
 **
 ** House-keeping function.
 **
+** @param [r] domain [AjPDomain]   Domain.
+** @param [r] noden  [ajint]       Node number.
+** @param [r] daf    [AjPDir]      Domain alignment files.
+** @param [r] super  [AjPDir]      Structural superimposition files.
+** @param [r] align  [AjPStr *]    Align.
+** @param [r] alignc [AjPStr *]    Alignc.
+** 
+** @return [void]
+** 
 ** @@
 ****************************************************************************/
-void domainalign_writeid(AjPDomain domain, ajint noden, 
-			 AjPDir daf, AjPDir super, 
-			 AjPStr *align, AjPStr *alignc) 
+static void domainalign_writeid(AjPDomain domain, 
+				ajint noden, 
+				AjPDir daf, 
+				AjPDir super, 
+				AjPStr *align, 
+				AjPStr *alignc) 
 {
     AjPStr temp=NULL;
     
@@ -872,14 +922,24 @@ void domainalign_writeid(AjPDomain domain, ajint noden,
 
 
 
-/* @func domainalign_writesid ************************************************
+
+
+
+/* @funcstatic domainalign_writesid *******************************************
 **
 ** House-keeping function.
 **
+** @param [r] domain [AjPDomain]   Domain.
+** @param [r] noden  [ajint]       Node number.
+** @param [r] id     [AjPStr *]    Id.
+** 
+** @return [void]
+** 
 ** @@
 ****************************************************************************/
-void domainalign_writesid(AjPDomain domain, ajint noden, 
-			 AjPStr *id)
+static 	void domainalign_writesid(AjPDomain domain, 
+				  ajint noden, 
+				  AjPStr *id)
 {
     if(noden==1) 
 	ajStrFromInt(id, domain->Scop->Sunid_Class);
@@ -905,39 +965,61 @@ void domainalign_writesid(AjPDomain domain, ajint noden,
 
 
 
-/* @func domainalign_stamp **************************************************
+/* @funcstatic domainalign_stamp **********************************************
 **
 ** Call STAMP and process files.
 **
+** @param [r] prevdomain [AjPDomain] Previous domain.
+** @param [r] domain [AjPDomain] This domain.
+** @param [r] daf [AjPDir] Domain alignment files.
+** @param [r] super [AjPDir] Superimposition files.
+** @param [r] singlets [AjPDir]  Singlet files.
+** @param [r] align [AjPStr]   Align.
+** @param [r] alignc [AjPStr] Alignc.
+** @param [r] dom [AjPStr]   Dom.
+** @param [r] name [AjPStr] Name.
+** @param [r] set [AjPStr] Name of set file.
+** @param [r] scan [AjPStr] Name of scan file.
+** @param [r] sort [AjPStr] Name of sort file.
+** @param [r] log [AjPStr] Lof file name.
+** @param [r] out [AjPStr] Out file name.
+** @param [r] keepsinglets [AjBool] Keep singlet sequences or not.
+** @param [r] moden [ajint] Mode number.
+** @param [r] noden [ajint] Node number.
+** @param [r] nset [ajint] Number in set.
+** @param [r] logf [AjPFile] Lof file.
+** 
+**
+** @return [void] True on success
 ** @@
 ****************************************************************************/
-void domainalign_stamp(AjPDomain prevdomain, 
-		       AjPDomain domain, 
-		       AjPDir    daf, 
-		       AjPDir    super,
-		       AjPDir    singlets, 
-		       AjPStr    align, 
-		       AjPStr    alignc, 
-		       AjPStr    dom, 
-		       AjPStr    name, 
-		       AjPStr    set, 
-		       AjPStr    scan, 
-		       AjPStr    sort, 
-		       AjPStr    log, 
-		       AjPStr    out, 
-		       AjBool    keepsinglets, 
-		       ajint     moden, 
-		       ajint     noden,
-		       ajint     nset, 
-		       AjPFile   logf)
+static void domainalign_stamp(AjPDomain prevdomain,
+			      AjPDomain domain, 
+			      AjPDir    daf, 
+			      AjPDir    super,
+			      AjPDir    singlets, 
+			      AjPStr    align, 
+			      AjPStr    alignc, 
+			      AjPStr    dom, 
+			      AjPStr    name, 
+			      AjPStr    set, 
+			      AjPStr    scan, 
+			      AjPStr    sort, 
+			      AjPStr    log, 
+			      AjPStr    out, 
+			      AjBool    keepsinglets, 
+			      ajint     moden, 
+			      ajint     noden,
+			      ajint     nset, 
+			      AjPFile   logf)
 {
-    AjPStr    exec      = NULL;	/* The UNIX command line to be executed*/
-    AjPFile   clusterf      = NULL;	/* File pointer for log file */
-    ajint     ncluster  = 0;	/* Counter for the number of clusters*/    
-    AjPStr    line      = NULL;	/* Holds a line from the log file*/
-    AjPRegexp rexp      = NULL;	/*For parsing no. of clusters in log file*/
-    ajint     x         = 0;    /* Counter */
-    AjPStr    temp      = NULL;	/* A temporary string */
+    AjPStr    exec      = NULL;	/* The UNIX command line to be executed.   */
+    AjPFile   clusterf  = NULL;	/* File pointer for log file.              */
+    ajint     ncluster  = 0;	/* Counter for the number of clusters.     */    
+    AjPStr    line      = NULL;	/* Holds a line from the log file.         */
+    AjPRegexp rexp      = NULL;	/* For parsing no. of clusters in log file */
+    ajint     x         = 0;    /* Counter.                                */
+    AjPStr    temp      = NULL;	/* A temporary string.                     */
      
 
     exec     = ajStrNew();
@@ -946,17 +1028,10 @@ void domainalign_stamp(AjPDomain prevdomain,
 
 
 
-    /* ajFmtPrint("\n***** DOMAINALIGN_STAMP\n"); */
-
-    /* Compile regular expression*/
-    /*    rexp     = ajRegCompC("^(Cluster:)  ([0-9])"); */
     rexp     = ajRegCompC("^(Cluster:)");
 
-
-
-
     
-    /* Call STAMP */
+    /* Call STAMP. */
     ajFmtPrintS(&exec,	"\nstamp -l %S -s -n 2 -slide 5 -prefix %S -d %S\n", 
 		dom, name, set);
     ajFmtPrint("%S\n", exec);
@@ -980,7 +1055,7 @@ void domainalign_stamp(AjPDomain prevdomain,
     system(ajStrStr(exec));  
     
     
-    /* Count the number of clusters in the log file*/
+    /* Count the number of clusters in the log file. */
     if(!(clusterf=ajFileNewIn(log)))
 	ajFatal("Could not open log file\n");
     ncluster=0;
@@ -990,32 +1065,27 @@ void domainalign_stamp(AjPDomain prevdomain,
     ajFileClose(&clusterf);	
     
     
-    /* Call STAMP ... calculate two fields for structural 
-       equivalence using threshold Pij value of 0.5, see stamp 
-       manual v4.1 pg 27*/
+    /* Call STAMP ... calculate two fields for structural equivalence using 
+       threshold Pij value of 0.5, see stamp manual v4.1 pg 27. */
     ajFmtPrintS(&exec,"poststamp -f %S.%d -min 0.5\n",
 		name, ncluster);
     ajFmtPrint("%S\n", exec);
     system(ajStrStr(exec));
     
     
-    /* Call STAMP ... convert block format alignment into clustal 
-       format*/
-    /*		ajFmtPrintS(&exec,"aconvert  -in b -out c <%S.%d.post > %S\n",
-		name, ncluster, out); */
-    
+    /* Call STAMP ... convert block format alignment into clustal format. */
     ajFmtPrintS(&exec,"ver2hor -f %S.%d.post > %S\n",
 		name, ncluster, out); 
     ajFmtPrint("%S\n", exec);
     system(ajStrStr(exec));
     
     
-    /* Process STAMP alignment file and generate alignment file 
-       for output */
+    /* Process STAMP alignment file and generate alignment file for output. */
     domainalign_ProcessStampFile(out, align, prevdomain, noden, logf);
     
     
-    /* Remove all temporary files */
+    /* Remove all temporary files. */
+    /*
     for(x=1;x<ncluster+1;x++)
     {
 	ajFmtPrintS(&temp, "rm %S.%d", name, x);
@@ -1024,7 +1094,7 @@ void domainalign_stamp(AjPDomain prevdomain,
     
     ajFmtPrintS(&temp, "rm %S.%d.post", name, ncluster);
     ajSystem(temp); 
-    
+  */  
 
     ajStrDel(&exec);
     ajStrDel(&line);
@@ -1035,7 +1105,7 @@ void domainalign_stamp(AjPDomain prevdomain,
 }   
 
 
-/* @func domainalign_tcoffee ************************************************
+/* @funcstatic domainalign_tcoffee ********************************************
 **
 ** Call TCOFFEE and process files.
 **
@@ -1045,6 +1115,9 @@ void domainalign_stamp(AjPDomain prevdomain,
 ** @param [r] alignc [AjPStr] Name of structure alignment file for output
 ** @param [r] pdbnames [AjPStr] Names of pdb files to be passed to TCOFFEEE 
 ** @param [r] noden [ajint] Node-level of alignment
+** @param [r] logf [AjPFile] Log file.
+**
+** @return [void] True on success
 ** @@
 ****************************************************************************/
 static void domainalign_tcoffee(AjPDomain domain, 
@@ -1065,15 +1138,14 @@ static void domainalign_tcoffee(AjPDomain domain,
        The 'pdb1 pdb2 pdb3' string contains the file (including the path) of the 
        clean domain cordinate files (pdb format) for the structural alifnment 
        e.g. d1vsc_2.ent. 
-       
-       '-outfile' is the clustal format alignment output file */
+       '-outfile' is the clustal format alignment output file. */
 
     ajFmtPrintS(&exec,"t_coffee -in %S sap_pair > %S", pdbnames, in);
     ajFmtPrint("%S\n", exec);
     system(ajStrStr(exec));  
 
     /* Process tcofee alignment file and generate alignment file 
-       for output */
+       for output. */
     domainalign_ProcessTcoffeeFile(in, align, domain, noden, logf);
 
     ajStrDel(&exec);
@@ -1085,30 +1157,34 @@ static void domainalign_tcoffee(AjPDomain domain,
 
 
 
-/* @func domainalign_ProcessTcoffeeFile *************************************
+/* @funcstatic domainalign_ProcessTcoffeeFile *********************************
 **
 ** Parses tcoffee output.
 **
 ** @param [r] in [AjPStr] Name of TCOFFEE input file
-** @param [r] out [AjPStr] Name of sequence alignment file for output
+** @param [r] align [AjPStr] Name of sequence alignment file for output
 ** @param [r] domain [AjPDomain] Domain being aligned
 ** @param [r] noden [ajint] Node-level of alignment** 
 ** @param [r] logf [AjPFile] Log file
+**
+** @return [void] True on success
 ** @@
 ****************************************************************************/
-static void domainalign_ProcessTcoffeeFile(AjPStr in, AjPStr align, 
-					   AjPDomain domain,  ajint noden, 
+static void domainalign_ProcessTcoffeeFile(AjPStr in, 
+					   AjPStr align, 
+					   AjPDomain domain,
+					   ajint noden, 
 					   AjPFile logf)
 {
-    AjPFile  outf = NULL;  /* Output file pointer */
-    AjPFile   inf = NULL;  /* Input file pointer */
-    AjPStr  temp1 = NULL;  /* Temporary string */
-    AjPStr  temp2 = NULL;  /* Temporary string */
-    AjPStr  temp3 = NULL;  /* Temporary string */
-    AjPStr   line = NULL;  /* Line of text from input file */
+    AjPFile  outf = NULL;  /* Output file pointer. */
+    AjPFile   inf = NULL;  /* Input file pointer. */
+    AjPStr  temp1 = NULL;  /* Temporary string. */
+    AjPStr  temp2 = NULL;  /* Temporary string. */
+    AjPStr  temp3 = NULL;  /* Temporary string. */
+    AjPStr   line = NULL;  /* Line of text from input file. */
     
     
-    /* Initialise strings */
+    /* Initialise strings. */
     line    = ajStrNew();
     temp1   = ajStrNew();
     temp2   = ajStrNew();
@@ -1116,7 +1192,7 @@ static void domainalign_ProcessTcoffeeFile(AjPStr in, AjPStr align,
 
 
 
-    /* Open input and output files */
+    /* Open input and output files. */
     if(!(inf=ajFileNewIn(in)))
         ajFatal("Could not open input file in domainalign_ProcessTcoffeeFile");
     if(!(outf=ajFileNewOut(align)))
@@ -1174,29 +1250,29 @@ static void domainalign_ProcessTcoffeeFile(AjPStr in, AjPStr align,
 
 
     
-    /* Start of code for reading input file */
+    /* Start of code for reading input file. */
     /*Ignore everything up to first line beginning with 'Number'*/
     while((ajFileReadLine(inf,&line)))
-        /* ajFileReadLine will trim the tailing \n */
+        /* ajFileReadLine will trim the tailing \n. */
         if((ajStrChar(line, 1)=='\0'))
             break;
 
     
-    /* Read rest of input file */
+    /* Read rest of input file. */
     while((ajFileReadLine(inf,&line)))
     {
       if((ajStrChar(line, 1)=='\0'))
         continue; 
         
-       /* Print the number line out as it is */
+       /* Print the number line out as it is. */
             else if(ajStrPrefixC(line,"CLUSTAL"))
               continue;
 	    else if(ajStrPrefixC(line," "))
                 ajFmtPrintF(outf,"\n");
-        /* write out a block of protein sequences */
+        /* write out a block of protein sequences. */
         else
         {
-               /* Read only the 7 characters of the domain identifier code in */
+               /* Read only the 7 characters of the domain identifier code in. */
                ajFmtScanS(line, "%S %S", &temp1,&temp3);
                  ajStrAssSub(&temp2, temp1, 0, 6);
   
@@ -1207,13 +1283,13 @@ static void domainalign_ProcessTcoffeeFile(AjPStr in, AjPStr align,
                    ajStrToUpper(&temp3);*/
                 
   
-                   /* Write domain id code and sequence out */
+                   /* Write domain id code and sequence out. */
                    ajFmtPrintF(outf,"%-13S%S\n",temp2, temp3);              
         }
     }
     
 
-    /* Clean up and close input and output files */
+    /* Clean up and close input and output files. */
     ajFileClose(&outf);
     ajFileClose(&inf);
     ajStrDel(&line);
@@ -1222,7 +1298,7 @@ static void domainalign_ProcessTcoffeeFile(AjPStr in, AjPStr align,
     ajStrDel(&temp3);
     
 
-    /* All done */
+    /* All done. */
     return;
 }
 
@@ -1230,10 +1306,16 @@ static void domainalign_ProcessTcoffeeFile(AjPStr in, AjPStr align,
 
 
 
-/* @func domainalign_keepsinglets *******************************************
+/* @funcstatic domainalign_keepsinglets ***************************************
 **
 ** Write singlet sequences to file.
 **
+** @param [r] domain [AjPDomain] 
+** @param [r] noden [ajint] 
+** @param [r] singlets [AjPDir] 
+** @param [r] logf [AjPFile] 
+**
+** @return [void] True on success
 ** @@
 ****************************************************************************/
 static void domainalign_keepsinglets(AjPDomain domain,
@@ -1241,9 +1323,9 @@ static void domainalign_keepsinglets(AjPDomain domain,
 				     AjPDir    singlets, 	
 				     AjPFile   logf)
 {
-    AjPStr      temp2     = NULL;	/* A temporary string */
-    AjPFile     singf     = NULL;	/* File pointer for singlets file */
-    AjPHitlist  hitlist   = NULL; /* Hitlist object for output of data */
+    AjPStr      temp2     = NULL;   /* A temporary string. */
+    AjPFile     singf     = NULL;   /* File pointer for singlets file. */
+    AjPHitlist  hitlist   = NULL;   /* Hitlist object for output of data. */
     
     temp2    = ajStrNew();
 
@@ -1252,13 +1334,14 @@ static void domainalign_keepsinglets(AjPDomain domain,
     
     if(MAJSTRLEN(ajDomainGetSeqPdb(domain)))
     {
-	/* Write Hit object */
+	/* Write Hit object. */
 	hitlist = embHitlistNew(1);
+	hitlist->Type = domain->Type;
 	ajStrAssS(&hitlist->hits[0]->Seq, ajDomainGetSeqPdb(domain));
 	ajStrAssS(&hitlist->hits[0]->Acc, ajDomainGetAcc(domain));
 	ajStrAssS(&hitlist->hits[0]->Spr, ajDomainGetSpr(domain));
 	ajStrAssS(&hitlist->hits[0]->Dom, ajDomainGetId(domain));
-		
+	
 
 	if((domain->Type == ajSCOP))
 	{
@@ -1302,11 +1385,11 @@ static void domainalign_keepsinglets(AjPDomain domain,
     }
     else
     {
-	ajWarn("No sequence found (no 'DS' record in DCF file) for singlet %S despite "
-	       "configuring to save singlets. "
+	ajWarn("No sequence found (no 'DS' record in DCF file) for singlet %S "
+	       "despite configuring to save singlets. "
 	       "NO file written!", ajDomainGetId(domain)); 
-	ajFmtPrintF(logf, "No sequence found (no 'DS' record in DCF file) for singlet %S despite "
-		    "configuring to save singlets. "
+	ajFmtPrintF(logf, "No sequence found (no 'DS' record in DCF file) for "
+		    "singlet %S despite configuring to save singlets. "
 		    "NO file written!", ajDomainGetId(domain));
     }		
 
@@ -1314,3 +1397,4 @@ static void domainalign_keepsinglets(AjPDomain domain,
 
     return;
 }    
+

@@ -21,7 +21,7 @@
 **  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 **  02111-1307, USA.
 **
-*****************************************************************************
+*******************************************************************************
 ** 
 **  PDBPARSE documentation
 **  See http://wwww.emboss.org
@@ -46,22 +46,11 @@
 **     fails on and see if we can get around them (might need to derive a 
 **     sequence with and without masking of residues for which there is no 
 **     C-alpha atom present. --> Need to do a rebuild for this.
-****************************************************************************/
-
-
+******************************************************************************/
 
 
 
 #include "emboss.h"
-
-
-
-
-
-
-
-
-
 
   
 
@@ -74,12 +63,12 @@
 
 int main(ajint argc, char **argv)
 {
-    AjPList    pdb_path     =NULL; /* Path of pdb files */
-    AjPStr     pdb_name     =NULL; /* Name of pdb file */
-    AjPDir     ccf_path    =NULL; /* Path of ccf files */
-    AjPStr     ccf_name    =NULL; /* Name of ccf file */
-    AjPStr     pdbid        =NULL; /* PDB code */
-    AjPStr     pdbid_temp   =NULL; /* PDB code */
+    AjPList    pdb_path     =NULL;  /* Path of pdb files */
+    AjPStr     pdb_name     =NULL;  /* Name of pdb file  */
+    AjPDir     ccf_path    =NULL;   /* Path of ccf files */
+    AjPStr     ccf_name    =NULL;   /* Name of ccf file  */
+    AjPStr     pdbid        =NULL;  /* PDB code          */
+    AjPStr     pdbid_temp   =NULL;  /* PDB code          */
     
     AjBool     ccfnaming   =ajFalse;   
     /* True == use the pdbid code to name the output file, 
@@ -187,15 +176,13 @@ int main(ajint argc, char **argv)
 
 	if(MAJSTRLEN(pdbid)>4)
 	{
-	    /* The file name is longer than expected (and probably contains a prefix)
-               Take the last four characters to be the pdbid code */
+	    /* The file name is longer than expected (and probably contains a 
+	       prefix). Take the last four characters to be the pdbid code */
 	    ajStrAssSub(&pdbid_temp, pdbid, pos-4, pos-1);
 	    ajStrAssS(&pdbid, pdbid_temp);
 	}
 	else if(MAJSTRLEN(pdbid)<4)
-	{
 	    ajFatal("Could not determine pdbid code from file name (%S)", pdbid);
-	}
 	
 
 	/* Parse pdb file and write pdb structure */

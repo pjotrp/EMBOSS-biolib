@@ -1,6 +1,7 @@
 /* @source scopparse application
 **
-** Reads raw SCOP classification files and writes a DCF file (domain classification file)."
+** Reads raw SCOP classification files and writes a DCF file (domain 
+** classification file).
 **
 ** @author: Copyright (C) Jon Ison (jison@hgmp.mrc.ac.uk)
 ** @author: Copyright (C) Alan Bleasby (ableasby@hgmp.mrc.ac.uk)
@@ -36,7 +37,11 @@
 **  
 **  NOTES
 **  na.
-****************************************************************************/
+******************************************************************************/
+
+
+
+
 
 #include "emboss.h"
 
@@ -44,11 +49,12 @@
 
 
 
-/* @prog scopparse **********************************************************
+
+/* @prog scopparse ************************************************************
 **
 ** Converts raw scop classification files to a file in embl-like format.
 **
-*****************************************************************************/
+******************************************************************************/
 int main(int argc, char **argv)
 {
     AjPFile inf1         = NULL;
@@ -64,7 +70,7 @@ int main(int argc, char **argv)
 
 
 
-    /* Read data from acd*/
+    /* Read data from acd. */
     ajNamInit("emboss");
     ajAcdInitP("scopparse", argc, argv, "DOMAINATRIX");
     inf1         =  ajAcdGetInfile("infilea");
@@ -81,7 +87,7 @@ int main(int argc, char **argv)
     ajFmtPrint("nominor: %B\n", nominor);
     */
 
-    /* Main body of code */
+    /* Main body of code. */
     list = ajScopReadAllRawNew(inf1, inf2, nomultichain);
     while(ajListPop(list, (void **) &tmp))
     {
@@ -89,13 +95,13 @@ int main(int argc, char **argv)
 	   ((!nominor) || ((tmp->Sunid_Class == 46456) ||  /* All alpha*/
 			   (tmp->Sunid_Class == 48724) ||  /* All beta */
 			   (tmp->Sunid_Class == 51349) ||  /* a/b      */
-			   (tmp->Sunid_Class == 53931)))) /* a+b      */
+			   (tmp->Sunid_Class == 53931))))  /* a+b      */
 	    ajScopWrite(outf, tmp);
 	ajScopDel(&tmp);
     }
     
 
-    /* Clean up */
+    /* Memory management. */
     ajFileClose(&outf);
     ajFileClose(&inf1);
     ajFileClose(&inf2);
@@ -104,6 +110,15 @@ int main(int argc, char **argv)
     ajExit();
     return 0;
 }
+
+
+
+
+
+
+
+
+
 
 
 

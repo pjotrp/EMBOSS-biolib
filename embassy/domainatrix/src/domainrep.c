@@ -39,9 +39,7 @@
 **  NOTES
 **  The stamp application must be installed on the system that is running 
 **  domainrep and correctly configured (see DOMAINREP documentation).
-****************************************************************************/
-
-
+******************************************************************************/
 
 
 
@@ -50,13 +48,30 @@
 
 #include "emboss.h"
 
-static AjBool domainrep_WriteRmsd(ajint x, ajint y, AjPFloat2d *scores,  AjPFile fptr);
-void domainrep_writelast(AjPDomain domain, ajint noden, AjPStr *last_node, ajint *last_nodeid);
 
 
 
 
-/* @prog domainrep *******************************************************
+/******************************************************************************
+**
+** PROTOTYPES  
+**
+******************************************************************************/
+static AjBool domainrep_WriteRmsd(ajint x, ajint y, 
+				  AjPFloat2d *scores,  
+				  AjPFile fptr);
+
+static void domainrep_writelast(AjPDomain domain, 
+				ajint noden, 
+				AjPStr *last_node, 
+				ajint *last_nodeid);
+
+
+
+
+
+
+/* @prog domainrep ************************************************************
 **
 ** Reorder scop classificaiton file so that the representative 
 ** structure of each family is given first.
@@ -65,48 +80,44 @@ void domainrep_writelast(AjPDomain domain, ajint noden, AjPStr *last_node, ajint
 
 int main(int argc, char **argv)
 {
-    ajint     nfam      = 0;	/* Counter for the families */
+    ajint      nfam       = 0;	  /* Counter for the families                */
+    ajint      x          = 0;    /* Counter                                 */
+    ajint      y          = 0;    /* Counter                                 */
+    ajint      last_nodeid= 0;    /* SCOP Sunid of last family that was processed */
+    AjPStr     last_node  = NULL; /* Last node that was processed */
+    AjPStr     exec       = NULL; /* The UNIX command line to be executed*/
+    AjPStr     dom        = NULL; /* Name of file containing single domain*/
+    AjPStr     set        = NULL; /* Name of file containing set of domains*/
+    AjPStr     out        = NULL; /* Name of file containing pairwise rmsd values */
+    AjPStr     name       = NULL; /* Base name of STAMP temp files */
+    AjPStr     temp       = NULL; /* A temporary string */
 
-    ajint     x         = 0;  /* Counter */
-    ajint     y         = 0;  /* Counter */
+    AjPFile    dcfin      = NULL; /* File pointer for Escop.dat file (input)*/
+    AjPFile    dcfout     = NULL; /* File pointer for Escop.dat file (output)*/
+    AjPFile    domf       = NULL; /* File pointer for single domain file */
+    AjPFile    setf       = NULL; /* File pointer for domain set file */
+    AjPFile    outf       = NULL; /* File pointer for file containing pairwise rmsd values */
     
 
-/*    ajint     last_fam = NULL; */ /* SCOP Sunid of last family that was processed */
-    ajint     last_nodeid=    0; /* SCOP Sunid of last family that was processed */
-    AjPStr    last_node  = NULL; /* Last node that was processed */
-    AjPStr    exec      = NULL;	/* The UNIX command line to be executed*/
-    AjPStr    dom       = NULL;	/* Name of file containing single domain*/
-    AjPStr    set       = NULL;	/* Name of file containing set of domains*/
-    AjPStr    out       = NULL;	/* Name of file containing pairwise rmsd values */
-    AjPStr    name      = NULL;	/* Base name of STAMP temp files */
-    AjPStr    temp      = NULL;	/* A temporary string */
+    AjPDomain  domain     = NULL; /* Pointer to domain structure */
 
-    AjPFile   dcfin    = NULL;	/* File pointer for Escop.dat file (input)*/
-    AjPFile   dcfout   = NULL;	/* File pointer for Escop.dat file (output)*/
-    AjPFile   domf      = NULL;	/* File pointer for single domain file */
-    AjPFile   setf      = NULL;	/* File pointer for domain set file */
-    AjPFile   outf      = NULL;	/* File pointer for file containing pairwise rmsd values */
-    
-
-    AjPDomain  domain      = NULL;	/* Pointer to domain structure */
-
-    AjPList famlist     = NULL; /* List of Scopobjects for current family */
+    AjPList    famlist    = NULL; /* List of Scopobjects for current family */
     AjPDomain *arr        = NULL; /* Array of pointers to the famlist data */
     
-    AjPDomain  tmp     =NULL;  /* Temp. pointer for freeing famlist*/
-    ajint   famsize     =0;     /* No. domains in the family */
+    AjPDomain  tmp        = NULL; /* Temp. pointer for freeing famlist*/
+    ajint      famsize    = 0;    /* No. domains in the family */
     
-    AjPFloat2d      scores        = NULL;    /* Array of pairwise rmsd values          */
-    AjPFloat        means         = NULL;    /* Array of average pairwise rmsd values  */
-    float      reso_cnt =0.0;   /* Used to calculate means array */
-    ajint      div      =0;     /* Used to calculate means array */
-    ajint      ignore   =0;     /* Used for writing ordered scop output file */
-    float      min=0.0;     /* Used for writing ordered scop output file */    
+    AjPFloat2d scores     = NULL; /* Array of pairwise rmsd values          */
+    AjPFloat   means      = NULL; /* Array of average pairwise rmsd values  */
+    float      reso_cnt   = 0.0;  /* Used to calculate means array */
+    ajint      div        = 0;    /* Used to calculate means array */
+    ajint      ignore     = 0;    /* Used for writing ordered scop output file */
+    float      min        = 0.0;  /* Used for writing ordered scop output file */    
 
    
-    AjPStr      *node   =NULL;      /* Node of redundancy removal */
-    ajint     noden      =0;     /*1: Class (SCOP), 2: Fold (SCOP) etc, see ACD file */
-    ajint     type = 0;   /* Type of domain (ajSCOP or ajCATH) in the DCF file */
+    AjPStr    *node       = NULL; /* Node of redundancy removal */
+    ajint      noden      = 0;    /*1: Class (SCOP), 2: Fold (SCOP) etc, see ACD file */
+    ajint      type       = 0;    /* Type of domain (ajSCOP or ajCATH) in the DCF file */
 
 
     /* Initialise strings etc*/
@@ -129,11 +140,9 @@ int main(int argc, char **argv)
     node      = ajAcdGetList("node");
 
     
-    /* Convert the selected node to an integer */
+    /* Convert the selected node to an integer. */
     if(!(ajStrToInt(node[0], &noden)))
-    {
 	ajFatal("Could not parse ACD node option");
-    }
 
     /* Initialise random number generator for naming of temp. files*/
     ajRandomSeed();
@@ -150,24 +159,21 @@ int main(int argc, char **argv)
 
 
 
-    /* Initialise last_node with something that is not in SCOP*/
+    /* Initialise last_node with something that is not in SCOP. */
     ajStrAssC(&last_node,"!!!!!");
     
     
     type = ajDomainDCFType(dcfin);
 
-    /* Start of main application loop*/
+    /* Start of main application loop. */
     while((domain=(ajDomainReadCNew(dcfin, "*", type))))
     {
-	/* A new family */
-/*	if( last_nodeid !=  domain->Sunid_Family) */
-/*	if(ajStrMatch(last_node, domain->Family)==ajFalse) */
-
+	/* A new family. */
 	if(((domain->Type == ajSCOP) &&
 	    (((noden==1) && (last_nodeid !=  domain->Scop->Sunid_Class))      || 
-	     ((noden==2) && (last_nodeid !=  domain->Scop->Sunid_Fold))        || 
-	     ((noden==3) && (last_nodeid !=  domain->Scop->Sunid_Superfamily)) || 
-	     ((noden==4) && (last_nodeid !=  domain->Scop->Sunid_Family))))       ||
+	     ((noden==2) && (last_nodeid !=  domain->Scop->Sunid_Fold))       || 
+	     ((noden==3) && (last_nodeid !=  domain->Scop->Sunid_Superfamily))|| 
+	     ((noden==4) && (last_nodeid !=  domain->Scop->Sunid_Family))))   ||
 	   ((domain->Type == ajCATH) &&
 	    (((noden==5) && (last_nodeid !=  domain->Cath->Class_Id))         || 
 	     ((noden==6) && (last_nodeid !=  domain->Cath->Arch_Id))          || 
@@ -179,16 +185,16 @@ int main(int argc, char **argv)
 	    /* If we have done the first family*/
 	    if(nfam)
 	    {
-		/* Get family size */
+		/* Get family size. */
 		famsize = ajListLength(famlist);
 		
 
 		if(famsize>2)
 		{
-		    /* Create an array of pointers to the famlist data */
+		    /* Create an array of pointers to the famlist data. */
 		    ajListToArray(famlist, (void ***) &(arr));
 		    
-		    /* Allocate & initialise scores and mean arrays */
+		    /* Allocate & initialise scores and mean arrays. */
 		    scores   = ajFloat2dNewL(famsize);
 		    for(x=0;x<famsize;x++)
 			for(y=0;y<famsize;y++)
@@ -199,7 +205,7 @@ int main(int argc, char **argv)
 			ajFloatPut(&means, x, 0);
 
 
-		    /* Do pairwise alignments for the family */
+		    /* Do pairwise alignments for the family. */
 		    for(x=0; x<famsize-1; x++)
 		    {
 			/* Open, write and close domain file*/
@@ -213,7 +219,7 @@ int main(int argc, char **argv)
 
 			for(y=x+1; y<famsize; y++)
 			{
-			    /* Open domain set file */
+			    /* Open domain set file. */
 			    if(!(setf=ajFileNewOut(set)))
 				ajFatal("Could not open domain set file\n");
 
@@ -231,22 +237,22 @@ int main(int argc, char **argv)
 			    ajFileClose(&setf);	
 			    
 			    
-			    /* Call STAMP */
+			    /* Call STAMP. */
 			    ajFmtPrintS(&exec,"stamp -l %S -s -n 2 -slide 5 -prefix "
 					"%S -d %S > %S\n", dom, name, set, out);
 			    ajFmtPrint("%S\n", exec);
 			    system(ajStrStr(exec));  
 
 			    
-			    /* Open stamp output file */
+			    /* Open stamp output file. */
 			    outf = ajFileNewIn(out);
 			    
 
-			    /* Parse stamp output file and write scores array */ 
+			    /* Parse stamp output file and write scores array. */ 
 			    domainrep_WriteRmsd(x, y, &scores, outf);
 			    
 			    
-			    /* Close stamp output file */
+			    /* Close stamp output file. */
 			    ajFileClose(&outf);	
 
 			}
@@ -286,7 +292,7 @@ int main(int argc, char **argv)
 		    
 		    
 		    /* Write the scop classificaiton file (output) giving the structure
-		       with the lowest mean rmsd first */
+		       with the lowest mean rmsd first. */
 		    for(ignore=0, min = 1000000, x=0;x<famsize;x++)
 		    {
 			if(ajFloatGet(means, x) < min)
@@ -315,12 +321,12 @@ int main(int argc, char **argv)
 		    famlist    = ajListNew();
 		
     
-		    /* Delete the scores and means array */
+		    /* Delete the scores and means array. */
 		    ajFloat2dDel(&scores);  	    	    
 		    ajFloatDel(&means);
 		}
 		/* family only has 1 or 2 members, Write output file with domain 
-		   or two domains in family list, delete family list and continue */
+		   or two domains in family list, delete family list and continue. */
 		else
 		{
 		    while(ajListPop(famlist,(void**)&tmp))
@@ -340,29 +346,26 @@ int main(int argc, char **argv)
 
 	    /* Copy current family name to last_node*/
 	    domainrep_writelast(domain, noden, &last_node, &last_nodeid);
-/*
-	    ajStrAssS(&last_node,domain->Family);
-	    last_nodeid = domain->Sunid_Family;	 */
 	}
 		
-	/* Add the Scop object to the list for the family */
+	/* Add the Scop object to the list for the family. */
 	ajListPushApp(famlist, domain);
     }
     /* End of main application loop*/
 
 
 
-    /* Start of code to process last family */
-    /* Get family size */
+    /* Start of code to process last family. */
+    /* Get family size. */
     famsize = ajListLength(famlist);
 		
 
     if(famsize>2)
     {
-	/* Create an array of pointers to the famlist data */
+	/* Create an array of pointers to the famlist data. */
 	ajListToArray(famlist, (void ***) &(arr));
 	
-	/* Allocate & initialise scores and mean arrays */
+	/* Allocate & initialise scores and mean arrays. */
 	scores   = ajFloat2dNewL(famsize);
 	for(x=0;x<famsize;x++)
 	    for(y=0;y<famsize;y++)
@@ -373,7 +376,7 @@ int main(int argc, char **argv)
 	    ajFloatPut(&means, x, 0);
 	
 	
-	/* Do pairwise alignments for the family */
+	/* Do pairwise alignments for the family. */
 	for(x=0; x<famsize-1; x++)
 	{
 	    /* Open, write and close domain file*/
@@ -387,7 +390,7 @@ int main(int argc, char **argv)
 
 	    for(y=x+1; y<famsize; y++)
 	    {
-		/* Open domain set file */
+		/* Open domain set file. */
 		if(!(setf=ajFileNewOut(set)))
 		    ajFatal("Could not open domain set file\n");
 
@@ -405,22 +408,22 @@ int main(int argc, char **argv)
 		ajFileClose(&setf);	
 			    
 			    
-		/* Call STAMP */
+		/* Call STAMP. */
 		ajFmtPrintS(&exec,"stamp -l %S -s -n 2 -slide 5 -prefix "
 			    "%S -d %S > %S\n", dom, name, set, out);
 		ajFmtPrint("%S\n", exec);
 		system(ajStrStr(exec));  
 
 			    
-		/* Open stamp output file */
+		/* Open stamp output file. */
 		outf = ajFileNewIn(out);
 			    
 
-		/* Parse stamp output file and write scores array */ 
+		/* Parse stamp output file and write scores array. */ 
 		domainrep_WriteRmsd(x, y, &scores, outf);
 			    
 			    
-		/* Close stamp output file */
+		/* Close stamp output file. */
 		ajFileClose(&outf);	
 	    }
 	}
@@ -459,7 +462,7 @@ int main(int argc, char **argv)
 	
 	
 	/* Write the scop classificaiton file (output) giving the structure
-	   with the lowest mean rmsd first */
+	   with the lowest mean rmsd first. */
 	for(ignore=0, min = 1000000, x=0;x<famsize;x++)
 	{
 	    if(ajFloatGet(means, x) < min)
@@ -488,12 +491,12 @@ int main(int argc, char **argv)
 	famlist    = ajListNew();
 	
 	
-	/* Delete the scores and means array */
+	/* Delete the scores and means array. */
 	ajFloat2dDel(&scores);  	    	    
 	ajFloatDel(&means);
     }
     /* family only has 1 or 2 members, Write output file with domain 
-       or two domains in family list, delete family list and continue */
+       or two domains in family list, delete family list and continue. */
     else
     {
 	while(ajListPop(famlist,(void**)&tmp))
@@ -507,7 +510,7 @@ int main(int argc, char **argv)
 
 
 
-    /* Remove all temporary files */
+    /* Remove all temporary files. */
     if(domf)
     {
 	ajFmtPrintS(&temp, "rm %S", dom);
@@ -541,7 +544,7 @@ int main(int argc, char **argv)
     ajStrDel(&temp); 
 
     
-    /* All done */
+    /* All done. */
     ajExit();
     return 0;
 }
@@ -556,7 +559,7 @@ int main(int argc, char **argv)
 
 
 
-/* @funcstatic domainrep_WriteRmsd  *********************************************
+/* @funcstatic domainrep_WriteRmsd  *******************************************
  **
  ** Reads a file containing the redirected stdout output from the scopalign
  ** application and extracts the pairwise rmsd data.  The rmsd values are 
@@ -568,41 +571,42 @@ int main(int argc, char **argv)
  ** @param  [r] fptr     [AjPFile]    File pointer to scopalign file
  ** @return              [AjBool]     True on succcess
  ** @@
- ******************************************************************************/
-static AjBool domainrep_WriteRmsd(ajint x, ajint y, AjPFloat2d *scores,  AjPFile fptr)
+ *****************************************************************************/
+static AjBool domainrep_WriteRmsd(ajint x, ajint y, AjPFloat2d *scores,  
+				  AjPFile fptr)
 {
 
-    AjPStr      scan          = NULL;    /* scan domain                            */
-    AjPStr      dom           = NULL;    /* domain scanned against scan domian     */
-    AjPStr      line          = NULL;    /* string to hold file line               */
-    AjPStr      skip          = NULL;    /* string                                 */
-    float       rmsd          = 0.0;     /* rmsd for this pairwise comparison      */
+    AjPStr      scan          = NULL;   /* scan domain                       */
+    AjPStr      dom           = NULL;   /* domain scanned against scan domian*/
+    AjPStr      line          = NULL;   /* string to hold file line          */
+    AjPStr      skip          = NULL;   /* string                            */
+    float       rmsd          = 0.0;    /* rmsd for this pairwise comparison */
     
 
 
-    /* Assign line string */
+    /* Assign line string. */
     line = ajStrNew();
 
 
-    /* Read through file until line starting with "See" is found */
+    /* Read through file until line starting with "See" is found. */
     while(ajFileReadLine(fptr, &line) && !(ajStrPrefixC(line, "See")))
     {
-        /* Look for line starting Scan */
+        /* Look for line starting Scan. */
         if(ajStrPrefixC(line, "Scan"))
         {
-            /* Assign strings */
+            /* Assign strings. */
             skip = ajStrNew();
             dom  = ajStrNew();
             scan = ajStrNew();
             
-            /* Read in important bits */
+            /* Read in important bits. */
             ajFmtScanS(line, "%*s%S%S%S", &scan, &dom, &skip);
             
-            /* If line does NOT represent domain scanned against itself  */
+            /* If line does NOT represent domain scanned against itself . */
             /* then process rmsd value                                   */
             if(!ajStrMatch(scan, dom))
             {
-                /* Check if domain was skipped i.e. no rmsd given */
+                /* Check if domain was skipped i.e. no rmsd given. */
                 if(ajStrMatchC(skip, "skipped"))
                 {
                     /* Assign silly value to array to ensure value is */
@@ -610,23 +614,23 @@ static AjBool domainrep_WriteRmsd(ajint x, ajint y, AjPFloat2d *scores,  AjPFile
                     ajFloat2dPut(scores, x, y, 100);
                     ajFloat2dPut(scores, y, x, 100);
                     
-                    /* Delete strings */
+                    /* Delete strings. */
                     ajStrDel(&scan);
                     ajStrDel(&skip);
                     ajStrDel(&dom);             
                 }               
                 
-                /* Else process rmsd value */
+                /* Else process rmsd value. */
                 else
                 {
-                    /* Read rmsd */
+                    /* Read rmsd. */
                     ajFmtScanS(line, "%*s %*s %*s %*d %*f %f", &rmsd);
                     
-                    /* Assign rmsd to array */
+                    /* Assign rmsd to array. */
                     ajFloat2dPut(scores, x, y, rmsd);
                     ajFloat2dPut(scores, y, x, rmsd);
                     
-                    /* Delete strings */
+                    /* Delete strings. */
                     ajStrDel(&scan);
                     ajStrDel(&skip);
                     ajStrDel(&dom);             
@@ -645,16 +649,16 @@ static AjBool domainrep_WriteRmsd(ajint x, ajint y, AjPFloat2d *scores,  AjPFile
             
         }       
             
-        /* Line doesn't start with 'Scan' so continue */
+        /* Line doesn't start with 'Scan' so continue. */
         else
             continue;
     }
 
     
-    /* Tidy up */
+    /* Tidy up. */
     ajStrDel(&line);
 
-    /* Return */
+    /* Return. */
     return ajTrue;
 }
 
@@ -662,13 +666,14 @@ static AjBool domainrep_WriteRmsd(ajint x, ajint y, AjPFloat2d *scores,  AjPFile
 
 
 
-/* @func domainrep_writelast ************************************************
+/* @funcstatic domainrep_writelast ********************************************
 **
 ** House-keeping function.
 **
 ** @@
 ****************************************************************************/
-void domainrep_writelast(AjPDomain domain, ajint noden, AjPStr *last_node, ajint *last_nodeid)
+static void domainrep_writelast(AjPDomain domain, ajint noden, AjPStr *last_node, 
+				ajint *last_nodeid)
 {
     if(noden==1) 
     {
@@ -712,7 +717,7 @@ void domainrep_writelast(AjPDomain domain, ajint noden, AjPStr *last_node, ajint
     } 
     else if (noden==9)
     {
-	/* There is no text describing the CATH families */
+	/* There is no text describing the CATH families. */
 	ajFmtPrintS(last_node, "%d", domain->Cath->Family_Id);
 	*last_nodeid = domain->Cath->Family_Id;
     } 

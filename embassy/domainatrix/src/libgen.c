@@ -36,7 +36,11 @@
 **  
 **  NOTES
 **  
-****************************************************************************/
+******************************************************************************/
+
+
+
+
 
 #include "emboss.h"
 
@@ -51,16 +55,38 @@
 #define HENIKOFF_LENGTH  27
 
 
-static void libgen_simple_matrix(AjPSeqset seqset, AjPFile outf, AjPStr name,
+
+
+
+/******************************************************************************
+**
+** PROTOTYPES  
+**
+******************************************************************************/
+static void libgen_simple_matrix(AjPSeqset seqset, 
+				 AjPFile outf,
+				 AjPStr name,
 				 ajint threshold);
-static void libgen_gribskov_profile(AjPSeqset seqset, AjPFile outf, 
-				    AjPStr name, ajint threshold, 
-				    float gapopen, float gapextend, 
-				    AjPStr *cons);
-static void libgen_henikoff_profile(AjPSeqset seqset, AjPMatrixf imtx, 
+
+static void libgen_gribskov_profile(AjPSeqset seqset,
+				    AjPFile outf, 
+				    AjPStr name,
 				    ajint threshold, 
-				    AjPFile outf, AjPStr name, float gapopen, 
-				    float gapextend, AjPStr *cons);
+				    float gapopen,
+				    float gapextend, 
+				    AjPStr *cons);
+
+static void libgen_henikoff_profile(AjPSeqset seqset,
+				    AjPMatrixf imtx, 
+				    ajint threshold, 
+				    AjPFile outf,
+				    AjPStr name, 
+				    float gapopen, 
+				    float gapextend,
+				    AjPStr *cons);
+
+
+
 
 
 /* @prog libgen *************************************************************
@@ -115,7 +141,7 @@ int main(int argc, char **argv)
     ajAcdInitP("libgen",argc,argv,"DOMAINATRIX");
     
     
-    /* ACD processing */
+    /* ACD processing. */
     mode       = ajAcdGetList("mode");
     indir      = ajAcdGetDirlist("dafin");
     outdir     = ajAcdGetDirectory("outdir");
@@ -126,20 +152,20 @@ int main(int argc, char **argv)
 
 
 
-    /* Housekeeping */
+    /* Housekeeping. */
     modei      = (ajint) ajStrChar(*mode,0)-48;
     gapopen    = ajRoundF(gapopen,8);
     gapextend  = ajRoundF(gapextend,8);
     seqsfname  = ajStrNew();
     cmd        = ajStrNew();
-    ajStrAssC(&database, "swissprot"); /* Dummy value */
+    ajStrAssC(&database, "swissprot"); /* Dummy value. */
 
 
 
-    /* Main application loop */
+    /* Main application loop. */
     while(ajListPop(indir,(void **)&inname))
     {  
-	/* Open domain alignment file */
+	/* Open domain alignment file. */
         if((inf = ajFileNewIn(inname)) == NULL)
         {
             ajWarn("Could not open file %S\n",inname);
@@ -147,33 +173,31 @@ int main(int argc, char **argv)
             continue;
         }
 	
-	/* Read alignment into Scopalg object and create seqset from it */
+	/* Read alignment into Scopalg object and create seqset from it. */
 	seqset = ajSeqsetNew();
 	if((!ajDmxScopalgRead(inf,&scopalg)))
 	{
 	    ajWarn("ajDmxScopalgRead call failed in libgen");
 	
-	    /* Read sequence set instead */ 
+	    /* Read sequence set instead. */ 
 	    seqin  = ajSeqinNew();
-	    /* Set the filename via the USA. ajSeqsetRead interprets it to find the filename. */
+	    /* Set the filename via the USA. ajSeqsetRead interprets it to 
+	       find the filename. */
 	    ajSeqinUsa(&seqin, inname);
 	
 	    if(!(ajSeqsetRead(seqset, seqin)))
 		ajFatal("SeqsetRead failed in seqsearch_psialigned");
 	    ajSeqinDel(&seqin);
 	}
-	/* Otherwise read seqset directly */
+	/* Otherwise read seqset directly. */
 	else
 	{
-	    /* Create seqset with input sequences */
+	    /* Create seqset with input sequences. */
 	    for(i=0; i<scopalg->N; i++)
             {
 		seq = ajSeqNewStr(scopalg->Seqs[i]);
 		ajStrAssS(&seq->Acc,scopalg->Codes[i]);
 		
-/*		ajStrAssS(&seq->Acc,scopalg->Codes[i]);
-                ajStrAssS(&seq->Seq,scopalg->Seqs[i]); */
-
                 ajSeqsetApp(seqset,seq);
 		ajSeqDel(&seq);
 
@@ -181,7 +205,7 @@ int main(int argc, char **argv)
 	}
 	ajFileClose(&inf);
 
-	/* Create name for output file */
+	/* Create name for output file. */
 	ajStrAssS(&outname, inname);
 	ajFileDirExtnTrim(&outname);	
 	ajStrInsert(&outname, 0, ajDirName(outdir));
@@ -191,7 +215,7 @@ int main(int argc, char **argv)
 
 	if((modei==LIBGEN_HMMER) || (modei==LIBGEN_PSSM) || (modei==LIBGEN_SAM))
 	{
-	    /* Write alignment in CLUSTAL format to temp. file */
+	    /* Write alignment in CLUSTAL format to temp. file. */
 	    ajRandomSeed();
 	    ajStrAssC(&seqsfname, ajFileTempName(NULL));
 	    if(modei==LIBGEN_SAM)
@@ -204,13 +228,15 @@ int main(int argc, char **argv)
 	    {
 		ajFmtPrintF(seqsf, "\n"); 
 		for(i=0;i<ajSeqsetSize(seqset);++i)
-		    ajFmtPrintF(seqsf,"%S_%d   %s\n", ajSeqsetName(seqset, i), ajSeqsetSeq(seqset, i));
+		    ajFmtPrintF(seqsf,"%S_%d   %s\n", 
+				ajSeqsetName(seqset, i),	
+				ajSeqsetSeq(seqset, i));
 		ajFmtPrintF(seqsf,"\n");
 	    }
 	    ajFileClose(&seqsf);
 
 
-	    /* Write single sequence to temp. file */
+	    /* Write single sequence to temp. file. */
 	    ajStrAssC(&seqfname, ajFileTempName(NULL));
 	    seqf = ajFileNewOut(seqfname);
 	    
@@ -224,22 +250,25 @@ int main(int argc, char **argv)
 	    if(modei==LIBGEN_HMMER)
 		ajFmtPrintS(&cmd,"hmmbuild -g %S %S",outname,seqsfname);
 	    else if(modei==LIBGEN_PSSM)
-		/* niter, evalue and database arg's have dummy values */
+		/* niter, evalue and database arg's have dummy values. */
 		ajFmtPrintS(&cmd,"blastpgp -i %S -B %S -j %d -e %f -d %S -C %S\n",
-			    seqfname, seqsfname, niter,evalue, database, outname);
+			    seqfname, seqsfname, niter,evalue, database, 
+			    outname);
 	    else if(modei==LIBGEN_SAM)
 	    {
 		ajStrAssC(&tmpfname, ajFileTempName(NULL));
 		ajStrAppC(&tmpfname, ".mod");
 
 
-		/* run modelfromalign */
-		ajFmtPrintS(&cmd,"modelfromalign %S -alignfile %S",tmpfname,seqsfname);
+		/* Run modelfromalign. */
+		ajFmtPrintS(&cmd,"modelfromalign %S -alignfile %S",tmpfname,
+			    seqsfname);
 		ajFmtPrint("%S\n", cmd);
 		system(ajStrStr(cmd));
 
 		/* Could run buildmodel to refine the model 
-		   ajFmtPrintS(&cmd,"buildmodel %S -train %S -alignfile %S",outname,tmpfname,seqsfname);
+		   ajFmtPrintS(&cmd,"buildmodel %S -train %S -alignfile %S",
+		   outname,tmpfname,seqsfname);
 		   ajFmtPrint("%S\n", cmd);
 		   system(ajStrStr(cmd));
 		   */
@@ -274,7 +303,7 @@ int main(int argc, char **argv)
 	    ajFileClose(&outf);	    
 	}
 
-	/* Tidy up */
+	/* Tidy up. */
 	ajStrDel(&inname);
 	if(scopalg)
 	    ajDmxScopalgDel(&scopalg);
@@ -284,7 +313,7 @@ int main(int argc, char **argv)
     
 
  
-    /* Tidy up */
+    /* Tidy up. */
     ajStrDel(&mode[0]);
     AJFREE(mode);
     ajListDel(&indir);
@@ -303,16 +332,20 @@ int main(int argc, char **argv)
 
 /* @funcstatic  libgen_simple_matrix ****************************************
 **
-** Undocumented.
+** Generate simple matrix.
 **
-** @param [?] seqset [AjPSeqset] Undocumented
-** @param [?] outf [AjPFile] Undocumented
-** @param [?] name [AjPStr] Undocumented
-** @param [?] threshold [ajint] Undocumented
+** @param [r] seqset [AjPSeqset] Set of sequences. 
+** @param [r] outf [AjPFile] Output file.
+** @param [r] name [AjPStr] Name.
+** @param [r] threshold [ajint] Threshold.
+** 
+** @return [void]
 ** @@
 ****************************************************************************/
-static void libgen_simple_matrix(AjPSeqset seqset, AjPFile outf, AjPStr name,
-                   ajint threshold)
+static void libgen_simple_matrix(AjPSeqset seqset, 
+				 AjPFile outf, 
+				 AjPStr name,
+				 ajint threshold)
 {
     const char *p;
     ajint nseqs;
@@ -334,7 +367,7 @@ static void libgen_simple_matrix(AjPSeqset seqset, AjPFile outf, AjPStr name,
 
     mlen = ajSeqsetLen(seqset);
     
-    /* Check sequences are the same length. Warn if not */
+    /* Check sequences are the same length. Warn if not. */
     for(i=0;i<nseqs;++i)
     {
         p = ajSeqsetSeq(seqset,i);
@@ -345,7 +378,7 @@ static void libgen_simple_matrix(AjPSeqset seqset, AjPFile outf, AjPStr name,
     for(i=0;i<LIBGEN_AZ+2;++i)
         AJCNEW0(matrix[i], mlen);
 
-    /* Load matrix */
+    /* Load matrix. */
     for(i=0;i<nseqs;++i)
     {
         p = ajSeqsetSeq(seqset,i);      
@@ -357,7 +390,7 @@ static void libgen_simple_matrix(AjPSeqset seqset, AjPFile outf, AjPStr name,
         }
     }
 
-    /* Get consensus sequence */
+    /* Get consensus sequence. */
     cons = ajStrNew();
     for(i=0;i<mlen;++i)
     {
@@ -371,7 +404,7 @@ static void libgen_simple_matrix(AjPSeqset seqset, AjPFile outf, AjPStr name,
         ajStrAppK(&cons,(char)(px+'A'));
     }
     
-    /* Find maximum score for matrix */
+    /* Find maximum score for matrix. */
     maxscore=0;
     for(i=0;i<mlen;++i)
     {
@@ -406,22 +439,35 @@ static void libgen_simple_matrix(AjPSeqset seqset, AjPFile outf, AjPStr name,
     return;
 }
 
-/* @funcstatic  libgen_gribskov_profile *************************************
+
+
+
+
+
+
+
+/* @funcstatic  libgen_gribskov_profile ***************************************
 **
-** Undocumented.
+** Generate Gribskov profile.
 **
-** @param [?] seqset [AjPSeqset] Undocumented
-** @param [?] outf [AjPFile] Undocumented
-** @param [?] name [AjPStr] Undocumented
-** @param [?] threshold [ajint] Undocumented
-** @param [?] gapopen [float] Undocumented
-** @param [?] gapextend [float] Undocumented
-** @param [?] cons [AjPStr*] Undocumented
+** @param [r] seqset [AjPSeqset] Set of sequences. 
+** @param [r] outf [AjPFile] Output file.
+** @param [r] name [AjPStr] Name.
+** @param [r] threshold [ajint] Threshold.
+** @param [r] gapopen [float] Gap open penalty. 
+** @param [r] gapextend [float] Gap extend penalty.
+** @param [w] cons [AjPStr*] Conservation.
+** 
+** @return [void]
 ** @@
-****************************************************************************/
+******************************************************************************/
 static void libgen_gribskov_profile(AjPSeqset seqset, 
-                      AjPFile outf, AjPStr name, ajint threshold,
-                      float gapopen, float gapextend, AjPStr *cons)
+				    AjPFile outf, 
+				    AjPStr name, 
+				    ajint threshold,
+				    float gapopen, 
+				    float gapextend, 
+				    AjPStr *cons)
 {
     AjPMatrixf matrix=0;
     AjPSeqCvt cvt=0;
@@ -464,9 +510,8 @@ static void libgen_gribskov_profile(AjPSeqset seqset,
 
 
 
-    /* Set gaps to be maximum length of gap that can occur
-     * including that position
-     */
+    /* Set gaps to be maximum length of gap that can occur including that 
+       position. */
     AJCNEW(gaps, mlen);
 
     for(i=0;i<mlen;++i)
@@ -477,7 +522,7 @@ static void libgen_gribskov_profile(AjPSeqset seqset,
             p=ajSeqsetSeq(seqset,j);
             if(i>=strlen(p))
                 continue;
-            if(ajAZToInt(p[i])!=27)       /* if not a gap */
+            if(ajAZToInt(p[i])!=27)  /* If not a gap. */
                 continue;
             pos = i;
             while(pos>-1 && ajAZToInt(p[pos])==27)
@@ -493,7 +538,7 @@ static void libgen_gribskov_profile(AjPSeqset seqset,
     }
 
 
-    /* get maximum score in scoring matrix */
+    /* Get maximum score in scoring matrix. */
     mmax=0.0;
     p=valid;
     while(*p)
@@ -509,14 +554,14 @@ static void libgen_gribskov_profile(AjPSeqset seqset,
     }
 
 
-    /* Create the weight matrix and zero it */
+    /* Create the weight matrix and zero it. */
     AJCNEW(weights, mlen);
     for(i=0;i<mlen;++i)
       AJCNEW0(weights[i], GRIBSKOV_LENGTH+1);
 
     /*
-     *  count the number of times each residue occurs at each
-     *  position in the alignment
+     **  Count the number of times each residue occurs at each
+     **  position in the alignment
      */
     for(i=0;i<mlen;++i)
         for(j=0;j<nseqs;++j)
@@ -542,18 +587,18 @@ static void libgen_gribskov_profile(AjPSeqset seqset,
     }
     
     
-    /* Now normalise the weights */
+    /* Normalise the weights. */
     for(i=0;i<mlen;++i)
         for(j=0;j<GRIBSKOV_LENGTH;++j)
             weights[i][j] /= (float)nseqs;
 
 
-    /* Create the profile matrix n*GRIBSKOV_LENGTH and zero it */
+    /* Create the profile matrix n*GRIBSKOV_LENGTH and zero it. */
     AJCNEW(mat, mlen);
     for(i=0;i<mlen;++i)
         AJCNEW0(mat[i],GRIBSKOV_LENGTH);
 
-    /* Fill the profile with aa scores */
+    /* Fill the profile with aa scores. */
     for(i=0;i<mlen;++i)
         for(p=valid;*p;++p)
         {
@@ -569,12 +614,13 @@ static void libgen_gribskov_profile(AjPSeqset seqset,
             mat[i][ajAZToInt(*p)] = sum;
         }
 
-    /* Calculate gap penalties */
+    /* Calculate gap penalties. */
     for(i=0;i<mlen;++i)
-        mat[i][GRIBSKOV_LENGTH-1]= (mmax / (gapopen+gapextend+(float)gaps[i]));
+        mat[i][GRIBSKOV_LENGTH-1]=
+	    (mmax / (gapopen+gapextend+(float)gaps[i]));
 
 
-    /* Get maximum matrix score */
+    /* Get maximum matrix score. */
     psum=0.0;
     for(i=0;i<mlen;++i)
     {
@@ -584,7 +630,7 @@ static void libgen_gribskov_profile(AjPSeqset seqset,
         psum+=pmax;
     }
     
-    /* Print matrix */
+    /* Print matrix. */
 
     ajFmtPrintF(outf,"# Gribskov Protein Profile\n");
     ajFmtPrintF(outf,"# Columns are amino acids A->Z\n");
@@ -626,22 +672,28 @@ static void libgen_gribskov_profile(AjPSeqset seqset,
 
 /* @funcstatic  libgen_henikoff_profile *************************************
 **
-** Undocumented.
+** Generate Henikoff profile.
 **
-** @param [?] seqset [AjPSeqset] Undocumented
-** @param [?] matrixf [AjPMatrixf] Undocumented
-** @param [?] threshold [ajint] Undocumented
-** @param [?] outf [AjPFile] Undocumented
-** @param [?] name [AjPStr] Undocumented
-** @param [?] gapopen [float] Undocumented
-** @param [?] gapextend [float] Undocumented
-** @param [?] cons [AjPStr*] Undocumented
+** @param [r] seqset [AjPSeqset] Set of sequences. 
+** @param [r] matrixf [AjPMatrixf] Substitution matrix.
+** @param [r] threshold [ajint] Threshold.
+** @param [r] outf [AjPFile] Output file.
+** @param [r] name [AjPStr] Name.
+** @param [r] gapopen [float] Gap open penalty. 
+** @param [r] gapextend [float] Gap extend penalty.
+** @param [w] cons [AjPStr*] Conservation.
+** 
+** @return [void]
 ** @@
 ****************************************************************************/
-static void libgen_henikoff_profile(AjPSeqset seqset, AjPMatrixf matrix, 
+static void libgen_henikoff_profile(AjPSeqset seqset, 
+				    AjPMatrixf matrix, 
 				    ajint threshold,  
-				    AjPFile outf, AjPStr name, float gapopen, 
-				    float gapextend, AjPStr *cons)
+				    AjPFile outf, 
+				    AjPStr name, 
+				    float gapopen, 
+				    float gapextend, 
+				    AjPStr *cons)
 {
     float **mat;
     ajint nseqs;
@@ -692,7 +744,7 @@ static void libgen_henikoff_profile(AjPSeqset seqset, AjPMatrixf matrix,
             if(i>=strlen(p))
                 continue;
             if(ajAZToInt(p[i])!=27)
-                continue; /* if not a gap */
+                continue; /* If not a gap. */
             pos = i;
             while(pos>-1 && ajAZToInt(p[pos])==27)
                 --pos;
@@ -706,7 +758,7 @@ static void libgen_henikoff_profile(AjPSeqset seqset, AjPMatrixf matrix,
         gaps[i]=gsum;
     }
 
-    /* get maximum score in scoring matrix */
+    /* Get maximum score in scoring matrix. */
     mmax=0;
     p=valid;
     while(*p)
@@ -722,14 +774,14 @@ static void libgen_henikoff_profile(AjPSeqset seqset, AjPMatrixf matrix,
     }
 
 
-    /* Create the weight matrix and zero it */
+    /* Create the weight matrix and zero it. */
     AJCNEW(weights, mlen);
     for(i=0;i<mlen;++i)
         AJCNEW0(weights[i],HENIKOFF_LENGTH+1);
 
     /*
-     *  count the number of times each residue occurs at each
-     *  position in the alignment
+     **  Count the number of times each residue occurs at each
+     **  position in the alignment
      */
     for(i=0;i<mlen;++i)
         for(j=0;j<nseqs;++j)
@@ -755,7 +807,7 @@ static void libgen_henikoff_profile(AjPSeqset seqset, AjPMatrixf matrix,
     
 
 
-    /* Count the number of different residues at each position */
+    /* Count the number of different residues at each position. */
 
     AJCNEW0(pcnt, mlen);
 
@@ -764,19 +816,19 @@ static void libgen_henikoff_profile(AjPSeqset seqset, AjPMatrixf matrix,
             if(weights[i][j])
                 ++pcnt[i];
     
-    /* weights = 1/(num diff res * count of residues at that position */
+    /* weights = 1/(num diff res * count of residues at that position. */
     for(i=0;i<mlen;++i)
         for(j=0;j<HENIKOFF_LENGTH-1;++j)
             if(weights[i][j])
                 weights[i][j] = 1.0/(weights[i][j]*(float)pcnt[i]);
 
 
-    /* Create the profile matrix n*HENIKOFF_LENGTH */
+    /* Create the profile matrix n*HENIKOFF_LENGTH. */
     AJCNEW(mat, mlen);
     for(i=0;i<mlen;++i)
       AJCNEW0(mat[i],HENIKOFF_LENGTH);
     
-    /* Fill the profile with aa scores */
+    /* Fill the profile with aa scores. */
     for(i=0;i<mlen;++i)
         for(p=valid;*p;++p)
         {
@@ -792,13 +844,13 @@ static void libgen_henikoff_profile(AjPSeqset seqset, AjPMatrixf matrix,
             mat[i][ajAZToInt(*p)] = sum;
         }
 
-    /* Calculate gap penalties */
+    /* Calculate gap penalties. */
     for(i=0;i<mlen;++i)
         mat[i][HENIKOFF_LENGTH-1]=(mmax / (gapopen+gapextend+
                                           (float)gaps[i]));
 
 
-    /* Get maximum matrix score */
+    /* Get maximum matrix score. */
     psum=0.0;
     for(i=0;i<mlen;++i)
     {
@@ -808,7 +860,7 @@ static void libgen_henikoff_profile(AjPSeqset seqset, AjPMatrixf matrix,
         psum+=pmax;
     }
 
-    /* Print matrix */
+    /* Print matrix. */
 
     ajFmtPrintF(outf,"# Henikoff Protein Profile\n");
     ajFmtPrintF(outf,"# Columns are amino acids A->Z\n");

@@ -35,7 +35,7 @@
 **  
 **  NOTES
 **  
-****************************************************************************/
+******************************************************************************/
 
 
 
@@ -48,24 +48,39 @@
 
 
 
+/******************************************************************************
+**
+** PROTOTYPES  
+**
+******************************************************************************/
+static AjBool domainseqs_AlignDomain(AjPSeq sp_seq, 
+				     AjPSeq pdb_seq, 
+				     AjPMatrixf matrix, 
+				     float gapopen, 
+				     float gapextend,
+				     ajint* start, 
+				     ajint* end);
 
-static AjBool domainseqs_AlignDomain(AjPSeq sp_seq, AjPSeq pdb_seq, 
-				AjPMatrixf matrix, float gapopen, 
-				float gapextend, ajint* start, 
-				ajint* end);
+static AjBool domainseqs_FindDomainLimits(AjPSeq sp_seq,
+					  AjPSeq pdb_seq, 
+					  AjPStr m,
+					  AjPStr n,
+					  ajint start1, 
+					  ajint start2,
+					  float gapopen, 
+					  float gapextend,
+					  float score, 
+					  AjPMatrixf matrix,
+					  ajint begina, 
+					  ajint beginb, 
+					  ajint* start, 
+					  ajint* end);
 
-static AjBool domainseqs_FindDomainLimits(AjPSeq sp_seq, AjPSeq pdb_seq, 
-				     AjPStr m, AjPStr n, ajint start1, 
-				     ajint start2, float gapopen, 
-				     float gapextend, float score, 
-				     AjPMatrixf matrix, ajint begina, 
-				     ajint beginb, ajint* start, ajint* end);
 
 
 
 
-
-/* @prog domainseqs ************************************************************
+/* @prog domainseqs ***********************************************************
 **
 **  Adds sequence records to a DCF file (domain classification file).
 **
@@ -74,43 +89,44 @@ static AjBool domainseqs_FindDomainLimits(AjPSeq sp_seq, AjPSeq pdb_seq,
 int main(int argc, char **argv)
 {
     ajint      start      = 0;    /* Start of the domain in the swissprot 
-				     sequence */
+				     sequence.                               */
     ajint      end        = 0;    /* End of the domain inthe swissprot 
-				     sequence */
+				     sequence.                               */
     
-    float      gapopen    = 0.0;  /* Gap insertion penalty*/
-    float      gapextend  = 0.0;  /* Gap extension penalty*/
+    float      gapopen    = 0.0;  /* Gap insertion penalty.                  */
+    float      gapextend  = 0.0;  /* Gap extension penalty.                  */
  
-    AjPStr     msg        = NULL; /* String used for messages */
-    AjPDir     dpdb_path  = NULL; /* Path of dpdb (clean domain) files */
-    AjPStr     dpdb_name  = NULL; /* Name of dpdb (clean domain) file */
-    AjPStr     dpdb_seq   = NULL; /* Holds the clean pdb sequence */
-    AjPStr     acc        = NULL; /* A string to hold an accession number */
+    AjPStr     msg        = NULL; /* String used for messages.               */
+    AjPDir     dpdb_path  = NULL; /* Path of dpdb (clean domain) files.      */
+    AjPStr     dpdb_name  = NULL; /* Name of dpdb (clean domain) file.       */
+    AjPStr     dpdb_seq   = NULL; /* Holds the clean pdb sequence.           */
+    AjPStr     acc        = NULL; /* A string to hold an accession number.   */
     AjPStr     db         = NULL; /* The name of the sequence database to 
-				     retrieve the sequences */
-    AjPStr     sp_dom_seq = NULL; /* The swissprot domain sequence */
+				     retrieve the sequences.                 */
+    AjPStr     sp_dom_seq = NULL; /* The swissprot domain sequence.          */
 
-    AjPFile    dpdb_inf   = NULL; /* File pointer for clean domain files */
-    AjPFile    domain_inf   = NULL; /* File pointer to DCF file */
-    AjPFile    pdbtosp_inf= NULL; /* File pointer to Epdbtosp.dat */
-    AjPFile    domain_outf  = NULL; /* File pointer for DCF output file */
-    AjPFile    errf       = NULL; /* Output log file */
+    AjPFile    dpdb_inf   = NULL; /* File pointer for clean domain files.    */
+    AjPFile    domain_inf = NULL; /* File pointer to DCF file.               */
+    AjPFile    pdbtosp_inf= NULL; /* File pointer to Epdbtosp.dat.           */
+    AjPFile    domain_outf= NULL; /* File pointer for DCF output file.       */
+    AjPFile    errf       = NULL; /* Output log file.                        */
     
-    AjPList    list       = NULL; /* A list to hold pdbtosp structures */
+    AjPList    list       = NULL; /* A list to hold pdbtosp structures.      */
     
     AjPSeq     sp_seq     = NULL; /* Sequence object to hold the retrieved 
-				     swissprot sequence */
+				     swissprot sequence.                     */
     AjPSeq     pdb_seq    = NULL; /* Sequence object to hold the retrieved 
-				     dpdb sequence */
+				     dpdb sequence.                          */
      
-    AjPMatrixf matrix;		  /* Substitution matrix*/
-    AjPDomain    domain       = NULL; /* Pointer to domain structure */
-    AjPPdb     pdb        = NULL; /* Pointer to pdb structure */
+    AjPMatrixf matrix;		  /* Substitution matrix.                    */
+    AjPDomain  domain     = NULL; /* Pointer to domain structure.            */
+    AjPPdb     pdb        = NULL; /* Pointer to pdb structure.               */
 
-    AjBool     getswiss   = ajFalse; /*Whether to retrieve swissprot 
-				       sequences for the domains */
+    AjBool     getswiss   = ajFalse; /* Whether to retrieve swissprot 
+				       sequences for the domains.            */
     
-    ajint     type = 0;   /* Type of domain (ajSCOP or ajCATH) in the DCF file */
+    ajint      type       = 0;   /* Type of domain (ajSCOP or ajCATH) in the 
+				    DCF file.                                */
 
     
     /* Initialise strings, lists,  etc */
@@ -142,25 +158,23 @@ int main(int argc, char **argv)
 
 
 
-    /* set up the pdbtosp object list */
+    /* Set up the pdbtosp object list. */
     if(getswiss)
 	list = ajPdbtospReadAllNew(pdbtosp_inf);
    
     type = ajDomainDCFType(domain_inf);
 
-    /* Start of main application loop */
+    /* Start of main application loop. */
     while((domain=(ajDomainReadCNew(domain_inf, "*", type))))
     {
 	ajStrAssS(&dpdb_name,ajDomainGetId(domain));
 	ajStrToLower(&dpdb_name);
-/*	ajStrApp(&dpdb_name,dpdb_extn); */
 
 	ajFmtPrintF(errf, "//\n%-15S\n", ajDomainGetId(domain));  
 	ajFmtPrint("//\n%-15S\n", ajDomainGetId(domain));  
 	
 
 	if(!(dpdb_inf=ajFileNewDirF(dpdb_path, dpdb_name)))
-/*	if(!(dpdb_inf=ajFileNewDF(dpdb_path, dpdb_name))) */
 	{
 	    ajStrAssS(&msg, dpdb_name);
 	    ajStrAppC(&msg, ".");
@@ -171,7 +185,7 @@ int main(int argc, char **argv)
 	    continue;
 	}
 	
-	/*Read the coordinate file for the domain*/
+	/* Read the coordinate file for the domain. */
 	if((!(pdb=ajPdbReadNew(dpdb_inf))))
 	{
 	    ajFmtPrintF(errf, "%-15s\n", "FILE_READ");  
@@ -183,15 +197,15 @@ int main(int argc, char **argv)
 	    continue;
 	}
 		
-	/* get and assign the pdb sequence */
+	/* Get and assign the pdb sequence. */
 	ajStrAssS(&dpdb_seq, pdb->Chains[0]->Seq);
 	
-	/* create a pdb sequence object */
+	/* Create a pdb sequence object. */
 	pdb_seq = ajSeqNew();
 	ajStrAssS(&pdb_seq->Name,dpdb_name);
 	ajStrAssS(&pdb_seq->Seq,dpdb_seq);
 	
-	/* add pdb sequence to the domain structure */
+	/* Add pdb sequence to the domain structure. */
 	if((domain->Type == ajSCOP))
 	    ajStrAssS(&domain->Scop->SeqPdb, dpdb_seq);
 	else
@@ -199,7 +213,7 @@ int main(int argc, char **argv)
 
 
 	
-	/* if we do not need the swissprot sequence */
+	/* If we do not need the swissprot sequence. */
 	if(!getswiss)
 	{
 	    ajDomainWrite(domain_outf,domain); 
@@ -211,11 +225,12 @@ int main(int argc, char **argv)
 	}
 	
 
-	/* We only want to retrieve a swissprot sequence 
-	   if the domain is not comprised of segments */
+	/* We only want to retrieve a swissprot sequence if the domain is not 
+	   comprised of segments. */
 	if(ajDomainGetN(domain) != 1)
 	{
-	    ajWarn("Will not retrieve swissprot sequence for segmented domain %S\n",dpdb_name);
+	    ajWarn("Will not retrieve swissprot sequence for segmented domain %S\n",
+		   dpdb_name);
 	    ajFmtPrintF(errf, "%-15s\n", "SEGMENTED_DOMAIN_NO_SP_SEQ");  
 	    ajDomainWrite(domain_outf,domain);
 	    ajFileClose(&dpdb_inf);
@@ -225,8 +240,8 @@ int main(int argc, char **argv)
 	    continue;
 	}
 	
-	/* given a pdb code get the accession number an list of pdbtoscop 
-	   structures */
+	/* Given a pdb code get the accession number an list of pdbtoscop 
+	   structures. */
 	if(!embPdbidToAcc(ajDomainGetPdb(domain),&acc,list))
 	{
 	    ajWarn("No accession number found for domain %S\n",dpdb_name);
@@ -239,13 +254,13 @@ int main(int argc, char **argv)
 	    continue;
 	}
 
-	/* add the accession number to the domain structure */
+	/* Add the accession number to the domain structure. */
 	if((domain->Type == ajSCOP))
 	    ajStrAssS(&domain->Scop->Acc,acc);
 	else
 	    ajStrAssS(&domain->Cath->Acc,acc);
 
-	/* get the swissprot sequence */
+	/* Get the swissprot sequence. */
 	sp_seq = ajSeqNew();
 
 	ajStrAssC(&db, "swissprot-acc:");
@@ -275,11 +290,9 @@ int main(int argc, char **argv)
 	else
 	    ajStrAssS(&domain->Cath->Spr,sp_seq->Name);
 
-	/***************************************************************************
-	 * find the swissprot sequence segment that is the same as the pdb sequence.
-	 ***************************************************************************/
+	/* Find swissprot sequence segment corresponding to pdb sequence. */
 	
-	/* first look for identical match */
+	/* First look for identical match. */
 	if((ajStrFind(sp_seq->Seq,dpdb_seq))>=0)
 	{
 	    start = ajStrFind(sp_seq->Seq,dpdb_seq);
@@ -297,8 +310,8 @@ int main(int argc, char **argv)
 	    }
 	}	
 	
-	/* Carry out Needle_Wunch pairwise alignment to find the 
-	   location of domain */
+	/* Carry out Needle_Wunch pairwise alignment to find the location of
+	   domain. */
 	else if (domainseqs_AlignDomain(sp_seq, pdb_seq, matrix, 
 				   gapopen, gapextend, &start, &end))
 	{
@@ -319,8 +332,8 @@ int main(int argc, char **argv)
 	else
 	    ajFatal("Fatal failure in domainseqs_AlignDomain\n");
 
-	/* get the domain sequence from the swissprot sequence trim it and write 
-	   to domain structure */
+	/* Get the domain sequence from the swissprot sequence trim it and 
+	   write to domain structure. */
 	ajStrAssSub(&sp_dom_seq, sp_seq->Seq, start, end);
 
 	if((domain->Type == ajSCOP))
@@ -328,10 +341,10 @@ int main(int argc, char **argv)
 	else
 	    ajStrAssS(&domain->Cath->SeqSpr,sp_dom_seq);
 
-	/*write out the domain structure */
+	/* write out the domain structure. */
 	ajDomainWrite(domain_outf,domain);
 
-	/* clean up */
+	/* Memory management. */
 	start = 0;
 	end   = 0;
 	
@@ -344,7 +357,7 @@ int main(int argc, char **argv)
     
 
     
-    /* Tidy up*/
+    /* Memory management.  */
     ajDirDel(&dpdb_path);
     ajMatrixfDel(&matrix);
     ajStrDel(&msg);
@@ -358,12 +371,11 @@ int main(int argc, char **argv)
     ajFileClose(&domain_outf);	    
     
 
-    /* Bye Bye */
     ajExit();
     return 0;
 }
 
-/* @funcstatic domainseqs_AlignDomain ***********************************************
+/* @funcstatic domainseqs_AlignDomain *****************************************
 **
 ** Align the pdb sequence to the full length swissprot sequence using Needleman 
 ** and Wunsch (adapted to find location (start & end) of pdb sequence in swissprot
@@ -379,42 +391,46 @@ int main(int argc, char **argv)
 **
 ** @return [AjBool] ajTrue on success
 ** @@
-*******************************************************************************/
-static AjBool domainseqs_AlignDomain(AjPSeq sp_seq, AjPSeq pdb_seq, AjPMatrixf matrix, 
-				float gapopen, float gapextend, ajint* start, 
-				ajint* end)
+******************************************************************************/
+static AjBool domainseqs_AlignDomain(AjPSeq sp_seq,
+				     AjPSeq pdb_seq, 
+				     AjPMatrixf matrix, 
+				     float gapopen,
+				     float gapextend, 
+				     ajint* start, 
+				     ajint* end)
 {
 
-    ajint         start1  = 0;	  /*Start of seq 1, passed as arg but not used*/
-    ajint         start2  = 0;	  /*Start of seq 2, passed as arg but not used*/
-    ajint         maxarr  = 300;  /*Initial size for matrix*/
-    ajint         len;
-    ajint         lena;
-    ajint         lenb;
-    ajint        *compass;
+    ajint      start1  = 0;	    /* Start of seq 1, passed but not used. */
+    ajint      start2  = 0;	    /* Start of seq 2, passed but not used. */
+    ajint      maxarr  = 300;       /* Initial size for matrix. */
+    ajint      len;
+    ajint      lena;
+    ajint      lenb;
+    ajint     *compass;
 
-    ajint        begina;
-    ajint        beginb;
+    ajint      begina;
+    ajint      beginb;
 
-    const char         *p;
-    const char         *q;
+    const char *p;
+    const char *q;
 
-    float        **sub;
-    float        id       = 0.;	  /*Passed as arg but not used here*/
-    float        sim      = 0.;	
-    float        idx      = 0.;	  /*Passed as arg but not used here*/
-    float        simx     = 0.;	  /*Passed as arg but not used here*/
-    float        *path;
-    float        score;    
+    float    **sub;
+    float      id       = 0.;	    /* Passed as arg but not used here. */
+    float      sim      = 0.;	
+    float      idx      = 0.;	    /* Passed as arg but not used here. */
+    float      simx     = 0.;	    /* Passed as arg but not used here. */
+    float     *path;
+    float      score;    
+    
+    AjPStr     m        = NULL;     /* Passed as arg but not used here. */
+    AjPStr     n        = NULL;     /* Passed as arg but not used here. */
 
-    AjPStr       m        = NULL; /*Passed as arg but not used here*/
-    AjPStr       n        = NULL; /*Passed as arg but not used here*/
-
-    AjPSeqCvt   cvt       = 0;
-    AjBool      show      = ajFalse; /*Passed as arg but not used here*/
+    AjPSeqCvt  cvt       = 0;
+    AjBool     show      = ajFalse; /* Passed as arg but not used here. */
 
 
-    /* Check args */
+    /* Check args. */
     if(!sp_seq || !pdb_seq || !matrix || !start || !end)
     {
 	ajWarn("Bad args passed to domainseqs_AlignDomain");
@@ -459,7 +475,7 @@ static AjBool domainseqs_AlignDomain(AjPSeq sp_seq, AjPSeq pdb_seq, AjPMatrixf m
     ajStrAssC(&n,"");
     
     
-    /* Call alignment functions */
+    /* Call alignment functions. */
     embAlignPathCalc(p,q,lena,lenb, gapopen,gapextend,path,sub,cvt,
 		     compass,show);
 
@@ -472,26 +488,29 @@ static AjBool domainseqs_AlignDomain(AjPSeq sp_seq, AjPSeq pdb_seq, AjPMatrixf m
 
     embAlignCalcSimilarity(m,n,sub,cvt,lena,lenb,&id,&sim,&idx, &simx);
 
-    /* calculate the start and end of the alignment relative to the 
-       swissprot numbering */
+    /* Calculate the start and end of the alignment relative to the 
+       swissprot numbering. */
     domainseqs_FindDomainLimits(sp_seq, pdb_seq, m, n, start1, start2,	
 			   gapopen, gapextend, score, matrix, begina,
 			   beginb, start, end);
    
     
     
-    /* Tidy up */
+    /* Tidy up. */
     AJFREE(compass);
     AJFREE(path);
     ajStrDel(&m);
     ajStrDel(&n);
     
-    /* Bye Bye */
+    /* Bye Bye. */
     return ajTrue;
 }    
 
 
-/* @funcstatic domainseqs_FindDomainLimits **************************************
+
+
+
+/* @funcstatic domainseqs_FindDomainLimits ************************************
 **
 ** Calculates the start and end of the alignment relative to the swissprot 
 ** numbering.
@@ -513,13 +532,22 @@ static AjBool domainseqs_AlignDomain(AjPSeq sp_seq, AjPSeq pdb_seq, AjPMatrixf m
 ** @param [w] end       [ajint*] The end of the alignment (domain) in the 
 **			         swissprot sequence.
 ** @return [AjBool]
-*******************************************************************************/
+******************************************************************************/
 
-static AjBool domainseqs_FindDomainLimits(AjPSeq sp_seq, AjPSeq pdb_seq,AjPStr m, 
-				     AjPStr n,	ajint start1, ajint start2, 
-				     float gapopen, float gapextend, float score, 
-				     AjPMatrixf matrix, ajint begina, 
-				     ajint beginb, ajint* start, ajint* end)
+static AjBool domainseqs_FindDomainLimits(AjPSeq sp_seq, 
+					  AjPSeq pdb_seq,
+					  AjPStr m, 
+					  AjPStr n,
+					  ajint start1, 
+					  ajint start2, 
+					  float gapopen, 
+					  float gapextend, 
+					  float score, 
+					  AjPMatrixf matrix, 
+					  ajint begina, 
+					  ajint beginb, 
+					  ajint* start, 
+					  ajint* end)
 { 
     AjPSeq res1       = NULL;
     AjPSeq res2       = NULL;
@@ -542,8 +570,8 @@ static AjBool domainseqs_FindDomainLimits(AjPSeq sp_seq, AjPSeq pdb_seq,AjPStr m
     const char* a;
     const char* b;
 
-    ajint no_gaps_sp  = 0;   /* the number of gaps in the swissprot sequence */
-    ajint no_gaps_pdb = 0;   /* the number of gaps in the pdb sequence */
+    ajint no_gaps_sp  = 0;   /* The number of gaps in the swissprot sequence. */
+    ajint no_gaps_pdb = 0;   /* The number of gaps in the pdb sequence. */
     
     ajDebug("embAlignReportGlobal %d %d\n", start1, start2);
     ajDebug("  sp_seq: '%S' \n", ajSeqStr(sp_seq));
@@ -565,11 +593,11 @@ static AjBool domainseqs_FindDomainLimits(AjPSeq sp_seq, AjPSeq pdb_seq,AjPStr m
     a = ajSeqChar(sp_seq);
     b = ajSeqChar(pdb_seq);
     
-    /* generate the full aligned sequences */
+    /* Generate the full aligned sequences. */
     ajStrModL (&fa, maxlen);
     ajStrModL (&fb, maxlen);
 
-    /* pad the start of either sequence */
+    /* Pad the start of either sequence. */
     if(start1>start2)
     {
 	for(i=0;i<start1;++i)
@@ -603,37 +631,30 @@ static AjBool domainseqs_FindDomainLimits(AjPSeq sp_seq, AjPSeq pdb_seq,AjPStr m
     alen=ajSeqLen(sp_seq) - apos;
     blen=ajSeqLen(pdb_seq) - bpos;
 
-    ajDebug("alen: %d blen: %d apos: %d bpos: %d\n", alen, blen, apos, bpos);
+    ajDebug("alen: %d blen: %d apos: %d bpos: %d\n", 
+	    alen, blen, apos, bpos);
 
     if(alen>blen)
     {
 	(void) ajStrAppC(&fa,&a[apos]);
 	for(i=0;i<blen;++i)
-	{
 	    (void) ajStrAppK(&fb,b[bpos+i]);
-	}	
 	nc=alen-blen;
 	for(i=0;i<nc;++i)
-	{
 	    (void) ajStrAppC(&fb," ");
-	}
     }	
     
     else if(blen>alen)
     {
 	(void) ajStrAppC(&fb,&b[bpos]);
 	for(i=0;i<alen;++i)
-	{
 	    (void) ajStrAppK(&fa,a[apos+i]);
-	}
 	nc=blen-alen;
 	for(i=0;i<nc;++i)
-	{
 	    (void) ajStrAppC(&fa," ");
-	}
     }
 
-    /* same length, just copy */
+    /* Same length, just copy. */
     else			
     {
 	(void) ajStrAppC(&fa,&a[apos]);
@@ -650,9 +671,7 @@ static AjBool domainseqs_FindDomainLimits(AjPSeq sp_seq, AjPSeq pdb_seq,AjPStr m
     end1 = start1 - ajStrCountK(m, '-') + ajStrLen(m);
     end2 = start2 - ajStrCountK(n, '-') + ajStrLen(n);
 
-    /********************************************************************
-     ** Find the domain boundries form the sequence alignment
-     *******************************************************************/
+    /* Find the domain boundries form the sequence alignment. */
 
     no_gaps_sp  = (alen + (end1 - ajStrLen(sp_seq->Seq)));
     no_gaps_pdb = (blen + (end2 - ajStrLen(pdb_seq->Seq)));

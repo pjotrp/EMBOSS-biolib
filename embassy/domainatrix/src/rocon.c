@@ -37,7 +37,7 @@
 **  
 **  NOTES
 **  
-****************************************************************************/
+******************************************************************************/
 
 #include "emboss.h"
 
@@ -45,7 +45,7 @@
 
 
 
-/* @prog rocon **************************************************************
+/* @prog rocon ****************************************************************
 **
 ** Reads a DHF file (domain hits file) of hits (sequences of unknown structural
 ** classification) and a domain families file (validation sequences of known 
@@ -89,7 +89,7 @@ int main(int argc, char **argv)
 
 
     
-    /* ACD processing */
+    /* ACD processing. */
     ajNamInit("emboss");
     ajAcdInitP("rocon",argc,argv,"DOMAINATRIX");
 
@@ -112,7 +112,7 @@ int main(int argc, char **argv)
 
 
 
-    /* Read input files */
+    /* Read input files. */
     hitsin_l  = embHitlistReadFasta(hitsin);
 
     while((validin_tmp = embHitlistReadFasta(validin)))
@@ -127,14 +127,13 @@ int main(int argc, char **argv)
 		nrelated += validin_tmp->N;
     }
 
-
-
-    /* Classify hits & sort results for output */
+    /* Classify hits & sort results for output. */
     if(moden==1)
     {
 	if(!(embHitlistClassify(&hitsin_l, validin_l, thresh)))
 	    ajFatal("embHitlistClassify failed\n");
     }
+
 
 
     for(x=0; x<hitsin_l->N; x++)
@@ -150,7 +149,7 @@ int main(int argc, char **argv)
     
 
 
-    /* Write output file */
+    /* Write output file. */
     ajFmtPrintF(hitsout, "> RELATED %d ; ROC %d\n", nrelated, maxroc);
     for(x=0; x<nhitsin; x++)
 	ajFmtPrintF(hitsout, "%-13S%-10S%-6d%-6d\n", 
@@ -161,7 +160,7 @@ int main(int argc, char **argv)
     
 
 
-    /* Free memory & exit cleanly */
+    /* Free memory & exit cleanly. */
     ajFileClose(&hitsin);
     embHitlistDel(&hitsin_l);
     ajListDel(&hitsin_tmp);
