@@ -105,6 +105,7 @@ static ajint prettyplot_fillinboxes(float ystart, ajint length, ajint numseq,
 int main(int argc, char **argv)
 {
     ajint i,numseq,j=0,numres,count,k;
+    ajint kmax;
     float defheight,currentheight;
     AjPStr shade=0,pair=0;
     AjPGraph graph = 0;
@@ -254,7 +255,7 @@ int main(int argc, char **argv)
 	if(sscanf(ajStrStr(pair),"%f,%f,%f",&identthresh,&simthresh,
 		  &relthresh) != 3)
 	{
-	    ajUser("pair %S could not be read. Default of 1.5,1.0,0.5"
+	    ajFatal("pair %S could not be read. Default of 1.5,1.0,0.5"
 		   " being used",pair);
 	    identthresh = 1.5;
 	    simthresh = 1.0;
@@ -286,12 +287,12 @@ int main(int argc, char **argv)
 		colourbyshade = AJTRUE;
 	    }
 	    else
-		ajUser("Shade %S has unkown characters only BLPW allowed",
+		ajFatal("Shade %S has unknown characters only BLPW allowed",
 		       shade);
 	}
 	else
-	    ajUser("Shade Selected but invalid must be 4 "
-		   "chars ajlong %S",shade);
+	    ajFatal("Shade Selected but invalid must be 4 "
+		   "chars long %S",shade);
     }
   
   
@@ -398,7 +399,7 @@ int main(int argc, char **argv)
 	ajFmtPrintS(&fname,"prettyplot%d.dat",fcnt++);
 	if(!(outf=ajFileNewOut(fname)))
 	    ajFatal("Cannot open file %S",fname);
-	ajUser("Writing to file %S",fname);
+	/*ajUser("Writing to file %S",fname);*/
 	ajFmtPrintF(outf,"##Graphic\n##Screen x1 %f y1 %f x2 %f y2 %f\n",
 		    -1.0-(float)charlen,0.0,
 		    (float)numres+10.0+(float)(numres/resbreak),
@@ -494,8 +495,8 @@ int main(int argc, char **argv)
 	}
     }
     
-    
-    for(k=0; k< ajSeqsetLen(seqset); k++)
+    kmax = ajSeqsetLen(seqset) - 1;
+    for(k=0; k<= kmax; k++)
     {
     
 	/* calculate the consensus */
@@ -807,7 +808,7 @@ int main(int argc, char **argv)
 			ajFmtPrintS(&fname,"prettyplot%d.dat",fcnt++);
 			if(!(outf=ajFileNewOut(fname)))
 			    ajFatal("Cannot open file %S",fname);
-			ajUser("Writing to file %S",fname);
+			/*ajUser("Writing to file %S",fname);*/
 			ajFmtPrintF(outf,"##Graphic\n##Screen x1 %f y1 %f"
 				    " x2 %f y2 %f\n",-1.0-(float)charlen,0.0,
 				    (float)numres+10.0+(float)
@@ -847,7 +848,7 @@ int main(int argc, char **argv)
 		    }	  
 		    if(previous[j] != part)
 			/* draw vertical line */
-			seqboxptr[j][k] += BOXLEF;
+			seqboxptr[j][k] |= BOXLEF;
 
 		    if(j==0)
 		    {	/* special case for horizontal line */
@@ -855,7 +856,7 @@ int main(int argc, char **argv)
 			{
 			    currentstate = 1;
 			    /* draw hori line */
-			    seqboxptr[j][k] += BOXTOP;
+			    seqboxptr[j][k] |= BOXTOP;
 			}
 			else
 			    currentstate = 0;
@@ -865,13 +866,13 @@ int main(int argc, char **argv)
 			if(part != currentstate)
 			{
 			    /*draw hori line */
-			    seqboxptr[j][k] += BOXTOP;
+			    seqboxptr[j][k] |= BOXTOP;
 			    currentstate = part;
 			}
 		    }
 		    if(j== numseq-1 && currentstate)
 			/* draw horiline at bottom */
-			seqboxptr[j][k] += BOXBOT;
+			seqboxptr[j][k] |= BOXBOT;
 
 		    previous[j] = part;
 		}
@@ -881,16 +882,16 @@ int main(int argc, char **argv)
 		    if(previous[j])
 		    {
 			/* draw vertical line */
-			seqboxptr[j][k] += BOXLEF;
+			seqboxptr[j][k] |= BOXLEF;
 		    }
 		    previous[j] = 0;
 		}
-		if(count == numres || countforgap >= resbreak )
+		if(count == numres || k == kmax || countforgap >= resbreak )
 		{			/* last one on the row or a break*/
 		    if(previous[j])
 		    {
 			/* draw vertical line */
-			seqboxptr[j][k] += BOXRIG;
+			seqboxptr[j][k] |= BOXRIG;
 		    }
 		    previous[j] = 0;
 		}
@@ -905,7 +906,7 @@ int main(int argc, char **argv)
 		       || identical[ajSeqCvtK (cvt, seqcharptr[j][k])] >=
 		       fplural )
 
-			seqboxptr[j][k] += BOXCOLOURED;
+			seqboxptr[j][k] |= BOXCOLOURED;
 		}
       
 	    /* END OF BOXES */
@@ -987,7 +988,7 @@ int main(int argc, char **argv)
 	    ajFmtPrintS(&fname,"prettyplot%d.dat",fcnt++);
 	    if(!(outf=ajFileNewOut(fname)))
 		ajFatal("Cannot open file %S",fname);
-	    ajUser("Writing to file %S",fname);
+	    /*ajUser("Writing to file %S",fname);*/
 	    ajFmtPrintF(outf,"##Graphic\n##Screen x1 %f y1 %f"
 			" x2 %f y2 %f\n",-1.0-(float)charlen,0.0,
 			(float)numres+10.0+(float)
@@ -1121,7 +1122,12 @@ static ajint prettyplot_fillinboxes(float ystart, ajint length, ajint numseq,
     ajint thiscol=0;
     float defcs=0.;
     float curcs=0.;
-    
+
+    ajDebug ("prettyplot_fillinboxes start:%d end:%d numres:%d resbreak:%d\n",
+	     start, end, numres, resbreak);
+    ajDebug ("prettyplot_fillinboxes boxcol:%b boxit:%b\n",
+	    boxcol, boxit);
+
     ajStrAppC(&strcon,"Consensus");
     ajStrTruncate(&strcon,charlen);
 
