@@ -207,6 +207,11 @@ AC_ARG_WITH(thread,
 		LDFLAGS="$LDFLAGS -lpthread"
 		LIBS="$LIBS -lpthread"
 	  fi
+	  if test "$withval" = "osf" ; then
+	        CFLAGS="$CFLAGS -D_REENTRANT -D_OSF_SOURCE" 
+		LDFLAGS="$LDFLAGS -lpthread"
+		LIBS="$LIBS -lpthread"
+	  fi
 else
   AC_MSG_RESULT(no)
 fi], [
