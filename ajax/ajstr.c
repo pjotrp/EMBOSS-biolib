@@ -4067,11 +4067,10 @@ AjIStr ajStrIterBack (const AjPStr thys)
 
 AjIStr ajStrIterNext (AjIStr iter)
 {
-
-    if(iter->Ptr == iter->End)
-	return NULL;
     
     iter->Ptr++;
+    if(iter->Ptr > iter->End)
+	return NULL;
 
     return iter;
 }
@@ -4088,10 +4087,11 @@ AjIStr ajStrIterNext (AjIStr iter)
 AjIStr ajStrIterBackNext (AjIStr iter)
 {
 
-    if(iter->Ptr == iter->Start)
-	return NULL;
     
     iter->Ptr--;
+
+    if(iter->Ptr < iter->Start)
+	return NULL;
 
     return iter;
 }
