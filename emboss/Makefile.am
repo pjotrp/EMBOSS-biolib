@@ -53,7 +53,7 @@ stssearch supermatcher swissparse syco \
 textsearch tfextract tfm tfscan \
 tmap transeq trimest trimseq \
 vectorstrip \
-water wobble wordcount wordmatch \
+water whichdb wobble wordcount wordmatch \
 wossname
 
 INCLUDES = -I$(top_srcdir)/nucleus -I$(top_srcdir)/ajax -I$(top_srcdir)/plplot
@@ -217,6 +217,7 @@ trimest_SOURCES = trimest.c
 trimseq_SOURCES = trimseq.c
 vectorstrip_SOURCES = vectorstrip.c
 water_SOURCES = water.c
+whichdb_SOURCES = whichdb.c
 wobble_SOURCES = wobble.c
 wordcount_SOURCES = wordcount.c
 wordmatch_SOURCES = wordmatch.c

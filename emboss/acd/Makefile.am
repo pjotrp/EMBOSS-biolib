@@ -44,8 +44,8 @@ pkgdata2_DATA =	megamerger.acd merger.acd msbar.acd \
 	stretcher.acd stssearch.acd supermatcher.acd syco.acd \
 	testplot.acd textsearch.acd tfextract.acd tfm.acd \
 	tfscan.acd tmap.acd transeq.acd treetypedisplay.acd \
-	trimest.acd trimseq.acd vectorstrip.acd water.acd wobble.acd \
-	wordcount.acd wordmatch.acd wossname.acd
+	trimest.acd trimseq.acd vectorstrip.acd water.acd whichdb.acd \
+	wobble.acd wordcount.acd wordmatch.acd wossname.acd
 
 pkgdatadir=$(prefix)/share/$(PACKAGE)/acd
 pkgdata2dir=$(prefix)/share/$(PACKAGE)/acd
