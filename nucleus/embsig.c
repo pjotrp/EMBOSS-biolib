@@ -1512,7 +1512,8 @@ AjPHit embHitReadFasta(AjPFile inf)
 	}
 	else
 	{
-	    ajStrApp(&hit->Seq, line);
+	    if(hit)
+		ajStrApp(&hit->Seq, line);
 	}
     }
 
