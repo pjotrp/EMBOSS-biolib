@@ -74,12 +74,8 @@ public class SequenceList extends JFrame
       table.addColumn(column);
     }
 
-    JTableHeader header = table.getTableHeader();
-    header.setUpdateTableInRealTime(false);
-
     JScrollPane scrollpane = new JScrollPane(table);
     scrollpane.setSize(300,100);
-    scrollpane.getViewport().add(table);
     getContentPane().add(scrollpane, BorderLayout.CENTER);
 
     JPanel buttonPanel = new JPanel(new FlowLayout());
@@ -93,7 +89,7 @@ public class SequenceList extends JFrame
         seqModel.insertRow(row+1);
         table.tableChanged(new TableModelEvent(seqModel, row+1, row+1, 
                 TableModelEvent.ALL_COLUMNS, TableModelEvent.INSERT));
-        table.repaint();
+//      table.repaint();
       }
     });
     buttonPanel.add(addSeq);
@@ -108,7 +104,7 @@ public class SequenceList extends JFrame
         {
           table.tableChanged(new TableModelEvent(seqModel, row+1, row+1,
                 TableModelEvent.ALL_COLUMNS, TableModelEvent.INSERT));
-          table.repaint();
+//        table.repaint();
         }
       }
     });
@@ -154,6 +150,11 @@ class CheckCellRenderer extends JCheckBox implements TableCellRenderer
   }
 }
 
+/**
+*
+* Content of each column in the JTable
+*
+*/
 class ColumnData
 {
   protected String title;
@@ -167,7 +168,11 @@ class ColumnData
   }
 }
 
-
+/**
+*
+* Content of each row in the JTable
+*
+*/
 class SequenceData
 {
   public String s_name;
