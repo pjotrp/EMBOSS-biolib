@@ -4929,8 +4929,8 @@ AjBool ajXyzCpdbWriteDomain(AjPFile errf, AjPFile outf, AjPPdb pdb,
 
     
     /* Write co-ordinates list to domain coordinate file */        
-    for(nostart=ajFalse, noend=ajFalse, 
-	z=0; z<scop->N;
+    for(nostart=ajFalse, noend=ajFalse, z=0;
+	z<scop->N;
 	z++,found_start=ajFalse, found_end=ajFalse)
     {
 	/*
