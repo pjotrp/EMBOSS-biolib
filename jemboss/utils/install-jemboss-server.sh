@@ -663,6 +663,15 @@ if [ "$EMBOSS_INSTALL" = "" ]; then
   EMBOSS_INSTALL=/usr/local/emboss
 fi
 
+if [ "$EMBOSS_INSTALL/share/EMBOSS/jemboss" ]; then
+  echo 
+  echo "Jemboss has already be installed to: "
+  echo "$EMBOSS_INSTALL/share/EMBOSS/jemboss "
+  echo "It is recommended this is removed before continuing."
+  echo "To continue press return."
+  read BLANK
+fi
+
 echo "$EMBOSS_INSTALL" >> $RECORD
 
 if [ $INSTALL_TYPE = "1" ]; then
