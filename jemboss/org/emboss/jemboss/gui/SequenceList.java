@@ -44,35 +44,8 @@ public class SequenceList extends JFrame
     setSize(500,200);
     table = new JTable();
     seqModel = new SequenceListTableModel();
-    table.setAutoCreateColumnsFromModel(false);
     table.setModel(seqModel);
     table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
-//create the columns of the table
-    for(int i=0;i<SequenceListTableModel.modelColumns.length;i++)
-    {
-      TableCellRenderer renderer;
-      if(i==SequenceListTableModel.COL_DEF)    
-        renderer = new CheckCellRenderer();
-      else
-      {
-        DefaultTableCellRenderer text = new DefaultTableCellRenderer();
-        text.setHorizontalAlignment(SequenceListTableModel.modelColumns[i].alignment);
-        renderer = text;
-      }
-
-      TableCellEditor editor;
-      if(i==SequenceListTableModel.COL_NAME ||
-         i==SequenceListTableModel.COL_PATH)
-        editor = new DefaultCellEditor(new JTextField());
-      else
-        editor = new DefaultCellEditor(new JCheckBox());
-
-      TableColumn column = new TableColumn(i,
-                        SequenceListTableModel.modelColumns[i].width,
-                        renderer,editor);
-      table.addColumn(column);
-    }
 
     JScrollPane scrollpane = new JScrollPane(table);
     scrollpane.setSize(300,100);
@@ -115,40 +88,6 @@ public class SequenceList extends JFrame
 
 }
 
-class CheckCellRenderer extends JCheckBox implements TableCellRenderer
-{
-  protected static Border m_noFocusBorder;
-
-  public CheckCellRenderer() 
-  {
-    super();
-    m_noFocusBorder = new EmptyBorder(1, 2, 1, 2);
-    setOpaque(true);
-    setBorder(m_noFocusBorder);
-  }
-
-  public Component getTableCellRendererComponent(JTable table,
-   Object value, boolean isSelected, boolean hasFocus,
-   int row, int column)
-  {
-    if (value instanceof Boolean) 
-    {
-      Boolean b = (Boolean)value;
-      setSelected(b.booleanValue());
-    }
-
-    setBackground(isSelected && !hasFocus ?
-      table.getSelectionBackground() : table.getBackground());
-    setForeground(isSelected && !hasFocus ?
-      table.getSelectionForeground() : table.getForeground());
-
-    setFont(table.getFont());
-    setBorder(hasFocus ? UIManager.getBorder(
-      "Table.focusCellHighlightBorder") : m_noFocusBorder);
-
-    return this;
-  }
-}
 
 /**
 *
@@ -212,6 +151,18 @@ class SequenceListTableModel extends AbstractTableModel
     new ColumnData("Path",150,JLabel.LEFT),
     new ColumnData("Default",15,JLabel.LEFT)
   };
+
+/*
+* JTable uses this method to determine the default renderer/
+* editor for each cell.  If we didn't implement this method,
+* then the last column would contain text ("true"/"false"),
+* rather than a check box.
+*/
+  public Class getColumnClass(int c) 
+  {
+    return getValueAt(0, c).getClass();
+  }
+
 
   public static final int COL_NAME = 0;
   public static final int COL_PATH = 1;
