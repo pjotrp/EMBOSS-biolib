@@ -1283,13 +1283,18 @@ AjBool ajNamGetValue (AjPStr name, AjPStr* value){
 AjBool ajNamGetValueC (char* name, AjPStr* value){
   NamPEntry fnew = 0;
   static AjPStr namstr = NULL;
+  AjBool hadPrefix = ajFalse;
   AjBool ret = ajFalse;
 
   if (ajStrPrefixCO(name, namPrefixStr)) /* may already have the prefix */
-    (void) ajStrAssC (&namstr, name);
-  else {
-    (void) ajStrAssS (&namstr, namPrefixStr);
-    (void) ajStrAppC (&namstr, name);
+  {
+      (void) ajStrAssC (&namstr, name);
+      hadPrefix = ajTrue;
+  }
+  else
+  {
+      (void) ajStrAssS (&namstr, namPrefixStr);
+      (void) ajStrAppC (&namstr, name);
   }
   /* upper case for ENV, otherwise don't care */
   (void) ajStrToUpper (&namstr);
@@ -1301,13 +1306,27 @@ AjBool ajNamGetValueC (char* name, AjPStr* value){
     return ajTrue;
   }
 
-  /* then test the table definitions */
+  /* then test the table definitions - with the prefix */
 
   fnew = ajTableGet(namMasterTable, ajStrStr(namstr));
   if (fnew) {
-    (void) ajStrAssS (value, fnew->value);
-    return ajTrue;
+      (void) ajStrAssS (value, fnew->value);
+      return ajTrue;
   }
+
+  if (!hadPrefix)
+  {
+
+      /* then test the table definitions - as originally specified */
+
+      fnew = ajTableGet(namMasterTable, name);
+      if (fnew)
+      {
+	  (void) ajStrAssS (value, fnew->value);
+	  return ajTrue;
+      }
+  }
+
 
   return ajFalse;
 }
@@ -2170,20 +2189,20 @@ AjBool ajNamResolve (AjPStr* name) {
   if (!namNameExp)
     namNameExp = ajRegCompC ("^\\$([A-Za-z0-9_]+)");
 
-  ajDebug ("ajNamResolve of '%S'\n", *name);
+  namUser ("ajNamResolve of '%S'\n", *name);
   ret = ajRegExec (namNameExp, *name);
   if (ret) {
     ajRegSubI(namNameExp, 1, &varname);
-    ajDebug ("variable '%S' found\n", varname);
+    namUser ("variable '%S' found\n", varname);
     (void) ajRegPost(namNameExp, &restname);
     ret = ajNamGetValue (varname, &varvalue);
     if (ret) {
       (void) ajStrAssS (name, varvalue);
       (void) ajStrApp (name, restname);
-      ajDebug ("converted to '%S'\n", *name);
+      namUser ("converted to '%S'\n", *name);
     }
     else {
-      ajDebug ("Variable unknown '$%S'\n", varname);
+      namUser ("Variable unknown '$%S'\n", varname);
       ajWarn ("Variable unknown in '%S'", *name);
     }
     ajStrDel(&varname);
