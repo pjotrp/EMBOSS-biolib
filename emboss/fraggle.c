@@ -82,7 +82,6 @@ int main(int argc, char **argv)
     ajint       len             = 0;     /* length of sequence hit                 */
     ajint       x               = 0;     /* Loop counters                          */
     ajint       y               = 0;     /* Loop counters                          */
-    ajint       mean            = 0;     /* Mean length of hits in file            */
     ajint       median          = 0;     /* Median length of sequence hits         */
     ajint       mid             = 0;     /* Middle value of seq_len array          */
     ajint       num_hits        = 0;     /* Number of hits in file                 */
