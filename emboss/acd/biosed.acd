@@ -1,6 +1,6 @@
 appl: biosed [
   documentation: "Replace or delete sequence sections"
-  groups: "Util:Editing"
+  groups: "Edit"
 ]
 
 seqall: sequence  [
