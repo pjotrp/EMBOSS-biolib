@@ -6574,7 +6574,12 @@ static AjBool featGetUsaSection(AjPStr* thys, AjPStr token, int* begin,
 
     p = ajStrStr(numbers);
     if(sscanf(p,"%d-%d",begin,end)!=2)
-	ok = ajFalse;
+    {
+	if(sscanf(p,"%d",begin)==1)
+	    *end=*begin;
+	else
+	    ok = ajFalse;
+    }
 
     ajStrApp(&db,entry2);
 
