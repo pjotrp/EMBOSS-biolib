@@ -152,43 +152,25 @@ gtggccaaacaggagaagaagaagaagaagacaggtcgggctaagcggcggatgcagtac
 aaccggcgctttgtcaacgttgtgcccacctttggcaagaagaagggccccaatgccaac
 tcttaa
 
-
-
 Data files
 
-
-
-
-None.
-        
+   None.
+   
 Notes
 
-
-
-
-None.
-        
+   None.
+   
 References
 
-
-
-
-None.
-        
+   None.
+   
 Warnings
 
-
-
-
-None.
-        
+   None.
+   
 Diagnostic Error Messages
 
-
-
-
-Several warning messages about malformed region specifications:
-
+   Several warning messages about malformed region specifications:
      * Non-digit found in region ...
      * Unpaired start of a region found in ...
      * Non-digit found in region ...

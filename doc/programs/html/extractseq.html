@@ -247,6 +247,7 @@ The output is a normal sequence file.
 <p>
 
 For example, the coding regions of em:hsfau1 are joined as:
+
 <p>
 <pre>
 % extractseq em:hsfau1 -reg "782..856,951..1095,1557..1612,1787..1912" stdout
@@ -263,19 +264,21 @@ cccacctttggcaagaagaagggccccaatgccaactcttaa
 
 <p>
 
-<p>
 If the option '-separate' is used then each specified region is written
 to the output file as a separate sequence.  The name of the sequence is
 created from the name of the original sequence with the start and end
 positions of the range appended with underscore characters between them,
 
 <p>
+
 For example: "XYZ region 2 to 34" is written as: "XYZ_2_34"
 
 <p>
 
 To output each of the exons in em:hsfau1 to a separate entry:
+
 <p>
+
 <pre>
 % extractseq em:hsfau1 -reg "782..856,951..1095,1557..1612,1787..1912" stdout -separate
 
@@ -292,7 +295,7 @@ gtaaagtccatggttccctggcccgtgctggaaaagtgagaggtcagactcctaag
 gtggccaaacaggagaagaagaagaagaagacaggtcgggctaagcggcggatgcagtac
 aaccggcgctttgtcaacgttgtgcccacctttggcaagaagaagggccccaatgccaac
 tcttaa
-<pre>
+</pre>
 
 
 
