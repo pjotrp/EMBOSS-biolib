@@ -85,8 +85,16 @@ static ajlong     btreeInsertShift(AjPBtcache cache, AjPBtpage *retpage,
 static void       btreeKeyShift(AjPBtcache cache, AjPBtpage tpage);
 
 
+
+
+#if 0
 static AjPBtpage  btreeTraverseLeaves(AjPBtcache cache, AjPBtpage thys);
 static void       btreeJoinLeaves(AjPBtcache cache);
+#endif
+
+
+
+
 static AjPBtpage  btreeFindINodeW(AjPBtcache cache, AjPBtpage page,
 				  const char *item);
 static AjPBtpage  btreePageFromKeyW(AjPBtcache cache, unsigned char *buf,
@@ -5151,6 +5159,7 @@ static void btreeKeyShift(AjPBtcache cache, AjPBtpage tpage)
 
 
 
+#if 0
 /* @funcstatic btreeTraverseLeaves *****************************************
 **
 ** Find the next leaf by traversing the tree
@@ -5245,10 +5254,12 @@ static AjPBtpage btreeTraverseLeaves(AjPBtcache cache, AjPBtpage thys)
 
     return page;
 }
+#endif
 
 
 
 
+#if 0
 /* @funcstatic btreeJoinLeaves ***********************************************
 **
 ** Update all Left/Right Leaf Pointers
@@ -5327,6 +5338,7 @@ static void btreeJoinLeaves(AjPBtcache cache)
 
     return;
 }
+#endif
 
 
 
