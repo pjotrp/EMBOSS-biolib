@@ -50,11 +50,11 @@ import org.emboss.jemboss.soap.GetWossname;
 public class BuildProgramMenu
 {
   /** database names */
-  private static String db[];
+  private static String db[] = {"",""};
   /** matrices */
-  private static Vector matrices;
+  private static Vector matrices = new Vector();
   /** codons usage tables  */
-  private static Vector codons;
+  private static Vector codons = new Vector();
   /** acd files cache */
   private Hashtable acdStore = new Hashtable();   
   private AuthPopup splashing;
@@ -150,6 +150,7 @@ public class BuildProgramMenu
                 }
               }
               String showdbOut = showdb.getDBText();
+
               Database d = new Database(showdbOut);
               db = d.getDB();
 
@@ -178,6 +179,15 @@ public class BuildProgramMenu
               Hashtable hwoss = (new JembossJarUtil("resources/wossname.jar")).getHash();
               if(hwoss.containsKey("wossname.out"))
                 woss = new String((byte[])hwoss.get("wossname.out"));
+
+              Hashtable hshowdb = (new JembossJarUtil("resources/showdb.jar")).getHash();
+              
+              if(hshowdb.containsKey("showdb.out"))
+              {
+                String showdbOut = new String((byte[])hshowdb.get("showdb.out"));
+                Database d = new Database(showdbOut);
+                db = d.getDB();
+              }
             }
             catch (Exception ex){ ex.printStackTrace(); }
 
