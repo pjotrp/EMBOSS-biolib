@@ -372,9 +372,10 @@ public class ShowSavedResults extends JFrame
               int maxHeight = (int)d1.getHeight()+5;
               if(maxHeight > 350)
                 maxHeight = 350;
-              Dimension d = new Dimension(maxWidth+30,maxHeight);
-              scrollDel.setPreferredSize(d);
-//            scrollDel.setMaximumSize(d);
+              else if(maxHeight < 50)
+                maxHeight = 50;
+              
+              scrollDel.setPreferredSize(new Dimension(maxWidth+30,maxHeight));
 
               ok = JOptionPane.showConfirmDialog(null,
                          scrollDel,"Confirm Deletion",
