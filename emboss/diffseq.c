@@ -563,7 +563,8 @@ static void diffseq_diff(AjPList matchlist, AjPSeq seq1, AjPSeq seq2, AjPFile
     char base2='\0';
     ajint len1;
     ajint len2;
-
+    AjPFeattable feat1;
+    AjPFeattable feat2;
 
     tmp = ajStrNew();
     name1 = ajStrNewC(ajSeqName(seq1));
@@ -574,11 +575,11 @@ static void diffseq_diff(AjPList matchlist, AjPSeq seq1, AjPSeq seq2, AjPFile
 
 
     /* get the feature table of the sequences */
-    AjPFeattable feat1 = ajSeqCopyFeat(seq1);
-    AjPFeattable feat2 = ajSeqCopyFeat(seq2);
+    feat1 = ajSeqCopyFeat(seq1);
+    feat2 = ajSeqCopyFeat(seq2);
 
 
-    /*
+     /*
      ** Obsolete. Return now unless outfile is defined.
      */
     

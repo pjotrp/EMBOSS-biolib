@@ -338,10 +338,9 @@ static void mwfilter_arraytidy(AjPDouble exparray, ajint *expn)
     ajint j;
     ajint n;
     ajint limit;
+    double v=0.;
 
     limit = *expn;
-
-    double v=0.;
 
     for(i=0,n=0;i<limit;++i)
 	if(ajDoubleGet(exparray,i) != DELETED)

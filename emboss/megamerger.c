@@ -116,7 +116,7 @@ static void megamerger_Merge(AjPList matchlist, AjPSeq seq1, AjPSeq seq2,
     EmbPWordMatch p = NULL;  		/* match structure */
     ajint count = 0;			/* count of matches */
     AjPStr seqstr;			/* merged sequence string */
-    AjPStr s1;		;		/* string of seq1 */
+    AjPStr s1;				/* string of seq1 */
     AjPStr s2;				/* string of seq2 */
     ajint prev1end = 0;
     ajint prev2end = 0;		/* end positions (+1) of previous match */
