@@ -2,6 +2,6 @@
 #
 appl:  [ doc: "testing" group: "testing" ]
 
-sequence: asequence 
+sequence: asequence [ ]
 
 outfile: outtest [ param: Y odirectory: "$(outdir)" ]
