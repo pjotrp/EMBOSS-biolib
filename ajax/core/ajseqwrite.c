@@ -83,6 +83,7 @@ static void       seqWriteNexus (AjPSeqout outseq);
 static void       seqWriteNexusnon (AjPSeqout outseq);
 static void       seqWritePhylip (AjPSeqout outseq);
 static void       seqWritePhylip3 (AjPSeqout outseq);
+static void       seqWriteSelex (AjPSeqout outseq);
 static void       seqWriteSeq (AjPSeqout outseq, SeqPSeqFormat sf);
 static void       seqWriteStaden (AjPSeqout outseq);
 static void       seqWriteStrider (AjPSeqout outseq);
@@ -125,6 +126,7 @@ static SeqOOutFormat seqOutFormat[] = { /* AJFALSE = write one file */
   {"fitch",      AJFALSE, AJFALSE, seqWriteFitch},
   {"msf",        AJFALSE, AJTRUE,  seqWriteMsf},
   {"clustal",    AJFALSE, AJTRUE,  seqWriteClustal},
+  {"selex",      AJFALSE, AJTRUE,  seqWriteSelex},
   {"aln",        AJFALSE, AJTRUE,  seqWriteClustal}, /* alias for clustal */
   {"phylip",     AJFALSE, AJTRUE,  seqWritePhylip},
   {"phylip3",    AJFALSE, AJTRUE,  seqWritePhylip3},
@@ -1173,6 +1175,216 @@ static void seqWriteClustal (AjPSeqout outseq) {
   }  
 
   return;
+}
+
+
+/* @funcstatic seqWriteSelex ************************************************
+**
+** Writes a sequence in Selex format.
+**
+** @param [P] outseq [AjPSeqout] Sequence output object.
+** @return [void]
+** @@
+******************************************************************************/
+
+static void seqWriteSelex (AjPSeqout outseq)
+{
+    ajint n;
+    ajint len=0;
+    ajint i=0;
+    ajint j=0;
+    ajint k=0;
+    
+    AjPSeq seq=NULL;
+    AjPSeq* seqs=NULL;
+    ajint test;
+    AjPSelexdata sdata=NULL;
+    AjPSelexSQ qdata=NULL;
+    ajint namelen=0;
+    ajint v=0;
+    AjBool sep=ajFalse;
+    AjPStr rfstr=NULL;
+    AjPStr csstr=NULL;
+    AjPStr ssstr=NULL;
+    char *p=NULL;
+    
+    ajDebug ("seqWriteSelex list size %d\n", ajListLength(outseq->Savelist));
+    
+    rfstr = ajStrNewC("#=RF");
+    csstr = ajStrNewC("#=CS");
+    ssstr = ajStrNewC("#=SS");
+    
+    n = ajListLength(outseq->Savelist);
+    if (!n)
+	return;
+    
+    test = ajListToArray (outseq->Savelist, (void***) &seqs);
+    ajDebug ("ajListToArray listed %d items\n", test);
+    
+    
+    
+    for (i=0; i < n; ++i)
+    {
+	seq = seqs[i];
+	if (len < ajSeqLen(seq))
+	    len = ajSeqLen(seq);
+    }  
+
+    sdata = seqs[0]->Selexdata;
+    if(sdata)
+    {
+	if(ajStrLen(sdata->id))
+	{
+	    sep=ajTrue;
+	    ajFmtPrintF(outseq->File,"#=ID %S\n",sdata->id);
+	}
+	if(ajStrLen(sdata->ac))
+	{
+	    sep=ajTrue;
+	    ajFmtPrintF(outseq->File,"#=AC %S\n",sdata->ac);
+	}
+	if(ajStrLen(sdata->de))
+	{
+	    sep=ajTrue;
+	    ajFmtPrintF(outseq->File,"#=DE %S\n",sdata->de);
+	}
+
+	if(sdata->ga[0] || sdata->ga[1])
+	{
+	    sep=ajTrue;
+	    ajFmtPrintF(outseq->File,"#=GA %.2f %.2f\n",sdata->ga[0],
+			sdata->ga[1]);
+	}
+
+	if(sdata->tc[0] || sdata->tc[1])
+	{
+	    sep=ajTrue;
+	    ajFmtPrintF(outseq->File,"#=TC %.2f %.2f\n",sdata->tc[0],
+			sdata->tc[1]);
+	}
+
+	if(sdata->nc[0] || sdata->nc[1])
+	{
+	    sep=ajTrue;
+	    ajFmtPrintF(outseq->File,"#=NC %.2f %.2f\n",sdata->nc[0],
+			sdata->nc[1]);
+	}
+	
+	if(ajStrLen(sdata->au))
+	{
+	    sep=ajTrue;
+	    ajFmtPrintF(outseq->File,"#=AU %S\n",sdata->au);
+	}
+
+	if(sep)
+	    ajFmtPrintF(outseq->File,"\n");
+
+
+	v=4;
+	for(i=0;i<n;++i)
+	{
+	    v = ajStrLen(seqs[i]->Selexdata->sq->name);
+	    namelen = (namelen > v) ? namelen : v;
+	}
+	for(i=0;i<n;++i)
+	{
+	    v = namelen - ajStrLen(seqs[i]->Selexdata->sq->name);
+	    for(j=0;j<v;++j)
+		ajStrAppK(&seqs[i]->Selexdata->sq->name,' ');
+	}
+	
+	
+	if(ajStrLen(sdata->sq->ac))
+	{
+	    for(i=0;i<n;++i)
+	    {
+		qdata = seqs[i]->Selexdata->sq;
+		ajFmtPrintF(outseq->File,"#=SQ %S %.2f %S %S %d..%d:%d %S\n",
+			    qdata->name,qdata->wt,qdata->source,qdata->ac,
+			    qdata->start,qdata->stop,qdata->len,qdata->de);
+	    }
+	}
+	ajFmtPrintF(outseq->File,"\n");
+    }
+
+
+    if(ajStrLen(seqs[0]->Selexdata->rf))
+    {
+	v = namelen - 4;
+	for(k=0;k<v;++k)
+	    ajStrAppK(&rfstr,' ');
+    }
+    if(ajStrLen(seqs[0]->Selexdata->cs))
+    {
+	v = namelen - 4;
+	for(k=0;k<v;++k)
+	    ajStrAppK(&csstr,' ');
+    }
+    if(ajStrLen(seqs[0]->Selexdata->ss))
+    {
+	v = namelen - 4;
+	for(k=0;k<v;++k)
+	    ajStrAppK(&ssstr,' ');
+    }
+    
+
+    
+    for(i=0;i<len;i+=50)
+    {
+	if(ajStrLen(seqs[0]->Selexdata->rf))
+	{
+	    p = ajStrStr(seqs[0]->Selexdata->rf);
+	    if(i+50>=len)
+		ajFmtPrintF(outseq->File,"%S %s\n",rfstr,&p[i]);
+	    else
+		ajFmtPrintF(outseq->File,"%S %-50.50s\n",rfstr,
+			    &p[i]);
+	}
+
+	if(ajStrLen(seqs[0]->Selexdata->cs))
+	{
+	    p = ajStrStr(seqs[0]->Selexdata->cs);
+	    if(i+50>=len)
+		ajFmtPrintF(outseq->File,"%S %s\n",csstr,&p[i]);
+	    else
+		ajFmtPrintF(outseq->File,"%S %-50.50s\n",csstr,
+			    &p[i]);
+	}
+	    
+
+	for(j=0;j<n;++j)
+	{
+	    sdata = seqs[j]->Selexdata;
+
+	    p = ajStrStr(sdata->str);
+	    if(i+50>=len)
+		ajFmtPrintF(outseq->File,"%S %s\n",sdata->sq->name,&p[i]);
+	    else
+		ajFmtPrintF(outseq->File,"%S %-50.50s\n",sdata->sq->name,
+			    &p[i]);
+	    if(ajStrLen(seqs[0]->Selexdata->ss))
+	    {
+		p = ajStrStr(seqs[0]->Selexdata->ss);
+		if(i+50>=len)
+		    ajFmtPrintF(outseq->File,"%S %s\n",ssstr,&p[i]);
+		else
+		    ajFmtPrintF(outseq->File,"%S %-50.50s\n",ssstr,
+				&p[i]);
+	    }
+
+	}
+	if(i+50<len)
+	    ajFmtPrintF(outseq->File,"\n");
+	
+    }
+    
+
+
+    ajStrDel(&rfstr);
+    ajStrDel(&csstr);
+    ajStrDel(&ssstr);
+    
+    return;
 }
 
 /* @funcstatic seqWriteMsf ***************************************************

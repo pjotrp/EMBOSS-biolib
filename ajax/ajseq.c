@@ -31,6 +31,7 @@
 static ajulong seqCrcTable[256];
 
 static void       seqCrcGen( void );
+static AjPSelexdata seqSelexClone(AjPSelexdata thys);
 
 
 /* ==================================================================== */
@@ -67,6 +68,56 @@ AjPSeqall ajSeqallNew (void) {
 
   return pthis;
 }
+
+
+/* @funcstatic seqSelexClone *************************************************
+**
+** Clone a Selexdata object
+**
+** @param [r] thys [AjPSelexdata] selex data object
+**
+** @return [AjPSelexdata] New selex data object.
+** @@
+******************************************************************************/
+
+static AjPSelexdata seqSelexClone(AjPSelexdata thys)
+{
+    AjPSelexdata pthis;
+
+    pthis = ajSelexdataNew();
+
+    ajStrAssS(&pthis->id, thys->id);
+    ajStrAssS(&pthis->ac, thys->ac);
+    ajStrAssS(&pthis->de, thys->de);
+    ajStrAssS(&pthis->au, thys->au);
+    ajStrAssS(&pthis->cs, thys->cs);
+    ajStrAssS(&pthis->rf, thys->rf);
+    ajStrAssS(&pthis->name, thys->name);
+    ajStrAssS(&pthis->str, thys->str);
+    ajStrAssS(&pthis->ss, thys->ss);
+
+    pthis->ga[0] = thys->ga[0];
+    pthis->ga[1] = thys->ga[1];
+    pthis->tc[0] = thys->tc[0];
+    pthis->tc[1] = thys->tc[1];
+    pthis->nc[0] = thys->nc[0];
+    pthis->nc[1] = thys->nc[1];
+
+    ajStrAssS(&pthis->sq->name, thys->sq->name);
+    ajStrAssS(&pthis->sq->source, thys->sq->source);
+    ajStrAssS(&pthis->sq->ac, thys->sq->ac);
+    ajStrAssS(&pthis->sq->de, thys->sq->de);
+
+    pthis->sq->wt    = thys->sq->wt;
+    pthis->sq->start = thys->sq->start;
+    pthis->sq->stop  = thys->sq->stop;
+    pthis->sq->len   = thys->sq->len;
+
+
+    return pthis;
+}
+
+
 
 /* ==================================================================== */
 /* ========================== destructors ============================= */
@@ -927,7 +978,8 @@ AjPSeq ajSeqNewL (size_t size) {
   pthis->Offend = 0;
   pthis->Weight = 1.0;
   pthis->Acclist = ajListstrNew();
-
+  pthis->Selexdata = ajSelexdataNew();
+  
   return pthis;
 }
 
@@ -971,8 +1023,105 @@ AjPSeq ajSeqNewS (AjPSeq seq) {
   ajListstrDel(&pthis->Acclist);
   pthis->Acclist = ajListstrNew();
 
+  pthis->Selexdata = seqSelexClone(seq->Selexdata);
+
   return pthis;
 }
+
+
+/* @func ajSelexSQNew ********************************************************
+**
+** Creates and initialises a selex #=SQ line object.
+**
+** @return [AjPSelexSQ] New sequence object.
+** @@
+******************************************************************************/
+
+AjPSelexSQ ajSelexSQNew()
+{
+    AjPSelexSQ thys=NULL;
+
+    AJNEW0(thys);
+
+    thys->name   = ajStrNew();
+    thys->source = ajStrNew();
+    thys->ac     = ajStrNew();
+    thys->de     = ajStrNew();
+
+    return thys;
+}
+
+
+/* @func ajSelexNew ********************************************************
+**
+** Creates and initialises a selex #=SQ line object.
+**
+** @param [r] n [ajint] Number of sequences
+** @return [AjPSelex] New sequence object.
+** @@
+******************************************************************************/
+
+AjPSelex ajSelexNew(ajint n)
+{
+    AjPSelex thys=NULL;
+    ajint    i;
+    
+    AJNEW0(thys);
+    thys->id = ajStrNew();
+    thys->ac = ajStrNew();
+    thys->de = ajStrNew();
+    thys->au = ajStrNew();
+    thys->cs = ajStrNew();
+    thys->rf = ajStrNew();
+    thys->n  = n;
+
+    AJCNEW(thys->name,n);
+    AJCNEW(thys->str,n);
+    AJCNEW(thys->ss,n);
+    AJCNEW(thys->sq,n);
+    
+    for(i=0;i<n;++i)
+    {
+	thys->name[i] = ajStrNew();
+	thys->str[i]  = ajStrNew();
+	thys->ss[i]   = ajStrNew();
+	thys->sq[i]   = ajSelexSQNew();
+    }
+
+    return thys;
+}
+
+
+/* @func ajSelexNew ********************************************************
+**
+** Creates and initialises a selex #=SQ line object.
+**
+** @param [r] n [ajint] Number of sequences
+** @return [AjPSelexdata] New sequence object.
+** @@
+******************************************************************************/
+
+AjPSelexdata ajSelexdataNew()
+{
+    AjPSelexdata thys=NULL;
+    
+    AJNEW0(thys);
+    thys->id = ajStrNew();
+    thys->ac = ajStrNew();
+    thys->de = ajStrNew();
+    thys->au = ajStrNew();
+    thys->cs = ajStrNew();
+    thys->rf = ajStrNew();
+
+    thys->name = ajStrNew();
+    thys->str  = ajStrNew();
+    thys->ss   = ajStrNew();
+    thys->sq   = ajSelexSQNew();
+
+    return thys;
+}
+
+
 
 /* ==================================================================== */
 /* ========================== destructors ============================= */
@@ -1026,11 +1175,125 @@ void ajSeqDel (AjPSeq* pthis) {
   while(ajListstrPop(thys->Acclist,&ptr))
       ajStrDel(&ptr);
   ajListDel(&thys->Acclist);
+
+  ajSelexdataDel(&thys->Selexdata);
   
 /*  ajListstrDel(&thys->Acclist);*/
 
   AJFREE (*pthis);
   return;
+}
+
+
+/* @func ajSelexSQDel ********************************************************
+**
+** Deletes a Selex object.
+**
+** @param [wP] pthis [AjPSelexSQ*] Selex #=SQ object
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajSelexSQDel(AjPSelexSQ *thys)
+{
+    AjPSelexSQ pthis = *thys;
+
+    if(!thys || !pthis)
+	return;
+
+    ajStrDel(&pthis->name);
+    ajStrDel(&pthis->source);
+    ajStrDel(&pthis->ac);
+    ajStrDel(&pthis->de);
+
+    AJFREE(pthis);
+    *thys = NULL;
+    
+    return;
+}
+
+
+/* @func ajSelexDel ********************************************************
+**
+** Deletes a Selex object.
+**
+** @param [wP] pthis [AjPSelex*] Selex object
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajSelexDel(AjPSelex *thys)
+{
+    AjPSelex pthis = *thys;
+    ajint    i;
+    ajint    n;
+    
+    if(!thys || !pthis)
+	return;
+
+    n = pthis->n;
+    for(i=0;i<n;++i)
+    {
+	ajStrDel(&pthis->name[i]);
+	ajStrDel(&pthis->str[i]);
+	ajStrDel(&pthis->ss[i]);
+	ajSelexSQDel(&pthis->sq[i]);
+    }
+    if(n)
+    {
+	AJFREE(pthis->name);
+	AJFREE(pthis->str);
+	AJFREE(pthis->ss);
+	AJFREE(pthis->sq);
+    }
+
+    ajStrDel(&pthis->id);
+    ajStrDel(&pthis->ac);
+    ajStrDel(&pthis->de);
+    ajStrDel(&pthis->au);
+    ajStrDel(&pthis->cs);
+    ajStrDel(&pthis->rf);
+    
+    AJFREE(pthis);
+    *thys = NULL;
+
+    return;
+}
+
+
+/* @func ajSelexdataDel *****************************************************
+**
+** Deletes a Selex data object.
+**
+** @param [wP] pthis [AjPSelexdata*] Selex data object
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajSelexdataDel(AjPSelexdata *thys)
+{
+    AjPSelexdata pthis = *thys;
+    
+    if(!thys || !pthis)
+	return;
+
+
+    ajStrDel(&pthis->name);
+    ajStrDel(&pthis->str);
+    ajStrDel(&pthis->ss);
+    ajSelexSQDel(&pthis->sq);
+
+    ajStrDel(&pthis->id);
+    ajStrDel(&pthis->ac);
+    ajStrDel(&pthis->de);
+    ajStrDel(&pthis->au);
+    ajStrDel(&pthis->cs);
+    ajStrDel(&pthis->rf);
+    
+    AJFREE(pthis);
+    *thys = NULL;
+
+    return;
 }
 
 

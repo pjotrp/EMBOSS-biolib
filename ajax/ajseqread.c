@@ -140,7 +140,6 @@ static SeqOInFormat seqInFormatDef[] = { /* AJFALSE = ignore (duplicates) */
   {"pir",        AJFALSE, seqReadNbrf},	/* alias for nbrf */
   {"codata",     AJTRUE,  seqReadCodata},
   {"strider",    AJTRUE,  seqReadStrider},
-  {"selex",      AJTRUE,  seqReadSelex},
   {"clustal",    AJTRUE,  seqReadClustal},
   {"aln",        AJFALSE, seqReadClustal}, /* alias for clustal */
   {"phylip",     AJTRUE,  seqReadPhylip},
@@ -164,7 +163,7 @@ static SeqOInFormat seqInFormatDef[] = { /* AJFALSE = ignore (duplicates) */
   {"plain",      AJFALSE, seqReadText},	/* alias for text */
   {"abi",        AJTRUE,  seqReadAbi},
   {"gff",        AJTRUE,  seqReadGff},
-
+  {"selex",      AJTRUE,  seqReadSelex},
   {"raw",        AJTRUE,  seqReadRaw}, /* OK - only sequence chars allowed */
   {NULL, 0, NULL}
 };
