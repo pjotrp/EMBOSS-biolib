@@ -198,6 +198,12 @@ Data files
 
 % embossdata -fetch -file Emus.cut
 
+   Not every file but most are described in the README file from
+   ftp://ftp.ebi.ac.uk/pub/databases/codonusage
+   
+   You can use the EMBOSS program 'cutgextract' on the CUTG database to
+   get files with more meaningful (long) names.
+   
 Notes
 
    None.
