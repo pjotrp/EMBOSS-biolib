@@ -1177,6 +1177,180 @@ AjPSeq ajSeqNewS (AjPSeq seq)
 }
 
 
+/* @func ajStockholmNew ********************************************************
+**
+** Creates and initialises a Stockholm object.
+**
+** @param [r] n [ajint] Number of sequences
+** @return [AjPStockholm] New sequence object.
+** @@
+******************************************************************************/
+
+AjPStockholm ajStockholmNew(ajint i)
+{
+    AjPStockholm thys=NULL;
+
+    AJNEW0(thys);
+    
+    thys->id  = ajStrNew();
+    thys->ac  = ajStrNew();
+    thys->de  = ajStrNew();
+    thys->au  = ajStrNew();
+    thys->al  = ajStrNew();
+    thys->tp  = ajStrNew();
+    thys->se  = ajStrNew();
+    thys->bm  = ajStrNew();
+    thys->dc  = ajStrNew();
+    thys->dr  = ajStrNew();
+    thys->cc  = ajStrNew();
+    thys->gs  = ajStrNew();
+    thys->ref = ajStrNew();
+    thys->sacons  = ajStrNew();
+    thys->sscons  = ajStrNew();
+
+    thys->n = i;
+
+    AJCNEW0(thys->name,i);
+    AJCNEW0(thys->str,i);
+
+    for(i=0;i<thys->n;++i)
+    {
+	thys->name[i] = ajStrNew();
+	thys->str[i]  = ajStrNew();
+    }
+    
+    return thys;
+}
+
+
+
+/* @func ajStockholmDel ********************************************************
+**
+** Deletes a Stockholm object.
+**
+** @param [w] thys [AjPStockholm*] Stockholm object
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajStockholmDel(AjPStockholm *thys)
+{
+    AjPStockholm pthis = NULL;
+    ajint i;
+    
+    if(!thys)
+	return;
+    pthis = *thys;
+    if(!pthis)
+	return;
+    
+    ajStrDel(&pthis->id);
+    ajStrDel(&pthis->ac);
+    ajStrDel(&pthis->de);
+    ajStrDel(&pthis->au);
+    ajStrDel(&pthis->al);
+    ajStrDel(&pthis->tp);
+    ajStrDel(&pthis->se);
+    ajStrDel(&pthis->bm);
+    ajStrDel(&pthis->dc);
+    ajStrDel(&pthis->dr);
+    ajStrDel(&pthis->cc);
+    ajStrDel(&pthis->gs);
+    ajStrDel(&pthis->ref);
+    ajStrDel(&pthis->sacons);
+    ajStrDel(&pthis->sscons);
+
+    for(i=0;i<pthis->n;++i)
+    {
+	ajStrDel(&pthis->name[i]);
+	ajStrDel(&pthis->str[i]);
+    }
+    
+    AJFREE(pthis->name);
+    AJFREE(pthis->str);
+    AJFREE(pthis);
+    
+    return;
+}
+
+
+/* @func ajStockholmdataNew **************************************************
+**
+** Creates and initialises a Stockholm data object.
+**
+** @return [AjPStockholmdata] New sequence object.
+** @@
+******************************************************************************/
+
+AjPStockholmdata ajStockholmdataNew(void)
+{
+    AjPStockholmdata thys=NULL;
+
+    AJNEW0(thys);
+    
+    thys->id  = ajStrNew();
+    thys->ac  = ajStrNew();
+    thys->de  = ajStrNew();
+    thys->au  = ajStrNew();
+    thys->al  = ajStrNew();
+    thys->tp  = ajStrNew();
+    thys->se  = ajStrNew();
+    thys->bm  = ajStrNew();
+    thys->dc  = ajStrNew();
+    thys->dr  = ajStrNew();
+    thys->cc  = ajStrNew();
+    thys->gs  = ajStrNew();
+    thys->ref = ajStrNew();
+    thys->sacons  = ajStrNew();
+    thys->sscons  = ajStrNew();
+    
+    return thys;
+}
+
+
+
+/* @func ajStockholmdataDel **************************************************
+**
+** Deletes a Stockholm data object.
+**
+** @param [w] thys [AjPStockholmdata*] Stockholm object
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajStockholmdataDel(AjPStockholmdata *thys)
+{
+    AjPStockholmdata pthis = NULL;
+    
+    if(!thys)
+	return;
+    pthis = *thys;
+    if(!pthis)
+	return;
+    
+    ajStrDel(&pthis->id);
+    ajStrDel(&pthis->ac);
+    ajStrDel(&pthis->de);
+    ajStrDel(&pthis->au);
+    ajStrDel(&pthis->al);
+    ajStrDel(&pthis->tp);
+    ajStrDel(&pthis->se);
+    ajStrDel(&pthis->bm);
+    ajStrDel(&pthis->dc);
+    ajStrDel(&pthis->dr);
+    ajStrDel(&pthis->cc);
+    ajStrDel(&pthis->gs);
+    ajStrDel(&pthis->ref);
+    ajStrDel(&pthis->sacons);
+    ajStrDel(&pthis->sscons);
+
+    AJFREE(pthis);
+    
+    return;
+}
+
+
+
 /* @func ajSelexSQNew ********************************************************
 **
 ** Creates and initialises a selex #=SQ line object.
@@ -1240,7 +1414,7 @@ AjPSelex ajSelexNew(ajint n)
 }
 
 
-/* @func ajSelexNew ********************************************************
+/* @func ajSelexdataNew ********************************************************
 **
 ** Creates and initialises a selex #=SQ line object.
 **
@@ -1326,6 +1500,8 @@ void ajSeqDel (AjPSeq* pthis)
 
     if(thys->Selexdata)
 	ajSelexdataDel(&thys->Selexdata);
+    if(thys->Stock)
+	ajStockholmdataDel(&thys->Stock);
   
     /*  ajListstrDel(&thys->Acclist);*/
 

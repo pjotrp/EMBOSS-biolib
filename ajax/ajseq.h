@@ -38,6 +38,12 @@ AjPSelexdata ajSelexdataNew(void);
 void         ajSelexdataDel(AjPSelexdata *thys);
 void         ajSelexSQDel(AjPSelexSQ *thys);
 AjPSelexSQ   ajSelexSQNew(void);
+AjPStockholm ajStockholmNew(ajint i);
+void         ajStockholmDel(AjPStockholm *thys);
+void         ajStockholmdataDel(AjPStockholmdata *thys);
+
+AjPStockholmdata ajStockholmdataNew(void);
+
 ajint        ajSeqallBegin (AjPSeqall seq);
 void         ajSeqallDel(AjPSeqall *thys);
 ajint        ajSeqallEnd (AjPSeqall seq);

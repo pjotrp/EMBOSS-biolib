@@ -106,6 +106,8 @@ static AjBool     seqReadNexusnon (AjPSeq thys, AjPSeqin seqin);
 static AjBool     seqReadPhylip (AjPSeq thys, AjPSeqin seqin);
 static AjBool     seqReadRaw (AjPSeq thys, AjPSeqin seqin);
 static AjBool     seqReadSelex(AjPSeq thys, AjPSeqin seqin);
+static AjBool     seqReadStockholm(AjPSeq thys, AjPSeqin seqin);
+static void       seqStockholmCopy(AjPSeq *thys, AjPSeqin seqin, ajint n);
 static void       seqSelexAppend(AjPStr src, AjPStr *dest, ajint beg,
 				 ajint end);
 static void       seqSelexCopy(AjPSeq *thys, AjPSeqin seqin, ajint n);
@@ -178,6 +180,8 @@ static SeqOInFormat seqInFormatDef[] = { /* AJFALSE = ignore (duplicates) */
   {"abi",        AJTRUE,  seqReadAbi},
   {"gff",        AJTRUE,  seqReadGff},
   {"selex",      AJTRUE,  seqReadSelex},
+  {"stockholm",  AJTRUE,  seqReadStockholm},
+  {"pfam",       AJTRUE,  seqReadStockholm},
   {"raw",        AJTRUE,  seqReadRaw}, /* OK - only sequence chars allowed */
   {NULL, 0, NULL}
 };
@@ -292,6 +296,7 @@ void ajSeqinDel (AjPSeqin* pthis)
     ajStrDel(&thys->Entryname);
     ajStrDel(&thys->Inseq);
     ajSelexDel(&thys->Selex);
+    ajStockholmDel(&thys->Stockholm);
     ajSeqQueryDel(&thys->Query);
 
     ajFileBuffDel(&thys->Filebuff);
@@ -1857,6 +1862,231 @@ static AjBool seqReadSelex(AjPSeq thys, AjPSeqin seqin)
 
 
 
+/* @func ajSeqReadStockholm ************************************************
+**
+** Read a Stockholm file.
+**
+** @param [w] thys [AjPSeq] Stockholm input file
+** @param [r] seqin [AjPSeqin] seqin object
+** @return [AjBool] ajTrue if success
+** @@
+*******************************************************************/
+
+static AjBool seqReadStockholm(AjPSeq thys, AjPSeqin seqin)
+{
+    AjPFileBuff buff  = seqin->Filebuff;
+    AjPStr      line  = NULL;
+    AjPStr      word  = NULL;
+    AjPStr      token = NULL;
+    AjPStr      post  = NULL;
+    AjBool      ok    = ajFalse;
+    AjBool      bmf   = ajTrue;
+    AjBool      dcf   = ajTrue;
+    AjBool      drf   = ajTrue;
+    AjBool      ccf   = ajTrue;
+    AjBool      gsf   = ajTrue;
+    AjBool      reff  = ajTrue;
+
+    AjPRegexp    sexp  = NULL;
+    AjPStockholm stock = NULL;
+
+    ajint i = 0;
+    ajint n = 0;
+    ajlong lpos=0L;
+    ajint  scnt=0;
+    
+    line = ajStrNew();
+
+    if(!seqin->Stockholm)
+    {
+	lpos = ajFileTell(buff->File);
+	ok=ajFileBuffGet(buff,&line);
+
+	if(!ok || !ajStrPrefixC(line,"# STOCKHOLM 1.0"))
+	{
+	    ajFileSeek(buff->File,lpos,0);
+	    ajFileBuffClear(buff,-1);
+	    ajFileBuffReset(buff);
+	    ajStrDel(&line);
+	    return ajFalse;
+	}
+    
+	while(ok && !ajStrPrefixC(line,"//") && !n)
+	{
+	    if(ajStrPrefixC(line,"#=GF SQ"))
+		ajFmtScanS(line,"%*s%*s%d",&n);
+	    ok=ajFileBuffGet(buff,&line);
+	}
+	if(!ok || ajStrPrefixC(line,"//"))
+	{
+	    ajFileSeek(buff->File,lpos,0);
+	    ajFileBuffClear(buff,-1);
+	    ajFileBuffReset(buff);
+	    ajStrDel(&line);
+	    return ajFalse;
+	}
+
+	ajFileSeek(buff->File,lpos,0);
+	ajFileBuffClear(buff,-1);
+	ajFileBuffReset(buff);
+
+	ok=ajFileBuffGet(buff,&line);
+	ok=ajFileBuffGet(buff,&line);
+	stock = ajStockholmNew(n);
+
+	word  = ajStrNew();
+	token = ajStrNew();
+	post  = ajStrNew();
+
+	sexp = ajRegCompC("^([^ \t\n]+)[ \t]+([^ \t\n]+)[ \t]+");
+	while(ok && !ajStrPrefixC(line,"//"))
+	{
+	    if(ajRegExec(sexp,line))
+	    {
+		ajRegSubI(sexp,1,&word);
+		ajRegSubI(sexp,2,&token);
+		ajRegPost(sexp,&post);
+		ajStrRemoveNewline(&post);
+		
+		if(!ajStrCmpC(word,"#=GF"))
+		{
+		    if(!ajStrCmpC(token,"ID"))
+			ajStrAssS(&stock->id,post);
+		    else if(!ajStrCmpC(token,"AC"))
+			ajStrAssS(&stock->ac,post);
+		    else if(!ajStrCmpC(token,"DE"))
+			ajStrAssS(&stock->de,post);
+		    else if(!ajStrCmpC(token,"AU"))
+			ajStrAssS(&stock->au,post);
+		    else if(!ajStrCmpC(token,"AL"))
+			ajStrAssS(&stock->al,post);
+		    else if(!ajStrCmpC(token,"SE"))
+			ajStrAssS(&stock->se,post);
+		    else if(!ajStrCmpC(token,"TP"))
+			ajStrAssS(&stock->se,post);
+		    else if(!ajStrCmpC(token,"GA"))
+			ajFmtScanS(post,"%d%d",&stock->ga[0],
+				   &stock->ga[1]);
+		    else if(!ajStrCmpC(token,"TC"))
+			ajFmtScanS(post,"%f%f",&stock->tc[0],
+				   &stock->tc[1]);
+		    else if(!ajStrCmpC(token,"NC"))
+			ajFmtScanS(post,"%f%f",&stock->nc[0],
+				   &stock->nc[1]);
+		    else if(!ajStrCmpC(token,"BM"))
+		    {
+			if(bmf)
+			{
+			    bmf = ajFalse;
+			    ajStrAssS(&stock->bm,line);
+			}
+			else
+			    ajStrApp(&stock->bm,line);
+		    }
+		    else if(!ajStrCmpC(token,"DC"))
+		    {
+			if(dcf)
+			{
+			    dcf = ajFalse;
+			    ajStrAssS(&stock->dc,line);
+			}
+			else
+			    ajStrApp(&stock->dc,line);
+		    }
+		    else if(!ajStrCmpC(token,"DR"))
+		    {
+			if(drf)
+			{
+			    drf = ajFalse;
+			    ajStrAssS(&stock->dr,line);
+			}
+			else
+			    ajStrApp(&stock->dr,line);
+		    }
+		    else if(!ajStrCmpC(token,"CC"))
+		    {
+			if(ccf)
+			{
+			    ccf = ajFalse;
+			    ajStrAssS(&stock->cc,line);
+			}
+			else
+			    ajStrApp(&stock->cc,line);
+		    }
+		    else if(*ajStrStr(token)=='R')
+		    {
+			if(reff)
+			{
+			    reff = ajFalse;
+			    ajStrAssS(&stock->ref,line);
+			}
+			else
+			    ajStrApp(&stock->ref,line);
+		    }
+		}
+
+		if(!ajStrCmpC(word,"#=GS"))
+		{
+		    if(gsf)
+		    {
+			gsf = ajFalse;
+			ajStrAssS(&stock->gs,line);
+		    }
+		    else
+			ajStrApp(&stock->gs,line);
+		}
+
+		if(!ajStrCmpC(word,"#=GC"))
+		{
+		    if(!ajStrCmpC(token,"SS_cons"))
+			ajStrAssS(&stock->sscons,post);
+		    else if(!ajStrCmpC(token,"SA_cons"))
+			ajStrAssS(&stock->sacons,post);
+		}
+
+	    }
+	    else
+	    {
+		ajFmtScanS(line,"%S%S",&stock->name[scnt],&stock->str[scnt]);
+		ajStrRemoveNewline(&stock->str[scnt]);
+		++scnt;
+	    }
+
+	    ok = ajFileBuffGet(buff,&line);
+	}
+
+	ajStrDel(&word);
+	ajStrDel(&token);
+	ajStrDel(&post);
+	ajRegFree(&sexp);
+	seqin->Stockholm = stock;
+    }
+
+
+    /* At this point the Stockholm structure is fully loaded */
+    if(seqin->Stockholm->Count >= seqin->Stockholm->n)
+    {
+	ajStrDel(&line);
+	return ajFalse;
+    }
+
+    i = seqin->Stockholm->Count;
+
+    seqStockholmCopy(&thys,seqin,i);
+
+    ++seqin->Stockholm->Count;
+
+    ajFileBuffClear(buff,0);
+    
+
+    ajStrDel(&line);
+    return ajTrue;
+}
+
+
+
+
+
 /* @funcstatic seqSelexCopy ************************************************
 **
 ** Copy Selex data to sequence object.
@@ -1911,6 +2141,58 @@ static void seqSelexCopy(AjPSeq *thys, AjPSeqin seqin, ajint n)
     sdata->sq->start = selex->sq[n]->start;
     sdata->sq->stop  = selex->sq[n]->stop;
     sdata->sq->len   = selex->sq[n]->len;
+
+    return;
+}
+
+
+/* @funcstatic seqStockholmCopy ********************************************
+**
+** Copy Stockholm data to sequence object.
+** Pad with gaps to make lengths equal.
+**
+** @param [w] thys [AjPSeq*] sequence object
+** @param [r] seqin [AjPSeqin] seqin containing selex info
+** @param [r] n [ajint] index into stockholm object
+** @return [void]
+** @@
+******************************************************************************/
+
+static void seqStockholmCopy(AjPSeq *thys, AjPSeqin seqin, ajint n)
+{
+    AjPSeq pthis   = *thys;
+    AjPStockholm stock = seqin->Stockholm;
+    AjPStockholmdata sdata;
+    
+    ajStrAssS(&pthis->Seq, stock->str[n]);
+    ajStrAssS(&pthis->Name, stock->name[n]);
+
+
+    if(!(*thys)->Stock)
+	(*thys)->Stock = ajStockholmdataNew();
+    
+    sdata = (*thys)->Stock;
+
+    ajStrAssS(&sdata->id,stock->id);
+    ajStrAssS(&sdata->ac,stock->ac);
+    ajStrAssS(&sdata->de,stock->de);
+    ajStrAssS(&sdata->au,stock->au);
+    ajStrAssS(&sdata->al,stock->al);
+    ajStrAssS(&sdata->tp,stock->tp);
+    ajStrAssS(&sdata->se,stock->se);
+    ajStrAssS(&sdata->gs,stock->gs);
+    ajStrAssS(&sdata->dc,stock->dc);
+    ajStrAssS(&sdata->dr,stock->dr);
+    ajStrAssS(&sdata->cc,stock->cc);
+    ajStrAssS(&sdata->ref,stock->ref);
+    ajStrAssS(&sdata->sacons,stock->sacons);
+    ajStrAssS(&sdata->sscons,stock->sscons);
+    sdata->ga[0] = stock->ga[0];
+    sdata->ga[1] = stock->ga[1];
+    sdata->tc[0] = stock->tc[0];
+    sdata->tc[1] = stock->tc[1];
+    sdata->nc[0] = stock->nc[0];
+    sdata->nc[1] = stock->nc[1];
 
     return;
 }
