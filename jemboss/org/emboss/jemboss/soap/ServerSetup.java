@@ -80,7 +80,7 @@ public class ServerSetup extends JTabbedPane
   * @param mysettings	jemboss properties
   *
   */
-  public ServerSetup(JembossParams mysettings, boolean withSoap)
+  public ServerSetup(final JembossParams mysettings, boolean withSoap)
   {
     this.myset      = mysettings;
     GridLayout gl   = null;
@@ -341,6 +341,17 @@ public class ServerSetup extends JTabbedPane
         {
           proxyBrowserName.setEnabled(useBrowserProxy.isSelected());
           proxyBrowserPort.setEnabled(useBrowserProxy.isSelected());
+ 
+          if(useBrowserProxy.isSelected())
+          {
+            String settings[] = new String[3];
+            settings[0] = new String("browserProxy.host="+
+                             (String)proxyBrowserName.getSelectedItem());
+            settings[1] = new String("browserProxy.port="+
+                             (String)proxyBrowserPort.getSelectedItem());
+            settings[2] = new String("browserProxy.use=true");
+            mysettings.updateJembossPropStrings(settings);
+          }
         }
       });
       proxy.add(jpWest, BorderLayout.WEST);
