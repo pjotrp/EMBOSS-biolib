@@ -3,7 +3,7 @@
 
 appl: qatest [ groups: "test" doc: "ACD file for QA testing" ]
 
-sequence: asequence [ param: Y ]
+sequence: asequence [ param: Y features: Y ]
 
 sequence: bsequence [ param: Y ]
 
@@ -17,3 +17,10 @@ string: testalen [ required: Y info: "asequence length $(asequence.length)" ]
 
 string: testblen [ required: Y info: "bsequence length $(bsequence.length)" ]
 
+string: outdir [ info: "output directory" ]
+
+outfile: outtest [ param: Y odirectory: "$(outdir)" ]
+
+seqout: outseq [ param: Y features: Y
+	         osdirectory: "$(outdir)"  ofdirectory: "$(outdir)"
+               ]
