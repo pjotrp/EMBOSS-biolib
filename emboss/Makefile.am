@@ -194,7 +194,6 @@ showfeat_SOURCES = showfeat.c
 showorf_SOURCES = showorf.c
 showseq_SOURCES = showseq.c
 shuffleseq_SOURCES = shuffleseq.c
-sideshowblob_SOURCES = sideshowblob.c
 sigcleave_SOURCES = sigcleave.c
 silent_SOURCES = silent.c
 sirna_SOURCES = sirna.c
