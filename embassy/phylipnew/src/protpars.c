@@ -21,7 +21,6 @@ typedef struct gseq {
 } gseq;
 
 AjPSeqset* seqsets = NULL;
-AjPPhyloProp phyloratecat = NULL;
 AjPPhyloProp phyloweights = NULL;
 AjPPhyloTree* phylotrees;
 
@@ -31,8 +30,8 @@ void   protgnu(gseq **);
 void   protchuck(gseq *);
 void   code(void);
 void   setup(void);
-/*void   getoptions(void);*/
-void emboss_getoptions(char *pgm, int argc, char *argv[]);
+//void   getoptions(void);
+void   emboss_getoptions(char *pgm, int argc, char *argv[]);
 void   protalloctree(void);
 void   allocrest(void);
 void   doinit(void);
@@ -55,8 +54,8 @@ void   addpreorder(node *, node *, node *);
 void   tryrearr(node *, boolean *);
 void   repreorder(node *, boolean *);
 void   rearrange(node **);
-/*void   protgetch(Char *);*/
-void   protaddelement(node **, long *, long *, boolean *, char**);
+void   protgetch(Char *);
+void   protaddelement(node **, long *, long *, boolean *, char **);
 void   prottreeread(char**);
 void   protancestset(long *, long *, long *, long *, long *);
                 
@@ -74,10 +73,14 @@ void   reallocchars(void);
 
 
 Char infilename[FNMLNGTH], intreename[FNMLNGTH], weightfilename[FNMLNGTH];
+
 const char* outfilename;
 const char* outtreename;
+AjPFile embossoutfile;
+AjPFile embossouttree;
+
 node *root;
-long chars, col, msets, ith, njumble, jumb;
+long chars, col, msets, ith, njumble, jumb, numtrees;
 /*   chars = number of sites in actual sequences */
 long inseed, inseed0;
 boolean jumble, usertree, weights, thresh, trout, progress, stepbox,
@@ -274,293 +277,121 @@ void setup()
 }  /* setup */
 
 
-
-/************ EMBOSS GET OPTIONS ROUTINES ******************************/
-
-void emboss_getoptions(char *pgm, int argc, char *argv[])
+void   emboss_getoptions(char *pgm, int argc, char *argv[])
 {
-    AjStatus retval;
-    AjPSeqset s;
-    const AjPSeq q;
-    ajint i;
-    ajint j;
+  AjStatus retval;
+  ajint numseqs=0;
+  ajint numwts=0;
 
-    jumble = false;
-    njumble = 1;
-    outgrno = 1;
-    outgropt = false;
-    thresh = false;
-    trout = true;
-    usertree = false;
-    weights = false;
-    whichcode = universal;
-    printdata = false;
-    progress = true;
-    treeprint = true;
-    stepbox = false;
-    ancseq = false;
-    interleaved = true;
-    /* initialize global variables */
+  jumble = false;
+  njumble = 1;
+  outgrno = 1;
+  outgropt = false;
+  thresh = false;
+  trout = true;
+  weights = false;
+  whichcode = universal;
+  printdata = false;
+  progress = true;
+  stepbox = false;
+  ancseq = false;
+  treeprint = true;
+  usertree = false;
+  AjPStr codestr;
+  mulsets = false;
+  justwts = false;
+  msets = 1;
 
-    ajNamInit("emboss");
-    retval =  ajAcdInitP (pgm, argc, argv, "PHYLIP");
 
-    seqsets = ajAcdGetSeqsetall("sequences");
-    j = 0;
-    for(j=0;seqsets[j];j++)
-    {
-	s = seqsets[j];
-	ajDebug ("New set\n");
-	for(i=0;i<ajSeqsetSize(s);i++)
-	{
-	    q = ajSeqsetGetSeq(s,i);
-	    ajDebug("  %d %d %S\n", i, ajSeqLen(q), ajSeqStr(q));
-	}
-	ajDebug ("Done set\n");
+  ajNamInit ("emboss");
+  retval = ajAcdInitP (pgm, argc, argv, "PHYLIP");
+
+  seqsets = ajAcdGetSeqsetall("sequence");
+ 
+
+    while (seqsets[numseqs])
+	numseqs++;
+
+    phylotrees = ajAcdGetTree("intreefile");
+
+    if (phylotrees){
+	numtrees = 0;
+	while (phylotrees[numtrees])
+	    numtrees++;
+	usertree = true;
     }
-    /* ajAcdGet */
 
-    /* init functions for standard ajAcdGet */
 
-    /* cleanup for clashing options */
+    phyloweights = ajAcdGetProperties("weights");
+    if (phyloweights)
+    {
+      weights = true;
+      numwts = ajPhyloPropGetSize(phyloweights);
+    }
 
-}
+    if (numseqs > 1) {
+	mulsets = true;
+        msets = numseqs;
+    }
+    else if (numwts > 1) {
+      mulsets = true;
+      msets = numwts;
+      justwts = true;
+    }
 
-/************ END EMBOSS GET OPTIONS ROUTINES **************************/
 
-/*
-//void getoptions()
-//{
-//  /# interactively set options #/
-//  long loopcount, loopcount2;
-//  Char ch, ch2;
-//
-//  fprintf(outfile, "\nProtein parsimony algorithm, version %s\n\n",VERSION);
-//  putchar('\n');
-//  jumble = false;
-//  njumble = 1;
-//  outgrno = 1;
-//  outgropt = false;
-//  thresh = false;
-//  trout = true;
-//  usertree = false;
-//  weights = false;
-//  whichcode = universal;
-//  printdata = false;
-//  progress = true;
-//  treeprint = true;
-//  stepbox = false;
-//  ancseq = false;
-//  interleaved = true;
-//  loopcount = 0;
-//  for (;;) {
-//    cleerhome();
-//    printf("\nProtein parsimony algorithm, version %s\n\n",VERSION);
-//    printf("Setting for this run:\n");
-//    printf("  U                 Search for best tree?  %s\n",
-//           (usertree ? "No, use user trees in input file" : "Yes"));
-//    if (!usertree) {
-//      printf("  J   Randomize input order of sequences?");
-//      if (jumble)
-//        printf("  Yes (seed =%8ld,%3ld times)\n", inseed0, njumble);
-//      else
-//        printf("  No. Use input order\n");
-//    }
-//    printf("  O                        Outgroup root?");
-//    if (outgropt)
-//      printf("  Yes, at sequence number%3ld\n", outgrno);
-//    else
-//      printf("  No, use as outgroup species%3ld\n", outgrno);
-//    printf("  T              Use Threshold parsimony?");
-//    if (thresh)
-//      printf("  Yes, count steps up to%4.1f per site\n", threshold);
-//    else
-//      printf("  No, use ordinary parsimony\n");
-//    printf("  C               Use which genetic code?  %s\n",
-//      (whichcode == universal) ? "Universal"                  :
-//      (whichcode == ciliate)   ? "Ciliate"                    :
-//      (whichcode == mito)      ? "Universal mitochondrial"    :
-//      (whichcode == vertmito)  ? "Vertebrate mitochondrial"   :
-//      (whichcode == flymito)   ? "Fly mitochondrial"          :
-//      (whichcode == yeastmito) ? "Yeast mitochondrial"        : "");
-//    printf("  W                       Sites weighted?  %s\n",
-//           (weights ? "Yes" : "No"));
-//    printf("  M           Analyze multiple data sets?");
-//    if (mulsets)
-//        printf("  Yes, %2ld %s\n", msets,
-//               (justwts ? "sets of weights" : "data sets"));
-//    else
-//      printf("  No\n");
-//    printf("  I          Input sequences interleaved?  %s\n",
-//           (interleaved ? "Yes" : "No"));
-//    printf("  0   Terminal type (IBM PC, ANSI, none)?  %s\n",
-//           (ibmpc ? "IBM PC" : ansi ? "ANSI" : "(none)"));
-//    printf("  1    Print out the data at start of run  %s\n",
-//           (printdata ? "Yes" : "No"));
-//    printf("  2  Print indications of progress of run  %s\n",
-//           (progress ? "Yes" : "No"));
-//    printf("  3                        Print out tree  %s\n",
-//           (treeprint ? "Yes" : "No"));
-//    printf("  4          Print out steps in each site  %s\n",
-//           (stepbox ? "Yes" : "No"));
-//    printf("  5  Print sequences at all nodes of tree  %s\n",
-//           (ancseq ? "Yes" : "No"));
-//    printf("  6       Write out trees onto tree file?  %s\n",
-//           (trout ? "Yes" : "No"));
-//    if(weights && justwts){
-//        printf(
-//         "WARNING:  W option and Multiple Weights options are both on.  ");
-//        printf(
-//         "The W menu option is unnecessary and has no additional effect. \n");
-//    }
-//    printf(
-//   "\nAre these settings correct? (type Y or the letter for one to change)\n");
-//    scanf("%c%*[^\n]", &ch);
-//    getchar();
-//    uppercase(&ch);
-//    if (ch == 'Y')
-//      break;
-//    if (strchr("WCJOTUMI1234560",ch) != NULL){
-//      switch (ch) {
-//        
-//      case 'J':
-//        jumble = !jumble;
-//        if (jumble)
-//          initjumble(&inseed, &inseed0, seed, &njumble);
-//        else njumble = 1;
-//        break;
-//      
-//      case 'W':
-//        weights = !weights;
-//        break;
-//  
-//      case 'O':
-//        outgropt = !outgropt;
-//        if (outgropt)
-//          initoutgroup(&outgrno, spp);
-//        else outgrno = 1;
-//        break;
-//        
-//      case 'T':
-//        thresh = !thresh;
-//        if (thresh)
-//          initthreshold(&threshold);
-//        break;
-//
-//      case 'C':
-//        printf("\nWhich genetic code?\n");
-//        printf(" type         for\n\n");
-//        printf("   U           Universal\n");
-//        printf("   M           Mitochondrial\n");
-//        printf("   V           Vertebrate mitochondrial\n");
-//        printf("   F           Fly mitochondrial\n");
-//        printf("   Y           Yeast mitochondrial\n\n");
-//        loopcount2 = 0;
-//        do {
-//          printf("type U, M, V, F, or Y\n");
-//          scanf("%c%*[^\n]", &ch);
-//          getchar();
-//          if (ch == '\n')
-//            ch = ' ';
-//          uppercase(&ch);
-//          countup(&loopcount2, 10);
-//        } while (ch != 'U' && ch != 'M' && ch != 'V'
-//                  && ch != 'F' && ch != 'Y');
-//        switch (ch) {
-//
-//        case 'U':
-//          whichcode = universal;
-//          break;
-//
-//        case 'M':
-//          whichcode = mito;
-//          break;
-//
-//        case 'V':
-//          whichcode = vertmito;
-//          break;
-//
-//        case 'F':
-//          whichcode = flymito;
-//          break;
-//
-//        case 'Y':
-//          whichcode = yeastmito;
-//          break;
-//        }
-//        break;
-//
-//      case 'M':
-//        mulsets = !mulsets;
-//        if (mulsets){
-//            printf("Multiple data sets or multiple weights?");
-//          loopcount2 = 0;
-//          do {
-//            printf(" (type D or W)\n");
-//#ifdef WIN32
-//            phyFillScreenColor();
-//#endif
-//            scanf("%c%*[^\n]", &ch2);
-//            getchar();
-//            if (ch2 == '\n')
-//              ch2 = ' ';
-//            uppercase(&ch2);
-//            countup(&loopcount2, 10);
-//          } while ((ch2 != 'W') && (ch2 != 'D'));
-//          justwts = (ch2 == 'W');
-//          if (justwts)
-//            justweights(&msets);
-//          else
-//            initdatasets(&msets);
-//          if (!jumble) {
-//            jumble = true;
-//            initjumble(&inseed, &inseed0, seed, &njumble);
-//          }
-//        }
-//        break;
-//        
-//      case 'I':
-//        interleaved = !interleaved;
-//        break;
-//        
-//      case 'U':
-//        usertree = !usertree;
-//        break;
-//        
-//      case '0':
-//        initterminal(&ibmpc, &ansi);
-//        break;
-//        
-//      case '1':
-//        printdata = !printdata;
-//        break;
-//        
-//      case '2':
-//        progress = !progress;
-//        break;
-//        
-//      case '3':
-//        treeprint = !treeprint;
-//        break;
-//        
-//      case '4':
-//        stepbox = !stepbox;
-//        break;
-//        
-//      case '5':
-//        ancseq = !ancseq;
-//        break;
-//        
-//      case '6':
-//        trout = !trout;
-//        break;
-//      }
-//    } else
-//        printf("Not a possible option!\n");
-//    countup(&loopcount, 100);
-//  }
-//}  /# getoptions #/
-*/
+     
+    printdata = ajAcdGetBool("printdata");
+    progress = ajAcdGetBool("progress");
+    treeprint = ajAcdGetBool("treeprint");
+    trout = ajAcdGetToggle("trout");
+    stepbox = ajAcdGetBool("stepbox");
+    ancseq = ajAcdGetBool("ancseq");
+    dotdiff = ajAcdGetBool("dotdiff");
+
+    if(!usertree) {
+      njumble = ajAcdGetInt("njumble");
+      if(njumble >0) {
+        jumble = true;
+        inseed = ajAcdGetInt("seed");
+        emboss_initseed(inseed, &inseed0, seed);
+      }
+      else njumble = 1;
+    } 
+
+    if((mulsets) && (!jumble)) {
+      jumble = true;
+      inseed = ajAcdGetInt("seed");
+      emboss_initseed(inseed, &inseed0, seed);
+    }
+
+    outgrno = ajAcdGetInt("outgrno");
+    if(outgrno != 0) outgropt = true;
+    else outgrno = 1;
+    thresh = ajAcdGetToggle("thresh");
+    if(thresh)  threshold = ajAcdGetFloat("threshold");
+    
+
+    codestr = ajAcdGetListI("whichcode",1);
+    
+    if(ajStrMatchCaseC(codestr, "u")) whichcode = universal;
+    else if (ajStrMatchCaseC(codestr, "m")) whichcode = mito;
+    else if (ajStrMatchCaseC(codestr,"v")) whichcode = vertmito;
+    else if (ajStrMatchCaseC(codestr,"f")) whichcode = flymito;
+    else if (ajStrMatchCaseC(codestr,"y")) whichcode = yeastmito;
+    else ajDie("Unknown option for 'which genetic code'");
+
+     embossoutfile = ajAcdGetOutfile("outfile");   
+     emboss_openfile(embossoutfile, &outfile, &outfilename);
+     
+     embossouttree = ajAcdGetOutfile("outtreefile");
+     if(trout) emboss_openfile(embossouttree, &outtree, &outtreename);
+
+
+    fprintf(outfile, "\nProtein parsimony algorithm, version %s\n\n",VERSION);
+
+
+}  /* emboss_getoptions */
 
 
 void protalloctree()
@@ -678,7 +509,6 @@ void doinit()
   /* initializes variables */
 
   inputnumbersseq(seqsets[0], &spp, &chars, &nonodes, 1);
-/*  getoptions();*/
   if (printdata)
     fprintf(outfile, "%2ld species, %3ld  sites\n\n", spp, chars);
   protalloctree();
@@ -688,74 +518,62 @@ void doinit()
 void protinputdata(AjPSeqset seqset)
 {
   /* input the names and sequences for each species */
-  long i, j, k, l, aasread;
+  long i, j, k, l;
   Char charstate;
-  boolean allread, done;
   aas aa = unk;   /* temporary amino acid for input */
   const AjPStr str;
 
-  if (printdata)
+  if (printdata) 
     headings(chars, "Sequences", "---------");
-  aasread = 0;
-  allread = false;
-  while (!(allread)) {
-    allread = true;
-    i = 1;
-    while (i <= spp) {
-      initnameseq(seqset, i - 1);
-      str = ajSeqStr(ajSeqsetGetSeq(seqset, i-1));
-      j =  0;
-      done = false;
-      while (!done) {
-        while (j < chars) {
-          charstate = ajStrChar(str, j);
-          uppercase(&charstate);
-          if ((!isalpha((int)charstate) && charstate != '?' &&
-               charstate != '-' && charstate != '*') || charstate == 'J' ||
-              charstate == 'O' || charstate == 'U') {
-            printf("WARNING -- BAD AMINO ACID:%c",charstate);
-            printf(" AT POSITION%5ld OF SPECIES %3ld\n",j,i);
-            exxit(-1);
-          }
-          j++;
-          aa = (charstate == 'A') ?  ala :
-               (charstate == 'B') ?  asx :
-               (charstate == 'C') ?  cys :
-               (charstate == 'D') ?  asp :
-               (charstate == 'E') ?  glu :
-               (charstate == 'F') ?  phe :
-               (charstate == 'G') ?  gly : aa;
-          aa = (charstate == 'H') ?  his :
-               (charstate == 'I') ? ileu :
-               (charstate == 'K') ?  lys :
-               (charstate == 'L') ?  leu :
-               (charstate == 'M') ?  met :
-               (charstate == 'N') ?  asn :
-               (charstate == 'P') ?  pro :
-               (charstate == 'Q') ?  gln :
-               (charstate == 'R') ?  arg : aa;
-          aa = (charstate == 'S') ?  ser :
-               (charstate == 'T') ?  thr :
-               (charstate == 'V') ?  val :
-               (charstate == 'W') ?  trp :
-               (charstate == 'X') ?  unk :
-               (charstate == 'Y') ?  tyr :
-               (charstate == 'Z') ?  glx :
-               (charstate == '*') ? stop :
-               (charstate == '?') ? quest:
-               (charstate == '-') ? del  :  aa;
-
-          treenode[i - 1]->seq[j - 1] = aa;
-          memcpy(treenode[i - 1]->siteset[j - 1],
-                 translate[(long)aa - (long)ala], sizeof(sitearray));
+  for (i=1; i <= spp; i++) {
+    initnameseq(seqset, i-1);
+    str = ajSeqStr(ajSeqsetGetSeq(seqset, i-1));
+    j =  0;
+    while (j < chars) {
+        charstate = ajStrChar(str, j);
+        uppercase(&charstate);
+        if ((!isalpha(charstate) && charstate != '?' &&
+             charstate != '-' && charstate != '*') || charstate == 'J' ||
+            charstate == 'O' || charstate == 'U') {
+          printf("WARNING -- BAD AMINO ACID:%c",charstate);
+          printf(" AT POSITION%5ld OF SPECIES %3ld\n",j,i);
+          exxit(-1);
         }
-        if (j == chars)
-          done = true;
-      }
-      i++;
+        j++;
+        aa = (charstate == 'A') ?  ala :
+             (charstate == 'B') ?  asx :
+             (charstate == 'C') ?  cys :
+             (charstate == 'D') ?  asp :
+             (charstate == 'E') ?  glu :
+             (charstate == 'F') ?  phe :
+             (charstate == 'G') ?  gly : aa;
+        aa = (charstate == 'H') ?  his :
+             (charstate == 'I') ? ileu :
+             (charstate == 'K') ?  lys :
+             (charstate == 'L') ?  leu :
+             (charstate == 'M') ?  met :
+             (charstate == 'N') ?  asn :
+             (charstate == 'P') ?  pro :
+             (charstate == 'Q') ?  gln :
+             (charstate == 'R') ?  arg : aa;
+        aa = (charstate == 'S') ?  ser :
+             (charstate == 'T') ?  thr :
+             (charstate == 'V') ?  val :
+             (charstate == 'W') ?  trp :
+             (charstate == 'X') ?  unk :
+             (charstate == 'Y') ?  tyr :
+             (charstate == 'Z') ?  glx :
+             (charstate == '*') ? stop :
+             (charstate == '?') ? quest:
+             (charstate == '-') ? del  :  aa;
+
+        treenode[i - 1]->seq[j - 1] = aa;
+        memcpy(treenode[i - 1]->siteset[j - 1],
+               translate[(long)aa - (long)ala], sizeof(sitearray));
     }
-    allread = (i > spp);
+    
   }
+
   if (printdata) {
     for (i = 1; i <= ((chars - 1) / 60 + 1); i++) {
       for (j = 1; j <= (spp); j++) {
@@ -810,6 +628,7 @@ void protinputdata(AjPSeqset seqset)
     putc('\n', outfile);
   }
   putc('\n', outfile);
+
 }  /* protinputdata */
 
 
@@ -850,7 +669,7 @@ void doinput()
       protinputdata(seqsets[0]);
     for (i = 0; i < chars; i++)
       weight[i] = 1;
-    inputweightsstr(phyloweights->Str[0], chars, weight, &weights);
+    inputweightsstr(phyloweights->Str[ith-1], chars, weight, &weights);
     if (justwts) {
       fprintf(outfile, "\n\nWeights set # %ld:\n\n", ith);
       if (progress)
@@ -860,13 +679,13 @@ void doinput()
       printweights(outfile, 0, chars, weight, "Sites");
   } else {
     if (!firstset){
-      samenumspseq(seqsets[ith-1],&chars, ith);
+      samenumspseq(seqsets[ith-1], &chars, ith);
       reallocchars();
     }
     for (i = 0; i < chars; i++)
       weight[i] = 1;
     if (weights) {
-      inputweightsstr(phyloweights->Str[ith-1], chars, weight, &weights);
+      inputweightsstr(phyloweights->Str[0], chars, weight, &weights);
     }
     if (weights)
       printweights(outfile, 0, chars, weight, "Sites");
@@ -1197,7 +1016,7 @@ void tryadd(node *p, node **item, node **nufork)
       recompute = true;
     }
   }
-  if (like > bestyet) {
+  if (like >= bestyet) {
     bestyet = like;
     there = p;
   }
@@ -1295,22 +1114,7 @@ void rearrange(node **r)
 }  /* rearrange */
 
 
-/*
-//void protgetch(Char *c)
-//{
-//  /# get next nonblank character #/
-//  do {
-//    if (eoln(intree))
-//      scan_eoln(intree);
-//    *c = gettc(intree);
-//    if (*c == '\n' || *c == '\t')
-//      *c = ' ';
-//  } while (!(*c != ' ' || eoff(intree)));
-//}  /# protgetch #/
-*/
-
-void protaddelement(node **p,long *nextnode,long *lparens,boolean *names,
-		    char** treestr)
+void protaddelement(node **p,long *nextnode,long *lparens,boolean *names, char** treestr)
 {
   /* recursive procedure adds nodes to user-defined tree */
   node *q;
@@ -1319,7 +1123,8 @@ void protaddelement(node **p,long *nextnode,long *lparens,boolean *names,
   Char str[nmlngth];
 
   ch = *(*treestr)++;
-  
+
+ 
   if (ch == '(' ) {
     if ((*lparens) >= spp - 1) {
       printf("\nERROR IN USER TREE: TOO MANY LEFT PARENTHESES\n");
@@ -1333,6 +1138,7 @@ void protaddelement(node **p,long *nextnode,long *lparens,boolean *names,
     do {
 	ch = *(*treestr)++;
     } while (ch && ch != ',');
+
     protaddelement(&q->next->next->back, nextnode,lparens,names, treestr);
     q->next->next->back->back = q->next->next;
     do {
@@ -1603,7 +1409,7 @@ void prothyprint(long b1, long b2, boolean *bottom, node *r,
       ch = '?';
       break;
     }
-    if (!(*bottom))
+    if (!(*bottom) && dotdiff)
       dot = (r->siteset[i] [0] == treenode[r->back->index - 1]->siteset[i][0]
              || ((r->siteset[i][0] &
                   (~((1L << ((long)ser1)) | (1L << ((long)ser2)) |
@@ -1756,7 +1562,7 @@ void maketree()
   /* constructs a binary tree from the pointers in treenode.
      adds each node at location which yields highest "likelihood"
      then rearranges the tree for greatest "likelihood" */
-  long i, j, numtrees=0;
+  long i, j;
   double gotlike;
   node *item, *nufork, *dummy;
   char* treestr;
@@ -1792,7 +1598,8 @@ void maketree()
           printf("\nDoing global rearrangements\n");
           printf("  !");
           for (j = 1; j <= nonodes; j++)
-            putchar('-');
+            if ( j % (( nonodes / 72 ) + 1 ) == 0 )
+              putchar('-');
           printf("!\n");
         }
         bestlike = bestyet;
@@ -1815,7 +1622,8 @@ void maketree()
               protadd(there, item, nufork);
             }
             if (progress) {
-              putchar('.');
+              if ( j % (( nonodes / 72 ) + 1 ) == 0 )
+                putchar('.');
               fflush(stdout);
             }
           }
@@ -1854,14 +1662,13 @@ void maketree()
         protpostorder(root);
         evaluate(root);
         printree(root, 1.0);
-	emboss_printtree(root, "printtree protpars a");
         describe();
         for (j = 1; j < (spp); j++)
           protre_move(&treenode[j], &dummy);
       }
     }
   } else {
-    /*openfile(&intree,INTREE,"input tree file", "r",progname,intreename);*/
+
     if (treeprint) {
       fprintf(outfile, "User-defined tree");
       if (numtrees > 1)
@@ -1877,7 +1684,6 @@ void maketree()
       protpostorder(root);
       evaluate(root);
       printree(root, 1.0);
-      emboss_printtree(root, "printtree protpars b");
       describe();
       which++;
     }
@@ -1903,26 +1709,17 @@ int main(int argc, Char *argv[])
   init(argc,argv);
   emboss_getoptions("fprotpars",argc,argv);
   progname = argv[0];
-  /*openfile(&infile,INFILE,"input file", "r",argv[0],infilename);*/
-  embossoutfile = ajAcdGetOutfile("outfile");
-  emboss_openfile(embossoutfile,&outfile,&outfilename);
+  
 
   ibmpc = IBMCRT;
   ansi = ANSICRT;
   garbage = NULL;
-  mulsets = false;
-  msets = 1;
+
   firstset = true;
   code();
   setup();
   doinit();
-/*
-  if (weights || justwts)
-    openfile(&weightfile,WEIGHTFILE,"weights file","r",argv[0],weightfilename);
-*/
-  embossouttree = ajAcdGetOutfile("outtreefile");
-  emboss_openfile(embossouttree,&outtree,&outtreename);
-  if (!outtree) trout = false;
+
   for (ith = 1; ith <= msets; ith++) {
     doinput();
     if (ith == 1)

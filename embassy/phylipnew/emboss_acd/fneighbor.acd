@@ -5,7 +5,6 @@ application: fneighbor [
   gui: "yes"
   batch: "yes"
   cpu: "high"
-  embassy: "phylipnew"
 ]
 
 section: input [
@@ -13,33 +12,9 @@ section: input [
   type: "page"
 ]
 
-infile: infile  [
+distances: datafile  [
   parameter: "Y"
-  information: "Distance matrix"
-  knowntype: "neighbor input"
-]
-
-boolean: lt  [
-  additional: "Y"
-  default: "N"
-  information: "Lower-triangular data matrix"
-]
-
-boolean: ut  [
-  additional: "Y"
-  default: "N"
-  information: "Upper-triangular data matrix"
-]
-
-toggle: multsets  [
-  additional: "Y"
-  default: "N"
-  information: "Analyze multiple data sets"
-]
-
-integer: datasets  [
-  standard: "$(multsets)"
-  information: "How many data sets"
+  knowntype: "distance matrix"
 ]
 
 endsection: input
@@ -51,87 +26,97 @@ section: output [
 
 outfile: outfile  [
   parameter: "Y"
-  default: "eneighbor.outfile"
   knowntype: "neighbor output"
 ]
 
-toggle: trout  [
-  parameter: "Y"
-  default: "Y"
-  information: "Create a tree file"
+toggle: trout [
+	additional: "Y"
+	default: "Y"
+	information: "Write out trees to tree file"
 ]
 
-boolean: drawtree  [
-  additional: "Y"
-  default: "Y"
-  information: "Draw tree"
-]
-
-outfile: treefile  [
-  standard: "$(trout)"
+outfile: outtreefile  [
+  additional: "$(trout)"
   extension: "treefile"
   information: "Tree file name"
   knowntype: "newick tree"
+  nullok: "Y"
+]
+boolean: printdata [
+	additional: "Y"
+	default: "N"
+	information: "Print data at start of run"
 ]
 
-boolean: printdata  [
-  additional: "Y"
-  default: "N"
-  information: "Print out the data at start of run"
+boolean: progress [
+	additional: "Y"
+	default: "Y"
+	information: "Print indications of progress of run"
 ]
 
-boolean: progress  [
-  additional: "Y"
-  default: "N"
-  information: "Print indications of progress of run"
+boolean: treeprint [
+	additional: "Y"
+	default: "Y"
+	information: "Print out tree"
 ]
 
 endsection: output
-
-section: required [
-  information: "Required section"
-  type: "page"
-]
-
-toggle: nj  [
-  standard: "Y"
-  information: "Neighbor-joining"
-  default: "Y"
-]
-
-toggle: og  [
-  standard: "$(nj)"
-  information: "Outgroup root"
-  default: "N"
-]
-
-integer: outgnum  [
-  standard: "$(og)"
-  information: "Number of the outgroup"
-]
-
-toggle: random  [
-  additional: "Y"
-  default: "N"
-  information: "Randomize input order of species"
-]
-
-integer: randseed  [
-  standard: "$(random)"
-  information: "Random number seed (must be odd)"
-]
-
-endsection: required
 
 section: additional [
   information: "Additional section"
   type: "page"
 ]
 
-boolean: sr  [
+list: matrixtype  [
+	additional: "Y"
+	minimum: "1"
+	maximum: "1"
+	header: "Matrix type"
+	values: "s:Square;
+        	 u:Upper triangular;
+          	 l:Lower triangular"
+  	information: "Type of data matrix"
+  	default: "s"
+]
+
+list: treetype  [
+	additional: "Y"
+	minimum: "1"
+	maximum: "1"
+	header: "Tree type"
+	values: "n:Neighbor-joining;
+        	 u:UPGMA"
+  	information: "Neighbor-joining or UPGMA tree"
+  	default: "n"
+]
+
+integer: outgrno [
+	additional: "@($(treetype)==n)"
+	min: 0  
+        max: "$(datafile.distancesize)"
+	default: 0
+	information: "Species number to use as outgroup"
+]
+
+toggle: jumble  [
   additional: "Y"
-  default: "Y"
+  default: "N"
+  information: "Randomise input order of species"
+]
+
+integer: seed [
+	additional: "$(jumble)"
+	information: "Random number seed between 1 and 32767 (must be odd)"
+	max: 32767
+	min: 1
+	default: 1
+]
+
+boolean: replicates  [
+  additional: "Y"
+  default: "N"
   information: "Subreplicates"
 ]
+
 
 endsection: additional

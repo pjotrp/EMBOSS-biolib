@@ -1,4 +1,3 @@
-#include "ajax.h"
 #include "phylip.h"
 #include "cons.h"
 
@@ -9,14 +8,22 @@
    to copy and use this program provided no fee is charged for it and
    provided that this copyright notice is not removed. */
 
+
 /* The following extern's refer to things declared in cons.c */
 
 AjPPhyloTree* phylotrees = NULL;
 
 extern int tree_pairing;
 
+extern Char intreename[FNMLNGTH], intree2name[FNMLNGTH];
+
 const char* outfilename;
 const char* outtreename;
+AjPFile embossoutfile;
+AjPFile embossouttree;
+
+long trees_in;
+
 extern node *root;
 
 extern long numopts, outgrno, col, setsz;
@@ -34,270 +41,87 @@ extern double trweight, ntrees, mlfrac;
 
 #ifndef OLDC
 /* function prototypes */
-/*void   getoptions(void); */
+//void   getoptions(void);
 void   emboss_getoptions(char *pgm, int argc, char *argv[]);
 void   count_siblings(node **p);
 void   treeout(node *);
 /* function prototypes */
 #endif
 
-/************ EMBOSS GET OPTIONS ROUTINES ******************************/
-void emboss_getoptions(char *pgm, int argc, char *argv[])
+
+void   emboss_getoptions(char *pgm, int argc, char *argv[])
 {
-    AjStatus retval;
-    AjPStr method;
 
-    /* Initial settings */
-    ibmpc          = IBMCRT;
-    ansi           = ANSICRT;
-    didreroot      = false;
-    firsttree      = true;
-    spp            = 0 ;
-    col            = 0 ;
-    ajint numtrees;
+  AjStatus retval;
+  AjPStr method;
 
-    /* This is needed so functions in cons.c work */
-    tree_pairing   = NO_PAIRING ;  
+  /* Initial settings */
+  ibmpc          = IBMCRT;
+  ansi           = ANSICRT;
+  didreroot      = false;
+  firsttree      = true;
+  spp            = 0 ;
+  col            = 0 ;
 
-    strict = false;
-    mr = false;
-    mre = false;
-    ml = false;
-    mlfrac = 0.5;
-    noroot = true;
-    numopts = 0;
-    outgrno = 1;
-    outgropt = false;
-    trout = true;
-    prntsets = true;
-    progress = true;
-    treeprint = true;
+  /* This is needed so functions in cons.c work */
+  tree_pairing   = NO_PAIRING ;  
 
-    ajNamInit("emboss");
-    retval =  ajAcdInitP (pgm, argc, argv,"PHYLIP");
+  strict = false;
+  mr = false;
+  mre = false;
+  ml = false;
+  mlfrac = 0.5;
+  noroot = true;
+  numopts = 0;
+  outgrno = 1;
+  outgropt = false;
+  trout = true;
+  prntsets = true;
+  progress = true;
+  treeprint = true;
+
+  ajNamInit("emboss");
+  retval =  ajAcdInitP (pgm, argc, argv,"PHYLIP");
 
     phylotrees = ajAcdGetTree("intreefile");
-    numtrees = 0;
-    while (phylotrees[numtrees])
-	numtrees++;
-
-    ajDebug("numtrees: %d\n", numtrees);
+    trees_in = 0;
+    while (phylotrees[trees_in])
+	trees_in++;
 
     method = ajAcdGetListI("method", 1);
-    if (ajStrMatchC(method, "strict"))
-	strict = true;
-    else if  (ajStrMatchC(method, "mr"))
-	mr = true;
-    else if  (ajStrMatchC(method, "mre"))
-	mre = true;
-    else if  (ajStrMatchC(method, "ml"))
-	ml = true;
-    else
-	ajDie("Unknown value for consensus method");
-     
-    prntsets = ajAcdGetBool("printsets");
+    if (ajStrMatchC(method, "strict")) strict = true;
+    else if(ajStrMatchC(method, "mr")) mr = true;
+    else if(ajStrMatchC(method, "mre")) mre = true;
+    else if(ajStrMatchC(method, "ml")) {
+      ml = true;
+      mlfrac = ajAcdGetFloat("mlfrac");
+    }
 
+    prntsets = ajAcdGetBool("prntsets");
     progress = ajAcdGetBool("progress");
-
-    treeprint = ajAcdGetBool("drawtree");
-
+    treeprint = ajAcdGetBool("treeprint");
     trout = ajAcdGetToggle("trout");
-    outtree = NULL;
+    outgrno = ajAcdGetInt("outgrno");
+    if(outgrno != 0) outgropt = true;
+    else outgrno = 1;
+
+    noroot =  !ajAcdGetToggle("root");
+
+  embossoutfile = ajAcdGetOutfile("outfile");   
+  emboss_openfile(embossoutfile, &outfile, &outfilename);
+     
   
-    noroot = !ajAcdGetToggle("root");
-    outgrno = ajAcdGetInt("outgnum");
-    if (noroot)
-	outgrno = 1;
+  if(trout) {
+    embossouttree = ajAcdGetOutfile("outtreefile");
+    emboss_openfile(embossouttree, &outtree, &outtreename);
+  }
 
-    /*putchar('\n');*/
-}
 
-/************ END EMBOSS GET OPTIONS ROUTINES **************************/
+  fprintf(outfile, "\nConsensus tree");
+  fprintf(outfile, " program, version %s\n\n", VERSION);
 
-/*
-//void getoptions()
-//{
-//  /# interactively set options #/
-//  long loopcount, loopcount2;
-//  Char ch;
-//  boolean done, done1;
-//
-//  /# Initial settings #/
-//  ibmpc          = IBMCRT;
-//  ansi           = ANSICRT;
-//  didreroot      = false;
-//  firsttree      = true;
-//  spp            = 0 ;
-//  col            = 0 ;
-//
-//  /# This is needed so functions in cons.c work #/
-//  tree_pairing   = NO_PAIRING ;  
-//
-//  fprintf(outfile, "\nConsensus tree");
-//  fprintf(outfile, " program, version %s\n\n", VERSION);
-//  putchar('\n');
-//  strict = false;
-//  mr = false;
-//  mre = true;
-//  ml = false;
-//  mlfrac = 0.5;
-//  noroot = true;
-//  numopts = 0;
-//  outgrno = 1;
-//  outgropt = false;
-//  trout = true;
-//  prntsets = true;
-//  progress = true;
-//  treeprint = true;
-//  loopcount = 0;
-//  do {
-//    cleerhome();
-//    printf("\nConsensus tree");
-//    printf(" program, version %s\n\n", VERSION);
-//    printf("Settings for this run:\n");
-//    printf(" C         Consensus type (MRe, strict, MR, Ml):");
-///#    printf(" C  Consensus type (MRe, strict, Adams, MR, Ml):");  debug #/
-//    if (strict)
-//      printf("  strict\n");
-//    else if (mr)
-//        printf("  Majority rule\n");
-//      else if (mre)
-//          printf("  Majority rule (extended)\n");
-//        else if (ml)
-//            printf("  Ml\n");
-//          else printf("  Adams\n");
-//    if (noroot) {
-//      printf(" O                                Outgroup root:");
-//      if (outgropt)
-//        printf("  Yes, at species number%3ld\n", outgrno);
-//      else
-//        printf("  No, use as outgroup species%3ld\n", outgrno);
-//      }
-//    printf(" R                Trees to be treated as Rooted:");
-//    if (noroot)
-//      printf("  No\n");
-//    else
-//      printf("  Yes\n");
-//    printf(" T           Terminal type (IBM PC, ANSI, none):");
-//    if (ibmpc)
-//      printf("  IBM PC\n");
-//    if (ansi)
-//      printf("  ANSI\n");
-//    if (!(ibmpc || ansi))
-//      printf("  (none)\n");
-//    printf(" 1                Print out the sets of species:");
-//    if (prntsets)
-//      printf("  Yes\n");
-//    else
-//      printf("  No\n");
-//    printf(" 2         Print indications of progress of run:  %s\n",
-//           (progress ? "Yes" : "No"));
-//    printf(" 3                               Print out tree:");
-//    if (treeprint)
-//      printf("  Yes\n");
-//    else
-//      printf("  No\n");
-//    printf(" 4               Write out trees onto tree file:");
-//    if (trout)
-//      printf("  Yes\n");
-//    else
-//      printf("  No\n");
-//
-//    printf("\nAre these settings correct? (type Y or the letter for one to change)\n");
-//#ifdef WIN32
-//    phyFillScreenColor();
-//#endif
-//    scanf("%c%*[^\n]", &ch);
-//    getchar();
-//    uppercase(&ch);
-//    done = (ch == 'Y');
-//    if (!done) {
-//      if ((noroot && (ch == 'O')) || strchr("CRT1234",ch) != NULL) {
-//        switch (ch) {
-//
-//        case 'C':
-//          if (strict) {
-//            strict = false;
-//            mr = true;
-//          } else {
-//            if (ml) {
-//              ml = false;
-//              mre = true;
-//            } else {
-//              if (mre) {
-//                mre = false;
-//                strict = true;
-//              } else {
-//                if (mr) {
-//                  mr = false;
-//                  ml = true;
-//                }
-//              }
-//            }
-//          }
-//          break;
-//
-//        case 'O':
-//          outgropt = !outgropt;
-//          if (outgropt) {
-//            numopts++;
-//            loopcount2 = 0;
-//            do {
-//              printf("Type number of the outgroup:\n");
-//#ifdef WIN32
-//              phyFillScreenColor();
-//#endif
-//              scanf("%ld%*[^\n]", &outgrno);
-//              getchar();
-//              done1 = (outgrno >= 1);
-//              if (!done1) {
-//                printf("ERROR: Bad outgroup number: %ld\n", outgrno);
-//                printf("  Must be greater than zero\n");
-//              }
-//            countup(&loopcount2, 10);
-//            } while (done1 != true);
-//          }
-//          break;
-//
-//        case 'R':
-//          noroot = !noroot;
-//          break;
-//
-//        case 'T':
-//          initterminal(&ibmpc, &ansi);
-//          break;
-//
-//        case '1':
-//          prntsets = !prntsets;
-//          break;
-//
-//        case '2':
-//          progress = !progress;
-//          break;
-//        
-//        case '3':
-//          treeprint = !treeprint;
-//          break;
-//
-//        case '4':
-//          trout = !trout;
-//          break;
-//
-//        }
-//      } else
-//        printf("Not a possible option!\n");
-//    }
-//    countup(&loopcount, 100);
-//  } while (!done);
-//  if (ml) {
-//    do {
-//      printf("\nFraction (l) of times a branch must appear\n");
-//      scanf("%lf%*[^\n]", &mlfrac);
-//      getchar();
-//    } while ((mlfrac < 0.5) || (mlfrac > 1.0));
-//  }
-//}  /# getoptions #/
-*/
+}  /* emboss_getoptions */
+
 
 void count_siblings(node **p)
 {
@@ -410,7 +234,7 @@ int main(int argc, Char *argv[])
   /* Local variables added by Dan F. */
   pattern_elm  ***pattern_array;
   double *timesseen_changes = NULL;
-  long trees_in = 0;
+
   long i, j;
   node *p, *q;
 
@@ -419,26 +243,11 @@ int main(int argc, Char *argv[])
   argv[0] = "Consense";
 #endif
   init(argc, argv);
-
-  /* Initialize option-based variables, then ask for changes regarding
-     their values. */
-  /*getoptions();*/
-  emboss_getoptions("fconsense",argc,argv);
-  /*openfile(&intree, INTREE, "input tree file", "r", argv[0], intreename);*/
-  embossoutfile = ajAcdGetOutfile("outfile");
-  emboss_openfile(embossoutfile, &outfile, &outfilename);
-  fprintf(outfile, "\nMajority-rule and strict consensus tree");
-  fprintf(outfile, " program, version %s\n\n", VERSION);
+  emboss_getoptions("fconsense", argc, argv);
 
   ntrees = 0.0;
   maxgrp = 32767;   /* initial size of set hash table */
   lasti  = -1;
-
-  if (trout)
-  {
-      embossouttree = ajAcdGetOutfile("outtreefile");
-      emboss_openfile(embossouttree, &outtree, &outtreename);
-  }
 
   if (prntsets)
     fprintf(outfile, "Species in order: \n\n");
@@ -457,14 +266,14 @@ int main(int argc, Char *argv[])
   for (i = spp; i < 2*(1+spp); i++)
     nodep[i] = NULL;
   consensus(pattern_array, trees_in);
-  /* printf("\n");*/
+  printf("\n");
   if (trout) {
     treeout(root);
     if (progress)
-      fprintf(stderr,"Consensus tree written to file \"%s\"\n\n", outtreename);
+      printf("Consensus tree written to file \"%s\"\n\n", outtreename);
   }
   if (progress)
-    fprintf(stderr,"Output written to file \"%s\"\n\n", outfilename);
+    printf("Output written to file \"%s\"\n\n", outfilename);
   for (i = 0; i < spp; i++)
     free(nodep[i]);
   for (i = spp; i < 2*(1 + spp); i++) {
@@ -487,12 +296,12 @@ int main(int argc, Char *argv[])
   fixmacfile(outfilename);
   fixmacfile(outtreename);
 #endif
-/*printf("Done.\n\n");*/
+printf("Done.\n\n");
 
 #ifdef WIN32
   phyRestoreConsoleAttributes();
 #endif
-  ajExit();
+
 return 0;
 }  /* main */
 

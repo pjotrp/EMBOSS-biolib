@@ -1,7 +1,6 @@
 application: fgendist [
   documentation: "Compute genetic distances from gene frequencies"
   groups: "Phylogeny:Gene frequencies"
-  embassy: "phylipnew"
 ]
 
 section: input [
@@ -9,45 +8,10 @@ section: input [
   type: "page"
 ]
 
-infile: infile  [
+frequencies: infile  [
   parameter: "Y"
-  information: "Data file"
+  help: "File containing one or more sets of data"
   knowntype: "gendist input"
-]
-
-boolean: all  [
-  additional: "Y"
-  default: "N"
-  information: "Input file contains all alleles at each locus
-                (else one)"
-]
-
-list: method  [
-  standard: "y"
-  minimum: "1"
-  maximum: "1"
-  header: "Distance methods"
-  values: "Nei:Nei genetic distance; Cav:Cavalli-Sforza chord
-           measur; Rey:Reynolds genetic distance"
-  information: "Choose the method to use"
-  default: "Nei"
-]
-
-boolean: lowertriangle  [
-  additional: "Y"
-  default: "N"
-  information: "Lower-triangular (else Square)"
-]
-
-toggle: multsets  [
-  additional: "Y"
-  default: "N"
-  information: "Analyze multiple data sets"
-]
-
-integer: datasets  [
-  standard: "$(multsets)"
-  information: "How many data sets"
 ]
 
 endsection: input
@@ -62,10 +26,34 @@ outfile: outfile  [
   knowntype: "gendist output"
 ]
 
-boolean: progress  [
-  additional: "Y"
-  default: "N"
-  information: "Print indications of progress of run"
+boolean: progress [
+	additional: "Y"
+	default: "Y"
+	information: "Print indications of progress of run"
 ]
 
+boolean: lower [
+	additional: "Y"
+	default: "N"
+	information: "Lower triangular distance matrix"
+]
 endsection: output
+
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
+list: method  [
+  additional: "y"
+  minimum: "1"
+  maximum: "1"
+  header: "Distance methods"
+  values: "n:Nei genetic distance; 
+	   c:Cavalli-Sforza chord measure; 
+           r:Reynolds genetic distance"
+  information: "Which method to use"
+  default: "n"
+]
+
+endsection: additional

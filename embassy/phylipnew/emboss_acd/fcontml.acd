@@ -1,11 +1,9 @@
 application: fcontml [
-  documentation: "Continuous character Maximum Likelihood
-                  method"
-  groups: "Phylogeny:Continuous characters"
+  documentation: "Gene frequency and continuous character Maximum Likelihood method"
+  groups: "Phylogeny:Gene frequencies"
   gui: "yes"
   batch: "yes"
   cpu: "high"
-  embassy: "phylipnew"
 ]
 
 section: input [
@@ -15,7 +13,7 @@ section: input [
 
 frequencies: infile [
   parameter: "Y"
-  knowntype: "continuous character"
+  help: "File containing one or more sets of data"
 ]
 
 tree: intreefile [
@@ -36,29 +34,37 @@ outfile: outfile  [
   knowntype: "contml output"
 ]
 
-boolean: printdata  [
-  additional: "Y"
-  default: "N"
-  information: "Print out the data at start of run"
+toggle: trout [
+	additional: "Y"
+	default: "Y"
+	information: "Write out trees to tree file"
 ]
 
-boolean: progress  [
-  additional: "Y"
-  default: "N"
-  information: "Print indications of progress of run"
+outfile: outtreefile [
+        additional: "$(trout)"
+	extension: "treefile"
+	information: "Tree file name"
+	knowntype: "newick tree"
+	nullok: "Y"
 ]
 
-boolean: drawtree  [
-  additional: "Y"
-  default: "Y"
-  information: "Draw tree"
+
+boolean: printdata [
+	additional: "Y"
+	default: "N"
+	information: "Print data at start of run"
 ]
 
-outfile: outtreefile  [
-  standard: "Y"
-  extension: "treefile"
-  information: "Tree file name"
-  knowntype: "newick tree"
+boolean: progress [
+	additional: "Y"
+	default: "Y"
+	information: "Print indications of progress of run"
+]
+
+boolean: treeprint [
+	additional: "Y"
+	default: "Y"
+	information: "Print out tree"
 ]
 
 endsection: output
@@ -68,28 +74,50 @@ section: additional [
   type: "page"
 ]
 
-integer: jumble [
-  additional: "Y"
-  information: "Number of times to jumble"
-  minimum: "1"
-  default: "1"
+list: datatype  [
+	additional: "Y"
+	minimum: "1"
+	maximum: "1"
+	header: "Input type"
+	values: "g:Gene frequencies;
+        	 i:Continuous characters"
+  	information: "Input type in infile"
+  	default: "g"
+]
+
+boolean: lengths [
+	additional: "$(intreefile.isdefined)"
+	default: "N"
+	information: "Use branch lengths from user trees"
+]
+
+integer: njumble [
+	additional: "@(!$(intreefile.isdefined))"
+	default: 0
+	min: 0
+	information: "Number of times to randomise"
 ]
 
 integer: seed [
-  additional: "@($(jumble) != 1)"
-  information: "Random number seed (must be odd)"
-  minimum: 1
-  maximum: "32765"
-  default: 1
+	additional: "$(njumble)"
+	information: "Random number seed between 1 and 32767 (must be odd)"
+	max: 32767
+	min: 1
+	default: 1
 ]
 
-integer: outgroup [
-  additional: "Y"
-  information: "Number of the outgroup"
-  default: "0"
-  minimum: "0"
-  maximum: "$(infile.freqsize)"
+boolean: global [
+	additional: "@(!$(intreefile.isdefined))"
+	default: "N"
+	information: "Global rearrangements"
+]
 
- ]
+integer: outgrno [
+	additional: "Y"
+	min: 0  
+        max: "$(infile.freqsize)"
+	default: 0
+	information: "Species number to use as outgroup"
+]
 
 endsection: additional

@@ -5,13 +5,13 @@
    Permission is granted to copy and use this program provided no fee is
    charged for it and provided that this copyright notice is not removed. */
 
-#define epsilong         0.02 /* a small number                            */
+#define epsilong         0.02 /* a small number */    
 
-AjPPhyloFreq phylofreq = NULL;		/* should be an array */
+AjPPhyloFreq phylofreq;
 
 #ifndef OLDC
 /* function prototypes */
-/*void   getoptions(void);*/
+//void   getoptions(void);
 void emboss_getoptions(char *pgm, int argc, char *argv[]);
 void   allocrest(void);
 void   doinit(void);
@@ -23,10 +23,9 @@ void   writedists(void);
 /* function prototypes */
 #endif
 
-
-
-Char infilename[FNMLNGTH];
 const char* outfilename;
+AjPFile embossoutfile;
+
 long loci, totalleles, df, datasets, ith;
 long nonodes;
 long *alleles;
@@ -35,125 +34,38 @@ double **d;
 boolean all, cavalli, lower, nei, reynolds,  mulsets,
                firstset, progress;
 
-
-/************ EMBOSS GET OPTIONS ROUTINES ******************************/
-
 void emboss_getoptions(char *pgm, int argc, char *argv[])
 {
-    AjStatus retval;
- 
-    /* initialize global variables */
+  AjStatus retval;
+  AjPStr method = NULL;
+  all = true;
+  cavalli = false;
+  lower = false;
+  nei = false;
+  reynolds = false;
+  lower = false;
+  progress = true;
+  mulsets = false;
+  datasets = 1;
 
     ajNamInit("emboss");
-    retval =  ajAcdInitP (pgm, argc, argv, "PHYLIP");
+    retval =  ajAcdInitP (pgm, argc, argv,"PHYLIP");
 
-    /* ajAcdGet */
+    phylofreq = ajAcdGetFrequencies("infile");
 
-    /* init functions for standard ajAcdGet */
+    method = ajAcdGetListI("method", 1);
+    if(ajStrMatchC(method, "n")) nei = true;
+    else if(ajStrMatchC(method, "c")) cavalli = true;
+    else if(ajStrMatchC(method, "r")) reynolds = true;
 
-    /* cleanup for clashing options */
+    lower = ajAcdGetBool("lower");
 
-}
+    progress = ajAcdGetBool("progress");
 
-/************ END EMBOSS GET OPTIONS ROUTINES **************************/
+     embossoutfile = ajAcdGetOutfile("outfile");   
+     emboss_openfile(embossoutfile, &outfile, &outfilename);
 
-/*
-//void getoptions()
-//{
-//  /# interactively set options #/
-//  long loopcount;
-//  Char ch;
-//
-//  all = false;
-//  cavalli = false;
-//  lower = false;
-//  nei = true;
-//  reynolds = false;
-//  lower = false;
-//  progress = true;
-//  loopcount = 0;
-//  for (;;) {
-//    cleerhome();
-//    printf("\nGenetic Distance Matrix program, version %s\n\n",VERSION);
-//    printf("Settings for this run:\n");
-//    printf("  A   Input file contains all alleles at each locus?  %s\n",
-//           all ? "Yes" : "One omitted at each locus");
-//    printf("  N                        Use Nei genetic distance?  %s\n",
-//           nei ? "Yes" : "No");
-//    printf("  C                Use Cavalli-Sforza chord measure?  %s\n",
-//           cavalli ? "Yes" : "No");
-//    printf("  R                   Use Reynolds genetic distance?  %s\n",
-//           reynolds ? "Yes" : "No");
-//    printf("  L                         Form of distance matrix?  %s\n",
-//           lower ? "Lower-triangular" : "Square");
-//    printf("  M                      Analyze multiple data sets?");
-//    if (mulsets)
-//      printf("  Yes, %2ld sets\n", datasets);
-//    else
-//      printf("  No\n");
-//    printf("  0              Terminal type (IBM PC, ANSI, none)?  %s\n",
-//           ibmpc ? "IBM PC" : ansi  ? "ANSI" : "(none)");
-//    printf("  1            Print indications of progress of run?  %s\n",
-//           progress ? "Yes" : "No");
-//    printf("\n  Y to accept these or type the letter for one to change\n");
-//#ifdef WIN32
-//    phyFillScreenColor();
-//#endif
-//    scanf("%c%*[^\n]", &ch);
-//    getchar();
-//    uppercase(&ch);
-//    if (ch == 'Y')
-//      break;
-//    if (strchr("ACNMRL01", ch) != NULL) {
-//      switch (ch) {
-//        
-//      case 'A':
-//        all = !all;
-//        break;
-//        
-//      case 'C':
-//        cavalli = true;
-//        nei = false;
-//        reynolds = false;
-//        break;
-//        
-//      case 'N':
-//        cavalli = false;
-//        nei = true;
-//        reynolds = false;
-//        break;
-//        
-//      case 'R':
-//        reynolds = true;
-//        cavalli = false;
-//        nei = false;
-//        break;
-//        
-//      case 'L':
-//        lower = !lower;
-//        break;
-//        
-//      case 'M':
-//        mulsets = !mulsets;
-//        if (mulsets)
-//          initdatasets(&datasets);
-//        break;
-//        
-//      case '0':
-//        initterminal(&ibmpc, &ansi);
-//        break;
-//        
-//      case '1':
-//        progress = !progress;
-//        break;
-//      }
-//    } else
-//      printf("Not a possible option!\n");
-//    countup(&loopcount, 100);
-//  }
-//  putchar('\n');
-//}  /# getoptions #/
-*/
+}  /* emboss_getoptions */
 
 
 void allocrest()
@@ -174,7 +86,6 @@ void doinit()
   /* initializes variables */
 
   inputnumbersfreq(phylofreq, &spp, &loci, &nonodes, 1);
-/*  getoptions();*/
   allocrest();
 }  /* doinit */
 
@@ -186,7 +97,7 @@ void getalleles()
   if (!firstset)
     samenumspfreq(phylofreq, &loci, ith);
   totalleles = 0;
-  for (i = 0; i < (loci); i++) {
+  for (i = 0; i < loci; i++) {
     alleles[i] = phylofreq->Allele[i];
     totalleles += alleles[i];
   }
@@ -197,16 +108,15 @@ void getalleles()
 void inputdata()
 {
   /* read allele frequencies */
-  long i, j, k, m, n, p;
+  long i, j, k, m, n;
   double sum;
   ajint ipos = 0;
-
+ 
   for (i = 0; i < spp; i++)
     x[i] = (phenotype3)Malloc(totalleles*sizeof(double));
   for (i = 1; i <= (spp); i++) {
     initnamefreq(phylofreq,i-1);
     m = 1;
-    p = 1;
     for (j = 1; j <= (loci); j++) {
       sum = 0.0;
       n = alleles[j - 1];
@@ -218,7 +128,7 @@ void inputdata()
           printf(" frequency is negative\n\n");
           exxit(-1);
         }
-        p++;
+ 
         m++;
       }
       if (all && fabs(sum - 1.0) > epsilong) {
@@ -229,6 +139,7 @@ void inputdata()
       }
     }
   }
+
 }  /* inputdata */
 
 
@@ -267,7 +178,6 @@ void makedists()
           f = x[i - 1][k] * x[j][k];
           if (f > 0.0)
             s += sqrt(f);
-          else f = 0.0;
         }
         d[i - 1][j] = 4 * (loci - s) / df;
       }
@@ -330,8 +240,8 @@ void writedists()
     else
       k = spp;
     for (j = 1; j <= k; j++) {
-      fprintf(outfile, "%8.4f", d[i][j - 1]);
-      if ((j + 1) % 9 == 0 && j < k)
+      fprintf(outfile, "%10.6f", fabs(d[i][j - 1]));
+      if ((j + 1) % 7 == 0 && j < k)
         putc('\n', outfile);
     }
     putc('\n', outfile);
@@ -349,15 +259,9 @@ int main(int argc, Char *argv[])
 #endif
   init(argc, argv);
   emboss_getoptions("fgendist",argc,argv);
-  /*openfile(&infile,INFILE,"input file", "r",argv[0],infilename);*/
-  embossoutfile = ajAcdGetOutfile("outfile");
-  emboss_openfile(embossoutfile,&outfile,&outfilename);
-
   ibmpc = IBMCRT;
   ansi = ANSICRT;
-  mulsets = false;
   firstset = true;
-  datasets = 1;
   doinit();
   for (ith = 1; ith <= (datasets); ith++) {
     getinput();

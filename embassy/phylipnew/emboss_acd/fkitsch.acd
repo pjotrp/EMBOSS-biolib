@@ -5,7 +5,6 @@ application: fkitsch [
   gui: "yes"
   batch: "yes"
   cpu: "high"
-  embassy: "phylipnew"
 ]
 
 section: input [
@@ -13,33 +12,16 @@ section: input [
   type: "page"
 ]
 
-infile: infile  [
+distances: datafile  [
   parameter: "Y"
-  information: "Data file"
-  knowntype: "kitsch input"
+  help: "File containing one or more distance matrices"
+  knowntype: "distance matrix"
 ]
 
-boolean: lt  [
-  additional: "Y"
-  default: "N"
-  information: "Lower-triangular data matrix"
-]
-
-boolean: ut  [
-  additional: "Y"
-  default: "N"
-  information: "Upper-triangular data matrix"
-]
-
-toggle: multsets  [
-  additional: "Y"
-  default: "N"
-  information: "Analyze multiple data sets"
-]
-
-integer: datasets  [
-  standard: "$(multsets)"
-  information: "How many data sets"
+tree: intreefile [
+	parameter: "Y"
+	nullok: "Y"
+	knowntype: "newick"
 ]
 
 endsection: input
@@ -54,74 +36,86 @@ outfile: outfile  [
   knowntype: "kitsch output"
 ]
 
-boolean: printdata  [
-  additional: "Y"
-  default: "N"
-  information: "Print out the data at start of run"
+toggle: trout [
+	additional: "Y"
+	default: "Y"
+	information: "Write out trees to tree file"
 ]
 
-boolean: progress  [
-  additional: "Y"
-  default: "N"
-  information: "Print indications of progress of run"
-]
-
-boolean: drawtree  [
-  additional: "Y"
-  default: "Y"
-  information: "Draw tree"
-]
-
-outfile: treefile  [
-  standard: "Y"
-  default: "ekitsch.treefile"
+outfile: outtreefile  [
+  additional: "$(trout)"
+  extension: "treefile"
   information: "Tree file name"
   knowntype: "newick tree"
+  nullok: "Y"
+]
+
+
+boolean: printdata [
+	additional: "Y"
+	default: "N"
+	information: "Print data at start of run"
+]
+
+boolean: progress [
+	additional: "Y"
+	default: "Y"
+	information: "Print indications of progress of run"
+]
+
+boolean: treeprint [
+	additional: "Y"
+	default: "Y"
+	information: "Print out tree"
 ]
 
 endsection: output
-
-section: required [
-  information: "Required section"
-  type: "page"
-]
-
-toggle: besttree  [
-  parameter: "Y"
-  default: "Y"
-  information: "Search for best tree"
-]
-
-toggle: random  [
-  additional: "$(besttree)"
-  default: "N"
-  information: "Randomize input order of species"
-]
-
-integer: randseed  [
-  standard: "$(random)"
-  information: "Random number seed (must be odd)"
-]
-
-integer: randtimes  [
-  standard: "$(random)"
-  information: "Number of times to jumble"
-]
-
-endsection: required
 
 section: additional [
   information: "Additional section"
   type: "page"
 ]
 
+list: matrixtype  [
+	additional: "Y"
+	minimum: "1"
+	maximum: "1"
+	header: "Matrix type"
+	values: "s:Square;
+        	 u:Upper triangular;
+          	 l:Lower triangular"
+  	information: "Type of data matrix"
+  	default: "s"
+]
+
+boolean: minev  [
+	additional: "Y"
+  	information: "Minimum evolution"
+  	default: "N"
+]
+
+integer: njumble [
+	additional: "@(!$(intreefile.isdefined))"
+	default: 0
+	min: 0
+	information: "Number of times to randomise"
+]
+
+integer: seed [
+	additional: "$(njumble)"
+	information: "Random number seed between 1 and 32767 (must be odd)"
+	max: 32767
+	min: 1
+	default: 1
+]
+
 float: power  [
   additional: "Y"
-  default: "3.0"
+  default: "2.0"
   information: "Power"
 ]
 
-boolean: negbranch  [
+boolean: negallowed  [
   additional: "Y"
   default: "N"
   information: "Negative branch lengths allowed"

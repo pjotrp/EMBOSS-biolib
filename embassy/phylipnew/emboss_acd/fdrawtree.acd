@@ -2,7 +2,304 @@ application: fdrawtree [
   documentation: "Plots an unrooted tree diagram"
   groups: "Phylogeny:Tree drawing"
   batch: "no"
-  embassy: "phylipnew"
+]
+
+section: input [
+	information: "Input section"
+	type: "page"
+]
+
+tree: intreefile [
+	parameter: "Y"
+	knowntype: "newick"
+]
+
+endsection: input
+
+section: output [
+	information: "Output section"
+	type: "page"
+]
+
+outfile: plotfile [
+	parameter: Y
+	knowntype: "drawgram outout"
 ]
 
 
+boolean: grows [
+	additional: "Y"          
+        default: "Y"
+        information: "Tree grows horizontally"
+]
+
+list: style  [
+	additional: "Y"
+	minimum: "1"
+	maximum: "1"
+	header: "Tree style"
+	values: "c:cladogram (v-shaped);
+                 p:phenogram (branches are square);
+                 v:curvogram (branches are 1/4 out of an ellipse);
+                 e:eurogram (branches angle outward, then up);
+                 s:swooporam (branches curve outward then reverse);
+                 o:circular tree"
+   	information: "Tree style output"
+  	default: "c"
+]
+
+list: plotter [
+	additional: "Y"
+	minimum: "1"
+	maximum: "1"
+	header: "Plotter or printer"
+	values: "l:Postscript printer file format;
+                 m:PICT format (for drawing programs);
+                 j:HP Laserjet PCL file format; 
+                 w:MS-Windows Bitmap;
+                 f:FIG 2.0 drawing program format;         
+	         a:Idraw drawing program format;
+       	         z:VRML Virtual Reality Markup Language file;
+	         p:PCX file format (for drawing programs);
+       		 k:TeKtronix 4010 graphics terminal;
+	         x:X Bitmap format;
+	         v:POVRAY 3D rendering program file;
+       		 r:Rayshade 3D rendering program file;
+	         h:Hewlett-Packard pen plotter (HPGL file format);
+	         d:DEC ReGIS graphics (VT240 terminal);
+	       	 e:Epson MX-80 dot-matrix printer;
+       		 c:Prowriter/Imagewriter dot-matrix printer;
+   	         t:Toshiba 24-pin dot-matrix printer;
+       		 o:Okidata dot-matrix printer;
+   	         b:Houston Instruments plotter;
+       		 u:other (one you have inserted code for)"
+   	information: "Plotter or printer the tree will be drawn on"
+  	default: "l"
+]
+
+list: plotterpcl [
+	additional: @($(plotter)==j)
+	minimum: 1
+	maximum: 1
+	header: "Laserjet resolution"
+	values: "1:75 DPI;
+		 2:150 DPI;
+		 3:300 DPI"
+	information: "Laserjet resolution"
+	default: "1"
+]
+
+
+list: plotterpcx [
+	additional: @($(plotter)==p)
+	minimum: 1
+	maximum: 1
+	header: "PCX file resolution"
+	values: "1:EGA 640  X 350;
+		 2:VGA 800  X 600;
+		 3:VGA 1024 X 768"
+	information: "PCX file resolution"
+	default: "1"
+]
+
+list: previewer  [
+	additional: "Y"
+	minimum: "1"
+	maximum: "1"
+	header: "Previewing device"
+	values: "n:Will not be previewed;
+I                i:MSDOS graphics screen
+                 m:Macintosh screens;
+                 x:X Windows display;
+                 w:MS Windows display;
+                 k:TeKtronix 4010 graphics terminal;
+                 d:DEC ReGIS graphics (VT240 terminal);
+                 o:Other (one you have inserted code for)"
+   	information: "Previewing device"
+  	default: "x"
+]
+
+list: iterate [
+	additional: "Y"
+	minimum: "1"
+	maximum: "1"
+	header: "Iterate to improve tree"
+	values: "n:No;
+		 e:Equal-Daylight algorithm;
+		 b:n-Body algorithm"
+	information: "Iterate to improve tree"
+	default: "e"
+]
+
+boolean: lengths [
+	additional: "Y"
+	default: "N"
+	information: "Use branch lengths from user trees"
+]
+
+list: labeldirec [
+	additional: "Y"
+	minimum: "1"
+	maximum: "1"
+	header: "Lable direction"
+	values: "a:along;
+		 f:fixed;
+		 r:radial;
+		 m:middle"
+	information: "Label direction"
+	default: "e"
+]
+
+float: treeangle [
+	information: "Angle the tree is to be plotted"
+	default: "90.0"
+	min: "-360.0"
+	max: "360.0"
+	additional: "Y"
+]
+
+float: arc [
+	information: "Degrees the arc should occupy"
+	default: "360"
+	min: "0.0"
+	max: "360.0"
+	additional: "Y"
+]
+
+float: labelrotation [
+	additional: "@($(style)!=c)"
+	information: "Angle of lables (0 degrees is horizontal for a tree growing vertically)"
+	default: "90.0" 
+        min: "0.0"
+	max: "360.0"
+]
+
+toggle: rescaled [
+	additional: "Y"
+	default: "Y"
+	information: "Automatically rescale branch lenghts"
+]
+
+float: bscale [
+	additional: "@(!$(rescaled))"
+	default: "1.0"
+	information: "Centimeters per unit branch length"
+]
+
+float: treedepth [
+	additional: "Y"
+	default: "0.53"
+	information: "Depth of tree as fraction of its breadth"
+	min: "0.1"
+	max: "100.0"
+]
+
+float: stemlength [
+	additional: "Y"
+	default: "0.05"
+	information: "Stem length as fraction of tree depth"
+	min: "0.1"
+	max: "100.0"
+]
+
+float: nodespace [
+	additional: "Y"
+	default: "0.3333"
+	information: "Character height as fraction of tip spacing"
+	min: "0.1"
+	max: "100.0"
+]
+
+list: nodeposition [
+	additional: "Y"
+	minimum: "1"
+	maximum: "1"
+	header: "Node position"
+	values: "i:Intermediate between their immediate descendants;
+                 w:Weighted average of tip positions;
+                 c:Centered among their ultimate descendants;
+                 n:Innermost of immediate descendants;
+                 v:So tree is v shaped"
+   	information: "Position of interior nodes"
+  	default: "c"
+]
+
+float: xmargin [
+	additional: "@($(plotter)!=r)"
+	default: "1.65"
+	min: "0.1"
+	information: "Horizontal margin (cm)"
+]
+float: ymargin [
+	additional: "@($(plotter)!=r)"
+	default: "2.16"
+	min: "0.1"
+	information: "Vertical margin (cm)"
+]
+
+float: xmarginray [
+	additional: "@($(plotter)==r)"
+	default: "1.65"
+	min: "0.1"
+	information: "Horizontal margin (pixels)"
+]
+float: ymarginray [
+	additional: "@($(plotter)==r)"
+	default: "2.16"
+	min: "0.1"
+	information: "Vertical margin (pixels)"
+]
+
+float: paperx [
+	additional: "Y"
+	default: "20.63750"
+	information: "Paper width"
+
+]
+float: papery [
+	additional: "Y"
+	default: "26.98750"
+	information: "Paper height"
+	min: "0.1"
+]
+
+float: pagesheight [
+	additional: Y
+	default: 1
+	information: "Number of trees across height of page"
+	min: 1
+]
+float: pageswidth [
+	additional: Y
+	default: 1
+	information: "Number of trees across width of page"
+	min: 1
+]
+
+float: hpmargin [
+	additional: "Y"
+	default: "0.41275"
+	information: "Horizontal overlap (cm)"
+	min: "0.001"
+]
+
+
+float: vpmargin [
+	additional: "Y"
+	default: "0.53975"
+	information: "Vertical overlap (cm)"
+	min: "0.001"
+]
+
+endsection: output
+
+section: additional [
+	information: "Additional section"
+	type: "page"
+]
+
+
+
+
+
+endsection: additional	

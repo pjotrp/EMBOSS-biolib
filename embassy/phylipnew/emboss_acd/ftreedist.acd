@@ -1,7 +1,6 @@
-application: ftreedist [
+ application: ftreedist [
   documentation: "Distances between trees"
   groups: "Phylogeny:Consensus"
-  embassy: "phylipnew"
 ]
 
 section: input [
@@ -9,15 +8,14 @@ section: input [
   type: "page"
 ]
 
-infile: intreefile [
+tree: intreefile [
   parameter: "Y"
-  knowntype: "newick tree"
-  information: "Tree file"
+  knowntype: "newick"
 ]
 
-infile: bintreefile [
+tree: secondintreefile [
   parameter: "Y"
-  knowntype: "newick tree"
+  knowntype: "newick"
   information: "Second input tree file"
   nullok: "Y"
 ]
@@ -37,36 +35,60 @@ outfile: outfile  [
 
 boolean: progress [
   additional: "Y"
-  default: "N"
+  default: "Y"
   information: "Print indications of progress of run"
 ]
 endsection: output
 
-section: required [
-  information: "Required section"
+section: additional [
+  information: "Additional section"
   type: "page"
 ]
 
+list: dtype [
+  additional: "Y"
+  information: "Distance type"
+  values: "s:Symmetric difference;
+           b:Branch score distance"
+  default: "b"
+]
+
 list: pairing [
-  standard: "Y"
+  additional: "@(!$(secondintreefile.isdefined))"
   information: "Tree pairing method"
-  values: "Adjacent:Distances between adjacent pairs in tree file;
-           Pairs:Distances between all possible pairs in tree file;
-           Correspond:Distances between corresponding pairs in one
-  tree file and another;
-           ListAll:Distances between all pairs in one tree file and
-  another"
-  default: "Adjacent"
+  values: "a:Distances between adjacent pairs in tree file;
+           p:Distances between all possible pairs in tree file"
+  default: "a"
+]
+
+list: pairingtwo [
+  additional: "$(secondintreefile.isdefined)"
+  information: "Tree pairing method"
+  values: "c:Distances between corresponding pairs in one tree file and another;
+           l:Distances between all pairs in one tree file and another"
+  default: "c"
 ]
 
 list: style [
-  standard: "Y"
+  additional: "Y"
   information: "Distances output option"
-  values: "Full:Full_matrix;
-           Verbose:One pair per line;
-           Sparse:One pair per line"
-  default: "Verbose"
+  values: "f:Full matrix;
+           v:One pair per line, verbose;
+           s:One pair per line, sparse"
+  default: "v"
 ]
 
-endsection: required
+boolean: noroot [
+  additional: "Y"
+  default: "N"
+  information: "Trees to be treated as rooted"
+]
+
+integer: outgrno [
+	additional: "Y"
+	min: 0  
+	default: 0
+	information: "Species number to use as outgroup"
+]
+endsection: additional
 

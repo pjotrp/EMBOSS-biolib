@@ -2,6 +2,121 @@ application: fmove [
   documentation: "Interactive mixed method parsimony"
   groups: "Phylogeny:Discrete characters"
   batch: "no"
-  embassy: "phylipnew"
 ]
 
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+discretestates: infile  [
+  parameter: "Y"
+  characters: "01PB?"
+  help: "File containing data set"
+  knowntype: "discrete characters input"
+]
+
+tree: intreefile [
+	parameter: "Y"
+	nullok: "Y"
+	knowntype: "newick"
+]
+properties: weights [
+	additional: "Y"
+	characters: "01"
+	information: "Weights file"
+	help: "Weights file"
+        length: "$(infile.discretelength)"
+        size: "1"
+	nullok: "Y"
+]
+
+properties: ancfile [
+	additional: "Y"
+	characters: "01?"
+	information: "Ancestral states file"
+	nullok: "Y"
+        length: "$(infile.discretelength)"
+        size: "1"
+]
+properties: factorfile [
+	additional: "Y"
+	information: "Factors file"
+	nullok: "Y"
+        length: "$(infile.discretelength)"
+        size: "1"
+]
+endsection: input
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+outfile: outtreefile [
+	additional: "Y"
+	extension: "treefile"
+	knowntype: "newick tree"
+	nullok: "Y"
+]
+
+endsection: output
+
+section: additional [
+	information: "Additional section"
+	type: "page"
+]
+
+
+list: method  [
+  additional: "y"
+  minimum: "1"
+  maximum: "1"
+  header: "Method"
+  values: "w:Wagner; 
+           c:Camin-Sokal; 
+           m:Mixed;"
+  information: "Choose the method to use"
+  default: "Wagner"
+]
+
+integer: outgrno [
+	additional: "Y"
+	min: 0  
+        max: "$(infile.discretsize)"
+	default: 0
+	information: "Species number to use as outgroup"
+]
+
+float: threshold [
+	additional: "Y"
+	min: 0
+	information: "Threshold value"
+	default: "$(infile.discretesize)" 
+]
+
+list: initialtree  [
+	additional: "Y"
+	minimum: "1"
+	maximum: "1"
+	header: "Initial tree"
+	values: "a:Arbitary;
+        	 u:User;
+          	 s:Specify"
+  	information: "Initial tree"
+  	default: "Arbitary"
+]
+
+integer: screenwidth [
+	additional: "Y"
+	default: "80"
+	information: "Width of terminal screen in characters"
+]
+
+integer: screenlines [
+	additional: "Y"
+	default: "24"
+	information: "Number of lines on screen"
+]
+
+endsection: additional

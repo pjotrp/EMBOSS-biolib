@@ -1,8 +1,7 @@
-#include "ajax.h"
 #include "phylip.h"
 #include "cont.h"
 
-/* version 3.6. (c) Copyright 1993-2001 by the University of Washington.
+/* version 3.6. (c) Copyright 1993-2004 by the University of Washington.
    Written by Joseph Felsenstein, Akiko Fuseki, Sean Lamont, and Andrew Keeffe.
    Permission is granted to copy and use this program provided no fee is
    charged for it and provided that this copyright notice is not removed. */
@@ -19,14 +18,16 @@
 AjPPhyloFreq phylofreq;
 AjPPhyloTree* phylotrees;
 
+
 #ifndef OLDC
 /* function prototypes */
-/*void   getoptions(void);*/
+//void   getoptions(void);
 void   emboss_getoptions(char *pgm, int argc, char *argv[]);
 void   allocrest(void);
 void   doinit(void);
 void   getalleles(void);
 void   inputdata(void);
+void   transformgfs(void);
 void   getinput(void);
 void   sumlikely(node *, node *, double *);
 double evaluate(tree *);
@@ -60,17 +61,18 @@ void   nodeinit(node *);
 void   initrav(node *);
 void   treevaluate(void);
 void   maketree(void);
+void   globrearrange(void);
 /* function prototypes */
 #endif
 
-
-Char infilename[FNMLNGTH], intreename[FNMLNGTH];
 const char* outfilename;
 const char* outtreename;
+AjPFile embossoutfile;
+AjPFile embossouttree;
 
-long nonodes2, loci, totalleles, df, outgrno, col, datasets, ith,
-        njumble, jumb=0;
-long inseed;
+long nonodes2, loci, totalleles, df, outgrno, col,
+      datasets, ith, njumble, jumb=0;
+long inseed, inseed0;
 long *alleles, *locus, *weight;
 phenotype3 *x;
 boolean all, contchars, global, jumble, lengths, outgropt, trout,
@@ -78,229 +80,97 @@ boolean all, contchars, global, jumble, lengths, outgropt, trout,
 longer seed;
 long *enterorder;
 tree curtree, priortree, bestree, bestree2;
-long nextsp,numtrees,which,maxwhich; /* From maketree, propogated to global */
+long nextsp, numtrees, which, maxwhich, shimotrees;
+ /* From maketree, propagated to global */
 boolean succeeded;
 double maxlogl;
-double l0gl[maxtrees];
-double *l0gf[maxtrees];
+double l0gl[MAXSHIMOTREES];
+double *pbar, *sqrtp, *l0gf[MAXSHIMOTREES];
 Char ch;
 char *progname;
 double trweight;   /* added to make treeread happy */
 boolean goteof;
 boolean haslengths;   /* end of ones added to make treeread happy */
+node *addwhere;
 
 
-/************ EMBOSS GET OPTIONS ROUTINES ******************************/
 void emboss_getoptions(char *pgm, int argc, char *argv[])
-{
-    AjStatus retval;
-    long inseed0;
-    
-    global = false;
-    jumble = false;
-    njumble = 1;
-    lengths = false;
-    outgrno = 1;
-    outgropt = false;
-    all = true;
-    contchars = false;
-    trout = true;
-    usertree = false;
-    printdata = false;
-    progress = true;
-    treeprint = true;
+{ 
+
+  AjStatus retval;
+  AjPStr datatype = NULL;
+
+  global = false;
+  jumble = false;
+  njumble = 1;
+  lengths = false;
+  outgrno = 1;
+  outgropt = false;
+  all = true;
+  contchars = false;
+  trout = true;
+  usertree = false;
+  printdata = false;
+  progress = true;
+  treeprint = true;
+  mulsets = false;
+  datasets = 1;
+
     ajNamInit("emboss");
-    retval =  ajAcdInitP (pgm, argc, argv,"PHYLIP");
+    retval = ajAcdInitP (pgm, argc, argv, "PHYLIP");
 
     phylofreq = ajAcdGetFrequencies("infile");
+
     phylotrees = ajAcdGetTree("intreefile");
-    numtrees = 0;
     if (phylotrees)
     {
-	while(phylotrees[numtrees])
-	    numtrees++;
-	usertree = true;
- 	lengths = false;
- 	global = false;
-   }
-    else
-    {
- 	lengths = true;
-	global = true;
+        numtrees = 0;
+        while (phylotrees[numtrees])
+            numtrees++;
+        usertree = true;
+        lengths = ajAcdGetBool("lengths");
     }
 
-    if (phylofreq->ContChar)
-	contchars = true;
+   datatype = ajAcdGetListI("datatype", 1);
+   if(ajStrMatchC(datatype, "c")) contchars = true;
 
-    if(contchars)
-	all = false;
-  
-    njumble = ajAcdGetInt("jumble");
-    inseed = ajAcdGetInt("seed");
-    emboss_initseed(inseed, &inseed0, seed);
+   outgrno = ajAcdGetInt("outgrno");
+   if(outgrno != 0) outgropt = true;
+   else outgrno = 1;
 
-    outgrno = ajAcdGetInt("outgroup");
+   if(!usertree) {
+      global = ajAcdGetBool("global"); 
+      njumble = ajAcdGetInt("njumble");
+      if(njumble >0) {
+        inseed = ajAcdGetInt("seed");
+        jumble = true; 
+        emboss_initseed(inseed, &inseed0, seed);
+      }
+      else njumble = 1;
+    }
 
-    progress = ajAcdGetBool("progress");
-	
     printdata = ajAcdGetBool("printdata");
-    
-    treeprint = ajAcdGetBool("drawtree");
+    progress = ajAcdGetBool("progress");
+    treeprint = ajAcdGetBool("treeprint");
+    trout = ajAcdGetToggle("trout");
 
-}
-/************ END EMBOSS GET OPTIONS ROUTINES **************************/
+    embossoutfile = ajAcdGetOutfile("outfile");   
+    embossouttree = ajAcdGetOutfile("outtreefile");
 
-/*
-//void getoptions()
-//{
-//  /# interactively set options #/
-//  long inseed0, loopcount;
-//  Char ch;
-//  boolean done;
-//
-//  fprintf(outfile, "\nContinuous character Maximum Likelihood");
-//  fprintf(outfile, " method version %s\n\n",VERSION);
-//  putchar('\n');
-//  global = false;
-//  jumble = false;
-//  njumble = 1;
-//  lengths = false;
-//  outgrno = 1;
-//  outgropt = false;
-//  all = false;
-//  contchars = false;
-//  trout = true;
-//  usertree = false;
-//  printdata = false;
-//  progress = true;
-//  treeprint = true;
-//  loopcount = 0;
-//  do {
-//    cleerhome();
-//    printf("\nContinuous character Maximum Likelihood");
-//    printf(" method version %s\n\n",VERSION);
-//    printf("Settings for this run:\n");
-//    printf("  U                       Search for best tree?  %s\n",
-//           (usertree ? "No, use user trees in input" : "Yes"));
-//    if (usertree) {
-//      printf("  L                Use lengths from user trees?%s\n",
-//             (lengths ? "  Yes" : "  No"));
-//    }
-//    printf("  C  Gene frequencies or continuous characters?  %s\n",
-//           (contchars ? "Continuous characters" : "Gene frequencies"));
-//    if (!contchars)
-//      printf("  A   Input file has all alleles at each locus?  %s\n",
-//             (all ? "Yes" : "No, one allele missing at each"));
-//    printf("  O                              Outgroup root?  %s %ld\n",
-//           (outgropt ? "Yes, at species number" :
-//                       "No, use as outgroup species"),outgrno);
-//    if (!usertree) {
-//      printf("  G                      Global rearrangements?  %s\n",
-//             (global ? "Yes" : "No"));
-//      printf("  J           Randomize input order of species?");
-//      if (jumble)
-//        printf("  Yes (seed=%8ld,%3ld times)\n", inseed0, njumble);
-//      else
-//        printf("  No. Use input order\n");
-//    }
-//    printf("  M                 Analyze multiple data sets?");
-//    if (mulsets)
-//      printf("  Yes, %2ld sets\n", datasets);
-//    else
-//      printf("  No\n");
-//    printf("  0         Terminal type (IBM PC, ANSI, none)?  %s\n",
-//           ibmpc ? "IBM PC" : ansi  ? "ANSI" : "(none)");
-//    printf("  1          Print out the data at start of run  %s\n",
-//           (printdata ? "Yes" : "No"));
-//    printf("  2        Print indications of progress of run  %s\n",
-//           (progress ? "Yes" : "No"));
-//    printf("  3                              Print out tree  %s\n",
-//           (treeprint ? "Yes" : "No"));
-//    printf("  4             Write out trees onto tree file?  %s\n",
-//           (trout ? "Yes" : "No"));
-//    printf("\n  Y to accept these or type the letter for one to change\n");
-//#ifdef WIN32
-//    phyFillScreenColor();
-//#endif
-//    scanf("%c%*[^\n]", &ch);
-//    getchar();
-//    uppercase(&ch);
-//    done = (ch == 'Y');
-//    if (!done) {
-//      if (strchr("JLOUGACM12340",ch) != NULL){
-//
-//        switch (ch) {
-//
-//        case 'A':
-//          if (!contchars)
-//            all = !all;
-//          break;
-//
-//        case 'C':
-//          contchars = !contchars;
-//          break;
-//
-//        case 'G':
-//          global = !global;
-//          break;
-//
-//        case 'J':
-//          jumble = !jumble;
-//          if (jumble)
-//            initjumble(&inseed, &inseed0, seed, &njumble);
-//          else njumble = 1;
-//          break;
-//
-//         case 'L':
-//           lengths = !lengths;
-//           break;
-//
-//        case 'O':
-//          outgropt = !outgropt;
-//          if (outgropt)
-//            initoutgroup(&outgrno, spp);
-//          break;
-//
-//        case 'U':
-//          usertree = !usertree;
-//          break;
-//
-//        case 'M':
-//          mulsets = !mulsets;
-//          if (mulsets)
-//            initdatasets(&datasets);
-//          break;
-//
-//        case '0':
-//          initterminal(&ibmpc, &ansi);
-//          break;
-//
-//        case '1':
-//          printdata = !printdata;
-//          break;
-//
-//        case '2':
-//          progress = !progress;
-//          break;
-//
-//        case '3':
-//          treeprint = !treeprint;
-//          break;
-//
-//        case '4':
-//          trout = !trout;
-//          break;
-//        }
-//      } else
-//        printf("Not a possible option!\n");
-//    }
-//    countup(&loopcount, 100);
-//  } while (!done);
-//}  /# getoptions #/
-*/
+    emboss_openfile(embossoutfile, &outfile, &outfilename);
+    if(trout) emboss_openfile(embossouttree, &outtree, &outtreename);
+
+    fprintf(outfile, "\nContinuous character Maximum Likelihood");
+    fprintf(outfile, " method version %s\n\n",VERSION);
+
+    printf("all: %s\n",(all ? "true":"false"));
+ 
+}  /* emboss_getoptions */
+
 
 void allocrest()
-{
+{  /* allocate arrays for number of alleles, the data coordinates, names etc */
+
   alleles = (long *)Malloc(loci*sizeof(long));
   if (contchars)
     locus = (long *)Malloc(loci*sizeof(long));
@@ -311,17 +181,9 @@ void allocrest()
 
 
 void doinit()
-{
-  /* initializes variables */
+{ /* initializes variables */
 
   inputnumbersfreq(phylofreq, &spp, &loci, &nonodes2, 2);
-    emboss_initoutgroup(&outgrno, spp);
-    if (outgrno > 0)
-	outgropt = true;
-    else
-	outgrno = 1;
-
-  /*getoptions();*/
   if (printdata)
     fprintf(outfile, "\n%4ld Populations, %4ld Loci\n", spp, loci);
   alloctree(&curtree.nodep, nonodes2);
@@ -337,9 +199,8 @@ void doinit()
 
 
 void getalleles()
-{
-  /* set up number of alleles at loci */
-  long i, j;
+{ /* set up number of alleles at loci */
+  long i, j, m;
 
   if (!firstset)
     samenumspfreq(phylofreq, &loci, ith);
@@ -347,24 +208,19 @@ void getalleles()
     totalleles = loci;
     for (i = 1; i <= loci; i++) {
       locus[i - 1] = i;
-      alleles[i - 1] = 2;
+      alleles[i - 1] = 1;
     }
     df = loci;
   } else {
     totalleles = 0;
-    /*scan_eoln(infile);*/
     if (printdata) {
       fprintf(outfile, "\nNumbers of alleles at the loci:\n");
       fprintf(outfile, "------- -- ------- -- --- -----\n\n");
     }
     for (i = 1; i <= loci; i++) {
-      /*if (eoln(infile)) 
-        scan_eoln(infile);*/
-      /*fscanf(infile, "%ld", &alleles[i - 1]);*/
       alleles[i-1] = phylofreq->Allele[i-1];
       if (alleles[i - 1] <= 0) {
-        ajErr("ERROR: Bad number of alleles: %ld at locus %ld",
-	      alleles[i-1], i);
+    printf("ERROR: Bad number of alleles: %ld at locus %ld\n", alleles[i-1], i);
         exxit(-1);
       }
       totalleles += alleles[i - 1];
@@ -372,11 +228,11 @@ void getalleles()
         fprintf(outfile, "%4ld", alleles[i - 1]);
     }
     locus = (long *)Malloc(totalleles*sizeof(long));
-    totalleles = 0;
+    m=0;
     for (i = 1; i <= loci; i++) {
-      for (j = totalleles; j < (totalleles + alleles[i - 1]); j++)
-        locus[j] = i;
-      totalleles += alleles[i - 1];
+      for (j = 0; j < alleles[i - 1]; j++)
+        locus[m+j] = i;
+      m += alleles[i - 1];
     }
     df = totalleles - loci;
   }
@@ -389,8 +245,9 @@ void getalleles()
   }
   for (i = 0; i < spp; i++)
     x[i] = (phenotype3)Malloc(totalleles*sizeof(double));
+  pbar = (double *)Malloc(totalleles*sizeof(double));
   if (usertree)
-    for (i = 0; i < maxtrees; i++)
+    for (i = 0; i < MAXSHIMOTREES ; i++)
       l0gf[i] = (double *)Malloc(totalleles*sizeof(double));
   if (printdata)
     putc('\n', outfile);
@@ -398,8 +255,7 @@ void getalleles()
 
 
 void inputdata()
-{
-  /* read species data */
+{ /* read species data */
   long i, j, k, l, m, n, p;
   double sum;
   ajint ipos = 0;
@@ -440,7 +296,6 @@ void inputdata()
     }
   }
   for (i = 0; i < spp; i++) {
-    /*scan_eoln(infile);*/
     initnamefreq(phylofreq, i);
     if (printdata)
       for (j = 0; j < nmlngth; j++)
@@ -456,14 +311,11 @@ void inputdata()
       else
         n = alleles[j - 1] - 1;
       for (k = 1; k <= n; k++) {
-        /*if (eoln(infile)) 
-          scan_eoln(infile);
-        fscanf(infile, "%lf", &x[i][m - 1]);*/
-	x[i][m - 1] = phylofreq->Data[ipos++];
+  	x[i][m - 1] = phylofreq->Data[ipos++]; 
         sum += x[i][m - 1];
         if (!contchars && x[i][m - 1] < 0.0) {
-          ajErr("ERROR: locus %ld in species %ld: "
-		"an allele frequency is negative", j, i+1);
+          printf("\n\nERROR: locus %ld in species %ld: an allele", j, i+1);
+          printf(" frequency is negative\n");
           exxit(-1);
         }
         if (printdata) {
@@ -474,32 +326,38 @@ void inputdata()
               putc(' ', outfile);
           }
         }
-        if (!contchars) {
-          if (x[i][m - 1] >= epsilon1)
-            x[i][m - 1] = sqrt(x[i][m - 1]);
-        }
         p++;
         m++;
       }
-      if (all && fabs(sum - 1.0) > epsilon2) {
-        ajErr("ERROR: Locus %ld in species %ld: "
-	      "frequencies do not add up to 1 (%f)",
-	      j, i + 1, sum);
-        exxit(-1);
+      if (all && !contchars) {
+        if (fabs(sum - 1.0) > epsilon2) {
+          printf(
+      "\n\nERROR: Locus %ld in species %ld: frequencies do not add up to 1\n",
+                  j, i + 1);
+          printf("\nFrequencies are:\n");
+          for (l = 0; l <= m-3; l++)
+            printf("%lf+", x[i][l]);
+          printf("%lf = %lf\n\n", x[i][m-2], sum);
+          exxit(-1);
+        } else {
+          for (l = 0; l <= m-2; l++)
+            x[i][l] /= sum;
         }
+      }
       if (!all && !contchars) {
-        x[i][m - 1] = 1.0 - sum;
-        if (x[i][m - 1] >= epsilon1)
-          x[i][m - 1] = sqrt(x[i][m - 1]);
-        if (x[i][m - 1] < 0.0) {
-          if (x[i][m - 1] > -epsilon2) {
-            for (l = 0; l <= m - 2; l++)
-              x[i][l] /= sqrt(sum);
-            x[i][m - 1] = 0.0;
+        x[i][m-1] = 1.0 - sum;
+        if (x[i][m-1] < 0.0) {
+          if (x[i][m-1] > -epsilon2) {
+            for (l = 0; l <= m-2; l++)
+              x[i][l] /= sum;
+            x[i][m-1] = 0.0;
           } else {
-            ajErr("\n\nERROR: Locus %ld in species %ld: "
-		  "frequencies add up to more than 1\n\n",
-		  j, i + 1);
+            printf("\n\nERROR: Locus %ld in species %ld: ", j, i + 1);
+            printf("frequencies add up to more than 1\n");
+            printf("\nFrequencies are:\n");
+            for (l = 0; l <= m-3; l++)
+              printf("%lf+", x[i][l]);
+            printf("%lf = %lf\n\n", x[i][m-2], sum);
             exxit(-1);
           }
         }
@@ -509,26 +367,114 @@ void inputdata()
     if (printdata)
       putc('\n', outfile);
   }
-  /*scan_eoln(infile);*/
   if (printdata)
     putc('\n', outfile);
 }  /* inputdata */
 
 
+void transformgfs()
+{ /* do stereographic projection transformation on gene frequencies to
+    get variables that come closer to independent Brownian motions */
+  long i, j, k, l, m, n, maxalleles;
+  double f, sum;
+  double *sumprod, *sqrtp, *pbar;
+  phenotype3 *c;
+
+  sumprod = (double *)Malloc(loci*sizeof(double));
+  sqrtp = (double *)Malloc(totalleles*sizeof(double));
+  pbar = (double *)Malloc(totalleles*sizeof(double));
+  for (i = 0; i < totalleles; i++) {  /* get mean gene frequencies */
+    pbar[i] = 0.0;
+    for (j = 0; j < spp; j++)
+      pbar[i] += x[j][i];
+    pbar[i] /= spp;
+    if (pbar[i] == 0.0)
+      sqrtp[i] = 0.0;
+    else
+      sqrtp[i] = sqrt(pbar[i]);
+  }
+  for (i = 0; i < spp; i++) {
+    for (j = 0; j < loci; j++)    /* for each locus, sum of root(p*x) */
+      sumprod[j] = 0.0;
+    for (j = 0; j < totalleles; j++)
+      if ((pbar[j]*x[i][j]) >= 0.0)
+        sumprod[locus[j]-1] += sqrtp[j]*sqrt(x[i][j]);
+    for (j = 0; j < totalleles; j++) { /* the projection to tangent plane */
+      f = 1.0 + sumprod[locus[j]-1];
+      if (x[i][j] == 0.0)
+        x[i][j] = (2.0/f - 1.0)*sqrtp[j];
+      else
+        x[i][j] = (2.0/f)*sqrt(x[i][j]) + (2.0/f - 1.0)*sqrtp[j];
+    }
+  }
+  maxalleles = 0;
+  for (i = 0; i < loci; i++)
+    if (alleles[i] > maxalleles)
+      maxalleles = alleles[i];
+  c = (phenotype3 *)Malloc(maxalleles*sizeof(phenotype3));
+  for (i = 0; i < maxalleles; i++)  /* enough room for any locus's contrasts */
+    c[i] = (double *)Malloc(maxalleles*sizeof(double));
+  m = 0;        
+  for (j = 0; j < loci; j++) {            /* do this for each locus */
+    for (k = 0; k < alleles[j]-1; k++) {  /* one fewer than # of alleles */
+      c[k][0] = 1.0;
+      for (l = 0; l < k; l++) {           /* for alleles 2 to k make it ... */
+        sum = 0.0;
+        for (n = 0; n <= l; n++)
+          sum += c[k][n]*c[l][n];
+        if (fabs(c[k-1][l]) > 0.000000001) /* ... orthogonal to those ones */
+          c[k][l+1] = -sum / c[k-1][l];
+        else
+          c[k][l+1] = 1.0;
+      }
+      sum = 0.0;
+      for (l = 0; l <= k; l++) /* make it orthogonal to vector of sqrtp's */
+        sum += c[k][l]*sqrtp[m+l];
+      if (sqrtp[m+k+1] > 0.0000000001)
+        c[k][k+1] = - sum / sqrtp[m+k+1];
+      else
+        c[k][k+1] = 0.0;
+      sum = 0.0;
+      for (l = 0; l <= k+1; l++)
+        sum += c[k][l]*c[k][l];
+      for (l = 0; l <= k; l++)      /* normalize so orthonormal */
+        if (sum > 0.0000000001)
+          c[k][l] /= sum;
+    }
+    for (i = 0; i < spp; i++) {     /* the orthonormal axes in the plane */
+      for (l = 0; l < alleles[k]-1; l++) { /* compute the l-th one */
+        c[maxalleles-1][l] = 0.0;  /* temporarily store it ... */
+        for (n = 0; n <= l+1; n++) 
+          c[maxalleles-1][l] += c[l][n]*x[i][m+n];
+      }
+      for (l = 0; l < alleles[k]-1; l++)
+        x[i][m+l] = c[maxalleles-1][l];  /* replace the gene freqs by it */
+    }
+    m += alleles[j];
+  }
+  for (i = 0; i < maxalleles; i++)
+    free(c[i]);
+  free(c);
+  free(sumprod);
+  free(sqrtp);
+} /* transformgfs */
+
+
 void getinput()
-{
-  /* reads the input data */
+{ /* reads the input data */
   getalleles();
   inputdata();
+  if (!contchars) {
+    transformgfs();
+  }
 }  /* getinput */
 
 
 void sumlikely(node *p, node *q, double *sum)
-{
-  /* sum contribution to likelihood over forks in tree */
-  long i;
+{ /* sum contribution to likelihood over forks in tree */
+  long i, j, m;
   double term, sumsq, vee;
-  double TEMP;
+  double temp;
 
   if (!p->tip)
     sumlikely(p->next->back, p->next->next->back, sum);
@@ -540,41 +486,53 @@ void sumlikely(node *p, node *q, double *sum)
     vee = p->v + q->v;
   vee += p->deltav + q->deltav;
   if (vee <= 1.0e-10) {
-    ajErr("ERROR: check for two identical species "
-	  "and eliminate one from the data\n");
+    printf("ERROR: check for two identical species ");
+    printf("and eliminate one from the data\n");
     exxit(-1);
   }
   sumsq = 0.0;
-  if (usertree && which <= maxtrees) {
+  if (usertree && which <= MAXSHIMOTREES) {
     for (i = 0; i < loci; i++)
-      l0gf[which - 1]
-        [i] += (1 - alleles[i]) * log(vee) / 2.0;
+      l0gf[which - 1][i] += (1 - alleles[i]) * log(vee) / 2.0;
   }
-  for (i = 0; i < totalleles; i++) {
-    TEMP = p->view[i] - q->view[i];
-    term = TEMP * TEMP;
-    if (usertree && which <= maxtrees)
-      l0gf[which - 1]
-        [locus[i] - 1] -= term / (2.0 * vee);
-    sumsq += term;
+  if (contchars) {
+    m = 0;
+    for (i = 0; i < loci; i++) {
+      temp = p->view[i] - q->view[i];
+      term = temp * temp;
+      if (usertree && which <= MAXSHIMOTREES)
+        l0gf[which - 1][i] -= term / (2.0 * vee);
+      sumsq += term;
+    }
+  } else {
+    m = 0;
+    for (i = 0; i < loci; i++) {
+      for (j = 1; j < alleles[i]; j++) {
+        temp = p->view[m+j-1] - q->view[m+j-1];
+        term = temp * temp;
+        if (usertree && which <= MAXSHIMOTREES)
+          l0gf[which - 1][i] -= term / (2.0 * vee);
+        sumsq += term;
+      }
+      m += alleles[i];
+    }
   }
   (*sum) += df * log(vee) / -2.0 - sumsq / (2.0 * vee);
 }  /* sumlikely */
 
 
 double evaluate(tree *t)
-{
-  /* evaluate likelihood of a tree */
+{ /* evaluate likelihood of a tree */
   long i;
   double sum;
 
   sum = 0.0;
-  if (usertree && which <= maxtrees) {
+  if (usertree && which <= MAXSHIMOTREES) {
     for (i = 0; i < loci; i++)
       l0gf[which - 1][i] = 0.0;
   }
   sumlikely(t->start->back, t->start, &sum);
-  if (usertree) {
+  if (usertree && which <= MAXSHIMOTREES) {
     l0gl[which - 1] = sum;
     if (which == 1) {
       maxwhich = 1;
@@ -590,27 +548,35 @@ double evaluate(tree *t)
 
 
 double distance(node *p, node *q)
-{
-  /* distance between two nodes */
-  long i;
-  double sum;
-  double TEMP;
+{ /* distance between two nodes */
+  long i, j, m;
+  double sum, temp;
 
   sum = 0.0;
-  for (i = 0; i < totalleles; i++) {
-    TEMP = p->view[i] - q->view[i];
-    sum += TEMP * TEMP;
+  if (!contchars) {
+    m = 0;
+    for (i = 0; i < loci; i++) {
+      for (j = 0; j < alleles[i]-1; j++) {
+        temp = p->view[m+j] - q->view[m+j];
+        sum += temp * temp;
+      }
+      m += alleles[i];
+    }
+  }
+  else {
+    for (i = 0; i < totalleles; i++) {
+      temp = p->view[i] - q->view[i];
+      sum += temp * temp;
+    }
   }
   return sum;
 }  /* distance */
 
 
 void makedists(node *p)
-{
+{ /* compute distances among three neighbors of a node */
   long i;
   node *q;
-  /* compute distances among three neighbors of a node */
-
 
   for (i = 1; i <= 3; i++) {
     q = p->next;
@@ -621,8 +587,7 @@ void makedists(node *p)
 
 
 void makebigv(node *p, boolean *negatives)
-{
-  /* make new branch length */
+{ /* make new branch length */
   long i;
   node *temp, *q, *r;
 
@@ -646,8 +611,7 @@ void makebigv(node *p, boolean *negatives)
 
 
 void correctv(node *p)
-{
-  /* iterate branch lengths if some are to be zero */
+{ /* iterate branch lengths if some are to be zero */
   node *q, *r, *temp;
   long i, j;
   double f1, f2, vtot;
@@ -677,8 +641,7 @@ void correctv(node *p)
 
 
 void littlev(node *p)
-{
-  /* remove part of it that belongs to other barnches */
+{ /* remove part of it that belongs to other barnches */
   long i;
 
   for (i = 1; i <= 3; i++) {
@@ -692,9 +655,8 @@ void littlev(node *p)
 
 
 void nuview(node *p)
-{
-  /* renew information about subtrees */
-  long i, j;
+{ /* renew information about subtrees */
+  long i, j, k, m;
   node *q, *r, *a, *b, *temp;
   double v1, v2, vtot, f1, f2;
 
@@ -711,8 +673,12 @@ void nuview(node *p)
     else
       f1 = 0.5;
     f2 = 1.0 - f1;
-    for (j = 0; j <totalleles; j++)
-      p->view[j] = f1 * a->view[j] + f2 * b->view[j];
+    m = 0;
+    for (j = 0; j < loci; j++) {
+      for (k = 1; k <= alleles[j]; k++)
+        p->view[m+k-1] = f1 * a->view[m+k-1] + f2 * b->view[m+k-1];
+      m += alleles[j];
+    }
     p->deltav = v1 * f1;
     temp = p;
     p = q;
@@ -723,8 +689,7 @@ void nuview(node *p)
 
 
 void update(node *p)
-{
-  /* update branch lengths around a node */
+{ /* update branch lengths around a node */
   boolean negatives;
 
   if (p->tip)
@@ -739,8 +704,7 @@ void update(node *p)
 
 
 void smooth(node *p)
-{
-  /* go through tree getting new branch lengths and views */
+{ /* go through tree getting new branch lengths and views */
   if (p->tip)
     return;
   update(p);
@@ -750,8 +714,7 @@ void smooth(node *p)
 
 
 void insert_(node *p, node *q)
-{
-  /* put p and q together and iterate info. on resulting tree */
+{ /* put p and q together and iterate info. on resulting tree */
   long i;
 
   hookup(p->next->next, q->back);
@@ -764,8 +727,7 @@ void insert_(node *p, node *q)
 
 
 void copynode(node *c, node *d)
-{
-  /* make a copy of a node */
+{ /* make a copy of a node */
   memcpy(d->view, c->view, totalleles*sizeof(double));
   d->v = c->v;
   d->iter = c->iter;
@@ -780,8 +742,7 @@ void copynode(node *c, node *d)
 
 
 void copy_(tree *a, tree *b)
-{
-  /* make a copy of a tree */
+{ /* make a copy of tree a to tree b */
   long i, j;
   node *p, *q;
 
@@ -822,8 +783,7 @@ void copy_(tree *a, tree *b)
 
 
 void inittip(long m, tree *t)
-{
-  /* initialize branch lengths and views in a tip */
+{ /* initialize branch lengths and views in a tip */
   node *tmp;
 
   tmp = t->nodep[m - 1];
@@ -834,8 +794,7 @@ void inittip(long m, tree *t)
 
 
 void buildnewtip(long m, tree *t, long nextsp)
-{
-  /* initialize and hook up a new tip */
+{ /* initialize and hook up a new tip */
   node *p;
 
   inittip(m, t);
@@ -845,8 +804,7 @@ void buildnewtip(long m, tree *t, long nextsp)
 
 
 void buildsimpletree(tree *t)
-{
-  /* make and initialize a three-species tree */
+{ /* make and initialize a three-species tree */
   inittip(enterorder[0], t);
   inittip(enterorder[1], t);
   hookup(t->nodep[enterorder[0] - 1], t->nodep[enterorder[1] - 1]);
@@ -856,12 +814,13 @@ void buildsimpletree(tree *t)
 
 
 void addtraverse(node *p, node *q, boolean contin)
-{
-  /* traverse through a tree, finding best place to add p */
+{ /* traverse through a tree, finding best place to add p */
   insert_(p, q);
   numtrees++;
-  if (evaluate(&curtree) > bestree.likelihood)
+  if (evaluate(&curtree) > bestree.likelihood) {
     copy_(&curtree, &bestree);
+    addwhere = q;
+  }
   copy_(&priortree, &curtree);
   if (!q->tip && contin) {
     addtraverse(p, q->next->back, contin);
@@ -871,8 +830,7 @@ void addtraverse(node *p, node *q, boolean contin)
 
 
 void re_move(node **p, node **q)
-{
-  /* remove p and record in q where it was */
+{ /* remove p and record in q where it was */
   *q = (*p)->next->back;
   hookup(*q, (*p)->next->next->back);
   (*p)->next->back = NULL;
@@ -881,41 +839,81 @@ void re_move(node **p, node **q)
   update((*q)->back);
 }  /* re_move */
 
+void globrearrange() 
+{ /* does global rearrangements */
+  tree globtree;
+  tree oldtree;
+  int i,j,k,num_sibs,num_sibs2;
+  node *where,*sib_ptr,*sib_ptr2;
+  double oldbestyet = curtree.likelihood;
+  int success = false;
+ 
+  alloctree(&globtree.nodep,nonodes2);
+  alloctree(&oldtree.nodep,nonodes2);
+  setuptree(&globtree,nonodes2);
+  setuptree(&oldtree,nonodes2);
+  allocview(&oldtree, nonodes2, totalleles);
+  allocview(&globtree, nonodes2, totalleles);
+  copy_(&curtree,&globtree);
+  copy_(&curtree,&oldtree);
+  for ( i = spp ; i < nonodes2 ; i++ ) {
+    num_sibs = count_sibs(curtree.nodep[i]);
+    sib_ptr  = curtree.nodep[i];
+    if ( (i - spp) % (( nonodes2 / 72 ) + 1 ) == 0 )
+      putchar('.');
+    fflush(stdout);
+    for ( j = 0 ; j <= num_sibs ; j++ ) {
+      re_move(&sib_ptr,&where);
+      copy_(&curtree,&priortree);
+      
+      if (where->tip) {
+        copy_(&oldtree,&curtree);
+        copy_(&oldtree,&bestree);
+        sib_ptr = sib_ptr->next;
+        continue;
+      }
+      else num_sibs2 = count_sibs(where);
+      sib_ptr2 = where;
+      for ( k = 0 ; k < num_sibs2 ; k++ ) {
+        addwhere = NULL;
+        addtraverse(sib_ptr,sib_ptr2->back,true);
+        if ( addwhere && where != addwhere && where->back != addwhere
+              && bestree.likelihood > globtree.likelihood) {
+            copy_(&bestree,&globtree);
+            success = true;
+        }
+        sib_ptr2 = sib_ptr2->next;
+      } 
+      copy_(&oldtree,&curtree);
+      copy_(&oldtree,&bestree);
+      sib_ptr = sib_ptr->next;
+    }
+  }
+  copy_(&globtree,&curtree);
+  copy_(&globtree,&bestree);
+  if (success && globtree.likelihood > oldbestyet)  {
+    succeeded = true;
+  }
+  else  {
+    succeeded = false;
+  }
+  freeview(&oldtree, nonodes2);
+  freeview(&globtree, nonodes2);
+  freetree(&globtree.nodep,nonodes2);
+  freetree(&oldtree.nodep,nonodes2);
+}
 
 void rearrange(node *p)
-{
-  /* rearranges the tree, globally or locally */
+{ /* rearranges the tree locally */
   node *q, *r;
 
   if (!p->tip && !p->back->tip) {
     r = p->next->next;
     re_move(&r, &q );
     copy_(&curtree, &priortree);
-    addtraverse(r, q->next->back, (boolean)(global && (nextsp == spp)));
-    addtraverse(r, q->next->next->back, (boolean)(global && (nextsp == spp)));
+    addtraverse(r, q->next->back, false);
+    addtraverse(r, q->next->next->back, false);
     copy_(&bestree, &curtree);
-    if (global && nextsp == spp && progress) {
-      putchar('.');
-      fflush(stdout);
-    }
-    if (global && nextsp == spp && !succeeded) {
-      if (r->back->tip) {
-        r = r->next->next;
-        re_move(&r, &q );
-        q = q->back;
-        copy_(&curtree, &priortree);
-        if (!q->tip) {
-          addtraverse(r, q->next->back, true);
-          addtraverse(r, q->next->next->back, true);
-        }
-        q = q->back;
-        if (!q->tip) {
-          addtraverse(r, q->next->back, true);
-          addtraverse(r, q->next->next->back, true);
-        }
-        copy_(&bestree, &curtree);
-      }
-    }
   }
   if (!p->tip) {
     rearrange(p->next->back);
@@ -925,8 +923,7 @@ void rearrange(node *p)
 
 
 void coordinates(node *p, double lengthsum, long *tipy, double *tipmax)
-{
-  /* establishes coordinates of nodes */
+{ /* establishes coordinates of nodes */
   node *q, *first, *last;
 
   if (p->tip) {
@@ -961,8 +958,7 @@ void coordinates(node *p, double lengthsum, long *tipy, double *tipmax)
 
 
 void drawline(long i, double scale)
-{
-  /* draws one row of the tree diagram by moving up tree */
+{ /* draws one row of the tree diagram by moving up tree */
   node *p, *q;
   long n, j;
   boolean extra;
@@ -1051,8 +1047,7 @@ void drawline(long i, double scale)
 
 
 void printree()
-{
-  /* prints out diagram of the tree */
+{ /* prints out diagram of the tree */
   long i;
   long tipy;
   double tipmax,scale;
@@ -1071,8 +1066,7 @@ void printree()
 
 
 void treeout(node *p)
-{
-  /* write out file with representation of final tree */
+{ /* write out file with representation of final tree */
   long i, n, w;
   Char c;
   double x;
@@ -1132,8 +1126,7 @@ void treeout(node *p)
 
 
 void describe(node *p, double chilow, double chihigh)
-{
-  /* print out information for one branch */
+{ /* print out information for one branch */
   long i;
   node *q;
   double bigv, delta;
@@ -1160,8 +1153,7 @@ void describe(node *p, double chilow, double chihigh)
 
 
 void summarize(void)
-{
-  /* print out branch lengths etc. */
+{ /* print out branch lengths etc. */
   double chilow,chihigh;
 
   fprintf(outfile, "\nremember: ");
@@ -1199,10 +1191,9 @@ void summarize(void)
 
 
 void nodeinit(node *p)
-{
-  /* initialize a node */
+{ /* initialize a node */
   node *q, *r;
-  long i;
+  long i, j, m;
 
   if (p->tip)
     return;
@@ -1210,18 +1201,21 @@ void nodeinit(node *p)
   r = p->next->next->back;
   nodeinit(q);
   nodeinit(r);
-  for (i = 0; i < totalleles; i++)
-    p->view[i] = 0.5 * q->view[i] + 0.5 * r->view[i];
-  if (p->iter)
+  m = 0;
+  for (i = 0; i < loci; i++) {
+    for (j = 1; j < alleles[i]; j++)
+      p->view[m+j-1] = 0.5 * q->view[m+j-1] + 0.5 * r->view[m+j-1];
+    m += alleles[i];
+  }
+  if ((!lengths) || p->iter)
     p->v = 0.1;
-  if (p->back->iter)
+  if ((!lengths) || p->back->iter)
     p->back->v = 0.1;
 }  /* nodeinit */
 
 
 void initrav(node *p)
-{
-  /* traverse to initialize */
+{ /* traverse to initialize */
   if (p->tip)
     nodeinit(p->back);
   else {
@@ -1232,8 +1226,7 @@ void initrav(node *p)
 
 
 void treevaluate()
-{
-  /* evaluate user-defined tree, iterating branch lengths */
+{ /* evaluate user-defined tree, iterating branch lengths */
   long i;
 
   initrav(curtree.start);
@@ -1245,13 +1238,17 @@ void treevaluate()
 
 
 void maketree()
-{
-  /* construct the tree */
+{ /* construct the tree */
   long i;
   char* treestr;
 
   if (usertree) {
-    /*openfile(&intree,INTREE,"input tree file", "r",progname,intreename);*/
+    if(numtrees > MAXSHIMOTREES)
+      shimotrees = MAXSHIMOTREES;
+    else
+      shimotrees = numtrees;
+    if (numtrees > 2)
+      emboss_initseed(inseed, &inseed0, seed);
     if (treeprint) {
       fprintf(outfile, "User-defined tree");
       if (numtrees > 1)
@@ -1299,7 +1296,7 @@ void maketree()
     if (jumb == 1) numtrees = 1;
     nextsp = 4;
     if (progress) {
-      fprintf(stderr, "Adding species:\n");
+      printf("Adding species:\n");
       writename(0, 3, enterorder);
 #ifdef WIN32
       phyFillScreenColor();
@@ -1320,18 +1317,22 @@ void maketree()
       }
       if (global && nextsp == spp) {
         if (progress) {
-          fprintf(stderr, "\nDoing global rearrangements\n");
-          fprintf(stderr,"  !");
+          printf("\nDoing global rearrangements\n");
+          printf("  !");
           for (i = 1; i <= spp - 2; i++)
-            fprintf(stderr,"-");
-          fprintf(stderr,"!\n");
-          fprintf(stderr,"   ");
+            if ( (i - spp) % (( nonodes2 / 72 ) + 1 ) == 0 )
+              putchar('-');
+          printf("!\n");
+          printf("   ");
         }
       }
       succeeded = true;
       while (succeeded) {
         succeeded = false;
-        rearrange(curtree.start);
+        if ( global && nextsp == spp )
+          globrearrange();
+        else 
+          rearrange(curtree.start);
         if (global && nextsp == spp)
           putc('\n', outfile);
       }
@@ -1357,9 +1358,9 @@ void maketree()
   if ( jumb < njumble)
     return;
   if (progress) {
-    fprintf(stderr,"\n\nOutput written to file \"%s\"\n\n", outfilename);
+    printf("\n\nOutput written to file \"%s\"\n\n", outfilename);
     if (trout)
-      fprintf(stderr,"Tree also written onto file \"%s\"\n\n", outtreename);
+      printf("Tree also written onto file \"%s\"\n\n", outtreename);
   }
   freeview(&curtree, nonodes2);
   if (!usertree) {
@@ -1368,38 +1369,30 @@ void maketree()
   }
   for (i = 0; i < spp; i++)
     free(x[i]);
-  if (!contchars)
+  if (!contchars) {
     free(locus);
-  if (usertree)
-    for (i = 0; i < maxtrees; i++)
-      free(l0gf[i]);
+    free(pbar);
+  }
 }  /* maketree */
 
 
 int main(int argc, Char *argv[])
 {  /* main program */
+  long i;
+
 #ifdef MAC
   argc = 1;                /* macsetup("Contml","");                */
   argv[0] = "Contml";
 #endif
   init(argc, argv);
-  progname = argv[0];
   emboss_getoptions("fcontml", argc, argv);
-  /*openfile(&infile,INFILE,"input file", "r",argv[0],infilename);*/
-  embossoutfile = ajAcdGetOutfile("outfile");
-  emboss_openfile(embossoutfile, &outfile,&outfilename);
-  fprintf(outfile, "\nContinuous character Maximum Likelihood");
-  fprintf(outfile, " method version %s\n\n",VERSION);
+  progname = argv[0];
+
   ibmpc = IBMCRT;
   ansi = ANSICRT;
-  mulsets = false;
   firstset = true;
-  datasets = 1;
   doinit();
-  embossouttree = ajAcdGetOutfile("outtreefile");
-  emboss_openfile(embossouttree, &outtree,&outtreename);
-  if (!outtree)
-      trout = false;
+
   for (ith = 1; ith <= datasets; ith++) {
     getinput();
     if (ith == 1)
@@ -1407,10 +1400,13 @@ int main(int argc, Char *argv[])
     if (datasets > 1) {
       fprintf(outfile, "Data set # %ld:\n\n", ith);
       if (progress)
-        fprintf(stderr,"\nData set # %ld:\n", ith);
+        printf("\nData set # %ld:\n", ith);
     }
     for (jumb = 1; jumb <= njumble; jumb++)
       maketree();
+    if (usertree)
+      for (i = 0; i < MAXSHIMOTREES; i++)
+        free(l0gf[i]);
   }
   FClose(outfile);
   FClose(outtree);
@@ -1419,11 +1415,10 @@ int main(int argc, Char *argv[])
   fixmacfile(outfilename);
   fixmacfile(outtreename);
 #endif
-  fprintf(stderr, "Done.\n\n");
+  printf("Done.\n\n");
 #ifdef WIN32
   phyRestoreConsoleAttributes();
 #endif
-  ajExit();
   return 0;
 }
 

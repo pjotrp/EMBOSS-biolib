@@ -1,7 +1,102 @@
 application: fdnamove [
   documentation: "Interactive DNA parsimony"
   groups: "Phylogeny:Molecular sequence"
-  batch: "no"
-  embassy: "phylipnew"
 ]
 
+section: input [
+	information: "Input section"
+	type: "page"
+]
+
+seqsetall: sequence [
+	parameter: "Y"
+	type: "gapdnaphylo"
+]
+
+tree: intreefile [
+	parameter: "Y"
+	nullok: "Y"
+	knowntype: "newick"
+]
+
+properties: weights [
+	additional: "Y"
+	characters: "01"
+	information: "Weights file"
+        length: "$(sequence.length)"
+        size: ""
+	help: "Weights file - Ignore sites with weight zero"
+	nullok: "Y"
+]
+
+endsection: input
+
+section: output [
+	information: "Output section"
+	type: "page"
+]
+
+outfile: outtreefile [
+	additional: "Y"
+	extension: "treefile"
+	knowntype: "newick tree"
+	nullok: "Y"
+]
+
+endsection: output
+
+section: additional [
+	information: "Additional section"
+	type: "page"
+]
+
+integer: outgrno [
+	additional: "Y"
+	min: 0  
+        max: "$(sequence.count)"
+	default: 0
+	information: "Species number to use as outgroup"
+]
+
+toggle: thresh [
+	additional: "Y"
+	default: "N"
+	information: "Use threshold parsimony"
+]
+
+float: threshold [
+	additional: "$(thresh)"
+	min: 1
+	information: "Threshold value"
+	default: 1
+]
+
+
+list: initialtree  [
+	additional: "Y"
+	minimum: "1"
+	maximum: "1"
+	header: "Initial tree"
+	values: "a:Arbitary;
+        	 u:User;
+          	 s:Specify"
+  	information: "Initial tree"
+  	default: "Arbitary"
+]
+
+integer: screenwidth [
+	additional: "Y"
+	default: "80"
+	information: "Width of terminal screen in characters"
+]
+
+integer: screenlines [
+	additional: "Y"
+	default: "24"
+	information: "Number of lines on screen"
+]
+
+
+endsection: additional	
+
+	

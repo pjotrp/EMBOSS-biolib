@@ -16962,12 +16962,12 @@ FC = 0
 
 ID fclique-ex
 AB phylipnew
-AA jmclique
+AA fclique
 IN ../../data/evolution/clique.dat
 IN
 IN
 IN
-FI clique.jmclique
+FI clique.fclique
 FC = 31
 FP /^Characters: \(  1  2  3  6\)\n/
 FP /^     2  1  3  6\n/
@@ -16986,7 +16986,7 @@ FP 3 /^./
 
 ID fclique-all
 AB phylipnew
-AA jmclique
+AA fclique
 CL -ancfile ../../data/evolution/clique.ancestral
 CL -factorfile ../../data/evolution/clique.factors
 CL -weights ../../data/evolution/clique.weights
@@ -16994,7 +16994,7 @@ IN ../../data/evolution/clique.dat
 IN
 IN
 IN
-FI clique.jmclique
+FI clique.fclique
 FC = 58
 FP /^     11223 4\n/
 FP /^Actual Characters: \(  1  4\)\n/
@@ -17016,13 +17016,13 @@ FP 3 /^./
 
 ID fconsense-ex
 AB phylipnew
-AA jmconsense
+AA fconsense
 IN ../../data/evolution/consense.dat
 IN
 IN
 IN
 IN
-FI consense.jmconsense
+FI consense.fconsense
 FC = 77
 FP /^  10. C\n/
 FP /^\.\.\*\.\*\.\.\.\.\.\s+4\.00\n/
@@ -17031,7 +17031,7 @@ FC = 2
 FP /^B:9.0\):9.0,A:9.0\);\n/
 FP /\(\(H:9.0,J:9.0\):4.0,D:9.0\)/
 FI stderr
-FC = 6
+FC = 2
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
@@ -17042,9 +17042,8 @@ FP 3 /^./
 
 ID fcontml-ex
 AB phylipnew
-AA jmcontml
+AA fcontml
 CL -printdata
-IN
 IN ../../data/evolution/contml.dat
 IN
 IN
@@ -17053,7 +17052,8 @@ IN
 IN
 IN
 IN
-FI contml.jmcontml
+IN
+FI contml.fcontml
 FC = 67
 FP /^Ln Likelihood =    20.7312[0-9]\n/
 FP /^  3       Chinese           0.00301   \(    -0.03824,     0.06681\)\n/
@@ -17061,7 +17061,7 @@ FI contml.treefile
 FC = 2
 FP /\(American:0.00000,\(Australian:0.13759,Chinese:0.00301\):0.09982\)/
 FI stderr
-FC = 5
+FC = 2
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
@@ -17072,7 +17072,8 @@ FP 10 /^./
 
 ID fcontrast-ex
 AB phylipnew
-AA jmcontrast
+AA fcontrast
+AA fcontrast
 IN ../../data/evolution/contrast.dat
 IN ../../data/evolution/contrast.tree
 IN
@@ -17082,7 +17083,32 @@ FC = 2
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
-FI contrast.jmcontrast
+FI contrast.fcontrast
+FC = 19
+FP /^    3.9423    1.7028\n/
+FP /^    1.0000    0.4319\n/
+FP /^    1.0000    0.6566\n/
+FI stdout
+FC = 5
+FP 2 /^./
+//
+
+ID fcontrast-reg
+AB phylipnew
+AA fcontrast
+CL -reg
+CC The -reg option is not yet giving the expected results
+CC when compared to phylip 3.6
+IN ../../data/evolution/contrast.dat
+IN ../../data/evolution/contrast.tree
+IN
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI contrast.fcontrast
 FC = 27
 FP /^   3.35832   0.89706\n/
 FP /^    1.0000    0.4319\n/
@@ -17094,7 +17120,7 @@ FP 3 /^./
 
 ID fdnacomp-ex
 AB phylipnew
-AA jmdnacomp
+AA fdnacomp
 CL -ancseq -stepbox -printdata
 IN ../../data/evolution/dnacomp.dat
 IN
@@ -17102,7 +17128,7 @@ IN
 IN
 IN
 IN
-FI dnacomp.jmdnacomp
+FI dnacomp.fdnacomp
 FC = 62
 FP /total number of compatible sites is       11.0\n/
 FP /   4   Epsilon     maybe   GGGATCTCGG CCC\n/
@@ -17122,15 +17148,42 @@ FC = 15
 FP 11 /^./
 //
 
+ID fdnacomp-ex2
+AB phylipnew
+AA fdnacomp
+CL 
+IN ../../data/evolution/dnacomp.dat
+IN ../../data/evolution/dnacomptree.dat
+IN
+IN
+IN
+IN
+FI dnacomp.fdnacomp
+FC = 23
+FP /^User-defined tree:\n/
+FP /^total number of compatible sites is       11.0\n/
+FI dnacomp.treefile
+FC = 1
+FP /^\(\(\(\(Epsilon,Delta\),Gamma\),Beta\),Alpha\);\n/
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 4
+FP 2 /^./
+//
+
 ID fdnadist-ex
 AB phylipnew
-AA jmdnadist
+AA fdnadist
 IN ../../data/evolution/dnadist.dat
 IN
 IN
 IN
 IN
-FI dnadist.jmdnadist
+FI dnadist.fdnadist
 FC = 9
 FP /    5\n/
 FP /^Alpha       0.000000  0.303893  0.857546  1.158921  1.542897\n/
@@ -17146,7 +17199,7 @@ FP 8 /^./
 
 ID fdnainvar-ex
 AB phylipnew
-AA jmdnainvar
+AA fdnainvar
 CL -printdata
 IN ../../data/evolution/dnainvar.dat
 IN
@@ -17154,7 +17207,7 @@ IN
 IN
 IN
 IN
-FI dnainvar.jmdnainvar
+FI dnainvar.fdnainvar
 FC = 120
 FP /^     AAAG         2\n/
 FP /^     1113         3\n/
@@ -17175,7 +17228,7 @@ FP 2 /^./
 
 ID fdnaml-ex
 AB phylipnew
-AA jmdnaml
+AA fdnaml
 CL -printdata 
 CL -ncategories 2 -categories "1111112222222" -rate "1.0 2.0"
 CL -gamma h
@@ -17192,7 +17245,7 @@ IN
 IN
 IN
 IN
-FI dnaml.jmdnaml
+FI dnaml.fdnaml
 FC = 90
 FP /^        1           0.264            0.522\n/
 FP /^        2           2.000\n/
@@ -17213,9 +17266,35 @@ FC = 54
 FP 45 /^./
 //
 
+ID fdnaml-ex2
+AB phylipnew
+AA fdnaml
+CL -printdata
+CL -njumble 3 -seed 3 
+IN ../../data/evolution/dnaml.dat
+IN
+IN
+FI dnaml.fdnaml
+FC = 56
+FP /^   A       0.24615\n/
+FP /^Ln Likelihood =   -72.25088\n/
+FP /^     3          Epsilon           0.00006     (     zero,     0.34299)\n/
+FI dnaml2.treefile
+FC = 1
+FP /^\(Gamma:1.01651,\(Beta:0.00006,\(Delta:0.28135,Epsilon:0.00006\):1.51302\):0.09401,Alpha:0.20756\);\n/
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 68
+FP 57 /^./
+//
+
 ID fdnamlk-ex
 AB phylipnew
-AA jmdnamlk
+AA fdnamlk
 CL -printdata 
 CL -ncategories 2 -categories "1111112222222" -rate "1.0 2.0"
 CL -gamma h
@@ -17232,7 +17311,7 @@ IN
 IN
 IN
 IN
-FI dnaml.jmdnamlk
+FI dnaml.fdnamlk
 FC = 89
 FP /^        1           0.264            0.522\n/
 FP /^        2           2.000\n/
@@ -17255,7 +17334,7 @@ FP 47 /^./
 
 ID fdnamove-ex
 AB phylipnew
-AA jmdnamove
+AA fdnamove
 IN ../../data/evolution/dnamove.dat
 IN
 IN Q
@@ -17275,11 +17354,11 @@ FP 15 /^./
 
 ID fdnapars-ex
 AB phylipnew
-AA jmdnapars
+AA fdnapars
 IN ../../data/evolution/dnapars.dat
 IN
 IN
-FI dnapars.jmdnapars
+FI dnapars.fdnapars
 FC = 30
 FP /^requires a total of     19.000\n/
 FP /^     3      Epsilon      0.096154\n/
@@ -17299,10 +17378,10 @@ FP 15 /^./
 
 ID fdnapenny-ex
 AB phylipnew
-AA jmdnapenny
+AA fdnapenny
 IN ../../data/evolution/dnapenny.dat
 IN
-FI dnapenny.jmdnapenny
+FI dnapenny.fdnapenny
 FC = 207
 FP /^     9 trees in all found\n/
 FP /^  \!     \+-----6  \+-----Gamma2    \n/
@@ -17323,7 +17402,7 @@ FP 11 /^./
 
 ID fdollop-ex
 AB phylipnew
-AA jmdollop
+AA fdollop
 IN ../../data/evolution/dollop.dat
 IN
 IN
@@ -17332,7 +17411,7 @@ FC = 2
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
-FI dollop.jmdollop
+FI dollop.fdollop
 FC = 24
 FP /^One most parsimonious tree found:\n/
 FP 1 /^requires a total of      3.000\n/
@@ -17346,26 +17425,31 @@ FP 12 /^./
 
 ID fdolmove-ex
 AB phylipnew
-AA jmdolmove
+AA fdolmove
 IN ../../data/evolution/dolmove.dat
 IN
 IN
+IN Q
+IN Y
+FI dolmove.treefile
+FC = 1
+FP /^\(Epsilon,\(Delta,\(Gamma,\(Beta,Alpha\)\)\)\);\n/
 FI stderr
 FC = 2
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FC = 18
-FP 12 /^./
+FC = 24
+FP 16 /^./
 //
 
 ID fdolpenny-ex
 AB phylipnew
-AA jmdolpenny
+AA fdolpenny
 IN ../../data/evolution/dolpenny.dat
 IN
-FI dolpenny.jmdolpenny
+FI dolpenny.fdolpenny
 FC = 63
 FP /^    3 trees in all found\n/
 FP 1 /^     \+--6     \+--5  \n/
@@ -17386,7 +17470,7 @@ FP 9 /^./
 
 ID fdrawgram-ex
 AB phylipnew
-AA jmdrawgram
+AA fdrawgram
 IN ../../data/evolution/drawgram.tree
 IN ../../data/evolution/font1
 IN
@@ -17410,10 +17494,10 @@ FP 0 /Died: /
 
 ID ffactor-ex
 AB phylipnew
-AA jmfactor
+AA ffactor
 IN ../../data/evolution/factor.dat
 IN
-FI factor.jmfactor
+FI factor.ffactor
 FC = 5
 FP /^ +4 +8\n/
 FP /^Alpha     11100000\n/
@@ -17433,11 +17517,11 @@ FP 2 /^./
 
 ID ffitch-ex
 AB phylipnew
-AA jmfitch
+AA ffitch
 IN ../../data/evolution/fitch.dat
 IN
 IN
-FI fitch.jmfitch
+FI fitch.ffitch
 FC = 50
 FP /^   7 Populations\n/
 FP /^Sum of squares =     0.01375\n/
@@ -17461,10 +17545,10 @@ FP 52 /^./
 
 ID fgendist-ex
 AB phylipnew
-AA jmgendist
+AA fgendist
 IN ../../data/evolution/gendist.dat
 IN
-FI gendist.jmgendist
+FI gendist.fgendist
 FC = 6
 FP /^    5\n/
 FP /^Chinese     0.080749  0.234698  0.000000  0.053879  0.063275\n/
@@ -17480,11 +17564,11 @@ FP 8 /^./
 
 ID fkitsch-ex
 AB phylipnew
-AA jmkitsch
+AA fkitsch
 IN ../../data/evolution/kitsch.dat
 IN
 IN
-FI kitsch.jmkitsch
+FI kitsch.fkitsch
 FC = 49
 FP /^   7 Populations\n/
 FP /^Sum of squares =      0.107\n/
@@ -17509,12 +17593,12 @@ FP 55 /^./
 
 ID fmix-ex
 AB phylipnew
-AA jmmix
+AA fmix
 IN ../../data/evolution/mix.dat
 IN
 IN
 IN
-FI mix.jmmix
+FI mix.fmix
 FC = 86
 FP 4 /^requires a total of      9.000\n/
 FP /^     4 trees in all found\n/
@@ -17526,7 +17610,33 @@ FP /^\(\(Gamma,\(\(Epsilon,Delta\),Beta\)\),Alpha\)\[0.2500\];\n/
 FP /^\(\(Epsilon,\(Gamma,\(Delta,Beta\)\)\),Alpha\)\[0.2500\];\n/
 FP /^\(\(Gamma,\(Epsilon,\(Delta,Beta\)\)\),Alpha\)\[0.2500\];\n/
 FI stderr
-FC = 6
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 16
+FP 11 /^./
+//
+
+ID fmix-ex2
+AB phylipnew
+AA fmix
+CL -printdata -ancfile ../../data/evolution/mixancfile.dat
+IN ../../data/evolution/mix.dat
+IN
+IN
+FI mix.fmix
+FC = 46
+FP /^    Ancestral states:\n/
+FP /^             001\?\? 1\n/
+FP /^One most parsimonious tree found:\n/
+FP /^requires a total of      8.000\n/
+FI mix.treefile
+FC = 1
+FP /^\(Delta,\(Epsilon,\(Gamma,\(Beta,Alpha\)\)\)\);\n/
+FI stderr
+FC = 2
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
@@ -17537,9 +17647,8 @@ FP 11 /^./
 
 ID fmove-ex
 AB phylipnew
-AA jmmove
+AA fmove
 IN ../../data/evolution/move.dat
-IN
 IN
 IN Q
 IN Y
@@ -17547,7 +17656,7 @@ FI move.treefile
 FC = 1
 FP /^\(Epsilon,\(Delta,\(Gamma,\(Beta,Alpha\)\)\)\);\n/
 FI stderr
-FC = 6
+FC = 2
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
@@ -17558,10 +17667,10 @@ FP 16 /^./
 
 ID fneighbor-ex
 AB phylipnew
-AA jmneighbor
+AA fneighbor
 IN ../../data/evolution/neighbor.dat
 IN
-FI neighbor.jmneighbor
+FI neighbor.fneighbor
 FC = 43
 FP /^   7 Populations\n/
 FP /^  \!                           \! \+--------Gorilla   \n/
@@ -17584,12 +17693,12 @@ FP 32 /^./
 
 ID fpars-ex
 AB phylipnew
-AA jmpars
+AA fpars
 IN ../../data/evolution/pars.dat
 IN
 IN
 IN
-FI pars.jmpars
+FI pars.fpars
 FC = 30
 FP /^One most parsimonious tree found:\n/
 FP /^requires a total of      8.000\n/
@@ -17599,22 +17708,22 @@ FI pars.treefile
 FC = 1
 FP /^\(\(\(Epsilon:0.00,Delta:3.00\):2.00,Gamma:0.00\):1.00,Beta:2.00,Alpha:0.00\);\n/
 FI stderr
-FC = 5
+FC = 2
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FC = 24
-FP 16 /^./
+FC = 21
+FP 15 /^./
 //
 
 ID fpenny-ex
 AB phylipnew
-AA jmpenny
+AA fpenny
 IN ../../data/evolution/penny.dat
 IN
 IN
-FI penny.jmpenny
+FI penny.fpenny
 FC = 70
 FP /^    3 trees in all found\n/
 FP 3 /^  remember: this is an unrooted tree\!\n/
@@ -17625,7 +17734,7 @@ FP /^\(Alpha1,\(\(Alpha2,\(\(Epsilon,Delta\),Gamma1\)\),\(Beta2,Beta1\)\)\)\[0.3
 FP /^\(Alpha1,\(Alpha2,\(\(\(Epsilon,Delta\),Gamma1\),\(Beta2,Beta1\)\)\)\)\[0.3333\];\n/
 FP /^\(Alpha1,\(\(Alpha2,\(Beta2,Beta1\)\),\(\(Epsilon,Delta\),Gamma1\)\)\)\[0.3333\];\n/
 FI stderr
-FC = 6
+FC = 2
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
@@ -17636,11 +17745,11 @@ FP 12 /^./
 
 ID fproml-ex
 AB phylipnew
-AA jmproml
+AA fproml
 IN ../../data/evolution/proml.dat
 IN
 IN
-FI proml.jmproml
+FI proml.fproml
 FC = 36
 FP /^Ln Likelihood =  -131.58633\n/
 FP /^  1------2                             \+------------Delta     \n/
@@ -17661,11 +17770,11 @@ FP 10 /^./
 
 ID fpromlk-ex
 AB phylipnew
-AA jmpromlk
+AA fpromlk
 IN ../../data/evolution/promlk.dat
 IN
 IN
-FI promlk.jmpromlk
+FI promlk.fpromlk
 FC = 38
 FP /^Ln Likelihood =  -134.75201\n/
 FP /^ root            3      \n/
@@ -17687,15 +17796,15 @@ FP 11 /^./
 
 ID fprotdist-ex
 AB phylipnew
-AA jmprotdist
+AA fprotdist
 IN ../../data/evolution/protdist.dat
 IN
 IN
-FI protdist.jmprotdist
+FI protdist.fprotdist
 FC = 9
 FP /^Gamma       0.625670  0.375578  0.000000  0.975798  0.861634\n/
 FI stderr
-FC = 9
+FC = 2
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
@@ -17706,11 +17815,11 @@ FP 27 /^./
 
 ID fprotpars-ex
 AB phylipnew
-AA jmprotpars
+AA fprotpars
 IN ../../data/evolution/protpars.dat
 IN
 IN
-FI protpars.jmprotpars
+FI protpars.fprotpars
 FC = 61
 FP /^     3 trees in all found\n/
 FP 1 /^  \!        \+--Beta      \n/
@@ -17726,16 +17835,157 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FC = 29
-FP 23 /^./
+FC = 16
+FP 11 /^./
+//
+
+ID fprotpars-ex2
+AB phylipnew
+AA fprotpars
+CL -njumble 3 -seed 3
+CL -printdata
+CL -ancseq
+CL -whichcode m
+CL -stepbox
+CL -outgrno 2 
+CL -thresh -threshold 3
+IN ../../data/evolution/protpars.dat
+IN
+IN
+FI protpars.fprotpars
+FC = 137
+FP /^     3 trees in all found\n/
+FP 3 /^requires a total of     14.000\n/
+FI protpars.treefile
+FC = 3
+FP /^\(Beta,\(Gamma,\(\(Epsilon,Delta\),Alpha\)\)\)\[0.3333\];\n/
+FP /^\(Beta,\(\(\(Epsilon,Delta\),Gamma\),Alpha\)\)\[0.3333\];\n/
+FP /^\(Beta,\(\(Epsilon,Delta\),\(Gamma,Alpha\)\)\)\[0.3333\];\n/
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 40
+FP 29 /^./
+//
+
+ID fprotpars-ex3
+AB phylipnew
+AA fprotpars
+CL -njumble 3 -seed 3
+IN ../../data/evolution/protpars2.dat
+IN
+IN
+FI protpars2.fprotpars
+FC = 435
+FP /^Data set # 1:\n/
+FP /^     3 trees in all found\n/
+FP 3 /^requires a total of     25.000\n/
+FP /^Data set # 2:\n/
+FP /^    15 trees in all found\n/
+FP 15 /^requires a total of     14.000\n/
+FP /^Data set # 3:\n/
+FP /^     5 trees in all found\n/
+FP 5 /^requires a total of     24.000\n/
+FI protpars2.treefile
+FC = 23
+FP /^\(\(Gamma,\(\(Epsilon,Delta\),Beta\)\),Alpha\)\[0.3333\];\n/
+FP /^\(\(\(\(Epsilon,Delta\),Gamma\),Beta\),Alpha\)\[0.3333\];\n/
+FP /^\(\(\(Epsilon,Delta\),\(Gamma,Beta\)\),Alpha\)\[0.3333\];\n/
+FP /^\(\(Gamma,\(Delta,\(Epsilon,Beta\)\)\),Alpha\)\[0.0667\];\n/
+FP /^\(\(\(Epsilon,Gamma\),\(Delta,Beta\)\),Alpha\)\[0.0667\];\n/
+FP /^\(\(Gamma,\(\(Epsilon,Delta\),Beta\)\),Alpha\)\[0.0667\];\n/
+FP /^\(\(Epsilon,\(Gamma,\(Delta,Beta\)\)\),Alpha\)\[0.0667\];\n/
+FP /^\(\(Gamma,\(Epsilon,\(Delta,Beta\)\)\),Alpha\)\[0.0667\];\n/
+FP /^\(\(\(Delta,Gamma\),\(Epsilon,Beta\)\),Alpha\)\[0.0667\];\n/
+FP /^\(\(\(Delta,\(Epsilon,Gamma\)\),Beta\),Alpha\)\[0.0667\];\n/
+FP /^\(\(\(\(Epsilon,Delta\),Gamma\),Beta\),Alpha\)\[0.0667\];\n/
+FP /^\(\(Epsilon,\(\(Delta,Gamma\),Beta\)\),Alpha\)\[0.0667\];\n/
+FP /^\(\(\(Epsilon,\(Delta,Gamma\)\),Beta\),Alpha\)\[0.0667\];\n/
+FP /^\(\(Delta,\(Gamma,\(Epsilon,Beta\)\)\),Alpha\)\[0.0667\];\n/
+FP /^\(\(Delta,\(\(Epsilon,Gamma\),Beta\)\),Alpha\)\[0.0667\];\n/
+FP /^\(\(\(Epsilon,Delta\),\(Gamma,Beta\)\),Alpha\)\[0.0667\];\n/
+FP /^\(\(Delta,\(Epsilon,\(Gamma,Beta\)\)\),Alpha\)\[0.0667\];\n/
+FP /^\(\(Epsilon,\(Delta,\(Gamma,Beta\)\)\),Alpha\)\[0.0667\];\n/
+FP /^\(\(Gamma,\(Delta,\(Epsilon,Beta\)\)\),Alpha\)\[0.2000\];\n/
+FP /^\(\(Gamma,\(\(Epsilon,Delta\),Beta\)\),Alpha\)\[0.2000\];\n/
+FP /^\(\(Gamma,\(Epsilon,\(Delta,Beta\)\)\),Alpha\)\[0.2000\];\n/
+FP /^\(\(\(\(Epsilon,Delta\),Gamma\),Beta\),Alpha\)\[0.2000\];\n/
+FP /^\(\(\(Epsilon,Delta\),\(Gamma,Beta\)\),Alpha\)\[0.2000\];\n/
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 139
+FP 102 /^./
+//
+
+ID fprotpars-ex4
+AB phylipnew
+AA fprotpars
+CL -option
+IN ../../data/evolution/protpars.dat
+IN
+IN ../../data/evolution/protparswts.dat
+IN
+IN
+IN
+IN 
+IN 
+IN
+IN
+IN
+IN 
+IN 
+IN
+IN
+FI protpars.fprotpars
+FC = 324
+FP /^Weights set # 1:\n/
+FP /^     3 trees in all found\n/
+FP 3 /^requires a total of     14.000\n/
+FP /^Weights set # 2:\n/
+FP /^    14 trees in all found\n/
+FP 14 /^requires a total of      2.000\n/
+FI protpars.treefile
+FC = 17
+FP /^\(\(Gamma,\(\(Epsilon,Delta\),Beta\)\),Alpha\)\[0.3333\];\n/
+FP /^\(\(\(\(Epsilon,Delta\),Gamma\),Beta\),Alpha\)\[0.3333\];\n/
+FP /^\(\(\(Epsilon,Delta\),\(Gamma,Beta\)\),Alpha\)\[0.3333\];\n/
+FP /^\(\(Gamma,\(Delta,\(Epsilon,Beta\)\)\),Alpha\)\[0.0714\];\n/
+FP /^\(\(\(Epsilon,Gamma\),\(Delta,Beta\)\),Alpha\)\[0.0714\];\n/
+FP /^\(\(Epsilon,\(Gamma,\(Delta,Beta\)\)\),Alpha\)\[0.0714\];\n/
+FP /^\(\(Gamma,\(Epsilon,\(Delta,Beta\)\)\),Alpha\)\[0.0714\];\n/
+FP /^\(\(\(Delta,Gamma\),\(Epsilon,Beta\)\),Alpha\)\[0.0714\];\n/
+FP /^\(\(\(Delta,\(Epsilon,Gamma\)\),Beta\),Alpha\)\[0.0714\];\n/
+FP /^\(\(\(\(Epsilon,Delta\),Gamma\),Beta\),Alpha\)\[0.0714\];\n/
+FP /^\(\(Epsilon,\(\(Delta,Gamma\),Beta\)\),Alpha\)\[0.0714\];\n/
+FP /^\(\(\(Epsilon,\(Delta,Gamma\)\),Beta\),Alpha\)\[0.0714\];\n/
+FP /^\(\(Delta,\(Gamma,\(Epsilon,Beta\)\)\),Alpha\)\[0.0714\];\n/
+FP /^\(\(Delta,\(\(Epsilon,Gamma\),Beta\)\),Alpha\)\[0.0714\];\n/
+FP /^\(\(\(Epsilon,Delta\),\(Gamma,Beta\)\),Alpha\)\[0.0714\];\n/
+FP /^\(\(Delta,\(Epsilon,\(Gamma,Beta\)\)\),Alpha\)\[0.0714\];\n/
+FP /^\(\(Epsilon,\(Delta,\(Gamma,Beta\)\)\),Alpha\)\[0.0714\];\n/
+FI stderr
+FC = 8
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 51
+FP 36 /^./
 //
 
 ID frestdist-ex
 AB phylipnew
-AA jmrestdist
+AA frestdist
 IN ../../data/evolution/restdist.dat
 IN
-FI restdist.jmrestdist
+FI restdist.frestdist
 FC = 6
 FP /^Gamma       0.107681  0.107681  0.000000  0.176484  0.192466\n/
 FI stderr
@@ -17750,11 +18000,11 @@ FP 9 /^./
 
 ID frestml-ex
 AB phylipnew
-AA jmrestml
+AA frestml
 IN ../../data/evolution/restml.dat
 IN
 IN
-FI restml.jmrestml
+FI restml.frestml
 FC = 41
 FP /^Ln Likelihood =   -40.34358\n/
 FP /^   1 +Gamma +0.10813     \(  0.01154,     0.21901\) \*\*\n/
@@ -17774,7 +18024,10 @@ FP 10 /^./
 
 ID fretree-ex
 AB phylipnew
-AA jmretree
+AA fretree
+CC First prompt only needed until it can read
+CC the number of species from the input tree
+IN 10
 IN ../../data/evolution/retree.dat
 IN Q
 IN Y
@@ -17795,20 +18048,17 @@ FP 26 /^./
 
 ID fseqboot-ex
 AB phylip
-AA jmseqboot_seq
+AA fseqboot_seq
 IN ../../data/evolution/seqboot.dat
 IN
-IN s
-IN
-IN
-FI seqboot.jmseqboot_seq
+FI seqboot.fseqboot_seq
 FC = 600
 FP 13 /^Alpha     AAAAAA\n/
 FP 22 /^Beta      AAACCC\n/
 FP 32 /^\S+ +AAACCC\n/
 FP 100 /^Alpha/
 FI stderr
-FC = 14
+FC = 2
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
@@ -17819,11 +18069,11 @@ FP 18 /^./
 
 ID ftreedist-ex
 AB phylipnew
-AA jmtreedist
+AA ftreedist
 IN ../../data/evolution/treedist.dat
 IN
 IN
-FI treedist.jmtreedist
+FI treedist.ftreedist
 FC = 11
 FP /Trees 1 and 2:    4/
 FP 6 /Trees \d+ and \d+:\s+\d+/
@@ -17839,12 +18089,12 @@ FP 2 /^./
 
 ID ftreedist-ex2
 AB phylipnew
-AA jmtreedist
+AA ftreedist
 CL -dtype s
 IN ../../data/evolution/treedist2.dat
 IN
 IN
-FI treedist2.jmtreedist
+FI treedist2.ftreedist
 FC = 11
 FP /Trees 1 and 2:    4/
 FP 6 /Trees \d+ and \d+:\s+\d+/
@@ -17860,12 +18110,12 @@ FP 2 /^./
 
 ID ftreedist-sparse
 AB phylipnew
-AA jmtreedist
+AA ftreedist
 CL -style s
 IN ../../data/evolution/treedist.dat
 IN
 IN
-FI treedist.jmtreedist
+FI treedist.ftreedist
 FC = 6
 FP /1 2 4/
 FP 6 /\d+\s+\d+\s+\d+/
@@ -17881,12 +18131,12 @@ FP 2 /^./
 
 ID ftreedist-listall
 AB phylipnew
-AA jmtreedist
+AA ftreedist
 CL -pairingtwo l -dtype s
 IN ../../data/evolution/treedist.dat
 IN ../../data/evolution/treedist2.dat
 IN
-FI treedist.jmtreedist
+FI treedist.ftreedist
 FC = 294
 FP /Trees 24 and 12:    0\n/
 FP 288 /Trees \d+ and \d+:\s+\d+/

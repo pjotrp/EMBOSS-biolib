@@ -1,7 +1,6 @@
 application: fdolpenny [
   documentation: "Penny algorithm Dollo or polymorphism"
   groups: "Phylogeny:Discrete characters"
-  embassy: "phylipnew"
 ]
 
 section: input [
@@ -9,29 +8,29 @@ section: input [
   type: "page"
 ]
 
-infile: datafile  [
+discretestates: infile  [
   parameter: "Y"
-  information: "Data file"
-  knowntype: "dolpenny input"
+  characters: "01PB?"
+  help: "File containing one or more data sets"
+  knowntype: "discrete characters input"
 ]
 
-boolean: ancest  [
-  additional: "Y"
-  default: "N"
-  information: "Use ancestral states in input file"
+properties: weights [
+	additional: "Y"
+	characters: "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+	information: "Weights file"
+	nullok: "Y"
+        length: "$(infile.discretelength)"
+        size: "1"
 ]
 
-toggle: multsets  [
-  additional: "Y"
-  default: "N"
-  information: "Analyze multiple data sets"
-]
-
-integer: datasets  [
-  standard: "$(multsets)"
-  minimum: "2"
-  default: "2"
-  information: "Number of sets"
+properties: ancfile [
+	additional: "Y"
+	characters: "01?"
+	information: "Ancestral states file"
+	nullok: "Y"
+        length: "$(infile.discretelength)"
+        size: "1"
 ]
 
 endsection: input
@@ -46,84 +45,74 @@ outfile: outfile  [
   knowntype: "dolpenny output"
 ]
 
-boolean: printdata  [
-  additional: "Y"
-  default: "N"
-  information: "Print out the data at start of run"
+
+toggle: trout [
+	additional: "Y"
+	default: "Y"
+	information: "Write out trees to tree file"
 ]
 
-boolean: progress  [
-  additional: "Y"
-  default: "N"
-  information: "Print indications of progress of run"
+outfile: outtreefile  [
+  additional: "$(trout)"
+  extension: "treefile"
+  information: "Tree file name"
+  knowntype: "newick tree"
+  nullok: "Y"
 ]
 
-boolean: steps  [
-  additional: "Y"
-  default: "N"
-  information: "Print out steps in each site"
+boolean: printdata [
+	additional: "Y"
+	default: "N"
+	information: "Print data at start of run"
 ]
 
-boolean: statesatnodes  [
+boolean: progress [
+	additional: "Y"
+	default: "Y"
+	information: "Print indications of progress of run"
+]
+
+
+boolean: treeprint [
+	additional: "Y"
+	default: "Y"
+	information: "Print out tree"
+]
+
+boolean: ancseq  [
   additional: "Y"
   default: "N"
   information: "Print states at all nodes of tree"
 ]
 
-boolean: drawtree  [
+boolean: stepbox  [
   additional: "Y"
-  default: "Y"
-  information: "Draw tree"
-]
-
-toggle: trout  [
-  parameter: "Y"
-  default: "Y"
-  information: "Create a tree file"
-]
-
-outfile: treefile  [
-  standard: "$(trout)"
-  extension: "treefile"
-  information: "Tree file name"
-  knowntype: "newick tree"
+  default: "N"
+  information: "Print out steps in each character"
 ]
 
 endsection: output
-
-section: required [
-  information: "Required section"
-  type: "page"
-]
-
-boolean: dollo  [
-  parameter: "Y"
-  default: "Y"
-  information: "Dollo Parsimony method (else Polymorphism)"
-]
-
-toggle: thresh  [
-  default: "N"
-  information: "Use threshold parsimony"
-]
-
-float: valthresh  [
-  standard: "$(thresh)"
-  minimum: "1.0"
-  default: "1.0"
-  information: "Threshold value"
-]
-
-endsection: required
 
 section: additional [
   information: "Additional section"
   type: "page"
 ]
 
-integer: numgroups  [
+toggle: thresh [
+	additional: "Y"
+	default: "N"
+	information: "Use threshold parsimony"
+]
+
+float: threshold [
+	additional: "$(thresh)"
+	min: 0
+	information: "Threshold value"
+	default: 1
+]
+integer: howmany  [
   additional: "Y"
-  information: "How many groups of 100 trees"
+  information: "How many groups of trees"
   default: "1000"
 ]
 
@@ -136,6 +125,18 @@ integer: howoften  [
 boolean: simple  [
   additional: "Y"
   information: "Branch and bound is simple"
+  default: "Y"
+]
+
+list: method  [
+	additional: "Y"
+	minimum: "1"
+	maximum: "1"
+	header: "Method"
+	values: "d:Dollo;
+                 p:Polymorphism"
+  	information: "Parsimony method"
+  	default: "d"
 ]
 
 endsection: additional

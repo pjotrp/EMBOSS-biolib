@@ -12,11 +12,14 @@
 #define overr           4
 #define which           1
 
-AjPPhyloState phylomix = NULL;
-AjPPhyloProp phyloweight = NULL;
+
+AjPPhyloState* phylostates = NULL;
+AjPPhyloProp phyloweights = NULL;
 AjPPhyloProp phyloanc = NULL;
+AjPPhyloProp phylomix = NULL;
 AjPPhyloProp phylofact = NULL;
 AjPPhyloTree* phylotrees = NULL;
+
 
 typedef enum {
   horiz, vert, up, overt, upcorner, downcorner, onne, zerro, question
@@ -31,7 +34,7 @@ typedef enum {
 
 #ifndef OLDC
 /*function prototypes */
-/*void   getoptions(void);*/
+//void   getoptions(void);
 void emboss_getoptions(char *pgm, int argc, char *argv[]);
 void   inputoptions(void);
 void   allocrest(void);
@@ -72,13 +75,15 @@ void   treeconstruct(void);
 /*function prototypes */
 #endif
  
-char infilename[FNMLNGTH],intreename[FNMLNGTH],weightfilename[FNMLNGTH], ancfilename[FNMLNGTH], mixfilename[FNMLNGTH], factfilename[FNMLNGTH];
+char infilename[FNMLNGTH],intreename[FNMLNGTH], weightfilename[FNMLNGTH], ancfilename[FNMLNGTH], mixfilename[FNMLNGTH], factfilename[FNMLNGTH];
 const char* outtreename;
+AjPFile embossouttree;
+
 node *root;
 long outgrno, screenlines, col, treelines, leftedge, topedge,
   vmargin, hscroll, vscroll, scrollinc, screenwidth, farthest;
 /* outgrno indicates outgroup */
-boolean weights, thresh, outgropt, ancvar, questions, allsokal,
+boolean weights, outgropt, ancvar, questions, allsokal,
                allwagner, mixture, factors, noroot,  waswritten;
 boolean *ancone, *anczero, *ancone0, *anczero0;
 Char *factor;
@@ -116,180 +121,93 @@ rearrtype lastop;
 boolean *names;
 
 
-
-/************ EMBOSS GET OPTIONS ROUTINES ******************************/
-
 void emboss_getoptions(char *pgm, int argc, char *argv[])
 {
-    AjStatus retval;
- 
-    /* initialize global variables */
+  AjStatus retval;
+  AjPStr initialtree = NULL;
+  AjPStr method = NULL;
+
+  how = arb;
+  usertree = false;
+  goteof = false;
+  outgrno = 1;
+  outgropt = false;
+  weights = false;
+  ancvar = false;
+  allsokal = false;
+  allwagner = true;
+  mixture = false;
+  factors = false;
+  screenlines = 24;
+  scrollinc = 20;
+  screenwidth = 80;
 
     ajNamInit("emboss");
     retval =  ajAcdInitP (pgm, argc, argv, "PHYLIP");
 
-    /* ajAcdGet */
+    phylostates = ajAcdGetDiscretestates("infile");
 
-    embossouttree = ajAcdGetOutfile("outtreefile");
-    emboss_openfile(embossouttree,&outtree,&outtreename);
-    /* init functions for standard ajAcdGet */
+    phyloweights = ajAcdGetProperties("weights");
+    if(phyloweights)  weights = true;
 
-    /* cleanup for clashing options */
+    outgrno = ajAcdGetInt("outgrno");
+    if(outgrno != 0) outgropt = true;
+    else outgrno = 1;
 
-}
+    threshold = ajAcdGetFloat("threshold");
 
-/************ END EMBOSS GET OPTIONS ROUTINES **************************/
+    method = ajAcdGetListI("method", 1);
 
-/*
-//void getoptions()
-//{
-//  /# interactively set options #/
-//  long loopcount;
-//  Char ch;
-//  boolean done, gotopt;
-//
-//  how = arb;
-//  usertree = false;
-//  goteof = false;
-//  outgrno = 1;
-//  outgropt = false;
-//  thresh = false;
-//  threshold = spp;
-//  weights = false;
-//  ancvar = false;
-//  allsokal = false;
-//  allwagner = true;
-//  mixture = false;
-//  factors = false;
-//  loopcount = 0;
-//  do {
-//    printf((ansi || ibmpc) ? "\033[2J\033[H" : "\n");
-//    printf("\n\nInteractive mixed parsimony algorithm, version %s\n\n",
-//           VERSION);
-//    printf("Settings for this run:\n");
-//    printf("  X                         Use Mixed method?  %s\n",
-//           mixture ? "Yes" : "No");
-//    printf("  P                         Parsimony method?  %s\n",
-//           (allwagner && !mixture)   ? "Wagner"       :
-//           (!(allwagner || mixture)) ? "Camin-Sokal"  : "(methods in mixture)");
-//        
-//    printf("  A                     Use ancestral states?  %s\n",
-//           ancvar ? "Yes" : "No");
-//    printf("  F                  Use factors information?  %s\n",
-//           factors ? "Yes" : "No");
-//    printf("  O                            Outgroup root?  %s %3ld\n",
-//           outgropt ? "Yes, at species number" : "No, use as outgroup species",
-//           outgrno);
-//    printf("  W                           Sites weighted?  %s\n",
-//           (weights ? "Yes" : "No"));
-//    printf("  T                  Use Threshold parsimony?");
-//    if (thresh)
-//      printf("  Yes, count steps up to%4.1f\n", threshold);
-//    else
-//      printf("  No, use ordinary parsimony\n");
-//    printf("  U  Initial tree (arbitrary, user, specify)?  %s\n",
-//           (how == arb) ? "Arbitrary"                   :
-//           (how == use) ? "User tree from tree file"    : "Tree you specify");
-//    printf("  0       Graphics type (IBM PC, ANSI, none)?  %s\n",
-//           ibmpc ? "IBM PC" : ansi  ? "ANSI" : "(none)");
-//    printf("  S                 Width of terminal screen?");
-//    printf("%4ld\n", screenwidth);
-//    printf("  L                Number of lines on screen?%4ld",screenlines);
-//    printf("\n\nAre these settings correct?");
-//    printf(" (type Y or the letter for one to change)\n");
-//#ifdef WIN32
-//    phyFillScreenColor();
-//#endif
-//    scanf("%c%*[^\n]", &ch);
-//    getchar();
-//    if (ch == '\n')
-//      ch = ' ';
-//    uppercase(&ch);
-//    done = (ch == 'Y');
-//    gotopt = (strchr("SFOTXPAU0WL",ch) != NULL) ? true : false;
-//    if (gotopt) {
-//      switch (ch) {
-//
-//      case 'F':
-//        factors = !factors;
-//        break;
-//
-//      case 'X':
-//        mixture = !mixture;
-//        break;
-//
-//      case 'W':
-//          weights = !weights;
-//          break;
-//
-//      case 'P':
-//        allwagner = !allwagner;
-//        break;
-//
-//      case 'A':
-//        ancvar = !ancvar;
-//        break;
-//
-//      case 'O':
-//        outgropt = !outgropt;
-//        if (outgropt)
-//          initoutgroup(&outgrno, spp);
-//        break;
-//
-//      case 'T':
-//        thresh = !thresh;
-//        if (thresh)
-//          initthreshold(&threshold);
-//        break;
-//
-//      case 'U':
-//        if (how == arb)
-//          how = use;
-//        else if (how == use)
-//          how = spec;
-//        else
-//          how = arb;
-//        break;
-//
-//      case '0':
-//        initterminal(&ibmpc, &ansi);
-//        break;
-//
-//      case 'S':
-//        screenwidth= readlong("Width of terminal screen (in characters)?\n");
-//        break;
-//
-//      case 'L':
-//        initnumlines(&screenlines);
-//        break;
-//      }
-//    }
-//    if (!(gotopt || done))
-//      printf("Not a possible option!\n");
-//    countup(&loopcount, 100);
-//  } while (!done);
-//  allsokal = (!allwagner && !mixture);
-//  if (scrollinc < screenwidth / 2.0)
-//    hscroll = scrollinc;
-//  else
-//    hscroll = screenwidth / 2;
-//  if (scrollinc < screenlines / 2.0)
-//    vscroll = scrollinc;
-//  else
-//    vscroll = screenlines / 2;
-//}  /# getoptions #/
-*/
+    if(ajStrMatchC(method, "w")) allwagner = true;
+    else if(ajStrMatchC(method, "c")) allsokal = true;
+    else if(ajStrMatchC(method, "m")) {
+      mixture = allwagner = true; 
+      phylomix = ajAcdGetProperties("mixfile");
+    }
+    initialtree = ajAcdGetListI("initialtree", 1);
+
+
+    if(ajStrMatchC(initialtree, "a")) how = arb;
+    if(ajStrMatchC(initialtree, "u")) how = use;
+    if(ajStrMatchC(initialtree, "s")) {
+      how = spec;
+      phylotrees = ajAcdGetTree("intreefile");
+      usertree = true;
+    }    
+
+    phyloanc = ajAcdGetProperties("ancfile");
+    if(phyloanc) ancvar = true;
+
+    phylofact = ajAcdGetProperties("factorfile");
+    if(phylofact) factors = true;
+
+    screenwidth = ajAcdGetInt("screenwidth");
+    screenlines = ajAcdGetInt("screenlines");
+
+
+  if (scrollinc < screenwidth / 2.0)
+    hscroll = scrollinc;
+  else
+    hscroll = screenwidth / 2;
+  if (scrollinc < screenlines / 2.0)
+    vscroll = scrollinc;
+  else
+    vscroll = screenlines / 2;
+
+     embossouttree = ajAcdGetOutfile("outtreefile");
+     emboss_openfile(embossouttree, &outtree, &outtreename);
+     
+}  /*emboss_getoptions */
 
 
 void inputoptions()
 {
-    /* input the information on the options */
+  /* input the information on the options */
   long i;
   for (i = 0; i < (chars); i++)
     weight[i] = 1;
     if (ancvar)
         inputancestorsstr(phyloanc->Str[0], anczero0, ancone0);
-
     if (factors) {
       factor = (Char *)Malloc(chars*sizeof(Char));
       inputfactorsstr(phylofact->Str[0], chars, factor, &factors);
@@ -297,7 +215,7 @@ void inputoptions()
     if (mixture)
         inputmixturestr(phylomix->Str[0], wagner0);
     if (weights)
-      inputweightsstr(phyloweight->Str[0], chars, weight, &weights);
+      inputweightsstr(phyloweights->Str[0], chars, weight, &weights);
   putchar('\n');
   if (weights)
     printweights(stdout, 0, chars, weight, "Characters");
@@ -369,27 +287,14 @@ void doinput()
 {
   /* reads the input data */
 
-  inputnumbersstate(phylomix, &spp, &chars, &nonodes, 1);
+  inputnumbersstate(phylostates[0], &spp, &chars, &nonodes, 1);
   words = chars / bits + 1;
   printf("%2ld species, %3ld characters\n", spp, chars);
-  printf("\nReading input file ...\n\n");
-/*  getoptions();*/
-  /*
-  if (weights)
-    openfile(&weightfile,WEIGHTFILE,"weights file","r",progname,weightfilename);
-  if(ancvar)
-      openfile(&ancfile,ANCFILE,"ancestors file", "r",progname,ancfilename);
-  if(mixture)
-      openfile(&mixfile,MIXFILE,"mixture file", "r",progname,mixfilename);
-  if(factors)
-      openfile(&factfile,FACTFILE,"factors file", "r",progname,factfilename);
-*/
-
   alloctree(&treenode);
   setuptree(treenode);
   allocrest();
   inputoptions();
-  disc_inputdata(phylomix, treenode, true, false, stdout);
+  disc_inputdata(phylostates[0], treenode, true, false, stdout);
 }  /* doinput */
 
 
@@ -917,7 +822,7 @@ void move_drawline(long i, long lastline)
 void move_printree()
 {
   /* prints out diagram of the tree */
-  long tipy, i, rover, dow;
+  long tipy, i, dow;
 
   if (!subtree)
     nuroot = root;
@@ -930,13 +835,9 @@ void move_printree()
   else
     putchar('\n');
   tipy = 1;
-  rover = 100 / spp;
-  if (rover > overr)
-    rover = overr;
   dow = down;
   if (spp * dow > screenlines && !subtree) {
     dow--;
-    rover--;
   }
   if (noroot)
     printf("(unrooted)");
@@ -1052,7 +953,7 @@ void yourtree()
 void initmovenode(node **p, node **grbg, node *q, long len, long nodei,
                         long *ntips, long *parens, initops whichinit,
                         pointarray treenode, pointarray nodep, Char *str, Char *ch,
-                        char ** treestr)
+                        char **treestr)
 {
   /* initializes a node */
   /* LM 7/27  I added this function and the commented lines around */
@@ -1097,8 +998,7 @@ void buildtree()
     break;
 
   case use:
-    /*openfile(&intree,INTREE,"input tree file", "r",progname,intreename);*/
-    names = (boolean *)Malloc(spp*sizeof(boolean));
+   names = (boolean *)Malloc(spp*sizeof(boolean));
     firsttree = true;                                            /**/
     nodep = NULL;                                       /**/
     nextnode = 0;                                           /**/
@@ -1110,6 +1010,7 @@ void buildtree()
     treeread(&treestr, &root, treenode, &goteof, &firsttree,
                 nodep, &nextnode, &haslengths,
                 &grbg, initmovenode); /*debug*/
+
     for (i = spp; i < (nonodes); i++) {
       p = treenode[i];
       for (j = 1; j <= 3; j++) {
@@ -1346,9 +1247,7 @@ void undo()
 void treewrite(boolean done)
 {
   /* write out tree to a file */
-  /*Char ch;*/
 
-  /*treeoptions(waswritten, &ch, &outtree, outtreename, progname);*/
   if (!done)
     move_printree();
   if (waswritten && ch == 'N')
@@ -1605,13 +1504,9 @@ int main(int argc, Char *argv[])
   argv[0] = "Move";
 #endif
   init(argc, argv);
-  emboss_getoptions("fmove",argc,argv);
+  emboss_getoptions("fmove", argc, argv);
   progname = argv[0];
-  /*openfile(&infile,infilename,"input file", "r",argv[0],infilename);*/
 
-  screenlines = 24;
-  scrollinc = 20;
-  screenwidth = 80;
   topedge = 1;
   leftedge = 1;
   ibmpc = IBMCRT;
@@ -1628,6 +1523,5 @@ int main(int argc, Char *argv[])
 #ifdef WIN32
   phyRestoreConsoleAttributes();
 #endif
-  ajExit();
   return 0;
 }  /* Interactive mixed parsimony */

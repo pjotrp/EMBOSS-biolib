@@ -1,7 +1,6 @@
 application: frestml [
   documentation: "Restriction site maximum Likelihood method"
   groups: "Phylogeny:Molecular sequence"
-  embassy: "phylipnew"
 ]
 
 section: input [
@@ -9,23 +8,26 @@ section: input [
   type: "page"
 ]
 
-infile: datafile  [
-  parameter: "Y"
-  information: "Input file"
-  knowntype: "restml input"
+discretestates: data [
+        characters: "01+-?"
+	parameter: "Y"
+        help: "File containing one or more sets of restriction data"
 ]
 
-toggle: multsets  [
-  additional: "Y"
-  default: "N"
-  information: "Analyze multiple data sets"
+properties: weights [
+	additional: "Y"
+	characters: "01"
+	information: "Weights file"
+	help: "Weights file"
+        length: "$(data.length)"
+        size: "1"
+	nullok: "Y"
 ]
 
-integer: datasets  [
-  standard: "$(multsets)"
-  minimum: "2"
-  default: "2"
-  information: "Number of sets"
+tree: intreefile [
+	parameter: "Y"
+	nullok: "Y"
+	knowntype: "newick"
 ]
 
 endsection: input
@@ -40,101 +42,79 @@ outfile: outfile  [
   knowntype: "restml output"
 ]
 
-boolean: printdata  [
-  additional: "Y"
-  default: "N"
-  information: "Print out the data at start of run"
-]
-
-boolean: progress  [
-  additional: "Y"
-  default: "N"
-  information: "Print indications of progress of run"
-]
-
-boolean: drawtree  [
-  additional: "Y"
-  default: "Y"
-  information: "Draw tree"
-]
-
-toggle: trout  [
-  parameter: "Y"
-  default: "Y"
-  information: "Create a tree file"
-]
-
-outfile: treefile  [
-  standard: "$(trout)"
+outfile: outtreefile  [
   extension: "treefile"
   information: "Tree file name"
   knowntype: "newick tree"
 ]
 
-endsection: output
-
-section: required [
-  information: "Required section"
-  type: "page"
+boolean: printdata  [
+  additional: "Y"
+  default: "N"
+  information: "Print data at start of run"
 ]
 
-toggle: besttree  [
+boolean: progress  [
   additional: "Y"
   default: "Y"
-  information: "Search for best tree"
+  information: "Print indications of progress of run"
 ]
 
-toggle: random  [
-  standard: "$(besttree)"
-  default: "N"
-  information: "Randomize input order of species"
-]
-
-integer: randseed  [
-  standard: "$(random)"
-  default: "3"
-  information: "Random number seed (must be odd)"
-]
-
-integer: randtimes  [
-  standard: "$(random)"
-  default: "3"
-  information: "How many times to randomise"
-]
-
-toggle: og  [
+boolean: treeprint  [
   additional: "Y"
-  information: "Outgroup root"
-  default: "N"
+  default: "Y"
+  information: "Print out tree"
 ]
 
-integer: outgnum  [
-  standard: "$(og)"
-  minimum: "1"
-  default: "1"
-  information: "Number of the outgroup"
+boolean: trout  [
+  additional: "Y"
+  default: "Y"
+  information: "Write out trees to tree file"
 ]
 
-endsection: required
+endsection: output
 
 section: additional [
   information: "Additional section"
   type: "page"
 ]
 
+integer: njumble [
+	additional: "Y"
+	default: 0
+	min: 0
+	information: "Number of times to randomise"
+]
+
+integer: seed [
+	additional: "$(njumble)"
+	information: "Random number seed between 1 and 32767 (must be odd)"
+	max: 32767
+	min: 1
+	default: 1
+]
+
+integer: outgrno [
+	additional: "Y"
+	min: "0"  
+	max: "$(data.size)"
+	default: 0
+	information: "Species number to use as outgroup"
+]
+
 boolean: allsites  [
   additional: "Y"
   default: "Y"
-  information: "Are all sites detected"
+  information: "All sites detected"
 ]
 
 boolean: lengths  [
-  additional: "@(!$(besttree))"
+  additional: "$(intreefile.isdefined)"
   default: "N"
   information: "Use lengths from user trees"
 ]
 
-integer: sitelen  [
+integer: sitelength  [
   additional: "Y"
   default: "6"
   minimum: "1"
@@ -142,17 +122,18 @@ integer: sitelen  [
   information: "Site length"
 ]
 
-float: extrap  [
-  additional: "Y"
-  default: "100.0"
-  minimum: "0.001"
-  information: "Extrapolation factor"
-]
-
 boolean: global  [
-  additional: "$(besttree)"
+  additional: "@(!$(intreefile.isdefined))"
   default: "N"
   information: "Global rearrangements"
 ]
+
+
+boolean: rough [
+	additional: "@(!$(intreefile.isdefined))"
+	default: "Y"
+	information: "Speedier but rougher analysis"
+]
+  	
 
 endsection: additional

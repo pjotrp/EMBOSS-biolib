@@ -13,20 +13,15 @@
 
 extern sequence y;
 
-AjPSeqset* seqsets = NULL;
-AjPPhyloState* phylostates = NULL;
-AjPPhyloProp phyloanc = NULL;
-AjPPhyloProp phylofact = NULL;
 AjPPhyloProp phyloweights = NULL;
-AjPPhyloTree* phylotrees = NULL;
-
-ajint numwts;
+AjPPhyloTree* phylotrees;
+AjPPhyloState* phylostates = NULL;
 
 #ifndef OLDC
 /* function prototypes */
 void   restml_inputnumbers(AjPPhyloState);
-/*void   getoptions(void);*/
-void emboss_getoptions(char *pgm, int argc, char *argv[]);
+//void   getoptions(void);
+void   emboss_getoptions(char *pgm, int argc, char *argv[]);
 void   allocrest(void);
 void   setuppie(void);
 void   doinit(void);
@@ -65,25 +60,33 @@ void   restml_treeout(node *);
 void   inittravtree(node *);
 void   treevaluate(void);
 void   maketree(void);
+void   globrearrange(void); 
 /* function prototypes */
 #endif
 
 
 Char infilename[FNMLNGTH], intreename[FNMLNGTH];
+
 const char* outfilename;
 const char* outtreename;
+AjPFile embossoutfile;
+AjPFile embossouttree;
+
+
+ajint numwts;
+
 long nonodes2, sites, enzymes, weightsum, sitelength, datasets, 
         ith, njumble, jumb=0;
 long inseed, inseed0;
 boolean  global, jumble, lengths, weights, trout, trunc8, usertree,
-           reconsider, progress, mulsets, firstset, improve, smoothit;
+           progress, mulsets, firstset, improve, smoothit;
 double bestyet;
 tree curtree, priortree, bestree, bestree2;
 longer seed;
 long *enterorder;
 steptr aliasweight;
 char *progname;
-node *qwhere;
+node *qwhere,*addwhere;
 
 /* Local variables for maketree, propagated globally for C version: */
 long       nextsp, numtrees, maxwhich, col;
@@ -105,212 +108,114 @@ boolean haslengths;
 void restml_inputnumbers(AjPPhyloState state)
 {
   /* read and print out numbers of species and sites */
-  /*fscanf(infile, "%ld%ld%ld", &spp, &sites, &enzymes);*/
+
   spp = state->Size;
   sites = state->Len;
   enzymes = state->Count;
+
   nonodes2 = spp * 2 - 2;
 }  /* restml_inputnumbers */
 
 
-
-/************ EMBOSS GET OPTIONS ROUTINES ******************************/
-
-void emboss_getoptions(char *pgm, int argc, char *argv[])
+void   emboss_getoptions(char *pgm, int argc, char *argv[])
 {
-    AjStatus retval;
- 
-    /* initialize global variables */
+
+  AjStatus retval;
+  ajint numseqs;
+
+  boolean rough;
+  
+  sitelength = 6;
+  trunc8 = true;
+  global = false;
+  improve = false;
+  jumble = false;
+  njumble = 1;
+  lengths = false;
+  outgrno = 1;
+  outgropt = false;
+  trout = true;
+  usertree = false;
+  weights = false;
+  printdata = false;
+  progress = true;
+  treeprint = true;
+  interleaved = true;
+  mulsets = false;
+  datasets = 1;
 
     ajNamInit("emboss");
-    retval =  ajAcdInitP (pgm, argc, argv, "PHYLIP");
+    retval = ajAcdInitP (pgm, argc, argv, "PHYLIP");
 
-    /* ajAcdGet */
+    phylostates = ajAcdGetDiscretestates("data");
 
-    inseed = ajAcdGetInt("seed");
+    numseqs = 0;
+    while (phylostates[numseqs])
+	numseqs++;
 
-    /* init functions for standard ajAcdGet */
+    printf("numseqs: %ld\n", numseqs);
 
-    /* cleanup for clashing options */
+    if (numseqs > 1) {
+	mulsets = true;
+        datasets = numseqs;
+    }
 
-}
+    phylotrees = ajAcdGetTree("intreefile");
+    if (phylotrees)
+    {
+        numtrees = 0;
+        while (phylotrees[numtrees])
+            numtrees++;
+        usertree = true;
+    }
 
-/************ END EMBOSS GET OPTIONS ROUTINES **************************/
+    numwts = 0;
 
-/*
-//void getoptions()
-//{
-//  /# interactively set options #/
-//  long loopcount, loopcount2;
-//  Char ch;
-//
-//  fprintf(outfile, "\nRestriction site Maximum Likelihood");
-//  fprintf(outfile, " method, version %s\n\n",VERSION);
-//  putchar('\n');
-//  sitelength = 6;
-//  trunc8 = true;
-//  global = false;
-//  improve = false;
-//  jumble = false;
-//  njumble = 1;
-//  lengths = false;
-//  outgrno = 1;
-//  outgropt = false;
-//  reconsider = false;
-//  trout = true;
-//  usertree = false;
-//  weights = false;
-//  printdata = false;
-//  progress = true;
-//  treeprint = true;
-//  interleaved = true;
-//  loopcount = 0;
-//  for (;;) {
-//    cleerhome();
-//    printf("\nRestriction site Maximum Likelihood");
-//    printf(" method, version %s\n\n",VERSION);
-//    printf("Settings for this run:\n");
-//    printf("  U                 Search for best tree?  %s\n",
-//           (usertree ? "No, use user trees in input file" : "Yes"));
-//    if (usertree) {
-//      printf("  N          Use lengths from user trees?  %s\n",
-//              (lengths ? "Yes" : "No"));
-//    }
-//    printf("  A               Are all sites detected?  %s\n",
-//           (trunc8 ? "No" : "Yes"));
-//    if (!usertree) {
-//      printf("  S        Speedier but rougher analysis?  %s\n",
-//             (improve ? "No, not rough" : "Yes"));
-//      printf("  G                Global rearrangements?  %s\n",
-//             (global ? "Yes" : "No"));
-//      printf("  J   Randomize input order of sequences?  ");
-//      if (jumble)
-//        printf("Yes (seed =%8ld,%3ld times)\n", inseed0, njumble);
-//      else
-//        printf("No. Use input order\n");
-//    }
-//    else
-//       printf("  V    Rearrange starting with user tree?  %s\n",
-//             (reconsider ? "Yes" : "No"));
-//    printf("  L                          Site length?%3ld\n",sitelength);
-//    printf("  O                        Outgroup root?  %s%3ld\n",
-//           (outgropt ? "Yes, at sequence number" :
-//                       "No, use as outgroup species"),outgrno);
-//
-//    printf("  M           Analyze multiple data sets?");
-//    if (mulsets)
-//      printf("  Yes, %2ld sets\n", datasets);
-//    else
-//      printf("  No\n");
-//    printf("  I          Input sequences interleaved?  %s\n",
-//           (interleaved ? "Yes" : "No, sequential"));
-//    printf("  0   Terminal type (IBM PC, ANSI, none)?  %s\n",
-//           ibmpc ? "IBM PC" : ansi  ? "ANSI" : "(none)");
-//    printf("  1    Print out the data at start of run  %s\n",
-//           (printdata ? "Yes" : "No"));
-//    printf("  2  Print indications of progress of run  %s\n",
-//           (progress ? "Yes" : "No"));
-//    printf("  3                        Print out tree  %s\n",
-//           (treeprint ? "Yes" : "No"));
-//    printf("  4       Write out trees onto tree file?  %s\n",
-//           (trout ? "Yes" : "No"));
-//    printf("\n  Y to accept these or type the letter for one to change\n");
-//    scanf("%c%*[^\n]", &ch);
-//    getchar();
-//    if (ch == '\n')
-//      ch = ' ';
-//    uppercase(&ch);
-//    if (ch == 'Y')
-//      break;
-//    if (strchr("UNASGJVLOTMI01234",ch) != NULL){
-//      switch (ch) {
-//
-//      case 'A':
-//        trunc8 = !trunc8;
-//        break;
-//        
-//      case 'S':
-//        improve = !improve;
-//        break;
-//
-//      case 'G':
-//        global = !global;
-//        break;
-//        
-//      case 'J':
-//        jumble = !jumble;
-//        if (jumble)
-//          initjumble(&inseed, &inseed0, seed, &njumble);
-//        else njumble = 1;
-//        break;
-//        
-//      case 'L':
-//        loopcount2 = 0;
-//        do {
-//          printf("New Sitelength?\n");
-//          scanf("%ld%*[^\n]", &sitelength);
-//          getchar();
-//          if (sitelength < 1)
-//            printf("BAD RESTRICTION SITE LENGTH: %ld\n", sitelength);
-//          countup(&loopcount2, 10);
-//        } while (sitelength < 1);
-//        break;
-//        
-//      case 'N':
-//        lengths = !lengths;
-//        break;
-//
-//      case 'O':
-//        outgropt = !outgropt;
-//        if (outgropt)
-//          initoutgroup(&outgrno, spp);
-//        else outgrno = 1;
-//        break;
-//        
-//      case 'U':
-//        usertree = !usertree;
-//        break;
-//        
-//      case 'V':
-//        reconsider = !reconsider;
-//        break;
-//
-//      case 'M':
-//        mulsets = !mulsets;
-//        if (mulsets)
-//          initdatasets(&datasets);
-//        break;
-//        
-//      case 'I':
-//        interleaved = !interleaved;
-//        break;
-//        
-//      case '0':
-//        initterminal(&ibmpc, &ansi);
-//        break;
-//        
-//      case '1':
-//        printdata = !printdata;
-//        break;
-//        
-//      case '2':
-//        progress = !progress;
-//        break;
-//        
-//      case '3':
-//        treeprint = !treeprint;
-//        break;
-//        
-//      case '4':
-//        trout = !trout;
-//        break;
-//      }
-//    } else
-//      printf("Not a possible option!\n");
-//    countup(&loopcount, 100);
-//  }
-//}  /# getoptions #/
-*/
+    phyloweights = ajAcdGetProperties("weights");
+    if (phyloweights) weights = true;
+
+
+
+
+    trunc8 = ajAcdGetBool("allsites");
+    
+ 
+    if (!usertree) {
+      rough = ajAcdGetBool("rough");
+      if(!rough) improve = true;  
+      global = ajAcdGetBool("global");
+      njumble = ajAcdGetInt("njumble");
+      if(njumble >0) {
+        inseed = ajAcdGetInt("seed");
+        jumble = true; 
+        emboss_initseed(inseed, &inseed0, seed);
+      }
+      else njumble = 1;
+    }
+
+    sitelength = ajAcdGetInt("sitelength");
+    outgrno = ajAcdGetInt("outgrno");
+    if(outgrno != 0) outgropt = true;
+    else outgrno = 1;
+
+    printdata = ajAcdGetBool("printdata");
+    progress = ajAcdGetBool("progress");
+    treeprint = ajAcdGetBool("treeprint");
+    trout = ajAcdGetBool("trout");
+
+     embossoutfile = ajAcdGetOutfile("outfile");   
+     emboss_openfile(embossoutfile, &outfile, &outfilename);
+     
+
+     if(trout) {
+     embossouttree = ajAcdGetOutfile("outtreefile");
+     emboss_openfile(embossouttree, &outtree, &outtreename);
+     }
+ 
+  fprintf(outfile, "\nRestriction site Maximum Likelihood");
+  fprintf(outfile, " method, version %s\n\n",VERSION);
+
+}  /* emboss_getoptions */
 
 
 void allocrest()
@@ -352,7 +257,6 @@ void doinit()
   long i;
 
   restml_inputnumbers(phylostates[0]);
-/*  getoptions();*/
   if (printdata)
     fprintf(outfile, "%4ld Species, %4ld Sites,%4ld Enzymes\n",
             spp, sites, enzymes);
@@ -381,7 +285,7 @@ void doinit()
   alloctrans(&curtree.trans, nonodes2, sitelength);
   alloctree(&curtree.nodep, nonodes2, false);
   allocrest();
-  if (usertree && !reconsider)
+  if (usertree)
     return;
   alloctrans(&bestree.trans, nonodes2, sitelength);
   alloctree(&bestree.nodep, nonodes2, 0);
@@ -396,18 +300,14 @@ void doinit()
 void inputoptions(AjPPhyloState state)
 {
   /* read the options information */
-  /*Char ch;*/
+  
   long i, extranum, cursp, curst, curenz;
 
   if (!firstset) {
-    /*
-       if (eoln(infile))
-      scan_eoln(infile);
-    fscanf(infile, "%ld%ld%ld", &cursp, &curst, &curenz);
-*/
     cursp = state->Size;
     curst = state->Len;
     curenz = state->Count;
+
     if (cursp != spp) {
       printf("\nERROR: INCONSISTENT NUMBER OF SPECIES IN DATA SET %4ld\n",
              ith);
@@ -424,11 +324,8 @@ void inputoptions(AjPPhyloState state)
     weight[i] = 1;
   weightsum = sites;
   extranum = numwts;
-  /*readoptions(&extranum, "W");*/
   for (i = 1; i <= numwts; i++) {
-    /*matchoptions(&ch, "W");*/
-    inputweightsstr2(phyloweights->Str[i-1], 1, sites+1,
-		       &weightsum, weight, &weights, "RESTML");
+      inputweightsstr2(phyloweights->Str[i-1], 1, sites+1, &weightsum, weight, &weights, "RESTML");
   }
   fprintf(outfile, "\n  Recognition sequences all%2ld bases long\n",
           sitelength);
@@ -468,11 +365,10 @@ void restml_inputdata(AjPPhyloState state)
   sitesread = 0;
   allread = false;
   while (!(allread)) {
-    allread = true;
-     i = 1;
+    i = 1;
     while (i <= spp ) {
-	str = state->Str[i-1];
-      initnamestate(state, i - 1);
+      str = state->Str[i-1];
+      initnamestate(state, i - 1);     
       j = 0;
       done = false;
       while (!done) {
@@ -671,14 +567,14 @@ void getinput()
   restml_inputdata(phylostates[ith-1]);
   makeweights();
   setuptree2(curtree);
-  if (!usertree || reconsider) {
+  if (!usertree) {
     setuptree2(priortree);
     setuptree2(bestree);
     if (njumble > 1) 
       setuptree2(bestree2);
   }
   allocx2(nonodes2, endsite+1, sitelength, curtree.nodep, false);
-  if (!usertree || reconsider) {
+  if (!usertree) {
     allocx2(nonodes2, endsite+1, sitelength, priortree.nodep, 0);
     allocx2(nonodes2, endsite+1, sitelength, bestree.nodep, 0);
     if (njumble > 1)
@@ -811,7 +707,7 @@ double evaluate(tree *tr, node *p)
 /* *** debug  put a variable "saveit" in evaluate as third argument as to
    whether to save the KHT suff */
   if (usertree) {
-    l0gl[which - 1] = sum;
+      l0gl[which - 1] = sum;
     if (which == 1) {
       maxwhich = 1;
       maxlogl = sum;
@@ -1117,7 +1013,7 @@ void restml_copynode(node *c, node *d)
 
 void restml_copy_(tree *a, tree *b)
 {
-  /* copy a tree */
+  /* copy tree a to tree b */
   long i,j;
   node *p, *q;
 
@@ -1219,8 +1115,10 @@ void addtraverse(node *p, node *q, boolean contin)
   like = evaluate(&curtree, p);
   if (like > bestyet) {
     bestyet = like;
-    if (smoothit)
+    if (smoothit) {
       restml_copy_(&curtree, &bestree);
+      addwhere = q;
+    }
     else
       qwhere = q;
     succeeded = true;
@@ -1242,10 +1140,93 @@ void addtraverse(node *p, node *q, boolean contin)
   }
 }  /* addtraverse */
 
+void globrearrange() 
+{
+  /* does global rearrangements */
+  tree globtree;
+  tree oldtree;
+  int i,j,k,l,num_sibs,num_sibs2;
+  node *where,*sib_ptr,*sib_ptr2;
+  double oldbestyet = curtree.likelihood;
+  int success = false;
+  printf("\n   ");
+  alloctree(&globtree.nodep,nonodes2,0);
+  alloctree(&oldtree.nodep,nonodes2,0);
+  alloctrans(&globtree.trans, nonodes2, sitelength);
+  alloctrans(&oldtree.trans, nonodes2, sitelength);
+  setuptree2(globtree);
+  setuptree2(oldtree);
+  allocx2(nonodes2, endsite + 1, sitelength,globtree.nodep, 0);
+  allocx2(nonodes2, endsite + 1, sitelength,oldtree.nodep, 0);
+  restml_copy_(&curtree,&globtree);
+  restml_copy_(&curtree,&oldtree);
+  bestyet = curtree.likelihood;
+  for ( i = spp ; i < nonodes2 ; i++ ) {
+    num_sibs = count_sibs(curtree.nodep[i]);
+    sib_ptr  = curtree.nodep[i];
+    if ( (i - spp) % (( nonodes2 / 72 ) + 1 ) == 0 )
+      putchar('.');
+    fflush(stdout);
+    for ( j = 0 ; j <= num_sibs ; j++ ) {
+      restml_re_move(&sib_ptr,&where);
+      restml_copy_(&curtree,&priortree);
+      qwhere = where;
+      
+      if (where->tip) {
+        restml_copy_(&oldtree,&curtree);
+        restml_copy_(&oldtree,&bestree);
+        sib_ptr=sib_ptr->next;
+        continue;
+      }
+      else num_sibs2 = count_sibs(where);
+      sib_ptr2 = where;
+      for ( k = 0 ; k < num_sibs2 ; k++ ) {
+        addwhere = NULL;
+        addtraverse(sib_ptr,sib_ptr2->back,true);
+        if ( !smoothit ) {
+          if (succeeded && qwhere != where && qwhere != where->back) {
+            insert_(sib_ptr,qwhere);
+            smoothit = true;
+            for (l = 1; l<=smoothings; l++) {
+              smooth (where);
+              smooth (where->back);
+            }
+            smoothit = false;
+            success = true;
+            restml_copy_(&curtree,&globtree);
+          }
+          restml_copy_(&priortree,&curtree);
+        }
+        else if ( addwhere && where != addwhere && where->back != addwhere
+              && bestyet > globtree.likelihood) {
+            restml_copy_(&bestree,&globtree);
+            success = true;
+        }
+        sib_ptr2 = sib_ptr2->next;
+      } 
+      restml_copy_(&oldtree,&curtree);
+      restml_copy_(&oldtree,&bestree);
+      sib_ptr = sib_ptr->next;
+    }
+  }
+  restml_copy_(&globtree,&curtree);
+  restml_copy_(&globtree,&bestree);
+  if (success && globtree.likelihood > oldbestyet)  {
+    succeeded = true;
+  }
+  else  {
+    succeeded = false;
+  }
+  bestyet = globtree.likelihood;
+  freetrans(&globtree.trans, nonodes2, sitelength);
+  freetrans(&oldtree.trans, nonodes2, sitelength);
+  freetree2(globtree.nodep,nonodes2);
+  freetree2(oldtree.nodep,nonodes2);
+}
 
 void rearrange(node *p, node *pp)
 {
-  /* rearranges the tree, globally or locally */
+  /* rearranges the tree locally */
   long i, oldnum3=0, oldnum4=0, oldnum5=0;
   double v3=0, v4=0, v5=0;
   node *q, *r;
@@ -1274,16 +1255,8 @@ void rearrange(node *p, node *pp)
       restml_copy_(&curtree, &priortree);
     else
       qwhere = q;
-    addtraverse(r, p->next->back, (boolean)(global && (nextsp == spp)));
-    addtraverse(r, p->next->next->back, (boolean)(global && (nextsp == spp)));
-    if (global && nextsp == spp && !succeeded) {
-      p = p->back;
-      if (!p->tip) {
-        addtraverse(r, p->next->back, (boolean)(global && (nextsp == spp)));
-        addtraverse(r, p->next->next->back, (boolean)(global && (nextsp == spp)));
-      }
-      p = p->back;
-    }
+    addtraverse(r, p->next->back, false);
+    addtraverse(r, p->next->next->back, false);
     if (smoothit)
       restml_copy_(&bestree, &curtree);
     else {
@@ -1315,10 +1288,6 @@ void rearrange(node *p, node *pp)
         smoothit = false;
         restml_copy_(&curtree, &bestree);
       }
-    }
-    if (global && nextsp == spp && progress) {
-      putchar('.');
-      fflush(stdout);
     }
   }
   if (!p->tip) {
@@ -1490,7 +1459,7 @@ double sigma(node *q, double *sumlr)
     TEMP = slopef / (1.0 - f);
     sumc += weightsum * (curvef / (1.0 - f) + TEMP * TEMP);
   }
-  for (i=0;i<sitelength;++i){
+  for (i=0;i<=sitelength;++i){
     free(Prob[i]);
     free(slopeP[i]);
     free(curveP[i]);
@@ -1651,11 +1620,13 @@ void inittravtree(node *p)
     p->branchnum = p->index;
   else
     p->branchnum = p->back->index;
-  branchtrans(p->branchnum, initialv);
   p->initialized = false;
   p->back->initialized = false;
-  p->v = initialv;
-  p->back->v = initialv;
+  if ((!lengths) || p->iter) {
+    branchtrans(p->branchnum, initialv);
+    p->v = initialv;
+    p->back->v = initialv;
+  }
   if (!p->tip) {
     inittravtree(p->next->back);
     inittravtree(p->next->next->back);
@@ -1667,29 +1638,27 @@ void treevaluate()
 {
   /* find maximum likelihood branch lengths of user tree */
   long i;
-  double dummy;
 
   inittravtree(curtree.start);
   smoothit = true;
   for (i = 1; i <= smoothings * 4; i++)
     smooth (curtree.start);
-  dummy = evaluate(&curtree, curtree.start);
+  evaluate(&curtree, curtree.start);
 }  /* treevaluate */
 
 
 void maketree()
 {
   /* construct and rearrange tree */
-  long i;
+  long i,j;
   char* treestr;
 
   if (usertree) {
-    /*openfile(&intree,INTREE,"input tree file","r",progname,intreename);*/
-    if (numtrees > 2)
+      if (numtrees > 2)
       emboss_initseed(inseed, &inseed0, seed);
-    l0gl = (double *)Malloc(numtrees * sizeof(double));
-    l0gf = (double **)Malloc(numtrees * sizeof(double *));
-    for (i=0;i<numtrees;++i)
+    l0gl = (double *) Malloc(numtrees * sizeof(double));
+    l0gf = (double **) Malloc(numtrees * sizeof(double *));
+    for (i=0; i < numtrees; ++i)
       l0gf[i] = (double *)Malloc(endsite * sizeof(double));
     if (treeprint) {
       fprintf(outfile, "User-defined tree");
@@ -1703,15 +1672,6 @@ void maketree()
       treeread2 (&treestr, &curtree.start, curtree.nodep,
         lengths, &trweight, &goteof, &haslengths, &spp);
       treevaluate();
-      if (reconsider) {
-        bestyet = - nextsp*sites*sitelength*log(4.0);
-        succeeded = true;
-        while (succeeded) {
-          succeeded = false;
-          rearrange(curtree.start, curtree.start->back);
-        }
-      treevaluate();
-      }
       restml_printree();
       summarize();
       if (trout) {
@@ -1763,13 +1723,20 @@ void maketree()
       if (global && nextsp == spp) {
         if (progress) {
           printf("Doing global rearrangements\n");
-          printf("   ");
+          printf("  !");
+          for (j = spp ; j < nonodes2 ; j++)
+            if ( (j - spp) % (( nonodes2 / 72 ) + 1 ) == 0 )
+              putchar('-');
+          putchar('!');
         }
       }
       succeeded = true;
       while (succeeded) {
         succeeded = false;
-        rearrange(curtree.start, curtree.start->back);
+        if (global && nextsp == spp)
+          globrearrange();
+        else 
+          rearrange(curtree.start, curtree.start->back);
       }
       for (i = spp; i < nonodes2; i++) {
         curtree.nodep[i]->initialized = false;
@@ -1842,18 +1809,12 @@ int main(int argc, Char *argv[])
   init(argc, argv);
   emboss_getoptions("frestml",argc,argv);
   progname = argv[0];
-  /*openfile(&infile,INFILE,"input file","r",argv[0],infilename);*/
-  embossoutfile = ajAcdGetOutfile("outfile");
-  emboss_openfile(embossoutfile,&outfile,&outfilename);
+
   ibmpc = IBMCRT;
   ansi = ANSICRT;
-  mulsets = false;
-  datasets = 1;
+
   firstset = true;
   doinit();
-  embossouttree = ajAcdGetOutfile("outtreefile");
-  emboss_openfile(embossouttree,&outtree,&outtreename);
-  if (!outtree) trout = false;
   for (ith = 1; ith <= datasets; ith++) {
     if (datasets > 1) {
       fprintf(outfile, "Data set # %ld:\n",ith);

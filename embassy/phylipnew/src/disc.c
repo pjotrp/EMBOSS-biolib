@@ -154,6 +154,7 @@ void disc_inputdata2(AjPPhyloState state, pointptr2 treenode)
       putc('\n', outfile);
   }
   fprintf(outfile, "\n\n");
+ 
 }  /* inputdata2 */
 
 
@@ -182,6 +183,7 @@ void alloctree(pointptr *treenode)
     p->next->next->next = p;
     (*treenode)[i] = p;
   }
+
 }  /* alloctree */
 
 

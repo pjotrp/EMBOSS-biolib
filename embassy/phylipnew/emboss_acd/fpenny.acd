@@ -1,8 +1,6 @@
-application: fpenny [
-  documentation: "Penny algorithm, branch-and-bound to find
-                  all most parsimonious trees"
+application: penny [
+  documentation: "Penny algorithm, branch-and-bound to find all most parsimonious trees"
   groups: "Phylogeny:Discrete characters"
-  embassy: "phylipnew"
 ]
 
 section: input [
@@ -10,21 +8,36 @@ section: input [
   type: "page"
 ]
 
-infile: infile  [
+discretestates: infile  [
   parameter: "Y"
-  information: "Data file"
-  knowntype: "penny input"
+  characters: "01PB?"
+  help: "File containing one or more data sets"
+  knowntype: "discrete characters input"
 ]
 
-toggle: multsets  [
-  additional: "Y"
-  default: "N"
-  information: "Analyze multiple data sets"
+properties: weights [
+	additional: "Y"
+	characters: "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+	information: "Weights file"
+	nullok: "Y"
+        length: "$(infile.discretelength)"
+        size: "1"
 ]
-
-integer: datasets  [
-  standard: "$(multsets)"
-  information: "How many data sets"
+properties: ancfile [
+	additional: "Y"
+	characters: "01?"
+	information: "Ancestral states file"
+	nullok: "Y"
+        length: "$(infile.discretelength)"
+        size: "1"
+]
+properties: mixfile [
+	additional: "Y"
+	characters: "CSW"
+	information: "Mixture file"
+	nullok: "Y"
+        length: "$(infile.discretelength)"
+        size: "1"
 ]
 
 endsection: input
@@ -39,101 +52,80 @@ outfile: outfile  [
   knowntype: "penny output"
 ]
 
-boolean: printdata  [
-  additional: "Y"
-  default: "N"
-  information: "Print out the data at start of run"
+toggle: trout [
+	additional: "Y"
+	default: "Y"
+	information: "Write out trees to tree file"
 ]
 
-boolean: progress  [
-  additional: "Y"
-  default: "N"
-  information: "Print indications of progress of run"
+outfile: outtreefile  [
+  additional: "$(trout)"
+  extension: "treefile"
+  information: "Tree file name"
+  knowntype: "newick tree"
+  nullok: "Y"
 ]
 
-boolean: steps  [
+boolean: printdata [
+	additional: "Y"
+	default: "N"
+	information: "Print data at start of run"
+]
+
+boolean: progress [
+	additional: "Y"
+	default: "Y"
+	information: "Print indications of progress of run"
+]
+
+boolean: treeprint [
+	additional: "Y"
+	default: "Y"
+	information: "Print out tree"
+]
+
+boolean: stepbox  [
   additional: "Y"
   default: "N"
   information: "Print out steps in each site"
 ]
 
-boolean: seqatnodes  [
+boolean: ancseq  [
   additional: "Y"
   default: "N"
-  information: "Print sequences at all nodes of tree"
-]
-
-boolean: drawtree  [
-  additional: "Y"
-  default: "Y"
-  information: "Draw tree"
-]
-
-toggle: trout  [
-  parameter: "Y"
-  default: "Y"
-  information: "Create a tree file"
-]
-
-outfile: treefile  [
-  standard: "$(trout)"
-  default: "epenny.treefile"
-  information: "Tree file name"
-  knowntype: "newick tree"
+  information: "Print states at all nodes of tree"
 ]
 
 endsection: output
-
-section: required [
-  information: "Required section"
-  type: "page"
-]
-
-list: method  [
-  standard: "y"
-  minimum: "1"
-  maximum: "1"
-  header: "Method"
-  values: "Wag:Wagner; Cam:Camin-Sokal; Mix:Mixed;"
-  information: "Choose the method to use"
-  default: "Wag"
-]
-
-toggle: og  [
-  additional: "Y"
-  information: "Outgroup root"
-  default: "N"
-]
-
-integer: outgnum  [
-  standard: "$(og)"
-  minimum: "1"
-  default: "1"
-  information: "Number of the outgroup"
-]
-
-toggle: thresh  [
-  default: "N"
-  information: "Use threshold parsimony"
-]
-
-float: valthresh  [
-  standard: "$(thresh)"
-  minimum: "1.0"
-  default: "1.0"
-  information: "Threshold value"
-]
-
-endsection: required
 
 section: additional [
   information: "Additional section"
   type: "page"
 ]
 
-integer: numgroups  [
+list: method  [
+  additional: "y"
+  minimum: "1"
+  maximum: "1"
+  header: "Method"
+  values: "Wag:Wagner; 
+           Cam:Camin-Sokal; 
+           Mix:Mixed;"
+  information: "Choose the method to use"
+  default: "Wagner"
+]
+
+integer: outgrno [
+	additional: "Y"
+	min: 0  
+        max: "$(infile.discretesize)"
+	default: 0
+	information: "Species number to use as outgroup"
+]
+
+integer: howmany  [
   additional: "Y"
-  information: "How many groups of 100 trees"
+  information: "How many groups of trees"
   default: "1000"
 ]
 
@@ -146,6 +138,13 @@ integer: howoften  [
 boolean: simple  [
   additional: "Y"
   information: "Branch and bound is simple"
+]
+
+float: threshold  [
+  additional: "Y"
+  minimum: "1.0"
+  default: "$(infile.discretesize)" 
+  information: "Threshold value"
 ]
 
 endsection: additional

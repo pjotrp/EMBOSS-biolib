@@ -1,7 +1,6 @@
 application: ffactor [
   documentation: "Multistate to binary recoding program"
   groups: "Phylogeny:Discrete characters"
-  embassy: "phylipnew"
 ]
 
 section: input [
@@ -9,9 +8,9 @@ section: input [
   type: "page"
 ]
 
-infile: datafile  [
+infile: infile  [
   parameter: "Y"
-  information: "Data file"
+  information: "File containing data set"
   knowntype: "factor input"
 ]
 
@@ -22,10 +21,29 @@ section: output [
   type: "page"
 ]
 
-outfile: outfile  [
-  parameter: "Y"
-  knowntype: "factor output"
+
+outfile: outfile [
+	parameter: "Y"
+	knowntype: "factor output"
 ]
+
+outfile: outfactorfile [
+	extension: "factor"
+	information: "Factor outfile name"
+	nullok: "Y"
+]
+outfile: outancfile [
+	extension: "ancestor"
+	information: "Ancestor outfile name"
+	nullok: "Y"
+]
+endsection: output
+
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
 
 boolean: anc  [
   additional: "Y"
@@ -38,11 +56,10 @@ boolean: factors  [
   default: "N"
   information: "Put factors information in output file"
 ]
-
-boolean: progress  [
-  additional: "Y"
-  default: "Y"
-  information: "Show progress"
+boolean: progress [
+	additional: "Y"
+	default: "Y"
+	information: "Print indications of progress of run"
 ]
 
-endsection: output
+endsection: additional

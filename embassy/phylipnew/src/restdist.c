@@ -1,4 +1,5 @@
 
+
 #include "phylip.h"
 #include "seq.h"
 
@@ -12,20 +13,14 @@
 
 extern sequence y;
 
-AjPSeqset* seqsets = NULL;
 AjPPhyloState* phylostates = NULL;
-AjPPhyloProp phyloanc = NULL;
-AjPPhyloProp phylofact = NULL;
-AjPPhyloProp phyloweights = NULL;
-AjPPhyloTree* phylotrees = NULL;
 
-ajint numwts;
 
 #ifndef OLDC
 /* function prototypes */
 void restdist_inputnumbers(AjPPhyloState);
-/*void getoptions(void);*/
-void emboss_getoptions(char *pgm, int argc, char *argv[]);
+//void getoptions(void);
+void   emboss_getoptions(char *pgm, int argc, char *argv[]);
 void allocrest(void);
 void doinit(void);
 void inputoptions(AjPPhyloState);
@@ -42,7 +37,10 @@ void getinput(void);
 
 
 Char infilename[FNMLNGTH];
-const char* outfilename; 
+
+const char* outfilename;
+AjPFile embossoutfile;
+
 long sites, weightsum, datasets, ith;
 boolean  restsites, neili, gama, weights, lower,
            progress, mulsets, firstset;
@@ -55,178 +53,67 @@ Char ch;
 void restdist_inputnumbers(AjPPhyloState state)
 {
   /* read and print out numbers of species and sites */
-    spp = state->Size;
-    sites = state->Len;
-  /*fscanf(infile, "%ld%ld", &spp, &sites);*/
+  spp = state->Size;
+  sites = state->Len;
 }  /* restdist_inputnumbers */
 
 
-
-/************ EMBOSS GET OPTIONS ROUTINES ******************************/
-
 void emboss_getoptions(char *pgm, int argc, char *argv[])
 {
-    AjStatus retval;
+
+  AjStatus retval;
+  ajint numseqs;
+
+  sitelength = 6.0;
+  neili = false;
+  gama = false;
+  cvi = 0.0;
+  weights = false;
+  lower = false;
+  printdata = false;
+  progress = true;
+  restsites = true;
+  ttratio = 2.0;
+  mulsets = false;
+  datasets = 1;
+    printf("\nRestriction site or fragment distances, ");
+    printf("version %s\n\n",VERSION);
  
-    /* initialize global variables */
-
     ajNamInit("emboss");
-    retval =  ajAcdInitP (pgm, argc, argv, "PHYLIP");
+    retval = ajAcdInitP (pgm, argc, argv, "PHYLIP");
 
-    /* ajAcdGet */
+    phylostates = ajAcdGetDiscretestates("data");
 
-    /* init functions for standard ajAcdGet */
+    numseqs = 0;
+    while (phylostates[numseqs])
+	numseqs++;
 
-    /* cleanup for clashing options */
+    if (numseqs > 1) {
+	mulsets = true;
+        datasets = numseqs;
+    }
 
-}
+    restsites = ajAcdGetBool("restsites");
+    neili = ajAcdGetBool("neili");
+    if(!neili) gama = ajAcdGetBool("gamma");
+    if(gama) {
+      cvi = ajAcdGetFloat("gammacoefficient");
+      cvi = 1.0 / (cvi * cvi);
+    }
+    ttratio = ajAcdGetFloat("ttratio");
+    sitelength = ajAcdGetInt("sitelength");
+    lower = ajAcdGetBool("lower");
+    printdata = ajAcdGetBool("printdata");
+    progress = ajAcdGetBool("progress");
 
-/************ END EMBOSS GET OPTIONS ROUTINES **************************/
+    xi = (ttratio - 0.5)/(ttratio + 0.5);
+    xv = 1.0 - xi;
+    fracchange = xi*0.5 + xv*0.75;
 
-/*
-//void getoptions()
-//{
-//  /# interactively set options #/
-//  long loopcount, loopcount2;
-//  Char ch;
-//
-//  putchar('\n');
-//  sitelength = 6.0;
-//  neili = false;
-//  gama = false;
-//  cvi = 0.0;
-//  weights = false;
-//  lower = false;
-//  printdata = false;
-//  progress = true;
-//  restsites = true;
-//  interleaved = true;
-//  ttratio = 2.0;
-//  loopcount = 0;
-//  for (;;) {
-//    cleerhome();
-//    printf("\nRestriction site or fragment distances, ");
-//    printf("version %s\n\n",VERSION);
-//    printf("Settings for this run:\n");
-//    printf("  R           Restriction sites or fragments?  %s\n",
-//           (restsites ? "Sites" : "Fragments"));
-//    if (!restsites)
-//      printf("  N        Original or modified Nei/Li model?  %s\n",
-//             (neili ? "Original" : "Modified"));
-//    if (restsites || !neili) {
-//      printf("  G  Gamma distribution of rates among sites?");
-//      if (!gama)
-//        printf("  No\n");
-//      else
-//        printf("  Yes\n");
-//      printf("  T            Transition/transversion ratio?  %f\n", ttratio);
-//    }
-//    printf("  S                              Site length? %4.1f\n",sitelength);
-//    printf("  L                  Form of distance matrix?  %s\n",
-//           (lower ? "Lower-triangular" : "Square"));
-//    printf("  M               Analyze multiple data sets?");
-//    if (mulsets)
-//      printf("  Yes, %2ld sets\n", datasets);
-//    else
-//      printf("  No\n");
-//    printf("  I              Input sequences interleaved?  %s\n",
-//           (interleaved ? "Yes" : "No, sequential"));
-//    printf("  0       Terminal type (IBM PC, ANSI, none)?  %s\n",
-//           ibmpc ? "IBM PC" : ansi  ? "ANSI" : "(none)");
-//    printf("  1       Print out the data at start of run?  %s\n",
-//           (printdata ? "Yes" : "No"));
-//    printf("  2     Print indications of progress of run?  %s\n",
-//           (progress ? "Yes" : "No"));
-//    printf("\n  Y to accept these or type the letter for one to change\n");
-//    scanf("%c%*[^\n]", &ch);
-//    getchar();
-//    if (ch == '\n')
-//      ch = ' ';
-//    uppercase(&ch);
-//    if (ch == 'Y')
-//      break;
-//    if (strchr("RDNGTSLMI012",ch) != NULL){
-//      switch (ch) {
-//        
-//      case 'R':
-//        restsites = !restsites;
-//        break;
-//        
-//      case 'G':
-//        if (restsites || !neili)
-//          gama = !gama;
-//        break;
-//
-//      case 'N':
-//        if (!restsites)
-//          neili = !neili;
-//        break;
-//
-//      case 'T':
-//        if (restsites || !neili)
-//          initratio(&ttratio);
-//        break;
-//
-//      case 'S':
-//        loopcount2 = 0;
-//        do {
-//          printf("New Sitelength?\n");
-//          scanf("%lf%*[^\n]", &sitelength);
-//          getchar();
-//          if (sitelength < 1.0)
-//            printf("BAD RESTRICTION SITE LENGTH: %f\n", sitelength); 
-//          countup(&loopcount2, 10);
-//        } while (sitelength < 1.0);
-//        break;
-//        
-//      case 'L':
-//        lower = !lower;
-//        break;
-//
-//      case 'M':
-//        mulsets = !mulsets;
-//        if (mulsets)
-//          initdatasets(&datasets);
-//        break;
-//        
-//      case 'I':
-//        interleaved = !interleaved;
-//        break;
-//        
-//      case '0':
-//        initterminal(&ibmpc, &ansi);
-//        break;
-//        
-//      case '1':
-//        printdata = !printdata;
-//        break;
-//        
-//      case '2':
-//        progress = !progress;
-//        break;
-//        
-//      }
-//    } else
-//      printf("Not a possible option!\n");
-//    countup(&loopcount, 100);
-//  }
-//  if (gama) {
-//    loopcount = 0;
-//    do {
-//      printf(
-//"\nCoefficient of variation of substitution rate among sites (must be positive)?\n");
-//      scanf("%lf%*[^\n]", &cvi);
-//      getchar();
-//      countup(&loopcount, 100);
-//    } while (cvi <= 0.0);
-//    cvi = 1.0 / (cvi * cvi);
-//    printf("\n");
-//  }
-//  xi = (ttratio - 0.5)/(ttratio + 0.5);
-//  xv = 1.0 - xi;
-//  fracchange = xi*0.5 + xv*0.75;
-//}  /# getoptions #/
-*/
+     embossoutfile = ajAcdGetOutfile("outfile");   
+     emboss_openfile(embossoutfile, &outfile, &outfilename);
+
+}  /* emboss_getoptions */
 
 
 void allocrest()
@@ -249,8 +136,7 @@ void allocrest()
 void doinit()
 {
   /* initializes variables */
-  restdist_inputnumbers(phylostates[ith-1]);
-/*  getoptions();*/
+  restdist_inputnumbers(phylostates[0]);
   if (printdata)
     fprintf(outfile, "\n %4ld Species, %4ld Sites\n", spp, sites);
   allocrest();
@@ -260,29 +146,32 @@ void doinit()
 void inputoptions(AjPPhyloState state)
 {
   /* read the options information */
-  /*Char ch;*/
+ 
   long i, extranum, cursp, curst;
 
   if (!firstset) {
-      cursp = state->Size;
-      curst = state->Len;
+    cursp = state->Size;
+    curst = state->Len; 
     if (cursp != spp) {
       printf("\nERROR: INCONSISTENT NUMBER OF SPECIES IN DATA SET %4ld\n",
              ith);
       exxit(-1);
     }
     sites = curst;
+
   }
   for (i = 1; i <= sites; i++)
     weight[i] = 1;
   weightsum = sites;
-  extranum = numwts;
-  /* readoptions(&extranum, "W");*/
-  for (i = 1; i <= numwts; i++) {
-      /*matchoptions(&ch, "W");*/
-      inputweightsstr2(phyloweights->Str[i-1],
-		    1, sites+1, &weightsum, weight, &weights, "RESTDIST");
-  }
+  extranum = 0;
+
+  /*  fscanf(infile, "%*[ 0-9]");
+  readoptions(&extranum, "W");
+  for (i = 1; i <= extranum; i++) {
+      matchoptions(&ch, "W");
+      inputweights2(1, sites+1, &weightsum, weight, &weights, "RESTDIST");
+      }
+    */
 
 }  /* inputoptions */
 
@@ -302,7 +191,8 @@ void restdist_inputdata(AjPPhyloState state)
     j = nmlngth - 1;
   if (j > 39)
     j = 39;
-  if (printdata) {
+ 
+ if (printdata) {
     fprintf(outfile, "Name");
     for (i = 1; i <= j; i++)
       putc(' ', outfile);
@@ -311,20 +201,19 @@ void restdist_inputdata(AjPPhyloState state)
     for (i = 1; i <= j; i++)
       putc(' ', outfile);
     fprintf(outfile, "-----\n\n");
-  }
+ }
   sitesread = 0;
   allread = false;
   while (!(allread)) {
     i = 1;
     while (i <= spp ) {
-      initnamestate(state, i - 1);
-      str = state->Str[i];
-      j = 0;
+        initnamestate(state, i - 1);
+        str = state->Str[i-1];
+        j = 0;
       done = false;
       while (!done) {
         while (j < sites) {
-          ch = ajStrChar(str, j-1);
-          uppercase(&ch);
+          ch = ajStrChar(str, j);
           if (ch != '1' && ch != '0' && ch != '+' && ch != '-' && ch != '?') {
             printf(" ERROR -- Bad symbol %c",ch);
             printf(" at position %ld of species %ld\n", j+1, i);
@@ -339,11 +228,14 @@ void restdist_inputdata(AjPPhyloState state)
         }
         if (j == sites)
           done = true;
+      
       }
       i++;
     }
     allread = (i > spp);
   }
+  
+  
   if (printdata) {
     for (i = 1; i <= ((sites - 1) / 60 + 1); i++) {
       for (j = 0; j < spp; j++) {
@@ -462,7 +354,7 @@ void makev(long m, long n, double *v)
 {
   /* compute one distance */
   long i, ii, it, numerator, denominator;
-  double f, g=0, h, p1, p2, p3, q1, pp, tt, delta, vv, slope;
+  double f, g=0, h, p1, p2, p3, q1, pp, tt, delta, vv;
 
   numerator = 0;
   denominator = 0;
@@ -489,7 +381,6 @@ void makev(long m, long n, double *v)
     }
     else {
       g = initialv;
-      h = g;
       delta = g;
       it = 0;
       while (fabs(delta) > 0.00002 && it < iterationsr) {
@@ -503,37 +394,36 @@ void makev(long m, long n, double *v)
   if ((!restsites) && neili)
     vv = - (2.0/sitelength) * log(g);
   else {
-    pp = exp(log(f)/sitelength);
-    delta = initialv;
-    tt = delta;
-    it = 0;
-    while (fabs(delta) > 0.00002 && it < iterationsr) {
-      it++;
-      if (gama) {
-        p1 = exp(-cvi * log(1 + tt / cvi));
-        p2 = exp(-cvi * log(1 + xv * tt / cvi))
-              - exp(-cvi * log(1 + tt / cvi));
-        p3 = 1.0 - exp(-cvi * log(1 + xv * tt / cvi));
-      } else {
-        p1 = exp(-tt);
-        p2 = exp(-xv * tt) - exp(-tt);
-        p3 = 1.0 - exp(-xv * tt);
+    if(neili && restsites){
+      pp = exp(log(f)/(2*sitelength));
+      vv = -(3.0/2.0)*log((4.0/3.0)*pp - (1.0/3.0));      
+    } else {
+      pp = exp(log(f)/sitelength); 
+      delta = initialv;
+      tt = delta;
+      it = 0;
+      while (fabs(delta) > 0.00002 && it < iterationsr) {
+        it++;
+        if (gama) {
+          p1 = exp(-cvi * log(1 + tt / cvi));
+          p2 = exp(-cvi * log(1 + xv * tt / cvi))
+            - exp(-cvi * log(1 + tt / cvi));
+          p3 = 1.0 - exp(-cvi * log(1 + xv * tt / cvi));
+        } else {
+          p1 = exp(-tt);
+          p2 = exp(-xv * tt) - exp(-tt);
+          p3 = 1.0 - exp(-xv * tt);
+        }
+        q1 = p1 + p2 / 2.0 + p3 / 4.0;
+        g = q1 - pp;
+        if (g < 0.0)
+          delta = fabs(delta) / -2.0;
+        else
+          delta = fabs(delta);
+        tt += delta;
       }
-      q1 = p1 + p2 / 2.0 + p3 / 4.0;
-      g = q1 - pp;
-      if (gama)
-        slope = - 0.5 * (1 / (1 + tt / cvi)) * exp(-cvi * log(1 + tt / cvi))
-                  - 0.25 * (xv / (1 + xv * tt / cvi)) *
-                  exp(-cvi * log(1 + xv * tt / cvi));
-      else
-        slope = - 0.5*exp(-tt) - 0.25*exp(-xv*tt);
-      if (g < 0.0)
-        delta = fabs(delta) / -2.0;
-      else
-        delta = fabs(delta);
-      tt += delta;
+      vv = fracchange * tt;
     }
-    vv = fracchange * tt;
   }
   *v = vv;
 }  /* makev */
@@ -590,8 +480,8 @@ void writedists()
     else
       k = spp;
     for (j = 1; j <= k; j++) {
-      fprintf(outfile, "%8.4f", d[i][j - 1]);
-      if ((j + 1) % 9 == 0 && j < k)
+      fprintf(outfile, "%10.6f", d[i][j - 1]);
+      if ((j + 1) % 7 == 0 && j < k)
         putc('\n', outfile);
     }
     putc('\n', outfile);
@@ -617,15 +507,11 @@ int main(int argc, Char *argv[])
   argv[0] = "Restdist";
 #endif
   init(argc,argv);
-  emboss_getoptions("frestdist",argc,argv);
+  emboss_getoptions("frestdist", argc, argv);
   progname = argv[0];
-  /*openfile(&infile,INFILE,"input data file","r",argv[0],infilename);*/
-  embossoutfile = ajAcdGetOutfile("outfile");
-  emboss_openfile(embossoutfile,&outfile,&outfilename);
+
   ibmpc = IBMCRT;
   ansi = ANSICRT;
-  mulsets = false;
-  datasets = 1;
   firstset = true;
   doinit();
   for (ith = 1; ith <= datasets; ith++) {

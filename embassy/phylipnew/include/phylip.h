@@ -617,6 +617,8 @@ void   initnameseq(AjPSeqset, long);
 void   initnamedist(AjPPhyloDist, long);
 void   initnamestate(AjPPhyloState, long);
 void   initnamefreq(AjPPhyloFreq, long);
+void   emboss_initcatn(long *categs);
+void   emboss_initcategs(AjPFloat arrayvals, long categs, double *rate);
 void   sgetch(Char *, long *, char **);
 void   getch(Char *, long *, FILE *);
 void   getch2(Char *, long *);

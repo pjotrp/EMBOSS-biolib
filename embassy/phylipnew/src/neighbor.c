@@ -8,12 +8,14 @@
    Permission is granted to copy and use this program provided no fee is
    charged for it and provided that this copyright notice is not removed. */
 
+
 AjPPhyloDist phylodist = NULL;
+AjPPhyloTree* phylotrees;
 
 #ifndef OLDC
 /* function prototypes */
-/*void getoptions(void);*/
-void emboss_getoptions(char *pgm, int argc, char *argv[]);
+//void getoptions(void);
+void   emboss_getoptions(char *pgm, int argc, char *argv[]);
 void allocrest(void);
 void doinit(void);
 void inputoptions(void);
@@ -26,10 +28,12 @@ void maketree(void);
 /* function prototypes */
 #endif
 
-
-Char infilename[FNMLNGTH];
 const char* outfilename;
 const char* outtreename;
+AjPFile embossoutfile;
+AjPFile embossouttree;
+
+Char infilename[FNMLNGTH];
 long nonodes2, outgrno, col, datasets, ith;
 long inseed;
 vector *x;
@@ -45,167 +49,77 @@ Char progname[20];
 node **cluster;
 
 
-
-/************ EMBOSS GET OPTIONS ROUTINES ******************************/
-
-void emboss_getoptions(char *pgm, int argc, char *argv[])
+void   emboss_getoptions(char *pgm, int argc, char *argv[])
 {
-    AjStatus retval;
- 
-    /* initialize global variables */
+  AjStatus retval;
+  AjPStr matrixtype = NULL;
+  AjPStr treetype=NULL;
+
+  long inseed0 = 0;
+  putchar('\n');
+  jumble = false;
+  lower = false;
+  outgrno = 1;
+  outgropt = false;
+  replicates = false;
+  trout = true;
+  upper = false;
+  printdata = false;
+  progress = true;
+  treeprint = true;
+  njoin = true;
+  mulsets = false;
+  datasets = 1;
+
 
     ajNamInit("emboss");
-    retval =  ajAcdInitP (pgm, argc, argv, "PHYLIP");
+    retval = ajAcdInitP (pgm, argc, argv, "PHYLIP");
+   
+    matrixtype = ajAcdGetListI("matrixtype", 1);
+    if(ajStrMatchC(matrixtype, "l")) lower = true;
+    else if(ajStrMatchC(matrixtype, "u")) upper = true;
 
-    /* ajAcdGet */
+    phylodist = ajAcdGetDistances("datafile");
 
-    /* init functions for standard ajAcdGet */
+    treetype = ajAcdGetListI("treetype", 1);
+    if(ajStrMatchC(treetype, "n")) njoin = true;
+    else if(ajStrMatchC(treetype, "u")) njoin = false;
 
-    /* cleanup for clashing options */
+    if(njoin) {
+      outgrno = ajAcdGetInt("outgrno");
+      if(outgrno != 0) outgropt = true;
+      else outgrno = 1;
+    }
 
-}
+    replicates = ajAcdGetBool("replicates");
 
-/************ END EMBOSS GET OPTIONS ROUTINES **************************/
+    jumble = ajAcdGetToggle("jumble");
+    if(jumble) {
+        inseed = ajAcdGetInt("seed"); 
+        emboss_initseed(inseed, &inseed0, seed);
+    } 
 
-/*
-//void getoptions()
-//{
-//  /# interactively set options #/
-//  long inseed0 = 0, loopcount;
-//  Char ch;
-//
-//  fprintf(outfile, "\nNeighbor-Joining/UPGMA method version %s\n\n",VERSION);
-//  putchar('\n');
-//  jumble = false;
-//  lower = false;
-//  outgrno = 1;
-//  outgropt = false;
-//  replicates = false;
-//  trout = true;
-//  upper = false;
-//  printdata = false;
-//  progress = true;
-//  treeprint = true;
-//  njoin = true;
-//  loopcount = 0;
-//  for(;;) {
-//    cleerhome();
-//    printf("\nNeighbor-Joining/UPGMA method version %s\n\n",VERSION);
-//    printf("Settings for this run:\n");
-//    printf("  N       Neighbor-joining or UPGMA tree?  %s\n",
-//           (njoin ? "Neighbor-joining" : "UPGMA"));
-//    if (njoin) {
-//      printf("  O                        Outgroup root?");
-//      if (outgropt)
-//        printf("  Yes, at species number%3ld\n", outgrno);
-//      else
-//        printf("  No, use as outgroup species%3ld\n", outgrno);
-//    }
-//    printf("  L         Lower-triangular data matrix?  %s\n",
-//           (lower ? "Yes" : "No"));
-//    printf("  R         Upper-triangular data matrix?  %s\n",
-//           (upper ? "Yes" : "No"));
-//    printf("  S                        Subreplicates?  %s\n",
-//           (replicates ? "Yes" : "No"));
-//    printf("  J     Randomize input order of species?");
-//    if (jumble)
-//      printf("  Yes (random number seed =%8ld)\n", inseed0);
-//    else
-//      printf("  No. Use input order\n");
-//    printf("  M           Analyze multiple data sets?");
-//    if (mulsets)
-//      printf("  Yes, %2ld sets\n", datasets);
-//    else
-//      printf("  No\n");
-//    printf("  0   Terminal type (IBM PC, ANSI, none)?  %s\n",
-//           (ibmpc ? "IBM PC" : ansi ? "ANSI" : "(none)"));
-//    printf("  1    Print out the data at start of run  %s\n",
-//           (printdata ? "Yes" : "No"));
-//    printf("  2  Print indications of progress of run  %s\n",
-//           (progress ? "Yes" : "No"));
-//    printf("  3                        Print out tree  %s\n",
-//           (treeprint ? "Yes" : "No"));
-//    printf("  4       Write out trees onto tree file?  %s\n",
-//           (trout ? "Yes" : "No"));
-//    printf("\n\n  Y to accept these or type the letter for one to change\n");
-//#ifdef WIN32
-//    phyFillScreenColor();
-//#endif
-//    scanf("%c%*[^\n]", &ch);
-//    getchar();
-//    if (ch == '\n')
-//      ch = ' ';
-//    uppercase(&ch);
-//    if  (ch == 'Y')
-//      break;
-//    if (strchr("NJOULRSM01234",ch) != NULL){
-//      switch (ch) {
-//        
-//      case 'J':
-//        jumble = !jumble;
-//         if (jumble)
-//          initseed(&inseed, &inseed0, seed);
-//        break;
-//        
-//      case 'L':
-//        lower = !lower;
-//        break;
-//        
-//      case 'O':
-//        outgropt = !outgropt;
-//        if (outgropt)
-//          initoutgroup(&outgrno, spp);
-//        else
-//          outgrno = 1;
-//        break;
-//        
-//      case 'R':
-//        upper = !upper;
-//        break;
-//        
-//      case 'S':
-//        replicates = !replicates;
-//        break;
-//        
-//      case 'N':
-//        njoin = !njoin;
-//        break;
-//        
-//      case 'M':
-//        mulsets = !mulsets;
-//        if (mulsets)
-//          initdatasets(&datasets);
-//        jumble = true;
-//         if (jumble)
-//          initseed(&inseed, &inseed0, seed);
-//        break;
-//        
-//      case '0':
-//        initterminal(&ibmpc, &ansi);
-//        break;
-//        
-//      case '1':
-//        printdata = !printdata;
-//        break;
-//        
-//      case '2':
-//        progress = !progress;
-//        break;
-//        
-//      case '3':
-//        treeprint = !treeprint;
-//        break;
-//        
-//      case '4':
-//        trout = !trout;
-//        break;
-//      }
-//    } else
-//      printf("Not a possible option!\n");
-//    countup(&loopcount, 100);
-//  }
-//}  /# getoptions #/
-*/
+    if((mulsets) && (!jumble)) {
+      jumble = true;
+      inseed = ajAcdGetInt("seed");
+      emboss_initseed(inseed, &inseed0, seed);
+    }    
+ 
+    printdata = ajAcdGetBool("printdata");
+    progress = ajAcdGetBool("progress");
+    treeprint = ajAcdGetBool("treeprint");
+    trout = ajAcdGetToggle("trout");
+
+    embossoutfile = ajAcdGetOutfile("outfile");   
+    embossouttree = ajAcdGetOutfile("outtreefile");
+
+    emboss_openfile(embossoutfile, &outfile, &outfilename);
+    if(trout) emboss_openfile(embossouttree, &outtree, &outtreename);
+
+  fprintf(outfile, "\nNeighbor-Joining/UPGMA method version %s\n\n",VERSION);
+
+
+}  /* emboss_getoptions */
 
 
 void allocrest()
@@ -231,7 +145,6 @@ void doinit()
 
   inputnumbers2seq(phylodist, &spp, &nonodes2, 2);
   nonodes2 += (njoin ? 0 : 1);
-/*  getoptions();*/
   alloctree(&curtree.nodep, nonodes2+1);
   p = curtree.nodep[nonodes2]->next->next;
   curtree.nodep[nonodes2]->next = curtree.nodep[nonodes2];
@@ -569,17 +482,12 @@ int main(int argc, Char *argv[])
 #endif
   init(argc, argv);
   emboss_getoptions("fneighbor",argc,argv);
-  /*openfile(&infile,INFILE,"input file", "r",argv[0],infilename);*/
-  embossoutfile = ajAcdGetOutfile("outfile");
-  emboss_openfile(embossoutfile,&outfile,&outfilename);
+
   ibmpc = IBMCRT;
   ansi = ANSICRT;
-  mulsets = false;
-  datasets = 1;
+
   doinit();
-  embossouttree = ajAcdGetOutfile("outtreefile");
-  emboss_openfile(embossouttree,&outtree,&outtreename);
-  if (!outtree) trout = false;
+
   ith = 1;
   while (ith <= datasets) {
     if (datasets > 1) {
@@ -591,7 +499,9 @@ int main(int argc, Char *argv[])
     maketree();
     ith++;
   }
-
+  FClose(infile);
+  FClose(outfile);
+  FClose(outtree);
 #ifdef MAC
   fixmacfile(outfilename);
   fixmacfile(outtreename);
@@ -600,7 +510,6 @@ int main(int argc, Char *argv[])
 #ifdef WIN32
   phyRestoreConsoleAttributes();
 #endif
-  ajExit();
   return 0;
 }
 

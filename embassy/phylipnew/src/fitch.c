@@ -1,3 +1,4 @@
+
 #include "phylip.h"
 #include "dist.h"
 
@@ -6,18 +7,18 @@
    Permission is granted to copy and use this program provided no fee is
    charged for it and provided that this copyright notice is not removed. */
 
-#define smoothings      4   /* number of zero-branch correction iterations */
+#define zsmoothings     10    /* number of zero-branch correction iterations */
 #define epsilonf        0.000001   /* a very small but not too small number  */
 #define delta           0.01      /* a not quite so small number */
-#define MAXNUMTREES     1000000 /* a number bigger than conceivable numtrees */
+#define MAXNUMTREES   100000000 /* a number bigger than conceivable numtrees */
 
 AjPPhyloDist phylodist = NULL;
-AjPPhyloTree* phylotrees = NULL;
+AjPPhyloTree* phylotrees;
 
 #ifndef OLDC
 /* function prototypes */
-/*void   getoptions(void);*/
-void emboss_getoptions(char *pgm, int argc, char *argv[]);
+//void   getoptions(void);
+void   emboss_getoptions(char *pgm, int argc, char *argv[]);
 void   allocrest(void);
 void   doinit(void);
 void   inputoptions(void);
@@ -49,19 +50,20 @@ void   rearrange(node *, long *, long *, boolean *);
 void   describe(node *);
 void   summarize(long);
 void   nodeinit(node *);
-
 void   initrav(node *);
 void   treevaluate(void);
 void   maketree(void);
+void   globrearrange(long* numtrees,boolean* succeeded);
 /* function prototypes */
 #endif
 
-
-
-Char infilename[FNMLNGTH], intreename[FNMLNGTH];
 const char* outfilename;
 const char* outtreename;
-long nonodes2, outgrno, nums, col, datasets, ith, njumble, jumb=0;
+AjPFile embossoutfile;
+AjPFile embossouttree;
+
+Char infilename[FNMLNGTH], intreename[FNMLNGTH];
+long nonodes2, outgrno, nums, col, datasets, ith, njumble, jumb=0, numtrees;
 long inseed;
 vector *x;
 intvector *reps;
@@ -72,6 +74,7 @@ double power;
 double trweight; /* to make treeread happy */
 boolean goteof, haslengths;  /* ditto ... */
 boolean first; /* ditto ... */
+node *addwhere;
 
 longer seed;
 long *enterorder;
@@ -81,235 +84,112 @@ char *progname;
 
 
 
-
-/************ EMBOSS GET OPTIONS ROUTINES ******************************/
-
-void emboss_getoptions(char *pgm, int argc, char *argv[])
+void   emboss_getoptions(char *pgm, int argc, char *argv[])
 {
-    AjStatus retval;
- 
-    /* initialize global variables */
+
+  AjStatus retval;
+  AjPStr matrixtype = NULL;
+
+  long inseed0=0;
+  minev = false;
+  global = false;
+  jumble = false;
+  njumble = 1;
+  lengths = false;
+  lower = false;
+  negallowed = false;
+  outgrno = 1;
+  outgropt = false;
+  power = 2.0;
+  replicates = false;
+  trout = true;
+  upper = false;
+  usertree = false;
+  printdata = false;
+  progress = true;
+  treeprint = true;
+  mulsets = false;
+  datasets = 1;
+
 
     ajNamInit("emboss");
-    retval =  ajAcdInitP (pgm, argc, argv, "PHYLIP");
+    retval = ajAcdInitP (pgm, argc, argv, "PHYLIP");
+   
+    phylodist = ajAcdGetDistances("datafile");
 
-    /* ajAcdGet */
+    //  while (phylodist[nummatrices])
+    //	nummatrices++;
 
-    /* init functions for standard ajAcdGet */
 
-    /* cleanup for clashing options */
+    minev = ajAcdGetBool("minev");
 
-}
+    phylotrees = ajAcdGetTree("intreefile");
+    if (phylotrees)
+    {
+        numtrees = 0;
+        while (phylotrees[numtrees])
+            numtrees++;
+        usertree = true;
+    }
 
-/************ END EMBOSS GET OPTIONS ROUTINES **************************/
+    power = ajAcdGetFloat("power");
+    if(minev) negallowed = true;
+    else negallowed = ajAcdGetBool("negallowed");
+  
+    matrixtype = ajAcdGetListI("matrixtype", 1);
+    if(ajStrMatchC(matrixtype, "l")) lower = true;
+    else if(ajStrMatchC(matrixtype, "u")) upper = true;
 
-/*
-//void getoptions()
-//{
-//  /# interactively set options #/
-//  long inseed0=0, loopcount;
-//  Char ch;
-//  boolean done=false;
-//
-//  putchar('\n');
-//  minev = false;
-//  global = false;
-//  jumble = false;
-//  njumble = 1;
-//  lengths = false;
-//  lower = false;
-//  negallowed = false;
-//  outgrno = 1;
-//  outgropt = false;
-//  power = 2.0;
-//  replicates = false;
-//  trout = true;
-//  upper = false;
-//  usertree = false;
-//  printdata = false;
-//  progress = true;
-//  treeprint = true;
-//  loopcount = 0;
-//  do {
-//    cleerhome();
-//    printf("\nFitch-Margoliash method version %s\n\n",VERSION);
-//    printf("Settings for this run:\n");
-//    printf("  D      Method (F-M, Minimum Evolution)?  %s\n",
-//             (minev ? "Minimum Evolution" : "Fitch-Margoliash"));
-//    printf("  U                 Search for best tree?  %s\n",
-//           (usertree ? "No, use user trees in input file" : "Yes"));
-//    if (usertree) {
-//      printf("  N          Use lengths from user trees?  %s\n",
-//             (lengths ? "Yes" : "No"));
-//    }
-//    printf("  P                                Power?%9.5f\n",power);
-//    printf("  -      Negative branch lengths allowed?  %s\n",
-//           negallowed ? "Yes" : "No");
-//    printf("  O                        Outgroup root?");
-//    if (outgropt)
-//      printf("  Yes, at species number%3ld\n", outgrno);
-//    else
-//      printf("  No, use as outgroup species%3ld\n", outgrno);
-//    printf("  L         Lower-triangular data matrix?");
-//    if (lower)
-//      printf("  Yes\n");
-//    else
-//      printf("  No\n");
-//    printf("  R         Upper-triangular data matrix?");
-//    if (upper)
-//      printf("  Yes\n");
-//    else
-//      printf("  No\n");
-//    printf("  S                        Subreplicates?");
-//    if (replicates)
-//      printf("  Yes\n");
-//    else
-//      printf("  No\n");
-//    if (!usertree) {
-//      printf("  G                Global rearrangements?");
-//      if (global)
-//        printf("  Yes\n");
-//      else
-//        printf("  No\n");
-//      printf("  J     Randomize input order of species?");
-//      if (jumble)
-//        printf("  Yes (seed =%8ld,%3ld times)\n", inseed0, njumble);
-//      else
-//        printf("  No. Use input order\n");
-//    }
-//    printf("  M           Analyze multiple data sets?");
-//    if (mulsets)
-//      printf("  Yes, %2ld sets\n", datasets);
-//    else
-//      printf("  No\n");
-//    printf("  0   Terminal type (IBM PC, ANSI, none)?");
-//    if (ibmpc)
-//      printf("  IBM PC\n");
-//    if (ansi)
-//      printf("  ANSI\n");
-//    if (!(ibmpc || ansi))
-//      printf("  (none)\n");
-//    printf("  1    Print out the data at start of run");
-//    if (printdata)
-//      printf("  Yes\n");
-//    else
-//      printf("  No\n");
-//    printf("  2  Print indications of progress of run");
-//    if (progress)
-//      printf("  Yes\n");
-//    else
-//      printf("  No\n");
-//    printf("  3                        Print out tree");
-//    if (treeprint)
-//      printf("  Yes\n");
-//    else
-//      printf("  No\n");
-//    printf("  4       Write out trees onto tree file?");
-//    if (trout)
-//      printf("  Yes\n");
-//    else
-//      printf("  No\n");
-//    printf(
-//   "\n  Y to accept these or type the letter for one to change\n");
-//#ifdef WIN32
-//    phyFillScreenColor();
-//#endif
-//    scanf("%c%*[^\n]", &ch);
-//    getchar();
-//    uppercase(&ch);
-//    done = (ch == 'Y');
-//   if (!done) {
-//      if (strchr("DJOUNPG-LRSM01234",ch) != NULL) {
-//        switch (ch) {
-//
-//        case 'D':
-//          minev = !minev;
-//          if (minev && (!negallowed))
-//            negallowed = true;
-//          break;
-//
-//        case '-':
-//          negallowed = !negallowed;
-//          break;
-//
-//        case 'G':
-//          global = !global;
-//          break;
-//
-//        case 'J':
-//          jumble = !jumble;
-//          if (jumble)
-//            initjumble(&inseed, &inseed0, seed, &njumble);
-//          else njumble = 1;
-//          break;
-//
-//        case 'L':
-//          lower = !lower;
-//          break;
-//
-//         case 'N':
-//           lengths = !lengths;
-//           break;
-//
-//        case 'O':
-//          outgropt = !outgropt;
-//          if (outgropt)
-//            initoutgroup(&outgrno, spp);
-//          break;
-//
-//        case 'P':
-//          initpower(&power);
-//          break;
-//
-//        case 'R':
-//          upper = !upper;
-//          break;
-//
-//        case 'S':
-//          replicates = !replicates;
-//          break;
-//
-//        case 'U':
-//          usertree = !usertree;
-//          break;
-//
-//        case 'M':
-//          mulsets = !mulsets;
-//          if (mulsets)
-//            initdatasets(&datasets);
-//          break;
-//
-//        case '0':
-//          initterminal(&ibmpc, &ansi);
-//          break;
-//
-//        case '1':
-//          printdata = !printdata;
-//          break;
-//
-//        case '2':
-//          progress = !progress;
-//          break;
-//
-//        case '3':
-//          treeprint = !treeprint;
-//          break;
-//
-//        case '4':
-//          trout = !trout;
-//          break;
-//        }
-//      } else
-//        printf("Not a possible option!\n");
-//    }
-//    countup(&loopcount, 100);
-//  } while (!done);
-//  if (lower && upper) {
-//    printf("ERROR: Data matrix cannot be both uppeR and Lower triangular\n");
-//    exxit(-1);
-//  }
-//}  /# getoptions #/
-*/
+    replicates = ajAcdGetBool("replicates");
+
+    if(!usertree) {
+      global = ajAcdGetBool("global");
+      njumble = ajAcdGetInt("njumble");
+      if(njumble >0) {
+        inseed = ajAcdGetInt("seed");
+        jumble = true; 
+        emboss_initseed(inseed, &inseed0, seed);
+      }
+      else njumble = 1;
+    }
+
+    outgrno = ajAcdGetInt("outgrno");
+    if(outgrno != 0) outgropt = true;
+    else outgrno = 1;
+
+    printdata = ajAcdGetBool("printdata");
+    progress = ajAcdGetBool("progress");
+    treeprint = ajAcdGetBool("treeprint");
+    trout = ajAcdGetToggle("trout");
+
+    embossoutfile = ajAcdGetOutfile("outfile");   
+    embossouttree = ajAcdGetOutfile("outtreefile");
+
+    emboss_openfile(embossoutfile, &outfile, &outfilename);
+    if(trout) emboss_openfile(embossouttree, &outtree, &outtreename);
+
+    printf("\n inseed: %ld",(inseed));
+    printf("\n global: %s",(global ? "true" : "false"));
+    printf("\n jumble: %s",(jumble ? "true" : "false"));
+    printf("\n njumble: %ld",(njumble));
+    printf("\n lengths: %s",(lengths ? "true" : "false"));
+    printf("\n lower: %s",(lower ? "true" : "false"));
+    printf("\n negallowed: %s",(negallowed ? "true" : "false"));
+    printf("\n outgrno: %ld",(outgrno));
+    printf("\n outgropt: %s",(outgropt ? "true" : "false"));
+    printf("\n power: %f",(power));
+    printf("\n replicates: %s",(replicates ? "true" : "false"));
+    printf("\n trout: %s",(trout ? "true" : "false"));
+    printf("\n upper: %s",(upper ? "true" : "false"));
+    printf("\n usertree: %s",(usertree ? "true" : "false"));
+    printf("\n printdata: %s",(printdata ? "true" : "false"));
+    printf("\n progress: %s",(progress ? "true" : "false"));
+    printf("\n treeprint: %s",(treeprint ? "true" : "false"));
+    printf("\n mulsets: %s",(mulsets ? "true" : "false"));
+    printf("\n datasets: %ld",(datasets));
+
+
+}  /* emboss_getoptions */
 
 
 void allocrest()
@@ -331,8 +211,7 @@ void doinit()
 {
   /* initializes variables */
 
-  inputnumbers2seq(phylodist,&spp, &nonodes2, 2);
-/*  getoptions();*/
+  inputnumbers2seq(phylodist, &spp, &nonodes2, 2);
   alloctree(&curtree.nodep, nonodes2);
   allocd(nonodes2, curtree.nodep);
   allocw(nonodes2, curtree.nodep);
@@ -529,7 +408,7 @@ void correctv(node *p)
   n = p->back->index;
   nq = q->back->index;
   nr = r->back->index;
-  for (i = 1; i <= smoothings; i++) {
+  for (i = 1; i <= zsmoothings; i++) {
     for (j = 1; j <= 3; j++) {
       if (p->iter) {
         wr = r->back->w[n - 1] + p->back->w[nr - 1];
@@ -641,7 +520,7 @@ void fillin(node *pa, node *qa, boolean contin)
 void insert_(node *p, node *q, boolean contin_)
 {
   /* put p and q together and iterate info. on resulting tree */
-  double x=0.0, oldlike, dummy;
+  double x=0.0, oldlike;
   hookup(p->next->next, q->back);
   hookup(p->next, q);
   x = q->v / 2.0;
@@ -652,12 +531,12 @@ void insert_(node *p, node *q, boolean contin_)
   p->next->next->back->v = x;
   p->next->next->v = x;
   fillin(p->back, p, contin_);
-  dummy = evaluate(&curtree);
+  evaluate(&curtree);
   do {
     oldlike = curtree.likelihood;
     smooth(p);
     smooth(p->back);
-    dummy = evaluate(&curtree);
+    evaluate(&curtree);
   } while (fabs(curtree.likelihood - oldlike) > delta);
 }  /* insert_ */
 
@@ -680,7 +559,7 @@ void copynode(node *c, node *d)
 
 void copy_(tree *a, tree *b)
 {
-  /* make a copy of a tree */
+  /* make copy of a tree a to tree b */
   long i, j=0;
   node *p, *q;
 
@@ -738,8 +617,8 @@ void setuptipf(long m, tree *t)
         WITH->d[i] = epsilonf;
       WITH->w[i] = n[i] / exp(power * log(WITH->d[i]));
     } else {
-      WITH->w[m - 1] = 0.0;
-      WITH->d[m - 1] = 0.0;
+      WITH->w[i] = 0.0;
+      WITH->d[i] = 0.0;
     }
   }
   for (i = spp; i < nonodes2; i++) {
@@ -781,8 +660,10 @@ void addtraverse(node *p, node *q, boolean contin, long *numtrees,
  /* traverse through a tree, finding best place to add p */
   insert_(p, q, true);
   (*numtrees)++;
-  if (evaluate(&curtree) > bestree.likelihood){
+  if (evaluate(&curtree) > (bestree.likelihood + 
+                            epsilonf * fabs(bestree.likelihood))){
     copy_(&curtree, &bestree);
+    addwhere = q;
     (*succeeded)=true;
   }
   copy_(&priortree, &curtree);
@@ -805,6 +686,76 @@ void re_move(node **p, node **q)
 }  /* re_move */
 
 
+void globrearrange(long* numtrees,boolean* succeeded) 
+{
+  /* does global rearrangements */
+  tree globtree;
+  tree oldtree;
+  int i,j,k,num_sibs,num_sibs2;
+  node *where,*sib_ptr,*sib_ptr2;
+  double oldbestyet = curtree.likelihood;
+  int success = false;
+ 
+  alloctree(&globtree.nodep,nonodes2);
+  alloctree(&oldtree.nodep,nonodes2);
+  setuptree(&globtree,nonodes2);
+  setuptree(&oldtree,nonodes2);
+  allocd(nonodes2, globtree.nodep);
+  allocd(nonodes2, oldtree.nodep);
+  allocw(nonodes2, globtree.nodep);
+  allocw(nonodes2, oldtree.nodep);
+  copy_(&curtree,&globtree);
+  copy_(&curtree,&oldtree);
+  for ( i = spp ; i < nonodes2 ; i++ ) {
+    num_sibs = count_sibs(curtree.nodep[i]);
+    sib_ptr  = curtree.nodep[i];
+    if ( (i - spp) % (( nonodes2 / 72 ) + 1 ) == 0 )
+      putchar('.');
+    fflush(stdout);
+    for ( j = 0 ; j <= num_sibs ; j++ ) {
+      re_move(&sib_ptr,&where);
+      copy_(&curtree,&priortree);
+      
+      if (where->tip) {
+        copy_(&oldtree,&curtree);
+        copy_(&oldtree,&bestree);
+        sib_ptr=sib_ptr->next;
+        continue;
+      }
+      else num_sibs2 = count_sibs(where);
+      sib_ptr2 = where;
+      for ( k = 0 ; k < num_sibs2 ; k++ ) {
+        addwhere = NULL;
+        addtraverse(sib_ptr,sib_ptr2->back,true,numtrees,succeeded);
+        if ( addwhere && where != addwhere && where->back != addwhere
+              && bestree.likelihood > globtree.likelihood) {
+            copy_(&bestree,&globtree);
+            success = true;
+        }
+        sib_ptr2 = sib_ptr2->next;
+      } 
+      copy_(&oldtree,&curtree);
+      copy_(&oldtree,&bestree);
+      sib_ptr = sib_ptr->next;
+    }
+  }
+  copy_(&globtree,&curtree);
+  copy_(&globtree,&bestree);
+  if (success && globtree.likelihood > oldbestyet)  {
+    *succeeded = true;
+  }
+  else  {
+    *succeeded = false;
+  }
+  freed(nonodes2, globtree.nodep);
+  freed(nonodes2, oldtree.nodep);
+  freew(nonodes2, globtree.nodep);
+  freew(nonodes2, oldtree.nodep);
+  freetree(&globtree.nodep,nonodes2);
+  freetree(&oldtree.nodep,nonodes2);
+}
+ 
+
 void rearrange(node *p, long *numtrees, long *nextsp, boolean *succeeded)
 {
   node *q, *r;
@@ -812,32 +763,12 @@ void rearrange(node *p, long *numtrees, long *nextsp, boolean *succeeded)
     r = p->next->next;
     re_move(&r, &q);
     copy_(&curtree, &priortree);
-    addtraverse(r, q->next->back, (boolean)(global && ((*nextsp) == spp)),
-                numtrees,succeeded);
-    addtraverse(r, q->next->next->back, (boolean)(global && ((*nextsp) == spp)),
-                numtrees,succeeded);
+    addtraverse(r, q->next->back, false, numtrees,succeeded);
+    addtraverse(r, q->next->next->back, false, numtrees,succeeded);
     copy_(&bestree, &curtree);
     if (global && ((*nextsp) == spp)) {
       putchar('.');
       fflush(stdout);
-    }
-    if (global && ((*nextsp) == spp) && !(*succeeded)) {
-      if (r->back->tip) {
-        r = r->next->next;
-        re_move(&r, &q);
-        q = q->back;
-        copy_(&curtree, &priortree);
-        if (!q->tip) {
-          addtraverse(r, q->next->back, true, numtrees,succeeded);
-          addtraverse(r, q->next->next->back, true, numtrees,succeeded);
-        }
-        q = q->back;
-        if (!q->tip) {
-          addtraverse(r, q->next->back, true, numtrees,succeeded);
-          addtraverse(r, q->next->next->back, true, numtrees,succeeded);
-        }
-        copy_(&bestree, &curtree);
-      }
     }
   }
   if (!p->tip) {
@@ -919,9 +850,9 @@ void nodeinit(node *p)
     }
     p = p->next;
   }
-  if (p->iter)
+  if ((!lengths) || p->iter)
     p->v = 1.0;
-  if (p->back->iter)
+  if ((!lengths) || p->back->iter)
     p->back->v = 1.0;
 }  /* nodeinit */
 
@@ -941,28 +872,28 @@ void treevaluate()
 {
   /* evaluate user-defined tree, iterating branch lengths */
   long i;
-  double dummy, oldlike;
+  double oldlike;
 
   for (i = 1; i <= spp; i++)
     setuptipf(i, &curtree);
   initrav(curtree.start);
   if (curtree.start->back != NULL) {
     initrav(curtree.start->back);
-    dummy = evaluate(&curtree);
+    evaluate(&curtree);
     do {
       oldlike = curtree.likelihood;
       smooth(curtree.start);
-      dummy = evaluate(&curtree);
+      evaluate(&curtree);
     } while (fabs(curtree.likelihood - oldlike) > delta);
   }
-  dummy = evaluate(&curtree);
+  evaluate(&curtree);
 }  /* treevaluate */
 
 
 void maketree()
 {
   /* contruct the tree */
-  long nextsp,numtrees;
+  long nextsp;
   boolean succeeded=false;
   long i, j, which;
   char* treestr;
@@ -972,11 +903,7 @@ void maketree()
     setuptree(&curtree, nonodes2);
     for (which = 1; which <= spp; which++)
       setuptipf(which, &curtree);
-/*
-    if (eoln(infile))
-      scan_eoln(infile);
-*/
-    /*openfile(&intree,INTREE,"input tree file","r",progname,intreename);*/
+
     if (numtrees > MAXNUMTREES) {
       printf("\nERROR: number of input trees is read incorrectly from %s\n",
         intreename);
@@ -1031,6 +958,7 @@ void maketree()
       buildnewtip(enterorder[nextsp - 1], &curtree, nextsp);
       copy_(&curtree, &priortree);
       bestree.likelihood = -99999.0;
+      curtree.start = curtree.nodep[enterorder[0] - 1]->back;
       addtraverse(curtree.nodep[enterorder[nextsp - 1] - 1]->back,
                   curtree.start, true, &numtrees,&succeeded);
       copy_(&bestree, &curtree);
@@ -1044,8 +972,9 @@ void maketree()
         if (progress) {
           printf("Doing global rearrangements\n");
           printf("  !");
-          for (j = 1; j <= (spp - 2); j++)
-            putchar('-');
+          for (j = spp; j < nonodes2; j++)
+            if ( (j - spp) % (( nonodes2 / 72 ) + 1 ) == 0 )
+              putchar('-');
           printf("!\n");
           printf("   ");
         }
@@ -1053,8 +982,12 @@ void maketree()
       succeeded = true;
       while (succeeded) {
         succeeded = false;
-        rearrange(curtree.start,
-                  &numtrees,&nextsp,&succeeded);
+        curtree.start = curtree.nodep[enterorder[0] - 1]->back;
+        if (nextsp == spp  && global)
+          globrearrange (&numtrees,&succeeded);
+        else{
+          rearrange(curtree.start,&numtrees,&nextsp,&succeeded);
+        }
         if (global && ((nextsp) == spp) && progress)
           printf("\n   ");
       }
@@ -1100,19 +1033,12 @@ int main(int argc, Char *argv[])
   init(argc,argv);
   emboss_getoptions("ffitch",argc,argv);
   progname = argv[0];
-  /*openfile(&infile,INFILE,"input file","r",argv[0],infilename);*/
-  embossoutfile = ajAcdGetOutfile("outfile");
-  emboss_openfile(embossoutfile,&outfile,&outfilename);
 
   ibmpc = IBMCRT;
   ansi = ANSICRT;
-  mulsets = false;
-  datasets = 1;
   firstset = true;
   doinit();
-  embossouttree = ajAcdGetOutfile("outtreefile");
-  emboss_openfile(embossouttree,&outtree,&outtreename);
-  if (!outtree) trout = false;
+
   for (i=0;i<spp;++i){
     enterorder[i]=0;}
   for (ith = 1; ith <= datasets; ith++) {
@@ -1125,10 +1051,6 @@ int main(int argc, Char *argv[])
     for (jumb = 1; jumb <= njumble; jumb++)
         maketree();
     firstset = false;
-/*
-    if (eoln(infile) && (ith < datasets))
-      scan_eoln(infile);
-*/
   }
   if (trout)
     FClose(outtree);
@@ -1142,6 +1064,5 @@ int main(int argc, Char *argv[])
 #ifdef WIN32
   phyRestoreConsoleAttributes();
 #endif
-  ajExit();
   return 0;
 }

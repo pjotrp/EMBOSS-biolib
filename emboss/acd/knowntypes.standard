@@ -32,10 +32,11 @@ file continuous_character_frequency_file Phylip continuous character frequency  
 file contrast_output Phylip contrast program output file
 file copy_of_datafile An EMBOSS datafile in its original format
 file dirichlet_prior HMMER dirichlet prior file
+file discrete_characters_input Phylip discrete characters input file
 file dnacomp_output Phylip dnacomp program output file
 file dnadist_output Phylip dnadist program output file
 file dnapars_output Phylip dnapars program output file
-file dnapenny_output Phylip dnaenny program output file
+file dnapenny_output Phylip dnapenny program output file
 directory emboss_database_directory Database directory
 string emboss_database_name Database name
 string emboss_database_release Database release number
@@ -136,6 +137,8 @@ string prosite_nucleotide_pattern PROSITE nucleotide pattern
 string prosite_pattern PROSITE protein pattern
 file protdist_input Phylip protdist program input file
 file protdist_output Phylip protdist program output file
+file protml_output Phylip protml program output file
+file protmlk_output Phylip protmlk program output file
 file protpars_input Phylip protpars program input file
 file protpars_output Phylip protpars program output file
 file quicktandem_output Output from the Sanger Centre quicktandem program
@@ -144,11 +147,16 @@ file rebase_withrefm_file REBASE database withrefm file
 string regular_expression Regular expression
 file restboot_input Phylip restboot program input file
 file restboot_output Phylip restboot program output file
+file restdist_output Phylip restdist program output file
 file restml_input Phylip restml program input file
 file restml_output Phylip restml program output file
 file selex_file Selex alignment file
 file seqboot_input Phylip seqboot program input file
 file seqboot_output Phylip seqboot program output file
+file seqbootdisc_output Phylip seqboot_disc program output file
+file seqbootfreq_output Phylip seqboot_freq program output file
+file seqbootrest_output Phylip seqboot_rest program output file
+file seqbootseq_output Phylip seqboot_seq program output file
 string sequence Sequence
 string sequence_id_input Sequence identifier for an input sequence
 string sequence_id_list Sequence identifier list or @filename for input sequences

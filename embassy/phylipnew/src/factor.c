@@ -24,14 +24,14 @@ typedef struct statenode {     /* Node of multifurcating tree */
   long edge;             /* Number of subtending edge   */
 } statenode;
 
-AjPFile inputfile;
+
+
 AjPStr rdline = NULL;
 
 #ifndef OLDC
 /* function prototypes */
-/*void   getoptions(void);*/
-void emboss_getoptions(char *pgm, int argc, char *argv[]);
-void   nextch(Char *ch);
+//void   getoptions(void);
+void   emboss_getoptions(char *pgm, int argc, char *argv[]);
 void   readtree(void);
 void   attachnodes(statenode *, Char *);
 void   maketree(statenode *, Char *);
@@ -39,7 +39,7 @@ void   construct(void);
 void   numberedges(statenode *, long *);
 void   factortree(void);
 void   dotrees(void);
-void   writech(Char ch, long *);
+void   writech(Char ch, long *, FILE *outauxfile);
 void   writefactors(long *);
 void   writeancestor(long *);
 void   doeu(long *, long);
@@ -47,9 +47,17 @@ void   dodatamatrix(void);
 /* function prototypes */
 #endif
 
+FILE *outfactfile, *outancfile;
 
 Char infilename[FNMLNGTH];
 const char* outfilename;
+const char* outfactname;
+const char* outancname;
+AjPFile inputfile;
+AjPFile embossoutfile;
+AjPFile embossoutfact;
+AjPFile embossoutanc;
+
 long neus, nchars, charindex, lastindex;
 Char ch;
 boolean ancstrrequest, factorrequest, rooted, progress;
@@ -67,131 +75,88 @@ Char  *ancsymbol;   /* Ancestral state  */
   statenode *nodes[maxstates];
 
 
-
-/************ EMBOSS GET OPTIONS ROUTINES ******************************/
-
-void emboss_getoptions(char *pgm, int argc, char *argv[])
+void   emboss_getoptions(char *pgm, int argc, char *argv[])
 {
-    AjStatus retval;
+  AjStatus retval;
+
+  ibmpc = IBMCRT;
+  ansi = ANSICRT;
+  progress = true;
+  factorrequest = false;
+  ancstrrequest = false;
+
+
+  ajNamInit("emboss");
+  retval = ajAcdInitP (pgm, argc, argv, "PHYLIP");
+
+  inputfile = ajAcdGetInfile("infile");
+
+  factorrequest = ajAcdGetBool("factors");
+  ancstrrequest = ajAcdGetBool("anc");
+  progress = ajAcdGetBool("progress");
+
+  embossoutfile = ajAcdGetOutfile("outfile");   
+  emboss_openfile(embossoutfile, &outfile, &outfilename);
+
+  if(factorrequest) {
+    embossoutfact = ajAcdGetOutfile("outfactorfile");   
+    emboss_openfile(embossoutfact, &outfactfile, &outfactname);
+  }
  
-    /* initialize global variables */
+  if(ancstrrequest) {
+    embossoutanc = ajAcdGetOutfile("outancfile");   
+    emboss_openfile(embossoutanc, &outancfile, &outfactname);
+  }
+ 
+}  /* emboss_getoptions */
 
-    ajNamInit("emboss");
-    retval =  ajAcdInitP (pgm, argc, argv, "PHYLIP");
-
-    /* ajAcdGet */
-
-    inputfile = ajAcdGetInfile("infile");
-
-
-    /* init functions for standard ajAcdGet */
-
-    /* cleanup for clashing options */
-
-}
-
-/************ END EMBOSS GET OPTIONS ROUTINES **************************/
-
-/*
-//void getoptions()
-//{
-//  /# interactively set options #/
-//  Char ch;
-//
-//  ibmpc = IBMCRT;
-//  ansi = ANSICRT;
-//  progress = true;
-//  factorrequest = false;
-//  ancstrrequest = false;
-//  putchar('\n');
-//  for (;;){
-//    printf(ansi ? "\033[2J\033[H" : "\n");
-//    printf("\nFactor -- multistate to binary recoding program, version %s\n\n"
-//           ,VERSION);
-//    printf("Settings for this run:\n");
-//    printf("  A      put ancestral states in output file?  %s\n",
-//           ancstrrequest ? "Yes" : "No");
-//    printf("  F   put factors information in output file?  %s\n",
-//           factorrequest ? "Yes" : "No");
-//    printf("  0       Terminal type (IBM PC, ANSI, none)?  %s\n",
-//           ibmpc ? "IBM PC" : ansi  ? "ANSI" : "(none)");
-//    printf("  1      Print indications of progress of run  %s\n",
-//           (progress ? "Yes" : "No"));
-//    printf("\nAre these settings correct? (type Y or the letter for one to change)\n");
-//#ifdef WIN32
-//    phyFillScreenColor();
-//#endif
-//    scanf("%c%*[^\n]", &ch);
-//    getchar();
-//    uppercase(&ch);
-//    if (ch == 'Y')
-//      break;
-//    if (strchr("AF01", ch) != NULL) {
-//      switch (ch) {
-//        
-//      case 'A':
-//        ancstrrequest = !ancstrrequest;
-//        break;
-//        
-//      case 'F':
-//        factorrequest = !factorrequest;
-//        break;
-//        
-//      case '0':
-//        initterminal(&ibmpc, &ansi);
-//        break;
-//
-//      case '1':
-//        progress = !progress;
-//      break;
-//      }
-//    } else
-//      printf("Not a possible option!\n");
-//  }
-//}  /# getoptions #/
-*/
-
-
-/*
-//void nextch(Char *ch)
-//{
-//  *ch = ' ';
-//  while (*ch == ' ' && !eoln(infile))
-//    *ch = gettc(infile);
-//}  /# nextch #/
-*/
 
 void readtree()
 {
   /* Reads a single character-state tree; puts adjacent symbol
      pairs into array 'pairs' */
 
+  npairs = 0;
   const char* cp;
+
+
+
   cp = ajStrStr(rdline);
+  printf("%c", (*cp));
+ 
+ 
+ 
   while (*cp && isspace((int)*cp))
       cp++;
   while (*cp && isdigit((int)*cp))
       cp++;
 
-  npairs = 0;
   while (*cp) {
-    
-      while (*cp && isspace((int)*cp))
+          while (*cp && isspace((int)*cp))
 	  cp++;
       ch = *cp++;
+      printf(" %c ", (ch));
     npairs++;
     pair[npairs - 1][0] = ch;
-    ch = *cp++;
-    if (!*cp || (ch != factchar)) {
-      printf("\n\nERROR: Character %d:  bad character state tree format\n\n",
+ 
+   
+    /*
+    if (!(*cp) || (ch != factchar)) {
+      printf("\n\nERROR: Character %d:  bad character state tree format1\n\n",
              (int)(cp - ajStrStr(rdline)));
-      exxit(-1);}
+      printf("\n\nch: %c\n", ch);
+      exxit(-1);
+    } *?
 
     pair[npairs - 1][1] = *cp++;
+
+    /*
     if (pair[npairs - 1][1] == ' '){
-      printf("\n\nERROR: Character %d:  bad character state tree format\n\n",
+      printf("\n\nERROR: Character %d:  bad character state tree format2\n\n",
              (int)(cp - ajStrStr(rdline)));
-      exxit(-1);}
+      exxit(-1);
+    } 
+    */
   }
 }  /* readtree */
 
@@ -373,7 +338,7 @@ void dotrees()
 {
   /* Process character-state trees */
   long lastchar;
-  ajint ival;
+  ajint ival=0;
 
   charindex = 0;
   lastchar = 0;
@@ -403,21 +368,21 @@ void dotrees()
     chstart[charindex - 1] = offset;
     numstates[charindex - 1] = nstates;
     offset += nstates * nstates;
-    fscanf(infile, "%ld", &charnumber);
+    fscanf(inputfile, "%ld", &charnumber);
   }
   /*    each multistate character */
   /*    symbol  */
 }  /* dotrees */
 
 
-void writech(Char ch, long *chposition)
+void writech(Char ch, long *chposition, FILE *outauxfile)
 {
   /* Writes a single character to output */
   if (*chposition > maxoutput) {
-    putc('\n', outfile);
+    putc('\n', outauxfile);
     *chposition = 1;
   }
-  putc(ch, outfile);
+  putc(ch, outauxfile);
   (*chposition)++;
 }  /* writech */
 
@@ -428,7 +393,6 @@ void writefactors(long *chposition)
   long i, charindex;
   Char symbol;
 
-  fprintf(outfile, "FACTORS   ");
   *chposition = 11;
   symbol = '-';
   for (charindex = 0; charindex < (lastindex); charindex++) {
@@ -437,13 +401,13 @@ void writefactors(long *chposition)
     else
       symbol = '-';
     if (numstates[charindex] == 0)
-      writech(symbol, chposition);
+      writech(symbol, chposition, outfactfile);
     else {
       for (i = 1; i < (numstates[charindex]); i++)
-        writech(symbol, chposition);
+        writech(symbol, chposition, outfactfile);
     }
   }
-  putc('\n', outfile);
+  putc('\n', outfactfile);
 }  /* writefactors */
 
 
@@ -457,17 +421,16 @@ void writeancestor(long *chposition)
     charindex++;
   if (charindex > lastindex)
     return;
-  fprintf(outfile, "ANCESTOR  ");
   *chposition = 11;
   for (charindex = 0; charindex < (lastindex); charindex++) {
     if (numstates[charindex] == 0)
-      writech(ancsymbol[charindex], chposition);
+      writech(ancsymbol[charindex], chposition, outancfile);
     else {
       for (i = 1; i < (numstates[charindex]); i++)
-        writech(ancsymbol[charindex], chposition);
+        writech(ancsymbol[charindex], chposition, outancfile);
     }
   }
-  putc('\n', outfile);
+  putc('\n', outancfile);
 }  /* writeancestor */
 
 
@@ -479,7 +442,7 @@ void doeu(long *chposition, long eu)
   const char* cp;
 
   cp = ajStrStr(rdline);
-  
+
   for (i = 1; i <= nmlngth; i++) {
     ch = *cp++;
     putc(ch, outfile);
@@ -496,7 +459,7 @@ void doeu(long *chposition, long eu)
   multichar = (Char *)Malloc(nchars*sizeof(Char));
   *chposition = 11;
   for (i = 0; i < (nchars); i++) {
-    do {
+    while (isspace((int)ch)) {
       ch = *cp++;
       if (!*cp)
       {
@@ -504,12 +467,13 @@ void doeu(long *chposition, long eu)
 	  cp = ajStrStr(rdline);
 	  ch = *cp++;
       }
-    } while (isspace((int)ch));
+    }
     multichar[i] = ch;
   }
+ 
   for (charindex = 0; charindex < (lastindex); charindex++) {
     if (numstates[charindex] == 0)
-      writech(multichar[charnum[charindex] - 1], chposition);
+      writech(multichar[charnum[charindex] - 1], chposition, outfile);
     else {
       i = 1;
       while (symbarray[chstart[charindex] + i - 1] !=
@@ -518,7 +482,7 @@ void doeu(long *chposition, long eu)
       if (i > numstates[charindex]) {
         if( multichar[charnum[charindex] - 1] == unkchar){
           for (i = 1; i < (numstates[charindex]); i++)
-            writech('?', chposition);
+            writech('?', chposition, outfile);
         } else {
           putc('\n', outfile);
           printf("\n\nERROR: In species %ld, multistate character %ld:  ",
@@ -531,7 +495,7 @@ void doeu(long *chposition, long eu)
         place = chstart[charindex] + numstates[charindex] +
                 (numstates[charindex] - 1) * (i - 1);
         for (i = 0; i <= (numstates[charindex] - 2); i++)
-          writech(symbarray[place + i], chposition);
+          writech(symbarray[place + i], chposition, outfile);
       }
     }
   }
@@ -553,7 +517,7 @@ void dodatamatrix()
       totalfactors += numstates[charindex] - 1;
   }
   if (rooted && ancstrrequest)
-    fprintf(outfile, "%5ld %4ld    A\n", neus + 1, totalfactors);
+    fprintf(outfile, "%5ld %4ld\n", neus + 1, totalfactors);
   else
     fprintf(outfile, "%5ld %4ld\n", neus, totalfactors);
   if (factorrequest)
@@ -577,14 +541,11 @@ int main(int argc, Char *argv[])
   argv[0] = "Factor";
 #endif
   init(argc,argv);
-  emboss_getoptions("ffactor",argc,argv);
-  /*openfile(&infile,INFILE,"input file", "r",argv[0],infilename);*/
-  embossoutfile = ajAcdGetOutfile("outfile");
-  emboss_openfile(embossoutfile,&outfile,&outfilename);
+  emboss_getoptions("ffactor", argc, argv);
 
-/*  getoptions();*/
   ajFileGetsTrim(inputfile, &rdline);
-  ajFmtScanS(rdline, "%ld%ld%*[^\n]", &neus, &nchars); /* ignore A - see ACD */
+  sscanf(ajStrStr(rdline), "%ld%ld*[^\n]", &neus, &nchars);
+
   charnum = (long *)Malloc(nchars*sizeof(long));
   chstart = (long *)Malloc(nchars*sizeof(long));
   numstates = (long *)Malloc(nchars*sizeof(long));
@@ -596,10 +557,9 @@ int main(int argc, Char *argv[])
 #ifdef MAC
   fixmacfile(outfilename);
 #endif
-  /*printf("Done.\n\n");*/
+  printf("Done.\n\n");
 #ifdef WIN32
   phyRestoreConsoleAttributes();
 #endif
-  ajExit();
   return 0;
 }  /* factor */

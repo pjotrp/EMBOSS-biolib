@@ -1,7 +1,6 @@
 application: fpars [
   documentation: "Discrete character parsimony"
   groups: "Phylogeny:Discrete characters"
-  embassy: "phylipnew"
 ]
 
 section: input [
@@ -9,11 +8,24 @@ section: input [
   type: "page"
 ]
 
-seqset: sequences  [
+discretestates: infile  [
   parameter: "Y"
-  type: "gapany"
+  help: "File containing one or more data sets"
 ]
 
+tree: intreefile [
+	parameter: "Y"
+	nullok: "Y"
+	knowntype: "newick"
+]
+properties: weights [
+	additional: "Y"
+	characters: "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+	information: "Weights file"
+	nullok: "Y"
+        length: "$(infile.discretelength)"
+        size: "1"
+]
 endsection: input
 
 section: output [
@@ -26,103 +38,129 @@ outfile: outfile  [
   knowntype: "pars output"
 ]
 
-boolean: printdata  [
-  additional: "Y"
-  default: "N"
-  information: "Print out the data at start of run"
+toggle: trout [
+	additional: "Y"
+	default: "Y"
+	information: "Write out trees to tree file"
 ]
 
-boolean: progress  [
-  additional: "Y"
-  default: "N"
-  information: "Print indications of progress of run"
-]
-
-boolean: steps  [
-  additional: "Y"
-  default: "N"
-  information: "Print out steps in each site"
-]
-
-boolean: seqatnodes  [
-  additional: "Y"
-  default: "N"
-  information: "Print sequences at all nodes of tree"
-]
-
-boolean: drawtree  [
-  additional: "Y"
-  default: "Y"
-  information: "Draw tree"
-]
-
-toggle: trout  [
-  parameter: "Y"
-  default: "Y"
-  information: "Create a tree file"
-]
-
-outfile: treefile  [
-  standard: "$(trout)"
+outfile: outtreefile  [
+  additional: "$(trout)"
   extension: "treefile"
   information: "Tree file name"
   knowntype: "newick tree"
+  nullok: "Y"
+]
+
+boolean: printdata [
+	additional: "Y"
+	default: "N"
+	information: "Print data at start of run"
+]
+
+boolean: progress [
+	additional: "Y"
+	default: "Y"
+	information: "Print indications of progress of run"
+]
+
+boolean: treeprint [
+	additional: "Y"
+	default: "Y"
+	information: "Print out tree"
+]
+
+boolean: stepbox [
+	additional: "Y"
+	default: "N"
+	information: "Print steps at each site"
+]
+
+boolean: ancseq [
+	additional: "Y"
+	default: "N"
+	information: "Print states at all nodes of tree"
+]
+
+boolean: dotdiff [
+  additional: "@($(ancseq) | $(printdata))"
+  default: "Y"
+  information: "Use dot differencing to display results"
 ]
 
 endsection: output
 
-section: required [
-  information: "Required section"
+section: additional [
+  information: "Additional section"
   type: "page"
 ]
 
-toggle: besttree  [
-  additional: "Y"
-  default: "Y"
-  information: "Search for best tree"
-]
-
-toggle: random  [
-  standard: "$(besttree)"
-  default: "N"
-  information: "Randomize input order of species"
-]
-
-integer: randseed  [
-  standard: "$(random)"
-  default: "3"
-  information: "Random number seed (must be odd)"
-]
-
-integer: randtimes  [
-  standard: "$(random)"
-  default: "3"
-  information: "How many times to randomise"
-]
-
-toggle: og  [
-  additional: "Y"
-  information: "Outgroup root"
-  default: "N"
-]
-
-integer: outgnum  [
-  standard: "$(og)"
+list: method  [
+  additional: "y"
   minimum: "1"
-  default: "1"
-  information: "Number of the outgroup"
+  maximum: "1"
+  header: "Method"
+  values: "w:Wagner; 
+           c:Camin-Sokal"
+  information: "Choose the parsimony method to use"
+  default: "Wagner"
 ]
 
-toggle: thresh  [
-  default: "N"
-  information: "Use threshold parsimony"
+integer: maxtrees [
+  additional: "Y"
+  information: "Number of trees to save"
+  default: "100"
+  minimum: "1"
+  maximum: "1000000"
 ]
 
-float: valthresh  [
-  standard: "$(thresh)"
-  minimum: "1.0"
-  default: "1.0"
-  information: "Threshold value"
+toggle: thorough [
+  additional: "@(!$(intreefile.isdefined))"
+  information: "More thorough search"
+  default: "Y"
 ]
 
-endsection: required
+boolean: rearrange [
+  additional: "$(thorough)"
+  default: "Y"
+  information: "Rearrange on just one best tree"
+]
+
+integer: njumble [
+	additional: "@(!$(intreefile.isdefined))"
+	default: 0
+	min: 0
+	information: "Number of times to randomise"
+]
+
+integer: seed [
+	additional: "$(njumble)"
+	information: "Random number seed between 1 and 32767 (must be odd)"
+	max: 32767
+	min: 1
+	default: 1
+]
+
+integer: outgrno [
+	additional: "Y"
+	min: 0  
+        max: "$(infile.discretesize)"
+	default: 0
+	information: "Species number to use as outgroup"
+]
+
+toggle: thresh [
+	additional: "Y"
+	default: "N"
+	information: "Use threshold parsimony"
+]
+
+float: threshold [
+	additional: "$(thresh)"
+	min: 1
+	information: "Threshold value"
+	default: 1
+]
+
+endsection: additional
+

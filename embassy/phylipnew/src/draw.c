@@ -1318,7 +1318,7 @@ void loadfont(short *font, char *application)
   AjPStr token = NULL;
 
   if (!intexp)
-      intexp = ajRegCompC("[0-9-]+");
+      intexp = ajRegCompC("[-0-9]+");
   i=0;
   fontfile = ajAcdGetInfile("fontfile");
 
@@ -2180,55 +2180,9 @@ void plotrparms(long ntips)
 }  /* plotrparms */
 
 
-void getplotter()
+void getplotter(Char ch)
 {
-  long loopcount;
-  Char ch,input[100];
 
-  clearit() ;
-  printf("\nWhich plotter or printer will the tree be drawn on?\n");
-  printf("(many other brands or models are compatible with these)\n\n");
-  printf("   type:       to choose one compatible with:\n\n");
-  printf("        L         Postscript printer file format\n");
-  printf("        M         PICT format (for drawing programs)\n");
-  printf("        J         HP Laserjet PCL file format\n");
-  printf("        W         MS-Windows Bitmap\n");
-#ifdef DOS
-  printf("        I         IBM PC graphics screens\n");
-#endif
-  printf("        F         FIG 2.0 drawing program format          \n");
-  printf("        A         Idraw drawing program format            \n");
-  printf("        Z         VRML Virtual Reality Markup Language file\n");
-  printf("        P         PCX file format (for drawing programs)\n");
-  printf("        K         TeKtronix 4010 graphics terminal\n");
-  printf("        X         X Bitmap format\n");
-  printf("        V         POVRAY 3D rendering program file\n");
-  printf("        R         Rayshade 3D rendering program file\n");
-  printf("        H         Hewlett-Packard pen plotter (HPGL file format)\n");
-  printf("        D         DEC ReGIS graphics (VT240 terminal)\n");
-  printf("        E         Epson MX-80 dot-matrix printer\n");
-  printf("        C         Prowriter/Imagewriter dot-matrix printer\n");
-  printf("        T         Toshiba 24-pin dot-matrix printer\n");
-  printf("        O         Okidata dot-matrix printer\n");
-  printf("        B         Houston Instruments plotter\n");
-  printf("        U         other: one you have inserted code for\n");
-  loopcount = 0;
-  do {
-    printf(" Choose one: \n");
-#ifdef WIN32
-    phyFillScreenColor();
-#endif
-    scanf("%c%*[^\n]", &ch);
-    getchar();
-    uppercase(&ch);
-    countup(&loopcount, 10);
-  }
-#ifdef DOS
-while (strchr("LJKHIDBECOTUAZPXRMFWV",ch) == NULL);   
-#endif
-#ifndef DOS
-while (strchr("LJKHDBECOTAZUPXRMFWV",ch) == NULL);
-#endif
   switch (ch) {
 
   case 'L':
@@ -2264,17 +2218,8 @@ while (strchr("LJKHDBECOTAZUPXRMFWV",ch) == NULL);
   case 'J':
     plotter = pcl;
     strcpy(fontname, "Hershey");
-    printf("Please select Laserjet resolution\n\n");
-    printf("1:  75 DPI\n2:  150 DPI\n3:  300 DPI\n\n");
-    loopcount = 0;
-    do {
-#ifdef WIN32
-      phyFillScreenColor();
-#endif
-      getstryng(input);
-      ch = atoi(input);
-      countup(&loopcount, 10);
-    } while (ch != 1 && ch != 2 && ch != 3);
+    ch = ajAcdGetListI("plotterpcl", 1);
+
     hpresolution = 75*(1<<(ch-1));
     /* following pcl init code copied here from plotrparms                  */
     xunitspercm = 118.11023622;   /* 300 DPI = 118.1 DPC                    */
@@ -2351,20 +2296,9 @@ while (strchr("LJKHDBECOTAZUPXRMFWV",ch) == NULL);
   case 'P':
     plotter = pcx;
     strcpy(fontname, "Hershey");
-    printf("Please select the PCX file resolution\n\n");
-    printf("1: EGA 640  X 350\n");
-    printf("2: VGA 800  X 600\n");
-    printf("3: VGA 1024 X 768\n\n");
-    loopcount = 0;
-    do {
-#ifdef WIN32
-      phyFillScreenColor();
-#endif
-      getstryng(input);
-      ch = (char)atoi(input);
-      uppercase(&ch);
-      countup(&loopcount, 10);
-    } while (ch != 1 && ch != 2 && ch != 3);
+
+    ch = ajAcdGetListI("plotterpcx", 1);
+
     switch (ch) {
       
     case 1:
@@ -2390,7 +2324,7 @@ while (strchr("LJKHDBECOTAZUPXRMFWV",ch) == NULL);
   case 'W':
     plotter = bmp;
     strcpy(fontname, "Hershey");
-    printf("Please select the MS-Windows bitmap file resolution\n");
+    /*    printf("Please select the MS-Windows bitmap file resolution\n");
     printf("X resolution?\n");
 #ifdef WIN32
     phyFillScreenColor();
@@ -2405,10 +2339,10 @@ while (strchr("LJKHDBECOTAZUPXRMFWV",ch) == NULL);
     getchar();
     xunitspercm = 1.0;
     yunitspercm = 1.0;
-    /* Assuming existing reasonable margin values, set the margins
+     Assuming existing reasonable margin values, set the margins
        to be the same as those in the previous output mode/resolution.
        This corrects the problem of the tree being hard up against the border
-       when large resolutions are entered. */
+       when large resolutions are entered. 
     xmargin = userxsize / xsize * xmargin;
     ymargin = userysize / ysize * ymargin;
 
@@ -2418,12 +2352,12 @@ while (strchr("LJKHDBECOTAZUPXRMFWV",ch) == NULL);
     strpdeep = DEFAULT_STRIPE_HEIGHT;
     strpdiv = DEFAULT_STRIPE_HEIGHT;
     strpwide = (long)xsize;
-    break;
+    break; */
 
   case 'X':
     plotter = xbm;
     strcpy(fontname, "Hershey");
-    printf("Please select the X-bitmap file resolution\n");
+    /*    printf("Please select the X-bitmap file resolution\n");
     printf("X resolution?\n");
 #ifdef WIN32
     phyFillScreenColor();
@@ -2437,19 +2371,19 @@ while (strchr("LJKHDBECOTAZUPXRMFWV",ch) == NULL);
     scanf("%lf%*[^\n]", &userysize);
     getchar();
     xunitspercm = 1.0;
-    yunitspercm = 1.0;
+    yunitspercm = 1.0;*/
     /* Assuming existing reasonable margin values, set the margins
        to be the same as those in the previous output mode/resolution. 
        This corrects the problem of the tree being hard up against the border
        when large resolutions are entered. */
-    xmargin = userxsize / xsize * xmargin;
+    /*    xmargin = userxsize / xsize * xmargin;
     ymargin = userysize / ysize * ymargin;
 
     xsize = userxsize;
     ysize = userysize;
     strpdeep = DEFAULT_STRIPE_HEIGHT;
     strpdiv = DEFAULT_STRIPE_HEIGHT;
-    strpwide = (long)xsize;
+    strpwide = (long)xsize; */
     break;
 
   case 'F':

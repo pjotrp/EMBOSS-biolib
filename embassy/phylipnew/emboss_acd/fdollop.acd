@@ -1,7 +1,6 @@
 application: fdollop [
   documentation: "Dollo and polymorphism parsimony algorithm"
   groups: "Phylogeny:Discrete characters"
-  embassy: "phylipnew"
 ]
 
 section: input [
@@ -9,29 +8,35 @@ section: input [
   type: "page"
 ]
 
-infile: infile  [
+discretestates: infile  [
   parameter: "Y"
-  information: "Data file"
-  knowntype: "dollop input"
+  characters: "01PB?"
+  help: "File containing one or more data sets"
+  knowntype: "discrete characters input"
 ]
 
-boolean: ancestral  [
-  additional: "Y"
-  default: "N"
-  information: "Use ancestral states in input file"
+tree: intreefile [
+	parameter: "Y"
+	nullok: "Y"
+	knowntype: "newick"
 ]
 
-toggle: multsets  [
-  additional: "Y"
-  default: "N"
-  information: "Analyze multiple data sets"
+properties: weights [
+	additional: "Y"
+	characters: "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+	information: "Weights file"
+	nullok: "Y"
+        length: "$(infile.discretelength)"
+        size: "1"
 ]
 
-integer: datasets  [
-  standard: "$(multsets)"
-  minimum: "2"
-  default: "2"
-  information: "Number of sets"
+properties: ancfile [
+	additional: "Y"
+	characters: "01?"
+	information: "Ancestral states file"
+	nullok: "Y"
+        length: "$(infile.discretelength)"
+        size: "1"
 ]
 
 endsection: input
@@ -46,25 +51,40 @@ outfile: outfile  [
   knowntype: "dollop output"
 ]
 
-boolean: printdata  [
-  additional: "Y"
-  default: "N"
-  information: "Print out the data at start of run"
+toggle: trout [
+	additional: "Y"
+	default: "Y"
+	information: "Write out trees to tree file"
 ]
 
-boolean: progress  [
-  additional: "Y"
-  default: "N"
-  information: "Print indications of progress of run"
+outfile: outtreefile  [
+  additional: "$(trout)"
+  extension: "treefile"
+  information: "Tree file name"
+  knowntype: "newick tree"
+  nullok: "Y"
 ]
 
-boolean: steps  [
-  additional: "Y"
-  default: "N"
-  information: "Print out steps in each site"
+boolean: printdata [
+	additional: "Y"
+	default: "N"
+	information: "Print data at start of run"
 ]
 
-boolean: statesatnodes  [
+boolean: progress [
+	additional: "Y"
+	default: "Y"
+	information: "Print indications of progress of run"
+]
+
+
+boolean: treeprint [
+	additional: "Y"
+	default: "Y"
+	information: "Print out tree"
+]
+
+boolean: ancseq  [
   additional: "Y"
   default: "N"
   information: "Print states at all nodes of tree"
@@ -76,187 +96,44 @@ boolean: stepbox  [
   information: "Print out steps in each character"
 ]
 
-boolean: ancseq [
-  additional: "Y"
-  default: "N"
-  information: "Print out steps at all nodes of tree"
-]
-
-boolean: drawtree  [
-  additional: "Y"
-  default: "Y"
-  information: "Draw tree"
-]
-
-toggle: trout  [
-  parameter: "Y"
-  default: "Y"
-  information: "Create a tree file"
-]
-
-outfile: outtreefile  [
-  standard: "$(trout)"
-  extension: "treefile"
-  information: "Tree file name"
-  knowntype: "newick tree"
-]
-
 endsection: output
-
-section: required [
-  information: "Required section"
-  type: "page"
-]
-
-toggle: besttree  [
-  additional: "Y"
-  default: "Y"
-  information: "Search for best tree"
-]
-
-toggle: random  [
-  additional: "$(besttree)"
-  default: "N"
-  information: "Randomize input order of species"
-]
-
-integer: randseed  [
-  standard: "$(random)"
-  default: "3"
-  information: "Random number seed (must be odd)"
-]
-
-integer: randtimes  [
-  standard: "$(random)"
-  default: "3"
-  information: "How many times to randomise"
-]
-
-toggle: thresh  [
-  default: "N"
-  information: "Use threshold parsimony"
-]
-
-float: valthresh  [
-  standard: "$(thresh)"
-  minimum: "1.0"
-  default: "1.0"
-  information: "Threshold value"
-]
-
-list: multiple [
-  default: "none"
-  standard: "Y"
-  minimum: "1"
-  maximum: "1"
-  information: "Multiple input option"
-  values: "none:None;
-           datasets:Multiple datasets;
-           weights: Multiple weights"
-]
-
-integer: jumble [
-  standard: "Y"
-  information: "Number of times to jumble"
-  minimum: "1"
-  default: "1"
-
-  help: "In most of the tree construction programs (except for the
-  '...PENNY' programs and CLIQUE), the exact details of the search of
-  different trees depend on the order of input of species. In these
-  programs the 'jumble' option enables you to tell the program to use a random
-  number generator to choose the input order of species. The program
-  will then prompt you for a 'seed' for the random number
-  generator. \
-
-The Jumble option defines how many times you want to restart the
-process. If you answer 10, the program will try ten different orders
-of species in constructing the trees, and the results printed out will
-reflect this entire search process (that is, the best trees found
-among all 10 runs will be printed out, not the best trees from each
-individual run)."
-
-]
-
-integer: seed [
-  standard: "$(jumble)!=1"
-  information: "Random number seed (must be odd)"
-  minimum: 1
-  maximum: "32765"
-  default: 1
-  help: "The seed should be an integer between 1 and 32765, and
-  should be of form 4n+1, which means that it must give a remainder of 1
-  when divided by 4. This can be judged by looking at the last two
-  digits of the number. Each different seed leads to a different
-  sequence of addition of species. By simply changing the random
-  number seed and re-running the programs one can look for other, and
-  better trees. If the seed entered is not 4n+1 the program will
-  choose the next highest valid seed. \
-
-Some people have asked what are good values of the random number
-seed. The random number seed is used to start a process of choosing
-'random' (actually pseudorandom) numbers, which behave as if they were
-unpredictably randomly chosen between 0 and 2**32-1 (which is
-4,294,967,296). You could put in the number 133 and find that the next
-random number was 1,876,973,009. As they are effectively
-unpredictable, there is no such thing as a choice that is better than
-any other, provided that the numbers are of the form 4n+1. However if
-you re-use a random number seed, the sequence of random numbers that
-result will be the same as before, resulting in exactly the same
-series of choices, which may not be what you want."
-
-]
-
-endsection: required
 
 section: additional [
   information: "Additional section"
   type: "page"
 ]
-
-boolean: dollo  [
-  additional: "Y"
-  default: "Y"
-  information: "Do Dollo (else Polymorphism)"
+list: method  [
+	additional: "Y"
+	minimum: "1"
+	maximum: "1"
+	header: "Method"
+	values: "d:Dollo;
+                 p:Polymorphism"
+  	information: "Parsimony method"
+  	default: "d"
 ]
 
+integer: njumble [
+	additional: "@(!$(intreefile.isdefined))"
+	default: 0
+	min: 0
+	information: "Number of times to randomise"
+]
+
+integer: seed [
+	additional: "$(njumble)"
+	information: "Random number seed between 1 and 32767 (must be odd)"
+	max: 32767
+	min: 1
+	default: 1
+]
+
+
 float: threshold [
-  additional: "Y"
-  information: "Threshold value"
-  minimum: "1.0"
-  maximum: "$(sequence.size)"
-  default: "$(sequence.size)"
-
-  help: "Sets a threshold for the parsimony programs such that if the
-  number of steps counted in a character is higher than the threshold,
-  it will be taken to be the threshold value rather than the actual
-  number of steps. The default is a threshold so high that it will
-  never be surpassed (in which case the steps will simply be
-  counted). \
-  The use of thresholds to obtain methods
-  intermediate between parsimony and compatibility methods is
-  described in the 1981b PHYLIP paper. \
-
-The numerical threshold value will be
-  a positive real number greater than 1. \
-
-In programs FMIX, FMOVE, FPENNY,
-  FPROTPARS, FDNAPARS, FDNAMOVE, and FDNAPENNY, do not use threshold
-  values less than or equal to 1.0, as they have no meaning and lead
-  to a tree which depends only on considerations such as the input
-  order of species and not at all on the character state data! \
-
-In
-  programs FDOLLOP, FDOLMOVE, and FDOLPENNY the threshold should never be
-  0.0 or less, for the same reason. \
-
-The 'threhold' option is an important and
-  underutilized one: it is, for example, the only way in this package
-  (except for program FDNACOMP) to do a compatibility analysis when
-  there are missing data. It is a method of de-weighting characters
-  that evolve rapidly. I wish more people were aware of its
-  properties."
-
+	additional: "Y"
+	min: 0
+	information: "Threshold value"
+	default: "$(infile.discretesize)" 
 ]
 
 endsection: additional

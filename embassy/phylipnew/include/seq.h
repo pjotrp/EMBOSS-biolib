@@ -212,6 +212,8 @@ void   freegrbg(node **);
 
 void   seq_inputdata(AjPSeqset, long);
 void   inputdata(long);
+void   emboss_treeout(node *, AjPOutfile, long);
+void   emboss_treeout3(node *, AjPOutfile, long, long *, node *);
 
 
 void   collapsetree(node *, node *, node **, pointarray, long *);

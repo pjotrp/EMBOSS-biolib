@@ -15,13 +15,14 @@ typedef long *treenumbers;
 typedef double *valptr;
 typedef long *placeptr;
 
-AjPPhyloState phylostate = NULL;
+AjPPhyloState* phylostates = NULL;
 AjPPhyloProp phyloanc = NULL;
 AjPPhyloProp phyloweights = NULL;
 
+
 #ifndef OLDC
 /* function prototypes */
-/*void   getoptions(void);*/
+//void   getoptions(void);
 void emboss_getoptions(char *pgm, int argc, char *argv[]);
 void   allocrest(void);
 void   doinit(void);
@@ -39,6 +40,9 @@ void   maketree(void);
 Char infilename[FNMLNGTH], weightfilename[FNMLNGTH], ancfilename[FNMLNGTH];
 const char* outfilename;
 const char* outtreename;
+AjPFile embossoutfile;
+AjPFile embossouttree;
+
 node *root;
 long howmany, howoften, col, msets, ith;
 boolean weights, thresh, ancvar, questions, dollo, simple, trout,
@@ -65,205 +69,90 @@ bitptr zeroanc, oneanc;
 bitptr stps;
 
 
-
-/************ EMBOSS GET OPTIONS ROUTINES ******************************/
-
 void emboss_getoptions(char *pgm, int argc, char *argv[])
 {
-    AjStatus retval;
- 
-    /* initialize global variables */
+
+  AjStatus retval;
+  ajint numseqs=0;
+  ajint numwts=0;
+  AjPStr method = NULL;
+
+  howoften = often;
+  howmany = many;
+  simple = true;
+  thresh = false;
+  threshold = spp;
+  trout = true;
+  weights = false;
+  justwts = false;
+  ancvar = false;
+  dollo = true;
+  printdata = false;
+  progress = true;
+  treeprint = true;
+  stepbox = false;
+  ancseq = false;
+  mulsets = false;
+  msets = 1;
 
     ajNamInit("emboss");
-    retval =  ajAcdInitP (pgm, argc, argv, "PHYLIP");
+    retval = ajAcdInitP (pgm, argc, argv, "PHYLIP");
 
-    /* ajAcdGet */
+    phylostates = ajAcdGetDiscretestates("infile");
 
-    /* init functions for standard ajAcdGet */
 
-    /* cleanup for clashing options */
+    while (phylostates[numseqs])
+	numseqs++;
 
-}
+    phyloweights = ajAcdGetProperties("weights");
+    if (phyloweights)
+    {
+      weights = true;
+      numwts = ajPhyloPropGetSize(phyloweights);
+    }
 
-/************ END EMBOSS GET OPTIONS ROUTINES **************************/
+    if (numseqs > 1) {
+      mulsets = true;
+      msets = numseqs;
+    }
+    else if (numwts > 1) {
+      mulsets = true;
+      msets = numwts;
+      justwts = true;
+    }
 
-/*
-//void getoptions()
-//{
-//  /# interactively set options #/
-//  long loopcount, loopcount2;
-//  Char ch, ch2;
-//  boolean done;
-//
-//  fprintf(outfile, "\nPenny algorithm for Dollo or polymorphism");
-//  fprintf(outfile, " parsimony, version %s\n",VERSION);
-//  fprintf(outfile, " branch-and-bound to find all");
-//  fprintf(outfile, " most parsimonious trees\n\n");
-//  howoften = often;
-//  howmany = many;
-//  simple = true;
-//  thresh = false;
-//  threshold = spp;
-//  trout = true;
-//  weights = false;
-//  justwts = false;
-//  ancvar = false;
-//  dollo = true;
-//  printdata = false;
-//  progress = true;
-//  treeprint = true;
-//  stepbox = false;
-//  ancseq = false;
-//  loopcount = 0;
-//  do {
-//    cleerhome();
-//    printf("\nPenny algorithm for Dollo or polymorphism parsimony,");
-//    printf(" version %s\n",VERSION);
-//    printf(" branch-and-bound to find all most parsimonious trees\n\n");
-//    printf("Settings for this run:\n");
-//    printf("  P                     Parsimony method?  %s\n",
-//           (dollo ? "Dollo" : "Polymorphism"));
-//    printf("  H        How many groups of %4ld trees:%6ld\n",howoften,howmany);
-//    printf("  F        How often to report, in trees:%5ld\n",howoften);
-//    printf("  S           Branch and bound is simple?  %s\n",
-//           (simple ? "Yes" : "No.  Reconsiders order of species"));
-//    printf("  T              Use Threshold parsimony?");
-//    if (thresh)
-//      printf("  Yes, count steps up to%4.1f per char.\n", threshold);
-//    else
-//      printf("  No, use ordinary parsimony\n");
-//    printf("  A                 Use ancestral states?  %s\n",
-//           (ancvar ? "Yes" : "No"));
-//    printf("  W                       Sites weighted?  %s\n",
-//           (weights ? "Yes" : "No"));
-//    printf("  M           Analyze multiple data sets?");
-//    if (mulsets)
-//        printf("  Yes, %2ld %s\n", msets,
-//               (justwts ? "sets of weights" : "data sets"));
-//    else
-//      printf("  No\n");
-//    printf("  0   Terminal type (IBM PC, ANSI, none)?  %s\n",
-//           (ibmpc ? "IBM PC" : ansi  ? "ANSI" : "(none)"));
-//    printf("  1    Print out the data at start of run  %s\n",
-//           (printdata ? "Yes" : "No"));
-//    printf("  2  Print indications of progress of run  %s\n",
-//           (progress ? "Yes" : "no"));
-//    printf("  3                        Print out tree  %s\n",
-//           (treeprint ? "Yes": "No"));
-//    printf("  4     Print out steps in each character  %s\n",
-//           (stepbox ? "Yes" : "No"));
-//    printf("  5     Print states at all nodes of tree  %s\n",
-//           (ancseq ? "Yes" : "No"));
-//    printf("  6       Write out trees onto tree file?  %s\n",
-//           (trout ? "Yes" : "No"));
-//    if(weights && justwts){
-//        printf(
-//         "WARNING:  W option and Multiple Weights options are both on.  ");
-//        printf(
-//         "The W menu option is unnecessary and has no additional effect. \n");
-//    }
-//    printf("\nAre these settings correct? (type Y or the letter for one to change)\n");
-//#ifdef WIN32
-//    phyFillScreenColor();
-//#endif
-//    scanf("%c%*[^\n]", &ch);
-//    getchar();
-//    uppercase(&ch);
-//    done = (ch == 'Y');
-//    if (!done) {
-//      if (strchr("WHMSTAPF1234560",ch) != NULL){
-//        switch (ch) {
-//
-//        case 'W':
-//        weights = !weights;
-//        break;
-//
-//        case 'H':
-//          inithowmany(&howmany, howoften);
-//          break;
-//
-//        case 'F':
-//          inithowoften(&howoften);
-//          break;
-//
-//        case 'A':
-//          ancvar = !ancvar;
-//          break;
-//
-//        case 'P':
-//          dollo = !dollo;
-//          break;
-//
-//        case 'S':
-//          simple = !simple;
-//          break;
-//
-//        case 'T':
-//          thresh = !thresh;
-//          if (thresh)
-//            initthreshold(&threshold);
-//          break;
-//
-//        case 'M':
-//          mulsets = !mulsets;
-//          if (mulsets){
-//            printf("Multiple data sets or multiple weights?");
-//          loopcount2 = 0;
-//          do {
-//            printf(" (type D or W)\n");
-//#ifdef WIN32
-//            phyFillScreenColor();
-//#endif
-//            scanf("%c%*[^\n]", &ch2);
-//            getchar();
-//            if (ch2 == '\n')
-//              ch2 = ' ';
-//            uppercase(&ch2);
-//            countup(&loopcount2, 10);
-//          } while ((ch2 != 'W') && (ch2 != 'D'));
-//          justwts = (ch2 == 'W');
-//          if (justwts)
-//            justweights(&msets);
-//          else
-//            initdatasets(&msets);
-//          }
-//          break;
-//
-//        case '0':
-//          initterminal(&ibmpc, &ansi);
-//          break;
-//
-//        case '1':
-//          printdata = !printdata;
-//          break;
-//
-//        case '2':
-//          progress = !progress;
-//          break;
-//
-//        case '3':
-//          treeprint = !treeprint;
-//          break;
-//
-//        case '4':
-//          stepbox = !stepbox;
-//          break;
-//
-//        case '5':
-//          ancseq = !ancseq;
-//          break;
-//
-//        case '6':
-//          trout = !trout;
-//          break;
-//        }
-//      } else
-//        printf("Not a possible option!\n");
-//    }
-//    countup(&loopcount, 100);
-//  } while (!done);
-//}  /# getoptions #/
-*/
+    method = ajAcdGetListI("method", 1);
+
+    if(ajStrMatchC(method, "d")) dollo = true;
+    else dollo = false;
+    phyloanc = ajAcdGetProperties("ancfile");
+    if(phyloanc) ancvar = true;
+
+    howmany = ajAcdGetInt("howmany");
+    howoften = ajAcdGetInt("howoften"); 
+    simple = ajAcdGetBool("simple");
+    thresh = ajAcdGetToggle("thresh");
+    if(thresh) ajAcdGetFloat("threshold");
+
+    printdata = ajAcdGetBool("printdata");
+    progress = ajAcdGetBool("progress");
+    treeprint = ajAcdGetBool("treeprint");
+    trout = ajAcdGetToggle("trout");
+    stepbox = ajAcdGetBool("stepbox");
+    ancseq = ajAcdGetBool("ancseq");
+
+
+     embossoutfile = ajAcdGetOutfile("outfile");   
+     emboss_openfile(embossoutfile, &outfile, &outfilename);
+     
+     if(trout) {
+     embossouttree = ajAcdGetOutfile("outtreefile");
+     emboss_openfile(embossouttree, &outtree, &outtreename);
+     }
+
+  fprintf(outfile, "\nPenny algorithm for Dollo or polymorphism parsimony, version %s\n",VERSION);
+  fprintf(outfile, " branch-and-bound to find all most parsimonious trees\n\n");
+}  /* emboss_getoptions */
 
 
 void allocrest()
@@ -300,9 +189,8 @@ void doinit()
 {
   /* initializes variables */
 
-  inputnumbersstate(phylostate, &spp, &chars, &nonodes, 1);
+  inputnumbersstate(phylostates[0], &spp, &chars, &nonodes, 1);
   words = chars / bits + 1;
-/*  getoptions();*/
   if (printdata)
     fprintf(outfile, "%2ld species, %3ld characters\n", spp, chars);
   alloctree(&treenode);
@@ -328,13 +216,13 @@ void inputoptions()
   }
   else {
       if (!firstset)
-          samenumspstate(phylostate, &chars, ith);
+          samenumspstate(phylostates[ith-1], &chars, ith);
       for (i = 0; i < (chars); i++)
           weight[i] = 1;
       if (ancvar)
           inputancestorsstr(phyloanc->Str[0], anczero0, ancone0);
       if (weights)
-          inputweightsstr(phyloweights->Str[0], chars, weight, &weights);
+          inputweightsstr(phyloweights->Str[ith-1], chars, weight, &weights);
   }
   for (i = 0; i < (chars); i++) {
     if (!ancvar) {
@@ -360,7 +248,7 @@ void doinput()
   /* reads the input data */
   inputoptions();
   if(!justwts || firstset)
-      disc_inputdata(phylostate, treenode, dollo, printdata, outfile);
+      disc_inputdata(phylostates[ith-1], treenode, dollo, printdata, outfile);
 }  /* doinput */
 
 
@@ -685,30 +573,16 @@ int main(int argc, Char *argv[])
   argv[0] = "Dolpenny";
 #endif
   init(argc, argv);
-  emboss_getoptions("fdolpenny",argc,argv);
-  /*openfile(&infile,INFILE,"input file", "r",argv[0],infilename);*/
-  embossoutfile = ajAcdGetOutfile("outfile");
-  emboss_openfile(embossoutfile,&outfile,&outfilename);
+  emboss_getoptions("fdolpenny", argc, argv);
+
   ibmpc = IBMCRT;
   ansi = ANSICRT;
   garbage = NULL;
-  mulsets = false;
-  msets = 1;
   firstset = true;
   bits = 8*sizeof(long) - 1;
   doinit();
-/*
-  if (weights || justwts)
-    openfile(&weightfile,WEIGHTFILE,"weights file","r",argv[0],weightfilename);
-*/
-  embossouttree = ajAcdGetOutfile("outtreefile");
-  emboss_openfile(embossouttree,&outtree,&outtreename);
-  if (!outtree) trout = false;
-/*
   if(ancvar)
-      openfile(&ancfile,ANCFILE,"ancestors file", "r",argv[0],ancfilename);
-*/
-  fprintf(outfile,"%s parsimony method\n\n",dollo ? "Dollo" : "Polymorphism");  
+      fprintf(outfile,"%s parsimony method\n\n",dollo ? "Dollo" : "Polymorphism");  
   for (ith = 1; ith <= msets; ith++) {
     doinput();
     if (msets > 1 && !justwts) {

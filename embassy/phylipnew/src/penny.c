@@ -12,13 +12,20 @@
 #define often           100  /* how often to notify how many trees examined */
 #define many            1000 /* how many multiples of howoften before stop  */
 
+AjPPhyloState* phylostates = NULL;
+AjPPhyloProp phyloweights = NULL;
+AjPPhyloProp phyloanc = NULL;
+AjPPhyloProp  phylomix = NULL;
+
+
+
 typedef long *treenumbers;
 typedef double *valptr;
 typedef long *placeptr;
 
 #ifndef OLDC
 /* function prototypes */
-/*void   getoptions(void);*/
+//void   getoptions(void);
 void emboss_getoptions(char *pgm, int argc, char *argv[]);
 void   allocrest(void);
 void   doinit(void);
@@ -34,19 +41,17 @@ void   maketree(void);
 /* function prototypes */
 #endif
 
-AjPSeqset* seqsets = NULL;
-AjPPhyloProp phyloweight = NULL;
-AjPPhyloProp phyloanc = NULL;
-AjPPhyloState phylomix = NULL;
-
 Char infilename[FNMLNGTH], weightfilename[FNMLNGTH], ancfilename[FNMLNGTH], mixfilename[FNMLNGTH];
 const char* outfilename;
 const char* outtreename;
+AjPFile embossoutfile;
+AjPFile embossouttree;
+
 node2 *root;
 long outgrno, rno, howmany, howoften, col, msets, ith;
 /*  outgrno indicates outgroup                                        */
 
-boolean weights, thresh, ancvar, questions, allsokal, allwagner,
+boolean weights, ancvar, questions, allsokal, allwagner,
                mixture, simple, trout, noroot, didreroot, outgropt,
                progress, treeprint, stepbox, ancseq, mulsets, firstset;
 boolean *ancone, *anczero, *ancone0, *anczero0, justwts;
@@ -71,226 +76,105 @@ bitptr zeroanc, oneanc;
 bitptr suppsteps;
 
 
-
-/************ EMBOSS GET OPTIONS ROUTINES ******************************/
-
 void emboss_getoptions(char *pgm, int argc, char *argv[])
-{
-    AjStatus retval;
- 
-    /* initialize global variables */
+{ 
+
+
+  AjStatus retval;
+  ajint numseqs=0;
+  ajint numwts=0;
+  AjPStr method = NULL;
+
+
+  howoften = often;
+  howmany = many;
+  outgrno = 1;
+  outgropt = false;
+  simple = true;
+  trout = true;
+  weights = false;
+  justwts = false;
+  ancvar = false;
+  allsokal = false;
+  allwagner = true;
+  mixture = false;
+  printdata = false;
+  progress = true;
+  treeprint = true;
+  stepbox = false;
+  ancseq = false;
+  mulsets = false;
+  msets = 1;
 
     ajNamInit("emboss");
-    retval =  ajAcdInitP (pgm, argc, argv, "PHYLIP");
+    retval = ajAcdInitP (pgm, argc, argv, "PHYLIP");
 
-    /* ajAcdGet */
+    phylostates = ajAcdGetDiscretestates("infile"); 
 
-    /* init functions for standard ajAcdGet */
+    while (phylostates[numseqs])
+	numseqs++;
 
-    /* cleanup for clashing options */
+    phyloweights = ajAcdGetProperties("weights");
+    if (phyloweights)
+    {
+      weights = true;
+      numwts = ajPhyloPropGetSize(phyloweights);
+    }
 
-}
+    if (numseqs > 1) {
+	mulsets = true;
+        msets = numseqs;
+    }
+    else if (numwts > 1) {
+      mulsets = true;
+      msets = numwts;
+      justwts = true;
+    }
 
-/************ END EMBOSS GET OPTIONS ROUTINES **************************/
+    phyloanc = ajAcdGetProperties("ancfile");
+    if(phyloanc) ancvar = true;
 
-/*
-//void getoptions()
-//{
-//  /# interactively set options #/
-//  long loopcount, loopcount2;
-//  Char ch, ch2;
-//
-//  fprintf(outfile, "\nPenny algorithm, version %s\n",VERSION);
-//  fprintf(outfile, " branch-and-bound to find all");
-//  fprintf(outfile, " most parsimonious trees\n\n");
-//  howoften = often;
-//  howmany = many;
-//  outgrno = 1;
-//  outgropt = false;
-//  simple = true;
-//  thresh = false;
-//  threshold = spp;
-//  trout = true;
-//  weights = false;
-//  justwts = false;
-//  ancvar = false;
-//  allsokal = false;
-//  allwagner = true;
-//  mixture = false;
-//  printdata = false;
-//  progress = true;
-//  treeprint = true;
-//  stepbox = false;
-//  ancseq = false;
-//  loopcount = 0;
-//  for(;;) {
-//    cleerhome();
-//    printf("\nPenny algorithm, version %s\n",VERSION);
-//    printf(" branch-and-bound to find all most parsimonious trees\n\n");
-//    printf("Settings for this run:\n");
-//    printf("  X                     Use Mixed method?  %s\n",
-//           mixture ? "Yes" : "No");
-//    printf("  P                     Parsimony method?  %s\n",
-//           (allwagner && !mixture)  ? "Wagner"       :
-//           (!(allwagner || mixture)) ? "Camin-Sokal"  : "(methods in mixture)");
-//    printf("  F        How often to report, in trees:%5ld\n",howoften);
-//    printf("  H        How many groups of%5ld trees:%6ld\n",howoften,howmany);
-//    printf("  O                        Outgroup root?");
-//    if (outgropt)
-//      printf("  Yes, at species number%3ld\n", outgrno);
-//    else
-//      printf("  No, use as outgroup species%3ld\n", outgrno);
-//    printf("  S           Branch and bound is simple?  %s\n",
-//           simple ? "Yes" : "No. reconsiders order of species");
-//    printf("  T              Use Threshold parsimony?");
-//    if (thresh)
-//      printf("  Yes, count steps up to%4.1f per char.\n", threshold);
-//    else
-//      printf("  No, use ordinary parsimony\n");
-//    printf("  A   Use ancestral states in input file?  %s\n",
-//           ancvar ? "Yes" : "No");
-//    printf("  W                       Sites weighted?  %s\n",
-//           (weights ? "Yes" : "No"));
-//    printf("  M           Analyze multiple data sets?");
-//    if (mulsets)
-//        printf("  Yes, %2ld %s\n", msets,
-//               (justwts ? "sets of weights" : "data sets"));
-//    else
-//      printf("  No\n");
-//    printf("  0   Terminal type (IBM PC, ANSI, none)?  %s\n",
-//           ibmpc ? "IBM PC" : ansi  ? "ANSI" : "(none)");
-//    printf("  1    Print out the data at start of run  %s\n",
-//           printdata ? "Yes" : "No");
-//    printf("  2  Print indications of progress of run  %s\n",
-//           progress ? "Yes" : "No");
-//    printf("  3                        Print out tree  %s\n",
-//           treeprint ? "Yes" : "No");
-//    printf("  4     Print out steps in each character  %s\n",
-//           stepbox ? "Yes" : "No");
-//    printf("  5     Print states at all nodes of tree  %s\n",
-//           ancseq ? "Yes" : "No");
-//    printf("  6       Write out trees onto tree file?  %s\n",
-//           trout ? "Yes" : "No");
-//    if(weights && justwts){
-//        printf(
-//         "WARNING:  W option and Multiple Weights options are both on.  ");
-//        printf(
-//         "The W menu option is unnecessary and has no additional effect. \n");
-//    }
-//    printf("\nAre these settings correct?");
-//    printf(" (type Y or the letter for one to change)\n");
-//#ifdef WIN32
-//    phyFillScreenColor();
-//#endif
-//    scanf("%c%*[^\n]", &ch);
-//    getchar();
-//    uppercase(&ch);
-//    if (ch == 'Y')
-//      break;
-//    if (strchr("WHFSOMPATX1234560",ch) != NULL){
-//      switch (ch) {
-//        
-//      case 'X':
-//        mixture = !mixture;
-//        break;
-//        
-//      case 'P':
-//        allwagner = !allwagner;
-//        break;
-//        
-//      case 'A':
-//        ancvar = !ancvar;
-//        break;
-//        
-//      case 'H':
-//        inithowmany(&howmany, howoften);
-//        break;
-//        
-//      case 'F':
-//        inithowoften(&howoften);
-//        break;
-//        
-//      case 'S':
-//        simple = !simple;
-//        break;
-//        
-//      case 'O':
-//        outgropt = !outgropt;
-//        if (outgropt)
-//          initoutgroup(&outgrno, spp);
-//        else outgrno = 1;
-//        break;
-//        
-//      case 'T':
-//        thresh = !thresh;
-//        if (thresh)
-//          initthreshold(&threshold);
-//        break;
-//
-//      case 'W':
-//        weights = !weights;
-//        break;
-//
-//      case 'M':
-//        mulsets = !mulsets;
-//        if (mulsets){
-//            printf("Multiple data sets or multiple weights?");
-//          loopcount2 = 0;
-//          do {
-//            printf(" (type D or W)\n");
-//#ifdef WIN32
-//            phyFillScreenColor();
-//#endif
-//            scanf("%c%*[^\n]", &ch2);
-//            getchar();
-//            if (ch2 == '\n')
-//              ch2 = ' ';
-//            uppercase(&ch2);
-//            countup(&loopcount2, 10);
-//          } while ((ch2 != 'W') && (ch2 != 'D'));
-//          justwts = (ch2 == 'W');
-//          if (justwts)
-//            justweights(&msets);
-//          else
-//            initdatasets(&msets);
-//        }
-//        break;
-//        
-//      case '0':
-//        initterminal(&ibmpc, &ansi);
-//        break;
-//        
-//      case '1':
-//        printdata = !printdata;
-//        break;
-//        
-//      case '2':
-//        progress = !progress;
-//        break;
-//        
-//      case '3':
-//        treeprint = !treeprint;
-//        break;
-//        
-//      case '4':
-//        stepbox = !stepbox;
-//        break;
-//        
-//      case '5':
-//        ancseq = !ancseq;
-//        break;
-//        
-//      case '6':
-//        trout = !trout;
-//        break;
-//      }
-//    } else
-//      printf("Not a possible option!\n");
-//    countup(&loopcount, 100);
-//  }
-//  allsokal = (!allwagner && !mixture);
-//}  /# getoptions #/
-*/
+    method = ajAcdGetListI("method", 1);
+
+    if(ajStrMatchC(method, "w")) allwagner = true;
+    else if(ajStrMatchC(method, "c")) allsokal = true;
+    else if(ajStrMatchC(method, "m")) {
+      mixture = allwagner = true; 
+      phylomix = ajAcdGetProperties("mixfile");
+    }
+
+    howmany = ajAcdGetInt("howmany");
+    howoften = ajAcdGetInt("howoften"); 
+
+    outgrno = ajAcdGetInt("outgrno");
+    if(outgrno != 0) outgropt = true;
+    else outgrno = 1;
+
+    simple = ajAcdGetBool("simple");
+
+
+    threshold = ajAcdGetFloat("threshold");
+
+    progress = ajAcdGetBool("progress");
+    printdata = ajAcdGetBool("printdata");
+    treeprint = ajAcdGetBool("treeprint");
+    trout = ajAcdGetToggle("trout");
+    stepbox = ajAcdGetBool("stepbox");
+    ancseq = ajAcdGetBool("ancseq");
+
+     embossoutfile = ajAcdGetOutfile("outfile");   
+     emboss_openfile(embossoutfile, &outfile, &outfilename);
+     
+     if(trout) {
+       embossouttree = ajAcdGetOutfile("outtreefile");
+       emboss_openfile(embossouttree, &outtree, &outtreename);
+     }
+
+  fprintf(outfile, "\nPenny algorithm, version %s\n",VERSION);
+  fprintf(outfile, " branch-and-bound to find all");
+  fprintf(outfile, " most parsimonious trees\n\n");
+
+}  /* emboss_getoptions */
 
 
 void allocrest()
@@ -330,9 +214,8 @@ void doinit()
 {
   /* initializes variables */
 
-  inputnumbersseq(seqsets[0], &spp, &chars, &nonodes, 1);
+  inputnumbersstate(phylostates[0],&spp, &chars, &nonodes, 1);
   words = chars / bits + 1;
-/*  getoptions();*/
   if (printdata)
     fprintf(outfile, "%2ld species, %3ld characters\n", spp, chars);
   alloctree2(&treenode);
@@ -355,7 +238,7 @@ void inputoptions()
       }
       for (i = 0; i < (chars); i++)
           weight[i] = 1;
-      inputweightsstr(phyloweight->Str[0], chars, weight, &weights);
+      inputweightsstr(phyloweights->Str[0], chars, weight, &weights);
       for (i = 0; i < (words); i++) {
           if (mixture)
               wagner[i] = wagner0[i];
@@ -367,7 +250,7 @@ void inputoptions()
   }
   else {
       if (!firstset) {
-          samenumspseq(seqsets[ith-1], &chars, ith);
+          samenumspstate(phylostates[ith-1], &chars, ith);
       }
       for (i = 0; i < (chars); i++)
           weight[i] = 1;
@@ -378,7 +261,7 @@ void inputoptions()
           inputmixturestr(phylomix->Str[ith-1], wagner0);
       }
       if (weights)
-          inputweightsstr(phyloweight->Str[ith-1], chars, weight, &weights);
+          inputweightsstr(phyloweights->Str[ith-1], chars, weight, &weights);
       for (i = 0; i < (words); i++) {
           if (mixture)
               wagner[i] = wagner0[i];
@@ -416,7 +299,7 @@ void doinput()
   /* reads the input data */
   inputoptions();
   if(!justwts || firstset)
-      disc_inputdata2(phylomix, treenode);
+      disc_inputdata2(phylostates[ith-1], treenode);
 }  /* doinput */
 
 
@@ -781,31 +664,15 @@ int main(int argc, Char *argv[])
   argv[0] = "Penny";
 #endif
   init(argc,argv);
-  emboss_getoptions("fpenny",argc,argv);
-  /*openfile(&infile,INFILE,"input file", "r",argv[0],infilename);*/
-  embossoutfile = ajAcdGetOutfile("outfile");
-  emboss_openfile(embossoutfile,&outfile,&outfilename);
-  ibmpc = IBMCRT;
+  emboss_getoptions("fpenny", argc, argv);
+
   ansi = ANSICRT;
-  mulsets = false;
-  msets = 1;
   firstset = true;
   garbage = NULL;
   bits = 8*sizeof(long) - 1;
   doinit();
-/*
-  if (weights || justwts)
-    openfile(&weightfile,WEIGHTFILE,"weights file","r",argv[0],weightfilename);
-*/
-  embossouttree = ajAcdGetOutfile("outtreefile");
-  emboss_openfile(embossouttree,&outtree,&outtreename);
-  if (!outtree) trout = false;
-/*
-  if(ancvar)
-      openfile(&ancfile,ANCFILE,"ancestors file", "r",argv[0],ancfilename);
-  if(mixture)
-      openfile(&mixfile,MIXFILE,"mixture file", "r",argv[0],mixfilename);
-*/
+
+  
   for (ith = 1; ith <= msets; ith++) {
     if(firstset){
         if (allsokal && !mixture)

@@ -1,7 +1,6 @@
 application: fdnacomp [
   documentation: "DNA compatibility algorithm"
   groups: "Phylogeny:Molecular sequence"
-  embassy: "phylipnew"
 ]
 
 section: input [
@@ -11,11 +10,12 @@ section: input [
 
 seqsetall: sequence  [
   parameter: "Y"
-  type: "gapdna"
+  type: "gapdnaphylo"
   help: "File containing one or more sequence alignments"
 ]
 
 tree: intreefile  [
+  parameter: "Y"
   nullok: "Y"
   knowntype: "newick"
 ]
@@ -23,6 +23,7 @@ tree: intreefile  [
 properties: weights [
   standard: "Y"
   information: "Weights file"
+  length: "$(sequence.length)"
   nullok: "Y"
   knowntype: "weights"
 ]
@@ -39,36 +40,36 @@ outfile: outfile  [
   knowntype: "dnacomp output"
 ]
 
-boolean: drawtree  [
-  additional: "Y"
-  default: "Y"
-  information: "Draw tree"
+toggle: trout [
+	additional: "Y"
+	default: "Y"
+	information: "Write out trees to tree file"
 ]
 
 outfile: outtreefile  [
+  additional: "$(trout)"
   extension: "treefile"
   information: "Tree file name"
   knowntype: "newick tree"
   nullok: "Y"
 ]
 
-integer: outgroup  [
-  minimum: "0"
-  default: "0"
-  maximum: "$(sequence.size)"
-  information: "Number of the outgroup"
-]
-
 boolean: printdata  [
   additional: "Y"
   default: "N"
-  information: "Print out the data at start of run"
+  information: "Print data at start of run"
 ]
 
 boolean: progress  [
   additional: "Y"
-  default: "N"
+  default: "Y"
   information: "Print indications of progress of run"
+]
+
+boolean: treeprint [
+  additional: "Y"
+  default: "Y"
+  information: "Print out tree"
 ]
 
 boolean: stepbox  [
@@ -90,19 +91,27 @@ section: additional [
   type: "page"
 ]
 
-integer: jumble [
+integer: outgrno  [
   additional: "Y"
-  information: "Number of times to jumble"
-  minimum: "1"
-  default: "1"
+  minimum: "0"
+  default: "0"
+  maximum: "$(sequence.count)"
+  information: "Species number to use as outgroup"
+]
+
+integer: njumble [
+  additional: "@(!$(intreefile.isdefined))"
+  information: "Number of times to randomise"
+  minimum: "0"
+  default: "0"
 
 ]
 
 integer: seed [
-  additional: "@($(jumble) != 1)"
-  information: "Random number seed (must be odd)"
+  additional: "$(njumble)"
+  information: "Random number seed between 1 and 32767 (must be odd)"
   minimum: 1
-  maximum: "32765"
+  maximum: "32767"
   default: 1
 ]
 

@@ -1,7 +1,6 @@
 application: fcontrast [
   documentation: "Continuous character Contrasts"
   groups: "Phylogeny:Continuous characters"
-  embassy: "phylipnew"
 ]
 
 section: input [
@@ -9,13 +8,15 @@ section: input [
   type: "page"
 ]
 
-frequencies: infile  [
+frequencies: infile [
   parameter: "Y"
+  help: "File containing one or more sets of data"
 ]
 
 tree: intreefile  [
   parameter: "Y"
   knowntype: "newick"
+  nullok: "N"
 ]
 
 endsection: input
@@ -30,28 +31,17 @@ outfile: outfile  [
   knowntype: "contrast output"
 ]
 
-boolean: printcorplusreg  [
-  additional: "Y"
-  default: "Y"
-  information: "Print out correlations and regressions"
+
+boolean: printdata [
+	additional: "Y"
+	default: "N"
+	information: "Print data at start of run"
 ]
 
-boolean: printdata  [
-  additional: "Y"
-  default: "N"
-  information: "Print out the data at start of run"
-]
-
-boolean: printcontrasts  [
-  additional: "Y"
-  default: "N"
-  information: "Print out contrasts"
-]
-
-boolean: progress  [
-  additional: "Y"
-  default: "N"
-  information: "Print indications of progress of run"
+boolean: progress [
+	additional: "Y"
+	default: "Y"
+	information: "Print indications of progress of run"
 ]
 
 endsection: output
@@ -61,8 +51,25 @@ section: additional [
   type: "page"
 ]
 
-boolean: lrt  [
+boolean: varywithin [
   additional: "Y"
+  default: "N"
+  information: "Within-population variation in data"
+]
+
+boolean: reg  [
+  additional: "@(!$(varywithin))"
+  default: "Y"
+  information: "Print out correlations and regressions"
+]
+
+boolean: writecont  [
+  additional: "@(!$(varywithin))"
+  default: "N"
+  information: "Print out contrasts"
+]
+boolean: nophylo  [
+  additional: "$(varywithin)"
   default: "Y"
   information: "LRT test of no phylogenetic component, with and without VarA"
 ]

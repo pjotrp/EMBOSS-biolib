@@ -13,14 +13,17 @@ typedef enum {
   xx, yy, zz, ww
 } simbol;
 
-AjPPhyloProp phyloweights;
-AjPSeqset* seqsets;
+AjPSeqset* seqsets = NULL;
+AjPPhyloProp phyloweights = NULL;
+AjPPhyloTree* phylotrees;
+
 ajint numseqs;
 ajint numwts;
 
 #ifndef OLDC
 /* function prototypes */
-/*void getoptions(void);*/
+
+//void getoptions(void);
 void emboss_getoptions(char *pgm, int argc, char *argv[]);
 void allocrest(void);
 void doinit(void);
@@ -46,7 +49,10 @@ void reallocsites(void);
 extern sequence y;
 
 Char infilename[FNMLNGTH], weightfilename[FNMLNGTH];
+
 const char* outfilename;
+AjPFile embossoutfile;
+
 long sites, msets, ith;
 boolean weights, progress, prntpat, printinv, mulsets, firstset, justwts;
 steptr aliasweight;
@@ -54,201 +60,61 @@ steptr aliasweight;
 long f[(long)ww - (long)xx + 1][(long)ww - (long)xx + 1]
        [(long)ww - (long)xx + 1]; /* made global from being local to makeinv */
 
-
-/************ EMBOSS GET OPTIONS ROUTINES ******************************/
-
 void emboss_getoptions(char *pgm, int argc, char *argv[])
 {
-    AjStatus retval;
+  AjStatus retval;
  
-    /* initialize global variables */
+  printdata = false;
+  weights = false;
+  dotdiff = true;
+  progress = true;
+  prntpat = true;
+  printinv = true;
+  numwts = 0;
+  mulsets = false;
+  msets = 1;
+
 
     ajNamInit("emboss");
-    retval =  ajAcdInitP (pgm, argc, argv, "PHYLIP");
-
+    retval = ajAcdInitP (pgm, argc, argv, "PHYLIP");
     seqsets = ajAcdGetSeqsetall("sequence");
-    numseqs = 0;
-    if (seqsets)
-    {
-	while (seqsets[numseqs])
-	    numseqs++;
-    }
 
-    if (numseqs > 1)
-    {
-	mulsets = true;
-	msets = numseqs;
-    }
-    else if (!numseqs)
-	justwts = true;
+    numseqs = 0;
+    while (seqsets[numseqs])
+	numseqs++;
 
     phyloweights = ajAcdGetProperties("weights");
     if (phyloweights)
     {
       weights = true;
       numwts = ajPhyloPropGetSize(phyloweights);
-      if (justwts && numwts > 1)
-      {
-	  mulsets = true;
-	  msets = numwts;
-      }
     }
 
-    printinv = ajAcdGetBool("printinvariant");
-    dotdiff = ajAcdGetBool("printdotdiff");
-    prntpat = ajAcdGetBool("printpattern");
+    if (numseqs > 1) {
+	mulsets = true;
+        msets = numseqs;
+    }
+    else if (numwts > 1) {
+      mulsets = true;
+      msets = numwts;
+      justwts = true;
+    }
+
     printdata = ajAcdGetBool("printdata");
+    if(printdata) dotdiff = ajAcdGetBool("dotdiff");
     progress = ajAcdGetBool("progress");
-}
+    prntpat = ajAcdGetBool("printpattern");
+    printinv = ajAcdGetBool("printinvariant");
 
-/************ END EMBOSS GET OPTIONS ROUTINES **************************/
+     embossoutfile = ajAcdGetOutfile("outfile");   
+     emboss_openfile(embossoutfile, &outfile, &outfilename);
+   
+  fprintf(outfile, "\nNucleic acid sequence Invariants ");
+  fprintf(outfile, "method, version %s\n\n",VERSION);
 
-/*
-//void getoptions()
-//{
-//  /# interactively set options #/
-//  long loopcount, loopcount2;
-//  boolean done;
-//  Char ch, ch2;
-//
-//  fprintf(outfile, "\nNucleic acid sequence Invariants ");
-//  fprintf(outfile, "method, version %s\n\n",VERSION);
-//  putchar('\n');
-//  printdata = false;
-//  weights = false;
-//  dotdiff = true;
-//  progress = true;
-//  prntpat = true;
-//  printinv = true;
-//  interleaved = true;
-//  loopcount = 0;
-//  do {
-//    cleerhome();
-//    printf("\nNucleic acid sequence Invariants ");
-//    printf("method, version %s\n\n",VERSION);
-//    printf("Settings for this run:\n");
-//    printf("  W                       Sites weighted?  %s\n",
-//           (weights ? "Yes" : "No"));
-//    printf("  M           Analyze multiple data sets?");
-//    if (mulsets)
-//      printf("  Yes, %2ld %s\n", msets,
-//              (justwts ? "sets of weights" : "data sets"));
-//    else
-//      printf("  No\n");
-//    printf("  I          Input sequences interleaved?");
-//    if (interleaved)
-//      printf("  Yes\n");
-//    else
-//      printf("  No, sequential\n");
-//    printf("  0   Terminal type (IBM PC, ANSI, none)?");
-//    if (ibmpc)
-//      printf("  IBM PC\n");
-//    if (ansi)
-//      printf("  ANSI\n");
-//    if (!(ibmpc || ansi))
-//      printf("  (none)\n");
-//    printf("  1    Print out the data at start of run");
-//    if (printdata)
-//      printf("  Yes\n");
-//    else
-//      printf("  No\n");
-//    if (printdata)
-//      printf("  .  Use dot-differencing to display them  %s\n",
-//           dotdiff ? "Yes" : "No");
-//    printf("  2  Print indications of progress of run  %s\n",
-//           (progress ? "Yes" : "No"));
-//    printf("  3      Print out the counts of patterns");
-//    if (prntpat)
-//      printf("  Yes\n");
-//    else
-//      printf("  No\n");
-//    printf("  4              Print out the invariants");
-//    if (printinv)
-//      printf("  Yes\n");
-//    else
-//        printf("  No\n");
-//    if(weights && justwts){
-//        printf(
-//              "WARNING:  W option and Multiple Weights options are both on.  ");
-//        printf(
-//         "The W menu option is unnecessary and has no additional effect. \n");
-//    }
-//    printf("\n  Y to accept these or type the letter for one to change\n");
-//#ifdef WIN32
-//    phyFillScreenColor();
-//#endif
-//    scanf("%c%*[^\n]", &ch);
-//    getchar();
-//    uppercase(&ch);
-//    done = (ch == 'Y');
-//    if (!done) {
-//      if (strchr("WMI01.234",ch) != NULL) {
-//        switch (ch) {
-//
-//        case 'W':
-//          weights = !weights;
-//          break;
-//
-//        case 'M':
-//          mulsets = !mulsets;
-//          if (mulsets){
-//            printf("Multiple data sets or multiple weights?");
-//            loopcount2 = 0;
-//            do {
-//              printf(" (type D or W)\n");
-//#ifdef WIN32
-//              phyFillScreenColor();
-//#endif
-//              scanf("%c%*[^\n]", &ch2);
-//              getchar();
-//              if (ch2 == '\n')
-//                ch2 = ' ';
-//                uppercase(&ch2);
-//                countup(&loopcount2, 10);
-//            } while ((ch2 != 'W') && (ch2 != 'D'));
-//            justwts = (ch2 == 'W');
-//            if (justwts)
-//              justweights(&msets);
-//            else
-//              initdatasets(&msets);
-//            }
-//            break;
-//
-//        case 'I':
-//          interleaved = !interleaved;
-//          break;
-//
-//        case '0':
-//          initterminal(&ibmpc, &ansi);
-//          break;
-//
-//        case '1':
-//          printdata = !printdata;
-//          break;
-//
-//        case '.':
-//          dotdiff = !dotdiff;
-//          break;
-//
-//        case '2':
-//          progress = !progress;
-//              break;
-//        
-//        case '3':
-//          prntpat = !prntpat;
-//          break;
-//
-//        case '4':
-//          printinv = !printinv;
-//          break;
-//        }
-//      } else
-//        printf("Not a possible option!\n");
-//    }
-//    countup(&loopcount, 100);
-//  } while (!done);
-//}  /# getoptions #/
-*/
+
+
+}  /* emboss_getoptions */
 
 void reallocsites(void) 
 {
@@ -289,7 +155,6 @@ void doinit()
   if (spp > maxsp){
     printf("TOO MANY SPECIES: only 4 allowed\n");
     exxit(-1);}
-/*  getoptions();*/
   if (printdata)
     fprintf(outfile, "%2ld species, %3ld  sites\n", spp, sites);
   allocrest();
@@ -354,7 +219,7 @@ void doinput()
       seq_inputdata(seqsets[ith-1], sites);
     for (i = 0; i < sites; i++)
       weight[i] = 1;
-    inputweightsstr(phyloweights->Str[0], sites, weight, &weights);
+    inputweightsstr(phyloweights->Str[ith-1], sites, weight, &weights);
     if (justwts) {
       fprintf(outfile, "\n\nWeights set # %ld:\n\n", ith);
       if (progress)
@@ -820,24 +685,13 @@ int main(int argc, Char *argv[])
   argv[0] = "Dnainvar";         
 #endif
   init(argc,argv);
-  emboss_getoptions("fdnainvar",argc,argv);
-  /*openfile(&infile,INFILE,"input file", "r",argv[0],infilename);*/
-  embossoutfile = ajAcdGetOutfile("outfile");
-  emboss_openfile(embossoutfile, &outfile,&outfilename);
-  fprintf(outfile,
-	  "\nNucleic acid sequence Invariants method, version %s\n\n",
-	  VERSION);
+  emboss_getoptions("fdnainvar", argc, argv);
 
   ibmpc = IBMCRT;
   ansi = ANSICRT;
-  mulsets = false;
   firstset = true;
-  msets = 1;
   doinit();
-  /*
-     if (weights || justwts)
-    openfile(&weightfile,WEIGHTFILE,"weights file","r",argv[0],weightfilename);
-*/
+
   for (ith = 1; ith <= msets; ith++) {
     doinput();
     if (ith == 1)
@@ -859,9 +713,10 @@ int main(int argc, Char *argv[])
 #ifdef MAC
   fixmacfile(outfilename);
 #endif
-  /*printf("Done.\n\n");*/
+  printf("Done.\n\n");
 #ifdef WIN32
   phyRestoreConsoleAttributes();
 #endif
   return 0;
 }  /* DNA Invariants */
+

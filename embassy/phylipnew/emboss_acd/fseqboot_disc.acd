@@ -1,5 +1,5 @@
-application: fseqboot [
-  documentation: "Bootstrapped sequences algorithm"
+application: fseqboot_disc [
+  documentation: "Bootstrapped restriction sites algorithm"
   groups: "Phylogeny:Molecular sequence"
 ]
 
@@ -8,18 +8,8 @@ section: input [
   type: "page"
 ]
 
-seqset: infile  [
+discretestates: infile  [
   parameter: "Y"
-  knowntype: "seqboot input"
-]
-
-properties: categories  [
-	additional: "Y"
-	characters: ""
-	information: "File of input categories"
-	nullok: "Y"
-        size: "1"
-        length: "$(infile.length)"
 ]
 
 properties: mixfile  [
@@ -28,7 +18,7 @@ properties: mixfile  [
 	information: "File of mixtures"
 	nullok: "Y"
         size: "1"
-        length: "$(infile.length)"
+        length: "$(infile.discretelength)"
 ]
 
 properties: ancfile  [
@@ -37,7 +27,7 @@ properties: ancfile  [
 	information: "File of ancestors"
 	nullok: "Y"
         size: "1"
-        length: "$(infile.length)"
+        length: "$(infile.discretelength)"
 ]
 
 properties: weights [
@@ -45,7 +35,7 @@ properties: weights [
 	characters: "01"
 	information: "Weights file"
 	help: "Weights file"
-        length: "$(infile.length)"
+        length: "$(infile.discretelength)"
 	nullok: "Y"
 ]
 
@@ -53,7 +43,7 @@ properties: factorfile [
 	additional: "Y"
 	information: "Factors file"
 	nullok: "Y"
-        length: "$(infile.length)"
+        length: "$(infile.discretelength)"
         size: "1"
 ]
 endsection: input
@@ -65,7 +55,31 @@ section: output [
 
 outfile: outfile  [
   parameter: "Y"
-  knowntype: "seqboot output"
+  knowntype: "seqbootdisc output"
+]
+
+outfile: outancfile  [
+  parameter: "Y"
+  knowntype: "outancfile"
+  extension: "ancfile"
+  information: "Out ancestor file name"
+  nullok: @(!$(ancfile.isdefined))
+]
+
+outfile: outmixfile  [
+  parameter: "Y"
+  knowntype: "outmixfile"
+  extension: "mixfile"
+  information: "Out mix file name"
+  nullok: @(!$(mixfile.isdefined))
+]
+
+outfile: outfactfile  [
+  parameter: "Y"
+  extension: "factfile"
+  knowntype: "outfactfile"
+  information: "Out fact file name"
+  nullok: @(!$(factorfile.isdefined))
 ]
 
 boolean: printdata  [
@@ -91,19 +105,6 @@ endsection: output
 section: additional [
   information: "Additional section"
   type: "page"
-]
-
-list: datatype  [
-  additional: "y"
-  minimum: "1"
-  maximum: "1"
-  header: "Datatype"
-  values: "s:Molecular sequences; 
-           m:Discrete Morphology;
-           r:Restriction Sites; 
-           g:Gene Frequencies"
-  information: "Choose the datatype"
-  default: "s"
 ]
 
 list: test  [
@@ -135,33 +136,8 @@ float: fracsample [
         maximum: "100.0"
 ]
 
-list: rewriteformat  [
-  additional: "@(@($(test)==r)&&@($(datatype)==s))"
-  minimum: "1"
-  maximum: "1"
-  header: "test"
-  values: "p:PHYLIP; 
-           n:NEXUS; 
-           x:XML"
-  information: "Output format"
-  default: "p"
-]
-
-
-list: seqtype  [
-  additional: "@( @( $(datatype) == s ) & @( $(rewriteformat) == {n | x} ))"
-  minimum: "1"
-  maximum: "1"
-  header: "test"
-  values: "d:dna; 
-           p:protein; 
-           r:rna"
-  information: "Output format"
-  default: "d"
-]
-
 list: morphseqtype  [
-  additional: "@( @( $(datatype) == m ) & @( $(test) == r ))"
+  additional: "@($(test) == r )"
   minimum: "1"
   maximum: "1"
   header: "Output format"
@@ -194,18 +170,6 @@ list: justweights  [
            w:Weights"
   information: "Write out datasets or just weights"
   default: "d"
-]
-
-boolean: enzymes  [
-  additional: "@($(datatype) == r)"
-  information: "Is the number of enzymes present in input file"
-  default: "N"
-]
-
-boolean: all  [
-  additional: "@($(datatype) == g)"
-  information: "All alleles present at each locus"
-  default: "N"
 ]
 
 integer: seed [

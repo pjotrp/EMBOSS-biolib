@@ -1,13 +1,24 @@
 ## Process this file with automake to produce Makefile.in
 
+## To add programs
+## Add the program binary name to bin_PROGRAMS
+## (using \ as a continuation character for multiple lines)
+##
+## And add a programname_SOURCES line to define the source files
+## to be compiled and linked
+##
+## make will compile and link the program
+## make install will copy the program to the install directory
 
 bin_PROGRAMS = fclique fconsense fcontml fcontrast \
 fdnacomp fdnadist fdnainvar fdnaml fdnamlk fdnamove fdnapars fdnapenny \
 fdolmove fdollop fdolpenny fdrawgram fdrawtree \
 ffactor ffitch fgendist fkitsch fmix fmove fneighbor fpars \
 fpenny fproml fpromlk fprotdist fprotpars \
-frestdist frestml fretree fseqboot ffreqboot frestboot ffactboot \
+frestdist frestml fretree \
+fseqboot_seq fseqboot_freq fseqboot_rest fseqboot_disc \
 ftreedist ftreedistpair
+
 
 if LOCALLINK
 INCLUDES = -I../include -I../../../ajax
@@ -64,12 +75,13 @@ fprotpars_SOURCES = protpars.c seq.c phylip.c
 frestdist_SOURCES = restdist.c seq.c phylip.c
 frestml_SOURCES = restml.c seq.c phylip.c
 fretree_SOURCES = retree.c moves.c phylip.c
-fseqboot_SOURCES = seqboot.c seq.c phylip.c
-ffreqboot_SOURCES = freqboot.c phylip.c
-frestboot_SOURCES = restboot.c phylip.c
-ffactboot_SOURCES = factboot.c phylip.c
 ftreedist_SOURCES = treedist.c cons.c phylip.c
 ftreedistpair_SOURCES = treedistpair.c cons.c phylip.c
+
+fseqboot_seq_SOURCES = seqboot_seq.c seq.c phylip.c
+fseqboot_freq_SOURCES = seqboot_freq.c seq.c phylip.c
+fseqboot_rest_SOURCES = seqboot_rest.c seq.c phylip.c
+fseqboot_disc_SOURCES = seqboot_disc.c seq.c phylip.c
 
 
 if LOCALLINK

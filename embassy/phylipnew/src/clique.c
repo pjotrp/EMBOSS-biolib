@@ -1,4 +1,3 @@
-#include "ajax.h"
 #include "phylip.h"
 #include "disc.h"
 
@@ -10,9 +9,9 @@
 
 #define FormWide        80   /* width of outfile page */
 
-extern AjPPhyloState* phylostates;
-AjPPhyloProp phyloancestors = NULL;
-AjPPhyloProp phylofactors = NULL;
+AjPPhyloState* phylostates;
+AjPPhyloProp phyloanc = NULL;
+AjPPhyloProp phylofact = NULL;
 AjPPhyloProp phyloweights = NULL;
 
 typedef boolean *aPtr;
@@ -31,8 +30,8 @@ typedef vecrec **Matrix;
 void clique_gnu(vecrec **);
 void clique_chuck(vecrec *);
 void nunode(node **);
-/*void   getoptions(void); */
-void   emboss_getoptions(char *pgm, int argc, char *argv[]);
+//void getoptions(void);
+void emboss_getoptions(char *pgm, int argc, char *argv[]);
 void clique_setuptree(void);
 void allocrest(void);
 void doinit(void);
@@ -41,7 +40,7 @@ void clique_printancestors(void);
 void clique_inputfactors(void);
 
 void inputoptions(void);
-void clique_inputdata(long);
+void clique_inputdata(void);
 boolean Compatible(long, long);
 void SetUp(vecrec **);
 void Intersect(boolean *, boolean *, boolean *);
@@ -69,12 +68,15 @@ void GetMaxCliques(vecrec **);
 
 
 
-Char infilename[FNMLNGTH];
+Char infilename[FNMLNGTH], ancfilename[FNMLNGTH], factfilename[FNMLNGTH], weightfilename[FNMLNGTH];
 const char* outfilename;
 const char* outtreename;
+AjPFile embossoutfile;
+AjPFile embossouttree;
+
 long ActualChars, Cliqmin, outgrno,
-       col, ith, datasets, setsz;
-boolean ancvar, Clmin, Factors, outgropt, trout, weights, noroot,
+       col, ith, msets, setsz;
+boolean ancvar, Clmin, Factors, outgropt, trout, weights, noroot, justwts,
                printcomp, progress, treeprint, mulsets, firstset;
 long nodes;
 
@@ -132,185 +134,84 @@ void nunode(node **p)
 }  /* nunode */
 
 
-/************ EMBOSS GET OPTIONS ROUTINES ******************************/
 void emboss_getoptions(char *pgm, int argc, char *argv[])
 {
-    AjStatus retval;
 
-    ancvar = false;
-    Clmin = false;
-    Cliqmin = 0;
-    Factors = false;
-    outgrno = 1;
-    outgropt = false;
-    trout = true;
-    weights = false;
-    printdata = false;
-    printcomp = false;
-    progress = true;
-    treeprint = true;
+  AjStatus retval;
+  ajint numseqs=0;
+  ajint numwts=0;
+
+  ancvar = false;
+  Clmin = false;
+  Factors = false;
+  outgrno = 1;
+  outgropt = false;
+  trout = true;
+  weights = false;
+  justwts = false;
+  printdata = false;
+  printcomp = false;
+  progress = true;
+  treeprint = true;
+  mulsets = false;
+  msets = 1;
 
     ajNamInit("emboss");
-    retval =  ajAcdInitP (pgm, argc, argv,"PHYLIP");
-
-    phyloancestors = ajAcdGetProperties("ancestral");
-    if (phyloancestors)
-	ancvar = true;
-    phylofactors = ajAcdGetProperties("multistate");
-    if (phylofactors)
-	Factors = true;
-    phyloweights = ajAcdGetProperties("weights");
+    retval = ajAcdInitP (pgm, argc, argv, "PHYLIP");
 
     phylostates = ajAcdGetDiscretestates("infile");
-    datasets = 0;
-    while(phylostates[datasets])
-	datasets++;
 
-    if (datasets > 1)
-	mulsets = true;
+    while (phylostates[numseqs])
+	numseqs++;
+
+    phyloweights = ajAcdGetProperties("weights");
+    if (phyloweights)
+    {
+      weights = true;
+      numwts = ajPhyloPropGetSize(phyloweights);
+    }
+
+    if (numseqs > 1) {
+      mulsets = true;
+      msets = numseqs;
+    }
+    else if (numwts > 1) {
+      mulsets = true;
+      msets = numwts;
+      justwts = true;
+    }
+
+    phyloanc = ajAcdGetProperties("ancfile");
+    if(phyloanc) ancvar = true;
+
+    phylofact = ajAcdGetProperties("factorfile");
+    if(phylofact) Factors = true;
+
+    Cliqmin = ajAcdGetInt("cliqmin");
+    if(Cliqmin != 0) Clmin = true;
+
+    outgrno = ajAcdGetInt("outgrno");
+    if(outgrno != 0) outgropt = true;
+    else outgrno = 1;
 
     printdata = ajAcdGetBool("printdata");
     progress = ajAcdGetBool("progress");
-    printcomp = ajAcdGetBool("matrixout");
-    treeprint = ajAcdGetBool("drawtree");
-    outgrno = ajAcdGetInt("outgroup");
-    Cliqmin = ajAcdGetInt("minclique");
-    if (Cliqmin < 1) {
-	Clmin = true;
-    }
+    treeprint = ajAcdGetBool("treeprint");
+    trout = ajAcdGetToggle("trout");
+    printcomp = ajAcdGetBool("printcomp");
 
-}
+     embossoutfile = ajAcdGetOutfile("outfile");   
+     emboss_openfile(embossoutfile, &outfile, &outfilename);
+     
+     if(trout) {
+     embossouttree = ajAcdGetOutfile("outtreefile");
+     emboss_openfile(embossouttree, &outtree, &outtreename);
+     }
 
-/************ END EMBOSS GET OPTIONS ROUTINES **************************/
+  fprintf(outfile, "\nLargest clique program, version %s\n\n",VERSION);
 
-/*
-//void getoptions(void)
-//{
-//  /# interactively set options #/
-//  long loopcount, loopcount2;
-//  Char ch;
-//  boolean done;
-//
-//  fprintf(outfile, "\nLargest clique program, version %s\n\n",VERSION);
-//  putchar('\n');
-//  ancvar = false;
-//  Clmin = false;
-//  Factors = false;
-//  outgrno = 1;
-//  outgropt = false;
-//  trout = true;
-//  weights = false;
-//  printdata = false;
-//  printcomp = false;
-//  progress = true;
-//  treeprint = true;
-//  loopcount = 0;
-//  do {
-//    cleerhome();
-//    printf("\nLargest clique program, version %s\n\n",VERSION);
-//    printf("Settings for this run:\n");
-//    printf("  A   Use ancestral states in input file?  %s\n",
-//           (ancvar ? "Yes" : "No"));
-//    printf("  C          Specify minimum clique size?");
-//    if (Clmin)
-//      printf("  Yes, at size%3ld\n", Cliqmin);
-//    else
-//      printf("  No\n");
-//    printf("  O                        Outgroup root?  %s%3ld\n",
-//           (outgropt ? "Yes, at species number" :
-//                       "No, use as outgroup species"),outgrno);
-//    printf("  M           Analyze multiple data sets?");
-//    if (mulsets)
-//      printf("  Yes, %2ld sets\n", datasets);
-//    else
-//      printf("  No\n");
-//    printf("  0   Terminal type (IBM PC, ANSI, none)?  %s\n",
-//           ibmpc ? "IBM PC" : ansi  ? "ANSI"   : "(none)");
-//    printf("  1    Print out the data at start of run  %s\n",
-//           (printdata ? "Yes" : "No"));
-//    printf("  2  Print indications of progress of run  %s\n",
-//           (progress ? "Yes" : "No"));
-//    printf("  3        Print out compatibility matrix  %s\n",
-//           (printcomp ? "Yes" : "No"));
-//    printf("  4                        Print out tree  %s\n",
-//           (treeprint ? "Yes" : "No"));
-//    printf("  5       Write out trees onto tree file?  %s\n",
-//           (trout ? "Yes" : "No"));
-//    printf("\n  Y to accept these or type the letter for one to change\n");
-//#ifdef WIN32
-//    phyFillScreenColor();
-//#endif
-//    scanf("%c%*[^\n]", &ch);
-//    getchar();
-//    uppercase(&ch);
-//    done = (ch == 'Y');
-//    if (!done) {
-//      if (strchr("OACM012345",ch) != NULL){
-//        switch (ch) {
-//
-//        case 'A':
-//          ancvar = !ancvar;
-//          break;
-//
-//        case 'C':
-//          Clmin = !Clmin;
-//          if (Clmin) {
-//            loopcount2 = 0;
-//            do {
-//              printf("Minimum clique size:\n");
-//#ifdef WIN32
-//              phyFillScreenColor();
-//#endif
-//              scanf("%ld%*[^\n]", &Cliqmin);
-//              getchar();
-//              countup(&loopcount2, 10);
-//            } while (Cliqmin < 0);
-//          }
-//          break;
-//
-//        case 'O':
-//          outgropt = !outgropt;
-//          if (outgropt)
-//            initoutgroup(&outgrno, spp);
-//          break;
-//
-//        case 'M':
-//          mulsets = !mulsets;
-//          if (mulsets)
-//            initdatasets(&datasets);
-//          break;
-//
-//        case '0':
-//          initterminal(&ibmpc, &ansi);
-//          break;
-//
-//        case '1':
-//          printdata = !printdata;
-//          break;
-//
-//        case '2':
-//          progress = !progress;
-//          break;
-//        
-//        case '3':
-//          printcomp = !printcomp;
-//          break;
-//
-//        case '4':
-//          treeprint = !treeprint;
-//          break;
-//
-//        case '5':
-//          trout = !trout;
-//          break;
-//        }
-//      } else
-//        printf("Not a possible option!\n");
-//      countup(&loopcount, 100);
-//    }
-//  } while (!done);
-//}  /# getoptions #/
-*/
+}  /* emboss_getoptions */
+
 
 void clique_setuptree(void)
 {
@@ -353,9 +254,6 @@ void doinit(void)
   /* initializes variables */
 
   inputnumbersstate(phylostates[0], &spp, &chars, &nonodes, 1);
-  /*getoptions(); */
-  fprintf(outfile, "\nLargest clique program, version %s\n\n",VERSION);
-
   if (printdata)
     fprintf(outfile, "%2ld species, %3ld  characters\n", spp, chars);
   clique_setuptree();
@@ -367,20 +265,11 @@ void clique_inputancestors(void)
 {
   /* reads the ancestral states for each character */
   long i;
-  Char ch;
-
-  /*for (i = 1; i < nmlngth; i++)
-    gettc(infile);*/
+  Char ch = ' ';
 
   for (i = 0; i < (chars); i++) {
-/*
-//    do {
-//      if (eoln(infile)) 
-//        scan_eoln(infile);
-//      ch = gettc(infile);
-//    } while (ch == ' ');
-*/
-    ch = ajStrChar(phyloancestors->Str[0], i);
+  ch = ajStrChar(phyloanc->Str[0], i);    
+    } while (ch == ' ');
     switch (ch) {
     
     case '1':
@@ -392,11 +281,11 @@ void clique_inputancestors(void)
       break;
     
     default:
-      ajErr("BAD ANCESTOR STATE: %c AT CHARACTER %4ld", ch, i + 1);
+      printf("BAD ANCESTOR STATE: %c AT CHARACTER %4ld\n", ch, i + 1);
       exxit(-1);
     }
-  }
-  /*scan_eoln(infile);*/
+
+ 
 }  /* clique_inputancestors */
 
 
@@ -427,103 +316,67 @@ void clique_inputfactors(void)
   long i;
 
   ActualChars = 1;
-  /*
-//  for (i = 1; i < nmlngth; i++)
-//    gettc(infile);
-*/
-
   for (i = 1; i <= (chars); i++) {
-/*
-//    if (eoln(infile)) 
-//      scan_eoln(infile);
-//    Factor[i - 1] = gettc(infile);
-*/
-    Factor[i-1] = ajStrChar(phylofactors->Str[0], i-1);
+    Factor[i - 1] = ajStrChar(phylofact->Str[0], i-1);
     if (i > 1) {
       if (Factor[i - 1] != Factor[i - 2])
         ActualChars++;
     }
     ActChar[i - 1] = ActualChars;
   }
-  /*scan_eoln(infile);*/
-  Factors = true;
 }  /* clique_inputfactors */
 
 
 void inputoptions(void)
 {
   /* reads the species names and character data */
-  long i, Extranum;
-  /*Char ch;*/
-  /*boolean avar;*/
-
-  if (!firstset)
-    samenumspstate(phylostates[ith], &chars, ith);
-  /*avar = false;*/
-  ActualChars = chars;
-  for (i = 1; i <= (chars); i++)
-    ActChar[i - 1] = i;
-  for (i = 0; i < (chars); i++)
-    oldweight[i] = 1;
-  Extranum = 0;
-/*
-//  while (!(eoln(infile))) {
-//    ch = gettc(infile);
-//    uppercase(&ch);
-//    if (ch == 'A' || ch == 'F' || ch == 'W')
-//      Extranum++;
-//    else if (ch != ' ') {
-//      putc('\n', outfile);
-//      ajErr("BAD OPTION CHARACTER: %c", ch);
-//      exxit(-1);
-//    }
-//  }
-//  scan_eoln(infile);
-//  for (i = 1; i <= Extranum; i++) {
-//    ch = gettc(infile);
-//    uppercase(&ch);
-//    if (ch != 'A' && ch != 'F' && ch != 'W') {
-//      ajErr("ERROR: Incorrect auxiliary options line"
-//	    " which starts with %c", ch);
-//      exxit(-1);
-//      }
-//    if (ch == 'A') {
-//      avar = true;
-//      if (!ancvar) {
-//        ajErr("ERROR: Ancestor option not chosen in menu"
-//	      " with option %c in input",ch);
-//        exxit(-1);
-//      } else
-//        clique_inputancestors();
-//    }
-  }
-*/
-
-    if (phyloancestors)
+  long i;
+  if(justwts){
+    if(firstset){
+      ActualChars = chars;
+      for (i = 1; i <= (chars); i++)
+        ActChar[i - 1] = i;
+    }
+    for (i = 0; i < (chars); i++)
+      oldweight[i] = 1;
+    inputweightsstr(phyloweights->Str[ith-1], chars, oldweight, &weights);
+    if(firstset && ancvar)
       clique_inputancestors();
-    if (phylofactors)
+    if(firstset && Factors)
       clique_inputfactors();
-    if (phyloweights)
-      inputweightsstr(phyloweights->Str[0],chars, oldweight, &weights);
-/*
-//if (ancvar && !avar) {
-//    ajErr("ERROR: Ancestor option chosen in menu"
-//	  " with no option A in input\n\n");
-//    exxit(-1);
-//  }
-*/
-
-  if (weights && printdata)
-    printweights(outfile, 0, ActualChars, oldweight, "Characters");
-  if (Factors)
-    printfactors(outfile, chars, Factor, "");
-  if (ancvar && printdata)
-    clique_printancestors();
-  noroot = !(outgropt || (ancvar));
+    if (printdata)
+      printweights(outfile, 0, ActualChars, oldweight, "Characters");
+    if (Factors)
+      printfactors(outfile, chars, Factor, "");
+    if (firstset && ancvar && printdata)
+      clique_printancestors();
+    noroot = !(outgropt || ancvar);
+  } else {
+    if (!firstset)
+      samenumspstate(phylostates[ith-1], &chars, ith);
+    ActualChars = chars;
+    for (i = 1; i <= (chars); i++)
+      ActChar[i - 1] = i;
+    for (i = 0; i < (chars); i++)
+      oldweight[i] = 1;
+    if(weights)
+      inputweightsstr(phyloweights->Str[0], chars, oldweight, &weights);
+    if(ancvar)
+      clique_inputancestors();
+    if(Factors)
+      clique_inputfactors();
+    if (weights && printdata)
+      printweights(outfile, 0, ActualChars, oldweight, "Characters");
+    if (Factors)
+      printfactors(outfile, chars, Factor, "");
+    if (ancvar && printdata)
+      clique_printancestors();
+    noroot = !(outgropt || ancvar);
+  }
 } /* inputoptions */
 
 
-void clique_inputdata(long iset)
+void clique_inputdata(void)
 {
   long i, j;
   Char ch;
@@ -544,21 +397,14 @@ void clique_inputdata(long iset)
     fprintf(outfile, "--------- ------\n\n");
   }
   for (i = 0; i < (spp); i++) {
-    initnamestate(phylostates[iset],i);
+    initnamestate(phylostates[ith-1],i);
     if (printdata)
       for (j = 0; j < nmlngth; j++)
         putc(nayme[i][j], outfile);
     if (printdata)
       fprintf(outfile, "  ");
     for (j = 1; j <= (chars); j++) {
-/*
-//      do {
-//	   if (eoln(infile)) 
-//          scan_eoln(infile);
-//        ch = gettc(infile);
-//      } while (ch == ' ');
-*/
-      ch = ajStrChar(phylostates[iset]->Str[i],j-1);
+      ch = ajStrChar(phylostates[ith-1]->Str[i],j-1);     
       if (printdata) {
         putc(ch, outfile);
         newline(outfile, j, 55, (long)nmlngth + 1);
@@ -566,13 +412,12 @@ void clique_inputdata(long iset)
           putc(' ', outfile);
       }
       if (ch != '0' && ch != '1') {
-        ajErr("ERROR: Bad character state: %c (not 0 or 1)"
-	      " at character %ld of species %ld", ch, j, i + 1);
+        printf("\n\nERROR: Bad character state: %c (not 0 or 1)", ch);
+        printf(" at character %ld of species %ld\n\n", j, i + 1);
         exxit(-1);
       }
       Data[i]->vec[j - 1] = (ch == '1');
     }
-    /*scan_eoln(infile);*/
     if (printdata)
       putc('\n', outfile);
   }
@@ -1492,48 +1337,40 @@ int main(int argc, Char *argv[])
    argc = 1;                /* macsetup("Clique","Clique");                */
    argv[0] = "Clique";
 #endif
-  ibmpc = IBMCRT;
-  ansi = ANSICRT;
-  mulsets = false;
-  firstset = true;
-  datasets = 1;
   init(argc, argv);
   emboss_getoptions("fclique",argc,argv);
-/*  openfile(&infile,INFILE,"input file", "r",argv[0],infilename);*/
-  embossoutfile = ajAcdGetOutfile("outfile");
-  embossouttree = ajAcdGetOutfile("outtreefile");
-  emboss_openfile(embossoutfile,&outfile,&outfilename);
-  emboss_openfile(embossouttree, &outtree,&outtreename);
+  ibmpc = IBMCRT;
+  ansi = ANSICRT;
+  firstset = true;
   doinit();
-  emboss_initoutgroup(&outgrno, spp);
-  if (outgrno > 0)
-    outgropt = true;
-  else
-    outgrno = 1;
-  if (!outtree)
-      trout = false;
 
-  for (ith = 1; ith <= (datasets); ith++) {
+  for (ith = 1; ith <= (msets); ith++) {
     inputoptions();
-    clique_inputdata(ith-1);
+    if(!justwts || firstset)
+      clique_inputdata();
     firstset = false;
     SetUp(Comp);
-    if (datasets > 1) {
+    if (msets > 1 && !justwts) {
       fprintf(outfile, "Data set # %ld:\n\n",ith);
       if (progress)
-        fprintf(stderr, "\nData set # %ld:\n",ith);
+        printf("\nData set # %ld:\n",ith);
+    }
+    if (justwts){
+      fprintf(outfile, "Weights set # %ld:\n\n", ith);
+      if (progress)
+        printf("\nWeights set # %ld:\n\n", ith);
     }
     GetMaxCliques(Comp);
     if (progress) {
-      fprintf(stderr, "\nOutput written to file \"%s\"\n",outfilename);
+      printf("\nOutput written to file \"%s\"\n",outfilename);
       if (trout)
-        fprintf(stderr, "\nTree");
+        printf("\nTree");
         if (tcount > 1)
-          fprintf(stderr, "s");
-        fprintf(stderr, " written on file \"%s\"\n\n", outtreename);
+          printf("s");
+        printf(" written on file \"%s\"\n\n", outtreename);
     }
   }
-  /*FClose(infile);*/
+  FClose(infile);
   FClose(outfile);
   FClose(outtree);
 #ifdef MAC
@@ -1543,8 +1380,7 @@ int main(int argc, Char *argv[])
 #ifdef WIN32
   phyRestoreConsoleAttributes();
 #endif
-/*printf("Done.\n\n");*/
-   ajExit();
+  printf("Done.\n\n");
   return 0;
 }
 

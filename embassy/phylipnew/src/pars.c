@@ -9,20 +9,21 @@
 
 #define MAXNUMTREES     1000000  /* bigger than number of user trees can be */
 
-AjPPhyloState* disc = NULL;
-AjPPhyloProp phyloweight = NULL;
+AjPPhyloState* phylostates = NULL;
+AjPPhyloProp phyloweights = NULL;
 AjPPhyloTree* phylotrees = NULL;
+
 
 #ifndef OLDC
 /* function prototypes */
-/*void   getoptions(void);*/
-void emboss_getoptions(char *pgm, int argc, char *argv[]);
+//void   getoptions(void);
+void   emboss_getoptions(char *pgm, int argc, char *argv[]);
 void   allocrest(void);
 void   doinit(void);
 void   makeweights(void);
 void   doinput(void);
 void   initparsnode(node **, node **, node *, long, long, long *, long *,
-                initops, pointarray, pointarray, Char *, Char *, char**);
+                initops, pointarray, pointarray, Char *, Char *, char **);
 void   evaluate(node *);
 void   tryadd(node *, node *, node *);
 void   addpreorder(node *, node *, node *);
@@ -50,7 +51,7 @@ Char infilename[FNMLNGTH], intreename[FNMLNGTH], weightfilename[FNMLNGTH];
 const char* outfilename;
 const char* outtreename;
 node *root;
-long chars, col, msets, ith, njumble, jumb, maxtrees;
+long chars, col, msets, ith, njumble, jumb, maxtrees, numtrees;
 /*   chars = number of sites in actual sequences */
 long inseed, inseed0;
 double threshold;
@@ -60,7 +61,7 @@ steptr oldweight;
 longer seed;
 pointarray treenode;            /* pointers to all nodes in tree */
 long *enterorder;
-Char progname[20];
+char *progname;
 long *zeros;
 unsigned char *zeros2;
 
@@ -83,264 +84,105 @@ boolean *names;
 node *grbg;
 
 
-
-/************ EMBOSS GET OPTIONS ROUTINES ******************************/
-
-void emboss_getoptions(char *pgm, int argc, char *argv[])
+void   emboss_getoptions(char *pgm, int argc, char *argv[])
 {
-    AjStatus retval;
- 
-    /* initialize global variables */
+  AjStatus retval;
+  ajint numseqs=0;
+  ajint numwts=0;
+
+  long inseed0;
+
+
+  jumble = false;
+  njumble = 1;
+  outgrno = 1;
+  outgropt = false;
+  thresh = false;
+  thorough = true;
+  rearrfirst = false;
+  maxtrees = 100;
+  trout = true;
+  usertree = false;
+  weights = false;
+  mulsets = false;
+  printdata = false;
+  progress = true;
+  treeprint = true;
+  stepbox = false;
+  ancseq = false;
+  dotdiff = true;
+  msets = 1;
+
+
+
 
     ajNamInit("emboss");
-    retval =  ajAcdInitP (pgm, argc, argv, "PHYLIP");
+    retval = ajAcdInitP (pgm, argc, argv, "PHYLIP");
 
-    /* ajAcdGet */
+    phylostates = ajAcdGetDiscretestates("infile");
 
-    inseed = ajAcdGetInt("seed");
 
-    /* init functions for standard ajAcdGet */
 
-    /* cleanup for clashing options */
+    while (phylostates[numseqs])
+	numseqs++;   
 
-}
+    if (numseqs > 1) {
+	mulsets = true;
+        msets = numseqs;
+    }
 
-/************ END EMBOSS GET OPTIONS ROUTINES **************************/
+    phyloweights = ajAcdGetProperties("weights");
+    if (phyloweights)
+    {
+      weights = true;
+      numwts = ajPhyloPropGetSize(phyloweights);
+    }
+    else if (numwts > 1) {
+      mulsets = true;
+      msets = numwts;
+      justwts = true;
+    }
 
-/*
-//void getoptions()
-//{
-//  /# interactively set options #/
-//  long inseed0, loopcount, loopcount2;
-//  Char ch, ch2;
-//
-//  fprintf(outfile, "\nDiscrete character parsimony algorithm, version %s\n\n",
-//            VERSION);
-//  jumble = false;
-//  njumble = 1;
-//  outgrno = 1;
-//  outgropt = false;
-//  thresh = false;
-//  thorough = true;
-//  rearrfirst = false;
-//  maxtrees = 100;
-//  trout = true;
-//  usertree = false;
-//  weights = false;
-//  mulsets = false;
-//  printdata = false;
-//  progress = true;
-//  treeprint = true;
-//  stepbox = false;
-//  ancseq = false;
-//  dotdiff = true;
-//  interleaved = true;
-//  loopcount = 0;
-//  for (;;) {
-//    cleerhome();
-//    printf("\nDiscrete character parsimony algorithm, version %s\n\n",VERSION);
-//    printf("Setting for this run:\n");
-//    printf("  U                 Search for best tree?  %s\n",
-//           (usertree ? "No, use user trees in input file" : "Yes"));
-//    if (!usertree) {
-//      printf("  S                        Search option?  ");
-//      if (thorough)
-//        printf("More thorough search\n");
-//      else if (rearrfirst)
-//        printf("Rearrange on one best tree\n");
-//      else
-//        printf("Less thorough\n");
-//      printf("  V              Number of trees to save?  %ld\n", maxtrees);
-//      printf("  J     Randomize input order of species?");
-//      if (jumble)
-//        printf("  Yes (seed =%8ld,%3ld times)\n", inseed0, njumble);
-//      else
-//        printf("  No. Use input order\n");
-//    }
-//    printf("  O                        Outgroup root?");
-//    if (outgropt)
-//      printf("  Yes, at species number %ld\n", outgrno);
-//    else
-//      printf("  No, use as outgroup species %ld\n", outgrno);
-//    printf("  T              Use Threshold parsimony?");
-//    if (thresh)
-//      printf("  Yes, count steps up to%4.1f per site\n", threshold);
-//    else
-//      printf("  No, use ordinary parsimony\n");
-//    printf("  W                       Sites weighted?  %s\n",
-//           (weights ? "Yes" : "No"));
-//    printf("  M           Analyze multiple data sets?");
-//    if (mulsets)
-//      printf("  Yes, %2ld %s\n", msets,
-//               (justwts ? "sets of weights" : "data sets"));
-//    else
-//      printf("  No\n");
-//    printf("  I            Input species interleaved?  %s\n",
-//           (interleaved ? "Yes" : "No, sequential"));
-//    printf("  0   Terminal type (IBM PC, ANSI, none)?  %s\n",
-//           ibmpc ? "IBM PC" : ansi  ? "ANSI"  : "(none)");
-//    printf("  1    Print out the data at start of run  %s\n",
-//           (printdata ? "Yes" : "No"));
-//    printf("  2  Print indications of progress of run  %s\n",
-//           progress ? "Yes" : "No");
-//    printf("  3                        Print out tree  %s\n",
-//           treeprint ? "Yes" : "No");
-//    printf("  4          Print out steps in each site  %s\n",
-//           stepbox ? "Yes" : "No");
-//    printf("  5  Print character at all nodes of tree  %s\n",
-//           ancseq ? "Yes" : "No");
-//    if (ancseq || printdata)
-//      printf("  .  Use dot-differencing to display them  %s\n",
-//           dotdiff ? "Yes" : "No");
-//    printf("  6       Write out trees onto tree file?  %s\n",
-//           trout ? "Yes" : "No");
-//    printf("\n  Y to accept these or type the letter for one to change\n");
-//#ifdef WIN32
-//    phyFillScreenColor();
-//#endif
-//    scanf("%c%*[^\n]", &ch);
-//    getchar();
-//    if (ch == '\n')
-//      ch = ' ';
-//    uppercase(&ch);
-//    if (ch == 'Y')
-//      break;
-//    if (strchr("WSVJOTUMI12345.60",ch) != NULL){
-//      switch (ch) {
-//        
-//      case 'J':
-//        jumble = !jumble;
-//        if (jumble)
-//          initjumble(&inseed, &inseed0, seed, &njumble);
-//        else njumble = 1;
-//        break;
-//        
-//      case 'O':
-//        outgropt = !outgropt;
-//        if (outgropt)
-//          initoutgroup(&outgrno, spp);
-//        break;
-//        
-//      case 'T':
-//        thresh = !thresh;
-//        if (thresh)
-//          initthreshold(&threshold);
-//        break;
-//        
-//      case 'W':
-//        weights = !weights;
-//        break;
-//
-//      case 'M':
-//        mulsets = !mulsets;
-//        if (mulsets) {
-//          printf("Multiple data sets or multiple weights?");
-//          loopcount2 = 0;
-//          do {
-//            printf(" (type D or W)\n");
-//#ifdef WIN32
-//            phyFillScreenColor();
-//#endif
-//            scanf("%c%*[^\n]", &ch2);
-//            getchar();
-//            if (ch2 == '\n')
-//              ch2 = ' ';
-//            uppercase(&ch2);
-//            countup(&loopcount2, 10);
-//          } while ((ch2 != 'W') && (ch2 != 'D'));
-//          justwts = (ch2 == 'W');
-//          if (justwts)
-//            justweights(&msets);
-//          else
-//            initdatasets(&msets);
-//          if (!jumble) {
-//            jumble = true;
-//            initjumble(&inseed, &inseed0, seed, &njumble);
-//          }
-//        }
-//        break;
-//        
-//      case 'U':
-//        usertree = !usertree;
-//        break;
-//        
-//      case 'S':
-//        thorough = !thorough;
-//        if (!thorough)
-//          printf("Rearrange on just one best tree?");
-//          loopcount2 = 0;
-//          do {
-//            printf(" (type Y or N)\n");
-//#ifdef WIN32
-//            phyFillScreenColor();
-//#endif
-//            scanf("%c%*[^\n]", &ch2);
-//            getchar();
-//            if (ch2 == '\n')
-//              ch2 = ' ';
-//            uppercase(&ch2);
-//            countup(&loopcount2, 10);
-//          } while ((ch2 != 'Y') && (ch2 != 'N'));
-//          rearrfirst = (ch2 == 'Y');
-//        break;
-//
-//      case 'V':
-//        loopcount2 = 0;
-//        do {
-//          printf("type the number of trees to save\n");
-//#ifdef WIN32
-//          phyFillScreenColor();
-//#endif
-//          scanf("%ld%*[^\n]", &maxtrees);
-//          if (maxtrees  > MAXNUMTREES)
-//            maxtrees = MAXNUMTREES;
-//          getchar();
-//          countup(&loopcount2, 10);
-//        } while (maxtrees < 1);
-//        break;
-//
-//      case 'I':
-//        interleaved = !interleaved;
-//        break;
-//        
-//      case '0':
-//        initterminal(&ibmpc, &ansi);
-//        break;
-//        
-//      case '1':
-//        printdata = !printdata;
-//        break;
-//        
-//      case '2':
-//        progress = !progress;
-//        break;
-//        
-//      case '3':
-//        treeprint = !treeprint;
-//        break;
-//        
-//      case '4':
-//        stepbox = !stepbox;
-//        break;
-//        
-//      case '5':
-//        ancseq = !ancseq;
-//        break;
-//        
-//      case '.':
-//        dotdiff = !dotdiff;
-//        break;
-//        
-//      case '6':
-//        trout = !trout;
-//        break;
-//      }
-//    } else
-//      printf("Not a possible option!\n");
-//    countup(&loopcount, 100);
-//  }
-//}  /# getoptions #/
-*/
+    if(!usertree) {
+      thorough = ajAcdGetToggle("thorough");
+      if(thorough) rearrfirst = ajAcdGetBool("rearrange");
+      maxtrees = ajAcdGetInt("maxtrees");
+      njumble = ajAcdGetInt("njumble");
+      if(njumble >0) {
+        inseed = ajAcdGetInt("seed");
+        jumble = true; 
+        emboss_initseed(inseed, &inseed0, seed);
+      }
+      else njumble = 1;
+    }
+
+    outgrno = ajAcdGetInt("outgrno");
+    if(outgrno != 0) outgropt = true;
+    else outgrno = 1;
+
+    thresh = ajAcdGetToggle("thresh");
+    if(thresh)  threshold = ajAcdGetFloat("threshold");
+    stepbox = ajAcdGetBool("stepbox");
+    ancseq = ajAcdGetBool("ancseq");
+
+    printdata = ajAcdGetBool("printdata");
+    progress = ajAcdGetBool("progress");
+    treeprint = ajAcdGetBool("treeprint");
+    trout = ajAcdGetToggle("trout");
+    if (ancseq || printdata) ajAcdGetBool("dotdiff");
+
+     embossoutfile = ajAcdGetOutfile("outfile");   
+     emboss_openfile(embossoutfile, &outfile, &outfilename);
+     
+    
+     if(trout) { 
+       embossouttree = ajAcdGetOutfile("outtreefile");
+       emboss_openfile(embossouttree, &outtree, &outtreename);
+     }
+
+  fprintf(outfile, "\nDiscrete character parsimony algorithm, version %s\n\n", VERSION);
+
+}  /* emboss_getoptions */
 
 
 void allocrest()
@@ -371,8 +213,7 @@ void doinit()
 {
   /* initializes variables */
 
-  inputnumbersstate(disc[0], &spp, &chars, &nonodes, 1);
-/*  getoptions();*/
+  inputnumbersstate(phylostates[0], &spp, &chars, &nonodes, 1);
   if (printdata)
     fprintf(outfile, "%2ld species, %3ld  sites\n\n", spp, chars);
   alloctree(&treenode, nonodes, usertree);
@@ -423,10 +264,10 @@ void doinput()
 
   if (justwts) {
     if (firstset)
-      discrete_inputdata(disc[0], chars);
+      discrete_inputdata(phylostates[0], chars);
     for (i = 0; i < chars; i++)
       weight[i] = 1;
-    inputweightsstr(phyloweight->Str[0], chars, weight, &weights);
+    inputweightsstr(phyloweights->Str[ith-1], chars, weight, &weights);
     if (justwts) {
       fprintf(outfile, "\n\nWeights set # %ld:\n\n", ith);
       if (progress)
@@ -436,12 +277,12 @@ void doinput()
       printweights(outfile, 0, chars, weight, "Sites");
   } else {
     if (!firstset)
-      samenumspstate(disc[ith-1], &chars, ith);
-    discrete_inputdata(disc[ith-1], chars);
+      samenumspstate(phylostates[ith-1], &chars, ith);
+    discrete_inputdata(phylostates[0], chars);
     for (i = 0; i < chars; i++)
       weight[i] = 1;
     if (weights) {
-      inputweightsstr(phyloweight->Str[ith-1], chars, weight, &weights);
+      inputweightsstr(phyloweights->Str[ith-1], chars, weight, &weights);
       if (printdata)
         printweights(outfile, 0, chars, weight, "Sites");
     }
@@ -469,9 +310,11 @@ void doinput()
 void initparsnode(node **p, node **grbg, node *q, long len, long nodei,
                         long *ntips, long *parens, initops whichinit,
                         pointarray treenode, pointarray nodep, Char *str, Char *ch,
-                        char** treestr)
+                        char **treestr)
 {
   /* initializes a node */
+  boolean minusread;
+  double valyew, divisor;
 
   switch (whichinit) {
   case bottom:
@@ -483,6 +326,9 @@ void initparsnode(node **p, node **grbg, node *q, long len, long nodei,
     break;
   case tip:
     match_names_to_data (str, treenode, p, spp);
+    break;
+  case length:         /* if there is a length, read it and discard value */
+    processlength(&valyew, &divisor, ch, &minusread, treestr, parens);
     break;
   default:      /*cases hslength,hsnolength,treewt,unittrwt,iter,*/
     break;      /*length should never occur                         */
@@ -599,7 +445,7 @@ void tryadd(node *p, node *item, node *nufork)
                      tmpadd, multf, root, zeros, zeros2, treenode);
         if (!thorough)
           changethere = !collapse;
-        if (thorough || !collapse || like > bstlike2) {
+        if (thorough || !collapse || like > bstlike2 || (nextree == 1)) {
           if (like > bstlike2) {
             addnsave(p, item, nufork, &root, &grbg, multf, treenode, 
                        place, zeros, zeros2);
@@ -1267,7 +1113,8 @@ void globrearrange()
                 zeros, zeros2);
       }
       if (progress) {
-        putchar('.');
+        if (j % ((nonodes / 72) + 1) == 0)
+          putchar('.');
         fflush(stdout);
       }
     }
@@ -1330,7 +1177,7 @@ void maketree()
   /* constructs a binary tree from the pointers in treenode.
      adds each node at location which yields highest "likelihood"
   then rearranges the tree for greatest "likelihood" */
-  long i, j, numtrees, nextnode;
+  long i, j, nextnode;
   boolean done, firsttree, goteof, haslengths;
   node *item, *nufork, *dummy;
   pointarray nodep;
@@ -1394,8 +1241,9 @@ void maketree()
           else
             printf(" on all trees tied for best\n");
           printf("  !");
-          for (j = 1; j <= nonodes; j++)
-            putchar('-');
+          for (j = 0; j < nonodes; j++)
+            if (j % ((nonodes / 72) + 1) == 0)
+              putchar('-');
           printf("!\n");
 #ifdef WIN32
           phyFillScreenColor();
@@ -1421,8 +1269,8 @@ void maketree()
       re_move(treenode[i], &dummy, &root, recompute, treenode, &grbg,
                 zeros, zeros2);
     if (jumb == njumble) {
-      if (thorough && (nextree > 2))
-        reducebestrees(bestrees, &nextree);
+      collapsebestrees(&root, &grbg, treenode, bestrees, place, zeros,
+                       zeros2, chars, recompute, progress);
       if (treeprint) {
         putc('\n', outfile);
         if (nextree == 2)
@@ -1464,9 +1312,6 @@ void maketree()
       }
     }
   } else {
-    /*openfile(&intree,INTREE,"input tree", "r",progname,intreename);*/
-    fscanf(intree, "%ld%*[^\n]", &numtrees);
-    getc(intree);
     if (numtrees > MAXNUMTREES) {
       printf(
             "\n\nERROR: number of input trees is read incorrectly from %s\n\n",
@@ -1566,25 +1411,16 @@ int main(int argc, Char *argv[])
    argv[0]="Pars";
 #endif
   init(argc, argv);
-  emboss_getoptions("fpars",argc,argv);
-  /*openfile(&infile,INFILE,"input file", "r",argv[0],infilename);*/
-   embossoutfile = ajAcdGetOutfile("outfile");
-  emboss_openfile(embossoutfile,&outfile,&outfilename);
+  emboss_getoptions("fpars", argc, argv);
+  progname = argv[0];
 
   ibmpc = IBMCRT;
   ansi = ANSICRT;
-  msets = 1;
   firstset = true;
   garbage = NULL;
   grbg = NULL;
   doinit();
-/*
-  if (weights || justwts)
-    openfile(&weightfile,WEIGHTFILE,"weights file","r",argv[0],weightfilename);
-*/
-   embossouttree = ajAcdGetOutfile("outtreefile");
-  emboss_openfile(embossouttree,&outtree,&outtreename);
-  if (!outtree) trout = false;
+
   for (ith = 1; ith <= msets; ith++) {
     if (msets > 1 && !justwts) {
       fprintf(outfile, "\nData set # %ld:\n\n", ith);
@@ -1598,7 +1434,6 @@ int main(int argc, Char *argv[])
       maketree();
   freerest();    
   }
-/*  freetree(nonodes, treenode);     debug */
   FClose(infile);
   FClose(outfile);
   if (weights || justwts)

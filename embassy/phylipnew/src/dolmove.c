@@ -3,7 +3,7 @@
 #include "disc.h"
 #include "dollo.h"
 
-/* version 3.6. (c) Copyright 1993-2002 by the University of Washington.
+/* version 3.6. (c) Copyright 1993-2004 by the University of Washington.
    Written by Joseph Felsenstein, Akiko Fuseki, Sean Lamont, and Andrew Keeffe.
    Permission is granted to copy and use this program provided no fee is
    charged for it and provided that this copyright notice is not removed. */
@@ -11,7 +11,7 @@
 #define overr           4
 #define which           1
 
-AjPPhyloState phylostate = NULL;
+AjPPhyloState* phylostates = NULL;
 AjPPhyloProp phyloanc = NULL;
 AjPPhyloProp phylofact = NULL;
 AjPPhyloProp phyloweights = NULL;
@@ -29,7 +29,7 @@ typedef enum {
 
 #ifndef OLDC
 /* function prototypes */
-/*void   getoptions(void);*/
+//void   getoptions(void);
 void emboss_getoptions(char *pgm, int argc, char *argv[]);
 void   inputoptions(void);
 void   allocrest(void);
@@ -70,8 +70,11 @@ void   treeconstruct(void);
 /* function prototypes */
 #endif
 
-Char infilename[FNMLNGTH],intreename[FNMLNGTH],ancfilename[FNMLNGTH], factfilename[FNMLNGTH], weightfilename[FNMLNGTH];
+Char infilename[FNMLNGTH],intreename[FNMLNGTH], ancfilename[FNMLNGTH], factfilename[FNMLNGTH], weightfilename[FNMLNGTH];
+
 const char* outtreename;
+AjPFile embossouttree;
+
 node *root;
 long outgrno, col, screenlines, screenwidth, scrollinc,treelines,
         leftedge,topedge,vmargin,hscroll,vscroll,farthest;
@@ -113,148 +116,78 @@ steptr numsone, numszero;
 boolean *names;
 
 
-
-/************ EMBOSS GET OPTIONS ROUTINES ******************************/
-
 void emboss_getoptions(char *pgm, int argc, char *argv[])
 {
-    AjStatus retval;
- 
-    /* initialize global variables */
+  AjStatus retval;
+  AjPStr method = NULL;
+  AjPStr initialtree = NULL;
+
+  how = arb;
+  usertree = false;
+  goteof = false;
+  thresh = false;
+  threshold = spp;
+  weights = false;
+  ancvar = false;
+  factors = false;
+  dollo = true;
+  screenlines = 24;
+  scrollinc   = 20;
+  screenwidth = 80;
 
     ajNamInit("emboss");
-    retval =  ajAcdInitP (pgm, argc, argv, "PHYLIP");
+    retval = ajAcdInitP (pgm, argc, argv, "PHYLIP");
 
-    embossouttree = ajAcdGetOutfile("outtreefile");
-    emboss_openfile(embossouttree,&outtree,&outtreename);
+    phylostates = ajAcdGetDiscretestates("infile");
 
-    /* ajAcdGet */
+    phyloweights = ajAcdGetProperties("weights");
+    if(phyloweights)  weights = true;
 
-    /* init functions for standard ajAcdGet */
+    phyloanc = ajAcdGetProperties("ancfile");
+    if(phyloanc) ancvar = true;
 
-    /* cleanup for clashing options */
+    initialtree = ajAcdGetListI("initialtree", 1);
 
-}
+    if(ajStrMatchC(initialtree, "a")) how = arb;
+    if(ajStrMatchC(initialtree, "u")) how = use;
+    if(ajStrMatchC(initialtree, "s")) {
+      how = spec;
+      phylotrees = ajAcdGetTree("intreefile");
+      usertree = true;
+    }
 
-/************ END EMBOSS GET OPTIONS ROUTINES **************************/
+    phylofact = ajAcdGetProperties("factorfile");
+    if(phylofact) factors = true;
 
-/*
-//void getoptions()
-//{
-//  /# interactively set options #/
-//  long loopcount;
-//  Char ch;
-//  boolean done, gotopt;
-//  char input[100];
-//
-//  how = arb;
-//  usertree = false;
-//  goteof = false;
-//  thresh = false;
-//  threshold = spp;
-//  weights = false;
-//  ancvar = false;
-//  factors = false;
-//  dollo = true;
-//  loopcount = 0;
-//  do {
-//    cleerhome();
-//    printf("\nInteractive Dollo or polymorphism parsimony,");
-//    printf(" version %s\n\n",VERSION);
-//    printf("Settings for this run:\n");
-//    printf("  P                        Parsimony method?");
-//    printf("  %s\n",(dollo ? "Dollo" : "Polymorphism"));
-//    printf("  A                     Use ancestral states?  %s\n",
-//           ancvar ? "Yes" : "No");
-//    printf("  F                  Use factors information?  %s\n",
-//           factors ? "Yes" : "No");
-//    printf("  W                           Sites weighted?  %s\n",
-//           (weights ? "Yes" : "No"));
-//    printf("  T                 Use Threshold parsimony?");
-//    if (thresh)
-//      printf("  Yes, count steps up to%4.1f\n", threshold);
-//    else
-//      printf("  No, use ordinary parsimony\n");
-//    printf("  A      Use ancestral states in input file?");
-//    printf("  %s\n",(ancvar ? "Yes" : "No"));
-//    printf("  U Initial tree (arbitrary, user, specify)?");
-//    printf("  %s\n",(how == arb) ? "Arbitrary" :
-//                    (how == use) ? "User tree from tree file" :
-//                                   "Tree you specify");
-//    printf("  0      Graphics type (IBM PC, ANSI, none)?  %s\n",
-//           ibmpc ? "IBM PC" : ansi  ? "ANSI"   : "(none)");
-//    printf("  L               Number of lines on screen?%4ld\n",screenlines);
-//    printf("  S                Width of terminal screen?%4ld\n",screenwidth);
-//    printf(
-//      "\n\nAre these settings correct? (type Y or the letter for one to change)\n");
-//#ifdef WIN32
-//    phyFillScreenColor();
-//#endif
-//    getstryng(input);
-//    ch = input[0];
-//    uppercase(&ch);
-//    done = (ch == 'Y');
-//    gotopt = (strchr("SFTPULA0W",ch) != NULL) ? true : false;
-//    if (gotopt) {
-//      switch (ch) {
-//
-//      case 'A':
-//        ancvar = !ancvar;
-//        break;
-//
-//      case 'F':
-//        factors = !factors;
-//        break;
-//
-//      case 'W':
-//          weights = !weights;
-//          break;
-//        
-//      case 'P':
-//        dollo = !dollo;
-//        break;
-//
-//      case 'T':
-//        thresh = !thresh;
-//        if (thresh)
-//          initthreshold(&threshold);
-//        break;
-//
-//      case 'U':
-//        if (how == arb)
-//          how = use;
-//        else if (how == use)
-//            how = spec;
-//          else
-//            how = arb;
-//        break;
-//
-//      case '0':
-//        initterminal(&ibmpc, &ansi);
-//        break;
-//
-//      case 'L':
-//        initnumlines(&screenlines);
-//        break;
-//
-//      case 'S':
-//        screenwidth = readlong("Width of terminal screen (in characters)?\n");
-//      }
-//    }
-//    else  
-//      printf("Not a possible option!\n");
-//    countup(&loopcount, 100);
-//  } while (!done);
-//  if (scrollinc < screenwidth / 2.0)
-//    hscroll = scrollinc;
-//  else
-//    hscroll = screenwidth / 2;
-//  if (scrollinc < screenlines / 2.0)
-//    vscroll = scrollinc;
-//  else
-//    vscroll = screenlines / 2;
-//}  /# getoptions #/
-*/
+
+    method = ajAcdGetListI("method", 1);
+
+    if(ajStrMatchC(method, "d")) dollo = true;
+    else dollo = false;
+
+    thresh = ajAcdGetToggle("thresh");
+    if(thresh)  threshold = ajAcdGetFloat("threshold");
+
+
+    screenwidth = ajAcdGetInt("screenwidth");
+    screenlines = ajAcdGetInt("screenlines");
+
+
+  if (scrollinc < screenwidth / 2.0)
+    hscroll = scrollinc;
+  else
+    hscroll = screenwidth / 2;
+  if (scrollinc < screenlines / 2.0)
+    vscroll = scrollinc;
+  else
+    vscroll = screenlines / 2;
+    printf("\nInteractive Dollo or polymorphism parsimony, version %s\n\n",VERSION);
+
+     embossouttree = ajAcdGetOutfile("outtreefile");
+     emboss_openfile(embossouttree, &outtree, &outtreename);
+
+
+}  /* emboss_getoptions */
 
 
 void inputoptions()
@@ -262,11 +195,11 @@ void inputoptions()
   /* input the information on the options */
   long i;
 
-  /*scan_eoln(infile);*/
+
   for (i = 0; i < (chars); i++)
       weight[i] = 1;
   if (ancvar)
-      inputancestorsstr(phyloanc->Str[0], anczero0, ancone0);
+      inputancestorsstr(phyloanc->Str[0],anczero0, ancone0);
   if (factors)
       inputfactorsstr(phylofact->Str[0], chars, factor, &factors);
   if (weights)
@@ -320,25 +253,14 @@ void doinput()
 {
   /* reads the input data */
 
-  inputnumbersstate(phylostate, &spp, &chars, &nonodes, 1);
+  inputnumbersstate(phylostates[0], &spp, &chars, &nonodes, 1);
   words = chars / bits + 1;
   printf("%2ld species, %3ld characters\n", spp, chars);
-  printf("\nReading input file ...\n\n");
-/*  getoptions();*/
-/*
-  if (weights)
-      openfile(&weightfile,WEIGHTFILE,"weights file","r",progname,weightfilename);
-  if(ancvar)
-      openfile(&ancfile,ANCFILE,"ancestors file", "r",progname,ancfilename);
-  if(factors)
-      openfile(&factfile,FACTFILE,"factors file", "r",progname,factfilename);
-*/
-
   alloctree(&treenode);
   setuptree(treenode);
   allocrest();
   inputoptions();
-  disc_inputdata(phylostate, treenode, dollo, false, outfile);
+  disc_inputdata(phylostates[0], treenode, dollo, false, stdout);
 }  /* doinput */
 
 
@@ -899,10 +821,18 @@ void dolmove_printree()
     evaluate(root);
   if (display)
     dolmove_hypstates();
+#ifdef WIN32
+  if(ibmpc || ansi){
+    phyClearScreen();
+  } else {
+    printf("\n");
+  }
+#else
   if (ansi || ibmpc)
     printf("\033[2J\033[H");
   else
     putchar('\n');
+#endif
   tipy = 1;
   dow = down;
   if (spp * dow > screenlines && !subtree)
@@ -1018,7 +948,7 @@ void yourtree()
 void initdolmovenode(node **p, node **grbg, node *q, long len, long nodei,
                         long *ntips, long *parens, initops whichinit,
                         pointarray treenode, pointarray nodep, Char *str, Char *ch,
-                        char** treestr)
+                        char **treestr)
 {
   /* initializes a node */
   /* LM 7/27  I added this function and the commented lines around */
@@ -1063,7 +993,6 @@ void buildtree()
     break;
 
   case use:
-    /*openfile(&intree,INTREE,"input tree file", "r",progname,intreename);*/
     names = (boolean *)Malloc(spp*sizeof(boolean));
     firsttree = true;                       /**/
     nodep = NULL;                           /**/
@@ -1314,9 +1243,7 @@ void undo()
 void treewrite(boolean done)
 {
   /* write out tree to a file */
-  /*Char ch;*/
 
-  /*treeoptions(waswritten, &ch, &outtree, outtreename, progname);*/
   if (!done)
     dolmove_printree();
   if (waswritten && ch == 'N')
@@ -1576,12 +1503,6 @@ int main(int argc, Char *argv[])
   init(argc, argv);
   emboss_getoptions("fdolmove",argc,argv);
   progname = argv[0];
-
-  /*openfile(&infile,infilename,"input file", "r",argv[0],infilename);*/
-
-  screenlines = 24;
-  scrollinc   = 20;
-  screenwidth = 80;
   topedge     = 1;
   leftedge    = 1;
   ibmpc = IBMCRT;

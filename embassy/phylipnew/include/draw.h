@@ -78,7 +78,7 @@ double lengthtext(char *, long, char *, fonttype);
 double heighttext(fonttype, char *);
 void plotrparms(long ntips);
 void   clearit(void);
-void   getplotter(void);
+void   getplotter(char);
 void   getpreview(void);
 const char *figfontname(int id);
 boolean isfigfont(char *);

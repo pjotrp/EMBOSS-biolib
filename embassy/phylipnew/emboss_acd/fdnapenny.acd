@@ -1,7 +1,6 @@
 application: fdnapenny [
   documentation: "Penny algorithm for DNA"
   groups: "Phylogeny:Molecular sequence"
-  embassy: "phylipnew"
 ]
 
 section: input [
@@ -9,9 +8,18 @@ section: input [
   type: "page"
 ]
 
-seqset: sequences  [
+seqsetall: sequence  [
   parameter: "Y"
-  type: "gapany"
+  type: "gapdnaphylo"
+  help:  "File containing one or more sequence alignments"
+]
+
+properties: weights [
+	additional: "Y"
+	characters: "01"
+        length: "$(sequence.length)"
+        size: "1"
+	nullok: "Y"
 ]
 
 endsection: input
@@ -26,47 +34,49 @@ outfile: outfile  [
   knowntype: "dnapenny output"
 ]
 
+
+toggle: trout [
+	additional: "Y"
+	default: "Y"
+	information: "Write out trees to tree file"
+]
+
+outfile: outtreefile  [
+  additional: "$(trout)"
+  extension: "treefile"
+  information: "Tree file name"
+  knowntype: "newick tree"
+  nullok: "Y"
+]
+
 boolean: printdata  [
   additional: "Y"
   default: "N"
-  information: "Print out the data at start of run"
+  information: "Print data at start of run"
 ]
 
 boolean: progress  [
   additional: "Y"
-  default: "N"
+  default: "Y"
   information: "Print indications of progress of run"
 ]
 
-boolean: steps  [
+boolean: treeprint [
+	additional: "Y"
+	default: "Y"
+	information: "Print out tree"
+]
+
+boolean: stepbox  [
   additional: "Y"
   default: "N"
   information: "Print out steps in each site"
 ]
 
-boolean: seqatnodes  [
+boolean: ancseq  [
   additional: "Y"
   default: "N"
   information: "Print sequences at all nodes of tree"
-]
-
-boolean: drawtree  [
-  additional: "Y"
-  default: "Y"
-  information: "Draw tree"
-]
-
-toggle: trout  [
-  parameter: "Y"
-  default: "Y"
-  information: "Create a tree file"
-]
-
-outfile: treefile  [
-  standard: "$(trout)"
-  extension: "treefile"
-  information: "Tree file name"
-  knowntype: "newick tree"
 ]
 
 endsection: output
@@ -76,53 +86,43 @@ section: additional [
   type: "page"
 ]
 
-integer: numgroups  [
-  additional: "Y"
-  information: "How many groups of 100 trees"
-  default: "1000"
-]
-
 integer: howoften  [
   additional: "Y"
   information: "How often to report, in trees"
   default: "100"
 ]
 
+integer: howmany  [
+  additional: "Y"
+  information: "How many groups of trees"
+  default: "1000"
+]
+
 boolean: simple  [
   additional: "Y"
   information: "Branch and bound is simple"
+  default: "Y"
 ]
 
-endsection: additional
-
-section: required [
-  information: "Required section"
-  type: "page"
-]
-
-toggle: og  [
+integer: outgrno  [
   additional: "Y"
-  information: "Outgroup root"
-  default: "N"
-]
-
-integer: outgnum  [
-  standard: "$(og)"
-  minimum: "1"
-  default: "1"
-  information: "Number of the outgroup"
+  minimum: "0"
+  maximum: "$(sequence.count)"
+  default: "0"
+  information: "Species number to use as outgroup"
 ]
 
 toggle: thresh  [
+  additional: "Y"
   default: "N"
   information: "Use threshold parsimony"
 ]
 
-float: valthresh  [
-  standard: "$(thresh)"
+float: threshold  [
+  additional: "$(thresh)"
   minimum: "1.0"
   default: "1.0"
   information: "Threshold value"
 ]
 
-endsection: required
+endsection: additional

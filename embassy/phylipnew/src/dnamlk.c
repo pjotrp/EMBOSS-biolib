@@ -25,16 +25,20 @@ AjPPhyloProp phyloratecat = NULL;
 AjPPhyloProp phyloweights = NULL;
 AjPPhyloTree* phylotrees;
 
+ajint numseqs;
+ajint numwts;
+
 #ifndef OLDC
 /* function prototypes */
-/*void   getoptions(void);*/
-void emboss_getoptions(char *pgm, int argc, char *argv[]);
+//void   getoptions(void);
+void   emboss_getoptions(char *pgm, int argc, char *argv[]);
+void   initmemrates(); 
 void   allocrest(void);
 void   doinit(void);
 void   inputoptions(void);
 void   makeweights(void);
 void   getinput(void);
-void   inittable_for_usertree (char*);
+void   inittable_for_usertree (char *);
 void   inittable(void);
 void   exmake(double, long);
 void   alloc_nvd(long, nuview_data *);
@@ -54,7 +58,7 @@ void   tryrearr(node *, boolean *);
 void   repreorder(node *, boolean *);
 void   rearrange(node **);
 void   initdnamlnode(node **, node **, node *, long, long, long *, long *,
-                initops, pointarray, pointarray, Char *, Char *, char**);
+                initops, pointarray, pointarray, Char *, Char *, char **);
 void   tymetrav(node *, double *);
 void   dnamlk_coordinates(node *, long *);
 void   dnamlk_drawline(long, double);
@@ -77,18 +81,20 @@ void restore_saved_tyme(tree *load_tree, double tymes[]);
 #endif
 
 
-Char infilename[FNMLNGTH], intreename[FNMLNGTH],
-     catfilename[FNMLNGTH], weightfilename[FNMLNGTH];
+Char infilename[FNMLNGTH],  intreename[FNMLNGTH], catfilename[FNMLNGTH], weightfilename[FNMLNGTH];
+
 const char* outfilename;
 const char* outtreename;
+AjPFile embossoutfile;
+AjPFile embossouttree;
 double *rrate;
-long sites, weightsum, categs, datasets, ith, njumble, jumb, numtrees;
+long sites, weightsum, categs, datasets, ith, njumble, jumb, numtrees, shimotrees;
 /*  sites = number of sites in actual sequences
   numtrees = number of user-defined trees */
 long inseed, inseed0, mx, mx0, mx1;
 boolean freqsfrom, global, global2=0, jumble, lngths, trout, usertree, weights, 
           rctgry, ctgry, ttr, auto_, progress, mulsets, firstset, hypstate, 
-          reconsider, smoothit, polishing, justwts, gama, invar;
+          smoothit, polishing, justwts, gama, invar;
 tree curtree, bestree, bestree2, priortree;
 node *qwhere, *grbg;
 double *tymes;
@@ -101,6 +107,7 @@ double *rate;
 double **term, **slopeterm, **curveterm;
 longer seed;
 double *probcat;
+long iprobcat;
 contribarr *contribution;
 char *progname;
 long rcategs, nonodes2;
@@ -137,393 +144,245 @@ void restore_saved_tyme(tree *load_tree, double tymes[])
   }
 }
 
-
-/************ EMBOSS GET OPTIONS ROUTINES ******************************/
-
 void emboss_getoptions(char *pgm, int argc, char *argv[])
 {
     AjStatus retval;
- 
-    /* initialize global variables */
+    AjPStr gammamethod = NULL;
+    ajint i;
+    AjPFloat basefreq;
+    AjPFloat hmmrates;
+    AjPFloat hmmprob;
+    AjPFloat arrayval;
+
+  double probsum=0.0;
+  auto_ = false;
+  ctgry = false;
+  rctgry = false;
+  categs = 1;
+  rcategs = 1;
+  freqsfrom = true;
+  gama = false;
+  invar = false;
+  global = false;
+  hypstate = false;
+  jumble = false;
+  njumble = 1;
+  lambda = 1.0;
+  lambda1 = 0.0;
+  lngths = false;
+  trout = true;
+  ttratio = 2.0;
+  ttr = false;
+  usertree = false;
+  weights = false;
+  printdata = false;
+  progress = true;
+  treeprint = true;
+  interleaved = true;
+  datasets = 1;
+  mulsets = false;
 
     ajNamInit("emboss");
-    retval =  ajAcdInitP (pgm, argc, argv, "PHYLIP");
+    retval = ajAcdInitP (pgm, argc, argv, "PHYLIP");
 
-    /* ajAcdGet */
 
-    /* init functions for standard ajAcdGet */
-    inseed = ajAcdGetInt("seed");
+    seqsets = ajAcdGetSeqsetall("sequence");
 
-    /* cleanup for clashing options */
+    numseqs = 0;
+    while (seqsets[numseqs])
+	numseqs++;
 
+    phylotrees = ajAcdGetTree("intreefile");
+    if (phylotrees)
+    {
+        numtrees = 0;
+        while (phylotrees[numtrees])
+            numtrees++;
+        usertree = true;
+        lngths = ajAcdGetBool("lengths");
+    }
+    numwts = 0;
+
+    phyloweights = ajAcdGetProperties("weights");
+    if (phyloweights)
+    {
+      weights = true;
+      numwts = ajPhyloPropGetSize(phyloweights);
+    }
+
+    if (numseqs > 1) {
+      mulsets = true;
+      datasets = numseqs;
+    }
+    else if (numwts > 1) {
+      mulsets = true;
+      datasets = numwts;
+      justwts = true;
+    }
+
+   categs = ajAcdGetInt("ncategories"); 
+
+    if (categs > 1) {
+      ctgry = true;
+      rate = (double *) Malloc(categs * sizeof(double));
+      arrayval = ajAcdGetArray("rate");
+      emboss_initcategs(arrayval, categs, rate);
+    }
+    else{
+      rate    = (double *) Malloc(categs*sizeof(double));
+      rate[0] = 1.0;
+    }     
+
+
+
+    phyloratecat = ajAcdGetProperties("categories");      
+
+    gammamethod = ajAcdGetListI("gamma", 1);
+
+    if(ajStrMatchC(gammamethod, "n")) {
+      rrate      = (double *) Malloc(rcategs*sizeof(double));
+      probcat    = (double *) Malloc(rcategs*sizeof(double));
+      iprobcat = rcategs;
+      rrate[0]   = 1.0;
+      probcat[0] = 1.0;
+    }     
+    else {
+      rctgry = true;
+      auto_ = ajAcdGetBool("adjsite"); 
+      if(auto_)  {
+         lambda = ajAcdGetFloat("lambda");
+         lambda = 1 / lambda;
+         lambda1 = 1.0 - lambda;
+      }
+    }        
+
+
+
+    if(ajStrMatchC(gammamethod, "g")) {
+      gama = true; 
+      rcategs = ajAcdGetInt("ngammacat");
+      cv = ajAcdGetFloat("gammacoefficient");
+      alpha = 1.0 / (cv*cv);
+      initmemrates();
+      initgammacat(rcategs, alpha, rrate, probcat);
+    }
+    else if(ajStrMatchC(gammamethod, "i")) {
+      invar = true;
+      rcategs = ajAcdGetInt("ninvarcat");
+      cv = ajAcdGetFloat("invarcoefficient");
+      alpha = 1.0 / (cv*cv);
+      invarfrac = ajAcdGetFloat("invarfrac");
+      initmemrates();
+      initgammacat(rcategs-1, alpha, rrate, probcat);
+      for (i=0; i < rcategs-1 ; i++)
+         probcat[i] = probcat[i]*(1.0-invarfrac);
+      probcat[rcategs-1] = invarfrac;
+      rrate[rcategs-1] = 0.0;
+    }
+    else if(ajStrMatchC(gammamethod, "h")) {
+      rcategs = ajAcdGetInt("nhmmcategories"); 
+      initmemrates();
+      hmmrates = ajAcdGetArray("hmmrates");
+      emboss_initcategs(hmmrates, rcategs,rrate);      
+      hmmprob = ajAcdGetArray("hmmprobabilities");
+      for (i=0; i < rcategs; i++){
+	 probcat[i] = ajFloatGet(hmmprob, i);
+         probsum += probcat[i];
+      }
+    }    
+
+    ttratio = ajAcdGetFloat("ttratio");
+ 
+    if(!usertree) {
+      global = ajAcdGetBool("global"); 
+      njumble = ajAcdGetInt("njumble");
+      if(njumble >0) {
+        inseed = ajAcdGetInt("seed");
+        jumble = true; 
+        emboss_initseed(inseed, &inseed0, seed);
+      }
+      else njumble = 1;
+    }
+
+    if((mulsets) && (!jumble)) {
+      jumble = true;
+      inseed = ajAcdGetInt("seed");
+      emboss_initseed(inseed, &inseed0, seed);
+    }
+
+    printdata = ajAcdGetBool("printdata");
+    progress = ajAcdGetBool("progress");
+    treeprint = ajAcdGetBool("treeprint");
+    trout = ajAcdGetToggle("trout");
+    hypstate = ajAcdGetBool("hypstate");
+
+    freqsfrom = ajAcdGetToggle("freqsfrom");
+    if(!freqsfrom) {
+      basefreq = ajAcdGetArray("basefreq"); 
+      freqa = ajFloatGet(basefreq, 0);
+      freqc = ajFloatGet(basefreq, 1);
+      freqg = ajFloatGet(basefreq, 2);
+      freqt = ajFloatGet(basefreq, 3);
+    }
+
+     embossoutfile = ajAcdGetOutfile("outfile");   
+     emboss_openfile(embossoutfile, &outfile, &outfilename);
+     
+     
+     if(trout) {
+       embossouttree = ajAcdGetOutfile("outtreefile");
+       emboss_openfile(embossouttree, &outtree, &outtreename);
+     }
+
+    fprintf(outfile, "\nNucleic acid sequence Maximum Likelihood");
+    fprintf(outfile, " method, version %s\n\n",VERSION);
+
+
+    printf("\n mulsets: %s",(mulsets ? "true" : "false"));
+    printf("\n datasets : %ld",(datasets));
+    printf("\n rctgry : %s",(rctgry ? "true" : "false"));
+    printf("\n gama : %s",(gama ? "true" : "false"));
+    printf("\n invar : %s",(invar ? "true" : "false"));
+    printf("\n\n ctgry: %s",(ctgry ? "true" : "false"));
+    printf("\n categs : %ld",(categs));
+    printf("\n rcategs : %ld",(rcategs));    
+    printf("\n auto_: %s",(auto_ ? "true" : "false"));
+    printf("\n freqsfrom : %s",(freqsfrom ? "true" : "false"));
+    printf("\n global : %s",(global ? "true" : "false"));
+    printf("\n hypstate : %s",(hypstate ? "true" : "false"));
+
+    printf("\n invar : %s",(invar ? "true" : "false"));
+    printf("\n jumble : %s",(jumble ? "true" : "false"));
+    printf("\n njumble : %ld",(njumble));
+    printf("\n lngths : %s",(lngths ? "true" : "false"));
+    printf("\n lambda : %f",(lambda));
+    printf("\n lambda1 : %f",(lambda1));
+    printf("\n cv : %f",(cv));
+    printf("\n freqa : %f",(freqa));
+    printf("\n freqc : %f",(freqc));
+    printf("\n freqg : %f",(freqg));
+    printf("\n freqt : %f",(freqt));
+    printf("\n trout : %s",(trout ? "true" : "false"));    
+    printf("\n ttratio : %f",(ttratio));
+    printf("\n probsum : %f",(probsum));
+    printf("\n ttr : %s",(ttr ? "true" : "false"));
+    printf("\n usertree : %s",(usertree ? "true" : "false"));
+    printf("\n weights: %s",(weights ? "true" : "false"));
+    printf("\n printdata : %s",(printdata ? "true" : "false"));
+    printf("\n progress : %s",(progress ? "true" : "false"));
+    printf("\n treeprint: %s",(treeprint ? "true" : "false"));
+    printf("\n interleaved : %s \n\n",(interleaved ? "true" : "false"));
+    for (i=0;i<iprobcat;i++)
+      printf("probcat[%d] %f\n", i, probcat[i]);
+
+}  /* emboss_getoptions */
+
+void initmemrates() 
+{
+   probcat = (double *) Malloc(rcategs * sizeof(double));
+   rrate = (double *) Malloc(rcategs * sizeof(double));
+   iprobcat = rcategs;
 }
-
-/************ END EMBOSS GET OPTIONS ROUTINES **************************/
-
-/*
-//void getoptions()
-//{
-//  /# interactively set options #/
-//  long i, loopcount, loopcount2;
-//  Char ch;
-//  boolean done;
-//  boolean didchangecat, didchangercat;
-//  double probsum;
-//
-//  fprintf(outfile, "\nNucleic acid sequence\n");
-//  fprintf(outfile, "   Maximum Likelihood method with molecular ");
-//  fprintf(outfile, "clock, version %s\n\n", VERSION);
-//  putchar('\n');
-//  auto_ = false;
-//  ctgry = false;
-//  didchangecat = false;
-//  rctgry = false;
-//  didchangercat = false;
-//  categs = 1;
-//  rcategs = 1;
-//  freqsfrom = true;
-//  gama = false;
-//  invar = false;
-//  global = false;
-//  hypstate = false;
-//  jumble = false;
-//  njumble = 1;
-//  lambda = 1.0;
-//  lambda1 = 0.0;
-//  lngths = false;
-//  trout = true;
-//  ttratio = 2.0;
-//  ttr = false;
-//  usertree = false;
-//  weights = false;
-//  printdata = false;
-//  progress = true;
-//  treeprint = true;
-//  interleaved = true;
-//  loopcount = 0;
-//  do {
-//    cleerhome();
-//    printf("\nNucleic acid sequence\n");
-//    printf("   Maximum Likelihood method with molecular clock, version %s\n\n",
-//           VERSION);
-//    printf("Settings for this run:\n");
-//    printf("  U                 Search for best tree?");
-//    if (usertree)
-//     printf("  No, use user trees in input file\n");
-//    else
-//      printf("  Yes\n");
-//    if (usertree) {
-//      printf("  L           Use lengths from user tree?");
-//      if (lngths)
-//        printf("  Yes\n");
-//      else
-//        printf("  No\n");
-//    }
-//    printf("  T        Transition/transversion ratio:");
-//    if (!ttr)
-//      printf("  2.0\n");
-//    else
-//      printf("  %8.4f\n", ttratio);
-//    printf("  F       Use empirical base frequencies?");
-//    if (freqsfrom)
-//      printf("  Yes\n");
-//    else
-//      printf("  No\n");
-//    printf("  C   One category of substitution rates?");
-//    if (!ctgry)
-//      printf("  Yes\n");
-//    else
-//      printf("  %ld categories\n", categs);
-//    printf("  R           Rate variation among sites?");
-//    if (!rctgry)
-//      printf("  constant rate\n");
-//    else {
-//      if (gama)
-//        printf("  Gamma distributed rates\n");
-//      else {
-//        if (invar)
-//          printf("  Gamma+Invariant sites\n");
-//        else
-//          printf("  user-defined HMM of rates\n");
-//      }
-//      printf("  A   Rates at adjacent sites correlated?");
-//      if (!auto_)
-//        printf("  No, they are independent\n");
-//      else
-//        printf("  Yes, mean block length =%6.1f\n", 1.0 / lambda);
-//    }
-//    if (!usertree) {
-//      printf("  G                Global rearrangements?");
-//      if (global)
-//        printf("  Yes\n");
-//      else
-//        printf("  No\n");
-//    }
-//    printf("  W                       Sites weighted?  %s\n",
-//           (weights ? "Yes" : "No"));
-//    if (!usertree) {
-//      printf("  J   Randomize input order of sequences?");
-//      if (jumble)
-//        printf("  Yes (seed = %8ld, %3ld times)\n", inseed0, njumble);
-//      else
-//        printf("  No. Use input order\n");
-//    }
-//    printf("  M           Analyze multiple data sets?");
-//    if (mulsets)
-//      printf("  Yes, %2ld %s\n", datasets,
-//               (justwts ? "sets of weights" : "data sets"));
-//    else
-//      printf("  No\n");
-//    printf("  I          Input sequences interleaved?");
-//    if (interleaved)
-//      printf("  Yes\n");
-//    else
-//      printf("  No, sequential\n");
-//    printf("  0   Terminal type (IBM PC, ANSI, none)?");
-//    if (ibmpc)
-//      printf("  IBM PC\n");
-//    if (ansi)
-//      printf("  ANSI\n");
-//    if (!(ibmpc || ansi))
-//      printf("  (none)\n");
-//    printf("  1    Print out the data at start of run");
-//    if (printdata)
-//      printf("  Yes\n");
-//    else
-//      printf("  No\n");
-//    printf("  2  Print indications of progress of run");
-//    if (progress)
-//      printf("  Yes\n");
-//    else
-//      printf("  No\n");
-//    printf("  3                        Print out tree");
-//    if (treeprint)
-//      printf("  Yes\n");
-//    else
-//      printf("  No\n");
-//    printf("  4       Write out trees onto tree file?");
-//    if (trout)
-//      printf("  Yes\n");
-//    else
-//      printf("  No\n");
-//    printf("  5   Reconstruct hypothetical sequences?  %s\n",
-//           (hypstate ? "Yes" : "No"));
-//    printf("\nAre these settings correct? (type Y or the letter for one to change)\n");
-//#ifdef WIN32
-//    phyFillScreenColor();
-//#endif
-//    scanf("%c%*[^\n]", &ch);
-//    getchar();
-//    if (ch == '\n')
-//      ch = ' ';
-//    uppercase(&ch);
-//    done = (ch == 'Y');
-//    if (!done) {
-//      uppercase(&ch);
-//      if (strchr("JUCRAFWGLTMI012345", ch) != NULL){
-//        switch (ch) {
-//
-//        case 'C':
-//          ctgry = !ctgry;
-//          if (ctgry) {
-//            printf("\nSitewise user-assigned categories:\n\n");
-//            initcatn(&categs);
-//            if (rate){
-//              free(rate);
-//            }
-//            rate    = (double *) Malloc( categs * sizeof(double));
-//            didchangecat = true;
-//            initcategs(categs, rate);
-//          }
-//          break;
-//
-//        case 'R':
-//          if (!rctgry) {
-//            rctgry = true;
-//            gama = true;
-//          } else {
-//            if (gama) {
-//              gama = false;
-//              invar = true;
-//            } else {
-//              if (invar)
-//                invar = false;
-//              else
-//                rctgry = false;
-//            }
-//          }
-//          break;
-//
-//        case 'A':
-//          auto_ = !auto_;
-//          if (auto_) {
-//            initlambda(&lambda);
-//            lambda1 = 1.0 - lambda;
-//          }
-//          break;
-//
-//        case 'F':
-//          freqsfrom = !freqsfrom;
-//          if (!freqsfrom)
-//            initfreqs(&freqa, &freqc, &freqg, &freqt);
-//          break;
-//
-//        case 'G':
-//          global = !global;
-//          break;
-//
-//        case 'W':
-//          weights = !weights;
-//          break;
-//
-//        case 'J':
-//          jumble = !jumble;
-//          if (jumble)
-//            initjumble(&inseed, &inseed0, seed, &njumble);
-//          else njumble = 1;
-//          break;
-//
-//        case 'L':
-//          lngths = !lngths;
-//          break;
-//
-//        case 'T':
-//          ttr = !ttr;
-//          if (ttr)
-//            initratio(&ttratio);
-//          break;
-//
-//        case 'U':
-//          usertree = !usertree;
-//          break;
-//
-//        case 'M':
-//          mulsets = !mulsets;
-//          if (mulsets) {
-//            printf("Multiple data sets or multiple weights?");
-//            loopcount2 = 0;
-//            do {
-//              printf(" (type D or W)\n");
-//#ifdef WIN32
-//              phyFillScreenColor();
-//#endif
-//              scanf("%c%*[^\n]", &ch2);
-//              getchar();
-//              if (ch2 == '\n')
-//                ch2 = ' ';
-//              uppercase(&ch2);
-//              countup(&loopcount2, 10);
-//            } while ((ch2 != 'W') && (ch2 != 'D'));
-//            justwts = (ch2 == 'W');
-//            if (justwts)
-//              justweights(&datasets);
-//            else
-//              initdatasets(&datasets);
-//            if (!jumble) {
-//              jumble = true;
-//              initjumble(&inseed, &inseed0, seed, &njumble);
-//            }
-//          }
-//          break;
-//
-//        case 'I':
-//          interleaved = !interleaved;
-//          break;
-//
-//        case '0':
-//          initterminal(&ibmpc, &ansi);
-//          break;
-//
-//        case '1':
-//          printdata = !printdata;
-//          break;
-//
-//        case '2':
-//          progress = !progress;
-//          break;
-//
-//        case '3':
-//          treeprint = !treeprint;
-//          break;
-//
-//        case '4':
-//          trout = !trout;
-//          break;
-//
-//        case '5':
-//          hypstate = !hypstate;
-//          break;
-//        }
-//      } else
-//        printf("Not a possible option!\n");
-//    }
-//    countup(&loopcount, 100);
-//  } while (!done);
-//  if (gama || invar) {
-//    loopcount = 0;
-//    do {
-//      printf(
-//"\nCoefficient of variation of substitution rate among sites (must be positive)\n");
-//      printf(
-//  " In gamma distribution parameters, this is 1/(square root of alpha)\n");
-//#ifdef WIN32
-//      phyFillScreenColor();
-//#endif
-//      scanf("%lf%*[^\n]", &cv);
-//      getchar();
-//      countup(&loopcount, 10);
-//    } while (cv <= 0.0);
-//    alpha = 1.0 / (cv * cv);
-//  }
-//  if (!rctgry)
-//    auto_ = false;
-//  if (rctgry) {
-//    printf("\nRates in HMM");
-//    if (invar)
-//      printf(" (including one for invariant sites)");
-//    printf(":\n");
-//    initcatn(&rcategs);
-//    if (probcat){
-//      free(probcat);
-//      free(rrate);
-//    }
-//    probcat = (double *) Malloc(rcategs * sizeof(double));
-//    rrate   = (double *) Malloc(rcategs * sizeof(double));
-//    didchangercat = true;
-//    if (gama)
-//      initgammacat(rcategs, alpha, rrate, probcat); 
-//    else {
-//      if (invar) {
-//        loopcount = 0;
-//        do {
-//          printf("Fraction of invariant sites?\n");
-//          scanf("%lf%*[^\n]", &invarfrac);
-//          getchar();
-//          countup(&loopcount, 10);
-//        } while ((invarfrac <= 0.0) || (invarfrac >= 1.0));
-//        initgammacat(rcategs-1, alpha, rrate, probcat); 
-//        for (i = 0; i < rcategs-1; i++)
-//          probcat[i] = probcat[i]*(1.0-invarfrac);
-//        probcat[rcategs-1] = invarfrac;
-//        rrate[rcategs-1] = 0.0;
-//      } else {
-//        initcategs(rcategs, rrate);
-//        initprobcat(rcategs, &probsum, probcat);
-//      }
-//    }
-//  }
-//  if (!didchangercat){
-//    rrate      = Malloc( rcategs*sizeof(double));
-//    probcat    = Malloc( rcategs*sizeof(double));
-//    rrate[0]   = 1.0;
-//    probcat[0] = 1.0;
-//  }
-//  if (!didchangecat){
-//    rate       = Malloc( categs*sizeof(double));
-//    rate[0]    = 1.0;
-//  }
-//}  /# getoptions #/
-*/
 
 void reallocsites(void) 
 {
@@ -572,7 +431,6 @@ void doinit()
   /* initializes variables */
 
   inputnumbersseq(seqsets[0], &spp, &sites, &nonodes, 1);
-/*  getoptions();*/
   if (printdata)
     fprintf(outfile, "%2ld species, %3ld  sites\n", spp, sites);
   alloctree(&curtree.nodep, nonodes, usertree);
@@ -601,7 +459,7 @@ void inputoptions()
     weight[i] = 1;
   
   if (justwts || weights)
-    inputweightsstr(phyloweights->Str[0], sites, weight, &weights);
+    inputweightsstr(phyloweights->Str[ith-1], sites, weight, &weights);
   weightsum = 0;
   for (i = 0; i < sites; i++)
     weightsum += weight[i];
@@ -747,6 +605,10 @@ void inittable()
       tbl[i][j]->ratxi /= sumrates;
       tbl[i][j]->ratxv /= sumrates;
     }
+
+  if(jumb > 1)
+    return;
+
   if (gama || invar) {
     fprintf(outfile, "\nDiscrete approximation to gamma distributed rates\n");
     fprintf(outfile,
@@ -1048,7 +910,7 @@ double evaluate(node *p)
     for (j = 0; j < rcategs; j++)
       clai[j] = tterm[j] / sumterm;
     memcpy(contribution[i], clai, sizeof(contribarr));
-    if (!auto_ && usertree)
+    if (!auto_ && usertree && (which <= shimotrees))
       l0gf[which - 1][i] = lterm;
     sum += aliasweight[i] * lterm;
   }
@@ -1079,7 +941,8 @@ double evaluate(node *p)
   curtree.likelihood = sum;
   if (auto_ || !usertree)
     return sum;
-  l0gl[which - 1] = sum;
+  if(which <= shimotrees)
+    l0gl[which - 1] = sum;
   if (which == 1) {
     maxwhich = 1;
     maxlogl = sum;
@@ -1157,18 +1020,18 @@ void makenewv(node *p)
     tdelta = (thigh - s->tyme) / 5.0;
   tfactor = 1.0;
   if (!done)
-    getthree(s, thigh, tlow);
+    getthree(s, thigh, tlow); /* get three points for interpolation */
   while (it < iterations && !done) {
     ymax = lnl[0];
     imax = 1;
-    for (i = 2; i <= 3; i++) {
-      if (lnl[i - 1] > ymax) {
-        ymax = lnl[i - 1];
+    for (i = 2; i <= 3; i++) { /*figure out which point has the largest */
+      if (lnl[i - 1] > ymax) { /*ln likelihood value */
+        ymax = lnl[i - 1];  
         imax = i;
       }
     }
-    if (imax != 2) {
-      ymax = x[1];
+    if (imax != 2) { /* make sure that the second point has the largest */
+      ymax = x[1];   /* ln likelihood value */
       x[1] = x[imax - 1];
       x[imax - 1] = ymax;
       ymax = lnl[1];
@@ -1177,7 +1040,7 @@ void makenewv(node *p)
     }
     tt = x[1];
     yold = tt;
-    s32 = (lnl[2] - lnl[1]) / (x[2] - x[1]);
+    s32 = (lnl[2] - lnl[1]) / (x[2] - x[1]); /* compute slopes */
     s21 = (lnl[1] - lnl[0]) / (x[1] - x[0]);
     if (fabs(x[2] - x[0]) > epsilon)
       curv = (s32 - s21) / ((x[2] - x[0]) / 2);
@@ -1202,30 +1065,28 @@ void makenewv(node *p)
     lnlike = evaluate(s);
     ymin = lnl[0];
     imin = 1;
-    for (i = 2; i <= 3; i++) {
-      if (lnl[i - 1] < ymin) {
+    for (i = 2; i <= 3; i++) { /* figure out which of the three original */
+      if (lnl[i - 1] < ymin) { /* points has the lowest ln likelihood */
         ymin = lnl[i - 1];
         imin = i;
       }
     }
     already = (tt == x[0]) || (tt == x[1]) || (tt == x[2]);
-    if (!already && ymin < lnlike) {
-      x[imin - 1] = tt;
-      lnl[imin - 1] = lnlike;
-    }
-    if (already || lnlike < oldlike) {
-      tt = oldx;
-      s->tyme = oldx;
-      x[1] = oldx;
-      lnl[1] = oldlike;
-      tfactor /= 2;
-      tdelta /= 2;
-      curtree.likelihood = oldlike;
-      lnlike = oldlike;
+    if (!already && ymin < lnlike) { /* if the minimum point is lower than   */
+      x[imin - 1] = tt;              /* our new interpolated point than take */
+      lnl[imin - 1] = lnlike;        /* that point and put it where the*/
+    }                                /* interpolated point is */
+    if (already || lnlike < oldlike) { 
+      tt = x[2];                     /* if either our interpolated point has */
+      s->tyme = x[2];                /* a lower score or is equivalent to    */
+      tfactor /= 2;                  /* our original three reinterpolate this*/
+      tdelta /= 2;                   /* time go only half as far             */
+      curtree.likelihood = lnl[2];
+      lnlike = lnl[2];
     } else
       tfactor = 1.0;
 
-    if (!done) {
+    if (!done) {  /* apply it to the sibs */
       sib_ptr = p;
       num_sibs = count_sibs(p);
       p->tyme = tt;
@@ -1415,7 +1276,6 @@ void dnamlk_re_move(node **item, node **fork, boolean tempadd)
   }
   p = (*item)->back->next->back;
   q = (*item)->back->next->next->back;
-/* debug replace by hookup calls?  Does that have NULL protection? */
   if (p != NULL)
     p->back = q;
   if (q != NULL)
@@ -1877,7 +1737,7 @@ void reconstr(node *p, long n)
     if (xx[first] < 0.4999995)
       m = m + (1 << second);
     if (xx[first] > 0.95)
-      putc(toupper((int) basechar[m - 1]), outfile);
+      putc(toupper(basechar[m - 1]), outfile);
     else
       putc(basechar[m - 1], outfile);
     if (rctgry && rcategs > 1)
@@ -2284,15 +2144,14 @@ void maketree()
      adds each node at location which yields highest likelihood
      then rearranges the tree for greatest likelihood */
 
-  long i, j, numtrees=0;
+  long i, j;
   double x;
   node *item, *nufork, *dummy, *q, *root=NULL;
-  boolean dummy_haslengths, dummy_first, goteof;
+  boolean succeded, dummy_haslengths, dummy_first, goteof;
   long nextnode;
   pointarray dummy_treenode=NULL;
   double oldbest;
   node *tmp;
-  int succeded = false;
   char* treestr;
 
   inittable();  
@@ -2350,7 +2209,8 @@ void maketree()
           printf("Doing global rearrangements\n");
           printf("  !");
           for (j = 1; j <= nonodes; j++)
-            putchar('-');
+            if ( j % (( nonodes / 72 ) + 1 ) == 0 )
+              putchar('-');
           printf("!\n");
         }
         global2 = true;
@@ -2386,7 +2246,8 @@ void maketree()
               restore_saved_tyme(&curtree,tymes);
             }
             if (progress) {
-              putchar('.');
+              if ( j % (( nonodes / 72 ) + 1 ) == 0 )
+                putchar('.');
               fflush(stdout);
             }
           } 
@@ -2416,14 +2277,17 @@ void maketree()
       }
     } 
   } else {
-    /*openfile(&intree, INTREE, "input tree file", "r", progname, intreename);*/
     treestr = ajStrStrMod(&phylotrees[0]->Tree);
     inittable_for_usertree (treestr);
+    if(numtrees > MAXSHIMOTREES)
+      shimotrees = MAXSHIMOTREES;
+    else
+      shimotrees = numtrees;
     if (numtrees > 2)
       emboss_initseed(inseed, &inseed0, seed);
-    l0gl = (double *)Malloc(numtrees * sizeof(double));
-    l0gf = (double **)Malloc(numtrees * sizeof(double *));
-    for (i=0; i < numtrees; ++i)
+    l0gl = (double *)Malloc(shimotrees * sizeof(double));
+    l0gf = (double **)Malloc(shimotrees * sizeof(double *));
+    for (i=0; i < shimotrees; ++i)
       l0gf[i] = (double *)Malloc(endsite * sizeof(double));
     if (treeprint) {
       fprintf(outfile, "User-defined tree");
@@ -2471,6 +2335,10 @@ void maketree()
         col = 0;
         dnamlk_treeout(curtree.root);
       }
+      if(which < numtrees){
+        freex_notip(nonodes, curtree.nodep);
+        gdispose(curtree.root, &grbg, curtree.nodep);
+      }
       which++;
     }      
 
@@ -2508,30 +2376,16 @@ int main(int argc, Char *argv[])
   argv[0] = "Dnamlk";
 #endif
   init(argc,argv);
-  emboss_getoptions("fdnamlk",argc,argv);
+  emboss_getoptions("fdnamlk", argc, argv);
   progname = argv[0];
-  /*openfile(&infile, INFILE, "input file", "r", argv[0], infilename);*/
-  embossoutfile = ajAcdGetOutfile("outfile");
-  emboss_openfile(embossoutfile,&outfile, &outfilename);
 
   ibmpc = IBMCRT;
   ansi = ANSICRT;
-  datasets = 1;
-  mulsets = false;
   firstset = true;
   doinit();
 
   ttratio0    = ttratio;
-  embossouttree = ajAcdGetOutfile("outtreefile");
-  emboss_openfile(embossouttree,&outtree,&outtreename);
-  if (!outtree)
-      trout = false;
-/*
-  if (ctgry)
-    openfile(&catfile, CATFILE, "categories file", "r", argv[0], catfilename);
-  if (weights || justwts)
-   openfile(&weightfile, WEIGHTFILE, "weights file", "r", argv[0], weightfilename);
-*/
+
   for (ith = 1; ith <= datasets; ith++) {
     ttratio = ttratio0;
     if (datasets > 1) {
@@ -2556,7 +2410,5 @@ int main(int argc, Char *argv[])
 #ifdef WIN32
   phyRestoreConsoleAttributes();
 #endif
-  ajExit();
   return 0;
 }  /* DNA Maximum Likelihood with molecular clock */
-

@@ -1,7 +1,6 @@
 application: fdnapars [
   documentation: "DNA parsimony algorithm"
   groups: "Phylogeny:Molecular sequence"
-  embassy: "phylipnew"
 ]
 
 section: input [
@@ -9,10 +8,25 @@ section: input [
   type: "page"
 ]
 
-seqset: sequence  [
+seqsetall: sequence  [
   parameter: "Y"
-  type: "gapany"
-  help: "File containing a sequence alignment"
+  type: "gapdnaphylo"
+  help: "File containing one or more sequence alignments"
+]
+
+tree: intreefile [
+	parameter: "Y"
+	nullok: "Y"
+	knowntype: "newick"
+]
+
+properties: weights [
+	additional: "Y"
+	characters: "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+	information: "Weights file"
+	nullok: "Y"
+        length: "$(sequence.length)"
+        size: "@(@($(sequence.multicount)>1) ? 1:0)"
 ]
 
 endsection: input
@@ -27,103 +41,124 @@ outfile: outfile  [
   knowntype: "dnapars output"
 ]
 
+toggle: trout [
+	additional: "Y"
+	default: "Y"
+	information: "Write out trees to tree file"
+]
+
+outfile: outtreefile  [
+  additional: "$(trout)"
+  extension: "treefile"
+  information: "Tree file name"
+  knowntype: "newick tree"
+  nullok: "Y"
+]
+
 boolean: printdata  [
   additional: "Y"
   default: "N"
-  information: "Print out the data at start of run"
+  information: "Print data at start of run"
 ]
 
 boolean: progress  [
   additional: "Y"
-  default: "N"
+  default: "Y"
   information: "Print indications of progress of run"
 ]
 
-boolean: steps  [
+boolean: stepbox  [
   additional: "Y"
   default: "N"
   information: "Print out steps in each site"
 ]
 
-boolean: seqatnodes  [
+boolean: ancseq  [
   additional: "Y"
   default: "N"
   information: "Print sequences at all nodes of tree"
 ]
 
-boolean: drawtree  [
+boolean: treeprint  [
   additional: "Y"
   default: "Y"
-  information: "Draw tree"
+  information: "Print out tree"
 ]
 
-toggle: trout  [
-  parameter: "Y"
+boolean: dotdiff [
+  additional: "@($(ancseq) | $(printdata))"
   default: "Y"
-  information: "Create a tree file"
-]
-
-outfile: treefile  [
-  standard: "$(trout)"
-  default: "ednapars.treefile"
-  information: "Tree file name"
-  knowntype: "newick tree"
+  information: "Use dot differencing to display results"
 ]
 
 endsection: output
 
-section: required [
-  information: "Required section"
+section: additional [
+  information: "Additional section"
   type: "page"
 ]
 
-toggle: besttree  [
+integer: maxtrees [
   additional: "Y"
-  default: "Y"
-  information: "Search for best tree"
-]
-
-toggle: random  [
-  standard: "$(besttree)"
-  default: "N"
-  information: "Randomize input order of species"
-]
-
-integer: randseed  [
-  standard: "$(random)"
-  default: "3"
-  information: "Random number seed (must be odd)"
-]
-
-integer: randtimes  [
-  standard: "$(random)"
-  default: "3"
-  information: "How many times to randomise"
-]
-
-toggle: og  [
-  additional: "Y"
-  information: "Outgroup root"
-  default: "N"
-]
-
-integer: outgnum  [
-  standard: "$(og)"
+  information: "Number of trees to save"
+  default: "10000"
   minimum: "1"
+  maximum: "1000000"
+]
+
+
+toggle: thorough [
+  additional: "@(!$(intreefile.isdefined))"
+  information: "More thorough search"
+  default: "Y"
+]
+
+boolean: rearrange [
+  additional: "$(thorough)"
+  default: "Y"
+  information: "Rearrange on just one best tree"
+]
+
+boolean: transversion [
+  additional: "Y"
+  information: "Use transversion parsimony"
+  default: "N"
+]
+
+integer: njumble  [
+  additional: "@(!$(intreefile.isdefined))"
+  default: "0"
+  minimum: "0"
+  information: "Number of times to randomise"
+]
+
+integer: seed  [
+  additional: "$(njumble)"
   default: "1"
-  information: "Number of the outgroup"
+  minimum: "1"
+  maximum: "32767"
+  information: "Random number seed between 1 and 32767 (must be odd)"
+]
+
+integer: outgrno  [
+  additional: "Y"
+  minimum: "0"
+  maximum: "$(sequence.count)"
+  default: "0"
+  information: "Species number to use as outgroup"
 ]
 
 toggle: thresh  [
+  additional: "Y"
   default: "N"
   information: "Use threshold parsimony"
 ]
 
-float: valthresh  [
-  standard: "$(thresh)"
+float: threshold  [
+  additional: "$(thresh)"
   minimum: "1.0"
   default: "1.0"
   information: "Threshold value"
 ]
 
-endsection: required
+endsection: additional

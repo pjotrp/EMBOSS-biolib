@@ -7,16 +7,14 @@
    copy and use this program provided no fee is charged for it and provided
    that this copyright notice is not removed. */
 
-#define maxsp           500   /* maximum number of species               */
-#define maxsz           999   /* size of pointer array.  >= 2*maxsp - 1  */
+#define maxsp           5000   /* maximum number of species               */
+#define maxsz           9999  /* size of pointer array.  >= 2*maxsp - 1  */
                               /* this can be large without eating memory */
 
 #define overr           4
 #define which           1
 
 AjPPhyloTree* phylotrees = NULL;
-
-AjBool myrooted;
 
 typedef enum {valid, remoov, quit} reslttype;
 
@@ -45,14 +43,14 @@ movet fromtype;
 #ifndef OLDC
 /* function prototypes */
 void   initretreenode(node **, node **, node *, long, long, long *,
-        long *, initops, pointarray, pointarray, Char *, Char *, char**);
+        long *, initops, pointarray, pointarray, Char *, Char *, char **);
 void   gdispose(node *);
 void   maketriad(node **, long);
 void   maketip(node **, long);
 void   copynode(node *, node *);
 node  *copytrav(node *);
 void   copytree(void);
-/*void   getoptions(void);*/
+//void   getoptions(void);
 void emboss_getoptions(char *pgm, int argc, char *argv[]);
 void   configure(void);
 void   prefix(chartype);
@@ -127,7 +125,8 @@ long nonodes, outgrno, screenwidth, vscreenwidth,
      numtrees, treesread;
 
 double     trweight;
-boolean    waswritten, hasmult, haslengths, nolengths, nexus, xmltree;
+boolean    waswritten, onfirsttree, hasmult, haslengths,
+           nolengths, nexus, xmltree;
 
 node **treeone, **treetwo;
 pointarray nodep;           /* pointers to all nodes in current tree */
@@ -140,7 +139,9 @@ unsigned char       cch[14];
 howtree    how;
 
 char       intreename[FNMLNGTH];
+
 const char* outtreename;
+AjPFile embossouttree;
 
 boolean    subtree, written, readnext;
 node      *nuroot;
@@ -373,137 +374,56 @@ void copytree()
 } /* copytree */
 
 
-
-/************ EMBOSS GET OPTIONS ROUTINES ******************************/
-
 void emboss_getoptions(char *pgm, int argc, char *argv[])
 {
-    AjStatus retval;
- 
-    /* initialize global variables */
+
+  AjStatus retval;
+  AjPStr initialtree = NULL;
+  AjPStr format = NULL;
+
+  how = use;
+  outgrno = 1;
+  onfirsttree = true;
+  screenlines = 24;
+  screenwidth = 80;
+  vscreenwidth = 80;
+  nexus = false;
+  xmltree = false;
 
     ajNamInit("emboss");
     retval =  ajAcdInitP (pgm, argc, argv, "PHYLIP");
 
-    /* ajAcdGet */
+      phylotrees = ajAcdGetTree("intreefile");
 
-    myrooted = ajAcdGetBool("rooted"); 	/*  tree to be rooted or unrooted */
 
-    /* init functions for standard ajAcdGet */
+    if(ajStrMatchC(initialtree, "a")) how = arb;
+    else if(ajStrMatchC(initialtree, "u")) how = use;
+    else if(ajStrMatchC(initialtree, "s")) how = spec;
 
-    /* cleanup for clashing options */
+    format = ajAcdGetListI("format", 1);
+    if(ajStrMatchC(format, "n")) nexus = true;
+    else if(ajStrMatchC(format, "x")) xmltree = true;
 
-}
 
-/************ END EMBOSS GET OPTIONS ROUTINES **************************/
+    screenwidth = ajAcdGetInt("screenwidth");
+    vscreenwidth = ajAcdGetInt("vscreenwidth");    
+    screenlines = ajAcdGetInt("screenlines");
 
-/*
-//void getoptions()
-//{
-//  /# interactively set options #/
-//  long loopcount;
-//  Char ch;
-//  boolean done, gotopt;
-//  long maxinput;
-//
-//  how = use;
-//  outgrno = 1;
-//  maxinput = 1;
-//  loopcount = 0;
-//  do {
-//    cleerhome();
-//    printf("\nTree Rearrangement, version %s\n\n",VERSION);
-//    printf("Settings for this run:\n");
-//    printf("  U          Initial tree (arbitrary, user, specify)?");
-//    if (how == arb)
-//      printf("  Arbitrary\n");
-//    else if (how == use)
-//      printf("  User tree from tree file\n");
-//    else
-//      printf("  Tree you specify\n");
-//    printf("  N   Format to write out trees (PHYLIP, Nexus, XML)?");
-//    if (nexus)
-//      printf("  Nexus\n");
-//    else {
-//      if (xmltree)
-//        printf("  XML\n");
-//      else
-//        printf("  PHYLIP\n");
-//      }
-//    printf("  0                     Graphics type (IBM PC, ANSI)?");
-//    if (ibmpc)
-//      printf("  IBM PC\n");
-//    if (ansi )
-//      printf("  ANSI\n");
-//    if (!(ibmpc || ansi))
-//      printf("  (none)\n");
-//    printf("  W       Width of terminal screen, of plotting area?");
-//    printf("%4ld, %2ld\n", screenwidth, vscreenwidth);
-//    printf("  L                        Number of lines on screen?");
-//    printf("%4ld\n", screenlines);
-//    printf("\nAre these settings correct?");
-//    printf(" (type Y or the letter for one to change)\n");
-//#ifdef WIN32
-//    phyFillScreenColor();
-//#endif
-//    scanf("%c%*[^\n]", &ch);
-//    getchar();
-//    if (ch == '\n')
-//      ch = ' ';
-//    ch = (isupper((int) ch)) ? ch : toupper((int) ch);
-//    done = (ch == 'Y');
-//    gotopt = (ch == 'U' || ch == 'N' || ch == '0' || ch == 'L' || ch == 'W');
-//    if (gotopt) {
-//      switch (ch) {
-//
-//      case 'U':
-//        if (how == arb)
-//          how = use;
-//        else if (how == use)
-//            how = spec;
-//          else
-//            how = arb;
-//        break;
-//
-//      case 'N':
-//        if (nexus) {
-//          nexus = false;
-//          xmltree = true;
-//        }
-//        else if (xmltree)
-//            xmltree = false;
-//          else
-//            nexus = true;
-//        break;
-//
-//      case '0':
-//        initterminal(&ibmpc, &ansi);
-//        break;
-//
-//      case 'L':
-//        initnumlines(&screenlines);
-//        break;
-//
-//      case 'W':
-//        screenwidth= readlong("Width of terminal screen (in characters)?\n");
-//        vscreenwidth=readlong("Width of plotting area (in characters)?\n");
-//        break;
-//      }
-//    }
-//    if (!(gotopt || done))
-//      printf("Not a possible option!\n");
-//    countup(&loopcount, 100);
-//  } while (!done);
-//  if (scrollinc < screenwidth / 2.0)
-//    hscroll = scrollinc;
-//  else
-//    hscroll = screenwidth / 2;
-//  if (scrollinc < screenlines / 2.0)
-//    vscroll = scrollinc;
-//  else
-//    vscroll = screenlines / 2;
-//}  /# getoptions #/
-*/
+  if (scrollinc < screenwidth / 2.0)
+    hscroll = scrollinc;
+  else
+    hscroll = screenwidth / 2;
+  if (scrollinc < screenlines / 2.0)
+    vscroll = scrollinc;
+  else
+    vscroll = screenlines / 2;
+
+
+
+    embossouttree = ajAcdGetOutfile("outtreefile");
+    emboss_openfile(embossouttree, &outtree, &outtreename);
+
+}  /* emboss_getoptions */
 
 
 void configure()
@@ -1167,20 +1087,16 @@ void printree()
   long across;
   long tipy;
   double tipmax;
-  long i, rover, dow, vmargin;
+  long i, dow, vmargin;
 
   haslengths = ifhaslengths();
   if (!subtree)
     nuroot = root;
   cleerhome();
   tipy = 1;
-  rover = 100 / spp;
-  if (rover > overr)
-    rover = overr;
   dow = down;
   if (spp * dow > screenlines && !subtree) {
     dow--;
-    rover--;
   }
   if (haslengths && !nolengths) {
     precoord(nuroot, &subtree, &tipmax, &across);
@@ -1226,7 +1142,7 @@ void arbitree()
   long i;
   node *newtip, *newfork;
 
-  spp = ajAcdGetInt("numspecies");
+  spp = ajAcdGetInt("spp");
   nonodes = spp * 2 - 1;
   maketip(&root, 1);
   maketip(&newtip, 2);
@@ -1287,7 +1203,7 @@ void yourtree()
         getchar();
         if (ch == '\n')
           ch = ' ';
-        ch = isupper((int) ch) ? ch : toupper((int) ch);
+        ch = isupper(ch) ? ch : toupper(ch);
         maxinput++;
         if (maxinput == 100) {
           printf("ERROR: too many tries at choosing option\n");
@@ -1392,8 +1308,7 @@ treeconstruct.  Memory leak if user reads multiple trees. */
     if (!readnext) {
       /* This is the first time through here, act accordingly */
       firsttree = true;
-      /*openfile(&intree,INTREE,"input tree file",
-            "r","retree",intreename);*/
+     
       treesread = 0;
     } else {
       /* This isn't the first time through here ... */
@@ -1401,11 +1316,11 @@ treeconstruct.  Memory leak if user reads multiple trees. */
     }
     treestr = ajStrStrMod(&phylotrees[treesread]->Tree);
     allocate_nodep(&nodep, treestr, &spp);
-    /*xx*/treesets[whichtree].nodep = nodep;
+    treesets[whichtree].nodep = nodep;
     
     if (firsttree)
       nayme = (naym *)Malloc(spp*sizeof(naym));
-   treeread(&treestr, &root, dummy_treenode, &goteof, &firsttree,
+    treeread(&treestr, &root, dummy_treenode, &goteof, &firsttree,
              nodep, &nextnode, &haslengths,
              &grbg, initretreenode);
     nonodes = nextnode;
@@ -1563,7 +1478,7 @@ void rearrange()
           getchar();
           if (ch == '\n')
             ch = ' ';
-          ch = isupper((int) ch) ? ch : toupper((int) ch);
+          ch = isupper(ch) ? ch : toupper(ch);
           maxinput++;
           if (maxinput == 100) {
             printf("ERROR: too many tries at choosing option\n");
@@ -1789,15 +1704,14 @@ double oltrav(node *p)
 void outlength()
 {
 /* compute the farthest combined length out from each node */
-  double dummy;
-  dummy = oltrav(root);
+  oltrav(root);
 }  /* outlength */
 
 
 void midpoint()
 {
 /* midpoint root the tree */
-  double balance, greatlen, lesslen, grlen, lslen, maxlen;
+  double balance, greatlen, lesslen, grlen, maxlen;
   node *maxnode, *grnode, *lsnode =NULL;
   boolean ok = true;
   boolean changed = false;
@@ -1834,7 +1748,7 @@ void midpoint()
       greatlen = q->beyond;
       grnode = q->back;
     }
-    if ((greatlen > q->beyond) && (q->beyond > lesslen)) {
+    if ((greatlen > q->beyond) && (q->beyond >= lesslen)) {
       lesslen = q->beyond;
       lsnode = q->back;
     }
@@ -1847,7 +1761,6 @@ void midpoint()
     ok = false;
   balance = greatlen - (greatlen + lesslen) / 2.0;
   grlen = grnode->length;
-  lslen = lsnode->length;
 
   while ((balance > grlen) && ok) {
     /* First, find the most distant immediate child of grnode
@@ -1882,7 +1795,7 @@ void midpoint()
         greatlen = q->beyond;
         grnode = q->back;
       }
-      if ((greatlen > q->beyond) && (q->beyond > lesslen)) {
+      if ((greatlen > q->beyond) && (q->beyond >= lesslen)) {
         lesslen = q->beyond;
         lsnode = q->back;
       }
@@ -1892,7 +1805,6 @@ void midpoint()
       ok = false;
     balance = greatlen - (greatlen + lesslen) / 2.0;
     grlen = grnode->length;
-    lslen = lsnode->length;
   }; /* end of while ((balance > grlen) && ok) */
 
   if (ok) {
@@ -1915,7 +1827,7 @@ void midpoint()
           greatlen = q->beyond;
           grnode = q->back;
         }
-        if ((greatlen > q->beyond) && (q->beyond > lesslen)) {
+        if ((greatlen > q->beyond) && (q->beyond >= lesslen)) {
           lesslen = q->beyond;
           lsnode = q->back;
         }
@@ -2038,7 +1950,7 @@ void del_or_restore()
       getchar();
       if (ch == '\n')
         ch = ' ';
-      ch = (isupper((int) ch)) ? ch : toupper((int) ch);
+      ch = (isupper(ch)) ? ch : toupper(ch);
       maxinput++;
       if (maxinput == 100) {
         printf("ERROR: too many tries at choosing option\n");
@@ -2351,7 +2263,10 @@ void treeout(node *p, boolean writeparens, double addlength, long indent)
    render this node as a tip (write its name).  */
 
   if (p == root) {
-    indent = 0;
+    if (xmltree)
+      indent = 0;
+    else
+      indent = 0;
     if (xmltree) {
       fprintf(outtree, "<phylogeny>");  /* assumes no length at root! */
     } else putc('(', outtree);
@@ -2369,12 +2284,11 @@ void treeout(node *p, boolean writeparens, double addlength, long indent)
         putc('\n', outtree);
         for (i = 1; i <= indent; i++)
           putc(' ', outtree);
-        fprintf(outtree, "<branch");
+        fprintf(outtree, "<clade");
         if (p->haslength) {
-          fprintf(outtree, " length=\"");
+          fprintf(outtree, " length=");
           x = p->length;
           writebranchlength(x);
-          fprintf(outtree, "\"");
         }
         putc('>', outtree);
         fprintf(outtree, "<name>");
@@ -2387,7 +2301,7 @@ void treeout(node *p, boolean writeparens, double addlength, long indent)
       }
       col += n;
       if (xmltree)
-        fprintf(outtree, "</name></branch>");
+        fprintf(outtree, "</name></clade>");
     }
   } else if (p->onebranch && p->onebranchnode->tip) { 
     if (p->onebranchnode->hasname) {
@@ -2401,7 +2315,7 @@ void treeout(node *p, boolean writeparens, double addlength, long indent)
         putc('\n', outtree);
         for (i = 1; i <= indent; i++)
           putc(' ', outtree);
-        fprintf(outtree, "<branch");
+        fprintf(outtree, "<clade");
         if ((p->haslength && writeparens) || p->onebranch) {
           if (!(p->onebranch && !p->onebranchhaslength)) {
             fprintf(outtree, " length=");
@@ -2417,13 +2331,13 @@ void treeout(node *p, boolean writeparens, double addlength, long indent)
       }
       for (i = 0; i < n; i++) {
         c = p->onebranchnode->nayme[i];
-        if (c == ' ')
-          c = '_';
+        if (c == '_')
+          c = ' ';
         putc(c, outtree);
       }
       col += n;
       if (xmltree)
-        fprintf(outtree, "</name></branch>");
+        fprintf(outtree, "</name></clade>");
     }
   }
   } else if (p->onebranch && !p->onebranchnode->tip) {
@@ -2437,11 +2351,11 @@ void treeout(node *p, boolean writeparens, double addlength, long indent)
       for (i = 1; i <= indent; i++)
         putc(' ', outtree);
       if (p == root)
-        fprintf(outtree, "<branch>");
+        fprintf(outtree, "<clade>");
     }
     if (p != root) {
       if (xmltree) {
-        fprintf(outtree, "<branch");
+        fprintf(outtree, "<clade");
         if ((p->haslength && writeparens) || p->onebranch) {
           if (!(p->onebranch && !p->onebranchhaslength)) {
             fprintf(outtree, " length=");
@@ -2496,9 +2410,8 @@ void treeout(node *p, boolean writeparens, double addlength, long indent)
           putc(' ', outtree);
       }
       if (xmltree) { 
-        fprintf(outtree, "</branch>");
+        fprintf(outtree, "</clade>");
       } else putc(')', outtree);
-      indent -= 2;
     }
     (col)++;
   }
@@ -2515,7 +2428,7 @@ void treeout(node *p, boolean writeparens, double addlength, long indent)
     }
   if (p == root) {
     if (xmltree) {
-      fprintf(outtree, "\n  </branch>\n</phylogeny>\n");
+      fprintf(outtree, "\n  </clade>\n</phylogeny>\n");
     } else putc(')', outtree); 
   }
 }  /* treeout */
@@ -2708,40 +2621,35 @@ void treewrite(boolean *done)
   long maxinput;
   boolean rooted;
 
-  if (myrooted)
-      rooted = true;
-  else
-      rooted = false;
-
-  embossouttree = ajAcdGetOutfile("outtreefile");
-  emboss_openfile(embossouttree,&outtree,&outtreename);
-  if (nexus) {
+  if (nexus && onfirsttree) {
     fprintf(outtree, "#NEXUS\n");
     fprintf(outtree, "BEGIN TREES\n");
     fprintf(outtree, "TRANSLATE;\n"); /* MacClade needs this */
   }
+  if (xmltree && onfirsttree) {
+    fprintf(outtree, "<phylogenies>\n");
+  }
+  onfirsttree = false;
   maxinput = 1;
-/*
-//  do {
-//    printf("Enter R if the tree is to be rooted\n");
-//    printf("OR enter U if the tree is to be unrooted: ");
-//#ifdef WIN32
-//    phyFillScreenColor();
-//#endif
-//    scanf("%c%*[^\n]", &ch);
-//    getchar();
-//    if (ch == '\n')
-//      ch = ' ';
-//    ch = (isupper((int) ch)) ? ch : toupper((int) ch);
-//    maxinput++;
-//    if (maxinput == 100) {
-//      printf("ERROR: too many tries at choosing option\n");
-//      exxit(-1);
-//    }
-//  } while (ch != 'R' && ch != 'U');
-*/
+  do {
+    printf("Enter R if the tree is to be rooted\n");
+    printf("OR enter U if the tree is to be unrooted: ");
+#ifdef WIN32
+    phyFillScreenColor();
+#endif
+    scanf("%c%*[^\n]", &ch);
+    getchar();
+    if (ch == '\n')
+      ch = ' ';
+    ch = (isupper(ch)) ? ch : toupper(ch);
+    maxinput++;
+    if (maxinput == 100) {
+      printf("ERROR: too many tries at choosing option\n");
+      exxit(-1);
+    }
+  } while (ch != 'R' && ch != 'U');
   col = 0;
-  /*rooted = (ch == 'R');*/
+  rooted = (ch == 'R');
   roottreeout(&rooted);
   treenumber++;
   printf("\nTree written to file \"%s\"\n\n", outtreename);
@@ -2749,8 +2657,6 @@ void treewrite(boolean *done)
   written = true;
   if (!(*done))
     printree();
-  if (!readnext && nexus) 
-    fprintf(outtree, "END;\n");
   FClose(outtree);
 }  /* treewrite */
 
@@ -3051,7 +2957,7 @@ void redisplay()
     getchar();
     if (ch == '\n')
       ch = ' ';
-    ch = isupper((int) ch) ? ch : toupper((int) ch);
+    ch = isupper(ch) ? ch : toupper(ch);
     if (ch == 'C' || ch == 'F' || ch == 'O' || ch == 'R' ||
       ch == 'U' || ch == 'X' || ch == 'Q' || ch == '.' ||
       ch == 'W' || ch == 'B' || ch == 'N' || ch == '?' ||
@@ -3229,19 +3135,21 @@ int main(int argc, Char *argv[])
   nolengths = false;
   grbg = NULL;
   scrollinc = 20;
-  screenlines = 24;
-  screenwidth = 80;
-  vscreenwidth = 80;
+
   ibmpc = IBMCRT;
   ansi  = ANSICRT;
   for(i = 0; i < maxsz; i++)
     delarray[i] = false;
   treenumber = 1;
-/*  getoptions();*/
   configure();
   treeconstruct();
-  if (waswritten)
-    FClose(outtree);
+  if (waswritten) {
+    outtree = fopen(outtreename, "a");
+    if (xmltree)
+      fprintf(outtree, "</phylogenies>\n");
+    else if (nexus)
+        fprintf(outtree, "END;\n");
+  }
   FClose(intree);
   FClose(outtree);
 #ifdef MAC

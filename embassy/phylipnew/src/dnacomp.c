@@ -1,3 +1,4 @@
+
 #include "phylip.h"
 #include "seq.h"
 
@@ -8,23 +9,23 @@
 
 #define maxtrees        100   /* maximum number of tied trees stored     */
 
-typedef boolean *boolptr;
-AjPPhyloProp phyloweights;
+AjPSeqset* seqsets = NULL;
+AjPPhyloProp phyloweights = NULL;
 AjPPhyloTree* phylotrees;
-AjPSeqset* seqsets;
-long numtrees;
-long numseqs;
-long numwts;
+
+ajint numseqs;
+ajint numwts;
+
+typedef boolean *boolptr;
 
 #ifndef OLDC
 /* function prototypes */
-/*void   getoptions(void);*/
-void emboss_getoptions(char *pgm, int argc, char *argv[]);
+void   emboss_getoptions(char *pgm, int argc, char *argv[]);
+//void   getoptions(void);
 void   allocrest(void);
 void   doinit(void);
 void   initdnacompnode(node **, node **, node *, long, long, long *,
-		       long *, initops, pointarray, pointarray, Char *,
-		       Char *, char**);
+               long *, initops, pointarray, pointarray, Char *, Char *, char **);
 void   makeweights(void);
 void   doinput(void);
 void   mincomp(long );
@@ -45,15 +46,17 @@ void   reallocchars(void);
 /* function prototypes */
 #endif
 
-extern AjPSeqset seqset;
 
 extern sequence y;
-Char infilename[FNMLNGTH], intreename[FNMLNGTH];
+Char infilename[FNMLNGTH], weightfilename[FNMLNGTH];
+
 const char* outfilename;
 const char* outtreename;
-const char* weightfilename;
+AjPFile embossoutfile;
+AjPFile embossouttree;
+
 node *root, *p;
-long chars, col, ith, njumble, jumb, msets;
+long chars, col, ith, njumble, jumb, msets, numtrees;
 long inseed, inseed0;
 boolean jumble, usertree, trout, weights,
                progress, stepbox, ancseq, firstset, mulsets, justwts;
@@ -82,57 +85,38 @@ long *zeros;
   node *temp, *temp1;
   node *grbg;
 
-
-/************ EMBOSS GET OPTIONS ROUTINES ******************************/
-
 void emboss_getoptions(char *pgm, int argc, char *argv[])
 {
-    AjStatus retval;
- 
-    /* initialize global variables */
+  AjStatus retval;
 
-    jumble = false;
-    njumble = 1;
-    outgrno = 1;
-    outgropt = false;
-    trout = true;
-    usertree = false;
-    weights = false;
-    justwts = false;
-    printdata = false;
-    progress = true;
-    treeprint = true;
-    stepbox = false;
-    ancseq = false;
-    interleaved = true;
-    numtrees = 0;
-    
+  jumble = false;
+  njumble = 1;
+  outgrno = 1;
+  outgropt = false;
+  trout = true;
+  usertree = false;
+  weights = false;
+  justwts = false;
+  printdata = false;
+  progress = true;
+  treeprint = true;
+  stepbox = false;
+  ancseq = false;
+  numtrees = 0;
+  numwts = 0;
+  mulsets = false;
+  msets = 1;
+
     ajNamInit("emboss");
-    retval =  ajAcdInitP (pgm, argc, argv, "PHYLIP");
-
+    retval = ajAcdInitP (pgm, argc, argv, "PHYLIP");
     seqsets = ajAcdGetSeqsetall("sequence");
-    numseqs = 0;
-    if (seqsets)
-    {
-	while (seqsets[numseqs])
-	    numseqs++;
-    }
-
-    if (numseqs > 1)
-    {
-	mulsets = true;
-	msets = numseqs;
-    }
-    else if (!numseqs)
-	justwts = true;
 
     phylotrees = ajAcdGetTree("intreefile");
     if (phylotrees)
     {
-	numtrees = 0;
-	while (phylotrees[numtrees])
-	    numtrees++;
-	usertree = true;
+        while (phylotrees[numtrees])
+            numtrees++;
+        usertree = true;
     }
 
     phyloweights = ajAcdGetProperties("weights");
@@ -140,205 +124,62 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
     {
       weights = true;
       numwts = ajPhyloPropGetSize(phyloweights);
-      if (justwts && numwts > 1)
-      {
-	  mulsets = true;
-	  msets = numwts;
-      }
+      printf("numwts: %d\n", numwts);
     }
 
-    /* init functions for standard ajAcdGet */
+    if (numseqs > 1) {
+	mulsets = true;
+        msets = numseqs;
+    }
+    else if (numwts > 1) {
+      mulsets = true;
+      msets = numwts;
+      justwts = true;
+    }
 
-    njumble = ajAcdGetInt("jumble");
-    inseed = ajAcdGetInt("seed");
-    emboss_initseed(inseed, &inseed0, seed);
-    ancseq = ajAcdGetBool("ancseq");
-    stepbox = ajAcdGetBool("stepbox");
-    treeprint = ajAcdGetBool("drawtree");
+    outgrno = ajAcdGetInt("outgrno");
+    if(outgrno != 0) outgropt = true;
+    else outgrno = 1;
+
     printdata = ajAcdGetBool("printdata");
     progress = ajAcdGetBool("progress");
-    outgrno = ajAcdGetInt("outgroup");
+    treeprint = ajAcdGetBool("treeprint");
+    trout = ajAcdGetToggle("trout");
+    stepbox = ajAcdGetBool("stepbox");
+    ancseq = ajAcdGetBool("ancseq");
+    
 
-    /* cleanup for clashing options */
+    if(!usertree) {
+      njumble = ajAcdGetInt("njumble");
+      if(njumble >0) {
+        inseed = ajAcdGetInt("seed");
+        jumble = true; 
+        emboss_initseed(inseed, &inseed0, seed);
+      }
+      else njumble = 1;
+    } 
 
-}
+    if((mulsets) && (!jumble)) {
+      jumble = true;
+      inseed = ajAcdGetInt("seed");
+      emboss_initseed(inseed, &inseed0, seed);
+    }
 
-/************ END EMBOSS GET OPTIONS ROUTINES **************************/
 
-/*
-//void getoptions()
-//{
-//  /# interactively set options #/
-//  long loopcount, loopcount2;
-//  Char ch, ch2;
-//
-//  fprintf(outfile, "\nDNA compatibility algorithm, version %s\n\n",VERSION);
-//  putchar('\n');
-//  jumble = false;
-//  njumble = 1;
-//  outgrno = 1;
-//  outgropt = false;
-//  trout = true;
-//  usertree = false;
-//  weights = false;
-//  justwts = false;
-//  printdata = false;
-//  progress = true;
-//  treeprint = true;
-//  stepbox = false;
-//  ancseq = false;
-//  interleaved = true;
-//  loopcount = 0;
-//  for (;;) {
-//    cleerhome();
-//    printf("\nDNA compatibility algorithm, version %s\n\n",VERSION);
-//    printf("Settings for this run:\n");
-//    printf("  U                 Search for best tree?  %s\n",
-//           (usertree ? "No, use user trees in input file" : "Yes"));
-//    if (!usertree) {
-//      printf("  J   Randomize input order of sequences?");
-//      if (jumble) {
-//        printf(
-//         "  Yes (seed =%8ld,%3ld times)\n", inseed0, njumble);
-//      }
-//      else
-//        printf("  No. Use input order\n");
-//    }
-//    printf("  O                        Outgroup root?");
-//    if (outgropt)
-//      printf("  Yes, at sequence number%3ld\n", outgrno);
-//    else
-//      printf("  No, use as outgroup species%3ld\n", outgrno);
-//    printf("  W                       Sites weighted?  %s\n",
-//           (weights ? "Yes" : "No"));
-//    printf("  M           Analyze multiple data sets?");
-//    if (mulsets)
-//      printf("  Yes, %2ld %s\n", msets,
-//               (justwts ? "sets of weights" : "data sets"));
-//    else
-//      printf("  No\n");
-//    printf("  I          Input sequences interleaved?  %s\n",
-//           (interleaved ? "Yes" : "No, sequential"));
-//    printf("  0   Terminal type (IBM PC, ANSI, none)?  %s\n",
-//           ibmpc ? "IBM PC" : ansi  ? "ANSI"   : "(none)");
-//    printf("  1    Print out the data at start of run  %s\n",
-//           (printdata ? "Yes" : "No"));
-//    printf("  2  Print indications of progress of run  %s\n",
-//           (progress ? "Yes" : "No"));
-//    printf("  3                        Print out tree  %s\n",
-//           (treeprint ? "Yes" : "No"));
-//    printf("  4  Print steps & compatibility at sites  %s\n",
-//           (stepbox ? "Yes" : "No"));
-//    printf("  5  Print sequences at all nodes of tree  %s\n",
-//           (ancseq ? "Yes" : "No"));
-//    printf("  6       Write out trees onto tree file?  %s\n",
-//           (trout ? "Yes" : "No"));
-//    if(weights && justwts){
-//      printf(
-//         "WARNING:  W option and Multiple Weights options are both on.  ");
-//      printf(
-//         "The W menu option is unnecessary and has no additional effect. \n");
-//    }
-//    printf("\nAre these settings correct? (type Y or the letter for one to change)\n");
-//#ifdef WIN32
-//    phyFillScreenColor();
-//#endif
-//    scanf("%c%*[^\n]", &ch);
-//    getchar();
-//    uppercase(&ch);
-//    if (ch == 'Y')
-//      break;
-//    if (strchr("WJOTUMI1234560",ch) != NULL){
-//      switch (ch) {
-//
-//      case 'J':
-//        jumble = !jumble;
-//        if (jumble)
-//          initjumble(&inseed, &inseed0, seed, &njumble);
-//        else njumble = 1;
-//        break;
-//
-//      case 'O':
-//        outgropt = !outgropt;
-//        if (outgropt)
-//          initoutgroup(&outgrno, spp);
-//        break;
-//
-//      case 'U':
-//        usertree = !usertree;
-//        break;
-//
-//      case 'M':
-//        mulsets = !mulsets;
-//        if (mulsets){
-//          printf("Multiple data sets or multiple weights?");
-//          loopcount2 = 0;
-//          do {
-//            printf(" (type D or W)\n");
-//#ifdef WIN32
-//            phyFillScreenColor();
-//#endif
-//            scanf("%c%*[^\n]", &ch2);
-//            getchar();
-//            if (ch2 == '\n')
-//              ch2 = ' ';
-//            uppercase(&ch2);
-//            countup(&loopcount2, 10);
-//          } while ((ch2 != 'W') && (ch2 != 'D'));
-//          justwts = (ch2 == 'W');
-//          if (justwts)
-//            justweights(&msets);
-//          else
-//            initdatasets(&msets);
-//          if (!jumble) {
-//            jumble = true;
-//            initjumble(&inseed, &inseed0, seed, &njumble);
-//          }
-//        }
-//        break;
-//
-//      case 'I':
-//        interleaved = !interleaved;
-//        break;
-//
-//      case 'W':
-//        weights = !weights;
-//        break;
-//
-//      case '0':
-//        initterminal(&ibmpc, &ansi);
-//        break;
-//
-//      case '1':
-//        printdata = !printdata;
-//        break;
-//
-//      case '2':
-//        progress = !progress;
-//        break;
-//
-//      case '3':
-//        treeprint = !treeprint;
-//        break;
-//
-//      case '4':
-//        stepbox = !stepbox;
-//        break;
-//
-//      case '5':
-//        ancseq = !ancseq;
-//        break;
-//
-//      case '6':
-//        trout = !trout;
-//        break;
-//      }
-//    } else
-//      printf("Not a possible option!\n");
-//    countup(&loopcount, 100);
-//  }
-//}  /# getoptions #/
-*/
+     embossoutfile = ajAcdGetOutfile("outfile");   
+     emboss_openfile(embossoutfile, &outfile, &outfilename);
+     
+     if(trout) { 
+       embossouttree = ajAcdGetOutfile("outtreefile");
+       emboss_openfile(embossouttree, &outtree, &outtreename);
+     }
+
+
+   fprintf(outfile, "\nDNA compatibility algorithm, version %s\n\n",VERSION);
+
+
+
+}  /* emboss_getoptions */
 
 
 void reallocchars(void) 
@@ -399,13 +240,6 @@ void doinit()
   /* initializes variables */
 
   inputnumbersseq(seqsets[0], &spp, &chars, &nonodes, 1);
-  emboss_initoutgroup(&outgrno, spp);
-  if (outgrno > 0)
-      outgropt = true;
-  else
-      outgrno = 1;
-
-/*  getoptions();*/
   if (printdata)
     fprintf(outfile, "%2ld species, %3ld  sites\n", spp, chars);
   alloctree(&treenode, nonodes, usertree);
@@ -480,7 +314,7 @@ void doinput()
       seq_inputdata(seqsets[ith-1], chars);
     for (i = 0; i < chars; i++)
       weight[i] = 1;
-    inputweightsstr(phyloweights->Str[0], chars, weight, &weights);
+    inputweightsstr(phyloweights->Str[ith-1], chars, weight, &weights);
     if (justwts) {
       fprintf(outfile, "\n\nWeights set # %ld:\n\n", ith);
       if (progress)
@@ -493,8 +327,7 @@ void doinput()
       samenumspseq(seqsets[ith-1], &chars, ith);
       reallocchars();
     }
-    if (firstset)
-	seq_inputdata(seqsets[ith-1], chars);
+    seq_inputdata(seqsets[ith-1], chars);
     for (i = 0; i < chars; i++)
       weight[i] = 1;
     if (weights) {
@@ -897,7 +730,8 @@ void standev3(long chars, long numtrees, long maxwhich, double maxsteps,
     }
     fprintf(outfile, "\n\n");
   } else {           /* Shimodaira-Hasegawa test using normal approximation */
-    fprintf(outfile, "Shimodaira-Hasegawa test\n\n");
+      fprintf(outfile, "Shimodaira-Hasegawa test\n\n");
+    
     covar = (double **)Malloc(numtrees*sizeof(double *));  
     sumw = 0.0;
     for (i = 0; i < chars; i++)
@@ -1041,7 +875,8 @@ void maketree()
           printf("\nDoing global rearrangements\n");
           printf("  !");
           for (j = 1; j <= nonodes; j++)
-            putchar('-');
+            if ( j % (( nonodes / 72 ) + 1 ) == 0 )
+              putchar('-');
           printf("!\n");
 #ifdef WIN32
           phyFillScreenColor();
@@ -1067,7 +902,8 @@ void maketree()
               add(there, item, nufork, &root, recompute, treenode, &grbg, zeros);
             }
             if (progress) {
-              putchar('.');
+              if ( j % (( nonodes / 72 ) + 1 ) == 0 )
+                putchar('.');
               fflush(stdout);
             }
           }
@@ -1112,8 +948,9 @@ void maketree()
           re_move(treenode[j], &dummy, &root, recompute, treenode, &grbg, zeros);
       }
     }
-  } else {
-      /*openfile(&intree, INTREE, "input tree file", "r", progname, intreename);*/
+  } 
+  else {
+     
     if (numtrees > 2)
       emboss_initseed(inseed, &inseed0, seed);
     if (treeprint) {
@@ -1196,23 +1033,14 @@ int main(int argc, Char *argv[])
   argv[0]="Dnacomp";
 #endif
   init(argc, argv);
-  emboss_getoptions("fdnacomp",argc,argv);
-  embossoutfile = ajAcdGetOutfile("outfile");
-  emboss_openfile(embossoutfile,&outfile,&outfilename);
-  mulsets = false;
+  emboss_getoptions("fdnacomp", argc, argv);
+ 
   garbage = NULL;
   grbg = NULL;
   ibmpc = IBMCRT;
   ansi = ANSICRT;
-  msets = 1;
   firstset = true;
   doinit();
-  /*if (weights || justwts)*/
-    /*openfile(&weightfile,WEIGHTFILE,"weights file","r",argv[0],&weightfilename);*/
-  embossouttree = ajAcdGetOutfile("outtreefile");
-  emboss_openfile(embossouttree,&outtree,&outtreename);
-  if (!outtree)
-      trout = false;
 
   for (ith = 1; ith <= msets; ith++) {
     doinput();

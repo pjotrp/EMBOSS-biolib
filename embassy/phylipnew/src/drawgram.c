@@ -1,5 +1,11 @@
 
+#ifdef OSX_CARBON
+#include <Carbon/Carbon.h>
+#endif
+
+#include "phylip.h"
 #include "draw.h"
+
 /* Version 3.6.  Copyright (c) 1986-2002 by Joseph Felsenstein and
   Christopher A. Meacham.  Additional code written by Hisashi Horino,
   Sean Lamont, Andrew Keefe, Daniel Fineman, and Akiko Fuseki.
@@ -75,9 +81,10 @@ String res[]= {
 
 #ifndef OLDC
 /* function prototypes */
+void emboss_getoptions(char *pgm, int argc, char *argv[]);
+
 void   initdrawgramnode(node **, node **, node *, long, long, long *,
-			long *, initops, pointarray, pointarray,
-			 Char *, Char *, char**);
+                long *, initops, pointarray, pointarray, Char *, Char *, char**);
 void   initialparms(void);
 char   showparms(void);
 void   getparms(char);
@@ -86,7 +93,6 @@ void   calculate(void);
 void   rescale(void);
 void   setup_environment(Char *argv[], boolean *);
 void   user_loop(boolean *);
-void emboss_getoptions(char *pgm, int argc, char *argv[]);
 /* function prototypes */
 #endif
 
@@ -101,6 +107,7 @@ void initdrawgramnode(node **p, node **grbg, node *q, long len,
   double valyew, divisor;
 
   switch (whichinit) {
+
   case bottom:
     gnu(grbg, p);
     (*p)->index = nodei;
@@ -109,10 +116,12 @@ void initdrawgramnode(node **p, node **grbg, node *q, long len,
       (*p)->nayme[i] = '\0';
     nodep[(*p)->index - 1] = (*p);
     break;
+
   case nonbottom:
     gnu(grbg, p);
     (*p)->index = nodei;
     break;
+
   case tip:
     (*ntips)++;
     gnu(grbg, p);
@@ -122,6 +131,7 @@ void initdrawgramnode(node **p, node **grbg, node *q, long len,
     (*p)->naymlength = len ;
     strncpy ((*p)->nayme, str, MAXNCH);
     break;
+
   case length:
     processlength(&valyew, &divisor, ch, &minusread, treestr, parens);
     if (!minusread)
@@ -129,9 +139,11 @@ void initdrawgramnode(node **p, node **grbg, node *q, long len,
     else
       (*p)->oldlen = 0.0;
     break;
+
   case hsnolength:
     haslengths = false;
     break;
+
   default:        /* cases hslength,treewt,unittrwt,iter        */
     break;        /* should never occur                        */
   }
@@ -170,611 +182,115 @@ void initialparms()
 }  /* initialparms */
 
 
-char showparms()
-{
-  char input[32];
-  Char ch;
-  char cstr[32];
-
-  if (!firstscreens)
-    clearit();
-  printf("\nRooted tree plotting program version %s\n\n", VERSION);
-  printf("Here are the settings: \n");
-  printf(" 0  Screen type (IBM PC, ANSI):  %s\n",
-           ibmpc ? "IBM PC" : ansi  ? "ANSI"  : "(none)");
-  printf(" P       Final plotting device: ");
-  switch (plotter) {
-    case lw:
-      printf(" Postscript printer\n");
-      break;
-    case pcl:
-      printf(" HP Laserjet compatible printer (%d DPI)\n", (int) hpresolution);
-      break;
-    case epson:
-      printf(" Epson dot-matrix printer\n");
-      break;
-    case pcx:
-      printf(" PCX file for PC Paintbrush drawing program (%s)\n",
-             (resopts == 1) ? "EGA 640x350" : 
-             (resopts == 2) ? "VGA 800x600" : "VGA 1024x768");
-      break;
-    case pict:
-      printf(" Macintosh PICT file for drawing program\n");
-      break;
-    case idraw:
-      printf(" Idraw drawing program\n");
-      break;
-    case fig:
-      printf(" Xfig drawing program\n");
-      break;
-    case hp:
-      printf(" HPGL graphics language for HP plotters\n");
-      break;
-    case xbm:
-      printf(" X Bitmap file format (%d by %d resolution)\n",(int)xsize,(int)ysize);
-      break;
-    case bmp:
-      printf(" MS-Windows Bitmap (%d by %d resolution)\n",(int)xsize,(int)ysize);
-      break;
-    case gif:
-      printf(" Compuserve GIF format (%d by %d)\n",(int)xsize,(int)ysize);
-      break;
-    case ibm:
-      printf(" IBM PC graphics (CGA, EGA, or VGA)\n");
-      break;
-    case tek:
-      printf(" Tektronix graphics screen\n");
-      break;
-    case decregis:
-      printf(" DEC ReGIS graphics (VT240 or DECTerm)\n");
-      break;
-    case houston:
-      printf(" Houston Instruments plotter\n");
-      break;
-    case toshiba:
-      printf(" Toshiba 24-pin dot matrix printer\n");
-      break;
-    case citoh:
-      printf(" Imagewriter or C.Itoh/TEC/NEC 9-pin dot matrix printer\n");
-      break;
-    case oki:
-      printf(" old Okidata 9-pin dot matrix printer\n");
-      break;
-    case ray:
-      printf(" Rayshade ray-tracing program file format\n");
-      break;
-    case pov:
-      printf(" POV ray-tracing program file format\n");
-      break;
-    case vrml:
-      printf(" VRML, Virtual Reality Markup Language\n");
-      break;
-    case mac:
-    case other:
-      printf(" (Current output device unannounced)\n");
-      break;
-    default:        /*case xpreview not handled */
-      break;
-  }
-  printf(" V           Previewing device: ");
-  if (!preview)
-    printf(" (none)\n");
-  else {
-    switch (previewer) {
-      case ibm:
-        printf(" IBM PC graphics (CGA, EGA, or VGA)\n");
-        break;
-      case xpreview:
-        printf(" X Windows display\n");
-        break;
-      case tek:
-        printf(" Tektronix graphics screen\n");
-        break;
-      case mac:
-        printf(" Macintosh graphics screen\n");
-        break;
-      case decregis:
-        printf(" DEC ReGIS graphics (VT240 or DECTerm)\n");
-        break;
-      case winpreview:
-        printf(" MS Windows display\n");
-        break;
-      case other:
-        printf(" (Current previewing device unannounced)\n");
-        break;
-      default:   /* all other cases */
-        break;
-    }
-  }
-  printf(" H                  Tree grows:  ");
-  printf((grows == vertical) ? "Vertically\n" : "Horizontally\n");
-  printf(" S                  Tree style:  %s\n",
-         (style == cladogram) ? "Cladogram" :
-         (style == phenogram)  ? "Phenogram" :
-         (style == curvogram) ? "Curvogram" :
-         (style == eurogram)  ? "Eurogram"  : 
-         (style == swoopogram) ? "Swoopogram" : "Circular");
-  printf(" B          Use branch lengths:  ");
-  if (haslengths) {
-    if (uselengths)
-      printf("Yes\n");
-    else
-      printf("No\n");
-  } else
-    printf("(no branch lengths available)\n");
-  if (style != circular) {
-    printf(" L             Angle of labels:");
-    if (labelrotation < 10.0)
-      printf("%5.1f\n", labelrotation);
-    else
-      printf("%6.1f\n", labelrotation);
-  }
-  printf(" R      Scale of branch length:");
-  if (rescaled)
-    printf("  Automatically rescaled\n");
-  else
-    printf("  Fixed:%6.2f cm per unit branch length\n", bscale);
-  printf(" D       Depth/Breadth of tree:%6.2f\n", treedepth);
-  printf(" T      Stem-length/tree-depth:%6.2f\n", stemlength);
-  printf(" C    Character ht / tip space:%8.4f\n", 1.0 / nodespace);
-  printf(" A             Ancestral nodes:  %s\n",
-         (nodeposition == weighted)     ? "Weighted"     :
-         (nodeposition == intermediate) ? "Intermediate" :
-         (nodeposition == centered)     ? "Centered"     :
-         (nodeposition == inner)        ? "Inner"        :
-         "So tree is V-shaped");
-  if (plotter == lw || plotter == idraw || 
-      (plotter == fig && (labelrotation == 90.0 || labelrotation == 180.0 || 
-                          labelrotation == 270.0 || labelrotation == 0.0)) ||
-  (plotter == pict && ((grows == vertical && labelrotation == 0.0) ||
-                      (grows == horizontal && labelrotation == 90.0))))
-    printf(" F                        Font:  %s\n",fontname);
-  if ((plotter == pict && ((grows == vertical && labelrotation == 0.0) ||
-                      (grows == horizontal && labelrotation == 90.0)))
-                   && (strcmp(fontname,"Hershey") != 0))
-    printf(" Q        Pict Font Attributes:  %s, %s, %s, %s\n",
-        (pictbold   ? "Bold"   : "Medium"),
-        (pictitalic ? "Italic" : "Regular"),
-        (pictshadow ? "Shadowed": "Unshadowed"),
-        (pictoutline ? "Outlined" : "Unoutlined"));
-  if (plotter == ray) {
-    printf(" M          Horizontal margins:%6.2f pixels\n", xmargin);
-    printf(" M            Vertical margins:%6.2f pixels\n", ymargin);
-  } else {
-    printf(" M          Horizontal margins:%6.2f cm\n", xmargin);
-    printf(" M            Vertical margins:%6.2f cm\n", ymargin);
-  }
-  printf(" #              Pages per tree:  ");
-  /* Add 0.5 to clear up truncation problems. */
-  if (((int) ((pagex / paperx) + 0.5) == 1) && 
-      ((int) ((pagey / papery) + 0.5) == 1))
-    /* If we're only using one page per tree, */
-    printf ("one page per tree\n") ;   
-  else
-    printf ("%.0f by %.0f pages per tree\n",
-             (pagey-vpmargin) / (papery-vpmargin),
-             (pagex-hpmargin) / (paperx-hpmargin)) ;
-
-  for (;;) {
-    printf("\n Y to accept these or type the letter for one to change\n");
-#ifdef WIN32
-    phyFillScreenColor();
-#endif
-    getstryng(input);
-    uppercase(&input[0]);
-    ch=input[0];
-    if (plotter == idraw || plotter == lw)
-       strcpy(cstr,"#Y0PVHSBLMRDTCAF");
-    else if (((plotter == fig) && (labelrotation == 0.0))
-             || (labelrotation == 90.0 )
-             || (labelrotation == 180.0) || (labelrotation == 270.0))
-      strcpy(cstr,"#Y0PVHSBLMRDTCAFQ");
-    else if (plotter == pict){
-        if (((grows == vertical && labelrotation == 0.0) ||
-            (grows == horizontal && labelrotation == 90.0)))
-                strcpy(cstr,"#Y0PVHSBLMRDTCAFQ");
-           else
-              strcpy(cstr,"#Y0PVHSBLMRDTCA"); }
-    else
-      strcpy(cstr,"#Y0PVHSBLMRDTCA");
-                     
-    if  (strchr(cstr,ch))
-      break;
-    printf(" That letter is not one of the menu choices.  Type\n");
-  }
- return ch;
-}  /* showparms */
 
 
-void getparms(char numtochange)
+
+void emboss_getoptions(char *pgm, int argc, char *argv[])
 {
   /* get from user the relevant parameters for the plotter and diagram */
-  long loopcount;
-  Char ch;
-  char input[100];
-  boolean ok;
-  int i, m, n;
-      
+
+  boolean getgrows;
+  int m, n;
+  AjPStr getstyle = NULL;
+  AjPStr plottercode = NULL;
+  AjPStr getpreviewer = NULL;
+  AjPStr getnodeposition = NULL;
+  AjStatus retval;    
+
+  ajNamInit("emboss");
+  retval = ajAcdInitP (pgm, argc, argv, "PHYLIP");
+
   n = (int)((pagex-hpmargin-0.01)/(paperx-hpmargin)+1.0);
   m = (int)((pagey-vpmargin-0.01)/(papery-vpmargin)+1.0);
-  switch (numtochange) {
 
-  case '0':
-    initterminal(&ibmpc, &ansi);
-    break;
+    phylotrees = ajAcdGetTree("intreefile");
+ 
+    plottercode = ajAcdGetListI("plotter", 1);
+    
+    getplotter(ajStrChar(plottercode,0));
 
-  case 'P':
-    getplotter();
-    break;
 
-  case 'V':
-    getpreview();
-    break;
+    getpreviewer = ajAcdGetListI("previewer", 1);
 
-  case 'H':
-    if (grows == vertical)
-      grows = horizontal;
-    else
-      grows = vertical;
-    break;
+    if(ajStrMatchC(getpreviewer, "n")) {
+      preview = false;
+      previewer = other;   /* Added by Dan F. */
+    }
+    else if(ajStrMatchC(getpreviewer, "i")) previewer = ibm;
+    else if(ajStrMatchC(getpreviewer, "m")) previewer = mac;
+    else if(ajStrMatchC(getpreviewer, "x")) previewer = xpreview;
+    else if(ajStrMatchC(getpreviewer, "w")) previewer = winpreview;
+    else if(ajStrMatchC(getpreviewer, "i")) previewer = tek; 
+    else if(ajStrMatchC(getpreviewer, "i")) previewer = decregis;
+    else if(ajStrMatchC(getpreviewer, "o")) previewer = other;
 
-  case 'S':
-    clearit() ; 
-    printf("What style tree is this to be (currently set to %s):\n",
-           (style == cladogram) ? "Cladogram" :
-           (style == phenogram)  ? "Phenogram" :
-           (style == curvogram) ? "Curvogram" :
-           (style == eurogram)  ? "Eurogram"  : 
-           (style == swoopogram) ? "Swoopogram" : "Circular") ;
-    printf(" C    Cladogram -- v-shaped \n") ;
-    printf(" P    Phenogram -- branches are square\n") ;
-    printf(" V    Curvogram -- branches are 1/4 of an ellipse\n") ;
-    printf(" E    Eurogram -- branches angle outward, then up\n");
-    printf(" S    Swoopogram -- branches curve outward then reverse\n") ;
-    printf(" O    Circular tree\n");
-    do {
-      printf("\n Type letter of style to change to (C, P, V, E, S or O):\n");
-#ifdef WIN32
-      phyFillScreenColor();
-#endif
-      scanf("%c%*[^\n]", &ch);
-      getchar();
-      uppercase(&ch);
-    } while (ch != 'C' && ch != 'P' && ch != 'V'
-          && ch != 'E' && ch != 'S' && ch != 'O');
-    switch (ch) {
 
-    case 'C':
-      style = cladogram;
-      break;
+    getgrows = ajAcdGetBool("grows");
+    if(getgrows) grows = horizontal;
+    else grows = vertical;
 
-    case 'P':
-      style = phenogram;
-      break;
 
-    case 'E':
-      style = eurogram;
-      break;
-
-    case 'S':
-      style = swoopogram;
-      break;
-
-    case 'V':
-      style = curvogram;
-      break;
-
-    case 'O':
+    getstyle = ajAcdGetListI("style", 1);
+    if(ajStrMatchC(getstyle, "c")) style = cladogram;
+    else if(ajStrMatchC(getstyle, "p")) style = phenogram;
+    else if(ajStrMatchC(getstyle, "e")) style = eurogram;
+    else if(ajStrMatchC(getstyle, "s")) style = swoopogram;
+    else if(ajStrMatchC(getstyle, "v")) style = curvogram;
+    else if(ajStrMatchC(getstyle, "o")) {
       style = circular;
       treedepth = 1.0;
-      break;
     }
-    break;
 
-  case 'B':
-    if (haslengths) {
-      uselengths = !uselengths;
-      if (!uselengths)
-        nodeposition = weighted;
-      else
-        nodeposition = intermediate;
-    } else {
-      printf("Cannot use lengths since not all of them exist\n");
-      uselengths = false;
+
+
+    uselengths = ajAcdGetBool("lengths");
+
+    labelrotation = ajAcdGetFloat("labelrotation");
+
+    if(plotter==ray) {
+      xmargin = ajAcdGetFloat("xmarginray");
+      ymargin = ajAcdGetFloat("ymarginray");
     }
-    break;
-
-  case 'L':
-    clearit();
-    printf("\n(Considering the tree as if it \"grew\" vertically:)\n");
-    printf("Are the labels to be plotted vertically (90),\n");
-    printf(" horizontally (0), or at a 45-degree angle?\n");
-    loopcount = 0;
-    do {
-      printf(" Choose an angle in degrees from 90 to 0:\n");
-#ifdef WIN32
-      phyFillScreenColor();
-#endif
-      scanf("%lf%*[^\n]", &labelrotation);
-      getchar();
-      uppercase(&ch);
-      countup(&loopcount, 10);
-    } while (labelrotation < 0.0 && labelrotation > 90.0);
-    break;
-
-  case 'M':
-    clearit();
-    printf("\nThe tree will be drawn to fit in a rectangle which has \n");
-    printf(" margins in the horizontal and vertical directions of:\n");
-    if (plotter == ray) {
-      printf(
-       "%6.2f pixels (horizontal margin) and%6.2f pixels (vertical margin)\n",
-               xmargin, ymargin);
-      }
     else {
-        printf("%6.2f cm (horizontal margin) and%6.2f cm (vertical margin)\n",
-               xmargin, ymargin);
-      }
-    putchar('\n');
-    loopcount = 0;
-    do {
-      if (plotter == ray)
-        printf(" New value (in pixels) of horizontal margin?\n");
-      else
-        printf(" New value (in cm) of horizontal margin?\n");
-#ifdef WIN32
-      phyFillScreenColor();
-#endif
-      scanf("%lf%*[^\n]", &xmargin);
-      getchar();
-      ok = ((unsigned)xmargin < xsize / 2.0);
-      if (!ok)
-        printf(" Impossible value.  Please retype it.\n");
-      countup(&loopcount, 10);
-    } while (!ok);
-    loopcount = 0;
-    do {
-      if (plotter == ray)
-        printf(" New value (in pixels) of vertical margin?\n");
-      else
-        printf(" New value (in cm) of vertical margin?\n");
-#ifdef WIN32
-      phyFillScreenColor();
-#endif
-      scanf("%lf%*[^\n]", &ymargin);
-      getchar();
-      ok = ((unsigned)ymargin < ysize / 2.0);
-      if (!ok)
-        printf(" Impossible value.  Please retype it.\n");
-      countup(&loopcount, 10);
-    } while (!ok);
-
-    break;
-
-  case 'R':
-    rescaled = !rescaled;
-    if (!rescaled) {
-      printf("Centimeters per unit branch length?\n");
-#ifdef WIN32
-      phyFillScreenColor();
-#endif
-      scanf("%lf%*[^\n]", &bscale);
-      getchar();
+      xmargin = ajAcdGetFloat("xmargin");
+      ymargin = ajAcdGetFloat("ymargin");
     }
-    break;
 
-  case 'D':
-    printf("New value of depth of tree as fraction of its breadth?\n");
-#ifdef WIN32
-    phyFillScreenColor();
-#endif
-    scanf("%lf%*[^\n]", &treedepth);
-    getchar();
-    break;
 
-  case 'T':
-    loopcount = 0;
-    do {
-      printf("New value of stem length as fraction of tree depth?\n");
-#ifdef WIN32
-      phyFillScreenColor();
-#endif
-      scanf("%lf%*[^\n]", &stemlength);
-      getchar();
-      countup(&loopcount, 10);
-    } while ((unsigned)stemlength >= 0.9);
-    break;
+    rescaled = ajAcdGetToggle("rescaled");
+    if(rescaled) bscale = ajAcdGetFloat("bscale");
 
-  case 'C':
-    printf("New value of character height as fraction of tip spacing?\n");
-#ifdef WIN32
-    phyFillScreenColor();
-#endif
-    scanf("%lf%*[^\n]", &nodespace);
-    getchar();
+    treedepth = ajAcdGetFloat("treedepth");
+    stemlength = ajAcdGetFloat("stemlength");
+    nodespace = ajAcdGetFloat("nodespace");
     nodespace = 1.0 / nodespace;
-    break;
 
-  case '#':
-    loopcount = 0;
-    for (;;){
-      clearit();
-      printf("  Page Specifications Submenu\n\n");
-      printf(" L   Output size in pages: %.0f down by %.0f across\n",
-             (pagey / papery), (pagex / paperx));
-      printf(" P   Physical paper size: %1.5f by %1.5f cm\n",paperx,papery);
-      printf(" O   Overlap Region: %1.5f %1.5f cm\n",hpmargin,vpmargin);
-      printf(" M   main menu\n");
-      getstryng(input);
-      ch = input[0];
-      uppercase(&ch);
-      switch (ch){
-      case 'L':
-        printf("Number of pages in height:\n");
-#ifdef WIN32
-        phyFillScreenColor();
-#endif
-        getstryng(input);
-        m = atoi(input);
-        printf("Number of pages in width:\n");
-        getstryng(input);
-        n = atoi(input);
-        break;
-      case 'P':
-        printf("Paper Width (in cm):\n");
-#ifdef WIN32
-        phyFillScreenColor();
-#endif
-        getstryng(input);
-        paperx = atof(input);
-        printf("Paper Height (in cm):\n");
-        getstryng(input);
-        papery = atof(input);    
-        break;
-      case 'O':
-        printf("Horizontal Overlap (in cm):");
-#ifdef WIN32
-        phyFillScreenColor();
-#endif
-        getstryng(input);
-        hpmargin = atof(input);    
-        printf("Vertical Overlap (in cm):");
-#ifdef WIN32
-        phyFillScreenColor();
-#endif
-        getstryng(input);
-        vpmargin = atof(input);    
-      case 'M':
-        break;
-      default:
-        printf("Please enter L, P, O , or M.\n");
-        break;
-      }
-      pagex = ((double)n * (paperx-hpmargin)+hpmargin);
-      pagey = ((double)m * (papery-vpmargin)+vpmargin);
-      if (ch == 'M')
-        break;
-      countup(&loopcount, 10);
-    }
-    break;
 
-  case 'A':
-    clearit();
-    printf("Should interior node positions:\n");
-    printf(" be Intermediate between their immediate descendants,\n");
-    printf("    Weighted average of tip positions\n");
-    printf("    Centered among their ultimate descendants\n");
-    printf("    iNnermost of immediate descendants\n");
-    printf(" or so that tree is V-shaped\n");
-    loopcount = 0;
-    do {
-      printf(" (type I, W, C, N or V):\n");
-#ifdef WIN32
-      phyFillScreenColor();
-#endif
-      scanf("%c%*[^\n]", &ch);
-      getchar();
-      uppercase(&ch);
-      countup(&loopcount, 10);
-    } while (ch != 'I' && ch != 'W' && ch != 'C' && ch != 'N' && ch != 'V');
-    switch (ch) {
 
-      case 'W':
-        nodeposition = weighted;
-        break;
+    m = ajAcdGetFloat("pagesheight");
+    n = ajAcdGetFloat("pageswidth"); 
 
-      case 'I':
-        nodeposition = intermediate;
-        break;
+    paperx = ajAcdGetFloat("paperx");
+    papery = ajAcdGetFloat("papery");
 
-      case 'C':
-        nodeposition = centered;
-        break;
+    hpmargin = ajAcdGetFloat("hpmargin");
+    vpmargin = ajAcdGetFloat("vpmargin");
 
-      case 'N':
-        nodeposition = inner;
-        break;
+    pagex = ((double)n * (paperx-hpmargin)+hpmargin);
+    pagey = ((double)m * (papery-vpmargin)+vpmargin);
+ 
 
-      case 'V':
-        nodeposition = vshaped;
-        break;
-    }
-    break;
+    getnodeposition = ajAcdGetListI("nodeposition", 1);
 
-  case 'F':
-    if (plotter == fig){
-        for (i=0;i<34;++i)
-          printf("%s\n",figfontname(i));
-      loopcount = 0;
-      for (;;){
-        printf("Fontname:"); 
-#ifdef WIN32
-        phyFillScreenColor();
-#endif
-        getstryng(fontname);
-        if (isfigfont(fontname))
-          break;
-        printf("Invalid font name for fig.\n");
-        printf("Enter one of the following fonts or \"Hershey\" for default font\n");
-        countup(&loopcount, 10);
-      }
-    }
-      else {
-        printf("Enter font name or \"Hershey\" for the default font\n");
-#ifdef WIN32
-        phyFillScreenColor();
-#endif
-        getstryng(fontname);
-      }
-    break;
+    if(ajStrMatchC(getnodeposition, "i"))  nodeposition = intermediate;
+    else if(ajStrMatchC(getnodeposition, "w")) nodeposition = weighted;
+    else if(ajStrMatchC(getnodeposition, "c")) nodeposition = centered;
+    else if(ajStrMatchC(getnodeposition, "i")) nodeposition = inner;
+    else if(ajStrMatchC(getnodeposition, "v")) nodeposition = vshaped;
 
-  case 'Q':
-    clearit();
-    loopcount = 0;
-    do {
-      printf("Italic? (Y/N)\n");  
-#ifdef WIN32
-      phyFillScreenColor();
-#endif
-      getstryng(input);
-      input[0] = toupper((int)input[0]);
-      countup(&loopcount, 10);
-    } while (input[0] != 'Y' && input[0] != 'N');
-    pictitalic = (input[0] == 'Y');
-    loopcount = 0;
-    do {
-      printf("Bold? (Y/N)\n");  
-#ifdef WIN32
-    phyFillScreenColor();
-#endif
-      getstryng(input);
-      input[0] = toupper((int)input[0]);
-      countup(&loopcount, 10);
-    } while (input[0] != 'Y' && input[0] != 'N');
-    pictbold = (input[0] == 'Y');
-    loopcount = 0;
-    do {
-      printf("Shadow? (Y/N)\n");  
-#ifdef WIN32
-      phyFillScreenColor();
-#endif
-      getstryng(input);
-      input[0] = toupper((int)input[0]);
-      countup(&loopcount, 10);
-    } while (input[0] != 'Y' && input[0] != 'N');
-    pictshadow = (input[0] == 'Y');
-    loopcount = 0;
-    do {
-      printf("Outline? (Y/N)\n");  
-#ifdef WIN32
-      phyFillScreenColor();
-#endif
-      getstryng(input);
-      input[0] = toupper((int)input[0]);
-      countup(&loopcount, 10);
-    } while (input[0] != 'Y' && input[0] != 'N');
-    pictoutline = (input[0] == 'Y');break;
-  }
+  embossplotfile = ajAcdGetOutfile("plotfile");
+  emboss_openfile(embossplotfile, &plotfile, &pltfilename);
+
 }  /* getparms */
 
 
@@ -864,12 +380,6 @@ void calctraverse(node *p, double lengthsum, double *tipx)
           p->xcoord = x5;
         else
           p->xcoord = x4;
-/* debug
-        if (p->xcoord < x1)
-          p->xcoord = x1;
-        else if (p->xcoord > x2)
-            p->xcoord = x2;               
-debug */
       }
       else {
         if ((y1-2*p->ycoord+y2) < 0.000001)
@@ -961,8 +471,6 @@ void calculate()
     labelheight = 1.0 / (nodespace * (spp - 1));
   else
     labelheight = 1.0 / nodespace;
-/*  if (style == circular)
-    labelheight = pi * labelheight;    debug */
   if (angle < pi / 6.0)
     tipspacing = (nodespace
         + cos(angle) * (maxtextlength - 0.5*maxfirst)) * labelheight;
@@ -1426,6 +934,7 @@ void setup_environment(Char *argv[], boolean *canbeplotted)
 {
   boolean firsttree;
   char* treestr;
+
   /* Set up all kinds of fun stuff */
 #ifdef MAC
   OSErr retcode;
@@ -1441,14 +950,12 @@ void setup_environment(Char *argv[], boolean *canbeplotted)
 #endif
 
   
-  embossplotfile = ajAcdGetOutfile("plotfile");
-  emboss_openfile(embossplotfile,&plotfile,&pltfilename);
-  /*openfile(&intree,INTREE,"input tree file", "r",argv[0],trefilename);*/
-  
+
+ 
   printf("DRAWGRAM from PHYLIP version %s\n",VERSION);
   printf("Reading tree ... \n");
   firsttree = true;
-  treestr = ajStrStrMod(&phylotrees[0]->Tree);
+  treestr = ajStrStrMod(&phylotrees[0]->Tree); 
   allocate_nodep(&nodep, treestr, &spp);
   treeread (&treestr, &root, treenode, &goteof, &firsttree,
             nodep, &nextnode, &haslengths,
@@ -1469,16 +976,16 @@ void setup_environment(Char *argv[], boolean *canbeplotted)
      
 void user_loop(boolean *canbeplotted)
 {
-  char     input_char;
+  
   long stripedepth;
   
   while (!(*canbeplotted)) {
-    do {
-      input_char=showparms();
-      firstscreens = false;
-      if (input_char != 'Y')
-        getparms(input_char);
-    } while (input_char != 'Y');
+    // do {
+    //  input_char=showparms();
+    // firstscreens = false;
+      //if (input_char != 'Y')
+        //getparms(input_char);
+    // } while (input_char != 'Y');
     if (dotmatrix) {
       stripedepth = allocstripe(stripe,(strpwide/8),
                                 ((long)(yunitspercm * ysize)));
@@ -1503,40 +1010,25 @@ void user_loop(boolean *canbeplotted)
       (*canbeplotted)=true;
     }
     if ((previewer == winpreview || previewer == xpreview || previewer == mac) && (winaction == quitnow)) {
-      (*canbeplotted) = true;
+      break;
     }
   }
 } /* user_loop */
 
-/************ EMBOSS GET OPTIONS ROUTINES ******************************/
-
-void emboss_getoptions(char *pgm, int argc, char *argv[])
-{
-    AjStatus retval;
- 
-    /* initialize global variables */
-
-    ajNamInit("emboss");
-    retval =  ajAcdInitP (pgm, argc, argv, "PHYLIP");
-
-    /* ajAcdGet */
-
-    /* init functions for standard ajAcdGet */
-
-    /* cleanup for clashing options */
-
-}
-
-/************ END EMBOSS GET OPTIONS ROUTINES **************************/
-
 int main(int argc, Char *argv[])
 {
   boolean canbeplotted;
+  boolean wasplotted = false;
 #ifdef MAC
   OSErr retcode;
   FInfo  fndrinfo;
-  
+#ifdef OSX_CARBON
+  FSRef fileRef;
+  FSSpec fileSpec;
+#endif
+#ifdef __MWERKS__
   SIOUXSetTitle("\pPHYLIP:  Drawtree");
+#endif
   argv[0] = "Drawgram";
 #endif
 
@@ -1549,12 +1041,13 @@ int main(int argc, Char *argv[])
 #endif
   
   init(argc, argv);
-  emboss_getoptions("fdrawgram",argc,argv);
+  emboss_getoptions("drawgram",argc,argv);
 
   setup_environment(argv, &canbeplotted);
 
   user_loop(&canbeplotted);
   if (!((previewer == winpreview || previewer == xpreview || previewer == mac) && (winaction == quitnow))) {
+    
     previewing = false;
     initplotter(spp,fontname);
     numlines = dotmatrix ? ((long)floor(yunitspercm * ysize + 0.5)/strpdeep) : 1;
@@ -1562,20 +1055,40 @@ int main(int argc, Char *argv[])
       printf("\nWriting plot file ...\n");
     drawit(fontname,&xoffset,&yoffset,numlines,root);
     finishplotter();
+    FClose(plotfile);
+    wasplotted = true;
+    printf("\nPlot written to file \"%s\"\n\n", pltfilename);
   }
-  printf("\nPlot written to file \"%s\"\n\n", pltfilename);
-  FClose(plotfile);
   FClose(intree);
 #ifdef MAC
-  if (plotter == pict){
+  if (plotter == pict && wasplotted){
+#ifdef OSX_CARBON
+    FSPathMakeRef((unsigned char *)pltfilename, &fileRef, NULL);
+    FSGetCatalogInfo(&fileRef, kFSCatInfoNone, NULL, NULL, &fileSpec, NULL);
+    FSpGetFInfo(&fileSpec, &fndrinfo);
+    fndrinfo.fdType='PICT';
+    fndrinfo.fdCreator='MDRW';
+    FSpSetFInfo(&fileSpec, &fndrinfo);
+#else
     retcode=GetFInfo(CtoPstr(PLOTFILE),0,&fndrinfo);
     fndrinfo.fdType='PICT';
     fndrinfo.fdCreator='MDRW';
-    retcode=SetFInfo(CtoPstr(PLOTFILE),0,&fndrinfo);}
-  if (plotter == lw){
+    retcode=SetFInfo(CtoPstr(PLOTFILE),0,&fndrinfo);
+#endif
+  }
+  if (plotter == lw && wasplotted){
+#ifdef OSX_CARBON
+    FSPathMakeRef((unsigned char *)pltfilename, &fileRef, NULL);
+    FSGetCatalogInfo(&fileRef, kFSCatInfoNone, NULL, NULL, &fileSpec, NULL);
+    FSpGetFInfo(&fileSpec, &fndrinfo);
+    fndrinfo.fdType='TEXT';
+    FSpSetFInfo(&fileSpec, &fndrinfo);
+#else
     retcode=GetFInfo(CtoPstr(PLOTFILE),0,&fndrinfo);
     fndrinfo.fdType='TEXT';
-    retcode=SetFInfo(CtoPstr(PLOTFILE),0,&fndrinfo);}
+    retcode=SetFInfo(CtoPstr(PLOTFILE),0,&fndrinfo);
+#endif
+  }
 #endif
   printf("Done.\n\n");
 
@@ -1583,7 +1096,7 @@ int main(int argc, Char *argv[])
   phyRestoreConsoleAttributes();
 #endif
 
-  exit(0);
+  return 0;
 }
 
 

@@ -12,16 +12,23 @@ typedef struct valrec {
   double rat, ratxv, z1, y1, z1zz, z1yy, z1xv;
 } valrec;
 
-AjPFile distfile;
-AjPFile simfile;
-
-extern sequence y;
 AjPSeqset* seqsets = NULL;
 AjPPhyloProp phyloratecat = NULL;
 AjPPhyloProp phyloweights = NULL;
 
+
+ajint numseqs;
+ajint numwts;
+
+
+
+
+extern sequence y;
+
 Char infilename[FNMLNGTH], catfilename[FNMLNGTH], weightfilename[FNMLNGTH];
-const char* outfilename = NULL;
+const char* outfilename;
+AjPFile embossoutfile;
+
 long sites, categs, weightsum, datasets, ith, rcategs;
 boolean freqsfrom, jukes, kimura, logdet, gama, invar, similarity, lower, f84,
         weights, progress, ctgry, mulsets, justwts, firstset, baddists;
@@ -38,12 +45,11 @@ valrec tbl[maxcategs];                /* function makedists.           */
 
 #ifndef OLDC
 /* function  prototypes */
-/*void   getoptions(void);*/
-void emboss_getoptions(char *pgm, int argc, char *argv[]);
+//void   getoptions(void);
+void   emboss_getoptions(char *pgm, int argc, char *argv[]);
 void   allocrest(void);
 void   reallocsites(void);
 void   doinit(void);
-void   inputcategories(void);
 void   printcategories(void);
 void   inputoptions(void);
 void   dnadist_sitesort(void);
@@ -62,406 +68,131 @@ void   writedists(void);
 #endif
 
 
-
-/************ EMBOSS GET OPTIONS ROUTINES ******************************/
-
-void emboss_getoptions(char *pgm, int argc, char *argv[])
+void   emboss_getoptions(char *pgm, int argc, char *argv[])
 {
     AjStatus retval;
-    AjPStr method;
-    ajint numseqs = 0; 
-    ajint numwts = 0; 
-    AjBool usegama = ajFalse;
+    AjPStr method = NULL;
     AjPStr gammamethod = NULL;
-    AjPFloat vals;
+    AjPFloat basefreq;
+    AjPFloat arrayval; 
+  boolean ttr;
 
-    ctgry = false;
-    categs = 1;
-    cvi = 1.0;
-    rcategs = 1;
-    rate[0] = 1.0;
-    freqsfrom = true;
-    gama = false;
-    invar = false;
-    invarfrac = 0.0;
-    jukes = false;
-    justwts = false;
-    kimura = false;
-    logdet = false;
-    f84 = false;
-    lower = false;
-    similarity = false;
-    ttratio = 2.0;
-    weights = false;
-    printdata = false;
-    progress = true;
-    interleaved = true;
-    mulsets = false;
-    datasets = 1;
-
-    /* initialize global variables */
+  ctgry = false;
+  categs = 1;
+  cvi = 1.0;
+  rcategs = 1;
+  rate[0] = 1.0;
+  freqsfrom = true;
+  gama = false;
+  invar = false;
+  invarfrac = 0.0;
+  jukes = false;
+  justwts = false;
+  kimura = false;
+  logdet = false;
+  f84 = false;
+  lower = false;
+  similarity = false;
+  ttratio = 2.0;
+  ttr = false;
+  weights = false;
+  printdata = false;
+  progress = true;
+  mulsets = false;
+  datasets = 1;
 
     ajNamInit("emboss");
-    retval =  ajAcdInitP (pgm, argc, argv, "PHYLIP");
+    retval = ajAcdInitP (pgm, argc, argv, "PHYLIP");
 
-    /* ajAcdGet */
-
-    distfile = ajAcdGetOutfile("distancefile");
-    simfile = ajAcdGetOutfile("similarityfile");
 
     seqsets = ajAcdGetSeqsetall("sequence");
+
     numseqs = 0;
     while (seqsets[numseqs])
 	numseqs++;
 
-    if (numseqs > 1)
-	mulsets = true;
-    else if (!numseqs)
-	justwts = true;
-
-    phyloratecat = ajAcdGetProperties("categories");
-    if (phyloratecat)
-	ctgry = true;
-
     phyloweights = ajAcdGetProperties("weights");
     if (phyloweights)
     {
+      weights = true;
       numwts = ajPhyloPropGetSize(phyloweights);
-      if (justwts && numwts > 1)
-	  mulsets = true;
+    }
+
+
+    if (numseqs > 1) {
+	mulsets = true;
+        datasets = numseqs;
+    }
+    else if (numwts > 1) {
+      mulsets = true;
+      datasets = numwts;
+      justwts = true;
     }
 
     method = ajAcdGetListI("method", 1);
-    if (ajStrMatchC(method, "F84"))
-	f84 = true;
-    else if (ajStrMatchC(method, "Kimura"))
-	kimura = true;
-    else if (ajStrMatchC(method, "LogDet"))
-	logdet = true;
-    else if (ajStrMatchC(method, "Jukes"))
-	jukes = true;
-    else if (ajStrMatchC(method, "Similarity"))
-	similarity = true;
-    else
-        ajDie("Unknown value for distance method");
 
-    if (jukes || kimura || logdet)
-	freqsfrom = false;
-    else				/* similarity, f84 */
-	freqsfrom = true;
-
-    if (jukes || kimura || logdet)
-	usegama = ajTrue;
-
-    gammamethod = ajAcdGetListI("gamma", 1);
-    if (usegama)
-    {
-	if (ajStrMatchC(gammamethod, "gamma"))
-	{
-	    gama = true;
-	    invar = false;
-	}
-	else if (ajStrMatchC(gammamethod, "invar"))
-	{
-	    gama = true;
-	    invar = true;
-	}
-	else if (ajStrMatchC(gammamethod, "none"))
-	{
-	    gama = false;
-	    invar = false;
-	}
-	else
-	{
-	    ajDie("Unknown option selected for 'gamma'");
-	}
-	    
+    if(ajStrMatchC(method, "f")) {
+      f84 = true;
+      ttratio = ajAcdGetFloat("ttratio");
+      freqsfrom = ajAcdGetToggle("freqsfrom");
     }
-    else
-    {
-	gama = false;
-	invar = false;
+    else if(ajStrMatchC(method, "k")) {
+      kimura = true;
+      ttratio = ajAcdGetFloat("ttratio");
+    }
+    else if(ajStrMatchC(method, "j")) jukes = true;
+    else if(ajStrMatchC(method, "l")) logdet = true;
+    else if(ajStrMatchC(method, "s")) similarity = true;
+
+
+
+    if( (f84) || (kimura) || (jukes) ) {
+      gammamethod = ajAcdGetListI("gamma", 1);
+      if(ajStrMatchC(gammamethod, "g")) { 
+        gama = true;
+        cvi = ajAcdGetFloat("gammacoefficient");
+        cvi = 1.0 / (cvi * cvi);
+      }
+      else if(ajStrMatchC(gammamethod, "i")) { 
+        invar = true;
+        cvi = ajAcdGetFloat("gammacoefficient");
+        cvi = 1.0 / (cvi * cvi);
+        invarfrac = ajAcdGetFloat("invarfrac");
+      }
+      else if(ajStrMatchC(gammamethod, "n")) {
+        categs = ajAcdGetInt("ncategories");        
+      }
     }
 
-    cvi = ajAcdGetFloat("coefficient");
-    if (!gama)		/* gama and invar */
-	cvi = 1.0;
+    if (categs > 1) {
+      ctgry = true;
+      arrayval = ajAcdGetArray("rate");
+      emboss_initcategs(arrayval, categs, rate);
+    }
 
-    invarfrac = ajAcdGetFloat("invarfrac");
-    if (!invar)
-	invarfrac = 0.0;
 
-    initfreqs(&freqa, &freqc, &freqg, &freqt);
-
-    progress = ajAcdGetBool("progress");
     printdata = ajAcdGetBool("printdata");
+    progress = ajAcdGetBool("progress");
+    lower = ajAcdGetBool("lower");
+    
 
-    /* init functions for standard ajAcdGet */
+    if(!freqsfrom) {
+      basefreq = ajAcdGetArray("basefreq"); 
+      freqa = ajFloatGet(basefreq, 0);
+      freqc = ajFloatGet(basefreq, 1);
+      freqg = ajFloatGet(basefreq, 2);
+      freqt = ajFloatGet(basefreq, 3);
+    }
 
-    initratio(&ttratio);
-    categs = ajAcdGetInt("ncategories");
-    emboss_initcatn(&categs);
-    vals = ajAcdGetArray("rates");
-    emboss_initcategs(vals,categs, rate);
 
-    /* cleanup for clashing options */
+     embossoutfile = ajAcdGetOutfile("outfile");   
 
-}
+     emboss_openfile(embossoutfile, &outfile, &outfilename); 
 
-/************ END EMBOSS GET OPTIONS ROUTINES **************************/
 
-/*
-//void getoptions()
-//{
-//  /# interactively set options #/
-//  long loopcount, loopcount2;
-//  Char ch, ch2;
-//  boolean ttr;
-//
-//  ctgry = false;
-//  categs = 1;
-//  cvi = 1.0;
-//  rcategs = 1;
-//  rate[0] = 1.0;
-//  freqsfrom = true;
-//  gama = false;
-//  invar = false;
-//  invarfrac = 0.0;
-//  jukes = false;
-//  justwts = false;
-//  kimura = false;
-//  logdet = false;
-//  f84 = true;
-//  lower = false;
-//  similarity = false;
-//  ttratio = 2.0;
-//  ttr = false;
-//  weights = false;
-//  printdata = false;
-//  progress = true;
-//  interleaved = true;
-//  loopcount = 0;
-//  for (;;) {
-//    cleerhome();
-//    printf("\nNucleic acid sequence Distance Matrix program,");
-//    printf(" version %s\n\n",VERSION);
-//    printf("Settings for this run:\n");
-//    printf("  D  Distance (F84, Kimura, Jukes-Cantor, LogDet)?  %s\n",
-//           kimura ? "Kimura 2-parameter" :
-//           jukes  ? "Jukes-Cantor"       :
-//           logdet ? "LogDet"             :
-//           similarity ? "Similarity table" : "F84");
-//    if (kimura || f84 || jukes) {
-//      printf("  G          Gamma distributed rates across sites?  ");
-//      if (gama)
-//        printf("Yes\n");
-//      else {
-//        if (invar)
-//          printf("Gamma+Invariant\n");
-//        else
-//          printf("No\n");
-//      }
-//    }
-//    if (kimura || f84) {
-//      printf("  T                 Transition/transversion ratio?");
-//      if (!ttr)
-//        printf("  2.0\n");
-//      else
-//        printf("%8.4f\n", ttratio);
-//    }
-//    if (!logdet && !similarity && !gama && !invar) {
-//      printf("  C            One category of substitution rates?");
-//      if (!ctgry || categs == 1)
-//        printf("  Yes\n");
-//      else
-//        printf("  %ld categories\n", categs);
-//    }
-//    printf("  W                         Use weights for sites?");
-//    if (weights)
-//      printf("  Yes\n");
-//    else
-//      printf("  No\n");
-//    if (f84)
-//      printf("  F                Use empirical base frequencies?  %s\n",
-//             (freqsfrom ? "Yes" : "No"));
-//    printf("  L                       Form of distance matrix?  %s\n",
-//           (lower ? "Lower-triangular" : "Square"));
-//    printf("  M                    Analyze multiple data sets?");
-//    if (mulsets)
-//      printf("  Yes, %2ld %s\n", datasets,
-//               (justwts ? "sets of weights" : "data sets"));
-//    else
-//      printf("  No\n");
-//    printf("  I                   Input sequences interleaved?  %s\n",
-//           (interleaved ? "Yes" : "No, sequential"));
-//    printf("  0            Terminal type (IBM PC, ANSI, none)?  %s\n",
-//           ibmpc ? "IBM PC" : ansi  ? "ANSI"   : "(none)");
-//    printf("  1             Print out the data at start of run  %s\n",
-//           (printdata ? "Yes" : "No"));
-//    printf("  2           Print indications of progress of run  %s\n",
-//           (progress ? "Yes" : "No"));
-//    printf("\n  Y to accept these or type the letter for one to change\n");
-//#ifdef WIN32
-//    phyFillScreenColor();
-//#endif
-//    scanf("%c%*[^\n]", &ch);
-//    getchar();
-//    uppercase(&ch);
-//    if  (ch == 'Y')
-//           break;
-//    if ((f84 && (strchr("CFGWLDTMI012",ch) != NULL)) ||
-//        (kimura && (strchr("CGWLDTMI012",ch) != NULL)) ||
-//        (jukes && (strchr("CGWLDMI012",ch) != NULL)) ||
-//        ((logdet || similarity) && (strchr("WLDMI012",ch)) != NULL) ||
-//        (ctgry && (strchr("CFWLDTMI012",ch) != NULL))) {
-//     switch (ch) {
-//
-//     case 'D':
-//       if (kimura) {
-//         kimura = false;
-//         jukes = true;
-//         freqsfrom = false;
-//       } else if (f84) {
-//         f84 = false;
-//         kimura = true;
-//         freqsfrom = false;
-//       } else if (logdet) {
-//         logdet = false;
-//         similarity = true;
-//       } else if (similarity) {
-//         similarity = false;
-//         f84 = true;
-//         freqsfrom = true;
-//       } else {   /# jukes #/
-//         jukes = false;
-//         logdet = true;
-//         freqsfrom = false;
-//       }
-//       break;
-//
-//     case 'G':
-//       if (!(gama || invar))
-//         gama = true;
-//       else {
-//         if (gama) {
-//           gama = false;
-//           invar = true;
-//         } else {
-//           if (invar)
-//             invar = false;
-//         }
-//       }
-//       break;
-//
-//
-//     case 'C':
-//       ctgry = !ctgry;
-//       if (ctgry) {
-//         initcatn(&categs);
-//         initcategs(categs, rate);
-//       }
-//       break;
-//
-//     case 'F':
-//       freqsfrom = !freqsfrom;
-//       if (!freqsfrom)
-//         initfreqs(&freqa, &freqc, &freqg, &freqt);
-//       break;
-//
-//     case 'W':
-//       weights = !weights;
-//       break;
-//
-//     case 'L':
-//       lower = !lower;
-//       break;
-//
-//     case 'T':
-//       ttr = !ttr;
-//       if (ttr)
-//        initratio(&ttratio);
-//       break;
-//
-//     case 'M':
-//       mulsets = !mulsets;
-//       if (mulsets) {
-//          printf("Multiple data sets or multiple weights?");
-//          loopcount2 = 0;
-//          do {
-//            printf(" (type D or W)\n");
-//#ifdef WIN32
-//            phyFillScreenColor();
-//#endif
-//            scanf("%c%*[^\n]", &ch2);
-//            uppercase(&ch2);
-//            getchar();
-//            countup(&loopcount2, 10);
-//          } while ((ch2 != 'W') && (ch2 != 'D'));
-//          justwts = (ch2 == 'W');
-//          if (justwts)
-//            justweights(&datasets);
-//          else
-//            initdatasets(&datasets);
-//        }
-//       break;
-//
-//     case 'I':
-//       interleaved = !interleaved;
-//       break;
-//
-//     case '0':
-//        initterminal(&ibmpc, &ansi);
-//       break;
-//
-//     case '1':
-//       printdata = !printdata;
-//       break;
-//
-//     case '2':
-//       progress = !progress;
-//       break;
-//     }
-//   } else {
-//      if (strchr("CFGWLDTMI012",ch) == NULL)
-//        printf("Not a possible option!\n");
-//      else
-//        printf("That option not allowed with these settings\n");
-//      printf("\nPress Enter or Return key to continue\n");
-//      getchar();
-//    }
-//    countup(&loopcount, 100);
-//  }
-//  if (gama || invar) {
-//    loopcount = 0;
-//    do {
-//      printf(
-//"\nCoefficient of variation of substitution rate among sites (must be positive)\n");
-//      printf(
-//  " In gamma distribution parameters, this is 1/(square root of alpha)\n");
-//#ifdef WIN32
-//      phyFillScreenColor();
-//#endif
-//      scanf("%lf%*[^\n]", &cvi);
-//      getchar();
-//      countup(&loopcount, 10);
-//    } while (cvi <= 0.0);
-//    cvi = 1.0 / (cvi * cvi);
-//  }
-//  if (invar) {
-//    loopcount = 0;
-//    do {
-//      printf("Fraction of invariant sites?\n");
-//      scanf("%lf%*[^\n]", &invarfrac);
-//      getchar();
-//      countup (&loopcount, 10);
-//    } while ((invarfrac <= 0.0) || (invarfrac >= 1.0));
-//  }
-//    if (!printdata)
-//    return;
-//    fprintf(outfile, "\nNucleic acid sequence Distance Matrix program,");
-//    fprintf(outfile, " version %s\n\n",VERSION);
-//}  /# getoptions #/
-*/
+    fprintf(outfile, "\nNucleic acid sequence Distance Matrix program,");
+    fprintf(outfile, " version %s\n\n",VERSION);
+}  /* emboss_getoptions */
 
 
 void allocrest()
@@ -521,36 +252,12 @@ void doinit()
   /* initializes variables */
 
   inputnumbersseq(seqsets[0], &spp, &sites, &nonodes, 1);
-/*  getoptions();*/
   if (printdata)
     fprintf(outfile, "%2ld species, %3ld  sites\n", spp, sites);
   allocrest();
 }  /* doinit */
 
 
-void inputcategories()
-{
-  /* reads the categories for each site */
-  long i;
-  Char ch;
-/*
-//  for (i = 1; i < nmlngth; i++)
-//    gettc(infile);
-*/
-
-  for (i = 0; i < sites; i++) {
-    ch = ajStrChar(phyloratecat->Str[0], i);
-/*
-//    do {
-//      if (eoln(infile))
-//        scan_eoln(infile);
-//      ch = gettc(infile);
-//    } while (ch == ' ');
-*/
-    category[i] = ch - '0';
-  }
-  /*scan_eoln(infile);*/
-}  /* inputcategories */
 
 
 void printcategories()
@@ -588,7 +295,6 @@ void inputoptions()
   }
   if (justwts || weights)
     inputweightsstr(phyloweights->Str[ith-1], sites, oldweight, &weights);
-    /*inputweights(sites, oldweight, &weights);*/
   if (printdata)
     putc('\n', outfile);
   if (jukes && printdata)
@@ -602,8 +308,7 @@ void inputoptions()
   if (firstset && printdata && (kimura || f84))
     fprintf(outfile, "\nTransition/transversion ratio = %10.6f\n", ttratio);
   if (ctgry && categs > 1) {
-    inputcategsstr(phyloratecat->Str[0], 0, sites,
-		   category, categs, "DnaDist");
+    inputcategsstr(phyloratecat->Str[0], 0, sites, category, categs, "DnaDist");
     if (printdata)
       printcategs(outfile, sites, category, "Site categories");
   } else if (printdata && (categs > 1)) {
@@ -613,11 +318,7 @@ void inputoptions()
     putc('\n', outfile);
     printcategories();
   }
-  if ((jukes || kimura || logdet) && freqsfrom) {
-    printf(" WARNING: CANNOT USE EMPIRICAL BASE FREQUENCIES");
-    printf(" WITH JUKES-CANTOR, KIMURA, JIN/NEI OR LOGDET DISTANCES\n");
-    exxit(-1);
-  }
+
   if (jukes)
     ttratio = 0.5000001;
   if (weights && printdata)
@@ -961,7 +662,7 @@ void getinput()
     }
   }
   if (!justwts || firstset)
-    seq_inputdata(seqsets[ith-1], sites);
+    seq_inputdata(seqsets[ith-1],sites);
   makeweights();
   dnadist_makevalues();
   if (freqsfrom) {
@@ -1025,7 +726,7 @@ void makev(long m, long n, double *v)
          p1, p2, p3, q1, q2, q3, tt, delta=0.0, slope,
          xx1freqa, xx1freqc, xx1freqg, xx1freqt;
   double *prod, *prod2, *prod3;
-  boolean quick, jukesquick, kimquick, logdetquick;
+  boolean quick, jukesquick, kimquick, logdetquick, overlap;
   bases b;
   node *p, *q;
   sitelike xx1, xx2;
@@ -1034,6 +735,22 @@ void makev(long m, long n, double *v)
 
   p = nodep[m - 1];
   q = nodep[n - 1];
+
+  /* check for overlap between sequences */
+  overlap = false;
+  for(i=0 ; i < sites ; i++){
+    if((strchr("NX?O-",y[m-1][i])==NULL) && 
+       (strchr("NX?O-",y[n-1][i])==NULL)){
+      overlap = true;
+      break;
+    }
+  }
+  if(!overlap){
+    printf("\nWARNING: NO OVERLAP BETWEEN SEQUENCES %ld AND %ld; -1.0 WAS WRITTEN\n", m, n);
+    (*v) = -1.0;
+    return;
+  }
+
   quick = (!ctgry || categs == 1);
   if (jukes || kimura || logdet || similarity) {
     numerator = 0;
@@ -1078,19 +795,15 @@ void makev(long m, long n, double *v)
     baddists = true;
   }
   if (jukesquick) {
-    if (similarity)
-      vv = (double)numerator / denominator;
-    else {
-      if (!gama && !invar)
-        vv = -0.75 * log((4.0*((double)numerator / denominator) - 1.0) / 3.0);
-      else if (!invar)
-          vv = 0.75 * cvi * (exp(-(1/cvi)*
-             log((4.0 * ((double)numerator / denominator) - 1.0) / 3.0)) - 1.0);
-        else
-          vv = 0.75 * cvi * (exp(-(1/cvi)*
-             log((4.0 * ((double)numerator / denominator - invarfrac)/
-                          (1.0-invarfrac) - 1.0) / 3.0)) - 1.0);
-    }
+    if (!gama && !invar)
+      vv = -0.75 * log((4.0*((double)numerator / denominator) - 1.0) / 3.0);
+    else if (!invar)
+        vv = 0.75 * cvi * (exp(-(1/cvi)*
+           log((4.0 * ((double)numerator / denominator) - 1.0) / 3.0)) - 1.0);
+      else
+        vv = 0.75 * cvi * (exp(-(1/cvi)*
+           log((4.0 * ((double)numerator / denominator - invarfrac)/
+                        (1.0-invarfrac) - 1.0) / 3.0)) - 1.0);
   }
   if (kimquick) {
     num1 = 0;
@@ -1258,9 +971,13 @@ void makev(long m, long n, double *v)
         basetable[i][j] = 0.0;
     }
     for (i = 0; i < endsite; i++) {
-      for (k = 0; p->x[i][0][k] == 0.0; k++);
+      k = 0;
+      while (p->x[i][0][k] == 0.0)
+        k++;
       basefreq1[k] += weight[i];
-      for (l = 0; q->x[i][0][l] == 0.0; l++);
+      l = 0;
+      while (q->x[i][0][l] == 0.0)
+        l++;
       basefreq2[l] += weight[i];
       basetable[k][l] += weight[i];
     }
@@ -1274,6 +991,14 @@ void makev(long m, long n, double *v)
                                         +log(basefreq1[2])+log(basefreq1[3])
                                         +log(basefreq2[0])+log(basefreq2[1])
                                         +log(basefreq2[2])+log(basefreq2[3])));
+  }
+  if (similarity) {
+    if (denominator < 1.0) {
+      printf("\nWARNING: SPECIES %3ld AND %3ld HAVE NO BASES THAT", m, n);
+      printf(" CAN BE COMPARED\n");
+      baddists = true;
+  }
+    vv = (double)numerator / denominator;
   }
   *v = vv;
 }  /* makev */
@@ -1348,92 +1073,52 @@ void writedists()
     fprintf(outfile, "%5ld\n", spp);
   else
     fprintf(outfile, "\n");
-
-  if (distfile && !similarity)
-      ajFmtPrintF(distfile, "%5ld\n", spp);
-
   if (!similarity) {
     for (i = 0; i < spp; i++) {
       for (j = 0; j < nmlngth; j++)
-      {
-	putc(nayme[i][j], outfile);
-        if (distfile)
-	    ajFmtPrintF(distfile, "%c", nayme[i][j]);
-      }
+        putc(nayme[i][j], outfile);
       if (lower)
         k = i;
       else
         k = spp;
       for (j = 1; j <= k; j++) {
-        fprintf(outfile, "%8.4f", d[i][j - 1]);
-        if (distfile)
-	    ajFmtPrintF(distfile, "%8.4f", d[i][j - 1]);
-        if ((j + 1) % 9 == 0 && j < k)
-	{
+        fprintf(outfile, "%10.6f", d[i][j - 1]);
+        if ((j + 1) % 7 == 0 && j < k)
           putc('\n', outfile);
-	  if (distfile)
-	      ajFmtPrintF(distfile, "\n");
-        }
       }
       putc('\n', outfile);
-      if (distfile)
-	  ajFmtPrintF(distfile, "\n");
     }
   } else {
-    for (i = 0; i < spp; i += 8) {
-      if ((i+8) < spp)
-        n = i+8;
+    for (i = 0; i < spp; i += 6) {
+      if ((i+6) < spp)
+        n = i+6;
       else
         n = spp;
       fprintf(outfile, "            ");
-      if (simfile)
-	  ajFmtPrintF(simfile, "            ");
       for (j = i; j < n ; j++) {
         for (k = 0; k < (nmlngth-3); k++)
-	{
           putc(nayme[j][k], outfile);
-	  if (simfile)
-	      ajFmtPrintF(simfile, "%c", nayme[j][k]);
-        }
         putc(' ', outfile);
-	if (simfile)
-	    ajFmtPrintF(simfile, " ");
+        putc(' ', outfile);
+        putc(' ', outfile);
       }
       putc('\n', outfile);
-      if (simfile)
-	  ajFmtPrintF(simfile, "\n");
       for (j = 0; j < spp; j++) {
         for (k = 0; k < nmlngth; k++)
-	{
           putc(nayme[j][k], outfile);
-	  if (simfile)
-	      ajFmtPrintF(simfile, "%c", nayme[j][k]);
-        }
-        if ((i+8) < spp)
-          n = i+8;
+        if ((i+6) < spp)
+          n = i+6;
         else
           n = spp;
         for (k = i; k < n ; k++)
-	{
-          fprintf(outfile, "%8.4f", d[j][k]);
-	  if (simfile)
-	      ajFmtPrintF(simfile, "%8.4f", d[j][k]);
-        }
+          fprintf(outfile, "%10.6f", d[j][k]);
         putc('\n', outfile);
-	if (simfile)
-	    ajFmtPrintF(simfile, "\n");
       }
       putc('\n', outfile);
-      if (simfile)
-	  ajFmtPrintF(simfile, "\n");
     }
   }
   if (progress)
-    ajUser("\nDistances written to file \"%s\"\n\n", outfilename);
-  if (progress && distfile)
-    ajUser("\nDistances written to file \"%F\"\n\n", distfile);
-  if (progress && simfile)
-    ajUser("\nSimilarities written to file \"%F\"\n\n", simfile);
+    printf("\nDistances written to file \"%s\"\n\n", outfilename);
 }  /* writedists */
 
 
@@ -1444,26 +1129,14 @@ int main(int argc, Char *argv[])
   argv[0] = "Dnadist";
 #endif
   init(argc, argv);
-  emboss_getoptions("fdnadist",argc,argv);
-  /*openfile(&infile,INFILE,"input file","r",argv[0],infilename);*/
-  embossoutfile = ajAcdGetOutfile("outfile");
-  emboss_openfile(embossoutfile,&outfile,&outfilename);
+  emboss_getoptions("fdnadist", argc, argv);
 
   ibmpc = IBMCRT;
   ansi = ANSICRT;
-/*
-//  mulsets = false;
-//  datasets = 1;
-*/
   firstset = true;
   doinit();
   ttratio0 = ttratio;
-/*
-//  if (ctgry)
-//    openfile(&catfile,CATFILE,"categories file","r",argv[0],catfilename);
-//  if (weights || justwts)
-//    openfile(&weightfile,WEIGHTFILE,"weights file","r",argv[0],weightfilename);
-*/
+
   for (ith = 1; ith <= datasets; ith++) {
     ttratio = ttratio0;
     getinput();
@@ -1479,11 +1152,10 @@ int main(int argc, Char *argv[])
 #ifdef MAC
   fixmacfile(outfilename);
 #endif
-  /*printf("Done.\n\n");*/
+  printf("Done.\n\n");
 #ifdef WIN32
   phyRestoreConsoleAttributes();
 #endif
-  ajExit();
   return 0;
 }  /* DNA Distances by Maximum Likelihood */
 

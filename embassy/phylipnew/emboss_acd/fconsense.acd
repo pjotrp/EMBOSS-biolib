@@ -1,7 +1,6 @@
 application: fconsense [
   documentation: "Majority-rule and strict consensus tree"
   groups: "Phylogeny:Consensus"
-  embassy: "phylipnew"
 ]
 
 section: input [
@@ -12,17 +11,6 @@ section: input [
 tree: intreefile [
   parameter: "Y"
   knowntype: "newick"
-]
-
-list: method [
-  standard: "Y"
-  minimum: "1"
-  maximum: "1"
-  information: "Consensus method"
-  values: "strict:strict consensus tree; mr:Majority Rule;
-           mre:Majority Rule (extended); ml:Minimum fraction (0.5 to
-           1.0)"
-  default: "mre"
 ]
 
 endsection: input
@@ -38,41 +26,61 @@ outfile: outfile [
 ]
 
 toggle: trout [
-  parameter: "Y"
-  default: "Y"
-  information: "Create a tree file"
+	additional: "Y"
+	default: "Y"
+	information: "Write out trees to tree file"
 ]
 
-boolean: drawtree [
-  additional: "Y"
-  default: "Y"
-  information: "Write out trees to tree file"
-]
-
-outfile: outtreefile [
-  parameter: "Y"
-  information: "Tree file name"
+outfile: outtreefile  [
+  additional: "$(trout)"
   extension: "treefile"
+  information: "Tree file name"
   knowntype: "newick tree"
+  nullok: "Y"
 ]
-
 
 boolean: progress [
-  additional: "Y"
-  default: "N"
-  information: "Print indications of progress of run"
+	additional: "Y"
+	default: "Y"
+	information: "Print indications of progress of run"
 ]
 
-boolean: printsets [
+boolean: treeprint [
+	additional: "Y"
+	default: "Y"
+	information: "Print out tree"
+]
+
+boolean: prntsets [
   additional: "Y"
   default: "Y"
   information: "Print out the sets of species"
 ]
 endsection: output
 
-section: required [
-  information: "Required section"
+section: additional [
+  information: "Additional section"
   type: "page"
+]
+
+list: method [
+  additional: "Y"
+  minimum: "1"
+  maximum: "1"
+  information: "Consensus method"
+  values: "s:strict consensus tree; 
+           mr:Majority Rule;
+           mre:Majority Rule (extended); 
+           ml:Minimum fraction (0.5 to 1.0)"
+  default: "mre"
+]
+
+float: mlfrac [
+	additional: "@($(method)==ml)"
+	min: "0.5"
+	max: "1.0"
+	default: "0.5"
+	information: "Fraction (l) of times a branch must appear"
 ]
 
 toggle: root [
@@ -81,17 +89,12 @@ toggle: root [
   information: "Trees to be treated as Rooted"
 ]
 
-toggle: og [
-  standard: "$(root)"
-  information: "Outgroup root"
-  default: "N"
+
+integer: outgrno [
+	additional: "Y"
+	min: 0  
+	default: 0
+	information: "Species number to use as outgroup"
 ]
 
-integer: outgnum [
-  standard: "$(og)"
-  minimum: "1"
-  default: "1"
-  information: "Number of the outgroup"
-]
-
-endsection: required
+endsection: additional

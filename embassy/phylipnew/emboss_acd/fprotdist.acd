@@ -1,7 +1,6 @@
 application: fprotdist [
   documentation: "Protein distance algorithm"
   groups: "Phylogeny:Molecular sequence"
-  embassy: "phylipnew"
 ]
 
 section: input [
@@ -9,9 +8,43 @@ section: input [
   type: "page"
 ]
 
-seqset: sequences  [
+seqsetall: sequence  [
   parameter: "Y"
-  type: "gapany"
+  type: "gapproteinphylo"
+  help: "File containing one or more sequence alignments"
+]
+
+integer: ncategories  [
+	additional: "Y"
+	default: "1"	
+	minimum: "1"
+	maximum: "9"
+	information: "Number of substitution rate categories"
+]
+
+array: rate [
+	additional: "@($(ncategories) > 1)"
+	information: "Rate for each category"
+	size: "$(ncategories)"
+        sumtest: "N"
+]
+
+properties: categories  [
+	additional: "@($(ncategories) > 1)"
+	characters: "1-$(ncategories)"
+	information: "File of substitution rate categories"
+	nullok: "@($(ncategories) == 1)"
+        size: "1"
+        length: "$(sequence.length)"
+]
+
+properties: weights [
+	additional: "Y"
+	characters: "01"
+	information: "Weights file"
+        length: "$(sequence.length)"
+        size: "@(@($(sequence.multicount)>1) ? 1:0)"
+	nullok: "Y"
 ]
 
 endsection: input
@@ -29,116 +62,115 @@ outfile: outfile  [
 boolean: printdata  [
   additional: "Y"
   default: "N"
-  information: "Print out the data at start of run"
+  information: "Print data at start of run"
 ]
 
 boolean: progress  [
   additional: "Y"
-  default: "N"
+  default: "Y"
   information: "Print indications of progress of run"
 ]
 
 endsection: output
-
-section: required [
-  information: "Required section"
-  type: "page"
-]
-
-list: method  [
-  standard: "y"
-  minimum: "1"
-  maximum: "1"
-  header: "Method"
-  values: "Pam:Dayhoff PAM matrix; Kim:Kimura formula;
-           Cat:Categories model"
-  information: "Choose the method to use"
-  default: "Pam"
-]
-
-endsection: required
 
 section: additional [
   information: "Additional section"
   type: "page"
 ]
 
-list: categ  [
-  additional: "@($(method) == Cat)"
+list: model  [
+  additional: "y"
   minimum: "1"
   maximum: "1"
-  header: "categorization of amino acids\n all have groups: (Glu Gln
-           Asp Asn), (Lys Arg His), (Phe Tyr Trp) plus:-"
-  values: "G:George/Hunt/Barker (Cys), (Met Val Leu Ileu), (Gly Ala
-           Ser Thr Pro); C:Chemical (Cys Met), (Val Leu Ileu Gly Ala Ser
-           Thr), (Pro); H:Hall (Cys), (Met Val Leu Ileu), (Gly Ala Ser Thr),
-           (Pro)"
-  information: "Choose the categorie to use"
+  header: "Method"
+  values: "j:Jones-Taylor-Thornton matrix;
+           h:Henikoff/Tiller PMB matrix;
+           d:Dayhoff PAM matrix; 
+  	   k:Kimura formula;
+           s:Similarity table;
+           c:Categories model"
+  information: "Choose the method to use"
+  default: "j"
+]
+
+list: gamma  [
+	additional: "@($(model) == { j | h | d | c })"
+	minimum: "1"
+	maximum: "1"
+	header: "Rate variation among sites"
+	values: "g:Gamma distributed rates;
+        	 i:Gamma+invariant sites;
+          	 c:Constant rate"
+  	information: "Rate variation among sites"
+  	default: "c"
+]
+
+float: gammacoefficient [
+	additional: "@($(gamma)==g)" 
+	information: "Coefficient of variation of substitution rate among sites"
+	minimum: "0.001"
+	default: "1"
+]
+
+
+float: invarcoefficient [
+	additional: "@($(gamma)==i)" 
+	information: "Coefficient of variation of substitution rate among sites"
+	minimum: "0.001"
+	default: "1"
+]
+
+list: aacateg  [
+  additional: "@($(model) == c)"
+  minimum: "1"
+  maximum: "1"
+  header: "Which categorizations of amino acids to use - all have groups: (Glu Gln Asp Asn), (Lys Arg His), (Phe Tyr Trp)plus:"
+  values: "G:George/Hunt/Barker (Cys), (Met Val Leu Ileu), (Gly Ala Ser Thr Pro); 
+           C:Chemical (Cys Met), (Val Leu Ileu Gly Ala Ser Thr), (Pro); 
+           H:Hall (Cys), (Met Val Leu Ileu), (Gly Ala Ser Thr),(Pro)"
+  information: "Choose the category to use"
   default: "G"
 ]
 
-list: gencode  [
-  additional: "@($(method) == Cat)"
+list: whichcode  [
+  additional: "@($(model) == c)"
   minimum: "1"
   maximum: "1"
   header: "Which genetic code"
-  values: "U:Universal; M:Mitochondrial; V:Vertebrate mitochondrial;
-           F:Fly mitochondrial; Y:Yeast mitochondrial"
+  values: "u:Universal; 
+           c:Ciliate;
+           m:Universal mitochondrial; 
+           v:Vertebrate mitochondrial;
+           f:Fly mitochondrial; 
+           y:Yeast mitochondrial"
   information: "Which genetic code"
-  default: "U"
+  default: "u"
 ]
 
-float: prob  [
-  additional: "@($(method) == Cat)"
+float: ease  [
+  additional: "@($(model) == c)"
   minimum: "0.0"
   maximum: "1.0"
   default: "0.457"
   information: "Prob change category (1.0=easy)"
 ]
 
-float: tranrate  [
-  additional: "@($(method) == Cat)"
+float: ttratio  [
+  additional: "@($(model) == c)"
   minimum: "0.0"
   default: "2.0"
   information: "Transition/transversion ratio"
 ]
 
-toggle: basefrequency  [
-  additional: "@($(method) == Cat)"
-  default: "Y"
-  information: "Use empirical base frequencies"
-]
 
-float: freqa  [
-  additional: "@(!$(basefrequency))"
-  minimum: "0.0"
-  maximum: "1.0"
-  default: "0.25"
-  information: "Frequency for A"
-]
-
-float: freqc  [
-  additional: "@(!$(basefrequency))"
-  minimum: "0.0"
-  maximum: "1.0"
-  default: "0.25"
-  information: "Frequency for C"
-]
-
-float: freqg  [
-  additional: "@(!$(basefrequency))"
-  minimum: "0.0"
-  maximum: "1.0"
-  default: "0.25"
-  information: "Frequency for G"
-]
-
-float: freqt  [
-  additional: "@(!$(basefrequency))"
-  minimum: "0.0"
-  maximum: "1.0"
-  default: "0.25"
-  information: "Frequency for T/U"
+array: basefreq [
+	additional: "@($(model) == c)"
+	size: "4"
+	min: "0.0"
+	max: "1.0"
+	default: "0.25 0.25 0.25 0.25"
+	information: "Base frequencies for A C G T/U (use blanks to separate)"
+	sum: 1.0
 ]
 
 endsection: additional

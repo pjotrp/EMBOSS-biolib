@@ -1,7 +1,6 @@
 application: fdnainvar [
   documentation: "Nucleic acid sequence Invariants method"
   groups: "Phylogeny:Molecular sequence"
-  embassy: "phylipnew"
 ]
 
 section: input [
@@ -11,12 +10,13 @@ section: input [
 
 seqsetall: sequence  [
   parameter: "Y"
-  type: "gapdna"
+  type: "gapdnaphylo"
+  help: "File containing one or more sequence alignments"
 ]
 
 properties: weights [
   standard: "Y"
-  help: "Weights file"
+  length: "$(sequence.length)"
   nullok: "Y"
   knowntype: "weights"
 ]
@@ -36,30 +36,30 @@ outfile: outfile  [
 boolean: printdata  [
   additional: "Y"
   default: "N"
-  information: "Print out the data at start of run"
+  information: "Print data at start of run"
 ]
 
-boolean: printdotdiff [
-  additional: "Y"
+boolean: dotdiff [
+  additional: "$(printdata)"
   default: "Y"
-  information: "Use dot-differencing to display data"
+  information: "Use dot-differencing to display results"
 ]
 
 boolean: printpattern [
   additional: "Y"
   default: "Y"
-  information: "Print out the counts of patterns"
+  information: "Print counts of patterns"
 ]
 
 boolean: printinvariant  [
   additional: "Y"
   default: "Y"
-  information: "Print out the invariants"
+  information: "Print invariants"
 ]
 
 boolean: progress  [
   additional: "Y"
-  default: "N"
+  default: "Y"
   information: "Print indications of progress of run"
 ]
 

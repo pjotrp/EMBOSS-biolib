@@ -1,4 +1,4 @@
-application: fseqboot [
+application: fseqboot_seq [
   documentation: "Bootstrapped sequences algorithm"
   groups: "Phylogeny:Molecular sequence"
 ]
@@ -8,9 +8,9 @@ section: input [
   type: "page"
 ]
 
-seqset: infile  [
+seqset: sequence  [
   parameter: "Y"
-  knowntype: "seqboot input"
+  type: "gapany"
 ]
 
 properties: categories  [
@@ -19,25 +19,7 @@ properties: categories  [
 	information: "File of input categories"
 	nullok: "Y"
         size: "1"
-        length: "$(infile.length)"
-]
-
-properties: mixfile  [
-	additional: "Y"
-	characters: ""
-	information: "File of mixtures"
-	nullok: "Y"
-        size: "1"
-        length: "$(infile.length)"
-]
-
-properties: ancfile  [
-	additional: "Y"
-	characters: ""
-	information: "File of ancestors"
-	nullok: "Y"
-        size: "1"
-        length: "$(infile.length)"
+        length: "$(sequence.length)"
 ]
 
 properties: weights [
@@ -45,17 +27,10 @@ properties: weights [
 	characters: "01"
 	information: "Weights file"
 	help: "Weights file"
-        length: "$(infile.length)"
+        length: "$(sequence.length)"
 	nullok: "Y"
 ]
 
-properties: factorfile [
-	additional: "Y"
-	information: "Factors file"
-	nullok: "Y"
-        length: "$(infile.length)"
-        size: "1"
-]
 endsection: input
 
 section: output [
@@ -65,7 +40,7 @@ section: output [
 
 outfile: outfile  [
   parameter: "Y"
-  knowntype: "seqboot output"
+  knowntype: "seqbootseq output"
 ]
 
 boolean: printdata  [
@@ -91,19 +66,6 @@ endsection: output
 section: additional [
   information: "Additional section"
   type: "page"
-]
-
-list: datatype  [
-  additional: "y"
-  minimum: "1"
-  maximum: "1"
-  header: "Datatype"
-  values: "s:Molecular sequences; 
-           m:Discrete Morphology;
-           r:Restriction Sites; 
-           g:Gene Frequencies"
-  information: "Choose the datatype"
-  default: "s"
 ]
 
 list: test  [
@@ -136,7 +98,7 @@ float: fracsample [
 ]
 
 list: rewriteformat  [
-  additional: "@(@($(test)==r)&&@($(datatype)==s))"
+  additional: "@($(test)==r)"
   minimum: "1"
   maximum: "1"
   header: "test"
@@ -149,7 +111,7 @@ list: rewriteformat  [
 
 
 list: seqtype  [
-  additional: "@( @( $(datatype) == s ) & @( $(rewriteformat) == {n | x} ))"
+  additional: " @( $(rewriteformat) == {n | x} )"
   minimum: "1"
   maximum: "1"
   header: "test"
@@ -158,17 +120,6 @@ list: seqtype  [
            r:rna"
   information: "Output format"
   default: "d"
-]
-
-list: morphseqtype  [
-  additional: "@( @( $(datatype) == m ) & @( $(test) == r ))"
-  minimum: "1"
-  maximum: "1"
-  header: "Output format"
-  values: "p:PHYLIP; 
-           n:NEXUS"
-  information: "Output format"
-  default: "p"
 ]
 
 integer: blocksize [
@@ -196,20 +147,8 @@ list: justweights  [
   default: "d"
 ]
 
-boolean: enzymes  [
-  additional: "@($(datatype) == r)"
-  information: "Is the number of enzymes present in input file"
-  default: "N"
-]
-
-boolean: all  [
-  additional: "@($(datatype) == g)"
-  information: "All alleles present at each locus"
-  default: "N"
-]
-
 integer: seed [
-	additional: "@($(test) != r)"
+	additional: "@($(test)!= r)"
 	information: "Random number seed between 1 and 32767 (must be odd)"
 	max: 32767
 	min: 1

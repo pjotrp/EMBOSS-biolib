@@ -1,128 +1,153 @@
 application: fprotpars [
-  documentation: "Protein parsimony algorithm"
-  groups: "Phylogeny:Molecular sequence"
-  embassy: "phylipnew"
+	documentation: "Protein pasimony algorithm"
+	groups: "Phylogeny:Molecular sequence"
 ]
 
 section: input [
-  information: "Input section"
-  type: "page"
+	information: "Input section"
+	type: "page"
 ]
 
-seqsetall: sequences  [
-  parameter: "Y"
-  type: "gapproteinphylo"
+seqsetall: sequence [
+	parameter: "Y"
+	type: "gapproteinphylo"
+        help: "File containing one or more sequence alignments"
+]
+
+tree: intreefile [
+	parameter: "Y"
+	nullok: "Y"
+	knowntype: "newick"
+]
+
+properties: weights [
+	additional: "Y"
+	characters: "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+	information: "Weights file"
+	nullok: "Y"
+        length: "$(sequence.length)"
+        size: "@(@($(sequence.multicount)>1) ? 1:0)"
 ]
 
 endsection: input
 
 section: output [
-  information: "Output section"
-  type: "page"
-]
-
-outfile: outfile  [
-  parameter: "Y"
-  knowntype: "protpars output"
+	information: "Output section"
+	type: "page"
 ]
 
 
-boolean: printdata  [
-  additional: "Y"
-  default: "N"
-  information: "Print out the data at start of run"
+outfile: outfile [
+	parameter: "Y"
+	knowntype: "protpars output"
 ]
 
-boolean: progress  [
-  additional: "Y"
-  default: "N"
-  information: "Print indications of progress of run"
-]
-
-boolean: steps  [
-  additional: "Y"
-  default: "N"
-  information: "Print out steps in each site"
-]
-
-boolean: seqatnodes  [
-  additional: "Y"
-  default: "N"
-  information: "Print sequences at all nodes of tree"
-]
-
-boolean: drawtree  [
-  additional: "Y"
-  default: "Y"
-  information: "Draw tree"
-]
-
-toggle: trout  [
-  parameter: "Y"
-  default: "Y"
-  information: "Create a tree file"
+toggle: trout [
+	additional: "Y"
+	default: "Y"
+	information: "Write out trees to tree file"
 ]
 
 outfile: outtreefile  [
-  standard: "$(trout)"
+  additional: "$(trout)"
   extension: "treefile"
   information: "Tree file name"
   knowntype: "newick tree"
+  nullok: "Y"
 ]
+
+boolean: printdata [
+	additional: "Y"
+	default: "N"
+	information: "Print data at start of run"
+]
+
+boolean: progress [
+	additional: "Y"
+	default: "Y"
+	information: "Print indications of progress of run"
+]
+
+boolean: treeprint [
+	additional: "Y"
+	default: "Y"
+	information: "Print out tree"
+]
+
+boolean: stepbox [
+	additional: "Y"
+	default: "N"
+	information: "Print steps at each site"
+]
+
+boolean: ancseq [
+	additional: "Y"
+	default: "N"
+	information: "Print sequences at all nodes of tree"
+]
+
+boolean: dotdiff [
+	additional: "@($(printdata) | $(ancseq))"
+	default: "Y"
+	information: "Use dot differencing to display results"
+]
+
 endsection: output
 
-section: required [
-  information: "Required section"
-  type: "page"
+section: additional [
+	information: "Additional section"
+	type: "page"
 ]
 
-toggle: besttree  [
-  additional: "Y"
-  default: "Y"
-  information: "Search for best tree"
+integer: njumble [
+	additional: "@(!$(intreefile.isdefined))"
+	default: 0
+	min: 0
+	information: "Number of times to randomise"
 ]
 
-toggle: random  [
-  standard: "$(besttree)"
-  default: "N"
-  information: "Randomize input order of species"
+integer: seed [
+	additional: "$(njumble)"
+	information: "Random number seed between 1 and 32767 (must be odd)"
+	max: 32767
+	min: 1
+	default: 1
 ]
 
-integer: randseed  [
-  standard: "$(random)"
-  default: "3"
-  information: "Random number seed (must be odd)"
+integer: outgrno [
+	additional: "Y"
+	min: 0  
+        max: "$(sequence.count)"
+	default: 0
+	information: "Species number to use as outgroup"
 ]
 
-integer: randtimes  [
-  standard: "$(random)"
-  default: "3"
-  information: "How many times to randomise"
+toggle: thresh [
+	additional: "Y"
+	default: "N"
+	information: "Use threshold parsimony"
 ]
 
-toggle: og  [
-  additional: "Y"
-  information: "Outgroup root"
-  default: "N"
+float: threshold [
+	additional: "$(thresh)"
+	min: 1
+	information: "Threshold value"
+	default: 1
 ]
 
-integer: outgnum  [
-  standard: "$(og)"
-  minimum: "1"
-  default: "1"
-  information: "Number of the outgroup"
+list: whichcode [
+	additional: "Y"
+	default: "Universal"
+	min: 1
+	max: 1
+	header: "Genetic codes"
+	values: "U:Universal,M:Mitochondrial,V:Vertebrate mitochondrial,F:Fly mitochondrial,Y:Yeast mitochondrial"
+	delim: ","
+	codedelim: ":"
+	information: "Use which genetic code"
 ]
 
-toggle: thresh  [
-  default: "N"
-  information: "Use threshold parsimony"
-]
 
-float: valthresh  [
-  standard: "$(thresh)"
-  minimum: "1.0"
-  default: "1.0"
-  information: "Threshold value"
-]
+endsection: additional	
 
-endsection: required
+	

@@ -1,10 +1,8 @@
-
 /* version 3.6. (c) Copyright 1993-2002 by the University of Washington.
    Written by Joseph Felsenstein, Akiko Fuseki, Sean Lamont, and Andrew Keeffe.
    Permission is granted to copy and use this program provided no fee is
    charged for it and provided that this copyright notice is not removed. */
 
-#include "ajax.h"
 #include "phylip.h"
 #include "cont.h"
 
@@ -13,7 +11,7 @@ AjPPhyloTree* phylotrees;
 
 #ifndef OLDC
 /* function prototypes */
-/*void   getoptions(void);*/
+//void   getoptions(void);
 void   emboss_getoptions(char *pgm, int argc, char *argv[]);
 void   getdata(void);
 void   allocrest(void);
@@ -41,8 +39,11 @@ void   maketree(void);
 #endif
 
 
-Char infilename[FNMLNGTH], intreename[FNMLNGTH];
 const char* outfilename;
+AjPFile embossoutfile;
+
+
+
 long nonodes, chars, numtrees;
 long *sample, contnum;
 phenotype3 **x, **cntrast, *ssqcont;
@@ -63,165 +64,49 @@ boolean haslengths, goteof, first;
 double trweight;
 
 
-/************ EMBOSS GET OPTIONS ROUTINES ******************************/
 void emboss_getoptions(char *pgm, int argc, char *argv[])
 {
-    AjStatus retval;
-
-    mulsets = false;
-    nophylo = true;
-    printdata = false;
-    progress = true;
-    varywithin = false;
-    writecont = false;
+  AjStatus retval;
+  mulsets = false;
+  nophylo = false;
+  printdata = false;
+  progress = true;
+  varywithin = false;
+  writecont = false;
+  reg = true;
 
     ajNamInit("emboss");
     retval =  ajAcdInitP (pgm, argc, argv,"PHYLIP");
 
-    reg = ajAcdGetBool("printcorplusreg");
-    progress = ajAcdGetBool("progress");
-    printdata = ajAcdGetBool("printdata");
-    writecont = ajAcdGetBool("printcontrasts");
-
     phylofreq = ajAcdGetFrequencies("infile");
     phylotrees = ajAcdGetTree("intreefile");
     numtrees = 0;
-    while(phylotrees[numtrees])
-	numtrees++;
+    while (phylotrees[numtrees])
+        numtrees++;
 
-    if (numtrees > 1)
-	mulsets = true;
+    varywithin = ajAcdGetBool("varywithin");
+    if(varywithin) nophylo = ajAcdGetBool("nophylo");
+    else {
+      reg = ajAcdGetBool("reg");
+      writecont = ajAcdGetBool("writecont");
+    }
     
-    if (phylofreq->Within)
-	varywithin = true;
+    printdata = ajAcdGetBool("printdata");
+    progress = ajAcdGetBool("progress");
 
-    nophylo = ajAcdGetBool("lrt");
-}
+     embossoutfile = ajAcdGetOutfile("outfile");   
+     emboss_openfile(embossoutfile, &outfile, &outfilename);
 
-/************ END EMBOSS GET OPTIONS ROUTINES **************************/
 
-/*
-//void getoptions()
-//{
-//  /# interactively set options #/
-//  long loopcount, loopcount2;
-//  Char ch;
-//  boolean done, done1;
-//
-//  mulsets = false;
-//  nophylo = true;
-//  printdata = false;
-//  progress = true;
-//  varywithin = false;
-//  writecont = false;
-//  loopcount = 0;
-//  do {
-//    cleerhome();
-//    printf("\nContinuous character comparative analysis, version %s\n\n",
-//             VERSION);
-//    printf("Settings for this run:\n");
-//    printf("  W        within-population variation in data?");
-//    if (varywithin)
-//      printf("  Yes, multiple individuals\n");
-//    else {
-//      printf("  No, species values are means\n");
-//      printf("  R     Print out correlations and regressions?  %s\n",
-//             (reg ? "Yes" : "No"));
-//    }
-//    printf("  A      LRT test of no phylogenetic component?");
-//    if (nophylo)
-//      printf("  Yes, with and without VarA\n");
-//    else
-//      printf("  No, just assume it is there\n");
-//    if (!varywithin)
-//      printf("  C                        Print out contrasts?  %s\n",
-//               (writecont? "Yes" : "No"));
-//    printf("  M                     Analyze multiple trees?");
-//    if (mulsets)
-//      printf("  Yes, %2ld trees\n", numtrees);
-//    else
-//      printf("  No\n");
-//    printf("  0         Terminal type (IBM PC, ANSI, none)?  %s\n",
-//           ibmpc ? "IBM PC"  :
-//           ansi  ? "ANSI"    : "(none)");
-//    printf("  1          Print out the data at start of run  %s\n",
-//           (printdata ? "Yes" : "No"));
-//    printf("  2        Print indications of progress of run  %s\n",
-//           (progress ? "Yes" : "No"));
-//    printf("\n  Y to accept these or type the letter for one to change\n");
-//#ifdef WIN32
-//    phyFillScreenColor();
-//#endif
-//    scanf("%c%*[^\n]", &ch);
-//    getchar();
-//    if (ch == '\n')
-//      ch = ' ';
-//    uppercase(&ch);
-//    done = (ch == 'Y');
-//    if (!done) {
-//      if (strchr("RAMWC120", ch) != NULL) {
-//        switch (ch) {
-//
-//        case 'R':
-//          reg = !reg;
-//          break;
-//
-//        case 'A':
-//          nophylo = !nophylo;
-//          break;
-//
-//        case 'M':
-//          mulsets = !mulsets;
-//          if (mulsets) {
-//            loopcount2 = 0;
-//            do {
-//              printf("How many trees?\n");
-//#ifdef WIN32
-//              phyFillScreenColor();
-//#endif
-//              scanf("%ld%*[^\n]", &numtrees);
-//              getchar();
-//              done1 = (numtrees >= 1);
-//              if (!done1)
-//                printf("BAD TREES NUMBER:  it must be greater than 1\n");
-//              countup(&loopcount2, 10);
-//            } while (done1 != true);
-//          }
-//          break;
-//
-//        case 'C':
-//          writecont = !writecont;
-//          break;
-//
-//        case 'W':
-//          varywithin = !varywithin;
-//          break;
-//
-//        case '0':
-//          initterminal(&ibmpc, &ansi);
-//          break;
-//
-//        case '1':
-//          printdata = !printdata;
-//          break;
-//
-//        case '2':
-//          progress = !progress;
-//          break;
-//        }
-//      } else
-//        printf("Not a possible option!\n");
-//    }
-//    countup(&loopcount, 100);
-//  } while (!done);
-//}  /# getoptions #/
-*/
+}  /* emboss_getoptions */
+
 
 void getdata()
 {
   /* read species data */
   long i, j, k, l;
   long idata = 0;
+
   if (printdata) {
     fprintf(outfile,
        "\nContinuous character contrasts analysis, version %s\n\n",VERSION);
@@ -236,13 +121,10 @@ void getdata()
   ssqcont = (phenotype3 *)Malloc((long)spp*sizeof(phenotype3 *));
   contnum = spp-1;
   for (i = 0; i < spp; i++) {
-    /*scan_eoln(infile);*/
     initnamefreq(phylofreq, i);
     if (varywithin) {
-      /*fscanf(infile, "%ld", &sample[i]);*/
       sample[i] = phylofreq->Individuals[i];
       contnum += sample[i]-1;
-      /*scan_eoln(infile);*/
     }
     else sample[i] = 1;
     if (printdata)
@@ -255,10 +137,7 @@ void getdata()
       x[i][k] = (phenotype3)Malloc((long)chars*sizeof(double));
       cntrast[i][k] = (phenotype3)Malloc((long)chars*sizeof(double));
       for (j = 1; j <= chars; j++) {
-        /*if (eoln(infile)) 
-          scan_eoln(infile);
-        fscanf(infile, "%lf", &x[i][k][j - 1]);*/
-	x[i][k][j - 1] = phylofreq->Data[idata++];
+      	x[i][k][j - 1] = phylofreq->Data[idata++]; 
         if (printdata) {
           fprintf(outfile, "%10.5f", x[i][k][j - 1]);
           if (j % 6 == 0) {
@@ -272,7 +151,7 @@ void getdata()
     if (printdata)
       putc('\n', outfile);
   }
-  /*scan_eoln(infile);*/
+
   if (printdata)
     putc('\n', outfile);
 }  /* getdata */
@@ -313,7 +192,6 @@ void doinit()
   /* initializes variables */
 
   inputnumbersfreq(phylofreq, &spp, &chars, &nonodes, 1);
-  /*getoptions();*/
   allocrest();
 }  /* doinit */
 
@@ -413,7 +291,7 @@ void writecontrasts()
   }
   for (i = 0; i <= contno - 2; i++) {
     for (j = 0; j < chars; j++)
-      fprintf(outfile, "%10.5f", cntrast[i][0][j]);
+      fprintf(outfile, "%10.5f", cntrast[i][0][j]/sqrt(ssqcont[i][0]));
     putc('\n', outfile);
   }
 }  /* writecontrasts */
@@ -434,7 +312,7 @@ void regressions()
     for (i = 0; i <= contno - 2; i++) {
     for (j = 0; j < chars; j++) {
       for (k = 0; k < chars; k++)
-        sumprod[j][k] += cntrast[i][0][j] * cntrast[i][0][k];
+        sumprod[j][k] += cntrast[i][0][j] * cntrast[i][0][k] / ssqcont[i][0];
     }
   }
   fprintf(outfile, "\nCovariance matrix\n");
@@ -479,8 +357,8 @@ double logdet(double **a)
 
   sum = 0.0;
   for (i = 0; i < chars; i++) {
-    if (a[i][i] == 0.0) {  /* debug make fabs() < 1.0E-37 instead? */
-       ajErr("ERROR: tried to invert singular matrix.");
+    if (fabs(a[i][i]) < 1.0E-37) {
+       printf("ERROR: tried to invert singular matrix.\n");
        exxit(-1);
     }
     sum += log(a[i][i]);
@@ -498,7 +376,7 @@ double logdet(double **a)
     }
   }
   return(sum);
-}  /* lodget */
+}  /* logdet */
 
 
 void invert(double **a)
@@ -510,8 +388,8 @@ void invert(double **a)
   double temp;
 
   for (i = 0; i < chars; i++) {
-    if (a[i][i] == 0.0) {  /* debug make fabs() < 1.0E-37 instead? */
-       ajErr("ERROR: tried to invert singular matrix.");
+    if (fabs(a[i][i]) < 1.0E-37) {
+       printf("ERROR: tried to invert singular matrix.\n");
        exxit(-1);
     }
     temp = 1.0 / a[i][i];
@@ -807,13 +685,12 @@ void emiterate(boolean novara)
      newcovars(novara);
      relnorm = normdiff(novara);
      if (its % 100 == 0)
-      fprintf(stderr,
-	      "Iteration no. %ld:  ln L = %f, Norm = %f\n", its, logL, relnorm);
+      printf("Iteration no. %ld:  ln L = %f, Norm = %f\n", its, logL, relnorm);
      its++;
    } while ((relnorm > 0.00001) && (its < 10000));
    if (its == 10000) {
-     fprintf(stderr,"\nWARNING: Iterations did not converge.");
-     fprintf(stderr,"  Results may be unreliable.\n");
+     printf("\nWARNING: Iterations did not converge.");
+     printf("  Results may be unreliable.\n");
    }
 } /* emiterate */
 
@@ -876,6 +753,7 @@ void maketree()
       fprintf(outfile, "==== ====== ====\n\n");
     }
     nextnode = 0;
+    nextnode = 0;
     treestr = ajStrStrMod(&phylotrees[which-1]->Tree);
     treeread (&treestr, &curtree.start, curtree.nodep, &goteof, &first,
             curtree.nodep, &nextnode, &haslengths, &grbg, initcontrastnode);
@@ -929,7 +807,7 @@ void maketree()
     which++;
   }
   if (progress)
-    fprintf(stderr,"\nOutput written to file \"%s\"\n\n", outfilename);
+    printf("\nOutput written to file \"%s\"\n\n", outfilename);
 }  /* maketree */
 
 
@@ -941,24 +819,18 @@ int main(int argc, Char *argv[])
 #endif
   init(argc, argv);
   emboss_getoptions("fcontrast", argc, argv);
-  /*openfile(&infile,INFILE,"input data","r",argv[0],infilename);*/
-  /*openfile(&intree,INTREE,"input tree", "r",argv[0],intreename);*/
-  embossoutfile = ajAcdGetOutfile("outfile");
-  emboss_openfile(embossoutfile,&outfile,&outfilename);
+
   ibmpc = IBMCRT;
   ansi = ANSICRT;
-  reg = true;
-  numtrees = 1;
   doinit();
   getdata();
   maketree();
   FClose(infile);
   FClose(outfile);
   FClose(intree);
-  /*printf("Done.\n\n");*/
+  printf("Done.\n\n");
 #ifdef WIN32
   phyRestoreConsoleAttributes();
 #endif
-  ajExit();
   return 0; 
 }

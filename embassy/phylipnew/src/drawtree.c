@@ -1,5 +1,13 @@
+
+
+#ifdef OSX_CARBON
+#include <Carbon/Carbon.h>
+#endif
+
  
+#include "phylip.h"
 #include "draw.h"
+
 
 /* Version 3.6.  Copyright (c) 1986-2002 by the University of Washington and
   Written by Joseph Felsenstein and Christopher A. Meacham.  Additional code
@@ -12,21 +20,15 @@
 #define MAXITERATIONS   100
 #define MINIMUMCHANGE   0.0001
 
-/* added - danieyek 990129 */
 /* When 2 Nodes are on top of each other, this is the max. force that's allowed. */
 #ifdef INFINITY
 #undef INFINITY
 #endif
 #define INFINITY        (double) 9999999999.0
 
-#define maxnodes 500     /* debug should this be 250? for 68k Macs? */
-
-AjPPhyloTree* phylotrees;
-
 typedef enum {fixed, radial, along, middle} labelorient;
 FILE        *plotfile;
-AjPFile embossplotfile;
-const char  *pltfilename;
+char        pltfilename[FNMLNGTH];
 long        nextnode,  strpwide, strpdeep,
             strptop, strpbottom,  payge, numlines,hpresolution;
 double      xmargin, ymargin, topoflabels, rightoflabels, leftoflabels,
@@ -39,7 +41,6 @@ boolean     canbeplotted, preview, previewing, dotmatrix,haslengths,
              notfirst, improve, nbody, firstscreens, labelavoid;
 boolean     pictbold,pictitalic,pictshadow,pictoutline;
 
-double textlength[maxnodes], firstlet[maxnodes];
 striptype stripe;
 plottertype plotter, oldplotter, previewer;
 growth grows;
@@ -53,22 +54,14 @@ char *progname;
 long filesize;
 long strpdiv;
 double pagex,pagey,paperx,papery,hpmargin,vpmargin;
+double *textlength, *firstlet;
 double trweight;   /* starting here, needed to make sccs version happy */
 boolean goteof;
 node *grbg;
 winactiontype winaction;
 
-/* added - danieyek 990226 */
 long maxNumOfIter;
-
-/* added - danieyek 990203 */
 extern double pie;
-
-
-
-
-
-/* added - danieyek 990204 */
 struct stackElem
 {
   /* This is actually equivalent to a reversed link list; pStackElemBack
@@ -141,7 +134,6 @@ void   user_loop(void);
 void setup_environment(int argc, Char *argv[]);
 void polarize(node *p, double *xx, double *yy);
 double vCounterClkwiseU(double Xu, double Yu, double Xv, double Yv);
-void emboss_getoptions(char *pgm, int argc, char *argv[]);
 /* function prototypes */
 #endif
 
@@ -184,7 +176,9 @@ void initdrawtreenode(node **p, node **grbg, node *q, long len,
     if (!minusread)
       (*p)->oldlen = valyew / divisor;
     else
-      (*p)->oldlen = 0.0;
+      (*p)->oldlen = fabs(valyew/divisor);
+    if ((*p)->oldlen < epsilon)
+      (*p)->oldlen = epsilon;
     if ((*p)->back != NULL)
       (*p)->back->oldlen = (*p)->oldlen;
     break;
@@ -499,13 +493,14 @@ char showparms()
 void getparms(char numtochange)
 {
   /* get from user the relevant parameters for the plotter and diagram */
-  long loopcount, loopcount2;
+  long loopcount2;
   Char ch;
   boolean ok;
   char    options[32];
   char    line[32];
   char    input[100];
   int m, n;
+  AjPStr plottercode = NULL;
 
   n = (int)((pagex-hpmargin-0.01)/(paperx-hpmargin)+1.0);
   m = (int)((pagey-vpmargin-0.01)/(papery-vpmargin)+1.0);
@@ -535,7 +530,8 @@ void getparms(char numtochange)
     break;
 
   case 'P':
-    getplotter();
+    plottercode = ajAcdGetListI("plotter", 1);
+    getplotter(ajStrChar(plottercode,0));
     break;
 
   case 'V':
@@ -805,7 +801,7 @@ void getparms(char numtochange)
       phyFillScreenColor();
 #endif
       getstryng(input);
-      input[0] = toupper((int) input[0]);
+      input[0] = toupper(input[0]);
       countup(&loopcount2, 10);
     } while (input[0] != 'Y' && input[0] != 'N');
     pictitalic = (input[0] == 'Y');
@@ -816,7 +812,7 @@ void getparms(char numtochange)
       phyFillScreenColor();
 #endif
       getstryng(input);
-      input[0] = toupper((int) input[0]);
+      input[0] = toupper(input[0]);
       countup(&loopcount2, 10);
     } while (input[0] != 'Y' && input[0] != 'N');
     pictbold = (input[0] == 'Y');
@@ -827,7 +823,7 @@ void getparms(char numtochange)
       phyFillScreenColor();
 #endif
       getstryng(input);
-      input[0] = toupper((int) input[0]);
+      input[0] = toupper(input[0]);
       countup(&loopcount2, 10);
     } while (input[0] != 'Y' && input[0] != 'N');
     pictshadow = (input[0] == 'Y');
@@ -838,13 +834,11 @@ void getparms(char numtochange)
       phyFillScreenColor();
 #endif
       getstryng(input);
-      input[0] = toupper((int) input[0]);
+      input[0] = toupper(input[0]);
       countup(&loopcount2, 10);
     } while (input[0] != 'Y' && input[0] != 'N');
     pictoutline = (input[0] == 'Y');
     break;
-
-    countup(&loopcount, 100);
   }
 }  /* getparms */
 
@@ -883,7 +877,6 @@ void plrtrans(node *p, double theta, double lower, double upper)
   node *pp, *qq;
 
   nn = p->width;
-  angle = theta;
   subangle = (upper - lower) / nn;
   qq = p;
   pp = p->next;
@@ -1169,7 +1162,7 @@ void improvtrav(node *p)
     do {
       qq = pp;
       pp = pp->next;
-    } while (pp != root);                      /* debug ?? */
+    } while (pp != root);
     p->righttheta = qq->righttheta;
     p->lefttheta = p->next->lefttheta;
   }
@@ -1179,16 +1172,6 @@ void improvtrav(node *p)
   do {
     langle = qq->righttheta - pp->lefttheta;
     rangle = pp->righttheta - ppp->lefttheta; 
-    /*
-    if (langle > pi)
-      langle -= 2*pi;
-    if (langle < -pi)
-      langle += 2*pi;
-    if (rangle > pi)
-      rangle -= 2*pi;
-    if (rangle < -pi)
-      rangle += 2*pi;
-      */
     while (langle > pi)
       langle -= 2*pi;
     while (langle < -pi)
@@ -1205,9 +1188,6 @@ void improvtrav(node *p)
       sumrot = -rangle;
     cosphi = cos(sumrot);
     sinphi = sin(sumrot);
-    /*
-    if ((p != root) || ((p == root) && (root->next->next->next != root))) {
-    */
     if (p != root) {
       if (fabs(sumrot) > maxchange)
         maxchange = fabs(sumrot);
@@ -1217,16 +1197,6 @@ void improvtrav(node *p)
       leftrightangle(pp, xx, yy);
       langle = qq->righttheta - pp->lefttheta;
       rangle = pp->righttheta - ppp->lefttheta; 
-      /*
-      if (langle > pi)
-        langle -= 2*pi;
-      if (langle < -pi)
-        langle += 2*pi;
-      if (rangle > pi)
-        rangle -= 2*pi;
-      if (rangle < -pi)
-        rangle += 2*pi;
-      */
       while (langle > pi)
         langle -= 2*pi;
       while (langle < -pi)
@@ -1442,7 +1412,6 @@ double signOfMoment(double xReferenceVector, double yReferenceVector,
   /* reduce angleReference to 0 */
   angleForce = angleForce - angleReference;
   angleForce = capedAngle(angleForce);
-  angleReference = 0;
 
   if (angleForce > 0 && angleForce < pie)
   {
@@ -1487,7 +1456,7 @@ double forcePerpendicularOnNode(node *pPivotSubNode, node *pToSubNode,
 
   alpha = theta + beta
  */
-  double totalForce, forceAngle, xDelta, yDelta, beta;
+  double totalForce, forceAngle, xDelta, yDelta;
   double alpha, theta, forcePerpendicular, sinForceAngle, cosForceAngle;
 
   totalForce = (double)0;
@@ -1512,7 +1481,6 @@ double forcePerpendicularOnNode(node *pPivotSubNode, node *pToSubNode,
 
   sinForceAngle = sin(forceAngle);
   cosForceAngle = cos(forceAngle);
-  beta = computeAngle((double)0, (double)0, yDelta, -xDelta);
   theta = angleBetVectors(xDelta, yDelta, cosForceAngle, sinForceAngle);
 
   if (theta > pie/2)
@@ -1946,7 +1914,6 @@ void improveNodeAngle(node *pToNode, double medianDistance)
   /* convert distance to absolute value and test if it is zero */
   if ( fabs(distance) < epsilon) 
   {
-    forcePerpendicular = (double)0;
     angleRotate = (double)0;
   }
   else 
@@ -1993,16 +1960,13 @@ void improvtravn(node *pStartingSubNode)
    (is pushed now) */
   stackElemType *pPUSHStackTop, *pPOPStackTop, *pTempStack;
   node *pSubNode, *pBackStartNode, *pBackSubNode;
-  double sinphi, cosphi, phi, medianDistance;
+  double medianDistance;
   long noOfIteration;
 
   /* Stack starts with no element on it */
   pPUSHStackTop = NULL;
   pPOPStackTop = NULL;
 
-phi = (double)1.0;
-sinphi = sin(phi);
-cosphi = cos(phi);
 
   /* Get the median to relate force to angle proportionally. */
   medianDistance = medianOfDistance(root, true);
@@ -2142,6 +2106,8 @@ void calculate()
   fontheight = heighttext(font,fontname);
   if (labeldirec == fixed)
     labangle = pi * labelrotation / 180.0;
+  textlength = (double*) Malloc(nextnode*sizeof(double));
+  firstlet = (double*) Malloc(nextnode*sizeof(double));
   for (i = 0; i < nextnode; i++) {
     if (nodep[i]->tip) {
       textlength[i] = lengthtext(nodep[i]->nayme, nodep[i]->naymlength,
@@ -2308,7 +2274,7 @@ void plotlabels(char *fontname)
   long i;
   double compr, dx = 0, dy = 0, labangle, sino, coso, cosl, sinl,
          cosv, sinv, vec;
-  boolean left, right;
+  boolean right;
   node *lp;
 
   compr = xunitspercm / yunitspercm;
@@ -2331,7 +2297,6 @@ void plotlabels(char *fontname)
       cosl = cos(labangle);
       sinl = sin(labangle);
       right = ((coso*cosl+sino*sinl) > 0.0) || (labeldirec == middle);
-      left = !right;
       vec = sqrt(1.0+firstlet[i]*firstlet[i]);
       cosv = firstlet[i]/vec;
       sinv = 1.0/vec;
@@ -2426,18 +2391,19 @@ void setup_environment(int argc, Char *argv[])
 {
   /* Set up all kinds of fun stuff */
   node *q, *r;
+  char* treestr;
 
   char *pChar;
   double i;
   boolean firsttree;
   pointarray treenode = NULL;
-  char* treestr;
-
 #ifdef MAC
   OSErr retcode;
   FInfo  fndrinfo;
   macsetup("Drawtree","Preview");
 #endif
+
+  
 #ifdef TURBOC
   if ((registerbgidriver(EGAVGA_driver) <0) ||
       (registerbgidriver(Herc_driver) <0)   ||
@@ -2445,15 +2411,13 @@ void setup_environment(int argc, Char *argv[])
     fprintf(stderr,"Graphics error: %s ",grapherrormsg(graphresult()));
     exxit(-1);}
 #endif
-
-
+ 
+ 
   printf("DRAWTREE from PHYLIP version %s\n", VERSION);
-  embossplotfile = ajAcdGetOutfile("plotfile");
-  emboss_openfile(embossplotfile,&plotfile,&pltfilename);
-  /*openfile(&intree,INTREE,"input tree file", "r",argv[0],NULL);*/
+  
+
   printf("Reading tree ... \n");
   firsttree = true;
-  treestr = ajStrStrMod(&phylotrees[0]->Tree);
   allocate_nodep(&nodep, treestr, &spp);
   treeread (&treestr, &root, treenode, &goteof, &firsttree,
             nodep, &nextnode, &haslengths,
@@ -2483,13 +2447,13 @@ void setup_environment(int argc, Char *argv[])
     pChar = argv[1];
     for (i = 0; i < strlen(pChar); i++)
     {
-      if ( ! isdigit((int) *pChar) ) 
+      if ( ! isdigit(*pChar) ) 
       {
             /* set to default if the 2nd. parameter is not a number */
             maxNumOfIter = 50;
             return;
       }
-      else if ( isspace((int) *pChar) )
+      else if ( isspace(*pChar) )
       {
             printf("ERROR: Number of iteration should not contain space!\n");
             exxit(1);
@@ -2506,36 +2470,21 @@ void setup_environment(int argc, Char *argv[])
 }  /* setup_environment */
 
 
-/************ EMBOSS GET OPTIONS ROUTINES ******************************/
-
-void emboss_getoptions(char *pgm, int argc, char *argv[])
-{
-    AjStatus retval;
- 
-    /* initialize global variables */
-
-    ajNamInit("emboss");
-    retval =  ajAcdInitP (pgm, argc, argv, "PHYLIP");
-
-    /* ajAcdGet */
-
-    /* init functions for standard ajAcdGet */
-
-    /* cleanup for clashing options */
-
-}
-
-/************ END EMBOSS GET OPTIONS ROUTINES **************************/
-
 int main(int argc, Char *argv[])
 {
   long stripedepth;
+  boolean wasplotted = false;
 #ifdef MAC
   char filename1[FNMLNGTH];
   OSErr retcode;
   FInfo  fndrinfo;
-  
+#ifdef OSX_CARBON
+  FSRef fileRef;
+  FSSpec fileSpec;
+#endif
+#ifdef __MWERKS__
   SIOUXSetTitle("\pPHYLIP:  Drawtree");
+#endif
   argv[0] = "Drawtree";
 #endif
 #ifdef X
@@ -2543,11 +2492,12 @@ int main(int argc, Char *argv[])
   nargv=argv;
 #endif
   init(argc,argv);
-  emboss_getoptions("fdrawtree",argc,argv);
   
   progname = argv[0];
   grbg =  NULL;
   setup_environment(argc, argv);
+
+
 
   user_loop();
   
@@ -2566,24 +2516,44 @@ int main(int argc, Char *argv[])
       printf("\nWriting plot file ...\n");
     drawit(fontname,&xoffset,&yoffset,numlines,root);
     finishplotter();
+    wasplotted = true;
+    FClose(plotfile);
+    printf("\nPlot written to file \"%s\"\n\n", pltfilename);
   }
 
   FClose(intree);
-  FClose(plotfile);
-  printf("\nPlot written to file \"%s\"\n\n", pltfilename);
   printf("Done.\n\n");
 #ifdef MAC
-  if (plotter == pict){
+  if (plotter == pict && wasplotted){
+#ifdef OSX_CARBON
+    FSPathMakeRef((unsigned char *)pltfilename, &fileRef, NULL);
+    FSGetCatalogInfo(&fileRef, kFSCatInfoNone, NULL, NULL, &fileSpec, NULL);
+    FSpGetFInfo(&fileSpec, &fndrinfo);
+    fndrinfo.fdType='PICT';
+    fndrinfo.fdCreator='MDRW';
+    FSpSetFInfo(&fileSpec, &fndrinfo);
+#else
     strcpy(filename1, pltfilename);
     retcode=GetFInfo(CtoPstr(filename1),0,&fndrinfo);
     fndrinfo.fdType='PICT';
     fndrinfo.fdCreator='MDRW';
     strcpy(filename1, pltfilename);
-    retcode=SetFInfo(CtoPstr(PLOTFILE),0,&fndrinfo);}
-  if (plotter == lw){
+    retcode=SetFInfo(CtoPstr(PLOTFILE),0,&fndrinfo);
+#endif
+  }
+  if (plotter == lw && wasplotted){
+#ifdef OSX_CARBON
+    FSPathMakeRef((unsigned char *)pltfilename, &fileRef, NULL);
+    FSGetCatalogInfo(&fileRef, kFSCatInfoNone, NULL, NULL, &fileSpec, NULL);
+    FSpGetFInfo(&fileSpec, &fndrinfo);
+    fndrinfo.fdType='TEXT';
+    FSpSetFInfo(&fileSpec, &fndrinfo);
+#else
     retcode=GetFInfo(CtoPstr(PLOTFILE),0,&fndrinfo);
     fndrinfo.fdType='TEXT';
-    retcode=SetFInfo(CtoPstr(PLOTFILE),0,&fndrinfo);}
+    retcode=SetFInfo(CtoPstr(PLOTFILE),0,&fndrinfo);
+#endif
+  }
 #endif
 #ifdef WIN32
   phyRestoreConsoleAttributes();

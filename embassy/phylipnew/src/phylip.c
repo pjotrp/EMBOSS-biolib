@@ -856,7 +856,7 @@ void samenumspseq2(AjPPhyloDist set, long ith)
     ajErr("\ERROR: Inconsistent number of species in data set %ld", ith);
     exxit(-1);
   }
-} /* samenumspstate */
+} /* samenumspphylodist */
 
 
 void inputweightsstr(AjPStr wtstr,
