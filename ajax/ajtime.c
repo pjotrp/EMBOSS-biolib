@@ -266,6 +266,9 @@ AjPTime ajTimeNew(void)
     return thys ;
 }
 
+
+
+
 /* @func ajTimeDel ************************************************************
 **
 ** Destructor for AjPTime object.
@@ -287,6 +290,3 @@ void ajTimeDel(AjPTime *thys)
     
     return;
 }
-
-
-
