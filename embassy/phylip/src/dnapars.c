@@ -1958,7 +1958,14 @@ node *p;
       c = nayme[p->index - 1][i];
       if (c == ' ')
         c = '_';
-      putc(c, treefile);
+       /*
+       ** check we're not printing NULL
+       ** Dave Hansen, LION Bioscience,  30/4/01
+       */
+      if ((int)c != 0)
+	  putc(c, treefile);
+      else
+	  putc(' ', treefile);
     }
     col += n;
   } else {

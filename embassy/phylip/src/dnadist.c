@@ -1390,7 +1390,14 @@ void writedists()
   fprintf(outfile, "%5hd\n", numsp);
   for (i = 0; i < numsp; i++) {
     for (j = 0; j < nmlngth; j++)
-      putc(nodep[i]->nayme[j], outfile);
+       /*
+       ** check we're not printing NULL
+       ** Dave Hansen, LION Bioscience,  30/4/01
+       */
+      if ((int)nodep[i]->nayme[j] != 0)
+        putc(nodep[i]->nayme[j], outfile);
+      else
+	  putc(' ', outfile);
     if (lower)
       k = i;
     else
