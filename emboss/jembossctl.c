@@ -72,6 +72,7 @@ static AjBool jctl_do_fork(char *buf, int uid, int gid);
 static AjBool jctl_do_batch(char *buf, int uid, int gid);
 static AjBool jctl_do_directory(char *buf, int uid, int gid);
 static AjBool jctl_do_deletefile(char *buf, int uid, int gid);
+static AjBool jctl_do_renamefile(char *buf, int uid, int gid);
 static AjBool jctl_do_deletedir(char *buf, int uid, int gid);
 static AjBool jctl_do_listfiles(char *buf, int uid, int gid, AjPStr *retlist);
 static AjBool jctl_do_listdirs(char *buf, int uid, int gid, AjPStr *retlist);
@@ -328,6 +329,13 @@ int main(int argc, char **argv)
 
 	if(ok)
 	    ok = jctl_do_batch(cbuf,uid,gid);
+	break;
+
+    case RENAME_FILE:
+	ajStrAssC(&tstr,cbuf);
+	ok = jctl_up(ajStrStr(tstr),&uid,&gid,&home);
+	if(ok)
+	    ok = jctl_do_renamefile(cbuf,uid,gid);
 	break;
 
     default:
@@ -1753,6 +1761,91 @@ static AjBool jctl_do_deletefile(char *buf, int uid, int gid)
 
 
 
+/* @funcstatic jctl_do_renamefile *******************************************
+**
+** Rename a user file
+**
+** @param [w] buf [char*] socket buffer
+** @param [w] uid [int] uid
+** @param [w] gid [int] gid
+**
+** @return [AjBool] true if success
+******************************************************************************/
+
+static AjBool jctl_do_renamefile(char *buf, int uid, int gid)
+{
+    AjPStr ufile    = NULL;
+    AjPStr u2file   = NULL;
+    char *p=NULL;
+
+
+    ufile    = ajStrNew();
+    u2file   = ajStrNew();
+
+    if(!jctl_initgroups(buf,gid))
+    {
+	fprintf(stderr,"Initgroups failure (do_renamefile)\n");
+	ajStrDel(&ufile);
+	return ajFalse;
+    }
+
+    /* Skip over authentication stuff */
+    p=buf;
+    while(*p)
+	++p;
+    ++p;
+
+    /* retrieve user file */
+    ajStrAssC(&ufile,p);
+
+    while(*p)
+	++p;
+    ++p;
+    /* retrieve new name */
+    ajStrAssC(&u2file,p);
+
+    jctl_zero(buf);
+
+    if(setgid(gid)==-1)
+    {
+	fprintf(stderr,"setgid error (rename file)\n");
+	ajStrDel(&ufile);
+	ajStrDel(&u2file);
+	return ajFalse;
+    }
+    if(setuid(uid)==-1)
+    {
+	fprintf(stderr,"setuid error (rename file)\n");
+	ajStrDel(&ufile);
+	ajStrDel(&u2file);
+	return ajFalse;
+    }
+    
+    if(!jctl_chdir(ajStrStr(ufile)))
+    {
+	fprintf(stderr,"setuid error (rename file)\n");
+	ajStrDel(&ufile);
+	ajStrDel(&u2file);
+	return ajFalse;
+    }
+
+    if(rename(ajStrStr(ufile),ajStrStr(u2file))==-1)
+    {
+	fprintf(stderr,"unlink error (rename file)\n");
+	ajStrDel(&ufile);
+	ajStrDel(&u2file);
+	return ajFalse;
+    }
+
+    ajStrDel(&ufile);
+    ajStrDel(&u2file);    
+
+
+    return ajTrue;
+}
+
+
+
 /* @funcstatic jctl_do_deletedir *******************************************
 **
 ** Recursively delete a user directory
@@ -2757,7 +2850,7 @@ static AjBool jctl_check_buffer(char *buf, int mlen)
     if(sscanf(buf,"%d",&command)!=1)
 	return ajFalse;
 
-    if(command<COMM_AUTH || command>BATCH_FORK)
+    if(command<COMM_AUTH || command>RENAME_FILE)
 	return ajFalse;
 
     if(command==COMM_AUTH)
@@ -2774,7 +2867,8 @@ static AjBool jctl_check_buffer(char *buf, int mlen)
 	return ajFalse;
 
     /* All commands except the fork have two strings */
-    if((command != EMBOSS_FORK) && (command!=BATCH_FORK))
+    if((command != EMBOSS_FORK) && (command!=BATCH_FORK) &&
+       (command!=RENAME_FILE))
 	return ajTrue;
 
     /* Check for valid third string */
@@ -2787,6 +2881,9 @@ static AjBool jctl_check_buffer(char *buf, int mlen)
     }
     if(count==JBUFFLEN)
 	return ajFalse;
+
+    if(command==RENAME_FILE)
+        return ajTrue;
 
     /* Check for valid fourth string */
     ++p;

@@ -151,6 +151,9 @@ static ajint java_make_dir(int tchan, char *cuser, char *cpass, AjPStr dir,
 			   char *buf, AjPStr *errstd);
 static ajint java_delete_file(int tchan, char *cuser, char *cpass,
 			      AjPStr ufile, char *buf, AjPStr *errstd);
+static ajint java_rename_file(int tchan, char *cuser, char *cpass,
+			      AjPStr ufile, AjPStr u2file, char *buf,
+			      AjPStr *errstd);
 static ajint java_delete_dir(int tchan, char *cuser, char *cpass, AjPStr dir,
 			     char *buf, AjPStr *errstd);
 static ajint java_list_files(int tchan, char *cuser, char *cpass, AjPStr dir,
@@ -1622,6 +1625,45 @@ static ajint java_delete_file(int tchan,char *cuser,char *cpass,AjPStr ufile,
 }
 
 
+/* @funcstatic java_rename_file ********************************************
+**
+** Send a rename file request to jembossctl
+**
+** @param [rw] conndes [int] socket
+** @param [r] cuser [char*] username
+** @param [r] cpass [char*] password
+** @param [r] ufile [AjPStr] file to rename
+** @param [r] u2file [AjPStr] new filename
+** @param [w] buf [char*] socket buffer
+** @param [w] errstd [AjPStr*] stderr from jembossctl
+**
+** @return [ajint] 0=success -1=failure
+******************************************************************************/
+
+static ajint java_rename_file(int tchan,char *cuser,char *cpass,AjPStr ufile,
+			      AjPStr u2file, char *buf, AjPStr *errstd)
+{
+    char *p=NULL;
+    int n;
+    
+    
+    n = sprintf(buf,"%d %s %s",RENAME_FILE,cuser,cpass);
+    p=buf+n+1;
+    sprintf(p,"%s",ajStrStr(ufile));
+    p += (ajStrLen(ufile)+1);
+    sprintf(p,"%s",ajStrStr(u2file));
+    n = (p-buf) + ajStrLen(u2file) +1;
+
+    if(java_snd(tchan,buf,n,errstd) < 0)
+    {
+	ajStrAppC(errstd,"Sending error (java_rename_file)\n");
+	return -1;
+    }
+
+    return 0;
+}
+
+
 /* @funcstatic java_delete_dir ********************************************
 **
 ** Send a delete directory request to jembossctl
@@ -2521,6 +2563,13 @@ static int java_jembossctl(ajint command, AjPStr username, AjPStr password,
 	java_wait_for_term(pid,outstd,errstd,outpipe,errpipe,buff);
 	break;
 
+    case RENAME_FILE:
+	ajStrAssS(&dir,str1);
+	ajStrAssS(&clemboss,str2);
+	retval = java_rename_file(tchan,cuser,cpass,dir,clemboss,buff,errstd);
+	java_wait_for_term(pid,outstd,errstd,outpipe,errpipe,buff);
+	break;
+
     case DELETE_DIR:
 	ajStrAssS(&dir,str1);
 	retval = java_delete_dir(tchan,cuser,cpass,dir,buff,errstd);
@@ -3386,6 +3435,162 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_delFile
 
     java_tidy_command(&username,&password,&envi,&file,
 		      &outstd,&errstd);
+    AJFREE(jpass);
+
+    if(!ok)
+	return (unsigned char)ajFalse;
+    
+    return (unsigned char)ajTrue;
+}
+
+
+/* @func Ajax.delFile **************************************************
+**
+** Delete a file
+** Loads outStd,errStd within java.
+**
+** @param [rw] env [JNIEnv*] java environment
+** @param [r] obj [jobject] java object
+** @param [r] door [jstring] username
+** @param [r] key [jstring] password
+** @param [r] environment [jstring] environment
+** @param [r] filename [jstring] file to delete
+**
+** @return [jboolean] true if success
+** @@
+******************************************************************************/
+
+JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_renameFile
+(JNIEnv *env, jobject obj, jstring door, jbyteArray key,
+ jstring environment, jstring filename, jstring filename2)
+{
+    AjPStr username=NULL;
+    AjPStr password=NULL;
+    AjPStr envi=NULL;
+    AjPStr outstd=NULL;
+    AjPStr errstd=NULL;
+    
+
+    jclass jvc = (*env)->GetObjectClass(env,obj);
+    jfieldID field;
+    jstring  ostr;
+    jstring  estr;
+    char   *juser = NULL;
+    char   *jpass = NULL;
+    char   *jenv  = NULL;
+    char   *jfil  = NULL;
+    char   *jfil2 = NULL;
+    
+    AjPStr file  = NULL;
+    AjPStr file2 = NULL;
+
+    AjBool ok=ajFalse;
+    jsize  plen = (*env)->GetArrayLength(env,key);
+    jbyte  *ca = (*env)->GetByteArrayElements(env,key,0);
+    int i;
+    
+    
+    username = ajStrNew();
+    password = ajStrNew();
+    envi     = ajStrNew();
+    outstd   = ajStrNew();
+    errstd   = ajStrNew();
+
+    file     = ajStrNew();
+    
+    juser = (char *) (*env)->GetStringUTFChars(env,door,0);
+    if(juser)
+	ajStrAssC(&username,juser);
+    else
+    {
+	java_tidy_command(&username,&password,&envi,&file,
+			  &outstd,&errstd);
+	return (unsigned char)ajFalse;
+    }
+    (*env)->ReleaseStringUTFChars(env,door,juser);
+
+
+    if(!(jpass=(char *)malloc(plen+1)))
+    {
+	java_tidy_command(&username,&password,&envi,&file,
+			  &outstd,&errstd);
+	return (unsigned char)ajFalse;
+    }
+    bzero((void *)jpass,plen+1);
+    for(i=0;i<plen;++i)
+	jpass[i] = (char)ca[i];
+    ajStrAssC(&password,jpass);
+    (*env)->ReleaseByteArrayElements(env,key,ca,0);
+
+
+    jenv = (char *) (*env)->GetStringUTFChars(env,environment,0);
+    if(jenv)
+	ajStrAssC(&envi,jenv);
+    else
+    {
+	java_tidy_command(&username,&password,&envi,&file,
+			  &outstd,&errstd);
+	AJFREE(jpass);
+	return (unsigned char)ajFalse;
+    }
+    (*env)->ReleaseStringUTFChars(env,environment,jenv);
+
+    if(!ajStrLen(username) || !ajStrLen(password) || !ajStrLen(envi))
+    {
+	java_tidy_command(&username,&password,&envi,&file,
+			  &outstd,&errstd);
+	AJFREE(jpass);
+	return (unsigned char)ajFalse;
+    }
+
+    jfil = (char *) (*env)->GetStringUTFChars(env,filename,0);
+    if(jfil)
+	ajStrAssC(&file,jfil);
+    else
+    {
+	java_tidy_command(&username,&password,&envi,&file,
+			  &outstd,&errstd);
+	AJFREE(jpass);
+	return (unsigned char)ajFalse;
+    }
+    (*env)->ReleaseStringUTFChars(env,filename,jfil);
+
+
+    file2 = ajStrNew();
+
+    jfil2 = (char *) (*env)->GetStringUTFChars(env,filename2,0);
+    if(jfil2)
+	ajStrAssC(&file2,jfil2);
+    else
+    {
+	java_tidy_command(&username,&password,&envi,&file,
+			  &outstd,&errstd);
+	ajStrDel(&file2);
+	AJFREE(jpass);
+	return (unsigned char)ajFalse;
+    }
+    (*env)->ReleaseStringUTFChars(env,filename2,jfil2);
+
+
+
+    ok = ajFalse;
+    if(!java_jembossctl(RENAME_FILE,username,password,envi,file,file2,
+			&outstd,&errstd,NULL,NULL))
+	ok = ajTrue;
+
+
+    field = (*env)->GetFieldID(env,jvc,"outStd","Ljava/lang/String;");    
+    ostr = (*env)->NewStringUTF(env,ajStrStr(outstd));
+    (*env)->SetObjectField(env,obj,field,ostr);
+
+    field = (*env)->GetFieldID(env,jvc,"errStd","Ljava/lang/String;");
+    estr = (*env)->NewStringUTF(env,ajStrStr(errstd));
+    (*env)->SetObjectField(env,obj,field,estr);
+
+
+    java_tidy_command(&username,&password,&envi,&file,
+		      &outstd,&errstd);
+    ajStrDel(&file2);
     AJFREE(jpass);
 
     if(!ok)
