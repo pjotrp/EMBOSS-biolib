@@ -160,6 +160,9 @@ if test $ALT_ALLINUSR = "0" ; then
 
 else
 	echo "PNG libraries found in standard system locations"
+	AC_DEFINE(PLD_png)
+	AM_CONDITIONAL(AMPNG, true)
+
 	LIBS="$LIBS -lgd -lpng -lz -lm"
 	LDFLAGS=$LDFLAGS
 	CPPFLAGS=$CPPFLAGS
