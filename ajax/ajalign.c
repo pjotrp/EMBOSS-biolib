@@ -482,7 +482,7 @@ static void alignWriteMark (AjPAlign thys, ajint iali, ajint markx)
 
     ajDebug("min0:%d min1:%d\n", min0, min1);
 
-    alignConsStats(thys, iali, &cons, &calcid, &calcgap, &calcsim, &calclen);
+    alignConsStats(thys, iali, &cons, &calcid, &calcsim, &calcgap, &calclen);
     ajAlignSetStats (thys, iali, nc, calcid, calcsim, calcgap, NULL);
     ajAlignSetSubStandard (thys, iali);
     ajAlignWriteHeader (thys);
