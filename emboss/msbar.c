@@ -69,7 +69,7 @@ int main(int argc, char **argv)
 
     /* the number of times to try to produce a sequence that is different to
        the 'other' sequences before we give up and output it anyway */
-    ajint attempts = 01;
+    ajint attempts = 10;
 
     /* count of tries to get a unique sequence */
     ajint try;
