@@ -1174,15 +1174,36 @@ public class BuildJembossForm implements ActionListener
       try
       {
         JFrame fsend = new JFrame("Batch");
-        JLabel label = new JLabel("Sending batch process now!");
-        label.setOpaque(true);
-        label.setBackground(Color.white);
-        fsend.getContentPane().add(label);
+        final int max = 20;
+        final JProgressBar progressBar = new JProgressBar(0,max);
+        progressBar.setStringPainted(true);
+        progressBar.setString("Sending batch process now!");
+        progressBar.setBackground(Color.white);
+
+        SwingWorker batchWorker = new SwingWorker()
+        {
+          public Object construct()
+          {
+            try
+            {
+              for(int i=0; i<max; i++)
+              {
+                sleep(500);
+                progressBar.setValue(i);
+              }
+            }
+            catch(InterruptedException intr){}
+            return null;
+          }
+        };
+
+        fsend.getContentPane().add(progressBar);
         fsend.pack();
         Dimension d = f.getToolkit().getScreenSize();
         fsend.setLocation( (int)(d.getWidth()-fsend.getWidth())/2,
                            (int)(d.getHeight()-fsend.getHeight())/2 );
         fsend.setVisible(true);
+        batchWorker.start();
 
         JembossRun thisrun = new JembossRun(embossCommand,"",
                                    filesToMove,mysettings);
