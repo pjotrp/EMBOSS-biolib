@@ -15,7 +15,7 @@ section: input [
 
 endsection: input
 
-section: required [
+section: additional [
   information: "Required section"
   type: "page"
 ]
@@ -60,13 +60,6 @@ section: required [
     default: "50."
     information: "Enter salt concentration (mM)"
   ]
-
-endsection: required
-
-section: additional [
-  information: "Additional section"
-  type: "page"
-]
 
   section: productsection [
     information: "Product options"
