@@ -1,7 +1,7 @@
 # distances application
 # AJAX COMMAND DEFINITION (ACD) FILE
 
-# TJC 7/3/2001
+# TJC 27/3/2001
 
 appl: distances [
 	doc: "Creates a distance matrix from multiple alignments"
@@ -58,7 +58,8 @@ appl: distances [
         def: N
         info: "Use the abiguous codes in the calculation."
         help: "Option to use the abiguous codes in the 
-              calculation of the Jukes-Cantor method."
+              calculation of the Jukes-Cantor method or
+              if the sequences are proteins."
   ]
 
   float: gapweight [
