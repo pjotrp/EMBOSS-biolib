@@ -257,9 +257,9 @@ public class DragTree extends JTree implements DragGestureListener,
     }
     else if(isFileSelection() && source.getText().equals("Rename..."))
     {
-      final String inputValue = JOptionPane.showInputDialog(null,
+      String inputValue = (String)JOptionPane.showInputDialog(null,
                               "New File Name","Rename "+f.getName(), 
-                              JOptionPane.QUESTION_MESSAGE);
+                              JOptionPane.QUESTION_MESSAGE,null,null,f.getName());
 
       if(inputValue != null && !inputValue.equals("") )
       {
@@ -390,6 +390,7 @@ public class DragTree extends JTree implements DragGestureListener,
        try
        {
          FileNode fn = (FileNode)t.getTransferData(FileNode.FILENODE);
+         fn = getNode(fn.getFile().getAbsolutePath());
          if (dropNode.isLeaf())
          {
            e.rejectDrop();
@@ -639,7 +640,8 @@ public class DragTree extends JTree implements DragGestureListener,
 
   /**
   *
-  * Gets the node from the existing explored nodes.
+  * Gets the node from the existing explored nodes and their
+  * children.
   * @param path 	path to a file or directory
   * @return 		corresponding node if the directory or
   *         		file is visible otherwise returns null.
@@ -656,6 +658,38 @@ public class DragTree extends JTree implements DragGestureListener,
       if(nodeName.equals(path))
         return node;
     }
+
+// check children of explored nodes
+    en = openNode.elements();
+    while(en.hasMoreElements())
+    {
+      FileNode child = getChildNode((FileNode)en.nextElement(),path);
+      if(child != null)
+        return child;
+    }
+
+
+    return null;
+  }
+
+  /**
+  *
+  * Gets the child node of a parent node
+  * @param parent       parent node
+  * @param childName    name of child
+  * @return the child node
+  *
+  */
+  private FileNode getChildNode(FileNode parent, String childName)
+  {
+    for(Enumeration children = parent.children(); children.hasMoreElements() ;)
+    {
+      FileNode childNode = (FileNode)children.nextElement();
+      String nodeName = childNode.getFile().getAbsolutePath();
+      if(childName.equals(nodeName))
+        return childNode;
+    }
+
     return null;
   }
 
@@ -701,8 +735,8 @@ public class DragTree extends JTree implements DragGestureListener,
     DefaultTreeModel model =(DefaultTreeModel)getModel();
     FileNode parentNode = getNode(node.getFile().getParent());
     model.removeNodeFromParent(node);
-    parentNode.reExplore();
-    model.nodeStructureChanged(parentNode);
+//  parentNode.reExplore();
+//  model.nodeStructureChanged(parentNode);
   }
 
   /**
