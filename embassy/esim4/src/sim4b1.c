@@ -6,7 +6,7 @@
 #ifndef __lint
 /*@unused@*/
 static const char rcsid[] = 
-"$Id: sim4b1.c,v 1.1 2002/02/25 09:33:50 hgmp Exp $";
+"$Id: sim4b1.c,v 1.2 2002/05/10 16:10:17 rice Exp $";
 #endif
 
 #include <stdio.h>
@@ -27,7 +27,7 @@ static const char rcsid[] =
 #define  EXTEND_FW (rs.acc_flag?Xextend_fw:extend_fw)
 #define  EXTEND_BW (rs.acc_flag?Xextend_bw:extend_bw)
 
-#define  SLIDE_INTRON(x)   (((x)==TRUE)?sync_slide_intron:slide_intron)
+#define  SLIDE_INTRON(x)   (((x)==SIMTRUE)?sync_slide_intron:slide_intron)
 
 uchar      *seq1, *seq2;
 int         M, N, encoding[NACHARS];
@@ -301,7 +301,7 @@ struct edit_script_list *SIM4(uchar *in_seq1, uchar *in_seq2,
                                     tmp_block->to1+
                                     (tmp_block1->from1-tmp_block->to1-1)-u,
                                     &I, &J);
-                   if ((good_match==FALSE) || tmp_block->flag || (J==0) || (I==0)) {
+                   if ((good_match==SIMFALSE) || tmp_block->flag || (J==0) || (I==0)) {
                        tmp_block1->from2 = I+1;
                        tmp_block1->from1 = J+1;
                        tmp_block1->edist += cost;
@@ -380,7 +380,7 @@ struct edit_script_list *SIM4(uchar *in_seq1, uchar *in_seq2,
                                     min(4*diff,tmp_block1->from1-tmp_block->to1-1),
                                     tmp_block->to2,tmp_block->to1,
                                     &I, &J);
-                   if ((good_match==FALSE) || tmp_block1->flag || (I==M) || (J==N)) {
+                   if ((good_match==SIMFALSE) || tmp_block1->flag || (I==M) || (J==N)) {
                        if (tmp_block->to1) {
                           tmp_block->to2 = I;
                           tmp_block->to1 = J;
@@ -2702,17 +2702,17 @@ static bool get_sync_flag(Exon *lblock, Exon *rblock, int w)
      int numx=0, e2;
      Exon *t;
 
-     if (((t=lblock->next_exon)==NULL) || !t->to1) return FALSE; 
+     if (((t=lblock->next_exon)==NULL) || !t->to1) return SIMFALSE; 
      numx++; e2 = t->to2; 
 
      while (((t=t->next_exon)!=NULL) && t->to1) {
         ++numx;
         if ((t->from2-e2>1) || 
             (t!=rblock && ((t->to2-t->from2+1<2*w+2) ||
-                           (t->to1-t->from1+1<2*w+2)))) return FALSE;
+                           (t->to1-t->from1+1<2*w+2)))) return SIMFALSE;
         e2 = t->to2;
      }
-     return ((numx<3) ? FALSE:TRUE);
+     return ((numx<3) ? SIMFALSE:SIMTRUE);
 }
  
 
@@ -3080,12 +3080,12 @@ static bool get_match_quality(Exon *lblock, Exon *rblock, sim4_stats_t *st, int 
   bool good_match;
   Exon *t;
   
-  good_match = TRUE; st->icoverage = 0;
+  good_match = SIMTRUE; st->icoverage = 0;
   t = lblock->next_exon;
   while (t->to1) {
      st->icoverage += t->to2-t->from2+1;
      if (100*t->edist>=5*(t->to2-t->from2+1)) {
-         good_match = FALSE; break;
+         good_match = SIMFALSE; break;
      }
      t = t->next_exon; 
   }
@@ -3099,7 +3099,7 @@ static bool get_match_quality(Exon *lblock, Exon *rblock, sim4_stats_t *st, int 
          ;
   else if ((tcov<.7*N) || (lblock->next_exon->from2>.1*N) ||
            (st->icoverage<.9*tcov))
-                 good_match = FALSE;
+                 good_match = SIMFALSE;
   
   return good_match; 
 }

@@ -1,7 +1,7 @@
 #ifndef SIM4_H
 #define SIM4_H
 
-/* $Id: sim4.h,v 1.1 2002/02/25 09:33:50 hgmp Exp $ */
+/* $Id: sim4.h,v 1.2 2002/05/10 16:10:17 rice Exp $ */
 
 
 /* 
@@ -62,7 +62,7 @@ extern  FILE *    SIM4_OUTDEV; /* set in sim4.init.c to stdout or by -outfile in
 #define  INTRON          4
 #define  O_INTRON        5
 
-enum { FALSE = 0, TRUE = 1};
+enum { SIMFALSE = 0, SIMTRUE = 1};
 enum { INIT = 0, PERM = 1, TEMP = 2};
 enum { EST_GEN = 1, GEN_EST = 2 };
 enum { FWD = 0, BWD = 1, BOTH = 2 };
@@ -138,7 +138,7 @@ typedef  struct ValNode {
          struct ValNode *next;
 } *ValNodePtr;
 
-typedef int signal_t[5][5];
+typedef int sim_signal_t[5][5];
 
 typedef struct spliced {
    int xs, xe, ys, ye, score;

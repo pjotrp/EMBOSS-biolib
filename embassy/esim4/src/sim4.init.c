@@ -62,7 +62,7 @@
 #ifndef __lint     
 /*@unused@*/       
 static const char rcsid[] =
-"$Id: sim4.init.c,v 1.2 2002/02/25 13:48:10 hgmp Exp $";
+"$Id: sim4.init.c,v 1.3 2002/05/10 16:10:17 rice Exp $";
 #endif         
            
 
@@ -394,9 +394,9 @@ else {
 
            ++count; 
            init_stats(&st); init_stats(&rev_st);
-           in_K = (rs.set_K==TRUE) ? rs.K:-1;
-           in_C = (rs.set_C==TRUE) ? rs.C:-1;
-           in_H = (rs.set_H==TRUE) ? rs.weight:-1;
+           in_K = (rs.set_K==SIMTRUE) ? rs.K:-1;
+           in_C = (rs.set_C==SIMTRUE) ? rs.C:-1;
+           in_H = (rs.set_H==SIMTRUE) ? rs.weight:-1;
 
            switch (rs.reverse) {
              case  0: Aligns = (file_type==EST_GEN) ?
@@ -788,10 +788,10 @@ AjPStr   esim4_cdsregion;
         args->set_K       = ajAcdGetBool ("usermspa");
         args->set_C       = ajAcdGetBool ("usermspb");
 	if(args->weight == 0 ){
-           args->set_H  = FALSE;  
+           args->set_H  = SIMFALSE;  
         }
         else {
-           args->set_H  = TRUE;  
+           args->set_H  = SIMTRUE;  
         }
 
         if( esim4_strand == NULL || ajStrMatchCaseC(esim4_strand,"forward") ){
@@ -861,10 +861,10 @@ static void sim4_argvals(sim4_args_t *args)
         if (get_argval('H', &(args->weight))) {
                 if (args->weight<0)
                         fatal("Positive number required for H.");
-                args->set_H = TRUE;
+                args->set_H = SIMTRUE;
         } else {
             /*  args->weight = DEFAULT_WEIGHT; */
-                args->set_H = FALSE;
+                args->set_H = SIMFALSE;
         }
          
                         
@@ -892,18 +892,18 @@ static void sim4_argvals(sim4_args_t *args)
         
         if (get_argval('K',&(args->K))) {
                 if (args->K<0) fatal("K must be positive."); 
-                args->set_K = TRUE;
+                args->set_K = SIMTRUE;
         } else {
                 args->K = DEFAULT_K;
-                args->set_K = FALSE;
+                args->set_K = SIMFALSE;
         }
 
         if (get_argval('C',&(args->C))) { 
                 if (args->C<0) fatal("C must be positive.");                    
-                args->set_C = TRUE;
+                args->set_C = SIMTRUE;
         } else {
                 args->C = DEFAULT_C;
-                args->set_C = FALSE;
+                args->set_C = SIMFALSE;
         }
         
         if (!get_argval('N', &(args->acc_flag)))

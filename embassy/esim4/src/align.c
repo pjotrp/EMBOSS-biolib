@@ -11,7 +11,7 @@
 #ifndef __lint
 /*@unused@*/
 static const char rcsid[] =
-"$Id: align.c,v 1.1 2002/02/25 09:33:49 hgmp Exp $";
+"$Id: align.c,v 1.2 2002/05/10 16:10:17 rice Exp $";
 #endif
 
 static int snake(int k, int x, int endx, int endy);
@@ -213,7 +213,7 @@ void    align_path(int i1, int j1, int i2, int j2, int dist, edit_script **head,
           midc and the distance from (mi, mj) to (i2, j2) is rmidc.
         */
 
-       flag = FALSE;
+       flag = SIMFALSE;
        mi = i1; mj = j1;
        ll = max(lower,rlower); uu = min(upper,rupper);
        for (k=ll; k<=uu; ++k) {
@@ -223,7 +223,7 @@ void    align_path(int i1, int j1, int i2, int j2, int dist, edit_script **head,
                 } else {
                     mi = rlast_d[k]; mj = k+mi; 
                 } 
-                flag = TRUE;
+                flag = SIMTRUE;
 
                 break;
             }         

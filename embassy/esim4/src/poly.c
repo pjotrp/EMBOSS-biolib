@@ -7,7 +7,7 @@
 
 #ifndef __lint
 /*@unused@*/
-static const char rcsid[] = "$Id: poly.c,v 1.1 2002/02/25 09:33:49 hgmp Exp $";
+static const char rcsid[] = "$Id: poly.c,v 1.2 2002/05/10 16:10:17 rice Exp $";
 #endif
 
 static void remove_polyT_front(struct edit_script_list **,Exon *,uchar *,uchar*,int *);
@@ -123,7 +123,7 @@ static void remove_polyA_back(struct edit_script_list **Sptr, Exon *Exons, uchar
      for ( ; exons_tail->next_exon && exons_tail->next_exon->to1; 
              prev=exons_tail, exons_tail=exons_tail->next_exon);
 
-     trim_p = TRUE;
+     trim_p = SIMTRUE;
      while ((t=exons_tail)!=NULL && t->to1 && trim_p) {
         /* compute the 'A' contents of the exon */
         b = s2 + t->to2-1; end = s2+t->from2-1; numA = 0;
@@ -144,7 +144,7 @@ static void remove_polyA_back(struct edit_script_list **Sptr, Exon *Exons, uchar
                /* note: pA is the last (innermost) position in the tail */
                trim_polyA_align(Sptr,Exons,&exons_tail,ct_pA,lastA,s1,s2);
             }
-            if (t==exons_tail) trim_p = FALSE;
+            if (t==exons_tail) trim_p = SIMFALSE;
         }
      }
 
@@ -281,7 +281,7 @@ static void remove_polyT_front(struct edit_script_list **Sptr, Exon *Exons, ucha
          reverse_script = 1;
      }
 
-     exons_head = Exons->next_exon; trim_p = TRUE;
+     exons_head = Exons->next_exon; trim_p = SIMTRUE;
      while ((t=exons_head)!=NULL && t->to1 && trim_p) {
         /* compute the 'T' contents of the exon */
         b = s2 + t->from2-1; end = s2+t->to2; numT = 0;
@@ -300,7 +300,7 @@ static void remove_polyT_front(struct edit_script_list **Sptr, Exon *Exons, ucha
                 ct_pT = (t->to2-ct_pT>=MIN_EXON) ? ct_pT : t->to2;
                 trim_polyT_align(Sptr,&exons_head,ct_pT,lastT,s1,s2);
             }
-            if (t==exons_head) trim_p = FALSE;
+            if (t==exons_head) trim_p = SIMFALSE;
         }
      }
      Exons->next_exon = exons_head;

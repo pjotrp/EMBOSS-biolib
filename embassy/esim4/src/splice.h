@@ -1,12 +1,12 @@
 #ifndef SPLICE_H
 #define SPLICE_H
 
-/* "$Id: splice.h,v 1.1 2002/02/25 09:33:50 hgmp Exp $"; */
+/* "$Id: splice.h,v 1.2 2002/05/10 16:10:17 rice Exp $"; */
 
-extern signal_t gt;
-extern signal_t ct;
-extern signal_t ag;
-extern signal_t ac;
+extern sim_signal_t gt;
+extern sim_signal_t ct;
+extern sim_signal_t ag;
+extern sim_signal_t ac;
 
 
 splice_t *new_splice(char,int,int,int,int,int,splice_t *);
