@@ -694,6 +694,7 @@ AjPAtom ajXyzAtomNew(void)
     ret->Id3 = ajStrNew();
     ret->Atm = ajStrNew();
     ret->Pdb = ajStrNew();
+    ret->eId = ajStrNew();
 
     return ret;
 }
@@ -723,10 +724,9 @@ AjPScop ajXyzScopNew(ajint chains)
     ret->Class       = ajStrNew();
     ret->Fold        = ajStrNew();
     ret->Superfamily = ajStrNew();
-    ret->Family      = ajStrNew();
-    ret->Domain      = ajStrNew();
+    ret->Family      = ajStrNew();  
+    ret->Domain      = ajStrNew();  
     ret->Source      = ajStrNew();
-
 
     if(chains)
     {
@@ -1326,6 +1326,7 @@ void ajXyzAtomDel(AjPAtom *thys)
     ajStrDel(&pthis->Id3);
     ajStrDel(&pthis->Atm);
     ajStrDel(&pthis->Pdb);
+    ajStrDel(&pthis->eId);
 
     AJFREE(pthis);
     pthis=NULL;
@@ -2856,6 +2857,19 @@ AjBool ajXyzCpdbRead(AjPFile inf, AjPPdb *thys)
 	    /* hetatm */
 	    ajStrToken(&token,&handle,NULL); 
 	    ajStrToInt(token,&(*thys)->Chains[nc-1]->Nlig);
+	    /* helices */
+	    ajStrToken(&token,&handle,NULL); 
+	    ajStrToInt(token,&(*thys)->Chains[nc-1]->numHelices);
+	    /* strands */
+	    ajStrToken(&token,&handle,NULL); 
+	    ajStrToInt(token,&(*thys)->Chains[nc-1]->numStrands);
+	    /* sheets */
+	    ajStrToken(&token,&handle,NULL); 
+	    ajStrToInt(token,&(*thys)->Chains[nc-1]->numSheets);
+	    /* turns */
+	    ajStrToken(&token,&handle,NULL); 
+	    ajStrToInt(token,&(*thys)->Chains[nc-1]->numTurns);
+
 	    /* water */
 	    /*
 	    ajStrToken(&token,&handle,NULL);
@@ -3197,10 +3211,14 @@ AjBool ajXyzCpdbWriteDomain(AjPFile errf, AjPFile outf, AjPPdb pdb, AjPScop scop
     ajFmtPrintF(outf, "XX\n");	
     ajFmtPrintF(outf, "%-5s[1]\n", "CN");	
     ajFmtPrintF(outf, "XX\n");	
-    ajFmtPrintF(outf, "%-5sID %c; NR %d; NL 0;\n", 
+    ajFmtPrintF(outf, "%-5sID %c; NR %d; NL 0; NH %d; NE %d; NS %d; NT %d;\n", 
 		"IN", 
 		id,
-		ajStrLen(seq));
+		ajStrLen(seq),
+		pdb->Chains[chn-1]->numHelices, 
+		pdb->Chains[chn-1]->numStrands, 
+		pdb->Chains[chn-1]->numSheets, 
+		pdb->Chains[chn-1]->numTurns);
     ajFmtPrintF(outf, "XX\n");	
     ajSeqWriteCdb(outf, seq);
     ajFmtPrintF(outf, "XX\n");	
@@ -3288,7 +3306,7 @@ AjBool ajXyzCpdbWriteDomain(AjPFile errf, AjPFile outf, AjPPdb pdb, AjPScop scop
 	    
 	    
 	    /* Print out coordinate line*/
-	    ajFmtPrintF(outf, "%-5s%-5d%-5d%-5d%-5c%-6d%-6S%-2c%6S    %-4S"
+	    ajFmtPrintF(outf, "%-5s%-5d%-5d%-5d%-5c%-6d%-6S%-5c%-5c%-5c%-5c%-2c%6S    %-4S"
 			"%8.3f%9.3f%9.3f%9.2f%9.2f\n", 
 			"CO", 
 			atm->Mod,       /* It will always be 1 */
@@ -3297,6 +3315,10 @@ AjBool ajXyzCpdbWriteDomain(AjPFile errf, AjPFile outf, AjPPdb pdb, AjPScop scop
 			atm->Type, 
 			atm->Idx+rn_mod, 
 			atm->Pdb, 
+			    '.', 
+			    '.', 
+			    '.', 
+			    '.', 
 			atm->Id1, 
 			atm->Id3,
 			atm->Atm, 
@@ -3383,11 +3405,15 @@ AjBool ajXyzCpdbWriteAll(AjPFile outf, AjPPdb thys)
 		    x+1);	
 	ajFmtPrintF(outf, "XX\n");	
  
-	ajFmtPrintF(outf, "%-5sID %c; NR %d; NL %d;\n", 
+	ajFmtPrintF(outf, "%-5sID %c; NR %d; NL %d; NH %d; NE %d; NS %d; NT %d;\n", 
 		    "IN", 
 		    thys->Chains[x]->Id,
 		    thys->Chains[x]->Nres,
-		    thys->Chains[x]->Nlig);
+		    thys->Chains[x]->Nlig,
+		    thys->Chains[x]->numHelices, 
+		    thys->Chains[x]->numStrands, 
+		    thys->Chains[x]->numSheets, 
+		    thys->Chains[x]->numTurns);
 
 	/*
 	ajFmtPrintF(outf, "%-5sID %c; NR %d; NH %d; NW %d;\n", 
@@ -3421,43 +3447,56 @@ AjBool ajXyzCpdbWriteAll(AjPFile outf, AjPPdb thys)
 		else	
 		{
 		    if(tmp->Type=='H')
-			ajFmtPrintF(outf, "%-5s%-5d%-5d%-5d%-5c%-6c%-6S%-2c"
+			ajFmtPrintF(outf, "%-5s%-5d%-5d%-5d%-5c%-6c%-6S%-5c%-5c%-5c%-5c%-2c"
 				    "%6S    %-4S"
-				"%8.3f%9.3f%9.3f%9.2f%9.2f\n", 
+				    "%8.3f%9.3f%9.3f%9.2f%9.2f\n", 
 				    "CO", 
-				tmp->Mod, 
-				tmp->Chn, 
-				tmp->Gpn, 
-				tmp->Type, 
+				    tmp->Mod, 
+				    tmp->Chn, 
+				    tmp->Gpn, 
+				    tmp->Type, 
 				    '.',
-				tmp->Pdb, 
-				    '.',
-				tmp->Id3,
-				tmp->Atm, 
-				tmp->X, 
-				tmp->Y, 
-				tmp->Z,
-				tmp->O,
-				tmp->B);
+				    tmp->Pdb, 
+				    '.', 
+				    '.', 
+				    '.', 
+				    '.', 
+				    tmp->Id1,
+				    tmp->Id3,
+				    tmp->Atm, 
+				    tmp->X, 
+				    tmp->Y, 
+				    tmp->Z,
+				    tmp->O,
+				    tmp->B);
 		    else
-		    ajFmtPrintF(outf, "%-5s%-5d%-5d%-5c%-5c%-6d%-6S%-2c"
-				    "%6S    %-4S"
-				"%8.3f%9.3f%9.3f%9.2f%9.2f\n", 
-				"CO", 
-				tmp->Mod, 
-				tmp->Chn, 
-				'.',
-				tmp->Type, 
-				tmp->Idx, 
-				tmp->Pdb, 
-				tmp->Id1, 
-				tmp->Id3,
-				tmp->Atm, 
-				tmp->X, 
-				tmp->Y, 
-				tmp->Z,
-				tmp->O,
-				tmp->B);
+		    {
+			ajFmtPrintF(outf, "%-5s%-5d%-5d%-5c%-5c%-6d%-6S%-5c%-5d%-5S",
+				    "CO", 
+				    tmp->Mod, 
+				    tmp->Chn, 
+				    '.',
+				    tmp->Type, 
+				    tmp->Idx, 
+				    tmp->Pdb, 
+				    tmp->eType,
+				    tmp->eNum,
+				    tmp->eId);
+			if(tmp->eType == 'H')
+			    ajFmtPrintF(outf, "%-5d", tmp->eClass);
+			else
+			    ajFmtPrintF(outf, "%-5c", '.');
+			ajFmtPrintF(outf, "%-2c%6S    %-4S%8.3f%9.3f%9.3f%9.2f%9.2f\n", 
+				    tmp->Id1, 
+				    tmp->Id3,
+				    tmp->Atm, 
+				    tmp->X, 
+				    tmp->Y, 
+				    tmp->Z,
+				    tmp->O,
+				    tmp->B);
+		    }
+		    
 		}
 	    }
 	    ajListIterFree(iter);			
@@ -3474,7 +3513,7 @@ AjBool ajXyzCpdbWriteAll(AjPFile outf, AjPPdb thys)
 		continue;
 	    else	
 	    {
-		ajFmtPrintF(outf, "%-5s%-5d%-5c%-5d%-5c%-6c%-6S%-2c"
+		ajFmtPrintF(outf, "%-5s%-5d%-5c%-5d%-5c%-6c%-6S%-5c%-5c%-5c%-5c%-2c"
 			    "%6S    %-4S"
 			    "%8.3f%9.3f%9.3f%9.2f%9.2f\n", 
 			    "CO", 
@@ -3484,7 +3523,11 @@ AjBool ajXyzCpdbWriteAll(AjPFile outf, AjPPdb thys)
 			    tmp->Type, 
 			    '.', 
 			    tmp->Pdb, 
-			    '.',
+			    '.', 
+			    '.', 
+			    '.', 
+			    '.', 
+			    tmp->Id1,
 			    tmp->Id3,
 			    tmp->Atm, 
 			    tmp->X, 
@@ -3508,7 +3551,7 @@ AjBool ajXyzCpdbWriteAll(AjPFile outf, AjPPdb thys)
 		continue;
 	    else	
 	    {
-		ajFmtPrintF(outf, "%-5s%-5d%-5c%-5c%-5c%-6c%-6S%-2c"
+		ajFmtPrintF(outf, "%-5s%-5d%-5c%-5c%-5c%-6c%-6S%-5c%-5c%-5c%-5c%-2c"
 			    "%6S    %-4S"
 			    "%8.3f%9.3f%9.3f%9.2f%9.2f\n", 
 			    "CO", 
@@ -3518,7 +3561,11 @@ AjBool ajXyzCpdbWriteAll(AjPFile outf, AjPPdb thys)
 			    tmp->Type, 
 			    '.', 
 			    tmp->Pdb, 
-			    '.',
+			    '.', 
+			    '.', 
+			    '.', 
+			    '.', 
+			    tmp->Id1,
 			    tmp->Id3,
 			    tmp->Atm, 
 			    tmp->X, 
@@ -5065,6 +5112,44 @@ AjBool   ajXyzScopalgWrite(AjPFile outf, AjPScopalg *thys)
 }
 
 
+
+
+/* @func ajXyzScopalgWriteClustal ********************************************
+**
+** Writes a Scopalg object to a specified file in CLUSTAL format (just the 
+** alignment without the SCOP classification information).
+**
+** @param [r] align      [AjPScopalg *]  A list Hitlist structures.
+** @param [w] outf       [AjPFile *]     Outfile file pointer
+** 
+** @return [AjBool] True on success (a file has been written)
+** @@
+******************************************************************************/
+AjBool ajXyzScopalgWriteClustal(AjPScopalg align, AjPFile* outf)
+{
+    ajint i;
+    
+    /*Check args*/
+    if(!align)
+    {
+	ajWarn("Null args passed to ajXyzScopalgWriteClustal ");
+	return ajFalse;
+    }
+    
+    /* remove i from the print statement before commiting */
+    ajFmtPrintF(*outf,"CLUSTALW\n\n");
+
+    for(i=0;i<align->N;++i)
+    	ajFmtPrintF(*outf,"%S_%d   %S\n",align->Codes[i],i,align->Seqs[i]);
+    ajFmtPrintF(*outf,"\n");
+    
+    return ajTrue;
+}	
+
+
+
+
+
 /* @func ajXyzScopalgGetseqs *************************************************
 **
 ** Read a Scopalg object and writes an array of AjPStr containing the sequences
@@ -5516,6 +5601,209 @@ AjBool   ajXyzHitlistRead(AjPFile inf, char *delim, AjPHitlist *thys)
 
 
 
+/* @func ajXyzHitlistReadNode ************************************************
+**
+** Reads a scop families file and writes a list of Hitlist objects containing 
+** all domains matching the scop classification provided.
+**
+** @param [r] scopf     [AjPFile *]      The scop families file.
+** @param [r] list      [AjPList *]      List of Hitlist objects.
+** @param [r] fam       [AjPStr   ]      Family.
+** @param [r] sfam      [AjPStr   ]      Superfamily.
+** @param [r] fold      [AjPStr   ]      Fold.
+** @param [r] class     [AjPStr   ]      Class
+** 
+** @return [AjBool] True on success (a list of hits was read)
+** @@
+******************************************************************************/
+
+AjBool ajXyzHitlistReadNode(AjPFile *scopf, AjPList *list, AjPStr fam, AjPStr sfam, AjPStr fold, AjPStr class)
+{
+    AjBool donemem=ajFalse;   
+
+    /* Allocate the list if it does not already exist */
+    if(!(*list))
+    {
+	donemem=ajTrue;
+	(*list)=ajListNew();
+    }
+    
+    /* if family is specified then the other fields also have to be specified. */
+    if(fam)
+    {
+	if(!sfam || !fold || !class)
+	{
+	    ajWarn("Bad arguments passed to ajXyzHitlistReadNode\n");
+	    if(donemem)
+		ajListDel(&(*list));
+	    return ajFalse;
+	}
+	else
+	    ajXyzHitlistReadFam(scopf,fam,sfam,fold,class,list);
+    }
+
+    /* if superfamily is specified then the other fields also have to be specified. */
+    else if(sfam)
+    {
+	if(!fold || !class)
+	{
+	    ajWarn("Bad arguments passed to ajXyzHitlistReadNode\n");
+	    if(donemem)
+		ajListDel(&(*list));
+	    return ajFalse;
+	}
+	else
+	    ajXyzHitlistReadSfam(scopf,fam,sfam,fold,class,list);
+    }
+    
+    /* if fold is specified then the other fields also have to be specified. */
+    else if(fold)
+    {
+	if(!class)
+	{
+	    ajWarn("Bad arguments passed to ajXyzHitlistReadNode\n");
+	    if(donemem)
+		ajListDel(&(*list));
+	    return ajFalse;
+	}
+	else
+	    ajXyzHitlistReadFold(scopf,fam,sfam,fold,class,list);
+    } 
+
+    else
+    {
+	ajWarn("Bad arguments passed to ajXyzHitlistReadNode\n");
+	if(donemem)
+	    ajListDel(&(*list));
+	return ajFalse;
+    }
+    
+    return ajTrue;
+}
+
+
+
+/* @func ajXyzHitlistReadFam ********************************************************
+**
+** Reads a scop families file, selects the entries with the specified family, and 
+** create a list of Hitlist structures.
+**
+** @param [r] scopf     [AjPFile *]       The scop families file.
+** @param [r] fam       [AjPStr  *]       Family
+** @param [r] sfam      [AjPStr  *]       Superfamily
+** @param [r] fold      [AjPStr  *]       Fold
+** @param [w] list      [AjPList *]       A list of hitlist structures.
+** 
+** @return [AjBool] True on success (a file has been written)
+** @@
+********************************************************************************/
+
+AjBool ajXyzHitlistReadFam(AjPFile *scopf, AjPStr fam, AjPStr sfam, AjPStr fold, AjPStr class, AjPList* list)
+{
+    AjPHitlist hitlist = NULL; 
+
+    /* if family is specified then the other fields also have to be specified. */
+    /* check that the other fields are populated */ 
+    if(!fam || !sfam || !fold || !class)
+    {
+	ajWarn("Bad arguments passed to ajXyzHitlistReadFam\n");
+	return ajFalse;
+    }
+    
+
+    while(ajXyzHitlistRead(*scopf,"//",&hitlist))
+    {
+	if(ajStrMatch(fam,hitlist->Family) &&
+	   ajStrMatch(sfam,hitlist->Superfamily) &&
+	   ajStrMatch(fold,hitlist->Fold) &&
+	   ajStrMatch(class,hitlist->Class))
+	    ajListPushApp(*list,hitlist);
+    }
+    
+    return ajTrue;
+}
+
+
+/* @func ajXyzHitlistReadSfam ***************************************************
+**
+** Reads a scop families file, selects the entries with the specified 
+** superfamily, and create a list of Hitlist structures.
+**
+** @param [r] scopf     [AjPFile *]       The scop families file.
+** @param [r] fam       [AjPStr  *]       Family
+** @param [r] sfam      [AjPStr  *]       Superfamily
+** @param [r] fold      [AjPStr  *]       Fold
+** @param [w] list      [AjPList *]       A list of hitlist structures.
+** 
+** @return [AjBool] True on success (a file has been written)
+** @@
+******************************************************************************/
+
+AjBool ajXyzHitlistReadSfam(AjPFile *scopf, AjPStr fam, AjPStr sfam, AjPStr fold, AjPStr class, AjPList* list)
+{
+    AjPHitlist hitlist = NULL; 
+    
+    /* if family is specified then the other fields also have to be specified. */
+    /* check that the other fields are populated */ 
+    if(!sfam || !fold || !class)
+    {
+	ajWarn("Bad arguments passed to ajXyzHitlistReadSfam\n");
+	return ajFalse;
+    }
+    
+    
+    while(ajXyzHitlistRead(*scopf,"//",&hitlist))
+    {
+	if(ajStrMatch(fam,hitlist->Superfamily) &&
+	   ajStrMatch(fold,hitlist->Fold) &&
+	   ajStrMatch(class,hitlist->Class))
+	    ajListPushApp(*list,hitlist);
+    }
+    
+    return ajTrue;
+}
+
+
+/* @func ajXyzHitlistReadFold ***************************************************
+**
+** Reads a scop families file, selects the entries with the specified 
+** fold, and create a list of Hitlist structures.
+**
+** @param [r] scopf     [AjPFile *]       The scop families file.
+** @param [r] fam       [AjPStr  *]       Family
+** @param [r] sfam      [AjPStr  *]       Superfamily
+** @param [r] fold      [AjPStr  *]       Fold
+** @param [w] hitlist   [AjPHitlist *]    Hitlist object. 
+** @param [w] list      [AjPList *]       A list of hitlist structures.
+** @@
+******************************************************************************/
+
+AjBool ajXyzHitlistReadFold(AjPFile *scopf, AjPStr fam, AjPStr sfam, AjPStr fold, AjPStr class,AjPList* list)
+{
+    AjPHitlist hitlist = NULL; 
+
+    /* if family is specified then the other fields also have to be specified. */
+    /* check that the other fields are populated */ 
+    if(!fold || !class)
+    {
+	ajWarn("Bad arguments passed to ajXyzHitlistReadFold\n");
+	return ajFalse;
+    }
+    
+    while(ajXyzHitlistRead(*scopf,"//",&hitlist))
+    {
+	if(ajStrMatch(fam,hitlist->Fold) &&
+	   ajStrMatch(class,hitlist->Class))
+	    ajListPushApp(*list,hitlist);
+    }	
+    
+    return ajTrue;
+}
+
+
+
+
+
 
 /* @func ajXyzHitlistWrite ***************************************************
 **
@@ -5562,6 +5850,59 @@ AjBool ajXyzHitlistWrite(AjPFile outf, AjPHitlist thys)
     /* Return */
     return ajTrue;
 }
+
+
+
+/* @func ajXyzHitlistsWriteFasta **********************************************
+**
+** Takes a list of Hitlist structures, converts them into a list of 
+** Scophit structures and then writes the sequences to a file in FASTA
+** format.
+**
+** @param [r] list      [AjPList *]    A list Hitlist structures.
+** @param [w] outf      [AjPFile *]    Outfile file pointer
+** 
+** @return [AjBool] True on success (a file has been written)
+** @@
+******************************************************************************/
+
+AjBool ajXyzHitlistsWriteFasta(AjPList *list, AjPFile *outf)
+{
+    AjPList hitslist = NULL; /* list of populatd scophit objects */ 
+    AjIList iter     = NULL; /* a list iterator for hitslist */
+    AjPScophit hit   = NULL; /* a scophit object to hold a hit */
+    
+    /* check arguments */
+    if(!(*list) || (!(*outf)))
+    {
+	ajWarn("Bad arguments\n");
+	return ajFalse;
+    }
+    
+    hitslist = ajListNew();
+    
+    if(ajXyzHitlistToScophits(*list,&hitslist))
+    {
+	iter = ajListIter(hitslist);
+	/* iterate through the list and write out the accession number and sequence to outf in FASTA format. */
+	while((hit = (AjPScophit)ajListIterNext(iter)))
+	{
+	    /* print the accession number and sequence to outfile */
+	    ajFmtPrintF(*outf,">%S_%d_%d\n",hit->Id,hit->Start,hit->End);
+	    ajFmtPrintF(*outf,"%S\n",hit->Seq);
+	}	
+	ajListIterFree(iter);
+    }		
+    
+    return ajTrue;
+}
+
+
+
+
+
+
+
 
 
 /* @func ajXyzCmapReadI ****************************************************
