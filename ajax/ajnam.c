@@ -752,6 +752,10 @@ static ajint namMethod2Scope(const AjPStr method)
 	result = (METHOD_ENTRY | METHOD_QUERY | METHOD_ALL);
     else if(!ajStrCmpC(method, "gcg"))
 	result = (METHOD_ENTRY | METHOD_QUERY | METHOD_ALL);
+    else if(!ajStrCmpC(method, "entrez"))
+	result = (METHOD_ENTRY | METHOD_QUERY);
+    else if(!ajStrCmpC(method, "seqhound"))
+	result = (METHOD_ENTRY | METHOD_QUERY);
     /* not in ajseqdb seqAccess list */
     /*
        else if(!ajStrCmpC(method, "corba"))
@@ -904,6 +908,7 @@ void ajNamListListDatabases(AjPList dbnames)
     void **array;
 
     array = ajTableToarray(namMasterTable, NULL);
+    ajDebug("ajNamListListDatabases\n");
 
     for(i = 0; array[i]; i += 2)
     {
