@@ -77,18 +77,18 @@ else {$end = $maxrecord}
 if ($offset) {
   $x = ($offset - 300 + $global_recsize)/$global_recsize;
     $recbuff = record (INFILE, $x);
-    if ($filename =~ /^div/o) { divreport($recbuff)  }
-    elsif ($filename =~ /^ent/o) { entreport($recbuff)  }
-    elsif ($filename =~ /^acnum\.hit/o) { hitreport($recbuff)  }
-    elsif ($filename =~ /^acnum\.trg/o) { trgreport($recbuff)  }
+    if ($filename =~ /^div/o) { divreport($recbuff, $x)  }
+    elsif ($filename =~ /^ent/o) { entreport($recbuff, $x)  }
+    elsif ($filename =~ /^acnum\.hit/o) { hitreport($recbuff, $x)  }
+    elsif ($filename =~ /^acnum\.trg/o) { trgreport($recbuff, $x)  }
 }
 else {
   for ($x=$begin;$x <= $end; $x++) {
     $recbuff = record (INFILE, $x);
-    if ($filename =~ /^div/o) { divreport($recbuff)  }
-    elsif ($filename =~ /^ent/o) { entreport($recbuff)  }
-    elsif ($filename =~ /^acnum\.hit/o) { hitreport($recbuff)  }
-    elsif ($filename =~ /^acnum\.trg/o) { trgreport($recbuff)  }
+    if ($filename =~ /^div/o) { divreport($recbuff, $x)  }
+    elsif ($filename =~ /^ent/o) { entreport($recbuff, $x)  }
+    elsif ($filename =~ /^acnum\.hit/o) { hitreport($recbuff, $x)  }
+    elsif ($filename =~ /^acnum\.trg/o) { trgreport($recbuff, $x)  }
   }
 }
 
@@ -159,41 +159,41 @@ sub record (*$) {
   return $buff;
 }
 
-sub divreport ($) {
-  my ($buff) = @_;
+sub divreport ($$) {
+  my ($buff, $nrecord) = @_;
   my $namelen = $global_recsize - 2;
   my $template = "vA$namelen";
   my ($num,$name) = unpack ($template, $buff);
-  printf "number: %d   name '%s'\n", $num, $name;
+  printf "%8d: number: %d   name '%s'\n", $nrecord, $num, $name;
   return;
 }
 
-sub entreport ($) {
-  my ($buff) = @_;
+sub entreport ($$) {
+  my ($buff, $nrecord) = @_;
   my $idlen = $global_recsize - 10;
   $template = "a$idlen" . "VVv";
   my ($id, $rpos, $spos,$num) = unpack ($template, $buff);
-  printf " rpos: %10d (%08x) spos: %10d (%08x) num: %8d name '%s'\n",
-          $rpos, $rpos, $spos, $spos, $num, $id;
+  printf "%8d: rpos: %10d (%08x) spos: %10d (%08x) num: %8d name '%s'\n",
+          $nrecord, $rpos, $rpos, $spos, $spos, $num, $id;
   return;
 }
 
-sub hitreport ($) {
-  my ($buff) = @_;
+sub hitreport ($$) {
+  my ($buff, $nrecord) = @_;
   my $idlen = $global_recsize - 4;
   $template = "V";
   my ($num) = unpack ($template, $buff);
-  printf "  num: %8d \n",
-          $num;
+  printf "%8d:  num: %8d \n",
+          $nrecord, $num;
   return;
 }
 
-sub trgreport ($) {
-  my ($buff) = @_;
+sub trgreport ($$) {
+  my ($buff, $nrecord) = @_;
   my $idlen = $global_recsize - 8;
   $template = "VVa$idlen";
   my ($count, $start, $id) = unpack ($template, $buff);
-  printf "count: %6d start: %10d  name '%s'\n",
-          $count, $start, $id;
+  printf "%8d: count: %6d start: %10d  name '%s'\n",
+          $nrecord, $count, $start, $id;
   return;
 }
