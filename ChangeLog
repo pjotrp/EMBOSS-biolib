@@ -1,10 +1,12 @@
 Version 2.7.0
-	Add -individual option to RESTRICT. This gives the fragment
+        Added embPatRestrictPreferred.
+
+	Added -individual option to RESTRICT. This gives the fragment
 	lengths produced by restriction assuming only each named RE
 	of the set that can cut the sequence is used. Results are
 	added to the tail section of the report.
 
-	Add a -equivalences option (on by default) to rebaseextract.
+	Added a -equivalences option (on by default) to rebaseextract.
 	This option calculates an embossre.equ file using RE
 	prototypes in the withrefm file.
 
