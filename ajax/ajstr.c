@@ -5945,6 +5945,44 @@ void ajStrDegap(AjPStr* thys)
     return;
 }
 
+
+
+
+/* @func ajStrRemoveCharsC ***************************************************
+**
+** Removes all of a given set of characters from a string
+**
+** @param [w] thys [AjPStr*] String
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajStrRemoveCharsC(AjPStr *thys, const char *string)
+{
+    char *p = NULL;
+    char *q = NULL;
+    char *r = NULL;
+
+    if(!thys || !*thys)
+	return;
+    
+    p = ajStrStr(*thys);
+    q = p;
+
+    while((r=strpbrk(p,string)))
+    {
+	while(p!=r)
+	    *(q++) = *(p++);
+	++p;
+	--(*thys)->Len;
+	*q = '\0';
+    }
+
+    return;
+}
+
+
+
 /* @func ajStrRemoveHtml ******************************************************
 **
 ** Removes all strings between and including angle brackets
