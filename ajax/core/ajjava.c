@@ -68,8 +68,8 @@
 #define AJ_OUTBUF 10000
 #define AJNOTFOUND -999
 
-#define UIDLIMIT 0              /* Temporarily zero for testing */
-#define GIDLIMIT 0
+#define UIDLIMIT 100
+#define GIDLIMIT 100
 
 static void empty_core_dump(void);
 #ifndef NO_AUTH
@@ -309,14 +309,18 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_userInfo
     juser = (char *) (*env)->GetStringUTFChars(env,door,0);
     if(juser)
 	ajStrAssC(&username,juser);
+    else
+	return ajFalse;
     (*env)->ReleaseStringUTFChars(env,door,juser);
 
     jpass = (char *) (*env)->GetStringUTFChars(env,key,0);
     if(jpass)
 	ajStrAssC(&password,jpass);
+    else
+	return ajFalse;
     (*env)->ReleaseStringUTFChars(env,key,jpass);
 
-    if(!ajStrLen(username) || !ajStrLen(password) || !juser || !jpass)
+    if(!ajStrLen(username) || !ajStrLen(password))
 	return ajFalse;
 
 #ifndef NO_AUTH
@@ -823,10 +827,8 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_fork
     int retval=0;
 
 
-/*  To be uncommented later
     if(!uid || !gid)
 	return (unsigned char)ajFalse;
-*/
 
     if(uid<UIDLIMIT)
 	return (unsigned char)ajFalse;
