@@ -27,6 +27,7 @@
 
 
 
+
 /* @func ajMatrixNew **********************************************************
 **
 ** Creates a new, zero matrix from an array of strings and a matrix name. If 
@@ -36,14 +37,15 @@
 ** The matrix comparison value table Matrix is created and initialised
 ** with zeroes.
 **
-** @param [r] codes [AjPStr*] Matrix labels, e.g. valid sequence character codes
+** @param [r] codes [AjPStr*] Matrix labels, e.g. valid sequence
+** character codes
 ** @param [r] n [ajint] Number of labels
 ** @param [r] filename [AjPStr] Matrix filename
 ** @return [AjPMatrix] New matrix, or NULL if codes, n or filename are 0.
 ** @@
 ******************************************************************************/
 
-AjPMatrix ajMatrixNew (AjPStr* codes, ajint n, AjPStr filename)
+AjPMatrix ajMatrixNew(AjPStr* codes, ajint n, AjPStr filename)
 {
     ajint     i   = 0;
     AjPMatrix ret = NULL;
@@ -58,18 +60,18 @@ AjPMatrix ajMatrixNew (AjPStr* codes, ajint n, AjPStr filename)
     ajStrAssS(&ret->Name, filename);
 
     AJCNEW0(ret->Codes, n);
-    for (i=0; i<n; i++)
+    for(i=0; i<n; i++)
 	ret->Codes[i] = ajStrNew();
     
-    for (i=0; i<n; i++)
-	 ajStrAssS (&ret->Codes[i], codes[i]);
+    for(i=0; i<n; i++)
+	ajStrAssS(&ret->Codes[i], codes[i]);
 
     ret->Size = n;
 
     AJCNEW0(ret->Matrix, n);
-    for (i=0; i<n; i++)
+    for(i=0; i<n; i++)
 	AJCNEW0(ret->Matrix[i], n);
-    ret->Cvt = ajSeqCvtNewZeroS (codes, n);
+    ret->Cvt = ajSeqCvtNewZeroS(codes, n);
 
     return ret;
 }
@@ -86,16 +88,16 @@ AjPMatrix ajMatrixNew (AjPStr* codes, ajint n, AjPStr filename)
 ** The matrix comparison value table Matrix is created and initialised
 ** with zeroes.
 **
-** @param [r] codes [AjPStr*] Matrix labels, e.g. valid sequence character codes
+** @param [r] codes [AjPStr*] Matrix labels, e.g. valid sequence char codes
 ** @param [r] n [ajint] Number of labels
 ** @param [r] filename [AjPStr] Matrix filename
 ** @return [AjPMatrixf] New matrix, or NULL if codes, n or filename are 0.
 ** @@
 ******************************************************************************/
 
-AjPMatrixf ajMatrixfNew (AjPStr* codes, ajint n, AjPStr filename)
+AjPMatrixf ajMatrixfNew(AjPStr* codes, ajint n, AjPStr filename)
 {
-    ajint i        = 0;
+    ajint i = 0;
     AjPMatrixf ret = 0;
 
 
@@ -104,21 +106,21 @@ AjPMatrixf ajMatrixfNew (AjPStr* codes, ajint n, AjPStr filename)
 
     AJNEW0(ret);
 
-     ajStrAssS(&ret->Name, filename);
+    ajStrAssS(&ret->Name, filename);
 
     AJCNEW0(ret->Codes, n);
-    for (i=0; i<n; i++)
+    for(i=0; i<n; i++)
 	ret->Codes[i] = ajStrNew();
 
-    for (i=0; i<n; i++)
-	 ajStrAssS (&ret->Codes[i], codes[i]);
+    for(i=0; i<n; i++)
+	ajStrAssS(&ret->Codes[i], codes[i]);
 
     ret->Size = n;
 
     AJCNEW0(ret->Matrixf, n);
-    for (i=0; i<n; i++)
+    for(i=0; i<n; i++)
 	AJCNEW0(ret->Matrixf[i], n);
-    ret->Cvt = ajSeqCvtNewZeroS (codes, n);
+    ret->Cvt = ajSeqCvtNewZeroS(codes, n);
 
     return ret;
 }
@@ -135,7 +137,7 @@ AjPMatrixf ajMatrixfNew (AjPStr* codes, ajint n, AjPStr filename)
 ** @@
 ******************************************************************************/
 
-void ajMatrixfDel (AjPMatrixf *thys)
+void ajMatrixfDel(AjPMatrixf *thys)
 {
     ajint isize = 0;
     ajint i     = 0;
@@ -151,7 +153,7 @@ void ajMatrixfDel (AjPMatrixf *thys)
 
     ajStrDel(&(*thys)->Name);
     for(i=0; i<isize; ++i)
-	AJFREE( (*thys)->Matrixf[i]);
+	AJFREE((*thys)->Matrixf[i]);
     AJFREE((*thys)->Matrixf);
 
     ajSeqCvtDel(&(*thys)->Cvt);
@@ -172,7 +174,7 @@ void ajMatrixfDel (AjPMatrixf *thys)
 ** @@
 ******************************************************************************/
 
-void ajMatrixDel (AjPMatrix *thys)
+void ajMatrixDel(AjPMatrix *thys)
 {
     ajint isize = 0;
     ajint i     = 0;
@@ -188,7 +190,7 @@ void ajMatrixDel (AjPMatrix *thys)
 
     ajStrDel(&(*thys)->Name);
     for(i=0; i<isize; ++i)
-	AJFREE( (*thys)->Matrix[i]);
+	AJFREE((*thys)->Matrix[i]);
     AJFREE((*thys)->Matrix);
 
     ajSeqCvtDel(&(*thys)->Cvt);
@@ -211,7 +213,7 @@ void ajMatrixDel (AjPMatrix *thys)
 ** @@
 ******************************************************************************/
 
-ajint** ajMatrixArray (AjPMatrix thys)
+ajint** ajMatrixArray(AjPMatrix thys)
 {
     return thys->Matrix;
 }
@@ -230,7 +232,7 @@ ajint** ajMatrixArray (AjPMatrix thys)
 ** @@
 ******************************************************************************/
 
-float** ajMatrixfArray (AjPMatrixf thys)
+float** ajMatrixfArray(AjPMatrixf thys)
 {
     return thys->Matrixf;
 }
@@ -247,7 +249,7 @@ float** ajMatrixfArray (AjPMatrixf thys)
 ** @@
 ******************************************************************************/
 
-ajint ajMatrixSize (AjPMatrix thys)
+ajint ajMatrixSize(AjPMatrix thys)
 {
     return thys->Size;
 }
@@ -264,7 +266,7 @@ ajint ajMatrixSize (AjPMatrix thys)
 ** @@
 ******************************************************************************/
 
-ajint ajMatrixfSize (AjPMatrixf thys)
+ajint ajMatrixfSize(AjPMatrixf thys)
 {
     return thys->Size;
 }
@@ -283,7 +285,7 @@ ajint ajMatrixfSize (AjPMatrixf thys)
 ** @@
 ******************************************************************************/
 
-AjPSeqCvt ajMatrixCvt (AjPMatrix thys)
+AjPSeqCvt ajMatrixCvt(AjPMatrix thys)
 {
     return thys->Cvt;
 }
@@ -302,7 +304,7 @@ AjPSeqCvt ajMatrixCvt (AjPMatrix thys)
 ** @@
 ******************************************************************************/
 
-AjPSeqCvt ajMatrixfCvt (AjPMatrixf thys)
+AjPSeqCvt ajMatrixfCvt(AjPMatrixf thys)
 {
     return thys->Cvt;
 }
@@ -323,19 +325,22 @@ AjPSeqCvt ajMatrixfCvt (AjPMatrixf thys)
 ** @@
 ******************************************************************************/
 
-void ajMatrixChar (AjPMatrix thys, ajint i, AjPStr *label)
+void ajMatrixChar(AjPMatrix thys, ajint i, AjPStr *label)
 {
-    if (i >= thys->Size)
+    if(i >= thys->Size)
     {
 	ajStrAssC(label, "?");
 	return;
     }
-    if (i < 0) 
+
+    if(i < 0) 
     {
 	ajStrAssC(label, "?");
 	return;
     }
+
     ajStrAssS(label, thys->Codes[i]);
+
     return;
 }
 
@@ -354,21 +359,23 @@ void ajMatrixChar (AjPMatrix thys, ajint i, AjPStr *label)
 ** @return [void] 
 ** @@
 ******************************************************************************/
-void ajMatrixfChar (AjPMatrixf thys, ajint i, AjPStr *label)
+
+void ajMatrixfChar(AjPMatrixf thys, ajint i, AjPStr *label)
 {
-    if (i >= thys->Size) 
+    if(i >= thys->Size) 
     {	
 	ajStrAssC(label, "?");
 	return;
     }
     
-    if (i < 0)
+    if(i < 0)
     {
 	ajStrAssC(label, "?");
 	return;
     }
 
     ajStrAssS(label, thys->Codes[i]);
+
     return;
 }
 
@@ -385,7 +392,7 @@ void ajMatrixfChar (AjPMatrixf thys, ajint i, AjPStr *label)
 ** @@
 ******************************************************************************/
 
-AjPStr ajMatrixName (AjPMatrix thys)
+AjPStr ajMatrixName(AjPMatrix thys)
 {
     return thys->Name;
 }
@@ -403,7 +410,7 @@ AjPStr ajMatrixName (AjPMatrix thys)
 ** @@
 ******************************************************************************/
 
-AjPStr ajMatrixfName (AjPMatrixf thys)
+AjPStr ajMatrixfName(AjPMatrixf thys)
 {
     return thys->Name;
 }
@@ -421,28 +428,30 @@ AjPStr ajMatrixfName (AjPMatrixf thys)
 ** @@
 ******************************************************************************/
 
-AjBool ajMatrixRead (AjPMatrix* pthis, AjPStr filename)
+AjBool ajMatrixRead(AjPMatrix* pthis, AjPStr filename)
 {
-    AjPStr    *orderstring = NULL;
-    AjPStr     buffer      = NULL;
-    AjPStr     delim       = NULL;
-    AjPStr     tok         = NULL;
-    AjPStr     firststring = NULL;
-    AjPFile    file        = NULL;
-    AjBool     first       = ajTrue;
-    AjPMatrix  thys        = NULL;
-    char      *ptr         = NULL;
-    ajint    **matrix      = NULL;
-    ajint      minval      = -1;
-    ajint      i           = 0;
-    ajint      l           = 0;
-    ajint      k           = 0;
-    ajint      cols        = 0;
-    ajint     *templine    = NULL;
-    
+    AjPStr buffer = NULL;
+    AjPStr delim  = NULL;
+    AjPStr tok    = NULL;
+
+    AjPStr firststring  = NULL;
+    AjPStr *orderstring = NULL;
+
+    AjPFile file    = NULL;
+    AjBool first    = ajTrue;
+    AjPMatrix  thys = NULL;
+    char *ptr       = NULL;
+    ajint **matrix  = NULL;
+
+    ajint minval = -1;
+    ajint i      = 0;
+    ajint l      = 0;
+    ajint k      = 0;
+    ajint cols   = 0;
+
+    ajint *templine = NULL;
 
     firststring = ajStrNew();
-    
     
     delim = ajStrNewC(" :\t\n");
     
@@ -455,7 +464,7 @@ AjBool ajMatrixRead (AjPMatrix* pthis, AjPStr filename)
     }
     
     
-    while (ajFileGets(file,&buffer))
+    while(ajFileGets(file,&buffer))
     {
 	ptr = ajStrStr(buffer);
 	if(*ptr != '#' && *ptr != '\n')
@@ -474,7 +483,7 @@ AjBool ajMatrixRead (AjPMatrix* pthis, AjPStr filename)
 
 		first = ajFalse;
 
-		thys = *pthis = ajMatrixNew (orderstring, cols, filename);
+		thys = *pthis = ajMatrixNew(orderstring, cols, filename);
 		matrix = thys->Matrix;
 	    }
 	    else
@@ -483,14 +492,15 @@ AjBool ajMatrixRead (AjPMatrix* pthis, AjPStr filename)
 		
 		k = ajSeqCvtKS(thys->Cvt, firststring);
 		/* 
-		** cols+1 is used below because 2nd and subsequent lines have 
-		** one more string in them (the residue label) 
-		*/
-		templine = ajArrIntLine(&buffer,ajStrStr(delim),cols+1,2,cols+1);
+		 ** cols+1 is used below because 2nd and subsequent lines have 
+		 ** one more string in them (the residue label) 
+		 */
+		templine = ajArrIntLine(&buffer,ajStrStr(delim),cols+1,2,
+					cols+1);
 		
 		for(i=0; i<cols; i++)   
 		{
-		    if (templine[i] < minval) 
+		    if(templine[i] < minval) 
 			minval = templine[i];
 		    matrix[k][ajSeqCvtKS(thys->Cvt,orderstring[i])] 
 			= templine[i];
@@ -499,7 +509,7 @@ AjBool ajMatrixRead (AjPMatrix* pthis, AjPStr filename)
 	    }
 	}
     }
-    ajDebug ("fill rest with minimum value %d\n", minval);
+    ajDebug("fill rest with minimum value %d\n", minval);
     
 
     ajFileClose(&file);
@@ -514,6 +524,7 @@ AjBool ajMatrixRead (AjPMatrix* pthis, AjPStr filename)
     ajDebug("read matrix file %S\n", filename);
     
     ajStrDel(&firststring);    
+
     return ajTrue;
 }
 
@@ -530,33 +541,35 @@ AjBool ajMatrixRead (AjPMatrix* pthis, AjPStr filename)
 ** @@
 ******************************************************************************/
 
-AjBool ajMatrixfRead (AjPMatrixf* pthis, AjPStr filename)
+AjBool ajMatrixfRead(AjPMatrixf* pthis, AjPStr filename)
 {
-    AjPStr      *orderstring = NULL;
-    AjPStr       buffer      = NULL;
-    AjPStr       delim       = NULL;
-    AjPStr       firststring = NULL;
-    AjPStr       reststring  = NULL;
-    AjPStr       tok         = NULL;
-    ajint        len         = 0;
-    ajint        i           = 0;
-    ajint        l           = 0;
-    ajint        k           = 0;
-    ajint        cols        = 0;
-    char        *ptr         = NULL;
-    AjPMatrixf   thys        = NULL;
-    AjPFile      file        = NULL;
-    AjBool       first       = ajTrue;
-    float      **matrix      = NULL;
-    float       *templine    = NULL;
-    float        minval      = -1.0;
+    AjPStr *orderstring = NULL;
+    AjPStr buffer       = NULL;
+    AjPStr delim        = NULL;
+    AjPStr firststring  = NULL;
+    AjPStr reststring   = NULL;
+    AjPStr tok          = NULL;
+
+    ajint len  = 0;
+    ajint i    = 0;
+    ajint l    = 0;
+    ajint k    = 0;
+    ajint cols = 0;
+
+    char *ptr = NULL;
+
+    AjPMatrixf thys = NULL;
+    AjPFile file    = NULL;
+    AjBool  first   = ajTrue;
+
+    float **matrix  = NULL;
+    float *templine = NULL;
+    float minval    = -1.0;
 
     
     firststring = ajStrNew();
     reststring  = ajStrNew();
 
-
-    
     delim = ajStrNewC(" :\t\n");
     
     ajFileDataNew(filename,&file);
@@ -568,7 +581,7 @@ AjBool ajMatrixfRead (AjPMatrixf* pthis, AjPStr filename)
 	return ajFalse;
     }
     
-    while (ajFileGets(file,&buffer))
+    while(ajFileGets(file,&buffer))
     {
 	ptr = ajStrStr(buffer);
 	if(*ptr != '#' && *ptr != '\n')
@@ -587,7 +600,7 @@ AjBool ajMatrixfRead (AjPMatrixf* pthis, AjPStr filename)
 
 		first = ajFalse;
 
-		thys = *pthis = ajMatrixfNew (orderstring, cols, filename);
+		thys = *pthis = ajMatrixfNew(orderstring, cols, filename);
 		matrix = thys->Matrixf;
 	    }
 	    else
@@ -612,7 +625,7 @@ AjBool ajMatrixfRead (AjPMatrixf* pthis, AjPStr filename)
 		
 		for(i=0; i<cols; i++)  
 		{
-		    if (templine[i] < minval) 
+		    if(templine[i] < minval) 
 			minval = templine[i];
 		    matrix[k][ajSeqCvtKS(thys->Cvt,orderstring[i])] 
 			= templine[i];
@@ -621,7 +634,7 @@ AjBool ajMatrixfRead (AjPMatrixf* pthis, AjPStr filename)
 	    }
 	}
     }
-    ajDebug ("fill rest with minimum value %d\n", minval);
+    ajDebug("fill rest with minimum value %d\n", minval);
     
 
     ajFileClose(&file);
@@ -638,6 +651,7 @@ AjBool ajMatrixfRead (AjPMatrixf* pthis, AjPStr filename)
     
     ajStrDel(&firststring);
     ajStrDel(&reststring);
+
     return ajTrue;
 }
 
@@ -657,9 +671,9 @@ AjBool ajMatrixfRead (AjPMatrixf* pthis, AjPStr filename)
 ** @@
 ******************************************************************************/
 
-AjBool ajMatrixSeqNum (AjPMatrix thys, AjPSeq seq, AjPStr* numseq)
+AjBool ajMatrixSeqNum(AjPMatrix thys, AjPSeq seq, AjPStr* numseq)
 {
-    return ajSeqNum (seq, thys->Cvt, numseq);
+    return ajSeqNum(seq, thys->Cvt, numseq);
 }
 
 
@@ -678,7 +692,7 @@ AjBool ajMatrixSeqNum (AjPMatrix thys, AjPSeq seq, AjPStr* numseq)
 ** @@
 ******************************************************************************/
 
-AjBool ajMatrixfSeqNum (AjPMatrixf thys, AjPSeq seq, AjPStr* numseq)
+AjBool ajMatrixfSeqNum(AjPMatrixf thys, AjPSeq seq, AjPStr* numseq)
 {
-    return ajSeqNum (seq, thys->Cvt, numseq);
+    return ajSeqNum(seq, thys->Cvt, numseq);
 }
