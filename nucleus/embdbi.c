@@ -253,7 +253,7 @@ AjPList embDbiFileListExc (AjPStr dir, AjPStr wildfile, AjPStr exclude) {
   while ((de = readdir(dp))) {
     if (!de->d_ino) continue;	/* skip deleted files with inode zero */
     ajStrAssC (&fname, de->d_name);
-    if (exclude && !ajFileTestSkip(fname, exclude, wildfile, ajFalse))
+    if (exclude && !ajFileTestSkip(fname, exclude, wildfile, ajFalse, ajFalse))
       continue;
     dirsize++;
     ajDebug ("accept '%S'\n", fname);
