@@ -2386,7 +2386,7 @@ void ajGraphxySetYEnd (AjPGraph graphs, float val) {
 ******************************************************************************/
 
 void ajGraphxyYtitle (AjPGraph graphs, AjPStr title){
-  (void) ajStrAss(&graphs->yaxis, title);
+  (void) ajStrAssS(&graphs->yaxis, title);
 }
 /* @func ajGraphxySetColour **********************************************
 **
@@ -2428,7 +2428,7 @@ void ajGraphxyYtitleC (AjPGraph graphs, char* title){
 ******************************************************************************/
 
 void ajGraphxyXtitle (AjPGraph graphs, AjPStr title) {
-  (void) ajStrAss(&graphs->xaxis,title);
+  (void) ajStrAssS(&graphs->xaxis,title);
   return;
 }
 
@@ -2458,7 +2458,8 @@ void ajGraphxyXtitleC (AjPGraph graphs, char* title) {
 ******************************************************************************/
 
 void ajGraphxyTitle (AjPGraph graphs, AjPStr title) {
-  (void) ajStrAss(&graphs->title,title);
+  ajDebug("ajGraphxyTitle '%S'\n", title);
+  (void) ajStrAssS(&graphs->title,title);
   return;
 }
 
@@ -2473,6 +2474,7 @@ void ajGraphxyTitle (AjPGraph graphs, AjPStr title) {
 ******************************************************************************/
 
 void ajGraphxyTitleC (AjPGraph graphs, char* title) {
+  ajDebug("ajGraphxyTitleC '%s'\n", title);
   (void) ajStrAssC(&graphs->title,title);
   return;
 }
@@ -2487,7 +2489,7 @@ void ajGraphxyTitleC (AjPGraph graphs, char* title) {
 ** @@
 ******************************************************************************/
 void ajGraphxySubtitle (AjPGraph graphs, AjPStr title) {
-  (void) ajStrAss(&graphs->subtitle,title);
+  (void) ajStrAssS(&graphs->subtitle,title);
   return;
 }
 
@@ -2801,6 +2803,7 @@ AjPGraphData ajGraphxyDataNewI (ajint numofpoints) {
   AJCNEW0(graph->x, numofpoints);
   AJCNEW0(graph->y, numofpoints);
   graph->numofpoints = numofpoints;
+
   return graph;
 }
 
@@ -2927,6 +2930,7 @@ void ajGraphSetMulti (AjPGraph thys, ajint numsets) {
   thys->numofgraphs = 0;
   thys->numofgraphsmax = numsets;
   thys->minmaxcalc  = 0;
+  thys->flags = GRAPH_XY;
 
   return;
 }
@@ -3503,7 +3507,11 @@ static void GraphxyGeneral (AjPGraph graphs, AjBool closeit) {
 
   ajGraphSetDevice(graphs);
 
+  ajDebug ("GraphxyGeneral flags %x\n", graphs->flags);
+  ajDebug ("... title '%S'\n", graphs->title);
+
   if(graphs->flags & AJGRAPH_OVERLAP){
+    ajDebug ("... AJGRAPH_OVERLAP\n");
     ajGraphColourBack();
     GraphInit(graphs);
     ajGraphColourFore();
@@ -3553,6 +3561,7 @@ static void GraphxyGeneral (AjPGraph graphs, AjBool closeit) {
       
   }
   else{
+    ajDebug ("... else not AJGRAPH_OVERLAP\n");
     GraphSetNumSubPage(graphs->numofgraphs);
     ajGraphColourBack();
     GraphInit(graphs);
