@@ -201,7 +201,7 @@ int main(int argc, char **argv)
 ** @@
 ******************************************************************************/
 
-static char *cutgextract_next(AjPFile inf, AjPInt *array)
+static char* cutgextract_next(AjPFile inf, AjPInt *array)
 {
     static AjPStr line=NULL;
     static AjPStr org=NULL;

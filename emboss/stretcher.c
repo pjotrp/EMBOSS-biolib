@@ -27,10 +27,10 @@
 
 /* @macro gap *****************************************************************
 **
-** Undocumented
+** k-symbol indel score
 **
 ** @param [r] k [ajint] Symbol
-** @return [] k-symbol indel score 
+** @return [void]  
 ******************************************************************************/
 
 #define gap(k)  ((k) <= 0 ? 0 : g+hh*(k))	/* k-symbol indel score */
@@ -599,8 +599,6 @@ static ajint stretcherCalcons(char *aa0,ajint n0,char *aa1,ajint n1,
 ** @param [r] nc [ajint] Undocumented
 ** @return [ajint] Undocumented
 ******************************************************************************/
-
-#define MAXOUT 201
 
 static ajint stretcherDiscons(char *seqc0, char *seqc1, ajint nc)
 {

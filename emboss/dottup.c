@@ -27,7 +27,7 @@
 static void dottup_objtofile(void **x,void *cl);
 static void dottup_drawPlotlines(void **x, void *cl);
 static void dottup_plotMatches(AjPList list);
-void dottup_stretchplot(AjPGraph graph, AjPList matchlist, AjPSeq seq1,
+static void dottup_stretchplot(AjPGraph graph, AjPList matchlist, AjPSeq seq1,
 			AjPSeq seq2, ajint begin1, ajint begin2, ajint end1,
 			ajint end2);
 
@@ -262,6 +262,9 @@ int main(int argc, char **argv)
 **
 ** Undocumented.
 **
+** @param [r] x [void**] Undocumented
+** @param [r] cl [void*] Undocumented
+** @return [void]
 ** @@
 ******************************************************************************/
 
@@ -291,6 +294,9 @@ static void dottup_objtofile(void **x,void *cl)
 **
 ** Undocumented.
 **
+** @param [r] x [void**] Undocumented
+** @param [r] cl [void*] Undocumented
+** @return [void]
 ** @@
 ******************************************************************************/
 
@@ -317,6 +323,7 @@ static void dottup_drawPlotlines(void **x, void *cl)
 ** Undocumented.
 **
 ** @param [?] list [AjPList] Undocumented
+** @return [void]
 ** @@
 ******************************************************************************/
 
@@ -335,7 +342,7 @@ static void dottup_plotMatches(AjPList list)
 
 
 
-/* @func dottup_stretchplot ***************************************************
+/* @funcstatic dottup_stretchplot *********************************************
 **
 ** Undocumented.
 **
@@ -347,10 +354,11 @@ static void dottup_plotMatches(AjPList list)
 ** @param [?] begin2 [ajint] Undocumented
 ** @param [?] end1 [ajint] Undocumented
 ** @param [?] end2 [ajint] Undocumented
+** @return [void]
 ** @@
 ******************************************************************************/
 
-void dottup_stretchplot(AjPGraph graph, AjPList matchlist, AjPSeq seq1,
+static void dottup_stretchplot(AjPGraph graph, AjPList matchlist, AjPSeq seq1,
 			AjPSeq seq2, ajint begin1, ajint begin2, ajint end1,
 			ajint end2)
 {

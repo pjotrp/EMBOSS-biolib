@@ -1088,10 +1088,11 @@ static ajint tmap_vec_to_stst(ajint *vec, ajint *start, ajint *stopp,
 
 
 /* @funcstatic tmap_weights **************************************************
+**
 ** Calculates number of differences between sequence 'testnr' and all
 **  other sequences (Ref. Vingron & Argos, CABIOS 5 (1989) 115-121).  
 **
-** @param [r] s [char**] sekvensmatris (sequence matrix)
+** @param [r] s [char {}{LENGTH}] sekvensmatris (sequence matrix)
 ** @param [r] poss [ajint] antal positioner i sekvenserna
 **                         (position in sequence)
 ** @param [r] nr [ajint] max nr av sekvenserna (max number of sequences)

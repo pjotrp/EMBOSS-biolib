@@ -25,12 +25,6 @@
 /* estimate size of a sequence's output table */
 #define TABLEGUESS 150
 
-/* @prog eprimer3 **************************************************************
-**
-** EMBOSS wrapper for the Whitehead's primer3 program
-**
-******************************************************************************/
-
 /* stuff for fork/exec/pipe etc.*/
 #include <unistd.h>
 #include <stdio.h>
@@ -56,6 +50,12 @@ static void eprimer3_write_primer(AjPFile outfile, char *tag, AjPStr pos,
 	AjPStr tm, AjPStr gc, AjPStr seq, AjBool rev);
 
 	
+/* @prog eprimer3 *************************************************************
+**
+** EMBOSS wrapper for the Whitehead's primer3 program
+**
+******************************************************************************/
+
 int main(int argc, char **argv, char **env)
 {
 
@@ -467,7 +467,7 @@ int main(int argc, char **argv, char **env)
 ** Reads the output from primer3_core into a returned AjPStr until EOF
 **
 ** @param [r] fd [int] file descriptor
-** @return [AjPStr] 
+** @return [AjPStr] Returned string
 **          
 *************************************************************************/
 
@@ -669,13 +669,14 @@ static void eprimer3_send_string(FILE * stream, char * tag, AjPStr value)
 **
 ** Write char * to primer3_core
 **
-** @param [r] stream [FILE *] File handle
-** @param [r] tag [char *] Tag of primer3 data type
-** @param [r] value [char *] Char * value to write
+** @param [r] stream [FILE*] File handle
+** @param [r] tag [char*] Tag of primer3 data type
+** @param [r] value [const char*] Char * value to write
 ** @return [void] 
 **          
 *************************************************************************/
-static void eprimer3_send_stringC(FILE * stream, char * tag, const char * value)
+static void eprimer3_send_stringC(FILE * stream, char * tag,
+				  const char * value)
 {
 
   AjPStr str=ajStrNew();
@@ -693,10 +694,10 @@ static void eprimer3_send_stringC(FILE * stream, char * tag, const char * value)
 ** Open a file descriptor as a stream to pipe to primer3_core
 **
 ** @param [r] fd [int] File descriptor
-** @return [FILE *] File stream
+** @return [FILE*] File stream
 **          
 *************************************************************************/
-static FILE * eprimer3_start_write(int fd)
+static FILE* eprimer3_start_write(int fd)
 {
   FILE *stream;
 
@@ -711,7 +712,7 @@ static FILE * eprimer3_start_write(int fd)
 ** Write a tag=value AjPStr to the primer3_core input stream
 **
 ** @param [r] str [AjPStr] Input string
-** @param [r] stream [FILE *] Stream piped to primer3_core
+** @param [r] stream [FILE*] Stream piped to primer3_core
 ** @return [void] 
 **          
 *************************************************************************/
@@ -974,12 +975,13 @@ PRIMER_PRODUCT_SIZE=137
 **
 ** @param [r] key1 [char *] First half of table key base string
 ** @param [r] number [ajint] Table key numeric part
-** @param [r] key1 [char *] Second half of table key base string (minus the '_')
+** @param [r] key2 [char *] Second half of table key base string (minus '_')
 ** @param [r] table [AjPTable] Table of tag/value result pairs
 ** @return [AjPStr] Table value
 **          
 *************************************************************************/
-static AjPStr eprimer3_tableget(char *key1, ajint number, char *key2, AjPTable table)
+static AjPStr eprimer3_tableget(char *key1, ajint number, char *key2,
+				AjPTable table)
 {
   AjPStr fullkey = NULL;
   AjPStr keynum = NULL;

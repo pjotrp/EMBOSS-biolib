@@ -364,7 +364,7 @@ int main(ajint argc, char **argv)
 
 
 
-/* @funcstatic contact_WriteFile *****************************************
+/* @funcstatic contacts_WriteFile *****************************************
 **
 ** Writes a file of INTRA-chain residue contact data in embl-like format 
 ** for a pdb structure.
@@ -582,29 +582,14 @@ static AjBool contacts_ContactMapWrite(AjPFile outf, AjPInt2d mat, char *txt,
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* @funcstatic contacts_ContactMapCalc **************************************
 **
 ** Write a contact map for a certain model and chain in a pdb structure. The
 ** contact map must contain intra-chain contacts. Rows and columns in the 
 ** square contact map correspond to residues in the chain.
 **
-** @param [w] mat    [AjPInt2d]   Contact map
-** @param [w] ncon   [ajint *]    No. contacts
+** @param [w] mat    [AjPInt2d*]  Contact map
+** @param [w] ncon   [ajint*]     No. contacts
 ** @param [r] dim    [ajint]      Dimension of matrix (no. residues) 
 ** @param [r] thresh [float]      Threshold distance at which contact between 
 **                                two residues is defined.
@@ -615,15 +600,16 @@ static AjBool contacts_ContactMapWrite(AjPFile outf, AjPInt2d mat, char *txt,
 ** @param [r] mod    [ajint]      Model number
 ** @param [r] chn    [ajint]      Chain number
 ** @param [r] pdb    [AjPPdb]     Pdb object
-** @param [r] pdb    [AjPVdw]     Vdw object
+** @param [r] vdw    [AjPVdwall]  Vdw object
 ** 
 ** @return [AjBool] True if file was succesfully written.
 ** @@
 **
 ****************************************************************************/
 static AjBool contacts_ContactMapCalc(AjPInt2d *mat, ajint *ncon, ajint dim, 
-				       float thresh, float ignore, ajint mod, ajint chn,
-				       AjPPdb pdb, AjPVdwall vdw)
+				      float thresh, float ignore, ajint mod,
+				      ajint chn,
+				      AjPPdb pdb, AjPVdwall vdw)
 {	
     /* Contact is checked for between two residues, residue 1 and residue 2 */
     

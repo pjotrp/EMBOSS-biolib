@@ -45,10 +45,10 @@ static ajint matcherNoCross(void);
 
 /* @macro gap *****************************************************************
 **
-** Undocumented
+** sets k-symbol indel score 
 **
 ** @param [r] k [ajint] Symbol
-** @return [] k-symbol indel score 
+** @return [void]
 ******************************************************************************/
 
 #define gap(k)  ((k) <= 0 ? 0 : q+r*(k))	/* k-symbol indel score */
@@ -920,7 +920,7 @@ static ajint matcherLocate(char *A,char *B,ajint nseq)
 **
 ** Undocumented
 **
-** @param [r] A []char*] Undocumented
+** @param [r] A [char*] Undocumented
 ** @param [r] B [char*] Undocumented
 ** @param [r] count [ajint] Undocumented
 ** @param [r] nseq [ajint] Number of sequences
@@ -1101,7 +1101,7 @@ static ajint matcherAddnode(ajint c, ajint ci, ajint cj, ajint i, ajint j,
 **
 ** Undocumented
 **
-** @return [vertexpr] Undocumented
+** @return [vertexptr] Undocumented
 ******************************************************************************/
 
 static vertexptr matcherFindmax(void)
@@ -1420,10 +1420,10 @@ static ajint matcherCalcons(char *aa0,ajint n0,char *aa1,ajint n1,ajint *res,
 ** @return [ajint] Undocumented
 ******************************************************************************/
 
-#define MAXOUT 201
-
 static ajint matcherDiscons(char *seqc0, char *seqc1, ajint nc)
 {
+
+#define MAXOUT 201
     char line[3][MAXOUT], cline[2][MAXOUT+10];
     ajint il, i, lend, loff, il1, il2;
     ajint del0, del1, ic, ll0, ll1, ll01, cl0, cl1, rl0, rl1;

@@ -480,8 +480,9 @@ int main(int argc, char **argv)
 ** @param [?] y1 [float] Undocumented
 ** @param [?] x2 [float] Undocumented
 ** @param [?] y2 [float] Undocumented
-** @param [r] stretch [AjBool] Do a stretch plot
 ** @param [?] text [AjBool] Undocumented
+** @param [r] stretch [AjBool] Do a stretch plot
+** @return [void]
 ** @@
 ******************************************************************************/
 
@@ -513,6 +514,8 @@ static void dotmatcher_pushpoint(AjPList *l, float x1, float y1, float x2,
 **
 ** @param [?] l [AjPList*] Undocumented
 ** @param [?] outf [AjPFile] Undocumented
+** @param [?] b1 [ajint] Undocumented
+** @param [?] b2 [ajint] Undocumented
 ** @@
 ******************************************************************************/
 

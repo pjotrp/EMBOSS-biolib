@@ -534,25 +534,25 @@ static AjBool interface_ContactMapWrite(AjPFile outf, AjPInt2d mat,
 
 
 
-/* @funcstatic contacts_ContactMapCalc **************************************
+/* @funcstatic interface_ContactMapCalc **************************************
 **
 ** Write a contact map for a certain model and chain in a pdb structure. The
 ** contact map must contain intra-chain contacts. Rows and columns in the 
 ** square contact map correspond to residues in the chain.
 **
-** @param [w] mat    [AjPInt2d]   Contact map
+** @param [w] mat    [AjPInt2d*]  Contact map
 ** @param [w] ncon   [ajint *]    No. contacts
-** @param [r] dim    [ajint]      Dimension of matrix (no. residues) 
 ** @param [r] thresh [float]      Threshold distance at which contact between 
 **                                two residues is defined.
 ** @param [r] ignore [float]      Threshold "ignore" distance - this is a 
-**                                speed-up.  Contact is not checked for between 
-**                                residues with CA atoms a further distance 
-**                                apart than this.
+**                                speed-up.  Contact is not checked for 
+**                                between residues with CA atoms a further 
+**                                distance apart than this.
 ** @param [r] mod    [ajint]      Model number
-** @param [r] chn    [ajint]      Chain number
+** @param [r] chn1   [ajint]      Chain number
+** @param [r] chn2   [ajint]      Chain number
 ** @param [r] pdb    [AjPPdb]     Pdb object
-** @param [r] pdb    [AjPVdw]     Vdw object
+** @param [r] vdw    [AjPVdwall]  Vdw object
 ** 
 ** @return [AjBool] True if file was succesfully written.
 ** @@

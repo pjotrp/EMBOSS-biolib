@@ -122,7 +122,7 @@
 
 #include "emboss.h"
 
-AjBool        ajXyzDichetScan(AjPStr path, AjPStr extn, AjPDichet ptr);
+static AjBool        dichet_Scan(AjPStr path, AjPStr extn, AjPDichet ptr);
 
 
 
@@ -166,7 +166,7 @@ int main(int argc, char **argv)
     
     /* Search pdb files for heterogens if appropriate */
     if(dogrep)
-	ajXyzDichetScan(path, extn, dic);
+	dichet_Scan(path, extn, dic);
     
 			
     /* Write output file */
@@ -191,19 +191,19 @@ int main(int argc, char **argv)
 
 
 
-/* @func ajXyzDichetScan **********************************************
+/* @funcstatic dichet_Scan **********************************************
 **
 ** Search a directory of pdb files and count the number of files that each 
 ** heterogen (from a Dichet object) appears in.
 **
-** @param [w] ptr  [AjPDichet] Dichet object
 ** @param [r] path [AjPStr]    Path of pdb files
 ** @param [r] extn [AjPStr]    Extension of pdb files
+** @param [w] ptr  [AjPDichet] Dichet object
 **
 ** @return [AjBool] True on success
 ** @@
 ******************************************************************************/
-AjBool        ajXyzDichetScan(AjPStr path, AjPStr extn, AjPDichet ptr)
+static AjBool        dichet_Scan(AjPStr path, AjPStr extn, AjPDichet ptr)
 {
     AjPList     listfiles=NULL;    /* List of files in  directory */   
     AjPList     listhet=NULL; /* List of names of different heterogens in the current file */
@@ -223,7 +223,7 @@ AjBool        ajXyzDichetScan(AjPStr path, AjPStr extn, AjPDichet ptr)
     /* Check args */
     if(!path || !extn || !ptr)
     {
-	ajWarn("Bad arg's passed to ajXyzDichetScan");
+	ajWarn("Bad arg's passed to dichet_Scan");
 	return ajFalse;
     }
     
@@ -257,7 +257,7 @@ AjBool        ajXyzDichetScan(AjPStr path, AjPStr extn, AjPDichet ptr)
         /* Open pdb file */
         if((fptr=ajFileNewIn(fname))==NULL)
 	{
-	    ajWarn("Could not open file in ajXyzDichetScan\n");
+	    ajWarn("Could not open file in dichet_Scan\n");
 	    continue;
 	}
 	else 

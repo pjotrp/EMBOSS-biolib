@@ -29,8 +29,8 @@
 ** 
 ** Operation
 ** 
-** scopparse parses the dir.cla.scop.txt and dir.des.scop.txt scop classification 
-** files (e.g. available at URL (1).)
+** scopparse parses the dir.cla.scop.txt and dir.des.scop.txt scop
+** classification files (e.g. available at URL (1).)
 ** (1) http://scop.mrc-lmb.cam.ac.uk/scop/parse/dir.cla.scop.txt_1.57
 **     http://scop.mrc-lmb.cam.ac.uk/scop/parse/dir.des.scop.txt_1.57
 ** The format of these files is explained at URL (2).
@@ -166,12 +166,12 @@
 
 
 
-ajint scopparse_CompSunid(const void *scop1, const void *scop2);
-ajint scopparse_search(ajint id, AjPScopdes *arr, ajint siz);
+static ajint scopparse_CompSunid(const void *scop1, const void *scop2);
+static ajint scopparse_search(ajint id, AjPScopdes *arr, ajint siz);
 
 
 
-/* @prog scopparse ***************************************************************
+/* @prog scopparse ************************************************************
 **
 ** Convert raw scop classification file to embl-like format
 **
@@ -275,7 +275,7 @@ int main(int argc, char **argv)
 
 
 
-/* @func scopparse_CompSunid *************************************************
+/* @funcstatic scopparse_CompSunid ********************************************
 **
 ** Function to sort AjOScopdes objects by Sunid element.
 **
@@ -286,7 +286,7 @@ int main(int argc, char **argv)
 ** should sort first. 0 if they are identical in value.
 ** @@
 ******************************************************************************/
-ajint scopparse_CompSunid(const void *scop1, const void *scop2)
+static ajint scopparse_CompSunid(const void *scop1, const void *scop2)
 {
     AjPScopdes p  = NULL;
     AjPScopdes q  = NULL;
@@ -307,20 +307,20 @@ ajint scopparse_CompSunid(const void *scop1, const void *scop2)
 
 
 
-/* @func scopparse_search ******************************************************
+/* @funcstatic scopparse_search ***********************************************
 **
 ** Performs a binary search for a Sunid over an array of Scopdes objects 
 ** structures (which of course must first have been sorted). 
 **
 ** @param [r] id  [ajint]      Search value of Sunid
-** @param [r] arr [AjPScopdes] Array of AjOScopdes objects
+** @param [r] arr [AjPScopdes*] Array of AjOScopdes objects
 ** @param [r] siz [ajint]      Size of array
 **
-** @return [ajint] Index of first AjOScopdes object found with an Sunid element 
-** matching id, or -1 if id is not found.
+** @return [ajint] Index of first AjOScopdes object found with a
+** Sunid element matching id, or -1 if id is not found.
 ** @@
 ******************************************************************************/
-ajint scopparse_search(ajint id, AjPScopdes *arr, ajint siz)
+static ajint scopparse_search(ajint id, AjPScopdes *arr, ajint siz)
 {
     int l;
     int m;
