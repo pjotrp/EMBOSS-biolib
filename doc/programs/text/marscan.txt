@@ -58,6 +58,9 @@ Description
    predicts 80% of MARs and SARs, suggesting that at least one other type
    of MAR/SAR may exist which does not contain a MRS.
    
+   It it still not at all clear whether MAR/SARs are real biological
+   phenomena or just experimental artefacts.
+   
    The problem of how to define and find MARs is still being actively
    invetsigated. For a recent evaluation of this method and others, see
    reference 3.
