@@ -4334,7 +4334,7 @@ AjPFeattable ajFeattableNewSeq( AjPSeq seq )
   AjPFeattable thys = NULL ;
 
   /* Allocate the object... */
-  AJNEW0(thys) ;
+  /*  AJNEW0(thys) ;  deleted by AJB */
 
   if (ajSeqIsProt(seq))
     thys = ajFeattableNewProt(ajSeqGetName(seq)) ;

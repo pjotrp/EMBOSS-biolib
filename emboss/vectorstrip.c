@@ -196,6 +196,12 @@ static void vectorstrip_initialise_cp(CPattern* pat)
     (*pat)->amino=0;
     (*pat)->carboxyl=0;
 
+    (*pat)->buf=NULL;
+    (*pat)->sotable=NULL;
+    (*pat)->solimit=0;
+    (*pat)->skipm=NULL;
+    (*pat)->tidy=NULL;
+
     return;
 }
 
@@ -660,7 +666,8 @@ static void vectorstrip_ccs_pattern(AjPStr pattern, AjPList* hitlist,
 		  &(cpat->sotable), &(cpat->solimit), 
 		  &(cpat->real_len), &(cpat->re), 
 		  &(cpat->skipm),mm );
-  
+
+
     embPatFuzzSearch(cpat->type, begin, cpat->patstr,
 		     cpat->origpat, seqname, seqstr, hitlist,
 		     cpat->len, mm, cpat->amino,

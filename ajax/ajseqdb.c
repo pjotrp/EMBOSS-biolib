@@ -341,15 +341,15 @@ static AjBool seqAccessEmblcd (AjPSeqin seqin)
          * unnecessary for the revised code but is left here
          * for a while as a reminder and 'just in case'
 	 */
-/*	if((qry->Type == QRY_ENTRY) && !seqin->multi)
+	if((qry->Type == QRY_ENTRY) && !seqin->multi)
 	{
-	    if(seqin->Ftquery->Handle)
+/*	    if(seqin->Ftquery->Handle)
 	    ajFileBuffClear(seqin->Ftquery->Handle,0);
 	    if(seqin->Ftquery->Handle)
-		ajFileBuffClear(seqin->Ftquery->Handle,0);
+		ajFileBuffClear(seqin->Ftquery->Handle,0); */
 	    AJFREE(qryd);
 	}
-*/
+
     }
     
     ajStrAssS (&seqin->Db, qry->DbName);
