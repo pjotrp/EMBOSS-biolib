@@ -2340,7 +2340,8 @@ AjBool ajFileBuffGetL (const AjPFileBuff thys, AjPStr* pdest, ajlong* fpos) {
 ** angle brackets, plus any TITLE. This seems to be enough to make HTML
 ** output readable.
 **
-** @param [r] thys [const AjPFileBuff] Buffered file with data loaded in the buffer.
+** @param [r] thys [const AjPFileBuff] Buffered file with data loaded
+**                                     in the buffer.
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -2351,6 +2352,7 @@ void ajFileBuffStripHtml (const AjPFileBuff thys) {
   AjPRegexp httpexp = NULL;
   AjPRegexp nullexp = NULL;
   AjPRegexp chunkexp = NULL;
+  AjPRegexp hexexp = NULL;
   AjPRegexp ncbiexp = NULL;
   AjPRegexp ncbiexp2 = NULL;
   AjPRegexp srsdbexp = NULL;
@@ -2358,17 +2360,25 @@ void ajFileBuffStripHtml (const AjPFileBuff thys) {
   AjPFileBuffList plist;
   AjPFileBuffList pdellist;
   AjPFileBuffList plast = NULL;
+  AjPFileBuffList chlist;
+  AjPFileBuffList chlast = NULL;
   AjPStr s1 = NULL;
   AjPStr s2 = NULL;
   AjPStr s3 = NULL;
   ajint i;
-  /*  AjBool dochunk = ajFalse;*/
+  AjBool doChunk = ajFalse;
+  ajint ichunk;
+  ajint chunkSize;
+  AjPStr nullLine=NULL;
+  AjPStr saveLine=NULL;
+  AjPStr hexstr=NULL;
 
   tagexp = ajRegCompC("^(.*)(<[!/A-Za-z][^>]*>)(.*)$");
   fullexp = ajRegCompC("^(.*)(<(TITLE)>.*</TITLE>)(.*)$");
   httpexp = ajRegCompC("^HTTP/");
   nullexp = ajRegCompC("^\r?\n?$");
-  chunkexp = ajRegCompC("^Transfer-Excoding: +chunked");
+  chunkexp = ajRegCompC("^Transfer-Encoding: +chunked");
+  hexexp = ajRegCompC("^([0-9a-fA-F]+)\r?\n?$");
   ncbiexp = ajRegCompC("^Entrez Reports\n$");
   ncbiexp2 = ajRegCompC("^----------------\n$");
   srsdbexp = ajRegCompC("^([A-Za-z0-9_-]+)(:)([A-Za-z0-9_-]+)");
@@ -2386,22 +2396,83 @@ void ajFileBuffStripHtml (const AjPFileBuff thys) {
       ajDebug ("removing line [%d], '%S' len %d\n",
 	       ajStrRef(plist->Line), plist->Line,
 	       ajStrLen(plist->Line));
-      ajRegExec(chunkexp, plist->Line);
-      /*      if (ajRegExec(chunkexp, plist->Line))
-	      dochunk = ajTrue;*/
-      pdellist = plist;
-      if (plast) {
-	plast->Next = plist->Next;
-	plist = plast->Next;
+      if (ajRegExec(chunkexp, plist->Line)) {
+	ajDebug("Chunk encoding: %S", plist->Line);
+	doChunk = ajTrue;
       }
-      else {			/* we are on the first line */
-	plist = thys->Lines = thys->Curr = plist->Next;
-      }
-      ajStrDel(&pdellist->Line);
-      AJFREE (pdellist);
+      ajStrDel(&plist->Line);
+      plist = thys->Lines = thys->Curr = plist->Next;
       thys->Size--;
       if (thys->Pos > i)
 	thys->Pos--;
+    }
+  }
+
+  if (doChunk) {
+    chlist = thys->Curr;
+    if (!ajRegExec(nullexp, chlist->Line)) {
+      ajFatal("Bad chunk data from HTTP server, expect blank line got '%S'",
+	      chlist->Line);
+    }
+    ajStrAssS(&nullLine, chlist->Line);
+    ajStrDel(&chlist->Line);
+    plist = chlist = thys->Lines = thys->Curr = chlist->Next;
+    if (!ajRegExec(hexexp, chlist->Line)) {
+      ajFatal("Bad chunk data from HTTP server, expect chunk size got '%S'",
+	      chlist->Line);
+    }
+    ajRegSubI(hexexp, 1, &hexstr);
+    ajStrToHex(hexstr, &chunkSize);
+    ajUser("Chunk size: %x %d", chunkSize, chunkSize);
+    ajStrDel(&chlist->Line);
+    plist = chlist = thys->Lines = thys->Curr = chlist->Next;
+    chlast = NULL;
+    ichunk = 0;
+    while (chunkSize) {
+      /* get the chunk size - zero is the end */
+      /* process the chunk */
+      ichunk += ajStrLen(chlist->Line);
+      if (ichunk >= chunkSize) {
+	ajUser("ichunk %d chunkSize %d", ichunk, chunkSize);
+	if (ichunk == chunkSize) {
+	  ajStrAssC(&saveLine, "");
+	  chlast = chlist;
+	  chlist = chlist->Next;
+	}
+	else {
+	  ajUser("ajStrSub len %d %d..%d",
+		 ajStrLen(chlist->Line),
+			  -(ichunk-chunkSize), -1);
+	  ajStrAssSub(&saveLine, chlist->Line, 0, -(ichunk-chunkSize));
+	  ajStrSub(&chlist->Line, -(ichunk-chunkSize), -1);
+	  ajDebug("join saveLine %d '%S' chlist->Line %d '%S'\n",
+		  ajStrLen(saveLine), saveLine,
+		  ajStrLen(chlist->Line), chlist->Line);
+	}
+	if (!ajRegExec(nullexp, chlist->Line))
+	  ajFatal("Bad chunk data from HTTP server, expect blank line got '%S'",
+		  chlist->Line);
+	pdellist = chlist;
+	if (chlast) {
+	  chlast->Next = chlist->Next;
+	  chlist = chlast->Next;
+	}
+	if (!ajRegExec(hexexp, chlist->Line)) {
+	  ajFatal("Bad chunk data from HTTP server, expect chunk size got '%S'",
+		  chlist->Line);
+	}
+	ajRegSubI(hexexp, 1, &hexstr);
+	ajStrToHex(hexstr, &chunkSize);
+	ajUser("Chunk size: %x %d", chunkSize, chunkSize);
+	ichunk = 0;
+	ajDebug ("## %4x %S", ichunk, chlist->Line);
+      }
+      if (ajStrLen(saveLine)) {
+	ajStrInsert(&chlist->Line, 0, saveLine);
+	ajStrAssC(&saveLine, "");
+      }
+      chlast = chlist;
+      chlist = chlist->Next;
     }
   }
 
@@ -2410,8 +2481,6 @@ void ajFileBuffStripHtml (const AjPFileBuff thys) {
       (void) ajStrAssC(&plist->Line, "\n");
     if (ajRegExec(ncbiexp2, plist->Line))
       (void) ajStrAssC(&plist->Line, "\n");
-
-
 
     while (ajRegExec(fullexp, plist->Line)) {
       ajRegSubI (fullexp, 1, &s1);
