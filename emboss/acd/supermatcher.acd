@@ -67,6 +67,7 @@ section: advanced [
   integer: width  [
     additional: "Y"
     default: "16"
+    minimum: "1"
     information: "Alignment width"
   ]
 
