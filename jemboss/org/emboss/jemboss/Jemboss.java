@@ -35,38 +35,49 @@ import org.emboss.jemboss.soap.*;           // results manager
 
 /**
 *
-*  Java interface to EMBOSS (http://www.emboss.org/)
-*  (i)  standalone - with a locally installation of EMBOSS.
-*  (ii) client / server mode - download the client from a site,
-*       such as the HGMP, which runs the Jemboss server.
+*  Java interface to EMBOSS (http://www.emboss.org/). This
+*  can be run in two different ways. In a STANDALONE mode 
+*  with a locally installation of EMBOSS, or
+*  CLIENT-SERVER mode download the client from a site,
+*  such as the HGMP, which runs the Jemboss server.
 *
 */
 public class Jemboss implements ActionListener
 {
 
 // Swing components
+
+/** Jemboss frame      */
   private JFrame f;
-  private JSplitPane pmain;
-
+/** Jemboss split pain */
+  private JSplitPane pmain; 
+/** Local filemanager panel */
   private JPanel p3;
+/** Local filemanager */
   public static DragTree tree;
+/** Button to open local filemanager */
   private JButton extend;
+/** Scroll pane for local filemanager */
   private JScrollPane scrollTree;
-
 /** true if in client-server mode (using SOAP) */
   static boolean withSoap;
-
 /** to manage the pending results */
   public static PendingResults resultsManager;
-
 /** Jemboss window dimension */
   private static Dimension jdim;
+/** Jemboss window dimension with local filemanager displayed */
   private static Dimension jdimExtend;
-
+/** Image for displaying the local filemanager */
   private ImageIcon fwdArrow;
+/** Image for hiding the local filemanager */
   private ImageIcon bwdArrow;
 
-  public Jemboss ()
+  /**
+  *
+  * Display the Jemboss GUI.
+  *
+  */
+  public Jemboss()
   {
 
     String fs = new String(System.getProperty("file.separator"));
