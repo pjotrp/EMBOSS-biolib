@@ -265,6 +265,16 @@ typedef struct bestelm {
 
 extern FILE *infile, *outfile, *intree, *intree2, *outtree,
     *weightfile, *catfile, *ancfile, *mixfile, *factfile;
+extern AjPFile embossinfile;
+extern AjPFile embossoutfile;
+extern AjPFile embossintre;
+extern AjPFile embossintree2;
+extern AjPFile embossouttree;
+extern AjPFile embossweightfile;
+extern AjPFile embosscatfile;
+extern AjPFile embossancfile;
+extern AjPFile embossmixfile;
+extern AjPFile embossfactfile;
 extern long spp, words, bits;
 extern boolean ibmpc, ansi, tranvsp;
 extern naym *nayme;                     /* names of species */
@@ -468,8 +478,8 @@ typedef void (*initptr)(node **, node **, node *, long, long,
 int    filexists(char *);
 const char*  get_command_name (const char *);
 void   getstryng(char *);
-void   openfile(FILE **,const char *,const char *,const char *,const char *,
-                const char **);
+/*void   openfile(FILE **,const char *,const char *,const char *,const char *,
+                const char **);*/
 void   cleerhome(void);
 void   loopcount(long *, long);
 double randum(longer);
@@ -477,13 +487,13 @@ void   randumize(longer, long *);
 double normrand(longer);
 
 void   uppercase(Char *);
-void   initseed(long *, long *, longer);
-void   initjumble(long *, long *, longer, long *);
-void   initoutgroup(long *, long);
-void   initthreshold(double *);
-void   initcatn(long *);
-void   initcategs(long, double *);
-void   initprobcat(long, double *, double *);
+/*void   initseed(long *, long *, longer);*/
+/*void   initjumble(long *, long *, longer, long *);*/
+/*void   initoutgroup(long *, long);*/
+/*void   initthreshold(double *);*/
+/*void   initcatn(long *);*/
+/*void   initcategs(long, double *);*/
+/*void   initprobcat(long, double *, double *);*/
 double logfac (long);
 double halfroot(double (*func)(long , double), long, double, double);
 double hermite(long, double);
@@ -587,8 +597,6 @@ void init(int argc, char** argv);
 
 /* new functions for EMBOSS */
 
-void   initrcatn(long *);
-void   initrcategs(long, double *);
 void   inputnumbersseq(AjPSeqset seqset,
                      long *spp, long *chars, long *nonodes, long n);
 void   inputnumbersseq2(AjPSeqset seqset,
@@ -607,6 +615,14 @@ void   initnamefreq(AjPPhyloFreq, long);
 void   sgetch(Char *, long *, char **);
 void   getch(Char *, long *, FILE *);
 void   getch2(Char *, long *);
+
+void emboss_openfile(AjPFile outfile, FILE **fp, const char **perm);
+void emboss_initseed(long inseed, long *inseed0, longer seed);
+void emboss_initoutgroup(long *outgrno, long spp);
+void emboss_initcatn(long *categs);
+void emboss_initcategs(AjPFloat arrayvals, long categs, double *rate);
+double emboss_initprobcat(AjPFloat arrayvals, long categs, double *probcat);
+void emboss_printtree(node *p, char* title);
 
 #endif /* OLDC */
 #endif /* _PHYLIP_H_ */
