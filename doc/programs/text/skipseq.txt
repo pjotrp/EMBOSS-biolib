@@ -18,7 +18,7 @@ Description
    seqret has an option to allow it to only read the first sequence from
    a multiple set of sequences (-firstonly). seqret cannot, however, skip
    the first few sequences from a multiple set of sequence, writing out
-   the rest; this is what seqret is for.
+   the rest; this is what skipseq is for.
    
    In all other respects, skipseq is the same as seqret.
    
