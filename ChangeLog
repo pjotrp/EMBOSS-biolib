@@ -1,4 +1,38 @@
 Version 2.7.0
+
+	A new test application acdvalid will check for deprecated ACD
+	syntax and report errors for something that should be fixed, or
+	warnings for something still to be clearly defined. None of these
+	"errors" will stop an ACD file from worknig correctly, but they do
+	cause confusion to the authors and maintainers of wrappers, GUIs,
+	and so on.
+
+	Sequence types are extended to include new types for programs that
+	can handle selenocysteine.
+
+	Sequence types are simplified so that input can be converted to
+	the specified type. Gaps can be removed, and unsupported
+	characters can be converted to X for protein or N for nucleotide.
+	A few applications may be unable to handle any ambiguity
+	(pureprotein, puredna, etc.) and will require correct input. To
+	make it safe to run a program over (for example) swissprot or
+	embl, such programs should read single sequences only, or be
+	converted to support ambiguity codes. This may take a little
+	time. banana, octanol and pepwindow alread reads single sequences.
+	In need of attention are hmoment and  iep.
+
+	In ACD files a new application attribute "external" is added where
+	a third-party tool is needed. examples include clustalw (emma) and
+	primer3_core (eprimer3 and primers).
+
+	ACD definitions for feature and featout now have a "type"
+	attribute. The feature output type defaults to the sequence type,
+	as for sequence output. Feature types are "protein" or
+	"nucleotide" or "any".
+	
+	ACD sections now have "information" instead of merely "info" for
+	consistency.
+	
 	Boundary fix for ajStrMask
 
 	Tightened up on reporting of isoschizomer groups in 'showseq -limit'
