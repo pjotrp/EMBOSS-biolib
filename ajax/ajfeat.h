@@ -127,13 +127,14 @@ void ajFeatTest (void);
 
 
 
-AjPFeature ajFeatAdd (AjPFeattable thys, AjPStr type,
+AjPFeature   ajFeatAdd (AjPFeattable thys, AjPStr type,
 		      ajint start, ajint end, float score,
 		      char strand, ajint frame, AjPStr desc);
-AjPFeature ajFeatAddC (AjPFeattable thys, char* type,
+AjPFeature   ajFeatAddC (AjPFeattable thys, char* type,
 		       ajint start, ajint end, float score,
 		       char strand, ajint frame, AjPStr desc);
-AjPFeature ajFeatNew (AjPFeattable thys,
+void         ajFileExit (void);
+AjPFeature   ajFeatNew (AjPFeattable thys,
 			     AjPStr       source, 
 			     AjPStr       type,
 			     ajint start, ajint end,
@@ -141,15 +142,15 @@ AjPFeature ajFeatNew (AjPFeattable thys,
 			     char         strand,
 			     ajint          frame, 
 			     AjPStr       desc);
-AjBool ajFeatSetDesc (AjPFeature thys, AjPStr desc);
-AjPStr ajFeatTagSet (AjPFeature thys, AjPStr tag, AjPStr value);
-AjPStr ajFeatTagSetC (AjPFeature thys, char* tag, AjPStr value);
-AjIList ajFeatTagIter (AjPFeature thys);
-AjBool ajFeatTagval (AjIList iter, AjPStr* tagnam, AjPStr* tagval);
+AjBool       ajFeatSetDesc (AjPFeature thys, AjPStr desc);
+AjPStr       ajFeatTagSet (AjPFeature thys, AjPStr tag, AjPStr value);
+AjPStr       ajFeatTagSetC (AjPFeature thys, char* tag, AjPStr value);
+AjIList      ajFeatTagIter (AjPFeature thys);
+AjBool       ajFeatTagval (AjIList iter, AjPStr* tagnam, AjPStr* tagval);
 
-void ajFeatTrace (AjPFeature thys);
-void ajFeatTagTrace (AjPFeature thys);
-void ajFeattableTrace (AjPFeattable thys);
+void         ajFeatTrace (AjPFeature thys);
+void         ajFeatTagTrace (AjPFeature thys);
+void         ajFeattableTrace (AjPFeattable thys);
 AjPFeattable ajFeattableNew( AjPStr name );
 AjPFeattable ajFeattableNewDna( AjPStr name );
 AjPFeattable ajFeattableNewProt( AjPStr name );

@@ -1,5 +1,4 @@
 /******************************************************************************
-** @source AJAX genome feature module implementation
 **
 ** A genome feature (in AJAX program context) is a description of a
 ** genomic entity which was determined by some 'source' analysis
@@ -50,7 +49,7 @@ typedef struct FeatSTagval {
 
 #define FEATFLAG_START_BEFORE_SEQ 0x0001 /* <start */
 #define FEATFLAG_END_AFTER_SEQ    0x0002 /* >end */
-#define FEATFLAG_MOTHER           0x0004 /* join() */
+#define FEATFLAG_CHILD            0x0004 /* join() */
 #define FEATFLAG_BETWEEN_SEQ      0x0008  /* x^y */
 #define FEATFLAG_START_TWO        0x0010  /* x.y.. */
 #define FEATFLAG_END_TWO          0x0020  /* ..x.y */
@@ -78,6 +77,10 @@ static AjPTable FeatTagsTableEmbl = NULL;
 static AjBool   FeatInitSwiss = AJFALSE;
 static AjPTable FeatTypeTableSwiss = NULL;
 static AjPTable FeatTagsTableSwiss = NULL;
+
+static AjBool   FeatInitAcedb = AJFALSE;
+static AjPTable FeatTypeTableAcedb = NULL;
+static AjPTable FeatTagsTableAcedb = NULL;
 
 static AjPStr featTagFmt (AjPStr name, AjPTable table);
 static AjPStr featTagLimit (AjPStr name, AjPTable table);
@@ -110,8 +113,6 @@ static char featStrand (ajint strand);
 static void ajFeatSetFlag(ajint *flags, ajint val);
 
 static AjPFeature featSwissFromLine ( AjPFeattable thys, AjPStr line);
-static AjPFeature featGenbankFromLine ( AjPFeattable thys, AjPStr line,
-					ajint genbank);
 
 static AjPStr featLocEmblWrapC(AjPStr* pval, ajint width,
 			       char* prefix, char* preftyp);
@@ -126,10 +127,10 @@ static AjBool featTagSpecialAllProteinid(AjPStr* pval);
 static AjBool featTagSpecialAllReplace(AjPStr* pval);
 static AjBool featTagSpecialAllTranslation(AjPStr* pval);
 static AjBool featTagAllLimit(AjPStr* pval, AjPStr values);
-static void featTagEmblQuote(AjPStr* pval);
+static void   featTagEmblQuote(AjPStr* pval);
 static AjPStr featTagEmblWrapC(AjPStr* pval, ajint width, char* prefix);
-static void featTagEmblDefault(AjPStr* pout, AjPStr tag, AjPStr* pval);
-static void featTagGffDefault(AjPStr* pout, AjPStr tag, AjPStr* pval);
+static void   featTagEmblDefault(AjPStr* pout, AjPStr tag, AjPStr* pval);
+static void   featTagGffDefault(AjPStr* pout, AjPStr tag, AjPStr* pval);
 static AjBool featTagSpecial(AjPStr* pval, AjPStr tag);
 static AjBool featTagGffSpecial(AjPStr* pval, AjPStr tag);
 
@@ -137,25 +138,19 @@ static AjBool featTagGffSpecial(AjPStr* pval, AjPStr tag);
 static AjBool featReadUnknown  ( AjPFeattable thys, AjPFileBuff file) ;
 static AjBool featReadAcedb    ( AjPFeattable thys, AjPFileBuff file) ;
 static AjBool featReadEmbl     ( AjPFeattable thys, AjPFileBuff file) ;
-static AjBool featReadGenbank  ( AjPFeattable thys, AjPFileBuff file) ;
-static AjBool featReadDdbj     ( AjPFeattable thys, AjPFileBuff file) ;
 static AjBool featReadGff      ( AjPFeattable thys, AjPFileBuff file) ;
 static AjBool featReadSwiss    ( AjPFeattable thys, AjPFileBuff file) ;
 
 static AjBool featRegInitAcedb();
 static AjBool featRegInitEmbl();
-static AjBool featRegInitGenBank();
 static AjBool featRegInitGff();
 static AjBool featRegInitSwiss();
 
 static void featClear ( AjPFeature thys );
 static AjBool featDelRegAcedb();
 static AjBool featDelRegEmbl();
-static AjBool featDelRegGenBank();
 static AjBool featDelRegGff();
 static AjBool featDelRegSwiss();
-static ajint featDoTagvalEmbl (AjPFeature gf, AjPFeattable owner,
-                                 AjPStr line);
 
 static AjBool featGetUsaSection(AjPStr* tmp, AjPStr token, ajint* begin,
 				ajint* end, AjPStr usa);
@@ -189,6 +184,7 @@ typedef struct FeatSInFormat {
   char *Name;
   AjBool Dna;
   AjBool Prot;
+  AjBool Used;
   AjBool (*Read)  (AjPFeattable thys, AjPFileBuff file);
   AjBool (*InitReg)();
   AjBool (*DelReg)();
@@ -198,23 +194,23 @@ typedef struct FeatSInFormat {
    input-function   init-regex-function del-regex-function */
 
 static FeatOInFormat featInFormatDef[] = {
-  {"unknown",       AJTRUE,             AJTRUE,
+  {"unknown",       AJTRUE,             AJTRUE,        AJFALSE,
    featReadUnknown, NULL,               NULL},
-  {"embl",          AJTRUE,             AJFALSE,
+  {"embl",          AJTRUE,             AJFALSE,       AJFALSE,
    featReadEmbl,    featRegInitEmbl,    featDelRegEmbl},
-  {"genbank",       AJTRUE,             AJFALSE,
+  {"genbank",       AJTRUE,             AJFALSE,       AJFALSE,
    featReadEmbl,    featRegInitEmbl,    featDelRegEmbl},
-  {"gb",            AJTRUE,             AJFALSE,
+  {"gb",            AJTRUE,             AJFALSE,       AJFALSE,
    featReadEmbl,    featRegInitEmbl,    featDelRegEmbl},
-  {"ddbj",          AJTRUE,             AJFALSE,
+  {"ddbj",          AJTRUE,             AJFALSE,       AJFALSE,
    featReadEmbl,    featRegInitEmbl,    featDelRegEmbl},
-  {"gff",           AJTRUE,             AJTRUE,
+  {"gff",           AJTRUE,             AJTRUE,        AJFALSE,
    featReadGff,     featRegInitGff,     featDelRegGff},
-  {"acedb",         AJTRUE,             AJFALSE,
+  {"acedb",         AJTRUE,             AJFALSE,       AJFALSE,
    featReadAcedb,   featRegInitAcedb,   featDelRegAcedb},
-  {"swissprot",     AJFALSE,             AJTRUE,
+  {"swissprot",     AJFALSE,            AJTRUE,        AJFALSE,
    featReadSwiss,   featRegInitSwiss,   featDelRegSwiss},
-  {"sw",            AJFALSE,             AJTRUE,
+  {"sw",            AJFALSE,             AJTRUE,       AJFALSE,
    featReadSwiss,   featRegInitSwiss,   featDelRegSwiss},
   {NULL, NULL, NULL, NULL, NULL, NULL}
 };
@@ -228,12 +224,11 @@ static AjPFeature featEmblFromLine ( AjPFeattable thys, AjPStr line,
 static AjPFeature featEmblProcess  ( AjPFeattable thys, AjPStr feature,
 				     AjPStr source,
 				     AjPStr* loc, AjPStr* tags);
-static AjPFeature featGffFromLine ( AjPFeattable thys, AjPStr line);
-
-static void FeatVocabDel (const void *key, void **value, void *cl);
+static AjPFeature featGffFromLine ( AjPFeattable thys, AjPStr line,
+				    float version);
 
 static void GFFProcessTagValues (AjPFeature gf, AjPFeattable table,
-				 AjPStr groupfield);
+				 AjPStr groupfield, float version);
 
 typedef struct FeatSOutFormat {
   char *Name;
@@ -271,25 +266,12 @@ static const Except_T Null_IO_Handle          = {
 /* Set each of the regular expressions below, depending on feature format */
 
 static AjPRegexp 
-  GffRegexFeature   = NULL,
   GffRegexNumeric   = NULL,
   GffRegexblankline = NULL,
   GffRegexversion   = NULL,
   GffRegexdate      = NULL,
   GffRegexregion    = NULL,
   GffRegexcomment   = NULL,
-
-  /*  
-  GffTvRegex        = NULL,
-  GffTvRegex1       = NULL,
-  GffTvRegex2       = NULL,
-  GffTvRegex3       = NULL,
-  GffTvRegex4       = NULL,
-  GffTvRegex5       = NULL,
-  GffTvRegex6       = NULL,
-  GffTvRegex7       = NULL,
-  GffTvRegex8       = NULL,
-  */
 
   GffRegexTvTagval   = NULL,
 
@@ -491,14 +473,17 @@ AjPFeattable ajFeaturesRead  ( AjPFeattabIn  ftin )
    ajDebug ("ajFeaturesRead format %d '%s'\n",
 	    format, featInFormat[format].Name);
 
-   if(!featInFormat[format].InitReg())
-     ajDebug("No InitReg yet for %s\n",featInFormat[format].Name);
+   if(!featInFormat[format].Used) {
+     if(!featInFormat[format].InitReg()) {
+       ajDebug("No InitReg yet for %s\n",featInFormat[format].Name);
+       ajErr ("Initialisation failed for feature format %s",
+	      featInFormat[format].Name);
+     }
+     featInFormat[format].Used = ajTrue;
+   }
 
    features = ajFeattableNew (ftin->Seqname);
    result = featInFormat[format].Read(features, file);
-
-   if(!featInFormat[format].DelReg())
-     ajDebug("No DelReg yet for %s\n",featInFormat[format].Name);
 
    if(result) {
      ajFeattableTrace (features);
@@ -543,7 +528,7 @@ AjPFeature ajFeatureNew (AjPFeattable thys,
 			 AjPStr       desc,
 			 ajint Start2, ajint End2) 
 {
-  ajint flags = FEATFLAG_MOTHER;
+  ajint flags = 0;
   AjPFeature ret = NULL ; 
  
   ret = featFeatureNew(thys,source,type,Start,End,score,strand,frame,desc,
@@ -773,17 +758,17 @@ static AjPFeature featFeatureNew (AjPFeattable thys,
   /* Allocate the object... */
   AJNEW0(ret) ;
 
-  if(flags & FEATFLAG_MOTHER){
+  if(flags & FEATFLAG_CHILD){
+    ret->Group = thys->Groups;
+    if (exon)
+      ret->Exon  = exon;
+    else
+      ret->Exon = ++maxexon;
+  }
+  else{
     thys->Groups++;
     ret->Group = thys->Groups;
     ret->Exon = 0;
-  }
-  else{
-    ret->Group = thys->Groups;
-   if (exon)
-     ret->Exon  = exon;
-   else
-     ret->Exon = ++maxexon;
   }
 
   ajStrAssS (&ret->Source, source);
@@ -1110,14 +1095,6 @@ AjBool ajFeatRead (AjPFeattable* pthis, AjPFeattabIn featin, AjPStr ufo) {
 ******************************************************************************/
 
 AjBool ajFeatWrite (AjPFeattable thys, AjPFeattabOut featout, AjPStr ufo) {
-  static AjPRegexp fmtexp = NULL;
-  static AjPRegexp filexp = NULL;
-  static AjPStr ufotest = NULL;
-
-  AjBool fmtstat = ajFalse;	/* status returns from regex tests */
-  AjBool filstat = ajFalse;	/* status returns from regex tests */
-  AjBool ret = ajFalse;
-  ajint i;
 
   ajFeattabOutOpen (featout, ufo);
 
@@ -1215,10 +1192,6 @@ static void FeattabInit ( AjPFeattable thys,
   ajDebug ("FeattabInit initializing name: '%S'\n", name);
   (void) ajStrAssS(&thys->Name,name) ;
   thys->DefFormat = 0;
-  thys->Version   = 0 ;
-  thys->Date      = ajTimeTodayF("GFF") ;
-  ajTimeTrace (thys->Date);
-  thys->DefSource = NULL ;
 
   thys->Features = ajListNew() ;
 }
@@ -1525,47 +1498,6 @@ static AjBool featReadEmbl     ( AjPFeattable thys, AjPFileBuff file){
   return found;
 }
 
-/* @funcstatic featReadGenbank ************************************************
-**
-** Reads feature data in GenBank format
-**
-** @param [r] thys [AjPFeattable] Feature table
-** @param [r] file [AjPFileBuff] Buffered input file
-** @return [AjBool] ajTrue on success
-** @@
-******************************************************************************/
-
-static AjBool featReadGenbank ( AjPFeattable thys, AjPFileBuff file){
-  static AjPStr line  = NULL ;
-  AjBool found = ajFalse ;
-  static AjPStr saveline = NULL;
-  static AjPStr saveloc  = NULL;
-
-
-  if(!line)
-    line = ajStrNewL(100);
-  
-  while( ajFileBuffGet (file, &line) ) {
-
-    (void) ajStrChomp(&line) ;
-    
-    if(!ajStrNCmpC(line, "  ", 2)){  /* if it's a feature do stuff */
-      if(featEmblFromLine(thys, line, &saveloc, &saveline)) 
-	found = ajTrue ;
-    }
-  }
-
-  /* Done - finish last feature */
-
-  if (featEmblFromLine(thys, NULL, &saveloc, &saveline))
-      found = ajTrue;
-
-  ajStrDel (&saveloc);
-  ajStrDel (&saveline);
-
-  return found;
-}
-
 /* @funcstatic featReadUnknown ************************************************
 **
 ** Reads feature data in Unknown format
@@ -1680,16 +1612,12 @@ static void featFlagSet (AjPFeature gf, AjPStr flagstr) {
     ajStrAssS (&savstr, tmpstr);
   }
 
-  
-
   return;
 }
 
 /* @funcstatic featGroupSet ***************************************************
 **
 ** Sets the group tag for a feature.
-** TODO: How to decide whether this is a MULTIPLE or MOTHER?
-** Can be done later, by looking for multiple group tags.
 **
 ** @param [u] gf       [AjPFeature]  Feature
 ** @param [u] table    [AjPFeattable] Feature table
@@ -1712,15 +1640,15 @@ static void featGroupSet (AjPFeature gf, AjPFeattable table,
   if (!groupexp)
     groupexp = ajRegCompC("^\"(([^.]*)[.])?([0-9]+)");
 
-  if (ajStrMatchCase(grouptag, savgrpstr)) {
+  if (ajStrLen(grouptag) && ajStrMatchCase(grouptag, savgrpstr)) {
     gf->Group = savegroup;
     gf->Exon = ++saveexon;
     return;
   }
 
-  ajStrAssS (&savgrpstr, grouptag);
 
-  if (ajRegExec(groupexp, grouptag)) {
+  if (ajStrLen(grouptag) && ajRegExec(groupexp, grouptag)) {
+    ajStrAssS (&savgrpstr, grouptag);
     ajRegSubI (groupexp, 2, &namstr);
     ajRegSubI (groupexp, 3, &grpstr);
     ajDebug ("featGroupSet '%S' name: '%S' group: '%S'\n",
@@ -1764,27 +1692,20 @@ static void featGroupSet (AjPFeature gf, AjPFeattable table,
 ******************************************************************************/
 
 static void GFFProcessTagValues (AjPFeature gf, AjPFeattable table,
-				 AjPStr groupfield) 
+				 AjPStr groupfield, float version) 
 {
-  static AjPStr field = NULL ;       /* Element to add to tags array */
-  AjPStr tag   = NULL ;		/* used in list data */
-  AjPStr value = NULL ;
-  static AjPStr  G_String  = NULL ;
   static AjPStr  TvString  = NULL ;
-  AjBool  end_tag   = ajFalse ;
-  AjPStr  sub1      = NULL ;
   AjPStr  tmptag      = NULL ;
   AjPStr  tmpval      = NULL ;
   AjBool  grpset = ajFalse;
 
-  ajDebug("GFFProcessTagValues version %.1f '%S'\n",
-	  table->Version, groupfield);
+  ajDebug("GFFProcessTagValues  version %3.1f '%S'\n", version, groupfield);
 
   /* Validate arguments */
   if(!ajStrLen(groupfield))	/* no tags, must be new */
     return;
 
-  if( table->Version == 1.0 ) {
+  if( version == 1.0 ) {
     (void) featGroupSet (gf, table, groupfield) ;
     ajDebug("V1.0 group: '%S'\n", groupfield);
     grpset = ajTrue;
@@ -1825,6 +1746,11 @@ static void GFFProcessTagValues (AjPFeature gf, AjPFeattable table,
     }
   }
 
+  if (!grpset) {
+    (void) featGroupSet (gf, table, NULL) ;
+    grpset = ajTrue;
+  }
+
   return;
 }
 
@@ -1847,15 +1773,13 @@ static void GFFProcessTagValues (AjPFeature gf, AjPFeattable table,
 
 static AjPFeature featSwissFromLine ( AjPFeattable thys, AjPStr line)
 {
-  static AjPStr
-    source    = NULL,
-    feature   = NULL,
-    start     = NULL,
-    end       = NULL,
-    score     = NULL,
-    desc      = NULL;
-  ajint    frame = 0 ;
-  char   strand  = '\0';
+  static AjPStr source   = NULL;
+  static AjPStr feature  = NULL;
+  static AjPStr start    = NULL;
+  static AjPStr end      = NULL;
+  static AjPStr desc     = NULL;
+  ajint frame = 0 ;
+  char strand  = '\0';
   ajint flags = 0;
   static AjPFeature gf    = NULL ;    /* made static so that it's easy
 					 to add second line of description */
@@ -1933,8 +1857,6 @@ static AjPFeature featSwissFromLine ( AjPFeattable thys, AjPStr line)
   else if (val)
     ajFeatSetFlag(&flags,FEATFLAG_END_AFTER_SEQ);
 
-  ajFeatSetFlag(&flags,FEATFLAG_MOTHER);
-
   ajDebug("flags = %d\n",flags);
 
   gf = featFeatureNew( thys,
@@ -1968,24 +1890,10 @@ static AjPFeature featEmblFromLine ( AjPFeattable thys,
 				     AjPStr* saveline)
 {
   static AjPFeature gf    = NULL ;      /* so tag-values can be added LATER */
-  static AjPStr
-    /*    seqname   = NULL, */
-    source    = NULL,
-    feature   = NULL,
-    start     = NULL,
-    end       = NULL,
-    start2    = NULL,
-    end2      = NULL,
-    line      = NULL;
-  char   strand = '+';		/* change later for complement location*/
-  ajint Start=0, End=0;
-  ajint Start2=0, End2=0;
-  AjBool okay=ajFalse;
-  AjBool mother=ajFalse;       /* is it the first feature of a set */
-  static AjBool join=0;         /* is it part of a join, multiple set data */
-  static AjBool lastwasafeature = 1,complement=0;
+  static AjPStr source    = NULL;
+  static AjPStr feature   = NULL;
+  static AjPStr line      = NULL;
   static AjPStr temp=NULL;
-  ajint val=0,flags=0,startpos=0;
   AjBool newft = ajFalse;
 
   if(!source)
@@ -2233,8 +2141,10 @@ static AjPFeature featEmblProcess  ( AjPFeattable thys, AjPStr feature,
     else Strand = '-';
 
     if (Mother) {
-      Flags |= FEATFLAG_MOTHER;
       if (!Fwd) Flags |= FEATFLAG_COMPLEMENT_MAIN;
+    }
+    else {
+      Flags |= FEATFLAG_CHILD;
     }
     if (Join || Order || Group || OneOf) Flags |= FEATFLAG_MULTIPLE;
     if (Group) Flags |= FEATFLAG_GROUP;
@@ -2261,7 +2171,8 @@ static AjPFeature featEmblProcess  ( AjPFeattable thys, AjPStr feature,
 			Frame,
 			NULL,	/* description, see tags */
 			Exon, Beg2, End2, entryid, label, Flags ) ;
-    if (Mother) ret = gf;
+    if (Mother)
+      ret = gf;
     Mother = ajFalse;
     /*if (OneOf) break;*/
   }
@@ -2316,7 +2227,8 @@ static AjPFeature featEmblProcess  ( AjPFeattable thys, AjPStr feature,
 ** @@
 ******************************************************************************/
 
-static AjPFeature featGffFromLine ( AjPFeattable thys, AjPStr line)
+static AjPFeature featGffFromLine ( AjPFeattable thys, AjPStr line,
+				    float version)
 {
     AjPFeature gf    = NULL ;
     static AjPStrTok split  = NULL  ;
@@ -2396,10 +2308,10 @@ static AjPFeature featGffFromLine ( AjPFeattable thys, AjPStr line)
                            fscore,
                            strand,
                            frame,
-			   NULL,0,0,0, entryid, label, FEATFLAG_MOTHER ) ;
+			   NULL,0,0,0, entryid, label, 0 ) ;
 
         if( ajStrTokenRest(&groupfield, &split))
-           GFFProcessTagValues( gf, thys, groupfield) ;
+           GFFProcessTagValues( gf, thys, groupfield, version) ;
 
 	ajStrDel(&groupfield) ; 
 	ajStrTokenClear(&split) ;
@@ -2448,7 +2360,7 @@ static AjBool featReadGff ( AjPFeattable thys, AjPFileBuff file)
 {
   static AjPStr line  = NULL ;
   AjBool found = ajFalse ;
-  thys->Version = DEFAULT_GFF_VERSION ;
+  float version = 2.0;
 
   if (!FeatTypeTableGff) {
     FeatTypeTableGff = ajStrTableNewCase(200); /* for the types + tags*/
@@ -2471,28 +2383,28 @@ static AjBool featReadGff ( AjPFeattable thys, AjPFileBuff file)
       ; /* ignore */
     }
     else if(ajRegExec(GffRegexversion,line)) {
-      AjPStr version = NULL ;
-      ajRegSubI (GffRegexversion, 1, &version); 
-      (void) ajStrToFloat (version, &(thys->Version));
-      ajStrDel(&version);
+      AjPStr verstr = NULL ;
+      ajRegSubI (GffRegexversion, 1, &verstr);
+      (void) ajStrToFloat (verstr, &version);
+      ajStrDel(&verstr);
     }
-    else if(ajRegExec(GffRegexdate,line)) {
-      AjPStr year  = NULL ;
-      AjPStr month = NULL ;
-      AjPStr day   = NULL ;
-      ajint nYear, nMonth, nDay ;
-      ajRegSubI (GffRegexdate, 1, &year); 
-      ajRegSubI (GffRegexdate, 2, &month); 
-      ajRegSubI (GffRegexdate, 3, &day);
-      (void) ajStrToInt (year,  &nYear);
-      (void) ajStrToInt (month, &nMonth);
-      (void) ajStrToInt (day,   &nDay);
-      thys->Date = ajTimeSet("GFF",nDay,nMonth,nYear) ;
-      ajTimeTrace (thys->Date);
-      ajStrDel(&year);
-      ajStrDel(&month);
-      ajStrDel(&day);
-    }
+/*
+//    else if(ajRegExec(GffRegexdate,line)) {
+//      AjPStr year  = NULL ;
+//      AjPStr month = NULL ;
+//      AjPStr day   = NULL ;
+//      ajint nYear, nMonth, nDay ;
+//      ajRegSubI (GffRegexdate, 1, &year); 
+//      ajRegSubI (GffRegexdate, 2, &month); 
+//      ajRegSubI (GffRegexdate, 3, &day);
+//      (void) ajStrToInt (year,  &nYear);
+//      (void) ajStrToInt (month, &nMonth);
+//      (void) ajStrToInt (day,   &nDay);
+//      ajStrDel(&year);
+//      ajStrDel(&month);
+//      ajStrDel(&day);
+//    }
+*/
     else if(ajRegExec(GffRegexregion,line)) {
       AjPStr start = NULL ;
       AjPStr end   = NULL ;
@@ -2511,7 +2423,7 @@ static AjBool featReadGff ( AjPFeattable thys, AjPFileBuff file)
     /* the real feature stuff */
 
     else {			/* must be a real feature at last !! */
-      if(featGffFromLine(thys, line))  /* does the ajFeattabAdd */
+      if(featGffFromLine(thys, line, version))  /* does the ajFeattabAdd */
 	found = ajTrue ;
     }
 
@@ -2549,10 +2461,9 @@ AjBool ajFeattableWriteGff (AjPFeattable Feattab, AjPFile file)
   if(file == NULL) AJRAISE(Null_IO_Handle) ;
   
   /* Print header first */
-  (void) ajFmtPrintF (file, "##gff-version %3.1f\n",
-		      Feattab->Version) ;
+  (void) ajFmtPrintF (file, "##gff-version 2.0\n") ;
 
-  (void) ajFmtPrintF (file, "##date %D\n", Feattab->Date) ;
+  (void) ajFmtPrintF (file, "##date %D\n", ajTimeTodayF("GFF")) ;
 
   /* type defaults to DNA */
 
@@ -2654,6 +2565,13 @@ static AjBool featRegInitSwiss (void)
 
   featInit();
 
+  FeatTypeTableSwiss = ajStrTableNewCase(200); /* for the types + tags*/
+  FeatTagsTableSwiss = ajStrTableNewCase(200); /* for the tags + valuetype */
+
+  featVocabRead ("embl", FeatTypeTableSwiss, FeatTagsTableSwiss);
+  ajDebug ("Tables embl Type: %x Tags: %x\n",
+	   FeatTypeTableSwiss, FeatTagsTableSwiss);
+
   ajDebug ("featRegInitSwiss Compiling featDumpSwiss() regexps\n");
   if (!SwRegexFeature)
     SwRegexFeature = ajRegCompC("^FT(.*)$") ;
@@ -2719,6 +2637,15 @@ static AjBool featRegInitGff (void) {
 ** @@
 ******************************************************************************/
 static AjBool featDelRegAcedb(void) {
+
+  if (!FeatInitAcedb)
+    return ajTrue;
+
+  ajStrTableFree(&FeatTypeTableAcedb);
+  ajStrTableFree(&FeatTagsTableAcedb);
+
+  FeatInitAcedb = ajFalse;
+
   return ajFalse;
 }
 
@@ -2730,6 +2657,10 @@ static AjBool featDelRegAcedb(void) {
 ** @@
 ******************************************************************************/
 static AjBool featDelRegEmbl(void) {
+
+  if (!FeatInitEmbl)
+    return ajTrue;
+
   ajRegFree(&EmblRegexLoc);
   ajRegFree(&EmblRegexLocMulti);
   ajRegFree(&EmblRegexLocNum);
@@ -2744,6 +2675,9 @@ static AjBool featDelRegEmbl(void) {
   ajRegFree(&EmblRegexTvTagQuote);
   ajRegFree(&EmblRegexTvTagQuote2);
 
+  ajStrTableFree(&FeatTypeTableEmbl);
+  ajStrTableFree(&FeatTagsTableEmbl);
+
   FeatInitEmbl = ajFalse;
   return ajTrue;
 }
@@ -2756,7 +2690,14 @@ static AjBool featDelRegEmbl(void) {
 ** @@
 ******************************************************************************/
 static AjBool featDelRegSwiss(void) {
+
+  if (!FeatInitSwiss)
+    return ajTrue;
+
   ajRegFree(&SwRegexFeature) ;
+
+  ajStrTableFree(&FeatTypeTableSwiss);
+  ajStrTableFree(&FeatTagsTableSwiss);
 
   FeatInitSwiss = ajFalse;
   return ajTrue;
@@ -2771,35 +2712,27 @@ static AjBool featDelRegSwiss(void) {
 ******************************************************************************/
 static AjBool featDelRegGff(void)
 {
+
+  if (!FeatInitGff)
+    return ajTrue;
+
     /* Clean-up any global static runtime resources here
        for example, regular expression pattern variables */
 
-    ajDebug ("ajFeatModInit Freeing featDumpGff() regexps\n");
-    ajRegFree(&GffRegexNumeric) ;
+  ajRegFree(&GffRegexNumeric) ;
+  ajRegFree(&GffRegexblankline) ;
+  ajRegFree(&GffRegexversion) ;
+  ajRegFree(&GffRegexdate) ;
+  ajRegFree(&GffRegexregion) ;
+  ajRegFree(&GffRegexcomment) ;
+  ajRegFree(&GffRegexTvTagval) ;
 
-    ajDebug ("ajFeatModInit Freeing featReadGff() regexps\n");
-    ajRegFree(&GffRegexblankline) ;
-    ajRegFree(&GffRegexversion) ;
-    ajRegFree(&GffRegexdate) ;
-    ajRegFree(&GffRegexregion) ;
-    ajRegFree(&GffRegexcomment) ;
-    ajRegFree(&GffRegexTvTagval) ;
+  ajStrTableFree(&FeatTypeTableGff);
+  ajStrTableFree(&FeatTagsTableGff);
 
-    ajDebug ("ajFeatModInit Freeing GFFProcessTagValues() regexps\n");
-    /*
-    ajRegFree(&GffTvRegex1) ;
-    ajRegFree(&GffTvRegex2) ;
-    ajRegFree(&GffTvRegex3) ;
-    ajRegFree(&GffTvRegex4) ;
-    ajRegFree(&GffTvRegex5) ;
-    ajRegFree(&GffTvRegex6) ;
-    ajRegFree(&GffTvRegex7) ;
-    ajRegFree(&GffTvRegex8) ;
-    */
+  FeatInitGff = ajFalse;
 
-    FeatInitGff = ajFalse;
-
-    return ajTrue;
+  return ajTrue;
 }
 
 /* @func ajFeattableWriteDdbj *************************************************
@@ -2863,7 +2796,6 @@ static AjBool feattableWriteEmbl (AjPFeattable thys, AjPFile file,
   AjBool join=ajFalse;
   AjBool whole = ajFalse;           /* has "complement(" been added */
   AjPStr location = NULL;        /* location list as a string */
-  char buff[80];
   AjPStr temp=NULL;
   AjPStr pos=NULL;
   ajint oldgroup = -1;
@@ -3009,7 +2941,7 @@ static AjBool feattableWriteEmbl (AjPFeattable thys, AjPFile file,
       }
       ajStrClear(&pos);
       ajStrApp(&location,temp);
-      if (gf->Flags & FEATFLAG_MOTHER)
+      if (!(gf->Flags & FEATFLAG_CHILD)) /* this is the parent/only feature */
 	gfprev=gf;
     }
 
@@ -3181,23 +3113,6 @@ ajint ajFeatLen (AjPFeattable thys) {
 ajint ajFeatSize (AjPFeattable thys) {
   if (!thys) return 0;
   return ajListLength (thys->Features);
-}
-
-
-/* @func ajFeatUnused *********************************************************
-**
-** Dummy just to use any untested functions
-**
-** @return [void]
-** @@
-******************************************************************************/
-
-void ajFeatUnused(void)
-{
-    AjPFeattable seqmap=NULL;
-    AjPStr line=NULL;
-    
-    return;
 }
 
 /* @funcstatic ajFeatSetFlag **************************************************
@@ -3787,9 +3702,6 @@ static AjBool featVocabRead (char* name, AjPTable TypeTable,
   AjPStr req = NULL;
   AjPStr rest = NULL;
   AjPStr type=NULL;
-  AjPStr feature=NULL;
-  AjPStr limited=NULL;
-  AjPStr new=NULL;
   AjPStr tmpstr=NULL;
   AjPStr token=NULL;
   AjPStr savetype = NULL;
@@ -3802,16 +3714,11 @@ static AjBool featVocabRead (char* name, AjPTable TypeTable,
   static AjPRegexp TagExp = NULL;
   static AjPRegexp VocabExp = NULL;
 
-  AjPStr featkey  = NULL;
-  AjPStr key = NULL ;
-
   ajint numtype = -1;
   ajint typecount = 0;
   ajint tagscount = 0;
   ajint linecount = 0;
   ajint i;
-  AjBool tagfound=ajFalse;
-  AjBool tagisman=ajFalse;
 
   char* TagType[] = {
     "QTEXT",			/* quoted text */
@@ -4181,7 +4088,6 @@ AjPStr ajFeatTagSet (AjPFeature thys, AjPStr tag, AjPStr value) {
   AjPStr tmptag = NULL;		/* these come from AjPTable */
   AjPStr tmpfmt = NULL;		/* so please, please don't delete */
   static AjPStr tmpval = NULL;
-  static AjPStr outstr = NULL;
   static AjPStr outtag = NULL;
   char* cp;
 
@@ -4516,7 +4422,6 @@ AjIList ajFeatTagIter (AjPFeature thys) {
 
 AjBool ajFeatTagval (AjIList iter, AjPStr* tagnam, AjPStr* tagval) {
 
-  ajint i=0;
   FeatPTagval tv = NULL;
 
   tv = ajListIterNext(iter);
@@ -5601,9 +5506,6 @@ static void featDumpGff (AjPFeature thys, AjPFeattable owner, AjPFile file) {
   static AjPStr tmpval=NULL;
   static AjPStr tmplim = NULL;
   AjPStr outval = NULL;
-  AjPStr tagnam = NULL;
-  AjPStr tagval = NULL;
-  AjPStr seqname = NULL;
   FeatPTagval tv = NULL;
   ajint end;
   ajint i=0;
@@ -5655,17 +5557,28 @@ static void featDumpGff (AjPFeature thys, AjPFeattable owner, AjPFile file) {
     ajFmtPrintAppS (&flagdata, "label:%S", thys->Label);
   }
 
+  /* group and flags */
+
+  (void) ajFmtPrintF (file, "Sequence \"%S.%d\"",
+		      owner->Name, thys->Group) ;
+  i++;
+
+  if(ajStrLen(flagdata)) {
+/*
+** Move this code up to run for all features - to preserve the order
+** when rewriting in EMBL format
+//    if ( FEATFLAG_MULTIPLE){
+//      (void) ajFmtPrintF (file, "Sequence \"%S.%d\" ; ",
+//			  owner->Name, thys->Group) ;
+//      i++;
+//    }
+*/
+    if (i++)
+      (void) ajFmtPrintF (file, " ; ") ;
+    (void) ajFmtPrintF (file, "FeatFlags \"%S\"", flagdata) ;
+  }
 
   /* For all tag-values... */
-  if(thys->Flags || ajStrLen(flagdata)) {
-    if ( FEATFLAG_MULTIPLE){
-      (void) ajFmtPrintF (file, "Sequence \"%S.%d\" ; ",
-			  owner->Name, thys->Group) ;
-      i++;
-    }
-    (void) ajFmtPrintF (file, "FeatFlags \"%S\"", flagdata) ;
-    i++;
-  }
 
   iter = ajFeatTagIter (thys);
 
@@ -5810,4 +5723,43 @@ static AjPStr featTagLimit (AjPStr name, AjPTable table) {
   ajStrAssS (&ret, vallist);
 
   return ret;
+}
+
+/* @func ajFeatExit ***********************************************************
+**
+** Prints a summary of file usage with debug calls
+**
+** Cleans up feature table internal memory
+**
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajFeatExit (void) {
+  ajint i;
+
+  for(i=1;featInFormat[i].Name;i++){
+    if (featInFormat[i].Used) {
+      if (!featInFormat[i].DelReg()) {
+	ajDebug("No DelReg yet for %s\n",featInFormat[i].Name);
+	ajErr ("No DelReg yet for %s\n",featInFormat[i].Name);
+      }
+    }
+  }
+  return;
+}
+
+/* @func ajFeatUnused **************************************************
+**
+** Dummy function to prevent compiler warnings
+**
+******************************************************************************/
+
+void ajFeatUnused (void) {
+  if (!DummyRegExec)
+    DummyRegExec = ajRegCompC(".*");
+
+  (void) featTag (NULL);
+  (void) featTableTagC (NULL, NULL);
+  (void) featTagvalNewC (NULL, NULL);
 }
