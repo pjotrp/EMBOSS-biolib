@@ -91,7 +91,8 @@ typedef struct DbiflatSParser
     AjBool (*Parser) (AjPFile libr, AjPFile* alistfile,
 		      AjBool systemsort, AjPStr* fields, ajint* maxFieldLen,
 		      ajint *dpos, AjPStr* id, AjPList* acl);
-} DbiflatOParser, *DbiflatPParser;
+} DbiflatOParser;
+#define DbiflatPParser DbiflatOParser*
 
 
 

@@ -131,16 +131,16 @@
 ** code.  Relies on list of Pdbtosp objects sorted by PDB code, which is 
 ** usually obtained by a call to ajPdbtospReadAllNew.
 ** 
-** @param [r] pdb  [AjPStr]   Pdb  identifier code
+** @param [r] pdb  [const AjPStr]   Pdb  identifier code
 ** @param [w] spr  [AjPStr*]  Swissprot identifier code
-** @param [r] list [AjPList]  Sorted list of Pdbtosp objects
+** @param [r] list [const AjPList]  Sorted list of Pdbtosp objects
 **
 ** @return [AjBool]  True if a swissprot identifier code was found
 **                   for the Pdb code.
 ** @@
 ****************************************************************************/
 
-AjBool embPdbidToSp(AjPStr pdb, AjPStr *spr, AjPList list)
+AjBool embPdbidToSp(const AjPStr pdb, AjPStr *spr, const AjPList list)
 {
     AjPPdbtosp *arr = NULL;  /* Array derived from list */
     ajint dim = 0;           /* Size of array */
@@ -181,16 +181,16 @@ AjBool embPdbidToSp(AjPStr pdb, AjPStr *spr, AjPList list)
 ** Relies on list of Pdbtosp objects sorted by PDB code, which is usually 
 ** obtained by a call to ajPdbtospReadAllNew.
 ** 
-** @param [r] pdb  [AjPStr]   Pdb  identifier code
+** @param [r] pdb  [const AjPStr]   Pdb  identifier code
 ** @param [w] acc  [AjPStr*]  Accession number
-** @param [r] list [AjPList]  Sorted list of Pdbtosp objects
+** @param [r] list [const AjPList]  Sorted list of Pdbtosp objects
 **
 ** @return [AjBool]  True if a swissprot identifier code was found for the
 **                   Pdb code.
 ** @@
 ****************************************************************************/
 
-AjBool embPdbidToAcc(AjPStr pdb, AjPStr *acc, AjPList list)
+AjBool embPdbidToAcc(const AjPStr pdb, AjPStr *acc, const AjPList list)
 {
     AjPPdbtosp *arr = NULL;  /* Array derived from list */
     ajint dim = 0;           /* Size of array */
@@ -235,7 +235,7 @@ AjBool embPdbidToAcc(AjPStr pdb, AjPStr *acc, AjPList list)
 ** Writes a list of scop identifier codes for the domains that a Pdb object
 ** contains.  The domain data is taken from a list of scop objects.
 **
-** @param [r] pdb             [AjPPdb]   Pointer to pdb object
+** @param [r] pdb             [const AjPPdb]   Pointer to pdb object
 ** @param [r] list_allscop    [const AjPList]  Pointer to SCOP list of SCOP 
 **                                       classification objects  
 ** @param [w] list_pdbscopids [AjPList*] Pointer to list of scop domain ids
@@ -245,7 +245,7 @@ AjBool embPdbidToAcc(AjPStr pdb, AjPStr *acc, AjPList list)
 ** @@
 ****************************************************************************/
 
-AjBool embPdbidToScop(AjPPdb pdb, const AjPList list_allscop,
+AjBool embPdbidToScop(const AjPPdb pdb, const AjPList list_allscop,
 		      AjPList *list_pdbscopids)
 {
   
@@ -290,10 +290,10 @@ AjBool embPdbidToScop(AjPPdb pdb, const AjPList list_allscop,
 **
 ** Determines whether two atoms are in physical contact  
 **
-** @param [r] atm1   [AjPAtom]     Atom 1 object
-** @param [r] atm2   [AjPAtom]     Atom 1 object
+** @param [r] atm1   [const AjPAtom]     Atom 1 object
+** @param [r] atm2   [const AjPAtom]     Atom 1 object
 ** @param [r] thresh [float]       Threshold contact distance
-** @param [r] vdw    [AjPVdwall]   Vdwall object
+** @param [r] vdw    [const AjPVdwall]   Vdwall object
 **
 ** Contact between two atoms is defined as when the van der Waals surface of 
 ** the first atom comes within the threshold contact distance (thresh) of 
@@ -304,8 +304,8 @@ AjBool embPdbidToScop(AjPPdb pdb, const AjPList list_allscop,
 **
 ****************************************************************************/
 
-AjBool embAtomInContact(AjPAtom atm1, AjPAtom atm2, float thresh,
-			AjPVdwall vdw)
+AjBool embAtomInContact(const AjPAtom atm1, const AjPAtom atm2, float thresh,
+			const AjPVdwall vdw)
 {
     float val  = 0.0;
     float val1 = 0.0;
@@ -349,9 +349,9 @@ AjBool embAtomInContact(AjPAtom atm1, AjPAtom atm2, float thresh,
 **
 ** Returns the distance (Angstroms) between two atoms.
 **
-** @param [r] atm1   [AjPAtom]     Atom 1 object
-** @param [r] atm2   [AjPAtom]     Atom 1 object
-** @param [r] vdw    [AjPVdwall]   Vdwall object
+** @param [r] atm1   [const AjPAtom]     Atom 1 object
+** @param [r] atm2   [const AjPAtom]     Atom 1 object
+** @param [r] vdw    [const AjPVdwall]   Vdwall object
 **
 ** Returns the distance (Angstroms) between the van der Waals surface of two
 ** atoms.
@@ -361,7 +361,8 @@ AjBool embAtomInContact(AjPAtom atm1, AjPAtom atm2, float thresh,
 **
 ****************************************************************************/
 
-float embAtomDistance(AjPAtom atm1, AjPAtom atm2, AjPVdwall vdw)
+float embAtomDistance(const AjPAtom atm1, const AjPAtom atm2,
+		      const AjPVdwall vdw)
 {
     float val  = 0.0;
     float val1 = 0.0;
@@ -413,15 +414,15 @@ float embAtomDistance(AjPAtom atm1, AjPAtom atm2, AjPVdwall vdw)
 **
 ** Returns the van der Waals radius of an atom. Returns 1.2 as default.
 **
-** @param [r] atm    [AjPAtom]     Atom object
-** @param [r] vdw    [AjPVdwall]   Vdwall object
+** @param [r] atm    [const AjPAtom]     Atom object
+** @param [r] vdw    [const AjPVdwall]   Vdwall object
 **
 ** @return [float] van der Waals radius of the atom
 ** @@
 **
 ****************************************************************************/
 
-float embVdwRad(AjPAtom atm, AjPVdwall vdw)
+float embVdwRad(const AjPAtom atm, const AjPVdwall vdw)
 {
     ajint x = 0;
     ajint y = 0;
@@ -445,14 +446,14 @@ float embVdwRad(AjPAtom atm, AjPVdwall vdw)
 ** specified chain number.
 ** 
 ** @param [w] idx [ajint*]  Residue number (index into sequence)
-** @param [r] pdb [AjPPdb]  Pdb object
-** @param [r] res [AjPStr]  Residue number (PDB numbering)
+** @param [r] pdb [const AjPPdb]  Pdb object
+** @param [r] res [const AjPStr]  Residue number (PDB numbering)
 ** @param [r] chn [ajint]   Chain number
 **
 ** @return [AjBool] True on succcess (res was found in pdb object)
 ** @@
 ****************************************************************************/
-AjBool embPdbToIdx(ajint *idx, AjPPdb pdb, AjPStr res, ajint chn)
+AjBool embPdbToIdx(ajint *idx, const AjPPdb pdb, const AjPStr res, ajint chn)
 {
     AjIList  iter = NULL;
     AjPAtom  atm  = NULL;
@@ -542,7 +543,7 @@ AjBool embPdbToIdx(ajint *idx, AjPPdb pdb, AjPStr res, ajint chn)
 ** giving the number of Atom objects in each array, is also written. The
 ** number of ligands is also written.
 ** 
-** @param [r] pdb             [AjPPdb]   Pointer to pdb object 
+** @param [r] pdb             [const AjPPdb]   Pointer to pdb object 
 ** @param [w] list_heterogens [AjPList*] Pointer to list of heterogen Atom
 **                                       arrays 
 ** @param [w] siz_heterogens  [AjPInt*]  Pointer to integer array of sizes
@@ -550,13 +551,13 @@ AjBool embPdbToIdx(ajint *idx, AjPPdb pdb, AjPStr res, ajint chn)
 **                                       array).
 ** @param [w] nhet            [ajint*]   Number of arrays in the list that
 **                                       was written. 
-** @param [w] logf            [AjPFile]  Log file for error messages
+** @param [u] logf            [AjPFile]  Log file for error messages
 **
 ** @return [AjBool] ajTrue on success
 ** @@ 
 ****************************************************************************/
 
-AjBool embPdbListHeterogens(AjPPdb pdb, AjPList *list_heterogens, 
+AjBool embPdbListHeterogens(const AjPPdb pdb, AjPList *list_heterogens, 
 			    AjPInt *siz_heterogens, ajint *nhet, 
 			    AjPFile logf)
 { 
@@ -665,7 +666,7 @@ AjBool embPdbListHeterogens(AjPPdb pdb, AjPList *list_heterogens,
 ** density was determined) for a given chain. The array length is of course
 ** equal to the number of structured residues. 
 **
-** @param [r] pdb [AjPPdb] Pdb object
+** @param [r] pdb [const AjPPdb] Pdb object
 ** @param [r] chn [ajint] Chain number
 ** @param [w] idx [AjPInt*] Index array
 **
@@ -673,7 +674,7 @@ AjBool embPdbListHeterogens(AjPPdb pdb, AjPList *list_heterogens,
 ** @@
 ****************************************************************************/
 
-AjBool embPdbAtomIndexI(AjPPdb pdb, ajint chn, AjPInt *idx)
+AjBool embPdbAtomIndexI(const AjPPdb pdb, ajint chn, AjPInt *idx)
 {
     AjIList  iter = NULL;
     AjPAtom  atm  = NULL;
@@ -745,7 +746,7 @@ AjBool embPdbAtomIndexI(AjPPdb pdb, ajint chn, AjPInt *idx)
 ** density was determined) for a given chain.  The array length is of course 
 ** equal to the number of structured residues. 
 **
-** @param [r] pdb [AjPPdb]  Pdb object
+** @param [r] pdb [const AjPPdb]  Pdb object
 ** @param [r] chn [char]  Chain identifier
 ** @param [w] idx [AjPInt*] Index array
 **
@@ -753,7 +754,7 @@ AjBool embPdbAtomIndexI(AjPPdb pdb, ajint chn, AjPInt *idx)
 ** @@
 ****************************************************************************/
 
-AjBool embPdbAtomIndexC(AjPPdb pdb, char chn, AjPInt *idx)
+AjBool embPdbAtomIndexC(const AjPPdb pdb, char chn, AjPInt *idx)
 {
     ajint chnn;
     
@@ -781,7 +782,7 @@ AjBool embPdbAtomIndexC(AjPPdb pdb, char chn, AjPInt *idx)
 ** which CA atoms are missing. The array length is of course equal to the 
 ** number of structured residues. 
 **
-** @param [r] pdb  [AjPPdb]  Pdb object
+** @param [r] pdb  [Aconst jPPdb]  Pdb object
 ** @param [r] chn  [ajint]   Chain number
 ** @param [w] idx  [AjPInt*] Index array
 ** @param [r] nres [ajint*]  Array length 
@@ -790,7 +791,8 @@ AjBool embPdbAtomIndexC(AjPPdb pdb, char chn, AjPInt *idx)
 ** @@
 ****************************************************************************/
 
-AjBool embPdbAtomIndexICA(AjPPdb pdb, ajint chn, AjPInt *idx, ajint *nres)
+AjBool embPdbAtomIndexICA(const AjPPdb pdb,
+			  ajint chn, AjPInt *idx, ajint *nres)
 {
     AjIList iter  = NULL;
     AjPAtom atm   = NULL;
@@ -866,7 +868,7 @@ AjBool embPdbAtomIndexICA(AjPPdb pdb, ajint chn, AjPInt *idx, ajint *nres)
 ** which CA atoms are missing. The array length is of course equal to the 
 ** number of structured residues. 
 **
-** @param [r] pdb [AjPPdb]  Pdb object
+** @param [r] pdb [const AjPPdb]  Pdb object
 ** @param [r] chn [char]    Chain identifier
 ** @param [w] idx [AjPInt*] Index array
 ** @param [r] nres [ajint*] Array length 
@@ -875,7 +877,7 @@ AjBool embPdbAtomIndexICA(AjPPdb pdb, ajint chn, AjPInt *idx, ajint *nres)
 ** @@
 ****************************************************************************/
 
-AjBool embPdbAtomIndexCCA(AjPPdb pdb, char chn, AjPInt *idx, ajint *nres)
+AjBool embPdbAtomIndexCCA(const AjPPdb pdb, char chn, AjPInt *idx, ajint *nres)
 {
     ajint chnn;
     
@@ -905,12 +907,12 @@ AjBool embPdbAtomIndexCCA(AjPPdb pdb, char chn, AjPInt *idx, ajint *nres)
 ** (STRIDE 'T' or 'C'). The string is allocated if necessary.
 **
 ** @param [w] to [AjPStr*]  String to write
-** @param [r] to [AjPStr]  String to read
+** @param [r] to [const AjPStr]  String to read
 **
 ** @return [AjBool] True on succcess
 ** @@
 ****************************************************************************/
-AjBool       embStrideToThree(AjPStr *to, AjPStr from)
+AjBool       embStrideToThree(AjPStr *to, const AjPStr from)
 {
     if(!from)
     {

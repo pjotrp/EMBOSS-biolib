@@ -187,7 +187,7 @@ extern int  pcre_copy_substring(const char *, const int *, int, int,
               char *, int);
 extern int  pcre_exec(const pcre *, const pcre_extra *,
               const char *, int, int, int, int *, int);
-extern void pcre_free_substring(const char *);
+extern void pcre_free_substring(const char **);
 extern void pcre_free_substring_list(const char **);
 extern int  pcre_fullinfo(const pcre *, const pcre_extra *, int,
               void *);

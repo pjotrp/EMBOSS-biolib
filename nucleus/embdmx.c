@@ -87,7 +87,7 @@
 ** otherwise it will read from the current position. Memory for the Hitlist
 ** will be allocated if necessary and must be freed by the user.
 ** 
-** @param [r] in      [AjPList]     List of pointers to Scophit objects
+** @param [r] in      [const AjPList]     List of pointers to Scophit objects
 ** @param [w] out     [AjPHitlist*] Pointer to Hitlist object
 ** @param [r] iter    [AjIList*]    Pointer to iterator for list.
 **
@@ -95,7 +95,8 @@
 ** @@
 ****************************************************************************/
 
-AjBool embDmxScophitsToHitlist(AjPList in, AjPHitlist *out, AjIList *iter)
+AjBool embDmxScophitsToHitlist(const AjPList in,
+			       AjPHitlist *out, AjIList *iter)
 {
     AjPScophit scoptmp = NULL;        /* Temp. pointer to Scophit object */
     AjPHit tmp      = NULL;           /* Temp. pointer to Hit object */
@@ -244,13 +245,13 @@ AjBool embDmxScophitsToHitlist(AjPList in, AjPHitlist *out, AjIList *iter)
 ** if necessary.
 **
 ** @param [w] to   [AjPHit*] Hit object pointer 
-** @param [r] from [AjPScophit] Scophit object 
+** @param [r] from [const AjPScophit] Scophit object 
 **
 ** @return [AjBool] True if copy was successful.
 ** @@
 ****************************************************************************/
 
-AjBool embDmxScophitToHit(AjPHit *to, AjPScophit from)
+AjBool embDmxScophitToHit(AjPHit *to, const AjPScophit from)
 {
     if(!from)
     {
@@ -301,7 +302,7 @@ AjBool embDmxScophitToHit(AjPHit *to, AjPScophit from)
 ** otherwise it will read from the current position. Memory for the Hitlist
 ** will be allocated if necessary and must be freed by the user.
 ** 
-** @param [r] in      [AjPList]     List of pointers to Scophit objects
+** @param [r] in      [const AjPList]     List of pointers to Scophit objects
 ** @param [w] out     [AjPHitlist*] Pointer to Hitlist object
 ** @param [r] iter    [AjIList*]    Pointer to iterator for list.
 **
@@ -309,7 +310,8 @@ AjBool embDmxScophitToHit(AjPHit *to, AjPScophit from)
 ** @@
 ****************************************************************************/
 
-AjBool embDmxScophitsAccToHitlist(AjPList in, AjPHitlist *out, AjIList *iter)
+AjBool embDmxScophitsAccToHitlist(const AjPList in,
+				  AjPHitlist *out, AjIList *iter)
 {
     AjPScophit scoptmp = NULL;        /* Temp. pointer to Scophit object */
 
@@ -482,14 +484,14 @@ AjBool embDmxScophitsAccToHitlist(AjPList in, AjPHitlist *out, AjIList *iter)
  ** displaying the results from scans of a model against a protein sequence
  ** database. Output in a sigplot compatible format.
  **
- ** @param [w] outf    [AjPFile]     Output file stream
- ** @param [r] hits    [AjPHitlist]  Hitlist objects with hits from scan
+ ** @param [u] outf    [AjPFile]     Output file stream
+ ** @param [r] hits    [const AjPHitlist]  Hitlist objects with hits from scan
  ** @param [r] maxhits [ajint]       Max. hits to write.
  **
  ** @return [AjBool] True if file was written
  ** @@
  ***************************************************************************/
-AjBool embDmxHitsWrite(AjPFile outf, AjPHitlist hits, ajint maxhits)
+AjBool embDmxHitsWrite(AjPFile outf, const AjPHitlist hits, ajint maxhits)
 {
     ajint  x  = 0;
     ajint cnt = 0;
@@ -568,7 +570,7 @@ AjBool embDmxHitsWrite(AjPFile outf, AjPHitlist hits, ajint maxhits)
 ** structure. The swissprot sequence is taken in preference to the pdb 
 ** sequence.
 **
-** @param [r] source  [AjPScop]       The Scop object to convert
+** @param [r] source  [const AjPScop]       The Scop object to convert
 ** @param [w] target  [AjPScophit*]   Destination of the the scophit 
 **                                    structure to write to. 
 **
@@ -576,7 +578,7 @@ AjBool embDmxHitsWrite(AjPFile outf, AjPHitlist hits, ajint maxhits)
 ** @@
 ****************************************************************************/
 
-AjBool embDmxScopToScophit(AjPScop source, AjPScophit* target)
+AjBool embDmxScopToScophit(const AjPScop source, AjPScophit* target)
 {
 
     if(!source || !target)
@@ -624,8 +626,8 @@ AjBool embDmxScopToScophit(AjPScop source, AjPScophit* target)
 ** Extracts the scop domain codes from the alignment and compiles a list of 
 ** corresponding Scop objects from the scop classification file.
 **
-** @param [r] align     [AjPScopalg]  Contains a seed alignment.
-** @param [r] scop_arr  [AjPScop*]    Array of AjPScop objects
+** @param [r] align     [const AjPScopalg]  Contains a seed alignment.
+** @param [r] scop_arr  [const AjPScop*]    Array of AjPScop objects
 ** @param [r] scop_dim  [ajint]       Size of array
 ** @param [w] list      [AjPList*]    List of Scop objects.
 ** 
@@ -634,7 +636,7 @@ AjBool embDmxScopToScophit(AjPScop source, AjPScophit* target)
 ** @@
 ****************************************************************************/
 
-AjBool embDmxScopalgToScop(AjPScopalg align, AjPScop *scop_arr, 
+AjBool embDmxScopalgToScop(const AjPScopalg align, AjPScop *scop_arr, 
 			   ajint scop_dim, AjPList* list)
 {
     AjPStr entry_up = NULL;  /* Current entry, upper case */
@@ -695,8 +697,8 @@ AjBool embDmxScopalgToScop(AjPScopalg align, AjPScop *scop_arr,
 **
 ** Checks for overlap and identical accession numbers between two hits.
 **
-** @param [r] h1  [AjPScophit]  Pointer to hit object 1
-** @param [r] h2  [AjPScophit]  Pointer to hit object 2
+** @param [r] h1  [const AjPScophit]  Pointer to hit object 1
+** @param [r] h2  [const AjPScophit]  Pointer to hit object 2
 ** @param [r] n   [ajint]       Threshold number of residues for overlap
 **
 ** @return [AjBool] True if the overlap between the sequences is at least as 
@@ -704,7 +706,8 @@ AjBool embDmxScopalgToScop(AjPScopalg align, AjPScop *scop_arr,
 ** @@
 ****************************************************************************/
 
-AjBool embDmxScophitsOverlapAcc(AjPScophit h1, AjPScophit h2, ajint n)
+AjBool embDmxScophitsOverlapAcc(const AjPScophit h1, const AjPScophit h2,
+				ajint n)
 {
     if((MAJSTRLEN(h1->Seq)<n) || (MAJSTRLEN(h2->Seq)<n))
     {
@@ -736,8 +739,8 @@ AjBool embDmxScophitsOverlapAcc(AjPScophit h1, AjPScophit h2, ajint n)
 **
 ** Checks for overlap between two hits.
 **
-** @param [r] h1  [AjPScophit]     Pointer to hit object 1
-** @param [r] h2  [AjPScophit]     Pointer to hit object 2
+** @param [r] h1  [const AjPScophit]     Pointer to hit object 1
+** @param [r] h2  [const AjPScophit]     Pointer to hit object 2
 ** @param [r] n   [ajint]          Threshold number of residues for overlap
 **
 ** @return [AjBool] True if the overlap between the sequences is at least as 
@@ -745,7 +748,7 @@ AjBool embDmxScophitsOverlapAcc(AjPScophit h1, AjPScophit h2, ajint n)
 ** @@
 ****************************************************************************/
 
-AjBool embDmxScophitsOverlap(AjPScophit h1, AjPScophit h2, ajint n)
+AjBool embDmxScophitsOverlap(const AjPScophit h1, const AjPScophit h2, ajint n)
 {
     if((MAJSTRLEN(h1->Seq)<n) || (MAJSTRLEN(h2->Seq)<n))
     {
@@ -782,14 +785,14 @@ AjBool embDmxScophitsOverlap(AjPScophit h1, AjPScophit h2, ajint n)
 ** If hit1 and hit2 are both OTHER, the merged hit remains classified as 
 ** OTHER.
 ** 
-** @param [r] hit1     [AjPScophit]  Scophit 1
-** @param [r] hit2     [AjPScophit]  Scophit 2
+** @param [r] hit1     [const AjPScophit]  Scophit 1
+** @param [r] hit2     [const AjPScophit]  Scophit 2
 **
 ** @return [AjPScophit] Pointer to Scophit object.
 ** @@
 ****************************************************************************/
 
-AjPScophit embDmxScophitMerge(AjPScophit hit1, AjPScophit hit2)
+AjPScophit embDmxScophitMerge(const AjPScophit hit1, const AjPScophit hit2)
 {
     AjPScophit ret;
     ajint start = 0;    /* Start of N-terminal-most sequence */
@@ -911,9 +914,9 @@ AjPScophit embDmxScophitMerge(AjPScophit hit1, AjPScophit hit2)
 ** objects hit1 and hit2. Appends the new Scophit onto a list. Target
 ** hit1 and hit2 for removal (set the Target element to ajTrue).
 ** 
-** @param [r] list   [AjPList]     List of Scophit objects
-** @param [r] hit1   [AjPScophit]  Scophit object 1
-** @param [r] hit2   [AjPScophit]  Scophit object 2
+** @param [u] list   [AjPList]     List of Scophit objects
+** @param [d] hit1   [AjPScophit]  Scophit object 1
+** @param [d] hit2   [AjPScophit]  Scophit object 2
 **
 ** @return [AjBool] True on success.
 ** @@
@@ -947,9 +950,9 @@ AjBool embDmxScophitMergeInsertOther(AjPList list, AjPScophit hit1,
 ** objects hit1 and hit2. Appends the new Scophit onto a list. Target
 ** hit1 and hit2 for removal (set the Target element to ajTrue).
 ** 
-** @param [r] list   [AjPList]     List of Scophit objects
-** @param [r] hit1   [AjPScophit]  Scophit object 1
-** @param [r] hit2   [AjPScophit]  Scophit object 2
+** @param [u] list   [AjPList]     List of Scophit objects
+** @param [d] hit1   [AjPScophit]  Scophit object 1
+** @param [d] hit2   [AjPScophit]  Scophit object 2
 **
 ** @return [AjBool] True on success.
 ** @@
@@ -984,9 +987,9 @@ AjBool embDmxScophitMergeInsertOtherTarget(AjPList list, AjPScophit hit1,
 ** objects hit1 and hit2. Appends the new Scophit onto a list. Target
 ** hit1 and hit2 for removal (set the Target element to ajTrue).
 ** 
-** @param [r] list   [AjPList]     List of Scophit objects
-** @param [r] hit1   [AjPScophit]  Scophit object 1
-** @param [r] hit2   [AjPScophit]  Scophit object 2
+** @param [u] list   [AjPList]     List of Scophit objects
+** @param [d] hit1   [AjPScophit]  Scophit object 1
+** @param [d] hit2   [AjPScophit]  Scophit object 2
 **
 ** @return [AjBool] True on success.
 ** @@
@@ -1024,16 +1027,16 @@ AjBool embDmxScophitMergeInsertOtherTargetBoth(AjPList list, AjPScophit hit1,
 ** objects hit1 and hit2. Insert the new Scophit immediately after hit2. 
 ** Target hit1 and hit2 for removal (set the Target element to ajTrue).
 ** 
-** @param [r] list   [AjPList]     List of Scophit objects
-** @param [r] hit1   [AjPScophit]  Scophit object 1
-** @param [r] hit2   [AjPScophit]  Scophit object 2
-** @param [r] iter   [AjIList]     List iterator
+** @param [r] list   [const AjPList]     List of Scophit objects
+** @param [d] hit1   [AjPScophit]  Scophit object 1
+** @param [d] hit2   [AjPScophit]  Scophit object 2
+** @param [u] iter   [AjIList]     List iterator
 **
 ** @return [AjBool] True on success.
 ** @@
 ****************************************************************************/
 
-AjBool embDmxScophitMergeInsertThis(AjPList list, AjPScophit hit1, 
+AjBool embDmxScophitMergeInsertThis(const AjPList list, AjPScophit hit1, 
 				   AjPScophit hit2,  AjIList iter)
 {
     AjPScophit new;
@@ -1062,17 +1065,18 @@ AjBool embDmxScophitMergeInsertThis(AjPList list, AjPScophit hit1,
 ** Target hit1, hit2 and the new Scophit for removal
 ** (set the Target element to ajTrue).
 ** 
-** @param [r] list   [AjPList]     List of Scophit objects
-** @param [r] hit1   [AjPScophit]  Scophit object 1
-** @param [r] hit2   [AjPScophit]  Scophit object 2
-** @param [r] iter   [AjIList]     List iterator
+** @param [r] list   [const AjPList]     List of Scophit objects
+** @param [d] hit1   [AjPScophit]  Scophit object 1
+** @param [d] hit2   [AjPScophit]  Scophit object 2
+** @param [u] iter   [AjIList]     List iterator
 **
 ** @return [AjBool] True on success.
 ** @@
 ****************************************************************************/
 
-AjBool embDmxScophitMergeInsertThisTarget(AjPList list, AjPScophit hit1, 
-					 AjPScophit hit2,  AjIList iter)
+AjBool embDmxScophitMergeInsertThisTarget(const AjPList list,
+					  AjPScophit hit1, 
+					  AjPScophit hit2,  AjIList iter)
 {
     AjPScophit new;
 
@@ -1102,16 +1106,18 @@ AjBool embDmxScophitMergeInsertThisTarget(AjPList list, AjPScophit hit1,
 ** Target2 elements are set to ajTrue).
 ** 
 ** 
-** @param [r] list   [AjPList]     List of Scophit objects
-** @param [r] hit1   [AjPScophit]  Scophit object 1
-** @param [r] hit2   [AjPScophit]  Scophit object 2
-** @param [r] iter   [AjIList]     List iterator
+** @param [r] list   [const AjPList]     List of Scophit objects
+** @param [d] hit1   [AjPScophit]  Scophit object 1
+** @param [d] hit2   [AjPScophit]  Scophit object 2
+** @param [u] iter   [AjIList]     List iterator
 **
 ** @return [AjBool] True on success.
 ** @@
 ****************************************************************************/
-AjBool embDmxScophitMergeInsertThisTargetBoth(AjPList list, AjPScophit hit1, 
-					     AjPScophit hit2,  AjIList iter)
+AjBool embDmxScophitMergeInsertThisTargetBoth(const AjPList list,
+					      AjPScophit hit1, 
+					      AjPScophit hit2,
+					      AjIList iter)
 {
     AjPScophit new;
 
@@ -1149,12 +1155,12 @@ AjBool embDmxScophitMergeInsertThisTargetBoth(AjPList list, AjPScophit hit1,
 ** 
 ** The set output will always contain at least 1 sequence.
 ** 
-** @param [r] input  [AjPList]    List of ajPSeq's 
+** @param [r] input  [const AjPList]    List of ajPSeq's 
 ** @param [w] keep   [AjPInt*]    0: rejected (redundant) sequence, 1: the 
                                   sequence was retained
 ** @param [w] nset   [ajint*]     Number of sequences in nr set (no. of 1's 
 **                                in the keep array)
-** @param [r] matrix    [AjPMatrixf] Residue substitution matrix
+** @param [r] matrix    [const AjPMatrixf] Residue substitution matrix
 ** @param [r] gapopen   [float]      Gap insertion penalty
 ** @param [r] gapextend [float]      Gap extension penalty
 ** @param [r] thresh    [float]      Threshold residue id. for "redundancy"
@@ -1163,9 +1169,9 @@ AjBool embDmxScophitMergeInsertThisTargetBoth(AjPList list, AjPScophit hit1,
 ** @@
 ****************************************************************************/
 
-AjBool embDmxSeqNR(AjPList input, AjPInt *keep, ajint *nset,
-		      AjPMatrixf matrix, float gapopen, float gapextend,
-		      float thresh)
+AjBool embDmxSeqNR(const AjPList input, AjPInt *keep, ajint *nset,
+		   const AjPMatrixf matrix, float gapopen, float gapextend,
+		   float thresh)
 {
     ajint start1  = 0;	  /* Start of seq 1, passed as arg but not used */
     ajint start2  = 0;	  /* Start of seq 2, passed as arg but not used */
@@ -1382,12 +1388,12 @@ AjBool embDmxSeqNR(AjPList input, AjPInt *keep, ajint *nset,
 ** sequence similarity to others in the set (the shortest sequence of the 
 ** current pair will be discarded).
 **
-** @param [r] input  [AjPList]    List of ajPSeq's
+** @param [r] input  [const AjPList]    List of ajPSeq's
 ** @param [w] keep   [AjPInt*]    0: rejected (redundant) sequence, 1: the
                                   sequence was retained
 ** @param [w] nset   [ajint*]     Number of sequences in nr set (no. of 1's
 **                                in the keep array)
-** @param [r] matrix    [AjPMatrixf] Residue substitution matrix
+** @param [r] matrix    [const AjPMatrixf] Residue substitution matrix
 ** @param [r] gapopen   [float]      Gap insertion penalty
 ** @param [r] gapextend [float]      Gap extension penalty
 ** @param [r] thresh1    [float]    Threshold lower limit
@@ -1396,9 +1402,10 @@ AjBool embDmxSeqNR(AjPList input, AjPInt *keep, ajint *nset,
 ** @return [AjBool] ajTrue on success
 ** @@
 ****************************************************************************/
-AjBool embDmxSeqNRRange(AjPList input, AjPInt *keep, ajint *nset,
-		      AjPMatrixf matrix, float gapopen, float gapextend,
-		      float thresh1, float thresh2)
+AjBool embDmxSeqNRRange(const AjPList input, AjPInt *keep, ajint *nset,
+			const AjPMatrixf matrix,
+			float gapopen, float gapextend,
+			float thresh1, float thresh2)
 {
     ajint start1 = 0;	/* Start of seq 1, passed as arg but not used */
     ajint start2 = 0;	/* Start of seq 2, passed as arg but not used */
@@ -1622,14 +1629,14 @@ AjBool embDmxSeqNRRange(AjPList input, AjPInt *keep, ajint *nset,
 ** Read from a list of Hitlist structures and writes a list of Scophit 
 ** structures.
 ** 
-** @param [r] in      [AjPList]  List of pointers to Hitlist structures
+** @param [r] in      [const AjPList]  List of pointers to Hitlist structures
 ** @param [w] out     [AjPList*] Pointer to list of Scophit structures
 **
 ** @return [AjBool] True on success (lists were processed ok)
 ** @@
 ****************************************************************************/
 
-AjBool embDmxHitlistToScophits(AjPList in, AjPList *out)
+AjBool embDmxHitlistToScophits(const AjPList in, AjPList *out)
 {
     AjPScophit scophit = NULL;   /* Pointer to Scophit object */
     AjPHitlist hitlist = NULL;   /* Pointer to Hitlist object */

@@ -129,14 +129,14 @@
 **
 ** Read a scop identifier code and writes the equivalent pdb identifier code
 **
-** @param [r] scop [AjPStr]   Scop identifier code
+** @param [r] scop [const AjPStr]   Scop identifier code
 ** @param [w] pdb  [AjPStr*]  Pdb identifier code
 **
 ** @return [AjPStr] Pointer to pdb identifier code.
 ** @@
 ****************************************************************************/
 
-AjPStr embScopToPdbid(AjPStr scop, AjPStr *pdb)
+AjPStr embScopToPdbid(const AjPStr scop, AjPStr *pdb)
 {
     ajStrAssSub(pdb, scop, 1, 4);
 
@@ -153,16 +153,16 @@ AjPStr embScopToPdbid(AjPStr scop, AjPStr *pdb)
 ** identifier code.  Relies on a list of Pdbtosp objects sorted by PDB
 ** code, which is usually obtained by a call to ajPdbtospReadAllNew.
 ** 
-** @param [r] scop  [AjPStr]  Scop domain identifier code
+** @param [r] scop  [const AjPStr]  Scop domain identifier code
 ** @param [w] spr   [AjPStr*]  Swissprot identifier code
-** @param [r] list  [AjPList]  Sorted list of Pdbtosp objects
+** @param [r] list  [const AjPList]  Sorted list of Pdbtosp objects
 **
 ** @return [AjBool]  True if a swissprot identifier code was
 **                   found for the Scop code.
 ** @@
 ****************************************************************************/
 
-AjBool embScopToSp(AjPStr scop, AjPStr *spr, AjPList list)
+AjBool embScopToSp(const AjPStr scop, AjPStr *spr, const AjPList list)
 {
     AjPStr pdb = NULL;
     
@@ -189,16 +189,16 @@ AjBool embScopToSp(AjPStr scop, AjPStr *spr, AjPList list)
 ** Relies on a list of Pdbtosp objects sorted by PDB code, which is usually
 ** obtained by a call to ajPdbtospReadAllNew.
 ** 
-** @param [r] scop  [AjPStr]  Scop domain identifier code
+** @param [r] scop  [const AjPStr]  Scop domain identifier code
 ** @param [w] acc   [AjPStr*]  Accession number
-** @param [r] list  [AjPList]  Sorted list of Pdbtosp objects
+** @param [r] list  [const AjPList]  Sorted list of Pdbtosp objects
 **
 ** @return [AjBool]  True if a swissprot identifier code was found for the
 **                   Scop code.
 ** @@
 ****************************************************************************/
 
-AjBool embScopToAcc(AjPStr scop, AjPStr *acc, AjPList list)
+AjBool embScopToAcc(const AjPStr scop, AjPStr *acc, const AjPList list)
 {
     AjPStr pdb = NULL;
     

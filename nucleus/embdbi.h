@@ -21,7 +21,8 @@ typedef struct EmbSField {
   char* field;
   char* entry;
   ajint nid;
-} EmbOField, *EmbPField;
+} EmbOField;
+#define EmbPField EmbOField*
 
 /* @data EmbPEntry ************************************************************
 **
@@ -45,7 +46,8 @@ typedef struct EmbSEntry {
   ajint spos;
   ajint* nfield;
   char*** field;
-} EmbOEntry, *EmbPEntry;
+} EmbOEntry;
+#define EmbPEntry EmbOEntry*
 
 ajint     embDbiCmpId (const void* a, const void* b);
 ajint     embDbiCmpFieldId (const void* a, const void* b);
@@ -67,7 +69,7 @@ AjBool    embDbiFlatOpenlib(const AjPStr lname, AjPFile* libr);
 void      embDbiHeader (AjPFile file, ajint filesize,
 			ajint recordcnt, short recordlen,
 			const AjPStr dbname, const AjPStr release,
-			char date[4]);
+			const char date[4]);
 void      embDbiHeaderSize (AjPFile file, ajint filesize, ajint recordcnt);
 void      embDbiMaxlen (AjPStr* token, ajint* maxlen);
 void      embDbiMemEntry (AjPList idlist,
@@ -76,7 +78,7 @@ void      embDbiMemEntry (AjPList idlist,
 ajint     embDbiMemWriteEntry (AjPFile entFile, ajint maxidlen,
 			       const AjPList idlist, void ***ids);
 ajint     embDbiMemWriteFields (const AjPStr dbname, const AjPStr release,
-				char date[4], const AjPStr indexdir,
+				const char date[4], const AjPStr indexdir,
 				const AjPStr field, ajint maxFieldLen,
 				const AjPList fieldList,
 				void** ids);
@@ -96,14 +98,14 @@ ajint     embDbiSortWriteEntry (AjPFile entFile, ajint maxidlen,
 				const AjPStr dbname, ajint nfiles,
 				AjBool cleanup, const AjPStr sortopt);
 ajint     embDbiSortWriteFields (const AjPStr dbname, const AjPStr release,
-				 char date[4], const AjPStr indexdir,
+				 const char date[4], const AjPStr indexdir,
 				 const AjPStr field,  ajint maxFieldLen,
 				 ajint nfiles, ajint nentries,
 				 AjBool cleanup, const AjPStr sortopt);
 void      embDbiSysCmd (const AjPStr cmdstr);
 void      embDbiWriteDivision (const AjPStr indexdir,
 			       const AjPStr dbname, const AjPStr release,
-			       char date[4],
+			       const char date[4],
 			       ajint maxfilelen, ajint nfiles,
 			       AjPStr* divfiles, AjPStr* seqfiles);
 void      embDbiWriteDivisionRecord (AjPFile file,

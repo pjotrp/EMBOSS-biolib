@@ -312,15 +312,16 @@ double embIepGetCharge(const ajint *c, const double *pro, double *total)
 **
 ** Calculate the pH nearest the IEP or return 0.0 if one doesn't exist
 **
-** @param [r] c [ajint *] sequence composition
-** @param [r] K [double *] sequence dissociation constants
+** @param [r] c [const ajint *] sequence composition
+** @param [r] K [const double *] sequence dissociation constants
 ** @param [w] op [ajint *] printout flags
 ** @param [w] pro [double *] number of protons
 **
 ** @return [double] IEP or 0.0
 ******************************************************************************/
 
-double embIepPhConverge(ajint *c, double *K, ajint *op, double *pro)
+double embIepPhConverge(const ajint *c, const double *K,
+			ajint *op, double *pro)
 {
     double sum = 0.0;
     double charge;

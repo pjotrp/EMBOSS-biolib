@@ -24,7 +24,8 @@ typedef struct EmbSMolFrag
     ajint begin;
     ajint end;
     double mwt;
-} EmbOMolFrag, *EmbPMolFrag;
+} EmbOMolFrag;
+#define EmbPMolFrag EmbOMolFrag*
 
 
 

@@ -197,7 +197,6 @@ typedef struct AcdSAttrAlias
     char* OldName;
     char* NewName;
 } AcdOAttrAlias;
-
 #define AcdPAttrAlias AcdOAttrAlias*
 
 static AcdOAttrAlias acdAttrAlias[] = {
@@ -231,7 +230,6 @@ typedef struct AcdSAttr
     char* Default;
     char* Help;
 } AcdOAttr;
-
 #define AcdPAttr AcdOAttr*
 
 
@@ -258,7 +256,6 @@ typedef struct AcdSQual
     char* Type;
     char* Help;
 } AcdOQual;
-
 #define AcdPQual AcdOQual*
 
 
@@ -285,7 +282,6 @@ typedef struct AcdSTableItem
     AjPStr Valid;
     AjPStr Expect;
 } AcdOTableItem;
-
 #define AcdPTableItem AcdOTableItem*
 
 
@@ -367,7 +363,6 @@ typedef struct AcdSAcd
     AjPStr ValStr;
     void* Value;
 } AcdOAcd;
-
 #define AcdPAcd AcdOAcd*
 
 
@@ -392,7 +387,6 @@ typedef struct AcdSSection
     char* Description;
     char* Type;
 } AcdOSection;
-
 #define AcdPSection AcdOSection*
 
 
@@ -454,7 +448,6 @@ typedef struct AcdSType
     ajint* UseCount;
     char* Valid;
 } AcdOType;
-
 #define AcdPType AcdOType*
 
 static AjBool* acdParamSet;
@@ -762,7 +755,6 @@ typedef struct AcdSExpList
     char* Name;
     AjBool (*Func) (AjPStr *result, const AjPStr str);
 } AcdOExpList;
-
 #define AcdPExpList AcdOExpList*
 
 
@@ -1992,6 +1984,7 @@ AcdOKey acdKeywords[] =
 **
 ** @attr Name [char*] Output type name
 ** @attr Format [char*] Default format (needs to be stored elsewhere)
+** @attr Type [ajint] Enumerated type (see AjEOutfileType in ajfile.h)
 ** @attr Prompt [(void*)] Function to define standard prompt
 ** @attr Outformat [(ajint*)] Function to test output format
 ** @@

@@ -49,7 +49,8 @@ typedef struct EmbSMdata
 {
     double mwt;
     AjPStr sdata;
-} EmbOMdata, *EmbPMdata;
+} EmbOMdata;
+#define EmbPMdata EmbOMdata*
 
 
 
@@ -81,7 +82,8 @@ typedef struct SHits
     double mwt;
     EmbPMolFrag* frags;
     ajint    nf;
-} OHits, *PHits;
+} OHits;
+#define PHits OHits*
 
 
 

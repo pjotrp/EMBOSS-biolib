@@ -60,8 +60,8 @@ typedef struct EmbSEstAlign
   ajint score;
   ajint len;
   ajint *align_path;
-}
-EmbOEstAlign, *EmbPEstAlign;
+} EmbOEstAlign;
+#define EmbPEstAlign EmbOEstAlign*
 
 
 

@@ -61,7 +61,8 @@ typedef struct AjSRinfo
     ajint cut2;
     ajint cut3;
     ajint cut4;
-} AjORinfo, *AjPRinfo;
+} AjORinfo;
+#define AjPRinfo AjORinfo*
 
 
 
@@ -93,7 +94,8 @@ typedef struct Mutant
     AjPStr reaa;
     char   obase;
     char   nbase;
-} OMutant, *Mutant;
+} OMutant;
+#define Mutant OMutant*
 
 
 
@@ -346,7 +348,7 @@ static AjPList recoder_rematch(const AjPStr sstr, AjPList relist,
 	/* find pattern matches in seq with NO mismatches */
 	mm = 0;
 	pats = embPatBruteForce(sstr,str,ajFalse,ajFalse,
-				&patlist,begin+1,mm,sname);
+				patlist,begin+1,mm,sname);
 
 	if(pats)
         {

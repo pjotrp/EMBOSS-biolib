@@ -56,7 +56,8 @@ typedef struct AjSPrimer
     float prodTm;
     float prodGC;
     ajint   score;
-} AjOPrimer, *AjPPrimer;
+} AjOPrimer;
+#define AjPPrimer AjOPrimer*
 
 
 
@@ -76,7 +77,8 @@ typedef struct AjSPair
 {
     AjPPrimer f;
     AjPPrimer r;
-} AjOPair, *AjPPair;
+} AjOPair;
+#define AjPPair AjOPair*
 
 
 

@@ -36,13 +36,14 @@ static ajint    wordCmpStr(const void *x, const void *y);
 static ajint    wordCompare(const void *x, const void *y);
 static void     wordCurIterTrace(const AjIList curiter);
 static void     wordCurListTrace(const AjPList curlist);
-static ajint    wordDeadZone(EmbPWordMatch match, ajint deadx1, ajint deady1,
+static ajint    wordDeadZone(EmbPWordMatch match,
+			     ajint deadx1, ajint deady1,
 			     int deadx2, ajint deady2, ajint minlength);
 static ajint    wordFindWordAtPos(const char *word,
 				  const AjPTable seq1MatchTable,
 				  ajint nextpos);
-static ajint    wordGetWholeMatch(const EmbPWordMatch match,
-				  AjPTable seq1MatchTable);
+static ajint    wordGetWholeMatch(EmbPWordMatch match,
+				  const AjPTable seq1MatchTable);
 static void     wordListInsertNodeOld(AjPListNode* pnode, void* x);
 static void     wordListInsertOld(AjIList iter, void* x);
 static ajint    wordMatchCmp(const void* v1, const void* v2);
@@ -387,24 +388,24 @@ void embWordMatchListDelete(AjPList* plist)
 **
 ** print the word table.
 **
-** @param [r] x [void**] List item (EmbPWordMatch*)
+** @param [r] x [void*] List item (EmbPWordMatch*)
 ** @param [r] cl [void*] Output file AjPFile
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void wordMatchListPrint(void **x,void *cl)
+static void wordMatchListPrint(void *x,void *cl)
 {
     EmbPWordMatch p;
     AjPFile file;
 
-    p    = (EmbPWordMatch)*x;
+    p    = (EmbPWordMatch)x;
     file = (AjPFile) cl;
 
     ajFmtPrintF(file, "%10d  %10d %10d\n",
-		       (*p).seq1start+1,
-		       (*p).seq2start+1,
-		       (*p).length);
+		       p->seq1start+1,
+		       p->seq2start+1,
+		       p->length);
 
     return;
 }
@@ -637,14 +638,14 @@ static ajint wordFindWordAtPos(const char *word, const AjPTable seq1MatchTable,
 **
 ** Looks for a word length match.
 **
-** @param [r] match [const EmbPWordMatch] match structure
-** @param [r] seq1MatchTable [AjPTable] match table
+** @param [u] match [EmbPWordMatch] match structure
+** @param [r] seq1MatchTable [const AjPTable] match table
 ** @return [ajint] Match position
 ** @@
 ******************************************************************************/
 
-static ajint wordGetWholeMatch(const EmbPWordMatch match,
-			       AjPTable seq1MatchTable)
+static ajint wordGetWholeMatch(EmbPWordMatch match,
+			       const AjPTable seq1MatchTable)
 {
     const AjPSeq seq2;
     const char *startptr;
@@ -1215,7 +1216,7 @@ static void wordCurIterTrace(const AjIList curiter)
 **       -------------------------
 **                 seq1
 **
-** @param [r] match [EmbPWordMatch] match to investigate
+** @param [u] match [EmbPWordMatch] match to investigate
 ** @param [r] deadx1 [ajint] x position of end of live zone 1
 ** @param [r] deady1 [ajint] y position of end of live zone 1
 ** @param [r] deadx2 [ajint] x position of end of live zone 2
@@ -1225,7 +1226,8 @@ static void wordCurIterTrace(const AjIList curiter)
 ** @@
 ******************************************************************************/
 
-static ajint wordDeadZone(EmbPWordMatch match, ajint deadx1, ajint deady1,
+static ajint wordDeadZone(EmbPWordMatch match,
+			  ajint deadx1, ajint deady1,
 			  ajint deadx2, ajint deady2, ajint minlength)
 {
     ajint startx;
@@ -1458,7 +1460,7 @@ AjBool embWordMatchIter(AjIList iter, ajint* start1, ajint* start2,
 ** Insert an item in a list, using an iterator (if not null)
 ** to show which position to insert. Otherwise, simply push.
 **
-** @param [r] iter [AjIList] List iterator.
+** @param [u] iter [AjIList] List iterator.
 ** @param [r] x [void*] Data item to insert.
 ** @return [void]
 ** @@

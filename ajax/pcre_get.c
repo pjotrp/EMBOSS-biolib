@@ -330,15 +330,15 @@ pcre_get_named_substring(const pcre *code, const char *subject,
 ** programs that can call its functions, but not free() or (pcre_free)()
 ** directly.
 **
-** @param [d] pointer [const char*] the result of a previous
+** @param [d] pointer [const char**] the result of a previous
 **                                  pcre_get_substring()
 ** @return [void]
 ******************************************************************************/
 
 void
-pcre_free_substring(const char *pointer)
+pcre_free_substring(const char **pointer)
 {
-    (pcre_free)((void *)pointer);
+    (pcre_free)((void *)*pointer);
 }
 
 /* End of get.c */

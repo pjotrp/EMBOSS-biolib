@@ -346,7 +346,7 @@ AjPList embDbiFileListExc(const AjPStr dir, const AjPStr wildfile,
 ** Open a flat file library
 **
 ** @param [r] lname [const AjPStr] Source file basename
-** @param [r] libr [AjPFile*] Database file
+** @param [u] libr [AjPFile*] Database file
 ** @return [AjBool] ajTrue on success
 ** @@
 ******************************************************************************/
@@ -471,7 +471,7 @@ void embDbiRmEntryFile(const AjPStr dbname,  AjBool cleanup)
 ** @param [r] ext2 [const char*] Output file extension
 ** @param [r] nfiles [ajint] Number of files to sort (zero if unnumbered)
 ** @param [r] cleanup [AjBool] If ajTrue, clean up temporary files after
-** @param [r] sortopt [AjPStr] Extra options for the system sort
+** @param [r] sortopt [const AjPStr] Extra options for the system sort
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -580,7 +580,7 @@ void embDbiSysCmd(const AjPStr cmdstr)
 **
 ** Updates the file header for an index file to include the correct file size.
 **
-** @param [r] file [AjPFile] Output file
+** @param [u] file [AjPFile] Output file
 ** @param [r] filesize [ajint] File size (if known, can be rewritten)
 ** @param [r] recordcnt [ajint] Number of records
 ** @return [void]
@@ -604,19 +604,20 @@ void embDbiHeaderSize(AjPFile file, ajint filesize, ajint recordcnt)
 ** Writes the header for an index file. Resets the file pointer to beginning
 ** of file, and leaves the file pointer at the start of the first record.
 **
-** @param [r] file [AjPFile] Output file
+** @param [u] file [AjPFile] Output file
 ** @param [r] filesize [ajint] File size (if known, can be rewritten)
 ** @param [r] recordcnt [ajint] Number of records
 ** @param [r] recordlen [short] Record length (bytes)
 ** @param [r] dbname [const AjPStr] Database name (up to 20 characters used)
-** @param [r] release [const AjPStr] Release as a string (up to 10 characters used)
-** @param [r] date [char[4]] Date dd,mm,yy,00
+** @param [r] release [const AjPStr] Release as a string (up to 10
+**                                   characters used)
+** @param [r] date [const char[4]] Date dd,mm,yy,00
 ** @return [void]
 ******************************************************************************/
 
 void embDbiHeader(AjPFile file, ajint filesize, ajint recordcnt,
 		  short recordlen, const AjPStr dbname, const AjPStr release,
-		  char date[4])
+		  const char date[4])
 {
     ajint i;
     static char padding[256];
@@ -773,17 +774,17 @@ AjPFile embDbiFileIndex(const AjPStr indexdir, const AjPStr field,
 ** @param [r] indexdir [const AjPStr] Index directory
 ** @param [r] dbname [const AjPStr] Database name
 ** @param [r] release [const AjPStr] Release number as a string
-** @param [r] date [char[4]] Date
+** @param [r] date [const char[4]] Date
 ** @param [r] maxfilelen [ajint] Max file length
 ** @param [r] nfiles [ajint] Number of files indexes
-** @param [r] divfiles [AjPStr*] Division filenames
-** @param [r] seqfiles [AjPStr*] Sequence filenames (or NULL if none)
+** @param [r] divfiles [CONST AjPStr*] Division filenames
+** @param [r] seqfiles [CONST AjPStr*] Sequence filenames (or NULL if none)
 ** @return [void]
 ******************************************************************************/
 
 void embDbiWriteDivision(const AjPStr indexdir,
 			 const AjPStr dbname, const AjPStr release,
-			 char date[4],  ajint maxfilelen, ajint nfiles,
+			 const char date[4],  ajint maxfilelen, ajint nfiles,
 			 AjPStr* divfiles, AjPStr* seqfiles)
 {
     AjPFile divFile;
@@ -823,7 +824,7 @@ void embDbiWriteDivision(const AjPStr indexdir,
 **
 ** Writes a record to the division lookup file
 **
-** @param [r] file [AjPFile] Index file
+** @param [u] file [AjPFile] Index file
 ** @param [r] maxnamlen [ajint] Maximum name length
 ** @param [r] recnum [short] Record number
 ** @param [r] datfile [const AjPStr] Data file name
@@ -856,7 +857,7 @@ void embDbiWriteDivisionRecord(AjPFile file, ajint maxnamlen, short recnum,
 **
 ** Writes a record to the entryname index file
 **
-** @param [r] file [AjPFile] hit file
+** @param [u] file [AjPFile] hit file
 ** @param [r] maxidlen [ajint] Maximum length for an id string
 ** @param [r] id [const AjPStr] The id string for this entry
 ** @param [r] rpos [ajint] Data file offset
@@ -884,7 +885,7 @@ void embDbiWriteEntryRecord(AjPFile file, ajint maxidlen, const AjPStr id,
 **
 ** Writes a record to the field hit (.hit) index file
 **
-** @param [r] file [AjPFile] hit file
+** @param [u] file [AjPFile] hit file
 ** @param [r] idnum [ajint] Entry number (1 for the first) in the
 **                          entryname file
 ** @return [void]
@@ -904,7 +905,7 @@ void embDbiWriteHit(AjPFile file, ajint idnum)
 **
 ** Writes a record to the field target (.trg) index file
 **
-** @param [r] file [AjPFile] hit file
+** @param [u] file [AjPFile] hit file
 ** @param [r] maxfieldlen [ajint] Maximum field token length
 ** @param [r] idnum [ajint] First record number (1 for the first) in the
 **                          field hit index file
@@ -931,11 +932,12 @@ void embDbiWriteTrg(AjPFile file, ajint maxfieldlen, ajint idnum,
 **
 ** Open sort files for entries and all fields
 **
-** @param [r] alistfile [AjPFile*] Sort files for each field.
+** @param [w] alistfile [AjPFile*] Sort files for each field.
 ** @param [r] ifile [ajint] Input file number (used for temporary file names)
 ** @param [r] dbname [const AjPStr] Database name
 **                                  (used for temporary file names)
-** @param [r] fields [AjPStr*] Field names (used for temporary file names)
+** @param [r] fields [CONST AjPStr*] Field names (used for temporary
+**                                   file names)
 ** @param [r] nfields [ajint] Number of fields
 ** @return [AjPFile] Sort file for entries
 ******************************************************************************/
@@ -962,8 +964,8 @@ AjPFile embDbiSortOpen(AjPFile* alistfile, ajint ifile, const AjPStr dbname,
 **
 ** Close the sort files for entries and all fields
 **
-** @param [r] elistfile [AjPFile*] Sort file for entries
-** @param [r] alistfile [AjPFile*] Sort files for each field.
+** @param [u] elistfile [AjPFile*] Sort file for entries
+** @param [u] alistfile [AjPFile*] Sort files for each field.
 ** @param [r] nfields [ajint] Number of fields
 ** @return [void]
 ******************************************************************************/
@@ -988,9 +990,9 @@ void embDbiSortClose(AjPFile* elistfile, AjPFile* alistfile, ajint nfields)
 ** Stores data for current entry in memory by appending to lists
 **
 ** @param [u] idlist [AjPList] List of entry IDs
-** @param [r] fieldList [AjPList*] List of field tokens for each field
+** @param [r] fieldList [CONST AjPList*] List of field tokens for each field
 ** @param [r] nfields [ajint] Number of fields
-** @param [r] entry [EmbPEntry] Current entry
+** @param [u] entry [EmbPEntry] Current entry
 ** @param [r] ifile [ajint] Current input file number
 ** @return [void]
 ******************************************************************************/
@@ -1023,7 +1025,7 @@ void embDbiMemEntry(AjPList idlist, AjPList* fieldList, ajint nfields,
 **
 ** Write the entryname index file using data from the entry sort file.
 **
-** @param [r] entFile [AjPFile] Entry file
+** @param [u] entFile [AjPFile] Entry file
 ** @param [r] maxidlen [ajint] Maximum id length
 ** @param [r] dbname [const AjPStr] Database name (used in temp file names)
 ** @param [r] nfiles [ajint] Number of files
@@ -1088,7 +1090,7 @@ ajint embDbiSortWriteEntry(AjPFile entFile, ajint maxidlen,
 **
 ** Write entryname index for in-memory processing
 **
-** @param [r] entFile [AjPFile] entryname index file
+** @param [u] entFile [AjPFile] entryname index file
 ** @param [r] maxidlen [ajint] Maximum entry id length
 ** @param [r] idlist [const AjPList] List of entry IDs to be written
 ** @param [w] ids [void***] AjPStr* array of IDs from list
@@ -1135,7 +1137,7 @@ ajint embDbiMemWriteEntry(AjPFile entFile, ajint maxidlen,
 **
 ** @param [r] dbname [const AjPStr] Database name (used for temp file names)
 ** @param [r] release [const AjPStr] Release number as a string
-** @param [r] date [char[4]] Date
+** @param [r] date [const char[4]] Date
 ** @param [r] indexdir [const AjPStr] Index directory
 ** @param [r] field [const AjPStr] Field name (used for temp file names)
 ** @param [r] maxFieldLen [ajint] Maximum field token length
@@ -1147,7 +1149,7 @@ ajint embDbiMemWriteEntry(AjPFile entFile, ajint maxidlen,
 ******************************************************************************/
 
 ajint embDbiSortWriteFields(const AjPStr dbname, const AjPStr release,
-			    char date[4], const AjPStr indexdir,
+			    const char date[4], const AjPStr indexdir,
 			    const AjPStr field, ajint maxFieldLen,
 			    ajint nfiles, ajint nentries,
 			    AjBool cleanup, const AjPStr sortopt)
@@ -1338,7 +1340,7 @@ ajint embDbiSortWriteFields(const AjPStr dbname, const AjPStr release,
 **
 ** @param [r] dbname [const AjPStr] Database name (used for temp file names)
 ** @param [r] release [const AjPStr] Release number as a string
-** @param [r] date [char[4]] Date
+** @param [r] date [const char[4]] Date
 ** @param [r] indexdir [const AjPStr] Index directory
 ** @param [r] field [const AjPStr] Field name (used for file names)
 ** @param [r] maxFieldLen [ajint] Maximum field token length
@@ -1348,7 +1350,7 @@ ajint embDbiSortWriteFields(const AjPStr dbname, const AjPStr release,
 ******************************************************************************/
 
 ajint embDbiMemWriteFields(const AjPStr dbname,const  AjPStr release,
-			   char date[4], const AjPStr indexdir,
+			   const char date[4], const AjPStr indexdir,
 			   const AjPStr field, ajint maxFieldLen,
 			   const AjPList fieldList, void** ids)
 {
@@ -1522,7 +1524,7 @@ void embDbiDateSet(const AjPStr datestr, char date[4])
 **
 ** A non-negative length is updated if the string is longer
 **
-** @param [r] token [AjPStr*] Token string
+** @param [u] token [AjPStr*] Token string
 ** @param [u] maxlen [ajint*] Maximum string length
 ** @return [void]
 ******************************************************************************/

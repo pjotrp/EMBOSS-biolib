@@ -66,7 +66,8 @@ typedef struct AjSOrder
     ajint similarity;
     ajint idcount;
     ajint simcount;
-} AjOOrder, *AjPOrder;
+} AjOOrder;
+#define AjPOrder AjOOrder*
 
 
 

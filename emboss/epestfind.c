@@ -70,14 +70,15 @@ typedef struct PestfindSData
     double Pscore;
     double Hydind;
     double Pstpct;
-} PestfindOData, *PestfindPData;
+} PestfindOData;
+#define PestfindPData PestfindOData*
 
 
 
 
 /* @macro ajStrIterIsBegin ******************************************
 ** Start point condition for a string iterator.
-** @param [r] iter [AjIStr] String iterator.
+** @param [r] iter [const AjIStr] String iterator.
 ** @return [AjBool] returns true for the first iteration
 ** and false for all subsequent.
 ** @@
@@ -92,7 +93,7 @@ typedef struct PestfindSData
 
 /* @macro ajStrIterIsEnd ********************************************
 ** End point condition for a string iterator.
-** @param [r] iter [AjIStr] String iterator.
+** @param [r] iter [const AjIStr] String iterator.
 ** @return [AjBool] returns AjTrue for the last iteration
 ** and AjFalse for all preceeding.
 ** @@
@@ -107,7 +108,7 @@ typedef struct PestfindSData
 
 /* @macro ajStrIterPos **********************************************
 ** Position of a string iterator.
-** @param [r] iter [AjIStr] String iterator.
+** @param [r] iter [const AjIStr] String iterator.
 ** @return [ajint] returns the current position of a string iterator 
 ** within the target string.
 ** @@
@@ -124,8 +125,8 @@ typedef struct PestfindSData
 /* @macro ajStrAssSubItrBeg *****************************************
 ** Assigns a substring from begin to current point of iteration.
 ** @param [w] substr [AjPStr] Target string.
-** @param [r] str [AjPStr] Source string.
-** @param [r] iter [AjIStr] String iterator.
+** @param [r] str [const AjPStr] Source string.
+** @param [r] iter [const AjIStr] String iterator.
 ** @return [AjBool] ajTrue if string was reallocated. 
 ** @@
 ** This macro returns a pointer to a substring assigned from the
@@ -141,8 +142,8 @@ typedef struct PestfindSData
 /* @macro ajStrAssSubItrEnd *****************************************
 ** Assigns substring from the current point of iteration until the end.
 ** @param [w] substr [AjPStr] Target string.
-** @param [r] str [AjPStr] Source string.
-** @param [r] iter [AjIStr] String iterator.
+** @param [r] str [const AjPStr] Source string.
+** @param [r] iter [const AjIStr] String iterator.
 ** @return [AjBool] ajTrue if string was reallocated. 
 ** @@
 ** This macro returns a pointer to a substring assigned from the

@@ -41,9 +41,9 @@ extern "C"
 /* ======================================================================= */
 /* ========================== Scop object ================================ */
 /* ======================================================================= */
-AjPStr   embScopToPdbid(AjPStr scop, AjPStr *pdb);
-AjBool   embScopToSp(AjPStr scop, AjPStr *spr, AjPList list);
-AjBool   embScopToAcc(AjPStr scop, AjPStr *acc, AjPList list);
+AjPStr   embScopToPdbid(const AjPStr scop, AjPStr *pdb);
+AjBool   embScopToSp(const AjPStr scop, AjPStr *spr, const AjPList list);
+AjBool   embScopToAcc(const AjPStr scop, AjPStr *acc, const AjPList list);
 
 
 

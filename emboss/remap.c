@@ -70,7 +70,8 @@ typedef struct SValue
 {
     ajint  count;
     AjPStr iso;
-} OValue, *PValue;
+} OValue;
+#define PValue OValue*
 
 
 
@@ -243,16 +244,17 @@ int main(int argc, char **argv)
 	}
 
 	ajFileSeek(enzfile, 0L, 0);
+	restrictlist = ajListNew();
 	/* search for hits, but don't use mincuts and maxcuts criteria yet */
 	hits = embPatRestrictMatch(seq, begin+1, end+1, enzfile, enzymes,
 				   sitelen,plasmid, ambiguity, default_mincuts,
 				   default_maxcuts, blunt, sticky, commercial,
-				   &restrictlist);
+				   restrictlist);
 
 	if(hits)
 	{
 	    /* this bit is lifted from printHits */
-	    embPatRestrictRestrict(&restrictlist, hits, !limit,
+	    embPatRestrictRestrict(restrictlist, hits, !limit,
 					  ajFalse);
 	    if(limit)
 		remap_RestrictPreferred(restrictlist,retable);

@@ -33,7 +33,7 @@
 
 
 
-static void restover_printHits(AjPSeq, AjPStr, AjPFile *outf, AjPList *l,
+static void restover_printHits(AjPSeq, AjPStr, AjPFile *outf, AjPList l,
 			       AjPStr *name, ajint hits, ajint begin,
 			       ajint end, AjBool ambiguity, ajint mincut,
 			       ajint maxcut, AjBool plasmid, AjBool blunt,
@@ -87,7 +87,7 @@ int main(int argc, char **argv)
 
     ajint hits;
 
-    AjPList l;
+    AjPList l = NULL;
 
     embInit("restover", argc, argv);
 
@@ -123,6 +123,7 @@ int main(int argc, char **argv)
 	max = min = 1;
 
     table = ajStrTableNew(EQUGUESS);
+    l = ajListNew();
 
     if(threeprime)
 	ajStrRev(&seqcmp);
@@ -163,12 +164,12 @@ int main(int argc, char **argv)
 
 	hits = embPatRestrictMatch(seq,begin,end,enzfile,enzymes,sitelen,
 				   plasmid,ambiguity,min,max,blunt,sticky,
-				   commercial,&l);
+				   commercial,l);
 
 	if(hits)
 	{
 	    name = ajStrNewC(ajSeqName(seq));
-	    restover_printHits(seq, seqcmp, &outf,&l,&name,hits,begin,end,
+	    restover_printHits(seq, seqcmp, &outf,l,&name,hits,begin,end,
 			       ambiguity,min,max,plasmid,blunt,sticky,
 			       sitelen,limit,table,alpha,frags,nameit,
 			       html);
@@ -179,6 +180,7 @@ int main(int argc, char **argv)
     }
 
 
+    ajListDel(&l);
     ajSeqDel(&seq);
     ajFileClose(&enzfile);
     ajFileClose(&outf);
@@ -198,7 +200,7 @@ int main(int argc, char **argv)
 ** @param [r] seq [AjPSeq] Sequence
 ** @param [w] seqcmp [AjPStr] Undocumented
 ** @param [w] outf [AjPFile*] outfile
-** @param [w] l [AjPList*] hits
+** @param [w] l [AjPList] hits
 ** @param [r] name [AjPStr*] sequence name
 ** @param [r] hits [ajint] number of hits
 ** @param [r] begin [ajint] start position
@@ -220,7 +222,7 @@ int main(int argc, char **argv)
 ******************************************************************************/
 
 static void restover_printHits(AjPSeq seq, AjPStr seqcmp, AjPFile *outf,
-			       AjPList *l,AjPStr *name, ajint hits,
+			       AjPList l, AjPStr *name, ajint hits,
 			       ajint begin, ajint end, AjBool ambiguity,
 			       ajint mincut, ajint maxcut, AjBool plasmid,
 			       AjBool blunt, AjBool sticky, ajint sitelen,
@@ -296,7 +298,7 @@ static void restover_printHits(AjPSeq seq, AjPStr seqcmp, AjPFile *outf,
 
     for(i=0;i<hits;++i)
     {
-	ajListPop(*l,(void **)&m);
+	ajListPop(l,(void **)&m);
 	ajDebug("hit %d start:%d cut1:%d cut2:%d\n",
 		i, m->start, m->cut1, m->cut2);
 
@@ -422,7 +424,6 @@ static void restover_printHits(AjPSeq seq, AjPStr seqcmp, AjPFile *outf,
     }
 
 
-    ajListDel(l);
     ajStrDel(&ps);
 
     if(html)

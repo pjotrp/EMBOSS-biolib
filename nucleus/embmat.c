@@ -36,7 +36,7 @@ static void matPushHitInt(const AjPStr n, const EmbPMatPrints m,
 ** Put a matching protein matrix (EmbPMatPrints) on the heap
 ** as an EmbPMatMatch structure
 **
-** @param [r] n [AjPStr *] Sequence name
+** @param [r] n [const AjPStr] Sequence name
 ** @param [r] m [const EmbPMatPrints] Matching fingerprint element
 ** @param [w] l [AjPList *] List to push hits to
 ** @param [r] pos [ajint] Sequence position of element

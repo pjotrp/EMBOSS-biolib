@@ -27,8 +27,8 @@
 
 
 
-static void dotpath_drawPlotlines(void **x, void *cl);
-static void dotpath_plotMatches(AjPList list);
+static void dotpath_drawPlotlines(void *x, void *cl);
+static void dotpath_plotMatches(const AjPList list);
 
 
 
@@ -228,7 +228,7 @@ int main(int argc, char **argv)
 ** @@
 ******************************************************************************/
 
-static void dotpath_drawPlotlines(void **x, void *cl)
+static void dotpath_drawPlotlines(void *x, void *cl)
 {
     EmbPWordMatch p;
     PLFLT x1;
@@ -236,13 +236,13 @@ static void dotpath_drawPlotlines(void **x, void *cl)
     PLFLT x2;
     PLFLT y2;
 
-    p  = (EmbPWordMatch)*x;
+    p  = (EmbPWordMatch)x;
 
-    x1 = x2 = ((*p).seq1start)+1;
-    y1 = y2 = (PLFLT)((*p).seq2start)+1;
+    x1 = x2 = (p->seq1start)+1;
+    y1 = y2 = (PLFLT)(p->seq2start)+1;
 
-    x2 += (*p).length;
-    y2 += (PLFLT)(*p).length;
+    x2 += p->length;
+    y2 += (PLFLT)p->length;
 
     ajGraphLine(x1, y1, x2, y2);
 
@@ -256,15 +256,15 @@ static void dotpath_drawPlotlines(void **x, void *cl)
 **
 ** Undocumented.
 **
-** @param [r] list [AjPList] Undocumented
+** @param [r] list [const AjPList] Undocumented
 ** @return [void]
 ** @@
 ******************************************************************************/
 
 
-static void dotpath_plotMatches(AjPList list)
+static void dotpath_plotMatches(const AjPList list)
 {
-    ajListMap(list,dotpath_drawPlotlines, NULL);
+    ajListMapRead(list,dotpath_drawPlotlines, NULL);
 
     return;
 }

@@ -13,7 +13,7 @@ extern "C"
 ** @attr seq1start [ajint] match start point in original sequence
 ** @attr seq2start [ajint] match start point in comparison sequence
 ** @attr length [ajint] length of match
-** @attr sequence [AjPSeq] need in case we build multiple matches here
+** @attr sequence [const AjPSeq] need in case we build multiple matches here
 **                         so we know which one the match belongs to
 ** @@
 ******************************************************************************/
@@ -23,14 +23,15 @@ typedef struct EmbSWordMatch {
   ajint seq2start;
   ajint length;
   const AjPSeq sequence;
-} EmbOWordMatch, *EmbPWordMatch;
+} EmbOWordMatch;
+#define EmbPWordMatch EmbOWordMatch*
 
 /* @data EmbPWord *************************************************************
 **
 ** NUCLEUS data structure for words
 **
 ** @attr count [ajint] Size of list
-** @attr fword [char*] Original word
+** @attr fword [const char*] Original word
 ** @attr list [AjPList] List of words
 ** @@
 ******************************************************************************/
@@ -39,7 +40,8 @@ typedef struct EmbSWord {
   ajint count;
   const char *fword;
   AjPList list;
-} EmbOWord, *EmbPWord;
+} EmbOWord;
+#define EmbPWord EmbOWord*
 
 /* @data EmbPWord2 ************************************************************
 **
@@ -53,7 +55,8 @@ typedef struct EmbSWord {
 typedef struct EmbSWord2 {
   char *name;
   EmbPWord fword;
-} EmbOWord2, *EmbPWord2;
+} EmbOWord2;
+#define EmbPWord2 EmbOWord2*
 
 
 

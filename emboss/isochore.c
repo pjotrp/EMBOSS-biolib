@@ -43,7 +43,8 @@ typedef struct AjSIntarr
 {
     ajint Size;
     ajint* Array;
-} AjOIntarr, *AjPIntarr;
+} AjOIntarr;
+#define AjPIntarr AjOIntarr*
 
 
 
@@ -63,7 +64,8 @@ typedef struct AjSFltarr
 {
     ajint Size;
     float* Array;
-} AjOFltarr, *AjPFltarr;
+} AjOFltarr;
+#define AjPFltarr AjOFltarr*
 
 
 

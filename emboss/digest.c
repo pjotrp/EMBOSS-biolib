@@ -193,7 +193,7 @@ int main(int argc, char **argv)
 **
 ** Undocumented.
 **
-** @param [r] l [AjPList] Undocumented
+** @param [u] l [AjPList] Undocumented
 ** @param [u] outf [AjPFile] Undocumented
 ** @param [r] be [ajint] Undocumented
 ** @param [r] s [const char*] Undocumented
@@ -249,8 +249,8 @@ static void digest_print_hits(AjPList l, AjPFile outf, ajint be, const char *s)
 **
 ** @param [w] report [AjPReport] report
 ** @param [r] seq [const AjPSeq] sequence object
-** @param [w] TabRpt [AjPFeattable] feature table object to store results
-** @param [r] l [AjPList] Undocumented
+** @param [u] TabRpt [AjPFeattable] feature table object to store results
+** @param [u] l [AjPList] Undocumented
 ** @param [r] be [ajint] Undocumented
 ** @param [r] s [const char*] Undocumented
 ** @@

@@ -229,23 +229,23 @@ int main(int argc, char **argv)
 	adj = begin+end+1;
 
 	embPatFuzzSearch(type16, begin, pattern16, seqname,
-			 text, &l16, plen16, mismatch16, amino16, carboxyl16,
+			 text, l16, plen16, mismatch16, amino16, carboxyl16,
 			 buf16, off16, sotable16, solimit16, regexp16,
 			 skipm16, &hits16, m16, &tidy16);
 
 	embPatFuzzSearch(type16rev, begin, pattern16rev,
-			 seqname, text, &l16rev, plen16rev, mismatch16rev,
+			 seqname, text, l16rev, plen16rev, mismatch16rev,
 			 amino16rev, carboxyl16rev, buf16rev, off16rev,
 			 sotable16rev, solimit16rev, regexp16rev, skipm16rev,
 			 &hits16rev, m16rev, &tidy16rev);
 
 	embPatFuzzSearch(type8, begin, pattern8, seqname, text,
-			 &l8, plen8, mismatch8, amino8, carboxyl8, buf8, off8,
+			 l8, plen8, mismatch8, amino8, carboxyl8, buf8, off8,
 			 sotable8, solimit8, regexp8, skipm8, &hits8, m8,
 			 &tidy8);
 
 	embPatFuzzSearch(type8rev, begin, pattern8rev,
-			 seqname, text, &l8rev, plen8rev, mismatch8rev,
+			 seqname, text, l8rev, plen8rev, mismatch8rev,
 			 amino8rev, carboxyl8rev, buf8rev, off8rev,
 			 sotable8rev, solimit8rev, regexp8rev, skipm8rev,
 			 &hits8rev, m8rev, &tidy8rev);

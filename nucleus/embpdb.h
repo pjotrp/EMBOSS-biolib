@@ -75,25 +75,28 @@ extern "C"
 /* ======================================================================= */
 /* =========================== Pdb object ================================ */
 /* ======================================================================= */
-AjBool       embAtomInContact(AjPAtom atm1, AjPAtom atm2, float thresh,
-			       AjPVdwall vdw);
-float        embAtomDistance(AjPAtom atm1, AjPAtom atm2, AjPVdwall vdw);
-AjBool       embPdbAtomIndexI(AjPPdb pdb, ajint chn, AjPInt *idx);
-AjBool       embPdbAtomIndexC(AjPPdb pdb, char chn, AjPInt *idx);
-AjBool       embPdbAtomIndexICA(AjPPdb pdb, ajint chn, AjPInt *idx, 
+AjBool       embAtomInContact(const AjPAtom atm1, const AjPAtom atm2,
+			      float thresh,
+			      const AjPVdwall vdw);
+float        embAtomDistance(const AjPAtom atm1, const AjPAtom atm2,
+			     const AjPVdwall vdw);
+AjBool       embPdbAtomIndexI(const AjPPdb pdb, ajint chn, AjPInt *idx);
+AjBool       embPdbAtomIndexC(const AjPPdb pdb, char chn, AjPInt *idx);
+AjBool       embPdbAtomIndexICA(const AjPPdb pdb, ajint chn, AjPInt *idx, 
 				ajint *nres);
-AjBool       embPdbAtomIndexCCA(AjPPdb pdb, char chn, AjPInt *idx, 
+AjBool       embPdbAtomIndexCCA(const AjPPdb pdb, char chn, AjPInt *idx, 
 				ajint *nres);
-AjBool       embPdbToIdx(ajint *idx, AjPPdb pdb, AjPStr res, ajint chn);
-AjBool       embPdbListHeterogens(AjPPdb pdb, AjPList *list_heterogens, 
+AjBool       embPdbToIdx(ajint *idx, const AjPPdb pdb, const AjPStr res,
+			 ajint chn);
+AjBool       embPdbListHeterogens(const AjPPdb pdb, AjPList *list_heterogens, 
 				  AjPInt *siz_heterogens, ajint *nhet, 
 				  AjPFile logf );
-AjBool       embPdbidToSp(AjPStr pdb, AjPStr *spr, AjPList list);
-AjBool       embPdbidToAcc(AjPStr pdb, AjPStr *acc, AjPList list);
-AjBool       embPdbidToScop(AjPPdb pdb, const AjPList list_allscop, 
+AjBool       embPdbidToSp(const AjPStr pdb, AjPStr *spr, const AjPList list);
+AjBool       embPdbidToAcc(const AjPStr pdb, AjPStr *acc, const AjPList list);
+AjBool       embPdbidToScop(const AjPPdb pdb, const AjPList list_allscop, 
 			    AjPList *list_pdbscopids);
-float        embVdwRad(AjPAtom atm, AjPVdwall vdw);
-AjBool       embStrideToThree(AjPStr *to, AjPStr from);
+float        embVdwRad(const AjPAtom atm, const AjPVdwall vdw);
+AjBool       embStrideToThree(AjPStr *to, const AjPStr from);
 
 
 

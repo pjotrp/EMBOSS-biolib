@@ -5044,13 +5044,14 @@ return (pcre *)re;
 ** @param [r]  offset [int] index into the offset vector
 ** @param [r]  eptr [register const uschar*] points into the subject
 ** @param [r]  length [int] length to be matched
-** @param [r]  md [match_data*] points to match data block
+** @param [r]  md [const match_data*] points to match data block
 ** @param [r]  ims [unsigned long int] the ims flags
 ** @return [BOOL] TRUE if matched
 ******************************************************************************/
 
 static BOOL
-match_ref(int offset, register const uschar *eptr, int length, match_data *md,
+match_ref(int offset, register const uschar *eptr, int length,
+  const match_data *md,
   unsigned long int ims)
 {
 const uschar *p = md->start_subject + md->offset_vector[offset];
@@ -5161,9 +5162,9 @@ return negated;   /* char was not found */
 ** @param [r]   eptr [register const uschar*]  pointer in subject
 ** @param [r]   ecode [register const uschar*]  position in code
 ** @param [r]   offset_top [int] current top pointer
-** @param [r]   md [match_data*]  pointer to "static" info for the match
+** @param [u]   md [match_data*]  pointer to "static" info for the match
 ** @param [r]   ims [unsigned long int]  current /i, /m, and /s options
-** @param [r]   eptrb [eptrblock*] pointer to chain of blocks containing
+** @param [u]   eptrb [eptrblock*] pointer to chain of blocks containing
 **               eptr at start of
 **                 brackets - for testing for empty matches
 ** @param [r]   flags [int] can contain
@@ -5178,8 +5179,9 @@ return negated;   /* char was not found */
 
 static int
 match(register const uschar *eptr, register const uschar *ecode,
-  int offset_top, match_data *md, unsigned long int ims, eptrblock *eptrb,
-  int flags)
+      int offset_top, match_data *md,
+      unsigned long int ims, eptrblock *eptrb,
+      int flags)
 {
 unsigned long int original_ims = ims;   /* Save for resetting on ')' */
 register int rrc;

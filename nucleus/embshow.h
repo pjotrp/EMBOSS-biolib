@@ -30,7 +30,7 @@ enum ShowEValtype
 **
 ** @cc information about the sequence
 **
-** @attr seq [AjPSeq] the sequence
+** @attr seq [const AjPSeq] the sequence
 ** @attr nucleic [AjBool] ajTrue = the sequence is nucleic
 ** @attr offset [ajint] offset to start numbering at
 ** @attr start [ajint] sequence position to start printing at
@@ -47,7 +47,7 @@ enum ShowEValtype
 
 typedef struct EmbSShow {
   AjPList list;
-  AjPSeq seq;
+  const AjPSeq seq;
   AjBool nucleic;
   ajint offset;
   ajint start;
@@ -56,7 +56,8 @@ typedef struct EmbSShow {
   ajint length;
   ajint margin;
   AjBool html;
-} EmbOShow, *EmbPShow;
+} EmbOShow;
+#define EmbPShow EmbOShow*
 
 
 /* @data EmbPShowInfo *********************************************************
@@ -105,7 +106,8 @@ typedef struct EmbSShow {
 typedef struct EmbSShowInfo {
   enum ShowEValtype type;
   void * info;
-} EmbOShowInfo, *EmbPShowInfo;
+} EmbOShowInfo;
+#define EmbPShowInfo EmbOShowInfo*
 
 
 
@@ -116,17 +118,18 @@ typedef struct EmbSShowInfo {
 **
 ** @attr number [AjBool] ajTrue = number the sequence
 ** @attr threeletter [AjBool] ajTrue = display proteins in three letter code
-** @attr upperrange [AjPRange] range of sequence to uppercase
-** @attr highlight [AjPRange] range of sequence to colour in HTML
+** @attr upperrange [const AjPRange] range of sequence to uppercase
+** @attr highlight [const AjPRange] range of sequence to colour in HTML
 ** @@
 ******************************************************************************/
 
 typedef struct EmbSShowSeq {
   AjBool number;
   AjBool threeletter;
-  AjPRange upperrange;
-  AjPRange highlight;
-} EmbOShowSeq, *EmbPShowSeq;
+  const AjPRange upperrange;
+  const AjPRange highlight;
+} EmbOShowSeq;
+#define EmbPShowSeq EmbOShowSeq*
 
 /* blank line information, type = SH_BLANK */
 
@@ -142,7 +145,8 @@ typedef struct EmbSShowSeq {
 
 typedef struct EmbSShowBlank {
   AjBool dummy;
-} EmbOShowBlank, *EmbPShowBlank;
+} EmbOShowBlank;
+#define EmbPShowBlank EmbOShowBlank*
 
 /* @data EmbPShowTicks ********************************************************
 **
@@ -156,7 +160,8 @@ typedef struct EmbSShowBlank {
 
 typedef struct EmbSShowTicks {
   AjBool dummy;
-} EmbOShowTicks, *EmbPShowTicks;
+} EmbOShowTicks;
+#define EmbPShowTicks EmbOShowTicks*
 
 /* @data EmbPShowTicknum ******************************************************
 **
@@ -170,19 +175,21 @@ typedef struct EmbSShowTicks {
 
 typedef struct EmbSShowTicknum {
   AjBool dummy;
-} EmbOShowTicknum, *EmbPShowTicknum;
+} EmbOShowTicknum;
+#define EmbPShowTicknum EmbOShowTicknum*
 
 /* @data EmbPShowTran *********************************************************
 **
 ** NUCLEUS data structure for translation information, type = SH_TRAN
 **
-** @attr transeq [AjPSeq] our stored translation
-** @attr trnTable [AjPTrn] translation table
+** @attr transeq [AjPSeq] Copy of our stored translation
+** @attr trnTable [const AjPTrn] translation table
 ** @attr frame [ajint] 1,2,3,-1,-2 or -3 = frame to translate
 ** @attr threeletter [AjBool] ajTrue = display in three letter code
 ** @attr number [AjBool] ajTrue = number the translation
 ** @attr tranpos [ajint] store of translation position for numbering
-** @attr regions [AjPRange] only translate in these regions, NULL = do all
+** @attr regions [const AjPRange] only translate in these regions,
+**                                NULL = do all
 ** @attr orfminsize [ajint] minimum size of ORF to display
 ** @attr lcinterorf [AjBool] ajTrue = put the inter-orf regions in lower case
 ** @attr firstorf [AjBool] ajTrue = beginning of the seq is a possible ORF
@@ -193,18 +200,19 @@ typedef struct EmbSShowTicknum {
 
 typedef struct EmbSShowTran {
   AjPSeq transeq;
-  AjPTrn trnTable;
+  const AjPTrn trnTable;
   ajint frame;
   AjBool threeletter;
   AjBool number;
   ajint tranpos;
-  AjPRange regions;
+  const AjPRange regions;
   ajint orfminsize;
   AjBool lcinterorf;
   AjBool firstorf;
   AjBool lastorf;
   AjBool showframe;
-} EmbOShowTran, *EmbPShowTran;
+} EmbOShowTran;
+#define EmbPShowTran EmbOShowTran*
 
 /* @data EmbPShowComp *********************************************************
 **
@@ -216,7 +224,8 @@ typedef struct EmbSShowTran {
 
 typedef struct EmbSShowComp {
   AjBool number;
-} EmbOShowComp, *EmbPShowComp;
+} EmbOShowComp;
+#define EmbPShowComp EmbOShowComp*
 
 /* @data EmbPShowRE ***********************************************************
 **
@@ -236,7 +245,8 @@ typedef struct EmbSShowRE {
   AjPList matches;
   ajint hits;
   AjPList sitelist;
-} EmbOShowRE, *EmbPShowRE;
+} EmbOShowRE;
+#define EmbPShowRE EmbOShowRE*
 
 /* @data EmbPShowFT ***********************************************************
 **
@@ -248,19 +258,21 @@ typedef struct EmbSShowRE {
 
 typedef struct EmbSShowFT {
   AjPFeattable feat;
-} EmbOShowFT, *EmbPShowFT;
+} EmbOShowFT;
+#define EmbPShowFT EmbOShowFT*
 
 /* @data EmbPShowNote *********************************************************
 **
 ** NUCLEUS data structure for annotation information, type = SH_NOTE
 **
-** @attr regions [AjPRange] regions to annotate, NULL = no regions
+** @attr regions [const AjPRange] regions to annotate, NULL = no regions
 ** @@
 ******************************************************************************/
 
 typedef struct EmbSShowNote {
-  AjPRange regions;
-} EmbOShowNote, *EmbPShowNote;
+  const AjPRange regions;
+} EmbOShowNote;
+#define EmbPShowNote EmbOShowNote*
 
 
 /********* assorted structures ***********/
@@ -277,31 +289,35 @@ typedef struct EmbSShowNote {
 typedef struct EmbSShowREsite {
   ajint pos;
   AjPStr name;
-} EmbOShowREsite, *EmbPShowREsite;
+} EmbOShowREsite;
+#define EmbPShowREsite EmbOShowREsite*
 
 
 /* declare functions **********************************************/
-EmbPShow embShowNew (AjPSeq seq, ajint begin, ajint end, ajint width,
+EmbPShow embShowNew (const AjPSeq seq, ajint begin, ajint end, ajint width,
 		     ajint length, ajint margin, AjBool html, ajint offset);
 void     embShowDel (EmbPShow* pthis);
 
 void     embShowAddSeq (EmbPShow thys, AjBool number, AjBool threeletter,
-			AjPRange upperrange, AjPRange colour);
+			const AjPRange upperrange, const AjPRange colour);
 void     embShowAddBlank (EmbPShow thys);
 void     embShowAddTicks (EmbPShow thys);
 void     embShowAddTicknum (EmbPShow thys);
 void     embShowAddComp (EmbPShow thys, AjBool number);
-void     embShowAddTran (EmbPShow thys, AjPTrn trnTable, ajint frame,
-			 AjBool threeletter, AjBool number, AjPRange regions,
+void     embShowAddTran (EmbPShow thys, const AjPTrn trnTable, ajint frame,
+			 AjBool threeletter, AjBool number,
+			 const AjPRange regions,
 			 ajint orfminsize, AjBool lcinterorf,
 			 AjBool firstorf, AjBool lastorf, AjBool showframe);
-void     embShowAddRE (EmbPShow thys, ajint sense, AjPList restrictlist,
+void     embShowAddRE (EmbPShow thys, ajint sense, const AjPList restrictlist,
 		       AjBool flat);
-void     embShowAddFT (EmbPShow thys, AjPFeattable feat);
-void     embShowAddNote (EmbPShow thys, AjPRange regions);
-void     embShowPrint (AjPFile out, EmbPShow thys);
-void     embShowUpperRange (AjPStr *line, AjPRange upperrange, ajint pos);
-void     embShowColourRange (AjPStr *line, AjPRange colour, ajint pos);
+void     embShowAddFT (EmbPShow thys, const AjPFeattable feat);
+void     embShowAddNote (EmbPShow thys, const AjPRange regions);
+void     embShowPrint (AjPFile out, const EmbPShow thys);
+void     embShowUpperRange (AjPStr *line,
+			    const AjPRange upperrange, ajint pos);
+void     embShowColourRange (AjPStr *line,
+			     const AjPRange colour, ajint pos);
 
 #endif
 

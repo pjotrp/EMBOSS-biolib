@@ -131,14 +131,14 @@ typedef struct AjSHit
 ** 
 **
 ** @attr  Class         [AjPStr]    SCOP classification.
-** @attr  Fold;         [AjPStr]    SCOP classification.
-** @attr  Superfamily;  [AjPStr]    SCOP classification.
-** @attr  Family;       [AjPStr]    SCOP classification.
-** @attr  Model;        [AjPStr]    SCOP classification.
-** @attr  Sunid_Family; [ajint]     SCOP sunid for family. 
-** @attr  Priority;     [AjBool]    True if the Hitlist is high priority. 
+** @attr  Fold         [AjPStr]    SCOP classification.
+** @attr  Superfamily  [AjPStr]    SCOP classification.
+** @attr  Family       [AjPStr]    SCOP classification.
+** @attr  Model        [AjPStr]    SCOP classification.
+** @attr  Sunid_Family [ajint]     SCOP sunid for family. 
+** @attr  Priority     [AjBool]    True if the Hitlist is high priority. 
 ** @attr  N             [ajint]     No. of hits. 
-** @attr  hits;         [AjPhHit*]  Array of hits. 
+** @attr  hits         [AjPHit*]  Array of hits. 
 **
 ** @new    embHitlistNew Default Hitlist constructor
 ** @delete embHitlistDel Default Hitlist destructor
@@ -196,7 +196,7 @@ typedef struct AjSHitlist
 ** @attr  subs  [float*]  Residue match values 
 ** 
 ** @new embSigposNew Default Sigdat object constructor
-** @del embSigposDel Default Sigdat object destructor
+** @delete embSigposDel Default Sigdat object destructor
 ** @@
 ****************************************************************************/
 typedef struct AJSSigpos
@@ -237,7 +237,7 @@ typedef struct AJSSigpos
 ** @attr  wsiz [ajint]    Window size for this gap 
 **
 ** @new embSigdatNew Default Sigdat object constructor
-** @del embSigdatDel Default Sigdat object destructor
+** @delete embSigdatDel Default Sigdat object destructor
 ** @@
 ****************************************************************************/
 typedef struct AJSSigdat

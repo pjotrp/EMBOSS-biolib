@@ -20,7 +20,8 @@ void   embIepGetProto (const double *K, const ajint *c,
 AjBool embIepIEP (const char *s, ajint amino, double *iep, AjBool termini);
 double embIepKToPk (double K);
 double embIepPhConcToPh (double H);
-double embIepPhConverge (ajint *c, double *K, ajint *op, double *pro);
+double embIepPhConverge (const ajint *c, const double *K,
+			 ajint *op, double *pro);
 void   embIepPkRead (void);
 double embIepPhToHConc (double pH);
 double embIepPkToK (double pK);

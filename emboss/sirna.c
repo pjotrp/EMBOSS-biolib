@@ -61,7 +61,8 @@ typedef struct SValue
     ajint pos;
     ajint GCcount;
     ajint score;
-} OValue, *PValue;
+} OValue;
+#define PValue OValue*
 
 
  

@@ -96,7 +96,7 @@ static void vectorstrip_initialise_cp(CPattern* pat);
 static void vectorstrip_initialise_vector(Vector* vec, AjPStr name,
 					  AjPStr five, AjPStr three);
 static void vectorstrip_read_vector_data(AjPFile vectorfile,
-					 AjPList* vectorlist);
+					 AjPList vectorlist);
 
 /* destructors */
 static void vectorstrip_free_list(AjPList list);
@@ -104,7 +104,7 @@ static void vectorstrip_free_cp(CPattern* pat);
 
 
 /* data processing */
-static void vectorstrip_process_pattern(AjPStr pat, AjPList* hitlist,
+static void vectorstrip_process_pattern(AjPStr pat, AjPList hitlist,
 					AjPStr seqname, AjPStr seqstr,
 					ajint threshold, ajint begin,
 					AjBool besthits);
@@ -114,7 +114,7 @@ static void vectorstrip_process_hits(AjPList fivelist, AjPList threelist,
 static void vectorstrip_scan_sequence(Vector vector, AjPSeqout seqout,
 				      AjPFile outf, AjPSeq sequence,
 				      ajint mis_per, AjBool besthits);
-static void vectorstrip_ccs_pattern(AjPStr pattern, AjPList* hitlist,
+static void vectorstrip_ccs_pattern(AjPStr pattern, AjPList hitlist,
 				    AjPStr seqname, AjPStr seqstr,
 				    ajint begin, ajint* hits, ajint mm);
 /* result output */
@@ -166,7 +166,7 @@ int main(int argc, char **argv)
 
     /* data from command line or file? */
     if(vec == AJTRUE)
-	vectorstrip_read_vector_data(vectorfile, &vectorlist);
+	vectorstrip_read_vector_data(vectorfile, vectorlist);
     else
     {
 	Vector v = NULL;
@@ -280,14 +280,14 @@ static void vectorstrip_initialise_vector(Vector* vec, AjPStr name,
 ** Reads vector data from a file into a list of Vectors.
 **
 ** @param [r] vectorfile [AjPFile] the file containing vector data
-** @param [w] vectorlist [AjPList*] list to store vector data
+** @param [w] vectorlist [AjPList] list to store vector data
 **                                  contains one node for each set of
 **                                  vector data in vectorfile
 ** @return [void]
 ******************************************************************************/
 
 static void vectorstrip_read_vector_data(AjPFile vectorfile,
-					 AjPList* vectorlist)
+					 AjPList vectorlist)
 {
     AjPStr rdline = NULL;
     AjPStrTok handle = NULL;
@@ -319,7 +319,7 @@ static void vectorstrip_read_vector_data(AjPFile vectorfile,
 	if(ajStrLen(five) || ajStrLen(three))
 	{
 	    vectorstrip_initialise_vector(&vector, name, five, three);
-	    ajListPushApp(*vectorlist, vector);
+	    ajListPushApp(vectorlist, vector);
 	}
 	ajStrDel(&name);
 	ajStrDel(&five);
@@ -410,7 +410,7 @@ static void vectorstrip_free_cp(CPattern* pat)
 ** allow searching with different numbers of mismatches.
 **
 ** @param [r] pattern [AjPStr] the pattern to be searched
-** @param [w] hitlist [AjPList*] list to which hits will be written
+** @param [w] hitlist [AjPList] list to which hits will be written
 ** @param [r] seqname [AjPStr] the name of the sequence
 ** @param [r] seqstr [AjPStr] string representing the sequence to be searched
 ** @param [r] threshold [ajint] max allowable percent mismatch based on length
@@ -419,7 +419,7 @@ static void vectorstrip_free_cp(CPattern* pat)
 ** @param [r] besthits [AjBool] Best hits
 ** @return [void]
 ******************************************************************************/
-static void vectorstrip_process_pattern(AjPStr pattern, AjPList* hitlist,
+static void vectorstrip_process_pattern(AjPStr pattern, AjPList hitlist,
 					AjPStr seqname, AjPStr seqstr,
 					ajint threshold, ajint begin,
 					AjBool besthits)
@@ -644,11 +644,11 @@ static void vectorstrip_scan_sequence(Vector vector, AjPSeqout seqout,
     ajStrToUpper(&text);
 
     if(ajStrLen(vector->fiveprime))
-	vectorstrip_process_pattern(vector->fiveprime, &fivelist, seqname,
+	vectorstrip_process_pattern(vector->fiveprime, fivelist, seqname,
 				    text, mis_per, begin, besthits);
 
     if(ajStrLen(vector->threeprime))
-	vectorstrip_process_pattern(vector->threeprime, &threelist, seqname,
+	vectorstrip_process_pattern(vector->threeprime, threelist, seqname,
 				    text, mis_per, begin, besthits);
 
     if(!(ajListLength(fivelist) || ajListLength(threelist)))
@@ -684,7 +684,7 @@ static void vectorstrip_scan_sequence(Vector vector, AjPSeqout seqout,
 ** mm mismatches
 **
 ** @param [r] pattern [AjPStr] pattern to be searched for
-** @param [w] hitlist [AjPList*] list of hits
+** @param [w] hitlist [AjPList] list of hits
 ** @param [r] seqname [AjPStr] name of sequence to be searched
 ** @param [r] seqstr [AjPStr] string representing sequence to be searched
 ** @param [r] begin [ajint] start position of sequence
@@ -693,7 +693,7 @@ static void vectorstrip_scan_sequence(Vector vector, AjPSeqout seqout,
 ** @return [void]
 ******************************************************************************/
 
-static void vectorstrip_ccs_pattern(AjPStr pattern, AjPList* hitlist,
+static void vectorstrip_ccs_pattern(AjPStr pattern, AjPList hitlist,
 				    AjPStr seqname, AjPStr seqstr,
 				    ajint begin, ajint* hits, ajint mm)
 {

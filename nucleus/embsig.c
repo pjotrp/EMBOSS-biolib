@@ -53,7 +53,8 @@ typedef struct EmbSHitidx
     AjPStr      Id;
     AjPHit      hptr;
     AjPHitlist  lptr;
-}EmbOHitidx, *EmbPHitidx;
+}EmbOHitidx;
+#define EmbPHitidx EmbOHitidx*
 
 
 /* @datastatic EmbPSigcell ****************************************************
@@ -77,7 +78,8 @@ typedef struct EmbSSigcell
     float  val;
     ajint  prev;
     AjBool visited;
-} EmbOSigcell, *EmbPSigcell;
+} EmbOSigcell;
+#define EmbPSigcell EmbOSigcell*
 
 
 

@@ -52,7 +52,8 @@ typedef struct AjSRinfo
     ajint cut2;
     ajint cut3;
     ajint cut4;
-} AjORinfo, *AjPRinfo;
+} AjORinfo;
+#define AjPRinfo AjORinfo*
 
 
 
@@ -86,7 +87,8 @@ typedef struct AjSSilent
     AjBool issilent;
     char   obase;
     char   nbase;
-} AjOSilent, *AjPSilent;
+} AjOSilent;
+#define AjPSilent AjOSilent*
 
 
 
@@ -340,7 +342,7 @@ static AjPList silent_mismatch(const AjPStr sstr, AjPList relist,
 
 
 	mm = 0;
-	hits=embPatBruteForce(sstr,str,ajFalse,ajFalse,&patlist,begin+1,mm,
+	hits=embPatBruteForce(sstr,str,ajFalse,ajFalse,patlist,begin+1,mm,
                               sname);
 
 	if(hits)
@@ -349,7 +351,7 @@ static AjPList silent_mismatch(const AjPStr sstr, AjPList relist,
  	else
         {
 	    mm = 1;
-	    hits = embPatBruteForce(sstr,str,ajFalse,ajFalse,&patlist,
+	    hits = embPatBruteForce(sstr,str,ajFalse,ajFalse,patlist,
 				  begin+1,mm,sname);
 
 	    if(hits)
@@ -469,13 +471,12 @@ static ajint silent_restr_read(AjPList *relist,const AjPStr enzymes)
 **
 ** @param [r] seq [const AjPStr] sequence
 ** @param [r] match [const EmbPMatMatch] pattern match
-** @param [r] rlp [Aconst jPRinfo] RE information
+** @param [r] rlp [const AjPRinfo] RE information
 ** @param [r] begin [ajint] start position
 ** @param [r] radj [ajint] reverse numbering adjustment
 ** @param [r] rev [AjBool] do complement
 ** @param [r] end [ajint] end position
-** @param [w] res [AjPSilent*] Undocumented
-** @return [AjBool] true if silent found
+** @return [AjPSilent] silent mutation object or NULL if not found
 ** @@
 ******************************************************************************/
 

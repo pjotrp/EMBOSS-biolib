@@ -200,7 +200,8 @@ typedef struct NODE
     ajint  BOT;
     ajint  LEFT;
     ajint  RIGHT;
-}  vertex, *vertexptr;
+}  vertex;
+#define vertexptr vertex*
 
 
 
@@ -239,9 +240,11 @@ typedef struct ONE
 {
     ajint COL;
     struct ONE  *NEXT;
-} pair, *pairptr;
+} pair;
+#define pairptr pair*
 
-pairptr *row, z; 			/* for saving used aligned pairs */
+pairptr *row; 			/* for saving used aligned pairs */
+pairptr z; 			/* for saving used aligned pairs */
 
 
 
@@ -565,7 +568,8 @@ static ajint matcher_Sim(AjPAlign align,
 
     for(i=1; i<ajSeqLen(seq);i++)
     {
-	pairptr this,next;
+	pairptr this;
+	pairptr next;
 	if(row[i])
 	{
 	    this = row[i];

@@ -115,13 +115,13 @@ int main(int argc, char **argv)
 	ajStrToUpper(&text);
 	adj = begin+end+1;
 
-	embPatFuzzSearch(type,begin,pattern,seqname,text,&l,
+	embPatFuzzSearch(type,begin,pattern,seqname,text,l,
 			 plen,mismatch,amino,carboxyl,buf,off,sotable,
 			 solimit,regexp,skipm,&hits,m,&tidy);
 	if(sc)
 	{
 	    ajSeqReverseStr(&text);
-	    embPatFuzzSearch(type,begin,pattern,seqname,text,&l,
+	    embPatFuzzSearch(type,begin,pattern,seqname,text,l,
 			     plen,mismatch,amino,carboxyl,buf,off,sotable,
 			     solimit,regexp,skipm,&thits,m,&tidy);
 	    ajSeqReverseStr(&text);

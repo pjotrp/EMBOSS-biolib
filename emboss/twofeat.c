@@ -46,7 +46,8 @@ typedef struct SHit
     ajint Start;
     ajint End;
     ajint distance;	   
-} OHit, *PHit;
+} OHit;
+#define PHit OHit*
 
 
  	  

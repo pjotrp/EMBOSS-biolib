@@ -23,7 +23,7 @@
 
 
 
-static AjPStr demotable_getsubfromstring(AjPStr line, ajint which);
+static AjPStr demotable_getsubfromstring(const AjPStr line, ajint which);
 static void demotable_typePrint (const void* key, void** value, void* cl);
 static void demotable_freetype (const void** key, void** value, void* cl);
 
@@ -99,13 +99,13 @@ int main(int argc, char **argv)
 **
 ** Undocumented.
 **
-** @param [r] line [AjPStr] Undocumented
+** @param [r] line [const AjPStr] Undocumented
 ** @param [r] which [ajint] Undocumented
 ** @return [AjPStr] Undocumented
 ** @@
 ******************************************************************************/
 
-static AjPStr demotable_getsubfromstring(AjPStr line, ajint which)
+static AjPStr demotable_getsubfromstring(const AjPStr line, ajint which)
 {
     static AjPRegexp gffexp = NULL;
     AjPStr temp = NULL;

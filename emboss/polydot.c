@@ -31,7 +31,7 @@ static ajint which;
 
 
 
-static void polydot_drawPlotlines(void **x, void *cl);
+static void polydot_drawPlotlines(void *x, void *cl);
 static void polydot_plotMatches(const AjPList list);
 
 
@@ -228,13 +228,13 @@ int main(int argc, char **argv)
 **
 ** Undocumented.
 **
-** @param [r] x [void**] Undocumented
+** @param [r] x [void*] Undocumented
 ** @param [r] cl [void*] Undocumented
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void polydot_drawPlotlines(void **x, void *cl)
+static void polydot_drawPlotlines(void *x, void *cl)
 {
     EmbPWordMatch p;
     PLFLT x1;
@@ -242,14 +242,14 @@ static void polydot_drawPlotlines(void **x, void *cl)
     PLFLT x2;
     PLFLT y2;
 
-    p = (EmbPWordMatch)*x;
+    p = (EmbPWordMatch)x;
 
     lines[which]++;
-    pts[which]+= (*p).length;
-    x1 = x2 = ((*p).seq1start)+xstart;
-    y1 = y2 = (PLFLT)((*p).seq2start)+ystart;
-    x2 += (*p).length;
-    y2 += (PLFLT)(*p).length;
+    pts[which]+= p->length;
+    x1 = x2 = (p->seq1start)+xstart;
+    y1 = y2 = (PLFLT)(p->seq2start)+ystart;
+    x2 += p->length;
+    y2 += (PLFLT)p->length;
 
     ajGraphLine(x1, y1, x2, y2);
 

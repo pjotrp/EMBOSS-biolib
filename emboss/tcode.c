@@ -67,7 +67,8 @@ typedef struct AjSTestcode
     AjPFloat cprobT;
     AjPFloat pweights;
     AjPFloat cweights;
-} AjOTestcode,*AjPTestcode;
+} AjOTestcode;
+#define AjPTestcode AjOTestcode*
 
 
 

@@ -35,7 +35,8 @@ typedef struct EmbSMatPrints
     ajint    *thresh;
     ajint    *max;
     PMAT_INT *matrix;
-} EmbOMatPrints, *EmbPMatPrints;
+} EmbOMatPrint;
+#define EmbPMatPrints EmbOMatPrint*
 
 /* @data EmbPMatMatch *********************************************************
 **
@@ -94,7 +95,8 @@ typedef struct EmbSMatMatch
     ajint    cut3;
     ajint    cut4;
     AjPStr iso;
-} EmbOMatMatch, *EmbPMatMatch;
+} EmbOMatMatch;
+#define EmbPMatMatch EmbOMatMatch*
 
 
 

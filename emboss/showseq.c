@@ -228,6 +228,8 @@ int main(int argc, char **argv)
 	begin = ajSeqBegin(seq)-1;
 	end   = ajSeqEnd(seq)-1;
 
+	restrictlist = ajListNew();
+
 	/* do the name and description */
 	if(nameseq)
 	{
@@ -298,11 +300,11 @@ int main(int argc, char **argv)
 	    hits = embPatRestrictMatch(seq, 1, ajSeqLen(seq), enzfile, enzymes,
 				       sitelen, plasmid, ambiguity, mincuts,
 				       maxcuts, blunt, sticky, commercial,
-				       &restrictlist);
+				       restrictlist);
 	    if(hits)
 	    {
 		/* this bit is lifted from printHits */
-		embPatRestrictRestrict(&restrictlist, hits, !limit,
+		embPatRestrictRestrict(restrictlist, hits, !limit,
 				       ajFalse);
 		if(limit)
 		    embPatRestrictPreferred(restrictlist,retable);

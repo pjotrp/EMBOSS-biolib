@@ -46,12 +46,13 @@ typedef struct sgff
     ajint  start;
     ajint  end;
     ajint  score;
-} gff,*gffptr;
+} gff;
+#define gffptr gff*
 
 
 
 
-static gffptr demolist_creategff(AjPStr line);
+static gffptr demolist_creategff(const AjPStr line);
 static ajint demolist_typecomp(const void *a, const void *b);
 static ajint demolist_startcomp(const void *a, const void *b);
 static void  demolist_dumpOut(void **x, void *cl);
@@ -247,12 +248,12 @@ static void  demolist_freegff (void **x, void *cl)
 ** Not important to understand for demo but this function
 ** merely passes back a gff struct
 **
-** @param [r] line [AjPStr] Undocumented
+** @param [r] line [const AjPStr] Undocumented
 ** @return [gffptr] Undocumented
 ** @@
 ******************************************************************************/
 
-static gffptr demolist_creategff(AjPStr line)
+static gffptr demolist_creategff(const AjPStr line)
 {
     static AjPRegexp gffexp = NULL;
     gffptr gffnew = NULL;

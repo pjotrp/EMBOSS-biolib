@@ -491,9 +491,9 @@ int main(int argc, char **argv)
 ** Undocumented.
 **
 ** @param [u] ofile [AjPFile] Undocumented
-** @param [r] genome [AjPSeq] Undocumented
-** @param [r] est [AjPSeq] Undocumented
-** @param [r] ge [EmbPEstAlign] Undocumented
+** @param [r] genome [const AjPSeq] Undocumented
+** @param [r] est [const AjPSeq] Undocumented
+** @param [r] ge [const EmbPEstAlign] Undocumented
 ** @param [r] match [ajint] Undocumented
 ** @param [r] mismatch [ajint] Undocumented
 ** @param [r] gap_penalty [ajint] Undocumented
