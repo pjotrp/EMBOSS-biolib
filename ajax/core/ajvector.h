@@ -39,6 +39,9 @@ extern "C"
 **
 ** @cast aj3dVectorLength return length of vector
 **
+** @attr x [float] x coordinate
+** @attr y [float] y coordinate
+** @attr z [float] z coordinate
 ** @@
 ******************************************************************************/
 
@@ -57,7 +60,7 @@ typedef struct AjS3dVector
 /* =================== All functions in alphabetical order ================= */
 /* ========================================================================= */
 
-/* aj3dvector.h () $Date: 2003/10/29 10:37:32 $                    DJC Oct03 */
+/* aj3dvector.h () $Date: 2004/02/03 12:47:44 $                    DJC Oct03 */
 
 float       aj3dVectorAngle(AjP3dVector ajp3dVectorFirst,
 			    AjP3dVector ajp3dVectorSecond);

@@ -21,6 +21,10 @@ extern "C"
 **
 ** NUCLEUS data structure for pattern matches
 **
+** @attr number [ajint] Number of matches
+** @attr start [ajint*] Match start positions
+** @attr len [ajint*] Match lengths
+** @@
 ******************************************************************************/
 
 typedef struct EmbSPatMatch {
@@ -34,25 +38,41 @@ typedef struct EmbSPatMatch {
 **
 ** NUCLEUS data structure for pattern matches
 **
+** @attr cod [AjPStr] Restriction Enzyme name
+** @attr pat [AjPStr] Recognition site
+** @attr bin [AjPStr] Binary converted site
+** @attr len [ajint] Pattern length
+** @attr blunt [AjBool] Blunt true, sticky false
+** @attr ncuts [ajint] Number of cuts
+** @attr cut1 [ajint] First  3' cut
+** @attr cut2 [ajint] First  5' cut
+** @attr cut3 [ajint] Second 3' cut
+** @attr cut4 [ajint] Second 5' cut
+** @attr org [AjPStr] Organism
+** @attr iso [AjPStr] Isoschizomers
+** @attr meth [AjPStr] Methylation
+** @attr sou [AjPStr] Source
+** @attr sup [AjPStr] Suppliers
+** @@
 ******************************************************************************/
 
 typedef struct EmbSPatRestrict
 {
-    AjPStr cod;				/* RE name                         */
-    AjPStr pat;				/* Recognition site                */
-    AjPStr bin;				/* Binary converted site           */
-    ajint    len;			/* Pattern length                  */
-    AjBool blunt;			/* Blunt true, sticky false        */
-    ajint    ncuts;			/* Number of cuts                  */
-    ajint    cut1;			/* First  3' cut                   */
-    ajint    cut2;			/* First  5' cut                   */
-    ajint    cut3;			/* Second 3' cut		   */
-    ajint    cut4;			/* Second 5' cut                   */
-    AjPStr org;				/* Organism                        */
-    AjPStr iso;                         /* Isoschizomers                   */
-    AjPStr meth;                        /* Methylation                     */
-    AjPStr sou;                         /* Source                          */
-    AjPStr sup;                         /* Suppliers                       */
+    AjPStr cod;
+    AjPStr pat;
+    AjPStr bin;
+    ajint    len;
+    AjBool blunt;
+    ajint    ncuts;
+    ajint    cut1;
+    ajint    cut2;
+    ajint    cut3;
+    ajint    cut4;
+    AjPStr org;
+    AjPStr iso;
+    AjPStr meth;
+    AjPStr sou;
+    AjPStr sup;
 } EmbOPatRestrict, *EmbPPatRestrict;
 
 
@@ -62,6 +82,9 @@ typedef struct EmbSPatRestrict
 **
 ** NUCLEUS data structure for nodes in Baeza-Yates & Perleberg algorithm
 **
+** @attr offset [ajint] Offset
+** @attr next [struct EmbSPatBYPNode*] Pointer to next node
+** @@
 ******************************************************************************/
 
 typedef struct EmbSPatBYPNode

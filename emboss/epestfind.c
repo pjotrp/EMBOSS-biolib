@@ -44,25 +44,32 @@
 
 
 
-/* @data PestfindPData ************************************************
+/* @datastatic PestfindPData **************************************************
 ** Pestfind data object.
 ** Holds results for application pestfind.
 ** PestfindPData is implemented as a pointer to a C data structure.
 ** @alias PestfindSData
 ** @alias PestfindOData
+**
+** @attr Type [ajint] 1 for potential, 2 for poor and 3 for invalid motifs
+** @attr Begin [ajint] Start position of PEST motif
+** @attr End [ajint] End position of PEST motif
+** @attr Length [ajint] Length of PEST motif
+** @attr Pscore [double] PEST score
+** @attr Hydind [double] Hydrophobicity index
+** @attr Pstpct [double] Mass percent (w/w) of DEPST
 ** @@
-********************************************************************/
+******************************************************************************/
 
 typedef struct PestfindSData
 {
-    /* Type = 1 for potential, 2 for poor and 3 for invalid motifs */
     ajint Type;
-    ajint Begin;		    /* Start position of PEST motif */
-    ajint End;			    /* End position of PEST motif */
-    ajint Length;		    /* Length of PEST motif */
-    double Pscore;		    /* PEST score */
-    double Hydind;		    /* Hydrophobicity index */
-    double Pstpct;		    /* Mass percent (w/w) of DEPST */
+    ajint Begin;
+    ajint End;
+    ajint Length;
+    double Pscore;
+    double Hydind;
+    double Pstpct;
 } PestfindOData, *PestfindPData;
 
 

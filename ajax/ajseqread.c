@@ -38,6 +38,10 @@ static AjBool seqInFormatSet = AJFALSE;
 ** @attr Name [char*] Format name
 ** @attr Try [AjBool] If true, try for an unknown input. Duplicate names
 **                    and read-anything formats are set false
+** @attr Protein [AjBool] True if suitable for protein
+** @attr Nucleotide [AjBool] True if suitable for nucleotide
+** @attr Feature [AjBool] True if includes parsable feature data
+** @attr Gap [AjBool] True if allows gap characters
 ** @attr Multiset [AjBool] If true, supports multiple sequence sets
 **                         If false, multiple sets must be in separate files
 ** @attr Read [(AjBool*)] Input function, returns ajTrue on success
@@ -73,6 +77,7 @@ typedef struct SeqSInFormat
 ** @attr Count [ajint] Undocumented
 ** @attr Nseq [ajint] Number of sequences
 ** @attr Bufflines [ajint] Undocumented
+** @attr Nexus [AjPNexus] Nexus alignment data
 ** @@
 ******************************************************************************/
 

@@ -185,6 +185,14 @@ extern "C"
 **
 ** @other AjPSeq uses AjPStr to store most values
 ** @other AjPStrTok parses AjPStr with delimiters
+**
+** @attr Res [ajint] Reserved bytes (usable for expanding in place)
+** @attr Len [ajint] Length of current string, excluding NULL at end
+** @attr Use [ajint] Use count - 1 for single reference, more if several
+**                   pointers share the same string.
+**                   Must drop to 0 before deleting. Modifying means making
+**                  a new string if not 1.
+** @attr Ptr [char*] The string, as a NULL-terminated C string.
 ** @@
 ******************************************************************************/
 
@@ -211,6 +219,10 @@ typedef struct AjSStr {
 ** @cast ajStrIterDone  Tests whether iteration is complete
 ** @cast ajStrIterGetCC   returns the character from the iterator
 ** @cast ajStrIterGetC   returns the character* from the iterator
+**
+** @attr Start [char*] Starting string pointer
+** @attr End [char*] Final string pointer (NULL character position)
+** @attr Ptr [char*] Current string pointer
 ** @@
 ******************************************************************************/
 typedef struct AjSStrIter {
@@ -238,6 +250,10 @@ typedef struct AjSStrIter {
 **                 next token.
 **
 **                 Parsing is initialized with ajStrTokenInit
+**
+** @attr String [AjPStr] String
+** @attr Delim [AjPStr] Delimiter set for ajStrToken
+** @attr Pos [ajint] Position in string
 ** @@
 ******************************************************************************/
 

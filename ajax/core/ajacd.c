@@ -216,6 +216,7 @@ static AcdOAttrAlias acdAttrAlias[] = {
 **
 ** @attr Name [char*] Attribute name
 ** @attr Type [enum AcdEValtype] Type code
+** @attr Default [char*] Default value as a string for help and documentation
 ** @attr Help [char*] Descriptive short text for documentation
 ** @@
 ******************************************************************************/
@@ -241,7 +242,7 @@ typedef struct AcdSAttr
 ** @alias AcdOQual
 **
 ** @attr Name [char*] Qualifier name
-** @attr Default [char*] Default value as a string
+** @attr Default [char*] Default value as a string for help and documentation
 ** @attr Type [char*] Type boolean, integer, float or string
 ** @attr Help [char*] Help text for documentation and for -help output
 ** @@
@@ -289,13 +290,16 @@ typedef struct AcdSTableItem
 
 /* @datastatic AcdPAcd ********************************************************
 **
-** AJAX Command Definition component
+** AJAX Command Definition item data.
 **
 ** ACDs are built as an ACD file is parsed, and are processed as a
 ** list in sequential order.
 **
 ** ACDs contain type information. Some functions will only work on certain
 ** types of ACDs.
+**
+** All ACD items are in a list. The base ACD item points to the next,
+** and so on until the Next pointer is NULL.
 **
 ** There is currently no destructor. No need for one at present.
 **
@@ -304,6 +308,35 @@ typedef struct AcdSTableItem
 ** @new acdNewAppl Creates an ACD application
 ** @new acdNewVar Creates an ACD variable
 ** @new acdNewAcd General constructor
+**
+** @attr Next [struct AcdSAcd*] Pointer to next ACD item
+** @attr Name [AjPStr] ACD item name
+** @attr Token [AjPStr] Command line qualifier (usually the same as Name)
+** @attr PNum [ajint] Parameter number, or zero if not a parameter
+** @attr Level [enum AcdELevel] ACD type class (qual/param, var, appl, etc.)
+** @attr Type [ajint] Index into acdType or acdKeywords
+** @attr NAttr [ajint] Number of ACD type-specific attributes
+** @attr AttrStr [AjPStr*] Definitions of ACD type-specific attributes
+** @attr SAttr [ajint] Number of calculated attributes for this ACD type
+** @attr SetAttr [AcdPAttr] Definitions of calculated attributes
+** @attr SetStr [AjPStr*] Values for the calculated attributes (SetAttr)
+** @attr DefStr [AjPStr*] Values for the default attributes
+** @attr Defined [AjBool] Set when a value is defined by the user
+** @attr Used [ajint] Use count, saved for a possible diagnostic message to
+**                    catch ACD items declared and never referenced by the
+**                    calling program.
+** @attr Assoc [AjBool] ajTrue if this is an associated qualifier, listed
+**                      in the AssocQuals structure of another ACD item
+** @attr LineNum [ajint] Source file line number of definition start,
+**                       saved for use in diagnostic messages 
+** @attr AssocQuals [struct AcdSAcd*] Associated qualifiers list, or
+**                                    NULL if there are none for this ACD type
+** @attr StdPrompt [AjPStr] Standard prompt set for some types by
+**                          an acdPrompt function
+** @attr OrigStr [AjPStr] Original string saved for later processing
+** @attr ValStr [AjPStr] Value as a string for printing
+** @attr Value [void*] Value as a pointer to the native object to be
+**                     returned by an ajAcdGet function call
 ** @@
 ******************************************************************************/
 
@@ -313,20 +346,20 @@ typedef struct AcdSAcd
     AjPStr Name;
     AjPStr Token;
     ajint PNum;
-    enum AcdELevel Level;		/* qual/param var appl */
-    ajint Type;			    /* acdType or acdKeywords index */
+    enum AcdELevel Level;
+    ajint Type;
     ajint NAttr;
-    AjPStr* AttrStr;		   /* type attribs: qual/param only */
-    ajint SAttr;		    /* specially set for some types */
+    AjPStr* AttrStr;
+    ajint SAttr;
     AcdPAttr SetAttr;
     AjPStr* SetStr;
-    AjPStr* DefStr;			/* default attrib values */
-    AjBool Defined;			/* set when defined by user */
+    AjPStr* DefStr;
+    AjBool Defined;
     ajint Used;
     AjBool Assoc;
     ajint LineNum;
     struct AcdSAcd* AssocQuals;
-    AjPStr StdPrompt;			/* Standard prompt if none is given */
+    AjPStr StdPrompt;
     AjPStr OrigStr;
     AjPStr ValStr;
     void* Value;
@@ -393,13 +426,14 @@ AcdOSection acdSecAdvanced[] =
 ** @alias AcdSType
 ** @alias AcdOType
 **
-** @attr Name [char*] Attribute type
-** @attr Group [char*] Attribute group
+** @attr Name [char*] Attribute type name
+** @attr Group [char*] Attribute group name
 ** @attr Section [AcdPSection] Expected section
 ** @attr Attr [AcdPAttr] Type-specific attributes
-** @attr TypeSet [(void*)] function to set value and prompt user
-** @attr Quals [AcdPQual] Type-specific qualifiers
-** @attr Usecount [ajint*] Number of times this type has been used
+** @attr TypeSet [(void*)] Function to set value and prompt user
+** @attr Quals [AcdPQual] Type-specific associated qualifiers
+** @attr Stdprompt [AjBool] Expect a standard prompt
+** @attr UseCount [ajint*] Number of times this type has been used
 ** @attr Valid [char*] Valid data help message and description for
 **                     documentation
 ** @@
@@ -407,15 +441,15 @@ AcdOSection acdSecAdvanced[] =
 
 typedef struct AcdSType
 {
-    char* Name;				/* type name */
-    char* Group;			/* group name */
-    AcdPSection Section;		/* section */
-    AcdPAttr Attr;			/* type-specific attributes */
-    void (*TypeSet)(AcdPAcd thys); /* func. to set value, prompt user */
-    AcdPQual Quals;	           /* type-specific associated qualifiers */
-    AjBool Stdprompt;			/* Expect a standard prompt */
-    ajint* UseCount;			/* Use count for acdvalid */
-    char* Valid;			/* Valid data help message */
+    char* Name;
+    char* Group;
+    AcdPSection Section;
+    AcdPAttr Attr;
+    void (*TypeSet)(AcdPAcd thys);
+    AcdPQual Quals;
+    AjBool Stdprompt;
+    ajint* UseCount;
+    char* Valid;
 } AcdOType;
 
 #define AcdPType AcdOType*
@@ -1737,8 +1771,8 @@ static AcdOAttr acdCalcTree[] =
 **
 ** @attr Name [char*] Keyword name
 ** @attr Stage [AcdEStage] Enumerated stage 
-** @attr Attr [AcdPAttr] Type-specifric attributes 
-** @attr KetSet [(void*)] function to set value and prompt user
+** @attr Attr [AcdPAttr] Type-specific attributes 
+** @attr KeySet [(void*)] Function to set value and prompt user
 ** @@
 ******************************************************************************/
 
@@ -1746,8 +1780,8 @@ typedef struct AcdSKey
 {
     char* Name;
     AcdEStage Stage;
-    AcdPAttr Attr;			/* type-specific attributes */
-    void (*KeySet)(AcdPAcd thys); /* func. to set value, prompt user */
+    AcdPAttr Attr;
+    void (*KeySet)(AcdPAcd thys);
 } AcdOKey;
 
 #define AcdPKey AcdOKey*

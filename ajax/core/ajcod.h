@@ -19,17 +19,23 @@ extern "C"
 ** @alias AjSCod
 ** @alias AjOCod
 **
+** @attr name [AjPStr] Name of codon file
+** @attr aa [ajint*] Amino acid represented by codon
+** @attr num [ajint*] Number of codons
+** @attr tcount [double*] Codons per thousand
+** @attr fraction [double*] Fraction of amino acids of this type
+** @attr back [ajint*] Index of favoured amino acid
 ** @@
 ******************************************************************************/
 
 typedef struct AjSCod
 {
-    AjPStr name;		/* Name of codon file                   */
-    ajint *aa;			/* Amino acid represented by codon      */
-    ajint *num;			/* Number of codons                     */
-    double *tcount;		/* Codons per thousand                  */
-    double *fraction;		/* Fraction of amino acids of this type */
-    ajint *back;			/* Index of favoured amino acid         */
+    AjPStr name;
+    ajint *aa;
+    ajint *num;
+    double *tcount;
+    double *fraction;
+    ajint *back;
 } AjOCod, *AjPCod;
 
 

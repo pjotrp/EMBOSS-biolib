@@ -63,10 +63,9 @@
 typedef struct AjSOrder
 {
     AjPSeq seq;
-    /* total of similarity scores to consensus for sort order */
     ajint similarity;
-    ajint idcount;	   /* count of identical residues for stats */
-    ajint simcount;	     /* count of similar residues for stats */
+    ajint idcount;
+    ajint simcount;
 } AjOOrder, *AjPOrder;
 
 

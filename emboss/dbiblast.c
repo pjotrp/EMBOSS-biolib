@@ -141,32 +141,32 @@ typedef struct SMemFile
 
 typedef struct SBlastDb
 {
-  ajint DbType;			/* database type indicator */
-  ajint DbFormat;		/* database format (version) indicator */
-  ajint IsProtein;		/* 1 for protein */
-  ajint IsBlast2;		/* 1 for blast2, 0 for blast1 */
-  ajint TitleLen;		/* length of database title */
-  ajint DateLen;		/* length of database date string */
-  ajint LineLen;		/* length of database lines */
-  ajint HeaderLen;		/* bytes before tables start */
-  ajint Size;			/* number of database entries */
-  ajint CompLen;		/* length of compressed seq file */
-  ajint MaxSeqLen;		/* max. entry length */
-  ajint TotLen;			/* number of bases or residues in database */
-  ajint CleanCount;		/* count of cleaned 8mers */
-  ajint TopCmp;			/* bytes before compressed table starts */
-  ajint TopSrc;			/* bytes before source table starts */
-  ajint TopHdr;			/* bytes before headers table starts */
-  ajint TopAmb;			/* bytes before ambiguity table starts */
-  ajint IdType;			/* ID type */
-  ajint IdPrefix;		/* ID prefix type */
-  PMemFile TFile;		/* table of offsets, also DB info */
-  PMemFile HFile;		/* description lines */
-  PMemFile SFile;		/* binary sequence data */
-  PMemFile FFile;		/* source sequence data */
-  AjPStr Title;			/* database title */
-  AjPStr Date;			/* database date */
-  AjPStr Name;			/* database base file name */
+  ajint DbType;
+  ajint DbFormat;
+  ajint IsProtein;
+  ajint IsBlast2;
+  ajint TitleLen;
+  ajint DateLen;
+  ajint LineLen;
+  ajint HeaderLen;
+  ajint Size;
+  ajint CompLen;
+  ajint MaxSeqLen;
+  ajint TotLen;
+  ajint CleanCount;
+  ajint TopCmp;
+  ajint TopSrc;
+  ajint TopHdr;
+  ajint TopAmb;
+  ajint IdType;
+  ajint IdPrefix;
+  PMemFile TFile;
+  PMemFile HFile;
+  PMemFile SFile;
+  PMemFile FFile;
+  AjPStr Title;
+  AjPStr Date;
+  AjPStr Name;
 } OBlastDb;
 
 #define PBlastDb OBlastDb*

@@ -33,6 +33,11 @@
 ** @attr Name [char*] format name
 ** @attr Single [AjBool] Write each sequence to a new file if true (e.g. GCG)
 ** @attr Save [AjBool] Save in memory and write at end (e.g. MSF alignments)
+** @attr Protein [AjBool] True if protein data is supported
+** @attr Nucleotide [AjBool] True if nucleotide data is supported
+** @attr Feature [AjBool] True if feature data can be written
+** @attr Gap [AjBool] True if gap characters are supported
+** @attr Multiset [AjBool] True if sets of sets (seqsetall) are supported
 ** @attr Write [(void*)] Function to write the format
 ** @@
 ******************************************************************************/
@@ -115,16 +120,6 @@ typedef struct SeqSSeqFormat
     char matchchar;
     char endstr[20];
     char leftstr[20];
-
-    /* obsolete
-       AjBool numtop;
-       AjBool numbot;
-       AjBool nametop;
-       
-       char padding[2];
-       ajint interline;
-       */
-
 } SeqOSeqFormat;
 
 #define SeqPSeqFormat SeqOSeqFormat*

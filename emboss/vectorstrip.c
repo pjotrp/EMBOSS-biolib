@@ -34,6 +34,7 @@
 **
 ** @attr patstr [AjPStr] Undocumented
 ** @attr origpat [AjPStr] Undocumented
+** @attr type [ajint] Undocumented
 ** @attr len [ajint] Undocumented
 ** @attr real_len [ajint] Undocumented
 ** @attr amino [AjBool] Undocumented
@@ -62,7 +63,7 @@ typedef struct clip_pattern
     ajuint solimit;
     EmbOPatBYPNode off[AJALPHA];
     AjPStr re;
-    ajint **skipm;
+    ajint** skipm;
     void* tidy;
 }*CPattern;
 

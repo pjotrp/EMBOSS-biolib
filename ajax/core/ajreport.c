@@ -40,7 +40,7 @@
 **
 ** Ajax feature report formats 
 **
-** @attr Name [char *] Format name
+** @attr Name [char*] Format name
 ** @attr Mintags [ajint] Minimum number of special tags needed
 ** @attr Showseq [AjBool] ajTrue if sequence is to be included
 ** @attr Nuc [AjBool] ajTrue if format can work with nucleotide sequences

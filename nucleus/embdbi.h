@@ -11,12 +11,16 @@ extern "C"
 ** NUCLEUS internal structure for database indexing applications
 ** to store field tokens with links to the entry index number.
 **
+** @attr field [char*] field token
+** @attr entry [char*] entry name
+** @attr nid [ajint] entry number
+** @@
 ******************************************************************************/
 
 typedef struct EmbSField {
-  char* field;			/* field token */
-  char* entry;			/* entry name */
-  ajint nid;			/* entry number */
+  char* field;
+  char* entry;
+  ajint nid;
 } EmbOField, *EmbPField;
 
 /* @data EmbPEntry ************************************************************
@@ -25,15 +29,22 @@ typedef struct EmbSField {
 ** to store an entry id with a list of field tokens and file
 ** positions for writing to the index files.
 **
+** @attr entry [char*] entry name
+** @attr filenum [ajint] record in division file
+** @attr rpos [ajint] entry offset in data file
+** @attr spos [ajint] entry offset in sequence file
+** @attr nfield [ajint*] number of tokens for each field
+** @attr field [char***] array of tokens for each field
+** @@
 ******************************************************************************/
 
 typedef struct EmbSEntry {
-  char* entry;			/* entry name */
-  ajint filenum;		/* record in division file */
-  ajint rpos;			/* entry offset in data file */
-  ajint spos;			/* entry offset in sequence file */
-  ajint* nfield;		/* number of tokens for each field */
-  char*** field;		/* array of tokens for each field */
+  char* entry;
+  ajint filenum;
+  ajint rpos;
+  ajint spos;
+  ajint* nfield;
+  char*** field;
 } EmbOEntry, *EmbPEntry;
 
 ajint     embDbiCmpId (const void* a, const void* b);

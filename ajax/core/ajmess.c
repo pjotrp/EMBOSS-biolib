@@ -201,10 +201,9 @@ static void messDump(const char *message);
 
 typedef struct MessSErrorInfo
 {
-    char* progname;	     /* Name of executable reporting error. */
-    char* filename;		   /* Filename where error reported */
-    ajint line_num;		    /* line number of file where error
-				       reported. */
+    char* progname;
+    char* filename;
+    ajint line_num;
 } MessOErrorInfo;
 
 #define MessPErrorInfo MessOErrorInfo*

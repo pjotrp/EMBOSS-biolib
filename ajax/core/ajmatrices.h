@@ -12,6 +12,13 @@ extern "C"
 **
 ** @alias AjSMatrix
 ** @alias AjOMatrix
+**
+** @attr Size [ajint] Matrix size (size of 2D array)
+** @attr Name [AjPStr] Matrix name
+** @attr Codes [AjPStr*] Row/column codes
+** @attr Matrix [ajint**] Matrix as 2D array
+** @attr Cvt [AjPSeqCvt] Conversion table
+** @@
 ******************************************************************************/
 
 typedef struct AjSMatrix {
@@ -20,7 +27,8 @@ typedef struct AjSMatrix {
   AjPStr* Codes;
   ajint** Matrix;
   AjPSeqCvt Cvt;
-} AjOMatrix, *AjPMatrix;
+} AjOMatrix;
+#define AjPMatrix AjOMatrix*
 
 /* @data AjPMatrixf ***********************************************************
 **
@@ -29,6 +37,13 @@ typedef struct AjSMatrix {
 **
 ** @alias AjSMatrixf
 ** @alias AjOMatrixf
+**
+** @attr Size [ajint] Matrix size (size of 2D array)
+** @attr Name [AjPStr] Matrix name
+** @attr Codes [AjPStr*] Row/column codes
+** @attr Matrixf [float**] Matrix as 2D array
+** @attr Cvt [AjPSeqCvt] Conversion table
+** @@
 ******************************************************************************/
 
 typedef struct AjSMatrixf {
@@ -37,7 +52,8 @@ typedef struct AjSMatrixf {
   AjPStr* Codes;
   float** Matrixf;
   AjPSeqCvt Cvt;
-} AjOMatrixf, *AjPMatrixf;
+} AjOMatrixf;
+#define AjPMatrixf AjOMatrixf*
 
 ajint**    ajMatrixArray (AjPMatrix thys);
 void       ajMatrixChar (AjPMatrix thys, ajint i, AjPStr *label);

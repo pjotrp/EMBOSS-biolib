@@ -5,6 +5,8 @@ $errfunc = 0;
 $errcount = 0;
 $totcount = 0;
 $totfile = 0;
+$filelib = "unknown";
+$filename = "unknown";
 
 %badfiles = ();
 
@@ -32,10 +34,21 @@ while (<>) {
 	$newfunc = 1;
     }
 
+    elsif (/^Typedef data type (\S+)/) {
+	$funcname = $1;
+	$newfunc = 1;
+    }
+
     if (/^set pubout \'([^\']+)\' lib \'([^\']+)\'/) {
 	$newfilename = $1;
 	$newfilelib = $2;
 	$newfile = 1;
+	if (/ type \'([^\']+)\'/) {
+	    $newfiletype = $1;
+	}
+	else {
+	    $newfiletype = "";
+	}
     }
 
     if ($newfunc || $newfile) {
@@ -54,6 +67,11 @@ while (<>) {
 	}
 	$errfile = 0;
 	$filename = $newfilename;
+	if ($newfiletype ne "") {
+	    if ($newfiletype eq "include") {$filename .= ".h"}
+	    elsif ($newfiletype eq "source") {$filename .= ".c"}
+	    else {$filename .= ".$newfiletype"}
+	}
 	$filelib = $newfilelib;
     }
 

@@ -11,8 +11,11 @@ extern "C"
 
 /* @data EmbPMolFrag **********************************************************
 **
-** Nucleus seqeunce molecular fragment object.
+** Nucleus sequence molecular fragment object.
 **
+** @attr begin [ajint] Start
+** @attr end [ajint] End
+** @attr mwt [double] Molecular weight
 ** @@
 ******************************************************************************/
 

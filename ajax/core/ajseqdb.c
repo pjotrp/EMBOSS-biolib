@@ -279,41 +279,41 @@ typedef struct SeqSCdTrg
 
 typedef struct SeqSCdQry
 {
-    AjPStr divfile;			/* division.lkp */
-    AjPStr idxfile;			/* entryname.idx */
-    AjPStr datfile;			/* main data reference */
-    AjPStr seqfile;			/* sequence */
-    AjPStr tblfile;			/* BLAST table */
-    AjPStr srcfile;			/* BLAST FASTA source data */
+    AjPStr divfile;
+    AjPStr idxfile;
+    AjPStr datfile;
+    AjPStr seqfile;
+    AjPStr tblfile;
+    AjPStr srcfile;
 
-    SeqPCdFile dfp;			/* division.lkp */
-    SeqPCdFile ifp;			/* entryname.idx */
-    SeqPCdFile trgfp;			/* acnum.trg */
-    SeqPCdFile hitfp;			/* acnum.hit */
-    SeqPCdTrg trgLine;			/* acnum input line */
+    SeqPCdFile dfp;
+    SeqPCdFile ifp;
+    SeqPCdFile trgfp;
+    SeqPCdFile hitfp;
+    SeqPCdTrg trgLine;
 
-    char* name;			        /* filename from division.lkp */
-    ajint nameSize;		        /* division.lkp filename length */
-    ajint div;				/* current division number */
-    ajint maxdiv;			/* max division number */
+    char* name;
+    ajint nameSize;
+    ajint div;
+    ajint maxdiv;
 
-    ajint type;				/* BLAST type */
-    ajint idnum;		        /* current BLAST entry offset */
+    ajint type;
+    ajint idnum;
 
-    AjPFile libr;	     /* main data reference or BLAST header */
-    AjPFile libs;	   /* sequence or BLAST compressed sequence */
-    AjPFile libt;			/* blast table */
-    AjPFile libf;			/* blast FASTA source data */
+    AjPFile libr;
+    AjPFile libs;
+    AjPFile libt;
+    AjPFile libf;
 
-    ajint TopHdr;		        /* BLAST table headers offset */
-    ajint TopCmp;		        /* BLAST table sequence offset */
-    ajint TopAmb;		        /* BLAST table ambiguities offset */
-    ajint TopSrc;		        /* BLAST table FASTA source offset */
-    ajint Size;				/* BLAST database size */
+    ajint TopHdr;
+    ajint TopCmp;
+    ajint TopAmb;
+    ajint TopSrc;
+    ajint Size;
 
-    AjPList List;			/* list of entries */
-    AjBool* Skip;		    /* skip file(s) in division.lkp */
-    SeqPCdIdx idxLine;			/* entryname.idx input line */
+    AjPList List;
+    AjBool* Skip;
+    SeqPCdIdx idxLine;
 } SeqOCdQry;
 
 #define SeqPCdQry SeqOCdQry*

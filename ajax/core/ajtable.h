@@ -42,6 +42,13 @@ struct binding {
 ** @cast ajTableGet Returns the value for a given key.
 ** @cast ajTableLength Returns the number of keys in a table.
 ** @use ajTableTrace Writes debug messages to trace the contents of a table.
+**
+** @attr size [ajint] Size - number of hash buckets
+** @attr cmp [(ajint*)] Compare function (0 for match, -1 or +1 if not matched)
+** @attr hash [(unsigned*)] Hash function
+** @attr length [ajint] Number of entries
+** @attr timestamp [unsigned] Time stamp
+** @attr buckets [struct binding**] Buckets
 ** @@
 ******************************************************************************/
 

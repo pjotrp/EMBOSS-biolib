@@ -73,7 +73,7 @@ typedef struct primerguts
     ajuint solimit;
     EmbOPatBYPNode off[AJALPHA];
     AjPStr re;
-    ajint **skipm;
+    ajint** skipm;
     void* tidy;
 } *PGuts;
 
@@ -103,8 +103,8 @@ typedef struct primerhit
     AjPStr seqname;
     AjPStr desc;
     AjPStr acc;
-    AjPStr forward;		/* pattern that hits forward strand */
-    AjPStr reverse;		/* pattern that hits reverse strand */
+    AjPStr forward;
+    AjPStr reverse;
     ajint forward_pos;
     ajint reverse_pos;
     ajint amplen;

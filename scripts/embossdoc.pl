@@ -50,6 +50,8 @@ $sect = $lastfsect = $laststatfsect = "";
 ## $source is the entire source file as a string with newlines
 ## step through each comment
 ## looking for extended JavaDoc style formatting
+## $ccfull is the comment
+## $rest is the rest of the file
 ##############################################################
 
 while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {

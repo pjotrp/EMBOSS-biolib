@@ -23,13 +23,17 @@ extern "C"
 ** @alias SeqSAccess
 ** @new seqMethod returns a copy of a known access method definition.
 ** @other AjPSeqin Sequence input
+**
+** @attr Name [char*] Access method name used in emboss.default
+** @attr Access [(AjBool*)] Access function
+** @attr AccessFree [(AjBool*)] Access cleanup function
 ** @@
 ******************************************************************************/
 
 typedef struct SeqSAccess {
-  char *Name;			/* Access method name used in emboss.default */
-  AjBool (*Access) (AjPSeqin seqin); /* Access function */
-  AjBool (*AccessFree) (void* qrydata); /* Access cleanup function */
+  char *Name;
+  AjBool (*Access) (AjPSeqin seqin);
+  AjBool (*AccessFree) (void* qrydata);
 } SeqOAccess;
 
 #define SeqPAccess SeqOAccess*

@@ -34,7 +34,7 @@
 ** @alias AjSRinfo
 ** @alias AjORinfo
 **
-** @attr code [AjPStr] Undocumented
+** @attr code [AjPStr] structure for silent mutation info
 ** @attr site [AjPStr] Undocumented
 ** @attr ncuts [ajint] Undocumented
 ** @attr cut1 [ajint] Undocumented
@@ -45,7 +45,7 @@
 
 typedef struct AjSRinfo
 {
-    AjPStr code;   /*structure for silent mutation info*/
+    AjPStr code;
     AjPStr site;
     ajint ncuts;
     ajint cut1;

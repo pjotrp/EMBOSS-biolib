@@ -1,4 +1,10 @@
 Version 2.9.0
+	Major cleanup of @data documentation. Added @datatype for typedef
+	data types (e.g. AjBool). Checking all have attributes, and all
+	attribute names and types match. Comments in the code are moved to
+	the @attr documentation. Added an @cc documentation line for
+	comments.
+
 	Eprimer3 has been changed so that it runs a separate child process
 	of primer3_core for every sequence. This is to cure a problem
 	seen when more than about 23 sequences were input, in which there

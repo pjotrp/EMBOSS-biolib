@@ -64,49 +64,6 @@
 
 
 
-/* @data EmbPShowInfo *********************************************************
-**
-**
-** The sequence and associated things to show are held in an ordered list
-** of type EmbPShowInfo. This list is held in the structure EmbPShow.
-**
-** The things to show are displayed around the sequence in the order that
-** they are held on the list.
-**
-** EmbPShowInfo holds the descriptor (one of EmbPShowBlank, EmbPShowTicks,
-** EmbPShowSeq, EmbPShowComp, etc.) and the type of the descriptor (one of
-** SH_BLANK, SH_TICKS, SH_SEQ, SH_COMP, etc.  )
-**
-** Each descriptor (EmbPShowSeq, EmbPShowBlank, EmbPShowTicks, etc.) holds
-** information that could be useful in displaying its type of information.
-**
-** So, for example:
-**
-** EmbPShow could have a list of:
-** ----------------------------
-**
-** EmbPShowInfo->type=SH_BLANK
-**    |       ->info=EmbPShowBlank
-**    |
-** EmbPShowInfo->type=SH_TICKS
-**    |       ->info=EmbPShowTicks
-**    |
-** EmbPShowInfo->type=SH_SEQ
-**    |       ->info=EmbPShowSeq
-**    |
-** EmbPShowInfo->type=SH_COMP
-**    |       ->info=EmbPShowComp
-**    |
-** EmbPShowInfo->type=etc.
-**    |       ->info=etc.
-**    |
-**   etc.
-**
-**
-**
-** @@
-******************************************************************************/
-
 static void    showFillRE(EmbPShow thys, AjPList lines,
 			  EmbPShowRE info, ajint pos);
 static void    showFillREflat(EmbPShow thys, AjPList lines, EmbPShowRE info,

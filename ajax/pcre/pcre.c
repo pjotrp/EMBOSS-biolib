@@ -212,7 +212,7 @@ stack, for holding the values of the subject pointer at the start of each
 subpattern, so as to detect when an empty string has been matched by a
 subpattern - to break infinite loops. */
 
-/* @data eptrblock ************************************************************
+/* @datastatic eptrblock ******************************************************
 **
 ** PCRE internals
 **

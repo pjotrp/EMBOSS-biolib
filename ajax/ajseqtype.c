@@ -36,8 +36,13 @@
 **
 ** @attr Name [char*] sequence type name
 ** @attr Gaps [AjBool] allow gap characters
+** @attr Ambig [AjBool] True if ambiguity codes are allowed
 ** @attr Type [ajint] enumerated ISANY=0 ISNUC=1 ISPROT=2 
-** @attr Test [(char*)] Test function
+** @attr ConvertFrom [char*] Convert each of these characters to the
+**                           ConvertTo equivalent
+** @attr ConvertTo [char*] Equivalent for each sequence character in
+**                         ConvertFrom
+** @attr Badchars [(AjPRegexp*)] Test function
 ** @attr Desc [char*] Description for documentation purposes
 ** @@
 ******************************************************************************/

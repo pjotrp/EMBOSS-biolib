@@ -242,7 +242,7 @@ typedef struct NamSEntry
     AjPStr value;
     ajint type;
     ajint scope;
-    void* data;		  /* Attribute values for databases */
+    void* data;
 } NamOEntry;
 
 #define NamPEntry NamOEntry*

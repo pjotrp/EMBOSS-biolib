@@ -15,12 +15,18 @@ extern "C"
 ** NUCLEUS internal data structure for est2genome EMBOSS application
 ** to maintain internal hash lists.
 **
+** @attr name [char*] Name
+** @attr offset [unsigned long] Offset
+** @attr text_offset [unsigned long] Text offset
+** @attr next [struct hash_list*] Next in list
+** @@
 ******************************************************************************/
 
 typedef struct hash_list
 {
   char *name;
-  unsigned long offset, text_offset;
+  unsigned long offset;
+  unsigned long text_offset;
   struct hash_list *next;
 }
 HASH_LIST;
@@ -35,12 +41,22 @@ typedef enum { NOT_A_SITE=1, DONOR=2, ACCEPTOR=4 } donor_acceptor;
 **
 ** NUCLEUS data structure for EST alignments (originally for est2genome)
 **
+** @attr gstart [ajint] Genomic start
+** @attr estart [ajint] EST start
+** @attr gstop [ajint] Genomic stop
+** @attr estop [ajint] EST stop
+** @attr score [ajint] Score
+** @attr len [ajint] Length
+** @attr align_path [ajint*] Path
+** @@
 ******************************************************************************/
 
 typedef struct EmbSEstAlign
 {
-  ajint gstart, estart;
-  ajint gstop, estop;
+  ajint gstart;
+  ajint estart;
+  ajint gstop;
+  ajint estop;
   ajint score;
   ajint len;
   ajint *align_path;

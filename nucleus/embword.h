@@ -10,20 +10,29 @@ extern "C"
 **
 ** NUCLEUS data structure for word matches
 **
+** @attr seq1start [ajint] match start point in original sequence
+** @attr seq2start [ajint] match start point in comparison sequence
+** @attr length [ajint] length of match
+** @attr sequence [AjPSeq] need in case we build multiple matches here
+**                         so we know which one the match belongs to
+** @@
 ******************************************************************************/
 
 typedef struct EmbSWordMatch {
-  ajint seq1start;            /* match start point in original sequence */
-  ajint seq2start;            /* match start point in comparison sequence */
-  ajint length;               /* length of match */
-  AjPSeq sequence;          /* need in case we build multiple matches here */
-			    /* so we know which one the match belongs to */
+  ajint seq1start;
+  ajint seq2start;
+  ajint length;
+  AjPSeq sequence;
 } EmbOWordMatch, *EmbPWordMatch;
 
 /* @data EmbPWord *************************************************************
 **
 ** NUCLEUS data structure for words
 **
+** @attr count [ajint] Size of list
+** @attr fword [char*] Original word
+** @attr list [AjPList] List of words
+** @@
 ******************************************************************************/
 
 typedef struct EmbSWord {
@@ -36,6 +45,9 @@ typedef struct EmbSWord {
 **
 ** NUCLEUS data structure for words (part 2)
 **
+** @attr name [char*] Name
+** @attr fword [EmbPWord] Word structure
+** @@
 ******************************************************************************/
 
 typedef struct EmbSWord2 {

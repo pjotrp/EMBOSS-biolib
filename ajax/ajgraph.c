@@ -128,7 +128,8 @@ static AjBool   GraphYTitlearg(char *name, va_list args);
 **
 ** @attr Name [char*] Name used by Ajax
 ** @attr Device [char*] Name used by plplot library
-** @attr ext [char*] fiel extension for output file if any
+** @attr ext [char*] File extension for output file if any
+** @attr plplot [AjBool] true if using PlPlot data and library calls
 ** @attr XYDisplay [(void*)] Function to display an XY graph
 ** @attr GOpen [(void*)] Function to display a general graph
 ** @@
@@ -136,10 +137,10 @@ static AjBool   GraphYTitlearg(char *name, va_list args);
 
 typedef struct GraphSType
 {
-    char* Name;			   /* Name recognized by AJAX calls */
-    char* Device;			/* PLPLOT name */
-    char* ext;				/* file extension */
-    AjBool plplot;			/* uses PlPlot functions */
+    char* Name;
+    char* Device;
+    char* ext;
+    AjBool plplot;
     void (*XYDisplay) (AjPGraph thys, AjBool closeit, char *ext);
     void (*GOpen) (AjPGraph thys, char *ext);
 } GraphOType, *GraphPType;

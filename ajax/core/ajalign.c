@@ -67,18 +67,18 @@
 
 typedef struct AlignSData
 {
-    ajint  Nseqs;		/* Number of sequences */
-    ajint* Start;		/* Start position in original sequence */
-    ajint* End;			/* End position in original sequence */
-    ajint* Offset;		/* Offset for numbering start of sequence */
-    ajint* SubOffset;		/* Substring offset within sequence */
-    AjBool* Rev;		/* Reverse sequence? */
-    AjPSeq* Seq;		/* Sequence data */
-    ajint Len;			/* Alignment length */
-    ajint NumId;		/* Number of identical positions */
-    ajint NumSim;		/* Number of similar positions */
-    ajint NumGap;		/* Number of gap positions */
-    AjPStr Score;		/* Score statistic int/float as a string */
+    ajint  Nseqs;
+    ajint* Start;
+    ajint* End;
+    ajint* Offset;
+    ajint* SubOffset;
+    AjBool* Rev;
+    AjPSeq* Seq;
+    ajint Len;
+    ajint NumId;
+    ajint NumSim;
+    ajint NumGap;
+    AjPStr Score;
 } AlignOData;
 
 #define AlignPData AlignOData*
@@ -98,8 +98,8 @@ typedef struct AlignSData
 ** @attr Name [char*] format name
 ** @attr Nuc [AjBool] ajTrue if format can work with nucleotide sequences
 ** @attr Prot [AjBool] ajTrue if format can work with protein sequences
-** @attr MinSeq [ajint] Minimum number of sequences, 2 for pairwise
-** @attr MaxSeq [ajint] Maximum number of sequences, 2 for pairwise
+** @attr Minseq [ajint] Minimum number of sequences, 2 for pairwise
+** @attr Maxseq [ajint] Maximum number of sequences, 2 for pairwise
 ** @attr Write [(void*)] Function to write alignment
 ** @@
 ******************************************************************************/

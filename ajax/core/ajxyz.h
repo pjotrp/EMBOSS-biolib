@@ -38,13 +38,12 @@ extern "C"
 
 typedef struct AjSDomConts
 {
-  AjPStr het_name;       /* 3-character code of heterogen */
-  AjPStr scop_name;      /* 7-character scop id domain name */  
-  ajint  no_keyres;      /* number of key binding residues */
-  AjPStr *aa_code;       /* Array for 3-character amino acid codes */ 
-  AjPInt res_pos;      /* Array of ints for residue positions in domain file */
-  AjPStr *res_pos2;      /* Array of residue positions in complete protein 
-			    coordinate file - exist as strings */
+  AjPStr het_name;
+  AjPStr scop_name;
+  ajint  no_keyres;
+  AjPStr *aa_code;
+  AjPInt res_pos;
+  AjPStr *res_pos2;
 }AjODomConts, *AjPDomConts;
 
 
@@ -62,7 +61,7 @@ typedef struct AjSDomConts
 ** @attr abv [AjPStr] 3-letter abbreviation of heterogen
 ** @attr ful [AjPStr] Full name
 ** @attr no_dom [ajint] number of domains
-** @attr cont_data [AjPDomConts] array of domain contact data
+** @attr cont_data [AjPDomConts*] array of domain contact data
 **                               (derived from tmp)
 ** @attr tmp [AjPList]  Temp. list of domain contact data
 ** @@
@@ -70,11 +69,11 @@ typedef struct AjSDomConts
 
 typedef struct AjSDbaseEnt
 {
-  AjPStr      abv;         /* 3-letter abbreviation of heterogen */
-  AjPStr      ful;         /* Full name */
-  ajint       no_dom;      /* number of domains */
-  AjPDomConts *cont_data;  /* array of domain contact data (derived from tmp)*/
-  AjPList     tmp;         /* Temp. list of domain contact data */
+  AjPStr      abv;
+  AjPStr      ful;
+  ajint       no_dom;
+  AjPDomConts *cont_data;
+  AjPList     tmp;
 } AjODbaseEnt, *AjPDbaseEnt;
 
 
@@ -90,14 +89,14 @@ typedef struct AjSDbaseEnt
 ** @alias AjODbase  
 **
 ** @attr n [ajint] Number of entries
-** @attr entries [AjPDbaseEnt *] Array of entries
+** @attr entries [AjPDbaseEnt*] Array of entries
 ** @@
 ******************************************************************************/
 
 typedef struct AjSDbase
 {
-  ajint         n;        /* Number of entries */
-  AjPDbaseEnt *entries;   /* Array of entries */
+  ajint         n;
+  AjPDbaseEnt *entries;
 } AjODbase, *AjPDbase;
 
 
@@ -116,15 +115,17 @@ typedef struct AjSDbase
 **
 ** @attr DomainID  [AjPStr]      Domain identifer code        
 ** @attr Pdb        [AjPStr]     Corresponding pdb identifer code
-** @attr Class;     [AjPStr]      CATH class name as an AjPStr
+** @attr Class     [AjPStr]      CATH class name as an AjPStr
 ** @attr Architecture [AjPStr]    CATH architecture name as an AjPStr
 ** @attr Topology    [AjPStr]   CATH topology name as an AjPStr
 ** @attr Superfamily [AjPStr]    CATH homologous superfamily name as an AjPStr
 ** @attr Length  [ajint]       No. of residues in domain
 ** @attr Chain  [char]        Chain identifier
 ** @attr NSegment [ajint]      No. of chain segments domain is comprised of
-** @attr Start  [AjPStr*]      PDB residue number of first residue in segment 
+** @attr Start  [AjPStr*]      PDB residue number of first residue in segment
+**                             or '.' 
 ** @attr End   [AjPStr*]        PDB residue number of last residue in segment
+**                             or '.' 
 ** @attr Class_Id  [ajint]      CATH class no. as an ajint
 ** @attr Arch_Id  [ajint]       CATH architecture no.as an ajint
 ** @attr Topology_Id [ajint]    CATH topology no. as an ajint
@@ -149,7 +150,7 @@ typedef struct AjSCath
     char   Chain;          
     
     ajint  NSegment;       
-    AjPStr *Start;   /*String used instead of int as need to use '.'*/      
+    AjPStr *Start;
     AjPStr *End;          
     
     ajint Class_Id;        
@@ -173,15 +174,20 @@ typedef struct AjSCath
 ** @alias AjSPdbtosp
 ** @alias AjOPdbtosp
 **
+**
+** @attr Pdb [AjPStr] PDB code
+** @attr n [ajint] No. entries for this pdb code
+** @attr Acc [AjPStr*] Accession numbers
+** @attr Spr [AjPStr*] Swissprot codes
 ** @@
 ******************************************************************************/
 
 typedef struct AjSPdbtosp
 {   	
-    AjPStr     Pdb;    /* PDB code*/
-    ajint      n;      /* No. entries for this pdb code */
-    AjPStr    *Acc;    /* Accession numbers */
-    AjPStr    *Spr;    /* Swissprot codes */
+    AjPStr     Pdb;
+    ajint      n;
+    AjPStr    *Acc;
+    AjPStr    *Spr;
 } AjOPdbtosp, *AjPPdbtosp;
 
 
@@ -198,31 +204,58 @@ typedef struct AjSPdbtosp
 ** @alias AjSScorealg
 ** @alias AjOScorealg
 **
+** @attr seqmat_score [AjPFloat]  Array of scores based on residue convervation
+** @attr seqvar_score [AjPFloat] Array of scores based on residue variability
+** @attr post_similar [AjPInt] Array of scores based on stamp pij value
+** @attr positions [AjPInt] Array of integers from 'Position' line in
+**                          alignment, used for manual specification of
+**                          signature positions
+** @attr ncon_score [AjPFloat] Array of scores based on number of contacts
+** @attr ccon_score [AjPFloat] Array of scores based on convervation of
+**                           contacts
+** @attr nccon_score [AjPInt] Array of total score based on convervation
+**                            and number of contacts
+** @attr combi_score [AjPInt] Array of total score based on users scoring
+**                             criteria
+** @attr ncon_thresh [AjPInt] Array of positions with > threshold number
+**                              of contacts
+** @attr seqmat_do [AjBool] Whether to use score based on residue convervation
+** @attr seqvar_do [AjBool] Whether to use score based on residue variablility
+** @attr filterpsim [AjBool] Whether to filter on basis of post_similar line
+** @attr filtercon [AjBool] Whether to filter on basis of number of contacts
+** @attr conthresh [ajint] Threshold number of contacts for filtercon
+** @attr ncon_do [AjBool] Whether to use score based on number of contacts
+** @attr ccon_do [AjBool] Whether to use score based on convervation
+**                              of contacts
+** @attr nccon_do [AjBool] Whether to use score based on convervation
+**                               and number of contacts
+** @attr random [AjBool] Whether to generate a randomised signature
+** @attr manual [AjBool] Whether signature positions were taken from
+**                              alignment file (manual selection)
 ** @@
 ******************************************************************************/
 typedef struct AjSScorealg
 {   
-    AjPFloat  seqmat_score;    /* Array of scores based on residue convervation */
-    AjPFloat  seqvar_score;    /* Array of scores based on residue variability */
-    AjPInt    post_similar;    /* Array of scores based on stamp pij value      */
-    AjPInt    positions;       /* Array of integers from 'Position' line in alignment, 
-				  used for manual specification of signature positions*/
-    AjPFloat  ncon_score;      /* Array of scores based on number of contacts   */
-    AjPFloat  ccon_score;      /* Array of scores based on convervation of contacts */
-    AjPInt    nccon_score;     /* Array of total score based on convervation and number of contacts */
-    AjPInt    combi_score;     /* Array of total score based on users scoring criteria  */
-    AjPInt    ncon_thresh;     /* Array of positions with > threshold number of contacts */
-    AjBool    seqmat_do;       /* Whether to use score based on residue convervation */
-    AjBool    seqvar_do;       /* Whether to use score based on residue variablility */
-    AjBool    filterpsim;      /* Whether to filter on basis of post_similar line      */
-    AjBool    filtercon;       /* Whether to filter on basis of number of contacts      */
-    ajint     conthresh;       /* Threshold number of contacts for filtercon */
-    AjBool    ncon_do;         /* Whether to use score based on number of contacts   */
-    AjBool    ccon_do;         /* Whether to use score based on convervation of contacts */
-    AjBool    nccon_do;        /* Whether to use score based on convervation and number of contacts */
+    AjPFloat  seqmat_score;
+    AjPFloat  seqvar_score;
+    AjPInt    post_similar;
+    AjPInt    positions;
+    AjPFloat  ncon_score;
+    AjPFloat  ccon_score;
+    AjPInt    nccon_score;
+    AjPInt    combi_score;
+    AjPInt    ncon_thresh;
+    AjBool    seqmat_do;
+    AjBool    seqvar_do;
+    AjBool    filterpsim;
+    AjBool    filtercon;
+    ajint     conthresh;
+    AjBool    ncon_do;
+    AjBool    ccon_do;
+    AjBool    nccon_do;
 
-    AjBool    random;          /* Whether to generate a randomised signature */
-    AjBool    manual;          /* Whether signature positions were taken from alignment file (manual selection) */
+    AjBool    random;
+    AjBool    manual;
     
 } AjOScorealg, *AjPScorealg;
 
@@ -239,15 +272,20 @@ typedef struct AjSScorealg
 ** @alias AjSVdwres
 ** @alias AjOVdwres
 **
+** @attr Id1 [char] Standard residue identifier or 'X' for unknown
+** @attr Id3 [AjPStr] 3 character residue identifier
+** @attr N [ajint] Number of atoms in residue
+** @attr Atm [AjPStr*] Array of atom identifiers
+** @attr Rad [float*] Array of van der Waal's radii
 ** @@
 ******************************************************************************/
 typedef struct AjSVdwres
 {
-    char       Id1;        /* Standard residue identifier or 'X' for unknown */
-    AjPStr     Id3;        /* 3 character residue identifier */
-    ajint      N;          /* Nummber of atoms in residue */
-    AjPStr    *Atm;        /* Array of atom identifiers */
-    float     *Rad;        /* Array of van der Waals radii */
+    char       Id1;
+    AjPStr     Id3;
+    ajint      N;
+    AjPStr    *Atm;
+    float     *Rad;
 } AjOVdwres, *AjPVdwres;
 
 
@@ -267,12 +305,14 @@ typedef struct AjSVdwres
 ** @alias AjSVdwall
 ** @alias AjOVdwall
 **
+** @attr N [ajint] Number of residues
+** @attr Res [AjPVdwres*] Array of Vdwres structures
 ** @@
 ******************************************************************************/
 typedef struct AjSVdwall
 {
-    ajint       N;      /* Number of residues */
-    AjPVdwres  *Res;    /* Array of Vdwres structures */
+    ajint       N;
+    AjPVdwres  *Res;
 } AjOVdwall, *AjPVdwall;
 
 
@@ -291,15 +331,20 @@ typedef struct AjSVdwall
 ** @alias AjSCmap
 ** @alias AjOCmap
 **
+** @attr Id [AjPStr] Protein id code
+** @attr Seq [AjPStr] The sequence of the domain or chain
+** @attr Mat [AjPInt2d] Contact map
+** @attr Dim [ajint] Dimension of contact map
+** @attr Ncon [ajint] No. of contacts (1's in contact map)
 ** @@
 ******************************************************************************/
 typedef struct AjSCmap
 {
-    AjPStr      Id;     /* Protein id code */
-    AjPStr      Seq;    /* The sequence of the domain or chain */
-    AjPInt2d    Mat;    /* Contact map */
-    ajint       Dim;    /* Dimension of contact map */
-    ajint       Ncon;   /* No. of contacts (1's in contact map) */
+    AjPStr      Id;
+    AjPStr      Seq;
+    AjPInt2d    Mat;
+    ajint       Dim;
+    ajint       Ncon;
 } AjOCmap, *AjPCmap;
 
 
@@ -318,6 +363,19 @@ typedef struct AjSCmap
 ** @alias AjSScopalg
 ** @alias AjOScopalg
 **
+** @attr Class [AjPStr] SCOP class
+** @attr Fold [AjPStr] SCOP fold
+** @attr Superfamily [AjPStr] SCOP superfamily
+** @attr Family [AjPStr] SCOP family
+** @attr Sunid_Family [ajint] SCOP sunid for family
+** @attr width [ajint] Width (residues) of widest part of alignment
+** @attr N [ajint] No. of sequences in alignment
+** @attr Codes [AjPStr*] Array of domain id codes of sequences
+** @attr Seqs [AjPStr*] Array of sequences
+** @attr Post_similar [AjPStr] Post_similar line from alignment
+** @attr Positions [AjPStr] Array of integers from 'Position' line in
+**                          alignment, used for manual specification
+**                          of signature positions
 ** @@
 ******************************************************************************/
 typedef struct AjSScopalg
@@ -326,14 +384,13 @@ typedef struct AjSScopalg
     AjPStr   Fold;
     AjPStr   Superfamily;
     AjPStr   Family;
-    ajint    Sunid_Family;        /* SCOP sunid for family */
-    ajint    width;        /* Width (residues) of widest part of alignment */
-    ajint    N;            /* No. of sequences in alignment */
-    AjPStr  *Codes;        /* Array of domain id codes of sequences */
-    AjPStr  *Seqs;         /* Array of sequences */
-    AjPStr   Post_similar; /* Post_similar line from alignment */
-    AjPStr   Positions;   /* Array of integers from 'Position' line in alignment, 
-				  used for manual specification of signature positions*/
+    ajint    Sunid_Family;
+    ajint    width;
+    ajint    N;
+    AjPStr  *Codes;
+    AjPStr  *Seqs;
+    AjPStr   Post_similar;
+    AjPStr   Positions;
 } AjOScopalg, *AjPScopalg;
 
 
@@ -354,6 +411,31 @@ typedef struct AjSScopalg
 ** @alias AjSScophit
 ** @alias AjOScophit
 **
+** @attr Class [AjPStr] SCOP class
+** @attr Fold [AjPStr] SCOP fold
+** @attr Superfamily [AjPStr] SCOP superfamily
+** @attr Family [AjPStr] SCOP family
+** @attr Sunid_Family [ajint] SCOP sunid for family
+** @attr Seq [AjPStr] Sequence as string
+** @attr Start [ajint] Start of sequence or signature alignment relative 
+**                     to full length
+** @attr End [ajint] End of sequence or signature alignment relative 
+**                   to full length
+** @attr Acc [AjPStr] Accession number of sequence entry
+** @attr Spr [AjPStr] Swissprot code of sequence entry
+** @attr Typeobj [AjPStr] Bibliographic information ... objective
+** @attr Typesbj [AjPStr] Bibliographic information ... subjective
+** @attr Model [AjPStr] String for model type (HMM, Gribskov etc)
+** @attr Group [AjPStr] 'REDUNDANT' or 'NON_REDUNDANT'
+** @attr Rank [ajint] Rank order of hit
+** @attr Score [float] Score of hit 
+** @attr Eval [float] E-value of hit
+** @attr Pval [float] p-value of hit
+** @attr Alg [AjPStr] Alignment, e.g. of a signature to the sequence
+** @attr Target [AjBool] True if the Scophit is targetted for removal from
+**                       a list of Scophit objects
+** @attr Target2 [AjBool] Also used for garbage collection
+** @attr Priority [AjBool] True if the Scop hit is high priority
 ** @@
 ******************************************************************************/
 
@@ -363,27 +445,24 @@ typedef struct AjSScophit
     AjPStr    Fold;
     AjPStr    Superfamily;
     AjPStr    Family;
-    ajint    Sunid_Family;        /* SCOP sunid for family */
-    AjPStr    Seq;	  /* Sequence as string */
-    ajint     Start;      /* Start of sequence or signature alignment relative to full length 
-			    swissprot sequence */
-    ajint     End;        /* End of sequence or signature alignment relative to full length 
-			    swissprot sequence */
-    AjPStr    Acc;        /* Accession number of sequence entry  */
-    AjPStr    Spr;        /* Swissprot code of sequence entry */
-    AjPStr    Typeobj;    /* Bibliographic information ... objective*/ 
-    AjPStr    Typesbj;    /* Bibliographic information ... subjective */ 
-    AjPStr    Model;      /* String for model type (HMM, Gribskov etc) */
-    AjPStr    Group;      /* 'REDUNDANT' or 'NON_REDUNDANT' */
-    ajint     Rank;       /* Rank order of hit */	
-    float     Score;      /* Score of hit */
-    float     Eval;       /* E-value of hit */
-    float     Pval;       /* p-value of hit */
-    AjPStr    Alg;        /* Alignment, e.g. of a signature to the sequence */
-    AjBool    Target;     /* True if the Scophit is targetted for removal from 
-			     a list of Scophit objects */
-    AjBool    Target2;    /* Also used for garbage collection */
-    AjBool    Priority;   /* True if the Scop hit is high priority. */
+    ajint    Sunid_Family;
+    AjPStr    Seq;
+    ajint     Start;
+    ajint     End;
+    AjPStr    Acc;
+    AjPStr    Spr;
+    AjPStr    Typeobj;
+    AjPStr    Typesbj;
+    AjPStr    Model;
+    AjPStr    Group;
+    ajint     Rank;
+    float     Score;
+    float     Eval;
+    float     Pval;
+    AjPStr    Alg;
+    AjBool    Target;
+    AjBool    Target2;
+    AjBool    Priority;
 } AjOScophit, *AjPScophit;
 
 
@@ -402,31 +481,49 @@ typedef struct AjSScophit
 ** @alias AjSHit
 ** @alias AjOHit
 **
+** @attr Seq [AjPStr] Sequence as string
+** @attr Start [ajint] Start of sequence or signature alignment relative 
+**                     to full length
+** @attr End [ajint] End of sequence or signature alignment relative to  
+		     full length swissprot sequence, this is an index  
+		     so starts at 0
+** @attr Acc [AjPStr] Accession number of sequence entry
+** @attr Spr [AjPStr] Swissprot code of sequence entry
+** @attr Typeobj [AjPStr] Primary classification of hit - objective
+** @attr Typesbj [AjPStr] Secondary classification of hit - subjective
+** @attr Model [AjPStr] String for model type (HMM, Gribskov etc)
+** @attr Alg [AjPStr] Alignment, e.g. of a model to the sequence
+** @attr Group [AjPStr] 'REDUNDANT' or 'NON_REDUNDANT'
+** @attr Rank [ajint] Rank order of hit
+** @attr Score [float] Score of hit 
+** @attr Eval [float] E-value of hit
+** @attr Pval [float] p-value of hit
+** @attr Target [AjBool] True if the Scophit is targetted for removal from
+**                       a list of Scophit objects
+** @attr Target2 [AjBool] Also used for garbage collection
+** @attr Priority [AjBool] True if the Scop hit is high priority
 ** @@
 ******************************************************************************/
 
 typedef struct AjSHit
 {
-  AjPStr    Seq;	/* Sequence as string */
-  ajint     Start;      /* Start of sequence or signature alignment relative to full length 
-			    swissprot sequence, this is an index so starts at 0 */
-  ajint     End;        /* End of sequence or signature alignment relative to full length 
-			    swissprot sequence, this is an index so starts at 0 */
-  AjPStr Acc;           /* Accession number of sequence entry  */
-  AjPStr    Spr;        /* Swissprot code of sequence entry */
-  AjPStr    Typeobj;    /* Primary classification of hit - objective*/
-  AjPStr    Typesbj;    /* Secondary classification of hit */
-  AjPStr    Model;      /* String for model type (HMM, Gribskov etc) */
-  AjPStr    Alg;        /* Alignment, e.g. of a signature to the sequence */
-  AjPStr    Group;      /* 'REDUNDANT' or 'NON_REDUNDANT' */
-  ajint     Rank;       /* Rank order of hit */	
-  float     Score;      /* Score of hit */
-  float     Eval;       /* E-value of hit */
-  float     Pval;       /* p-value of hit */
-  AjBool    Target;     /* True if the Scophit is targetted for removal from 
-			     a list of Scophit objects */
-  AjBool    Target2;    /* Also used for garbage collection */
-  AjBool    Priority;   /* True if the Scop hit is high priority. */
+  AjPStr    Seq;
+  ajint     Start;
+  ajint     End;
+  AjPStr    Acc;
+  AjPStr    Spr;
+  AjPStr    Typeobj;
+  AjPStr    Typesbj;
+  AjPStr    Model;
+  AjPStr    Alg;
+  AjPStr    Group;
+  ajint     Rank;
+  float     Score;
+  float     Eval;
+  float     Pval;
+  AjBool    Target;
+  AjBool    Target2;
+  AjBool    Priority;
 } AjOHit, *AjPHit;
 
 
@@ -442,6 +539,15 @@ typedef struct AjSHit
 ** @alias AjSHitlist
 ** @alias AjOHitlist
 **
+** @attr Class [AjPStr] SCOP class
+** @attr Fold [AjPStr] SCOP fold
+** @attr Superfamily [AjPStr] SCOP superfamily
+** @attr Family [AjPStr] SCOP family
+** @attr Model [AjPStr] String for model type (HMM, Gribskov etc)
+** @attr Sunid_Family [ajint] SCOP sunid for family
+** @attr Priority [AjBool] True if the Hitlist is high priority
+** @attr N [ajint] No. of hits
+** @attr hits [AjPHit*] Array of hits
 ** @@
 ******************************************************************************/
 
@@ -452,10 +558,10 @@ typedef struct AjSHitlist
     AjPStr  Superfamily;
     AjPStr  Family;
     AjPStr  Model;
-    ajint    Sunid_Family;        /* SCOP sunid for family */
-    AjBool  Priority;   /* True if the Hitlist is high priority. */
-    ajint   N;            /* No. of hits */
-    AjPHit *hits;        /* Array of hits */
+    ajint    Sunid_Family;
+    AjBool  Priority;
+    ajint   N;
+    AjPHit *hits;
 } AjOHitlist, *AjPHitlist;
 
 
@@ -473,13 +579,16 @@ typedef struct AjSHitlist
 ** @alias AjSHitidx
 ** @alias AjOHitidx
 **
+** @attr Id [AjPStr] Identifier
+** @attr hptr [AjPHit] Pointer to AjPHit structure
+** @attr lptr [AjPHitlist] Pointer to AjPHitlist structure
 ** @@
 ******************************************************************************/
 typedef struct AjSHitidx
 {  
-    AjPStr      Id;        /* Identifier */  
-    AjPHit      hptr;      /* Pointer to AjPHit structure*/
-    AjPHitlist  lptr;      /* Pointer to AjPHitlist structure*/
+    AjPStr      Id;
+    AjPHit      hptr;
+    AjPHitlist  lptr;
 }AjOHitidx, *AjPHitidx;
 
 
@@ -498,57 +607,98 @@ typedef struct AjSHitidx
 ** @alias AjSAtom
 ** @alias AjOAtom
 **
+** @attr Mod [ajint] Model number
+** @attr Chn [ajint] Chain number
+** @attr Gpn [ajint] Group number
+** @attr Type [char] 'P' (protein atom), 'H' ("heterogens") or 'w' (water)
+** @attr Idx [ajint] Residue number - index into sequence
+** @attr Pdb [AjPStr] Residue number - according to original PDB file
+** @attr Id1 [char] Standard residue identifier or 'X' for unknown 
+**                  types or '.' for heterogens and water
+** @attr Id3 [AjPStr] Residue or group identifier
+** @attr Atm [AjPStr] Atom identifier
+** @attr X [float] X coordinate
+** @attr Y [float] Y coordinate
+** @attr Z [float] Z coordinate
+** @attr O [float] Occupancy
+** @attr B [float] B value thermal factor
+** @attr Phi [float] 18:Phi angle
+** @attr Psi [float] 19:Psi angle
+** @attr Area [float] 20:Residue solvent accessible area
+**
+** @cc Secondary structure-specific variables from the PDB file
+**
+** @attr eNum [ajint] Serial number of the element
+** @attr eId [AjPStr] Element identifier
+** @attr eType [char] Element type COIL ('C'), HELIX ('H'), SHEET ('E')
+**                    or TURN ('T'). Has a default value of COIL.
+** @attr eClass [ajint] Class of helix, an int from 1-10,  from 
+**	  http://www.rcsb.org/pdb/docs/format/pdbguide2.2/guide2.2_frame.html
+**        (see below)
+**
+** @cc Variables for data derived from stride
+**
+** @attr eStrideNum [ajint] Number of the element (sequential count,
+**                         from N-term)
+** @attr eStrideType [char] 8: Element type: ALPHA HELIX ('H'),
+**                         3-10 HELIX ('G')
+**			   PI-HELIX ('I'), EXTENDED CONFORMATION ('E'), 
+**			   ISOLATED BRIDGE ('B' or 'b'), TURN ('T') or COIL 
+**			   (none of the above) ('C'). (from STRIDE)
+**
+** @cc Variables for data derived from naccess
+**
+** @attr all_abs [float] Absolute accessibility, all atoms
+** @attr all_rel [float] Relative accessibility, all atoms
+** @attr side_abs [float] Absolute accessibility, atoms in sidechain
+** @attr side_rel [float] Relative accessibility, atoms in sidechain
+** @attr main_abs [float] Absolute accessibility, atoms in mainchain
+** @attr main_rel [float] Relative accessibility, atoms in mainchain
+** @attr npol_abs [float] Absolute accessibility, nonpolar atoms
+** @attr npol_rel [float] Relative accessibility, nonpolar atoms
+** @attr pol_abs [float] Absolute accessibility, polar atoms
+** @attr pol_rel [float] Relative accessibility, polar atoms
 ** @@
 ******************************************************************************/
 
 typedef struct AjSAtom
 {
-  ajint        Mod;       /*Model number*/
-  ajint        Chn;       /*Chain number*/
-  ajint        Gpn;       /*Group number*/
-  char       Type;        /*'P' (protein atom), 'H' ("heterogens") or 'w' 
-			    (water)*/
-  ajint        Idx;       /*Residue number - index into sequence*/
-  AjPStr     Pdb;         /*Residue number - according to original PDB file*/
-  char       Id1;         /*Standard residue identifier or 'X' for unknown 
-			    types or '.' for heterogens and water*/
-  AjPStr     Id3;         /*Residue or group identifier*/
-  AjPStr     Atm;         /*Atom identifier*/
-  float      X;           /*X coordinate*/
-  float      Y;           /*Y coordinate*/
-  float      Z;           /*Z coordinate*/
-  float      O;           /*Occupancy */
-  float      B;           /*B value thermal factor*/
-  float      Phi;        /*18:Phi angle*/
-  float      Psi;        /*19:Psi angle*/
-  float      Area;       /*20:Residue solvent accessible area*/
+  ajint        Mod;
+  ajint        Chn;
+  ajint        Gpn;
+  char       Type;
+  ajint        Idx;
+  AjPStr     Pdb;
+  char       Id1;
+  AjPStr     Id3;
+  AjPStr     Atm;
+  float      X;
+  float      Y;
+  float      Z;
+  float      O;
+  float      B;
+  float      Phi;
+  float      Psi;
+  float      Area;
   
-  /* Secondary structure-specific variables from the PDB file*/
-  ajint      eNum;        /* Serial number of the element */
-  AjPStr     eId;         /* Element identifier */
-  char       eType;       /* Element type COIL ('C'), HELIX ('H'), SHEET ('E') or TURN ('T'). Has a default value of COIL. */
-  ajint      eClass;      /* Class of helix, an int from 1-10,  from 
-			     http://www.rcsb.org/pdb/docs/format/pdbguide2.2/guide2.2_frame.html (see below)*/
+  ajint      eNum;
+  AjPStr     eId;
+  char       eType;
+  ajint      eClass;
 
-  /* Variables for data derived from stride */
-  ajint      eStrideNum;  /* Number of the element (sequential count from N-term) */
-  char       eStrideType; /* 8: Element type:  ALPHA HELIX ('H'),3-10 HELIX ('G')
-			     ,PI-HELIX ('I'), EXTENDED CONFORMATION ('E'), 
-			     ISOLATED BRIDGE ('B' or 'b'), TURN ('T') or COIL 
-			     (none of the above) ('C'). (from STRIDE)*/
+  ajint      eStrideNum;
+  char       eStrideType;
 
-  /* Variables for data derived from naccess */
-  float      all_abs;     /* Absolute accessibility, all atoms */
-  float      all_rel;     /* Relative accessibility, all atoms */
-  float      side_abs;    /* Absolute accessibility, atoms in sidechain */
-  float      side_rel;    /* Relative accessibility, atoms in sidechain */
-  float      main_abs;    /* Absolute accessibility, atoms in mainchain */
-  float      main_rel;    /* Relative accessibility, atoms in mainchain */
-  float      npol_abs;    /* Absolute accessibility, nonpolar atoms */
-  float      npol_rel;    /* Relative accessibility, nonpolar atoms */
-  float      pol_abs;     /* Absolute accessibility, polar atoms */
-  float      pol_rel;     /* Relative accessibility, polar atoms */
-
+  float      all_abs;
+  float      all_rel;
+  float      side_abs;
+  float      side_rel;
+  float      main_abs;
+  float      main_rel;
+  float      npol_abs;
+  float      npol_rel;
+  float      pol_abs;
+  float      pol_rel;
 } AjOAtom, *AjPAtom;
 
 
@@ -563,24 +713,33 @@ typedef struct AjSAtom
 ** @alias AjSChain
 ** @alias AjOChain
 **
+** @attr Id [char] Chain id, ('.' if one wasn't specified in the 
+**		   original PDB file)
+** @attr Nres [ajint] No. of amino acid residues
+** @attr Nlig [ajint] No. of groups which are non-covalently associated 
+**		   with the chain, excluding water ("heterogens")
+** @attr numHelices [ajint] No. of helices in the chain according to the
+**                          PDB file
+** @attr numStrands [ajint] No. of strands in the chain according to the
+**                          PDB file
+** @attr Seq [AjPStr] sequence as string
+** @attr Atoms [AjPList] List of Atom objects for (potentially multiple models)
+**		  of the polypeptide chain and any groups (ligands) that 
+**		  could be uniquely associated with a chain
 ** @@
 ******************************************************************************/
 
 typedef struct AjSChain
 {
-/**/  char       Id;         /*Chain id, ('.' if one wasn't specified in the 
-			   original PDB file)*/
-/**/  ajint        Nres;       /*No. of amino acid residues*/
-/**/  ajint        Nlig;       /*No. of groups which are non-covalently associated 
-			   with the chain, excluding water ("heterogens")*/
+    char       Id;
+    ajint      Nres;
+    ajint      Nlig;
 
-/**/  ajint    numHelices;   /* No. of helices in the chain according to the PDB file*/
-/**/  ajint   numStrands;   /* No. of strands in the chain according to the PDB file */
+    ajint      numHelices;
+    ajint      numStrands;
 
-/**/  AjPStr     Seq;	 /* sequence as string */
-/**/  AjPList    Atoms;      /*List of Atom objects for (potentially multiple models)
-			  of the polypeptide chain and any groups (ligands) that 
-			  could be uniquely associated with a chain*/
+    AjPStr     Seq;
+    AjPList    Atoms;
 } AjOChain, *AjPChain;
 
 
@@ -596,27 +755,39 @@ typedef struct AjSChain
 ** @alias AjSPdb
 ** @alias AjOPdb
 **
+** @attr Pdb [AjPStr] PDB code
+** @attr Compnd [AjPStr] Text from COMPND records in PDB file
+** @attr Source [AjPStr] Text from SOURCE records in PDB file
+** @attr Method [ajint] Exp. type, value is either XRAY or NMR
+** @attr Reso [float] Resolution of an XRAY structure or 0.0
+** @attr Nmod [ajint] No. of models (always 1 for XRAY structures)
+** @attr Nchn [ajint] No. polypeptide chains
+** @attr Chains [AjPChain*] Array of pointers to AjSChain structures
+** @attr Ngp [ajint] No. groups that could not be uniquely associated 
+**		     with a chain in the SEQRES records
+** @attr gpid [AjPChar] Array of chain (group) id's for groups that 
+**		     could not be uniquely associated with a chain
+** @attr Groups [AjPList] List of Atom objects for groups that could not 
+**		   be uniquely associated with a chain
+** @attr Water [AjPList] List of Atom objects for water molecules (which can 
+**		   never be uniquely associated with a chain
 ** @@
 ******************************************************************************/
 
 typedef struct AjSPdb
 {
-/**/  AjPStr     Pdb;        /*PDB code*/
-/**/  AjPStr     Compnd;     /*Text from COMPND records in PDB file*/
-/**/  AjPStr     Source;     /*Text from SOURCE records in PDB file*/
-/**/  ajint        Method;     /*Exp. type, value is either XRAY or NMR*/
-/**/  float      Reso;       /*Resolution of an XRAY structure or 0*/
-/**/  ajint        Nmod;       /*No. of models (always 1 for XRAY structures)*/
-/**/  ajint        Nchn;       /*No. polypeptide chains */
-/**/  AjPChain  *Chains;     /*Array of pointers to AjSChain structures*/
-/**/  ajint      Ngp;        /* No. groups that could not be uniquely associated with a chain 
-			    in the SEQRES records */
-/**/  AjPChar    gpid;	   /*Array of chain (group) id's for groups that 
-			     could not be uniquely associated with a chain */
-/**/  AjPList   Groups;     /*List of Atom objects for groups that could not 
-			   be uniquely associated with a chain */
-/**/  AjPList   Water;     /*List of Atom objects for water molecules (which can 
-			   never be uniquely associated with a chain */
+    AjPStr     Pdb;
+    AjPStr     Compnd;
+    AjPStr     Source;
+    ajint        Method;
+    float      Reso;
+    ajint        Nmod;
+    ajint        Nchn;
+    AjPChain  *Chains;
+    ajint      Ngp;
+    AjPChar    gpid;
+    AjPList   Groups;
+    AjPList   Water;
 }AjOPdb, *AjPPdb;
 
 
@@ -648,39 +819,64 @@ typedef struct AjSPdb
 ** @alias AjSScop
 ** @alias AjOScop
 **
+** @attr Entry [AjPStr] SCOP Domain identifer code
+** @attr Pdb [AjPStr] Corresponding pdb identifier code
+** @attr Class [AjPStr] SCOP class name as an AjPStr
+** @attr Fold [AjPStr] SCOP fold  name as an AjPStr
+** @attr Superfamily [AjPStr] SCOP superfamily name as an AjPStr
+** @attr Family [AjPStr] SCOP family name as an AjPStr
+** @attr Domain [AjPStr] SCOP domain name as an AjPStr
+** @attr Source [AjPStr] SCOP source (species) as an AjPStr
+** @attr N [ajint] No. chain or segments from which this domain is comprised
+** @attr Chain [char*] Chain identifiers
+** @attr Start [AjPStr*] PDB residue number of first residue in domain
+** @attr End [AjPStr*] PDB residue number of last residue in domain
+** @attr Sunid_Class [ajint] SCOP sunid for class
+** @attr Sunid_Fold [ajint] SCOP sunid for fold
+** @attr Sunid_Superfamily [ajint] SCOP sunid for superfamily
+** @attr Sunid_Family [ajint] SCOP sunid for family
+** @attr Sunid_Domain [ajint] SCOP sunid for domain
+** @attr Sunid_Source [ajint] SCOP sunid for species
+** @attr Sunid_Domdat [ajint] SCOP sunid for domain data
+** @attr Acc [AjPStr] Accession number of sequence entry
+** @attr Spr [AjPStr] Swissprot code of sequence entry
+** @attr SeqPdb [AjPStr] Sequence (from pdb) as string
+** @attr SeqSpr [AjPStr] Sequence (from swissprot) as string
+** @attr Startd [ajint] Start of sequence relative to full length 
+**		    swissprot sequence
+** @attr Endd [ajint] End of sequence relative to full length 
+**		    swissprot sequence
 ** @@
 ******************************************************************************/
 typedef struct AjSScop
 {
-    AjPStr Entry;         /* Domain identifer code */
-    AjPStr Pdb;           /* Corresponding pdb identifier code*/
-    AjPStr Class;         /* SCOP class name as an AjPStr */
-    AjPStr Fold;          /* SCOP fold  name as an AjPStr */ 
-    AjPStr Superfamily;   /* SCOP superfamily name as an AjPStr */
-    AjPStr Family;        /* SCOP family name as an AjPStr */
-    AjPStr Domain;        /* SCOP domain name as an AjPStr */
-    AjPStr Source;        /* SCOP source (species) as an AjPStr */
-    ajint    N;           /* No. chain or segments from which this domain is comprised */
-    char   *Chain;        /* Chain identifiers */
-    AjPStr *Start;        /* PDB residue number of first residue in domain */
-    AjPStr *End;          /* PDB residue number of last residue in domain */
+    AjPStr Entry;
+    AjPStr Pdb;
+    AjPStr Class;
+    AjPStr Fold;
+    AjPStr Superfamily;
+    AjPStr Family;
+    AjPStr Domain;
+    AjPStr Source;
+    ajint    N;
+    char   *Chain;
+    AjPStr *Start;
+    AjPStr *End;
 
-    ajint  Sunid_Class;         /* SCOP sunid for class */
-    ajint  Sunid_Fold;          /* SCOP sunid for fold */
-    ajint  Sunid_Superfamily;   /* SCOP sunid for superfamily */
-    ajint  Sunid_Family;        /* SCOP sunid for family */
-    ajint  Sunid_Domain;        /* SCOP sunid for domain */  
-    ajint  Sunid_Source;        /* SCOP sunid for species */
-    ajint  Sunid_Domdat;        /* SCOP sunid for domain data */
+    ajint  Sunid_Class;
+    ajint  Sunid_Fold;
+    ajint  Sunid_Superfamily;
+    ajint  Sunid_Family;
+    ajint  Sunid_Domain;
+    ajint  Sunid_Source;
+    ajint  Sunid_Domdat;
 
-    AjPStr Acc;           /* Accession number of sequence entry  */
-    AjPStr Spr;           /* Swissprot code of sequence entry */
-    AjPStr SeqPdb;	  /* Sequence (from pdb) as string */
-    AjPStr SeqSpr;	  /* Sequence (from swissprot) as string */
-    ajint  Startd;      /* Start of sequence relative to full length 
-			    swissprot sequence */
-    ajint  Endd;        /* End of sequence relative to full length 
-			    swissprot sequence */
+    AjPStr Acc;
+    AjPStr Spr;
+    AjPStr SeqPdb;
+    AjPStr SeqSpr;
+    ajint  Startd;
+    ajint  Endd;
 } AjOScop,*AjPScop;
 
 
@@ -694,28 +890,25 @@ typedef struct AjSScop
 **
 ** Holds scop database data from raw file (dir.cla.scop.txt from SCOP authors)
 **
-** The variables have the following meaning:
-**
-**  AjPStr Entry;          Domain identifer code 
-**  AjPStr Pdb;            Corresponding pdb identifier code
-**  AjPStr Sccs;           Scop compact classification string
-**  ajint  Class;          SCOP sunid for class 
-**  ajint  Fold;           SCOP sunid for fold 
-**  ajint  Superfamily;    SCOP sunid for superfamily 
-**  ajint  Family;         SCOP sunid for family 
-**  ajint  Domain;         SCOP sunid for domain   
-**  ajint  Source;         SCOP sunid for species 
-**  ajint  Domdat;         SCOP sunid for domain data
-**  ajint  N;              No. chains from which this domain is comprised 
-**  char   *Chain;         Chain identifiers 
-**  AjPStr *Start;         PDB residue number of first residue in domain 
-**  AjPStr *End;           PDB residue number of last residue in domain 
-**
 ** AjPScopcla is implemented as a pointer to a C data structure.
 **
 ** @alias AjSScopcla
 ** @alias AjOScopcla
 **
+** @attr Entry [AjPStr] Domain identifer code
+** @attr Pdb [AjPStr] Corresponding pdb identifier code
+** @attr Sccs [AjPStr] Scop compact classification string
+** @attr Class [ajint] SCOP sunid for class 
+** @attr Fold [ajint] SCOP sunid for fold 
+** @attr Superfamily [ajint] SCOP sunid for superfamily 
+** @attr Family [ajint] SCOP sunid for family 
+** @attr Domain [ajint] SCOP sunid for domain   
+** @attr Source [ajint] SCOP sunid for species 
+** @attr Domdat [ajint] SCOP sunid for domain data
+** @attr N [ajint] No. chains from which this domain is comprised 
+** @attr Chain [char*] Chain identifiers 
+** @attr Start [AjPStr*] PDB residue number of first residue in domain 
+** @attr End [AjPStr*] PDB residue number of last residue in domain 
 ** @@
 ******************************************************************************/
 
@@ -747,21 +940,18 @@ typedef struct AjSScopcla
 **
 ** Holds scop database data from raw file (dir.des.scop.txt from SCOP authors)
 **
-** The variables have the following meaning:
-**
-**  ajint  Sunid;   SCOP sunid for node 
-**  AjPStr Type;    Type of node, either 'px' (domain data), 'cl' (class),
-**  'cf' (fold), 'sf' (superfamily), 'fa' (family), 'dm' (domain) or 
-**  'sp' (species).
-**  AjPStr Sccs;    Scop compact classification string
-**  AjPStr Entry;   Domain identifer code (or '-' if Type!='px')
-**  AjPStr Desc;    Description in english of the node
-**
 ** AjPScopdes is implemented as a pointer to a C data structure.
 **
 ** @alias AjSScopdes
 ** @alias AjOScopdes
 **
+** @attr Sunid [ajint] SCOP sunid for node
+** @attr Type [AjPStr] Type of node, either 'px' (domain data), 'cl' (class),
+**  'cf' (fold), 'sf' (superfamily), 'fa' (family), 'dm' (domain) or 
+**  'sp' (species)
+** @attr Sccs [AjPStr] Scop compact classification string
+** @attr Entry [AjPStr] Domain identifer code (or '-' if Type!='px')
+** @attr Desc [AjPStr] Description in english of the node
 ** @@
 ******************************************************************************/
 
@@ -789,13 +979,16 @@ typedef struct AjSScopdes
 ** @alias AjSSigcell
 ** @alias AjOSigcell
 **
+** @attr val [float] Value for this cell
+** @attr prev [ajint] Index in path matrix of prev. highest value
+** @attr visited [AjBool] ajTrue if this cell has been visited
 ** @@
 ******************************************************************************/
 typedef struct AjSSigcell
 {
-    float  val;            /* Value for this cell */
-    ajint  prev;           /* Index in path matrix of prev. highest value */
-    AjBool visited;        /* == ajTrue if this cell has been visited */
+    float  val;
+    ajint  prev;
+    AjBool visited;
 } AjOSigcell, *AjPSigcell;
 
 
@@ -815,18 +1008,25 @@ typedef struct AjSSigcell
 ** @alias AjSSigdat
 ** @alias AjOSigdat
 **
+** @attr nres [ajint] No. diff. types of residue
+** @attr rids [AjPChar] Residue ids
+** @attr rfrq [AjPInt] Residue frequencies
+** @attr ngap [ajint] No. diff. sizes of empirical gap
+** @attr gsiz [AjPInt] Gap sizes
+** @attr gfrq [AjPInt] Frequencies of gaps of each size
+** @attr wsiz [ajint] Window size for this gap
 ** @@
 ******************************************************************************/
 typedef struct AJSSigdat
 {
-    ajint       nres;         /* No. diff. types of residue*/
-    AjPChar     rids;         /* Residue id's */
-    AjPInt      rfrq;         /* Residue frequencies */
+    ajint       nres;
+    AjPChar     rids;
+    AjPInt      rfrq;
 
-    ajint       ngap;         /* No. diff. sizes of empirical gap*/
-    AjPInt      gsiz;         /* Gap sizes */
-    AjPInt      gfrq;         /* Frequencies of gaps of each size*/
-    ajint       wsiz;         /* Window size for this gap */
+    ajint       ngap;
+    AjPInt      gsiz;
+    AjPInt      gfrq;
+    ajint       wsiz;
 } AJOSigdat, *AjPSigdat;
 
 
@@ -845,14 +1045,18 @@ typedef struct AJSSigdat
 ** @alias AjSSigpos
 ** @alias AjOSigpos
 **
+** @attr ngaps [ajint] No. of gaps
+** @attr gsiz [ajint*] Gap sizes
+** @attr gpen [float*] Gap penalties
+** @attr subs [float*] Residue match values
 ** @@
 ******************************************************************************/
 typedef struct AJSSigpos
 {
-    ajint    ngaps;        /* No. of gaps */
-    ajint   *gsiz;         /* Gap sizes */
-    float   *gpen;         /* Gap penalties */
-    float   *subs;         /* Residue match values */
+    ajint    ngaps;
+    ajint   *gsiz;
+    float   *gpen;
+    float   *subs;
 } AJOSigpos, *AjPSigpos;
 
 
@@ -869,6 +1073,14 @@ typedef struct AJSSigpos
 ** @alias AjSSignature
 ** @alias AjOSignature
 **
+** @attr Class [AjPStr] SCOP class
+** @attr Fold [AjPStr] SCOP fold
+** @attr Superfamily [AjPStr] SCOP superfamily
+** @attr Family [AjPStr] SCOP family
+** @attr Sunid_Family [ajint] SCOP sunid for family
+** @attr npos [ajint] No. of signature positions
+** @attr pos [AjPSigpos*] Array of derived data for purposes of alignment
+** @attr dat [AjPSigdat*] Array of empirical data
 ** @@
 ******************************************************************************/
 typedef struct AjSSignature
@@ -877,11 +1089,10 @@ typedef struct AjSSignature
     AjPStr     Fold;
     AjPStr     Superfamily;
     AjPStr     Family;
-    ajint    Sunid_Family;        /* SCOP sunid for family */
-    ajint      npos;       /*No. of signature positions*/
-    AjPSigpos *pos;        /*Array of derived data for puropses of 
-			     alignment*/
-    AjPSigdat *dat;        /*Array of empirical data*/
+    ajint    Sunid_Family;
+    ajint      npos;
+    AjPSigpos *pos;
+    AjPSigdat *dat;
 } AjOSignature, *AjPSignature;
 
 
@@ -901,14 +1112,18 @@ typedef struct AjSSignature
 ** @alias AjSHetent
 ** @alias AjOHetent
 **
+** @attr abv [AjPStr] 3-letter abbreviation of heterogen
+** @attr syn [AjPStr] Synonym
+** @attr ful [AjPStr] Full name
+** @attr cnt [ajint] No. of occurences (files) of this heterogen in a directory
 ** @@
 ******************************************************************************/
 typedef struct AjSHetent
 {
-    AjPStr   abv;   /* 3-letter abbreviation of heterogen */
-    AjPStr   syn;   /* Synonym */
-    AjPStr   ful;   /* Full name */
-    ajint    cnt;   /* No. of occurences (files) of this heterogen in a directory */
+    AjPStr   abv;
+    AjPStr   syn;
+    AjPStr   ful;
+    ajint    cnt;
 } AjOHetent, *AjPHetent;
 
 
@@ -924,12 +1139,14 @@ typedef struct AjSHetent
 ** @alias AjSHet
 ** @alias AjOHet
 **
+** @attr n [ajint] Number of entries
+** @attr entries [AjPHetent*] Array of entries
 ** @@
 ******************************************************************************/
 typedef struct AjSHet
 {
-    ajint         n;        /* Number of entries */
-    AjPHetent *entries;  /* Array of entries */
+    ajint         n;
+    AjPHetent *entries;
 } AjOHet, *AjPHet;
 
 
@@ -940,20 +1157,31 @@ typedef struct AjSHet
 ** @alias AjOCoord
 ** @alias AjSCoord
 **
+** @attr Class [AjPStr] SCOP class
+** @attr Fold [AjPStr] SCOP fold
+** @attr Superfamily [AjPStr] SCOP superfamily
+** @attr Family [AjPStr] SCOP family
+** @attr Sunid_Family [ajint] the sun_id for a given SCOP family
+** @attr Model_Type [AjPStr] The type of model used to generate the scores
+** @attr Acc [AjPStr] Accession number of sequence entry
+** @attr Spr [AjPStr] Swissprot code of sequence entry
+** @attr x [ajint] The score interval
+** @attr y [ajint] Frequency of scores
+** @@
 ******************************************************************************/
 
 typedef struct AjSCoord
 {
-    AjPStr   Class;        /* SCOP class */
-    AjPStr   Fold;         /* SCOP fold */
-    AjPStr   Superfamily;  /* SCOP superfamily */
-    AjPStr   Family;       /* SCOP family */
-    ajint    Sunid_Family; /* the sun_id for a given SCOP family */
-    AjPStr   Model_Type;   /* The type of model used to generate the scores */
-    AjPStr   Acc;          /* Accession number of sequence entry  */
-    AjPStr   Spr;          /* Swissprot code of sequence entry */
-    ajint    x;            /* The score interval */
-    ajint    y;            /* Frequency of scores */
+    AjPStr   Class;
+    AjPStr   Fold;
+    AjPStr   Superfamily;
+    AjPStr   Family;
+    ajint    Sunid_Family;
+    AjPStr   Model_Type;
+    AjPStr   Acc;
+    AjPStr   Spr;
+    ajint    x;
+    ajint    y;
 } AjOCoord, *AjPCoord;
 
 /* @data AjPDatapoint *******************************************************
@@ -963,16 +1191,21 @@ typedef struct AjSCoord
 ** @alias AjODatapoint
 ** @alias AjSDatapoint
 **
+** @attr Acc [AjPStr] Accession number of sequence entry
+** @attr Spr [AjPStr] Swissprot code of sequence entry
+** @attr x [ajint] The score interval
+** @attr y [ajint] Frequency of scores
+** @@
 ******************************************************************************/
 
 
 
 typedef struct AjSDatapoint
 {
-    AjPStr    Acc;                      /* Accession number of sequence entry  */
-    AjPStr    Spr;                      /* Swissprot code of sequence entry */
-    ajint     x;                        /* The score interval */
-    ajint     y;                        /* Frequency of scores */
+    AjPStr    Acc;
+    AjPStr    Spr;
+    ajint     x;
+    ajint     y;
 } AjODatapoint, *AjPDatapoint;
 
 
@@ -983,41 +1216,34 @@ typedef struct AjSDatapoint
 ** @alias AjODiscord
 ** @alias AjSDiscord
 **
+** @attr Class [AjPStr] SCOP class
+** @attr Fold [AjPStr] SCOP fold
+** @attr Superfamily [AjPStr] SCOP superfamily
+** @attr Family [AjPStr] SCOP family
+** @attr Sunid_Family [ajint] the sun_id for a given SCOP family
+** @attr Model_Type [AjPStr] The type of model used to generate the scores
+** @attr N [ajint] No. of data points
+** @attr Points [AjPDatapoint*] an array of coordinates
+** @@
 ******************************************************************************/
 
 typedef struct AjSDiscord
 {
-    AjPStr        Class;                /* SCOP class */
-    AjPStr        Fold;                 /* SCOP fold */
-    AjPStr        Superfamily;          /* SCOP superfamily */
-    AjPStr        Family;               /* SCOP family */
-    ajint         Sunid_Family;         /* the sun_id for a given SCOP family */
-    AjPStr        Model_Type;           /* The type of model used to generate the scores */
-    ajint         N;                    /* No. of data points */
+    AjPStr        Class;
+    AjPStr        Fold;
+    AjPStr        Superfamily;
+    AjPStr        Family;
+    ajint         Sunid_Family;
+    AjPStr        Model_Type;
+    ajint         N;
 
-    AjPDatapoint  *Points;              /* an array of coordinates */
+    AjPDatapoint  *Points;
 } AjODiscord, *AjPDiscord;
 
 
 
 
 
-
-
-
-/* @data AjPXXX *******************************************************
-**
-** Ajax XXX object.
-**
-** Holds data for 
-**
-** AjPXXX is implemented as a pointer to a C data structure.
-**
-** @alias AjSXXX
-** @alias AjOXXX
-**
-** @@
-******************************************************************************/
 
 
 

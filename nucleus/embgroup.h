@@ -49,12 +49,16 @@ extern "C"
 **
 ** @alias Gnode
 **
+** @attr name [AjPStr] name of group or of program
+** @attr doc [AjPStr] documentation for this program (used by list of programs)
+** @attr progs [AjPList] list of programs in this group (used by groups list)
+** @@
 ******************************************************************************/
 
 typedef struct gnode {
-  AjPStr name;	/* name of group or of program */
-  AjPStr doc;	/* documentation for this program (used by list of programs) */
-  AjPList progs; /* list of programs in this group (used by list of groups) */
+  AjPStr name;
+  AjPStr doc;
+  AjPList progs;
 } Gnode, *GPnode;
 
 
