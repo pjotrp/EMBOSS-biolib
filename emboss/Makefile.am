@@ -15,7 +15,7 @@ backtranseq banana btwisted \
 cai chaos charge checktrans chips cirdna codcmp coderet \
 compseq cons cpgplot cpgreport cusp cutseq \
 dan dbiblast dbifasta dbiflat dbigcg \
-degapseq descseq diffseq digest domainer \
+degapseq descseq diffseq digest distances domainer \
 dotmatcher dotpath dottup dreg \
 einverted embossdata emma emowse entret \
 equicktandem est2genome etandem extractseq \
@@ -77,6 +77,7 @@ degapseq_SOURCES = degapseq.c
 descseq_SOURCES = descseq.c
 diffseq_SOURCES = diffseq.c
 digest_SOURCES = digest.c
+distances_SOURCES = distances.c
 domainer_SOURCES = domainer.c
 dotmatcher_SOURCES = dotmatcher.c
 dottup_SOURCES = dottup.c
