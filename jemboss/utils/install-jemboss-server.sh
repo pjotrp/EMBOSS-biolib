@@ -952,7 +952,8 @@ if [ "$SSL" != "y" ]; then
     echo
     echo "Please wait, starting tomcat......."
     sleep 25
-    deploy_axis_services $JEMBOSS/lib JembossServer.wsdd http://$LOCALHOST:$PORT/ $JAVA_HOME "" ""
+#   deploy_axis_services $JEMBOSS/lib JembossServer.wsdd http://$LOCALHOST:$PORT/ $JAVA_HOME "" ""
+    deploy_axis_services $JEMBOSS/lib JembossServer.wsdd http://localhost:$PORT/ $JAVA_HOME "" ""
   fi
 
 else
@@ -999,7 +1000,8 @@ else
     OPT_PROP1="-Djava.protocol.handler.pkgs=com.sun.net.ssl.internal.www.protocol"
     OPT_PROP2="-Djavax.net.ssl.trustStore=$JEMBOSS/resources/client.keystore"
 
-    deploy_axis_services $JEMBOSS/lib JembossServer.wsdd https://$LOCALHOST:$PORT/ $JAVA_HOME $OPT_PROP1 $OPT_PROP2
+#   deploy_axis_services $JEMBOSS/lib JembossServer.wsdd https://$LOCALHOST:$PORT/ $JAVA_HOME $OPT_PROP1 $OPT_PROP2
+    deploy_axis_services $JEMBOSS/lib JembossServer.wsdd https://localhost:$PORT/ $JAVA_HOME $OPT_PROP1 $OPT_PROP2
   else
     echo
     echo
