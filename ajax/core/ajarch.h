@@ -114,6 +114,10 @@ typedef unsigned short ajushort;
 typedef unsigned long long ajulong;
 #endif
 
+#ifdef __CYGWIN__
+#define __int64 long long
+#endif
+
 #endif
 
 #ifdef __cplusplus

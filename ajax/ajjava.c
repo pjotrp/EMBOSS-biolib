@@ -26,8 +26,8 @@
 
 #ifdef HAVE_JAVA
 
-#include <jni.h>
 #include "ajax.h"
+#include <jni.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
