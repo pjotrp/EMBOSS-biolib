@@ -2049,6 +2049,7 @@ ajint ajFmtScanS(const AjPStr thys, const char* fmt, ...)
 ** @return [ajint] number of successful conversions
 ** @@
 ******************************************************************************/
+
 static ajint fmtVscan(const char *thys,const char *fmt,va_list ap)
 {
     ajint n;
@@ -2537,7 +2538,7 @@ static void scvt_s(const char *fmt, char **pos, VALIST ap, ajint width,
 static void scvt_o(const char *fmt, char **pos, VALIST ap, ajint width,
 		   AjBool convert, AjBool *ok)
 {
-    char *p = *pos;
+    char *p;
     char *q;
     unsigned long *val = NULL;
     ajulong  *hval = NULL;
@@ -2799,7 +2800,7 @@ static void scvt_uB(const char *fmt, char **pos, VALIST ap, ajint width,
 
     *ok = ajFalse;
 
-    q=p;
+    q = p;
 
     if(!strncmp(q,"Yes",3))
     {
@@ -3051,6 +3052,7 @@ static void scvt_z(const char *fmt, char **pos, VALIST ap, ajint width,
 ** @return [ajlong] result
 ** @@
 ******************************************************************************/
+
 static ajlong sc_long(const char *str)
 {
     ajlong v = 0;
@@ -3080,6 +3082,7 @@ static ajlong sc_long(const char *str)
 ** @return [ajulong] result
 ** @@
 ******************************************************************************/
+
 static ajulong sc_ulong(const char *str)
 {
     ajulong v = 0;
