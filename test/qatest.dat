@@ -2453,6 +2453,7 @@ FC = 2
 //
 
 ID pscan-ex
+CC Needs printsextract to have been run
 AP pscan
 IN tsw:opsd_human
 IN
@@ -2476,6 +2477,7 @@ FC = 2
 //
 
 ID recoder-ex
+CC Needs rebasextract to have been run
 AP recoder
 IN tembl:hsfau
 IN EcoRII
@@ -2551,7 +2553,7 @@ FP /^\s+11\s+TaqI\s+TCGA\s+11\s+13\s+\n/
 //
 
 ID restrict-ex
-CC Needs rebaseextract to reformat REBASE data
+CC Needs rebasextract to have been run
 AP restrict
 IN tembl:hsfau
 IN
@@ -4680,7 +4682,7 @@ FP /^ECLACY          1486/
 
 ID syco-ex
 AP syco
-CL -plot -cfile pae
+CL -plot -cfile Epae
 IN tembl:paamir
 IN ps
 FI stderr
