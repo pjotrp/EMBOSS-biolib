@@ -10,7 +10,7 @@
 
 appl: topo [
         doc: "Draws an image of a transmembrane protein"
-        group: "who knows"
+        group: "protein: sequence features, secondary structure"
 ]
 
   sequence: sequence [ param: Y]
