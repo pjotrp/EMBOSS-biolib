@@ -46,13 +46,13 @@ the blast-like stage of the algorithm.  Default value: 12."
 	info: "(E) Sets the cutoff in range [3,10]."
   ]
   
-  bool: usermspA [ 
+  bool: usermspa [ 
 	opt: Y
         def: N
 	info: "False: esim4 calculates mspA, True: value from mspA command line argument."
   ]
 
-  int: mspA [ 
+  int: mspa [ 
 	opt: $(usermspA)
         def: 16
 	info: "(K) MSP score threshold for the first stage of the algorithm."
@@ -64,13 +64,13 @@ To avoid spurious matches, however, a larger value may be needed for
 longer sequences."
   ]
        
-  bool: usermspB [ 
+  bool: usermspb [ 
 	opt: Y
         def: N
 	info: "False: esim4 calculates mspB, True:  value from mspB command line argument."
   ]
 
-  int: mspB [ 
+  int: mspb [ 
 	opt: $(usermspB)
         req: $(usermspB)
         def: 12
@@ -157,7 +157,7 @@ characters is restricted to A,C,G,T,N and X
 only. "
   ]
 
-  string: CDSregion [ 
+  string: cdsregion [ 
 	opt: Y
 	info: "(S) Define CDS ends in mRNA"
 	help: "(S) Allows the user to specify the endpoints of the CDS in the input
@@ -171,19 +171,19 @@ the file only.
 "
   ]
 
-  int: offsetA [ 
+  int: offseta [ 
 	opt: Y
         info: "(f) Undocumented - some sort of offset in first sequence."
   ]
-  int: offsetB [ 
+  int: offsetb [ 
 	opt: Y
         info: "(F) Undocumented - some sort of offset in second sequence."
   ]
-  int: toA [ 
+  int: toa [ 
 	opt: Y
         info: "(t) Undocumented - offset end of first sequence?"
   ]
-  int: toB [ 
+  int: tob [ 
 	opt: Y
         info: "(T) Undocumented - offset end of second sequence?"
   ]
