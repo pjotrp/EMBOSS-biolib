@@ -498,7 +498,10 @@ AjBool ajMatrixRead(AjPMatrix* pthis, const AjPStr filename)
 	    {
 		ajFmtScanC(ptr, "%S", &firststring);
 		
-		k = ajSeqCvtK(thys->Cvt, ajStrChar(firststring,0));
+		/* JISON 19/7/4
+		   k = ajSeqCvtK(thys->Cvt, ajStrChar(firststring,0)); */
+		k = ajSeqCvtKS(thys->Cvt, firststring);
+
 		/* 
 		 ** cols+1 is used below because 2nd and subsequent lines have 
 		 ** one more string in them (the residue label) 
@@ -510,9 +513,14 @@ AjBool ajMatrixRead(AjPMatrix* pthis, const AjPStr filename)
 		{
 		    if(templine[i] < minval) 
 			minval = templine[i];
+
+		    /* JISON 19/7/4
 		    matrix[k][ajSeqCvtK(thys->Cvt,
 					ajStrChar(orderstring[i],0))] 
-					    = templine[i];
+					    = templine[i]; */
+		    matrix[k][ajSeqCvtKS(thys->Cvt,
+					 orderstring[i])] 
+					     = templine[i];
 		}
 		AJFREE(templine);
 	    }
@@ -615,7 +623,10 @@ AjBool ajMatrixfRead(AjPMatrixf* pthis, const AjPStr filename)
 	    else
 	    {
 		ajFmtScanC(ptr, "%S", &firststring);
-		k = ajSeqCvtK(thys->Cvt, ajStrChar(firststring,0));
+		/* JISON 19/7/4 
+		   k = ajSeqCvtK(thys->Cvt, ajStrChar(firststring,0)); */
+		k = ajSeqCvtKS(thys->Cvt, firststring); 
+
 		len = MAJSTRLEN(firststring);
 		ajStrAssSubC(&reststring, ptr, len, -1);
 
@@ -636,9 +647,14 @@ AjBool ajMatrixfRead(AjPMatrixf* pthis, const AjPStr filename)
 		{
 		    if(templine[i] < minval) 
 			minval = templine[i];
+		    /* JISON 19/7/4
 		    matrix[k][ajSeqCvtK(thys->Cvt,
 					ajStrChar(orderstring[i],0))] 
-					    = templine[i];
+					    = templine[i]; */
+
+		    matrix[k][ajSeqCvtKS(thys->Cvt,
+					 orderstring[i])] 
+					     = templine[i];
 		}
 		AJFREE(templine);
 	    }
