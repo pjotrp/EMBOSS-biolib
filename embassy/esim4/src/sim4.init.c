@@ -62,7 +62,7 @@
 #ifndef __lint     
 /*@unused@*/       
 static const char rcsid[] =
-"$Id: sim4.init.c,v 1.1 2002/02/25 09:33:50 hgmp Exp $";
+"$Id: sim4.init.c,v 1.2 2002/02/25 13:48:10 hgmp Exp $";
 #endif         
            
 
@@ -169,11 +169,15 @@ int main(int argc, char *argv[])
 	ajAcdInitP("esim4",argc,argv,"ESIM4");
 /*	embInit ("esim4", argc, argv); */
         sim4_argvals(&rs);
+
+
+	ajSeqToUpper(esim4_sequence);
+
         DNA_scores(&ds, ss);
 
 	/*
          *   AJB: This trims the sequence according to -sbegin and -send
-         *   values and then sets Offet and Offend accordingly
+         *   values and then sets Offset and Offend accordingly
          */
 	ajSeqTrim(esim4_sequence);
         
@@ -188,6 +192,7 @@ int main(int argc, char *argv[])
         if( ! ajSeqallNext(esim4_seqall,&esim4_genome)){
                 fatal("The genomic sequence file specification is invalid.");
         }
+	ajSeqToUpper(esim4_genome);
 	/* AJB: Trim genomic sequence */
 	ajSeqTrim(esim4_genome);
 	len2 = strlen(ajSeqChar(esim4_genome));
@@ -330,6 +335,7 @@ else {
            if (count) { /* skip the first seq2, already in memory */
 #ifdef EMBASSY
 	      /* AJB: Trim sequence again */
+	       ajSeqToUpper(esim4_genome);
 	      ajSeqTrim(esim4_genome);
 	      len2 = strlen(ajSeqChar(esim4_genome));
               if(seq2 != NULL)free(seq2);
