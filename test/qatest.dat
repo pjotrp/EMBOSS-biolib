@@ -1588,7 +1588,7 @@ IN EMBL
 IN
 IN
 FI stderr
-FC = 5
+FC = 6
 FP 0 /Warning:/
 FI division.lkp
 FZ = 322
@@ -1615,7 +1615,7 @@ IN EMBL
 IN
 IN
 FI stderr
-FC = 5
+FC = 6
 FP 0 /Warning:/
 FI division.lkp
 FZ = 322
@@ -1799,7 +1799,7 @@ IN SWNEW
 IN
 IN
 FI stderr
-FC = 5
+FC = 6
 FP 0 /Warning:/
 FI division.lkp
 FZ = 378
@@ -1826,7 +1826,7 @@ IN SWNEW
 IN
 IN
 FI stderr
-FC = 5
+FC = 6
 FP 0 /Warning:/
 FI division.lkp
 FZ = 378
@@ -1877,7 +1877,7 @@ IN SWNEW
 IN
 IN
 FI stderr
-FC = 5
+FC = 6
 FP 0 /Warning:/
 FI division.lkp
 FZ = 378
@@ -2041,7 +2041,7 @@ IN GENBANK
 IN
 IN
 FI stderr
-FC = 5
+FC = 6
 FP 0 /Warning:/
 FI division.lkp
 FZ = 570
@@ -8497,10 +8497,10 @@ FI stderr
 FC = 1
 FP 0 /Warning:/
 FI ap000504.split
-FZ = 104917
-FP /\A>AP000504_1-53000/
-FP /^>AP000504_50001-100000/
-FP 2 /^>/
+FZ = 108068
+FP /\A>AP000504_1-50000/
+FP /^>AP000504_47001-97000/
+FP 3 /^>/
 //
 
 # update example
@@ -9052,6 +9052,165 @@ FZ = 137
 FP /^ECLACI\twordmatch\tmisc_feature\t1\t1113\t1\.000\t/
 //
 
+ID wordmatch-pair
+AP wordmatch
+CL tsw:hba_human tsw:hbb_human -aformat pair
+IN
+IN
+FI stderr
+FC = 2
+FP 0 /Warning:/
+FI hba_human.wordmatch
+FZ > 608
+FP 1 /^HBA_HUMAN         58 HGKKV     62\n/
+FP 1 /^                     \|\|\|\|\|\n/
+FP 2 /^                     \|\|\|\|\n/
+FP 1 /^HBB_HUMAN         63 HGKKV     67\n/
+FI HBA_HUMAN.gff
+FZ = 336
+FP /^HBA_HUMAN\twordmatch\tmisc_feature\t58\t62\t1\.000\t/
+FI HBB_HUMAN.gff
+FZ = 336
+FP /^HBB_HUMAN\twordmatch\tmisc_feature\t63\t67\t1\.000\t/
+//
+
+ID wordmatch-srspair
+AP wordmatch
+CL tsw:hba_human tsw:hbb_human -aformat srspair
+IN
+IN
+FI stderr
+FC = 2
+FP 0 /Warning:/
+FI hba_human.wordmatch
+FZ > 608
+FP 1 /^HBA_HUMAN         58 HGKKV     62\n/
+FP 1 /^                     \|\|\|\|\|\n/
+FP 2 /^                     \|\|\|\|\n/
+FP 1 /^HBB_HUMAN         63 HGKKV     67\n/
+FI HBA_HUMAN.gff
+FZ = 336
+FP /^HBA_HUMAN\twordmatch\tmisc_feature\t58\t62\t1\.000\t/
+FI HBB_HUMAN.gff
+FZ = 336
+FP /^HBB_HUMAN\twordmatch\tmisc_feature\t63\t67\t1\.000\t/
+//
+
+ID wordmatch-markx0
+AP wordmatch
+CL tsw:hba_human tsw:hbb_human -aformat markx0
+IN
+IN
+FI stderr
+FC = 2
+FP 0 /Warning:/
+FI hba_human.wordmatch
+FZ > 608
+FP 1 /^HBA_HU HGKKV\n/
+FP 1 /^       :::::\n/
+FP 1 /^HBB_HU HGKKV\n/
+FP 1 /^        60  \n/
+FI HBA_HUMAN.gff
+FZ = 336
+FP /^HBA_HUMAN\twordmatch\tmisc_feature\t58\t62\t1\.000\t/
+FI HBB_HUMAN.gff
+FZ = 336
+FP /^HBB_HUMAN\twordmatch\tmisc_feature\t63\t67\t1\.000\t/
+//
+
+ID wordmatch-markx1
+AP wordmatch
+CL tsw:hba_human tsw:hbb_human -aformat markx1
+IN
+IN
+FI stderr
+FC = 2
+FP 0 /Warning:/
+FI hba_human.wordmatch
+FZ > 608
+FP 1 /^HBA_HU HGKKV\n/
+## found for numbering and for alignment in first hit
+FP 2 /^            \n/
+FP 1 /^HBB_HU HGKKV\n/
+FP 1 /^        60  \n/
+FI HBA_HUMAN.gff
+FZ = 336
+FP /^HBA_HUMAN\twordmatch\tmisc_feature\t58\t62\t1\.000\t/
+FI HBB_HUMAN.gff
+FZ = 336
+FP /^HBB_HUMAN\twordmatch\tmisc_feature\t63\t67\t1\.000\t/
+//
+
+ID wordmatch-markx2
+AP wordmatch
+CL tsw:hba_human tsw:hbb_human -aformat markx2
+IN
+IN
+FI stderr
+FC = 2
+FP 0 /Warning:/
+FI hba_human.wordmatch
+FZ > 608
+FP 1 /^        60  \n/
+FP 1 /^HBA_HU HGKKV\n/
+FP 1 /^HBB_HU \.\.\.\.\.\n/
+FI HBA_HUMAN.gff
+FZ = 336
+FP /^HBA_HUMAN\twordmatch\tmisc_feature\t58\t62\t1\.000\t/
+FI HBB_HUMAN.gff
+FZ = 336
+FP /^HBB_HUMAN\twordmatch\tmisc_feature\t63\t67\t1\.000\t/
+//
+
+ID wordmatch-markx3
+AP wordmatch
+CL tsw:hba_human tsw:hbb_human -aformat markx3
+IN
+IN
+FI stderr
+FC = 2
+FP 0 /Warning:/
+FI hba_human.wordmatch
+FZ > 608
+FP 1 /^>HBA_HUMAN \.\.\nHGKKV\n/
+FP 1 /^>HBB_HUMAN \.\.\nHGKKV\n/
+FI HBA_HUMAN.gff
+FZ = 336
+FP /^HBA_HUMAN\twordmatch\tmisc_feature\t58\t62\t1\.000\t/
+FI HBB_HUMAN.gff
+FZ = 336
+FP /^HBB_HUMAN\twordmatch\tmisc_feature\t63\t67\t1\.000\t/
+//
+
+ID wordmatch-markx10
+AP wordmatch
+CL tsw:hba_human tsw:hbb_human -aformat markx10
+IN
+IN
+FI stderr
+FC = 2
+FP 0 /Warning:/
+FI hba_human.wordmatch
+FZ > 608
+FP 3 /^>HBA_HUMAN \.\.\n/
+FP 3 /^; sq_len: 141\n/
+FP 1 /^; al_start: 58\n/
+FP 1 /^; al_stop: 62\n/
+FP 1 /^; al_display_start: 58\n/
+FP 2 /^HGKKV\n/
+FP 3 /^>HBB_HUMAN \.\.\n/
+FP 3 /^; sq_len: 146\n/
+FP 1 /^; al_start: 63\n/
+FP 1 /^; al_stop: 67\n/
+FP 1 /^; al_display_start: 63\n/
+FI HBA_HUMAN.gff
+FZ = 336
+FP /^HBA_HUMAN\twordmatch\tmisc_feature\t58\t62\t1\.000\t/
+FI HBB_HUMAN.gff
+FZ = 336
+FP /^HBB_HUMAN\twordmatch\tmisc_feature\t63\t67\t1\.000\t/
+//
+
 ID wossname-ex
 AP wossname
 CL restrict
@@ -9283,6 +9442,143 @@ FP 1 /^ AFULL AACCGG\n/
 FP 1 /^ BFULL AACGGG\n/
 FP 1 /^             \n/
 FC = 33
+//
+
+ID align-matcher-pair
+AP matcher
+CL -gappen 5 -gaplen 1 -stdout -sbegin1 5 -send1 15 -sbegin2 2 -send2 -6
+CL -aformat pair
+IN ../../data/aligna.dna
+IN ../../data/alignb.dna
+IN
+FI stderr
+FC = 2
+FP 0 /Warning:/
+FI stdout
+FP /^# Identity: +5\/6 \(83\.3%\)/
+FP /^# Score: +21\n/
+FP 1 /^           10\n/
+FP 1 /^ AFULL AACCGG\n/
+FP 1 /^ BFULL AACGGG\n/
+FP 1 /^             \n/
+FC = 33
+//
+
+ID align-matcher-srspair
+AP matcher
+CL -gappen 5 -gaplen 1 -stdout -sbegin1 5 -send1 15 -sbegin2 2 -send2 -6
+CL -aformat srspair
+IN ../../data/aligna.dna
+IN ../../data/alignb.dna
+IN
+FI stderr
+FC = 2
+FP 0 /Warning:/
+FI stdout
+FP /^# Identity: +5\/6 \(83\.3%\)/
+FP /^# Score: +21\n/
+FP 1 /^           10\n/
+FP 1 /^ AFULL AACCGG\n/
+FP 1 /^ BFULL AACGGG\n/
+FP 1 /^             \n/
+FC = 33
+//
+
+ID align-matcher-markx0
+AP matcher
+CL -gappen 5 -gaplen 1 -stdout -sbegin1 5 -send1 15 -sbegin2 2 -send2 -6
+CL -aformat markx0
+IN ../../data/aligna.dna
+IN ../../data/alignb.dna
+IN
+FI stderr
+FC = 2
+FP 0 /Warning:/
+FI stdout
+FP /^# Identity: +5\/6 \(83\.3%\)/
+FP /^# Score: +21\n/
+FP 1 /^           10\n/
+FP 1 /^ AFULL AACCGG\n/
+FP 1 /^       ::: ::\n/
+FP 1 /^ BFULL AACGGG\n/
+FP 1 /^             \n/
+FC = 33
+//
+
+ID align-matcher-markx1
+AP matcher
+CL -gappen 5 -gaplen 1 -stdout -sbegin1 5 -send1 15 -sbegin2 2 -send2 -6
+CL -aformat markx1
+IN ../../data/aligna.dna
+IN ../../data/alignb.dna
+IN
+FI stderr
+FC = 2
+FP 0 /Warning:/
+FI stdout
+FP /^# Identity: +5\/6 \(83\.3%\)/
+FP /^# Score: +21\n/
+FP 1 /^           10\n/
+FP 1 /^ AFULL AACCGG\n/
+FP 1 /^          X  \n/
+FP 1 /^ BFULL AACGGG\n/
+FP 1 /^             \n/
+FC = 33
+//
+
+ID align-matcher-markx2
+AP matcher
+CL -gappen 5 -gaplen 1 -stdout -sbegin1 5 -send1 15 -sbegin2 2 -send2 -6
+CL -aformat markx2
+IN ../../data/aligna.dna
+IN ../../data/alignb.dna
+IN
+FI stderr
+FC = 2
+FP 0 /Warning:/
+FI stdout
+FP /^# Identity: +5\/6 \(83\.3%\)/
+FP /^# Score: +21\n/
+FP 1 /^           10\n/
+FP 1 /^ AFULL AACCGG\n/
+FP 1 /^BFULL  \.\.\.G\.\.\n/
+FC = 31
+//
+
+ID align-matcher-markx3
+AP matcher
+CL -gappen 5 -gaplen 1 -stdout -sbegin1 5 -send1 15 -sbegin2 2 -send2 -6
+CL -aformat markx3
+IN ../../data/aligna.dna
+IN ../../data/alignb.dna
+IN
+FI stderr
+FC = 2
+FP 0 /Warning:/
+FI stdout
+FP /^# Identity: +5\/6 \(83\.3%\)/
+FP /^# Score: +21\n/
+FP /^# Identity: +5\/6 \(83\.3%\)/
+FP /^# Score: +21\n/
+FP 1 /^>AFULL \.\.\nAACCGG\n/
+FP 1 /^>BFULL \.\.\nAACGGG\n/
+FC = 31
+//
+
+ID align-matcher-markx10
+AP matcher
+CL -gappen 5 -gaplen 1 -stdout -sbegin1 5 -send1 15 -sbegin2 2 -send2 -6
+CL -aformat markx10
+IN ../../data/aligna.dna
+IN ../../data/alignb.dna
+IN
+FI stderr
+FC = 2
+FP 0 /Warning:/
+FI stdout
+FP 1 /^>AFULL \.\.\n;[^\n]+\n;[^\n]+\n;[^\n]+\n;[^\n]+\nAACCGG\n/
+FP 1 /^>BFULL \.\.\n;[^\n]+\n;[^\n]+\n;[^\n]+\n;[^\n]+\nAACGGG\n/
+FC = 39
 //
 
 ID align-water-full
