@@ -41,7 +41,7 @@ static void rebex_process_pattern(AjPStr *pattern, AjPStr *code, AjPFile outf,
 static void rebex_printEnzHeader(AjPFile outf);
 static void rebex_printRefHeader(AjPFile outf);
 static void rebex_printSuppHeader(AjPFile outf);
-static void rebex_write_equ(AjPTable ptable, AjPFile oute);
+
 
 
 /* @prog rebaseextract ********************************************************
@@ -83,9 +83,11 @@ int main(int argc, char **argv)
     AjPStr    value     = NULL;
     AjPStrTok handle    = NULL;
     AjPStr    token     = NULL;
+    AjPStr    line2     = NULL;
     
     AjBool    isproto   = ajFalse;
     char      c;
+    char      *sptr     = NULL;
     
     embInit("rebaseextract",argc,argv);
 
@@ -116,6 +118,7 @@ int main(int argc, char **argv)
     ajStrDel(&pfname);
 
     line     = ajStrNew();
+    line2    = ajStrNew();
     code     = ajStrNew();
     pattern  = ajStrNew();
     isoschiz = ajStrNew();
@@ -168,14 +171,20 @@ int main(int argc, char **argv)
     {
 	if(!ajStrLen(line))
 	    continue;
-	c = *ajStrStr(line);
+	sptr = ajStrStr(line);
+	c = *sptr;
 	if(c>='A' && c<='Z')
 	{
+	    while(*sptr!=' ')
+		++sptr;
+	    while(*sptr==' ')
+		++sptr;
+	    
 	    key   = ajStrNew();
-	    value = ajStrNew();
-
-	    if(ajFmtScanS(line,"%S%S",&key,&value)==2)
-	        ajTablePut(ptable,(const void *)key, (void *)value);
+	    value = ajStrNewC(sptr);
+	    ajStrCleanWhite(&value);
+	    ajFmtScanS(line,"%S",&key);
+	    ajTablePut(ptable,(const void *)key, (void *)value);
 	}
     }
     
@@ -202,21 +211,12 @@ int main(int argc, char **argv)
 	    continue;
 	ajStrAssC(&code,ajStrStr(line)+3);
 	/* Get isoschizomers */
-	if(!ajFileReadLine(inf,&line))
+	if(!ajFileReadLine(inf,&line2))
 	    ajFatal("Unexpected EOF");
 
-	if(ajStrLen(line)>3)
+	if(ajStrLen(line2)>3)
 	{
-	    ajStrAssC(&isoschiz,ajStrStr(line)+3);
-	    if(doequ)
-	    {
-		ajStrAssS(&isostr,isoschiz);
-		handle = ajStrTokenInit(isostr,"\t\n>,");
-	        ajStrToken (&token, &handle, NULL);
-		if(ajTableGet(ptable,(const void *)token))
-		    ajFmtPrintF(oute,"%S %S\n",code,token);
-		ajStrTokenClear(&handle);
-	    }
+	    ajStrAssC(&isoschiz,ajStrStr(line2)+3);
 	}
 	else
 	    ajStrAssC(&isoschiz,"");
@@ -227,7 +227,20 @@ int main(int argc, char **argv)
 	    ajFatal("Unexpected EOF");
 
 	if(ajStrLen(line)>3)
+	{
 	    ajStrAssC(&pattern,ajStrStr(line)+3);
+
+	    if(doequ && ajStrLen(line2)>3)
+	    {
+		ajStrAssS(&isostr,isoschiz);
+		handle = ajStrTokenInit(isostr,"\t\n>,");
+	        ajStrToken (&token, &handle, NULL);
+		if((value=ajTableGet(ptable,(const void *)token)))
+		    if(ajStrMatch(value,pattern))
+			ajFmtPrintF(oute,"%S %S\n",code,token);
+		ajStrTokenClear(&handle);
+	    }
+	}
 	else
 	    ajStrAssC(&pattern,"");
 
@@ -326,6 +339,7 @@ int main(int argc, char **argv)
 
 
     ajStrDel(&line);
+    ajStrDel(&line2);
     ajStrDel(&token);
     ajStrDel(&isoschiz);
     ajStrDel(&tit);
