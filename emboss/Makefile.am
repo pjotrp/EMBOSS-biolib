@@ -18,10 +18,10 @@ demoalign demofeatures demolist demoreport demosequence demostring demotable \
 entrails histogramtest intconv \
 patmattest \
 prima primers \
-seqinfo seqretall seqretallfeat seqretset seqretsingle \
+seqinfo seqretall seqretallfeat seqretset seqretsingle seqrettype \
 testplot treetypedisplay
 
-bin_PROGRAMS = aaindexextract abiview acdc acdpretty acdtable \
+bin_PROGRAMS = aaindexextract abiview acdc acdpretty acdtable acdvalid \
 antigenic \
 backtranseq banana biosed btwisted \
 cai chaos charge checktrans chips cirdna codcmp coderet \
@@ -65,6 +65,7 @@ abiview_SOURCES = abiview.c
 acdc_SOURCES = acdc.c
 acdpretty_SOURCES = acdpretty.c
 acdtable_SOURCES = acdtable.c
+acdvalid_SOURCES = acdvalid.c
 antigenic_SOURCES = antigenic.c
 backtranseq_SOURCES = backtranseq.c
 banana_SOURCES = banana.c
@@ -241,6 +242,7 @@ seqretall_SOURCES = seqretall.c
 seqretallfeat_SOURCES = seqretallfeat.c
 seqretset_SOURCES = seqretset.c
 seqretsingle_SOURCES = seqretsingle.c
+seqrettype_SOURCES = seqrettype.c
 testplot_SOURCES = testplot.c
 treetypedisplay_SOURCES = treetypedisplay.c
 
