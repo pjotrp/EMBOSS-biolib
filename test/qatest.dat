@@ -8288,6 +8288,20 @@ FP /^  Element 2 Threshold 49% Score 75%\n/
 FP /^             Start position 72 Length 22\n/
 //
 
+ID psiphi-ex
+AP psiphi
+CL ../../data/1atn.pxyz -chainnumber=2 -startresiduenumber=4 -finishresiduenumber=65 -outf=1atn.psiphi
+IN ../../data/1atn.pxyz
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI 1atn.psiphi 
+FZ = 3062
+FP /     24      24     0.0   \-89\.18   \-40\.94\n/
+//
+
 ID rebaseextract-keep
 CC needs local copy of REBASE withrefm and proto file
 AP rebaseextract
