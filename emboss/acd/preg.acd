@@ -4,7 +4,7 @@
 
 appl: preg [
 	doc: "regular expression search of a protein sequence"
-	groups: "pattern matching"
+	groups: "Protein:Motifs"
 ]
 
   seqall: sequence [ param: Y type: protein ]

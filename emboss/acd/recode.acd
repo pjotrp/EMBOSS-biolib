@@ -2,7 +2,7 @@
 #
 appl: recode [
           doc: "Remove restriction sites but maintain the same translation"
-          groups: "DNA: sequence features, restriction enzymes, site directed mutagenesis"
+          groups: "Nucleic:Restriction"
 ]
 
 

@@ -10,7 +10,7 @@
 
 appl: prophet [
 	doc: "Gapped alignment for profiles"
-	group: "profiles"
+	groups: "Nucleic:Profiles, Protein:Profiles"
   ]
 
 

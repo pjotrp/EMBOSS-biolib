@@ -1,6 +1,6 @@
 appl: patmatmotifs [
   documentation: "Search a PROSITE motif database with a protein sequence"
-  groups: "motifs, pattern matching"
+  groups: "Protein:Motifs"
 ]
 
 sequence: sequence  [

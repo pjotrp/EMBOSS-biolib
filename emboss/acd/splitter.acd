@@ -9,7 +9,7 @@
 
 appl: splitter [
 	doc: "Split a sequence into (overlapping) smaller sequences"
-	group: "sequence editing"
+	groups: "Edit"
 ]
 
   seqall: sequence [ 

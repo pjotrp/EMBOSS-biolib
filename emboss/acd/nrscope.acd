@@ -1,7 +1,7 @@
 appl: nrscope 
 [
         doc: "Converts redundant EMBL-format SCOP file to non-redundant one"
-	groups: "PROTEIN: structure"
+	groups: "Utils:Database creation"
 ]
 
 
