@@ -162,7 +162,11 @@ public class DragTree extends JTree implements DragGestureListener,
     JMenuItem source = (JMenuItem)(e.getSource());
     if(source.getText().equals("Refresh")) 
     {
-      newRoot(org.emboss.jemboss.gui.AdvancedOptions.getHomeDirectory());
+      String cwd = org.emboss.jemboss.gui.AdvancedOptions.getHomeDirectory();
+      if(cwd.equals(""))
+        cwd = System.getProperty("user.home");
+
+      newRoot(cwd);
       return;
     }
 
