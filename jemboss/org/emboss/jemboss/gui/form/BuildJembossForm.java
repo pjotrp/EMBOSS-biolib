@@ -74,6 +74,7 @@ public class BuildJembossForm implements ActionListener
   private JList multiOption[];
   private SetInFileCard inSeq[];
   private JButton bresults;
+  private JButton balign;
   private String applName;
   private String db[];
   private String[] envp;
@@ -201,8 +202,11 @@ public class BuildJembossForm implements ActionListener
 
 
 // Display results button
-    bresults = new JButton("Show results");
+    bresults = new JButton("Show Results");
     bresults.addActionListener(this);
+ 
+    balign = new JButton("Show Alignment");
+    balign.addActionListener(this);
 
 // Go button
     
@@ -232,6 +236,11 @@ public class BuildJembossForm implements ActionListener
     tools.add(Box.createRigidArea(new Dimension(4,0)));
     tools.add(bresults);
     bresults.setVisible(false);
+
+    tools.add(Box.createRigidArea(new Dimension(4,0)));
+    tools.add(balign);
+    balign.setVisible(false);
+
     tools.add(Box.createHorizontalGlue());
     fieldPane.add(Box.createRigidArea(new Dimension(0,10)));
     fieldPane.add(tools);
@@ -435,6 +444,9 @@ public class BuildJembossForm implements ActionListener
 
           f.setCursor(cdone);
           bresults.setVisible(true);
+
+          if(applName.equals("emma"))
+            balign.setVisible(true);
         }
       }
       else
@@ -482,24 +494,34 @@ public class BuildJembossForm implements ActionListener
       }
       f.setCursor(cdone);
     }
-    else if( ae.getActionCommand().startsWith("Show results"))
+    else if( ae.getActionCommand().startsWith("Show Alignment"))
+    {
+       org.emboss.jemboss.editor.AlignJFrame ajFrame =
+               new org.emboss.jemboss.editor.AlignJFrame(new File(seqoutResult));
+       ajFrame.setVisible(true);
+    }
+    else if( ae.getActionCommand().startsWith("Show Results"))
     {
       JFrame res = new JFrame(applName + " Results  : " + seqoutResult);
       res.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
       JTabbedPane fresults = new JTabbedPane();
       res.getContentPane().add(fresults,BorderLayout.CENTER);
       Hashtable hashRes = new Hashtable();
-      res.setSize(450,400);
+
+      Dimension d = res.getToolkit().getScreenSize();
+      res.setSize((int)d.getWidth()/2,(int)d.getHeight()/2);
+
       JPanel presults;
-      JPanel pscroll;
+      ScrollPanel pscroll;
       JScrollPane rscroll;
 
       if(!stdout.equals("") &&
          !(stdout.startsWith("Created") && stdout.endsWith(".png")))
       {
         presults = new JPanel(new BorderLayout());
-        pscroll = new JPanel(new BorderLayout());
+        pscroll = new ScrollPanel(new BorderLayout());
         rscroll = new JScrollPane(pscroll);
+        rscroll.getViewport().setBackground(Color.WHITE);
         presults.add(rscroll, BorderLayout.CENTER);
         JTextArea atext = new JTextArea(stdout);
         atext.setFont(new Font("monospaced", Font.PLAIN, 12));
@@ -513,31 +535,36 @@ public class BuildJembossForm implements ActionListener
       for(int j=0;j<numofFields;j++) 
       {
         presults = new JPanel(new BorderLayout());
-        pscroll = new JPanel(new BorderLayout());
+        pscroll = new ScrollPanel(new BorderLayout());
         rscroll = new JScrollPane(pscroll);
+        rscroll.getViewport().setBackground(Color.WHITE);
         presults.add(rscroll, BorderLayout.CENTER);
 
         if(parseAcd.isOutputSequence(j) || parseAcd.isOutputFile(j))
         {
           try
           {
-            BufferedReader in;
-            StringBuffer text = new StringBuffer();
+            String name = null;
             if(parseAcd.isOutputSequence(j))
-              in = new BufferedReader(new FileReader(seqoutResult));
+              name = seqoutResult;
             else
-              in = new BufferedReader(new FileReader(outfileResult));
+              name = outfileResult;
+
+            StringBuffer text = new StringBuffer();
+            BufferedReader in = new BufferedReader(new FileReader(name));
 
             while((line = in.readLine()) != null)
               text = text.append(line + "\n");
 
             in.close();
-            JTextArea seqText = new JTextArea(text.toString());
+ 
+            String txt = text.toString();
+            JTextArea seqText = new JTextArea(txt);
             seqText.setFont(new Font("monospaced", Font.PLAIN, 12));
             pscroll.add(seqText, BorderLayout.CENTER);
             seqText.setCaretPosition(0);
-            fresults.add(seqoutResult,presults);
-            hashRes.put("stdout",text);
+            fresults.add(name,presults);
+            hashRes.put(name,txt);
           }
           catch (IOException ioe)
           {
@@ -563,8 +590,9 @@ public class BuildJembossForm implements ActionListener
           for(int i=0;i<pngFiles.length;i++)
           {
             presults = new JPanel(new BorderLayout());
-            pscroll  = new JPanel(new BorderLayout());
+            pscroll  = new ScrollPanel(new BorderLayout());
             rscroll  = new JScrollPane(pscroll);
+            rscroll.getViewport().setBackground(Color.WHITE);
             presults.add(rscroll, BorderLayout.CENTER);
             byte pngContents[] = getLocalFile(new File(pngFiles[i]));
             ImageIcon icon = new ImageIcon(pngContents);
@@ -621,6 +649,11 @@ public class BuildJembossForm implements ActionListener
             seqoutResult = textf[h].getText();
           else if(att.startsWith("outfile"))
             outfileResult = textf[h].getText();;
+        }
+        else if(!withSoap && applName.equals("emma") && att.startsWith("seqoutset"))
+        {
+          options = options.concat(" -" + val + " emma.aln "); 
+          seqoutResult = "emma.aln";
         }
 
         if(att.startsWith("seqout"))
@@ -948,7 +981,7 @@ public class BuildJembossForm implements ActionListener
          
     if(options.equals("NOT OK"))
       command = "NOT OK";
-    else 
+    else
       command = command.concat(options + " -stdout -auto");
 
     return command;
