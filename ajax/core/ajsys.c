@@ -218,7 +218,7 @@ AjBool ajSysWhichEnv(AjPStr *s, char * const env[])
 	if(!(*env[count]))
 	    break;
 
-	ajDebug("  env[%d] '%s'\n", count, env[count]);
+	/*ajDebug("  env[%d] '%s'\n", count, env[count]);*/
 
 	if(!strncmp("PATH=",env[count],5))
 	    break;
@@ -226,7 +226,7 @@ AjBool ajSysWhichEnv(AjPStr *s, char * const env[])
 	++count;
     }
     
-    ajDebug("PATH  env[%d] '%s'\n", count, env[count]);
+   /* ajDebug("PATH  env[%d] '%s'\n", count, env[count]);*/
 
     if(env[count]==NULL || !(*env[count]))
     {
@@ -243,7 +243,7 @@ AjBool ajSysWhichEnv(AjPStr *s, char * const env[])
     cp += 5;
     ajStrAssC(&tmp,cp);
 
-    ajDebug("tmp '%S' save '%S' buf '%S'\n", tmp, save, buf);
+    /*ajDebug("tmp '%S' save '%S' buf '%S'\n", tmp, save, buf);*/
  
     p = ajSysStrtokR(ajStrStr(tmp),":",&save,&buf);
     
