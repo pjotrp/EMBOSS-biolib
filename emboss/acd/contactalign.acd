@@ -20,11 +20,18 @@ section: input [
     information: "second sequence to be aligned"
   ]
 
-  matrixf: datafile [
+  matrixf: contactscoringfile [
     optional: "Y"	
     info: "Matrix file"
     protein: $(down.protein)
-    default: "data/EBLOSUM62"	
+    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/contactscore.dat"	
+  ]
+
+  matrixf: substitutionscoringfile [
+    optional: "Y"	
+    info: "Matrix file"
+    protein: $(down.protein)
+    default: "/users/damian/EMBOSS/emboss/emboss/emboss/data/EBLOSUM62"	
   ]
 
 endsection: input
