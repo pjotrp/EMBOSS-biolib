@@ -161,7 +161,7 @@ static void reportWriteEmbl (AjPReport thys,
   if (!ftfmt)
     ajStrAssC (&ftfmt, "embl");
 
-  ajFmtPrintF (thys->File, "#EMBL output\n");
+  /*  ajFmtPrintF (thys->File, "#EMBL output\n"); */
 
   thys->Ftquery = ajFeattabOutNewSSF (ftfmt, thys->Name,
 				      ajStrStr(thys->Type),
@@ -192,7 +192,7 @@ static void reportWriteGenbank (AjPReport thys,
   if (!ftfmt)
     ajStrAssC (&ftfmt, "genbank");
 
-  ajFmtPrintF (thys->File, "#Genbank output\n");
+  /* ajFmtPrintF (thys->File, "#Genbank output\n"); */
 
   thys->Ftquery = ajFeattabOutNewSSF (ftfmt, thys->Name,
 				      ajStrStr(thys->Type),
