@@ -60,7 +60,7 @@ public class ShowResultSet extends JFrame
     super("Saved Results on the Server");
     JTabbedPane rtp = new JTabbedPane();
 
-    new ResultsMenuBar(this,rtp,reslist);
+    new ResultsMenuBar(this,rtp,reslist,inputFiles);
     setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
     int ntabs = 0;
@@ -94,9 +94,8 @@ public class ShowResultSet extends JFrame
       r1 = new JScrollPane(s1);
       FileEditorDisplay fed = new FileEditorDisplay(null,cmd,
                                          reslist.get(cmd));
-      JTextPane o1 = fed.getJTextPane();
-      o1.setCaretPosition(0);
-      s1.add(o1, BorderLayout.CENTER);
+      fed.setCaretPosition(0);
+      s1.add(fed, BorderLayout.CENTER);
       rtp.add(cmd,r1);
     }
 
@@ -143,9 +142,8 @@ public class ShowResultSet extends JFrame
         {
           FileEditorDisplay fed = new FileEditorDisplay(null,thiskey,
                                                      h.get(thiskey));
-          JTextPane o1 = fed.getJTextPane();
-          o1.setCaretPosition(0);
-          s1.add(o1, BorderLayout.CENTER);
+          fed.setCaretPosition(0);
+          s1.add(fed, BorderLayout.CENTER);
           rtp.add(thiskey,r1);
         }
       }
