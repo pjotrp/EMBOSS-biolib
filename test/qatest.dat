@@ -8778,16 +8778,46 @@ FP /^tembl\s+N\s+\n/
 
 ID showfeat-ex
 AP showfeat
-IN tembl:hsfau
+IN tembl:hsfau1
 IN
 FI stderr
 FC = 2
 FP 0 /Warning:/
-FI hsfau.showfeat 
-FZ = 841
-FP /\|=+\| 2167\n/
-FP 2 /    misc_feature\n/
+FI hsfau1.showfeat 
+FZ = 1429
+FP /\|=+\| 2016\n/
+FP 5 /    mRNA\n/
 FP /-> source\n/
+//
+
+ID showfeat-ex2
+UC Display 'joined' features on one line with positions:
+AP showfeat
+CL -sort join -pos
+IN tembl:hsfau1
+IN
+FI stderr
+FC = 2
+FP 0 /Warning:/
+FI hsfau1.showfeat 
+FZ = 1150
+FP /\|=+\| 2016\n/
+FP /mRNA\n/
+FP /source\n/
+//
+
+ID showfeat-ex3
+UC Display just positions and names of CDS features - this can be used as a regions file in showseq:
+AP showfeat
+CL -matchtype CDS -width 0 -noid -nodesc -noscale -pos 
+IN tembl:hsfau1
+IN
+FI stderr
+FC = 2
+FP 0 /Warning:/
+FI hsfau1.showfeat 
+FZ = 54
+FP /CDS/
 //
 
 ID showorf-ex
@@ -8804,10 +8834,6 @@ FP /^F1 +1 G  T  A  G  R  A  S  A  R  S  P  P  A  G  R  R  E  17\n/
 FP /^R2 +106    Y  R  Q  G  L  M  Q  E  I  V  V  L  R  A  V  P  91\n/
 //
 
-# output needs further work
-# ran to base 120 (should be 100)
-# note="" extra quotes
-
 ID showseq-ex
 AP showseq
 CL tembl:paamir -sbeg 1 -send 100
@@ -8819,6 +8845,121 @@ FP 0 /Warning:/
 FI paamir.showseq 
 FZ = 793
 FP 2 /^\s+\|=+\|\n\s+promoter note="/
+OC Note that although we asked for the sequence display to end at
+OC position '100', it has displayed the sequence up to the end of the line
+OC - position '120'.  This is a feature of this program to make the display
+OC of things like restriction enzyme cutting sites easier. 
+//
+
+ID showseq-ex2
+UC The standard list of output formats are only a small selection of the
+UC possible ways in which a sequence might be displayed.  Precise control
+UC over the output format is acheived by selecting the qualifier '-format 0' 
+UC (Option 0 in the list of things to display).  For example,
+UC by choosing format '0' and then specifying that we want to display the
+UC things: 'b,s,t,c', we will output the sequence in the following way:
+AP showseq
+CL tembl:paamir -sbeg 1 -send 120
+IN 0
+IN b,s,t,c
+IN 
+FI stderr
+FC = 28
+FP 0 /Warning:/
+FI paamir.showseq 
+FZ = 511
+FP /^          ggtacc/
+//
+
+ID showseq-ex3
+UC Display only the sequence:
+AP showseq
+CL tembl:paamir -sbeg 1 -send 100 -noname -nodesc -format 0 -thing S
+IN
+FI stderr
+FC = 2
+FP 0 /Warning:/
+FI paamir.showseq 
+FZ = 143
+FP /^          ggtacc/
+//
+
+ID showseq-ex4
+UC Protein sequence can be displayed in three-letter codes. (The codes are displayed downwards, so the first code is 'Met'): 
+AP showseq
+CL tsw:rs24_fugru -three -format 2
+IN
+FI stderr
+FC = 2
+FP 0 /Warning:/
+FI rs24_fugru.showseq
+FZ = 990
+FP /^          MAATVT/
+//
+
+ID showseq-ex5
+UC Number the sequence lines in the margin: 
+AP showseq
+CL tembl:paamir -sbeg 1 -send 100 -format 1 -number
+IN
+FI stderr
+FC = 2
+FP 0 /Warning:/
+FI paamir.showseq 
+FZ = 232
+FP /^        1 ggtacc/
+//
+
+ID showseq-ex6
+UC Start the numbering at a specified value ('123' in this case):
+AP showseq
+CL tembl:paamir -sbeg 1 -send 100 -format 1 -number -offset 123
+IN
+FI stderr
+FC = 2
+FP 0 /Warning:/
+FI paamir.showseq 
+FZ = 233
+FP /^      123 ggtacc/
+//
+
+ID showseq-ex7
+UC Make selected regions uppercase. (Use '-slower' to force the rest of the sequence to be lowercase). 
+AP showseq
+CL tembl:paamir -sbeg 1 -send 100 -format 1 -slower -upper '25-45,101-203,333-362'
+IN
+FI stderr
+FC = 2
+FP 0 /Warning:/
+FI paamir.showseq 
+FZ = 225
+FP /tgctCGAT/
+//
+
+ID showseq-ex8
+UC Translate selected regions: 
+AP showseq
+CL tembl:paamir -sbeg 1 -send 120 -format 4 -trans 25-49,66-76
+IN
+FI stderr
+FC = 2
+FP 0 /Warning:/
+FI paamir.showseq 
+FZ = 937
+FP /R  S  P  P  A  G  R  R  V/
+//
+
+ID showseq-ex9
+UC Add your own annotation to the display:
+AP showseq
+CL tembl:paamir -sbeg 1 -send 100 -format 2 -send 120 -annotation '13-26 binding site 15-15 SNP'
+IN
+FI stderr
+FC = 2
+FP 0 /Warning:/
+FI paamir.showseq 
+FZ = 919
+FP /binding site/
 //
 
 ID shuffleseq-ex
