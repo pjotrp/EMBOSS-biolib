@@ -3255,9 +3255,7 @@ FC = 34
 //
 
 
-# temporary fix while distmat is giving warnings
-#FC = 2
-#FP 0 /Warning:/
+
 ID distmat-ex
 AP distmat
 CC Example file missing test/data/pax.align
@@ -3267,7 +3265,7 @@ IN 2
 IN
 FI stderr
 FC = 6
-FP 1 /Warning:/
+FP 0 /Warning:/
 FI pax.distmat
 FP / Kimura /
 FP /^\s+0[.]00\s+20[.]37\s+PX8A_HUMAN 9\n/
