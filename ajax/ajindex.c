@@ -8605,7 +8605,7 @@ AjPBtpage ajBtreeSecFindInsert(AjPBtcache cache, const char *key)
     /* The root node should always be in the cache (BT_LOCKed) */
     root = btreeCacheLocate(cache,cache->secrootblock);
 
-    ajDebug("cache->slevel = %d root=%d\n",cache->slevel,(ajint)root);
+    /* ajDebug("cache->slevel = %d root=%d\n",cache->slevel,(ajint)root); */
     
 
     if(!cache->slevel)
