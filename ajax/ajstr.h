@@ -257,6 +257,7 @@ void       ajCharToUpper (char *txt);
 
 AjBool     ajStrApp  (AjPStr* pthis, const AjPStr src);
 AjBool     ajStrAppC (AjPStr* pthis, const char *txt);
+AjBool     ajStrAppCI (AjPStr* pthis, const char *txt, size_t i);
 AjBool     ajStrAppK (AjPStr* pthis, const char chr);
 AjBool     ajStrAppKI (AjPStr* pthis, const char chr, ajint number);
 AjBool     ajStrAppSub (AjPStr* pthis, const AjPStr src,
@@ -312,6 +313,7 @@ ajint      ajStrFind (const AjPStr thys, const AjPStr text);
 ajint      ajStrFindC  (const AjPStr thys, const char* txt);
 ajint      ajStrFindCase (const AjPStr thys, const AjPStr text);
 ajint      ajStrFindCaseC (const AjPStr thys, const char* txt);
+ajint      ajStrFindK  (const AjPStr thys, const char chr);
 
 void       ajStrFill (AjPStr* pthis, ajint count, char fill);
 void       ajStrFix (AjPStr *pthys);
@@ -361,6 +363,8 @@ AjBool     ajStrJoin  (AjPStr* pthis, ajint pos1,
 AjBool     ajStrJoinC (AjPStr* pthis, ajint pos1,
 		       const char* addbit, ajint pos2);
 
+AjBool     ajStrKeepAlphaC (AjPStr* pthis, const char* chars);
+AjBool     ajStrKeepC (AjPStr* pthis, const char* chars);
 ajint      ajStrLen(const AjPStr thys);
 
 #define    MAJSTRLEN(str) str->Len
@@ -381,6 +385,7 @@ AjBool     ajStrMatchWordC (const AjPStr str, const char* text);
 AjBool     ajStrMatchWordCC (const char* str, const char* text);
 AjBool     ajStrMod  (AjPStr* pthis);
 AjBool     ajStrModL (AjPStr* pthis, size_t size);
+AjBool     ajStrModMinL (AjPStr* pthis, size_t size);
 ajint      ajStrNCmpC (const AjPStr thys, const char *text, ajint n);
 ajint 	   ajStrNCmpCaseCC (const char* str1, const char* str2, ajint len);
 ajint      ajStrNCmpO (const AjPStr thys, const AjPStr anoth, ajint n);

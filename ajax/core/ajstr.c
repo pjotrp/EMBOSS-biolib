@@ -694,7 +694,7 @@ AjBool ajStrSetC(AjPStr* pthis, const char* str)
 
 /* @func ajStrAss *************************************************************
 **
-** Assignment constructor with copy of a string object
+** Assignment construct or with copy of a string object
 **
 ** @param [w] pthis [AjPStr*] Target string
 ** @param [uN] str [AjPStr] Source string
@@ -941,7 +941,7 @@ AjBool ajStrAssCI(AjPStr* pthis, const char* txt, size_t ilen)
     thys = *pthis;
 
     thys->Len = ilen;
-    if (txt)
+    if (txt && ilen)
 	memmove(thys->Ptr, txt, ilen);
     thys->Ptr[ilen] = '\0';
 
@@ -1561,7 +1561,7 @@ AjBool ajStrApp(AjPStr* pthis, const AjPStr src)
     else
 	j = src->Len+1;
 
-    ret = ajStrModL(pthis, ajRound(j, STRSIZE));
+    ret = ajStrModMinL(pthis, j);
     thys = *pthis;			/* possible new location */
 
     memmove(thys->Ptr+thys->Len, t->Ptr, src->Len+1);
@@ -1588,11 +1588,34 @@ AjBool ajStrApp(AjPStr* pthis, const AjPStr src)
 
 AjBool ajStrAppC(AjPStr* pthis, const char* txt)
 {
+    ajint i;
+
+    i = strlen(txt);
+
+    return ajStrAppCI(pthis, txt, i);
+}
+
+
+
+
+/* @func ajStrAppCI ***********************************************************
+**
+** Appends a character string to the end of a string object.
+** Uses {ajStrModL} to make sure target string is modifiable.
+**
+** @param [w] pthis [AjPStr*] Target string
+** @param [rN] txt [const char*] Source text
+** @param [r] i [size_t] String length
+** @return [AjBool] ajTrue if string was reallocated
+** @category modify [AjPStr] Appends a char* text
+** @@
+******************************************************************************/
+
+AjBool ajStrAppCI(AjPStr* pthis, const char* txt, size_t i)
+{
     AjBool ret = ajFalse;
-    AjPStr t;
 
     AjPStr thys;
-    ajint i;
     ajint j;
 
     thys = pthis ? *pthis : 0;
@@ -1600,20 +1623,18 @@ AjBool ajStrAppC(AjPStr* pthis, const char* txt)
     if(!txt)
 	return ajStrAppC(pthis, "");
 
-    t = ajStrNewC(txt);
-    i = strlen(txt);
     if(pthis && *pthis)
 	j = AJMAX(thys->Res, thys->Len+i+1);
     else
 	j = i+1;
 
-    ret = ajStrModL(pthis, ajRound(j, STRSIZE));
+    ret = ajStrModMinL(pthis, j);
     thys = *pthis;			/* possible new location */
 
-    memmove(thys->Ptr+thys->Len, t->Ptr, i+1);
+    memmove(thys->Ptr+thys->Len, txt, i+1);
     thys->Len += i;
 
-    ajStrDel(&t);
+    thys->Ptr[thys->Len] = '\0';
 
     return ret;
 }
@@ -1646,7 +1667,7 @@ AjBool ajStrAppK(AjPStr* pthis, const char chr)
     else
 	j = 2;
 
-    ret = ajStrModL(pthis, ajRound(j, STRSIZE));
+    ret = ajStrModMinL(pthis, j);
     thys = *pthis;			/* possible new location */
 
     *(thys->Ptr+thys->Len) = chr;
@@ -1689,7 +1710,7 @@ AjBool ajStrAppKI(AjPStr* pthis, const char chr, ajint number)
     else
 	j = number+1;
 
-    ret = ajStrModL(pthis, ajRound(j, STRSIZE));
+    ret = ajStrModMinL(pthis, j);
     thys = *pthis;			/* possible new location */
 
     cp = &thys->Ptr[thys->Len];
@@ -1751,7 +1772,7 @@ AjBool ajStrAppSub(AjPStr* pthis, const AjPStr src, ajint begin, ajint end)
     else
 	j = ilen+1;
 
-    ret = ajStrModL(pthis, ajRound(j, STRSIZE));
+    ret = ajStrModMinL(pthis, j);
     thys = *pthis;			/* possible new location */
 
     memmove(thys->Ptr+thys->Len, &t->Ptr[ibegin], ilen);
@@ -1831,7 +1852,7 @@ AjBool ajStrInsertC(AjPStr* pthis, ajint begin, const char* insert )
 	/*    ajDebug("ajStrInsertC res: %d len: %d +len: %d j: %d\n",
 	      thys->Res, thys->Len, len, j);*/
 	/*    ajDebug("expanding to res: %d\n", ajRound(j, STRSIZE));*/
-	ret = ajStrModL(pthis, ajRound(j, STRSIZE));
+	ret = ajStrModMinL(pthis, j);
 	/*    ajDebug("expanded to res: %d len: %d\n",
 	      (*pthis)->Res, (*pthis)->Len);*/
     }
@@ -2127,7 +2148,7 @@ AjBool ajStrJoinC(AjPStr* pthis, ajint begin, const char* addbit,
 
     if(newlen > thys->Res)
     {
-	ajStrModL(pthis, ajRound(j, STRSIZE));
+	ajStrModMinL(pthis, j);
 	thys = *pthis;
     }
 
@@ -2957,6 +2978,50 @@ AjBool ajStrModL(AjPStr* pthis, size_t size)
 
 
 
+/* @func ajStrModMinL *********************************************************
+**
+** Make certain that a string is modifiable, and big enough for its
+** intended purpose.
+**
+** The target string is guaranteed to have a reference count of 1,
+** and a minimum reserved size.
+**
+** @param [w] pthis [AjPStr*] String
+** @param [r] size [size_t] Minimum reserved size.
+** @return [AjBool] ajTrue if the string was reallocated
+** @category modify [AjPStr] Make certain a string is modifiable,
+**                and big enough for its intended purpose.
+** @@
+******************************************************************************/
+
+AjBool ajStrModMinL(AjPStr* pthis, size_t size)
+{
+    AjBool ret = ajFalse;
+    AjPStr thys;
+    size_t roundsize;
+
+    thys = pthis ? *pthis : 0;
+
+    if(!thys)
+    {
+	roundsize = ajRound(size, STRSIZE);
+	thys = *pthis = ajStrNewL(roundsize);
+	ret = ajTrue;
+    }
+
+    if((thys->Use > 1 || thys->Res < size))
+    {
+	roundsize = ajRound(size, STRSIZE);
+	strCloneL(pthis, roundsize);
+	ret = ajTrue;
+    }
+
+    return ret;
+}
+
+
+
+
 /* @func ajStrConvert *********************************************************
 **
 ** Replaces one set of characters with another set
@@ -3409,6 +3474,95 @@ AjBool ajStrCleanWhite(AjPStr* s)
 
 
 
+/* @func ajStrKeepC ******************************************************
+**
+** Removes all characters from a string that are not in a given set.
+**
+** @param [u] s [AjPStr *] String to clean.
+** @param [r] charset [const char*] Character set to keep
+** @return [AjBool] ajTrue if string was reallocated
+** @category modify [AjPStr] Remove all whitespace from a
+**                string
+** @@
+******************************************************************************/
+
+AjBool ajStrKeepC(AjPStr* s, const char* charset)
+{
+    AjBool ret      = ajFalse;
+    static AjPStr t = NULL;
+    ajint len;
+    char *p;
+    char *q;
+
+    ajStrAssS(&t,*s);		/* make a copy in t to be read */
+
+    p = t->Ptr;
+    q = (*s)->Ptr;
+
+    len = ajStrLen(t);
+
+    while(*p)
+    {
+	if(strchr(charset, *p))
+	    *q++=*p;
+	p++;
+    }
+
+    *q='\0';
+    (*s)->Len = q - (*s)->Ptr;
+
+    return ret;
+}
+
+
+
+
+/* @func ajStrKeepAlphaC ******************************************************
+**
+** Removes all characters from a string that are not alphabetic and
+** are not in a given set.
+**
+** @param [u] s [AjPStr *] String to clean.
+** @param [r] charset [const char*] Character set to keep
+** @return [AjBool] ajTrue if string was reallocated
+** @category modify [AjPStr] Remove all whitespace from a
+**                string
+** @@
+******************************************************************************/
+
+AjBool ajStrKeepAlphaC(AjPStr* s, const char* charset)
+{
+    AjBool ret      = ajFalse;
+    static AjPStr t = NULL;
+    ajint len;
+    char *p;
+    char *q;
+
+    ajStrAssS(&t,*s);		/* make a copy in t to be read */
+
+    p = t->Ptr;
+    q = (*s)->Ptr;
+
+    len = ajStrLen(t);
+
+    while(*p)
+    {
+	if(isalpha(*p))
+	    *q++=*p;
+	else if(strchr(charset, *p))
+	    *q++=*p;
+	p++;
+    }
+
+    *q='\0';
+    (*s)->Len = q - (*s)->Ptr;
+
+    return ret;
+}
+
+
+
+
 /* @func ajStrBlock ***********************************************************
 **
 ** Splits string into words (blocks) of a given size.
@@ -3697,7 +3851,8 @@ AjBool ajStrUncommentStart(AjPStr* text)
 ** For some reason, this is nasty to test for with regular expressions.
 **
 ** @param [r] s [const AjPStr] String to test
-** @return [AjBool] ajTrue if string has () pairs with possibly other text
+** @return [AjBool] ajTrue if string has zero or more () pairs
+**                  with possibly other text
 ** @@
 ******************************************************************************/
 
@@ -3782,9 +3937,35 @@ char* ajStrStrMod(AjPStr *pthis)
 ** Locates the first occurrence in the string of the second string.
 **
 ** @param [r] thys [const AjPStr] String
+** @param [r] chr [const char] character to find
+** @return [ajint] Position of the start of text in string if found.
+**                Or -1 for text not found.
+** @category use [AjPStr] Find
+** @@
+******************************************************************************/
+
+ajint ajStrFindK(const AjPStr thys, const char chcr)
+{
+    const char* cp;
+
+    cp = strchr(thys->Ptr, (ajint) chcr);
+    if(!cp)
+	return -1;
+
+    return(cp - thys->Ptr);
+}
+
+
+
+
+/* @func ajStrFindC ***********************************************************
+**
+** Locates the first occurrence in the string of the second string.
+**
+** @param [r] thys [const AjPStr] String
 ** @param [r] text [const char*] text to find
 ** @return [ajint] Position of the start of text in string if found.
-** @error -1 Text not found.
+**                Or -1 for text not found.
 ** @category use [AjPStr] Find
 ** @@
 ******************************************************************************/
@@ -3810,7 +3991,7 @@ ajint ajStrFindC(const AjPStr thys, const char* text)
 ** @param [r] thys [const AjPStr] String
 ** @param [r] text [const AjPStr] text to find
 ** @return [ajint] Position of the start of text in string if found.
-** @error -1 Text not found.
+**                Or -1 for text not found.
 ** @category use [AjPStr] Find
 ** @@
 ******************************************************************************/
@@ -6764,7 +6945,7 @@ void ajStrTokenTrace(const AjPStrTok tok)
 ** Note: This can return "true" but an empty string in cases where the
 ** delimiter has changed since the previous call.
 **
-** The test used the C function 'strcspn'.
+** The test uses the C function 'strcspn'.
 **
 ** @param [w] pthis [AjPStr*] Next token returned.
 ** @param [u] ptoken [AjPStrTok*] String token parsing object.
@@ -6801,11 +6982,14 @@ AjBool ajStrToken(AjPStr* pthis, AjPStrTok* ptoken, const char* delim)
     ilen = strcspn(cp, token->Delim->Ptr);
 
     if(ilen)
+    {
 	ajStrAssSub(pthis, token->String,
 			    token->Pos, token->Pos + ilen - 1);
+    }
     else
+    {
 	ajStrAssC(pthis, "");
-
+    }
     token->Pos += ilen;
     token->Pos += strspn(&token->String->Ptr[token->Pos], token->Delim->Ptr);
 
@@ -6818,11 +7002,6 @@ AjBool ajStrToken(AjPStr* pthis, AjPStrTok* ptoken, const char* delim)
 /* @func ajStrTokenRest *******************************************************
 **
 ** Returns the remainder of a partially parsed string.
-**
-** Note: This can return "true" but an empty string in cases where the
-** delimiter has changed since the previous call.
-**
-** The test used the C function 'strcspn'.
 **
 ** @param [w] pthis [AjPStr*] Next token returned.
 ** @param [u] ptoken [AjPStrTok*] String token parsing object.
