@@ -11,7 +11,7 @@ patmattest \
 psiblasts \
 seqinfo seqretsingle \
 sigplot sigscan \
-testplot treetypedisplay primer3
+testplot treetypedisplay 
 
 bin_PROGRAMS = abiview acdc antigenic \
 backtranseq banana btwisted \
