@@ -145,7 +145,8 @@ int main( int argc , char **argv )
 	    ajDie("cannot open file %S",ajpStrCmapFileName);
 
 	/* get Cmap object from current Cmap file */
-	ajXyzCmapReadI(ajpFileCmapCurrent, 1, 1, &ajpCmapCurrent);
+	if(!(ajpCmapCurrent = ajCmapReadINew(ajpFileCmapCurrent, 1, 1 )))
+	    ajDie("no valid contact map in %S",ajpStrCmapFileName);
 
 	/* obtain chain name from Cmap object */
 	ajpStrChainId = ajpCmapCurrent->Id;
@@ -346,9 +347,9 @@ static AjPFeature write_count(AjPFeattable ajpFeattableCounts,
 **
 ** writes normalized substitution scores to a scoring matrix file format
 **
-** @param [r] ajpInt2dCounts [AjPInt2d] 2-D matrix of signed integer scores
 ** @param [r] ajpFileScoringMatrix [AjPFile] file to write scoring table to
-** @return [AjBool] AJTRUE for success
+** @param [r] ajpInt2dScoringMatrix [AjPInt2d] 2-D matrix of signed integer scores
+** @return [AjBool] did it work? ajTrue for success
 ** @@
 ******************************************************************************/
 
