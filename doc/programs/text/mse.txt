@@ -1,8 +1,81 @@
 
-                                   Not Found
-
-   The requested URL /apps-copy/mse.shtml was not found on this server.
-     _________________________________________________________________
+                                    mse 
 
 
-    Apache/1.3.26 Server at emboss.sourceforge.net Port 80
+
+Function
+
+   [an error occurred while processing this directive]
+
+Description
+
+   **************** EDIT HERE ****************
+
+Algorithm
+
+   **************** EDIT HERE ****************
+
+Usage
+
+   No qa tests were found for mse
+
+Command line arguments
+
+   [an error occurred while processing this directive]
+
+   [an error occurred while processing this directive]
+
+Input file format
+
+   mse reads any normal sequence USAs.
+
+   No qa tests were found for mse
+
+Output file format
+
+   mse outputs a graph to the specified graphics device. outputs a report
+   format file. The default format is ...
+
+   No qa tests were found for mse
+
+Data files
+
+   **************** EDIT HERE ****************
+
+Notes
+
+   None.
+
+References
+
+   None.
+
+Warnings
+
+   None.
+
+Diagnostic Error Messages
+
+   None.
+
+Exit status
+
+   It always exits with status 0.
+
+Known bugs
+
+   None. [an error occurred while processing this directive]
+
+Author(s)
+
+   This program is an EMBOSS conversion of a program written by Will
+   Gilbert as part of his MSE package.
+
+History
+
+   [an error occurred while processing this directive]
+
+Target users
+
+   This program is intended to be used by everyone and everything, from
+   naive users to embedded scripts.

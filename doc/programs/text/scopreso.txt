@@ -1,5 +1,5 @@
 
-                          ProgramNameToBeReplaced 
+                                 scopreso 
 
 
 
@@ -27,14 +27,14 @@ Command line arguments
 
 Input file format
 
-   ProgramNameToBeReplaced reads any normal sequence USAs.
+   scopreso reads any normal sequence USAs.
 
    [an error occurred while processing this directive]
 
 Output file format
 
-   ProgramNameToBeReplaced outputs a graph to the specified graphics
-   device. outputs a report format file. The default format is ...
+   scopreso outputs a graph to the specified graphics device. outputs a
+   report format file. The default format is ...
 
    [an error occurred while processing this directive]
 

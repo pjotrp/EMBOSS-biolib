@@ -9,39 +9,40 @@ pkgdata_DATA =  aaindexextract.txt abiview.txt antigenic.txt \
                digest.txt distmat.txt dnacomp.txt dnadist.txt dnainvar.txt \
                dnaml.txt dnamlk.txt dnapars.txt dnapenny.txt dollop.txt \
                dolpenny.txt domainer.txt dotmatcher.txt dotpath.txt \
-               dottup.txt dreg.txt eclique.txt econsense.txt econtml.txt \
-               econtrast.txt ednacomp.txt ednadist.txt ednainvar.txt \
-               ednaml.txt ednamlk.txt ednapars.txt ednapenny.txt \
-               edollop.txt edolpenny.txt efactor.txt efitch.txt \
-               egendist.txt einverted.txt ekitsch.txt embossdata.txt \
-               embossversion.txt emix.txt emma.txt emnu.txt emowse.txt \
-               eneighbor.txt entret.txt epenny.txt epestfind.txt \
-               eprimer3.txt eprotdist.txt eprotpars.txt equicktandem.txt \
-               erestml.txt eseqboot.txt est2genome.txt etandem.txt \
-               extractfeat.txt extractseq.txt factor.txt fclique.txt \
-               fconsense.txt fcontml.txt fcontrast.txt fdnacomp.txt \
-               fdnadist.txt fdnainvar.txt fdnaml.txt fdnamlk.txt \
-               fdnamove.txt fdnapars.txt fdnapenny.txt fdollop.txt \
-               fdolmove.txt fdolpenny.txt fdrawgram.txt fdrawtree.txt \
-               ffactboot.txt ffactor.txt \
-#	       ffitch.txt \
-	       ffreqboot.txt \
-               fgendist.txt findkm.txt fitch.txt fkitsch.txt fmix.txt \
-               fmove.txt fneighbor.txt fpars.txt fpenny.txt fproml.txt \
-               fpromlk.txt fprotdist.txt fprotpars.txt fraggle.txt \
-               freak.txt frestboot.txt frestdist.txt frestml.txt \
-               fretree.txt fseqboot.txt ftreedist.txt ftreedistpair.txt \
-               fuzznuc.txt fuzzpro.txt fuzztran.txt garnier.txt geecee.txt \
-               gendist.txt getorf.txt helixturnhelix.txt hetparse.txt \
-               hmmgen.txt hmoment.txt iep.txt infoalign.txt infoseq.txt \
-               interface.txt isochore.txt jembossctl.txt kitsch.txt
-pkgdata2_DATA = libscan.txt lindna.txt listor.txt marscan.txt maskfeat.txt \
-               maskseq.txt matcher.txt megamerger.txt merger.txt mix.txt \
-               msbar.txt mse.txt mwcontam.txt mwfilter.txt needle.txt \
-               neighbor.txt newcpgreport.txt newcpgseek.txt newseq.txt \
-               noreturn.txt notseq.txt nthseq.txt octanol.txt oddcomp.txt \
-               palindrome.txt pasteseq.txt patmatdb.txt patmatmotifs.txt \
-               pdbparse.txt pdbtosp.txt penny.txt pepcoil.txt pepinfo.txt \
+               dottup.txt dreg.txt ealistat.txt eclique.txt econsense.txt \
+               econtml.txt econtrast.txt ednacomp.txt ednadist.txt \
+               ednainvar.txt ednaml.txt ednamlk.txt ednapars.txt \
+               ednapenny.txt edollop.txt edolpenny.txt efactor.txt \
+               efitch.txt egendist.txt ehmmalign.txt ehmmbuild.txt \
+               ehmmcalibrate.txt ehmmconvert.txt ehmmemit.txt ehmmfetch.txt \
+               ehmmindex.txt ehmmpfam.txt ehmmsearch.txt einverted.txt \
+               ekitsch.txt embossdata.txt embossversion.txt emix.txt \
+               emma.txt emnu.txt emowse.txt eneighbor.txt entret.txt \
+               epenny.txt epestfind.txt eprimer3.txt eprotdist.txt \
+               eprotpars.txt equicktandem.txt erestml.txt eseqboot.txt \
+               esim4.txt est2genome.txt etandem.txt extractfeat.txt \
+               extractseq.txt factor.txt fclique.txt fconsense.txt \
+               fcontml.txt fcontrast.txt fdnacomp.txt fdnadist.txt \
+               fdnainvar.txt fdnaml.txt fdnamlk.txt fdnamove.txt \
+               fdnapars.txt fdnapenny.txt fdollop.txt fdolmove.txt \
+               fdolpenny.txt fdrawgram.txt fdrawtree.txt ffactboot.txt \
+               ffactor.txt ffitch.txt ffreqboot.txt fgendist.txt findkm.txt \
+               fkitsch.txt fmix.txt fmove.txt fneighbor.txt \
+               fpars.txt fpenny.txt fproml.txt fpromlk.txt fprotdist.txt \
+               fprotpars.txt fraggle.txt freak.txt frestboot.txt \
+               frestdist.txt frestml.txt fretree.txt fseqboot.txt \
+               ftreedist.txt ftreedistpair.txt fuzznuc.txt fuzzpro.txt \
+               fuzztran.txt garnier.txt geecee.txt gendist.txt getorf.txt \
+               helixturnhelix.txt hetparse.txt hmmgen.txt hmoment.txt \
+               iep.txt infoalign.txt infoseq.txt interface.txt isochore.txt
+pkgdata2_DATA = jembossctl.txt kitsch.txt libscan.txt lindna.txt listor.txt \
+               marscan.txt maskfeat.txt maskseq.txt matcher.txt \
+               megamerger.txt meme.txt merger.txt mix.txt msbar.txt mse.txt \
+               mwcontam.txt mwfilter.txt myseq.txt needle.txt neighbor.txt \
+               newcpgreport.txt newcpgseek.txt newseq.txt noreturn.txt \
+               notseq.txt nthseq.txt octanol.txt oddcomp.txt palindrome.txt \
+               pasteseq.txt patmatdb.txt patmatmotifs.txt pdbparse.txt \
+               pdbplus.txt pdbtosp.txt penny.txt pepcoil.txt pepinfo.txt \
                pepnet.txt pepstats.txt pepwheel.txt pepwindow.txt \
                pepwindowall.txt pestfind.txt plotcon.txt plotorf.txt \
                polydot.txt preg.txt prettyplot.txt prettyseq.txt \
@@ -64,5 +65,5 @@ pkgdata2_DATA = libscan.txt lindna.txt listor.txt marscan.txt maskfeat.txt \
                whichdb.txt wobble.txt wordcount.txt wordmatch.txt \
                wossname.txt yank.txt
 
-pkgdatadir=$(prefix)/share/$(PACKAGE)/doc/programs/html
-pkgdata2dir=$(prefix)/share/$(PACKAGE)/doc/programs/html
+pkgdatadir=$(prefix)/share/$(PACKAGE)/doc/programs/text
+pkgdata2dir=$(prefix)/share/$(PACKAGE)/doc/programs/text

@@ -1,5 +1,5 @@
 
-                          ProgramNameToBeReplaced 
+                                  scoprep 
 
 
 
@@ -17,8 +17,6 @@ Algorithm
 
 Usage
 
-   [an error occurred while processing this directive]
-
 Command line arguments
 
    [an error occurred while processing this directive]
@@ -27,16 +25,12 @@ Command line arguments
 
 Input file format
 
-   ProgramNameToBeReplaced reads any normal sequence USAs.
-
-   [an error occurred while processing this directive]
+   scoprep reads any normal sequence USAs.
 
 Output file format
 
-   ProgramNameToBeReplaced outputs a graph to the specified graphics
-   device. outputs a report format file. The default format is ...
-
-   [an error occurred while processing this directive]
+   scoprep outputs a graph to the specified graphics device. outputs a
+   report format file. The default format is ...
 
 Data files
 

@@ -164,7 +164,8 @@ Author(s)
    MRC Rosalind Franklin Centre for Genomics Research Wellcome Trust
    Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
 
-   [an error occurred while processing this directive]
+   Waqas Awan (wawan © hgmp.mrc.ac.uk)
+   HGMP-RC, Genome Campus, Hinxton, Cambridge CB10 1SB, UK
 
 History
 
