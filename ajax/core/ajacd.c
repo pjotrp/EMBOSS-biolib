@@ -570,6 +570,9 @@ AcdOAttr acdAttrXxxx[] = {
 
 AcdOAttr acdAttrAppl[] = { {"documentation", VT_STR},
 			   {"groups", VT_STR},
+			   {"gui", VT_STR},
+			   {"batch", VT_STR},
+			   {"cpu", VT_STR},
 			   {"comment", VT_STR},
 			   {NULL, VT_NULL} };
 
