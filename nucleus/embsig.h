@@ -175,6 +175,9 @@ typedef struct AjSHit
 ** @output embHitlistWriteSubsetFasta Write a subset of a Hitlist to file in 
 **         extended FASTA format (see documentation for the DOMAINATRIX "seqsearch"
 **         application). 
+** @output embHitlistWriteHitFasta Write a single Hit from a Hitlist to file 
+**         in extended FASTA format (see documentation for the DOMAINATRIX 
+**         "seqsearch" application). 
 ** @use    embHitlistClassify Classifies a list of signature-sequence hits 
 **         (held in a Hitlist object) according to list of target sequences 
 **         (a list of Hitlist objects).
@@ -421,6 +424,10 @@ AjBool        embHitlistWriteFasta(AjPFile outf,
 AjBool        embHitlistWriteSubsetFasta(AjPFile outf, 
 					 const AjPHitlist obj, 
 					 const AjPInt ok);
+
+AjBool        embHitlistWriteHitFasta(AjPFile outf, 
+				      ajint n, 
+				      const AjPHitlist obj);
 
 AjPList       embHitlistReadNode(AjPFile inf, 
 				 const AjPStr fam, 

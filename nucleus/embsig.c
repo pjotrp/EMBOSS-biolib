@@ -2633,6 +2633,104 @@ AjBool embHitlistWriteSubsetFasta(AjPFile outf,
 
 
 
+/* @func embHitlistWriteFasta ***********************************************
+**
+** Write contents of a Hitlist object to an output file in embl-like format
+** (see documentation for the DOMAINATRIX "seqsearch" application).
+** Text for Class, Fold, Superfamily and Family is only written if the text
+** is available.
+** 
+** @param [u] outf [AjPFile] Output file stream
+** @param [r] obj [const AjPHitlist] Hitlist object
+**
+** @return [AjBool] True on success
+** @@
+****************************************************************************/
+
+AjBool        embHitlistWriteHitFasta(AjPFile outf, 
+				      ajint n, 
+				      const AjPHitlist obj)
+{
+    if(!obj)
+	return ajFalse;
+    if(n >= obj->N)
+	return ajFalse;
+    
+    ajFmtPrintF(outf, "> ");
+    
+    if(MAJSTRLEN(obj->hits[n]->Acc))
+	ajFmtPrintF(outf, "%S^", obj->hits[n]->Acc);
+    else
+	ajFmtPrintF(outf, ".^");
+    
+    if(MAJSTRLEN(obj->hits[n]->Spr))
+	ajFmtPrintF(outf, "%S^", obj->hits[n]->Spr);
+    else
+	ajFmtPrintF(outf, ".^");
+    
+    ajFmtPrintF(outf, "%d^%d^", obj->hits[n]->Start, obj->hits[n]->End);
+    
+    if((obj->Type == ajSCOP))  
+	ajFmtPrintF(outf, "SCOP^");
+    else if ((obj->Type == ajCATH))
+	ajFmtPrintF(outf, "CATH^");
+    else
+	ajFmtPrintF(outf, ".^");
+    
+    if(MAJSTRLEN(obj->hits[n]->Dom))
+	ajFmtPrintF(outf, "%S^", obj->hits[n]->Dom);
+    else
+	ajFmtPrintF(outf, ".^");
+    
+    ajFmtPrintF(outf,"%d^", obj->Sunid_Family);
+    
+    if(MAJSTRLEN(obj->Class))
+	ajFmtPrintF(outf,"%S^",obj->Class);
+    else
+	ajFmtPrintF(outf, ".^");
+    
+    if(MAJSTRLEN(obj->Architecture))
+	ajFmtPrintF(outf,"%S^",obj->Architecture);
+    else
+	ajFmtPrintF(outf, ".^");
+    
+    if(MAJSTRLEN(obj->Topology))
+	ajFmtPrintF(outf,"%S^",obj->Topology);
+    else
+	ajFmtPrintF(outf, ".^");
+    
+    if(MAJSTRLEN(obj->Fold))
+	ajFmtPrintF(outf,"%S^",obj->Fold);
+    else
+	ajFmtPrintF(outf, ".^");
+    
+    if(MAJSTRLEN(obj->Superfamily))
+	ajFmtPrintF(outf,"%S^",obj->Superfamily);
+    
+    if(MAJSTRLEN(obj->Family))
+	ajFmtPrintF(outf,"%S^",obj->Family);
+    
+    if(MAJSTRLEN(obj->hits[n]->Model))
+	ajFmtPrintF(outf, "%S^", obj->hits[n]->Model);
+    else
+	ajFmtPrintF(outf, ".^");
+    
+    ajFmtPrintF(outf, "%.2f^", obj->hits[n]->Score);
+    
+    ajFmtPrintF(outf, "%.3e^", obj->hits[n]->Pval);
+    
+    ajFmtPrintF(outf, "%.3e", obj->hits[n]->Eval);
+    
+    ajFmtPrintF(outf, "\n");
+    ajFmtPrintF(outf, "%S\n", obj->hits[n]->Seq);
+
+    return ajTrue;
+}
+
+
+
+
+
 /* @func embSignatureReadNew ************************************************
 **
 ** Read a Signature object from a file in embl-like format (see documentation
@@ -2860,10 +2958,11 @@ AjBool embSignatureWrite(AjPFile outf, const AjPSignature obj)
 	ajFmtPrintSplit(outf,obj->Superfamily,"XX\nSF   ",75," \t\n\r");
     if(MAJSTRLEN(obj->Family))
 	ajFmtPrintSplit(outf,obj->Family,"XX\nFA   ",75," \t\n\r");
-    ajFmtPrintF(outf,"XX\nSI   %d\n", obj->Sunid_Family);
-    ajFmtPrintF(outf,"XX\nNP   %d\n",obj->npos);
+    if(obj->Sunid_Family)
+	ajFmtPrintF(outf,"XX\nSI   %d\nXX\n", obj->Sunid_Family);
 
 
+    ajFmtPrintF(outf,"NP   %d\n",obj->npos);
     for(i=0;i<obj->npos;++i)
     {
 	ajFmtPrintF(outf,"XX\nNN   [%d]\n",i+1);
