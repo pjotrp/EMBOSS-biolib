@@ -17,7 +17,7 @@ string: database  [
   knowntype: "hmm database name"
 ]
 
-string: consensus  [
+string: name  [
   parameter: "Y"
   information: "Entry name"
   knowntype: "hmm entry name"
