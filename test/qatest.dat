@@ -1031,6 +1031,7 @@ FC = 9999
 ID dotmatcher-ex
 AP dotmatcher
 CL tsw:hba_human tsw:hbb_human -graph ps
+IN
 FI stderr
 FC = 2
 ##
@@ -1060,6 +1061,7 @@ FC = 1
 ID dottup-ex
 AP dottup
 CL tembl:eclac tembl:eclaci -wordsize=6 -gtitle="eclaci vs eclac" -graph ps
+IN
 FI dottup.ps
 FZ > 66990
 FP /^%%Title: PLplot Graph\n/
@@ -2077,7 +2079,7 @@ FP /^Length of the sequence = 3148 basepairs\n/
 FP /^Length of match = 4\n/
 FP /^Start of match = position 1037 of sequence\n/
 FP /^End of match = position 1040 of sequence\n/
-FP /^patmatDB of HD_FUGRU from 1037 to 1040 using pattern st\[ty\]s\n/
+FP /^patmatDB of HD_FUGRU from 1037 to 1040 using pattern ST\[TY\]S\n/
 FP /^STPASSTTSSAVDP\n/
 //
 
@@ -4868,9 +4870,9 @@ FZ = 0
 FI eclac.supermatcher
 FZ > 71230
 FP /^ECLAC +1 /
-FP /^# Score: 37305\.0/
+FP /^# Score: 37385\.0/
 FP 5 /^# Score: /
-FP /^ECLACY +1451 [acgt]+ +1492\n/
+FP /^ECLACA +1801 [acgt]+ +1832\n/
 //
 
 ID supermatcher-range
@@ -4888,10 +4890,10 @@ FI supermatcher.error
 FZ = 0
 FI eclac.supermatcher
 FZ > 69555
-FP /^ECLAC +1 /
-FP /^# Score: 37305\.0/
+FP /^ECLAC +101 /
+FP /^# Score: 36385\.0/
 FP 5 /^# Score: /
-FP /^ECLACY +1451 [acgt]+ +1492\n/
+FP /^ECLACA +1701 [acgt]+ +1732\n/
 //
 
 ID syco-ex
