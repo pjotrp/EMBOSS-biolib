@@ -710,6 +710,7 @@ AjPFeattable ajFeatRead  ( AjPFeattabIn  ftin )
 	    format, featInFormat[format].Name, file);
 
    if(!featInFormat[format].Used) {
+     /* Calling funclist featInFormatDef() */
      if(!featInFormat[format].InitReg()) {
        ajDebug("Initialisation failed for %s\n",featInFormat[format].Name);
        ajErr ("Initialisation failed for feature format %s",
@@ -719,6 +720,8 @@ AjPFeattable ajFeatRead  ( AjPFeattabIn  ftin )
    }
 
    features = ajFeattableNew (ftin->Seqname);
+
+   /* Calling funclist featInFormatDef() */
    result = featInFormat[format].Read(features, file);
 
    if(result) {
@@ -7490,6 +7493,7 @@ void ajFeatExit (void) {
 
   for(i=1;featInFormat[i].Name;i++){
     if (featInFormat[i].Used) {
+      /* Calling funclist featInFormatDef() */
       if (!featInFormat[i].DelReg()) {
 	ajDebug("No DelReg yet for %s\n",featInFormat[i].Name);
 	ajErr ("No DelReg yet for %s\n",featInFormat[i].Name);

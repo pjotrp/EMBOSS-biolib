@@ -188,7 +188,7 @@ typedef struct AcdSType
 {
   char* Name;			/* type name */
   AcdPAttr Attr;		/* type-specific attributes */
-  void (*Set)(AcdPAcd thys);	/* function to set value and prompt user */
+  void (*TypeSet)(AcdPAcd thys); /* function to set value and prompt user */
   AcdPQual Quals;		/* type-specific associated qualifiers */
   char* Valid;			/* Valid data help message */
 } AcdOType, *AcdPType;
@@ -398,7 +398,7 @@ typedef struct AcdSExpList {
   AjBool (*Func) (AjPStr *result, AjPStr str);
 } AcdOExpList;
 
-/* @funclist explist **********************************************************
+/* @funclist acdExpList ****************************************************
 **
 ** Functions for processing expressions in ACD dependencies
 **
@@ -777,7 +777,7 @@ typedef struct AcdSKey
   char *Name;
   AcdEStage Stage;
   AcdPAttr Attr;		/* type-specific attributes */
-  void (*Set)(AcdPAcd thys);	/* function to set value and prompt user */
+  void (*KeySet)(AcdPAcd thys);	/* function to set value and prompt user */
 } AcdOKey, *AcdPKey;
 
 /* @funclist acdKeywords ******************************************************
@@ -8006,6 +8006,7 @@ static void acdHelpValid (AcdPAcd thys, AjPStr* str) {
 
   for (i=0; acdValid[i].Name; i++) {
     if (ajStrMatchCC (acdType[thys->Type].Name, acdValid[i].Name)) {
+      /* Calling funclist acdValid() */
       if (acdValid[i].Valid) acdValid[i].Valid(thys, str);
       break;
     }
@@ -8390,6 +8391,7 @@ static void acdHelpExpect (AcdPAcd thys, AjPStr* str) {
 
   for (i=0; acdValid[i].Name; i++) {
     if (ajStrMatchCC (acdType[thys->Type].Name, acdValid[i].Name)) {
+      /* Calling funclist acdValid() */
       if (acdValid[i].Expect) acdValid[i].Expect(thys, str);
       break;
     }
@@ -9186,12 +9188,17 @@ static void acdSetAll (void) {
 
   ajint i = 0;
 
+
   for (pa=acdList; pa; pa=pa->Next) {
     if (acdIsStype(pa)) continue;
-    if (acdIsQtype(pa))
-      acdType[pa->Type].Set (pa);
-    else
-      acdKeywords[pa->Type].Set (pa);
+    if (acdIsQtype(pa)) {
+      /* Calling funclist acdKeywords() */
+      acdType[pa->Type].KeySet (pa);
+    }
+    else {
+      /* Calling funclist acdType() */
+      acdKeywords[pa->Type].TypeSet (pa);
+    }
     i++;
   }
 
@@ -9779,6 +9786,8 @@ static AjBool acdFunResolve (AjPStr* result, AjPStr str) {
 
   for (i = 0; explist[i].Name; i++) {
     /* ajDebug ("try using '%s'\n", explist[i].Name); */
+    /* Calling funclist acdexplist() */
+
     if (explist[i].Func (result, str)) {
       ajDebug ("resolved '%S' using '%s'\n", str, explist[i].Name);
       ajDebug ("  result '%S'\n", *result);

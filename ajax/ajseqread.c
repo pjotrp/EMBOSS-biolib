@@ -1043,6 +1043,7 @@ static ajint seqReadFmt (AjPSeq thys, AjPSeqin seqin, SeqPInFormat inform,
     ajDebug ("++seqReadFmt format %d (%s) '%S'\n",
 		 format, inform[format].Name, seqin->Usa);
 
+    /* Calling funclist seqInFormatDef() */
     if (inform[format].Read (thys, seqin))
     {
 	ajDebug ("seqReadFmt success with format %d (%s)\n",
@@ -1146,6 +1147,7 @@ static AjBool seqRead (AjPSeq thys, AjPSeqin seqin)
 	ajDebug ("seqRead: single access - count %d - call access"
 		 " routine again\n",
 		 seqin->Count);
+	/* Calling funclist seqAccess() */
 	if (!seqin->Query->Access->Access(seqin))
 	{
 	    ajDebug ("seqRead: seqin->Query->Access->Access(seqin) "
@@ -5133,7 +5135,8 @@ static AjBool seqUsaProcess (AjPSeq thys, AjPSeqin seqin)
 	    else
 	    {
 		/* ajDebug ("trying access method '%S'\n", qry->Method); */
-	      /* calls seqAccess(function) */
+
+	      /* Calling funclist seqAccess() */
 		accstat = qry->Access->Access (seqin);
 		if (accstat)
 		  return ajTrue;

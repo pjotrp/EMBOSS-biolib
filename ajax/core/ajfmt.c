@@ -1564,6 +1564,9 @@ void ajFmtVfmt (int put(int c, void* cl), void* cl, const char* fmt,
 		fmt++;
 	    }
 	    c = *fmt++;		/* finally, next character is the code */
+
+	    /* Calling funclist Fmt_T() */
+
 	    (void) assert(cvt[(int)c]);	/* we need a defined routine */
 	    (*cvt[(int)c])(c, VA_P(ap), put, cl, (ajuint *)flags, width,
 			   precision);
@@ -1908,6 +1911,8 @@ static ajint ajFmtVscan(char *thys,const char *fmt,va_list ap)
 
 	/* *q is the conversion function to call */
 	ok = ajTrue;
+
+	/* Calling funclist Fmt_S() */
 	(void) assert(scvt[(int)*q]);
 	(*scvt[(int)*q])(q,&p,VA_P(ap),width,convert,&ok);
 

@@ -1496,7 +1496,7 @@ void ajAlignWrite (AjPAlign thys) {
 
   ajAlignSetType (thys);
 
-  /* EFUNC NOTE: next line Write calls funclist alignFormat() */
+  /* Calling funclist alignFormat() */
 
   alignFormat[thys->Format].Write (thys);
 

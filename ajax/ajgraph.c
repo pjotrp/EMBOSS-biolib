@@ -714,6 +714,8 @@ void ajGraphOpenWin (AjPGraph thys, float xmin, float xmax,
   ajtime.format = 0;
 
   ajGraphSetDevice(thys);
+
+  /* Calling funclist graphType() */
   graphType[thys->displaytype].GOpen(thys, graphType[thys->displaytype].ext);
 
 
@@ -797,6 +799,7 @@ void ajGraphOpen (AjPGraph thys, PLFLT xmin, PLFLT xmax,
   ajtime.format = 0;
 
   ajGraphSetDevice(thys);
+  /* Calling funclist graphType() */
   graphType[thys->displaytype].GOpen(thys, graphType[thys->displaytype].ext);
 
   if( ajStrLen(thys->title) <=1){
@@ -853,6 +856,7 @@ AjBool ajGraphSet (AjPGraph thys, AjPStr type) {
 
   for (i=0;graphType[i].Name;i++) {
     if (ajStrPrefixCaseCO(graphType[i].Name, type)) {
+      /* Calling funclist graphType() */
       if (!graphType[i].GOpen) {
 	ajDebug("ajGraphSet type '%S' displaytype %d '%s' no GOpen function\n",
 	      type, i, graphType[i].Name);
@@ -887,6 +891,7 @@ AjBool ajGraphxySet (AjPGraph thys, AjPStr type) {
 
   for (i=0;graphType[i].Name;i++) {
     if (ajStrPrefixCaseCO(graphType[i].Name, type)) {
+      /* Calling funclist graphType() */
       if (!graphType[i].XYDisplay) {
 	ajDebug("ajGraphxySet type '%S' displaytype %d '%s' no XYDisplay function\n",
 		type, i, graphType[i].Name);
@@ -3582,6 +3587,7 @@ static void GraphxyGeneral (AjPGraph graphs, AjBool closeit) {
 *************************************************************************/
 void ajGraphxyDisplay (AjPGraph graphs, AjBool closeit) {
 
+  /* Calling funclist graphType() */
   (graphType[graphs->displaytype].XYDisplay)
     (graphs, closeit, graphType[graphs->displaytype].ext);
   return;

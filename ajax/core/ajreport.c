@@ -1749,7 +1749,7 @@ void ajReportWrite (AjPReport thys, AjPFeattable ftable, AjPSeq seq) {
 
   ajReportSetType (thys, ftable, seq);
 
-  /* EFUNC NOTE: next line Write calls funclist reportFormat() */
+  /* Calling funclist reportFormat() */
 
   reportFormat[thys->Format].Write (thys, ftable, seq);
 

@@ -195,6 +195,7 @@ void ajSeqAllWrite (AjPSeqout outseq, AjPSeq seq) {
   if (outseq->Single)
     (void) seqFileReopen(outseq);
 
+  /* Calling funclist seqOutFormat() */
   seqOutFormat[outseq->Format].Write (outseq);
   outseq->Count++;
 
@@ -269,6 +270,7 @@ void ajSeqsetWrite (AjPSeqout outseq, AjPSeqset seq) {
     if (outseq->Single)
       (void) seqFileReopen(outseq);
 
+    /* Calling funclist seqOutFormat() */
     seqOutFormat[outseq->Format].Write (outseq);
     outseq->Count++;
 
@@ -311,6 +313,7 @@ static void seqWriteListAppend (AjPSeqout outseq, AjPSeq seq) {
   if (outseq->Single) {
     ajDebug("single sequence mode: write immediately\n");
     seqDefName (&outseq->Name, !outseq->Single);
+    /* Calling funclist seqOutFormat() */
     seqOutFormat[outseq->Format].Write (outseq);
   }
 
@@ -334,8 +337,10 @@ void ajSeqWriteClose (AjPSeqout outseq) {
 
   ajDebug ("ajSeqWriteClose '%F'\n", outseq->File);
 
-  if (seqOutFormat[outseq->Format].Save)
+  if (seqOutFormat[outseq->Format].Save) {
+    /* Calling funclist seqOutFormat() */
     seqOutFormat[outseq->Format].Write (outseq);
+  }
 
   if (outseq->Knownfile)
     outseq->File = NULL;
@@ -384,6 +389,7 @@ void ajSeqWrite (AjPSeqout outseq, AjPSeq seq) {
   if (outseq->Single)
     (void) seqFileReopen(outseq);
 
+  /* Calling funclist seqOutFormat() */
   seqOutFormat[outseq->Format].Write (outseq);
   outseq->Count++;
 
