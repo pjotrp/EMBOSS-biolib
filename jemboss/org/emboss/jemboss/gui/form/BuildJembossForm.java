@@ -459,7 +459,7 @@ public class BuildJembossForm implements ActionListener
               }
             }
             else
-              new ShowResultSet(thisrun.hash(),filesToMove);
+              new ShowResultSet(thisrun.hash(),filesToMove,mysettings);
           }
           catch (JembossSoapException eae)
           {
@@ -570,7 +570,9 @@ public class BuildJembossForm implements ActionListener
           }
         }
       }
-      new ResultsMenuBar(res,fresults,hashRes,null);
+ 
+      new ResultsMenuBar(res,fresults,hashRes,mysettings);
+//    new ResultsMenuBar(res,fresults,hashRes,null);
       res.setVisible(true);
     }
   }

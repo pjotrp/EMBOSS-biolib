@@ -58,6 +58,12 @@ public class ResultsMenuBar extends JMenuBar
   private JMenuItem redo = new JMenuItem("Redo");
   private UndoManager undoManager = new UndoManager();
 
+  
+  public ResultsMenuBar(final JFrame frame, final JTabbedPane rtb,
+                        final Hashtable hashOut, JembossParams mysettings)
+  {
+    this(frame,rtb,hashOut,null,null,mysettings); 
+  }
 
   public ResultsMenuBar(final JFrame frame, final JTabbedPane rtb,
                         final Hashtable hashOut, final Hashtable hashIn)
@@ -132,7 +138,6 @@ public class ResultsMenuBar extends JMenuBar
                         final JembossParams mysettings)
   {
     setResultsMenuBar(frame,false);
-
 
     fileMenuShowres.addActionListener(new ActionListener()
     {
@@ -332,7 +337,7 @@ public class ResultsMenuBar extends JMenuBar
                         final String project, final JembossParams mysettings)
   {
     boolean addRemoteSaveMenu = false;
-    if(mysettings != null)
+    if(project != null)
       addRemoteSaveMenu = true;
 
     setResultsMenuBar(frame, addRemoteSaveMenu);
