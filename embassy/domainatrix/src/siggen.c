@@ -885,7 +885,7 @@ int main(ajint argc, char **argv)
                 /* A scop identifier is presumed if the id is 7 characters 
                    long and the first character is a 'd' or 'D' */
                 if((ajStrLen(alg->Codes[x])==7)
-                   &&(toupper(ajStrChar(alg->Codes[x], 0)) == 'D'))
+                   &&(toupper((int)ajStrChar(alg->Codes[x], 0)) == 'D'))
 
                 { 
                     /*Read the chain id from the SCOP domain code and convert 
