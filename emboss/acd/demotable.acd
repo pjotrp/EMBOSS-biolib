@@ -6,5 +6,5 @@ appl: demotable [
 infile: gff  [
   parameter: "Y"
   information: "gff file to be read in"
-  help: "File containing normal tab delimted gff's"
+  help: "File containing normal tab delimited gff's"
 ]

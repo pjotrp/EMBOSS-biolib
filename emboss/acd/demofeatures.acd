@@ -7,7 +7,7 @@ featout: featout  [
   parameter: "Y"
   default: "gff:demofeatures.gff"
   information: "feature file for output"
-  help: "File for output of normal tab delimted gff's"
+  help: "File for output of normal tab delimited gff's"
 ]
 
 bool: typesort  [
