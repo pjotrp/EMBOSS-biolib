@@ -9,8 +9,8 @@
 **  Journal of Molecular Biology 162:705-708
 **
 ** @author Copyright (C) 2003--2004 Damian Counsell
-** @version $Revision: 1.6 $
-** @modified $Date: 2004/05/05 14:01:29 $
+** @version $Revision: 1.7 $
+** @modified $Date: 2004/05/05 16:38:47 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -42,7 +42,7 @@
 enum constant
     {
 	/* DDDDEBUG */
-	enumDebugLevel        =  3,
+	enumDebugLevel        =  0,
 	enumTraceArrayOffset  =  1
     };
 
