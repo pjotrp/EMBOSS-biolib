@@ -25,7 +25,7 @@ pkgdata_DATA =  aaindexextract.txt abiview.txt antigenic.txt \
                fcontml.txt fcontrast.txt fdnacomp.txt fdnadist.txt \
                fdnainvar.txt fdnaml.txt fdnamlk.txt fdnamove.txt \
                fdnapars.txt fdnapenny.txt fdollop.txt fdolmove.txt \
-               fdolpenny.txt fdrawgram.txt fdrawtree.txt ffactboot.txt \
+               fdolpenny.txt fdrawgram.txt fdrawtree.txt \
                ffactor.txt ffitch.txt ffreqboot.txt fgendist.txt findkm.txt \
                fkitsch.txt fmix.txt fmove.txt fneighbor.txt \
                fpars.txt fpenny.txt fproml.txt fpromlk.txt fprotdist.txt \

@@ -46,7 +46,7 @@ pkgdata_DATA =  abiview.1.abiview.gif chaos.1.chaos.gif cirdna.1.cirdna.gif \
                fdnainvar.html fdnaml.html fdnamlk.html fdnamove.html \
                fdnapars.html fdnapenny.html fdollop.html fdolmove.html \
                fdolpenny.html fdrawgram.html fdrawtree.html \
-               feature_tables_group.html ffactboot.html ffactor.html \
+               feature_tables_group.html ffactor.html \
                ffitch.html ffreqboot.html fgendist.html findkm.html \
                fitch.html fkitsch.html fmix.html fmove.html fneighbor.html \
                fpars.html fpenny.html fproml.html fpromlk.html \
