@@ -1,0 +1,5 @@
+user.auth=true
+server.public=http://localhost:8080/soap/servlet/rpcrouter
+server.private=http://localhost:8080/soap/servlet/rpcrouter
+service.public=http://www.hgmp.mrc.ac.uk/EmbossSoap
+service.private=http://www.hgmp.mrc.ac.uk/EmbossSoap
