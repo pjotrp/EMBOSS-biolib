@@ -7501,7 +7501,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI laci_ecoli.pepstats
-FZ = 1315
+FZ = 1316
 FP /^Molecular weight = 38563\.97/
 FP /^Average Residue Weight  = 107\.122\s+Charge\s+= 1\.5\s+\n/
 FP /^Isoelectric Point = 6\.8820\n/
