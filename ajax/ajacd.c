@@ -12438,12 +12438,12 @@ static void acdHelpAssoc(const AcdPAcd thys, AjPStr *str, const char* name)
 	    if(name && strcmp(name, quals[i].Name))
 		continue;
 	    if(thys->PNum)
-		ajFmtPrintS(&qname, "-%s%d",
+		ajFmtPrintS(&qname, " -%s%d",
 			    quals[i].Name, thys->PNum);
 	    else
-		ajFmtPrintS(&qname, "-%s", quals[i].Name);
+		ajFmtPrintS(&qname, " -%s", quals[i].Name);
 	    ajStrAssC(&qtype, quals[i].Type);
-	    ajFmtPrintS(&line, "   %-20S %-10S ",
+	    ajFmtPrintS(&line, "  %-20S %-10S ",
 			qname,  qtype);
 	    ajStrAssC(&text, quals[i].Help);
 	    acdTextFormat(&text);
@@ -13739,9 +13739,9 @@ static void acdHelpAssocTable(const AcdPAcd thys, AjPList tablist, char flag)
 	acdLog("++ assoc[%d].Name %S\n", i, pa->Name);
 	AJNEW0(item);
 	if(thys->PNum)
-	    ajFmtPrintS(&item->Qual, "-%S%d", pa->Name, pa->PNum);
+	    ajFmtPrintS(&item->Qual, " -%S%d", pa->Name, pa->PNum);
 	else
-	    ajFmtPrintS(&item->Qual, "-%S", pa->Name);
+	    ajFmtPrintS(&item->Qual, " -%S", pa->Name);
 	ajFmtPrintS(&line, "  %-20S %-10S ",
 		    qname,  qtype);
 	acdHelpText(pa, &item->Help);
