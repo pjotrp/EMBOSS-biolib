@@ -6,7 +6,7 @@ dnl Process this file with autoconf to produce a configure script.
 #CC=cc
 
 AC_INIT(ajax/ajacd.c)
-AM_INIT_AUTOMAKE(EMBOSS, 2.2.1)
+AM_INIT_AUTOMAKE(EMBOSS, 2.3.0)
 
 
 dnl Use libtool to make a shared library.
@@ -248,15 +248,7 @@ jemboss/api/org/emboss/jemboss/parser/Makefile
 jemboss/api/org/emboss/jemboss/parser/acd/Makefile
 jemboss/api/org/emboss/jemboss/programs/Makefile
 jemboss/api/org/emboss/jemboss/soap/Makefile
-jemboss/embreo/Makefile jemboss/embreo/Modules/Makefile
-jemboss/embreo/api-docs/Makefile jemboss/embreo/api-docs/uk/Makefile
-jemboss/embreo/api-docs/uk/ac/Makefile
-jemboss/embreo/api-docs/uk/ac/Makefile
-jemboss/embreo/api-docs/uk/ac/mrc/Makefile
-jemboss/embreo/api-docs/uk/ac/mrc/hgmp/Makefile
-jemboss/embreo/api-docs/uk/ac/mrc/hgmp/embreo/Makefile
-jemboss/embreo/api-docs/uk/ac/mrc/hgmp/embreo/filemgr/Makefile
-jemboss/embreo/cgi-bin/Makefile jemboss/images/Makefile
+jemboss/images/Makefile
 jemboss/lib/Makefile jemboss/org/Makefile jemboss/org/emboss/Makefile
 jemboss/org/emboss/jemboss/Makefile jemboss/org/emboss/jemboss/gui/Makefile
 jemboss/org/emboss/jemboss/gui/filetree/Makefile

@@ -9,4 +9,7 @@ Version 2.3.0
         Primer3 renamed eprimer3 to avoid conflicts with the Whitehead's
 	primer3 version 3.0.6.
 	transeq's '-frame' can have a list of values, as: '-frame=1,2,3'
-
+	Non-existent files in lists are again ignored
+	Various wildcard database search fixes
+	ESIM4 added as an embassy package
+	
