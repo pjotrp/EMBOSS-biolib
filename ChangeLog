@@ -1,4 +1,8 @@
 Version 2.9.0
+	ajListMapRead and ajListstrMapRead functions for read-only lists.
+	As an added check, the functions these call for each element have
+	a different prototype.
+
 	ajStrStr function now returns const, as do various 'Get' functions.
 	The few cases where a true char* is needed must now call
 	ajStrStrMod with the AjPStr passed by reference so that we can

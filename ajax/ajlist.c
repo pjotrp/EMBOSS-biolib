@@ -1245,19 +1245,19 @@ void ajListstrMap(AjPList thys, void apply(AjPStr* x, void* cl), void* cl)
 ** @param [f] apply [void function] Function to call for each list item.
 ** @param [u] cl [void*] Standard, usually NULL.
 ** @return [void]
-** @category modify [AjPList] Call a function for each node in a list.
+** @category use [AjPList] Call a function for each node in a list.
 ** @@
 ******************************************************************************/
 
 void ajListMapRead(const AjPList thys,
-		   void apply(void** x, void* cl), void* cl)
+		   void apply(void* x, void* cl), void* cl)
 {
     AjPListNode rest;
 
     assert(apply);
 
     for(rest = thys->First; rest->Next; rest = rest->Next)
-	apply((void**) &rest->Item, cl);
+	apply((void*) rest->Item, cl);
 
     return;
 }
@@ -1275,19 +1275,19 @@ void ajListMapRead(const AjPList thys,
 ** @param [f] apply [void function] Function to call for each list item.
 ** @param [u] cl [void*] Standard, usually NULL.
 ** @return [void]
-** @category modify [AjPList] Call a function for each node in a list.
+** @category use [AjPList] Call a function for each node in a list.
 ** @@
 ******************************************************************************/
 
 void ajListstrMapRead(const AjPList thys,
-		  void apply(AjPStr* x, void* cl), void* cl)
+		  void apply(AjPStr x, void* cl), void* cl)
 {
     AjPListNode rest;
 
     assert(apply);
 
     for(rest=thys->First; rest->Next; rest = rest->Next)
-	apply((AjPStr*) &rest->Item, cl);
+	apply((AjPStr) rest->Item, cl);
 
 
     return;

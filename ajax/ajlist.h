@@ -162,7 +162,7 @@ ajint       ajListLength (const AjPList list);
 void        ajListMap    (AjPList list,
 			  void apply(void **x, void *cl), void *cl);
 void        ajListMapRead(const AjPList list,
-			  void apply(void **x, void *cl), void *cl);
+			  void apply(void *x, void *cl), void *cl);
 AjPList     ajListNew (void);          /* return header */
 AjPList     ajListNewArgs   (void* x, ...);  /* new header returned */
 AjPListNode ajListNodesNew (void *x, ...);  /* same as NewArgs but no header */
@@ -182,7 +182,7 @@ ajint       ajListstrLength (const AjPList list);
 void        ajListstrMap (AjPList thys,
 			  void apply(AjPStr* x, void* cl), void* cl);
 void        ajListstrMapRead (const AjPList thys,
-			      void apply(AjPStr* x, void* cl), void* cl);
+			      void apply(AjPStr x, void* cl), void* cl);
 AjPList     ajListstrNew (void);          /* return header */
 AjPList     ajListstrNewArgs  (AjPStr x, ...);  /* new header returned */
 AjBool      ajListstrPeek    (const AjPList list, AjPStr* x);
