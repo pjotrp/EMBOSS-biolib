@@ -147,3 +147,69 @@ fi
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+AC_DEFUN(CHECK_THREADS,
+#
+# Handle jemboss threading options
+#
+[AC_MSG_CHECKING(if any threading type is given)
+AC_ARG_WITH(thread,
+[  --with-thread=THREADTYPE [defaults linux] ],
+[if test "$withval" != no ; then
+  AC_MSG_RESULT(yes)
+
+	  ALT_THREADTYPE="-D${withval}"
+
+	  if test "$withval" = "yes" ; then
+	        CFLAGS="$CFLAGS -D_REENTRANT" 
+		LDFLAGS="$LDFLAGS -lpthread"
+		LIBS="$LIBS -lpthread"
+	  fi
+
+	  if test "$withval" = "linux" ; then
+	        CFLAGS="$CFLAGS -D_REENTRANT" 
+		LDFLAGS="$LDFLAGS -lpthread"
+		LIBS="$LIBS -lpthread"
+	  fi
+
+	  if test "$withval" = "solaris" ; then
+	        CFLAGS="$CFLAGS -D_POSIX_C_SOURCE=199506L -D__EXTENSIONS__" 
+		LDFLAGS="$LDFLAGS -lpthread"
+		LIBS="$LIBS -lpthread"
+	  fi
+	  if test "$withval" = "macos" ; then
+	        CFLAGS="$CFLAGS"
+		LDFLAGS="$LDFLAGS -lpthread"
+		LIBS="$LIBS -lpthread"
+	  fi
+	  if test "$withval" = "hpux" ; then
+	        CFLAGS="$CFLAGS -D_POSIX_C_SOURCE=199506L" 
+		LDFLAGS="$LDFLAGS -lpthread"
+		LIBS="$LIBS -lpthread"
+	  fi
+	  if test "$withval" = "sgi" ; then
+	        CFLAGS="$CFLAGS -D_POSIX_C_SOURCE=199506L" 
+		LDFLAGS="$LDFLAGS -lpthread"
+		LIBS="$LIBS -lpthread"
+	  fi
+	  if test "$withval" = "aix" ; then
+	        CFLAGS="$CFLAGS -D_REENTRANT" 
+		LDFLAGS="$LDFLAGS -lpthread"
+		LIBS="$LIBS -lpthread"
+	  fi
+else
+  AC_MSG_RESULT(no)
+fi], [
+AC_MSG_RESULT(no)
+])
+])
