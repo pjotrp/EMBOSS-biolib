@@ -1,0 +1,17 @@
+# AJAX COMMAND DEFINITION (ACD) FILE
+
+
+# ajb 19 Nov 2000
+
+appl: corbatest [
+	doc: "Test of EMBL corba retrieval"
+	groups: "DNA: sequence retrieval"
+]
+
+string: entry [
+	param: Y 
+]
+
+outfile: outfile [
+	param: Y
+]

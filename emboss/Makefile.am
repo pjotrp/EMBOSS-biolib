@@ -2,7 +2,7 @@
 SUBDIRS = acd data
 
 check_PROGRAMS = ajtest ajtest2 ajtest3 ajtestajnam \
-cluster \
+cluster corbatest \
 demofeatures demolist demosequence demostring demotable \
 entrails histogramtest messtest \
 patmattest plplottest proteinmotifsearch \
@@ -63,6 +63,7 @@ coderet_SOURCES = coderet.c
 complex_SOURCES = complex.c
 compseq_SOURCES = compseq.c
 cons_SOURCES = cons.c
+corbatest_SOURCES = corbatest.c
 cpgplot_SOURCES = cpgplot.c
 cpgreport_SOURCES = cpgreport.c
 cusp_SOURCES = cusp.c

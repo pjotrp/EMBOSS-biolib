@@ -57,6 +57,7 @@ extern "C"
 #include "ajxyz.h"
 #include "ajacd.h"
 #include "ajcall.h"
+#include "ajcorba.h"
 
 #endif
 

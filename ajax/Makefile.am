@@ -5,8 +5,10 @@ lib_LTLIBRARIES = libajax.la libajaxg.la
 INCLUDES = -DAJAX_FIXED_ROOT=$(AJAX_FIXED_ROOT) -DPREFIX=\"$(prefix)\" -I$(top_srcdir)/plplot
 
 AJAXSRC = ajacd.c ajarr.c ajassert.c \
-ajbase.c ajcall.c ajcod.c ajdan.c ajexcept.c ajfeat.c ajfile.c ajfmt.c \
-ajlist.c \
+ajbase.c ajcall.c ajcod.c \
+ajcorba.c ajcorbaemc.c ajcorbaems.c \
+ajdan.c ajexcept.c ajfeat.c ajfile.c \
+ajfmt.c ajlist.c \
 ajmath.c ajmatrices.c ajmem.c ajmess.c ajnam.c \
 ajposreg.c ajrange.c ajreg.c \
 ajseq.c ajseqdb.c ajseqread.c ajseqtype.c ajseqwrite.c \
@@ -20,7 +22,9 @@ AJAXGSRC = ajgraph.c ajhist.c
 
 noinst_HEADERS = ajax.h ajdefine.h \
 ajacd.h ajarr.h ajassert.h \
-ajbase.h ajcall.h ajcod.h ajdan.h ajexcept.h ajfeat.h ajfile.h ajfmt.h \
+ajbase.h ajcall.h ajcod.h \
+ajcorba.h ajcorbaembl.h \
+ajdan.h ajexcept.h ajfeat.h ajfile.h ajfmt.h \
 ajgraph.h ajgraphstruct.h ajhist.h ajlist.h \
 ajmath.h ajmatrices.h ajmem.h ajmess.h ajnam.h \
 ajposreg.h ajrange.h ajreg.h ajsort.h \
