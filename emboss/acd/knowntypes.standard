@@ -23,6 +23,7 @@ file primer3_out Whitehead primer3 program output
 file prints_database PRINTS database file
 file profile_file profile data file
 file matrix_file weight matrix file
+file newick_tree PHYLIP tree file
 file rebase_proto_file REBASE database proto file
 file rebase_withrefm_file REBASE database withrefm file
 file supermatcher_error_file error file from supermatcher program
