@@ -135,10 +135,12 @@ int main(int argc, char **argv)
     psolu = 0.4934 + 0.276*fabs((double)(cv-CVDISC)) -
 	0.0392*(cv-CVDISC)*(cv-CVDISC);
     
-    ajFmtPrintF(outf,"Probability of ");
     if(cv-CVDISC >= 0.0)
-	ajFmtPrintF(outf,"in");
-    ajFmtPrintF(outf,"solubility = %.3lf\n\n",psolu);
+	ajFmtPrintF(outf,"Imp");
+    else
+	ajFmtPrintF(outf,"P");
+    ajFmtPrintF(outf,"robability of forming inclusion bodies = %.3lf\n\n",
+		psolu);
 
 
     ajFmtPrintF(outf,"Residue\t\tNumber\t\tMole%%\t\tDayhoffStat\n");
