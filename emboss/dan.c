@@ -105,10 +105,10 @@ int main(int argc, char **argv)
     shift     = ajAcdGetInt("shiftincrement");
     DNAConc   = ajAcdGetFloat("dnaconc");
     saltConc  = ajAcdGetFloat("saltconc");
-    doThermo  = ajAcdGetBool("thermo");
-    isProduct = ajAcdGetBool("product");
+    doThermo  = ajAcdGetToggle("thermo");
+    isProduct = ajAcdGetToggle("product");
     isRNA     = ajAcdGetBool("rna");
-    doplot    = ajAcdGetBool("plot");
+    doplot    = ajAcdGetToggle("plot");
 
     formamide = ajAcdGetFloat("formamide");
     mismatch  = ajAcdGetFloat("mismatch");
@@ -529,7 +529,7 @@ static void dan_plotit(AjPSeq *seq, float *xa, float *ta, float *cga,
 		       float *tpa, ajint npoints, ajint ibegin, ajint iend,
 		       AjPGraph graphs, float mintemp)
 {
-    AjPGraphData tmGraph = NULL;
+    AjPGraphPlpData tmGraph = NULL;
     float max = -64000.;
     float min = 64000.;
 
@@ -541,14 +541,14 @@ static void dan_plotit(AjPSeq *seq, float *xa, float *ta, float *cga,
 	max = (max>ta[i]) ? max : ta[i];
     }
 
-    tmGraph = ajGraphxyDataNewI(npoints);
-    ajGraphxySetTitleDo(graphs,ajTrue);
+    tmGraph = ajGraphPlpDataNewI(npoints);
+    ajGraphSetTitleDo(graphs,ajTrue);
     ajGraphxySetXLabel(graphs,ajTrue);
     ajGraphxySetYLabel(graphs,ajTrue);
 
-    ajGraphxyTitleC(graphs,ajSeqName(*seq));
-    ajGraphxyXtitleC(graphs,"Base number");
-    ajGraphxyYtitleC(graphs,"Melt temp (C)");
+    ajGraphSetTitleC(graphs,ajSeqName(*seq));
+    ajGraphSetXTitleC(graphs,"Base number");
+    ajGraphSetYTitleC(graphs,"Melt temp (C)");
 
     ajGraphxySetXStart(graphs,ibegin);
     ajGraphxySetXEnd(graphs,iend);
@@ -557,13 +557,13 @@ static void dan_plotit(AjPSeq *seq, float *xa, float *ta, float *cga,
     ajGraphxySetXRangeII(graphs,ibegin,iend);
     ajGraphxySetYRangeII(graphs,(ajint)mintemp,100);
 
-    ajGraphDataxySetTypeC(tmGraph,"2D Plot");
-    ajGraphDataxySetMaxMin(tmGraph,(float)ibegin,(float)iend,min,max);
-    ajGraphDataxySetMaxima(tmGraph,(float)ibegin,(float)iend,min,max);
+    ajGraphPlpDataSetTypeC(tmGraph,"2D Plot");
+    ajGraphPlpDataSetMaxMin(tmGraph,(float)ibegin,(float)iend,min,max);
+    ajGraphPlpDataSetMaxima(tmGraph,(float)ibegin,(float)iend,min,max);
 
 
-    ajGraphxyAddDataPtrPtr(tmGraph,xa,ta);
-    ajGraphxyAddGraph(graphs,tmGraph);
+    ajGraphPlpDataSetXY(tmGraph,xa,ta);
+    ajGraphDataAdd(graphs,tmGraph);
 
     ajGraphxyDisplay(graphs,AJTRUE);
 

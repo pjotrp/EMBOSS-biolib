@@ -112,7 +112,7 @@ int main(int argc, char **argv)
     doobsexp  = ajAcdGetBool("obsexp");
     docg      = ajAcdGetBool("cg");
     dopc      = ajAcdGetBool("pc");
-    featout   = ajAcdGetFeatout("featout");
+    featout   = ajAcdGetFeatout("outfeat");
 
 
 
@@ -507,9 +507,9 @@ static void cpgplot_plotit(char *seq, ajint begin, ajint len, ajint shift,
 			   AjBool dopc, AjPGraph graphs)
 
 {
-    AjPGraphData tmGraph  = NULL;
-    AjPGraphData tmGraph2 = NULL;
-    AjPGraphData tmGraph3 = NULL;
+    AjPGraphPlpData tmGraph  = NULL;
+    AjPGraphPlpData tmGraph2 = NULL;
+    AjPGraphPlpData tmGraph3 = NULL;
     float *tmp = NULL;
     ajint i;
     float min = 0.;
@@ -517,10 +517,10 @@ static void cpgplot_plotit(char *seq, ajint begin, ajint len, ajint shift,
 
     if(doobsexp)
     {
-	tmGraph2 = ajGraphxyDataNew();
-	ajGraphxyDataSetTitleC(tmGraph2,"Observed vs Expected");
-	ajGraphxyDataSetXtitleC(tmGraph2,"Base number");
-	ajGraphxyDataSetYtitleC(tmGraph2,"Obs/Exp");
+	tmGraph2 = ajGraphPlpDataNew();
+	ajGraphPlpDataSetTitleC(tmGraph2,"Observed vs Expected");
+	ajGraphPlpDataSetXTitleC(tmGraph2,"Base number");
+	ajGraphPlpDataSetYTitleC(tmGraph2,"Obs/Exp");
 
 	min = 64000.;
 	max = -64000.;
@@ -530,11 +530,11 @@ static void cpgplot_plotit(char *seq, ajint begin, ajint len, ajint shift,
 	    max = (max>obsexp[i]) ? max : obsexp[i];
 	}
 
-	ajGraphDataxySetMaxMin(tmGraph2,(float)begin,(float)begin+len-1,
+	ajGraphPlpDataSetMaxMin(tmGraph2,(float)begin,(float)begin+len-1,
 			       min,max);
-	ajGraphDataxySetMaxima(tmGraph2,(float)begin,(float)begin+len-1,
+	ajGraphPlpDataSetMaxima(tmGraph2,(float)begin,(float)begin+len-1,
 			       0.0,max);
-	ajGraphDataxySetTypeC(tmGraph2,"Multi 2D Plot");
+	ajGraphPlpDataSetTypeC(tmGraph2,"Multi 2D Plot");
 
 	ajGraphxySetXStart(graphs,(float)begin);
 	ajGraphxySetXEnd(graphs,(float)(begin+len-1));
@@ -544,17 +544,17 @@ static void cpgplot_plotit(char *seq, ajint begin, ajint len, ajint shift,
 	ajGraphxySetXRangeII(graphs,begin,begin+len-1);
 	ajGraphxySetYRangeII(graphs,0,(ajint)(obsexpmax+1.0));
 
-	ajGraphxyAddDataCalcPtr(tmGraph2,len,(float)begin,1.0,obsexp);
-	ajGraphxyAddGraph(graphs,tmGraph2);
+	ajGraphPlpDataCalcXY(tmGraph2,len,(float)begin,1.0,obsexp);
+	ajGraphDataAdd(graphs,tmGraph2);
 	tmGraph2 = NULL;
     }
 
     if(dopc)
     {
-	tmGraph3 = ajGraphxyDataNew();
-	ajGraphxyDataSetTitleC(tmGraph3,"Percentage");
-	ajGraphxyDataSetXtitleC(tmGraph3,"Base number");
-	ajGraphxyDataSetYtitleC(tmGraph3,"Percentage");
+	tmGraph3 = ajGraphPlpDataNew();
+	ajGraphPlpDataSetTitleC(tmGraph3,"Percentage");
+	ajGraphPlpDataSetXTitleC(tmGraph3,"Base number");
+	ajGraphPlpDataSetYTitleC(tmGraph3,"Percentage");
 
 	min = 64000.;
 	max = -64000.;
@@ -564,11 +564,11 @@ static void cpgplot_plotit(char *seq, ajint begin, ajint len, ajint shift,
 	    max = (max>xypc[i]) ? max : xypc[i];
 	}
 
-	ajGraphDataxySetMaxMin(tmGraph3,(float)begin,(float)begin+len-1,
+	ajGraphPlpDataSetMaxMin(tmGraph3,(float)begin,(float)begin+len-1,
 			       min,max);
-	ajGraphDataxySetMaxima(tmGraph3,(float)begin,(float)begin+len-1,
+	ajGraphPlpDataSetMaxima(tmGraph3,(float)begin,(float)begin+len-1,
 			      0.0,max);
-	ajGraphDataxySetTypeC(tmGraph3,"Multi 2D Plot");
+	ajGraphPlpDataSetTypeC(tmGraph3,"Multi 2D Plot");
 
 	ajGraphxySetXStart(graphs,(float)begin);
 	ajGraphxySetXEnd(graphs,(float)(begin+len-1));
@@ -577,8 +577,8 @@ static void cpgplot_plotit(char *seq, ajint begin, ajint len, ajint shift,
 	ajGraphxySetXRangeII(graphs,begin,begin+len-1);
 	ajGraphxySetYRangeII(graphs,0,100);
 
-	ajGraphxyAddDataCalcPtr(tmGraph3,len,(float)begin,1.0,xypc);
-	ajGraphxyAddGraph(graphs,tmGraph3);
+	ajGraphPlpDataCalcXY(tmGraph3,len,(float)begin,1.0,xypc);
+	ajGraphDataAdd(graphs,tmGraph3);
 	tmGraph3 = NULL;
     }
 
@@ -593,14 +593,14 @@ static void cpgplot_plotit(char *seq, ajint begin, ajint len, ajint shift,
 		tmp[i] = 0.0;
 	}
 
-	tmGraph = ajGraphxyDataNew();
-	ajGraphxyDataSetTitleC(tmGraph,"Putative Islands");
-	ajGraphxyDataSetXtitleC(tmGraph,"Base Number");
-	ajGraphxyDataSetYtitleC(tmGraph,"Threshold");
+	tmGraph = ajGraphPlpDataNew();
+	ajGraphPlpDataSetTitleC(tmGraph,"Putative Islands");
+	ajGraphPlpDataSetXTitleC(tmGraph,"Base Number");
+	ajGraphPlpDataSetYTitleC(tmGraph,"Threshold");
 
-	ajGraphDataxySetMaxMin(tmGraph,(float)begin,(float)begin+len-1,
+	ajGraphPlpDataSetMaxMin(tmGraph,(float)begin,(float)begin+len-1,
 			       0.,1.);
-	ajGraphDataxySetTypeC(tmGraph,"Multi 2D Plot");
+	ajGraphPlpDataSetTypeC(tmGraph,"Multi 2D Plot");
 
 
 	ajGraphxySetXStart(graphs,(float)begin);
@@ -609,20 +609,20 @@ static void cpgplot_plotit(char *seq, ajint begin, ajint len, ajint shift,
 	ajGraphxySetYEnd(graphs,2);
 	ajGraphxySetXRangeII(graphs,begin,begin+len-1);
 	ajGraphxySetYRangeII(graphs,0,2);
-	ajGraphDataxySetMaxMin(tmGraph,(float)begin,(float)(begin+len-1),
+	ajGraphPlpDataSetMaxMin(tmGraph,(float)begin,(float)(begin+len-1),
 			       0.0,1.2);
-	ajGraphDataxySetMaxima(tmGraph,(float)begin,(float)(begin+len-1),
+	ajGraphPlpDataSetMaxima(tmGraph,(float)begin,(float)(begin+len-1),
 			       0.0,1.0);
 
-	ajGraphxyAddDataCalcPtr(tmGraph,len,(float)begin,1.0,tmp);
-	ajGraphxyAddGraph(graphs,tmGraph);
+	ajGraphPlpDataCalcXY(tmGraph,len,(float)begin,1.0,tmp);
+	ajGraphDataAdd(graphs,tmGraph);
 	tmGraph = NULL;
     }
 
 
     if(docg || dopc || doobsexp)
     {
-	ajGraphxyTitleC(graphs,seq);
+	ajGraphSetTitleC(graphs,seq);
 	ajGraphxySetOverLap(graphs,ajFalse);
 	ajGraphxyDisplay(graphs, AJTRUE);
     }

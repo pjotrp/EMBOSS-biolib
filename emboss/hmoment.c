@@ -76,7 +76,7 @@ int main(int argc, char **argv)
     ajGraphInit("hmoment", argc, argv);
 
     seqall    = ajAcdGetSeqall("seqall");
-    plot      = ajAcdGetBool("plot");
+    plot      = ajAcdGetToggle("plot");
     window    = ajAcdGetInt("window");
     aangle    = ajAcdGetInt("aangle");
     bangle    = ajAcdGetInt("bangle");
@@ -216,14 +216,14 @@ static void hmoment_addgraph(AjPGraph graph, ajint limit, float *x, float *y,
 {
     ajint i;
 
-    AjPGraphData data;
+    AjPGraphPlpData data;
     AjPStr st = NULL;
 
     if(limit<1)
 	return;
 
 
-    data = ajGraphxyDataNewI(limit);
+    data = ajGraphPlpDataNewI(limit);
 
     st = ajStrNew();
 
@@ -233,24 +233,24 @@ static void hmoment_addgraph(AjPGraph graph, ajint limit, float *x, float *y,
 	data->y[i] = y[i];
     }
 
-    ajGraphxySetColour(data,colour);
-    ajGraphDataxySetMaxMin(data,x[0],x[limit-1],0.,ymax);
-    ajGraphDataxySetMaxima(data,x[0],x[limit-1],0.,ymax);
+    ajGraphPlpDataSetColour(data,colour);
+    ajGraphPlpDataSetMaxMin(data,x[0],x[limit-1],0.,ymax);
+    ajGraphPlpDataSetMaxima(data,x[0],x[limit-1],0.,ymax);
 
-    ajGraphDataxySetTypeC(data,"2D Plot Float");
+    ajGraphPlpDataSetTypeC(data,"2D Plot Float");
 
     ajFmtPrintS(&st,"HMOMENT of %s. Window:%d",sname,window);
-    ajGraphxyDataSetTitle(data,st);
+    ajGraphPlpDataSetTitle(data,st);
 
     ajFmtPrintS(&st,"uH (%d deg)",angle);
-    ajGraphxyDataSetYtitle(data,st);
+    ajGraphPlpDataSetYTitle(data,st);
 
     ajFmtPrintS(&st,"Position (w=%d)",window);
-    ajGraphxyDataSetXtitle(data,st);
+    ajGraphPlpDataSetXTitle(data,st);
 
-    ajGraphDataObjAddLine(data,x[0],baseline,x[limit-1],baseline,BLUE);
+    ajGraphPlpDataAddLine(data,x[0],baseline,x[limit-1],baseline,BLUE);
 
-    ajGraphxyAddGraph(graph,data);
+    ajGraphDataAdd(graph,data);
 
     ajStrDel(&st);
 

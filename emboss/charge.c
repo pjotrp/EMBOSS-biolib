@@ -84,7 +84,7 @@ int main(int argc, char **argv)
     ajGraphInit("charge", argc, argv);
 
     seqall    = ajAcdGetSeqall("seqall");
-    plot      = ajAcdGetBool("plot");
+    plot      = ajAcdGetToggle("plot");
     window    = ajAcdGetInt("window");
     cdata    = ajAcdGetDatafile("aadata");
 
@@ -153,8 +153,8 @@ int main(int argc, char **argv)
 	{
 	    ajGraphSetMulti(graph,1);
 	    ajGraphxySetOverLap(graph,ajFalse);
-	    ajGraphxyXtitleC(graph,"Position");
-	    ajGraphxyYtitleC(graph,"Charge");
+	    ajGraphSetXTitleC(graph,"Position");
+	    ajGraphSetYTitleC(graph,"Charge");
 	    charge_addgraph(graph,limit,x,y,ymax,ymin,window,sname);
 	    if(limit>0)
 		ajGraphxyDisplay(graph,ajFalse);
@@ -204,14 +204,14 @@ static void charge_addgraph(AjPGraph graph, ajint limit, float *x,
 {
     ajint i;
 
-    AjPGraphData data;
+    AjPGraphPlpData data;
     AjPStr st = NULL;
     float baseline = 0.;
 
     if(limit<1)
 	return;
 
-    data = ajGraphxyDataNewI(limit);
+    data = ajGraphPlpDataNewI(limit);
 
     st = ajStrNew();
 
@@ -221,24 +221,24 @@ static void charge_addgraph(AjPGraph graph, ajint limit, float *x,
 	data->y[i] = y[i];
     }
 
-    ajGraphxySetColour(data,BLACK);
-    ajGraphDataxySetMaxMin(data,x[0],x[limit-1],ymin,ymax);
-    ajGraphDataxySetMaxima(data,x[0],x[limit-1],ymin,ymax);
+    ajGraphPlpDataSetColour(data,BLACK);
+    ajGraphPlpDataSetMaxMin(data,x[0],x[limit-1],ymin,ymax);
+    ajGraphPlpDataSetMaxima(data,x[0],x[limit-1],ymin,ymax);
 
     ajFmtPrintS(&st,"CHARGE of %s. Window:%d",sname,window);
-    ajGraphxyDataSetTitle(data,st);
-    ajGraphxyTitleC(graph,ajStrStr(st));
+    ajGraphPlpDataSetTitle(data,st);
+    ajGraphSetTitleC(graph,ajStrStr(st));
 
-    ajGraphDataxySetTypeC(data,"2D Plot Float");
+    ajGraphPlpDataSetTypeC(data,"2D Plot Float");
     ajFmtPrintS(&st,"Charge");
-    ajGraphxyDataSetYtitle(data,st);
+    ajGraphPlpDataSetYTitle(data,st);
 
     ajFmtPrintS(&st,"Position");
-    ajGraphxyDataSetXtitle(data,st);
+    ajGraphPlpDataSetXTitle(data,st);
 
-    ajGraphDataObjAddLine(data,x[0],baseline,x[limit-1],baseline,BLUE);
+    ajGraphPlpDataAddLine(data,x[0],baseline,x[limit-1],baseline,BLUE);
 
-    ajGraphxyAddGraph(graph,data);
+    ajGraphDataAdd(graph,data);
 
     ajStrDel(&st);
 
