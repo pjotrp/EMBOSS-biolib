@@ -633,7 +633,7 @@ static void restrict_reportHits(AjPReport report, AjPSeq seq,
 		ajSortIntInc(ajIntInt(farray),nfrags);
 
 
-		fa   = AJALLOC(nfrags*sizeof(ajint)+1);		
+		fa   = AJALLOC((nfrags+1)*sizeof(ajint));		
 		last = 0;
 		for(j=0;j<nfrags;++j)
 		{
@@ -683,7 +683,7 @@ static void restrict_reportHits(AjPReport report, AjPSeq seq,
 	    ajSortIntInc(ajIntInt(farray),nfrags);
 
 
-	    fa = AJALLOC(nfrags*sizeof(ajint)+1);		
+	    fa = AJALLOC((nfrags+1)*sizeof(ajint));		
 	    last = 0;
 	    for(j=0;j<nfrags;++j)
 	    {
@@ -781,6 +781,7 @@ static void restrict_read_equiv(AjPFile *equfile, AjPTable *table)
 	ajTablePut(*table,(const void *)key, (void *)value);
     }
 
+    ajStrDel(&line);
     ajFileClose(equfile);
 
     return;
