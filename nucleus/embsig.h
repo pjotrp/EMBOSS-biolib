@@ -137,6 +137,7 @@ typedef struct AjSHit
 **
 ** 
 **
+** @attr  Type          [ajint]     Domain type, either ajSCOP (1) or ajCATH (2).
 ** @attr  Class         [AjPStr]    SCOP classification.
 ** @attr  Architecture  [AjPStr]    CATH classification.
 ** @attr  Topology      [AjPStr]    CATH classification.
@@ -182,6 +183,7 @@ typedef struct AjSHit
 
 typedef struct AjSHitlist
 {
+    ajint    Type;
     AjPStr   Class;
     AjPStr   Architecture;
     AjPStr   Topology;
@@ -288,6 +290,7 @@ typedef struct AJSSigdat
 **
 ** 
 **
+** @attr  Type          [ajint]     Domain type, either ajSCOP (1) or ajCATH (2).
 ** @attr  Class        [AjPStr]      SCOP classification.
 ** @attr  Architecture [AjPStr]      CATH classification.
 ** @attr  Topology     [AjPStr]      CATH classification.
@@ -329,6 +332,7 @@ typedef struct AJSSigdat
 ****************************************************************************/
 typedef struct AjSSignature
 {
+    ajint       Type;
     AjPStr      Class;
     AjPStr      Architecture;
     AjPStr      Topology;

@@ -110,6 +110,7 @@ AjBool embDmxScophitsToHitlist(const AjPList in,
     AjPStr fold     = NULL;
     AjPStr class    = NULL;
     ajint Sunid_Family = 0;
+    ajint type      = 0;
     
     /* Check args and allocate memory */
     if(!in || !iter)
@@ -145,6 +146,7 @@ AjBool embDmxScophitsToHitlist(const AjPList in,
     list = ajListNew();
 
     Sunid_Family=scoptmp->Sunid_Family;
+    type = scoptmp->Type;
     
     
     if(scoptmp->Class)
@@ -221,6 +223,8 @@ AjBool embDmxScophitsToHitlist(const AjPList in,
     ajStrAssS(&(*out)->Superfamily, sfam);
     ajStrAssS(&(*out)->Family, fam);
     (*out)->Sunid_Family = Sunid_Family;
+    (*out)->Type = type;
+    
     
 
     /* Copy temp. list to Hitlist */
@@ -267,6 +271,7 @@ AjBool embDmxScophitToHit(AjPHit *to, const AjPScophit from)
     (*to)->End   = from->End;
     ajStrAssS(&(*to)->Acc, from->Acc);
     ajStrAssS(&(*to)->Spr, from->Spr);
+    ajStrAssS(&(*to)->Dom, from->Dom);
     ajStrAssS(&(*to)->Typeobj, from->Typeobj);
     ajStrAssS(&(*to)->Typesbj, from->Typesbj);
     ajStrAssS(&(*to)->Model, from->Model);
@@ -328,6 +333,7 @@ AjBool embDmxScophitsAccToHitlist(const AjPList in,
     AjPStr fold  = NULL;
     AjPStr class = NULL;
     ajint Sunid_Family = 0;
+    ajint type   =0;
     
     /* Check args and allocate memory */
     if(!in || !iter)
@@ -387,6 +393,7 @@ AjBool embDmxScophitsAccToHitlist(const AjPList in,
 
     
     Sunid_Family=scoptmp->Sunid_Family;
+    type=scoptmp->Type;
     
     
     if(scoptmp->Class)
@@ -460,7 +467,8 @@ AjBool embDmxScophitsAccToHitlist(const AjPList in,
     ajStrAssS(&(*out)->Superfamily, sfam);
     ajStrAssS(&(*out)->Family, fam);
     (*out)->Sunid_Family = Sunid_Family;
-    
+    (*out)->Type = type;
+        
 
     /* Copy temp. list to Hitlist */
     (*out)->N = ajListToArray(list, (void ***) &((*out)->hits));
@@ -625,6 +633,7 @@ AjBool embDmxScopToScophit(const AjPScop source, AjPScophit* target)
 	ajStrAssS(&(*target)->Acc,source->Acc);
 	ajStrAssS(&(*target)->Spr,source->Spr);
     }
+    ajStrAssS(&(*target)->Dom,source->Entry);
     
     return ajTrue;
 }
@@ -827,12 +836,21 @@ AjPScophit embDmxScophitMerge(const AjPScophit hit1, const AjPScophit hit2)
 	return NULL;
     }
 
+    if((hit1->Type != hit2->Type))
+    {
+	ajWarn("Merge attempted on 2 hits of different domain type");
+	return NULL;
+    }
+
     /* Allocate memory */
     ret = ajDmxScophitNew();
     temp = ajStrNew();
     
     ajStrAssS(&(ret->Acc), hit1->Acc);
     ajStrAssS(&(ret->Spr), hit1->Spr);
+    ajStrAssS(&(ret->Dom), hit1->Dom);
+    ret->Type = hit1->Type;
+    
         
     if(ajStrMatch(hit1->Class, hit2->Class))
     {
@@ -1963,6 +1981,7 @@ AjBool embDmxHitlistToScophits(const AjPList in, AjPList *out)
 	    
 
 	    /* Assign scop classification records from hitlist structure */
+	    scophit->Type = hitlist->Type;
 	    ajStrAssS(&scophit->Class, hitlist->Class);
 	    ajStrAssS(&scophit->Fold, hitlist->Fold);
 	    ajStrAssS(&scophit->Superfamily, hitlist->Superfamily);
@@ -1974,6 +1993,7 @@ AjBool embDmxHitlistToScophits(const AjPList in, AjPList *out)
 	    ajStrAssS(&scophit->Seq, hitlist->hits[x]->Seq);
 	    ajStrAssS(&scophit->Acc, hitlist->hits[x]->Acc);
 	    ajStrAssS(&scophit->Spr, hitlist->hits[x]->Spr);
+	    ajStrAssS(&scophit->Dom, hitlist->hits[x]->Dom);
 	    ajStrAssS(&scophit->Typeobj, hitlist->hits[x]->Typeobj);
 	    ajStrAssS(&scophit->Typesbj, hitlist->hits[x]->Typesbj);
 	    ajStrAssS(&scophit->Model, hitlist->hits[x]->Model);

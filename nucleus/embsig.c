@@ -1451,7 +1451,7 @@ AjPHit embHitReadFasta(AjPFile inf)
 
 	    /* Check line has correct no. of tokens and allocate Hit */
 	    ajStrAssSub(&subline, line, 1, -1);
-	    if( (ntok=ajStrTokenCount(subline, "^")) != 16)
+	    if( (ntok=ajStrTokenCount(subline, "^")) != 17)
 	    {
 		ajWarn("Wrong no. (%d) of tokens for a DHF file on line %S\n", ntok, line);
 		ajStrDel(&line);
@@ -1468,10 +1468,14 @@ AjPHit embHitReadFasta(AjPFile inf)
 	    token = ajStrTokC(subline, "^");
 	    ajStrAssS(&hit->Acc, token);
 	    ajStrChomp(&hit->Acc); 
-	    
+	    if(ajStrMatchC(hit->Acc, "."))
+		ajStrClear(&hit->Acc);
+
 	    /* Spr */
 	    token = ajStrTokC(NULL, "^");
 	    ajStrAssS(&hit->Spr, token);
+	    if(ajStrMatchC(hit->Spr, "."))
+		ajStrClear(&hit->Spr);
 
 	    /* Start */
 	    token = ajStrTokC(NULL, "^");
@@ -1481,9 +1485,14 @@ AjPHit embHitReadFasta(AjPFile inf)
 	    token = ajStrTokC(NULL, "^");
 	    ajFmtScanS(token, "%d", &hit->End);
 	    
+	    /* Disregard domain type */
+	    token = ajStrTokC(NULL, "^");
+
 	    /* Dom */
 	    token = ajStrTokC(NULL, "^");
 	    ajStrAssS(&hit->Dom, token);
+	    if(ajStrMatchC(hit->Dom, "."))
+		ajStrClear(&hit->Dom);
 
 	    /* Disregard domain identifier - a change of domain identifier indicates 
 	       a new block of hits in a file with multiple hitlists, but we only 
@@ -1498,6 +1507,8 @@ AjPHit embHitReadFasta(AjPFile inf)
 
 	    token = ajStrTokC(NULL, "^");
 	    ajStrAssS(&hit->Model, token);
+	    if(ajStrMatchC(hit->Model, "."))
+		ajStrClear(&hit->Model);
 
 	    token = ajStrTokC(NULL, "^");
 	    ajFmtScanS(token, "%f", &hit->Score);
@@ -1550,7 +1561,8 @@ AjPHit embHitReadFasta(AjPFile inf)
 AjPHitlist embHitlistRead(AjPFile inf) 
 {
     AjPHitlist ret = NULL;
-    
+
+    AjPStr    type     = NULL;
     AjPStr line   = NULL;   /* Line of text */
     AjPStr class  = NULL;
     AjPStr arch   = NULL;
@@ -1573,6 +1585,7 @@ AjPHitlist embHitlistRead(AjPFile inf)
     super   = ajStrNew();
     family  = ajStrNew();
     line    = ajStrNew();
+    type    = ajStrNew();
     
 
     
@@ -1588,6 +1601,10 @@ AjPHitlist embHitlistRead(AjPFile inf)
 	{
 	    ok = ajFileReadLine(inf,&line);
 	    continue;
+	}
+	else if(ajStrPrefixC(line,"TY"))
+	{
+	    ajFmtScanS(line, "%*s %S", &type);
 	}
 	else if(ajStrPrefixC(line,"SI"))
 	{
@@ -1656,6 +1673,10 @@ AjPHitlist embHitlistRead(AjPFile inf)
 	    ajStrAssS(&(ret)->Superfamily, super);
 	    ajStrAssS(&(ret)->Family, family);
 	    (ret)->Sunid_Family = Sunid_Family;
+	    if(ajStrMatchC(type, "SCOP"))
+		(ret)->Type = ajSCOP;
+	    else if(ajStrMatchC(type, "CATH"))
+		(ret)->Type = ajCATH;
 	}
 	else if(ajStrPrefixC(line,"NN"))
 	{
@@ -1728,6 +1749,7 @@ AjPHitlist embHitlistRead(AjPFile inf)
     ajStrDel(&fold);
     ajStrDel(&super);
     ajStrDel(&family);
+    ajStrDel(&type);
     
     return ret;
 }
@@ -1763,6 +1785,8 @@ AjPHitlist embHitlistReadFasta(AjPFile inf)
     AjPStr    subline   = NULL;
     AjBool    ok       = ajFalse;
     AjBool    parseok  = ajFalse;
+    AjPStr    type     = NULL;
+    
     
     ajlong    fpos     = 0;    
 
@@ -1771,7 +1795,8 @@ AjPHitlist embHitlistReadFasta(AjPFile inf)
     line     = ajStrNew();
     subline  = ajStrNew();
     tmplist  = ajListNew();
-
+    type     = ajStrNew();
+    
 
     while((ok = ajFileReadLine(inf,&line)))
     {
@@ -1786,7 +1811,7 @@ AjPHitlist embHitlistReadFasta(AjPFile inf)
 	    
 	    /* Check line has correct no. of tokens and allocate Hit */
 	    ajStrAssSub(&subline, line, 1, -1);
-	    if( (ntok=ajStrTokenCount(subline, "^")) != 16)
+	    if( (ntok=ajStrTokenCount(subline, "^")) != 17)
 		ajFatal("Incorrect no. (%d) of tokens on line %S\n", ntok, line);
 	    else
 	    {
@@ -1798,10 +1823,14 @@ AjPHitlist embHitlistReadFasta(AjPFile inf)
 	    token = ajStrTokC(subline, "^");
 	    ajStrAssS(&hit->Acc, token);
 	    ajStrChomp(&hit->Acc); 
-	    
+	    if(ajStrMatchC(hit->Acc, "."))
+		ajStrClear(&hit->Acc);
+
 	    /* Spr */
 	    token = ajStrTokC(NULL, "^");
 	    ajStrAssS(&hit->Spr, token);
+	    if(ajStrMatchC(hit->Spr, "."))
+		ajStrClear(&hit->Spr);
 
 	    /* Start */
 	    token = ajStrTokC(NULL, "^");
@@ -1811,9 +1840,15 @@ AjPHitlist embHitlistReadFasta(AjPFile inf)
 	    token = ajStrTokC(NULL, "^");
 	    ajFmtScanS(token, "%d", &hit->End);
 	    
+	    /* Type */
+	    token = ajStrTokC(NULL, "^");
+	    ajStrAssS(&type, token);
+
 	    /* Dom */
 	    token = ajStrTokC(NULL, "^");
 	    ajStrAssS(&hit->Dom, token);
+	    if(ajStrMatchC(hit->Dom, "."))
+		ajStrClear(&hit->Dom);
 
 	    /* Read domain identifier - a change of domain identifier indicates 
 	       a new block of hits in a file with multiple hitlists. */
@@ -1831,6 +1866,7 @@ AjPHitlist embHitlistReadFasta(AjPFile inf)
 		hitlist->N = ajListToArray(tmplist, (void ***)&hitlist->hits);
 		ajStrDel(&line);
 		ajStrDel(&subline);
+		ajStrDel(&type);
 		ajListDel(&tmplist);
 		ajFileSeek(inf, fpos, 0);
 		return hitlist;
@@ -1841,6 +1877,10 @@ AjPHitlist embHitlistReadFasta(AjPFile inf)
 		{
 		    hitlist = embHitlistNew(0);
 		    hitlist->Sunid_Family = this_id;
+		    if(ajStrMatchC(type, "SCOP"))
+			hitlist->Type = ajSCOP;
+		    else if(ajStrMatchC(type, "CATH"))
+			hitlist->Type = ajCATH;
 		}	
 		last_id = this_id;
 	    }	    
@@ -1857,25 +1897,39 @@ AjPHitlist embHitlistReadFasta(AjPFile inf)
 	    {
 		token = ajStrTokC(NULL, "^");
 		ajStrAssS(&hitlist->Class, token);
-		
+		if(ajStrMatchC(hitlist->Class, "."))
+		    ajStrClear(&hitlist->Class);	
+
 		token = ajStrTokC(NULL, "^");
 		ajStrAssS(&hitlist->Architecture, token);
+		if(ajStrMatchC(hitlist->Architecture, "."))
+		    ajStrClear(&hitlist->Architecture);
 
 		token = ajStrTokC(NULL, "^");
 		ajStrAssS(&hitlist->Topology, token);
+		if(ajStrMatchC(hitlist->Topology, "."))
+		    ajStrClear(&hitlist->Topology);
 
 		token = ajStrTokC(NULL, "^");
 		ajStrAssS(&hitlist->Fold, token);
+		if(ajStrMatchC(hitlist->Fold, "."))
+		    ajStrClear(&hitlist->Fold);
 
 		token = ajStrTokC(NULL, "^");
 		ajStrAssS(&hitlist->Superfamily, token);
+		if(ajStrMatchC(hitlist->Superfamily, "."))
+		    ajStrClear(&hitlist->Superfamily);
 
 		token = ajStrTokC(NULL, "^");
 		ajStrAssS(&hitlist->Family, token);
+		if(ajStrMatchC(hitlist->Family, "."))
+		    ajStrClear(&hitlist->Family);
 	    }
 
 	    token = ajStrTokC(NULL, "^");
 	    ajStrAssS(&hit->Model, token);
+	    if(ajStrMatchC(hit->Model, "."))
+		ajStrClear(&hit->Model);
 
 	    token = ajStrTokC(NULL, "^");
 	    ajFmtScanS(token, "%f", &hit->Score);
@@ -1903,6 +1957,7 @@ AjPHitlist embHitlistReadFasta(AjPFile inf)
 	hitlist->N = ajListToArray(tmplist, (void ***)&hitlist->hits);
 	ajStrDel(&subline);
 	ajStrDel(&line);
+	ajStrDel(&type);
 	ajListDel(&tmplist);
 	return hitlist;
     }
@@ -1911,6 +1966,7 @@ AjPHitlist embHitlistReadFasta(AjPFile inf)
     /* Tidy up */
     ajStrDel(&line);
     ajStrDel(&subline);
+    ajStrDel(&type);
     ajListDel(&tmplist);
     
     
@@ -2170,6 +2226,13 @@ AjBool embHitlistWrite(AjPFile outf, const AjPHitlist obj)
     if(!obj)
 	return ajFalse;
 
+
+    if((obj->Type == ajSCOP))  
+	ajFmtPrintF(outf, "TY   SCOP\nXX\n");
+    else if ((obj->Type == ajCATH))
+	ajFmtPrintF(outf, "TY   CATH\nXX\n");
+
+
     if(MAJSTRLEN(obj->Class))
 	ajFmtPrintF(outf,"CL   %S\n",obj->Class);
 
@@ -2279,6 +2342,12 @@ AjBool embHitlistWriteSubset(AjPFile outf,
 
     if(!obj)
 	return ajFalse;
+
+
+    if((obj->Type == ajSCOP))  
+	ajFmtPrintF(outf, "TY   SCOP\nXX\n");
+    else if ((obj->Type == ajCATH))
+	ajFmtPrintF(outf, "TY   CATH\nXX\n");
 
     if(MAJSTRLEN(obj->Class))
 	ajFmtPrintF(outf,"CL   %S\n",obj->Class);
@@ -2406,6 +2475,13 @@ AjBool embHitlistWriteFasta(AjPFile outf, const  AjPHitlist obj)
 
 	ajFmtPrintF(outf, "%d^%d^", obj->hits[x]->Start, obj->hits[x]->End);
 
+	if((obj->Type == ajSCOP))  
+	    ajFmtPrintF(outf, "SCOP^");
+	else if ((obj->Type == ajCATH))
+	    ajFmtPrintF(outf, "CATH^");
+	else
+	    ajFmtPrintF(outf, ".^");
+	
 	if(MAJSTRLEN(obj->hits[x]->Dom))
 	    ajFmtPrintF(outf, "%S^", obj->hits[x]->Dom);
 	else
@@ -2502,6 +2578,13 @@ AjBool embHitlistWriteSubsetFasta(AjPFile outf,
 	    else
 		ajFmtPrintF(outf, ".^");
 	    ajFmtPrintF(outf, "%d^%d^", obj->hits[x]->Start, obj->hits[x]->End);
+
+	    if((obj->Type == ajSCOP))  
+		ajFmtPrintF(outf, "SCOP^");
+	    else if ((obj->Type == ajCATH))
+		ajFmtPrintF(outf, "CATH^");
+	    else
+		ajFmtPrintF(outf, ".^");
 
 	    if(MAJSTRLEN(obj->hits[x]->Dom))
 		ajFmtPrintF(outf, "%S^", obj->hits[x]->Dom);
@@ -2838,6 +2921,8 @@ AjPHitlist embSignatureHitsRead(AjPFile inf)
     AjPStr super  = NULL;
     AjPStr family = NULL;
     AjPStr line   = NULL;
+    AjPStr type   = NULL;
+
     
     if(!inf)
     {
@@ -2854,12 +2939,16 @@ AjPHitlist embSignatureHitsRead(AjPFile inf)
     super  = ajStrNew();
     family = ajStrNew();
     line   = ajStrNew();
-
+    type    = ajStrNew();
     
     
     while(ok && ajFileReadLine(inf,&line))
     {
-	if(ajStrPrefixC(line,"SI"))
+	if(ajStrPrefixC(line,"TY"))
+	{
+	    ajFmtScanS(line, "%*s %S", &type);
+	}
+	else if(ajStrPrefixC(line,"SI"))
 	{
 	    ajFmtScanS(line, "%*s %d", &Sunid_Family);
 	}
@@ -2948,6 +3037,10 @@ AjPHitlist embSignatureHitsRead(AjPFile inf)
     ajStrAssS(&ret->Superfamily, super);
     ajStrAssS(&ret->Family, family);
     ret->Sunid_Family = Sunid_Family;
+    if(ajStrMatchC(type, "SCOP"))
+	(ret)->Type = ajSCOP;
+    else if(ajStrMatchC(type, "CATH"))
+	(ret)->Type = ajCATH;
     
     ret->N=ajListToArray(list, (void ***)&(ret->hits));
     
@@ -2960,6 +3053,7 @@ AjPHitlist embSignatureHitsRead(AjPFile inf)
     ajStrDel(&super);
     ajStrDel(&family);
     ajStrDel(&line);
+    ajStrDel(&type);
     
     return ret;
 }
@@ -3003,6 +3097,10 @@ AjBool embSignatureHitsWrite(AjPFile outf, const AjPSignature sig,
 
 
     /* Print SCOP classification records of signature */
+    if((sig->Type == ajSCOP))  
+	ajFmtPrintF(outf, "TY   SCOP\nXX\n");
+    else if ((sig->Type == ajCATH))
+	ajFmtPrintF(outf, "TY   CATH\nXX\n");
     if(MAJSTRLEN(sig->Class))
 	ajFmtPrintF(outf,"CL   %S",sig->Class);
     if(MAJSTRLEN(sig->Architecture))    
