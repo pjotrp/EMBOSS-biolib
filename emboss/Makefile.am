@@ -15,7 +15,7 @@ endif
 check_PROGRAMS = acdlog ajtest \
 complex corbatest \
 demoalign demofeatures demolist demoreport demosequence demostring demotable \
-entrails histogramtest intconv \
+entrails giep histogramtest intconv \
 patmattest \
 prima primers \
 seqinfo seqretall seqretallfeat seqretset seqretsingle seqrettype \
