@@ -278,7 +278,7 @@ char*      ajStrBool (AjBool boule);
 char       ajStrChar (const AjPStr thys, ajint pos);
 AjBool     ajStrCheck (const AjPStr thys);
 AjBool     ajStrChomp (AjPStr* pthis);
-AjBool     ajStrChompC (AjPStr* pthis, char* delim);
+AjBool     ajStrChompC (AjPStr* pthis, const char* delim);
 AjBool     ajStrChompEnd (AjPStr* pthis);
 AjBool     ajStrChop  (AjPStr* pthis);
 AjBool     ajStrClean (AjPStr* s);
@@ -360,7 +360,7 @@ AjBool     ajStrJoinC (AjPStr* pthis, ajint pos1,
 ajint      ajStrLen(const AjPStr thys);
 
 #define    MAJSTRLEN(str) str->Len
-ajint      ajStrListToArray(AjPStr str, AjPStr **array);
+ajint      ajStrListToArray(const AjPStr str, AjPStr **array);
 AjBool     ajStrMask(AjPStr* str, ajint begin, ajint end, char maskchar);
 AjBool     ajStrMatch       (const AjPStr thys, const AjPStr str);
 AjBool     ajStrMatchC      (const AjPStr thys, const char* txt);
@@ -372,8 +372,8 @@ AjBool     ajStrMatchWild   (const AjPStr thys, const AjPStr wild);
 AjBool     ajStrMatchWildC  (const AjPStr thys, const char* text);
 AjBool     ajStrMatchWildCC (const char* str, const char* text);
 AjBool     ajStrMatchWildCO (const char* str, const AjPStr wild);
-AjBool     ajStrMatchWord (AjPStr str, AjPStr text);
-AjBool     ajStrMatchWordC (AjPStr str, const char* text);
+AjBool     ajStrMatchWord (const AjPStr str, const AjPStr text);
+AjBool     ajStrMatchWordC (const AjPStr str, const char* text);
 AjBool     ajStrMatchWordCC (const char* str, const char* text);
 AjBool     ajStrMod  (AjPStr* pthis);
 AjBool     ajStrModL (AjPStr* pthis, size_t size);
@@ -385,7 +385,7 @@ AjPStr     ajStrNewC (const char *txt);
 AjPStr     ajStrNewCIL (const char *txt, ajint len, size_t size);
 AjPStr     ajStrNewCL (const char *txt, size_t size);
 AjPStr     ajStrNewL (size_t size);
-AjPStr     ajStrNewS (AjPStr str);
+AjPStr     ajStrNewS (const AjPStr str);
 
 ajint      ajStrPos  (const AjPStr thys, ajint ipos);
 ajint      ajStrPosI (const AjPStr thys, ajint imin, ajint ipos);
