@@ -46,7 +46,7 @@ prettyplot prettyseq primer3 primersearch printsextract \
 profit prophecy prophet \
 prosextract pscan psiblasts \
 rebaseextract recoder redata remap restover restrict revseq scope \
-seealso seqmatchall seqret seqretall seqretallfeat seqretset seqretsplit \
+seealso seqmatchall seqnr seqret seqretall seqretallfeat seqretset seqretsplit seqsort\
 showalign showdb showfeat showorf showseq \
 shuffleseq sigcleave siggen sigscan silent splitter scopalign stretcher \
 stssearch supermatcher swissparse syco \
@@ -181,7 +181,9 @@ revseq_SOURCES = revseq.c
 scope_SOURCES = scope.c
 seealso_SOURCES = seealso.c
 seqmatchall_SOURCES = seqmatchall.c
+seqnr_SOURCES = seqnr.c
 seqret_SOURCES = seqret.c
+seqsort_SOURCES = seqsort.c
 seqinfo_SOURCES = seqinfo.c
 seqretall_SOURCES = seqretall.c
 seqretallfeat_SOURCES = seqretallfeat.c
