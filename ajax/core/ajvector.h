@@ -57,7 +57,7 @@ typedef struct AjS3dVector
 /* =================== All functions in alphabetical order ================= */
 /* ========================================================================= */
 
-/* aj3dvector.h () $Date: 2003/10/16 16:40:25 $                    DJC Oct03 */
+/* aj3dvector.h () $Date: 2003/10/21 16:53:52 $                    DJC Oct03 */
 
 float       aj3dVectorAngle(AjP3dVector ajp3dVectorFirst,
 			    AjP3dVector ajp3dVectorSecond);
@@ -77,6 +77,9 @@ float       aj3dVectorDotProduct(AjP3dVector ajp3dVectorFirst,
 				 AjP3dVector ajp3dVectorSecond);
 float       aj3dVectorLength(AjP3dVector ajp3dVectorToBeSized);
 AjP3dVector aj3dVectorNew(void);
+void        aj3dVectorSum(AjP3dVector ajp3dVectorFirst,
+			  AjP3dVector ajp3dVectorSecond,
+			  AjP3dVector ajp3dVectorSum);
 
 #endif
 
