@@ -1,4 +1,4 @@
-SET emboss_tempdata /nfs/WWW/data/EMBOSS/test
+#SET emboss_tempdata name_of_emboss_test_database_directory
 
 # Logfile - set this to a file that any user can append to
 # and EMBOSS applications will automatically write log information
@@ -75,13 +75,13 @@ DB tpir [ type: P dir: $emboss_tempdata/pir
 # Assumed the dbigcg index files are in the same directory
 
 # DB pir [ type: P dir: /data/pir
-#    method: nbrf
+#    method: gcg
 #    file: pir*.seq
 #    format: nbrf
 #    comment: "PIR/NBRF" ]
 
 # DB nbrf [ type: P dir: /data/pir
-#    method: nbrf
+#    method: gcg
 #    file: pir*.seq
 #    format: nbrf
 #    comment: "PIR/NBRF" ]
