@@ -38,12 +38,14 @@ import java.io.*;
 *
 * This can be used to test the private server. It is run from
 * the command line and requires the username, password and a 
-* multiple sequence file as input:
+* sequence file as input:
 *
-* java org/emboss/jemboss/server/TestPrivateServer username passwd ~/pax.msf
+* java org.emboss.jemboss.server.TestPrivateServer username passwd app ~/pax.msf
 *
-* If it connects correctly to the server it will run 'cons',
+* If it connects correctly to the server it will run an emboss application,
 * and return the output.
+*
+* This works with 'cons' and 'seqret'.
 *
 */
 
@@ -51,6 +53,7 @@ public class TestPrivateServer
 {
   private static JembossParams mysettings;
   private static String filename;
+  private static String prog;
 
   public TestPrivateServer()
   {
@@ -95,8 +98,13 @@ public class TestPrivateServer
     }
 
     Hashtable filesToMove = new Hashtable();
-    String embossCommand = "cons ";
-    embossCommand = filesForSoap(filename,embossCommand,"msf",filesToMove);
+    String embossCommand = prog + " ";
+
+    String val = "msf";
+    if(!prog.equals("cons"))
+      val = "sequence";
+
+    embossCommand = filesForSoap(filename,embossCommand,val,filesToMove);
     embossCommand = embossCommand.concat(" -auto");
 
     if(mysettings.getUseAuth() == true)
@@ -212,7 +220,8 @@ public class TestPrivateServer
     mysettings = new JembossParams();
     mysettings.setServiceUserName(args[0]);
     mysettings.setServicePasswd(args[1].toCharArray());
-    filename = args[2];
+    prog     = args[2];
+    filename = args[3];
 
     new TestPrivateServer();
   }
