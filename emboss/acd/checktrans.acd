@@ -8,6 +8,11 @@ appl: checktrans [
 	type: stopprotein 
   ]
 
+  featout: outfile [
+        parameter: Y
+	info: "Feature file for output "
+  ]
+
   int: orfml [
 	req: Y 
 	min:1 
@@ -15,17 +20,15 @@ appl: checktrans [
 	info: "Minimum ORF Length to report"
   ]
 
-  outfile: report [
-	param: Y 
-  ]
-
   seqoutall: outseq [
 	req: Y
 	info: "Sequence file to hold output ORF sequences"
   ]
 
-  featout: featout [
-        parameter: N
-	info: "feature file for output "
-        help: "File for output features"
-        ]
+  outfile: oldreport [
+	opt: Y
+	def: "/dev/null"
+	info: "Old format output report file"
+  ]
+
+
