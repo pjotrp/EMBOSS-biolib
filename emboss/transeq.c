@@ -89,7 +89,7 @@ int main(int argc, char **argv)
         if(first)
         {
             first = ajFalse;
-	    if(ajRangeDefault(regions, ajSeqStr(seq)))
+	    if(ajRangeDefault(regions,seq))
 	        defr = ajTrue;
 	}
 
