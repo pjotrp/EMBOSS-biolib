@@ -141,8 +141,6 @@ int main(int argc, char **argv)
     
     ajGraphxyDisplay(mult,AJTRUE);
 
-    ajGraphxyDel(mult);
-
     ajExit();
     return 0;
 }
