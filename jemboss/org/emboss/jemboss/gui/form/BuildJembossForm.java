@@ -391,9 +391,17 @@ public class BuildJembossForm implements ActionListener
     if( ae.getActionCommand().startsWith("Advanced Option"))
     {
       if(advSectionBox.isVisible())
+      {
         advSectionBox.setVisible(false);
+        p2.setVisible(false);
+        p2.setVisible(true);
+      }
       else
+      {
         advSectionBox.setVisible(true);
+        p2.setVisible(false);
+        p2.setVisible(true);
+      }
     }
     else if ( ae.getActionCommand().startsWith("GO"))
     {
