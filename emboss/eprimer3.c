@@ -865,7 +865,7 @@ static void eprimer3_send_stringC(FILE *stream, const char *tag,
 **
 ** Open a file descriptor as a stream to pipe to primer3_core
 **
-** @param [u] fd [int] File descriptor
+** @param [r] fd [int] File descriptor
 ** @return [FILE*] File stream
 **
 ******************************************************************************/

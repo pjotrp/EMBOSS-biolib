@@ -39,19 +39,22 @@ static void newcpgreport_findbases(AjPStr *substr, ajint begin, ajint len,
 				   float *xypc, AjPStr *bases,
 				   float *obsexpmax, ajint *plstart,
 				   ajint *plend);
-static void newcpgreport_countbases(char *seq, char *bases, ajint window,
+static void newcpgreport_countbases(const char *seq, const char *bases,
+				    ajint window,
 				    ajint *cx, ajint *cy, ajint *cxpy);
-static void newcpgreport_identify(AjPFile outf, float *obsexp, float *xypc,
+static void newcpgreport_identify(AjPFile outf,
+				  const float *obsexp, const float *xypc,
 				  AjBool *thresh, ajint begin, ajint len,
-				  ajint shift, char *bases, char *name,
+				  ajint shift,
+				  const char *bases, const char *name,
 				  ajint minlen, float minobsexp, float minpc,
-				  char *seq);
-static void newcpgreport_reportislands(AjPFile outf, AjBool *thresh,
-				       char *bases, char *name,
+				  const char *seq);
+static void newcpgreport_reportislands(AjPFile outf, const AjBool *thresh,
+				       const char *bases, const char *name,
 				       float minobsexp, float minpc,
 				       ajint minlen, ajint begin,
-				       ajint len, char *seq);
-static void newcpgreport_compisl(AjPFile outf, char *p, ajint begin1,
+				       ajint len, const char *seq);
+static void newcpgreport_compisl(AjPFile outf, const char *p, ajint begin1,
 				 ajint end1);
 
 
@@ -230,8 +233,8 @@ static void newcpgreport_findbases(AjPStr *substr, ajint begin, ajint len,
 **
 ** Undocumented.
 **
-** @param [r] seq [char*] sequence
-** @param [r] bases [char*] two-base to look for e.g. GC
+** @param [r] seq [const char*] sequence
+** @param [r] bases [const char*] two-base to look for e.g. GC
 ** @param [r] window [ajint] window
 ** @param [w] cx [ajint*] amount C
 ** @param [w] cy [ajint*] amount G
@@ -239,7 +242,8 @@ static void newcpgreport_findbases(AjPStr *substr, ajint begin, ajint len,
 ** @@
 ******************************************************************************/
 
-static void newcpgreport_countbases(char *seq, char *bases, ajint window,
+static void newcpgreport_countbases(const char *seq, const char *bases,
+				    ajint window,
 				    ajint *cx, ajint *cy, ajint *cxpy)
 {
     ajint i;
@@ -286,27 +290,31 @@ static void newcpgreport_countbases(char *seq, char *bases, ajint window,
 **    % composition is over 50% and the calculated Obs/Exp ratio is over 0.6
 **    and the conditions hold for a minimum of 200 bases.
 **
-** @param [w] outf [AjPFile] Undocumented
-** @param [r] obsexp [float*] Undocumented
-** @param [?] xypc [float*] Undocumented
-** @param [?] thresh [AjBool*] Undocumented
-** @param [?] begin [ajint] Undocumented
-** @param [?] len [ajint] Undocumented
-** @param [?] shift [ajint] Undocumented
-** @param [?] bases [char*] Undocumented
-** @param [?] name [char*] Undocumented
-** @param [?] minlen [ajint] Undocumented
-** @param [?] minobsexp [float] Undocumented
-** @param [?] minpc [float] Undocumented
-** @param [?] seq [char*] Undocumented
+** The results rae returned as true values in the thresh array.
+**
+** @param [u] outf [AjPFile] Undocumented
+** @param [r] obsexp [const float*] Array of observed/expected values
+** @param [r] xypc [const float*] Array of base percent values
+** @param [w] thresh [AjBool*] Array of threshold flags
+** @param [r] begin [ajint] Undocumented
+** @param [r] len [ajint] Undocumented
+** @param [r] shift [ajint] Undocumented
+** @param [r] bases [const char*] Undocumented
+** @param [r] name [const char*] Undocumented
+** @param [r] minlen [ajint] Undocumented
+** @param [r] minobsexp [float] Undocumented
+** @param [r] minpc [float] Undocumented
+** @param [r] seq [const char*] Undocumented
 ** @@
 ******************************************************************************/
 
-static void newcpgreport_identify(AjPFile outf, float *obsexp, float *xypc,
+static void newcpgreport_identify(AjPFile outf, const float *obsexp,
+				  const float *xypc,
 				  AjBool *thresh, ajint begin, ajint len,
-				  ajint shift, char *bases, char *name,
+				  ajint shift,
+				  const char *bases, const char *name,
 				  ajint minlen, float minobsexp, float minpc,
-				  char *seq)
+				  const char *seq)
 {
     static ajint avwindow = 10;
     float avpc;
@@ -385,25 +393,25 @@ static void newcpgreport_identify(AjPFile outf, float *obsexp, float *xypc,
 **
 ** Undocumented.
 **
-** @param [?] outf [AjPFile] Undocumented
-** @param [?] thresh [AjBool*] Undocumented
-** @param [?] bases [char*] Undocumented
-** @param [?] name [char*] Undocumented
-** @param [?] minobsexp [float] Undocumented
-** @param [?] minpc [float] Undocumented
-** @param [?] minlen [ajint] Undocumented
-** @param [?] begin [ajint] Undocumented
-** @param [?] len [ajint] Undocumented
-** @param [?] seq [char*] Undocumented
+** @param [u] outf [AjPFile] Undocumented
+** @param [r] thresh [const AjBool*] Undocumented
+** @param [r] bases [const char*] Undocumented
+** @param [r] name [const char*] Undocumented
+** @param [r] minobsexp [float] Undocumented
+** @param [r] minpc [float] Undocumented
+** @param [r] minlen [ajint] Undocumented
+** @param [r] begin [ajint] Undocumented
+** @param [r] len [ajint] Undocumented
+** @param [r] seq [const char*] Undocumented
 ** @@
 ******************************************************************************/
 
 
-static void newcpgreport_reportislands(AjPFile outf, AjBool *thresh,
-				       char *bases, char *name,
+static void newcpgreport_reportislands(AjPFile outf,const  AjBool *thresh,
+				       const char *bases, const char *name,
 				       float minobsexp, float minpc,
 				       ajint minlen, ajint begin,
-				       ajint len, char *seq)
+				       ajint len, const char *seq)
 {
     AjBool island;
     ajint startpos = 0;
@@ -483,14 +491,14 @@ static void newcpgreport_reportislands(AjPFile outf, AjBool *thresh,
 **
 ** Undocumented.
 **
-** @param [?] outf [AjPFile] Undocumented
-** @param [?] p [char*] Undocumented
-** @param [?] begin1 [ajint] Undocumented
-** @param [?] end1 [ajint] Undocumented
+** @param [u] outf [AjPFile] Undocumented
+** @param [r] p [const char*] Undocumented
+** @param [r] begin1 [ajint] Undocumented
+** @param [r] end1 [ajint] Undocumented
 ** @@
 ******************************************************************************/
 
-static void newcpgreport_compisl(AjPFile outf, char *p, ajint begin1,
+static void newcpgreport_compisl(AjPFile outf, const char *p, ajint begin1,
 				 ajint end1)
 {
     ajint C  = 0;

@@ -227,7 +227,7 @@ static void equicktandem_print(AjPFile outf, ajint begin)
 **
 ** Saves a result as a feature.
 **
-** @param [r] tab [AjPFeattable] Undocumented
+** @param [u] tab [AjPFeattable] Undocumented
 ** @param [r] begin [ajint] Undocumented
 ** @@
 ******************************************************************************/

@@ -27,7 +27,7 @@
 
 
 static void dottup_drawPlotlines(void **x, void *cl);
-static void dottup_plotMatches(AjPList list);
+static void dottup_plotMatches(const AjPList list);
 static void dottup_stretchplot(AjPGraph graph, const AjPList matchlist,
 			       const AjPSeq seq1, const AjPSeq seq2,
 			       ajint begin1, ajint begin2,
@@ -256,14 +256,14 @@ static void dottup_drawPlotlines(void **x, void *cl)
 **
 ** Undocumented.
 **
-** @param [r] list [AjPList] Undocumented
+** @param [r] list [const AjPList] Undocumented
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void dottup_plotMatches(AjPList list)
+static void dottup_plotMatches(const AjPList list)
 {
-    ajListMap(list,dottup_drawPlotlines, NULL);
+    ajListMapRead(list,dottup_drawPlotlines, NULL);
 
     return;
 }

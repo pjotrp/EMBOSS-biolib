@@ -30,9 +30,9 @@
 
 
 
-static void  charge_addgraph(AjPGraph graph, ajint limit, float *x,
-			     float *y, float ymax, float ymin,
-			     ajint window, char *sname);
+static void  charge_addgraph(AjPGraph graph, ajint limit, const float *x,
+			     const float *y, float ymax, float ymin,
+			     ajint window, const char *sname);
 static AjPFloat charge_read_amino(AjPFile fp);
 
 
@@ -186,20 +186,20 @@ int main(int argc, char **argv)
 **
 ** Undocumented.
 **
-** @param [r] graph [AjPGraph] graph object
+** @param [u] graph [AjPGraph] graph object
 ** @param [r] limit [ajint] range
-** @param [r] x [float*] x co-ords
-** @param [r] y [float*] y co-ords
+** @param [r] x [const float*] x co-ords
+** @param [r] y [const float*] y co-ords
 ** @param [r] ymax [float] max y value
 ** @param [r] ymin [float] max x value
 ** @param [r] window [ajint] window
-** @param [r] sname [char*] sequence name
+** @param [r] sname [const char*] sequence name
 ** @@
 ******************************************************************************/
 
-static void charge_addgraph(AjPGraph graph, ajint limit, float *x,
-			    float *y, float ymax, float ymin,
-			    ajint window, char *sname)
+static void charge_addgraph(AjPGraph graph, ajint limit, const float *x,
+			    const float *y, float ymax, float ymin,
+			    ajint window, const char *sname)
 {
     ajint i;
 

@@ -29,7 +29,7 @@ static void compseq_readexpfreq(AjPTable *exptable, AjPFile infile,
 				 ajint size);
 static void compseq_makebigarray(ajulong no_elements, ajulong **bigarray);
 static double compseq_getexpfreqnuc(const AjPStr dispseq, ajint word,
-				    ajulong *calcfreq_array,
+				    const ajulong *calcfreq_array,
 				    ajulong calcfreq_total);
 static double compseq_getexpfreqprot(const AjPStr dispseq, ajint word,
 				     AjBool ignorebz,
@@ -555,14 +555,14 @@ static void compseq_readexpfreq(AjPTable *exptable, AjPFile infile,
 **
 ** @param [r] dispseq [const AjPStr] sequence of word
 ** @param [r] word [ajint] word length
-** @param [r] calcfreq_array [ajulong *] array of counts of single bases
+** @param [r] calcfreq_array [const ajulong *] array of counts of single bases
 ** @param [r] calcfreq_total [ajulong] number of bases counted
 ** @return [double] Calculated expected frequency of this word
 ** @@
 ******************************************************************************/
 
 static double compseq_getexpfreqnuc(const AjPStr dispseq, ajint word,
-	ajulong *calcfreq_array, ajulong calcfreq_total)
+	const ajulong *calcfreq_array, ajulong calcfreq_total)
 {
     ajint i;
     ajint offset = 0;

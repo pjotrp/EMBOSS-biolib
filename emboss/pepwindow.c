@@ -124,7 +124,7 @@ int main(int argc, char **argv)
 **
 ** Read the NAKAI (AAINDEX) data file
 **
-** @param [r] file [AjPFile] Input file
+** @param [u] file [AjPFile] Input file
 ** @param [w] matrix [float[]] Data values for each amino acid
 ** @return [AjBool] ajTrue on success
 ** @@

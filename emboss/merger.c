@@ -27,14 +27,18 @@
 
 
 static void merger_Merge(AjPAlign align, AjPStr *merged,
-			 char *a, char *b, AjPStr m, AjPStr n, ajint start1,
+			 const char *a, const char *b,
+			 const AjPStr m, const AjPStr n,
+			 ajint start1,
 			 ajint start2, float score, AjBool mark, float **sub,
-			 AjPSeqCvt cvt, char *namea, char *nameb, ajint begina,
+			 const AjPSeqCvt cvt,
+			 const char *namea, const char *nameb, ajint begina,
 			 ajint beginb);
 
-static float merger_quality(char * seq, ajint pos, ajint window);
+static float merger_quality(const char * seq, ajint pos, ajint window);
 
-static AjBool merger_bestquality(char * a, char *b, ajint apos, ajint bpos);
+static AjBool merger_bestquality(const char * a, const char *b,
+				 ajint apos, ajint bpos);
 
 
 
@@ -189,8 +193,8 @@ int main(int argc, char **argv)
 **
 ** @param [w] align [AjPAlign] Alignment object
 ** @param [w] ms [AjPStr *] output merged sequence
-** @param [r] a [char *] complete first sequence
-** @param [r] b [char *] complete second sequence
+** @param [r] a [const char *] complete first sequence
+** @param [r] b [const char *] complete second sequence
 ** @param [r] m [AjPStr] Walk alignment for first sequence
 ** @param [r] n [AjPStr] Walk alignment for second sequence
 ** @param [r] start1 [ajint] start of alignment in first sequence
@@ -198,19 +202,21 @@ int main(int argc, char **argv)
 ** @param [r] score [float] alignment score from AlignScoreX
 ** @param [r] mark [AjBool] mark matches and conservatives
 ** @param [r] sub [float **] substitution matrix
-** @param [r] cvt [AjPSeqCvt] conversion table for matrix
-** @param [r] namea [char *] name of first sequence
-** @param [r] nameb [char *] name of second sequence
+** @param [r] cvt [const AjPSeqCvt] conversion table for matrix
+** @param [r] namea [const char *] name of first sequence
+** @param [r] nameb [const char *] name of second sequence
 ** @param [r] begina [ajint] first sequence offset
 ** @param [r] beginb [ajint] second sequence offset
 **
 ** @return [void]
 ******************************************************************************/
 
-static void merger_Merge(AjPAlign align, AjPStr *ms, char *a,
-			 char *b, AjPStr m, AjPStr n, ajint start1,
+static void merger_Merge(AjPAlign align, AjPStr *ms,
+			 const char *a, const char *b,
+			 const AjPStr m, const AjPStr n, ajint start1,
 			 ajint start2, float score, AjBool mark, float **sub,
-			 AjPSeqCvt cvt, char *namea, char *nameb,
+			 const AjPSeqCvt cvt,
+			 const char *namea, const char *nameb,
 			 ajint begina, ajint beginb)
 {
     ajint apos;
@@ -425,15 +431,16 @@ static void merger_Merge(AjPAlign align, AjPStr *ms, char *a,
 ** Return ajTrue if the first sequence has the best quality
 ** If both sequences have the same quality, pick the first
 **
-** @param [r] a [char*] First sequence
-** @param [r] b [char*] Second sequence
+** @param [r] a [const char*] First sequence
+** @param [r] b [const char*] Second sequence
 ** @param [r] apos [ajint] Position in first sequence
 ** @param [r] bpos [ajint] Position in second sequence
 ** @return [AjBool] ajTrue = first sequence is the best quality at this point
 **
 ******************************************************************************/
 
-static AjBool merger_bestquality(char * a, char *b, ajint apos, ajint bpos)
+static AjBool merger_bestquality(const char * a, const char *b,
+				 ajint apos, ajint bpos)
 {
     float qa;
     float qb;
@@ -484,14 +491,14 @@ static AjBool merger_bestquality(char * a, char *b, ajint apos, ajint bpos)
 ** THIS HEAVILY DISCRIMINATES AGAINST THE IFFY BITS AT THE END OF
 ** SEQUENCE READS
 **
-** @param [r] seq [char*] Sequence
+** @param [r] seq [const char*] Sequence
 ** @param [r] pos [ajint] Position
 ** @param [r] window [ajint] Window size
 ** @return [float] quality of the window
 **
 ******************************************************************************/
 
-static float merger_quality(char * seq, ajint pos, ajint window)
+static float merger_quality(const char * seq, ajint pos, ajint window)
 {
     ajint value = 0;
     ajint i;

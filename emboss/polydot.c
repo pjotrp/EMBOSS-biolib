@@ -32,7 +32,7 @@ static ajint which;
 
 
 static void polydot_drawPlotlines(void **x, void *cl);
-static void polydot_plotMatches(AjPList list);
+static void polydot_plotMatches(const AjPList list);
 
 
 
@@ -263,14 +263,14 @@ static void polydot_drawPlotlines(void **x, void *cl)
 **
 ** Undocumented.
 **
-** @param [?] list [AjPList] Undocumented
+** @param [r] list [const AjPList] Undocumented
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void polydot_plotMatches(AjPList list)
+static void polydot_plotMatches(const AjPList list)
 {
-    ajListMap(list,polydot_drawPlotlines, NULL);
+    ajListMapRead(list,polydot_drawPlotlines, NULL);
 
     return;
 }

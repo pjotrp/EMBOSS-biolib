@@ -25,7 +25,8 @@
 
 
 
-static void megamerger_Merge(AjPList matchlist, AjPSeq seq1, AjPSeq seq2,
+static void megamerger_Merge(const AjPList matchlist,
+			     const AjPSeq seq1, const AjPSeq seq2,
 			     AjPSeqout seqout, AjPFile outfile, AjBool prefer);
 
 
@@ -98,10 +99,10 @@ int main(int argc, char **argv)
 **
 ** Marge and write a report on the merge of the two sequences.
 **
-** @param [r] matchlist [AjPList] List of minimal non-overlapping matches
-** @param [r] seq1 [AjPSeq] Sequence to be merged.
-** @param [r] seq2 [AjPSeq] Sequence to be merged.
-** @param [r] seqout [AjPSeqout] Output merged sequence
+** @param [r] matchlist [const AjPList] List of minimal non-overlapping matches
+** @param [r] seq1 [const AjPSeq] Sequence to be merged.
+** @param [r] seq2 [const AjPSeq] Sequence to be merged.
+** @param [w] seqout [AjPSeqout] Output merged sequence
 ** @param [u] outfile [AjPFile] Output file containing report.
 ** @param [r] prefer [AjBool] If TRUE, use the first sequence when there
 **                            is a mismatch
@@ -109,7 +110,8 @@ int main(int argc, char **argv)
 ** @@
 ******************************************************************************/
 
-static void megamerger_Merge(AjPList matchlist, AjPSeq seq1, AjPSeq seq2,
+static void megamerger_Merge(const AjPList matchlist,
+			     const AjPSeq seq1,const  AjPSeq seq2,
 			     AjPSeqout seqout, AjPFile outfile, AjBool prefer)
 {
     AjIList iter = NULL;       		/* match list iterator */
@@ -123,7 +125,7 @@ static void megamerger_Merge(AjPList matchlist, AjPSeq seq1, AjPSeq seq2,
     ajint mid1;
     ajint mid2;			/* middle of a mismatch region */
     AjPStr tmp;			/* holds sequence string while uppercasing */
-
+    AjPSeq seq = NULL;
 
     tmp    = ajStrNew();
     seqstr = ajStrNew();
@@ -339,9 +341,11 @@ static void megamerger_Merge(AjPList matchlist, AjPSeq seq1, AjPSeq seq2,
     }
 
     /* write out sequence at end */
-    ajSeqReplace(seq1, seqstr);
-    ajSeqWrite(seqout, seq1);
+    seq = ajSeqNewS(seq1);
+    ajSeqReplace(seq, seqstr);
+    ajSeqWrite(seqout, seq);
 
+    ajSeqDel(&seq);
     ajStrDel(&tmp);
     ajStrDel(&seqstr);
     ajListIterFree(&iter);

@@ -26,10 +26,11 @@
 
 
 
-static void plotorf_norfs(char *seq, char *rev, ajint n, float **x, float **y,
+static void plotorf_norfs(const char *seq, const char *rev,
+			  ajint n, float **x, float **y,
 			  AjPInt *cnt, ajint beg, AjPStr *starts,
 			  ajint nstarts, AjPStr *stops, ajint nstops);
-static AjBool plotorf_isin(char *p, AjPStr *str, ajint n);
+static AjBool plotorf_isin(const char *p, AjPStr *str, ajint n);
 
 
 
@@ -175,21 +176,22 @@ int main(int argc, char **argv)
 **
 ** Undocumented.
 **
-** @param [r] seq [char*] nucleic sequence
-** @param [r] rev [char*] reverse sequence
+** @param [r] seq [const char*] nucleic sequence
+** @param [r] rev [const char*] reverse sequence
 ** @param [r] n [ajint] length
 ** @param [w] x [float**] xpos
 ** @param [w] y [float**] ypos
 ** @param [w] cnt [AjPInt*] orf count
 ** @param [r] beg [ajint] sequence strat
-** @param [w] starts [AjPStr*] start posns
+** @param [r] starts [AjPStr*] start posns
 ** @param [r] nstarts [ajint] number of starts
-** @param [w] stops [AjPStr*] stop posns
+** @param [r] stops [AjPStr*] stop posns
 ** @param [r] nstops [ajint] number of stops
 ** @@
 ******************************************************************************/
 
-static void plotorf_norfs(char *seq, char *rev, ajint n, float **x, float **y,
+static void plotorf_norfs(const char *seq, const char *rev,
+			  ajint n, float **x, float **y,
 			  AjPInt *cnt, ajint beg, AjPStr *starts,
 			  ajint nstarts, AjPStr *stops, ajint nstops)
 {
@@ -198,7 +200,7 @@ static void plotorf_norfs(char *seq, char *rev, ajint n, float **x, float **y,
     ajint count;
     AjBool inframe;
     ajint po;
-    char *p;
+    const char *p;
 
 
 
@@ -301,14 +303,14 @@ static void plotorf_norfs(char *seq, char *rev, ajint n, float **x, float **y,
 **
 ** True if codon at p occurs in string str
 **
-** @param [r] p [char*] codon
+** @param [r] p [const char*] codon
 ** @param [r] str [AjPStr*] sequence
 ** @param [r] n [ajint] str length
 ** @return [AjBool] true if found
 ** @@
 ******************************************************************************/
 
-static AjBool plotorf_isin(char *p, AjPStr *str, ajint n)
+static AjBool plotorf_isin(const char *p, AjPStr *str, ajint n)
 {
     ajint i;
     AjBool ret;

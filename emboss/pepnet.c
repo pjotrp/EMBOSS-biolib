@@ -27,8 +27,8 @@
 
 
 
-static void pepnet_plotresidue(char c, float x, float y, char *squares,
-			       char *circles, char *diamonds);
+static void pepnet_plotresidue(char c, float x, float y, const char *squares,
+			       const char *circles, const char *diamonds);
 static void pepnet_drawocta(float x, float y, float size);
 
 
@@ -246,14 +246,14 @@ static void pepnet_drawocta(float x, float y, float size)
 ** @param [r] c [char] char to plot
 ** @param [r] x [float] x coordinate
 ** @param [r] y [float] y coordinate
-** @param [r] squares [char*] residues for squares
-** @param [r] octags [char*] residues for octagons
-** @param [r] diamonds [char*] residues for diamonds
+** @param [r] squares [const char*] residues for squares
+** @param [r] octags [const char*] residues for octagons
+** @param [r] diamonds [const char*] residues for diamonds
 ** @@
 ******************************************************************************/
 
-static void pepnet_plotresidue(char c, float x, float y, char *squares,
-			       char *octags, char *diamonds)
+static void pepnet_plotresidue(char c, float x, float y, const char *squares,
+			       const char *octags, const char *diamonds)
 {
     static char cs[2];
 

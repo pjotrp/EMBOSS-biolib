@@ -108,7 +108,8 @@ static DbiflatOParser parser[] =
 
 
 static EmbPEntry dbiflat_NextFlatEntry(AjPFile libr, ajint ifile,
-				       AjPStr idformat, AjBool systemsort,
+				       const AjPStr idformat,
+				       AjBool systemsort,
 				       AjPStr* fields, ajint* maxFieldLen,
 				       ajint* maxidlen,
 				       AjPFile elistfile, AjPFile* alistfile);
@@ -327,9 +328,9 @@ int main(int argc, char **argv)
 **
 ** @param [u] libr [AjPFile] Database file
 ** @param [r] ifile [ajint] File number.
-** @param [r] idformat [AjPStr] Format to be used
+** @param [r] idformat [const AjPStr] Format to be used
 ** @param [r] systemsort [AjBool] If ajTrue use system sort, else internal sort
-** @param [r] fields [AjPStr*] Fields to be indexed
+** @param [u] fields [AjPStr*] Fields to be indexed
 ** @param [w] maxFieldLen [ajint*] Maximum token length for each field
 ** @param [w] maxidlen [ajint*] Maximum entry ID length
 ** @param [u] elistfile [AjPFile] entry file
@@ -339,7 +340,8 @@ int main(int argc, char **argv)
 ******************************************************************************/
 
 static EmbPEntry dbiflat_NextFlatEntry(AjPFile libr, ajint ifile,
-				       AjPStr idformat, AjBool systemsort,
+				       const AjPStr idformat,
+				       AjBool systemsort,
 				       AjPStr* fields, ajint* maxFieldLen,
 				       ajint* maxidlen,
 				       AjPFile elistfile, AjPFile* alistfile)
