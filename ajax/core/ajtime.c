@@ -55,6 +55,8 @@ static TimeOFormat timeFormat[] =  /* formats for strftime */
     {"GFF", "%Y-%m-%d"},
     {"yyyy-mm-dd", "%Y-%m-%d"},
     {"dd Mon yyyy", "%d %b %Y"},
+    {"day", "%d-%b-%Y"},
+    {"daytime", "%d-%b-%Y %H:%M"},
     {"log", "%a %b %d %H:%M:%S %Y"},
     { NULL, NULL}
 };
