@@ -104,7 +104,7 @@ EmbPentry embDbiEntryNew (void) {
 ** @@ 
 ******************************************************************************/
 
-AjPList embDbiFileList (AjPStr dir, AjPStr wildfile) {
+AjPList embDbiFileList (AjPStr dir, AjPStr wildfile, AjBool trim) {
 
   AjPList retlist=NULL;
     
@@ -153,9 +153,11 @@ AjPList embDbiFileList (AjPStr dir, AjPStr wildfile) {
     if (!ajStrMatchWildCO(de->d_name, wildfile)) continue;
     (void) ajStrAssC(&s,de->d_name);
     p=q=ajStrStr(s);
-    p=strrchr(p,(int)'.');
-    if(p)
+    if (trim) {
+      p=strrchr(p,(int)'.');
+      if(p)
 	*p='\0';
+    }
     s2 = ajStrNewC(q);
     
     ll=ajListLength(l);

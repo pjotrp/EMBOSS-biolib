@@ -311,7 +311,7 @@ int main(int argc, char **argv)
   idlist = ajListNew ();
   aclist = ajListNew ();
 
-  inlist = embDbiFileList (directory, filename);
+  inlist = embDbiFileList (directory, filename, ajTrue);
   ajListSort (inlist, ajStrCmp);
   nfiles = ajListToArray(inlist, &files);
 
