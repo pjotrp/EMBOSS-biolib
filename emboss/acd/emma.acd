@@ -18,18 +18,6 @@ section: input [
     type: "gapany"
   ]
 
-endsection: input
-
-section: additional [
-  information: "Additional section"
-  type: "page"
-]
-
-  section: dendsection [
-    information: "Dendrogram options"
-    type: "frame"
-  ]
-
     toggle: onlydend  [
       additional: "Y"
       default: "N"
@@ -50,7 +38,12 @@ section: additional [
       knowntype: "dendrogram"
     ]
 
-  endsection: dendsection
+endsection: input
+
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
 
   section: slowalignsection [
     information: "Slow align options"
@@ -101,7 +94,7 @@ section: additional [
   ]
 
     list: pwmatrix  [
-      additional: "@($(acdprotein)?$(slow):False)"
+      additional: "@($(acdprotein) & $(slow))"
       default: "b"
       minimum: "1"
       maximum: "1"
@@ -140,7 +133,7 @@ section: additional [
     ]
 
     list: pwdnamatrix  [
-      additional: "@($(acdprotein)?False:$(slow))"
+      additional: "@(!$(acdprotein) & $(slow))"
       default: "i"
       minimum: "1"
       maximum: "1"
