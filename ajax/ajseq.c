@@ -1024,7 +1024,10 @@ AjPStr ajSeqsetGetName (AjPSeqset thys)
 {
     ajDebug ("ajSeqsetGetName '%S'\n", thys->Name);
 
-    return thys->Name;
+    if (ajStrLen(thys->Name))
+      return thys->Name;
+
+    return thys->Usa;
 }
 
 /* @func ajSeqsetGetSeq *****************************************************
