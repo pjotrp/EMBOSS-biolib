@@ -461,6 +461,7 @@ static void acdAmbigApp (AjPStr* pambiglist, AjPStr str);
 static void acdAmbigAppC (AjPStr* pambiglist, char* txt);
 static AjBool acdDataFilename (AjPStr* datafname, AjPStr name, AjPStr ext);
 static AjBool acdInFilename (AjPStr* infname);
+static AjBool acdOutDirectory (AjPStr* outdir);
 static AjBool acdOutFilename (AjPStr* outfname, AjPStr name, AjPStr ext);
 static AjBool acdInFileSave (AjPStr infname);
 static AjPStr acdStrDiff (AjPStr str1, AjPStr str2);
@@ -780,21 +781,25 @@ AcdOAttr acdAttrFloat[] = {
 
 AcdOAttr acdAttrGraph[] = {
   {"standardtype", VT_STR, "(Not used by ACD) Standard named graph type"},
-  {"gtitle",VT_STR, "Graph title default:''"},
-  {"gsubtitle",VT_STR, "Graph subtitle default:''"},
-  {"gxtitle",VT_STR, "Graph x-axis title default:''"},
-  {"gytitle",VT_STR, "Graph y-axis title default:''"},
-  {"goutfile",VT_STR, "Graph output file default:progname.device"},
+  /* qualifiers
+//  {"gtitle",VT_STR, "Graph title default:''"},
+//  {"gsubtitle",VT_STR, "Graph subtitle default:''"},
+//  {"gxtitle",VT_STR, "Graph x-axis title default:''"},
+//  {"gytitle",VT_STR, "Graph y-axis title default:''"},
+//  {"goutfile",VT_STR, "Graph output file default:progname.device"},
+ */
   {NULL, VT_NULL, NULL}
 };
 
 AcdOAttr acdAttrGraphxy[] = {
   {"standardtype", VT_STR, "(Not used by ACD) Standard named graph type"},
-  {"gtitle",VT_STR, "Graph title default:''"},
-  {"gsubtitle",VT_STR, "Graph subtitle default:''"},
-  {"gxtitle",VT_STR, "Graph x-axis title default:''"},
-  {"gytitle",VT_STR, "Graph y-axis title default:''"},
-  {"goutfile",VT_STR, "Graph output file default:progname.device"},
+  /* qualifiers
+//  {"gtitle",VT_STR, "Graph title default:''"},
+//  {"gsubtitle",VT_STR, "Graph subtitle default:''"},
+//  {"gxtitle",VT_STR, "Graph x-axis title default:''"},
+//  {"gytitle",VT_STR, "Graph y-axis title default:''"},
+//  {"goutfile",VT_STR, "Graph output file default:progname.device"},
+*/
   {"multiple", VT_INT, "Number of graphs default:1"},
   {NULL, VT_NULL, NULL}
 };
@@ -916,6 +921,7 @@ AcdOAttr acdAttrSeqout[] = {
   {"name", VT_STR, "Output base name (-osname preferred)"},
   {"extension", VT_STR, "Output extension (-osextension preferred)"},
   {"features", VT_BOOL, "Write features if any default:N"},
+  {"type", VT_STR, "Output sequence type (protein, gapprotein, etc.)"},
   {NULL, VT_NULL, NULL}
 };
 
@@ -923,6 +929,7 @@ AcdOAttr acdAttrSeqoutall[] = {
   {"name", VT_STR, "Output base name (-osname preferred)"},
   {"extension", VT_STR, "Output extension (-osextension preferred)"},
   {"features", VT_BOOL, "Writee features if any default:N"},
+  {"type", VT_STR, "Output sequence type (protein, gapprotein, etc.)"},
   {NULL, VT_NULL, NULL}
 };
 
@@ -930,6 +937,7 @@ AcdOAttr acdAttrSeqoutset[] = {
   {"name", VT_STR, "Output base name (-osname preferred)"},
   {"extension", VT_STR, "Output extension (-osextension preferred)"},
   {"features", VT_BOOL, "Write features if any default:N"},
+  {"type", VT_STR, "Output sequence type (protein, gapprotein, etc.)"},
   {NULL, VT_NULL, NULL}
 };
 
@@ -1084,6 +1092,7 @@ AcdOQual acdQualAlign[] =
   {"aformat",    "",  "string",  "Alignment format"},
   {"aopenfile",  "",  "string",  "Alignment file name"},
   {"aextension", "",  "string",  "File name extension"},
+  {"adirectory", "",  "string",  "Output directory"},
   {"aname",      "",  "string",  "Base file name"},
   {"awidth",     "0", "integer", "Alignment width"},
   {"aaccshow",   "N", "boolean", "Show accession number in the header"},
@@ -1109,8 +1118,15 @@ AcdOQual acdQualFeatout[] =
   {"offormat",   "",  "string",  "Output feature format"},
   {"ofopenfile", "",  "string",  "Features file name"},
   {"ofextension","",  "string",  "File name extension"},
+  {"ofdirectory","",  "string",  "Output directory"},
   {"ofname",     "",  "string",  "Base file name"},
   {"ofsingle",   "N", "boolean", "Separate file for each entry"},
+  {NULL, NULL, NULL, NULL}
+};
+
+AcdOQual acdQualOutfile[] =
+{
+  {"odirectory","",  "string",  "Output directory"},
   {NULL, NULL, NULL, NULL}
 };
 
@@ -1119,6 +1135,7 @@ AcdOQual acdQualReport[] =
   {"rformat",    "",  "string",  "Report format"},
   {"rname",      "",  "string",  "Base file name"},
   {"rextension", "",  "string",  "File name extension"},
+  {"rdirectory", "",  "string",  "Output directory"},
   {"raccshow",   "N", "boolean", "Show accession number in the report"},
   {"rdesshow",   "N", "boolean", "Show description in the report"},
   {"rusashow",   "N", "boolean", "Show the full USA in the report"},
@@ -1190,11 +1207,13 @@ AcdOQual acdQualSeqout[] =
   {"osformat",   "",  "string",  "Output seq format"},
   {"osextension","",  "string",  "File name extension"},
   {"osname",     "",  "string",  "Base file name"},
+  {"osdirectory","",  "string",  "Output directory"},
   {"osdbname",   "",  "string",  "Database name to add"},
   {"ossingle",   "N", "boolean", "Separate file for each entry"},
   {"oufo",       "",  "string",  "UFO features"},
   {"offormat",   "",  "string",  "Features format"},
   {"ofname",     "",  "string",  "Features file name"},
+  {"ofdirectory","",  "string",  "Output directory"},
   {NULL, NULL, NULL, NULL}
 };
 
@@ -1203,11 +1222,13 @@ AcdOQual acdQualSeqoutset[] =
   {"osformat",   "",  "string",  "Output seq format"},
   {"osextension","",  "string",  "File name extension"},
   {"osname",     "",  "string",  "Base file name"},
+  {"osdirectory","",  "string",  "Output directory"},
   {"osdbname",   "",  "string",  "Database name to add"},
   {"ossingle",   "N", "boolean", "Separate file for each entry"},
   {"oufo",       "",  "string",  "UFO features"},
   {"offormat",   "",  "string",  "Features format"},
   {"ofname",     "",  "string",  "Features file name"},
+  {"ofdirectory","",  "string",  "Output directory"},
   {NULL, NULL, NULL, NULL}
 };
 
@@ -1216,11 +1237,13 @@ AcdOQual acdQualSeqoutall[] =
   {"osformat",   "",  "string",  "Output seq format"},
   {"osextension","",  "string",  "File name extension"},
   {"osname",     "",  "string",  "Base file name"},
+  {"osdirectory","",  "string",  "Output directory"},
   {"osdbname",   "",  "string",  "Database name to add"},
   {"ossingle",   "N", "boolean", "Separate file for each entry"},
   {"oufo",       "",  "string",  "UFO features"},
   {"offormat",   "",  "string",  "Features format"},
   {"ofname",     "",  "string",  "Features file name"},
+  {"ofdirectory","",  "string",  "Output directory"},
   {NULL, NULL, NULL, NULL}
 };
 
@@ -1236,6 +1259,7 @@ AcdOQual acdQualGraph[] =
   {"grtitle",   "",  "string",  "Graph right axis title"},
   */
   {"goutfile",  "",  "string",  "Output file for non interactive displays"},
+  {"gdirectory","",  "string",  "Output directory"},
   {NULL, NULL, NULL, NULL}
 };
 
@@ -1252,6 +1276,7 @@ AcdOQual acdQualGraphxy[] =
   {"gsets",     "0", "integer", "Number of sets"},
   */
   {"goutfile",  "",  "string",  "Output file for non interactive displays"},
+  {"gdirectory","",  "string",  "Output directory"},
   {NULL, NULL, NULL, NULL}
 };
 
@@ -1328,7 +1353,7 @@ AcdOType acdType[] =
    acdAttrMatrixf,   acdSetMatrixf,   NULL,
    "Comparison matrix file in EMBOSS data path" },
   {"outfile",     "output",           acdSecOutput,
-   acdAttrOutfile,   acdSetOutfile,   NULL,
+   acdAttrOutfile,   acdSetOutfile,   acdQualOutfile,
    "Output file" },
   {"range",	  "simple",           NULL,
    acdAttrRange,     acdSetRange,     NULL,
@@ -1712,7 +1737,7 @@ static void acdParse (AjPStr text)
     static AjPStr acdtoken = NULL;
     AjPStrTok tokenhandle;
     char white[] = " \t\n\r";
-    char whiteplus[] = " \t\n\r:=";
+    char whiteplus[] = " \t\n\r:";
     AjBool done=ajFalse;
     AjPStr secname = NULL;
     ajint* secprompt = NULL;
@@ -1747,7 +1772,7 @@ static void acdParse (AjPStr text)
 	    (void) ajStrToken (&acdAppl, &tokenhandle, white);
 	    /* then the appl name */
 	    (void) ajStrToLower (&acdAppl);
-	    /* may be [token:= */
+	    /* may be [token: */
 	    (void) ajStrToken (&acdtmp, &tokenhandle, whiteplus);
 
 	    (void) ajStrToLower (&acdtmp);
@@ -1995,8 +2020,12 @@ static void acdNoComment (AjPStr* text)
 ** Note that ajStrTok has a stored internal copy of the text string
 ** which is set up at the start of acdParse and is being used here.
 **
-** Quotes can be single or double, or any kind of parentheses,
+** Quotes can be single or double.
+**
+** The early versions also allowed any kind of parentheses,
 ** depending on the first character of the next token examined.
+** This is now obsolete, to simplify the syntax and to allow
+** future reuse of parentheses.
 **
 ** @param [u] tokenhandle [AjPStrTok*] Current parsing handle for input text
 ** @param [r] delim [char*] Delimiter string
@@ -2014,8 +2043,8 @@ static AjPStr acdParseValue (AjPStrTok* tokenhandle, char* delim)
     char *cq;
     AjBool done = ajFalse;
 
-    char *quotes = "\"'{(<";
-    char *endquotes = "\"'})>";
+    char *quotes = "\"'";
+    char *endquotes = "\"'";
 
     if(!ajStrToken (&strp, tokenhandle, delim))
 	return NULL;
@@ -2065,8 +2094,12 @@ static AjPStr acdParseValue (AjPStrTok* tokenhandle, char* delim)
 ** Note that ajStrTok has a stored internal copy of the text string
 ** which is set up at the start of acdParse and is being used here.
 **
-** Quotes can be single or double, or any kind of parentheses,
+** Quotes can be single or double.
+**
+** The early versions also allowed any kind of parentheses,
 ** depending on the first character of the next token examined.
+** This is now obsolete, to simplify the syntax and to allow
+** future reuse of parentheses.
 **
 ** @param [u] tokenhandle [AjPStrTok*] Current parsing handle for input text
 ** @param [r] delim [char*] Delimiter string
@@ -2085,8 +2118,8 @@ static AjPStr acdParseValueRB (AjPStrTok* tokenhandle, char* delim)
     AjBool done = ajFalse;
     AjBool rightb = ajFalse;
 
-    char *quotes = "\"'{(<";
-    char *endquotes = "\"'})>";
+    char *quotes = "\"'";
+    char *endquotes = "\"'";
 
     if (!ajStrToken (&strp, tokenhandle, delim))
 	return NULL;
@@ -3515,7 +3548,9 @@ static void acdSetAlign (AcdPAcd thys)
 
     static AjPStr name = NULL;
     static AjPStr ext = NULL;
+    static AjPStr dir = NULL;
     static AjPStr outfname = NULL;
+    static AjPStr fullfname = NULL;
 
     required = acdIsRequired(thys);
     val = ajAlignNew();
@@ -3528,12 +3563,14 @@ static void acdSetAlign (AcdPAcd thys)
     (void) acdGetValueAssoc (thys, "aformat", &val->Formatstr);
     (void) acdGetValueAssoc (thys, "aextension", &ext);
     (void) acdGetValueAssoc (thys, "aname", &name);
+    (void) acdGetValueAssoc (thys, "adirectory", &dir);
     (void) acdQualToInt (thys, "awidth", 50, &val->Width, &defreply);
     (void) acdQualToBool (thys, "aglobal", ajFalse, &val->Global, &defreply);
     (void) acdQualToBool (thys, "aaccshow", ajFalse, &val->Showacc, &defreply);
     (void) acdQualToBool (thys, "adesshow", ajFalse, &val->Showdes, &defreply);
     (void) acdQualToBool (thys, "ausashow", ajFalse, &val->Showusa, &defreply);
 
+    (void) acdOutDirectory (&dir);
     (void) acdOutFilename (&outfname, name, ext);
     (void) acdReplyInit (thys, ajStrStr(outfname), &defreply);
     acdPromptAlign(thys);
@@ -3547,16 +3584,18 @@ static void acdSetAlign (AcdPAcd thys)
 	if (required)
 	    (void) acdUserGet (thys, &reply);
 
-	ok = ajAlignOpen (val, reply);
+	ajStrAssS(&fullfname, reply);
+	ajFileSetDir (&fullfname, dir);
+	ok = ajAlignOpen (val, fullfname);
 	if (!ok)
-	    acdBadVal (thys, required,
-		       "Unable to open alignment file '%S'", reply);
+	  acdBadVal (thys, required,
+		     "Unable to open alignment file '%S'", fullfname);
     }
     if (!ok)
 	acdBadRetry (thys);
 
     thys->Value = val;
-    (void) ajStrAssS (&thys->ValStr, reply);
+    (void) ajStrAssS (&thys->ValStr, fullfname);
 
     return;
 }
@@ -4085,7 +4124,8 @@ static void acdSetDatafile (AcdPAcd thys)
 	    if (!val)
 	    {
 		acdBadVal (thys, required,
-			   "Unable to open data file '%S' for input", reply);
+			   "Unable to open data file '%S' for input",
+			   reply);
 		ok = ajFalse;
 	    }
 	}
@@ -4178,7 +4218,8 @@ static void acdSetDirectory (AcdPAcd thys)
 		ok = ajFileDir(&reply);
 	    if (!ok)
 		acdBadVal (thys, required,
-			   "Unable to open file '%S' for input", reply);
+			   "Unable to open file '%S' for input",
+			   reply);
 	}
 	else
 	{
@@ -4275,7 +4316,8 @@ static void acdSetDirlist (AcdPAcd thys)
 		ok = ajFileDir(&reply);
 	    if (!ok)
 		acdBadVal (thys, required,
-			   "Unable to open file '%S' for input", reply);
+			   "Unable to open file '%S' for input",
+			   reply);
 	}
 
 	else
@@ -4543,14 +4585,17 @@ static void acdSetFeatout (AcdPAcd thys)
       ajStrAssS (&ext, val->Formatstr);
     else
       (void) acdAttrResolve (thys, "extension", &ext);
+    if (!ajStrLen(ext))
+      (void) ajFeatOutFormatDefault(&ext);
 
+    (void) acdOutDirectory (&val->Directory);
     (void) acdOutFilename (&outfname, name, ext);
     (void) acdReplyInit (thys, ajStrStr(outfname), &defreply);
     acdPromptFeatout (thys);
 
     for (itry=acdPromptTry; itry && !ok; itry--)
     {
-	ok = ajTrue;			/* accept the default if nothing changes */
+	ok = ajTrue;	   /* accept the default if nothing changes */
 
 	(void) ajStrAssS (&reply, defreply);
 
@@ -4558,10 +4603,20 @@ static void acdSetFeatout (AcdPAcd thys)
 	    (void) acdUserGet (thys, &reply);
 
 	(void) acdGetValueAssoc (thys, "ofopenfile", &val->Filename);
+	(void) acdGetValueAssoc (thys, "ofdirectory", &val->Directory);
+	(void) acdOutDirectory (&val->Directory);
+
 	ok = ajFeattabOutOpen (val, reply);
-	if (!ok)
+	if (!ok) {
+	  if (ajStrLen(val->Directory))
 	    acdBadVal (thys, required,
-		       "Unable to open features output '%S'", reply);
+		       "Unable to open features output '%S%S'",
+		       val->Directory, reply);
+	  else
+	    acdBadVal (thys, required,
+		       "Unable to open features output '%S'",
+		       reply);
+	}
     }
     if (!ok)
 	acdBadRetry (thys);
@@ -4850,25 +4905,29 @@ static void acdSetGraph (AcdPAcd thys)
     thys->Value = val;
     (void) ajStrAssC (&thys->ValStr, "graph definition");
 
-    if (!acdGetValueAssoc (thys, "gtitle", &title))
-	(void) acdAttrResolve (thys, "gtitle", &title);
-    (void) call("ajGraphxyTitle",val,title);
+    if (acdGetValueAssoc (thys, "gtitle", &title))
+      (void) call("ajGraphxyTitle",val,title);
 
-    if (!acdGetValueAssoc (thys, "gsubtitle", &title))
-	(void) acdAttrResolve (thys, "gsubtitle", &title);
-    (void) call("ajGraphxySubtitle",val,title);
+    if (acdGetValueAssoc (thys, "gsubtitle", &title))
+      (void) call("ajGraphxySubtitle",val,title);
 
-    if (!acdGetValueAssoc (thys, "gxtitle", &title))
-	(void) acdAttrResolve (thys, "gxtitle", &title);
-    (void) call("ajGraphxyXtitle",val,title);
+    if (acdGetValueAssoc (thys, "gxtitle", &title))
+      (void) call("ajGraphxyXtitle",val,title);
 
-    if (!acdGetValueAssoc (thys, "gytitle", &title))
-	(void) acdAttrResolve (thys, "gytitle", &title);
-    (void) call("ajGraphxyYtitle",val,title);
+    if (acdGetValueAssoc (thys, "gytitle", &title))
+      (void) call("ajGraphxyYtitle",val,title);
 
-    if (!acdGetValueAssoc (thys, "goutfile", &title))
-	(void) acdAttrResolve (thys, "goutfile", &title);
-    (void) call("ajGraphxySetOutputFile",val,title);
+    if (acdGetValueAssoc (thys, "goutfile", &title))
+      (void) call("ajGraphxySetOutputFile",val,title);
+
+    if (acdGetValueAssoc (thys, "gdirectory", &title))
+      (void) call("ajGraphxySetOutputDir",val,title);
+    else {
+      ajStrAssC(&title, "");
+      if (acdOutDirectory(&title))
+	(void) call("ajGraphxySetOutputDir",val,title);
+    }
+
 
     (void) call("ajGraphTrace",val);
 
@@ -4963,25 +5022,28 @@ static void acdSetGraphxy (AcdPAcd thys)
     thys->Value = val;
     (void) ajStrAssC (&thys->ValStr, "XY graph definition");
 
-    if (!acdGetValueAssoc (thys, "gtitle", &title))
-	(void) acdAttrResolve (thys, "gtitle", &title);
-    (void) call("ajGraphxyTitle",val,title);
+    if (acdGetValueAssoc (thys, "gtitle", &title))
+      (void) call("ajGraphxyTitle",val,title);
 
-    if (!acdGetValueAssoc (thys, "gsubtitle", &title))
-	(void) acdAttrResolve (thys, "gsubtitle", &title);
-    (void) call("ajGraphxySubtitle",val,title);
+    if (acdGetValueAssoc (thys, "gsubtitle", &title))
+      (void) call("ajGraphxySubtitle",val,title);
 
-    if (!acdGetValueAssoc (thys, "gxtitle", &title))
-	(void) acdAttrResolve (thys, "gxtitle", &title);
-    (void) call("ajGraphxyXtitle",val,title);
+    if (acdGetValueAssoc (thys, "gxtitle", &title))
+      (void) call("ajGraphxyXtitle",val,title);
 
-    if (!acdGetValueAssoc (thys, "gytitle", &title))
-	(void) acdAttrResolve (thys, "gytitle", &title);
-    (void) call("ajGraphxyYtitle",val,title);
+    if (acdGetValueAssoc (thys, "gytitle", &title))
+      (void) call("ajGraphxyYtitle",val,title);
 
-    if (!acdGetValueAssoc (thys, "goutfile", &title))
-	(void) acdAttrResolve (thys, "goutfile", &title);
-    (void) call("ajGraphxySetOutputFile",val,title);
+    if (acdGetValueAssoc (thys, "goutfile", &title))
+      (void) call("ajGraphxySetOutputFile",val,title);
+
+    if (acdGetValueAssoc (thys, "gdirectory", &title))
+      (void) call("ajGraphxySetOutputDir",val,title);
+    else {
+      ajStrAssC(&title, "");
+      if (acdOutDirectory(&title))
+	(void) call("ajGraphxySetOutputDir",val,title);
+    }
 
     (void) call("ajGraphTrace",val);
 
@@ -5179,7 +5241,8 @@ static void acdSetInfile (AcdPAcd thys)
 	    if (!val)
 	    {
 		acdBadVal (thys, required,
-			   "Unable to open file '%S' for input", reply);
+			   "Unable to open file '%S' for input",
+			   reply);
 		ok = ajFalse;
 	    }
 	}
@@ -5187,7 +5250,8 @@ static void acdSetInfile (AcdPAcd thys)
 	{
 	    if (!nullok)
 	    {
-		acdBadVal (thys, required, "Input file is required");
+		acdBadVal (thys, required,
+			   "Input file is required");
 		ok = ajFalse;
 	    }
 	}
@@ -5571,12 +5635,15 @@ static void acdSetOutfile (AcdPAcd thys)
 
     static AjPStr name = NULL;
     static AjPStr ext = NULL;
+    static AjPStr dir = NULL;
     static AjPStr outfname = NULL;
+    static AjPStr fullfname = NULL;
 
     val = NULL;				/* set the default value */
 
     (void) acdAttrResolve (thys, "name", &name);
     (void) acdAttrResolve (thys, "extension", &ext);
+    (void) acdGetValueAssoc(thys, "odirectory", &dir);
 
     (void) acdAttrToBool (thys, "nullok", ajFalse, &nullok);
     acdLog ("nullok: %B\n", nullok);
@@ -5590,6 +5657,7 @@ static void acdSetOutfile (AcdPAcd thys)
     }
     else
     {
+      (void) acdOutDirectory (&dir);
       (void) acdOutFilename (&outfname, name, ext);
       (void) acdReplyInit (thys, ajStrStr(outfname), &defreply);
     }
@@ -5597,44 +5665,49 @@ static void acdSetOutfile (AcdPAcd thys)
 
     for (itry=acdPromptTry; itry && !ok; itry--)
     {
-	ok = ajTrue;	   /* accept the default if nothing changes */
+      ok = ajTrue;	   /* accept the default if nothing changes */
 
-	(void) ajStrAssS (&reply, defreply);
+      (void) ajStrAssS (&reply, defreply);
 
-	if (required)
+      if (required)
 	    (void) acdUserGet (thys, &reply);
-
-	if (ajStrLen(reply))
+      
+      if (ajStrLen(reply))
+      {
+	ajStrAssS(&fullfname, reply);
+	ajFileSetDir (&fullfname, dir);
+	if (append)
 	{
-	    if (append)
-	    {
-	        val = ajFileNewApp(reply);
-	    }
-	    else
-	    {
-	        val = ajFileNewOut(reply);
-	    }
-	    if (!val)
-	    {
-		acdBadVal (thys, required,
-			   "Unable to open file '%S' for output", reply);
-		ok = ajFalse;
-	    }
+	  val = ajFileNewApp(fullfname);
 	}
 	else
 	{
-	    if (!nullok)
-	    {
-		acdBadVal (thys, required, "Output file is required");
-		ok = ajFalse;
-	    }
+	  val = ajFileNewOut(fullfname);
 	}
+	if (!val)
+	{
+	  acdBadVal (thys, required,
+		     "Unable to open file '%S' for output",
+		     fullfname);
+	  ok = ajFalse;
+	}
+      }
+      else
+      {
+	if (!nullok)
+	{
+	  acdBadVal (thys, required,
+		     "Output file is required");
+	  ok = ajFalse;
+	}
+      }
     }
+
     if (!ok)
 	acdBadRetry (thys);
 
     thys->Value = val;
-    (void) ajStrAssS (&thys->ValStr, reply);
+    (void) ajStrAssS (&thys->ValStr, fullfname);
 
     return;
 }
@@ -5883,7 +5956,9 @@ static void acdSetReport (AcdPAcd thys)
 
     static AjPStr name = NULL;
     static AjPStr ext = NULL;
+    static AjPStr dir = NULL;
     static AjPStr outfname = NULL;
+    static AjPStr fullfname = NULL;
     static AjPStr taglist = NULL;
     ajint mintags = 0;
 
@@ -5896,6 +5971,7 @@ static void acdSetReport (AcdPAcd thys)
     (void) acdAttrToBool (thys, "multiple", ajFalse, &val->Multi);
     (void) acdAttrToInt (thys, "precision", 3, &val->Precision);
 
+    (void) acdGetValueAssoc (thys, "rdirectory", &dir);
     (void) acdGetValueAssoc (thys, "rextension", &ext);
     (void) acdGetValueAssoc (thys, "rname", &name);
     (void) acdGetValueAssoc (thys, "rformat", &val->Formatstr);
@@ -5911,6 +5987,7 @@ static void acdSetReport (AcdPAcd thys)
       ajErr("Unable to use report format '%S'", val->Formatstr);
     }
 
+    (void) acdOutDirectory (&dir);
     (void) acdOutFilename (&outfname, name, ext);
     (void) acdReplyInit (thys, ajStrStr(outfname), &defreply);
     acdPromptReport (thys);
@@ -5924,16 +6001,19 @@ static void acdSetReport (AcdPAcd thys)
 	if (required)
 	    (void) acdUserGet (thys, &reply);
 
-	ok = ajReportOpen (val, reply);
+	ajStrAssS(&fullfname, reply);
+	ajFileSetDir (&fullfname, dir);
+	ok = ajReportOpen (val, fullfname);
 	if (!ok)
 	    acdBadVal (thys, required,
-		       "Unable to open report file '%S'", reply);
+		       "Unable to open report file '%S'",
+		       fullfname);
     }
     if (!ok)
 	acdBadRetry (thys);
 
     thys->Value = val;
-    (void) ajStrAssS (&thys->ValStr, reply);
+    (void) ajStrAssS (&thys->ValStr, fullfname);
 
     return;
 }
@@ -7012,7 +7092,6 @@ static void acdSetSeqout (AcdPAcd thys) {
   (void) acdAttrToBool(thys, "features", ajFalse, &osfeat);
   val->Features = osfeat;
 
-  ajDebug ("acdSetSeqout features: %B\n", val->Features);
   required = acdIsRequired(thys);
   (void) acdReplyInit (thys, ajStrStr(outfname), &defreply);
   acdPromptSeqout (thys);
@@ -7026,8 +7105,12 @@ static void acdSetSeqout (AcdPAcd thys) {
     if (required)
       (void) acdUserGet (thys, &reply);
 
-    ajSeqoutUsa (&val, reply);
+    ajSeqoutUsa (&val, reply);	/* resets the AjPSeqout */
     val->Features = osfeat;
+    (void) acdGetValueAssoc(thys, "osdirectory", &val->Directory);
+    (void) acdOutDirectory (&val->Directory);
+    ajDebug ("acdSetSeqout features: %B dir '%S'\n",
+	     val->Features, val->Directory);
 
     (void) ajStrSet(&val->Formatstr, fmt);
     if (!ajStrLen(val->Formatstr))
@@ -7038,15 +7121,25 @@ static void acdSetSeqout (AcdPAcd thys) {
 
     (void) acdGetValueAssoc (thys, "oufo", &val->Ufo);
     (void) acdGetValueAssoc (thys, "offormat", &val->Ftquery->Formatstr);
+    if (!ajStrLen(val->Ftquery->Formatstr))
+      (void) ajFeatOutFormatDefault(&val->Ftquery->Formatstr);
     (void) acdGetValueAssoc (thys, "ofname", &val->Ftquery->Filename);
+    (void) acdGetValueAssoc (thys, "ofdirectory", &val->Ftquery->Directory);
+    (void) acdOutDirectory (&val->Ftquery->Directory);
 
     (void) acdQualToBool (thys, "ossingle",
 			  ajFalse,
 			  &val->Single, &sing);
 
     if (!ajSeqoutOpen(val)) {
-      acdBadVal (thys, required,
-		 "Unable to write sequence to '%S'", reply);
+      if (ajStrLen(val->Directory))
+	acdBadVal (thys, required,
+		   "Unable to write sequence to '%S%S'",
+		   val->Directory, reply);
+      else
+	acdBadVal (thys, required,
+		   "Unable to write sequence to '%S'",
+		   reply);
       ok = ajFalse;
     }
   }
@@ -7135,10 +7228,10 @@ static void acdSetSeqoutset (AcdPAcd thys) {
 
   (void) acdOutFilename (&outfname, name, ext);
 
+  (void) acdGetValueAssoc (thys, "osdbname", &val->Setdb);
+
   (void) acdAttrToBool(thys, "features", ajFalse, &osfeat);
   val->Features = osfeat;
-
-  (void) acdGetValueAssoc (thys, "osdbname", &val->Setdb);
 
   required = acdIsRequired(thys);
   (void) acdReplyInit (thys, ajStrStr(outfname), &defreply);
@@ -7155,6 +7248,9 @@ static void acdSetSeqoutset (AcdPAcd thys) {
 
     ajSeqoutUsa (&val, reply);
     val->Features = osfeat;
+    (void) acdGetValueAssoc(thys, "osdirectory", &val->Directory);
+    (void) acdOutDirectory (&val->Directory);
+    ajDebug ("acdSetSeqoutset features: %B\n", val->Features);
 
     (void) ajStrSet(&val->Formatstr, fmt);
     if (!ajStrLen(val->Formatstr))
@@ -7165,15 +7261,25 @@ static void acdSetSeqoutset (AcdPAcd thys) {
 
     (void) acdGetValueAssoc (thys, "oufo", &val->Ufo);
     (void) acdGetValueAssoc (thys, "offormat", &val->Ftquery->Formatstr);
+    if (!ajStrLen(val->Ftquery->Formatstr))
+      (void) ajFeatOutFormatDefault(&val->Ftquery->Formatstr);
     (void) acdGetValueAssoc (thys, "ofname", &val->Ftquery->Filename);
+    (void) acdGetValueAssoc (thys, "ofdirectory", &val->Ftquery->Directory);
+    (void) acdOutDirectory (&val->Ftquery->Directory);
 
     (void) acdQualToBool (thys, "ossingle",
 			  ajSeqOutFormatSingle(val->Formatstr),
 			  &val->Single, &sing);
 
     if (!ajSeqoutOpen(val)) {
-      acdBadVal (thys, required,
-		 "Unable to write sequence to '%S'", reply);
+      if (ajStrLen(val->Directory))
+	acdBadVal (thys, required,
+		   "Unable to write sequence to '%S%S'",
+		   val->Directory, reply);
+      else
+	acdBadVal (thys, required,
+		   "Unable to write sequence to '%S'",
+		   reply);
       ok = ajFalse;
     }
   }
@@ -7276,6 +7382,9 @@ static void acdSetSeqoutall (AcdPAcd thys) {
 
     ajSeqoutUsa (&val, reply);
     val->Features = osfeat;
+    (void) acdGetValueAssoc(thys, "osdirectory", &val->Directory);
+    (void) acdOutDirectory (&val->Directory);
+    ajDebug ("acdSetSeqoutall features: %B\n", val->Features);
 
     (void) ajStrSet(&val->Formatstr, fmt);
     if (!ajStrLen(val->Formatstr))
@@ -7286,7 +7395,14 @@ static void acdSetSeqoutall (AcdPAcd thys) {
 
     (void) acdGetValueAssoc (thys, "oufo", &val->Ufo);
     (void) acdGetValueAssoc (thys, "offormat", &val->Ftquery->Formatstr);
-    (void) acdGetValueAssoc (thys, "ofname", &val->Ftquery->Filename);
+    if (!ajStrLen(val->Ftquery->Formatstr))
+      (void) ajFeatOutFormatDefault(&val->Ftquery->Formatstr);
+    if (!acdGetValueAssoc (thys, "ofname", &val->Ftquery->Filename))
+      (void) acdOutFilename (&val->Ftquery->Filename,
+			     val->Ftquery->Filename, val->Ftquery->Formatstr);
+    
+    (void) acdGetValueAssoc (thys, "ofdirectory", &val->Ftquery->Directory);
+    (void) acdOutDirectory (&val->Ftquery->Directory);
 
     (void) acdLog ("acdSetSeqoutall ossingle default: %B\n",
 		    ajSeqOutFormatSingle(val->Formatstr));
@@ -7299,8 +7415,14 @@ static void acdSetSeqoutall (AcdPAcd thys) {
 		    val->Single, sing);
 
     if (!ajSeqoutOpen(val)) {
-      acdBadVal (thys, required,
-		 "Unable to write sequence to '%S'", reply);
+      if (ajStrLen(val->Directory))
+	acdBadVal (thys, required,
+		   "Unable to write sequence to '%S%S'",
+		   val->Directory, reply);
+      else
+	acdBadVal (thys, required,
+		   "Unable to write sequence to '%S'",
+		   reply);
       ok = ajFalse;
     }
   }
@@ -11285,7 +11407,7 @@ static AjBool acdAttrValueStr (AcdPAcd thys, char *attrib, char* def,
   return ajFalse;
 }
 
-/* @func ajAcdControl *********************************************************
+/* @func ajAcdSetControl ******************************************************
 **
 ** Sets special qualifiers which were originally provided via the
 ** command line.
@@ -11324,7 +11446,7 @@ AjBool ajAcdSetControl (char* optionName) {
     return ajTrue;
   }
 
-  ajDie("Unknown control option '%s'", optionName);
+  ajDie("Unknown ajAcdSetControl control option '%s'", optionName);
 
   return ajFalse;
 }
@@ -11334,8 +11456,9 @@ AjBool ajAcdSetControl (char* optionName) {
 ** Steps through the command line and checks for special qualifiers.
 ** Sets special internal variables to reflect their presence.
 **
-** Currently these are "-debug", "-acdlog", "-stdout", "-filter",
-** "-help" and "-auto".
+** Currently these are "-debug", "-stdout", "-filter", "-options"
+** "-help" and "-auto", plus the message controls
+** "-warning", "-error", "-fatal", "-die"
 **
 ** @param [r] argc [ajint] Number of arguments
 ** @param [r] argv [char* []] Actual arguments as a text array.
@@ -13916,6 +14039,62 @@ static AjBool acdInFilename (AjPStr* infname) {
 
   return ret;
 }
+
+/* @funcstatic acdOutDirectory ************************************************
+**
+** Sets a default output file directory. Uses the _OUTDIRECTORY variable
+** as a default value, but any niput string overrides it.
+**
+** The recommendation is that the directory should always be provided
+** in the emboss.defaults file or by an environment variable.
+**
+** As for all associated qualifiers, it is also possible to set a value
+** in the ACD file.
+**
+** @param [wP] dir [AjPStr*] Specified directory
+** @return [AjBool] ajTrue if a directory was successfully set
+** @@
+******************************************************************************/
+
+static AjBool acdOutDirectory (AjPStr* dir) {
+
+  AjBool ret = ajFalse;
+  static AjPStr defdir = NULL;
+  static AjPStr mydir = NULL;
+
+  ajDebug ("acdOutDirectory ('%S')\n",
+	   *dir);
+
+  if (!defdir)
+  {
+    if (!ajNamGetValueC ("outdirectory", &defdir))
+      ajStrAssC(&defdir, "");
+  }
+
+  if (dir && ajStrLen(*dir))
+    ajStrAssS (&mydir, *dir);
+  else
+    ajStrAssS (&mydir, defdir);
+
+  if (ajStrLen(mydir))
+  {
+    ajFileDirFix(&mydir);
+    ajStrAssS(dir, mydir);
+    ret = ajTrue;
+  }
+  else
+  {
+    ajStrAssC(dir, "");
+    ret = ajFalse;
+  }
+
+  ajDebug (". . . dir '%S' ret: %B\n",
+	   *dir, ret);
+
+  (void) ajStrDelReuse(&mydir);
+  return ret;
+}
+
 /* @funcstatic acdOutFilename *************************************************
 **
 ** Sets a default output file name. If stdout or filtering are on,
@@ -13938,6 +14117,7 @@ static AjBool acdInFilename (AjPStr* infname) {
 ** @param [wP] outfname [AjPStr*] Input file name
 ** @param [P] name [AjPStr] Specified base file name
 ** @param [P] ext [AjPStr] Specified extension
+** @param [P] dir [AjPStr] Specified directory
 ** @return [AjBool] ajTrue if a name was successfully set
 ** @@
 ******************************************************************************/
@@ -13948,7 +14128,8 @@ static AjBool acdOutFilename (AjPStr* outfname, AjPStr name, AjPStr ext) {
   static AjPStr myname = NULL;
   static AjPStr myext = NULL;
 
-  ajDebug ("acdOutFilename ('%S', '%S', '%S')\n", *outfname, name, ext);
+  ajDebug ("acdOutFilename ('%S', '%S', '%S')\n",
+	   *outfname, name, ext);
 
   if (!acdOutFile && acdStdout){ /* first outfile, running as a filter */
     (void) ajStrAssC (outfname, "stdout");
@@ -13957,7 +14138,7 @@ static AjBool acdOutFilename (AjPStr* outfname, AjPStr name, AjPStr ext) {
     return ajTrue;
   }
 
-  (void) ajStrSet(&myname, name);	 /* use name if given */
+  (void) ajStrSet(&myname, name);	/* use name if given */
   (void) ajStrSet(&myname, acdInFName); /* else use saved name */
   (void) ajStrSetC(&myname, "outfile"); /* if all else fails, use "outfile" */
 
@@ -13969,12 +14150,13 @@ static AjBool acdOutFilename (AjPStr* outfname, AjPStr name, AjPStr ext) {
   if (!ajStrLen(myext))		/* if all else fails, use out2 etc. */
     (void) ajFmtPrintS (&myext, "out%d", acdOutFile+1);
 
-  ajDebug (". . . myname '%S', myext '%S'\n", myname, myext);
+  ajDebug (". . . myname '%S', myext '%S'\n",
+	   myname, myext);
 
-  if (ajStrLen(myext))
+  if (ext && ajStrLen(myext))	/* NULL ext means add no extension */
     (void) ajFmtPrintS(outfname, "%S.%S", myname, myext);
   else
-    (void) ajStrAssS (outfname, myname);
+    (void) ajStrApp (outfname, myname);
 
   acdOutFile++;
 
