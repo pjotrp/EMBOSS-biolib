@@ -21,7 +21,7 @@ pkgdata_DATA = abiview0.gif banana0.gif chaos0.gif cpgplot0.gif \
                database_indexing_group.html database_information_group.html \
                dbiblast.html dbifasta.html dbiflat.html dbigcg.html \
                descseq.html diffseq.html digest.html \
-               display_alignment_multiple_group.html \
+               display_alignment_multiple_group.html domainer.html \
                dna_sequence_composition_group.html \
                dna_sequence_features_group.html \
                dna_sequence_properties_group.html \
@@ -49,6 +49,7 @@ pkgdata_DATA = abiview0.gif banana0.gif chaos0.gif cpgplot0.gif \
                msbar.html mse.html mutation_group.html needle.html \
                neighbor.html new_group_group.html newcpgreport.html \
                newcpgseek.html newseq.html noreturn.html notseq.html \
+               nrscope.html \  
                nthseq.html octanol.html oddcomp.html palindrome.html \
                pasteseq.html patmatdb.html patmatmotifs.html \
                pattern_matching_group.html penny.html pepcoil.html \
@@ -65,7 +66,8 @@ pkgdata_DATA = abiview0.gif banana0.gif chaos0.gif cpgplot0.gif \
                reformatting_group.html remap.html repeats_group.html \
                restml.html restrict.html \
                re_group.html \
-               revseq.html secondary_structure_group.html seealso.html \
+               revseq.html scope.html \
+               secondary_structure_group.html seealso.html \
                seqboot.html seqmatchall.html seqret.html seqretall.html \
                seqretset.html seqretsplit.html \
                sequence_comparison_group.html sequence_composition_group.html \
