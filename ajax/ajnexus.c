@@ -2230,6 +2230,8 @@ static AjBool nexusSetSequences(AjPNexus thys)
 		ajTablePut(seqtab, thys->Taxa->TaxLabels[itax], seqstr);
 		seqstr = NULL;
 		itax++;
+		if (itax >= thys->Ntax)
+		    havetaxa = ajTrue;
 	    }
 
 	    seqstr = ajTableGet(seqtab, taxlabel);
