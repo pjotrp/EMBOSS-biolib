@@ -2645,6 +2645,37 @@ FZ = 0
 //
 
 #############################################
+# Direct access database(s)
+#############################################
+
+ID direct-all
+AP seqret
+CL temblall:* test.out -auto
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+FI test.out
+FP 42 /^>/
+//
+
+ID direct-filename
+AP seqret
+CL temblvrt:* test.out -auto
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+FI test.out
+FP 23 /^>/
+//
+
+ID direct-exclude
+AP seqret
+CL temblrest:* test.out -auto
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+FI test.out
+FP 19 /^>/
+//
+
+#############################################
 # The qapblast database(s)
 #############################################
 
