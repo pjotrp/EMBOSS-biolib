@@ -1765,6 +1765,24 @@ void ajSeqAssSeqC (AjPSeq thys, char* text)
     return;
 }
 
+/* @func ajSeqAssSeqCI ********************************************************
+**
+** Assigns a modified sequence to an existing AjPSeq sequence.
+**
+** @param [u] thys [AjPSeq] Sequence object.
+** @param [r] text [char*] New sequence as a C character string.
+** @param [r] ilen [ajint] Numbur of characters to use
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajSeqAssSeqCI (AjPSeq thys, char* text, ajint ilen)
+{
+    (void) ajStrAssCI(&thys->Seq, text, ilen);
+
+    return;
+}
+
 /* @func ajSeqAssDesc ********************************************************
 **
 ** Assigns a modified description to an existing AjPSeq sequence.
@@ -1868,15 +1886,17 @@ void ajSeqReplaceC (AjPSeq thys, char* seq)
 
 void ajSeqSetRange (AjPSeq seq, ajint ibegin, ajint iend)
 {
-    ajDebug ("ajSeqSetRange (len: %d %d, %d)\n", ajSeqLen(seq), ibegin, iend);
+    ajDebug ("ajSeqSetRange (len: %d %d..%d old %d..%d)\n",
+	     ajSeqLen(seq), ibegin, iend,
+	     seq->Begin, seq->End);
 
-    if (ibegin)
+    if (ibegin && !seq->Begin)
 	seq->Begin = ibegin;
 
-    if (iend)
+    if (iend && !seq->End)
 	seq->End = iend;
 
-    ajDebug ("      result: (len: %d %d, %d)\n",
+    ajDebug ("      result: (len: %d %d..%d)\n",
 	     ajSeqLen(seq), seq->Begin, seq->End);
 
     return;
