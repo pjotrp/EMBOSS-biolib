@@ -44,6 +44,8 @@ int main (int argc, char * argv[]) {
     ajWarn("No matches found.");
     ajExitBad ();
   }
+
+  return 0;
 }
 
 
