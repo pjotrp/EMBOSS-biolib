@@ -397,7 +397,7 @@ mw seq(...) comp(...)
    contain more than one sequence information qualifiers. For example:
      _________________________________________________________________
    
-7176 seq(t[pqt]ln)
+7176 seq(b-t[pqt]ln)
 1744
 1490
 1433   comp(3[ed]1[p]) seq(gmde)
