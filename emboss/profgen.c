@@ -99,7 +99,7 @@ int main(int argc, char **argv)
    
     AjPStr *type      = NULL;      /* the type of profile to be generated */
 
-    ajint threshold   = NULL;      /* only for frequency matrices */
+    ajint threshold   = 0;         /* only for frequency matrices */
     ajint i;                       /* loop iterator */
     ajint posdash     = 0;
     ajint posdot      = 0;
