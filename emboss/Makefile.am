@@ -17,7 +17,7 @@ compseq cons cpgplot cpgreport cusp cutseq \
 dan dbiblast dbifasta dbiflat dbigcg \
 degapseq descseq diffseq digest distmat domainer \
 dotmatcher dotpath dottup dreg \
-einverted embossdata emma emowse entret \
+einverted embossdata embossversion emma emowse entret \
 equicktandem est2genome etandem extractseq \
 findkm freak fuzznuc fuzzpro fuzztran \
 garnier geecee getorf helixturnhelix hmoment \
@@ -91,6 +91,7 @@ entret_SOURCES = entret.c
 equicktandem_SOURCES = equicktandem.c
 est2genome_SOURCES = est2genome.c
 etandem_SOURCES = etandem.c
+embossversion_SOURCES = embossversion.c
 extractseq_SOURCES = extractseq.c
 findkm_SOURCES = findkm.c
 freak_SOURCES = freak.c
