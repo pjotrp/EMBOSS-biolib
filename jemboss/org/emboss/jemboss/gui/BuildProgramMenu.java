@@ -161,6 +161,19 @@ public class BuildProgramMenu
             matrices.add(dataFile[i]);
           
           // get the available codon usage tables
+          dataFile = (new File(mysettings.getEmbossData()+
+                                  "/CODONS")).list(new FilenameFilter()
+          {
+            public boolean accept(File dir, String name)
+            {
+              File fileName = new File(dir, name);
+              return !fileName.isDirectory();
+            };
+          });
+
+          codons = new Vector();
+          for(int i=0;i<dataFile.length;i++)
+            codons.add(dataFile[i]);
         }
 
         return woss;
