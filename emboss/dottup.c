@@ -72,7 +72,8 @@ int main(int argc, char **argv)
     char ptr[10];
     ajint begin1;
     ajint begin2;
-
+    ajint end1;
+    ajint end2;
     
     ajGraphInit("dottup", argc, argv);
 
@@ -86,7 +87,9 @@ int main(int argc, char **argv)
 
     begin1 = ajSeqBegin(seq1);
     begin2 = ajSeqBegin(seq2);
-
+    end1   = ajSeqEnd(seq1);
+    end2   = ajSeqEnd(seq2);
+    
     ajSeqTrim(seq1);
     ajSeqTrim(seq2);
 
@@ -201,8 +204,8 @@ int main(int argc, char **argv)
 	ajFmtPrintF(outfile,"##Xmin %f Xmax %f Ymin %f Ymax %f\n",0.,
 		    (float)ajSeqLen(seq1),0.,(float)ajSeqLen(seq2));
 	ajFmtPrintF(outfile,"##ScaleXmin %f ScaleXmax %f "
-		    "ScaleYmin %f ScaleYmax %f\n",0.,(float)ajSeqLen(seq1),0.,
-		    (float)ajSeqLen(seq2));
+		    "ScaleYmin %f ScaleYmax %f\n",(float)begin1,(float)end1,
+		    (float)begin2,(float)end2);
 	ajFmtPrintF(outfile,"##Maintitle\n");
 	ajFmtPrintF(outfile,"##Xtitle %s\n##Ytitle %s\n",ajSeqName(seq1),
 		    ajSeqName(seq2));

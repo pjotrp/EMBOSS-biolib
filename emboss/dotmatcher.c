@@ -372,8 +372,8 @@ int main(int argc, char **argv)
 	ajFmtPrintF(outf,"##Xmin %f Xmax %f Ymin %f Ymax %f\n",0.,
 		    (float)ajSeqLen(seq),0.,(float)ajSeqLen(seq2));
 	ajFmtPrintF(outf,"##ScaleXmin %f ScaleXmax %f "
-		    "ScaleYmin %f ScaleYmax %f\n",0.,(float)ajSeqLen(seq),0.,
-		    (float)ajSeqLen(seq2));
+		    "ScaleYmin %f ScaleYmax %f\n",(float)b1,(float)e1,
+		    (float)b2,(float)e2);
 	ajFmtPrintF(outf,"##Maintitle %S\n",subt);
 	ajFmtPrintF(outf,"##Xtitle %s\n##Ytitle %s\n",ajSeqName(seq),
 		    ajSeqName(seq2));
