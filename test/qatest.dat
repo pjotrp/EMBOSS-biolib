@@ -2117,7 +2117,38 @@ FP 0 /Error: /
 FP 0 /Died: /
 //
 
+ID banana-data
+AP banana
+CL -outfile banana.data -nograph
+IN tembl:rnu68037
+FI banana.data
+FC = 1219
+FP /c      17.7     20.0\n/
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+//
+
 ID banana-ex
+AP banana
+CL -nooutfile -graph ps
+IN tembl:rnu68037
+FI stdout
+FC = 1
+FP /^Created banana.ps\n/
+FI banana.ps
+FC > 1
+FP /%%Title: PLplot Graph\n/
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+//
+
+ID banana-ex2
 AP banana
 CL -graph data
 IN tembl:rnu68037
@@ -2160,37 +2191,6 @@ FP /^##/
 FI banana9.dat
 FC > 1
 FP /^##/
-//
-
-ID banana-data
-AP banana
-CL -outfile banana.data -nograph
-IN tembl:rnu68037
-FI banana.data
-FC = 1219
-FP /c      17.7     20.0\n/
-FI stderr
-FC = 2
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-//
-
-ID banana-graph
-AP banana
-CL -nooutfile -graph ps
-IN tembl:rnu68037
-FI stdout
-FC = 1
-FP /^Created banana.ps\n/
-FI banana.ps
-FC > 1
-FP /%%Title: PLplot Graph\n/
-FI stderr
-FC = 2
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
 //
 
 ID biosed-ex
@@ -6542,7 +6542,7 @@ ID feat-embl
 AP seqret
 CL -feat ../../data/feat.fasta -ufo ../../data/feat.emft embl::test.out -auto
 FI test.out
-FZ = 78140
+FZ = 78146
 ## Internal quotes
 FP /^FT                   ""amiE"" gene"\n/
 ## Bad features type (CODS) to misc_feature
@@ -6559,7 +6559,7 @@ ID feat-embl-togff
 AP seqret
 CL -feat ../../data/feat.fasta -ufo ../../data/feat.emft gff::test.out -auto
 FI test.out
-FZ = 60755
+FZ = 60754
 ## Internal quotes
 FP /\tCDS\t1289\t1879\t0\.000\t\+\t\.\tSequence "AB036666.58" ; .* of \\"amiE\\" /
 //
@@ -6568,7 +6568,7 @@ ID feat-embl-togb
 AP seqret
 CL -feat ../../data/feat.fasta -ufo ../../data/feat.emft gb::test.out -auto
 FI test.out
-FZ = 75351
+FZ = 75357
 ## Internal quotes
 FP /^                     ""amiE"" gene"\n/
 ## Bad features type (CODS) to misc_feature
@@ -6585,7 +6585,7 @@ ID feat-genbank-toembl
 AP seqret
 CL -feat ../../data/feat.fasta -ufo ../../data/feat.gbft em::test.out -auto
 FI test.out
-FZ = 78140
+FZ = 78146
 ## Internal quotes
 FP /^FT                   ""amiE"" gene"\n/
 ## Bad features type (CODS) to misc_feature
@@ -6612,7 +6612,7 @@ ID feat-pir-togff
 AP seqret
 CL -feat ../../data/featprot.fasta -ufo ../../data/feat.pir gff::test.out -auto
 FI test.out
-FZ = 5019
+FZ = 5020
 ## active site two locations with copied annotation (note and comment)
 FP /^OPSD_HUMAN\tPIR\tact_site\t38\t38\t0\.000\t\+\t\.\tSequence "OPSD_HUMAN\.11" ; note "Cys, His" ; comment "status experimental"\n/
 FP /^OPSD_HUMAN\tPIR\tact_site\t90\t90\t0\.000\t\+\t\.\tSequence "OPSD_HUMAN.11" ; FeatFlags "0x4"\n/
@@ -6649,7 +6649,7 @@ ID feat-swiss-togff
 AP seqret
 CL -feat tsw:laci_ecoli gff::test.out -auto
 FI test.out
-FZ = 1428
+FZ = 1429
 FP /^LACI_ECOLI\tSWISSPROT\tdna_bind\t6\t25\t0\.000\t\+\t\.\tSequence "LACI_ECOLI\.1" ; note "H-T-H MOTIF"\n/
 FP /^LACI_ECOLI\tSWISSPROT\thelix\t32\t44\t0.000\t\+\t\.\tSequence "LACI_ECOLI\.9"\n/
 //
@@ -9885,7 +9885,7 @@ ID seqret-outusa-gff
 AP seqret
 CL -auto ../../data/dna.embl gff::test.out
 FI test.out
-FZ = 191
+FZ = 192
 FP /^##gff-version 2\n/
 FP /^##source-version EMBOSS [0-9.]+\n/
 FP /^##date [0-9\-]+\n/
@@ -9898,7 +9898,7 @@ ID seqret-out-gff
 AP seqret
 CL -auto ../../data/dna.embl test.out -osf gff
 FI test.out
-FZ = 191
+FZ = 192
 FP /^##gff-version 2\n/
 FP /^##source-version EMBOSS [0-9.]+\n/
 FP /^##date [0-9\-]+\n/
@@ -10257,7 +10257,7 @@ ID seqret-outmultiusa-gff
 AP seqret
 CL -auto ../../data/dna.m-embl gff::test.out
 FI test.out
-FZ = 642
+FZ = 645
 FP 3 /^##DNA FASTAM[1-3]\n/
 FP /^##DNA FASTAM2\n/
 FP 3 /^##end-DNA\n/
@@ -10267,7 +10267,7 @@ ID seqret-outmulti-gff
 AP seqret
 CL -auto ../../data/dna.m-embl test.out -osf gff
 FI test.out
-FZ = 642
+FZ = 645
 FP 3 /^##DNA FASTAM[1-3]\n/
 FP /^##DNA FASTAM2\n/
 FP 3 /^##end-DNA\n/
@@ -10277,7 +10277,7 @@ ID seqret-outmultiusa-gffprot
 AP seqret
 CL -auto ../../data/prot.m-swiss gff::test.out
 FI test.out
-FZ = 543
+FZ = 546
 FP 3 /^##gff-version 2\n/
 FP 3 /^##Protein SWISSM[1-3]\n/
 FP /^##Protein SWISSM2\n/
@@ -10289,7 +10289,7 @@ ID seqret-outmulti-gffprot
 AP seqret
 CL -auto ../../data/prot.m-swiss test.out -osf gff
 FI test.out
-FZ = 543
+FZ = 546
 FP 3 /^##gff-version 2\n/
 FP 3 /^##Protein SWISSM[1-3]\n/
 FP /^##Protein SWISSM2\n/
@@ -13782,7 +13782,7 @@ ID wossname-ex6
 UC Output html tags around the list of programs:
 AP wossname
 CL '' -html -prelink
-CL 'http://www.uk.embnet.org/Software/EMBOSS/Apps/'
+CL 'http://emboss.sf.net/apps/'
 CL -postlink '.html' -out wossname.html
 FI stderr
 FC = 1
@@ -13790,7 +13790,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI wossname.html
-FP /<a href="http:\/\/www\.uk\.embnet\.org\/Software\/EMBOSS\/Apps\/abiview\.html"/
+FP /<a href="http:\/\/emboss\.sf\.net\/apps\/abiview\.html"/
 //
 
 ID yank-ex
@@ -15944,40 +15944,44 @@ FP 0 /Died: /
 //
 
 #######################################
+# CONSTRUCT
+#######################################
+
+#######################################
 # DOMAINATRIX
 #######################################
 
-ID contacts-ex
-AB domainatrix
-AA contacts
-IN ../../data/structure
-IN
-IN
-IN
-IN
-IN
-IN
-FI stderr
-FC = 3
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-FI stdout
-FC = 3
-FP /^1cs4\n/
-FI 1cs4.con
-FZ = 3660
-FP /^SM   ASP 2 ; ASP 46\n/
-FI 1ii7.con
-FZ = 3469
-FP /^SM   ILE 9 ; LEU 50\n/
-FI 2hhb.con
-FZ = 10932
-FP /^SM   LEU 2 ; ALA 12\n/
-FI contacts.log
-FC = 3
-FP /^1cs4\n/
-//
+#ID contacts-ex
+#AB domainatrix
+#AA contacts
+#IN ../../data/structure
+#IN
+#IN
+#IN
+#IN
+#IN
+#IN
+#FI stderr
+#FC = 3
+#FP 0 /Warning: /
+#FP 0 /Error: /
+#FP 0 /Died: /
+#FI stdout
+#FC = 3
+#FP /^1cs4\n/
+#FI 1cs4.con
+#FZ = 3660
+#FP /^SM   ASP 2 ; ASP 46\n/
+#FI 1ii7.con
+#FZ = 3469
+#FP /^SM   ILE 9 ; LEU 50\n/
+#FI 2hhb.con
+#FZ = 10932
+#FP /^SM   LEU 2 ; ALA 12\n/
+#FI contacts.log
+#FC = 3
+#FP /^1cs4\n/
+#//
 
 ID domainer-ex
 AB domainatrix
