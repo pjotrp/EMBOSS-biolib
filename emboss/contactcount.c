@@ -27,6 +27,13 @@
 #include "emboss.h"
 #include <math.h>
 
+/* residue character constants */
+#define ZERO_COUNTS 0
+#define TOTAL_RES_TYPES 28
+static const ajint cAjIntAsciiOffset   = -65;
+static const ajint cAjIntAsterisk      =  91;
+static const ajint cAjIntQuestionMark  =  92;
+
 /* DDDDEBUG */
 #define DEBUG_LEVEL 0
 
@@ -35,10 +42,9 @@ static AjPFeature write_count(AjPFeattable ajpFeattableCounts,
 			      ajint ajIntSpecificPairs,
 			      ajint ajIntTotalPairs);
 
-static AjBool write_scoring_matrix(AjPFile ajpFileScoringMatrix,
-				   AjPStr ajpStrOriginalAlphabet);
+static AjBool write_scoring_matrix(AjPInt2d ajpInt2dCounts, AjPFile ajpFileScoringMatrix);
 
-static ajint  char_to_BLOSUM_index(char cResType);
+static ajint char_to_BLOSUM_index(char cResType);
 
 static ajint BLOSUM_index_to_char(ajint ajIntBlosumIndex);
 
@@ -88,7 +94,7 @@ int main( int argc , char **argv )
     /* scoring matrix */
     ajint ajIntNumberOfResTypes;
     AjPInt2d ajpInt2dCounts = NULL;
-    ajint ajIntTempCount = 0;
+    ajint ajIntCount = 0;
     AjPFile ajpFile2dScoringMatrix = NULL;
 
     /* number of contacts between first and second residue types */
@@ -128,7 +134,7 @@ int main( int argc , char **argv )
     {
 	for(ajIntColumn = 0;ajIntColumn < ajIntNumberOfResTypes;ajIntColumn++)
 	{
-	    ajInt2dPut(&ajpInt2dCounts, ajIntRow, ajIntColumn,0);
+	    ajInt2dPut(&ajpInt2dCounts, ajIntRow, ajIntColumn, ZERO_COUNTS);
 	}
     }
 
@@ -174,8 +180,6 @@ int main( int argc , char **argv )
 	    for(ajIntColumn = 0;ajIntColumn < ajIntColumnMax;ajIntColumn++)
 	    {
 		cSecondResType = ajStrChar(ajpStrChainSeq, ajIntColumn);
-/* 		ajIntFirstResType = ajAZToInt(cFirstResType); */
-/* 		ajIntSecondResType = ajAZToInt(cSecondResType); */
 		ajIntFirstResType = char_to_BLOSUM_index(cFirstResType);
 		ajIntSecondResType = char_to_BLOSUM_index(cSecondResType);
 		if((ajIntFirstResType < 0) || (ajIntFirstResType > 27))
@@ -190,24 +194,24 @@ int main( int argc , char **argv )
 		}
 		else if(ajInt2dGet(ajpInt2dContactMap, ajIntRow, ajIntColumn))
 		{
-		    ajIntTempCount = ajInt2dGet(ajpInt2dCounts,
-						ajIntFirstResType,
-						ajIntSecondResType);
+		    ajIntCount = ajInt2dGet(ajpInt2dCounts,
+					    ajIntFirstResType,
+					    ajIntSecondResType);
 		    ajInt2dPut(&ajpInt2dCounts,
 			       ajIntFirstResType,
 			       ajIntSecondResType,
-			       ajIntTempCount+1);
+			       ajIntCount+1);
 		}	    
 	    }
 	}
 
-	ajIntTempCount = ajInt2dGet(ajpInt2dCounts, 6, 11);
+	ajIntCount = ajInt2dGet(ajpInt2dCounts, 6, 11);
 	ajFmtPrint("=======================\n");
-	ajFmtPrint("HERE IT IS FIRST:\t%d\n", ajIntTempCount);
+	ajFmtPrint("HERE IT IS FIRST:\t%d\n", ajIntCount);
 	ajFmtPrint("=======================\n");
-	ajIntTempCount = ajInt2dGet(ajpInt2dCounts, 11, 6);
+	ajIntCount = ajInt2dGet(ajpInt2dCounts, 11, 6);
 	ajFmtPrint("=======================\n");
-	ajFmtPrint("HERE IT IS AGAIN:\t%d\n", ajIntTempCount);
+	ajFmtPrint("HERE IT IS AGAIN:\t%d\n", ajIntCount);
 	ajFmtPrint("=======================\n");
 
 	/* get dimensions of count array */
@@ -253,23 +257,16 @@ int main( int argc , char **argv )
     {
 	for(ajIntColumn = 0;ajIntColumn < ajIntNumberOfResTypes;ajIntColumn++)
 	{
-/* 	    cFirstResType = ajIntToAZ(ajIntRow); */
-/* 	    cSecondResType = ajIntToAZ(ajIntColumn); */
 	    cFirstResType = BLOSUM_index_to_char(ajIntRow);
 	    cSecondResType = BLOSUM_index_to_char(ajIntColumn);
-	    ajIntTempCount = ajInt2dGet(ajpInt2dCounts, ajIntRow, ajIntColumn);
-	    ajFmtPrint("%d\t", ajIntTempCount);
+	    ajIntCount = ajInt2dGet(ajpInt2dCounts, ajIntRow, ajIntColumn);
+	    ajFmtPrint("%d\t", ajIntCount);
 	}
 	ajFmtPrint("\n");
     }
-
-
-    /* XXXX WHY DOESN'T THIS RETURN A VALID POINTER? */
-/*     ajpFile2dScoringMatrix = ajFileNewOutC("/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/dummyfile.dat"); */
     
     /* write scores to scoring matrix data file */
-    write_scoring_matrix(ajpFile2dScoringMatrix,
-			 ajpStrNaturalAlphabet);
+    write_scoring_matrix(ajpInt2dCounts, ajpFile2dScoringMatrix);
 
     /* DDDDEBUG TEST INFO FOR TAIL OF REPORT */
     /*     ajFmtPrintS(&ajpStrReportTail, "This is some tail text"); */
@@ -354,17 +351,17 @@ static AjPFeature write_count(AjPFeattable ajpFeattableCounts,
 ** writes normalized substitution scores to a scoring matrix file format
 **
 ** @param [r] ajpFileScoringMatrix [AjPFile] file to write scoring table to
-** @param [r] ajpStrOriginalAlphabet [AjPStr] chars of input residue types in order
 ** @param [r] ajpInt2dScoringMatrix [AjPInt2d] 2-D matrix of signed integer scores
 ** @return [AjBool] AJTRUE for success
 ** @@
 ******************************************************************************/
 
-static AjBool write_scoring_matrix(AjPFile ajpFileScoringMatrix,
-				   AjPStr ajpStrOriginalAlphabet)
+static AjBool write_scoring_matrix(AjPInt2d ajpInt2dCounts,
+				   AjPFile ajpFileScoringMatrix)
 {
-    ajint ajIntRow      = 0;
-    ajint ajIntColumn   = 0;
+    ajint ajIntRow    = 0;
+    ajint ajIntColumn = 0;
+    ajint ajIntCount  = 0;
     char cRowResType    = '\0';
     char cColumnResType = '\0';
     AjBool ajBoolSuccess = AJFALSE;
@@ -385,23 +382,24 @@ static AjBool write_scoring_matrix(AjPFile ajpFileScoringMatrix,
     do
     {
 	cRowResType = ajStrIterGetK(ajpStrIterRowResType);
-/* 	ajIntRow = ajAZToInt(cRowResType); */
 	ajIntRow = char_to_BLOSUM_index(cRowResType);
 	ajpStrIterColumnResType = ajStrIter(ajpStrResTypeAlphabetCopy);
 
 	/* iterate over string of BLOSUM residue types */
+	ajFmtPrintF(ajpFileScoringMatrix, "%c ", cRowResType);
 	do
 	{
 	    cColumnResType = ajStrIterGetK(ajpStrIterColumnResType);
 	    ajIntColumn = char_to_BLOSUM_index(cColumnResType);
+	    ajIntCount = ajInt2dGet(ajpInt2dCounts, ajIntRow, ajIntColumn);
 	    /* DDDDEBUG */
-	    ajFmtPrint("(%4c, %4c)-", cRowResType, cColumnResType);
-	    ajFmtPrint("(%4d, %4d) ", ajIntRow, ajIntColumn);
-	    ajFmtPrintF(ajpFileScoringMatrix, "(%4c, %4c)-", cRowResType, cColumnResType);
-	    ajFmtPrintF(ajpFileScoringMatrix, "(%4d, %4d) ", ajIntRow, ajIntColumn);
+	    ajFmtPrint("(%4c, %4c) ", cRowResType, cColumnResType);
+	    ajFmtPrint("(%4d, %4d) :\t", ajIntRow, ajIntColumn);
+	    ajFmtPrint("%4d", ajIntCount);
+	    ajFmtPrintF(ajpFileScoringMatrix, "%4d ", ajIntCount);
 	}
 	while(ajStrIterNext(ajpStrIterColumnResType));
-
+	ajFmtPrintF(ajpFileScoringMatrix, "\n");
 	ajFmtPrint("\n");
 	/* KKKK kludge to rewind string iterator */
 	ajStrIterFree(&ajpStrIterColumnResType);
@@ -429,22 +427,19 @@ static AjBool write_scoring_matrix(AjPFile ajpFileScoringMatrix,
 static ajint char_to_BLOSUM_index(char cResType)
 {
     ajint ajIntBlosumIndex;
-    static const ajint ajIntAsciiOffset = -65;
-    static const ajint ajIntAsterisk = 91;
-    static const ajint ajIntQuestionMark = 92;
 
     /* look up array for residue type order
      *  found in EBLOSUM data files:
      *   ARNDCQEGHILKMFPSTWYVBZX*
      */
-    const ajint ajIntArrayLookUp[28] =
+    const ajint ajIntArrayLookUp[TOTAL_RES_TYPES] =
 	{0,20,4,3,6,13,7,8,9,24,11,10,12,2,25,14,5,1,15,16,26,19,17,22,18,21,23,27};
     if (cResType == '*')
-	cResType = ajIntAsterisk;
+	cResType = cAjIntAsterisk;
     if (cResType == '?')
-	cResType = ajIntQuestionMark;
+	cResType = cAjIntQuestionMark;
   
-    cResType = cResType + ajIntAsciiOffset;
+    cResType = cResType + cAjIntAsciiOffset;
     
     /* default to out-of-range value */
     if ((cResType < 0) || (cResType > 27))
@@ -474,7 +469,7 @@ static ajint BLOSUM_index_to_char(ajint ajIntBlosumIndex)
      *  found in EBLOSUM data files:
      *   ARNDCQEGHILKMFPSTWYVBZX*
      */
-    const char cArrayLookUp[28] =
+    const char cArrayLookUp[TOTAL_RES_TYPES] =
 	{'A','R','N','D','C','Q','E','G','H','I','L','K','M','F','P','S','T','W','Y','V','B','Z','X','*','J','O','U','?'};
   
     /* XXXX SHOULD THIS BE AN OFFICIAL AMBIGUITY CODE INSTEAD? */
