@@ -4522,6 +4522,11 @@ static AjBool seqReadGenbank (AjPSeq thys, AjPSeqin seqin)
     if (ajStrLen(seqin->Inseq))
     {					/* we have a sequence to use */
 	ajDebug("Got an Inseq sequence\n");
+	if(ajStrMatchC(qry->Method,"gcg"))
+	{
+	    while(!ajStrPrefixC(rdline,"ORIGIN"))
+	      ajFileBuffGetStore(buff,&rdline, seqin->Text, &thys->TextPtr);
+	}
 	ajStrAssS (&thys->Seq, seqin->Inseq);
 	if (seqin->Text)
 	{
@@ -4549,12 +4554,10 @@ static AjBool seqReadGenbank (AjPSeq thys, AjPSeqin seqin)
     }
 
     if(!ajStrMatchC(qry->Method,"gcg"))
+    {
 	while(!ajStrPrefixC(rdline,"//"))
 	    ajFileBuffGetStore(buff,&rdline, seqin->Text, &thys->TextPtr);
-    else
-	while(!ajStrPrefixC(rdline,"ORIGIN"))
-	    ajFileBuffGetStore(buff,&rdline, seqin->Text, &thys->TextPtr);
-
+    }
 
     ajFileBuffClear (buff, 0);
 
