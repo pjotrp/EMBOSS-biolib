@@ -1758,6 +1758,7 @@ static void seqWriteEmbl (AjPSeqout outseq) {
       ilen += ajStrLen(cur);
 
     }
+    ajListIterFree(it) ;
     (void) ajFmtPrintF (outseq->File, ";\n", cur);
   }
 
@@ -1791,6 +1792,7 @@ static void seqWriteEmbl (AjPSeqout outseq) {
       (void) ajFmtPrintF (outseq->File, "%S", cur);
       ilen += ajStrLen(cur);
     }
+    ajListIterFree(it) ;
     (void) ajFmtPrintF (outseq->File, ".\n", cur);
   }
 
@@ -1822,6 +1824,7 @@ static void seqWriteEmbl (AjPSeqout outseq) {
       (void) ajFmtPrintF (outseq->File, "%S", cur);
       ilen += ajStrLen(cur);
     }
+    ajListIterFree(it) ;
     (void) ajFmtPrintF (outseq->File, ".\n", cur);
   }
 
@@ -1911,6 +1914,8 @@ static void seqWriteSwiss (AjPSeqout outseq) {
       ilen += ajStrLen(cur);
 
     }
+
+    ajListIterFree(it) ;
     (void) ajFmtPrintF (outseq->File, ";\n", cur);
   }
 
@@ -1945,6 +1950,8 @@ static void seqWriteSwiss (AjPSeqout outseq) {
       (void) ajFmtPrintF (outseq->File, "%S", cur);
       ilen += ajStrLen(cur);
     }
+
+    ajListIterFree(it) ;
     (void) ajFmtPrintF (outseq->File, ".\n", cur);
   }
 
@@ -1972,6 +1979,8 @@ static void seqWriteSwiss (AjPSeqout outseq) {
       (void) ajFmtPrintF (outseq->File, "%S", cur);
       ilen += ajStrLen(cur);
     }
+
+    ajListIterFree(it) ;
     (void) ajFmtPrintF (outseq->File, ".\n", cur);
   }
 
@@ -2056,6 +2065,8 @@ static void seqWriteGenbank (AjPSeqout outseq) {
       ilen += ajStrLen(cur);
 
     }
+
+    ajListIterFree(it) ;
     if (ilen > 0)
       (void) ajFmtPrintF (outseq->File, "\n", cur);
   }
@@ -2087,6 +2098,8 @@ static void seqWriteGenbank (AjPSeqout outseq) {
       (void) ajFmtPrintF (outseq->File, "%S", cur);
       ilen += ajStrLen(cur);
     }
+
+    ajListIterFree(it) ;
     (void) ajFmtPrintF (outseq->File, ".\n", cur);
   }
 
@@ -2119,6 +2132,8 @@ static void seqWriteGenbank (AjPSeqout outseq) {
       (void) ajFmtPrintF (outseq->File, "%S", cur);
       ilen += ajStrLen(cur);
     }
+
+    ajListIterFree(it) ;
     (void) ajFmtPrintF (outseq->File, ".\n", cur);
   }
 
@@ -2574,6 +2589,7 @@ static void seqWriteDebug (AjPSeqout outseq) {
     while ((cur = (AjPStr) ajListIterNext(it))) {
       (void) ajFmtPrintF (outseq->File, " %S\n", cur);
     }
+    (void) ajListIterFree (it);
     (void) ajFmtPrintF (outseq->File, "\n");
   }
       
@@ -2587,6 +2603,7 @@ static void seqWriteDebug (AjPSeqout outseq) {
     while ((cur = (AjPStr) ajListIterNext(it))) {
       (void) ajFmtPrintF (outseq->File, "    '%S'\n", cur);
     }
+    (void) ajListIterFree (it);
   }
   (void) ajFmtPrintF (outseq->File, "  Taxonomy: '%S'\n", outseq->Tax);
   if (ajListLength(outseq->Taxlist))
@@ -2597,6 +2614,7 @@ static void seqWriteDebug (AjPSeqout outseq) {
     while ((cur = (AjPStr) ajListIterNext(it))) {
       (void) ajFmtPrintF (outseq->File, "    '%S'\n", cur);
     }
+    (void) ajListIterFree (it);
   }
   (void) ajFmtPrintF (outseq->File, "  Type: '%S'\n", outseq->Type);
   (void) ajFmtPrintF (outseq->File, "  Database: '%S'\n", outseq->Db);
@@ -3599,6 +3617,7 @@ void ajSeqoutTrace (AjPSeqout seq) {
     while ((cur = (AjPStr) ajListIterNext(it))) {
       (void) ajDebug (" %S\n", cur);
     }
+    (void) ajListIterFree (it);
     (void) ajDebug ("\n");
   }
   if (ajStrLen(seq->Sv))
@@ -3615,6 +3634,7 @@ void ajSeqoutTrace (AjPSeqout seq) {
     while ((cur = (AjPStr) ajListIterNext(it))) {
       (void) ajDebug ("   '%S'\n", cur);
     }
+    (void) ajListIterFree (it);
     (void) ajDebug ("\n");
   }
   (void) ajDebug ("  Taxonomy: '%S'\n", seq->Tax);
@@ -3626,6 +3646,7 @@ void ajSeqoutTrace (AjPSeqout seq) {
     while ((cur = (AjPStr) ajListIterNext(it))) {
       (void) ajDebug ("   '%S'\n", cur);
     }
+    (void) ajListIterFree (it);
   }
   if (ajStrLen(seq->Type))
     ajDebug ( "  Type: '%S'\n", seq->Type);
