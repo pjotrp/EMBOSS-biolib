@@ -33,9 +33,10 @@ pkgdata_DATA =  abiview0.gif banana0.gif chaos0.gif cirdna.gif cpgplot0.gif \
                equicktandem.html erestml.html eseqboot.html est2genome.html \
                etandem.html extractfeat.html extractseq.html factor.html \
                feature_tables_group.html findkm.html fitch.html freak.html \
-               fuzznuc.html fuzzpro.html fuzztran.html garnier.html \
-               geecee.html gendist.html getorf.html groups.html \
-               helixturnhelix.html histogramtest.html hmoment.html iep.html \
+               funky.html fuzznuc.html fuzzpro.html fuzztran.html \
+               garnier.html geecee.html gendist.html getorf.html \
+               groups.html helixturnhelix.html hetparse.html \
+               histogramtest.html hmmgen.html hmoment.html iep.html \
                index.html infoalign.html information_group.html \
                infoseq.html interface.html isochore.html jembossctl.html
 pkgdata2_DATA = kitsch.html lindna.html listor.html marscan.html \
@@ -54,13 +55,13 @@ pkgdata2_DATA = kitsch.html lindna.html listor.html marscan.html \
                nucleic_transcription_group.html \
                nucleic_translation_group.html octanol.html oddcomp.html \
                palindrome.html pasteseq.html patmatdb.html \
-               patmatmotifs.html pdbtosp.html penny.html pepcoil.html \
-               pepinfo.html pepnet.html pepstats.html pepwheel.html \
-               pepwindow.html pepwindowall.html phylogeny_group.html \
-               plotcon.html plotorf.html polydot.html preg.html \
-               prettyplot.html prettyseq.html primersearch.html \
-               printsextract.html profit.html prophecy.html prophet.html \
-               prosextract.html protdist.html \
+               patmatmotifs.html pdbparse.html pdbtosp.html penny.html \
+               pepcoil.html pepinfo.html pepnet.html pepstats.html \
+               pepwheel.html pepwindow.html pepwindowall.html \
+               phylogeny_group.html plotcon.html plotorf.html polydot.html \
+               preg.html prettyplot.html prettyseq.html primersearch.html \
+               printsextract.html profgen.html profit.html prophecy.html \
+               prophet.html prosextract.html protdist.html \
                protein_2d_structure_group.html \
                protein_3d_structure_group.html \
                protein_composition_group.html protein_motifs_group.html \
@@ -68,18 +69,20 @@ pkgdata2_DATA = kitsch.html lindna.html listor.html marscan.html \
                protein_structure_group.html pscan.html psiblasts.html \
                rebaseextract.html recode.html recoder.html redata.html \
                remap.html restml.html restover.html restrict.html \
-               revseq.html scopalign.html scope.html scopparse.html \
-               seealso.html seqboot.html seqmatchall.html seqnr.html \
-               seqret.html seqretall.html seqretallfeat.html \
-               seqretfeat.html seqretset.html seqretsplit.html seqsort.html \
-               showalign.html showdb.html showfeat.html showorf.html \
-               showseq.html shuffleseq.html sigcleave.html siggen.html \
-               sigscan.html silent.html splitter.html stamps.html \
-               stretcher.html stssearch.html supermatcher.html \
-               swissparse.html syco.html test_group.html textsearch.html \
-               tfextract.html tfm.html tfscan.html tmap.html topo.html \
-               tranalign.html transeq.html trimest.html trimseq.html \
-               union.html utils_database_creation_group.html \
+               revseq.html scopalign.html scope.html scopnr.html \
+               scopparse.html scoprep.html scopreso.html scopseqs.html \
+               seealso.html seqalign.html seqboot.html seqmatchall.html \
+               seqnr.html seqret.html seqretall.html seqretallfeat.html \
+               seqretfeat.html seqretset.html seqretsplit.html \
+               seqsearch.html seqsort.html seqwords.html showalign.html \
+               showdb.html showfeat.html showorf.html showseq.html \
+               shuffleseq.html sigcleave.html siggen.html sigscan.html \
+               silent.html splitter.html stamps.html stretcher.html \
+               stssearch.html supermatcher.html swissparse.html syco.html \
+               test_group.html textsearch.html tfextract.html tfm.html \
+               tfscan.html tmap.html topo.html tranalign.html transeq.html \
+               trimest.html trimseq.html union.html \
+               utils_database_creation_group.html \
                utils_database_indexing_group.html utils_misc_group.html \
                vectorstrip.html water.html whichdb.html wobble.html \
                wordcount.html wordmatch.html wossname.html yank.html
