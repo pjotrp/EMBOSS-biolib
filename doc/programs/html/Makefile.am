@@ -1,6 +1,6 @@
 pkgdata_DATA =  abiview0.gif banana0.gif chaos0.gif cirdna.gif cpgplot0.gif \
                dotmatcher0.gif dottup0.gif emboss_icon.gif findkm0.gif \
-               isochore0.gif lindna.gif octanol0.gif pepinfo1.gif \
+               isochore0.gif lindna.gif octanol0.gif pepinfo1.gif emboss_icon.jpg \
                pepinfo2.gif pepnet0.gif pepwheel0.gif pepwindow0.gif \
                pepwindowall0.gif plotorf0.gif polydot0.gif prettyplot3.gif \
                prettyplot4.gif syco0.gif syco1.gif tmap0.gif topo.gif \
