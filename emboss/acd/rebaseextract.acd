@@ -16,6 +16,7 @@ boolean: equivalences [
   optional: "Y"
   default: "Y"
   prompt: "Create prototype equivalence file"
+  help: " This option calculates an embossre.equ file using restriction enzyme prototypes in the withrefm file."
 ]
 
 endsection: input
