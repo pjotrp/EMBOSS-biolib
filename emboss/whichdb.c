@@ -45,6 +45,7 @@ int main(int argc, char **argv)
     AjBool pro  = ajFalse;
     AjPSeq seq  = NULL;
     AjBool get  = ajFalse;
+    AjBool showall  = ajFalse;
     AjPStr lnam = NULL;
     AjPStr snam = NULL;
 
@@ -55,6 +56,7 @@ int main(int argc, char **argv)
     entry = ajAcdGetString("entry");
     outf  = ajAcdGetOutfile("outfile");
     get   = ajAcdGetBool("get");
+    showall = ajAcdGetBool("showall");
 
     if(!ajStrLen(entry))
     {
@@ -89,8 +91,16 @@ int main(int argc, char **argv)
 	    pro = ajTrue;
 	else
 	    pro = ajFalse;
+
+	if (showall && !get)
+	  ajFmtPrintF(outf,"# Trying '%S'\n",idqry);
+
 	if(!ajSeqGetFromUsa(idqry,pro,&seq))
+	{
+	    if (showall && !get)
+	      ajFmtPrintF(outf,"# Failed '%S'\n",idqry);
 	    continue;
+	}
 
 	if(get)
 	{
