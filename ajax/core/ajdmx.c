@@ -538,6 +538,9 @@ AjBool ajDmxScopalgRead(AjPFile inf, AjPScopalg *thys)
 
 void ajDmxScophitDel(AjPScophit *pthis)
 {
+    if(!*pthis)
+	return;
+
     ajStrDel(&(*pthis)->Class);
     ajStrDel(&(*pthis)->Architecture);
     ajStrDel(&(*pthis)->Topology);
