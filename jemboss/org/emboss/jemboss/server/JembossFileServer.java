@@ -132,7 +132,7 @@ public class JembossFileServer
        fullFileName.toLowerCase().endsWith(".gif") ||
        fullFileName.toLowerCase().endsWith(".jpeg") )
     {
-      byte[] data = JembossAuthServer.readByteFile(fullFileName);
+      byte[] data = JembossServer.readByteFile(fullFileName);
       vans.add("contents");
       vans.add(data);
     }
