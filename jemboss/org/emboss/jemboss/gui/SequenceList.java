@@ -32,11 +32,9 @@ import javax.swing.border.*;
 import java.awt.event.*;
 
 import org.emboss.jemboss.parser.*;
-import org.emboss.jemboss.soap.CallAjax;
+import org.emboss.jemboss.soap.*;
 
 import uk.ac.mrc.hgmp.embreo.EmbreoParams;
-import uk.ac.mrc.hgmp.embreo.EmbreoAuthException;
-
 
 import org.emboss.jemboss.gui.filetree.*;
 import java.awt.datatransfer.*;
@@ -192,7 +190,7 @@ public class SequenceList extends JFrame
                 ok = true;
               }
             }
-            catch (EmbreoAuthException eae)
+            catch (JembossSoapException eae)
             {
               System.out.println("Call to Ajax library failed");
               setCursor(cdone);

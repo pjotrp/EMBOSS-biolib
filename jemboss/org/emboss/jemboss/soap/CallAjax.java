@@ -36,7 +36,7 @@ public class CallAjax {
   private PublicRequest epr;
 
    public CallAjax(String fileContent, String seqtype, EmbreoParams mysettings) 
-       throws EmbreoAuthException 
+       throws JembossSoapException 
    {
 
      Vector params = new Vector();

@@ -36,8 +36,8 @@ import org.emboss.jemboss.parser.*;
 import org.emboss.jemboss.programs.ListFile;
 import org.emboss.jemboss.gui.sequenceChooser.*;
 import org.emboss.jemboss.soap.CallAjax;
+import org.emboss.jemboss.soap.JembossSoapException;
 import uk.ac.mrc.hgmp.embreo.EmbreoParams;
-import uk.ac.mrc.hgmp.embreo.EmbreoAuthException;
 
 
 /**
@@ -711,7 +711,7 @@ public class SectionPanel
                 }
 //              System.out.println("PROPERTIES::: " + ajaxLength + " " + ajaxWeight );
               }
-              catch (EmbreoAuthException eae)
+              catch (JembossSoapException eae)
               {
                 System.out.println("Call to Ajax library failed");
               }
@@ -787,7 +787,6 @@ public class SectionPanel
   private void resolveDependents(int nod, Dependent dep[], String textVal, 
                                  String varName)
   {
-
     for(int i=0;i<nod;i++)
     {
       String exp = dep[i].getDependentExp();
