@@ -211,7 +211,8 @@ AjPTime ajTimeSet( const char *timefmt, ajint mday, ajint mon, ajint year)
 
 
 
-/* @func ajTimeLocal ************************************************************ A localtime()/localtime_r() replacement for AjPTime objects
+/* @func ajTimeLocal ************************************************************ 
+** A localtime()/localtime_r() replacement for AjPTime objects
 **
 ** @param  [r] timer [const time_t] Time
 ** @param  [w] thys [AjPTime] Time object
@@ -243,3 +244,48 @@ AjBool ajTimeLocal(const time_t timer, AjPTime thys)
 
     return ajTrue;
 }
+
+
+
+
+/* @func ajTimeNew ************************************************************
+**
+** Constructor for AjPTime object.
+**
+** @return [AjPTime] An AjPTime object
+** @@
+******************************************************************************/
+
+AjPTime ajTimeNew(void)
+{
+    AjPTime thys = NULL;
+
+    AJNEW0(thys);
+
+    return thys ;
+}
+
+/* @func ajTimeDel ************************************************************
+**
+** Destructor for AjPTime object.
+**
+** @param [w] thys [AjPTime*] Time object pointer
+**
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajTimeDel(AjPTime *thys)
+{
+    /* Check arg's */
+    if(*thys==NULL)
+	return;
+
+    AJFREE(*thys);
+    *thys = NULL;
+    
+    return;
+}
+
+
+
