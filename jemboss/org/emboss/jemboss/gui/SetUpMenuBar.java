@@ -183,7 +183,7 @@ public class SetUpMenuBar
       }
     });
     prefsMenu.add(serverSettings);
-
+    menuPanel.add(prefsMenu);
     
     JMenu toolMenu = new JMenu("Tools");
     toolMenu.setMnemonic(KeyEvent.VK_T);
