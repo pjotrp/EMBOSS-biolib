@@ -12,7 +12,6 @@ int main(int argc, char **argv)
 
     AjPSeqout seqout;
     AjPSeq seq = NULL;
-    AjBool firstonly;
 
     embInit ("seqretsingle", argc, argv);
 
