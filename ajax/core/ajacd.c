@@ -84,7 +84,6 @@ static AjPStr acdExpTmpstr = NULL;
 static AjPStr acdLogFName = NULL;
 static AjPFile acdLogFile = NULL;
 static AjPList acdSecList = NULL;
-static AjPList acdSecPromptList = NULL;
 
 static AjPStr acdPrettyFName = NULL;
 static AjPFile acdPrettyFile = NULL;
@@ -1493,11 +1492,10 @@ AjStatus ajAcdInitP (char *pgm, ajint argc, char *argv[], char *package)
     AjPList acdListCount = NULL;
     AjPStr tmpword = NULL;	/* words to add to acdListWords */
     ajint i;
-    ajint* k;
+    ajint *k = NULL;
 
     acdProgram = ajStrNewC (pgm);
     acdSecList = ajListstrNew();
-    acdSecPromptList = ajListstrNew();
 
     ajDebug ("testing acdprompts");
     if (ajNamGetValueC ("acdprompts", &tmpstr))
@@ -1585,11 +1583,17 @@ AjStatus ajAcdInitP (char *pgm, ajint argc, char *argv[], char *package)
 	  {
 	    if (ajStrLen(tmpword)) /* nothing before first whitespace */
 	    {
+	      acdLog ("++ add to list %x '%S'\n", tmpword, tmpword);
 	      ajListstrPushApp (acdListWords, tmpword);
 	      tmpword = NULL;
 	    }
+	    else
+	    {
+	      ajStrDel (&tmpword);
+	    }
 	  }
 	  (void) ajStrTokenClear (&tokenhandle);
+	  ajStrDel (&tmpword); 	/* empty token at the end */
 	}
     }
     ajFileClose (&acdFile);
@@ -1602,6 +1606,7 @@ AjStatus ajAcdInitP (char *pgm, ajint argc, char *argv[], char *package)
     /* Parse the input to set the initial definitions */
 
     acdParse (acdListWords, acdListCount);
+
     ajListstrDel (&acdListWords);
     ajListDel (&acdListCount);
 
@@ -1747,22 +1752,22 @@ static void acdParse (AjPList listwords, AjPList listcount)
     AjPStr acdStrAlias = NULL;
     AjPStr acdStrValue = NULL;
     AjPStr secname = NULL;
-    ajint* secprompt = NULL;
     ajint linecount = 0;
     ajint lineword = 0;
-    ajint *iword;
+    ajint *iword = NULL;
     acdLineNum = 0;
 
-    while (ajListLength(listcount) && (!lineword))
+    while (ajListLength (listcount) && (!lineword))
     {
-      ajListPeek(listcount, (void**) &iword);
+      ajListPeek (listcount, (void**) &iword);
       if (*iword)
 	lineword = *iword;
       else
       {
-	ajListPop(listcount, (void**) &iword);
+	ajListPop (listcount, (void**) &iword);
 	linecount++;
 	acdLineNum = linecount - 1;
+	AJFREE (iword);
       }
     }
     lineword = 0;
@@ -1770,14 +1775,15 @@ static void acdParse (AjPList listwords, AjPList listcount)
 
     while (ajListLength(listwords))
     {
- 	acdWordNextName(listwords, &acdStrType);
+ 	acdWordNextName (listwords, &acdStrType);
 
-	while (ajListLength(listcount) && (lineword < acdWordNum))
+	while (ajListLength (listcount) && (lineword < acdWordNum))
 	{
-	  ajListPop(listcount, (void**) &iword);
+	  ajListPop (listcount, (void**) &iword);
 	  lineword = *iword;
 	  linecount++;
 	  acdLineNum = linecount - 1;
+	  AJFREE (iword);
 	}
 
 	acdCurrentStage = acdStage (acdStrType);
@@ -1894,9 +1900,6 @@ static void acdParse (AjPList listwords, AjPList listcount)
     acdLineNum = linecount;
 
     if (ajListstrLength(acdSecList)) { /* fatal error, unclosed section(s) */
-      while (ajListPop(acdSecPromptList, (void*) &secprompt)) {
-	AJFREE (secprompt);
-      }
       while (ajListstrPop(acdSecList, &secname)) {
 	ajDebug("Section '%S' has no endsection\n", secname);
 	ajErr("Section '%S' has no endsection", secname); /* fails below */
@@ -1906,12 +1909,20 @@ static void acdParse (AjPList listwords, AjPList listcount)
       acdError ("Unclosed sections in ACD file"); /* test noendsec.acd */
     }
 
-    (void) ajStrDelReuse (&acdStrValue);
+    (void) ajStrDel (&acdStrName); /* the global string ... no longer needed */
+
+    (void) ajStrDel (&acdStrAlias);
+    (void) ajStrDel (&acdStrType);
+    (void) ajStrDel (&acdStrValue);
     (void) ajListstrDel (&acdSecList);
-    (void) ajListDel (&acdSecPromptList);
 
     acdLineNum = 0;
 
+    while (ajListLength (listcount))
+    {
+      ajListPop (listcount, (void**) &iword);
+      AJFREE (iword);
+    }
     return;
 }
 
@@ -1937,7 +1948,7 @@ static void acdParse (AjPList listwords, AjPList listcount)
 
 static AjPStr acdParseValue (AjPList listwords)
 {
-    static AjPStr strp=NULL;
+    AjPStr strp=NULL;
     static AjPStr tmpstrp=NULL;
     char  endq[]=" ";
     ajint iquote;
@@ -1953,7 +1964,11 @@ static AjPStr acdParseValue (AjPList listwords)
 
     cq = strchr(quotes, ajStrChar(strp, 0));
     if (!cq)				/* no quotes, simple return */
-	return strp;
+    {
+      ajStrAssS(&tmpstrp, strp);
+      ajStrDel(&strp);
+      return tmpstrp;
+    }
 
     /* quote found: parse up to closing quote then strip white space */
 
@@ -1982,11 +1997,14 @@ static AjPStr acdParseValue (AjPList listwords)
 		(void) ajStrAssS(&tmpstrp, strp);
 	}
 	if (!done)
+	{
 	  if (!acdWordNext (listwords, &strp)) /* test noquote.acd */
 	    acdErrorAcd (acdNewCurr,
 			 "Unexpected end of file, no closing quote\n");
+	}
     }
 
+    ajStrDel (&strp);
     return tmpstrp;
 }
 
@@ -2002,6 +2020,7 @@ static AjPStr acdParseValue (AjPList listwords)
 
 static AjBool acdWordNext (AjPList listwords, AjPStr* pword)
 {
+  ajStrDel (pword);
   if (ajListstrPop(listwords, pword))
   {
     acdWordNum++;
@@ -2140,7 +2159,9 @@ static AjBool acdNotLeftB (AjPList listwords)
   char ch;
   AjPStr pstr = NULL;
  
-  ajListstrPeek (listwords, &pstr);
+  if (!ajListstrPeek (listwords, &pstr))
+    return ajFalse;
+
   ch = ajStrChar(pstr, 0);
 
   if (ch == '[')
@@ -2164,22 +2185,26 @@ static AjBool acdNotLeftB (AjPList listwords)
 static AjBool acdIsLeftB (AjPList listwords)
 {
   char ch;
+  AjPStr teststr = NULL;
   AjPStr pstr = NULL;
  
-  ajListstrPeek (listwords, &pstr);
-  ch = ajStrChar(pstr, 0);
+  if (!ajListstrPeek (listwords, &teststr))
+    return ajFalse;
+
+  ch = ajStrChar(teststr, 0);
 
   if (ch == '[')
   {
-    (void) ajStrTrim (&pstr, 1);	/* trim the leading '[' in the list */
-    if (!ajStrLen(pstr))
+    (void) ajStrTrim (&teststr, 1);	/* trim the leading '[' in the list */
+    if (!ajStrLen(teststr))
     {				/* only the '[' so remove from the list */
       (void) acdWordNext (listwords, &pstr); /*  must succeed - see Peek */
+      ajStrDel (&pstr);		/* empty - ignored - so delete */
+      teststr = NULL;
     }
-    ajStrDel (&pstr);		/* empty - ignored - so delete */
     return ajTrue;
   }
-  /* do not delete pstr - we only peeked */
+  /* do not delete teststr - we only peeked  - deleted as pstr */
 
   return ajFalse;
 }
@@ -2192,7 +2217,6 @@ static AjBool acdIsLeftB (AjPList listwords)
 ** If that fails, tests the start of the next word in the list.
 **
 ** Afterwards, the value of pstr is the last word with any ']' removed
-** and listwords starts with the first word after the ']'
 **
 ** @param [uP] pstr [AjPStr*] String which has a trailing ']' removed if found
 ** @param [r] listwords [AjPList] List of remaining words to be parsed
@@ -2202,27 +2226,36 @@ static AjBool acdIsLeftB (AjPList listwords)
 
 static AjBool acdIsRightB (AjPStr* pstr, AjPList listwords)
 {
+  AjPStr teststr = NULL;
   AjPStr tmpstr = NULL;
-  char ch = ajStrChar(*pstr, -1);
+  char ch;
 
-  if (ch == ']')
+  if (*pstr)
   {
-    (void) ajStrTrim (pstr, -1);
-    return ajTrue;
+    ch = ajStrChar(*pstr, -1);
+
+    if (ch == ']')		/* test input pstr value for ']' at end */
+      {
+	(void) ajStrTrim (pstr, -1);
+	return ajTrue;
+      }
   }
 
-  if (!ajListstrPeek (listwords, &tmpstr)) /* leftend.acd valend.acd */
+  /* go on to the next word in the list */
+
+  if (!ajListstrPeek (listwords, &teststr)) /* leftend.acd valend.acd */
     acdErrorAcd (acdNewCurr, "End of file looking for ']'");
 
-  ch = ajStrChar(tmpstr, 0);
+  ch = ajStrChar(teststr, 0);
 
-  if (ch == ']')
+  if (ch == ']')		/* next word starts with ']' */
   {
-    (void) ajStrTrim (&tmpstr, 1);
-    if (!ajStrLen(tmpstr))
+    (void) ajStrTrim (&teststr, 1); /* trim the word - in the list */
+    if (!ajStrLen(teststr))	/*  only "]" so delete it */
     {
       acdWordNext (listwords, &tmpstr);	/* works - we tested  ajListstrPeek */
       ajStrDel (&tmpstr);
+      teststr = NULL;
     }
     return ajTrue;
   }
@@ -2242,9 +2275,9 @@ static AjBool acdIsRightB (AjPStr* pstr, AjPList listwords)
 
 static void acdParseAttributes (AcdPAcd acd, AjPList listwords)
 {
-  AjPStr acdStrAttr = NULL;
-  AjPStr acdStrValue = NULL;
-  AjPStr acdFixValue = NULL;
+  AjPStr strAttr = NULL;
+  AjPStr strValue = NULL;
+  AjPStr strFixValue = NULL;
   AjBool done=ajFalse;
 
   if (!acdIsLeftB(listwords))	/* test noleftappl.acd noleftsec.acd */
@@ -2254,29 +2287,35 @@ static void acdParseAttributes (AcdPAcd acd, AjPList listwords)
 
   acdPrettyShift ();
 
-  done = acdIsRightB(&acdStrAttr, listwords);
+  done = acdIsRightB(&strAttr, listwords); /* could be [ ] */
 
   /* continue parsing until we reach a true closing ']' character */
 
   while (!done)
   {
-    if (!acdWordNextName (listwords, &acdStrAttr)) /* test: noattname.acd */
+    if (!acdWordNextName (listwords, &strAttr)) /* test: noattname.acd */
       acdErrorAcd (acdNewCurr, "Bad or missing attribute name '%S'",
-		   acdStrAttr);
+		   strAttr);
 
-    (void) ajStrAssS (&acdStrValue, acdParseValue (listwords));
-    done = acdIsRightB(&acdStrValue, listwords);
-    (void) ajStrAssS (&acdFixValue, acdStrValue);
-    (void) acdTextFormat(&acdFixValue);
+    (void) ajStrAssS (&strValue, acdParseValue (listwords));
+    done = acdIsRightB(&strValue, listwords); /* will this be last pair? */
+
+    (void) ajStrAssS (&strFixValue, strValue);
+    (void) acdTextFormat(&strFixValue);
     if (acdCurrentStage == QUAL_STAGE)
-      (void) acdSet (acd, &acdStrAttr, acdFixValue);
+      (void) acdSet (acd, &strAttr, strFixValue);
     else
-      (void) acdSetKey (acd, &acdStrAttr, acdFixValue);
-    acdPrettyWrap (ajStrLen(acdStrAttr)+3, "%S: \"%S\"",
-		   acdStrAttr, acdStrValue);
+      (void) acdSetKey (acd, &strAttr, strFixValue);
+    acdPrettyWrap (ajStrLen(strAttr)+3, "%S: \"%S\"",
+		   strAttr, strValue);
   }
+
   acdPrettyUnShift ();
   acdPretty ("]\n");
+
+  ajStrDel (&strAttr);
+  ajStrDel (&strValue);
+  ajStrDel (&strFixValue);
 
   return;
 }
@@ -2330,7 +2369,7 @@ static AcdPAcd acdNewAppl (AjPStr name)
     acd = acdNewAcdKey (name, name, ikey);
     acd->Level = ACD_APPL;
     if (saveqacd)
-	acd->AssocQuals = saveqacd;
+        acd->AssocQuals = saveqacd;
 
     (void) ajStrDelReuse (&qname);
     (void) ajStrDelReuse (&qtype);
@@ -2380,7 +2419,6 @@ static AcdPAcd acdNewSec (AjPStr name)
     static ajint firstcall = 1;
     static ajint ikey;
     AjPStr secname=NULL;
-    ajint* secprompt = NULL;
 
     if (firstcall)
     {
@@ -2396,9 +2434,6 @@ static AcdPAcd acdNewSec (AjPStr name)
 
     ajStrAssS(&secname, name);
     ajListstrPush (acdSecList, secname);
-
-    AJNEW0(secprompt);
-    ajListPush (acdSecPromptList, secprompt);
 
     ajDebug("acdNewSec acdSecList push '%S' new length %d\n",
 	    secname, ajListstrLength(acdSecList));
@@ -2421,7 +2456,6 @@ static AcdPAcd acdNewEndsec (AjPStr name)
     static ajint firstcall = 1;
     static ajint ikey;
     AjPStr secname=NULL;
-    ajint* secprompt=NULL;
 
     if (firstcall)
     {
@@ -2439,9 +2473,8 @@ static AcdPAcd acdNewEndsec (AjPStr name)
 
     else {
       ajListstrPop (acdSecList, &secname);
-      ajListPop (acdSecPromptList, (void*) &secprompt);
-      ajDebug("Pop from acdSecList '%S' (%d) new length %d\n",
-	      secname, *secprompt, ajListstrLength(acdSecList));
+      ajDebug("Pop from acdSecList '%S' new length %d\n",
+	      secname, ajListstrLength(acdSecList));
 
       if (!ajStrMatch(name, secname)) {	/* test badendsec.acd */
 	ajDebug ("Bad endsection '%S', current section is '%S\n'",
@@ -2450,7 +2483,6 @@ static AcdPAcd acdNewEndsec (AjPStr name)
 		  name, secname);
       }
       ajStrDel(&secname);
-      AJFREE (secprompt);
     }
 
     acd = acdNewAcdKey(name, name, ikey);
@@ -9578,7 +9610,7 @@ static AjBool acdSet (AcdPAcd thys, AjPStr* attrib, AjPStr value) {
   }
 
   if (aqual)
-    return acdDef (aqual, value);
+    return acdDef(aqual, value);
 
   /* test: wrongattr.acd */
   acdErrorAcd (thys, "Attribute '%S' unknown\n", *attrib );
@@ -9882,6 +9914,8 @@ static ajint acdFindAttrC (AcdPAttr attr, char* attrib) {
 ** Steps through all the ACD items, filling in missing information.
 ** Parameters are defined in the default attributes. The parameter
 ** number is generated here in the order they are found.
+**
+** Associated qualifiers (if any) also get a copy of the parameter number.
 **
 ** @return [void]
 ** @@
