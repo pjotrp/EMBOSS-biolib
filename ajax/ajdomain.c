@@ -4283,11 +4283,15 @@ AjBool ajScopWrite(AjPFile outf, const AjPScop obj)
 		obj->Sunid_Family,obj->Sunid_Domain, obj->Sunid_Source,
 		obj->Sunid_Domdat);
 
-    ajFmtPrintF(outf,"CL   %S",obj->Class);
-    ajFmtPrintSplit(outf,obj->Fold,"\nXX\nFO   ",75," \t\n\r");
-    ajFmtPrintSplit(outf,obj->Superfamily,"XX\nSF   ",75," \t\n\r");
-    ajFmtPrintSplit(outf,obj->Family,"XX\nFA   ",75," \t\n\r");
-    ajFmtPrintSplit(outf,obj->Domain,"XX\nDO   ",75," \t\n\r");;
+    ajFmtPrintF(outf,"CL   %S\n",obj->Class);
+    ajFmtPrintF(outf, "XX\n");
+    ajFmtPrintSplit(outf,obj->Fold,"FO   ",75," \t\n\r");
+    ajFmtPrintF(outf, "XX\n");
+    ajFmtPrintSplit(outf,obj->Superfamily,"SF   ",75," \t\n\r");
+    ajFmtPrintF(outf, "XX\n");
+    ajFmtPrintSplit(outf,obj->Family,"FA   ",75," \t\n\r");
+    ajFmtPrintF(outf, "XX\n");
+    ajFmtPrintSplit(outf,obj->Domain,"DO   ",75," \t\n\r");;
     ajFmtPrintF(outf,"XX\nOS   %S\n",obj->Source);
 
     if(ajStrLen(obj->SeqPdb))
