@@ -384,7 +384,7 @@ static void reportWriteDbMotif (AjPReport thys,
 		   AJMIN(6, istart),
 		   istart, tmpstr, iend);
     }
-    ajStrDelReuse(&tmpstr);
+    ajStrDel(&tmpstr);
   }
 
   ajStrDel(&subseq);
