@@ -48,6 +48,8 @@ public class RunEmbossApplication
     }
     catch(IOException ioe)
     {
+      System.out.println("RunEmbossApplication Error executing: "+
+                          embossCommand);
       status = "1";
     }
   }
