@@ -6559,7 +6559,7 @@ ID feat-embl-togff
 AP seqret
 CL -feat ../../data/feat.fasta -ufo ../../data/feat.emft gff::test.out -auto
 FI test.out
-FZ = 60754
+FZ = 60762
 ## Internal quotes
 FP /\tCDS\t1289\t1879\t0\.000\t\+\t\.\tSequence "AB036666.58" ; .* of \\"amiE\\" /
 //
