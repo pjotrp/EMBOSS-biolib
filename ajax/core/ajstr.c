@@ -5911,7 +5911,8 @@ ajint ajStrListToArray(AjPStr thys, AjPStr **array)
 
 /* @func ajStrDegap ***********************************************************
 **
-** Removes all but alphabetic characters from a string
+** Removes all but alphabetic characters and asterisk (possible sequence
+** characters) from a string
 **
 ** @param [w] thys [AjPStr*] String
 ** @return [void]
@@ -5932,7 +5933,9 @@ void ajStrDegap(AjPStr* thys)
     for(i=0;i<len;++i)
     {
 	c = *(p++);
-	if((c>='A' && c<='Z') || (c>='a' && c<='z'))
+	if((c=='O') || (c=='o'))	/* O is a gap character for Phylip */
+	    --(*thys)->Len;
+	else if((c>='A' && c<='Z') || (c>='a' && c<='z') || (c=='*'))
 	    *(q++) = c;
 	else
 	    --(*thys)->Len;
