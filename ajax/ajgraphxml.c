@@ -101,7 +101,8 @@ static void 	xml_SetCurrentScene(AjPXmlFile file, AjPXmlNode node);
 static void 	xml_ClearFile(AjPXmlFile file);
 static void 	xml_UnrefNode(AjPXmlNode node);
 
-
+static void     xml_clear_nodeTypes(const void *key, void **value, void *cl);
+static void     xml_deltablenode(const void *key, void **value, void *cl);
 
 
 
@@ -175,6 +176,14 @@ void ajXmlFileDel(AjPXmlFile *thys)
 {
     if(!thys || !*thys)
 	return;
+
+
+    if((*thys)->nodeTypes)
+    {
+	ajTableMap((*thys)->nodeTypes,xml_clear_nodeTypes,NULL);
+	ajTableFree(&(*thys)->nodeTypes);
+    }
+
 
     AJFREE(*thys);
     *thys = NULL;
@@ -2489,9 +2498,10 @@ void ajXmlAddGraphicC(AjPXmlFile file, char *type)
 	    }
     }
 
-    ajTableFree(&file->nodeTypes);
-    file->nodeTypes = ajStrTableNew(1);
 
+    if(!file->nodeTypes)
+	file->nodeTypes = ajStrTableNew(1);
+    
     /*  el unrefed above if type == NULL */
     /* look to see if I need some checking here hugh */
 
@@ -3124,7 +3134,6 @@ static AjPStr xml_GetIndex(AjPXmlNode passedNode)
 
     if(proto)
     {
-	gdome_str_unref(nodeName);
 	nodeName = gdome_el_tagName(xml_GetNodeElement(node), &exc);
 
 	gdome_str_unref(nodeName);
@@ -4062,10 +4071,13 @@ static AjPXmlNode xml_GetNodeTypeMakeIfNot(AjPXmlFile file, AjPStr nameReqd)
     ajint limit2;
     
     /*    returnNode = (AjPXmlNode) ajTableGet(file->nodeTypes, nameReqd); */
+
+
     colourTable = (AjPTable) ajTableGet(file->nodeTypes, nameReqd);
     if(colourTable != NULL)
 	returnNode = (AjPXmlNode) ajTableGet(colourTable, 
 					     xml_PresentColourAsString(file));
+    
 
 
     /*   if(returnNode != NULL && xml_IsShapeThisColour(file, returnNode)) */
@@ -4078,15 +4090,6 @@ static AjPXmlNode xml_GetNodeTypeMakeIfNot(AjPXmlFile file, AjPStr nameReqd)
 	    returnNode2 = xml_SetNode(xml_GetNode(returnNode));
 	    gdome_n_ref(xml_GetNode(returnNode), &exc);
 
-	    /*	    colourTable = (AjPTable) ajTableGet(file->nodeTypes,
-		    nameReqd);
-		    if(colourTable == NULL)
-		    {
-		    colourTable = ajStrTableNew(1);
-		    }
-		    ajTablePut(colourTable, 
-		    (const void *) xml_PresentColourAsString(file),
-		    (void *)returnNode2); */
 	    return returnNode2;
 	}
     }
@@ -4146,15 +4149,12 @@ static AjPXmlNode xml_GetNodeTypeMakeIfNot(AjPXmlFile file, AjPStr nameReqd)
 	    (xml_GetNode(xml_GetCurrentGraphic(file)));
 	gdome_n_ref(xml_GetNode(xml_GetCurrentGraphic(file)), &exc);
 
+
 	colourTable = (AjPTable) ajTableGet(file->nodeTypes, nameReqd);
 	if(colourTable == NULL)
 	{
 	    colourTable = ajStrTableNew(1);
     
-	    /*
-	       ajTablePut(file->nodeTypes, (const void *) nameReqd,
-	       (void *)colourTable); 
-	       */
 	    ajTablePut(file->nodeTypes, (const void *) ajStrNewS(nameReqd),
 		       (void *)colourTable);
     
@@ -4162,7 +4162,7 @@ static AjPXmlNode xml_GetNodeTypeMakeIfNot(AjPXmlFile file, AjPStr nameReqd)
 	ajTablePut(colourTable, 
 		   (const void *) xml_PresentColourAsString(file),
 		   (void *)returnNode2);
-	/*	ajXmlWriteStdout(file); */
+
 	return(xml_GetCurrentGraphic(file));
       
     }
@@ -4266,11 +4266,12 @@ static AjPXmlNode xml_GetNodeTypeMakeIfNot(AjPXmlFile file, AjPStr nameReqd)
 	returnNode2 = xml_GetParent(returnNode);
 	gdome_n_ref(xml_GetNode(returnNode2), &exc);
 
+
 	colourTable = (AjPTable) ajTableGet(file->nodeTypes, nameReqd);
 	if(colourTable == NULL)
 	{
 	    colourTable = ajStrTableNew(1);
-	    ajTablePut(file->nodeTypes, (const void *) nameReqd,
+	    ajTablePut(file->nodeTypes, (const void *) ajStrNewS(nameReqd),
 		       (void *)colourTable);
 	}
 	ajTablePut(colourTable, 
@@ -4288,19 +4289,18 @@ static AjPXmlNode xml_GetNodeTypeMakeIfNot(AjPXmlFile file, AjPStr nameReqd)
     returnNode2 = xml_SetNode(xml_GetNode(returnNode));
     gdome_n_ref(xml_GetNode(returnNode), &exc);
 
+
     colourTable = (AjPTable) ajTableGet(file->nodeTypes, nameReqd);
     if(colourTable == NULL)
     {
 	colourTable = ajStrTableNew(1);
 	ajTablePut(file->nodeTypes, 
-		   (const void *) nameReqd,
+		   (const void *) ajStrNewS(nameReqd),
 		   (void *)colourTable);
     }
     ajTablePut(colourTable, 
 	       (const void *) xml_PresentColourAsString(file),
 	       (void *)returnNode2);
-    /*    ajTablePut(file->nodeTypes, (const void *)nameReqd, 
-	  (void *) returnNode2); */
 
     /* listShapes and nodeName unrefed just above */
     /* tempNode, unrefed as required */
@@ -4567,7 +4567,7 @@ static AjPXmlFile xml_CreateNewOutputFile()
     xml_AddCommonBit(file);
 
     file->nodeTypes = ajStrTableNew(1);
-
+    
     gdome_str_unref (name);
     gdome_str_unref (publicId);
     gdome_str_unref (systemId);
@@ -5151,5 +5151,58 @@ void xml_Unused()
 
     return;
 }
+
+
+
+/* @funcstatic  xml_clear_nodeTypes ************************************
+**
+** Clear primary table allocation for colourtable
+**
+** @param [P] key [const void*] Standard argument, table key.
+** @param [P] value [void**] Standard argument, table data item.
+** @param [P] cl [void*] Standard argument, usually NULL
+**
+** @return [void]
+** @@
+*********************************************************************/
+static void xml_clear_nodeTypes(const void *key, void **value, void *cl)
+{
+    AjPTable table = (AjPTable) *value;
+    AjPStr skey = (AjPStr) key;
+    
+    ajStrDel(&skey);
+    ajTableMap(table,xml_deltablenode,NULL);
+
+    ajTableFree(&table);
+
+    return;
+}
+
+
+
+
+/* @funcstatic  xml_deltablenode ************************************
+**
+** Clear secondary (XmlNode) table allocation for colourtable subtables
+**
+** @param [P] key [const void*] Standard argument, table key.
+** @param [P] value [void**] Standard argument, table data item.
+** @param [P] cl [void*] Standard argument, usually NULL
+**
+** @return [void]
+** @@
+*********************************************************************/
+static void xml_deltablenode(const void *key, void **value, void *cl)
+{
+    AjPXmlNode node =(AjPXmlNode) *value;
+    AjPStr skey = (AjPStr) key;
+
+    ajStrDel(&skey);
+    ajXmlNodeDel(&node);
+
+    return;
+}
+
+
 
 #endif
