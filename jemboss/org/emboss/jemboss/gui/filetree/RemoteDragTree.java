@@ -527,7 +527,8 @@ public class RemoteDragTree extends JTree implements DragGestureListener,
   public void addObject(RemoteFileNode parentNode,String child,
                         boolean ldir)
   {
-    String path = parentNode.getFile();
+//  String path = parentNode.getFile();
+    String path = parentNode.getFullName();
     //create new file node
     if(path.equals(" "))
       path = "";
