@@ -173,7 +173,8 @@ int main(int argc, char **argv)
 
 
 
-        /*  Parse the Psi-Blast output file and write a Hitlist object */
+        /*  Parse the Psi-Blast output file and write a Hitlist object. It
+	 is OK for scopalg to be NULL (i.e. if modei ==1) */
         tmphitlist = seqsearch_ReadPsiblastOutput(scopalg, psif);
         
         /* Delete psiblast output file*/
@@ -254,7 +255,8 @@ int main(int argc, char **argv)
 		ajFmtPrintF(logf, "WARN  Could not open for writing %S\n", 
 			    dhfname);
 		embHitlistDel(&hitlist);
-		ajDmxScopalgDel(&scopalg);  
+		if(modei==2) 
+		    ajDmxScopalgDel(&scopalg);  
 		ajFileClose(&psif); 
 
 		/* free up listin */
@@ -296,7 +298,8 @@ int main(int argc, char **argv)
 
 	    /* Free memory etc*/
 	    embHitlistDel(&hitlist);
-	    ajDmxScopalgDel(&scopalg);
+	    if(modei==2)
+		ajDmxScopalgDel(&scopalg);
 	    ajFileClose(&psif);     
 	    ajStrDel(&inname);
 	}
