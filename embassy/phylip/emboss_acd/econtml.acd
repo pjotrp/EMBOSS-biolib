@@ -60,7 +60,7 @@ int: outgnum [
      req: "$(og)"
      min: 1 
      def: 1
-     info:"number of the outgroup" ]
+     info: "number of the outgroup" ]
 
 bool:  multsets [ 
        opt: Y 
@@ -90,12 +90,12 @@ bool: drawtree [
 
 bool: trout [ 
       param: Y 
-      def:Y
+      def: Y
       information: "Create a tree file" ]
 
 outfile: treefile [
           req: "$(trout)" 
 	  def: "econtml.treefile"
           info: "Tree file name" 
-          prompt:"Output treefile name" ]
+          prompt: "Output treefile name" ]
 

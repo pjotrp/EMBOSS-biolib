@@ -32,12 +32,12 @@ list: method [ req: y min: 1 max: 1
 
 bool: enzymes [
       opt: "@($(method) == Res)"
-      info:"Present in input file"
+      info: "Present in input file"
       def: N ]
       
 bool: all [
       opt: "@($(method) == Gen)"
-      info:"All alleles present at each locus"
+      info: "All alleles present at each locus"
       def: N ]
 
 list: test [ req: y min: 1 max: 1

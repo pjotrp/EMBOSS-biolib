@@ -15,7 +15,7 @@ outfile: outfile [
 
 bool: trout [ 
       param: Y 
-      def:Y
+      def: Y
       information: "Create a tree file" ]
 
 bool: drawtree [ 
@@ -27,7 +27,7 @@ outfile: treefile [
 	  req: "$(trout)" 
 	  def: "eneighbor.treefile" 
 	  info: "Tree file name" 
-	  prompt:"Treefile name" ]
+	  prompt: "Treefile name" ]
 
 bool: nj [ 
       req: Y 
@@ -42,7 +42,7 @@ bool: og [
 
 int: outgnum [ 
      req: "$(og)" 
-     info:"number of the outgroup" ]
+     info: "number of the outgroup" ]
 
 
 bool: lt [ 

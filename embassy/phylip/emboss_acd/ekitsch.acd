@@ -62,7 +62,7 @@ int: randtimes [
 #     min: 1
 #     def: 1
 ##     max: "@($(msf.count))"  
-#     info:"number of the outgroup" ]
+#     info: "number of the outgroup" ]
 
 bool: lt [ 
       opt: Y 
@@ -107,4 +107,4 @@ outfile: treefile [
           req: "Y" 
           def: "ekitsch.treefile" 
           info: "Tree file name" 
-          prompt:"Treefile name" ]
+          prompt: "Treefile name" ]

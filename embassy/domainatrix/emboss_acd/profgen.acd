@@ -1,6 +1,6 @@
 appl: profgen [
   documentation: "Generates various profiles for each alignment in a directory."
-  groups:"Protein:3D Structure"
+  groups: "Protein:3D Structure"
   gui: "yes"
   batch: "yes"
   cpu: "medium"

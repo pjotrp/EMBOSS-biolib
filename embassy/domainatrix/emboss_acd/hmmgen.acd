@@ -1,7 +1,7 @@
 appl: hmmgen 
 [
   documentation: "Generates a hidden Markov model for each alignment in a directory by using the HMMER package."
-  groups:"Protein:3D Structure"
+  groups: "Protein:3D Structure"
   gui: "yes"
   batch: "yes"
   cpu: "medium"

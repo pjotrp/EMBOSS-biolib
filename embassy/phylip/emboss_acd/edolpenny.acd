@@ -84,11 +84,11 @@ bool: drawtree [
 
 bool: trout [ 
       param: Y 
-      def:Y
+      def: Y
       information: "Create a tree file" ]
 
 outfile: treefile [
           req: "$(trout)" 
           def: "edolpenny.treefile"
           info: "Tree file name" 
-          prompt:"Output treefile name" ]
+          prompt: "Output treefile name" ]

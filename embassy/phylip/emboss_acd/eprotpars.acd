@@ -42,7 +42,7 @@ int: outgnum [
      req: "$(og)"
      min: 1 
      def: 1
-     info:"number of the outgroup" ]
+     info: "number of the outgroup" ]
 
 bool: thresh [
       req: N
@@ -60,7 +60,7 @@ float: valthresh [
 #      opt: Y 
 #      min: 1 
 #      max: 1
-#      header:"Which genetic code"
+#      header: "Which genetic code"
 #      values: "U:Universal;
 #               M:Mitochondrial;
 #               V:Vertebrate mitochondrial;
@@ -96,11 +96,11 @@ bool: drawtree [
 
 bool: trout [ 
       param: Y 
-      def:Y
+      def: Y
       information: "Create a tree file" ]
 
 outfile: treefile [
           req: "$(trout)" 
           def: "eprotpars.treefile"
           info: "Tree file name" 
-          prompt:"Output treefile name" ]
+          prompt: "Output treefile name" ]

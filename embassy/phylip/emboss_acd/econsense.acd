@@ -15,7 +15,7 @@ outfile: outfile [
 
 bool: trout [ 
       param: Y 
-      def:Y
+      def: Y
       information: "Create a tree file" ]
 
 bool: drawtree [ 

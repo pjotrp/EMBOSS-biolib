@@ -16,7 +16,7 @@ outfile: outfile [
 
 bool: trout [ 
       param: Y 
-      def:Y
+      def: Y
       information: "Create a tree file" ]
 
 bool: drawtree [ 
@@ -58,7 +58,7 @@ int: outgnum [
      min: 1
      def: 1
 #     max: "@($(msf.count))"  
-     info:"number of the outgroup" ]
+     info: "number of the outgroup" ]
 
 bool: printdata [ 
       opt: Y 
@@ -68,7 +68,7 @@ bool: printdata [
 
 bool: progress [ 
       opt: Y 
-      def: N 
+      def: Neze 
       info: "Print indications of progress of run" 
       prompt: "Print indications of progress of run" ]
 

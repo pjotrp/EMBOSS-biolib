@@ -36,7 +36,7 @@ int: outgnum [
      req: "$(og)"
      min: 1 
      def: 1
-     info:"number of the outgroup" ]
+     info: "number of the outgroup" ]
 
 bool: thresh [
       req: N
@@ -81,11 +81,11 @@ bool: drawtree [
 
 bool: trout [ 
       param: Y 
-      def:Y
+      def: Y
       information: "Create a tree file" ]
 
 outfile: treefile [
           req: "$(trout)" 
           def: "ednapenny.treefile"
           info: "Tree file name" 
-          prompt:"Output treefile name" ]
+          prompt: "Output treefile name" ]

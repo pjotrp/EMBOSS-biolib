@@ -53,7 +53,7 @@ int: outgnum [
      min: 1
      def: 1
 #     max: "@($(msf.count))"  
-     info:"number of the outgroup" ]
+     info: "number of the outgroup" ]
 
 bool: thresh [
       req: N
@@ -103,7 +103,7 @@ bool: steps [
 
 bool: trout [ 
       param: Y 
-      def:Y
+      def: Y
       information: "Create a tree file" ]
 
 bool: drawtree [ 
@@ -115,4 +115,4 @@ outfile: treefile [
           req: "$(trout)" 
           def: "emix.treefile" 
           info: "Tree file name" 
-          prompt:"Treefile name" ]
+          prompt: "Treefile name" ]
