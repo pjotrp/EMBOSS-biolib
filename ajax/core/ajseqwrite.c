@@ -95,6 +95,7 @@ static void       seqWriteTreecon (AjPSeqout outseq);
 **
 ** Functions to write each sequence format
 **
+** @return [void]
 ******************************************************************************/
 
 static SeqOOutFormat seqOutFormat[] = { /* AJFALSE = write one file */
@@ -1155,6 +1156,12 @@ static void seqWriteClustal (AjPSeqout outseq) {
       ilen = ajSeqLen(seq);
   }  
 
+  for (i=0; i < isize; i++) {
+    seq = seqarr[i];
+    if (ilen > ajSeqLen(seq))
+      ajSeqFill(seq, ilen);
+  }  
+
   (void) ajFmtPrintF (outseq->File,
 		      "CLUSTAL W(1.4) multiple sequence alignment\n");
   
@@ -1515,8 +1522,6 @@ static void seqWriteMsf (AjPSeqout outseq) {
 	     ajSeqGetName(seq), ajSeqLen(seq), check);
     checktot += check;
     checktot = checktot % 10000;
-    if (ilen < ajSeqLen(seq))
-      ilen = ajSeqLen(seq);
   }  
 
   ajDebug ("checksum %d\n", checktot);
