@@ -38,18 +38,35 @@ ssl_print_notes()
  echo "   adding/changing the provider line (usually provider 2 or 3):"
  echo "   security.provider.2=com.sun.net.ssl.internal.ssl.Provider"
  echo
+
  echo "B) COPY & PASTE THE FOLLOWING INTO (changing port number if required) "$TOMCAT_ROOT/conf/server.xml
  echo
- echo '   <!-- Define an SSL HTTP/1.1 Connector on port '$PORT' -->'
- echo '   <Connector className="org.apache.catalina.connector.http.HttpConnector"'
- echo '           port="'$PORT'" minProcessors="5" maxProcessors="75"'
- echo '           enableLookups="true"'
- echo '           acceptCount="10" debug="0" scheme="https" secure="true">'
- echo '   <Factory className="org.apache.catalina.net.SSLServerSocketFactory"'
- echo '           keystoreFile="'$KEYSTOREFILE'" keystorePass="'$PASSWD'"'
- echo '           clientAuth="false" protocol="TLS"/>'
- echo '   </Connector>'  
- echo 
+
+ if [ -d "$TOMCAT_ROOT/shared/classes" ]; then
+#tomcat 4.1.x
+   echo '    <!-- Define a SSL Coyote HTTP/1.1 Connector on port '$PORT' -->'
+   echo '    <Connector className="org.apache.coyote.tomcat4.CoyoteConnector"'
+   echo '               port="'$PORT'" minProcessors="5" maxProcessors="75"'
+   echo '               enableLookups="false"'
+   echo '               acceptCount="10" debug="0" scheme="https" secure="true"'
+   echo '               useURIValidationHack="false">'
+   echo '      <Factory className="org.apache.coyote.tomcat4.CoyoteServerSocketFactory"'
+   echo '           keystoreFile="'$KEYSTOREFILE'" keystorePass="'$PASSWD'"'
+   echo '           clientAuth="false" protocol="TLS"/>'
+   echo '    </Connector>'
+ else
+#tomcat 4.0.x
+   echo '   <!-- Define an SSL HTTP/1.1 Connector on port '$PORT' -->'
+   echo '   <Connector className="org.apache.catalina.connector.http.HttpConnector"'
+   echo '           port="'$PORT'" minProcessors="5" maxProcessors="75"'
+   echo '           enableLookups="true"'
+   echo '           acceptCount="10" debug="0" scheme="https" secure="true">'
+   echo '   <Factory className="org.apache.catalina.net.SSLServerSocketFactory"'
+   echo '           keystoreFile="'$KEYSTOREFILE'" keystorePass="'$PASSWD'"'
+   echo '           clientAuth="false" protocol="TLS"/>'
+   echo '   </Connector>'  
+   echo 
+ fi
 
 }
 
@@ -856,12 +873,12 @@ fi
 
 if [ -d "$TOMCAT_ROOT/classes" ]; then
 
-#tomcat 10.0.x
+#tomcat 4.0.x
   ln -s $JEMBOSS/org $TOMCAT_ROOT/classes
   ln -s $JEMBOSS/resources $TOMCAT_ROOT/classes
 elif [ -d "$TOMCAT_ROOT/shared/classes" ]; then
 
-#tomcat 10.1.x
+#tomcat 4.1.x
   ln -s $JEMBOSS/org $TOMCAT_ROOT/shared/classes/org
   ln -s $JEMBOSS/resources $TOMCAT_ROOT/shared/classes/resources
 # cp -R $JEMBOSS/org/emboss $TOMCAT_ROOT/webapps/soap/WEB-INF/classes/org/emboss
