@@ -172,6 +172,6 @@ DB qasrsfasta [ type: N format: fasta method: srsfasta
 DB qasrswww [ type: N format: embl method: srswww
   dbalias: embl
   fields: "sv des org key"
-  url: http://picasso.lionbio.co.uk:8723/srs6bin/cgi-bin/wgetz
+  url: http://srs.ebi.ac.uk/srs6bin/cgi-bin/wgetz
   comment: "Remote SRS web server"
 ]
