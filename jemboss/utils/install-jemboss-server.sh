@@ -18,7 +18,7 @@
 #
 #
 # Install EMBOSS & Jemboss 
-# last changed: 15/10/02
+# last changed: 26/11/02
 #
 #
 
@@ -839,11 +839,16 @@ fi
 make_jemboss_properties $EMBOSS_INSTALL $LOCALHOST $AUTH $SSL $PORT $EMBOSS_URL
 if [ $INSTALL_TYPE = "2" ]; then
   RUNFILE=$JEMBOSS/runJemboss.csh
+  if [ -f "$RUNFILE.bak" ]; then
+    rm -f $RUNFILE.bak
+  fi
   sed "s|^#java org|java org|" $RUNFILE > $RUNFILE.new
-  sed "s|^java org.emboss.jemboss.Jemboss &|#java org.emboss.jemboss.Jemboss &|" $RUNFILE.new > $RUNFILE.new1
-  rm -f $RUNFILE.new 
+  sed "s|^java org.emboss.jemboss.Jemboss &|#java org.emboss.jemboss.Jemboss &|" $RUNFILE.new  > $RUNFILE.new1
+  sed "s|^#setenv EMBOSS_INSTALL.*|setenv EMBOSS_INSTALL $EMBOSS_INSTALL/lib|"   $RUNFILE.new1 > $RUNFILE.new2
+  sed "s|^#setenv LD_LIBRARY_PATH|setenv LD_LIBRARY_PATH|"                       $RUNFILE.new2 > $RUNFILE.new3
+  rm -f $RUNFILE.new $RUNFILE.new1 $RUNFILE.new2
   mv $RUNFILE $RUNFILE.bak
-  mv $RUNFILE.new1 $RUNFILE
+  mv $RUNFILE.new3 $RUNFILE
   chmod a+x $RUNFILE
   exit 0
 fi
