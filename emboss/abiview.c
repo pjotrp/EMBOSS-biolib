@@ -26,13 +26,13 @@
 #include "emboss.h"
 
 
-static AjPGraphData abiview_graphDisplay(AjPGraph graphs, AjPInt2d trace,
+static AjPGraphPlpData abiview_graphDisplay(AjPGraph graphs, AjPInt2d trace,
 					 ajint nstart, ajint nstop,
 					 AjPShort  basePositions, ajint base,
 					 ajint colour, AjBool overlay,
 					 float tmax, ajint* ntrace);
 
-static AjPGraphData abiview_graphTextDisplay(AjPGraph graphs, ajint nstart,
+static AjPGraphPlpData abiview_graphTextDisplay(AjPGraph graphs, ajint nstart,
 					     ajint nstop,
 					     AjPShort basePositions,
 					     AjBool overlay, AjPStr nseq,
@@ -74,11 +74,11 @@ int main(int argc, char **argv)
     AjBool yticks;
     AjBool dseq;
 
-    AjPGraphData gd1 = NULL;
-    AjPGraphData gd2 = NULL;
-    AjPGraphData gd3 = NULL;
-    AjPGraphData gd4 = NULL;
-    AjPGraphData gd5 = NULL;
+    AjPGraphPlpData gd1 = NULL;
+    AjPGraphPlpData gd2 = NULL;
+    AjPGraphPlpData gd3 = NULL;
+    AjPGraphPlpData gd4 = NULL;
+    AjPGraphPlpData gd5 = NULL;
 
     ajint ntrace;
     ajint strace;
@@ -109,7 +109,7 @@ int main(int argc, char **argv)
     const ajlong BYTE[] = { 0x000000ff };
 
 
-    ajGraphInit ("abiview", argc, argv);
+    ajGraphInit("abiview", argc, argv);
 
     fp         = ajAcdGetInfile("infile");
     graphs     = ajAcdGetGraphxy("graph");
@@ -144,7 +144,8 @@ int main(int argc, char **argv)
         ajFatal("-startbase (%d) larger than the number of bases (%d).",
                  base_start,numBases);
 
-    if(graphs->displaytype == 17)
+    /* For data, all in one 'plot' */
+    if(ajGraphIsData(graphs))
 	window = numBases+1;
 
     trace = ajInt2dNew();
@@ -164,7 +165,7 @@ int main(int argc, char **argv)
     res4 = (char)(fwo_&BYTE[0]);
 
 
-    /* decide if to draw graph for each base */
+    /* decide whether to draw graph for each base */
     graph1 = abiview_drawbase(&res1,baseN);
     graph2 = abiview_drawbase(&res2,baseN);
     graph3 = abiview_drawbase(&res3,baseN);
@@ -193,8 +194,8 @@ int main(int argc, char **argv)
 
     nstop  = window+1+nstart;
 
-    ajGraphxyTitle(graphs,fname);
-    ajGraphxyYtitleC(graphs,"Signal");
+    ajGraphSetTitle(graphs,fname);
+    ajGraphSetYTitleC(graphs,"Signal");
     if(yticks)
     {
 	ajGraphxySetYTick(graphs,ajTrue);
@@ -260,20 +261,19 @@ int main(int argc, char **argv)
 	/* Clean up */
 	if(nstop<numBases)
 	{
-	    if(graph1) ajGraphDataDel(&gd1); /* free graph data mem */
-	    if(graph2) ajGraphDataDel(&gd2);
-	    if(graph3) ajGraphDataDel(&gd3);
-	    if(graph4) ajGraphDataDel(&gd4);
+	    if(graph1) ajGraphPlpDataDel(&gd1); /* free graph data mem */
+	    if(graph2) ajGraphPlpDataDel(&gd2);
+	    if(graph3) ajGraphPlpDataDel(&gd3);
+	    if(graph4) ajGraphPlpDataDel(&gd4);
 
 	    if(dseq)
 	    {
 		if(!overlay)
 		{
-		    ajGraphDataObjDel(&gd5); /* free seq text mem */
-		    ajGraphDataDel(&gd5);
+		    ajGraphPlpDataDel(&gd5); /* free seq text mem */
 		}
 		else
-		    ajGraphObjDel(&graphs); /* free seq text mem */
+		    ajGraphClear(graphs); /* free seq text mem */
 	    }
 
 
@@ -290,10 +290,10 @@ int main(int argc, char **argv)
 
     ajGraphCloseWin();
     if(dseq && overlay)
-	ajGraphObjDel(&graphs);   /* free seq text mem */
+	ajGraphClear(graphs);   /* free seq text mem */
 
     if(dseq && !overlay)
-	ajGraphDataObjDel(&gd5);  /* free seq text mem */
+	ajGraphPlpDataDel(&gd5);  /* free seq text mem */
 
 /*    ajGraphxyDel(&graphs);*/
     ajInt2dDel(&trace);
@@ -330,11 +330,11 @@ int main(int argc, char **argv)
 ** @param [r] overlay [AjBool] Overlay plot
 ** @param [r] tmax [float] Maximum
 ** @param [r] nt [ajint*] Array
-** @return [AjPGraphData] graph data object
+** @return [AjPGraphPlpData] graph data object
 **
 ******************************************************************************/
 
-static AjPGraphData abiview_graphDisplay(AjPGraph graphs, AjPInt2d trace,
+static AjPGraphPlpData abiview_graphDisplay(AjPGraph graphs, AjPInt2d trace,
 					 ajint nstart, ajint nstop,
 					 AjPShort  basePositions,
 					 ajint base, ajint colour,
@@ -346,11 +346,11 @@ static AjPGraphData abiview_graphDisplay(AjPGraph graphs, AjPInt2d trace,
     ajshort lastbP;
     ajint bstart;
 
-    AjPGraphData gdata;
+    AjPGraphPlpData gdata;
 
 
     /* create graph data object */
-    gdata = ajGraphxyDataNewI(ajShortGet(basePositions,nstop-1)-(*nt));
+    gdata = ajGraphPlpDataNewI(ajShortGet(basePositions,nstop-1)-(*nt));
 
     if(nstart>0)
 	lastbP = ajShortGet(basePositions,nstart-1);
@@ -372,12 +372,12 @@ static AjPGraphData abiview_graphDisplay(AjPGraph graphs, AjPInt2d trace,
 	lastbP = bP;
     }
 
-    ajGraphxySetColour(gdata,colour);
-    ajGraphDataxySetMaxMin(gdata,(float)nstart+1.,
+    ajGraphPlpDataSetColour(gdata,colour);
+    ajGraphPlpDataSetMaxMin(gdata,(float)nstart+1.,
                            (float)nstop,0.,tmax+80.);
 
     /* add graph to list in a multiple graph */
-    ajGraphxyAddGraph(graphs,gdata);
+    ajGraphDataAdd(graphs,gdata);
 
     return gdata;
 }
@@ -398,11 +398,11 @@ static AjPGraphData abiview_graphDisplay(AjPGraph graphs, AjPInt2d trace,
 ** @param [r] nseq [AjPStr] Sequence number
 ** @param [r] tmax [float] Maximum
 ** @param [r] nt [ajint] Nt data
-** @return [AjPGraphData] graph data object containing the sequence text
+** @return [AjPGraphPlpData] graph data object containing the sequence text
 **
 ******************************************************************************/
 
-static AjPGraphData abiview_graphTextDisplay(AjPGraph graphs, ajint nstart,
+static AjPGraphPlpData abiview_graphTextDisplay(AjPGraph graphs, ajint nstart,
 					     ajint nstop,
 					     AjPShort basePositions,
 					     AjBool overlay, AjPStr nseq,
@@ -411,26 +411,26 @@ static AjPGraphData abiview_graphTextDisplay(AjPGraph graphs, ajint nstart,
     ajint i;
     ajint colres;
 
-    AjPGraphData gdata;
+    AjPGraphPlpData gdata;
     char res[2];
 
     res[1]='\0';
 
     /* create graph data object */
-    gdata = ajGraphxyDataNewI(ajShortGet(basePositions,nstop-1)-nt);
+    gdata = ajGraphPlpDataNewI(ajShortGet(basePositions,nstop-1)-nt);
 
     for(i=nstart;i<nstop;i++)
     {
 	*res = ajStrChar(nseq,i);
 	colres = abiview_getResColour(*res);
-	ajGraphDataObjAddText(gdata,(float)i+1.,tmax+75.,colres,res);
+	ajGraphPlpDataAddText(gdata,(float)i+1.,tmax+75.,colres,res);
     }
 
-    ajGraphDataxySetMaxMin(gdata,(float)nstart+1,
+    ajGraphPlpDataSetMaxMin(gdata,(float)nstart+1,
 			   (float)nstop,tmax+70.,tmax+80.);
 
     /* add graph to list in a multiple graph */
-    ajGraphxyAddGraph(graphs,gdata);
+    ajGraphDataAdd(graphs,gdata);
 
     return gdata;
 }
@@ -465,7 +465,7 @@ static void abiview_TextDisplay(AjPGraph graphs, ajint nstart, ajint nstop,
     {
 	*res = ajStrChar(nseq,i);
 	colres = abiview_getResColour(*res);
-	ajGraphObjAddText(graphs,(float)i+1.,tmax+30.,colres,res);
+	ajGraphAddText(graphs,(float)i+1.,tmax+30.,colres,res);
     }
 
     return;
