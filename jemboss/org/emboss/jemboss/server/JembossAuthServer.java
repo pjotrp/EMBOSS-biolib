@@ -724,8 +724,9 @@ public class JembossAuthServer
                                     embossCommand,project);
 
 // UNCOMMENT THIS LINE TO USE QUEUEING SOFTWARE
-//    runAsBatch(aj,userName,passwd,project,embossCommand)
-
+//    runAsBatch(aj,userName,passwd,project,embossCommand);
+//    runAsGNQSBatch(aj,userName,passwd,project,embossCommand);
+//    runAsPBSBatch(aj,userName,passwd,project,embossCommand);
       result.add("msg");
       result.add("");
       result.add("job_submitted");
@@ -742,10 +743,109 @@ public class JembossAuthServer
 
 /**
 *
-* Submit to a batch queue. This method creates a script for
+* Submit to a OpenPBS batch queue. This method creates a script for
 * submission to a batch queueing system.
 *
 */
+  private void runAsPBSBatch(Ajax aj, String userName, byte[] passwd,
+                              String project, String embossCommand)
+  {
+    String appl   = embossCommand.substring(0,embossCommand.indexOf(" "));
+
+    String scriptIt = "#PBS -j oe\n";
+    scriptIt = scriptIt.concat("#PBS -S /bin/sh\n");
+    scriptIt = scriptIt.concat("#PBS -N"+appl+"\n");
+    scriptIt = scriptIt.concat(environ.replace(' ','\n'));
+    scriptIt = scriptIt.concat("\nexport PATH\n");
+    scriptIt = scriptIt.concat("export PLPLOT_LIB\n");
+    scriptIt = scriptIt.concat("export EMBOSS_DATA\n");
+    scriptIt = scriptIt.concat("cd "+project+"\n"+embossCommand+"\n");
+    scriptIt = scriptIt.concat("date > "+project+"/.finished\n");
+
+    String scriptFile = new String(project+fs+".scriptfile_"+appl);
+    boolean ok = false;
+    try
+    {
+      ok = aj.putFile(userName,passwd,environ,scriptFile,
+                      scriptIt.getBytes());
+    }
+    catch(Exception exp){}
+
+    if(!ok)
+    {
+      appendToLogFile("Failed to make file "+project+fs+".scriptfile",errorLog);
+      appendToLogFile("STDERR "+aj.getErrStd(),errorLog);
+      appendToLogFile("STDOUT "+aj.getOutStd(),errorLog);
+    }
+
+    boolean lfork=true;
+    try
+    {
+      //EDIT batchCommand
+      String batchCommand = "/hgmp/local/openpbs/bin/qsub "+scriptFile;
+      lfork = aj.forkEmboss(userName,passwd,environ,
+                            batchCommand,project);
+    }
+    catch(Exception exp){}
+
+    if(!lfork || !aj.getErrStd().equals(""))
+      appendToLogFile("Fork batch process failed "+embossCommand,errorLog);
+    return;
+  }
+
+/**
+*
+* Submit to a Generic NQS batch queue. This method creates a script for
+* submission to a batch queueing system.
+*
+*/
+  private void runAsGNQSBatch(Ajax aj, String userName, byte[] passwd,
+                              String project, String embossCommand)
+  {
+    String appl   = embossCommand.substring(0,embossCommand.indexOf(" "));
+
+    String scriptIt = "#QSUB -q jemboss-queue\n";
+    scriptIt = scriptIt.concat("#QSUB -s /bin/sh\n");
+    scriptIt = scriptIt.concat("#QSUB -eo -o report.nqs\n");
+    scriptIt = scriptIt.concat(environ.replace(' ','\n'));
+    scriptIt = scriptIt.concat("\nexport PATH\n");
+    scriptIt = scriptIt.concat("export PLPLOT_LIB\n");
+    scriptIt = scriptIt.concat("export EMBOSS_DATA\n");
+    scriptIt = scriptIt.concat("cd "+project+"\n"+embossCommand+"\n");
+    scriptIt = scriptIt.concat("date > "+project+"/.finished\n");
+
+    String scriptFile = new String(project+fs+".scriptfile_"+appl);
+    boolean ok = false;
+    try
+    {
+      ok = aj.putFile(userName,passwd,environ,scriptFile,
+                      scriptIt.getBytes());
+    }
+    catch(Exception exp){}
+
+    if(!ok)
+    {
+      appendToLogFile("Failed to make file "+project+fs+".scriptfile",errorLog);
+      appendToLogFile("STDERR "+aj.getErrStd(),errorLog);
+      appendToLogFile("STDOUT "+aj.getOutStd(),errorLog);
+    }
+
+    boolean lfork=true;
+    try
+    {
+      //EDIT batchCommand
+      String batchCommand = "/hgmp/local/nqs/bin/qsub "+scriptFile;
+      lfork = aj.forkEmboss(userName,passwd,environ,
+                            batchCommand,project);
+    }
+    catch(Exception exp){}
+
+    if(!lfork || !aj.getErrStd().equals(""))
+      appendToLogFile("Fork batch process failed "+embossCommand,errorLog);
+    return;
+  }
+
+
   private void runAsBatch(Ajax aj, String userName, byte[] passwd,
                     String project, String embossCommand)
   {
