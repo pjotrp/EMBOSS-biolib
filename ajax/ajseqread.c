@@ -139,21 +139,21 @@ static void       seqUsaSave (SeqPListUsa node, AjPSeqin seqin);
 
 static SeqOInFormat seqInFormatDef[] = { /* AJFALSE = ignore (duplicates) */
   {"unknown",    AJFALSE, seqReadText},	/* alias for text */
-  {"gcg",        AJTRUE,  seqReadGcg},
+  {"gcg",        AJTRUE,  seqReadGcg}, /* test first ... headers mislead */
   {"gcg8",       AJFALSE, seqReadGcg}, /* alias for gcg (reads pre-9.0 too) */
   {"embl",       AJTRUE,  seqReadEmbl},
   {"em",         AJFALSE, seqReadEmbl},	/* alias for embl */
   {"swiss",      AJTRUE,  seqReadSwiss},
   {"sw",         AJFALSE, seqReadSwiss}, /* alias for swiss */
   {"swissprot",  AJTRUE,  seqReadSwiss},
-  {"ncbi",       AJTRUE,  seqReadNcbi},
+  {"nbrf",       AJTRUE,  seqReadNbrf},	/* test before NCBI */
+  {"pir",        AJFALSE, seqReadNbrf},	/* alias for nbrf */
+  {"ncbi",       AJTRUE,  seqReadNcbi},	/* test before FASTA */
   {"fasta",      AJTRUE,  seqReadFasta},
   {"pearson",    AJFALSE, seqReadFasta}, /* alias for fasta */
   {"genbank",    AJTRUE,  seqReadGenbank},
   {"gb",         AJFALSE, seqReadGenbank}, /* alias for genbank */
   {"ddbj",       AJFALSE, seqReadGenbank}, /* alias for genbank */
-  {"nbrf",       AJTRUE,  seqReadNbrf},
-  {"pir",        AJFALSE, seqReadNbrf},	/* alias for nbrf */
   {"codata",     AJTRUE,  seqReadCodata},
   {"strider",    AJTRUE,  seqReadStrider},
   {"clustal",    AJTRUE,  seqReadClustal},
@@ -6027,6 +6027,9 @@ AjBool ajSeqParseNcbi(AjPStr instr, AjPStr* id, AjPStr* acc, AjPStr* desc)
     */
 
      (void) ajDebug("ajSeqParseNcbi '%S'\n", instr); 
+
+    if (ajStrChar(instr, 3) == ';')	/* then it is really PIR format */
+	return ajFalse;
 
      ajStrAssS (&str, instr);
 
