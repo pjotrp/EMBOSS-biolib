@@ -35,7 +35,7 @@ profit prophecy prophet \
 prosextract pscan \
 rebaseextract recoder redata remap restover restrict revseq scope \
 seealso seqmatchall seqret seqretall seqretset seqretsplit \
-showdb showfeat showorf showseq \
+showalign showdb showfeat showorf showseq \
 shuffleseq sigcleave silent splitter scopalign stretcher \
 stssearch supermatcher syco \
 textsearch tfextract tfm tfscan \
@@ -166,6 +166,7 @@ seqretall_SOURCES = seqretall.c
 seqretset_SOURCES = seqretset.c
 seqretsplit_SOURCES = seqretsplit.c
 scope_SOURCES = scope.c
+showalign_SOURCES = showalign.c
 showdb_SOURCES = showdb.c
 showfeat_SOURCES = showfeat.c
 showorf_SOURCES = showorf.c

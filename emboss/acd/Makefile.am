@@ -31,8 +31,8 @@ pkgdata_DATA = codes.english \
 	restover.acd restrict.acd revseq.acd scope.acd seealso.acd \
 	seqinfo.acd seqmatchall.acd seqret.acd seqretall.acd \
 	seqretallfeat.acd seqretfeat.acd seqretset.acd \
-	seqretsplit.acd seqrettype.acd seqtofeat.acd showdb.acd \
-	showfeat.acd showorf.acd showseq.acd shuffleseq.acd \
+	seqretsplit.acd seqrettype.acd seqtofeat.acd showalign.acd\
+	showdb.acd showfeat.acd showorf.acd showseq.acd shuffleseq.acd \
 	sigcleave.acd silent.acd simplesw.acd splitter.acd \
 	stamps.acd stretcher.acd stssearch.acd supermatcher.acd syco.acd \
 	testplot.acd textsearch.acd tfextract.acd tfm.acd \
