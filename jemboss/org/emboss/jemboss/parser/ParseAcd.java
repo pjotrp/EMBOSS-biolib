@@ -71,6 +71,8 @@ public class ParseAcd
   private int nbool;
                       /** number of sequence fields */
   private int nseqs;
+                      /** number of filelist fields */
+  private int nflist;
                       /** number of list & selection fields 
                           - single selection */
   private int nlist;
@@ -371,6 +373,17 @@ public class ParseAcd
 
 /**
 *
+* Gets the number of filelist data types in the ACD
+* @return Number of file lists in the Jemboss form.
+*
+*/
+  public int getNumFileList()
+  {
+    return nflist;
+  }
+
+/**
+*
 * Gets the number of list & selection data types in the ACD,
 * using single list selection
 * @return Number of selection lists in the Jemboss form.
@@ -509,6 +522,11 @@ public class ParseAcd
     {
       appF.setGuiHandleNumber(nseqs);
       nseqs++;
+    }
+    else if (dataType.startsWith("filelist") )
+    {
+      appF.setGuiHandleNumber(nflist);
+      nflist++;
     }
     else if (dataType.startsWith("list") || dataType.startsWith("select"))
     {
