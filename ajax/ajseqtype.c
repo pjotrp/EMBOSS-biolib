@@ -191,7 +191,7 @@ static SeqOType seqType[] =
     {"gapprotein",     AJTRUE,  AJTRUE,  ISPROT, "?*",  "XX",
 	 seqTypeCharProtGap,
 	 "protein sequence with gaps"},
-    {"proteinstandard",AJFALSE, AJTRUE,  ISPROT, "?Uu", "XXx",
+    {"proteinstandard",AJFALSE, AJTRUE,  ISPROT, "?*Uu", "XXXx",
 	 seqTypeCharProt,
 	 "protein sequence with no selenocysteine"},
     {"stopproteinstandard",AJFALSE, AJTRUE, ISPROT, "?Uu", "XXx",
