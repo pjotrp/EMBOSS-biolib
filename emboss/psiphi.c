@@ -162,7 +162,7 @@ int main( int argc , char **argv )
     ajIntFinishResidueNumber = ajAcdGetInt("finishresiduenumber");
 
     /* reserve memory for and read in structure */
-    /* JISON */    ajpPdbCleanStructure = embPdbReadNew(ajpFileCleanProteinStructure);
+    /* JISON */    ajpPdbCleanStructure = ajPdbReadNew(ajpFileCleanProteinStructure);
     
     /* check and set number of chain to be analysed */
     ajIntHighestChainNumber = ajpPdbCleanStructure->Nchn;
