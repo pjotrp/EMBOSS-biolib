@@ -410,6 +410,18 @@ output_auth_xml()
 
 }
 
+#
+# Find the likely location for the png & gd libs
+get_libs()
+{
+  USER_CONFIG=$1
+  if (test -f /usr/local/include/png.h) && (test -f /usr/local/include/gd.h); then
+     USER_CONFIG="--with-pngdriver=/usr/local"
+  elif (test -f /usr/include/png.h) && (test -f /usr/include/gd.h); then
+     USER_CONFIG="default"
+  fi
+}
+
 check_libs()
 {
   USER_CONFIG=$1
@@ -427,9 +439,10 @@ check_libs()
 # test for libpng
   WARN="false"
   if (test ! -f $DIR/include/png.h ) || 
-     ( (test ! -f $DIR/lib/libpng.a) && (test ! -f $DIR/lib/libpng.so) ); then
+     ( (test ! -f $DIR/lib/libpng.a) && (test ! -f $DIR/lib/libpng.so) &&
+       (test ! -f $DIR/lib/libpng.dylib) ); then
     WARN="true"
-    if(test $PLATFORM = "macos"); then
+    if( (test $PLATFORM = "macos") || (test $PLATFORM = "linux") ); then
       if (test -f /usr/local/include/png.h ); then
          WARN="false"
          echo "...found libpng (/usr/local/)"
@@ -450,6 +463,9 @@ check_libs()
     echo "      http://www.libpng.org/pub/png/libpng.html"
     echo "      http://libpng.sourceforge.net/"
     echo
+    echo "For details see the EMBOSS admin guide:"
+    echo "http://www.hgmp.mrc.ac.uk/Software/EMBOSS/Doc/Admin_guide/adminguide/"
+    echo
     echo "To exit use Control C or press return to continue."
     echo
     echo "--------------------------------------------------------------"
@@ -459,9 +475,10 @@ check_libs()
 # test for gd
   WARN="false"
   if (test ! -f $DIR/include/gd.h) ||
-     ( (test ! -f $DIR/lib/libgd.a) && (test ! -f $DIR/lib/libgd.so) ); then
+     ( (test ! -f $DIR/lib/libgd.a) && (test ! -f $DIR/lib/libgd.so) &&
+       (test ! -f $DIR/lib/libgd.dylib) ); then
     WARN="true"
-    if(test $PLATFORM = "macos"); then
+    if( (test $PLATFORM = "macos") || (test $PLATFORM = "linux") ); then
       if (test -f /usr/local/include/gd.h); then
          WARN="false"
           echo "...found libgd (/usr/local)"
@@ -481,6 +498,9 @@ check_libs()
     echo "Download gd from"
     echo "       http://www.boutell.com/gd/"
     echo
+    echo "For details see the EMBOSS admin guide:"
+    echo "http://www.hgmp.mrc.ac.uk/Software/EMBOSS/Doc/Admin_guide/adminguide/"
+    echo
     echo "To exit use Control C or press return to continue."
     echo
     echo "--------------------------------------------------------------"
@@ -489,8 +509,10 @@ check_libs()
 
 # test for zlib which can be either in /usr/lib or $DIR/lib
   WARN="false"
-  if ( ((test ! -f /usr/lib/libz.a) || (test ! -f $DIR/lib/libz.so)) &&
-       ((test ! -f /usr/lib/libz.dylib) && (test ! -f /usr/local/lib/libz.dylib)) ); then
+  if ( (test ! -f /usr/lib/libz.a) && (test ! -f $DIR/lib/libz.a) &&
+       (test ! -f /usr/lib/libz.dylib) && (test ! -f $DIR/lib/libz.dylib) &&
+       (test ! -f /usr/local/lib/libz.a) && (test ! -f /usr/local/lib/libz.a) &&
+       (test ! -f /usr/local/lib/libz.dylib) && (test ! -f /usr/local/lib/libz.dylib) ); then
     WARN="true"
   else
     echo "...found zlib"
@@ -501,10 +523,13 @@ check_libs()
     echo "--------------------------------------------------------------"
     echo
     echo "WARNING! The script has detected that zlib is not"
-    echo "installed"
+    echo "installed in /usr or /usr/local"
     echo
     echo "Download zlib from"
     echo "       http://www.info-zip.org/pub/infozip/zlib/"
+    echo
+    echo "For details see the EMBOSS admin guide:"
+    echo "http://www.hgmp.mrc.ac.uk/Software/EMBOSS/Doc/Admin_guide/adminguide/"
     echo
     echo "To exit use Control C or press return to continue."
     echo
@@ -962,14 +987,35 @@ if [ $INSTALL_TYPE = "1" ]; then
   echo
   cp -R $SOAP_ROOT/webapps/axis $TOMCAT_ROOT/webapps
 fi
+
 #
-#
+# Configuration options
 #
 
 USER_CONFIG=""
-echo "Enter any other EMBOSS configuration options (e.g. --with-pngdriver=pathname"
-echo "or press return to leave blank):"
-read USER_CONFIG
+get_libs $USER_CONFIG
+
+if [ "$USER_CONFIG" = "" ]; then
+  echo "Enter any other EMBOSS configuration options (e.g. --with-pngdriver=pathname)"
+  echo "or press return to leave blank:"
+  read USER_CONFIG
+elif [ "$USER_CONFIG" = "default" ]; then
+  echo
+  echo "The libraries for EMBOSS (libpng and gd) appear to be in /usr,"
+  echo "if these are the correct libraries then there should be no need"
+  echo "to add any configuration options."
+  echo
+  echo "Enter any other EMBOSS configuration options (e.g. --with-pngdriver=pathname)"
+  echo "or press return to leave blank:"
+  read USER_CONFIG
+else
+  echo "Enter any other EMBOSS configuration options or press return to"
+  echo "use default [$USER_CONFIG]:"
+  read USER_CONFIG_TMP
+  if [ "$USER_CONFIG_TMP" != "" ]; then
+    USER_CONFIG="$USER_CONFIG_TMP"
+  fi
+fi
 
 check_libs "$USER_CONFIG" $PLATFORM
 
