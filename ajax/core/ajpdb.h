@@ -157,7 +157,8 @@ typedef struct AjSAtom
     float   npol_rel;    
     float   pol_abs;  
     float   pol_rel;  
-} AjOAtom, *AjPAtom;
+} AjOAtom;
+#define AjPAtom AjOAtom*
 
 
 
@@ -211,7 +212,8 @@ typedef struct AjSChain
     ajint    numStrands;  
     AjPStr   Seq;      
     AjPList  Atoms;    
-} AjOChain, *AjPChain;
+} AjOChain;
+#define AjPChain AjOChain*
 
 
 
@@ -315,7 +317,8 @@ typedef struct AjSPdb
     AjPChar    gpid;	
     AjPList    Groups;    
     AjPList    Water;     
-}AjOPdb, *AjPPdb;
+} AjOPdb;
+#define AjPPdb AjOPdb*
 
 
 
@@ -355,7 +358,8 @@ typedef struct AjSHetent
     AjPStr   syn;   
     AjPStr   ful;   
     ajint    cnt;   
-} AjOHetent, *AjPHetent;
+} AjOHetent;
+#define AjPHetent AjOHetent*
 
 
 
@@ -394,7 +398,8 @@ typedef struct AjSHet
 {
     ajint         n;   
     AjPHetent *entries;
-} AjOHet, *AjPHet;
+} AjOHet;
+#define AjPHet AjOHet*
 
 
 
@@ -435,7 +440,8 @@ typedef struct AjSVdwres
     ajint    N;       
     AjPStr  *Atm;     
     float   *Rad;     
-} AjOVdwres, *AjPVdwres;
+} AjOVdwres;
+#define AjPVdwres AjOVdwres*
 
 
 
@@ -472,7 +478,8 @@ typedef struct AjSVdwall
 {
     ajint       N;    
     AjPVdwres  *Res;  
-} AjOVdwall, *AjPVdwall;
+} AjOVdwall;
+#define AjPVdwall AjOVdwall*
 
 
 
@@ -519,7 +526,8 @@ typedef struct AjSCmap
     AjPInt2d  Mat;    
     ajint     Dim;    
     ajint     Ncon;   
-} AjOCmap, *AjPCmap;
+} AjOCmap;
+#define AjPCmap AjOCmap*
 
 
 
@@ -574,7 +582,8 @@ typedef struct AjSPdbtosp
     ajint    n;  
     AjPStr  *Acc;
     AjPStr  *Spr;
-} AjOPdbtosp, *AjPPdbtosp;
+} AjOPdbtosp;
+#define AjPPdbtosp AjOPdbtosp*
 
 
 
@@ -669,7 +678,7 @@ void         ajChainDel(AjPChain *ptr);
 AjPPdb       ajPdbNew(ajint n);
 void         ajPdbDel(AjPPdb *ptr);
 AjBool       ajPdbCopy(AjPPdb *to, AjPPdb from);
-AjBool       ajPdbChnidToNum(char id, AjPPdb pdb, ajint *chn);
+AjBool       ajPdbChnidToNum(char id, const AjPPdb pdb, ajint *chn);
 
 AjPPdb       ajPdbReadNew(AjPFile inf);
 AjPPdb       ajPdbReadFirstModelNew(AjPFile inf);
