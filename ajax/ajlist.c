@@ -513,7 +513,7 @@ AjBool ajListLast(AjPList thys, void** x) {
 
 /* @func ajListNth **********************************************
 **
-** Set pointer to last node's nth data item. 0 < n < number of elements. 
+** Set pointer to last node's nth data item. 0 <= n < number of elements. 
 **
 ** @param [r] thys [AjPList] List
 ** @param [r] n [AjPList] element of the list
