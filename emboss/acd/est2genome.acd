@@ -1,6 +1,9 @@
 appl: est2genome [
   documentation: "Align EST and genomic DNA sequences"
   groups: "Alignment:Global"
+  gui: yes
+  batch: yes
+  cpu: medium
 ]
 
 section: input [ info: "input Section" type: page ]

@@ -1,6 +1,9 @@
 appl: megamerger [
   documentation: "Merge two large overlapping nucleic acid sequences"
   groups: "Alignment:Consensus"
+  gui: yes
+  batch: yes
+  cpu: medium
 ]
 
 section: input [ info: "input Section" type: page ]

@@ -1,6 +1,9 @@
 appl: sigscan [
   documentation: "Scans a sparse protein signature against swissprot"
   groups: "PROTEIN:3D STRUCTURE"
+  gui: yes
+  batch: yes
+  cpu: medium
 ]
 
 section: input [ info: "input Section" type: page ]

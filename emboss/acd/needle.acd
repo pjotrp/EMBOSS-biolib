@@ -1,6 +1,9 @@
 appl: needle [
   documentation: "Needleman-Wunsch global alignment."
   groups: "Alignment:Global"
+  gui: yes
+  batch: yes
+  cpu: medium
 ]
 
 section: input [ info: "input Section" type: page ]

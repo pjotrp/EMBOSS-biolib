@@ -1,6 +1,9 @@
 appl: printsextract [
   documentation: "Extract data from PRINTS"
   groups: "Utils:Database creation"
+  gui: yes
+  batch: yes
+  cpu: medium
 ]
 
 section: input [ input: "required Section" type: page ]

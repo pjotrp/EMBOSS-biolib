@@ -1,6 +1,9 @@
 appl: prophet [
   documentation: "Gapped alignment for profiles"
   groups: "Nucleic:Profiles, Protein:Profiles"
+  gui: yes
+  batch: yes
+  cpu: medium
 ]
 
 section: input [ info: "input Section" type: page ]

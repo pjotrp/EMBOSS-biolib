@@ -1,6 +1,9 @@
 appl: scopalign [
   documentation: "Generate alignments for SCOP families"
   groups: "Protein:3D Structure"
+  gui: yes
+  batch: yes
+  cpu: medium
 ]
 
 section: input [ info: "input Section" type: page ]
