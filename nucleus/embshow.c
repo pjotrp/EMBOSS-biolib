@@ -887,7 +887,7 @@ void embShowPrint(AjPFile out, EmbPShow thys)
     ajint end;
     AjIList liter;		    /* iterator for lines */
     AjPStr line;
-    ajint count;		    /* count of newlines in the list */
+    ajint count   = 0;		    /* count of newlines in the list */
     ajint line_no = 0;		    /* line number on page */
 
     ajDebug("embShowPrint\n");

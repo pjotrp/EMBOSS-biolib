@@ -41,6 +41,11 @@ if test "`uname`" = "Linux"; then
 CPPFLAGS="-DAJ_Linux64 $CPPFLAGS"
 fi
 
+dnl Test for FreeBSD 64 bit
+if test "`uname`" = "FreeBSD"; then
+CPPFLAGS="-DAJ_FreeBSD64 $CPPFLAGS"
+fi
+
 dnl Test for Solaris 64 bit. This is done in the optimisation section...
 dnl Another Solaris feature is that -fast implies -xarch=v8 and
 dnl therefore switches off -xarch=v9 if it is given first.
@@ -120,6 +125,12 @@ dnl Test for Linux optimisation
 if test "`uname`" = "Linux"; then
 CFLAGS="$CFLAGS -O2"
 fi
+
+dnl Test for FreeBSD optimisation
+if test "`uname`" = "FreeBSD"; then
+CFLAGS="$CFLAGS -O2"
+fi
+
 
 else
 CFLAGS="$CFLAGS -O2"
@@ -284,6 +295,11 @@ if test "`uname`" = "Linux"; then
 CPPFLAGS="-DAJ_LinuxLF -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE $CPPFLAGS"
 fi
 
+dnl Test for FreeBSD large file support
+if test "`uname`" = "FreeBSD"; then
+CPPFLAGS="-DAJ_FreeBSDLF $CPPFLAGS"
+fi
+
 dnl Test for Solaris large file support
 if test "`uname`" = "SunOS"; then
 CPPFLAGS="-DAJ_SolarisLF -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE $CPPFLAGS"
@@ -354,7 +370,7 @@ dnl Test if --enable-debug given
 AC_ARG_ENABLE(warnings,
 [  --enable-warnings          warnings (-Wall option on compiler)])
 if test "${enable_warnings}" = "yes" ; then
-  CFLAGS="$CFLAGS -Wall"
+  CFLAGS="$CFLAGS -Wall -fno-strict-aliasing"
 fi          
 
 dnl Set extra needed compiler flags
