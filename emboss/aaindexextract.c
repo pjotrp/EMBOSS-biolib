@@ -61,19 +61,16 @@ int main(int argc, char **argv)
     while (ajFileGetsTrim(inf, &line))
     {
 
-      ajUser("%S", line);
 
       /* process the ID for a new index */
 
       if (ajRegExec(idexp, line))
       {
-	ajUser("ID line");
 	if (!done)
 	  ajFatal("bad aaindex1 format new ID at: %S", line);
 	ajRegSubI (idexp, 1, &id);
 	ajStrToLower(&id);
 	ajFmtPrintS(&outfname, "%S/%S", outdir, id);
-	ajUser("outfname: '%S'", outfname);
 	ajFileDataNewWrite(outfname,&outf);
 	done = ajFalse;
       }
@@ -92,7 +89,6 @@ int main(int argc, char **argv)
 
       if (ajRegExec(endexp, line))
       {
-	ajUser("end line");
 	done = ajTrue;
 	ajFileClose (&outf);
       }
