@@ -24,6 +24,9 @@
 #include "emboss.h"
 #include <limits.h>
 
+
+
+
 /* @datastatic AjPRinfo *******************************************************
 **
 ** recoder internals for RE information
@@ -50,6 +53,8 @@ typedef struct AjSRinfo
     ajint cut3;
     ajint cut4;
 } AjORinfo, *AjPRinfo;
+
+
 
 
 /* @datastatic AjPSilent ******************************************************
@@ -84,7 +89,7 @@ typedef struct AjSSilent
 } AjOSilent, *AjPSilent;
 
 
-/* Prototypes */
+
 
 static AjPList silent_mismatch(AjPStr sstr, AjPList ressite, AjPFile outf,
 			       AjPStr sname, ajint RStotal, ajint begin,
@@ -104,10 +109,6 @@ static ajint silent_basecompare(const void *a, const void *b);
 
 
 
-
-
-
-
 /* @prog silent ***************************************************************
 **
 ** Silent mutation restriction enzyme scan
@@ -116,45 +117,45 @@ static ajint silent_basecompare(const void *a, const void *b);
 
 int main(int argc, char **argv)
 {
-    AjPSeq seq=NULL;		     /*3 things we need from ACD/embInit*/
-    AjPFile outf=NULL;
-    AjPStr sstr=NULL;		     /*ajPatBruteForce requires the sequence
-                                         as an AjPStr so we need one*/
-    AjPStr sname=NULL;		     /*and it wants a name as well*/
-    AjPStr revcomp=NULL;	     /*to hold reverse complement of sequence*/
-    ajint RStotal;
-    AjPStr enzymes=NULL;                /* string for RE selection */
+    AjPSeq seq    = NULL;
+    AjPFile outf  = NULL;
+    AjPStr sstr   = NULL;
 
-    AjPList relist=NULL;
-    ajint   begin;                        /* specified start by user */
-    ajint   end;                          /* specified end by user */
-    ajint   radj;
+    AjPStr sname   = NULL;
+    AjPStr revcomp = NULL;
+    ajint RStotal;
+    AjPStr enzymes = NULL;                /* string for RE selection */
+
+    AjPList relist = NULL;
+    ajint begin;
+    ajint end;
+    ajint radj;
     ajint start;
     AjBool sshow;
     AjBool tshow;
     AjBool allmut;
 
-    AjPList results1=NULL;              /* for forward strand */
-    AjPList results2=NULL;              /* for reverse strand */
+    AjPList results1 = NULL;              /* for forward strand */
+    AjPList results2 = NULL;              /* for reverse strand */
     AjPList shits;
     AjPList nshits;
 
-    /*get all user input*/
+
+
     embInit("silent", argc, argv);
 
-    /*and recover it from somewhere in memory*/
-    seq = ajAcdGetSeq("seq");
-    enzymes=ajAcdGetString("enzymes");          /* enzymes specified by user */
-    sshow=ajAcdGetBool("sshow");
-    tshow=ajAcdGetBool("tshow");
-    allmut=ajAcdGetBool("allmut");
-    outf = ajAcdGetOutfile("outf");
+    seq     = ajAcdGetSeq("seq");
+    enzymes = ajAcdGetString("enzymes");
+    sshow   = ajAcdGetBool("sshow");
+    tshow   = ajAcdGetBool("tshow");
+    allmut  = ajAcdGetBool("allmut");
+    outf    = ajAcdGetOutfile("outf");
 
-    shits=ajListNew();
-    nshits=ajListNew();
+    shits  = ajListNew();
+    nshits = ajListNew();
 
     /*calling function to read in RE info*/
-    RStotal=silent_restr_read(&relist,enzymes);
+    RStotal = silent_restr_read(&relist,enzymes);
 
     begin = ajSeqBegin(seq);             /* returns the seq start posn, or 1
                                             if no start has been set */
@@ -163,30 +164,23 @@ int main(int argc, char **argv)
     radj=begin+end+1;                    /* posn adjustment for complementary
                                             strand */
 
-    /*
-     *  copy sequence. It constructs as well (if it doesn't exist and it has
-     *  been initialised as NULL)!
-     */
+
     ajStrAssSubC(&sstr,ajSeqChar(seq),--begin,--end);
-    /* --begin and --end to convert counting from 0-N, not 1-N */
+    ajStrToUpper(&sstr);
 
-    ajStrToUpper(&sstr);                 /* converts seq to uppercase */
+    sname = ajSeqGetName(seq);
+    ajStrAssC(&revcomp,ajStrStr(sstr));
+    ajSeqReverseStr(&revcomp);
+    start  = begin+1;
 
-    sname = ajSeqGetName(seq);		 /*get sequence name. Another
-                                           constructor!*/
-
-    ajStrAssC(&revcomp,ajStrStr(sstr));	 /*copying sequence into revcomp*/
-    ajSeqReverseStr(&revcomp);		 /*getting reverse complement of
-                                           sequence*/
-    start=begin+1;
     if(sshow)
     {
 	ajFmtPrintF(outf,"SEQUENCE:\n");
         silent_fmt_sequence(sstr,outf,start,ajTrue);
     }
 
-    results1=silent_mismatch(sstr,relist,outf,sname,RStotal,begin,radj,
-			     ajFalse,end,tshow);
+    results1 = silent_mismatch(sstr,relist,outf,sname,RStotal,begin,radj,
+			       ajFalse,end,tshow);
 
     silent_split_hits(&results1,&shits,&nshits,allmut);
 
@@ -214,8 +208,8 @@ int main(int argc, char **argv)
 	silent_fmt_sequence(revcomp,outf,start,ajTrue);
     }
 
-    results2=silent_mismatch(revcomp,relist,outf,sname,RStotal,begin,radj,
-			     ajTrue,end,tshow);
+    results2 = silent_mismatch(revcomp,relist,outf,sname,RStotal,begin,radj,
+			       ajTrue,end,tshow);
 
     silent_split_hits(&results2,&shits,&nshits,allmut);
 
@@ -240,7 +234,9 @@ int main(int argc, char **argv)
     ajListDel(&nshits);
 
     ajFileClose(&outf);
+
     ajExit();
+
     return 0;
 }
 
@@ -268,7 +264,6 @@ int main(int argc, char **argv)
 ** @@
 ******************************************************************************/
 
-
 static AjPList silent_mismatch(AjPStr sstr, AjPList relist, AjPFile outf,
 			       AjPStr sname, ajint RStotal, ajint begin,
 			       ajint radj,AjBool rev, ajint end,
@@ -276,28 +271,28 @@ static AjPList silent_mismatch(AjPStr sstr, AjPList relist, AjPFile outf,
 {
     AjPSilent res;
     AjPList results;
-    AjPStr str;                        /*holds RS patterns*/
+    AjPStr str;                          /*holds RS patterns*/
     AjPStr tstr;
-    AjBool dummy=ajFalse;              /*need a bool for ajPatClassify*/
+    AjBool dummy = ajFalse;              /*need a bool for ajPatClassify*/
     ajint mm;                            /*number of mismatches*/
     ajint hits;                          /*number of pattern matches found*/
     ajint i;
     ajint aw;
     ajint start;
-    AjPList patlist=NULL;              /*a list for pattern matches.
+    AjPList patlist = NULL;            /*a list for pattern matches.
                                              a list of ..*/
     EmbPMatMatch match;                /*..AjMatMatch structures*/
-    AjPRinfo rlp=NULL;
-    AjPStr pep=NULL;                   /*string to hold protein*/
-    AjPTrn table=NULL;                 /*object to hold translation table*/
+    AjPRinfo rlp = NULL;
+    AjPStr pep   = NULL;               /*string to hold protein*/
+    AjPTrn table = NULL;               /*object to hold translation table*/
 
-    str=ajStrNew();
-    tstr=ajStrNew();
-    pep=ajStrNew();
-    table=ajTrnNewI(0);                /*0 stands for standard DNA-
+    str   = ajStrNew();
+    tstr  = ajStrNew();
+    pep   = ajStrNew();
+    table = ajTrnNewI(0);                /*0 stands for standard DNA-
                                          see fuzztran.acd*/
-    results=ajListNew();
-    start=1;
+    results = ajListNew();
+    start = 1;
     if(!rev)                           /* forward strand */
     {
 	ajTrnStrFrame(table,sstr,1,&pep); /*1 stands for frame number*/
@@ -321,75 +316,59 @@ static AjPList silent_mismatch(AjPStr sstr, AjPList relist, AjPFile outf,
     }
 
     for(aw=0;aw<RStotal;aw++)          /* loop to read in restriction
-                                              enzyme patterns */
+					  enzyme patterns */
     {
 	/* Pop off the first RE */
-	(void) ajListPop(relist,(void **)&rlp);
+	ajListPop(relist,(void **)&rlp);
         /* ignore unknown cut sites and zero cutters */
        	if(*ajStrStr(rlp->site)=='?'||!rlp->ncuts)
         {
-           	ajListPushApp(relist,(void*)rlp);
-           	continue;
-         }
-         ajStrToUpper(&rlp->site);          /* convert all RS to upper case */
-         ajStrAss(&str,rlp->site);          /* str now holds RS patterns */
+	    ajListPushApp(relist,(void*)rlp);
+	    continue;
+	}
+	ajStrToUpper(&rlp->site);   /* convert all RS to upper case */
+	ajStrAss(&str,rlp->site);      /* str now holds RS patterns */
 
-   	/*our pattern matching will return a list of matches so allocate our
-	  list*/
-	 patlist = ajListNew();
-
-   	/*and allocate the AjPStr structs. These ones do the ajStrNew()s in
-          the library .. a lot of functions don't*/
-	/*convert our pattern string to a regular expression*/
-	/*the "0" means its DNA and so it'll do any ambig conversions*/
-
+	patlist = ajListNew();
         if(!embPatClassify(&str,&dummy,&dummy,&dummy,&dummy,&dummy,&dummy,0))
 	    continue;
 
-	/*now see if the pattern typed matches the sequence with NO mismatches
-        */
 
-	mm=0;
+	mm = 0;
 	hits=embPatBruteForce(&sstr,&str,ajFalse,ajFalse,&patlist,begin+1,mm,
                               &sname);
 
 	if(hits)
-        {
-            	while(ajListPop(patlist,(void**)&match))
-		    embMatMatchDel(&match);
-        }
+	    while(ajListPop(patlist,(void**)&match))
+		embMatMatchDel(&match);
  	else
         {
-		mm=1;
-          	hits=embPatBruteForce(&sstr,&str,ajFalse,ajFalse,&patlist,
-                                      begin+1,mm,&sname);
+	    mm = 1;
+	    hits = embPatBruteForce(&sstr,&str,ajFalse,ajFalse,&patlist,
+				  begin+1,mm,&sname);
 
-		if(hits)
+	    if(hits)
 		for(i=0;i<hits;++i)
 		{
-                	(void)ajListPop(patlist,(void**)&match);
- 			if(silent_checktrans(sstr,outf,match,rlp,begin,radj,
-					     rev,end,&res))
-			    ajListPushApp(results,(void *)res);
-			embMatMatchDel(&match);
+		    ajListPop(patlist,(void**)&match);
+		    if(silent_checktrans(sstr,outf,match,rlp,begin,radj,
+					 rev,end,&res))
+			ajListPushApp(results,(void *)res);
+		    embMatMatchDel(&match);
          	}
    	}
 
-        /* Push our RE info back to the list, but on top of it */
         ajListPushApp(relist,(void *)rlp);
 
 	ajListDel(&patlist);
     }
-
+    
     ajStrDel(&str);
     ajStrDel(&tstr);
     ajStrDel(&pep);
     ajTrnDel(&table);
     return (results);
 }
-
-
-
 
 
 
@@ -406,57 +385,42 @@ static AjPList silent_mismatch(AjPStr sstr, AjPList relist, AjPFile outf,
 
 static ajint silent_restr_read(AjPList *relist,AjPStr enzymes)
 {
-    EmbPPatRestrict rptr=NULL;		/*somewhere to store RE info*/
-    AjPFile fin=NULL;			/*we need an input file pointer to read
-                                          in the RE file data*/
-    AjPStr refilename=NULL;		/*...and a string for the filename*/
-    register ajint RStotal=0;		/*counts no of RE*/
-    AjPRinfo rinfo=NULL;
-    AjBool isall=ajFalse;
-    ajint ne=0;
+    EmbPPatRestrict rptr = NULL;
+    AjPFile fin = NULL;
+
+    AjPStr refilename = NULL;
+    register ajint RStotal = 0;
+    AjPRinfo rinfo = NULL;
+    AjBool isall = ajFalse;
+    ajint ne = 0;
     ajint i;
-    AjPStr *ea=NULL;
+    AjPStr *ea = NULL;
 
-    /*open the RE file*/
-    /*first allocate a string and at the same time initialise it*/
-    refilename=ajStrNewC("REBASE/embossre.enz");
-    /*keeping all constructors together now allocate a restrict structure*/
-    rptr=embPatRestrictNew();
-
-    /* and a list on which to store the code and site info */
-    *relist=ajListNew();
-
-    /*now open re file. note that the function below will construct an AjPFile
-      so you don't need to do an ajFileNewIn() call*/
+    refilename = ajStrNewC("REBASE/embossre.enz");
+    rptr       = embPatRestrictNew();
+    *relist    = ajListNew();
 
     ajFileDataNew(refilename,&fin);
-    /*if fin is NULL then the file wasn't found*/
     if(!fin)
 	ajFatal("Aborting...restriction file not found");
 
     /* Parse the user-selected enzyme list */
     if(!enzymes)
-	isall=ajTrue;
+	isall = ajTrue;
     else
     {
-	ne=ajArrCommaList(enzymes,&ea);       /* ne=number of enzymes specified
-                                                 by users */
-        for(i=0;i<ne;++i)                     /* ea is a pointer to AjPStr
-                                                 array created enzyme list */
-	    ajStrCleanWhite(&ea[i]);          /* removes all whitespace from a
-                                                 string */
-        if(ajStrMatchCaseC(ea[0],"all"))
-            isall=ajTrue;
-        else
-            isall=ajFalse;
-    }
+	ne = ajArrCommaList(enzymes,&ea);
+        for(i=0;i<ne;++i)
+	    ajStrCleanWhite(&ea[i]);
 
-    /*now we just go into a loop reading the RE data into the AjPRestrict
-      object using our open file pointer*/
+        if(ajStrMatchCaseC(ea[0],"all"))
+            isall = ajTrue;
+        else
+            isall = ajFalse;
+    }
 
     while(embPatRestrictReadEntry(&rptr,&fin))
     {
-	/* Only select the enzymes on the command line */
      	if(!isall)
 	{
 		for(i=0;i<ne;++i)
@@ -468,18 +432,17 @@ static ajint silent_restr_read(AjPList *relist,AjPStr enzymes)
 
         AJNEW(rinfo);
         /* reading in RE info into rinfo from EmbPPatRestrict structure */
-        rinfo->code=ajStrNewC(ajStrStr(rptr->cod));
-	rinfo->site=ajStrNewC(ajStrStr(rptr->pat));
-        rinfo->ncuts=rptr->ncuts;
-        rinfo->cut1=rptr->cut1;
-        rinfo->cut2=rptr->cut2;
-        rinfo->cut3=rptr->cut3;
-        rinfo->cut4=rptr->cut4;
+        rinfo->code  = ajStrNewC(ajStrStr(rptr->cod));
+	rinfo->site  = ajStrNewC(ajStrStr(rptr->pat));
+        rinfo->ncuts = rptr->ncuts;
+        rinfo->cut1  = rptr->cut1;
+        rinfo->cut2  = rptr->cut2;
+        rinfo->cut3  = rptr->cut3;
+        rinfo->cut4  = rptr->cut4;
 	ajListPush(*relist,(void *)rinfo);
 	RStotal++;
     }
 
-    /* tidy up and return no of REs */
     for(i=0;i<ne;++i)
 	ajStrDel(&ea[i]);
     AJFREE(ea);
@@ -487,9 +450,9 @@ static ajint silent_restr_read(AjPList *relist,AjPStr enzymes)
     embPatRestrictDel(&rptr);
     ajFileClose(&fin);
     ajStrDel(&refilename);
+
     return RStotal;
 }
-
 
 
 
@@ -515,35 +478,34 @@ static AjBool silent_checktrans(AjPStr seq,AjPFile outf,EmbPMatMatch match,
 				AjPRinfo rlp, ajint begin, ajint radj,
 				AjBool rev, ajint end, AjPSilent *res)
 {
-    char *p=NULL;
-    char *q=NULL;
-    char *s=NULL;
+    char *p = NULL;
+    char *q = NULL;
+    char *s = NULL;
     char *t;
     char *u;
     ajint matchpos;
     ajint framep;
 
     ajint count;
-    AjPTrn table=NULL;
-    AjPStr s1=NULL;
-    AjPStr s2=NULL;
+    AjPTrn table = NULL;
+    AjPStr s1 = NULL;
+    AjPStr s2 = NULL;
     char c;
     char rc;
-    ajint  min=INT_MAX;          /* Reverse sense intentional! */
-    ajint  max=-INT_MAX;
+    ajint  min = INT_MAX;          /* Reverse sense intentional! */
+    ajint  max = -INT_MAX;
     ajint fpos;
     ajint rpos;
     ajint x;
 
-    matchpos = match->start;          /* posn of start of match in seq */
-    fpos=matchpos;
-    rpos=radj-fpos-match->len;        /* posn of start of match in rev seq */
+    matchpos = match->start;
+    fpos = matchpos;
+    rpos=radj-fpos-match->len;
+    t = ajStrStr(seq);
 
-    t = ajStrStr(seq);                /* pointer to start of seq */
+    p = t+fpos-(begin+1);
 
-    p=t+fpos-(begin+1);               /* pointer to start of match in seq */
-
-    u=q=ajStrStr(rlp->site);          /* pointer to start of RS pattern */
+    u = q = ajStrStr(rlp->site);
 
     /* Test here for whether cut site is within sequence substring */
     if(rlp->ncuts==4)
@@ -580,31 +542,29 @@ static AjBool silent_checktrans(AjPStr seq,AjPFile outf,EmbPMatMatch match,
     }
 
 
-    count=0;   /* loop to count to base which is different in seq and RS,
-                  starting from beginning of match */
+    count=0;
     while(ajAZToBin(*q++) & ajAZToBin(*p++))
           ++count;
 
     /* Changed base postion */
-    x=fpos+count-(begin+1);
+    x = fpos+count-(begin+1);
     /* Where the frame starts on the reverse strand */
-    framep=(end-begin+1)%3;
+    framep = (end-begin+1)%3;
 
-    c = t[x];         /* store base in seq which is different in RS pattern */
-    rc = u[count];    /* store base in RS pattern that is different in seq */
+    c  = t[x];
+    rc = u[count];
 
     if(!rev)            /* forward strand */
-	s=t+x-x%3;
+	s = t+x-x%3;
     else                /* reverse strand */
-        s=t+x-(x-framep)%3;
+        s = t+x-(x-framep)%3;
 
-    table=ajTrnNewI(0);
+    table = ajTrnNewI(0);
 
     /* translates codon pointed to by s (original seq) */
     s1 = ajStrNewC(ajStrStr(ajTrnCodonC(table,s)));
 
-    t[x] = rc;        /* changes base in seq to one in equivalent posn in RS
-                         pattern */
+    t[x] = rc;
 
     /*  translates codon pointed to by s (mutated base from RS pattern */
     s2 = ajStrNewC(ajStrStr(ajTrnCodonC(table,s)));
@@ -614,32 +574,31 @@ static AjBool silent_checktrans(AjPStr seq,AjPFile outf,EmbPMatMatch match,
     AJNEW(*res);
     (*res)->obase = c;
     (*res)->nbase = rc;
-    (*res)->code=ajStrNewC(ajStrStr(rlp->code));
-    (*res)->site=ajStrNewC(ajStrStr(rlp->site));
-    (*res)->seqaa=ajStrNewC(ajStrStr(s1));
-    (*res)->reaa=ajStrNewC(ajStrStr(s2));
+    (*res)->code  = ajStrNewC(ajStrStr(rlp->code));
+    (*res)->site  = ajStrNewC(ajStrStr(rlp->site));
+    (*res)->seqaa = ajStrNewC(ajStrStr(s1));
+    (*res)->reaa  = ajStrNewC(ajStrStr(s2));
     if(ajStrMatch(s1,s2))
-	(*res)->issilent=ajTrue;
+	(*res)->issilent = ajTrue;
     else
-	(*res)->issilent=ajFalse;
+	(*res)->issilent = ajFalse;
     if(!rev)
     {
-       	(*res)->match=matchpos;
-        (*res)->base=matchpos+count;
+       	(*res)->match = matchpos;
+        (*res)->base  = matchpos+count;
     }
     else
     {
-	(*res)->match=rpos;
-	(*res)->base=rpos+match->len-1-count;
+	(*res)->match = rpos;
+	(*res)->base  = rpos+match->len-1-count;
     }
 
     ajStrDel(&s1);
     ajStrDel(&s2);
     ajTrnDel(&table);
+
     return ajTrue;
 }
-
-
 
 
 
@@ -665,9 +624,9 @@ static void silent_fmt_sequence(AjPStr seq, AjPFile outf, ajint start,
 
     if(num)
     {
-    	p=ajStrStr(seq);
+    	p = ajStrStr(seq);
     	ajFmtPrintF(outf,"%-7d",start);
-    	tlen=ajStrLen(seq);
+    	tlen = ajStrLen(seq);
     	for(i=0; i<tlen ; i++)
     	{
 		ajFmtPrintF(outf,"%c",p[i]);
@@ -678,9 +637,9 @@ static void silent_fmt_sequence(AjPStr seq, AjPFile outf, ajint start,
     }
     else
     {
-	p=ajStrStr(seq);
+	p = ajStrStr(seq);
         ajFmtPrintF(outf,"%-7d",start);
-        tlen=ajStrLen(seq);
+        tlen = ajStrLen(seq);
         for(i=0; i<tlen ; i++)
         {
                 ajFmtPrintF(outf,"%c",p[i]);
@@ -691,11 +650,9 @@ static void silent_fmt_sequence(AjPStr seq, AjPFile outf, ajint start,
     }
 
     ajFmtPrintF(outf,"\n");
+
     return;
 }
-
-
-
 
 
 
@@ -709,13 +666,12 @@ static void silent_fmt_sequence(AjPStr seq, AjPFile outf, ajint start,
 ** @@
 ******************************************************************************/
 
-
 static void silent_fmt_hits(AjPList hits, AjPFile outf)
 {
     AjPSilent res;
 
-    ajFmtPrintF(outf,
-    "Enzyme      RS-Pattern  Match-Posn   AA  Base-Posn Mutation\n");
+    ajFmtPrintF(outf, "Enzyme      RS-Pattern  Match-Posn   AA  "
+		"Base-Posn Mutation\n");
 
     ajListSort(hits,silent_basecompare);
 
@@ -737,9 +693,6 @@ static void silent_fmt_hits(AjPList hits, AjPFile outf)
 
 
 
-
-
-
 /* @funcstatic silent_split_hits **********************************************
 **
 ** Divide hitlist into separate silent/non-silent lists
@@ -750,7 +703,6 @@ static void silent_fmt_hits(AjPList hits, AjPFile outf)
 ** @param [r] allmut [AjBool] do non-silents
 ** @@
 ******************************************************************************/
-
 
 static void silent_split_hits(AjPList *hits, AjPList *silents,
 			      AjPList *nonsilents, AjBool allmut)
@@ -782,9 +734,6 @@ static void silent_split_hits(AjPList *hits, AjPList *silents,
 
 
 
-
-
-
 /* @funcstatic silent_basecompare *********************************************
 **
 ** Comparison function for ajListSort
@@ -795,9 +744,7 @@ static void silent_split_hits(AjPList *hits, AjPList *silents,
 ** @@
 ******************************************************************************/
 
-
 static ajint silent_basecompare(const void *a, const void *b)
 {
     return((*(AjPSilent *)a)->base)-((*(AjPSilent *)b)->base);
 }
-
