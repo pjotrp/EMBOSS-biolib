@@ -58,6 +58,7 @@ AjBool getnakaidata(AjPFile file, float matrix[])
 	else if(line == 1)
 	{
 	    line++;
+            ajStrClean(&buffer);
 	    token = ajStrTokenInit(buffer,ajStrStr(delim));
 	    cols = ajStrTokenCount(&buffer,ajStrStr(delim));
 	    ajDebug("num of cols = %d\n",cols);
@@ -97,6 +98,7 @@ AjBool getnakaidata(AjPFile file, float matrix[])
 	else if(line == 2)
 	{
 	    line++;
+	    ajStrClean(&buffer);
 	    token = ajStrTokenInit(buffer,ajStrStr(delim));
 	    cols = ajStrTokenCount(&buffer,ajStrStr(delim));
 	    ajStrToken(&buf2,&token,ajStrStr(delim));
