@@ -227,6 +227,15 @@ typedef struct FeatSInFormat {
 /* name             Dna   Protein
    input-function   init-regex-function del-regex-function */
 
+/* @funcstatic featInFormatDef ************************************************
+**
+** Input feature formats
+**
+** Includes the read function (featRead), and initialising (featInitReg)
+** and deletion (featDelReg) of parsing resular expression.
+**
+******************************************************************************/
+
 static FeatOInFormat featInFormatDef[] = {
   {"unknown",       AJFALSE, AJFALSE, AJFALSE,
    featReadUnknown, NULL,               NULL},
@@ -240,8 +249,8 @@ static FeatOInFormat featInFormatDef[] = {
    featReadEmbl,    featRegInitEmbl,    featDelRegEmbl},
   {"gff",           AJTRUE,  AJTRUE,  AJFALSE,
    featReadGff,     featRegInitGff,     featDelRegGff},
-  {"acedb",         AJTRUE,  AJFALSE, AJFALSE,
-   featReadAcedb,   featRegInitAcedb,   featDelRegAcedb},
+  /*  {"acedb",         AJTRUE,  AJFALSE, AJFALSE,
+      featReadAcedb,   featRegInitAcedb,   featDelRegAcedb},*/
   {"swissprot",     AJFALSE, AJTRUE,  AJFALSE,
    featReadSwiss,   featRegInitSwiss,   featDelRegSwiss},
   {"swiss",         AJFALSE, AJTRUE,  AJFALSE,
@@ -301,6 +310,16 @@ typedef struct FeatSOutFormat {
   AjBool (*VocInit) ();
   AjBool (*Write) (AjPFeattable thys, AjPFile file);
 } FeatOOutFormat, *FeatPOutFormat;
+
+/* @funclist featOutFormatDef *************************************************
+**
+** Feature output formats
+**
+** Includes functions to initialise the internal type/tag tables
+** (featVocabInit) - done automatically for input formats by the featInitReg
+** functions) and to write the output file (ajFeattableWrite)
+**
+******************************************************************************/
 
 static FeatOOutFormat featOutFormatDef[] = {
   {"unknown",   AJFALSE, NULL,               ajFeattableWriteUnknown},
@@ -3101,6 +3120,7 @@ static AjBool featRegInitGff (void) {
 
   featInit();
 
+  featVocabInitGff();
 
   ajDebug ("featRegInitGff Compiling featDumpGff() regexps\n");
   GffRegexNumeric = ajRegCompC("^[\\+-]?[0-9]+\\.?[0-9]*$") ;

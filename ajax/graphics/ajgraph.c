@@ -103,6 +103,13 @@ typedef struct GraphSType {
   void (*GOpen) (AjPGraph thys, char *ext);
 } GraphOType, *GraphPType;
 
+/* @funclist graphType ********************************************************
+**
+** Graph functions to open and display a graph with the PLPLOT
+** device drivers
+**
+******************************************************************************/
+
 static GraphOType graphType[] = {
   {"postscript", "ps",      ".ps",   GraphxyDisplayToFile, GraphOpenFile},
   {"ps",         "ps",      ".ps",   GraphxyDisplayToFile, GraphOpenFile},

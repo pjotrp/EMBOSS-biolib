@@ -191,6 +191,12 @@ static void       seqGcgLoadBuff (const AjPSeqin seqin);
 static AjBool     seqGcgReadRef (const AjPSeqin seqin);
 static AjBool     seqGcgReadSeq (const AjPSeqin seqin);
 
+/* @funclist seqAccess ********************************************************
+**
+** Functions to access each database or sequence access method
+**
+******************************************************************************/
+
 static SeqOAccess seqAccess[] =
 {
   {"emblcd", seqAccessEmblcd},
@@ -206,7 +212,8 @@ static SeqOAccess seqAccess[] =
   {"nbrf",seqAccessNbrf},
   {"gcg",seqAccessGcg},
   {"blast",seqAccessBlast},
-  {NULL, NULL} };
+  {NULL, NULL}
+};
 
 static char aa_btoa[27] = {"-ARNDCQEGHILKMFPSTWYVBZX*"};
 static char aa_btoa2[27]= {"-ABCDEFGHIKLMNPQRSTVWXYZ*"};

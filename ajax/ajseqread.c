@@ -106,6 +106,12 @@ static AjBool     seqUsaProcess (AjPSeq thys, AjPSeqin seqin);
 
 /* static data that needs the function definitions and so must come later */
 
+/* @funclist seqInFormatDef ***************************************************
+**
+** Functions to read each sequence format
+**
+******************************************************************************/
+
 static SeqOInFormat seqInFormatDef[] = { /* AJFALSE = ignore (duplicates) */
   {"unknown",    AJFALSE, seqReadText},	/* alias for text */
   {"gcg",        AJTRUE,  seqReadGcg},
@@ -147,7 +153,8 @@ static SeqOInFormat seqInFormatDef[] = { /* AJFALSE = ignore (duplicates) */
   {"abi",        AJTRUE,  seqReadAbi},
   {"gff",        AJTRUE,  seqReadGff},
   {"raw",        AJTRUE,  seqReadRaw}, /* OK - only sequence chars allowed */
-  {NULL, 0, NULL} };
+  {NULL, 0, NULL}
+};
 
 static SeqPInFormat seqInFormat = seqInFormatDef;
 

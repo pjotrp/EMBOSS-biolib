@@ -390,6 +390,36 @@ static AjBool acdExpCase (AjPStr* result, AjPStr str);
 static AjBool acdExpFilename (AjPStr* result, AjPStr str);
 static AjBool acdExpExists (AjPStr* result, AjPStr str);
 
+typedef struct AcdSExpList {
+  char* Name;
+  AjBool (*Func) (AjPStr *result, AjPStr str);
+} AcdOExpList;
+
+/* @funclist explist **********************************************************
+**
+** Functions for processing expressions in ACD dependencies
+**
+******************************************************************************/
+
+static AcdOExpList explist[] = {
+    {"plus", acdExpPlus},
+    {"minus", acdExpMinus},
+    {"star", acdExpStar},
+    {"div", acdExpDiv},
+    {"not", acdExpNot},
+    {"equal", acdExpEqual},
+    {"notequal", acdExpNotEqual},
+    {"greater", acdExpGreater},
+    {"lesser", acdExpLesser},
+    {"or", acdExpOr},
+    {"and", acdExpAnd},
+    {"cond", acdExpCond},
+    {"case", acdExpCase},
+    {"filename", acdExpFilename},
+    {"exists", acdExpExists},
+    {NULL, NULL}
+};
+
 /* Dummy model routine for new data types - but these must not be static
    and wil be defined in ajacd.h instead */
 
@@ -915,6 +945,14 @@ AcdOQual acdQualGraphxy[] =
 /*"Type"         Attributes        Function
   Qualifiers         "Help Text" */
 
+/* @funclist acdType **********************************************************
+**
+** Processing for ACD types
+**
+** Includes the acdSet functions for each ACD type
+**
+******************************************************************************/
+
 AcdOType acdType[] =
 {
   {"array",        acdAttrArray,    acdSetArray,
@@ -986,6 +1024,13 @@ typedef struct AcdSValid
   void (*Valid) (AcdPAcd thys, AjPStr* str);
   void (*Expect) (AcdPAcd thys, AjPStr* str);
 } AcdOValid, *AcdPValid;
+
+/* @funclist acdValid *********************************************************
+**
+** ACD type help processing, includes functions to describe valid
+** values and expected values in -help output and -acdtable output
+**
+******************************************************************************/
 
 AcdOValid acdValid[] =
 {
@@ -9476,34 +9521,6 @@ static AjBool acdHelpVarResolve (AjPStr* str, AjPStr var) {
 
 static AjBool acdFunResolve (AjPStr* result, AjPStr str) {
   ajint i;
-
-  typedef struct expSlist {
-    char* Name;
-    AjBool (*Func) (AjPStr *result, AjPStr str);
-  } expOlist;
-
-  /*
-   * AJB: initialisations below have variable functions in an
-   * initialisation list which is supposed to be constant!
-   * This may not be portable.
-   */
-  expOlist explist[] = {
-    {"plus", acdExpPlus},
-    {"minus", acdExpMinus},
-    {"star", acdExpStar},
-    {"div", acdExpDiv},
-    {"not", acdExpNot},
-    {"equal", acdExpEqual},
-    {"notequal", acdExpNotEqual},
-    {"greater", acdExpGreater},
-    {"lesser", acdExpLesser},
-    {"or", acdExpOr},
-    {"and", acdExpAnd},
-    {"cond", acdExpCond},
-    {"case", acdExpCase},
-    {"filename", acdExpFilename},
-    {"exists", acdExpExists},
-    {NULL, NULL} };
 
   ajDebug ("acdFunResolve '%S'\n", str);
 

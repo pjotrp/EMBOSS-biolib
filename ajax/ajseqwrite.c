@@ -90,6 +90,12 @@ static void       seqWriteSwiss (AjPSeqout outseq);
 static void       seqWriteText (AjPSeqout outseq);
 static void       seqWriteTreecon (AjPSeqout outseq);
 
+/* @funclist seqOutFormat *****************************************************
+**
+** Functions to write each sequence format
+**
+******************************************************************************/
+
 static SeqOOutFormat seqOutFormat[] = { /* AJFALSE = write one file */
   {"unknown",    AJFALSE, AJFALSE, seqWriteFasta}, /* internal default writes FASTA */
                                  /* set 'fasta' in ajSeqOutFormatDefault */
