@@ -30,7 +30,7 @@ extern sequence y, convtab;
 
 #ifndef OLDC
 /*function prototypes*/
-void   discrete_inputdata(AjPSeqset, long);
+void   discrete_inputdata(AjPPhyloState, long);
 void   alloctree(pointarray *, long, boolean);
 void   setuptree(pointarray, long, boolean);
 void   alloctip(node *, long *, unsigned char *);

@@ -11,7 +11,7 @@ boolean interleaved, printdata, outgropt, treeprint, dotdiff;
 steptr weight, category, alias, location, ally;
 sequence y, convtab;
 
-void discrete_inputdata(AjPSeqset seqset, long chars)
+void discrete_inputdata(AjPPhyloState state, long chars)
 {
   /* input the names and sequences for each species */
   /* used by pars */
@@ -24,9 +24,9 @@ void discrete_inputdata(AjPSeqset seqset, long chars)
     headings(chars, "Sequences", "---------");
   
   for(i=0;i<spp;i++){
-    strncpy(&nayme[i][0],ajStrStr(ajSeqsetName(seqset, i)),nmlngth);
+    initnamestate(state,i);
     /*    ajUser("%s/n",ajSeqsetName(seqset, i));*/
-    strncpy(&y[i][0],ajSeqsetSeq(seqset, i),chars);
+    strncpy(&y[i][0],ajStrStr(state->Str[i]),chars);
     y[i][chars] = '\0';
   }
   if(!printdata)
