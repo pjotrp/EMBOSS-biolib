@@ -1379,6 +1379,7 @@ static void seqWriteSelex (AjPSeqout outseq)
     }
     
 
+    AJFREE(seqs);
 
     ajStrDel(&rfstr);
     ajStrDel(&csstr);
