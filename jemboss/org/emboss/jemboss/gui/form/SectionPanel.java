@@ -978,8 +978,26 @@ public class SectionPanel
         {
           setShadingAndVisibility(textf[h], true, field);
         }
+        
         if(type.startsWith("def"))
-          textf[h].setText(result);
+        {
+          if(att.startsWith("matrix"))
+          {
+            Vector mat = BuildProgramMenu.getMatrices();
+            Enumeration en = mat.elements();
+            while(en.hasMoreElements())
+            {
+              String m = (String)en.nextElement();
+              if(result.equalsIgnoreCase(m))
+              {
+                textf[h].setText(m);
+                break;
+              }
+            }
+          }
+          else
+            textf[h].setText(result);
+        }
 
       }
       else if(att.startsWith("int"))
