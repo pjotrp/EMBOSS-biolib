@@ -3130,8 +3130,8 @@ AjBool  sigplot_SeedIdCalc(AjPList seedlist,  AjPScopalg alg, AjPFile matrixout,
     ajint   	nin;			/*Number of sequences in input list*/
     ajint     	*compass;
 
-    char       	*p;
-    char       	*q;
+    const char  *p;
+    const char  *q;
 
     float     **sub;
     float       id       	= 0.; 	/*Passed as arg but not used here*/
@@ -3393,8 +3393,8 @@ AjBool  sigplot_HitIdCalc(AjPList seedlist, AjPList hitlist, AjPScopalg alg,
     ajint	num		= 0;
     
 
-    char       	*p;
-    char       	*q;
+    const char  *p;
+    const char  *q;
 
     float     **sub;
     float       id       	= 0.; 	/*Passed as arg but not used here*/

@@ -524,8 +524,8 @@ static AjBool scopseqs_AlignDomain(AjPSeq sp_seq, AjPSeq pdb_seq, AjPMatrixf mat
     ajint        begina;
     ajint        beginb;
 
-    char         *p;
-    char         *q;
+    const char   *p;
+    const char   *q;
 
     float        **sub;
     float        id       = 0.;	  /*Passed as arg but not used here*/
@@ -667,8 +667,8 @@ static AjBool scopseqs_FindDomainLimits(AjPSeq sp_seq, AjPSeq pdb_seq,AjPStr m,
     ajint bpos;
     ajint nc;
 
-    char* a;
-    char* b;
+    const char* a;
+    const char* b;
 
     ajint no_gaps_sp  = 0;   /* the number of gaps in the swissprot sequence */
     ajint no_gaps_pdb = 0;   /* the number of gaps in the pdb sequence */

@@ -189,7 +189,7 @@ int main(int argc, char **argv)
     AjPStr outfname   = NULL;      /* name of output file */
     /*AjPStr name       = NULL;       name of profile out file */
 
-    char *p           = NULL;      /* pointer to type */
+    const char *p     = NULL;      /* pointer to type */
 
     AjPFile inf       = NULL;      /* file pointer to input extended alignment file */
     AjPFile outf      = NULL;      /* file pointer to output profile */
@@ -443,7 +443,7 @@ int main(int argc, char **argv)
 static void profgen_simple_matrix(AjPSeqset seqset, AjPFile outf, AjPStr name,
                    ajint threshold)
 {
-    char *p;
+    const char *p;
     ajint nseqs;
     ajint mlen;
     ajint len;
@@ -563,7 +563,7 @@ static void profgen_gribskov_profile(AjPSeqset seqset, float **sub,
     ajint i;
     ajint j;
     static char *valid="ACDEFGHIKLMNPQRSTVWY";
-    char *p;
+    const char *p;
     char *q;
     float score;
     float sum;
@@ -778,7 +778,7 @@ static void profgen_henikoff_profile(AjPSeqset seqset, AjPMatrixf matrix, float 
     ajint i;
     ajint j;
     static char *valid="ACDEFGHIKLMNPQRSTVWY";
-    char *p;
+    const char *p;
     char *q;
     float score;
     float sum;

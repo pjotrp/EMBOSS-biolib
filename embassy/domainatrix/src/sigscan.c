@@ -553,8 +553,8 @@ AjBool sigscan_SignatureAlignWrite(AjPFile outf, AjPSignature sig,
     ajint  mwid2 = 0;     /* Width of region to print sequence into */
     ajint  len   = 0;     /* Temp. length of sequence */
     ajint  mlen  = 0;     /* Max. length of sequence */
-    char   *ptrp = NULL;  /* Pointer to sequence string */ 
-    char   *ptrs = NULL;  /* Pointer to alignment string */ 
+    const char   *ptrp = NULL;  /* Pointer to sequence string */ 
+    const char   *ptrs = NULL;  /* Pointer to alignment string */ 
     ajint  idx   = 0;     /* Start position for printing */
     ajint  niter = 0;     /* No. iterations of loop for printing out
 			     sequence blocks */
@@ -685,8 +685,8 @@ AjBool sigscan_SignatureAlignWriteBlock(AjPFile outf, AjPSignature sig,
     ajint  mwid2 = 0;    /* Width of region to print sequence into */
     ajint  len   = 0;    /* Temp. length of sequence */
     ajint  mlen  = 0;    /* Max. length of sequence */
-    char   *ptrp = NULL; /* Pointer to sequence string */ 
-    char   *ptrs = NULL; /* Pointer to alignment string */ 
+    const char   *ptrp = NULL; /* Pointer to sequence string */ 
+    const char   *ptrs = NULL; /* Pointer to alignment string */ 
     ajint  idx   = 0;    /* Start position for printing */
     ajint  niter = 0;    /*
 			 ** No. iterations of loop for printing out

@@ -236,8 +236,6 @@ int main(int argc, char **argv)
 
     AjPScopalg scopalg= NULL;      /* scopalg object for read in extn alignment files */
 
-    ajint posdash     = 0;
-    ajint posdot      = 0;
 
     ajNamInit("emboss");
     ajAcdInitP("hmmgen",argc,argv, "DOMAINATRIX");
