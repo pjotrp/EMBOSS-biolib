@@ -314,6 +314,8 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_userInfo
     ajStrAssC(&password,jpass);
     (*env)->ReleaseStringUTFChars(env,key,jpass);
 
+    if(!ajStrLen(username) || !ajStrLen(password))
+	return ajFalse;
 
 #ifndef NO_AUTH
     ok = check_pass(username,password,&uid,&gid,&home);
