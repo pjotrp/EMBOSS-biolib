@@ -4,8 +4,8 @@
 **  writes the resulting alignments into a new directory
 **
 ** @author: Copyright (C) Damian Counsell
-** @version $Revision: 1.4 $
-** @modified $Date: 2004/09/20 18:18:01 $
+** @version $Revision: 1.5 $
+** @modified $Date: 2004/10/14 18:57:10 $
 ** @@
 **
 ** This program is free software; you can redistribute it and/or
@@ -43,7 +43,6 @@ enum constant
 int main( int argc , char **argv )
 {
     /* position counters and limits */
-    ajint ajIntCount;
     ajint ajIntNumberOfSeqPairFiles  = enumCountZero;
     AjPSeqin ajpSeqinUnalignedPair   = NULL;
     float fExtensionPenalty;
@@ -79,8 +78,8 @@ int main( int argc , char **argv )
     AjPStr ajpStrAlignmentFormat      = NULL; /* format for output alignment file              */
     AjPStr ajpStrFirstCommandLine     = NULL; /* command line given to alignment program       */
     AjPStr ajpStrSecondCommandLine    = NULL; /* command line given to alignment program       */
-    embInit("alignrunner", argc, argv);
 
+    embInit("alignrunner", argc, argv);
 
     /* get command-line parameters from ACD */     
     ajpStrPathToCommands = ajAcdGetDirectoryName("pathtocommands");
@@ -110,14 +109,15 @@ int main( int argc , char **argv )
     ajpSeqsetUnalignedPair = ajSeqsetNew();
     /* new string for alignment command and options to it */
     ajpStrJoinOutfileName = ajStrNewC("_vs_");
+
     ajpSeqQuery = ajSeqNew();    
     ajpSeqTemplate = ajSeqNew();
     ajpStrQuerySeq = ajStrNew();    
     ajpStrTemplateSeq = ajStrNew();
     
-    /*     while(ajListPop(ajpListSeqPairFiles, (void **)&ajpStrSeqPairFileName)) */
+    while(ajListPop(ajpListSeqPairFiles, (void **)&ajpStrSeqPairFileName))
     /* DDDDEBUG */
-    for(ajIntCount = 0;ajIntCount < 10;ajIntCount++)
+    /* for(ajIntCount = 0;ajIntCount < 10;ajIntCount++) */
     {
 	ajpStrRootOutfileName = ajStrNew();
 	ajpStrFirstOutfileName = ajStrNew();
@@ -126,55 +126,69 @@ int main( int argc , char **argv )
 	ajpStrSecondCommandLine = ajStrNew();
 
 	/* DDDDEBUG */
-	ajListPop(ajpListSeqPairFiles, (void **)&ajpStrSeqPairFileName);
-	ajFmtPrint( "%S\n", ajpStrSeqPairFileName);
+/* 	ajListPop(ajpListSeqPairFiles, (void **)&ajpStrSeqPairFileName); */
+/* 	ajFmtPrint( "%S\n", ajpStrSeqPairFileName); */
 
 	/* read two unaligned sequences into memory */
 	ajSeqinUsa(&ajpSeqinUnalignedPair, ajpStrSeqPairFileName);
 	ajSeqsetRead(ajpSeqsetUnalignedPair, ajpSeqinUnalignedPair);
 
-	ajpSeqQuery = ajSeqsetGetSeq(ajpSeqsetUnalignedPair, enumQuerySeqIndex);
-	ajpSeqTemplate = ajSeqsetGetSeq(ajpSeqsetUnalignedPair, enumTemplateSeqIndex);
+	if(ajpSeqsetUnalignedPair->Size > 1)
+	{
+	    ajpSeqQuery = ajSeqsetGetSeq(ajpSeqsetUnalignedPair, enumQuerySeqIndex);
+	    ajpSeqTemplate = ajSeqsetGetSeq(ajpSeqsetUnalignedPair, enumTemplateSeqIndex);
+	    
+	    ajpStrQuerySeq = ajSeqStr(ajpSeqQuery);
+	    ajpStrTemplateSeq = ajSeqStr(ajpSeqTemplate);
 
-	ajpStrQuerySeq = ajSeqStr(ajpSeqQuery);
-	ajpStrTemplateSeq = ajSeqStr(ajpSeqTemplate);
+	    ajStrCopy(&ajpStrRootOutfileName, ajpSeqQuery->Name);
+	    ajStrApp(&ajpStrRootOutfileName, ajpStrJoinOutfileName);
+	    ajStrApp(&ajpStrRootOutfileName, ajpSeqTemplate->Name);
+	    /* 	ajFileNameTrim(&ajpStrFirstOutfileName); */
+	    /* 	ajFileNameTrim(&ajpStrSecondOutfileName); */
+	    /* 	ajFileNameShorten(&ajpStrFirstOutfileName); */
+	    /* 	ajFileNameShorten(&ajpStrSecondOutfileName); */
+	    ajStrCopy(&ajpStrFirstOutfileName, ajpStrRootOutfileName);
+	    ajStrCopy(&ajpStrSecondOutfileName, ajpStrRootOutfileName);	
+	    ajStrApp(&ajpStrFirstOutfileName, ajpStrFirstOutfileSuffix);
+	    ajStrApp(&ajpStrSecondOutfileName, ajpStrSecondOutfileSuffix);
 
-	ajStrCopy(&ajpStrRootOutfileName, ajpSeqQuery->Name);
-	ajStrApp(&ajpStrRootOutfileName, ajpStrJoinOutfileName);
-	ajStrApp(&ajpStrRootOutfileName, ajpSeqTemplate->Name);
-/* 	ajFileNameTrim(&ajpStrFirstOutfileName); */
-/* 	ajFileNameTrim(&ajpStrSecondOutfileName); */
-/* 	ajFileNameShorten(&ajpStrFirstOutfileName); */
-/* 	ajFileNameShorten(&ajpStrSecondOutfileName); */
-	ajStrCopy(&ajpStrFirstOutfileName, ajpStrRootOutfileName);
-	ajStrCopy(&ajpStrSecondOutfileName, ajpStrRootOutfileName);	
-	ajStrApp(&ajpStrFirstOutfileName, ajpStrFirstOutfileSuffix);
-	ajStrApp(&ajpStrSecondOutfileName, ajpStrSecondOutfileSuffix);
+	    /* obtain sequences as modifiable strings */
+	    ajFmtPrintS(&ajpStrFirstCommandLine,
+			"%S%S -asequence asis::%S  -bsequence asis::%S -datafile %S%S -gapopen %2.1f -gapextend %2.1f -outfile %S%S -aformat3 %S",
+			ajpStrPathToCommands, ajpStrFirstCommandName,
+			ajpStrQuerySeq, ajpStrTemplateSeq,
+			ajpStrPathToScoringMatrix, ajpStrScoringMatrixName,
+			fGapPenalty, fExtensionPenalty,
+			ajpStrFirstPathToOutfile, ajpStrFirstOutfileName,
+			ajpStrAlignmentFormat);
 
-	/* obtain sequences as modifiable strings */
-	ajFmtPrintS(&ajpStrFirstCommandLine,
-		    "%S%S -asequence asis::%S  -bsequence asis::%S -datafile %S%S -gapopen %2.1f -gapextend %2.1f -outfile %S%S -aformat3 %S",
-		    ajpStrPathToCommands, ajpStrFirstCommandName,
-		    ajpStrQuerySeq, ajpStrTemplateSeq,
-		    ajpStrPathToScoringMatrix, ajpStrScoringMatrixName,
-		    fGapPenalty, fExtensionPenalty,
-		    ajpStrFirstPathToOutfile, ajpStrFirstOutfileName,
-		    ajpStrAlignmentFormat);
+	    ajFmtPrintS(&ajpStrSecondCommandLine,
+			"%S%S -down asis::%S -across asis::%S -substitution %S%S -gapo %2.1f -gape %2.1f -aligned %S%S",
+			ajpStrPathToCommands, ajpStrSecondCommandName,
+			ajpStrQuerySeq, ajpStrTemplateSeq,
+			ajpStrPathToScoringMatrix, ajpStrScoringMatrixName,
+			fGapPenalty, fExtensionPenalty,
+			ajpStrSecondPathToOutfile, ajpStrSecondOutfileName);
 
-	ajFmtPrintS(&ajpStrSecondCommandLine,
-		    "%S%S -down asis::%S -across asis::%S -substitution %S%S -gapo %2.1f -gape %2.1f -aligned %S%S",
-		    ajpStrPathToCommands, ajpStrSecondCommandName,
-		    ajpStrQuerySeq, ajpStrTemplateSeq,
-		    ajpStrPathToScoringMatrix, ajpStrScoringMatrixName,
-		    fGapPenalty, fExtensionPenalty,
-		    ajpStrSecondPathToOutfile, ajpStrSecondOutfileName);
+	    /* execute commands */
+	    pcFirstCommandLine = ajStrStr(ajpStrFirstCommandLine);
+	    pcSecondCommandLine = ajStrStr(ajpStrSecondCommandLine);
+	    system(pcFirstCommandLine);
+	    system(pcSecondCommandLine);
 
-	pcFirstCommandLine = ajStrStr(ajpStrFirstCommandLine);
-	pcSecondCommandLine = ajStrStr(ajpStrSecondCommandLine);
-	system(pcFirstCommandLine);
-	system(pcSecondCommandLine);
-	printf("\n%s", pcFirstCommandLine);
- 	printf("\n%s", pcSecondCommandLine);
+	    /* DDDDEBUG */
+	    if(enumDebugLevel)
+	    {
+		printf("\n%s", pcFirstCommandLine);
+		printf("\n%s", pcSecondCommandLine);
+	    }
+	}
+	else
+	{
+	    ajFmtPrint("\nSINGLE ENTRY IN FILE\n");
+	}
+
 	ajStrDel(&ajpStrRootOutfileName);
 	ajStrDel(&ajpStrFirstOutfileName);
 	ajStrDel(&ajpStrSecondOutfileName);

@@ -4,8 +4,8 @@
 **  writes the resulting ungapped sequence pairs into a new directory
 **
 ** @author: Copyright (C) Damian Counsell
-** @version $Revision: 1.1 $
-** @modified $Date: 2004/09/06 19:55:56 $
+** @version $Revision: 1.2 $
+** @modified $Date: 2004/10/14 18:55:53 $
 ** @@
 **
 ** This program is free software; you can redistribute it and/or
@@ -41,7 +41,7 @@ enum constant
 int main( int argc , char **argv )
 {
     ajint ajIntNumberOfSeqPairFiles  = 0;
-    ajint ajIntSeparatorPos          = 0;    /* where does the filename root meet its suffix? */
+    ajint ajIntSeparatorPos          = 0;    /* where does the filename root meet its suffix */
 
     /* all unaligned input sequences in directory */
     AjPList ajpListSeqPairFiles      = NULL;
