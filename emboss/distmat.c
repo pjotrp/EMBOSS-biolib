@@ -92,7 +92,7 @@ int main (int argc, char * argv[])
     AjPStr* methodlist;
     AjPFile outf=NULL;
     
-    AjBool nuc;
+    AjBool nuc=ajFalse;
     AjBool ambig;
     AjBool calc_a;
 
@@ -131,7 +131,7 @@ int main (int argc, char * argv[])
     }     
     else if(posn == 123)
       posn = 0;
-    else if(posn == 23 | posn == 13 | posn != 12)
+    else if(posn == 23 || posn == 13 || posn != 12)
       ajFatal("Choose base positions 1, 2, 3, 12, or 123");
 
     (void) ajStrToInt(methodlist[0], &method);
@@ -231,9 +231,6 @@ static AjPFloat2d Tamura(char** seqcharptr, ajint len, ajint nseqs)
     AjPFloat2d matDist=NULL;
     AjPFloat2d gap=NULL;
     AjPFloat2d GC=NULL;
-
-    char *p;
-
 
     Ptrans  = ajInt2dNew();
     Qtranv  = ajInt2dNew();
@@ -554,7 +551,6 @@ static AjPFloat2d calc_match(char** seqcharptr, ajint len, ajint nseqs,
     ajint i;
     ajint j;
     ajint k;
-    ajint **matrix;
 
     char m1;
     char m2;
@@ -712,12 +708,10 @@ static AjPFloat2d TajimaNei(char** seqcharptr, AjPFloat2d match,
     float slen;
     float h;
     float m;
-    float g;
     float D;
     float b;
 
     AjPFloat2d matchTN=NULL;
-    char *p;
 
 
     len   = ajInt2dNew();     /* scored length for pairs */
@@ -902,7 +896,7 @@ static AjPFloat2d JinNei(char** seqcharptr, ajint mlen, ajint nseqs,
     ajint t2;
     ajint trans;
     ajint tranv;
-    ajint slen;
+    ajint slen=0;
 
     float av;
     float var;
@@ -1220,11 +1214,11 @@ static float checkambigProt(ajint t1, ajint t2)
 
     if( !strchr("X",t1) && t1 == t2 )
       n = 1.0;
-    else if( (strchr("B",t1) && strchr("DN",t2) ||
-              strchr("B",t2) && strchr("DN",t1)) )
+    else if( ((strchr("B",t1) && strchr("DN",t2)) ||
+              (strchr("B",t2) && strchr("DN",t1))) )
       n = 0.5;
-    else if( (strchr("Z",t1) && strchr("EQ",t2) ||
-              strchr("Z",t2) && strchr("EQ",t1)) )
+    else if( ((strchr("Z",t1) && strchr("EQ",t2)) ||
+              (strchr("Z",t2) && strchr("EQ",t1))) )
       n = 0.5;
     else if( strchr("X",t1) && strchr("X",t2) )
       n = 0.0025;
@@ -1372,8 +1366,6 @@ static void outputDist(AjPFile outf, ajint nseqs, ajint mlen, AjPSeqset seqset,
     ajint i;
     ajint j;
     float D;
-    AjPStr mtd=NULL;
-
 
     if(posn == 0)
     {
