@@ -227,9 +227,14 @@ int main(int argc, char **argv)
     return 0;
 }
 
-
-
-/* Functions */
+/* @func spaces ***************************************************************
+**
+** Undocumented.
+**
+** @param [?] outf [AjPFile*] Undocumented
+** @param [?] length [ajint] Undocumented
+** @@
+******************************************************************************/
 
 void spaces(AjPFile *outf, ajint length)
 {

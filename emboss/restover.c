@@ -186,6 +186,35 @@ int main(int argc, char **argv)
 
 
 
+/* @func printHits ************************************************************
+**
+** Undocumented.
+**
+** @param [?] seq [AjPSeq] Undocumented
+** @param [?] seqcmp [AjPStr] Undocumented
+** @param [?] outf [AjPFile*] Undocumented
+** @param [?] l [AjPList*] Undocumented
+** @param [?] name [AjPStr*] Undocumented
+** @param [?] hits [ajint] Undocumented
+** @param [?] begin [ajint] Undocumented
+** @param [?] end [ajint] Undocumented
+** @param [?] ambiguity [AjBool] Undocumented
+** @param [?] mincut [ajint] Undocumented
+** @param [?] maxcut [ajint] Undocumented
+** @param [?] plasmid [AjBool] Undocumented
+** @param [?] blunt [AjBool] Undocumented
+** @param [?] sticky [AjBool] Undocumented
+** @param [?] sitelen [ajint] Undocumented
+** @param [?] limit [AjBool] Undocumented
+** @param [?] equiv [AjBool] Undocumented
+** @param [?] table [AjPTable] Undocumented
+** @param [?] alpha [AjBool] Undocumented
+** @param [?] frags [AjBool] Undocumented
+** @param [?] nameit [AjBool] Undocumented
+** @param [?] html [AjBool] Undocumented
+** @@
+******************************************************************************/
+
 
 void printHits(AjPSeq seq, AjPStr seqcmp, AjPFile *outf, AjPList *l,
 	       AjPStr *name, ajint hits, ajint begin,
@@ -393,6 +422,15 @@ void printHits(AjPSeq seq, AjPStr seqcmp, AjPFile *outf, AjPList *l,
     return;
 }
 
+
+/* @func read_equiv ***********************************************************
+**
+** Undocumented.
+**
+** @param [?] equfile [AjPFile*] Undocumented
+** @param [?] table [AjPTable*] Undocumented
+** @@
+******************************************************************************/
 
 
 void read_equiv(AjPFile *equfile, AjPTable *table)

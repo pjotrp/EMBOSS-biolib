@@ -89,6 +89,17 @@ char *constr=0;
 
 
 
+/* @func calcseqperpage *******************************************************
+**
+** Undocumented.
+**
+** @param [?] yincr [float] Undocumented
+** @param [?] y [float] Undocumented
+** @param [?] consensus [AjBool] Undocumented
+** @return [ajint] Undocumented
+** @@
+******************************************************************************/
+
 
 ajint calcseqperpage(float yincr,float y,AjBool consensus)
 {
@@ -111,6 +122,33 @@ ajint calcseqperpage(float yincr,float y,AjBool consensus)
 
 
 
+
+/* @func fillinboxes **********************************************************
+**
+** Undocumented.
+**
+** @param [?] ystart [float] Undocumented
+** @param [?] length [ajint] Undocumented
+** @param [?] numseq [ajint] Undocumented
+** @param [?] resbreak [ajint] Undocumented
+** @param [?] cvt [AjPSeqCvt] Undocumented
+** @param [?] yincr [float] Undocumented
+** @param [?] numres [ajint] Undocumented
+** @param [?] consensus [AjBool] Undocumented
+** @param [?] title [AjBool] Undocumented
+** @param [?] start [ajint] Undocumented
+** @param [?] end [ajint] Undocumented
+** @param [?] boxcol [AjBool] Undocumented
+** @param [?] boxit [AjBool] Undocumented
+** @param [?] seqstart [ajint] Undocumented
+** @param [?] seqend [ajint] Undocumented
+** @param [?] outf [AjPFile] Undocumented
+** @param [?] data [AjBool] Undocumented
+** @param [?] datacol [ajint] Undocumented
+** @param [?] datacs [float] Undocumented
+** @return [ajint] Undocumented
+** @@
+******************************************************************************/
 
 ajint fillinboxes(float ystart, ajint length, ajint numseq, ajint resbreak,
 		AjPSeqCvt cvt, float yincr, ajint numres,AjBool consensus,

@@ -213,9 +213,11 @@ void     TermsDel(AjPTerms *pthis);
 AjPTerms TermsNew(void);
 AjBool   keysearch(AjPFile inf, AjPTerms terms, AjPHitlist *hits);
 
-
-
-
+/* @prog swissparse *******************************************************
+**
+** Retrieves sequences from swissprot using keyword search
+**
+******************************************************************************/
 
 int main(int argc, char **argv)
 {

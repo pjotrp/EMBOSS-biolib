@@ -237,6 +237,18 @@ int main(int argc, char **argv)
     return 0;
 }
 
+/* @funcstatic  drawocta ******************************************************
+**
+** Undocumented.
+**
+** @param [?] x [float] Undocumented
+** @param [?] y [float] Undocumented
+** @param [?] size [float] Undocumented
+** @param [?] text [AjBool] Undocumented
+** @param [?] outf [AjPFile] Undocumented
+** @@
+******************************************************************************/
+
 
 static void drawocta(float x, float y, float size, AjBool text, AjPFile outf)
 {
@@ -270,6 +282,25 @@ static void drawocta(float x, float y, float size, AjBool text, AjPFile outf)
 
 
     
+/* @funcstatic  plotresidue ***************************************************
+**
+** Undocumented.
+**
+** @param [?] c [char] Undocumented
+** @param [?] r [float] Undocumented
+** @param [?] a [float] Undocumented
+** @param [?] squares [char*] Undocumented
+** @param [?] octags [char*] Undocumented
+** @param [?] diamonds [char*] Undocumented
+** @param [?] text [AjBool] Undocumented
+** @param [?] outf [AjPFile] Undocumented
+** @param [?] xmin [float] Undocumented
+** @param [?] xmax [float] Undocumented
+** @param [?] ymin [float] Undocumented
+** @param [?] ymax [float] Undocumented
+** @@
+******************************************************************************/
+
 
 static void plotresidue(char c, float r, float a, char *squares, char *octags,
 		 char *diamonds, AjBool text, AjPFile outf,

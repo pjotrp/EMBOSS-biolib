@@ -14,6 +14,13 @@ ajint *pts;
 ajint which;
 AjPFile outf=NULL;
 
+/* @funcstatic  drawPlotlines *************************************************
+**
+** Undocumented.
+**
+** @@
+******************************************************************************/
+
 static void drawPlotlines(void **x, void *cl)
 {
     EmbPWordMatch p  = (EmbPWordMatch)*x;
@@ -28,6 +35,13 @@ static void drawPlotlines(void **x, void *cl)
  
     ajGraphLine(x1, y1, x2, y2);
 }
+
+/* @funcstatic  dataPlotlines *************************************************
+**
+** Undocumented.
+**
+** @@
+******************************************************************************/
 
 static void dataPlotlines(void **x, void *cl)
 {
@@ -44,6 +58,15 @@ static void dataPlotlines(void **x, void *cl)
     ajFmtPrintF(outf,"Line x1 %f y1 %f x2 %f y2 %f colour 0\n",x1, y1, x2, y2);
 }
 
+
+/* @funcstatic  plotMatches ***************************************************
+**
+** Undocumented.
+**
+** @param [?] list [AjPList] Undocumented
+** @param [?] text [AjBool] Undocumented
+** @@
+******************************************************************************/
 
 static void plotMatches(AjPList list, AjBool text)
 {

@@ -19,20 +19,23 @@
 
 #include "emboss.h"
 
-/*
-e.g.
-proteinmotifsearch embl:M94271 /nfs/disk100/pubseq/prosite/prosite.regex
-
-get protein.
-convert to upper case.
-
-open motif file and read each motif.
-convert to upper case.
-
-comp reg exp.
-
-search regcomp with string.
-*/
+/* @prog proteinmotifsearch ***************************************************
+**
+** testing protein motif searching
+** e.g.
+** proteinmotifsearch embl:M94271 /nfs/disk100/pubseq/prosite/prosite.regex
+** 
+** get protein.
+** convert to upper case.
+** 
+** open motif file and read each motif.
+** convert to upper case.
+** 
+** comp reg exp.
+** 
+** search regcomp with string.
+**
+******************************************************************************/
 
 int main(int argc, char **argv)
 {

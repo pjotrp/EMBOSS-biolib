@@ -2,6 +2,12 @@
 #include "emboss.h"
 #include "ajmess.h"
 
+/* @prog messtest *******************************************************
+**
+** Testing messages
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
   AjPStr str1;

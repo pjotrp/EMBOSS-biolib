@@ -237,6 +237,15 @@ int main(int argc, char **argv)
 
 
 
+/* @func getType **************************************************************
+**
+** Undocumented.
+**
+** @param [?] inf [AjPFile] Undocumented
+** @return [ajint] Undocumented
+** @@
+******************************************************************************/
+
 
 ajint getType(AjPFile inf)
 {
@@ -264,6 +273,19 @@ ajint getType(AjPFile inf)
 
 
 
+
+/* @funcstatic  read_simple ***************************************************
+**
+** Undocumented.
+**
+** @param [?] inf [AjPFile] Undocumented
+** @param [?] name [AjPStr*] Undocumented
+** @param [?] mlen [ajint*] Undocumented
+** @param [?] maxs [ajint*] Undocumented
+** @param [?] thresh [ajint*] Undocumented
+** @param [?] cons [AjPStr*] Undocumented
+** @@
+******************************************************************************/
 
 
 static void read_simple(AjPFile inf, AjPStr *name, ajint *mlen,
@@ -320,6 +342,22 @@ static void read_simple(AjPFile inf, AjPStr *name, ajint *mlen,
 
 
 
+
+/* @funcstatic  read_profile **************************************************
+**
+** Undocumented.
+**
+** @param [?] inf [AjPFile] Undocumented
+** @param [?] name [AjPStr*] Undocumented
+** @param [?] mname [AjPStr*] Undocumented
+** @param [?] mlen [ajint*] Undocumented
+** @param [?] gapopen [float*] Undocumented
+** @param [?] gapextend [float*] Undocumented
+** @param [?] thresh [ajint*] Undocumented
+** @param [?] maxs [float*] Undocumented
+** @param [?] cons [AjPStr*] Undocumented
+** @@
+******************************************************************************/
 
 
 static void read_profile(AjPFile inf, AjPStr *name, AjPStr *mname, ajint *mlen,
@@ -404,6 +442,22 @@ static void read_profile(AjPFile inf, AjPStr *name, AjPStr *mname, ajint *mlen,
 
 
 
+/* @func scan_simple **********************************************************
+**
+** Undocumented.
+**
+** @param [?] substr [AjPStr] Undocumented
+** @param [?] pname [AjPStr] Undocumented
+** @param [?] name [AjPStr] Undocumented
+** @param [?] mlen [ajint] Undocumented
+** @param [?] maxs [ajint] Undocumented
+** @param [?] thresh [ajint] Undocumented
+** @param [?] matrix [ajint**] Undocumented
+** @param [?] outf [AjPFile] Undocumented
+** @param [?] cons [AjPStr*] Undocumented
+** @@
+******************************************************************************/
+
 
 void scan_simple(AjPStr substr, AjPStr pname, AjPStr name, ajint mlen, ajint maxs,
 		 ajint thresh, ajint **matrix,AjPFile outf, AjPStr *cons)
@@ -436,6 +490,22 @@ void scan_simple(AjPStr substr, AjPStr pname, AjPStr name, ajint mlen, ajint max
 
 
 
+/* @func printHits ************************************************************
+**
+** Undocumented.
+**
+** @param [?] substr [AjPStr] Undocumented
+** @param [?] pname [AjPStr] Undocumented
+** @param [?] pos [ajint] Undocumented
+** @param [?] name [AjPStr] Undocumented
+** @param [?] score [ajint] Undocumented
+** @param [?] thresh [ajint] Undocumented
+** @param [?] maxs [float] Undocumented
+** @param [?] outf [AjPFile] Undocumented
+** @param [?] cons [AjPStr*] Undocumented
+** @@
+******************************************************************************/
+
 
 void printHits(AjPStr substr,AjPStr pname, ajint pos, AjPStr name, ajint score,
 	       ajint thresh, float maxs, AjPFile outf, AjPStr *cons)
@@ -444,6 +514,25 @@ void printHits(AjPStr substr,AjPStr pname, ajint pos, AjPStr name, ajint score,
     ajFmtPrintF(outf,"%s %d Percentage: %d\n",ajStrStr(pname),pos+1,score);
 }
 
+
+/* @func scan_profile *********************************************************
+**
+** Undocumented.
+**
+** @param [?] substr [AjPStr] Undocumented
+** @param [?] pname [AjPStr] Undocumented
+** @param [?] name [AjPStr] Undocumented
+** @param [?] mname [AjPStr] Undocumented
+** @param [?] mlen [ajint] Undocumented
+** @param [?] fmatrix [float**] Undocumented
+** @param [?] thresh [ajint] Undocumented
+** @param [?] maxs [float] Undocumented
+** @param [?] gapopen [float] Undocumented
+** @param [?] gapextend [float] Undocumented
+** @param [?] outf [AjPFile] Undocumented
+** @param [?] cons [AjPStr*] Undocumented
+** @@
+******************************************************************************/
 
 
 void scan_profile(AjPStr substr, AjPStr pname, AjPStr name, AjPStr mname,

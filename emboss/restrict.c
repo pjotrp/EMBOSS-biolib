@@ -179,6 +179,32 @@ int main(int argc, char **argv)
 
 
 
+/* @func printHits ************************************************************
+**
+** Undocumented.
+**
+** @param [?] outf [AjPFile*] Undocumented
+** @param [?] l [AjPList*] Undocumented
+** @param [?] name [AjPStr*] Undocumented
+** @param [?] hits [ajint] Undocumented
+** @param [?] begin [ajint] Undocumented
+** @param [?] end [ajint] Undocumented
+** @param [?] ambiguity [AjBool] Undocumented
+** @param [?] mincut [ajint] Undocumented
+** @param [?] maxcut [ajint] Undocumented
+** @param [?] plasmid [AjBool] Undocumented
+** @param [?] blunt [AjBool] Undocumented
+** @param [?] sticky [AjBool] Undocumented
+** @param [?] sitelen [ajint] Undocumented
+** @param [?] limit [AjBool] Undocumented
+** @param [?] equiv [AjBool] Undocumented
+** @param [?] table [AjPTable] Undocumented
+** @param [?] alpha [AjBool] Undocumented
+** @param [?] frags [AjBool] Undocumented
+** @param [?] nameit [AjBool] Undocumented
+** @@
+******************************************************************************/
+
 
 void printHits(AjPFile *outf, AjPList *l, AjPStr *name, ajint hits, ajint begin,
 	       ajint end, AjBool ambiguity, ajint mincut, ajint maxcut, AjBool
@@ -319,6 +345,15 @@ void printHits(AjPFile *outf, AjPList *l, AjPStr *name, ajint hits, ajint begin,
     return;
 }
 
+
+/* @func read_equiv ***********************************************************
+**
+** Undocumented.
+**
+** @param [?] equfile [AjPFile*] Undocumented
+** @param [?] table [AjPTable*] Undocumented
+** @@
+******************************************************************************/
 
 
 void read_equiv(AjPFile *equfile, AjPTable *table)

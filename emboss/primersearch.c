@@ -147,6 +147,15 @@ int main(int argc, char **argv)
 }
 
 /* "constructors" */
+
+/* @funcstatic  initialise_pguts **********************************************
+**
+** Undocumented.
+**
+** @param [?] primer [PGuts*] Undocumented
+** @@
+******************************************************************************/
+
 static void initialise_pguts(PGuts* primer)
 {
   AJNEW(*primer);
@@ -162,7 +171,15 @@ static void initialise_pguts(PGuts* primer)
 }
 
 /* "destructors" */
-/* Frees up all the internal members of a PGuts struct */
+
+/* @funcstatic  free_pguts ****************************************************
+**
+** Frees up all the internal members of a PGuts struct
+**
+** @param [?] primer [PGuts*] Undocumented
+** @@
+******************************************************************************/
+
 static void free_pguts(PGuts* primer)
 {
   ajint i=0;
@@ -183,7 +200,13 @@ static void free_pguts(PGuts* primer)
   AJFREE(*primer);
 }
 
-/* frees up the internal members of a Primer */
+/* @func free_primer **********************************************************
+**
+** frees up the internal members of a Primer
+**
+** @@
+******************************************************************************/
+
 void free_primer(void **x, void *cl){
   Primer* p;
   Primer primdata;
@@ -217,6 +240,14 @@ void free_primer(void **x, void *cl){
   AJFREE(primdata);
 }
 
+/* @funcstatic  clean_hitlist *************************************************
+**
+** Undocumented.
+**
+** @param [?] hlist [AjPList] Undocumented
+** @@
+******************************************************************************/
+
 static void clean_hitlist(AjPList hlist)
 {
   AjIList lIter;
@@ -235,7 +266,17 @@ static void clean_hitlist(AjPList hlist)
 }
 
 /* utilities */
-/* read primers in from primerfile, classify and compile the patterns */
+
+/* @funcstatic  read_primers **************************************************
+**
+** read primers in from primerfile, classify and compile the patterns
+**
+** @param [?] primerList [AjPList*] Undocumented
+** @param [?] primerFile [AjPFile] Undocumented
+** @param [?] mmp [ajint] Undocumented
+** @@
+******************************************************************************/
+
 static void read_primers(AjPList *primerList, AjPFile primerFile, ajint mmp)
 {
   AjPStr rdline = NULL;
@@ -302,7 +343,15 @@ static void read_primers(AjPList *primerList, AjPFile primerFile, ajint mmp)
 
 }
 
-/* determines pattern type and compiles it */
+/* @funcstatic  classify_and_compile ******************************************
+**
+** determines pattern type and compiles it
+**
+** @param [?] primdata [Primer*] Undocumented
+** @return [AjBool] Undocumented
+** @@
+******************************************************************************/
+
 static AjBool classify_and_compile(Primer* primdata)
 {
 
@@ -353,8 +402,16 @@ static AjBool classify_and_compile(Primer* primdata)
   return AJTRUE; /* this is a useable primer */
 }
 
+/* @funcstatic  primer_search *************************************************
+**
+** tests the primers in primdata against seq and writes results to outfile
+**
+** @param [?] primerList [AjPList] Undocumented
+** @param [?] seq [AjPSeq] Undocumented
+** @param [?] outf [AjPFile] Undocumented
+** @@
+******************************************************************************/
 
-/* tests the primers in primdata against seq and writes results to outfile */
 static void primer_search(AjPList primerList, AjPSeq seq, AjPFile outf)
 {
   AjIList listIter;
@@ -374,10 +431,19 @@ static void primer_search(AjPList primerList, AjPSeq seq, AjPFile outf)
   return;
 }
 
+/* @funcstatic  scan_seq ******************************************************
+**
+** scans the primer pairs against the sequence in either forward 
+** sense or reverse complemented 
+** works out amplimer length if the two primers both hit
+**
+** @param [?] primdata [Primer] Undocumented
+** @param [?] seq [AjPSeq] Undocumented
+** @param [?] reverse [AjBool] Undocumented
+** @param [?] outf [AjPFile] Undocumented
+** @@
+******************************************************************************/
 
-/* scans the primer pairs against the sequence in either forward 
-   sense or reverse complemented 
-   works out amplimer length if the two primers both hit */
 static void scan_seq(Primer primdata, AjPSeq seq, AjBool reverse, AjPFile outf)
 {
   AjPStr seqstr = NULL;
@@ -505,6 +571,18 @@ static void scan_seq(Primer primdata, AjPSeq seq, AjBool reverse, AjPFile outf)
   return;
 }
 
+/* @funcstatic  store_hits ****************************************************
+**
+** Undocumented.
+**
+** @param [?] primdata [Primer] Undocumented
+** @param [?] fhits [AjPList] Undocumented
+** @param [?] rhits [AjPList] Undocumented
+** @param [?] seq [AjPSeq] Undocumented
+** @param [?] reverse [AjBool] Undocumented
+** @@
+******************************************************************************/
+
 static void store_hits(Primer primdata, AjPList fhits, AjPList rhits, AjPSeq seq, AjBool reverse)
 {
   ajint amplen = 0;
@@ -570,6 +648,15 @@ static void store_hits(Primer primdata, AjPList fhits, AjPList rhits, AjPSeq seq
   ajListIterFree(fi);
   return;
 }
+
+/* @funcstatic  print_hits ****************************************************
+**
+** Undocumented.
+**
+** @param [?] primerList [AjPList] Undocumented
+** @param [?] outf [AjPFile] Undocumented
+** @@
+******************************************************************************/
 
 
 static void print_hits(AjPList primerList, AjPFile outf)

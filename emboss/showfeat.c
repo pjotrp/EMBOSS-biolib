@@ -656,6 +656,7 @@ allow this as a match */
   return val;
 
 }
+
 /* @funcstatic AddPos ***********************************************
 **
 ** writes the positions to the positions string
@@ -677,6 +678,7 @@ static void AddPos(AjPStr *posout, ajint start, ajint end) {
   ajFmtPrintAppS(posout, "%d-%d", start, end);
 
 }
+
 /* @funcstatic AddTagsStr ***********************************************
 **
 ** writes the tags to the tagsout string

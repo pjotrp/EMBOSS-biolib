@@ -5,6 +5,13 @@ static AjPSeq seq1;
 
 ajint statwordlen;
 
+/* @funcstatic  matchListPrint ************************************************
+**
+** Undocumented.
+**
+** @@
+******************************************************************************/
+
 static void matchListPrint(void **x,void *cl) {
   EmbPWordMatch p = (EmbPWordMatch)*x;
   AjPFile outfile = (AjPFile) cl;
@@ -16,6 +23,15 @@ static void matchListPrint(void **x,void *cl) {
 
   /*  printf("%d\t %d\t %d \n",(*p).seq1start,(*p).seq2start,(*p).length);*/
 }
+
+/* @funcstatic  listPrint *****************************************************
+**
+** Undocumented.
+**
+** @param [?] outfile [AjPFile] Undocumented
+** @param [?] list [AjPList] Undocumented
+** @@
+******************************************************************************/
 
 static void listPrint(AjPFile outfile, AjPList list){
   ajListMap(list,matchListPrint, outfile);

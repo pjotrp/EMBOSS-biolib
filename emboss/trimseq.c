@@ -98,23 +98,22 @@ int main(int argc, char **argv)
 
 }
 
-/***********************************************************************
- trim 
 
-Parameters:
-
-AjPSeq sequence
-ajint sense	1 = trim from left, 0 = trim from right
-AjBool isnuc
-ajint window
-float percent
-AjBool strict	trim off all IUPAC ambiguity codes, not just X, N
-AjBool star	trim off asterisks in proteins
-
-Returns:
-ajint position to trim to or -1 or ajSeqLen(seq) if no bad characters were found
-
-*/
+/* @func trim *****************************************************************
+**
+** Trim sequence
+**
+** @param [?] seq [AjPSeq] sequence
+** @param [?] sense [ajint] Undocumented
+** @param [?] isnuc [AjBool] Undocumented
+** @param [?] window [ajint] Undocumented
+** @param [?] percent [float] Undocumented
+** @param [?] strict [AjBool] trim off all IUPAC ambiguity codes, not just X, N
+** @param [?] star [AjBool] trim off asterisks in proteins
+** @return [ajint] position to trim to or -1
+**                 or ajSeqLen(seq) if no bad characters were found
+** @@
+******************************************************************************/
 
 ajint trim (AjPSeq seq, ajint sense, AjBool isnuc, ajint window, float percent, AjBool strict, AjBool star) {
 	
@@ -213,15 +212,16 @@ ajint trim (AjPSeq seq, ajint sense, AjBool isnuc, ajint window, float percent, 
   return leroy_brown;
 
 }
-/***********************************************************************
- parole
- sets the upper and lowercase characters in the array 'gang' to be ajFalse
 
-Parameters:
-AjBool *gang	- array of flags for whether a character is required or not
-char *good_guys	- string of chars that are required
-
-*/
+/* @func parole ***************************************************************
+**
+**  sets the upper and lowercase characters in the array 'gang' to be ajFalse
+** 
+** @param [?] gang [AjBool*] array of flags for whether a character
+**                           is required or not
+** @param [?] good_guys [char*] string of chars that are required
+** @@
+******************************************************************************/
 
 void parole(AjBool *gang, char *good_guys) {
 	
@@ -233,15 +233,16 @@ void parole(AjBool *gang, char *good_guys) {
   }
 }
 	
-/***********************************************************************
- arrest
- resets the upper and lowercase characters in the array 'gang' to be ajTrue
 
-Parameters:
-AjBool *gang	- array of flags for whether a character is required or not
-char *bad_guys	- string of chars that are not required
-
-*/
+/* @func arrest ***************************************************************
+**
+**  resets the upper and lowercase characters in the array 'gang' to be ajTrue
+** 
+** @param [?] gang [AjBool*] array of flags for whether a character
+**                           is required or not
+** @param [?] bad_guys [char*] string of chars that are not required
+** @@
+******************************************************************************/
 
 void arrest(AjBool *gang, char *bad_guys) {
 	

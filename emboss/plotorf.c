@@ -144,6 +144,24 @@ int main(int argc, char **argv)
     return 0;
 }
 
+/* @func norfs ****************************************************************
+**
+** Undocumented.
+**
+** @param [?] seq [char*] Undocumented
+** @param [?] rev [char*] Undocumented
+** @param [?] n [ajint] Undocumented
+** @param [?] x [float**] Undocumented
+** @param [?] y [float**] Undocumented
+** @param [?] cnt [AjPInt*] Undocumented
+** @param [?] beg [ajint] Undocumented
+** @param [?] starts [AjPStr*] Undocumented
+** @param [?] nstarts [ajint] Undocumented
+** @param [?] stops [AjPStr*] Undocumented
+** @param [?] nstops [ajint] Undocumented
+** @@
+******************************************************************************/
+
 
 
 void norfs(char *seq, char *rev, ajint n, float **x, float **y, AjPInt *cnt,
@@ -257,6 +275,17 @@ void norfs(char *seq, char *rev, ajint n, float **x, float **y, AjPInt *cnt,
     
     return;
 }
+
+/* @func isin *****************************************************************
+**
+** Undocumented.
+**
+** @param [?] p [char*] Undocumented
+** @param [?] str [AjPStr*] Undocumented
+** @param [?] n [ajint] Undocumented
+** @return [AjBool] Undocumented
+** @@
+******************************************************************************/
 
 
 AjBool isin(char *p, AjPStr *str, ajint n)

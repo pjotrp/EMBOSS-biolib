@@ -913,6 +913,7 @@ correctly, so ...  */
 ** @return [ajint] Compare value (-1, 0, +1)
 ** @@
 ******************************************************************************/
+
 static ajint CompareTwoSeqNames(const void * a, const void * b)
 {
   return strcmp(ajSeqName((*(AjOOrder *)a).seq), ajSeqName((*(AjOOrder *)b).seq));
@@ -929,6 +930,7 @@ static ajint CompareTwoSeqNames(const void * a, const void * b)
 ** @return [ajint] Compare value (-1, 0, +1)
 ** @@
 ******************************************************************************/
+
 static ajint CompareTwoSeqSimilarities(const void * a, const void * b)
 {
   return (*(AjOOrder *)b).similarity - (*(AjOOrder *)a).similarity;

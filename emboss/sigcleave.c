@@ -249,6 +249,16 @@ int main(int argc, char **argv)
 
 
 
+/* @func readSig **************************************************************
+**
+** Undocumented.
+**
+** @param [?] matrix [AjPFloat2d*] Undocumented
+** @param [?] prokaryote [AjBool] Undocumented
+** @return [ajint] Undocumented
+** @@
+******************************************************************************/
+
 
 ajint readSig(AjPFloat2d *matrix,AjBool prokaryote)
 {

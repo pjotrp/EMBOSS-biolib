@@ -22,6 +22,13 @@ concat *conmax = NULL;
 ajint maxgap = 0;
 
 
+/* @funcstatic  matchListOrder ************************************************
+**
+** Undocumented.
+**
+** @@
+******************************************************************************/
+
 static void matchListOrder(void **x,void *cl) {
   EmbPWordMatch p = (EmbPWordMatch)*x;
   AjPList ordered = (AjPList) cl;
@@ -60,11 +67,27 @@ static void matchListOrder(void **x,void *cl) {
 
 }
 
+/* @funcstatic  orderandconcat ************************************************
+**
+** Undocumented.
+**
+** @param [?] list [AjPList] Undocumented
+** @param [?] ordered [AjPList] Undocumented
+** @@
+******************************************************************************/
+
 static void orderandconcat(AjPList list,AjPList ordered){
 
   ajListMap(list,matchListOrder, ordered);
 
 }
+
+/* @funcstatic  removelists ***************************************************
+**
+** Undocumented.
+**
+** @@
+******************************************************************************/
 
 static void removelists(void **x,void *cl) {
   concat *p = (concat *)*x;
@@ -72,6 +95,13 @@ static void removelists(void **x,void *cl) {
   ajListFree(&(p)->list);  
   AJFREE(p);
 }
+
+/* @funcstatic  findmax *******************************************************
+**
+** Undocumented.
+**
+** @@
+******************************************************************************/
 
 static void findmax(void **x,void *cl) {
   concat *p = (concat *)*x;
@@ -83,6 +113,22 @@ static void findmax(void **x,void *cl) {
   }
 
 }
+
+/* @funcstatic  findstartpoints ***********************************************
+**
+** Undocumented.
+**
+** @param [?] seq1MatchTable [AjPTable*] Undocumented
+** @param [?] b [AjPSeq] Undocumented
+** @param [?] a [AjPSeq] Undocumented
+** @param [?] start1 [ajint*] Undocumented
+** @param [?] start2 [ajint*] Undocumented
+** @param [?] end1 [ajint*] Undocumented
+** @param [?] end2 [ajint*] Undocumented
+** @param [?] width [ajint] Undocumented
+** @return [ajint] Undocumented
+** @@
+******************************************************************************/
 
 static ajint findstartpoints(AjPTable *seq1MatchTable,AjPSeq b,AjPSeq a,
 			   ajint *start1, ajint *start2, ajint *end1, ajint *end2,

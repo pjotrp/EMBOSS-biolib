@@ -154,9 +154,14 @@ int main(int argc, char **argv)
     return 0;
 }
 
-
-
-/* spaces - add spaces under sequence between the count bars. */
+/* @func spaces ***************************************************************
+**
+** add spaces under sequence between the count bars
+**
+** @param [?] outf [AjPFile*] Undocumented
+** @param [?] length [ajint] Undocumented
+** @@
+******************************************************************************/
 
 void spaces(AjPFile *outf, ajint length)
 {

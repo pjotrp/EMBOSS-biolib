@@ -296,6 +296,19 @@ int main(int argc, char **argv)
 
 
 
+/* @funcstatic  pushpoint *****************************************************
+**
+** Undocumented.
+**
+** @param [?] l [AjPList*] Undocumented
+** @param [?] x1 [float] Undocumented
+** @param [?] y1 [float] Undocumented
+** @param [?] x2 [float] Undocumented
+** @param [?] y2 [float] Undocumented
+** @param [?] text [AjBool] Undocumented
+** @@
+******************************************************************************/
+
 
 
 static void pushpoint(AjPList *l, float x1, float y1, float x2, float y2,
@@ -315,6 +328,15 @@ static void pushpoint(AjPList *l, float x1, float y1, float x2, float y2,
 
 
 
+
+/* @funcstatic  datapoints ****************************************************
+**
+** Undocumented.
+**
+** @param [?] l [AjPList*] Undocumented
+** @param [?] outf [AjPFile] Undocumented
+** @@
+******************************************************************************/
 
 
 static void datapoints(AjPList *l,AjPFile outf)

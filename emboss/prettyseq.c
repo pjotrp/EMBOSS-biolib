@@ -114,6 +114,21 @@ int main(int argc, char **argv)
 }
 
 
+/* @funcstatic  prettyTranslate ***********************************************
+**
+** Undocumented.
+**
+** @param [?] outf [AjPFile] Undocumented
+** @param [?] beg [ajint] Undocumented
+** @param [?] end [ajint] Undocumented
+** @param [?] s [AjPStr] Undocumented
+** @param [?] codon [AjPCod] Undocumented
+** @param [?] range [AjPRange] Undocumented
+** @param [?] width [ajint] Undocumented
+** @param [?] pro [AjPStr] Undocumented
+** @@
+******************************************************************************/
+
 
 static void prettyTranslate(AjPFile outf, ajint beg, ajint end, AjPStr s,
 			    AjPCod codon, AjPRange range, ajint width,
@@ -205,6 +220,17 @@ static void prettyTranslate(AjPFile outf, ajint beg, ajint end, AjPStr s,
 
 
 
+/* @funcstatic  makeRuler *****************************************************
+**
+** Undocumented.
+**
+** @param [?] len [ajint] Undocumented
+** @param [?] begin [ajint] Undocumented
+** @param [?] ruler [char*] Undocumented
+** @param [?] npos [ajint*] Undocumented
+** @@
+******************************************************************************/
+
 
 static void makeRuler(ajint len, ajint begin, char *ruler, ajint *npos)
 {
@@ -222,6 +248,16 @@ static void makeRuler(ajint len, ajint begin, char *ruler, ajint *npos)
 
 
 
+
+/* @funcstatic  calcProteinPos ************************************************
+**
+** Undocumented.
+**
+** @param [?] ppos [ajint*] Undocumented
+** @param [?] pro [AjPStr] Undocumented
+** @param [?] len [ajint] Undocumented
+** @@
+******************************************************************************/
 
 
 static void calcProteinPos(ajint *ppos, AjPStr pro, ajint len)
@@ -281,6 +317,26 @@ static void calcProteinPos(ajint *ppos, AjPStr pro, ajint len)
 
 
 
+/* @funcstatic  showTrans *****************************************************
+**
+** Undocumented.
+**
+** @param [?] ppos [ajint*] Undocumented
+** @param [?] npos [ajint*] Undocumented
+** @param [?] pro [AjPStr] Undocumented
+** @param [?] substr [AjPStr] Undocumented
+** @param [?] len [ajint] Undocumented
+** @param [?] ruler [char*] Undocumented
+** @param [?] begin [ajint] Undocumented
+** @param [?] outf [AjPFile] Undocumented
+** @param [?] isrule [AjBool] Undocumented
+** @param [?] isp [AjBool] Undocumented
+** @param [?] isn [AjBool] Undocumented
+** @param [?] width [ajint] Undocumented
+** @param [?] name [char*] Undocumented
+** @@
+******************************************************************************/
+
 static void showTrans(ajint *ppos, ajint *npos, AjPStr pro, AjPStr substr,
 		 ajint len, char *ruler, ajint begin,
 		 AjPFile outf, AjBool isrule, AjBool isp, AjBool isn,
@@ -311,6 +367,26 @@ static void showTrans(ajint *ppos, ajint *npos, AjPStr pro, AjPStr substr,
 }
 
 
+
+/* @funcstatic  showTransb ****************************************************
+**
+** Undocumented.
+**
+** @param [?] ppos [ajint*] Undocumented
+** @param [?] npos [ajint*] Undocumented
+** @param [?] pro [AjPStr] Undocumented
+** @param [?] substr [AjPStr] Undocumented
+** @param [?] len [ajint] Undocumented
+** @param [?] ruler [char*] Undocumented
+** @param [?] begin [ajint] Undocumented
+** @param [?] outf [AjPFile] Undocumented
+** @param [?] isrule [AjBool] Undocumented
+** @param [?] isp [AjBool] Undocumented
+** @param [?] isn [AjBool] Undocumented
+** @param [?] start [ajint] Undocumented
+** @param [?] end [ajint] Undocumented
+** @@
+******************************************************************************/
 
 
 static void showTransb(ajint *ppos, ajint *npos, AjPStr pro, AjPStr substr,

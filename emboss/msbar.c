@@ -99,7 +99,18 @@ int main(int argc, char **argv)
 
 }
 
-/*******************************************************************************/
+/* @funcstatic  blockmutn *****************************************************
+**
+** Undocumented.
+**
+** @param [?] str [AjPStr*] Undocumented
+** @param [?] isnuc [AjBool] Undocumented
+** @param [?] blocklist [AjPStr*] Undocumented
+** @param [?] min [ajint] Undocumented
+** @param [?] max [ajint] Undocumented
+** @param [?] inframe [AjBool] Undocumented
+** @@
+******************************************************************************/
 
 static void blockmutn(AjPStr *str, AjBool isnuc, AjPStr *blocklist, ajint min, ajint max, AjBool inframe) {
 	
@@ -183,7 +194,17 @@ ajint opt;
 
 }
 
-/*******************************************************************************/
+
+/* @funcstatic  codonmutn *****************************************************
+**
+** Undocumented.
+**
+** @param [?] str [AjPStr*] Undocumented
+** @param [?] isnuc [AjBool] Undocumented
+** @param [?] codonlist [AjPStr*] Undocumented
+** @param [?] inframe [AjBool] Undocumented
+** @@
+******************************************************************************/
 
 static void codonmutn(AjPStr *str, AjBool isnuc, AjPStr *codonlist, AjBool inframe) {
 	
@@ -263,7 +284,15 @@ ajint opt;
 
 }
 
-/*******************************************************************************/
+/* @funcstatic  pointmutn *****************************************************
+**
+** Undocumented.
+**
+** @param [?] str [AjPStr*] Undocumented
+** @param [?] isnuc [AjBool] Undocumented
+** @param [?] pointlist [AjPStr*] Undocumented
+** @@
+******************************************************************************/
 
 static void pointmutn(AjPStr *str, AjBool isnuc, AjPStr *pointlist) {
 	
@@ -327,7 +356,16 @@ ajint opt;
 
 }
 
-/*******************************************************************************/
+/* @funcstatic  Insert ********************************************************
+**
+** Undocumented.
+**
+** @param [?] str [AjPStr*] Undocumented
+** @param [?] isnuc [AjBool] Undocumented
+** @param [?] start [ajint] Undocumented
+** @param [?] end [ajint] Undocumented
+** @@
+******************************************************************************/
 
 static void Insert(AjPStr *str, AjBool isnuc, ajint start, ajint end) {
 
@@ -352,7 +390,16 @@ ajint r;
 
 }
 
-/*******************************************************************************/
+/* @funcstatic  Move **********************************************************
+**
+** Undocumented.
+**
+** @param [?] str [AjPStr*] Undocumented
+** @param [?] start [ajint] Undocumented
+** @param [?] end [ajint] Undocumented
+** @param [?] destination [ajint] Undocumented
+** @@
+******************************************************************************/
 
 static void Move(AjPStr *str, ajint start, ajint end, ajint destination) {
 
@@ -365,7 +412,15 @@ AjPStr mov=NULL;
                  
 }
 
-/*******************************************************************************/
+/* @funcstatic  Duplicate *****************************************************
+**
+** Undocumented.
+**
+** @param [?] str [AjPStr*] Undocumented
+** @param [?] start [ajint] Undocumented
+** @param [?] end [ajint] Undocumented
+** @@
+******************************************************************************/
 
 static void Duplicate(AjPStr *str, ajint start, ajint end) {
 

@@ -22,7 +22,14 @@
 
 #include "emboss.h"
 
-/* return the path to the program doc directory */
+/* @funcstatic  FindAppDocRoot ************************************************
+**
+** return the path to the program doc directory
+**
+** @param [?] docroot [AjPStr*] Undocumented
+** @@
+******************************************************************************/
+
 static void FindAppDocRoot (AjPStr* docroot) {
 
   AjPStr docrootinst = NULL;
@@ -52,7 +59,17 @@ static void FindAppDocRoot (AjPStr* docroot) {
   return;
 }
 
-/* return the path to the program documentation html or text file */
+/* @funcstatic  FindAppDoc ****************************************************
+**
+** return the path to the program documentation html or text file
+**
+** @param [?] program [AjPStr] Undocumented
+** @param [?] html [AjBool] Undocumented
+** @param [?] path [AjPStr*] Undocumented
+** @return [AjBool] Undocumented
+** @@
+******************************************************************************/
+
 static AjBool FindAppDoc (AjPStr program, AjBool html, AjPStr* path) {
 
   AjPStr docroot = NULL;

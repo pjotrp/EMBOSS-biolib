@@ -1,6 +1,17 @@
 #include "emboss.h"
 
 
+/* @func buildListFromString **************************************************
+**
+** Undocumented.
+**
+** @param [?] string [AjPStr] Undocumented
+** @param [?] seq [AjPSeq] Undocumented
+** @param [?] feat [AjBool] Undocumented
+** @return [AjPList] Undocumented
+** @@
+******************************************************************************/
+
 AjPList buildListFromString(AjPStr string, AjPSeq seq, AjBool feat){
   AjPRegexp commaseparated = NULL;
   AjPList newlist = NULL;

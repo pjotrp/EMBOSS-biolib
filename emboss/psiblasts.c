@@ -153,6 +153,17 @@
  **									    **
  *****************************************************************************/
 
+/* @func SeqGet ***************************************************************
+**
+** This routine takes the name of an alignment file in clustal format and
+** parses out the sequences and returns a AjPList containing just these
+** sequences.
+**
+** @param [?] alignf [AjPStr] Undocumented
+** @return [AjPList] Undocumented
+** @@
+******************************************************************************/
+
 AjPList SeqGet(AjPStr alignf)
 {
 
@@ -252,6 +263,12 @@ AjPList SeqGet(AjPStr alignf)
     ajExit();
 
 }
+
+/* @prog psiblasts *******************************************************
+**
+** Testing
+**
+******************************************************************************/
 
 int main(int argc, char **argv)
 {

@@ -20,6 +20,12 @@
 #include "ajax.h"
 #include "ajgraph.h"
 
+/* @prog plplottest *******************************************************
+**
+** Testing PLPLOT function calls
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
   ajint i;

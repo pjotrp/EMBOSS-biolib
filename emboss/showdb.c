@@ -218,7 +218,29 @@ int main(int argc, char **argv)
   (void) ajExit();
   exit(0);
 }
-/****************************************************************/
+
+
+/* @funcstatic  DBOut *********************************************************
+**
+** Undocumented.
+**
+** @param [?] outfile [AjPFile] Undocumented
+** @param [?] dbname [AjPStr] Undocumented
+** @param [?] type [AjPStr] Undocumented
+** @param [?] id [AjBool] Undocumented
+** @param [?] qry [AjBool] Undocumented
+** @param [?] all [AjBool] Undocumented
+** @param [?] comment [AjPStr] Undocumented
+** @param [?] release [AjPStr] Undocumented
+** @param [?] html [AjBool] Undocumented
+** @param [?] dotype [AjBool] Undocumented
+** @param [?] doid [AjBool] Undocumented
+** @param [?] doqry [AjBool] Undocumented
+** @param [?] doall [AjBool] Undocumented
+** @param [?] docomment [AjBool] Undocumented
+** @param [?] dorelease [AjBool] Undocumented
+** @@
+******************************************************************************/
 
 static void DBOut(AjPFile outfile, AjPStr dbname, AjPStr type, AjBool
 id, AjBool qry, AjBool all, AjPStr comment, AjPStr release, AjBool html,

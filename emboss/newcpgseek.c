@@ -101,6 +101,20 @@ int main(int argc, char **argv)
     return 0;
 }
 
+/* @func cpgsearch ************************************************************
+**
+** Undocumented.
+**
+** @param [?] outf [AjPFile*] Undocumented
+** @param [?] from [ajint] Undocumented
+** @param [?] to [ajint] Undocumented
+** @param [?] p [char*] Undocumented
+** @param [?] name [char*] Undocumented
+** @param [?] begin [ajint] Undocumented
+** @param [?] score [ajint*] Undocumented
+** @@
+******************************************************************************/
+
 
 void cpgsearch(AjPFile *outf, ajint from, ajint to, char *p, char *name,
 	       ajint begin, ajint *score)
@@ -179,6 +193,19 @@ void cpgsearch(AjPFile *outf, ajint from, ajint to, char *p, char *name,
 	cpgsearch(outf,t+2,to,p,name,begin,score);
     }
 }
+
+/* @func calcgc ***************************************************************
+**
+** Undocumented.
+**
+** @param [?] from [ajint] Undocumented
+** @param [?] to [ajint] Undocumented
+** @param [?] p [char*] Undocumented
+** @param [?] dcg [ajint*] Undocumented
+** @param [?] dgc [ajint*] Undocumented
+** @param [?] gc [ajint*] Undocumented
+** @@
+******************************************************************************/
 
 void calcgc(ajint from, ajint to, char *p, ajint *dcg, ajint *dgc, ajint *gc)
 {

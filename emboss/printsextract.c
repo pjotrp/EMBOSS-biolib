@@ -108,6 +108,16 @@ int main(int argc, char **argv)
 
 
 
+/* @func prints_entry *********************************************************
+**
+** Undocumented.
+**
+** @param [?] s [AjPStr*] Undocumented
+** @param [?] fp [AjPFile*] Undocumented
+** @return [AjBool] Undocumented
+** @@
+******************************************************************************/
+
 
 AjBool prints_entry(AjPStr *s, AjPFile *fp)
 {
@@ -117,6 +127,16 @@ AjBool prints_entry(AjPStr *s, AjPFile *fp)
     return ajFalse;
 }
 
+
+/* @func write_code ***********************************************************
+**
+** Undocumented.
+**
+** @param [?] fp [AjPFile*] Undocumented
+** @param [?] s [AjPStr*] Undocumented
+** @param [?] c [AjPStr*] Undocumented
+** @@
+******************************************************************************/
 
 void write_code(AjPFile *fp, AjPStr *s, AjPStr *c)
 {
@@ -128,6 +148,17 @@ void write_code(AjPFile *fp, AjPStr *s, AjPStr *c)
     ajFmtPrintF(*fp,"%s\n",p);
 }
 
+
+/* @func write_accession ******************************************************
+**
+** Undocumented.
+**
+** @param [?] inf [AjPFile*] Undocumented
+** @param [?] outf [AjPFile*] Undocumented
+** @param [?] s [AjPStr*] Undocumented
+** @param [?] a [AjPStr*] Undocumented
+** @@
+******************************************************************************/
 
 
 void write_accession(AjPFile *inf, AjPFile *outf, AjPStr *s, AjPStr *a)
@@ -144,6 +175,17 @@ void write_accession(AjPFile *inf, AjPFile *outf, AjPStr *s, AjPStr *a)
     ajStrAssC(a,ajStrStr(*s)+4);
     ajFmtPrintF(*outf,"%s\n",ajStrStr(*s)+4);
 }
+
+/* @func write_sets ***********************************************************
+**
+** Undocumented.
+**
+** @param [?] inf [AjPFile*] Undocumented
+** @param [?] outf [AjPFile*] Undocumented
+** @param [?] s [AjPStr*] Undocumented
+** @return [ajint] Undocumented
+** @@
+******************************************************************************/
 
 
 ajint write_sets(AjPFile *inf, AjPFile *outf, AjPStr *s)
@@ -167,6 +209,16 @@ ajint write_sets(AjPFile *inf, AjPFile *outf, AjPStr *s)
 
 
 
+/* @func write_title **********************************************************
+**
+** Undocumented.
+**
+** @param [?] inf [AjPFile*] Undocumented
+** @param [?] outf [AjPFile*] Undocumented
+** @param [?] s [AjPStr*] Undocumented
+** @@
+******************************************************************************/
+
 void write_title(AjPFile *inf, AjPFile *outf, AjPStr *s)
 {
     if(!ajFileReadLine(*inf,s)) ajFatal("Premature EOF");
@@ -175,6 +227,17 @@ void write_title(AjPFile *inf, AjPFile *outf, AjPStr *s)
     ajFmtPrintF(*outf,"%s\n",ajStrStr(*s)+4);
 }
     
+
+/* @func write_desc ***********************************************************
+**
+** Undocumented.
+**
+** @param [?] inf [AjPFile*] Undocumented
+** @param [?] s [AjPStr*] Undocumented
+** @param [?] a [AjPStr*] Undocumented
+** @param [?] c [AjPStr*] Undocumented
+** @@
+******************************************************************************/
 
 void write_desc(AjPFile *inf, AjPStr *s, AjPStr *a, AjPStr *c)
 {
@@ -203,6 +266,15 @@ void write_desc(AjPFile *inf, AjPStr *s, AjPStr *a, AjPStr *c)
     return;
 }
 
+/* @func skipToDn *************************************************************
+**
+** Undocumented.
+**
+** @param [?] inf [AjPFile*] Undocumented
+** @param [?] s [AjPStr*] Undocumented
+** @@
+******************************************************************************/
+
 
 void skipToDn(AjPFile *inf, AjPStr *s)
 {
@@ -213,6 +285,16 @@ void skipToDn(AjPFile *inf, AjPStr *s)
     }
     ajFatal("Premature EOF");
 }
+
+/* @func skipToFm *************************************************************
+**
+** Undocumented.
+**
+** @param [?] inf [AjPFile*] Undocumented
+** @param [?] s [AjPStr*] Undocumented
+** @return [ajlong] Undocumented
+** @@
+******************************************************************************/
 
 
 ajlong skipToFm(AjPFile *inf, AjPStr *s)
@@ -227,6 +309,18 @@ ajlong skipToFm(AjPFile *inf, AjPStr *s)
     return 0L;
 }
 
+
+/* @func getSeqNumbers ********************************************************
+**
+** Undocumented.
+**
+** @param [?] inf [AjPFile*] Undocumented
+** @param [?] cnts [ajint*] Undocumented
+** @param [?] lens [ajint*] Undocumented
+** @param [?] s [AjPStr*] Undocumented
+** @param [?] n [ajint] Undocumented
+** @@
+******************************************************************************/
 
 void getSeqNumbers(AjPFile *inf, ajint *cnts, ajint *lens, AjPStr *s, ajint n)
 {
@@ -263,6 +357,19 @@ void getSeqNumbers(AjPFile *inf, ajint *cnts, ajint *lens, AjPStr *s, ajint n)
     }
 }
 
+
+/* @func calcMatrices *********************************************************
+**
+** Undocumented.
+**
+** @param [?] inf [AjPFile*] Undocumented
+** @param [?] outf [AjPFile*] Undocumented
+** @param [?] cnts [ajint*] Undocumented
+** @param [?] lens [ajint*] Undocumented
+** @param [?] s [AjPStr*] Undocumented
+** @param [?] n [ajint] Undocumented
+** @@
+******************************************************************************/
 
 
 void calcMatrices(AjPFile *inf, AjPFile *outf, ajint *cnts, ajint *lens,
@@ -357,6 +464,14 @@ void calcMatrices(AjPFile *inf, AjPFile *outf, ajint *cnts, ajint *lens,
 }
 
 
+
+/* @func printHeader **********************************************************
+**
+** Undocumented.
+**
+** @param [?] outf [AjPFile] Undocumented
+** @@
+******************************************************************************/
 
 
 void printHeader(AjPFile outf)

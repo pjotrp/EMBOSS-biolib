@@ -183,6 +183,16 @@ int main(int argc, char **argv)
 
 
 
+/* @func getType **************************************************************
+**
+** Undocumented.
+**
+** @param [?] inf [AjPFile] Undocumented
+** @param [?] tname [AjPStr*] Undocumented
+** @return [ajint] Undocumented
+** @@
+******************************************************************************/
+
 
 ajint getType(AjPFile inf, AjPStr *tname)
 {
@@ -211,6 +221,22 @@ ajint getType(AjPFile inf, AjPStr *tname)
 
 
 
+
+/* @funcstatic  read_profile **************************************************
+**
+** Undocumented.
+**
+** @param [?] inf [AjPFile] Undocumented
+** @param [?] name [AjPStr*] Undocumented
+** @param [?] mname [AjPStr*] Undocumented
+** @param [?] mlen [ajint*] Undocumented
+** @param [?] gapopen [float*] Undocumented
+** @param [?] gapextend [float*] Undocumented
+** @param [?] thresh [ajint*] Undocumented
+** @param [?] maxs [float*] Undocumented
+** @param [?] cons [AjPStr*] Undocumented
+** @@
+******************************************************************************/
 
 
 static void read_profile(AjPFile inf, AjPStr *name, AjPStr *mname, ajint *mlen,
@@ -294,6 +320,33 @@ static void read_profile(AjPFile inf, AjPStr *name, AjPStr *mname, ajint *mlen,
 
 
 
+
+/* @func scan_profile *********************************************************
+**
+** Undocumented.
+**
+** @param [?] substr [AjPStr] Undocumented
+** @param [?] pname [AjPStr] Undocumented
+** @param [?] name [AjPStr] Undocumented
+** @param [?] mname [AjPStr] Undocumented
+** @param [?] mlen [ajint] Undocumented
+** @param [?] fmatrix [float**] Undocumented
+** @param [?] thresh [ajint] Undocumented
+** @param [?] maxs [float] Undocumented
+** @param [?] gapopen [float] Undocumented
+** @param [?] gapextend [float] Undocumented
+** @param [?] outf [AjPFile] Undocumented
+** @param [?] cons [AjPStr*] Undocumented
+** @param [?] opencoeff [float] Undocumented
+** @param [?] extendcoeff [float] Undocumented
+** @param [?] path [float*] Undocumented
+** @param [?] compass [ajint*] Undocumented
+** @param [?] m [AjPStr*] Undocumented
+** @param [?] n [AjPStr*] Undocumented
+** @param [?] slen [ajint] Undocumented
+** @param [?] begin [ajint] Undocumented
+** @@
+******************************************************************************/
 
 
 void scan_profile(AjPStr substr, AjPStr pname, AjPStr name, AjPStr mname,

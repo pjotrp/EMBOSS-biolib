@@ -95,6 +95,14 @@ int main(int argc, char **argv)
   return 0;
 }
 
+/* @funcstatic  primTest ******************************************************
+**
+** Undocumented.
+**
+** @@
+******************************************************************************/
+
+
 static void primTest (void **x,void *cl) {
   Primer* p;
   Primer primdata;

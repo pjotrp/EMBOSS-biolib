@@ -134,6 +134,19 @@ int main(int argc, char **argv)
 
 
 
+/* @func print_hits ***********************************************************
+**
+** Undocumented.
+**
+** @param [?] outf [AjPFile*] Undocumented
+** @param [?] l [AjPList*] Undocumented
+** @param [?] nmotifs [ajint] Undocumented
+** @param [?] name [AjPStr*] Undocumented
+** @param [?] begin [ajint] Undocumented
+** @param [?] end [ajint] Undocumented
+** @@
+******************************************************************************/
+
 
 void print_hits(AjPFile *outf, AjPList *l, ajint nmotifs, AjPStr *name,
 		ajint begin, ajint end)

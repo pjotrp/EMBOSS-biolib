@@ -159,6 +159,21 @@ int main(int argc, char **argv)
     return 0;
 }
 
+/* @func print_hits ***********************************************************
+**
+** Undocumented.
+**
+** @param [?] name [AjPStr] Undocumented
+** @param [?] l [AjPList*] Undocumented
+** @param [?] hits [ajint] Undocumented
+** @param [?] outf [AjPFile] Undocumented
+** @param [?] begin [ajint] Undocumented
+** @param [?] end [ajint] Undocumented
+** @param [?] t [AjPTable] Undocumented
+** @param [?] seq [AjPSeq] Undocumented
+** @@
+******************************************************************************/
+
 
 void print_hits(AjPStr name, AjPList *l, ajint hits, AjPFile outf, ajint begin,
 		ajint end, AjPTable t, AjPSeq seq)

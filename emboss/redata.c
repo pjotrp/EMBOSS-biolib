@@ -260,6 +260,15 @@ int main(int argc, char **argv)
 }
 
 
+/* @func supply_table *********************************************************
+**
+** Undocumented.
+**
+** @param [?] inf [AjPFile] Undocumented
+** @return [AjPTable] Undocumented
+** @@
+******************************************************************************/
+
 
 AjPTable supply_table(AjPFile inf)
 {

@@ -320,6 +320,14 @@ int main(int argc, char **argv)
 
 
 
+/* @func readcoildat **********************************************************
+**
+** Undocumented.
+**
+** @param [?] rdat [AjPFloat2d*] Undocumented
+** @@
+******************************************************************************/
+
 
 void readcoildat(AjPFloat2d *rdat)
 {
@@ -363,6 +371,15 @@ void readcoildat(AjPFloat2d *rdat)
 
 
 
+/* @func probcoil *************************************************************
+**
+** Undocumented.
+**
+** @param [?] score [float] Undocumented
+** @return [float] Undocumented
+** @@
+******************************************************************************/
+
 
 float probcoil(float score)
 {
@@ -377,6 +394,18 @@ float probcoil(float score)
 
 
 
+
+/* @func inframe **************************************************************
+**
+** Undocumented.
+**
+** @param [?] start [ajint] Undocumented
+** @param [?] pos [ajint] Undocumented
+** @param [?] frame [ajint] Undocumented
+** @param [?] len [ajint] Undocumented
+** @return [ajint] Undocumented
+** @@
+******************************************************************************/
 
 ajint inframe(ajint start, ajint pos, ajint frame, ajint len)
 {

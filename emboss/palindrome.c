@@ -24,6 +24,18 @@ static void printPalindrome( AjPFile outfile, AjPStr seq, Palindrome pal);
 static AjBool palindromeLonger( Palindrome a, Palindrome b );
 static void palindromeSwap ( Palindrome a, Palindrome b );
 
+/* @funcstatic  newPalindrome *************************************************
+**
+** Undocumented.
+**
+** @param [?] fstart [ajint] Undocumented
+** @param [?] fend [ajint] Undocumented
+** @param [?] rstart [ajint] Undocumented
+** @param [?] rend [ajint] Undocumented
+** @return [Palindrome] Undocumented
+** @@
+******************************************************************************/
+
 static Palindrome newPalindrome( ajint fstart, ajint fend, ajint rstart, ajint rend) {
 
    Palindrome pal;
@@ -37,6 +49,16 @@ static Palindrome newPalindrome( ajint fstart, ajint fend, ajint rstart, ajint r
    return pal;
 }
 
+/* @funcstatic  palindromeAInB ************************************************
+**
+** Undocumented.
+**
+** @param [?] a [Palindrome] Undocumented
+** @param [?] b [Palindrome] Undocumented
+** @return [AjBool] Undocumented
+** @@
+******************************************************************************/
+
 static AjBool palindromeAInB( Palindrome a, Palindrome b) {
 
   if ((a->forwardStart >= b->forwardStart) &&
@@ -49,6 +71,16 @@ static AjBool palindromeAInB( Palindrome a, Palindrome b) {
 
   return AJFALSE;
 }
+
+/* @funcstatic  palindromeAOverB **********************************************
+**
+** Undocumented.
+**
+** @param [?] a [Palindrome] Undocumented
+** @param [?] b [Palindrome] Undocumented
+** @return [AjBool] Undocumented
+** @@
+******************************************************************************/
 
 static AjBool palindromeAOverB( Palindrome a, Palindrome b) {
 
@@ -68,11 +100,33 @@ static AjBool palindromeAOverB( Palindrome a, Palindrome b) {
   return AJFALSE;
 }
 
+/* @funcstatic  palindromeOver ************************************************
+**
+** Undocumented.
+**
+** @param [?] astart [ajint] Undocumented
+** @param [?] aend [ajint] Undocumented
+** @param [?] bstart [ajint] Undocumented
+** @param [?] bend [ajint] Undocumented
+** @return [AjBool] Undocumented
+** @@
+******************************************************************************/
+
 static AjBool palindromeOver( ajint astart, ajint aend, ajint bstart, ajint bend) {
   if (astart >= bstart && astart <= bend) return ajTrue;
   if (bstart >= astart && bstart <= aend) return ajTrue;
   return ajFalse;
 }
+
+/* @funcstatic  palindromeLonger **********************************************
+**
+** Undocumented.
+**
+** @param [?] a [Palindrome] Undocumented
+** @param [?] b [Palindrome] Undocumented
+** @return [AjBool] Undocumented
+** @@
+******************************************************************************/
 
 static AjBool palindromeLonger( Palindrome a, Palindrome b ) {
   if ((a->forwardEnd - a->forwardStart) >
@@ -80,6 +134,15 @@ static AjBool palindromeLonger( Palindrome a, Palindrome b ) {
     return ajTrue;
   return ajFalse;
 }
+
+/* @funcstatic  palindromeSwap ************************************************
+**
+** Undocumented.
+**
+** @param [?] a [Palindrome] Undocumented
+** @param [?] b [Palindrome] Undocumented
+** @@
+******************************************************************************/
 
 static void palindromeSwap ( Palindrome a, Palindrome b ) {
   b->forwardStart =  a->forwardStart;
@@ -89,6 +152,16 @@ static void palindromeSwap ( Palindrome a, Palindrome b ) {
   return;
 }
 
+
+/* @funcstatic  printPalindrome ***********************************************
+**
+** Undocumented.
+**
+** @param [?] outfile [AjPFile] Undocumented
+** @param [?] seq [AjPStr] Undocumented
+** @param [?] pal [Palindrome] Undocumented
+** @@
+******************************************************************************/
 
 static void printPalindrome( AjPFile outfile, AjPStr seq, Palindrome pal) {
 

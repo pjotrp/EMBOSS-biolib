@@ -213,6 +213,24 @@ int main(int argc, char **argv)
 
 
 
+/* @func mismatch *************************************************************
+**
+** Undocumented.
+**
+** @param [?] sstr [AjPStr] Undocumented
+** @param [?] relist [AjPList] Undocumented
+** @param [?] outf [AjPFile] Undocumented
+** @param [?] sname [AjPStr] Undocumented
+** @param [?] RStotal [ajint] Undocumented
+** @param [?] begin [ajint] Undocumented
+** @param [?] radj [ajint] Undocumented
+** @param [?] rev [AjBool] Undocumented
+** @param [?] end [ajint] Undocumented
+** @param [?] tshow [AjBool] Undocumented
+** @return [AjPList] Undocumented
+** @@
+******************************************************************************/
+
 
 AjPList mismatch(AjPStr sstr, AjPList relist, AjPFile outf, AjPStr sname,
 	         ajint RStotal, ajint begin, ajint radj,AjBool rev, ajint end,
@@ -338,6 +356,16 @@ AjPList mismatch(AjPStr sstr, AjPList relist, AjPFile outf, AjPStr sname,
 
 
 
+/* @func restr_read ***********************************************************
+**
+** Undocumented.
+**
+** @param [?] relist [AjPList*] Undocumented
+** @param [?] enzymes [AjPStr] Undocumented
+** @return [ajint] Undocumented
+** @@
+******************************************************************************/
+
 
 ajint restr_read(AjPList *relist,AjPStr enzymes)
 {
@@ -428,6 +456,23 @@ ajint restr_read(AjPList *relist,AjPStr enzymes)
 
 
 
+
+/* @func checktrans ***********************************************************
+**
+** Undocumented.
+**
+** @param [?] seq [AjPStr] Undocumented
+** @param [?] outf [AjPFile] Undocumented
+** @param [?] match [EmbPMatMatch] Undocumented
+** @param [?] rlp [AjPRinfo] Undocumented
+** @param [?] begin [ajint] Undocumented
+** @param [?] radj [ajint] Undocumented
+** @param [?] rev [AjBool] Undocumented
+** @param [?] end [ajint] Undocumented
+** @param [?] res [AjPSilent*] Undocumented
+** @return [AjBool] Undocumented
+** @@
+******************************************************************************/
 
 
 
@@ -563,6 +608,17 @@ AjBool checktrans(AjPStr seq,AjPFile outf,EmbPMatMatch match, AjPRinfo rlp,
 
 
 
+/* @func fmt_sequence *********************************************************
+**
+** Undocumented.
+**
+** @param [?] seq [AjPStr] Undocumented
+** @param [?] outf [AjPFile] Undocumented
+** @param [?] start [ajint] Undocumented
+** @param [?] num [AjBool] Undocumented
+** @@
+******************************************************************************/
+
 
 
 void fmt_sequence(AjPStr seq, AjPFile outf, ajint start, AjBool num)
@@ -609,6 +665,15 @@ void fmt_sequence(AjPStr seq, AjPFile outf, ajint start, AjBool num)
 
 
 
+/* @func fmt_hits *************************************************************
+**
+** Undocumented.
+**
+** @param [?] hits [AjPList] Undocumented
+** @param [?] outf [AjPFile] Undocumented
+** @@
+******************************************************************************/
+
 
 void fmt_hits(AjPList hits, AjPFile outf)
 {
@@ -639,6 +704,17 @@ void fmt_hits(AjPList hits, AjPFile outf)
 
 
 
+
+/* @func split_hits ***********************************************************
+**
+** Undocumented.
+**
+** @param [?] hits [AjPList*] Undocumented
+** @param [?] silents [AjPList*] Undocumented
+** @param [?] nonsilents [AjPList*] Undocumented
+** @param [?] allmut [AjBool] Undocumented
+** @@
+******************************************************************************/
 
 
 void split_hits(AjPList *hits, AjPList *silents, AjPList *nonsilents, 
@@ -673,6 +749,14 @@ void split_hits(AjPList *hits, AjPList *silents, AjPList *nonsilents,
 
 
 
+
+/* @funcstatic  basecompare ***************************************************
+**
+** Undocumented.
+**
+** @return [ajint] Undocumented
+** @@
+******************************************************************************/
 
 
 static ajint basecompare(const void *a, const void *b)

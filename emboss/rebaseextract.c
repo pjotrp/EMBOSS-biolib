@@ -215,6 +215,17 @@ int main(int argc, char **argv)
 
 
 
+/* @func process_pattern ******************************************************
+**
+** Undocumented.
+**
+** @param [?] pattern [AjPStr*] Undocumented
+** @param [?] code [AjPStr*] Undocumented
+** @param [?] outf [AjPFile] Undocumented
+** @param [?] hassup [AjBool] Undocumented
+** @@
+******************************************************************************/
+
 
 void process_pattern(AjPStr *pattern, AjPStr *code, AjPFile outf,
 		     AjBool hassup)
@@ -401,6 +412,14 @@ void process_pattern(AjPStr *pattern, AjPStr *code, AjPFile outf,
     
 }
 
+/* @func printEnzHeader *******************************************************
+**
+** Undocumented.
+**
+** @param [?] outf [AjPFile] Undocumented
+** @@
+******************************************************************************/
+
 
 void printEnzHeader(AjPFile outf)
 {
@@ -438,6 +457,14 @@ void printEnzHeader(AjPFile outf)
 
 
 
+/* @func printRefHeader *******************************************************
+**
+** Undocumented.
+**
+** @param [?] outf [AjPFile] Undocumented
+** @@
+******************************************************************************/
+
 
 void printRefHeader(AjPFile outf)
 {
@@ -457,6 +484,14 @@ void printRefHeader(AjPFile outf)
   return;
 }
 
+
+/* @func printSuppHeader ******************************************************
+**
+** Undocumented.
+**
+** @param [?] outf [AjPFile] Undocumented
+** @@
+******************************************************************************/
 
 
 void printSuppHeader(AjPFile outf)

@@ -20,7 +20,13 @@
 #include "emboss.h"
 
 char *testset[] = { "GAN","GAATTC","CCSGG","GANTC","GABNNNNNVTC","GA","GANN","TC"};
-  
+
+/* @prog patmettest *******************************************************
+**
+** Testing
+**
+******************************************************************************/
+ 
 int main(int argc, char **argv)
 {
   AjPStr cut = NULL;

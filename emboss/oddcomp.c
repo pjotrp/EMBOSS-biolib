@@ -246,15 +246,33 @@ int main(int argc, char **argv)
   return 0;
 }
 
-/******************************************************/
-
+/* @func makebigarray *********************************************************
+**
+** Undocumented.
+**
+** @param [?] no_elements [ajlong] Undocumented
+** @param [?] bigarray [ajlong**] Undocumented
+** @return [ajint] Undocumented
+** @@
+******************************************************************************/
 
 ajint makebigarray(ajlong no_elements, ajlong **bigarray) {
 
   AJCNEW(*bigarray, no_elements);
   return 0;
 }
-/******************************************************/
+
+/* @func readexpfreq **********************************************************
+**
+** Undocumented.
+**
+** @param [?] exptable [AjPTable*] Undocumented
+** @param [?] compdata [AjPFile] Undocumented
+** @param [?] size [ajint*] Undocumented
+** @return [ajint] Undocumented
+** @@
+******************************************************************************/
+
 ajint readexpfreq(AjPTable *exptable, AjPFile compdata, ajint *size) {
 
   AjPStr line = NULL;

@@ -300,8 +300,8 @@ int main(int argc, char **argv)
     
 
 
-if(!targetrange)
-  {
+    if(!targetrange)
+    {
 	
     limit=seqlen-minprimerlen-minprodlen+1;
     lastpos=seqlen-minprodlen;
@@ -507,11 +507,15 @@ if(!targetrange)
 }
 
 
-
-
-
-
-/* ************** FUNCTIONS *********************** */
+/* @func primalign ************************************************************
+**
+** Undocumented.
+**
+** @param [?] a [char*] Undocumented
+** @param [?] b [char*] Undocumented
+** @return [ajint] Undocumented
+** @@
+******************************************************************************/
 
 ajint primalign(char *a, char *b)
 {
@@ -555,7 +559,15 @@ ajint primalign(char *a, char *b)
 }
 
 
-/**********************PROB SCORE *******/
+/* @func probAlign ************************************************************
+**
+** prob score
+**
+** @param [?] seq1 [AjPStr*] Undocumented
+** @param [?] seq2 [AjPStr*] Undocumented
+** @return [float] Undocumented
+** @@
+******************************************************************************/
 
 float probAlign(AjPStr *seq1, AjPStr *seq2)
 {
@@ -592,10 +604,39 @@ float probAlign(AjPStr *seq1, AjPStr *seq2)
 }
 
 
-/*********************************************/
 
-
-
+/* @func testproduct **********************************************************
+**
+** Undocumented.
+**
+** @param [?] seqstr [AjPStr] Undocumented
+** @param [?] startpos [ajint] Undocumented
+** @param [?] endpos [ajint] Undocumented
+** @param [?] primerlen [ajint] Undocumented
+** @param [?] minprimerlen [ajint] Undocumented
+** @param [?] maxprimerlen [ajint] Undocumented
+** @param [?] minpmGCcont [float] Undocumented
+** @param [?] maxpmGCcont [float] Undocumented
+** @param [?] minprimerTm [ajint] Undocumented
+** @param [?] maxprimerTm [ajint] Undocumented
+** @param [?] minprodlen [ajint] Undocumented
+** @param [?] maxprodlen [ajint] Undocumented
+** @param [?] prodTm [float] Undocumented
+** @param [?] prodGC [float] Undocumented
+** @param [?] seqlen [ajint] Undocumented
+** @param [?] eric [AjPPrimer*] Undocumented
+** @param [?] fred [AjPPrimer*] Undocumented
+** @param [?] forlist [AjPList*] Undocumented
+** @param [?] revlist [AjPList*] Undocumented
+** @param [?] neric [ajint*] Undocumented
+** @param [?] nfred [ajint*] Undocumented
+** @param [?] stepping_value [ajint] Undocumented
+** @param [?] saltconc [float] Undocumented
+** @param [?] dnaconc [float] Undocumented
+** @param [?] isDNA [AjBool] Undocumented
+** @param [?] begin [ajint] Undocumented
+** @@
+******************************************************************************/
 
 void testproduct
  (AjPStr seqstr, ajint startpos, ajint endpos, ajint primerlen, 
@@ -726,12 +767,16 @@ void testproduct
 
 
 
-
-
-
-   
-
-/*******reject self complementary primers*******/
+/* @func reject_self **********************************************************
+**
+** reject self complementary primers
+**
+** @param [?] forlist [AjPList*] Undocumented
+** @param [?] revlist [AjPList*] Undocumented
+** @param [?] neric [ajint*] Undocumented
+** @param [?] nfred [ajint*] Undocumented
+** @@
+******************************************************************************/
 
 void reject_self(AjPList *forlist,AjPList *revlist, ajint *neric, ajint *nfred)
 {
@@ -815,10 +860,16 @@ void reject_self(AjPList *forlist,AjPList *revlist, ajint *neric, ajint *nfred)
     
 }
 
-
-
-
-/*******BEST PRIMER FUNCTION********/
+/* @func best_primer **********************************************************
+**
+** BEST PRIMER FUNCTION
+**
+** @param [?] forlist [AjPList*] Undocumented
+** @param [?] revlist [AjPList*] Undocumented
+** @param [?] neric [ajint*] Undocumented
+** @param [?] nfred [ajint*] Undocumented
+** @@
+******************************************************************************/
 
 void best_primer(AjPList *forlist, AjPList *revlist, ajint *neric, ajint *nfred)
 {
@@ -924,7 +975,13 @@ void best_primer(AjPList *forlist, AjPList *revlist, ajint *neric, ajint *nfred)
 }
 
 
-/********** Free memory from primers *********/
+/* @func ajPrimerDel **********************************************************
+**
+** Free memory from primers
+**
+** @param [?] p [AjPPrimer*] Undocumented
+** @@
+******************************************************************************/
 
 void ajPrimerDel(AjPPrimer *p)
 {
@@ -936,6 +993,14 @@ void ajPrimerDel(AjPPrimer *p)
   
   
 
+/* @funcstatic  ajPrimaCompare ************************************************
+**
+** Undocumented.
+**
+** @return [ajint] Undocumented
+** @@
+******************************************************************************/
+
 static ajint ajPrimaCompare(const void *a, const void *b)
 {
     return (*(AjPPair *)a)->f->score -
@@ -943,6 +1008,14 @@ static ajint ajPrimaCompare(const void *a, const void *b)
 }
 
 
+
+/* @funcstatic  ajPrimaPosCompare *********************************************
+**
+** Undocumented.
+**
+** @return [ajint] Undocumented
+** @@
+******************************************************************************/
 
 static ajint ajPrimaPosCompare(const void *a, const void *b)
 {
@@ -959,8 +1032,29 @@ static ajint ajPrimaPosEndCompare(const void *a, const void *b)
 	   ((*(AjPPair *)b)->r->start);
 }
 
-
-/***************IF THERE'S A TARGET RANGE *************************/
+/* @func testtarget ***********************************************************
+**
+** Undocumented.
+**
+** @param [?] seqstr [AjPStr] Undocumented
+** @param [?] revstr [AjPStr] Undocumented
+** @param [?] targetstart [ajint] Undocumented
+** @param [?] targetend [ajint] Undocumented
+** @param [?] minprimerlen [ajint] Undocumented
+** @param [?] maxprimerlen [ajint] Undocumented
+** @param [?] seqlen [ajint] Undocumented
+** @param [?] minprimerTm [float] Undocumented
+** @param [?] maxprimerTm [float] Undocumented
+** @param [?] minpmGCcont [float] Undocumented
+** @param [?] maxpmGCcont [float] Undocumented
+** @param [?] minprodGCcont [float] Undocumented
+** @param [?] maxprodGCcont [float] Undocumented
+** @param [?] saltconc [float] Undocumented
+** @param [?] dnaconc [float] Undocumented
+** @param [?] pairlist [AjPList*] Undocumented
+** @param [?] npair [ajint*] Undocumented
+** @@
+******************************************************************************/
 
 void testtarget(AjPStr seqstr, AjPStr revstr, ajint targetstart, ajint targetend,  
 		 ajint minprimerlen, ajint maxprimerlen, ajint seqlen,
@@ -1213,6 +1307,20 @@ void testtarget(AjPStr seqstr, AjPStr revstr, ajint targetstart, ajint targetend
     return;
 }
 
+/* @func test_multi ***********************************************************
+**
+** Undocumented.
+**
+** @param [?] forlist [AjPList*] Undocumented
+** @param [?] revlist [AjPList*] Undocumented
+** @param [?] neric [ajint*] Undocumented
+** @param [?] nfred [ajint*] Undocumented
+** @param [?] seq [AjPStr] Undocumented
+** @param [?] rseq [AjPStr] Undocumented
+** @param [?] len [ajint] Undocumented
+** @@
+******************************************************************************/
+
 
 void test_multi(AjPList *forlist, AjPList *revlist, ajint *neric, ajint *nfred,
 		AjPStr seq, AjPStr rseq, ajint len)
@@ -1313,6 +1421,17 @@ void test_multi(AjPList *forlist, AjPList *revlist, ajint *neric, ajint *nfred,
 }
 
 
+/* @func seq_align ************************************************************
+**
+** Undocumented.
+**
+** @param [?] a [char*] Undocumented
+** @param [?] b [char*] Undocumented
+** @param [?] len [ajint] Undocumented
+** @return [ajint] Undocumented
+** @@
+******************************************************************************/
+
 
 ajint seq_align(char *a, char *b, ajint len)
 {
@@ -1330,6 +1449,16 @@ ajint seq_align(char *a, char *b, ajint len)
 
 
 
+
+/* @func prune_nearby *********************************************************
+**
+** Undocumented.
+**
+** @param [?] pairlist [AjPList*] Undocumented
+** @param [?] npair [ajint*] Undocumented
+** @param [?] range [ajint] Undocumented
+** @@
+******************************************************************************/
 
 
 void prune_nearby(AjPList *pairlist, ajint *npair, ajint range)
@@ -1390,6 +1519,16 @@ void prune_nearby(AjPList *pairlist, ajint *npair, ajint range)
 
 
 
+/* @func check_overlap ********************************************************
+**
+** Undocumented.
+**
+** @param [?] pairlist [AjPList*] Undocumented
+** @param [?] npair [ajint*] Undocumented
+** @param [?] overlap [ajint] Undocumented
+** @@
+******************************************************************************/
+
 
 void check_overlap(AjPList *pairlist, ajint *npair, ajint overlap)
 {
@@ -1435,15 +1574,18 @@ void check_overlap(AjPList *pairlist, ajint *npair, ajint overlap)
     return;
 }
 
+/* @func TwoSortscorepos ******************************************************
+**
+** Sort on basis of score then, within that block on the basis of
+** product start then within that block on the basis of product end
+** This requires the two functions TwoSortscorepos for the double
+** double sort and RevSort, called within that, to sort on the
+** primer end position
+**
+** @param [?] pairlist [AjPList*] Undocumented
+** @@
+******************************************************************************/
 
-
-/*
- * Sort on basis of score then, within that block on the basis of
- * product start then within that block on the basis of product end
- * This requires the two functions TwoSortscorepos for the double
- * double sort and RevSort, called within that, to sort on the
- * primer end position
- */
 void TwoSortscorepos(AjPList *pairlist)
 {
     AjPPair tmp=NULL;
@@ -1490,10 +1632,14 @@ void TwoSortscorepos(AjPList *pairlist)
     return;
 }
 
+/* @func RevSort **************************************************************
+**
+** See TwoSortscorepos
+**
+** @param [?] alist [AjPList*] Undocumented
+** @@
+******************************************************************************/
 
-
-
-/* See TwoSortscorepos */
 void RevSort(AjPList *alist)
 {
     AjPPair tmp=NULL;

@@ -160,6 +160,22 @@ int main(int argc, char **argv)
 }
 
 
+/* @func calcpc ***************************************************************
+**
+** Undocumented.
+**
+** @param [?] seq [char*] Undocumented
+** @param [?] rev [char*] Undocumented
+** @param [?] n [ajint] Undocumented
+** @param [?] x [float**] Undocumented
+** @param [?] y [float**] Undocumented
+** @param [?] count [ajint*] Undocumented
+** @param [?] beg [ajint] Undocumented
+** @param [?] gc [char*] Undocumented
+** @param [?] window [ajint] Undocumented
+** @@
+******************************************************************************/
+
 
 void calcpc(char *seq, char *rev, ajint n, float **x, float **y, ajint *count,
 	    ajint beg, char *gc, ajint window)
@@ -229,6 +245,14 @@ void calcpc(char *seq, char *rev, ajint n, float **x, float **y, ajint *count,
 }
 
 	    
+/* @func checkstring **********************************************************
+**
+** Undocumented.
+**
+** @param [?] str [AjPStr*] Undocumented
+** @@
+******************************************************************************/
+
 
 
 void checkstring(AjPStr *str)
@@ -253,6 +277,15 @@ void checkstring(AjPStr *str)
     return;
 }
 
+/* @func get_mean *************************************************************
+**
+** Undocumented.
+**
+** @param [?] bases [char*] Undocumented
+** @param [?] s [char*] Undocumented
+** @return [float] Undocumented
+** @@
+******************************************************************************/
 
 
 float get_mean(char *bases, char *s)

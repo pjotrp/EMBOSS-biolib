@@ -190,6 +190,14 @@ ajint tm_in_vector(ajint *start, ajint *stopp, ajint max, ajint starttmp, ajint 
 void align_rel(ajint antal, ajint poss, ajint span);
 
 
+/* @func plot2 ****************************************************************
+**
+** Undocumented.
+**
+** @param [?] mult [AjPGraph] Undocumented
+** @@
+******************************************************************************/
+
 void plot2(AjPGraph mult){
   AjPGraphData graph=NULL;
   float max=-10.0,min=10.0;
@@ -344,21 +352,23 @@ if(!ajSeqsetLen(seqset))
 } /* END OF MAIN */
 
 
-
-
-
-
-/*
- * refpos2, utg. 44
- * ----------------
- * Transforms the positional numbers of alignment into those of a reference sequence
- * in each alignment.
- *
- * Global variables:
- * -----------------
- * relc[] and reln[] - vectors containing the "real" positional numbers 
- *
- */
+/* @func refpos2 **************************************************************
+**
+** refpos2, utg. 44
+** ----------------
+** Transforms the positional numbers of alignment into those of a
+** reference sequence
+** in each alignment.
+**
+** Global variables:
+** -----------------
+** relc[] and reln[] - vectors containing the "real" positional numbers 
+**
+**
+** @param [?] refnr [ajint] Undocumented
+** @param [?] poss [ajint] Undocumented
+** @@
+******************************************************************************/
 
 void refpos2(ajint refnr, ajint poss)
 
@@ -386,13 +396,18 @@ void refpos2(ajint refnr, ajint poss)
 }
 
 
-/*
- * all_charged
- * -----------
- * Calculates if all residues at an alignment position are identical and one of DEKRQN
- * 
- * Returns 1 if so, otherwise 0
- */
+/* @func all_charged **********************************************************
+**
+** Calculates if all residues at an alignment position are identical
+** and one of DEKRQN
+** 
+** Returns 1 if so, otherwise 0
+**
+** @param [?] pos [ajint] Undocumented
+** @param [?] nr [ajint] Undocumented
+** @return [ajint] Undocumented
+** @@
+******************************************************************************/
 
 ajint all_charged(ajint pos, ajint nr)
   {
@@ -409,20 +424,20 @@ ajint all_charged(ajint pos, ajint nr)
     }
     else
       return 0;
-  }
+}
 
 
-
-
-
-/*
- * length1
- * -------
- *
- * Calculates the real medium length of TM segment
- * Eliminates from the calculations sequences with less than 4 positions
- *
- */
+/* @func length1 **************************************************************
+**
+**  Calculates the real medium length of TM segment
+** Eliminates from the calculations sequences with less than 4 positions
+**
+** @param [?] nr [ajint] Undocumented
+** @param [?] start [ajint] Undocumented
+** @param [?] stopp [ajint] Undocumented
+** @return [float] Undocumented
+** @@
+******************************************************************************/
 
 float length1(ajint nr, ajint start, ajint stopp)
 {
@@ -459,11 +474,19 @@ float length1(ajint nr, ajint start, ajint stopp)
 }
 
 
-/*
- * present3p, utg. 44
- * ------------------
- * Presents results from predictions
- */
+/* @func present3p ************************************************************
+**
+** Presents results from predictions
+**
+** @param [?] antal [ajint] Undocumented
+** @param [?] npos [ajint*] Undocumented
+** @param [?] cpos [ajint*] Undocumented
+** @param [?] poss [ajint] Undocumented
+** @param [?] nr [ajint] Undocumented
+** @param [?] seqset [AjPSeqset] Undocumented
+** @param [?] outfile [AjPFile] Undocumented
+** @@
+******************************************************************************/
 
 void present3p(ajint antal, ajint *npos, ajint *cpos,  ajint poss, ajint nr, AjPSeqset seqset, AjPFile outfile)
 
@@ -493,19 +516,18 @@ void present3p(ajint antal, ajint *npos, ajint *cpos,  ajint poss, ajint nr, AjP
 } /* present3p */
 
 
-
-  
-
-/*
- * pred1
- * -----
- * Prediction algorithm
- * Returns number of transmembrane segments
- *
- * Global variables
- * npos[]
- * cpos[]
- */
+/* @func pred1 ****************************************************************
+**
+** Prediction algorithm
+** Returns number of transmembrane segments
+**
+** @param [?] m_limit [float] Undocumented
+** @param [?] ml_limit [float] Undocumented
+** @param [?] e_limit [float] Undocumented
+** @param [?] nr [ajint] Undocumented
+** @return [ajint] Undocumented
+** @@
+******************************************************************************/
 
 ajint pred1(float m_limit, float ml_limit, float e_limit, ajint nr)
 {
@@ -851,13 +873,17 @@ ajint pred1(float m_limit, float ml_limit, float e_limit, ajint nr)
 }
 
 
-
-/*
- * peak1
- * -----
- * Finds peak value in the vector 'parameter'
- * and returns position of peak value
- */
+/* @func peak1 ****************************************************************
+**
+** Finds peak value in the vector 'parameter'
+** and returns position of peak value
+**
+** @param [?] start [ajint] Undocumented
+** @param [?] stopp [ajint] Undocumented
+** @param [?] parameter [float*] Undocumented
+** @return [ajint] Undocumented
+** @@
+******************************************************************************/
 
 ajint peak1(ajint start, ajint stopp, float *parameter)
 {
@@ -881,13 +907,16 @@ ajint peak1(ajint start, ajint stopp, float *parameter)
 #define MAX_TM_LANGD 30        
 #define MIN_TM_LANGD 25
 
-
-
-/*
- *  summa1
- *  ------
- *  Sums the values for 'parameter' in span 'start' to 'stopp'
- */
+/* @func summa1 ***************************************************************
+**
+** Sums the values for 'parameter' in span 'start' to 'stopp'
+**
+** @param [?] start [ajint] Undocumented
+** @param [?] stopp [ajint] Undocumented
+** @param [?] parameter [float*] Undocumented
+** @return [float] Undocumented
+** @@
+******************************************************************************/
 
 float summa1(ajint start, ajint stopp, float *parameter)
 {
@@ -900,13 +929,18 @@ float summa1(ajint start, ajint stopp, float *parameter)
   return summa;
 }
 
-
-
-/*
- * tm_in_vector
- * ------------
- * Checks if segment already in TM vector
- */
+/* @func tm_in_vector *********************************************************
+**
+** Checks if segment already in TM vector
+**
+** @param [?] start [ajint*] Undocumented
+** @param [?] stopp [ajint*] Undocumented
+** @param [?] max [ajint] Undocumented
+** @param [?] starttmp [ajint] Undocumented
+** @param [?] stopptmp [ajint] Undocumented
+** @return [ajint] Undocumented
+** @@
+******************************************************************************/
 
 ajint tm_in_vector(ajint *start, ajint *stopp, ajint max, ajint starttmp, ajint stopptmp)
 {
@@ -920,11 +954,20 @@ ajint tm_in_vector(ajint *start, ajint *stopp, ajint max, ajint starttmp, ajint 
   return temp;
 }
 
-
-/* insert_in_vector
- * ----------------
- * Insert segment in TM vector
- */
+/* @func insert_in_vector *****************************************************
+**
+** Insert segment in TM vector
+**
+** @param [?] start [ajint*] Undocumented
+** @param [?] stopp [ajint*] Undocumented
+** @param [?] max [ajint] Undocumented
+** @param [?] starttmp [ajint] Undocumented
+** @param [?] stopptmp [ajint] Undocumented
+** @param [?] pred [ajint*] Undocumented
+** @param [?] predparameter [ajint] Undocumented
+** @return [ajint] Undocumented
+** @@
+******************************************************************************/
 
 ajint insert_in_vector(ajint *start, ajint *stopp, ajint max, ajint starttmp, ajint stopptmp, ajint *pred, ajint predparameter)
 {
@@ -958,14 +1001,18 @@ ajint insert_in_vector(ajint *start, ajint *stopp, ajint max, ajint starttmp, aj
 
 }
   
-
-
-/*
- * vec_to_stst
- * -----------
- * Transfers information in vector vec[] to start[] and stopp[]
- * Returns number of elements in start[] and stopp[]
- */
+/* @func vec_to_stst **********************************************************
+**
+** Transfers information in vector vec[] to start[] and stopp[]
+** Returns number of elements in start[] and stopp[]
+**
+** @param [?] vec [ajint*] Undocumented
+** @param [?] start [ajint*] Undocumented
+** @param [?] stopp [ajint*] Undocumented
+** @param [?] length [ajint] Undocumented
+** @return [ajint] Undocumented
+** @@
+******************************************************************************/
 
 ajint vec_to_stst(ajint *vec, ajint *start, ajint *stopp, ajint length)
 {
@@ -994,24 +1041,17 @@ ajint vec_to_stst(ajint *vec, ajint *start, ajint *stopp, ajint length)
 
 
 
-
-
-
-
-
-/*
- *  weights
- *  -------
- *  Calculates number of differences between sequence 'testnr' and all 
- *  other sequences (Ref. Vingron & Argos, CABIOS 5 (1989) 115-121).  
- *
- *  s[][]   - sekvensmatris
- *  poss    - antal positioner i sekvenserna
- *  nr      - max nr av sekvenserna
- *  norm_sk - vektor for vikterna
- *
- */
-
+/* @func weights **************************************************************
+** Calculates number of differences between sequence 'testnr' and all
+**  other sequences (Ref. Vingron & Argos, CABIOS 5 (1989) 115-121).  
+**
+** @param [R] s [char**] sekvensmatris (sequence matrix)
+** @param [R] poss [ajint] antal positioner i sekvenserna
+**                         (position in sequence)
+** @param [R] nr [ajint] max nr av sekvenserna (max number of sequences)
+** @param [R] norm_sk [float*] vektor for vikterna (vector)
+** @@
+******************************************************************************/
 
 void weights(char s[][LENGTH], ajint poss, ajint nr, float *norm_sk)
 {
@@ -1047,25 +1087,20 @@ void weights(char s[][LENGTH], ajint poss, ajint nr, float *norm_sk)
 
 
 
-
-/*
- * profile2
- * --------
- * Calculates mean values of 'P[]' over 'span' a.a.
- * and stores the result in 'profile[]'.
- *
- * Calculates on all sequences of the alignment
- * Ignores gaps
- *
- * prof  - number of profile
- * antal - number of sequences in alignment
- * poss  - number of positions in sequence
- * span  - length of span for profile to be calculated upon
- * s[][] - sequence data
- * P[]   - values for profile 
- * profile[] - result vector, result stored in pos closest
- *             to centre of segment
- */
+/* @func profile2 *************************************************************
+**
+**  Calculates mean values of 'P[]' over 'span' a.a.
+** and stores the result in 'profile[]'.
+**
+** Calculates on all sequences of the alignment
+** Ignores gaps
+**
+** @param [?] prof [ajint] number of profile
+** @param [?] antal [ajint] number of sequences in alignment
+** @param [?] poss [ajint] number of positions in sequence
+** @param [?] span [ajint] length of span for profile to be calculated upon
+** @@
+******************************************************************************/
 
 void profile2(ajint prof, ajint antal, ajint poss, ajint span)
 {
@@ -1110,11 +1145,15 @@ void profile2(ajint prof, ajint antal, ajint poss, ajint span)
 
 
 
-
-/*
- * align_rel
- * ---------
- */
+/* @func align_rel ************************************************************
+**
+** Undocumented.
+**
+** @param [?] antal [ajint] Undocumented
+** @param [?] poss [ajint] Undocumented
+** @param [?] span [ajint] Undocumented
+** @@
+******************************************************************************/
 
 void align_rel(ajint antal, ajint poss, ajint span)
 
