@@ -106,7 +106,7 @@ static void sortfile (const char* ext1, const char* ext2, ajint nfiles);
 static void rmfile (const char* ext, ajint nfiles);
 static void rmfileI (const char* ext, ajint ifile);
 
-AjPRegexp getExpr(AjPStr idformat, ajint *type);
+static AjPRegexp getExpr(AjPStr idformat, ajint *type);
 
 
 int main(int argc, char **argv)
@@ -691,6 +691,8 @@ static Pentry entryNew (void) {
 ** @param [r] libr [AjPFile] Database file
 ** @param [r] ifile [ajint] File number.
 ** @param [r] idformat [AjPStr] type of id line
+** @param [r] exp [AjPRegexp] Regular expression for id parsing
+** @param [r] type [ajint] type of fasta id.
 ** @return [Pentry] Entry data object.
 ** @@
 ******************************************************************************/
@@ -823,22 +825,16 @@ static AjBool flatopenlib(AjPStr lname, AjPFile* libr) {
   return ajTrue;
 }
 
-
-
-
-
-
-
 /* @funcstatic getExpr *****************************************************
 **
 ** Compile regular expression
 **
 ** @param [r] idformat [AjPStr] type of ID line
-** @param [w] type [int *] numeric type
+** @param [w] type [ajint *] numeric type
 ** @return [AjPRegexp] ajTrue on success.
 ** @@
 ******************************************************************************/
-AjPRegexp getExpr(AjPStr idformat, ajint *type)
+static AjPRegexp getExpr(AjPStr idformat, ajint *type)
 {
     AjPRegexp exp=NULL;
     
@@ -905,7 +901,7 @@ AjPRegexp getExpr(AjPStr idformat, ajint *type)
 ** Parse the ID, accession from a FASTA format sequence
 **
 ** @param [r] libr [AjPFile] Input database file
-** @param [w] dpos [int*] Byte offset
+** @param [w] dpos [ajint*] Byte offset
 ** @param [w] id [AjPStr*] ID
 ** @param [w] acl [AjPList] List of accession numbers
 ** @param [r] exp [AjPRegexp] regular expression
