@@ -86,4 +86,59 @@ fi
 
 
 
+AC_DEFUN(CHECK_AUTH,
+#
+# Handle user authorisation
+#
+[AC_MSG_CHECKING(if any authorisation type is given)
+AC_ARG_WITH(auth,
+[  --with-auth=AUTHTYPE [defaults PAM] ],
+[if test "$withval" != no ; then
+  AC_MSG_RESULT(yes)
+
+	  ALT_AUTHTYPE="-D${withval}"
+
+	  if test "$withval" = "yes" ; then
+		ALT_AUTHTYPE="-DPAM"
+	  fi
+	  if test "$withval" = "pam" ; then
+		ALT_AUTHTYPE="-DPAM"
+	  fi
+	  if test "$withval" = "shadow" ; then
+		ALT_AUTHTYPE="-DSHADOW"
+	  fi
+	  if test "$withval" = "noshadow" ; then
+		ALT_AUTHTYPE="-DNO_SHADOW"
+	  fi
+	  if test "$withval" = "aixshadow" ; then
+		ALT_AUTHTYPE="-DAIX_SHADOW"
+	  fi
+	  if test "$withval" = "hpuxshadow" ; then
+		ALT_AUTHTYPE="-DHPUX_SHADOW"
+	  fi
+
+	  AC_CHECK_LIB(crypt, main)
+	  AC_CHECK_LIB(pam, main)
+else
+  AC_MSG_RESULT(no)
+fi], [
+AC_MSG_RESULT(no)
+#	if test "$JAVA_OK" = "yes" ; then
+#		echo "Error: --with-java=dir unspecified"
+#		exit 0
+#	fi
+])
+
+if test -n "${ALT_AUTHTYPE}"
+then
+	CPPFLAGS="$CPPFLAGS ${ALT_AUTHTYPE}"
+else
+	CPPFLAGS="$CPPFLAGS -DNO_AUTH"
+fi
+
+
+])
+
+
+
 
