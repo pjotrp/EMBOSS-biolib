@@ -778,8 +778,9 @@ public class BuildJembossForm implements ActionListener
 
           if(fn.endsWith(":") || fn.endsWith(":*"))
           {
+             String ls = PlafMacros.getLineSeparator();
              int n = JOptionPane.showConfirmDialog(f,
-                       "Do you really want to extract\n"+
+                       "Do you really want to extract"+ls+
                        "the whole of " + fn + " databese?",
                        "Confirm the sequence entry",
                        JOptionPane.YES_NO_OPTION);

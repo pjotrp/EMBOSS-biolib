@@ -154,35 +154,36 @@ public class AlignFormat
   */
   public String getToolTip()
   {
+    String ls = PlafMacros.getLineSeparator();
     String commonFormat =
-        "unknown - synonym for simple format.\n"+
-        "multiple - synonym for simple format.\n"+
-        "simple - displays the sequence names and positions and\n"+
-        "puts the markup line underneath the sequences.\n"+
-        "fasta - Fasta sequence format with gaps\n"+
-        "msf - MSF sequence format.\n"+
-        "srs - shows the sequence ID name and position.\n";
+        "unknown - synonym for simple format."+ls+
+        "multiple - synonym for simple format."+ls+
+        "simple - displays the sequence names and positions and"+ls+
+        "puts the markup line underneath the sequences."+ls+
+        "fasta - Fasta sequence format with gaps"+ls+
+        "msf - MSF sequence format."+ls+
+        "srs - shows the sequence ID name and position."+ls;
 
     if(lpair)
-      return commonFormat +
-        "\npair - default format used with only 2 sequences.\n"+
-        "markx0 - default output format for FASTA programs.\n"+
-        "markx1 - alternative format for FASTA programs in which\n"+
-        "identities are not marked. Conservative replacements are\n"+
-        "denoted by \'x\' and non-conservative substitutions by \'X\'.\n"+
-        "markx2 - alternative format for FASTA programs in which\n"+
-        "residues in the second sequence are only shown if they\n"+
-        "are different from the first.\n"+
-        "markx3 - alternative format for FASTA programs in which\n"+
-        "the sequences are displayed in FASTA format. These can\n"+
-        "be used to build a primitive multiple alignment.\n"+
-        "markx10 - alternative format for FASTA programs in which\n"+
-        "the sequences are displayed in FASTA format and the\n"+
-        "sequence length, alignment start and stop is given in\n"+
-        "in lines starting with a semi colon after the title line\n"+
-        "srspair - similar in style to pair format.\n"+
-        "score - does not display the sequence alignment. Only\n"+
-        "shows names of the sequences, length of the alignment and\n"+ 
+      return commonFormat + ls +
+        "pair - default format used with only 2 sequences."+ls+
+        "markx0 - default output format for FASTA programs."+ls+
+        "markx1 - alternative format for FASTA programs in which"+ls+
+        "identities are not marked. Conservative replacements are"+ls+
+        "denoted by \'x\' and non-conservative substitutions by \'X\'."+ls+
+        "markx2 - alternative format for FASTA programs in which"+ls+
+        "residues in the second sequence are only shown if they"+ls+
+        "are different from the first."+ls+
+        "markx3 - alternative format for FASTA programs in which"+ls+
+        "the sequences are displayed in FASTA format. These can"+ls+
+        "be used to build a primitive multiple alignment."+ls+
+        "markx10 - alternative format for FASTA programs in which"+ls+
+        "the sequences are displayed in FASTA format and the"+ls+
+        "sequence length, alignment start and stop is given in"+ls+
+        "in lines starting with a semi colon after the title line"+ls+
+        "srspair - similar in style to pair format."+ls+
+        "score - does not display the sequence alignment. Only"+ls+
+        "shows names of the sequences, length of the alignment and"+ls+ 
         "the score in brackets.";
 
     return commonFormat;

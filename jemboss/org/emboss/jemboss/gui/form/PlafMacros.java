@@ -86,5 +86,15 @@ public class PlafMacros implements SwingConstants
     }
   }
 
+  /**
+  *
+  * Get the line separator string
+  * @return 	line separator
+  *
+  */
+  public static String getLineSeparator()
+  {
+    return LINE_SEPARATOR;
+  }
 }
 
