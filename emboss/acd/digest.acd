@@ -38,6 +38,13 @@ cut sites plus 1..3, 2..4, 3..5 etc but not (e.g.) 2..5.  Overlaps are
 therefore fragments with exactly one potential cut site within it."
   ]
 
+string: aadata [
+	opt: N
+	info: "Amino acid data file"
+	help: "Molecular weight data for amino acids"
+	def: "Eamino.dat"
+]
+
   bool: allpartials [ 
 	opt: N 
 	info: "Show all partials" 

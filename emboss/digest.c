@@ -53,7 +53,9 @@ int main(int argc, char **argv)
     AjPFile  outf;
     AjPList  l;
     AjPList  pa;
-
+    AjPStr   datafn = NULL;
+    AjPFile mfptr=NULL;
+    
     ajint     ncomp;
     ajint     npart;
     
@@ -66,7 +68,7 @@ int main(int argc, char **argv)
     overlap     = ajAcdGetBool("overlap");
     allpartials = ajAcdGetBool("allpartials");
     outf        = ajAcdGetOutfile("outfile");
-
+    datafn      = ajAcdGetString("aadata");
 
     sscanf(ajStrStr(*menu),"%d",&n);
     --n;
@@ -80,7 +82,14 @@ int main(int argc, char **argv)
     l  = ajListNew();
     pa = ajListNew();
     rname = ajStrNew();
-    
+
+
+
+   ajFileDataNew(datafn, &mfptr);
+    if(!mfptr)
+	ajFatal("%S  not found\n",datafn);
+
+    embPropAminoRead(mfptr);
     
     embPropCalcFragments(ajStrStr(substr),n,be,&l,&pa,unfavoured,overlap,
 			allpartials,&ncomp,&npart,&rname);
@@ -122,7 +131,8 @@ int main(int argc, char **argv)
     ajListDel(&l);
     
     ajFileClose(&outf);
-
+    ajFileClose(&mfptr);
+    
     ajExit();
     return 0;
 }

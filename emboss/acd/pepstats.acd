@@ -7,4 +7,12 @@ appl: pepstats [
 
   bool: termini [ req: N def: Y  info: "Include charge at N and C terminus"]
 
+string: aadata [
+	opt: N
+	info: "Amino acid data file"
+	help: "Molecular weight data for amino acids"
+	def: "Eamino.dat"
+]
+
+
   outfile: outfile [req: Y ]
