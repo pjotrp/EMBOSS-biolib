@@ -595,8 +595,8 @@ float embAlignScoreSWMatrix(float *path, ajint *compass, float gapopen,
     float bimble;
     float wscore;
     
-    ajint ix;
-    ajint iy;
+    ajint ix=0;
+    ajint iy=0;
     ajint t;
     
     ajint xpos=0;
