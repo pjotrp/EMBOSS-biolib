@@ -396,9 +396,9 @@ REMEMBER TO EDIT THESE FILES:
       if (-e "$cvsdoc/html/$x.html") {
 # check to see if the html file has changed
       system "lynx -source $url/$x.html > x.x";
-# change ../emboss_icon.gif and ../index.html to current directory
+# change ../emboss_icon.jpg and ../index.html to current directory
       system "perl -p -i -e 's#\.\.\/index.html#index.html#g;' x.x";
-      system "perl -p -i -e 's#\.\.\/emboss_icon.gif#emboss_icon.gif#g;' x.x";
+      system "perl -p -i -e 's#\.\.\/emboss_icon.jpg#emboss_icon.jpg#g;' x.x";
       if (filediff (0, "$cvsdoc/html/$x.html", "x.x")) {
 	system "cp x.x $cvsdoc/html/$x.html";
 	chmod 0664, "$cvsdoc/html/$x.html";
@@ -410,9 +410,9 @@ REMEMBER TO EDIT THESE FILES:
     } else {
 # it doesn't exist, so create the new html output
       system "lynx -source $url/$x.html > $cvsdoc/html/$x.html";
-# change ../emboss_icon.gif and ../index.html to current directory
+# change ../emboss_icon.jpg and ../index.html to current directory
       system "perl -p -i -e 's#\.\.\/index.html#index.html#g;' $cvsdoc/html/$x.html";
-      system "perl -p -i -e 's#\.\.\/emboss_icon.gif#emboss_icon.gif#g;' $cvsdoc/html/$x.html";
+      system "perl -p -i -e 's#\.\.\/emboss_icon.jpg#emboss_icon.jpg#g;' $cvsdoc/html/$x.html";
       chmod 0664, "$cvsdoc/html/$x.html";
 #     system "cvs add -m'documentation created' $cvsdoc/html/$x.html";
       $cvsdochtmladd .= " $x.html";
