@@ -601,11 +601,10 @@ public class BuildJembossForm implements ActionListener
       else if (parseAcd.isOutputGraph(j))
         options = options.concat(" -" + val + " png");
 
-      if ( att.startsWith("datafile")|| att.startsWith("featout")||
+      if ( att.startsWith("dirlist")|| att.startsWith("featout")||
            att.startsWith("string")  || att.startsWith("seqout") ||
            att.startsWith("outfile") || att.startsWith("matrix") ||
-           att.startsWith("regexp") || att.startsWith("codon") ||
-           att.startsWith("dirlist") )
+           att.startsWith("regexp") || att.startsWith("codon") )
       {
         if(!(textf[h].getText()).equals("") && textf[h].isVisible()
                                             && textf[h].isEnabled()) 
@@ -720,7 +719,7 @@ public class BuildJembossForm implements ActionListener
                          rangeText + " ");
         } 
       }
-      else if ( att.startsWith("infile") )
+      else if ( att.startsWith("infile") || att.startsWith("datafile") )
       {
         if(!(textf[h].getText()).equals("") && textf[h].isVisible()
                                             && textf[h].isEnabled())
