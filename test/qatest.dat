@@ -1940,6 +1940,8 @@ DI AAINDEX
 
 ID abiview-ex
 AP abiview
+PP EMBOSSRC=../../
+PP export EMBOSSRC
 CL -graph cps
 IN ../../data/abiview.abi
 IN
@@ -1961,6 +1963,8 @@ FP /^%%Title: PLplot Graph\n/
 ##ID abiview-old
 ##AP abiview
 ##CC Example file missing test/data/ba16d2.s1
+##PP EMBOSSRC=../../
+##PP export EMBOSSRC
 ##CL -graph ps
 ##IN ../../data/ba16d2.s1
 ##IN
@@ -2057,6 +2061,8 @@ FP 0 /Died: /
 
 ID banana-ex
 AP banana
+PP EMBOSSRC=../../
+PP export EMBOSSRC
 CL -graph data
 IN tembl:rnu68037
 FI banana.profile
@@ -2116,6 +2122,8 @@ FP 0 /Died: /
 
 ID banana-graph
 AP banana
+PP EMBOSSRC=../../
+PP export EMBOSSRC
 CL -nooutfile -graph ps
 IN tembl:rnu68037
 FI stdout
@@ -2187,6 +2195,8 @@ FP /0[.]188/
 
 ID chaos-ex
 AP chaos
+PP EMBOSSRC=../../
+PP export EMBOSSRC
 CL tembl:eclac -graph cps
 FI stderr
 FC = 1
@@ -2204,6 +2214,8 @@ FP /^Created chaos.ps\n/
 
 ID chaos-data
 AP chaos
+PP EMBOSSRC=../../
+PP export EMBOSSRC
 CL tembl:eclac -graph data
 FI stdout
 FC = 1
@@ -2277,6 +2289,8 @@ FP /Nc = 32[.]951/
 
 ID cirdna-ex
 AP cirdna
+PP EMBOSSRC=../../
+PP export EMBOSSRC
 CL -graph cps
 IN ../../data/data.cirp
 IN
@@ -2413,6 +2427,8 @@ FP /^nnnnnnnnnnnnnnnnnnnnACGTACGTACGTACGTACGTACGTACGTnnnnACGTACGT\n/
 
 ID cpgplot-ex
 AP cpgplot
+PP EMBOSSRC=../../
+PP export EMBOSSRC
 CL tembl:rnu68037 -graph cps
 IN
 IN
@@ -2442,6 +2458,8 @@ FP /^%%Title: PLplot Graph/
 
 ID cpgplot-old
 AP cpgplot
+PP EMBOSSRC=../../
+PP export EMBOSSRC
 CL tembl:rnu68037 -graph data
 IN
 IN
@@ -2597,6 +2615,8 @@ FC = 2165
 ID dan-ex2
 UC An example of producing a plot of Tm:
 AP dan
+PP EMBOSSRC=../..
+PP export EMBOSSRC
 CL -plot -graph cps
 IN tembl:paamir
 IN
@@ -2621,6 +2641,8 @@ FZ = 0
 ID dan-old
 UC An example of producing a plot of Tm:
 AP dan
+PP EMBOSSRC=../..
+PP export EMBOSSRC
 CL -plot -graph data
 IN tembl:paamir
 IN
@@ -2650,27 +2672,27 @@ FZ = 0
 
 ID direct-all
 AP seqret
-CL temblall:* test.out -auto
 PP EMBOSSRC=../..
 PP export EMBOSSRC
+CL temblall:* test.out -auto
 FI test.out
 FP 44 /^>/
 //
 
 ID direct-filename
 AP seqret
-CL temblvrt:* test.out -auto
 PP EMBOSSRC=../..
 PP export EMBOSSRC
+CL temblvrt:* test.out -auto
 FI test.out
 FP 25 /^>/
 //
 
 ID direct-exclude
 AP seqret
-CL temblrest:* test.out -auto
 PP EMBOSSRC=../..
 PP export EMBOSSRC
+CL temblrest:* test.out -auto
 FI test.out
 FP 19 /^>/
 //
@@ -5294,6 +5316,8 @@ FC = 17
 
 ID dotmatcher-ex
 AP dotmatcher
+PP EMBOSSRC=../../
+PP export EMBOSSRC
 CL tsw:hba_human tsw:hbb_human -graph cps
 FI stderr
 FC = 1
@@ -5310,6 +5334,8 @@ FP /^Created dotmatcher.ps\n/
 
 ID dotmatcher-data
 AP dotmatcher
+PP EMBOSSRC=../../
+PP export EMBOSSRC
 CL tsw:hba_human tsw:hbb_human -graph data
 FI stderr
 FC = 1
@@ -5326,6 +5352,8 @@ FP /^Text2 x1 73.000000 y1 163.5[0-9]+ colour 0 size 1.000000 Dotmatcher: HBA_HU
 
 ID dotmatcher-stretchdata
 AP dotmatcher
+PP EMBOSSRC=../../
+PP export EMBOSSRC
 CL tsw:hba_human tsw:hbb_human -stretch -xygraph data
 FI stderr
 FC = 1
@@ -5349,6 +5377,8 @@ FP /^##Number 0\n/
 
 ID dotmatcher-stretch
 AP dotmatcher
+PP EMBOSSRC=../../
+PP export EMBOSSRC
 CL tsw:hba_human tsw:hbb_human -xygraph ps -stretch
 IN
 FI stderr
@@ -5370,6 +5400,8 @@ AP dotpath
 ## timeout 60 seconds on original test system
 ##
 TI 400
+PP EMBOSSRC=../../
+PP export EMBOSSRC
 CL tembl:AF129756 tembl:AP000504 -word 20 -graph cps -overlaps
 FI stderr
 FC = 1
@@ -5391,6 +5423,8 @@ AP dotpath
 ## timeout 60 seconds on original test system
 ##
 TI 400
+PP EMBOSSRC=../../
+PP export EMBOSSRC
 CL tembl:AF129756 tembl:AP000504 -word 20 -graph data
 FI dotpath1.dat
 FP /^Line x1 10963.000000 y1 4915.000000 x2 10999.000000 y2 4951.000000 colour 0\n/
@@ -5407,6 +5441,8 @@ FP 0 /Died: /
 
 ID dottup-ex
 AP dottup
+PP EMBOSSRC=../../
+PP export EMBOSSRC
 CL tembl:eclac tembl:eclaci -wordsize=6 -gtitle="eclaci vs eclac" -graph cps
 FI stdout
 FZ = 18
@@ -5424,6 +5460,8 @@ FP 0 /Died: /
 
 ID dottup-data
 AP dottup
+PP EMBOSSRC=../../
+PP export EMBOSSRC
 CL tembl:eclac tembl:eclaci -wordsize=6 -gtitle="eclaci vs eclac"
 CL -graph data
 IN
@@ -5444,6 +5482,8 @@ ID dottup-stretchdata
 AP dottup
 CL tembl:eclac tembl:eclaci -wordsize=6 -gtitle="eclaci vs eclac"
 CL -stretch -xygraph data
+PP EMBOSSRC=../../
+PP export EMBOSSRC
 IN
 FI stdout
 FC = 1
@@ -5462,6 +5502,8 @@ ID dottup-stretch
 AP dottup
 CL tembl:eclac tembl:eclaci -wordsize=6 -gtitle="eclaci vs eclac" -xygraph ps
 CL -stretch
+PP EMBOSSRC=../../
+PP export EMBOSSRC
 IN
 FI stdout
 FZ = 18
@@ -6155,6 +6197,8 @@ FP 1 /Died: /
 
 ID epestfind-ex
 AP epestfind
+PP EMBOSSRC=../../
+PP export EMBOSSRC
 CL -graph cps -invalid
 IN ../../data/exu2_drops.embl
 IN 
@@ -6672,6 +6716,8 @@ FP /^tcttaa\n/
 
 ID findkm-ex
 AP findkm
+PP EMBOSSRC=../../
+PP export EMBOSSRC
 CL -graph cps
 IN ../../data/enztest.dat
 IN
@@ -7220,6 +7266,8 @@ FP /^<tr><td>tembl-id:PAAMIR</td><td>PAAMIR</td><td>X13776</td><td>N</td><td>216
 ID isochore-ex
 CC Change to reading tembl:AF129756 - much faster
 AP isochore
+PP EMBOSSRC=../../
+PP export EMBOSSRC
 CL tembl:AF129756  -graph cps
 IN
 FI stderr
@@ -7254,6 +7302,8 @@ FP 0 /Died: /
 # remove the extra 2 prompts from the example
 ID lindna-ex
 AP lindna
+PP EMBOSSRC=../../
+PP export EMBOSSRC
 CL -graph cps
 IN ../../data/data.linp
 IN
@@ -8004,6 +8054,8 @@ FP /^%%Pages: 1\n/
 
 ID pepnet-data
 AP pepnet
+PP EMBOSSRC=../../
+PP export EMBOSSRC
 CL -sask -graph data
 ## No -outfile qualifier - fixed filename
 IN tsw:gcn4_yeast
@@ -8065,6 +8117,8 @@ FP /^%%Pages: 1\n/
 
 ID pepwheel-data
 AP pepwheel
+PP EMBOSSRC=../../
+PP export EMBOSSRC
 CL tsw:hbb_human -send 30 -graph data
 FI stdout
 FC = 1
@@ -8175,6 +8229,8 @@ FP /^%%Pages: 1\n/
 # change example to use globins.msf
 ID plotcon-ex
 AP plotcon
+PP EMBOSSRC=../../
+PP export EMBOSSRC
 CL -sformat msf ../../data/globins.msf -graph cps
 IN
 FI stderr
@@ -8193,6 +8249,8 @@ FP /^%%Pages: 1\n/
 
 ID plotcon-data
 AP plotcon
+PP EMBOSSRC=../../
+PP export EMBOSSRC
 CL -sformat msf ../../data/globins.msf -graph data
 IN
 FI stdout
@@ -8249,6 +8307,8 @@ FP /^%%Pages: 1\n/
 
 ID polydot-ex
 AP polydot
+PP EMBOSSRC=../../
+PP export EMBOSSRC
 CL ../../data/globins.fasta -gtitle="Polydot of globins.fasta"
 CL -graph cps
 IN
@@ -8267,6 +8327,8 @@ FP /^%%Pages: 1\n/
 
 ID polydot-data
 AP polydot
+PP EMBOSSRC=../../
+PP export EMBOSSRC
 CL ../../data/globins.fasta -gtitle="Polydot of globins.fasta"
 CL -graph data
 IN
@@ -8289,6 +8351,8 @@ FP /^Text1 x1 1121.670044 y1 1023.659973 colour 0 size 0.300000   1    146     8
 
 ID polydot-feat
 AP polydot
+PP EMBOSSRC=../../
+PP export EMBOSSRC
 CL ../../data/globins.fasta -gtitle="Polydot of globins.fasta"
 CL -graph cps -dumpfeat
 IN
@@ -8343,6 +8407,8 @@ FP /^%%Pages: 2\n/
 
 ID prettyplot-data
 AP prettyplot
+PP EMBOSSRC=../../
+PP export EMBOSSRC
 CL -resbreak=10 -boxcol -consensus -plurality=3
 CL -graph data
 IN ../../data/globins.msf
@@ -8954,7 +9020,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI eclac.seqmatchall
-FZ = 1537
+FZ = 1535
 FP /^  1832 ECLAC +[+] +5646..7477     ECLACA +[+] +1..1832\n/
 FP /^  1113 ECLAC +[+] +49..1161     ECLACI +[+] +1..1113\n/
 FP /^  1500 ECLAC +[+] +4305..5804     ECLACY +[+] +1..1500\n/
@@ -13354,6 +13420,8 @@ FP /^     37     236   0.951 Coding/
 
 ID tcode-ex2
 UC Produce a graphical plot
+PP EMBOSSRC=../../
+PP export EMBOSSRC
 CL -plot -graph cps
 AP tcode
 IN tembl:hsfau1
@@ -13489,6 +13557,8 @@ FP /^ +T00702; PU.1;Quality: 3; Species: mouse, Mus musculus.\n/
 
 ID tmap-ex
 AP tmap
+PP EMBOSSRC=../../
+PP export EMBOSSRC
 CL tsw:opsd_human -out tmap.res -graph cps
 FI stderr
 FC = 1
@@ -14127,7 +14197,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI eclac.seqmatchall
-FZ = 1537
+FZ = 1535
 FP /^  1832 ECLAC +[+] +5646..7477     ECLACA +[+] +1..1832\n/
 FP /^  1113 ECLAC +[+] +49..1161     ECLACI +[+] +1..1113\n/
 FP /^  1500 ECLAC +[+] +4305..5804     ECLACY +[+] +1..1500\n/
@@ -15796,7 +15866,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI dna.demoalign
-FZ = 1214
+FZ = 1212
 FP 9 /^MSFM[1-3] +/
 //
 
@@ -15896,6 +15966,8 @@ FP 0 /Died: /
 
 ID histogramtest-check
 AQ histogramtest
+PP EMBOSSRC=../../
+PP export EMBOSSRC
 CL -graph ps
 IN
 IN
@@ -16056,6 +16128,8 @@ FP 1 /^>/
 ID testplot-check
 AQ testplot
 CC No documentation, no example
+PP EMBOSSRC=../../
+PP export EMBOSSRC
 CL -graph ps
 IN
 IN
@@ -16076,6 +16150,8 @@ FP /^%%Pages: 1\n/
 ID treetypedisplay-check
 AQ treetypedisplay
 CC No documentation, no example
+PP EMBOSSRC=../../
+PP export EMBOSSRC
 CL -graph ps
 FI stderr
 FC = 1
@@ -18769,6 +18845,8 @@ FP 2 /^./
 ID topo-ex
 AB topo
 AA topo
+PP EMBOSSRC=../../
+PP export EMBOSSRC
 CL tsw:aqp1_human -signa -prol=UM -cys=cg -gly=sr -acid=dr
 CL -basic=db -ohaa=da -araa=dg -graph ps
 IN 18 35 49 67 94 115 136 156 165 184 211 232
