@@ -79,7 +79,7 @@ Command line arguments
 
    Mandatory qualifiers:
   [-sequence]          sequence   Sequence USA
-  [-outfile]           report     (no help text) report value
+  [-outfile]           report     Output report file name
 
    Optional qualifiers:
    -full               boolean    Provide full documentation for matching
@@ -102,7 +102,7 @@ Command line arguments
    [-sequence]
    (Parameter 1) Sequence USA Readable sequence Required
    [-outfile]
-   (Parameter 2) (no help text) report value Report file
+   (Parameter 2) Output report file name Report file
    Optional qualifiers Allowed values Default
    -full Provide full documentation for matching patterns Yes/No No
    -[no]prune Ignore simple patterns. If this is true then these simple

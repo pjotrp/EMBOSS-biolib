@@ -35,7 +35,7 @@ Command line arguments
   [-seqb]              seqset     Sequence set USA
    -gapopen            float      Gap opening penalty
    -gapextend          float      Gap extension penalty
-   -outfile            align      (no help text) align value
+   -outfile            align      Output alignment file name
 
    Optional qualifiers:
    -datafile           matrixf    This is the scoring matrix file used when
@@ -64,7 +64,7 @@ Command line arguments
    sequence type
    -gapextend Gap extension penalty Number from 0.100 to 10.000 0.5 for
    any sequence type
-   -outfile (no help text) align value Alignment file
+   -outfile Output alignment file name Alignment file
    Optional qualifiers Allowed values Default
    -datafile This is the scoring matrix file used when comparing
    sequences. By default it is the file 'EBLOSUM62' (for proteins) or the

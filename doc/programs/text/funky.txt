@@ -26,12 +26,55 @@ Usage
 
 Command line arguments
 
+   Mandatory qualifiers:
+  [-prot]              string     Location of protein coordinate files for
+                                  input (embl-like format)
+  [-protextn]          string     Extension of protein coordinate files
+                                  (embl-like format)
+  [-dom]               string     Location of domain coordinate files for
+                                  input (embl-like format)
+  [-domextn]           string     Extension of domain coordinate files
+                                  (embl-like format)
+   -dic                infile     Name of dictionary of heterogen groups
+   -scop               infile     Name of scop file for input (embl-like
+                                  format)
+   -vdwf               infile     Name of data file with van der Waals radii
+   -thresh             float      Threshold contact distance
+
+   Optional qualifiers: (none)
+   Advanced qualifiers:
+   -outf               outfile    Name of output file
+   -logf               outfile    Name of log file
+
+   General qualifiers:
+  -help                boolean    Report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
    
-   EMBOSS An error in ajacd.c at line 9137:
-attribute gui unknown
 
-
-   EMBOSS An error in ajacd.c at line 9137: attribute gui unknown
+   Mandatory qualifiers Allowed values Default
+   [-prot]
+   (Parameter 1) Location of protein coordinate files for input
+   (embl-like format) Any string is accepted ./
+   [-protextn]
+   (Parameter 2) Extension of protein coordinate files (embl-like format)
+   Any string is accepted .pxyz
+   [-dom]
+   (Parameter 3) Location of domain coordinate files for input (embl-like
+   format) Any string is accepted ./
+   [-domextn]
+   (Parameter 4) Extension of domain coordinate files (embl-like format)
+   Any string is accepted .pxyz
+   -dic Name of dictionary of heterogen groups Input file Ehet.dat
+   -scop Name of scop file for input (embl-like format) Input file
+   Escop.dat
+   -vdwf Name of data file with van der Waals radii Input file Evdw.dat
+   -thresh Threshold contact distance Any numeric value 1.0
+   Optional qualifiers Allowed values Default
+   (none)
+   Advanced qualifiers Allowed values Default
+   -outf Name of output file Output file funky.out
+   -logf Name of log file Output file funky.log
    
 Input file format
 

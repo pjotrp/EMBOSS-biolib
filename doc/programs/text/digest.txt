@@ -63,7 +63,7 @@ Command line arguments
    Mandatory qualifiers:
   [-sequencea]         sequence   Sequence USA
    -menu               menu       Select number
-  [-outfile]           report     (no help text) report value
+  [-outfile]           report     Output report file name
 
    Optional qualifiers: (none)
    Advanced qualifiers:
@@ -100,7 +100,7 @@ Command line arguments
    8 (CNBr)
    1
    [-outfile]
-   (Parameter 2) (no help text) report value Report file
+   (Parameter 2) Output report file name Report file
    Optional qualifiers Allowed values Default
    (none)
    Advanced qualifiers Allowed values Default

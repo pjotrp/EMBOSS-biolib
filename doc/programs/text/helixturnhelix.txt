@@ -28,7 +28,7 @@ Command line arguments
 
    Mandatory qualifiers:
   [-sequence]          seqall     Sequence database USA
-  [-outfile]           report     (no help text) report value
+  [-outfile]           report     Output report file name
 
    Optional qualifiers:
    -mean               float      Mean value
@@ -47,7 +47,7 @@ Command line arguments
    [-sequence]
    (Parameter 1) Sequence database USA Readable sequence(s) Required
    [-outfile]
-   (Parameter 2) (no help text) report value Report file
+   (Parameter 2) Output report file name Report file
    Optional qualifiers Allowed values Default
    -mean Mean value Number from 1.000 to 10000.000 238.71
    -sd Standard Deviation value Number from 1.000 to 10000.000 293.61

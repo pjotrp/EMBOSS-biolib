@@ -51,7 +51,7 @@ Command line arguments
    Mandatory qualifiers:
   [-sequencea]         sequence   Sequence USA
   [-sequenceb]         sequence   Sequence USA
-  [-outfile]           align      (no help text) align value
+  [-outfile]           align      Output alignment file name
 
    Optional qualifiers:
    -datafile           matrix     This is the scoring matrix file used when
@@ -102,7 +102,7 @@ Command line arguments
    [-sequenceb]
    (Parameter 2) Sequence USA Readable sequence Required
    [-outfile]
-   (Parameter 3) (no help text) align value Alignment file
+   (Parameter 3) Output alignment file name Alignment file
    Optional qualifiers Allowed values Default
    -datafile This is the scoring matrix file used when comparing
    sequences. By default it is the file 'EBLOSUM62' (for proteins) or the

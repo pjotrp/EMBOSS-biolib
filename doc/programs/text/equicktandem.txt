@@ -40,7 +40,7 @@ Command line arguments
   [-sequence]          sequence   Sequence USA
    -maxrepeat          integer    Maximum repeat size
    -threshold          integer    Threshold score
-  [-outfile]           report     (no help text) report value
+  [-outfile]           report     Output report file name
 
    Optional qualifiers: (none)
    Advanced qualifiers:
@@ -58,7 +58,7 @@ Command line arguments
    -maxrepeat Maximum repeat size Any integer value 600
    -threshold Threshold score Any integer value 20
    [-outfile]
-   (Parameter 2) (no help text) report value Report file
+   (Parameter 2) Output report file name Report file
    Optional qualifiers Allowed values Default
    (none)
    Advanced qualifiers Allowed values Default

@@ -49,7 +49,7 @@ Command line arguments
   [-sequence]          sequence   Sequence USA
    -minrepeat          integer    Minimum repeat size
    -maxrepeat          integer    Maximum repeat size
-  [-outfile]           report     (no help text) report value
+  [-outfile]           report     Output report file name
 
    Optional qualifiers: (none)
    Advanced qualifiers:
@@ -71,7 +71,7 @@ Command line arguments
    -maxrepeat Maximum repeat size Integer, same as -minrepeat or higher
    Same as -minrepeat
    [-outfile]
-   (Parameter 2) (no help text) report value Report file
+   (Parameter 2) Output report file name Report file
    Optional qualifiers Allowed values Default
    (none)
    Advanced qualifiers Allowed values Default
