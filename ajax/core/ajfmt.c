@@ -2119,6 +2119,51 @@ ajint ajFmtScanC(const char* thys, const char* fmt, ...)
 
 
 
+/* @func ajFmtScanF **********************************************************
+**
+** Scan a string according to fmt and load the ... variable pointers
+** Like C function sscanf.
+**
+** @param [r] thys [const char*] String.
+** @param [r] fmt [const char*] Format string.
+** @param [v] [...] Variable length argument list
+** @return [ajint] number of successful conversions
+** @@
+******************************************************************************/
+
+ajint ajFmtScanF(AjPFile thys, const char* fmt, ...)
+{
+    va_list ap;
+    ajint   n;
+    FILE* file;
+
+    file = ajFileFp(thys);
+
+#if defined(__amd64__) || defined(__PPC__) && defined(_CALL_SYSV)
+    va_list save_ap;
+#endif
+
+    va_start(ap, fmt);
+
+#if defined(__amd64__) || defined(__PPC__) && defined(_CALL_SYSV)
+    __va_copy(save_ap,ap);
+#endif
+
+    n = fscanf(file,fmt,ap);
+
+#if defined(__amd64__) || defined(__PPC__) && defined(_CALL_SYSV)
+    __va_copy(ap,save_ap);
+#endif
+
+
+    va_end(ap);
+
+    return n;
+}
+
+
+
+
 /* @funcstatic fmtVscan *******************************************************
 **
 ** Scan a string according to fmt and load the va_list variable pointers
