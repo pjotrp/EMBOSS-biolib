@@ -69,16 +69,17 @@ pkgdata2_DATA = lindna.html listor.html marscan.html maskfeat.html \
                rebaseextract.html recode.html recoder.html redata.html \
                remap.html restml.html restover.html restrict.html \
                revseq.html scopalign.html scope.html scopparse.html \
-               seealso.html seqboot.html seqmatchall.html seqret.html \
-               seqretall.html seqretallfeat.html seqretfeat.html \
-               seqretset.html seqretsplit.html showalign.html showdb.html \
-               showfeat.html showorf.html showseq.html shuffleseq.html \
-               sigcleave.html siggen.html sigscan.html silent.html \
-               splitter.html stamps.html stretcher.html stssearch.html \
-               supermatcher.html swissparse.html syco.html test_group.html \
-               textsearch.html tfextract.html tfm.html tfscan.html \
-               tmap.html topo.html tranalign.html transeq.html trimest.html \
-               trimseq.html union.html utils_database_creation_group.html \
+               seealso.html seqboot.html seqmatchall.html seqnr.html \
+               seqret.html seqretall.html seqretallfeat.html \
+               seqretfeat.html seqretset.html seqretsplit.html \
+               showalign.html showdb.html showfeat.html showorf.html \
+               showseq.html shuffleseq.html sigcleave.html siggen.html \
+               sigscan.html silent.html splitter.html stamps.html \
+               stretcher.html stssearch.html supermatcher.html \
+               swissparse.html syco.html test_group.html textsearch.html \
+               tfextract.html tfm.html tfscan.html tmap.html topo.html \
+               tranalign.html transeq.html trimest.html trimseq.html \
+               union.html utils_database_creation_group.html \
                utils_database_indexing_group.html utils_misc_group.html \
                vectorstrip.html water.html whichdb.html wobble.html \
                wordcount.html wordmatch.html wossname.html yank.html
