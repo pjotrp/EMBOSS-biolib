@@ -430,9 +430,10 @@ deploy_axis_services()
 
   SERVICE=$2
   URL=$3
-  JAVAHOME=$4
-  OPT_PROP1=$5
-  OPT_PROP2=$6
+  URL2=$4
+  JAVAHOME=$5
+  OPT_PROP1=$6
+  OPT_PROP2=$7
 
   echo
 # echo "$JAVAHOME/bin/java -classpath $CLASSPATH $OPT_PROP1 $OPT_PROP2 \\ "
@@ -445,6 +446,10 @@ deploy_axis_services()
 
   echo "#!/bin/csh " > deploy.csh
   echo "$JAVAHOME/bin/java -classpath $CLASSPATH $OPT_PROP1 $OPT_PROP2 org.apache.axis.client.AdminClient -l$URL/axis/services JembossServer.wsdd" >> deploy.csh
+  echo "" >> deploy.csh
+  echo 'if ($status != 0) then' >> deploy.csh
+  echo "  $JAVAHOME/bin/java -classpath $CLASSPATH $OPT_PROP1 $OPT_PROP2 org.apache.axis.client.AdminClient -l$URL2/axis/services JembossServer.wsdd" >> deploy.csh
+  echo "endif" >> deploy.csh
   chmod u+x deploy.csh
 }
 
@@ -1450,7 +1455,7 @@ if [ "$SSL" != "y" ]; then
     ./tomstart
 
     sleep 25
-    deploy_axis_services $JEMBOSS/lib JembossServer.wsdd http://localhost:$PORT/ $JAVA_HOME "" ""
+    deploy_axis_services $JEMBOSS/lib JembossServer.wsdd http://localhost:$PORT/ http://$LOCALHOST:$PORT/ $JAVA_HOME "" ""
   fi
 
 else
@@ -1521,7 +1526,7 @@ else
     OPT_PROP1="-Djava.protocol.handler.pkgs=com.sun.net.ssl.internal.www.protocol"
     OPT_PROP2="-Djavax.net.ssl.trustStore=$JEMBOSS/resources/client.keystore"
 
-    deploy_axis_services $JEMBOSS/lib JembossServer.wsdd https://localhost:$PORT/ $JAVA_HOME $OPT_PROP1 $OPT_PROP2
+    deploy_axis_services $JEMBOSS/lib JembossServer.wsdd https://localhost:$PORT/ https://$LOCALHOST:$PORT $JAVA_HOME $OPT_PROP1 $OPT_PROP2
   fi
 fi
 
