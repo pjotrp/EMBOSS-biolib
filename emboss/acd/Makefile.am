@@ -21,7 +21,7 @@ pkgdata_DATA = codes.english \
 	garnier.acd geecee.acd getorf.acd helixturnhelix.acd hetparse.acd hmmgen.acd hmoment.acd \
 	histogramtest.acd iep.acd infoalign.acd infoseq.acd isochore.acd \
 	interface.acd lindna.acd listor.acd \
-        marscan.acd maskfeat.acd maskseq.acd \
+	marscan.acd maskfeat.acd maskseq.acd \
 	matcher.acd 
 pkgdata2_DATA =	megamerger.acd merger.acd msbar.acd \
 	mwfilter.acd needle.acd \
