@@ -57,6 +57,7 @@ typedef struct AjSFeattabOut {
   AjPStr        Formatstr;	/* Output format name */
   ajint         Format;		/* Output format enum */
   AjPStr        Filename;	/* Output filename */
+  AjPStr        Directory;	/* Output directory */
   AjPStr        Seqid;		/* Output entryname */
   AjPStr        Type;		/* Type N or P */
   AjPFile       Handle ;	/* Output file */
