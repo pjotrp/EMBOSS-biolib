@@ -218,6 +218,9 @@ treetypedisplay_SOURCES = treetypedisplay.c
 
 LDADD = ../nucleus/libnucleus.la ../ajax/libajaxg.la ../ajax/libajax.la ../plplot/libplplot.la $(XLIB)
 
+pkgdata_DATA = emboss.default.template
+pkgdatadir=$(prefix)/share/$(PACKAGE)
+
 if PURIFY
   LINK = purify $(LIBTOOL) --mode=link $(CC) $(CFLAGS) $(LDFLAGS) -o $@
 else
