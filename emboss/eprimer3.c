@@ -559,12 +559,12 @@ int main(int argc, char **argv, char **env)
 ** Reads the output from primer3_core into a returned AjPStr until EOF
 **
 ** @param [r] fd [int] file descriptor
-** @param [U] result [AjPStr] Returned string
-** @return void
+** @param [u] result [AjPStr*] Returned string
+** @return [void]
 **
 ******************************************************************************/
 
-static void eprimer3_read(int fd, AjPStr * result)
+static void eprimer3_read(int fd, AjPStr* result)
 {
     FILE *stream;
     int ch;

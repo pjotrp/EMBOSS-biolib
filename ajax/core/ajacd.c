@@ -5416,7 +5416,7 @@ AjPDir ajAcdGetDirectory(const char *token)
 ** Optionally can be forced to have a fully qualified path when returned.
 **
 ** @param [r] token [const char*] Text token name
-** @return [AjPDir] Directory object
+** @return [AjPStr] Directory path
 ** @cre failure to find an item with the right name and type aborts.
 ** @@
 ******************************************************************************/
@@ -7516,7 +7516,7 @@ static void acdSetMatrixf(AcdPAcd thys)
 ** Optionally can be forced to have a fully qualified path when returned.
 **
 ** @param [r] token [const char*] Text token name
-** @return [AjPStr] String containing a directory name
+** @return [AjPDir] Output directory object
 ** @cre failure to find an item with the right name and type aborts.
 ** @@
 ******************************************************************************/
@@ -13866,7 +13866,8 @@ static AjBool acdVarTestValid(const AjPStr var, AjBool* toggle)
 **
 ** Tests a variable reference is non recursive
 **
-** @param [w] var [AjPStr*] String value
+** @param [w] var [AjPStr] String value to be tested
+** @param [w] varname [AjPStr*] Variable name if found, else unchanged
 ** @return [AjBool] ajTrue if no further variable or function is found
 ** @@
 ******************************************************************************/
@@ -13903,13 +13904,16 @@ static AjBool acdVarSimple(AjPStr var, AjPStr* varname)
 	ajStrApp(&newvar, result);
 	if(ajRegPost(varexp, &restvar)) /* any more? */
 	    ajStrApp(&newvar, restvar);
-	acdLog("acdVarSimple name %S resolved to '%S'\n", *varname, newvar);
+	acdLog("acdVarSimple name %S resolaved to '%S'\n", *varname, newvar);
+	if(ajRegExec(varexp, newvar))
+	    return ajFalse;
+	if(ajRegExec(funexp, newvar))
+	    return ajFalse;
+
+	return ajTrue;
     }
-    
-    if(ajRegExec(varexp, newvar))
-	return ajFalse;
-    if(ajRegExec(funexp, newvar))
-	return ajFalse;
+
+    /* else no variable reference at found */
 
     return ajTrue;
 }

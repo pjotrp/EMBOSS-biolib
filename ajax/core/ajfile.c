@@ -209,7 +209,7 @@ AjPDir ajDiroutNewS(const AjPStr name, const AjPStr ext)
 
 
 
-/* @func ajDiroutNewS *********************************************************
+/* @func ajDiroutNewSS ********************************************************
 **
 ** Creates a new directory output object.
 **
@@ -780,7 +780,7 @@ AjPFile ajFileNewOutD(const AjPStr dir, const AjPStr name)
 ** If the filename already has a directory specified,
 ** the "dir" argument is ignored.
 **
-** @param [rN] dir [const AjPStr] Directory (optional, can be empty or NULL).
+** @param [rN] dir [const AjPDir] Directory (optional, can be empty or NULL).
 ** @param [r] name [const AjPStr] File name.
 ** @return [AjPFile] New file object.
 ** @@
@@ -3005,7 +3005,7 @@ AjPFile ajFileNewDF(const AjPStr dir, const AjPStr filename)
 ** Looks for file "file" with the extension (if any) specified
 ** for the directory
 **
-** @param [r] dir [const AjPStr] Directory
+** @param [r] dir [const AjPDir] Directory
 ** @param [r] filename [const AjPStr] Wildcard Filename.
 ** @return [AjPFile] New file object.
 ** @@
@@ -4394,7 +4394,7 @@ AjBool ajFileBuffEmpty(const AjPFileBuff thys)
 **
 ** @param [r] filename [AjPStr*] Filename.
 ** @param [r] dir [const AjPDir] Directory
-** @param [r] dir [const AjPStr] Base filename
+** @param [r] name [const AjPStr] Base filename
 ** @return [AjBool] ajTrue if the replacement succeeded.
 ** @@
 ******************************************************************************/
