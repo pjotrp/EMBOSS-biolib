@@ -8,8 +8,8 @@
 **
 **
 ** @author: Copyright (C) Damian Counsell
-** @version $Revision: 1.2 $
-** @modified $Date: 2004/11/22 18:21:17 $
+** @version $Revision: 1.3 $
+** @modified $Date: 2004/11/25 20:24:26 $
 ** @@
 **
 ** This program is free software; you can redistribute it and/or
@@ -59,6 +59,7 @@ int main(int argc , char **argv)
     AjPStr ajpStrGoldSeqFileNameCopy = NULL;
     AjPStr ajpStrTestSeqFileNameCopy = NULL;
     AjPStr ajpStrPathToOutfile       = NULL; /* directory for scores        */
+    AjPStr ajpStrScoresOutfile        = NULL; /* file for scores             */
     AjPStr ajpStrOutfileSuffix       = NULL;
 
     ajint ajIntSeqFilesInGoldDir;
@@ -73,6 +74,7 @@ int main(int argc , char **argv)
     ajpListGoldSeqFiles  = ajAcdGetDirlist("goldseqsdirlist");
     ajpListTestSeqFiles  = ajAcdGetDirlist("testseqsdirlist");
     ajpStrPathToOutfile  = ajAcdGetOutdirName("scoresoutdir");
+    ajpStrScoresOutfile  = ajAcdGetString("scoresoutfilename");
 
     /* assign other values */
     ajpStrCommandName    = ajStrNewC("scorer");
@@ -120,10 +122,11 @@ int main(int argc , char **argv)
 	 * assemble command line to score each pair of substituted sequences
 	 */
 	ajFmtPrintS(&ajpStrCommandLine,
-		    "%S%S %S %S -auto >> /users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_scoring_files/22Nov04/scores.csv",
+		    "%S%S %S %S -auto >> %S/%S",
 		    ajpStrPathToCommand, ajpStrCommandName,
 		    ajpStrGoldSeqFileName,
-		    ajpStrTestSeqFileName);
+		    ajpStrTestSeqFileName,
+		    ajpStrPathToOutfile, ajpStrScoresOutfile);
 
 	pcCommandLine  = ajStrStr(ajpStrCommandLine);
 

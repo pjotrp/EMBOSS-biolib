@@ -10,8 +10,8 @@
 **  and each mismatch scores zero.
 **
 ** @author: Copyright (C) Damian Counsell
-** @version $Revision: 1.5 $
-** @modified $Date: 2004/10/28 18:15:57 $
+** @version $Revision: 1.6 $
+** @modified $Date: 2004/11/25 20:23:35 $
 ** @@
 **
 ** This program is free software; you can redistribute it and/or
@@ -58,7 +58,6 @@ int main(int argc, char **argv)
     /* substituted sequences */
     AjPSeq ajpSeqGold           = NULL; /* ideal substituted seq       */
     AjPSeq ajpSeqTest           = NULL; /* test substituted seq        */
-    AjPSeq ajpSeqScored         = NULL; /* score sequence              */
     char *pcGoldSeq             = NULL; /* ideal seq string            */
     char *pcTestSeq             = NULL; /* test seq string             */
 
@@ -76,8 +75,7 @@ int main(int argc, char **argv)
     ajpSeqGold = ajAcdGetSeq("goldsubstituted");
     /* get test aligned and substituted sequence*/
     ajpSeqTest = ajAcdGetSeq("testsubstituted");
-    ajpFileScores = ajAcdGetOutfile("seqscorefile");
-    
+    ajpFileScores = ajAcdGetOutfile("seqscorefile");    
 
     pcGoldSeq = ajSeqCharCopy(ajpSeqGold);
     pcTestSeq = ajSeqCharCopy(ajpSeqTest);
@@ -105,8 +103,8 @@ int main(int argc, char **argv)
     /*    ajpStrTemplateName = ajStrTokC(ajpSeqGold->Name, pcSeqNameSeparator); */
     /*     ajpStrQueryName = ajStrTokC(NULL, pcSeqNameSeparator); */
 
-    ajFmtPrintF(ajpFileScores, "%S, %S, %3.2f\n", ajpStrTemplateName, ajpStrQueryName, fPercentIdentity);    
-    ajFmtPrint("%S, %S, %3.2f\n", ajpStrTemplateName, ajpStrQueryName, fPercentIdentity);
+    ajFmtPrintF(ajpFileScores, "%S, %S, %3.2f\n", ajpStrQueryName, ajpStrTemplateName, fPercentIdentity);    
+    ajFmtPrint("%S, %S, %3.2f\n", ajpStrQueryName, ajpStrTemplateName, fPercentIdentity);
 
     /* tidy up */
     ajSeqDel(&ajpSeqGold);

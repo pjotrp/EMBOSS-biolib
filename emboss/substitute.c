@@ -6,8 +6,8 @@
 **
 **
 ** @author: Copyright (C) Damian Counsell
-** @version $Revision: 1.12 $
-** @modified $Date: 2004/11/19 17:59:18 $
+** @version $Revision: 1.13 $
+** @modified $Date: 2004/11/25 20:23:57 $
 ** @@
 **
 ** This program is free software; you can redistribute it and/or
@@ -84,19 +84,17 @@ int main(int argc , char **argv)
     AjPStr ajpStrSubstitutedSeq = NULL; /* substituted seq string           */
 
     /* variables for constructing sequence name */
-    AjPStr ajpStrTempQuerySeqName     = NULL;
-    AjPStr ajpStrQuerySeqName         = NULL;
+    AjPStr ajpStrTempQuerySeqName    = NULL;
+    AjPStr ajpStrQuerySeqName        = NULL;
     AjIStr ajpStrIterQuerySeqName    = NULL;
-    char cQuerySeqName                = '\0';
-    AjBool ajBoolQueryNameRead        = AJFALSE;
-    
-    AjPStr ajpStrTempTemplateSeqName  = NULL;
-    AjPStr ajpStrTemplateSeqName      = NULL;
+    char cQuerySeqName               = '\0';
+    AjBool ajBoolQueryNameRead       = AJFALSE;
+    AjPStr ajpStrTempTemplateSeqName = NULL;
+    AjPStr ajpStrTemplateSeqName     = NULL;
     AjIStr ajpStrIterTemplateSeqName = NULL;
-    char cTemplateSeqName             = '\0';
-    AjBool ajBoolTemplateNameRead     = AJFALSE;
-
-    AjPStr ajpStrJoinOutfileName      = NULL;
+    char cTemplateSeqName            = '\0';
+    AjBool ajBoolTemplateNameRead    = AJFALSE;
+    AjPStr ajpStrJoinOutfileName     = NULL;
 
     embInit("substitute", argc, argv);
 
@@ -110,10 +108,10 @@ int main(int argc , char **argv)
 		ajpSeqsetPair->Filename);
 
     /* read seqset into seqs */
-    ajpSeqTraceAcross = ajSeqsetGetSeq(ajpSeqsetPair,
-				       enumTemplateSeqIndex);
     ajpSeqTraceDown = ajSeqsetGetSeq(ajpSeqsetPair,
 				     enumQuerySeqIndex);
+    ajpSeqTraceAcross = ajSeqsetGetSeq(ajpSeqsetPair,
+				       enumTemplateSeqIndex);
 
     /* get name from sequence properties */
     ajpStrTempQuerySeqName = ajStrNewS(ajpSeqTraceDown->Name);
@@ -182,13 +180,13 @@ int main(int argc , char **argv)
     /* delimiter between halves of sequence filename */
     ajpStrJoinOutfileName = ajStrNewC("_");    
     /*
-     * note that the template sequence always comes first
-     * in gold standard alignment pairs, but always comes
-     * second in my programs
+     * note that the template sequence always comes first in
+     * the gold standard alignment pair files but always comes
+     * second in the names of those files and in my programs
      */
-    ajStrCopy(&ajpStrSeqFileName, ajpStrTemplateSeqName);
+    ajStrCopy(&ajpStrSeqFileName, ajpStrQuerySeqName);
     ajStrApp(&ajpStrSeqFileName, ajpStrJoinOutfileName);
-    ajStrApp(&ajpStrSeqFileName, ajpStrQuerySeqName);
+    ajStrApp(&ajpStrSeqFileName, ajpStrTemplateSeqName);
     ajFileNameShorten(&ajpStrSeqFileName);
     ajFileNameTrim(&ajpStrSeqFileName);
 
