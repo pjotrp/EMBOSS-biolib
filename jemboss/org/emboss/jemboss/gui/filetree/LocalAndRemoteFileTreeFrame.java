@@ -35,6 +35,7 @@ public class LocalAndRemoteFileTreeFrame extends JFrame
 {
 
   private DragTree ltree;
+  private JSplitPane treePane;
 
 /**
 *
@@ -45,25 +46,91 @@ public class LocalAndRemoteFileTreeFrame extends JFrame
     super("File Manager");
     try
     {  
-      RemoteFileTreePanel rtree = new RemoteFileTreePanel(mysettings,false);
+      final RemoteFileTreePanel rtree =
+                           new RemoteFileTreePanel(mysettings,false);
       ltree = new DragTree(new File(System.getProperty("user.home")), 
                                                    this, mysettings);
-      JScrollPane scrollTree = new JScrollPane(ltree);   
+      final JScrollPane scrollTree = new JScrollPane(ltree);   
+
       Dimension d = rtree.getPreferredSize();
       scrollTree.setPreferredSize(d);
       JPanel jp = new JPanel(new BorderLayout());
 
       JMenuBar menuBar = new JMenuBar();
+      JMenu prefMenu = new JMenu("File");
+      prefMenu.setMnemonic(KeyEvent.VK_F);
+      final JFrame f = this;
+
+      ButtonGroup group = new ButtonGroup();
+      JRadioButtonMenuItem prefV = new JRadioButtonMenuItem("Vertical Split");
+      prefMenu.add(prefV);
+      prefV.addActionListener(new ActionListener()
+      {
+        public void actionPerformed(ActionEvent e)
+        {
+          treePane.remove(rtree);
+          treePane.remove(scrollTree);
+          treePane.setOrientation(JSplitPane.VERTICAL_SPLIT);
+          treePane.setTopComponent(rtree);
+          treePane.setBottomComponent(scrollTree);
+          treePane.setDividerLocation(0.5);
+          Dimension pSize = new Dimension(250, 250);
+          rtree.setPreferredSize(pSize);
+          scrollTree.setPreferredSize(pSize);
+          f.pack();
+          treePane.setDividerLocation(0.5);
+        }
+      });
+      prefV.setSelected(true);
+      group.add(prefV);
+     
+      JRadioButtonMenuItem prefH = new JRadioButtonMenuItem("Horizontal Split");
+      prefMenu.add(prefH);
+      prefH.addActionListener(new ActionListener()
+      {
+        public void actionPerformed(ActionEvent e)
+        {
+          treePane.remove(rtree);
+          treePane.remove(scrollTree);
+          treePane.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
+          treePane.setRightComponent(rtree);
+          treePane.setLeftComponent(scrollTree);
+          Dimension pSize = new Dimension(350, 250);
+          rtree.setPreferredSize(pSize);
+          scrollTree.setPreferredSize(pSize);
+          f.pack();
+          treePane.setDividerLocation(0.5);
+        }
+      });
+      group.add(prefH);
+
+      JMenuItem prefClose = new JMenuItem("Close");
+      prefClose.setAccelerator(KeyStroke.getKeyStroke(
+                    KeyEvent.VK_C, ActionEvent.CTRL_MASK));
+
+      prefClose.addActionListener(new ActionListener()
+      {
+        public void actionPerformed(ActionEvent e)
+        {
+          f.setVisible(false);
+        }
+      });
+      prefMenu.addSeparator();
+      prefMenu.add(prefClose);
+      menuBar.add(prefMenu);
+
       JComboBox rootSelect = rtree.getRootSelect();
-      Dimension d1 = rootSelect.getPreferredSize();
       rootSelect.setMaximumSize(d);
 
-      d = new Dimension((int)d.getWidth(),(int)d1.getHeight());
       menuBar.add(Box.createHorizontalGlue());
       menuBar.add(rootSelect);
       setJMenuBar(menuBar);
-      JSplitPane treePane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
-                                           scrollTree,rtree);
+      
+      Dimension pSize = new Dimension(250, 250);
+      rtree.setPreferredSize(pSize);
+      scrollTree.setPreferredSize(pSize);
+      treePane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
+                                        rtree,scrollTree);
       getContentPane().add(treePane);
       pack();
       setVisible(true);
