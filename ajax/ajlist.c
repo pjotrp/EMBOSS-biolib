@@ -1584,8 +1584,8 @@ void ajListPushList (AjPList thys, AjPList* pmore)
 	thys->First->Prev = NULL;
     }
 
-    ajListDel (pmore);			/* free the list but not the nodes */
-
+    AJFREE(more);	/* free the list but not the nodes */
+    
     return;
 }
 
