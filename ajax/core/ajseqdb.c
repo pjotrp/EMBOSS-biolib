@@ -3441,14 +3441,14 @@ static AjBool seqAccessGcg(AjPSeqin seqin)
 	{
 	    ajDebug("entry id: '%S' acc: '%S'\n", qry->Id, qry->Acc);
 	    if(!seqCdQryEntry(qry))
-		ajDebug("GCG Entry failed");
+		ajDebug("GCG Entry failed\n");
 	}
 
 	if(qry->Type == QRY_QUERY)
 	{
 	    ajDebug("query id: '%S' acc: '%S'\n", qry->Id, qry->Acc);
 	    if(!seqCdQryQuery(qry))
-		ajDebug("GCG Query failed");
+		ajDebug("GCG Query failed\n");
 	}
 	AJFREE(qryd->trgLine);
     }
@@ -4047,6 +4047,11 @@ static AjBool seqAccessBlast(AjPSeqin seqin)
 	ajFileClose(&qryd->libt);
 	ajFileClose(&qryd->libf);
 	seqCdQryClose(qry);
+	if((qry->Type == QRY_ENTRY) && !seqin->multi)
+	{
+	    AJFREE(qry->QryData);
+	    qryd = NULL;
+	}
     }
 
     ajStrAssS(&seqin->Db, qry->DbName);
@@ -5933,8 +5938,8 @@ static ajint seqCdTrgFind(AjPSeqQuery qry, const char* indexname,
 	    name[prefixlen]='\0';      /* truncate to prefix length */
 	    cmp = ajStrCmpC(fdprefix,name);
 	    /*	    match = ajStrMatchWildC(fdstr,name);*/
-	    ajDebug(" trg testc %d '%s' '%S' %2d (+/- %d)\n",
-		    pos,name,fdprefix,t-b);
+	    ajDebug(" trg testc %d '%s' '%S' %B (+/- %d)\n",
+		    pos,name,fdprefix,cmp, t-b);
 	    if(!cmp)
 	    {
 		ajDebug(" trg hit %d\n",pos);
