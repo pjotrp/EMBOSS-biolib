@@ -1265,6 +1265,9 @@ void ajFmtPrintF(AjPFile file, const char* fmt, ...)
 {
     va_list ap;
 
+    if(!file)
+	return;
+
     va_start(ap, fmt);
     ajFmtVfmt(fmtOutC, file->fp, fmt, ap);
     va_end(ap);
@@ -1288,6 +1291,9 @@ void ajFmtPrintF(AjPFile file, const char* fmt, ...)
 
 void ajFmtVPrintF(AjPFile file, const char* fmt, va_list ap)
 {
+    if(!file)
+	return;
+
     ajFmtVfmt(fmtOutC, file->fp, fmt, ap);
 
     return;
@@ -1985,6 +1991,9 @@ void ajFmtPrintSplit(AjPFile outf, const AjPStr str,
     ajint    l = 0;
     ajint    c = 0;
 
+    if(!outf)
+	return;
+
     token = ajStrNew();
     tmp   = ajStrNewC("");
     tmp2  = ajStrNew();
@@ -2136,6 +2145,9 @@ ajint ajFmtScanF(AjPFile thys, const char* fmt, ...)
     va_list ap;
     ajint   n;
     FILE* file;
+
+    if(!thys)
+	return 0;
 
     file = ajFileFp(thys);
 
