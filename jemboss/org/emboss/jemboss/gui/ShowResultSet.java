@@ -40,34 +40,51 @@ import org.emboss.jemboss.JembossParams;
 public class ShowResultSet extends JFrame
 {
 
-/**
-* 
-* @param the result data to display
-*
-*/
+  /**
+  * 
+  * @param reslist 	result list
+  * @param project	the result data to display
+  * @param mysettings	jemboss properties
+  *
+  */
   public ShowResultSet(Hashtable reslist, String project, 
                                 JembossParams mysettings)
   {
     this(reslist,null,project,mysettings);
   }
 
+  /**
+  *
+  * @param reslist      result list
+  * @param inputFiles 	input files
+  *
+  */
   public ShowResultSet(Hashtable reslist, Hashtable inputFiles)
   {
     this(reslist,inputFiles,null,null);
   }
 
+  /**
+  *
+  * @param reslist      result list
+  * @param inputFiles   input files
+  * @param mysettings   jemboss properties
+  *
+  */
   public ShowResultSet(Hashtable reslist, Hashtable inputFiles,
                        JembossParams mysettings)
   {
     this(reslist,inputFiles,null,mysettings);
   }
 
-/**
-*  
-* @param the result data to display
-* @param the input data to display
-*
-*/
+  /**
+  *  
+  * @param reslist	result list 
+  * @param inputFiles	the input data to display
+  * @param project      the result data to display
+  * @param mysettings   jemboss properties
+  *
+  */
   public ShowResultSet(Hashtable reslist, Hashtable inputFiles, 
                        String project, JembossParams mysettings)
   {
@@ -117,6 +134,14 @@ public class ShowResultSet extends JFrame
     setVisible(true);
   }
 
+  /**
+  *
+  * Add the contents of a hash table to the tabbed pane
+  * @param h	hash table
+  * @param rtp	tabbed pane
+  * @return	array of names of PNG tabs
+  *
+  */
   private String[] addHashContentsToTab(Hashtable h,JTabbedPane rtp)
   {
 
@@ -167,10 +192,17 @@ public class ShowResultSet extends JFrame
     for(int i=0;i<ntabs;i++)
       pngtabs[i] = new String(stabs[i]);
     
-
     return pngtabs;
   }
 
+  /**
+  *
+  * Find the number in a string expression
+  * @param exp	string expression
+  * @return 	number in a string expression or -1 
+  *		if none found
+  *
+  */
   private int findInt(String exp)
   {
 
