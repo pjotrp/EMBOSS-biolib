@@ -177,7 +177,7 @@ int main(int argc, char **argv)
 
 
     /* Read data from acd */
-    embInit("domaine",argc,argv); 
+    embInit("domainer",argc,argv); 
     cpdb_path     = ajAcdGetString("cpdb");
     cpdb_extn     = ajAcdGetString("cpdbextn");
     pdb_extn      = ajAcdGetString("pdbextn");
