@@ -484,18 +484,18 @@ cp $SOAP_ROOT/webapps/soap.war $TOMCAT_ROOT/webapps
 #
 #
 #
-echo "Use the following for png support:"
-echo "--with-pngdriver=$EMBOSS_INSTALL/share/EMBOSS"
-echo "(y/n) [y]?"
-read PNGSUPPORT
+#echo "Use the following for png support:"
+#echo "--with-pngdriver=$EMBOSS_INSTALL/share/EMBOSS"
+#echo "(y/n) [y]?"
+#read PNGSUPPORT
 
 PNG=""
-if [ "$PNGSUPPORT" = "" ]; then
-  PNG="--with-pngdriver=$EMBOSS_INSTALL/share/EMBOSS"
-fi
-if [ "$PNGSUPPORT" = "y" ]; then
-  PNG="--with-pngdriver=$EMBOSS_INSTALL/share/EMBOSS"
-fi
+#if [ "$PNGSUPPORT" = "" ]; then
+#  PNG="--with-pngdriver=$EMBOSS_INSTALL/share/EMBOSS"
+#fi
+#if [ "$PNGSUPPORT" = "y" ]; then
+#  PNG="--with-pngdriver=$EMBOSS_INSTALL/share/EMBOSS"
+#fi
 
 USER_CONFIG=""
 echo "Enter any other configuration options (or press return to leave blank):"
