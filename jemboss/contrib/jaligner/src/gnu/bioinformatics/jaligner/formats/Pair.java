@@ -1,6 +1,6 @@
 /**
  * @author Ahmed Moustafa (ahmed at users.sourceforge.net) 
- * $Id: Pair.java,v 1.2 2003/09/10 10:59:22 timc Exp $
+ * $Id: Pair.java,v 1.3 2003/09/24 09:07:40 timc Exp $
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -25,7 +25,7 @@ import gnu.bioinformatics.jaligner.util.Alignment;
  * The simple output format <a href="http://www.hgmp.mrc.ac.uk/Software/EMBOSS/Themes/AlignExamples/align.pair">Pair</a> of the alignment of two sequences.
  *
  * @author Ahmed Moustafa (ahmed at users.sourceforge.net) 
- * @version $Revision: 1.2 $ 
+ * @version $Revision: 1.3 $ 
  */
 
 public class Pair {
@@ -36,9 +36,15 @@ public class Pair {
 	private static final String NEW_LINE = "\n";
 	private static final String BLANK = " ";
 	
+	/**
+	 * Formats an alignment object to the Pair format
+	 * @param alignment alignment object to be formated
+	 * @return
+	 */
 	public static String format(Alignment alignment) {
 		char[] sequence1 = alignment.getSequence1();
 		char[] sequence2 = alignment.getSequence2();
+		char[] markup = alignment.getMarkup();
 		
 		int length = sequence1.length > sequence2.length ? sequence2.length : sequence1.length;
 		
@@ -57,8 +63,10 @@ public class Pair {
 		
 		char[] subsequence1;
 		char[] subsequence2;
-		char[] markup;
+		char[] submarkup;
 		int line;
+		
+		char c1, c2;
 		
 		for (int i = 0; i * SEQUENCE_WIDTH < length; i++) {
 			
@@ -69,23 +77,22 @@ public class Pair {
 
 			subsequence1 = new char[line - i * SEQUENCE_WIDTH];
 			subsequence2 = new char[line - i * SEQUENCE_WIDTH];
-			markup = new char[line - i * SEQUENCE_WIDTH];
+			submarkup = new char[line - i * SEQUENCE_WIDTH];
 		
 			for (int j = i * SEQUENCE_WIDTH, k = 0; j < line; j++, k++) {
 				subsequence1[k] = sequence1[j];
 				subsequence2[k] = sequence2[j];
-				if (subsequence1[k] == subsequence2[k]) {
-					markup[k] = Alignment.MARKUP_IDENTITY;
+				submarkup[k] = markup[j];
+				c1 = subsequence1[k];
+				c2 = subsequence2[k];
+				if (c1 == c2) {
 					position1++;
 					position2++;
-				} else if (subsequence1[k] == Alignment.GAP) {
-					markup[k] = Alignment.MARKUP_GAP;
+				} else if (c1 == Alignment.GAP) {
 					position2++;
-				} else if (subsequence2[k] == Alignment.GAP) {
-					markup[k] = Alignment.MARKUP_GAP;
+				} else if (c2 == Alignment.GAP) {
 					position1++;
 				} else {
-					markup[k] = Alignment.MARKUP_SIMILARITY;
 					position1++;
 					position2++;
 				}
@@ -101,7 +108,7 @@ public class Pair {
 			buffer.append(NEW_LINE);
 			
 			buffer.append(preMarkup);
-			buffer.append(markup);
+			buffer.append(submarkup);
 			buffer.append(NEW_LINE);
 
 			buffer.append(name2);
@@ -147,5 +154,13 @@ public class Pair {
 		}
 		
 		return buffer2.append(buffer1).toString();
+	}
+	
+	/**
+	 * Prints an alignment to the standard output in the Pair format
+	 * @param alignment an alignment object to be formated and printed
+	 */
+	public static void print (Alignment alignment) {
+		System.out.println ( format(alignment) );
 	}
 }

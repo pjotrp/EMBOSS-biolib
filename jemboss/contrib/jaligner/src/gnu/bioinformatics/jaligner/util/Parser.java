@@ -1,6 +1,6 @@
 /**
  * @author Ahmed Moustafa (ahmed at users.sourceforge.net)
- * $Id: Parser.java,v 1.2 2003/09/10 10:59:22 timc Exp $
+ * $Id: Parser.java,v 1.3 2003/09/24 09:07:40 timc Exp $
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -24,9 +24,11 @@ import gnu.bioinformatics.jaligner.formats.FASTA;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 /**
  * A parser to sequences from different formats.
@@ -37,7 +39,7 @@ import java.io.IOException;
  * </ul>
  *
  * @author Ahmed Moustafa (ahmed at users.sourceforge.net) 
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 
 public class Parser {
@@ -87,16 +89,15 @@ public class Parser {
 	}
 
 	/**
-	 * Returns a FASTA parsed and loaded from a file
-	 * @param file FASTA file
+	 * Returns a FASTA parsed and loaded an input stream
+	 * @param is FASTA format input stream 
 	 * @return FASTA
-	 * @throws FileNotFoundException
 	 * @throws IOException
 	 * @throws ParserException
 	 */
-	public static FASTA loadFASTA (File file) throws FileNotFoundException, IOException, ParserException {
-		BufferedReader reader = new BufferedReader(new FileReader(file));
-	
+	public static FASTA loadFASTA (InputStream is) throws IOException, ParserException {
+		BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+		
 		// Read & parse the first line
 		String line = reader.readLine();
 			
@@ -125,17 +126,29 @@ public class Parser {
 	    	
 		return fasta;
 	}
-	
+
 	/**
 	 * Returns a FASTA parsed and loaded from a file
-	 * @param file file name of the FASTA file
+	 * @param file FASTA format file
 	 * @return FASTA
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 * @throws ParserException
 	 */
-	public static FASTA loadFASTA (String file) throws Exception {
-		return loadFASTA(new File(file));
+	public static FASTA loadFASTA (File file) throws FileNotFoundException, IOException, ParserException {
+		return loadFASTA(new FileInputStream(file));
+	}
+
+	/**
+	 * Returns a FASTA parsed and loaded from a file
+	 * @param filename file name of FASTA format file
+	 * @return FASTA
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 * @throws ParserException
+	 */
+	public static FASTA loadFASTA (String filename) throws Exception {
+		return loadFASTA(new FileInputStream(filename));
 	}
 	
 	/**
@@ -146,11 +159,22 @@ public class Parser {
 	 * @throws ParserException
 	 */
 	public static char[] prepareSequence (String sequence) throws ParserException {
-		char[] buffer1 = new char[sequence.length()];
+		return prepareSequence(sequence.toCharArray());
+	}
+	
+	/**
+	 * Removes whitespaces from a sequence and validates the remaining characters.
+	 * 
+	 * @param sequence sequence to be prepared
+	 * @return prepared array of characters
+	 * @throws ParserException
+	 */
+	public static char[] prepareSequence (char[] sequence) throws ParserException {
+		char[] buffer1 = new char[sequence.length];
 		
 		int length = 0;
-		for (int i = 0, n = sequence.length(); i < n; i++) {
-			switch ( sequence.charAt(i) ) {
+		for (int i = 0, n = sequence.length; i < n; i++) {
+			switch ( sequence[i] ) {
 				// skip whitespaces
 				case 9:
 				case 10:
@@ -184,10 +208,10 @@ public class Parser {
 				case 'X':
 				
 				case '-':
-				case '*': buffer1[length++] = sequence.charAt(i); break;
+				case '*': buffer1[length++] = sequence[i]; break;
 							
 				// throw an exception for anything else
-				default: throw new ParserException ( "Invalid sequence character: " + sequence.charAt(i) ); 
+				default: throw new ParserException ( "Invalid sequence character: " + sequence[i] ); 
 			}
 		}
 		

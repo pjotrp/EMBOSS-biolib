@@ -1,6 +1,6 @@
 /**
  * @author Ahmed Moustafa (ahmed at users.sourceforge.net)
- * $Id: Matrices.java,v 1.2 2003/09/10 10:59:22 timc Exp $
+ * $Id: Matrices.java,v 1.3 2003/09/24 09:07:40 timc Exp $
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -20,19 +20,27 @@
 package gnu.bioinformatics.jaligner.util;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.JarURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.StringTokenizer;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 /**
  * A holder for the scoring matrices (Singleton).
  * 
  * @author Ahmed Moustafa (ahmed at users.sourceforge.net)
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 
 public class Matrices extends HashMap {
@@ -51,8 +59,12 @@ public class Matrices extends HashMap {
 	 * The size of the scoring matrix. It is the number of the characters in the ASCII table.
 	 * It is more than the 20 amino acids just to save the processing time of the mapping. 
 	 */
-	
 	private static final int SIZE = 127;
+	
+	/**
+	 * The path to the matrices within the package.
+	 */
+	private static final String MATRICES_HOME = "gnu/bioinformatics/jaligner/matrices/";
 
 	/**
 	 * Constructor
@@ -84,7 +96,7 @@ public class Matrices extends HashMap {
 		if (new StringTokenizer(matrix, System.getProperty("file.separator")).countTokens() == 1) {
 			// matrix does not include the path
 			// Load the matrix from matrices.jar
-			is = this.getClass().getClassLoader().getResourceAsStream(matrix);
+			is = this.getClass().getClassLoader().getResourceAsStream(MATRICES_HOME + matrix);
 		} else {
 			// matrix includes the path information
 			// Load the matrix from the file system
@@ -153,5 +165,45 @@ public class Matrices extends HashMap {
 		Matrices matrices = Matrices.getInstance();
 		float[][] similarity = matrices.get(matrix);
 		return similarity[c1][c2];
+	}
+	
+	/**
+	 * Returns a list of the scoring matrix in the matrices home
+	 * @return sorted array of scoring matrices
+	 * @throws IOException
+	 */
+	public static String[] list ( ) throws IOException {
+		URL url = Matrices.class.getClassLoader().getResource(MATRICES_HOME);
+		if (url.getFile().toString().indexOf("!") != -1) {
+			// It is a Jar file
+			JarURLConnection jarConn = (JarURLConnection)url.openConnection();
+			JarFile jarfile = jarConn.getJarFile();
+			Enumeration list = jarfile.entries();
+			JarEntry entry;
+			ArrayList array = new ArrayList();
+			String name;
+			int n = MATRICES_HOME.length();
+			while (list.hasMoreElements()) {
+				entry = (JarEntry) list.nextElement();
+				if (!entry.isDirectory()) {
+					name = entry.getName();
+					if (name.startsWith(MATRICES_HOME)) {
+						array.add(name.substring(n));
+					}
+				}
+			}
+			String[] entries = new String[array.size()];
+			for (int i = 0; i < entries.length; i++) {
+				entries[i] = (String) array.get(i);
+			}
+			Arrays.sort(entries, new AlphanumericCompartor());
+			return entries;
+		} else {
+			// It is a file system
+			File file = new File (url.getFile());
+			String files[] = file.list( );
+			Arrays.sort(files, new AlphanumericCompartor());
+			return files;
+		}
 	}
 }

@@ -1,5 +1,5 @@
 /**
- * $Id: SW.java,v 1.2 2003/09/10 10:59:22 timc Exp $
+ * $Id: SW.java,v 1.3 2003/09/24 09:07:40 timc Exp $
  * @author Ahmed Moustafa (ahmed at users.sourceforge.net)
  * 
  * This program is free software; you can redistribute it and/or
@@ -31,7 +31,6 @@ import java.io.FileOutputStream;
 import java.io.PrintStream;
 import java.text.DecimalFormat;
 import java.util.Date;
-import java.util.List;
 
 /**
  * A front-end class to the Smith-Waterman algorithm class.
@@ -39,7 +38,7 @@ import java.util.List;
  * and a main method to be called from the command line.
  * 
  * @author Ahmed Moustafa (ahmed at users.sourceforge.net)
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 
 public class SW {
@@ -55,7 +54,6 @@ public class SW {
 			String matrix = DEFAULT_MATRIX;
 			float open = DEFAULT_OPEN_GAP_PENALTY;
 			float extend = DEFAULT_EXTEND_GAP_PENALTY;
-			boolean all = false;
 			String file = null;
 			
 			for (int i = 0; i < args.length; i++) {
@@ -66,8 +64,6 @@ public class SW {
 						open = Float.parseFloat(args[++i]);
 					} else if (args[i].equals("-e")) {
 						extend = Float.parseFloat(args[++i]);
-					} else if (args[i].equals("-a")) {
-						all = true;
 					} else if (args[i].equals("-f")) {
 						file = args[++i];
 					} else if (args[i].equals("-h") || args[i].equals("-help")) {
@@ -110,49 +106,16 @@ public class SW {
 			}
 			
 			printHeader(file == null ? "stdout" : file);
+			Alignment alignment = align(fasta1, fasta2, matrix, open, extend);
+			printStatistics (alignment, matrix, open, extend);
+			System.out.println ( Pair.format(alignment) );
+			printTailer();
 			
-			if (all) {
-				List alignments = alignAll(fasta1, fasta2, matrix, open, extend);
-				System.out.println ( "# of alignments = " + alignments.size ( ) );
-				System.out.println ( );
-				Alignment alignment = null;
-				for (int i = 0, n = alignments.size(); i < n; i++) {
-					alignment = (Alignment) alignments.get ( i );
-					printStatistics (alignment, matrix, open, extend);
-					System.out.println ( Pair.format(alignment) );
-					printTailer();
-				}
-			} else {
-				Alignment alignment = align(fasta1, fasta2, matrix, open, extend);
-				printStatistics (alignment, matrix, open, extend);
-				System.out.println ( Pair.format(alignment) );
-				printTailer();
-			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.exit(1);
 		}
 	}	
-	
-	/**
-	 * Returns alignments to sequence1 and sequence2 using Smith-Waterman.
-	 * All the returned alignments will have the same maximum score.
-	 * @param sequence1	1st sequence in plain format
-	 * @param sequence2	2nd sequence in plain format
-	 * @param matrix	scoring matrix
-	 * @param open		open gap penalty
-	 * @param extend	extend gap penalty
-	 * @return an array of alignments
-	 * @throws Exception
-	 * @see Alignment
-	 */
-	public static List alignAll(String sequence1, String sequence2, String matrix, float open, float extend) throws Exception {
-		
-		char[] ch1 = Parser.prepareSequence(sequence1.toUpperCase());
-		char[] ch2 = Parser.prepareSequence(sequence2.toUpperCase());
-		
-		return alignAll(ch1, ch2, matrix, open, extend);
-	}
 	
 	/**
 	 * Returns an alignment to sequence1 and sequence2 using Smith-Waterman.
@@ -166,34 +129,11 @@ public class SW {
 	 * @see Alignment
 	 */
 	public static Alignment align (String sequence1, String sequence2, String matrix, float open, float extend) throws Exception {
-		Alignment alignment = align(sequence1.toUpperCase(), sequence2.toUpperCase(), matrix, open, extend);
-		return alignment;
+		char[] array1 = Parser.prepareSequence(sequence1); 
+		char[] array2 = Parser.prepareSequence(sequence2);
+		return align(array1, array2, matrix, open, extend);
 	}
 	
-
-	/**
-	 * Returns alignments to sequence1 and sequence2 using Smith-Waterman.
-	 * All the returned alignments will have the same maximum score.
-	 * @param fasta1	1st sequence in FASTA format
-	 * @param fasta2	2nd sequence in FASTA format
-	 * @param matrix	scoring matrix
-	 * @param open		open gap penalty
-	 * @param extend	extend gap penalty
-	 * @return an array of alignments
-	 * @throws Exception
-	 * @see Alignment
-	 * @see FASTA
-	 */
-	public static List alignAll (FASTA fasta1, FASTA fasta2, String matrix, float open, float extend) throws Exception {
-		char[] ch1 = fasta1.getSequence();
-		char[] ch2 = fasta2.getSequence();
-		List alignments = alignAll(ch1, ch2, matrix, open, extend);
-		for (int i = 0, n = alignments.size(); i < n; i++) { 
-			((Alignment)alignments.get(i)).setName1(fasta1.getName());
-			((Alignment)alignments.get(i)).setName2(fasta2.getName());
-		}
-		return alignments;
-	}
 
 	/**
 	 * Returns alignments to sequence1 and sequence2 using Smith-Waterman.
@@ -217,27 +157,6 @@ public class SW {
 	}
 
 	/**
-	 * Returns alignments to sequence1 and sequence2 using Smith-Waterman.
-	 * All the returned alignments will have the same maximum score.
-	 * @param file1		1st sequence in FASTA format in file1
-	 * @param file2		2nd sequence in FASTA format in file2
-	 * @param matrix	scoring matrix
-	 * @param open		open gap penalty
-	 * @param extend	extend gap penalty
-	 * @return list of alignments
-	 * @throws Exception
-	 * @see Alignment
-	 * @see FASTA
-	 */
-	public static List alignAll (File file1, File file2, String matrix, float open, float extend) throws Exception {
-		
-		FASTA fasta1 = Parser.loadFASTA(file1);
-		FASTA fasta2 = Parser.loadFASTA(file2);
-		
-		return alignAll (fasta1, fasta2, matrix, open, extend);
-	}
-
-	/**
 	 * Returns an alignment to sequence1 and sequence2 using Smith-Waterman.
 	 * @param file1		1st sequence in FASTA format in file1
 	 * @param file2		2nd sequence in FASTA format in file2
@@ -250,28 +169,11 @@ public class SW {
 	 * @see FASTA
 	 */
 	public static Alignment align (File file1, File file2, String matrix, float open, float extend) throws Exception {
-		Alignment alignment = align(file1, file2, matrix, open, extend);
-		return alignment;
+		FASTA fasta1 = Parser.loadFASTA(file1);
+		FASTA fasta2 = Parser.loadFASTA(file2);
+		return align(fasta1, fasta2, matrix, open, extend);
 	}
 
-	
-	/**
-	 * Returns possible aligments with the same maximum alignment score
-	 * All the returned alignments will have the same maximum score.
-	 * @param	sequence1	1st sequence
-	 * @param	sequence2	2nd sequence
-	 * @param	matrix		the scoring matrix (filename)
-	 * @param	open		open gap penalty
-	 * @param	extend		extend gap penalty
-	 * @return	a list of alignments
-	 * @see		Alignment
-	 */
-	public static List alignAll (char[] sequence1, char[] sequence2, String matrix, float open, float extend) throws Exception {
-		Matrices matrices = Matrices.getInstance();
-		SmithWaterman sw = new SmithWaterman( );
-		List alignments = sw.alignAll(sequence1, sequence2, matrices.get(matrix), open, extend);
-		return alignments;
-	}
 	
 	/**
 	 * Returns an alignment
@@ -284,10 +186,7 @@ public class SW {
 	 * @see		Alignment
 	 */
 	public static Alignment align (char[] sequence1, char[] sequence2, String matrix, float open, float extend) throws Exception {
-		Matrices matrices = Matrices.getInstance();
-		SmithWaterman sw = new SmithWaterman( );
-		Alignment alignment = sw.align(sequence1, sequence2, matrices.get(matrix), open, extend);
-		return alignment;
+		return SmithWaterman.align(sequence1, sequence2, Matrices.getInstance().get(matrix), open, extend);
 	}
 	
 	/**

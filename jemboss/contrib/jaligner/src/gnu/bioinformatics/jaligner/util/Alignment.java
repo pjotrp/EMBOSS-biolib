@@ -1,6 +1,6 @@
 /**
  * @author Ahmed Moustafa (ahmed at users.sourceforge.net)
- * $Id: Alignment.java,v 1.2 2003/09/10 10:59:22 timc Exp $
+ * $Id: Alignment.java,v 1.3 2003/09/24 09:07:40 timc Exp $
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -26,7 +26,7 @@ import gnu.bioinformatics.jaligner.formats.Pair;
  * It holds the score, the two sequences aligned and the markup line.
  *
  * @author Ahmed Moustafa (ahmed at users.sourceforge.net)
- * @version $Revision: 1.2 $  
+ * @version $Revision: 1.3 $  
  */
 
 public class Alignment {
@@ -35,6 +35,7 @@ public class Alignment {
 	public static final char MARKUP_IDENTITY	= '|';
 	public static final char MARKUP_SIMILARITY	= ':';
 	public static final char MARKUP_GAP			= ' ';
+	public static final char MARKUP_MISMATCH	= '.';
 
 	private float score;
 	private char[] sequence1;
