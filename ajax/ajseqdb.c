@@ -586,8 +586,9 @@ static size_t seqCdFileRead (void* ptr, size_t element_size,
 
 /* @funcstatic seqCdFileReadName **********************************************
 **
-** Reads a character string from an EMBL CD-ROM index file. The result
-** is truncated at the first space, if any.
+** Reads a character string from an EMBL CD-ROM index file. Trailing spaces
+** (if any) are truncated. EMBLCD indices normally have a trailing NULL
+** character.
 **
 ** @param [w] name [char*] Buffer to read into. Must be at least namesize
 **                         bytes in size.
@@ -605,11 +606,19 @@ static size_t seqCdFileReadName (char* name, size_t namesize,
 
     ret =  ajFileRead (name, namesize, 1, thys->File);
 
-    name[namesize] = '\0';
-    sp = strchr(name, ' ');
-    if (sp)
-	*sp = '\0';
+    ajDebug("seqCdFileReadName was '%s'\n", name);
 
+    name[namesize] = '\0';
+    sp = &name[strlen(name)];
+    while (sp > name)
+    {
+        sp--;
+	if (*sp != ' ')
+	  break;
+	*sp = '\0';
+    }
+
+    ajDebug("seqCdFileReadName now '%s'\n", name);
     return ret;
 }
 
@@ -943,7 +952,7 @@ static ajint seqCdTrgSearch (SeqPCdTrg trgLine, AjPStr entry, SeqPCdFile fp)
     name = seqCdTrgName (ipos, fp);
     icmp = ajStrCmpC(entrystr, name);
 
-    ajDebug ("trg test %d '%s' %2d (+/- %d)\n", ipos, name, icmp, ihi-ilo);
+    ajDebug ("trg testa %d '%s' %2d (+/- %d)\n", ipos, name, icmp, ihi-ilo);
 
     while (icmp)
     {
@@ -961,7 +970,7 @@ static ajint seqCdTrgSearch (SeqPCdTrg trgLine, AjPStr entry, SeqPCdFile fp)
 	ipos = itry;
 	name = seqCdTrgName (ipos, fp);
 	icmp = ajStrCmpC(entrystr, name);
-	ajDebug ("trg test %d '%s' %2d (+/- %d)\n", ipos, name, icmp, ihi-ilo);
+	ajDebug ("trg testb %d '%s' %2d (+/- %d)\n", ipos, name, icmp, ihi-ilo);
     }
 
     seqCdTrgLine (trgLine, ipos, fp);
@@ -1078,6 +1087,9 @@ static char* seqCdTrgName (ajint ipos, SeqPCdFile fil)
     (void) seqCdFileSeek (fil, ipos);
     (void) seqCdFileRead (name, 8, fil);
     (void) seqCdFileReadName (name, nameSize, fil);
+
+    ajDebug("seqCdTrgName maxNameSize:%d nameSize:%d name '%s'\n",
+	    maxNameSize, nameSize, name);
 
     return name;
 }
@@ -4268,7 +4280,7 @@ static AjBool seqCdTrgQuery (AjPSeqQuery qry)
     AjBool *skip = wild->Skip;
     
     AjPStr fdstr = NULL;
-    AjPStr fdtmp = NULL;
+    AjPStr fdprefix = NULL;
 
     ajint t;
     ajint b;
@@ -4276,13 +4288,14 @@ static AjBool seqCdTrgQuery (AjPSeqQuery qry)
     ajint b2;
     ajint t3;
     ajint pos=0;
-    ajint len;
+    ajint prefixlen;
     ajint start;
     ajint end;
     ajint i;
     ajint j;
     ajint k;
     ajint cmp;
+    AjBool match;
     
     AjBool first;
     char   *name;
@@ -4320,29 +4333,43 @@ static AjBool seqCdTrgQuery (AjPSeqQuery qry)
 	return ajFalse;
     }
 
+    /* fdstr is the original query string, in uppercase */
+
+    /* fdprefix is the fixed (no wildcard) prefix of fdstr */
+
     (void) ajStrAssS (&fdstr,queryName);
     (void) ajStrToUpper(&fdstr);
-    (void) ajStrAssC(&fdtmp,ajStrStr(fdstr));
+    (void) ajStrAssS(&fdprefix,fdstr);
 
-    (void) ajStrWildPrefix(&fdtmp);
+    (void) ajStrWildPrefix(&fdprefix);
 
+    ajDebug("queryName '%S' fdstr '%S' fdprefix '%S'\n",
+	    queryName, fdstr, fdprefix);
     b = b2 = 0;
     t = t2 = t3 = trgfp->NRecords - 1;
 
-    len = ajStrLen(fdtmp);
+    prefixlen = ajStrLen(fdprefix);
     first = ajTrue;
 
-    
-    if(len)
+    if(prefixlen)
     {
+
+      /*
+      ** (1a) we have a prefix (no wildcard at the start)
+      ** look for the prefix fdprefix
+      ** Set range of records that match (will be consecutive of course)
+      ** from first match
+      */
+
 	while(b<=t)
 	{
 	    pos = (t+b)/2;
 	    name = seqCdTrgName(pos,trgfp);
-	    name[len]='\0';
-	    cmp = ajStrCmpC(fdtmp,name);
-/*	    cmp = ajStrMatchWildC(fdstr,name);*/
-	    ajDebug(" trg test %d '%s' %2d (+/- %d)\n",pos,name,cmp,t-b);
+	    name[prefixlen]='\0';	/* truncate to prefix length */
+	    cmp = ajStrCmpC(fdprefix,name);
+/*	    match = ajStrMatchWildC(fdstr,name);*/
+	    ajDebug(" trg testc %d '%s' '%S' %2d (+/- %d)\n",
+		    pos,name,fdprefix,t-b);
 	    if(!cmp)
 	    {
 		ajDebug(" trg hit %d\n",pos);
@@ -4362,23 +4389,28 @@ static AjBool seqCdTrgQuery (AjPSeqQuery qry)
 
 	if(first)
 	{
-	    ajStrDel(&fdtmp);
+	    ajStrDel(&fdprefix);
 	    ajStrDel(&fdstr);
 	    seqCdTrgClose(&trgfp,&hitfp);
 	    return ajFalse;
 	}
-	ajDebug("first pass: pos %d b2 %d t2 %d\n",pos,b2,t2);
+	ajDebug("first pass: pos:%d b2:%d t2:%d\n",pos,b2,t2);
 
+    /*
+    ** (1b) Process below
+    */
+    
 	b = b2-1;
 	t = t2;
 	while(b<=t)
 	{
 	    pos = (t+b)/2;
 	    name = seqCdTrgName(pos,trgfp);
-	    name[len]='\0';
-	    cmp = ajStrCmpC(fdtmp,name);
-/*	    cmp = ajStrMatchWildC(fdstr,name);*/
-	    ajDebug(" trg test %d '%s' %2d (+/- %d)\n",pos,name,cmp,t-b);
+	    name[prefixlen]='\0';
+	    cmp = ajStrCmpC(fdprefix,name);
+	    /* match = ajStrMatchWildC(fdstr,name); */
+	    ajDebug(" trg testd %d '%s' '%S' %B (+/- %d)\n",
+		    pos,name,fdprefix,cmp,t-b);
 	    if(!cmp)
 	    {
 		ajDebug(" trg hit %d\n",pos);
@@ -4390,7 +4422,7 @@ static AjBool seqCdTrgQuery (AjPSeqQuery qry)
 		b = pos+1;
 	}
 
-	ajDebug("second pass: pos %d b2 %d t3 %d\n",pos,b2,t3);
+	ajDebug("second pass: pos:%d b2:%d t3:%d\n",pos,b2,t3);
 	name = seqCdTrgName(b2,trgfp);
 	ajDebug("first %d '%s'\n",b2,name);
 	name = seqCdTrgName(t3,trgfp);
@@ -4402,6 +4434,13 @@ static AjBool seqCdTrgQuery (AjPSeqQuery qry)
 	end   = t3;
 	for(i=start;i<=end;++i)
 	{
+	    name = seqCdTrgName(i,trgfp);
+	    match = ajStrMatchWildCC(name, ajStrStr(fdstr));
+
+	    ajDebug("third pass: match:%B i:%d name '%s' queryName '%S'\n",
+		    match, i, name, fdstr);
+	    if (!match) continue;
+
 	    seqCdTrgLine (trgline, i, trgfp);	
 	    (void) seqCdFileSeek (hitfp,trgline->FirstHit-1);
 	    ajDebug("Query First: %d Count: %d\n",
@@ -4438,14 +4477,10 @@ static AjBool seqCdTrgQuery (AjPSeqQuery qry)
 
     ajStrDel(&trgline->Target);
     ajStrDel(&fdstr);
-    ajStrDel(&fdtmp);
+    ajStrDel(&fdprefix);
     
     if(ajListLength(l))
 	return ajTrue;
 
     return ajFalse;
 }
-
-
-
-
