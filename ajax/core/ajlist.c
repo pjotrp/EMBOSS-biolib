@@ -1220,7 +1220,9 @@ ajint ajListToArray(AjPList thys, void*** array)
 	return 0;
     }
 
-    AJFREE(*array);
+    if (*array)
+	AJFREE(*array);
+
     *array = AJALLOC((n+1)*sizeof(array));
     for(i = 0; i < n; i++)
     {
