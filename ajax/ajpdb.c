@@ -537,7 +537,7 @@ AjPCmap ajCmapReadNew(AjPFile inf, ajint mode, ajint chn, ajint mod)
     static   AjPStr temp_domid = NULL;   /* Temp. domain id  */
     static   AjPStr temp_ligid = NULL;   /* Temp. ligand id  */
     static   AjPStr type       = NULL;   /* Type of contact  */
-    static   AjPStr desc       = NULL;   /* Ligand description, SITES output only */
+    static   AjPStr desc       = NULL;   /* Ligand desc., SITES output only */
     AjPStr   token             = NULL;   /* For parsing      */
         
     ajint    smcon     = 0;      /* No. of SM contacts       */	
@@ -549,8 +549,8 @@ AjPCmap ajCmapReadNew(AjPFile inf, ajint mode, ajint chn, ajint mod)
     ajint    cn2       = -1;     /* Chain number 2 */
     char     id1       = -1;     /* Chain id 1     */
     char     id2       = -1;     /* Chain id 2     */
-    ajint    nres1     = 0;      /* No. of residues in domain / chain 1 */	
-    ajint    nres2     = 0;      /* No. of residues in domain / chain 2 */	
+    ajint    nres1     = 0;      /* No. of residues in domain / chain 1 */
+    ajint    nres2     = 0;      /* No. of residues in domain / chain 2 */
     AjPStr   seq1      = NULL;   /* Sequence 1 */
     AjPStr   seq2      = NULL;   /* Sequence 2 */
            
@@ -700,14 +700,16 @@ AjPCmap ajCmapReadNew(AjPFile inf, ajint mode, ajint chn, ajint mod)
 	    ajFmtScanS(token, "%*s %d", &licon);
 	    
 
+
 	    /*
-	    ** The fourth conditional is to capture those few domains which are 
-	    ** made up from more than one chain.  For these, the chain 
+	    ** The fourth conditional is to capture those few domains which 
+	    ** are made up from more than one chain.  For these, the chain 
 	    ** character passed in might be an A or a B (e.g. the character
 	    ** extracted from the scop domain code) whereas the chain id given
-	    ** in the contact map file will be a '.' - because of how scopparse 
-	    ** copes with these cases. (A '.' is also in the contact maps for
-	    ** where a chain id was not specified in the original pdb file).
+	    ** in the contact map file will be a '.' - because of how 
+	    ** scopparse copes with these cases. (A '.' is also in the contact
+	    ** maps for where a chain id was not specified in the original
+            ** pdb file).
 	    */
 
 	    if( ((cn1==chn)&&(mode==CMAP_MODE_I))                       ||
@@ -715,7 +717,6 @@ AjPCmap ajCmapReadNew(AjPFile inf, ajint mode, ajint chn, ajint mod)
 		((toupper((int)id1)==toupper(chn))&&(mode==CMAP_MODE_C))||
 		((toupper((int)id1)=='.') && (toupper(chn)!='.') &&
 		(mode==CMAP_MODE_C))
-
 		)
 	    {
 		idok=ajTrue;
@@ -806,7 +807,7 @@ AjPCmap ajCmapReadNew(AjPFile inf, ajint mode, ajint chn, ajint mod)
 	}
     }
 
-    
+
     ajStrDel(&seq1);
     ajStrDel(&seq2);
     return ret;	

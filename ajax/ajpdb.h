@@ -558,8 +558,9 @@ typedef struct AjSVdwall
 ** 
 ** 
 ** @new     ajCmapNew Default Cmap constructor.
-** @new     ajCmapReadINew Cmap constructor from reading file in CON (embl-like)
-**          format (see documentation for the EMBASSY DOMAINATRIX package).
+** @new     ajCmapReadINew Cmap constructor from reading file in CON
+**          (embl-like)format (see documentation for the EMBASSY DOMAINATRIX
+**          package).
 ** @new     ajCmapReadCNew Cmap constructor from reading file in CON 
 **          format (see documentation for the EMBASSY DOMAINATRIX package).
 ** @new     ajCmapReadNew Cmap constructor from reading file in CON 
