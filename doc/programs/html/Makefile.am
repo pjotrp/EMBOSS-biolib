@@ -42,8 +42,8 @@ pkgdata_DATA = abiview0.gif banana0.gif chaos0.gif cpgplot0.gif \
                garnier.html geecee.html gendist.html \
                gene_finding_group.html getorf.html groups.html \
                helixturnhelix.html hydropathy_group.html iep.html \
-               index.html infoseq.html isochore.html kitsch.html \
-               lindna.html marscan.html maskfeat.html maskseq.html \
+               index.html infoseq.html isochore.html kitsch.html
+pkgdata2_DATA = lindna.html marscan.html maskfeat.html maskseq.html \
                matcher.html \
                megamerger.html menus_group.html merger.html mix.html \
                motifs_group.html \
@@ -88,4 +88,5 @@ pkgdata_DATA = abiview0.gif banana0.gif chaos0.gif cpgplot0.gif \
                wordmatch.html wossname.html
 
 pkgdatadir=$(prefix)/share/$(PACKAGE)/doc/programs/html
+pkgdata2dir=$(prefix)/share/$(PACKAGE)/doc/programs/html
 
