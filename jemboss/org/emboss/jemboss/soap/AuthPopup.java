@@ -164,6 +164,7 @@ public class AuthPopup extends JFrame
 */
   public void addBottomPanel() 
   {
+    setTitle("File Manager Login");
     final JPanel buttonPanel = 
          new JPanel(new FlowLayout(FlowLayout.RIGHT));
     JButton exitButton = new JButton("Exit");
@@ -268,7 +269,9 @@ public class AuthPopup extends JFrame
         mysettings.setServiceUserName(ufield.getText());
         mysettings.setServicePasswd(pfield.getPassword());
         exitOnDone = true;
-        if (iprogressmax > 0)
+
+        if(iprogressmax > 0 &&
+           iprogress != iprogressmax)
         {
           remove(promptPanel);
           pack();
@@ -290,7 +293,8 @@ public class AuthPopup extends JFrame
         mysettings.setServiceUserName(ufield.getText());
         mysettings.setServicePasswd(pfield.getPassword());
         exitOnDone = true;
-        if (iprogressmax > 0)
+        if(iprogressmax > 0 &&
+           iprogress != iprogressmax)
         {
           remove(promptPanel);
           pack();
