@@ -1,0 +1,238 @@
+
+                                  libscan 
+
+
+
+Function
+
+   [an error occurred while processing this directive]
+
+Description
+
+   Scans each signature, profile or HMM in a directory against a sequence
+   database and writes a signature hits file for each one. Or scans
+   sequences against such a library of discriminating elements and writes
+   a library scan file for each one.
+
+   This program is part of a suite of EMBOSS applications that directly
+   or indirectly make use of the protein structure databases pdb and
+   scop. This program is part of an experimental analysis pipeline
+   described in an accompanying document. We provide the software in the
+   hope that it will be useful. The applications were designed for
+   specific research purposes and may not be useful or reliable in
+   contexts other than the described pipeline. The development of the
+   suite was coordinated by Jon Ison to whom enquiries and bug reports
+   should be sent (email jison@hgmp.mrc.ac.uk).
+
+   The advantage of screening a relatively small library of
+   discriminating elements with a sequence is that it is sufficient for
+   the sequence to detect its true family (discriminator) in the first
+   rank for an effective prediction. This is in contrast to searching a
+   larger sequence database to identify homology, where biologically
+   significant hits may achieve statistically insignificant scores and
+   therefore be missed. A library might help the detection of such
+   proteins because they may still score their true discriminator higher
+   than the others in the library regardless of statistical estimates.
+   Further improvements to predictions are gained when multiple sources
+   of evidence, in this case the different types of discriminating
+   element, are considered.
+
+   The libscan application allows a protein sequence or sequences to be
+   screened against the library of discriminating elements. The results
+   of a screen are returned to the user in a library scan file containing
+   a list of top-scoring SCOP domains rank-ordered by p-value for each
+   individual type of discriminator, and also for all of the
+   discriminator types in combination (combined prediction). For the
+   combined prediction, the p-value is derived from an empirically
+   derived distribution of the product of the p-values of the individual
+   methods.
+
+   libscan runs in one of two modes either (i) database search mode or
+   (ii) library screen mode. In database search mode libscan reads one or
+   more directories each containing a single type of discriminating
+   element, the permitted types are sparse sequence signature, Gribskov
+   profile, Henikoff profile or hidden Markov model. Each directory must
+   contain a discriminating element for each of one or more scop
+   families; files for indivdual families should have the same name
+   (possibly with different file extensions) in the different
+   directories, e.g. the scop family with the identifier 46445 might be
+   represented by files 46445.hmm, 46445.sig, 46445.gribs and 46445.henik
+   in their respective directories. libscan scans each discriminating
+   element against a sequence set that must also be provided by the user
+   and generates a signature hits file (of scored hits to sequences in
+   the set) for each individual discriminating element. In mode (i), the
+   user must also provide a scop validation file so that a classification
+   of hits can be given in the signature hits files. The user specifies a
+   maximum number of false hits that are written to the signature hits
+   files.
+
+   In library screen mode, libscan reads a sequence set, screens each
+   sequence against the library (directories of discriminating elements)
+   and writes a library scan file (of top-scoring families) for each
+   sequence. In either mode, a scop classification file is required as a
+   source of family classification data. The paths and extensions of the
+   sequence set and scop classification files (input) different types of
+   discriminating elements (input), and paths and extension of signature
+   hits files or library scan file (output) are specified by the user.
+
+Algorithm
+
+   The approach for calculating p-values for individual
+   discriminator-sequence matches is the same irrespective of which mode
+   libscan is run in and is summarised as follows: (i) Each
+   discriminating element is scanned (scored) against each sequence. (ii)
+   The ditribution of scores is generated for each different type of
+   element. (iii) Using these distributions, a p-value is calculated for
+   each discriminator-sequence match. The approach for calculating the
+   'combined p-value' for each individual sequence is as follows: (i)
+   p-values of the matches for the different types of discriminator
+   versus a sequence are multiplied to yield the 'product of p-values'.
+   (ii) A distribution of 'product of p-values' is generated for each
+   individual sequence. (iii) Using these distributions, a so-called
+   'combined p-value', reflecting the overall significance of the matches
+   of the sequence to the different types of discriminators, is
+   generated. Importantly, two (or more) p-values are only ever
+   multiplied together if corresponding hit is to the same region of the
+   protein. 'Same' is defined as two hits overlapping by a user-defined
+   number of residues.
+
+Usage
+
+   No qa tests were found for libscan
+
+Command line arguments
+
+   [an error occurred while processing this directive]
+
+   [an error occurred while processing this directive]
+
+Input file format
+
+   libscan reads any normal sequence USAs.
+
+   No qa tests were found for libscan
+
+   The format of the scop classification file is described in scopparse
+
+   The format of the signature files is explained in siggen
+
+   The format of the profile and hmm files is explained in documentation
+   for the propechy application and the hmmer package respectively.
+
+Output file format
+
+   No qa tests were found for libscan
+
+   The format of the signature hits file is described in sigscan
+
+Data files
+
+   EMBOSS data files are distributed with the application and stored in
+   the standard EMBOSS data directory, which is defined by the EMBOSS
+   environment variable EMBOSS_DATA.
+
+   To see the available EMBOSS data files, run:
+
+% embossdata -showall
+
+   To fetch one of the data files (for example 'Exxx.dat') into your
+   current directory for you to inspect or modify, run:
+
+% embossdata -fetch -file Exxx.dat
+
+   Users can provide their own data files in their own directories.
+   Project specific files can be put in the current directory, or for
+   tidier directory listings in a subdirectory called ".embossdata".
+   Files for all EMBOSS runs can be put in the user's home directory, or
+   again in a subdirectory called ".embossdata".
+
+   The directories are searched in the following order:
+     * . (your current directory)
+     * .embossdata (under your current directory)
+     * ~/ (your home directory)
+     * ~/.embossdata
+
+   libscan requires a residue substitution matrix.
+
+Notes
+
+   None.
+
+References
+
+   None.
+
+Warnings
+
+   The score distributions and therefore p-values are calculated only
+   from the data that libscan is provided. Therefore, meaningful p-values
+   are only guaranteed if the sequence set (database search mode) or
+   number of families (library screeen mode) is sufficiently large.
+
+Diagnostic Error Messages
+
+   None.
+
+Exit status
+
+   It always exits with status 0.
+
+Known bugs
+
+   None. [an error occurred while processing this directive]
+
+   Hidden Markov models can be generated for scop families by using
+   hmmgen which uses the HMMER package.
+
+   Simple frequency matrices, Gribskov profiles and Hennikoff profiles
+   can be generated for scop families by using profgen.
+
+   A 'signature file' contains a sparse sequence signature. The files are
+   generated by siggen.
+
+   A 'signature hits file' contains the results of a search of a
+   discriminating element (one of protein signature, hidden Markov model,
+   simple frequency matrix, Gribskov profile or Hennikoff profile)
+   against a sequence database. The files are generated by sigscan and
+   modelscan.
+
+   A 'library scan file' holds the results of a search of a sequence
+   against a library of discriminating elements for scop families (one
+   directory for each type of element, e.g. sparse sequence signatures,
+   profiles or HMMs).
+
+   The library scan file contains, for each invividual type of
+   discriminating element and for the combination of the elements,
+   classification and other data for each of a user-defined number of
+   top-scoring families (discriminators) from the scop database.
+
+   A 'scop classification file' contains classification and other data
+   for domains from the scop database. The file is in embl-like format
+   and is generated by scopparse. Domain sequence information can be
+   added to the file by using scopseqs.
+
+   A 'scop validation file' contains sequence relatives (hits) for each
+   of a number of different scop families, superfamilies and folds. The
+   file contains the collated results from psiblast searches of a
+   sequence database for the indvidual scop families; hits of unambiguous
+   family assignment are listed under their respective family, otherwise
+   a hit is assigned as relatives to a scop superfamily or fold instead.
+   The scop validation file is generated by seqnr and is in embl-like
+   format.
+
+Author(s)
+
+   Jon Ison (jison © rfcgr.mrc.ac.uk)
+   MRC Rosalind Franklin Centre for Genomics Research Wellcome Trust
+   Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
+
+   [an error occurred while processing this directive]
+
+History
+
+   Written (2003) - Jon Ison & Ranjeeva Ranasinghe
+
+Target users
+
+   This program is intended to be used by everyone and everything, from
+   naive users to embedded scripts.

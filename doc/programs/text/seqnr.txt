@@ -1,0 +1,80 @@
+
+                          ProgramNameToBeReplaced 
+
+
+
+Function
+
+   [an error occurred while processing this directive]
+
+Description
+
+   **************** EDIT HERE ****************
+
+Algorithm
+
+   **************** EDIT HERE ****************
+
+Usage
+
+   [an error occurred while processing this directive]
+
+Command line arguments
+
+   [an error occurred while processing this directive]
+
+   [an error occurred while processing this directive]
+
+Input file format
+
+   ProgramNameToBeReplaced reads any normal sequence USAs.
+
+   [an error occurred while processing this directive]
+
+Output file format
+
+   ProgramNameToBeReplaced outputs a graph to the specified graphics
+   device. outputs a report format file. The default format is ...
+
+   [an error occurred while processing this directive]
+
+Data files
+
+   **************** EDIT HERE ****************
+
+Notes
+
+   None.
+
+References
+
+   None.
+
+Warnings
+
+   None.
+
+Diagnostic Error Messages
+
+   None.
+
+Exit status
+
+   It always exits with status 0.
+
+Known bugs
+
+   None. [an error occurred while processing this directive]
+
+Author(s)
+
+   **************** EDIT HERE ****************
+
+History
+
+   Written (date) - author.
+
+Target users
+
+   This program is intended to be used by everyone and everything, from
+   naive users to embedded scripts.

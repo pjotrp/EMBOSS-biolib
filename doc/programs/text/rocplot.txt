@@ -1,0 +1,721 @@
+
+                           rocplot documentation
+                                      
+   
+
+CONTENTS
+
+   1.0 SUMMARY 
+   2.0 INPUTS & OUTPUTS 
+   3.0 INPUT FILE FORMAT 
+   4.0 OUTPUT FILE FORMAT 
+   5.0 DATA FILES 
+   6.0 USAGE 
+   7.0 COMMAND-LINE ARGUMENTS 
+   8.0 KNOWN BUGS & WARNINGS 
+   9.0 NOTES 
+   10.0 DESCRIPTION 
+   11.0 ALGORITHM 
+   12.0 RELATED APPLICATIONS 
+   13.0 DIAGNOSTIC ERROR MESSAGES 
+   14.0 AUTHORS 
+   15.0 REFERENCES 
+
+1.0 SUMMARY
+
+   Provides interpretation and graphical display of the performance of
+   discriminating elements (e.g. profiles for protein families). rocplot
+   reads file(s) of hits from discriminator-database search(es), performs
+   ROC analysis on the hits, and writes graphs illustrating the
+   diagnostic performance of the discriminating elements
+
+   rocplot is a generic tool for interpretation and graphical display of
+   the performance of predictive methods. rocplot reads one or more files
+   of hits, performs Receiver Operator Characteristic (ROC) analysis on
+   the hits, and writes graphs, including ROC plots, illustrating
+   diagnostic performance. For example, a profile or other type of
+   discriminating element can be generated for a protein family and
+   scanned against a sequence database to identify putative new family
+   members. The file(s) of hits would contain the results of the
+   profile-database search(es).
+
+2.0 INPUTS & OUTPUTS
+
+   rocplot reads a directory of one or more hits files and writes a text,
+   summary file containing ROC value(s), which are a convenient numerical
+   measure of the sensitivity and specificity of a predictive method.
+   GNUPLOT files for the following graphs are also written.
+   (i) ROC plots displaying graphically the method sensitivity and
+   specificity.
+   (ii) Classification plots, which are a useful aid in interpreting ROC
+   plots and ROC values.
+   (iii) In some modes (see below) a bar chart of the distribution of ROC
+   values is generated.
+
+  2.1 rocplot modes
+
+   rocplot runs in one of two basic modes:
+   (i) "Single hits file"
+   (ii) "Multiple hits file".
+
+  2.1.1 Single hits file mode
+
+   ROC analysis is performed on the single hits file. A ROC plot
+   containing one ROC curve and a single ROC value and classification
+   plot are generated.
+
+  2.1.2 Multiple hits files mode
+
+   The same ROC number must be given in the hits files and each file must
+   contain at least this number of non-TRUE hits (see Section 3.1): an
+   error is generated and the program terminates otherwise. In "multiple
+   hits file mode" there are two sub-modes:
+   (i) "Do not combine data"
+   (ii) "Combine data".
+
+  2.1.3 Do not combine data mode
+
+   ROC analysis is performed separately for each hits file. Multiple ROC
+   curves are given on the same ROC plot. A ROC value and classification
+   plot are generated for each hits file. A bar chart giving the
+   distribution of ROCn values is also generated. The mean and standard
+   deviation of ROCn values are written to the summary file.
+
+  2.1.4 Combine data mode
+
+   The hits are combined and ROC analysis is performed on the whole (see
+   Section 8.6). A ROC plot containing one ROC curve and a single ROC
+   value and classification plot are generated.
+   In "combine data" mode there are a further two sub-modes:
+   (i) "Single gold standard"
+   (ii) "Multiple gold standard".
+   These determine how the ROC number and value are calculated.
+
+  2.1.5 Single gold standard mode
+
+   There is a single gold standard (list of known true hits) for the
+   different searches. The same number of known true hits must be
+   specified in the hits files: an error is generated and the program
+   terminates otherwise. The accession number (or other code) and start
+   and end point of each hit must also be given (see Section 3.1).
+
+  2.1.6 Multiple gold standard mode
+
+   There is a gold standard for each different search.
+   The output in the different modes is summarised (Figure 1).
+   Figure 1 Summary of rocplot output 
+                      ____________________________________________________
+                      | SINGLE HITS FILE  |      MULTIPLE HITS FILES     |
+                      |                   |                |             |
+                      |                   | Do not combine |   Combine   |
+
+                      |                   | data           |   data      |
+ _____________________|___________________|________________|_____________|
+                      |                   |                |             |
+ ROC curves / value   | Single            | Multiple (1)   | Single      |
+ Bar chart            | -                 | Yes            | -           |
+ Classification plot  | Single            | Multiple       | Single      |
+ Summary file         | Yes               | Yes            | Yes         |
+ _____________________|___________________|________________|_____________|
+
+   (1) Multiple ROC curves are given on a single ROC plot.
+
+3.0 INPUT FILE FORMAT
+
+  3.1 Hits files
+
+   A hits file (Figure 2) contains a list of classified hits that are
+   rank-ordered on the basis of score. The first line must have '>' in
+   the first character position and a space (' ') in the second, then two
+   token - integer pairs delimited by ';'. The integer following
+   'RELATED' is the total number of known true hits ('relatives') and is
+   the maximum number of TRUE tokens (see below) that could ever appear
+   in the hits file. The integer following 'ROC' is the ROC value that
+   will be calculated. This integer also determines the limit of the
+   x-axes of the ROC and classification plots (see Sections 8.2 & 8.4).
+   The file then contains a number of lines corresponding to a list of
+   classified hits. The hits *must* be rank-ordered on the basis of
+   score, p-value, E-value etc, with the highest scoring / most
+   significant hit given in the highest rank (1); i.e. on the second line
+   of the file. Other hits should then be given in order of decreasing
+   score / significance.
+   The first string in a hit line is the classification and must be one
+   of the following: 'TRUE', 'CROSS', 'UNCERTAIN', 'UNKNOWN' or 'FALSE'.
+   If rocplot is run in "Multiple hits files" - "Combine data" - "Single
+   gold standard" modes, each hit line must contain a second string
+   followed by 2 integers. These are required so that rocplot can
+   identify unique hits in the lists of hits (see Section 9.4). For hits
+   to sequences, the string is the accession number (or other database
+   code) and the integers are the start and end point of the hit relative
+   to the full length sequence. For some applications the start and end
+   point data are not required to define unique hits: in these cases the
+   start and end values for all hits should be set to 0 and 1
+   respectively.
+   Figure 2 Excerpt from a hits file 
+> RELATED 140 ; ROC 50
+TRUE         DBCODE1   1   50
+TRUE         DBCODE2   12  65
+TRUE         DBCODE3   13  62
+TRUE         DBCODE4   13  63
+CROSS        DBCODE5   13  63
+TRUE         DBCODE6   14  61
+TRUE         DBCODE7   1   50
+CROSS        DBCODE8   32  84
+TRUE         DBCODE9   31  85
+FALSE        DBCODE10  13  63
+TRUE         DBCODE11  1   50
+UNCERTAIN    DBCODE12  1   51
+UNCERTAIN    DBCODE13  1   52
+UNKNOWN      DBCODE14  37  84
+UNKNOWN      DBCODE15  35  82
+FALSE        DBCODE16  13  61
+FALSE        DBCODE17  1   51
+
+4.0 OUTPUT FILE FORMAT
+
+  4.1 Summary file
+
+   The summary file is shown in Figure 3. The first section is comments
+   including the modes rocplot was run in. The file may then contain a
+   section where the file name, number of known true hits and ROCn value
+   are given for each hits file. In cases where data from multiple hits
+   files were combined a single ROCn value will be given instead of this
+   section. The mean and SD of the ROCn values are given if calculated.
+   Figure 3 Summary file 
+(This section is always given)
+rocplot summary file
+mode         == 2 (Multiple hits file)
+multimode    == 2 (Combine data)
+datamode     == 1 (Single gold standard)
+< The section is only given in "Single hits file" mode and "Multiple hits files
+" - "Do not combine data" mode. >
+File         Known      ROC50 (*1)
+user_data1   124       0.874
+user_data2   124       0.687
+< This line is only given in "Multiple hits files" - "Combine data" mode. >
+ROC50        == 0.666 (combined) (*1)
+< This section is only given in "Multiple hits files" - "Do not combine data" m
+ode >
+mean ROC50   == 0.781 (*1)
+sd   ROC50   == 0.093 (*1)
+
+  4.2 GNUPLOT files
+
+   rocplot generates various gnuplot driver and data files depending upon
+   mode. For example, the user specifies the base name of the rocplot,
+   classification, bar chart and summary files to be "_rocplot",
+   "_classplot", "_barchart" and "_summary" respectively. If rocplot is
+   run in "Multiple hits files" - "Combine data" - "Single gold standard"
+   mode the following files are generated.
+_classplot_dat0   Data file for classification plot
+_classplot_dat1   Data file for classification plot
+_classplot_dat2   Data file for classification plot
+_classplot_dat3   Data file for classification plot
+_classplot_dat4   Data file for classification plot
+_classplot        Driver file for classification plot
+_rocplot_dat0     Data file for roc plot.
+_rocplot          Driver file for roc plot.
+_summary          Summary file.
+
+   If rocplot is run in "Multiple hits files" - "Combine data" - "Single
+   gold standard" mode the following files are generated.
+_classplot0_dat0  Data file for first classification plot
+_classplot0_dat1  ""
+_classplot0_dat2  ""
+_classplot0_dat3  ""
+_classplot0_dat4  ""
+_classplot0       Driver file for first classification plot
+_classplot1_dat0  Data file for second classification plot
+_classplot1_dat1  ""
+_classplot1_dat3  ""
+_classplot1_dat4  ""
+_classplot1       Driver file for second classification plot
+_rocplot_dat0     Data file for roc plot.
+_rocplot_dat1     ""
+_rocplot          Driver file for roc plot.
+_summary          Summary file.
+
+   Note that there is no _classplot1_dat2 indicating that the second hits
+   file did not contain any hits for one of the data series (see Section
+   8.4).
+   If rocplot is run in "Multiple hits files" - "Do not combine data" the
+   following files are generated.
+_barchart_dat      Data file for bar chart.
+_barchart          Driver file for bar chart.
+
+   The plots are visualised by using GNUPLOT, for example by typing load
+   '_classplot1' from the GNUPLOT command line.
+
+5.0 DATA FILES
+
+   rocplot does not use a data file.
+
+6.0 USAGE
+
+   The following command line would achieve the same result.
+
+rocplot rocplot _rocplot -mode 2 -multimode 2 -datamode 1 -thresh 10 -outfdata
+_summary -classbasename _classplot
+
+7.0 COMMAND-LINE ARGUMENTS
+
+Error: File /homes/pmr/local/share/EMBOSS/acd/rocplot.acd line 1: (rocplot) Att
+ribute 'embassy' unknown
+
+   Error: File /homes/pmr/local/share/EMBOSS/acd/rocplot.acd line 1:
+   (rocplot) Attribute 'embassy' unknown
+
+8.0 KNOWN BUGS & WARNINGS
+
+   GNUPLOT must be started in the same directory as the gnuplot data
+   files.
+   If you run rocplot on many input files without specifying combination
+   of data the ROC plot generated can get very cluttered. This is not a
+   flaw of rocplot, but an inevitable consequence of trying to draw too
+   many things on the same plot. The recomended maximum is 5 to 10 input
+   files.
+   The hits in the hits files *must* be rank-ordered on the basis of
+   score, p-value, E-value etc, with the highest scoring / most
+   significant hit given in the highest rank (1); i.e. on the second line
+   of the file. Other hits should then be given in order of decreasing
+   score / significance.
+
+9.0 NOTES
+
+   A future implementation will
+   Accept a feature file as input.
+   Split rocplot into separate programs, one for each of the major modes.
+
+10.0 DESCRIPTION
+
+   Predictive methods are a mainstay of bioinformatics. Discrciminating
+   elements such as hidden Markov models (HMM), sparse protein signatures
+   and profiles can be generated for a set of proteins with related
+   sequence, structural or functional properties. These discriminators
+   are characteristic of the property considered and can be used
+   diagnostically, for instance, by screening a database of
+   uncharacterised sequences. When assessing predictive performance a
+   "gold standard" of truth is required. This is a set of examples that
+   are known to be related to the discriminating element, and, ideally, a
+   further set that is known to be definitely not related. For example,
+   to assess a protein family HMM to detect true members of that family
+   requires, at least, a list of the known family members. If a method
+   works well for the "gold standard" we can infer it will work well
+   generally. Traditionally, swissprot annotation was used but this is
+   somewhat unreliable because the annotation is derived from sequence
+   comparison as well as experimental data. Increasingly, use is made of
+   databases such as SCOP, in which sequence, structural and functional
+   relationships are classified. As an aside, such databases are biased
+   for domains, which are the unit of classification, so it's important
+   to check that a method tested on e.g. SCOP will also work on
+   full-length sequences.
+
+  10.1 Sensitivity and specificity
+
+   Most predictive methods can be placed into two broad groupings: (i)
+   Methods that produce a definite yes/no answer. There is a single list
+   of "hits" and things not in this list are "misses". (ii) Methods that
+   produce a list of hits that is rank-ordered on the basis of the score
+   or p-value of the discrimintor-sequence match. The hit with the
+   highest / most significant score will be in highest rank, i.e. rank 1.
+   Usually, a cutoff value of rank, score or p-value is applied; "hits"
+   occur at and above the cuttoff and "misses" occur below it.
+   Armed with the notion of a "gold standard" and "hits" and "misses",
+   all hits retrieved by a search can be organised as in Figure 4.
+   Figure 4 Classification of hits
+                 From the gold standard
+                |          |          |
+                | Related  | Unrelated|
+         _______|__________|__________|_______
+                |          |          |
+S r      (+ve)  |    TP    |    FP    |   P   (=TP+FP)
+e e      hits   |          |          |
+a s      _______|_ ________|__________|_______
+r u             |          |          |
+c l      (-ve)  |    FN    |    TN    |   N   (=FN+TN)
+h t      misses |          |          |
+         _______|__________|__________|_______
+                |          |          |
+                |    R     |    U     |
+                | (=TP+FN) | (=FP+TN) |
+
+   Where TP are true positives, FN are false negatives, R (TP+FN) is the
+   total number of known true hits (relatives). FP are false positives,
+   TN are true negatives and U (FP+TN) is the total number of known
+   non-relatives. The number of positives is given by P (TP+FP) and the
+   number of misses by N (FN+TN).
+   The two basic types of error are where (i) a relationship is missed
+   ("false negative" or "ommission error") and (ii) a relationship is
+   inferred which does not truly exist ("false positive" or "commission
+   error"). The cost of these two errors are not usually equal: it
+   depends on the specific application but usually false positives are
+   worse than false negatives. A crude way to measure the performance is
+   to quote ommission and commission error rates at a fixed cutoff value
+   to the list of hits. These rates are usually given as sensitivity
+   (SENS or "coverage") and specificity (SPEC or "accuracy") of the
+   method and are defined as follows.
+   SENS = TP / R
+   SPEC = TP / P
+   Another measure of specificity (JMB 282, 903-918) defines SENS = TN /
+   U. The measure used depends on the specific application, but TP/P is
+   often most suitable as it reflects the hits that are actually
+   retrieved by the search. TP / P is used in rocplot (see Section 10.2).
+   The most basic graphical representation of sensitivity and specificity
+   is the "coverage versus error plot" or "sensitivity curve" (Figure 5).
+   This plots the number of true positives detected (y-axis) versus the
+   number of false positives detected (x-axis), at different cutoff
+   values in the list of hits. The word 'detected' here refers to a hit
+   that is above the cutoff, i.e. is of a higher or more significant
+   score.
+   Figure 5 A "coverage versus error" plot
+
+            |
+            |                           *
+ No. true   |                    *
+ positives  |              *
+ detected   |          *
+            |       *
+            |     *
+            |   *
+            |  *
+            | *
+            |*
+            |______________________________
+                                 No. false
+                                 positives
+                                 detected
+
+  10.2 ROC plot
+
+   A superior measure of diagnostic performance is to use Receiver
+   Operator Characteristic (ROC) curves to display graphically the
+   sensitivity and specificity of a method. ROC analysis is a powerful
+   aid to interpretation and has been widely used, for instance to
+   evaluate clinical diagnostic tests and in the bioinformatics
+   literature. A ROC curve (Figure 6) is a generalised version of the
+   "coverage versus error" plot. It plots SENS (TP/R) on the y-axis, i.e.
+   the fraction of known true hits detected or the "rate of true
+   positives", versus 1-SPEC (1 - TP/P) on the x-axis, i.e. 1 minus the
+   fraction of detected hits that are true positives or the "rate of
+   false positives". ROC curves are generated by plotting SENS versus
+   (1-SPEC) for all possible cutoff values in a rank-ordered list of
+   hits.
+   Figure 6 A ROC curve
+            |
+            |                           *
+    SENS    |                    *
+            |              *
+  "rate of  |          *
+    true    |       *
+ positives" |     *
+            |   *
+            |  *
+            | *
+            |*
+            |______________________________
+                             1 - SPEC
+                     "rate of false positives"
+
+   A ROC curve shows the trade-off between sensitivitiy and specificity:
+   as sensitivitiy increases, specificity decreases. The ideal ROC curve
+   lies on the y-axis, i.e. there is perfect discrimination between
+   related and unrelated proteins. A ROC curve for a good prediction
+   should always be to the left of the diagonal. ROC curves are very
+   useful for comparing two diffent methods (e.g. homology search
+   methods) because if one method produces a curve to the left of another
+   then that method is superior, regardless of the cost of ommission and
+   commission errors.
+
+  10.3 ROC value
+
+   The area under the ROC curve (AUROC) gives the probability of a
+   correct classification and is a very convenient numerical measure of
+   the sensitivity and specificity of a method. Areas are relative to a
+   ROC space which is a unit square in which both SENS and SPEC are
+   plotted from 0 to 1. An area of 0.9 for example means that a sequence
+   from the group of known relatives has a probability of 0.9 of scoring
+   higher than a sequence from the group of known non-relatives. The best
+   possible prediction has an AUROC of 1.
+   In most cases however there are vastly more true negatives than true
+   positives. This is the case when a search is made with a sequence
+   against a large sequence database. As most sequence are quite
+   discriminating for their family, the AUROC for a ROC curve plotted for
+   the results of the entire database search will be very close to 1. The
+   AUROC value is still useful but it has to be calculated to 5 or 6
+   decimal places. Furthermore all the curves would look identical which
+   makes comparing two methods by eye impossible, all the database scores
+   would have to be written to disk, and the value does not really
+   represent the way in which the average biologist, who is unprepared to
+   inspect many thousands of false positives, would use the method. For
+   these reasons, ROC curves are usually truncated to the first 50 or 100
+   false hits, and the so-called ROC50 or ROC100 value calculated. ROCn
+   values are quicker and more convenient to calculate, can be expressed
+   by fewer decimal places and reflect the way in which the average
+   biologist will use the method.
+
+  10.4 Classification plot
+
+   In many cases not every hit returned by a search can be clearly
+   classified as true or false or it might otherwise be desirable to
+   manage hits with an intermediate classification. This might be the
+   case where the gold standard is based on a hierarchic structure (e.g.
+   SCOP). Consider conceptual "cross", "uncertain" and "unknown" hits.
+   "Cross hits" have a definite relation to the query but not at such a
+   fine level as a "true" hit. An example is a query matching a sequence
+   belonging to a different family but the same superfamily as the query.
+   An "uncertain hit" might show some but not clear evidence of a
+   relation. An example would be a query matching a sequence belonging to
+   a different family and superfamily, but the same fold as the query.
+   For other hits, nothing may be known either way and these would be
+   classified as "unknown". rocplot supports "cross", "uncertain" and
+   "unknown" hits and provides a graphical representation of the
+   classifications of hits by generating a "classification plot".
+   A classification plot (Figure 7) shows the proportion of hits detected
+   that are 'true', 'cross', 'uncertain', 'unknown' and 'false'. The
+   y-axis is the proportion of the hits detected that are of a certain
+   type, the x-axis is the proportion of the total number of hits
+   detected. A separate curve is given for hits of each type. In rocplot
+   a classification plot is generated by plotting these proportions at
+   each rank in the list of hits up to the point where a user-defined
+   number of 'false' hits are detected. As ROC plots and values (see
+   below) do not consider 'cross', 'uncertain' and 'unknown' hits, the
+   classification plot is a useful aid in interpreting the ROC plot and
+   value for some applications.
+   Figure 7 A classification plot
+ Proportion of 1.0|
+ hits detected    |
+ that are of a    |
+ certain type     |
+                  |                       *     *  TRUE
+                  |              *        .     .  CROSS
+                  |        *      .
+                  |    *   .
+                  |  *  .                    x  x  FALSE
+                  | *.              x
+                  |*.          x
+                  |______________________________
+                 0                              1.0
+                                 Proportion of total
+                                 number of hits detected.
+
+   Hits of classification 'uncertain' and 'unknown' are not shown for
+   clarity.
+
+  10.5 Processing multiple lists of hits (no combination of lists)
+
+   ROC analysis is a powerful way to compare predictive methods side by
+   side. A ROC value can be generated for each method and a curve plotted
+   on the same ROC plot. For some applications a summary of a set of ROC
+   values is required. Depending upon mode (see Section 2.1), rocplot
+   will generate the mean, standard deviation (SD) and a bar chart
+   (Figure 8) of the distribution of ROCn values. In constructing the bar
+   chart, the range of possible ROC values from 0 to 1 is divided into 20
+   bins of size 0.05 and the frequency of occurence of ROC values in each
+   bin range is calculated.
+   Figure 8 Bar chart for distribution of ROCn values
+Frequency   |
+            |                        ___
+            |                       |   |
+            |                    ___|   |
+            |            ___    |   |   |
+            |           |   |   |   |   |
+            |    ___    |   |   |   |   |
+            |   |   |___|   |   |   |   |
+            |   |   |   |   |___|   |   |
+            |___|   |   |   |   |   |   |
+            |   |   |   |   |   |   |   |
+            |___|___|___|___|___|___|___|__
+
+                         Bins for different
+                         ranges of value of
+                         ROCn value
+
+  10.6 Processing multiple lists of hits (combination of lists)
+
+   In some cases it is desirable to combine data from multiple lists of
+   hits and derive a single ROC curve and value. Such cases fall into one
+   of two broad groups: (i) There is a single set of known true relatives
+   for the different searches, for example, when assessing the
+   performance of multiple discriminating elements for a single family.
+   In these cases the typical ROC50 or ROC100 value is generated. (ii)
+   There is a different set of known true relatives for each different
+   search, for example, when assessing the performance of a single
+   discriminating element over mutliple families. A much higher ROC
+   number is used. For exmaple, ROC500 is reasonable if 10 lists of hits
+   are combined.
+   Lists of hits arising from different searches can be combined and
+   reordered if they are scored on the same scoring scale or have been
+   assigned a p-value. In principle one way to use rocplot is to do the
+   combination and reordering yourself and provide rocplot with a single
+   list of hits as input. This, however, is not possible if the lists of
+   hits use different scoring schemes and a p-value is not available.
+   Furthermore, in many cases the relative positioning of hits in the
+   list is more important than the absolute score. If two lists of hits
+   (A and B) whose hits lie on different regions of the same scoring
+   scale are merged and reordered, true hits, which rank very highly in
+   their own list (A), might be relegated way down the merged list,
+   appearing after false hits from list B. Therefore the high-ranking and
+   potentially interesting hits in list A might, depending on the ROCn
+   value calculated, not be considered in the combination ROC value. To
+   overcome this, the lists of hits can be processed in parallel: to
+   consider all the hits at rank 1 in the different lists first, then all
+   the hits at rank 1 and 2, and so on. This is the approach taken in
+   rocplot (see Section 9).
+
+11.0 ALGORITHM
+
+  11.1 Classification plot
+
+   The proportion of the total hits detected that are of a certain type
+   (TRUE, CROSS, UNCERTAIN, UNKNOWN and FALSE) is calculated at each rank
+   position in the list of hits, from the first rank (hit) up to and
+   including the hit corresponding to the nth false positive. n is the
+   ROC number given in the hits file. For example, if i is the current
+   rank number, Proportion(TRUE) = (Number of TRUE tokens from ranks 1 to
+   i / i).
+
+  11.2 ROC plot
+
+  11.2.1 "Single hits file" mode and "Multiple hits files" - "Do not combine
+  data" mode
+
+   SENS and SPEC are calculated at each rank in the list of hits from the
+   first rank up to and including the hit that is the nth false positive.
+   n is the ROC number given in the hits file. SENS and SPEC are
+   calculated as follows.
+   SENS(i) = TP / R
+   SPEC(i) = TP / i
+   Where i is the current rank number, TP is the number of TRUE tokens
+   occuring from rank 1 to i. R is the total number of known true hits
+   (relatives) specified after the 'RELATED' token in the hits file(s)
+   (see Section 3.1).
+   Hits classified as CROSS, UNCERTAIN and UNKNOWN are all treated as
+   FALSE. This means that the ROC curve is really giving "rate of noise"
+   on the x-axis rather than the "rate of false positives". The "noise"
+   might actually include genuinely interesting hits and for this reason,
+   the ROC plot must be interpreted in the light of the classification
+   plot if CROSS, UNCERTAIN and UNKNOWN classifications are used. If the
+   hits file contains fewer than n hits that are non-TRUE, an error is
+   generated and rocplot terminates.
+
+  11.2.2 "Multiple hits files" / "Combine data" mode
+
+   SENS and SPEC are calculated at different ranks as before but this
+   time the lists are processed in parallel. SENS and SPEC are calculated
+   from each list in turn at each rank from the first rank up to and
+   including the rank at which n false positive (from the different
+   lists) are detected. If there are 5 hits files for example, a maximum
+   of 5 hits are considered to yield up to 5 SENS and 5 SPEC values at
+   each rank. In "Single gold standard" mode, n is the ROC number
+   specified after the 'ROC' token in the hits files. In "Multiple gold
+   standard" mode, n = (ROC number from hits files * number of input
+   files). SENS and SPEC are calculated as follows.
+   SENS(i, j) = TP / R
+   SPEC(i, j) = TP / nhits
+   Where i is the current rank number and j is the number of the list of
+   the hit being considered. TP is the number of true positives. TP =
+   (Number of TRUE tokens in ranks 1 to i-1 in all lists + number of TRUE
+   tokens in rank i in lists 1 to j). Note that in "Single gold standard"
+   mode only those TRUE tokens corresponding to unique hits (see below)
+   are counted. R is the number of known 'true' hits (relatives). In
+   "Single gold standard" mode, R equals the value after the 'RELATED'
+   token in the hits files. In "Multiple gold standard" mode, R equals
+   the sum of the values given after the 'RELATED' tokens. nhits is the
+   number of hits considered so far. If the hits files contain equal
+   numbers of hits, nhits = (i-1)*N + j, where N is the total number of
+   hits files.
+
+  11.3 ROC value
+
+  11.3.1 "Single hits file" mode and "Multiple hits files" - "Do not combine
+  data" mode
+
+   The ROCn value is defined as:
+   ROCn = 1/nR * T (T is Ti summed for 1<=i<=n)
+   n is the ROC number from the hits file. R is the total number of known
+   true hits given in the hits file after the 'RELATED' token. Ti is the
+   number of TRUE tokens occuring from rank 1 up to the rank for the ith
+   non-TRUE hit. In other words, Ti is the number of 'true' hits detected
+   above the ith 'false' hit.
+
+  11.3.2 "Multiple hits files" / "Combine data" mode
+
+   Again, the ROCn value is defined as :
+   ROCn = 1/nR * T (T is Ti summed for 1<=i<=n)
+   n is the ROC number used. In "Single gold standard" mode, n is the ROC
+   number given in the hits files. In "Multiple gold standard" mode, n =
+   (ROC number given in hits files * number of input files). R is the
+   number of known true hits (relatives). In "Single gold standard" mode,
+   R equals the value given after the 'RELATED' token in the hits files.
+   In "Multiple gold standard" mode, R equals the sum of the values given
+   after the 'RELATED' tokens.
+   Ti is the number of TRUE tokens found up to the ith token that is not
+   'TRUE'. If k and j are the rank and number of list respectively at
+   which the nth non-TRUE hit is detected, Ti = (number of TRUE tokens in
+   ranks 1 to k-1 in all lists + number of TRUEn tokens in rank k in
+   lists 1 to j). Again, Ti is the number of 'true' hits detected above
+   the ith 'false' hit.
+
+  11.4 Identifying unique hits
+
+   In "Multiple hits files" - "Combine data" - "Single gold standard"
+   mode, rocplot only counts unique hits when calculating SENS and SPEC.
+   Two hits are 'unique' if they have (i) different accesssion numbers or
+   (ii) the same accession numbers but which do not overlap by any more
+   than a user-defined number of residues. The overlap is determined from
+   the start and end points of the hit. For example two hits, with the
+   same accession numbers and start and end points of 1-100 and 91 - 190
+   respectively, are not unique if the overlap threshold is 10 or less.
+   Duplicate hits (the second and subsequent occurences of non-unique
+   ones) in the hits files are discarded - they are NOT considered when
+   calculating the ROC curve and value.
+   The different hits files might contain different numbers of hits and
+   therefore at higher ranks, SENS and SPEC might only consider hits from
+   a subset of all the hits files, up to the last rank for which it is
+   likely just a single hit will be considered. This is illustrated in
+   Figure 9, which shows the lists of hits for 3 hits files, a ROC number
+   of 3 is given for each one. At ranks 1 up to 6, SENS and SPEC would
+   consider hits from all 3 input files. At rank 7 however, only hits
+   from files 2 and 3 would be considered as 3 false hits have been
+   detected in file 1 and no more hits are listed. Similarly at ranks 10
+   and 11 only hits from file 3 will be considered.
+   Figure 9 Calculation of ROC value for multiple hits files
+Rank  File1  File2  File3
+      ROC3   ROC3   ROC3
+1     TRUE   TRUE   TRUE
+2     TRUE   TRUE   TRUE
+3     TRUE   TRUE   TRUE
+4     FALSE  TRUE   TRUE
+5     FALSE  TRUE   TRUE
+6     FALSE  FALSE  TRUE
+7            FALSE  FALSE
+8            TRUE   FALSE
+9            FALSE  TRUE
+10                  TRUE
+11                  FALSE
+
+12.0 RELATED APPLICATIONS
+
+13.0 DIAGNOSTIC ERROR MESSAGES
+
+   For purposes of generating the ROC plot and ROC curve, hits classified
+   as CROSS, UNCERTAIN and UNKNOWN are all treated as FALSE. An error is
+   generated and rocplot terminates in the following cases.
+   If the hits file contains more TRUE hits than the number after the
+   'RELATED' token.
+   In "Multiple hits files" mode, if different values are given after the
+   'ROC' token in the files.
+   The number of non-TRUE hits is less than the value after the 'ROC'
+   token.
+   In "Single gold standard" mode, if different values are given after
+   the 'RELATED' token in the files.
+
+14.0 AUTHORS
+
+   Jon Ison (jison © rfcgr.mrc.ac.uk)
+   MRC Rosalind Franklin Centre for Genomics Research Wellcome Trust
+   Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
+
+14.0 REFERENCES
+
+   Please cite the authors and EMBOSS.
