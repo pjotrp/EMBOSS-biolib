@@ -336,7 +336,10 @@ void ajSystem(const AjPStr cl)
 	}
     }
     else
+    {
 	execv(ajStrStr(pname), argptr);
+	ajExitAbort();			/* just in case */
+    }
 
     ajStrDel(&pname);
 
@@ -414,7 +417,10 @@ void ajSystemEnv(const AjPStr cl, char * const env[])
 	}
     }
     else
+    {
 	execve(ajStrStr(pname), argptr, env);
+	ajExitAbort();			/* just in case */
+    }
 
     ajStrDel(&pname);
 
