@@ -194,7 +194,6 @@ static OParser parser[] =
   {NULL, NULL}
 };
 
-/* static void   stripncbi (AjPStr* line); */
 static EmbPentry dbiblast_nextblastentry (PBlastDb db, ajint ifile);
 static AjBool dbiblast_blastopenlib(AjPStr lname, PBlastDb* pdb);
 
@@ -822,9 +821,6 @@ static EmbPentry dbiblast_nextblastentry (PBlastDb db, ajint ifile)
 
     j = dbiblast_ncblreadhdr(&hline, db, tabhdr[jpos], tabhdr[jpos+1]);
 
-    /*  if (db->IsBlast2)
-	stripncbi (&hline);*/
-  
     if (!parser[iparser].Parser(hline, db, &id, acl))
 	ajFatal("failed to parse '%S'", hline);
 
@@ -1048,53 +1044,6 @@ static AjBool dbiblast_blastopenlib (AjPStr name, PBlastDb* pdb)
 
     return ajTrue;
 }
-
-
-
-/* #funcstatic stripncbi ********************************************
-**
-** trim the ncbi line.
-**
-** #param [r] line [AjPStr*] Input line
-** #return [void] 
-** ##
-******************************************************************************/
-/*
-static void stripncbi (AjPStr* line)
-{
-  static AjPRegexp gnlexp = NULL;
-  static AjPRegexp giexp = NULL;
-  static AjPStr tmpline = NULL;
-  static AjPStr tmpstr = NULL;
-
-  if (!gnlexp)
-    gnlexp = ajRegCompC("^gnl[|][^|]+[|][^ ]+ +");
-
-  if (!giexp)
-    giexp = ajRegCompC("^gi[|][^|]+[|]");
-
-  ajStrAssS (&tmpline, *line);
-
-  ajDebug ("parseNCBI '%S'\n", tmpline);
-  if (ajRegExec(gnlexp, tmpline))
-  {
-    ajRegPost(gnlexp, &tmpstr);
-    ajStrAssS (&tmpline, tmpstr);
-  }
-
-  if (ajRegExec(giexp, tmpline))
-  {
-    ajRegPost(giexp, &tmpstr);
-    ajStrAssS (&tmpline, tmpstr);
-  }
-
-  ajStrAssS (line, tmpline);
-  ajDebug ("trim to   '%S'\n", tmpline);
-
-  return;
-}
-*/
-
 
 
 
