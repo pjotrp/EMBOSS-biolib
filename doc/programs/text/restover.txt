@@ -10,16 +10,32 @@ Function
    
 Description
 
-   **************** EDIT HERE ****************
+   The Restriction Enzyme database (REBASE) is a collection of
+   information about restriction enzymes and related proteins. It
+   contains published and unpublished references, recognition and
+   cleavage sites, isoschizomers, commercial availability, methylation
+   sensitivity, crystal and sequence data. DNA methyltransferases, homing
+   endonucleases, nicking enzymes, specificity subunits and control
+   proteins are also included. Most recently, putative DNA
+   methyltransferases and restriction enzymes, as predicted from analysis
+   of genomic sequences, are also listed.
+   
+   The home page of REBASE is: http://rebase.neb.com/rebase/rebase.html
+   
+   restover takes various criteria for specifying types of restriction
+   enzymes and searches the REBASE database for matching enzymes that
+   have the desired effect when they cut the specified input sequence.
    
 Usage
 
    Here is a sample session with restover:
 
 % restover
+Finds restriction enzymes that produce a specific overhang
+Input sequence(s): em:hsfau
+Overlap sequence: cg
+Output file [hsfau.restover]:
 
-   **************** EDIT HERE ****************
-   
 Command line arguments
 
    Mandatory qualifiers:
@@ -81,19 +97,64 @@ Command line arguments
    
 Input file format
 
-   **************** EDIT HERE ****************
+   It reads in a normal DNA sequence USA.
    
 Output file format
 
-   **************** EDIT HERE ****************
+   The output file from the above example is:
+     _________________________________________________________________
+   
+# Restrict of HSFAU from 1 to 518
+#
+# Minimum cuts per enzyme: 1
+# Maximum cuts per enzyme: 2000000000
+# Minimum length of recognition site: 2
+# Number of hits with any overlap: 208
+# Base Number   Enzyme          Site            5'      3'      [5'     3']
+        11      TaqI            TCGA            11      13
+        28      AciI            CCGC            25      27
+        38      AciI            CCGC            38      40
+        71      AciI            CCGC            71      73
+        73      Hin6I           GCGC            73      75
+        94      TaqI            TCGA            94      96
+        103     BsiSI           CCGG            103     105
+        162     BsiSI           CCGG            162     164
+        190     Hin6I           GCGC            190     192
+        192     Hin6I           GCGC            192     194
+        225     Bse1I           ACTGG           221     219
+        229     AciI            CCGC            226     228
+        263     AciI            CCGC            263     265
+        380     AciI            CCGC            377     379
+        383     AciI            CCGC            380     382
+        395     BsiSI           CCGG            395     397
+        398     Hin6I           GCGC            398     400
+        408     AclI            AACGTT          409     411
+        409     HpyCH4IV        ACGT            409     411
+     _________________________________________________________________
+   
+   The output from restover is a simple text one. The base number,
+   restriction enzyme name, recognition site and cut positions are shown.
+   Note that cuts are always to the right of the residue shown and that
+   5' cuts are referred to by their associated 3' number sequence. The
+   program reports enzymes that cut at two or four sites.
    
 Data files
 
-   **************** EDIT HERE ****************
+   The data files are stored in the REBASE directory of the standard
+   EMBOSS data directory. The names are:
+   
+     * embossre.enz Cleavage information
+     * embossre.ref Reference/methylation information
+     * embossre.sup Supplier information
+       
+   The column information is described at the top of the data files
    
 Notes
 
-   None.
+   The data files must have been created before running this program.
+   This is done by running the rebaseextract program with the "withrefm"
+   file from an REBASE release. You may have to ask your system manager
+   to do this.
    
 References
 
@@ -145,12 +206,11 @@ See also
    
 Author(s)
 
-   This application was written by Alan Bleasby (ableasby@hgmp.mrc.ac.uk)
-   **************** EDIT HERE ****************
+   This application was written by Bernd Jagla
    
 History
 
-   Written (date) - author. **************** EDIT HERE ****************
+   Written (Jan 2001) - Bernd Jagla
    
 Target users
 
