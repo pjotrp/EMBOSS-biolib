@@ -121,7 +121,11 @@ static ReportOFormat reportFormat[] = {
 static void reportWriteTrace (AjPReport thys,
 			      AjPFeattable ftable, AjPSeq seq) {
 
+  ajReportWriteHeader (thys, ftable, seq);
+
   ajFmtPrintF (thys->File, "Trace output\n");
+
+  ajReportWriteTail (thys, ftable, seq);
 
   return;
 }
@@ -278,6 +282,23 @@ static void reportWriteSwiss (AjPReport thys,
 **
 ** Writes a report in DbMotif format
 **
+** Format:<br>
+** Length = [length] <br>
+** Start = position [start] of sequence <br>
+** End = position [start] of sequence <br>
+** ... other tags ... <br>
+** [sequence] <br>
+** [start and end numbered below sequence] <br>
+**
+** Data reported: Length, Start, End, Sequence (5 bases around feature)
+**
+** Tags required: None
+**
+** Tags used: None
+**
+** Tags reported: <br>
+**   all tags reported as name = value
+**
 ** @param [R] thys [AjPReport] Report object
 ** @param [R] ftable [AjPFeattable] Feature table object
 ** @param [R] seq [AjPSeq] Sequence object
@@ -306,6 +327,8 @@ static void reportWriteDbMotif (AjPReport thys,
   AjPStr tagval = NULL;
   ajint jstart;
   ajint jend;
+
+  ajReportWriteHeader (thys, ftable, seq);
 
   ntags = ajReportLists (thys, &tagtypes, &tagnames, &tagprints);
 
@@ -352,12 +375,42 @@ static void reportWriteDbMotif (AjPReport thys,
   ajListIterFree(iterft);
   ajStrDel(&subseq);
 
+  ajReportWriteTail (thys, ftable, seq);
+
   return;
 }
 
 /* @funcstatic reportWriteDiffseq *******************************************
 **
-** Writes a report in Diffseq format
+** Writes a report in Diffseq format, based on the output from the
+** diffseq application. The report describes matches, usually short,
+** between two sequences and features which overlap them.
+**
+** A number of tags are used. The rpeort makes little sense without them.
+** These tags are used to replicate features in a second sequence.
+**
+** Format:<br>
+**   [Name] [start]-[end] Length: [length] <br>
+**   Feature: [special first_feature tag] <br>
+**   Sequence: [sequence] <br>
+**   Sequence: [special sequence tag] <br>
+**   Feature: [special second_feature tag] <br>
+**   [as first line, using special tags name, start, end, length] <br>
+**
+** Data reported: Name, Start, End, Length, Sequence
+**
+** Tags required: None
+**
+** Tags used: <br>
+**   start : start position in second sequence <br>
+**   end : end in second sequence <br>
+**   length : length of match in second sequence <br>
+**   name : name of second sequence (set by ajReportSeqName) <br>
+**   sequence : sequence of match in second sequence <br>
+**   first_feature : feature(s) in first sequence <br>
+**   second_feature : feature(s) in second sequence <br>
+**
+** Tags reported: None
 **
 ** @param [R] thys [AjPReport] Report object
 ** @param [R] ftable [AjPFeattable] Feature table object
@@ -492,7 +545,24 @@ static void reportWriteDiffseq (AjPReport thys,
 
 /* @funcstatic reportWriteExcel *******************************************
 **
-** Writes a report in Excel (tab delimited) format
+** Writes a report in Excel (tab delimited) format. Name, start, end
+** and score are always reported. Other tags in the report definition
+** are added as extra columns.
+**
+** All values are (for now) unquoted. Missing values are reported as '.'
+**
+** Format:<br>
+**   "SeqName Start End Score" (tab delimited) <br>
+**   [extra tag names added to first line] <br>
+**   Name Start End Score [extra tag values] (tab delimited) <br>
+**
+** Data reported: Name Start End Score
+**
+** Tags required: None
+**
+** Tags used: None
+**
+** Tags reported: All defined tags
 **
 ** @param [R] thys [AjPReport] Report object
 ** @param [R] ftable [AjPFeattable] Feature table object
@@ -560,9 +630,27 @@ static void reportWriteExcel (AjPReport thys,
 
   return;
 }
+
 /* @funcstatic reportWriteFeatTable *******************************************
 **
-** Writes a report in FeatTable format
+** Writes a report in FeatTable format. The report is an EMBL feature
+** table using only the tags in the report definition. There is no
+** requirement for tag names to match standards for the EMBL feature
+** table.
+**
+** The original EMBOSS application for this format was cpgreport.
+**
+** Format:<br>
+**   FT [type] [start]..[end] <br>
+**                            /[tagname]=[tagvalue] <br>
+**
+** Data reported: Type, Start, End
+**
+** Tags required: None
+**
+** Tags used: None
+**
+** Tags reported: All
 **
 ** @param [R] thys [AjPReport] Report object
 ** @param [R] ftable [AjPFeattable] Feature table object
@@ -630,7 +718,18 @@ static void reportWriteFeatTable (AjPReport thys,
 
 /* @funcstatic reportWriteListFile *******************************************
 **
-** Writes a report in ListFile format
+** Writes a report in ListFile format for use as input to another application.
+**
+** Format:<br>
+**   Name[start:end] <br>
+**
+** Data reported: Name, Start, End, Strand
+**
+** Tags required: None
+**
+** Tags used: None
+**
+** Tags reported: None
 **
 ** @param [R] thys [AjPReport] Report object
 ** @param [R] ftable [AjPFeattable] Feature table object
@@ -653,6 +752,8 @@ static void reportWriteListFile (AjPReport thys,
   ajint i=0;
   AjPStr tmpstr = NULL;
 
+  ajReportWriteHeader (thys, ftable, seq);
+
   iterft = ajListIter(ftable->Features) ;
   while(ajListIterMore(iterft)) {
     feature = (AjPFeature)ajListIterNext (iterft) ;
@@ -662,10 +763,32 @@ static void reportWriteListFile (AjPReport thys,
     ilen = iend - istart + 1;
     ajStrAssSub(&subseq, ajSeqStr(seq), istart-1, iend-1);
     i++;
-    ajFmtPrintF (outf, "%-15.15S start:%d end:%d\n",
-		 ajReportSeqName(thys, seq), istart, iend);
+
+    ajFmtPrintS (&tmpstr, "[");
+
+    if (istart)
+      ajFmtPrintAppS (&tmpstr, "%d", istart);
+
+    ajFmtPrintAppS (&tmpstr, ":");
+
+    if (iend)
+      ajFmtPrintAppS (&tmpstr, "%d", iend);
+
+    if (feature->Strand == '-')
+      ajFmtPrintAppS (&tmpstr, ":r");
+    ajFmtPrintAppS (&tmpstr, "]");
+
+    if (ajStrLen(tmpstr) > 3)
+      ajFmtPrintF (outf, "%-15.15S%S\n",
+		 ajReportSeqName(thys, seq), tmpstr);
+    else
+      ajFmtPrintF (outf, "%-15.15S\n",
+		   ajReportSeqName(thys, seq));
+
     ajStrDelReuse(&tmpstr);
   }
+
+  ajReportWriteTail (thys, ftable, seq);
 
   ajListIterFree(iterft);
   ajStrDel(&subseq);
@@ -676,8 +799,26 @@ static void reportWriteListFile (AjPReport thys,
 
 /* @funcstatic reportWriteMotif *******************************************
 **
-** Writes a report in Motif format
+** Writes a report in Motif format.  Based on the original output
+** format of antigenic, helixturnhelix and sigcleave.
 **
+** Format:<br>
+**   (1) Score [score] length [length] at [name] [start->[end] <br>
+**               *  (marked at position pos) <br>
+**             [sequence] <br>
+**             |        | <br>
+**       [start]        [end] <br>
+**   [tagname]: tagvalue
+**
+** Data reported: Name, Start, End, Length, Score, Sequence
+**
+** Tags required: None
+**
+** Tags used: <br>
+**   pos (integer, maximum score position)
+**
+** Tags reported: All
+**   
 ** @param [R] thys [AjPReport] Report object
 ** @param [R] ftable [AjPFeattable] Feature table object
 ** @param [R] seq [AjPSeq] Sequence object
@@ -759,9 +900,20 @@ static void reportWriteMotif (AjPReport thys,
       ajFmtPrintF (outf, "           |%S|\n", tmpstr);
       ajFmtPrintF (outf, "%12d%S%d\n", istart, tmpstr, iend);
     }
+    if (ntags) {
+      for (j=0; j < ntags; j++) {
+	if (j == jmax) continue;
+	if (ajFeatGetNote(feature, tagnames[j], &tagval)) {
+	  ajFmtPrintF (outf, " %S: %S\n", tagprints[j], tagval);
+	}
+      }
+    }
+
     ajFmtPrintF (outf, "\n");
     ajStrDelReuse(&tmpstr);
   }
+
+  ajReportWriteTail (thys, ftable, seq);
 
   ajStrDel(&subseq);
   ajStrDel(&tmpstr);
@@ -772,7 +924,20 @@ static void reportWriteMotif (AjPReport thys,
 
 /* @funcstatic reportWriteRegions *******************************************
 **
-** Writes a report in Regions format
+** Writes a report in Regions format. The report (unusually for the current
+** report formats) includes the feature type.
+**
+** Format: <br>
+**   [type] from [start] to [end] ([length] [name]) <br>
+**   ([tagname]: [tagvalue], [tagname]: [tagvalue]  ...) <br>
+**
+** Data reported: Type, Start, End, Length, Name
+**
+** Tags required: None
+**
+** Tags used: None
+**
+** Tags reported: All
 **
 ** @param [R] thys [AjPReport] Report object
 ** @param [R] ftable [AjPFeattable] Feature table object
@@ -800,6 +965,8 @@ static void reportWriteRegions (AjPReport thys,
   AjPStr* tagprints;
   ajint j=0;
   AjPStr tagval = NULL;
+
+  ajReportWriteHeader (thys, ftable, seq);
 
   ntags = ajReportLists (thys, &tagtypes, &tagnames, &tagprints);
 
@@ -832,6 +999,8 @@ static void reportWriteRegions (AjPReport thys,
     ajFmtPrintF (outf, "\n\n");
   }
 
+  ajReportWriteTail (thys, ftable, seq);
+
   ajListIterFree(iterft);
   ajStrDel(&subseq);
   ajStrDel(&tagstr);
@@ -842,7 +1011,22 @@ static void reportWriteRegions (AjPReport thys,
 
 /* @funcstatic reportWriteSeqTable *******************************************
 **
-** Writes a report in SeqTable format
+** Writes a report in SeqTable format Thie is a simple table format that
+** includes the feature sequence. See reportWriteTable for a version
+** without the sequence. Missing tag values are reported as '.'
+** The column width is 6, or longer if the name is longer.
+**
+** Format:<br>
+**   Start   End   [tagnames]  Sequence
+**   [start] [end] [tagvalues] [sequence]
+**
+** Data reported:
+**
+** Tags required: None
+**
+** Tags used: None
+**
+** Tags reported: All
 **
 ** @param [R] thys [AjPReport] Report object
 ** @param [R] ftable [AjPFeattable] Feature table object
@@ -872,12 +1056,14 @@ static void reportWriteSeqTable (AjPReport thys,
   ajint jwid=6;
   ajint jmin=6;			/* minimum width for printing special tags */
 
+  ajReportWriteHeader (thys, ftable, seq);
+
   ntags = ajReportLists (thys, &tagtypes, &tagnames, &tagprints);
 
   ajFmtPrintF (outf, "%7s %7s", "Start", "End");
   for (j=0; j < ntags; j++) {
     jwid = AJMAX(jmin, ajStrLen(tagprints[j]));
-    ajFmtPrintF (outf, " %*S", jwid, tagprints[j]);
+    ajFmtPrintF (outf, " %-*S", jwid, tagprints[j]);
   }
   ajFmtPrintF (outf, " Sequence\n");
 
@@ -893,14 +1079,16 @@ static void reportWriteSeqTable (AjPReport thys,
     for (j=0; j < ntags; j++) {
       jwid = AJMAX(jmin, ajStrLen(tagprints[j]));
       if (ajFeatGetNote(feature, tagnames[j], &tagval)) {
-	ajFmtPrintF (outf, " %*S", jwid, tagval);
+	ajFmtPrintF (outf, " %-*S", jwid, tagval);
       }
       else {
-	ajFmtPrintF (outf, " %*s", jwid, "."); /* missing value '.' for now */
+	ajFmtPrintF (outf, " %-*s", jwid, "."); /* missing value '.' for now */
       }
     }
     ajFmtPrintF (outf, " %S\n", subseq);
   }
+
+  ajReportWriteTail (thys, ftable, seq);
 
   ajListIterFree(iterft);
   ajStrDel(&subseq);
@@ -910,7 +1098,21 @@ static void reportWriteSeqTable (AjPReport thys,
 
 /* @funcstatic reportWriteTable *******************************************
 **
-** Writes a report in Table format
+** Writes a report in Table format. See reportWriteSeqTable for a version
+** with the sequence. Missing tag values are reported as '.'
+** The column width is 6, or longer if the name is longer.
+**
+** Format:<br>
+**   USA    Start   End   Score   [tagnames]
+**   [name] [start] [end] [score] [tagvalues]
+**
+** Data reported:
+**
+** Tags required: None
+**
+** Tags used: None
+**
+** Tags reported:
 **
 ** @param [R] thys [AjPReport] Report object
 ** @param [R] ftable [AjPFeattable] Feature table object
@@ -939,12 +1141,14 @@ static void reportWriteTable (AjPReport thys,
   ajint jwid=6;
   ajint jmin=6;			/* minimum width for printing special tags */
 
+  ajReportWriteHeader (thys, ftable, seq);
+
   ntags = ajReportLists (thys, &tagtypes, &tagnames, &tagprints);
 
-  ajFmtPrintF (outf, "%-15s %7s %7s %5s", "USA", "Start", "End", "Score");
+  ajFmtPrintF (outf, "%-15s %7s %7s %7s", "USA", "Start", "End", "Score");
   for (j=0; j < ntags; j++) {
     jwid = AJMAX(jmin, ajStrLen(tagprints[j]));
-    ajFmtPrintF (outf, " %*S", jwid, tagprints[j]);
+    ajFmtPrintF (outf, " %-*S", jwid, tagprints[j]);
   }
   ajFmtPrintF (outf, "\n");
 
@@ -957,17 +1161,22 @@ static void reportWriteTable (AjPReport thys,
     ilen = iend - istart + 1;
     ajStrAssSub(&subseq, ajSeqStr(seq), istart-1, iend-1);
 
-    ajFmtPrintF (outf, "%-15.15S %7d %7d %5d",
+    ajFmtPrintF (outf, "%-15.15S %7d %7d %7.3f",
 		 ajReportSeqName(thys, seq),
-		 istart, iend, (ajint) score);
+		 istart, iend, score);
     for (j=0; j < ntags; j++) {
       jwid = AJMAX(jmin, ajStrLen(tagprints[j]));
       if (ajFeatGetNote(feature, tagnames[j], &tagval)) {
-	  ajFmtPrintF (outf, " %*S", jwid, tagval);
+	  ajFmtPrintF (outf, " %-*S", jwid, tagval);
+      }
+      else {
+	  ajFmtPrintF (outf, " %-*s", jwid, "."); /* missing value '.' for now */
       }
     }
     ajFmtPrintF (outf, "\n");
   }
+
+  ajReportWriteTail (thys, ftable, seq);
 
   ajListIterFree(iterft);
   ajStrDel(&subseq);
@@ -1295,12 +1504,29 @@ void ajReportWriteHeader (AjPReport thys, AjPFeattable ftable, AjPSeq seq) {
   AjPFile outf = thys->File;
   AjPStr tmpstr=NULL;
 
-  ajFmtPrintF (outf, "########################################\n");
-  ajFmtPrintF (outf, "# Program:  %s\n", ajAcdProgram());
-  ajFmtPrintF (outf, "# Rundate:  %D\n", ajTimeTodayF("log"));
+  /* Header for the top of the file (first call for report only) */
+
+  if (!thys->Count) {
+    ajFmtPrintF (outf, "########################################\n");
+    ajFmtPrintF (outf, "# Program:  %s\n", ajAcdProgram());
+    ajFmtPrintF (outf, "# Rundate:  %D\n", ajTimeTodayF("log"));
+    if (thys->Multi) {
+      ajFmtPrintF (outf, "########################################\n\n");
+    }
+    else {
+      ajFmtPrintF (outf, "#\n");
+    }
+  }
+
+  /* Sequence header (can be part of top header) */
+
+  if (thys->Multi) {
+    ajFmtPrintF (outf, "#=======================================\n#\n");
+  }
 
   ajFmtPrintF (outf, "# Sequence: %S     from: %d   to: %d\n",
-	       ajReportSeqName(thys, seq), ajSeqBegin(seq), ajSeqEnd(seq));
+		 ajReportSeqName(thys, seq), ajSeqBegin(seq), ajSeqEnd(seq));
+
   if (ajStrLen(thys->Header)) {
     ajStrAssS (&tmpstr, thys->Header);
     ajStrSubstituteCC (&tmpstr, "\n", "\1# ");
@@ -1309,7 +1535,15 @@ void ajReportWriteHeader (AjPReport thys, AjPFeattable ftable, AjPSeq seq) {
     ajFmtPrintF (outf, "# %S\n", tmpstr);
     ajFmtPrintF (outf, "#\n");
   }
-  ajFmtPrintF (outf, "########################################\n\n");
+
+  if (thys->Multi) {
+    ajFmtPrintF (outf, "#=======================================\n\n");
+    }
+  else {
+    ajFmtPrintF (outf, "########################################\n\n");
+  }
+
+  ++thys->Count;
 
   return;
 }
@@ -1330,7 +1564,13 @@ void ajReportWriteTail (AjPReport thys, AjPFeattable ftable, AjPSeq seq) {
   AjPFile outf = thys->File;
   AjPStr tmpstr=NULL;
 
-  ajFmtPrintF (outf, "########################################\n");
+  if (thys->Multi) {
+    ajFmtPrintF (outf, "\n--------------------------------------\n\n");
+  }
+  else {
+    ajFmtPrintF (outf, "\n######################################\n");
+  }
+
   if (ajStrLen(thys->Tail)) {
     ajStrAssS (&tmpstr, thys->Tail);
     ajStrSubstituteCC (&tmpstr, "\n", "\1# ");
@@ -1339,7 +1579,13 @@ void ajReportWriteTail (AjPReport thys, AjPFeattable ftable, AjPSeq seq) {
     ajFmtPrintF (outf, "# %S\n", tmpstr);
     ajFmtPrintF (outf, "#\n");
   }
-  ajFmtPrintF (outf, "########################################\n\n");
+
+  if (thys->Multi) {
+    ajFmtPrintF (outf, "#---------------------------------------\n\n");
+  }
+  else {
+    ajFmtPrintF (outf, "########################################\n\n");
+  }
 
   return;
 }

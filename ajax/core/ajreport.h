@@ -23,7 +23,6 @@ extern "C"
 ******************************************************************************/
 
 typedef struct AjSReport {
-  ajint Count;
   AjPStr Name;
   AjPStr Type;
   AjPStr Formatstr;
@@ -36,10 +35,12 @@ typedef struct AjSReport {
   AjPList Tagnames;
   AjPList Tagprints;
   AjPList Tagtypes;
-  ajint Mintags;
   AjPStr Header;
   AjPStr Tail;
   AjBool Showusa;
+  AjBool Multi;
+  ajint Mintags;
+  ajint Count;
 } AjOReport, *AjPReport;
 
 void         ajReportClose (AjPReport pthys);
