@@ -10,12 +10,34 @@ Function
    
 Description
 
+   If you are not interested in developing EMBOSS programs yourself, then
+   you should stop reading now.
+   Read no further.
+   
+   ajtest is of no use to you.
+   
+   ajtest is simply the name given to a generic test program that is used
+   to evaluate the behaviour of various EMBOSS functions during the
+   writing of other programs. The contents of this program will change
+   depending on whatever programs were last being developed when this
+   EMBOSS release was made public.
+   
+   ajtest serves no purpose that is useful for the general user
+   community. It is only useful as a general-purpose program to serve as
+   a test-bed for developers.
+   
+   It is here simply as a useful generic application for people creating
+   new library functions that they wish to call in the context of a real
+   EMBOSS program.
+   
 Usage
 
    Here is a sample session with ajtest.
 
 % ajtest
 
+   (You are less than impressed, I can tell.)
+   
 Command line arguments
 
    Mandatory qualifiers:
@@ -40,26 +62,51 @@ Command line arguments
    Advanced qualifiers Allowed values Default
    (none)
    
+   (Of course, the parameters could be changed completely in the next
+   release.)
+   
 Input file format
 
-   Reads DNA or protein sequences
+   That depends.
    
 Output file format
 
+   Could be anything.
+   
 Data files
 
+   Possibly.
+   
 Notes
 
+   Take no notice of this program.
+   
 References
 
+   None whatsoever.
+   
 Warnings
 
+   WARNING!
+   WARNING!
+   WARNING!
+   WARNING!
+   
+   You have been warned.
+   
 Diagnostic Error Messages
 
+   Maybe.
+   
 Exit status
 
+   Might not exit.
+   
 Known bugs
 
+   Hopefully none, but you could edit the source file and add some, if
+   you have set up your own copy of EMBOSS.
+   
 See also
 
    Program name                    Description
@@ -75,7 +122,7 @@ History
 
 Target users
 
-   This program is intended to be used by everyone and everything, from
-   naive users to embedded scripts.
+   This program is not intended to be used by anyone except application
+   developers.
    
 Comments
