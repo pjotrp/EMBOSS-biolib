@@ -1716,7 +1716,8 @@ static void seqSelexCopy(AjPSeq *thys, AjPSeqin seqin, ajint n)
     
     ajStrAssS(&pthis->Seq, selex->str[n]);
     ajStrAssS(&pthis->Name, selex->name[n]);
-
+    pthis->Weight = selex->sq[n]->wt;
+    
     sdata = (*thys)->Selexdata;
 
     ajStrAssS(&sdata->id,selex->id);

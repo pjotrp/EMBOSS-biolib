@@ -339,6 +339,20 @@ ajint ajSeqallGetRange (AjPSeqall thys, ajint* begin, ajint* end) {
   return ajSeqGetRange(thys->Seq, begin, end);
 }
 
+/* @func ajSeqsetGetFormat **************************************************
+**
+** Returns the sequence format for a sequence set
+**
+** @param [r] thys [AjPSeqset] Sequence set object.
+** @return [AjPStr] Sequence format
+** @@
+******************************************************************************/
+
+AjPStr ajSeqsetGetFormat (AjPSeqset thys)
+{
+    return thys->Formatstr;
+}
+
 /* @func ajSeqsetGetRange **************************************************
 **
 ** Returns the sequence range for a sequence set
@@ -695,6 +709,48 @@ AjBool ajSeqsetIsNuc (AjPSeqset thys) {
 
   return ajFalse;
 }
+
+/* @func ajSeqsetIsRna *************************************************
+**
+** Tests whether a sequence set is rna.
+**
+** @param [P] thys [AjPSeqset] Sequence set
+** @return [AjBool] ajTrue for an rna sequence set.
+** @@
+******************************************************************************/
+
+AjBool ajSeqsetIsRna (AjPSeqset thys) {
+
+  AjPSeq seq;
+
+  seq = thys->Seq[0];
+  if (!ajSeqTypeGaprna(seq))
+    return ajTrue;
+
+  return ajFalse;
+}
+
+
+/* @func ajSeqsetIsRna *************************************************
+**
+** Tests whether a sequence set is dna.
+**
+** @param [P] thys [AjPSeqset] Sequence set
+** @return [AjBool] ajTrue for an dna sequence set.
+** @@
+******************************************************************************/
+
+AjBool ajSeqsetIsDna (AjPSeqset thys) {
+
+  AjPSeq seq;
+
+  seq = thys->Seq[0];
+  if (!ajSeqTypeGapdna(seq))
+    return ajTrue;
+
+  return ajFalse;
+}
+
 
 /* @func ajSeqsetIsProt ****************************************************
 **
