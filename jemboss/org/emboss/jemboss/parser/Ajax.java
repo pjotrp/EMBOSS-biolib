@@ -58,6 +58,9 @@ public class Ajax
   public synchronized native boolean forkEmboss(String username,
                byte[] password, String environment,
                String commandline, String directory);
+  public synchronized native boolean forkBatch(String username,
+               byte[] password, String environment,
+               String commandline, String directory);
   public synchronized native boolean makeDir(String username,
                byte[] password, String environment,
                String directory);
