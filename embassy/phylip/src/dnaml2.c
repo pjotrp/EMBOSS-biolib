@@ -742,6 +742,8 @@ double scale;
   } while (!done);
   if (p->ycoord == i && p->tip) {
     for (j = 0; j < nmlngth; j++)
+      /* check we're not printing NULL - Bren Vaughan, LION Bioscience,  22/10/2001 */
+      if ((int)p->nayme[j] != 0)
       putc(p->nayme[j], outfile);
   }
   putc('\n', outfile);
@@ -815,6 +817,8 @@ node *p;
   fprintf(outfile, "%4hd          ", q->number - numsp);
   if (p->tip) {
     for (i = 0; i < nmlngth; i++)
+      /* check we're not printing NULL - Bren Vaughan, LION Bioscience,  22/10/2001 */
+      if ((int)p->nayme[i] != 0)
       putc(p->nayme[i], outfile);
   } else
     fprintf(outfile, "%4hd      ", p->number - numsp);
@@ -947,6 +951,8 @@ node *p;
       c = p->nayme[i];
       if (c == ' ')
 	c = '_';
+      /* check we're not printing NULL - Bren Vaughan, LION Bioscience,  22/10/2001 */
+      if ((int)c != 0)
       putc(c, treefile);
     }
     col += n;
@@ -1432,4 +1438,3 @@ void maketree()
     }
   }
 }  /* maketree */
-
