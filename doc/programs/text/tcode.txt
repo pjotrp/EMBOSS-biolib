@@ -88,7 +88,7 @@ Output report [hsfau1.tcode]:
    
 
 % tcode -plot -graph cps 
-Fickett TESTCODE statistic
+Fickett TESTCODE statistic to identify protein-coding DNA
 Input sequence(s): tembl:hsfau1
 Length of sliding window [200]: 
 
