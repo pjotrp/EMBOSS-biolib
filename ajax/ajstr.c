@@ -2785,6 +2785,44 @@ void ajStrQuoteStrip(AjPStr* s)
 
 
 
+/* @func ajStrQuoteStripAll ***************************************************
+**
+** Makes sure a string is unquoted (remove any single or double quotes).
+** Internal escaped or doubled-up quotes are converted to simple quotes
+**
+** @param [u] s [AjPStr *] string
+**
+** @return [void]
+** @@
+******************************************************************************/
+void ajStrQuoteStripAll(AjPStr* s)
+{
+    if(ajStrChar(*s, -1) == '"')
+    {
+	ajStrTrim(s, -1);
+
+	if(ajStrChar(*s, 0) == '"')
+	    ajStrTrim(s, 1);
+
+	ajStrSubstituteCC(s, "\"\"", "\""); /* doubled quotes to single */
+	ajStrSubstituteCC(s, "\\\"", "\""); /* escaped quotes to single */
+    }
+    else if(ajStrChar(*s, -1) == '\'')
+    {
+	ajStrTrim(s, -1);
+
+	if(ajStrChar(*s, 0) == '\'')
+	    ajStrTrim(s, 1);
+
+	ajStrSubstituteCC(s, "''", "'"); /* doubled quotes to single */
+	ajStrSubstituteCC(s, "\\'", "'"); /* escaped quotes to single */
+    }
+    return;
+}
+
+
+
+
 /* @func ajStrRandom **********************************************************
 **
 ** Returns randomised string in place
@@ -5207,9 +5245,9 @@ void ajStrStat(const char* title)
     static ajlong statTotal     = 0;
 
     ajDebug("String usage statistics since last call %s:\n", title);
-    ajDebug("String usage (bytes): %ld allocated, %ld freed\n",
+    ajDebug("String usage (bytes): %Ld allocated, %Ld freed\n",
 	    strAlloc - statAlloc, strFree - statFree);
-    ajDebug("String usage (number): %ld allocated, %ld freed, %ld in use\n",
+    ajDebug("String usage (number): %Ld allocated, %Ld freed, %Ld in use\n",
 	    strTotal - statTotal, strFreeCount - statFreeCount,
 	    strCount - statCount);
 
@@ -5235,9 +5273,10 @@ void ajStrStat(const char* title)
 
 void ajStrExit(void)
 {
-    ajDebug("String usage (bytes): %ld allocated, %ld freed, %ld in use\n",
-	    strAlloc, strFree, strAlloc - strFree);
-    ajDebug("String usage (number): %ld allocated, %ld freed %ld in use\n",
+    ajDebug("String usage (bytes): %Ld allocated, %Ld freed, %Ld in use\n",
+	    strAlloc, strFree,
+	    (strAlloc - strFree));
+    ajDebug("String usage (number): %Ld allocated, %Ld freed %Ld in use\n",
 	    strTotal, strFreeCount, strCount);
 
     return;
