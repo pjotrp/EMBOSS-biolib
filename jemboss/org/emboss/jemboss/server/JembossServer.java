@@ -138,7 +138,6 @@ public class JembossServer
     String line;
     String acdToParse = new String(acdDirToParse + appName + ".acd");
 
-
     try
     {
       BufferedReader in = new BufferedReader(new FileReader(acdToParse));
@@ -849,51 +848,64 @@ public class JembossServer
 
 /**
 *
+* Used to provide information on the batch/background
+* processes.
+*
+*/
+  public Vector update_result_status(String prog, String opt,
+                        Hashtable resToQuery,String userName)
+  {
+    tmproot = tmproot.concat(userName+fs);
+    return update_result_status(prog, opt, resToQuery);
+  }
+
+/**
+*
 * Used to provide information on the batch/background 
 * processes.
 *
 */
-//public Vector update_result_status(String prog, String opt, 
-//                                   Hashtable resToQuery)
-//{
+  public Vector update_result_status(String prog, String opt, 
+                                     Hashtable resToQuery)
+  {
 
-//  Vector vans = new Vector();
-//  Enumeration enum = resToQuery.keys();
-//  while (enum.hasMoreElements())
-//  {
-//    String thiskey = (String)enum.nextElement().toString();
-//    String thiselm = (String)resToQuery.get(thiskey);
+    Vector vans = new Vector();
+    Enumeration enum = resToQuery.keys();
+    while (enum.hasMoreElements())
+    {
+      String thiskey = (String)enum.nextElement().toString();
+      String thiselm = (String)resToQuery.get(thiskey);
 //    System.out.println("KEY : "+thiskey+" ELEMENT: "+thiselm);
-//    File f = new File(tmproot+fs+thiskey+fs+".finished");
-//    if(f.exists())
-//    {
-//      vans.add(thiskey);
-//      vans.add("complete");
-//      String fc = "";
-//      try
-//      {
-//        String line;
-//        BufferedReader in = new BufferedReader(new FileReader(tmproot+
-//                                              fs+thiskey+fs+".desc"));
-//        while((line = in.readLine()) != null)
-//          fc = fc.concat(line + "\n");
-//      }
-//      catch (IOException ioe)
-//      {
-//        fc = "Error in reading information file";
-//      }
-//      vans.add(thiskey+"-description");
-//      vans.add(fc);
-//    }
-//    else
-//    {
-//      vans.add(thiskey);
-//      vans.add("pending");
-//    }
-//  }
+      File f = new File(tmproot+fs+thiskey+fs+".finished");
+      if(f.exists())
+      {
+        vans.add(thiskey);
+        vans.add("complete");
+        String fc = "";
+        try
+        {
+          String line;
+          BufferedReader in = new BufferedReader(new FileReader(tmproot+
+                                                fs+thiskey+fs+".desc"));
+          while((line = in.readLine()) != null)
+            fc = fc.concat(line + "\n");
+        }
+        catch (IOException ioe)
+        {
+          fc = "Error in reading information file";
+        }
+        vans.add(thiskey+"-description");
+        vans.add(fc);
+      }
+      else
+      {
+        vans.add(thiskey);
+        vans.add("pending");
+      }
+    }
 
-//  return vans;
-//}
+    return vans;
+  }
 
 
 }
