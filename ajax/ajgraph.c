@@ -393,8 +393,14 @@ static void GraphSetWin2(float xmin, float xmax, float ymin, float ymax){
 ******************************************************************************/
 
 static void GraphArray(ajint numofpoints, float *x, float *y){
-  ajDebug("=g= plline ( %d, %.2f .. %.2f, %.2f .. %.2f) [num x..x y..y]\n",
-	  numofpoints, x[0], x[numofpoints-1], y[0], y[numofpoints-1] );
+
+  if (numofpoints)
+    ajDebug("=g= plline ( %d, %.2f .. %.2f, %.2f .. %.2f) [num x..x y..y]\n",
+	    numofpoints, x[0], x[numofpoints-1], y[0], y[numofpoints-1] );
+  else
+    ajDebug("=g= plline ( %d, <> .. <>, <> .. <>) [num x..x y..y]\n",
+	    numofpoints );
+
   plline(numofpoints, x,y);
 } 
 
@@ -480,8 +486,13 @@ static void GraphArrayGapsI(ajint numofpoints, ajint *x, ajint *y){
 
 static void GraphFill(ajint numofpoints, float *x, float *y){
 
-  ajDebug("=g= plfill ( %d, %.2f .. %.2f, %.2f .. %.2f) [num x..x y..y]\n",
-	  numofpoints, x[0], x[numofpoints-1], y[0], y[numofpoints-1] );
+  if (numofpoints)
+    ajDebug("=g= plfill ( %d, %.2f .. %.2f, %.2f .. %.2f) [num x..x y..y]\n",
+	    numofpoints, x[0], x[numofpoints-1], y[0], y[numofpoints-1] );
+  else
+    ajDebug("=g= plfill ( %d, <> .. <>, <> .. <>) [num x..x y..y]\n",
+	    numofpoints );
+    
   plfill(numofpoints, x, y);
 }
 
@@ -1962,8 +1973,14 @@ void ajGraphTextMid (PLFLT x1, PLFLT y1, char *text){
 ** @@
 *************************************************************************/
 void ajGraphVertBars(ajint numofpoints, PLFLT *x, PLFLT *ymin, PLFLT *ymax){
-  ajDebug ("=g= plerry (%d %.2f .. %.2f, %.2f, %.2f) [num, x..x, ymin, ymax]\n",
-	   numofpoints, x[0], x[numofpoints-1], ymin, ymax); 
+
+  if (numofpoints)
+    ajDebug ("=g= plerry (%d %.2f..%.2f, %.2f, %.2f) [num,x..x,ymin,ymax]\n",
+	     numofpoints, x[0], x[numofpoints-1], ymin, ymax);
+  else
+    ajDebug ("=g= plerry (%d <>..<>, %.2f, %.2f) [num,x..x,ymin,ymax]\n",
+	     numofpoints, ymin, ymax); 
+
   plerry(numofpoints,x,ymin,ymax);
 }
 
@@ -1981,8 +1998,14 @@ void ajGraphVertBars(ajint numofpoints, PLFLT *x, PLFLT *ymin, PLFLT *ymax){
 ** @@
 *************************************************************************/
 void ajGraphHoriBars(ajint numofpoints, PLFLT *y, PLFLT *xmin, PLFLT *xmax){
-  ajDebug ("=g= plerrx (%d %.2f .. %.2f, %.2f, %.2f) [num, y..y, xmin, xmax]\n",
-	   numofpoints, y[0], y[numofpoints-1], xmin, xmax); 
+
+  if (numofpoints)
+    ajDebug ("=g= plerrx (%d %.2f..%.2f, %.2f, %.2f) [num,y..y,xmin,xmax]\n",
+	     numofpoints, y[0], y[numofpoints-1], xmin, xmax); 
+  else
+    ajDebug ("=g= plerrx (%d <>..<>, %.2f, %.2f) [num,y..y,xmin,xmax]\n",
+	     numofpoints, xmin, xmax); 
+
   plerrx(numofpoints,y,xmin,xmax);
 }
 
