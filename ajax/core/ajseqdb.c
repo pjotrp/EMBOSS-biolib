@@ -440,8 +440,11 @@ static AjBool seqCdAll (AjPSeqin seqin)
     ajDebug ("EMBLCD All index directory '%S'\n", qry->IndexDir);
 
     dfp = seqCdFileOpen(qry->IndexDir, "division.lkp", &divfile);
-    if (!dfp)
-	ajFatal("Cannot open division file '%S'", divfile);
+    if (!dfp) {
+	ajWarn("Cannot open division file '%S' for database '%S'",
+		divfile, qry->DbName);
+	return ajFalse;
+    }
 
     nameSize = dfp->RecSize - 2;
     name = ajCharNewL (nameSize+1);
@@ -1442,7 +1445,7 @@ static AjBool seqAccessSrswww (AjPSeqin seqin)
    urlexp = ajRegCompC("^http://([a-z0-9.-]+)(:[0-9]+)?(.*)");
     if (!ajRegExec(urlexp, url))
     {
-	ajErr ("invalid URL '%S' for database %S", url, qry->DbName);
+	ajErr ("invalid URL '%S' for database '%S'", url, qry->DbName);
 	return ajFalse;
     }
   
@@ -1513,7 +1516,7 @@ static AjBool seqAccessSrswww (AjPSeqin seqin)
     if (!hp)
     {
 	ajDebug ("Unable to get host '%S'\n", host);
-	ajErr ("Unable to get host '%S'", host);
+	ajErr ("Unable to get host '%S' for database '%S'", host, qry->DbName);
 	return ajFalse;
     }
 
@@ -1522,7 +1525,7 @@ static AjBool seqAccessSrswww (AjPSeqin seqin)
     if (sock < 0)
     {
 	ajDebug ("Socket create failed, sock: %d\n", sock);
-	ajErr ("Socket create failed");
+	ajErr ("Socket create failed for database '%S'", qry->DbName);
 	return ajFalse;
     }
 
@@ -1542,8 +1545,8 @@ static AjBool seqAccessSrswww (AjPSeqin seqin)
     if (status < 0)
     {
 	ajDebug ("socket connect failed, status: %d\n", status);
-	ajErr ("socket connect failed");
-	perror("Socket connet failed");
+	ajErr ("socket connect failed for database '%S'", qry->DbName);
+	perror("Socket connect failed");
 	return ajFalse;
     }
 
@@ -1572,14 +1575,14 @@ static AjBool seqAccessSrswww (AjPSeqin seqin)
     if (!fp)
     {
 	ajDebug ("socket open failed sock: %d\n", sock);
-	ajErr ("socket open failed");
+	ajErr ("socket open failed for database '%S'", qry->DbName);
 	return ajFalse;
     }
     seqin->Filebuff = ajFileBuffNewF(fp);
     if (!seqin->Filebuff)
     {
 	ajDebug ("socket buffer attach failed\n");
-	ajErr ("socket buffer attach failed");
+	ajErr ("socket buffer attach failed for database '%S'", qry->DbName);
 	return ajFalse;
     }
     ajFileBuffLoad(seqin->Filebuff);
@@ -1686,7 +1689,8 @@ static AjBool seqCdQryOpen (AjPSeqQuery qry)
     qryd->dfp = seqCdFileOpen(qry->IndexDir, "division.lkp", &qryd->divfile);
     if (!qryd->dfp)
     {
-	ajWarn("Cannot open division file '%S'", qryd->divfile);
+	ajWarn("Cannot open division file '%S' for database '%S'",
+	       qryd->divfile, qry->DbName);
 	return ajFalse;
     }
     
@@ -3435,7 +3439,7 @@ static AjBool seqAccessUrl (AjPSeqin seqin)
 
     if (!hp)
     {
-	ajErr ("Unable to get host '%S'", host);
+	ajErr ("Unable to get host '%S' for database '%S'", host, qry->DbName);
 	return ajFalse;
     }
 
@@ -3443,7 +3447,7 @@ static AjBool seqAccessUrl (AjPSeqin seqin)
     sock = socket(AF_INET, SOCK_STREAM, 0); 
     if (sock < 0)
     {
-	ajErr ("Socket create failed");
+	ajErr ("Socket create failed for database '%S'", qry->DbName);
 	return ajFalse;
     }
 
@@ -3464,8 +3468,8 @@ static AjBool seqAccessUrl (AjPSeqin seqin)
     if (status < 0)
     {
 	ajDebug ("socket connect failed, status: %d\n", status);
-	ajErr ("socket connect failed");
-	perror("Socket connet failed");
+	ajErr ("socket connect failed for database '%S'", qry->DbName);
+	perror("Socket connect failed");
 	return ajFalse;
     }
 
@@ -3497,14 +3501,14 @@ static AjBool seqAccessUrl (AjPSeqin seqin)
     if (!fp)
     {
 	ajDebug ("socket open failed sock: %d\n", sock);
-	ajErr ("socket open failed");
+	ajErr ("socket open failed for database '%S'", qry->DbName);
 	return ajFalse;
     }
     seqin->Filebuff = ajFileBuffNewF(fp);
     if (!seqin->Filebuff)
     {
 	ajDebug ("socket buffer attach failed\n");
-	ajErr ("socket buffer attach failed");
+	ajErr ("socket buffer attach failed for database '%S'", qry->DbName);
 	return ajFalse;
     }
     ajFileBuffLoad(seqin->Filebuff);
