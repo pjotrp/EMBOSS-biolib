@@ -290,9 +290,7 @@ static void transeq_GetFrames(AjPStr *framelist, AjBool *frames)
             frames[5] = ajTrue;
 	}
 	else
-	{
 	    ajErr("Unknown frame: '%S'", framelist[i]);
-	}
     }
 
     return;
