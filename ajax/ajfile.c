@@ -1167,6 +1167,7 @@ AjBool ajFileNameTrim (AjPStr* fname) {
 void ajFileDataNewWrite(const AjPStr tfile, AjPFile *fnew)
 {
     static AjPStr fname = NULL;
+    static AjPStr pname = NULL;
 
     if(tfile == NULL) return;
 
@@ -1184,7 +1185,23 @@ void ajFileDataNewWrite(const AjPStr tfile, AjPFile *fnew)
 
     }
 
-    if(ajNamRoot(&fname))	/* just emboss/data under installation */
+    if(ajNamRootInstall(&fname)) /* just emboss/data under installation */
+    {
+    
+        (void) ajNamRootPack(&pname);	/* just EMBOSS */
+	(void) ajFileDirFix(&fname);
+	(void) ajStrAppC(&fname,"share/");
+	(void) ajStrApp(&fname,pname);
+	(void) ajStrAppC(&fname,"/data/");
+	(void) ajStrApp(&fname,tfile);
+	if(!(*fnew = ajFileNewOut(fname)))
+	    ajFatal("Cannot write to file %s\n",ajStrStr(fname));
+	ajStrDel(&fname);
+	return;
+
+    }
+
+    if(ajNamRoot(&fname))	/* just emboss/data under source */
     {
     
 	(void) ajStrAppC(&fname,"/data/");
