@@ -469,8 +469,12 @@ static void alignWriteMark (AjPAlign thys, ajint iali, ajint markx)
     n0 = ajSeqLen(seq);
     max0=nc;
     max1=nc;
-    min0=data->Offset[0] + data->Start[0];
-    min1=data->Offset[1] + data->Start[1];
+    /*
+//    min0=data->Offset[0] + data->Start[0];
+//    min1=data->Offset[1] + data->Start[1];
+    */
+    min0=data->Offset[0];
+    min1=data->Offset[1];
     sbegin0=data->Start[0];
     sbegin1=data->Start[1];
     ioff0=data->Offset[0];
