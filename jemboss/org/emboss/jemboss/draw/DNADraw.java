@@ -90,7 +90,7 @@ public class DNADraw extends ScrollPanel
     lineAttr = new Hashtable();
     lineAttr.put("start",new Integer(0));
     lineAttr.put("end",new Integer(4000));
-    lineAttr.put("lsize",new Integer(10));
+    lineAttr.put("lsize",new Integer(5));
     lineAttr.put("circular",new Boolean(true));
 
     MouseListener mouseListener = new MouseAdapter()
