@@ -1600,6 +1600,7 @@ AjBool ajAlignDefineCC(AjPAlign thys, const char* seqa, const char* seqb,
     if(!thys->Nseqs)
 	thys->Nseqs = 2;
 
+    data->Nseqs = 2;
     AJCNEW0(data->Start, 2);
     AJCNEW0(data->End, 2);
     AJCNEW0(data->Offset, 2);
@@ -1627,6 +1628,9 @@ AjBool ajAlignDefineCC(AjPAlign thys, const char* seqa, const char* seqb,
 
     data->Len = AJMIN(strlen(seqa), strlen(seqb));
 
+    ajDebug("ajAlignDefineCC %s %d %s %d\n",
+	    namea, ajSeqLen(data->Seq[0]),
+	    nameb, ajSeqLen(data->Seq[1]));
     ajListPushApp(thys->Data, data);
 
     return ajTrue;
@@ -3126,10 +3130,14 @@ static void alignDataDel(AlignPData* pthys, AjBool external)
     AJFREE(thys->SubOffset);
 
     ajStrDel(&thys->Score);
+    ajDebug("alignDataDel NSeqs: %d\n", thys->Nseqs);
     if(!external)
 	for(i=0;i<thys->Nseqs;++i)
+	{
+	    ajDebug("alignDataDel seq[%d] %S %d\n",
+		    i, ajSeqGetName(thys->Seq[i]), ajSeqLen(thys->Seq[i]));
 	    ajSeqDel(&thys->Seq[i]);
-
+        }
     AJFREE(thys->Seq);
     AJFREE(*pthys);
 
