@@ -37,19 +37,21 @@ endsection: input
 
 
 
-section: required
+section: standard 
 [
-  information: "Required section"
+  information: "Standard section"
   type: "page"
 ]
 
 list: mode  
 [
   standard:      "Y"
-  values:        "1:Single input file mode;2:Multiple input file mode"
+  values:        "1: Single input file mode, 2: Multiple input file mode"
   default:       "1"
   minimum:       "1"
   maximum:       "2"
+  delimiter:     ","
+  codedelimiter: ":"
   button:        "Y"
   header:        "Available modes"
   information:   "Select mode of operation"
@@ -78,12 +80,14 @@ list: mode
 list: multimode  
 [
   standard:      "@($(mode)==2)"
-  values:        "1:Do not combine data (multiple ROC curves in single ROC 
-	          plot, multiple classification plots);2:Combine data 
+  values:        "1: Do not combine data (multiple ROC curves in single ROC 
+	          plot, multiple classification plots), 2: Combine data 
 		  (single ROC curve, single classification plot)"
   default:       "1"
   minimum:       "1"
   maximum:       "2"
+  delimiter:     ","
+  codedelimiter: ":"
   button:        "Y"
   header:        "Available modes"
   information:   "Select mode of operation"
@@ -107,7 +111,7 @@ list: multimode
 list: datamode  
 [
   standard:      "@(@($(mode)==2) & @($(multimode)==2))"
-  values:        "1:Single list of known true relatives;2:Multiple lists of
+  values:        "1: Single list of known true relatives, 2: Multiple lists of
                   known true relatives"
   default:       "1"
   minimum:       "1"
@@ -148,7 +152,7 @@ integer: thresh
   default:       10 
 ]
 
-endsection: required
+endsection: standard
 
 
 
@@ -158,9 +162,9 @@ section: output
   type:        "page"
 ]
 
-# Convert this to an outfile if the graphics library functions are 
-# ever adapated to take AjPFile rather than AjPStr 
-string: outfroc
+# Convert this to an outfile when the graphics library functions are 
+# adapated to take AjPFile rather than AjPStr 
+string: rocbasename
 [
     parameter:   "Y"
     information: "Base name of ROC plot file(s) (output)"
@@ -190,7 +194,7 @@ outfile: outfdata
 
 # Convert this to a outfile if the graphics library functions are 
 # ever adapated to take AjPFile rather than AjPStr 
-string: outfbar
+string: barbasename
 [                 
     standard:    "@(@($(mode)==2) & @($(multimode)==1))"
     information: "Base name of bar chart for ROC value distribution (output)"
@@ -202,7 +206,7 @@ string: outfbar
 ]
 
 
-string:  basename
+string:  classbasename
 [
    standard:     "Y"
    information:  "Base name of classification plot file(s) (output)"
@@ -219,7 +223,6 @@ string:  basename
 
 outfile: errf
 [
-    standard:    "Y"
     information: "Name of error file (output)"
     default:     "rocplot.errors"
 ]
