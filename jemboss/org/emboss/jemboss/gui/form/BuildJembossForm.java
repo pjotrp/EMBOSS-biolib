@@ -164,7 +164,7 @@ public class BuildJembossForm implements ActionListener
         }
         else
         {
-          EmbreoHelp thishelp = new EmbreoHelp(applName,mysettings);
+          GetHelp thishelp = new GetHelp(applName,mysettings);
           text = thishelp.getHelpText();
         }
         JTextArea helpText = new JTextArea(text);
