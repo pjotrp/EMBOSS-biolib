@@ -36,17 +36,17 @@ pkgdata2_DATA = jembossctl.txt kitsch.txt lindna.txt listor.txt marscan.txt \
                prophet.txt prosextract.txt protdist.txt pscan.txt \
                psiblasts.txt rebaseextract.txt recode.txt recoder.txt \
                redata.txt remap.txt restml.txt restover.txt restrict.txt \
-               revseq.txt scopalign.txt scope.txt seealso.txt seqboot.txt \
-               seqmatchall.txt seqret.txt seqretall.txt seqretallfeat.txt \
-               seqretfeat.txt seqretset.txt seqretsplit.txt showalign.txt \
-               showdb.txt showfeat.txt showorf.txt showseq.txt \
-               shuffleseq.txt sigcleave.txt siggen.txt sigscan.txt \
-               silent.txt splitter.txt stamps.txt stretcher.txt \
-               stssearch.txt supermatcher.txt swissparse.txt syco.txt \
-               textsearch.txt tfextract.txt tfm.txt tfscan.txt tmap.txt \
-               topo.txt tranalign.txt transeq.txt trimest.txt trimseq.txt \
-               union.txt vectorstrip.txt water.txt whichdb.txt wobble.txt \
-               wordcount.txt wordmatch.txt wossname.txt yank.txt
+               revseq.txt scopalign.txt scope.txt scopparse.txt seealso.txt \
+               seqboot.txt seqmatchall.txt seqret.txt seqretall.txt \
+               seqretallfeat.txt seqretfeat.txt seqretset.txt \
+               seqretsplit.txt showalign.txt showdb.txt showfeat.txt \
+               showorf.txt showseq.txt shuffleseq.txt sigcleave.txt \
+               siggen.txt sigscan.txt silent.txt splitter.txt stamps.txt \
+               stretcher.txt stssearch.txt supermatcher.txt swissparse.txt \
+               syco.txt textsearch.txt tfextract.txt tfm.txt tfscan.txt \
+               tmap.txt topo.txt tranalign.txt transeq.txt trimest.txt \
+               trimseq.txt union.txt vectorstrip.txt water.txt whichdb.txt \
+               wobble.txt wordcount.txt wordmatch.txt wossname.txt yank.txt
 
 pkgdatadir=$(prefix)/share/$(PACKAGE)/doc/programs/text
 pkgdata2dir=$(prefix)/share/$(PACKAGE)/doc/programs/text
