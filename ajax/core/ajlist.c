@@ -851,7 +851,7 @@ void ajListstrFree(AjPList* pthis)
 	    AJFREE(*rest);
 	}
     }
-
+    
     AJFREE(*rest);
     AJFREE(*pthis);
 
@@ -873,6 +873,8 @@ void ajListstrFree(AjPList* pthis)
 void ajListDel(AjPList* pthis)
 {
     AjPList list;
+    AjPListNode *rest=NULL;
+    AjPListNode next=NULL;
 
     if (!pthis)
 	return;
@@ -880,10 +882,17 @@ void ajListDel(AjPList* pthis)
 	return;
 
     list = *pthis;
-    if (!list->Count)
-	if (list->Last == list->First)
-	    AJFREE (list->First);
 
+    rest = &list->First;
+
+    if (list->Count)
+	for ( ; (*rest)->Next; *rest = next)
+	{
+	    next = (*rest)->Next;
+	    AJFREE(*rest);
+	}
+
+    AJFREE (*rest);
     AJFREE(*pthis);
 
     return;
