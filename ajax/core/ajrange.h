@@ -27,7 +27,6 @@ extern "C"
 ** @use ajRangeStrStuff The opposite of ajRangeStrExtract
 ** @use ajRangeStrMask Mask the range in a String
 ** @use ajRangeStrToLower Change to lower-case the range in a String
-** @use ajRangeOverlapSingle Detect an overlap of a range to a sequence region
 ** @use ajRangeOverlaps Detect overlaps of a set of ranges to a seq region
 ** @use ajRangeOrdered Test if ranges are in ascending non-overlapping order
 ** @use ajRangeDefault Test if the default range has been set

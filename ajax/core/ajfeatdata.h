@@ -107,7 +107,7 @@ typedef struct AjSFeattabOut {
 ** @new    ajFeattableNew        Constructor
 ** @delete ajFeattableDel        Default destructor
 ** @modify ajFeattableAdd        Adds an AjPFeature to a set
-** @input  ajFeatRead            Reads in a feature set in a specified format
+** @new    ajFeatRead            Reads in a feature set in a specified format
 **
 ** @attr Seqid [AjPStr] Sequence name
 ** @attr Type [AjPStr] Sequence type: P or N
@@ -171,7 +171,7 @@ typedef struct AjSFeattable {
 **                               must specify the associated
 **                               (non-null) AjPFeattable
 ** @delete ajFeatDel             Default destructor
-** @assign ajFeatCopy            Copy constructor
+** @new    ajFeatCopy            Copy constructor
 **
 ** @attr Protein [AjBool] true for a protein feature
 ** @attr Source [AjPStr] Source program name (or EMBL)

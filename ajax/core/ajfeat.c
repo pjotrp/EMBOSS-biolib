@@ -962,7 +962,7 @@ AjPFeattabOut ajFeattabOutNewSSF(const AjPStr fmt, const AjPStr name,
 **                                     of the features to be read in
 ** @return [AjPFeattable] Pointer to a new feature table containing
 **                        the features read in
-** @category new [AjPFeattable] Reads in a feature set
+** @category new [AjPFeattable] Reads in a feature set in a specified format
 ** @@
 ******************************************************************************/
 

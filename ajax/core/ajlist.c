@@ -1542,7 +1542,7 @@ AjIList ajListIter(AjPList thys)
 **                 Not const in practice - the iterator can insert
 **                 and delete entries
 ** @return [AjIList] New list iterator
-** @category new [AjIList] Default constructor
+** @category new [AjIList] Default constructor for a read-only list iterator
 ** @category use [AjPList] Creates a list iterator.
 ** @@
 ******************************************************************************/

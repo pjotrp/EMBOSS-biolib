@@ -30,7 +30,7 @@ extern "C"
 ** @use aj3dVectorCrossProduct return cross product of two vectors
 ** @use aj3dVectorAngle return angle between two vectors
 ** @use aj3dVectorDihedralAngle return angle between two planes
-** @use aj3dVectorBetweenPoints return vector between two points
+** @modify aj3dVectorBetweenPoints return vector between two points
 **
 ** @cast aj3dVectorLength return length of vector
 **
@@ -55,7 +55,7 @@ typedef struct AjS3dVector
 /* =================== All functions in alphabetical order ================= */
 /* ========================================================================= */
 
-/* aj3dvector.h () $Date: 2004/05/06 15:09:14 $                    DJC Oct03 */
+/* aj3dvector.h () $Date: 2004/07/14 15:36:49 $                    DJC Oct03 */
 
 float       aj3dVectorAngle(const AjP3dVector ajp3dVectorFirst,
 			    const AjP3dVector ajp3dVectorSecond);

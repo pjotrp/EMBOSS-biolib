@@ -18,20 +18,19 @@ extern "C"
 ** @new ajTrnNew Default constructor
 ** @new ajTrnNewI Default constructor
 ** @new ajTrnNewC Default constructor
-** @new ajTrnNewPep Peptide object constructor
 ** @delete ajTrnDel Default destructor
 ** @input ajTrnReadFile Reads a Genetic Code file
-** @use ajTrnCodon Translating a codon from a AjPStr
-** @use ajTrnRevCodon Reverse complement translating a codon from a AjPStr
-** @use ajTrnCodonC Translating a codon from a char*
-** @use ajTrnRevCodonC Translating a codon from a AjPStr
+** @use ajTrnCodon Translating a codon from an AjPStr
+** @use ajTrnRevCodon Reverse complement translating a codon from an AjPStr
+** @use ajTrnCodonC Translating a codon from a char* text
+** @use ajTrnRevCodonC Translating a codon from a char* text
 ** @use ajTrnCodonK Translating a codon from a char* to a char
 ** @use ajTrnRevCodonK Reverse complement translating a codon
 **                     from a char* to a char
 ** @use ajTrnC Translating a sequence from a char* text
 ** @use ajTrnRevC Reverse complement translating a sequence from a char* text
 ** @use ajTrnAltRevC (Alt) Reverse complement translating a sequence
-**                         from a char*
+**                         from a char* text
 ** @use ajTrnStr Translating a sequence from a AjPStr
 ** @use ajTrnRevStr Reverse complement translating a sequence from a AjPStr
 ** @use ajTrnAltRevStr (Alt) Reverse complement translating a sequence

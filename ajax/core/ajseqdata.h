@@ -61,8 +61,8 @@ typedef struct SeqSAccess SeqSAccess;
 ** @use seqQueryMatch Compares an AjPSeq to a query.
 ** @modify ajSeqQueryStarclear Clears fully wild elements of a query because
 **                          empty elements are the same.
-** @use seqQueryWild Tests whether a query includes wildcards
-** @use seqQueryIs Tests whether a query has been defined
+** @use ajSeqQueryWild Tests whether a query includes wildcards
+** @use ajSeqQueryIs Tests whether a query has been defined
 ** @@
 ******************************************************************************/
 
@@ -348,9 +348,7 @@ typedef struct AjSStockholmdata
 ** @modify ajSeqinUsa Resets using a new USA
 ** @modify ajSeqinClear Resets ready for reuse.
 ** @modify ajSeqinSetRange Sets a sequence range for all input sequences
-** @input ajSeqRead Reading a sequence.
-** @input ajSeqsetRead Reading a sequence set.
-** @input ajSeqAllRead Reading a sequence stream.
+**
 ** @other AjPSeq Sequences
 ** @other AjPSeqset Sequence sets
 ** @other AjPSeqall Sequence streams
@@ -535,7 +533,7 @@ typedef struct AjSSeqin {
 ** @cast ajSeqBegin Returns the sequence start position
 ** @cast ajSeqEnd Returns the sequence end position
 ** @cast ajSeqCheckGcg Calculates the GCG checksum for a sequence.
-** @cast ajSeqNum Converts a sequence to numbers
+** @cast ajSeqNum Convert sequence to numbers
 ** @use ajSeqIsNuc tests whether a sequence is nucleotide
 ** @use ajSeqIsProt tests whether a sequence is protein
 ** @output ajSeqWrite Master sequence output routine

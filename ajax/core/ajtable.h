@@ -37,7 +37,7 @@ struct binding {
 ** @modify ajTableMap Calls a function for each key/value in a table.
 ** @modify ajTableRemove Removes a key/value pair from a table, and returns
 **                    the value.
-** @cast ajTableToArray Creates an array to hold each key value pair
+** @cast ajTableToarray Creates an array to hold each key value pair
 **                     in pairs of array elements. The last element is null.
 ** @cast ajTableGet Returns the value for a given key.
 ** @cast ajTableLength Returns the number of keys in a table.

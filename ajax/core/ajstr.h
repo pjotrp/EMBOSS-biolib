@@ -194,11 +194,13 @@ typedef AjPStr* AjPPStr;
 **
 ** @modify ajStrIterNext Steps to the next iteration
 **
-** @cast ajStrIterBegin returns result of first iteration
-** @cast ajStrIterEnd   returns result of last iteration
+** @modify ajStrIterBegin returns result of first iteration
+** @modify ajStrIterNext Steps to the next iteration
+** @modify ajStrIterBackNext Step to previous character in string iterator.
+** @modify ajStrIterEnd   returns result of last iteration
 ** @cast ajStrIterDone  Tests whether iteration is complete
-** @cast ajStrIterGetK  returns the character from the iterator
 ** @cast ajStrIterGetC  returns the character* from the iterator
+** @cast ajStrIterGetK  returns the character from the iterator
 **
 ** @attr Start [char*] Starting string pointer
 ** @attr End [char*] Final string pointer (NULL character position)
@@ -223,6 +225,9 @@ typedef struct AjSStrIter {
 ** @attr String [AjPStr] String
 ** @attr Delim [AjPStr] Delimiter set for ajStrToken
 ** @attr Pos [ajint] Position in string
+**
+** @new ajStrTokenInit Generates a string token parser object
+** @delete ajStrTokenClear Destroys a string token parser
 ** @@
 ******************************************************************************/
 

@@ -960,7 +960,7 @@ AjPSeq ajTrnNewPep(const AjPSeq nucleicSeq, ajint frame)
 ** @param [r] trnObj [const AjPTrn] Translation tables
 ** @param [r] codon [const AjPStr] codon to translate
 ** @return [const AjPStr] Amino acid translation
-** @category use [AjPTrn] Translating a codon from a AjPStr
+** @category use [AjPTrn] Translating a codon from an AjPStr
 ** @@
 ******************************************************************************/
 
@@ -993,7 +993,7 @@ const AjPStr ajTrnCodon(const AjPTrn trnObj, const AjPStr codon)
 ** @param [r] codon [const AjPStr] codon to translate
 ** @return [const AjPStr] Amino acid translation
 ** @category use [AjPTrn] Reverse complement translating a codon
-**                from a AjPStr
+**                from an AjPStr
 ** @@
 ******************************************************************************/
 
@@ -1482,7 +1482,7 @@ void ajTrnAltRevSeq(const AjPTrn trnObj, const AjPSeq seq, AjPStr *pep)
 ** @param [u] pep [AjPStr *] returned peptide translation (APPENDED TO INPUT)
 **
 ** @return [void]
-** @category use [AjPTrn] Translating a sequence from a char * in a
+** @category use [AjPTrn] Translating a sequence from a char* in a
 **                frame
 ** @@
 ******************************************************************************/
@@ -1694,7 +1694,7 @@ AjPSeq ajTrnSeqFramePep(const AjPTrn trnObj, const AjPSeq seq, ajint frame)
 **
 ** @return [ajint] Number of dangling bases (0,1 or 2)
 ** @category use [AjPTrn] Translates the last 1 or two bases of a
-**                sequence in a char
+**                sequence in a char* text
 ** @@
 ******************************************************************************/
 
@@ -1756,8 +1756,10 @@ ajint ajTrnCDangle(const AjPTrn trnObj, const char *seq, ajint len,
 ** @param [u] pep [AjPStr *] returned peptide translation (APPENDED TO INPUT)
 **
 ** @return [ajint] Number of dangling bases (0,1 or 2)
-
-	dangle = len - end;** @@
+**	dangle = len - end;
+** @category use [AjPTrn] Translates the last 1 or two bases of a
+**                sequence in a AjStr
+** @@
 ******************************************************************************/
 
 ajint ajTrnStrDangle(const AjPTrn trnObj, const AjPStr seq, ajint frame,
@@ -1948,7 +1950,7 @@ ajint ajTrnStartStop(const AjPTrn trnObj, const AjPStr codon, char *aa)
 ** @param [w] aa [char *] returned translated amino acid
 **                        (not a NULL-terminated array of char)
 ** @return [ajint] 1 if it is a start codon, -1 if it is a stop codon, else 0
-** @category use [AjPTrn] Checks whether a const char * codon is a
+** @category use [AjPTrn] Checks whether a const char* codon is a
 **                Start codon, a Stop codon or something else
 ** @@
 ******************************************************************************/
