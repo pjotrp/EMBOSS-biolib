@@ -21,12 +21,12 @@ extern "C"
 #endif
 
 typedef void (*Fmt_T)(ajint code, VALIST ap,
-	ajint put(ajint c, void *cl), void *cl,
+	int put(int c, void *cl), void *cl,
 	ajuint flags[256], ajint width, ajint precision);
 
-extern void ajFmtFmt (ajint put(ajint c, void *cl), void *cl,
+extern void ajFmtFmt (int put(int c, void *cl), void *cl,
 	const char *fmt, ...);
-extern void ajFmtVfmt(ajint put(ajint c, void *cl), void *cl,
+extern void ajFmtVfmt(int put(int c, void *cl), void *cl,
 	const char *fmt, va_list ap);
 extern void ajFmtError (const char *fmt, ...);
 extern void ajFmtVError (const char *fmt, va_list ap);
@@ -52,7 +52,7 @@ extern char *ajFmtString (const char *fmt, ...);
 extern char *ajFmtVString(const char *fmt, va_list ap);
 extern Fmt_T ajFmtRegister(ajint code, Fmt_T cvt);
 extern void ajFmtPutd(const char *str, ajint len,
-	ajint put(ajint c, void *cl), void *cl,
+	int put(int c, void *cl), void *cl,
 	ajuint flags[256], ajint width, ajint precision);
 extern void ajFmtPuts(const char *str, ajint len,
 	ajint put(ajint c, void *cl), void *cl,
