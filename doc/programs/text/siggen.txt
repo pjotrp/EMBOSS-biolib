@@ -27,10 +27,21 @@ Usage
    Here is a sample session with siggen:
 
 % siggen
-Scans a sparse protein signature against swissprot
-Name of signature file for input [test.sig]:
-Name of sequence database to search [./test.seq]:
-Name of (optionally grouped) scop families file for input [test.fam]:
+Generates a sparse protein signature
+Location of alignment files for input [./]: ./jontest
+Extension of alignment files for input [.align]:
+Location of contact files for input [./]: ./jontest
+Extension of contact files [.con]:
+% sparsity of signature [10]:
+Generate a randomized signature [N]:
+Substitution matrix to be used [./EBLOSUM62]:
+Score alignment on basis of residue conservation [Y]:
+Score alignment on basis of number of contacts [Y]:
+Score alignment on basis of conservation of contacts [Y]: N
+Score alignment on a combined measure of number and conservation of contacts [N
+]:
+Ignore alignment postitions with post_similar value of 0 [Y]:
+Name of signature file for output [sig.sig]:
 
 Command line arguments
 
