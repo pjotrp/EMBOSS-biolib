@@ -6,8 +6,8 @@
 **
 **
 ** @author Copyright (C) 2004 Damian Counsell
-** @version $Revision: 1.1 $
-** @modified $Date: 2004/06/16 17:08:23 $
+** @version $Revision: 1.2 $
+** @modified $Date: 2004/12/06 18:03:36 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -70,13 +70,13 @@ static char *cArrayThreeLetterCodes[enumTotalResTypes] =
 	"GLN\0","ARG\0","SER\0","THR\0","SEC\0","VAL\0","TRP\0","XAA\0",
 	"TYR\0","GLX\0","XXX\0","YYY\0","ZZZ\0","NO MATCH\0"
     };
-static char cOneLetterCodes[enumTotalResTypes] =
-    {
-	'A','B','C','D','E','F','G','H',
-	'I','\0','K','L','M','N','\0','P',
-	'Q','R','S','T','U','V','W','X',
-	'Y','Z','\0','\0','\0','\0'
-    };
+/* static char cOneLetterCodes[enumTotalResTypes] = */
+/*     { */
+/* 	'A','B','C','D','E','F','G','H', */
+/* 	'I','\0','K','L','M','N','\0','P', */
+/* 	'Q','R','S','T','U','V','W','X', */
+/* 	'Y','Z','\0','\0','\0','\0' */
+/*     }; */
 
 /* ==================================================================== */
 /* ======================== private functions ========================= */
@@ -322,6 +322,41 @@ AjBool embContactWriteScoringMatrix(AjPInt2d ajpInt2dCounts,
 
 
 
+/* @func embAjintToScoringMatrixIndex *****************************************
+**
+** converts residue type integer to scoring_matrix index
+**
+** @param [r] ajIntResType [ajint] numerical residue type
+** @return [ajint] index to corresponding character in data dir scoring matrix
+** @@
+******************************************************************************/
+
+ajint embAjintToScoringMatrixIndex(ajint ajIntResType)
+{
+    ajint ajIntScoringMatrixIndex;
+    ajint ajIntLookUpArrayIndex;
+
+    /* look up array for residue type order
+     *  found in scoring matrix data files:
+     *   ARNDCQEGHILKMFPSTWYVBZX*
+     */
+    const ajint ajIntArrayLookUp[enumTotalResTypes] =
+	{0,20,4,3,6,13,7,8,9,24,11,10,12,2,25,14,5,1,15,16,26,19,17,22,18,21,23,27};
+
+    /* default to out-of-range value */
+    if ((ajIntResType < 0) || (ajIntResType > 27))
+	ajIntScoringMatrixIndex = 28;
+    else
+    {
+	ajIntLookUpArrayIndex = (ajIntResType - enumArrayOffset);
+	ajIntScoringMatrixIndex = ajIntArrayLookUp[ajIntLookUpArrayIndex];
+    }
+    
+    return ajIntScoringMatrixIndex;
+}
+
+
+
 /* @func embCharToScoringMatrixIndex *****************************************
 **
 ** converts residue type character to scoring_matrix index
@@ -370,7 +405,7 @@ ajint embCharToScoringMatrixIndex(char cResType)
 
 ajint embScoringMatrixIndexToChar(ajint ajIntScoringMatrixIndex)
 {
-    char cResType;
+    char cResType = '\0';
 
     /* look up array for residue type order
      *  found in scoring matrix data files:
@@ -824,137 +859,6 @@ AjBool embLoadHeaderLine (AjPStr *pAjpStrCmapLine,
 
 
 
-/* @func embWriteCmapFile ****************************************************
-**
-** writes ajpdb contact map file from header object and two arrays of ints  
-**
-** @param [r] ajpFileUpdatedCmap [AjPFile] output file stream of current cmap
-** @param [r] ajIntSeqLen [ajint] number of residues in chain sequence
-** @param [r] pAjpInt2dCmapSummary [AjPInt2d*] summary of contact map
-** @param [r] pAjpCmapHeader [AjPCmapHeader*] Contact map header
-** @param [r] pAjpInt2dCmapResTypes [AjPInt2d*] contacts as residue types
-** @param [r] pAjpInt2dCmapPositions [AjPInt2d*] contacts as positions in
-**                                               chain
-** @return [AjBool] ajTrue if file successfully written
-** @@
-******************************************************************************/
-
-AjBool embWriteCmapFile (AjPFile ajpFileUpdatedCmap,
-			ajint ajIntSeqLen,
-			AjPInt2d *pAjpInt2dCmapSummary,
-			AjPCmapHeader *pAjpCmapHeader,
-			AjPInt2d *pAjpInt2dCmapResTypes,
-			AjPInt2d *pAjpInt2dCmapPositions)
-{
-    AjBool ajBoolUpdatedCmapFileWritten = ajFalse; /* has the file been written? */
-
-    /* counters and limits */
-    ajint ajIntRow;
-    ajint ajIntColumn;
-    ajint ajIntColumnLen;
-
-    /* to store contact attributes from contact map */
-    ajint ajIntTempFirstResType;
-    ajint ajIntTempSecondResType;
-    AjPStr ajpStrTempFirstResType;
-    AjPStr ajpStrTempSecondResType;
-    ajint ajIntTempFirstPosition;
-    ajint ajIntTempSecondPosition;
-
-     /* object to hold single contact */
-    AjPContact ajpContactTemp = NULL;
-    /* structure to hold header text */
-    AjPCmapHeader ajpCmapHeader = NULL;
-
-    /* arrays to hold contacts */
-    AjPInt2d ajpInt2dCmapSummary = NULL;
-    AjPInt2d ajpInt2dCmapResTypes = NULL;
-    AjPInt2d ajpInt2dCmapPositions = NULL;
-
-    /* dereference pointers to original pointers */
-    ajpCmapHeader = *pAjpCmapHeader;
-    ajpInt2dCmapSummary = *pAjpInt2dCmapSummary;
-    ajpInt2dCmapResTypes = *pAjpInt2dCmapResTypes;
-    ajpInt2dCmapPositions = *pAjpInt2dCmapPositions;    
-
-    /* check file passed to function is usable */	
-    if(!ajpFileUpdatedCmap)
-    {	
-	ajWarn("function embWriteCmapFile cannot open passed filestream");	
-	return ajFalse;
-    }
-
-    /* write header to file */
-    ajBoolUpdatedCmapFileWritten = embWriteCmapHeader(ajpFileUpdatedCmap,
-						     ajpCmapHeader);
-
-    /* reserve memory for current contact object */
-    ajpContactTemp = ajContactNew();
-
-    /* XXXX OUTER LOOP OVER FIRST RESIDUES IN CONTACTS */
-    for(ajIntColumn = enumArrayOffset;ajIntColumn < ajIntSeqLen;ajIntColumn++)
-    {
-	/* find end of each column */
-	ajIntColumnLen = ajInt2dGet(ajpInt2dCmapSummary,
-				    enumLastContactIndex,
-				    ajIntColumn);
-
-/* 	ajFmtPrint("££££££££££££££££££££££££££££££££\n"); */
-/* 	ajFmtPrint("££££££ COLUMN LENGTH: %d ££££££\n", ajIntColumnLen); */
-/* 	ajFmtPrint("££££££££££££££££££££££££££££££££\n\n"); */
-
-	ajIntTempFirstResType = ajInt2dGet(ajpInt2dCmapSummary,
-					   enumFirstResTypeIndex,
-					   ajIntColumn);
-	ajpStrTempFirstResType = embAjint1ToString3(ajIntTempFirstResType);
-
-	if (ajIntColumnLen > enumZeroContacts)
-	{
-
-	    /* XXXX INNER LOOP OVER CONTACTS IN COLUMN */
-	    for(ajIntRow = 0;ajIntRow < ajIntColumnLen;ajIntRow++)
-	    {
-		ajIntTempSecondResType = ajInt2dGet(ajpInt2dCmapResTypes,
-						    ajIntRow,
-						    ajIntColumn);	    
-
-		/* load up temporary contact object with values from residue type array */ 
-		ajpStrTempSecondResType = embAjint1ToString3(ajIntTempSecondResType);
-
-		if( enumDebugLevel > 1 )
-		{
-		    
-		    ajFmtPrint("££££££££££££££££££££££££££££££££\n");
-		    ajFmtPrint("££££ first residue type: %S ££££\n",
-			       ajpStrTempFirstResType);
-		    ajFmtPrint("£££ second residue type: %S ££££\n",
-			       ajpStrTempSecondResType);
-		    ajFmtPrint("££££££££££££££££££££££££££££££££\n\n");
-		}
-		
-		/* read temporary contact object with values from position array */
-		ajIntTempFirstPosition = ajIntColumn;
-		ajIntTempSecondPosition = ajInt2dGet(ajpInt2dCmapPositions,
-						     ajIntRow,
-						     ajIntColumn);
-
-		/* load up temporary contact object with values from residue position array */
-		ajpContactTemp->ajIntFirstPosition = ajIntTempFirstPosition;
-		ajpContactTemp->ajIntSecondPosition = ajIntTempSecondPosition;
-		ajpContactTemp->ajpStrFirstResType = ajpStrTempFirstResType;
-		ajpContactTemp->ajpStrSecondResType = ajpStrTempSecondResType;
-		
-		embWriteContact(ajpFileUpdatedCmap,
-			      ajpContactTemp);
-	    }
-	}
-    }
-
-    /* free contact */
-    embContactDel(&ajpContactTemp);
-    
-    return ajBoolUpdatedCmapFileWritten;
-}
 
 
 /* @func embString3ToAjint1 ***************************************************
@@ -1061,6 +965,300 @@ AjPInt2d embGetIntMap (ajint ajIntAcrossSeqLen)
 }
 
 
+
+/* @func embWriteCmapFile ****************************************************
+**
+** writes ajpdb contact map file from header object and two arrays of ints  
+**
+** @param [r] ajpFileCmap [AjPFile] output file stream of current cmap
+** @param [r] ajIntSeqLen [ajint] number of residues in chain sequence
+** @param [r] pAjpInt2dCmapSummary [AjPInt2d*] summary of contact map
+** @param [r] pAjpCmapHeader [AjPCmapHeader*] Contact map header
+** @param [r] pAjpInt2dCmapResTypes [AjPInt2d*] contacts as residue types
+** @param [r] pAjpInt2dCmapPositions [AjPInt2d*] contacts as positions in
+**                                               chain
+** @return [AjBool] ajTrue if file successfully written
+** @@
+******************************************************************************/
+
+AjBool embWriteCmapFile (AjPFile ajpFileCmap,
+			ajint ajIntSeqLen,
+			AjPInt2d *pAjpInt2dCmapSummary,
+			AjPCmapHeader *pAjpCmapHeader,
+			AjPInt2d *pAjpInt2dCmapResTypes,
+			AjPInt2d *pAjpInt2dCmapPositions)
+{
+    AjBool ajBoolCmapFileWritten = ajFalse; /* has the file been written? */
+
+    /* counters and limits */
+    ajint ajIntRow;
+    ajint ajIntColumn;
+    ajint ajIntColumnLen;
+
+    /* to store contact attributes from contact map */
+    ajint ajIntTempFirstResType;
+    ajint ajIntTempSecondResType;
+    AjPStr ajpStrTempFirstResType;
+    AjPStr ajpStrTempSecondResType;
+    ajint ajIntTempFirstPosition;
+    ajint ajIntTempSecondPosition;
+
+     /* object to hold single contact */
+    AjPContact ajpContactTemp = NULL;
+    /* structure to hold header text */
+    AjPCmapHeader ajpCmapHeader = NULL;
+
+    /* arrays to hold contacts */
+    AjPInt2d ajpInt2dCmapSummary = NULL;
+    AjPInt2d ajpInt2dCmapResTypes = NULL;
+    AjPInt2d ajpInt2dCmapPositions = NULL;
+
+    /* dereference pointers to original pointers */
+    ajpCmapHeader = *pAjpCmapHeader;
+    ajpInt2dCmapSummary = *pAjpInt2dCmapSummary;
+    ajpInt2dCmapResTypes = *pAjpInt2dCmapResTypes;
+    ajpInt2dCmapPositions = *pAjpInt2dCmapPositions;    
+
+    /* check file passed to function is usable */	
+    if(!ajpFileCmap)
+    {	
+	ajWarn("function embWriteCmapFile cannot open passed filestream");	
+	return ajFalse;
+    }
+
+    /* write header to file */
+    ajBoolCmapFileWritten = embWriteCmapHeader(ajpFileCmap,
+						     ajpCmapHeader);
+
+    /* reserve memory for current contact object */
+    ajpContactTemp = ajContactNew();
+
+    /* XXXX OUTER LOOP OVER FIRST RESIDUES IN CONTACTS */
+    for(ajIntColumn = enumArrayOffset;ajIntColumn < ajIntSeqLen;ajIntColumn++)
+    {
+	/* find end of each column */
+	ajIntColumnLen = ajInt2dGet(ajpInt2dCmapSummary,
+				    enumLastContactIndex,
+				    ajIntColumn);
+
+/* 	ajFmtPrint("££££££££££££££££££££££££££££££££\n"); */
+/* 	ajFmtPrint("££££££ COLUMN LENGTH: %d ££££££\n", ajIntColumnLen); */
+/* 	ajFmtPrint("££££££££££££££££££££££££££££££££\n\n"); */
+
+	ajIntTempFirstResType = ajInt2dGet(ajpInt2dCmapSummary,
+					   enumFirstResTypeIndex,
+					   ajIntColumn);
+	ajpStrTempFirstResType = embAjint1ToString3(ajIntTempFirstResType);
+
+	if (ajIntColumnLen > enumZeroContacts)
+	{
+
+	    /* XXXX INNER LOOP OVER CONTACTS IN COLUMN */
+	    for(ajIntRow = 0;ajIntRow < ajIntColumnLen;ajIntRow++)
+	    {
+		ajIntTempSecondResType = ajInt2dGet(ajpInt2dCmapResTypes,
+						    ajIntRow,
+						    ajIntColumn);	    
+
+		/* load up temporary contact object with values from residue type array */ 
+		ajpStrTempSecondResType = embAjint1ToString3(ajIntTempSecondResType);
+
+		if( enumDebugLevel > 1 )
+		{
+		    
+		    ajFmtPrint("££££££££££££££££££££££££££££££££\n");
+		    ajFmtPrint("££££ first residue type: %S ££££\n",
+			       ajpStrTempFirstResType);
+		    ajFmtPrint("£££ second residue type: %S ££££\n",
+			       ajpStrTempSecondResType);
+		    ajFmtPrint("££££££££££££££££££££££££££££££££\n\n");
+		}
+		
+		/* read temporary contact object with values from position array */
+		ajIntTempFirstPosition = ajIntColumn;
+		ajIntTempSecondPosition = ajInt2dGet(ajpInt2dCmapPositions,
+						     ajIntRow,
+						     ajIntColumn);
+
+		/* load up temporary contact object with values from residue position array */
+		ajpContactTemp->ajIntFirstPosition = ajIntTempFirstPosition;
+		ajpContactTemp->ajIntSecondPosition = ajIntTempSecondPosition;
+		ajpContactTemp->ajpStrFirstResType = ajpStrTempFirstResType;
+		ajpContactTemp->ajpStrSecondResType = ajpStrTempSecondResType;
+		
+		embWriteContact(ajpFileCmap,
+			      ajpContactTemp);
+	    }
+	}
+    }
+
+    /* free contact */
+    embContactDel(&ajpContactTemp);
+    
+    return ajBoolCmapFileWritten;
+}
+
+
+
+/* @func embUpdatedWriteCmapFile *********************************************
+**
+** writes ajpdb contact map file from header two arrays plus contact scores
+**  for each pair of residues
+**
+** @param [r] ajpFileUpdatedCmap [AjPFile] output file stream of current cmap
+** @param [r] ajIntSeqLen [ajint] number of residues in chain sequence
+** @param [r] pAjpInt2dCmapSummary [AjPInt2d*] summary of contact map
+** @param [r] pAjpCmapHeader [AjPCmapHeader*] Contact map header
+** @param [r] pAjpInt2dCmapResTypes [AjPInt2d*] contacts as residue types
+** @param [r] pAjpInt2dCmapPositions [AjPInt2d*] contacts as positions in
+**                                               chain
+** @param [r] ajpMatrixfContactScoring [AjPMatrixf] scoring matrix
+** @return [AjBool] ajTrue if file successfully written
+** @@
+******************************************************************************/
+
+AjBool embWriteUpdatedCmapFile (AjPFile ajpFileUpdatedCmap,
+				ajint ajIntSeqLen,
+				AjPInt2d *pAjpInt2dCmapSummary,
+				AjPCmapHeader *pAjpCmapHeader,
+				AjPInt2d *pAjpInt2dCmapResTypes,
+				AjPInt2d *pAjpInt2dCmapPositions,
+				AjPMatrixf *pAjpMatrixfContactScoring)
+{
+    AjBool ajBoolUpdatedCmapFileWritten = ajFalse; /* has the file been written? */
+
+    /* counters and limits */
+    ajint ajIntRow;
+    ajint ajIntColumn;
+    ajint ajIntColumnLen;
+
+    /* to store contact attributes from contact map */
+    ajint ajIntFirstResType;
+    ajint ajIntSecondResType;
+    ajint ajIntScoreRow;
+    ajint ajIntScoreColumn;
+    AjPStr ajpStrFirstResType;
+    AjPStr ajpStrSecondResType;
+    ajint ajIntFirstPosition;
+    ajint ajIntSecondPosition;
+
+     /* object to hold single contact */
+    AjPContact ajpContact = NULL;
+    /* structure to hold header text */
+    AjPCmapHeader ajpCmapHeader = NULL;
+
+    /* arrays to hold contacts */
+    AjPInt2d ajpInt2dCmapSummary = NULL;
+    AjPInt2d ajpInt2dCmapResTypes = NULL;
+    AjPInt2d ajpInt2dCmapPositions = NULL;
+
+    /* array from contact scoring matrix */
+    AjPMatrixf ajpMatrixfContactScoring = NULL;
+    float** floatArray2dScoring = NULL;
+    float fContactScore;
+    /* dereference pointers to original pointers */
+    ajpMatrixfContactScoring = *pAjpMatrixfContactScoring;
+    ajpCmapHeader = *pAjpCmapHeader;
+    ajpInt2dCmapSummary = *pAjpInt2dCmapSummary;
+    ajpInt2dCmapResTypes = *pAjpInt2dCmapResTypes;
+    ajpInt2dCmapPositions = *pAjpInt2dCmapPositions;    
+
+    /* check file passed to function is usable */	
+    if(!ajpFileUpdatedCmap)
+    {	
+	ajWarn("function embWriteCmapFile cannot open passed filestream");	
+	return ajFalse;
+    }
+
+    /* write header to file */
+    ajBoolUpdatedCmapFileWritten = embWriteCmapHeader(ajpFileUpdatedCmap,
+						     ajpCmapHeader);
+
+    /* reserve memory for current contact object */
+    ajpContact = ajContactNew();
+
+    fContactScore = 0.0;
+
+    /* XXXX OUTER LOOP OVER FIRST RESIDUES IN CONTACTS */
+    for(ajIntColumn = enumArrayOffset;ajIntColumn < ajIntSeqLen;ajIntColumn++)
+    {
+	/* find end of each column */
+	ajIntColumnLen = ajInt2dGet(ajpInt2dCmapSummary,
+				    enumLastContactIndex,
+				    ajIntColumn);
+
+/* 	ajFmtPrint("££££££££££££££££££££££££££££££££\n"); */
+/* 	ajFmtPrint("££££££ COLUMN LENGTH: %d ££££££\n", ajIntColumnLen); */
+/* 	ajFmtPrint("££££££££££££££££££££££££££££££££\n\n"); */
+
+	ajIntFirstResType = ajInt2dGet(ajpInt2dCmapSummary,
+				       enumFirstResTypeIndex,
+				       ajIntColumn);
+	ajpStrFirstResType = embAjint1ToString3(ajIntFirstResType);
+
+	if (ajIntColumnLen > enumZeroContacts)
+	{
+
+	    /* XXXX INNER LOOP OVER CONTACTS IN COLUMN */
+	    for(ajIntRow = 0;ajIntRow < ajIntColumnLen;ajIntRow++)
+	    {
+		ajIntSecondResType = ajInt2dGet(ajpInt2dCmapResTypes,
+						ajIntRow,
+						ajIntColumn);	    
+
+		/* load up temporary contact object with values from residue type array */ 
+		ajpStrSecondResType = embAjint1ToString3(ajIntSecondResType);
+
+		if( enumDebugLevel > 1 )
+		{
+		    
+		    ajFmtPrint("££££££££££££££££££££££££££££££££\n");
+		    ajFmtPrint("££££ first residue type: %S ££££\n",
+			       ajpStrFirstResType);
+		    ajFmtPrint("£££ second residue type: %S ££££\n",
+			       ajpStrSecondResType);
+		    ajFmtPrint("££££££££££££££££££££££££££££££££\n\n");
+		}
+		
+		/* read temporary contact object with values from position array */
+		ajIntFirstPosition = ajIntColumn;
+		ajIntSecondPosition = ajInt2dGet(ajpInt2dCmapPositions,
+						 ajIntRow,
+						 ajIntColumn);
+
+		/*
+		 * load up temporary contact object with
+		 * values from residue position array
+		 */
+		ajpContact->ajIntFirstPosition  = ajIntFirstPosition;
+		ajpContact->ajIntSecondPosition = ajIntSecondPosition;
+		ajpContact->ajpStrFirstResType  = ajpStrFirstResType;
+		ajpContact->ajpStrSecondResType = ajpStrSecondResType;
+
+		/* convert the input float AjpMatrix to a 2D array of scores */ 
+		floatArray2dScoring = ajMatrixfArray(ajpMatrixfContactScoring);
+
+		/* get probability of two residues contact each other */
+		ajIntScoreRow = embAjintToScoringMatrixIndex(ajIntFirstResType);
+		ajIntScoreColumn = embAjintToScoringMatrixIndex(ajIntSecondResType);
+		fContactScore =
+		    (float)(floatArray2dScoring[ajIntScoreRow][ajIntScoreColumn]);
+		
+		embWriteUpdatedContact(ajpFileUpdatedCmap,
+				       ajpContact,
+				       fContactScore);
+	    }
+	}
+    }
+
+    /* free contact */
+    embContactDel(&ajpContact);
+    
+    return ajBoolUpdatedCmapFileWritten;
+}
+
+
+
 /* @func embWriteContact *******************************************************
 **
 ** writes contact object to open contact map file
@@ -1072,7 +1270,7 @@ AjPInt2d embGetIntMap (ajint ajIntAcrossSeqLen)
 ******************************************************************************/
 
 void embWriteContact (AjPFile ajpFileUpdatedCmap,
-		    AjPContact ajpContactToWrite)
+		      AjPContact ajpContactToWrite)
 {
     /* write contact object attributes in EMBL-like format */
     ajFmtPrintF(ajpFileUpdatedCmap,
@@ -1082,6 +1280,34 @@ void embWriteContact (AjPFile ajpFileUpdatedCmap,
 		ajpContactToWrite->ajpStrSecondResType,
 		ajpContactToWrite->ajIntSecondPosition);
 }
+
+
+
+/* @func embWriteUpdatedContact **********************************************
+**
+** writes updated contact object to open contact map file
+**
+** @param [r] ajpFileUpdatedCmap [AjPFile] file to write contact map to
+** @param [r] ajpContactToWrite [AjPContact] contact to be written
+** @param [r] fContactScore [float] probability score of contact pair
+** @return [void]
+** @@
+******************************************************************************/
+
+void embWriteUpdatedContact (AjPFile ajpFileUpdatedCmap,
+			     AjPContact ajpContactToWrite,
+			     float fContactScore)
+{
+    /* write contact object attributes in EMBL-like format */
+    ajFmtPrintF(ajpFileUpdatedCmap,
+		"SM   %S %d ; %S %d\t%f\n",
+		ajpContactToWrite->ajpStrFirstResType,
+		ajpContactToWrite->ajIntFirstPosition,
+		ajpContactToWrite->ajpStrSecondResType,
+		ajpContactToWrite->ajIntSecondPosition,
+		fContactScore);
+}
+
 
 
 /* @func embWriteCmapHeader *************************************************
@@ -1095,7 +1321,7 @@ void embWriteContact (AjPFile ajpFileUpdatedCmap,
 ******************************************************************************/
 
 AjBool embWriteCmapHeader (AjPFile ajpFileUpdatedCmap,
-				 AjPCmapHeader ajpHeaderToWrite)
+			   AjPCmapHeader ajpHeaderToWrite)
 {
     AjBool ajBoolSuccess;
     AjPStr ajpStrBlankLine = NULL;
