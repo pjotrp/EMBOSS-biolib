@@ -74,7 +74,7 @@ boolean: printdata  [
 
 boolean: progress  [
   additional: "Y"
-  default: "Neze"
+  default: "N"
   information: "Print indications of progress of run"
 ]
 
