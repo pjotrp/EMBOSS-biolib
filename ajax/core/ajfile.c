@@ -3041,9 +3041,9 @@ AjBool ajFileNameExtC (AjPStr* filename, const char* extension)
 ** @@
 ******************************************************************************/
 
-void ajFileScan(AjPStr path, AjPStr filename, AjPList *result,
-		AjBool show, AjBool dolist, AjPList *list,
-		AjPList rlist, AjBool recurs, const AjPFile outf)
+ajint ajFileScan(AjPStr path, AjPStr filename, AjPList *result,
+		 AjBool show, AjBool dolist, AjPList *list,
+		 AjPList rlist, AjBool recurs, const AjPFile outf)
 {
     AjPList dirs=NULL;
     AjIList iter=NULL;
@@ -3071,14 +3071,14 @@ void ajFileScan(AjPStr path, AjPStr filename, AjPList *result,
     if(!ajFileDir(&tpath))
     {
 	ajStrDel(&tpath);
-	return;
+	return 0;
     }
     
 
     if(!(indir=opendir(ajStrStr(tpath))))
     {
 	ajStrDel(&tpath);
-	return;
+	return 0;
     }
     
 
@@ -3155,7 +3155,7 @@ void ajFileScan(AjPStr path, AjPStr filename, AjPList *result,
     ajStrDel(&tpath);
     ajListDel(&dirs);
 
-    return;
+    return ajListLength(*list);
 }
 
 /* @func ajFileTestSkip ****************************************************
