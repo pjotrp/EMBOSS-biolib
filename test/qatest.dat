@@ -4682,7 +4682,7 @@ FP /^ECLACY          1486/
 
 ID syco-ex
 AP syco
-CL -plot -cfile Epae
+CL -plot -cfile Epae.cut
 IN tembl:paamir
 IN ps
 FI stderr
