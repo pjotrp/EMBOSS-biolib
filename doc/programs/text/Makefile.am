@@ -3,54 +3,64 @@ pkgdata_DATA =  aaindexextract.txt abiview.txt antigenic.txt \
                chaos.txt charge.txt checktrans.txt chips.txt cirdna.txt \
                clique.txt codcmp.txt coderet.txt complex.txt compseq.txt \
                cons.txt consense.txt contacts.txt contml.txt contrast.txt \
-               cpgplot.txt cpgreport.txt cusp.txt cutgextract.txt \
-               cutseq.txt dan.txt dbiblast.txt dbifasta.txt dbiflat.txt \
-               dbigcg.txt degapseq.txt descseq.txt diffseq.txt digest.txt \
-               distmat.txt dnacomp.txt dnadist.txt dnainvar.txt dnaml.txt \
-               dnamlk.txt dnapars.txt dnapenny.txt dollop.txt dolpenny.txt \
-               domainer.txt dotmatcher.txt dotpath.txt dottup.txt dreg.txt \
-               eclique.txt econsense.txt econtml.txt econtrast.txt \
-               ednacomp.txt ednadist.txt ednainvar.txt ednaml.txt \
-               ednamlk.txt ednapars.txt ednapenny.txt edollop.txt \
-               edolpenny.txt efactor.txt efitch.txt egendist.txt \
-               einverted.txt ekitsch.txt embossdata.txt embossversion.txt \
-               emix.txt emma.txt emnu.txt emowse.txt eneighbor.txt \
-               entret.txt epenny.txt epestfind.txt eprimer3.txt \
-               eprotdist.txt eprotpars.txt equicktandem.txt erestml.txt \
-               eseqboot.txt est2genome.txt etandem.txt extractfeat.txt \
-               extractseq.txt factor.txt findkm.txt fitch.txt fraggle.txt \
-               freak.txt fuzznuc.txt fuzzpro.txt fuzztran.txt garnier.txt \
-               geecee.txt gendist.txt getorf.txt helixturnhelix.txt \
-               hetparse.txt hmmgen.txt hmoment.txt iep.txt infoalign.txt \
-               infoseq.txt interface.txt isochore.txt jembossctl.txt
-pkgdata2_DATA = kitsch.txt libscan.txt lindna.txt listor.txt marscan.txt \
-               maskfeat.txt maskseq.txt matcher.txt megamerger.txt \
-               merger.txt mix.txt msbar.txt mse.txt mwcontam.txt \
-               mwfilter.txt needle.txt neighbor.txt newcpgreport.txt \
-               newcpgseek.txt newseq.txt noreturn.txt notseq.txt nthseq.txt \
-               octanol.txt oddcomp.txt palindrome.txt pasteseq.txt \
-               patmatdb.txt patmatmotifs.txt pdbparse.txt pdbtosp.txt \
-               penny.txt pepcoil.txt pepinfo.txt pepnet.txt pepstats.txt \
-               pepwheel.txt pepwindow.txt pepwindowall.txt pestfind.txt \
-               plotcon.txt plotorf.txt polydot.txt preg.txt prettyplot.txt \
-               prettyseq.txt primersearch.txt printsextract.txt profgen.txt \
-               profit.txt prophecy.txt prophet.txt prosextract.txt \
-               protdist.txt pscan.txt rebaseextract.txt recoder.txt \
-               redata.txt remap.txt restml.txt restover.txt restrict.txt \
-               revseq.txt rocplot.txt scopalign.txt scope.txt scopnr.txt \
-               scopparse.txt scoprep.txt scopreso.txt scopseqs.txt \
-               seealso.txt seqalign.txt seqboot.txt seqmatchall.txt \
-               seqnr.txt seqret.txt seqretsplit.txt seqsearch.txt \
-               seqsort.txt seqwords.txt showalign.txt showdb.txt \
-               showfeat.txt showorf.txt showseq.txt shuffleseq.txt \
-               sigcleave.txt siggen.txt sigplot.txt sigscan.txt silent.txt \
-               sirna.txt SITE-DIRECTED.txt sixpack.txt skipseq.txt \
-               splitter.txt stretcher.txt stssearch.txt supermatcher.txt \
-               syco.txt tcode.txt textsearch.txt tfextract.txt tfm.txt \
-               tfscan.txt tmap.txt topo.txt tranalign.txt transeq.txt \
-               trimest.txt trimseq.txt twofeat.txt union.txt \
-               vectorstrip.txt water.txt whichdb.txt wobble.txt \
-               wordcount.txt wordmatch.txt wossname.txt yank.txt
+               cpgplot.txt cpgreport.txt crystalball.txt cusp.txt \
+               cutgextract.txt cutseq.txt dan.txt dbiblast.txt dbifasta.txt \
+               dbiflat.txt dbigcg.txt degapseq.txt descseq.txt diffseq.txt \
+               digest.txt distmat.txt dnacomp.txt dnadist.txt dnainvar.txt \
+               dnaml.txt dnamlk.txt dnapars.txt dnapenny.txt dollop.txt \
+               dolpenny.txt domainer.txt dotmatcher.txt dotpath.txt \
+               dottup.txt dreg.txt eclique.txt econsense.txt econtml.txt \
+               econtrast.txt ednacomp.txt ednadist.txt ednainvar.txt \
+               ednaml.txt ednamlk.txt ednapars.txt ednapenny.txt \
+               edollop.txt edolpenny.txt efactor.txt efitch.txt \
+               egendist.txt einverted.txt ekitsch.txt embossdata.txt \
+               embossversion.txt emix.txt emma.txt emnu.txt emowse.txt \
+               eneighbor.txt entret.txt epenny.txt epestfind.txt \
+               eprimer3.txt eprotdist.txt eprotpars.txt equicktandem.txt \
+               erestml.txt eseqboot.txt est2genome.txt etandem.txt \
+               extractfeat.txt extractseq.txt factor.txt fclique.txt \
+               fconsense.txt fcontml.txt fcontrast.txt fdnacomp.txt \
+               fdnadist.txt fdnainvar.txt fdnaml.txt fdnamlk.txt \
+               fdnamove.txt fdnapars.txt fdnapenny.txt fdollop.txt \
+               fdolmove.txt fdolpenny.txt fdrawgram.txt fdrawtree.txt \
+               ffactboot.txt ffactor.txt ffreqboot.txt fgendist.txt \
+               findkm.txt fitch.txt fkitsch.txt fmix.txt fmove.txt \
+               fneighbor.txt fpars.txt fpenny.txt fproml.txt fpromlk.txt \
+               fprotdist.txt fprotpars.txt fraggle.txt freak.txt \
+               frestboot.txt frestdist.txt frestml.txt fretree.txt \
+               fseqboot.txt ftreedist.txt ftreedistpair.txt fuzznuc.txt \
+               fuzzpro.txt fuzztran.txt garnier.txt geecee.txt gendist.txt \
+               getorf.txt helixturnhelix.txt hetparse.txt hmmgen.txt \
+               hmoment.txt iep.txt infoalign.txt infoseq.txt interface.txt \
+               isochore.txt jembossctl.txt kitsch.txt libscan.txt
+pkgdata2_DATA = lindna.txt listor.txt marscan.txt maskfeat.txt maskseq.txt \
+               matcher.txt megamerger.txt merger.txt mix.txt msbar.txt \
+               mse.txt mwcontam.txt mwfilter.txt needle.txt neighbor.txt \
+               newcpgreport.txt newcpgseek.txt newseq.txt noreturn.txt \
+               notseq.txt nthseq.txt octanol.txt oddcomp.txt palindrome.txt \
+               pasteseq.txt patmatdb.txt patmatmotifs.txt pdbparse.txt \
+               pdbtosp.txt penny.txt pepcoil.txt pepinfo.txt pepnet.txt \
+               pepstats.txt pepwheel.txt pepwindow.txt pepwindowall.txt \
+               pestfind.txt plotcon.txt plotorf.txt polydot.txt preg.txt \
+               prettyplot.txt prettyseq.txt primersearch.txt \
+               printsextract.txt profgen.txt profit.txt prophecy.txt \
+               prophet.txt prosextract.txt protdist.txt pscan.txt \
+               rebaseextract.txt recoder.txt redata.txt remap.txt \
+               restml.txt restover.txt restrict.txt revseq.txt rocplot.txt \
+               scopalign.txt scope.txt scopnr.txt scopparse.txt scoprep.txt \
+               scopreso.txt scopseqs.txt seealso.txt seqalign.txt \
+               seqboot.txt seqmatchall.txt seqnr.txt seqret.txt \
+               seqretsplit.txt seqsearch.txt seqsort.txt seqwords.txt \
+               showalign.txt showdb.txt showfeat.txt showorf.txt \
+               showseq.txt shuffleseq.txt sigcleave.txt siggen.txt \
+               sigplot.txt sigscan.txt silent.txt sirna.txt \
+               SITE-DIRECTED.txt sixpack.txt skipseq.txt splitter.txt \
+               stretcher.txt stssearch.txt supermatcher.txt syco.txt \
+               tcode.txt textsearch.txt tfextract.txt tfm.txt tfscan.txt \
+               tmap.txt topo.txt tranalign.txt transeq.txt trimest.txt \
+               trimseq.txt twofeat.txt union.txt vectorstrip.txt water.txt \
+               whichdb.txt wobble.txt wordcount.txt wordmatch.txt \
+               wossname.txt yank.txt
 
-pkgdatadir=$(prefix)/share/$(PACKAGE)/doc/programs/text
-pkgdata2dir=$(prefix)/share/$(PACKAGE)/doc/programs/text
+pkgdatadir=$(prefix)/share/$(PACKAGE)/doc/programs/html
+pkgdata2dir=$(prefix)/share/$(PACKAGE)/doc/programs/html
