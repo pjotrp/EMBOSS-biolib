@@ -576,6 +576,44 @@ void ajStrDel(AjPStr* pthis)
 
 
 
+/* @func ajStrArrayDel ********************************************************
+**
+** Default destructor for AJAX string arrays.
+** Called for each element in the array, which must end with a NULL.
+**
+** If the given string is NULL, or a NULL pointer, simply returns.
+**
+** @param  [w] pthis [AjPStr**] Pointer to the string array to be deleted.
+**         The pointer is always deleted.
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajStrArrayDel(AjPStr** pthis)
+{
+    AjPStr* thys;
+    ajint i;
+
+    thys = pthis ? *pthis : 0;
+
+    if(!pthis)
+	return;
+
+    if(!*pthis)
+	return;
+
+    for (i=0; (*pthis)[i];i++)
+    {
+	ajStrDel(&(*pthis)[i]);
+    }
+
+    AJFREE(*pthis);
+    return;
+}
+
+
+
+
 /* @func ajStrDelReuse ********************************************************
 **
 ** Destructor for AJAX strings. Strings with a use count of 1
