@@ -30,10 +30,12 @@ public class Separator extends JPanel
 {
   private Color light;
   private Color dark;
+  private Dimension d;
 
   public Separator(Dimension d)
   {
     super();
+    this.d = d;
     setSize(d);
   }
 
@@ -41,8 +43,9 @@ public class Separator extends JPanel
   {
     Dimension size = getSize();
     light = getBackground().brighter().brighter();
-    dark  = getBackground().darker().darker();
-    int length = size.width;
+//  dark  = getBackground().darker().darker();
+    dark  = getBackground().darker();
+    int length = d.width;
     int xpos = (size.width)/2 - length/2;
     int ypos = (size.height)/2;
     g.setColor(dark);

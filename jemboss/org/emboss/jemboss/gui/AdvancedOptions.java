@@ -37,7 +37,7 @@ public class AdvancedOptions extends JPanel
   public static JCheckBox prefShadeGUI;
   public static JComboBox jobMgr;
   public static JTextField mailServer;
-  public static JTextField userHome;
+  public static String cwd = System.getProperty("user.home");
   private String time[] = new String[6];
 
   public AdvancedOptions()
@@ -85,7 +85,7 @@ public class AdvancedOptions extends JPanel
     bdown.add(bleft);
 
     bdown.add(Box.createVerticalStrut(5));
-    bdown.add(new Separator(new Dimension(100,10)));
+    bdown.add(new Separator(new Dimension(400,10)));
     bdown.add(Box.createVerticalStrut(5));
 
 //set users home root directory
@@ -96,8 +96,8 @@ public class AdvancedOptions extends JPanel
     bleft.add(Box.createHorizontalGlue());
     bdown.add(bleft);
 
-    userHome = new JTextField();                 
-    userHome.setText(System.getProperty("user.home"));
+    final JTextField userHome = new JTextField();                 
+    userHome.setText(cwd);
     bleft =  Box.createHorizontalBox();
     bleft.add(userHome);
     bdown.add(bleft);
@@ -116,7 +116,8 @@ public class AdvancedOptions extends JPanel
         File f = new File(userHome.getText());
         if(f.exists() && f.canRead())
         {
-          org.emboss.jemboss.Jemboss.tree.newRoot(userHome.getText());
+          cwd = userHome.getText();
+          org.emboss.jemboss.Jemboss.tree.newRoot(cwd);
           if(!f.canWrite())
             JOptionPane.showMessageDialog(null,
                           "You cannot write to this directory.",
@@ -137,12 +138,14 @@ public class AdvancedOptions extends JPanel
     {
       public void actionPerformed(ActionEvent e)
       {
-        userHome.setText(System.getProperty("user.home"));
+        cwd = System.getProperty("user.home");
+        org.emboss.jemboss.Jemboss.tree.newRoot(cwd);
+        userHome.setText(cwd);
       }
     });
 
     bdown.add(Box.createVerticalStrut(5));
-    bdown.add(new Separator(new Dimension(100,10)));
+    bdown.add(new Separator(new Dimension(400,10)));
     bdown.add(Box.createVerticalStrut(5));
 
     this.add(bdown);

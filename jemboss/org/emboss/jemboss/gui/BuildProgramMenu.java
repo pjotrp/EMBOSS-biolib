@@ -30,7 +30,6 @@ import java.awt.event.*;
 import java.io.*;
 import java.util.*;
 
-
 import org.emboss.jemboss.programs.*;        // running EMBOSS programs
 import org.emboss.jemboss.gui.startup.*;     // finds programs, groups, docs & db's
 import org.emboss.jemboss.soap.*;
@@ -113,9 +112,17 @@ public class BuildProgramMenu
         if(withSoap) 
         {
           splashing.doneSomething("Connecting with server");
-          GetWossname ewoss = new GetWossname(mysettings);
-          woss = ewoss.getDBText();
-          splashing.doneSomething("Found EMBOSS applications");
+          try
+          {
+            GetWossname ewoss = new GetWossname(mysettings);
+            woss = ewoss.getDBText(); 
+            splashing.doneSomething("Found EMBOSS applications");
+          } 
+          catch(Exception e)
+          {
+            splashing.doneSomething("ERROR can't connect!");
+          }
+
         } 
         else 
         {

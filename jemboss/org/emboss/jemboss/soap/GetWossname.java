@@ -39,10 +39,15 @@ public class GetWossname
 
    }
 
-   public String getStatus() 
+   public boolean getStatus()
    {
-     return status;
+     return epr.succeeded();
    }
+
+// public String getStatus() 
+// {
+//   return status;
+// }
 
    public String getStatusMsg() 
    {

@@ -31,6 +31,7 @@ import javax.swing.border.*;
 import java.io.*;
 
 import org.emboss.jemboss.gui.form.*;
+import org.emboss.jemboss.gui.AdvancedOptions;
 
 /**
 *
@@ -52,6 +53,7 @@ public class FileChooser
 
     SecurityManager sm = System.getSecurityManager();
     System.setSecurityManager(null);
+
     fc = new JFileChooser();
     System.setSecurityManager(sm);
 
@@ -79,14 +81,18 @@ public class FileChooser
     openButton.addActionListener(new ActionListener(){
       public void actionPerformed(ActionEvent e)       
       {
+        String dir = AdvancedOptions.cwd;
+        File cwd = new File(dir);
+        if(cwd.isDirectory() && cwd.canRead())
+          fc.setCurrentDirectory(cwd);
+
         int returnVal = fc.showOpenDialog(fc);
 
         if (returnVal == JFileChooser.APPROVE_OPTION) 
         {
-          File files = fc.getSelectedFile();
-          fileSelected = files.getName();
-          fileName.setText(fileSelected);
+          fileSelected = fc.getSelectedFile().getAbsolutePath();
           currentDirectory = fc.getCurrentDirectory().getPath();
+          fileName.setText(fileSelected);
         }
       }
     });
@@ -97,11 +103,7 @@ public class FileChooser
   
   public String getFileChosen() 
   {
-    String ps = System.getProperty("path.separator");
-    if(fileSelected != null) 
-      return currentDirectory.concat(ps + fileSelected);
-    else
-      return fileName.getText();
+    return fileName.getText();
   }
 
   public JFileChooser getJFileChooser() 

@@ -226,6 +226,7 @@ public class JembossServer
     String fn = null;
     File tf = null;
 
+    Vector vans = new Vector();
     // create temporary file
     if( ((fileContent.indexOf(":") < 0) || 
          (fileContent.indexOf("\n") > 0) ) &&
@@ -241,23 +242,40 @@ public class JembossServer
     
         fn = new String(tf.getCanonicalPath());
       }
-      catch (IOException ioe) {}
+      catch (IOException ioe) 
+      {
+        System.out.println("IOException : STATUS NOT OK");
+        vans.add("status");
+        vans.add("1");
+        return vans;
+      }
     }
     else
     {
-      fn = fileContent;     //looks like db entry or local file name
+      fn = fileContent;     //db entry or local file name
     }
 
-    Ajax aj = new Ajax();
-//  boolean ok = aj.seqType(fn);
-
-    boolean ok;
-    if(seqtype.startsWith("seqset"))
-      ok = aj.seqsetType(fn);
-    else
-     ok = aj.seqType(fn);
-   
-    Vector vans = new Vector();
+    boolean ok = false;
+    Ajax aj = null;
+    if( ((new File(fn)).exists()) ||    //call ajax if sequence file
+         (fn.indexOf(":") > 0) )        //or db
+    {
+      try
+      {
+        aj = new Ajax();
+        if(seqtype.startsWith("seqset"))
+          ok = aj.seqsetType(fn);
+        else
+          ok = aj.seqType(fn);
+      }
+      catch (Exception e)
+      {
+        System.out.println("AjaxException : STATUS NOT OK");
+        vans.add("status");
+        vans.add("1");
+        return vans;
+      }
+    }
 
     if(ok)
     {
@@ -277,7 +295,6 @@ public class JembossServer
       vans.add("status");
       vans.add("1");
     }
-
 
     if(afile)
       tf.delete();

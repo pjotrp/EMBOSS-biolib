@@ -29,8 +29,8 @@ import javax.swing.event.*;
 import java.awt.event.*;
 import org.emboss.jemboss.gui.form.TextFieldSink;
 import jalview.AlignFrame;
-import jalview.MailProperties;
-import jalview.PIDColourScheme;
+//import jalview.MailProperties;
+//import jalview.PIDColourScheme;
 
 public class LaunchJalView extends JFrame
 {
@@ -99,6 +99,7 @@ public class LaunchJalView extends JFrame
     bacross.add(Box.createHorizontalGlue());
     bdown.add(bacross);
 
+    final JFrame fr = this;
     launch.addActionListener(new ActionListener()
     {
       public void actionPerformed(ActionEvent e)
@@ -117,11 +118,23 @@ public class LaunchJalView extends JFrame
               "-mail",
               mailServer.getText()                   //mail server
             };
-            AlignFrame af = AlignFrame.parseArgs(args);
-            af.setSize(700,500);
-            setCursor(cdone);
-            setVisible(false);
-            af.show();
+            try
+            {
+              AlignFrame af = AlignFrame.parseArgs(args);
+              af.setSize(700,500);
+              setCursor(cdone);
+              setVisible(false);
+              af.show();
+            }
+            catch(Exception npe)
+            {
+              setCursor(cdone);
+              String ls = System.getProperty("line.separator");
+              JOptionPane.showMessageDialog(fr,
+                       "Check the sequence entered " + ls +
+                       "and the format choosen.",
+                       "Error Message", JOptionPane.ERROR_MESSAGE);
+            }
             return null;
           }
         };

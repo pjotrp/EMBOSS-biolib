@@ -166,6 +166,7 @@ public class AuthPopup
       splashp.add(promptPanel);
       splashf.getContentPane().add(splashp);
       splashf.setSize(380,170);
+      splashf.pack();
 
       // all added, display the frame
       splashf.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);

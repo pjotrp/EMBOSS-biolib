@@ -297,7 +297,7 @@ public class SectionPanel
                               appName,inSeqAttr,true);
 
           pan.add(inSeq[h].getInCard());
-          pan.add(section.add(Box.createVerticalStrut(5)));
+//        pan.add(section.add(Box.createVerticalStrut(5)));
         }
         else if(att.startsWith("sequence") || att.startsWith("seqall"))
         {
@@ -306,7 +306,7 @@ public class SectionPanel
                                 appName,inSeqAttr,true);
 
           pan.add(inSeq[h].getInCard());
-          pan.add(section.add(Box.createVerticalStrut(5)));
+//        pan.add(section.add(Box.createVerticalStrut(5)));
         }
         else if(att.startsWith("range"))
         {
@@ -372,6 +372,14 @@ public class SectionPanel
 //using jni?
       if(AdvancedOptions.prefjni.isSelected())
         checkDependents(section);
+
+      if((att.startsWith("seqset") || att.startsWith("seqall")||
+          att.startsWith("sequence")) && !isInp )
+      {
+        section.add(new Separator(new Dimension(350,10)));
+        section.add(Box.createVerticalStrut(10));
+      }
+
       nf++;
       if(nf<numofFields)
       {
@@ -671,7 +679,7 @@ public class SectionPanel
               {
                 JOptionPane.showMessageDialog(sectionPane,
                           "Sequence not found." +
-                          "\nCheck the sequence entered.",
+                          "Check the sequence entered.",
                           "Error Message", JOptionPane.ERROR_MESSAGE);
               }
             }
