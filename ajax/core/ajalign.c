@@ -1360,7 +1360,7 @@ static void alignWriteSrsAny(AjPAlign thys, ajint imax, AjBool mark)
 **
 ** Writes an alignment as a T-COFFEE library
 **
-** @param [R] thys [AjPAlign] Alignment object
+** @param [r] thys [AjPAlign] Alignment object
 ** @return [void]
 ** @@
 ******************************************************************************/

@@ -12,8 +12,8 @@
 **  i, j, and k unit vectors in the x y and z directions respectively
 **
 ** @author Copyright (C) 2003 Damian Counsell
-** @version $Revision: 1.9 $
-** @modified $Date: 2003/11/06 15:17:55 $
+** @version $Revision: 1.10 $
+** @modified $Date: 2004/01/26 12:35:10 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -201,13 +201,17 @@ void aj3dVectorCrossProduct(AjP3dVector ajp3dVectorFirst,
 
 /* @func aj3dVectorBetweenPoints *********************************************
 **
-** calculates the vector from one point in space (start) to another (end)
+** Calculates the vector from one point in space (start) to another (end)
 **
-** @param [r] ajpFloatStartPoint [AjPFloat] co-ordinates of origin of vector
-** @param [r] ajpFloatEndPoint co-ordinates [AjPFloat] of target of vector
-** @param [r] ajpFloatVectorBetweenPoints [AjPFloat] vector from start to end
+** @param [r] fStartX [float] X coordinate of start
+** @param [r] fStartY [float] Y coordinate of start
+** @param [r] fStartZ [float] Z coordinate of start
+** @param [r] fEndX   [float] X coordinate of end
+** @param [r] fEndY   [float] Y coordinate of end
+** @param [r] fEndZ   [float] Z coordinate of end
+** @param [r] ajp3dVectorBetweenPoints [AjP3dVector] vector from start to end
 **
-** @return [float] angle between vectors in degrees
+** @return [void]
 ** @@
 ******************************************************************************/
 
@@ -259,14 +263,14 @@ float aj3dVectorLength(AjP3dVector ajp3dVectorToBeSized)
 
 
 
-/* @func aj3dVectorAngle ***********************************************
+/* @func aj3dVectorAngle ******************************************************
 **
-** calculates the angle between two vectors
+** cCalculates the angle between two vectors
 **
 ** method adapted from vmd XXXX INSERT CREDIT/REFERENCE HERE
 **
-** @param [r] ajpFloatFirstVector [AjP3dVector] first vector
-** @param [r] ajpFloatSecondVector [AjP3dVector] second vector
+** @param [r] ajp3dVectorFirst [AjP3dVector] first vector
+** @param [r] ajp3dVectorSecond [AjP3dVector] second vector
 **
 ** @return [float] angle between vectors in degrees
 ** @@
@@ -314,9 +318,9 @@ float aj3dVectorAngle(AjP3dVector ajp3dVectorFirst,
 ** calculates the angle from the plane perpendicular to A x B to the plane
 **  perpendicular to B x C (where A, B and C are vectors)
 **
-** @param [r] ajp3dVectorA [AjP3dVector] 
-** @param [r] ajp3dVectorB [AjP3dVector] 
-** @param [r] ajp3dVectorC [AjP3dVector] 
+** @param [r] ajp3dVectorA [AjP3dVector] Vector A
+** @param [r] ajp3dVectorB [AjP3dVector] Vector B
+** @param [r] ajp3dVectorC [AjP3dVector] Vector C 
 **
 ** @return [float] dihedral angle
 ** @@

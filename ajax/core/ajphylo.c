@@ -26,27 +26,12 @@
 #include "ajphylo.h"
 
 
-/* @func ajPhylo ******************************************************
-**
-** 
-**
-** @param [r]  [] 
-** @return [void]
-******************************************************************************/
-
-void ajPhylo(void)
-{
-    return;
-}
-
-
-
 
 /* @func ajPhyloDistNew ******************************************************
 **
 ** Constructor for AjPPhyloDist
 **
-** @return [AjPPhyloDist]
+** @return [AjPPhyloDist] AjPPhyloDist object
 ******************************************************************************/
 
 AjPPhyloDist ajPhyloDistNew(void)
@@ -65,7 +50,7 @@ AjPPhyloDist ajPhyloDistNew(void)
 **
 ** Constructor for AjPPhyloFreq
 **
-** @return [AjPPhyloFreq]
+** @return [AjPPhyloFreq] AjPPhyloFreq object
 ******************************************************************************/
 
 AjPPhyloFreq ajPhyloFreqNew(void)
@@ -84,7 +69,7 @@ AjPPhyloFreq ajPhyloFreqNew(void)
 **
 ** Constructor for AjPPhyloProp
 **
-** @return [AjPPhyloProp]
+** @return [AjPPhyloProp] AjPPhyloProp object
 ******************************************************************************/
 
 AjPPhyloProp ajPhyloPropNew(void)
@@ -103,7 +88,7 @@ AjPPhyloProp ajPhyloPropNew(void)
 **
 ** Constructor for AjPPhyloState
 **
-** @return [AjPPhyloState]
+** @return [AjPPhyloState] AjPPhyloState object
 ******************************************************************************/
 
 AjPPhyloState ajPhyloStateNew(void)
@@ -122,7 +107,7 @@ AjPPhyloState ajPhyloStateNew(void)
 **
 ** Constructor for AjPPhyloTree
 **
-** @return [AjPPhyloTree]
+** @return [AjPPhyloTree] AjPPhyloTree object
 ******************************************************************************/
 
 AjPPhyloTree ajPhyloTreeNew(void)
@@ -141,7 +126,8 @@ AjPPhyloTree ajPhyloTreeNew(void)
 **
 ** Destructor for AjPPhyloDist
 **
-** @param [d] pthys [AjPPhyloDist]
+** @param [d] pthis [AjPPhyloDist*] Distance object
+** @return [void]
 ******************************************************************************/
 
 void ajPhyloDistDel(AjPPhyloDist* pthis)
@@ -168,7 +154,8 @@ void ajPhyloDistDel(AjPPhyloDist* pthis)
 **
 ** Destructor for AjPPhyloFreq
 **
-** @param [d] pthys [AjPPhyloFreq]
+** @param [d] pthis [AjPPhyloFreq*] fequency object
+** @return [void]
 ******************************************************************************/
 
 void ajPhyloFreqDel(AjPPhyloFreq* pthis)
@@ -200,7 +187,8 @@ void ajPhyloFreqDel(AjPPhyloFreq* pthis)
 **
 ** Destructor for AjPPhyloProp
 **
-** @param [d] pthys [AjPPhyloProp]
+** @param [d] pthis [AjPPhyloProp*] Properties object
+** @return [void]
 ******************************************************************************/
 
 void ajPhyloPropDel(AjPPhyloProp* pthis)
@@ -225,7 +213,8 @@ void ajPhyloPropDel(AjPPhyloProp* pthis)
 **
 ** Destructor for AjPPhyloState
 **
-** @param [d] pthys [AjPPhyloState]
+** @param [d] pthis [AjPPhyloState*] Discrete states object
+** @return [void]
 ******************************************************************************/
 
 void ajPhyloStateDel(AjPPhyloState* pthis)
@@ -256,7 +245,8 @@ void ajPhyloStateDel(AjPPhyloState* pthis)
 **
 ** Destructor for AjPPhyloTree
 **
-** @param [d] pthys [AjPPhyloTree]
+** @param [d] pthis [AjPPhyloTree*] Trees object
+** @return [void]
 ******************************************************************************/
 
 void ajPhyloTreeDel(AjPPhyloTree* pthis)
@@ -1166,10 +1156,8 @@ AjPPhyloProp ajPhyloPropRead(AjPStr filename, AjPStr propchars,
 **
 ** Returns size (number of property strings)
 **
-** @param [r] 
-** @param [r] statechars [AjPStr] Valid state characters
-** @return [AjPPhyloState*] Phylogenetic discrete states object on success
-**                        NULL on failure
+** @param [r] thys [AjPPhyloProp] Properties object
+** @return [ajint] Number of property strings
 ******************************************************************************/
 
 ajint ajPhyloPropGetSize(AjPPhyloProp thys)

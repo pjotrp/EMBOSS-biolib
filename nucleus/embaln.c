@@ -2023,7 +2023,7 @@ void embAlignPathCalcFast(char *a, char *b, ajint lena, ajint lenb,
 ** @param [r] cvt [AjPSeqCvt] Conversion array for AjPMatrixf
 ** @param [w] start1 [ajint *] start of alignment in first sequence
 ** @param [w] start2 [ajint *] start of alignment in second sequence
-** @param [r] width [ajint] width of path matrix
+** @param [r] pathwidth [ajint] width of path matrix
 **
 ** @return [float] Score of best matching segment
 ******************************************************************************/

@@ -411,7 +411,7 @@ AjBool ajRegPostC(AjPRegexp rp, const char** post)
 ** After a successful match, returns the string before the match.
 **
 ** @param [r] rp [AjPRegexp] Compiled regular expression.
-** @param [w] post [AjPStr*] String to hold the result.
+** @param [w] dest [AjPStr*] String to hold the result.
 ** @return [AjBool] ajTrue on success.
 ** @@
 ******************************************************************************/

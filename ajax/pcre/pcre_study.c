@@ -349,7 +349,7 @@ while (*code == OP_ALT);
 ** information that will speed up the matching. It returns a pcre_extra block
 ** which then gets handed back to pcre_exec().
 **
-** @param [r]  re [const pcre*] points to the compiled expression
+** @param [r]  external_re [const pcre*] points to the compiled expression
 ** @param [r]  options [int] contains option bits
 ** @param [w]  errorptr [const char**] points to where to place error messages;
 **            set NULL unless error

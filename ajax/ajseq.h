@@ -23,12 +23,13 @@ extern "C"
 ** @alias AjSSeqCvt
 ** @alias AjOSeqCvt
 **
-** @attr size [ajint] 
-** @attr len [ajint] 
-** @attr missing [ajint] 
-** @attr bases [AjPStr] 
-** @attr labels [AjPStr*] 
-** @attr table [char*] 
+** @attr size [ajint] Number of characters in table, usually
+**                    all possible characters.
+** @attr len [ajint] Number of characters defined
+** @attr missing [ajint] Index of the missing character value
+** @attr bases [AjPStr] The bases which can be converted
+** @attr labels [AjPStr*] Unused
+** @attr table [char*] Binary character value for each character in bases
 ** @@
 ******************************************************************************/
 

@@ -399,7 +399,7 @@ void ajUtilRevInt(ajint* ival)
 **
 ** Reverses the byte order in a long.
 **
-** @param [u] ival [ajlong*] Integer in wrong byte order.
+** @param [u] lval [ajlong*] Integer in wrong byte order.
 **                           Returned in correct order.
 ** @return [void]
 ** @@

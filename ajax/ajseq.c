@@ -3795,7 +3795,9 @@ AjPSeqCvt ajSeqCvtNewZero(char* bases)
 ** Upper and lower case characters are converted to the same numbers.
 ** All other characters are set to zero.
 **
-** @param [r] bases [AjPStr*] Allowed sequence character strings.
+** @param [r] bases [AjPStr*] Allowed sequence character strings (size
+**                            specified by parameter n)
+** @param [r] n [int] Number of strings
 ** @return [AjPSeqCvt] Conversion table.
 ** @@
 ******************************************************************************/
@@ -4932,18 +4934,18 @@ ajint ajSeqFill(AjPSeq seq, ajint len)
 
 
 
-/* @funcstatic ajSeqsetConsStats **********************************************
+/* @func ajSeqsetConsStats ****************************************************
 **
 ** Calculates alignment statistics (and a consensus) from a sequence set.
 **
-** @param [u] thys [AjPSetset] Sequence set.
+** @param [u] thys [AjPSeqset] Sequence set.
 ** @param [w] mymatrix [AjPMatrix] User-defined matrix, or NULL for the default
 ** @param [w] cons [AjPStr*] the created consensus sequence
 ** @param [r] retident [ajint*] number of residues identical in all sequences
 ** @param [r] retsim   [ajint*] number of residues similar in all sequences
 ** @param [r] retgap   [ajint*] number of residues with a gap in 1 sequence
 ** @param [r] retlen [ajint*] length of the alignment
-** @return [void]
+** @return [AjBool] ajTrue on success
 ******************************************************************************/
 
 AjBool ajSeqsetConsStats(AjPSeqset thys, AjPMatrix mymatrix, AjPStr *cons,
