@@ -495,6 +495,7 @@ if ($cvsdoctextcommit ne "") {
 }
 
 print "Create make files\n";
+chdir "/packages/emboss_dev/$ENV{'USER'}/emboss/emboss/scripts";
 system("./makeMake.pl");	# no parameter == do text
 system("./makeMake.pl html");
 
