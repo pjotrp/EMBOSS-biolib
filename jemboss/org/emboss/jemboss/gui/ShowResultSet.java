@@ -60,7 +60,6 @@ public class ShowResultSet extends JFrame
     super("Saved Results on the Server");
     JTabbedPane rtp = new JTabbedPane();
 
-    new ResultsMenuBar(this,rtp,reslist,inputFiles);
     setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
     int ntabs = 0;
@@ -98,6 +97,8 @@ public class ShowResultSet extends JFrame
       s1.add(fed, BorderLayout.CENTER);
       rtp.add(cmd,r1);
     }
+
+    new ResultsMenuBar(this,rtp,reslist,inputFiles);
 
     setSize(640,480);
     getContentPane().add(rtp,BorderLayout.CENTER);
