@@ -1266,6 +1266,14 @@ static void domainalign_keepsinglets(AjPDomain domain,
 	    ajStrAssS(&hitlist->Fold, domain->Scop->Fold);
 	    ajStrAssS(&hitlist->Superfamily, domain->Scop->Superfamily);
 	    ajStrAssS(&hitlist->Family, domain->Scop->Family);
+	    if(noden==4)
+		hitlist->Sunid_Family = domain->Scop->Sunid_Family;
+	    else if(noden==3)
+		hitlist->Sunid_Family = domain->Scop->Sunid_Superfamily;
+	    else if(noden==2)
+		hitlist->Sunid_Family = domain->Scop->Sunid_Fold;
+	    else if(noden==1)
+		hitlist->Sunid_Family = domain->Scop->Sunid_Class;
 	}
 	else
 	{	
@@ -1273,10 +1281,19 @@ static void domainalign_keepsinglets(AjPDomain domain,
 	    ajStrAssS(&hitlist->Architecture, domain->Cath->Architecture);
 	    ajStrAssS(&hitlist->Topology, domain->Cath->Topology);
 	    ajStrAssS(&hitlist->Superfamily, domain->Cath->Superfamily);
-	    
-	}
-	
 
+	    if(noden==9)
+		hitlist->Sunid_Family = domain->Cath->Family_Id;
+	    if(noden==8)
+		hitlist->Sunid_Family = domain->Cath->Superfamily_Id;
+	    else if(noden==7)
+		hitlist->Sunid_Family = domain->Cath->Topology_Id;
+	    else if(noden==6)
+		hitlist->Sunid_Family = domain->Cath->Arch_Id;
+	    else if(noden==5)
+		hitlist->Sunid_Family = domain->Cath->Class_Id;
+
+	}
 
 	singf = ajFileNewOutDir(singlets, temp2);
 	embHitlistWriteFasta(singf, hitlist);
