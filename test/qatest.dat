@@ -9032,6 +9032,22 @@ FZ = 2641
 FP /GAAGAAGACAGGUCGGGCUdTdT AGCCCGACCUGUCUUCUUCdTdT/
 //
 
+ID sixpack-ex
+AP sixpack
+CC No documentation
+IN tembl:hsfau
+IN 
+IN 
+FI stderr
+FC = 2
+FI hsfau.sixpack
+FZ = 6424
+FP /R  I  F  F  G  S  L  E  T  L  F  F/
+FI hsfau.fasta
+FZ = 3739
+FP /FLFLDSIFAVAGTAVQSPICSSLSAPRSYTPSR/
+//
+
 ID skipseq-ex
 UC This does not skip any sequences. It is exactly equivalent to seqret:
 AP skipseq
