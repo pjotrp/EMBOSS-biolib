@@ -70,7 +70,7 @@ int main(int argc, char **argv)
     ajStrAssC(&fthit, "hit");
 
     /*converting the Prosite motif to a reg exps */
-    regexp =embPatPrositeToRegExp(&motif);
+    regexp =embPatPrositeToRegExp(motif);
 
     ajFmtPrintAppS(&tmpstr, "Motif: %S\n", motif);
     ajReportSetHeader(report, tmpstr);

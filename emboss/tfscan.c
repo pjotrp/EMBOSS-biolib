@@ -152,7 +152,7 @@ int main(int argc, char **argv)
 	    ajStrAssS(&opattern,pattern);
 	    ajStrAssC(&bf,p);
 	    
-	    v = embPatVariablePattern(&pattern,opattern,substr,pname,l,0,
+	    v = embPatVariablePattern(pattern,substr,pname,l,0,
 				      mismatch,begin);
 	    if(v)
 	    {

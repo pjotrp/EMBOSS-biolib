@@ -331,13 +331,14 @@ static AjPList silent_mismatch(AjPStr sstr, AjPList relist, AjPStr* tailstr,
 	ajStrAssS(&str,rlp->site);      /* str now holds RS patterns */
 
 	patlist = ajListNew();
-        if(!embPatClassify(&str,&dummy,&dummy,&dummy,&dummy,&dummy,&dummy,0))
+        if(!embPatClassify(str,&str,
+			   &dummy,&dummy,&dummy,&dummy,&dummy,&dummy,0))
 	    continue;
 
 
 	mm = 0;
-	hits=embPatBruteForce(&sstr,&str,ajFalse,ajFalse,&patlist,begin+1,mm,
-                              &sname);
+	hits=embPatBruteForce(sstr,str,ajFalse,ajFalse,&patlist,begin+1,mm,
+                              sname);
 
 	if(hits)
 	    while(ajListPop(patlist,(void**)&match))
@@ -345,8 +346,8 @@ static AjPList silent_mismatch(AjPStr sstr, AjPList relist, AjPStr* tailstr,
  	else
         {
 	    mm = 1;
-	    hits = embPatBruteForce(&sstr,&str,ajFalse,ajFalse,&patlist,
-				  begin+1,mm,&sname);
+	    hits = embPatBruteForce(sstr,str,ajFalse,ajFalse,&patlist,
+				  begin+1,mm,sname);
 
 	    if(hits)
 		for(i=0;i<hits;++i)

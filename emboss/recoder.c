@@ -99,15 +99,16 @@ typedef struct Mutant
 
 
 static ajint  recoder_readRE(AjPList *relist, AjPStr enzymes);
-static AjPList recoder_rematch(AjPStr sstr, AjPList ressite, AjPStr* tailstr,
-			       AjPStr sname, ajint RStotal, ajint radj,
+static AjPList recoder_rematch(const AjPStr sstr, AjPList ressite,
+			       AjPStr* tailstr,
+			       const AjPStr sname, ajint RStotal, ajint radj,
 			       AjBool rev, ajint begin, ajint end,
 			       AjBool tshow);
-static AjPList recoder_checkTrans(AjPStr seq,EmbPMatMatch match,
+static AjPList recoder_checkTrans(const AjPStr seq,EmbPMatMatch match,
 				  AjPRinfo rlp, ajint begin, ajint radj,
 				  AjBool rev, ajint end, ajint pos,
 				  AjBool* empty);
-static AjBool recoder_checkPat(AjPStr seq,EmbPMatMatch match,
+static AjBool recoder_checkPat(const AjPStr seq,EmbPMatMatch match,
 			       AjPRinfo rlp, ajint radj, AjBool rev,
 			       ajint begin, ajint end);
 static ajint recoder_changebase(char pbase, char* tbase);
@@ -250,10 +251,10 @@ int main(int argc, char **argv)
 ** Looks for RE matches and test new bases to find those that
 ** give the same translation.
 **
-** @param [r] sstr [AjPStr] Search sequence as a string
-** @param [r] relist [AjPList] Regular expression list
-** @param [r] tailstr [AjPStr*] Report tail as a string
-** @param [r] sname [AjPStr] Sequence name
+** @param [r] sstr [const AjPStr] Search sequence as a string
+** @param [u] relist [AjPList] Regular expression list
+** @param [w] tailstr [AjPStr*] Report tail as a string
+** @param [r] sname [const AjPStr] Sequence name
 ** @param [r] RStotal [ajint] Restriction sites
 ** @param [r] radj [ajint] Position adjustment for reversed sequence
 ** @param [r] rev [AjBool] Reverse sequence
@@ -264,8 +265,9 @@ int main(int argc, char **argv)
 **                   maintaining same translation.
 ******************************************************************************/
 
-static AjPList recoder_rematch(AjPStr sstr, AjPList relist, AjPStr* tailstr,
-			       AjPStr sname, ajint RStotal, ajint radj,
+static AjPList recoder_rematch(const AjPStr sstr, AjPList relist,
+			       AjPStr* tailstr,
+			       const AjPStr sname, ajint RStotal, ajint radj,
 			       AjBool rev, ajint begin, ajint end,
 			       AjBool tshow)
 {
@@ -338,13 +340,13 @@ static AjPList recoder_rematch(AjPStr sstr, AjPList relist, AjPStr* tailstr,
 	/* convert our RS pattern to a reg expression    */
 	/* "0" means DNA & so does any ambig conversions */
 
-        if(!embPatClassify(&str,&dummy,&dummy,&dummy,
+        if(!embPatClassify(str,&str,&dummy,&dummy,&dummy,
                     &dummy,&dummy,&dummy,0)) continue;
 
 	/* find pattern matches in seq with NO mismatches */
 	mm = 0;
-	pats = embPatBruteForce(&sstr,&str,ajFalse,ajFalse,
-				&patlist,begin+1,mm,&sname);
+	pats = embPatBruteForce(sstr,str,ajFalse,ajFalse,
+				&patlist,begin+1,mm,sname);
 
 	if(pats)
         {
@@ -473,7 +475,7 @@ static ajint recoder_readRE(AjPList *relist,AjPStr enzymes)
 **
 ** Checks whether the RS pattern falls within the sequence string
 **
-** @param [r] seq [AjPStr] Sequence as a string
+** @param [r] seq [const AjPStr] Sequence as a string
 ** @param [r] match [EmbPMatMatch] Match data
 ** @param [r] rlp [AjPRinfo] Restriction site info
 ** @param [r] radj [ajint] Adjustment for reversed sequence
@@ -483,7 +485,7 @@ static ajint recoder_readRE(AjPList *relist,AjPStr enzymes)
 ** @return [AjBool] ajTrue if the pattern is found
 **
 ******************************************************************************/
-static AjBool recoder_checkPat(AjPStr seq,EmbPMatMatch match,
+static AjBool recoder_checkPat(const AjPStr seq,EmbPMatMatch match,
 			       AjPRinfo rlp, ajint radj, AjBool rev,
 			       ajint begin, ajint end)
 {
@@ -535,7 +537,7 @@ static AjBool recoder_checkPat(AjPStr seq,EmbPMatMatch match,
 ** Identify mutations at a site in the RS pattern that result in the
 ** same translation.
 **
-** @param [r] seq [AjPStr] Sequence as a string
+** @param [r] seq [const AjPStr] Sequence as a string
 ** @param [r] match [EmbPMatMatch] Match data
 ** @param [r] rlp [AjPRinfo] Restriction site info
 ** @param [r] begin [ajint] Start position
@@ -549,7 +551,7 @@ static AjBool recoder_checkPat(AjPStr seq,EmbPMatMatch match,
 **
 ******************************************************************************/
 
-static AjPList recoder_checkTrans(AjPStr seq,EmbPMatMatch match,
+static AjPList recoder_checkTrans(const AjPStr seq,EmbPMatMatch match,
 				  AjPRinfo rlp, ajint begin, ajint radj,
 				  AjBool rev, ajint end, ajint pos,
 				  AjBool* empty)
@@ -731,7 +733,7 @@ static ajint recoder_changebase(char pbase, char* tbase)
 **
 ** @param [r] title [char*] Title for sequence report
 ** @param [r] seq [AjPStr] Sequence as a string
-** @param [r] tailstr [AjPStr*] Report tail as a string
+** @param [w] tailstr [AjPStr*] Report tail as a string
 ** @param [r] start [ajint] Start position
 ** @param [r] num [AjBool] Numbered sequence
 ** @return [void]

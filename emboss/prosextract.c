@@ -154,7 +154,7 @@ int main(int argc, char **argv)
 	    }
 
 	    ajFmtPrintF(outf, "%s\n", ajStrStr(pa));
-	    re = embPatPrositeToRegExp(&pa);
+	    re = embPatPrositeToRegExp(pa);
 	    ajFmtPrintF(outf, "^%s\n\n", ajStrStr(re));
 	    ajStrDel(&re);
 	    continue;

@@ -706,7 +706,7 @@ static void vectorstrip_ccs_pattern(AjPStr pattern, AjPList* hitlist,
     /* copy the original pattern for Henry Spencer code */
     ajStrAssC(&(cpat->origpat), ajStrStr(pattern));
 
-    if(!(cpat->type = embPatGetType(&(cpat->patstr),mm,0,
+    if(!(cpat->type = embPatGetType((cpat->origpat),&(cpat->patstr),mm,0,
 				    &(cpat->real_len),
 				    &(cpat->amino),
 				    &(cpat->carboxyl))))
@@ -717,7 +717,7 @@ static void vectorstrip_ccs_pattern(AjPStr pattern, AjPList* hitlist,
     }
 
     embPatCompile(cpat->type, cpat->patstr,
-		  cpat->origpat, &(cpat->len),
+		  &(cpat->len),
 		  &(cpat->buf), cpat->off,
 		  &(cpat->sotable), &(cpat->solimit),
 		  &(cpat->real_len), &(cpat->re),
@@ -725,7 +725,7 @@ static void vectorstrip_ccs_pattern(AjPStr pattern, AjPList* hitlist,
 
 
     embPatFuzzSearch(cpat->type, begin, cpat->patstr,
-		     cpat->origpat, seqname, seqstr, hitlist,
+		     seqname, seqstr, hitlist,
 		     cpat->len, mm, cpat->amino,
 		     cpat->carboxyl, cpat->buf,
 		     cpat->off, cpat->sotable,
