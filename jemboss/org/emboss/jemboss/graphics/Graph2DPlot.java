@@ -1001,7 +1001,11 @@ public class Graph2DPlot extends ScrollPanel
             y1 >= -yendPoint && y2 >= -yendPoint )
         {
           int colourID = (int)emboss_data[5][i];
-          if(colourID >= 0 || colourID < 16)
+
+          if(graph_colour != null &&
+             graph_colour != Color.black)
+            g.setColor(graph_colour);
+          else if(colourID >= 0 || colourID < 16)
             g.setColor(plplot_colour[colourID]);
 
           g.drawLine((int)x1,(int)y1,(int)x2,(int)y2);
