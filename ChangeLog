@@ -1,4 +1,6 @@
 Version 2.8.0
+	Added binding factor output to tfscan
+
 	Removed the Henry Spencer regular expression libraries. There were
 	a few calls to the ajPosReg functions, but only to test it worked
 	the same way as ajReg. Added a case-insensitive ajRegComp and
