@@ -181,7 +181,7 @@ section: additional [
            you have requested frames 4, 5 or 6.
            By default, all six frames will be displayed."
   ]
-						                     
+
 endsection: additional
 
 section: output [
