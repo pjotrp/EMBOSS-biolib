@@ -2447,6 +2447,16 @@ void ajFileBuffStripHtml (const AjPFileBuff thys) {
     i++;
   }
 
+
+/*  plist = thys->Curr;
+    while(plist)
+    {
+	printf("%s",ajStrStr(plist->Line));
+	plist=plist->Next;
+    }
+    exit(0);
+*/
+
   ajStrDel (&s1);
   ajStrDel (&s2);
   ajStrDel (&s3);
@@ -3390,4 +3400,102 @@ ajint ajFileWriteStr (AjPFile thys, AjPStr str, ajint len) {
     memset (&buf[i], '\0', len-i);
 
   return fwrite (buf, len, 1, ajFileFp(thys));
+}
+
+
+/* @func ajFileBuffStripSrs  ********************************************
+**
+** Strip out SRS6.1 header lines.
+**
+** @param [rw] thys [AjPFileBuff] buffer
+** @return [ajint] Return 1=success 0=not SRS6.1
+** @@
+******************************************************************************/
+ajint ajFileBuffStripSrs(AjPFileBuff thys)
+{
+    AjPFileBuffList lptr=NULL;
+    AjPFileBuffList tptr=NULL;
+    AjPFileBuffList lastptr=NULL;
+    
+    AjBool found;
+    AjPStr tmp=NULL;
+    
+    found = ajFalse;
+    lptr = thys->Curr;
+
+
+    lptr=thys->Curr;
+
+
+    /* SRS 6.1 etc has '&nbsp' lines. If not found then return false */
+    /* There must be a better way but LION were unresponsive         */
+    while(lptr && !found)
+    {
+	if(ajStrPrefixC(lptr->Line,"&nbsp"))
+	    found = ajTrue;
+	lptr = lptr->Next;
+    }
+
+    if(!found)
+	return ajFalse;
+
+    found = ajFalse;
+    lptr=thys->Curr;
+
+    while(lptr && !found)
+    {
+	if(!ajStrPrefixC(lptr->Line,"<pre>"))
+	{
+	    tptr = lptr;
+	    lptr = lptr->Next;
+	    thys->Curr=lptr;
+	    ajStrDel(&tptr->Line);
+	    AJFREE(tptr);
+	    thys->Size--;
+	}
+	else
+	    found = ajTrue;
+    }
+
+    thys->Lines = thys->Curr;
+    
+
+    /* Remove '<pre>' at the start of the entry */
+    tmp = ajStrNew();
+    ajStrAssS(&tmp,lptr->Line);
+    ajStrAssSub(&lptr->Line,tmp,5,-1);
+    ajStrDel(&tmp);
+
+    /* Remove anything between and including angle brackets */
+    while(lptr && !ajStrPrefixC(lptr->Line,"</pre>"))
+    {
+	ajStrRemoveHtml(&lptr->Line);
+	lastptr = lptr;
+	lptr = lptr->Next;
+    }
+
+
+    while(lptr)
+    {
+	tptr = lptr->Next;
+	ajStrDel(&lptr->Line);
+	AJFREE(lptr);
+	thys->Size--;
+	lptr = tptr;
+    }
+
+    lastptr->Next = NULL;
+
+/*  Test print
+    lptr=thys->Curr;
+    while(lptr)
+    {
+	printf("%s",ajStrStr(lptr->Line));
+	lptr=lptr->Next;
+    }
+    printf("Hello %d\n",thys->Size);
+    fflush(stdout);
+*/
+
+    return ajTrue;
 }
