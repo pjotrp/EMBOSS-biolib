@@ -358,7 +358,7 @@ static ajint compseq_readexpfreq(AjPTable *exptable, AjPFile infile,
 	/* look for the word size */
 	if (!ajStrFindC(line, "Word size"))
 	{
-	    (void) ajStrAssSub(&sizestr, line, 10, ajStrLen(line));
+	    (void) ajStrAssSub(&sizestr, line, 10, ajStrLen(line)-1);
 	    (void) ajStrChomp(&sizestr);
 	    (void) ajStrToInt(sizestr, &thissize);
 	    if (size == thissize) break;
