@@ -244,7 +244,8 @@ CHECK_THREADS
 
 AC_OUTPUT(plplot/Makefile plplot/lib/Makefile nucleus/Makefile ajax/Makefile
 emboss/Makefile emboss/acd/Makefile test/Makefile test/data/Makefile
-test/embl/Makefile test/genbank/Makefile test/pir/Makefile test/swiss/Makefile
+test/embl/Makefile test/genbank/Makefile test/gb/Makefile
+test/pir/Makefile test/swiss/Makefile
 test/swnew/Makefile test/wormpep/Makefile emboss/data/Makefile
 emboss/data/CODONS/Makefile emboss/data/REBASE/Makefile 
 emboss/data/PRINTS/Makefile emboss/data/PROSITE/Makefile
