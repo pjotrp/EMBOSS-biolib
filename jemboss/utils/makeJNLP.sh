@@ -24,6 +24,11 @@ if [ -f "resources/client.keystore" ]; then
   cd resources
   jar cf client.jar client.keystore
   cd ..
+else
+  echo
+  echo "*** WARNING! If you are using an SSL Jemboss server then"
+  echo "*** this will not work as the script has not found the"
+  echo "*** client keystore file."
 fi
 
 #
