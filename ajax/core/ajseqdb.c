@@ -355,8 +355,6 @@ static AjBool seqAccessEmblcd (AjPSeqin seqin)
 	if((qry->Type == QRY_ENTRY) && !seqin->multi)
 	{
 /*	    if(seqin->Ftquery->Handle)
-	    ajFileBuffClear(seqin->Ftquery->Handle,0);
-	    if(seqin->Ftquery->Handle)
 		ajFileBuffClear(seqin->Ftquery->Handle,0); */
 	    AJFREE(qryd);
 	}
@@ -735,6 +733,8 @@ static AjBool seqCdIdxQuery (AjPSeqQuery qry)
     ajint jhi;
     ajint khi;
     AjBool first;
+    ajint ifail=0;
+    ajint iskip=0;
 
     SeqPCdEntry entry;
 
@@ -827,7 +827,17 @@ static AjBool seqCdIdxQuery (AjPSeqQuery qry)
 	{
 	    if (!qryd->Skip[idxLine->DivCode-1])
 	    {
-		ajDebug ("  OK: '%S'\n", idxLine->EntryName);
+	      if (ifail)
+	      {
+		ajDebug ("FAIL: %d entries\n", ifail);
+		ifail=0;
+	      }
+	      if (iskip)
+	      {
+		ajDebug ("SKIP: %d entries\n", iskip);
+		iskip=0;
+	      }
+	      ajDebug ("  OK: '%S'\n", idxLine->EntryName);
 		AJNEW0(entry);
 		entry->div = idxLine->DivCode;
 		entry->annoff = idxLine->AnnOffset;
@@ -835,11 +845,28 @@ static AjBool seqCdIdxQuery (AjPSeqQuery qry)
 		ajListPushApp (list, (void*)entry);
 	    }
 	    else
-		ajDebug ("SKIP: '%S' [file %d]\n",
+	    {
+	      ajDebug ("SKIP: '%S' [file %d]\n",
 			 idxLine->EntryName, idxLine->DivCode);
+	      iskip++;
+	    }
 	}
 	else
-	    ajDebug ("FAIL: '%S' '%S'\n", idxLine->EntryName, idstr);
+	{
+	  ++ifail;
+	  /* ajDebug ("FAIL: '%S' '%S'\n", idxLine->EntryName, idstr);*/
+	}
+    }
+
+    if (ifail)
+    {
+      ajDebug ("FAIL: %d entries\n", ifail);
+      ifail=0;
+    }
+    if (iskip)
+    {
+      ajDebug ("SKIP: %d entries\n", iskip);
+      ifail=0;
     }
 
     ajStrDel (&idstr);
@@ -1289,8 +1316,8 @@ static AjBool seqCdQryReuse (AjPSeqQuery qry)
 	ajDebug ("nameSize %d\n",  qryd->nameSize);
 	ajDebug ("div      %d\n",  qryd->div);
 	ajDebug ("maxdiv   %d\n",  qryd->maxdiv);
-	ajDebug ("qryd->List\n");
-	ajListTrace (qryd->List);
+	ajDebug ("qryd->List length %d\n", ajListLength(qryd->List));
+	/*ajListTrace (qryd->List);*/
     }
 
     return ajTrue;
@@ -1500,8 +1527,8 @@ static AjBool seqCdQryNext (AjPSeqQuery qry)
     if (!ajListLength(qryd->List))
 	return ajFalse;
 
-    ajDebug ("qryd->List (b)\n");
-    ajListTrace (qryd->List);
+    ajDebug ("qryd->List (b) length %d\n", ajListLength(qryd->List));
+    /*ajListTrace (qryd->List);*/
     (void) ajListPop (qryd->List, &item);
     entry = (SeqPCdEntry) item;
 
@@ -1546,10 +1573,11 @@ static AjBool seqBlastQryNext (AjPSeqQuery qry)
     if (!ajListLength(qryd->List))
 	return ajFalse;
 
-    ajDebug ("seqBlastQryNext qryd %x qryd->List (c) %d\n",
+    ajDebug ("seqBlastQryNext qryd %x qryd->List (c) length: %d\n",
 	     qryd, ajListLength(qryd->List));
 
-    ajListTrace (qryd->List);
+    /* ajListTrace (qryd->List);*/
+
     (void) ajListPop (qryd->List, &item);
     entry = (SeqPCdEntry) item;
 
@@ -2209,7 +2237,9 @@ static AjBool seqBlastOpen (AjPSeqQuery qry)
     qryd = qry->QryData;
 
     qryd->type = 0;
-    /*  qryd->div = 1;*/	/* Messes things up with multi-volume index */
+    if (!qryd->div)
+      qryd->div = 1;	/* Check what this does with a multi-volume index */
+
     HeaderLen = 0;
 
     (void) seqCdFileSeek (qryd->dfp, (qryd->div - 1)); /* first (only) file */
@@ -3079,6 +3109,9 @@ static AjBool seqBlastReadTable (const AjPSeqin seqin, AjPStr* hline,
     if (qryd->type >= 2)
 	seqBlastStripNcbi (hline);	/* trim the gnl| prefix */
     /* The above now just adds a > */  
+
+    ajFileBuffClear(seqin->Filebuff, -1); /* delete all lines */
+
     ajDebug ("Load FASTA file with '%S'\n", *hline);
     ajFileBuffLoadS (seqin->Filebuff, *hline);
 
