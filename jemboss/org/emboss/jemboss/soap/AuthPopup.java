@@ -103,6 +103,23 @@ public class AuthPopup
       
       final JPasswordField pfield = new JPasswordField(16);
       final JTextField xfield = new JTextField(16);
+
+      //close login box on carriage return in passwd field
+      pfield.addActionListener(new ActionListener()
+      {
+        public void actionPerformed(ActionEvent e)
+        {
+          mysettings.setServiceUserName(ufield.getText());
+          mysettings.setServicePasswd(String.valueOf(pfield.getPassword()));
+          if (mysettings.getUseX11())
+          {
+            mysettings.setX11display(xfield.getText());
+          }
+          exitOnDone = true;
+          splashf.dispose();
+        }
+      });
+
       JLabel ulab = new JLabel(" Username:", SwingConstants.LEFT);
       JLabel plab = new JLabel(" Password:", SwingConstants.LEFT);
       JLabel xlab = new JLabel("X Display:", SwingConstants.LEFT);
