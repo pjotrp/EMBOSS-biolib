@@ -543,12 +543,12 @@ AjBool ajNamDbDetails (AjPStr name, AjPStr* type, AjBool* id, AjBool* qry,
 
   fnew = ajTableGet(namMasterTable, ajStrStr(name));
   if (fnew) {
-    ajDebug ("  '%S' found\n", name);
+    /* ajDebug ("  '%S' found\n", name); */
 
     dbattr = fnew->data;
     for (i=0; namDbAttrs[i].Name; i++) {
-      ajDebug("Attribute name = %s, value = %S\n",
-	      namDbAttrs[i].Name, dbattr[i]);
+      /* ajDebug("Attribute name = %s, value = %S\n",
+	 namDbAttrs[i].Name, dbattr[i]); */
       if (ajStrLen(dbattr[i])) {
         if (!strcmp ("type", namDbAttrs[i].Name))
 	  (void) ajStrAss(type, dbattr[i]);
