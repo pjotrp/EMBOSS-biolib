@@ -54,7 +54,7 @@ section: advanced [
 
   boolean: threeprime  [
     default: "N"
-    information: "3' overhang? (else 5') e.g. BamHI has CTAG as
+    information: "Use 3' overhang e.g. BamHI has CTAG as
                   a 5' overhang, and ApaI has CCGG as 3' overhang."
   ]
 

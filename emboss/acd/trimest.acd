@@ -15,8 +15,8 @@ section: input [
 
 endsection: input
 
-section: advanced [
-  information: "Advanced section"
+section: additional [
+  information: "Additional section"
   type: "page"
 ]
 
@@ -59,6 +59,13 @@ section: advanced [
            when it is written out. If this option is not set, then the sense
            will not be changed."
   ]
+
+endsection: additional
+
+section: advanced [
+  information: "Advanced section"
+  type: "page"
+]
 
   boolean: fiveprime  [
     default: "Y"

@@ -35,6 +35,13 @@ section: required [
     expected: "None"
   ]
 
+endsection: required
+
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
   boolean: tolower  [
     additional: "Y"
     default: "N"
@@ -59,7 +66,7 @@ section: required [
     expected: "'X' for protein, 'N' for nucleic"
   ]
 
-endsection: required
+endsection: additional
 
 section: output [
   information: "Output section"

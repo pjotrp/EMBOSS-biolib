@@ -33,8 +33,8 @@ section: required [
 
 endsection: required
 
-section: advanced [
-  information: "Advanced section"
+section: additional [
+  information: "Additional section"
   type: "page"
 ]
 
@@ -44,7 +44,7 @@ section: advanced [
     information: "Do a case-sensitive search"
   ]
 
-endsection: advanced
+endsection: additional
 
 section: output [
   information: "Output section"

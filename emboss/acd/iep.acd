@@ -22,7 +22,7 @@ section: advanced [
 ]
 
   float: step  [
-    information: "pH step value"
+    information: "Step value for pH"
     minimum: ".01"
     maximum: "1."
     default: ".5"

@@ -49,6 +49,13 @@ section: advanced [
            money for them."
   ]
 
+endsection: advanced
+
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
   boolean: explode  [
     additional: "Y"
     default: "N"
@@ -68,7 +75,7 @@ section: advanced [
            wish to use non-exploded names"
   ]
 
-endsection: advanced
+endsection: additional
 
 section: output [
   information: "Output section"

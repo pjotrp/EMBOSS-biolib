@@ -15,12 +15,15 @@ section: input [
     help: "The sequence alignment to be displayed."
   ]
 
-endsection: input
-
-section: advanced [
-  information: "Advanced section"
-  type: "page"
-]
+  matrix: matrix  [
+    additional: "Y"
+    information: "Similarity scoring Matrix file"
+    protein: "$(acdprotein)"
+    help: "This is the scoring matrix file used when comparing
+           sequences. By default it is the file 'EBLOSUM62' (for proteins) or
+           the file 'EDNAFULL' (for nucleic sequences). These files are
+           found in the 'data' directory of the EMBOSS installation."
+  ]
 
   string: refseq  [
     additional: "Y"
@@ -35,15 +38,12 @@ section: advanced [
            consensus sequence is used as the reference sequence."
   ]
 
-  matrix: matrix  [
-    additional: "Y"
-    information: "Similarity scoring Matrix file"
-    protein: "$(acdprotein)"
-    help: "This is the scoring matrix file used when comparing
-           sequences. By default it is the file 'EBLOSUM62' (for proteins) or
-           the file 'EDNAFULL' (for nucleic sequences). These files are
-           found in the 'data' directory of the EMBOSS installation."
-  ]
+endsection: input
+
+section: advanced [
+  information: "Advanced section"
+  type: "page"
+]
 
   float: plurality  [
     default: "50.0"

@@ -14,16 +14,16 @@ section: input [
     type: "DNA"
   ]
 
+  codon: cfile  [
+    help: "Codon usage file"
+  ]
+
 endsection: input
 
 section: advanced [
   information: "Advanced section"
   type: "page"
 ]
-
-  codon: cfile  [
-    help: "Codon usage file"
-  ]
 
   integer: window  [
     default: "30"

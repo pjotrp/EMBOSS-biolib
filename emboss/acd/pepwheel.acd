@@ -45,6 +45,11 @@ section: output [
            value divided by this value."
   ]
 
+  graph: graph  [
+    standard: "Y"
+    gxtitle: "$(sequence.name)"
+  ]
+
   section: markupsection [
     information: "Markup section"
     type: "frame"
@@ -82,17 +87,5 @@ section: output [
     ]
 
   endsection: markupsection
-
-  section: datasection [
-    information: "Data output section"
-    type: "frame"
-  ]
-
-    graph: graph  [
-      standard: "Y"
-      gxtitle: "$(sequence.name)"
-    ]
-
-  endsection: datasection
 
 endsection: output

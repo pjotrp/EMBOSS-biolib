@@ -15,10 +15,20 @@ section: input [
     help: "File containing a sequence alignment"
   ]
 
+  matrix: matrixfile  [
+    additional: "Y"
+    information: "Matrix file"
+    protein: "$(acdprotein)"
+    help: "This is the scoring matrix file used when comparing
+           sequences. By default it is the file 'EBLOSUM62' (for proteins)
+           or the file 'EDNAFULL' (for nucleic sequences). These files are
+           found in the 'data' directory of the EMBOSS installation."
+  ]
+
 endsection: input
 
-section: advanced [
-  information: "Advanced section"
+section: additional [
+  information: "Additional section"
   type: "page"
 ]
 
@@ -77,7 +87,7 @@ section: advanced [
 
   string: shade  [
     additional: "Y"
-    information: "shading"
+    information: "Shading"
     help: "Set to BPLW for normal shading \
            so for pair = 1.5,1.0,0.5 and shade = BPLW \
            Residues score Colour \
@@ -188,16 +198,6 @@ section: advanced [
       maximum: "3"
     ]
 
-    matrix: matrixfile  [
-      additional: "Y"
-      information: "Matrix file"
-      protein: "$(acdprotein)"
-      help: "This is the scoring matrix file used when comparing
-             sequences. By default it is the file 'EBLOSUM62' (for proteins)
-             or the file 'EDNAFULL' (for nucleic sequences). These files are
-             found in the 'data' directory of the EMBOSS installation."
-    ]
-
   endsection: consensussection
 
   integer: showscore  [
@@ -212,7 +212,7 @@ section: advanced [
     default: "N"
   ]
 
-endsection: advanced
+endsection: additional
 
 section: output [
   information: "Output section"

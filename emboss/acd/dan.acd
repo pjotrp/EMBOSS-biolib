@@ -63,16 +63,10 @@ section: required [
 
 endsection: required
 
-section: advanced [
-  information: "Advanced section"
+section: additional [
+  information: "Additional section"
   type: "page"
 ]
-
-  boolean: rna  [
-    information: "Use RNA data values"
-    help: "This specifies that the sequence is an RNA sequnce and not
-           a DNA sequence."
-  ]
 
   section: productsection [
     information: "Product options"
@@ -80,13 +74,14 @@ section: advanced [
   ]
 
     boolean: product  [
+      additional: "Y"
       information: "Prompt for product values"
       help: "This prompts for percent formamide, percent of mismatches
              allowed and product length."
     ]
 
     float: formamide  [
-      standard: "$(product)"
+      additional: "$(product)"
       minimum: "0."
       maximum: "100."
       default: "0."
@@ -96,7 +91,7 @@ section: advanced [
     ]
 
     float: mismatch  [
-      standard: "$(product)"
+      additional: "$(product)"
       minimum: "0."
       maximum: "100."
       default: "0."
@@ -106,7 +101,7 @@ section: advanced [
     ]
 
     integer: prodlen  [
-      standard: "$(product)"
+      additional: "$(product)"
       minimum: "$(windowSize)"
       default: "$(windowSize)"
       information: "Enter the product length"
@@ -123,6 +118,7 @@ section: advanced [
   ]
 
     boolean: thermo  [
+      additional: "Y"
       information: "Thermodynamic calculations"
       help: "Output the DeltaG, DeltaH and DeltaS values of the
              sequence windows to the output data file."
@@ -140,6 +136,19 @@ section: advanced [
     ]
 
   endsection: thermosection
+
+endsection: additional
+
+section: advanced [
+  information: "Advanced section"
+  type: "page"
+]
+
+  boolean: rna  [
+    information: "Use RNA data values"
+    help: "This specifies that the sequence is an RNA sequence and not
+           a DNA sequence."
+  ]
 
 endsection: advanced
 
@@ -178,7 +187,7 @@ section: output [
     rformat: "seqtable"
     taglist: "float:tm=Tm float:gc=GC float:dg=DeltaG
               float:dh=DeltaH float:ds=DeltaS float:tmprod=TmProd"
-    nullok: "@($(plot))"
+    nullok: "$(plot)"
   ]
 
 endsection: output

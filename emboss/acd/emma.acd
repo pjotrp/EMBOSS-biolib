@@ -20,8 +20,8 @@ section: input [
 
 endsection: input
 
-section: advanced [
-  information: "Advanced section"
+section: additional [
+  information: "Additional section"
   type: "page"
 ]
 
@@ -357,7 +357,7 @@ section: advanced [
       additional: "Y"
       default: "Y"
       information: "Use end gap separation penalty"
-      help: "'End gap separation' treats end gaps just like internal
+      help: "End gap separation: treats end gaps just like internal
              gaps for the purposes of avoiding gaps that are too close (set
              by 'gap separation distance'). If you turn this off, end gaps
              will be ignored for this purpose. This is useful when you wish
@@ -371,7 +371,7 @@ section: advanced [
       minimum: "0"
       information: "Gap separation distance"
       valid: "Positive integer"
-      help: "'Gap separation distance' tries to decrease the chances
+      help: "Gap separation distance: tries to decrease the chances
              of gaps being too close to each other. Gaps that are less than
              this distance apart are penalised more than other gaps. This
              does not prevent close gaps; it makes them less frequent,
@@ -382,7 +382,7 @@ section: advanced [
       additional: "$(prot)"
       default: "N"
       information: "No residue specific gaps"
-      help: "'Residue specific penalties' are amino acid specific gap
+      help: "Residue specific penalties:  amino acid specific gap
              penalties that reduce or increase the gap opening penalties at
              each position in the alignment or sequence. As an example,
              positions that are rich in glycine are more likely to have an
@@ -402,7 +402,7 @@ section: advanced [
       additional: "$(prot)"
       default: "N"
       information: "No hydrophilic gaps"
-      help: "'Hydrophilic gap penalties' are used to increase the
+      help: "Hydrophilic gap penalties: used to increase the
              chances of a gap within a run (5 or more residues) of
              hydrophilic amino acids; these are likely to be loop or random
              coil regions where gaps are more common. The residues that are
@@ -427,7 +427,7 @@ section: advanced [
            aligned later."
   ]
 
-endsection: advanced
+endsection: additional
 
 section: output [
   information: "Output section"

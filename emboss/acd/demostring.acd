@@ -3,7 +3,14 @@ application: demostring [
   groups: "Test"
 ]
 
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
 string: instring  [
   standard: "Y"
   information: "Value for instr"
 ]
+
+endsection: input

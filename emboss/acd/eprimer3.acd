@@ -18,8 +18,8 @@ section: input [
 
 endsection: input
 
-section: advanced [
-  information: "Advanced section"
+section: additional [
+  information: "Additional section"
   type: "page"
 ]
 
@@ -797,7 +797,7 @@ section: advanced [
 
   endsection: oligosection
 
-endsection: advanced
+endsection: additional
 
 section: output [
   information: "Output section"

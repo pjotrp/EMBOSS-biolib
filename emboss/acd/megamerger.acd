@@ -36,6 +36,13 @@ section: required [
     information: "Word size"
   ]
 
+endsection: required
+
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
   boolean: prefer  [
     additional: "Y"
     default: "N"
@@ -50,7 +57,7 @@ section: required [
            other sequence when there is a mismatch."
   ]
 
-endsection: required
+endsection: additional
 
 section: output [
   information: "Output section"
