@@ -27,12 +27,13 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import java.awt.event.*;
-import java.io.*;
+import java.io.File;
 import javax.swing.border.*;
-import javax.swing.undo.*;
+import javax.swing.undo.UndoManager;
+import javax.swing.undo.CannotRedoException;
 import javax.swing.text.JTextComponent;
 
-import org.emboss.jemboss.gui.sequenceChooser.*;
+import org.emboss.jemboss.gui.sequenceChooser.SequenceFilter;
 import org.emboss.jemboss.gui.filetree.*;
 import org.emboss.jemboss.gui.AdvancedOptions;
 
@@ -83,7 +84,7 @@ public class ResultsMenuBar extends JMenuBar
     // close
     JMenuItem resFileMenuExit = new JMenuItem("Close");
     resFileMenuExit.setAccelerator(KeyStroke.getKeyStroke(
-                    KeyEvent.VK_C, ActionEvent.CTRL_MASK));
+                    KeyEvent.VK_E, ActionEvent.CTRL_MASK));
     
     resFileMenuExit.addActionListener(new ActionListener()
     {
@@ -200,7 +201,7 @@ public class ResultsMenuBar extends JMenuBar
     colourMenu.add(cm);
     add(colourMenu);
 
-    //Text / sequence display option
+    //Text - sequence display option
     ButtonGroup group = new ButtonGroup();
     JMenu optionsMenu   = new JMenu("Options");
     JRadioButtonMenuItem optionsMenuText = new JRadioButtonMenuItem("Text");
@@ -530,8 +531,17 @@ public class ResultsMenuBar extends JMenuBar
 
   private JTextComponent getJTextComponentAt(JTabbedPane rtb, int index)
   {
-    JScrollPane jsp = (JScrollPane)(rtb.getComponentAt(index));
-    JPanel jp = (JPanel)(jsp.getViewport().getView());
+    JPanel jp;
+    try
+    {
+      JScrollPane jsp = (JScrollPane)(rtb.getComponentAt(index));
+      jp = (JPanel)(jsp.getViewport().getView());
+    }
+    catch(ClassCastException cce)
+    {
+      jp = (JPanel)(rtb.getComponentAt(index));
+    }
+
     try
     {
       return (JTextComponent)jp.getComponent(0);
@@ -544,40 +554,43 @@ public class ResultsMenuBar extends JMenuBar
 
 class ColorMenu extends JMenu
 {
-  protected Border m_unselectedBorder;
-  protected Border m_selectedBorder;
-  protected Border m_activeBorder;
+  protected Border unselectedBorder;
+  protected Border selectedBorder;
+  protected Border activeBorder;
 
-  protected Hashtable m_panes;
-  protected ColorPane m_selected;
+  protected Hashtable panes;
+  protected ColorPane selected;
 
   public ColorMenu(String name) 
   {
     super(name);
-    m_unselectedBorder = new CompoundBorder(
+    unselectedBorder = new CompoundBorder(
       new MatteBorder(1, 1, 1, 1, getBackground()),
       new BevelBorder(BevelBorder.LOWERED, 
       Color.white, Color.gray));
-    m_selectedBorder = new CompoundBorder(
+    selectedBorder = new CompoundBorder(
       new MatteBorder(2, 2, 2, 2, Color.red),
       new MatteBorder(1, 1, 1, 1, getBackground()));
-    m_activeBorder = new CompoundBorder(
+    activeBorder = new CompoundBorder(
       new MatteBorder(2, 2, 2, 2, Color.blue),
       new MatteBorder(1, 1, 1, 1, getBackground()));
         
     JPanel p = new JPanel();
     p.setBorder(new EmptyBorder(5, 5, 5, 5));
     p.setLayout(new GridLayout(8, 8));
-    m_panes = new Hashtable();
+    panes = new Hashtable();
 
     int[] values = new int[] { 0, 128, 192, 255 };
-    for (int r=0; r<values.length; r++) {
-      for (int g=0; g<values.length; g++) {
-        for (int b=0; b<values.length; b++) {
+    for (int r=0; r<values.length; r++) 
+    {
+      for (int g=0; g<values.length; g++) 
+      {
+        for (int b=0; b<values.length; b++)
+        {
           Color c = new Color(values[r], values[g], values[b]);
           ColorPane pn = new ColorPane(c);
           p.add(pn);
-          m_panes.put(c, pn);
+          panes.put(c, pn);
         }
       }
     }
@@ -586,20 +599,20 @@ class ColorMenu extends JMenu
 
   public void setColor(Color c) 
   {
-    Object obj = m_panes.get(c);
+    Object obj = panes.get(c);
     if (obj == null)
       return;
-    if (m_selected != null)
-      m_selected.setSelected(false);
-    m_selected = (ColorPane)obj;
-    m_selected.setSelected(true);
+    if (selected != null)
+      selected.setSelected(false);
+    selected = (ColorPane)obj;
+    selected.setSelected(true);
   }
 
   public Color getColor() 
   {
-    if (m_selected == null)
+    if (selected == null)
       return null;
-    return m_selected.getColor();
+    return selected.getColor();
   }
 
   public void doSelection() 
@@ -610,21 +623,21 @@ class ColorMenu extends JMenu
 
   class ColorPane extends JPanel implements MouseListener
   {
-    protected Color m_c;
-    protected boolean m_selected;
+    protected Color col;
+    protected boolean selected;
 
     public ColorPane(Color c) 
     {
-      m_c = c;
+      col = c;
       setBackground(c);
-      setBorder(m_unselectedBorder);
+      setBorder(unselectedBorder);
       String msg = "R "+c.getRed()+", G "+c.getGreen()+
         ", B "+c.getBlue();
       setToolTipText(msg);
       addMouseListener(this);
     }
 
-    public Color getColor() { return m_c; }
+    public Color getColor() { return col; }
 
     public Dimension getPreferredSize() 
     {
@@ -633,35 +646,35 @@ class ColorMenu extends JMenu
     public Dimension getMaximumSize() { return getPreferredSize(); }
     public Dimension getMinimumSize() { return getPreferredSize(); }
 
-    public void setSelected(boolean selected) 
+    public void setSelected(boolean select) 
     {
-      m_selected = selected;
-      if (m_selected)
-        setBorder(m_selectedBorder);
+      selected = select;
+      if (selected)
+        setBorder(selectedBorder);
       else
-        setBorder(m_unselectedBorder);
+        setBorder(unselectedBorder);
     }
 
-    public boolean isSelected() { return m_selected; }
+    public boolean isSelected() { return selected; }
     public void mousePressed(MouseEvent e) {}
     public void mouseClicked(MouseEvent e) {}
 
     public void mouseReleased(MouseEvent e) 
     {
-      setColor(m_c);
+      setColor(col);
       MenuSelectionManager.defaultManager().clearSelectedPath();
       doSelection();
     }
 
     public void mouseEntered(MouseEvent e) 
     {
-      setBorder(m_activeBorder);
+      setBorder(activeBorder);
     }
 
     public void mouseExited(MouseEvent e) 
     {
-      setBorder(m_selected ? m_selectedBorder : 
-        m_unselectedBorder);
+      setBorder(selected ? selectedBorder : 
+        unselectedBorder);
     }
   }
 }
