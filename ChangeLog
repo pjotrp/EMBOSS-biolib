@@ -689,7 +689,6 @@ Version 2.3.1
 Version 2.3.0
 
 	Seqretall, seqretallfeat and seqretset moved to 'make check'.
-
 	Seqret has all the functionality of the above.
 
 	Fix for NBRF accession number reading (ajseqread.c).
@@ -700,8 +699,7 @@ Version 2.3.0
 
 	Fix for problem reading plain format sequences by primer3.
 
-	Primer3 renamed eprimer3 to avoid conflicts with the Whitehead's.
-
+	Primer3 renamed eprimer3 to avoid conflicts with the Whitehead's
 	Primer3 version 3.0.6.
 
 	Transeq's '-frame' can have a list of values, as: '-frame=1,2,3'.
