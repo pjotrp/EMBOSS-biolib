@@ -15953,7 +15953,7 @@ FP 0 /Died: /
 ID allversusall-ex
 AB domainatrix
 AA allversusall
-IN ../../data/structure/allversusall/in
+IN ../../data/structure/allversusall/
 IN
 IN
 FI stdout
@@ -16112,11 +16112,11 @@ FP 0 /Died: /
 FI stdout
 FC = 4
 FP 2 /^\/\/\n/
-FI ../../data/structure/domainseqs/all_s.scop
+FI all_s.scop
 FC = 62
 FZ = 1269
 FP 2 /^ID   /
-FI ../../data/structure/domainseqs/domainseqs.log
+FI domainseqs.log
 FC = 6
 FZ = 78
 //
