@@ -19,7 +19,10 @@
 ** along with this program; if not, write to the Free Software
 ** Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******************************************************************************/
+
 #include "emboss.h"
+
+
 
 
 /* @prog preg *****************************************************************
@@ -30,7 +33,6 @@
 
 int main(int argc, char **argv)
 {
-
     AjPSeqall seqall;
     AjPFile outf;
     AjPRegexp patexp;
@@ -43,49 +45,54 @@ int main(int argc, char **argv)
     ajint ipos;
     ajint ilen;
 
-    embInit ("preg", argc, argv);
+    embInit("preg", argc, argv);
 
-    outf = ajAcdGetOutfile ("outfile");
-    seqall = ajAcdGetSeqall ("sequence");
-    patexp = ajAcdGetRegexp ("pattern");
+    outf   = ajAcdGetOutfile("outfile");
+    seqall = ajAcdGetSeqall("sequence");
+    patexp = ajAcdGetRegexp("pattern");
 
-    ajFmtPrintF (outf, "preg search of %S with pattern %S\n",
-		 ajAcdValue("sequence"), ajAcdValue("pattern"));
+    ajFmtPrintF(outf, "preg search of %S with pattern %S\n",
+		ajAcdValue("sequence"), ajAcdValue("pattern"));
 
-    while (ajSeqallNext(seqall, &seq))
+    while(ajSeqallNext(seqall, &seq))
     {
 	found = ajFalse;
 	ipos = 1;
-	ajStrAssS (&str, ajSeqStr(seq));
+	ajStrAssS(&str, ajSeqStr(seq));
 	ajStrToUpper(&str);
-	ajDebug ("Testing '%s' len: %d %d\n",
-		 ajSeqName(seq), ajSeqLen(seq), ajStrLen(str));
-	while (ajStrLen(str) && ajRegExec (patexp, str))
+	ajDebug("Testing '%s' len: %d %d\n",
+		ajSeqName(seq), ajSeqLen(seq), ajStrLen(str));
+
+	while(ajStrLen(str) && ajRegExec(patexp, str))
 	{
-	    if (!found)
+	    if(!found)
 	    {
-		ajFmtPrintF (outf, "Matches in %s\n", ajSeqName(seq));
+		ajFmtPrintF(outf, "Matches in %s\n", ajSeqName(seq));
 		found = ajTrue;
 	    }
-	    ioff = ajRegOffset (patexp);
-	    ilen = ajRegLenI (patexp, 0);
-	    if (ioff || ilen) {
-	      ajRegSubI (patexp, 0, &substr);
-	      ajRegPost (patexp, &tmpstr);
-	      ajStrAssS (&str, tmpstr);
-	      ipos += ioff;
-	      ajFmtPrintF (outf, "%15s %5d %S\n", ajSeqName(seq), ipos, substr);
-	      ipos += ilen;
+	    ioff = ajRegOffset(patexp);
+	    ilen = ajRegLenI(patexp, 0);
+	    if(ioff || ilen)
+	    {
+		ajRegSubI(patexp, 0, &substr);
+		ajRegPost(patexp, &tmpstr);
+		ajStrAssS(&str, tmpstr);
+		ipos += ioff;
+		ajFmtPrintF(outf, "%15s %5d %S\n", ajSeqName(seq), ipos,
+			    substr);
+		ipos += ilen;
 	    }
-	    else {
-	      ipos++;
-	      ajStrTrim(&str, 1);
+	    else
+	    {
+		ipos++;
+		ajStrTrim(&str, 1);
 	    }
 	}
     }
 
-    ajFileClose (&outf);
+    ajFileClose(&outf);
 
-    ajExit ();
+    ajExit();
+
     return 0;
 }
