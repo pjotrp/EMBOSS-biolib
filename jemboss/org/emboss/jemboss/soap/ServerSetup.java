@@ -38,8 +38,11 @@ public class ServerSetup extends JPanel
   private MemoryComboBox privateURL;
   private MemoryComboBox publicName;
   private MemoryComboBox privateName;
+  private MemoryComboBox proxyName;
+  private MemoryComboBox proxyPort;
 
   private JCheckBox userAuth;
+  private JCheckBox useProxy;
 
   private JembossParams mysettings; 
 
@@ -56,14 +59,23 @@ public class ServerSetup extends JPanel
 
     Vector PublicServerURL = new Vector();
     PublicServerURL.add(mysettings.getPublicSoapURL());
+
     Vector PrivateServerURL = new Vector();
     PrivateServerURL.add(mysettings.getPrivateSoapURL());
+
     Vector PublicServerName = new Vector();
     PublicServerName.add(mysettings.getPublicSoapService());
+
     Vector PrivateServerName = new Vector();
     PrivateServerName.add(mysettings.getPrivateSoapService());
 
-    GridLayout gl = new GridLayout(6,1,6,6);
+    Vector proxyNameSettings = new Vector();
+    proxyNameSettings.add(mysettings.getProxyHost());
+
+    Vector proxyPortSettings = new Vector();
+    proxyPortSettings.add(new Integer(mysettings.getProxyPortNum()));
+
+    GridLayout gl = new GridLayout(10,1,6,6);
     
     JPanel jpWest   = new JPanel(gl);
     JPanel jpCenter = new JPanel(gl);
@@ -99,7 +111,41 @@ public class ServerSetup extends JPanel
 //separator
     jpWest.add(new JLabel(""));
     jpCenter.add(new JLabel(""));
- 
+    
+//proxy name
+    useProxy = new JCheckBox("Use proxy settings",
+                              mysettings.getUseProxy());
+    jpWest.add(useProxy);
+    jpCenter.add(new JLabel(""));
+
+    lab = new JLabel("Proxy ");
+    jpWest.add(lab);
+    proxyName = new MemoryComboBox(proxyNameSettings);
+    jpCenter.add(proxyName);
+
+    lab = new JLabel("Proxy Port");
+    jpWest.add(lab);
+    proxyPort = new MemoryComboBox(proxyPortSettings);
+    jpCenter.add(proxyPort);
+
+    proxyName.setEnabled(useProxy.isSelected());
+    proxyPort.setEnabled(useProxy.isSelected());
+
+    useProxy.addActionListener(new ActionListener()
+    {
+      public void actionPerformed(ActionEvent e)
+      {
+        proxyName.setEnabled(useProxy.isSelected());
+        proxyPort.setEnabled(useProxy.isSelected());
+      }
+    });
+
+
+//separator
+    jpWest.add(new JLabel(""));
+    jpCenter.add(new JLabel(""));
+
+
     add(jpWest, BorderLayout.WEST);
     add(jpCenter, BorderLayout.CENTER);
 
@@ -111,7 +157,7 @@ public class ServerSetup extends JPanel
 
   public JembossParams setNewSettings()
   {
-    String settings[] = new String[5];
+    String settings[] = new String[8];
     settings[0] = 
        new String("server.public="+(String)publicURL.getSelectedItem());
     settings[1] = 
@@ -125,6 +171,16 @@ public class ServerSetup extends JPanel
       settings[4] = new String("user.auth=true");
     else
       settings[4] = new String("user.auth=false");
+
+    settings[6] =
+         new String("proxy.host="+(String)proxyName.getSelectedItem());
+    settings[7] =
+         new String("proxy.port="+((Integer)proxyPort.getSelectedItem()).toString());
+
+    if(useProxy.isSelected())
+      settings[5] = new String("proxy.use=true");
+    else
+      settings[5] = new String("proxy.use=false");
 
     mysettings.updateJembossPropStrings(settings);
 
