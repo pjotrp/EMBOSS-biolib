@@ -27,7 +27,7 @@ noinst_HEADERS = ajax.h ajarch.h ajdefine.h \
 ajacd.h ajarr.h ajassert.h \
 ajbase.h ajcall.h ajcod.h \
 ajcorba.h ajcorbaembl.h \
-ajdan.h ajexcept.h ajfeat.h ajfile.h ajfmt.h \
+ajdan.h ajexcept.h ajfeat.h ajfeatdata.h ajfile.h ajfmt.h \
 ajgraph.h ajgraphstruct.h ajhist.h ajlist.h \
 ajmath.h ajmatrices.h ajmem.h ajmess.h ajnam.h \
 ajposreg.h ajrange.h ajreg.h ajreport.h \
