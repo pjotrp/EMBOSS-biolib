@@ -8570,7 +8570,6 @@ AjBool ajXyzHitlistToScophits(AjPList in, AjPList *out)
     AjPHitlist   hitlist=NULL;   /* Pointer to Hitlist object */
     AjIList      iter   =NULL;   /* List iterator */
     ajint        x      =0;      /* Loop counter */
-    ajint        y      =0;      /* Loop counter */
 
     /* Check args */
     if(!in)
