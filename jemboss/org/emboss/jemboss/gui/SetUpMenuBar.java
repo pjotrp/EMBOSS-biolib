@@ -269,7 +269,7 @@ public class SetUpMenuBar
                              "version");
         }
         JOptionPane.showMessageDialog(f, fc +
-                  " by the EMBOSS team at the HGMP-RC (UK)");
+                  " by the EMBOSS team");
       }
     });
     helpMenu.add(helpMenuAbout);
