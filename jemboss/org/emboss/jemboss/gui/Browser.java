@@ -44,38 +44,27 @@ public class Browser extends JFrame implements HyperlinkListener,
   private Cursor cbusy = new Cursor(Cursor.WAIT_CURSOR);
   private Cursor cdone = new Cursor(Cursor.DEFAULT_CURSOR);
 
+
+
   public Browser(String initialURL, String name) throws IOException
   {
     this(initialURL,name,false,"");
   }
 
   public Browser(String initialURL, String name,  boolean ltext, 
-                                 String text) throws IOException
+                         String text) throws IOException
   {
 
     super(name);
     this.initialURL = initialURL;
 
-    Vector urlCache = new Vector();
+    urlCache = new Vector();
     if(!ltext)
       urlCache.add(initialURL);
     else
       urlCache.add(name+".html");
 
-    JMenuBar menuBar = new JMenuBar();
-
-    ClassLoader cl = this.getClass().getClassLoader();
-    ImageIcon jem = new ImageIcon(cl.getResource("images/Jemboss_logo_small.gif")); 
-    jembossButton = new JIconButton(jem);
-    jembossButton.addActionListener(this);
-    JLabel urlLabel = new JLabel("URL:");
-    urlField = new MemoryComboBox(urlCache);
-    urlField.addActionListener(this);
-
-    menuBar.add(jembossButton);
-    menuBar.add(urlLabel);
-    menuBar.add(urlField);
-    setJMenuBar(menuBar);
+    setUpJMenuBar();
 
     if(ltext)
     {
@@ -85,7 +74,7 @@ public class Browser extends JFrame implements HyperlinkListener,
         htmlPane.setContentType("text/html");
       htmlPane.setText(text);
     }
-    else
+    else 
     {
       try
       {
@@ -98,19 +87,66 @@ public class Browser extends JFrame implements HyperlinkListener,
       }
     }
 
-    htmlPane.setEditable(false);
-    htmlPane.setCaretPosition(0);
-    JScrollPane scrollPane = new JScrollPane(htmlPane);
+    addToScrollPane();
+    setBrowserSize();
+    setVisible(true);
+  }
 
-    getContentPane().add(scrollPane, BorderLayout.CENTER);
-    
+  public Browser(URL urlName, String initialURL) throws IOException
+  {
+    super(initialURL);
+    this.initialURL = initialURL;
+    urlCache = new Vector();
+    urlCache.add(initialURL);
+    setUpJMenuBar();
+    try
+    {
+      htmlPane = new JEditorPane(urlName);
+    }
+    catch(IOException ioe)
+    {
+      throw new IOException();
+    }
+
+    addToScrollPane();
+    setBrowserSize();
+    setVisible(true);
+  }
+
+  public void setUpJMenuBar()
+  {
+    JMenuBar menuBar = new JMenuBar();
+
+    ClassLoader cl = this.getClass().getClassLoader();
+    ImageIcon jem = new ImageIcon(cl.getResource("images/Jemboss_logo_small.gif"));
+    jembossButton = new JIconButton(jem);
+    jembossButton.addActionListener(this);
+
+    JLabel urlLabel = new JLabel("URL:");
+    urlField = new MemoryComboBox(urlCache);
+    urlField.addActionListener(this);
+
+    menuBar.add(jembossButton);
+    menuBar.add(urlLabel);
+    menuBar.add(urlField);
+    setJMenuBar(menuBar);
+  }
+
+  public void setBrowserSize()
+  {
     Dimension screenSize = getToolkit().getScreenSize();
     int width  = screenSize.width * 5 / 10;
     int height = screenSize.height * 4 / 10;
     setBounds(width/5, height/4, width, height);
-    setVisible(true);
   }
 
+  public void addToScrollPane()
+  {
+    htmlPane.setEditable(false);
+    htmlPane.setCaretPosition(0);
+    JScrollPane scrollPane = new JScrollPane(htmlPane);
+    getContentPane().add(scrollPane, BorderLayout.CENTER);
+  }
 
   public void actionPerformed(ActionEvent event) 
   {
