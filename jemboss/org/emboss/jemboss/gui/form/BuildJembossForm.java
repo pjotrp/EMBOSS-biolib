@@ -961,7 +961,7 @@ public class BuildJembossForm implements ActionListener
       }
       catch (IOException e)
       {
-        System.out.println("Cannot open EMBOSS acd file " + acdToParse);
+        System.out.println("Cannot read EMBOSS acd file " + acdText);
       }
     } else {
       if (acdStore.containsKey(applName)) 

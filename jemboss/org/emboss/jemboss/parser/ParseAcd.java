@@ -102,7 +102,7 @@ public class ParseAcd{
       line = new String();
       char c;
 
-      in.mark(300);
+      in.mark(1500);
       line = in.readLine();
 
 // loop over all parameter definitions
@@ -111,10 +111,9 @@ public class ParseAcd{
         line = line.trim();    // removes leading & trailing whitespace
         len = line.length();
      
-        if(line.startsWith("#") || len ==0 || 
-           line.startsWith("var") )
+        if(line.startsWith("#") || len ==0)
         {
-          in.mark(600);
+          in.mark(1500);
           continue;
         }
 
@@ -135,13 +134,31 @@ public class ParseAcd{
         if(dataType.startsWith("appl"))
           current = new Application(param);
 
-        if(line.startsWith("endsection"))
+        if(line.startsWith("var:") || line.startsWith("variable"))
+        {
+          param = param.trim();
+          appF[numofFields] = new ApplicationFields();
+          appF[numofFields].setNumberOfParam(2);
+          appF[numofFields].setParam(0,dataType,param);
+      
+          int ns = param.indexOf(" ");
+          if(ns > -1)
+          {
+            String value = param.substring(ns);
+            value = value.replace('"',' ').trim();
+            appF[numofFields].setParam(1, "value", value);
+          }
+          numofFields++;
+          in.mark(1500);
+          continue;
+        }
+        else if(line.startsWith("endsection"))
         {
           appF[numofFields] = new ApplicationFields();
           appF[numofFields].setNumberOfParam(1);
           appF[numofFields].setParam(0, dataType, param);
           numofFields++;
-          in.mark(600);
+          in.mark(1500);
           continue;
         }
         else if(line.startsWith("section"))
@@ -166,7 +183,7 @@ public class ParseAcd{
          st.nextToken();
         }
 
-        in.mark(900);
+        in.mark(1500);
         do 
         {
           ttype = parseParam(in, st);
@@ -192,7 +209,7 @@ public class ParseAcd{
           else if ( ttype == java.io.StreamTokenizer.TT_NUMBER) 
           {
 //           System.out.println(" ATTR " + attr + " NVALUE " + nvalue);
-             appF[numofFields].setParam(numofParams, attr, nvalue);
+//           appF[numofFields].setParam(numofParams, attr, nvalue);
           }
 
         } while (attr != null);
@@ -253,7 +270,7 @@ public class ParseAcd{
         }
 
         numofFields++;
-        in.mark(600);
+        in.mark(1500);
 
         if(groups && dataType.startsWith("appl")) 
         {

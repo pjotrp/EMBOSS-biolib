@@ -127,7 +127,6 @@ public class SectionPanel
   {
 
     Border etched = BorderFactory.createEtchedBorder();
-
     isShadedGUI = AdvancedOptions.prefShadeGUI.isSelected();
 
     this.p3 = p3;
@@ -203,7 +202,8 @@ public class SectionPanel
     while( !( att.equals("endsection")  && varName.equals(nameSect)) &&
             nf < numofFields )
     {
-      if(!(att.equals("graph") || att.equals("xygraph")) )
+      if(!(att.equals("graph") || att.equals("xygraph")
+        || att.equals("var")   || att.equals("variable")) )
       {
         int h = parseAcd.getGuiHandleNumber(nf);
         Box pan = new Box(BoxLayout.X_AXIS);
@@ -593,12 +593,12 @@ public class SectionPanel
           att.startsWith("sequence") ) 
       {
         Box left = new Box(BoxLayout.X_AXIS);
-        JButton upload = new JButton("USE THIS SEQUENCE");
+        JButton upload = new JButton("LOAD ATTRIBUTES FOR THIS SEQUENCE");
 
         upload.setToolTipText(
                 "After entering your sequence above, click here. This\n" +
                 "will display the input parameters for " + appName + "\n" +
-                " that are dependent on the sequence attributes.");
+                "that are dependent on the sequence attributes.");
 
         upload.setForeground(Color.red);
         Dimension d = upload.getPreferredSize();
@@ -659,8 +659,7 @@ public class SectionPanel
                 JOptionPane.showMessageDialog(sectionPane,
                           "Sequence not found." +
                           "\nCheck the sequence entered.",
-                          "Error Message",
-                          JOptionPane.ERROR_MESSAGE);
+                          "Error Message", JOptionPane.ERROR_MESSAGE);
               }
             }
             else
@@ -729,8 +728,7 @@ public class SectionPanel
                   JOptionPane.showMessageDialog(sectionPane,
                           "Sequence not found." +
                           "\nCheck the sequence entered.",
-                          "Error Message",
-                          JOptionPane.ERROR_MESSAGE); 
+                          "Error Message", JOptionPane.ERROR_MESSAGE);
                 }
 //              System.out.println("PROPERTIES::: " + ajaxLength + " " + ajaxWeight );
               }
