@@ -1,4 +1,34 @@
 Version 3.0.0
+	Entrez added as an access method. Sequence format must be
+	genbank. Server URL is hard-coded at NCBI (for now). Works by
+	finding GIs GenInfo Identifiers) that match the query, and then
+	retrieving them one at a time. This is still a prototype - more work is
+	needed. Note that apparently Entrez cannot retrieve by LOCUS (id).
+
+	Seqhound added as an access method. Sequence format must be
+	genbank. Needs a URL to find the server. Works by finding GIs
+	(GenInfo Identifiers) that match the query, and then retrieving
+	them one at a time. This is still a prototype - more work is
+	needed. Some Entrez error conditions are less graceful in
+	SeqHound. Des and Key searches are turned off until SeqHound adds
+	indexing for these. Org searches work, but require the numeric
+	taxon ID. This is not friendly, so we are looking for a way to get
+	the taxid from the species or genus.
+
+	Direct access databases now support exclude wildcards. The syntax
+	is as for emblcd indexing, but only files listed in filename are
+	included.
+	
+	Database names must be letters, numbers and underscores
+	only. Reading emboss.default and .embossrc now generates a warning
+	message for any bad database name. Bad names were ignored by USA
+	processing, leading to confusing results.
+
+	seqretsplit has a new -feature option (as for seqret)
+	
+	noreturn can write files for PC or Mac file systems using a new
+	-system qualifier.
+
 	FASTA format sequence files with a seqeunce ID starting P1; were
 	assumed to be PIR format. These can now be read as FASTA, assuming
 	that PIR format has already beed tested for.
