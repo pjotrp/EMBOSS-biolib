@@ -27,6 +27,7 @@ ajint embDbiCmpAcId (const void* a, const void* b);
 ajint embDbiCmpAcAc (const void* a, const void* b);
 EmbPentry embDbiEntryNew (void);
 AjPList embDbiFileList (AjPStr dir, AjPStr wildfile, AjPStr exclude);
+AjBool embDbiFlatOpenlib(AjPStr lname, AjPFile* libr);
 void embDbiRmFile (AjPStr dbname, const char* ext, ajint nfiles,
 		   AjBool cleanup);
 void embDbiRmFileI (AjPStr dbname, const char* ext, ajint ifile,

@@ -56,13 +56,13 @@ static AjPStr release = NULL;
 static AjPStr datestr = NULL;
 static AjPStr sortopt = NULL;
 
-static AjBool parseFasta   (AjPFile libr, ajint *dpos,
+static AjBool dbifastaParseFasta   (AjPFile libr, ajint *dpos,
 			    AjPStr* id, AjPList acl, AjPRegexp exp,
 			    ajint type);
 
-static EmbPentry nextflatentry (AjPFile libr, ajint ifile, AjPStr idformat,
-			     AjPRegexp exp, ajint type);
-static AjBool flatopenlib(AjPStr lname, AjPFile* libr);
+static EmbPentry dbifastaNextFlatEntry (AjPFile libr, ajint ifile,
+					AjPStr idformat, AjPRegexp exp,
+					ajint type);
 
 static AjPRegexp getExpr(AjPStr idformat, ajint *type);
 
@@ -193,7 +193,7 @@ int main(int argc, char **argv)
 
   for (ifile=0; ifile<nfiles; ifile++) {
     curfilename = (AjPStr) files[ifile];
-    flatopenlib (curfilename, &libr);
+    embDbiFlatOpenlib (curfilename, &libr);
     ajDebug ("processing '%S' ...\n", curfilename);
     ajDebug ("processing '%F' ...\n", libr);
     ajStrAssS (&divfiles[ifile], curfilename);
@@ -214,7 +214,7 @@ int main(int argc, char **argv)
 
     if (ajStrLen(curfilename) >= maxfilelen)
       maxfilelen = ajStrLen(curfilename) + 1;
-    while ((entry=nextflatentry(libr, ifile, idformat,exp,idtype))) {
+    while ((entry=dbifastaNextFlatEntry(libr, ifile, idformat,exp,idtype))) {
       if (systemsort) {
 	nid++;
       }
@@ -543,7 +543,7 @@ int main(int argc, char **argv)
   return 0;
 }
 
-/* @funcstatic nextflatentry ********************************************
+/* @funcstatic dbifastaNextFlatEntry ******************************************
 **
 ** Returns next database entry as an EmbPentry object
 **
@@ -556,8 +556,9 @@ int main(int argc, char **argv)
 ** @@
 ******************************************************************************/
 
-static EmbPentry nextflatentry (AjPFile libr, ajint ifile, AjPStr idformat,
-			     AjPRegexp exp, ajint type)
+static EmbPentry dbifastaNextFlatEntry (AjPFile libr, ajint ifile,
+					AjPStr idformat, AjPRegexp exp,
+					ajint type)
 {
 
   static EmbPentry ret=NULL;
@@ -574,7 +575,7 @@ static EmbPentry nextflatentry (AjPFile libr, ajint ifile, AjPStr idformat,
   if (!ret || !systemsort)
     ret = embDbiEntryNew();
 
-  if (!parseFasta(libr, &ir, &id, acl, exp, type))
+  if (!dbifastaParseFasta(libr, &ir, &id, acl, exp, type))
      return NULL;
 
   /* id to ret->entry */
@@ -612,32 +613,6 @@ static EmbPentry nextflatentry (AjPFile libr, ajint ifile, AjPStr idformat,
   }
 
   return ret;
-}
-
-/* @funcstatic flatopenlib ********************************************
-**
-** Open a flat file library
-**
-** @param [r] lname [AjPStr] Source file basename
-** @param [r] libr [AjPFile*] Database file
-** @return [AjBool] ajTrue on success
-** @@
-******************************************************************************/
-
-static AjBool flatopenlib(AjPStr lname, AjPFile* libr) {
-
-  ajFileClose(libr);
-
-  *libr = ajFileNewIn(lname);
-  if(!*libr)
-	ajFatal("Cannot open %S for reading",lname);
-  if (!*libr) {
-    ajErr(" cannot open library flat file: %S\n",
-	    lname);
-    return ajFalse;
-  }
-  
-  return ajTrue;
 }
 
 /* @funcstatic getExpr *****************************************************
@@ -701,17 +676,7 @@ static AjPRegexp getExpr(AjPStr idformat, ajint *type)
     return exp;
 }
 
-    
-
-
-
-
-
-
-
-
-
-/* @funcstatic parseFasta *****************************************************
+/* @funcstatic dbifastaParseFasta *********************************************
 **
 ** Parse the ID, accession from a FASTA format sequence
 **
@@ -725,9 +690,9 @@ static AjPRegexp getExpr(AjPStr idformat, ajint *type)
 ** @@
 ******************************************************************************/
 
-static AjBool parseFasta (AjPFile libr, ajint* dpos,
-			  AjPStr* id, AjPList acl, AjPRegexp exp,
-			  ajint type)
+static AjBool dbifastaParseFasta (AjPFile libr, ajint* dpos,
+				  AjPStr* id, AjPList acl, AjPRegexp exp,
+				  ajint type)
 {
   static AjPStr tmpac = NULL; 
   static AjPStr token = NULL;

@@ -66,8 +66,13 @@ static OParser parser[] = {
   {NULL, NULL}
 };
 
-static EmbPentry nextflatentry (AjPFile libr, ajint ifile);
-static AjBool flatopenlib(AjPStr lname, AjPFile* libr);
+static EmbPentry dbiflatNextFlatEntry (AjPFile libr, ajint ifile);
+
+/* @prog dbiflat **************************************************************
+**
+** Indexing a flat file database
+**
+******************************************************************************/
 
 int main(int argc, char **argv)
 {
@@ -189,7 +194,7 @@ int main(int argc, char **argv)
 
   for (ifile=0; ifile<nfiles; ifile++) {
     curfilename = (AjPStr) files[ifile];
-    flatopenlib (curfilename, &libr);
+    embDbiFlatOpenlib (curfilename, &libr);
     ajDebug ("processing '%S' ...\n", curfilename);
     ajDebug ("processing '%F' ...\n", libr);
     ajStrAssS (&divfiles[ifile], curfilename);
@@ -210,7 +215,7 @@ int main(int argc, char **argv)
 
     if (ajStrLen(curfilename) >= maxfilelen)
       maxfilelen = ajStrLen(curfilename) + 1;
-    while ((entry=nextflatentry(libr, ifile))) {
+    while ((entry=dbiflatNextFlatEntry(libr, ifile))) {
       if (systemsort) {
 	nid++;
       }
@@ -539,7 +544,7 @@ int main(int argc, char **argv)
   return 0;
 }
 
-/* @funcstatic nextflatentry ********************************************
+/* @funcstatic dbiflatNextFlatEntry *******************************************
 **
 ** Returns next database entry as an EmbPentry object
 **
@@ -549,7 +554,7 @@ int main(int argc, char **argv)
 ** @@
 ******************************************************************************/
 
-static EmbPentry nextflatentry (AjPFile libr, ajint ifile) {
+static EmbPentry dbiflatNextFlatEntry (AjPFile libr, ajint ifile) {
 
   static EmbPentry ret=NULL;
   ajint ir;
@@ -616,32 +621,6 @@ static EmbPentry nextflatentry (AjPFile libr, ajint ifile) {
   }
 
   return ret;
-}
-
-/* @funcstatic flatopenlib ********************************************
-**
-** Open a flat file library
-**
-** @param [r] lname [AjPStr] Source file basename
-** @param [r] libr [AjPFile*] Database file
-** @return [AjBool] ajTrue on success
-** @@
-******************************************************************************/
-
-static AjBool flatopenlib(AjPStr lname, AjPFile* libr) {
-
-  ajFileClose(libr);
-
-  *libr = ajFileNewIn(lname);
-  if(!*libr)
-	ajFatal("Cannot open %S for reading",lname);
-  if (!*libr) {
-    ajErr(" cannot open library flat file: %S\n",
-	    lname);
-    return ajFalse;
-  }
-  
-  return ajTrue;
 }
 
 /* @funcstatic dbiflatParseEmbl ********************************************

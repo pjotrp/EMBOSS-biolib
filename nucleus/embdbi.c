@@ -148,6 +148,32 @@ AjPList embDbiFileList (AjPStr dir, AjPStr wildfile, AjPStr exclude) {
   return retlist;
 }
 
+/* @func embDBiFlatOpenlib ****************************************************
+**
+** Open a flat file library
+**
+** @param [r] lname [AjPStr] Source file basename
+** @param [r] libr [AjPFile*] Database file
+** @return [AjBool] ajTrue on success
+** @@
+******************************************************************************/
+
+AjBool embDbiFlatOpenlib(AjPStr lname, AjPFile* libr) {
+
+  ajFileClose(libr);
+
+  *libr = ajFileNewIn(lname);
+  if(!*libr)
+	ajFatal("Cannot open %S for reading",lname);
+  if (!*libr) {
+    ajErr(" cannot open library flat file: %S\n",
+	    lname);
+    return ajFalse;
+  }
+  
+  return ajTrue;
+}
+
 /* @func embDbiRmFile ********************************************************
 **
 ** Remove a file or a set of numbered files
