@@ -589,7 +589,6 @@ static AjBool dbifasta_ParseFasta(AjPFile libr, ajint* dpos,
     default:
 	ajStrDelReuse(&tmpac);
 	return ajFalse;
-	break;
     }
 
     ajStrToUpper(id);

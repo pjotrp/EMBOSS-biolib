@@ -576,16 +576,12 @@ static int sirna_compare_score(const void* v1, const void* v2)
     	return -1;
     else if(s1->score < s2->score)
     	return +1;
-    else
-    {
-	/* sort by position if scores are equal */
-        if(s1->pos < s2->pos)
-            return -1;
-	else if(s1->pos > s2->pos)
-            return +1;
-	else
-    	    return 0;
-    }	
+
+    /* sort by position if scores are equal */
+    if(s1->pos < s2->pos)
+	return -1;
+    else if(s1->pos > s2->pos)
+	return +1;
 
     return 0;
 }

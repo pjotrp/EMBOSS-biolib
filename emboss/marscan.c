@@ -72,7 +72,7 @@ int main(int argc, char **argv)
     EmbOPatBYPNode off16[AJALPHA];
 
     ajuint *sotable16 = NULL;
-    ajint  solimit16  = 0;
+    ajuint solimit16  = 0;
     AjPStr regexp16   = NULL;
     ajint  **skipm16  = NULL;
     ajint  mismatch16 = 1;		/* allow a single mismatch */
@@ -92,7 +92,7 @@ int main(int argc, char **argv)
     EmbOPatBYPNode off16rev[AJALPHA];
 
     ajuint   *sotable16rev = NULL;
-    ajint    solimit16rev  = 0;
+    ajuint   solimit16rev  = 0;
     AjPStr   regexp16rev   = NULL;
     ajint    **skipm16rev  = NULL;
     ajint    mismatch16rev = 1;		/* allow a single mismatch */
@@ -112,7 +112,7 @@ int main(int argc, char **argv)
     EmbOPatBYPNode off8[AJALPHA];
 
     ajuint   *sotable8 = NULL;
-    ajint    solimit8  = 0;
+    ajuint   solimit8  = 0;
     AjPStr   regexp8   = NULL;
     ajint    **skipm8  = NULL;
     ajint    mismatch8 = 0;
@@ -132,7 +132,7 @@ int main(int argc, char **argv)
     EmbOPatBYPNode off8rev[AJALPHA];
 
     ajuint   *sotable8rev = NULL;
-    ajint    solimit8rev  = 0;
+    ajuint   solimit8rev  = 0;
     AjPStr   regexp8rev   = NULL;
     ajint    **skipm8rev  = NULL;
     ajint    mismatch8rev = 0;
