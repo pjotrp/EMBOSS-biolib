@@ -1,6 +1,6 @@
 appl: swissparse [
   documentation: "Retrieves sequences from swissprot using keyword search"
-  groups: "Edit: Feature Tables"
+  groups: "Edit, Feature Tables"
 ]
 
 infile: keyfile  [

@@ -1,6 +1,6 @@
 appl: maskfeat [
   documentation: "Mask off features of a sequence."
-  groups: "Edit: Feature tables"
+  groups: "Edit, Feature tables"
 ]
 
 seqall: sequence  [
