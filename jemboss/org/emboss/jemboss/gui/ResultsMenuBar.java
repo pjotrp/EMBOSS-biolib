@@ -23,17 +23,16 @@
 package org.emboss.jemboss.gui;
 
 import java.util.Hashtable;
-import java.util.Enumeration;
-import java.awt.*;
+import java.awt.Cursor;
+import java.awt.Dimension;
 import javax.swing.*;
 import javax.swing.event.*;
-import org.emboss.jemboss.gui.sequenceChooser.*;
-import org.emboss.jemboss.gui.filetree.*;
-import org.emboss.jemboss.gui.AdvancedOptions;
-
 import java.awt.event.*;
 import java.io.*;
 
+import org.emboss.jemboss.gui.sequenceChooser.*;
+import org.emboss.jemboss.gui.filetree.*;
+import org.emboss.jemboss.gui.AdvancedOptions;
 
 /**
 *
@@ -41,12 +40,10 @@ import java.io.*;
 * 
 *
 */
-public class ResultsMenuBar
+public class ResultsMenuBar extends JMenuBar
 {
 
-  private String fs = new String(System.getProperty("file.separator"));
   private JMenuItem fileMenuShowres;
-  private JMenuBar menuPanel;
 
 /**
 *
@@ -56,13 +53,8 @@ public class ResultsMenuBar
 */
   public ResultsMenuBar(final JFrame frame)
   {
+    add(Box.createRigidArea(new Dimension(5,24)));
 
-    menuPanel = new JMenuBar();
-    new BoxLayout(menuPanel,BoxLayout.X_AXIS);
-    menuPanel.add(Box.createRigidArea(new Dimension(5,24)));
-
-//  menuPanel = new JMenuBar();
-//  menuPanel.setLayout(new FlowLayout(FlowLayout.LEFT,10,5));
     JMenu fileMenu = new JMenu("File");
     fileMenu.setMnemonic(KeyEvent.VK_F);
     fileMenuShowres = new JMenuItem("Save...");
@@ -81,9 +73,9 @@ public class ResultsMenuBar
       }
     });
     fileMenu.add(resFileMenuExit);
-    menuPanel.add(fileMenu);
+    add(fileMenu);
 
-    frame.setJMenuBar(menuPanel);
+    frame.setJMenuBar(this);
   }
 
 
@@ -99,13 +91,11 @@ public class ResultsMenuBar
   {
     this(frame);
 
-    final JTextPane seqText = fed.getJTextPane();
-
     fileMenuShowres.addActionListener(new ActionListener()
     {
       public void actionPerformed(ActionEvent e)
       {
-        FileSaving fsave = new FileSaving(seqText, fed.getPNGContent());
+        FileSaving fsave = new FileSaving(fed, fed.getPNGContent());
 
         if(fsave.writeOK())
         {
@@ -134,7 +124,7 @@ public class ResultsMenuBar
     optionsMenu.add(optionsMenuSeq);
     group.add(optionsMenuSeq);
 
-    menuPanel.add(optionsMenu);
+    add(optionsMenu);
 
     optionsMenuSeq.addActionListener(new ActionListener()
     {
@@ -142,10 +132,10 @@ public class ResultsMenuBar
       {
         if(((JRadioButtonMenuItem)e.getSource()).isSelected())
         {
-          String text = seqText.getText();
-          seqText.setText("");
-          fed.setText(text,"sequence",seqText);
-          seqText.setCaretPosition(0);
+          String text = fed.getText();
+          fed.setText("");
+          fed.setText(text,"sequence");
+          fed.setCaretPosition(0);
         }
       }
     });
@@ -156,10 +146,10 @@ public class ResultsMenuBar
      {
        if(((JRadioButtonMenuItem)e.getSource()).isSelected())
        {
-         String text = seqText.getText();
-         seqText.setText("");
-         fed.setText(text,"regular",seqText);
-         seqText.setCaretPosition(0);
+         String text = fed.getText();
+         fed.setText("");
+         fed.setText(text,"regular");
+         fed.setCaretPosition(0);
        }
      }
    });
@@ -178,7 +168,7 @@ public class ResultsMenuBar
 *
 */
   public ResultsMenuBar(final JFrame frame, final JTabbedPane rtb,
-                        final Hashtable hash)
+                        final Hashtable hashOut, final Hashtable hashIn)
   {
 
     this(frame);
@@ -208,25 +198,13 @@ public class ResultsMenuBar
           frame.setCursor(new Cursor(Cursor.WAIT_CURSOR));
 //        save results
           String tabTitle = rtb.getTitleAt(rtb.getSelectedIndex());
-          Enumeration enum = hash.keys();
 
-          while(enum.hasMoreElements())
+          if(hashOut.containsKey(tabTitle))
+            fileSave(cwd,fileSelected,tabTitle,hashOut);
+          else if(hashIn != null)
           {
-            String thiskey = (String)enum.nextElement();
-            if(tabTitle.equals(thiskey))
-            {
-              FileSave fsave = new FileSave(new File(cwd + fs + fileSelected));
-              if(fsave.doWrite())
-                fsave.fileSaving(hash.get(thiskey));
-              if(!fsave.fileExists())
-              {
-                org.emboss.jemboss.Jemboss.tree.addObject(fileSelected,cwd,null);
-
-                DragTree ltree = SetUpMenuBar.getLocalDragTree();
-                if(ltree!=null)
-                  ltree.addObject(fileSelected,cwd,null);
-              }
-            }
+            if(hashIn.containsKey(tabTitle))
+              fileSave(cwd,fileSelected,tabTitle,hashIn);
           }
 
           frame.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
@@ -235,10 +213,25 @@ public class ResultsMenuBar
     });
   }
 
+  private void fileSave(String cwd, String fileSelected, 
+                        String tabTitle, Hashtable h)
+  {
+    String fs = new String(System.getProperty("file.separator"));
+    FileSave fsave = new FileSave(new File(cwd + fs + fileSelected));
+    if(fsave.doWrite())
+      fsave.fileSaving(h.get(tabTitle));
+    if(!fsave.fileExists())
+    {
+      org.emboss.jemboss.Jemboss.tree.addObject(fileSelected,cwd,null);
+      DragTree ltree = SetUpMenuBar.getLocalDragTree();
+      if(ltree!=null)
+        ltree.addObject(fileSelected,cwd,null);
+    }
+  }
 
   public JMenuBar getJMenuBar()
   {
-    return menuPanel;
+    return this;
   }
   
 }
