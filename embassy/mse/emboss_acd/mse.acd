@@ -1,6 +1,7 @@
 appl: mse [
         doc: "Multiple Sequence Editor"
         groups: "alignment"
+	gui: N
 ]
 
   seqset: msf [ 
