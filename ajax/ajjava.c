@@ -1224,13 +1224,26 @@ static AjPStr java_uniqueName(AjPStr username, ajint command)
 {
     AjPStr pipename=NULL;
     struct timeval tv;
+    struct stat buf;
+    int count = 0;
     
     if(gettimeofday(&tv,NULL))
 	return NULL;
     
     pipename = ajStrNew();
-    ajFmtPrintS(&pipename,"/tmp/%S-%d-%Ld-%Ld-%d",username,ajRandomNumber(),tv.tv_sec,
-		tv.tv_usec,command);
+
+    do
+    {
+	if(count++ == 10)
+	{
+	    ajStrDel(&pipename);
+	    return NULL;
+	}
+	ajFmtPrintS(&pipename,"/tmp/jb-%S-%d-%Ld-%Ld-%d",username,
+		    ajRandomNumber(),tv.tv_sec,tv.tv_usec,command);
+    }
+    while(stat(ajStrStr(pipename),&buf)!=-1);
+    
 
     return pipename;
 }
@@ -1911,6 +1924,9 @@ static int java_jembossctl(ajint command, AjPStr username, AjPStr password,
 
 
     uniq = java_uniqueName(username,command);
+    if(!uniq)
+	return -1;
+    
     cuniq = ajStrStr(uniq);
     cuser = ajStrStr(username);
     cpass = ajStrStr(password);
