@@ -325,6 +325,8 @@ static AjBool acdAttrToInt (AcdPAcd thys,
  			    char *attr, ajint defval, ajint *result);
 static AjBool acdAttrToStr (AcdPAcd thys,
 			    char *attr, char* defval, AjPStr *result);
+static void   acdPrintCalcAttr (AjPFile outf, AjBool full,
+			      char* acdtype, AcdOAttr calcattr[]);
 static AjBool acdQualToBool (AcdPAcd thys, char *qual, 
 			     AjBool defval, AjBool *result, AjPStr* valstr);
 static AjBool acdQualToFloat (AcdPAcd thys, char *qual,
@@ -861,6 +863,62 @@ AcdOAttr acdAttrString[] = {
 };
 
 AcdOAttr acdAttrVar[] = {
+  {NULL, VT_NULL, NULL}
+};
+
+/* Calculated attributes */
+
+static AcdOAttr acdCalcFeat[] =
+{
+  {"fbegin", VT_INT, "The beginning of the selection of the feature table"},
+  {"fend", VT_INT, "The end of the selection of the feature table"},
+  {"flength", VT_INT, "Total length of sequence (size is number of features)"},
+  {"fprotein", VT_BOOL, "Boolean, indicates if feature table is protein"},
+  {"fnucleic", VT_BOOL, "Boolean, indicates if feature table is DNA"},
+  {"fname", VT_STR, "The name of the feature table"},
+  {"fsize", VT_STR, "Integer, number of features"},
+  {NULL, VT_NULL, NULL}
+};
+
+static AcdOAttr acdCalcRegexp[] = {
+  {"length", VT_INT, "The length of the regular expression"},
+  {NULL, VT_NULL, NULL}
+};
+
+static AcdOAttr acdCalcSeq[] = {
+  {"begin", VT_INT, "The beginning of the selection of the sequence"},
+  {"end", VT_INT, "The end of the selection of the sequence"},
+  {"length", VT_INT, "The total length of the sequence"},
+  {"protein", VT_BOOL, "Boolean, indicates if sequence is protein"},
+  {"nucleic", VT_BOOL, "Boolean, indicates if sequence is DNA"},
+  {"name", VT_STR, "The name/ID/accession # of the sequence"},
+  {NULL, VT_NULL, NULL}
+};
+
+static AcdOAttr acdCalcSeqall[] = {
+  {"begin", VT_INT, "The beginning of the selection of the sequence"},
+  {"end", VT_INT, "The end of the selection of the sequence"},
+  {"length", VT_INT, "The total length of the sequence"},
+  {"protein", VT_BOOL, "Boolean, indicates if sequence is protein"},
+  {"nucleic", VT_BOOL, "Boolean, indicates if sequence is DNA"},
+  {"name", VT_STR, "The name/ID/accession # of the sequence"},
+  {NULL, VT_NULL, NULL}
+};
+
+static AcdOAttr acdCalcSeqset[] = {
+  {"begin", VT_INT, "The beginning of the selection of the sequence"},
+  {"end", VT_INT, "The end of the selection of the sequence"},
+  {"length", VT_INT, "The maximum length of the sequence set"},
+  {"protein", VT_BOOL, "Boolean, indicates if sequence set is protein"},
+  {"nucleic", VT_BOOL, "Boolean, indicates if sequence set is DNA"},
+  {"name", VT_STR, "The name of the sequence set"},
+  {"totweight", VT_FLOAT, "Float, total sequence weight for a set"},
+  {"count", VT_INT, "Integer, number of sequences in the set"},
+  {NULL, VT_NULL, NULL}
+};
+
+static AcdOAttr acdCalcString[] = {
+  {"length", VT_INT, "The length of the string"},
   {NULL, VT_NULL, NULL}
 };
 
@@ -4161,17 +4219,6 @@ static void acdSetFeat (AcdPAcd thys)
 
     static AjPStr infname = NULL;
 
-    static AcdOAttr setattr[] =
-    {
-	{"begin", VT_INT},
-	{"end", VT_INT},
-	{"length", VT_INT},
-	{"protein", VT_BOOL},
-	{"nucleic", VT_BOOL},
-	{"name", VT_STR},
-	{"size", VT_STR},
-	{NULL, VT_NULL} };
-
     ajint fbegin=0;
     ajint fend=0;
     AjBool freverse=ajFalse;
@@ -4225,7 +4272,7 @@ static void acdSetFeat (AcdPAcd thys)
     if (!ok)
 	acdBadRetry (thys);
 
-    ok = acdQualToInt (thys, "fend", ajFeatLen(val), &fend, &defreply);
+    ok = acdQualToInt (thys, "fend", ajFeattableLen(val), &fend, &defreply);
     for (itry=acdPromptTry; itry && !ok; itry--)
     {
 	(void) ajStrAssS (&reply, defreply);
@@ -4256,30 +4303,27 @@ static void acdSetFeat (AcdPAcd thys)
     acdLog ("sbegin: %d, send: %d, freverse: %B\n",
 	    fbegin, fend, freverse);
   
-    /*
-       if (freverse)
-       ajFeatReverse (val);
+    if (freverse)
+      ajFeattableReverse (val);
        
-       ajFeattabSetRange(val, fbegin, fend);
-       ajFeattabInSetRange(tabin, fbegin, fend);
-       */
+    ajFeattableSetRange(val, fbegin, fend);
 
     ajFeattabInDel (&tabin);
 
     /* features tables have special set attributes */
 
-    thys->SAttr = acdAttrListCount (setattr);
-    thys->SetAttr = &setattr[0];
+    thys->SAttr = acdAttrListCount (acdCalcFeat);
+    thys->SetAttr = &acdCalcFeat[0];
     thys->SetStr = AJCALLOC0 (thys->SAttr, sizeof (AjPStr));
 
     iattr = 0;
-    (void) ajStrFromInt (&thys->SetStr[iattr++], fbegin);
-    (void) ajStrFromInt (&thys->SetStr[iattr++], fend);
-    (void) ajStrFromInt (&thys->SetStr[iattr++], ajFeatLen(val));
-    (void) ajStrFromBool (&thys->SetStr[iattr++], ajFeatIsProt(val));
-    (void) ajStrFromBool (&thys->SetStr[iattr++], !ajFeatIsProt(val));
-    (void) ajStrAssS (&thys->SetStr[iattr++], val->Name);
-    (void) ajStrFromInt (&thys->SetStr[iattr++], ajFeatSize(val));
+    (void) ajStrFromInt (&thys->SetStr[iattr++], ajFeattableBegin(val));
+    (void) ajStrFromInt (&thys->SetStr[iattr++], ajFeattableEnd(val));
+    (void) ajStrFromInt (&thys->SetStr[iattr++], ajFeattableLen(val));
+    (void) ajStrFromBool (&thys->SetStr[iattr++], ajFeattableIsProt(val));
+    (void) ajStrFromBool (&thys->SetStr[iattr++], ajFeattableIsNuc(val));
+    (void) ajStrAssS (&thys->SetStr[iattr++], ajFeattableGetName(val));
+    (void) ajStrFromInt (&thys->SetStr[iattr++], ajFeattableSize(val));
 
     thys->Value = val;
     (void) ajStrAssS (&thys->ValStr, reply);
@@ -5564,10 +5608,6 @@ static void acdSetRegexp (AcdPAcd thys) {
   AjBool lower;
   ajint itry;
 
-  static AcdOAttr setattr[] = {
-    {"length", VT_INT},
-    {NULL, VT_NULL} };
-
   ajint minlen;
   ajint maxlen;
   ajint len;
@@ -5626,8 +5666,8 @@ static void acdSetRegexp (AcdPAcd thys) {
 
   /* regexps have special set attributes the same as strings */
 
-  thys->SAttr = acdAttrListCount (setattr);
-  thys->SetAttr = &setattr[0];
+  thys->SAttr = acdAttrListCount (acdCalcRegexp);
+  thys->SetAttr = &acdCalcRegexp[0];
   thys->SetStr = AJCALLOC0 (thys->SAttr, sizeof (AjPStr));
 
   (void) ajStrFromInt (&thys->SetStr[0], ajStrLen(reply));
@@ -6030,15 +6070,6 @@ static void acdSetSeq (AcdPAcd thys) {
 
   static AjPStr infname = NULL;
 
-  static AcdOAttr setattr[] = {
-    {"begin", VT_INT},
-    {"end", VT_INT},
-    {"length", VT_INT},
-    {"protein", VT_BOOL},
-    {"nucleic", VT_BOOL},
-    {"name", VT_STR},
-    {NULL, VT_NULL} };
-
   ajint sbegin=0;
   ajint send=0;
   AjBool sreverse=ajFalse;
@@ -6209,8 +6240,8 @@ static void acdSetSeq (AcdPAcd thys) {
 
   /* sequences have special set attributes */
 
-  thys->SAttr = acdAttrListCount (setattr);
-  thys->SetAttr = &setattr[0];
+  thys->SAttr = acdAttrListCount (acdCalcSeq);
+  thys->SetAttr = &acdCalcSeq[0];
   thys->SetStr = AJCALLOC0 (thys->SAttr, sizeof (AjPStr));
 
   (void) ajStrFromInt (&thys->SetStr[ACD_SEQ_BEGIN], ajSeqBegin(val));
@@ -6291,17 +6322,6 @@ static void acdSetSeqset (AcdPAcd thys) {
   ajint itry;
 
   static AjPStr infname = NULL;
-
-  static AcdOAttr setattr[] = {
-    {"begin", VT_INT},
-    {"end", VT_INT},
-    {"length", VT_INT},
-    {"protein", VT_BOOL},
-    {"nucleic", VT_BOOL},
-    {"name", VT_STR},
-    {"totweight", VT_FLOAT},
-    {"count", VT_INT},
-    {NULL, VT_NULL} };
 
   ajint sbegin=0;
   ajint send=0;
@@ -6459,8 +6479,8 @@ static void acdSetSeqset (AcdPAcd thys) {
 
   /* sequences have special set attributes */
 
-  thys->SAttr = acdAttrListCount (setattr);
-  thys->SetAttr = &setattr[0];
+  thys->SAttr = acdAttrListCount (acdCalcSeqset);
+  thys->SetAttr = &acdCalcSeqset[0];
   thys->SetStr = AJCALLOC0 (thys->SAttr, sizeof (AjPStr));
 
   (void) ajStrFromInt (&thys->SetStr[ACD_SEQ_BEGIN], ajSeqsetBegin(val));
@@ -6549,15 +6569,6 @@ static void acdSetSeqall (AcdPAcd thys) {
   ajint itry;
 
   static AjPStr infname = NULL;
-
-  static AcdOAttr setattr[] = {
-    {"begin", VT_INT},
-    {"end", VT_INT},
-    {"length", VT_INT},
-    {"protein", VT_BOOL},
-    {"nucleic", VT_BOOL},
-    {"name", VT_STR},
-    {NULL, VT_NULL} };
 
   ajint sbegin=0;
   ajint send=0;
@@ -6728,8 +6739,8 @@ static void acdSetSeqall (AcdPAcd thys) {
   
   /* sequences have special set attributes */
 
-  thys->SAttr = acdAttrListCount (setattr);
-  thys->SetAttr = &setattr[0];
+  thys->SAttr = acdAttrListCount (acdCalcSeqall);
+  thys->SetAttr = &acdCalcSeqall[0];
   thys->SetStr = AJCALLOC0 (thys->SAttr, sizeof (AjPStr));
 
   (void) ajStrFromInt (&thys->SetStr[ACD_SEQ_BEGIN], ajSeqallBegin(val));
@@ -7180,10 +7191,6 @@ static void acdSetString (AcdPAcd thys) {
 
   AjPRegexp patexp = NULL;
 
-  static AcdOAttr setattr[] = {
-    {"length", VT_INT},
-    {NULL, VT_NULL} };
-
   ajint minlen;
   ajint maxlen;
   ajint len;
@@ -7247,8 +7254,8 @@ static void acdSetString (AcdPAcd thys) {
 
   /* strings have special set attributes */
 
-  thys->SAttr = acdAttrListCount (setattr);
-  thys->SetAttr = &setattr[0];
+  thys->SAttr = acdAttrListCount (acdCalcString);
+  thys->SetAttr = &acdCalcString[0];
   thys->SetStr = AJCALLOC0 (thys->SAttr, sizeof (AjPStr));
 
   (void) ajStrFromInt (&thys->SetStr[0], ajStrLen(reply));
@@ -13924,6 +13931,48 @@ void ajAcdPrintType (AjPFile outf, AjBool full) {
     ajFmtPrintF (outf, "\n");
   }
 
+  ajFmtPrintF (outf, "# ACD Calculated attributes\n");
+  ajFmtPrintF (outf, "# Name\n");
+  ajFmtPrintF (outf, "#     Attribute    Type       Comment\n");
+
+  acdPrintCalcAttr (outf, full, "features", acdCalcFeat);
+  acdPrintCalcAttr (outf, full, "regexp", acdCalcRegexp);
+  acdPrintCalcAttr (outf, full, "sequence", acdCalcSeq);
+  acdPrintCalcAttr (outf, full, "seqall", acdCalcSeqall);
+  acdPrintCalcAttr (outf, full, "seqset", acdCalcSeqset);
+  acdPrintCalcAttr (outf, full, "string", acdCalcString);
+
+  return;
+}
+
+/* @funcstatic acdPrintCalcAttr *************************************************
+**
+** Report calculated attributes set
+** For use by EMBOSS entrails.
+**
+** @param [r] outf [AjPFile] Output file
+** @param [r] full [AjBool] Full report
+** @return [void]
+**
+******************************************************************************/
+
+static void acdPrintCalcAttr (AjPFile outf, AjBool full,
+			      char* acdtype, AcdOAttr calcattr[]) {
+
+  ajint i;
+
+  ajFmtPrintF (outf, "  %-15s",acdtype);
+  ajFmtPrintF (outf, "\n");
+  if (full && calcattr[0].Name) {
+    ajFmtPrintF (outf, "    attributes {\n");
+    for (i=0; calcattr[i].Name; i++) {
+      ajFmtPrintF (outf, "      %-12s", calcattr[i].Name);
+      ajFmtPrintF (outf, " %-10s", acdValNames[calcattr[i].Type]);
+      ajFmtPrintF (outf, " \"%s\"", calcattr[i].Help);
+      ajFmtPrintF (outf, "\n");
+    }
+    ajFmtPrintF (outf, "    }\n");
+  }
   return;
 }
 
