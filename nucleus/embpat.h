@@ -105,7 +105,7 @@ AjBool      embPatClassify (AjPStr *pat, AjBool *amino, AjBool *carboxyl,
 
 void embPatCompile(ajint type, AjPStr pattern, AjPStr opattern, ajint* plen,
 		   ajint** buf, EmbOPatBYPNode* off, ajuint** sotable,
-		   ajint* solimit, ajint* m, AjPStr* regexp, ajint*** skipm,
+		   ajuint* solimit, ajint* m, AjPStr* regexp, ajint*** skipm,
 		   ajint mismatch);
 
 void            embPatFuzzSearch(ajint type, ajint begin, AjPStr pattern,

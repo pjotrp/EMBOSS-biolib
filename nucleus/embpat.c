@@ -4030,7 +4030,7 @@ ajint embPatGetType(AjPStr *pattern, ajint mismatch, AjBool protein, ajint *m,
 ** @param [w] buf [ajint**] buffer for BMH search
 ** @param [w] off [EmbOPatBYPNode*] offset buffer for B-Y/P search
 ** @param [w] sotable [ajuint**] buffer for SHIFT-OR
-** @param [w] solimit [ajint*] limit for SHIFT-OR
+** @param [w] solimit [ajuint*] limit for SHIFT-OR
 ** @param [w] m [ajint*] real length of pattern (from embPatGetType)
 ** @param [w] regexp [AjPStr *] Henry Spencer regexp string
 ** @param [w] skipm [ajint***] skip buffer for Tarhio-Ukkonen
@@ -4042,7 +4042,7 @@ ajint embPatGetType(AjPStr *pattern, ajint mismatch, AjBool protein, ajint *m,
 
 void embPatCompile(ajint type, AjPStr pattern, AjPStr opattern, ajint* plen,
 		   ajint** buf, EmbOPatBYPNode* off, ajuint** sotable,
-		   ajint* solimit, ajint* m, AjPStr* regexp, ajint*** skipm,
+		   ajuint* solimit, ajint* m, AjPStr* regexp, ajint*** skipm,
 		   ajint mismatch)
 {
     ajint i = 0;
