@@ -85,6 +85,7 @@ my $scripts = "$distribtop/scripts";
 my $doctop = "$distribtop/doc/sourceforge";
 
 my @embassylist = ("appendixd",
+		   "construct",
 		   "domainatrix",
 		   "emnu",
 		   "esim4",
