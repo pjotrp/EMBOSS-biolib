@@ -57,6 +57,9 @@ int main(int argc, char **argv)
     
     inf = ajAcdGetInfile("inf");
 
+
+    line = ajStrNew();
+
     done = ajTrue;
     while (ajFileGetsTrim(inf, &line))
     {
@@ -94,6 +97,8 @@ int main(int argc, char **argv)
       }
     }
     ajFileClose (&inf);
+
+    ajStrDel(&line);
 
     ajExit();
     return 0;
