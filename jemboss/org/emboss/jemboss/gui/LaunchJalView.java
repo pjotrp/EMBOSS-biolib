@@ -28,7 +28,8 @@ import javax.swing.*;
 import javax.swing.event.*;
 import java.awt.event.*;
 import org.emboss.jemboss.gui.form.TextFieldSink;
-
+import jalview.AlignFrame;
+import jalview.MailProperties;
 
 public class LaunchJalView extends JFrame
 {
@@ -40,7 +41,7 @@ public class LaunchJalView extends JFrame
     final TextFieldSink tfs = new TextFieldSink();
 
     Box bacross = Box.createHorizontalBox();
-    Box bdown = Box.createVerticalBox();
+    final Box bdown = Box.createVerticalBox();
     bdown.add(Box.createVerticalStrut(5));
 
     JLabel lname = new JLabel("Multiple Sequence Filename");
@@ -77,7 +78,7 @@ public class LaunchJalView extends JFrame
     bdown.add(format);
     bdown.add(Box.createVerticalStrut(5));
 
-    JButton launch = new JButton("LAUNCH");
+    final JButton launch = new JButton("LAUNCH");
     bacross = Box.createHorizontalBox();
     bacross.add(Box.createHorizontalStrut(1));
     bacross.add(launch);
@@ -88,25 +89,8 @@ public class LaunchJalView extends JFrame
     {
       public void actionPerformed(ActionEvent e)
       {
-        String ps = System.getProperty("path.separator");
-        String fs = System.getProperty("file.separator");
-        String launchCommand = System.getProperty("java.home") + fs + "bin"
-                                          + fs +"java jalview.AlignFrame ";
-
-        launchCommand = launchCommand.concat(tfs.getText() + " File ");
-        launchCommand = launchCommand.concat((String)format.getSelectedItem()); 
-
-        Runtime jalviewRun = Runtime.getRuntime();
-        try
-        {
-          Process p = jalviewRun.exec(launchCommand);
-          setVisible(false);
-        }
-        catch(IOException ioe)
-        {
-          System.out.println("Failed to launch jalview " + launchCommand);
-        }
-        
+        new AlignFrame(null,tfs.getText(),"File","MSF");
+        setVisible(false);
       }
     });
 
