@@ -5153,7 +5153,7 @@ FP /^%%Pages: 1\n/
 
 ID pestfind-ex
 AP pestfind
-CL -graph cps
+CL -graph cps -invalid
 IN ../../data/exu2_drops.embl
 IN 
 IN 
@@ -5165,10 +5165,10 @@ FI stdout
 FZ = 20
 FP /^Created pestfind.ps\n/
 FI exu2_drops.pestfind
-FZ = 2585
+FZ = 3194
 FP /238 KMVYEMALQLIESESTESPESFESPESSESSEAEVK 273/
 FI pestfind.ps
-FZ = 24084
+FZ = 27060
 FP /^%%Title: PLplot Graph\n/
 //
 
