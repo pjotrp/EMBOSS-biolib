@@ -9628,9 +9628,9 @@ FP /484     509   0.000    484    489    509    509/
 //
 
 ID twofeat-ex2
-UC The -twoout option makes the output report give the pairs of features found.
+UC The -twoout option makes the output report give the pairs of features found. The ouput report format type has been changed to display the full original pairs of faetures in GFF format.
 AP twofeat
-CL -twoout tembl:hsfau
+CL -twoout -rformat gff tembl:hsfau
 IN polyA_signal
 IN polyA_site
 IN 10
@@ -9640,8 +9640,8 @@ FI stderr
 FC = 2
 FP 0 /Warning:/
 FI hsfau.twofeat
-FZ = 568
-FP /484     489   0.000      .      .      .      ./
+FZ = 192
+FP /polyA_signal/
 //
 
 ID union-ex
