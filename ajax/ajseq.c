@@ -447,6 +447,26 @@ AjPStr ajSeqallGetNameSeq (AjPSeqall thys)
     return ajSeqGetName(thys->Seq);
 }
 
+/* @func ajSeqsetGetUsa *****************************************************
+**
+** Returns the sequence name of a sequence set.
+** Because this is a pointer to the real internal string
+** the caller must take care not to change the character string in any way.
+** If the string is to be changed (case for example) then it must first
+** be copied.
+**
+** @param [u] thys [AjPSeqset] Sequence set object.
+** @return [AjPStr] Name as a string.
+** @@
+******************************************************************************/
+
+AjPStr ajSeqsetGetUsa (AjPSeqset thys)
+{
+    ajDebug ("ajSeqetGetUsa '%S'\n", thys->Usa);
+
+    return thys->Usa;
+}
+
 /* @func ajSeqGetUsa *****************************************************
 **
 ** Returns the sequence name of a sequence stream.
@@ -1254,7 +1274,7 @@ void ajSeqDel (AjPSeq* pthis)
     ajStrDel (&thys->Seq);
 
     if(thys->Fttable)
-	ajFeattabDel(&thys->Fttable);
+	ajFeattableDel(&thys->Fttable);
 
     while(ajListstrPop(thys->Acclist,&ptr))
 	ajStrDel(&ptr);
@@ -1410,7 +1430,7 @@ void ajSeqClear (AjPSeq thys)
     (void) ajStrClear (&thys->TextPtr);
     (void) ajStrClear (&thys->Seq);
 
-    ajFeattabDel(&thys->Fttable);
+    ajFeattableDel(&thys->Fttable);
 
     return;
 }
@@ -2871,11 +2891,13 @@ AjPStr ajSeqGetDesc (AjPSeq thys)
 
 /* @func ajSeqGetFeat ********************************************************
 **
-** Returns the sequence description.
-** Because this is a pointer to the real internal string
-** the caller must take care not to change the character string in any way.
-** If the string is to be changed (case for example) then it must first
-** be copied.
+** Returns the sequence feature table.
+** Because this is a pointer to the real internal table
+** the caller must take care not to change it in any way,
+** or to delete it.
+**
+** If the table is to be changed or deleted then it must first
+** be copied with ajSeqCopyFeat
 **
 ** @param [u] thys [AjPSeq] Sequence object.
 ** @return [AjPFeattable] feature table (if any)
@@ -2885,6 +2907,27 @@ AjPStr ajSeqGetDesc (AjPSeq thys)
 AjPFeattable ajSeqGetFeat (AjPSeq thys)
 {
     return thys->Fttable;
+}
+
+/* @func ajSeqCopyFeat ********************************************************
+**
+** Returns a copy of the sequence feature table.
+** Because this is a copy of all the data, the caller is responsible
+** for deleting it after use.
+**
+** If the table is not to be changed or deleted then ajSeqGetFeat
+** can return a copy of the internal pointer.
+**
+** @param [u] thys [AjPSeq] Sequence object.
+** @return [AjPFeattable] feature table (if any)
+** @@
+******************************************************************************/
+
+AjPFeattable ajSeqCopyFeat (AjPSeq thys)
+{
+  AjPFeattable ret = NULL;
+  ajFeattableCopy (&ret, thys->Fttable);
+  return ret;
 }
 
 /* @func ajSeqGetName ********************************************************
@@ -2981,6 +3024,24 @@ AjPSeqout ajSeqoutNew (void)
     pthis->Fttable = NULL;
 
     return pthis;
+}
+
+/* @func ajSeqoutNewF *********************************************************
+**
+** Creates a new sequence output object using a preopened file.
+**
+** @param [R] file [AjPFile;
+** @return [AjPSeqout] New sequence output object.
+** @@
+******************************************************************************/
+
+AjPSeqout ajSeqoutNewF (AjPFile file)
+{
+  AjPSeqout pthis;
+  pthis = ajSeqoutNew();
+  pthis->Knownfile = file;
+
+  return pthis;
 }
 
 /* ==================================================================== */
