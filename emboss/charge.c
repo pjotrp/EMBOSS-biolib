@@ -30,7 +30,7 @@
 static void  addgraph(AjPGraph graph, ajint limit, float *x, float *y,
 		      float ymax, float ymin,
 		      ajint window, char *sname);
-static AjPFloat read_amino(AjPFile fp);
+static AjPFloat read_amino(AjPFile* fp);
 
 int main(int argc, char **argv)
 {
@@ -87,7 +87,7 @@ int main(int argc, char **argv)
 	ajFatal("Cannot open amino acid data file %S",aadata);
 
 
-    chg = read_amino(cdata);
+    chg = read_amino(&cdata);
 
     str = ajStrNew();
     
@@ -210,7 +210,7 @@ static void  addgraph(AjPGraph graph, ajint limit, float *x, float *y,
 }
 
 
-static AjPFloat read_amino(AjPFile fp)
+static AjPFloat read_amino(AjPFile* fp)
 {
   /*    AjPFile  fp=NULL; */
     AjPStr   line;
@@ -219,8 +219,8 @@ static AjPFloat read_amino(AjPFile fp)
     float    v=0.;
     ajint    idx;
     
-    /*    ajFileDataNewC(AMINOFILE,&fp);
-    if(!fp)
+    /*    ajFileDataNewC(AMINOFILE,fp);
+    if(!*fp)
 	ajFatal("Cannot find data file %s\n",AMINOFILE);
     */
 
@@ -228,7 +228,7 @@ static AjPFloat read_amino(AjPFile fp)
     chg  = ajFloatNew();
     
 
-    while(ajFileReadLine(fp,&line))
+    while(ajFileReadLine(*fp,&line))
     {
 	if(*ajStrStr(line)=='#' || !ajStrLen(line))
 	    continue;
@@ -238,7 +238,7 @@ static AjPFloat read_amino(AjPFile fp)
 	ajFloatPut(&chg,idx,v);
     }
 
-    ajFileClose(&fp);
+    ajFileClose(fp);
     ajStrDel(&line);
     
     return chg;
