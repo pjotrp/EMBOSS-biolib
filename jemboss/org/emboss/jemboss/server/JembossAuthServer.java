@@ -59,12 +59,15 @@ public class JembossAuthServer
     "PATH=" + embossPath + ps + embossBin,
     "PLPLOT_LIB=" + plplot,
     "EMBOSS_DATA=" + embossData
+//  ,"LD_LIBRARY_PATH=/usr/local/lib"
+// FIX FOR SOME SUNOS
   };
   
   private String environ = "PATH=" + embossBin+ ps + embossPath +" "+
                            "PLPLOT_LIB=" + plplot +" "+
                            "EMBOSS_DATA=" + embossData +" ";
-
+// "LD_LIBRARY_PATH=/usr/local/lib"+" ";
+// FIX FOR SOME SUNOS
 
   public String name()
   {

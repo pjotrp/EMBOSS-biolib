@@ -60,6 +60,9 @@ public class JembossServer
     "PLPLOT_LIB=" + plplot,
     "EMBOSS_DATA=" + embossData,
     "HOME=" + homeDirectory
+//  ,"LD_LIBRARY_PATH=/usr/local/lib"
+// FIX FOR SOME SUNOS
+
   };
  
   private static Hashtable acdStore;
