@@ -22,25 +22,31 @@
 
 #include "emboss.h"
 
-void put_seq(AjPSeq seq, AjPStr strseq, int n, char *name, int type);
+void put_seq(AjPSeq seq, AjPStr strseq, int n, char *name, int type,
+	     AjPSeqout seqout);
 
 
 int main(int argc, char **argv)
 {
     AjPSeq seq=NULL;
+    AjPSeqout seqout=NULL;
     
     int ncds=0;
     int nmrna=0;
+    int ntran=0;
     int i=0;
 
     AjPStr cds=NULL;
     AjPStr mrna=NULL;
+    AjPStr tran=NULL;
     
     AjBool ret=ajFalse;
     AjPStr *cdslines=NULL;
     AjPStr *mrnalines=NULL;
+    AjPStr *tranlines=NULL;
     AjBool docds=ajFalse;
     AjBool domrna=ajFalse;
+    AjBool dotran=ajFalse;
     
     
     embInit("coderet",argc,argv);
@@ -49,10 +55,13 @@ int main(int argc, char **argv)
     
     domrna = ajAcdGetBool("mrna");
     docds  = ajAcdGetBool("cds");
+    dotran = ajAcdGetBool("translation");
     
-
-    cds = ajStrNew();
+    seqout = ajAcdGetSeqout("seqout");
+    
+    cds  = ajStrNew();
     mrna = ajStrNew();
+    tran = ajStrNew();
     
 
     if(docds)
@@ -67,7 +76,7 @@ int main(int argc, char **argv)
 		ajWarn("Cannot extract");
 		continue;
 	    }
-	    put_seq(seq,cds,i,"cds",0);
+	    put_seq(seq,cds,i,"cds",0,seqout);
 	    ajStrDel(&cdslines[i]);
 	}
 	if(ncds)
@@ -86,15 +95,32 @@ int main(int argc, char **argv)
 		ajWarn("Cannot extract");
 		continue;
 	    }
-	    put_seq(seq,mrna,i,"mrna",0);
+	    put_seq(seq,mrna,i,"mrna",0,seqout);
 	    ajStrDel(&mrnalines[i]);
 	}
 
 	if(nmrna)
 	    AJFREE(mrnalines);
     }
-    
 
+
+    if(dotran)
+    {
+	ntran = ajFeatGetTrans(seq->TextPtr, &tranlines);
+    
+	for(i=0;i<ntran;++i)
+	{
+	    put_seq(seq,tranlines[i],i,"pro",1,seqout);
+	    ajStrDel(&tranlines[i]);
+	}
+
+	if(nmrna)
+	    AJFREE(tranlines);
+    }
+
+
+    
+    ajSeqWriteClose(seqout);
 
     ajExit();
     return 0;
@@ -102,11 +128,11 @@ int main(int argc, char **argv)
 
 
 
-void put_seq(AjPSeq seq, AjPStr strseq, int n, char *name, int type)
+void put_seq(AjPSeq seq, AjPStr strseq, int n, char *name, int type,
+	     AjPSeqout seqout)
 {
     AjPSeq nseq=NULL;
     AjPStr fn=NULL;
-    AjPSeqout seqout=NULL;
     
     fn = ajStrNew();
     
@@ -125,16 +151,10 @@ void put_seq(AjPSeq seq, AjPStr strseq, int n, char *name, int type)
     
     ajSeqReplace(nseq,strseq);
 
-    seqout = ajSeqoutNew();
 
-    ajStrAppC(&fn,".seq");
-
-    ajSeqOutSetFormatC(seqout,"fasta");
-    ajSeqFileNewOut(seqout,fn);	
     ajSeqWrite (seqout,nseq);  
-    ajSeqWriteClose(seqout);
 
-    ajSeqoutDel(&seqout);
+
     ajSeqDel(&nseq);
     ajStrDel(&fn);
     

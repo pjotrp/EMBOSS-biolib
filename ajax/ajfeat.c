@@ -6405,7 +6405,7 @@ int ajFeatGetLocs(AjPStr str, AjPStr **cds, char *type)
 	    ajStrAppC(&(*cds)[nc],p+21);
 	    ++i;
 	}
-	ajStrClean(&(*cds)[nc]);
+	ajStrCleanWhite(&(*cds)[nc]);
     }
 	
 
@@ -6414,6 +6414,85 @@ int ajFeatGetLocs(AjPStr str, AjPStr **cds, char *type)
     AJFREE(entry);
 
     ajStrDel(&test);
+
+    return ncds;
+}
+
+/* @func ajFeatGetTrans ****************************************************
+**
+** Returns ytanslation information from catenated sequence entry
+**
+** @param [r] str [AjPStr] catenated (seq->TextPtr) entry
+** @param [w] cds [AjPStr**] array of translations
+**
+** @return [int] number of location lines
+** @@
+******************************************************************************/
+
+int ajFeatGetTrans(AjPStr str, AjPStr **cds)
+{
+    AjPStr *entry=NULL;
+    int nlines=0;
+    int i=0;
+    int ncds=0;
+    int nc=0;
+    char *p=NULL;
+    static AjPRegexp exp_tr=NULL;
+    
+    
+    nlines = ajStrListToArray(str, &entry);
+
+    exp_tr = ajRegCompC("/translation=");
+
+    for(i=0;i<nlines;++i)
+    {
+	if(ajStrPrefixC(entry[i],"FT "))
+	{
+	    p = ajStrStr(entry[i]);
+	    *p = *(p+1) = ' ';
+	}
+	
+	if(ajRegExec(exp_tr,entry[i]))
+	    ++ncds;
+    }
+    
+
+    if(ncds)
+    {
+	AJCNEW0(*cds,ncds);
+	for(i=0;i<ncds;++i)
+	    (*cds)[i] = ajStrNew();
+    }
+
+
+    for(nc=i=0;nc<ncds;++nc)
+    {
+	if(ajStrPrefixC(entry[i],"FT "))
+	{
+	    p = ajStrStr(entry[i]);
+	    *p = *(p+1) = ' ';
+	}
+	
+	while(!ajRegExec(exp_tr,entry[i]))
+	    ++i;
+	
+	ajStrAssC(&(*cds)[nc],ajStrStr(entry[i++])+35);
+	while( *(p=ajStrStr(entry[i]))==' ')
+	{
+	    if(*(p+21)=='/' || *(p+5)!=' ')
+		break;
+	    ajStrAppC(&(*cds)[nc],p+21);
+	    ++i;
+	}
+	p = ajStrStr((*cds)[nc]);
+	p[ajStrLen((*cds)[nc])-2] = ' ';
+	ajStrCleanWhite(&(*cds)[nc]);
+    }
+	
+
+    for(i=0;i<nlines;++i)
+	ajStrDel(&entry[i]);
+    AJFREE(entry);
 
     return ncds;
 }

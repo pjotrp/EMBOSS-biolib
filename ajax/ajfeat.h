@@ -650,8 +650,8 @@ void                 ajFeatDickTracy(AjPFeatLexicon dictionary);
 AjPFeatLexicon       ajFeatTableDict(AjPFeatTable thys);
 
 AjBool ajFeatLocToSeq(AjPStr seq, AjPStr line, AjPStr *res);
-int    ajfeatGetLocs(AjPStr str, AjPStr **cds, char *type);
-
+int    ajFeatGetLocs(AjPStr str, AjPStr **cds, char *type);
+int    ajFeatGetTrans(AjPStr str, AjPStr **cds);
 
 
 #define              ajFeatObjClass(p)  \
