@@ -7,14 +7,12 @@ pkgdata_DATA =  aaindexextract.html abiview.html acdc.html acd_group.html \
 	antigenic.html backtranseq.html banana.html biosed.html \
 	btwisted.html cai.html cathparse.html chaos.html charge.html \
 	checktrans.html chips.html cirdna.html clique.html codcmp.html \
-	coderet.html compseq.html consense.html cons.html contactalign.html \
-	contactcount.html contacts.html contml.html contrast.html \
+	coderet.html compseq.html cons.html contactalign.html \
+	contactcount.html contacts.html contrast.html \
 	cpgplot.html cpgreport.html crystalball.html cusp.html \
 	cutgextract.html cutseq.html dan.html dbiblast.html dbifasta.html \
 	dbiflat.html dbigcg.html degapseq.html degapseqrunner.html \
-	descseq.html diffseq.html digest.html display_group.html \
-	distmat.html dnacomp.html dnadist.html dnainvar.html dnaml.html \
-	dnamlk.html dnapars.html dnapenny.html dollop.html dolpenny.html \
+	descseq.html diffseq.html digest.html display_group.html distmat.html \
 	domainalign.html domainer.html domainnr.html domainrep.html \
 	domainreso.html domainseqs.html domainsse.html dotmatcher.html \
 	dotpath.html dottup.html dreg.html ealistat.html eclique.html \
@@ -35,19 +33,19 @@ pkgdata_DATA =  aaindexextract.html abiview.html acdc.html acd_group.html \
 	fdnamove.html fdnapars.html fdnapenny.html fdollop.html \
 	fdolmove.html fdolpenny.html fdrawgram.html fdrawtree.html \
 	feature_tables_group.html ffactor.html ffitch.html ffreqboot.html \
-	fgendist.html findkm.html fitch.html fkitsch.html fmix.html \
+	fgendist.html findkm.html fkitsch.html fmix.html \
 	fmove.html fneighbor.html fpars.html fpenny.html fproml.html \
 	fpromlk.html fprotdist.html fprotpars.html freak.html \
 	frestboot.html frestdist.html frestml.html fretree.html \
 	fseqbootall.html fseqboot.html ftreedist.html ftreedistpair.html \
 	fuzznuc.html fuzzpro.html fuzztran.html garnier.html geecee.html \
-	gendist.html getorf.html groups.html helixturnhelix.html \
+	getorf.html groups.html helixturnhelix.html \
 	hetparse.html hmm_group.html hmoment.html iep.html index.html \
 	infoalign.html information_group.html infoseq.html interface.html \
-	isochore.html jembossctl.html kitsch.html libgen.html \
+	isochore.html jembossctl.html libgen.html \
 	libscan.html lindna.html listor.html marscan.html maskfeat.html \
 	maskseq.html matcher.html megamerger.html meme.html \
-	menus_group.html merger.html mix.html msbar.html mse.html \
+	menus_group.html merger.html msbar.html mse.html \
 	mwcontam.html mwfilter.html myseq.html
 
 pkgdata2_DATA = nawalign.html nawalignrunner.html needle.html \
@@ -75,15 +73,15 @@ pkgdata2_DATA = nawalign.html nawalignrunner.html needle.html \
 	phylogeny_tree_drawing_group.html plotcon.html plotorf.html \
 	polydot.html preg.html prettyplot.html prettyseq.html \
 	primersearch.html printsextract.html profit.html prophecy.html \
-	prophet.html prosextract.html protdist.html \
+	prophet.html prosextract.html \
 	protein_2d_structure_group.html protein_3d_structure_group.html \
 	protein_composition_group.html protein_motifs_group.html \
 	protein_mutation_group.html protein_profiles_group.html \
 	protein_sequence_alignment_group.html pscan.html psiphi.html \
 	rebaseextract.html recoder.html redata.html remap.html \
-	restml.html restover.html restrict.html revseq.html rocon.html \
+	restover.html restrict.html revseq.html rocon.html \
 	rocplot.html scope.html scopparse.html scorer.html \
-	scorerrunner.html seealso.html seqalign.html seqboot.html \
+	scorerrunner.html seealso.html seqalign.html \
 	seqfraggle.html seqmatchall.html seqnr.html seqret.html \
 	seqretsplit.html seqsearch.html seqsort.html seqwords.html \
 	showalign.html showdb.html showfeat.html showorf.html \
