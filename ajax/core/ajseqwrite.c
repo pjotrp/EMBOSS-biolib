@@ -168,7 +168,7 @@ static void       seqWriteNcbi(AjPSeqout outseq);
 static void       seqWriteNexus(AjPSeqout outseq);
 static void       seqWriteNexusnon(AjPSeqout outseq);
 static void       seqWritePhylip(AjPSeqout outseq);
-static void       seqWritePhylip3(AjPSeqout outseq);
+static void       seqWritePhylipnon(AjPSeqout outseq);
 static void       seqWriteSelex(AjPSeqout outseq);
 static void       seqWriteSeq(AjPSeqout outseq, const SeqPSeqFormat sf);
 static void       seqWriteStaden(AjPSeqout outseq);
@@ -256,8 +256,10 @@ static SeqOOutFormat seqOutFormat[] =
 	AJFALSE, AJTRUE,  AJFALSE, seqWriteClustal}, /* alias for clustal */
     {"phylip",     AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
 	AJFALSE, AJTRUE,  AJTRUE,  seqWritePhylip},
-    {"phylip3",    AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
-	AJFALSE, AJTRUE,  AJFALSE, seqWritePhylip3},
+    {"phylipnon",    AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
+	AJFALSE, AJTRUE,  AJFALSE, seqWritePhylipnon},
+    {"phylip3",    AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  /* alias for phylipnon*/
+	AJFALSE, AJTRUE,  AJFALSE, seqWritePhylipnon},
     {"asn1",       AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
 	AJFALSE, AJTRUE,  AJFALSE, seqWriteAsn1},
     {"hennig86",   AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
@@ -1523,6 +1525,7 @@ static void seqWriteClustal(AjPSeqout outseq)
     static AjPStr sseq = NULL;
     ajint ipos;
     ajint iend;
+    ajint iwidth = 50;
     
     ajDebug("seqWriteClustal list size %d\n", ajListLength(outseq->Savelist));
     
@@ -1553,24 +1556,29 @@ static void seqWriteClustal(AjPSeqout outseq)
     
     ajFmtPrintF(outseq->File, "\n\n");
     
+    iwidth = 50;
     for(ipos=1; ipos <= ilen; ipos += 50)
     {
 	iend = ipos + 50 -1;
 	if(iend > ilen)
+	{
 	    iend = ilen;
+	    iwidth = ilen - ipos + 1;
+	}
 
 	for(i=0; i < isize; i++)
 	{
 	    seq = seqarr[i];
 	    ajStrAssSub(&sseq, seq->Seq, ipos-1, iend-1);
 	    ajSeqGapS(&sseq, '-');
-	    ajStrBlock(&sseq, 10);
+	    /* clustalw no longer uses blocks of 10 - after version 1.4 */
+	    /*ajStrBlock(&sseq, 10);*/ 
 	    ajFmtPrintF(outseq->File,
 			"%-15.15S %S\n",
 			seq->Name, sseq);
 	}
 	ajFmtPrintF(outseq->File,	/* *. conserved line */
-		    "%-15.15s %54.54s\n", "", "");
+		    "%-15.15s %*.*s\n", "", iwidth, iwidth, "");
 	ajFmtPrintF(outseq->File, "\n"); /* blank line */
     }
     
@@ -2865,7 +2873,7 @@ static void seqWritePhylip(AjPSeqout outseq)
 
 
 
-/* @funcstatic seqWritePhylip3 ************************************************
+/* @funcstatic seqWritePhylipnon **********************************************
 **
 ** Writes a sequence in PHYLIP non-interleaved format.
 **
@@ -2874,7 +2882,7 @@ static void seqWritePhylip(AjPSeqout outseq)
 ** @@
 ******************************************************************************/
 
-static void seqWritePhylip3(AjPSeqout outseq)
+static void seqWritePhylipnon(AjPSeqout outseq)
 {
     ajint isize;
     ajint ilen = 0;
@@ -2891,7 +2899,8 @@ static void seqWritePhylip3(AjPSeqout outseq)
     ajint iend  = 0;
     AjPStr tstr = NULL;
     
-    ajDebug("seqWritePhylip3 list size %d\n", ajListLength(outseq->Savelist));
+    ajDebug("seqWritePhylipnon list size %d\n",
+	    ajListLength(outseq->Savelist));
     
     isize = ajListLength(outseq->Savelist);
     if(!isize)
@@ -2908,7 +2917,7 @@ static void seqWritePhylip3(AjPSeqout outseq)
     }
     
     tstr = ajStrNewL(ilen+1);
-    ajFmtPrintF(outseq->File, "1 %d YF\n", ilen);
+    ajFmtPrintF(outseq->File, "%d %d\n", isize, ilen);
     
     for(n=0;n<isize;++n)
     {
