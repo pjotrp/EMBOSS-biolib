@@ -99,6 +99,13 @@ float HorTextPileLengthMax(AjPStr Name2, ajint NumNames);
 float ComputeAngle(float RealLength, float Length, float OriginAngle);
 AjPStr Style[MAXLABELS][MAXLABELS],Name[MAXLABELS][MAXLABELS];
 
+
+/* @prog cirdna ***************************************************************
+**
+** Draws circular maps of DNA constructs
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
     AjPGraph graph;

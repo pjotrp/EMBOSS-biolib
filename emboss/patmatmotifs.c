@@ -23,6 +23,13 @@
    
 void spaces(AjPFile *outf, ajint length); 
   
+
+/* @prog patmatmotifs *********************************************************
+**
+** Search a PROSITE motif database with a protein sequence
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
 

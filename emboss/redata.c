@@ -36,6 +36,13 @@ AjPTable supply_table(AjPFile inf);
 
 
 
+
+/* @prog redata ***************************************************************
+**
+** Search REBASE for enzyme name, references, suppliers etc
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
     AjPStr    enzyme=NULL;

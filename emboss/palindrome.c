@@ -110,6 +110,13 @@ static void printPalindrome( AjPFile outfile, AjPStr seq, Palindrome pal) {
 
 }
 
+
+/* @prog palindrome ***********************************************************
+**
+** Looks for inverted repeats in a nucleotide sequence
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
 

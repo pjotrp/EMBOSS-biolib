@@ -40,6 +40,13 @@ static void printIntResults( AjPFile outfile, AjPSeq seq, ajint * results,
 
 static ajint seq_start, seq_end, win_mid, seq_begin;
 
+
+/* @prog pepinfo **************************************************************
+**
+** Plots simple amino acid properties in parallel
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
 

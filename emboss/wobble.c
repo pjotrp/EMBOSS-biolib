@@ -31,6 +31,13 @@ void calcpc(char *seq, char *rev, ajint n, float **x, float **y, ajint *count,
 float get_mean(char *bases, char *s);
 
 
+
+/* @prog wobble ***************************************************************
+**
+** Wobble base plot
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
     AjPFile    outf;

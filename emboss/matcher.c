@@ -145,6 +145,13 @@ AjPFile outf;
 AjPMatrix matrix=NULL;
 AjPSeqCvt cvt = NULL;
 
+
+/* @prog matcher **************************************************************
+**
+** Finds the best local alignments between two sequences
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
   AjPStr aa0str=0,aa1str=0;

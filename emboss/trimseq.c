@@ -27,6 +27,13 @@ ajint trim (AjPSeq seq, ajint sense, AjBool isnuc, ajint window, float percent, 
 void parole(AjBool *gang, char *good_guys);
 void arrest(AjBool *gang, char *bad_guys);
 
+
+/* @prog trimseq **************************************************************
+**
+** Trim ambiguous bits off the ends of sequences
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
 

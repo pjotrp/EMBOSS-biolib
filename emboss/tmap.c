@@ -248,6 +248,13 @@ void plot2(AjPGraph mult){
 
 /* Start of main program */
 
+
+/* @prog tmap ***************************************************************
+**
+** Displays membrane spanning regions
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
   AjPSeqset seqset;

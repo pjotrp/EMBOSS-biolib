@@ -22,6 +22,13 @@
 
 #include "emboss.h"
 
+
+/* @prog pasteseq *************************************************************
+**
+** Insert one sequence into another
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
   AjPSeq seq=NULL;

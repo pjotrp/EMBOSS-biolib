@@ -138,6 +138,13 @@ AjBool getnakaidata(AjPFile file, float matrix[]){
   return ajTrue;
 }
   
+
+/* @prog pepwindow ************************************************************
+**
+** Displays protein hydropathy
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
   AjPFile datafile;

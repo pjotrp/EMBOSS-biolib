@@ -23,6 +23,13 @@
 #include "emboss.h"
 
 
+
+/* @prog noreturn *************************************************************
+**
+** Removes carriage return from ASCII files
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
     AjPFile inf  = NULL;

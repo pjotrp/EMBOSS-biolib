@@ -30,6 +30,13 @@ static void  addgraph(AjPGraph graph, ajint limit, float *x, float *y,
 		      ajint window, char *sname);
 static AjPFloat read_amino(void);
 
+
+/* @prog charge ***************************************************************
+**
+** Protein charge plot
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
     AjPSeqall  seqall;

@@ -82,6 +82,13 @@ void testtarget(AjPStr seqstr, AjPStr revstr, ajint targetstart, ajint targetend
 		float saltconc, float dnaconc,
 		AjPList *pairlist, ajint *npair);
 
+
+/* @prog prima ***************************************************************
+**
+** Selects primers for PCR and DNA amplification
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
     AjPFile outf=NULL;

@@ -1,5 +1,12 @@
 #include "emboss.h"
 
+
+/* @prog seqretall ************************************************************
+**
+** Reads and writes (returns) a set of sequences one at a time
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
 

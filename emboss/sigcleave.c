@@ -38,6 +38,13 @@ ajint readSig(AjPFloat2d *matrix,AjBool prokaryote);
 
 
 
+
+/* @prog sigcleave ************************************************************
+**
+** Reports protein signal cleavage sites
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
     AjPSeqall seqall;

@@ -24,6 +24,13 @@
 
 #include "emboss.h"
 
+
+/* @prog nthseq ***************************************************************
+**
+** Writes one sequence from a multiple set of sequences
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
 

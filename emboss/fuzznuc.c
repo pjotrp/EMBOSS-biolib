@@ -29,6 +29,13 @@ void print_hits(AjPList *l, ajint hits, AjPFile outf, AjPStr seq, AjBool mms,
 		AjBool dodesc, AjPStr acc, AjBool doacc, AjPStr usa, AjBool
 		dousa);
 
+
+/* @prog fuzznuc **************************************************************
+**
+** Nucleic acid pattern search
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
     AjPSeqall seqall;

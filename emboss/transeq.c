@@ -27,6 +27,13 @@
 static void GetRegions(AjPRange regions, AjPSeq seq);
 static void Trim (AjPSeq seq);
 
+
+/* @prog transeq **************************************************************
+**
+** Translate nucleic acid sequences
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
     AjPSeqall seqall;

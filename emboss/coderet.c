@@ -27,6 +27,13 @@ void put_seq(AjPSeq seq, AjPStr strseq, ajint n, char *name, ajint type,
 
 
 
+
+/* @prog coderet **************************************************************
+**
+** Extract CDS, mRNA and translations from feature tables
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
     AjPSeqall seqall=NULL;

@@ -44,6 +44,13 @@ void printSuppHeader(AjPFile outf);
 
 
 
+
+/* @prog rebaseextract ********************************************************
+**
+** Extract data from REBASE
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
   AjPFile inf   = NULL;

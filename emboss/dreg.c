@@ -1,5 +1,12 @@
 #include "emboss.h"
 
+
+/* @prog dreg ***************************************************************
+**
+** regular expression search of a nucleotide sequence
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
 

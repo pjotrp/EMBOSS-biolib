@@ -26,6 +26,13 @@ void spaces(AjPFile *outf, ajint length);
 
 
 
+
+/* @prog patmatdb *************************************************************
+**
+** Search a protein sequence with a motif
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
     AjPFile outf 		=NULL;	

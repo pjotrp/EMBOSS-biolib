@@ -39,6 +39,13 @@ void calcgc(ajint from, ajint to, char *p, ajint *dcg, ajint *dgc, ajint *gc);
 
 
 
+
+/* @prog cpgreport ************************************************************
+**
+** Reports all CpG rich regions
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
     AjPSeqall seqall;

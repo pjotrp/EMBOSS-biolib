@@ -30,6 +30,13 @@ AjPStr getUniqueFileName();
 
 
 
+
+/* @prog emma ***************************************************************
+**
+** Multiple alignment program - interface to ClustalW program
+**
+******************************************************************************/
+
 int main(int argc, char **argv, char **env)
 {
 

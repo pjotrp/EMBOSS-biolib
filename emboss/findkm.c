@@ -32,6 +32,13 @@ float findmin(float *arr1, ajint number);
 
 /*Func declarations */
 
+
+/* @prog findkm ***************************************************************
+**
+** Find Km and Vmax for an enzyme reaction by a Hanes/Woolf plot
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
     AjPFile infile = NULL;

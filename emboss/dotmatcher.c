@@ -42,6 +42,13 @@ typedef struct SPoint
 
 
 
+
+/* @prog dotmatcher ***********************************************************
+**
+** Displays a thresholded dotplot of two sequences
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
     AjPList list=NULL;

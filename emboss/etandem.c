@@ -172,6 +172,13 @@ static void finalReport (void) {
 
 /**************************/
 
+
+/* @prog etandem **************************************************************
+**
+** Looks for tandem repeats in a nucleotide sequence
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
 

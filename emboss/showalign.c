@@ -91,6 +91,13 @@ static ajint CompareTwoSeqSimilarities(const void * a, const void * b);
 
 
 
+
+/* @prog showalign ************************************************************
+**
+** Display a multiple sequence alignment
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
 

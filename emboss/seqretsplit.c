@@ -1,5 +1,12 @@
 #include "emboss.h"
 
+
+/* @prog seqretsplit **********************************************************
+**
+** Reads and writes (returns) sequences in individual files
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
 

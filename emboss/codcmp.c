@@ -23,6 +23,13 @@
 #include "emboss.h"
 #include <math.h>
 
+
+/* @prog codcmp ***************************************************************
+**
+** Codon usage table comparison
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
     AjPFile    outf;

@@ -40,6 +40,13 @@ pattern in a MRS */
 #define MAXDIST 200
 
 
+
+/* @prog marscan **************************************************************
+**
+** Finds MAR/SAR sites in nucleic sequences
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
     AjPSeqall seqall;

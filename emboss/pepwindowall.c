@@ -143,6 +143,13 @@ AjBool getnakaidata(AjPFile file, float matrix[])
     return description;
 }
 
+
+/* @prog pepwindowall *********************************************************
+**
+** Displays protein hydropathy of a set of sequences
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
     AjPFile datafile;

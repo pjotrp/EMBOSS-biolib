@@ -22,6 +22,13 @@
 
 #include "emboss.h"
 
+
+/* @prog textsearch ***********************************************************
+**
+** Search sequence documentation text. SRS and Entrez are faster!
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
 

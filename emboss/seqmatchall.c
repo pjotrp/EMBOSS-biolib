@@ -21,6 +21,13 @@ static void listPrint(AjPFile outfile, AjPList list){
   ajListMap(list,matchListPrint, outfile);
 }
 
+
+/* @prog seqmatchall **********************************************************
+**
+** Does an all-against-all comparison of a set of sequences
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
   AjPTable seq1MatchTable =0 ;

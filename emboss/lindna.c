@@ -98,6 +98,13 @@ float VerTextSeqLength(float postext, ajint NumNames);
 
 
 
+
+/* @prog lindna ***************************************************************
+**
+** Draws linear maps of DNA constructs
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
     AjPGraph graph;

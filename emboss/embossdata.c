@@ -32,6 +32,13 @@ static AjPStr data_dir(void);
 
 
 
+
+/* @prog embossdata ***********************************************************
+**
+** Finds or fetches the data files read in by the EMBOSS programs
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
     AjPList rlist=NULL;

@@ -29,6 +29,13 @@ static void diff (AjPList matchlist, AjPSeq seq1, AjPSeq seq2, AjPFile
 static void WordMatchListConvDiffToFeat(AjPList list, AjPFeattable *tab1,
                 AjPFeattable *tab2, AjPSeq seq1, AjPSeq seq2);
                                 
+
+/* @prog diffseq **************************************************************
+**
+** Find differences (SNPs) between nearly identical sequences
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
   

@@ -29,6 +29,13 @@ ajint makebigarray(ajulong no_elements, ajulong **bigarray);
 
 
 
+
+/* @prog compseq **************************************************************
+**
+** Counts the composition of dimer/trimer/etc words in a sequence
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
 

@@ -40,6 +40,13 @@ void printHits(AjPSeq, AjPStr, AjPFile *outf, AjPList *l, AjPStr *name,
 void read_equiv(AjPFile *equfile, AjPTable *table);
 static void read_file_of_enzyme_names(AjPStr *enzymes);
 
+
+/* @prog restover *************************************************************
+**
+** Finds restriction enzymes that produce a specific overhang
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
     AjPSeqall seqall;

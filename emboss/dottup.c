@@ -58,6 +58,13 @@ static void plotMatches(AjPList list)
 
 
 
+
+/* @prog dottup ***************************************************************
+**
+** Displays a wordmatch dotplot of two sequences
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
   

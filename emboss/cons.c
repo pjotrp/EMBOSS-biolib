@@ -34,6 +34,13 @@
 
 #include "emboss.h"
 
+
+/* @prog cons ***************************************************************
+**
+** Creates a consensus from multiple alignments
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
     ajint   nseqs;

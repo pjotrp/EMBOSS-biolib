@@ -141,6 +141,13 @@ static ajint findstartpoints(AjPTable *seq1MatchTable,AjPSeq b,AjPSeq a,
 
 
 
+
+/* @prog supermatcher *********************************************************
+**
+** Finds a match of a large sequence against one or more sequences
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
     AjPSeqall seq1;

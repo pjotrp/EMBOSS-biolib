@@ -22,6 +22,13 @@
 
 #include "emboss.h"
 
+
+/* @prog descseq **************************************************************
+**
+** Alter the name or description of a sequence
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
 

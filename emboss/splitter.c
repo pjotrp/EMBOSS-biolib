@@ -22,6 +22,13 @@
 
 #include "emboss.h"
 
+
+/* @prog splitter *************************************************************
+**
+** Split a sequence into (overlapping) smaller sequences
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
 

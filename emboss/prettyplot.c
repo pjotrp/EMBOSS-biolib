@@ -503,6 +503,13 @@ ajint fillinboxes(float ystart, ajint length, ajint numseq, ajint resbreak,
 
 
 
+
+/* @prog prettyplot ***********************************************************
+**
+** Displays aligned sequences, with colouring and boxing
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
     ajint i,numseq,j=0,numres,count,k;

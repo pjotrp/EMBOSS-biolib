@@ -30,6 +30,13 @@ static void  addgraph(AjPGraph graph, ajint limit, float *x, float *y,
 		      ajint window, float baseline);
 
 
+
+/* @prog hmoment **************************************************************
+**
+** Hydrophobic moment calculation
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
     AjPSeqall  seqall;

@@ -12,6 +12,13 @@ wordmatch -sequencea /nfs/adnah/il/wordtest/eclac.seq -sequenceb /nfs/adnah/il/w
 #include "ajax.h"
 #include "emboss.h"
 
+
+/* @prog wordmatch ************************************************************
+**
+** Finds all exact matches of a given size between 2 sequences
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
 

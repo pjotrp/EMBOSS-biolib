@@ -70,6 +70,13 @@ static ajint basecompare(const void *a, const void *b);
 
 
 
+
+/* @prog silent ***************************************************************
+**
+** Silent mutation restriction enzyme scan
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
     AjPSeq seq=NULL;		     /*3 things we need from ACD/embInit*/

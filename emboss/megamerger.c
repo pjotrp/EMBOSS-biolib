@@ -28,6 +28,13 @@ static void megamergerMerge (AjPList matchlist, AjPSeq seq1, AjPSeq seq2,
 			     AjPSeqout seqout, AjPFile outfile);
 
 
+
+/* @prog megamerger ***********************************************************
+**
+** Merge two large overlapping nucleic acid sequences
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
   

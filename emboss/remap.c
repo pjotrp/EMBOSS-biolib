@@ -38,6 +38,13 @@ typedef struct SValue {
 } OValue, *PValue;
 
 
+
+/* @prog remap ***************************************************************
+**
+** Display a sequence with restriction cut sites, translation etc
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
 

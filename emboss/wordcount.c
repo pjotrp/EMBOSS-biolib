@@ -3,6 +3,13 @@
 
 
 
+
+/* @prog wordcount ************************************************************
+**
+** Counts words of a specified size in a DNA sequence
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
 

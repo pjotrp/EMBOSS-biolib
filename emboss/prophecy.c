@@ -38,6 +38,13 @@ void henikoff_profile(AjPSeqset seqset, AjPMatrixf imtx, float **sub,
 		      float gapopen, float gapextend, AjPStr *cons);
 
 
+
+/* @prog prophecy *************************************************************
+**
+** Creates matrices/profiles from multiple alignments
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
 

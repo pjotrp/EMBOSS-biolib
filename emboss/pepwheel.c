@@ -40,6 +40,13 @@ static void drawocta(float x, float y, float size, AjBool text, AjPFile outf);
 #define AJB_PURPLE 10
 
 
+
+/* @prog pepwheel *************************************************************
+**
+** Shows protein sequences as helices
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
     AjPSeq    seq=NULL;

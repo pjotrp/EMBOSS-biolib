@@ -23,6 +23,13 @@
 #include "emboss.h"
 
 
+
+/* @prog freak ***************************************************************
+**
+** Residue/base frequency table or plot
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
     AjPSeqall  seqall;

@@ -52,6 +52,13 @@ AjPList buildListFromString(AjPStr string, AjPSeq seq, AjBool feat){
   return newlist;
 }
 
+
+/* @prog seqretfeat ***********************************************************
+**
+** Reads and writes (returns) a sequence and outputs the feature table for it
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
 

@@ -17,6 +17,13 @@ ajint ntests = 0;
 
 static void primTest (void **x,void *cl);
 
+
+/* @prog stssearch ************************************************************
+**
+** Searches a DNA database for matches with a set of STS primers
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
 

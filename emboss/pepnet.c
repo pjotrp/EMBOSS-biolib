@@ -35,6 +35,13 @@ static void drawocta(float x, float y, float size, AjBool text,
 
 
 
+
+/* @prog pepnet ***************************************************************
+**
+** Displays proteins as a helical net
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
     AjPSeq    seq=NULL;

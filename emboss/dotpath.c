@@ -62,6 +62,13 @@ static void plotMatches(AjPList list)
 
 
 
+
+/* @prog dotpath **************************************************************
+**
+** Displays a non-overlapping wordmatch dotplot of two sequences
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
     AjPSeq seq1,seq2;

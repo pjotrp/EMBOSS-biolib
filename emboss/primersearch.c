@@ -90,6 +90,13 @@ static void store_hits(Primer primdata, AjPList fhits_list, AjPList rhits_list, 
 static void print_hits(AjPList primerList, AjPFile outf);
 
 
+
+/* @prog primersearch *********************************************************
+**
+** Searches DNA sequences for matches with primer pairs
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
     AjPSeqall seqall;

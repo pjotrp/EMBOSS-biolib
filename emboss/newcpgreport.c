@@ -18,6 +18,13 @@ void compisl(AjPFile outf, char *p, ajint begin1, ajint end1);
 
 
 
+
+/* @prog newcpgreport *********************************************************
+**
+** Report CpG rich areas
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
     AjPSeqall seqall;

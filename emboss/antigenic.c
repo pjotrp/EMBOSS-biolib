@@ -41,6 +41,13 @@ void dumptoFeat(ajint nhits, AjPInt hp,AjPInt hpos,AjPInt hlen,AjPFloat thisap,
 
 
 
+
+/* @prog antigenic ************************************************************
+**
+** Finds antigenic sites in proteins
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
     AjPSeqall seqall;

@@ -49,6 +49,13 @@ void    printHeader(AjPFile outf);
 
 
 
+
+/* @prog printsextract ********************************************************
+**
+** Extract data from PRINTS
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
     AjPFile inf  = NULL;

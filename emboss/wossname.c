@@ -22,6 +22,13 @@
 
 #include "emboss.h"
 
+
+/* @prog wossname *************************************************************
+**
+** Finds programs by keywords in their one-line documentation
+**
+******************************************************************************/
+
 int main(int argc, char **argv, char **env)
 {
 

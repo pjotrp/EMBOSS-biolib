@@ -38,6 +38,13 @@ static void read_file_of_enzyme_names(AjPStr *enzymes);
 
 
 
+
+/* @prog showseq **************************************************************
+**
+** Display a sequence with features, translation etc
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
 

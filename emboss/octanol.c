@@ -84,6 +84,13 @@ ajint getwhitewimbleydata(AjPFile file, float matrix[], float err[],
   return 1;
 }
 
+
+/* @prog octanol **************************************************************
+**
+** Displays protein hydropathy
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
   AjPFile datafile;

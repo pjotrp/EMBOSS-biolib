@@ -33,6 +33,13 @@ ajint makebigarray(ajlong no_elements, ajlong **bigarray);
 
 
 
+
+/* @prog oddcomp **************************************************************
+**
+** Finds protein sequence regions with a biased composition
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
 

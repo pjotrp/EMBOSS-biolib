@@ -47,6 +47,13 @@ static void showTransb(ajint **ppos, ajint *npos, AjPStr *pseqs, AjPStr substr,
 
 
 
+
+/* @prog showorf **************************************************************
+**
+** Pretty output of DNA translations
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
     AjPSeq       a;

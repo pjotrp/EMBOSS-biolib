@@ -34,6 +34,13 @@ ajint inframe(ajint start, ajint pos, ajint frame, ajint len);
 
 
 
+
+/* @prog pepcoil **************************************************************
+**
+** Predicts coiled coil regions
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
     AjPSeqall seqall;

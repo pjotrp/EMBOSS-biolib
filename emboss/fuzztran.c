@@ -29,6 +29,13 @@ void print_hits(AjPList *l, ajint hits, AjPFile outf, AjPStr seq, AjBool mms,
 		AjPStr acc, AjBool doacc, AjPStr usa, AjBool dousa);
 
 
+
+/* @prog fuzztran *************************************************************
+**
+** Protein pattern search after translation
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
     AjPSeqall seqall;

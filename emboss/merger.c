@@ -32,6 +32,13 @@ float quality (char * seq, ajint pos, ajint window);
 
 AjBool bestquality (char * a, char *b, ajint apos, ajint bpos);
 
+
+/* @prog merger ***************************************************************
+**
+** Merge two overlapping nucleic acid sequences
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
     AjPSeq a;

@@ -22,6 +22,13 @@
 
 #include "emboss.h"
 
+
+/* @prog embossversion ********************************************************
+**
+** Writes the current EMBOSS version number
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
 

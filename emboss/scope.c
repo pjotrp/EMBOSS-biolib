@@ -93,6 +93,13 @@
 
 
 
+
+/* @prog scope ***************************************************************
+**
+** Convert raw scop classification file to embl-like format
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
     AjPRegexp rexp    = NULL;

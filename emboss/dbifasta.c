@@ -67,6 +67,13 @@ static EmbPentry dbifastaNextFlatEntry (AjPFile libr, ajint ifile,
 static AjPRegexp getExpr(AjPStr idformat, ajint *type);
 
 
+
+/* @prog dbifasta *************************************************************
+**
+** Index a fasta database
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
 

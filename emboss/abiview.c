@@ -41,6 +41,13 @@ static ajint getResColour(char B);
 
 
 
+
+/* @prog abiview **************************************************************
+**
+** Reads ABI file and display the trace
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
     AjPStr  fname;

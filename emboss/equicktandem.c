@@ -24,6 +24,13 @@ char *back, *front, *maxback=NULL, *maxfront=NULL;
 char* sq;
 ajint gap, max, score ;
 
+
+/* @prog equicktandem *********************************************************
+**
+** Finds tandem repeats
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
   ajint thresh;

@@ -1,5 +1,12 @@
 #include "emboss.h"
 
+
+/* @prog geecee ***************************************************************
+**
+** Calculates the fractional GC content of nucleic acid sequences
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
 

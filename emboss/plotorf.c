@@ -30,6 +30,13 @@ void norfs(char *seq, char *rev, ajint n, float **x, float **y, AjPInt *cnt,
 AjBool isin(char *p, AjPStr *str, ajint n);
 
 
+
+/* @prog plotorf **************************************************************
+**
+** Plot potential open reading frames
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
     AjPSeq     seq;

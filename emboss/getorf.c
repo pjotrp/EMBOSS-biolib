@@ -46,6 +46,13 @@ static void FindORFs(AjPSeq seq, ajint len, AjPTrn trnTable, ajint minsize,
 #define AROUND_INIT_STOP 5
 #define AROUND_END_STOP 6
 
+
+/* @prog getorf ***************************************************************
+**
+** Finds and extracts open reading frames (ORFs)
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
 

@@ -37,6 +37,13 @@ void ajbseq(AjPSeqout *outseq, char *seq, ajint begin, int
 void dumptofeat(AjPFeattabOut featout, ajint from, ajint to,
 	char *p, char *seqname, ajint begin, ajint min_orflength);
 
+
+/* @prog checktrans ***********************************************************
+**
+** Reports STOP codons and ORF statistics of a protein sequence
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
     AjPSeqall seqall;

@@ -24,6 +24,13 @@
 #include "emboss.h"
 void MaskRegions(AjPStr regions, AjPSeq *seq, AjPStr maskchar);
 
+
+/* @prog maskseq **************************************************************
+**
+** Mask off regions of a sequence
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
 

@@ -24,6 +24,13 @@
 #include "emboss.h"
 static void FeatSeqMask (AjPSeq seq, AjPStr type, AjPStr maskchar);
 
+
+/* @prog maskfeat *************************************************************
+**
+** Mask off features of a sequence
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
 

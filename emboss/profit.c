@@ -53,6 +53,13 @@ ajint getType(AjPFile inf);
 
 
 
+
+/* @prog profit ***************************************************************
+**
+** Scan a sequence or database with a matrix or profile
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
     AjPSeqall seqall;

@@ -22,6 +22,13 @@
 
 #include "emboss.h"
 
+
+/* @prog cutseq ***************************************************************
+**
+** Removes a specified section from a sequence
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
 

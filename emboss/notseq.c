@@ -1,5 +1,12 @@
 #include "emboss.h"
 
+
+/* @prog notseq ***************************************************************
+**
+** Excludes a set of sequences and writes out the remaining ones
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
 

@@ -119,6 +119,13 @@ void ProcessStampFile(AjPStr in, AjPStr out, AjPScop scop);
 
 
 
+
+/* @prog stamps ***************************************************************
+**
+** Generate alignments for SCOP families
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
     ajint     nfam      = 0;	/* Counter for the families */

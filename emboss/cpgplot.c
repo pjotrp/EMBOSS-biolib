@@ -47,6 +47,13 @@ void dumpfeatout(AjPFeattabOut featout, AjBool *thresh, char *seqname,
 		 ajint begin, ajint len);
 
 
+
+/* @prog cpgplot **************************************************************
+**
+** Plot CpG rich areas
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
     AjPSeqall seqall;

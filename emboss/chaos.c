@@ -24,6 +24,13 @@
 #include "emboss.h"
 #include "ajax.h"
 
+
+/* @prog chaos ***************************************************************
+**
+** Create a chaos game representation plot for a sequence
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
   AjPSeq sequence = NULL ;

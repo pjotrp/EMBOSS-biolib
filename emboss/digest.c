@@ -27,6 +27,13 @@ void print_hits(AjPList l, AjPFile outf, ajint be, char *s);
 
 
 
+
+/* @prog digest ***************************************************************
+**
+** Protein proteolytic enzyme or reagent cleavage digest
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
 

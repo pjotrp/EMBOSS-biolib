@@ -27,6 +27,13 @@ id, AjBool qry, AjBool all, AjPStr comment, AjPStr release, AjBool html,
 AjBool dotype, AjBool doid, AjBool doqry, AjBool doall, 
 AjBool docomment, AjBool dorelease);
 	
+
+/* @prog showdb ***************************************************************
+**
+** Displays information on the currently available databases
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
   AjBool html;

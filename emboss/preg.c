@@ -1,5 +1,12 @@
 #include "emboss.h"
 
+
+/* @prog preg ***************************************************************
+**
+** Regular expression search of a protein sequence
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
 

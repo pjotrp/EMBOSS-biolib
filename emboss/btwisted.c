@@ -24,6 +24,13 @@
 
 AjPTable getdinucdata(AjPFile anglesfile);
 
+
+/* @prog btwisted *************************************************************
+**
+** Calculates the twisting in a B-DNA sequence
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
 

@@ -40,6 +40,13 @@ void scan_profile(AjPStr substr, AjPStr pname, AjPStr name, AjPStr mname,
 
 
 
+
+/* @prog prophet **************************************************************
+**
+** Gapped alignment for profiles
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
     AjPSeqall seqall;

@@ -83,6 +83,13 @@ static AjBool FindAppDoc (AjPStr program, AjBool html, AjPStr* path) {
 }
 
 
+
+/* @prog tfm ***************************************************************
+**
+** Displays a program's help documentation manual
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
 

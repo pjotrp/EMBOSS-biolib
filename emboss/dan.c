@@ -45,6 +45,13 @@ void unfmall(float *xa, float *ta, float *tpa, float *cga);
 
 
 
+
+/* @prog dan ***************************************************************
+**
+** Calculates DNA RNA/DNA melting temperature
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
     AjPSeqall seqall;

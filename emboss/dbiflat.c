@@ -70,7 +70,7 @@ static EmbPentry dbiflatNextFlatEntry (AjPFile libr, ajint ifile);
 
 /* @prog dbiflat **************************************************************
 **
-** Indexing a flat file database
+** Index a flat file database
 **
 ******************************************************************************/
 

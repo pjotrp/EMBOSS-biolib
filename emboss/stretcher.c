@@ -83,6 +83,13 @@ ajint nc;
 AjPMatrix matrix = NULL;
 AjPSeqCvt cvt = NULL;
 
+
+/* @prog stretcher ************************************************************
+**
+** Finds the best global alignment between two sequences
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
   AjPStr aa0str=0,aa1str=0;

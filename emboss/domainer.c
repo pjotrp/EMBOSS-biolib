@@ -139,6 +139,13 @@
 
 
 
+
+/* @prog domainer *************************************************************
+**
+** Build domain coordinate files
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
     AjPStr   cpdb_path     =NULL;	/* Path of cpdb files */

@@ -30,6 +30,13 @@ void print_hits(AjPList *l, ajint hits, AjPFile outf, AjPStr seq, AjBool mms,
 
 
 
+
+/* @prog fuzzpro **************************************************************
+**
+** Protein pattern search
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
     AjPSeqall seqall;

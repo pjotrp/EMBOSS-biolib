@@ -58,6 +58,13 @@ static void plotMatches(AjPList list, AjBool text)
 
 
 
+
+/* @prog polydot **************************************************************
+**
+** Displays all-against-all dotplots of a set of sequences
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
   

@@ -74,6 +74,13 @@ void print_hits(AjPFile outf, AjPList hlist, ajint dno, EmbPMdata* data);
 
 
 
+
+/* @prog emowse ***************************************************************
+**
+** Protein identification by mass spectrometry
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
     AjPSeq       seq;

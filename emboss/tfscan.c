@@ -31,6 +31,13 @@ void print_hits(AjPStr name, AjPList *l, ajint hits, AjPFile outf, ajint begin,
 
 
 
+
+/* @prog tfscan ***************************************************************
+**
+** Scans DNA sequences for transcription factors
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
     AjPSeqall seqall;

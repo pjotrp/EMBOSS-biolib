@@ -55,6 +55,13 @@ void print_hits(AjPList *ajb, ajint n, float minsd, ajint lastcol,
 
 
 
+
+/* @prog helixturnhelix *******************************************************
+**
+** Report nucleic acid binding motifs
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
     AjPSeqall seqall;

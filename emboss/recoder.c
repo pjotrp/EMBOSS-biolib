@@ -1,4 +1,4 @@
-/* @source recode
+/* @source recoder
 **
 ** Find restriction sites in a nucleotide sequence and remove 
 ** them whilst maintaining the same translation.
@@ -79,6 +79,13 @@ static void fmt_muts(AjPList muts, AjPFile outf);
  
 
 
+
+/* @prog recoder **************************************************************
+**
+** Remove restriction sites but maintain the same translation
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
     AjPSeq seq=NULL;     
@@ -103,7 +110,7 @@ int main(int argc, char **argv)
     AjPRinfo re;
  
 
-    embInit("recode", argc, argv);
+    embInit("recoder", argc, argv);
 	
     seq = ajAcdGetSeq("seq");             /* sequence to investigate */
     enzymes = ajAcdGetString("enzymes");  /* enzyme list             */  

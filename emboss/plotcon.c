@@ -62,6 +62,13 @@ typedef struct SPoint
 
 
 
+
+/* @prog plotcon **************************************************************
+**
+** Plots the quality of conservation of a sequence alignment
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
   

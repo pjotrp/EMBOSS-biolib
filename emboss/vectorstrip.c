@@ -76,6 +76,13 @@ static void write_sequence(AjPSeq sequence, AjPSeqout seqout,
 static void print_hits(AjPList l, AjPFile outf, AjPStr seq, ajint begin);
 static void reportseq(AjPStr seqstr, AjPFile outf);
 
+
+/* @prog vectorstrip **********************************************************
+**
+** Strips out DNA between a pair of vector sequences
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
   /* sequence related */

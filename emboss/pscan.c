@@ -32,6 +32,13 @@ void print_hits(AjPFile *outf, AjPList *l, ajint nmotifs, AjPStr *name,
 
 
 
+
+/* @prog pscan ***************************************************************
+**
+** Scans proteins using PRINTS
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
     AjPSeqall seqall;

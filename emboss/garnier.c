@@ -290,6 +290,13 @@ void dogarnier(AjPFile outf, ajint s, ajint len, char *seq, char *name,
 	       ajint begin, ajint Idc);
 void makemap (char *input, ajint *map, ajint n);
 
+
+/* @prog garnier **************************************************************
+**
+** Predicts protein secondary structure
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
     AjPSeqall seqall;

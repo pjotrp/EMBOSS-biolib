@@ -41,6 +41,13 @@ static void prettyTranslate(AjPFile outf, ajint beg, ajint end, AjPStr s,
 			    AjPCod codon, AjPRange range, ajint width,
 			    AjPStr pro);
 
+
+/* @prog prettyseq ************************************************************
+**
+** Output sequence with translated ranges
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
     AjPSeq       a;

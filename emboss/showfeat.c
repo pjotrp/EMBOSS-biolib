@@ -55,6 +55,13 @@ static void AddTagsStr(AjPStr *tagout, AjPFeature feat, AjBool values);
 
 
 
+
+/* @prog showfeat *************************************************************
+**
+** Show features of a sequence
+**
+******************************************************************************/
+
 int main(int argc, char **argv)
 {
 
