@@ -4930,7 +4930,6 @@ static AjBool seqReadMase(AjPSeq thys, AjPSeqin seqin)
     AjPFileBuff buff;
     AjBool ok = ajTrue;
     static AjPRegexp headexp = NULL;
-    ajint ilen = 0;
 
     if (!headexp)
 	headexp = ajRegCompC("^(;+)");
