@@ -20,8 +20,8 @@
 
 package org.emboss.jemboss.server;
 
-import org.emboss.jemboss.*;
-import org.emboss.jemboss.programs.*;
+import org.emboss.jemboss.JembossParams;
+import org.emboss.jemboss.programs.RunEmbossApplication;
 import org.emboss.jemboss.parser.*;
 
 import java.io.*;
@@ -49,13 +49,16 @@ public class JembossAuthServer
 
   private String homeDirectory = new String(System.getProperty("user.home") + fs);
   
-  private String username = new String(System.getProperty("user.name") + fs);
-  private String tmproot = new String("/tmp/SOAP/emboss/" + username );
+//SOAP directory
+  private String tmproot = new String("/tmp/SOAP/emboss/");
+  private String logFile = new String(tmproot+"/emboss.log");
+  private String errorLog = new String(tmproot+"/error.log");
+
   private File tmprootDir = new File(tmproot);
 
   private String[] envp = 
-  {                                         //embossBin first in path-
-    "PATH=" + embossBin + ps + embossPath,  //JNI speedup
+  {
+    "PATH=" + embossPath + ps + embossBin,
     "PLPLOT_LIB=" + plplot,
     "EMBOSS_DATA=" + embossData,
     "HOME=" + homeDirectory
@@ -104,20 +107,20 @@ public class JembossAuthServer
 
   public String docurl()
   {
-     return "http://www.uk.embnet.org/Software/EMBOSS/general.html";
+    return "http://www.uk.embnet.org/Software/EMBOSS/general.html";
   }
 
   public Hashtable servicedesc()
   {
-     Hashtable desc = new Hashtable();
-     desc.put("name",name());
-     desc.put("version",version());
-     desc.put("appversion",appversion());
-     desc.put("about",about());
-     desc.put("helpurl",helpurl());
-     desc.put("abouturl",abouturl());
-     desc.put("docurl",docurl());
-     return desc;
+    Hashtable desc = new Hashtable();
+    desc.put("name",name());
+    desc.put("version",version());
+    desc.put("appversion",appversion());
+    desc.put("about",about());
+    desc.put("helpurl",helpurl());
+    desc.put("abouturl",abouturl());
+    desc.put("docurl",docurl());
+    return desc;
   }
 
 
@@ -240,7 +243,7 @@ public class JembossAuthServer
       }
       catch (IOException ioe) 
       {
-        System.out.println("IOException : STATUS NOT OK");
+        System.out.println("IOException : STATUS NOT OK ");
         vans.add("status");
         vans.add("1");
         return vans;
@@ -337,33 +340,26 @@ public class JembossAuthServer
   {
 
     tmproot = tmproot.concat(userName+fs);
-   
-    Ajax aj = new Ajax();
+    tmprootDir = new File(tmproot);
 
+    Ajax aj = new Ajax();
     Vector result = new Vector();
 
     if(!verifyUser(aj,userName,passwd,result))
       return result;
 
-    // remember the original uid & uid
-    int sgid = aj.getgid();
-    int suid = aj.getuid();
-
-    // change to user id   
-    if(!changeUser(aj,result,userName,aj.uid,aj.gid))
-      return result;
-
-    System.out.println("Running runProg now.... " + tmproot);
-
     //disallow pathnames and multiple command constructions
     if((embossCommand.indexOf("/") > -1) || (embossCommand.indexOf(";") > -1) ||
        (embossCommand.indexOf("/") > -1) )
     {
-       result.add("msg");
-       result.add("ERROR: Disallowed command syntax "+embossCommand);
-       result.add("status");
-       result.add("1");
-       return result;
+      String warn = new String("ERROR: Disallowed command syntax "+
+                               embossCommand);
+      appendToLogFile(warn,errorLog);
+      result.add("msg");
+      result.add(warn);
+      result.add("status");
+      result.add("1");
+      return result;
     }
 
     //trap anything that is trying to write to stdout
@@ -382,15 +378,36 @@ public class JembossAuthServer
     embossCommand = embossBin.concat(embossCommand);
     String msg = new String("");
 
+//remember the original uid & uid
+    int sgid = aj.getgid();
+    int suid = aj.getuid();
+
+//change to user id
+//  if(!changeUser(aj,result,userName,aj.uid,aj.gid))
+//    return result;
+    String environ ="";
+    for(int i=0;i<envp.length;i++)
+       environ = environ.concat(envp[i]+" ");
+
     boolean ok;
-    
     if(!tmprootDir.isDirectory())
     {
-      ok = tmprootDir.mkdirs();
+//    ok = tmprootDir.mkdirs();
+      ok = aj.fork("mkdir "+tmproot,
+          environ,".",aj.uid,aj.gid);
+
       if(ok)
-        System.out.println("Created directory "+tmproot);
+        appendToLogFile("Created directory "+tmproot,errorLog);
       else
-        System.out.println("Failed to create directory "+tmproot);
+      {
+        String warnmsg = new String("Failed to create directory "+tmproot);
+        appendToLogFile(warnmsg,errorLog);
+        result.add("msg");
+        result.add(warnmsg);
+        result.add("status");
+        result.add("1");
+        return result;
+      }
     }
 
     Random rnd = new Random();
@@ -401,30 +418,34 @@ public class JembossAuthServer
          dat.replace(' ','_') + "_" + rnd.nextInt(99999));
 
     File projectDir = new File(project);
-    ok = projectDir.mkdirs();
+//  ok = projectDir.mkdirs();
+
+    boolean llfork = aj.fork("mkdir "+project,
+                          environ,".",aj.uid,aj.gid);
+
+    if(!changeUser(aj,result,userName,aj.uid,aj.gid))
+      return result;
 
 //create description file
     File desc = new File(new String(project + fs + ".desc"));
 
+//create description file & input files
     String descript = "";
     try
     {
       PrintWriter dout = new PrintWriter(new FileWriter(desc));
 
       descript = descript.concat("EMBOSS run details"+ls+ls+
-                                 "Application: "+appl+ls+rest+
-                                 "Started at "+dat+ls+ls+"Input files:");
-      dout.println("EMBOSS run details" + ls + ls);
-      dout.println("Application: " + appl + ls + rest);
-      dout.println("Started at " + dat + ls + ls + "Input files:");
-  
-      while (enum.hasMoreElements())
+                       "Application: "+appl+ls+rest+ls+
+                       "Started at "+dat+ls+ls+"Input files:"+ls);
+
+      while(enum.hasMoreElements())
       {
         String thiskey = (String)enum.nextElement().toString();
         String filec = (String)inFiles.get(thiskey);
         File f = new File(project + fs + thiskey);
-        descript = descript.concat(project+fs+thiskey);
-        dout.println(project + fs + thiskey);
+
+        descript = descript.concat(project+fs+thiskey+ls);
         try
         {
           f.createNewFile();
@@ -437,19 +458,19 @@ public class JembossAuthServer
           msg = new String("Error making description file");
         }
       }
-      
+      dout.println(descript);
       dout.close();
     }
-    catch (IOException ioe) {} 
+    catch (IOException ioe) 
+    {
+      msg = new String("Error making description file");
+    } 
  
-
     aj.setegid(sgid);
     aj.seteuid(suid);
-  
-    String environ ="";
-    for(int i=0;i<envp.length;i++)
-       environ = environ.concat(envp[i]+" ");
-
+    
+    appendToLogFile(dat+"  "+embossCommand,logFile);
+ 
     result.add("cmd");
     result.add(appl + " " + rest);
     result.add("status");
@@ -459,21 +480,23 @@ public class JembossAuthServer
     {
       boolean lfork = aj.fork(embossCommand,environ,project,
                                              aj.uid,aj.gid);
-
 //    System.out.println("STDOUT \n"+aj.outStd);
 //    System.out.println("STDERR \n"+aj.errStd);
 
       result.add("msg");
       if(!lfork)
+      {
         result.add("Fork process in run_prog failed on server");
+        appendToLogFile("Fork process failed "+embossCommand,errorLog);
+      }
       else
         result.add("");
       createFinishedFile(project);
     }
     else      //batch or background
     {
-      JembossAuthThread jt = new JembossAuthThread(aj,embossCommand,environ,
-                                           project);
+      JembossAuthThread jt = new JembossAuthThread(aj,
+                         embossCommand,environ,project);
       jt.start();
       result.add("msg");
       result.add("");
@@ -637,8 +660,8 @@ public class JembossAuthServer
       }
       catch (IOException ioe)
       {
-        System.out.println("IOException in list_saved_results "+tmproot +fs +
-                                               resFiles[i] +fs + ".desc");
+        System.out.println("IOException in list_saved_results "+
+                        tmproot +fs +resFiles[i] +fs + ".desc");
       }
     }
 
@@ -647,6 +670,40 @@ public class JembossAuthServer
 
     return lsr;
   }
+
+
+/**
+*
+* Appends a log entry to the log file
+*
+*/ 
+  private void appendToLogFile(String logEntry, String logFileName)
+  {
+    BufferedWriter bw = null;
+    try 
+    {
+      bw = new BufferedWriter(new FileWriter(logFileName, true));
+      bw.write(logEntry);
+      bw.newLine();
+      bw.flush();
+    } 
+    catch (IOException ioe) 
+    {
+      System.out.println("Error writing to log file "+logFile);
+      ioe.printStackTrace();
+    } 
+    finally                     // always close the file
+    {                       
+      if(bw != null) 
+        try
+        {
+          bw.close();
+        } 
+        catch (IOException ioe2) {}
+    }
+
+  }
+
 
 /**
 *
@@ -669,13 +726,24 @@ public class JembossAuthServer
       String line = new String("");
       String fc = new String("");
       String key = new String(outFiles[i]);
+      BufferedReader in = null;
       try
-      {
-        BufferedReader in = new BufferedReader(new FileReader(project + fs + outFiles[i]));
+      { 
+        in = new BufferedReader(new FileReader(project + fs + outFiles[i]));
         while((line = in.readLine()) != null)
           fc = fc.concat(line + "\n");
       }
       catch (IOException ioe){}
+      finally
+      {
+        if(in!=null)
+          try
+          {
+            in.close();
+          }
+          catch (IOException ioe2){}
+      }
+
       if(!fc.equals(""))
       {
         result.add(key);
@@ -707,40 +775,12 @@ public class JembossAuthServer
     {
       String line = new String("");
       String key = new String(pngFiles[i]);
-      DataInputStream dis;
-      FileInputStream fis;
+      DataInputStream dis = null;
+      FileInputStream fis = null;
       int nby = 0;
-      byte data[] = new byte[1];
-      try
+      byte data[] = readByteFile(project + fs + pngFiles[i]);
+      if(data != null)
       {
-        fis = new FileInputStream(project + fs + pngFiles[i]);
-        dis = new DataInputStream(fis);
-        while(true)
-        {
-          dis.readByte();
-          nby++;
-        }
-      }
-      catch (EOFException eof){}
-      catch (IOException ioe){}
-
-      if(nby >0)
-      {
-        try
-        {
-          data = new byte[nby];
-          fis = new FileInputStream(project + fs + pngFiles[i]);
-          dis = new DataInputStream(fis);
-          nby=0;
-          while(true)
-          {
-            data[nby]=dis.readByte();
-            nby++;
-          }
-        }
-        catch (EOFException eof){}
-        catch (IOException ioe){}
-
         result.add(key);
         result.add(data);
       }
@@ -748,6 +788,81 @@ public class JembossAuthServer
     return result;
   }
  
+/**
+*
+* Read a file into a byte array.
+* @param String file name
+* @return byte[] contents of file
+*
+*/
+  protected static byte[] readByteFile(String filename)
+  {
+
+    DataInputStream dis = null;
+    FileInputStream fis = null;
+    int nby = 0;
+    byte data[] = null;
+
+    try
+    {
+      fis = new FileInputStream(filename);
+      dis = new DataInputStream(fis);
+      while(true)
+      {
+        dis.readByte();
+        nby++;
+      }
+    }
+    catch (EOFException eof){}
+    catch (IOException ioe){}
+    finally
+    {
+      if(dis!=null)
+        try
+        {
+          dis.close();
+        }
+        catch (IOException ioe2){}
+      if(fis!=null)
+        try
+        {
+          fis.close();
+        }
+        catch (IOException ioe2){}
+    }
+
+    if(nby >0)
+    {
+      try
+      {
+        data = new byte[nby];
+        fis = new FileInputStream(filename);
+        dis = new DataInputStream(fis);
+        nby=0;
+        dis.readFully(data);
+      }
+      catch (EOFException eof){}
+      catch (IOException ioe){}
+      finally
+      {
+        if(dis!=null)
+          try
+          {
+            dis.close();
+          }
+          catch (IOException ioe2){}
+        if(fis!=null)
+          try
+          {
+            fis.close();
+          }
+          catch (IOException ioe2){}
+      }
+    }
+
+    return data;
+  }
+
 /**
 *
 * Used to provide information on the batch/background
@@ -784,6 +899,8 @@ public class JembossAuthServer
                                                 fs+thiskey+fs+".desc"));
           while((line = in.readLine()) != null)
             fc = fc.concat(line + "\n");
+
+          in.close();
         }
         catch (IOException ioe)
         {
@@ -809,7 +926,7 @@ public class JembossAuthServer
 
     if(userName == null || passwd == null)
     {
-      System.out.println("Failed Authorisation "+userName);
+//    System.out.println("Failed Authorisation "+userName);
       res.add("msg");
       res.add("Failed Authorisation "+userName);
       res.add("status");
@@ -818,7 +935,7 @@ public class JembossAuthServer
     }
     else if(!aj.userInfo(userName,passwd))
     {
-      System.out.println("Failed Authorisation "+userName);
+      appendToLogFile("Failed Authorisation "+userName,errorLog);
       res.add("msg");
       res.add("Failed Authorisation "+userName);
       res.add("status");
@@ -839,9 +956,11 @@ public class JembossAuthServer
     if(resgid != 0 || resuid != 0)
     {
       if(resgid != 0)
-        System.out.println("Failed Authorisation change group "+userName);
+        appendToLogFile("Failed Authorisation change group "+
+                         userName,errorLog);
       if(resuid != 0)
-        System.out.println("Failed Authorisation change to user "+userName);
+        appendToLogFile("Failed Authorisation change to user "+
+                         userName,errorLog);
       res.add("msg");
       res.add("Failed Authorisation "+userName);
       res.add("status");
