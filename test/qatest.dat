@@ -9267,12 +9267,13 @@ FZ = 0
 ID tfm-ex
 AP tfm
 CC wossname documentation subject to updates - will break file size test
+CC On some systems 'more' also reports the filename at the start of the output
 CL wossname
 FI stderr
 FC = 1
 FP 0 /Warning:/
 FI stdout
-FZ = 47928
+FZ = 47835
 FP 1 /^ +Finds programs by keywords in their one-line documentation\n/
 FP 2 /^ +-explode/
 //
