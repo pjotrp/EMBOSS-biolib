@@ -51,7 +51,7 @@ showalign showdb showfeat showorf showseq \
 shuffleseq sigcleave siggen sigscan silent splitter scopalign stretcher \
 stssearch supermatcher swissparse syco \
 textsearch tfextract tfm tfscan \
-tmap transeq trimest trimseq \
+tmap tranalign transeq trimest trimseq \
 union vectorstrip \
 water whichdb wobble wordcount wordmatch \
 wossname yank
@@ -214,6 +214,7 @@ tfextract_SOURCES = tfextract.c
 tfm_SOURCES = tfm.c
 tfscan_SOURCES = tfscan.c
 tmap_SOURCES = tmap.c
+tranalign_SOURCES = tranalign.c
 transeq_SOURCES = transeq.c
 trimest_SOURCES = trimest.c
 trimseq_SOURCES = trimseq.c
