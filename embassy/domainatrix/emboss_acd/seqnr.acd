@@ -8,8 +8,8 @@ application: seqnr [
   cpu: "medium"
 ]
 
-section: input [
-  information: "input Section"
+section: input
+  information: "Input section"
   type: "page"
 ]
 
@@ -73,8 +73,8 @@ section: input [
 
 endsection: input
 
-section: required [
-  information: "required Section"
+section: required
+  information: "Required section"
   type: "page"
 ]
 
@@ -116,19 +116,17 @@ section: required [
 
 endsection: required
 
-section: advanced [
-  information: "advanced Section"
+section: advanced
+  information: "Advanced section"
   type: "page"
 ]
 
   matrixf: datafile  [
-    optional: "N"
     information: "Residue substitution matrix"
     default: "EBLOSUM62"
   ]
 
   float: gapopen  [
-    optional: "N"
     information: "Gap insertion penalty"
     minimum: "1."
     maximum: "100."
@@ -143,7 +141,6 @@ section: advanced [
   ]
 
   float: gapextend  [
-    optional: "N"
     information: "Gap extension penalty"
     minimum: "0.0"
     maximum: "10."
@@ -163,8 +160,8 @@ section: advanced [
 
 endsection: advanced
 
-section: output [
-  information: "output Section"
+section: output
+  information: "Output section"
   type: "page"
 ]
 

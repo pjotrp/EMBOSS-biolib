@@ -8,7 +8,6 @@ infile: infile  [
 ]
 
 list: format  [
-  required: "N"
   default: "A"
   minimum: "1"
   maximum: "1"
@@ -21,13 +20,11 @@ list: format  [
 ]
 
 boolean: append  [
-  required: "N"
   default: "N"
   information: "Append to file"
 ]
 
 boolean: force  [
-  required: "N"
   default: "N"
   information: "Force overwriting"
 ]

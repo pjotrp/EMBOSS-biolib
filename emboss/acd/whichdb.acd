@@ -12,13 +12,11 @@ string: entry  [
 ]
 
 boolean: get  [
-  required: "N"
   default: "N"
   information: "Retrieve sequences"
 ]
 
 boolean: showall  [
-  required: "N"
   default: "N"
   information: "Show failed attempts"
 ]

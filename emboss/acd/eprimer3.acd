@@ -4,8 +4,8 @@ application: eprimer3 [
   external: "primer3_core"
 ]
 
-section: input [
-  information: "input Section"
+section: input
+  information: "Input section"
   type: "page"
 ]
 
@@ -18,18 +18,17 @@ section: input [
 
 endsection: input
 
-section: advanced [
-  information: "advanced Section"
+section: advanced
+  information: "Advanced section"
   type: "page"
 ]
 
-  section: program [
+  section: program
     information: "Program Options"
     type: "frame"
   ]
 
     boolean: explainflag  [
-      optional: "N"
       default: "N"
       information: "Explain flag"
       help: "If this flag is non-0, produce LEFT-EXPLAIN,
@@ -40,7 +39,6 @@ section: advanced [
     ]
 
     boolean: fileflag  [
-      optional: "N"
       default: "N"
       information: "Create results files for each sequence"
       help: "If the associated value is non-0, then EPrimer3 creates
@@ -88,7 +86,6 @@ section: advanced [
     ]
 
     integer: firstbaseindex  [
-      optional: "N"
       default: "1"
       information: "First base index"
       help: "This parameter is the index of the first base in the
@@ -102,7 +99,7 @@ section: advanced [
 
   endsection: program
 
-  section: sequenceopt [
+  section: sequenceopt
     information: "Sequence options"
     type: "frame"
   ]
@@ -173,13 +170,12 @@ section: advanced [
 
   endsection: sequenceopt
 
-  section: primer [
+  section: primer
     information: "Primer Details"
     type: "frame"
   ]
 
     boolean: pickanyway  [
-      optional: "N"
       default: "N"
       information: "Pick anyway"
       help: "If true pick a primer pair even if LEFT-INPUT,
@@ -188,7 +184,6 @@ section: advanced [
     ]
 
     infile: mispriminglibrary  [
-      optional: "N"
       default: ""
       nullok: "Y"
       information: "Mispriming library"
@@ -223,7 +218,6 @@ section: advanced [
     ]
 
     float: maxmispriming  [
-      optional: "N"
       default: "12.00"
       maximum: "9999.99"
       information: "Primer maximum mispriming"
@@ -232,7 +226,6 @@ section: advanced [
     ]
 
     float: pairmaxmispriming  [
-      optional: "N"
       default: "24.00"
       maximum: "9999.99"
       information: "Primer pair maximum mispriming"
@@ -380,7 +373,6 @@ section: advanced [
     ]
 
     integer: numnsaccepted  [
-      optional: "N"
       default: "0"
       minimum: "0"
       information: "Maximum Ns accepted in a primer"
@@ -389,7 +381,6 @@ section: advanced [
     ]
 
     float: selfany  [
-      optional: "N"
       default: "8.00"
       minimum: "0.00"
       maximum: "9999.99"
@@ -417,7 +408,6 @@ section: advanced [
     ]
 
     float: selfend  [
-      optional: "N"
       default: "3.00"
       minimum: "0.00"
       maximum: "$(selfany)"
@@ -459,7 +449,7 @@ section: advanced [
 
   endsection: primer
 
-  section: product [
+  section: product
     information: "Product details"
     type: "frame"
   ]
@@ -541,13 +531,12 @@ section: advanced [
 
   endsection: product
 
-  section: primerweights [
+  section: primerweights
     information: "Primer Penalty Weights"
     type: "frame"
   ]
 
     float: maxendstability  [
-      optional: "N"
       default: "9.0"
       maximum: "999.9999"
       information: "Maximum 3' end stability"
@@ -567,7 +556,7 @@ section: advanced [
 
   endsection: primerweights
 
-  section: oligosinput [
+  section: oligosinput
     information: "Internal Oligo Input"
     type: "frame"
   ]
@@ -596,7 +585,7 @@ section: advanced [
 
   endsection: oligosinput
 
-  section: oligos [
+  section: oligos
     information: "Internal Oligo Details"
     type: "frame"
   ]
@@ -763,7 +752,6 @@ section: advanced [
     ]
 
     infile: oligomishyblibrary  [
-      optional: "N"
       default: ""
       nullok: "Y"
       information: "Internal oligo mishybridizing library"
@@ -797,7 +785,6 @@ section: advanced [
     ]
 
     float: oligomaxmishyb  [
-      optional: "N"
       default: "12.0"
       maximum: "9999.99"
       information: "Internal oligo maximum mishybridization"
@@ -810,8 +797,8 @@ section: advanced [
 
 endsection: advanced
 
-section: output [
-  information: "output Section"
+section: output
+  information: "Output section"
   type: "page"
 ]
 

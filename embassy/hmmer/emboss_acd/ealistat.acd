@@ -11,13 +11,11 @@ infile: infile  [
 ]
 
 boolean: additional  [
-  required: "N"
   default: "N"
   information: "Show additional information"
 ]
 
 boolean: fast  [
-  required: "N"
   default: "N"
   information: "Use sampling method"
 ]

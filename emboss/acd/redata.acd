@@ -4,8 +4,8 @@ application: redata [
   groups: "Nucleic:Restriction"
 ]
 
-section: input [
-  information: "input Section"
+section: input
+  information: "Input section"
   type: "page"
 ]
 
@@ -21,26 +21,23 @@ section: input [
 
 endsection: input
 
-section: output [
-  information: "output Section"
+section: output
+  information: "Output section"
   type: "page"
 ]
 
   boolean: isoschizomers  [
-    required: "N"
     default: "Y"
     information: "Show isoschizomers"
     help: "Show other enzymes with this specificity. (Isoschizomers)"
   ]
 
   boolean: references  [
-    required: "N"
     default: "Y"
     information: "Show references"
   ]
 
   boolean: suppliers  [
-    required: "N"
     default: "Y"
     information: "Show suppliers"
   ]

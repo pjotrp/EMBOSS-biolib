@@ -1,6 +1,6 @@
 application: erestml [
   documentation: "Restriction site Maximum Likelihood method"
-  groups: "phylip"
+  groups: "Phylogeny"
 ]
 
 infile: datafile  [

@@ -16,67 +16,56 @@ string: hmmfile  [
 ]
 
 integer: nalign  [
-  required: "N"
   default: "100"
   information: "Number of alignments"
 ]
 
 float: evalue  [
-  required: "N"
   default: "10."
   information: "E-value cutoff"
 ]
 
 float: hitcut  [
-  required: "N"
   default: "-1000000."
   information: "Hit score cutoff"
 ]
 
 integer: dbsize  [
-  required: "N"
   default: "59021"
   information: "Calc E-value for DB size n"
 ]
 
 integer: cpu  [
-  required: "N"
   default: "0"
   information: "Number of CPUs"
 ]
 
 float: dome  [
-  required: "N"
   default: "1000000."
   information: "E-value domain cutoff"
 ]
 
 float: domt  [
-  required: "N"
   default: "-1000000."
   information: "Hit score domain cutoff"
 ]
 
 boolean: forward  [
-  required: "N"
   default: "N"
   information: "Use forward algorithm"
 ]
 
 boolean: nulltwo  [
-  required: "N"
   default: "N"
   information: "Turn off second null model"
 ]
 
 boolean: pvm  [
-  required: "N"
   default: "N"
   information: "Use parallel virtual machine"
 ]
 
 boolean: xnu  [
-  required: "N"
   default: "N"
   information: "Use XNU filtering"
 ]

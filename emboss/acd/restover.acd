@@ -4,8 +4,8 @@ application: restover [
   groups: "Nucleic:Restriction"
 ]
 
-section: input [
-  information: "input Section"
+section: input
+  information: "Input section"
   type: "page"
 ]
 
@@ -16,8 +16,8 @@ section: input [
 
 endsection: input
 
-section: required [
-  information: "required Section"
+section: required
+  information: "Required section"
   type: "page"
 ]
 
@@ -28,13 +28,12 @@ section: required [
 
 endsection: required
 
-section: advanced [
-  information: "advanced Section"
+section: advanced
+  information: "Advanced section"
   type: "page"
 ]
 
   integer: min  [
-    optional: "N"
     minimum: "1"
     maximum: "1000"
     default: "1"
@@ -42,7 +41,6 @@ section: advanced [
   ]
 
   integer: max  [
-    optional: "N"
     minimum: "$(min)"
     maximum: "2000000000"
     default: "2000000000"
@@ -50,87 +48,74 @@ section: advanced [
   ]
 
   boolean: single  [
-    optional: "N"
     default: "N"
     information: "Force single site only cuts"
   ]
 
   boolean: threeprime  [
-    optional: "N"
     default: "N"
     information: "3' overhang? (else 5') e.g. BamHI has CTAG as
                   a 5' overhang, and ApaI has CCGG as 3' overhang."
   ]
 
   boolean: blunt  [
-    optional: "N"
     default: "Y"
     information: "Allow blunt end cutters"
   ]
 
   boolean: sticky  [
-    optional: "N"
     default: "Y"
     information: "Allow sticky end cutters"
   ]
 
   boolean: ambiguity  [
-    optional: "N"
     default: "Y"
     information: "Allow ambiguous matches"
   ]
 
   boolean: plasmid  [
-    optional: "N"
     default: "N"
     information: "Allow circular DNA"
   ]
 
   boolean: commercial  [
-    optional: "N"
     default: "Y"
     information: "Only enzymes with suppliers"
   ]
 
   string: datafile  [
-    required: "N"
     default: ""
     information: "Alternative RE data file"
   ]
 
 endsection: advanced
 
-section: output [
-  information: "output Section"
+section: output
+  information: "Output section"
   type: "page"
 ]
 
   boolean: html  [
-    optional: "N"
     default: "N"
     information: "Create HTML output"
   ]
 
   boolean: limit  [
-    optional: "N"
     default: "Y"
     information: "Limits reports to one isoschizomer"
   ]
 
   boolean: alphabetic  [
-    optional: "N"
     default: "N"
     information: "Sort output alphabetically"
   ]
 
   boolean: fragments  [
-    optional: "N"
     default: "N"
     information: "Show fragment lengths"
   ]
 
   boolean: name  [
-    optional: "N"
     default: "N"
     information: "Show sequence name"
   ]

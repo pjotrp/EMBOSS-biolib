@@ -3,8 +3,8 @@ application: noreturn [
   groups: "Edit"
 ]
 
-section: input [
-  information: "input Section"
+section: input
+  information: "Input section"
   type: "page"
 ]
 
@@ -14,8 +14,8 @@ section: input [
 
 endsection: input
 
-section: output [
-  information: "output Section"
+section: output
+  information: "Output section"
   type: "page"
 ]
 

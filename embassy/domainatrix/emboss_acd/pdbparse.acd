@@ -7,8 +7,8 @@ application: pdbparse [
   cpu: "low"
 ]
 
-section: input [
-  information: "input Section"
+section: input
+  information: "Input section"
   type: "page"
 ]
 
@@ -28,8 +28,8 @@ section: input [
 
 endsection: input
 
-section: required [
-  information: "required Section"
+section: required
+  information: "Required section"
   type: "page"
 ]
 
@@ -71,13 +71,12 @@ section: required [
 
 endsection: required
 
-section: advanced [
-  information: "advanced Section"
+section: advanced
+  information: "Advanced section"
   type: "page"
 ]
 
   boolean: cpdbnaming  [
-    optional: "N"
     information: "Use pdbid code to name files"
     help: "The user specifies whether the output files have the same
            names as the input files or whether the pdb identifier code (from
@@ -93,7 +92,6 @@ section: advanced [
   ]
 
   integer: maxmis  [
-    optional: "N"
     information: "Maximum number of permissible mismatches
                   between the ATOM and SEQRES sequences"
     default: "3"
@@ -101,8 +99,8 @@ section: advanced [
 
 endsection: advanced
 
-section: output [
-  information: "output Section"
+section: output
+  information: "Output section"
   type: "page"
 ]
 

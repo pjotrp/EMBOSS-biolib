@@ -1,6 +1,6 @@
 application: econtrast [
   documentation: "Continuous character Contrasts"
-  groups: "phylip"
+  groups: "Phylogeny"
 ]
 
 infile: infile  [

@@ -35,7 +35,6 @@ integer: step  [
 ]
 
 integer: sim  [
-  required: "N"
   default: "0"
   information: "Simulations"
   help: "calculate the linguistic complexity by comparison with a

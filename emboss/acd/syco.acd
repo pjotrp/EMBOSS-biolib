@@ -4,8 +4,8 @@ application: syco [
   groups: "Nucleic:Codon usage, Nucleic:Gene finding"
 ]
 
-section: input [
-  information: "input Section"
+section: input
+  information: "Input section"
   type: "page"
 ]
 
@@ -16,30 +16,26 @@ section: input [
 
 endsection: input
 
-section: advanced [
-  information: "advanced Section"
+section: advanced
+  information: "Advanced section"
   type: "page"
 ]
 
   codon: cfile  [
-    optional: "N"
     information: "Codon usage file"
   ]
 
   integer: window  [
-    optional: "N"
     default: "30"
     information: "Averaging window"
   ]
 
   boolean: uncommon  [
-    optional: "N"
     default: "N"
     information: "Show common codon usage"
   ]
 
   float: minimum  [
-    optional: "N"
     default: ".15"
     minimum: "0.0"
     maximum: ".99"
@@ -48,13 +44,12 @@ section: advanced [
 
 endsection: advanced
 
-section: output [
-  information: "output Section"
+section: output
+  information: "Output section"
   type: "page"
 ]
 
   boolean: plot  [
-    optional: "N"
     information: "Produce plot"
   ]
 

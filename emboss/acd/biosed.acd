@@ -3,8 +3,8 @@ application: biosed [
   groups: "Edit"
 ]
 
-section: input [
-  information: "input Section"
+section: input
+  information: "Input section"
   type: "page"
 ]
 
@@ -14,8 +14,8 @@ section: input [
 
 endsection: input
 
-section: required [
-  information: "required Section"
+section: required
+  information: "Required section"
   type: "page"
 ]
 
@@ -27,13 +27,12 @@ section: required [
 
 endsection: required
 
-section: advanced [
-  information: "advanced Section"
+section: advanced
+  information: "Advanced section"
   type: "page"
 ]
 
   boolean: delete  [
-    optional: "N"
     information: "Delete the target sequence sections"
     default: "N"
   ]
@@ -46,8 +45,8 @@ section: advanced [
 
 endsection: advanced
 
-section: output [
-  information: "output Section"
+section: output
+  information: "Output section"
   type: "page"
 ]
 

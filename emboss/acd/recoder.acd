@@ -4,8 +4,8 @@ application: recoder [
   groups: "Nucleic:Restriction"
 ]
 
-section: input [
-  information: "input Section"
+section: input
+  information: "Input section"
   type: "page"
 ]
 
@@ -17,8 +17,8 @@ section: input [
 
 endsection: input
 
-section: required [
-  information: "required Section"
+section: required
+  information: "Required section"
   type: "page"
 ]
 
@@ -30,19 +30,17 @@ section: required [
 
 endsection: required
 
-section: output [
-  information: "output Section"
+section: output
+  information: "Output section"
   type: "page"
 ]
 
   boolean: sshow  [
-    required: "N"
     default: "N"
     information: "Display untranslated sequence"
   ]
 
   boolean: tshow  [
-    required: "N"
     default: "N"
     information: "Display translated sequence"
   ]

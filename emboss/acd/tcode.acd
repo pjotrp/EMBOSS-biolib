@@ -4,8 +4,8 @@ application: tcode [
   groups: "Nucleic:Gene finding"
 ]
 
-section: input [
-  information: "input Section"
+section: input
+  information: "Input section"
   type: "page"
 ]
 
@@ -16,8 +16,8 @@ section: input [
 
 endsection: input
 
-section: required [
-  information: "required Section"
+section: required
+  information: "Required section"
   type: "page"
 ]
 
@@ -34,7 +34,6 @@ section: required [
   ]
 
   boolean: plot  [
-    optional: "N"
     information: "Graphical display"
     default: "N"
     help: "On selection a graph of the sequence (X axis) plotted
@@ -45,13 +44,12 @@ section: required [
 
 endsection: required
 
-section: advanced [
-  information: "advanced Section"
+section: advanced
+  information: "Advanced section"
   type: "page"
 ]
 
   integer: step  [
-    optional: "N"
     information: "Stepping increment for the window"
     default: "3"
     minimum: "1"
@@ -63,7 +61,6 @@ section: advanced [
   ]
 
   datafile: datafile  [
-    optional: "N"
     information: "Testcode data file"
     default: "Etcode.dat"
     help: "The default data file is Etcode.dat and contains coding
@@ -73,8 +70,8 @@ section: advanced [
 
 endsection: advanced
 
-section: output [
-  information: "output Section"
+section: output
+  information: "Output section"
   type: "page"
 ]
 

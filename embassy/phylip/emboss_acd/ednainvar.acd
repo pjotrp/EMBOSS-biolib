@@ -1,6 +1,6 @@
 application: ednainvar [
   documentation: "Nucleic acid sequence Invariants method"
-  groups: "phylip"
+  groups: "Phylogeny"
 ]
 
 seqset: msf  [

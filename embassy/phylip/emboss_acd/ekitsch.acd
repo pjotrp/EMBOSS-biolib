@@ -1,7 +1,7 @@
 application: ekitsch [
   documentation: "Fitch-Margoliash method with contemporary
                   tips"
-  groups: "phylip"
+  groups: "Phylogeny"
   gui: "yes"
   batch: "yes"
   cpu: "high"

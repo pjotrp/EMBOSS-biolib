@@ -1,6 +1,6 @@
 application: edolpenny [
   documentation: "Penny algorithm Dollo or polymorphism"
-  groups: "phylip"
+  groups: "Phylogeny"
 ]
 
 infile: datafile  [
@@ -37,7 +37,6 @@ boolean: simple  [
 ]
 
 boolean: thresh  [
-  required: "N"
   default: "N"
   information: "Use Threshold parsimony"
 ]

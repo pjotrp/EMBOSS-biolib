@@ -7,8 +7,8 @@ application: prosextract [
   cpu: "medium"
 ]
 
-section: input [
-  information: "input Section"
+section: input
+  information: "Input section"
   type: "page"
 ]
 

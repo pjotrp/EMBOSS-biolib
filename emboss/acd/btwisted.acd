@@ -4,8 +4,8 @@ application: btwisted [
   groups: "Nucleic:Composition"
 ]
 
-section: input [
-  information: "input Section"
+section: input
+  information: "Input section"
   type: "page"
 ]
 
@@ -16,27 +16,25 @@ section: input [
 
 endsection: input
 
-section: advanced [
-  information: "advanced Section"
+section: advanced
+  information: "Advanced section"
   type: "page"
 ]
 
   string: angledata  [
-    required: "N"
     default: "Eangles.dat"
     information: "File containing base pair twist angles"
   ]
 
   string: energydata  [
-    required: "N"
     default: "Eenergy.dat"
     information: "File containing base pair stacking energies"
   ]
 
 endsection: advanced
 
-section: output [
-  information: "output Section"
+section: output
+  information: "Output section"
   type: "page"
 ]
 

@@ -3,8 +3,8 @@ application: chips [
   groups: "Nucleic:Codon usage"
 ]
 
-section: input [
-  information: "input Section"
+section: input
+  information: "Input section"
   type: "page"
 ]
 
@@ -15,26 +15,24 @@ section: input [
 
 endsection: input
 
-section: advanced [
-  information: "advanced Section"
+section: advanced
+  information: "Advanced section"
   type: "page"
 ]
 
   codon: cfile  [
-    optional: "N"
     information: "Codon usage file"
   ]
 
   boolean: sum  [
-    optional: "N"
     default: "Y"
     information: "Sum codons over all sequences"
   ]
 
 endsection: advanced
 
-section: output [
-  information: "output Section"
+section: output
+  information: "Output section"
   type: "page"
 ]
 

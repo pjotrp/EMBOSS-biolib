@@ -8,8 +8,8 @@ application: emma [
   external: "clustalw"
 ]
 
-section: input [
-  information: "input Section"
+section: input
+  information: "Input section"
   type: "page"
 ]
 
@@ -20,12 +20,12 @@ section: input [
 
 endsection: input
 
-section: advanced [
-  information: "advanced Section"
+section: advanced
+  information: "Advanced section"
   type: "page"
 ]
 
-  section: dendsection [
+  section: dendsection
     information: "dendrogram Section"
     type: "frame"
   ]
@@ -61,7 +61,7 @@ section: advanced [
                   protein"
   ]
 
-  section: slowsection [
+  section: slowsection
     information: "slowsection Section"
     type: "frame"
   ]
@@ -115,13 +115,12 @@ section: advanced [
 
   endsection: slowsection
 
-  section: protsection [
+  section: protsection
     information: "protsection Section"
     type: "frame"
   ]
 
     boolean: prot  [
-      optional: "N"
       default: "@($(insist) ?
                 @(!$(inseqs.protein)):$(inseqs.protein))"
       information: "Do not change this value"
@@ -192,7 +191,7 @@ section: advanced [
 
   endsection: protsection
 
-  section: fastsection [
+  section: fastsection
     information: "fastsection Section"
     type: "frame"
   ]
@@ -262,7 +261,7 @@ section: advanced [
 
   endsection: fastsection
 
-  section: matrixsection [
+  section: matrixsection
     information: "matrixsection Section"
     type: "frame"
   ]
@@ -338,7 +337,7 @@ section: advanced [
 
   endsection: matrixsection
 
-  section: gapsection [
+  section: gapsection
     information: "gapsection Section"
     type: "frame"
   ]
@@ -443,8 +442,8 @@ section: advanced [
 
 endsection: advanced
 
-section: output [
-  information: "output Section"
+section: output
+  information: "Output section"
   type: "page"
 ]
 

@@ -4,8 +4,8 @@ application: splitter [
   groups: "Edit"
 ]
 
-section: input [
-  information: "input Section"
+section: input
+  information: "Input section"
   type: "page"
 ]
 
@@ -16,8 +16,8 @@ section: input [
 
 endsection: input
 
-section: advanced [
-  information: "advanced Section"
+section: advanced
+  information: "Advanced section"
   type: "page"
 ]
 
@@ -37,15 +37,14 @@ section: advanced [
   ]
 
   boolean: addoverlap  [
-    optional: "N"
     default: "N"
     prompt: "Add overlap to size"
   ]
 
 endsection: advanced
 
-section: output [
-  information: "output Section"
+section: output
+  information: "Output section"
   type: "page"
 ]
 

@@ -16,19 +16,16 @@ seqset: sequences  [
 ]
 
 string: mapali  [
-  required: "N"
   default: ""
   information: "Map alignment"
 ]
 
 string: withali  [
-  required: "N"
   default: ""
   information: "Heuristic alignment"
 ]
 
 boolean: matchonly  [
-  required: "N"
   default: "N"
   information: "Only show match state alignment symbols"
 ]

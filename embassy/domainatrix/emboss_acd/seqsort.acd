@@ -7,8 +7,8 @@ application: seqsort [
   cpu: "medium"
 ]
 
-section: required [
-  information: "required Section"
+section: required
+  information: "Required section"
   type: "page"
 ]
 
@@ -77,8 +77,8 @@ section: required [
 
 endsection: required
 
-section: output [
-  information: "output Section"
+section: output
+  information: "Output section"
   type: "page"
 ]
 

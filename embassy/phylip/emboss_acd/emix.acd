@@ -1,6 +1,6 @@
 application: emix [
   documentation: "Mixed parsimony algorithm"
-  groups: "phylip"
+  groups: "Phylogeny"
 ]
 
 infile: infile  [
@@ -59,7 +59,6 @@ integer: outgnum  [
 ]
 
 boolean: thresh  [
-  required: "N"
   default: "N"
   information: "Use Threshold parsimony"
 ]

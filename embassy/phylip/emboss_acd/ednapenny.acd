@@ -1,6 +1,6 @@
 application: ednapenny [
   documentation: "Penny algorithm for DNA"
-  groups: "phylip"
+  groups: "Phylogeny"
 ]
 
 seqset: msf  [
@@ -46,7 +46,6 @@ integer: outgnum  [
 ]
 
 boolean: thresh  [
-  required: "N"
   default: "N"
   information: "Use Threshold parsimony"
 ]

@@ -26,7 +26,6 @@ seqoutall: outseq  [
 ]
 
 featout: featout  [
-  parameter: "N"
   information: "Feature file for output"
   help: "File for output features"
   type: "protein"

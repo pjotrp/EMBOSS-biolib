@@ -3,8 +3,8 @@ application: cutgextract [
   groups: "Utils:Database creation"
 ]
 
-section: input [
-  information: "input Section"
+section: input
+  information: "Input section"
   type: "page"
 ]
 
@@ -16,13 +16,12 @@ section: input [
 
 endsection: input
 
-section: advanced [
-  information: "advanced Section"
+section: advanced
+  information: "Advanced section"
   type: "page"
 ]
 
   string: wildspec  [
-    required: "N"
     default: "*.codon"
     information: "Type of codon file"
   ]

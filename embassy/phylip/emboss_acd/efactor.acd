@@ -1,6 +1,6 @@
 application: efactor [
   documentation: "multistate to binary recoding program"
-  groups: "phylip"
+  groups: "Phylogeny"
 ]
 
 infile: datafile  [

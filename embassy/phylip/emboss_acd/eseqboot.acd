@@ -1,6 +1,6 @@
 application: eseqboot [
   documentation: "Bootstrapped sequences algorithm"
-  groups: "phylip"
+  groups: "Phylogeny"
 ]
 
 infile: datafile  [

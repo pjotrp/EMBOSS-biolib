@@ -4,8 +4,8 @@ application: showseq [
   groups: "Display, Nucleic:Translation, Nucleic:Restriction"
 ]
 
-section: input [
-  information: "input Section"
+section: input
+  information: "Input section"
   type: "page"
 ]
 
@@ -16,8 +16,8 @@ section: input [
 
 endsection: input
 
-section: required [
-  information: "required Section"
+section: required
+  information: "Required section"
   type: "page"
 ]
 
@@ -38,8 +38,8 @@ section: required [
 
 endsection: required
 
-section: advanced [
-  information: "advanced Section"
+section: advanced
+  information: "Advanced section"
   type: "page"
 ]
 
@@ -147,13 +147,12 @@ section: advanced [
                added."
   ]
 
-  section: restrictsection [
+  section: restrictsection
     information: "restriction Section"
     type: "frame"
   ]
 
     boolean: flatreformat  [
-      optional: "N"
       default: "N"
       prompt: "Display RE sites in flat format"
       help: "This changes the output format to one where the
@@ -163,7 +162,6 @@ section: advanced [
     ]
 
     integer: mincuts  [
-      optional: "N"
       minimum: "1"
       maximum: "1000"
       default: "1"
@@ -174,7 +172,6 @@ section: advanced [
     ]
 
     integer: maxcuts  [
-      optional: "N"
       minimum: "$(mincuts)"
       maximum: "2000000000"
       default: "2000000000"
@@ -185,7 +182,6 @@ section: advanced [
     ]
 
     integer: sitelen  [
-      optional: "N"
       minimum: "2"
       maximum: "20"
       default: "4"
@@ -196,7 +192,6 @@ section: advanced [
     ]
 
     boolean: single  [
-      optional: "N"
       default: "N"
       information: "Force single RE site only cuts"
       help: "If this is set then this forces the values of the mincuts
@@ -205,7 +200,6 @@ section: advanced [
     ]
 
     boolean: blunt  [
-      optional: "N"
       default: "Y"
       information: "Allow blunt end RE cutters"
       help: "This allows those enzymes which cut at the same position
@@ -213,7 +207,6 @@ section: advanced [
     ]
 
     boolean: sticky  [
-      optional: "N"
       default: "Y"
       information: "Allow sticky end RE cutters"
       help: "This allows those enzymes which cut at different
@@ -222,7 +215,6 @@ section: advanced [
     ]
 
     boolean: ambiguity  [
-      optional: "N"
       default: "Y"
       information: "Allow ambiguous RE matches"
       help: "This allows those enzymes which have one or more 'N'
@@ -230,7 +222,6 @@ section: advanced [
     ]
 
     boolean: plasmid  [
-      optional: "N"
       default: "N"
       information: "Allow circular DNA"
       help: "If this is set then this allows searches for restriction
@@ -239,7 +230,6 @@ section: advanced [
     ]
 
     boolean: commercial  [
-      optional: "N"
       default: "Y"
       information: "Only use restriction enzymes with
                     suppliers"
@@ -255,7 +245,6 @@ section: advanced [
     ]
 
     boolean: limit  [
-      optional: "N"
       default: "Y"
       information: "Limits RE hits to one isoschizomer"
       help: "This limits the reporting of enzymes to just one enzyme
@@ -370,7 +359,7 @@ section: advanced [
     information: "Use HTML formatting"
   ]
 
-  section: featuresection [
+  section: featuresection
     information: "feature Section"
     type: "frame"
   ]
@@ -493,8 +482,8 @@ section: advanced [
 
 endsection: advanced
 
-section: output [
-  information: "output Section"
+section: output
+  information: "Output section"
   type: "page"
 ]
 

@@ -4,8 +4,8 @@ application: dotmatcher [
   groups: "Alignment:Dot plots"
 ]
 
-section: input [
-  information: "input Section"
+section: input
+  information: "Input section"
   type: "page"
 ]
 
@@ -21,8 +21,8 @@ section: input [
 
 endsection: input
 
-section: advanced [
-  information: "advanced Section"
+section: advanced
+  information: "Advanced section"
   type: "page"
 ]
 
@@ -52,13 +52,12 @@ section: advanced [
 
 endsection: advanced
 
-section: output [
-  information: "output Section"
+section: output
+  information: "Output section"
   type: "page"
 ]
 
   boolean: stretch  [
-    required: "N"
     default: "N"
     information: "Stretch plot"
     help: "Display a non-proportional graph"
@@ -73,7 +72,6 @@ section: output [
 
   graph: graph  [
     required: "@(@(!$(data)) & @(!$(stretch)))"
-    optional: "N"
     gtitle: "Dotmatcher: $(sequencea.name) vs $(sequenceb.name)"
     gxtitle: "$(sequencea.name)"
     gytitle: "$(sequenceb.name)"
@@ -81,7 +79,6 @@ section: output [
 
   xygraph: xygraph  [
     required: "$(stretch)"
-    optional: "N"
     gtitle: "Dotmatcher: $(sequencea.name) vs $(sequenceb.name)"
     gxtitle: "$(sequencea.name)"
     gytitle: "$(sequenceb.name)"

@@ -1,6 +1,6 @@
 application: edollop [
   documentation: "Dollo and polymorphism parsimony algorithm"
-  groups: "phylip"
+  groups: "Phylogeny"
 ]
 
 infile: datafile  [
@@ -44,7 +44,6 @@ boolean: dollo  [
 ]
 
 boolean: thresh  [
-  required: "N"
   default: "N"
   information: "Use Threshold parsimony"
 ]

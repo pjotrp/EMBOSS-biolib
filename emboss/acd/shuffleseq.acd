@@ -4,8 +4,8 @@ application: shuffleseq [
   groups: "Nucleic:Mutation, Protein:Mutation"
 ]
 
-section: input [
-  information: "input Section"
+section: input
+  information: "Input section"
   type: "page"
 ]
 
@@ -16,21 +16,20 @@ section: input [
 
 endsection: input
 
-section: advanced [
-  information: "advanced Section"
+section: advanced
+  information: "Advanced section"
   type: "page"
 ]
 
   integer: shuffle  [
-    required: "N"
     default: "1"
     information: "Number of shuffles"
   ]
 
 endsection: advanced
 
-section: output [
-  information: "output Section"
+section: output
+  information: "Output section"
   type: "page"
 ]
 

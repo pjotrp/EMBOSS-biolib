@@ -3,8 +3,8 @@ application: transeq [
   groups: "Nucleic:Translation"
 ]
 
-section: input [
-  information: "input Section"
+section: input
+  information: "Input section"
   type: "page"
 ]
 
@@ -15,8 +15,8 @@ section: input [
 
 endsection: input
 
-section: advanced [
-  information: "advanced Section"
+section: advanced
+  information: "Advanced section"
   type: "page"
 ]
 
@@ -92,7 +92,6 @@ section: advanced [
   ]
 
   boolean: alternative  [
-    required: "N"
     default: "N"
     prompt: "Define frame '-1' as starting in the last codon"
     help: "The default definition of frame '-1' is the
@@ -106,8 +105,8 @@ section: advanced [
 
 endsection: advanced
 
-section: output [
-  information: "output Section"
+section: output
+  information: "Output section"
   type: "page"
 ]
 

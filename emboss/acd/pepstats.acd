@@ -3,8 +3,8 @@ application: pepstats [
   groups: "Protein:Composition"
 ]
 
-section: input [
-  information: "input Section"
+section: input
+  information: "Input section"
   type: "page"
 ]
 
@@ -15,19 +15,17 @@ section: input [
 
 endsection: input
 
-section: advanced [
-  information: "advanced Section"
+section: advanced
+  information: "Advanced section"
   type: "page"
 ]
 
   boolean: termini  [
-    required: "N"
     default: "Y"
     information: "Include charge at N and C terminus"
   ]
 
   string: aadata  [
-    optional: "N"
     information: "Amino acid data file"
     help: "Molecular weight data for amino acids"
     default: "Eamino.dat"
@@ -35,8 +33,8 @@ section: advanced [
 
 endsection: advanced
 
-section: output [
-  information: "output Section"
+section: output
+  information: "Output section"
   type: "page"
 ]
 

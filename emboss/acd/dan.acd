@@ -3,8 +3,8 @@ application: dan [
   groups: "Nucleic:Composition"
 ]
 
-section: input [
-  information: "input Section"
+section: input
+  information: "Input section"
   type: "page"
 ]
 
@@ -15,8 +15,8 @@ section: input [
 
 endsection: input
 
-section: required [
-  information: "required Section"
+section: required
+  information: "Required section"
   type: "page"
 ]
 
@@ -63,25 +63,23 @@ section: required [
 
 endsection: required
 
-section: advanced [
-  information: "advanced Section"
+section: advanced
+  information: "Advanced section"
   type: "page"
 ]
 
   boolean: rna  [
-    optional: "N"
     information: "Use RNA data values"
     help: "This specifies that the sequence is an RNA sequnce and not
            a DNA sequence."
   ]
 
-  section: productsection [
+  section: productsection
     information: "productsection Section"
     type: "frame"
   ]
 
     boolean: product  [
-      optional: "N"
       information: "Prompt for product values"
       help: "This prompts for percent formamide, percent of mismatches
              allowed and product length."
@@ -119,13 +117,12 @@ section: advanced [
 
   endsection: productsection
 
-  section: thermosection [
+  section: thermosection
     information: "thermosection Section"
     type: "frame"
   ]
 
     boolean: thermo  [
-      optional: "N"
       information: "Thermodynamic calculations"
       help: "Output the DeltaG, DeltaH and DeltaS values of the
              sequence windows to the output data file."
@@ -146,8 +143,8 @@ section: advanced [
 
 endsection: advanced
 
-section: output [
-  information: "output Section"
+section: output
+  information: "Output section"
   type: "page"
 ]
 

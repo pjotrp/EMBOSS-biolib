@@ -11,7 +11,6 @@ seqset: sequences  [
 ]
 
 list: strategy  [
-  required: "N"
   default: "L"
   minimum: "1"
   maximum: "1"
@@ -24,61 +23,51 @@ list: strategy  [
 ]
 
 string: name  [
-  required: "N"
   default: "Ehmm"
   information: "Name for the HMM"
 ]
 
 string: resave  [
-  required: "N"
   default: ""
   information: "Resave selex file"
 ]
 
 boolean: append  [
-  required: "N"
   default: "N"
   information: "Append to file"
 ]
 
 boolean: force  [
-  required: "N"
   default: "N"
   information: "Force overwriting"
 ]
 
 boolean: amino  [
-  required: "N"
   default: "N"
   information: "Treat as protein"
 ]
 
 boolean: nucleic  [
-  required: "N"
   default: "N"
   information: "Treat as dna"
 ]
 
 float: archpri  [
-  required: "N"
   default: "0.85"
   information: "Architecture prior"
 ]
 
 boolean: binary  [
-  required: "N"
   default: "N"
   information: "Write HMM as binary"
 ]
 
 string: cfile  [
-  required: "N"
   default: ""
   information: "Emission and transition count file"
 ]
 
 list: cstrategy  [
-  required: "N"
   default: "F"
   minimum: "1"
   maximum: "1"
@@ -91,79 +80,66 @@ list: cstrategy  [
 ]
 
 boolean: fast  [
-  required: "N"
   default: "N"
   information: "Work in fast mode"
 ]
 
 float: gapmax  [
-  required: "N"
   default: "0.5"
   information: "Fast mode control"
 ]
 
 boolean: hand  [
-  required: "N"
   default: "N"
   information: "specify model by hand"
 ]
 
 float: idlevel  [
-  required: "N"
   default: "0.62"
   information: "Cutoff ID threhold"
 ]
 
 boolean: efficiency  [
-  required: "N"
   default: "Y"
   information: "Be efficient"
 ]
 
 string: null  [
-  required: "N"
   default: ""
   information: "NULL model file"
 ]
 
 string: pam  [
-  required: "N"
   default: ""
   information: "PAM file"
 ]
 
 float: pamweight  [
-  required: "N"
   default: "20.0"
   information: "Weighting for PAM"
 ]
 
 string: prior  [
-  required: "N"
   default: ""
   information: "Prior file"
 ]
 
 float: swentry  [
-  required: "N"
   default: "0.5"
   information: "Probability control for local entries"
 ]
 
 float: swexit  [
-  required: "N"
   default: "0.5"
   information: "Probability control for exits"
 ]
 
 boolean: more  [
-  required: "N"
   default: "N"
   information: "Verbosity"
 ]
 
 list: weighting  [
-  required: "N"
   default: "G"
   minimum: "1"
   maximum: "1"

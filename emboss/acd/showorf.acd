@@ -3,8 +3,8 @@ application: showorf [
   groups: "Nucleic:Gene finding, Nucleic:Translation"
 ]
 
-section: input [
-  information: "input Section"
+section: input
+  information: "Input section"
   type: "page"
 ]
 
@@ -15,8 +15,8 @@ section: input [
 
 endsection: input
 
-section: required [
-  information: "required Section"
+section: required
+  information: "Required section"
   type: "page"
 ]
 
@@ -35,21 +35,20 @@ section: required [
 
 endsection: required
 
-section: advanced [
-  information: "advanced Section"
+section: advanced
+  information: "Advanced section"
   type: "page"
 ]
 
   codon: cfile  [
-    optional: "N"
     information: "Codon usage file"
     default: "Ehum.cut"
   ]
 
 endsection: advanced
 
-section: output [
-  information: "output Section"
+section: output
+  information: "Output section"
   type: "page"
 ]
 
@@ -76,7 +75,6 @@ section: output [
   ]
 
   integer: width  [
-    optional: "N"
     minimum: "10"
     default: "50"
     information: "Width of screen"

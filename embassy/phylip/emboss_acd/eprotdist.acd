@@ -1,6 +1,6 @@
 application: eprotdist [
   documentation: "Protein distance algorithm"
-  groups: "phylip"
+  groups: "Phylogeny"
 ]
 
 seqset: msf  [

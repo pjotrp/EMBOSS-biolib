@@ -3,8 +3,8 @@ application: embossversion [
   groups: "Utils:Misc"
 ]
 
-section: output [
-  information: "output Section"
+section: output
+  information: "Output section"
   type: "page"
 ]
 

@@ -3,8 +3,8 @@ application: hmoment [
   groups: "Protein:2D Structure"
 ]
 
-section: input [
-  information: "input Section"
+section: input
+  information: "Input section"
   type: "page"
 ]
 
@@ -15,8 +15,8 @@ section: input [
 
 endsection: input
 
-section: advanced [
-  information: "advanced Section"
+section: advanced
+  information: "Advanced section"
   type: "page"
 ]
 
@@ -27,7 +27,6 @@ section: advanced [
   ]
 
   integer: aangle  [
-    optional: "N"
     default: "100"
     information: "Alpha helix angle (degrees)"
   ]
@@ -39,26 +38,23 @@ section: advanced [
   ]
 
   float: baseline  [
-    optional: "N"
     default: "0.35"
     information: "Graph marker line"
   ]
 
 endsection: advanced
 
-section: output [
-  information: "output Section"
+section: output
+  information: "Output section"
   type: "page"
 ]
 
   boolean: plot  [
-    optional: "N"
     default: "N"
     information: "Produce graphic"
   ]
 
   boolean: double  [
-    optional: "N"
     default: "N"
     information: "Plot two graphs"
   ]

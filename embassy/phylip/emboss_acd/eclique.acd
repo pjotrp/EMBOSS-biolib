@@ -1,6 +1,6 @@
 application: eclique [
   documentation: "Largest clique program"
-  groups: "phylip"
+  groups: "Phylogeny"
 ]
 
 infile: infile  [

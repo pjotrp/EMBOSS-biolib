@@ -1,6 +1,6 @@
 application: egendist [
   documentation: "Genetic Distance Matrix program"
-  groups: "phylip"
+  groups: "Phylogeny"
 ]
 
 infile: infile  [

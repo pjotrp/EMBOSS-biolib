@@ -1,7 +1,7 @@
 application: epenny [
   documentation: "Penny algorithm, branch-and-bound to find
                   all most parsimonious trees"
-  groups: "phylip"
+  groups: "Phylogeny"
 ]
 
 infile: infile  [
@@ -55,7 +55,6 @@ integer: outgnum  [
 ]
 
 boolean: thresh  [
-  required: "N"
   default: "N"
   information: "Use Threshold parsimony"
 ]

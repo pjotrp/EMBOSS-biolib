@@ -5,8 +5,8 @@ application: primers [
   external: "primer3_core"
 ]
 
-section: input [
-  information: "input Section"
+section: input
+  information: "Input section"
   type: "page"
 ]
 
@@ -19,8 +19,8 @@ section: input [
 
 endsection: input
 
-section: required [
-  information: "required Section"
+section: required
+  information: "Required section"
   type: "page"
 ]
 
@@ -42,7 +42,7 @@ section: required [
 
 endsection: required
 
-section: advanced [
+section: advanced
   information: "advanced section"
   type: "page"
 ]
@@ -78,8 +78,8 @@ section: advanced [
 
 endsection: advanced
 
-section: output [
-  information: "output Section"
+section: output
+  information: "Output section"
   type: "page"
 ]
 

@@ -1,6 +1,6 @@
 application: econsense [
   documentation: "Majority-rule and strict consensus tree"
-  groups: "phylip"
+  groups: "Phylogeny"
 ]
 
 infile: infile  [

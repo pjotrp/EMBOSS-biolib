@@ -3,8 +3,8 @@ application: pepnet [
   groups: "Display, Protein:2D Structure"
 ]
 
-section: input [
-  information: "input Section"
+section: input
+  information: "Input section"
   type: "page"
 ]
 
@@ -15,8 +15,8 @@ section: input [
 
 endsection: input
 
-section: output [
-  information: "output Section"
+section: output
+  information: "Output section"
   type: "page"
 ]
 
@@ -52,7 +52,6 @@ section: output [
   ]
 
   boolean: data  [
-    required: "N"
     default: "N"
     information: "Display as data"
     help: "Output the data to a file instead of plotting it"

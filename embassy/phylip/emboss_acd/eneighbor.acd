@@ -1,7 +1,7 @@
 application: eneighbor [
   documentation: "Phylogenies from distance matrix by N-J or
                   UPGMA method"
-  groups: "phylip"
+  groups: "Phylogeny"
   gui: "yes"
   batch: "yes"
   cpu: "high"
