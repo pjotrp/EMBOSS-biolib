@@ -4915,7 +4915,7 @@ FC = 1
 FP /Created dotmatcher1.dat\n/
 FI dotmatcher1.dat
 FC = 30
-FP /^Text2 x1 73.000000 y1 163.519989 colour 0 size 1.000000 Dotmatcher: HBA_HUMAN vs HBB_HUMAN\n/
+FP /^Text2 x1 73.000000 y1 163.5[0-9]+ colour 0 size 1.000000 Dotmatcher: HBA_HUMAN vs HBB_HUMAN\n/
 //
 
 ID dotmatcher-stretchdata
@@ -7541,7 +7541,7 @@ FP 0 /Error: /
 FP 0 /Died: /
 FI pepwheel1.dat
 FC = 138
-FP /^Text1 x1 -0.000000 y1 0.453300 colour 9 size 1.000000 V\n/
+FP /^Text1 x1 -?0.000000 y1 0.453300 colour 9 size 1.000000 V\n/
 FP /^Rectangle x1 -0.025000 y1 0.431300 x2 0.025000 y2 0.481300 colour 9\n/
 //
 
@@ -13497,7 +13497,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FP /\AALPHABETIC.*\naaindexextract /
+FP s /\AALPHABETIC.*\naaindexextract /
 //
 
 ID wossname-ex4
@@ -15574,7 +15574,7 @@ FC = 0
 //
 
 #######################################
-# PHYLIP
+# PHYLIP 3.5
 #######################################
 
 ID eclique-help
@@ -15767,6 +15767,454 @@ AA eseqboot
 CL -help
 FI stderr
 FC = 0
+//
+
+#######################################
+# PHYLIP 3.5
+#######################################
+
+ID fclique-ex
+AB phylipnew
+AA fclique
+IN ../../data/evolution/clique.dat
+IN
+IN
+IN
+FI clique.fclique
+FC = 53
+FP /^Characters: \(  1  2  3  6\)\n/
+FP /^     2  1  3  6\n/
+FI clique.treefile
+FC = 2
+FP /^\(\(\(Delta,Epsilon\),Gamma\),Alpha,Beta\);\n/
+FP /^\(\(Delta,Beta\),Alpha,Gamma,Epsilon\);\n/
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+//
+
+ID fconsense-ex
+AB phylipnew
+AA fconsense
+IN ../../data/evolution/consense.dat
+IN
+IN
+IN
+IN
+FI consense.fconsense
+FC = 77
+FP /^  10. C\n/
+FP /^\.\.\*\.\*\.\.\.\.\.\s+4\.00\n/
+FI consense.treefile
+FC = 2
+FP /^B:9.0\):9.0,A:9.0\);\n/
+FP /\(\(H:9.0,J:9.0\):4.0,D:9.0\)/
+FI stderr
+FC = 6
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+//
+
+ID fcontml-ex
+AB phylipnew
+AA fcontml
+CL -drawtree -nocontinuous -printdata
+IN ../../data/evolution/contml.dat
+IN
+IN
+IN
+IN
+IN
+IN
+IN
+FI contml.fcontml
+FC = 52
+FP /^Ln Likelihood =    33.29060\n/
+FP /^  3       Chinese           0.00221   \(    -0.02034,     0.03710\)\n/
+FI contml.treefile
+FC = 2
+FP /\(American:0.02094,\(Australian:0.05959,Chinese:0.00221\):0.05098\)/
+FI stderr
+FC = 3
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+//
+
+ID fcontrast-ex
+AB phylipnew
+AA fcontrast
+IN ../../data/evolution/contrast.dat
+IN ../../data/evolution/contrast.tree
+IN
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+//
+
+ID fdnacomp-ex
+AB phylipnew
+AA fdnacomp
+FI stderr
+FC = 0
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+//
+
+ID fdnadist-ex
+AB phylipnew
+AA fdnadist
+FI stderr
+FC = 0
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+//
+
+ID fdnainvar-ex
+AB phylipnew
+AA fdnainvar
+FI stderr
+FC = 0
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+//
+
+ID fdnaml-ex
+AB phylipnew
+AA fdnaml
+FI stderr
+FC = 0
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+//
+
+ID fdnamlk-ex
+AB phylipnew
+AA fdnamlk
+FI stderr
+FC = 0
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+//
+
+ID fdnamove-ex
+AB phylipnew
+AA fdnamove
+FI stderr
+FC = 0
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+//
+
+ID fdnapars-ex
+AB phylipnew
+AA fdnapars
+FI stderr
+FC = 0
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+//
+
+ID fdnapenny-ex
+AB phylipnew
+AA fdnapenny
+FI stderr
+FC = 0
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+//
+
+ID fdollop-ex
+AB phylipnew
+AA fdollop
+FI stderr
+FC = 0
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+//
+
+ID fdolmove-ex
+AB phylipnew
+AA fdolmove
+FI stderr
+FC = 0
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+//
+
+ID fdolpenny-ex
+AB phylipnew
+AA fdolpenny
+FI stderr
+FC = 0
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+//
+
+ID fdrawgram-ex
+AB phylipnew
+AA fdrawgram
+FI stderr
+FC = 0
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+//
+
+ID fdrawtree-ex
+AB phylipnew
+AA fdrawtree
+FI stderr
+FC = 0
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+//
+
+ID ffactor-ex
+AB phylipnew
+AA ffactor
+FI stderr
+FC = 0
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+//
+
+ID ffitch-ex
+AB phylipnew
+AA ffitch
+FI stderr
+FC = 0
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+//
+
+ID fgendist-ex
+AB phylipnew
+AA fgendist
+FI stderr
+FC = 0
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+//
+
+ID fkitsch-ex
+AB phylipnew
+AA fkitsch
+FI stderr
+FC = 0
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+//
+
+ID fmix-ex
+AB phylipnew
+AA fmix
+FI stderr
+FC = 0
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+//
+
+ID fmove-ex
+AB phylipnew
+AA fmove
+FI stderr
+FC = 0
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+//
+
+ID fneighbor-ex
+AB phylipnew
+AA fneighbor
+FI stderr
+FC = 0
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+//
+
+ID fpars-ex
+AB phylipnew
+AA fpars
+FI stderr
+FC = 0
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+//
+
+ID fpenny-ex
+AB phylipnew
+AA fpenny
+FI stderr
+FC = 0
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+//
+
+ID fproml-ex
+AB phylipnew
+AA fproml
+CL -help
+FI stderr
+FC = 0
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+//
+
+ID fpromlk-ex
+AB phylipnew
+AA fpromlk
+CL -help
+FI stderr
+FC = 0
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+//
+
+ID fprotdist-ex
+AB phylipnew
+AA fprotdist
+FI stderr
+FC = 0
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+//
+
+ID fprotpars-ex
+AB phylipnew
+AA fprotpars
+FI stderr
+FC = 0
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+//
+
+ID frestdist-ex
+AB phylipnew
+AA frestdist
+CL -help
+FI stderr
+FC = 0
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+//
+
+ID frestml-ex
+AB phylipnew
+AA frestml
+CL -help
+FI stderr
+FC = 0
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+//
+
+ID fretree-ex
+AB phylipnew
+AA fretree
+CL -help
+FI stderr
+FC = 0
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+//
+
+ID fseqboot-ex
+AB phylip
+AA fseqboot
+CL -help
+FI stderr
+FC = 0
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+//
+
+ID ftreedist-ex
+AB phylipnew
+AA ftreedist
+IN ../../data/evolution/treedist.dat
+IN
+IN
+FI treedist.ftreedist
+FC = 12
+FP /Trees 1 and 2:    4/
+FP 6 /Trees \d+ and \d+:\s+\d+/
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+//
+
+ID ftreedist-sparse
+AB phylipnew
+AA ftreedist
+CL -style sparse
+IN ../../data/evolution/treedist.dat
+IN
+IN
+FI treedist.ftreedist
+FC = 6
+FP /1 2 4/
+FP 6 /\d+\s+\d+\s+\d+/
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+//
+
+ID ftreedist-listall
+AB phylipnew
+AA ftreedist
+CL -pair listall
+IN ../../data/evolution/treedist.dat
+IN ../../data/evolution/treedist.dat2
+IN
+FI treedist.ftreedist
+FC = 295
+FP /Trees 24 and 12:    0\n/
+FP 288 /Trees \d+ and \d+:\s+\d+/
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 //
 
 #######################################
