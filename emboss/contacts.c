@@ -35,13 +35,13 @@
 ** coordinate file (or the single scop domain in the case where domainer output
 ** is read).  
 **
-** Contact between two residues is defined as when the Van der Waals surface of 
+** Contact between two residues is defined as when the van der Waals surface of 
 ** any atom of the first residue comes within the threshold contact distance of 
-** the Van der Waals surface of any atom of the second residue. The threshold 
+** the van der Waals surface of any atom of the second residue. The threshold 
 ** contact distance is a user-defined distance with a default value of 1 
 ** Angstrom.
 ** 
-** The following Van der Waals radii are used: 
+** The following van der Waals radii are used: 
 ** C:1.8 Angstrom 
 ** O:1.4 Angstrom 
 ** N:1.7 Angstrom 
@@ -127,9 +127,7 @@
 ** WARN  Could not open for reading cpdb file s003.pxyz
 **
 ** Notes
-** Should give an example of the output file here.
 **
-** Change two acd paths to \
 ******************************************************************************/
 
 
@@ -140,10 +138,15 @@
 #include "emboss.h"
 #include "math.h"
 
-AjBool	ajXyzContactsWrite(AjPFile logf, AjPFile outf, float thresh, AjPPdb pdb);
-AjBool	ajXyzPrintContactMap(AjPFile outf, AjPInt2d mat, char *txt, ajint mod, ajint chn, AjPPdb pdb);
-AjBool	ajXyzWriteContactMap(AjPInt2d *mat, ajint *ncon, ajint dim, float thresh, ajint mod, ajint chn, AjPPdb pdb);
-AjBool  ajXyzInContact(AjPAtom atm1, AjPAtom atm2, float thresh);
+AjBool	ajXyzContactsWrite(AjPFile logf, AjPFile outf, float thresh, 
+			   AjPPdb pdb, AjPVdwall vdw);
+AjBool	ajXyzPrintContactMap(AjPFile outf, AjPInt2d mat, char *txt, 
+			     ajint mod, ajint chn, AjPPdb pdb);
+AjBool	ajXyzWriteContactMap(AjPInt2d *mat, ajint *ncon, ajint dim, 
+			     float thresh, ajint mod, ajint chn, AjPPdb pdb, 
+			     AjPVdwall vdw);
+AjBool  ajXyzInContact(AjPAtom atm1, AjPAtom atm2, float thresh, 
+		       AjPVdwall vdw);
 
 
 
@@ -155,24 +158,27 @@ AjBool  ajXyzInContact(AjPAtom atm1, AjPAtom atm2, float thresh);
 
 int main(ajint argc, char **argv)
 {
-    AjPStr   cpdb_path     =NULL;	/* Path of cpdb files */
-    AjPStr   cpdb_extn     =NULL;	/* Extn. of cpdb files */
-    AjPStr   cpdb_name     =NULL;	/* Name of cpdb file */
-    AjPStr   con_path      =NULL;	/* Path of contact files */
-    AjPStr   con_extn      =NULL;	/* Extn. of contact files */
-    AjPStr   con_name 	   =NULL;	/* Name of contact file */
-    AjPStr   msg           =NULL;	/* Error message */
-    AjPStr   temp          =NULL;	/* Temp string */
+    AjPStr     cpdb_path     =NULL;	/* Path of cpdb files */
+    AjPStr     cpdb_extn     =NULL;	/* Extn. of cpdb files */
+    AjPStr     cpdb_name     =NULL;	/* Name of cpdb file */
+    AjPStr     con_path      =NULL;	/* Path of contact files */
+    AjPStr     con_extn      =NULL;	/* Extn. of contact files */
+    AjPStr     con_name      =NULL;	/* Name of contact file */
+    AjPStr     msg           =NULL;	/* Error message */
+    AjPStr     temp          =NULL;	/* Temp string */
 
-    AjPFile  cpdb_inf      =NULL;       /* cpdb input file pointer */
-    AjPFile  con_outf      =NULL;       /* contact output file pointer */
-    AjPFile  logf          =NULL;       /* log file pointer*/
+    AjPFile    cpdb_inf      =NULL;     /* cpdb input file pointer */
+    AjPFile    con_outf      =NULL;     /* contact output file pointer */
+    AjPFile    logf          =NULL;     /* log file pointer*/
+    AjPFile    vdwf          =NULL;     /* van der Waals file pointer*/
 
-    AjPPdb   pdb           =NULL;
+    AjPPdb     pdb           =NULL;
 
-    AjPList  list          =NULL;       
+    AjPList    list          =NULL;       
 
-    float    thresh        =0;
+    float      thresh        =0;
+    
+    AjPVdwall  vdw           =NULL;     /* Structure for vdw radii */
     
 
 
@@ -197,6 +203,8 @@ int main(ajint argc, char **argv)
     con_extn      = ajAcdGetString("conextn");
     logf          = ajAcdGetOutfile("conerrf");
     thresh        = ajAcdGetFloat("thresh");
+    vdwf          = ajAcdGetInfile("vdwf");
+
 
     /* Check directories*/
     if(!ajFileDir(&cpdb_path))
@@ -216,7 +224,13 @@ int main(ajint argc, char **argv)
 	ajStrAppC(&temp, ".");    
 	ajStrApp(&temp, cpdb_extn);    
     }
-    ajFileScan(cpdb_path, temp, &list, ajFalse, ajFalse, NULL, NULL, ajFalse, NULL); 
+    ajFileScan(cpdb_path, temp, &list, ajFalse, ajFalse, NULL, NULL, 
+	       ajFalse, NULL); 
+
+
+    /* Allocate and read Vdwall object */
+    if(!ajXyzVdwallRead(vdwf, &vdw))
+	ajFatal("Error reading vdw radii file\n");
 
 
 
@@ -269,10 +283,10 @@ int main(ajint argc, char **argv)
 	    ajStrDel(&temp);	
 	    continue;
 	}  
-
+    
 	
 	/* Write contacts file */
-	if(!ajXyzContactsWrite(logf, con_outf, thresh, pdb))
+	if(!ajXyzContactsWrite(logf, con_outf, thresh, pdb, vdw))
 	{
 	    ajFmtPrintS(&msg, "ERROR  file write error %S", con_name);
 	    ajWarn(ajStrStr(msg));
@@ -302,7 +316,7 @@ int main(ajint argc, char **argv)
 	ajStrDel(&temp);	
     }
     /*End of main application loop*/    
-    
+
 
 
 
@@ -311,22 +325,22 @@ int main(ajint argc, char **argv)
     ajStrDel(&cpdb_path);
     ajStrDel(&cpdb_extn);
     ajStrDel(&cpdb_name);
-
     ajStrDel(&con_path);
     ajStrDel(&con_extn);
     ajStrDel(&con_name);
-
     ajStrDel(&msg);
     ajStrDel(&temp);
 
     ajFileClose(&cpdb_inf);
     ajFileClose(&con_outf);
     ajFileClose(&logf);
+    ajFileClose(&vdwf);
 
     ajListDel(&list);
+    ajXyzVdwallDel(&vdw);
+    
 
-
-    /* Bye Bye */
+    /* Return */
     ajExit();
     return 0;
 }	
@@ -344,18 +358,23 @@ int main(ajint argc, char **argv)
 ** @param [w] outf   [AjPFile] Output file stream (contact file)
 ** @param [r] thresh [float]   Threshold contact distance
 ** @param [r] pdb    [AjPPdb]  Pdb object
+** @param [r] vdw    [AjPVdwall]   Vdwall object
 **
 ** @return [AjBool] True on success
 ** @@
 **
 ******************************************************************************/
 
-AjBool	ajXyzContactsWrite(AjPFile logf, AjPFile outf, float thresh, AjPPdb pdb)
+AjBool	ajXyzContactsWrite(AjPFile logf, AjPFile outf, float thresh, 
+			   AjPPdb pdb, AjPVdwall vdw)
 {
     AjPInt2d    mat   =NULL;    /* Contact map */
     ajint       x,y,z;          /* Loop counters */
     ajint       ncon  =0;       /* No. contacts (1's) in matrix */
     
+
+
+
 
     /* Error checking on args */
     if(!logf || !outf || !pdb)
@@ -365,9 +384,11 @@ AjBool	ajXyzContactsWrite(AjPFile logf, AjPFile outf, float thresh, AjPPdb pdb)
     /* Print out header data */
     ajFmtPrintF(outf, "%-5s%S\n", "ID", pdb->Pdb);
     ajFmtPrintF(outf, "XX\n");
-    ajFmtPrintF(outf, "%-5s%s\n", "DE", "Residue-residue side-chain contact data");
+    ajFmtPrintF(outf, "%-5s%s\n", 
+		"DE", "Residue-residue side-chain contact data");
     ajFmtPrintF(outf, "XX\n");
-    ajFmtPrintF(outf, "%-5s%s%.1f; NMOD %d; NCHA %d;\n", "EX", "THRESH ", thresh, pdb->Nmod, pdb->Nchn);
+    ajFmtPrintF(outf, "%-5s%s%.1f; NMOD %d; NCHA %d;\n", "EX", "THRESH ", 
+		thresh, pdb->Nmod, pdb->Nchn);
 
 
     /* Start of loop to print out data for each model / chain */
@@ -385,8 +406,10 @@ AjBool	ajXyzContactsWrite(AjPFile logf, AjPFile outf, float thresh, AjPPdb pdb)
 	    for(z=0;z<pdb->Chains[y]->Nres;++z)
 		ajInt2dPut(&mat, z, pdb->Chains[y]->Nres-1, (ajint) 0);
 
-
-	    if(!ajXyzWriteContactMap(&mat, &ncon, pdb->Chains[y]->Nres, thresh, x+1, y+1, pdb))
+	    
+	    /* Write the contact map */
+	    if(!ajXyzWriteContactMap(&mat, &ncon, pdb->Chains[y]->Nres, 
+				     thresh, x+1, y+1, pdb,  vdw))
 	    {
 		ajFmtPrintF(logf, "ERROR  Writing contact map\n");
 		ajInt2dDel(&mat);
@@ -423,9 +446,9 @@ AjBool	ajXyzContactsWrite(AjPFile logf, AjPFile outf, float thresh, AjPPdb pdb)
 	}
     }
     /* End of loop to print out data for each model / chain */
-
-
     ajFmtPrintF(outf, "//\n");    
+
+
 
 
 
@@ -437,7 +460,7 @@ AjBool	ajXyzContactsWrite(AjPFile logf, AjPFile outf, float thresh, AjPPdb pdb)
 
 
 
-/* @func ajXyzPrintContactMap **************************************************
+/* @func ajXyzPrintContactMap ************************************************
 **
 ** Writes data in a contact map to file for a certain model and chain in a pdb 
 ** structure.
@@ -458,16 +481,13 @@ AjBool	ajXyzContactsWrite(AjPFile logf, AjPFile outf, float thresh, AjPPdb pdb)
 ** @return [AjBool] True if file was succesfully written.
 ** @@
 **
-******************************************************************************/
-AjBool	ajXyzPrintContactMap(AjPFile outf, AjPInt2d mat, char *txt, int mod, int chn, AjPPdb pdb)
+****************************************************************************/
+AjBool	ajXyzPrintContactMap(AjPFile outf, AjPInt2d mat, char *txt, int mod, 
+			     int chn, AjPPdb pdb)
 {
     ajint      x,y;           /* Loop counters */    
-    ajint      done1=0;       /* Flag */
-    ajint      done2=0;       /* Flag */
     AjPStr   res1;          /* ID of residue 1 */
     AjPStr   res2;          /* ID of residue 2 */
-    AjIList  iter=NULL;     /* Iterator for list of atoms */
-    AjPAtom  atm=NULL;      /* Atom structure */
 
 
     /* Error checking on args */
@@ -489,82 +509,26 @@ AjBool	ajXyzPrintContactMap(AjPFile outf, AjPInt2d mat, char *txt, int mod, int 
 	{
 	    if((ajInt2dGet(mat, x, y)==1))
 	    {
-		/* If the residue type from the sequence is unkown - 
-		   there may be missing electron density or it may be 
-		   an unusual amino acid - so check the list of atoms */
-
-		
-		if((ajStrChar(pdb->Chains[chn-1]->Seq, x)=='X'))
-		    done1=0;
-		else
-		    done1=1;
-		if((ajStrChar(pdb->Chains[chn-1]->Seq, y)=='X'))
-		    done2=0;
-		else
-		    done2=1;
-
-		if((!done1)||(!done2))
-		{
-		    /* Free list iterator */
-		    ajListIterFree(iter);	
-
-
-		    /* Intitialise iterator for list of atoms*/
-		    iter=ajListIter(pdb->Chains[chn-1]->Atoms);	
-
-
-		    /* Iterate through list of atoms*/
-		    while((atm=(AjPAtom)ajListIterNext(iter)))
-		    {
-			/* Find the correct model */
-			if(atm->Mod<mod)
-			    continue;
-			
-			
-			/* Break if a non-protein atom is found or in the wrong model*/
-			if(atm->Type!='P' || atm->Mod>mod)
-			    break;
-
-			
-			/* Assign residue id */
-			if((!done1) && (atm->Idx == x+1))
-			    {
-				ajStrAss(&res1, atm->Id3);
-				done1=1;
-			    }
-			
-			if((!done2) && (atm->Idx == y+1))
-			    {
-				ajStrAss(&res2, atm->Id3);
-				done2=1;
-			    }
-			if(done1 && done2)
-			    break;
-		    }		
-		}
-
-
-		/* Assign residue id if not already done*/
-		if(!done1)
-		    if(!ajBaseAa1ToAa3(ajStrChar(pdb->Chains[chn-1]->Seq, x), &res1))
+		/* Assign residue id */
+		    if(!ajBaseAa1ToAa3(ajStrChar(pdb->Chains[chn-1]->Seq, x), 
+				       &res1))
 		    {
 			ajStrDel(&res1);
 			ajStrDel(&res2);  
-			ajListIterFree(iter);	
 			ajWarn("Index out of range in ajXyzPrintPdbSeqresChain");		
 			return ajFalse;
 		    }
-		if(!done2)
-		    if(!ajBaseAa1ToAa3(ajStrChar(pdb->Chains[chn-1]->Seq, y), &res2))
+		    if(!ajBaseAa1ToAa3(ajStrChar(pdb->Chains[chn-1]->Seq, y), 
+				       &res2))
 		    {
 			ajStrDel(&res1);
 			ajStrDel(&res2);  
-			ajListIterFree(iter);	
 			ajWarn("Index out of range in ajXyzPrintPdbSeqresChain");		
 			return ajFalse;
 		    }
  		/* Print out the contact */
-		ajFmtPrintF(outf, "%-5s%S %d ; %S %d\n", txt, res1, x+1, res2, y+1);	
+		ajFmtPrintF(outf, "%-5s%S %d ; %S %d\n", txt, res1, x+1, 
+			    res2, y+1);	
 	    }
 	}
 
@@ -572,7 +536,6 @@ AjBool	ajXyzPrintContactMap(AjPFile outf, AjPInt2d mat, char *txt, int mod, int 
     /*Tidy up */
     ajStrDel(&res1);
     ajStrDel(&res2);  
-    ajListIterFree(iter);	
 
 
     /* Return */
@@ -583,33 +546,38 @@ AjBool	ajXyzPrintContactMap(AjPFile outf, AjPInt2d mat, char *txt, int mod, int 
 
 
 
-/* @func ajXyzWriteContactMap *************************************************
+/* @func ajXyzWriteContactMap ************************************************
 **
 ** Writes a residue contact map for a specified model and chain in a pdb 
 ** structure.  
 **
 ** @param [w] mat    [AjPInt2d *]  Contact map
-** @param [w] ncon   [ajint *]       No. contacts (1's) in contact map
-** @param [w] dim    [ajint]        Dimension of the contact map 
+** @param [w] ncon   [ajint *]     No. contacts (1's) in contact map
+** @param [w] dim    [ajint]       Dimension of the contact map 
 ** @param [r] thresh [float]       Threshold contact distance
-** @param [r] mod    [ajint]         Model number
-** @param [r] chn    [ajint]         Chain number
+** @param [r] mod    [ajint]       Model number
+** @param [r] chn    [ajint]       Chain number
 ** @param [r] pdb    [AjPPdb]      Pdb object
+** @param [r] vdw    [AjPVdwall]   Vdwall object
 **
-** Contact between two residues is defined as when the Van der Waals surface of 
+** Contact between two residues is defined as when the van der Waals surface of 
 ** any atom of the first residue comes within the threshold contact distance
-** (thresh) of the Van der Waals surface of any atom of the second residue. 
+** (thresh) of the van der Waals surface of any atom of the second residue. 
 **
 ** @return [AjBool] True if mat was succesfully written.
 ** @@
 **
-******************************************************************************/
-AjBool	ajXyzWriteContactMap(AjPInt2d *mat, ajint *ncon, ajint dim, float thresh, ajint mod, ajint chn, AjPPdb pdb)
+*****************************************************************************/
+AjBool	ajXyzWriteContactMap(AjPInt2d *mat, ajint *ncon, ajint dim, 
+			     float thresh, ajint mod, ajint chn, AjPPdb pdb, 
+			     AjPVdwall vdw)
 {
-    AjPAtom   *arr;              /* Array of AjPAtom from pdb list */
-    ajint      siz;            /* Size of array */
-    ajint      x,y;            /* Loop counters */
-   
+    AjPAtom    *arr     =NULL;         /* Array of AjPAtom from pdb list */
+    ajint       siz     =0;            /* Size of array */
+    ajint       x       =0;            /* Loop counters */
+    ajint       y       =0;            /* Loop counters */
+    ajint       last_atm=0;
+    AXbaj	jBool      done    =ajFalse;       /* Flag */
     
 
     /* Error checking on args */
@@ -619,6 +587,7 @@ AjBool	ajXyzWriteContactMap(AjPInt2d *mat, ajint *ncon, ajint dim, float thresh,
 	return ajFalse;
     }
     
+
     
 
     /* Initialise no. contacts to zero */
@@ -626,42 +595,35 @@ AjBool	ajXyzWriteContactMap(AjPInt2d *mat, ajint *ncon, ajint dim, float thresh,
     
 
     /*Convert the AjPList of atoms to an array of AjPAtom*/
-    if(!(siz=ajListToArray((AjPList)pdb->Chains[chn-1]->Atoms,(void ***)&arr)))
+    if(!(siz=ajListToArray((AjPList)pdb->Chains[chn-1]->Atoms,
+			   (void ***)&arr)))
     {
-	ajWarn("Zero sized list of sequences passed into ajXyzWriteContactMap");
+	ajWarn("Zero sized list of sequences passed into "
+	       "ajXyzWriteContactMap");
 	return ajFalse;
     }
     
 
-    /* r1 is counter for 1st residue 
-       r2 is counter for 2nd residue 
-       a1 is counter for atom from 1st residue 
-       a2 is counter for atom from 2nd residue 
-       last_atm is the index of the last atom to consider
-       */
 
-
-    /* Advance both atom counters to the correct model */
-/*    for(a1=0; a1<siz; a1++) */
+        
+    /* Advance atom 1 counter to the correct model */
+    for(x=0; x<siz; x++) 
 	/* Find the correct model */
-/*	if(arr[a1]->Mod!=mod)
-	    continue;
-	else
+	if(arr[x]->Mod==mod)
 	{
-	    a2=a1;
 	    done=1;
 	    break;
 	}
     if(!done)
     {
-	ajWarn("Zero sized list of sequences passed into ajXyzWriteContactMap");
+	ajWarn("Model not found in ajXyzWriteContactMap");
 	AJFREE(arr);
 	return ajFalse;
-    } */
-    
-    
-    /* Find index for last atom */
-/*    for(last_atm=a1; last_atm<siz; last_atm++)
+    } 
+
+
+    /* Find index postition for last atom */
+    for(last_atm=x; last_atm<siz; last_atm++)
 	if(arr[last_atm]->Mod!=mod  || arr[last_atm]->Type!='P')
 	{
 	    last_atm--;
@@ -669,61 +631,28 @@ AjBool	ajXyzWriteContactMap(AjPInt2d *mat, ajint *ncon, ajint dim, float thresh,
 	}
     if(last_atm==siz)
 	last_atm--;
-    if(last_atm == a1)
+    if(last_atm == x)
     {
 	ajWarn("No atoms for the chain in ajXyzWriteContactMap");
 	AJFREE(arr);
 	return ajFalse;
-    } */
-    
-    
-    /* Loop for 1st residue */ 
-/*    for(r1=0; r1<pdb->Chains[chn-1]->Nres; r1++)
-    { */
-	/* Loop for 2nd residue */
-/*	for(r2=r1+1; r2<pdb->Chains[chn-1]->Nres; r2++)
-	{
-	    for( ; (a1<=last_atm) && (arr[a1]->Idx-1==r1); a1++)
-	    {
-		
-	    }	
-	
-
-	}
-    } */
-    
-
-
+    } 
 
 
     
     /* Atom 1 counter - Iterate through the list of atoms */
-    for(x=0; x<siz; x++)
+    for(; x<last_atm+1; x++)
     {
-	/* Find the correct model */
-	if(arr[x]->Mod<mod)
-	    continue;
-
-	
-	/* Break if the atom is non-protein or in the wrong model */
-	if(arr[x]->Mod>mod  || arr[x]->Type!='P')
-	    break;
-
-
 	/* Atom 2 counter - Iterate through the list of atoms */
-	for(y=x; y<siz; y++)
+	for(y=x; y<last_atm+1; y++)
 	{
-	    /* Break if the atom is non-protein or in the wrong model */
-	    if(arr[y]->Mod>mod  || arr[y]->Type!='P')
-		break;
-
-
 	    /* Jump to next residue if necessary */
 	    if(arr[y]->Idx <= arr[x]->Idx)
 		continue;
 
 
-	    /* Check we do not already have a contact for this pair of residues 
+	    /* Check we do not already have a contact for this pair of 
+	       residues.
 	       First check to see whether index is in range (it should be!)*/
 	    if((arr[x]->Idx-1 < dim) && (arr[y]->Idx-1 < dim))
 	    {
@@ -732,14 +661,15 @@ AjBool	ajXyzWriteContactMap(AjPInt2d *mat, ajint *ncon, ajint dim, float thresh,
 	    }
 	    else
 	    {
-		/* The residue number should never exceed dim (no. residues in the chain) */
-		ajFatal("Unexpected fatal error.  email culprit (jison@hgmp.mrc.ac.uk)");
+		/* The residue number should never exceed dim (no. residues 
+		   in the chain) */
+		ajFatal("Unexpected fatal error.  email culprit "
+			"(jison@hgmp.mrc.ac.uk)");
 	    }
 	    
 	    
-	    
 	    /* Determines whether the two atoms make contact */
-	    if(ajXyzInContact(arr[x], arr[y], thresh))
+	    if(ajXyzInContact(arr[x], arr[y], thresh, vdw))
 	    {
 		if((ajInt2dGet(*mat, arr[x]->Idx-1, arr[y]->Idx-1)==0))
 		{
@@ -776,8 +706,9 @@ AjBool	ajXyzWriteContactMap(AjPInt2d *mat, ajint *ncon, ajint dim, float thresh,
 ** @param [r] atm1   [AjPAtom]     Atom 1 object
 ** @param [r] atm2   [AjPAtom]     Atom 1 object
 ** @param [r] thresh [float]       Threshold contact distance
+** @param [r] vdw    [AjPVdwall]   Vdwall object
 **
-** Contact between two atoms is defined as when the Van der Waals surface of 
+** Contact between two atoms is defined as when the van der Waals surface of 
 ** the first atom comes within the threshold contact distance (thresh) of the 
 ** van der Waals surface of the second atom.
 **
@@ -785,20 +716,21 @@ AjBool	ajXyzWriteContactMap(AjPInt2d *mat, ajint *ncon, ajint dim, float thresh,
 ** @@
 **
 ******************************************************************************/
-AjBool  ajXyzInContact(AjPAtom atm1, AjPAtom atm2, float thresh)
+AjBool  ajXyzInContact(AjPAtom atm1, AjPAtom atm2, float thresh, AjPVdwall vdw)
 {
     float val=0;
 
     
+
+
+
     val=((atm1->X -  atm2->X) * (atm1->X -  atm2->X)) +
 	((atm1->Y -  atm2->Y) * (atm1->Y -  atm2->Y)) +
-	((atm1->Z -  atm2->Z) * (atm1->Z -  atm2->Z));
+	    ((atm1->Z -  atm2->Z) * (atm1->Z -  atm2->Z));
 
 
-/*     printf("thresh: %.1f   dis: %.1f\n", thresh, sqrt(val)); */
     
-    
-    if(sqrt(val) <= thresh)
+    if((sqrt(val) - ajXyzVdwRad(atm1, vdw) - ajXyzVdwRad(atm2, vdw)) <= thresh)
 	return ajTrue;
     else
 	return ajFalse;
@@ -806,4 +738,40 @@ AjBool  ajXyzInContact(AjPAtom atm1, AjPAtom atm2, float thresh)
 
 
 
+/* @func ajXyzVdwRad *****************************************************
+**
+** Returns the van der Waals radius of an atom. Returns 1.2 as default.
+**
+** @param [r] atm    [AjPAtom]     Atom object
+** @param [r] vdw    [AjPVdwall]   Vdwall object
+**
+** Contact between two atoms is defined as when the van der Waals surface of 
+** the first atom comes within the threshold contact distance (thresh) of the 
+** van der Waals surface of the second atom.
+**
+** @return [float] van der Waals radius of the atom
+** @@
+**
+******************************************************************************/
+float ajXyzVdwRad(AjPAtom atm, AjPVdwall vdw)
+{
+    ajint x=0;
+    ajint y=0;
+    
 
+
+
+
+    for(x=0;x<vdw->N;x++)
+    {
+	for(y=0;y<vdw->Res[x]->N;y++)
+	{
+	    if(ajStrMatch(atm->Atm, vdw->Res[x]->Atm[y]))
+		return(vdw->Res[x]->Rad[y]);	 
+	}
+    }
+
+    
+    /* Return default value */
+    return((float)1.2);
+}

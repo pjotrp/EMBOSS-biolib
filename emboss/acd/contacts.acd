@@ -1,6 +1,6 @@
 appl: contacts
 [
-	doc: "Build contact files"
+	doc: "Reads a coordinate file and writes a contact file"
 	groups: "PROTEIN: structure"
 ]
 
@@ -8,7 +8,7 @@ string: cpdb
 [ 
 	param: Y
 	info: "Location of coordinate files for input (embl-like format)"
-	def: "/data/contacts"
+	def: "./"
 ]
 
 string: cpdbextn
@@ -22,7 +22,7 @@ string: con
 [ 
 	param: Y
 	info: "Location of contact files for output"
-	def: "/data/contacts"
+	def: "./"
 ]
 
 string: conextn
@@ -37,6 +37,13 @@ float: thresh
 	param: Y
 	info: "Threshold contact distance"
 	def: 1.0
+]
+
+infile: vdwf
+[ 
+	param: Y
+	prompt: "Name of data file with van der Waals radii"
+	def: "vdw.dat"
 ]
 
 outfile: conerrf
