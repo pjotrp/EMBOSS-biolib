@@ -841,7 +841,7 @@ static void seqGapSL (AjPStr* seq, char gapc, char padc, ajint ilen) {
   }
 
   if (ilen)
-    (void) ajStrModL (seq, ilen);
+    (void) ajStrModL (seq, ilen+1);
   else
     (void) ajStrMod(seq);
 
