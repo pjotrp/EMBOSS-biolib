@@ -3,10 +3,22 @@ appl: seqretsingle [
   groups: "Test"
 ]
 
-sequence: sequence  [
-  parameter: "Y"
+section: input [ info: "input Section" type: page ]
+bool: feature  [
+  information: "Use feature information"
 ]
 
-seqoutall: outseq  [
+sequence: sequence  [
   parameter: "Y"
+  features: "$(feature)"
 ]
+
+endsection: input
+
+section: output [ info: "output Section" type: page ]
+seqout: outseq  [
+  parameter: "Y"
+  features: "$(feature)"
+]
+
+endsection: output
