@@ -58,5 +58,15 @@ hindiii \ HinfI \ PpiI"
 
   string: datafile [ req: N def: "" info: "Alternative RE data file" ]
 
-  outfile: outfile [ param: Y ]
+  report: outfile [ param: Y
+                    rformat: table
+		    multi: Y
+	            taglist: "str:enzyme=Enzyme_name str:site=Restriction_site
+		              int:5prime=5' int:3prime=3'
+		              int:5primerev=5'rev int:3primerev=3'rev"
+  ]
+
+# Obsolete - replaced by report file
+# Source code will use this to write the original output format if enabled
+#  outfile: outfile [ param: Y ]
 

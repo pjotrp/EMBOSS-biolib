@@ -25,10 +25,21 @@ appl: diffseq [
 	info: "Word size"
   ]
 
-  outfile: outfile [
+  report: outfile [
 	req: Y
+	rformat: diffseq
 	info: "Output report file"
+	taglist: "int:start int:end int:length str:name str:sequence
+	          str:first_feature str:second_feature"
   ]
+
+# Obsolete - replaced by report file
+# Source code will use this to write the original output format if enabled
+#  outfile: outfile [
+#	req: N
+#	info: "Output report file (original format)"
+#	ext: "diffseq_orig"
+#  ]
 
   featout: afeatout [
         opt: Y

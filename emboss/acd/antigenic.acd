@@ -13,10 +13,27 @@ appl: antigenic [
   int: minlen [ req: Y min: 1 max: 50 def: 6
                   info: "Minimum length" ]
 
-  outfile: outfile [ param: Y  ]
+  report: outfile [ param: Y
+                    rformat: motif
+		    multiple: Y
+		    taglist: "int:pos=Max_score_pos"	   
+                  ]
 
-featout: featout [
-        parameter: N
-        info: "feature file for output "
-        help: "File for output features"
-        ]
+# Obsolete - replaced by report file
+# Source code will use this to write the original output format if enabled
+#  outfile: originalfile [ param: Y  ]
+
+# Obsolete - replaced by report file
+# Source code will use this to write the original output format if enabled
+#featout: featout [
+#        parameter: N
+#        info: "feature file for output "
+#        help: "File for output features"
+#        ]
+
+
+
+
+
+
+

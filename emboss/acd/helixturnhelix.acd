@@ -21,4 +21,12 @@ appl: helixturnhelix [
 
   bool: eightyseven [ opt: Y info: "Use the old (1987) weight data" ]
 
-  outfile: outfile [ param: Y ext: "hth" expect: "seqname.hth" ]
+  report: outfile [ param: Y
+                    rformat: motif
+		    rextension: "hth"
+		    taglist: "int:pos=Maximum_score_at
+		              float:sd=Standard_deviations"
+                  ]
+# Obsolete - replaced by report file
+# Source code will use this to write the original output format if enabled
+#  outfile: originalfile [ param: Y ext: "hth" expect: "seqname.hth" ]

@@ -10,7 +10,15 @@ appl: sigcleave [
 
   seqall: sequence [ param: Y type: PureProtein ]
 
-  outfile: outfile [ param: Y extension: "sig" ]
+  report: outfile [ param: Y rextension: "sig"
+                    rformat: motif
+	            multiple: Y
+	            taglist: "str:mature_peptide"
+  ]
+
+# Obsolete - replaced by report file
+# Source code will use this to write the original output format if enabled
+#  outfile: originalfile [ param: Y extension: "sig" ]
 
   bool: prokaryote [ opt: Y
          help: "Specifies the sequence is prokaryotic and changes the
