@@ -16,9 +16,10 @@ section: input [
     parameter: "Y"
     information: "Location of pdb files (pdb format input)"
     help: "A detailed explanation of the pdb file format is available
-           on the pdb web site http://www.rcsb.org/pdb/info.html default:
-           "./"
+           on the pdb web site http://www.rcsb.org/pdb/info.html"
+    default: "./"
   ]
+
 
   string: pdbextn  [
     parameter: "Y"
@@ -51,6 +52,7 @@ section: required [
     default: "N"
   ]
 
+
   boolean: atommask  [
     required: "Y"
     information: "Mask amino acid residues in protein chains
@@ -60,6 +62,7 @@ section: required [
            file"
     default: "N"
   ]
+
 
   outfile: errf  [
     required: "Y"
@@ -77,6 +80,7 @@ section: advanced [
 ]
 
   boolean: cpdbnaming  [
+    optional: "Y"
     information: "Use pdbid code to name files"
     help: "The user specifies whether the output files have the same
            names as the input files or whether the pdb identifier code (from
@@ -91,7 +95,9 @@ section: advanced [
     default: "5"
   ]
 
+
   integer: maxmis  [
+    optional: "Y"
     information: "Maximum number of permissible mismatches
                   between the ATOM and SEQRES sequences"
     default: "3"
@@ -104,6 +110,7 @@ section: output [
   type: "page"
 ]
 
+
   string: cpdb  [
     parameter: "Y"
     information: "Location of coordinate files (embl format
@@ -115,6 +122,7 @@ section: output [
     default: "./"
   ]
 
+
   string: cpdbextn  [
     parameter: "Y"
     information: "Extension of coordinate files (embl format
@@ -123,3 +131,4 @@ section: output [
   ]
 
 endsection: output
+

@@ -27,6 +27,8 @@ section: input [
            family in question by using seqalign."
   ]
 
+
+
   string: extn  [
     parameter: "Y"
     default: ".salign"
@@ -49,10 +51,13 @@ section: input [
 
 endsection: input
 
+
+
 section: output [
   information: "Output section"
   type: "page"
 ]
+
 
   string: outpath  [
     parameter: "Y"
@@ -68,6 +73,8 @@ section: output [
            be extended with sequence relatives (of unknown structure) to the
            family in question by using seqalign."
   ]
+
+
 
   string: outextn  [
     parameter: "Y"

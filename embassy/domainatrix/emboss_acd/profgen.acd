@@ -12,6 +12,8 @@ section: input [
   type: "page"
 ]
 
+
+
   string: infpath  [
     parameter: "Y"
     default: "./"
@@ -26,6 +28,7 @@ section: input [
            family in question by using seqalign."
   ]
 
+
   string: infextn  [
     parameter: "Y"
     default: ".ealign"
@@ -34,54 +37,57 @@ section: input [
 
 endsection: input
 
+
+
 section: required [
   information: "Required section"
   type: "page"
 ]
 
-  list: type  [
-    required: "Y"
-    default: "F"
-    minimum: "1"
-    maximum: "1"
-    values: "F:Frequency,G:Gribskov,H:Henikoff"
-    delimiter: ","
-    codedelimiter: ":"
-    header: "Profile type"
-    information: "Select type"
-    button: "Y"
-  ]
 
-  variable: dogap "@($(type) != f)"
+list: type  [
+  required: "Y"
+  default: "F"
+  minimum: "1"
+  maximum: "1"
+  values: "F:Frequency,G:Gribskov,H:Henikoff"
+  delimiter: ","
+  codedelimiter: ":"
+  header: "Profile type"
+  information: "Select type"
+  button: "Y"
+]
 
-  integer: threshold  [
-    required: "@($(type)==F)"
-    default: "75"
-    minimum: "1"
-    maximum: "100"
-    information: "Enter threshold reporting percentage"
-  ]
+variable:  dogap "@($(type) != f)"
 
-  matrixf: datafile  [
-    required: "@($(type)!=F)"
-    information: "Residue substitution matrix"
-    default: "@($(type) = G: Epprofile H: EBLOSUM62 F: EBLOSUM62)"
-    expected: "'Epprofile' for Gribskov type, or EBLOSUM62"
-  ]
+integer: threshold  [
+  required: "@($(type)==F)"
+  default: "75"
+  minimum: "1"
+  maximum: "100"
+  information: "Enter threshold reporting percentage"
+]
 
-  float: open  [
-    required: "$(dogap)"
-    information: "Gap insertion penalty"
-    default: "3.0"
-  ]
+matrixf: datafile  [
+  required: "@($(type)!=F)"
+  information: "Residue substitution matrix"
+  default: "@($(type) = G: Epprofile H: EBLOSUM62 F: EBLOSUM62)"
+  expected: "'Epprofile' for Gribskov type, or EBLOSUM62"
+]
 
-  float: extension  [
-    required: "$(dogap)"
-    information: "Gap extension penalty"
-    default: "0.3"
-  ]
+float: open  [
+  required: "$(dogap)"
+  information: "Gap insertion penalty"
+  default: "3.0"
+]
 
+float: extension  [
+  required: "$(dogap)"
+  information: "Gap extension penalty"
+  default: "0.3"
+]
 endsection: required
+
 
 section: output [
   information: "Output section"
@@ -112,6 +118,7 @@ section: output [
     information: "Extension of Gribskov profile files"
   ]
 
+
   string: hnpfpath  [
     required: "@($(type)==H)"
     default: "./"
@@ -121,7 +128,7 @@ section: output [
   string: hnpfextn  [
     required: "@($(type)==H)"
     default: ".henik"
-    information: "Extention of Henikoff profile files"
+    information: "Extension of Henikoff profile files"
   ]
 
 endsection: output

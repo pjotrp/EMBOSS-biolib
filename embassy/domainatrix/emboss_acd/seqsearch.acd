@@ -23,6 +23,7 @@ section: input [
            information can be added to the file by using scopseqs."
   ]
 
+
   string: align  [
     parameter: "Y"
     information: "Location of scop alignment files (input)"
@@ -37,55 +38,60 @@ section: input [
     default: "./"
   ]
 
-  string: alignextn  [
-    parameter: "Y"
-    information: "Extension of scop alignment files (input)"
-    default: ".salign"
-  ]
 
-  string: database  [
-    parameter: "Y"
-    information: "Name of BLAST-indexed database to search"
-    default: "swissprot"
-  ]
+string: alignextn  [
+  parameter: "Y"
+  information: "Extension of scop alignment files (input)"
+  default: ".salign"
+]
 
+string: database    
+[ 
+      param: Y
+      information: "Name of BLAST-indexed database to search"
+      def: "swissprot"
+]
 endsection: input
+
+
+
+
 
 section: required [
   information: "Required section"
   type: "page"
 ]
 
-  integer: niter  [
-    required: "Y"
-    information: "Number of PSIBLAST iterations"
-    default: "1"
-  ]
 
-  float: evalue  [
-    required: "Y"
-    information: "Threshold E-value for inclusion in family"
-    default: "0.001"
-  ]
+integer: niter  [
+  required: "Y"
+  information: "Number of PSIBLAST iterations"
+  default: "1"
+]
 
-  integer: maxhits  [
-    required: "Y"
-    information: "Maximum number of hits"
-    default: "1000"
-  ]
+float: evalue  [
+  required: "Y"
+  information: "Threshold E-value for inclusion in family"
+  default: "0.001"
+]
 
-  string: submatrix  [
-    required: "Y"
-    information: "Residue substitution matrix"
-    default: "EBLOSUM62"
-  ]
+integer: maxhits  [
+  required: "Y"
+  information: "Maximum number of hits"
+  default: "1000"
+]
 
 endsection: required
+
+
+
 
 section: output [
   information: "Output section"
   type: "page"
 ]
+
+
 
   string: hits  [
     parameter: "Y"
@@ -96,6 +102,8 @@ section: output [
            embl-like format."
     default: "./"
   ]
+
+
 
   string: hitsextn  [
     parameter: "Y"

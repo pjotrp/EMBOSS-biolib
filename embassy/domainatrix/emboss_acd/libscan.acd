@@ -4,6 +4,7 @@ application: libscan [
   groups: "Protein:3D Structure"
 ]
 
+
 list: mode  [
   required: "Y"
   default: "1"
@@ -26,6 +27,8 @@ list: mode  [
          for each one."
 ]
 
+
+
 seqset: db  [
   required: "Y"
   prompt: "File containing sequences to search or screen"
@@ -34,6 +37,7 @@ seqset: db  [
          reads a sequence set and screens each sequence against the library
          (directories of disciminating elements)"
 ]
+
 
 boolean: grib  [
   required: "Y"
@@ -58,6 +62,12 @@ boolean: sig  [
   information: "Use signature"
   default: "Y"
 ]
+
+
+
+#####################
+# Hmm  parameters
+#####################
 
 string: hmmpath  [
   required: "$(hmm)"
@@ -173,6 +183,8 @@ string: sigextn  [
   default: ".sig"
 ]
 
+
+
 list: nterm  [
   required: "$(sig)"
   default: "1"
@@ -193,16 +205,16 @@ matrixf: sub  [
   default: "EBLOSUM62"
 ]
 
-float: siggapo  [
+float: siggapo [
   required: "$(sig)"
   default: "10.0"
-  information: "Gap insertion penalty"
+  information: "Gap insertion penalty "
 ]
 
-float: siggape  [
+float: siggape [
   required: "$(sig)"
   default: "0.5"
-  information: "Gap extension penalty"
+  information: "Gap extension penalty "
 ]
 
 string: sigoutpath  [
@@ -212,12 +224,15 @@ string: sigoutpath  [
   default: "./"
 ]
 
+
+
 string: sigoutextn  [
   required: "$(sig) : N"
   information: "Extension for signature hits/library scan files
                 for signature searches (output)"
   default: ".sigout"
 ]
+
 
 infile: scopf  [
   required: "Y"
@@ -229,6 +244,7 @@ infile: scopf  [
          scopparse. Domain sequence information can be added to the file by
          using scopseqs."
 ]
+
 
 infile: targetf  [
   prompt: "Name of validation file (input)"
@@ -244,12 +260,16 @@ infile: targetf  [
   nullok: "Y"
 ]
 
+
+
+
 integer: maxhits  [
   required: "@($(mode)==1)"
   information: "The maximum number of hits to be written to the
                 signature hits file."
   default: "50"
 ]
+
 
 integer: overlap  [
   required: "@($(mode)==1)"
@@ -263,6 +283,8 @@ integer: overlap  [
          defined as two hits overlapping by a user-defined number of
          residues."
 ]
+
+
 
 string: mrgoutpath  [
   required: "Y"

@@ -12,6 +12,8 @@ section: input [
   type: "page"
 ]
 
+
+
   string: hitsin  [
     parameter: "Y"
     information: "Location of scop hits files (input)"
@@ -30,10 +32,14 @@ section: input [
 
 endsection: input
 
+
+
 section: required [
   information: "Required section"
   type: "page"
 ]
+
+
 
   integer: thresh  [
     required: "Y"
@@ -52,6 +58,7 @@ section: output [
   information: "Output section"
   type: "page"
 ]
+
 
   string: hitsout  [
     parameter: "Y"

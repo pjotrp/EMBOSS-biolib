@@ -41,6 +41,10 @@ section: input [
 
 endsection: input
 
+
+
+
+
 section: required [
   information: "Required section"
   type: "page"
@@ -53,6 +57,9 @@ section: required [
   ]
 
 endsection: required
+
+
+
 
 section: output [
   information: "Output section"
@@ -70,3 +77,6 @@ section: output [
   ]
 
 endsection: output
+
+
+

@@ -12,6 +12,7 @@ section: input [
   type: "page"
 ]
 
+
   string: algpath  [
     parameter: "Y"
     information: "Location of scop alignment files (input)"
@@ -34,10 +35,13 @@ section: input [
 
 endsection: input
 
+
+
 section: required [
   information: "Required section"
   type: "page"
 ]
+
 
   list: mode  [
     required: "Y"
@@ -63,6 +67,7 @@ section: required [
     information: "Select number"
   ]
 
+
   integer: sparsity  [
     required: "@($(mode)!=1)"
     information: "% sparsity of signature"
@@ -75,6 +80,8 @@ section: required [
            alignment positions."
     default: "10"
   ]
+
+
 
   integer: wsiz  [
     required: "Y"
@@ -90,6 +97,8 @@ section: required [
     default: "0"
   ]
 
+
+
   list: seqoption  [
     required: "@($(mode)==2)"
     default: "3"
@@ -102,11 +111,15 @@ section: required [
     information: "Select number"
   ]
 
+
+
   matrixf: datafile  [
     required: "@($(seqoption)==1)"
     information: "Substitution matrix to be used"
     default: "EBLOSUM62"
   ]
+
+
 
   list: conoption  [
     required: "@($(mode)==2)"
@@ -121,6 +134,8 @@ section: required [
     header: "Residue contacts scoring method"
     information: "Select number"
   ]
+
+
 
   boolean: filtercon  [
     required: "@($(conoption)!=5)"
@@ -144,11 +159,13 @@ section: required [
     default: "./"
   ]
 
+
   string: conextn  [
     required: "@($(conoption)!=5)"
     information: "Extension of contact files"
     default: ".con"
   ]
+
 
   string: cpdbpath  [
     required: "@($(conoption)!=5)"
@@ -175,17 +192,16 @@ section: required [
 
 endsection: required
 
-section: advanced [
-  information: "Advanced section"
-  type: "page"
-]
 
-endsection: advanced
+
+
 
 section: output [
   information: "Output section"
   type: "page"
 ]
+
+
 
   string: sigpath  [
     parameter: "Y"
@@ -202,3 +218,12 @@ section: output [
   ]
 
 endsection: output
+
+
+
+
+
+
+
+
+

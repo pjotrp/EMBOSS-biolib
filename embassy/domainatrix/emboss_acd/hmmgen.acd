@@ -12,6 +12,9 @@ section: input [
   type: "page"
 ]
 
+
+
+
   string: infpath  [
     parameter: "Y"
     default: "./"
@@ -34,6 +37,7 @@ section: input [
 
 endsection: input
 
+
 section: output [
   information: "Output section"
   type: "page"
@@ -52,3 +56,16 @@ section: output [
   ]
 
 endsection: output
+
+
+
+
+
+
+
+
+
+
+
+
+

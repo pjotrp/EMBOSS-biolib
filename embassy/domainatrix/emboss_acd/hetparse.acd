@@ -27,6 +27,7 @@ section: required [
   type: "page"
 ]
 
+
   boolean: dogrep  [
     required: "Y"
     information: "Search a directory of files with keywords?"
@@ -36,11 +37,14 @@ section: required [
     default: "N"
   ]
 
+
+
   string: path  [
     required: "$(dogrep)"
     information: "Directory to search with keywords"
     default: "./"
   ]
+
 
   string: extn  [
     required: "$(dogrep)"
@@ -63,3 +67,11 @@ section: output [
   ]
 
 endsection: output
+
+
+
+
+
+
+
+

@@ -12,6 +12,7 @@ section: input [
   type: "page"
 ]
 
+
   infile: scopin  [
     parameter: "Y"
     information: "Name of scop classification file (embl format
@@ -28,6 +29,7 @@ section: output [
   information: "Output section"
   type: "page"
 ]
+
 
   outfile: scopout  [
     parameter: "Y"

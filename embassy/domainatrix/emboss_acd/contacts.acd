@@ -7,12 +7,13 @@ application: contacts [
   cpu: "high"
 ]
 
+
 section: input [
   information: "Input section"
   type: "page"
 ]
 
-  string: cpdb  [
+string: cpdb  [
     parameter: "Y"
     information: "Location of coordinate files (embl format
                   input)"
@@ -26,6 +27,8 @@ section: input [
     default: "./"
   ]
 
+
+
   string: cpdbextn  [
     parameter: "Y"
     information: "Extension of coordinate files (embl format
@@ -33,12 +36,14 @@ section: input [
     default: ".pxyz"
   ]
 
-  string: vdwf  [
+  infile: vdwf  [
+    required: "Y"
     information: "Name of data file with van der Waals radii"
     default: "Evdw.dat"
   ]
-
 endsection: input
+
+
 
 section: required [
   information: "Required section"
@@ -55,15 +60,19 @@ section: required [
            user-defined distance with a default value of 1 Angstrom."
     default: "1.0"
   ]
-
 endsection: required
+
+
+
 
 section: advanced [
   information: "Advanced section"
   type: "page"
 ]
 
+
   float: ignore  [
+    optional: "Y"
     information: "Threshold ignore distance"
     help: "If any two atoms from two different residues are at least
            this distance apart then no futher inter-atomic contacts will be
@@ -73,6 +82,10 @@ section: advanced [
   ]
 
 endsection: advanced
+
+
+
+
 
 section: output [
   information: "Output section"
@@ -88,11 +101,11 @@ section: output [
     default: "./"
   ]
 
-  string: conextn  [
-    parameter: "Y"
-    information: "Extension of contact files (output)"
-    default: ".con"
-  ]
+string: conextn  [
+  parameter: "Y"
+  information: "Extension of contact files (output)"
+  default: ".con"
+]
 
   outfile: conerrf  [
     required: "Y"
@@ -101,5 +114,16 @@ section: output [
     help: "The log file contains messages about any errors arising
            while contacts ran."
   ]
-
 endsection: output
+
+
+
+
+
+
+
+
+
+
+
+

@@ -13,6 +13,9 @@ section: input [
   type: "page"
 ]
 
+
+
+
   infile: inf  [
     parameter: "Y"
     information: "Name of the scop families file (input)"
@@ -73,6 +76,9 @@ section: input [
 
 endsection: input
 
+
+
+
 section: required [
   information: "Required section"
   type: "page"
@@ -80,7 +86,7 @@ section: required [
 
   integer: overlap  [
     required: "Y"
-    information: "number of overlapping residues required to
+    information: "Number of overlapping residues required to
                   define two hits as 'overlapping'"
     default: "10"
   ]
@@ -90,6 +96,7 @@ section: required [
     information: "The % sequence identity redundancy threshold"
     default: "95.0"
   ]
+
 
   list: mode  [
     required: "Y"
@@ -113,8 +120,8 @@ section: required [
     header: "Mode of operation"
     information: "Select mode"
   ]
-
 endsection: required
+
 
 section: advanced [
   information: "Advanced section"
@@ -122,11 +129,16 @@ section: advanced [
 ]
 
   matrixf: datafile  [
+    optional: "Y"
     information: "Residue substitution matrix"
     default: "EBLOSUM62"
   ]
 
+
+
+
   float: gapopen  [
+    optional: "Y"
     information: "Gap insertion penalty"
     minimum: "1."
     maximum: "100."
@@ -140,7 +152,10 @@ section: advanced [
            nucleotide sequences."
   ]
 
+
+
   float: gapextend  [
+    optional: "Y"
     information: "Gap extension penalty"
     minimum: "0.0"
     maximum: "10."
@@ -160,10 +175,15 @@ section: advanced [
 
 endsection: advanced
 
+
+
 section: output [
   information: "Output section"
   type: "page"
 ]
+
+
+
 
   outfile: outf  [
     required: "@($(mode)==2)"
@@ -181,7 +201,7 @@ section: output [
     default: "famnr.hits"
   ]
 
-  string: voutfname  [
+  infile: voutfname  [
     parameter: "Y"
     information: "Name of scop validation file (output)"
     help: "A 'scop validation file' contains sequence relatives (hits)
@@ -204,3 +224,12 @@ section: output [
   ]
 
 endsection: output
+
+
+
+
+
+
+
+
+

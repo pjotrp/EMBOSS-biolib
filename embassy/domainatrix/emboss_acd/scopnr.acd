@@ -12,6 +12,8 @@ section: input [
   type: "page"
 ]
 
+
+
   infile: scopin  [
     parameter: "Y"
     information: "Name of scop classification file (embl format
@@ -24,10 +26,14 @@ section: input [
 
 endsection: input
 
+
+
 section: required [
   information: "Required section"
   type: "page"
 ]
+
+
 
   list: mode  [
     required: "Y"
@@ -53,6 +59,8 @@ section: required [
     information: "Select number"
   ]
 
+
+
   float: thresh  [
     required: "@($(mode)==1)"
     information: "The % sequence identity redundancy threshold"
@@ -75,6 +83,7 @@ section: required [
 
 endsection: required
 
+
 section: advanced [
   information: "Advanced section"
   type: "page"
@@ -85,6 +94,8 @@ section: advanced [
     information: "Residue substitution matrix"
     default: "EBLOSUM62"
   ]
+
+
 
   float: gapopen  [
     optional: "Y"
@@ -100,6 +111,7 @@ section: advanced [
            matrix for protein sequences, and the EDNAFULL matrix for
            nucleotide sequences."
   ]
+
 
   float: gapextend  [
     optional: "Y"
@@ -122,6 +134,7 @@ section: advanced [
 
 endsection: advanced
 
+
 section: output [
   information: "Output section"
   type: "page"
@@ -133,6 +146,7 @@ section: output [
                   file (embl format output)"
     default: "test.scop"
   ]
+
 
   outfile: errf  [
     required: "Y"
