@@ -36,7 +36,7 @@ import org.emboss.jemboss.gui.filetree.FileEditorDisplay;
 * Displays JTabbedPane of the contents of the Hashtable
 *
 */
-public class ShowResultSet
+public class ShowResultSet extends JFrame
 {
 
 /**
@@ -57,11 +57,11 @@ public class ShowResultSet
 */
   public ShowResultSet(Hashtable reslist, Hashtable inputFiles)
   {
+    super("Saved Results on the Server");
     JTabbedPane rtp = new JTabbedPane();
-    JFrame resFrame = new JFrame("Saved Results on the Server");
 
-    new ResultsMenuBar(resFrame,rtp,reslist);
-    resFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+    new ResultsMenuBar(this,rtp,reslist);
+    setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
     int ntabs = 0;
 
@@ -95,15 +95,14 @@ public class ShowResultSet
       FileEditorDisplay fed = new FileEditorDisplay(null,cmd,
                                          reslist.get(cmd));
       JTextPane o1 = fed.getJTextPane();
-      o1.setFont(new Font("monospaced", Font.PLAIN, 12));
       o1.setCaretPosition(0);
       s1.add(o1, BorderLayout.CENTER);
       rtp.add(cmd,r1);
     }
 
-    resFrame.setSize(640,480);
-    resFrame.getContentPane().add(rtp,BorderLayout.CENTER);
-    resFrame.setVisible(true);
+    setSize(640,480);
+    getContentPane().add(rtp,BorderLayout.CENTER);
+    setVisible(true);
   }
 
   private String[] addHashContentsToTab(Hashtable h,JTabbedPane rtp)
@@ -145,8 +144,6 @@ public class ShowResultSet
           FileEditorDisplay fed = new FileEditorDisplay(null,thiskey,
                                                      h.get(thiskey));
           JTextPane o1 = fed.getJTextPane();
-//        JTextArea o1 = new JTextArea((String)h.get(thiskey));
-          o1.setFont(new Font("monospaced", Font.PLAIN, 12));
           o1.setCaretPosition(0);
           s1.add(o1, BorderLayout.CENTER);
           rtp.add(thiskey,r1);
