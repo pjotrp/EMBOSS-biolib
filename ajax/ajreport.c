@@ -1263,7 +1263,9 @@ static void reportWriteRegions(AjPReport thys, AjPFeattable ftable,
 
 /* @funcstatic reportWriteSeqTable ********************************************
 **
-** Writes a report in SeqTable format Thie is a simple table format that
+** Writes a report in SeqTable format.
+**
+** This is a simple table format that
 ** includes the feature sequence. See reportWriteTable for a version
 ** without the sequence. Missing tag values are reported as '.'
 ** The column width is 6, or longer if the name is longer.
@@ -1639,8 +1641,16 @@ static void reportWriteTable(AjPReport thys, AjPFeattable ftable, AjPSeq seq)
     while(ajListIterMore(iterft))
     {
 	feature = (AjPFeature)ajListIterNext(iterft);
-	istart = feature->Start;
-	iend = feature->End;
+	if (feature->Strand == '-')
+	{
+	    istart = feature->End;
+	    iend = feature->Start;
+	}
+	else
+	{
+	    istart = feature->Start;
+	    iend = feature->End;
+	}
 	score = feature->Score;
 	ajStrAssSub(&subseq, ajSeqStr(seq), istart-1, iend-1);
 	/* ajStrToUpper(&subseq); */
