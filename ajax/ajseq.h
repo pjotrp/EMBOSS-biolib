@@ -92,6 +92,7 @@ ajint        ajSeqCvtSize (AjPSeqCvt cvt);
 void         ajSeqCvtTrace (AjPSeqCvt cvt);
 void         ajSeqDel (AjPSeq* pthis);
 ajint        ajSeqEnd (AjPSeq seq);
+void         ajSeqGapStandard (AjPSeq thys, char gapch);
 AjPStr       ajSeqGetAcc (AjPSeq thys);
 AjPStr       ajSeqGetDesc (AjPSeq thys);
 AjPStr       ajSeqGetEntry (AjPSeq thys);
