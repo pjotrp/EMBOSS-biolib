@@ -277,10 +277,13 @@ public class SequenceList extends JFrame
 
 
 class DragJTable extends JTable implements DragGestureListener,
-                           DragSourceListener, DropTargetListener
+             DragSourceListener, DropTargetListener
 {
 
   private SequenceListTableModel seqModel;
+  public static DataFlavor DRAGJTABLE =
+           new DataFlavor(DragJTable.class, "Sequence JTable");
+  static DataFlavor flavors[] = { DRAGJTABLE , DataFlavor.stringFlavor };
 
   public DragJTable(SequenceListTableModel seqModel)
   {
@@ -303,13 +306,17 @@ class DragJTable extends JTable implements DragGestureListener,
     if(ncol == convertColumnIndexToView(SequenceListTableModel.COL_NAME))
     {
       int nrow = getSelectedRow();
-      String fileName = getFileName(nrow);
-      if(isListFile(nrow).booleanValue())
-        fileName="@".concat(fileName);
+//    String fileName = getFileName(nrow);
+//    if(isListFile(nrow).booleanValue())
+//      fileName="@".concat(fileName);
 
-      e.startDrag(DragSource.DefaultCopyDrop,  // cursor
-         new StringSelection(fileName),        // transferable data
-                                 this);        // drag source listener
+      e.startDrag(DragSource.DefaultCopyDrop,             // cursor
+            (Transferable)seqModel.getSequenceData(nrow), // transferable data
+                  this);                                  // drag source listener
+
+//    e.startDrag(DragSource.DefaultCopyDrop,  // cursor
+//       new StringSelection(fileName),        // transferable data
+//                               this);        // drag source listener
     }
   }
   public void dragDropEnd(DragSourceDropEvent e) {}
@@ -335,7 +342,8 @@ class DragJTable extends JTable implements DragGestureListener,
   public void dragEnter(DropTargetDragEvent e)
   {
     if(e.isDataFlavorSupported(RemoteFileNode.REMOTEFILENODE) ||
-       e.isDataFlavorSupported(FileNode.FILENODE))
+       e.isDataFlavorSupported(FileNode.FILENODE) ||
+       e.isDataFlavorSupported(DataFlavor.stringFlavor) )
       e.acceptDrag(DnDConstants.ACTION_COPY_OR_MOVE);
   }
 
@@ -369,7 +377,25 @@ class DragJTable extends JTable implements DragGestureListener,
         e.rejectDrop();
       }
     }
+    else if(t.isDataFlavorSupported(DataFlavor.stringFlavor))
+    {
+      System.out.println("HERE DataFlavor.stringFlavor");
+    }
+    else if(t.isDataFlavorSupported(SequenceData.SEQUENCEDATA))
+    {
+      try
+      {
+        SequenceData seqData = (SequenceData)
+           t.getTransferData(SequenceData.SEQUENCEDATA);
+        System.out.println(seqData.s_name);
+        System.out.println(seqData.s_beg);
+      }
+      catch (UnsupportedFlavorException ufe){}
+      catch (IOException ioe){}
+    }
+
   }
+
 
   public void insertData(SequenceListTableModel seqModel, Point ploc,
                          String fileName, Boolean bremote)
@@ -391,6 +417,7 @@ class DragJTable extends JTable implements DragGestureListener,
   public void dropActionChanged(DropTargetDragEvent e) {}
   public void dragExit(DropTargetEvent e){}
 
+
 }
 
 /**
@@ -409,48 +436,6 @@ class ColumnData
     this.width = width;
     this.alignment = alignment;
   }
-}
-
-/**
-*
-* Content of each row in the DragJTable
-*
-*/
-class SequenceData
-{
-  public String s_name;       //seq location
-  public String s_beg;        //seq start
-  public String s_end;        //seq end
-  public Boolean s_default;   //use as the default
-  public Boolean s_remote;    //file on remote file system
-  public Boolean s_listFile;  //sequence list file
-
-  public SequenceData()
-  {
-    s_name = new String();
-    s_beg = new String();
-    s_end = new String();
-    s_default = new Boolean(false);
-    s_remote = new Boolean(false);
-    s_listFile = new Boolean(false);
-  }
-
-  public SequenceData(String name, String beg, String end,
-                      Boolean lis, Boolean def, Boolean remote)
-  {
-    s_name = name;
-    s_beg = beg;
-    s_end = end;
-    s_default = def;
-    s_listFile = lis;
-    s_remote = remote;
-  }
-
-  public String getSequenceName()
-  {
-    return s_name;
-  }
-
 }
 
 
@@ -501,6 +486,12 @@ class SequenceListTableModel extends AbstractTableModel
     
   }
   
+
+  public SequenceData getSequenceData(int nrow)
+  {
+    return (SequenceData)modelVector.get(nrow);
+  }
+
   public int getRowCount()
   {
     return modelVector==null ? 0 : modelVector.size();
