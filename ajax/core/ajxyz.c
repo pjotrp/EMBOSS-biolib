@@ -1045,6 +1045,8 @@ void ajXyzPdbDel(AjPPdb *thys)
     
     for(i=0;i<nc;++i)
 	ajXyzChainDel(&pthis->Chains[i]);
+    AJFREE(pthis->Chains);
+
     AJFREE(pthis);
     pthis=NULL;
 
@@ -1073,6 +1075,7 @@ void ajXyzChainDel(AjPChain *thys)
     while(ajListPop(pthis->Atoms,(void **)&atm))
 	ajXyzAtomDel(&atm);
 
+    ajStrDel(&pthis->Seq);
     ajListDel(&pthis->Atoms);
 
     AJFREE(pthis);
@@ -2840,7 +2843,6 @@ AjBool ajXyzCpdbWriteDomain(AjPFile errf, AjPFile outf, AjPPdb pdb, AjPScop scop
     
 
     /* Tidy up*/
-    ajListIterFree(iter);	    
     ajStrDel(&seq);
     ajStrDel(&tmpseq);
     
@@ -3620,7 +3622,7 @@ AjBool ajXyzPrintPdbSeqresDomain(AjPFile errf, AjPFile outf, AjPPdb pdb,
 
 
     /* Tidy up*/
-    ajListIterFree(iter);			
+
     ajStrDel(&tmp1);
     ajStrDel(&tmp2);
 
