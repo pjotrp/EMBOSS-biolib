@@ -132,8 +132,9 @@ public class Jemboss implements ActionListener
 
     f = new JFrame("Jemboss");
 
-    // set the working dir
-    if(!withSoap)
+    // set to the working dir
+    if(!withSoap &&
+       mysettings.getUserHome().equals(System.getProperty("user.home")))
     {
       mysettings.setUserHome(System.getProperty("user.dir"));
       if(mysettings.getDebug())
