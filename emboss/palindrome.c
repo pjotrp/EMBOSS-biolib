@@ -228,11 +228,8 @@ int main(int argc, char **argv)
 			    {
 				if(palindrome_Longer(ppal, pnext))
 				{
-				    ajDebug("swap...\n");
 				    palindrome_Swap(ppal, pnext);
 				}
-				else
-				    ajDebug("keep...\n");
 
 				found = AJTRUE;
 				break;
@@ -465,7 +462,7 @@ static void palindrome_Print(AjPFile outfile,
     ajint i;
     ajint j;
 
-    if(pal->forwardEnd - pal->forwardStart +1 > maxLen)
+    if(pal->forwardEnd - pal->forwardStart > maxLen)
 	return;
 
     ajFmtPrintF(outfile, "%-5d ", (pal->forwardStart+1));
