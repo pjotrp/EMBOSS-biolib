@@ -148,6 +148,7 @@ sub runtest ($) {
 	  "diffseq" => "diffseq tembl:hsfau tembl:hsfau1 -auto",
 	  "descseq" => "descseq -desc 'Test' tsw:opsd_human -auto",
 	  "degapseq" => "degapseq $ENV{EPURE}/../test/data/globins.msf -auto",
+	  "dbigcg2" => "dbigcg -dir $ENV{EPURE}/../test/pir -file '*.seq' -index . -id pir -db pir -auto",
 	  "dbigcg" => "dbigcg -dir $ENV{EPURE}/../test/embl -file '*.seq' -index . -id embl -db embl -auto",
 	  "dbiflat" => "dbiflat -dir $ENV{EPURE}/../test/swiss -file seq.dat -index . -id swiss -db swiss -auto",
 	  "dbifasta" => "dbifasta -dir $ENV{EPURE}/../test/wormpep -file wormpep -index . -id idacc -db worm -auto",
