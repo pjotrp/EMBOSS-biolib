@@ -48,6 +48,7 @@ void ajRegSubC (AjPRegexp rp, const char* source, AjPStr* dest);
 void ajRegFree (AjPRegexp* pexp);
 void ajRegTrace (AjPRegexp exp);
 
+void ajRegExit (void);
 #endif
 
 #ifdef __cplusplus
