@@ -59,6 +59,7 @@ public class SequenceList extends JFrame
             SequenceListTableModel.modelColumns[i].title);
       column.setPreferredWidth(
              SequenceListTableModel.modelColumns[i].width);
+
     }
 
     JMenuItem openMenuItem = new JMenuItem("Open");
@@ -68,7 +69,7 @@ public class SequenceList extends JFrame
       {
         int nrow = table.getSelectedRow();
         String fileName = (String)table.getValueAt(nrow,
-                         SequenceListTableModel.COL_NAME);
+                table.convertColumnIndexToView(SequenceListTableModel.COL_NAME));
         System.out.println("FILE NAME IS " +fileName);
         SequenceData row = (SequenceData)seqModel.modelVector.elementAt(nrow);
         if(!(row.s_remote.booleanValue()))
@@ -86,9 +87,16 @@ public class SequenceList extends JFrame
     scrollpane.setSize(300,100);
     getContentPane().add(scrollpane, BorderLayout.CENTER);
 
-    JPanel buttonPanel = new JPanel(new FlowLayout());
-   
-    JButton addSeq = new JButton("Add sequence");
+    JMenuBar menuPanel = new JMenuBar();
+    new BoxLayout(menuPanel,BoxLayout.X_AXIS);
+    setJMenuBar(menuPanel);
+
+    JMenu fileMenu = new JMenu("File");
+    menuPanel.add(fileMenu);
+    JMenu toolMenu = new JMenu("Tools");
+    menuPanel.add(toolMenu);
+
+    JMenuItem addSeq = new JMenuItem("Add sequence");
     addSeq.addActionListener(new ActionListener()
     {
       public void actionPerformed(ActionEvent e)
@@ -100,9 +108,9 @@ public class SequenceList extends JFrame
 //      table.repaint();
       }
     });
-    buttonPanel.add(addSeq);
+    toolMenu.add(addSeq);
 
-    JButton deleteSeq = new JButton("Delete  sequence");
+    JMenuItem deleteSeq = new JMenuItem("Delete  sequence");
     deleteSeq.addActionListener(new ActionListener()
     {
       public void actionPerformed(ActionEvent e)
@@ -116,9 +124,32 @@ public class SequenceList extends JFrame
         }
       }
     });
-    buttonPanel.add(deleteSeq);
+    toolMenu.add(deleteSeq);
+ 
+    JMenuItem ajaxSeq = new JMenuItem("Calculate sequence attributes");
+    ajaxSeq.addActionListener(new ActionListener()
+    {
+      public void actionPerformed(ActionEvent e)
+      {
+        System.out.println("CALLING AJAX");
+      }
+    });
+    toolMenu.add(ajaxSeq);
 
-    JButton closeFrame = new JButton("Close");
+
+    JMenuItem reset = new JMenuItem("Reset Table");
+    reset.addActionListener(new ActionListener()
+    {
+      public void actionPerformed(ActionEvent e)
+      {
+        seqModel.setDefaultData();
+      }
+    });
+    fileMenu.add(reset);
+
+    fileMenu.addSeparator();
+
+    JMenuItem closeFrame = new JMenuItem("Close");
     closeFrame.addActionListener(new ActionListener()
     {
       public void actionPerformed(ActionEvent e)
@@ -126,9 +157,8 @@ public class SequenceList extends JFrame
         setVisible(false);
       }
     });
-    buttonPanel.add(closeFrame);
+    fileMenu.add(closeFrame);
 
-    getContentPane().add(buttonPanel, BorderLayout.SOUTH);
   }
 
   class PopupListener extends MouseAdapter 
@@ -152,19 +182,21 @@ public class SequenceList extends JFrame
 }
 
 
+
 class DragJTable extends JTable implements DragGestureListener,
                            DragSourceListener, DropTargetListener
 {
 
   private SequenceListTableModel seqModel;
+
   public DragJTable(SequenceListTableModel seqModel)
   {
     super();
     this.seqModel = seqModel;
     DragSource dragSource = DragSource.getDefaultDragSource();
     dragSource.createDefaultDragGestureRecognizer(
-           this,                             // component where drag originates
-           DnDConstants.ACTION_COPY_OR_MOVE, // actions
+           this,                            // component where drag originates
+           DnDConstants.ACTION_COPY,        // actions
            this);
     setDropTarget(new DropTarget(this,this));
   }
@@ -172,12 +204,24 @@ class DragJTable extends JTable implements DragGestureListener,
 // drag source
   public void dragGestureRecognized(DragGestureEvent e)
   {
+    Point p = e.getDragOrigin();
+    int ncol = columnAtPoint(p);
+    if(ncol == convertColumnIndexToView(SequenceListTableModel.COL_NAME))
+      e.startDrag(DragSource.DefaultCopyDrop,                // cursor
+         new StringSelection(getFileName(getSelectedRow())), // transferable data
+                                     this);                  // drag source listener
   }
   public void dragDropEnd(DragSourceDropEvent e) {}
   public void dragEnter(DragSourceDragEvent e) {}
   public void dragExit(DragSourceEvent e) {}
   public void dragOver(DragSourceDragEvent e) {}
   public void dropActionChanged(DragSourceDragEvent e) {}
+
+  public String getFileName(int row)
+  {
+    return (String)seqModel.getValueAt(row,
+                  SequenceListTableModel.COL_NAME);
+  }
 
 // drop sink
   public void dragEnter(DropTargetDragEvent e)
@@ -223,7 +267,6 @@ class DragJTable extends JTable implements DragGestureListener,
                          String fileName, Boolean bremote)
   {
     int row = rowAtPoint(ploc);
-    seqModel.insertRow(row);
     seqModel.modelVector.insertElementAt(new SequenceData(fileName,"","",
                                    new Boolean(false),bremote),row);
 
