@@ -15662,43 +15662,43 @@ IN _summary
 IN _classplot
 FI _rocplot       
 FC > 0
-FP 1 GNUPLOT
+FP 1 /GNUPLOT/
 FZ > 0
 FI _rocplot_dat0
 FC > 0
-FP 1 GNUPLOT
+FP 1 /GNUPLOT/
 FZ > 0
 FI _classplot      
 FC > 0
-FP 1 GNUPLOT
+FP 1 /GNUPLOT/
 FZ > 0
 FI _classplot_dat0 
 FC > 0
-FP 1 GNUPLOT
+FP 1 /GNUPLOT/
 FZ > 0
 FI _classplot_dat1 
 FC > 0
-FP 1 GNUPLOT
+FP 1 /GNUPLOT/
 FZ > 0
 FI _classplot_dat2 
 FC > 0
-FP 1 GNUPLOT
+FP 1 /GNUPLOT/
 FZ > 0
 FI _classplot_dat3 
 FC > 0
-FP 1 GNUPLOT
+FP 1 /GNUPLOT/
 FZ > 0
 FI _classplot_dat4 
 FC > 0
-FP 1 GNUPLOT
+FP 1 /GNUPLOT/
 FZ > 0
 FI _summary
 FC > 0
-FP 1 rocplot
+FP 1 /rocplot/
 FZ > 0
 FI  rocplot.errors
 FC > 0
-FP 1 MODE
+FP 1 /MODE/
 FZ > 0
 //
 
