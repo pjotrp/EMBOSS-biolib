@@ -50,6 +50,7 @@ public class ListFile
     String lfn = trim(fn);
     File inFile = new File(lfn);
 
+
     if((inFile.exists() && inFile.canRead() && inFile.isFile()) 
         || fn.startsWith("internalList::")) 
     {
@@ -111,7 +112,7 @@ public class ListFile
           }
         }
 	
-        filesToMove.put(sfs,listfile);   // add list file itself
+        filesToMove.put(sfs,listfile.getBytes());   // add list file itself
       }
       catch (IOException e) {}
     } 
@@ -134,22 +135,8 @@ public class ListFile
       String spf = pf.getSafeFileName();
 
       if(!filesToMove.containsKey(spf))   // read if we haven't already
-      {
-        try
-        {
-          BufferedReader fin = new BufferedReader(new FileReader(pFile));
-          String ftext = "";
-          String fline;
-          while((fline = fin.readLine()) != null)
-            ftext = ftext.concat(fline+"\n");
-
-          filesToMove.put(spf,ftext);
-        }
-        catch (IOException e)
-        {
-          System.out.println("ListFile: Error reading list file " + line);
-        }
-      }
+          filesToMove.put(spf,getLocalFile(pFile));
+      
       // add the server reference to the listfile
       listfile = listfile.concat(spf+"\n");
     }
@@ -159,6 +146,30 @@ public class ListFile
     }
     return listfile;
   }
+
+/**
+*
+* Read file in as a byte array.
+*
+*/
+  private static byte[] getLocalFile(File name)
+  {
+    byte[] b = null;
+    try
+    {
+      long s = name.length();
+      b = new byte[(int)s];
+      FileInputStream fi = new FileInputStream(name);
+      fi.read(b);
+      fi.close();
+    }
+    catch (IOException ioe)
+    {
+      System.out.println("Cannot read file: " + name);
+    }
+    return b;
+  }
+
 
 /**
 *
