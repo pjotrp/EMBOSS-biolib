@@ -38,10 +38,11 @@
 ** All permutations of pair-wise sequence alignments are calculated for each 
 ** scop family in turn using the EMBOSS implementation of the Needleman and 
 ** Wunsch global alignment algorithm.  If a pair of proteins achieve greater 
-** than a threshold percentage sequence identity (specified by the user) the 
+** than a threshold percentage sequence similarity (specified by the user) the 
 ** shortest sequence is discarded.  The user must specify gap insertion and 
 ** extension penalties and a residue substitution matrix for use in the 
-** alignments. 
+** alignments.  % sequence similarity is calculated by using the EMBOSS 
+** function embAlignCalcSimilarity.
 **
 ** nrscope generates a log file an excerpt of which is shown (Figure 1). The 
 ** first two lines describe the level in the scop hierarchy at which redundancy 
