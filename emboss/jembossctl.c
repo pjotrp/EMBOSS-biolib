@@ -788,7 +788,8 @@ static AjBool jctl_up(char *buf, int *uid, int *gid, AjPStr *home)
     AjPStr cstr=NULL;
     ajint command;
     AjBool ok=ajFalse;
-
+    char *p=NULL;
+    
     username = ajStrNew();
     password = ajStrNew();
     cstr     = ajStrNew();
@@ -807,6 +808,16 @@ static AjBool jctl_up(char *buf, int *uid, int *gid, AjPStr *home)
 	ajStrDel(&cstr);
 	return ajFalse;
     }
+    
+
+    p = ajStrStr(cstr);
+    while(*p!=' ')
+	++p;
+    ++p;
+    while(*p!=' ')
+	++p;
+    ++p;
+    ajStrAssC(&password,p);
     
     
 #ifndef NO_AUTH
