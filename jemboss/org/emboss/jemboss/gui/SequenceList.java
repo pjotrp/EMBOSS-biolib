@@ -55,7 +55,7 @@ public class SequenceList extends JFrame
   public SequenceList(final boolean withSoap,final EmbreoParams mysettings)
   {
     super("Sequence List");
-    setSize(400,200);
+    setSize(400,155);
     seqModel = new SequenceListTableModel();
     table = new DragJTable(seqModel);
     table.setModel(seqModel);
