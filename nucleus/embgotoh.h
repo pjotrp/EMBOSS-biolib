@@ -57,10 +57,10 @@ typedef struct AjGotohCell
 /* =================== All functions in alphabetical order ================= */
 /* ========================================================================= */
 
-/* ajgotoh.h() $Date: 2004/06/21 14:06:21 $                        DJC Oct03 */
+/* ajgotoh.h() $Date: 2004/06/24 22:16:55 $                        DJC Oct03 */
 
-AjPGotohCell **embGotohCellGetArray(ajint ajIntDownSeqLen,
-				    ajint ajIntCrossSeqLen);
+AjPGotohCell** const embGotohCellGetArray(ajint ajIntDownSeqLen,
+					  ajint ajIntAcrossSeqLen);
     
 
 AjPGotohCell   embGotohCellCreate(ajint ajIntRow, ajint ajIntColumn,
@@ -78,12 +78,12 @@ AjPFloat2d     embGotohPairScore(const AjPMatrixf ajpMatrixFscoring,
 				 const AjPSeq ajpSeqAcross,
 				 float fExtensionPenalty);
 
-void      embGotohCellCalculateSumScore(const AjPFloat2d ajpFloat2dPairScores,
-					const AjPSeq ajpSeqDown,
-					const AjPSeq ajpSeqAcross,
-					AjPGotohCell **ajpGotohCellGotohScores,
-					float fGapPenalty,
-					float fExtensionPenalty);
+void embGotohCellCalculateSumScore(const AjPFloat2d ajpFloat2dPairScores,
+				   const AjPSeq ajpSeqDown,
+				   const AjPSeq ajpSeqAcross,
+				   AjPGotohCell const **ajpGotohCellGotohScores,
+				   float fGapPenalty,
+				   float fExtensionPenalty);
 
 ajint   embGotohCellBacktrace(AjPGotohCell const **ajpGotohCellGotohScores,
 			      const AjPSeq ajpSeqDown,
