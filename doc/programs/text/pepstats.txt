@@ -50,7 +50,7 @@ Usage
 
 % pepstats 
 Protein statistics
-Input sequence: tsw:laci_ecoli
+Input sequence(s): tsw:laci_ecoli
 Output file [laci_ecoli.pepstats]: 
    
    Go to the input files for this example
@@ -59,7 +59,7 @@ Output file [laci_ecoli.pepstats]:
 Command line arguments
 
    Mandatory qualifiers:
-  [-sequence]          sequence   Sequence USA
+  [-sequence]          seqall     Sequence database USA
    -outfile            outfile    Output file name
 
    Optional qualifiers: (none)
@@ -105,7 +105,7 @@ Command line arguments
 
    Mandatory qualifiers Allowed values Default
    [-sequence]
-   (Parameter 1) Sequence USA Readable sequence Required
+   (Parameter 1) Sequence database USA Readable sequence(s) Required
    -outfile Output file name Output file <sequence>.pepstats
    Optional qualifiers Allowed values Default
    (none)
