@@ -228,30 +228,31 @@ public class JembossAuthServer
 * @return sequence length, weight & type (protein/nucleotide)
 *
 */
-  public Vector call_ajax(String fileContent, String seqtype)
+  public Vector call_ajax(String fileContent, String seqtype,
+                          String userName, byte[] passwd)
   {
-    boolean afile = false;
-    String fn = null;
-    File tf = null;
 
     Vector vans = new Vector();
+    Ajax aj = new Ajax();
+    if(!verifyUser(aj,userName,passwd,vans))
+      return vans;
+
+    boolean afile = false;
+    String fn = null;
 
     // create temporary file
     if( ((fileContent.indexOf(":") < 0) || 
          (fileContent.indexOf("\n") > 0) ) &&
        !((new File(fileContent)).exists()) ) 
     {
-      afile = true;
       try
       {
-        tf = File.createTempFile("tmp",".jembosstmp", tmprootDir);
-        PrintWriter out = new PrintWriter(new FileWriter(tf));
-        out.println(fileContent);
-        out.close();
-    
-        fn = new String(tf.getCanonicalPath());
+        fn = tmproot+fs+userName+fs+".jembosstmp";
+        boolean ok = aj.putFile(userName,passwd,environ,
+                             fn,fileContent.getBytes());
+        afile = true;
       }
-      catch (IOException ioe) 
+      catch (Exception ioe) 
       {
         appendToLogFile("IOException: call_ajax creating tmp.jembosstmp",
                          errorLog);
@@ -264,6 +265,102 @@ public class JembossAuthServer
     {
       fn = fileContent;     //looks like db entry or local file name
     }
+
+    boolean ok = false;
+    if( ((new File(fn)).exists()) ||    //call ajax if sequence file
+         (fn.indexOf(":") > 0) )        //or db
+    {
+      try
+      {
+        if(seqtype.startsWith("seqset"))
+          ok = aj.seqsetAttrib(userName,passwd,environ,fn);
+        else
+          ok = aj.seqAttrib(userName,passwd,environ,fn);
+      }
+      catch (Exception e)
+      {
+        appendToLogFile("Exception: call_ajax status not ok",
+                         errorLog);
+        vans.add("status");
+        vans.add("1");
+        return vans;
+      }
+    }
+
+    if(afile)
+      aj.delFile(userName,passwd,environ,fn);
+
+    for(int i=0;i<passwd.length;i++)
+      passwd[i] = '\0';
+
+    if(ok)
+    {
+//    System.out.println("STATUS OK");
+      vans.add("length");
+      vans.add(new Integer(aj.length_soap));
+      vans.add("protein");
+      vans.add(new Boolean(aj.protein_soap));
+      vans.add("weight");
+      vans.add(new Float(aj.weight_soap));
+      vans.add("status");
+      vans.add("0");
+    }
+    else
+    {
+      appendToLogFile("Error: call_ajax status not ok",
+                         errorLog);
+      vans.add("status");
+      vans.add("1");
+    }
+
+    return vans;
+  }
+
+
+/**
+*
+* Uses JNI to calculate sequence attributes using EMBOSS library call. 
+* @param sequence filename or database entry
+* @return sequence length, weight & type (protein/nucleotide)
+*
+*/
+  public Vector call_ajax(String fileContent, String seqtype)
+  {
+    boolean afile = false;
+    String fn = null;
+    File tf = null;
+
+    Vector vans = new Vector();
+
+    // create temporary file
+    if( ((fileContent.indexOf(":") < 0) ||
+         (fileContent.indexOf("\n") > 0) ) &&
+       !((new File(fileContent)).exists()) )
+    {
+      afile = true;
+      try
+      {
+        tf = File.createTempFile("tmp",".jembosstmp", tmprootDir);
+        PrintWriter out = new PrintWriter(new FileWriter(tf));
+        out.println(fileContent);
+        out.close();
+
+        fn = new String(tf.getCanonicalPath());
+      }
+      catch (IOException ioe)
+      {
+        appendToLogFile("IOException: call_ajax creating tmp.jembosstmp",
+                         errorLog);
+        vans.add("status");
+        vans.add("1");
+        return vans;
+      }
+    }
+    else
+    {
+      fn = fileContent;     //looks like db entry or local file name
+    }
+
 
     boolean ok = false;
     Ajax aj = null;
