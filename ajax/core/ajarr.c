@@ -1747,6 +1747,7 @@ float* ajArrFloatLine(AjPStr *line, const char *delim, ajint cols,
     ajint ncols;
     ajint i;
 
+    ajStrClean(line);
 
     t     = ajStrTokenInit(*line, delim);
     tmp   = ajStrNew();
