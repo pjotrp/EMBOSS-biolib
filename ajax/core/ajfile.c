@@ -3112,8 +3112,6 @@ char *ajFileTempName(const char *dir)
     AjBool  ok;
     AjPFile outf;
     
-    ajRandomSeed();
-
     if(!dt)
 	dt     = ajStrNew();
 
