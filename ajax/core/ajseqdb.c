@@ -39,24 +39,69 @@
 
 static AjBool seqCdReverse = AJFALSE;
 
+/* @datastatic SeqPCdDiv ******************************************************
+**
+** EMBLCD division file record structure
+**
+** @alias SeqSCdDiv
+** @alias SeqOCdDiv
+**
+** @attr DivCode [ajint] Division code
+** @attr FileName [AjPStr] Filename(s)
+** @@
+******************************************************************************/
+
 typedef struct SeqSCdDiv
 {
   ajint DivCode;
   AjPStr FileName;
 } SeqOCdDiv, *SeqPCdDiv;
 
+/* @datastatic SeqPCdEntry ****************************************************
+**
+** EMBLCD entrynam.idx file record structure
+**
+** @alias SeqSCdEntry
+** @alias SeqOCdEntry
+**
+** @attr div [ajint] division file record
+** @attr annoff [ajint] data file offset
+** @attr seqoff [ajint] sequence file offset (if any)
+** @@
+******************************************************************************/
+
 typedef struct SeqSCdEntry
 {
   ajint div;
   ajint annoff;
   ajint seqoff;
-} *SeqPCdEntry;
+} SeqOCdEntry, *SeqPCdEntry;
 
-typedef  struct SeqSCdFHeader
+/* @datastatic SeqPCdFHeader **************************************************
+**
+** EMBLCD index file header structure, same for all index files.
+**
+** @alias SeqSCdFHeader
+** @alias SeqOCdFHeader
+**
+** @attr FileSize [ajuint] Index file size
+** @attr NRecords [ajuint] Index record count
+** @attr IdSize [ajuint] Index string length
+** @attr RelDay [ajint] Release date - day
+** @attr RelMonth [ajint] Release date - month
+** @attr RelYear [ajint] Release date - year
+** @attr RecSize [short] Record size
+** @attr DbName [char[24]] Database name
+** @attr Release [char[12]] Release name/number
+** @attr Date [char[4]] Data as read - 4 bytes
+** @@
+******************************************************************************/
+
+typedef struct SeqSCdFHeader
 {
-  ajint FileSize;
-  ajint NRecords;
-  ajint IdSize;
+  ajuint FileSize;
+  ajuint NRecords;
+  ajuint IdSize;
   ajint RelDay;
   ajint RelMonth;
   ajint RelYear;
@@ -66,6 +111,20 @@ typedef  struct SeqSCdFHeader
   char Date[4];
 } SeqOCdFHeader, *SeqPCdFHeader;
 
+/* @datastatic SeqPCdFile *****************************************************
+**
+** EMBLCD file data structure
+**
+** @alias SeqSCdFile
+** @alias SeqOCdFile
+**
+** @attr Header [SeqPCdFHeader] Header data
+** @attr File [AjPFile] File
+** @attr NRecords [ajint] Number of records
+** @attr RecSize [ajint] Record length (for calculating record offsets)
+** @@
+******************************************************************************/
+
 typedef struct SeqSCdFile
 {
   SeqPCdFHeader Header;
@@ -74,26 +133,105 @@ typedef struct SeqSCdFile
   ajint RecSize;
 } SeqOCdFile, *SeqPCdFile;
 
+/* @datastatic SeqPCdHit ******************************************************
+**
+** EMBLCD hit file record structure
+**
+** @alias SeqSCdHit
+** @alias SeqOCdHit
+**
+** @attr NHits [ajuint] Number of hits in HitList array
+** @attr HitList [ajuint*] Array of hits, as record numbers in the
+**                         entrynam file
+** @@
+******************************************************************************/
+
 typedef struct SeqSCdHit
 {
-  ajint NHits;
-  ajint* HitList;
+  ajuint NHits;
+  ajuint* HitList;
 } SeqOCdHit, *SeqPCdHit;
+
+/* @datastatic SeqPCdIdx ******************************************************
+**
+** EMBLCD entryname index file record structure
+**
+** @alias SeqSCdIdx
+** @alias SeqOCdIdx
+**
+** @attr AnnOffset [ajuint] Data file offset (see DivCode)
+** @attr SeqOffset [ajuint] Sequence file offset (if any) (see DivCode)
+** @attr EntryName [AjPStr] Entry ID - the file is sorted by these
+** @attr DivCode [short] Division file record
+** @@
+******************************************************************************/
 
 typedef struct SeqSCdIdx
 {
-  ajint AnnOffset;
-  ajint SeqOffset;
+  ajuint AnnOffset;
+  ajuint SeqOffset;
   AjPStr EntryName;
   short DivCode;
 } SeqOCdIdx, *SeqPCdIdx;
 
+/* @datastatic SeqPCdTrg ******************************************************
+**
+** EMBLCD target (,trg) file record structure
+**
+** @alias SeqSCdTrg
+** @alias SeqOCdTrg
+**
+** @attr FirstHit [ajuint] First hit record in .hit file
+** @attr NHits [ajuint] Number of hit records in .hit file
+** @attr Target [AjPStr] Indexed target string (the file is sorted by these)
+** @@
+******************************************************************************/
+
 typedef struct SeqSCdTrg
 {
-  ajint FirstHit;
-  ajint NHits;
+  ajuint FirstHit;
+  ajuint NHits;
   AjPStr Target;
 } SeqOCdTrg, *SeqPCdTrg;
+
+/* @datastatic SeqPCdQry ******************************************************
+**
+** EMBLCD query structure
+**
+** @alias SeqSCdQry
+** @alias SeqOCdQry
+**
+** @attr divfile [AjPStr] division.lkp
+** @attr idxfile [AjPStr] entryname.idx
+** @attr datfile [AjPStr] main data reference
+** @attr seqfile [AjPStr] sequence
+** @attr tblfile [AjPStr] BLAST table
+** @attr srcfile [AjPStr] BLAST FASTA source data
+** @attr dfp [SeqPCdFile] division.lkp
+** @attr ifp [SeqPCdFile] entryname.idx
+** @attr trgfp [SeqPCdFile] acnum.trg
+** @attr hitfp [SeqPCdFile] acnum.hit
+** @attr trgLine [SeqPCdTrg]acnum input line
+** @attr name [char*] filename from division.lkp
+** @attr nameSize [ajint] division.lkp filename length
+** @attr div [ajint] current division number
+** @attr maxdiv [ajint] max division number
+** @attr type [ajint] BLAST type
+** @attr idnum [ajint] current BLAST entry offset
+** @attr libr [AjPFile] main data reference or BLAST header
+** @attr libs [AjPFile] sequence or BLAST compressed sequence
+** @attr libt [AjPFile] blast table
+** @attr libf [AjPFile] blast FASTA source data
+** @attr TopHdr [ajint] BLAST table headers offset
+** @attr TopCmp [ajint] BLAST table sequence offset
+** @attr TopAmb [ajint] BLAST table ambiguities offset
+** @attr TopSrc [ajint] BLAST table FASTA source offset
+** @attr Size [ajint] BLAST database size
+** @attr List [AjPList] list of entries
+** @attr Skip [AjBool*] skip file(s) in division.lkp
+** @attr idxLine [SeqPCdIdx] entryname.idx input line
+** @@
+******************************************************************************/
 
 typedef struct SeqSCdQry
 {
@@ -110,8 +248,8 @@ typedef struct SeqSCdQry
   SeqPCdFile hitfp;		/* acnum.hit */
   SeqPCdTrg trgLine;		/* acnum input line */
 
-  char *name;			/* filename from division.lkp */
-  ajint nameSize;			/* division.lkp filename length */
+  char* name;			/* filename from division.lkp */
+  ajint nameSize;		/* division.lkp filename length */
   ajint div;			/* current division number */
   ajint maxdiv;			/* max division number */
 
@@ -130,9 +268,9 @@ typedef struct SeqSCdQry
   ajint Size;			/* BLAST database size */
 
   AjPList List;			/* list of entries */
-  AjBool *Skip;			/* skip file(s) in division.lkp */
+  AjBool* Skip;			/* skip file(s) in division.lkp */
   SeqPCdIdx idxLine;		/* entryname.idx input line */
-} *SeqPCdQry;
+} SeqOCdQry, *SeqPCdQry;
 
 static AjBool     seqAccessApp (AjPSeqin seqin);
 static AjBool     seqAccessBlast (AjPSeqin seqin);
@@ -167,9 +305,10 @@ static size_t     seqCdFileReadName (char* name, size_t namesize,
 				     SeqPCdFile thys);
 static size_t     seqCdFileReadShort (short* i, SeqPCdFile thys);
 static void       seqCdFileClose (SeqPCdFile *thys);
-static ajint      seqCdFileSeek (SeqPCdFile fil, ajint ipos);
-static void       seqCdIdxLine (SeqPCdIdx idxLine,  ajint ipos, SeqPCdFile fp);
-static char*      seqCdIdxName (ajint ipos, SeqPCdFile fp);
+static ajint      seqCdFileSeek (SeqPCdFile fil, ajuint ipos);
+static void       seqCdIdxLine (SeqPCdIdx idxLine,  ajuint ipos,
+				SeqPCdFile fp);
+static char*      seqCdIdxName (ajuint ipos, SeqPCdFile fp);
 static AjBool     seqCdIdxQuery (AjPSeqQuery qry);
 static ajint      seqCdIdxSearch (SeqPCdIdx idxLine, AjPStr entry,
 				  SeqPCdFile fp);
@@ -182,8 +321,8 @@ static AjBool     seqCdQryQuery (AjPSeqQuery qry);
 static AjBool     seqCdQryReuse (AjPSeqQuery qry);
 static AjBool     seqCdReadHeader (SeqPCdFile fp);
 static AjBool     seqCdTrgClose (SeqPCdFile *trgfil, SeqPCdFile *hitfil);
-static void       seqCdTrgLine (SeqPCdTrg trgLine, ajint ipos, SeqPCdFile fp);
-static char*      seqCdTrgName (ajint ipos, SeqPCdFile fp);
+static void       seqCdTrgLine (SeqPCdTrg trgLine, ajuint ipos, SeqPCdFile fp);
+static char*      seqCdTrgName (ajuint ipos, SeqPCdFile fp);
 static AjBool     seqCdTrgOpen (AjPStr dir, char* name,
 			    SeqPCdFile *trgfil, SeqPCdFile *hitfil);
 static AjBool     seqCdTrgQuery (AjPSeqQuery qry);
@@ -557,16 +696,21 @@ static SeqPCdFile seqCdFileOpen (AjPStr dir, char* name, AjPStr* fullname)
 ** Sets the file position in an EMBL CD-ROM index file.
 **
 ** @param [r] fil [SeqPCdFile] EMBL CD-ROM index file object.
-** @param [r] ipos [ajint] Offset.
+** @param [r] ipos [ajuint] Offset.
 ** @return [ajint] Return value from the seek operation.
 ** @@
 ******************************************************************************/
 
 
-static ajint seqCdFileSeek (SeqPCdFile fil, ajint ipos)
+static ajint seqCdFileSeek (SeqPCdFile fil, ajuint ipos)
 {
     ajint ret;
-    ret = ajFileSeek(fil->File, 300 + ipos*fil->RecSize, 0);
+    ajuint jpos;
+
+    jpos = 300 + ipos*fil->RecSize;
+    ret = ajFileSeek(fil->File, jpos, 0);
+    ajDebug("seqCdFileSeek rec %u pos %u tell %ld returns %d\n",
+	    ipos, jpos, ajFileTell(fil->File), ret);
 
     return ret;
 }
@@ -608,9 +752,10 @@ static size_t seqCdFileReadName (char* name, size_t namesize,
     size_t ret;
     char* sp;
 
+    ajDebug("seqCdFileReadName pos %ld\n", ajFileTell(thys->File));
     ret =  ajFileRead (name, namesize, 1, thys->File);
 
-    ajDebug("seqCdFileReadName was '%s'\n", name);
+    ajDebug("seqCdFileReadName was '%s' ret %d\n", name, ret);
 
     name[namesize] = '\0';
     sp = &name[strlen(name)];
@@ -710,9 +855,9 @@ static void seqCdFileClose (SeqPCdFile* pthis)
 static ajint seqCdIdxSearch (SeqPCdIdx idxLine, AjPStr entry, SeqPCdFile fil)
 {
     AjPStr entrystr = NULL;
-    ajint ihi;
-    ajint ilo;
-    ajint ipos=0;
+    ajuint ihi;
+    ajuint ilo;
+    ajuint ipos=0;
     ajint icmp=0;
     char *name;
 
@@ -728,7 +873,7 @@ static ajint seqCdIdxSearch (SeqPCdIdx idxLine, AjPStr entry, SeqPCdFile fil)
 	ipos = (ilo + ihi)/2;
 	name = seqCdIdxName (ipos, fil);
 	icmp = ajStrCmpC(entrystr, name);
-	ajDebug ("idx test %d '%s' %2d (+/- %d)\n", ipos, name, icmp, ihi-ilo);
+	ajDebug ("idx test %u '%s' %2d (+/- %u)\n", ipos, name, icmp, ihi-ilo);
 	if (!icmp) break;
 	if (icmp < 0)
 	    ihi = ipos-1;
@@ -767,9 +912,9 @@ static AjBool seqCdIdxQuery (AjPSeqQuery qry)
 
     AjPStr idstr = NULL;
     AjPStr idpref = NULL;
-    ajint ihi;
-    ajint ilo;
-    ajint ipos=0;
+    ajuint ihi;
+    ajuint ilo;
+    ajuint ipos=0;
     ajint icmp;
     char *name;
     ajint i;
@@ -938,9 +1083,9 @@ static AjBool seqCdIdxQuery (AjPSeqQuery qry)
 static ajint seqCdTrgSearch (SeqPCdTrg trgLine, AjPStr entry, SeqPCdFile fp)
 {
     AjPStr entrystr = NULL;
-    ajint ihi;
-    ajint ilo;
-    ajint ipos;
+    ajuint ihi;
+    ajuint ilo;
+    ajuint ipos;
     ajint icmp;
     ajint itry;
     char *name;
@@ -995,13 +1140,13 @@ static ajint seqCdTrgSearch (SeqPCdTrg trgLine, AjPStr entry, SeqPCdFile fp)
 ** Reads the name from record ipos of an EMBL CD-ROM index file.
 ** The name length is known from the index file object.
 **
-** @param [r] ipos [ajint] Record number.
+** @param [r] ipos [ajuint] Record number.
 ** @param [r] fil [SeqPCdFile] EMBL CD-ROM index file.
 ** @return [char*] Name read from file.
 ** @@
 ******************************************************************************/
 
-static char* seqCdIdxName (ajint ipos, SeqPCdFile fil)
+static char* seqCdIdxName (ajuint ipos, SeqPCdFile fil)
 {
     static char* name = NULL;
     static ajint maxNameSize = 0;
@@ -1028,13 +1173,13 @@ static char* seqCdIdxName (ajint ipos, SeqPCdFile fil)
 ** Reads a numbered record from an EMBL CD-ROM index file.
 **
 ** @param [u] idxLine [SeqPCdIdx] Index file record.
-** @param [r] ipos [ajint] Record number.
+** @param [r] ipos [ajuint] Record number.
 ** @param [r] fil [SeqPCdFile] EMBL CD-ROM index file.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void seqCdIdxLine (SeqPCdIdx idxLine, ajint ipos, SeqPCdFile fil)
+static void seqCdIdxLine (SeqPCdIdx idxLine, ajuint ipos, SeqPCdFile fil)
 {
     static char* name = NULL;
     static ajint maxNameSize = 0;
@@ -1066,13 +1211,13 @@ static void seqCdIdxLine (SeqPCdIdx idxLine, ajint ipos, SeqPCdFile fil)
 **
 ** Reads the target name from an EMBL CD-ROM index target file.
 **
-** @param [r] ipos [ajint] Record number.
+** @param [r] ipos [ajuint] Record number.
 ** @param [r] fil [SeqPCdFile] EMBL CD-ROM index target file.
 ** @return [char*] Name.
 ** @@
 ******************************************************************************/
 
-static char* seqCdTrgName (ajint ipos, SeqPCdFile fil)
+static char* seqCdTrgName (ajuint ipos, SeqPCdFile fil)
 {
     static char* name = NULL;
     static ajint maxNameSize = 0;
@@ -1103,13 +1248,13 @@ static char* seqCdTrgName (ajint ipos, SeqPCdFile fil)
 ** Reads a line from an EMBL CD-ROM index target file.
 **
 ** @param [w] trgLine [SeqPCdTrg] Target file record.
-** @param [r] ipos [ajint] Record number.
+** @param [r] ipos [ajuint] Record number.
 ** @param [r] fil [SeqPCdFile] EMBL CD-ROM index target file.
 ** @return [void].
 ** @@
 ******************************************************************************/
 
-static void seqCdTrgLine (SeqPCdTrg trgLine, ajint ipos, SeqPCdFile fil)
+static void seqCdTrgLine (SeqPCdTrg trgLine, ajuint ipos, SeqPCdFile fil)
 {
     static char* name = NULL;
     static ajint maxNameSize = 0;
@@ -2566,7 +2711,8 @@ static AjBool seqGcgReadSeq (const AjPSeqin seqin)
 	if (ajStrChar(gcgtype, 0) == '2')
 	    rblock = (rblock+3)/4;
 
-	ajFileRead (ajStrStr(seqin->Inseq), 1, rblock, qryd->libs);
+	if (!ajFileRead (ajStrStr(seqin->Inseq), 1, rblock, qryd->libs))
+	  ajFatal ("error reading file %F", qryd->libs);
 
 	if (ajStrChar(gcgtype, 0) == '2')
 	{				/* convert 2bit to ascii */
@@ -2582,7 +2728,8 @@ static AjBool seqGcgReadSeq (const AjPSeqin seqin)
 	    ajFatal ("Unknown GCG entry type '%S', entry name '%S'",
 		     gcgtype, tmpstr);
 	}
-	ajFileGets (qryd->libs, &line); /* newline at end */
+	if (!ajFileGets (qryd->libs, &line)) /* newline at end */
+	  ajFatal ("error reading file %F", qryd->libs);
 
 	if(continued)
 	{
@@ -2611,7 +2758,8 @@ static AjBool seqGcgReadSeq (const AjPSeqin seqin)
 		if (ajStrChar(gcgtype, 0) == '2')
 		    rblock = (rblock+3)/4;
 
-		ajFileRead (ajStrStr(contseq), 1, rblock, qryd->libs);
+		if (!ajFileRead (ajStrStr(contseq), 1, rblock, qryd->libs))
+		  ajFatal ("error reading file %F", qryd->libs);
 
 		if (ajStrChar(gcgtype, 0) == '2')
 		{			/* convert 2bit to ascii */
@@ -2627,7 +2775,8 @@ static AjBool seqGcgReadSeq (const AjPSeqin seqin)
 		    ajFatal ("Unknown GCG entry: name '%S'",
 			     tmpstr);
 		}
-		ajFileGets (qryd->libs, &line); /* newline at end */
+		if (!ajFileGets (qryd->libs, &line)) /* newline at end */
+		  ajFatal ("error reading file %F", qryd->libs);
 
 		if(!contexp)
 		    contexp = ajRegCompC("^([^ ]+) +([^ ]+) +([^ ]+) +"
@@ -2977,7 +3126,10 @@ static AjBool seqBlastOpen (AjPSeqQuery qry, AjBool next)
     ajDebug ("IsBlast2: %B title_len: %d rdtmp: %d title_str: '%S'\n",
 	     isblast2, TitleLen, rdtmp, Title);
     ajStrTrace(Title);
-    ajFileRead(ajStrStr(Title), (size_t)1, (size_t)rdtmp, qryd->libt);
+
+    if (!ajFileRead(ajStrStr(Title), (size_t)1, (size_t)rdtmp, qryd->libt))
+      ajFatal ("error reading file %F", qryd->libt);
+
     if (isblast2)
 	ajStrFixI (Title, TitleLen);
     else
@@ -2995,7 +3147,8 @@ static AjBool seqBlastOpen (AjPSeqQuery qry, AjBool next)
 	DateLen = ajFileReadUint (qryd->libt, bigend);
 	rdtmp2 = DateLen;
 	(void) ajStrAssCL(&Date, "", rdtmp2+1);
-	ajFileRead (ajStrStr(Date),(size_t)1,(size_t)rdtmp2,qryd->libt);
+	if (!ajFileRead (ajStrStr(Date),(size_t)1,(size_t)rdtmp2,qryd->libt))
+	  ajFatal ("error reading file %F", qryd->libt);
 	ajStrFixI (Date, DateLen);
 	ajDebug ("datelen: %d rdtmp: %d date_str: '%S'\n",
 		 DateLen, rdtmp2, Date);
@@ -3832,7 +3985,8 @@ static AjBool seqBlastReadTable (const AjPSeqin seqin, AjPStr* hline,
 	     qryd->type, hsize, start, end, qryd->Size);
 
     ajFileSeek (qryd->libr, start, 0);
-    ajFileRead (ajStrStr(*hline), 1, hsize, qryd->libr);
+    if (!ajFileRead (ajStrStr(*hline), 1, hsize, qryd->libr))
+	ajFatal ("error reading file %F", qryd->libr);
     ajStrFixI (*hline, hsize);
 
 
@@ -3890,7 +4044,8 @@ static AjBool seqBlastReadTable (const AjPSeqin seqin, AjPStr* hline,
 
 	(void) ajStrAssCL (sline, "", seq_len+1);
 
-	ajFileRead(&tmpbyte, 1, 1, qryd->libs); /* skip the null byte */
+	if (!ajFileRead(&tmpbyte, 1, 1, qryd->libs)) /* skip the null byte */
+	  ajFatal ("error reading file %F", qryd->libs);
 	if (tmpbyte)
 	    ajErr(" phase error: %d:%d found\n",qryd->idnum,(ajint)tmpbyte);
 
@@ -4101,8 +4256,9 @@ static AjBool seqBlastReadTable (const AjPSeqin seqin, AjPStr* hline,
 
 	    (void) ajStrAssCL (sline, "", seq_len+1);
 
-	    ajFileRead(&tmpbyte, (size_t)1, (size_t)1,
-		       qryd->libs);	/* skip the null byte */
+	    if (!ajFileRead(&tmpbyte, (size_t)1, (size_t)1,
+			    qryd->libs))	/* skip the null byte */
+	      ajFatal ("error reading file %F", qryd->libs);
 	    if (tmpbyte != nt_magic_byte)
 	    {
 		ajDebug (" phase error: %d:%d (%d/%d) found\n",
@@ -4133,7 +4289,9 @@ static AjBool seqBlastReadTable (const AjPSeqin seqin, AjPStr* hline,
 		return ajFalse;
 	    }
 	    /* skip the null byte */
-	    ajFileRead(&tmpbyte, (size_t)1, (size_t)1, qryd->libs);
+	    if (!ajFileRead(&tmpbyte, (size_t)1, (size_t)1, qryd->libs))
+	      ajFatal ("error reading file %F", qryd->libs);
+
 	    if (tmpbyte != nt_magic_byte)
 	    {
 		ajDebug (" phase2 error: %d:%d (%d/%d) next \n",
