@@ -3025,7 +3025,7 @@ AjPVdwall  ajVdwallReadNew(AjPFile inf)
 {
     AjPCmap ret = NULL;
     
-    if((ret=ajCmapReadNew(inf, CMAP_MODE_I, chn, mod)))
+    if(!(ret=ajCmapReadNew(inf, CMAP_MODE_I, chn, mod)))
 	return NULL;
 
     return ret;
@@ -3087,15 +3087,15 @@ AjPCmap ajCmapReadNew(AjPFile inf, ajint mode, ajint chn, ajint mod)
     static   AjPStr line    = NULL;   /* Line of text */
     static   AjPStr temp_id = NULL;   /* Temp location for protein id */
     
-    ajint    num_res = 0;       /* No. of residues in domain */	
-    ajint    num_con = 0;       /* Total no. of contacts in domain */	
-    ajint    x       = 0;       /* No. of first residue making contact */
-    ajint    y       = 0;       /* No. of second residue making contact */
-    ajint    md      = -1;      /* Model number */
-    ajint    cn      = -1;      /* Chain number */
-    char     chnid   = '.';     /* Temp. chain identifier */
-    AjBool   idok    = ajFalse; /* If the required chain has been found */
-    
+    ajint    num_res   = 0;       /* No. of residues in domain */	
+    ajint    num_con   = 0;       /* Total no. of contacts in domain */	
+    ajint    x         = 0;       /* No. of first residue making contact */
+    ajint    y         = 0;       /* No. of second residue making contact */
+    ajint    md        = -1;      /* Model number */
+    ajint    cn        = -1;      /* Chain number */
+    char     chnid     = '.';     /* Temp. chain identifier */
+    AjBool   idok      = ajFalse; /* If the required chain has been found */
+    AjBool   valid_id  = ajFalse; /* If an ID line has been read */
 
     /* Check args */	
     if(!inf)
@@ -3123,7 +3123,10 @@ AjPCmap ajCmapReadNew(AjPFile inf, ajint mode, ajint chn, ajint mod)
     {
 	/* Parse ID line */
 	if(ajStrPrefixC(line, "ID"))
+	{
+	    valid_id = ajTrue;
 	    ajFmtScanS(line, "%*s %S", &temp_id);
+	}
 	/* Parse model number */
 	else if(ajStrPrefixC(line, "MO"))
 	    ajFmtScanS(line, "%*s[%d]", &md);
@@ -3188,7 +3191,13 @@ AjPCmap ajCmapReadNew(AjPFile inf, ajint mode, ajint chn, ajint mod)
 	    ajInt2dPut(&(ret)->Mat, x-1, y-1, 1);
 	    ajInt2dPut(&(ret)->Mat, y-1, x-1, 1);
 	}
-    }	
+    }
+
+    if(!valid_id)
+    {
+	ajWarn("No valid ID in contact map file");	
+	return NULL;
+    }
     
     return ret;	
 }	
@@ -3497,7 +3506,7 @@ AjPList  ajPdbtospReadAllNew(AjPFile inf)
 	ret = ajListNew();
     
 
-    while(ptr = ajPdbtospReadCNew(inf, "*"))
+    while((ptr = ajPdbtospReadCNew(inf, "*")))
 	ajListPush(ret, (void *) ptr);
 
     ajListSort(ret, pdbSortPdbtospPdb);
