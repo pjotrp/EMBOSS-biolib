@@ -91,6 +91,62 @@ FP / ambiguous master qualifier for sbegin_a /
 FP /\nunknown qualifier -sbegin_a\n/
 //
 
+ID acdc-0012
+AP acdc
+CL qatest -acdpretty
+FI qatest.acdpretty
+FZ = 488
+FP 2 /^string:/
+FP 8 /^[a-z]+: /
+//
+
+ID acdc-0013
+AP acdc
+CL qatest -help
+FI stderr
+FZ = 670
+FP 3 / qualifiers:\n/
+FP 4 / qualifiers:/
+FP 1 /^ +\[-asequence\] +sequence +Sequence USA\n/
+FP 1 /^ +\[-bsequence\] +sequence +Sequence USA\n/
+FP 2 /^ +\[-.sequence\] +sequence +Sequence USA\n/
+//
+
+ID acdc-0014
+AP acdc
+CL qatest -help -verbose
+FI stderr
+FZ = 3142
+FP 26 /   boolean /
+FP  6 /   integer /
+FP 16 /   string /
+//
+
+ID acdc-0015
+AP acdc
+CL qatest tembl:paamir tembl:paamir x.x -debug
+IN
+IN
+FI stderr
+FC = 2
+FI x.x
+FZ = 0
+FI qatest.dbg
+FP / acdDebug Yes /
+FP 2 /^Memory usage /
+//
+
+ID aaindexextract-keep
+AP aaindexextract
+DL keep
+PP mkdir ./AAINDEX
+PP export EMBOSS_DATA=./
+IN ../../data/aaindex1.test
+FI stderr
+FC = 2
+DI AAINDEX
+//
+
 ID antigenic-command
 AP antigenic
 CL tsw:amir_pseae -auto
@@ -3945,10 +4001,11 @@ IN
 FI stderr
 FC = 2
 FI laci_ecoli.pepstats
-FZ = 1259
+FZ = 1295
 FP /^Molecular weight = 38563\.97/
 FP /^Average Residue Weight  = 107\.122\s+Charge\s+= 1\.5\s+\n/
 FP /^Isoelectric Point = 6\.8820\n/
+FP /^Probability of insolubility = 0\.670\n/
 FP /^A = Ala\s+44\s+12\.222\s+1\.421\s+\n/
 FP /^Tiny\s+\(A\+C\+G\+S\+T\)\s+121\s+33\.611\n/
 //
@@ -4163,13 +4220,15 @@ FI hs214yg7.primersearch
 FZ = 0
 //
 
-ID printsextract-ex
-TI 400
-CC Needs a local copy of prints
+ID printsextract-keep
+DL keep
+PP mkdir ./PRINTS
+PP export EMBOSS_DATA=./
 AP printsextract
-IN /srsdata/flatfiles/prints/prints30_0.dat
+IN ../../data/prints.test
 FI stderr
 FC = 2
+DI PRINTS
 //
 
 # change example to start with data/globins.msf
