@@ -27,7 +27,14 @@ Nucleic:Repeats .
 Nucleic:Restriction .
 Nucleic:Transcription .
 Nucleic:Translation .
-Phylogeny .
+Phylogeny:Consensus .
+Phylogeny:Continuous_characters .
+Phylogeny:Discrete_characters .
+Phylogeny:Distance_matrix .
+Phylogeny:Gene_frequencies .
+Phylogeny:Molecular_sequence .
+Phylogeny:Tree_drawing .
+Phylogeny:Misc .
 Protein:2D_structure .
 Protein:3D_structure .
 Protein:Composition .
