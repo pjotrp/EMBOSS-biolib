@@ -354,7 +354,7 @@ static AjBool seqTypeFix(AjPSeq thys, ajint itype)
 		ret = seqTypeFixReg(thys, itype, 'X');
 	    break;
 	default:
-	    ajDie("Unknown sequence type code for '%c'", seqType[itype].Name);
+	    ajDie("Unknown sequence type code for '%s'", seqType[itype].Name);
 	    return ajFalse;
 	}
     }
