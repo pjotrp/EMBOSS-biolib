@@ -53,7 +53,8 @@ static void primer3_output_report(AjPFile outfile, AjPTable table,
 static AjPStr primer3_tableget(char * key1, ajint number, char *key2, 
 	AjPTable table);
 static void primer3_write_primer(AjPFile outfile, char *tag, AjPStr pos, 
-	AjPStr tm, AjPStr gc, AjPStr seq);	
+	AjPStr tm, AjPStr gc, AjPStr seq, AjBool rev);
+
 	
 int main(int argc, char **argv, char **env)
 {
@@ -919,7 +920,7 @@ PRIMER_PRODUCT_SIZE=137
     gc = primer3_tableget("PRIMER_LEFT", i, "GC_PERCENT", table);
     pos = primer3_tableget("PRIMER_LEFT", i, "", table);
     seq = primer3_tableget("PRIMER_LEFT", i, "SEQUENCE", table);
-    primer3_write_primer(outfile, "FORWARD PRIMER", pos, tm, gc, seq);
+    primer3_write_primer(outfile, "FORWARD PRIMER", pos, tm, gc, seq, AJFALSE);
 
 
 /* right primer data */
@@ -927,7 +928,7 @@ PRIMER_PRODUCT_SIZE=137
     gc = primer3_tableget("PRIMER_RIGHT", i, "GC_PERCENT", table);
     pos = primer3_tableget("PRIMER_RIGHT", i, "", table);
     seq = primer3_tableget("PRIMER_RIGHT", i, "SEQUENCE", table);
-    primer3_write_primer(outfile, "REVERSE PRIMER", pos, tm, gc, seq);
+    primer3_write_primer(outfile, "REVERSE PRIMER", pos, tm, gc, seq, AJTRUE);
 
 
 /* internal oligo data */
@@ -936,7 +937,7 @@ PRIMER_PRODUCT_SIZE=137
     gc = primer3_tableget("PRIMER_INTERNAL_OLIGO", i, "GC_PERCENT", table);
     pos = primer3_tableget("PRIMER_INTERNAL_OLIGO", i, "", table);
     seq = primer3_tableget("PRIMER_INTERNAL_OLIGO", i, "SEQUENCE", table);
-    primer3_write_primer(outfile, "INTERNAL OLIGO", pos, tm, gc, seq);
+    primer3_write_primer(outfile, "INTERNAL OLIGO", pos, tm, gc, seq, AJFALSE);
 
     (void) ajFmtPrintF(outfile, "\n");
 
@@ -995,11 +996,12 @@ static AjPStr primer3_tableget(char *key1, ajint number, char *key2, AjPTable ta
 ** @param [r] tm [AjPStr] Tm of primer
 ** @param [r] gc [AjPStr] GC% of primer
 ** @param [r] seq [AjPStr] Sequence of primer
+** @param [r] rev [AjBool] Sequence is reverse-complement
 ** @return [void] 
 **          
 *************************************************************************/
 static void primer3_write_primer(AjPFile outfile, char *tag, AjPStr pos, 
-	AjPStr tm, AjPStr gc, AjPStr seq)
+	AjPStr tm, AjPStr gc, AjPStr seq, AjBool rev)
 {
 
   ajint startint;
@@ -1018,6 +1020,9 @@ static void primer3_write_primer(AjPFile outfile, char *tag, AjPStr pos,
     ajStrToInt(start, &startint);
     ajStrCut(&pos, 0, comma);
     ajStrToInt(pos, &lenint);
+    if (rev) {
+      startint = startint - lenint + 1;
+    }
     (void) ajFmtPrintF(outfile, "     %s  %6d %4d  %2.2f  %2.2f  %S\n\n",
     	tag, startint, lenint, tmfloat, gcfloat, seq);
   }
