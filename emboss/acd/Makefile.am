@@ -30,7 +30,7 @@ pkgdata2_DATA =	megamerger.acd merger.acd msbar.acd \
 	palindrome.acd pasteseq.acd patmatdb.acd patmatmotifs.acd \
 	patmattest.acd pepcoil.acd pepinfo.acd pepnet.acd \
 	pepstats.acd pepwheel.acd pepwindow.acd pepwindowall.acd \
-	plotcon.acd plotorf.acd polydot.acd \
+	pestfind.acd plotcon.acd plotorf.acd polydot.acd \
 	preg.acd prettyplot.acd prettyseq.acd prima.acd \
 	primers.acd primersearch.acd printsextract.acd profit.acd \
 	prophecy.acd prophet.acd prosextract.acd pscan.acd  \
