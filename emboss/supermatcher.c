@@ -262,7 +262,7 @@ int main(int argc, char **argv)
     while(ajSeqallNext(seq1,&a))
     {
       if(!m)
-	m=ajStrNewL(ajSeqLen(a));
+	m=ajStrNewL(1+ajSeqLen(a));
 
       lena = ajSeqLen(a);
 
@@ -279,7 +279,7 @@ int main(int argc, char **argv)
 	  b = ajSeqsetGetSeq (seq2, k);
 	  lenb = ajSeqLen(b);
 	  if(!n)
-	    n=ajStrNewL(ajSeqLen(b));
+	    n=ajStrNewL(1+ajSeqLen(b));
 	  
 	  ajDebug ("Processing '%S'\n", ajSeqGetName (b));
 	  p = ajSeqChar(a);

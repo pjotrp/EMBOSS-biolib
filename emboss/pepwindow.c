@@ -168,7 +168,7 @@ int main(int argc, char **argv)
 
   s1 = ajStrStr(ajSeqStr(seq));
 
-  aa0str = ajStrNewL(ajSeqLen(seq));
+  aa0str = ajStrNewL(ajSeqLen(seq)+1);
 
   graphdata = ajGraphxyDataNewI(ajSeqLen(seq)-llen);
 
@@ -178,9 +178,9 @@ int main(int argc, char **argv)
   
   ajGraphxyAddGraph(mult,graphdata);
   
-  for(i=0;i<ajSeqLen(seq);i++)
+  for(i=0;i<ajSeqLen(seq);i++) {
     ajStrAppK(&aa0str,(char)ajAZToInt(*s1++));
-
+  }
 
   if(!getnakaidata(datafile,&matrix[0]))
     exit(-1);
@@ -189,8 +189,10 @@ int main(int argc, char **argv)
 
   for(i=0;i<ajSeqLen(seq)-llen;i++){
     total = 0;
-    for(j=0;j<llen;j++)
+    for(j=0;j<llen;j++) {
       total = total + matrix[(ajint)s1[j]];
+    }
+
     total=total/(float)llen;
     graphdata->x[i] = (float)i+midpoint;
     graphdata->y[i] = total;
