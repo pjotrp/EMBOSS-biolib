@@ -8,16 +8,16 @@ section: input [
   type: "page"
 ]
 
+  sequence: across [
+    param: "Y"
+    type: "protein"
+    information: "first (template) polypeptide sequence to be aligned"
+  ]
+
   sequence: down [
     param: "Y"
     type: "protein"
-    information: "first (query) polypeptide sequence to be aligned"
-  ]
-
-  sequence: across [
-    param: "Y"
-    type: protein
-    information: "second (template) polypeptide sequence to be aligned"
+    information: "second (query) polypeptide sequence to be aligned"
   ]
 
   matrixf: substitutionscoringfile [
@@ -67,6 +67,12 @@ section: required [
            penalty such events would otherwise carry; generally the
            gap extension penalty should be significantly lower than
            the gap opening penalty."
+  ]
+
+  boolean: zeroend  [
+    default: "Y"
+    information: "Do not penalize gaps at sequence ends"
+    help: "If this option is true then no penalty is added for gaps at either ends of a trace."
   ]
 
 endsection: required
