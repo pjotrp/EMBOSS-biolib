@@ -16,6 +16,7 @@ section: output [ info: "output Section" type: page ]
 seqout: outseq  [
   parameter: "Y"
   information: "Sequence file"
+  type: "dna"
 ]
 
 xygraph: graph  [

@@ -71,6 +71,7 @@ section: output [ info: "output Section" type: page ]
 seqoutall: outseq  [
   parameter: "Y"
   extension: "orf"
+  type: "stopprotein"
 ]
 
 endsection: output

@@ -39,6 +39,7 @@ section: output [ info: "output Section" type: page ]
 
 seqoutset: outseq  [
   parameter: "Y"
+  type: "gapnucleotide"
 ]
 
 endsection: output

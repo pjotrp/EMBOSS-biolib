@@ -3,13 +3,6 @@ appl: newseq [
   groups: "Edit"
 ]
 
-section: output [ info: "output Section" type: page ]
-seqout: outseq  [
-  parameter: "Y"
-]
-
-endsection: output
-
 section: required [ info: "required Section" type: page ]
 string: name  [
   parameter: "Y"
@@ -36,6 +29,14 @@ list: type  [
 ]
 
 endsection: required
+
+section: output [ info: "output Section" type: page ]
+seqout: outseq  [
+  parameter: "Y"
+  type: "@(@($(type) == P) ? gapprotein : gapnucleotide)" 
+]
+
+endsection: output
 
 section: input [ info: "input Section" type: page ]
 string: sequence  [

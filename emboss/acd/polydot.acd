@@ -42,7 +42,7 @@ outfile: outfile  [
   nullok: "Y"
 ]
 
-endsection:datasection
+endsection: datasection
 
 integer: gap  [
   default: "10"

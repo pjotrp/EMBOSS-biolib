@@ -36,6 +36,7 @@ endsection: advanced
 section: output [ info: "output Section" type: page ]
 seqout: seqout  [
   parameter: "Y"
+  type: "protein"
 ]
 endsection: output
 
