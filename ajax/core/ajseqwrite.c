@@ -1580,7 +1580,7 @@ static void seqWritePhylip (AjPSeqout outseq)
 	    ajStrAssC(&tstr,ajStrStr(seq->Seq));
 	    p = ajStrStr(tstr);
 	    for(j=ajStrLen(tstr);j<ilen;++j)
-		*(p+j)=' ';
+		*(p+j)='-';
 	    *(p+j)='\0';
 	    tstr->Len=ilen;
 	    (void) ajStrAssSub(&sseq, tstr, ipos-1, iend-1);
@@ -1653,7 +1653,7 @@ static void seqWritePhylip3 (AjPSeqout outseq)
 	ajStrAssC(&tstr,ajStrStr(seq->Seq));
 	p = ajStrStr(tstr);
 	for(j=ajStrLen(tstr);j<ilen;++j)
-	    *(p+j)=' ';
+	    *(p+j)='-';
 	*(p+j)='\0';
 	tstr->Len=ilen;
 
