@@ -11218,7 +11218,7 @@ PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL -auto -out test.out -osf embl qasrsfasta-ID:AB000095
 FI test.out
-FZ = 3348
+FZ = 3407
 FP /^ID   AB000095 /
 FP 1 /^ID /
 //
@@ -11231,7 +11231,7 @@ PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL -auto -out test.out -osf embl qasrsfasta-ACC:AB000095
 FI test.out
-FZ = 3348
+FZ = 3407
 FP /^ID   AB000095 /
 FP 1 /^ID /
 //
@@ -11244,7 +11244,7 @@ PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL -auto -out test.out -osf embl qasrsfasta-SV:AB000095.1
 FI test.out
-FZ = 3348
+FZ = 3407
 FP /^ID   AB000095 /
 FP 1 /^ID /
 //
@@ -11257,7 +11257,7 @@ PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL -auto -out test.out -osf embl qasrsfasta:AB000095
 FI test.out
-FZ = 3348
+FZ = 3407
 FP /^ID   AB000095 /
 FP 1 /^ID /
 //
@@ -15433,6 +15433,19 @@ FP 0 /Error: /
 FP 0 /Died: /
 //
 
+ID embpat-type1
+AP fuzzpro
+CL asis:ACDEEEFFFGHKLMNPPQQQRRSTVWXYZABCD
+CL CDEEEF
+CL -auto -debug
+FI fuzzpro.dbg
+FP 1 /embPatType 1 /
+FI stderr
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+//
+
 #######################################
 # DOMAINATRIX
 #######################################
@@ -16110,7 +16123,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FC = 4
+FC > 3
 FP /^emnu version: 1.0.5\n/
 FP /^EMBOSS Simple Menu\n/
 FP /ALPHABETIC LISTING OF ALL PROGRAMS/
