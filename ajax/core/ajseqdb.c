@@ -298,6 +298,7 @@ static void       seqBlastStripNcbi (AjPStr* line);
 static AjBool     seqCdAll (AjPSeqin seqin);
 static int        seqCdEntryCmp (const void* a, const void* b);
 static void       seqCdEntryDel (void** pentry, void* cl);
+static void       seqCdFileClose (SeqPCdFile *thys);
 static SeqPCdFile seqCdFileOpen (AjPStr dir, char* name, AjPStr* fullname);
 static size_t     seqCdFileRead (void* ptr, size_t element_size,
 				 SeqPCdFile thys);
@@ -305,7 +306,7 @@ static size_t     seqCdFileReadInt (ajint* i, SeqPCdFile thys);
 static size_t     seqCdFileReadName (char* name, size_t namesize,
 				     SeqPCdFile thys);
 static size_t     seqCdFileReadShort (short* i, SeqPCdFile thys);
-static void       seqCdFileClose (SeqPCdFile *thys);
+static size_t     seqCdFileReadUInt (ajuint* i, SeqPCdFile thys);
 static ajint      seqCdFileSeek (SeqPCdFile fil, ajuint ipos);
 static void       seqCdIdxLine (SeqPCdIdx idxLine,  ajuint ipos,
 				SeqPCdFile fp);
@@ -637,6 +638,7 @@ static AjBool seqCdAll (AjPSeqin seqin)
 	    ajStrDel(&fullName);
 	}
     }
+    ajFileBuffDel (&seqin->Filebuff);
     seqin->Filebuff = ajFileBuffNewInList(list);
     fullName = NULL;
 
@@ -816,6 +818,30 @@ static size_t seqCdFileReadInt (ajint* i, SeqPCdFile thys)
 
     if (seqCdReverse)
 	ajUtilRev4(i);
+
+    return ret;
+}
+
+/* @funcstatic seqCdFileReadUInt **********************************************
+**
+** Reads a 4 byte integer from an EMBL CD-ROM index file. If the byte
+** order in the index file does not match the current system the bytes
+** are reversed automatically.
+**
+** @param [w] i [ajuint*] Integer read from file.
+** @param [r] thys [SeqPCdFile] EMBL CR-ROM index file.
+** @return [size_t] Number of bytes read.
+** @@
+******************************************************************************/
+
+static size_t seqCdFileReadUInt (ajuint* i, SeqPCdFile thys)
+{
+    size_t ret;
+
+    ret = ajFileRead (i, 4, 1, thys->File);
+
+    if (seqCdReverse)
+	ajUtilRev4((ajint*)i);
 
     return ret;
 }
@@ -1232,8 +1258,8 @@ static void seqCdIdxLine (SeqPCdIdx idxLine, ajuint ipos, SeqPCdFile fil)
 
     (void) ajStrAssC(&idxLine->EntryName,name);
 
-    (void) seqCdFileReadInt (&idxLine->AnnOffset, fil);
-    (void) seqCdFileReadInt (&idxLine->SeqOffset, fil);
+    (void) seqCdFileReadUInt (&idxLine->AnnOffset, fil);
+    (void) seqCdFileReadUInt (&idxLine->SeqOffset, fil);
     (void) seqCdFileReadShort (&idxLine->DivCode, fil);
 
     return;
@@ -1306,8 +1332,8 @@ static void seqCdTrgLine (SeqPCdTrg trgLine, ajuint ipos, SeqPCdFile fil)
 
     (void) seqCdFileSeek (fil, ipos);
 
-    (void) seqCdFileReadInt(&trgLine->NHits, fil);
-    (void) seqCdFileReadInt(&trgLine->FirstHit, fil);
+    (void) seqCdFileReadUInt(&trgLine->NHits, fil);
+    (void) seqCdFileReadUInt(&trgLine->FirstHit, fil);
     (void) seqCdFileReadName (name, nameSize, fil);
 
     trgLine->Target = ajStrNewC(name);
@@ -1331,8 +1357,8 @@ static AjBool seqCdReadHeader (SeqPCdFile fil)
 {
     SeqPCdFHeader header = fil->Header;
 
-    (void) seqCdFileReadInt (&header->FileSize, fil);
-    (void) seqCdFileReadInt (&header->NRecords, fil);
+    (void) seqCdFileReadUInt (&header->FileSize, fil);
+    (void) seqCdFileReadUInt (&header->NRecords, fil);
     (void) seqCdFileReadShort (&header->RecSize, fil);
 
     header->IdSize = header->RecSize - 10;
@@ -1465,6 +1491,7 @@ static AjBool seqAccessSrs (AjPSeqin seqin)
 	(void) ajFmtPrintS(&seqin->Filename, "%S -e '%S'|",
 			   qry->Application, searchdb);
 
+    ajFileBuffDel (&seqin->Filebuff);
     seqin->Filebuff = ajFileBuffNewIn (seqin->Filename);
     if (!seqin->Filebuff)
     {
@@ -1533,6 +1560,8 @@ static AjBool seqAccessSrsfasta (AjPSeqin seqin)
 			   qry->Application, searchdb);
 
     ajDebug ("searching with SRS command '%S'\n", seqin->Filename);
+
+    ajFileBuffDel (&seqin->Filebuff);
     seqin->Filebuff = ajFileBuffNewIn (seqin->Filename);
     if (!seqin->Filebuff)
     {
@@ -1768,6 +1797,7 @@ static AjBool seqAccessSrswww (AjPSeqin seqin)
 	ajErr ("socket open failed for database '%S'", qry->DbName);
 	return ajFalse;
     }
+    ajFileBuffDel (&seqin->Filebuff);
     seqin->Filebuff = ajFileBuffNewF(fp);
     if (!seqin->Filebuff)
     {
@@ -2463,6 +2493,7 @@ static AjBool seqAccessGcg (AjPSeqin seqin)
 	    ajFatal ("seqCdQryOpen failed");
 
 	qryd = qry->QryData;
+	ajFileBuffDel (&seqin->Filebuff);
 	seqin->Filebuff = ajFileBuffNew();
 
 	/* binary search for the entryname we need */
@@ -2915,6 +2946,7 @@ static AjBool seqGcgAll (const AjPSeqin seqin)
     }
 
     qryd = qry->QryData;
+    ajFileBuffDel (&seqin->Filebuff);
     seqin->Filebuff = ajFileBuffNew();
 
     if (!qryd->libr)
@@ -2990,6 +3022,7 @@ static AjBool seqAccessBlast (AjPSeqin seqin)
 	    ajFatal ("seqCdQryOpen failed");
 
 	qryd = qry->QryData;
+	ajFileBuffDel (&seqin->Filebuff);
 	seqin->Filebuff = ajFileBuffNew();
 
 	/* binary search for the entryname we need */
@@ -3384,6 +3417,7 @@ static AjBool seqBlastAll (const AjPSeqin seqin)
 	    ajFatal ("seqBlastAll failed");
 
 	qryd = qry->QryData;
+	ajFileBuffDel (&seqin->Filebuff);
 	seqin->Filebuff = ajFileBuffNew();
 	qryd->idnum = 0;
     }
@@ -3670,6 +3704,8 @@ static AjBool seqAccessUrl (AjPSeqin seqin)
 	ajErr ("socket open failed for database '%S'", qry->DbName);
 	return ajFalse;
     }
+
+    ajFileBuffDel (&seqin->Filebuff);
     seqin->Filebuff = ajFileBuffNewF(fp);
     if (!seqin->Filebuff)
     {
@@ -3759,6 +3795,7 @@ static AjBool seqAccessApp (AjPSeqin seqin)
     }
 
 
+    ajFileBuffDel (&seqin->Filebuff);
     seqin->Filebuff = ajFileBuffNewIn (pipename);
     if (!seqin->Filebuff)
     {
@@ -3803,6 +3840,7 @@ AjBool ajSeqAccessAsis (AjPSeqin seqin)
 
     ajDebug ("ajSeqAccessAsis %S\n", qry->Filename);
 
+    ajFileBuffDel (&seqin->Filebuff);
     seqin->Filebuff = ajFileBuffNewS (qry->Filename);
     if (!seqin->Filebuff)
     {
@@ -3844,6 +3882,7 @@ AjBool ajSeqAccessFile (AjPSeqin seqin)
 
     /* ajStrTraceT (qry->Filename, "qry->Filename (before):"); */
 
+    ajFileBuffDel (&seqin->Filebuff);
     seqin->Filebuff = ajFileBuffNewIn (qry->Filename);
     if (!seqin->Filebuff)
     {
@@ -3881,6 +3920,8 @@ AjBool ajSeqAccessOffset (AjPSeqin seqin)
     ajDebug ("ajSeqAccessOffset %S %ld\n", qry->Filename, qry->Fpos);
 
     /* ajStrTraceT (qry->Filename, "qry->Filename (before):"); */
+
+    ajFileBuffDel (&seqin->Filebuff);
     seqin->Filebuff = ajFileBuffNewIn (qry->Filename);
     if (!seqin->Filebuff)
     {
@@ -3926,6 +3967,7 @@ static AjBool seqAccessDirect (AjPSeqin seqin)
 
     ajDebug ("Try to open %S%S.seq\n", qry->Directory, qry->Filename);
 
+    ajFileBuffDel (&seqin->Filebuff);
     seqin->Filebuff = ajFileBuffNewDW (qry->Directory, qry->Filename);
     if (!seqin->Filebuff)
     {
