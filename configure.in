@@ -247,6 +247,7 @@ emboss/Makefile emboss/acd/Makefile test/Makefile test/data/Makefile
 test/embl/Makefile test/genbank/Makefile test/gb/Makefile
 test/pir/Makefile test/swiss/Makefile
 test/swnew/Makefile test/wormpep/Makefile emboss/data/Makefile
+emboss/data/AAINDEX/Makefile
 emboss/data/CODONS/Makefile emboss/data/REBASE/Makefile 
 emboss/data/PRINTS/Makefile emboss/data/PROSITE/Makefile
 doc/Makefile doc/manuals/Makefile doc/tutorials/Makefile

@@ -21,7 +21,7 @@ seqinfo seqretall seqretallfeat seqretset seqretsingle \
 sigplot \
 testplot treetypedisplay
 
-bin_PROGRAMS = abiview acdc antigenic \
+bin_PROGRAMS = aaindexextract abiview acdc antigenic \
 backtranseq banana biosed btwisted \
 cai chaos charge checktrans chips cirdna codcmp coderet \
 contacts compseq cons cpgplot cpgreport cusp cutgextract cutseq \
@@ -48,7 +48,8 @@ prosextract pscan \
 rebaseextract recoder redata remap restover restrict revseq scopnr scopparse \
 scopseqs scoprep scopreso seealso seqalign seqmatchall seqnr seqret seqretsplit seqsearch seqsort seqwords \
 showalign showdb showfeat showorf showseq \
-shuffleseq sigcleave siggen sigscan silent splitter scopalign stretcher \
+shuffleseq sigcleave siggen sigscan silent skipseq \
+splitter scopalign stretcher \
 stssearch supermatcher syco \
 textsearch tfextract tfm tfscan \
 tmap tranalign transeq trimest trimseq \
@@ -58,6 +59,7 @@ wossname yank
 
 INCLUDES = -I$(top_srcdir)/nucleus -I$(top_srcdir)/ajax -I$(top_srcdir)/plplot
 
+aaindexextract_SOURCES = aaindexextract.c
 abiview_SOURCES = abiview.c
 acdc_SOURCES = acdc.c
 antigenic_SOURCES = antigenic.c

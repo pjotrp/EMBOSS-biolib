@@ -1,6 +1,6 @@
 
 pkgdata_DATA = codes.english \
-	abiview.acd ajbad.acd ajfeatest.acd ajtest.acd \
+	aaindexextract.acd abiview.acd ajbad.acd ajfeatest.acd ajtest.acd \
 	antigenic.acd backtranseq.acd banana.acd biosed.acd \
 	btwisted.acd cai.acd chaos.acd charge.acd checktrans.acd chips.acd \
 	cirdna.acd codcmp.acd coderet.acd \
@@ -41,7 +41,8 @@ pkgdata2_DATA =	megamerger.acd merger.acd msbar.acd \
 	seqretallfeat.acd seqretset.acd seqretsingle.acd \
 	seqretsplit.acd seqsearch.acd seqsort.acd seqwords.acd showalign.acd\
 	showdb.acd showfeat.acd showorf.acd showseq.acd shuffleseq.acd \
-	sigcleave.acd siggen.acd sigscan.acd sigplot.acd silent.acd splitter.acd \
+	sigcleave.acd siggen.acd sigscan.acd sigplot.acd silent.acd
+	skipseq.acd splitter.acd \
 	stretcher.acd stssearch.acd supermatcher.acd syco.acd \
 	testplot.acd textsearch.acd tfextract.acd tfm.acd \
 	tfscan.acd tmap.acd tranalign.acd transeq.acd treetypedisplay.acd \
