@@ -540,6 +540,7 @@ static void GraphClose(void){
   while (ajListstrLength(files)) {
     ajListstrPop (files, &tmpStr);
     ajDebug("GraphInfo file '%S'\n", tmpStr);
+    printf ("Created %s\n", ajStrStr(tmpStr));
     ajStrDel(&tmpStr);
   }
   ajListstrDel(&files);
