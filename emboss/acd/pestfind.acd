@@ -39,7 +39,7 @@ select: order  [
   default: "score"
   delimiter: ","
   header: "Sort order of results"
-  help: "Results may be sorted by length, position and score."
+  help: "Name of the output file which holds the results of the analysis. Results may be sorted by length, position and score."
   information: "Sort order of results"
   maximum: "1"
   minimum: "1"
@@ -105,7 +105,7 @@ section: advanced  [
 
 float: threshold  [
   default: "+5.0"
-  help: "Threshold value to discriminate weak from potential PEST motifs."
+  help: "Threshold value to discriminate weak from potential PEST motifs.  Valid PEST motifs are discriminated into 'poor' and 'potential' motifs depending on this threshold score.  By default, the default value is set to +5.0 based on experimental data.  Alterations are not recommended since significance is a matter of biology, not mathematics."
   information: "Threshold score"
   maximum: "+55.0"
   minimum: "-55.0"
