@@ -93,7 +93,7 @@ int main(int argc, char **argv)
 {
 
     AjPList idlist;
-    AjPList* fieldList;
+    AjPList* fieldList=NULL;
 
     AjBool systemsort;
     AjBool cleanup;
@@ -139,7 +139,7 @@ int main(int argc, char **argv)
     AjPFile entFile = NULL;
 
     AjPStr* divfiles = NULL;
-    ajint* maxFieldLen;
+    ajint* maxFieldLen = NULL;
 
     ajint ifield=0;
     ajint nfields=0;

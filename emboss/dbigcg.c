@@ -125,7 +125,7 @@ int main(int argc, char **argv)
 {
 
     AjPList idlist;
-    AjPList* fieldList;
+    AjPList* fieldList=NULL;
 
     AjBool systemsort;
     AjBool cleanup;
@@ -173,7 +173,7 @@ int main(int argc, char **argv)
 
     AjPStr* reffiles = NULL;
     AjPStr* seqfiles = NULL;
-    ajint* maxFieldLen;
+    ajint* maxFieldLen = NULL;
 
     ajint ifield=0;
     ajint nfields=0;
@@ -651,7 +651,7 @@ static ajint dbigcg_pirgetent(AjPStr idformat,
     ajint gcglen;
     static AjPStr rline=NULL;
     static AjPStr sline=NULL;
-    ajint spos;
+    ajint spos = 0;
 
     if (!called)
     {
@@ -1104,7 +1104,7 @@ static AjBool dbigcg_ParseGenbank (AjPFile libr,
     static AjPRegexp phrexp = NULL;
     static AjPRegexp taxexp = NULL;
     static AjPRegexp verexp = NULL;
-    ajint rpos;
+    ajint rpos = 0;
     static AjPStr tmpstr = NULL;
     static AjPStr tmpline = NULL;
     static AjPStr rline=NULL;

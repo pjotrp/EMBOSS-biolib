@@ -1135,7 +1135,7 @@ ajint embDbiMemWriteFields (AjPStr dbname, AjPStr release,
     EmbPField fieldData=NULL;
     static char* lastfd=NULL;
     static AjPStr fieldStr=NULL;
-    ajint lastidnum;
+    ajint lastidnum=0;
 
     trgFile = embDbiFileIndex (indexdir, field, "trg");
     hitFile = embDbiFileIndex (indexdir, field, "hit");
