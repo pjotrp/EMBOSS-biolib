@@ -5,8 +5,8 @@
 **
 **
 ** @author: Copyright (C) Damian Counsell
-** @version $Revision: 1.2 $
-** @modified $Date: 2004/07/15 18:54:12 $
+** @version $Revision: 1.3 $
+** @modified $Date: 2004/07/16 16:48:17 $
 ** @@
 **
 ** This program is free software; you can redistribute it and/or
@@ -127,9 +127,9 @@ int main(int argc , char **argv)
 		ajpStrPairFileCurrentBaseName);
 
     /* read seqset into seqs */
-    ajpSeqTraceAcross = ajSeqsetGetSeq(ajpSeqsetPairCurrent,
-				       enumQuerySeqIndex);
     ajpSeqTraceDown = ajSeqsetGetSeq(ajpSeqsetPairCurrent,
+				       enumQuerySeqIndex);
+    ajpSeqTraceAcross = ajSeqsetGetSeq(ajpSeqsetPairCurrent,
 				     enumTemplateSeqIndex);
 
     /* get trace length */
@@ -143,7 +143,9 @@ int main(int argc , char **argv)
 
     ajIntSingleSeqCount = 0;
     
-    for(ajIntTraceCount = 0;ajIntTraceCount < ajIntAcrossTraceLen; ajIntTraceCount++)
+    for(ajIntTraceCount = 0;
+	ajIntTraceCount < ajIntAcrossTraceLen;
+	ajIntTraceCount++)
     {
 	/* DDDDEBUG */
 	ajFmtPrint("BEFORE trace count: %d\t", ajIntTraceCount);
@@ -155,15 +157,13 @@ int main(int argc , char **argv)
 	cTempTraceDown   = pcTraceDown[ajIntTraceCount];
 	cTempTraceAcross = pcTraceAcross[ajIntTraceCount];
 
-	if(cTempTraceDown == '-')
+	if(isalpha(cTempTraceAcross))
 	{
 	    cTempSingleSeq = pcTraceAcross[ajIntTraceCount];
-	    pcSingleSeq[ajIntSingleSeqCount] = cTempSingleSeq;
-	    ajIntSingleSeqCount++;
-	}
-	else if(cTempTraceAcross != '-')
-	{
-	    cTempSingleSeq = pcTraceDown[ajIntTraceCount];
+	    if(isalpha(cTempTraceDown))
+	    {
+		cTempSingleSeq = pcTraceDown[ajIntTraceCount];
+	    }
 	    pcSingleSeq[ajIntSingleSeqCount] = cTempSingleSeq;
 	    ajIntSingleSeqCount++;
 	}
@@ -175,10 +175,13 @@ int main(int argc , char **argv)
 	ajFmtPrint("AFTER across (template): %c\t", cTempTraceAcross);
 	ajFmtPrint("AFTER substitute: %c\t\n\n", cTempSingleSeq);
     }
+    /* terminate substituted sequence string */
     ajIntTraceCount++;
     pcSingleSeq[ajIntSingleSeqCount] = '\0';
 
     ajpStrSingleSeq = ajStrNewC(pcSingleSeq);
+
+    ajFmtPrint("\n%S\n", ajpStrSingleSeq);
 
     ajSeqAssSeq(ajpSeqSingle, (const AjPStr) ajpStrSingleSeq);
 
