@@ -321,7 +321,7 @@ int main(ajint argc, char **argv)
     AjPFile    con_outf      =NULL;     /* contact output file pointer */
     AjPFile    logf          =NULL;     /* log file pointer*/
     AjPFile    vdwf          =NULL;     /* van der Waals file pointer*/
-    AjPStr     vdwfstr       =NULL;
+/*    AjPStr     vdwfstr       =NULL; */
     
     AjPPdb     pdb           =NULL;
 
@@ -347,7 +347,7 @@ int main(ajint argc, char **argv)
     con_path      = ajStrNew();
     con_extn      = ajStrNew();
     con_name      = ajStrNew();
-    vdwfstr       = ajStrNew();
+/*    vdwfstr       = ajStrNew(); */
 
 
     /* Read data from acd */
@@ -360,7 +360,8 @@ int main(ajint argc, char **argv)
     logf          = ajAcdGetOutfile("conerrf");
     thresh        = ajAcdGetFloat("thresh");
     ignore        = ajAcdGetFloat("ignore");
-    vdwfstr       = ajAcdGetString("vdwf");
+/*    vdwfstr       = ajAcdGetString("vdwf");*/
+    vdwf       = ajAcdGetInfile("vdwf");
 
 
     /* Check directories*/
@@ -388,9 +389,10 @@ int main(ajint argc, char **argv)
     ajStrDel(&temp);
     
     /* Allocate and read Vdwall object */
+    /*
     ajFileDataNew(vdwfstr,&vdwf);
     if(!vdwf)
-	ajFatal("Cannot open %S",vdwfstr);
+	ajFatal("Cannot open %S",vdwfstr); */
 
     if(!ajXyzVdwallRead(vdwf, &vdw))
 	ajFatal("Error reading vdw radii file\n");
@@ -526,7 +528,7 @@ rm /data/structure/con_new/d1qjha_.conD1G1XA_
     ajStrDel(&con_extn);
     ajStrDel(&con_name);
     ajStrDel(&msg);
-    ajStrDel(&vdwfstr);
+/*    ajStrDel(&vdwfstr); */
     
     ajFileClose(&logf);
     ajFileClose(&vdwf);

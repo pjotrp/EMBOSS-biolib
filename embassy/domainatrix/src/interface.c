@@ -276,7 +276,7 @@ int main(ajint argc, char **argv)
     AjPFile    con_outf      =NULL;     /* contact output file pointer */
     AjPFile    logf          =NULL;     /* log file pointer*/
     AjPFile    vdwf          =NULL;     /* van der Waals file pointer*/
-    AjPStr     vdwfstr       =NULL;
+/*    AjPStr     vdwfstr       =NULL; */
     
     AjPPdb     pdb           =NULL;
 
@@ -290,7 +290,7 @@ int main(ajint argc, char **argv)
     /* Initialise strings */
     temp          = ajStrNew();
     msg           = ajStrNew();
-    vdwfstr       = ajStrNew();
+/*    vdwfstr       = ajStrNew(); */
 
 
     /* Read data from acd */
@@ -301,14 +301,15 @@ int main(ajint argc, char **argv)
     logf          = ajAcdGetOutfile("conerrf");
     thresh        = ajAcdGetFloat("thresh");
     ignore        = ajAcdGetFloat("ignore");
-    vdwfstr       = ajAcdGetString("vdwf");
+/*    vdwfstr       = ajAcdGetString("vdwf");*/
+    vdwf       = ajAcdGetInfile("vdwf");
 
 
     
     /* Allocate and read Vdwall object */
-    ajFileDataNew(vdwfstr,&vdwf);
+/*    ajFileDataNew(vdwfstr,&vdwf);
     if(!vdwf)
-	ajFatal("Cannot open %S",vdwfstr);
+	ajFatal("Cannot open %S",vdwfstr); */
 
     if(!ajXyzVdwallRead(vdwf, &vdw))
 	ajFatal("Error reading vdw radii file\n");
@@ -327,7 +328,7 @@ int main(ajint argc, char **argv)
 	
 	ajStrDel(&temp);	
 	ajStrDel(&msg);
-	ajStrDel(&vdwfstr);
+/*	ajStrDel(&vdwfstr); */
 	
 	ajExit();
 	return 0;
@@ -347,7 +348,7 @@ int main(ajint argc, char **argv)
 	
 	ajStrDel(&temp);	
 	ajStrDel(&msg);
-	ajStrDel(&vdwfstr);
+/*	ajStrDel(&vdwfstr); */
 	
 	ajExit();
 	return 0;
@@ -368,7 +369,7 @@ int main(ajint argc, char **argv)
 	
 	ajStrDel(&temp);	
 	ajStrDel(&msg);
-	ajStrDel(&vdwfstr);
+/*	ajStrDel(&vdwfstr); */
 
 	ajExit();
 	return 0;
@@ -388,7 +389,7 @@ int main(ajint argc, char **argv)
 
     ajStrDel(&temp);	
     ajStrDel(&msg);
-    ajStrDel(&vdwfstr);
+/*    ajStrDel(&vdwfstr); */
     
     ajFileClose(&logf);
     ajFileClose(&vdwf);

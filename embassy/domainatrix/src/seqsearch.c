@@ -127,7 +127,6 @@
 **  Number of PSIBLAST iterations [1]: 1
 **  Threshold E-value for inclusion in family [0.001]: 0.0001
 **  Maximum number of hits [1000]: 100
-**  Residue substitution matrix [EBLOSUM62]: 
 **  Location of scop hits files (output) [./]: /test_data
 **  Extension of scop hits files [.hits]: 
 **  Name of log file for the build [seqsearch.log]: /test_data/seqsearch.log
@@ -146,16 +145,14 @@
 **  was used to search the sequence database swissprot using psiblast.  
 **  psiblast was configured to perform 1 iteration with a threshold E-value 
 **  for acceptance of a hit of 0.0001 and no more than 100 hits were generated
-**  from each iteration.  The residue substitution matrix EBLOSUM62 was used
-**  for the searches.  Hits file were specified to be written to /test_data
+**  from each iteration.  Hits file were specified to be written to /test_data
 **  and have the file extension .hits; in this case a single hits file called
 **  /test_data/55074.hits was written.  A log file called 
 **  /test_data/seqsearch.log was also written.
 **  
 **  The following command line would achieve the same result.
 **  seqsearch /test_data/all.scop /test_data .salign swissprot /test_data 
-**  .hits -niter 1 -evalue 0.0001 -maxhits 100 -submatrix EBLOSUM62 -logf 
-**  seqsearch.log
+**  .hits -niter 1 -evalue 0.0001 -maxhits 100 -logf seqsearch.log
 **  
 **  
 **  
@@ -268,7 +265,7 @@
 **  
 **  
 **  Data files
-**  seqsearch requires a residue substitution matrix.
+**  seqsearch does not requires any data files.
 **  
 **  
 **  
@@ -327,7 +324,6 @@ int main(int argc, char **argv)
     AjPStr     hitsname  = NULL;   /* Name of hits file */
     AjPStr     singlet   = NULL;   /* sequence of a particular sunid */ 
     
-    AjPStr     submatrix = NULL;   /* Name of residue substitution matrix */
     AjPStr     msg       = NULL;   /* Error message */
     AjPStr     temp      = NULL;   /* Temp string */
     AjPStr     psiname   = NULL;   /* Name of psiblast output file */
@@ -337,7 +333,7 @@ int main(int argc, char **argv)
     AjPFile    logf      = NULL;   /* Log file pointer */
     AjPFile    psif      = NULL;   /* Pointer to psiblast output file*/
     AjPFile    alignf    = NULL;   /* Alignment file pointer */
-    AjPFile    Escop     = NULL;   /* File pointer to Escop_seqs.dat */
+    AjPFile    escop     = NULL;   /* File pointer to Escop_seqs.dat */
     
     ajint      maxhits   = 0;      /* Maximum number of hits reported by PSIBLAST */          
     ajint      niter     = 0;      /* Number of PSIBLAST iterations */          
@@ -380,12 +376,11 @@ int main(int argc, char **argv)
     alignextn  = ajAcdGetString("alignextn");
     hits       = ajAcdGetString("hits");
     hitsextn   = ajAcdGetString("hitsextn");
-    submatrix  = ajAcdGetString("submatrix");
     maxhits    = ajAcdGetInt("maxhits");
     niter      = ajAcdGetInt("niter");
     evalue     = ajAcdGetFloat("evalue");
     logf       = ajAcdGetOutfile("logf");
-    Escop      = ajAcdGetInfile("Escop");
+    escop      = ajAcdGetInfile("escop");
     database   = ajAcdGetString("database");    
     
     /* Check directories */
@@ -408,8 +403,8 @@ int main(int argc, char **argv)
     ajFileScan(align,temp,&list,ajFalse,ajFalse,NULL,NULL,ajFalse,NULL); 
     
     /* create a list of scop objects */
-    ajXyzScopReadAll(Escop,&scoplist);
-    ajFileClose(&Escop);
+    ajXyzScopReadAll(escop,&scoplist);
+    ajFileClose(&escop);
     
     /* need to sort the list before binary search otherwise does not work */
     ajListSort(scoplist,ajXyzScopCompSunid);
@@ -652,7 +647,6 @@ int main(int argc, char **argv)
     ajStrDel(&hitsname);
     ajStrDel(&psiname);
     ajStrDel(&database);
-    ajStrDel(&submatrix);
     ajStrDel(&msg);
     ajStrDel(&temp);
     ajStrDel(&singlet);
