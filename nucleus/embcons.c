@@ -180,7 +180,7 @@ void embConsCalc(AjPSeqset seqset,AjPMatrix cmpmatrix,
          res = seqcharptr[highindex][k];
 
       if(matching[highindex]<= setcase)
-        res = tolower(res);
+        res = tolower((int)res);
 
       if(identity)                      /* if just looking for id's */
       {

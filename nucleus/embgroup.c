@@ -382,7 +382,7 @@ static void grpParse(AjPFile file, AjPStr *appl, AjPStr *doc, AjPList groups,
           (void) ajStrChomp(&tmpvalue);
 	  ajDebug ("gui value '%S'\n", tmpvalue);
 /* test for '[Nn]*' */
-          if (tolower((ajStrStr(tmpvalue))[0]) == 'n') {
+          if (tolower((int)(ajStrStr(tmpvalue))[0]) == 'n') {
             *gui = ajFalse;
           }
           ajStrDel(&tmpvalue);
