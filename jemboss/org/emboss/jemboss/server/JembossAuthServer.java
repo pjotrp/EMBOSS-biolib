@@ -546,10 +546,14 @@ public class JembossAuthServer
     }
     else      //batch or background
     {
-      JembossAuthThread jt = new JembossAuthThread(
-                         userName,passwd,
-                         embossCommand,environ,project);
-      jt.start();
+//    JembossAuthThread jt = new JembossAuthThread(
+//                       userName,passwd,
+//                       embossCommand,environ,project);
+//    jt.start();
+
+      boolean lforkB = aj.forkBatch(userName,passwd,environ,
+                                    embossCommand,project);
+
       result.add("msg");
       result.add("");
       result.add("job_submitted");
