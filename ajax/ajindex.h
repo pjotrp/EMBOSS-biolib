@@ -411,9 +411,8 @@ typedef struct AjSBtCache
 ** Btree primary keyword
 **
 ** @attr keyword [AjPStr] Keyword
-** @attr treeblock [ajlong] Tree block number
+** @attr treeblock [ajlong] Disc block of secondary tree
 ** @attr id [AjPStr] Identifier
-** @attr treeblock [ajlong] disc block of secondary tree
 ******************************************************************************/
 
 typedef struct AjSBtPri
@@ -434,8 +433,8 @@ typedef struct AjSBtPri
 ** @attr NodeType [ajint] Node type
 ** @attr Nentries [ajint] Number of entries
 ** @attr Overflow [ajlong] Offset to overflow block
-** @attr keylen [ajint*] key lengths
-** @attr Ids [AjPBtId*] Ids
+** @attr keylen [ajint*] Key lengths
+** @attr codes [AjPBtPri*] Codes
 ******************************************************************************/
 
 typedef struct AjSPriBucket
