@@ -8363,16 +8363,16 @@ FP /^             Start position 39 Length 25\n/
 
 ID psiphi-ex
 AP psiphi
-CL ../../data/1atn.pxyz -chainnumber=2 -startresiduenumber=4 -finishresiduenumber=65 -outf=1atn.psiphi
-IN ../../data/1atn.pxyz
+CL ../../data/1hmp_a.ccf -chainnumber=1 -startresiduenumber=5 -finishresiduenumber=85
+IN
 FI stderr
-FC = 2
+FC = 3
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
-FI 1atn.psiphi 
-FZ = 3062
-FP /     24      24     0.0   \-89\.18   \-40\.94\n/
+FI 1hmp_a.psiphi 
+FZ = 3862
+FP /     56      56     0\.0  \-139\.15   162\.01\n/
 //
 
 ID rebaseextract-keep
@@ -11039,7 +11039,7 @@ RQ srs
 AP seqret
 CL -auto -out test.out -osf embl qasrs-ID:AB000095
 FI test.out
-FZ = 3678
+FZ = 3701
 FP /^ID   AB000095 /
 FP 1 /^ID /
 //
@@ -11050,7 +11050,7 @@ RQ srs
 AP seqret
 CL -auto -out test.out -osf embl qasrs-ACC:AB000095
 FI test.out
-FZ = 3678
+FZ = 3701
 FP /^ID   AB000095 /
 FP 1 /^ID /
 //
@@ -11061,7 +11061,7 @@ RQ srs
 AP seqret
 CL -auto -out test.out -osf embl qasrs-SV:AB000095.1
 FI test.out
-FZ = 3678
+FZ = 3701
 FP /^ID   AB000095 /
 FP 1 /^ID /
 //
@@ -11072,7 +11072,7 @@ RQ srs
 AP seqret
 CL -auto -out test.out -osf embl qasrs:AB000095
 FI test.out
-FZ = 3678
+FZ = 3701
 FP /^ID   AB000095 /
 FP 1 /^ID /
 //
@@ -15947,9 +15947,144 @@ FP 0 /Died: /
 # CONSTRUCT
 #######################################
 
+ID alignrunner-ex
+AB construct
+AA alignrunner
+IN ../../data/construct/
+IN
+IN
+IN
+IN
+IN
+IN
+IN 10.0
+IN 0.5
+IN Y
+IN
+IN
+IN
+IN
+IN
+FI stderr
+FC = 0
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+//
+
+ID contactalign-ex
+AB construct
+AA contactalign
+CC warnings in stderr
+IN ../../data/construct/1hgx_a.fasta
+IN ../../data/construct/1hmp_a.fasta
+IN 10.0
+IN 0.5
+IN 1hgx_a_vs_1hmp_a.contactalign
+FI stderr
+FC = 6
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 612
+FP 200 /^current position:/
+//
+
+ID contactcount-ex
+AB construct
+AA contactcount
+FI stderr
+FC = 0
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+//
+
+ID degapseqrunner-ex
+AB construct
+AA degapseqrunner
+FI stderr
+FC = 0
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+//
+
+ID nawalign-ex
+AB construct
+AA nawalign
+FI stderr
+FC = 0
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+//
+
+ID nawalignrunner-ex
+AB construct
+AA nawalignrunner
+FI stderr
+FC = 0
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+//
+
+ID needlerunner-ex
+AB construct
+AA needlerunner
+FI stderr
+FC = 0
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+//
+
+ID scorer-ex
+AB construct
+AA scorer
+FI stderr
+FC = 0
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+//
+
+ID scorerrunner-ex
+AB construct
+AA scorerrunner
+FI stderr
+FC = 0
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+//
+
+ID substitute-ex
+AB construct
+AA substitute
+//
+FI stderr
+FC = 0
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+
+ID substituterunner-ex
+AB construct
+AA substituterunner
+FI stderr
+FC = 0
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+//
+
 #######################################
 # DOMAINATRIX
 #######################################
+
 ID allversusall-ex
 AB domainatrix
 AA allversusall
@@ -16097,7 +16232,6 @@ FP 2 /^\/\//
 ID domainseqs-ex
 AB domainatrix
 AA domainseqs
-CC Warnings - no accession number for both entries
 IN ../../data/structure/all.scop
 IN ../../data/structure/
 IN Y
@@ -16135,6 +16269,14 @@ IN
 IN
 IN
 IN
+FI stderr
+FC = 45
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 54
+FP 4 /^stamp/
 FI 54894.ent
 FC = 1461
 FZ = 117961
@@ -16536,7 +16678,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FC = 74
+FC = 73
 FP 9 /Sequence \d+: .* \d+ aa\n/
 FI 54894.daf
 FC = 22
@@ -16575,10 +16717,11 @@ FC = 6
 FP 2 /^blastpgp/
 FI 54894.dhf
 FC = 14
-FZ = 2378
+FP 7 /^>/
 FI 55074.dhf
 FC = 72
 FZ = 13281
+FP 36 /^>/
 FI seqsearch.log
 FC = 4
 FP 2 /[.]daf\n/
@@ -16612,7 +16755,6 @@ FP 117 /^>/
 ID seqsort-ex
 AB domainatrix
 AA seqsort
-CC Empty list warnings
 IN ../../data/structure
 IN 10
 IN Y
@@ -16627,25 +16769,24 @@ FP 0 /Error: /
 FP 0 /Died: /
 FI fam.dhf
 FC = 316
-FZ = 58647
+FZ = 59437
 FP 158 /^> /
 FI oth.dhf
 FC = 0
 FZ = 0 
 FI 54894.dhf
 FC = 80
-FZ = 13579 
+FZ = 13779 
 FP 40  /^> /
 FI 55074.dhf
 FC = 236
-FZ = 45068 
+FZ = 45658 
 FP 118 /^> /
 //
 
 ID sigscan-ex
 AB domainatrix
 AA sigscan
-CC output does not match HGMP
 IN ../../data/structure/54894.sig
 IN ../../data/structure/swsmall
 IN
@@ -16665,10 +16806,12 @@ FC = 5
 FP 5 / ok\n/
 FI SIGSCAN.dhf
 FC = 200
-FZ = 39320
+FP /^> P57451\^\.\^6\^91\^SCOP\^\.\^54894\^Alpha and beta proteins/
+FP /^> Q9KP65\^\.\^6\^91\^SCOP\^\.\^54894\^Alpha and beta proteins/
 FI SIGSCAN.aln
 FC = 1113
-FZ = 73700
+FP /^Q9YBD5    1      VRKIRSGVVIDHIPPGRAFTMLKALGLLPPRGYRWRIAVVINAESSKLGRKDI 53\n/
+FP /^SIGNATURE -      ------\*---\*\*-\*---------------------------\*------\*--\*-\n/
 //
 
 ID scopparse-ex
@@ -16695,7 +16838,6 @@ AB domainatrix
 AA seqnr
 PP mkdir hitsnr
 PP mkdir hitsred
-CC bad input data?
 IN ../../data/structure/seqnr/hitsin
 IN Y
 IN ../../data/structure/seqnr/singlets
@@ -16707,6 +16849,8 @@ IN hitsnr
 IN Y
 IN hitsred
 IN
+FI stderr
+FC = 6
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
@@ -16714,22 +16858,32 @@ FI stdout
 FC = 2
 FP 2 /^Processing/
 FI seqnr.log
-FZ = 86
 FC = 4
+FP 2 /^\/\/\n/
+FP 2 /[.]dhf\n/
 DI hitsnr
-FI hitsnr/54894.dhf
-FZ = 679
-FC = 4
-FI hitsnr/55074.dhf
-FZ = 376
-FC = 2
+DF 54894.dhf
+## FZ = 679
+## FC = 4
+## FP 2 /^>/
+## FP /^> Q9YBD5\^/
+## FP /^> Q9KP65\^/
+DF 55074.dhf
+## FZ = 376
+## FC = 2
+## FP 1 /^>/
+## FP /^> Q9DGG6\^/
 DI hitsred
-FI hitsred/54894.dhf      
-FZ = 2356
-FC = 14
-FI hitsred/55074.dhf
-FZ = 1547
-FC = 8
+DF 54894.dhf      
+## FZ = 2356
+## FC = 14
+## FP 7 /^>/
+## FP /^> Q9UX07\^/
+DF 55074.dhf
+## FZ = 1547
+## FC = 8
+## FP 4 /^>/
+## FP /^> Q9WVI4\^/
 //
 
 ID seqwords-ex
@@ -16752,8 +16906,6 @@ FP /^> Q60150\^.\^1\^312\^SCOP\^.\^0\^Alpha and beta proteins/
 ID sites-ex
 AB domainatrix
 AA sites
-CC input files do not match
-CL -dicfile ../../data/structure/Ehet.dat
 IN ../../data/structure/sites
 IN ../../data/structure
 IN ../../data/structure/sites/sites.dcf
@@ -16770,13 +16922,16 @@ FP 0 /^Warning:/
 FP 0 /^Error:/
 FP 0 /^Died:/
 FI SITES.con
-FC = 50
-FZ = 1041
+FC = 163
+FZ = 3604
+FP 7 /^ID   /
+FP 3 /^LI   ASP 41/
+FP /ID   PDB 1cs4; DOM d1cs4a_; LIG POP;\n/
 FI SITES.log
 FC = 2
 FZ = 208
-FP /^CCF:.*1cs4.ccf    HETS:YES        NHETS:7 SCOP:YES        NDOMS: 1\n/
-FP /^CCF:.*1ii7.ccf    HETS:YES        NHETS:5 SCOP:YES        NDOMS: 1\n/
+FP /^CCF:.*1cs4.ccf\tHETS:YES\tNHETS:7\tSCOP:YES\tNDOMS: 1\n/
+FP /^CCF:.*1ii7.ccf\tHETS:YES\tNHETS:5\tSCOP:YES\tNDOMS: 1\n/
 //
 
 ID siggen-ex
@@ -16784,11 +16939,11 @@ AB domainatrix
 AA siggen
 IN ../../data/structure/
 IN 2
-IN 15
-IN 0
+IN 5
 IN 1
 IN EBLOSUM62
-IN 5
+IN 15
+IN 0
 IN Y
 IN
 FI stderr
@@ -17335,24 +17490,65 @@ FP /^Most distant seq:    6%\n/
 # MEME
 #######################################
 
-ID meme-help
+ID meme-ex
 AB meme
 AA meme
-CL -help
+CL -protein
+IN ../../data/memepep.dat
+IN
+IN 3
+IN
 FI stderr
-FC = 0
+FC = 6
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI carp_rhich.meme
+FC = 359
+FP /^MOTIF\s+1\s+width =\s+8\s+sites =\s+5.0\n/
+FP /MOTIF\s+2\s+width =\s+15\s+sites =\s+5.0\n/
+FP /^MOTIF\s+3\s+width =\s+16\s+sites =\s+5.0\n/
+FP 3 /^MOTIF/
 //
 
 #######################################
 # MSE
 #######################################
 
-ID mse-help
+ID mse-ex
 AB mse
 AA mse
-CL -help
+CL ../../data/dna.msf msf::mse.msf
+IN :21
+IN :1 up
+IN acgt:25 28 delete
+IN ----:exit
+FI stderr
+FC = 1
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FZ = 2876
+FP /exit/
+FI mse.msf
+FC = 25
+FP /^MSFM2      ACGTACGTACGTACGTACGTacgt....ACGTACGTACGTACGTACGTAC\n/
+FP 9 /^MSFM/
+//
+
+#######################################
+# MYEMBOSS
+#######################################
+
+ID myseq-ex
+AB myemboss
+AA myseq
 FI stderr
 FC = 0
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
 //
 
 #######################################
@@ -17569,12 +17765,35 @@ FC = 54
 FP 45 /^./
 //
 
-ID ednamlk-help
+ID ednamlk-ex
 AB phylip
 AA ednamlk
-CL -help
+CL -categories -catnum 2 -catvals "1.0 3.2" -catprob "0.4 0.6"
+CL -lambda 1.5
+IN ../../data/evolution/dnaml.dat
+IN
+IN
+IN
+IN
+IN
+IN
+IN
+IN
 FI stderr
-FC = 0
+FC = 3
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI ednamlk.outfile
+FC = 57
+FP /Transition/transversion parameter =   1.5230/
+FP /^  \!\s+\+-------------Gamma     \n/
+FP /^Ln Likelihood =   -72.40499\n/
+FP /^   3             4         3.40036     3.40036\n/
+FI ednamlk.treefile
+FC = 2
+FP /^\(\(Delta:0.15834,Epsilon:0.15834\):3.40036,\(Gamma:0.80621,\n/
+FP /^\(Alpha:0.17218,Beta:0.17218\):0.63403\):2.75249\);\n/
 //
 
 ID ednapars-ex
@@ -18085,6 +18304,23 @@ FC = 7
 FP 3 /^./
 //
 
+ID fdiscboot-ex
+AB phylipnew
+AA fdiscboot
+IN ../../data/evolution/discboot.dat
+IN
+FI discboot.fdiscboot
+FC = 9999
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 23
+FP 18 /^./
+//
+
 ID fdnacomp-ex
 AB phylipnew
 AA fdnacomp
@@ -18508,6 +18744,23 @@ FP 0 /Died: /
 FI stdout
 FC = 57
 FP 52 /^./
+//
+
+ID ffreqboot-ex
+AB phylipnew
+AA ffreqboot
+IN ../../data/evolution/freqboot.dat
+IN
+FI freqboot.ffreqboot
+FC = 9999
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 23
+FP 18 /^./
 //
 
 ID fgendist-ex
@@ -18947,6 +19200,23 @@ FC = 51
 FP 36 /^./
 //
 
+ID frestboot-ex
+AB phylipnew
+AA frestboot
+IN ../../data/evolution/restboot.dat
+IN
+FI restboot.frestboot
+FC = 9999
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 23
+FP 18 /^./
+//
+
 ID frestdist-ex
 AB phylipnew
 AA frestdist
@@ -19019,6 +19289,27 @@ AA fseqboot
 IN ../../data/evolution/seqboot.dat
 IN
 FI seqboot.fseqboot
+FC = 600
+FP 13 /^Alpha     AAAAAA\n/
+FP 22 /^Beta      AAACCC\n/
+FP 32 /^\S+ +AAACCC\n/
+FP 100 /^Alpha/
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 23
+FP 18 /^./
+//
+
+ID fseqbootall-ex
+AB phylipnew
+AA fseqboot
+IN ../../data/evolution/seqboot.dat
+IN
+FI seqboot.fseqbootall
 FC = 600
 FP 13 /^Alpha     AAAAAA\n/
 FP 22 /^Beta      AAACCC\n/
@@ -19107,6 +19398,25 @@ FI treedist.ftreedist
 FC = 294
 FP /Trees 24 and 12:    0\n/
 FP 288 /Trees \d+ and \d+:\s+\d+/
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 5
+FP 2 /^./
+//
+
+ID ftreedistpair-ex
+AB phylipnew
+AA ftreedistpair
+CL -pairingtwo l -dtype s
+IN ../../data/evolution/treedist.dat
+IN ../../data/evolution/treedist2.dat
+IN
+FI treedist.ftreedistpair
+FC = 9999
 FI stderr
 FC = 2
 FP 0 /Warning: /
