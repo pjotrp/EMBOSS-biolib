@@ -3227,7 +3227,7 @@ static AjBool seqReadStaden(AjPSeq thys, AjPSeqin seqin)
     }
     else
     {
-	seqSetName(&thys->Name, thys->Filename);
+	seqSetName(&thys->Name, seqin->Filename);
 	seqAppend(&thys->Seq, rdline);
     }
 
@@ -3688,9 +3688,11 @@ static AjBool seqReadPhylip(AjPSeq thys, AjPSeqin seqin)
 		AJFREE(seqin->Data);
 		return ajFalse;
 	    }
+	    ajDebug("line: '%S'\n", rdline);
 	    AJNEW0(phyitem);
 	    ajRegSubI(headexp, 1, &tmpstr);
 	    seqSetName(&phyitem->Name, tmpstr);
+	    ajDebug("name: '%S' => '%S'\n", tmpstr, phyitem->Name);
 	    phyitem->Weight = 1.0;
 	    ajRegPost(headexp, &seqstr);
 	    seqAppend(&phyitem->Seq, seqstr);
@@ -6493,24 +6495,26 @@ static AjBool seqSetInFormat(const AjPStr format)
 
 static ajint seqAppend(AjPStr* pseq, const AjPStr line)
 {
-    const char* cp;
-    static AjPStr token     = NULL;
-    static AjPRegexp seqexp = NULL;
-    ajint i = 0;
+    AjPStr tmpstr = NULL;
+    ajint ret = 0;
 
-    if(!seqexp)
-	seqexp = ajRegCompC("[A-Za-z*.~?-]+");
+    ajStrAssS(&tmpstr, line);
+    ajStrKeepAlphaC(&tmpstr, "*.~?#+-");
+    ajStrApp(pseq, tmpstr);
 
-    cp = ajStrStr(line);
-    while(cp && ajRegExecC(seqexp, cp))
+/*
+    while(ajStrLen(tmpstr) && ajRegExec(seqexp, tmpstr))
     {
 	ajRegSubI(seqexp, 0, &token);
 	ajStrApp(pseq, token);
 	i += ajStrLen(token);
-	ajRegPostC(seqexp, &cp);
+	ajRegPost(seqexp, &tmpstr);
     }
+*/
+    ret = ajStrLen(tmpstr);
+    ajStrDel(&tmpstr);
 
-    return i;
+    return ret;;
 }
 
 
@@ -7518,26 +7522,31 @@ static AjBool seqinUfoLocal(const AjPSeqin thys)
 
 static void seqSetName(AjPStr* name, const AjPStr str)
 {
-    static AjPRegexp idexp = NULL;	/* dbname:id */
+    AjPStrTok split = NULL;
+    AjPStr token = NULL;
 
-    if(!idexp)
-	idexp = ajRegCompC("^([^ \t\n\r,<>|;]+:)?([^ \t\n\r,<>|;]+)$");
-
-    if(ajRegExec(idexp, str))
-	ajRegSubI(idexp, 2, name);
+    if(ajStrIsWord(str))
+    {
+	ajDebug("seqSetName word '%S'\n", str);
+	split = ajStrTokenInit(str, ":");
+	while(ajStrToken(&token, &split, NULL))
+	{
+	    if(ajStrLen(token))
+	       ajStrAssS(name, token);
+	}
+	ajStrTokenClear(&split);
+    }
     else
     {
+	ajDebug("seqSetName non-word '%S'\n", str);
 	ajStrAssS(name, str);
-	ajDebug("seqSetName default '%S'\n", str);
-	if (!ajStrIsWord(*name))
-	{
-	    ajStrClean(name);
-	    ajStrSubstituteKK(name, ' ', '_');
-	    ajDebug("seqSetName cleaned '%S'\n", *name);
-	}
+	ajStrClean(name);
+	ajStrSubstituteKK(name, ' ', '_');
+	ajDebug("seqSetName cleaned '%S'\n", *name);
     }
-    ajDebug("seqSetName '%S' result: '%S'\n", str, *name);
 
+    ajDebug("seqSetName '%S' result: '%S'\n", str, *name);
+    ajStrDel(&token);
     return;
 }
 
