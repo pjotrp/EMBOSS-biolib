@@ -124,6 +124,12 @@ AjBool        embDmxSeqNRRange(const AjPList input,
 			       float thresh2, 
 			       AjBool CheckGarbage);
 
+AjBool        embDmxSeqCompall(const AjPList input, 
+			       AjPFloat2d *scores, 
+			       const AjPMatrixf matrix, 
+			       float gapopen, 
+			       float gapextend);
+
 #endif
 
 #ifdef __cplusplus

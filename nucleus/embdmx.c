@@ -1708,6 +1708,200 @@ AjBool embDmxSeqNRRange(const AjPList input, AjPInt *keep, ajint *nset,
 
 
 
+/* @func embDmxSeqCompall ***************************************************
+**
+** Reads a list of AjPSeq's and writes an array of sequence similarity values
+** for an all-versus-all comparison of the sequences.  The rows and columns 
+** in the array correspond to the order of the sequences in the list.
+**
+** 
+** @param [r] input  [const AjPList]    List of ajPSeq's 
+** @param [w] scores [AjPFloat2d*] Sequence similarity values
+** @param [r] matrix    [const AjPMatrixf] Residue substitution matrix
+** @param [r] gapopen   [float]      Gap insertion penalty
+** @param [r] gapextend [float]      Gap extension penalty
+**
+** @return [AjBool] ajTrue on success
+** @@
+****************************************************************************/
+
+AjBool embDmxSeqCompall(const AjPList input, AjPFloat2d *scores, 
+		   const AjPMatrixf matrix, float gapopen, float gapextend)
+{
+    ajint start1  = 0;	  /* Start of seq 1, passed as arg but not used */
+    ajint start2  = 0;	  /* Start of seq 2, passed as arg but not used */
+    ajint maxarr  = 300;  /* Initial size for matrix */
+    ajint len;
+    ajint x;		  /* Counter for seq 1 */
+    ajint y;		  /* Counter for seq 2 */
+    ajint nin;		  /* Number of sequences in input list */
+    ajint *compass;
+
+    const char  *p;
+    const char  *q;
+
+    AjFloatArray *sub;
+    float id   = 0.;	  /* Passed as arg but not used here */
+    float sim  = 0.;
+    float idx  = 0.;	  /* Passed as arg but not used here */
+    float simx = 0.;	  /* Passed as arg but not used here */
+    float *path;
+
+    AjPStr m = NULL;	  /* Passed as arg but not used here */
+    AjPStr n = NULL;	  /* Passed as arg but not used here */
+
+    AjPSeq      *inseqs = NULL;	 /* Array containing input sequences */
+    AjPInt      lens    = NULL;	 /* 1: Lengths of sequences* in input list */
+    AjPSeqCvt   cvt     = 0;
+    AjBool      show    = ajFalse; /* Passed as arg but not used here */
+
+
+    /* Intitialise some variables */
+    AJCNEW(path, maxarr);
+    AJCNEW(compass, maxarr);
+    m = ajStrNew();
+    n = ajStrNew();
+    gapopen   = ajRoundF(gapopen,8);
+    gapextend = ajRoundF(gapextend,8);
+    sub = ajMatrixfArray(matrix);
+    cvt = ajMatrixfCvt(matrix);
+
+    /* Convert the AjPList to an array of AjPseq */
+    if(!(nin=ajListToArray(input,(void ***)&inseqs)))
+    {
+	ajWarn("Zero sized list of sequences passed into embDmxSeqCompall");
+	AJFREE(compass);
+	AJFREE(path);
+	ajStrDel(&m);
+	ajStrDel(&n);
+	return ajFalse;
+    }
+
+
+    /* Create an ajint array to hold lengths of sequences */
+    lens = ajIntNewL(nin);
+    for(x=0; x<nin; x++)
+	ajIntPut(&lens,x,ajSeqLen(inseqs[x]));
+
+
+    /* Create a 2d float array to hold the similarity scores */
+    *scores = ajFloat2dNew();
+
+    /* Start of main application loop */
+    for(x=0; x<nin; x++)
+    {
+	for(y=x+1; y<nin; y++)
+	{
+	    /* DIAGNOSTICS 
+	       ajFmtPrint("x=%d y=%d\nComparing\n%S\nto\n%S\n\n", 
+		       x, y, inseqs[x]->Seq, inseqs[y]->Seq);*/
+	    
+	    
+
+	    /* Process w/o alignment identical sequences */
+	    if(ajStrMatch(inseqs[x]->Seq, inseqs[y]->Seq))
+	    {
+/*  DIAGNOSTICS		printf("Score=%f\n", 100.0);  */
+		
+		ajFloat2dPut(scores,x,y,(float)100.0);
+		continue;
+	    }
+
+
+	    /* Intitialise variables for use by alignment functions */
+	    len = ajIntGet(lens,x)*ajIntGet(lens,y);
+
+	    if(len>maxarr)
+	    {
+		AJCRESIZE(path,len);
+		AJCRESIZE(compass,len);
+		maxarr=len;
+	    }
+
+	    p = ajSeqChar(inseqs[x]);
+	    q = ajSeqChar(inseqs[y]);
+
+	    ajStrAssC(&m,"");
+	    ajStrAssC(&n,"");
+
+
+	    /* Check that no sequence length is 0 */
+	    if((ajIntGet(lens,x)==0)||(ajIntGet(lens,y)==0))
+	    {
+		ajWarn("Zero length sequence in embDmxSeqCompall");
+		AJFREE(compass);
+		AJFREE(path);
+		ajStrDel(&m);
+		ajStrDel(&n);
+		ajFloat2dDel(scores);
+		ajIntDel(&lens);
+		AJFREE(inseqs);
+
+		return ajFalse;
+	    }
+
+
+	    /* Call alignment functions */
+	    embAlignPathCalc(p,q,ajIntGet(lens,x),ajIntGet(lens,y), gapopen,
+			     gapextend,path,sub,cvt,compass,show);
+
+	    embAlignScoreNWMatrix(path,inseqs[x],inseqs[y],sub,cvt,
+				  ajIntGet(lens,x), ajIntGet(lens,y),gapopen,
+				  compass,gapextend,&start1,&start2);
+
+	    embAlignWalkNWMatrix(path,inseqs[x],inseqs[y],&m,&n,
+				 ajIntGet(lens,x),ajIntGet(lens,y),
+				 &start1,&start2,gapopen,gapextend,cvt,
+				 compass,sub);
+
+	    embAlignCalcSimilarity(m,n,sub,cvt,ajIntGet(lens,x),
+				   ajIntGet(lens,y),&id,&sim,&idx, &simx);
+
+
+	    /* Write array with score*/
+	/* DIAGNOSTICS	   printf("Score=%f\n", sim);  */
+		    ajFloat2dPut(scores,x,y,sim);
+	}
+    }
+
+
+    /* DIAGNOSTIC 
+    for(x=0; x<nin; x++)
+    {
+	for(y=x+1; y<nin; y++)	
+	{
+	    ajFmtPrint("%d:%d : %f\n", x+1, y+1, ajFloat2dGet(*scores,x,y));
+        }
+    }
+    */
+    
+
+
+    for(x=0; x<nin; x++)
+    {
+	for(y=x+1; y<nin; y++)
+	{
+/*DIAGNOSTICS	    ajFmtPrint("x=%d y=%d\nComparing\n%S\nto\n%S\n\n", 
+		       x, y, inseqs[x]->Seq, inseqs[y]->Seq);        */
+	}
+    }
+    
+
+
+    AJFREE(compass);
+    AJFREE(path);
+    ajStrDel(&m);
+    ajStrDel(&n);
+    ajIntDel(&lens);
+    AJFREE(inseqs);
+
+    return ajTrue;
+}
+
+
+
+
+
 /* @func embDmxHitlistToScophits ********************************************
 **
 ** Read from a list of Hitlist structures and writes a list of Scophit 
