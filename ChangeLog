@@ -1,0 +1,8 @@
+Version 2.3.0
+
+        Seqretall, seqretallfeat and seqretset moved to 'make check'.
+        Seqret has all the functionality of the above.
+	Fix for NBRF accession number reading (ajseqread.c)
+	Whichdb program added.
+	
+	
