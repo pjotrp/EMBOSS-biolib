@@ -133,7 +133,7 @@ section: output [
   type: "page"
 ]
 
-  outdir: indexdirectory  [
+  outdir: indexoutdir  [
     default: "."
     information: "Index directory"
     knowntype: "output directory"
