@@ -293,6 +293,7 @@ void embPropCalcFragments(char *s, ajint n, ajint begin, AjPList *l, AjPList *pa
     {
 	(void) ajListPop(t,(void **)&ival);
 	endsa[i]=*ival;
+	AJFREE(ival);
     }
 
 
