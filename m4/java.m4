@@ -4,7 +4,7 @@ dnl Need to specify --with-java and --with-javajni
 dnl @author Alan Bleasby (ableasby@hgmp.mrc.ac.uk)
 dnl
 
-AC_DEFUN(CHECK_JAVA,
+AC_DEFUN([CHECK_JAVA],
 #
 # Handle user hints
 #
@@ -50,7 +50,7 @@ fi
 
 
 
-AC_DEFUN(CHECK_JAVAOS,
+AC_DEFUN([CHECK_JAVAOS],
 #
 # Handle user hints
 #
@@ -86,7 +86,7 @@ fi
 
 
 
-AC_DEFUN(CHECK_AUTH,
+AC_DEFUN([CHECK_AUTH],
 #
 # Handle user authorisation
 #
@@ -160,7 +160,7 @@ fi
 
 
 
-AC_DEFUN(CHECK_THREADS,
+AC_DEFUN([CHECK_THREADS],
 #
 # Handle jemboss threading options
 #
