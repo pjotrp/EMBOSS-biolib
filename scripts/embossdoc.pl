@@ -5,8 +5,11 @@ $locout = "local";
 $infile = "";
 $lib = "unknown";
 
-###%test = ("func" => 1, "funcstatic" => 1, "funclist" => 1, "prog" => 1);
+### test is whether to test the return etc.
+### body is whether to print the body code
+
 %test = ("func" => 1, "funcstatic" => 1, "funclist" => 0, "prog" => 0);
+%body = ("func" => 1, "funcstatic" => 1, "funclist" => 1, "prog" => 1);
 
 if ($ARGV[0]) {$infile = $ARGV[0];}
 if ($ARGV[1]) {$lib = $ARGV[1];}
@@ -401,7 +404,7 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 ## $rest is what follows the comment
 ##############################################################
 
-    if ($test{$type} == 1) {
+    if ($body{$type} == 1) {
 
 # body is the code up to a '}' at the start of a line
 
