@@ -5,7 +5,8 @@ pkgdata_DATA = abiview0.gif banana0.gif chaos0.gif cpgplot0.gif \
                pepwheel0.gif pepwindow0.gif pepwindowall0.gif \
                plotorf0.gif polydot0.gif prettyplot3.gif prettyplot4.gif \
                syco0.gif syco1.gif tmap0.gif topo.gif wobble0.gif \
-               SITE-DIRECTED.html abiview.html alignment_global_group.html \
+               SITE-DIRECTED.html abiview.html abi_trace_files_group.html \
+               alignment_global_group.html \
                alignment_group.html alignment_local_group.html \
                alignment_multiple_group.html antigenic.html \
                assorted_group.html \
