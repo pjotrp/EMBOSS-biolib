@@ -212,6 +212,20 @@ typedef struct AjSOutfile {
 
 #define AjPOutfile AjOOutfile*
 
+enum AjEOutfileType
+{
+    OUTFILE_UNKNOWN,			/* Unknown - none of these */
+    OUTFILE_CODON,			/* Codon usage */
+    OUTFILE_CPDB,			/* Clean PDB */
+    OUTFILE_DISCRETE,			/* Discrete data */
+    OUTFILE_DISTANCE,			/* Distance matrix data */
+    OUTFILE_FREQ,			/* Frequency data */
+    OUTFILE_MATRIX,			/* Integer matrix data */
+    OUTFILE_MATRIXF,			/* Floating point matrix data */
+    OUTFILE_PROPERTIES,			/* Phylogenetic properties */
+    OUTFILE_SCOP,			/* SCOP data */
+    OUTFILE_TREE			/* Phylogenetic tree data */
+};
 /* ============= prototypes =========================*/
 
 void        ajDirDel (AjPDir* pthis);

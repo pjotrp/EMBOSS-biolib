@@ -2001,6 +2001,7 @@ typedef struct AcdSOuttype
 {
     char* Name;
     char* Format;
+    ajint Type;
     void (*Prompt)(AcdPAcd thys);
     ajint (*Outformat)(const AjPStr format);
 } AcdOOuttype;
@@ -2015,18 +2016,29 @@ typedef struct AcdSOuttype
 
 AcdOOuttype acdOuttype[] =
 {
-    {"outcodon",      "cutg",   acdPromptOutcodon,      acdOutFormatCodon},
-    {"outcpdb",       "cpdb",   acdPromptOutcpdb,       acdOutFormatCpdb},
-    {"outdata",       "text",   acdPromptOutdata,       acdOutFormatData},
-    {"outdiscrete",   "phylip", acdPromptOutdiscrete,   acdOutFormatDiscrete},
-    {"outdistance",   "phylip", acdPromptOutdistance,   acdOutFormatDistance},
-    {"outfreq",       "phylip", acdPromptOutfreq,       acdOutFormatFreq},
-    {"outmatrix",     "emboss", acdPromptOutmatrix,     acdOutFormatMatrix},
-    {"outmatrixf",    "emboss", acdPromptOutmatrix,     acdOutFormatMatrixf},
-    {"outproperties", "phylip", acdPromptOutproperties,acdOutFormatProperties},
-    {"outscop",       "",       acdPromptOutscop,       acdOutFormatScop},
-    {"outtree",       "phylip", acdPromptOuttree,       acdOutFormatTree},
-    {NULL, NULL, NULL}
+    {"outcodon",      "cutg",      OUTFILE_CODON,
+	 acdPromptOutcodon,      acdOutFormatCodon},
+    {"outcpdb",       "cpdb",      OUTFILE_CPDB,
+	 acdPromptOutcpdb,       acdOutFormatCpdb},
+    {"outdata",       "text",      OUTFILE_UNKNOWN,
+	 acdPromptOutdata,       acdOutFormatData},
+    {"outdiscrete",   "phylip",      OUTFILE_DISCRETE,
+	 acdPromptOutdiscrete,   acdOutFormatDiscrete},
+    {"outdistance",   "phylip",      OUTFILE_DISTANCE,
+	 acdPromptOutdistance,   acdOutFormatDistance},
+    {"outfreq",       "phylip",      OUTFILE_FREQ,
+	 acdPromptOutfreq,       acdOutFormatFreq},
+    {"outmatrix",     "emboss",      OUTFILE_MATRIX,
+	 acdPromptOutmatrix,     acdOutFormatMatrix},
+    {"outmatrixf",    "emboss",      OUTFILE_MATRIXF,
+	 acdPromptOutmatrix,     acdOutFormatMatrixf},
+    {"outproperties", "phylip",      OUTFILE_PROPERTIES,
+	 acdPromptOutproperties,acdOutFormatProperties},
+    {"outscop",       "scop",      OUTFILE_SCOP,
+	 acdPromptOutscop,       acdOutFormatScop},
+    {"outtree",       "phylip",      OUTFILE_TREE,
+	 acdPromptOuttree,       acdOutFormatTree},
+    {NULL, NULL, OUTFILE_UNKNOWN, NULL, NULL}
 };
 
 
@@ -2447,10 +2459,10 @@ AcdOType acdType[] =
 	 AJFALSE, &acdUseData, "Comparison matrix file in EMBOSS data path" },
     {"outcodon",	   "output",           acdSecOutput,
 	 acdAttrOutcodon,  acdSetOutcodon,     NULL,
-	 AJTRUE,  &acdUseData, "Codon usage file" },
+	 AJTRUE,  &acdUseOutfile, "Codon usage file" },
     {"outcpdb", 	   "output",           acdSecOutput,
 	 acdAttrOutcpdb,   acdSetOutcpdb,      NULL,
-	 AJTRUE,  &acdUseData, "Cleaned PDB file" },
+	 AJTRUE,  &acdUseOutfile, "Cleaned PDB file" },
     {"outdata",            "output",           acdSecOutput,
 	 acdAttrOutdata,   acdSetOutdata,   acdQualOutdata,
 	 AJTRUE,  &acdUseOutfile, "Formatted output file" },
@@ -6185,7 +6197,7 @@ static void acdSetDiscretestates(AcdPAcd thys)
 	    if(!val)
 	    {
 		acdBadVal(thys, required,
-			  "Unable to read frequencies file '%S'",
+			  "Unable to read discrete states from '%S'",
 			  reply);
 		ok = ajFalse;
 	    }
@@ -6194,7 +6206,7 @@ static void acdSetDiscretestates(AcdPAcd thys)
 	    if(!nullok)
 	    {
 		acdBadVal(thys, required,
-			  "Input frequencies file is required");
+			  "Input discrete states file is required");
 		ok = ajFalse;
 	    }
     }
@@ -6318,7 +6330,7 @@ static void acdSetDistances(AcdPAcd thys)
 	    if(!val)
 	    {
 		acdBadVal(thys, required,
-			  "Unable to read distance file '%S'",
+			  "Unable to read distances file '%S'",
 			  reply);
 		ok = ajFalse;
 	    }
@@ -7940,7 +7952,7 @@ static void acdSetMatrixf(AcdPAcd thys)
 /* @funcstatic acdSetOutType **************************************************
 **
 ** Generic definition for any of the ACD formatted output types.
-** May be erplaced by a specific acdSet function is additional attributes
+** May be replaced by a specific acdSet function if additional attributes
 ** or qualifiers are to be processed.
 **
 ** Understands all attributes and associated qualifiers for these item types.
@@ -8975,7 +8987,7 @@ static void acdSetProperties(AcdPAcd thys)
 	    if(!val)
 	    {
 		acdBadVal(thys, required,
-			  "Unable to open file '%S' for input",
+			  "Unable to read properties from '%S'",
 			  reply);
 		ok = ajFalse;
 	    }
@@ -11689,7 +11701,7 @@ static void acdSetTree(AcdPAcd thys)
 	    if(!val)
 	    {
 		acdBadVal(thys, required,
-			  "Unable to open file '%S' for input",
+			  "Unable to read tree data from '%S'",
 			  reply);
 		ok = ajFalse;
 	    }
