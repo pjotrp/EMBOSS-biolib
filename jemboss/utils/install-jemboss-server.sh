@@ -1,7 +1,7 @@
 #!/bin/sh
 # 
 # install-jemboss-server.sh
-# 1/5/02
+# last changed: 16/09/02
 
 
 
@@ -215,6 +215,22 @@ output_auth_xml()
   
 }
 
+#echo
+#echo
+#echo "--------------------------------------------------------------"
+#echo " "
+#echo "         Type of installation [1] :"
+#echo "         (1) CLIENT-SERVER"
+#echo "         (2) STANDALONE"
+#echo " "
+#echo "--------------------------------------------------------------"
+#read INSTALL_TYPE
+#if [ "$INSTALL_TYPE" != "1" ]; then
+#  if [ "$INSTALL_TYPE" != "2" ]; then
+#    INSTALL_TYPE="1"
+#  fi
+#fi
+#clear
 
 echo
 echo "--------------------------------------------------------------"
@@ -637,6 +653,17 @@ chmod u+x tomstart
 chmod u+x tomstop
 
 #
+# Add classes to Tomcat path
+#
+
+if [ -d "$TOMCAT_ROOT/shared/classes" ]; then
+#tomcat 10.1.x
+  cp $JEMBOSS/lib/mail.jar $TOMCAT_ROOT/shared/lib
+  cp $JEMBOSS/lib/activation.jar $TOMCAT_ROOT/shared/lib
+fi
+
+
+#
 #
 # Create XML deployment descriptor files
 #
@@ -726,17 +753,28 @@ fi
 # Add classes to Tomcat path
 #
 
-if [ ! -d "$TOMCAT_ROOT/classes" ]; then
-  echo "WARNING:  $TOMCAT_ROOT/classes not found"
-  echo "Jemboss classpath not added to Tomcat"
+if [ -d "$TOMCAT_ROOT/classes" ]; then
 
-else
+#tomcat 10.0.x
   ln -s $JEMBOSS/org $TOMCAT_ROOT/classes
   ln -s $JEMBOSS/resources $TOMCAT_ROOT/classes
-fi
-#  tomcat_classpath_notes $TOMCAT_ROOT $JEMBOSS
+elif [ -d "$TOMCAT_ROOT/shared/classes" ]; then
 
-#
+#tomcat 10.1.x
+  ln -s $JEMBOSS/org $TOMCAT_ROOT/shared/classes/org
+  ln -s $JEMBOSS/resources $TOMCAT_ROOT/shared/classes/resources
+# cp -R $JEMBOSS/org/emboss $TOMCAT_ROOT/webapps/soap/WEB-INF/classes/org/emboss
+# cp -R $JEMBOSS/resources $TOMCAT_ROOT/webapps/soap/WEB-INF/classes/resources
+
+# mv $TOMCAT_ROOT/shared/lib $TOMCAT_ROOT/webapps/soap/WEB-INF/lib
+# mv $TOMCAT_ROOT/shared/lib $TOMCAT_ROOT/webapps/soap/WEB-INF/lib
+else
+  echo "WARNING: no $TOMCAT_ROOT/classes "
+  echo "         or $TOMCAT_ROOT/shared/classes "
+  echo "Jemboss classpath not added to Tomcat"
+fi
+
+
 #
 # Change jemboss.properties to reflect server location
 # $EMBOSS_INSTALL/share/EMBOSS/jemboss/resources/jemboss.properties
@@ -779,6 +817,7 @@ else
 fi
 
 chmod a+x $JEMBOSS/runJemboss.csh
+chmod u+x $JEMBOSS/utils/*sh
 
 exit 0;
 
