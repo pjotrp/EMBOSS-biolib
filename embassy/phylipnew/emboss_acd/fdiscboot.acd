@@ -1,6 +1,7 @@
-application: fseqboot_disc [
-  documentation: "Bootstrapped restriction sites algorithm"
+application: fdiscboot [
+  documentation: "Bootstrapped discrete sites algorithm"
   groups: "Phylogeny:Molecular sequence"
+  embassy: "phylipnew"
 ]
 
 section: input [

@@ -1,6 +1,7 @@
 application: fdnamlk [
-	documentation: "Estimates nucleotide phylogeny by maximum likelihood"
-	groups: "Phylogeny:Molecular sequence"
+  documentation: "Estimates nucleotide phylogeny by maximum likelihood"
+  groups: "Phylogeny:Molecular sequence"
+  embassy: "phylipnew"
 ]
 
 section: input [

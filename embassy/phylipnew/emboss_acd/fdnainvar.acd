@@ -1,6 +1,7 @@
 application: fdnainvar [
   documentation: "Nucleic acid sequence Invariants method"
   groups: "Phylogeny:Molecular sequence"
+  embassy: "phylipnew"
 ]
 
 section: input [

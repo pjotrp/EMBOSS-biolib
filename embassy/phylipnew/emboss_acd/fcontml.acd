@@ -4,6 +4,7 @@ application: fcontml [
   gui: "yes"
   batch: "yes"
   cpu: "high"
+  embassy: "phylipnew"
 ]
 
 section: input [

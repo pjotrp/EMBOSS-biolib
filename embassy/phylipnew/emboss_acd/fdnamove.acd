@@ -1,6 +1,7 @@
 application: fdnamove [
   documentation: "Interactive DNA parsimony"
   groups: "Phylogeny:Molecular sequence"
+  embassy: "phylipnew"
 ]
 
 section: input [

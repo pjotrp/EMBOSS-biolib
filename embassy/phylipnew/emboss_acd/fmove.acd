@@ -2,6 +2,7 @@ application: fmove [
   documentation: "Interactive mixed method parsimony"
   groups: "Phylogeny:Discrete characters"
   batch: "no"
+  embassy: "phylipnew"
 ]
 
 section: input [

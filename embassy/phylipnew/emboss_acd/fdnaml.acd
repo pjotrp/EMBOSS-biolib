@@ -2,6 +2,7 @@ application: fdnaml [
   documentation: "Estimates nucleotide phylogeny by maximum
                   likelihood"
   groups: "Phylogeny:Molecular sequence"
+  embassy: "phylipnew"
 ]
 
 section: input [

@@ -16,20 +16,23 @@ typedef enum {
 } seqtype;
 
 
-AjPPhyloFreq phylofreqs = NULL;
 
+AjPPhyloState* phylostate = NULL;
 AjPPhyloProp phyloweights = NULL;
-
+AjPPhyloProp phyloanc = NULL;
+AjPPhyloProp phylomix = NULL;
+AjPPhyloProp phylofact = NULL;
 
 #ifndef OLDC
 /* function prototypes */
 //void   getoptions(void);
 void emboss_getoptions(char *pgm, int argc, char *argv[]);
 
+void   seqboot_inputnumbersstate(AjPPhyloState);
 
-void   seqboot_inputnumbersfreq(AjPPhyloFreq);
 void   inputoptions(void);
-void   seqboot_inputdatafreq(AjPPhyloFreq);
+void   seqboot_inputdatastate(AjPPhyloState);
+
 void   allocrest(void);
 void   allocnew(void);
 void   doinput(int argc, Char *argv[]);
@@ -92,14 +95,13 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
 {
   AjStatus retval;
   AjPStr test = NULL; 
-  AjPStr outputformat = NULL;
   AjPStr typeofseq = NULL;
   AjPStr justweights = NULL;
   AjBool rewrite = false;
 
   long inseed, inseed0;
  
-  data = genefreqs;
+  data = morphology;
   seq = dna;
   bootstrap = false;
   jackknife = false;
@@ -109,7 +111,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
   blocksize = 1;
   regular = true;
   fracsample = 1.0;
-  all = true;
+  all = false;
   reps = 100;
   weights = false;
   mixture = false;
@@ -128,13 +130,17 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
     ajNamInit("emboss");
     retval =  ajAcdInitP (pgm, argc, argv, "PHYLIP");
 
-    phylofreqs = ajAcdGetFrequencies("infile");
+    phylostate = ajAcdGetDiscretestates("infile");
+ 
+    phylofact = ajAcdGetProperties("factorfile");
+    if(phylofact) {
+      factors = true;
+      embossoutfactfile = ajAcdGetOutfile("outfactfile");
+      emboss_openfile(embossoutfactfile, &outfactfile, &outfactfilename);
+    }
 
 
-
-
-
-
+    
     test = ajAcdGetListI("test", 1);
     
     if(ajStrMatchC(test, "b")) {
@@ -165,19 +171,12 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
 
 
     if(rewrite) {
-      if (data == seqs) {
-        outputformat = ajAcdGetListI("rewriteformat", 1);
-	if(ajStrMatchC(outputformat, "n")) nexus = true;
-	else if(ajStrMatchC(outputformat, "x")) xml = true;
-        
-        if( (nexus) || (xml) ) {
-          typeofseq = ajAcdGetListI("seqtype", 1);
-          if(ajStrMatchC(typeofseq, "d"))  seq = dna;
-          else if(ajStrMatchC(typeofseq, "r")) seq = rna;
-          else if(ajStrMatchC(typeofseq, "p")) seq = protein;
-	}
+      if (data == morphology) {
+        typeofseq = ajAcdGetListI("morphseqtype", 1);
+        if(ajStrMatchC(typeofseq, "d")) seq = dna;
+        else if(ajStrMatchC(typeofseq, "r")) seq = rna;
+        else if(ajStrMatchC(typeofseq, "p")) seq = protein;	  
       }
-
     }
     else{
       reps = ajAcdGetInt("reps");
@@ -187,16 +186,28 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
       if(jackknife || bootstrap || permute) {
         phyloweights = ajAcdGetProperties("weights");
         if(phyloweights) weights = true;
-      }
+      
+        phyloanc = ajAcdGetProperties("ancfile");
+        if(phyloanc) {
+          ancvar = true;
+          embossoutancfile = ajAcdGetOutfile("outancfile");
+          emboss_openfile(embossoutancfile, &outancfile, &outancfilename);
+        }
 
-
+        phylomix = ajAcdGetProperties("mixfile");
+        if(phylomix) {
+          mixture = true;
+          embossoutmixfile = ajAcdGetOutfile("outmixfile");
+          emboss_openfile(embossoutmixfile, &outmixfile, &outmixfilename);
+        }
+ 
         if(!permute) {
           justweights = ajAcdGetListI("justweights", 1); 
           if(ajStrMatchC(justweights, "j")) justwts = true;
         }
 
       }
-
+    }
 
     printdata = ajAcdGetBool("printdata");
     if(printdata) dotdiff = ajAcdGetBool("dotdiff");
@@ -219,26 +230,37 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
 
 
 
-void seqboot_inputnumbersfreq(AjPPhyloFreq freq)
+
+void seqboot_inputnumbersstate(AjPPhyloState state)
 {
   /* read numbers of species and of sites */
-  long i;
 
-  spp = freq->Size;
-  sites = freq->Loci;
+  spp = state->Size;
+  sites = state->Len;
   loci = sites;
   maxalleles = 1;
-  if (!freq->ContChar) {
-    alleles = (long *)Malloc(sites*sizeof(long));
-    sites = 0;
-    for (i = 0; i < (loci); i++) {
-      alleles[i] = freq->Allele[i];
-      if (alleles[i] > maxalleles)
-         maxalleles = alleles[i];
-      sites += alleles[i];
-    }
+}  /* seqboot_inputnumberstate */
+
+
+void seqboot_inputfactors(AjPPhyloProp fact)
+{
+  long i, j;
+  Char ch, prevch;
+  AjPStr str;
+
+  prevch = ' ';
+  str = fact->Str[0];
+
+  j = 0;
+  for (i = 0; i < (sites); i++) {
+    ch = ajStrChar(str,i);
+    if (ch != prevch)
+      j++;
+    prevch = ch;
+    factorr[i] = j;
   }
-}  /* seqboot_inputnumbersfreq */
+
+}  /* seqboot_inputfactors */
 
 
 void inputoptions()
@@ -261,7 +283,9 @@ void inputoptions()
     for (i = 1; i <= (sites); i++)
       factorr[i - 1] = i;
   }
-
+  if(factors){
+    seqboot_inputfactors(phylofact);
+  }
   for (i = 0; i < (sites); i++)
     oldweight[i] = 1;
   if (weights)
@@ -304,17 +328,19 @@ void inputoptions()
 }  /* inputoptions */
 
 
-void seqboot_inputdatafreq(AjPPhyloFreq freq)
+
+
+ void seqboot_inputdatastate(AjPPhyloState state)
 {
   /* input the names and sequences for each species */
   long i, j, k, l, m, n;
-  double x;
-  ajint ipos=0;
- 
+  Char charstate;
+  AjPStr str;
+  boolean allread, done;
 
-  nodef = (double **)Malloc(spp*sizeof(double *));
+  nodep = (Char **)Malloc(spp*sizeof(Char *));
   for (i = 0; i < (spp); i++)
-    nodef[i] = (double *)Malloc(sites*sizeof(double));
+    nodep[i] = (Char *)Malloc(sites*sizeof(Char));
 
   j = nmlngth + (sites + (sites - 1) / 10) / 2 - 5;
   if (j < nmlngth - 1)
@@ -345,21 +371,36 @@ void seqboot_inputdatafreq(AjPPhyloFreq freq)
       } else {
         if (permute) {
           fprintf(outfile, "Species order permuted separately for each");
-          fprintf(outfile, " locus\n\n");
+          if (data == morphology)
+            fprintf(outfile, " character\n\n");
+          if (data == restsites)
+            fprintf(outfile, " site\n\n");
         }
         else {
           if (ild) {
-            fprintf(outfile, "Locus");
+            if (data == morphology)
+              fprintf(outfile, "Character");
+            if (data == restsites)
+              fprintf(outfile, "Site");
             fprintf(outfile, " order permuted\n\n");
 	  } else {
             if (lockhart)
-              fprintf(outfile, "Locus");
-            fprintf(outfile, " order permuted separately for each species\n\n");
+              if (data == morphology)
+                fprintf(outfile, "Character");
+              if (data == restsites)
+                fprintf(outfile, "Site");
+         fprintf(outfile, " order permuted separately for each species\n\n");
           }
         }
       }
     }
-    fprintf(outfile, "%3ld species, %3ld  loci\n\n", spp, loci);
+      fprintf(outfile, "%3ld species, ", spp);
+      if (data == seqs)
+        fprintf(outfile, "%3ld  sites\n\n", sites);
+        else if (data == morphology)
+          fprintf(outfile, "%3ld  characters\n\n", sites);
+          else if (data == restsites)
+            fprintf(outfile, "%3ld  sites\n\n", sites);
 
     fprintf(outfile, "Name");
     for (i = 1; i <= j; i++)
@@ -371,46 +412,60 @@ void seqboot_inputdatafreq(AjPPhyloFreq freq)
     fprintf(outfile, "----\n\n");
   }
 
-  
-  for (i = 1; i <= (spp); i++) {
-    initnamefreq(freq,i - 1);
-    j = 1;
-    while (j <= sites) {
-      x = freq->Data[ipos++];
-      if ((unsigned)x > 1.0) {
-        printf("GENE FREQ OUTSIDE [0,1] in species %ld\n", i);
-        exxit(-1);
-      } else {
-        nodef[i - 1][j - 1] = x;
-        j++;
+  allread = false;
+  while (!allread) {
+    allread = true;
+    i = 1;
+    while (i <= spp) {
+      initnamestate(state, i-1);
+      str = state->Str[i-1];
+      j = 0;
+      done = false;
+      while (!done) {
+        while (j < sites) {
+          charstate = ajStrChar(str, j);
+          uppercase(&charstate);
+          j++;
+          if (charstate == '.')
+            charstate = nodep[0][j-1];
+          nodep[i-1][j-1] = charstate;
+        }
+        if (j == sites)
+          done = true;
       }
+      i++;
     }
+    allread = (i > spp);
   }
-  
 
   if (!printdata)
     return;
- 
-  m = (sites - 1) / 8 + 1;
-
+  m = (sites - 1) / 60 + 1;
   for (i = 1; i <= m; i++) {
     for (j = 0; j < spp; j++) {
       for (k = 0; k < nmlngth; k++)
         putc(nayme[j][k], outfile);
       fprintf(outfile, "   ");
-      l = i * 8;
+      l = i * 60;
       if (l > sites)
         l = sites;
-      n = (i - 1) * 8;
+      n = (i - 1) * 60;
       for (k = n; k < l; k++) {
-        fprintf(outfile, "%8.5f", nodef[j][k]);
+          if (j + 1 > 1 && nodep[j][k] == nodep[0][k])
+            charstate = '.';
+          else
+            charstate = nodep[j][k];
+          putc(charstate, outfile);
+          if ((k + 1) % 10 == 0 && (k + 1) % 60 != 0)
+            putc(' ', outfile);
       }
       putc('\n', outfile);
     }
     putc('\n', outfile);
   }
   putc('\n', outfile);
-}  /* seqboot_inputdatafreq */
+}  /* seqboot_inputdatastate */
+
 
 void allocrest()
 { /* allocate memory for bookkeeping arrays */
@@ -447,10 +502,10 @@ void allocnew(void)
 
 void doinput(int argc, Char *argv[])
 { /* reads the input data */
-  seqboot_inputnumbersfreq(phylofreqs);
+  seqboot_inputnumbersstate(phylostate[0]);
   allocrest();
   inputoptions();
-  seqboot_inputdatafreq(phylofreqs);
+  seqboot_inputdatastate(phylostate[0]);
 
 
 }  /* doinput */
@@ -990,7 +1045,7 @@ int main(int argc, Char *argv[])
   argv[0] = "SeqBoot";
 #endif
   init(argc,argv);
-  emboss_getoptions("ffreqboot", argc, argv);
+  emboss_getoptions("fdiscboot", argc, argv);
   ibmpc = IBMCRT;
   ansi = ANSICRT;
   doinput(argc, argv);

@@ -1,5 +1,5 @@
 application: ffreqboot [
-  documentation: "Bootstrapped sequences algorithm"
+  documentation: "Bootstrapped genetic frequencies algorithm"
   groups: "Phylogeny:Molecular sequence"
   embassy: "phylipnew"
 ]
@@ -9,79 +9,88 @@ section: input [
   type: "page"
 ]
 
-infile: datafile  [
+frequencies: infile  [
   parameter: "Y"
-  information: "Input file"
-  knowntype: "freqboot input"
+]
+
+
+properties: weights [
+	additional: "Y"
+	characters: "01"
+	information: "Weights file"
+	help: "Weights file"
+        length: "$(infile.length)"
+	nullok: "Y"
 ]
 
 endsection: input
-
-section: required [
-  information: "Required section"
-  type: "page"
-]
-
-list: test  [
-  standard: "y"
-  minimum: "1"
-  maximum: "1"
-  header: "test"
-  values: "Boot:Bootstrap; Jack:Delete-half Jackknife; Perm:Permute
-           species for each character"
-  information: "Choose test"
-  default: "Boot"
-]
-
-integer: reps  [
-  standard: "Y"
-  information: "How many replicates"
-  minimum: "1"
-  default: "100"
-]
-
-integer: randseed  [
-  standard: "Y"
-  default: "3"
-  information: "Random number seed (must be odd)"
-]
-
-list: method  [
-  standard: "y"
-  minimum: "1"
-  maximum: "1"
-  header: "Method"
-  values: "Seq:Molecular sequences; Mor:Discrete Morphology;
-           Res:Restriction Sites; Gen:Gene Frequencies"
-  information: "Choose the method"
-  default: "Seq"
-]
-
-endsection: required
 
 section: additional [
   information: "Additional section"
   type: "page"
 ]
 
-boolean: inter  [
-  additional: "Y"
-  information: "Interleaved input"
-  default: "N"
+list: test  [
+  additional: "y"
+  minimum: "1"
+  maximum: "1"
+  header: "Test"
+  values: "b:Bootstrap; 
+           j:Jackknife; 
+           c:Permute species for each character;
+           o:Permute character order;
+           s:Permute within species;
+	   r:Rewrite data"
+  information: "Choose test"
+  default: "b"
 ]
 
-boolean: enzymes  [
-  additional: "@($(method) == Res)"
-  information: "Present in input file"
-  default: "N"
+toggle: regular [
+	additional: "@( $(test) == { b | j } )"
+	information: "Altered sampling fraction"
+	default: "N"
 ]
 
-boolean: all  [
-  additional: "@($(method) == Gen)"
-  information: "All alleles present at each locus"
-  default: "N"
+float: fracsample [
+	additional: "@(!$(regular))"
+	information: "Samples as percentage of sites"
+	default: "100.0"
+	minimum: "0.1"
+        maximum: "100.0"
 ]
 
+integer: blocksize [
+	information: "Block size for bootstraping"
+	additional: "@($(test) == b)"
+	default: "1"
+	minimum: "1"
+]
+
+integer: reps  [
+  additional: "@($(test) != r)"
+  information: "How many replicates"
+  minimum: "1"
+  default: "100"
+]
+
+list: justweights  [
+  additional: "@( $(test) == { b | j } )"
+  minimum: "1"
+  maximum: "1"
+  header: "Write out datasets or just weights"
+  values: "d:Datasets; 
+           w:Weights"
+  information: "Write out datasets or just weights"
+  default: "d"
+]
+
+integer: seed [
+	additional: "@($(test) != r)"
+	information: "Random number seed between 1 and 32767 (must be odd)"
+	minimum: "1"
+	maximum: "32767"
+	default: "1"
+]
 endsection: additional
 
 section: output [
@@ -91,7 +100,7 @@ section: output [
 
 outfile: outfile  [
   parameter: "Y"
-  knowntype: "freqboot output"
+  knowntype: "seqbootfreq output"
 ]
 
 boolean: printdata  [
@@ -100,9 +109,15 @@ boolean: printdata  [
   information: "Print out the data at start of run"
 ]
 
+boolean: dotdiff [
+	additional: "$(printdata)"
+	default: "Y"
+	information: "Use dot-differencing"
+]
+
 boolean: progress  [
   additional: "Y"
-  default: "N"
+  default: "Y"
   information: "Print indications of progress of run"
 ]
 

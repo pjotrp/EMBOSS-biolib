@@ -1,6 +1,7 @@
 application: fgendist [
   documentation: "Compute genetic distances from gene frequencies"
   groups: "Phylogeny:Gene frequencies"
+  embassy: "phylipnew"
 ]
 
 section: input [

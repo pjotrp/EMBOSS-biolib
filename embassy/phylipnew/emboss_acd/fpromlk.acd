@@ -1,6 +1,7 @@
 application: fpromlk [
-	documentation: "Protein phylogeny by maximum likelihood"
-	groups: "Phylogeny:Molecular sequence"
+  documentation: "Protein phylogeny by maximum likelihood"
+  groups: "Phylogeny:Molecular sequence"
+  embassy: "phylipnew"
 ]
 
 section: input [

@@ -1,6 +1,7 @@
 application: fretree [
   documentation: "Interactive tree rearrangement"
   groups: "Phylogeny:Tree drawing"
+  embassy: "phylipnew"
 ]
 
 section: input [

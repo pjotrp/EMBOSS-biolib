@@ -16,7 +16,7 @@ fdolmove fdollop fdolpenny fdrawgram fdrawtree \
 ffactor ffitch fgendist fkitsch fmix fmove fneighbor fpars \
 fpenny fproml fpromlk fprotdist fprotpars \
 frestdist frestml fretree \
-fseqboot_seq fseqboot_freq fseqboot_rest fseqboot_disc \
+fdiscboot ffreqboot frestboot fseqboot fseqbootall \
 ftreedist ftreedistpair
 
 
@@ -78,10 +78,11 @@ fretree_SOURCES = retree.c moves.c phylip.c
 ftreedist_SOURCES = treedist.c cons.c phylip.c
 ftreedistpair_SOURCES = treedistpair.c cons.c phylip.c
 
-fseqboot_seq_SOURCES = seqboot_seq.c seq.c phylip.c
-fseqboot_freq_SOURCES = seqboot_freq.c seq.c phylip.c
-fseqboot_rest_SOURCES = seqboot_rest.c seq.c phylip.c
-fseqboot_disc_SOURCES = seqboot_disc.c seq.c phylip.c
+fdiscboot_SOURCES = discboot.c seq.c phylip.c
+ffreqboot_SOURCES = freqboot.c seq.c phylip.c
+frestboot_SOURCES = restboot.c seq.c phylip.c
+fseqboot_SOURCES = seqboot.c seq.c phylip.c
+fseqbootall_SOURCES = seqbootall.c seq.c phylip.c
 
 
 if LOCALLINK
