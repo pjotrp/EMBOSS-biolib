@@ -1422,7 +1422,7 @@ ID feat-pir-togff
 AP seqretallfeat
 CL ../../data/featprot.fasta -ufo ../../data/feat.pir gff::test.out -auto
 FI test.out
-FZ = 5019
+FZ = 5023
 ## active site two locations with copied annotation (note and comment)
 FP /^OPSD_HUMAN\tPIR\tact_site\t38\t38\t0\.000\t\+\t\.\tSequence "OPSD_HUMAN\.11" ; note "Cys, His" ; comment "status experimental"\n/
 FP /^OPSD_HUMAN\tPIR\tact_site\t90\t90\t0\.000\t\+\t\.\tSequence "OPSD_HUMAN.11" ; FeatFlags "0x4"\n/
@@ -1459,7 +1459,7 @@ ID feat-swiss-togff
 AP seqretallfeat
 CL tsw:laci_ecoli gff::test.out -auto
 FI test.out
-FZ = 1424
+FZ = 1428
 FP /^LACI_ECOLI\tSWISSPROT\tdna_bind\t6\t25\t0\.000\t\+\t\.\tSequence "LACI_ECOLI\.1" ; note "H-T-H MOTIF"\n/
 FP /^LACI_ECOLI\tSWISSPROT\thelix\t32\t44\t0.000\t\+\t\.\tSequence "LACI_ECOLI\.9"\n/
 //
@@ -3561,7 +3561,7 @@ CL -auto ../../data/dna.embl gff::test.out
 FI test.out
 FZ = 191
 FP /^##gff-version 2\n/
-FP /^##source-version EMBOSS 2\.0\.0\n/
+FP /^##source-version EMBOSS 2\.0\.1\n/
 FP /^##date [0-9\-]+\n/
 FP /^##DNA EMBL\n/
 FP /^##acgtacgtacgtacgtacgtacgtacgtacgtacgtacgtacgtacgtacgtacgtacgt\n/
@@ -3574,7 +3574,7 @@ CL -auto ../../data/dna.embl test.out -osf gff
 FI test.out
 FZ = 191
 FP /^##gff-version 2\n/
-FP /^##source-version EMBOSS 2\.0\.0\n/
+FP /^##source-version EMBOSS 2\.0\.1\n/
 FP /^##date [0-9\-]+\n/
 FP /^##DNA EMBL\n/
 FP /^##acgtacgtacgtacgtacgtacgtacgtacgtacgtacgtacgtacgtacgtacgtacgt\n/
