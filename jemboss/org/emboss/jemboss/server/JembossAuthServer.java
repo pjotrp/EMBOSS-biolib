@@ -724,9 +724,9 @@ public class JembossAuthServer
                                     embossCommand,project);
 
 // UNCOMMENT THIS LINE TO USE QUEUEING SOFTWARE
-//    runAsBatch(aj,userName,passwd,project,embossCommand);
-//    runAsGNQSBatch(aj,userName,passwd,project,embossCommand);
-//    runAsPBSBatch(aj,userName,passwd,project,embossCommand);
+//    runAsBatch(aj,userName,passwd,project,quoteMe(embossCommand));
+//    runAsGNQSBatch(aj,userName,passwd,project,quoteMe(embossCommand));
+//    runAsPBSBatch(aj,userName,passwd,project,quoteMe(embossCommand));
       result.add("msg");
       result.add("");
       result.add("job_submitted");
@@ -743,6 +743,25 @@ public class JembossAuthServer
 
 /**
 *
+* Quote all tokens ready for shell scripts
+*
+*/
+  private String quoteMe(String s)
+  {
+    String qs = "";
+    StringTokenizer st = new StringTokenizer(s.trim()," ");
+    String tok;
+    while (st.hasMoreTokens())
+    {
+      tok = st.nextToken().trim();
+      if(!tok.equals(" "))
+        qs = qs.concat("\""+tok+"\" ");
+    }
+    return qs;
+  }
+
+/**
+*
 * Submit to a OpenPBS batch queue. This method creates a script for
 * submission to a batch queueing system.
 *
@@ -750,11 +769,9 @@ public class JembossAuthServer
   private void runAsPBSBatch(Ajax aj, String userName, byte[] passwd,
                               String project, String embossCommand)
   {
-    String appl   = embossCommand.substring(0,embossCommand.indexOf(" "));
-
     String scriptIt = "#PBS -j oe\n";
     scriptIt = scriptIt.concat("#PBS -S /bin/sh\n");
-    scriptIt = scriptIt.concat("#PBS -N"+appl+"\n");
+//  scriptIt = scriptIt.concat("#PBS -N"+appl+"\n");
     scriptIt = scriptIt.concat(environ.replace(' ','\n'));
     scriptIt = scriptIt.concat("\nexport PATH\n");
     scriptIt = scriptIt.concat("export PLPLOT_LIB\n");
@@ -762,7 +779,7 @@ public class JembossAuthServer
     scriptIt = scriptIt.concat("cd "+project+"\n"+embossCommand+"\n");
     scriptIt = scriptIt.concat("date > "+project+"/.finished\n");
 
-    String scriptFile = new String(project+fs+".scriptfile_"+appl);
+    String scriptFile = new String(project+fs+".scriptfile");
     boolean ok = false;
     try
     {
@@ -802,8 +819,6 @@ public class JembossAuthServer
   private void runAsGNQSBatch(Ajax aj, String userName, byte[] passwd,
                               String project, String embossCommand)
   {
-    String appl   = embossCommand.substring(0,embossCommand.indexOf(" "));
-
     String scriptIt = "#QSUB -q jemboss-queue\n";
     scriptIt = scriptIt.concat("#QSUB -s /bin/sh\n");
     scriptIt = scriptIt.concat("#QSUB -eo -o report.nqs\n");
@@ -814,7 +829,7 @@ public class JembossAuthServer
     scriptIt = scriptIt.concat("cd "+project+"\n"+embossCommand+"\n");
     scriptIt = scriptIt.concat("date > "+project+"/.finished\n");
 
-    String scriptFile = new String(project+fs+".scriptfile_"+appl);
+    String scriptFile = new String(project+fs+".scriptfile");
     boolean ok = false;
     try
     {
