@@ -3770,7 +3770,7 @@ static AjBool acdTestQualC(const char *name)
 
 	if(ifound > 1)		/* master should be checked earlier */
 	{
-	    /* ajWarn ("Ambiguous associated qualifier '%s' (%S)",
+	    /* ajWarn("Ambiguous associated qualifier '%s' (%S)",
 	       name, ambigList);
 	       ajStrDelReuse(&ambigList); */
 	    return ajFalse;
@@ -10137,7 +10137,7 @@ static void* acdGetValueNum(const char *token, const char* type, ajint pnum)
 	{
 	    acdLog("Found pa->Token '%S' pa->Type %d itype: %d\n",
 		   pa->Token, pa->Type, itype);
-	    if (pa->Level != ACD_QUAL && pa->Level != ACD_PARAM )
+	    if(pa->Level != ACD_QUAL && pa->Level != ACD_PARAM )
 		ajDie("Unknown qualifier'-%S' ", pa->Token);
 
 	    if((itype>=0) && (pa->Type != itype)) /* program source error */
@@ -10299,15 +10299,15 @@ static void acdHelp(void)
 	    break;
 	case HELP_REQ:
 	    acdHelpAppend(pa, &helpReq, hlpFlag);
-	    acdHelpTable (pa, reqlist, hlpFlag);
+	    acdHelpTable(pa, reqlist, hlpFlag);
 	    break;
 	case HELP_OPT:
 	    acdHelpAppend(pa, &helpOpt, hlpFlag);
-	    acdHelpTable (pa, optlist, hlpFlag);
+	    acdHelpTable(pa, optlist, hlpFlag);
 	    break;
 	case HELP_ADV:
 	    acdHelpAppend(pa, &helpAdv, hlpFlag);
-	    acdHelpTable (pa, advlist, hlpFlag);
+	    acdHelpTable(pa, advlist, hlpFlag);
 	    break;
 	case HELP_ASS:	   /* associated - process after the master */
 	    break;
@@ -10324,12 +10324,12 @@ static void acdHelp(void)
 		if(acdVerbose)
 		{
 		    acdHelpAssoc(pa, &helpGen, NULL);
-		    acdHelpAssocTable (pa, genlist, hlpFlag);
+		    acdHelpAssocTable(pa, genlist, hlpFlag);
 		}
 		else
 		{
 		    acdHelpAssoc(pa, &helpGen, "help");
-		    acdHelpAssocTable (pa, genlist, hlpFlag);
+		    acdHelpAssocTable(pa, genlist, hlpFlag);
 		}
 	    }
 	    else
@@ -10337,7 +10337,7 @@ static void acdHelp(void)
 		if(acdVerbose)
 		{
 		    acdHelpAssoc(pa, &helpAss, NULL);
-		    acdHelpAssocTable (pa, asslist, hlpFlag);
+		    acdHelpAssocTable(pa, asslist, hlpFlag);
 		}
 	    }
 	}
@@ -10501,7 +10501,7 @@ static void acdHelpAppend(const AcdPAcd thys, AjPStr *str, char flag)
     else
 	ajFmtPrintS(&name, " -%S%S", nostr, thys->Name);
     
-    ajFmtPrintS (&line, "%c %-20S %-10S ", flag, name, type);
+    ajFmtPrintS(&line, "%c %-20S %-10S ", flag, name, type);
     acdHelpText(thys, &text);
     acdTextFormat(&text);
     ajStrWrapLeft(&text, 45, 34);
@@ -11241,7 +11241,7 @@ static void acdHelpExpectFloat(const AcdPAcd thys, AjPStr* str)
     if(!ajStrToFloat(tmpstr, &f))
 	f = 0.0;
 
-    acdAttrValueStr  (thys, "precision", "3", &tmpstr);
+    acdAttrValueStr (thys, "precision", "3", &tmpstr);
     if(!ajStrToInt(tmpstr, &iprec))
 	iprec = 3;
 
@@ -13090,7 +13090,8 @@ static AjBool acdVarTest(const AjPStr var)
 {
     static AjPRegexp varexp = NULL;
 
-    if(!varexp) varexp = ajRegCompC("^(.*)\\$\\(([a-zA-Z0-9_.]+)\\)");
+    if(!varexp)
+	varexp = ajRegCompC("^(.*)\\$\\(([a-zA-Z0-9_.]+)\\)");
 
     if(ajRegExec(varexp, var))
 	return ajTrue;
@@ -13119,14 +13120,16 @@ static AjBool acdVarTestValid(const AjPStr var)
     AjPStr varname = NULL;
     AjBool toggle;
 
-    if(!varexp) varexp = ajRegCompC("^(.*)\\$\\([a-zA-Z0-9_.]+\\)");
-    if(!toggleexp) toggleexp = ajRegCompC("^(@\\([!])?(\\$\\([a-zA-Z0-9_.]+\\))\\)?$");
+    if(!varexp)
+	varexp = ajRegCompC("^(.*)\\$\\([a-zA-Z0-9_.]+\\)");
+    if(!toggleexp)
+	toggleexp = ajRegCompC("^(@\\([!])?(\\$\\([a-zA-Z0-9_.]+\\))\\)?$");
 
     if(!ajRegExec(varexp, var))
 	return ajFalse;
 
     /*
-     ** We have a variable - is it a simple (toggle) dependency?
+     ** A variable - is it a simple (toggle) dependency?
      ** Toggles can be @($(varname)) or @(!$(varname))
      */
 
@@ -13137,7 +13140,7 @@ static AjBool acdVarTestValid(const AjPStr var)
 	toggle = acdVarSimple(&varname);
 	acdLog("varname '%S' toggle %B\n", varname, toggle);
 	ajStrDel(&varname);
-	if (toggle)
+	if(toggle)
 	    return ajFalse;
 
 	return ajTrue;
@@ -13175,7 +13178,7 @@ static AjBool acdVarSimple(AjPStr* var)
     {
 	ajRegSubI(varexp, 2, &token);	/* variable name */
 	acdVarSplit(token, &varname, &attrname);
-	if (!ajStrLen(attrname))
+	if(!ajStrLen(attrname))
 	    ajStrAssC(&attrname, "default");
 	if(!acdGetAttr(&result, varname, attrname))
 	{
@@ -18774,17 +18777,15 @@ void ajAcdExit(AjBool silent)
 /*	ajDebug("ajAcdExit Name................ Assoc Level  Used\n");*/
 	for(pa=acdList; pa; pa=pa->Next)
 	{
-/*	    ajDebug("ajAcdExit %20S   %3B   %3d   %3B\n",
+	    /*ajDebug("ajAcdExit %20S   %3B   %3d   %3B\n",
 		    pa->Name, pa->Assoc, pa->Level, pa->Used); */
 	    if(pa->Assoc)
 		continue;
 	    if(pa->Level != ACD_PARAM && pa->Level != ACD_QUAL)
 		continue;
 	    if(!pa->Used)
-	    {
 		acdLog("ACD qualifier never used: %S = '%S' (assoc %B)",
 		       pa->Name, pa->ValStr, pa->Assoc);
-	    }
 	}
     }
 
