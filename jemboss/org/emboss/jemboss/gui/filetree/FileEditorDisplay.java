@@ -51,7 +51,6 @@ public class FileEditorDisplay
 
      this.filename = filename;
      initStylesForTextPane(seqText);
-     setUpPopup();
 
      text = "";
      try
@@ -85,7 +84,6 @@ public class FileEditorDisplay
      
      this.filename = filename;
      initStylesForTextPane(seqText);
-     setUpPopup();
 
      if(contents.getClass().equals(String.class))
      {
@@ -126,21 +124,20 @@ public class FileEditorDisplay
 
    }
 
-   public void setUpPopup()
-   {
-     MouseListener popupListener = new PopupListener();
-
-     JMenuItem menuItem = new JMenuItem("Save",KeyEvent.VK_S);
-     seqText.addMouseListener(popupListener);
-     menuItem.addActionListener(new ActionListener()
-     {
-       public void actionPerformed(ActionEvent e)
-       {
-         new FileSaving(seqText,pngContent);
-       }
-     });
-     popup.add(menuItem);
-   }
+// public void setUpPopup()
+// {
+//   MouseListener popupListener = new PopupListener();
+//   JMenuItem menuItem = new JMenuItem("Save",KeyEvent.VK_S);
+//   seqText.addMouseListener(popupListener);
+//   menuItem.addActionListener(new ActionListener()
+//   {
+//     public void actionPerformed(ActionEvent e)
+//     {
+//       new FileSaving(seqText,pngContent);
+//     }
+//   });
+//   popup.add(menuItem);
+// }
 
 /**
 *
@@ -152,7 +149,6 @@ public class FileEditorDisplay
    {
      return seqText; 
    }  
-
 
 
 /**

@@ -105,7 +105,17 @@ public class ResultsMenuBar
     {
       public void actionPerformed(ActionEvent e)
       {
-        new FileSaving(seqText, fed.getPNGContent());
+        FileSaving fsave = new FileSaving(seqText, fed.getPNGContent());
+
+        if(fsave.writeOK())
+        {
+          String fileSelected = fsave.getFileName();
+          String pathSelected = fsave.getPath();
+          org.emboss.jemboss.Jemboss.tree.addObject(fileSelected,pathSelected,null);
+          DragTree ltree = org.emboss.jemboss.gui.SetUpMenuBar.getLocalDragTree();
+          if(ltree!=null)
+            ltree.addObject(fileSelected,pathSelected,null);
+        }
       }
     });
 
