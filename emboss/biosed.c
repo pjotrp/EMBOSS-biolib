@@ -24,7 +24,7 @@
 
 
 static void biosed_replace(AjPStr *substr, AjPStr target, AjPStr replace);
-static void biosed_delete(AjPStr substr, AjPStr target);
+static void biosed_delete(AjPStr *substr, AjPStr target);
 
 
 /* @prog biosed ***************************************************************
@@ -76,7 +76,7 @@ int main(int argc, char **argv)
 	if(!delete)
 	    biosed_replace(&substr,target,replace);
 	else
-	    biosed_delete(substr,target);
+	    biosed_delete(&substr,target);
 
 	ajSeqReplace(seq,substr);
 	ajSeqAllWrite(outseq,seq);
@@ -148,13 +148,13 @@ static void biosed_replace(AjPStr *substr, AjPStr target, AjPStr replace)
 **
 ** Generic (unoptimised) delete of all matching string subsections
 **
-** @param [w] substr [AjPStr] sequence
+** @param [w] substr [AjPStr*] sequence
 ** @param [r] target [AjPStr] target pattern
 **
 ** @return [void]
 ** @@
 ******************************************************************************/
-static void biosed_delete(AjPStr substr, AjPStr target)
+static void biosed_delete(AjPStr *substr, AjPStr target)
 {
     AjPStr str = NULL;
     char   *p  = NULL;
@@ -164,7 +164,7 @@ static void biosed_delete(AjPStr substr, AjPStr target)
     ajint  tlen = 0;
     
     str = ajStrNew();
-    ajStrAssS(&str,substr);
+    ajStrAssS(&str,*substr);
     p = ajStrStr(str);
     v = ajStrStr(target);
     tlen = ajStrLen(target);
@@ -174,9 +174,9 @@ static void biosed_delete(AjPStr substr, AjPStr target)
 	t = q + tlen;
 	p = t;
 	while((*q++=*p++));
-	p = t;
+	p = t-1;
     }
-    ajStrAssC(&substr,ajStrStr(str));
+    ajStrAssC(substr,ajStrStr(str));
     ajStrDel(&str);
 
     return;
