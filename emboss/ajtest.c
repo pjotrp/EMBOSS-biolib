@@ -9,23 +9,21 @@
 int main(int argc, char **argv)
 {
 
-    AjPSeq seq;
+    AjPSeqset seqset;
     AjPSeqall seqall;
-    AjPSeqout seqout;
+    AjPSeq seq;
+    ajint i = 0;
 
     embInit ("ajtest", argc, argv);
 
     seqall = ajAcdGetSeqall ("sequence");
-    seqout = ajAcdGetSeqout ("outseq");
+    seqset = ajAcdGetSeqset ("seqset");
 
+    ajUser ("Set of %d", ajSeqsetSize(seqset));
     while (ajSeqallNext (seqall, &seq))
     {
-	ajSeqTrace (seq);
-	ajUser ("<%S>", ajSeqGetUsa(seq));
-	ajSeqAllWrite (seqout, seq);
+	ajUser ("%3d <%S>", i++, ajSeqGetUsa(seq));
     }
-
-    ajSeqWriteClose (seqout);
 
     ajExit ();
     return 0;
