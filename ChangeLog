@@ -1,3 +1,18 @@
+Version 2.8.0
+	In ACD files alternatives for protein and nucleotide input are
+	common. Added an automatic variable $(acdprotein) which is defined
+	as the calculated ".protein" attribute of the first input
+	sequence(s). The value will be "Y" or "N". Acdvalid will check
+	that this is how proteins are tested, so the original
+	"$(asequence.protein)" syntax will become obsolete. The intention is
+	that any wrappers can use this to make protein and nucleotide
+	versions of the ACD file, and in general to use only simple
+	boolean tests in calculated ACD values.
+
+	Added wait call to wait for a piped command to complete
+	before reading data (needed for listfile input with
+	many piped reads, for example getz calls from SRS databases.
+
 Version 2.7.1
 	Corrected Jemboss for displaying emma & prettyplot forms
 	Corrected display of recognition sequence for restrict -solofragment
