@@ -29,4 +29,4 @@ libmeme_la_LDFLAGS = -version-info 2:3:1
 
 meme_SOURCES = meme.c
 
-LDADD = libmeme.la ../../../plplot/libplplot.la ../../../ajax/libajax.la
+LDADD = libmeme.la ../../../plplot/libplplot.la ../../../ajax/libajax.la $(XLIB)

@@ -68,6 +68,4 @@ ftreedist_SOURCES = treedist.c cons.c phylip.c
 ftreedistpair_SOURCES = treedistpair.c cons.c phylip.c
 
 
-LDADD = ../../../plplot/libplplot.la ../../../ajax/libajax.la
-
-
+LDADD = ../../../plplot/libplplot.la ../../../ajax/libajax.la $(XLIB)
