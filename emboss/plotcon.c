@@ -111,7 +111,9 @@ int main (int argc, char **argv)
 
     (void) ajGraphInit ("plotcon", argc, argv);
   
-    seqset = ajAcdGetSeqset("msf");	/* Pads seq set with gap characters */
+    seqset = ajAcdGetSeqset("msf");	
+
+    ajSeqsetFill(seqset);               /* Pads seq set with gap characters */
     numseq = ajSeqsetSize (seqset);
     lenseq = ajSeqsetLen(seqset);
 
