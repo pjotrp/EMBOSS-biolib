@@ -43,10 +43,10 @@ float: minprimerTm [req: Y default: 53
 float: maxprimerTm [req: Y default: 58
             info: "Maximum Primer Tm (deg Celsius)"]
 
-int:    minprodlen [req: @($(targetrange)==False) default: 100
+int:    minprodlen [req: @(!$(targetrange)) default: 100
             info: "Minimum product length"]
             
-int:    maxprodlen [req: @($(targetrange)==False) default: 300
+int:    maxprodlen [req: @(!$(targetrange)) default: 300
             info: "Maximum product length"]    
 
 float: 	minprodGCcont [req: N min: .30 max: .70 default: .40

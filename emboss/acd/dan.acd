@@ -141,7 +141,7 @@ temperature at which to calculate the DeltaG, DeltaH and DeltaS values."
   ]
 
   outfile: outfile [
-	req: @($(plot)!=True)
+	req: @(!$(plot))
 	info: "Output data file"
 	help: "If a plot is not being produced then data on the melting
 point etc.  in each window along the sequence is output to the file."
