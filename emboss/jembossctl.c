@@ -688,8 +688,7 @@ static AjBool jctl_up(char *buf, int *uid, int *gid, AjPStr *home)
 
     bzero((void*)ajStrStr(username),ajStrLen(username));
     bzero((void*)ajStrStr(password),ajStrLen(password));
-    bzero((void *)buf,ajStrLen(password)+ajStrLen(username)+4);
-
+    jctl_zero(buf);
 
     ajStrDel(&username);
     ajStrDel(&password);
