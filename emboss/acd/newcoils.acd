@@ -4,7 +4,7 @@ application: newcoils [
 ]
 
 section: input [
-  info: "Input section"
+  information: "Input section"
   type: "page"
 ]
 
@@ -22,7 +22,7 @@ section: input [
 endsection: input
 
 section: required [
-  info: "Required section"
+  information: "Required section"
   type: "page"
 ]
 
@@ -48,7 +48,7 @@ section: required [
     information: "Verb - matrix file"
   ]
 
-  int: mode  [
+  integer: mode  [
     standard: "Y"
     minimum: "0"
     maximum: "2"
@@ -56,7 +56,7 @@ section: required [
     information: "Display Mode"
   ]
 
-  int: minseg  [
+  integer: minseg  [
     standard: "Y"
     minimum: "0"
     maximum: "10"
@@ -74,7 +74,7 @@ section: required [
 
 endsection: required
 
-section: output [ info: "Output section" type: page ]
+section: output [ information: "Output section" type: page ]
 
   outfile: outfile  [
     parameter: "Y"
