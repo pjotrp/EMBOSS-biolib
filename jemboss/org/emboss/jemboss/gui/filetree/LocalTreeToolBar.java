@@ -152,7 +152,7 @@ public class LocalTreeToolBar extends JToolBar
     if(f.exists() && f.canRead())
     {
       String cwd = f.getAbsolutePath();
-      mysettings.setUserHome(cwd);
+//    mysettings.setUserHome(cwd);
       org.emboss.jemboss.Jemboss.tree.newRoot(cwd);
       if(SetUpMenuBar.localAndRemoteTree != null)
       SetUpMenuBar.localAndRemoteTree.getLocalDragTree().newRoot(cwd);
