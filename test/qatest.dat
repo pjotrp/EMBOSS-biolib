@@ -9278,6 +9278,112 @@ AQ treetypedisplay
 CC No documentation, no example
 //
 
+ID acd-calc-feat
+AP acdc
+CL qatestcalcfeat ../../data/feat.emft
+IN
+IN
+IN
+IN
+IN
+IN
+IN
+FI stderr
+FC = 2
+FP 7 /:/
+FP 1 /FLength \[0\]: /
+FP 1 /FName: /
+FP 1 /FBegin \[1\]: /
+FP 1 /FEnd \[0\]: /
+FP 1 /FProtein \[N\]:/
+FP 1 /FNucleic \[Y\]: /
+FP 1 /FSize \[81\]: /
+//
+
+ID acd-calc-regexp
+AP acdc
+CL qatestcalcregexp "abc[def] ghi"
+IN
+FI stderr
+FC = 2
+FP 1 /:/
+FP 1 /Length \[12\]: /
+//
+
+ID acd-calc-seq
+AP acdc
+CL qatestcalcseq tembl:paamir
+IN
+IN
+IN
+IN
+IN
+IN
+FI stderr
+FC = 2
+FP 6 /:/
+FP 1 /Length \[2167\]: /
+FP 1 /Name \[PAAMIR\]: /
+FP 1 /Begin \[1\]: /
+FP 1 /End \[2167\]: /
+FP 1 /Protein \[N\]:/
+FP 1 /Nucleic \[Y\]: /
+//
+
+ID acd-calc-seqall
+AP acdc
+CL qatestcalcseqall tembl:eclac*
+IN
+IN
+IN
+IN
+IN
+IN
+FI stderr
+FC = 2
+FP 6 /:/
+FP 1 /Length \[7477\]: /
+FP 1 /Name \[ECLAC\]: /
+FP 1 /Begin \[1\]: /
+FP 1 /End \[7477\]: /
+FP 1 /Protein \[N\]:/
+FP 1 /Nucleic \[Y\]: /
+//
+
+ID acd-calc-seqset
+AP acdc
+CL qatestcalcseqset tembl:eclac*
+IN
+IN
+IN
+IN
+IN
+IN
+IN
+IN
+FI stderr
+FC = 2
+FP 8 /:/
+FP 1 /Length \[7477\]: /
+FP 1 /Name: /
+FP 1 /Begin \[1\]: /
+FP 1 /End \[7477\]: /
+FP 1 /Protein \[N\]:/
+FP 1 /Nucleic \[Y\]: /
+FP 1 /Totweight \[5\.000\]: /
+FP 1 /Count \[5\]: /
+//
+
+ID acd-calc-string
+AP acdc
+CL qatestcalcstring "abc def"
+IN
+FI stderr
+FC = 2
+FP 1 /:/
+FP 1 /Length \[7\]: /
+//
+
 #######################################
 # EMNU
 #######################################
