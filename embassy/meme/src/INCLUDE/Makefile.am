@@ -1,0 +1,1 @@
+DISTFILES = *.h Makefile.am

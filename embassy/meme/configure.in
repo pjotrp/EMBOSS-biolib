@@ -89,4 +89,4 @@ fi
 
 AM_CONDITIONAL(PURIFY, test "${enable_purify}" = "yes")
 
-AC_OUTPUT(Makefile src/Makefile emboss_acd/Makefile )
+AC_OUTPUT(Makefile src/Makefile src/INCLUDE/Makefile emboss_acd/Makefile )

@@ -1,5 +1,7 @@
 ## Process this file with automake to produce Makefile.in
 
+SUBDIRS = INCLUDE
+
 lib_LTLIBRARIES = libmeme.la
 
 bin_PROGRAMS = meme
