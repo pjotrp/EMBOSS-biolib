@@ -15,6 +15,7 @@
 ******************************************************************************/
 
 #include "ajax.h"
+#include "limits.h"
 
 static ajint seqMaxGcglines = 5000;
 static AjPRegexp qrywildexp = 0;
