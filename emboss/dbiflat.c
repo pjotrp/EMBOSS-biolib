@@ -836,7 +836,7 @@ static AjBool flatopenlib(AjPStr lname, AjPFile* libr) {
 ** Reads to the end of the entry and then returns.
 **
 ** @param [r] libr [AjPFile] Input database file
-** @param [w] dpos [int*] Byte offset
+** @param [w] dpos [ajint*] Byte offset
 ** @param [w] id [AjPStr*] ID
 ** @param [w] acl [AjPList] List of accession numbers
 ** @return [AjBool] ajTrue on success.
@@ -901,7 +901,7 @@ static AjBool parseEmbl (AjPFile libr, ajint* dpos,
 ** Parse the ID, accession from a Genbank entry
 **
 ** @param [r] libr [AjPFile] Input database file
-** @param [w] dpos [int*] Byte offset
+** @param [w] dpos [ajint*] Byte offset
 ** @param [w] id [AjPStr*] ID
 ** @param [w] acl [AjPList] List of accession numbers
 ** @return [AjBool] ajTrue on success.

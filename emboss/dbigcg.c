@@ -888,8 +888,8 @@ static AjBool gcgopenlib(AjPStr lname, AjPFile* libr, AjPFile* libs) {
 **
 ** @param [r] libr [AjPFile] Reference file
 ** @param [r] libs [AjPFile] Sequence file
-** @param [w] d_pos [int*] Reference file offset returned
-** @param [w] s_pos [int*] Sequence  file offset returned
+** @param [w] d_pos [ajint*] Reference file offset returned
+** @param [w] s_pos [ajint*] Sequence  file offset returned
 ** @param [w] libstr [AjPStr*] ID
 ** @param [w] acl [AjPList] Accession number list
 ** @return [ajint] Sequence length
@@ -1027,8 +1027,8 @@ static ajint gcggetent(AjPFile libr, AjPFile libs,
 **
 ** @param [r] libr [AjPFile] Reference file
 ** @param [r] libs [AjPFile] Sequence file
-** @param [w] d_pos [int*] Reference file offset returned
-** @param [w] s_pos [int*] Sequence file offset  returned
+** @param [w] d_pos [ajint*] Reference file offset returned
+** @param [w] s_pos [ajint*] Sequence file offset  returned
 ** @param [w] libstr [AjPStr*] ID
 ** @param [w] acl [AjPList] Accession number list
 ** @return [ajint] Sequence length
