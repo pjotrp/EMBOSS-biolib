@@ -30,7 +30,6 @@ import javax.swing.event.*;
 import java.util.*;
 import java.awt.event.*;
 import java.io.*;
-import org.apache.regexp.*;
 
 import org.emboss.jemboss.gui.AdvancedOptions;
 import org.emboss.jemboss.parser.*;
@@ -46,7 +45,6 @@ import uk.ac.mrc.hgmp.embreo.EmbreoAuthException;
 * Responsible for displaying the graphical representation
 * of an ACD section. This also handles events related to
 * dependent parameters.
-*
 *
 */
 public class SectionPanel
@@ -791,7 +789,6 @@ public class SectionPanel
 
     for(int i=0;i<nod;i++)
     {
-      
       String exp = dep[i].getDependentExp();
       int field = dep[i].getDependentField();
       int param = dep[i].getDependentParam();
@@ -808,8 +805,8 @@ public class SectionPanel
       String att = parseAcd.getParameterAttribute(
                     dep[i].getDependentField(),0).toLowerCase();
       String type = dep[i].getDependentType();
-//    System.out.println(varName + " RESULT ==> " + result + " " + type + " att " + att
-//               + " : " + parseAcd.getParamValueStr(dep[i].getDependentField(),0));
+//    System.out.println(varName + " RES => " + result +" "+ type +" att "+ att
+//            +" : "+ parseAcd.getParamValueStr(dep[i].getDependentField(),0));
       int h = parseAcd.getGuiHandleNumber(field);
 
 
@@ -936,7 +933,6 @@ public class SectionPanel
     p3.setVisible(true);   //it to re-display sections properly!!
 
   }
-
 
 
   private void setShadingAndVisibility(Component c, boolean useThis, int field)

@@ -25,15 +25,16 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
+import java.util.zip.*;
 
 import java.awt.event.*;
 import java.io.*;
 import java.util.*;
 
-import org.emboss.jemboss.programs.*;        // running EMBOSS programs
-import org.emboss.jemboss.gui.startup.*;     // finds programs, groups, docs & db's
+import org.emboss.jemboss.programs.*;      // running EMBOSS programs
+import org.emboss.jemboss.gui.startup.*;   // finds programs, groups, docs & db's
 import org.emboss.jemboss.soap.*;
-import org.emboss.jemboss.gui.form.*;        // program forms constructed from ACD
+import org.emboss.jemboss.gui.form.*;      // program forms constructed from ACD
 import org.emboss.jemboss.soap.GetWossname;
 import uk.ac.mrc.hgmp.embreo.*;
 
@@ -42,31 +43,16 @@ import uk.ac.mrc.hgmp.embreo.*;
 * BuildProgramMenu class construct the program menus.
 *
 * @author T. J. Carver
-* @version 1.0 
 *
 */
 
 public class BuildProgramMenu
 {
+  /** database names */
+  private static String db[];
+  /** acd files cache */
+  private Hashtable acdStore;   
 
-  private static String db[];                    // database names
-  private String applName;
-  private Hashtable acdStore = new Hashtable();  // cache the acd files
-  private JFrame f;
-  private JPanel p1;
-  private JPanel p2;
-  private JScrollPane scrollProgForm;
-
-  private String embossBin;
-  private String envp[];
-  private EmbreoParams mysettings;
-  private boolean withSoap;
-  private String cwd;
-  private String acdDirToParse;
-  private String showdbOut;
-
-  final Cursor cbusy = new Cursor(Cursor.WAIT_CURSOR);
-  final Cursor cdone = new Cursor(Cursor.DEFAULT_CURSOR);
 
 /**
 *
@@ -88,19 +74,11 @@ public class BuildProgramMenu
            final String embossBin, final String envp[],
            final EmbreoParams mysettings, final boolean withSoap,
            final String cwd, final String acdDirToParse,
-           JFrame frame, final AuthPopup splashing)
+           final JFrame f, final AuthPopup splashing)
   {
   
-    f = frame;
-    this.p1 = p1;
-    this.p2 = p2;
-    this.scrollProgForm = scrollProgForm;
-    this.embossBin = embossBin;
-    this.envp = envp;
-    this.mysettings = mysettings;
-    this.withSoap = withSoap;
-    this.cwd = cwd;
-    this.acdDirToParse = acdDirToParse;
+    final Cursor cbusy = new Cursor(Cursor.WAIT_CURSOR);
+    final Cursor cdone = new Cursor(Cursor.DEFAULT_CURSOR);
 
     SwingWorker groupworker = new SwingWorker() 
     {
@@ -126,7 +104,8 @@ public class BuildProgramMenu
             {
               splashing.doneSomething("Cannot connect!");
               ServerSetup ss = new ServerSetup(mysettings);
-              int sso = JOptionPane.showConfirmDialog(f,ss,"Check Public Server Settings",
+              int sso = JOptionPane.showConfirmDialog(f,ss,
+                             "Check Public Server Settings",
                              JOptionPane.OK_CANCEL_OPTION,
                              JOptionPane.ERROR_MESSAGE,null);
               if(sso == JOptionPane.OK_OPTION)
@@ -138,10 +117,10 @@ public class BuildProgramMenu
         } 
         else 
         {
-    
           String embossCommand = new String(embossBin + "wossname -colon -auto");
           System.out.println(embossCommand);
-          RunEmbossApplication rea = new RunEmbossApplication(embossCommand,envp,null);
+          RunEmbossApplication rea = new RunEmbossApplication(
+                                      embossCommand,envp,null);
           rea.isProcessStdout();
           woss = rea.getProcessStdout();
           Process processWoss = rea.getProcess();
@@ -149,7 +128,7 @@ public class BuildProgramMenu
           embossCommand = new String(embossBin + "showdb -auto");
           rea = new RunEmbossApplication(embossCommand,envp,null);
           rea.isProcessStdout();
-          showdbOut = rea.getProcessStdout();
+          String showdbOut = rea.getProcessStdout();
 
           try 
           {
@@ -176,6 +155,8 @@ public class BuildProgramMenu
         ToolTipManager toolTipManager = ToolTipManager.sharedInstance();
         toolTipManager.setDismissDelay(80000);
 
+        acdStore = loadAcdStore("resources/acdstore.jar");
+
 // program menu
         JMenuBar menuBar = new JMenuBar();
         ProgList progs = new ProgList(woss,cwd,menuBar);
@@ -187,9 +168,6 @@ public class BuildProgramMenu
         menuBar.setLayout(new  GridLayout(npG,1));
    
         final int numProgs = progs.getNumProgs();
-//      JMenu primaryGroups[] = new JMenu[npG];
-//      primaryGroups = progs.getPrimaryGroups();
-
         final String allAcd[] = progs.getProgsList();
         final String allDes[] = progs.getProgDescription();
 
@@ -216,11 +194,12 @@ public class BuildProgramMenu
                 p = p.substring(0,ind).trim();
                 if(p.equalsIgnoreCase(allAcd[k]))
                 {
-                  applName = allAcd[k];
                   p2.removeAll();
-                  BuildJembossForm bjf = new BuildJembossForm(k,allDes,db,
-                      allAcd,envp,cwd,embossBin,acdDirToParse,withSoap,p2,
-                      mysettings,acdStore,f);
+                  String acdText = getAcdText(allAcd[k],acdDirToParse,
+                                              mysettings,withSoap);
+                  BuildJembossForm bjf = new BuildJembossForm(allDes[k],
+                                db,allAcd[k],envp,cwd,embossBin,acdText,
+                                withSoap,p2,mysettings,f);
                   
                   p2.setVisible(false);
                   p2.setVisible(true);
@@ -232,7 +211,6 @@ public class BuildProgramMenu
               f.setCursor(cdone);
             }
           });
-//        f.setVisible(true);
 
           if(withSoap)
           {
@@ -285,11 +263,13 @@ public class BuildProgramMenu
           {
             f.setCursor(cbusy);
             int index = progList.getSelectedIndex();
-            applName = allAcd[index];
             p2.removeAll();
-            BuildJembossForm bjf = new BuildJembossForm(index,allDes,db,
-                    allAcd,envp,cwd,embossBin,acdDirToParse,withSoap,p2,
-                    mysettings,acdStore,f);
+            String acdText = getAcdText(allAcd[index],acdDirToParse,
+                                        mysettings,withSoap);
+            BuildJembossForm bjf = new BuildJembossForm(allDes[index],
+                                  db,allAcd[index],envp,cwd,embossBin,
+                                  acdText,withSoap,p2,mysettings,f);
+               
             p2.setVisible(false);
             p2.setVisible(true);
             JViewport vp = scrollProgForm.getViewport();
@@ -312,7 +292,8 @@ public class BuildProgramMenu
 
 // put on the logo
         ClassLoader cl = this.getClass().getClassLoader();
-        ImageIcon jlo = new ImageIcon(cl.getResource("images/Jemboss_logo_large.gif"));
+        ImageIcon jlo = new ImageIcon(
+                  cl.getResource("images/Jemboss_logo_large.gif"));
         JLabel jlablogo = new JLabel(jlo); 
         jlablogo.setPreferredSize(new Dimension(300,360));  //centre's logo
         JPanel pFront = new JPanel();
@@ -333,15 +314,18 @@ public class BuildProgramMenu
         {
           public void mouseClicked(MouseEvent e)
           {
+            System.gc();
             f.setCursor(cbusy);
             JList source = (JList)e.getSource();
             source.setSelectionBackground(Color.cyan);
             int index = source.getSelectedIndex();
-            applName = allAcd[index];
             p2.removeAll();
-            BuildJembossForm bjf = new BuildJembossForm(index,allDes,db,
-                    allAcd,envp,cwd,embossBin,acdDirToParse,withSoap,p2,
-                    mysettings,acdStore,f);
+            String acdText = getAcdText(allAcd[index],acdDirToParse,
+                                        mysettings,withSoap);
+            BuildJembossForm bjf = new BuildJembossForm(allDes[index],
+                                  db,allAcd[index],envp,cwd,embossBin,
+                                  acdText,withSoap,p2,mysettings,f);
+
             p2.setVisible(false);
             p2.setVisible(true);
             JViewport vp = scrollProgForm.getViewport();
@@ -361,7 +345,7 @@ public class BuildProgramMenu
             public Object construct()
             {
               EmbreoShowDB showdb = new EmbreoShowDB(mysettings);
-              showdbOut = showdb.getDBText();
+              String showdbOut = showdb.getDBText();
               Database d = new Database(showdbOut);
               db = d.getDB();
               JLabel jl = new JLabel("<html>"); // not used but speeds first
@@ -372,17 +356,151 @@ public class BuildProgramMenu
           };
           databaseworker.start();
         }
-
-
       }
     };
     groupworker.start();
 
   }
 
+/**
+*
+* List of available EMBOSS databases.
+* @return String[] list of databases
+*
+*/
   protected static String[] getDatabaseList()
   {
     return db;
+  }
+
+
+/**
+*
+* Load hash table with Jar file text resources (e.g.
+* acd files).
+* @param String name of jar file (on classpath)
+* @return Hashtable of the file names and contents
+*
+*/
+
+  private Hashtable loadAcdStore(String jarFile)
+  {
+    Hashtable acdStore = new Hashtable();
+    try 
+    {
+      // extracts just sizes only
+      ClassLoader cl = this.getClass().getClassLoader();
+      ZipInputStream zis= new ZipInputStream(
+                     cl.getResourceAsStream(jarFile));
+      ZipEntry ze=null;
+      Hashtable htSizes = new Hashtable();
+
+      while((ze=zis.getNextEntry())!=null)
+      {
+        int ret=0;
+        int cnt=0;
+        int rb = 0;
+        while(ret != -1)
+        {
+          byte[] b1 = new byte[1];
+          ret=zis.read(b1,rb,1);
+          cnt++;
+        }
+        htSizes.put(ze.getName(),new Integer(cnt));
+      }
+      zis.close();
+
+      // extract resources and put them into the hashtable
+      zis = new ZipInputStream(cl.getResourceAsStream(jarFile));
+      ze=null;
+      while ((ze=zis.getNextEntry())!=null) 
+      {
+        if(ze.isDirectory()) 
+          continue;
+         
+        int size=(int)ze.getSize(); // -1 means unknown size
+        if(size==-1) 
+          size=((Integer)htSizes.get(ze.getName())).intValue();
+         
+        byte[] b=new byte[(int)size];
+        int rb=0;
+        int chunk=0;
+        while (((int)size - rb) > 0) 
+        {
+          chunk=zis.read(b,rb,(int)size - rb);
+          if(chunk==-1) 
+            break;
+          rb+=chunk;
+        }
+
+        // add to internal resource hashtable removing .acd suffix
+        acdStore.put(ze.getName().substring(0,
+                     ze.getName().length()-4),
+                     new String(b));
+      }
+      zis.close();
+    }
+    catch (NullPointerException e) 
+    {
+      System.out.println("BuildProgramMenu Error: acdStore");
+    } 
+    catch (FileNotFoundException e) 
+    {
+      e.printStackTrace();
+    }
+    catch (IOException e)
+    {
+      e.printStackTrace();
+    }
+    return acdStore;
+  }
+
+
+/**
+*
+* Get the contents of an ACD file in the form of a String.
+* @param String of the ACD file name
+* @param String representation of the ACD
+*
+*/
+  private String getAcdText(String applName, String acdDirToParse,
+                            EmbreoParams mysettings, boolean withSoap)
+  {
+
+    String acdText = new String("");
+    String line;
+
+    if(!withSoap)
+    {
+      String acdToParse = acdDirToParse.concat(applName).concat(".acd");
+      try
+      {
+        BufferedReader in = new BufferedReader(new FileReader(acdToParse));
+        while((line = in.readLine()) != null)
+          acdText = acdText.concat(line + "\n");
+        in.close();
+      }
+      catch (IOException e)
+      {
+        System.out.println("BuildProgramMenu: Cannot read acd file " + acdText);
+      }
+    }
+    else 
+    {
+      if (acdStore.containsKey(applName))
+      {
+        acdText = (String)acdStore.get(applName);
+        System.out.println("Retrieved "+applName+" acd file from cache");
+      }
+      else
+      {
+        EmbreoACD progacd = new EmbreoACD(applName,mysettings);
+        acdText = progacd.getAcd();
+        System.out.println("Retrieved "+applName+" acd file via soap");
+        acdStore.put(applName,acdText);
+      }
+    }
+    return acdText;
   }
 
 }
