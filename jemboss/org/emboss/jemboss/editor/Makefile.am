@@ -12,7 +12,8 @@ GroutAlignJFrameListener.java                SequenceNameJButton.java \
 GroutGraphicSequenceCollectionEvent.java     SequenceProperties.java \
 GroutGraphicSequenceCollection.java          SequenceReader.java \
 GroutGraphicSequenceCollectionListener.java  SequenceSaver.java \
-GroutSequence.java IDTableJFrame.java        PrintableJTable.java
+GroutSequence.java IDTableJFrame.java        PrintableJTable.java \
+Paste.java
 
 pkgdatadir=$(prefix)/share/$(PACKAGE)/jemboss/org/emboss/jemboss/editor
 
