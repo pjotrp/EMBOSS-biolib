@@ -407,7 +407,7 @@ static void graphDataObjDel(AjPGraphData gd , int nstart, int nstop)
 
    AjPGraphObj ObjCurr;
    AjPGraphObj ObjNext;
-   AjPGraphObj ObjPrev;
+   AjPGraphObj ObjPrev=NULL;
 
 
    ObjCurr = gd->Obj;

@@ -1183,7 +1183,7 @@ AjBool ajPrintPdbAtomDomain(AjPFile outf, AjPPdb pdb, AjPScop scop, int mod)
     int      rn_mod=0;  
     int      z;
     int      finalrn=0;
-    char     id;
+    char     id='\0';
     int      chn;
 
 
