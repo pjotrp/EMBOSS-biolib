@@ -35,13 +35,15 @@ static void  fill_polygon	(PLStream *pls);
 * Maybe, but it works for me...
 */
 
-/*
+
 int PNGWidth = 640;
 int PNGHeight  = 480;
-*/
 
-int PNGWidth = 1280;		/* 2* default size */
-int PNGHeight  = 960;		/* 2* default size */
+/* 2* default size */
+
+/* int PNGWidth = 1280; */
+/* int PNGHeight  = 960; */
+
 
 int PNGColor  = 16; /* you should not need to use this*/
 
