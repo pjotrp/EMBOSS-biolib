@@ -98,9 +98,6 @@ FZ = 0
 ID antigenic-command
 AP antigenic
 CL tsw:amir_pseae -auto
-FI amir_pseae.out2
-FZ = 564
-FP /^AMIR_PSEAE\tantigenic\tmisc_feature\t4\t60\t1\.222.*; note "max score at 53"\n/
 FI amir_pseae.antigenic
 FP /^# Program: antigenic\n/
 FP /Sequence: AMIR_PSEAE/
@@ -116,9 +113,6 @@ AP antigenic
 IN tsw:act1_fugru
 IN
 IN
-FI act1_fugru.out2
-FZ = 1877
-FP /^ACT1_FUGRU\tantigenic\tmisc_feature\t214\t222\t1\.207\t\+\t\.\tSequence "ACT1_FUGRU\.1" ; note "max score at 217"\n/
 FI act1_fugru.antigenic
 FP /^# Program: antigenic\n/
 FP /1[.]207/
@@ -149,10 +143,11 @@ FI banana.profile
 FZ = 25580
 FP /^t +0.0 +0.0\ng +17.7 +0.0\na +21.1 +0.0\ng +28.5 +0.0\n/
 FP /^c +17.7 +0.0\nc +15.7 +19.2\nt +15.7 +18.5\ng +17.7 +17.9\n/
-FI banana.dat1
-FZ = 308957
 FI stderr
 FC = 2
+FI stdout
+FZ = 19
+FP /^Created banana.dat\n/
 //
 ID btwisted-ex
 AP btwisted
@@ -181,13 +176,14 @@ ID chaos-ex
 AP chaos
 CL tembl:eclac -graph ps
 FI stderr
-FC = 2
-FI eclac.chaos
-FZ = 0
+FC = 1
 FI chaos.ps
 FZ > 100
 FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 1\n/
+FI stdout
+FZ = 17
+FP /^Created chaos.ps\n/
 //
 
 ID charge-ex
@@ -245,6 +241,9 @@ FI cirdna.ps
 FZ = 20181
 FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 1\n/
+FI stdout
+FZ = 18
+FP /^Created cirdna.ps\n/
 //
 
 ID codcmp-ex
@@ -467,6 +466,111 @@ FZ = 0
 # The qapblast database(s)
 #############################################
 
+ID dbiblast-allsys-keep
+DL keep
+AP dbiblast
+CL -fields "acnum,seqvn,des"
+IN swnew
+IN ../../data
+IN
+IN
+IN
+IN
+IN
+FI stderr
+FC = 8
+FI division.lkp
+FZ = 322
+FP /\A.{300}\001\000swnew.pin\000/
+FI entrynam.idx
+FZ = 480
+FP /\A.{300}CO9_FUGRU\000/
+FI acnum.hit
+FZ = 336
+FP /\A.{300}\006/
+FI acnum.trg
+FZ = 426
+FP /\A.{308}O42493\001/
+FI des.hit
+FZ = 576
+FP /\A.{300}\006/
+FI des.trg
+FZ = 1839
+FP /\A.{308}1\000/
+FI seqvn.hit
+FZ = 300
+FP /\A.{300}$/
+FI seqvn.trg
+FZ = 300
+FP /\A.{300}$/
+//
+
+ID dbiblast-allnosys-keep
+DL keep
+AP dbiblast
+CL -fields "acnum,seqvn,des" -nosystemsort
+IN swnew
+IN ../../data
+IN
+IN
+IN
+IN
+IN
+FI stderr
+FC = 8
+FI division.lkp
+FZ = 322
+FP /\A.{300}\001\000swnew.pin\000/
+FI entrynam.idx
+FZ = 480
+FP /\A.{300}CO9_FUGRU\000/
+FI acnum.hit
+FZ = 336
+FP /\A.{300}\006/
+FI acnum.trg
+FZ = 426
+FP /\A.{308}O42493\001/
+FI des.hit
+FZ = 576
+FP /\A.{300}\006/
+FI des.trg
+FZ = 1839
+FP /\A.{308}1\000/
+FI seqvn.hit
+FZ = 300
+FP /\A.{300}$/
+FI seqvn.trg
+FZ = 300
+FP /\A.{300}$/
+//
+
+ID dbiblast-nosys-keep
+DL keep
+AP dbiblast
+CL -nosystemsort
+IN swnew
+IN ../../data
+IN
+IN
+IN
+IN
+IN
+FI stderr
+FC = 8
+FI division.lkp
+FZ = 322
+FP /\A.{300}\001\000swnew.pin\000/
+FI entrynam.idx
+FZ = 480
+FP /\A.{300}CO9_FUGRU\000/
+FI acnum.hit
+FZ = 336
+FP /\A.{300}\006/
+FI acnum.trg
+FZ = 426
+FP /\A.{308}O42493\001/
+//
+
 ID dbiblast-ex-keep
 DL keep
 AP dbiblast
@@ -479,18 +583,18 @@ IN
 IN
 FI stderr
 FC = 8
-FI acnum.hit
-FZ = 336
-FP /\A.{300}\006/
-FI acnum.trg
-FZ = 480
-FP /\A.{308}O42493\000/
 FI division.lkp
 FZ = 322
 FP /\A.{300}\001\000swnew.pin\000/
 FI entrynam.idx
-FZ = 498
+FZ = 480
 FP /\A.{300}CO9_FUGRU\000/
+FI acnum.hit
+FZ = 336
+FP /\A.{300}\006/
+FI acnum.trg
+FZ = 426
+FP /\A.{308}O42493\001/
 //
 
 ID dbiblast-idfirst
@@ -608,18 +712,18 @@ IN P
 IN
 FI stderr
 FC = 8
+FI division.lkp
+FZ = 440
+FP /\A.{300}\001\000swsplit.00.pin\000/
+FI entrynam.idx
+FZ = 480
+FP /\A.{300}CO9_FUGRU\000/
 FI acnum.hit
 FZ = 336
 FP /\A.{300}\006/
 FI acnum.trg
-FZ = 480
-FP /\A.{308}O42493\000/
-FI division.lkp
-FZ = 420
-FP /\A.{300}\001\000swsplit.00.pin\000/
-FI entrynam.idx
-FZ = 498
-FP /\A.{300}CO9_FUGRU\000/
+FZ = 426
+FP /\A.{308}O42493\001/
 //
 
 ID dbiblast-split-idfirst
@@ -786,18 +890,98 @@ IN
 IN
 FI stderr
 FC = 8
-FI acnum.hit
-FZ = 312
-FP /\A.{300}\001/
-FI acnum.trg
-FZ = 414
-FP /\A.{308}L48662\000/
 FI division.lkp
 FZ = 322
 FP /\A.{300}\001\000emrod\000/
 FI entrynam.idx
-FZ = 420
+FZ = 354
 FP /\A.{300}MMAM\000/
+FI acnum.hit
+FZ = 312
+FP /\A.{300}\001/
+FI acnum.trg
+FZ = 342
+FP /\A.{308}L48662\001/
+//
+
+ID dbifasta-allsys-keep
+DL keep
+AP dbifasta
+CL -fields="acnum,seqvn,des"
+IN idacc
+IN ../../data
+IN emrod
+IN EMROD
+IN
+IN
+FI stderr
+FC = 8
+FI division.lkp
+FZ = 322
+FP /\A.{300}\001\000emrod\000/
+FI entrynam.idx
+FZ = 354
+FP /\A.{300}MMAM\000/
+FI acnum.hit
+FZ = 312
+FP /\A.{300}\001/
+FI acnum.trg
+FZ = 342
+FP /\A.{308}L48662\001/
+FI seqvn.hit
+FZ = 300
+FP /\A.{44} +/
+FI seqvn.trg
+FZ = 300
+FP /\A.{44} +/
+FI des.hit
+FZ = 412
+FP /\A.{300}\001/
+FP /\A.{44} +/
+FI des.trg
+FZ = 750
+FP /\A.{308}11\000/
+FP /\A.{44} +/
+//
+
+ID dbifasta-allnosys-keep
+DL keep
+AP dbifasta
+CL -fields="acnum,seqvn,des" -nosystemsort
+IN idacc
+IN ../../data
+IN emrod
+IN EMROD
+IN
+IN
+FI stderr
+FC = 8
+FI division.lkp
+FZ = 322
+FP /\A.{300}\001\000emrod\000/
+FI entrynam.idx
+FZ = 354
+FP /\A.{300}MMAM\000/
+FI acnum.hit
+FZ = 312
+FP /\A.{300}\001/
+FI acnum.trg
+FZ = 342
+FP /\A.{308}L48662\001/
+FI seqvn.hit
+FZ = 300
+FP /\A.{44} +/
+FI seqvn.trg
+FZ = 300
+FP /\A.{44} +/
+FI des.hit
+FZ = 412
+FP /\A.{300}\001/
+FP /\A.{44} +/
+FI des.trg
+FZ = 750
+FP /\A.{308}11\000/
+FP /\A.{44} +/
 //
 
 ID dbifasta-idfirst
@@ -882,18 +1066,18 @@ IN
 IN
 FI stderr
 FC = 8
-FI acnum.hit
-FZ = 336
-FP /\A.{300}\006/
-FI acnum.trg
-FZ = 642
-FP /\A.{308}O42493\000/
 FI division.lkp
 FZ = 322
 FP /\A.{300}\001\000swnew\000/
 FI entrynam.idx
-FZ = 660
+FZ = 480
 FP /\A.{300}CO9_FUGRU\000/
+FI acnum.hit
+FZ = 336
+FP /\A.{300}\006/
+FI acnum.trg
+FZ = 426
+FP /\A.{308}O42493\001/
 //
 
 ID dbifasta-swiss-idfirst
@@ -978,19 +1162,19 @@ IN
 IN
 FI stderr
 FC = 8
-FI acnum.hit
-FZ = 564
-FP /\A.{300}\001/
-FI acnum.trg
-FZ = 2808
-CC Pattern needs 's' modifier ... binary data includes a newline
-FP s /\A.{308}AC3[.]1\000/
 FI division.lkp
 FZ = 366
 FP /\A.{300}\001\000wormpep.clone.AB\000/
 FI entrynam.idx
-FZ = 2940
+FZ = 1488
 FP /\A.{300}AC3[.]1\000/
+FI acnum.hit
+FZ = 564
+FP /\A.{300}\001/
+FI acnum.trg
+FZ = 1356
+## Pattern needs 's' modifier ... binary data includes a newline
+FP s /\A.{308}AC3[.]1\000/
 //
 
 ID dbifasta-worm-idfirst
@@ -1084,18 +1268,44 @@ IN
 IN
 FI stderr
 FC = 5
-FI acnum.hit
-FZ = 312
-FP /\A.{300}\001/
-FI acnum.trg
-FZ = 360
-FP /\A.{308}L48662\000/
 FI division.lkp
 FZ = 322
 FP /\A.{300}\001\000rod\.dat\000/
 FI entrynam.idx
-FZ = 366
+FZ = 354
 FP /\A.{300}MMAM\000/
+FI acnum.hit
+FZ = 312
+FP /\A.{300}\001/
+FI acnum.trg
+FZ = 342
+FP /\A.{308}L48662\001/
+//
+
+ID dbiflat-nosys-keep
+DL keep
+AP dbiflat
+CL -nosystemsort
+IN EMBL
+IN ../../embl
+IN rod.dat
+IN EMBL
+IN
+IN
+FI stderr
+FC = 5
+FI division.lkp
+FZ = 322
+FP /\A.{300}\001\000rod\.dat\000/
+FI entrynam.idx
+FZ = 354
+FP /\A.{300}MMAM\000/
+FI acnum.hit
+FZ = 312
+FP /\A.{300}\001/
+FI acnum.trg
+FZ = 342
+FP /\A.{308}L48662\001/
 //
 
 ID dbiflat-id
@@ -1267,18 +1477,118 @@ IN
 IN
 FI stderr
 FC = 5
-FI acnum.hit
-FZ = 320
-FP /\A.{300}\003/
-FI acnum.trg
-FP /\A.{308}P53450\000/
-FZ = 400
 FI division.lkp
 FZ = 378
 FP /\A.{300}\001\000new_seq\.dat\000/
 FI entrynam.idx
-FZ = 410
+FZ = 400
 FP /\A.{300}CO9_FUGRU\000/
+FI acnum.hit
+FZ = 320
+FP /\A.{300}\003/
+FI acnum.trg
+FZ = 370
+FP /\A.{308}P53450\001/
+//
+
+ID dbiflat-swiss-allsys-keep
+DL keep
+AP dbiflat
+CL -fields="acnum,seqvn,des,keyword,taxon"
+IN
+IN ../../swnew
+IN
+IN SWNEW
+IN
+IN
+FI stderr
+FC = 5
+FI division.lkp
+FZ = 378
+FP /\A.{300}\001\000new_seq\.dat\000/
+FI entrynam.idx
+FZ = 400
+FP /\A.{300}CO9_FUGRU\000/
+FI acnum.hit
+FZ = 320
+FP /\A.{300}\003/
+FI acnum.trg
+FZ = 370
+FP /\A.{308}P53450\001/
+FI des.trg
+FZ = 1326
+FP /\A.{308}1\000/
+FI des.hit
+FZ = 468
+FP /\A.{300}\004/
+FI keyword.trg
+FZ = 1200
+FP /\A.{308}ACYLTRANSFERASE\000/
+FI keyword.hit
+FZ = 408
+FP /\A.{300}\004/
+FI seqvn.trg
+FZ = 380
+FP /\A.{308}P53450[.]0\001/
+FI seqvn.hit
+FZ = 320
+FP /\A.{300}\003/
+FI taxon.trg
+FP /\A.{308}ACTINOPTERYGII\000/
+FZ = 624
+FI taxon.hit
+FZ = 540
+FP /\A.{300}\001/
+//
+
+ID dbiflat-swiss-allnosys-keep
+DL keep
+AP dbiflat
+CL -nosystemsort -fields="acnum,seqvn,des,keyword,taxon"
+IN
+IN ../../swnew
+IN
+IN SWNEW
+IN
+IN
+FI stderr
+FC = 5
+FI division.lkp
+FZ = 378
+FP /\A.{300}\001\000new_seq\.dat\000/
+FI entrynam.idx
+FZ = 400
+FP /\A.{300}CO9_FUGRU\000/
+FI acnum.hit
+FZ = 320
+FP /\A.{300}\003/
+FI acnum.trg
+FZ = 370
+FP /\A.{308}P53450\001/
+FI des.trg
+FZ = 1326
+FP /\A.{308}1\000/
+FI des.hit
+FZ = 468
+FP /\A.{300}\004/
+FI keyword.trg
+FZ = 1200
+FP /\A.{308}ACYLTRANSFERASE\000/
+FI keyword.hit
+FZ = 408
+FP /\A.{300}\004/
+FI seqvn.trg
+FZ = 380
+FP /\A.{308}P53450[.]0\001/
+FI seqvn.hit
+FZ = 320
+FP /\A.{300}\003/
+FI taxon.trg
+FZ = 624
+FP /\A.{308}ACTINOPTERYGII\000/
+FI taxon.hit
+FZ = 540
+FP /\A.{300}\001/
 //
 
 ID dbiflat-swiss-idfirst
@@ -1397,6 +1707,32 @@ FP /Error: Database Entry 'CO9_FUGRU' not found/
 FP /Error: Unable to read sequence 'qapflatinc-id:CO9_FUGRU'/
 //
 
+ID dbiflat-genbank-keep
+DL keep
+AP dbiflat
+IN GENBANK
+IN ../../genbank
+IN *.seq
+IN GENBANK
+IN
+IN
+FI stderr
+FC = 5
+FI division.lkp
+FZ = 570
+## Pattern needs 's' modifier ... binary data includes a newline
+FP s /\A.{300}\001\000gbbct1.seq\000/
+FI entrynam.idx
+FZ = 1080
+FP /\A.{300}AB000095\000/
+FI acnum.hit
+FZ = 624
+FP /\A.{300}\001/
+FI acnum.trg
+FZ = 1596
+FP /\A.{308}AB000095\001/
+//
+
 #############################################
 # The qangcg database(s)
 #############################################
@@ -1413,18 +1749,18 @@ IN
 IN
 FI stderr
 FC = 6
-FI acnum.hit
-FZ = 492
-FP /\A.{300}\001/
-FI acnum.trg
-FZ = 1260
-FP /\A.{308}AB000095\000/
 FI division.lkp
 FZ = 606
 FP /\A.{300}\001\000eem_ba1\.ref eem_ba1\.seq\000/
 FI entrynam.idx
-FZ = 1180
-FP /\A.{300}AB000095\000/
+FZ = 1020
+FP /\A.{300}AB000095/
+FI acnum.hit
+FZ = 492
+FP /\A.{300}\001/
+FI acnum.trg
+FZ = 1068
+FP /\A.{308}AB000095/
 //
 
 ID dbigcg-id
@@ -1620,6 +1956,420 @@ FP 1 /Error: /
 FP /Error: Unable to read sequence 'qangcginc-id:hsfau'/
 //
 
+#############################################
+# The qangcg database(s)
+#############################################
+
+ID dbigcg-allsys-keep
+DL keep
+TI 120
+AP dbigcg
+CL -fields "acnum,seqvn,des,keyword,taxon"
+IN EMBL
+IN ../../embl
+IN
+IN EMBL
+IN
+IN
+FI stderr
+FC = 6
+FI division.lkp
+FZ = 606
+FP /\A.{300}\001\000eem_ba1\.ref eem_ba1\.seq\000/
+FI entrynam.idx
+FZ = 1020
+FP /\A.{300}AB000095/
+FI acnum.hit
+FZ = 492
+FP /\A.{300}\001/
+FI acnum.trg
+FZ = 1068
+FP /\A.{308}AB000095/
+FI des.hit
+FZ = 1824
+FP /\A.{300}\016/
+FI des.trg
+FZ = 5754
+FP /\A.{308}0\000/
+FI keyword.hit
+FZ = 588
+FP /\A.{300}\032/
+FI keyword.trg
+FZ = 3264
+FP /\A.{308}16P13\000/
+FI seqvn.hit
+FZ = 396
+FP /\A.{300}\001/
+FI seqvn.trg
+FZ = 732
+FP /\A.{308}AB000095\.1/
+FI taxon.hit
+FZ = 2036
+FP /\A.{300}\047/
+FI taxon.trg
+FZ = 3765
+FP /\A.{308}AFRICAN CLAWED FROG\000/
+//
+
+ID dbigcg-allsys-id
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qangcgall-id:hsfau test.out -auto
+FI test.out
+FZ = 560
+FP 1 /\A>HSFAU /
+FP 1 />/
+//
+
+ID dbigcg-allsys-idfirst
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qangcgall-id:AB000095 test.out -auto
+FI test.out
+FZ = 2542
+FP 1 />AB000095 /
+FP 1 />/
+//
+
+ID dbigcg-allsys-idsecond
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qangcgall-id:AB009062 test.out -auto
+FI test.out
+FZ = 594
+FP 1 />AB009062 /
+FP 1 />/
+//
+
+ID dbigcg-allsys-last
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qangcgall-id:XLRHODOP test.out -auto
+FI test.out
+FZ = 1777
+FP 1 />XLRHODOP /
+FP 1 />/
+//
+
+ID dbigcg-allsys-acc
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qangcgall:L07770 test.out -auto
+FI test.out
+FZ = 1777
+FP 1 />XLRHODOP /
+FP 1 />/
+//
+
+ID dbigcg-allsys-nextlast
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qangcgall-id:XL23808 test.out -auto
+FI test.out
+FZ = 4876
+FP 1 />XL23808 /
+FP 1 />/
+//
+
+ID dbigcg-allsys-splitfirst
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qangcgall-id:CEY39B6 test.out -auto
+FI test.out
+FZ = 362911
+FP 1 />CEY39B6 /
+FP 1 />/
+//
+
+ID dbigcg-allsys-splitmid
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qangcgall-id:PFMAL4P1 test.out -auto
+FI test.out
+FZ = 399267
+FP 1 />PFMAL4P1 /
+FP 1 />/
+//
+
+ID dbigcg-allsys-splitbefore
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qangcgall-id:AC017364 test.out -auto
+FI test.out
+FZ = 3801
+FP 1 />AC017364 /
+FP 1 />/
+//
+
+ID dbigcg-allsys-splitafter
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qangcgall-id:PFMAL4P3 test.out -auto
+FI test.out
+FZ = 326444
+FP 1 />PFMAL4P3 /
+FP 1 />/
+//
+
+ID dbigcg-allsys-splitend
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qangcgall-id:ECUW67 test.out -auto
+FI test.out
+FZ = 378731
+FP 1 />ECUW67 /
+FP 1 />/
+//
+
+ID dbigcg-allsys-all
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qangcgall:* test.out -auto
+FI test.out
+FZ = 2145073
+FP 1 />XL23808 /
+FP 40 />/
+//
+
+ID dbigcg-allsys-wild
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qangcgall:h* test.out -auto
+FI test.out
+FZ = 77403
+FP 13 />H/
+FP 13 />/
+//
+
+ID dbigcg-allsys-acnum
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qangcgall-acc:X65923 test.out -auto
+FI test.out
+FZ = 560
+FP 1 /\A>HSFAU /
+FP 1 />/
+//
+
+ID dbigcg-allsys-acnumall
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qangcgall-acc:* test.out -auto
+FI test.out
+FZ = 2145073
+FP 1 />XL23808 /
+FP 40 />/
+//
+
+ID dbigcg-allsys-acnumwild
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qangcgall-acc:x* test.out -auto
+FI test.out
+FZ = 18986
+FP 11 />[A-Z0-9]+ X/
+FP 11 />/
+//
+
+ID dbigcg-allsys-sv
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qangcgall-sv:D00596.1 test.out -auto
+FI test.out
+FZ = 19007
+FP 1 />HSTS1 /
+FP 1 />/
+//
+
+ID dbigcg-allsys-svall
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qangcgall-sv:* test.out -auto
+FI test.out
+FZ = 2145073
+FP 1 />HSFAU /
+FP 40 />/
+//
+
+ID dbigcg-allsys-svwild
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qangcgall-sv:x* test.out -auto
+FI test.out
+FZ = 5045
+FP 3 />H/
+FP 3 />/
+//
+
+ID dbigcg-allsys-des
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qangcgall-des:fau test.out -auto
+FI test.out
+FZ = 560
+FP 1 /\A>HSFAU /
+FP 1 />/
+//
+
+ID dbigcg-allsys-desall
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qangcgall-des:* test.out -auto
+FI test.out
+FZ = 2145073
+FP 1 />XL23808 /
+FP 40 />/
+//
+
+ID dbigcg-allsys-deswild
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qangcgall-des:m* test.out -auto
+FI test.out
+FZ = 1543930
+FP 18 />.* [Mm]/
+FP 18 />/
+//
+
+ID dbigcg-allsys-key
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qangcgall-key:rhodopsin test.out -auto
+FI test.out
+FZ = 5087
+FP 1 />XLRHODOP /
+FP 3 />/
+//
+
+ID dbigcg-allsys-keyall
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qangcgall-key:* test.out -auto
+FI test.out
+FZ = 2145073
+FP 1 />XL23808 /
+FP 40 />/
+//
+
+ID dbigcg-allsys-keywild
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qangcgall-key:m* test.out -auto
+FI test.out
+FZ = 9918
+FP 1 />AB009602/
+FP 3 />/
+//
+
+ID dbigcg-allsys-org
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qangcgall-org:Mus test.out -auto
+FI test.out
+FZ = 4274
+FP 1 />MMAM /
+FP 2 />/
+//
+
+ID dbigcg-allsys-orgall
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qangcgall-org:* test.out -auto
+FI test.out
+FZ = 2145073
+FP 1 />XL23808 /
+FP 40 />/
+//
+
+ID dbigcg-allsys-orgwild
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qangcgall-org:s* test.out -auto
+FI test.out
+FZ = 45442
+FP 1 />MMAM/
+FP 5 />/
+//
+
+ID dbigcg-allnosys-keep
+DL keep
+TI 120
+AP dbigcg
+CL -fields "acnum,seqvn,des,keyword,taxon" -nosystem
+IN EMBL
+IN ../../embl
+IN
+IN EMBL
+IN
+IN
+FI stderr
+FC = 6
+FI division.lkp
+FZ = 606
+FP /\A.{300}\001\000eem_ba1\.ref eem_ba1\.seq\000/
+FI entrynam.idx
+FZ = 1020
+FP /\A.{300}AB000095/
+FI acnum.hit
+FZ = 492
+FP /\A.{300}\001/
+FI acnum.trg
+FZ = 1068
+FP /\A.{308}AB000095/
+FI des.hit
+FZ = 1824
+FP /\A.{300}\016/
+FI des.trg
+FZ = 5754
+FP /\A.{308}0\000/
+FI keyword.hit
+FZ = 588
+FP /\A.{300}\032/
+FI keyword.trg
+FZ = 3264
+FP /\A.{308}16P13\000/
+FI seqvn.hit
+FZ = 396
+FP /\A.{300}\001/
+FI seqvn.trg
+FZ = 732
+FP /\A.{308}AB000095\.1/
+FI taxon.hit
+FZ = 2036
+FP /\A.{300}\047/
+FI taxon.trg
+FZ = 3765
+FP /\A.{308}AFRICAN CLAWED FROG\000/
+//
+
 ##################################################################
 # end of database access tests
 ##################################################################
@@ -1738,14 +2488,12 @@ CL tsw:hba_human tsw:hbb_human -graph ps
 IN
 FI stderr
 FC = 2
-##
-## why is this output file created?
-##
-FI hba_human.dotmatcher
-FZ = 0
 FI dotmatcher.ps
 FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 1\n/
+FI stdout
+FZ = 22
+FP /^Created dotmatcher.ps\n/
 //
 
 ID dotmatcher-stretch
@@ -1753,12 +2501,10 @@ AP dotmatcher
 CL tsw:hba_human tsw:hbb_human -xygraph ps -stretch
 IN
 FI stderr
-FC = 2
-##
-## why is this output file created?
-##
-FI hba_human.dotmatcher
-FZ = 0
+FC = 1
+FI stdout
+FZ = 22
+FP /^Created dotmatcher.ps\n/
 FI dotmatcher.ps
 FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 1\n/
@@ -1785,31 +2531,30 @@ AP dotpath
 ##
 TI 400
 CL tembl:AF129756 tembl:AP000504 -word 20 -graph ps
-FI af129756.dotpath
-FZ = 0
+FI stderr
+FC = 1
+FI stdout
+FZ = 19
+FP /^Created dotpath.ps\n/
 FI dotpath.ps
 FZ > 16800
 FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 1\n/
-FI stderr
-FC = 2
 //
 
 ID dottup-ex
 AP dottup
 CL tembl:eclac tembl:eclaci -wordsize=6 -gtitle="eclaci vs eclac" -graph ps
 IN
+FI stdout
+FZ = 18
+FP /^Created dottup.ps\n/
 FI dottup.ps
 FZ > 66990
 FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 1\n/
 FI stderr
 FC = 2
-##
-##we do not really want the eclac.dottup file by default
-##
-FI eclac.dottup
-FZ = 0
 //
 
 ID dottup-stretch
@@ -1817,17 +2562,15 @@ AP dottup
 CL tembl:eclac tembl:eclaci -wordsize=6 -gtitle="eclaci vs eclac" -xygraph ps
 CL -stretch
 IN
+FI stdout
+FZ = 18
+FP /^Created dottup.ps\n/
 FI dottup.ps
 FZ > 66990
 FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 1\n/
 FI stderr
-FC = 2
-##
-##we do not really want the eclac.dottup file by default
-##
-FI eclac.dottup
-FZ = 0
+FC = 1
 //
 
 ID dreg-ex
@@ -2180,6 +2923,9 @@ AP findkm
 CL -graph ps
 IN ../../data/enztest.dat
 IN
+FI stdout
+FZ = 18
+FP /^Created findkm.ps\n/
 FI stderr
 FC = 2
 FI enztest.findkm
@@ -2594,6 +3340,9 @@ ID lindna-ex
 AP lindna
 CL -graph ps
 IN ../../data/data.linp
+FI stdout
+FZ = 18
+FP /^Created lindna.ps\n/
 FI stderr
 FC = 2
 FI lindna.ps
@@ -2952,6 +3701,9 @@ ID octanol-ex
 AP octanol
 IN tsw:opsd_human
 IN ps
+FI stdout
+FZ = 19
+FP /^Created octanol.ps\n/
 FI stderr
 FC = 2
 FI octanol.ps
@@ -3082,6 +3834,9 @@ IN ps
 IN
 FI stderr
 FC = 2
+FI stdout
+FZ = 19
+FP /^Created pepinfo.ps\n/
 FI pepinfo.out 
 FZ = 202670
 FP 3 /^\s+4\s+T\s+1\n/
@@ -3102,6 +3857,9 @@ IN 274
 IN ps
 FI stderr
 FC = 2
+FI stdout
+FZ = 18
+FP /^Created pepnet.ps\n/
 FI pepnet.ps
 FZ = 12009
 FP /^%%Title: PLplot Graph\n/
@@ -3129,8 +3887,9 @@ CL tsw:hbb_human -send 30
 IN ps
 FI stderr
 FC = 2
-FI hbb_human.pepwheel
-FZ = 0
+FI stdout
+FZ = 20
+FP /^Created pepwheel.ps\n/
 FI pepwheel.ps
 FZ = 12395
 FP /^%%Title: PLplot Graph\n/
@@ -3143,6 +3902,9 @@ CL tsw:hba_human
 IN ps
 FI stderr
 FC = 2
+FI stdout
+FZ = 21
+FP /^Created pepwindow.ps\n/
 FI pepwindow.ps
 FZ = 14647
 FP /^%%Title: PLplot Graph\n/
@@ -3155,7 +3917,10 @@ AP pepwindowall
 CL ../../data/globins.msf -gxtitle="Base Number" -gytitle="hydropathy"
 IN ps
 FI stderr
-FC = 12
+FC = 11
+FI stdout
+FZ = 24
+FP /^Created pepwindowall.ps\n/
 FI pepwindowall.ps
 FZ = 13691
 FP /^%%Title: PLplot Graph\n/
@@ -3169,12 +3934,13 @@ CL -sformat msf ../../data/globins.msf -graph ps
 IN
 FI stderr
 FC = 2
+FI stdout
+FZ = 19
+FP /^Created plotcon.ps\n/
 FI plotcon.ps
 FZ = 20866
 FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 1\n/
-FI globins.plotcon
-FZ = 0
 //
 
 ID plotorf-ex
@@ -3183,6 +3949,9 @@ IN tembl:paamir
 IN ps
 FI stderr
 FC = 2
+FI stdout
+FZ = 19
+FP /^Created plotorf.ps\n/
 FI plotorf.ps
 FZ = 40719
 FP /^%%Title: PLplot Graph\n/
@@ -3196,6 +3965,9 @@ IN ../../data/mito.seq
 IN ps
 FI stderr
 FC = 2
+FI stdout
+FZ = 19
+FP /^Created plotorf.ps\n/
 FI plotorf.ps
 FZ = 140763
 FP /^%%Title: PLplot Graph\n/
@@ -3209,11 +3981,12 @@ CL -graph ps
 IN
 FI stderr
 FC = 2
+FI stdout
+FZ = 19
+FP /^Created polydot.ps\n/
 FI polydot.ps
 FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 1\n/
-FI globins.polydot
-FZ = 0
 //
 
 ID preg-ex
@@ -3235,6 +4008,9 @@ IN ../../data/globins.msf
 IN ps
 FI stderr
 FC = 2
+FI stdout
+FZ = 22
+FP /^Created prettyplot.ps\n/
 FI prettyplot.ps
 FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 3\n/
@@ -3246,6 +4022,9 @@ CL ../../data/globins.msf -plurality=3 -docolour
 IN ps
 FI stderr
 FC = 2
+FI stdout
+FZ = 22
+FP /^Created prettyplot.ps\n/
 FI prettyplot.ps
 FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 2\n/
@@ -3386,7 +4165,7 @@ IN
 IN
 FI stderr
 FC = 2
-FI hba_human.prophet
+FI hd_fugru.prophet
 FP /^Score: 170.08\n/
 FP /^Consensus +15 +ELSAVDKAWVKAN\.SVAEVGGHALERGLFASEPMTLEFFDTFKYL 58 +\n/
 FP /^HBA_HUMAN +1 +VLSPADKTNVKAAWG\.GKVGAHAGEYGAEALERMFLSFPTTKTYF 44 +\n/
@@ -3575,7 +4354,7 @@ IN matcher
 FI stderr
 FC = 2
 FI stdout
-FZ = 290
+FZ > 289
 FP /^seqmatchall/
 FP /^supermatcher/
 FP /^water/
@@ -6073,15 +6852,6 @@ FP /^>HSFAU /
 FI hsfau1.fasta
 FZ = 2088
 FP /^>HSFAU1 /
-FI hsferg1.fasta
-FZ = 571
-FP /^>HSFERG1 /
-FI hsferg2.fasta
-FZ = 1204
-FP /^>HSFERG2 /
-FI hsfos.fasta
-FZ = 6378
-FP /^>HSFOS /
 //
 
 #####################################################
@@ -6474,7 +7244,7 @@ IN
 FI stderr
 FC = 2
 FI hba_human.stretcher
-FZ > 1445
+FZ > 1442
 FP /^# Matrix: EBLOSUM62\n/
 FP /^# Gap_penalty: 12\n/
 FP /^# Extend_penalty: 2\n/
@@ -6546,6 +7316,9 @@ IN tembl:paamir
 IN ps
 FI stderr
 FC = 2
+FI stdout
+FZ = 16
+FP /^Created syco.ps\n/
 FI paamir.syco
 FZ = 0
 FI syco.ps
@@ -6628,7 +7401,10 @@ ID tmap-ex
 AP tmap
 CL tsw:opsd_human -out tmap.res -graph ps
 FI stderr
-FC = 2
+FC = 1
+FI stdout
+FZ = 16
+FP /^Created tmap.ps\n/
 FI tmap.res
 FZ = 1068
 FP /^  TM  1:   43 -   69  \(27\.0\)\n/
@@ -6875,6 +7651,9 @@ IN ps
 IN
 FI stderr
 FC = 2
+FI stdout
+FZ = 18
+FP /^Created wobble.ps\n/
 FI paamir.wobble
 FZ = 46
 FP /^Expected GC content in third position = 66.54\n/
@@ -6904,14 +7683,14 @@ IN
 FI stderr
 FC = 2
 FI hba_human.wordmatch
-FZ = 150
-FP /^        58          63          5\n/
-FP /^        14          15          4\n/
-FP /^       116         121          4\n/
-FI hba_human.out2
+FZ > 608
+FP /^ +5 HBA_HUMAN +58\.\.62 +HBB_HUMAN +63\.\.67\n/
+FP /^ +4 HBA_HUMAN +14\.\.17 +HBB_HUMAN +15\.\.18\n/
+FP /^ +4 HBA_HUMAN +116\.\.119 +HBB_HUMAN +121\.\.124\n/
+FI HBA_HUMAN.gff
 FZ = 336
 FP /^HBA_HUMAN\twordmatch\tmisc_feature\t58\t62\t1\.000\t/
-FI hba_human.out3
+FI HBB_HUMAN.gff
 FZ = 336
 FP /^HBB_HUMAN\twordmatch\tmisc_feature\t63\t67\t1\.000\t/
 //
@@ -6920,12 +7699,9 @@ ID wordmatch-same
 AP wordmatch
 CL tembl:eclaci tembl:eclaci -word 50 -auto
 FI eclaci.wordmatch
-FZ = 82
-FP /^         1           1       1113\n/
-FI eclaci.out2
-FZ = 137
-FP /^ECLACI\twordmatch\tmisc_feature\t1\t1113\t1\.000\t/
-FI eclaci.out3
+FZ > 460
+FP /^ +1113 +ECLACI +1\.\.1113 +ECLACI +1\.\.1113\n/
+FI ECLACI.gff
 FZ = 137
 FP /^ECLACI\twordmatch\tmisc_feature\t1\t1113\t1\.000\t/
 //
