@@ -60,7 +60,7 @@ pkgdata_DATA = banana0.gif chaos0.gif cpgplot0.gif dotmatcher0.gif \
                pscan.html rebaseextract.html redata.html \
                reformatting_group.html remap.html repeats_group.html \
                restml.html restrict.html \
-               restriction_enzymes_group.html \
+               re_group.html \
                revseq.html secondary_structure_group.html seealso.html \
                seqboot.html seqmatchall.html seqret.html seqretall.html \
                seqretset.html seqretsplit.html \
