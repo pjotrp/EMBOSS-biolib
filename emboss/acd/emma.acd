@@ -15,7 +15,7 @@ seqall: inseqs  [
 endsection: input
 
 section: advanced [ info: "advanced Section" type: page ]
-section: dendsection [ info: "dendsection Section" type: page ]
+section: dendsection [ info: "dendsection Section" type: frame ]
 bool: onlydend  [
   optional: "Y"
   default: "No"
@@ -45,7 +45,7 @@ bool: insist  [
   information: "Insist that the sequence type is changed to protein"
 ]
 
-section: slowsection [ info: "slowsection Section" type: page ]
+section: slowsection [ info: "slowsection Section" type: frame ]
 list: slowfast  [
   optional: "Y"
   default: "s"
@@ -82,7 +82,7 @@ float: pwgapv  [
 
 endsection: slowsection
 
-section: protsection [ info: "protsection Section" type: page ]
+section: protsection [ info: "protsection Section" type: frame ]
 bool: prot  [
   optional: "N"
   default: "@($(insist) ? @(!$(inseqs.protein)):$(inseqs.protein))"
@@ -128,7 +128,7 @@ string: pairwisedata  [
 
 endsection: protsection
 
-section: fastsection [ info: "fastsection Section" type: page ]
+section: fastsection [ info: "fastsection Section" type: frame ]
 
 integer: ktup  [
   optional: "@(!$(slow))"
@@ -179,7 +179,7 @@ bool: nopercent  [
 
 endsection: fastsection
 
-section: matrixsection [ info: "matrixsection Section" type: page ]
+section: matrixsection [ info: "matrixsection Section" type: frame ]
 list: matrix  [
   optional: "$(prot)"
   default: "b"
@@ -220,7 +220,7 @@ string: mamatrix  [
 
 endsection: matrixsection
 
-section: gapsection [ info: "gapsection Section" type: page ]
+section: gapsection [ info: "gapsection Section" type: frame ]
 float: gapc  [
   optional: "Y"
   default: "10.0"

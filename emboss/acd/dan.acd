@@ -55,7 +55,7 @@ bool: rna  [
   help: "This specifies that the sequence is an RNA sequnce and not a DNA sequence."
 ]
 
-section: productsection [ info: "productsection Section" type: page ]
+section: productsection [ info: "productsection Section" type: frame ]
 bool: product  [
   optional: "N"
   information: "Prompt for product values"
@@ -91,7 +91,7 @@ integer: prodlen  [
 
 endsection: productsection
 
-section: thermosection [ info: "thermosection Section" type: page ]
+section: thermosection [ info: "thermosection Section" type: frame ]
 bool: thermo  [
   optional: "N"
   information: "Thermodynamic calculations"
