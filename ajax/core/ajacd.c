@@ -835,6 +835,8 @@ AcdOQual acdQualAlign[] =
   {"aextension", "",       "string", "file name extension"},
   {"aname",      "",       "string", "base file name"},
   {"awidth",     "",       "int",    "alignment width"},
+  {"aaccshow",   "",       "bool",   "show accession number in the header"},
+  {"adesshow",   "",       "bool",   "show description in the header"},
   {"ausashow",   "",       "bool",   "show the full USA in the alignment"},
   {"aglobal",    "",       "bool",   "show the full sequence in alignment"},
   {NULL, NULL, NULL, NULL} };
@@ -3182,6 +3184,8 @@ static void acdSetAlign (AcdPAcd thys)
     (void) acdQualToInt (thys, "awidth", 50, &val->Width, &defreply);
     (void) acdAttrToBool (thys, "multiple", ajFalse, &val->Multi);
     (void) acdQualToBool (thys, "aglobal", ajFalse, &val->Global, &defreply);
+    (void) acdQualToBool (thys, "aaccshow", ajFalse, &val->Showacc, &defreply);
+    (void) acdQualToBool (thys, "adesshow", ajFalse, &val->Showdes, &defreply);
     (void) acdQualToBool (thys, "ausashow", ajFalse, &val->Showusa, &defreply);
 
     (void) acdOutFilename (&outfname, name, ext);
@@ -4110,7 +4114,8 @@ static void acdSetFeatout (AcdPAcd thys)
     required = acdIsRequired(thys);
     val = ajFeattabOutNew();
 
-    acdAttrResolve (thys, "name", &name);
+    if (!acdGetValueAssoc (thys, "ofname", &name))
+      acdAttrResolve (thys, "name", &name);
     if (!acdGetValueAssoc (thys, "offormat", &val->Formatstr))
 	(void) acdAttrResolve (thys, "extension", &ext);
 
@@ -12967,13 +12972,14 @@ static AjPStr* acdListValue (AcdPAcd thys, ajint min, ajint max, AjPStr reply) {
 
   /* ajDebug ("reply: '%S' delim '%S'", reply, repdelim); */
 
-  ajStrAssC(&validstr, "");
   rephandle = ajStrTokenInit (reply, ajStrStr(repdelim));
+  ajStrAssC(&validstr, "");
   while (ajStrToken (&repstr, &rephandle, NULL)) {
     itoken++;
     ajDebug("testing '%S'\n", repstr);
     handle = ajStrTokenInit (value, ajStrStr(delim));
     ifound = jfound = 0;
+    ajStrAssC(&validstr, "");
     while (ajStrDelim (&line, &handle, NULL)) {
       codehandle = ajStrTokenInit (line, ajStrStr(codedelim));
       (void) ajStrToken (&code, &codehandle, NULL);
@@ -12984,11 +12990,9 @@ static AjPStr* acdListValue (AcdPAcd thys, ajint min, ajint max, AjPStr reply) {
       /* ajDebug ("desc:  '%S'\n", desc); */
       /* ajDebug ("test '%S' code: '%S' desc: %S'\n", repstr, code, desc); */
 
-      if (itoken == 1) {
-	if (ajStrLen(validstr))
+      if (ajStrLen(validstr))
 	  ajStrAppK(&validstr, ',');
-	ajStrApp(&validstr, code);
-      }
+      ajStrApp(&validstr, code);
 
       if (ajStrMatch(code, repstr) ||
 	  (!exactcase && ajStrMatch(code, repstr))) {
