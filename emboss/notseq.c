@@ -6,7 +6,7 @@ int main (int argc, char * argv[]) {
 
   AjPSeqall seqall;
   AjPSeqout seqout;
-  AjPSeqout junkseq;
+  AjPSeqout junkout;
   AjPSeq seq = NULL;
   AjPStr pattern = NULL;
   AjPStr name=NULL;
@@ -16,7 +16,7 @@ int main (int argc, char * argv[]) {
   embInit ("notseq", argc, argv);
 
   seqout = ajAcdGetSeqoutall ("outseq");
-  junkseq = ajAcdGetSeqoutall ("junkseq");
+  junkout = ajAcdGetSeqoutall ("junkout");
   seqall = ajAcdGetSeqall ("sequence");
   pattern = ajAcdGetString ("exclude");
 
@@ -25,7 +25,7 @@ int main (int argc, char * argv[]) {
     (void) ajStrAss(&acc, ajSeqGetAcc(seq));
       
     if (MatchPattern(name, pattern) || MatchPattern(acc, pattern)) {
-      ajSeqAllWrite (junkseq, seq);    	
+      ajSeqAllWrite (junkout, seq);    	
       gotone = ajTrue;
     } else {
 /* no match, so not excluded */
@@ -36,7 +36,7 @@ int main (int argc, char * argv[]) {
   }
 
   ajSeqWriteClose (seqout);
-  ajSeqWriteClose (junkseq);
+  ajSeqWriteClose (junkout);
 
   if (gotone) {
     ajExit ();

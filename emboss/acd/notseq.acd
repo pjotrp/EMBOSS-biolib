@@ -21,7 +21,7 @@ appl: notseq [
 	info: "Sequence names to exclude"
 	help: "Enter a list of sequence names or accession numbers to
 exclude from the sequences read in.  The excluded sequences will be
-written to the file specified in the 'notout' parameter.  The remainder
+written to the file specified in the 'junkout' parameter.  The remainder
 will be written out to the file specified in the 'outseq' parameter. \ 
 The list of sequence names can be separated by either spaces or commas. \ 
 The sequence names can be wildcarded. \ 
@@ -30,7 +30,7 @@ An example of a list of sequences to be excluded is: \
 myseq, hs*, one two three"
   ]
 
-  seqoutall: notout [ 
+  seqoutall: junkout [ 
 	opt: Y
 	def: "/dev/null"
 	info: "file of excluded sequences"
