@@ -1,5 +1,10 @@
 Version 2.5.1
 
+	Duplicate IDs fix. The database indexing programs skipped
+	duplicate IDs but did not reset the size of the entryname index
+	file so some queries could fail to find the later IDs in the
+	databases.
+	
 	Writing data files used EMBOSS_DATA, or by default the install
 	directory. Earlier versions, if not installed, could write to the
 	source tree emboss/data directory. Fixed to continue if there is

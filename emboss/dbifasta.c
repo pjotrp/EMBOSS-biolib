@@ -112,6 +112,7 @@ int main(int argc, char **argv)
     ajint idtype=0;
 
     ajint idCount=0;
+    ajint idDone;
     AjPList listInputFiles = NULL;
     void ** inputFiles = NULL;
     ajint nfiles;
@@ -239,12 +240,17 @@ int main(int argc, char **argv)
     embDbiHeader (entFile, filesize, idCount, recsize, dbname, release, date);
 
     if (systemsort)
-        idCount = embDbiSortWriteEntry (entFile, maxidlen,
+        idDone = embDbiSortWriteEntry (entFile, maxidlen,
 					dbname, nfiles, cleanup, sortopt);
     else			/* save entries in entryIds array */
-        embDbiMemWriteEntry (entFile, maxidlen,
-			     idlist, &entryIds);
+    {
+        idDone = embDbiMemWriteEntry (entFile, maxidlen,
+				      idlist, &entryIds);
+	if (idDone != idCount)
+	  ajFatal ("Duplicates not allowed for in-memory processing");
+    }
 
+    embDbiHeaderSize (entFile, 300+(idDone*(ajint)recsize), idDone);
     ajFileClose (&entFile);
 
     /*
