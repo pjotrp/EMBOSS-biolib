@@ -35,13 +35,15 @@ public class RunEmbossApplication2
   /** running process */
   private Process p;
   /** standard out */
-  private String stdout = "";
+  private StringBuffer stdout = new StringBuffer();
   /** standard error */
-  private String stderr = "";
+  private StringBuffer stderr = new StringBuffer();
   /** running directory */
   private File project;
   /** process status */
   private String status;
+  private StdoutHandler stdouth;
+  private StderrHandler stderrh;
 
   /**
   *
@@ -63,11 +65,10 @@ public class RunEmbossApplication2
 
       // 2 threads to read in stdout & stderr buffers 
       // to prevent blocking
-//    StdoutHandler stdouth = new StdoutHandler(this);
-      StderrHandler stderrh = new StderrHandler(this);
-//    stdouth.start();
+      stdouth = new StdoutHandler(this);
+      stderrh = new StderrHandler(this);
+      stdouth.start();
       stderrh.start();
-
     }
     catch(IOException ioe)
     {
@@ -82,20 +83,19 @@ public class RunEmbossApplication2
   * @return true if there is any standard out
   *
   */
-  public boolean isProcessStdout()
-  {
-    if(stdout.equals(""))
-      return false;
-    return true;
-  }
+//public boolean isProcessStdout()
+//{
+//  if(stdout.equals(""))
+//    return false;
+//  return true;
+//}
 
   /**
   *
   * Read in the process stderr.
-  * @return	stderr
   *
   */
-  public String readProcessStderr()
+  private void readProcessStderr()
   {
 
     BufferedInputStream stderrStream = null;
@@ -113,7 +113,7 @@ public class RunEmbossApplication2
 
       while((nc = stderrRead.read(c,0,100)) != -1)
       {
-        stderr = stderr.concat(new String(c,0,nc));
+        stderr = stderr.append(new String(c,0,nc));
         noff += nc;
       }
     }
@@ -144,16 +144,15 @@ public class RunEmbossApplication2
       }
     }
 
-    return stderr;
+    return;
   }
 
   /**
   *
   * Read in the process stdout.
-  * @return 	stdout
   *
   */
-  public String readProcessStdout()
+  private void readProcessStdout()
   {
     
     BufferedInputStream stdoutStream = null;
@@ -173,7 +172,7 @@ public class RunEmbossApplication2
 
       while((nc = stdoutRead.read(c,0,100)) != -1)
       {
-        stdout = stdout.concat(new String(c,0,nc));
+        stdout = stdout.append(new String(c,0,nc));
         noff += nc;
       }
 
@@ -205,7 +204,7 @@ public class RunEmbossApplication2
       }
     }
  
-    return stdout;
+    return;
   }
 
   /**
@@ -214,7 +213,7 @@ public class RunEmbossApplication2
   * to write the stdout to the project directory.
   *
   */
-  public void writeStdout()
+  private void writeStdout()
   {
     if(project != null)
     {
@@ -252,8 +251,40 @@ public class RunEmbossApplication2
   */
   public String getProcessStdout()
   {
-//  readProcessStdout();
-    return stdout;
+    try
+    {
+      // make sure we hang around for stdout
+      while(stdouth.isAlive())
+        Thread.currentThread().sleep(10);
+    }
+    catch(InterruptedException ie)
+    {
+      ie.printStackTrace();
+    }
+                                                                                
+    return new String(stdout.toString().trim());
+  }
+
+
+  /**
+  *
+  * @return stderr
+  *
+  */
+  public String getProcessStderr()
+  {
+    try
+    {
+      // make sure we hang around for stdout
+      while(stderrh.isAlive())
+        Thread.currentThread().sleep(10);
+    }
+    catch(InterruptedException ie)
+    {
+      ie.printStackTrace();
+    }
+                                                                                
+    return new String(stderr.toString().trim());
   }
 
   /**
