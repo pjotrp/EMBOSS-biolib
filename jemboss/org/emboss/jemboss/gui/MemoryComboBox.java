@@ -28,6 +28,7 @@ import java.io.*;
 import java.util.Vector;
 import javax.swing.*;
 import javax.swing.event.*;
+import java.net.URL;
 
 /**
 *
@@ -39,6 +40,7 @@ public class MemoryComboBox extends JComboBox
 {
 
   public static final int MAX_MEM_LEN = 30;
+  private Vector order;
 
   public MemoryComboBox(Vector v)
   {
@@ -50,12 +52,15 @@ public class MemoryComboBox extends JComboBox
       public void actionPerformed(ActionEvent e)
       {
         MemoryComboBox cb = (MemoryComboBox)e.getSource();
-        String newEntry = (String)cb.getSelectedItem();
-        cb.add(newEntry);
+        cb.add(cb.getSelectedItem());
       }
     });
 
+    order = new Vector();
+    for(int i=0;i<v.size();i++)
+      order.add(v.get(i));
   }
+
 
   /**
   * 
@@ -63,13 +68,47 @@ public class MemoryComboBox extends JComboBox
   * @param item		element to add
   *
   */
-  public void add(String item)
+  public void add(Object item)
   {
     removeItem(item);
     insertItemAt(item, 0);
     setSelectedItem(item);
-    if (getItemCount() > MAX_MEM_LEN)
+    if(getItemCount() > MAX_MEM_LEN)
       removeItemAt(getItemCount()-1);
+
+    if(!order.contains(item))
+      order.add(item);
+  }
+
+
+  /**
+  *
+  * Determine if item is in the JComboBox
+  * @param item		object to test existance of
+  *
+  */
+  public boolean isItem(Object item)
+  {
+    int nitems = getItemCount();
+    for(int i=0;i<nitems;i++)
+      if(item.equals(getItemAt(i)))
+        return true;
+    return false;
+  }
+
+
+  public int getIndexOf(Object item)
+  {
+//  int nitems = order.size();
+//  for(int i=0;i<nitems;i++)
+//    System.out.println(i+" "+((URL)order.get(i)).getFile());
+    return order.indexOf(item);
+  }
+
+
+  public URL getURLAt(int index)
+  {
+    return (URL)order.get(index);
   }
 
 }

@@ -77,15 +77,8 @@ public class Browser extends JFrame implements HyperlinkListener,
   public Browser(String initialURL, String name,  boolean ltext, 
                  String text, JembossParams mysettings) throws IOException
   {
-
     super(name);
     this.initialURL = initialURL;
-
-    Vector urlCache = new Vector();
-    if(!ltext)
-      urlCache.add(initialURL);
-    else
-      urlCache.add(name+".html");
 
     if(mysettings.isBrowserProxy())
     {
@@ -94,7 +87,7 @@ public class Browser extends JFrame implements HyperlinkListener,
                           mysettings.getBrowserProxyPort()));
     }
 
-    if(ltext)
+    if(ltext)        
     {
       htmlPane = new JEditorPane();
       if( (text.indexOf("<html>") > -1) ||
@@ -102,25 +95,20 @@ public class Browser extends JFrame implements HyperlinkListener,
         htmlPane.setContentType("text/html");
       htmlPane.setText(text);
       htmlPane.addHyperlinkListener(this);
+      setBrowserSize();
+      Vector urlCache = new Vector();
+      urlCache.add(name+".html");
+      setUpJMenuBar(urlCache);
+      addToScrollPane();
+      setVisible(true);
     }
-    else 
+    else
     {
-      try
-      {
-        htmlPane = new JEditorPane(initialURL);
-        htmlPane.addHyperlinkListener(this);
-      } 
-      catch(IOException ioe) 
-      {
-        throw new IOException();
-      }
+      URL pageURL = new URL(initialURL);
+      setURL(pageURL,initialURL);
     }
-
-    setBrowserSize();
-    setUpJMenuBar(urlCache);
-    addToScrollPane();
-    setVisible(true);
   }
+
 
   /**
   *
@@ -132,23 +120,40 @@ public class Browser extends JFrame implements HyperlinkListener,
   {
     super(initialURL);
     this.initialURL = initialURL;
-    Vector urlCache = new Vector();
-    urlCache.add(initialURL);
+    setURL(urlName,initialURL);
+  }
 
+
+  /**
+  *
+  * Set the URL in the browser
+  * @param url		URL to display
+  * @param name 	URL name
+  *
+  */
+  public void setURL(URL url, String name)
+  {
     try
     {
-      htmlPane = new JEditorPane(urlName);
+      htmlPane = new JEditorPane(url);
+      htmlPane.addHyperlinkListener(this);
+
+      Vector urlCache = new Vector();
+      urlCache.add(url);
+      setBrowserSize();
+      setUpJMenuBar(urlCache);
+      setTitle(name);
+      addToScrollPane();
+      setVisible(true);
     }
     catch(IOException ioe)
     {
-      throw new IOException();
+      JOptionPane.showMessageDialog(null,
+                              "Cannot Load URL\n"+name,
+                              "Error", JOptionPane.ERROR_MESSAGE);
     }
-
-    setBrowserSize();
-    setUpJMenuBar(urlCache);
-    addToScrollPane();
-    setVisible(true);
   }
+
 
   /**
   *
@@ -173,6 +178,13 @@ public class Browser extends JFrame implements HyperlinkListener,
     backMenu.setActionCommand("BACK");
     backMenu.addActionListener(this);
     fileMenu.add(backMenu);
+
+    JMenuItem fwdMenu = new JMenuItem("Forward");
+    fwdMenu.setAccelerator(KeyStroke.getKeyStroke(
+              KeyEvent.VK_F, ActionEvent.CTRL_MASK));
+    fwdMenu.setActionCommand("FWD");
+    fwdMenu.addActionListener(this);
+    fileMenu.add(fwdMenu);
 
     // close
     fileMenu.addSeparator();
@@ -222,6 +234,7 @@ public class Browser extends JFrame implements HyperlinkListener,
 
   }
 
+
   /**
   *
   * Set the Jemboss web browser size
@@ -234,6 +247,7 @@ public class Browser extends JFrame implements HyperlinkListener,
     int height = screenSize.height * 6 / 10;
     setBounds(width/5, height/6, width, height);
   }
+
 
   /**
   *
@@ -252,6 +266,7 @@ public class Browser extends JFrame implements HyperlinkListener,
     getContentPane().add(scrollPane, BorderLayout.CENTER);
   }
 
+
   /**
   *
   * Override actionPerformed
@@ -260,21 +275,51 @@ public class Browser extends JFrame implements HyperlinkListener,
   */
   public void actionPerformed(ActionEvent event) 
   {
-    String url;
+    URL url = null;
     setCursor(cbusy);
     if (event.getSource() == urlField) 
-      url = (String)urlField.getSelectedItem();
+    {
+      Object select = urlField.getSelectedItem();
+      if(select instanceof String)
+      {
+        try
+        {
+          url = new URL((String)select);
+        }
+        catch(MalformedURLException me){}
+      }
+      else
+        url = (URL)select;
+    }
     else if (event.getActionCommand().equals("JEMBOSS"))
-      url = "http://www.rfcgr.mrc.ac.uk/Software/EMBOSS/Jemboss/";
+    {
+      try
+      {
+        url = new URL("http://www.rfcgr.mrc.ac.uk/Software/EMBOSS/Jemboss/");
+      }
+      catch(MalformedURLException me){}
+    }
     else if (event.getActionCommand().equals("BACK"))
-      url = (String)urlField.getItemAt(1);
-    else
-      url = initialURL;
+    {
+      int index = urlField.getIndexOf(urlField.getSelectedItem())-1;
+      if(index > -1 && index < urlField.getItemCount())
+        url = urlField.getURLAt(index);
+    }
+    else if (event.getActionCommand().equals("FWD"))
+    {
+      int index = urlField.getIndexOf(urlField.getSelectedItem())+1;
+      if(index > -1 && index < urlField.getItemCount())
+        url = urlField.getURLAt(index);
+    }
 
     try
     {
-      htmlPane.setPage(new URL(url));
-      urlField.add(url);
+      htmlPane.setPage(url);
+      
+      if(!urlField.isItem(url))
+        urlField.add(url);
+      else
+        urlField.setSelectedItem(url);
     }
     catch(IOException ioe)
     {
@@ -283,6 +328,7 @@ public class Browser extends JFrame implements HyperlinkListener,
     }
     setCursor(cdone);
   }
+
 
   /**
   *
@@ -298,7 +344,8 @@ public class Browser extends JFrame implements HyperlinkListener,
       try 
       {
         htmlPane.setPage(event.getURL());
-        urlField.add(event.getURL().toExternalForm());
+        urlField.add(event.getURL());
+//      urlField.add(event.getURL().toExternalForm());
       } 
       catch(IOException ioe) 
       {
@@ -311,6 +358,7 @@ public class Browser extends JFrame implements HyperlinkListener,
     }
   }
 
+
   /**
   *
   * Display a warning message
@@ -322,6 +370,7 @@ public class Browser extends JFrame implements HyperlinkListener,
     JOptionPane.showMessageDialog(this, message, "Warning", 
                                   JOptionPane.ERROR_MESSAGE);
   }
+
 
   /**
   *
@@ -336,6 +385,25 @@ public class Browser extends JFrame implements HyperlinkListener,
       setContentAreaFilled(false);
       setBorderPainted(false);
       setFocusPainted(false);
+    }
+  }
+
+
+  public static void main(String arg[])
+  {
+    ClassLoader cl = ClassLoader.getSystemClassLoader();
+    try
+    {
+      URL inURL = cl.getResource("resources/seqList.html");
+      new Browser(inURL,"resources/seqList.html");
+    }
+    catch (MalformedURLException mex)
+    {
+      System.out.println("Didn't find resources/seqList.html");
+    }
+    catch (IOException iex)
+    {
+      System.out.println("Didn't find resources/seqList.html");
     }
   }
 
