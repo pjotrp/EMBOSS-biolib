@@ -233,7 +233,7 @@ void ajSeqallToLower (AjPSeqall seqall)
 
 /* @func ajSeqallToUpper ******************************************************
 **
-** Convertes the latest sequence in a stream to upper case.
+** Converts the latest sequence in a stream to upper case.
 **
 ** @param [P] seqall [AjPSeqall] Sequence stream object
 ** @return [void]
@@ -2526,8 +2526,9 @@ AjBool ajSeqIsProt (AjPSeq thys)
 /* @func ajIsAccession ********************************************************
 **
 ** Tests whether a string is a potential sequence accession number.
-** The current definition is one or two alpha characters, followed
-** by a string of digits and a minimum length of 6.
+** The current definition is one or two alpha characters,
+** then a possible underscore (for REFSEQ accessions),
+** followed by a string of digits and a minimum length of 6.
 **
 ** Revised for new Swiss-Prot accession number format AnXXXn
 **
@@ -2560,6 +2561,8 @@ AjBool ajIsAccession (AjPStr accnum)
     if (isalpha((ajint)*cp))
     {					/* EMBL/GenBank AAnnnnnn */
 	cp++;
+
+	if (*cp == '_') cp++;	/* REFSEQ NM_nnnnnn */
 
 	while(*cp)
 	    if(isdigit((ajint)*cp))
@@ -2602,6 +2605,7 @@ AjBool ajIsAccession (AjPStr accnum)
 ** a number.
 **
 ** Revised for new Swiss-Prot accession number format AnXXXn
+** Revised for REFSEQ accession number format NM_nnnnnn
 **
 ** @param [P] sv [AjPStr] String to be tested
 ** @return [AjPStr] accession number part of the string if successful
@@ -2639,6 +2643,8 @@ AjPStr ajIsSeqversion (AjPStr sv)
     {					/* EMBL/GenBank AAnnnnnn */
         ajStrAppK(&accnum, *cp);
 	cp++;
+
+	if (*cp == '_') cp++;	/* REFSEQ NM_nnnnnn */
 
 	while(*cp)			/* optional trailing .version */
 	{
