@@ -148,6 +148,8 @@ FC = 2
 FI stdout
 FZ = 19
 FP /^Created banana.dat\n/
+FI banana.dat
+FZ = 0
 //
 ID btwisted-ex
 AP btwisted
@@ -713,7 +715,59 @@ IN
 FI stderr
 FC = 8
 FI division.lkp
-FZ = 440
+FZ = 410
+FP /\A.{300}\001\000swsplit.00.pin\000/
+FI entrynam.idx
+FZ = 480
+FP /\A.{300}CO9_FUGRU\000/
+FI acnum.hit
+FZ = 336
+FP /\A.{300}\006/
+FI acnum.trg
+FZ = 426
+FP /\A.{308}O42493\001/
+//
+
+ID dbiblast-split-wild-keep
+DL keep
+AP dbiblast
+IN swsplit
+IN ../../data
+IN swsplit.*.*
+IN
+IN
+IN P
+IN
+FI stderr
+FC = 8
+FI division.lkp
+FZ = 410
+FP /\A.{300}\001\000swsplit.00.pin\000/
+FI entrynam.idx
+FZ = 480
+FP /\A.{300}CO9_FUGRU\000/
+FI acnum.hit
+FZ = 336
+FP /\A.{300}\006/
+FI acnum.trg
+FZ = 426
+FP /\A.{308}O42493\001/
+//
+
+ID dbiblast-split-list-keep
+DL keep
+AP dbiblast
+IN swsplit
+IN ../../data
+IN swsplit.00.pin swsplit.01.pin swsplit.02.pin swsplit.03.pin swsplit.04.pin 
+IN
+IN
+IN P
+IN
+FI stderr
+FC = 8
+FI division.lkp
+FZ = 410
 FP /\A.{300}\001\000swsplit.00.pin\000/
 FI entrynam.idx
 FZ = 480
@@ -2292,9 +2346,9 @@ PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL qangcgall-org:Mus test.out -auto
 FI test.out
-FZ = 4274
+FZ = 473
 FP 1 />MMAM /
-FP 2 />/
+FP 1 />/
 //
 
 ID dbigcg-allsys-orgall
@@ -2317,6 +2371,17 @@ FI test.out
 FZ = 45442
 FP 1 />MMAM/
 FP 5 />/
+//
+
+ID dbigcg-allsys-orgwild2
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qangcgall-org:mus* test.out -auto
+FI test.out
+FZ = 4274
+FP 1 />MMAM/
+FP 2 />/
 //
 
 ID dbigcg-allnosys-keep
