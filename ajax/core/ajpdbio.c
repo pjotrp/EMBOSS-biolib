@@ -4905,7 +4905,7 @@ static AjBool AlignNumbering(AjPPdbfile *pdbfile, AjPFile logf, ajint lim,
 				   residue mismatch between ATOM and SEQRES 
 				   sequences */
     ajint  this_num = 0;	/* Current residue number */
-    ajint  max = 0;             /* Used in diagnostics code */
+/*DIAGNOSTIC    ajint  max = 0; */            /* Used in diagnostics code */
     
     
     
@@ -5095,19 +5095,19 @@ static AjBool AlignNumbering(AjPPdbfile *pdbfile, AjPFile logf, ajint lim,
 		
 		
 
-		/* DIAGNOSTIC CODE  */
+		/* DIAGNOSTIC CODE  
 		ajFmtPrintF(logf, "\nChainMod %d"
 		   " (seq %d)\n%S\n%S\n\n\n", 
 		   i+1,x+1,
 		   seq[i], 
 		   (*pdbfile)->seqres[i]);
-		   
+		   */
 		    
 
 		/***********************************************/
 		/******************* STEP 1 ********************/
 		/***********************************************/
-		/*DIAGNOSTIC */
+		/*DIAGNOSTIC 
 		  ajFmtPrintF(logf, "STEP1 tmpseqres: %S\n", tmpseqres); 
 		  
 		  ajFmtPrintF(logf, "chnn : %d\n"
@@ -5126,7 +5126,7 @@ static AjBool AlignNumbering(AjPPdbfile *pdbfile, AjPFile logf, ajint lim,
 		  else
 		 ajFmtPrintF(logf, "seq1 and seqres DO NOT match\n");
 		 ajFmtPrintF(logf, "\n");
-		/* */
+		*/
 
 		/* Check whether sequences are identical length*/
 		if(nres[i]==(*pdbfile)->nres[i])
@@ -5145,7 +5145,7 @@ static AjBool AlignNumbering(AjPPdbfile *pdbfile, AjPFile logf, ajint lim,
 			
 			done=ajTrue;
 
-			/* DIAGNOSTIC */ajFmtPrintF(logf, "STEP1 OK\n");  
+			/* DIAGNOSTIC ajFmtPrintF(logf, "STEP1 OK\n");  */
 			
 			break;
 		    }
@@ -5219,8 +5219,8 @@ static AjBool AlignNumbering(AjPPdbfile *pdbfile, AjPFile logf, ajint lim,
 				(*pdbfile)->resn1ok[i]=ajFalse;		       
 			
 			    done=ajTrue;
-			    /*DIAGNOSTIC		 */
-			   ajFmtPrintF(logf, "STEP1 OK %d mismatches\n", nmismatches); 
+			    /*DIAGNOSTIC		 
+			   ajFmtPrintF(logf, "STEP1 OK %d mismatches\n", nmismatches); */
 
 			    break;
 			}
@@ -5231,9 +5231,9 @@ static AjBool AlignNumbering(AjPPdbfile *pdbfile, AjPFile logf, ajint lim,
 			       Restore the original seqres sequence */
 			    ajStrAssS(&((*pdbfile)->seqres[i]), tmpseqres);
 			    (*pdbfile)->nres[i]=ajStrLen((*pdbfile)->seqres[i]);
-			    /*DIAGNOSTIC */
+			    /*DIAGNOSTIC 
 			     ajFmtPrintF(logf, "STEP1 **NOT** OK %d mismatches\n", 
-			      nmismatches);  
+			      nmismatches);  */
 			    
 			}
 		    }
@@ -5245,7 +5245,7 @@ static AjBool AlignNumbering(AjPPdbfile *pdbfile, AjPFile logf, ajint lim,
 		/***********************************************/
 		/******************* STEP 2 ********************/
 		/***********************************************/
-		/*DIAGNOSTIC */
+		/*DIAGNOSTIC
 		ajFmtPrintF(logf, "STEP2 tmpseqres: %S\n", tmpseqres);
 		
 		ajFmtPrintF(logf, "chnn : %d\n"
@@ -5264,7 +5264,7 @@ static AjBool AlignNumbering(AjPPdbfile *pdbfile, AjPFile logf, ajint lim,
 		else
 		    ajFmtPrintF(logf, "seq1 and seqres DO NOT match\n");
 		ajFmtPrintF(logf, "\n");
-		/* */
+		 */
 
 
 		/* JONNEW The code below replaces 'ORIGINAL' code block */
@@ -5272,9 +5272,9 @@ static AjBool AlignNumbering(AjPPdbfile *pdbfile, AjPFile logf, ajint lim,
 		if(maxb >= MAJSTRLEN(seq[i]))
 		    maxb = MAJSTRLEN(seq[i]) - 1;
 
-		/*DIAGNOSTIC  */
+		/*DIAGNOSTIC  
 		ajFmtPrintF(logf, "maxb = %d\nlim2 = %d\nstrlen: %d\n", 
-			    maxb, lim2, MAJSTRLEN(seq[i]));
+			    maxb, lim2, MAJSTRLEN(seq[i]));*/
 		
 
 		/* First pass through loop is full-length sequence */
@@ -5284,9 +5284,9 @@ static AjBool AlignNumbering(AjPPdbfile *pdbfile, AjPFile logf, ajint lim,
 		    ajStrAssSub(&seqbit, seq[i], 0, (lenseqbit -1));
 		    ajStrAssSub(&bit, seq[i], (lenseqbit), -1);
 		    
-		    /*DIAGNOSTIC  */
+		    /*DIAGNOSTIC  
 		    ajFmtPrintF(logf, "Trying ATOM substring %S\n"
-				"versus SEQRES        %S\n", seqbit, (*pdbfile)->seqres[i]);
+				"versus SEQRES        %S\n", seqbit, (*pdbfile)->seqres[i]);*/
 		    
 		    
 		    /* Check whether ATOM is substring of SEQRES sequence */
@@ -5322,8 +5322,8 @@ static AjBool AlignNumbering(AjPPdbfile *pdbfile, AjPFile logf, ajint lim,
 			}
 			
 			done=ajTrue;
-			/*DIAGNOSTIC  */
-			ajFmtPrintF(logf, "STEP2 OK\n");  
+			/*DIAGNOSTIC  
+			ajFmtPrintF(logf, "STEP2 OK\n");  */
 			break;
 		    }
 		}
@@ -5332,8 +5332,8 @@ static AjBool AlignNumbering(AjPPdbfile *pdbfile, AjPFile logf, ajint lim,
 		else
 		{
 		    /* Otherwise, ATOM is NOT a substring of SEQRES sequence */
-		    /*DIAGNOSTIC	*/ 	
-		    ajFmtPrintF(logf, "STEP2 **NOT** OK\n"); 
+		    /*DIAGNOSTIC
+		    ajFmtPrintF(logf, "STEP2 **NOT** OK\n"); 	*/ 	
 		}
 		
 		    /* ORIGINAL
@@ -5358,8 +5358,8 @@ static AjBool AlignNumbering(AjPPdbfile *pdbfile, AjPFile logf, ajint lim,
 		/***********************************************/
 		/******************* STEP 3 ********************/
 		/***********************************************/
-		/*DIAGNOSTIC	 */
-		  ajFmtPrintF(logf, "STEP3 tmpseqres: %S\n", tmpseqres);
+		/*DIAGNOSTIC
+		  ajFmtPrintF(logf, "STEP3 tmpseqres: %S\n", tmpseqres);	 
 		  
 		  ajFmtPrintF(logf, "chnn : %d\n"
 		  "seq1 : %S\n"
@@ -5377,7 +5377,7 @@ static AjBool AlignNumbering(AjPPdbfile *pdbfile, AjPFile logf, ajint lim,
 		  else
 		 ajFmtPrintF(logf, "seq1 and seqres DO NOT match\n");
 		 ajFmtPrintF(logf, "\n");
-		/* */
+		 */
 
 
 		/* Check whether SEQRES is substring of ATOM sequence */
@@ -5426,7 +5426,7 @@ static AjBool AlignNumbering(AjPPdbfile *pdbfile, AjPFile logf, ajint lim,
 		    else
 			(*pdbfile)->resn1ok[i]=ajFalse;		       
 
-		    /*DIAGNOSTIC */  ajFmtPrintF(logf, "STEP3 OK\n");  
+		    /*DIAGNOSTIC   ajFmtPrintF(logf, "STEP3 OK\n");  */
 
 		    done=ajTrue;
 		    break;
@@ -5434,14 +5434,14 @@ static AjBool AlignNumbering(AjPPdbfile *pdbfile, AjPFile logf, ajint lim,
 
 		/* Otherwise, SEQRES is NOT a substring of the ATOM 
 		   sequence */
-		/* DIAGNOSTIC  */ ajFmtPrintF(logf, "STEP3 **NOT** OK\n");  
+		/* DIAGNOSTIC   ajFmtPrintF(logf, "STEP3 **NOT** OK\n");  */
 
 		
 
 		/***********************************************/
 		/******************* STEP 4 ********************/
 		/***********************************************/
-		/*DIAGNOSTIC */
+		/*DIAGNOSTIC 
 		  ajFmtPrintF(logf, "STEP4.1 tmpseqres: %S\n", tmpseqres);
 		  
 		  ajFmtPrintF(logf, "chnn : %d\n"
@@ -5462,7 +5462,7 @@ static AjBool AlignNumbering(AjPPdbfile *pdbfile, AjPFile logf, ajint lim,
 		 ajFmtPrintF(logf, "\n");
 		  
 		  ajFmtPrintF(logf, "STEP4.2 tmpseqres: %S\n", tmpseqres);
-		/* */
+		   */
 
 		/* Check whether residue numbering is correct (and count 
 		   the number of mismatches) */
@@ -5517,8 +5517,8 @@ static AjBool AlignNumbering(AjPPdbfile *pdbfile, AjPFile logf, ajint lim,
 		}
 		
 
-		/*DIAGNOSTIC	*/
-		  ajFmtPrintF(logf, "STEP4.3 tmpseqres: %S\n", tmpseqres); 
+		/*DIAGNOSTIC	
+		  ajFmtPrintF(logf, "STEP4.3 tmpseqres: %S\n", tmpseqres); */
 
 		if(!err)
 		{
@@ -5546,9 +5546,9 @@ static AjBool AlignNumbering(AjPPdbfile *pdbfile, AjPFile logf, ajint lim,
 
 			done=ajTrue;
 			
-			/*DIAGNOSTIC	*/
+			/*DIAGNOSTIC
 			 ajFmtPrintF(logf, "STEP4 OK %d mismatches\n",
-			  nmismatches);  
+			  nmismatches);  	*/
 			
  			break;
 		    }
@@ -5561,9 +5561,9 @@ static AjBool AlignNumbering(AjPPdbfile *pdbfile, AjPFile logf, ajint lim,
 			(*pdbfile)->nres[i]=ajStrLen((*pdbfile)->seqres[i]);
 
 			
-			/*DIAGNOSTIC		*/
+			/*DIAGNOSTIC
 			 ajFmtPrintF(logf, "STEP4 **NOT** OK %d mismatches\n", 
-			  nmismatches); 
+			  nmismatches); 		*/
 		    }
 		}
 		else
@@ -5576,8 +5576,8 @@ static AjBool AlignNumbering(AjPPdbfile *pdbfile, AjPFile logf, ajint lim,
 
 
 
-		    /*DIAGNOSTIC		*/
-		     ajFmtPrintF(logf, "STEP4 **NOT** OK out_of_range\n");  
+		    /*DIAGNOSTIC
+		     ajFmtPrintF(logf, "STEP4 **NOT** OK out_of_range\n");  		*/
 		}
 
 
@@ -5587,7 +5587,7 @@ static AjBool AlignNumbering(AjPPdbfile *pdbfile, AjPFile logf, ajint lim,
 		/***********************************************/
 		/******************* STEP 5 ********************/
 		/***********************************************/
-		/*DIAGNOSTIC */
+		/*DIAGNOSTIC
 		  ajFmtPrintF(logf, "STEP5 tmpseqres: %S\n", tmpseqres); 
 		  
 		  ajFmtPrintF(logf, "chnn : %d\n"
@@ -5606,7 +5606,7 @@ static AjBool AlignNumbering(AjPPdbfile *pdbfile, AjPFile logf, ajint lim,
 		  else
 		 ajFmtPrintF(logf, "seq1 and seqres DO NOT match\n");
 		 ajFmtPrintF(logf, "\n");
-		/* */
+		 */
 
 
 
@@ -5683,7 +5683,7 @@ static AjBool AlignNumbering(AjPPdbfile *pdbfile, AjPFile logf, ajint lim,
 		if(done_end)
 		{
 		    
-		    /*DIAGNOSTIC	*/	ajFmtPrintF(logf, "chnn : %d\n"
+		    /*DIAGNOSTIC		ajFmtPrintF(logf, "chnn : %d\n"
 		      "seq1 : %S\n"
 		      "seq2 : %S\n"
 		      "seqr : %S\n", i+1, seq1[i], seq2[i], 
@@ -5699,7 +5699,7 @@ static AjBool AlignNumbering(AjPPdbfile *pdbfile, AjPFile logf, ajint lim,
 		      else
 		     ajFmtPrintF(logf, "seq1 and seqres DO NOT match\n");
 		     ajFmtPrintF(logf, "\n");
-						/* */
+						*/
 
 
 		    
@@ -5719,14 +5719,14 @@ static AjBool AlignNumbering(AjPPdbfile *pdbfile, AjPFile logf, ajint lim,
 		    		    
 		    
 
-		    /*DIAGNOSTIC */		    ajFmtPrintF(logf, "STEP5 OK\n");  
+		    /*DIAGNOSTIC		    ajFmtPrintF(logf, "STEP5 OK\n");  */
 		    
 		    done=ajTrue;
 		    break;
 		}
 
 
-		/*DIAGNOSTIC	       */ajFmtPrintF(logf, "STEP5 **NOT** OK\n"); 
+		/*DIAGNOSTIC	       ajFmtPrintF(logf, "STEP5 **NOT** OK\n"); */
 
 		/* Otherwise, agreement could not be found */
 
@@ -5740,7 +5740,7 @@ static AjBool AlignNumbering(AjPPdbfile *pdbfile, AjPFile logf, ajint lim,
 		/***********************************************/
 		/******************* STEP 6 ********************/
 		/***********************************************/
-		/*DIAGNOSTIC	*/	ajFmtPrintF(logf, "STEP6 tmpseqres: %S\n", 
+		/*DIAGNOSTIC		ajFmtPrintF(logf, "STEP6 tmpseqres: %S\n", 
 		  tmpseqres);
 		  
 		  ajFmtPrintF(logf, "chnn : %d\n"
@@ -5759,7 +5759,7 @@ static AjBool AlignNumbering(AjPPdbfile *pdbfile, AjPFile logf, ajint lim,
 		  else
 		 ajFmtPrintF(logf, "seq1 and seqres DO NOT match\n");
 		 ajFmtPrintF(logf, "\n");
-		/* */
+		  */
 
 
 		/* Try again by alignment.
@@ -5790,9 +5790,9 @@ static AjBool AlignNumbering(AjPPdbfile *pdbfile, AjPFile logf, ajint lim,
 		    ajStrAssSubC(&substr, atm_ptr, 0, siz_substr-1);
       
 
-		    /*DIAGNOSTIC		*/
+		    /*DIAGNOSTIC		
 		      ajFmtPrintF(logf, "\n***\n%12s\n%s\n%12s\n%s\n", 
-		      "Aligning ", ajStrStr(substr), "To ", seqres_ptr);  
+		      "Aligning ", ajStrStr(substr), "To ", seqres_ptr);  */
 		    
 		    
 		    /* Set loc_ptr to point to the first occurence of 
@@ -5821,11 +5821,11 @@ static AjBool AlignNumbering(AjPPdbfile *pdbfile, AjPFile logf, ajint lim,
 			
 
 
-			    /*DIAGNOSTIC */
+			    /*DIAGNOSTIC
 			      ajFmtPrintF(logf, 
 			      "\n!!!\n%12s\n%s\n%12s\n%s\n", 
 			      "Aligning ", ajStrStr(substr2), "To ", 
-			      seqres_ptr); 
+			      seqres_ptr); */
 
 
 			    /* Set loc_ptr to point to the first occurence of 
@@ -5852,7 +5852,7 @@ static AjBool AlignNumbering(AjPPdbfile *pdbfile, AjPFile logf, ajint lim,
 				}
 
 
-				/*DIAGNOSTIC */
+				/*DIAGNOSTIC 
 				  ajFmtPrintF(logf, "\n\n\nnmismatches = "
 				  "%d\n%12s%s\n%12s%s\n%12s%s\n%12s%s\n", 
 				  nmismatches, 
@@ -5863,12 +5863,12 @@ static AjBool AlignNumbering(AjPPdbfile *pdbfile, AjPFile logf, ajint lim,
 				  "substr:",
 				  substr, 
 				  "substr2", 
-				  substr2);  
+				  substr2);  */
 
 			    
-				/*DIAGNOSTIC */
+				/*DIAGNOSTIC 
 				  ajFmtPrintF(logf, 
-				  "MISMATCH FOUND OK\n");  
+				  "MISMATCH FOUND OK\n");  */
 
 				/* There is enough space to accommodate 
 				   substring2 and the 'missing' 
@@ -5878,9 +5878,9 @@ static AjBool AlignNumbering(AjPPdbfile *pdbfile, AjPFile logf, ajint lim,
 			    }
 			}
 		    }
-		    /*DIAGNOSTIC */
+		    /*DIAGNOSTIC 
 		    else
-			ajFmtPrintF(logf, "ALIGNMENT FOUND OK\n");  
+			ajFmtPrintF(logf, "ALIGNMENT FOUND OK\n");  */
 		    
 		    
 		    /* atm_idx and seqres_idx are set to give the index into 
@@ -5899,7 +5899,7 @@ static AjBool AlignNumbering(AjPPdbfile *pdbfile, AjPFile logf, ajint lim,
 					    ajStrStr((*pdbfile)->seqres[i]))
 					   /sizeof(char));
 		    
-		    /*DIAGNOSTIC */ajFmtPrintF(logf, "seqres_idx : %d\n", seqres_idx); 
+		    /*DIAGNOSTIC ajFmtPrintF(logf, "seqres_idx : %d\n", seqres_idx); */
 		    
 
 
@@ -5920,8 +5920,8 @@ static AjBool AlignNumbering(AjPPdbfile *pdbfile, AjPFile logf, ajint lim,
 		    if((nres[i] - atm_idx) > (len - seqres_idx))
 			break;
 		    
-		    /**************************************************/
-                    /* This will have to change for 1st residue       */
+		    /**************************************************/		    
+		    /* This will have to change for 1st residue       */
 		    /**************************************************/
 		    
 		    /* Try and find an exact match within the gap for the 
@@ -5929,18 +5929,18 @@ static AjBool AlignNumbering(AjPPdbfile *pdbfile, AjPFile logf, ajint lim,
 		    fixed = ajFalse;
 		    if(founderr)
 		    {
-			/*DIAGNOSTIC */
-			 ajFmtPrintF(logf, "About to try (seqres_idx_last:"
-				     " %d, seqres_idx: %d) ...\n",
-				     seqres_idx_last, seqres_idx); 
+			/*DIAGNOSTIC 
+			ajFmtPrintF(logf, "About to try (seqres_idx_last: %d,  "
+				"seqres_idx: %d) ...\n", seqres_idx_last, 
+				    seqres_idx); */
 			
 			
 			aa_last = ajStrChar(substr, 0);
 			for(z=seqres_idx_last+1; z<seqres_idx; z++)
 			{
-			    /*DIAGNOSTIC */
+			    /*DIAGNOSTIC 
 			     ajFmtPrintF(logf, "Trying ATOM:SEQRES  %c:%c\n", 
-			      aa_last,(*pdbfile)->seqres[i]->Ptr[z]);
+			      aa_last,(*pdbfile)->seqres[i]->Ptr[z]);*/
 			    
 			    if((*pdbfile)->seqres[i]->Ptr[z] == aa_last)
 			    {
@@ -5962,8 +5962,8 @@ static AjBool AlignNumbering(AjPPdbfile *pdbfile, AjPFile logf, ajint lim,
 		    
 		    if(!fixed)
 		    {
-			/*DIAGNOSTIC */
-			 ajFmtPrintF(logf, "FAILED TO FIX\n"); 
+			/*DIAGNOSTIC 
+			 ajFmtPrintF(logf, "FAILED TO FIX\n"); */
 			/* Assign residue number */
 			for(k=0, y=atm_idx,  z=seqres_idx; k<siz_substr; 
 			    k++,  y++,  z++)
@@ -6009,10 +6009,10 @@ static AjBool AlignNumbering(AjPPdbfile *pdbfile, AjPFile logf, ajint lim,
 			   A further 1 is added to give a number starting 
 			   from 1 (rather than 0)*/
 			
-			/*DIAGNOSTIC */
+			/*DIAGNOSTIC 
 			  ajFmtPrintF(logf, "a : %d\n(*pdbfile)->rtype[a] : "
 			  "%S\n(*pdbfile)->pdbn[a] : %S\n", 
-			  a, (*pdbfile)->rtype[a], (*pdbfile)->pdbn[a]);
+			  a, (*pdbfile)->rtype[a], (*pdbfile)->pdbn[a]); */
 			  
 			
 			ajFmtPrintS(&msgbit,  "%S %S %S %d;    ", 
@@ -6020,11 +6020,11 @@ static AjBool AlignNumbering(AjPPdbfile *pdbfile, AjPFile logf, ajint lim,
 				    aa_misfit, idx_misfit_seqres-j+1);
 			
 
-			/*DIAGNOSTIC */
+			/*DIAGNOSTIC 
 			  ajFmtPrintS(&msgbit, "ATOM residue %d (%c) vs "
 			  "SEQRES residue %d (%c).   ", 
 			  ajIntGet(num[i], atm_idx), ajStrChar(substr, 0), 
-			  seqres_idx+1, (*pdbfile)->seqres[i]->Ptr[seqres_idx]); 
+			  seqres_idx+1, (*pdbfile)->seqres[i]->Ptr[seqres_idx]); */
 
 
 			ajStrApp(&msgstr, msgbit);
@@ -6091,16 +6091,16 @@ static AjBool AlignNumbering(AjPPdbfile *pdbfile, AjPFile logf, ajint lim,
 		    else
 			(*pdbfile)->resn1ok[i]=ajFalse;		       
 		    
-		    /*DIAGNOSTIC		 */
-		     ajFmtPrintF(logf, "STEP6 OK %d mismatches\n", nmismatches);   
+		    /*DIAGNOSTIC		 
+		     ajFmtPrintF(logf, "STEP6 OK %d mismatches\n", nmismatches);   */
 
 		    done=ajTrue;
 		    break;
 		}
 		
 		
-		/*DIAGNOSTIC	 */
-		ajFmtPrintF(logf, "STEP6 **NOT** OK %d mismatches\n", nmismatches); 
+		/*DIAGNOSTIC	 
+		ajFmtPrintF(logf, "STEP6 **NOT** OK %d mismatches\n", nmismatches); */
 
 
 		/* Otherwise, agreement could not be found - unacceptable 
@@ -6227,7 +6227,7 @@ static AjBool AlignNumbering(AjPPdbfile *pdbfile, AjPFile logf, ajint lim,
 
     
     
-    /* DIAGNOSTIC */
+    /* DIAGNOSTIC 
        
        ajFmtPrintF(logf, "\n\n\n"); 
        
@@ -6340,7 +6340,7 @@ static AjBool AlignNumbering(AjPPdbfile *pdbfile, AjPFile logf, ajint lim,
        
        }
        
-/*       */
+       */
     
     
     
