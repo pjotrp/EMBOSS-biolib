@@ -168,6 +168,7 @@ AjPFile     ajFileNewDF (const AjPStr dir, const AjPStr filename);
 AjPFile     ajFileNewDW (const AjPStr dir, const AjPStr wildfile);
 AjPFile     ajFileNewF (FILE* file);
 AjPFile     ajFileNewIn (const AjPStr name);
+AjPFile     ajFileNewInC (const char *name);
 AjPFile     ajFileNewInPipe (const AjPStr name);
 AjPFile     ajFileNewInList (const AjPList list);
 AjPFile     ajFileNewOut (const AjPStr name);

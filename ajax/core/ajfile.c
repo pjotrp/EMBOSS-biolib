@@ -251,6 +251,33 @@ AjPFile ajFileNewIn (const AjPStr name) {
     return thys;
 }
 
+
+
+/* @func ajFileNewInC *******************************************************
+**
+** Creates a new file object to read a named file.
+**
+** If the filename begins with a pipe character then a pipe is opened
+** using ajFileNewInPipe.
+**
+** @param [r] name [const char*] File name.
+** @return [AjPFile] New file object.
+** @@
+******************************************************************************/
+
+AjPFile ajFileNewInC (const char *name)
+{
+    AjPStr tmp;
+    AjPFile fp;
+    
+    tmp = ajStrNewC(name);
+    fp = ajFileNewIn(tmp);
+    ajStrDel(&tmp);
+
+    return fp;
+}
+
+
 /* @func ajFileNewInList ******************************************************
 **
 ** Creates a new file object with a list of input files.
