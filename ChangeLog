@@ -1,4 +1,21 @@
 Version 2.8.0
+	The ACD qualifiers -acdpretty -acdtable and -acdlog are
+	removed. Programs acdpretty and acdtable do the first two tasks
+	(in the same way as before). To turn on the acdlog file, use
+	environment variable EMBOSS_ACDLOG.
+	
+	Graphs can now use "-graph data" to produce files compatible with
+	the Staden package's spin2 and spin GUIs. This makes some ACD
+	options obsolete, especially the various -data and -outfile
+	combinations. Banana already wrote an output file which caused
+	some confusion in these options. The outfile and the graph are
+	both produced by default, but have the nullok attribute and can be
+	turned off with -nooutfile or -nograph on the command line.
+
+	graph and xygraph output can now be optional - the ACD files can
+	have a nullok: "Y" attribute which allows -nograph on the command
+	line.
+	
 	In ACD files alternatives for protein and nucleotide input are
 	common. Added an automatic variable $(acdprotein) which is defined
 	as the calculated ".protein" attribute of the first input
