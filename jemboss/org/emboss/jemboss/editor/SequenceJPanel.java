@@ -337,7 +337,7 @@ public class SequenceJPanel extends JPanel
 
         String res = seqS.substring(i,i+1);
         if(prettyPlot)
-          leftResidue = prettyDraw(i,ipos,res,seqHeight,leftResidue,g);
+          leftResidue = prettyDraw(i,ipos,istop,res,seqHeight,leftResidue,g);
         
         g.drawString(res, 
                      ipos+boundWidth2,
@@ -372,7 +372,7 @@ public class SequenceJPanel extends JPanel
   * @param g		graphics
   *
   */
-  private boolean prettyDraw(int i, int ipos, String res,
+  private boolean prettyDraw(int i, int ipos, int istop, String res,
                              int seqHeight, boolean leftResidue, Graphics g)
   {
     String sName = seq.getName();
@@ -385,7 +385,7 @@ public class SequenceJPanel extends JPanel
         g.drawLine(ipos,0,ipos,seqHeight);
       leftResidue = true;
 
-      if(i+2 > seq.getLength())
+      if(i+2 > istop)
         g.drawLine(ipos+resWidth,0,ipos+resWidth,seqHeight);     
       else
       {
@@ -804,7 +804,7 @@ public class SequenceJPanel extends JPanel
       {
         String res = seqS.substring(i,i+1);
         if(prettyPlot)
-          leftResidue = prettyDraw(i,ipos,res,seqHeight,leftResidue,g2d);
+          leftResidue = prettyDraw(i,ipos,istop,res,seqHeight,leftResidue,g2d);
 
         g2d.drawString(res,
                       ((i-istart)*resWidth)+boundWidth2+MAXSEQNAME,
