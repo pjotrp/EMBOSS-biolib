@@ -343,6 +343,7 @@ static AjBool acdSetQualDefBool (AcdPAcd thys, char* name, AjBool value);
 static AjBool acdSetQualDefInt (AcdPAcd thys, char* name, ajint value);
 static AjBool acdSetKey (AcdPAcd thys, AjPStr* attrib, AjPStr value);
 static AjBool acdSetVarDef (AcdPAcd thys, AjPStr value);
+static void acdPromptAlign (AcdPAcd thys);
 static void acdPromptCodon (AcdPAcd thys);
 static void acdPromptCpdb (AcdPAcd thys);
 static void acdPromptDirlist (AcdPAcd thys);
@@ -470,6 +471,7 @@ static void acdSetAppl (AcdPAcd thys);
 static void acdSetEndsec (AcdPAcd thys);
 static void acdSetSec (AcdPAcd thys);
 static void acdSetVar (AcdPAcd thys);
+static void acdSetAlign (AcdPAcd thys);
 static void acdSetArray (AcdPAcd thys);
 static void acdSetBool (AcdPAcd thys);
 static void acdSetCodon (AcdPAcd thys);
@@ -570,6 +572,13 @@ AcdOAttr acdAttrAppl[] = { {"documentation", VT_STR},
 			   {"groups", VT_STR},
 			   {"comment", VT_STR},
 			   {NULL, VT_NULL} };
+
+AcdOAttr acdAttrAlign[] = { {"name", VT_STR},
+			    {"extension", VT_STR},
+			    {"type", VT_STR},
+			    {"taglist", VT_STR}, /* extra tags to report */
+			    {"mintags", VT_INT}, /* min number extra tags */
+			    {NULL, VT_NULL} };
 
 AcdOAttr acdAttrArray[] = { {"minimum", VT_FLOAT},
 			    {"maximum", VT_FLOAT},
@@ -693,8 +702,11 @@ AcdOAttr acdAttrRegexp[] = { {"minlength", VT_INT},
 			     {NULL, VT_NULL} };
 
 AcdOAttr acdAttrReport[] = { {"name", VT_STR},
-			      {"extension", VT_STR},
-			      {NULL, VT_NULL} };
+			     {"extension", VT_STR},
+			     {"type", VT_STR},
+			     {"taglist", VT_STR}, /* extra tags to report */
+			     {"mintags", VT_INT}, /* min number extra tags */
+			     {NULL, VT_NULL} };
 
 AcdOAttr acdAttrSec[] = { {"info", VT_STR},
 			   {"type", VT_STR}, /* list in acdSetSec */
@@ -796,6 +808,16 @@ AcdOQual acdQualAppl[] =	/* careful: index numbers used in*/
   {"verbose",    "N",      "bool", "report some/full command line options"},
   {NULL, NULL, NULL, NULL} };
 
+AcdOQual acdQualAlign[] =
+{
+  {"aformat",    "",       "string", "alignment format"},
+  {"aopenfile",  "",       "string", "alignment file name"},
+  {"aextension", "",       "string", "file name extension"},
+  {"aname",      "",       "string", "base file name"},
+  {"awidth",     "",       "int",    "alignment width"},
+  {"ausashow",   "",       "bool",   "show the full USA in the alignment"},
+  {NULL, NULL, NULL, NULL} };
+
 AcdOQual acdQualFeat[] =
 {
   {"fformat",    "",       "string",  "features format"},
@@ -821,6 +843,7 @@ AcdOQual acdQualReport[] =
   {"ropenfile",  "",       "string", "report file name"},
   {"rextension", "",       "string", "file name extension"},
   {"rname",      "",       "string", "base file name"},
+  {"rusashow",   "",       "bool",   "show the full USA in the report"},
   {NULL, NULL, NULL, NULL} };
 
 AcdOQual acdQualSeq[] =
@@ -962,7 +985,9 @@ AcdOQual acdQualGraphxy[] =
 
 AcdOType acdType[] =
 {
-  {"array",        acdAttrArray,    acdSetArray,
+  {"align",       acdAttrAlign,     acdSetAlign,
+   acdQualAlign,    "Alignment file" },
+  {"array",       acdAttrArray,     acdSetArray,
    NULL,             "List of numbers" },
   {"bool",        acdAttrBool,      acdSetBool,
    NULL,             "Yes/No" },
@@ -3012,6 +3037,97 @@ static void acdSetVar (AcdPAcd thys)
     return;
 }
 
+/* @func ajAcdGetAlign ********************************************************
+**
+** Returns an item of type Align as defined in a named ACD item.
+** Called by the application after all ACD values have been set,
+** and simply returns what the ACD item already has.
+**
+** @param [r] token [char*] Text token name
+** @return [AjPAlign] Alignment output object. Already opened
+**                      by ajAlignOpent so this just returns the object
+** @cre failure to find an item with the right name and type aborts.
+** @@
+******************************************************************************/
+
+AjPAlign ajAcdGetAlign (char *token)
+{
+    return acdGetValue (token, "align");
+}
+
+/* @funcstatic acdSetAlign ***************************************************
+**
+** Using the definition in the ACD file, and any values for the
+** item or its associated qualifiers provided on the command line,
+** prompts the user if necessary (and possible) and
+** sets the actual value for an ACD alignment output item.
+**
+** Understands all attributes and associated qualifiers for this item type.
+**
+** The default value (if no other available) is a null string, which
+** is invalid.
+**
+** Associated qualifiers "-aformat", "-aopenfile"
+** are applied to the EURO before reading the sequence.
+**
+** @param [u] thys [AcdPAcd] ACD item.
+** @return [void]
+** @see ajSeqRead
+** @@
+******************************************************************************/
+
+static void acdSetAlign (AcdPAcd thys)
+{
+    AjPAlign val = NULL;
+
+    AjBool required = ajFalse;
+    AjBool ok = ajFalse;
+    static AjPStr defreply = NULL;
+    static AjPStr reply = NULL;
+    ajint itry;
+
+    static AjPStr name = NULL;
+    static AjPStr ext = NULL;
+    static AjPStr outfname = NULL;
+
+    required = acdIsRequired(thys);
+    val = ajAlignNew();
+
+    acdAttrResolve (thys, "name", &name);
+    (void) acdAttrToStr (thys, "type", "", &val->Type);
+    (void) acdGetValueAssoc (thys, "aformat", &val->Formatstr);
+    (void) acdGetValueAssoc (thys, "aextension", &ext);
+    (void) acdQualToInt (thys, "awidth", 0, &val->Width, &defreply);
+    (void) acdQualToBool (thys, "ausashow", ajFalse, &val->Showusa, &defreply);
+
+    (void) acdOutFilename (&outfname, name, val->Formatstr);
+    (void) acdReplyInit (thys, ajStrStr(outfname), &defreply);
+    acdPromptAlign(thys);
+
+    for (itry=acdPromptTry; itry && !ok; itry--)
+    {
+	ok = ajTrue;		/* accept the default if nothing changes */
+
+	(void) ajStrAssS (&reply, defreply);
+
+	if (required)
+	    (void) acdUserGet (thys, &reply);
+
+	(void) acdGetValueAssoc (thys, "aopenfile", &val->Filename);
+	ok = ajAlignOpen (val, reply);
+	if (!ok)
+	    acdBadVal (thys, required,
+		       "Unable to read sequence '%S'", reply);
+    }
+    if (!ok)
+	acdBadRetry (thys);
+
+    thys->Value = val;
+    (void) ajStrAssS (&thys->ValStr, reply);
+
+    return;
+}
+
 /* @func ajAcdGetArray ********************************************************
 **
 ** Returns an item of type array as defined in a named ACD item. Called by the
@@ -3692,16 +3808,17 @@ AjPFeattable ajAcdGetFeat (char *token)
 ** is invalid.
 **
 ** Associated qualifiers "-fformat", "-fopenfile"
-** are applied to the UFO before reading the sequence.
+** are applied to the UFO before reading the feature table.
 **
 ** Associated qualifiers "-fbegin", "-fend" and "-freverse"
 ** are applied as appropriate, with prompting for values,
-** after the sequence has been read. They are applied to the feature table,
+** after the feature table has been read.
+** They are applied to the feature table,
 ** and the resulting table is what is set in the ACD item.
 **
 ** @param [u] thys [AcdPAcd] ACD item.
 ** @return [void]
-** @see ajSeqRead
+** @see ajFeatRead
 ** @@
 ******************************************************************************/
 
@@ -3764,7 +3881,7 @@ static void acdSetFeat (AcdPAcd thys)
     if (!ok)
 	acdBadRetry (thys);
 
-    (void) acdInFileSave(ajFeatGetName(val)); /* save the sequence name */
+    (void) acdInFileSave(ajFeattableGetName(val)); /* save the sequence name */
 
     /* now process the begin, end and reverse options */
 
@@ -3873,17 +3990,12 @@ AjPFeattabOut ajAcdGetFeatout (char *token)
 ** The default value (if no other available) is a null string, which
 ** is invalid.
 **
-** Associated qualifiers "-fformat", "-fopenfile"
-** are applied to the UFO before reading the sequence.
-**
-** Associated qualifiers "-fbegin", "-fend" and "-freverse"
-** are applied as appropriate, with prompting for values,
-** after the sequence has been read. They are applied to the feature table,
-** and the resulting table is what is set in the ACD item.
+** Associated qualifiers "-offormat", "-ofopenfile"
+** are applied to the UFO before opening the output file.
 **
 ** @param [u] thys [AcdPAcd] ACD item.
 ** @return [void]
-** @see ajSeqRead
+** @see ajFeatTabOutOpen
 ** @@
 ******************************************************************************/
 
@@ -5339,7 +5451,7 @@ static void acdSetRegexp (AcdPAcd thys) {
 **
 ** @param [r] token [char*] Text token name
 ** @return [AjPReport] Report output object. Already opened
-**                      by acdSetFeatout so this just returns the object
+**                      by ajReportOpen so this just returns the object
 ** @cre failure to find an item with the right name and type aborts.
 ** @@
 ******************************************************************************/
@@ -5362,12 +5474,7 @@ AjPReport ajAcdGetReport (char *token)
 ** is invalid.
 **
 ** Associated qualifiers "-rformat", "-ropenfile"
-** are applied to the UFO before reading the sequence.
-**
-** Associated qualifiers "-rbegin", "-rend" and "-rreverse"
-** are applied as appropriate, with prompting for values,
-** after the sequence has been read. They are applied to the feature table,
-** and the resulting table is what is set in the ACD item.
+** are applied to the EURO before opening the output file.
 **
 ** @param [u] thys [AcdPAcd] ACD item.
 ** @return [void]
@@ -5388,23 +5495,27 @@ static void acdSetReport (AcdPAcd thys)
     static AjPStr name = NULL;
     static AjPStr ext = NULL;
     static AjPStr outfname = NULL;
-
-    static AcdOAttr setattr[] =
-    {
-	{"begin", VT_INT},
-	{"end", VT_INT},
-	{"length", VT_INT},
-	{"protein", VT_BOOL},
-	{"nucleic", VT_BOOL},
-	{"name", VT_STR},
-	{NULL, VT_NULL} };
+    static AjPStr taglist = NULL;
+    ajint mintags = 0;
 
     required = acdIsRequired(thys);
     val = ajReportNew();
 
     acdAttrResolve (thys, "name", &name);
-    if (!acdGetValueAssoc (thys, "rformat", &val->Formatstr))
-	(void) acdAttrResolve (thys, "rextension", &ext);
+    (void) acdAttrToStr (thys, "taglist", "", &taglist);
+    (void) acdAttrToInt (thys, "mintags", 0, &val->Mintags);
+    (void) acdAttrToStr (thys, "type", "", &val->Type);
+    (void) acdGetValueAssoc (thys, "rformat", &val->Formatstr);
+    (void) acdGetValueAssoc (thys, "rextension", &ext);
+    (void) acdQualToBool (thys, "rusashow", ajFalse, &val->Showusa, &defreply);
+
+    if (!ajReportSetTags (val, taglist, mintags)) {
+      ajErr("Bad tag list for report");
+    }
+
+    if (!ajReportValid (val)) {
+      ajErr("Unable to use report format '%S'", val->Formatstr);
+    }
 
     (void) acdOutFilename (&outfname, name, val->Formatstr);
     (void) acdReplyInit (thys, ajStrStr(outfname), &defreply);
@@ -5427,21 +5538,6 @@ static void acdSetReport (AcdPAcd thys)
     }
     if (!ok)
 	acdBadRetry (thys);
-
-    /* reports have special set attributes */
-
-    thys->SAttr = acdAttrListCount (setattr);
-    thys->SetAttr = &setattr[0];
-    thys->SetStr = AJCALLOC0 (thys->SAttr, sizeof (AjPStr));
-
-    /*
-       (void) ajStrFromInt (&thys->SetStr[ACD_SEQ_BEGIN], ajSeqBegin(val));
-       (void) ajStrFromInt (&thys->SetStr[ACD_SEQ_END], ajSeqEnd(val));
-       (void) ajStrFromInt (&thys->SetStr[ACD_SEQ_LENGTH], ajSeqLen(val));
-       (void) ajStrFromBool (&thys->SetStr[ACD_SEQ_PROTEIN], ajSeqIsProt(val));
-       (void) ajStrFromBool (&thys->SetStr[ACD_SEQ_NUCLEIC], ajSeqIsNuc(val));
-       (void) ajStrAssS (&thys->SetStr[ACD_SEQ_NAME], val->Name);
-       */
 
     thys->Value = val;
     (void) ajStrAssS (&thys->ValStr, reply);
@@ -10505,7 +10601,7 @@ static AjPStr acdAttrValue (AcdPAcd thys, char *attrib) {
       return defstr[i];
   }
   if (i < 0)
-    ajFatal ("unknown attribute %s\n", attrib);
+    ajFatal ("unknown attribute '%s' for '%S'\n", attrib, thys->Name);
   return NULL;
 }
 
@@ -11988,6 +12084,48 @@ static void acdPromptFeatout (AcdPAcd thys) {
     case 2: (void) ajFmtPrintS (prompt, "%dnd output features", count); break;
     case 3: (void) ajFmtPrintS (prompt, "%drd output features", count); break;
     default: (void) ajFmtPrintS (prompt, "%dth output features", count); break;
+    }
+    break;
+  }
+  return;
+}
+
+/* @funcstatic acdPromptAlign ************************************************
+**
+** Sets the default prompt for this ACD object to be a report output
+** prompt with "first", "second" etc. added.
+**
+** @param [r] thys [AcdPAcd] Current ACD object.
+** @return [void]
+** @@
+******************************************************************************/
+
+static void acdPromptAlign (AcdPAcd thys) {
+  AjPStr* prompt;
+  static ajint count=0;
+
+  if (!thys->DefStr)
+    return;
+
+  prompt = &thys->DefStr[DEF_PROMPT];
+  if (ajStrLen(*prompt))
+    return;
+
+  count++;
+  switch (count) {
+  case 1: (void) ajFmtPrintS (prompt, "Output alignment"); break;
+  case 2: (void) ajFmtPrintS (prompt, "Second output alignment"); break;
+  case 3: (void) ajFmtPrintS (prompt, "Third output alignment"); break;
+  case 11:
+  case 12:
+  case 13:
+    (void) ajFmtPrintS (prompt, "%dth output alignment", count); break;
+  default:
+    switch (count % 10) {
+    case 1: (void) ajFmtPrintS (prompt, "%dst output alignment", count); break;
+    case 2: (void) ajFmtPrintS (prompt, "%dnd output alignment", count); break;
+    case 3: (void) ajFmtPrintS (prompt, "%drd output alignment", count); break;
+    default: (void) ajFmtPrintS (prompt, "%dth output alignment", count); break;
     }
     break;
   }
