@@ -274,16 +274,26 @@ public class Browser extends JFrame
         Graphics2D g2 = (Graphics2D)g;
 
         g2.setColor(new Color(0,128,0));
-        g2.fill(Browser.makeShape(4,12,14,22,14,16,18,16,18,12));
+
+        float loc1[][] = { {4,12}, {14,22}, {14,16}, 
+                                   {18,16}, {18,12} };
+        g2.fill(Browser.makeShape(loc1));
         g2.setColor(Color.green);
-        g2.fill(Browser.makeShape(4,12,14,2,14,8,18,8,18,12));
+
+        float loc2[][] = { {4,12}, {14,2}, {14,8}, 
+                                   {18,8}, {18,12} };
+        g2.fill(Browser.makeShape(loc2));
 
         if(!isEnabled())
         {
           g2.setColor(Color.gray);
-          g2.fill(Browser.makeShape(5,12,14,21,14,15,18,15,18,12));
+          float loc3[][] = { {5,12}, {14,21}, {14,15}, 
+                                     {18,15}, {18,12} };
+          g2.fill(Browser.makeShape(loc3));
           g2.setColor(Color.lightGray);
-          g2.fill(Browser.makeShape(5,12,14,3,14,9,18,9,18,12));
+          float loc4[][] = { {5,12}, {14,3}, {14,9}, 
+                                     {18,9}, {18,12} };
+          g2.fill(Browser.makeShape(loc4));
         }
         setSize(22,24);
       }
@@ -305,16 +315,27 @@ public class Browser extends JFrame
         Graphics2D g2 = (Graphics2D)g;
 
         g2.setColor(new Color(0,128,0));
-        g2.fill(Browser.makeShape(4,12,4,16,8,16,8,22,18,12));
+
+        float loc1[][] = { {4,12}, {4,16}, {8,16}, 
+                                   {8,22}, {18,12} };
+
+        g2.fill(Browser.makeShape(loc1));
         g2.setColor(Color.green);
-        g2.fill(Browser.makeShape(4,12,4,8,8,8,8,2,18,12));
+
+        float loc2[][] = { {4,12}, {4,8}, {8,8},
+                                   {8,2}, {18,12} };
+        g2.fill(Browser.makeShape(loc2));
 
         if(!isEnabled())
         {
           g2.setColor(Color.gray);
-          g2.fill(Browser.makeShape(4,12,4,15,8,15,8,21,17,12));
+          float loc3[][] = { {4,12}, {4,15}, {8,15},
+                                     {8,21}, {17,12} };
+          g2.fill(Browser.makeShape(loc3));
           g2.setColor(Color.lightGray);
-          g2.fill(Browser.makeShape(4,12,4,7,8,7,8,3,17,12));
+          float loc4[][] = { {4,12}, {4,7}, {8,7},
+                                     {8,3}, {17,12} };
+          g2.fill(Browser.makeShape(loc4));
         }
 
         setSize(22,24);
@@ -558,26 +579,24 @@ public class Browser extends JFrame
                                   JOptionPane.ERROR_MESSAGE);
   }
 
+
   /**
   *
-  * Use to draw a Shape.
+  * Used to draw a Shape.
   *
   */
-  public static GeneralPath makeShape(float a1, float b1,
-        float a2, float b2, float a3, float b3, float a4, 
-        float b4, float a5, float b5)
+  public static GeneralPath makeShape(float loc[][])
   {
     GeneralPath path = new GeneralPath(GeneralPath.WIND_NON_ZERO);
-                                                                                
-    path.moveTo(a1,b1);
-    path.lineTo(a2,b2);
-    path.lineTo(a3,b3);
-    path.lineTo(a4,b4);
-    path.lineTo(a5,b5);
-    path.closePath();
-                                                                                
+
+    path.moveTo(loc[0][0],loc[0][1]);
+
+    for(int i=1; i<loc.length; i++)
+      path.lineTo(loc[i][0],loc[i][1]);
+
     return path;
   }
+
 
 
 
