@@ -17,7 +17,7 @@ section: input [
 
   section: afeaturesection [
     information: "First feature options"
-    type: "rame"
+    type: "frame"
   ]
 
     string: asource  [
