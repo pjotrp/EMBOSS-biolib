@@ -63,13 +63,9 @@ public class Splash
     JPanel splashp = new JPanel(new BorderLayout());
 
     JPanel logoPanel = new JPanel(new BorderLayout());
-    JembossLogo jlo = new JembossLogo(20,38,35);
-    Dimension d = new Dimension(380,52);
-    jlo.setPreferredSize(d); 
-    jlo.setMinimumSize(d);
-    jlo.setMaximumSize(d);
 
-    logoPanel.add(jlo);
+    ImageIcon ii = new ImageIcon("images/Jemboss_logo_greyback.gif");
+    logoPanel.add(new JLabel(ii));
     splashp.add(logoPanel, BorderLayout.NORTH);
 
     //if required, a login prompt
