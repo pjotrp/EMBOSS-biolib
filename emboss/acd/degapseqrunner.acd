@@ -1,0 +1,65 @@
+application: degapseqrunner [
+  documentation: "runs degapseqprogram on all sequence pairs in a directory"
+  groups: "protein: 3D structure"
+]
+
+section: input [
+  information: "input section"
+  type: "page"
+]
+
+  dirlist: gappedseqsdir [
+    parameter: "Y"
+    default: "/data/structure/people/mhurley/Database/HOMSTRAD/class/alpha+beta/proteasome"
+    information: "input directory of files containing sequence pairs for alignment"
+  ]
+
+  string: pathtocommand [
+    parameter: "Y"
+    default: "/users/damian/EMBOSS/emboss/emboss/emboss"
+    information: "directory where degapping executable lives"
+  ]
+
+  string: commandname [
+    parameter: "Y"
+    default: "degapseq"
+    information: "name of degapping executable"
+  ]
+
+endsection: input
+
+section: required [
+  information: "required section"
+  type: "page"
+]
+
+endsection: required
+
+
+section: advanced [
+  information: "advanced section"
+  type: "page"
+]
+
+endsection: advanced
+
+section: output [
+  information: "output Section"
+  type: "page"
+
+]
+  outdir: degappedseqsoutdir
+  [
+    parameter: "Y"
+    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/degapped"
+    information: "name of directory containing degapped sequence pairs"
+    extension: "deg"
+  ]
+
+  string: outfilesuffix [
+    parameter: "Y"
+    default: ".deg"
+    information: "appended to end of all output file names"
+  ]
+
+endsection: output
