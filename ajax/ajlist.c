@@ -1556,18 +1556,14 @@ void ajListstrIterTrace (AjIList thys)
 void ajListPushList (AjPList thys, AjPList* pmore)
 {
     AjPList more = *pmore;
-    AjPListNode  tmp=NULL;
 
     if (more->Count)
     {					/* more list has items */
 
 	if (thys->Count)
 	{				/* master list has items */
-	    tmp = more->Last->Prev;
-	    
 	    more->Last->Item = thys->First->Item;
 	    more->Last->Next = thys->First->Next;
-	    more->Last->Prev = tmp;
 	    thys->First->Next->Prev = more->Last;
 	}
 	else
