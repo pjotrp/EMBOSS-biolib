@@ -764,8 +764,9 @@ void embShowPrint(AjPFile out, EmbPShow thys)
 	     *  we assume that newline characters only occur at the end of
 	     *  lines
 	     */
-	    if (ajStrStr(line)[ajStrLen(line)-1] == '\n')
-		count++;
+	    if(ajStrLen(line))
+		if (ajStrStr(line)[ajStrLen(line)-1] == '\n')
+		    count++;
 	(void) ajListIterFree(liter);
 
 	/* thys->length is zero if we have an indefinite page length */
@@ -1624,7 +1625,7 @@ static void showFillREupright(EmbPShow thys, AjPList lines, EmbPShowRE info,
 {
     AjPStr line=NULL;
     AjPStr newline=NULL;
-    AjPStr baseline=ajStrNew();		/* line holding first set of ticks */
+    AjPStr baseline;			/* line holding first set of ticks */
     AjPList linelist = ajListstrNew();	/* list of lines to fill */
     ajint cut;				/* the sites to display */
     AjIList liter;			/* iterator for linelist */
@@ -1637,6 +1638,8 @@ static void showFillREupright(EmbPShow thys, AjPList lines, EmbPShowRE info,
     AjPStr tick=NULL;			/* tick "|" string */
     ajint ln;
     AjPStr sajb=NULL;
+
+    baseline = ajStrNew();
   
     /* if we have not yet produced a sorted list of cut sites, do it now */
     if (info->sitelist == NULL)
