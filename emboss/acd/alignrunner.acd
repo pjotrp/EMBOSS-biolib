@@ -10,7 +10,11 @@ section: input [
 
   dirlist: seqpairsdir [
     parameter: "Y"
-    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_degapped_sequences/55_60"
+    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_degapped_sequences/25_30"
+#    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_degapped_sequences/30_35"
+#    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_degapped_sequences/40_45"
+#    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_degapped_sequences/50_55"
+#    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_degapped_sequences/55_60"
 #    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_degapped_sequences/60_65"
     information: "input directory of files containing sequence pairs for alignment"
     extension: "deg"
@@ -30,7 +34,7 @@ section: input [
 
   string: secondcommandname [
     parameter: "Y"
-    default: "nawalign"
+    default: "contactalign"
     information: "name of second alignment executable"
   ]
 
@@ -87,6 +91,13 @@ section: required [
            the gap opening penalty."
   ]
 
+  boolean: zeroend  [
+    standard: "Y"
+    information: "Zero penalty for gaps at sequence ends?"
+    default: "Y"
+    help: "If this option is true then no penalty is added for gaps at either ends of a trace."
+  ]
+
 endsection: required
 
 
@@ -105,7 +116,11 @@ section: output [
   outdir: firstalignedseqsoutdir
   [
     parameter: "Y"
-    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_aligned_sequences/needle/55_60"
+    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_aligned_sequences/needle/25_30"
+#    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_aligned_sequences/needle/30_35"
+#    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_aligned_sequences/needle/40_45"
+#    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_aligned_sequences/needle/50_55"
+#    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_aligned_sequences/needle/55_60"
 #    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_aligned_sequences/needle/60_65"
     information: "name of directory containing sequences aligned by first method"
     extension: "needle"
@@ -114,10 +129,16 @@ section: output [
   outdir: secondalignedseqsoutdir
   [
     parameter: "Y"
-    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_aligned_sequences/nawalign/55_60"
+    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_aligned_sequences/contactalign/25_30"
+#    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_aligned_sequences/nawalign/25_30"
+#    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_aligned_sequences/nawalign/30_35"
+#    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_aligned_sequences/nawalign/40_45"
+#    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_aligned_sequences/nawalign/50_55"
+#    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_aligned_sequences/nawalign/55_60"
 #    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_aligned_sequences/nawalign/60_65"
     information: "name of directory containing sequences aligned by second method"
-    extension: "nawalign"
+    extension: "contactalign"
+#    extension: "nawalign"
   ]
 
   string: firstoutfilesuffix [
@@ -128,7 +149,8 @@ section: output [
 
   string: secondoutfilesuffix [
     parameter: "Y"
-    default: ".nawalign"
+    default: ".contactalign"
+#    default: ".nawalign"
     information: "appended to end of all output file names of sequences aligned by second alignment method"
   ]
 

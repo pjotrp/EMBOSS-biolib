@@ -10,10 +10,14 @@ section: input [
 
   dirlist: gappedseqsdir [
     parameter: "Y"
+    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_input_sequences/gold/25_30"
+#    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_input_sequences/gold/30_35"
+#    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_input_sequences/gold/40_45"
+#    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_input_sequences/gold/50_55"
+#    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_input_sequences/gold/55_60"
 #    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_input_sequences/gold/60_65"
-    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_input_sequences/gold/55_60"
     information: "input directory of files containing sequence pairs for degapping"
-    extension: "gold"
+    extension: "ali"
   ]
 
   string: pathtocommand [
@@ -53,8 +57,12 @@ section: output [
   outdir: degappedseqsoutdir
   [
     parameter: "Y"
+    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_degapped_sequences/25_30"
+#    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_degapped_sequences/30_35"
+#    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_degapped_sequences/40_45"
+#    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_degapped_sequences/50_55"
+#    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_degapped_sequences/55_60"
 #    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_degapped_sequences/60_65"
-    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_degapped_sequences/55_60"
     information: "name of directory containing degapped sequence pairs"
     extension: "deg"
   ]
