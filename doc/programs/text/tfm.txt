@@ -731,9 +731,6 @@ Command line arguments
    -filter              boolean    Read standard input, write standard output
    -options             boolean    Prompt for required and optional values
    -debug               boolean    Write debug output to program.dbg
-   -acdlog              boolean    Write ACD processing log to program.acdlog
-   -acdpretty           boolean    Rewrite ACD file as program.acdpretty
-   -acdtable            boolean    Write HTML table of options
    -verbose             boolean    Report some/full command line options
    -help                boolean    Report command line options. More
                                   information on associated and general
@@ -986,22 +983,22 @@ Command line arguments
    Advanced qualifiers: (none)
    Associated qualifiers:
   "-outfile" related qualifiers
-   -odirectory          string     Output directory
+  -odirectory          string     Output directory
 
    General qualifiers:
-   -auto                boolean    Turn off prompts
-   -stdout              boolean    Write standard output
-   -filter              boolean    Read standard input, write standard output
-   -options             boolean    Prompt for required and optional values
-   -debug               boolean    Write debug output to program.dbg
-   -verbose             boolean    Report some/full command line options
-   -help                boolean    Report command line options. More
+  -auto                boolean    Turn off prompts
+  -stdout              boolean    Write standard output
+  -filter              boolean    Read standard input, write standard output
+  -options             boolean    Prompt for required and optional values
+  -debug               boolean    Write debug output to program.dbg
+  -verbose             boolean    Report some/full command line options
+  -help                boolean    Report command line options. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
-   -warning             boolean    Report warnings
-   -error               boolean    Report errors
-   -fatal               boolean    Report fatal errors
-   -die                 boolean    Report deaths
+  -warning             boolean    Report warnings
+  -error               boolean    Report errors
+  -fatal               boolean    Report fatal errors
+  -die                 boolean    Report deaths
    
 
    Mandatory qualifiers Allowed values Default

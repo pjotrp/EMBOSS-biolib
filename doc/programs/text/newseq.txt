@@ -72,31 +72,31 @@ Command line arguments
    Advanced qualifiers: (none)
    Associated qualifiers:
   "-outseq" related qualifiers
-   -osformat4           string     Output seq format
-   -osextension4        string     File name extension
-   -osname4             string     Base file name
-   -osdirectory4        string     Output directory
-   -osdbname4           string     Database name to add
-   -ossingle4           boolean    Separate file for each entry
-   -oufo4               string     UFO features
-   -offormat4           string     Features format
-   -ofname4             string     Features file name
-   -ofdirectory4        string     Output directory
+  -osformat4           string     Output seq format
+  -osextension4        string     File name extension
+  -osname4             string     Base file name
+  -osdirectory4        string     Output directory
+  -osdbname4           string     Database name to add
+  -ossingle4           boolean    Separate file for each entry
+  -oufo4               string     UFO features
+  -offormat4           string     Features format
+  -ofname4             string     Features file name
+  -ofdirectory4        string     Output directory
 
    General qualifiers:
-   -auto                boolean    Turn off prompts
-   -stdout              boolean    Write standard output
-   -filter              boolean    Read standard input, write standard output
-   -options             boolean    Prompt for required and optional values
-   -debug               boolean    Write debug output to program.dbg
-   -verbose             boolean    Report some/full command line options
-   -help                boolean    Report command line options. More
+  -auto                boolean    Turn off prompts
+  -stdout              boolean    Write standard output
+  -filter              boolean    Read standard input, write standard output
+  -options             boolean    Prompt for required and optional values
+  -debug               boolean    Write debug output to program.dbg
+  -verbose             boolean    Report some/full command line options
+  -help                boolean    Report command line options. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
-   -warning             boolean    Report warnings
-   -error               boolean    Report errors
-   -fatal               boolean    Report fatal errors
-   -die                 boolean    Report deaths
+  -warning             boolean    Report warnings
+  -error               boolean    Report errors
+  -fatal               boolean    Report fatal errors
+  -die                 boolean    Report deaths
    
 
    Mandatory qualifiers Allowed values Default

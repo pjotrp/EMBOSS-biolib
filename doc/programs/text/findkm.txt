@@ -41,30 +41,30 @@ Command line arguments
 
    Associated qualifiers:
   "-outfile" related qualifiers
-   -odirectory2         string     Output directory
+  -odirectory2         string     Output directory
   "-graphlb" related qualifiers
-   -gprompt             boolean    Graph prompting
-   -gtitle              string     Graph title
-   -gsubtitle           string     Graph subtitle
-   -gxtitle             string     Graph x axis title
-   -gytitle             string     Graph y axis title
-   -goutfile            string     Output file for non interactive displays
-   -gdirectory          string     Output directory
+  -gprompt             boolean    Graph prompting
+  -gtitle              string     Graph title
+  -gsubtitle           string     Graph subtitle
+  -gxtitle             string     Graph x axis title
+  -gytitle             string     Graph y axis title
+  -goutfile            string     Output file for non interactive displays
+  -gdirectory          string     Output directory
 
    General qualifiers:
-   -auto                boolean    Turn off prompts
-   -stdout              boolean    Write standard output
-   -filter              boolean    Read standard input, write standard output
-   -options             boolean    Prompt for required and optional values
-   -debug               boolean    Write debug output to program.dbg
-   -verbose             boolean    Report some/full command line options
-   -help                boolean    Report command line options. More
+  -auto                boolean    Turn off prompts
+  -stdout              boolean    Write standard output
+  -filter              boolean    Read standard input, write standard output
+  -options             boolean    Prompt for required and optional values
+  -debug               boolean    Write debug output to program.dbg
+  -verbose             boolean    Report some/full command line options
+  -help                boolean    Report command line options. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
-   -warning             boolean    Report warnings
-   -error               boolean    Report errors
-   -fatal               boolean    Report fatal errors
-   -die                 boolean    Report deaths
+  -warning             boolean    Report warnings
+  -error               boolean    Report errors
+  -fatal               boolean    Report fatal errors
+  -die                 boolean    Report deaths
    
 
    Mandatory qualifiers Allowed values Default

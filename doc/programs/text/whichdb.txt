@@ -62,6 +62,12 @@ Usage
 Search all databases for an entry
 ID or Accession number: hsfau1
 Output file [outfile.whichdb]: 
+Error: failed to open filename 'garyseq.seq'
+Warning: Cannot open division file '' for database 'maskutrdb'
+Warning: seqCdQry failed
+Error: socket connect failed for database 'tgb'
+socket connect failed for database 'tgb': 
+Connection timed out
    
    Go to the output files for this example
    
@@ -78,22 +84,22 @@ Command line arguments
 
    Associated qualifiers:
   "-outfile" related qualifiers
-   -odirectory          string     Output directory
+  -odirectory          string     Output directory
 
    General qualifiers:
-   -auto                boolean    Turn off prompts
-   -stdout              boolean    Write standard output
-   -filter              boolean    Read standard input, write standard output
-   -options             boolean    Prompt for required and optional values
-   -debug               boolean    Write debug output to program.dbg
-   -verbose             boolean    Report some/full command line options
-   -help                boolean    Report command line options. More
+  -auto                boolean    Turn off prompts
+  -stdout              boolean    Write standard output
+  -filter              boolean    Read standard input, write standard output
+  -options             boolean    Prompt for required and optional values
+  -debug               boolean    Write debug output to program.dbg
+  -verbose             boolean    Report some/full command line options
+  -help                boolean    Report command line options. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
-   -warning             boolean    Report warnings
-   -error               boolean    Report errors
-   -fatal               boolean    Report fatal errors
-   -die                 boolean    Report deaths
+  -warning             boolean    Report warnings
+  -error               boolean    Report errors
+  -fatal               boolean    Report fatal errors
+  -die                 boolean    Report deaths
    
 
    Mandatory qualifiers Allowed values Default
