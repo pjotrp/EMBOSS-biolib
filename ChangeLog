@@ -5,7 +5,7 @@ Version 2.7.0
 	All exit calls now use either 0 (success) or the standard
 	library EXIT_FAILURE value (usually 1).
 
-	All report output fiels have a new attribute (and qualifier)
+	All report output fields have a new attribute (and qualifier)
 	rscoreshow which defaults to "Y". Setting rscoreshow: "N" will
 	remove the score from the output, except for GFF where it is
 	required, and SRS format where it can be kept for use in standard
