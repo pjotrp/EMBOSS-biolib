@@ -5571,9 +5571,7 @@ FP 0 /Warning:/
 DI PRINTS
 //
 
-# change example to start with data/globins.msf
-# note - prompts reversed relative to example
-# Note - failed to find any results
+
 ID profit-ex
 AP profit
 ## changed to a matrix file which produces some results
@@ -5589,7 +5587,6 @@ FZ = 122
 FP /^HBB_HUMAN/
 //
 
-#fix example to match this.
 ID prophecy-ex
 AP prophecy
 IN ../../data/globins.msf
@@ -5607,7 +5604,6 @@ FP /^Maximum score\s+496\n/
 FP /^Consensus\s+PIVDT.*AAYQG\n/
 //
 
-#fix example to match this.
 ID prophecy-ex2
 AP prophecy
 IN ../../data/globins.msf
@@ -9391,6 +9387,40 @@ FI syco.ps
 FZ = 59910
 FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 1\n/
+//
+
+ID tcode-ex
+AP tcode
+IN tembl:hsfau1
+IN 
+IN 
+FI stderr
+FC = 2
+FP 0 /Warning:/
+FI hsfau1.tcode
+FZ = 21691
+FP /^      1     200   0.673 Non-coding/
+FP /^     22     221   0.767 No opinion/
+FP /^     37     236   0.951 Coding/
+//
+
+ID tcode-ex2
+UC Produce a graphical plot
+CL -plot -graph cps
+AP tcode
+IN tembl:hsfau1
+IN 
+IN 
+FI stderr
+FC = 2
+FP 0 /Warning:/
+FI stdout
+FZ = 17
+FP /^Created tcode.ps\n/
+FI tcode.ps
+FP /^%%Title: PLplot Graph/
+FI hsfau1.tcode
+FZ = 0
 //
 
 ID textsearch-ex
