@@ -868,6 +868,7 @@ static void acdSetOutdir(AcdPAcd thys);
 static void acdSetOutdiscrete(AcdPAcd thys);
 static void acdSetOutdistance(AcdPAcd thys);
 static void acdSetOutfile(AcdPAcd thys);
+static void acdSetOutfileall(AcdPAcd thys);
 static void acdSetOutfreq(AcdPAcd thys);
 static void acdSetOutmatrix(AcdPAcd thys);
 static void acdSetOutmatrixf(AcdPAcd thys);
@@ -1403,6 +1404,20 @@ AcdOAttr acdAttrOutfile[] =
 	 "Default file extension"},
     {"append", VT_BOOL, "N",
 	 "Append to an existing file"},
+    {"nulldefault", VT_BOOL, "N",
+	 "Defaults to 'no file'"},
+    {"nullok", VT_BOOL, "N",
+	 "Can accept a null filename as 'no file'"},
+    {NULL, VT_NULL, NULL,
+	 NULL}
+};
+
+AcdOAttr acdAttrOutfileall[] =
+{
+    {"name", VT_STR, "",
+	 "Default file name"},
+    {"extension", VT_STR, "",
+	 "Default file extension"},
     {"nulldefault", VT_BOOL, "N",
 	 "Defaults to 'no file'"},
     {"nullok", VT_BOOL, "N",
@@ -2190,6 +2205,12 @@ AcdOQual acdQualOutfile[] =
     {NULL, NULL, NULL, NULL}
 };
 
+AcdOQual acdQualOutfileall[] =
+{
+    {"odirectory","",  "string",  "Output directory"},
+    {NULL, NULL, NULL, NULL}
+};
+
 AcdOQual acdQualOutfreq[] =
 {
     {"odirectory","",  "string",  "Output directory"},
@@ -2483,6 +2504,9 @@ AcdOType acdType[] =
     {"outfile",            "output",           acdSecOutput,
 	 acdAttrOutfile,   acdSetOutfile,   acdQualOutfile,
 	 AJTRUE,  &acdUseOutfile, "Output file" },
+    {"outfileall",         "output",           acdSecOutput,
+	 acdAttrOutfileall,   acdSetOutfileall,   acdQualOutfileall,
+	 AJTRUE,  &acdUseOutfile, "Multiple output files" },
     {"outfreq",            "output",           acdSecOutput,
 	 acdAttrOutfreq,   acdSetOutfreq,   acdQualOutfreq,
 	 AJTRUE,  &acdUseOutfile, "Frequency value(s)" },
@@ -8544,6 +8568,141 @@ static void acdSetOutfile(AcdPAcd thys)
     acdAttrToBool(thys, "nullok", ajFalse, &nullok);
     acdAttrToBool(thys, "nulldefault", ajFalse, &nulldefault);
     acdAttrToBool(thys, "append", ajFalse, &append);
+    acdOutDirectory(&dir);
+    
+    required = acdIsRequired(thys);
+    if(nullok && nulldefault)
+    {
+	if (acdDefinedEmpty(thys))  /* user set to empty - make default name */
+	    acdOutFilename(&defreply, name, ext);
+	else				/* leave empty */
+	    acdReplyInit(thys, "", &defreply);
+    }
+    else
+    {
+	acdOutFilename(&outfname, name, ext);
+	acdReplyInit(thys, ajStrStr(outfname), &defreply);
+    }
+    acdPromptOutfile(thys);
+    
+    for(itry=acdPromptTry; itry && !ok; itry--)
+    {
+	ok = ajTrue;	   /* accept the default if nothing changes */
+	
+	ajStrAssS(&reply, defreply);
+	
+	if(required)
+	    acdUserGet(thys, &reply);
+	
+	if(ajStrLen(reply))
+	{
+	    ajStrAssS(&fullfname, reply);
+	    ajFileSetDir(&fullfname, dir);
+	    if(append)
+		val = ajFileNewApp(fullfname);
+	    else
+		val = ajFileNewOut(fullfname);
+
+	    if(!val)
+	    {
+		acdBadVal(thys, required,
+			  "Unable to open file '%S' for output",
+			  fullfname);
+		ok = ajFalse;
+	    }
+	}
+	else
+	    if(!nullok)
+	    {
+		acdBadVal(thys, required,
+			  "Output file is required");
+		ok = ajFalse;
+	    }
+    }
+    
+    if(!ok)
+	acdBadRetry(thys);
+    
+    thys->Value = val;
+    ajStrAssS(&thys->ValStr, fullfname);
+    
+    return;
+}
+
+
+
+
+/* @func ajAcdGetOutfileall ***************************************************
+**
+** Returns an item of type Outfile as defined in a named ACD item.
+** Called by the application after all ACD values have been set,
+** and simply returns what the ACD item already has.
+**
+** @param [r] token [const char*] Text token name
+** @return [AjPFile] File object. The file was already opened by
+**         acdSetOutfile so this just returns the pointer.
+** @cre failure to find an item with the right name and type aborts.
+** @@
+******************************************************************************/
+
+AjPFile ajAcdGetOutfileall(const char *token)
+{
+    return acdGetValue(token, "outfileall");
+}
+
+
+
+
+/* @funcstatic acdSetOutfileall ***********************************************
+**
+** Using the definition in the ACD file, and any values for the
+** item or its associated qualifiers provided on the command line,
+** prompts the user if necessary (and possible) and
+** sets the actual value for an ACD outfileall item.
+**
+** Understands all attributes and associated qualifiers for this item type.
+**
+** The default value, if stdout or filtering is on is "stdout" for the
+** first file.
+**
+** Otherwise an output file name is constructed.
+**
+** Various file naming options are defined, but not yet implemented here.
+**
+** @param [u] thys [AcdPAcd] ACD item.
+** @return [void]
+** @see ajFileNewOut
+** @@
+******************************************************************************/
+
+static void acdSetOutfileall(AcdPAcd thys)
+{
+    AjPFile val;
+    
+    AjBool required = ajFalse;
+    AjBool ok       = ajFalse;
+
+    static AjPStr defreply = NULL;
+    static AjPStr reply    = NULL;
+    ajint itry;
+    AjBool nullok;
+    AjBool nulldefault;
+    AjBool append = ajFalse;
+    
+    static AjPStr name      = NULL;
+    static AjPStr ext       = NULL;
+    static AjPStr dir       = NULL;
+    static AjPStr outfname  = NULL;
+    static AjPStr fullfname = NULL;
+    
+    val = NULL;				/* set the default value */
+    
+    acdAttrResolve(thys, "name", &name);
+    acdAttrResolve(thys, "extension", &ext);
+    acdGetValueAssoc(thys, "odirectory", &dir);
+    
+    acdAttrToBool(thys, "nullok", ajFalse, &nullok);
+    acdAttrToBool(thys, "nulldefault", ajFalse, &nulldefault);
     acdOutDirectory(&dir);
     
     required = acdIsRequired(thys);
