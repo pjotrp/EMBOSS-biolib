@@ -219,7 +219,8 @@ public class SectionPanel
       sectionPane.setBorder(title);
 
       String secType = parseAcd.getInfoParamValue(nf).toLowerCase();
-      if(secType.startsWith("advanced "))
+      if(secType.startsWith("advanced ") ||
+         secType.startsWith("additional ") )
         isAdv = true;
       else if(secType.startsWith("input "))
         isInp = true;

@@ -178,7 +178,8 @@ public class ParseAcd
         else if(line.startsWith("section"))
         {
           if(param.equals("input") || param.equals("required") ||
-             param.equals("output") || param.equals("advanced") )
+             param.equals("output") || param.equals("advanced") ||
+             param.equals("additional") )
             nsection++;
           else
             nsubsection++;
