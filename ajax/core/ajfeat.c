@@ -1784,7 +1784,7 @@ static AjPFeature featSwissFromLine ( AjPFeattable thys, AjPStr line)
   static AjPFeature gf    = NULL ;    /* made static so that it's easy
 					 to add second line of description */
   ajint Start, End, val;
-  float fscore;
+  float fscore = 0.0;
   static AjPStr entryid=NULL;
   static AjPStr label=NULL;
 
