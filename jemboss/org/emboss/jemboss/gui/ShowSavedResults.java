@@ -123,7 +123,7 @@ public class ShowSavedResults
       {
         public void actionPerformed(ActionEvent e)
         {
-          listByDateRun(reslist);
+          listByDateRun(reslist,false);
         }
       });
       resFileMenu.add(listByDate);
@@ -159,7 +159,7 @@ public class ShowSavedResults
               if(listByProgram.isSelected())
                 listByProgramName();
               else
-                listByDateRun(reslist);
+                listByDateRun(reslist,false);
             } 
             else 
             {
@@ -178,6 +178,9 @@ public class ShowSavedResults
 
       resFileMenu.addSeparator();
       JMenuItem resFileMenuExit = new JMenuItem("Close");
+      resFileMenuExit.setAccelerator(KeyStroke.getKeyStroke(
+                    KeyEvent.VK_C, ActionEvent.CTRL_MASK));
+
       resFileMenuExit.addActionListener(new ActionListener()
       {
         public void actionPerformed(ActionEvent e) 
@@ -189,7 +192,7 @@ public class ShowSavedResults
       savedResFrame.setJMenuBar(resMenu);
         
       // this is the list of saved results
-      listByDateRun(reslist);
+      listByDateRun(reslist,true);
   
       final JList st = new JList(datasets);
       st.addListSelectionListener(new ListSelectionListener()
@@ -208,11 +211,11 @@ public class ShowSavedResults
           {
             int index = theList.getSelectedIndex();
             String thisdata = datasets.elementAt(index).toString();
-            reslist.setCurrent(thisdata);
-	    aboutRes.setText((String)reslist.get(thisdata));
+
+            aboutRes.setText((String)reslist.get(thisdata));
             aboutRes.setCaretPosition(0);
-	  }
-	}
+          }
+        }
       });
 
       st.addMouseListener(new MouseAdapter() 
@@ -221,11 +224,10 @@ public class ShowSavedResults
         {
           if (e.getClickCount() == 2) 
           {
-            int index = st.locationToIndex(e.getPoint());
             try
             {
               savedResFrame.setCursor(cbusy);
-              ResultList thisres = new ResultList(mysettings, reslist.getCurrent(),
+              ResultList thisres = new ResultList(mysettings,(String)st.getSelectedValue(),
                                                       "show_saved_results");
               new ShowResultSet(thisres.hash());
               savedResFrame.setCursor(cdone);
@@ -246,13 +248,13 @@ public class ShowSavedResults
       {
         public void actionPerformed(ActionEvent e) 
 	{
-	  if(reslist.getCurrent() != null)
+          String sel = (String)st.getSelectedValue();
+  	  if(sel != null)
           {
 	    try 
 	    {
 	      savedResFrame.setCursor(cbusy);
-	      ResultList thisres = new ResultList(mysettings, reslist.getCurrent(), 
-                                                       "show_saved_results");
+	      ResultList thisres = new ResultList(mysettings,sel,"show_saved_results"); 
               new ShowResultSet(thisres.hash());
 	      savedResFrame.setCursor(cdone);
 	    } 
@@ -260,11 +262,11 @@ public class ShowSavedResults
             {
               new AuthPopup(mysettings,f);
 	    }
-	  } 
-	  else 
-	  {
+  	  } 
+  	  else 
+  	  {
             statusField.setText("Nothing selected to be displayed.");
-	  }
+  	  }
         }
       });
         
@@ -274,29 +276,43 @@ public class ShowSavedResults
       {
         public void actionPerformed(ActionEvent e) 
         {
-          if(reslist.getCurrent() != null) 
+          Object sel[] = st.getSelectedValues();
+          if(sel != null) 
           {
-            try        // ask the server to delete these results
-	    {
-	      savedResFrame.setCursor(cbusy);
-	      ResultList thisres = new ResultList(mysettings, reslist.getCurrent(), 
-                                                       "delete_saved_results");
-	      savedResFrame.setCursor(cdone);
+            String selList= new String("");
+            for(int i=0;i<sel.length;i++)
+              selList=selList.concat(sel[i]+"\n");
+
+            int ok = JOptionPane.OK_OPTION;
+            if(sel.length>1)
+              ok = JOptionPane.showConfirmDialog(savedResFrame, 
+                  "Delete the following results:\n"+selList,
+                  "Confirm Deletion", 
+                  JOptionPane.YES_NO_OPTION);
+            
+            if(ok == JOptionPane.OK_OPTION)
+            {
+              try        // ask the server to delete these results
+	      {
+	        savedResFrame.setCursor(cbusy); 
+	        ResultList thisres = new ResultList(mysettings,selList,
+                                         "delete_saved_results"); 
+	        savedResFrame.setCursor(cdone);
 	       
-              statusField.setText("Deleted " +reslist.getCurrent() + "  results set");
+                // amend the list
+                for(int i=0;i<sel.length;i++)
+                  datasets.removeElement(sel[i]);
+                
+                statusField.setText("Deleted " + sel.length + "  result(s)");
      
-	      // clean up the list so they can't see it any more
-	        
-	      reslist.setCurrent(null);
-	      aboutRes.setText("");
-	      int index = st.getSelectedIndex();
-	      datasets.remove(index);
-	      st.setSelectedIndex(-1);
-	    } 
-	    catch (JembossSoapException eae) 
-	    {
-              new AuthPopup(mysettings,f);
-	    }
+	        aboutRes.setText("");
+	        st.setSelectedIndex(-1);
+	      } 
+	      catch (JembossSoapException eae) 
+	      {
+                new AuthPopup(mysettings,f);
+              }
+            }
 	  } 
           else 
           {
@@ -363,6 +379,9 @@ public class ShowSavedResults
     });
 
     JMenuItem resFileMenuExit = new JMenuItem("Close",KeyEvent.VK_C);
+    resFileMenuExit.setAccelerator(KeyStroke.getKeyStroke(
+                    KeyEvent.VK_C, ActionEvent.CTRL_MASK));
+
     resFileMenuExit.addActionListener(new ActionListener()
     {
       public void actionPerformed(ActionEvent e) 
@@ -390,16 +409,10 @@ public class ShowSavedResults
 	  return;
 	
 	JList theList = (JList)e.getSource();
-	if (theList.isSelectionEmpty()) 
-        {
-	  if (mysettings.getDebug()) 
-	    System.out.println("ResListView: Empty selection");
-	} 
-        else
+	if (!theList.isSelectionEmpty()) 
         {
 	  int index = theList.getSelectedIndex();
 	  String thisdata = datasets.elementAt(index).toString();
-	  epr.setCurrent(thisdata);
 	  aboutRes.setText((String)epr.descriptionHash().get(thisdata));
       	  aboutRes.setCaretPosition(0);
 	  aboutRes.setEditable(false);
@@ -414,11 +427,10 @@ public class ShowSavedResults
       {
 	if (e.getClickCount() == 2) 
         {
-	  int index = st.locationToIndex(e.getPoint());
 	  try
           {
 	    savedResFrame.setCursor(cbusy);
-	    ResultList thisres = new ResultList(mysettings, epr.getCurrent(), 
+	    ResultList thisres = new ResultList(mysettings, (String)st.getSelectedValue(), 
                                                      "show_saved_results");
 	    savedResFrame.setCursor(cdone);
 	    if (thisres.getStatus().equals("0")) 
@@ -445,12 +457,12 @@ public class ShowSavedResults
     showResButton.addActionListener(new ActionListener(){
       public void actionPerformed(ActionEvent e) 
       {
-	if(epr.getCurrent() != null) 
+	if(st.getSelectedValue() != null) 
         {
 	  try
           {
 	    savedResFrame.setCursor(cbusy);
-	    ResultList thisres = new ResultList(mysettings, epr.getCurrent(), 
+	    ResultList thisres = new ResultList(mysettings, (String)st.getSelectedValue(), 
                                                       "show_saved_results");
 	    savedResFrame.setCursor(cdone);
 	    if (thisres.getStatus().equals("0")) 
@@ -476,34 +488,46 @@ public class ShowSavedResults
     {
       public void actionPerformed(ActionEvent e) 
       {
-	if(epr.getCurrent() != null) 
+        Object sel[] = st.getSelectedValues();
+	if(sel != null) 
         {
-	  try 
-          {
-	    savedResFrame.setCursor(cbusy);
-	    ResultList thisres = new ResultList(mysettings, epr.getCurrent(),
-                                                      "delete_saved_results");
-	    savedResFrame.setCursor(cdone);
+          String selList= new String("");
+          for(int i=0;i<sel.length;i++)
+            selList=selList.concat(sel[i]+"\n");
 
-            JembossProcess jp = epr.getResult(epr.getCurrent());
-            epr.removeResult(jp);
-
-            statusField.setText("Deleted " + epr.getCurrent() + "  results set");
-	    epr.setCurrent(null);
-	    
-	    // clean up the list so they can't see it any more
-	   
-	    aboutRes.setText("");
-	    int index = st.getSelectedIndex();
-            if(index >-1)
-	      datasets.remove(index);
-	    st.setSelectedIndex(-1);
-	  }
-          catch (JembossSoapException eae)
+          int ok = JOptionPane.OK_OPTION;
+          if(sel.length>1)
+            ok = JOptionPane.showConfirmDialog(savedResFrame,
+                "Delete the following results:\n"+selList,
+                "Confirm Deletion",
+                JOptionPane.YES_NO_OPTION);
+           
+          if(ok == JOptionPane.OK_OPTION)
           {
-	    // shouldn't happen
-	    new AuthPopup(mysettings,savedResFrame);
-	  }
+
+	    try 
+            {
+	      savedResFrame.setCursor(cbusy);
+	      ResultList thisres = new ResultList(mysettings,selList,
+                                             "delete_saved_results");
+	      savedResFrame.setCursor(cdone);
+
+              for(int i=0;i<sel.length;i++)
+              {
+                JembossProcess jp = epr.getResult((String)sel[i]);
+                epr.removeResult(jp);
+                datasets.removeElement(sel[i]);  // amend the list
+              }
+              statusField.setText("Deleted " + sel.length+ "  result(s)");
+	      aboutRes.setText("");
+	      st.setSelectedIndex(-1);
+	    }
+            catch (JembossSoapException eae)
+            {
+	      // shouldn't happen
+	      new AuthPopup(mysettings,savedResFrame);
+	    }
+          }
 	}
       }
     });
@@ -530,13 +554,24 @@ public class ShowSavedResults
   }
 
 
-  private void listByDateRun(ResultList reslist)
+  private void listByDateRun(ResultList reslist,boolean ldisp)
   {
     StringTokenizer tokenizer =
          new StringTokenizer((String)reslist.get("list"), "\n");
-    datasets.removeAllElements();
+
+    Vector vdata = new Vector();
     while (tokenizer.hasMoreTokens())
-      datasets.addElement(tokenizer.nextToken());
+    {
+      String data = tokenizer.nextToken();
+      if(datasets.contains(data) || ldisp)
+        vdata.add(data);
+    }
+    datasets.removeAllElements();
+
+    Enumeration en = vdata.elements();
+    while(en.hasMoreElements())
+      datasets.addElement(en.nextElement());
+
   }
 
 
