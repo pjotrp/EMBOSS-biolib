@@ -41,6 +41,7 @@ int main(int argc, char **argv)
     char *exerr=NULL;
     int  exint=0;
     int  nfeat=0;
+    int  nlocs=0;
     int  i;
     int  j;
     int  k;
@@ -67,6 +68,21 @@ int main(int argc, char **argv)
 	ajFmtPrintF(outf,"Start: %d\tEnd: %d\tStrand: %d\n",
 		    feat->Types[i]->Start,feat->Types[i]->End,
 		    feat->Types[i]->Strand);
+	ajFmtPrintF(outf,"Locations...\n");
+	nlocs = feat->Types[i]->Nlocs;
+	for(j=0;j<nlocs;++j)
+	{
+	    ajFmtPrintF(outf,"Start: Pos=%d Ext=%d Fuzzy=%d\n",
+			feat->Types[i]->LSpos[j],
+			feat->Types[i]->LSex[j],
+			feat->Types[i]->LSfuzzy[j]);
+	    ajFmtPrintF(outf,"End:   Pos=%d Ext=%d Fuzzy=%d\n",
+			feat->Types[i]->LEpos[j],
+			feat->Types[i]->LEex[j],
+			feat->Types[i]->LEfuzzy[j]);
+	    ajFmtPrintF(outf,"Strand: %d\n",feat->Types[i]->LStrand[j]);
+	}
+
 	ntags = feat->Types[i]->Ntags;
 	for(j=0;j<ntags;++j)
 	{

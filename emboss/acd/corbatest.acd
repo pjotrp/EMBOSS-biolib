@@ -10,6 +10,8 @@ appl: corbatest [
 
 string: entry [
 	param: Y 
+	prompt: "Enter an EMBL ID or ACCNO"
+	def: "hsfau"
 ]
 
 outfile: outfile [

@@ -87,12 +87,13 @@ AjPCorbafeat ajCorbafeatNew(int ntypes)
 ** Default constructor for empty AJAX corba feature type objects.
 **
 ** @param [r] ntags [int] Number of tags e.g. note
+** @param [r] nlocs [int] Number of location positions
 **
 ** @return [AjPCorbatype] Pointer to an codon object
 ** @@
 ******************************************************************************/
 
-AjPCorbatype ajCorbatypeNew(int ntags)
+AjPCorbatype ajCorbatypeNew(int ntags, int nlocs)
 {
     AjPCorbatype Ctype=NULL;
     int i;
@@ -105,7 +106,8 @@ AjPCorbatype ajCorbatypeNew(int ntags)
     Ctype->Name   = ajStrNew();
     Ctype->Source = ajStrNew();
     Ctype->Id     = ajStrNew();
-
+    Ctype->Nlocs  = nlocs;
+    
     if(ntags)
     {
 	AJCNEW0(Ctype->Tag,ntags);
@@ -114,6 +116,17 @@ AjPCorbatype ajCorbatypeNew(int ntags)
 
 	for(i=0;i<ntags;++i)
 	    Ctype->Tag[i] = ajStrNew();
+    }
+
+    if(nlocs)
+    {
+	AJCNEW0(Ctype->LSpos,nlocs);
+	AJCNEW0(Ctype->LSex,nlocs);
+	AJCNEW0(Ctype->LSfuzzy,nlocs);
+	AJCNEW0(Ctype->LEpos,nlocs);
+	AJCNEW0(Ctype->LEex,nlocs);
+	AJCNEW0(Ctype->LEfuzzy,nlocs);
+	AJCNEW0(Ctype->LStrand,nlocs);
     }
 
     return Ctype;
@@ -135,6 +148,7 @@ void ajCorbatypeDel(AjPCorbatype *thys)
     AjPCorbatype pthis=NULL;
     int ntags;
     int nval;
+    
     int i;
     int j;
     
@@ -157,6 +171,17 @@ void ajCorbatypeDel(AjPCorbatype *thys)
 	AJFREE(pthis->Tag);
 	AJFREE(pthis->Val);
 	AJFREE(pthis->Nval);
+    }
+
+    if(pthis->Nlocs)
+    {
+	AJFREE(pthis->LSpos);
+	AJFREE(pthis->LSex);
+	AJFREE(pthis->LSfuzzy);
+	AJFREE(pthis->LEpos);
+	AJFREE(pthis->LEex);
+	AJFREE(pthis->LEfuzzy);
+	AJFREE(pthis->LStrand);
     }
     
     ajStrDel(&pthis->Name);
@@ -270,6 +295,8 @@ AjPStr ajSeqCorbaEmbl(char *code, char **exerr, int *exint, AjPCorbafeat *feat,
     org_biocorba_seqcore_NameValueSetList *Efptr;
     org_biocorba_seqcore_NameValueSet     *Eqptr;
     org_biocorba_seqcore_StringList       Esl;
+    org_biocorba_seqcore_SeqFeatureLocationList *Ell;
+    org_biocorba_seqcore_SeqFeatureLocation *Esfl;
     
     int i;
     int j;
@@ -277,7 +304,7 @@ AjPStr ajSeqCorbaEmbl(char *code, char **exerr, int *exint, AjPCorbafeat *feat,
     unsigned long qlen;
     int fcnt  = 0;
     int ntags = 0;
-    
+    int nlocs = 0;
     
     
 
@@ -458,7 +485,6 @@ AjPStr ajSeqCorbaEmbl(char *code, char **exerr, int *exint, AjPCorbafeat *feat,
 	}
 
 	*feat = ajCorbafeatNew(Enfeat);
-    
 
 	Cseqfeatiter =
 	    org_biocorba_seqcore_SeqFeatureVector_iterator(Cseqfeatvec,&Cenv);
@@ -500,6 +526,19 @@ AjPStr ajSeqCorbaEmbl(char *code, char **exerr, int *exint, AjPCorbafeat *feat,
 		return NULL;
 	    }
 
+	    Ell = org_biocorba_seqcore_SeqFeature_locations(Cseqfeat,&Cenv);
+	    if(Cenv._major != CORBA_NO_EXCEPTION)
+	    {
+		*exerr  = "Feature Locations list";
+		*exint  = Cenv._major;
+		return NULL;
+	    }
+
+	    nlocs = Ell->_length;
+	    Esfl  = Ell->_buffer;
+	    
+
+
 	    Efptr = org_biocorba_seqcore_SeqFeature_qualifiers(Cseqfeat,
 							       &Cenv);
 	    if(Cenv._major != CORBA_NO_EXCEPTION)
@@ -510,7 +549,20 @@ AjPStr ajSeqCorbaEmbl(char *code, char **exerr, int *exint, AjPCorbafeat *feat,
 	    }
 
 	    ntags = Efptr->_length;
-	    (*feat)->Types[fcnt] = ajCorbatypeNew(ntags);
+	    (*feat)->Types[fcnt] = ajCorbatypeNew(ntags,nlocs);
+
+	    for(i=0;i<nlocs;++i)
+	    {
+		(*feat)->Types[fcnt]->LStrand[i] = Esfl->strand;
+		(*feat)->Types[fcnt]->LSpos[i]   = Esfl->start.position;
+		(*feat)->Types[fcnt]->LEpos[i]   = Esfl->end.position;
+		(*feat)->Types[fcnt]->LSex[i]    = Esfl->start.extension;
+		(*feat)->Types[fcnt]->LEex[i]    = Esfl->end.extension;
+		(*feat)->Types[fcnt]->LSfuzzy[i] = Esfl->start.fuzzy;
+		(*feat)->Types[fcnt]->LEfuzzy[i] = Esfl->end.fuzzy;
+	    }
+	    
+
 	
 
 	    /* Get Top-level feature information */
@@ -590,6 +642,7 @@ AjPStr ajSeqCorbaEmbl(char *code, char **exerr, int *exint, AjPCorbafeat *feat,
 
 
 	    /* Clean up the feature object */
+	    CORBA_free(Ell);
 	    CORBA_free(Efptr);
 	    CORBA_free(Eftype);
 	    CORBA_free(Efsource);

@@ -20,6 +20,14 @@ typedef struct AjSCorbatype
     AjPStr       *Tag;
     int          *Nval;
     AjPStr       **Val;
+    int          Nlocs;
+    int          *LSpos;
+    int	         *LSex;
+    int          *LSfuzzy;
+    int          *LEpos;
+    int          *LEex;
+    int          *LEfuzzy;
+    int          *LStrand;
     AjPStr       Seq;
 } AjOCorbatype,*AjPCorbatype;
 
@@ -33,7 +41,7 @@ typedef struct AjSCorbafeat
 void         ajCorbafeatDel(AjPCorbafeat *thys);
 void         ajCorbatypeDel(AjPCorbatype *thys);
 AjPCorbafeat ajCorbafeatNew(int ntypes);
-AjPCorbatype ajCorbatypeNew(int ntags);
+AjPCorbatype ajCorbatypeNew(int ntags, int nlocs);
 AjPStr       ajSeqCorbaEmbl(char *acc, char **exerr, int *exint,
 			    AjPCorbafeat *feat, AjBool dofeat);
 
