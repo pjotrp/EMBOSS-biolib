@@ -36,6 +36,7 @@ extern "C"
 #include "ajseqdb.h"
 #include "ajseqabi.h"
 #include "ajreport.h"
+#include "ajalign.h"
 #include "ajfmt.h"
 #include "ajmatrices.h"
 
