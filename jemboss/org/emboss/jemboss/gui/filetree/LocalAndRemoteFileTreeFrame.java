@@ -74,7 +74,7 @@ public class LocalAndRemoteFileTreeFrame extends JFrame
           treePane.setTopComponent(rtree);
           treePane.setBottomComponent(scrollTree);
           treePane.setDividerLocation(0.5);
-          Dimension pSize = new Dimension(240, 250);
+          Dimension pSize = new Dimension(210, 250);
           rtree.setPreferredSize(pSize);
           scrollTree.setPreferredSize(pSize);
           f.pack();
@@ -95,7 +95,7 @@ public class LocalAndRemoteFileTreeFrame extends JFrame
           treePane.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
           treePane.setRightComponent(rtree);
           treePane.setLeftComponent(scrollTree);
-          Dimension pSize = new Dimension(240, 250);
+          Dimension pSize = new Dimension(210, 250);
           rtree.setPreferredSize(pSize);
           scrollTree.setPreferredSize(pSize);
           f.pack();
@@ -126,7 +126,7 @@ public class LocalAndRemoteFileTreeFrame extends JFrame
       menuBar.add(rootSelect);
       setJMenuBar(menuBar);
       
-      Dimension pSize = new Dimension(250, 250);
+      Dimension pSize = new Dimension(210, 250);
       rtree.setPreferredSize(pSize);
       scrollTree.setPreferredSize(pSize);
       treePane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
