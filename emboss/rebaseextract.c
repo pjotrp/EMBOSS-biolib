@@ -605,6 +605,14 @@ static void rebex_printSuppHeader(AjPFile outf)
 }
 
 
+/* @funcstatic rebex_write_equ ******************************************
+**
+** Work out prototypes and write from codes and first isoschizomer entry
+**
+** @param [r] ptable [AjPFile] table of code/isoschizomer pairs
+** @param [w] oute [AjPFile] emboss.equ output file
+** @@
+******************************************************************************/
 
 static void rebex_write_equ(AjPTable ptable, AjPFile oute)
 {
