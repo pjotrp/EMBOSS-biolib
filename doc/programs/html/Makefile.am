@@ -80,7 +80,7 @@ pkgdata2_DATA = isochore.html kitsch.html lindna.html listor.html \
                stssearch.html supermatcher.html syco.html textsearch.html \
                tfextract.html tfm.html tfscan.html tmap.html topo.html \
                tranalign.html transeq.html trimest.html trimseq.html \
-               union.html utils_database_creation_group.html \
+               twofeat.html union.html utils_database_creation_group.html \
                utils_database_indexing_group.html utils_misc_group.html \
                vectorstrip.html water.html whichdb.html wobble.html \
                wordcount.html wordmatch.html wossname.html yank.html \
