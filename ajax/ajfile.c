@@ -2578,7 +2578,6 @@ void ajFileBuffStripHtml (const AjPFileBuff thys) {
     }
     ajRegSubI(hexexp, 1, &hexstr);
     ajStrToHex(hexstr, &chunkSize);
-    ajUser("Chunk size: %x %d", chunkSize, chunkSize);
     ajStrDel(&chlist->Line);
     plist = chlist = thys->Lines = thys->Curr = chlist->Next;
     chlast = NULL;
@@ -2588,16 +2587,12 @@ void ajFileBuffStripHtml (const AjPFileBuff thys) {
       /* process the chunk */
       ichunk += ajStrLen(chlist->Line);
       if (ichunk >= chunkSize) {
-	ajUser("ichunk %d chunkSize %d", ichunk, chunkSize);
 	if (ichunk == chunkSize) {
 	  ajStrAssC(&saveLine, "");
 	  chlast = chlist;
 	  chlist = chlist->Next;
 	}
 	else {
-	  ajUser("ajStrSub len %d %d..%d",
-		 ajStrLen(chlist->Line),
-			  -(ichunk-chunkSize), -1);
 	  ajStrAssSub(&saveLine, chlist->Line, 0, -(ichunk-chunkSize));
 	  ajStrSub(&chlist->Line, -(ichunk-chunkSize), -1);
 	  ajDebug("join saveLine %d '%S' chlist->Line %d '%S'\n",
@@ -2618,7 +2613,6 @@ void ajFileBuffStripHtml (const AjPFileBuff thys) {
 	}
 	ajRegSubI(hexexp, 1, &hexstr);
 	ajStrToHex(hexstr, &chunkSize);
-	ajUser("Chunk size: %x %d", chunkSize, chunkSize);
 	ichunk = 0;
 	ajDebug ("## %4x %S", ichunk, chlist->Line);
       }
