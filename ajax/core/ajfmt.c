@@ -1728,46 +1728,58 @@ void ajFmtPrintSplit(AjPFile outf, AjPStr str, char *prefix, ajint len,
     AjPStrTok handle=NULL;
     AjPStr token = NULL;
     AjPStr tmp   = NULL;
+    AjPStr tmp2  = NULL;
+
     ajint    n = 0;
     ajint    l = 0;
     ajint    c = 0;
-    
+
     token = ajStrNew();
     tmp   = ajStrNewC("");
-    
+    tmp2  = ajStrNew();
 
     handle = ajStrTokenInit(str,delim);
-    
+
     while(ajStrToken(&token,&handle,NULL))
     {
 	if(!c)
 	    ajFmtPrintF(outf,"%s",prefix);
-	
+
 	if((l=n+ajStrLen(token)) < len)
 	{
 	    if(c++)
 		ajStrAppC(&tmp," ");
 	    ajStrApp(&tmp,token);
-	    n = ++l;
+	    if(c!=1)
+		n = ++l;
+	    else
+		n = l;
 	}
 	else
 	{
 	    ajFmtPrintF(outf,"%S\n",tmp);
 	    ajStrAssS(&tmp,token);
 	    ajStrAppC(&tmp," ");
-	    n = ajStrLen(token);
+	    n = ajStrLen(token) + 1;
 	    c = 0;
 	}
     }
 
     if(c)
 	ajFmtPrintF(outf,"%S\n",tmp);
+    else
+    {
+	n = ajStrLen(tmp);
+	ajStrAssSub(&tmp2,tmp,0,n-2);
+	ajFmtPrintF(outf,"%s%S\n",prefix,tmp2);
+    }
 
 
     ajStrTokenClear(&handle);
     ajStrDel(&token);
     ajStrDel(&tmp);
-    
+    ajStrDel(&tmp2);
+
     return;
 }
 
