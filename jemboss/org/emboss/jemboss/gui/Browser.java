@@ -393,7 +393,7 @@ public class Browser extends JFrame
         {
 	  try
           {
-	    inURL = new URL("http://www.rfcgr.mrc.ac.uk/Software/EMBOSS/Jemboss/guide.html");
+	    inURL = new URL("http://emboss.sourceforge.net/Jemboss/guide.html");
 	  }
 	  catch(MalformedURLException me){}
 	}
@@ -500,7 +500,7 @@ public class Browser extends JFrame
     {
       try
       {
-        url = new URL("http://www.rfcgr.mrc.ac.uk/Software/EMBOSS/Jemboss/");
+        url = new URL("http://emboss.sourceforge.net/Jemboss/");
       }
       catch(MalformedURLException me){}
     }
