@@ -15633,6 +15633,60 @@ FP /^Length\t\t279\n/
 FP /^Max_score\t1572.10\n/
 //
 
+ID rocplot-ex
+AB domainatrix
+AA rocplot
+CC No special requirements.
+IN ../../data/structure/rocplot/
+IN 2
+IN 2
+IN 1
+IN
+IN _rocplot
+IN _summary 
+IN _classplot
+FI _rocplot       
+FC > 0
+FP 1 GNUPLOT
+FZ > 0
+FI _rocplot_dat0
+FC > 0
+FP 1 GNUPLOT
+FZ > 0
+FI _classplot      
+FC > 0
+FP 1 GNUPLOT
+FZ > 0
+FI _classplot_dat0 
+FC > 0
+FP 1 GNUPLOT
+FZ > 0
+FI _classplot_dat1 
+FC > 0
+FP 1 GNUPLOT
+FZ > 0
+FI _classplot_dat2 
+FC > 0
+FP 1 GNUPLOT
+FZ > 0
+FI _classplot_dat3 
+FC > 0
+FP 1 GNUPLOT
+FZ > 0
+FI _classplot_dat4 
+FC > 0
+FP 1 GNUPLOT
+FZ > 0
+FI _summary
+FC > 0
+FP 1 rocplot
+FZ > 0
+FI  rocplot.errors
+FC > 0
+FP 1 MODE
+FZ > 0
+//
+
 ID scopalign-ex
 AB domainatrix
 AA scopalign
