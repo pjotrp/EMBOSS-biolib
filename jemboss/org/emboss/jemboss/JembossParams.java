@@ -226,11 +226,12 @@ public class JembossParams
 
     // set up for overrides
     javaNoProxyEntries = new Vector();
-    if (System.getProperty("proxyPort") != null) 
+    if(System.getProperty("proxyPort") != null) 
     {
-      if (System.getProperty("proxyHost") != null)
+      if(System.getProperty("proxyHost") != null)
       {
 	useJavaProxy = true;
+        useProxy = useJavaProxy;
 	javaProxyPort = System.getProperty("proxyPort");
 	javaProxyPortNum = Integer.parseInt(javaProxyPort);
 	javaProxyHost = System.getProperty("proxyHost");
@@ -326,7 +327,7 @@ public class JembossParams
       currentMode = jembossSettings.getProperty(currentModeName);
       serverPublicList = jembossSettings.getProperty(serverPublicListName);
       serverPrivateList = jembossSettings.getProperty(serverPrivateListName);
-      serviceUserName = jembossSettings.getProperty(serviceUserNameName);
+//    serviceUserName = jembossSettings.getProperty(serviceUserNameName);
     } 
     catch (Exception e) {  }
   }
@@ -410,8 +411,8 @@ public class JembossParams
 	if (useJavaNoProxy) 
         {
 	  int ip = javaNoProxyEntries.size();
-	  for (int j = 0 ; j<ip ; ++j) 
-	    if (s.indexOf((String)javaNoProxyEntries.get(j).toString()) != -1) 
+	  for(int j = 0 ; j<ip ; ++j) 
+	    if(s.indexOf((String)javaNoProxyEntries.get(j).toString()) != -1) 
 	      jp = false;
 	}
 	return jp;
@@ -498,7 +499,8 @@ public class JembossParams
       if(useProxy)
       {
 	String spnum = new Integer(proxyPortNum).toString();
-	pdesc = "Current Settings:\n" + "Proxy Host: " + proxyHost + "\nProxy Port: " + spnum;
+	pdesc = "Current Settings: " + "Proxy Host: " + proxyHost + 
+                                           " Proxy Port: " + spnum;
       } 
       else 
 	pdesc = "No proxies, connecting direct.";
@@ -507,8 +509,8 @@ public class JembossParams
     {
       if (useJavaProxy) 
       {
-	pdesc = "Settings Imported from Java:\n" + "Proxy Host: " + javaProxyHost
-	        + "\nProxy Port: " + javaProxyPort;
+	pdesc = "Settings Imported from Java: " + "Proxy Host: " + javaProxyHost
+	                                      + " Proxy Port: " + javaProxyPort;
 	if(useJavaNoProxy) 
 	  pdesc = pdesc + "\nNo Proxy On: " + javaNoProxy;
       } 
@@ -517,7 +519,8 @@ public class JembossParams
 	if(useProxy) 
         {
 	  String spnum = new Integer(proxyPortNum).toString();
-	  pdesc = "Current Settings:\n" + "Proxy Host: " + proxyHost + "\nProxy Port: " + spnum;
+	  pdesc = "Current Settings: " + "Proxy Host: " + proxyHost + 
+                                             " Proxy Port: " + spnum;
 	} 
         else 
 	  pdesc = "No proxies, connecting direct.";
