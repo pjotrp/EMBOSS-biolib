@@ -69,8 +69,8 @@ public class AdvancedOptions extends JPanel
     jobMgr = new JComboBox(time);
     jobMgr.setSelectedIndex(2);
     int hgt = (new Double(jobMgr.getPreferredSize().getHeight())).intValue();
-    jobMgr.setPreferredSize(new Dimension(100,hgt));
-    jobMgr.setMaximumSize(new Dimension(100,hgt));
+    jobMgr.setPreferredSize(new Dimension(70,hgt));
+    jobMgr.setMaximumSize(new Dimension(70,hgt));
     bleft =  Box.createHorizontalBox();
     bleft.add(jobMgr);
     JLabel ljobMgr = new JLabel(" Job Manager update frequency");
