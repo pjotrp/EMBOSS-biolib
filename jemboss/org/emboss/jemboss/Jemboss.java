@@ -131,11 +131,20 @@ public class Jemboss implements ActionListener
     }
 
     f = new JFrame("Jemboss");
+
+    // set the working dir
+    if(!withSoap)
+      mysettings.setUserHome(System.getProperty("user.dir"));
+
     // make the local file manager
     tree = new DragTree(new File(mysettings.getUserHome()),
                         f, mysettings);
 
-    scrollTree = new JScrollPane(tree);
+    JPanel filePanel = new JPanel(new BorderLayout());
+    filePanel.add(new LocalTreeToolBar(mysettings),
+                  BorderLayout.NORTH);
+    filePanel.add(tree,BorderLayout.CENTER);
+    scrollTree = new JScrollPane(filePanel);
 
     JPanel p1 = new JPanel(new BorderLayout());         // menu panel
     ScrollPanel p2 = new ScrollPanel(new GridLayout()); // emboss form pain
