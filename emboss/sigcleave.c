@@ -32,7 +32,7 @@
 #define EUKFILE "Esig.euk"
 #define PROFILE "Esig.pro"
 
-ajint readSig(AjPFloat2d *matrix,AjBool prokaryote);
+static ajint sigcleave_readSig(AjPFloat2d *matrix,AjBool prokaryote);
 
 
 
@@ -107,7 +107,7 @@ int main(int argc, char **argv)
     sstr   = ajStrNew();
 
     
-    readSig(&matrix,prokaryote);
+    sigcleave_readSig(&matrix,prokaryote);
 
 
     while(ajSeqallNext(seqall, &seq))
@@ -249,18 +249,18 @@ int main(int argc, char **argv)
 
 
 
-/* @func readSig **************************************************************
+/* @funcstatic sigcleave_readSig *********************************************
 **
-** Undocumented.
+** Read signal peptide data file
 **
-** @param [?] matrix [AjPFloat2d*] Undocumented
-** @param [?] prokaryote [AjBool] Undocumented
+** @param [w] matrix [AjPFloat2d*] data file information
+** @param [r] prokaryote [AjBool] use prokaryotic data file
 ** @return [ajint] Undocumented
 ** @@
 ******************************************************************************/
 
 
-ajint readSig(AjPFloat2d *matrix,AjBool prokaryote)
+static ajint sigcleave_readSig(AjPFloat2d *matrix,AjBool prokaryote)
 {
     AjPFile mfptr=NULL;
     AjPStr  line=NULL;
