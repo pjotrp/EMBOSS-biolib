@@ -46,6 +46,9 @@ bool: allpartials  [
   help: "As for overlap but fragments containing more than one potential cut site are included."
 ]
 
-outfile: outfile  [
+report: outfile  [
   parameter: "Y"
+  rformat: "seqtable"
+  multiple: "Y"
+  taglist: "float:molwt=Mol_Weight str:cterm str:nterm"
 ]
