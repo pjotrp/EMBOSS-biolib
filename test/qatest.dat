@@ -5060,6 +5060,505 @@ FP /^FT   CDS             57\.\.458\n/
 FP /^\/\/\Z/
 //
 
+ID entret-inauto-acedb
+AP entret
+CL -auto ../../data/dna.acedb test.out
+FI test.out
+FZ = 117
+FC = 4
+FP /DNA : "ACEDB"\n/
+FP /GTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGT/
+//
+
+ID entret-in-acedb
+AP entret
+CL -auto ../../data/dna.acedb -sf acedb test.out
+FI test.out
+FZ = 117
+FC = 4
+FP /DNA : "ACEDB"\n/
+FP /GTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGT/
+//
+
+ID entret-inauto-codata
+AP entret
+CL -auto ../../data/dna.codata test.out
+FI test.out
+FC = 10
+FP /^ENTRY           CODATA *\n/
+FP /^     91 G T A C G T A C G T\n/
+//
+
+ID entret-in-codata
+AP entret
+CL -auto ../../data/dna.codata -sf codata test.out
+FI test.out
+FZ = 423
+FC = 10
+FP /^ENTRY           CODATA *\n/
+FP /^     91 G T A C G T A C G T\n/
+//
+
+ID entret-inauto-embl
+AP entret
+CL -auto ../../data/dna.embl test.out
+FI test.out
+FZ = 487
+FC = 18
+FP /^ID   EMBL       standard; DNA; UNC; 100 BP.\n/
+FP /^     acgtacgtac gtacgtacgt acgtacgtac gtacgtacgt +100\n/
+//
+
+ID entret-in-embl
+AP entret
+CL -auto ../../data/dna.embl -sf embl test.out
+FI test.out
+FZ = 487
+FC = 18
+FP /^ID   EMBL       standard; DNA; UNC; 100 BP.\n/
+FP /^     acgtacgtac gtacgtacgt acgtacgtac gtacgtacgt +100\n/
+//
+
+ID entret-inauto-fasta
+AP entret
+CL -auto ../../data/dna.fasta test.out
+FI test.out
+FZ = 143
+FC = 4
+FP /^>FASTA F10002 FASTA FORMAT DNA SEQUENCE\n/
+FP /^ACGTACGTACGTACGTACGT\n/
+//
+
+ID entret-in-fasta
+AP entret
+CL -auto ../../data/dna.fasta -sf fasta test.out
+FI test.out
+FZ = 143
+FC = 4
+FP /^>FASTA F10002 FASTA FORMAT DNA SEQUENCE\n/
+FP /^ACGTACGTACGTACGTACGT\n/
+//
+
+ID entret-inauto-gcg
+AP entret
+CL -auto ../../data/dna.gcg test.out
+FI test.out
+FZ = 208
+FC = 9
+FP /^GCG  Length: 100  Type: N  Check: 6856 ..\n/
+FP /^  51 GTACGTACGT ACGTACGTAC GTACGTACGT ACGTACGTAC GTACGTACGT\n/
+//
+
+ID entret-in-gcg
+AP entret
+CL -auto ../../data/dna.gcg -sf gcg test.out
+FI test.out
+FZ = 208
+FC = 9
+FP /^GCG  Length: 100  Type: N  Check: 6856 ..\n/
+FP /^  51 GTACGTACGT ACGTACGTAC GTACGTACGT ACGTACGTAC GTACGTACGT\n/
+//
+
+ID entret-inauto-gcg8
+AP entret
+CL -auto ../../data/dna.gcg8 test.out
+FI test.out
+FZ = 182
+FC = 7
+FP /^GCG8  Length: 100  Check: 6856 ..\n/
+FP /^  51 GTACGTACGT ACGTACGTAC GTACGTACGT ACGTACGTAC GTACGTACGT\n/
+//
+
+ID entret-in-gcg8
+AP entret
+CL -auto ../../data/dna.gcg8 -sf gcg8 test.out
+FI test.out
+FZ = 182
+FC = 7
+FP /^GCG8  Length: 100  Check: 6856 ..\n/
+FP /^  51 GTACGTACGT ACGTACGTAC GTACGTACGT ACGTACGTAC GTACGTACGT\n/
+//
+
+ID entret-inauto-genbank
+AP entret
+CL -auto ../../data/dna.genbank test.out
+FI test.out
+FZ = 268
+FC = 8
+FP /^LOCUS       GENBANK\n/
+FP /^      61  ACGTACGTAC GTACGTACGT ACGTACGTAC GTACGTACGT\n/
+//
+
+ID entret-in-genbank
+AP entret
+CL -auto ../../data/dna.genbank -sf genbank test.out
+FI test.out
+FZ = 268
+FC = 8
+FP /^LOCUS       GENBANK\n/
+FP /^      61  ACGTACGTAC GTACGTACGT ACGTACGTAC GTACGTACGT\n/
+//
+
+ID entret-in-ig
+AP entret
+CL -auto ../../data/dna.ig -sf ig test.out
+FI test.out
+FZ = 141
+FC = 4
+FP /^;IG FORMAT DNA SEQUENCE, 100 bases\n/
+FP /^GTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGT1\n/
+//
+
+ID entret-inauto-ncbi
+AP entret
+CL -auto ../../data/dna.ncbi test.out
+FI test.out
+FZ = 145
+FC = 4
+FP /^>gnl\|N10002\|NCBI NCBI FORMAT DNA SEQUENCE\n/
+FP /^ACGTACGTACGTACGTACGT\n/
+//
+
+ID entret-in-ncbi
+AP entret
+CL -auto ../../data/dna.ncbi -sf ncbi test.out
+FI test.out
+FZ = 145
+FC = 4
+FP /^>gnl\|N10002\|NCBI NCBI FORMAT DNA SEQUENCE\n/
+FP /^ACGTACGTACGTACGTACGT\n/
+//
+
+ID entret-inauto-nbrf
+AP entret
+CL -auto ../../data/prot.nbrf test.out
+FI test.out
+FZ = 132
+FC = 6
+FP /^>P1;pir\n/
+FP /^ ABCDEFGHIK LMNPQRSTVW XYZACGTU.-\n/
+//
+
+ID entret-in-nbrf
+AP entret
+CL -auto ../../data/prot.nbrf -sf nbrf test.out
+FI test.out
+FZ = 132
+FC = 6
+FP /^>P1;pir\n/
+FP /^ ABCDEFGHIK LMNPQRSTVW XYZACGTU.-\n/
+//
+
+ID entret-inauto-raw
+AP entret
+CL -auto ../../data/dna.text test.out
+FI test.out
+FZ = 102
+FC = 2
+FP /^ACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTAC\n/
+FP /^GTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGT\n/
+//
+
+ID entret-in-raw
+AP entret
+CL -auto ../../data/dna.text -sf raw test.out
+FI test.out
+FZ = 102
+FC = 2
+FP /^ACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTAC\n/
+FP /^GTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGT\n/
+//
+
+ID entret-inauto-staden
+AP entret
+CL -auto ../../data/dna.staden test.out
+FI test.out
+FZ = 102
+FC = 2
+FP /^ACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTAC\n/
+FP /^GTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGT\n/
+//
+
+ID entret-in-staden
+AP entret
+CL -auto ../../data/dna.staden -sf staden test.out
+FI test.out
+FZ = 102
+FC = 2
+FP /^ACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTAC\n/
+FP /^GTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGT\n/
+//
+
+ID entret-inauto-strider
+AP entret
+CL -auto ../../data/dna.strider test.out
+FI test.out
+FZ = 168
+FC = 6
+FP /^; DNA sequence STRIDER, 100 bases\n/
+FP /^GTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGT\n/
+//
+
+ID entret-in-strider
+AP entret
+CL -auto ../../data/dna.strider -sf strider test.out
+FI test.out
+FZ = 168
+FC = 6
+FP /^; DNA sequence STRIDER, 100 bases\n/
+FP /^GTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGT\n/
+//
+
+ID entret-inauto-text
+AP entret
+CL -auto ../../data/dna.text test.out
+FI test.out
+FZ = 102
+FC = 2
+FP /^ACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTAC\n/
+FP /^GTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGT\n/
+//
+
+ID entret-in-text
+AP entret
+CL -auto ../../data/dna.text -sf text test.out
+FI test.out
+FZ = 102
+FC = 2
+FP /^ACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTAC\n/
+FP /^GTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGT\n/
+//
+
+ID entret-inauto-abi
+AP entret
+CC Fails ... ABI reading functions use raw file pointer not the buffer
+CL -auto ../../data/abiview.abi test.out
+FI test.out
+FZ = 152547
+//
+
+ID entret-inauto-selex
+AP entret
+CL -auto ../../data/test.selex test.out
+FI test.out
+FZ = 610
+FC = 20
+FP /^#=ID r17\n/
+FP /^lig2  AUGGAUGCGCACC AUCA GGGCGUAUCUAU\n/
+//
+
+ID entret-in-selex
+AP entret
+CL -auto ../../data/test.selex -sf selex test.out
+FI test.out
+FZ = 610
+FC = 20
+FP /^#=ID r17\n/
+FP /^lig2  AUGGAUGCGCACC AUCA GGGCGUAUCUAU\n/
+//
+
+ID entret-inmultiauto-acedb
+AP entret
+CL -auto ../../data/dna.m-acedb test.out
+FI test.out
+FZ = 420
+FC = 15
+FP /^DNA : "ACEDBM1"\n/
+FP /^ACGTACGTACGTACGTACGT\n/
+//
+
+ID entret-inmulti-acedb
+AP entret
+CL -auto ../../data/dna.m-acedb -sf acedb test.out
+FI test.out
+FZ = 420
+FC = 15
+FP /^DNA : "ACEDBM1"\n/
+FP /^ACGTACGTACGTACGTACGT\n/
+//
+
+ID entret-inmultiauto-codata
+AP entret
+CL -auto ../../data/dna.m-codata test.out
+FI test.out
+FZ = 1416
+FC = 30
+FP /^ENTRY           CODATAM1 +\n/
+FP /^     91 G T A C G T A C G T A C G T A C G T A C G T A C G T A C G T\n/
+//
+
+ID entret-inmulti-codata
+AP entret
+CL -auto ../../data/dna.m-codata -sf codata test.out
+FI test.out
+FZ = 1416
+FC = 30
+FP /^ENTRY           CODATAM1 +\n/
+FP /^     91 G T A C G T A C G T A C G T A C G T A C G T A C G T A C G T\n/
+//
+
+ID entret-inmultiauto-embl
+AP entret
+CL -auto ../../data/dna.m-embl test.out
+FI test.out
+FZ = 945
+FC = 21
+FP 3 /^ID/
+FP /^ +CGTACGTACG TACGTACGTA ACGTACGTAC GTACGTACGT ACGTACGTAC GTACGTACGT +120\n/
+//
+
+ID entret-inmulti-embl
+AP entret
+CL -auto ../../data/dna.m-embl -sf embl test.out
+FI test.out
+FZ = 945
+FC = 21
+FP 3 /^ID/
+FP /^ +CGTACGTACG TACGTACGTA ACGTACGTAC GTACGTACGT ACGTACGTAC GTACGTACGT +120\n/
+//
+
+ID entret-inmultiauto-fasta
+AP entret
+CL -auto ../../data/dna.m-fasta test.out
+FI test.out
+FZ = 516
+FC = 12
+FP 3 /^>/
+FP /^CGTACGTACGTACGTACGTACGTACGTACGTACGTACGTA\n/
+//
+
+ID entret-inmulti-fasta
+AP entret
+CL -auto ../../data/dna.m-fasta -sf fasta test.out
+FI test.out
+FZ = 516
+FC = 12
+FP 3 /^>/
+FP /^CGTACGTACGTACGTACGTACGTACGTACGTACGTACGTA\n/
+//
+
+ID entret-inmultiauto-msf
+AP entret
+CL -auto ../../data/dna.msf test.out
+FI test.out
+FZ = 820
+FC = 22
+FP 3 /^ Name: MSF/
+FP /^        MSFM3  ACGTACGTAC GTACGTACGT\n/
+//
+
+ID entret-inmulti-msf
+AP entret
+CL -auto ../../data/dna.msf -sf msf test.out
+FI test.out
+FZ = 820
+FC = 22
+FP 3 /^ Name: MSF/
+FP /^        MSFM3  ACGTACGTAC GTACGTACGT\n/
+//
+
+ID entret-inmultiauto-msf8
+AP entret
+CL -auto ../../data/dna.msf8 test.out
+FI test.out
+FZ = 1084
+FC = 30
+FP 3 /^ Name: fastam/
+FP /^fastam3  TACGTACGTA CGTACGTACG T\n/
+//
+
+ID entret-inmulti-msf8
+AP entret
+CL -auto ../../data/dna.msf8 -sf msf test.out
+FI test.out
+FZ = 1084
+FC = 30
+FP 3 /^ Name: fastam/
+FP /^fastam3  TACGTACGTA CGTACGTACG T\n/
+//
+
+ID entret-inmultiauto-ncbi
+AP entret
+CL -auto ../../data/dna.m-ncbi test.out
+FI test.out
+FZ = 594
+FC = 12
+FP 3 /^>/
+FP /^GGTTAACCGGTTAACCGGTTAACCGGTTAACCGGTTAACCGGTTAACCGGTTAACCGGTT\n/
+//
+
+ID entret-inmulti-ncbi
+AP entret
+CL -auto ../../data/dna.m-ncbi -sf ncbi test.out
+FI test.out
+FZ = 594
+FC = 12
+FP 3 /^>/
+FP /^GGTTAACCGGTTAACCGGTTAACCGGTTAACCGGTTAACCGGTTAACCGGTTAACCGGTT\n/
+//
+
+ID entret-inmultiauto-phylip
+AP entret
+CL -auto ../../data/dna.phylip test.out
+FI test.out
+FZ = 495
+FC = 12
+FP 3 /^MSFM/
+FP /^          ACGTACGTTG CAACGTACGT\n/
+//
+
+ID entret-inmulti-phylip
+AP entret
+CL -auto ../../data/dna.phylip -sf phylip test.out
+FI test.out
+FZ = 495
+FC = 12
+FP 3 /^MSFM/
+FP /^          ACGTACGTTG CAACGTACGT\n/
+//
+
+ID entret-inmultiauto-strider
+AP entret
+CL -auto ../../data/dna.m-strider test.out
+FI test.out
+FZ = 648
+FC = 21
+FP 3 /^; DNA sequence  STRIDERM/
+FP /^GGTTAACCGGTTAACCGGTTAACCGGTTAACCGGTTAACCGGTT\n/
+//
+
+ID entret-inmulti-strider
+AP entret
+CL -auto ../../data/dna.m-strider -sf strider test.out
+FI test.out
+FZ = 648
+FC = 21
+FP 3 /^; DNA sequence  STRIDERM/
+FP /^GGTTAACCGGTTAACCGGTTAACCGGTTAACCGGTTAACCGGTT\n/
+//
+
+ID entret-inauto-nonewline
+AP entret
+CL -auto ../../data/dna.nonewline test.out
+FI test.out
+FZ = 50
+FC = 2
+FP /^>\n/
+FP /^aaaaccccggggttttaaaaccccggggttttaaccggttshshshsh$/
+//
+
+ID entret-inauto-empty
+AP entret
+CL -auto stdin test.out
+ER 1
+FI stderr
+FZ = 109
+FP /Error: Unable to read sequence 'stdin'/
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 1 /Died: /
+//
+
 ID eprimer3-ex
 AP eprimer3
 CL tembl:hsfau1 hsfau.eprimer3 -explain
