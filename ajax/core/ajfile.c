@@ -718,6 +718,7 @@ void ajFileDataNew(const AjPStr tfile, AjPFile *fnew)
     ajStrDelReuse(&bname);
     ajStrDelReuse(&fname);
 
+    ajDebug ("ajFileDataNew failed to find '%S'\n", fname);
     *fnew = NULL;
 
     return;

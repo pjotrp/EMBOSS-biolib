@@ -181,8 +181,8 @@ static void grpGetAcdDirs (AjPList glist, AjPList alpha, char **env,
 /* go through all the directories in this directory */
   if ((dirp = opendir(ajStrStr(acddir))) == NULL)
   {   /* open our directory */
-    /*    ajDie("You do not have read permission on the directory '%S'",
-	  acddir); */
+    /*    ajFatal ("You do not have read permission on the directory '%S'",
+	            acddir); */
     return;			/* could be no embassy installed */
   }
 
@@ -240,7 +240,7 @@ static void grpGetAcdFiles (AjPList glist, AjPList alpha, char **env,
 
 /* go through all the files in this directory */
   if ((dirp = opendir(ajStrStr(acddir))) == NULL) {   /* open our directory */
-    ajDie("You do not have read permission on the directory '%S'", acddir);
+    ajFatal ("You do not have read permission on the directory '%S'", acddir);
   }
 
   for (dp = readdir(dirp); dp != NULL; dp = readdir(dirp)) {

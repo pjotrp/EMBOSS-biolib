@@ -3187,8 +3187,8 @@ static AjBool acdUserGetPrompt (char* prompt, AjPStr* reply)
 
 static void acdBadRetry (AcdPAcd thys)
 {
-    ajDie ("%S terminated: Bad value for '-%S' and no more retries\n",
-	   acdProgram, thys->Name);
+    ajFatal ("%S terminated: Bad value for '-%S' and no more retries\n",
+	     acdProgram, thys->Name);
 }
 
 /* @funcstatic acdBadVal ******************************************************
@@ -3226,12 +3226,12 @@ static void acdBadVal (AcdPAcd thys, AjBool required, char *fmt, ...)
     va_end (args) ;
 
     if (!required)
-	ajDie ("%S terminated: Bad value for option [%S] and no prompt\n",
-	       acdProgram,name);
+	ajFatal ("%S terminated: Bad value for option [%S] and no prompt\n",
+		 acdProgram,name);
 
     if (acdAuto)
-	ajDie ("%S terminated: Bad value with -auto defined.\n",
-	       acdProgram);
+	ajFatal ("%S terminated: Bad value with -auto defined.\n",
+		 acdProgram);
 
     return;
 }
