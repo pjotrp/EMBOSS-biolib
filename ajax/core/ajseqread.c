@@ -6240,6 +6240,7 @@ AjBool ajSeqQueryWild (AjPSeqQuery qry)
 	ajDebug("wild query Id '%S'\n", qry->Id);
 	return ajTrue;
     }
+
     if (ajStrLen(qry->Acc))
     {
         if (!ajStrLen(qry->Id))
@@ -6253,21 +6254,25 @@ AjBool ajSeqQueryWild (AjPSeqQuery qry)
 	    return ajTrue;
 	}
     }
+
     if (ajStrLen(qry->Sv))
     {
-	ajDebug("wild query Sv '%S'\n", qry->Sv);
+	ajDebug("wild (has) query Sv '%S'\n", qry->Sv);
 	return ajTrue;
     }
+
     if (ajStrLen(qry->Des))
     {
 	ajDebug("wild (has) query Des '%S'\n", qry->Des);
 	return ajTrue;
     }
+
     if (ajStrLen(qry->Org))
     {
 	ajDebug("wild (has) query Org '%S'\n", qry->Org);
 	return ajTrue;
     }
+
     if (ajStrLen(qry->Key))
     {
 	ajDebug("wild (has) query Key '%S'\n", qry->Key);
