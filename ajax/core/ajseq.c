@@ -3126,8 +3126,11 @@ AjPStr ajIsSeqversion(const AjPStr sv)
         ajStrAppK(&accnum, *cp);
 	cp++;
 
-	if(*cp == '_') cp++;		/* REFSEQ NM_nnnnnn */
-
+	if(*cp == '_')		/* REFSEQ NM_nnnnnn */
+	{
+	    ajStrAppK(&accnum, *cp);
+	    cp++;
+	}
 	while(*cp)		      /* optional trailing .version */
 	{
 	    if(isdigit((ajint)*cp) || *cp=='.')
