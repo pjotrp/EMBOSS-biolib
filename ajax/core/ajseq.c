@@ -1061,7 +1061,8 @@ void ajSeqClear (AjPSeq thys) {
   (void) ajStrClear (&thys->Entryname);
   (void) ajStrClear (&thys->TextPtr);
   (void) ajStrClear (&thys->Seq);
-  
+
+  ajFeattabDel(&thys->Fttable);
   return;
 }
 

@@ -334,8 +334,11 @@ static AjBool seqAccessEmblcd (AjPSeqin seqin)
     {
 	seqCdQryClose (qry);
 	/* AJB addition */
-	if(qry->Type == QRY_ENTRY && !seqin->multi)
+	if((qry->Type == QRY_ENTRY) && !seqin->multi)
 	{
+	  /* 
+	    if(seqin->Ftquery->Handle)
+	    ajFileBuffClear(seqin->Ftquery->Handle,0); */
 /*	    if(seqin->Ftquery->Handle)
 		ajFileBuffClear(seqin->Ftquery->Handle,0);*/
 	    AJFREE(qryd);

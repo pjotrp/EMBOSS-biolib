@@ -94,32 +94,32 @@ static SeqOOutFormat seqOutFormat[] = { /* AJFALSE = write one file */
   {"unknown",    AJFALSE, AJFALSE, seqWriteFasta}, /* internal default writes FASTA */
                                  /* set 'fasta' in ajSeqOutFormatDefault */
   {"gcg",        AJFALSE, AJFALSE, seqWriteGcg},
-  {"gcg8",       AJFALSE, AJFALSE, seqWriteGcg},
+  {"gcg8",       AJFALSE, AJFALSE, seqWriteGcg}, /* alias for gcg */
   {"embl",       AJFALSE, AJFALSE, seqWriteEmbl},
-  {"em",         AJFALSE, AJFALSE, seqWriteEmbl},
+  {"em",         AJFALSE, AJFALSE, seqWriteEmbl}, /* alias for embl */
   {"swiss",      AJFALSE, AJFALSE, seqWriteSwiss},
-  {"sw",         AJFALSE, AJFALSE, seqWriteSwiss},
+  {"sw",         AJFALSE, AJFALSE, seqWriteSwiss}, /* alias for swiss */
   {"fasta",      AJFALSE, AJFALSE, seqWriteFasta},
-  {"pearson",    AJFALSE, AJFALSE, seqWriteFasta}, /* Pearson = Fasta */
+  {"pearson",    AJFALSE, AJFALSE, seqWriteFasta}, /* alias for fasta */
   {"ncbi",       AJFALSE, AJFALSE, seqWriteNcbi},
   {"nbrf",       AJFALSE, AJFALSE, seqWriteNbrf},
-  {"pir",        AJFALSE, AJFALSE, seqWriteNbrf},
+  {"pir",        AJFALSE, AJFALSE, seqWriteNbrf}, /* alias for nbrf */
   {"genbank",    AJFALSE, AJFALSE, seqWriteGenbank},
-  {"gb",         AJFALSE, AJFALSE, seqWriteGenbank},
+  {"gb",         AJFALSE, AJFALSE, seqWriteGenbank}, /* alias for genbank */
   {"gff",        AJFALSE, AJFALSE, seqWriteGff},
   {"ig",         AJFALSE, AJFALSE, seqWriteIg},
   {"codata",     AJFALSE, AJFALSE, seqWriteCodata},
   {"strider",    AJFALSE, AJFALSE, seqWriteStrider},
   {"acedb",      AJFALSE, AJFALSE, seqWriteAcedb},
   {"experiment", AJFALSE, AJFALSE, seqWriteStaden},
-  {"staden",     AJFALSE, AJFALSE, seqWriteStaden},
+  {"staden",     AJFALSE, AJFALSE, seqWriteStaden}, /* alias for experiment */
   {"text",       AJFALSE, AJFALSE, seqWriteText},
-  {"plain",      AJFALSE, AJFALSE, seqWriteText},
-  {"raw",        AJFALSE, AJFALSE, seqWriteText},
+  {"plain",      AJFALSE, AJFALSE, seqWriteText}, /* alias for text */
+  {"raw",        AJFALSE, AJFALSE, seqWriteText}, /* alias for text output */
   {"fitch",      AJFALSE, AJFALSE, seqWriteFitch},
   {"msf",        AJFALSE, AJTRUE,  seqWriteMsf},
   {"clustal",    AJFALSE, AJTRUE,  seqWriteClustal},
-  {"aln",        AJFALSE, AJTRUE,  seqWriteClustal},
+  {"aln",        AJFALSE, AJTRUE,  seqWriteClustal}, /* alias for clustal */
   {"phylip",     AJFALSE, AJTRUE,  seqWritePhylip},
   {"phylip3",    AJFALSE, AJTRUE,  seqWritePhylip3},
   {"asn1",       AJFALSE, AJFALSE, seqWriteAsn1},
@@ -128,12 +128,12 @@ static SeqOOutFormat seqOutFormat[] = { /* AJFALSE = write one file */
   {"meganon",    AJFALSE, AJTRUE,  seqWriteMeganon},
   {"nexus",      AJFALSE, AJTRUE,  seqWriteNexus},
   {"nexusnon",   AJFALSE, AJTRUE,  seqWriteNexusnon},
-  {"paup",       AJFALSE, AJTRUE,  seqWriteNexus},
-  {"paupnon",    AJFALSE, AJTRUE,  seqWriteNexusnon},
+  {"paup",       AJFALSE, AJTRUE,  seqWriteNexus}, /* alias for nexus */
+  {"paupnon",    AJFALSE, AJTRUE,  seqWriteNexusnon}, /* alias for nexusnon */
   {"jackknifer", AJFALSE, AJTRUE,  seqWriteJackknifer},
   {"jackknifernon", AJFALSE, AJTRUE,  seqWriteJackknifernon},
   {"treecon",    AJFALSE, AJTRUE,  seqWriteTreecon},
-  {"debug",      AJFALSE, AJFALSE, seqWriteDebug},
+  {"debug",      AJFALSE, AJFALSE, seqWriteDebug}, /* trace report */
   {NULL, 0, 0, NULL} };
 
 
