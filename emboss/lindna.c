@@ -216,7 +216,7 @@ int main(int argc, char **argv)
     Ruler = ajAcdGetBool("ruler");
 
     /* get the type of blocks */
-    BlockType = ajAcdGetSelectI("blocktype", 1);
+    BlockType = ajAcdGetListI("blocktype", 1);
     /* get the type of junctions used to link blocks */
     InterSymbol = ajAcdGetSelectI("intersymbol",1);
     /* get the colour of junctions used to link blocks */

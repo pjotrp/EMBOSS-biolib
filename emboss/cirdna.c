@@ -228,7 +228,7 @@ int main(int argc, char **argv)
     Ruler = ajAcdGetBool("ruler");
 
     /* get the type of blocks */
-    BlockType = ajAcdGetSelectI("blocktype", 1);
+    BlockType = ajAcdGetListI("blocktype", 1);
 
     /* get the angle of the molecule's origin */
     OriginAngle = ajAcdGetFloat("originangle");
