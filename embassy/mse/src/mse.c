@@ -14,12 +14,13 @@
 **  October 1999   Now uses curses for Unix C (V3.0) (il@sanger.ac.uk)
 **
 *****************************************************************************/
+#include "ajax.h"
 #include <stdio.h>
 #include <ctype.h>
 #include <math.h>
 #include <string.h>
 #include "mse.h"         /* MSE global variables and definitions  */
-#include "ajax.h"
+
 
 /*FILE *debug;*/
 int DEFAULTFORMAT;

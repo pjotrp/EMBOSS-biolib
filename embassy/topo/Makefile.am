@@ -2,6 +2,8 @@
 
 SUBDIRS = source emboss_acd
 
+EXTRA_DIST = depcomp
+
 # tar to pick up the other directories
 # then remove any CVS subdirectories
 
