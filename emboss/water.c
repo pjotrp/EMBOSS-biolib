@@ -69,8 +69,9 @@ int main(int argc, char **argv)
     ajint begina;
     ajint beginb;
 
-    AjBool dosim=ajFalse;
+    AjBool dobrief=ajTrue;
     AjBool fasta=ajFalse;
+    AjPStr tmpstr=NULL;
 
     float id=0.;
     float sim=0.;
@@ -86,7 +87,7 @@ int main(int argc, char **argv)
     seqall    = ajAcdGetSeqall("seqall");
     gapopen   = ajAcdGetFloat("gapopen");
     gapextend = ajAcdGetFloat("gapextend");
-    dosim     = ajAcdGetBool("similarity");
+    dobrief   = ajAcdGetBool("brief");
     /* fasta     = ajAcdGetBool("fasta");*/
     align     = ajAcdGetAlign("outfile");
 
@@ -151,7 +152,7 @@ int main(int argc, char **argv)
 			     start2,score,1,sub,cvt,ajSeqName(a),
 			     ajSeqName(b),begina,beginb);
 
-	  if(dosim)
+	  if(!dobrief)
 	  {
 	    embAlignCalcSimilarity(m,n,sub,cvt,lena,lenb,&id,&sim,&idx,
 				   &simx);
@@ -184,6 +185,23 @@ int main(int argc, char **argv)
 			     start1, start2,
 			     gapopen, gapextend,
 			     score, matrix, begina, beginb);
+	if (!dobrief)
+	{
+	  embAlignCalcSimilarity(m,n,sub,cvt,lena,lenb,&id,&sim,&idx,
+				 &simx);
+	  ajFmtPrintAppS(&tmpstr,"Longest_Identity = %5.2f%%\n",
+			 id);
+	  ajFmtPrintAppS(&tmpstr,"Longest_Similarity = %5.2f%%\n",
+			 sim);
+	  ajFmtPrintAppS(&tmpstr,"Shortest_Identity = %5.2f%%\n",
+			 idx);
+	  ajFmtPrintAppS(&tmpstr,"Shortest_Similarity = %5.2f%%",
+			 simx);
+	  ajAlignSetSubHeaderApp(align, tmpstr);
+	}
+	ajAlignWrite (align);
+	ajAlignReset(align);
+
     }
 
     ajAlignClose(align);
@@ -198,6 +216,7 @@ int main(int argc, char **argv)
     ajStrDel(&n);
     ajStrDel(&m);
     ajStrDel(&ss);
+    ajStrDel(&tmpstr);
 
     ajExit();
     return 0;
