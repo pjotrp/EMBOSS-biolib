@@ -634,7 +634,12 @@ float embAlignScoreSWMatrix(float *path, int *compass, float gapopen,
 		    ajFatal("SW: Error walking left");
 		++gapcnt;
 	    }
-	    if(score<0.0) break;
+	    if(bimble<0.0)
+	    {
+		++ypos;
+		break;
+	    }
+	    
 	    t -= (int)gapcnt;
 
 	    wscore += sub[ajSeqCvtK(cvt,p[ypos])][ajSeqCvtK(cvt,q[t-1])];
@@ -671,7 +676,12 @@ float embAlignScoreSWMatrix(float *path, int *compass, float gapopen,
 		}
 		++gapcnt;
 	    }
-	    if(score<0.0) break;
+	    if(bimble<0.0)
+	    {
+		++xpos;
+		break;
+	    }
+	    
 	    t -= (int)gapcnt;
 
 	    wscore += sub[ajSeqCvtK(cvt,p[t-1])][ajSeqCvtK(cvt,q[xpos])];
@@ -792,7 +802,12 @@ void embAlignWalkSWMatrix(float *path, int *compass, float gapopen,
 		    ajFatal("SW: Error walking left");
 		++gapcnt;
 	    }
-	    if(score<0.0) break;
+	    if(bimble<0.0)
+	    {
+		++ypos;
+		break;
+	    }
+	    
 	    for(ic=-1;ic<gapcnt;++ic)
 	    {
 		(void) ajStrInsertC(m,0,dot);
@@ -825,7 +840,12 @@ void embAlignWalkSWMatrix(float *path, int *compass, float gapopen,
 		    ajFatal("SW: Error walking down");
 		++gapcnt;
 	    }
-	    if(score<0.0) break;
+	    if(bimble<0.0)
+	    {
+		++xpos;
+		break;
+	    }
+	    
 	    for(ic=-1;ic<gapcnt;++ic)
 	    {
 		(void) ajStrInsertC(n,0,dot);
