@@ -5,8 +5,8 @@
 **
 **
 ** @author: Copyright (C) Damian Counsell
-** @version $Revision: 1.1 $
-** @modified $Date: 2004/10/14 18:49:17 $
+** @version $Revision: 1.2 $
+** @modified $Date: 2004/10/26 12:58:49 $
 ** @@
 **
 ** This program is free software; you can redistribute it and/or
@@ -51,7 +51,7 @@ int main(int argc , char **argv)
 
     /* parameters to substitution command */
     AjPList ajpListFirstPairFiles       = NULL; /* first list of pair files     */
-    AjPList ajpListSecondPairFiles      = NULL; /* first list of pair files     */
+    AjPList ajpListSecondPairFiles      = NULL; /* second list of pair files    */
     AjPStr ajpStrInfileSuffix           = NULL; /* extension pair files         */
     AjPStr ajpStrRootOutfileName        = NULL; /* non-dir, non-extension name  */
     AjPStr ajpStrFirstPairFileName      = NULL;
