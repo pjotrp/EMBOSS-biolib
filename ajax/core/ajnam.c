@@ -123,7 +123,7 @@ NamOAttr namAttr[] = {
   {"exclude", "", "wildcard filenames to exclude from 'filename'"},
   {"fields", "", "extra database fields available, 'id' and 'acc' are standard"},
   {"proxy", "", "http proxy server, or ':' to cancel a global proxy"},
-  {"httpversion", "1.0", "HTTP version for GET requests"},
+  {"httpversion", "", "HTTP version for GET requests"},
   {NULL, NULL, NULL}
 };
 
