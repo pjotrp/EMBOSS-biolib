@@ -43,7 +43,7 @@ infile: vdwf
 [ 
 	param: Y
 	prompt: "Name of data file with van der Waals radii"
-	def: "vdw.dat"
+	def: "Evdw.dat"
 ]
 
 outfile: conerrf
