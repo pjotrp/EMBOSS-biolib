@@ -157,7 +157,9 @@ ID aaindexextract-keep
 AP aaindexextract
 DL keep
 PP mkdir ./AAINDEX
-PP export EMBOSS_DATA=./
+## split export EMBOSS_DATA=./ into two statements
+PP EMBOSS_DATA=./
+PP export EMBOSS_DATA
 IN ../../data/aaindex1.test
 FI stderr
 FC = 2
@@ -4889,6 +4891,7 @@ FP /^204   ttttttttttttttttctggcggtcccga   176\n/
 
 # change the examples to use these files
 ID pasteseq-ex
+UC To insert the sequence 'tsw:flav_nossm' after position 67 in sequence 'tsw:amir_pseae' and write the results to the file 'amir_pseae.fasta': 
 AP pasteseq
 CL tsw:amir_pseae tsw:flav_nossm -pos=67
 IN
@@ -4901,6 +4904,7 @@ FP /^FQNGHHDSKKIGLFYGTZTGKTESVAEIIDEFGDEVVTLDIDEIAALLAAGTPRTTLVAL\n/
 //
 
 ID pasteseq-ex2
+UC This does the same thing, but the output qualifier is explicitly used:
 AP pasteseq
 CL tsw:amir_pseae tsw:flav_nossm -out=amirplus.seq -pos=67
 FI stderr
@@ -4912,6 +4916,7 @@ FP /^FQNGHHDSKKIGLFYGTZTGKTESVAEIIDEFGDEVVTLDIDEIAALLAAGTPRTTLVAL\n/
 //
 
 ID pasteseq-ex3
+UC To insert the sequence 'tsw:flav_nossm' before the start of sequence 'tsw:amir_pseae' use -pos=0:
 AP pasteseq
 CL tsw:amir_pseae tsw:flav_nossm -out=amirplus.seq -pos=0
 FI stderr
@@ -4942,7 +4947,9 @@ FP /^STPASSTTSSAVDP\n/
 # change the example (was an arabidopsis entry)
 ID patmatmotifs-ex
 AP patmatmotifs
-PP export EMBOSS_DATA=../prosextract-keep/
+## split export EMBOSS_DATA=../prosextract-keep/ into two statements
+PP EMBOSS_DATA=../prosextract-keep/
+PP export EMBOSS_DATA
 CL -full
 IN tsw:opsd_human
 IN
@@ -5410,8 +5417,10 @@ FP /^HBA_HUMAN +1 +VLSPADKTNVKAAWG\.GKVGAHAGEYGAEALERMFLSFPTTKTYF 44 +\n/
 ID prosextract-keep
 AP prosextract
 DL keep
+## split export EMBOSS_DATA=./ into two statements
 PP mkdir ./PROSITE
-PP export EMBOSS_DATA=./
+PP EMBOSS_DATA=./
+PP export EMBOSS_DATA
 IN ../../data/
 FI stderr
 FC = 2
