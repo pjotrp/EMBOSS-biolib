@@ -471,12 +471,12 @@ int main(int argc, char **argv)
 	}
 	else
 	{
-	    ajFmtPrintF (outf,"Text2 x1 %f y1 %f colour 0 size %f %s\n",
+	    ajFmtPrintF (outf,"Text2 x1 %f y1 %f colour 0 size %f %S\n",
 			 ((float)numres+10.0)/2.0,ystart,datacs,
-			    ajStrStr(seqset->Usa));
-	    ajFmtPrintF (outf,"Text2 x1 %f y1 %f colour 0 size %f %s\n",
+			    seqset->Usa);
+	    ajFmtPrintF (outf,"Text2 x1 %f y1 %f colour 0 size %f %S\n",
 			 ((float)numres+10.0)/2.0,1.0,datacs,
-			    ajStrStr(options));
+			    options);
 	}
     }
 
@@ -1219,9 +1219,9 @@ static ajint prettyplot_fillinboxes(float ystart, ajint length, ajint numseq,
 	    if(!data)
 		ajGraphTextStart (-charlen,y-(yincr*l),ajStrStr(seqnames[i]));
 	    else
-		ajFmtPrintF(outf,"Text1 x1 %f y1 %f colour 0 size %f %s\n",
+		ajFmtPrintF(outf,"Text1 x1 %f y1 %f colour 0 size %f %S\n",
 			    (float)-charlen,y-(yincr*l),curcs,
-			    ajStrStr(seqnames[i]));
+			    seqnames[i]);
 	}
 
 	if(consensus && (numseq==seqend))
@@ -1232,7 +1232,7 @@ static ajint prettyplot_fillinboxes(float ystart, ajint length, ajint numseq,
 	    else
 		ajFmtPrintF(outf,"Text1 x1 %f y1 %f colour 0 size %f %s\n",
 			    (float)-charlen,y-(yincr*((seqend-seqstart)+1)),
-			    curcs, ajStrStr(seqnames[i]));
+			    curcs, "Consensus");
 	}
 
     }
@@ -1317,7 +1317,7 @@ static ajint prettyplot_fillinboxes(float ystart, ajint length, ajint numseq,
 			ajFmtPrintF(outf,"Text1 x1 %f y1 %f colour 0 "
 				    "size %f %s\n", (float)-charlen,
 				    y-(yincr*((seqend-seqstart)+1)),curcs,
-				    ajStrStr(seqnames[i]));
+				    "Consensus");
 
 		}
 
