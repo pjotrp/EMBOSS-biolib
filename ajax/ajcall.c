@@ -81,7 +81,8 @@ void callRegister(char *name, CallFunc func)
 ** a error message saying so. 
 **
 ** @param [r] name [char *] name of the function to call. 
-** @return [void] NULL if function call not found.
+** @param [v] [...] Optional arguments
+** @return [void*] NULL if function call not found.
 ** @@
 ******************************************************************************/
 void* call(char *name, ...)
