@@ -80,18 +80,6 @@ public class RunEmbossApplication2
 
   /**
   *
-  * @return true if there is any standard out
-  *
-  */
-//public boolean isProcessStdout()
-//{
-//  if(stdout.equals(""))
-//    return false;
-//  return true;
-//}
-
-  /**
-  *
   * Read in the process stderr.
   *
   */
@@ -287,6 +275,22 @@ public class RunEmbossApplication2
     return new String(stderr.toString().trim());
   }
 
+  /**
+  *
+  * Wait for the process to end
+  *
+  */
+  public void waitFor()
+  {
+    try
+    {
+      p.waitFor();
+    }
+    catch(InterruptedException ie)
+    {
+      ie.printStackTrace();
+    }
+  }
   /**
   *
   * @return process
