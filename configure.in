@@ -204,6 +204,7 @@ dnl Tests for AIX
 dnl If shared needs -Wl,-G in plplot,ajax,nucleus, -lX11 in plplot,
 dnl and -Wl,brtl -Wl,-bdynamic in emboss
 dnl We therefore need a static test as well
+needajax=no
 AM_CONDITIONAL(ISAIXIA64, test "`uname`" = "AIX")
 AM_CONDITIONAL(ISSHARED, test "${enable_shared}" = "yes")
 AC_SUBST(ISAIXIA64)
@@ -224,10 +225,9 @@ case $host_os in
 	aix4.3.3*) needajax=yes ;;
 	*) needajax=no ;;
 esac
-
+fi
 AM_CONDITIONAL(NEEDAJAX,test "$needajax" = "yes")
 AC_SUBST(NEEDAJAX)
-fi
 
 AC_OUTPUT(plplot/Makefile plplot/lib/Makefile nucleus/Makefile ajax/Makefile
 emboss/Makefile emboss/acd/Makefile test/Makefile test/data/Makefile
