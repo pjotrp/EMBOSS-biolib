@@ -9192,12 +9192,12 @@ static void acdSetAll (void) {
   for (pa=acdList; pa; pa=pa->Next) {
     if (acdIsStype(pa)) continue;
     if (acdIsQtype(pa)) {
-      /* Calling funclist acdKeywords() */
-      acdType[pa->Type].KeySet (pa);
+      /* Calling funclist acdType() */
+      acdType[pa->Type].TypeSet (pa);
     }
     else {
-      /* Calling funclist acdType() */
-      acdKeywords[pa->Type].TypeSet (pa);
+      /* Calling funclist acdKeywords() */
+      acdKeywords[pa->Type].KeySet (pa);
     }
     i++;
   }
