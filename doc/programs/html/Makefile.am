@@ -4,7 +4,7 @@ pkgdata_DATA =  abiview0.gif banana0.gif chaos0.gif cirdna.gif cpgplot0.gif \
                pepinfo2.gif pepnet0.gif pepwheel0.gif pepwindow0.gif \
                pepwindowall0.gif plotorf0.gif polydot0.gif prettyplot3.gif \
                prettyplot4.gif syco0.gif syco1.gif tmap0.gif topo.gif \
-               wobble0.gif abiview.html ajtest.html \
+               wobble0.gif aaindexextract.html abiview.html ajtest.html \
                alignment_consensus_group.html \
                alignment_differences_group.html \
                alignment_dot_plots_group.html alignment_global_group.html \
