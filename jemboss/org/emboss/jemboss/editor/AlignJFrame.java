@@ -421,7 +421,19 @@ public class AlignJFrame extends JFrame
       }
     });
     calculateMenu.add(consOptions);
+    calculateMenu.add(new JSeparator());
 
+// %age identity between pairs
+    JMenuItem calculateId = new JMenuItem("Identity table");
+    calculateId.addActionListener(new ActionListener()
+    {
+      public void actionPerformed(ActionEvent e)
+      {
+        IDTableJFrame idtab = new IDTableJFrame(gsc.getSequenceCollection());
+        idtab.setVisible(true);
+      }
+    });
+    calculateMenu.add(calculateId);
     calculateMenu.add(new JSeparator());
 
 // consensus plot

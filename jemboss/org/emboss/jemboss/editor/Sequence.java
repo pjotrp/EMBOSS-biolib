@@ -140,6 +140,19 @@ public class Sequence
     return seq;
   }
 
+
+  /**
+  *
+  * Get the residue at a position
+  * @return     sequence
+  *
+  */
+  public String getResidueAt(int p)
+  {
+    return seq.substring(p,p+1);
+  }
+
+
   /**
   *
   * Get the sequence length
