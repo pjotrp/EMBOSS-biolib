@@ -1928,18 +1928,27 @@ AjBool ajFileGetsL(AjPFile thys, AjPStr* pdest, ajlong* fpos)
 
 	jlen = strlen(&buff[ipos]);
 	ilen += jlen;
-	if(jlen == (isize-1))
+
+	/*
+	 ** We need to read again if:
+	 ** We have read the entire buffer
+	 ** and we don't have a newline at the end
+	 ** (must be careful about that - we may just have read enough)
+	 */
+	ajStrFixI(&thys->Buff, ilen);
+	if((jlen == (isize-1)) &&
+	   (ajStrChar(thys->Buff,-1) != '\n'))
 	{
+	    ajStrModL(&thys->Buff, ajStrSize(thys->Buff)+fileBuffSize);
 	    ajDebug("more to do: jlen: %d ipos: %d isize: %d ilen: %d "
 		    "Size: %d\n",
 		    jlen, ipos, isize, ilen, ajStrSize(thys->Buff));
-	    ajStrFixI(&thys->Buff, ilen);
-	    ajStrModL(&thys->Buff, ajStrSize(thys->Buff)+fileBuffSize);
 	    ipos += jlen;
 	    buff = ajStrStrMod(&thys->Buff);
 	    isize = ajStrSize(thys->Buff) - ipos;
 	    ajDebug("expand to: ipos: %d isize: %d Size: %d\n",
 		    ipos, isize, ajStrSize(thys->Buff));
+
 	}
 	else
 	    buff = NULL;
@@ -1947,7 +1956,7 @@ AjBool ajFileGetsL(AjPFile thys, AjPStr* pdest, ajlong* fpos)
     
     ajStrFixI(&thys->Buff, ilen);
     ajStrAssS(pdest, thys->Buff);
-    
+ 
     return ajTrue;
 }
 
