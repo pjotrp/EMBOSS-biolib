@@ -2597,7 +2597,7 @@ void ajSeqPrintOutFormat (AjPFile outf, AjBool full) {
 
   ajFmtPrintF (outf, "\n");
   ajFmtPrintF (outf, "# sequence output formats\n");
-  ajFmtPrintF (outf, "# Name         Try (if true, try)\n");
+  ajFmtPrintF (outf, "# Name         Single (if true, 1 sequence per file)\n");
   ajFmtPrintF (outf, "\n");
   ajFmtPrintF (outf, "OutFormat {\n");
   for (i=0; seqOutFormat[i].Name; i++) {
