@@ -43,7 +43,7 @@ DB tpir [ type: P dir: $emboss_tempdata/pir
    comment: "PIR using NBRF access for 4 files" ]
 
 DB tgb [ type: N method: url format: genbank
-   url: "http://www.cbr.nrc.ca/srs6.1bin/cgi-bin/wgetz?-e+[genbank-id:%s]"
+   url: "http://www.ca.embnet.org/srs6bin/cgi-bin/wgetz?-id+-e+[genbank-id:'%s']+-vn+2"
    comment: "Genbank IDs" ]
 
 #############################################
