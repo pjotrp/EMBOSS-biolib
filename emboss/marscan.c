@@ -665,7 +665,7 @@ static void marscan_output_stored_match(AjBool stored_match, ajint stored_dist,
     float score=0.0;
     AjPStr source=NULL;
     AjPStr type=NULL;
-    AjPStr desc=NULL;
+/*    AjPStr desc=NULL;*/
     AjPStr note=NULL;
     AjPFeature feature;
     AjPStr notestr=NULL;
