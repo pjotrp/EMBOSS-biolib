@@ -1,5 +1,10 @@
 Version 2.5.0
 
+	Inclusion of stat64 and readdir64 for offsetbits=64 (ajfile.c
+	and ajsys.c)
+
+	Workaround for broken Solaris readdir64_r (jembossctl)
+	
         infoseq can now optionally display GI and Sequence Version numbers.
 
 	notseq can now read in a file of sequence names.
