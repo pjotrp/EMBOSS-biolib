@@ -1,0 +1,71 @@
+application: scorerrunner
+[
+  documentation: "runs scorer to compare ordered pairs of substituted seqs in two directories and write the scores to a third"
+  groups: "protein: global alignment"
+]
+
+section: input
+[
+  information: "input section"
+  type: "page"
+]
+
+  directory: pathtocommand
+  [
+    parameter: "Y"
+    default: "/users/damian/EMBOSS/emboss/emboss/emboss"
+    information: "directory where alignment executables live"
+  ]
+
+  dirlist: goldseqsdirlist
+  [
+    parameter: "Y"
+    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_substituted_sequences/gold"
+    information: "first directory containing paired traces"
+    extension: "sbs"
+  ]
+
+  dirlist: testseqsdirlist
+  [
+    parameter: "Y"
+#    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_substituted_sequences/needle"
+    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_substituted_sequences/nawalign"
+    information: "second directory containing paired traces"
+    extension: "sbs"
+  ]
+
+endsection: input
+
+
+section: required
+[
+  information: "required section"
+  type: "page"
+]
+endsection: required
+
+
+section: advanced
+[
+  information: "advanced section"
+  type: "page"
+]
+endsection: advanced
+
+
+section: output
+[
+  information: "output Section"
+  type: "page"
+]
+
+  outdir: scoresoutdir
+  [
+    parameter: "Y"
+    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_scoring_files/"
+    information: "name of directory containing output scores"
+    extension: "needle"
+  ]
+
+
+endsection: output
