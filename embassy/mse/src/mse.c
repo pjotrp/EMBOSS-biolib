@@ -138,6 +138,8 @@ void DoSave(char *FName)
 }
 
 void Initscr(){
+
+  ajDebug("MSE Initscr Display = initscr()\n");
   Display = initscr();
   nocbreak();
   nonl();
@@ -149,9 +151,10 @@ void Initscr(){
   __Rows=Display->_maxy;
   if(__Cols == 0 || __Rows == 0){
     ajDebug("ERROR:Cols = %d Rows = %d\n",__Cols,__Rows);
-    __Cols =30;
-    __Rows = 80;
+    __Cols =80;
+    __Rows = 24;
   }
+  ajDebug("Initscr:Cols = %d Rows = %d\n",__Cols,__Rows);
   NROWS = (int)((__Rows-12)/2); 
   MARK1 = NROWS+3;
   MARK2 = (NROWS*2)+6;
@@ -261,11 +264,11 @@ return 0;
 
 }  /* End of MSE Main */
 
-/******************************************************************************/
-/******************************************************************************/
+/*****************************************************************************/
+/*****************************************************************************/
 /****  MSEInit  ***************************************************************
 **
-**  performs the initialization for MSE, ed only once.
+**  performs the initialization for MSE, used only once.
 **
 *****************************************************************************/
 
@@ -282,11 +285,12 @@ char *temp;
  temp = getenv("MITSeqFormat");  
  if(temp)
    strcpy(OneLine,temp);
- if ( OneLine )
+ else
    strcpy(OneLine, "GCG");
  DefFormat = EncodeFormat(OneLine);
  if ( DefFormat == UNDEF ) DefFormat = GCG;
 
+ajDebug("MSEInit DefFormat %d (4=GCG) NOS %d\n", DefFormat, NOS);
 /* Initialize all strands */
 
 	for ( i=0; i<=NOS; i++ )
@@ -301,7 +305,7 @@ char *temp;
 	ScrScaleLen = 100;
 	ScrBarLen = 0;
 
-	DoNeither();
+	DoNeither();	      /* turn of plurality and highlighting */
 
 /* Draw the initial screen */
 
@@ -727,6 +731,7 @@ Parse:
 */
 
 	      /*case SMG$K_TRM_DO:*/
+	    case ':':
 	    case CNTRLZ:
 	      return;
 
@@ -4038,24 +4043,24 @@ void DoFind(int Start, int Finish, char *Pattern )
 
 } /* End of DoFind */
 
-/****  DoHelp  **************************************************************
+/**** DoHelp **************************************************************
 **
 **  for "Help" type out in a page-wise fashion.  Help messages moved from
 **  files in MITDATA to the program in order to make the distribution of
 **  MSE easier.
 **
 **  Each page has 22 lines and has been declared to be 85 characters wide.
-**  I sure that there is a much better way to implement this.
+**  I am sure that there is a much better way to implement this.
 **
 ****************************************************************************/
 
 void DoHelp(int Start) 
 {
 
-  int i=0, Page=0, Pages=10;
+  int i=0, Page=0, Pages=9;
   unsigned int c;
-  AjPStr whereto = NULL;
-  AjBool okay = ajTrue;
+/*  AjPStr whereto = NULL;*/
+/*  AjBool okay = ajTrue;*/
 
   static char HelpMsg[10][22][85] = {
 {  /* Page One */ 
@@ -4125,7 +4130,7 @@ void DoHelp(int Start)
 "      NEIther           - Turn off plurality sequence calculation",
 "                           Saves CPU time!!",
 "",
-"      ALNED [filename]  - Read in an alignment file from the NBRF/PIR program",
+"      ALNED [filename]  - Read in an alignment file from NBRF/PIR's program",
 "                           ALNED (A multiple sequence alignment program)."
 },{  /* Page Four */
 "     Commands end with <ret>, [ ] indicates an optional parameter.",
@@ -4154,8 +4159,8 @@ void DoHelp(int Start)
 "     \"s\" and \"f\" are line numbers for to and from or start and finish.",
 "     Only the capitalized part of the command is necessary",
 "",
-"        Open    - Open up a new line by moving all the line above the current",
-"                   line up by one",
+"        Open    - Open up a new line by moving all the line above the",
+"                   current line up by one",
 "",
 "  [s,f] Lock    - Lock lines \"s\" to \"f\" such that you cannot add or delete",
 "                   sequence symbols. You may still shift and/or reverse lines.",
@@ -4168,7 +4173,7 @@ void DoHelp(int Start)
 "                   Default is set the Offset of the current line to the",
 "                   current line position. Also works with anchored groups.",
 "",
-"    [s] REVerse - Reverse/complement line \"s\".  The current line is the defualt",
+"    [s] REVerse - Reverse/complement line \"s\". The current line is the default",
 "                   If the reversed line is part of an anchored group then the",
 "                   entire group is reversed.",
 ""
@@ -4223,15 +4228,15 @@ void DoHelp(int Start)
 "     \"s\" and \"f\" represent sequence positions. Only the capitalized part ",
 "     of the command is necessary",
 "",
-"      GelAlign       - Will take all of the strands currently loaded into MSE",
-"                        and produce the best alignment based on exact matches.",
-"                        GelAlign does not add gaps but it will get the strands",
-"                        started for you",
+"      GelAlign       - Will take all of the strands currently loaded into",
+"                        MSE and produce the best alignment based on exact",
+"                        matches. GelAlign does not add gaps but it will get",
+"                        the strands started for you",
 "",
 "[s,f] Meld [seqname] - Merges strands \"s\" to \"f\" to create a new entry",
-"                        named \"seqname\".  If the current strand is part of an",
+"                        named \"seqname\". If the current strand is part of an",
 "                        anchored group then that group will be melded.  You",
-"                        will be prompted to continue if undetermined postitions",
+"                        will be prompted to continue if undetermined positions",
 "                        are found in the melded sequence.",
 "",
 "",
@@ -4267,20 +4272,20 @@ void DoHelp(int Start)
 },{  /* Page Ten */
 "                        Release Notes for MSE V2.1",
 "",
-" 1.  Read/Writes Staden, Raw, GCG, NBRF and IG user sequence formats. Default",
-"     is set with system logical \"MITSeqFormat\".",
+" 1.  Read/Writes Staden, Raw, GCG, NBRF and IG user sequence formats.",
+"     Default is set with system logical \"MITSeqFormat\".",
 "",
 " 2.  Dropped the INLCUDE command, use EDIT and then Cut/Paste what you need.",
 "",
 " 3.  Added the MELD command for collapsing groups into a new sequence.  The",
-"     group may either be specified as a range or the currently anhored group.",
+"     group may be specified as a range or as the currently anchored group.",
 "",
 " 4.  The keypad now functions in a very similar way as VMS EDT.  Note that",
-"     \"PAGE\" was slightly redefined to move left/right by screenfulls. \"SECTION\"",
-"     still moves up and down.",
+"     \"PAGE\" was slightly redefined to move left/right by screen width.",
+"     \"SECTION\" still moves up and down.",
 "",
-" 5.  PF4 in VMS EDT deletes the current line.  This key was not implemented in",
-"     that manner as it would be a little used feature would cause lots of ",
+" 5.  PF4 in VMS EDT deletes the current line.  This key was not implemented",
+"     in that manner as such a little used feature would cause lots of",
 "     problems.  Hence, it acts a toggle for the Anchor/NoAnchor making the",
 "     use of anchored group easier.",
 "",
@@ -4318,33 +4323,29 @@ void DoHelp(int Start)
  Page = LIMIT(1, Start, Pages);
 
  /*	savescreen(); il NEED still */
- ajStrAssS(&whereto,tmpdir);
+
+/*
+ ajStrAssC(&whereto,"./");
  ajStrAppC(&whereto,"virtual.dump");
  if(scr_dump(ajStrStr(whereto))==ERR) {
    ajDebug("scr_dump to %S ERR \n",whereto);
-   /* problem storing so try ./ */
    ajStrClear(&whereto);
    ajStrAppC(&whereto,"/tmp/virtual.dump");
    if(scr_dump(ajStrStr(whereto))==ERR) {
      ajDebug("scr_dump to %S ERR \n",whereto);
-     ajStrClear(&whereto);
-     ajStrAppC(&whereto,"/tmp/virtual.dump");
-     if(scr_dump(ajStrStr(whereto))==ERR) {
-       ajDebug("scr_dump to %S ERR \n",whereto);
-       okay = ajFalse;
-     }
-     else 
-       ajDebug("scr_dump to %S 0kay \n",whereto);
+     okay = ajFalse;
    }
-   else
+   else 
      ajDebug("scr_dump to %S 0kay \n",whereto);
  }
  else 
    ajDebug("scr_dump to %S 0kay \n",whereto);
+*/
 
  ajDebug("Start = %d Page = %d\n",Start,Page);
  while( Page <= Pages ) {
    clear();
+   ajDebug("Help page %d of %d\n",Page,Pages);
    for (i=0; i<22; i++)
      printw("%s\n",HelpMsg[Page-1][i]);
      printw("\n     [Help page %d of %d.  Press RETURN for more help. SPACE to quit.] ",
@@ -4357,27 +4358,38 @@ void DoHelp(int Start)
  /* restorescreen(); il NEED still */
 
  /*clear(); NO IDEA WHY CLEAR MESSES UP RESTORE BEFORE IT'S CALLED ???? */
+ clear();
+/*
  if(okay){
    if(scr_restore(ajStrStr(whereto))==ERR)
      ajDebug("scr_restore ERR \n");
    else
-     ajDebug("scr_restore 0kay \n");
+     ajDebug("scr_restore '%S' 0kay \n", whereto);
  
    ajStrInsertC(&whereto,0,"rm ");
    ajSystemEnv(whereto, envptr);
  }
  ajStrDel(&whereto);
-
+*/
+ ajDebug("DoHelp ready to doupdate\n");
  doupdate();
+ ajDebug("DoHelp done doupdate\n");
  /* refresh();*/
  /*    c = getch();*/
- /*DoRedraw();*/
  
+/*clear();*/
+for(i=0;i<=NROWS;i++){
+  ReDoSeq[i] = 1;
+  ReDoBar[i]= 1;
+}
+
+ReDoBar[Strand] = 1;
+DoRedraw();
 } /* End of DoHelp */
 
 /****  DoRedraw  *************************************************************
 **
-**  redraws the screen for in the event of foreign I/O.
+**  redraws the screen in the event of foreign I/O.
 **
 ****************************************************************************/
 
@@ -4385,7 +4397,9 @@ void DoRedraw()
 {
   /*repaint();*/
   /*  redrawwin(Display);*/
+  ajDebug("DoRedraw ready to doupdate\n");
   doupdate();
+  ajDebug("DoRedraw done doupdate\n");
   refresh();
 } /* end of DoRedraw */
 
