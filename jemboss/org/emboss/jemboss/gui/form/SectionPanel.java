@@ -585,6 +585,8 @@ public class SectionPanel
   private void checkDependents(Box section)
   {
 
+    final Cursor cbusy = new Cursor(Cursor.WAIT_CURSOR);
+    final Cursor cdone = new Cursor(Cursor.DEFAULT_CURSOR);
     final String att = parseAcd.getParameterAttribute(nf,0).toLowerCase();
     final String varName = parseAcd.getParamValueStr(nf,0);
     final String valS = parseAcd.getParamValueStr(nf,0).toLowerCase();
@@ -624,6 +626,7 @@ public class SectionPanel
         {
           public void actionPerformed(ActionEvent e)
           {
+            f.setCursor(cbusy);
             findatt:
             if(!withSoap)
             {
@@ -740,6 +743,7 @@ public class SectionPanel
                 System.out.println("Call to Ajax library failed");
               }
             }
+            f.setCursor(cdone);
 //          resolveDependents(nod,dep,tfs.getText(),varName);
           }
         });
