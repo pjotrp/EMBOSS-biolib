@@ -57,7 +57,8 @@ public class BuildProgramMenu
   private static Vector codons;
   /** acd files cache */
   private Hashtable acdStore = new Hashtable();   
-
+  private AuthPopup splashing;
+  private SplashThread splashThread;
 
 /**
 *
@@ -79,11 +80,24 @@ public class BuildProgramMenu
            final String embossBin, final String envp[],
            final JembossParams mysettings, final boolean withSoap,
            final String cwd, final String acdDirToParse,
-           final JFrame f, final AuthPopup splashing)
+           final JFrame f)
   {
   
     final Cursor cbusy = new Cursor(Cursor.WAIT_CURSOR);
     final Cursor cdone = new Cursor(Cursor.DEFAULT_CURSOR);
+  
+    if(withSoap)
+    {  
+      splashing = new AuthPopup(mysettings,100);
+      if(mysettings.getUseAuth())
+      splashing.setBottomPanel();
+      splashing.setSize(380,200);
+      splashing.pack();
+      splashing.setVisible(true);
+
+      splashThread = new SplashThread(splashing,100-4);
+      splashThread.start();
+    }
 
     SwingWorker groupworker = new SwingWorker() 
     {
@@ -94,6 +108,29 @@ public class BuildProgramMenu
       {
         if(withSoap) 
         {
+          SwingWorker databaseworker = new SwingWorker()
+          {
+            public Object construct()
+            {
+              ShowDB showdb = new ShowDB(mysettings);
+              String showdbOut = showdb.getDBText();
+              Database d = new Database(showdbOut);
+              db = d.getDB();
+
+              splashing.doneSomething("");
+              splashThread.setInterval(0);
+
+              matrices = showdb.getMatrices();  // get the available matrices
+              codons   = showdb.getCodonUsage();
+
+              JLabel jl = new JLabel("<html>"); // not used but speeds first
+                                                // ACD form loading which
+                                                // uses html
+              return null;
+            }
+          };
+          databaseworker.start();
+          
           splashing.doneSomething("Connecting with server");
           boolean calling = true;
 
@@ -103,8 +140,19 @@ public class BuildProgramMenu
           {
             try
             {
-              GetWossname ewoss = new GetWossname(mysettings);
-              woss = ewoss.getDBText(); 
+              try
+              {
+                Hashtable hwoss = (new JembossJarUtil("resources/wossname.jar")).getHash();
+                if(hwoss.containsKey("wossname.out"))
+                  woss = new String((byte[])hwoss.get("wossname.out"));
+              }
+              catch (Exception ex){ ex.printStackTrace(); }
+
+              if(woss.equals(""))
+              {
+                GetWossname ewoss = new GetWossname(mysettings);
+                woss = ewoss.getDBText(); 
+              }
               splashing.doneSomething("Found EMBOSS applications");
               calling = false;
             } 
@@ -122,7 +170,7 @@ public class BuildProgramMenu
                 splashing.doneSomething("Cannot connect!");
                 ServerSetup ss = new ServerSetup(mysettings);
                 int sso = JOptionPane.showConfirmDialog(f,ss,
-                             "Check Public Server Settings",
+                             "Check Settings",
                              JOptionPane.OK_CANCEL_OPTION,
                              JOptionPane.ERROR_MESSAGE,null);
                 if(sso == JOptionPane.OK_OPTION)
@@ -196,7 +244,6 @@ public class BuildProgramMenu
 
       public void finished() 
       {
-
 // sets the delay for dismissing tooltips
         MultiLineToolTipUI.initialize();
         ToolTipManager toolTipManager = ToolTipManager.sharedInstance();
@@ -389,28 +436,6 @@ public class BuildProgramMenu
         p1.setVisible(false);
         p1.setVisible(true);
 
-        if(withSoap)
-        {
-          SwingWorker databaseworker = new SwingWorker()
-          {
-            public Object construct()
-            {
-              ShowDB showdb = new ShowDB(mysettings);
-              String showdbOut = showdb.getDBText();
-              Database d = new Database(showdbOut);
-              db = d.getDB();
-
-              matrices = showdb.getMatrices();  // get the available matrices
-              codons   = showdb.getCodonUsage(); 
-
-              JLabel jl = new JLabel("<html>"); // not used but speeds first
-                                                // ACD form loading which
-                                                // uses html
-              return null;
-            }
-          };
-          databaseworker.start();
-        }
       }
     };
     groupworker.start();
