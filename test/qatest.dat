@@ -153,6 +153,21 @@ DI AAINDEX
 FP 0 /Warning:/
 //
 
+ID abiview-ex
+AP abiview
+CC Example file missing test/data/ba16d2.s1
+CL -graph ps
+IN ../../data/ba16d2.s1
+IN
+FI stderr
+FC = 2
+FI stdout
+FZ = 18
+FP /^Created abiview.ps\n/
+FI outfile.fasta
+FZ = 0
+//
+
 ID antigenic-command
 AP antigenic
 CL tsw:amir_pseae -auto
@@ -209,6 +224,26 @@ FP 0 /Warning:/
 FI stdout
 FZ = 19
 FP /^Created banana.dat\n/
+//
+
+ID biosed-ex
+AP biosed
+CL tembl:hsfau hsfau.rna -target T -replace U
+FI stderr
+FC = 1
+FI hsfau.rna
+FZ = 562
+FP /^UCUAAUAAAAAAGCCACUUAGUUCAGUCAAAAAAAAAA\n/
+//
+
+ID biosed-ex2
+AP biosed
+CL tsw:AMIR_PSEAE AMIR_PSEAE.pep -target PPP -replace XXPPPXX
+FI stderr
+FC = 1
+FI AMIR_PSEAE.pep
+FZ = 252
+FP /^MSANSLLGSLRELQVLVLNPPGEVSDALVLQLIRIGCSVRQCWXXPPPXXEAFDVPVDVV\n/
 //
 
 ID btwisted-ex
@@ -408,6 +443,11 @@ FZ = 134
 FP /\A>EMBOSS_001\n/
 FP /^acgtacgtacgtacgtacgtnnnnacgtacgtacgtacgtnnnnnnnnnnnnnnnnnnnn\n/
 FP /^nnnnnnnnnnnnnnnnnnnnacgtacgtacgtacgtacgtacgtacgtnnnnacgtacgt\n/
+//
+
+ID contacts-ex
+AP contacts
+CC No example in the documentation
 //
 
 ID cpgplot-ex
@@ -2633,7 +2673,8 @@ FC = 34
 
 ID distmat-ex
 AP distmat
-CC Test data pax.align not yet available for example run
+CC Example file missing test/data/pax.align
+CC No example in the documentation
 CL ../../data/pax.align
 IN 2
 IN
@@ -2647,7 +2688,8 @@ FC = 99999
 //
 
 ID domainer-ex
-CC Test data not yet available for example run
+CC Example file missing test/scop/testscop.dat
+CC Example files missing test/cpdb/*
 AP domainer
 IN ../../scop/testscop.dat
 IN ../../cpdb/
@@ -2896,6 +2938,28 @@ FP /^FT   CDS             57\.\.458\n/
 FP /^\/\/\Z/
 //
 
+ID eprimer3-ex
+AP eprimer3
+CL tembl:hsfau1 hsfau.eprimer3 -explain
+FI stderr
+FC = 1
+FI hsfau.eprimer3
+FZ = 1427
+FP /^\n/
+FP /^# considered 16422\n/
+FP /^# GC content failed 156\n/
+FP /^# ok 2960\n/
+FP /^# considered 16330\n/
+FP /^# ok 2902\n/
+FP /^# considered 2652\n/
+FP /^# unacceptable product size 2444\n/
+FP /^# ok 186\n/
+FP /^   1 PRODUCT SIZE: 202\n/
+FP /^     FORWARD PRIMER     801   20  59\.72  60\.00  CCCAGGAGCTACACACCTTC\n/
+FP /^     REVERSE PRIMER     983   20  59\.81  55\.00  GGAGCACGACTTGATCTTCC\n/
+FP 5 /PRODUCT SIZE: +[0-9]+/
+//
+
 ID equicktandem-ex
 AP equicktandem
 IN tembl:hhtetra
@@ -3077,6 +3141,60 @@ FP /^    793     936     120      6     24     93.8 acccta   \n/
 FP /^    432     485      38      6      9     90.7 ccctaa   \n/
 FP /^    494     529      26      6      6     94.4 ccctaa   \n/
 FP /^    568     597      24      6      5    100.0 aaccct   \n/
+//
+
+ID extractfeat-ex
+AP extractfeat
+CL tembl:hsfau1 -type exon stdout
+FI stderr
+FC = 1
+FI stdout
+FZ = 743
+FP 5 /^>HSFAU1_/
+FP /^>HSFAU1_951_1095 \[exon\] H\.sapiens fau 1 gene\n/
+FP /^gtaaagtccatggttccctggcccgtgctggaaaagtgagaggtcagactcctaag\n/
+//
+
+ID extractfeat-ex2
+AP extractfeat
+CL tembl:hsfau1 -type exon -before 10 -after 10 stdout
+FI stderr
+FC = 1
+FI stdout
+FZ = 844
+FP 5 /^>HSFAU1_/
+FP /^>HSFAU1_951_1095 \[exon\] H\.sapiens fau 1 gene\n/
+FP /^cccactacaggtaaagtccatggttccctggcccgtgctggaaaagtgagaggtcagact\n/
+FP /^cctaaggtgagtgaga\n/
+//
+
+ID extractfeat-ex3
+AP extractfeat
+CL tembl:*  -type exon -before 5 -after -5 stdout
+FI stderr
+FC = 1
+FI stdout
+FZ = 14856
+FP 5 /^>HSFAU1_/
+FP 138 /^>/
+FP /^>HSFAU1_951_1095 \[exon\] H\.sapiens fau 1 gene\n/
+//
+
+# The example has phosphorylation, we only have features that say
+# PHOSPHORYLATION (BY RK) (BY SIMILARITY).
+ID extractfeat-ex4
+AP extractfeat
+CL tsw:*  -type mod_res -value phosphorylation* -before 3 -after -4 stdout
+FI stderr
+FC = 1
+FI stdout
+FZ = 97
+FP 2 /^>/
+FP 2 /\[mod_res\]/
+FP /^>OPSD_HUMAN_343_343 \[mod_res\] RHODOPSIN\.\n/
+FP /^TETSQVA\n/
+FP /^>PAXI_HUMAN_118_118 \[mod_res\] PAXILLIN\.\n/
+FP /^EHVYSFP\n/
 //
 
 ID extractseq-ex
@@ -3335,6 +3453,10 @@ FP /^LACI_ECOLI\tSWISSPROT\tdna_bind\t6\t25\t0\.000\t\+\t\.\tSequence "LACI_ECOL
 FP /^LACI_ECOLI\tSWISSPROT\thelix\t32\t44\t0.000\t\+\t\.\tSequence "LACI_ECOLI\.9"\n/
 //
 
+ID funky-ex
+AP funky
+CC No example in the documentation
+//
 
 ID garnier-ex
 AP garnier
@@ -3399,6 +3521,16 @@ FP 0 /Warning:/
 FI laci_ecoli.hth
 FP /^[(]1[)] Score 2160[.]000 length 22 at residues 4->25\n/
 FP /^ Standard_deviations: 6.54\n/
+//
+
+ID hetparse-ex
+AP hetparse
+CC No example in the documentation
+//
+
+ID hmmgen-ex
+AP hmmgen
+CC No example in the documentation
 //
 
 ID hmoment-ex
@@ -3580,16 +3712,29 @@ FZ = 354
 FP /^<tr><td>tembl-id:PAAMIR</td><td>PAAMIR</td><td>X13776</td><td>N</td><td>2167</td><td>66.54 </td><td>Pseudomonas .* regulation</td></tr>\n/
 //
 
+ID interface-ex
+AP interface
+CC No example in the documentation
+//
+
 ID isochore-ex
 CC Reads Genbank entry SCCHRIII from remote server
 AP isochore
-CL tgb:scchriii
+CL tgb:scchriii -graph ps
 IN
 FI stderr
 FC = 2
 FP 0 /Warning:/
 FI scchriii.iso
-FZ = 0
+FZ = 39979
+FP /^5000\s+0\.364\n/
+FI isochore.ps
+FZ > 100
+FP /^%%Title: PLplot Graph\n/
+FP /^%%Pages: 1\n/
+FI stdout
+FZ = 20
+FP /^Created isochore.ps\n/
 //
 
 # remove the extra 2 prompts from the example
@@ -3609,6 +3754,64 @@ FI lindna.ps
 FZ = 14048
 FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 1\n/
+//
+
+## Example should be file1 file2
+ID listor-ex
+AP listor
+CL ../../data/file1 ../../data/file2
+IN
+FI stderr
+FC = 2
+FI file1.list
+FZ = 111
+FC = 4
+FP 4 /^ncbi::/
+FP 3 /file1/
+FP 1 /file2/
+//
+
+ID listor-ex2
+AP listor
+CL ../../data/file1 ../../data/file2 -operator and
+IN
+FI stderr
+FC = 2
+FI file1.list
+FZ = 56
+FC = 2
+FP 2 /^ncbi::/
+FP 2 /file1/
+FP 0 /file2/
+//
+
+ID listor-ex3
+AP listor
+CL ../../data/file1 ../../data/file2 -operator xor
+IN
+FI stderr
+FC = 2
+FI file1.list
+FZ = 55
+FC = 2
+FP 2 /^ncbi::/
+FP 1 /file1/
+FP 1 /file2/
+//
+
+ID listor-ex4
+AP listor
+CL ../../data/file1 ../../data/file2 -operator not
+IN
+FI stderr
+FC = 2
+FI file1.list
+FZ = 27
+FC = 1
+FP 1 /^ncbi::/
+FP 1 /file1/
+FP 0 /file2/
+FP 1 /file1:one/
 //
 
 ID marscan-ex
@@ -3820,6 +4023,32 @@ FZ = 7678
 FP /^>ECLAC J01636/
 //
 
+ID mwcontam-ex
+AP mwcontam
+IN ../../data/mw1.dat,../../data/mw2.dat,../../data/mw3.dat
+IN
+IN
+FI stderr
+FC = 2
+FI outfile.mwcontam
+FZ = 15
+FP /^67\.000\n/
+FP /^415\.000\n/
+//
+
+ID mwfilter-ex
+AP mwfilter
+IN ../../data/molwts.dat
+IN
+IN
+FI stderr
+FC = 2
+FI molwts.mwfilter
+FZ = 190
+FC = 16
+FP /^874\.364756\n/
+//
+
 ID needle-ex
 AP needle
 CL tsw:hba_human tsw:hbb_human
@@ -3942,27 +4171,6 @@ FP 0 /^>HBB_HORSE/
 FP /^>GLB5_PETMA/
 FP /^>MYG_PHYCA/
 FP /^>LGB2_LUPLU/
-//
-
-ID nrscope-ex
-CC input data file not available
-AP nrscope
-IN ../../data/Escop.dat
-IN EscopNR.test
-IN
-IN
-IN 95
-IN
-IN 20
-IN 1
-IN EscopNR.log
-FI stderr
-FC = 2
-FP 0 /Warning:/
-FI EscopNR.log
-FZ = 0
-FI EscopNR.test
-FZ = 0
 //
 
 ID nthseq-ex
@@ -4098,6 +4306,16 @@ FP /^End = position 139 of sequence\n/
 FP /^Length = 17\n/
 FP /^Motif = G_PROTEIN_RECEP_F1_1\n/
 FP /^TLGGEIALWSLVVLAIERYVVVCKPMS\n/
+//
+
+ID pdbparse-ex
+AP pdbparse
+CC No example in documentation
+//
+
+ID pdbtosp-ex
+AP pdbtosp
+CC No example in documentation
 //
 
 ID pepcoil-ex
@@ -4457,6 +4675,11 @@ FP 0 /Warning:/
 DI PRINTS
 //
 
+ID profgen-ex
+AP profgen
+CC No example in documentation
+//
+
 # change example to start with data/globins.msf
 # note - prompts reversed relative to example
 # Note - failed to find any results
@@ -4716,16 +4939,29 @@ FI stdout
 FZ = 0
 //
 
-ID scope-ex
-CC missing input file(s)
-AP scope
-IN ../../data/scop.orig
-IN
-FI stderr
-FC = 2
-FP 0 /Warning:/
-FI Escop.dat
-FZ = 0
+ID scopnr-ex
+AP scopnr
+CC No example in documentation
+//
+
+ID scopparse-ex
+AP scopparse
+CC No example in documentation
+//
+
+ID scoprep-ex
+AP scoprep
+CC No example in documentation
+//
+
+ID scopreso-ex
+AP scopreso
+CC No example in documentation
+//
+
+ID scopseqs-ex
+AP scopseqs
+CC No example in documentation
 //
 
 ID seealso-ex
@@ -4740,6 +4976,16 @@ FP /^seqmatchall/
 FP /^supermatcher/
 FP /^water/
 FP /^wordmatch/
+//
+
+ID seqalign-ex
+AP seqalign
+CC No example in documentation
+//
+
+ID seqinfo-ex
+AP seqinfo
+CC No documentation
 //
 
 ID seqmatchall-ex
@@ -7401,6 +7647,21 @@ FP /^BLAST$/
 FZ = 46
 //
 
+ID seqsearch-ex
+AP seqsearch
+CC No example in documentation
+//
+
+ID seqsort-ex
+AP seqsort
+CC No example in documentation
+//
+
+ID seqwords-ex
+AP seqwords
+CC No example in documentation
+//
+
 # change example to use globins.msf
 ID showalign-ex
 AP showalign
@@ -7575,6 +7836,16 @@ FP /^ Sequence: LLVLLLLCETVQA\n/
 FP 9 /^ Sequence: /
 //
 
+ID siggen-ex
+AP siggen
+CC Missing example files test/data/jontest/*
+//
+
+ID sigscan-ex
+AP sigscan
+CC No example in documentation
+//
+
 ID silent-ex
 CC Needs REBASEXTRACT to reformat REBASE
 AP silent
@@ -7587,6 +7858,31 @@ FP 0 /Warning:/
 FI hsfau.silent 
 FZ = 565
 FP /^HindIII     AAGCTT         267       A\.A    268      A->T  \n/
+//
+
+ID skipseq-ex
+AP skipseq
+CC No documentation
+IN tembl:eclac*
+IN
+FI stderr
+FC = 2
+FI eclac.fasta
+FZ = 15618
+FP 5 /^>/
+//
+
+ID skipseq-ex2
+AP skipseq
+CC No documentation
+CL -skip 1
+IN tembl:eclac*
+IN
+FI stderr
+FC = 2
+FI eclac.fasta
+FZ = 7940
+FP 4 /^>/
 //
 
 ID splitter-ex
@@ -7615,16 +7911,6 @@ FP /\A>AP000504_1-53000/
 FP /^>AP000504_50001-100000/
 FP 2 /^>/
 //
-
-#not an EMBOSS program, but needed for scopalign
-#ID stamps-ex
-#AP stamps
-#IN ../../data/scop.orig
-#IN
-#FI stderr
-#FC = 2
-#FP 0 /Warning:/
-#//
 
 # update example
 ID stretcher-ex
@@ -8046,9 +8332,22 @@ FZ = 562
 FP /^>HSFAU /
 //
 
-# need the data file
+ID union-ex
+AP union
+IN @../../data/cds.list
+IN
+IN
+FI stderr
+FC = 2
+FI hsfau1.fasta
+FZ = 447
+FP 1 /^>/
+//
+
+
 ID vectorstrip-ex
-CC input data file is missing
+CC Missing example file test/data/vecseqs.list
+CC Missing example file test/data/vectors
 AP vectorstrip
 CL ../../data/vecseqs.list
 IN
@@ -8083,6 +8382,18 @@ FP /^HBB_HUMAN +3 +LTPEEKSAVTALWGKV--NVDEVGGEALGRLLVVYPWTQRFFESFGDLST +50\n/
 FP /^HBA_HUMAN +50 +----HGSAQVKGHGKKVADALTNAVAHVDDMPNALSALSDLHAHKLRVDP +95\n/
 FP /^# Identity: +63/145 \(43\.4%\)\n/
 FP /^# Similarity: +88/145 \(60.7%\)\n/
+//
+
+ID whichdb-ex
+AP whichdb
+TI 300
+IN hsfau1
+IN
+FI stderr
+FC = 2
+FI outfile.whichdb
+FZ > 0
+FP /^tembl:hsfau1\n/
 //
 
 ID wobble-ex
@@ -8223,6 +8534,24 @@ FC = 2
 FP 0 /Warning:/
 FI stdout
 FP /<a href="http:\/\/www\.sanger\.ac\.uk\/Software\/EMBOSS\/Apps\/abiview\.shtml"/
+//
+
+ID yank-ex
+AP yank
+PP cp ../../data/cds.list .
+CL -sask
+IN tembl:hsfau1
+IN 1913
+IN 1915
+IN
+IN cds.list
+IN
+FI stderr
+FC = 2
+FI cds.list
+FZ = 132
+FC = 5
+FP 5 /tembl-id:HSFAU1\[[0-9]+:[0-9]+\]\n/
 //
 
 ###########################################################
@@ -8737,7 +9066,213 @@ FP 1 /^BFULL +2 aacggg           7\n/
 FC = 31
 //
 
+#######################################
+# EMBOSS make check
+#######################################
 
+ID ajtest-check
+## Hard to test ... could be anything
+## Only -help is 'guaranteed' to work
+AQ ajtest
+CL -help
+FI stderr
+FC > 0
+//
+
+ID complex-check
+AQ complex
+TI 300
+CL -omnia
+IN tembl:*
+IN
+IN
+IN
+IN
+IN
+IN
+FI stderr
+FC = 2
+FI complex.ujtable
+FZ = 0
+FI hs989235.complex
+FZ = 3584
+FP /^ +10 +HSHT +1658 +0[.]7314 +\n/
+FI hs989235.fasta
+FZ = 531797
+FP 41 /^>/
+//
+
+ID corbatest-check
+AQ corbatest
+CC No documentation, no example
+//
+
+ID demoalign-check
+AQ demoalign
+CC No documentation, no example
+//
+
+ID demofeatures-check
+AQ demofeatures
+CC No documentation, no example
+//
+
+ID demolist-check
+AQ demolist
+CC No documentation, no example
+//
+
+ID demoreport-check
+AQ demoreport
+CC No documentation, no example
+//
+
+ID demosequence-check
+AQ demosequence
+CC No documentation, no example
+//
+
+ID demostring-check
+AQ demostring
+CC No documentation, no example
+//
+
+ID demotable-check
+AQ demotable
+CC No documentation, no example
+//
+
+ID entrails-check
+AQ entrails
+CL -full
+IN
+FI outfile.entrails
+FZ > 21000
+FP /^ +taglist +string +"Extra tags to report"\n/
+FP /^ +ausashow +boolean +"N" +"Show the full USA in the alignment"\n/
+FI stderr
+FC = 2
+//
+
+ID histogramtest-check
+AQ histogramtest
+CL -graph ps
+IN
+IN
+IN
+FI histogramtest.ps
+FZ > 0
+FP /^%%/
+FI stderr
+FC = 2
+//
+
+ID intconv-check
+AQ intconv
+CL stdin stdout -auto
+IN int main (int argc, char* argv[]) {
+IN   int number;
+IN   long time;
+IN   ajint long[52];
+IN   ajlong int;
+IN   exit (1);
+IN }
+FI stdout
+FP 4 /ajint/
+FP 2 /ajlong/
+FZ = 107
+//
+
+ID patmattest-check
+AQ patmattest
+CC No documentation, no example
+//
+
+ID prima-check
+AQ prima
+IN tembl:eclaci
+IN
+IN
+IN
+IN
+IN
+IN
+FI stderr
+FC = 2
+FI eclaci.prima
+FZ = 1597
+FP /^3 pairs found\n/
+//
+
+ID primers-check
+AQ primers
+CC No documentation, no example
+//
+
+ID seqinfo-check
+AQ seqinfo
+CC No documentation, no example
+//
+
+ID seqretall-check
+AQ seqretall
+IN tembl:eclac*
+IN
+FI eclac.fasta
+FZ = 15618
+FP 5 /^>/
+FI stderr
+FC = 2
+//
+
+ID seqretallfeat-check
+AQ seqretallfeat
+CL -osf embl
+IN tembl:eclac*
+IN eclacall.embl
+FI stderr
+FC = 2
+FI eclacall.embl
+FZ = 33282
+FP 5 /^ID   ECLAC/
+//
+
+ID seqretset-check
+AQ seqretset
+IN tembl:eclac*
+IN
+FI stderr
+FC = 2
+FI eclac.fasta
+FZ = 15618
+FP 5 /^>/
+//
+
+ID seqretsingle-check
+AQ seqretsingle
+IN tembl:eclac*
+IN
+FI stderr
+FC = 2
+FI eclac.fasta
+FZ = 7678
+FP 1 /^>/
+//
+
+ID sigplot-check
+AQ sigplot
+CC No documentation, no example
+//
+
+ID testplot-check
+AQ testplot
+CC No documentation, no example
+//
+
+ID treetypedisplay-check
+AQ treetypedisplay
+CC No documentation, no example
+//
 
 #######################################
 # EMNU

@@ -76,6 +76,8 @@ sub runtest ($) {
   my %outfile = ();
   my %testdir = ();
   my %outdir = ();
+  my $testq = 0;
+  my $testpath="";
 
 # these are globals, used by the caller
 
@@ -115,11 +117,12 @@ sub runtest ($) {
     elsif ($line =~ /^CC\s*(.*)/) {$globalcomment .= "** $1\n"}
     elsif ($line =~ /^TI\s+(\d+)/) {$timeout = $1}
     elsif ($line =~ /^ER\s+(\d+)/) {$testret = $1}
-    elsif ($line =~ /^AP\s+(\S+)/) {$testapp = $1}
+    elsif ($line =~ /^AP\s+(\S+)/) {$testapp = $1; $apcount{$testapp}++}
     elsif ($line =~ /^DL\s+(success|keep|all)/) {$globaltestdelete = $1}
     elsif ($line =~ /^PP\s*(.*)/) {$ppcmd .= "$1 ; "}
     elsif ($line =~ /^QQ\s*(.*)/) {$qqcmd .= " ; $1"}
     elsif ($line =~ /^IN\s*(.*)/) {$testin .= "$1\n"}
+    elsif ($line =~ /^AQ\s*(.*)/) {$testq = 1; $testapp = $1; $apcount{$testapp}++}
     elsif ($line =~ /^CL\s+(.*)/) {
       if ($cmdline ne "") {$cmdline .= " "}
       $cmdline .= $1;
@@ -133,7 +136,7 @@ sub runtest ($) {
 	$testerr = "$retcode{20} $testid/$dirname\n";
 	print STDERR $testerr;
 	print LOG $testerr;
-	return 16;
+	return 20;
       }
       $outdir{$dirname} = $idir;
       print LOG "Known directory [$idir] <$1>\n";
@@ -209,6 +212,15 @@ sub runtest ($) {
     }
   }
 
+  if ($testq) {	# for "make check" apps (AQ lines) we can skip
+    $testpath = "../../emboss/";
+    if (! (-e "$testpath$testapp")) {return 0} # make check not run
+    if ($testappname && defined($acdname{$testapp}) && $acdname{$testapp}) {
+      print STDERR "check application $testapp installed - possible old version\n";
+    }
+    $testpath = "../$testpath";
+  }
+
 # cd to the test directory (created when ID was parsed)
 
   chdir $testid;
@@ -232,7 +244,7 @@ sub runtest ($) {
   eval {
     $status = 0;
     alarm($timeout);
-    $sysstat = system("$ppcmd $testapp $cmdline > stdout 2> stderr $stdin $qqcmd");
+    $sysstat = system("$ppcmd $testpath$testapp $cmdline > stdout 2> stderr $stdin $qqcmd");
     alarm(0);
     $status = $sysstat >> 8;
   };
@@ -583,6 +595,8 @@ $defdelete="success";		# success, all, keep
 $timeoutdef=60;			# default timeout in seconds
 
 $numtests = 0;
+$testappname=0;
+
 %dotest = ();
 foreach $test (@ARGV) {
   if ($test =~ /^-(.*)/) {
@@ -645,6 +659,35 @@ $SIG{ALRM} = sub { print STDERR "+++ timeout handler\n"; die "qatest timeout" };
 
 # The relative path is fixed, as are the paths of files in the qatest.dat
 # file, so best to keep everything running in the test/qa directory
+
+opendir (ACDDIR, "../../emboss/acd") || die "Cannot open emboss/acd directory";
+@acdfiles = readdir(ACDDIR);
+closedir ACDDIR;
+
+if (!$numtests) {
+
+  $testappname = 1;
+
+  foreach $acd (@acdfiles) {
+    if ($acd =~ /^(.*).acd$/) { $acdname{$1} = 0}
+  }
+
+  undef @acdfiles;
+
+  open (WOSSNAME, "wossname -alpha -auto|") || die "Cannot run wossname";
+  while (<WOSSNAME>) {
+    if (/^[a-z]\S+/) {
+      $app = $&;
+      if (defined($acdname{$app})) {$acdname{$app} = 1}
+    } 
+  }
+  close WOSSNAME;
+
+#  foreach $app (sort (keys (%acdname))) {
+#    if ($acdname{$app}) {print "$app\n"}
+#  }
+
+}
 
 open (IN, "../qatest.dat") || die "Cannot open qatest.dat";
 open (LOG, ">qatest.log") || die "Cannot open qatest.log";
@@ -758,6 +801,14 @@ while (<IN>) {
 $tpass = $tcount - $tfail;
 $allendtime = time();
 $alltime = $allendtime - $allstarttime;
+
+if ($testappname) {
+  foreach $x (sort (keys (%acdname))) {
+    if ($acdname{$x}) {
+      if (!defined($apcount{$x})) { print STDERR "No test(s) for '$x'\n"}
+    }
+  }
+}
 
 print STDERR "Tests total: $tcount pass: $tpass fail: $tfail\n";
 
