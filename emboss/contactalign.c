@@ -66,6 +66,9 @@ static AjBool print_contact (AjPContact ajpContactToPrint);
 
 int main( int argc , char **argv)
 {
+    /*DEBUG */
+    ajint ajIntCount;
+
     /* sequence objects and copies */
     AjPSeq ajpSeqDown = NULL;
     AjPSeq ajpSeqAcross = NULL;
@@ -172,14 +175,19 @@ int main( int argc , char **argv)
     /* create an object to hold a new contact */
     ajpContactTemp = AjContactNew();
 
-    /* read in one contact from a map */
     /* DDDD DEBUG DUMMY FILENAME BELOW */
     ajpStrCmapFile = ajStrNewC("/users/damian/EMBOSS/emboss/emboss/emboss/conts/d1aj3__.con");
     ajpFileCmap = ajFileNewIn(ajpStrCmapFile);
-    ajBoolSuccess = read_cmap_line(ajpFileCmap, ajpContactTemp);
+
+    /* read in some contacts from a map */
+    for(ajIntCount = 0;ajIntCount<10;ajIntCount++)
+    {	
+	ajBoolSuccess = read_cmap_line(ajpFileCmap, ajpContactTemp);
+
+	/* and check that's worked */
+	print_contact( ajpContactTemp );
+    }
     
-    /* and check that's worked */
-    print_contact( ajpContactTemp );
 
     /* XXXX LOOK UP PROBABILITY SCORE FOR PAIR */
 
@@ -188,6 +196,16 @@ int main( int argc , char **argv)
 
 
     /* XXXX FIND CORRESPONDING FIRST AND SECOND RESIDUES IN ORIGINAL QUERY SEQUENCE */
+
+    /* XXXX COUNT REAL RESIDUES IN FIRST SEQUENCE */
+
+    /* XXXX LOOK UP FIRST CONTACT RESIDUE POSITION AND COUNT THAT NUMBER OF REAL RESIDUES IN QUERY SEQUENCE */
+
+    
+
+    /* XXXX LOOK UP SECOND CONTACT RESIDUE POSITION AND COUNT THAT NUMBER OF REAL RESIDUES IN QUERY SEQUENCE */
+
+    /* XXXX LOOK UP FIRST RESIDUE POSITION AND COUNT THAT NUMBER OF REAL RESIDUES IN SECOND SEQUENCE */
 
     /* XXXX LOOK UP PROBABILITY SCORE FOR NEW PAIR */
 
@@ -245,13 +263,17 @@ static AjBool read_cmap_line (AjPFile ajpFileCmap, AjPContact ajpContactToRead)
 	ajpStrSecondResidue = ajStrNew();
     }
 
+    /* skip non-contact lines in contact map file */
+    /* XXXX PERHAPS THERE SHOULD BE A SANITY CHECK HERE, */
+    /*  USING THE DATA IN THE HEADER SECTION OF THE FILE */
     while(ajFileReadLine(ajpFileCmap, &ajpStrCmapLine) &&
 	  !(ajStrPrefixC(ajpStrCmapLine, "SM")) );
+
     ajFmtScanS(ajpStrCmapLine, "%S %S %d %c %S %d",
 	       &ajpStrPrefix ,
 	       &ajpStrFirstResidue , &ajIntFirstResidue,
 	       &cPunctuation ,
-	       &ajpStrSecondResidue, &ajIntSecondResidue);
+	       &ajpStrSecondResidue, &ajIntSecondResidue);    
 
     ajpContactToRead->ajpStrFirstRes=ajpStrFirstResidue;
     ajpContactToRead->ajIntNumberFirstRes=ajIntFirstResidue;
