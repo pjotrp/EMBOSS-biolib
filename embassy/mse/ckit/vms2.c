@@ -46,7 +46,7 @@ static char outSpec[256];
 	  case      IG: NewFileType(outSpec, ".IG");  break;
 	  case     IBI: NewFileType(outSpec, ".IBI");  break;
 	  case STRIDER: NewFileType(outSpec, ".STR");  break;
-	  case     RAW:
+	  case  RAWSEQ:
 	       default:  NewFileType(outSpec, ".RAW"); break;
 	}
 
@@ -173,7 +173,7 @@ extern char *StrChange(), *DecodeType(int), *GetTime();
 **
 **  STRIDER- Write out strider header line and sequnce title.
 **
-**  RAW    - Do nothing.
+**  RAWSEQ - Do nothing.
 */
 
 	switch ( format ) {
@@ -311,7 +311,7 @@ extern char *StrChange(), *DecodeType(int), *GetTime();
 
 	/****************************************************************/
 
-	  case RAW:
+	  case RAWSEQ:
 	  default:
 	    break;
 

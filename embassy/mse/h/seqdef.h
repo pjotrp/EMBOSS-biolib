@@ -13,10 +13,12 @@
 **
 ************************************************************************/
 
+/* note: RAW now RAWSEQ because clashes with IO definition in ioctl.h on AIX */
+
 #define UNDEF      0      /* Undefined, pick up from system logical       */
 #define NBRF       1      /* NBRF/MIT sequence format                     */
 #define PIR        1      /* NBRF/MIT sequence format                     */
-#define RAW        2      /* sequence-only using IUPAC symbols            */
+#define RAWSEQ     2      /* sequence-only using IUPAC symbols            */
 #define STADEN     3      /* Staden                                       */
 #define GCG        4      /* UWGCG sequence format                        */
 #define IG         5      /* Intellegentics (IG) format                   */

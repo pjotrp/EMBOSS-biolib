@@ -146,7 +146,7 @@ static int defSeqFormat = UNDEF;
 /*
 ** Find out what the User has define as his/her default format for
 ** his/her user-entry sequences.  If it's not defined, set it to
-** GCG. RAW makes a more theoritcal choice but GCG a more practical one.
+** GCG. RAWSEQ makes a more theoretical choice but GCG a more practical one.
 */
 
 	if ( defSeqFormat == UNDEF ) {          
@@ -240,7 +240,7 @@ static int defSeqFormat = UNDEF;
 	  else if ( StrIndex("/IBI",spec->options) )
 	    spec->format = IBI;
 	  else if ( StrIndex("/RAW",spec->options) )
-	    spec->format = RAW;
+	    spec->format = RAWSEQ;
 	  else if ( StrIndex("/STA",spec->options) )
 	    spec->format = STADEN;
 	  else if ( StrIndex("/GCG",spec->options) )
@@ -272,7 +272,7 @@ Choice EncodeFormat(char *string)
 
 	if (      strcmp(string,"PIR")==0 )      return(PIR);
 	else if ( strcmp(string,"NBRF")==0 )     return(PIR);
-	else if ( strcmp(string,"RAW")==0 )      return(RAW);
+	else if ( strcmp(string,"RAW")==0 )      return(RAWSEQ);
 	else if ( strcmp(string,"STADEN")==0 )   return(STADEN);
 	else if ( strcmp(string,"GCG")==0 )      return(GCG);
 	else if ( strcmp(string,"IG")==0 )       return(IG);
@@ -297,7 +297,7 @@ char *DecodeFormat(int format)
 {
 	switch ( format ) {
 	  case     PIR: return((char *)"PIR");
-	  case     RAW: return((char *)"Raw");
+	  case  RAWSEQ: return((char *)"Raw");
 	  case  STADEN: return((char *)"Staden");
 	  case     GCG: return((char *)"GCG");
 	  case      IG: return((char *)"IG");

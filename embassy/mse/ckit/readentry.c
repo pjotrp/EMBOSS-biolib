@@ -397,7 +397,7 @@ char *cPos;
 	      }
 	      sprintf(title, "IG format file: %s", DePath(spec->file));
 	      break;
-	    case RAW:
+	    case RAWSEQ:
 	      if ( ReadTxt(spec,seq) == 0 ) return(0);
 	      sprintf(title,"Raw format file: %s", DePath(spec->file));
 	      break;
@@ -439,7 +439,7 @@ char *cPos;
 */
 
 	switch ( spec->format ) {
-	  case RAW:
+	  case RAWSEQ:
 	  case GCG:
 	  case STADEN:
 	  case IBI:
@@ -477,7 +477,7 @@ char *cPos;
 	    break;
 
 	  case IG:
-	  case RAW:
+	  case RAWSEQ:
 	  case STADEN:
 	  case GCG:
 	  case IBI:
@@ -793,7 +793,7 @@ FILE *file;
 	      if ( StrIndex("..",oneLine) ) return(1);
 	      strcat(seq->text,oneLine);
 	      break;
-	    case RAW:
+	    case RAWSEQ:
 	    case STRIDER:
 	    case STADEN:
  	      goto Done;
@@ -817,7 +817,7 @@ FILE *file;
 	    sprintf(errMsg, "Missing keyword \"ORIGIN\" in file \"%s\".", spec->file);
 	    PostError(1,errMsg);
 	    return(0);
-	  case RAW:
+	  case RAWSEQ:
 	    return(1);
 	  default:
 	    sprintf(errMsg, "End of File while reading Text: \"%s\"", spec->file);
