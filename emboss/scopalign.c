@@ -112,6 +112,8 @@
 
 
 #include "emboss.h"
+
+
 static void scopalign_ProcessStampFile(AjPStr in, AjPStr out, AjPScop scop);
 
 
@@ -474,7 +476,7 @@ int main(int argc, char **argv)
 
 
 
-/* @funcstatic scopalign_ProcessStampFile *************************************
+/* @funcstatic scopalign_ProcessStampFile ***********************************
 **
 ** This function is very specific to scopalign, hence it is not library code.
 ** This function reads the output of ver2hor, i.e. a stamp alignment (Figure 
@@ -564,6 +566,7 @@ int main(int argc, char **argv)
 ** @return [void]
 ** @@
 *****************************************************************************/
+
 static void scopalign_ProcessStampFile(AjPStr in, AjPStr out, AjPScop scop)
 {
     AjPFile  outf =NULL;  /* Output file pointer */
@@ -597,8 +600,8 @@ static void scopalign_ProcessStampFile(AjPStr in, AjPStr out, AjPScop scop)
     ajFmtPrintSplit(outf,scop->Fold,"\nXX\nFO   ",75," \t\n\r");
     ajFmtPrintSplit(outf,scop->Superfamily,"XX\nSF   ",75," \t\n\r");
     ajFmtPrintSplit(outf,scop->Family,"XX\nFA   ",75," \t\n\r");
-    ajFmtPrintF(outf,"XX\n");
-    
+    ajFmtPrintF(outf,"XX");
+
     
     /* Start of code for reading input file */
     /*Ignore everything up to first line beginning with 'Number'*/
@@ -627,7 +630,7 @@ static void scopalign_ProcessStampFile(AjPStr in, AjPStr out, AjPScop scop)
 	{
 	    /* Print the number line out as it is */
 	    if(ajStrPrefixC(line,"Number"))
-		ajFmtPrintF(outf,"%S\n",line);
+		ajFmtPrintF(outf,"\n%S\n",line);
 	    else
 	    {
 		/* Read only the 7 characters of the domain identifier code in */
@@ -659,7 +662,7 @@ static void scopalign_ProcessStampFile(AjPStr in, AjPStr out, AjPScop scop)
 		ajStrAssSub(&temp3, line, 13, 69);
 
 		/* Write post similar line out */
-		ajFmtPrintF(outf,"%-13s%S\n\n","Post_similar", temp3);
+		ajFmtPrintF(outf,"%-13s%S\n","Post_similar", temp3);
 	    }
 	    /* Ignore Very and Less similar lines */
 	    else continue;
