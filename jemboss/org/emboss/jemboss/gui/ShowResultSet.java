@@ -129,14 +129,26 @@ public class ShowResultSet extends JFrame
 // now load png files into pane
     for(int i=0; i<stabs.length;i++)
     {
-      ImageIcon i1 = new ImageIcon((byte [])reslist.get(stabs[i]));
-      ImageIconJPanel iiPanel = new ImageIconJPanel(i1);
-      r1 = new JScrollPane(iiPanel);
-      r1.getViewport().setBackground(Color.white);
-      if(stabs[i] != null)
+      if(stabs[i].endsWith(".dat"))
       {
-        rtp.add(r1,i);
+        Graph2DPlot gp = new Graph2DPlot();
+        r1 = new JScrollPane(gp);
+        gp.setFileData(new String((byte [])reslist.get(stabs[i])));
+        rtp.add(r1, i);
         rtp.setTitleAt(i,stabs[i]);
+        setJMenuBar(gp.getMenuBar(false, this));
+      }
+      else
+      {
+        ImageIcon i1 = new ImageIcon((byte [])reslist.get(stabs[i]));
+        ImageIconJPanel iiPanel = new ImageIconJPanel(i1);
+        r1 = new JScrollPane(iiPanel);
+        r1.getViewport().setBackground(Color.white);
+        if(stabs[i] != null)
+        {
+          rtp.add(r1,i);
+          rtp.setTitleAt(i,stabs[i]);
+        }
       }
     }
 
@@ -238,7 +250,8 @@ public class ShowResultSet extends JFrame
       String thiskey = (String)enumer.nextElement().toString();
       if(!thiskey.equals(cmd))
       {
-        if (thiskey.endsWith("png") || thiskey.endsWith("html"))
+        if( thiskey.endsWith("png") || thiskey.endsWith("html") ||
+            thiskey.endsWith(".dat") )
         {
           int index = findInt(thiskey);
           if(index>0 && index < stabs.length)
@@ -254,15 +267,6 @@ public class ShowResultSet extends JFrame
             r1.getViewport().setBackground(Color.white);
             rtp.add(thiskey,r1);
           }
-        }
-        else if (thiskey.endsWith(".dat"))
-        {
-          Graph2DPlot gp = new Graph2DPlot();
-          r1 = new JScrollPane(gp);
-          gp.setFileData(new String((byte [])h.get(thiskey)));
-//  frame.setJMenuBar(gp.getMenuBar(false, frame));
-          rtp.add(thiskey,r1);
-          setJMenuBar(gp.getMenuBar(false, this));
         }
         else if (thiskey.endsWith("x3d")) // grout
         {
