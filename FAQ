@@ -362,7 +362,7 @@ A) To get the PNG driver you will need to have installed z,png and gd
 
 
 
-Q) Where to look for the additonal librarys needed for PNG.
+Q) Where to look for the additional libraries needed for PNG.
 
 A)
    GD)  http://www.boutell.com/gd/
@@ -395,6 +395,8 @@ A) The hp drivers presume the pens are loaded as:-
 
     Otherwise your output will have different colours.
 
+
+
 Q) Browsing the Gnu site I came across libplot, libxmi and plot utils. 
 Would these be a suitable replacement for PLPLOT?
 
@@ -403,6 +405,26 @@ A) So far they are still GPL rather than LGPL.
 Robert Maier promised a while back to LGPL them but has not yet.  Pity. 
 Makes all the difference for linking in third party applications to
 EMBOSS. 
+
+
+
+
+Q) I am trying to compile PNG support into EMBOSS on our CTU Unix system.  This
+ requires the z, png and gd libraries, which are not on our system at the
+ moment.
+ 
+ Does anyone know where I can get these libraries for either OSF or CTU Unix?
+ All the references to them I have found on the web have been for Linux.  Are
+ these platform independent (so I can use the Linux libraries)?  Or do I need
+ specific versions for our unix version?
+
+A) You should be able to compile them from the source on just about any
+Unix platform. 
+
+  http://www.info-zip.org/pub/infozip/zlib/
+  http://libpng.sourceforge.net/
+  http://www.boutell.com/gd/
+
 
 
 SECTION D - Data Files
