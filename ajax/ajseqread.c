@@ -5008,10 +5008,9 @@ static AjBool seqReadGenbank(AjPSeq thys, AjPSeqin seqin)
 
     if(ajStrPrefixC(rdline, "WPCOMMENT"))
     {
-	ajFileBuffGetStore(buff, &rdline,
+	ok = ajFileBuffGetStore(buff, &rdline,
 			   seqin->Text, &thys->TextPtr);
 	bufflines++;
-	ok = ajTrue;
 	while(ok && ajStrPrefixC(rdline, " "))
 	{
 	    ok = ajFileBuffGetStore(buff, &rdline,
@@ -5213,8 +5212,9 @@ static AjBool seqReadGenbank(AjPSeq thys, AjPSeqin seqin)
 	/* we have a sequence to use */
 	ajDebug("Got an Inseq sequence\n");
 	if(ajStrMatchC(qry->Method,"gcg"))
-	    while(!ajStrPrefixC(rdline,"ORIGIN"))
-		ajFileBuffGetStore(buff,&rdline, seqin->Text, &thys->TextPtr);
+	    while(ok && !ajStrPrefixC(rdline,"ORIGIN"))
+		ok = ajFileBuffGetStore(buff,&rdline, seqin->Text,
+					&thys->TextPtr);
 
 	ajStrAssS(&thys->Seq, seqin->Inseq);
 	if(seqin->Text)
@@ -5244,8 +5244,8 @@ static AjBool seqReadGenbank(AjPSeq thys, AjPSeqin seqin)
     }
 
     if(!ajStrMatchC(qry->Method,"gcg"))
-	while(!ajStrPrefixC(rdline,"//"))
-	    ajFileBuffGetStore(buff,&rdline, seqin->Text, &thys->TextPtr);
+	while(ok && !ajStrPrefixC(rdline,"//"))
+	    ok = ajFileBuffGetStore(buff,&rdline, seqin->Text, &thys->TextPtr);
 
 
     ajFileBuffClear(buff, 0);
