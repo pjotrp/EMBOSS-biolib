@@ -3932,7 +3932,7 @@ char* ajStrStrMod(AjPStr *pthis)
 
 
 
-/* @func ajStrFindC ***********************************************************
+/* @func ajStrFindK ***********************************************************
 **
 ** Locates the first occurrence in the string of the second string.
 **
@@ -3944,11 +3944,11 @@ char* ajStrStrMod(AjPStr *pthis)
 ** @@
 ******************************************************************************/
 
-ajint ajStrFindK(const AjPStr thys, const char chcr)
+ajint ajStrFindK(const AjPStr thys, const char chr)
 {
     const char* cp;
 
-    cp = strchr(thys->Ptr, (ajint) chcr);
+    cp = strchr(thys->Ptr, (ajint) chr);
     if(!cp)
 	return -1;
 

@@ -136,7 +136,8 @@ static void          btreeAddToSecBucket(AjPBtcache cache, ajlong pageno,
 					 const AjPStr id);
 static AjBool        btreeReorderSecBuckets(AjPBtcache cache, AjPBtpage leaf);
 #if 0
-static               void btreeInsertIdOnly(AjPBtcache cache, AjPBtPri pri);
+static               void btreeInsertIdOnly(AjPBtcache cache,
+					    const AjPBtPri pri);
 #endif
 static void          btreeSplitRootSec(AjPBtcache cache);
 static ajint         btreeNumInSecBucket(AjPBtcache cache, ajlong pageno);
@@ -710,7 +711,7 @@ AjPBtpage ajBtreeCacheWrite(AjPBtcache cache, ajlong pageno)
 ** disc and then lock the page in the disc cache.
 ** The root node is at block 0L
 **
-** @param [w] cache [AjPBtcache] cache
+** @param [u] cache [AjPBtcache] cache
 ** @param [w] rootpage [ajlong] root block
 **
 ** @return [void]
@@ -6081,7 +6082,7 @@ AjPList ajBtreeDupFromKey(AjPBtcache cache, const char *key)
 **
 ** @param [r] n [ajint] Number of IDs
 **
-** @return [AjPBucket] initialised disc block cache structure
+** @return [AjPPriBucket] initialised disc block cache structure
 ** @@
 ******************************************************************************/
 
@@ -8922,13 +8923,13 @@ static AjBool btreeReorderSecBuckets(AjPBtcache cache, AjPBtpage leaf)
 ** Add only a secondary ID: the primary keyword already exists
 **
 ** @param [u] cache [AjPBtcache] cache
-** @param [r] pri [AjPBtPri] keyword/id
+** @param [r] pri [const AjPBtPri] keyword/id
 **
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void btreeInsertIdOnly(AjPBtcache cache, AjPBtPri pri)
+static void btreeInsertIdOnly(AjPBtcache cache, const AjPBtPri pri)
 {
     unsigned char *buf;
     AjPBtpage page = NULL;
@@ -10049,7 +10050,7 @@ static void btreeKeyShiftSec(AjPBtcache cache, AjPBtpage tpage)
 
 
 
-/* @funcstatic btreeLockTest ********************************************
+/* @func btreeLockTest ********************************************
 **
 ** Test function: show if a primary tree root block is unlocked
 **
@@ -10179,13 +10180,13 @@ AjPList ajBtreeSecLeafList(AjPBtcache cache, ajlong rootblock)
 **
 ** @param [u] cache [AjPBtcache] cache
 ** @param [r] rootblock [ajlong] root page of secondary tree
-** @param [r] id [char *] test ID
+** @param [r] id [const char *] test ID
 **
 ** @return [AjBool] true if ID found
 ** @@
 ******************************************************************************/
 
-AjBool ajBtreeVerifyId(AjPBtcache cache, ajlong rootblock, char *id)
+AjBool ajBtreeVerifyId(AjPBtcache cache, ajlong rootblock, const char *id)
 {
     AjPBtpage page;
     AjPBtpage spage;

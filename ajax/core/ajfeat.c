@@ -140,15 +140,18 @@ static void         featDumpPir(const AjPFeature thys, const AjPStr location,
 				AjPFile file);
 static void         featDumpSwiss(const AjPFeature thys, AjPFile file,
 				  const AjPFeature gftop);
-static AjBool       featEmblLoc(AjPStr loc, AjPStr* begstr, AjBool* between,
+static AjBool       featEmblLoc(const AjPStr loc,
+				AjPStr* begstr, AjBool* between,
 				AjBool* simple, AjPStr* endstr);
-static AjBool       featEmblLocNum(AjPStr loc, AjBool* bound, ajint* num);
-static AjBool       featEmblLocRange(AjPStr loc, ajint* num1, ajint* num2);
-static AjBool       featEmblOperIn(AjPStr loc, AjPStr* opnam, AjPStr* value,
-				   AjPStr* rest);
-static AjBool       featEmblOperNone(AjPStr loc, AjPStr* entryid,
+static AjBool       featEmblLocNum(const AjPStr loc,
+				   AjBool* bound, ajint* num);
+static AjBool       featEmblLocRange(const AjPStr loc,
+				     ajint* num1, ajint* num2);
+static AjBool       featEmblOperIn(const AjPStr loc, AjPStr* opnam,
+				   AjPStr* value, AjPStr* rest);
+static AjBool       featEmblOperNone(const AjPStr loc, AjPStr* entryid,
 				     AjPStr* value, AjPStr* rest);
-static AjBool       featEmblOperOut(AjPStr loc,
+static AjBool       featEmblOperOut(const AjPStr loc,
 				    AjPStr* opnam, AjPStr* value);
 static AjBool       featEmblTvRest(AjPStr* tags, AjPStr* skip);
 static AjBool       featEmblTvTagVal(AjPStr* tags, AjPStr* tag, AjPStr* value);
@@ -440,8 +443,8 @@ static AjBool      feattableWriteUnknown(const AjPFeattable features,
 static AjPFeature  featEmblFromLine(AjPFeattable thys, const AjPStr line,
 				    AjPStr* savefeat,
 				    AjPStr* saveloc, AjPStr* saveline);
-static AjPFeature  featEmblProcess(AjPFeattable thys, AjPStr feature,
-				   AjPStr source,
+static AjPFeature  featEmblProcess(AjPFeattable thys, const AjPStr feature,
+				   const AjPStr source,
 				   AjPStr* loc, AjPStr* tags);
 static AjPFeature  featGffFromLine(AjPFeattable thys, const AjPStr line,
 				   float version);
@@ -3150,16 +3153,16 @@ static AjPFeature featEmblFromLine(AjPFeattable thys,
 ** Processes one feature location and qualifier tags for EMBL
 **
 ** @param [u] thys [AjPFeattable] Feature table
-** @param [u] feature [AjPStr] Feature type key
-** @param [u] source [AjPStr] Feature table source
+** @param [r] feature [const AjPStr] Feature type key
+** @param [r] source [const AjPStr] Feature table source
 ** @param [w] loc [AjPStr*] Feature location
 ** @param [w] tags [AjPStr*] Feature qualifier tags string
 ** @return [AjPFeature] Feature as inserted into the feature table
 ** @@
 ******************************************************************************/
 
-static AjPFeature featEmblProcess(AjPFeattable thys, AjPStr feature,
-				  AjPStr source,
+static AjPFeature featEmblProcess(AjPFeattable thys, const AjPStr feature,
+				  const AjPStr source,
 				  AjPStr* loc, AjPStr* tags)
 {    
     AjPFeature ret  = NULL;
@@ -3472,7 +3475,7 @@ static AjPFeature featEmblProcess(AjPFeattable thys, AjPStr feature,
 ** @return [AjBool] ajTrue if an operator was found
 ******************************************************************************/
 
-static AjBool featEmblOperOut(AjPStr loc, AjPStr* opnam, AjPStr* value)
+static AjBool featEmblOperOut(const AjPStr loc, AjPStr* opnam, AjPStr* value)
 {
     ajint left=0;
     ajint right=0;
@@ -3539,7 +3542,7 @@ static AjBool featEmblOperOut(AjPStr loc, AjPStr* opnam, AjPStr* value)
 ** @return [AjBool] ajTrue if an operator was found
 ******************************************************************************/
 
-static AjBool featEmblOperIn(AjPStr loc, AjPStr* opnam, AjPStr* value,
+static AjBool featEmblOperIn(const AjPStr loc, AjPStr* opnam, AjPStr* value,
 			     AjPStr* rest)
 {
     ajint left=0;
@@ -3602,8 +3605,8 @@ static AjBool featEmblOperIn(AjPStr loc, AjPStr* opnam, AjPStr* value,
 **                  ajFalse means an error occurred
 ******************************************************************************/
 
-static AjBool featEmblOperNone(AjPStr loc, AjPStr* entryid, AjPStr* value,
-			       AjPStr* rest)
+static AjBool featEmblOperNone(const AjPStr loc, AjPStr* entryid,
+			       AjPStr* value, AjPStr* rest)
 {
     ajint ipos=0;
     ajint idpos = 0;
@@ -3657,7 +3660,7 @@ static AjBool featEmblOperNone(AjPStr loc, AjPStr* entryid, AjPStr* value,
 **                  ajFalse means an error occurred
 ******************************************************************************/
 
-static AjBool featEmblLoc(AjPStr loc, AjPStr* begstr, AjBool* between,
+static AjBool featEmblLoc(const AjPStr loc, AjPStr* begstr, AjBool* between,
 			  AjBool* simple, AjPStr* endstr)
 {
     ajint ipos=0;
@@ -3745,12 +3748,12 @@ static AjBool featEmblLoc(AjPStr loc, AjPStr* begstr, AjBool* between,
 **
 ** @param [r] loc [const AjPStr] Feature location
 ** @param [w] bound [AjBool*] ajTrue if less than or greater than specified
-** @param [w] value [AjPStr*] Location with entryID removed
+** @param [w] num [ajint*] Base position
 ** @return [AjBool] ajTrue if a match was found
 **                  ajFalse means an error occurred
 ******************************************************************************/
 
-static AjBool featEmblLocNum(AjPStr loc, AjBool* bound, ajint* num)
+static AjBool featEmblLocNum(const AjPStr loc, AjBool* bound, ajint* num)
 {
     const char* cp = ajStrStr(loc);
 
@@ -3781,13 +3784,13 @@ static AjBool featEmblLocNum(AjPStr loc, AjBool* bound, ajint* num)
 ** start or end of a feature location.
 **
 ** @param [r] loc [const AjPStr] Feature location
-** @param [w] num [ajint*] First base position
-** @param [w] num [ajint*] Last base position
+** @param [w] num1 [ajint*] First base position
+** @param [w] num2 [ajint*] Last base position
 ** @return [AjBool] ajTrue if a match was found
 **                  ajFalse means an error occurred
 ******************************************************************************/
 
-static AjBool featEmblLocRange(AjPStr loc, ajint* num1, ajint* num2)
+static AjBool featEmblLocRange(const AjPStr loc, ajint* num1, ajint* num2)
 {
     ajint ipos=0;
     AjBool dot = ajFalse;
@@ -7875,6 +7878,8 @@ static AjPStr featTypeProt(const AjPStr type)
 ** returns the valid feature tag for the internal DNA feature table
 **
 ** @param [r]   thys  [const AjPStr] Tag name
+** @param [w]   knowntag  [AjBool*] ajTrue if the tag was found in the
+**                                  list of known tags
 ** @return [AjPStr] Valid feature tag name
 ** @@
 ******************************************************************************/
@@ -7895,6 +7900,8 @@ static AjPStr featTagDna(const AjPStr thys, AjBool* knowntag)
 ** returns the valid feature tag for the internal protein feature table
 **
 ** @param [r]   thys  [const AjPStr] Tag name
+** @param [w]   knowntag  [AjBool*] ajTrue if the tag was found in the
+**                                  list of known tags
 ** @return [AjPStr] Valid feature tag name
 ** @@
 ******************************************************************************/
@@ -7955,6 +7962,8 @@ static AjPStr featTableType(const AjPStr type, const AjPTable table)
 **
 ** @param [r]   tag  [const AjPStr] Type name
 ** @param [r]   table [const AjPTable]  Feature table
+** @param [w]   knowntag  [AjBool*] ajTrue if the tag was found in the
+**                                  list of known tags
 ** @return [AjPStr] Valid feature tag name
 ** @@
 ******************************************************************************/
@@ -8791,7 +8800,7 @@ static AjBool featTagSpecialAllTranslation(AjPStr* pval)
 **
 ** The format is a positive integer, or unknown (unquoted)
 **
-** @param  [r] pval [const AjPStr] parameter value
+** @param  [r] pval [AjPStr*] parameter value
 ** @return [AjBool] ajTrue for a valid value, possibly corrected
 **                  ajFalse if invalid, to be converted to default (note) type
 ** @@

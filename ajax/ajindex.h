@@ -523,7 +523,7 @@ void       ajBtreeInsertSecId(AjPBtcache cache, const AjPStr id);
 AjBool     ajBtreeSecFromId(AjPBtcache cache, const char *key);
 
 AjPList    ajBtreeSecLeafList(AjPBtcache cache, ajlong rootblock);
-AjBool     ajBtreeVerifyId(AjPBtcache cache, ajlong rootblock, char *id);
+AjBool     ajBtreeVerifyId(AjPBtcache cache, ajlong rootblock, const char *id);
 
 void       ajBtreeInsertKeyword(AjPBtcache cache, const AjPBtPri pri);
 

@@ -2884,7 +2884,7 @@ AjBool ajNamSetControl(const char* optionName)
 **
 ** Return the value for a resource attribute
 **
-** @param [r] resource [const char *] resource name
+** @param [r] name [const char *] resource name
 ** @param [r] attribute [const char *] resource attribute
 ** @param [w] value [AjPStr *] resource value
 

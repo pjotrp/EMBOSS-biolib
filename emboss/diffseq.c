@@ -118,7 +118,7 @@ static PosPDiff diffseq_PosPDiffNew(void);
 
 static void diffseq_PosPDiffDel(void **x, void *cl);
 
-static void diffseq_FeatSetCDSFrame(const AjPFeattable ftab);
+static void diffseq_FeatSetCDSFrame(AjPFeattable ftab);
 
 
 /* @prog diffseq **************************************************************
@@ -240,8 +240,6 @@ int main(int argc, char **argv)
 ** @param [r] over1end [ajint] end of overlap region in sequence1
 ** @param [r] over2start [ajint] start of overlap region in sequence2
 ** @param [r] over2end [ajint] end of overlap region in sequence2
-** @param [r] translation [AjBool] ajTrue if we want to check the translation
-** @param [r] tranftab [AjPFeattable] translation differences feature table
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -413,8 +411,6 @@ static void diffseq_Diff(const AjPList difflist,
 ** @param [u] tab2 [AjPFeattable*] feature table for sequence 2
 ** @param [r] seq1 [const AjPSeq] sequence 1
 ** @param [r] seq2 [const AjPSeq] sequence 2
-** @param [r] translation [AjBool] ajTrue if we want to check the translation
-** @param [r] tranftab [AjPFeattable] translation differences feature table
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -821,7 +817,7 @@ static void diffseq_DiffList(const AjPList matchlist, AjPList difflist,
 }
 
 
-/* @func diffseq_PosPDiffNew ******************************************************
+/* @funcstatic diffseq_PosPDiffNew ********************************************
 **
 ** Constructor for an empty PosPDiff object
 **
@@ -840,14 +836,13 @@ static PosPDiff diffseq_PosPDiffNew(void)
     return pthis;
 }
     
-/* @func diffseq_PosPDiffDel ******************************************************
+/* @funcstatic diffseq_PosPDiffDel ********************************************
 **
 ** Destructor for a PosPDiff object for use with ajListMap
 **
 ** @param [r] x [void**] Undocumented
 ** @param [r] cl [void*] Undocumented 
 ** @return [void]
-** @category delete [PosPDiff] Default destructor
 ** @@
 ******************************************************************************/
 
@@ -866,7 +861,7 @@ static void diffseq_PosPDiffDel(void **x, void *cl)
 
 
 
-/* @funcstatic diffseq_FeatSetCDSFrame ************************************************
+/* @funcstatic diffseq_FeatSetCDSFrame ****************************************
 **
 ** The Feature object in the ajfeat library has a field 'Frame' but it is
 ** often left as '0' (unknown) in CDS features. This routine fixes it.
@@ -875,12 +870,12 @@ static void diffseq_PosPDiffDel(void **x, void *cl)
 **
 ** Frame value of 0 is unknown, values 1,2,3 are equal to GFF phases 0,1,2
 **
-** @param [u] ftab [const AjPFeattable] Feature table
+** @param [u] ftab [AjPFeattable] Feature table
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void diffseq_FeatSetCDSFrame(const AjPFeattable ftab)
+static void diffseq_FeatSetCDSFrame(AjPFeattable ftab)
 {
 
     AjIList iter      = NULL;        /* feature table iterator */
