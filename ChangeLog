@@ -1,4 +1,7 @@
 Version 3.0.0
+	Feature table updated for nucleotide sequences to
+	EMBL/GenBank/DDBJ version 6.2. A few obsoleted qualifiers.
+
 	tranalign now allows for the proteins to have Methionine residues
 	at the start which now match a START codon in the corresponding
 	nucleic acid sequence.
