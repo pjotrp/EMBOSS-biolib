@@ -1313,6 +1313,10 @@ if [ "$AUTH_TYPE" = "3" ]; then
     echo "setenv LD_PRELOAD /lib/libpam.so" >> tomstart
   elif [ -f "/usr/lib/libpam.so" ]; then
     echo "setenv LD_PRELOAD /usr/lib/libpam.so" >> tomstart
+  elif [ -f "/lib64/libpam.so" ]; then
+    echo "setenv LD_PRELOAD /lib64/libpam.so" >> tomstart
+  elif [ -f "/usr/lib64/libpam.so" ]; then
+    echo "setenv LD_PRELOAD /usr/lib64/libpam.so" >> tomstart  
   else
     echo
     echo "WARNING: don't know what to set LD_PRELOAD to"
