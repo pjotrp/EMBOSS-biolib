@@ -13,6 +13,7 @@
 ** @author Copyright (C) 1998 Peter Rice
 ** @version 1.0
 ** @modified Jun 25 pmr First version
+** @modified May 06 2004 Jon Ison Minor mods.
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
