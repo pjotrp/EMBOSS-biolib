@@ -473,7 +473,7 @@ static void hth_print_hits(AjPList *ajb, ajint n, float minsd, ajint lastcol,
 static void hth_report_hits(AjPList *ajb, ajint lastcol, AjPReport report,
 			    AjPFeattable TabRpt)
 {
-    DNAB     **lp;
+    DNAB     **lp = NULL;
 
     AjPInt   hp  = NULL;
     AjPFloat hsd = NULL;

@@ -374,10 +374,10 @@ static void reportWriteDbMotif(AjPReport thys, AjPFeattable ftable, AjPSeq seq)
     AjPStr tmpstr = NULL;
     
     ajint ntags;
-    static AjPStr* tagtypes;
-    static AjPStr* tagnames;
-    static AjPStr* tagprints;
-    static ajint*  tagsizes;
+    static AjPStr* tagtypes = NULL;
+    static AjPStr* tagnames = NULL;
+    static AjPStr* tagprints = NULL;
+    static ajint*  tagsizes = NULL;
     ajint j = 0;
     AjPStr tagval = NULL;
     ajint jstart;
@@ -664,10 +664,10 @@ static void reportWriteExcel(AjPReport thys, AjPFeattable ftable, AjPSeq seq)
 
     
     ajint ntags;
-    static AjPStr* tagtypes;
-    static AjPStr* tagnames;
-    static AjPStr* tagprints;
-    static ajint*  tagsizes;
+    static AjPStr* tagtypes = NULL;
+    static AjPStr* tagnames = NULL;
+    static AjPStr* tagprints = NULL;
+    static ajint*  tagsizes = NULL;
 
     AjPStr tagval = NULL;
 
@@ -767,10 +767,10 @@ static void reportWriteFeatTable(AjPReport thys, AjPFeattable ftable,
     AjPStr subseq = NULL;
     
     ajint ntags;
-    static AjPStr* tagtypes;
-    static AjPStr* tagnames;
-    static AjPStr* tagprints;
-    static ajint*  tagsizes;
+    static AjPStr* tagtypes = NULL;
+    static AjPStr* tagnames = NULL;
+    static AjPStr* tagprints = NULL;
+    static ajint*  tagsizes = NULL;
     ajint j = 0;
     AjPStr tagval = NULL;
 
@@ -950,10 +950,10 @@ static void reportWriteMotif(AjPReport thys, AjPFeattable ftable, AjPSeq seq)
     AjPStr tmpstr = NULL;
     
     ajint ntags;
-    static AjPStr* tagtypes;
-    static AjPStr* tagnames;
-    static AjPStr* tagprints;
-    static ajint*  tagsizes;
+    static AjPStr* tagtypes = NULL;
+    static AjPStr* tagnames = NULL;
+    static AjPStr* tagprints = NULL;
+    static ajint*  tagsizes = NULL;
     ajint j = 0;
     AjPStr tagval = NULL;
     
@@ -1087,10 +1087,10 @@ static void reportWriteNameTable(AjPReport thys, AjPFeattable ftable,
     float score   = 0.0;
     AjPStr subseq = NULL;
     ajint ntags;
-    static AjPStr* tagtypes;
-    static AjPStr* tagnames;
-    static AjPStr* tagprints;
-    static ajint*  tagsizes;
+    static AjPStr* tagtypes = NULL;
+    static AjPStr* tagnames = NULL;
+    static AjPStr* tagprints = NULL;
+    static ajint*  tagsizes = NULL;
     ajint j = 0;
     AjPStr tagval = NULL;
     ajint jwid = 6;
@@ -1203,10 +1203,10 @@ static void reportWriteRegions(AjPReport thys, AjPFeattable ftable,
     AjPStr tagstr = NULL;
     
     ajint ntags;
-    static AjPStr* tagtypes;
-    static AjPStr* tagnames;
-    static AjPStr* tagprints;
-    static ajint*  tagsizes;
+    static AjPStr* tagtypes = NULL;
+    static AjPStr* tagnames = NULL;
+    static AjPStr* tagprints = NULL;
+    static ajint*  tagsizes = NULL;
     ajint j = 0;
     AjPStr tagval = NULL;
 
@@ -1298,10 +1298,10 @@ static void reportWriteSeqTable(AjPReport thys, AjPFeattable ftable,
     AjPStr subseq = NULL;
     
     ajint ntags;
-    static AjPStr* tagtypes;
-    static AjPStr* tagnames;
-    static AjPStr* tagprints;
-    static ajint*  tagsizes;
+    static AjPStr* tagtypes = NULL;
+    static AjPStr* tagnames = NULL;
+    static AjPStr* tagprints = NULL;
+    static ajint*  tagsizes = NULL;
     ajint j=0;
     AjPStr tagval = NULL;
     ajint jwid = 6;
@@ -1490,10 +1490,10 @@ static void reportWriteSrsFlags(AjPReport thys, AjPFeattable ftable,
     ajint ift     = 0;
     
     ajint ntags;
-    static AjPStr* tagtypes;
-    static AjPStr* tagnames;
-    static AjPStr* tagprints;
-    static ajint*  tagsizes;
+    static AjPStr* tagtypes = NULL;
+    static AjPStr* tagnames = NULL;
+    static AjPStr* tagprints = NULL;
+    static ajint*  tagsizes = NULL;
     ajint j = 0;
     AjPStr tagval = NULL;
     
@@ -1601,10 +1601,10 @@ static void reportWriteTable(AjPReport thys, AjPFeattable ftable, AjPSeq seq)
     float score   = 0.0;
     AjPStr subseq = NULL;
     ajint ntags;
-    static AjPStr* tagtypes;
-    static AjPStr* tagnames;
-    static AjPStr* tagprints;
-    static ajint*  tagsizes;
+    static AjPStr* tagtypes = NULL;
+    static AjPStr* tagnames = NULL;
+    static AjPStr* tagprints = NULL;
+    static ajint*  tagsizes = NULL;
     ajint j = 0;
     AjPStr tagval = NULL;
     ajint jwid = 6;
@@ -1715,10 +1715,10 @@ static void reportWriteTagseq(AjPReport thys, AjPFeattable ftable, AjPSeq seq)
     AjPStr subseq = NULL;
     AjPStr substr = NULL;
     ajint ntags;
-    static AjPStr* tagtypes;
-    static AjPStr* tagnames;
-    static AjPStr* tagprints;
-    static ajint*  tagsizes;
+    static AjPStr* tagtypes = NULL;
+    static AjPStr* tagnames = NULL;
+    static AjPStr* tagprints = NULL;
+    static ajint*  tagsizes = NULL;
     ajint j = 0;
     ajint i = 0;
     AjPStr tagval = NULL;

@@ -815,7 +815,7 @@ void embDbiWriteDivision(AjPStr indexdir, AjPStr dbname, AjPStr release,
 ** @param [r] maxnamlen [ajint] Maximum name length
 ** @param [r] recnum [short] Record number
 ** @param [r] datfile [AjPStr] Data file name
-** @param [r] seqfile [AjPStr] Seqeunce file name (or NULL if none)
+** @param [r] seqfile [AjPStr] Sequence file name (or NULL if none)
 ** @return [void]
 ******************************************************************************/
 

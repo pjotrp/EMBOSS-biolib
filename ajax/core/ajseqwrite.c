@@ -857,7 +857,7 @@ static void seqWriteHennig86(AjPSeqout outseq)
     ajint isize;
     ajint ilen = 0;
     ajint i    = 0;
-    void** seqs;
+    void** seqs = NULL;
     AjPSeq seq;
     AjPSeq* seqarr;
     ajint itest;
@@ -953,7 +953,7 @@ static void seqWriteMega(AjPSeqout outseq)
     ajint isize;
     ajint ilen = 0;
     ajint i    = 0;
-    void** seqs;
+    void** seqs = NULL;
     AjPSeq seq;
     AjPSeq* seqarr;
     ajint itest;
@@ -1022,7 +1022,7 @@ static void seqWriteMeganon(AjPSeqout outseq)
     ajint isize;
     ajint ilen = 0;
     ajint i    = 0;
-    void** seqs;
+    void** seqs = NULL;
     AjPSeq seq;
     AjPSeq* seqarr;
     ajint itest;
@@ -1081,7 +1081,7 @@ static void seqWriteNexus(AjPSeqout outseq)
     ajint isize;
     ajint ilen = 0;
     ajint i    = 0;
-    void** seqs;
+    void** seqs = NULL;
     AjPSeq seq;
     AjPSeq* seqarr;
     ajint itest;
@@ -1148,6 +1148,8 @@ static void seqWriteNexus(AjPSeqout outseq)
 		"begin assumptions;\n");
     ajFmtPrintF(outseq->File,
 		"options deftype=unord;\n");
+    ajFmtPrintF(outseq->File,
+		"end;\n");		/* or is it endblock; ??? */
     return;
 }
 
@@ -1168,7 +1170,7 @@ static void seqWriteNexusnon(AjPSeqout outseq)
     ajint isize;
     ajint ilen = 0;
     ajint i    = 0;
-    void** seqs;
+    void** seqs = NULL;
     AjPSeq seq;
     AjPSeq* seqarr;
     ajint itest;
@@ -1225,6 +1227,8 @@ static void seqWriteNexusnon(AjPSeqout outseq)
 		"begin assumptions;\n");
     ajFmtPrintF(outseq->File,
 		"options deftype=unord;\n");
+    ajFmtPrintF(outseq->File,
+		"end;\n");		/* or is it endblock; ??? */
     return;
 }
 
@@ -1245,7 +1249,7 @@ static void seqWriteJackknifer(AjPSeqout outseq)
     ajint isize;
     ajint ilen = 0;
     ajint i    = 0;
-    void** seqs;
+    void** seqs = NULL;
     AjPSeq seq;
     AjPSeq* seqarr;
     ajint itest;
@@ -1315,7 +1319,7 @@ static void seqWriteJackknifernon(AjPSeqout outseq)
     ajint isize;
     ajint ilen = 0;
     ajint i    = 0;
-    void** seqs;
+    void** seqs = NULL;
     AjPSeq seq;
     AjPSeq* seqarr;
     ajint itest;
@@ -1393,7 +1397,7 @@ static void seqWriteTreecon(AjPSeqout outseq)
     ajint isize;
     ajint ilen = 0;
     ajint i    = 0;
-    void** seqs;
+    void** seqs = NULL;
     AjPSeq seq;
     AjPSeq* seqarr;
     ajint itest;
@@ -1449,7 +1453,7 @@ static void seqWriteClustal(AjPSeqout outseq)
     ajint isize;
     ajint ilen = 0;
     ajint i    = 0;
-    void** seqs;
+    void** seqs = NULL;
     AjPSeq seq;
     AjPSeq* seqarr;
     ajint itest;
@@ -1810,7 +1814,7 @@ static void seqWriteMsf(AjPSeqout outseq)
     ajint isize;
     ajint ilen = 0;
     ajint i    = 0;
-    void** seqs;
+    void** seqs = NULL;
     AjPSeq seq;
     AjPSeq* seqarr;
     ajint checktot = 0;
@@ -2683,7 +2687,7 @@ static void seqWritePhylip(AjPSeqout outseq)
     ajint i    = 0;
     ajint j    = 0;
     char *p    = NULL;
-    void** seqs;
+    void** seqs = NULL;
     AjPSeq seq;
     AjPSeq* seqarr;
     ajint itest;
@@ -2768,7 +2772,7 @@ static void seqWritePhylip3(AjPSeqout outseq)
     ajint j    = 0;
     ajint n    = 0;
     char *p    = NULL;
-    void** seqs;
+    void** seqs = NULL;
     AjPSeq seq;
     AjPSeq* seqarr;
     ajint itest;

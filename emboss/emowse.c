@@ -139,7 +139,7 @@ int main(int argc, char **argv)
     ajint rno;
 
     AjPList flist;
-    EmbPMdata *data;
+    EmbPMdata *data = NULL;
     ajint dno;
     ajint nfrags;
     AjPList hlist = NULL;
