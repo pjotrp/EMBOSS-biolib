@@ -424,6 +424,8 @@ static void merger_Merge(AjPAlign align, AjPStr *ms,
 	ajStrDel(&tmpstr);
     }
 
+    ajStrDel(&mm);
+    ajStrDel(&nn);
     return;
 }
 

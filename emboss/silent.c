@@ -531,6 +531,7 @@ static AjPSilent silent_checktrans(const AjPStr seq,const EmbPMatMatch match,
     else
     {
         ajWarn("Possibly corrupt RE file");
+	ajStrDel(&tstr);
         return NULL;
     }
 
@@ -538,16 +539,18 @@ static AjPSilent silent_checktrans(const AjPStr seq,const EmbPMatMatch match,
     {
 	if(matchpos+min<0||matchpos+max>end+1)
 	{
-		/*Cut site not in sequence range*/
-		return NULL;
+	    /*Cut site not in sequence range*/
+	    ajStrDel(&tstr);
+	    return NULL;
 	}
     }
     else                       /* reverse strand */
     {
 	if(radj-matchpos-1-min>end+1||radj-matchpos-1-max<begin)
 	{
-		/*Cut site not in sequence range*/
-		return NULL;
+	    /*Cut site not in sequence range*/
+	    ajStrDel(&tstr);
+	    return NULL;
 	}
     }
 
@@ -603,6 +606,7 @@ static AjPSilent silent_checktrans(const AjPStr seq,const EmbPMatMatch match,
 	ret->base  = rpos+match->len-1-count;
     }
 
+    ajStrDel(&tstr);
     ajStrDel(&s1);
     ajStrDel(&s2);
     ajTrnDel(&table);

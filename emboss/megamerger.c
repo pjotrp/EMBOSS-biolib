@@ -346,6 +346,8 @@ static void megamerger_Merge(const AjPList matchlist,
     ajSeqWrite(seqout, seq);
 
     ajSeqDel(&seq);
+    ajStrDel(&s1);
+    ajStrDel(&s2);
     ajStrDel(&tmp);
     ajStrDel(&seqstr);
     ajListIterFree(&iter);

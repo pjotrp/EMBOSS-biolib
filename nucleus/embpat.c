@@ -1808,6 +1808,7 @@ AjBool embPatClassify(const AjPStr pat, AjPStr *cleanpat,
     ajStrAssS(&tmppat, pat);
     ajStrClean(&tmppat);
     patAminoCarboxyl(tmppat,cleanpat, amino,carboxyl);
+    ajStrDel(&tmppat);
 
     ajDebug("cleaned pat '%S' amino %b carboxyl %b\n",
 	    *cleanpat, *amino, *carboxyl);
@@ -1960,7 +1961,6 @@ AjBool embPatClassify(const AjPStr pat, AjPStr *cleanpat,
 	ajDebug("repeats expanded pat '%S'\n", *cleanpat);
     }
 
-    ajStrDel(&tmppat);
     return ajTrue;
 }
 

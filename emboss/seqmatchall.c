@@ -62,7 +62,7 @@ int main(int argc, char **argv)
     statwordlen = ajAcdGetInt("wordsize");
     align    = ajAcdGetAlign("outfile");
 
-    ajAlignSetExternal(align, ajTrue);
+    /* ajAlignSetExternal(align, ajTrue); */
     embWordLength(statwordlen);
 
     for(i=0;i<ajSeqsetSize(seqset);i++)
@@ -158,7 +158,7 @@ static void seqmatchall_matchListPrint(void *x,void *cl)
 **
 ** Undocumented.
 **
-** @param [u] align [AjPAlign] Algnment object
+** @param [u] align [AjPAlign] Alignment object
 ** @param [r] list [const AjPList] Undocumented
 ** @@
 ******************************************************************************/

@@ -648,6 +648,7 @@ static AjPList recoder_checkTrans(const AjPStr dna, const EmbPMatMatch match,
     pseq[x] = base;          /* resubstitute orig base */
 
     ajStrDel(&s1);
+    ajStrDel(&seq);
     ajTrnDel(&table);
 
     return res;
