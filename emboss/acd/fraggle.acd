@@ -1,4 +1,4 @@
-appl: fragment [
+appl: fraggle [
   documentation: "Removes fragment sequences from a seqsearch hits file"
   groups: "Protein:3D Structure"
   gui: "yes"
