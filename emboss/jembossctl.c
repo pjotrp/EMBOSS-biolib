@@ -2776,6 +2776,12 @@ static int jctl_pipe_read(char *buf, int n, int seconds)
     char *p;
     int  rchan=0;
     unsigned long block=0;
+    long then = 0;
+    long now  = 0;
+    struct timeval tv;
+    
+    gettimeofday(&tv,NULL);
+    then = tv.tv_sec;
     
 
     block = 1;
@@ -2793,50 +2799,59 @@ static int jctl_pipe_read(char *buf, int n, int seconds)
 #ifdef HAVE_POLL
     while(sum!=n)
     {
-	/* Check pipe is readable */
-	ufds.fd = rchan;
-	ufds.events = POLLIN | POLLPRI;
-	nfds = 1;
-
-	ret=poll(&ufds,nfds,seconds*1000);
-
-	if(!ret || ret==-1)
+	gettimeofday(&tv,NULL);
+	now = tv.tv_sec;
+	if(now-then >= seconds)
 	{
 	    fprintf(stderr,"jctl_pipe_read timeout\n");
 	    return -1;
 	}
 
-	if((ufds.revents & POLLIN) || (ufds.revents & POLLPRI))
+	/* Check pipe is readable */
+	ufds.fd = rchan;
+	ufds.events = POLLIN | POLLPRI;
+	nfds = 1;
+
+	ret=poll(&ufds,nfds,1);
+
+	if(ret && ret!=-1)
 	{
-	    while((got=read(rchan,p,n-(p-buf)))==-1 && errno==EINTR);
-	    if(got == -1)
+	    if((ufds.revents & POLLIN) || (ufds.revents & POLLPRI))
 	    {
-		fprintf(stderr,"jctl_pipe_read read error\n");
-		return -1;
+		while((got=read(rchan,p,n-(p-buf)))==-1 && errno==EINTR);
+		if(got == -1)
+		{
+		    fprintf(stderr,"jctl_pipe_read read error\n");
+		    return -1;
+		}
+		sum += got;
+		p += got;
+		gettimeofday(&tv,NULL);
+		then = tv.tv_sec;
 	    }
-	    sum += got;
-	    p += got;
 	}
     }
 #else
     while(sum!=n)
     {
+	gettimeofday(&tv,NULL);
+	now = tv.tv_sec;
+	if(now-then >= seconds)
+	{
+	    fprintf(stderr,"jctl_pipe_read timeout\n");
+	    return -1;
+	}
+
 	/* Check pipe is readable */
-	tfd.tv_sec  = seconds;
-	tfd.tv_usec = 0;
+	tfd.tv_sec  = 0;
+	tfd.tv_usec = 1000;
 	FD_ZERO(&fdr);
 	FD_SET(rchan,&fdr);
 	fdw = fdr;
 	
 	ret = select(rchan+1,&fdr,&fdw,NULL,&tfd);
 
-	if(!ret || ret==-1)
-	{
-	    fprintf(stderr,"jctl_pipe_read timeout\n");
-	    return -1;
-	}
-
-	if(FD_ISSET(rchan,&fdr))
+	if(ret && ret!=-1 && FD_ISSET(rchan,&fdr))
 	{
 	    while((got=read(rchan,p,n-(p-buf)))==-1 && errno==EINTR);
 	    if(got == -1)
@@ -2846,6 +2861,8 @@ static int jctl_pipe_read(char *buf, int n, int seconds)
 	    }
 	    sum += got;
 	    p += got;
+	    gettimeofday(&tv,NULL);
+	    then = tv.tv_sec;
 	}
     }
 #endif
@@ -2893,6 +2910,12 @@ static int jctl_pipe_write(char *buf, int n, int seconds)
     char *p;
     int tchan=1;
     unsigned long block=0;
+    long then = 0;
+    long now  = 0;
+    struct timeval tv;
+    
+    gettimeofday(&tv,NULL);
+    then = tv.tv_sec;
     
 
     block = 1;
@@ -2909,19 +2932,21 @@ static int jctl_pipe_write(char *buf, int n, int seconds)
 #ifdef HAVE_POLL
     while(written!=n)
     {
-	/* Check pipe is writeable */
-	ufds.fd = tchan;
-	ufds.events = POLLOUT;
-	nfds = 1;
-	ret=poll(&ufds,nfds,seconds*1000);
-
-	if(!ret || ret==-1)
+	gettimeofday(&tv,NULL);
+	now = tv.tv_sec;
+	if(now-then >= seconds)
 	{
 	    fprintf(stderr,"jctl_pipe_write timeout\n");
 	    return -1;
 	}
 
-	if(ufds.revents & POLLOUT)
+	/* Check pipe is writeable */
+	ufds.fd = tchan;
+	ufds.events = POLLOUT;
+	nfds = 1;
+	ret=poll(&ufds,nfds,1);
+
+	if(ret && ret!=-1 && (ufds.revents & POLLOUT))
 	{
 	    while((sent=write(tchan,p,n-(p-buf)))==-1 && errno==EINTR);
 	    if(sent == -1)
@@ -2931,26 +2956,31 @@ static int jctl_pipe_write(char *buf, int n, int seconds)
 	    }
 	    written += sent;
 	    p += sent;
+	    gettimeofday(&tv,NULL);
+	    then = tv.tv_sec;
 	}
     }
 #else
     while(written!=n)
     {
-	/* Check pipe is writeable */
-	tfd.tv_sec  = seconds;
-	tfd.tv_usec = 0;
-	FD_ZERO(&fdw);
-	FD_SET(tchan,&fdw);
-	fdr = fdw;
-	
-	ret = select(tchan+1,&fdr,&fdw,NULL,&tfd);
-	if(!ret || ret==-1)
+	gettimeofday(&tv,NULL);
+	now = tv.tv_sec;
+	if(now-then >= seconds)
 	{
 	    fprintf(stderr,"jctl_pipe_write timeout\n");
 	    return -1;
 	}
 
-	if(FD_ISSET(tchan,&fdw))
+	/* Check pipe is writeable */
+	tfd.tv_sec  = 0;
+	tfd.tv_usec = 1000;
+	FD_ZERO(&fdw);
+	FD_SET(tchan,&fdw);
+	fdr = fdw;
+	
+	ret = select(tchan+1,&fdr,&fdw,NULL,&tfd);
+
+	if(ret && ret!=-1 && FD_ISSET(tchan,&fdw))
 	{
 	    while((sent=write(tchan,p,n-(p-buf)))==-1 && errno==EINTR);
 	    if(sent == -1)
@@ -2960,6 +2990,8 @@ static int jctl_pipe_write(char *buf, int n, int seconds)
 	    }
 	    written += sent;
 	    p += sent;
+	    gettimeofday(&tv,NULL);
+	    then = tv.tv_sec;
 	}
     }
 #endif

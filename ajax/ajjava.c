@@ -56,10 +56,6 @@
 #define UIDLIMIT 100		/* Minimum acceptable uid and gid     */
 #define GIDLIMIT 1		/* Alter these to suit security prefs */
 
-#ifndef TMPSOCK			/* Location for Jemboss user files */
-#define TMPSOCK "/tmp"
-#endif
-
 #define AJ_OUTBUF 10000		/* Socket buffer size */
 #define AJNOTFOUND -999		/* Error flag         */
 
@@ -2275,9 +2271,6 @@ static int java_jembossctl(ajint command, AjPStr username, AjPStr password,
 			   AjPStr *outstd, AjPStr *errstd,
 			   unsigned char **fbuf, int *fsize)
 {
-/*
-    FILE *ajb;
-*/
     AjPStr dir=NULL;
     AjPStr uniq=NULL;
 
@@ -2310,10 +2303,7 @@ static int java_jembossctl(ajint command, AjPStr username, AjPStr password,
     int retval=0;
     char c;
     int  n;
-/*
-    char fred[100];
-    struct timeval tv;
-*/
+
     cuser = ajStrStr(username);
     cpass = ajStrStr(password);
 
@@ -2420,14 +2410,6 @@ static int java_jembossctl(ajint command, AjPStr username, AjPStr password,
 	return -1;
     }
 
-/*
-    gettimeofday(&tv,NULL);
-    sprintf(fred,"/tmp/zzz.%d",tv.tv_usec);
-    
-    ajb = fopen(fred,"w");
-    fprintf(ajb,"Command=%d\n",command);
-    fflush(ajb);
-*/    
     /* At this point pipe comms are active and commands can be sent */
 
     switch(command)
@@ -3928,6 +3910,12 @@ static int java_pipe_write(int tchan, char *buf, int n, int seconds,
     int  ret=0;
     char *p;
     unsigned long block=0;
+    long then = 0;
+    long now  = 0;
+    struct timeval tv;
+    
+    gettimeofday(&tv,NULL);
+    then = tv.tv_sec;
     
 
     block = 1;
@@ -3944,21 +3932,22 @@ static int java_pipe_write(int tchan, char *buf, int n, int seconds,
 #ifdef HAVE_POLL
     while(written!=n)
     {
+	gettimeofday(&tv,NULL);
+	now = tv.tv_sec;
+	if(now-then >= seconds)
+	{
+	    ajStrAppC(errstd,"java_pipe_write timeout\n");
+	    return -1;
+	}
+
 	/* Check pipe is writeable */
 
 	ufds.fd = tchan;
 	ufds.events = POLLOUT;
 	nfds = 1;
-	ret=poll(&ufds,nfds,seconds*1000);
+	ret=poll(&ufds,nfds,1);
 
-
-	if(!ret || ret==-1)
-	{
-	    ajStrAppC(errstd,"java_pipe_write timeout\n");
-	    return -1;
-	}
-
-	if(ufds.revents & POLLOUT)
+	if(ret && ret!=-1 && (ufds.revents & POLLOUT))
 	{
 	    while((sent=write(tchan,p,n-(p-buf)))==-1 && errno==EINTR);
 	    if(sent == -1)
@@ -3968,25 +3957,31 @@ static int java_pipe_write(int tchan, char *buf, int n, int seconds,
 	    }
 	    written += sent;
 	    p += sent;
+	    gettimeofday(&tv,NULL);
+	    then = tv.tv_sec;
 	}
     }
 #else
     while(written!=n)
     {
+	gettimeofday(&tv,NULL);
+	now = tv.tv_sec;
+	if(now-then >= seconds)
+	{
+	    ajStrAppC(errstd,"java_pipe_write timeout\n");
+	    return -1;
+	}
+
 	/* Check pipe is writeable */
-	tfd.tv_sec  = seconds;
-	tfd.tv_usec = 0;
+	tfd.tv_sec  = 0;
+	tfd.tv_usec = 1000;
 	FD_ZERO(&fdw);
 	FD_SET(tchan,&fdw);
 	fdr = fdw;
 	
 	ret = select(tchan+1,&fdr,&fdw,NULL,&tfd);
-	if(!ret || ret==-1)
-	{
-	    ajStrAppC(errstd,"java_pipe_write timeout\n");
-	    return -1;
-	}
-	if(FD_ISSET(tchan,&fdw))
+
+	if(ret && ret!=-1 && FD_ISSET(tchan,&fdw))
 	{
 	    while((sent=write(tchan,p,n-(p-buf)))==-1 && errno==EINTR);
 	    if(sent == -1)
@@ -3996,6 +3991,8 @@ static int java_pipe_write(int tchan, char *buf, int n, int seconds,
 	    }
 	    written += sent;
 	    p += sent;
+	    gettimeofday(&tv,NULL);
+	    then = tv.tv_sec;
 	}
     }
 #endif
@@ -4043,7 +4040,13 @@ static int java_pipe_read(int rchan, char *buf, int n, int seconds,
     int  ret=0;
     char *p;
     unsigned long block=0;
+    long then = 0;
+    long now  = 0;
+    struct timeval tv;
     
+    gettimeofday(&tv,NULL);
+    then = tv.tv_sec;
+
 
     block = 1;
     if(ioctl(rchan,FIONBIO,&block)==-1)
@@ -4058,48 +4061,60 @@ static int java_pipe_read(int rchan, char *buf, int n, int seconds,
 #ifdef HAVE_POLL
     while(sum!=n)
     {
+	gettimeofday(&tv,NULL);
+	now = tv.tv_sec;
+	if(now-then >= seconds)
+	{
+	    ajStrAppC(errstd,"java_pipe_read timeout\n");
+	    return -1;
+	}
+
 	/* Check pipe is readable */
 	ufds.fd = rchan;
 	ufds.events = POLLIN | POLLPRI;
 	nfds = 1;
 
-	ret=poll(&ufds,nfds,seconds*1000);
+	ret=poll(&ufds,nfds,1);
 
-	if(!ret || ret==-1)
+	if(ret && ret!=-1)
+	{
+	    if((ufds.revents & POLLIN) || (ufds.revents & POLLPRI))
+	    {
+		while((got=read(rchan,p,n-(p-buf)))==-1 && errno==EINTR);
+		if(got == -1)
+		{
+		    ajStrAppC(errstd,"java_pipe_read read error\n");
+		    return -1;
+		}
+		sum += got;
+		p += got;
+		gettimeofday(&tv,NULL);
+		then = tv.tv_sec;
+	    }
+	}
+	
+    }
+#else
+    while(sum!=n)
+    {
+	gettimeofday(&tv,NULL);
+	now = tv.tv_sec;
+	if(now-then >= seconds)
 	{
 	    ajStrAppC(errstd,"java_pipe_read timeout\n");
 	    return -1;
 	}
 
-	if((ufds.revents & POLLIN) || (ufds.revents & POLLPRI))
-	{
-	    while((got=read(rchan,p,n-(p-buf)))==-1 && errno==EINTR);
-	    if(got == -1)
-	    {
-		ajStrAppC(errstd,"java_pipe_read read error\n");
-		return -1;
-	    }
-	    sum += got;
-	    p += got;
-	}
-    }
-#else
-    while(sum!=n)
-    {
 	/* Check pipe is readable */
-	tfd.tv_sec  = seconds;
-	tfd.tv_usec = 0;
+	tfd.tv_sec  = 0;
+	tfd.tv_usec = 1000;
 	FD_ZERO(&fdr);
 	FD_SET(rchan,&fdr);
 	fdw = fdr;
 	
 	ret = select(rchan+1,&fdr,&fdw,NULL,&tfd);
-	if(!ret || ret==-1)
-	{
-	    ajStrAppC(errstd,"java_pipe_read timeout\n");
-	    return -1;
-	}
-	if(FD_ISSET(rchan,&fdr))
+
+	if(ret && ret!=-1 && FD_ISSET(rchan,&fdr))
 	{
 	    while((got=read(rchan,p,n-(p-buf)))==-1 && errno==EINTR);
 	    if(got == -1)
@@ -4109,6 +4124,8 @@ static int java_pipe_read(int rchan, char *buf, int n, int seconds,
 	    }
 	    sum += got;
 	    p += got;
+	    gettimeofday(&tv,NULL);
+	    then = tv.tv_sec;
 	}
     }
 #endif
