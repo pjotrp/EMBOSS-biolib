@@ -1,4 +1,4 @@
- /* @source contactalign application
+/* @source contactalign application
 **
 ** aligns two sequences: seqDownSequence and seqAcrossSequence
 **  (eventually using a structure-weighted alignment method)---at the
@@ -23,9 +23,12 @@
 ** Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******************************************************************************/
 
-#define TRACE_BACK_ARRAY_SEQ_OFFSET 1
-/* DDDDEBUG */
-#define DEBUG_LEVEL 0
+enum constant {enumDebugLevel       =  0,
+	       enumLastContact      =  0,
+	       enumZeroContacts     =  0,
+	       enumTraceArrayOffset =  1,
+	       enumTotalResTypes    = 28,
+	       enumNoResTypeMatch   = 29};
 
 #include "emboss.h"
 #include <math.h>
@@ -33,28 +36,47 @@
 typedef struct AjContact
 {
     /* position of residues in contact */
-    ajint ajIntNumberFirstRes;
-    ajint ajIntNumberSecondRes;
+    ajint ajIntFirstPosition;
+    ajint ajIntSecondPosition;
     /* 3-letter codes for 1st residue in contact */
-    AjPStr ajpStrFirstRes; 
-    AjPStr ajpStrSecondRes;
+    AjPStr ajpStrFirstResType; 
+    AjPStr ajpStrSecondResType;
 } AjOContact;
 #define AjPContact AjOContact*
 
-static void debug_pair_score(AjPFloat2d ajpFloat2dPairScores,
-			     AjPSeq ajpSeqDown,
-			     AjPSeq ajpSeqAcross);
+static void debug_pair_score (AjPFloat2d ajpFloat2dPairScores,
+			      AjPSeq ajpSeqDown,
+			      AjPSeq ajpSeqAcross);
 
-static void debug_Gotoh_score(AjPGotohCell **ajpGotohCellGotohScores,
-			      ajint ajIntDownSeqLen,
-			      ajint ajIntAcrossSeqLen);
+static void debug_Gotoh_score (AjPGotohCell **ajpGotohCellGotohScores,
+			       ajint ajIntDownSeqLen,
+			       ajint ajIntAcrossSeqLen);
+
+static AjBool read_cmap_file (AjPFile ajpFileCmap,
+			      AjPInt2d *pAjPInt2dCmapPositions,
+			      AjPInt2d *pAjPInt2dCmapResTypes);
 
 static AjBool read_cmap_line (AjPFile ajpFileCmap,
 			      AjPContact ajpContactToRead);
 
-static AjPContact AjContactNew(void);
+
+static AjBool parse_cmap_line (AjPStr ajpStrCmapLine,
+			       AjPContact ajpContactLoaded);
+
+static AjPContact ajContactNew ();
+
+static void ajContactDel (AjPContact *pAjpContactToDelete);
 
 static AjBool print_contact (AjPContact ajpContactToPrint);
+
+static AjBool string3_to_ajint1 (AjPStr ajpStrThreeLetterCode);
+
+static void debug_int_map (AjPInt2d *ajpInt2dTemplateContacts,
+			   char *pcSeq,
+			   ajint ajIntSeqLen);
+
+static AjPInt2d get_int_map (ajint ajIntAcrossSeqLen);
+
 
 
 /* @prog contactalign ********************************************************
@@ -64,10 +86,11 @@ static AjBool print_contact (AjPContact ajpContactToPrint);
 **
 ******************************************************************************/
 
-int main( int argc , char **argv)
+int main(int argc , char **argv)
 {
     /*DEBUG */
     ajint ajIntCount;
+    char *pcSeqAcross;
 
     /* sequence objects and copies */
     AjPSeq ajpSeqDown = NULL;
@@ -77,10 +100,14 @@ int main( int argc , char **argv)
     /* object to write out aligned sequence */
     AjPSeqout ajpSeqoutAligned = NULL;
     /* prebuilt scoring AjpMatrix (e.g. BLOSUM62) */
-    AjPMatrixf ajpMatrixFscoring = NULL;
+    AjPMatrixf ajpMatrixfSubstitutionScoring = NULL;
+    /* contact-based scoring AjpMatrix  */
+    AjPMatrixf ajpMatrixfContactScoring = NULL;
 
-    /* array for pair scores according to scoring matrix */
+    /* array for pair scores according to conventional scoring matrix */
     AjPFloat2d ajpFloat2dPairScores = NULL;
+    /* array for pair scores according to contact-based scoring matrix */
+    float **floatArrayContactScores = NULL;
 
     /* array for recursively summed scores in backtrace */
     AjPGotohCell **ajpGotohCellGotohScores;
@@ -98,10 +125,11 @@ int main( int argc , char **argv)
     /* DDDDEBUG temporary contact map filename */
     AjPStr ajpStrCmapFile = NULL;
     AjPFile ajpFileCmap = NULL;
-     /* object to hold single contact */
-    AjPContact ajpContactTemp = NULL;
+    
+    AjPInt2d ajpInt2dCmapResTypes = NULL;
+    AjPInt2d ajpInt2dCmapPositions = NULL;
 
-    AjBool ajBoolSuccess = AJFALSE; /* did it work? */
+    AjBool ajBoolCmapFileRead = ajFalse;
 
     embInit( "contactalign" , argc , argv);
   
@@ -112,7 +140,8 @@ int main( int argc , char **argv)
     /* ajAcdGet functions access acd values embInit has put in memory */
     ajpSeqDown   = ajAcdGetSeq("down");
     ajpSeqAcross = ajAcdGetSeq("across");
-    ajpMatrixFscoring = ajAcdGetMatrixf("datafile");
+    ajpMatrixfSubstitutionScoring = ajAcdGetMatrixf("substitutionscoringfile");
+    ajpMatrixfContactScoring = ajAcdGetMatrixf("contactscoringfile");
     ajpSeqoutAligned  = ajAcdGetSeqout("aligned");
 
     /* get sequence lengths: no. rows and columns in Gotoh sum array */
@@ -120,25 +149,25 @@ int main( int argc , char **argv)
     ajIntAcrossSeqLen = ajSeqLen(ajpSeqAcross);
 
     /* score the sequences to produce a scoring AjpMatrix */
-    ajpFloat2dPairScores = embGotohPairScore(ajpMatrixFscoring,
+    ajpFloat2dPairScores = embGotohPairScore(ajpMatrixfSubstitutionScoring,
 					     ajpSeqDown,
 					     ajpSeqAcross,
 					     fExtensionPenalty);
 
     /* DDDDEBUG CHECK THAT WORKED */
-    if(DEBUG_LEVEL > 1)
+    if(enumDebugLevel > 1)
     {
 	debug_pair_score(ajpFloat2dPairScores, ajpSeqDown, ajpSeqAcross);
     }
     
     /* initialize Gotoh score array */
     ajpGotohCellGotohScores = embGotohCellGetArray(ajIntDownSeqLen +
-						   TRACE_BACK_ARRAY_SEQ_OFFSET,
+						   enumTraceArrayOffset,
 						   ajIntAcrossSeqLen +
-						   TRACE_BACK_ARRAY_SEQ_OFFSET);
+						   enumTraceArrayOffset);
     
     /* DDDDEBUG CHECK THAT WORKED */
-    if(DEBUG_LEVEL > 1)
+    if(enumDebugLevel > 1)
     {
 	debug_Gotoh_score(ajpGotohCellGotohScores, ajIntDownSeqLen, ajIntAcrossSeqLen);
     }
@@ -151,7 +180,7 @@ int main( int argc , char **argv)
 				  fExtensionPenalty);
 
     /* DDDDEBUG CHECK THAT WORKED */
-    if(DEBUG_LEVEL > 1)
+    if(enumDebugLevel > 1)
     {
 	debug_Gotoh_score(ajpGotohCellGotohScores, ajIntDownSeqLen, ajIntAcrossSeqLen);
     }
@@ -170,26 +199,43 @@ int main( int argc , char **argv)
     /* read the backtraced elements off the stack */
     embGotohReadOffBacktrace(ajpListGotohCellsMaxScoringTrace, ajpSeqDownCopy, ajpSeqAcrossCopy);
 
-    /* READ IN EACH CONTACT IN A MAP */
-
-    /* create an object to hold a new contact */
-    ajpContactTemp = AjContactNew();
-
     /* DDDD DEBUG DUMMY FILENAME BELOW */
     ajpStrCmapFile = ajStrNewC("/users/damian/EMBOSS/emboss/emboss/emboss/conts/d1aj3__.con");
     ajpFileCmap = ajFileNewIn(ajpStrCmapFile);
 
-    /* read in some contacts from a map */
-    for(ajIntCount = 0;ajIntCount<10;ajIntCount++)
-    {	
-	ajBoolSuccess = read_cmap_line(ajpFileCmap, ajpContactTemp);
+    ajpInt2dCmapResTypes = get_int_map(ajIntAcrossSeqLen);
+    ajpInt2dCmapPositions = get_int_map(ajIntAcrossSeqLen);
 
-	/* and check that's worked */
-	print_contact( ajpContactTemp );
-    }
-    
+    /* read in some contacts from a map */
+    for(ajIntCount = 0;ajIntCount < 10;ajIntCount++)
+
+    pcSeqAcross = ajSeqCharCopy(ajpSeqAcross);
+
+    /* DDDDEBUGGING */
+    debug_int_map(&ajpInt2dCmapResTypes, pcSeqAcross, ajIntAcrossSeqLen);
+    debug_int_map(&ajpInt2dCmapPositions, pcSeqAcross, ajIntAcrossSeqLen);
+
+    /*
+     * read the 2-and-half-D data---the contacts
+     *  from the Cmap file---into a 1-D array
+     *  of AjPStrs, each containing the one-letter
+     *  codes for the corresponding residue's
+     *  contact partners
+     */
+
+    ajBoolCmapFileRead = read_cmap_file(ajpFileCmap,
+					&ajpInt2dCmapResTypes,
+					&ajpInt2dCmapPositions);
+
+
+    /* DDDDEBUGGING */
+    debug_int_map(&ajpInt2dCmapResTypes, pcSeqAcross, ajIntAcrossSeqLen);
+    debug_int_map(&ajpInt2dCmapPositions, pcSeqAcross, ajIntAcrossSeqLen);
 
     /* XXXX LOOK UP PROBABILITY SCORE FOR PAIR */
+
+    /* convert the input float AjpMatrix to a 2D array of scores */ 
+    floatArrayContactScores = ajMatrixfArray(ajpMatrixfContactScoring);
 
     /* XXXX FIND CORRESPONDING FIRST AND SECOND RESIDUES IN ORIGINAL TEMPLATE SEQUENCE */
     
@@ -226,68 +272,233 @@ int main( int argc , char **argv)
 
 
 
+/* @funcstatic string3_to_ajint1 *********************************************
+**
+** gives one-letter ASCII number for three-letter amino acid residue code
+**
+** @param [r] ajpStrThreeLetterCode [AjPStr] three-letter code string
+** @return [ajint] code for one-letter equivalent A=0 29=NO MATCH
+** @@
+******************************************************************************/
+
+static ajint string3_to_ajint1 (AjPStr ajpStrThreeLetterCode)
+{
+    ajint ajIntCount;
+    ajint ajIntCode = enumNoResTypeMatch;
+
+    /* look-up array of three-letter codes */
+    /* XXXX THE LAST TWO TLCs ARE DUMMIES FOR THE MOMENT */
+    static char *cArrayThreeLetterCodes[] =
+	{
+	    "ALA\0","ASX\0","CYS\0","ASP\0","GLU\0","PHE\0","GLY\0","HIS\0",
+	    "ILE\0","---\0","LYS\0","LEU\0","MET\0","ASN\0","---\0","PRO\0",
+	    "GLN\0","ARG\0","SER\0","THR\0","---\0","VAL\0","TRP\0","XAA\0",
+	    "TYR\0","GLX\0","XXX","YYY" 
+	};
+
+    for(ajIntCount = 0; ajIntCount < enumTotalResTypes; ajIntCount++)
+	if(!ajStrCmpC(ajpStrThreeLetterCode,
+		      cArrayThreeLetterCodes[ajIntCount]))
+	{
+	    ajIntCode = ajIntCount;
+	}
+
+    return ajIntCode;
+}
+
+
+
+/* @funcstatic read_cmap_file ************************************************
+**
+** reads ajxyz contact map file into two arrays: one of strings, one of ints  
+**
+** @param [r] ajpFileCmap [AjPFile]  input file stream of current cmap
+** @param [r] pAjPInt2dCmapResTypes [AjPInt2d *] contacts as residue types
+** @param [r] pAjPInt2dCmapPositions [AjPInt2d *] contacts as positions in chain
+** @return [AjBool] ajTrue if file successfully read
+** @@
+******************************************************************************/
+
+static AjBool read_cmap_file (AjPFile ajpFileCmap,
+			      AjPInt2d *pAjpInt2dCmapResTypes,
+			      AjPInt2d *pAjpInt2dCmapPositions)
+{
+    static AjPStr ajpStrCmapLine = NULL;  /* current line of Cmap file */
+    AjBool ajBoolCmapFileRead = ajFalse;
+
+    /* to store residue-specific contacts from template's contact map */
+    ajint ajIntTempFirstResType;
+    ajint ajIntTempSecondResType;
+    ajint ajIntTempFirstPosition;
+    ajint ajIntTempSecondPosition;
+    ajint ajIntTempLastResRowIndex;
+
+     /* object to hold single contact */
+    AjPContact ajpContactTemp = NULL;
+
+    AjPInt2d ajpInt2dCmapResTypes = NULL;
+    AjPInt2d ajpInt2dCmapPositions = NULL;
+    
+    ajpInt2dCmapResTypes = *pAjpInt2dCmapResTypes;
+    ajpInt2dCmapPositions = *pAjpInt2dCmapPositions;    
+
+    /* check file passed to function is usable */	
+    if(!ajpFileCmap)
+    {	
+	ajWarn("function read_cmap_file cannot open passed filestream");	
+	return ajFalse;
+    }
+
+    ajpStrCmapLine = ajStrNew();
+
+    /* skip non-contact lines in contact map file */
+    while(ajFileReadLine(ajpFileCmap, &ajpStrCmapLine) &&
+	  !(ajStrPrefixC(ajpStrCmapLine, "SM")) );
+
+    /* XXXX PERHAPS THERE SHOULD BE A SANITY CHECK HERE, */
+    /*  USING THE DATA IN THE HEADER SECTION OF THE FILE */
+
+    ajIntTempLastResRowIndex = enumZeroContacts;
+
+    ajpContactTemp = ajContactNew();
+
+    while(read_cmap_line(ajpFileCmap, ajpContactTemp))
+    {
+
+	/* load up temporary contact object with values read from line in Cmap file */ 
+	ajIntTempFirstResType = string3_to_ajint1(ajpContactTemp->ajpStrFirstResType);
+	ajIntTempSecondResType = string3_to_ajint1(ajpContactTemp->ajpStrSecondResType);
+	ajIntTempFirstPosition = ajpContactTemp->ajIntFirstPosition;
+	ajIntTempSecondPosition = ajpContactTemp->ajIntSecondPosition;
+
+	/* get position of last contact in column */
+	ajIntTempLastResRowIndex = ajInt2dGet(ajpInt2dCmapPositions,
+					      enumLastContact,
+					      ajIntTempFirstPosition);
+
+	/* increment contact counter at zeroth position in column */
+	ajIntTempLastResRowIndex++;
+
+	/* insert second residue position in contact into column of ints in array of first residues */
+	ajInt2dPut(&ajpInt2dCmapPositions,
+		   ajIntTempLastResRowIndex,
+		   ajIntTempFirstPosition,
+		   ajIntTempSecondPosition);
+
+	/* insert second residue type in contact into column of ints in array of first residues */
+	ajInt2dPut(&ajpInt2dCmapResTypes,
+		   ajIntTempLastResRowIndex,
+		   ajIntTempFirstPosition,
+		   ajIntTempSecondResType);
+
+	/* insert incremented contact counter at zeroth cell of corresponding array columns */
+	ajInt2dPut(&ajpInt2dCmapResTypes,
+		   enumLastContact,
+		   ajIntTempFirstPosition,
+		   ajIntTempLastResRowIndex);
+
+	ajInt2dPut(&ajpInt2dCmapPositions,
+		   enumLastContact,
+		   ajIntTempFirstPosition,
+		   ajIntTempLastResRowIndex);
+
+	/* DDDDEBUG: AND CHECK THAT'S WORKED */
+	print_contact(ajpContactTemp);
+    }
+
+    /* free contact */
+    ajContactDel(&ajpContactTemp);
+    
+    
+    return ajBoolCmapFileRead;
+}
+
+
 
 /* @funcstatic read_cmap_line ************************************************
 **
 ** reads single contact from ajxyz contact map file  
 **
 ** @param [r] ajpFileCmap [AjPFile]  input file stream of current cmap
-** @param [r] ajpContactToRead [AjPContact] residue contact object from line
-** @return [AjBool] AJTRUE if contact successfully read
+** @param [r] pAjpContactToRead [AjPContact] to residue contact object
+** @return [AjPStr] contents of line read
 ** @@
 ******************************************************************************/
 
 static AjBool read_cmap_line (AjPFile ajpFileCmap, AjPContact ajpContactToRead)
 {
-    static AjPStr ajpStrCmapLine = NULL;  /* current line of Cmap file */
-    static AjPStr ajpStrPrefix = NULL;  /* first two characters on current line */
-    char cPunctuation  = '\0';  /* separator on current line */
-    ajint ajIntFirstResidue = 0; /* position of 1st residue in contact */
-    ajint ajIntSecondResidue = 0;/* position of 2nd residue in contact */
-    AjPStr ajpStrFirstResidue = 0; /* 3-letter code for 1st residue in contact */
-    AjPStr ajpStrSecondResidue = 0; /* 3-letter code for 2nd residue in contact */
-    AjBool ajBoolContactRead = AJFALSE;
+    AjPStr ajpStrTempCmapLine = NULL;  /* current line of Cmap file */
+    AjBool ajBoolContactRead = ajFalse;
 
-    /* check file passed to function is usable */	
-    if(!ajpFileCmap)
-    {	
-	ajWarn("read_cmap_line cannot open passed filestream");	
-	return AJFALSE;
-    }
+    ajpStrTempCmapLine = ajStrNew();
 
-    /* Initialise strings */
-    if(!ajpStrCmapLine)
-    {
-	ajpStrCmapLine = ajStrNew();
-	ajpStrFirstResidue = ajStrNew();
-	ajpStrSecondResidue = ajStrNew();
-    }
+    ajFileReadLine(ajpFileCmap, &ajpStrTempCmapLine);
 
-    /* skip non-contact lines in contact map file */
-    /* XXXX PERHAPS THERE SHOULD BE A SANITY CHECK HERE, */
-    /*  USING THE DATA IN THE HEADER SECTION OF THE FILE */
-    while(ajFileReadLine(ajpFileCmap, &ajpStrCmapLine) &&
-	  !(ajStrPrefixC(ajpStrCmapLine, "SM")) );
+    ajBoolContactRead = parse_cmap_line(ajpStrTempCmapLine, ajpContactToRead);
 
-    ajFmtScanS(ajpStrCmapLine, "%S %S %d %c %S %d",
-	       &ajpStrPrefix ,
-	       &ajpStrFirstResidue , &ajIntFirstResidue,
-	       &cPunctuation ,
-	       &ajpStrSecondResidue, &ajIntSecondResidue);    
-
-    ajpContactToRead->ajpStrFirstRes=ajpStrFirstResidue;
-    ajpContactToRead->ajIntNumberFirstRes=ajIntFirstResidue;
-    ajpContactToRead->ajpStrSecondRes=ajpStrSecondResidue;
-    ajpContactToRead->ajIntNumberSecondRes=ajIntSecondResidue;
-  
+    ajStrDel(&ajpStrTempCmapLine);
     
     return ajBoolContactRead;
 }
 
 
 
+/* @funcstatic parse_cmap_line ************************************************
+**
+** loads single contact from AjPStr of single line of ajxyz contact map file
+**
+** @param [r] ajpStrCmapLine [AjPStr] to contact line from Cmap file
+** @param [r] ajpContactParsed [AjPContact] to contact object from line
+** @return [AjBool] ajTrue if contact successfully parsed
+** @@
+******************************************************************************/
 
-/* @funcstatic AjContactNew **************************************************
+static AjBool parse_cmap_line (AjPStr ajpStrCmapLine,
+			       AjPContact ajpContactParsed)
+{
+    AjPStr ajpStrPrefix = NULL;  /* first two characters on current line */
+    char cPunctuation  = '\0';  /* separator on current line */
+    ajint ajIntFirstPosition = 0; /* position of 1st residue in contact */
+    ajint ajIntSecondPosition = 0;/* position of 2nd residue in contact */
+    ajint ajIntConversionsDone = 0; /* n(successful conversions) by AjFmtScansS */
+    AjPStr ajpStrFirstResType = NULL; /* 3-letter code for 1st residue in contact */
+    AjPStr ajpStrSecondResType = NULL; /* 3-letter code for 2nd residue in contact */
+    AjBool ajBoolContactParsed = ajFalse;
+
+    ajpStrFirstResType = ajStrNew();
+    ajpStrSecondResType = ajStrNew();
+    ajpStrPrefix = ajStrNew();
+
+    /* check file passed to function is usable */	
+    if(!ajpStrCmapLine)
+    {	
+	ajWarn("NULL string passed to parse_cmap_line");	
+	return ajFalse;
+    }
+
+    ajIntConversionsDone = ajFmtScanS(ajpStrCmapLine, "%S %S %d %c %S %d",
+				      &ajpStrPrefix,
+				      &ajpStrFirstResType, &ajIntFirstPosition,
+				      &cPunctuation,
+				      &ajpStrSecondResType, &ajIntSecondPosition);
+
+    if(ajIntConversionsDone == 6)
+    {
+	ajpContactParsed->ajpStrFirstResType = ajpStrFirstResType;
+	ajpContactParsed->ajIntFirstPosition = ajIntFirstPosition;
+	ajpContactParsed->ajpStrSecondResType = ajpStrSecondResType;
+	ajpContactParsed->ajIntSecondPosition = ajIntSecondPosition;
+	ajBoolContactParsed = ajTrue;
+    }
+
+    ajStrDel(&ajpStrPrefix);
+    
+    return ajBoolContactParsed;
+}
+
+
+
+/* @funcstatic ajContactNew **************************************************
 **
 ** Default constructor for a Cmap contact object
 **
@@ -295,13 +506,73 @@ static AjBool read_cmap_line (AjPFile ajpFileCmap, AjPContact ajpContactToRead)
 ** @@
 ******************************************************************************/
 
-static AjPContact AjContactNew(void)
+static AjPContact ajContactNew(void)
 {
     AjPContact ajpContactReturned = NULL;
 
     AJNEW0(ajpContactReturned);
 
     return ajpContactReturned;
+}
+
+
+
+/* @funcstatic ajContactDel **************************************************
+**
+** Default destructor for a Cmap contact object
+**
+** @param [r] pAjpContactToDel [AjPContact *] contact to be deleted
+** @return [void]
+** @@
+******************************************************************************/
+
+static void ajContactDel(AjPContact* pthis)
+{
+    AjPContact thys = NULL;
+
+    thys = pthis ? *pthis :0;
+ 
+    if(!pthis)
+	return;
+
+    thys->ajIntFirstPosition = 0;
+    thys->ajIntSecondPosition = 0;
+    thys->ajpStrFirstResType = NULL; 
+    thys->ajpStrSecondResType = NULL;    
+
+    AJFREE(thys);
+    *pthis = NULL;
+
+    return;
+}
+
+
+/* @funcstatic get_int_map *************************************************
+**
+** reserves memory for a 2-D array of ints to store a contact map 
+**
+** @param [r] ajIntAcrossSeqLen [AjPContact] number of residues in template
+** @return [ajint **] array of ajints containing position IDs for each contact
+** @@
+******************************************************************************/
+
+static AjPInt2d get_int_map (ajint ajIntAcrossSeqLen)
+{
+    ajint ajIntCount;
+    
+    AjPInt2d ajpInt2dContacts = NULL;
+
+    ajpInt2dContacts = ajInt2dNewL(ajIntAcrossSeqLen);
+
+    for(ajIntCount = 0;ajIntCount < ajIntAcrossSeqLen;ajIntCount++)
+    {
+	ajInt2dPut(&ajpInt2dContacts,
+		   enumLastContact,
+		   ajIntCount,
+		   enumZeroContacts);
+    }
+	
+    return ajpInt2dContacts;
 }
 
 
@@ -316,14 +587,14 @@ static AjPContact AjContactNew(void)
 /*                                                                              */
 /* prints out result of Gotoh scoring                                           */
 
-void debug_Gotoh_score(AjPGotohCell **ajpGotohCellGotohScores, ajint ajIntDownSeqLen, ajint ajIntAcrossSeqLen)
+void debug_Gotoh_score (AjPGotohCell **ajpGotohCellGotohScores, ajint ajIntDownSeqLen, ajint ajIntAcrossSeqLen)
 {
   ajint ajIntRowCount;
   ajint ajIntColumnCount;
 
-  for(ajIntRowCount = 0 ; ajIntRowCount < ajIntDownSeqLen + TRACE_BACK_ARRAY_SEQ_OFFSET ; ajIntRowCount++)
+  for(ajIntRowCount = 0 ; ajIntRowCount < ajIntDownSeqLen + enumTraceArrayOffset ; ajIntRowCount++)
     {
-      for(ajIntColumnCount = 0 ; ajIntColumnCount < ajIntAcrossSeqLen + TRACE_BACK_ARRAY_SEQ_OFFSET ; ajIntColumnCount++)
+      for(ajIntColumnCount = 0 ; ajIntColumnCount < ajIntAcrossSeqLen + enumTraceArrayOffset ; ajIntColumnCount++)
 	{
 	  ajFmtPrint("====================================================================================================\n");
 	  ajFmtPrint("GOTOH (%4d, %4d):\ti pointer: %4d j pointer: %4d\tsubscore: %3.3f\ttemplate residue:\t%c\tquery residue:\t%c\tisIndel?: %B\n", \
@@ -355,8 +626,8 @@ void debug_pair_score(AjPFloat2d ajpFloat2dPairScores , AjPSeq ajpSeqDown , AjPS
   ajint ajIntColumn;
 
   /* get size of sequences---and therefore good array values */
-  ajIntMaxRow = ajSeqLen(ajpSeqDown) + TRACE_BACK_ARRAY_SEQ_OFFSET;
-  ajIntMaxColumn = ajSeqLen(ajpSeqAcross) + TRACE_BACK_ARRAY_SEQ_OFFSET;
+  ajIntMaxRow = ajSeqLen(ajpSeqDown) + enumTraceArrayOffset;
+  ajIntMaxColumn = ajSeqLen(ajpSeqAcross) + enumTraceArrayOffset;
 
   ajFmtPrint( "ROWS:\t%d\tCOLUMNS:\t%d\n" , ajIntMaxRow , ajIntMaxColumn );
 
@@ -394,13 +665,63 @@ static AjBool print_contact (AjPContact ajpContactToPrint)
 
     /* print out each residue in contact object in order */
     ajFmtPrint("\n\nFIRST RESIDUE residue type:\t%S\tresidue number:\t%d\n",
-	       ajpContactToPrint->ajpStrFirstRes,
-	       ajpContactToPrint->ajIntNumberFirstRes);
+	       ajpContactToPrint->ajpStrFirstResType,
+	       ajpContactToPrint->ajIntFirstPosition);
     ajFmtPrint("\n\nSECOND RESIDUE residue type:\t%S\tresidue number:\t%d\n",    
-	       ajpContactToPrint->ajpStrSecondRes,
-	       ajpContactToPrint->ajIntNumberSecondRes);
+	       ajpContactToPrint->ajpStrSecondResType,
+	       ajpContactToPrint->ajIntSecondPosition);
 
     ajBoolSuccess= AJTRUE;
     
     return ajBoolSuccess;
 }
+
+
+
+/* 17Mar04              debug_int_map()                  Damian Counsell  */
+/*                                                                              */
+/* checks that array of strings of one-letter contacts is properly built        */
+
+static void debug_int_map(AjPInt2d *ajpInt2dTemplateContacts,
+			  char *pcSeq,
+			  ajint ajIntSeqLen)
+{
+  ajint ajIntCount;
+  ajint ajIntContactCount;
+  ajint ajIntTempLastContact;
+  ajint ajIntTempFirstRes;
+  ajint ajIntTempSecondRes;
+
+  ajFmtPrint("====================================================================================================\n");
+  ajFmtPrint("====================================================================================================\n");
+  for(ajIntCount = 0; ajIntCount < ajIntSeqLen; ajIntCount++)
+    {
+	ajIntTempLastContact = ajInt2dGet(*ajpInt2dTemplateContacts,
+					  enumLastContact,
+					  ajIntCount);
+	ajFmtPrint("current count:\t%4d current residue type: %c\tnumber of contacts: %4d",
+		   ajIntCount,
+		   pcSeq[ajIntCount],
+		   ajIntTempLastContact);
+	ajFmtPrint("\tcurrent contact ints: ");
+	
+	ajIntTempFirstRes = ajIntCount;
+	
+	if(ajIntTempLastContact)
+	    for (ajIntContactCount = 1;ajIntContactCount <= ajIntTempLastContact;ajIntContactCount++)
+	    {
+		ajIntTempSecondRes = ajInt2dGet(*ajpInt2dTemplateContacts,
+						ajIntContactCount,
+						ajIntCount);
+		ajFmtPrint("%3d ", ajIntTempSecondRes);
+	    }
+	ajFmtPrint("\n");
+	
+    }
+
+  ajFmtPrint("====================================================================================================\n");
+  ajFmtPrint("====================================================================================================\n");
+
+  return;
+}
+
