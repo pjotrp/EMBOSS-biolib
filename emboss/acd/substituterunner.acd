@@ -1,0 +1,64 @@
+application: substituterunner
+[
+  documentation: "runs substitute on directory of traces and writes substituted sequences to two more"
+  groups: "protein: global alignment"
+]
+
+section: input
+[
+  information: "input section"
+  type: "page"
+]
+
+  directory: pathtocommands
+  [
+    parameter: "Y"
+    default: "/users/damian/EMBOSS/emboss/emboss/emboss"
+    information: "directory where alignment executables live"
+  ]
+
+  dirlist: alignedpairsdirlist
+  [
+    parameter: "Y"
+#    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_aligned_sequences/nawalign/55_60"
+    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_aligned_sequences/needle/55_60"
+    information: "directory containing paired traces"
+#    extension: "nawalign"
+    extension: "needle"
+  ]
+
+endsection: input
+
+
+section: required
+[
+  information: "required section"
+  type: "page"
+]
+endsection: required
+
+
+section: advanced
+[
+  information: "advanced section"
+  type: "page"
+]
+endsection: advanced
+
+
+section: output
+[
+  information: "output Section"
+  type: "page"
+]
+
+  outdir: substitutedseqsoutdir
+  [
+    parameter: "Y"
+#    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_substituted_sequences/nawalign/55_60"
+    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_substituted_sequences/needle/55_60"
+    information: "directory containing aligned sequences"
+    extension: "sbs"
+  ]
+
+endsection: output
