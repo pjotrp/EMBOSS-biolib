@@ -527,7 +527,6 @@ static void      acdSelectPrompt (AcdPAcd thys);
 static AjPStr*   acdSelectValue (AcdPAcd thys, ajint min, ajint max,
 				 AjPStr reply);
 static AcdEStage acdStage (AjPStr token);
-static AjPStr    acdStrDiff (AjPStr str1, AjPStr str2);
 static AcdPAcd   acdTestAssoc (AcdPAcd thys, AjPStr name, AjPStr altname);
 static void      acdTestAssocUnknown (AjPStr name);
 static AjBool    acdTestQualC (char *name);
@@ -849,6 +848,7 @@ AcdOAttr acdAttrFeatout[] =
 AcdOAttr acdAttrFilelist[] =
 {
     {"nullok", VT_BOOL, "Can accept a null filename as 'no file' default:N"},
+    {"standardtype", VT_STR, "Standard named file type"},
     {NULL, VT_NULL, NULL}
 };
 
@@ -1401,7 +1401,7 @@ AcdOType acdType[] =
 	 AJFALSE, "Boolean value Yes/No" },
     {"codon",	           "input",            acdSecInput,
 	 acdAttrCodon,     acdSetCodon,        NULL,
-	 AJFALSE, "Codon usage file in EMBOSS data path" },
+	 AJTRUE,  "Codon usage file in EMBOSS data path" },
     {"cpdb",	           "input",            acdSecInput,
 	 acdAttrCpdb,      acdSetCpdb,         NULL,
 	 AJFALSE, "Cleaned PDB file in EMBOSS data path" },
@@ -1938,8 +1938,12 @@ static void acdParse (AjPList listwords, AjPList listcount)
 	    
 	    acdNewCurr = acdNewQual (acdStrName, acdStrAlias, &acdStrType, 0);
 	    
-	    acdPretty ("\n%S: %S %S [\n", acdStrType,
-		       acdStrName, acdStrDiff(acdStrName, acdStrAlias));
+	    if (!ajStrMatch(acdStrName, acdStrAlias))
+		acdPretty ("\n%S: %S %S [\n", acdStrType,
+		       acdStrName, acdStrAlias);
+	    else
+		acdPretty ("\n%S: %S [\n", acdStrType,
+			   acdStrName);
 	    
 	    acdParseAttributes (acdNewCurr, listwords);
 	    
@@ -15341,30 +15345,6 @@ static AjBool acdInTypeFeat (AjPStr* typename)
     return ret;
 }
 
-/* @funcstatic acdStrDiff *****************************************************
-**
-** Returns the second string if different from the first,
-** otherwise returns an empty string
-**
-** @param [r] str1 [AjPStr] First string
-** @param [r] str2 [AjPStr] Second string
-** @return [AjPStr] Selected string returned
-** @@
-******************************************************************************/
-
-static AjPStr acdStrDiff (AjPStr str1, AjPStr str2)
-{
-    static AjPStr emptyStr = NULL;
-
-    if (!emptyStr)
-	(void) ajStrAssC(&emptyStr, "");
-
-    if (ajStrMatch (str1, str2))
-	return emptyStr;
-
-    return str2;
-}
-
 /* @funcstatic acdLog *********************************************************
 **
 ** Writes a message to the .acdlog file
@@ -16139,7 +16119,7 @@ static void acdValidSection (AcdPAcd thys)
 	    if (ajStrMatchC(tmpstr, "page"))
 		acdErrorValid("Sub level section '%S' not of type 'frame'",
 			      thys->Name);
-	    else if (!ajStrPrefixC(sectType, "frame"))
+	    else if (ajStrPrefixC(sectType, "page"))
 		acdErrorValid("Sub level section '%S' not defined "
 			      "as type 'frame' in sections.standard",
 			      thys->Name);
@@ -16325,15 +16305,20 @@ static void acdValidQual (AcdPAcd thys)
 	    ajStrAssS (&qualSeqFirst, thys->Token);
 	ajFmtPrintS(&qualName, "%csequence",
 		    (char) ('a' - 1 + qualCountSeq));
-	if (!ajStrSuffixC(thys->Token, "sequence"))
+	if (!(ajStrSuffixC(thys->Token, "sequence") ||
+	      (ajStrMatchCC(acdType[thys->Type].Name, "seqall") &&
+	       ajStrSuffixC(thys->Token, "seqall"))))
 	{
-	    acdWarn("sequence qualifier '%S' is not 'sequence' or '*sequence'",
+	    acdWarn("sequence qualifier '%S' is not 'sequence' or '*sequence' "
+		    "or 'seqall'",
 		    thys->Token);
 	}
 	else
 	{
 	    if ((qualCountSeq > 1) ||
-		!ajStrMatchC(thys->Token, "sequence"))
+		!(ajStrMatchC(thys->Token, "sequence") ||
+		  (ajStrMatchCC(acdType[thys->Type].Name, "seqall") &&
+		   ajStrSuffixC(thys->Token, "seqall")) ))
 		seqMulti = ajTrue;
 	    if (seqMulti)
 	    {
@@ -16357,14 +16342,24 @@ static void acdValidQual (AcdPAcd thys)
     /* infile - assume parameter  -infile */
     /* check for type */
 
-    if (ajStrMatchCC(acdType[thys->Type].Name, "infile"))
+    if (ajStrMatchCC(acdType[thys->Type].Name, "infile") ||
+	ajStrMatchCC(acdType[thys->Type].Name, "filelist"))
     {
 	if (!isparam)
 	    acdWarn("input file is not a parameter");
 	qualCountInfile++;
-	if (!ajStrSuffixC(thys->Token, "file"))
-	    acdWarn("infile qualifier '%S' is not 'infile' or '*file'",
-		    thys->Token);
+	if (ajStrMatchCC(acdType[thys->Type].Name, "infile"))
+	{
+	    if (!ajStrSuffixC(thys->Token, "file"))
+		acdWarn("infile qualifier '%S' is not 'infile' or '*file'",
+			thys->Token);
+	}
+	else if (ajStrMatchCC(acdType[thys->Type].Name, "filelist"))
+	{
+	    if (!ajStrSuffixC(thys->Token, "files"))
+		acdWarn("filelist qualifier '%S' is not '*files'",
+			thys->Token);
+	}
 	else
 	{
 	    if ((qualCountInfile > 1) ||
@@ -16467,15 +16462,17 @@ static void acdValidQual (AcdPAcd thys)
 	ajFmtPrintS(&qualName, "%coutseq",
 		    (char) ('a' - 1 + qualCountSeq));
 
-	if (!ajStrSuffixC(thys->Token, "outseq"))
+	if (!ajStrSuffixC(thys->Token, "outseq") &&
+	    !ajStrSuffixC(thys->Token, "outfile"))
 	    acdWarn("sequence output qualifier '%S' is not 'outseq' "
-		    "or '*outseq'",
+		    "or '*outseq' or 'outfile'",
 		    thys->Token);
 
 	else
 	{
-	    if ((qualCountSeq > 1) ||
-		!ajStrMatchC(thys->Token, "outseq"))
+	    if ((qualCountSeqout > 1) ||
+		(!ajStrMatchC(thys->Token, "outseq") &&
+		 !ajStrMatchC(thys->Token, "outfile")))
 		seqoutMulti = ajTrue;
 	    if (seqoutMulti)
 	    {
