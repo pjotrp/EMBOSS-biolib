@@ -418,7 +418,12 @@ int main(int argc, char **argv, char **env)
 
 /* send primer3 Primer "Sequence" parameters */
             primer3_send_string(stream, "SEQUENCE", substr);
-            primer3_send_string(stream, "PRIMER_SEQUENCE_ID", ajSeqGetName(seq));
+/* if no ID name, use the USA */
+            if (ajStrMatchC(ajSeqGetName(seq),"")) {
+              primer3_send_string(stream, "PRIMER_SEQUENCE_ID", ajSeqGetUsa(seq));
+            } else {
+              primer3_send_string(stream, "PRIMER_SEQUENCE_ID", ajSeqGetName(seq));
+            }
             primer3_send_range(stream, "INCLUDED_REGION", included_region);
 	    primer3_send_range(stream, "TARGET", target);
 	    primer3_send_range(stream, "EXCLUDED_REGION", excluded_region);
