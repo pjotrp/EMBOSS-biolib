@@ -472,8 +472,8 @@ viral         N
    
 Command line arguments
 
-   Mandatory qualifiers: (none)
-   Optional qualifiers:
+   Standard (Mandatory) qualifiers: (none)
+   Additional (Optional) qualifiers:
    -database           string     Name of a single database to give
                                   information on
    -html               boolean    Format output as an HTML table
@@ -483,11 +483,9 @@ Command line arguments
                                   used on this database, other than the
                                   standard 'id' or 'acc' fields.
    -release            boolean    Display 'release' column
-   -outfile            outfile    If you enter the name of a file here then
-                                  this program will write the database details
-                                  into that file.
+   -outfile            outfile    Output file name
 
-   Advanced qualifiers:
+   Advanced (Unprompted) qualifiers:
    -only               boolean    This is a way of shortening the command line
                                   if you only want a few things to be
                                   displayed. Instead of specifying:
@@ -503,28 +501,29 @@ Command line arguments
    -comment            boolean    Display 'comment' column
 
    Associated qualifiers:
-  "-outfile" related qualifiers
-  -odirectory          string     Output directory
+
+   "-outfile" associated qualifiers
+   -odirectory          string     Output directory
 
    General qualifiers:
-  -auto                boolean    Turn off prompts
-  -stdout              boolean    Write standard output
-  -filter              boolean    Read standard input, write standard output
-  -options             boolean    Prompt for required and optional values
-  -debug               boolean    Write debug output to program.dbg
-  -verbose             boolean    Report some/full command line options
-  -help                boolean    Report command line options. More
+   -auto                boolean    Turn off prompts
+   -stdout              boolean    Write standard output
+   -filter              boolean    Read standard input, write standard output
+   -options             boolean    Prompt for standard and additional values
+   -debug               boolean    Write debug output to program.dbg
+   -verbose             boolean    Report some/full command line options
+   -help                boolean    Report command line options. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
-  -warning             boolean    Report warnings
-  -error               boolean    Report errors
-  -fatal               boolean    Report fatal errors
-  -die                 boolean    Report deaths
+   -warning             boolean    Report warnings
+   -error               boolean    Report errors
+   -fatal               boolean    Report fatal errors
+   -die                 boolean    Report deaths
    
 
-   Mandatory qualifiers Allowed values Default
+   Standard (Mandatory) qualifiers Allowed values Default
    (none)
-   Optional qualifiers Allowed values Default
+   Additional (Optional) qualifiers Allowed values Default
    -database Name of a single database to give information on Any string
    is accepted An empty string is accepted
    -html Format output as an HTML table Boolean value Yes/No No
@@ -534,9 +533,8 @@ Command line arguments
    database, other than the standard 'id' or 'acc' fields. Boolean value
    Yes/No No
    -release Display 'release' column Boolean value Yes/No No
-   -outfile If you enter the name of a file here then this program will
-   write the database details into that file. Output file stdout
-   Advanced qualifiers Allowed values Default
+   -outfile Output file name Output file stdout
+   Advanced (Unprompted) qualifiers Allowed values Default
    -only This is a way of shortening the command line if you only want a
    few things to be displayed. Instead of specifying: '-nohead -notype
    -noid -noquery -noall' to get only the comment output, you can specify

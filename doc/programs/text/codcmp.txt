@@ -41,45 +41,46 @@ Output file [outfile.codcmp]:
    
 Command line arguments
 
-   Mandatory qualifiers:
+   Standard (Mandatory) qualifiers:
   [-first]             codon      First codon usage file
-  [-second]            codon      Second codon usage file
+  [-second]            codon      Second codon usage file for comparison
   [-outfile]           outfile    Output file name
 
-   Optional qualifiers: (none)
-   Advanced qualifiers: (none)
+   Additional (Optional) qualifiers: (none)
+   Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
-  "-outfile" related qualifiers
-  -odirectory3         string     Output directory
+
+   "-outfile" associated qualifiers
+   -odirectory3         string     Output directory
 
    General qualifiers:
-  -auto                boolean    Turn off prompts
-  -stdout              boolean    Write standard output
-  -filter              boolean    Read standard input, write standard output
-  -options             boolean    Prompt for required and optional values
-  -debug               boolean    Write debug output to program.dbg
-  -verbose             boolean    Report some/full command line options
-  -help                boolean    Report command line options. More
+   -auto                boolean    Turn off prompts
+   -stdout              boolean    Write standard output
+   -filter              boolean    Read standard input, write standard output
+   -options             boolean    Prompt for standard and additional values
+   -debug               boolean    Write debug output to program.dbg
+   -verbose             boolean    Report some/full command line options
+   -help                boolean    Report command line options. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
-  -warning             boolean    Report warnings
-  -error               boolean    Report errors
-  -fatal               boolean    Report fatal errors
-  -die                 boolean    Report deaths
+   -warning             boolean    Report warnings
+   -error               boolean    Report errors
+   -fatal               boolean    Report fatal errors
+   -die                 boolean    Report deaths
    
 
-   Mandatory qualifiers Allowed values Default
+   Standard (Mandatory) qualifiers Allowed values Default
    [-first]
    (Parameter 1) First codon usage file Codon usage file in EMBOSS data
    path Ehum.cut
    [-second]
-   (Parameter 2) Second codon usage file Codon usage file in EMBOSS data
-   path Ehum.cut
+   (Parameter 2) Second codon usage file for comparison Codon usage file
+   in EMBOSS data path Ehum.cut
    [-outfile]
    (Parameter 3) Output file name Output file <sequence>.codcmp
-   Optional qualifiers Allowed values Default
+   Additional (Optional) qualifiers Allowed values Default
    (none)
-   Advanced qualifiers Allowed values Default
+   Advanced (Unprompted) qualifiers Allowed values Default
    (none)
    
 Input file format

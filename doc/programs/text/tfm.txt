@@ -964,13 +964,11 @@ UTILS MISC
    
 Command line arguments
 
-   Mandatory qualifiers:
+   Standard (Mandatory) qualifiers:
   [-program]           string     Enter the name of an EMBOSS program
 
-   Optional qualifiers:
-   -outfile            outfile    If you enter the name of a file here then
-                                  this program will write the program names
-                                  and brief descriptions into that file.
+   Additional (Optional) qualifiers:
+   -outfile            outfile    Output file name
    -html               boolean    This will format the output for displaying
                                   as a WWW document.
    -more               boolean    This uses the standard UNIX utility 'more'
@@ -980,35 +978,34 @@ Command line arguments
                                   reading a page, press the SPACE bar to
                                   proceed to the next page.
 
-   Advanced qualifiers: (none)
+   Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
-  "-outfile" related qualifiers
-  -odirectory          string     Output directory
+
+   "-outfile" associated qualifiers
+   -odirectory          string     Output directory
 
    General qualifiers:
-  -auto                boolean    Turn off prompts
-  -stdout              boolean    Write standard output
-  -filter              boolean    Read standard input, write standard output
-  -options             boolean    Prompt for required and optional values
-  -debug               boolean    Write debug output to program.dbg
-  -verbose             boolean    Report some/full command line options
-  -help                boolean    Report command line options. More
+   -auto                boolean    Turn off prompts
+   -stdout              boolean    Write standard output
+   -filter              boolean    Read standard input, write standard output
+   -options             boolean    Prompt for standard and additional values
+   -debug               boolean    Write debug output to program.dbg
+   -verbose             boolean    Report some/full command line options
+   -help                boolean    Report command line options. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
-  -warning             boolean    Report warnings
-  -error               boolean    Report errors
-  -fatal               boolean    Report fatal errors
-  -die                 boolean    Report deaths
+   -warning             boolean    Report warnings
+   -error               boolean    Report errors
+   -fatal               boolean    Report fatal errors
+   -die                 boolean    Report deaths
    
 
-   Mandatory qualifiers Allowed values Default
+   Standard (Mandatory) qualifiers Allowed values Default
    [-program]
    (Parameter 1) Enter the name of an EMBOSS program A string of at least
    1 characters Required
-   Optional qualifiers Allowed values Default
-   -outfile If you enter the name of a file here then this program will
-   write the program names and brief descriptions into that file. Output
-   file stdout
+   Additional (Optional) qualifiers Allowed values Default
+   -outfile Output file name Output file stdout
    -html This will format the output for displaying as a WWW document.
    Boolean value Yes/No No
    -more This uses the standard UNIX utility 'more' to display the text
@@ -1016,7 +1013,7 @@ Command line arguments
    to the next page. When you have finished reading a page, press the
    SPACE bar to proceed to the next page. Boolean value Yes/No
    @(!$(html))
-   Advanced qualifiers Allowed values Default
+   Advanced (Unprompted) qualifiers Allowed values Default
    (none)
    
 Input file format

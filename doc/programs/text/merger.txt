@@ -80,13 +80,13 @@ Output alignment [eclacy.out2]:
 
 Command line arguments
 
-   Mandatory qualifiers:
+   Standard (Mandatory) qualifiers:
   [-asequence]         sequence   Sequence USA
   [-bsequence]         sequence   Sequence USA
   [-outseq]            seqout     Output sequence USA
   [-outfile]           align      Output alignment file name
 
-   Optional qualifiers:
+   Additional (Optional) qualifiers:
    -datafile           matrixf    This is the scoring matrix file used when
                                   comparing sequences. By default it is the
                                   file 'EBLOSUM62' (for proteins) or the file
@@ -96,80 +96,84 @@ Command line arguments
    -gapopen            float      Gap opening penalty
    -gapextend          float      Gap extension penalty
 
-   Advanced qualifiers: (none)
+   Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
-  "-asequence" related qualifiers
-  -sbegin1             integer    First base used
-  -send1               integer    Last base used, def=seq length
-  -sreverse1           boolean    Reverse (if DNA)
-  -sask1               boolean    Ask for begin/end/reverse
-  -snucleotide1        boolean    Sequence is nucleotide
-  -sprotein1           boolean    Sequence is protein
-  -slower1             boolean    Make lower case
-  -supper1             boolean    Make upper case
-  -sformat1            string     Input sequence format
-  -sopenfile1          string     Input filename
-  -sdbname1            string     Database name
-  -sid1                string     Entryname
-  -ufo1                string     UFO features
-  -fformat1            string     Features format
-  -fopenfile1          string     Features file name
-  "-bsequence" related qualifiers
-  -sbegin2             integer    First base used
-  -send2               integer    Last base used, def=seq length
-  -sreverse2           boolean    Reverse (if DNA)
-  -sask2               boolean    Ask for begin/end/reverse
-  -snucleotide2        boolean    Sequence is nucleotide
-  -sprotein2           boolean    Sequence is protein
-  -slower2             boolean    Make lower case
-  -supper2             boolean    Make upper case
-  -sformat2            string     Input sequence format
-  -sopenfile2          string     Input filename
-  -sdbname2            string     Database name
-  -sid2                string     Entryname
-  -ufo2                string     UFO features
-  -fformat2            string     Features format
-  -fopenfile2          string     Features file name
-  "-outseq" related qualifiers
-  -osformat3           string     Output seq format
-  -osextension3        string     File name extension
-  -osname3             string     Base file name
-  -osdirectory3        string     Output directory
-  -osdbname3           string     Database name to add
-  -ossingle3           boolean    Separate file for each entry
-  -oufo3               string     UFO features
-  -offormat3           string     Features format
-  -ofname3             string     Features file name
-  -ofdirectory3        string     Output directory
-  "-outfile" related qualifiers
-  -aformat4            string     Alignment format
-  -aopenfile4          string     Alignment file name
-  -aextension4         string     File name extension
-  -adirectory4         string     Output directory
-  -aname4              string     Base file name
-  -awidth4             integer    Alignment width
-  -aaccshow4           boolean    Show accession number in the header
-  -adesshow4           boolean    Show description in the header
-  -ausashow4           boolean    Show the full USA in the alignment
-  -aglobal4            boolean    Show the full sequence in alignment
+
+   "-asequence" associated qualifiers
+   -sbegin1             integer    First base used
+   -send1               integer    Last base used, def=seq length
+   -sreverse1           boolean    Reverse (if DNA)
+   -sask1               boolean    Ask for begin/end/reverse
+   -snucleotide1        boolean    Sequence is nucleotide
+   -sprotein1           boolean    Sequence is protein
+   -slower1             boolean    Make lower case
+   -supper1             boolean    Make upper case
+   -sformat1            string     Input sequence format
+   -sopenfile1          string     Input filename
+   -sdbname1            string     Database name
+   -sid1                string     Entryname
+   -ufo1                string     UFO features
+   -fformat1            string     Features format
+   -fopenfile1          string     Features file name
+
+   "-bsequence" associated qualifiers
+   -sbegin2             integer    First base used
+   -send2               integer    Last base used, def=seq length
+   -sreverse2           boolean    Reverse (if DNA)
+   -sask2               boolean    Ask for begin/end/reverse
+   -snucleotide2        boolean    Sequence is nucleotide
+   -sprotein2           boolean    Sequence is protein
+   -slower2             boolean    Make lower case
+   -supper2             boolean    Make upper case
+   -sformat2            string     Input sequence format
+   -sopenfile2          string     Input filename
+   -sdbname2            string     Database name
+   -sid2                string     Entryname
+   -ufo2                string     UFO features
+   -fformat2            string     Features format
+   -fopenfile2          string     Features file name
+
+   "-outseq" associated qualifiers
+   -osformat3           string     Output seq format
+   -osextension3        string     File name extension
+   -osname3             string     Base file name
+   -osdirectory3        string     Output directory
+   -osdbname3           string     Database name to add
+   -ossingle3           boolean    Separate file for each entry
+   -oufo3               string     UFO features
+   -offormat3           string     Features format
+   -ofname3             string     Features file name
+   -ofdirectory3        string     Output directory
+
+   "-outfile" associated qualifiers
+   -aformat4            string     Alignment format
+   -aopenfile4          string     Alignment file name
+   -aextension4         string     File name extension
+   -adirectory4         string     Output directory
+   -aname4              string     Base file name
+   -awidth4             integer    Alignment width
+   -aaccshow4           boolean    Show accession number in the header
+   -adesshow4           boolean    Show description in the header
+   -ausashow4           boolean    Show the full USA in the alignment
+   -aglobal4            boolean    Show the full sequence in alignment
 
    General qualifiers:
-  -auto                boolean    Turn off prompts
-  -stdout              boolean    Write standard output
-  -filter              boolean    Read standard input, write standard output
-  -options             boolean    Prompt for required and optional values
-  -debug               boolean    Write debug output to program.dbg
-  -verbose             boolean    Report some/full command line options
-  -help                boolean    Report command line options. More
+   -auto                boolean    Turn off prompts
+   -stdout              boolean    Write standard output
+   -filter              boolean    Read standard input, write standard output
+   -options             boolean    Prompt for standard and additional values
+   -debug               boolean    Write debug output to program.dbg
+   -verbose             boolean    Report some/full command line options
+   -help                boolean    Report command line options. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
-  -warning             boolean    Report warnings
-  -error               boolean    Report errors
-  -fatal               boolean    Report fatal errors
-  -die                 boolean    Report deaths
+   -warning             boolean    Report warnings
+   -error               boolean    Report errors
+   -fatal               boolean    Report fatal errors
+   -die                 boolean    Report deaths
    
 
-   Mandatory qualifiers Allowed values Default
+   Standard (Mandatory) qualifiers Allowed values Default
    [-asequence]
    (Parameter 1) Sequence USA Readable sequence Required
    [-bsequence]
@@ -178,7 +182,7 @@ Command line arguments
    (Parameter 3) Output sequence USA Writeable sequence <sequence>.format
    [-outfile]
    (Parameter 4) Output alignment file name Alignment output file
-   Optional qualifiers Allowed values Default
+   Additional (Optional) qualifiers Allowed values Default
    -datafile This is the scoring matrix file used when comparing
    sequences. By default it is the file 'EBLOSUM62' (for proteins) or the
    file 'EDNAFULL' (for nucleic sequences). These files are found in the
@@ -187,7 +191,7 @@ Command line arguments
    EDNAFULL for DNA
    -gapopen Gap opening penalty Number from 1.000 to 100.000 50.0
    -gapextend Gap extension penalty Number from 0.100 to 10.000 5
-   Advanced qualifiers Allowed values Default
+   Advanced (Unprompted) qualifiers Allowed values Default
    (none)
    
 Input file format

@@ -246,18 +246,18 @@ Created pestfind.ps
 
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
-   Mandatory qualifiers:
+   Standard (Mandatory) qualifiers:
   [-sequence]          sequence   Protein sequence USA to be analysed.
    -window             integer    Minimal distance between positively charged
                                   amino acids.
    -order              selection  Name of the output file which holds the
                                   results of the analysis. Results may be
                                   sorted by length, position and score.
-   -outfile            outfile    Name of file to which results will be
+  [-outfile]           outfile    Name of file to which results will be
                                   written.
    -graph              xygraph    Graph type
 
-   Optional qualifiers:
+   Additional (Optional) qualifiers:
    -threshold          float      Threshold value to discriminate weak from
                                   potential PEST motifs. Valid PEST motifs are
                                   discriminated into 'poor' and 'potential'
@@ -269,7 +269,7 @@ Created pestfind.ps
    -aadata             string     File of amino acid properties and molecular
                                   masses.
 
-   Advanced qualifiers:
+   Advanced (Unprompted) qualifiers:
    -[no]potential      boolean    Decide whether potential PEST motifs should
                                   be printed.
    -[no]poor           boolean    Decide whether poor PEST motifs should be
@@ -280,47 +280,50 @@ Created pestfind.ps
                                   to sequence.
 
    Associated qualifiers:
-  "-sequence" related qualifiers
-  -sbegin1             integer    First base used
-  -send1               integer    Last base used, def=seq length
-  -sreverse1           boolean    Reverse (if DNA)
-  -sask1               boolean    Ask for begin/end/reverse
-  -snucleotide1        boolean    Sequence is nucleotide
-  -sprotein1           boolean    Sequence is protein
-  -slower1             boolean    Make lower case
-  -supper1             boolean    Make upper case
-  -sformat1            string     Input sequence format
-  -sopenfile1          string     Input filename
-  -sdbname1            string     Database name
-  -sid1                string     Entryname
-  -ufo1                string     UFO features
-  -fformat1            string     Features format
-  -fopenfile1          string     Features file name
-  "-outfile" related qualifiers
-  -odirectory          string     Output directory
-  "-graph" related qualifiers
-  -gprompt             boolean    Graph prompting
-  -gtitle              string     Graph title
-  -gsubtitle           string     Graph subtitle
-  -gxtitle             string     Graph x axis title
-  -gytitle             string     Graph y axis title
-  -goutfile            string     Output file for non interactive displays
-  -gdirectory          string     Output directory
+
+   "-sequence" associated qualifiers
+   -sbegin1             integer    First base used
+   -send1               integer    Last base used, def=seq length
+   -sreverse1           boolean    Reverse (if DNA)
+   -sask1               boolean    Ask for begin/end/reverse
+   -snucleotide1        boolean    Sequence is nucleotide
+   -sprotein1           boolean    Sequence is protein
+   -slower1             boolean    Make lower case
+   -supper1             boolean    Make upper case
+   -sformat1            string     Input sequence format
+   -sopenfile1          string     Input filename
+   -sdbname1            string     Database name
+   -sid1                string     Entryname
+   -ufo1                string     UFO features
+   -fformat1            string     Features format
+   -fopenfile1          string     Features file name
+
+   "-outfile" associated qualifiers
+   -odirectory2         string     Output directory
+
+   "-graph" associated qualifiers
+   -gprompt             boolean    Graph prompting
+   -gtitle              string     Graph title
+   -gsubtitle           string     Graph subtitle
+   -gxtitle             string     Graph x axis title
+   -gytitle             string     Graph y axis title
+   -goutfile            string     Output file for non interactive displays
+   -gdirectory          string     Output directory
 
    General qualifiers:
-  -auto                boolean    Turn off prompts
-  -stdout              boolean    Write standard output
-  -filter              boolean    Read standard input, write standard output
-  -options             boolean    Prompt for required and optional values
-  -debug               boolean    Write debug output to program.dbg
-  -verbose             boolean    Report some/full command line options
-  -help                boolean    Report command line options. More
+   -auto                boolean    Turn off prompts
+   -stdout              boolean    Write standard output
+   -filter              boolean    Read standard input, write standard output
+   -options             boolean    Prompt for standard and additional values
+   -debug               boolean    Write debug output to program.dbg
+   -verbose             boolean    Report some/full command line options
+   -help                boolean    Report command line options. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
-  -warning             boolean    Report warnings
-  -error               boolean    Report errors
-  -fatal               boolean    Report fatal errors
-  -die                 boolean    Report deaths
+   -warning             boolean    Report warnings
+   -error               boolean    Report errors
+   -fatal               boolean    Report fatal errors
+   -die                 boolean    Report deaths
 
 
 </pre>
@@ -328,7 +331,7 @@ Created pestfind.ps
 <P>
 <table border cellspacing=0 cellpadding=3 bgcolor="#ccccff">
 <tr bgcolor="#FFFFCC">
-<th align="left" colspan=2>Mandatory qualifiers</th>
+<th align="left" colspan=2>Standard (Mandatory) qualifiers</th>
 <th align="left">Allowed values</th>
 <th align="left">Default</th>
 </tr>
@@ -355,7 +358,7 @@ Created pestfind.ps
 </tr>
 
 <tr>
-<td>-outfile</td>
+<td>[-outfile]<br>(Parameter 2)</td>
 <td>Name of file to which results will be written.</td>
 <td>Output file</td>
 <td><i>&lt;sequence&gt;</i>.pestfind</td>
@@ -369,7 +372,7 @@ Created pestfind.ps
 </tr>
 
 <tr bgcolor="#FFFFCC">
-<th align="left" colspan=2>Optional qualifiers</th>
+<th align="left" colspan=2>Additional (Optional) qualifiers</th>
 <th align="left">Allowed values</th>
 <th align="left">Default</th>
 </tr>
@@ -389,7 +392,7 @@ Created pestfind.ps
 </tr>
 
 <tr bgcolor="#FFFFCC">
-<th align="left" colspan=2>Advanced qualifiers</th>
+<th align="left" colspan=2>Advanced (Unprompted) qualifiers</th>
 <th align="left">Allowed values</th>
 <th align="left">Default</th>
 </tr>

@@ -73,43 +73,44 @@ Connection timed out
    
 Command line arguments
 
-   Mandatory qualifiers (* if not always prompted):
+   Standard (Mandatory) qualifiers (* if not always prompted):
   [-entry]             string     ID or Accession number
 *  -outfile            outfile    Output file name
 
-   Optional qualifiers: (none)
-   Advanced qualifiers:
+   Additional (Optional) qualifiers: (none)
+   Advanced (Unprompted) qualifiers:
    -get                boolean    Retrieve sequences
    -showall            boolean    Show failed attempts
 
    Associated qualifiers:
-  "-outfile" related qualifiers
-  -odirectory          string     Output directory
+
+   "-outfile" associated qualifiers
+   -odirectory          string     Output directory
 
    General qualifiers:
-  -auto                boolean    Turn off prompts
-  -stdout              boolean    Write standard output
-  -filter              boolean    Read standard input, write standard output
-  -options             boolean    Prompt for required and optional values
-  -debug               boolean    Write debug output to program.dbg
-  -verbose             boolean    Report some/full command line options
-  -help                boolean    Report command line options. More
+   -auto                boolean    Turn off prompts
+   -stdout              boolean    Write standard output
+   -filter              boolean    Read standard input, write standard output
+   -options             boolean    Prompt for standard and additional values
+   -debug               boolean    Write debug output to program.dbg
+   -verbose             boolean    Report some/full command line options
+   -help                boolean    Report command line options. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
-  -warning             boolean    Report warnings
-  -error               boolean    Report errors
-  -fatal               boolean    Report fatal errors
-  -die                 boolean    Report deaths
+   -warning             boolean    Report warnings
+   -error               boolean    Report errors
+   -fatal               boolean    Report fatal errors
+   -die                 boolean    Report deaths
    
 
-   Mandatory qualifiers Allowed values Default
+   Standard (Mandatory) qualifiers Allowed values Default
    [-entry]
    (Parameter 1) ID or Accession number Any string is accepted An empty
    string is accepted
    -outfile Output file name Output file <sequence>.whichdb
-   Optional qualifiers Allowed values Default
+   Additional (Optional) qualifiers Allowed values Default
    (none)
-   Advanced qualifiers Allowed values Default
+   Advanced (Unprompted) qualifiers Allowed values Default
    -get Retrieve sequences Boolean value Yes/No No
    -showall Show failed attempts Boolean value Yes/No No
    

@@ -735,16 +735,15 @@ IT IS DONE FOR YOU.
 
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
-   Mandatory qualifiers:
+   Standard (Mandatory) qualifiers:
   [-sequence]          seqall     Sequence database USA
   [-outseq]            seqoutset  Output sequence set USA
   [-dendoutfile]       outfile    Dendogram output filename
 
-   Optional qualifiers (* if not always prompted):
-   -onlydend           boolean    only produce dendrogram file
-*  -dend               boolean    select if you want to do alignment using an
-                                  old dendrogram
-*  -dendfile           string     name of old dendrogram file
+   Additional (Optional) qualifiers (* if not always prompted):
+   -onlydend           boolean    Only produce dendrogram file
+*  -dend               boolean    Do alignment using an old dendrogram
+*  -dendfile           string     Name of old dendrogram file
    -insist             boolean    Insist that the sequence type is changed to
                                   protein
    -slowfast           menu       A distance is calculated between every pair
@@ -924,54 +923,55 @@ IT IS DONE FOR YOU.
                                   less identical than this level to any other
                                   sequences will be aligned later.
 
-   Advanced qualifiers:
-   -prot               boolean    Do not change this value
-
+   Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
-  "-sequence" related qualifiers
-  -sbegin1             integer    First base used
-  -send1               integer    Last base used, def=seq length
-  -sreverse1           boolean    Reverse (if DNA)
-  -sask1               boolean    Ask for begin/end/reverse
-  -snucleotide1        boolean    Sequence is nucleotide
-  -sprotein1           boolean    Sequence is protein
-  -slower1             boolean    Make lower case
-  -supper1             boolean    Make upper case
-  -sformat1            string     Input sequence format
-  -sopenfile1          string     Input filename
-  -sdbname1            string     Database name
-  -sid1                string     Entryname
-  -ufo1                string     UFO features
-  -fformat1            string     Features format
-  -fopenfile1          string     Features file name
-  "-outseq" related qualifiers
-  -osformat2           string     Output seq format
-  -osextension2        string     File name extension
-  -osname2             string     Base file name
-  -osdirectory2        string     Output directory
-  -osdbname2           string     Database name to add
-  -ossingle2           boolean    Separate file for each entry
-  -oufo2               string     UFO features
-  -offormat2           string     Features format
-  -ofname2             string     Features file name
-  -ofdirectory2        string     Output directory
-  "-dendoutfile" related qualifiers
-  -odirectory3         string     Output directory
+
+   "-sequence" associated qualifiers
+   -sbegin1             integer    First base used
+   -send1               integer    Last base used, def=seq length
+   -sreverse1           boolean    Reverse (if DNA)
+   -sask1               boolean    Ask for begin/end/reverse
+   -snucleotide1        boolean    Sequence is nucleotide
+   -sprotein1           boolean    Sequence is protein
+   -slower1             boolean    Make lower case
+   -supper1             boolean    Make upper case
+   -sformat1            string     Input sequence format
+   -sopenfile1          string     Input filename
+   -sdbname1            string     Database name
+   -sid1                string     Entryname
+   -ufo1                string     UFO features
+   -fformat1            string     Features format
+   -fopenfile1          string     Features file name
+
+   "-outseq" associated qualifiers
+   -osformat2           string     Output seq format
+   -osextension2        string     File name extension
+   -osname2             string     Base file name
+   -osdirectory2        string     Output directory
+   -osdbname2           string     Database name to add
+   -ossingle2           boolean    Separate file for each entry
+   -oufo2               string     UFO features
+   -offormat2           string     Features format
+   -ofname2             string     Features file name
+   -ofdirectory2        string     Output directory
+
+   "-dendoutfile" associated qualifiers
+   -odirectory3         string     Output directory
 
    General qualifiers:
-  -auto                boolean    Turn off prompts
-  -stdout              boolean    Write standard output
-  -filter              boolean    Read standard input, write standard output
-  -options             boolean    Prompt for required and optional values
-  -debug               boolean    Write debug output to program.dbg
-  -verbose             boolean    Report some/full command line options
-  -help                boolean    Report command line options. More
+   -auto                boolean    Turn off prompts
+   -stdout              boolean    Write standard output
+   -filter              boolean    Read standard input, write standard output
+   -options             boolean    Prompt for standard and additional values
+   -debug               boolean    Write debug output to program.dbg
+   -verbose             boolean    Report some/full command line options
+   -help                boolean    Report command line options. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
-  -warning             boolean    Report warnings
-  -error               boolean    Report errors
-  -fatal               boolean    Report fatal errors
-  -die                 boolean    Report deaths
+   -warning             boolean    Report warnings
+   -error               boolean    Report errors
+   -fatal               boolean    Report fatal errors
+   -die                 boolean    Report deaths
 
 
 </pre>
@@ -980,7 +980,7 @@ IT IS DONE FOR YOU.
 
 <table border cellspacing=0 cellpadding=3 bgcolor="#ccccff">
 <tr bgcolor="#FFFFCC">
-<th align="left" colspan=2>Mandatory qualifiers</th>
+<th align="left" colspan=2>Standard (Mandatory) qualifiers</th>
 <th align="left">Allowed values</th>
 <th align="left">Default</th>
 </tr>
@@ -1007,28 +1007,28 @@ IT IS DONE FOR YOU.
 </tr>
 
 <tr bgcolor="#FFFFCC">
-<th align="left" colspan=2>Optional qualifiers</th>
+<th align="left" colspan=2>Additional (Optional) qualifiers</th>
 <th align="left">Allowed values</th>
 <th align="left">Default</th>
 </tr>
 
 <tr>
 <td>-onlydend</td>
-<td>only produce dendrogram file</td>
+<td>Only produce dendrogram file</td>
 <td>Boolean value Yes/No</td>
 <td>No</td>
 </tr>
 
 <tr>
 <td>-dend</td>
-<td>select if you want to do alignment using an old dendrogram</td>
+<td>Do alignment using an old dendrogram</td>
 <td>Boolean value Yes/No</td>
 <td>No</td>
 </tr>
 
 <tr>
 <td>-dendfile</td>
-<td>name of old dendrogram file</td>
+<td>Name of old dendrogram file</td>
 <td>Any string is accepted</td>
 <td>NULL</td>
 </tr>
@@ -1206,16 +1206,13 @@ We also supply an identity matrix which gives a score of 1.0 to two identical am
 </tr>
 
 <tr bgcolor="#FFFFCC">
-<th align="left" colspan=2>Advanced qualifiers</th>
+<th align="left" colspan=2>Advanced (Unprompted) qualifiers</th>
 <th align="left">Allowed values</th>
 <th align="left">Default</th>
 </tr>
 
 <tr>
-<td>-prot</td>
-<td>Do not change this value</td>
-<td>Boolean value Yes/No</td>
-<td>@($(insist) ? @(!$(sequence.protein)):$(sequence.protein))</td>
+<td colspan=4>(none)</td>
 </tr>
 
 </table>

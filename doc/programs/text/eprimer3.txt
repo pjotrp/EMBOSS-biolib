@@ -95,12 +95,12 @@ Picks PCR primers and hybridization oligos
    
 Command line arguments
 
-   Mandatory qualifiers:
+   Standard (Mandatory) qualifiers:
   [-sequence]          seqall     The sequence from which to choose primers.
                                   The sequence must be presented 5' to 3'
   [-outfile]           outfile    Output file name
 
-   Optional qualifiers (* if not always prompted):
+   Additional (Optional) qualifiers (* if not always prompted):
    -task               menu       Tell EPrimer3 what task to perform. Legal
                                   values are 0: 'Pick PCR primers', 1: 'Pick
                                   PCR primers and hybridization probe', 2:
@@ -398,7 +398,7 @@ Command line arguments
                                   oligo mononucleotide repeat, for example
                                   AAAAAA.
 
-   Advanced qualifiers:
+   Advanced (Unprompted) qualifiers:
    -explainflag        boolean    If this flag is non-0, produce LEFT-EXPLAIN,
                                   RIGHT-EXPLAIN, and INTERNAL-OLIGO-EXPLAIN
                                   output tags, which are intended to provide
@@ -604,48 +604,50 @@ Command line arguments
                                   specified in INTERNAL-OLIGO-MISHYB-LIBRARY.
 
    Associated qualifiers:
-  "-sequence" related qualifiers
-  -sbegin1             integer    First base used
-  -send1               integer    Last base used, def=seq length
-  -sreverse1           boolean    Reverse (if DNA)
-  -sask1               boolean    Ask for begin/end/reverse
-  -snucleotide1        boolean    Sequence is nucleotide
-  -sprotein1           boolean    Sequence is protein
-  -slower1             boolean    Make lower case
-  -supper1             boolean    Make upper case
-  -sformat1            string     Input sequence format
-  -sopenfile1          string     Input filename
-  -sdbname1            string     Database name
-  -sid1                string     Entryname
-  -ufo1                string     UFO features
-  -fformat1            string     Features format
-  -fopenfile1          string     Features file name
-  "-outfile" related qualifiers
-  -odirectory2         string     Output directory
+
+   "-sequence" associated qualifiers
+   -sbegin1             integer    First base used
+   -send1               integer    Last base used, def=seq length
+   -sreverse1           boolean    Reverse (if DNA)
+   -sask1               boolean    Ask for begin/end/reverse
+   -snucleotide1        boolean    Sequence is nucleotide
+   -sprotein1           boolean    Sequence is protein
+   -slower1             boolean    Make lower case
+   -supper1             boolean    Make upper case
+   -sformat1            string     Input sequence format
+   -sopenfile1          string     Input filename
+   -sdbname1            string     Database name
+   -sid1                string     Entryname
+   -ufo1                string     UFO features
+   -fformat1            string     Features format
+   -fopenfile1          string     Features file name
+
+   "-outfile" associated qualifiers
+   -odirectory2         string     Output directory
 
    General qualifiers:
-  -auto                boolean    Turn off prompts
-  -stdout              boolean    Write standard output
-  -filter              boolean    Read standard input, write standard output
-  -options             boolean    Prompt for required and optional values
-  -debug               boolean    Write debug output to program.dbg
-  -verbose             boolean    Report some/full command line options
-  -help                boolean    Report command line options. More
+   -auto                boolean    Turn off prompts
+   -stdout              boolean    Write standard output
+   -filter              boolean    Read standard input, write standard output
+   -options             boolean    Prompt for standard and additional values
+   -debug               boolean    Write debug output to program.dbg
+   -verbose             boolean    Report some/full command line options
+   -help                boolean    Report command line options. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
-  -warning             boolean    Report warnings
-  -error               boolean    Report errors
-  -fatal               boolean    Report fatal errors
-  -die                 boolean    Report deaths
+   -warning             boolean    Report warnings
+   -error               boolean    Report errors
+   -fatal               boolean    Report fatal errors
+   -die                 boolean    Report deaths
    
 
-   Mandatory qualifiers Allowed values Default
+   Standard (Mandatory) qualifiers Allowed values Default
    [-sequence]
    (Parameter 1) The sequence from which to choose primers. The sequence
    must be presented 5' to 3' Readable sequence(s) Required
    [-outfile]
    (Parameter 2) Output file name Output file <sequence>.eprimer3
-   Optional qualifiers Allowed values Default
+   Additional (Optional) qualifiers Allowed values Default
    -task Tell EPrimer3 what task to perform. Legal values are 0: 'Pick
    PCR primers', 1: 'Pick PCR primers and hybridization probe', 2: 'Pick
    forward primer only', 3: 'Pick reverse primer only', 4: 'Pick
@@ -851,7 +853,7 @@ Command line arguments
    as high as INTERNAL-OLIGO-SELF-ANY. Number up to 9999.990 12.00
    -oligomaxpolyx The maximum allowable length of an internal oligo
    mononucleotide repeat, for example AAAAAA. Integer 0 or more 5
-   Advanced qualifiers Allowed values Default
+   Advanced (Unprompted) qualifiers Allowed values Default
    -explainflag If this flag is non-0, produce LEFT-EXPLAIN,
    RIGHT-EXPLAIN, and INTERNAL-OLIGO-EXPLAIN output tags, which are
    intended to provide information on the number of oligos and primer

@@ -98,8 +98,7 @@ Usage
 
 % infoalign ../../data/globins.msf 
 Information on a multiple sequence alignment
-If you enter the name of a file here then this program will write the sequence
-details into that file. [globins.infoalign]: 
+Output file [globins.infoalign]: 
    
    Go to the input files for this example
    Go to the output files for this example
@@ -111,8 +110,7 @@ details into that file. [globins.infoalign]:
 
 % infoalign ../../data/globins.msf -nousa 
 Information on a multiple sequence alignment
-If you enter the name of a file here then this program will write the sequence
-details into that file. [globins.infoalign]: 
+Output file [globins.infoalign]: 
    
    Go to the output files for this example
    
@@ -123,8 +121,7 @@ details into that file. [globins.infoalign]:
 
 % infoalign ../../data/globins.msf -only -name -seqlength 
 Information on a multiple sequence alignment
-If you enter the name of a file here then this program will write the sequence
-details into that file. [globins.infoalign]: 
+Output file [globins.infoalign]: 
    
    Go to the output files for this example
    
@@ -136,8 +133,7 @@ details into that file. [globins.infoalign]:
 
 % infoalign ../../data/globins.msf -only -name -gapcount -diffcount 
 Information on a multiple sequence alignment
-If you enter the name of a file here then this program will write the sequence
-details into that file. [globins.infoalign]: 
+Output file [globins.infoalign]: 
    
    Go to the output files for this example
    
@@ -148,8 +144,7 @@ details into that file. [globins.infoalign]:
 
 % infoalign ../../data/globins.msf -only -name -gaps 
 Information on a multiple sequence alignment
-If you enter the name of a file here then this program will write the sequence
-details into that file. [globins.infoalign]: 
+Output file [globins.infoalign]: 
    
    Go to the output files for this example
    
@@ -160,8 +155,7 @@ details into that file. [globins.infoalign]:
 
 % infoalign ../../data/globins.msf -html 
 Information on a multiple sequence alignment
-If you enter the name of a file here then this program will write the sequence
-details into that file. [globins.infoalign]: 
+Output file [globins.infoalign]: 
    
    Go to the output files for this example
    
@@ -172,8 +166,7 @@ details into that file. [globins.infoalign]:
 
 % infoalign ../../data/globins.msf -refseq 1 
 Information on a multiple sequence alignment
-If you enter the name of a file here then this program will write the sequence
-details into that file. [globins.infoalign]: 
+Output file [globins.infoalign]: 
    
    Go to the output files for this example
    
@@ -195,13 +188,13 @@ details into that file. [globins.infoalign]:
    
 Command line arguments
 
-   Mandatory qualifiers:
+   Standard (Mandatory) qualifiers:
   [-sequence]          seqset     The sequence alignment to be displayed.
   [-outfile]           outfile    If you enter the name of a file here then
                                   this program will write the sequence details
                                   into that file.
 
-   Optional qualifiers:
+   Additional (Optional) qualifiers:
    -refseq             string     If you give the number in the alignment or
                                   the name of a sequence, it will be taken to
                                   be the reference sequence. The reference
@@ -219,7 +212,7 @@ Command line arguments
                                   the EMBOSS installation.
    -html               boolean    Format output as an HTML table
 
-   Advanced qualifiers:
+   Advanced (Unprompted) qualifiers:
    -plurality          float      Set a cut-off for the % of positive scoring
                                   matches below which there is no consensus.
                                   The default plurality is taken as 50% of the
@@ -253,50 +246,52 @@ Command line arguments
    -description        boolean    Display 'description' column
 
    Associated qualifiers:
-  "-sequence" related qualifiers
-  -sbegin1             integer    First base used
-  -send1               integer    Last base used, def=seq length
-  -sreverse1           boolean    Reverse (if DNA)
-  -sask1               boolean    Ask for begin/end/reverse
-  -snucleotide1        boolean    Sequence is nucleotide
-  -sprotein1           boolean    Sequence is protein
-  -slower1             boolean    Make lower case
-  -supper1             boolean    Make upper case
-  -sformat1            string     Input sequence format
-  -sopenfile1          string     Input filename
-  -sdbname1            string     Database name
-  -sid1                string     Entryname
-  -ufo1                string     UFO features
-  -fformat1            string     Features format
-  -fopenfile1          string     Features file name
-  "-outfile" related qualifiers
-  -odirectory2         string     Output directory
+
+   "-sequence" associated qualifiers
+   -sbegin1             integer    First base used
+   -send1               integer    Last base used, def=seq length
+   -sreverse1           boolean    Reverse (if DNA)
+   -sask1               boolean    Ask for begin/end/reverse
+   -snucleotide1        boolean    Sequence is nucleotide
+   -sprotein1           boolean    Sequence is protein
+   -slower1             boolean    Make lower case
+   -supper1             boolean    Make upper case
+   -sformat1            string     Input sequence format
+   -sopenfile1          string     Input filename
+   -sdbname1            string     Database name
+   -sid1                string     Entryname
+   -ufo1                string     UFO features
+   -fformat1            string     Features format
+   -fopenfile1          string     Features file name
+
+   "-outfile" associated qualifiers
+   -odirectory2         string     Output directory
 
    General qualifiers:
-  -auto                boolean    Turn off prompts
-  -stdout              boolean    Write standard output
-  -filter              boolean    Read standard input, write standard output
-  -options             boolean    Prompt for required and optional values
-  -debug               boolean    Write debug output to program.dbg
-  -verbose             boolean    Report some/full command line options
-  -help                boolean    Report command line options. More
+   -auto                boolean    Turn off prompts
+   -stdout              boolean    Write standard output
+   -filter              boolean    Read standard input, write standard output
+   -options             boolean    Prompt for standard and additional values
+   -debug               boolean    Write debug output to program.dbg
+   -verbose             boolean    Report some/full command line options
+   -help                boolean    Report command line options. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
-  -warning             boolean    Report warnings
-  -error               boolean    Report errors
-  -fatal               boolean    Report fatal errors
-  -die                 boolean    Report deaths
+   -warning             boolean    Report warnings
+   -error               boolean    Report errors
+   -fatal               boolean    Report fatal errors
+   -die                 boolean    Report deaths
    
 
-   Mandatory qualifiers Allowed values Default
+   Standard (Mandatory) qualifiers Allowed values Default
    [-sequence]
-   (Parameter 1) The sequence alignment to be displayed. Readable
+   (Parameter 1) The sequence alignment to be displayed. Readable set of
    sequences Required
    [-outfile]
    (Parameter 2) If you enter the name of a file here then this program
    will write the sequence details into that file. Output file
    <sequence>.infoalign
-   Optional qualifiers Allowed values Default
+   Additional (Optional) qualifiers Allowed values Default
    -refseq If you give the number in the alignment or the name of a
    sequence, it will be taken to be the reference sequence. The reference
    sequence is the one against which all the other sequences are
@@ -310,7 +305,7 @@ Command line arguments
    EMBOSS data path EBLOSUM62 for protein
    EDNAFULL for DNA
    -html Format output as an HTML table Boolean value Yes/No No
-   Advanced qualifiers Allowed values Default
+   Advanced (Unprompted) qualifiers Allowed values Default
    -plurality Set a cut-off for the % of positive scoring matches below
    which there is no consensus. The default plurality is taken as 50% of
    the total weight of all the sequences in the alignment. Number from

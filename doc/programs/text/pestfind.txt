@@ -133,18 +133,18 @@ Created pestfind.ps
    
 Command line arguments
 
-   Mandatory qualifiers:
+   Standard (Mandatory) qualifiers:
   [-sequence]          sequence   Protein sequence USA to be analysed.
    -window             integer    Minimal distance between positively charged
                                   amino acids.
    -order              selection  Name of the output file which holds the
                                   results of the analysis. Results may be
                                   sorted by length, position and score.
-   -outfile            outfile    Name of file to which results will be
+  [-outfile]           outfile    Name of file to which results will be
                                   written.
    -graph              xygraph    Graph type
 
-   Optional qualifiers:
+   Additional (Optional) qualifiers:
    -threshold          float      Threshold value to discriminate weak from
                                   potential PEST motifs. Valid PEST motifs are
                                   discriminated into 'poor' and 'potential'
@@ -156,7 +156,7 @@ Command line arguments
    -aadata             string     File of amino acid properties and molecular
                                   masses.
 
-   Advanced qualifiers:
+   Advanced (Unprompted) qualifiers:
    -[no]potential      boolean    Decide whether potential PEST motifs should
                                   be printed.
    -[no]poor           boolean    Decide whether poor PEST motifs should be
@@ -167,50 +167,53 @@ Command line arguments
                                   to sequence.
 
    Associated qualifiers:
-  "-sequence" related qualifiers
-  -sbegin1             integer    First base used
-  -send1               integer    Last base used, def=seq length
-  -sreverse1           boolean    Reverse (if DNA)
-  -sask1               boolean    Ask for begin/end/reverse
-  -snucleotide1        boolean    Sequence is nucleotide
-  -sprotein1           boolean    Sequence is protein
-  -slower1             boolean    Make lower case
-  -supper1             boolean    Make upper case
-  -sformat1            string     Input sequence format
-  -sopenfile1          string     Input filename
-  -sdbname1            string     Database name
-  -sid1                string     Entryname
-  -ufo1                string     UFO features
-  -fformat1            string     Features format
-  -fopenfile1          string     Features file name
-  "-outfile" related qualifiers
-  -odirectory          string     Output directory
-  "-graph" related qualifiers
-  -gprompt             boolean    Graph prompting
-  -gtitle              string     Graph title
-  -gsubtitle           string     Graph subtitle
-  -gxtitle             string     Graph x axis title
-  -gytitle             string     Graph y axis title
-  -goutfile            string     Output file for non interactive displays
-  -gdirectory          string     Output directory
+
+   "-sequence" associated qualifiers
+   -sbegin1             integer    First base used
+   -send1               integer    Last base used, def=seq length
+   -sreverse1           boolean    Reverse (if DNA)
+   -sask1               boolean    Ask for begin/end/reverse
+   -snucleotide1        boolean    Sequence is nucleotide
+   -sprotein1           boolean    Sequence is protein
+   -slower1             boolean    Make lower case
+   -supper1             boolean    Make upper case
+   -sformat1            string     Input sequence format
+   -sopenfile1          string     Input filename
+   -sdbname1            string     Database name
+   -sid1                string     Entryname
+   -ufo1                string     UFO features
+   -fformat1            string     Features format
+   -fopenfile1          string     Features file name
+
+   "-outfile" associated qualifiers
+   -odirectory2         string     Output directory
+
+   "-graph" associated qualifiers
+   -gprompt             boolean    Graph prompting
+   -gtitle              string     Graph title
+   -gsubtitle           string     Graph subtitle
+   -gxtitle             string     Graph x axis title
+   -gytitle             string     Graph y axis title
+   -goutfile            string     Output file for non interactive displays
+   -gdirectory          string     Output directory
 
    General qualifiers:
-  -auto                boolean    Turn off prompts
-  -stdout              boolean    Write standard output
-  -filter              boolean    Read standard input, write standard output
-  -options             boolean    Prompt for required and optional values
-  -debug               boolean    Write debug output to program.dbg
-  -verbose             boolean    Report some/full command line options
-  -help                boolean    Report command line options. More
+   -auto                boolean    Turn off prompts
+   -stdout              boolean    Write standard output
+   -filter              boolean    Read standard input, write standard output
+   -options             boolean    Prompt for standard and additional values
+   -debug               boolean    Write debug output to program.dbg
+   -verbose             boolean    Report some/full command line options
+   -help                boolean    Report command line options. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
-  -warning             boolean    Report warnings
-  -error               boolean    Report errors
-  -fatal               boolean    Report fatal errors
-  -die                 boolean    Report deaths
+   -warning             boolean    Report warnings
+   -error               boolean    Report errors
+   -fatal               boolean    Report fatal errors
+   -die                 boolean    Report deaths
    
 
-   Mandatory qualifiers Allowed values Default
+   Standard (Mandatory) qualifiers Allowed values Default
    [-sequence]
    (Parameter 1) Protein sequence USA to be analysed. Readable sequence
    Required
@@ -219,13 +222,14 @@ Command line arguments
    -order Name of the output file which holds the results of the
    analysis. Results may be sorted by length, position and score. Choose
    from selection list of values score
-   -outfile Name of file to which results will be written. Output file
-   <sequence>.pestfind
+   [-outfile]
+   (Parameter 2) Name of file to which results will be written. Output
+   file <sequence>.pestfind
    -graph Graph type EMBOSS has a list of known devices, including
    postscript, ps, hpgl, hp7470, hp7580, meta, colourps, cps, xwindows,
    x11, tektronics, tekt, tek4107t, tek, none, null, text, data, xterm,
    png EMBOSS_GRAPHICS value, or x11
-   Optional qualifiers Allowed values Default
+   Additional (Optional) qualifiers Allowed values Default
    -threshold Threshold value to discriminate weak from potential PEST
    motifs. Valid PEST motifs are discriminated into 'poor' and
    'potential' motifs depending on this threshold score. By default, the
@@ -234,7 +238,7 @@ Command line arguments
    mathematics. Number from -55.00 to 55.00 +5.0
    -aadata File of amino acid properties and molecular masses. Any string
    is accepted Eamino.dat
-   Advanced qualifiers Allowed values Default
+   Advanced (Unprompted) qualifiers Allowed values Default
    -[no]potential Decide whether potential PEST motifs should be printed.
    Boolean value Yes/No Yes
    -[no]poor Decide whether poor PEST motifs should be printed. Boolean

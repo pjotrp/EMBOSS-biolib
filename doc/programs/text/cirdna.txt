@@ -53,7 +53,7 @@ Created cirdna.ps
    
 Command line arguments
 
-   Mandatory qualifiers:
+   Standard (Mandatory) qualifiers:
    -graphout           graph      Graph type
   [-infile]            infile     input file containing mapping data
    -[no]ruler          boolean    do you want a ruler
@@ -65,7 +65,7 @@ Command line arguments
    -posblocks          selection  text inside or outside the blocks (enter In
                                   or Out)
 
-   Optional qualifiers:
+   Additional (Optional) qualifiers:
    -originangle        float      position of the molecule's origin on the
                                   circle (enter a number in the range 0 - 360)
    -[no]intersymbol    boolean    do you want horizontal junctions between
@@ -96,34 +96,35 @@ Command line arguments
                                   ranges. Enter a number <1 or >1 to decrease
                                   or increase the size, respectively
 
-   Advanced qualifiers: (none)
+   Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
-  "-graphout" related qualifiers
-  -gprompt             boolean    Graph prompting
-  -gtitle              string     Graph title
-  -gsubtitle           string     Graph subtitle
-  -gxtitle             string     Graph x axis title
-  -gytitle             string     Graph y axis title
-  -goutfile            string     Output file for non interactive displays
-  -gdirectory          string     Output directory
+
+   "-graphout" associated qualifiers
+   -gprompt             boolean    Graph prompting
+   -gtitle              string     Graph title
+   -gsubtitle           string     Graph subtitle
+   -gxtitle             string     Graph x axis title
+   -gytitle             string     Graph y axis title
+   -goutfile            string     Output file for non interactive displays
+   -gdirectory          string     Output directory
 
    General qualifiers:
-  -auto                boolean    Turn off prompts
-  -stdout              boolean    Write standard output
-  -filter              boolean    Read standard input, write standard output
-  -options             boolean    Prompt for required and optional values
-  -debug               boolean    Write debug output to program.dbg
-  -verbose             boolean    Report some/full command line options
-  -help                boolean    Report command line options. More
+   -auto                boolean    Turn off prompts
+   -stdout              boolean    Write standard output
+   -filter              boolean    Read standard input, write standard output
+   -options             boolean    Prompt for standard and additional values
+   -debug               boolean    Write debug output to program.dbg
+   -verbose             boolean    Report some/full command line options
+   -help                boolean    Report command line options. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
-  -warning             boolean    Report warnings
-  -error               boolean    Report errors
-  -fatal               boolean    Report fatal errors
-  -die                 boolean    Report deaths
+   -warning             boolean    Report warnings
+   -error               boolean    Report errors
+   -fatal               boolean    Report fatal errors
+   -die                 boolean    Report deaths
    
 
-   Mandatory qualifiers Allowed values Default
+   Standard (Mandatory) qualifiers Allowed values Default
    -graphout Graph type EMBOSS has a list of known devices, including
    postscript, ps, hpgl, hp7470, hp7580, meta, colourps, cps, xwindows,
    x11, tektronics, tekt, tek4107t, tek, none, null, text, data, xterm,
@@ -138,7 +139,7 @@ Command line arguments
    from selection list of values Out
    -posblocks text inside or outside the blocks (enter In or Out) Choose
    from selection list of values In
-   Optional qualifiers Allowed values Default
+   Additional (Optional) qualifiers Allowed values Default
    -originangle position of the molecule's origin on the circle (enter a
    number in the range 0 - 360) Number from 0.000 to 360.000 90
    -[no]intersymbol do you want horizontal junctions between blocks
@@ -166,7 +167,7 @@ Command line arguments
    -postext space between text and ticks, blocks, and ranges. Enter a
    number <1 or >1 to decrease or increase the size, respectively Any
    numeric value 1
-   Advanced qualifiers Allowed values Default
+   Advanced (Unprompted) qualifiers Allowed values Default
    (none)
    
 Input file format

@@ -37,46 +37,47 @@ Output file [molwts.mwfilter]:
    
 Command line arguments
 
-   Mandatory qualifiers:
+   Standard (Mandatory) qualifiers:
   [-infile]            infile     Molecular weight file input
    -tolerance          float      ppm tolerance
   [-outfile]           outfile    Output file name
 
-   Optional qualifiers:
+   Additional (Optional) qualifiers:
    -showdel            boolean    Output deleted mwts
 
-   Advanced qualifiers:
+   Advanced (Unprompted) qualifiers:
    -datafile           datafile   Data file of noisy molecular weights
 
    Associated qualifiers:
-  "-outfile" related qualifiers
-  -odirectory2         string     Output directory
+
+   "-outfile" associated qualifiers
+   -odirectory2         string     Output directory
 
    General qualifiers:
-  -auto                boolean    Turn off prompts
-  -stdout              boolean    Write standard output
-  -filter              boolean    Read standard input, write standard output
-  -options             boolean    Prompt for required and optional values
-  -debug               boolean    Write debug output to program.dbg
-  -verbose             boolean    Report some/full command line options
-  -help                boolean    Report command line options. More
+   -auto                boolean    Turn off prompts
+   -stdout              boolean    Write standard output
+   -filter              boolean    Read standard input, write standard output
+   -options             boolean    Prompt for standard and additional values
+   -debug               boolean    Write debug output to program.dbg
+   -verbose             boolean    Report some/full command line options
+   -help                boolean    Report command line options. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
-  -warning             boolean    Report warnings
-  -error               boolean    Report errors
-  -fatal               boolean    Report fatal errors
-  -die                 boolean    Report deaths
+   -warning             boolean    Report warnings
+   -error               boolean    Report errors
+   -fatal               boolean    Report fatal errors
+   -die                 boolean    Report deaths
    
 
-   Mandatory qualifiers Allowed values Default
+   Standard (Mandatory) qualifiers Allowed values Default
    [-infile]
    (Parameter 1) Molecular weight file input Input file Required
    -tolerance ppm tolerance Any numeric value 50.0
    [-outfile]
    (Parameter 2) Output file name Output file <sequence>.mwfilter
-   Optional qualifiers Allowed values Default
+   Additional (Optional) qualifiers Allowed values Default
    -showdel Output deleted mwts Boolean value Yes/No No
-   Advanced qualifiers Allowed values Default
+   Advanced (Unprompted) qualifiers Allowed values Default
    -datafile Data file of noisy molecular weights Data file Emwfilter.dat
    
 Input file format

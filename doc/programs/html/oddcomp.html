@@ -130,9 +130,9 @@ IT IS DONE FOR YOU.
 
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
-   Mandatory qualifiers:
+   Standard (Mandatory) qualifiers:
   [-sequence]          seqall     Sequence database USA
-  [-compdata]          infile     This is a file in the format of the output
+  [-compdatafile]      infile     This is a file in the format of the output
                                   produced by 'compseq' that is used to set
                                   the minimum frequencies of words in this
                                   analysis.
@@ -142,8 +142,8 @@ IT IS DONE FOR YOU.
                                   40 aa stretch you should enter 40 here.
   [-outfile]           outfile    This is the results file.
 
-   Optional qualifiers: (none)
-   Advanced qualifiers:
+   Additional (Optional) qualifiers: (none)
+   Advanced (Unprompted) qualifiers:
    -[no]ignorebz       boolean    The amino acid code B represents Asparagine
                                   or Aspartic acid and the code Z represents
                                   Glutamine or Glutamic acid.
@@ -153,39 +153,41 @@ IT IS DONE FOR YOU.
                                   words.
 
    Associated qualifiers:
-  "-sequence" related qualifiers
-  -sbegin1             integer    First base used
-  -send1               integer    Last base used, def=seq length
-  -sreverse1           boolean    Reverse (if DNA)
-  -sask1               boolean    Ask for begin/end/reverse
-  -snucleotide1        boolean    Sequence is nucleotide
-  -sprotein1           boolean    Sequence is protein
-  -slower1             boolean    Make lower case
-  -supper1             boolean    Make upper case
-  -sformat1            string     Input sequence format
-  -sopenfile1          string     Input filename
-  -sdbname1            string     Database name
-  -sid1                string     Entryname
-  -ufo1                string     UFO features
-  -fformat1            string     Features format
-  -fopenfile1          string     Features file name
-  "-outfile" related qualifiers
-  -odirectory4         string     Output directory
+
+   "-sequence" associated qualifiers
+   -sbegin1             integer    First base used
+   -send1               integer    Last base used, def=seq length
+   -sreverse1           boolean    Reverse (if DNA)
+   -sask1               boolean    Ask for begin/end/reverse
+   -snucleotide1        boolean    Sequence is nucleotide
+   -sprotein1           boolean    Sequence is protein
+   -slower1             boolean    Make lower case
+   -supper1             boolean    Make upper case
+   -sformat1            string     Input sequence format
+   -sopenfile1          string     Input filename
+   -sdbname1            string     Database name
+   -sid1                string     Entryname
+   -ufo1                string     UFO features
+   -fformat1            string     Features format
+   -fopenfile1          string     Features file name
+
+   "-outfile" associated qualifiers
+   -odirectory4         string     Output directory
 
    General qualifiers:
-  -auto                boolean    Turn off prompts
-  -stdout              boolean    Write standard output
-  -filter              boolean    Read standard input, write standard output
-  -options             boolean    Prompt for required and optional values
-  -debug               boolean    Write debug output to program.dbg
-  -verbose             boolean    Report some/full command line options
-  -help                boolean    Report command line options. More
+   -auto                boolean    Turn off prompts
+   -stdout              boolean    Write standard output
+   -filter              boolean    Read standard input, write standard output
+   -options             boolean    Prompt for standard and additional values
+   -debug               boolean    Write debug output to program.dbg
+   -verbose             boolean    Report some/full command line options
+   -help                boolean    Report command line options. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
-  -warning             boolean    Report warnings
-  -error               boolean    Report errors
-  -fatal               boolean    Report fatal errors
-  -die                 boolean    Report deaths
+   -warning             boolean    Report warnings
+   -error               boolean    Report errors
+   -fatal               boolean    Report fatal errors
+   -die                 boolean    Report deaths
 
 
 </pre>
@@ -194,7 +196,7 @@ IT IS DONE FOR YOU.
 
 <table border cellspacing=0 cellpadding=3 bgcolor="#ccccff">
 <tr bgcolor="#FFFFCC">
-<th align="left" colspan=2>Mandatory qualifiers</th>
+<th align="left" colspan=2>Standard (Mandatory) qualifiers</th>
 <th align="left">Allowed values</th>
 <th align="left">Default</th>
 </tr>
@@ -207,7 +209,7 @@ IT IS DONE FOR YOU.
 </tr>
 
 <tr>
-<td>[-compdata]<br>(Parameter 2)</td>
+<td>[-compdatafile]<br>(Parameter 2)</td>
 <td>This is a file in the format of the output produced by 'compseq' that is used to set the minimum frequencies of words in this analysis.</td>
 <td>Input file</td>
 <td><b>Required</b></td>
@@ -229,7 +231,7 @@ Thus if you want to count frequencies in a 40 aa stretch you should enter 40 her
 </tr>
 
 <tr bgcolor="#FFFFCC">
-<th align="left" colspan=2>Optional qualifiers</th>
+<th align="left" colspan=2>Additional (Optional) qualifiers</th>
 <th align="left">Allowed values</th>
 <th align="left">Default</th>
 </tr>
@@ -239,7 +241,7 @@ Thus if you want to count frequencies in a 40 aa stretch you should enter 40 her
 </tr>
 
 <tr bgcolor="#FFFFCC">
-<th align="left" colspan=2>Advanced qualifiers</th>
+<th align="left" colspan=2>Advanced (Unprompted) qualifiers</th>
 <th align="left">Allowed values</th>
 <th align="left">Default</th>
 </tr>

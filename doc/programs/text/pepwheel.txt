@@ -34,11 +34,11 @@ Created pepwheel.ps
    
 Command line arguments
 
-   Mandatory qualifiers:
+   Standard (Mandatory) qualifiers:
   [-sequence]          sequence   Sequence USA
    -graph              graph      Graph type
 
-   Optional qualifiers (* if not always prompted):
+   Additional (Optional) qualifiers (* if not always prompted):
    -steps              integer    The number of residues plotted per turn is
                                   this value divided by the 'turns' value.
    -turns              integer    The number of residues plotted per turn is
@@ -50,7 +50,7 @@ Command line arguments
 *  -octags             string     By default the positively charged residues
                                   HKR are marked with octagons.
 
-   Advanced qualifiers:
+   Advanced (Unprompted) qualifiers:
    -[no]wheel          boolean    Plot the wheel
    -amphipathic        boolean    If this is true then the residues ACFGILMVWY
                                   are marked as squares and all other
@@ -60,55 +60,57 @@ Command line arguments
                                   and '-octags'.
 
    Associated qualifiers:
-  "-sequence" related qualifiers
-  -sbegin1             integer    First base used
-  -send1               integer    Last base used, def=seq length
-  -sreverse1           boolean    Reverse (if DNA)
-  -sask1               boolean    Ask for begin/end/reverse
-  -snucleotide1        boolean    Sequence is nucleotide
-  -sprotein1           boolean    Sequence is protein
-  -slower1             boolean    Make lower case
-  -supper1             boolean    Make upper case
-  -sformat1            string     Input sequence format
-  -sopenfile1          string     Input filename
-  -sdbname1            string     Database name
-  -sid1                string     Entryname
-  -ufo1                string     UFO features
-  -fformat1            string     Features format
-  -fopenfile1          string     Features file name
-  "-graph" related qualifiers
-  -gprompt             boolean    Graph prompting
-  -gtitle              string     Graph title
-  -gsubtitle           string     Graph subtitle
-  -gxtitle             string     Graph x axis title
-  -gytitle             string     Graph y axis title
-  -goutfile            string     Output file for non interactive displays
-  -gdirectory          string     Output directory
+
+   "-sequence" associated qualifiers
+   -sbegin1             integer    First base used
+   -send1               integer    Last base used, def=seq length
+   -sreverse1           boolean    Reverse (if DNA)
+   -sask1               boolean    Ask for begin/end/reverse
+   -snucleotide1        boolean    Sequence is nucleotide
+   -sprotein1           boolean    Sequence is protein
+   -slower1             boolean    Make lower case
+   -supper1             boolean    Make upper case
+   -sformat1            string     Input sequence format
+   -sopenfile1          string     Input filename
+   -sdbname1            string     Database name
+   -sid1                string     Entryname
+   -ufo1                string     UFO features
+   -fformat1            string     Features format
+   -fopenfile1          string     Features file name
+
+   "-graph" associated qualifiers
+   -gprompt             boolean    Graph prompting
+   -gtitle              string     Graph title
+   -gsubtitle           string     Graph subtitle
+   -gxtitle             string     Graph x axis title
+   -gytitle             string     Graph y axis title
+   -goutfile            string     Output file for non interactive displays
+   -gdirectory          string     Output directory
 
    General qualifiers:
-  -auto                boolean    Turn off prompts
-  -stdout              boolean    Write standard output
-  -filter              boolean    Read standard input, write standard output
-  -options             boolean    Prompt for required and optional values
-  -debug               boolean    Write debug output to program.dbg
-  -verbose             boolean    Report some/full command line options
-  -help                boolean    Report command line options. More
+   -auto                boolean    Turn off prompts
+   -stdout              boolean    Write standard output
+   -filter              boolean    Read standard input, write standard output
+   -options             boolean    Prompt for standard and additional values
+   -debug               boolean    Write debug output to program.dbg
+   -verbose             boolean    Report some/full command line options
+   -help                boolean    Report command line options. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
-  -warning             boolean    Report warnings
-  -error               boolean    Report errors
-  -fatal               boolean    Report fatal errors
-  -die                 boolean    Report deaths
+   -warning             boolean    Report warnings
+   -error               boolean    Report errors
+   -fatal               boolean    Report fatal errors
+   -die                 boolean    Report deaths
    
 
-   Mandatory qualifiers Allowed values Default
+   Standard (Mandatory) qualifiers Allowed values Default
    [-sequence]
    (Parameter 1) Sequence USA Readable sequence Required
    -graph Graph type EMBOSS has a list of known devices, including
    postscript, ps, hpgl, hp7470, hp7580, meta, colourps, cps, xwindows,
    x11, tektronics, tekt, tek4107t, tek, none, null, text, data, xterm,
    png EMBOSS_GRAPHICS value, or x11
-   Optional qualifiers Allowed values Default
+   Additional (Optional) qualifiers Allowed values Default
    -steps The number of residues plotted per turn is this value divided
    by the 'turns' value. Integer from 2 to 100 18
    -turns The number of residues plotted per turn is the 'steps' value
@@ -119,7 +121,7 @@ Command line arguments
    string is accepted DENQST
    -octags By default the positively charged residues HKR are marked with
    octagons. Any string is accepted HKR
-   Advanced qualifiers Allowed values Default
+   Advanced (Unprompted) qualifiers Allowed values Default
    -[no]wheel Plot the wheel Boolean value Yes/No Yes
    -amphipathic If this is true then the residues ACFGILMVWY are marked
    as squares and all other residues are unmarked. This overrides any

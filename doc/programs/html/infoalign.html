@@ -171,7 +171,7 @@ character:
 
 % <b>infoalign ../../data/globins.msf </b>
 Information on a multiple sequence alignment
-If you enter the name of a file here then this program will write the sequence details into that file. [globins.infoalign]: <b></b>
+Output file [globins.infoalign]: <b></b>
 
 </pre></td></tr></table><p>
 <p>
@@ -187,7 +187,7 @@ This example doesn't display the USA of the sequence:
 
 % <b>infoalign ../../data/globins.msf -nousa </b>
 Information on a multiple sequence alignment
-If you enter the name of a file here then this program will write the sequence details into that file. [globins.infoalign]: <b></b>
+Output file [globins.infoalign]: <b></b>
 
 </pre></td></tr></table><p>
 <p>
@@ -203,7 +203,7 @@ Display only the name and sequence length of a sequence:
 
 % <b>infoalign ../../data/globins.msf -only -name -seqlength </b>
 Information on a multiple sequence alignment
-If you enter the name of a file here then this program will write the sequence details into that file. [globins.infoalign]: <b></b>
+Output file [globins.infoalign]: <b></b>
 
 </pre></td></tr></table><p>
 <p>
@@ -219,7 +219,7 @@ Display only the name, number of gap characters and differences to the consensus
 
 % <b>infoalign ../../data/globins.msf -only -name -gapcount -diffcount </b>
 Information on a multiple sequence alignment
-If you enter the name of a file here then this program will write the sequence details into that file. [globins.infoalign]: <b></b>
+Output file [globins.infoalign]: <b></b>
 
 </pre></td></tr></table><p>
 <p>
@@ -235,7 +235,7 @@ Display the name and number of gaps within a sequence:
 
 % <b>infoalign ../../data/globins.msf -only -name -gaps </b>
 Information on a multiple sequence alignment
-If you enter the name of a file here then this program will write the sequence details into that file. [globins.infoalign]: <b></b>
+Output file [globins.infoalign]: <b></b>
 
 </pre></td></tr></table><p>
 <p>
@@ -251,7 +251,7 @@ Display information formatted with HTML:
 
 % <b>infoalign ../../data/globins.msf -html </b>
 Information on a multiple sequence alignment
-If you enter the name of a file here then this program will write the sequence details into that file. [globins.infoalign]: <b></b>
+Output file [globins.infoalign]: <b></b>
 
 </pre></td></tr></table><p>
 <p>
@@ -267,7 +267,7 @@ Use the first sequence as the reference sequence to compare to:
 
 % <b>infoalign ../../data/globins.msf -refseq 1 </b>
 Information on a multiple sequence alignment
-If you enter the name of a file here then this program will write the sequence details into that file. [globins.infoalign]: <b></b>
+Output file [globins.infoalign]: <b></b>
 
 </pre></td></tr></table><p>
 <p>
@@ -305,13 +305,13 @@ If you enter the name of a file here then this program will write the sequence d
 
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
-   Mandatory qualifiers:
+   Standard (Mandatory) qualifiers:
   [-sequence]          seqset     The sequence alignment to be displayed.
   [-outfile]           outfile    If you enter the name of a file here then
                                   this program will write the sequence details
                                   into that file.
 
-   Optional qualifiers:
+   Additional (Optional) qualifiers:
    -refseq             string     If you give the number in the alignment or
                                   the name of a sequence, it will be taken to
                                   be the reference sequence. The reference
@@ -329,7 +329,7 @@ If you enter the name of a file here then this program will write the sequence d
                                   the EMBOSS installation.
    -html               boolean    Format output as an HTML table
 
-   Advanced qualifiers:
+   Advanced (Unprompted) qualifiers:
    -plurality          float      Set a cut-off for the % of positive scoring
                                   matches below which there is no consensus.
                                   The default plurality is taken as 50% of the
@@ -363,39 +363,41 @@ If you enter the name of a file here then this program will write the sequence d
    -description        boolean    Display 'description' column
 
    Associated qualifiers:
-  "-sequence" related qualifiers
-  -sbegin1             integer    First base used
-  -send1               integer    Last base used, def=seq length
-  -sreverse1           boolean    Reverse (if DNA)
-  -sask1               boolean    Ask for begin/end/reverse
-  -snucleotide1        boolean    Sequence is nucleotide
-  -sprotein1           boolean    Sequence is protein
-  -slower1             boolean    Make lower case
-  -supper1             boolean    Make upper case
-  -sformat1            string     Input sequence format
-  -sopenfile1          string     Input filename
-  -sdbname1            string     Database name
-  -sid1                string     Entryname
-  -ufo1                string     UFO features
-  -fformat1            string     Features format
-  -fopenfile1          string     Features file name
-  "-outfile" related qualifiers
-  -odirectory2         string     Output directory
+
+   "-sequence" associated qualifiers
+   -sbegin1             integer    First base used
+   -send1               integer    Last base used, def=seq length
+   -sreverse1           boolean    Reverse (if DNA)
+   -sask1               boolean    Ask for begin/end/reverse
+   -snucleotide1        boolean    Sequence is nucleotide
+   -sprotein1           boolean    Sequence is protein
+   -slower1             boolean    Make lower case
+   -supper1             boolean    Make upper case
+   -sformat1            string     Input sequence format
+   -sopenfile1          string     Input filename
+   -sdbname1            string     Database name
+   -sid1                string     Entryname
+   -ufo1                string     UFO features
+   -fformat1            string     Features format
+   -fopenfile1          string     Features file name
+
+   "-outfile" associated qualifiers
+   -odirectory2         string     Output directory
 
    General qualifiers:
-  -auto                boolean    Turn off prompts
-  -stdout              boolean    Write standard output
-  -filter              boolean    Read standard input, write standard output
-  -options             boolean    Prompt for required and optional values
-  -debug               boolean    Write debug output to program.dbg
-  -verbose             boolean    Report some/full command line options
-  -help                boolean    Report command line options. More
+   -auto                boolean    Turn off prompts
+   -stdout              boolean    Write standard output
+   -filter              boolean    Read standard input, write standard output
+   -options             boolean    Prompt for standard and additional values
+   -debug               boolean    Write debug output to program.dbg
+   -verbose             boolean    Report some/full command line options
+   -help                boolean    Report command line options. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
-  -warning             boolean    Report warnings
-  -error               boolean    Report errors
-  -fatal               boolean    Report fatal errors
-  -die                 boolean    Report deaths
+   -warning             boolean    Report warnings
+   -error               boolean    Report errors
+   -fatal               boolean    Report fatal errors
+   -die                 boolean    Report deaths
 
 
 </pre>
@@ -403,7 +405,7 @@ If you enter the name of a file here then this program will write the sequence d
 <P>
 <table border cellspacing=0 cellpadding=3 bgcolor="#ccccff">
 <tr bgcolor="#FFFFCC">
-<th align="left" colspan=2>Mandatory qualifiers</th>
+<th align="left" colspan=2>Standard (Mandatory) qualifiers</th>
 <th align="left">Allowed values</th>
 <th align="left">Default</th>
 </tr>
@@ -411,7 +413,7 @@ If you enter the name of a file here then this program will write the sequence d
 <tr>
 <td>[-sequence]<br>(Parameter 1)</td>
 <td>The sequence alignment to be displayed.</td>
-<td>Readable sequences</td>
+<td>Readable set of sequences</td>
 <td><b>Required</b></td>
 </tr>
 
@@ -423,7 +425,7 @@ If you enter the name of a file here then this program will write the sequence d
 </tr>
 
 <tr bgcolor="#FFFFCC">
-<th align="left" colspan=2>Optional qualifiers</th>
+<th align="left" colspan=2>Additional (Optional) qualifiers</th>
 <th align="left">Allowed values</th>
 <th align="left">Default</th>
 </tr>
@@ -450,7 +452,7 @@ If you enter the name of a file here then this program will write the sequence d
 </tr>
 
 <tr bgcolor="#FFFFCC">
-<th align="left" colspan=2>Advanced qualifiers</th>
+<th align="left" colspan=2>Advanced (Unprompted) qualifiers</th>
 <th align="left">Allowed values</th>
 <th align="left">Default</th>
 </tr>

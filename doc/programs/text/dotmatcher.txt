@@ -48,13 +48,13 @@ Created dotmatcher.ps
    
 Command line arguments
 
-   Mandatory qualifiers (* if not always prompted):
+   Standard (Mandatory) qualifiers (* if not always prompted):
   [-asequence]         sequence   Sequence USA
   [-bsequence]         sequence   Sequence USA
 *  -graph              graph      Graph type
 *  -xygraph            xygraph    Graph type
 
-   Optional qualifiers:
+   Additional (Optional) qualifiers:
    -windowsize         integer    window size over which to test threshhold
    -threshold          integer    threshold
    -matrixfile         matrix     This is the scoring matrix file used when
@@ -64,76 +64,80 @@ Command line arguments
                                   files are found in the 'data' directory of
                                   the EMBOSS installation.
 
-   Advanced qualifiers:
+   Advanced (Unprompted) qualifiers:
    -stretch            boolean    Display a non-proportional graph
 
    Associated qualifiers:
-  "-asequence" related qualifiers
-  -sbegin1             integer    First base used
-  -send1               integer    Last base used, def=seq length
-  -sreverse1           boolean    Reverse (if DNA)
-  -sask1               boolean    Ask for begin/end/reverse
-  -snucleotide1        boolean    Sequence is nucleotide
-  -sprotein1           boolean    Sequence is protein
-  -slower1             boolean    Make lower case
-  -supper1             boolean    Make upper case
-  -sformat1            string     Input sequence format
-  -sopenfile1          string     Input filename
-  -sdbname1            string     Database name
-  -sid1                string     Entryname
-  -ufo1                string     UFO features
-  -fformat1            string     Features format
-  -fopenfile1          string     Features file name
-  "-bsequence" related qualifiers
-  -sbegin2             integer    First base used
-  -send2               integer    Last base used, def=seq length
-  -sreverse2           boolean    Reverse (if DNA)
-  -sask2               boolean    Ask for begin/end/reverse
-  -snucleotide2        boolean    Sequence is nucleotide
-  -sprotein2           boolean    Sequence is protein
-  -slower2             boolean    Make lower case
-  -supper2             boolean    Make upper case
-  -sformat2            string     Input sequence format
-  -sopenfile2          string     Input filename
-  -sdbname2            string     Database name
-  -sid2                string     Entryname
-  -ufo2                string     UFO features
-  -fformat2            string     Features format
-  -fopenfile2          string     Features file name
-  "-graph" related qualifiers
-  -gprompt             boolean    Graph prompting
-  -gtitle              string     Graph title
-  -gsubtitle           string     Graph subtitle
-  -gxtitle             string     Graph x axis title
-  -gytitle             string     Graph y axis title
-  -goutfile            string     Output file for non interactive displays
-  -gdirectory          string     Output directory
-  "-xygraph" related qualifiers
-  -gprompt             boolean    Graph prompting
-  -gtitle              string     Graph title
-  -gsubtitle           string     Graph subtitle
-  -gxtitle             string     Graph x axis title
-  -gytitle             string     Graph y axis title
-  -goutfile            string     Output file for non interactive displays
-  -gdirectory          string     Output directory
+
+   "-asequence" associated qualifiers
+   -sbegin1             integer    First base used
+   -send1               integer    Last base used, def=seq length
+   -sreverse1           boolean    Reverse (if DNA)
+   -sask1               boolean    Ask for begin/end/reverse
+   -snucleotide1        boolean    Sequence is nucleotide
+   -sprotein1           boolean    Sequence is protein
+   -slower1             boolean    Make lower case
+   -supper1             boolean    Make upper case
+   -sformat1            string     Input sequence format
+   -sopenfile1          string     Input filename
+   -sdbname1            string     Database name
+   -sid1                string     Entryname
+   -ufo1                string     UFO features
+   -fformat1            string     Features format
+   -fopenfile1          string     Features file name
+
+   "-bsequence" associated qualifiers
+   -sbegin2             integer    First base used
+   -send2               integer    Last base used, def=seq length
+   -sreverse2           boolean    Reverse (if DNA)
+   -sask2               boolean    Ask for begin/end/reverse
+   -snucleotide2        boolean    Sequence is nucleotide
+   -sprotein2           boolean    Sequence is protein
+   -slower2             boolean    Make lower case
+   -supper2             boolean    Make upper case
+   -sformat2            string     Input sequence format
+   -sopenfile2          string     Input filename
+   -sdbname2            string     Database name
+   -sid2                string     Entryname
+   -ufo2                string     UFO features
+   -fformat2            string     Features format
+   -fopenfile2          string     Features file name
+
+   "-graph" associated qualifiers
+   -gprompt             boolean    Graph prompting
+   -gtitle              string     Graph title
+   -gsubtitle           string     Graph subtitle
+   -gxtitle             string     Graph x axis title
+   -gytitle             string     Graph y axis title
+   -goutfile            string     Output file for non interactive displays
+   -gdirectory          string     Output directory
+
+   "-xygraph" associated qualifiers
+   -gprompt             boolean    Graph prompting
+   -gtitle              string     Graph title
+   -gsubtitle           string     Graph subtitle
+   -gxtitle             string     Graph x axis title
+   -gytitle             string     Graph y axis title
+   -goutfile            string     Output file for non interactive displays
+   -gdirectory          string     Output directory
 
    General qualifiers:
-  -auto                boolean    Turn off prompts
-  -stdout              boolean    Write standard output
-  -filter              boolean    Read standard input, write standard output
-  -options             boolean    Prompt for required and optional values
-  -debug               boolean    Write debug output to program.dbg
-  -verbose             boolean    Report some/full command line options
-  -help                boolean    Report command line options. More
+   -auto                boolean    Turn off prompts
+   -stdout              boolean    Write standard output
+   -filter              boolean    Read standard input, write standard output
+   -options             boolean    Prompt for standard and additional values
+   -debug               boolean    Write debug output to program.dbg
+   -verbose             boolean    Report some/full command line options
+   -help                boolean    Report command line options. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
-  -warning             boolean    Report warnings
-  -error               boolean    Report errors
-  -fatal               boolean    Report fatal errors
-  -die                 boolean    Report deaths
+   -warning             boolean    Report warnings
+   -error               boolean    Report errors
+   -fatal               boolean    Report fatal errors
+   -die                 boolean    Report deaths
    
 
-   Mandatory qualifiers Allowed values Default
+   Standard (Mandatory) qualifiers Allowed values Default
    [-asequence]
    (Parameter 1) Sequence USA Readable sequence Required
    [-bsequence]
@@ -146,7 +150,7 @@ Command line arguments
    postscript, ps, hpgl, hp7470, hp7580, meta, colourps, cps, xwindows,
    x11, tektronics, tekt, tek4107t, tek, none, null, text, data, xterm,
    png EMBOSS_GRAPHICS value, or x11
-   Optional qualifiers Allowed values Default
+   Additional (Optional) qualifiers Allowed values Default
    -windowsize window size over which to test threshhold Integer 3 or
    more 10
    -threshold threshold Integer 0 or more 23
@@ -156,7 +160,7 @@ Command line arguments
    'data' directory of the EMBOSS installation. Comparison matrix file in
    EMBOSS data path EBLOSUM62 for protein
    EDNAFULL for DNA
-   Advanced qualifiers Allowed values Default
+   Advanced (Unprompted) qualifiers Allowed values Default
    -stretch Display a non-proportional graph Boolean value Yes/No No
    
 Input file format

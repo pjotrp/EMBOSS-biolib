@@ -31,37 +31,41 @@ Writes the current EMBOSS version number
    
 Command line arguments
 
-   Mandatory qualifiers: (none)
-   Optional qualifiers:
+   Standard (Mandatory) qualifiers: (none)
+   Additional (Optional) qualifiers:
+   -full               boolean    Show all EMBOSS version information fields
    -outfile            outfile    Output file name
 
-   Advanced qualifiers: (none)
+   Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
-  "-outfile" related qualifiers
-  -odirectory          string     Output directory
+
+   "-outfile" associated qualifiers
+   -odirectory          string     Output directory
 
    General qualifiers:
-  -auto                boolean    Turn off prompts
-  -stdout              boolean    Write standard output
-  -filter              boolean    Read standard input, write standard output
-  -options             boolean    Prompt for required and optional values
-  -debug               boolean    Write debug output to program.dbg
-  -verbose             boolean    Report some/full command line options
-  -help                boolean    Report command line options. More
+   -auto                boolean    Turn off prompts
+   -stdout              boolean    Write standard output
+   -filter              boolean    Read standard input, write standard output
+   -options             boolean    Prompt for standard and additional values
+   -debug               boolean    Write debug output to program.dbg
+   -verbose             boolean    Report some/full command line options
+   -help                boolean    Report command line options. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
-  -warning             boolean    Report warnings
-  -error               boolean    Report errors
-  -fatal               boolean    Report fatal errors
-  -die                 boolean    Report deaths
+   -warning             boolean    Report warnings
+   -error               boolean    Report errors
+   -fatal               boolean    Report fatal errors
+   -die                 boolean    Report deaths
    
 
-   Mandatory qualifiers      Allowed values Default
-   (none)
-   Optional qualifiers       Allowed values Default
-   -outfile Output file name Output file    stdout
-   Advanced qualifiers       Allowed values Default
-   (none)
+Standard (Mandatory) qualifiers                    Allowed values       Default
+(none)
+Additional (Optional) qualifiers                   Allowed values       Default
+-full    Show all EMBOSS version information fields Boolean value Yes/No
+   No
+-outfile Output file name                          Output file          stdout
+Advanced (Unprompted) qualifiers                   Allowed values       Default
+(none)
    
 Input file format
 

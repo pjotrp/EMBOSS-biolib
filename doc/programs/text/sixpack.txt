@@ -53,16 +53,12 @@ Output ORFs to a file [paamir.fasta]:
    
 Command line arguments
 
-   Mandatory qualifiers:
+   Standard (Mandatory) qualifiers:
   [-sequence]          sequence   Sequence USA
-  [-outfile]           outfile    If you enter the name of a file here then
-                                  this program will write the sequence details
-                                  into that file.
-   -outseq             seqoutall  If you enter the name of a file here then
-                                  this program will write the ORFs into that
-                                  file.
+  [-outfile]           outfile    Output file name
+   -outseq             seqoutall  ORF sequence output
 
-   Optional qualifiers:
+   Additional (Optional) qualifiers:
    -table              menu       Genetics code used for the translation
    -[no]firstorf       boolean    Count the beginning of a sequence as a
                                   possible ORF, even if it's inferior to the
@@ -72,7 +68,7 @@ Command line arguments
                                   or inferior to the minimal ORF size.
    -mstart             boolean    Displays only ORFs starting with an M.
 
-   Advanced qualifiers:
+   Advanced (Unprompted) qualifiers:
    -[no]reverse        boolean    Display also the translation of the DNA
                                   sequence in the 3 reverse frames
    -orfminsize         integer    Minimum size of Open Reading Frames (ORFs)
@@ -116,62 +112,62 @@ Command line arguments
    -html               boolean    Use HTML formatting
 
    Associated qualifiers:
-  "-sequence" related qualifiers
-  -sbegin1             integer    First base used
-  -send1               integer    Last base used, def=seq length
-  -sreverse1           boolean    Reverse (if DNA)
-  -sask1               boolean    Ask for begin/end/reverse
-  -snucleotide1        boolean    Sequence is nucleotide
-  -sprotein1           boolean    Sequence is protein
-  -slower1             boolean    Make lower case
-  -supper1             boolean    Make upper case
-  -sformat1            string     Input sequence format
-  -sopenfile1          string     Input filename
-  -sdbname1            string     Database name
-  -sid1                string     Entryname
-  -ufo1                string     UFO features
-  -fformat1            string     Features format
-  -fopenfile1          string     Features file name
-  "-outfile" related qualifiers
-  -odirectory2         string     Output directory
-  "-outseq" related qualifiers
-  -osformat            string     Output seq format
-  -osextension         string     File name extension
-  -osname              string     Base file name
-  -osdirectory         string     Output directory
-  -osdbname            string     Database name to add
-  -ossingle            boolean    Separate file for each entry
-  -oufo                string     UFO features
-  -offormat            string     Features format
-  -ofname              string     Features file name
-  -ofdirectory         string     Output directory
+
+   "-sequence" associated qualifiers
+   -sbegin1             integer    First base used
+   -send1               integer    Last base used, def=seq length
+   -sreverse1           boolean    Reverse (if DNA)
+   -sask1               boolean    Ask for begin/end/reverse
+   -snucleotide1        boolean    Sequence is nucleotide
+   -sprotein1           boolean    Sequence is protein
+   -slower1             boolean    Make lower case
+   -supper1             boolean    Make upper case
+   -sformat1            string     Input sequence format
+   -sopenfile1          string     Input filename
+   -sdbname1            string     Database name
+   -sid1                string     Entryname
+   -ufo1                string     UFO features
+   -fformat1            string     Features format
+   -fopenfile1          string     Features file name
+
+   "-outfile" associated qualifiers
+   -odirectory2         string     Output directory
+
+   "-outseq" associated qualifiers
+   -osformat            string     Output seq format
+   -osextension         string     File name extension
+   -osname              string     Base file name
+   -osdirectory         string     Output directory
+   -osdbname            string     Database name to add
+   -ossingle            boolean    Separate file for each entry
+   -oufo                string     UFO features
+   -offormat            string     Features format
+   -ofname              string     Features file name
+   -ofdirectory         string     Output directory
 
    General qualifiers:
-  -auto                boolean    Turn off prompts
-  -stdout              boolean    Write standard output
-  -filter              boolean    Read standard input, write standard output
-  -options             boolean    Prompt for required and optional values
-  -debug               boolean    Write debug output to program.dbg
-  -verbose             boolean    Report some/full command line options
-  -help                boolean    Report command line options. More
+   -auto                boolean    Turn off prompts
+   -stdout              boolean    Write standard output
+   -filter              boolean    Read standard input, write standard output
+   -options             boolean    Prompt for standard and additional values
+   -debug               boolean    Write debug output to program.dbg
+   -verbose             boolean    Report some/full command line options
+   -help                boolean    Report command line options. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
-  -warning             boolean    Report warnings
-  -error               boolean    Report errors
-  -fatal               boolean    Report fatal errors
-  -die                 boolean    Report deaths
+   -warning             boolean    Report warnings
+   -error               boolean    Report errors
+   -fatal               boolean    Report fatal errors
+   -die                 boolean    Report deaths
    
 
-   Mandatory qualifiers Allowed values Default
+   Standard (Mandatory) qualifiers Allowed values Default
    [-sequence]
    (Parameter 1) Sequence USA Readable sequence Required
    [-outfile]
-   (Parameter 2) If you enter the name of a file here then this program
-   will write the sequence details into that file. Output file
-   <sequence>.sixpack
-   -outseq If you enter the name of a file here then this program will
-   write the ORFs into that file. Writeable sequence(s) <sequence>.format
-   Optional qualifiers Allowed values Default
+   (Parameter 2) Output file name Output file <sequence>.sixpack
+   -outseq ORF sequence output Writeable sequence(s) <sequence>.format
+   Additional (Optional) qualifiers Allowed values Default
    -table Genetics code used for the translation
    0 (Standard)
    1 (Standard (with alternative initiation codons))
@@ -200,7 +196,7 @@ Command line arguments
    it's not finishing with a STOP, or inferior to the minimal ORF size.
    Boolean value Yes/No Yes
    -mstart Displays only ORFs starting with an M. Boolean value Yes/No No
-   Advanced qualifiers Allowed values Default
+   Advanced (Unprompted) qualifiers Allowed values Default
    -[no]reverse Display also the translation of the DNA sequence in the 3
    reverse frames Boolean value Yes/No Yes
    -orfminsize Minimum size of Open Reading Frames (ORFs) to display in
