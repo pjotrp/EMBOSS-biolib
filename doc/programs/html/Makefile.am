@@ -11,9 +11,9 @@ pkgdata_DATA =  abiview0.gif banana0.gif chaos0.gif cpgplot0.gif \
                antigenic.html backtranseq.html banana.html btwisted.html \
                cai.html chaos.html charge.html checktrans.html chips.html \
                cirdna.html clique.html codcmp.html coderet.html \
-               compseq.html cons.html consense.html contml.html \
-               contrast.html cpgplot.html cpgreport.html cusp.html \
-               cutseq.html dan.html dbiblast.html dbifasta.html \
+               compseq.html cons.html consense.html contacts.html \
+               contml.html contrast.html cpgplot.html cpgreport.html \
+               cusp.html cutseq.html dan.html dbiblast.html dbifasta.html \
                dbiflat.html dbigcg.html degapseq.html descseq.html \
                diffseq.html digest.html display_group.html distmat.html \
                dnacomp.html dnadist.html dnainvar.html dnaml.html \
@@ -61,18 +61,19 @@ pkgdata2_DATA = isochore.html kitsch.html lindna.html marscan.html \
                protein_3d_structure_group.html \
                protein_composition_group.html protein_motifs_group.html \
                protein_mutation_group.html protein_profiles_group.html \
-               pscan.html rebaseextract.html recode.html recoder.html \
-               redata.html remap.html restml.html restover.html \
-               restrict.html revseq.html scopalign.html scope.html \
-               seealso.html seqboot.html seqmatchall.html seqret.html \
-               seqretall.html seqretfeat.html seqretset.html \
-               seqretsplit.html showalign.html showdb.html showfeat.html \
-               showorf.html showseq.html shuffleseq.html sigcleave.html \
-               silent.html splitter.html stamps.html stretcher.html \
-               stssearch.html supermatcher.html syco.html test_group.html \
-               textsearch.html tfextract.html tfm.html tfscan.html \
-               tmap.html topo.html transeq.html trimseq.html \
-               utils_database_creation_group.html \
+               protein_structure_group.html pscan.html rebaseextract.html \
+               recode.html recoder.html redata.html remap.html restml.html \
+               restover.html restrict.html revseq.html scopalign.html \
+               scope.html seealso.html seqboot.html seqmatchall.html \
+               seqret.html seqretall.html seqretallfeat.html \
+               seqretfeat.html seqretset.html seqretsplit.html \
+               showalign.html showdb.html showfeat.html showorf.html \
+               showseq.html shuffleseq.html sigcleave.html siggen.html \
+               sigscan.html silent.html splitter.html stamps.html \
+               stretcher.html stssearch.html supermatcher.html \
+               swissparse.html syco.html test_group.html textsearch.html \
+               tfextract.html tfm.html tfscan.html tmap.html topo.html \
+               transeq.html trimseq.html utils_database_creation_group.html \
                utils_database_indexing_group.html utils_misc_group.html \
                vectorstrip.html water.html wobble.html wordcount.html \
                wordmatch.html wossname.html
