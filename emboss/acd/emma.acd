@@ -49,6 +49,13 @@ bool: insist  [
   information: "Insist that the sequence type is changed to protein"
 ]
 
+bool: tmpprot  [
+  required: "N"
+  default: "@(!$(inseqs.protein))"
+  expected: "Yes for protein sequences"
+  information: "Temporary holder for input protein sequence type"
+]
+
 bool: prot  [
   required: "N"
   default: "@($(insist)?$(tmpprot):$(inseqs.protein))"
