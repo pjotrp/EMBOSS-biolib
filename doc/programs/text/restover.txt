@@ -22,9 +22,9 @@ Description
    
    The home page of REBASE is: http://rebase.neb.com/rebase/rebase.html
    
-   restover takes various criteria for specifying types of restriction
-   enzymes and searches the REBASE database for matching enzymes that
-   have the desired effect when they cut the specified input sequence.
+   restover takes a specified sequence and a short sequence of a cut-site
+   overhang and searches the REBASE database for matching enzymes that
+   create the desired overhang sequence when they cut the input sequence.
    
 Usage
 
