@@ -154,6 +154,43 @@ typedef struct AjSScopalg
 
 
 
+
+
+/* @data AjPScophit *******************************************************
+**
+** Ajax Scophit object.
+**
+** Holds data associated with a protein / domain sequence that is generated 
+** / manipulated by the EMBOSS applications psiblasts, swissparse, seqsort, 
+** seqmerge and groups.  Includes SCOP classification records.
+**
+** AjPScophit is implemented as a pointer to a C data structure.
+**
+** @alias AjSScophit
+** @alias AjOScophit
+**
+** @@
+******************************************************************************/
+
+typedef struct AjSScophit
+{
+    AjPStr   Class;
+    AjPStr   Fold;
+    AjPStr   Superfamily;
+    AjPStr   Family;
+    AjPStr    Seq;	/* Sequence as string */
+    ajint     Start;      /* Start of sequence relative to full length 
+			    swissprot sequence */
+    ajint     End;        /* End of sequence relative to full length 
+			    swissprot sequence */
+    AjPStr    Id;         /* Identifier */  
+    AjPStr    Type;       /* Bibliographic information */ 
+    ajint     Group;      /* Group no. of sequence */
+} AjOScophit, *AjPScophit;
+
+
+
+
 /* @data AjPHit *******************************************************
 **
 ** Ajax hit object.
@@ -341,6 +378,10 @@ AjPPdb   ajXyzPdbNew(ajint chains);
 void     ajXyzPdbDel(AjPPdb *thys);
 void     ajXyzScopDel(AjPScop *pthis);
 AjPScop  ajXyzScopNew(ajint n);
+
+
+AjPScophit  ajXyzScophitNew(void);
+void     ajXyzScophitDel(AjPScophit *pthis);
 
 void     ajXyzHitDel(AjPHit *pthis);
 AjPHit   ajXyzHitNew(void);

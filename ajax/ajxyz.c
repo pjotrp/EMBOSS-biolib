@@ -238,6 +238,37 @@ AjPScopalg  ajXyzScopalgNew(int n)
 
 
 
+
+/* @func ajXyzScophitNew *********************************************************
+**
+** Scophit object constructor. 
+**
+** @return [AjPScophit] Pointer to a Scophit object
+** @@
+******************************************************************************/
+AjPScophit  ajXyzScophitNew(void)
+{
+    AjPScophit ret = NULL;
+
+    AJNEW0(ret);
+
+    ret->Class       =ajStrNew();
+    ret->Fold        =ajStrNew();
+    ret->Superfamily =ajStrNew();
+    ret->Family      =ajStrNew();
+    ret->Seq         = ajStrNew();
+    ret->Id          = ajStrNew();
+    ret->Type        = ajStrNew();
+    ret->Start       =0;
+    ret->End         =0;
+    ret->Group       =0;
+    
+    return ret;
+}
+
+
+
+
 /* @func ajXyzHitNew *********************************************************
 **
 ** Hit object constructor. This is normally called by the ajXyzHitlistNew
@@ -551,6 +582,34 @@ void ajXyzScopalgDel(AjPScopalg *pthis)
     AJFREE((*pthis)->Codes);
     AJFREE((*pthis)->Seqs);
     
+    AJFREE(*pthis);
+    
+    return;
+}
+
+
+
+
+
+/* @func ajXyzScophitDel ******************************************************
+**
+** Destructor for Scophit object.
+**
+** @param [w] pthis [AjPScophit*] Scophit object pointer
+**
+** @return [void]
+** @@
+******************************************************************************/
+void     ajXyzScophitDel(AjPScophit *pthis)
+{
+    ajStrDel(&(*pthis)->Class);
+    ajStrDel(&(*pthis)->Fold);
+    ajStrDel(&(*pthis)->Superfamily);
+    ajStrDel(&(*pthis)->Family);
+    ajStrDel(&(*pthis)->Seq);
+    ajStrDel(&(*pthis)->Id);
+    ajStrDel(&(*pthis)->Type);
+
     AJFREE(*pthis);
     
     return;
@@ -3501,5 +3560,72 @@ AjBool   ajXyzVdwallRead(AjPFile inf, AjPVdwall *thys)
 
 
 
+
+
+/* @func ajXyzHitlistToScophits ****************************************************
+**
+** Read from a list of pointers to Hitlist structures and writes a pointer to a 
+** list of Scophit structures.
+** 
+** @param [r] in      [AjPList]  List of pointers to Hitlist structures
+** @param [w] out     [AjPList*] Pointer to list of Scophit structures
+**
+** @return [AjBool] True on success (lists were processed ok)
+** @@
+******************************************************************************/
+AjBool ajXyzHitlistToScophits(AjPList in, AjPList *out)
+{
+    AjPScophit   scophit=NULL;   /* Pointer to Scophit object */
+    AjPHitlist   hitlist=NULL;   /* Pointer to Hitlist object */
+    AjIList      iter   =NULL;   /* List iterator */
+    ajint        x      =0;      /* Loop counter */
+   
+
+    /* Check args */
+    if(!in)
+    {
+	ajWarn("Null arg passed to ajXyzHitlistToScophits");
+	return ajFalse;
+    }
+
+    /* Create list iterator and new list */
+    iter=ajListIter(in);	
+    
+
+    /* Iterate through the list of Hitlist pointers */
+    while((hitlist=(AjPHitlist)ajListIterNext(iter)))
+    {
+	/* Loop for each hit in hitlist structure */
+	for(x=0; x<hitlist->N; ++x)
+	{
+	    /* Create a new scophit structure */
+	    AJNEW0(scophit);
+
+	    /* Assign scop classification records from hitlist structure */
+	    ajStrAss(&scophit->Class, hitlist->Class);
+	    ajStrAss(&scophit->Fold, hitlist->Fold);
+	    ajStrAss(&scophit->Superfamily, hitlist->Superfamily);
+	    ajStrAss(&scophit->Family, hitlist->Family);
+
+	    /* Assign records from hit structure */
+	    ajStrAss(&scophit->Seq, hitlist->hits[x]->Seq);
+	    ajStrAss(&scophit->Id, hitlist->hits[x]->Id);
+	    ajStrAss(&scophit->Type, hitlist->hits[x]->Type);
+	    scophit->Start = hitlist->hits[x]->Start;
+	    scophit->End = hitlist->hits[x]->End;
+	    scophit->Group = hitlist->hits[x]->Group;
+
+	    
+	    /* Push scophit onto list */
+	    ajListPushApp(*out,scophit);
+	}
+    }	
+    
+
+    /* Clean up and return */
+    ajListIterFree(iter);	
+
+    return ajTrue;
+}
 
 
