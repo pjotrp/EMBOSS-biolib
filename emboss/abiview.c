@@ -276,7 +276,11 @@ int main(int argc, char **argv)
    
     ajGraphCloseWin();
     if(dseq && overlay)
-	ajGraphObjDel(&graphs); /* free seq text mem */
+	ajGraphObjDel(&graphs);   /* free seq text mem */
+
+    if(dseq && !overlay)
+	ajGraphDataObjDel(&gd5);  /* free seq text mem */
+
     ajGraphxyDel(graphs);
     ajInt2dDel(&trace);
     ajShortDel(&basePositions);
