@@ -659,11 +659,17 @@ public class JembossAuthServer
       catch(Exception exp){} 
  
       if(!lfork || !aj.getErrStd().equals(""))
+      {
         returnError(aj,"Fork process failed in run_prog "+
                         embossCommand);
-
-      result.add("msg");
-      result.add("");
+        result.add("msg");
+        result.add(aj.getErrStd());
+      }
+      else
+      {
+        result.add("msg");
+        result.add("");
+      }
 
       try
       {
