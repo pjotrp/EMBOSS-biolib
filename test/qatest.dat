@@ -6633,6 +6633,17 @@ FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 1\n/
 //
 
+ID tranalign-ex
+AP tranalign
+CL ../../data/tranalign.seq ../../data/tranalign.pep tranalign2.seq
+FI stderr
+FC = 1
+FI tranalign2.seq
+FZ = 2375
+FP /^>HSFAU1/
+FP /^cagatcaaggctcatgtagcctca---ctggagggcattgccccggaagatcaagtcgtg/
+//
+
 # update the examples
 ID transeq-ex
 AP transeq
