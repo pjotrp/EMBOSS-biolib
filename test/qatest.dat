@@ -5533,7 +5533,7 @@ FI test.out
 FZ = 362
 FC = 14
 FP /^GCG  Length: 100  Type: N  Check: 6856 ..\n/
-FP /^   1 ACGTAC\<note\>GTAC GTACGTACGT\n/
+FP /^   1 ACGTAC\<note\<GTAC GTACGTACGT\n/
 //
 
 ID entret-in-gcg
@@ -5543,7 +5543,7 @@ FI test.out
 FZ = 362
 FC = 14
 FP /^GCG  Length: 100  Type: N  Check: 6856 ..\n/
-FP /^   1 ACGTAC\<note\>GTAC GTACGTACGT\n/
+FP /^   1 ACGTAC\<note\<GTAC GTACGTACGT\n/
 //
 
 ID entret-inauto-gcg8
@@ -9880,18 +9880,18 @@ ID seqret-outusa-experiment
 AP seqret
 CL -auto ../../data/dna.embl experiment::test.out
 FI test.out
-FZ = 113
-FP /<EMBL---->/
-FP /^acgtacgtacgtacgtacgtacgtacgtacgtacgtacgtacgtacgtacgtacgtacgt\n/
+FZ = 469
+FP /^ID   EMBL       standard; DNA; UNC; 100 BP.\n/
+FP /^\s+ acgtacgtac gtacgtacgt acgtacgtac gtacgtacgt\s+100\n/
 //
 
 ID seqret-out-experiment
 AP seqret
 CL -auto ../../data/dna.embl test.out -osf experiment
 FI test.out
-FZ = 113
-FP /<EMBL---->/
-FP /^acgtacgtacgtacgtacgtacgtacgtacgtacgtacgtacgtacgtacgtacgtacgt\n/
+FZ = 469
+FP /^ID   EMBL       standard; DNA; UNC; 100 BP.\n/
+FP /^\s+ acgtacgtac gtacgtacgt acgtacgtac gtacgtacgt\s+100\n/
 //
 
 ID seqret-outusa-fasta
@@ -10050,6 +10050,24 @@ FI test.out
 FZ = 153
 FP /^>gnl\|unk\|EMBL \(E10002.34\) EMBL FORMAT DNA SEQUENCE\n/
 FP /^acgtacgtacgtacgtacgtacgtacgtacgtacgtacgt\n/
+//
+
+ID seqret-outusa-staden
+AP seqret
+CL -auto ../../data/dna.embl staden::test.out
+FI test.out
+FZ = 113
+FP /<EMBL---->/
+FP /^acgtacgtacgtacgtacgtacgtacgtacgtacgtacgtacgtacgtacgtacgtacgt\n/
+//
+
+ID seqret-out-staden
+AP seqret
+CL -auto ../../data/dna.embl test.out -osf staden
+FI test.out
+FZ = 113
+FP /<EMBL---->/
+FP /^acgtacgtacgtacgtacgtacgtacgtacgtacgtacgtacgtacgtacgtacgtacgt\n/
 //
 
 ID seqret-outusa-strider
