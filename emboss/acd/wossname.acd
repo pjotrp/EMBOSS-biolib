@@ -76,3 +76,14 @@ bool: colon  [
   prompt: "Put a colon in the group name between two levels"
   help: "The groups that EMBOSS applications belong to up to two levels, for example the primary group 'ALIGNMENT' has several sub-groups, or second-level groups, e.g.: CONSENSUS, DIFFERENCES, DOT PLOTS, GLOBAL, LOCAL, MULTIPLE. To aid programs that parse the output of wossname that require the names of these subgroups, a colon ':' will be placed between the first and second level of the group name if this option is true."
 ]
+
+bool: gui  [
+  default: "N"
+  prompt: "Only report those applications that can run in a GUI"
+  help: "This option is intended to help those who are designing
+Graphical User Interfaces to the EMBOSS applications.  Some EMBOSS
+programs are inappropriate for running in a GUI, these include other
+menu programs and interactive editors.  This option allows you to only
+report those programs that can be run from a GUI"
+]
+
