@@ -49,7 +49,6 @@ static AjPFeature write_count(AjPFeattable ajpFeattableCounts,
 int main( int argc , char **argv )
 {
     /* position counters and limits */
-    ajint ajIntResTypeCurrent = 0;
     ajint ajIntContactNumber  = 0;
     ajint ajIntNumberOfContactFiles = 0;
     ajint ajIntRow    = 0;
@@ -73,11 +72,8 @@ int main( int argc , char **argv )
     ajint ajIntSecondResType = 0;    /* second residue number in contact */
 
     /* count matrix */
-    AjPStr ajpStrResTypeAlphabet   = NULL; /* ordered letters of residues  */
     AjPStr ajpStrFirstResType      = NULL;
     AjPStr ajpStrSecondResType     = NULL;
-    AjIStr ajpStrIterFirstResType  = NULL;
-    AjIStr ajpStrIterSecondResType = NULL;
 
     /* scoring matrix */
     AjPInt2d ajpInt2dCounts = NULL;
@@ -94,7 +90,8 @@ int main( int argc , char **argv )
     AjPStr ajpStrReportHead         = NULL;
     AjPFeattable ajpFeattableCounts = NULL;
     AjPFeature ajpFeatCurrent       = NULL;
-    AjPStr ajpStrReportTail         = NULL; /* DDDDEBUGGING ONLY */
+    /*  DDDDEBUGGING ONLY */
+    /*     AjPStr ajpStrReportTail         = NULL;  DDDDEBUGGING ONLY */
 
     embInit( "contactcount", argc, argv );
 
@@ -102,7 +99,7 @@ int main( int argc , char **argv )
     ajpListCmapFiles = ajAcdGetDirlist("cmapdir");
 
     /* get test output file from ACD */
-    ajpFile2dScoringMatrix = ajAcdGetOutfile("dummyfile");
+    ajpFile2dScoringMatrix = ajAcdGetOutfile("matrixfile");
 
     /* get contact count output file from ACD */
     ajpReportCounts = ajAcdGetReport("outfile");
@@ -110,8 +107,6 @@ int main( int argc , char **argv )
     ajIntNumberOfContactFiles = ajListLength(ajpListCmapFiles);
 
     /* create a 2-D array (count array) to store the scores */
-    ajpStrResTypeAlphabet = ajStrNewC("ARNDCQEGHILKMFPSTWYVBZX*");
-
     ajpInt2dCounts = ajInt2dNewL(enumTotalResTypes);
 
     /* empty count array */
@@ -281,12 +276,8 @@ int main( int argc , char **argv )
     ajInt2dDel(&ajpInt2dCounts);
 
     /* tidy up scoring output objects */
-    ajStrIterFree(&ajpStrIterFirstResType);
-    ajStrIterFree(&ajpStrIterSecondResType);
     ajStrDel(&ajpStrFirstResType);
     ajStrDel(&ajpStrSecondResType);
-    ajStrDel(&ajpStrResTypeAlphabet);    
-    
     ajFileClose(&ajpFile2dScoringMatrix);
 
     /*  tidy up everything else... */
