@@ -414,12 +414,21 @@ output_auth_xml()
 get_libs()
 {
   USER_CONFIG=$1
+
+  include_lib_dirs="
+/usr/local
+/opt/freeware
+/usr/freeware"
+
   if (test -f /usr/include/png.h) && (test -f /usr/include/gd.h); then
      USER_CONFIG="default"
-  elif (test -f /usr/local/include/png.h) && (test -f /usr/local/include/gd.h); then
-     USER_CONFIG="--with-pngdriver=/usr/local"
-  elif (test -f /opt/freeware/include/png.h) && (test -f /opt/freeware/include/gd.h); then
-     USER_CONFIG="--with-pngdriver=/opt/freeware"
+  else
+    for lib_dir in `echo  "$include_lib_dirs"` ;
+    do
+      if (test -f $lib_dir/include/png.h) && (test -f $lib_dir/include/gd.h); then
+        USER_CONFIG="--with-pngdriver=$lib_dir"
+      fi  
+    done
   fi
 }
 
@@ -434,23 +443,32 @@ check_libs()
     DIR=`echo $USER_CONFIG | sed -n -e 's|\(.*\)--with-pngdriver=\([^ ]*\)\(.*\)|\2|p'`
   fi
 
+  lib_dirs="
+$DIR/lib
+$DIR/lib32
+$DIR/lib64"
+
   echo
   echo "Inspecting $DIR"
  
 # test for libpng
-  WARN="false"
-  if (test ! -f $DIR/include/png.h ) || 
-     ( (test ! -f $DIR/lib/libpng.a) && (test ! -f $DIR/lib/libpng.so) &&
-       (test ! -f $DIR/lib/libpng.dylib) ); then
+  WARN="true"
+  if (test ! -f $DIR/include/png.h ); then
     WARN="true"
-    if( (test $PLATFORM = "macos") || (test $PLATFORM = "linux") ); then
-      if (test -f /usr/local/include/png.h ); then
-         WARN="false"
-         echo "...found libpng (/usr/local/)"
-      fi
-    fi   
   else
-    echo "...found libpng ($DIR)"
+    for lib_dir in `echo  "$lib_dirs"` ; 
+    do
+      echo "checking $lib_dir"
+      if (test -f $lib_dir/libpng.a) || (test -f $lib_dir/libpng.so); then
+         WARN="false"
+         echo "...found libpng in $lib_dir"
+         break
+      elif (test -f $lib_dir/libpng.dylib); then
+         WARN="false"
+         echo "...found libpng in $lib_dir"
+         break
+      fi                     
+    done
   fi
 
   if (test $WARN = "true"); then
@@ -474,19 +492,23 @@ check_libs()
   fi
 
 # test for gd
-  WARN="false"
-  if (test ! -f $DIR/include/gd.h) ||
-     ( (test ! -f $DIR/lib/libgd.a) && (test ! -f $DIR/lib/libgd.so) &&
-       (test ! -f $DIR/lib/libgd.dylib) ); then
+  WARN="true"
+  if (test ! -f $DIR/include/gd.h ); then
     WARN="true"
-    if( (test $PLATFORM = "macos") || (test $PLATFORM = "linux") ); then
-      if (test -f /usr/local/include/gd.h); then
-         WARN="false"
-          echo "...found libgd (/usr/local)"
-      fi
-    fi
   else
-    echo "...found libgd ($DIR)"
+    for lib_dir in `echo  "$lib_dirs"` ;
+    do
+      echo "checking $lib_dir"
+      if (test -f $lib_dir/libgd.a) || (test -f $lib_dir/libgd.so); then
+         WARN="false"
+         echo "...found gd in $lib_dir"
+         break
+      elif (test -f $lib_dir/libgd.dylib); then
+         WARN="false"
+         echo "...found libpng in $lib_dir"
+         break
+      fi
+    done
   fi
 
   if (test $WARN = "true"); then
@@ -509,15 +531,24 @@ check_libs()
   fi 
 
 # test for zlib which can be either in /usr/lib or $DIR/lib
-  WARN="false"
-  if ( (test ! -f /usr/lib/libz.a) && (test ! -f $DIR/lib/libz.a) &&
-       (test ! -f /usr/lib/libz.dylib) && (test ! -f $DIR/lib/libz.dylib) &&
-       (test ! -f /usr/local/lib/libz.a) && (test ! -f /usr/local/lib/libz.a) &&
-       (test ! -f /usr/local/lib/libz.dylib) && (test ! -f /usr/local/lib/libz.dylib) ); then
-    WARN="true"
-  else
-    echo "...found zlib"
-  fi
+
+  lib_dirs="
+$DIR/lib
+$DIR/lib32
+$DIR/lib64
+/usr/lib
+/usr/local/lib"
+
+  WARN="true"
+  for lib_dir in `echo  "$lib_dirs"` ;
+  do
+    echo "checking $lib_dir"
+    if (test -f $lib_dir/libz.a) || (test -f $lib_dir/libz.dylib); then
+       WARN="false"
+       echo "...found zlib in $lib_dir"
+       break
+    fi
+  done
 
   if (test $WARN = "true"); then
     echo
