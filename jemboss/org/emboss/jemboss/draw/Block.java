@@ -350,14 +350,19 @@ public class Block extends JPanel
     double heightPanel = current_dna.getHeight();
     Point location = current_dna.getLocationPoint();
     int ymid  = (int)(heightPanel/2.);
+
+    int shift = (int)fracRadii;
+    if(shift > 1 && shift < (int)heightPanel)
+      ymid  = shift;
+
     int start = current_dna.getStart();
     int end   = current_dna.getEnd();
     g2.setStroke(new BasicStroke(strokeSize));
 
     int xend   = (((int)ddiameter-location.x)*(bend-start)/
-                   (end-start))+location.x;
+                   (end-start))+location.x-(int)strokeSize2;
     int xstart = (((int)ddiameter-location.x)*(bstart-start)/
-                   (end-start))+location.x;
+                   (end-start))+location.x+(int)strokeSize2;
     if(arrowHead)
     {
       xend-=strokeSize2;
@@ -376,9 +381,7 @@ public class Block extends JPanel
       g2.drawLine(xstart,ymid,xend,ymid);
     }
     else
-    {
       g2.drawLine(xstart,ymid,xend,ymid);
-    }
 
     rect.setLocation(xstart,ymid-(int)strokeSize2);
     rect.setSize(xend-xstart,(int)strokeSize);
@@ -491,15 +494,20 @@ public class Block extends JPanel
   */
   public void setBlockLocation(int x, int y)
   {
-    double dradii = current_dna.getDiameter()/2.d;
-    Point location = current_dna.getLocationPoint();
+    if(current_dna.isCircular())
+    {
+      double dradii = current_dna.getDiameter()/2.d;
+      Point location = current_dna.getLocationPoint();
 
-    double x_origin = location.x+dradii;
-    double y_origin = location.y+dradii;
-    double len = Math.sqrt(Math.pow((y_origin-y),2)+
-                           Math.pow((x_origin-x),2));   
-    fracRadii = len/dradii;
-    System.out.println(fracRadii);
+      double x_origin = location.x+dradii;
+      double y_origin = location.y+dradii;
+      double len = Math.sqrt(Math.pow((y_origin-y),2)+
+                             Math.pow((x_origin-x),2));   
+      fracRadii = len/dradii;
+    }
+    else
+      fracRadii = y;
+    
     repaint();
   }
 
