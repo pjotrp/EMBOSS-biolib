@@ -45,12 +45,12 @@ pkgdata2_DATA = isochore.txt jembossctl.txt kitsch.txt lindna.txt listor.txt \
                seqsort.txt seqwords.txt showalign.txt showdb.txt \
                showfeat.txt showorf.txt showseq.txt shuffleseq.txt \
                sigcleave.txt siggen.txt sigscan.txt silent.txt sirna.txt \
-               skipseq.txt splitter.txt stamps.txt stretcher.txt \
-               stssearch.txt supermatcher.txt swissparse.txt syco.txt \
-               textsearch.txt tfextract.txt tfm.txt tfscan.txt tmap.txt \
-               topo.txt tranalign.txt transeq.txt trimest.txt trimseq.txt \
-               union.txt vectorstrip.txt water.txt whichdb.txt wobble.txt \
-               wordcount.txt wordmatch.txt wossname.txt yank.txt
+               sixpack.txt skipseq.txt splitter.txt stamps.txt \
+               stretcher.txt stssearch.txt supermatcher.txt swissparse.txt \
+               syco.txt textsearch.txt tfextract.txt tfm.txt tfscan.txt \
+               tmap.txt topo.txt tranalign.txt transeq.txt trimest.txt \
+               trimseq.txt union.txt vectorstrip.txt water.txt whichdb.txt \
+               wobble.txt wordcount.txt wordmatch.txt wossname.txt yank.txt
 
 pkgdatadir=$(prefix)/share/$(PACKAGE)/doc/programs/text
 pkgdata2dir=$(prefix)/share/$(PACKAGE)/doc/programs/text
