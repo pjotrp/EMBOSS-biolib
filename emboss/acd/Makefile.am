@@ -10,7 +10,8 @@ pkgdata_DATA = codes.english \
 	dbigcg.acd degapseq.acd \
 	demofeatures.acd demolist.acd demosequence.acd \
 	demostring.acd demotable.acd descseq.acd diffseq.acd \
-	digest.acd domainer.acd dotmatcher.acd dotpath.acd dottup.acd \
+	digest.acd distmat.acd domainer.acd \
+	dotmatcher.acd dotpath.acd dottup.acd \
 	dreg.acd einverted.acd embossdata.acd embossversion.acd emma.acd \
 	emowse.acd entrails.acd entret.acd equicktandem.acd \
 	est2genome.acd etandem.acd extractseq.acd findkm.acd \
