@@ -43,7 +43,7 @@ import org.emboss.jemboss.JembossParams;
 *
 */
 public class DragTree extends JTree implements DragGestureListener,
-                           DragSourceListener, DropTargetListener 
+                           DragSourceListener, DropTargetListener, ActionListener 
 {
 
   public static DefaultTreeModel model;
@@ -52,6 +52,8 @@ public class DragTree extends JTree implements DragGestureListener,
 
   private File root;
   private String fs = new String(System.getProperty("file.separator"));
+
+  private JPopupMenu popup;
   final Cursor cbusy = new Cursor(Cursor.WAIT_CURSOR);
   final Cursor cdone = new Cursor(Cursor.DEFAULT_CURSOR);
 
@@ -78,13 +80,31 @@ public class DragTree extends JTree implements DragGestureListener,
     this.getSelectionModel().setSelectionMode
                   (TreeSelectionModel.SINGLE_TREE_SELECTION);
 
+    // Popup menu
+    addMouseListener(new PopupListener());
+    popup = new JPopupMenu();
+    JMenuItem menuItem = new JMenuItem("Refresh");
+    menuItem.addActionListener(this);
+    popup.add(menuItem);
+    menuItem = new JMenuItem("Rename...");
+    menuItem.addActionListener(this);
+    popup.add(menuItem);
+    menuItem = new JMenuItem("New Folder...");
+    menuItem.addActionListener(this);
+    popup.add(menuItem);
+    menuItem = new JMenuItem("Delete File...");
+    menuItem.addActionListener(this);
+    popup.add(menuItem);
+
+
     //Listen for when a file is selected
 
     MouseListener mouseListener = new MouseAdapter() 
     {
       public void mouseClicked(MouseEvent me) 
       {
-        if(me.getClickCount() == 2 && isFileSelection()) 
+        if(me.getClickCount() == 2 && isFileSelection() &&
+           !me.isPopupTrigger()) 
         {
           f.setCursor(cbusy);
           JTree t = (JTree)me.getSource();
@@ -131,6 +151,94 @@ public class DragTree extends JTree implements DragGestureListener,
 
   }
 
+  /**
+  *
+  * Popup menu actions
+  * 
+  */
+  public void actionPerformed(ActionEvent e) 
+  {
+
+    JMenuItem source = (JMenuItem)(e.getSource());
+    final FileNode node = getNodename();
+    if(node == null)
+    {
+      JOptionPane.showMessageDialog(null,"No file selected.",
+                                    "Warning",
+                                    JOptionPane.WARNING_MESSAGE);
+      return;
+    }
+    
+    final File f = node.getFile();
+
+    if(source.getText().equals("Refresh"))
+      newRoot(System.getProperty("user.home"));
+    else if(source.getText().equals("New Folder..."))
+    {
+      String inputValue = JOptionPane.showInputDialog(null,
+                          "Folder Name","Create New Folder in",
+                          JOptionPane.QUESTION_MESSAGE);
+
+      if(inputValue != null && !inputValue.equals("") )
+      {
+ 
+        String path = null;
+        if(isFileSelection())
+          path = f.getParent();
+        else
+          path = f.getAbsolutePath();
+ 
+        File dir = new File(path+System.getProperty("file.separator")+
+                            inputValue);
+        dir.mkdir();
+        addObject(inputValue,path);
+      }
+    }
+    else if(isFileSelection())
+    {
+      if(source.getText().equals("Rename..."))
+      {
+        final String inputValue = JOptionPane.showInputDialog(null,
+                                "New File Name","Rename "+f.getName(), 
+                                JOptionPane.QUESTION_MESSAGE);
+        if(inputValue != null && !inputValue.equals("") )
+        {
+          final String path = f.getParent();
+          File fnew = new File(path+System.getProperty("file.separator")+inputValue);
+          f.renameTo(fnew);
+          Runnable deleteFileFromTree = new Runnable()
+          {
+            public void run () 
+            { 
+              deleteObject(node,f.getParentFile().getAbsolutePath());
+              addObject(inputValue,path);
+            };
+          };
+          SwingUtilities.invokeLater(deleteFileFromTree);
+        }
+        
+      }
+      else if(source.getText().equals("Delete File..."))
+      {
+        int n = JOptionPane.showConfirmDialog(
+                                   null,"Delete "+f.getAbsolutePath()+"?",
+                                   "Delete f.getAbsolutePath()",
+                                   JOptionPane.YES_NO_OPTION);
+        if(n == JOptionPane.YES_OPTION)
+        {
+          f.delete();
+          Runnable deleteFileFromTree = new Runnable()
+          {
+            public void run () { deleteObject(node,
+                                 f.getParentFile().getAbsolutePath()); };
+          };
+          SwingUtilities.invokeLater(deleteFileFromTree);
+        }
+      }
+    }
+  
+  }
+
   public void newRoot(String newRoot)
   {
     root = new File(newRoot);
@@ -141,6 +249,12 @@ public class DragTree extends JTree implements DragGestureListener,
 // drag source
   public void dragGestureRecognized(DragGestureEvent e) 
   {
+    // ignore if mouse popup trigger
+    InputEvent ie = e.getTriggerEvent();
+    if(ie instanceof MouseEvent) 
+      if(((MouseEvent)ie).isPopupTrigger()) 
+        return;
+
     // drag only files 
     if(isFileSelection())
       e.startDrag(DragSource.DefaultCopyDrop, // cursor
@@ -241,6 +355,26 @@ public class DragTree extends JTree implements DragGestureListener,
 
   }
 
+  class PopupListener extends MouseAdapter 
+  {
+    public void mousePressed(MouseEvent e) 
+    {
+      maybeShowPopup(e);
+    }
+
+    public void mouseReleased(MouseEvent e) 
+    {
+      maybeShowPopup(e);
+    }
+
+    private void maybeShowPopup(MouseEvent e) 
+    {
+      if(e.isPopupTrigger()) 
+        popup.show(e.getComponent(),
+                e.getX(), e.getY());
+    }
+  }
+
 /**
 *
 * When a suitable DataFlavor is offered over a remote file
@@ -281,6 +415,8 @@ public class DragTree extends JTree implements DragGestureListener,
   public FileNode getNodename()
   {
     TreePath path = getLeadSelectionPath();
+    if(path == null)
+      return null;
     FileNode node = (FileNode)path.getLastPathComponent();
 //  System.out.println(node.getFile().getAbsolutePath());
     return node;
@@ -289,6 +425,9 @@ public class DragTree extends JTree implements DragGestureListener,
   public boolean isFileSelection() 
   {
     TreePath path = getLeadSelectionPath();
+    if(path == null)
+      return false;
+
     FileNode node = (FileNode)path.getLastPathComponent();
     return !node.isDirectory();
   }
@@ -323,7 +462,6 @@ public class DragTree extends JTree implements DragGestureListener,
     while(enum.hasMoreElements())
     {
       String thiskey = (String)enum.nextElement();
- 
       try
       {
         if(thiskey.equals(path))
@@ -340,8 +478,6 @@ public class DragTree extends JTree implements DragGestureListener,
       }
       catch(IOException ioe) {}
     }
-
-
 
 
     if(parentNode == null)
@@ -369,7 +505,45 @@ public class DragTree extends JTree implements DragGestureListener,
     return childNode;
   }
 
+  public void deleteObject(FileNode node, String parentPath)
+  {
 
+    FileNode parentNode = null;
+    Enumeration enum = openNodeDir.keys();
+
+    while(enum.hasMoreElements())
+    {
+      String thiskey = (String)enum.nextElement();
+      try
+      {
+        if(thiskey.equals(parentPath))
+        {
+          parentNode = (FileNode)openNodeDir.get(thiskey);
+          break;
+        }
+        else if((new File(thiskey)).getCanonicalPath().equals(parentPath))  //check canonical path -
+        {                                                                   //resolves mount dirs
+          parentNode = (FileNode)openNodeDir.get(thiskey);
+          break;
+        }
+      }
+      catch(IOException ioe) {}
+    }
+
+
+    if(parentNode == null)
+      return;
+    else if(!parentNode.isExplored())
+    {
+      model = (DefaultTreeModel)getModel();
+      parentNode.explore(openNodeDir);
+      model.nodeStructureChanged(parentNode);
+    }
+
+    model.removeNodeFromParent(node);
+
+    return;
+  }
 /**
 *
 * Opens a JFrame with the file contents displayed.
