@@ -95,8 +95,8 @@ int main(int argc, char **argv)
    
     /* tidy up */
     (void) ajFileClose(&outfile);
-    ajFeaturesWrite(seq1out, Tab1);
-    ajFeaturesWrite(seq2out, Tab2);
+    ajFeatWrite(seq1out, Tab1);
+    ajFeatWrite(seq2out, Tab2);
       
     ajExit();
     return 0;
@@ -128,7 +128,6 @@ static void diffseq_WordMatchListConvDiffToFeat(AjPList list,
     AjPStr type=NULL;
     AjPStr note=NULL;
     AjPStr replace=NULL;
-    AjPStr desc=NULL;
     AjPFeature feature;
     AjIList iter=NULL;
     ajint misstart1 = -1;		/* start of mismatch region in seq1 */
@@ -169,9 +168,9 @@ static void diffseq_WordMatchListConvDiffToFeat(AjPList list,
 	    /* check that we have seen a match already */
 	    if (misstart1 <= misend1)
 	    {	/* is there a gap between the matches? */
-		feature = ajFeatureNew(*tab1, source, type,
-				       misstart1+1, misend1+1, score, 
-				       strand, frame, desc, 0, 0) ;
+		feature = ajFeatNew(*tab1, source, type,
+				    misstart1+1, misend1+1, 
+				    score, strand, frame) ;
 		if (misstart1 == misend1 && misstart2 == misend2)
 		    ajFmtPrintS(&notestr, "SNP in %S", ajSeqGetName(seq2));
 		else if (misstart2 > misend2)
@@ -199,9 +198,9 @@ static void diffseq_WordMatchListConvDiffToFeat(AjPList list,
 
 	    if (misstart2 <= misend2)
 	    {	/* is there a gap between the matches? */
-		feature = ajFeatureNew(*tab2, source, type,
-				       misstart2+1, misend2+1, score, 
-				       strand, frame, desc, 0, 0) ;
+		feature = ajFeatNew(*tab2, source, type,
+				    misstart2+1, misend2+1, 
+				    score, strand, frame) ;
 
 		if (misstart2 == misend2 && misstart1 == misend1)
 		    ajFmtPrintS(&notestr, "SNP in %S", ajSeqGetName(seq1));

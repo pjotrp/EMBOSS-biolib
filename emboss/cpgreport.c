@@ -100,7 +100,7 @@ int main(int argc, char **argv)
     ajStrDel(&substr);
     ajFileClose(&outf);
     ajFeatSortByStart(feattable);
-    ajFeaturesWrite (featout, feattable);
+    ajFeatWrite (featout, feattable);
     ajFeattabDel(&feattable);
     
     ajExit();
@@ -151,7 +151,6 @@ static void cpgreport_cpgsearch(AjPFile *outf, ajint from, ajint to, char *p,
     ajint dgc;
     ajint gc;
     static AjPStr name2=NULL,source=NULL,type=NULL;
-    AjPStr desc=NULL;
     char  strand='+';
     ajint frame=0;
     AjPFeature feature;
@@ -180,9 +179,9 @@ static void cpgreport_cpgsearch(AjPFile *outf, ajint from, ajint to, char *p,
 	    {	      
 	        score2 = (float) top;
 		/*ajFmtPrintS(&score2,"%d.0",top);*/
-	        feature = ajFeatureNew(*feattable, source, type,
-				       lsum+2+z,t+2+z, score2, strand, frame,
-				       desc , 0, 0) ;    
+	        feature = ajFeatNew(*feattable, source, type,
+				    lsum+2+z,t+2+z,
+				    score2, strand, frame) ;
 		if(!feature)
 		  ajDebug("Error feature not added to feature table");
 		ajFmtPrintF(*outf,"%-20.20s %6d %6d %5d ",name,lsum+2+z,
@@ -195,9 +194,9 @@ static void cpgreport_cpgsearch(AjPFile *outf, ajint from, ajint to, char *p,
 	    {
 	      score2 = (float) top;
 	      /*score2 = ajFmtPrintS(&score2,"%d.0",top);*/
-	      feature = ajFeatureNew(*feattable, source, type,
-				     lsum+2+z,t+2+z, score2, strand, frame,
-				     desc , 0, 0) ;    
+	      feature = ajFeatNew(*feattable, source, type,
+				  lsum+2+z,t+2+z,
+				  score2, strand, frame) ;
 	      ajFmtPrintF(*outf,"%-20s %6d %6d %5d ",name,lsum+2+z,t+2+z,
 			  top);
 		ajFmtPrintF(*outf,"     %5d %5.1f    -\n",
@@ -228,9 +227,9 @@ static void cpgreport_cpgsearch(AjPFile *outf, ajint from, ajint to, char *p,
 			((float)dcg/(float)dgc));
 	    score2 = (float) top;
 	    /*score2 = ajFmtPrintS(&score2,"%d.0",top);*/
-	    feature = ajFeatureNew(*feattable, source, type,
-				   lsum+2+z,t+2+z, score2, strand, frame,
-				   desc , 0, 0) ;    
+	    feature = ajFeatNew(*feattable, source, type,
+				lsum+2+z,t+2+z,
+				score2, strand, frame) ;
 	}
 	else
 	{
@@ -239,15 +238,13 @@ static void cpgreport_cpgsearch(AjPFile *outf, ajint from, ajint to, char *p,
 			(float)gc*100.0/(float)(t+1-lsum));
 	    score2 = (float) top;
 	    /*score2 = ajFmtPrintS(&score2,"%d.0",top);*/
-	    feature = ajFeatureNew(*feattable, source, type,
-				   lsum+2+z,t+2+z, score2, strand, frame,
-				   desc , 0, 0) ;    
+	    feature = ajFeatNew(*feattable, source, type,
+				lsum+2+z,t+2+z,
+				score2, strand, frame) ;
 	}
 	cpgreport_cpgsearch(outf,t+2,to,p,name,begin,score,featout,feattable);
     }
 
-    ajStrDel(&desc);
-    
     return;
 }
 

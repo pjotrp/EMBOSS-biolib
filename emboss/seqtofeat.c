@@ -67,13 +67,12 @@ int main(int argc, char **argv)
 	ajUser ("offset %d match %d to %d '%S'",
 		ioffset, istart, iend, match);
 	ajRegPost (exp, &cpyseq);
-	ajFeatureNew (ftab, src, ftname, istart, iend, NULL, '+', 0,
-		      NULL, istart, iend);
+	ajFeatNew (ftab, src, ftname, istart, iend, NULL, '+', 0);
 	ioffset = iend + 1;
 	icnt++;
     }
 
-    ajFeaturesWrite(outft, ftab);
+    ajFeatWrite(outft, ftab);
 
     ajRegFree(&exp);
 

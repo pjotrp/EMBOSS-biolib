@@ -264,7 +264,7 @@ int main(int argc, char **argv)
 	    ajStrAppC(&ufo,".");
 	    ajStrApp(&ufo,ext);
 	    ajFeattabOutOpen(seq1out, ufo);
-	    ajFeaturesWrite(seq1out, tabptr[i]);
+	    ajFeatWrite(seq1out, tabptr[i]);
 	}
     }
 

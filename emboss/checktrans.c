@@ -232,14 +232,15 @@ static void checktrans_dumptofeat(AjPFeattabOut featout, ajint from, ajint to,
     ajint last_stop = 0;
     ajint orflength = 0;
     AjPFeattable feattable;
-    AjPStr name=NULL,desc=NULL,source=NULL,type=NULL;
+    AjPStr name=NULL;
+    AjPStr source=NULL;
+    AjPStr type=NULL;
     char strand='+';
     ajint frame=0;
     AjPFeature feature;
     float score = 0.0;
   
     name = ajStrNew();
-    desc = ajStrNew();
     source = ajStrNew();
     type = ajStrNew();
 
@@ -259,9 +260,8 @@ static void checktrans_dumptofeat(AjPFeattabOut featout, ajint from, ajint to,
 	    orflength=i-last_stop;
 	    if (orflength >= min_orflength)
 	    {
-		feature = ajFeatureNew(feattable, source, type,
-				       i-orflength+1,i, score, strand, frame,
-				       desc , 0, 0) ;    
+		feature = ajFeatNew(feattable, source, type,
+				    i-orflength+1,i, score, strand, frame) ;
 		if(!feature)
 		    ajDebug("Error adding feature to table");
 	    }
@@ -276,11 +276,10 @@ static void checktrans_dumptofeat(AjPFeattabOut featout, ajint from, ajint to,
     }
 
     ajFeatSortByStart(feattable);
-    ajFeaturesWrite (featout, feattable);
+    ajFeatWrite (featout, feattable);
     ajFeattabDel(&feattable);
 
     ajStrDel(&name);
-    ajStrDel(&desc);
     ajStrDel(&source);
     ajStrDel(&type);
 

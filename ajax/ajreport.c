@@ -208,7 +208,7 @@ static void reportWriteEmbl (AjPReport thys) {
   thys->Ftquery = ajFeattabOutNewSSF (ftfmt, thys->Name,
 				      ajStrStr(thys->Type),
 				      thys->File);
-  if (!ajFeaturesWrite (thys->Ftquery, thys->Fttable)) {
+  if (!ajFeatWrite (thys->Ftquery, thys->Fttable)) {
     ajWarn ("ajReportWrite features output failed format: '%S'",
 	    ftfmt);
   }
@@ -236,7 +236,7 @@ static void reportWriteGenbank (AjPReport thys) {
   thys->Ftquery = ajFeattabOutNewSSF (ftfmt, thys->Name,
 				      ajStrStr(thys->Type),
 				      thys->File);
-  if (!ajFeaturesWrite (thys->Ftquery, thys->Fttable)) {
+  if (!ajFeatWrite (thys->Ftquery, thys->Fttable)) {
     ajWarn ("ajReportWrite features output failed format: '%S'",
 	    ftfmt);
   }
@@ -263,7 +263,7 @@ static void reportWriteGff (AjPReport thys) {
   thys->Ftquery = ajFeattabOutNewSSF (ftfmt, thys->Name,
 				      ajStrStr(thys->Type),
 				      thys->File);
-  if (!ajFeaturesWrite (thys->Ftquery, thys->Fttable)) {
+  if (!ajFeatWrite (thys->Ftquery, thys->Fttable)) {
     ajWarn ("ajReportWrite features output failed format: '%S'",
 	    ftfmt);
   }

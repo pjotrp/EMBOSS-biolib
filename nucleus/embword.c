@@ -373,15 +373,15 @@ void embWordMatchListConvToFeat(AjPList list,
   iter = ajListIter(list);
   while(ajListIterMore(iter)) {
     EmbPWordMatch p = (EmbPWordMatch) ajListIterNext (iter) ;
-    feature = ajFeatureNew(*tab1, source, type,
-			   p->seq1start+1,p->seq1start+p->length , score, 
-			   strand, frame, NULL , 0, 0) ;
+    feature = ajFeatNew(*tab1, source, type,
+			p->seq1start+1,p->seq1start+p->length , score, 
+			strand, frame) ;
 
     ajFeatTagSet(feature, tag, ajSeqGetName(seq2));
 
-    feature = ajFeatureNew(*tab2, source, type,
+    feature = ajFeatNew(*tab2, source, type,
 			   p->seq2start+1,p->seq2start+p->length , score, 
-			   strand, frame, NULL , 0, 0) ;    
+			   strand, frame) ;    
 
     ajFeatTagSet(feature, tag, ajSeqGetName(seq1));
   }

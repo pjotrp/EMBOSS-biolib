@@ -260,7 +260,7 @@ int main(int argc, char **argv)
 	    marscan_stepdown (l16, l8, &tab);
 
 	    /* write features and tidy up */
-	    (void) ajFeaturesWrite(outf, tab);        
+	    (void) ajFeatWrite(outf, tab);        
 	    ajFeattabDel(&tab);
 	}
 	
@@ -699,8 +699,8 @@ static void marscan_output_stored_match(AjBool stored_match, ajint stored_dist,
 	end = e16;
 
 
-    feature = ajFeatNew(*tab, source, type, start, end, score, strand, frame,
-			desc) ;
+    feature = ajFeatNew(*tab, source, type, start, end,
+			score, strand, frame) ;
 
     ajFmtPrintS(&notestr,
 		"MAR/SAR recognition site (MRS). 8bp pattern=%d..%d. 16bp "
@@ -708,18 +708,10 @@ static void marscan_output_stored_match(AjBool stored_match, ajint stored_dist,
 		s8, e8, s16, e16);
     ajFeatTagSet(feature, note, notestr);
 
-    /*
-     *  //ajFmtPrintS(&notestr,
-     *  // "MAR/SAR recognition site (MRS). 8bp pattern=%d..%d. 16bp
-     *  pattern = %d..%d",
-     *  //  s8, e8, s16, e16);
-     *  //ajFeatSetTagValue(feature, note, notestr, ajFalse);
-      */
-
-    /* tidy up - don't delete 'notestr' */
     ajStrDel(&source);
     ajStrDel(&type);
     ajStrDel(&note);
+    ajStrDel(&notestr);
     
     return;
 }

@@ -63,8 +63,8 @@ int main(int argc, char **argv)
     
     embWordMatchListDelete(&matchlist); /* free the match structures */
   }
-  ajFeaturesWrite(seq1out, Tab1);
-  ajFeaturesWrite(seq2out, Tab2);
+  ajFeatWrite(seq1out, Tab1);
+  ajFeatWrite(seq2out, Tab2);
 
   ajExit();
   return 0;

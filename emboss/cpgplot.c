@@ -640,7 +640,9 @@ static void cpgplot_dumpfeatout(AjPFeattabOut featout, AjBool *thresh,
     ajint endpos;
     ajint i;
     AjPFeattable feattable;
-    AjPStr name=NULL,desc=NULL,source=NULL,type=NULL;
+    AjPStr name=NULL;
+    AjPStr source=NULL;
+    AjPStr type=NULL;
     char strand='+';
     ajint frame=0;
     AjPFeature feature;
@@ -663,10 +665,9 @@ static void cpgplot_dumpfeatout(AjPFeattabOut featout, AjBool *thresh,
 	    if(!island)
 	    {
 		endpos = i;
-		feature = ajFeatureNew(feattable, source, type,
-				       startpos+begin+1,endpos+begin, score,
-				       strand, frame,
-				       desc , 0, 0) ;    
+		feature = ajFeatNew(feattable, source, type,
+				    startpos+begin+1,endpos+begin,
+				    score, strand, frame) ;
 		if(!feature)
 		  ajDebug("Error feature not added to feature table");
 	    }
@@ -681,12 +682,12 @@ static void cpgplot_dumpfeatout(AjPFeattabOut featout, AjBool *thresh,
     if(island)
     {
 	endpos=len-1;
-	feature = ajFeatureNew(feattable, source, type,
-			       startpos+begin+1,endpos+begin, score, strand,
-			       frame, desc , 0, 0) ;    
+	feature = ajFeatNew(feattable, source, type,
+			    startpos+begin+1,endpos+begin,
+			    score, strand, frame) ;
     }
     ajFeatSortByStart(feattable);
-    ajFeaturesWrite (featout, feattable);
+    ajFeatWrite (featout, feattable);
     ajFeattabDel(&feattable);
 
     ajStrDel(&source);

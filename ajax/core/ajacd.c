@@ -3704,7 +3704,7 @@ static void acdSetFeat (AcdPAcd thys)
 	(void) acdGetValueAssoc (thys, "fformat", &tabin->Formatstr);
 	(void) acdGetValueAssoc (thys, "fopenfile", &tabin->Filename);
 
-	ok = ajFeatRead(&val, tabin, reply);
+	ok = ajFeatUfoRead(&val, tabin, reply);
 	if (!ok)
 	    acdBadVal (thys, required,
 		       "Unable to read feature table '%S'", reply);

@@ -10,7 +10,6 @@ int main (int argc, char **argv)
 {
     AjPFeattable feattable;
     AjPStr name=NULL;
-    AjPStr desc=NULL;
     AjPStr source=NULL;
     AjPStr type=NULL;
     char strand='+';
@@ -48,9 +47,8 @@ int main (int argc, char **argv)
 	else
 	    ajStrAssC(&type,"misc_feature");
 
-	feature = ajFeatureNew(feattable, source, type,
-			       i, i+10, score, strand, frame,
-			       desc , 0, 0) ;    
+	feature = ajFeatNew(feattable, source, type,
+			    i, i+10, score, strand, frame) ;
     }
   
   
@@ -59,7 +57,7 @@ int main (int argc, char **argv)
     if(sortbystart)
 	ajFeatSortByStart(feattable);
 
-    ajFeaturesWrite (output, feattable);
+    ajFeatWrite (output, feattable);
   
     ajStrDel(&name);
     ajStrDel(&type);
