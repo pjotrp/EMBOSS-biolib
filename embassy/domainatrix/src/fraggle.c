@@ -88,21 +88,21 @@
 **  An example of interactive use of fraggle is shown below.
 **  Unix % fraggle
 **  Removes fragment sequences from files of hits for scop families.
-**  Location of scop hits files (input) [./]: 000_testdata
+**  Location of scop hits files (input) [./]: testdata
 **  Percentage of median length for definition of fragments [50]:
-**  Location of scop hits files (output) [./]: 000_testdata
-**  Processing 000_testdata/54894.hits
-**  Processing 000_testdata/55074.hits
+**  Location of scop hits files (output) [./]: testdata
+**  Processing testdata/54894.hits
+**  Processing testdata/55074.hits
 **  Unix %
 ** 
 **  
 **  All the scop hits files with the file extension .hits (specified in the 
-**  ACD file) in the directory /000_testdata were read.  In this case two 
+**  ACD file) in the directory /testdata were read.  In this case two 
 **  files called 55074.hits and 54894.hits were read.  Two scop hits file with
-**  fragment sequences removed were written to /000_testdata.
+**  fragment sequences removed were written to /testdata.
 **  
 **  The following command line would achieve the same result.
-**  fraggle 000_testdata 000_testdata -thresh 50
+**  fraggle testdata testdata -thresh 50
 **  
 **  
 **  
@@ -203,7 +203,7 @@ int main(int argc, char **argv)
     
 
 
-    ajFmtPrint("length: %d\n", ajListLength(hitsin));
+/*    ajFmtPrint("length: %d\n", ajListLength(hitsin)); */
     
 
     /* Start of main application loop                         */

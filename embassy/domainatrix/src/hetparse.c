@@ -88,25 +88,24 @@
 **  Unix % 
 **  Unix % hetparse
 **  Converts raw dictionary of heterogen groups to a file in embl-like format.
-**  Name of input file (raw dictionary of heterogen groups): /test_data/het.txt
+**  Name of input file (raw dictionary of heterogen groups): testdata/het.txt
 **  Search a directory of files with keywords? [N]: y
-**  Directory to search with keywords [./]: /test_data
-**  Exension of files to search in above directory [.ent]: 
-**  Name of output file (embl format) [Ehet.dat]: /test_data/Ehet.dat
-**  Processing /test_data/pdb1cs4.ent
-**  Processing /test_data/pdb1ii7.ent
+**  Directory to search with keywords [./]: testdata
+**  Output file [Ehet.dat]: testdata/Ehet.dat
+**  Processing testdata/pdb1cs4.ent
+**  Processing testdata/pdb1ii7.ent
+**  Unix %
 **  
 **  A file containing the raw (unprocessed) dictionary of heterogen groups
-**  called /test_data/het.txt was read and a reformatted 
-**  dictionary file called /test_data/Ehet.dat was written.
-**  hetparse searched in the directory /test_data for pdb files
-**  with the file extension .ent and made counts of the number of files that
+**  called testdata/het.txt was read and a reformatted 
+**  dictionary file called testdata/Ehet.dat was written.
+**  hetparse searched in the directory testdata for pdb files
+**  made counts of the number of files that
 **  each heterogen in the dictionary file appeared in.  Two pdb files 
 **  (pdb1cs4.ent and pdb1ii7.ent) were read.
 **  
 **  The following command line would achieve the same result.
-**  hetparse /test_data/het.txt /test_data/Ehet.dat -dogrep Y -path /test_data
-**  -extn .ent 
+**  hetparse testdata/het.txt testdata/Ehet.dat -dogrep Y -dirlist testdata
 **  
 ** 
 **  

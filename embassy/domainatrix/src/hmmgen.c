@@ -221,10 +221,8 @@
 int main(int argc, char **argv)
 {
 
-    AjPStr infpath    = NULL;      /* path to directory containing extended alignments */
-    AjPStr infextn    = NULL;      /* file extension of extended alignment files */
-    AjPStr outfpath   = NULL;      /* output directory for the HMM profiles */
-    AjPStr outfextn   = NULL;      /* output file extension for HMM profiles */
+    AjPList infpath    = NULL;      /* path to directory containing extended alignments */
+    AjPDir outfpath   = NULL;      /* output directory for the HMM profiles */
     AjPStr filename   = NULL;      /* name of extended alignment file */
     AjPStr outfile    = NULL;      /* name of output file a HMM */
     AjPStr tmp        = NULL;      /* temparary string variable */
@@ -232,8 +230,6 @@ int main(int argc, char **argv)
     AjPStr tmpname    = NULL;      /* randomly generated name for hmmer input */
     AjPStr seqsin     = NULL;      /* name of sequence file for input into 
 				      hmmer in CLUSTAL format */
-
-    AjPList list      = NULL;      /* a list of file names */
 
     AjPFile inf       = NULL;      /* file pointer for extn alignments */
     AjPFile seqsinf   = NULL;      /* file pointer of seqsin */
@@ -246,10 +242,8 @@ int main(int argc, char **argv)
     ajNamInit("emboss");
     ajAcdInitP("hmmgen",argc,argv, "DOMAINATRIX");
 
-    infpath  = ajAcdGetString("infpath");
-    infextn  = ajAcdGetString("infextn");
-    outfpath = ajAcdGetString("outfpath");
-    outfextn = ajAcdGetString("outfextn");
+    infpath  = ajAcdGetDirlist("infpath");
+    outfpath = ajAcdGetDirectory("outfpath");
 
     filename = ajStrNew();
     outfile  = ajStrNew();
@@ -257,30 +251,10 @@ int main(int argc, char **argv)
     cmd      = ajStrNew();
     tmpname  = ajStrNew();
    
-    list = ajListNew();
 
-    /* Check directories */
-    if((!ajFileDir(&infpath)) || (!ajFileDir(&outfpath)) || (!(infextn)))
-        ajFatal("Could not open extended alignment directory");    
-    
-    /* Create list of files in the path */
-    ajStrAssC(&tmp, "*");               /* assign a wildcard to tmp */
-        
-    if((ajStrChar(infextn, 0)=='.'))    /* checks if the file extension starts with "." */
-        ajStrApp(&tmp, infextn);        /* assign the acd input file extension to tmp */
- 
-    /* this picks up situations where the user has specified an extension without a "." */
-    else
-    {
-        ajStrAppC(&tmp, ".");           /* assign "." to tmp */  
-        ajStrApp(&tmp, infextn);        /* append tmp with a user specified extension */  
-    }   
-
-    /* all files containing extended alignments will be in a list */
-    ajFileScan(infpath, tmp, &list, ajFalse, ajFalse, NULL, NULL, ajFalse, NULL);    
 
     /* read each each extended alignment file and run prophecy to generate profile */
-    while(ajListPop(list,(void **)&filename))
+    while(ajListPop(infpath,(void **)&filename))
     {  
         if((inf = ajFileNewIn(filename)) == NULL)
         {
@@ -299,24 +273,14 @@ int main(int argc, char **argv)
             ajStrAppC(&seqsin, ".seqsin");
 
             /* create an output filename */
-            /* Add a '.' to outextn if one does not already exist */
-	    /* checks if the file extension starts with "." */
-            if((ajStrChar(outfextn, 0)!='.'))        
-                ajStrInsertC(&outfextn, 0, ".");
-                
-            /* Create the name of the output file */
-            posdash = ajStrRFindC(filename, "/");
-            posdot  = ajStrRFindC(filename, ".");
-                
-            if(posdash >= posdot)
-                ajFatal("Could not create filename. Email rranasin@hgmp.mrc.ac.uk");
-            else
-            {
-                ajStrAssS(&outfile,outfpath);
-                ajStrAppSub(&outfile, filename, posdash+1, posdot-1);
-                ajStrApp(&outfile,outfextn);
-            }
-                
+	    ajStrAssS(&outfile, ajDirName(outfpath));
+	    ajFileDirExtnTrim(&filename);
+	    ajStrAssS(&outfile,filename);
+	    ajStrAssS(&outfile, ajDirExt(outfpath));
+
+
+	
+    
             /* read alignment file into a scopalg structure */
             ajDmxScopalgRead(inf,&scopalg);
                     
@@ -355,16 +319,13 @@ int main(int argc, char **argv)
     }
     
     /* clean up */
-    ajStrDel(&infpath);
-    ajStrDel(&infextn);
-    ajStrDel(&outfpath);
-    ajStrDel(&outfextn);
+    ajListDel(&infpath);
+    ajDirDel(&outfpath);
     ajStrDel(&outfile);
     ajStrDel(&tmp);
     ajStrDel(&cmd);
     ajStrDel(&tmpname);
     
-    ajListDel(&list);
 
     /* exit */ 
     ajExit();

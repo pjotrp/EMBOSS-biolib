@@ -94,27 +94,26 @@
 **  Unix % contacts
 **  Reads coordinate files and writes files of intra-chain residue-residue
 **  contact data.
-**  Location of coordinate files (embl format input) [./]: /test_data
-**  Extension of coordinate files [.pxyz]: .dxyz
-**  Name of data file with van der Waals radii [Evdw.dat]: 
-**  Threshold contact distance [1.0]: 
-**  Location of contact files for output [./]: /test_data
-**  Extension of contact files [.con]: 
-**  Name of log file for the build [contacts.log]: /test_data/contacts.log
-**  D1II7A_
+**  Location of coordinate files (embl-like format input) [./]: testdata
+**  Name of data file with van der Waals radii [Evdw.dat]:
+**  Threshold contact distance [1.0]:
+**  Location of contact files (output) [./]: testdata
+**  Name of log file for the build [contacts.log]: testdata/contacts.log
 **  D1CS4A_
-**  Unix % 
+**  D1II7A_
+**  Unix %
 **  
-**  Coordinate files with the extension .dxyz were read from 
-**  /test_data and the contact files d1cs4a_.con and d1ii7a_.con
-**  were written to the same directory.  van der Waals radii were taken from 
+**  Coordinate files of file extension defined in the ACD file were read from 
+**  testdata and the contact files (e.g. d1cs4a_.con and d1ii7a_.con)
+**  were written to the same directory (the file extension .con would be set 
+**  in the ACD file)  van der Waals radii were taken from 
 **  the emboss data file Evdw.dat and the default contact distance of 1 
 **  Angstrom was used to determine contacts.  The log file 
-**  test_data/contacts.log was written.
+**  testdata/contacts.log was written.
 **  
 **  The following command line would achieve the same result.
-**  contacts /test_data .dxyz /test_data .con -thresh 1.0 -conerrf 
-**  /test_data/contacts.log -vdwf Evdw.dat
+**  contacts testdata testdata -thresh 1.0 -conerrf 
+**  testdata/contacts.log -vdwf Evdw.dat
 **
 **  
 **  
@@ -317,11 +316,9 @@ static AjBool contacts_ContactMapCalc(AjPInt2d *mat, ajint *ncon, ajint dim,
 
 int main(ajint argc, char **argv)
 {
-    AjPStr     cpdb_path     =NULL;	/* Path of cpdb files */
-    AjPStr     cpdb_extn     =NULL;	/* Extn. of cpdb files */
+    AjPList     cpdb_path     =NULL;	/* Directory of cpdb files */
     AjPStr     cpdb_name     =NULL;	/* Name of cpdb file */
-    AjPStr     con_path      =NULL;	/* Path of contact files */
-    AjPStr     con_extn      =NULL;	/* Extn. of contact files */
+    AjPDir     con_path      =NULL;	/* Directory of contact files */
     AjPStr     con_name      =NULL;	/* Name of contact file */
     AjPStr     msg           =NULL;	/* Error message */
     AjPStr     temp          =NULL;	/* Temp string */
@@ -333,8 +330,6 @@ int main(ajint argc, char **argv)
 /*    AjPStr     vdwfstr       =NULL; */
     
     AjPPdb     pdb           =NULL;
-
-    AjPList    list          =NULL;       
 
     float      thresh        =0;
     float      ignore        =0;
@@ -352,11 +347,7 @@ int main(ajint argc, char **argv)
     /* Initialise strings */
     temp          = ajStrNew();
     msg           = ajStrNew();
-    cpdb_path     = ajStrNew();
-    cpdb_extn     = ajStrNew();
     cpdb_name     = ajStrNew();
-    con_path      = ajStrNew();
-    con_extn      = ajStrNew();
     con_name      = ajStrNew();
 /*    vdwfstr       = ajStrNew(); */
     
@@ -364,10 +355,8 @@ int main(ajint argc, char **argv)
     /* Read data from acd */
     ajNamInit("emboss");
     ajAcdInitP("contacts",argc,argv,"DOMAINATRIX"); 
-    cpdb_path     = ajAcdGetString("cpdb");
-    cpdb_extn     = ajAcdGetString("cpdbextn");
-    con_path      = ajAcdGetString("con");
-    con_extn      = ajAcdGetString("conextn");
+    cpdb_path     = ajAcdGetDirlist("cpdb");
+    con_path      = ajAcdGetDirectory("con");
     logf          = ajAcdGetOutfile("conerrf");
     thresh        = ajAcdGetFloat("thresh");
     skip          = ajAcdGetBool("skip");
@@ -376,30 +365,7 @@ int main(ajint argc, char **argv)
     vdwf       = ajAcdGetDatafile("vdwf");
 
 
-    /* Check directories etc.*/
-    if(!ajFileDir(&cpdb_path))
-	ajFatal("Could not open cpdb directory");
 
-    if(!ajFileDir(&con_path))
-	ajFatal("Could not open contact directory");
-
-
-
-    /* Create list of files in cpdb directory */
-    list = ajListNew();
-    ajStrAssC(&temp, "*");	
-    if((ajStrChar(cpdb_extn, 0)=='.'))
-	ajStrApp(&temp, cpdb_extn);    
-    else
-    {
-	ajStrAppC(&temp, ".");    
-	ajStrApp(&temp, cpdb_extn);    
-    }
-    ajFileScan(cpdb_path, temp, &list, ajFalse, ajFalse, NULL, NULL, 
-	       ajFalse, NULL); 
-
-
-    ajStrDel(&temp);
     
     /* Allocate and read Vdwall object */
     /*
@@ -413,7 +379,7 @@ int main(ajint argc, char **argv)
 
 
     /*Start of main application loop*/
-    while(ajListPop(list,(void **)&temp))
+    while(ajListPop(cpdb_path,(void **)&temp))
     {
 /* 
 This error was also reported - could easily be more like this
@@ -484,12 +450,9 @@ rm /data/structure/con_new/d1qjha_.conD1G1XA_
 
 
 	/* Open contact file for writing*/
-	ajStrAss(&con_name, con_path);
-
-	ajStrApp(&con_name, pdb->Pdb);
+	ajStrAssS(&con_name, pdb->Pdb);
 	ajStrToLower(&con_name);
-	ajStrAppC(&con_name, ajStrStr(con_extn));
-	if(!(con_outf=ajFileNewOut(con_name)))
+	if(!(con_outf=ajFileNewOutDir(con_path, con_name)))
 	{
 	    ajFmtPrintS(&msg, "ERROR file open error %S", 
 			con_name);
@@ -534,11 +497,9 @@ rm /data/structure/con_new/d1qjha_.conD1G1XA_
 
 
     /*Tidy up */
-    ajStrDel(&cpdb_path);
-    ajStrDel(&cpdb_extn);
+    ajListDel(&cpdb_path);
     ajStrDel(&cpdb_name);
-    ajStrDel(&con_path);
-    ajStrDel(&con_extn);
+    ajDirDel(&con_path);
     ajStrDel(&con_name);
     ajStrDel(&msg);
 /*    ajStrDel(&vdwfstr); */
@@ -546,7 +507,6 @@ rm /data/structure/con_new/d1qjha_.conD1G1XA_
     ajFileClose(&logf);
     ajFileClose(&vdwf);
 
-    ajListDel(&list);
     ajVdwallDel(&vdw);
     
 
