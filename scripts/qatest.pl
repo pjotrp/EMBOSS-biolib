@@ -40,6 +40,12 @@
 # is no piped input. Fixed by always providing piped stdin, usually empty.
 # 
 
+sub usage () {
+  print STDERR "Usage:\n";
+  print STDERR "  qatest.pl [-kk | -ks | -ka]  [-t=60] [testnames...]\n";
+  print STDERR "            defaults: -kk -t=60\n";
+}
+
 ###################################################################
 # runtest
 #
@@ -521,19 +527,34 @@ sub testnum ($$) {
 # For each test in qatest.dat, call runtest
 #########################################################################
 
+$defdelete="success";		# success, all, keep
+$timeoutdef=60;			# default timeout in seconds
+
 $numtests = $#ARGV;
 %dotest = ();
 foreach $test (@ARGV) {
-  $dotest{$test} = 1;
+  if ($test =~ /^-(.*)/) {
+    $opt=$1;
+    if ($opt eq "kk") {$defdelete="keep"}
+    elsif ($opt eq "ks") {$defdelete="success"}
+    elsif ($opt eq "ka") {$defdelete="all"}
+    elsif ($opt =~ /t=([0-9]+)/) {$timeoutdef=int($1)}
+    else {print STDERR "+++ unknown option '$opt'\n"; usage()}
+  }
+  else {
+    $dotest{$test} = 1;
+  }
 }
+
+### print STDERR "Timeoutdef: $timeoutdef\n";
+### print STDERR "Defdelete: '$defdelete'\n";
+
 $id = "";
 $lastid = "";
 $testdef = "";
 $tcount=0;
 $tfail=0;
 
-$timeoutdef=60;			# default timeout in seconds
-$defdelete="success";		# success, all, keep
 $globaltestdelete=$defdelete;
 $globalcomment = "";
 
