@@ -3393,7 +3393,7 @@ void ajStrExit (void) {
 ******************************************************************************/
 
 
-/* @macro AJSTRSTR *******************************************************
+/* @macro MAJSTRSTR *******************************************************
 **
 ** A macro version of {ajStrStr} available in case it is needed for speed.
 **
@@ -3419,7 +3419,7 @@ char* ajStrStr (const AjPStr thys) {
   return thys->Ptr;
 }
 
-/* @macro AJSTRLEN *******************************************************
+/* @macro MAJSTRLEN *******************************************************
 **
 ** A macro version of {ajStrLen} available in case it is needed for speed.
 **
@@ -3445,7 +3445,7 @@ ajint ajStrLen (const AjPStr thys) {
   return thys->Len;
 }
 
-/* @macro AJSTRSIZE *******************************************************
+/* @macro MAJSTRSIZE *******************************************************
 **
 ** A macro version of {ajStrSize} available in case it is needed for speed.
 **
@@ -3471,7 +3471,7 @@ ajint ajStrSize (const AjPStr thys) {
   return thys->Res;
 }
 
-/* @macro AJSTRREF *******************************************************
+/* @macro MAJSTRREF *******************************************************
 **
 ** A macro version of {ajStrRef} available in case it is needed for speed.
 **

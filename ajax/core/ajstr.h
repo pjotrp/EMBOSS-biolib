@@ -343,7 +343,7 @@ AjBool     ajStrJoinC (AjPStr* pthis, ajint pos1, const char* addbit, ajint pos2
 
 ajint        ajStrLen(const AjPStr thys);
 
-#define    AJSTRLEN(str) str->Len
+#define    MAJSTRLEN(str) str->Len
 ajint        ajStrListToArray(AjPStr str, AjPStr **array);
 AjBool     ajStrMask(AjPStr* str, ajint begin, ajint end, char maskchar);
 AjBool     ajStrMatch       (const AjPStr thys, const AjPStr str);
@@ -385,7 +385,7 @@ AjBool     ajStrReplace  (AjPStr* pthis, ajint pos1,
 AjBool     ajStrReplaceC (AjPStr* pthis, ajint pos1,
 			  const char* overwrite, ajint len);
 ajint        ajStrRef(const AjPStr thys);
-#define    AJSTRREF(str) str->Use
+#define    MAJSTRREF(str) str->Use
 void       ajStrRemoveHtml(AjPStr *thys);
 void       ajStrRemoveNewline(AjPStr *thys);
 AjBool     ajStrRev (AjPStr* pthis);
@@ -394,10 +394,10 @@ ajint        ajStrRoom (const AjPStr thys);
 AjBool     ajStrSet   (AjPStr* pthis, const AjPStr str);
 AjBool     ajStrSetC  (AjPStr* pthis, const char* str);
 ajint        ajStrSize (const AjPStr thys);
-#define    AJSTRSIZE(str) str->Res
+#define    MAJSTRSIZE(str) str->Res
 void       ajStrStat (char* title);
 char*      ajStrStr (const AjPStr thys);
-#define    AJSTRSTR(str) str->Ptr
+#define    MAJSTRSTR(str) str->Ptr
 AjBool     ajStrSub (AjPStr* pthis, ajint begin, ajint len);
 AjBool     ajStrSubstitute   (AjPStr* pthis, const AjPStr replace,
 			      const AjPStr putin);
