@@ -10,7 +10,7 @@
 
 appl: maskseq [
 	doc: "Mask off regions of a sequence."
-	groups: "Feature Tables, Edit"
+	groups: "Edit"
 ]
 
   sequence: sequence [
