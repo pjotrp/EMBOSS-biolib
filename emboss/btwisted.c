@@ -22,7 +22,7 @@
 
 #include "emboss.h"
 
-AjPTable getdinucdata(AjPFile anglesfile);
+static AjPTable btwisted_getdinucdata(AjPFile anglesfile);
 
 
 /* @prog btwisted *************************************************************
@@ -74,8 +74,8 @@ int main(int argc, char **argv)
     if(!energies)
 	ajFatal("Cannot open file %S",efile);
     
-    angletable  = getdinucdata(angles);
-    energytable = getdinucdata(energies);
+    angletable  = btwisted_getdinucdata(angles);
+    energytable = btwisted_getdinucdata(energies);
 
     begin = ajSeqBegin(seq);
     end   = ajSeqEnd(seq);
@@ -128,7 +128,7 @@ int main(int argc, char **argv)
 
 
 
-/* @func getdinucdata ********************************************************
+/* @funcstatic btwisted_getdinucdata *****************************************
 **
 ** Undocumented.
 **
@@ -139,7 +139,7 @@ int main(int argc, char **argv)
 
 
 
-AjPTable getdinucdata(AjPFile inf)
+static AjPTable btwisted_getdinucdata(AjPFile inf)
 {
     AjPStr valstr=NULL;
     AjPStr key=NULL;

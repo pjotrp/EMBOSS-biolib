@@ -32,12 +32,12 @@
 int main(int argc, char **argv)
 {
 
-  if (argc < 2)
-    ajFatal("Error - must specify an application to compile\n");
-  else {
-    ajGraphInit (argv[1], argc-1, &argv[1]);
-  }
-  ajExit ();
-  return 0;
+    if (argc < 2)
+	ajFatal("Error - must specify an application to compile\n");
+    else
+	ajGraphInit (argv[1], argc-1, &argv[1]);
+
+    ajExit ();
+    return 0;
 }
 

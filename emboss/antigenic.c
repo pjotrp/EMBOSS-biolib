@@ -33,11 +33,12 @@
 
 #define DATAFILE "Eantigenic.dat"
 
-void readAunty(AjPFloat *agp);
-void padit(AjPFile *outf, ajint b, ajint e);
-void dumptoFeat(ajint nhits, AjPInt hp,AjPInt hpos,AjPInt hlen,AjPFloat thisap,
-		AjPFloat hwt, AjPFeattabOut featout,char *seqname,
-		ajint begin);
+static void antigenic_readAunty(AjPFloat *agp);
+static void antigenic_padit(AjPFile *outf, ajint b, ajint e);
+static void antigenic_dumptoFeat(ajint nhits, AjPInt hp,AjPInt hpos,
+				 AjPInt hlen,AjPFloat thisap,
+				 AjPFloat hwt, AjPFeattabOut featout,
+				 char *seqname,ajint begin);
 
 
 
@@ -107,7 +108,7 @@ int main(int argc, char **argv)
 
     agp = ajFloatNew();
 
-    readAunty(&agp);
+    antigenic_readAunty(&agp);
 
     seqall    = ajAcdGetSeqall("sequence");
     minlen    = ajAcdGetInt("minlen");
@@ -204,10 +205,10 @@ int main(int argc, char **argv)
 	ajStrAssSubC(&stmp,ajStrStr(sstr),istart,iend);    
 	ajFmtPrintF(outf," Sequence:  %S\n",stmp);
 	ajFmtPrintF(outf,"            |");
-	padit(&outf,istart,iend);
+	antigenic_padit(&outf,istart,iend);
 	ajFmtPrintF(outf,"|\n");
 	ajFmtPrintF(outf,"%13d",istart+begin);
-	padit(&outf,istart,iend);
+	antigenic_padit(&outf,istart,iend);
 	ajFmtPrintF(outf,"%d\n",iend+begin);
 
 	if(nhits)
@@ -235,14 +236,14 @@ int main(int argc, char **argv)
 		ajStrAssSubC(&stmp,ajStrStr(sstr),istart,iend);	   ;
 		ajFmtPrintF(outf," Sequence:  %S\n",stmp);
 		ajFmtPrintF(outf,"            |");
-		padit(&outf,istart,iend);
+		antigenic_padit(&outf,istart,iend);
 		ajFmtPrintF(outf,"|\n");
 		ajFmtPrintF(outf,"%13d",istart+begin);
-		padit(&outf,istart,iend);
+		antigenic_padit(&outf,istart,iend);
 		ajFmtPrintF(outf,"%d\n",iend+begin);
 	    }
-	    dumptoFeat(nhits,hp,hpos,hlen,thisap,hwt,featout,ajSeqName(seq),
-		       begin);
+	    antigenic_dumptoFeat(nhits,hp,hpos,hlen,thisap,hwt,featout,
+				 ajSeqName(seq),begin);
 	}
 	
 
@@ -273,7 +274,7 @@ int main(int argc, char **argv)
 
 
 
-/* @func readAunty ***********************************************************
+/* @funcstatic antigenic_readAunty *******************************************
 **
 ** Undocumented.
 **
@@ -282,7 +283,7 @@ int main(int argc, char **argv)
 ******************************************************************************/
 
 
-void readAunty(AjPFloat *agp)
+static void antigenic_readAunty(AjPFloat *agp)
 {
     AjPFile mfptr=NULL;
     AjPStr  line=NULL;
@@ -372,7 +373,7 @@ void readAunty(AjPFloat *agp)
 }
 
 
-/* @func padit ***************************************************************
+/* @funcstatic  antigenic_padit **********************************************
 **
 ** Undocumented.
 **
@@ -383,7 +384,7 @@ void readAunty(AjPFloat *agp)
 ******************************************************************************/
 
 
-void padit(AjPFile *outf, ajint b, ajint e)
+static void antigenic_padit(AjPFile *outf, ajint b, ajint e)
 {
     ajint i;
 
@@ -393,7 +394,7 @@ void padit(AjPFile *outf, ajint b, ajint e)
 }
 
 
-/* @func dumptoFeat **********************************************************
+/* @funcstatic antigenic_dumptoFeat ******************************************
 **
 ** Undocumented.
 **
@@ -409,9 +410,10 @@ void padit(AjPFile *outf, ajint b, ajint e)
 ** @@
 ******************************************************************************/
 
-void dumptoFeat(ajint nhits, AjPInt hp, AjPInt hpos, AjPInt hlen,
-		AjPFloat thisap, AjPFloat hwt, AjPFeattabOut featout,
-		char *seqname, ajint begin)
+static void antigenic_dumptoFeat(ajint nhits, AjPInt hp, AjPInt hpos,
+				 AjPInt hlen, AjPFloat thisap, AjPFloat hwt,
+				 AjPFeattabOut featout, char *seqname,
+				 ajint begin)
 {
     AjPFeattable feattable;
     AjPStr name=NULL;

@@ -243,10 +243,10 @@ int main(int argc, char **argv)
 
     for(i=(ajint)rbend+1;i<=ajStrLen(sstr)-(ajint)rbend-1;i++)
     {
-	bend[i] = sqrt(((x[i+(ajint)rbend]-x[i-(ajint)rbend])*(x[i+(ajint)rbend]-
-							   x[i-(ajint)rbend])) +
-		       ((y[i+(ajint)rbend]-y[i-(ajint)rbend])*(y[i+(ajint)rbend]-
-							   y[i-(ajint)rbend])));
+	bend[i] = sqrt(((x[i+(ajint)rbend]-x[i-(ajint)rbend])*
+			(x[i+(ajint)rbend]-x[i-(ajint)rbend])) +
+		       ((y[i+(ajint)rbend]-y[i-(ajint)rbend])*
+			(y[i+(ajint)rbend]-y[i-(ajint)rbend])));
 	bend[i]*=bendscale;
     }
 

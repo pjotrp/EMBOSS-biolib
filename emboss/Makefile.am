@@ -3,7 +3,7 @@ SUBDIRS = acd data
 
 EXTRA_DIST = emboss.default.template
 
-check_PROGRAMS = ajtest ajtest2 ajtest3 ajtestajnam \
+check_PROGRAMS = ajtest \
 contacts complex corbatest \
 demofeatures demolist demosequence demostring demotable \
 entrails histogramtest intconv \
@@ -200,9 +200,6 @@ wordmatch_SOURCES = wordmatch.c
 wossname_SOURCES = wossname.c
 
 ajtest_SOURCES = ajtest.c
-ajtest2_SOURCES = ajtest2.c
-ajtest3_SOURCES = ajtest3.c
-ajtestajnam_SOURCES = ajtestajnam.c
 contacts_SOURCES = contacts.c
 demofeatures_SOURCES = demofeatures.c
 demolist_SOURCES = demolist.c

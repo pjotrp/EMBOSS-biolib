@@ -28,14 +28,16 @@
 #include <math.h>
 #include <stdlib.h>
 
-void findorfs( AjPSeqout *outseq, AjPFile *outf, ajint s, ajint len,
-	char *seq, char *name, ajint begin, ajint orfml);
+static void checktrans_findorfs( AjPSeqout *outseq, AjPFile *outf, ajint s,
+				ajint len, char *seq, char *name, ajint begin,
+				ajint orfml);
 
-void ajbseq(AjPSeqout *outseq, char *seq, ajint begin, int
-	end, char *name, ajint count);
+static void checktrans_ajbseq(AjPSeqout *outseq, char *seq, ajint begin,
+			      int end, char *name, ajint count);
 
-void dumptofeat(AjPFeattabOut featout, ajint from, ajint to,
-	char *p, char *seqname, ajint begin, ajint min_orflength);
+static void checktrans_dumptofeat(AjPFeattabOut featout, ajint from, ajint to,
+				  char *p, char *seqname, ajint begin,
+				  ajint min_orflength);
 
 
 /* @prog checktrans ***********************************************************
@@ -69,7 +71,8 @@ int main(int argc, char **argv)
     substr    = ajStrNew();
 
 
-    while(ajSeqallNext(seqall, &seq)) {
+    while(ajSeqallNext(seqall, &seq))
+    {
         begin=ajSeqBegin(seq);
         end=ajSeqEnd(seq);
 
@@ -81,13 +84,13 @@ int main(int argc, char **argv)
         len=ajStrLen(substr);
 
 	ajFmtPrintF(outf,"\n\nCHECKTRANS of %s from %d to %d\n\n",
-		      ajSeqName(seq),begin,begin+len-1);
+		    ajSeqName(seq),begin,begin+len-1);
 
-        findorfs(&outseq, &outf,0,len,ajStrStr(substr),ajSeqName(seq),begin,
-		 orfml);
+        checktrans_findorfs(&outseq, &outf,0,len,ajStrStr(substr),
+			    ajSeqName(seq),begin,orfml);
 
-	dumptofeat(featout,0,len,ajStrStr(substr),ajSeqName(seq),begin,
-		   orfml);
+	checktrans_dumptofeat(featout,0,len,ajStrStr(substr),ajSeqName(seq),
+			      begin,orfml);
     }
     
     
@@ -100,9 +103,12 @@ int main(int argc, char **argv)
     return 0;
 }
 
+
+
+
 /* findorfs - finds ORFs and prints report. */
 
-/* @func findorfs ************************************************************
+/* @funcstatic checktrans_findorfs ********************************************
 **
 ** Undocumented.
 **
@@ -117,8 +123,9 @@ int main(int argc, char **argv)
 ** @@
 ******************************************************************************/
 
-void findorfs (AjPSeqout *outseq, AjPFile *outf, ajint from, ajint to,
-	char *p, char *name, ajint begin, ajint min_orflength)
+static void checktrans_findorfs (AjPSeqout *outseq, AjPFile *outf, ajint from,
+				 ajint to, char *p, char *name, ajint begin,
+				 ajint min_orflength)
 
 {
     ajint i;
@@ -128,33 +135,37 @@ void findorfs (AjPSeqout *outseq, AjPFile *outf, ajint from, ajint to,
 
     ajFmtPrintF(*outf,"\tORF#\tPos\tLen\tORF Range\tSequence name\n\n");
 
-    for (i=from;i<to;++i) {
-
-	if(p[i]=='*') {
+    for (i=from;i<to;++i)
+    {
+	if(p[i]=='*')
+	{
 	    orflength=i-last_stop;
-	    if (orflength >= min_orflength) {
-
-		    
-              ajFmtPrintF(*outf,"\t%d\t%d\t%d\t%d-%d\t%s_%d\n", count,
-                i+1, orflength, i-orflength+1, i, name,count);
-              ajbseq(outseq, p,i-orflength,i-1,name,count);
+	    if (orflength >= min_orflength)
+	    {
+		ajFmtPrintF(*outf,"\t%d\t%d\t%d\t%d-%d\t%s_%d\n", count,
+			    i+1, orflength, i-orflength+1, i, name,count);
+		checktrans_ajbseq(outseq, p,i-orflength,i-1,name,count);
 		    
 	    }
 	    last_stop = ++i;
 	    ++count;
-            while (p[i] == '*') {	/* check to see if we have consecutive ****s */
-              last_stop = ++i;
-              ++count;
+            while (p[i] == '*')
+	    {	/* check to see if we have consecutive ****s */
+		last_stop = ++i;
+		++count;
             }
 	}
     }
 
-	ajFmtPrintF(*outf,"\n\tTotal STOPS: %5d\n\n ",count-1);
+    ajFmtPrintF(*outf,"\n\tTotal STOPS: %5d\n\n ",count-1);
 
+    return;
 }
 
 
-/* @func ajbseq **************************************************************
+
+
+/* @funcstatic checktrans_ajbseq **********************************************
 **
 ** Undocumented.
 **
@@ -169,8 +180,9 @@ void findorfs (AjPSeqout *outseq, AjPFile *outf, ajint from, ajint to,
 
 
 
-void ajbseq(AjPSeqout *outseq, char *seq, ajint begin, int
-	end, char *name, ajint count) {
+static void checktrans_ajbseq(AjPSeqout *outseq, char *seq, ajint begin, int
+			      end, char *name, ajint count)
+{
     AjPSeq sq;
     AjPStr str;
     AjPStr nm;
@@ -194,7 +206,10 @@ void ajbseq(AjPSeqout *outseq, char *seq, ajint begin, int
     return;
 }
 
-/* @func dumptofeat **********************************************************
+
+
+
+/* @funcstatic checktrans_dumptofeat *****************************************
 **
 ** Undocumented.
 **
@@ -208,50 +223,55 @@ void ajbseq(AjPSeqout *outseq, char *seq, ajint begin, int
 ** @@
 ******************************************************************************/
 
-void dumptofeat(AjPFeattabOut featout, ajint from, ajint to,
-	char *p, char *seqname, ajint begin, ajint min_orflength){
-  ajint i;
-  ajint count = 1;
-  ajint last_stop = 0;
-  ajint orflength = 0;
-  AjPFeattable feattable;
-  AjPStr name=NULL,desc=NULL,source=NULL,type=NULL;
-  char strand='+';
-  ajint frame=0;
-  AjPFeature feature;
-  float score = 0.0;
+static void checktrans_dumptofeat(AjPFeattabOut featout, ajint from, ajint to,
+				  char *p, char *seqname, ajint begin,
+				  ajint min_orflength)
+{
+    ajint i;
+    ajint count = 1;
+    ajint last_stop = 0;
+    ajint orflength = 0;
+    AjPFeattable feattable;
+    AjPStr name=NULL,desc=NULL,source=NULL,type=NULL;
+    char strand='+';
+    ajint frame=0;
+    AjPFeature feature;
+    float score = 0.0;
   
-  ajStrAssC(&name,seqname);
+    ajStrAssC(&name,seqname);
   
-  feattable = ajFeattableNewProt(name);
+    feattable = ajFeattableNewProt(name);
 
-  ajStrAssC(&source,"checktrans");
-  ajStrAssC(&type,"misc_feature");
+    ajStrAssC(&source,"checktrans");
+    ajStrAssC(&type,"misc_feature");
 
 
-  for (i=from;i<to;++i) {
-    
-    if(p[i]=='*') {
-      orflength=i-last_stop;
-      if (orflength >= min_orflength) {
-	
-	
-	feature = ajFeatureNew(feattable, source, type,
-			       i-orflength+1,i, score, strand, frame,
-                          desc , 0, 0) ;    
-	if(!feature)
-	  ajDebug("Error adding feature to table");
-      }
-      last_stop = ++i;
-      ++count;
-      while (p[i] == '*') {	/* check to see if we have consecutive ****s */
-	last_stop = ++i;
-	++count;
-      }
+    for (i=from;i<to;++i)
+    {
+	if(p[i]=='*')
+	{
+	    orflength=i-last_stop;
+	    if (orflength >= min_orflength)
+	    {
+		feature = ajFeatureNew(feattable, source, type,
+				       i-orflength+1,i, score, strand, frame,
+				       desc , 0, 0) ;    
+		if(!feature)
+		    ajDebug("Error adding feature to table");
+	    }
+	    last_stop = ++i;
+	    ++count;
+	    while (p[i] == '*')
+	    {	/* check to see if we have consecutive ****s */
+		last_stop = ++i;
+		++count;
+	    }
+	}
     }
-  }
-  ajFeatSortByStart(feattable);
-  ajFeaturesWrite (featout, feattable);
-  ajFeattabDel(&feattable);
-    
+
+    ajFeatSortByStart(feattable);
+    ajFeaturesWrite (featout, feattable);
+    ajFeattabDel(&feattable);
+
+    return;
 }

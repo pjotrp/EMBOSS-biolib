@@ -2,30 +2,31 @@
 
 /* @prog ajtest ***************************************************************
 **
-** testing, and subjest to frequent change
+** testing, and subject to frequent change
 **
 ******************************************************************************/
 
 int main(int argc, char **argv)
 {
 
-  AjPSeq seq;
-  AjPSeqall seqall;
-  AjPSeqout seqout;
+    AjPSeq seq;
+    AjPSeqall seqall;
+    AjPSeqout seqout;
 
-  embInit ("ajtest", argc, argv);
+    embInit ("ajtest", argc, argv);
 
-  seqall = ajAcdGetSeqall ("sequence");
-  seqout = ajAcdGetSeqout ("outseq");
+    seqall = ajAcdGetSeqall ("sequence");
+    seqout = ajAcdGetSeqout ("outseq");
 
-  while (ajSeqallNext (seqall, &seq)) {
-    ajSeqTrace (seq);
-    ajUser ("<%S>", ajSeqGetUsa(seq));
-    ajSeqAllWrite (seqout, seq);
-  }
+    while (ajSeqallNext (seqall, &seq))
+    {
+	ajSeqTrace (seq);
+	ajUser ("<%S>", ajSeqGetUsa(seq));
+	ajSeqAllWrite (seqout, seq);
+    }
 
-  ajSeqWriteClose (seqout);
+    ajSeqWriteClose (seqout);
 
-  ajExit ();
-  return 0;
+    ajExit ();
+    return 0;
 }
