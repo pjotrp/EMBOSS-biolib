@@ -5386,6 +5386,7 @@ static AjBool seqListProcess (AjPSeq seq, AjPSeqin seqin, AjPStr listfile)
 	        seqUsaSave(node, seqin);
 	        ajListPushApp(list, node);
 	    }
+	    ajStrDel(&token);
 	    token = NULL;
 	}
     }
