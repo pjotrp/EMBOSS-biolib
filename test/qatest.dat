@@ -1,4 +1,4 @@
-#
+###########################################################################
 # Things to do
 #
 # (1) database extract programs to write to a local directory
@@ -36,8 +36,6 @@ CL qatest tembl:paamir tembl:paamir x.x -a 5 -auto
 ER 1
 FI stderr
 FP /ambiguous qualifier a /
-FI x.x
-FZ = 0
 //
 
 ID acdc-0005
@@ -91,8 +89,6 @@ ER 1
 FI stderr
 FP / ambiguous master qualifier for sbegin_a /
 FP /\nunknown qualifier -sbegin_a\n/
-FI x.x
-FZ = 0
 //
 
 ID antigenic-command
@@ -148,9 +144,8 @@ FC = 2
 FI stdout
 FZ = 19
 FP /^Created banana.dat\n/
-FI banana.dat
-FZ = 0
 //
+
 ID btwisted-ex
 AP btwisted
 CL -auto tembl:ab000095 -sbegin 100 -send 120
@@ -237,10 +232,12 @@ CL -graph ps
 IN ../../data/data.cirp
 IN
 IN
+IN
+IN
 FI stderr
 FC = 2
 FI cirdna.ps
-FZ = 20181
+FZ = 22787
 FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 1\n/
 FI stdout
@@ -439,10 +436,10 @@ IN
 FI stderr
 FC = 2
 FI paamir.dan
-FZ = 170146
+FZ = 170172
 FP / +1 +20 +64\.9 +70\.0 .* ggtaccgctggccgagcatc *\n/
 FP / +2 +21 +63\.7 +65\.0 .* gtaccgctggccgagcatct *\n/
-FC = 2164
+FC = 2165
 //
 
 ID dan-ex2
@@ -896,8 +893,6 @@ AP seqret
 PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL qapblastsplitexc:FABP_FUGRU test.out -auto
-FI test.out
-FZ = 0
 FI stderr
 FZ = 87
 FP /Error: BLAST Entry failed/
@@ -921,8 +916,6 @@ AP seqret
 PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL qapblastsplitinc:CO9_FUGRU test.out -auto
-FI test.out
-FZ = 0
 FI stderr
 FZ = 86
 FP /Error: BLAST Entry failed/
@@ -1728,8 +1721,6 @@ AP seqret
 PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL qapflatexc-id:FOS_FUGRU test.out -auto
-FI test.out
-FZ = 0
 FI stderr
 FZ = 101
 FP /Error: Database Entry 'FOS_FUGRU' not found/
@@ -1753,8 +1744,6 @@ AP seqret
 PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL qapflatinc-id:CO9_FUGRU test.out -auto
-FI test.out
-FZ = 0
 FI stderr
 FZ = 101
 FP /Error: Database Entry 'CO9_FUGRU' not found/
@@ -1977,8 +1966,6 @@ AP seqret
 PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL qangcgexc-id:eclac test.out -auto
-FI test.out
-FZ = 0
 FI stderr
 FZ = 52
 FP 1 /Error: /
@@ -2002,8 +1989,6 @@ AP seqret
 PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL qangcginc-id:hsfau test.out -auto
-FI test.out
-FZ = 0
 FI stderr
 FZ = 52
 FP 1 /Error: /
@@ -2512,7 +2497,7 @@ FC = 11
 FI opsd_human.digest
 FP /^    246     248    346\.378 K      E      AEK\s*\n/
 FP /yields 14 fragments/
-FC = 33
+FC = 34
 //
 
 
@@ -2602,7 +2587,7 @@ FI stdout
 FZ = 19
 FP /^Created dotpath.ps\n/
 FI dotpath.ps
-FZ > 16800
+FZ > 16600
 FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 1\n/
 //
@@ -2775,7 +2760,7 @@ IN
 FI stderr
 FC = 2
 FI hhtetra.qtan
-FZ = 509
+FZ = 532
 FP /^ +191     935     339      6    124\n/
 //
 
@@ -2927,8 +2912,8 @@ IN
 FI stderr
 FC = 2
 FI hhtetra.tan
-FZ = 811
-FC = 28
+FZ = 834
+FC = 29
 FP /^# HitCount: 5\n/
 FP /^    793     936     120      6     24     93.8 acccta   \n/
 FP /^    793     936     120      6     24     93.8 acccta   \n/
@@ -3024,7 +3009,7 @@ IN
 FI stderr
 FC = 2
 FI hhtetra.fuzznuc
-FZ = 545
+FZ = 571
 FP /^# HitCount: 2\n/
 FP /^      1       6        . aagctt\n/
 FP /^   1267    1272        . aagctt\n/
@@ -3039,6 +3024,7 @@ IN
 FI stderr
 FC = 2
 FI 100k_rat.fuzzpro
+FZ = 2380
 FP 6 /^# HitCount: 1\n/
 FP /^     53      63        . YVGDEAQSKRG\n/
 FP 3 /^     53      63        . YVGDEAQSKRG\n/
@@ -3057,7 +3043,7 @@ IN
 FI stderr
 FC = 31
 FI rnops.fuzztran
-FZ = 1112
+FZ = 1135
 FP /^# HitCount: 9\n/
 FP /^    919     924       2        .      1    307    308 RA         \n/
 FP /^    752     757       2        .      2    251    252 RA         \n/
@@ -3192,6 +3178,18 @@ FI stderr
 FC = 2
 FI amic_pseae.garnier
 FP /^#  Residue totals: H:111   E: 98   T: 81   C: 94\n/
+//
+
+ID garnier-range
+AP garnier
+CL -sbegin 51 -send 120
+IN tsw:amic_pseae
+IN
+FI stderr
+FC = 2
+FI amic_pseae.garnier
+FZ = 1144
+FP /^#  Residue totals: H: 17   E: 21   T: 22   C: 10\n/
 //
 
 ID geecee-ex
@@ -3412,6 +3410,8 @@ ID lindna-ex
 AP lindna
 CL -graph ps
 IN ../../data/data.linp
+IN
+IN
 FI stdout
 FZ = 18
 FP /^Created lindna.ps\n/
@@ -3487,7 +3487,7 @@ FI hba_human.matcher
 FP /^# Identity: +63\/145 \(43\.4%\)/
 FP /^# Score: +264\n/
 FP /^HBA_HU -----GSAQVKGHGKKVADALTNAVAHVDDMPNALSALSDLHAHKLRVDP\n/
-FC = 44
+FC = 45
 //
 
 ID megamerger-ex
@@ -3856,7 +3856,7 @@ IN
 FI stderr
 FC = 2
 FI 100k_rat.patmatdb 
-FZ = 1260
+FZ = 1285
 FP /^# Sequence: HD_FUGRU     from: 1   to: 3148\n# HitCount: 1\n/
 FP /^Length = 4\n/
 FP /^Start = position 1038 of sequence\n/
@@ -5238,8 +5238,6 @@ ER 1
 FI stderr
 FZ = 39
 FP /Error: Unable to read sequence 'stdin'/
-FI test.out
-FZ =0
 //
 
 ID seqret-in-badformat
@@ -6387,8 +6385,6 @@ ID seqret-query-direct-fail
 ER 1
 AP seqret
 CL -auto -out test.out -osf embl embl::../../embl/rod.dat:bad:MMAM
-FI test.out
-FZ = 0
 FI stderr
 FZ = 137
 FP /Error: Unknown query field 'bad' in USA '../../embl/rod.dat:bad:MMAM'/
@@ -6418,8 +6414,6 @@ ID seqret-query-direct-namefail
 ER 1
 AP seqret
 CL -auto -out test.out -osf embl embl::../../embl/rod.dat:FAIL
-FI test.out
-FZ = 0
 FI stderr
 FZ = 63
 FP 1 /^Error: /
@@ -6448,8 +6442,6 @@ ID seqret-query-direct-idfail
 ER 1
 AP seqret
 CL -auto -out test.out -osf embl embl::../../embl/rod.dat:ID:FAIL
-FI test.out
-FZ = 0
 FI stderr
 FZ = 66
 FP /^Error: Unable to read sequence 'embl::../../embl/rod.dat:ID:FAIL'/
@@ -6478,8 +6470,6 @@ ID seqret-query-direct-accfail
 ER 1
 AP seqret
 CL -auto -out test.out -osf embl embl::../../embl/rod.dat:ACC:Z99999
-FI test.out
-FZ = 0
 FI stderr
 FZ = 69
 FP /^Error: Unable to read sequence 'embl::../../embl/rod.dat:ACC:Z99999'/
@@ -6490,8 +6480,6 @@ ID seqret-query-direct-accfail2
 ER 1
 AP seqret
 CL -auto -out test.out -osf embl embl::../../embl/rod.dat:ACC:99999Z
-FI test.out
-FZ = 0
 FI stderr
 FZ = 69
 FP /^Error: Unable to read sequence 'embl::../../embl/rod.dat:ACC:99999Z'/
@@ -6520,8 +6508,6 @@ ID seqret-query-direct-svfail
 ER 1
 AP seqret
 CL -auto -out test.out -osf embl embl::../../embl/rod.dat:SV:Z99999.1
-FI test.out
-FZ = 0
 FI stderr
 FZ = 70
 FP /^Error: Unable to read sequence 'embl::../../embl/rod.dat:SV:Z99999.1'/
@@ -6550,8 +6536,6 @@ ID seqret-query-direct-desfail
 ER 1
 AP seqret
 CL -auto -out test.out -osf embl embl::../../embl/rod.dat:DES:lynam
-FI test.out
-FZ = 0
 FI stderr
 FZ = 68
 FP /^Error: Unable to read sequence 'embl::../../embl/rod.dat:DES:lynam'/
@@ -6598,8 +6582,6 @@ ID seqret-query-direct-keyfail
 ER 1
 AP seqret
 CL -auto -out test.out -osf embl embl::../../embl/rod.dat:KEY:CHAIN
-FI test.out
-FZ = 0
 FI stderr
 FZ = 68
 FP /^Error: Unable to read sequence 'embl::../../embl/rod.dat:KEY:CHAIN'/
@@ -6640,8 +6622,6 @@ ID seqret-query-direct-orgfail
 ER 1
 AP seqret
 CL -auto -out test.out -osf embl embl::../../embl/rod.dat:ORG:HOMO
-FI test.out
-FZ = 0
 FI stderr
 FZ = 67
 FP /^Error: Unable to read sequence 'embl::../../embl/rod.dat:ORG:HOMO'/
@@ -6656,8 +6636,6 @@ AP seqret
 PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL -auto -out test.out -osf embl qasrs-bad:AB000095
-FI test.out
-FZ = 0
 FI stderr
 FZ = 135
 FP /^Error: USA 'qasrs-bad:AB000095' query field 'bad' not defined for database 'qasrs'/
@@ -6673,8 +6651,6 @@ AP seqret
 PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL -auto -out test.out -osf embl qasrs-key:AB000095
-FI test.out
-FZ = 0
 FI stderr
 FZ = 135
 FP /^Error: USA 'qasrs-key:AB000095' query field 'key' not defined for database 'qasrs'/
@@ -6737,8 +6713,6 @@ AP seqret
 PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL -auto -out test.out -osf embl qasrs-id:OLD
-FI test.out
-FZ = 0
 FI stderr
 FZ = 46
 FP /^Error: Unable to read sequence 'qasrs-id:OLD'/
@@ -6800,8 +6774,6 @@ AP seqret
 PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL -auto -out test.out -osf embl qasrsfasta-id:OLD
-FI test.out
-FZ = 0
 FI stderr
 FZ = 51
 FP /^Error: Unable to read sequence 'qasrsfasta-id:OLD'/
@@ -6863,8 +6835,6 @@ CC Requires http access to EBI SRS server
 PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL -auto -out test.out -osf embl qasrswww-id:OLD
-FI test.out
-FZ = 0
 FI stderr
 FZ = 49
 FP /^Error: Unable to read sequence 'qasrswww-id:OLD'/
@@ -7447,13 +7417,14 @@ FZ = 0
 
 ID tfm-ex
 AP tfm
+CC wossname documentation subject to updates - will break file size test
 CL wossname
 FI stderr
 FC = 1
 FI stdout
-FZ = 15479
-FP /EMBOSS: wossname/
-FP /Program wossname/
+FZ = 15359
+FP 1 /^ +Finds programs by keywords in their one-line documentation\n/
+FP 2 /^ +-explode/
 //
 
 ID tfscan-ex
@@ -7813,7 +7784,7 @@ CL -search '' -alphabetic
 FI stderr
 FC = 1
 FI stdout
-FP /\AALPHABETIC.*\nabiview /
+FP /\AALPHABETIC.*\naaindexextract /
 //
 
 ID wossname-ex4
@@ -7870,7 +7841,7 @@ FP 1 /^                 10  \n/
 FP 1 /^             20      \n/
 FP 1 /^ AFULL AAACCCGGG--TTT\n/
 FP 1 /^ BFULL AAAC--GGGCCTTT\n/
-FC = 32
+FC = 33
 //
 
 
@@ -7889,7 +7860,7 @@ FP 1 /^ AFULL CCGGTT\n/
 FP 1 /^ APART CCGGTT\n/
 FP 1 /^           10        20        30        40        50    \n/
 FP 1 /^               10        20        30        40        50\n/
-FC = 38
+FC = 39
 //
 
 ID align-matcher-begin
@@ -7907,7 +7878,7 @@ FP 1 /^             20      \n/
 FP 1 /^ AFULL AAACCCGGG--TTT\n/
 FP 1 /^ BFULL AAAC--GGGCCTTT\n/
 FP 1 /^                 10  \n/
-FC = 32
+FC = 33
 //
 
 ID align-matcher-end
@@ -7925,7 +7896,7 @@ FP 1 /^           10    \n/
 FP 1 /^ AFULL AACCGG--TT\n/
 FP 1 /^ BFULL AACGGGCCTT\n/
 FP 1 /^              10 \n/
-FC = 32
+FC = 33
 //
 
 ID align-matcher-begin2
@@ -7943,7 +7914,7 @@ FP 1 /^       20      \n/
 FP 1 /^ AFULL GGG--TTT\n/
 FP 1 /^ BFULL GGGCCTTT\n/
 FP 1 /^           10  \n/
-FC = 32
+FC = 33
 //
 
 ID align-matcher-end2
@@ -7961,7 +7932,7 @@ FP 1 /^               50      \n/
 FP 1 /^ AFULL AAACCCGGGTTTAACC\n/
 FP 1 /^ BFULL AAAC--GGG-----CC\n/
 FP 1 /^                       \n/
-FC = 32
+FC = 33
 //
 
 ID align-matcher-begendall
@@ -7979,7 +7950,7 @@ FP 1 /^           10\n/
 FP 1 /^ AFULL AACCGG\n/
 FP 1 /^ BFULL AACGGG\n/
 FP 1 /^             \n/
-FC = 32
+FC = 33
 //
 
 ID align-water-full
@@ -7995,7 +7966,7 @@ FP /^# Identity: +10\/14 \(71\.4%\)/
 FP /^# Score: +38\.0\n/
 FP 1 /^AFULL             13 aaacccggg--ttt     24\n/
 FP 1 /^BFULL              1 aaa--cgggccttt     12\n/
-FC = 30
+FC = 31
 //
 
 
@@ -8012,7 +7983,7 @@ FP /^# Identity: +56\/56 \(100\.0%\)/
 FP /^# Score: +280\.0\n/
 FP 1 /^AFULL             55 ccggtt     60\n/
 FP 1 /^APART             51 ccggtt     56\n/
-FC = 34
+FC = 35
 //
 
 ID align-water-begin
@@ -8028,7 +7999,7 @@ FP /^# Identity: +10\/14 \(71\.4%\)/
 FP /^# Score: +38\.0\n/
 FP 1 /^AFULL             13 aaacccggg--ttt     24\n/
 FP 1 /^BFULL              1 aaa--cgggccttt     12\n/
-FC = 30
+FC = 31
 //
 
 ID align-water-end
@@ -8044,7 +8015,7 @@ FP /^# Identity: +7\/11 \(63\.6%\)/
 FP /^# Score: +24\.0\n/
 FP 1 /^AFULL              5 aaccgg---tt     12\n/
 FP 1 /^BFULL              1 aaacgggcctt     11\n/
-FC = 30
+FC = 31
 //
 
 ID align-water-begin2
@@ -8060,7 +8031,7 @@ FP /^# Identity: +6\/8 \(75\.0%\)/
 FP /^# Score: +24\.0\n/
 FP 1 /^AFULL             19 ggg--ttt     24\n/
 FP 1 /^BFULL              5 gggccttt     12\n/
-FC = 30
+FC = 31
 //
 
 ID align-water-end2
@@ -8076,7 +8047,7 @@ FP /^# Identity: +9\/16 \(56\.2%\)/
 FP /^# Score: +30\.0\n/
 FP 1 /^AFULL             41 aaacccgggtttaacc     56\n/
 FP 1 /^BFULL              1 aaa--cggg-----cc      9\n/
-FC = 30
+FC = 31
 //
 
 ID align-water-begendall
@@ -8092,7 +8063,7 @@ FP /^# Identity: +5\/6 \(83\.3%\)/
 FP /^# Score: +21\.0\n/
 FP 1 /^AFULL              5 aaccgg     10\n/
 FP 1 /^BFULL              2 aacggg      7\n/
-FC = 30
+FC = 31
 //
 
 ID align-stretcher-full
@@ -8110,7 +8081,7 @@ FP 1 /^               10        20        30        40        50\n/
 FP 1 /^ AFULL ACGTAACCGGTTAAACCCGGGTTTAAAACCCCGGGGTTTTAAACCCGGGT\n/
 FP 1 /^ BFULL A------------AAC----------------GGGCCTTT----------\n/
 FP 1 /^                                           10            \n/
-FC = 38
+FC = 39
 //
 
 ID align-stretcher-part
@@ -8128,7 +8099,7 @@ FP 1 /^               60    \n/
 FP 1 /^ AFULL TTAACCGGTTACGT\n/
 FP 1 /^ APART TTAACCGGTT----\n/
 FP 1 /^         50          \n/
-FC = 38
+FC = 39
 //
 
 ID align-stretcher-begin
@@ -8146,6 +8117,7 @@ FP 1 /^           10        20        30        40        50    \n/
 FP 1 /^ AFULL AACCGGTTAAACCCGGGTTTAAAACCCCGGGGTTTTAAACCCGGGTTTAA\n/
 FP 1 /^ BFULL AAACG-------------------------GGCCTT--------------\n/
 FP 1 /^                                        10               \n/
+FC = 39
 //
 
 ID align-stretcher-end
@@ -8163,7 +8135,7 @@ FP 1 /^               10     \n/
 FP 1 /^ AFULL ACGTAACCGGTTAAA\n/
 FP 1 /^ BFULL A---AACGGGCCTTT\n/
 FP 1 /^                  10  \n/
-FC = 32
+FC = 33
 //
 
 ID align-stretcher-begin2
@@ -8181,6 +8153,7 @@ FP 1 /^               10        20        30        40        50\n/
 FP 1 /^ AFULL ACGTAACCGGTTAAACCCGGGTTTAAAACCCCGGGGTTTTAAACCCGGGT\n/
 FP 1 /^ BFULL --------------------------------GGGCCTTT----------\n/
 FP 1 /^                                           10            \n/
+FC = 39
 //
 
 ID align-stretcher-end2
@@ -8198,7 +8171,7 @@ FP 1 /^               60    \n/
 FP 1 /^ AFULL TTAACCGGTTACGT\n/
 FP 1 /^ BFULL -----------CCT\n/
 FP 1 /^                   10\n/
-FC = 38
+FC = 39
 //
 
 ID align-stretcher-begendall
@@ -8216,7 +8189,7 @@ FP 1 /^           10     \n/
 FP 1 /^ AFULL AACCGGTTAAA\n/
 FP 1 /^ BFULL AACGGG-----\n/
 FP 1 /^                  \n/
-FC = 32
+FC = 33
 //
 
 ID align-needle-full
@@ -8232,7 +8205,7 @@ FP /^# Identity: +8\/64 \(12\.5%\)/
 FP /^# Score: +24\.0\n/
 FP 1 /^AFULL +1 acgtaaccggttaaacccgggtttaaaaccccggggttttaaacccgggt     50\n/
 FP 1 /^BFULL +1             aaacgggccttt                               12\n/
-FC = 34
+FC = 35
 //
 
 ID align-needle-part
@@ -8248,7 +8221,7 @@ FP /^# Identity: +56\/64 \(87\.5%\)/
 FP /^# Score: +280\.0\n/
 FP 1 /^AFULL             51 ttaaccggttacgt     64\n/
 FP 1 /^APART             47 ttaaccggtt         56\n/
-FC = 34
+FC = 35
 //
 
 ID align-needle-begin
@@ -8264,7 +8237,7 @@ FP /^# Identity: +8\/60 \(13\.3%\)/
 FP /^# Score: +24\.0\n/
 FP 1 /^AFULL +5 aaccggttaaacccgggtttaaaaccccggggttttaaacccgggtttaa     54\n/
 FP 1 /^BFULL +1         aaacgggccttt                                   12\n/
-FC = 34
+FC = 35
 //
 
 ID align-needle-end
@@ -8280,7 +8253,7 @@ FP /^# Identity: +3\/24 \(12\.5%\)/
 FP /^# Score: +15\.0\n/
 FP 1 /^AFULL +1 acgtaaccggttaaa              15\n/
 FP 1 /^BFULL +1             aaacgggccttt     12\n/
-FC = 30
+FC = 31
 //
 
 ID align-needle-begin2
@@ -8296,7 +8269,7 @@ FP /^# Identity: +6\/64 \( 9\.4%\)/
 FP /^# Score: +22\.0\n/
 FP 1 /^AFULL +1 acgtaaccggttaaacccgggtttaaaaccccggggttttaaacccgggt     50\n/
 FP 1 /^BFULL +5                                 gggccttt               12\n/
-FC = 34
+FC = 35
 //
 
 ID align-needle-end2
@@ -8312,7 +8285,7 @@ FP /^# Identity: +6\/64 \( 9\.4%\)/
 FP /^# Score: +14\.0\n/
 FP 1 /^AFULL +1 acgtaaccggttaaacccgggtttaaaaccccggggttttaaacccgggt     50\n/
 FP 1 /^BFULL +1             aaacgggcct                                 10\n/
-FC = 34
+FC = 35
 //
 
 ID align-needle-begendall
@@ -8328,7 +8301,7 @@ FP /^# Identity: +5\/11 \(45\.5%\)/
 FP /^# Score: +21\.0\n/
 FP 1 /^AFULL +5 aaccggttaaa     15\n/
 FP 1 /^BFULL +2 aacggg           7\n/
-FC = 30
+FC = 31
 //
 
 
