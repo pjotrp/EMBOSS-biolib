@@ -212,6 +212,19 @@ if test -d ajax/.libs ; then
 else
 	mkdir ajax/.libs
 fi
+
+#if test "$host_os" = "aix5.1.0.0"; then
+#	echo $host_os
+#	exit 0
+#fi
+case $host_os in
+	aix5*) needajax=no ;;
+	aix4.3.3*) needajax=yes ;;
+	*) needajax=no ;;
+esac
+
+AM_CONDITIONAL(NEEDAJAX,test "$needajax" = "yes")
+AC_SUBST(NEEDAJAX)
 fi
 
 AC_OUTPUT(plplot/Makefile plplot/lib/Makefile nucleus/Makefile ajax/Makefile
