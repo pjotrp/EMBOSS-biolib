@@ -85,8 +85,8 @@ if [ ! -f "$CWPWD/resources/acdstore.jar" ]; then
   done
 fi
 
-if [ ! -d "jnlp" ]; then
-  mkdir jnlp
+if [ ! -d "$CWPWD/jnlp" ]; then
+  mkdir $CWPWD/jnlp
 fi
 
 getJavaHomePath
