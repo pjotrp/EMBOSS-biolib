@@ -21,6 +21,11 @@ $docdir = "/data/www/Software/EMBOSS/Apps";
 
 
 ###################################################################
+# check that we are on the CVS machine
+require 'hostname.pl';
+if (hostname() ne "tin") {
+	die "This script should be executed on the CVS machine 'tin'\n";
+}
 
 
 ###################################################################
