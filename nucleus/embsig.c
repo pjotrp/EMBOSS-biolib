@@ -1531,8 +1531,8 @@ AjPHit embHitReadFasta(AjPFile inf)
 		ajStrDel(&subline);
 		return hit;
 	    }	
-	    else
-		hit = embHitNew();
+/*	    else
+		hit = embHitNew(); */
 
 	    /* Check line has correct no. of tokens and allocate Hit */
 	    ajStrAssSub(&subline, line, 1, -1);
@@ -3035,7 +3035,7 @@ AjPSignature embSignatureReadNew(AjPFile inf)
 	}
 	else if(ajStrPrefixC(line,"NP"))
 	{
-	    ajFmtScanS(line, "NP%d", &npos);
+	    ajFmtScanS(line, "NP %d", &npos);
 
 	    /* Create signature structure */
 	    (ret)=embSignatureNew(npos);
@@ -3080,8 +3080,8 @@ AjPSignature embSignatureReadNew(AjPFile inf)
 
 	    /* Safety check */
 	    if(n>npos)
-		ajFatal("Dangerous error in input file caught in "
-			"embSignatureReadNew.\n Email jison@hgmp.mrc.ac.uk");
+		ajFatal("Dangerous error in input file: n (%d) > npos (%d). Caught in "
+			"embSignatureReadNew.\n Email jison@hgmp.mrc.ac.uk", n, npos);
 	}
 	else if(ajStrPrefixC(line,"IN"))
 	    {
@@ -3116,7 +3116,13 @@ AjPSignature embSignatureReadNew(AjPFile inf)
 			ajIntPut(&(ret)->dat[n-1]->efrq,i,v2);
 		    }
 		    else
-			ajFatal("Signature type (1D or 3D) not known in embSignatureWrite");
+		    {
+			/* This code block identical to above */
+			ajWarn("Signature type (1D or 3D) not known in embSignatureWrite. Presuming 1D");
+			ajFmtScanS(line, "%*s %c %*c %d", &c1,&v2);
+			ajChararrPut(&(ret)->dat[n-1]->rids,i,c1);
+			ajIntPut(&(ret)->dat[n-1]->rfrq,i,v2);
+		    }
 		}
 		if(!ok)
 		    break;
@@ -3183,9 +3189,40 @@ AjBool embSignatureWrite(AjPFile outf, const AjPSignature obj)
     else if ((obj->Typesig == aj3D))
 	ajFmtPrintF(outf, "TS   3D\nXX\n");
     else
-	ajFatal("Signature type (1D or 3D) not known in embSignatureWrite");
+    {
+	ajWarn("Signature type (1D or 3D) not known in embSignatureWrite. Presuming 1D");
+	ajFmtPrintF(outf, "TS   1D\nXX\n");
+    }
     
+    if(MAJSTRLEN(obj->Class))
+    {	ajFmtPrintF(outf,"CL   %S\n",obj->Class);
+	ajFmtPrintF(outf, "XX\n");
+    }
+    if(MAJSTRLEN(obj->Architecture))
+    {	ajFmtPrintF(outf,"AR   %S\n",obj->Architecture);
+	ajFmtPrintF(outf, "XX\n");
+    }
+    if(MAJSTRLEN(obj->Topology))
+    {	ajFmtPrintF(outf,"TP   %S\n",obj->Topology);
+	ajFmtPrintF(outf, "XX\n");
+    }
+    if(MAJSTRLEN(obj->Fold))
+    {
+	ajFmtPrintSplit(outf,obj->Fold,"FO   ",75," \t\n\r");
+	ajFmtPrintF(outf, "XX\n");
+    }
+    if(MAJSTRLEN(obj->Superfamily))
+    {
+	ajFmtPrintSplit(outf,obj->Superfamily,"SF   ",75," \t\n\r");
+	ajFmtPrintF(outf, "XX\n");
+    }
+    if(MAJSTRLEN(obj->Family))
+    {
+	ajFmtPrintSplit(outf,obj->Family,"FA   ",75," \t\n\r");
+	ajFmtPrintF(outf, "XX\n");
+    }
 
+    /*
     if(MAJSTRLEN(obj->Class))
 	ajFmtPrintF(outf,"CL   %S",obj->Class);
     if(MAJSTRLEN(obj->Architecture))
@@ -3198,8 +3235,14 @@ AjBool embSignatureWrite(AjPFile outf, const AjPSignature obj)
 	ajFmtPrintSplit(outf,obj->Superfamily,"XX\nSF   ",75," \t\n\r");
     if(MAJSTRLEN(obj->Family))
 	ajFmtPrintSplit(outf,obj->Family,"XX\nFA   ",75," \t\n\r");
+	*/
+
     if(obj->Sunid_Family)
-	ajFmtPrintF(outf,"XX\nSI   %d\nXX\n", obj->Sunid_Family);
+	ajFmtPrintF(outf,"SI   %d\nXX\n", obj->Sunid_Family);
+	
+
+
+
 
     /* Signatures of type ajLIGAND only */
     if(obj->Type == ajLIGAND)
@@ -3261,7 +3304,17 @@ AjBool embSignatureWrite(AjPFile outf, const AjPSignature obj)
 	    }
 	}
 	else
-	    ajFatal("Type of signature (1D or 3D) unknown in embSignatureWrite");
+	{
+	    ajWarn("Type of signature (1D or 3D) unknown in embSignatureWrite. Presuming 1D.");
+	    /* This code block identical to above */
+	    ajFmtPrintF(outf,"XX\nIN   NRES %d ; NGAP %d ; WSIZ %d\nXX\n",
+			obj->dat[i]->nres, obj->dat[i]->ngap,
+			obj->dat[i]->wsiz);
+	    for(j=0;j<obj->dat[i]->nres;++j)
+		ajFmtPrintF(outf,"AA   %c ; %d\n",
+			    (char)  ajChararrGet(obj->dat[i]->rids, j),
+			    (ajint) ajIntGet(obj->dat[i]->rfrq, j));
+	}
 	
 
 	ajFmtPrintF(outf,"XX\n");
@@ -4077,7 +4130,27 @@ AjBool embSignatureCompile(AjPSignature *S, float gapo, float gape,
 	    }
 	}
 	else
-	    ajFatal("Signature type (1D or 3D) unknown in embSignatureCompile");
+	{
+	    ajWarn("Signature type (1D or 3D) not known in embSignatureCompile. Presuming 1D");
+	    
+	    /* This code block identical to above */
+	    for(z=0;z<26; z++)
+	    {
+		for(div=0, y=0; y<(*S)->dat[x]->nres; y++)
+		{
+		    div+=(ajIntGet((*S)->dat[x]->rfrq, y));
+		
+		    (*S)->pos[x]->subs[z] += 
+			(ajIntGet((*S)->dat[x]->rfrq, y)) * 
+			    sub[ajSeqCvtK(cvt,(char)((ajint)'A'+z))]
+				[ajSeqCvtK(cvt, ajChararrGet((*S)->dat[x]->rids,
+							     y))];
+		}
+		(*S)->pos[x]->subs[z] /= div;
+	    }
+	}
+	
+	       
 		
 	/* FREE tgap & tpen ARRAYS */
 	AJFREE(tgap);
