@@ -26,9 +26,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.net.MalformedURLException;
 
 import org.emboss.jemboss.soap.JembossSoapException;
 import org.emboss.jemboss.JembossParams;
+import org.emboss.jemboss.gui.Browser;
 
 public class LocalAndRemoteFileTreeFrame extends JFrame
 {
@@ -125,6 +129,32 @@ public class LocalAndRemoteFileTreeFrame extends JFrame
       prefMenu.add(prefClose);
       menuBar.add(prefMenu);
 
+
+      JMenu helpMenu = new JMenu("Help");
+      helpMenu.setMnemonic(KeyEvent.VK_H);
+      JMenuItem fmh = new JMenuItem("About File Manager");
+      fmh.addActionListener(new ActionListener()
+      {
+        public void actionPerformed(ActionEvent e)
+        {
+          ClassLoader cl = this.getClass().getClassLoader();
+          try
+          {
+            URL inURL = cl.getResource("resources/filemgr.html");
+            new Browser(inURL,"resources/filemgr.html");
+          }
+          catch (MalformedURLException mex)
+          {
+            System.out.println("Didn't find resources/filemgr.html");
+          }
+          catch (IOException iex)
+          {
+            System.out.println("Didn't find resources/filemgr.html");
+          }
+        }
+      });
+      helpMenu.add(fmh);
+      menuBar.add(helpMenu);
       setJMenuBar(menuBar);
       
       rtree.setPreferredSize(panelSize);
