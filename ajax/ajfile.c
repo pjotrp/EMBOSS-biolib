@@ -26,6 +26,7 @@
 #include <sys/stat.h>
 #include <pwd.h>
 #include <string.h>
+#include <errno.h>
 #include <unistd.h>
 #include <limits.h>
 
@@ -133,7 +134,8 @@ AjPFile ajFileNewInPipe (const AjPStr name) {
     (void) ajSysArglist (tmpname, &pgm, &arglist);
     ajDebug ("execvp ('%S', NULL)\n", tmpname);
     (void) execvp (pgm, arglist);
-    ajFatal ("execvp failed\n"); /* should never get here */
+    ajFatal ("execvp ('%S', NULL) failed: '%s'\n",
+	     tmpname, strerror(errno)); /* should never get here */
   }
 
   ajDebug ("pid %d, pipe '%d', '%d'\n",
