@@ -39,7 +39,7 @@ pkgdata2_DATA =	megamerger.acd merger.acd msbar.acd \
 	scopalign.acd scopseqs.acd scoprep.acd scopreso.acd  scopnr.acd scopparse.acd seealso.acd \
 	seqinfo.acd seqalign.acd seqmatchall.acd seqnr.acd seqret.acd seqretall.acd \
 	seqretallfeat.acd seqretset.acd seqretsingle.acd \
-	seqretsplit.acd seqsearch.acd seqsort.acd seqwords.acd showalign.acd\
+	seqretsplit.acd seqsearch.acd seqsort.acd seqwords.acd showalign.acd \
 	showdb.acd showfeat.acd showorf.acd showseq.acd shuffleseq.acd \
 	sigcleave.acd siggen.acd sigscan.acd sigplot.acd silent.acd
 	skipseq.acd splitter.acd \
