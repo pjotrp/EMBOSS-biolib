@@ -432,6 +432,8 @@ void ajRegSubC (AjPRegexp rp, const char* source, AjPStr* dest) {
 ******************************************************************************/
 
 void ajRegFree (AjPRegexp* pexp) {
+  if (!pexp) return;
+  if (!*pexp) return;
   ajDebug("ajRegFree %x size regexp %d\n", **pexp,
 	  (ajint) sizeof(**pexp));
   regFreeCount += 1;
