@@ -1,6 +1,6 @@
 appl: sigscan
 [
-	doc: "Signature III pattern matching algorithm"
+	doc: "Scans a sparse protein signature against swissprot"
 	groups: "PROTEIN: structure"
 ]
 

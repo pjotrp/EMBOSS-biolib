@@ -1,6 +1,6 @@
 appl: contacts
 [
-	doc: "Reads a coordinate file and writes a contact file"
+	doc: "Reads coordinate files and writes contact files"
 	groups: "Protein:3D Structure"
 ]
 
