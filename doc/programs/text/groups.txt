@@ -34,6 +34,7 @@
    Protein motifs          Protein motifs
    Protein mutation        Protein mutation
    Protein profiles        Protein profiles
+   Test                    Test
    Utils database creation Utils database creation
    Utils database indexing Utils database indexing
    Utils misc              Utils misc
