@@ -9172,8 +9172,8 @@ FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 1\n/
 //
 
-# change the example
 ID textsearch-ex
+UC Search for 'lactose':
 AP textsearch
 CL tsw:* 'lactose'
 IN
@@ -9187,6 +9187,7 @@ FP /^tsw-id:LACY_ECOLI LACY_ECOLI    P02920\s+LACTOSE PERMEASE/
 //
 
 ID textsearch-ex2
+UC Search for 'lactose' or 'permease' in E.coli proteins:
 AP textsearch
 CL tsw:*_ecoli 'lactose | permease'
 IN
@@ -9201,20 +9202,22 @@ FP /^tsw-id:LACY_ECOLI LACY_ECOLI    P02920\s+LACTOSE PERMEASE/
 
 # update example
 ID textsearch-ex3
+UC Output a search for 'lacz' formatted with HTML to a file:
 AP textsearch
-CL tembl:* 'lacz' -html -outfile embl.lacz
+CL tembl:* 'lacz' -html -outfile embl.lacz.html
 FI stderr
-FC = 2
+FC = 1
 FP 0 /Warning:/
-FI embl.lacz
-FZ = 220
-FP /^tembl-id:ECLAC    ECLAC         J01636\s+E.coli lactose operon/
-FP /^tembl-id:ECLACZ   ECLACZ        V00296\s+E. coli gene lacZ coding for/
+FI embl.lacz.html
+FZ = 349
+FP /^<tr><td>tembl-id:ECLAC</td><td>ECLAC</td><td>J01636</td>\s+<td>E.coli lactose operon with lacI, lacZ, lacY and lacA genes.</td></tr>/
+//
 
 ID tfextract-keep
 DL keep
 AP tfextract
-PP export EMBOSS_DATA=./
+PP EMBOSS_DATA=./
+PP export EMBOSS_DATA
 IN ../../data/site.dat
 FI stderr
 FC = 2
@@ -9254,7 +9257,8 @@ FP 2 /^ +-explode/
 ID tfscan-ex
 CC Needs tfextract to reformat TRANSFAC data
 AP tfscan
-PP export EMBOSS_DATA=../tfextract-keep/
+PP EMBOSS_DATA=../tfextract-keep/
+PP export EMBOSS_DATA
 IN tembl:hsfos
 IN v
 IN
@@ -9270,7 +9274,7 @@ FP /^MOUSE\$FCGR3A_02      R04413   3287  3292  ttcctc\n/
 
 ID tmap-ex
 AP tmap
-CL tsw:opsd_human -out tmap.res -graph ps
+CL tsw:opsd_human -out tmap.res -graph cps
 FI stderr
 FC = 1
 FP 0 /Warning:/
@@ -9282,7 +9286,7 @@ FZ = 1068
 FP /^  TM  1:   43 -   69  \(27\.0\)\n/
 FP /^  TM  1:   43 -   69 \(27\)\n/
 FI tmap.ps
-FZ = 39543
+FZ = 39837
 FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 1\n/
 //
@@ -9301,6 +9305,7 @@ FP /^cagatcaaggctcatgtagcctca---ctggagggcattgccccggaagatcaagtcgtg/
 
 # update the examples
 ID transeq-ex
+UC To translate a sequence in the first frame (starting at the first base and proceeding to the end):
 AP transeq
 CL tembl:paamir amir.pep
 FI stderr
@@ -9313,6 +9318,7 @@ FP /^GTAGRASARSPPAGRRELHDLPGEPGARAGSLRTALSDSHRRGNGWDRTRSGR\*SACCSP\n/
 //
 
 ID transeq-ex2
+UC To translate a sequence in the second frame:
 AP transeq
 CL tembl:paamir amir.pep -frame=2
 FI stderr
@@ -9325,6 +9331,7 @@ FP /^VPLAEHLLDHHQPGDGNCTIYLASLEHERVRFVRR\*ATVTGEETDGIAPGAAADRPAVLR\n/
 //
 
 ID transeq-ex3
+UC To translate a sequence in the first frame in the reverse sense (starting at the last frame 1 codon and proceeding to the start): 
 AP transeq
 CL tembl:paamir amir.pep -frame=-1
 FI stderr
@@ -9337,6 +9344,7 @@ FP /^SNQTALRNSTAPTYSRTSPSMMTIPLLLLFWSARIAQADGSFPSNS\*AIFRIGSRRFIAS\n/
 //
 
 ID transeq-ex4
+UC To translate a sequence in all three forward frames:
 AP transeq
 CL tembl:paamir amir.pep -frame=F
 FI stderr
@@ -9351,6 +9359,7 @@ FP /^CWARSAVGRWR\*STSWSAC\*APASRST\*SFPQQPGRAR\*RPER\*PCYSLLPICGWPPTSS\n/
 //
 
 ID transeq-ex5
+UC To translate a sequence in all three reverse frames:
 AP transeq
 CL tembl:paamir amir.pep -frame=R
 FI stderr
@@ -9366,6 +9375,7 @@ FP /^>PAAMIR_6/
 //
 
 ID transeq-ex6
+UC To translate a sequence in all six forward and reverse frames:
 AP transeq
 CL tembl:paamir amir.pep -frame=6
 FI stderr
@@ -9383,6 +9393,7 @@ FP /^LEELVGGHPQIGKSE\*QGQRSGLQRALPGCCGKDQVERDAGAQHADQEVDHRHLPTADLA\n/
 //
 
 ID transeq-ex7
+UC To translate a specific set of regions corresponding to a known set of coding sequences:
 AP transeq
 CL tembl:paamir amir.pep -reg=2-45,67-201,328-509
 FI stderr
@@ -9396,6 +9407,7 @@ FP /^X\Z/
 //
 
 ID transeq-ex8
+UC To translate a mitochondrial sequence using the mammalian mitochondrion genetic code table:
 AP transeq
 CL ../../data/mito.seq mito.pep -table 2
 FI stderr
@@ -9497,9 +9509,9 @@ FP /^>HSFAU /
 //
 
 ID union-ex
+UC the file 'cds.list' contains a list of the regions making up the coding sequence of 'embl:hsfau':
 AP union
 IN @../../data/cds.list
-IN
 IN
 FI stderr
 FC = 2
@@ -9510,10 +9522,8 @@ FP 1 /^>/
 
 
 ID vectorstrip-ex
-CC Missing example file test/data/vecseqs.list
-CC Missing example file test/data/vectors
 AP vectorstrip
-CL ../../data/vecseqs.list
+CL @../../data/vecseqs.list
 IN
 IN ../../data/vectors
 IN
@@ -9524,9 +9534,11 @@ FI stderr
 FC = 2
 FP 0 /Warning:/
 FI vector.strip
-FZ = 0
+FZ = 1835
+FP /tcgagagccgtattgcgatatagcgcacatgcgttggacacagatgagca/
 FI vector.fasta
-FZ = 0
+FZ = 457
+FP /tcgagagccgtattgcgatatagcgcacatgcgttggacacagatgagcacacagtgaca/
 //
 
 ID water-ex
