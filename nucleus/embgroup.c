@@ -402,7 +402,7 @@ static void grpParse(AjPFile file, AjPStr *appl, AjPStr *doc, AjPList groups,
 
     /* find appl token */
     while(ajStrToken(&tmpstr, &tokenhandle, whiteplus))
-	if(ajStrPrefixC(tmpstr, "appl"))
+	if(ajStrPrefixCaseC(tmpstr, "appl"))
 	    break;
 
     /* next token is the application name */
@@ -430,7 +430,7 @@ static void grpParse(AjPFile file, AjPStr *appl, AjPStr *doc, AjPList groups,
 		    done = !ajStrCmpC(tmpstr, "]");
 		}
 
-		if(ajStrPrefixC(token, "doc"))
+		if(ajStrPrefixCaseC(token, "doc"))
 		{
 		    donedoc = ajTrue;
 		    ajStrAssS(doc, value);
@@ -438,7 +438,7 @@ static void grpParse(AjPFile file, AjPStr *appl, AjPStr *doc, AjPList groups,
 		    ajStrTrimC(doc, ".,");
 
 		}
-		else if(ajStrPrefixC(token, "gui"))
+		else if(ajStrPrefixCaseC(token, "gui"))
 		{
 		    ajStrAssS(&tmpvalue, value);
 		    ajStrChomp(&tmpvalue);
@@ -449,12 +449,12 @@ static void grpParse(AjPFile file, AjPStr *appl, AjPStr *doc, AjPList groups,
 
 		    ajStrDel(&tmpvalue);
 		}
-		else if(ajStrPrefixC(token, "group"))
+		else if(ajStrPrefixCaseC(token, "group"))
 		{
 		    donegroup = ajTrue;
 		    grpSplitList(groups, value, explode, colon);
 		}
-		else if(ajStrPrefixC(token, "embassy"))
+		else if(ajStrPrefixCaseC(token, "embassy"))
 		{
 		    *embassy = ajTrue;
 		    ajStrAssS(hasembassyname, value);
