@@ -236,6 +236,7 @@ Known bugs
 See also
 
    Program name                          Description
+   abiview      Reads ABI file and display the trace
    entret       Reads and writes (returns) flatfile entries
    lindna       Draws linear maps of DNA constructs
    notseq       Excludes a set of sequences and writes out the remaining ones

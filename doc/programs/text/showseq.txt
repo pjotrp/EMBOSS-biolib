@@ -776,6 +776,7 @@ Known bugs
 See also
 
    Program name Description
+   abiview Reads ABI file and display the trace
    antigenic Finds antigenic sites in proteins
    backtranseq Back translate a protein sequence
    chaos Create a chaos game representation plot for a sequence

@@ -568,6 +568,7 @@ Known bugs
 See also
 
    Program name Description
+   abiview Reads ABI file and display the trace
    backtranseq Back translate a protein sequence
    cirdna Draws circular maps of DNA constructs
    cusp Create a codon usage table
