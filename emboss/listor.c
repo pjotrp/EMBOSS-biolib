@@ -46,7 +46,7 @@ int main(int argc, char **argv)
   ajint *order1, *order2;
   ajint *hits1, *hits2;
   ajint curr1, curr2;
-  ajint tmp1, tmp2;
+  ajint tmp1, tmp2=0;
   ajint i;
   AjPStr * operator;
   ajint Operator;
@@ -200,6 +200,8 @@ static void listor_Output(AjPFile list, ajint Operator, AjPSeqset seq1,
       }
     }
   }
+
+  return;
 }
 
 /* @funcstatic listor_Write *****************************************************  
@@ -218,5 +220,6 @@ static void listor_Write(AjPFile list, AjPSeqset seqset, ajint i)
 
   ajFmtPrintF(list, "%S\n", ajSeqGetUsa(ajSeqsetGetSeq(seqset, i)));
 
+  return;
 }
 
