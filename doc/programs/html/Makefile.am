@@ -49,12 +49,12 @@ pkgdata2_DATA = lindna.html marscan.html maskfeat.html maskseq.html \
                pasteseq.html patmatdb.html patmatmotifs.html \
                pattern_matching_group.html penny.html pepcoil.html \
                pepinfo.html pepnet.html pepstats.html pepwheel.html \
-               pepwindow.html pepwindowall.html plotcon.html plotorf.html \
-               polydot.html preg.html prettyplot.html prettyseq.html \
-               prima.html primers_group.html primersearch.html \
-               printsextract.html profiles_group.html profit.html \
-               prophecy.html prophet.html prosextract.html protdist.html \
-               protein_sequence_composition_group.html \
+               pepwindow.html pepwindowall.html phylogeny_group.html \
+               plotcon.html plotorf.html polydot.html preg.html \
+               prettyplot.html prettyseq.html prima.html primers_group.html \
+               primersearch.html printsextract.html profiles_group.html \
+               profit.html prophecy.html prophet.html prosextract.html \
+               protdist.html protein_sequence_composition_group.html \
                protein_sequence_features_group.html \
                protein_sequence_properties_group.html \
                protein_structure_group.html pscan.html re_group.html \
