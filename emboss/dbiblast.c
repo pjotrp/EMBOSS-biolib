@@ -183,12 +183,15 @@ static AjBool dbiblast_blastopenlib(AjPStr lname, AjBool usesrc,
 				    ajint blastv, char dbtype,
 				    PBlastDb* pdb);
 
+static void dbiblast_dbfree (PBlastDb* pdb);
+
 static void dbiblast_dbname(AjPStr* dbname, AjPStr oname, char *suff);
 static void dbiblast_newname(AjPStr* nname, AjPStr oname, char *suff);
 
 static void dbiblast_memreadUInt4(PMemFile fd, ajuint *val);
 
 static PMemFile dbiblast_memfopenfile (AjPStr name);
+static void dbiblast_memfclosefile (PMemFile* pfd);
 static size_t dbiblast_memfseek (PMemFile mf, ajlong offset, ajint whence);
 static size_t dbiblast_memfread (void* dest, size_t size, size_t num_items,
 				 PMemFile mf);
@@ -199,6 +202,7 @@ static ajint dbiblast_loadtable (ajuint* table, ajint isize, PBlastDb db,
 				 ajint top, ajint pos);
 static ajint dbiblast_ncblreadhdr (AjPStr* hline, PBlastDb db,
 				   ajint start, ajint end);
+static AjBool dbiblast_wrongtype(AjPStr oname, char *suff);
 
 static AjBool readReverse = AJFALSE;
 
@@ -251,10 +255,11 @@ int main(int argc, char **argv)
     PBlastDb db=NULL;
 
     ajint idCount=0;
-    AjPList listInputFiles = NULL;
-    void ** inputFiles = NULL;
+    AjPList listTestFiles = NULL;
+    void ** testFiles = NULL;
     ajint nfiles;
     ajint ifile;
+    ajint jfile;
 
     ajint filesize;
     short recsize;
@@ -325,9 +330,9 @@ int main(int argc, char **argv)
     ajDebug ("reading '%S/%S'\n", directory, filename);
     ajDebug ("writing '%S/'\n", indexdir);
 
-    listInputFiles = embDbiFileListExc (directory, filename, exclude);
-    ajListSort (listInputFiles, ajStrCmp);
-    nfiles = ajListToArray(listInputFiles, &inputFiles);
+    listTestFiles = embDbiFileListExc (directory, filename, exclude);
+    ajListSort (listTestFiles, ajStrCmp);
+    nfiles = ajListToArray(listTestFiles, &testFiles);
 
     if (!nfiles)
 	ajFatal ("No files selected");
@@ -338,23 +343,28 @@ int main(int argc, char **argv)
     ** process each input file, one at a time
     */
 
+    jfile = 0;
     for (ifile=0; ifile < nfiles; ifile++)
     {
-	curfilename = (AjPStr) inputFiles[ifile];
-	dbiblast_blastopenlib (curfilename, usesrc, blastv, dbtype, &db);
-	if (ajStrLen(curfilename) >= maxfilelen)
-	    maxfilelen = ajStrLen(curfilename) + 1;
+	curfilename = (AjPStr) testFiles[ifile];
+	if (!dbiblast_blastopenlib (curfilename,
+				    usesrc, blastv, dbtype, &db))
+	  continue;		/* could be the wrong file type with "*.*" */
 
 	ajDebug ("processing filename '%S' ...\n", curfilename);
 	ajDebug ("processing file '%S' ...\n", db->TFile->Name);
-	ajStrAssS (&divfiles[ifile], db->TFile->Name);
-	ajFileNameTrim(&divfiles[ifile]);
+
+
+	ajStrAssS (&divfiles[jfile], db->TFile->Name);
+	ajFileNameTrim(&divfiles[jfile]);
+	if (ajStrLen(divfiles[jfile]) >= maxfilelen)
+	    maxfilelen = ajStrLen(divfiles[jfile]) + 1;
 
 	if (systemsort)		/* elistfile for entries, alist for fields */
-	  elistfile = embDbiSortOpen (alistfile, ifile,
+	  elistfile = embDbiSortOpen (alistfile, jfile,
 				      dbname, fields, nfields);
 
-	while ((entry=dbiblast_nextblastentry(db, ifile,
+	while ((entry=dbiblast_nextblastentry(db, jfile,
 					      idformat, systemsort,
 					      fields,
 					      maxFieldLen,
@@ -363,11 +373,15 @@ int main(int argc, char **argv)
 	{
 	    idCount++;
 	    if (!systemsort)	/* save the entry data in lists */
-	      embDbiMemEntry (idlist, fieldList, nfields, entry, ifile);
+	      embDbiMemEntry (idlist, fieldList, nfields, entry, jfile);
 	}
 	if (systemsort)
 	  embDbiSortClose (&elistfile, alistfile, nfields);
+
+	dbiblast_dbfree(&db);
+	jfile++;
     }
+    nfiles = jfile;
 
     /*
     ** write the division.lkp file
@@ -421,7 +435,7 @@ int main(int argc, char **argv)
     if (systemsort)
       embDbiRmEntryFile (dbname, cleanup);
 
-    ajListDel(&listInputFiles);    
+    ajListDel(&listTestFiles);    
 
     ajExit ();
     return 0;
@@ -586,6 +600,38 @@ static EmbPEntry dbiblast_nextblastentry (PBlastDb db, ajint ifile,
 
 
 
+/* @funcstatic dbiblast_dbfree *****************************************
+**
+** Free BLAST library object
+**
+** @param [u] pdb [PBlastDb*] Blast dababase structure.
+** @return [void]
+** @@
+******************************************************************************/
+
+static void dbiblast_dbfree ( PBlastDb* pdb)
+{
+  PBlastDb db = *pdb;
+
+  if (!pdb) return;
+  if (!*pdb) return;
+
+  db = *pdb;
+
+  dbiblast_memfclosefile (&db->TFile);
+  dbiblast_memfclosefile (&db->HFile);
+  dbiblast_memfclosefile (&db->SFile);
+  dbiblast_memfclosefile (&db->FFile);
+
+  ajStrDel (&db->Name);
+  ajStrDel (&db->Date);
+  ajStrDel (&db->Title);
+
+  AJFREE (*pdb);
+
+  return;
+}
+
 /* @funcstatic dbiblast_blastopenlib *****************************************
 **
 ** Open BLAST library
@@ -610,26 +656,31 @@ static AjBool dbiblast_blastopenlib (AjPStr name, AjBool usesrc,
     ajint rdtmp2=0;
     ajint itype;
     ajint ttop;
+    PMemFile TFile=NULL;
 
     PBlastDb ret;
   
-    AJNEW0 (*pdb);
-
-    ret = *pdb;
-
-
-
     for (itype=0; blasttypes[itype].ExtT; itype++)
     {
 	if ((blastv == 1) && blasttypes[itype].IsBlast2) continue;
 	if ((blastv == 2) && !blasttypes[itype].IsBlast2) continue;
 	if ((dbtype == 'P') && !blasttypes[itype].IsProtein) continue;
 	if ((dbtype == 'N') && blasttypes[itype].IsProtein) continue;
+	if (dbiblast_wrongtype(name, blasttypes[itype].ExtT))
+	  continue;
         dbiblast_dbname(&dbname,name,blasttypes[itype].ExtT);
 	dbiblast_newname(&tname,dbname,blasttypes[itype].ExtT);
-	ret->TFile = dbiblast_memfopenfile(tname);
-	if (ret->TFile) break;
+	TFile = dbiblast_memfopenfile(tname);
+	if (TFile) break;
     }
+    if (!TFile)
+      return ajFalse;
+
+    AJNEW0 (*pdb);
+
+    ret = *pdb;
+
+    ret->TFile = TFile;
 
     ajStrAssS(&ret->Name, dbname);
     ajDebug ("Name '%S'\n", ret->Name);
@@ -1380,7 +1431,7 @@ static void dbiblast_newname(AjPStr* nname, AjPStr oname, char *suff)
 /* @funcstatic dbiblast_dbname ********************************************
 **
 ** Generate the database name (original fasta file name)
-** by strip[ping off the suffix
+** by stripping off the suffix
 **
 ** @param [w] dbname [AjPStr*] Database filename
 ** @param [r] oname [AjPStr] Original file name
@@ -1411,6 +1462,73 @@ static void dbiblast_dbname(AjPStr* dbname, AjPStr oname, char *suff)
     ajStrDel(&suffix);
     
     return;
+}
+
+/* @funcstatic dbiblast_wrongtype ********************************************
+**
+** Tests for the other database filenames in case the user asked
+** for "*.*". Used to test we have the *.suff fiel before opening all files.
+**
+** @param [r] oname [AjPStr] Original file name
+** @param [r] suff [char*] Required suffix
+** @return [AjBool] ajTrue if any other filename suffix is recognized
+** @@
+******************************************************************************/
+
+static AjBool dbiblast_wrongtype(AjPStr oname, char *suff)
+{
+    ajint itype;
+
+    for (itype=0; blasttypes[itype].ExtT; itype++)
+    {
+      if (strcmp(suff, blasttypes[itype].ExtT))
+      {
+	if (ajStrSuffixC(oname, blasttypes[itype].ExtT))
+	{
+	  return ajTrue;
+	}
+      }
+
+      if (strcmp(suff, blasttypes[itype].ExtH))
+      {
+	if (ajStrSuffixC(oname, blasttypes[itype].ExtH))
+	{
+	  return ajTrue;
+	}
+      }
+
+      if (strcmp(suff, blasttypes[itype].ExtS))
+      {
+	if (ajStrSuffixC(oname, blasttypes[itype].ExtS))
+	{
+	  return ajTrue;
+	}
+      }
+    }
+    return ajFalse;
+}
+
+/* @funcstatic dbiblast_memfopenfile *****************************************
+**
+** Open a (possibly memory mapped) binary file
+**
+** @param [d] pfd [PMemFile*] File
+** @return [void]
+** @@
+******************************************************************************/
+
+static void dbiblast_memfclosefile (PMemFile* pfd)
+{
+  PMemFile fd;
+
+  if (!pfd) return;
+  if (!*pfd) return;
+
+  fd = *pfd;
+  ajFileClose(&fd->File);
+  ajStrDel(&fd->Name);
+
+  AJFREE (*pfd);
 }
 
 /* @funcstatic dbiblast_memfopenfile *****************************************
