@@ -44,55 +44,60 @@ public class ShowSavedResults
 {
 
 
-// cursors to show when we're at work
-  final Cursor cbusy = new Cursor(Cursor.WAIT_CURSOR);
-  final Cursor cdone = new Cursor(Cursor.DEFAULT_CURSOR);
+  private Cursor cbusy = new Cursor(Cursor.WAIT_CURSOR);
+  private Cursor cdone = new Cursor(Cursor.DEFAULT_CURSOR);
+  private DefaultListModel datasets = new DefaultListModel();
+  private JFrame savedResFrame;
+  private JPanel sp = new JPanel();
+  private JTextArea aboutRes; 
+  private JScrollPane aboutScroll;
+  private JScrollPane ss;
+  private JMenuBar resMenu = new JMenuBar();
+  private ImageIcon rfii;
 
-  private JFrame f;
-  private EmbreoParams settings;
+  public ShowSavedResults(String frameName)
+  {
+    savedResFrame = new JFrame(frameName);
+    aboutRes = new JTextArea("Select a result set from"
+                              +"\nthose listed and details"
+                              +"\nof that analysis will be"
+                              +"\nshown here. Then you can"
+                              +"\neither delete or view those"
+                              +"\nresults using the buttons below.");
+    aboutScroll = new JScrollPane(aboutRes);  
+    ss = new JScrollPane(sp);
+    resMenu.setLayout(new FlowLayout(FlowLayout.LEFT,10,1));
+    ClassLoader cl = this.getClass().getClassLoader();
+    rfii = new ImageIcon(cl.getResource("images/Refresh_button.gif"));
+  }
 
+
+/**
+*
+* Show the saved results on the server.
+*
+*/
   public ShowSavedResults(final EmbreoParams mysettings, final JFrame f) 
   {
 
-    this.f = f;
-    settings =mysettings;
+    this("Saved Results on Server");
+     
+    Dimension d = new Dimension(270,270);
+    ss.setPreferredSize(d);
+    ss.setMaximumSize(d);
 
     try
     {
-      final EmbreoResList reslist = new EmbreoResList(settings);
-      final DefaultListModel datasets = new DefaultListModel();
-      final JFrame savedResFrame = new JFrame("Saved Results on Server");
-      savedResFrame.setSize(470,300);
-      JPanel sp = new JPanel();
-      final JTextArea aboutRes = new JTextArea("Select a result set from"
-                                   +"\nthose listed and details"
-                                   +"\nof that analysis will be"
-                                   +"\nshown here. Then you can"
-                                   +"\neither delete or view those"
-                                   +"\nresults using the buttons below.");
+      final EmbreoResList reslist = new EmbreoResList(mysettings);
 
-      final JScrollPane aboutScroll = new JScrollPane(aboutRes);
-      JScrollPane ss = new JScrollPane(sp);
-      Dimension d = new Dimension(270,300);
-      ss.setPreferredSize(d);
-      ss.setMinimumSize(d);
-      ss.setMaximumSize(d);  
-      // MenuBar with exit; reload (latter not yet implemented)
-      JMenuBar resMenu = new JMenuBar();
-      resMenu.setLayout(new FlowLayout(FlowLayout.LEFT,10,1));
       JMenu resFileMenu = new JMenu("File");
       resMenu.add(resFileMenu);
 
-      ClassLoader cl = this.getClass().getClassLoader();
-      ImageIcon rfii = new ImageIcon(cl.getResource("images/Refresh_button.gif"));
       JButton refresh = new JButton(rfii);
       refresh.setMargin(new Insets(0,1,0,1));
       refresh.setToolTipText("Refresh");
       resMenu.add(refresh);
-      
 
-//    JMenuItem resFileMenuUpdate = new JMenuItem("Refresh List",KeyEvent.VK_U);
-//    resFileMenuUpdate.addActionListener(new ActionListener()
       refresh.addActionListener(new ActionListener()
       {
         public void actionPerformed(ActionEvent e) 
@@ -125,8 +130,6 @@ public class ShowSavedResults
           }
         }
       });
-//    resFileMenu.add(resFileMenuUpdate);
-//    resFileMenu.addSeparator();
 
       JMenuItem resFileMenuExit = new JMenuItem("Close");
       resFileMenuExit.addActionListener(new ActionListener()
@@ -137,12 +140,13 @@ public class ShowSavedResults
         }
       });
       resFileMenu.add(resFileMenuExit);
-//    resMenu.add(resFileMenu);
       savedResFrame.setJMenuBar(resMenu);
         
       // this is the list of saved results
         
-      StringTokenizer tokenizer = new StringTokenizer((String)reslist.get("list"), "\n");
+      StringTokenizer tokenizer =
+                 new StringTokenizer((String)reslist.get("list"), "\n");
+
       while (tokenizer.hasMoreTokens()) 
       {
         String image = tokenizer.nextToken();
@@ -183,7 +187,7 @@ public class ShowSavedResults
             try
             {
               savedResFrame.setCursor(cbusy);
-              EmbreoResList thisres = new EmbreoResList(settings, reslist.getCurrent(),
+              EmbreoResList thisres = new EmbreoResList(mysettings, reslist.getCurrent(),
                                                       "show_saved_results");
               new ShowResultSet(thisres.hash());
               savedResFrame.setCursor(cdone);
@@ -191,12 +195,11 @@ public class ShowSavedResults
             catch (EmbreoAuthException eae) 
             {  
               new EmbreoAuthPopup(mysettings,f);
-              EmbreoAuthPrompt pfa = new EmbreoAuthPrompt(settings);
+              EmbreoAuthPrompt pfa = new EmbreoAuthPrompt(mysettings);
             }
           }
         }
       });
-
       sp.add(st);
         
       // action buttons
@@ -212,7 +215,7 @@ public class ShowSavedResults
 	    try 
 	    {
 	      savedResFrame.setCursor(cbusy);
-	      EmbreoResList thisres = new EmbreoResList(settings, reslist.getCurrent(), 
+	      EmbreoResList thisres = new EmbreoResList(mysettings, reslist.getCurrent(), 
                                                        "show_saved_results");
               new ShowResultSet(thisres.hash());
 	      savedResFrame.setCursor(cdone);
@@ -220,8 +223,7 @@ public class ShowSavedResults
             catch (EmbreoAuthException eae)
             {
               new EmbreoAuthPopup(mysettings,f);
-              EmbreoAuthPrompt pfa = new EmbreoAuthPrompt(settings);
-//            settings = pfa.getSettings();
+              EmbreoAuthPrompt pfa = new EmbreoAuthPrompt(mysettings);
 	    }
 	  } 
 	  else 
@@ -243,7 +245,7 @@ public class ShowSavedResults
             try        // ask the server to delete these results
 	    {
 	      savedResFrame.setCursor(cbusy);
-	      EmbreoResList thisres = new EmbreoResList(settings, reslist.getCurrent(), 
+	      EmbreoResList thisres = new EmbreoResList(mysettings, reslist.getCurrent(), 
                                                        "delete_saved_results");
 	      savedResFrame.setCursor(cdone);
 	       
@@ -262,8 +264,7 @@ public class ShowSavedResults
 	    catch (EmbreoAuthException eae) 
 	    {
               new EmbreoAuthPopup(mysettings,f);
-              EmbreoAuthPrompt pfa = new EmbreoAuthPrompt(settings);
-//            settings = pfa.getSettings();
+              EmbreoAuthPrompt pfa = new EmbreoAuthPrompt(mysettings);
 	    }
 	  } 
           else 
@@ -284,55 +285,39 @@ public class ShowSavedResults
     catch (EmbreoAuthException eae) 
     {
       new EmbreoAuthPopup(mysettings,f);
-      EmbreoAuthPrompt pfa = new EmbreoAuthPrompt(settings);
+      EmbreoAuthPrompt pfa = new EmbreoAuthPrompt(mysettings);
     }
-    catch (NullPointerException npe)
-    {
-      new EmbreoAuthPopup(mysettings,f);
-      EmbreoAuthPrompt pfa = new EmbreoAuthPrompt(settings);
-    }
+//  catch (NullPointerException npe)
+//  {
+//    new EmbreoAuthPopup(mysettings,f);
+//    EmbreoAuthPrompt pfa = new EmbreoAuthPrompt(mysettings);
+//  }
 
   }
 
-  public ShowSavedResults(final EmbreoParams mysettings, final EmbreoPendingResults epr) throws EmbreoAuthException
+
+/**
+*
+* Show the results sent to a batch queue.
+*
+*/
+  public ShowSavedResults(final EmbreoParams mysettings, final EmbreoPendingResults epr)
+                                           throws EmbreoAuthException
   {
 
-    final DefaultListModel datasets = new DefaultListModel();
+    this("Current Sessions Results");
 
-    //The main gui frame
-    final JFrame savedResFrame;
-    savedResFrame = new JFrame("Current Sessions Results");
-
-    savedResFrame.setSize(400,300);
-    JPanel sp = new JPanel();
-    final JTextArea aboutRes = new JTextArea("Select a result set from"
-					     +"\nthose listed and details"
-					     +"\nof that analysis will be"
-					     +"\nshown here. Then you can"
-					     +"\neither delete or view those"
-					     +"\nresults using the buttons below.");
-
-    final JScrollPane aboutScroll = new JScrollPane(aboutRes);
-    JScrollPane ss = new JScrollPane(sp);
-    //
-    // MenuBar with exit; update
-    //
-    //JMenuBar resMenu = new JMenuBar();
-
-    JMenuBar resMenu = new JMenuBar();
-    resMenu.setLayout(new FlowLayout(FlowLayout.LEFT,10,1));
+    Dimension d = new Dimension(270,100);
+    ss.setPreferredSize(d);
+    ss.setMaximumSize(d);
 
     JMenu resFileMenu = new JMenu("File");
     resMenu.add(resFileMenu);
 
-    ClassLoader cl = this.getClass().getClassLoader();
-    ImageIcon rfii = new ImageIcon(cl.getResource("images/Refresh_button.gif"));
     JButton refresh = new JButton(rfii);
     refresh.setMargin(new Insets(0,1,0,1));
     refresh.setToolTipText("Refresh");
     resMenu.add(refresh);
-//  JMenuItem resFileMenuUpdate = new JMenuItem("Refresh List",KeyEvent.VK_U);
-//  resFileMenuUpdate.addActionListener(new ActionListener()
     refresh.addActionListener(new ActionListener()
     {
       public void actionPerformed(ActionEvent e) 
@@ -349,8 +334,6 @@ public class ShowSavedResults
 	}
       }
     });
-//  resFileMenu.add(resFileMenuUpdate);
-//  resFileMenu.addSeparator();
 
     JMenuItem resFileMenuExit = new JMenuItem("Close",KeyEvent.VK_C);
     resFileMenuExit.addActionListener(new ActionListener()
@@ -362,9 +345,9 @@ public class ShowSavedResults
     });
     resFileMenu.add(resFileMenuExit);
     savedResFrame.setJMenuBar(resMenu);
-    //
+    
     // set up the results list in the gui
-    //
+    
     Enumeration enum = epr.descriptionHash().keys();
     while (enum.hasMoreElements()) 
     {
@@ -382,10 +365,12 @@ public class ShowSavedResults
 	JList theList = (JList)e.getSource();
 	if (theList.isSelectionEmpty()) 
         {
-	  if (mysettings.getDebug()) {
+	  if (mysettings.getDebug()) 
 	    System.out.println("EmbreoResListView: Empty selection");
-	  }
-	} else {
+	  
+	} 
+        else
+        {
 	  int index = theList.getSelectedIndex();
 	  String thisdata = datasets.elementAt(index).toString();
 	  epr.setCurrent(thisdata);
@@ -397,23 +382,27 @@ public class ShowSavedResults
     });
 
 
-    st.addMouseListener(new MouseAdapter() {
-      public void mouseClicked(MouseEvent e) {
+    st.addMouseListener(new MouseAdapter() 
+    {
+      public void mouseClicked(MouseEvent e) 
+      {
 	if (e.getClickCount() == 2) 
         {
 	  int index = st.locationToIndex(e.getPoint());
-	  try {
+	  try
+          {
 	    savedResFrame.setCursor(cbusy);
-	    EmbreoResList thisres = new EmbreoResList(mysettings, epr.getCurrent(), "show_saved_results");
+	    EmbreoResList thisres = new EmbreoResList(mysettings, epr.getCurrent(), 
+                                                     "show_saved_results");
 	    savedResFrame.setCursor(cdone);
 	    if (thisres.getStatus().equals("0")) 
-            {
               new ShowResultSet(thisres.hash());
-//	      EmbreoResView ev = new EmbreoResView(epr.getCurrent(), thisres.hash(), mysettings);
-	    } else {
+            else  
 	      EmbreoUtils.errorPopup(savedResFrame,thisres.getStatusMsg());
-	    }
-	  } catch (EmbreoAuthException eae) {
+ 
+	  } 
+          catch (EmbreoAuthException eae) 
+          {
 	    EmbreoAuthPopup ep = new EmbreoAuthPopup(mysettings,savedResFrame);
 	    EmbreoAuthPrompt epp = new EmbreoAuthPrompt(mysettings);
 	  }
@@ -421,27 +410,31 @@ public class ShowSavedResults
       }
     });
     sp.add(st);
-    //
+    
     // action buttons
-    //
     // display retrieves all the files and shows them in a window
-    //
+   
     JPanel resButtonPanel = new JPanel();
     JButton showResButton = new JButton("Display");
     showResButton.addActionListener(new ActionListener(){
-      public void actionPerformed(ActionEvent e) {
-	if(epr.getCurrent() != null) {
-	  try {
+      public void actionPerformed(ActionEvent e) 
+      {
+	if(epr.getCurrent() != null) 
+        {
+	  try
+          {
 	    savedResFrame.setCursor(cbusy);
-	    EmbreoResList thisres = new EmbreoResList(mysettings, epr.getCurrent(), "show_saved_results");
+	    EmbreoResList thisres = new EmbreoResList(mysettings, epr.getCurrent(), 
+                                                      "show_saved_results");
 	    savedResFrame.setCursor(cdone);
-	    if (thisres.getStatus().equals("0")) {
+	    if (thisres.getStatus().equals("0")) 
               new ShowResultSet(thisres.hash());
-//	      EmbreoResView ev = new EmbreoResView(epr.getCurrent(), thisres.hash(), mysettings);
-	    } else {
+            else 
 	      EmbreoUtils.errorPopup(savedResFrame,thisres.getStatusMsg());
-	    }
-	  } catch (EmbreoAuthException eae) {
+	    
+	  } 
+          catch (EmbreoAuthException eae) 
+          {
             savedResFrame.setCursor(cdone);
 	    EmbreoAuthPopup ep = new EmbreoAuthPopup(mysettings,savedResFrame);
 	    EmbreoAuthPrompt epp = new EmbreoAuthPrompt(mysettings);
@@ -449,37 +442,38 @@ public class ShowSavedResults
 	}
       }
     });
-    //
+    
     // delete removes the file on the server
     // and edits the list
-    //
+   
     JButton delResButton = new JButton("Delete");
-    delResButton.addActionListener(new ActionListener(){
-      public void actionPerformed(ActionEvent e) {
-	if(epr.getCurrent() != null) {
-	  try {
+    delResButton.addActionListener(new ActionListener()
+    {
+      public void actionPerformed(ActionEvent e) 
+      {
+	if(epr.getCurrent() != null) 
+        {
+	  try 
+          {
 	    savedResFrame.setCursor(cbusy);
-	    //
-	    // ask the server to delete these results
-	    //
-	    EmbreoResList thisres = new EmbreoResList(mysettings, epr.getCurrent(), "delete_saved_results");
+	    EmbreoResList thisres = new EmbreoResList(mysettings, epr.getCurrent(),
+                                                      "delete_saved_results");
 	    savedResFrame.setCursor(cdone);
-	    //
-	    // be nice to the user and tell them we've wasted their results
-	    //
 	    JOptionPane.showMessageDialog(savedResFrame,"Result set\n"
                          +epr.getCurrent()+
 			 "\nhas been successfully deleted");
 	    epr.setCurrent(null);
-	    //
+	    
 	    // clean up the list so they can't see it any more
-	    //
+	   
 	    aboutRes.setText("");
 	    int index = st.getSelectedIndex();
 	    datasets.remove(index);
 	    st.setSelectedIndex(-1);
-	  } catch (EmbreoAuthException eae) {
-	    // this shouldn't happen
+	  }
+          catch (EmbreoAuthException eae)
+          {
+	    // shouldn't happen
 	    EmbreoAuthPopup ep = new EmbreoAuthPopup(mysettings,savedResFrame);
 	    EmbreoAuthPrompt epp = new EmbreoAuthPrompt(mysettings);
 	  }
