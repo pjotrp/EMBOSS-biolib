@@ -33,7 +33,7 @@
 #include <float.h>
 #define AZ 28
 
-enum ajGraphObjectTypes { RECTANGLE, RECTANGLEFILL, TEXT, LINE};
+enum AjEGraphObjectTypes { RECTANGLE, RECTANGLEFILL, TEXT, LINE};
 
 static char *colournum[] = { "BLACK", "RED", "YELLOW", "GREEN", "AQUAMARINE",
 		"PINK", "WHEAT", "GREY", "BROWN", "BLUE", "BLUEVIOLET",
@@ -1057,6 +1057,60 @@ void ajGraphTrace (AjPGraph thys) {
 }
 
 
+/* @func ajGraphDataTrace *****************************************************
+**
+** Writes debug messages to trace the contents of a graphdata object.
+**
+** @param [r] thys [AjPGraphData] Graphdata object
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajGraphDataTrace (AjPGraphData thys) {
+
+  ajint i = 0;
+  AjPGraphObj obj;
+
+  ajDebug("GraphData trace\n");
+  ajDebug("\n(a) True booleans\n");
+
+  if (thys->xcalc) ajDebug ("xcalc %B\n", thys->xcalc);
+  if (thys->ycalc) ajDebug ("ycalc %B\n", thys->ycalc);
+
+  ajDebug("\n(b) Strings with values\n");
+
+  ajDebug ("Title '%S'\n", thys->title);
+  ajDebug ("Subtitle '%S'\n", thys->subtitle);
+  ajDebug ("Xaxis '%S'\n", thys->xaxis);
+  ajDebug ("Yaxis '%S'\n", thys->yaxis);
+  ajDebug ("gtype '%S'\n", thys->gtype);
+
+  ajDebug("\n(c) Other values\n");
+  ajDebug ("numofpoints %d\n", thys->numofpoints);
+  ajDebug ("numofobjects %d\n", thys->numofobjects);
+  ajDebug("minX   %7.3f maxX   %7.3f\n", thys->minX, thys->maxX);
+  ajDebug("minY   %7.3f maxY   %7.3f\n", thys->minY, thys->maxY);
+  ajDebug("tminX   %7.3f tmaxX   %7.3f\n", thys->tminX, thys->tmaxX);
+  ajDebug("tminY   %7.3f tmaxY   %7.3f\n", thys->tminY, thys->tmaxY);
+  ajDebug("colour %d\n", thys->colour);
+  ajDebug("lineType %d\n", thys->lineType);
+
+  ajDebug ("obj list: %x\n", thys->Obj);
+  if (thys->Obj) {
+    obj=thys->Obj;
+    while (obj->next) {
+      i++;
+      obj = obj->next;
+    }
+  }
+
+  ajDebug ("obj list length: %d/%d\n",
+	   i, thys->numofobjects);
+ 
+  return;
+}
+
+
 /* @func ajGraphCircle ********************************************************
 **
 ** Draw a circle.
@@ -1068,7 +1122,7 @@ void ajGraphTrace (AjPGraph thys) {
 ** @@
 **
 ** NOTE: Due to x and y not the same length this produces an oval!!
-**       This will have to do for now. But i am aware that the code
+**       This will have to do for now. But i (il@sanger) am aware that the code
 **       is slow and not quite right.
 ******************************************************************************/
 void ajGraphCircle (PLFLT xcentre, PLFLT ycentre, float radius){
@@ -2170,11 +2224,11 @@ static void GraphxyDisplayToData (AjPGraph graphs, AjBool closeit, char *ext) {
     temp = ajFmtStr("%S%d%s",graphs->outputfile,i+1,ext);
     outf = ajFileNewOut(temp);
     if(!outf){
-      ajMessError("Error could not open file %S\n",temp);
+      ajErr ("Could not open graph file %S\n",temp);
       return;
     }
     else
-      ajMessOut("Writing graph %d data to %S\n",i+1,temp);
+      ajUser ("Writing graph %d data to %S",i+1,temp);
 
 
     (void) ajFmtPrintF(outf,"##%S\n",g->gtype);
@@ -2887,19 +2941,37 @@ AjPGraphData ajGraphxyDataNewI (ajint numofpoints) {
 
 ajint ajGraphxyAddGraph(AjPGraph mult, AjPGraphData graphdata){
 
-  if(mult->numofgraphs)
-    if((mult->graphs)[0]->numofpoints != graphdata->numofpoints){
-      ajMessError("ERROR only homogenous number of points allowed "
-		  "for multiple graphs\n");
+  if(mult->numofgraphs) {
+    ajDebug ("ajGraphxyAddGraph multi \n");
+    /*
+    if((mult->graphs[0])->xstart != graphdata->xstart ||
+       (mult->graphs[0])->xend != graphdata->xend){
+      ajErr ("Multiple graph - expect X-axis %f to %f, found %f to %f",
+	     (mult->graphs[0])->xstart, (mult->graphs[0])->xend,
+	     graphdata->xstart, graphdata->xend);
       return 0;
-    }
+    */
 
-  if(mult->numofgraphs < mult->numofgraphsmax){
+    /* ajDebug("Trace data [%d]\n", mult->numofgraphs);
+       ajGraphDataTrace (graphdata); */
+
+  }
+  
+  else {
+    /*
+    ajGraphTrace (mult);
+    ajDebug("Trace data [%d]\n", 0);
+    ajGraphDataTrace (graphdata);
+    */
+  }
+
+  if (mult->numofgraphs < mult->numofgraphsmax){
     (mult->graphs)[mult->numofgraphs++] = graphdata;
     return 1;
   }
 
-  ajMessError("ERROR no space left more graphs in the multiple graph store\n");
+  ajErr ("Too many multiple graphs - expected %d graphs",
+	 mult->numofgraphsmax);
   return 0;
 }
 
