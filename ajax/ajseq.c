@@ -1709,8 +1709,8 @@ void ajSeqClear (AjPSeq thys)
 
 void ajSeqallClear (AjPSeqall thys)
 {
-  ajSeqClear (&thys->Seq);
-  ajSeqinClear(&thys->Seqin);
+  ajSeqClear (thys->Seq);
+  ajSeqinClear(thys->Seqin);
   thys->Count=0;
   thys->Begin=0;
   thys->End=0;
