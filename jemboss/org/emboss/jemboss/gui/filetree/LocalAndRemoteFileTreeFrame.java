@@ -83,8 +83,11 @@ public class LocalAndRemoteFileTreeFrame extends JFrame
           treePane.setOrientation(JSplitPane.VERTICAL_SPLIT);
           treePane.setTopComponent(localPanel);
           treePane.setBottomComponent(remotePanel);
-          rtree.setPreferredSize(panelSize);
-          ltree.setPreferredSize(panelSize);
+//        rtree.setPreferredSize(panelSize);
+//        ltree.setPreferredSize(panelSize);
+          remotePanel.setPreferredSize(panelSize);
+          localPanel.setPreferredSize(panelSize);
+
           pack();
           treePane.setDividerLocation(0.5);
         }
@@ -105,8 +108,11 @@ public class LocalAndRemoteFileTreeFrame extends JFrame
           treePane.setLeftComponent(localPanel);
           treePane.setRightComponent(remotePanel);
   
-          rtree.setPreferredSize(panelSize);
-          ltree.setPreferredSize(panelSize);
+//        rtree.setPreferredSize(panelSize);
+//        ltree.setPreferredSize(panelSize);
+          remotePanel.setPreferredSize(panelSize);
+          localPanel.setPreferredSize(panelSize);
+
           pack();
           treePane.setDividerLocation(0.5);
         }
