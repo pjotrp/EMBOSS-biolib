@@ -118,6 +118,9 @@ void ajListstrFree   (AjPList *list);
 void ajListDel   (AjPList *list);
 void ajListstrDel   (AjPList *list);
 
+void ajListGarbageCollect(AjPList list, void (*destruct)(const void **),
+			  AjBool (*compar)(const void *));
+
 void ajListPush   (AjPList list, void* x);      /* " " */
 void ajListstrPush (AjPList list, AjPStr x);
 

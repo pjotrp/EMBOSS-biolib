@@ -1806,3 +1806,32 @@ void ajListDummyFunction(void** array)
 {
     listArrayTrace(array);
 }
+
+
+/* @func ajListGarbageCollect ***********************************************
+**
+** Garbage collect a list
+**
+** @param [r] thys [AjPList] List.
+** @param [r] destruct [void* function] Wrapper function for item destructor
+** @param [r] compar [AjBool* function] Function to test whether to delete
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajListGarbageCollect(AjPList list, void (*destruct)(const void **),
+			  AjBool (*compar)(const void *))
+{
+    AjIList iter=NULL;
+    void    *ret;
+    
+
+    iter = ajListIter(list);
+    while((ret=ajListIterNext(iter)))
+	if(compar(ret))
+	    ajListRemove(iter);
+
+    ajListIterFree(iter);
+
+    return;
+}
