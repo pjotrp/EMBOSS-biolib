@@ -527,9 +527,10 @@ public class GraphicSequenceCollection extends JPanel
     else
     {
       Sequence seqDown = (Sequence)seqs.get(seqIndex+1);
+      SequenceJPanel seqPanelDown = (SequenceJPanel)graphicSequence.get(seqIndex+2);
       String res = seqDown.getSequence().substring(pos,pos+1);
       Color col = getColor(res,pos,seqDown.getName());
-      if(col.equals(Color.black) || seqDown.getName().equals("Consensus"))
+      if(col.equals(Color.black) || !seqPanelDown.isPrettyPlot())   
         testDown = 1;
     }
 

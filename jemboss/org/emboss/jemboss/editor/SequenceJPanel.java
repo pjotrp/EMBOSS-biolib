@@ -596,6 +596,18 @@ public class SequenceJPanel extends JPanel
     this.prettyPlot = prettyPlot;
   }
 
+ 
+  /**
+  *
+  * Determine if using prettyplot display
+  * @return  	true if the prettyplot display is to
+  *           	be used
+  */
+  public boolean isPrettyPlot()
+  {
+    return prettyPlot;
+  }
+
 
   /**
   *
