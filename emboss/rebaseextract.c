@@ -566,6 +566,7 @@ static void rebex_process_pattern(const AjPStr pattern, const AjPStr code,
 			len,ncuts,blunt,cut1,cut2);
     }
 
+    ajStrDel(&tmppattern);
     ajStrDel(&temp);
     ajStrDel(&ppat);
     ajStrTokenClear(&tokens);
