@@ -59,6 +59,7 @@ static void     GraphObjDel (AjPGraph graphs);
 static void     GraphObjDraw (AjPGraph graphs);
 static void     GraphObjPrint (AjPGraph graphs);
 static void     GraphOpenFile (AjPGraph graphs, char *ext);
+static void     GraphOpenNull (AjPGraph graphs, char *ext);
 static void     GraphOpenXwin (AjPGraph graphs, char *ext);
 static void     GraphPen (ajint pen, ajint red, ajint green, ajint blue);
 static void     GraphRegister (void);
@@ -122,7 +123,7 @@ static GraphOType graphType[] = {
   {"none",       "null",    "null",  GraphxyDisplayXwin,   GraphOpenXwin},
   {"null",       "null",    "null",  GraphxyDisplayXwin,   GraphOpenXwin},
   {"text",       "null",    "null",  GraphxyDisplayXwin,   GraphOpenXwin},
-  {"data",       "null",    ".dat",  GraphxyDisplayToData, NULL},
+  {"data",       "null",    ".dat",  GraphxyDisplayToData, GraphOpenFile},
 #ifndef X_DISPLAY_MISSING /* X not available */
   {"xterm",      "xterm",   "null",  GraphxyDisplayXwin, GraphOpenXwin},
 #endif
@@ -518,7 +519,7 @@ static void GraphSymbols(float *x1, float *y1, ajint numofdots,
 
 /* @funcstatic GraphClose *****************************************************
 **
-** Close the graph with the plplot command.
+** Close the graph with the plplot plend command.
 **
 ** @return [void]
 ** @@
@@ -699,7 +700,7 @@ void ajGraphOpenPlot(AjPGraph thys, ajint numofsets) {
 void ajGraphOpenWin (AjPGraph thys, float xmin, float xmax,
 		  float ymin, float ymax)
 {
-  AJTIME ajtime;
+  AjOTime ajtime;
   const time_t tim = time(0);      
 
   ajtime.time = localtime(&tim);
@@ -782,7 +783,7 @@ void ajGraphCloseWin(void){
 
 void ajGraphOpen (AjPGraph thys, PLFLT xmin, PLFLT xmax,
 		  PLFLT ymin, PLFLT ymax, ajint flags) {
-  AJTIME ajtime;
+  AjOTime ajtime;
   const time_t tim = time(0);      
 
   ajtime.time = localtime(&tim);
@@ -880,7 +881,7 @@ AjBool ajGraphxySet (AjPGraph thys, AjPStr type) {
   for (i=0;graphType[i].Name;i++) {
     if (ajStrPrefixCaseCO(graphType[i].Name, type)) {
       if (!graphType[i].XYDisplay) {
-	ajDebug("ajGraphxySet type '%S' displaytype %d '%s' no GOpen function\n",
+	ajDebug("ajGraphxySet type '%S' displaytype %d '%s' no XYDisplay function\n",
 		type, i, graphType[i].Name);
 	return ajFalse;
       }
@@ -2005,6 +2006,19 @@ static void GraphOpenFile (AjPGraph graphs, char *ext) {
 
   GraphSetName(graphs, graphs->outputfile,ext);
   
+  return;
+}
+
+/* @funcstatic GraphOpenNull *******************************************
+**
+** A dummy routine for writing graphs to a data file. Does nothing.
+**
+** @param [r] graphs [AjPGraph] Multiple graph pointer.
+** @param [r] ext [char*] file extension
+** @return [void]
+** @@
+******************************************************************************/
+static void GraphOpenNull (AjPGraph graphs, char *ext) {
   return;
 }
 
@@ -3459,7 +3473,7 @@ static void GraphxyGeneral (AjPGraph graphs, AjBool closeit) {
 
   AjPGraphData g;
   ajint i,old,old2;
-  AJTIME ajtime;
+  AjOTime ajtime;
   const time_t tim = time(0);      
 
   ajtime.time = localtime(&tim);

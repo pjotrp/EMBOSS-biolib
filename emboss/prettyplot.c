@@ -564,7 +564,7 @@ int main(int argc, char **argv)
     ajint resbreak;
     float fplural;
     float ystart;
-    AJTIME ajtime;
+    AjOTime ajtime;
     const time_t tim = time(0);
     ajint gapcount=0;
     ajint countforgap=0;

@@ -75,7 +75,7 @@ int main(int argc, char **argv)
     AjPMatrix cmpmatrix=0;
     AjPSeqCvt cvt=0;
     AjBool text;
-    AJTIME ajtime;
+    AjOTime ajtime;
     const time_t tim = time(0);
   
     char **seqcharptr;

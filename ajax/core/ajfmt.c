@@ -726,7 +726,7 @@ static void cvt_uB(ajint code, VALIST ap, int put(int c, void* cl), void* cl,
 static void cvt_uD(ajint code, VALIST ap, int put(int c, void* cl), void* cl,
 		  ajuint* flags, ajint width, ajint precision)
 {
-    AJTIME *time =  va_arg(VA_V(ap), AJTIME *);
+    AjPTime time =  va_arg(VA_V(ap), AjPTime);
     struct tm *mytime = time->time;
 
     char buf[280];

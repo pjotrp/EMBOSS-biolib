@@ -55,7 +55,7 @@ int main(int argc, char **argv)
     float thresh;
     AjPGraph graph = 0;
     /* AjPStr title=0,subtitle=0;*/
-    AJTIME ajtime;
+    AjOTime ajtime;
     const time_t tim = time(0);
     AjBool boxit=AJTRUE;
     /* Different ticks as they need to be different for x and y due to
