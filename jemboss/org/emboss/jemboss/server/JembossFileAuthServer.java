@@ -204,16 +204,40 @@ public class JembossFileAuthServer
                              byte[] passwd, Vector res)
   {
 
-    if(!aj.userAuth(userName,passwd,environ))
+    if(userName == null || passwd == null)
+    {
+//    System.out.println("Failed Authorisation "+userName);
+      res.add("msg");
+      res.add("Failed Authorisation ");
+      res.add("status");
+      res.add("1");
+      return false;
+    }
+
+    boolean ok = false;
+
+    try
+    {
+      ok = aj.userAuth(userName,passwd,environ);
+    }
+    catch(Exception exp) 
+    {
+      ok = false;
+    }
+
+    if(!ok)
     {
       System.out.println("Failed Authorisation "+userName);
+      System.out.println("STDERR "+aj.getErrStd());
       res.add("msg");
       res.add("Failed Authorisation "+userName);
       res.add("status");
       res.add("1");
       return false;
     }
+
     return true;
+
   }
 
 }
