@@ -52,7 +52,10 @@
 #ifndef _XOPEN_SOURCE
 #define _XOPEN_SOURCE
 #endif
+
+#ifndef __ppc__
 #include <crypt.h>
+#endif
 
 #define R_BUFFER 2048		/* Reentrant buffer size */
 

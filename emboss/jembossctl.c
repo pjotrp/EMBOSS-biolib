@@ -77,7 +77,10 @@ static void jctl_zero(char *buf);
 #ifndef _XOPEN_SOURCE
 #define _XOPEN_SOURCE
 #endif
+
+#ifndef __ppc__
 #include <crypt.h>
+#endif
 
 #ifdef N_SHADOW
 #include <shadow.h>
