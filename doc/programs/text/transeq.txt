@@ -139,10 +139,16 @@ Command line arguments
                                   Note: you should not try to use this option
                                   with any other frame than the default,
                                   -frame=1
-   -trim               boolean    This removes all X and * characters from the
-                                  right end of the translation. The trimming
-                                  process starts at the end and continues
-                                  until the next character is not a X or a *
+   -trim               boolean    This removes all 'X' and '*' characters from
+                                  the right end of the translation. The
+                                  trimming process starts at the end and
+                                  continues until the next character is not a
+                                  'X' or a '*'
+   -clean              boolean    This changes all STOP codon positions from
+                                  the '*' character to 'X' (an unknown
+                                  residue). This is useful because some
+                                  programs will not accept protein sequences
+                                  with '*' characters in them.
 
    Advanced qualifiers:
    -alternative        boolean    The default definition of frame '-1' is the
@@ -208,9 +214,13 @@ Command line arguments
    1,5,8,10,23,45,57,99 Note: you should not try to use this option with
    any other frame than the default, -frame=1 Sequence range Whole
    sequence
-   -trim This removes all X and * characters from the right end of the
-   translation. The trimming process starts at the end and continues
-   until the next character is not a X or a * Boolean value Yes/No No
+   -trim This removes all 'X' and '*' characters from the right end of
+   the translation. The trimming process starts at the end and continues
+   until the next character is not a 'X' or a '*' Boolean value Yes/No No
+   -clean This changes all STOP codon positions from the '*' character to
+   'X' (an unknown residue). This is useful because some programs will
+   not accept protein sequences with '*' characters in them. Boolean
+   value Yes/No No
    Advanced qualifiers Allowed values Default
    -alternative The default definition of frame '-1' is the
    reverse-complement of the set of codons used in frame 1. (Frame -2 is

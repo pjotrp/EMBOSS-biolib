@@ -229,10 +229,16 @@ IT IS DONE FOR YOU.
                                   Note: you should not try to use this option
                                   with any other frame than the default,
                                   -frame=1
-   -trim               boolean    This removes all X and * characters from the
-                                  right end of the translation. The trimming
-                                  process starts at the end and continues
-                                  until the next character is not a X or a *
+   -trim               boolean    This removes all 'X' and '*' characters from
+                                  the right end of the translation. The
+                                  trimming process starts at the end and
+                                  continues until the next character is not a
+                                  'X' or a '*'
+   -clean              boolean    This changes all STOP codon positions from
+                                  the '*' character to 'X' (an unknown
+                                  residue). This is useful because some
+                                  programs will not accept protein sequences
+                                  with '*' characters in them.
 
    Advanced qualifiers:
    -alternative        boolean    The default definition of frame '-1' is the
@@ -314,7 +320,14 @@ Note: you should not try to use this option with any other frame than the defaul
 
 <tr>
 <td>-trim</td>
-<td>This removes all X and * characters from the right end of the translation. The trimming process starts at the end and continues until the next character is not a X or a *</td>
+<td>This removes all 'X' and '*' characters from the right end of the translation. The trimming process starts at the end and continues until the next character is not a 'X' or a '*'</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-clean</td>
+<td>This changes all STOP codon positions from the '*' character to 'X' (an unknown residue). This is useful because some programs will not accept protein sequences with '*' characters in them.</td>
 <td>Boolean value Yes/No</td>
 <td>No</td>
 </tr>
