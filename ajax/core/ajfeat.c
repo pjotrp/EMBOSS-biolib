@@ -6327,12 +6327,12 @@ static AjBool featTagSpecialAllProteinid (AjPStr* pval) {
 static AjBool featTagSpecialAllReplace (AjPStr* pval) {
 
   static AjPRegexp exp = NULL;
-
   static AjPStr seqstr = NULL;
   AjBool ret = ajFalse;
 
   if (!exp)
-    exp = ajRegCompC("^([acgt]*)$");
+    exp = ajRegCompC("^([acgtn]*)$"); /* n is used in old_sequence */
+				/* and in misc_difference features */
 
   /* if (!exp)
      exp = ajRegCompC("^\"([acgt]*)\"$");*/
