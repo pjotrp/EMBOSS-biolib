@@ -2,7 +2,7 @@ pkgdata_DATA = banana0.gif chaos0.gif cpgplot0.gif dotmatcher0.gif \
                dottup0.gif emboss_icon.gif findkm0.gif isochore0.gif \
                octanol0.gif pepinfo1.gif pepinfo2.gif pepnet0.gif \
                pepwheel0.gif pepwindow0.gif pepwindowall0.gif \
-               plotorf0.gif polydot0.gif prettyplot3.gif pretty plot4.gif \
+               plotorf0.gif polydot0.gif prettyplot3.gif prettyplot4.gif \
                syco0.gif syco1.gif tmap0.gif topo.gif wobble0.gif \
                SITE-DIRECTED.html alignment_global_group.html \
                alignment_group.html alignment_local_group.html \
