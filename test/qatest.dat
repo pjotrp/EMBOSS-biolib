@@ -6303,6 +6303,27 @@ FP /Note .* forward est and forward genome, .* imply forward gene/
 FP /^Exon       129  99.2  1380  1510 HSA1280        428   558 pax6/
 //
 
+ID est2genome-mode-both2
+TI 200
+AP est2genome
+CL -sreverse -mode both
+IN ../../data/pax6_cdna.fasta
+IN ../../data/z83307.seq
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI pax6.est2genome
+FZ = 2104
+FP /Note .* forward est and forward genome, .* imply REVERSED GENE/
+FP /^Exon       129  99.2 20744 20874 HSA1280       1141  1271 pax6/
+CC Note the nosplice version of this test does not have "REVERSED GENE"
+CC This is only because with no splice consensus penalty the same score
+CC is found in both directions and the forward gene is the one reported
+//
+
 ID est2genome-mode-forward
 TI 200
 AP est2genome
@@ -6343,6 +6364,99 @@ ID est2genome-mode-reverse2
 TI 200
 AP est2genome
 CL -mode reverse
+IN ../../data/pax6_cdna.fasta
+IN ../../data/z83307.seq
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI pax6.est2genome
+FZ = 47
+FP /Note requested reversed est and forward genome/
+FP 0 /^Exon/
+//
+
+ID est2genome-nosplice-both
+TI 200
+AP est2genome
+CL -nosplice -mode both
+IN ../../data/pax6_cdna.fasta
+IN ../../data/z83307.seq
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI pax6.est2genome
+FZ = 2103
+FP /Note .* forward est and forward genome, .* imply forward gene/
+FP /^Exon       124  99.2  1380  1505 HSA1280        428   553 pax6/
+//
+
+ID est2genome-nosplice-both2
+TI 200
+AP est2genome
+CL -sreverse -nosplice -mode both
+IN ../../data/pax6_cdna.fasta
+IN ../../data/z83307.seq
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI pax6.est2genome
+FZ = 2103
+FP /Note .* forward est and forward genome, .* imply forward gene/
+FP /^Exon       132  99.3 20741 20874 HSA1280       1138  1271 pax6/
+CC Note the mode version of this test has "imply REVERSED GENE"
+CC This is only because with no splice consensus penalty the same score
+CC is found in both directions and the forward gene is the one reported
+//
+
+ID est2genome-nosplice-forward
+TI 200
+AP est2genome
+CL -nosplice -mode forward
+IN ../../data/pax6_cdna.fasta
+IN ../../data/z83307.seq
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI pax6.est2genome
+FZ = 2050
+FP /Note requested forward est and forward genome/
+FP /^Exon       124  99.2  1380  1505 HSA1280        428   553 pax6/
+//
+
+ID est2genome-nosplice-reverse
+TI 200
+AP est2genome
+CL -nosplice -mode reverse -srev1
+IN ../../data/pax6_cdna.fasta
+IN ../../data/z83307.seq
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI pax6.est2genome
+FZ = 2051
+FP /Note requested reversed est and forward genome/
+FP /^Exon       124  99.2  1380  1505 HSA1280        428   553 pax6/
+//
+
+ID est2genome-nosplice-reverse2
+TI 200
+AP est2genome
+CL -nosplice -mode reverse
 IN ../../data/pax6_cdna.fasta
 IN ../../data/z83307.seq
 IN
