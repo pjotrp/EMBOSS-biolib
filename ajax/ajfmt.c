@@ -173,7 +173,7 @@ static AjBool c_notin(ajint c, char *list)
 ** As for C RTL but prints null if given a null pointer.
 **
 ** @param [r] code [ajint] Format code specified (usually s)
-** @param [r] ap [va_list] Original arguments at current position
+** @param [r] ap [VALIST] Original arguments at current position
 ** @param [r] put [int function] Standard function
 ** @param [r] cl [void*] Standard
 ** @param [r] flags [ajuint*] Flags (after the %)
@@ -204,7 +204,7 @@ static void cvt_s(ajint code, VALIST ap, int put(int c, void* cl), void* cl,
 ** Conversion for %d to print integer
 **
 ** @param [r] code [ajint] Format code specified (usually d)
-** @param [r] ap [va_list*] Original arguments at current position
+** @param [r] ap [VALIST] Original arguments at current position
 ** @param [r] put [int function] Standard function
 ** @param [r] cl [void*] Standard
 ** @param [r] flags [ajuint*] Flags (after the %)
@@ -302,7 +302,7 @@ static void cvt_d(ajint code, VALIST ap, int put(int c, void* cl), void* cl,
 ** Conversion for %u to print unsigned integer
 **
 ** @param [r] code [ajint] Format code specified (usually u)
-** @param [r] app [va_list] Original arguments at current position
+** @param [r] ap [VALIST] Original arguments at current position
 ** @param [r] put [int function] Standard function
 ** @param [r] cl [void*] Standard
 ** @param [r] flags [ajuint*] Flags (after the %)
@@ -359,7 +359,7 @@ static void cvt_u(ajint code, VALIST ap, int put(int c, void* cl), void* cl,
 ** Conversion for %o to print unsigned integer as octal
 **
 ** @param [r] code [ajint] Format code specified (usually o)
-** @param [r] ap [va_list] Original arguments at current position
+** @param [r] ap [VALIST] Original arguments at current position
 ** @param [r] put [int function] Standard function
 ** @param [r] cl [void*] Standard
 ** @param [r] flags [ajuint*] Flags (after the %)
@@ -420,7 +420,7 @@ static void cvt_o(ajint code, VALIST ap, int put(int c, void* cl), void* cl,
 ** Conversion for %x to print unsigned integer as hexadecimal
 **
 ** @param [r] code [ajint] Format code specified (usually x)
-** @param [r] ap [va_list] Original arguments at current position
+** @param [r] ap [VALIST] Original arguments at current position
 ** @param [r] put [int function] Standard function
 ** @param [r] cl [void*] Standard
 ** @param [r] flags [ajuint*] Flags (after the %)
@@ -496,7 +496,7 @@ static void cvt_x(ajint code, VALIST ap, int put(int c, void* cl), void* cl,
 ** Conversion for %p to print pointers of type void* as hexadecimal
 **
 ** @param [r] code [ajint] Format code specified (usually p)
-** @param [r] ap [va_list] Original arguments at current position
+** @param [r] ap [VALIST] Original arguments at current position
 ** @param [r] put [int function] Standard function
 ** @param [r] cl [void*] Standard
 ** @param [r] flags [ajuint*] Flags (after the %)
@@ -533,7 +533,7 @@ static void cvt_p(ajint code, VALIST ap, int put(int c, void* cl), void* cl,
 ** by default, so char is always promoted to ajint by the time it reaches here.
 **
 ** @param [r] code [ajint] Format code specified (usually c)
-** @param [r] ap [va_list] Original arguments at current position
+** @param [r] ap [VALIST] Original arguments at current position
 ** @param [r] put [int function] Standard function
 ** @param [r] cl [void*] Standard
 ** @param [r] flags [ajuint*] Flags (after the %)
@@ -574,7 +574,7 @@ static void cvt_c(ajint code, VALIST ap, int put(int c, void* cl), void* cl,
 ** of the format for sprintf.
 **
 ** @param [r] code [ajint] Format code specified (usually f)
-** @param [r] ap [va_list] Original arguments at current position
+** @param [r] ap [VALIST] Original arguments at current position
 ** @param [r] put [int function] Standard function
 ** @param [r] cl [void*] Standard
 ** @param [r] flags [ajuint*] Flags (after the %)
@@ -623,7 +623,7 @@ static void cvt_f(ajint code, VALIST ap, int put(int c, void* cl), void* cl,
 ** Conversion for %S to print a string
 **
 ** @param [r] code [ajint] Format code specified (usually S)
-** @param [r] ap [va_list] Original arguments at current position
+** @param [r] ap [VALIST] Original arguments at current position
 ** @param [r] put [int function] Standard function
 ** @param [r] cl [void*] Standard
 ** @param [r] flags [ajuint*] Flags (after the %)
@@ -653,7 +653,7 @@ static void cvt_S(ajint code, VALIST ap, int put(int c, void* cl), void* cl,
 ** Conversion for %b to print a boolean as a 1 letter code (Y or N)
 **
 ** @param [r] code [ajint] Format code specified (usually b)
-** @param [r] ap [va_list] Original arguments at current position
+** @param [r] ap [VALIST] Original arguments at current position
 ** @param [r] put [int function] Standard function
 ** @param [r] cl [void*] Standard
 ** @param [r] flags [ajuint*] Flags (after the %)
@@ -683,7 +683,7 @@ static void cvt_b(ajint code, VALIST ap, int put(int c, void* cl), void* cl,
 ** Conversion for %B to print a boolean as text (Yes or No)
 **
 ** @param [r] code [ajint] Format code specified (usually B)
-** @param [r] ap [va_list] Original arguments at current position
+** @param [r] ap [VALIST] Original arguments at current position
 ** @param [r] put [int function] Standard function
 ** @param [r] cl [void*] Standard
 ** @param [r] flags [ajuint*] Flags (after the %)
@@ -713,7 +713,7 @@ static void cvt_B(ajint code, VALIST ap, int put(int c, void* cl), void* cl,
 ** Conversion for %D to print a datetime value
 **
 ** @param [r] code [ajint] Format code specified (usually D)
-** @param [r] ap [va_list] Original arguments at current position
+** @param [r] ap [VALIST] Original arguments at current position
 ** @param [r] put [int function] Standard function
 ** @param [r] cl [void*] Standard
 ** @param [r] flags [ajuint*] Flags (after the %)
@@ -751,7 +751,7 @@ static void cvt_D(ajint code, VALIST ap, int put(int c, void* cl), void* cl,
 ** Conversion for %F to print a file object
 **
 ** @param [r] code [ajint] Format code specified (usually F)
-** @param [r] ap [va_list] Original arguments at current position
+** @param [r] ap [VALIST] Original arguments at current position
 ** @param [r] put [int function] Standard function
 ** @param [r] cl [void*] Standard
 ** @param [r] flags [ajuint*] Flags (after the %)
@@ -948,7 +948,7 @@ void ajFmtPuts (const char* str, ajint len, int put(int c, void* cl), void* cl,
 **
 ** formats and emits the "..." arguments according to the format string fmt
 **
-** @param [f] put [int function] Standard function.
+** @param [f] put [ajint function] Standard function.
 ** @param [rP] cl [void*] Standard.
 ** @param [r] fmt [const char*] Format string
 ** @param [v] [...] Variable length argument list
@@ -1778,7 +1778,7 @@ ajint ajFmtScanS(AjPStr thys, const char* fmt, ...)
 }
 
 
-/* @func ajFmtVscan  *****************************************************
+/* @funcstatic ajFmtVscan *****************************************************
 **
 ** Scan a string according to fmt and load the va_list variable pointers
 **
@@ -1907,7 +1907,7 @@ static ajint ajFmtVscan(char *thys,const char *fmt,va_list ap)
 **
 ** @param [r] fmt [char*] Format string at conv char posn
 ** @param [w] pos [char**] Input string current position
-** @param [r] ap [va_list] Original arguments at current position
+** @param [r] ap [VALIST] Original arguments at current position
 ** @param [r] width [ajint] Width
 ** @param [r] convert [AjBool] ajFalse if %* was specified
 ** @param [w] ok [AjBool*] set for a successful conversion
@@ -1953,7 +1953,7 @@ static void scvt_S(char *fmt, char **pos, VALIST ap, ajint width,
 **
 ** @param [r] fmt [char*] Format string at conv char posn
 ** @param [w] pos [char**] Input string current position
-** @param [r] ap [va_list] Original arguments at current position
+** @param [r] ap [VALIST] Original arguments at current position
 ** @param [r] width [ajint] Width
 ** @param [r] convert [AjBool] ajFalse if %* was specified
 ** @param [w] ok [AjBool*] set for a successful conversion
@@ -2034,7 +2034,7 @@ static void scvt_d(char *fmt, char **pos, VALIST ap, ajint width,
 **
 ** @param [r] fmt [char*] Format string at conv char posn
 ** @param [w] pos [char**] Input string current position
-** @param [r] ap [va_list] Original arguments at current position
+** @param [r] ap [VALIST] Original arguments at current position
 ** @param [r] width [ajint] Width
 ** @param [r] convert [AjBool] ajFalse if %* was specified
 ** @param [w] ok [AjBool*] set for a successful conversion
@@ -2119,7 +2119,7 @@ static void scvt_x(char *fmt, char **pos, VALIST ap, ajint width,
 **
 ** @param [r] fmt [char*] Format string at conv char posn
 ** @param [w] pos [char**] Input string current position
-** @param [r] ap [va_list] Original arguments at current position
+** @param [r] ap [VALIST] Original arguments at current position
 ** @param [r] width [ajint] Width
 ** @param [r] convert [AjBool] ajFalse if %* was specified
 ** @param [w] ok [AjBool*] set for a successful conversion
@@ -2189,7 +2189,7 @@ static void scvt_f(char *fmt, char **pos, VALIST ap, ajint width,
 **
 ** @param [r] fmt [char*] Format string at conv char posn
 ** @param [w] pos [char**] Input string current position
-** @param [r] ap [va_list] Original arguments at current position
+** @param [r] ap [VALIST] Original arguments at current position
 ** @param [r] width [ajint] Width
 ** @param [r] convert [AjBool] ajFalse if %* was specified
 ** @param [w] ok [AjBool*] set for a successful conversion
@@ -2240,7 +2240,7 @@ static void scvt_s(char *fmt, char **pos, VALIST ap, ajint width,
 **
 ** @param [r] fmt [char*] Format string at conv char posn
 ** @param [w] pos [char**] Input string current position
-** @param [r] ap [va_list] Original arguments at current position
+** @param [r] ap [VALIST] Original arguments at current position
 ** @param [r] width [ajint] Width
 ** @param [r] convert [AjBool] ajFalse if %* was specified
 ** @param [w] ok [AjBool*] set for a successful conversion
@@ -2326,7 +2326,7 @@ static void scvt_o(char *fmt, char **pos, VALIST ap, ajint width,
 **
 ** @param [r] fmt [char*] Format string at conv char posn
 ** @param [w] pos [char**] Input string current position
-** @param [r] ap [va_list] Original arguments at current position
+** @param [r] ap [VALIST] Original arguments at current position
 ** @param [r] width [ajint] Width
 ** @param [r] convert [AjBool] ajFalse if %* was specified
 ** @param [w] ok [AjBool*] set for a successful conversion
@@ -2413,7 +2413,7 @@ static void scvt_u(char *fmt, char **pos, VALIST ap, ajint width,
 **
 ** @param [r] fmt [char*] Format string at conv char posn
 ** @param [w] pos [char**] Input string current position
-** @param [r] ap [va_list] Original arguments at current position
+** @param [r] ap [VALIST] Original arguments at current position
 ** @param [r] width [ajint] Width
 ** @param [r] convert [AjBool] ajFalse if %* was specified
 ** @param [w] ok [AjBool*] set for a successful conversion
@@ -2469,7 +2469,7 @@ static void scvt_p(char *fmt, char **pos, VALIST ap, ajint width,
 **
 ** @param [r] fmt [char*] Format string at conv char posn
 ** @param [w] pos [char**] Input string current position
-** @param [r] ap [va_list] Original arguments at current position
+** @param [r] ap [VALIST] Original arguments at current position
 ** @param [r] width [ajint] Width
 ** @param [r] convert [AjBool] ajFalse if %* was specified
 ** @param [w] ok [AjBool*] set for a successful conversion
@@ -2581,7 +2581,7 @@ static void scvt_B(char *fmt, char **pos, VALIST ap, ajint width,
 **
 ** @param [r] fmt [char*] Format string at conv char posn
 ** @param [w] pos [char**] Input string current position
-** @param [r] ap [va_list] Original arguments at current position
+** @param [r] ap [VALIST] Original arguments at current position
 ** @param [r] width [ajint] Width
 ** @param [r] convert [AjBool] ajFalse if %* was specified
 ** @param [w] ok [AjBool*] set for a successful conversion
@@ -2625,7 +2625,7 @@ static void scvt_c(char *fmt, char **pos, VALIST ap, ajint width,
 **
 ** @param [r] fmt [char*] Format string at conv char posn
 ** @param [w] pos [char**] Input string current position
-** @param [r] ap [va_list] Original arguments at current position
+** @param [r] ap [VALIST] Original arguments at current position
 ** @param [r] width [ajint] Width
 ** @param [r] convert [AjBool] ajFalse if %* was specified
 ** @param [w] ok [AjBool*] set for a successful conversion
@@ -2679,7 +2679,7 @@ static void scvt_b(char *fmt, char **pos, VALIST ap, ajint width,
 **
 ** @param [r] fmt [char*] Format string at conv char posn
 ** @param [w] pos [char**] Input string current position
-** @param [r] ap [va_list] Original arguments at current position
+** @param [r] ap [VALIST] Original arguments at current position
 ** @param [r] width [ajint] Width
 ** @param [r] convert [AjBool] ajFalse if %* was specified
 ** @param [w] ok [AjBool*] set for a successful conversion
