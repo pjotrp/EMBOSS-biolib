@@ -27,6 +27,9 @@
 #define DELETED -1.
 #define MILLION 1000000.
 
+
+
+
 /* @datastatic AjPMwh *********************************************************
 **
 ** mwfilter internals
@@ -46,9 +49,7 @@ typedef struct AjSMwh
 
 
 
-/*
- *  prototypes
- */
+
 static void mwfilter_readdata(AjPFile datafile, AjPDouble *rmarray,
 			      AjPDouble *darray);
 static void mwfilter_readexp(AjPFile inf, AjPDouble *exparray);
@@ -59,6 +60,7 @@ static void mwfilter_moddel(AjPDouble exparray, ajint expn,
 			    AjPDouble darray, ajint dn,
 			    ajint tol);
 static void mwfilter_arraytidy(AjPDouble exparray, ajint *expn);
+
 
 
 
@@ -83,9 +85,9 @@ int main(int argc, char **argv)
     AjPDouble darray   = NULL;
     AjPDouble exparray = NULL;
 
-    ajint     rmn  = 0;
-    ajint     dn   = 0;
-    ajint     expn = 0;
+    ajint rmn  = 0;
+    ajint dn   = 0;
+    ajint expn = 0;
 
     ajint i;
     AjPMwh dptr = NULL;
@@ -147,6 +149,7 @@ int main(int argc, char **argv)
     ajFileClose(&outf);
 
     ajExit();
+
     return 0;
 }
 
@@ -175,8 +178,7 @@ static void mwfilter_readdata(AjPFile inf, AjPDouble *rmarray,
     line = ajStrNew();
 
     /* Read in the top of the file (noisy molwts) */
-    while(ajFileReadLine(inf,&line) && !ajStrPrefixC(line,
-	  "Displacements"))
+    while(ajFileReadLine(inf,&line) && !ajStrPrefixC(line,"Displacements"))
     {
 	if(!ajStrLen(line))
 	    continue;
@@ -189,8 +191,10 @@ static void mwfilter_readdata(AjPFile inf, AjPDouble *rmarray,
 	ajDoublePut(rmarray,rmn++,n);
     }
 
-    /* If no displacements then return, otherwise read them in */
-    /* This copes with oxy-Met, oxy-Thr & Na                   */
+    /*
+    ** If no displacements then return, otherwise read them in
+    ** This copes with oxy-Met, oxy-Thr & Na
+    */
     if(!ajStrPrefixC(line,"Displacements"))
     {
 	ajStrDel(&line);
@@ -203,8 +207,10 @@ static void mwfilter_readdata(AjPFile inf, AjPDouble *rmarray,
 	if(!ajStrLen(line))
 	    continue;
 	c = *ajStrStr(line);
+
 	if(c=='#' || c=='\n')
 	    continue;
+
 	if(ajFmtScanS(line,"%*s%lf",&n) != 1)
 	    continue;
 
@@ -227,13 +233,14 @@ static void mwfilter_readdata(AjPFile inf, AjPDouble *rmarray,
 ** @param [w] exparray [AjPDouble*] Data array
 ** @@
 ******************************************************************************/
+
 static void mwfilter_readexp(AjPFile inf, AjPDouble *exparray)
 {
-    ajint   expn  = 0;
+    ajint expn  = 0;
 
-    AjPStr  line = NULL;
-    char    c;
-    double  n;
+    AjPStr line = NULL;
+    char c;
+    double n;
 
     line = ajStrNew();
 
@@ -242,8 +249,10 @@ static void mwfilter_readexp(AjPFile inf, AjPDouble *exparray)
 	if(!ajStrLen(line))
 	    continue;
 	c = *ajStrStr(line);
+
 	if(c=='#' || c=='\n')
 	    continue;
+
 	if(ajFmtScanS(line,"%lf",&n) != 1)
 	    continue;
 
@@ -271,6 +280,7 @@ static void mwfilter_readexp(AjPFile inf, AjPDouble *exparray)
 ** @param [w] dlist [AjPList] list to store deleted weights
 ** @@
 ******************************************************************************/
+
 static void mwfilter_noisedel(AjPDouble exparray, ajint expn,
 			      AjPDouble rmarray, ajint rmn,
 			      ajint tol, AjBool showdel, AjPList dlist)
@@ -282,7 +292,7 @@ static void mwfilter_noisedel(AjPDouble exparray, ajint expn,
     double n;
     double ppmval;
     double mwexp;
-    AjPMwh delwt=NULL;
+    AjPMwh delwt = NULL;
 
     for(i=0;i<expn;++i)
     {
@@ -327,7 +337,9 @@ static void mwfilter_arraytidy(AjPDouble exparray, ajint *expn)
     ajint i;
     ajint j;
     ajint n;
-    ajint limit = *expn;
+    ajint limit;
+
+    limit = *expn;
 
     double v=0.;
 
