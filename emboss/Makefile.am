@@ -5,7 +5,7 @@ EXTRA_DIST = emboss.default.template
 
 check_PROGRAMS = ajtest \
 complex corbatest \
-demofeatures demolist demosequence demostring demotable \
+demoalign demofeatures demolist demoreport demosequence demostring demotable \
 entrails histogramtest intconv \
 patmattest \
 psiblasts \
@@ -204,8 +204,10 @@ wordmatch_SOURCES = wordmatch.c
 wossname_SOURCES = wossname.c
 
 ajtest_SOURCES = ajtest.c
+demoalign_SOURCES = demoalign.c
 demofeatures_SOURCES = demofeatures.c
 demolist_SOURCES = demolist.c
+demoreport_SOURCES = demoreport.c
 demosequence_SOURCES = demosequence.c
 demostring_SOURCES = demostring.c
 demotable_SOURCES = demotable.c
