@@ -350,13 +350,13 @@ public class ShowSavedResults
     savedResFrame.setJMenuBar(resMenu);
     
     // set up the results list in the gui
-    
     Enumeration enum = epr.descriptionHash().keys();
     while (enum.hasMoreElements()) 
     {
       String image = (String)enum.nextElement().toString();
       datasets.addElement(image);
     }
+
     final JList st = new JList(datasets);
     st.addListSelectionListener(new ListSelectionListener()
     {
@@ -370,7 +370,6 @@ public class ShowSavedResults
         {
 	  if (mysettings.getDebug()) 
 	    System.out.println("ResListView: Empty selection");
-	  
 	} 
         else
         {
@@ -490,6 +489,7 @@ public class ShowSavedResults
     savedResFrame.getContentPane().add(aboutScroll,BorderLayout.CENTER);
     savedResFrame.getContentPane().add(resButtonStatus,BorderLayout.SOUTH);
     savedResFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    
     savedResFrame.pack();
     savedResFrame.setVisible(true);
 
@@ -498,6 +498,7 @@ public class ShowSavedResults
     int ind = freq.indexOf(" ");
     new ResultsUpdateTimer(Integer.parseInt(freq.substring(0,ind)),
                            datasets, savedResFrame);
+    statusField.setText("Window refresh rate " + freq);
 
   }
 
