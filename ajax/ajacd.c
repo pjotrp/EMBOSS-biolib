@@ -580,7 +580,8 @@ AcdOAttr acdAttrAlign[] = { {"name", VT_STR},
 			    {"aextension", VT_STR},
 			    {"type", VT_STR},
 			    {"taglist", VT_STR}, /* extra tags to report */
-			    {"mintags", VT_INT}, /* min number extra tags */
+			    {"minseqs", VT_INT}, /* min number extra tags */
+			    {"maxseqs", VT_INT}, /* min number extra tags */
 			    {"multiple", VT_BOOL},
 			    {NULL, VT_NULL} };
 
@@ -3113,11 +3114,13 @@ static void acdSetAlign (AcdPAcd thys)
     (void) acdAttrToStr (thys, "type", "", &val->Type);
     (void) acdGetValueAssoc (thys, "aformat", &val->Formatstr);
     (void) acdGetValueAssoc (thys, "aextension", &ext);
-    (void) acdQualToInt (thys, "awidth", 0, &val->Width, &defreply);
+    (void) acdAttrToInt (thys, "minseqs", 0, &val->Nmin);
+    (void) acdAttrToInt (thys, "maxseqs", 0, &val->Nmax);
+    (void) acdQualToInt (thys, "awidth", 50, &val->Width, &defreply);
     (void) acdAttrToBool (thys, "multiple", ajFalse, &val->Multi);
     (void) acdQualToBool (thys, "ausashow", ajFalse, &val->Showusa, &defreply);
 
-    (void) acdOutFilename (&outfname, name, val->Formatstr);
+    (void) acdOutFilename (&outfname, name, ext);
     (void) acdReplyInit (thys, ajStrStr(outfname), &defreply);
     acdPromptAlign(thys);
 
@@ -3134,7 +3137,7 @@ static void acdSetAlign (AcdPAcd thys)
 	ok = ajAlignOpen (val, reply);
 	if (!ok)
 	    acdBadVal (thys, required,
-		       "Unable to read sequence '%S'", reply);
+		       "Unable to open alignment file '%S'", reply);
     }
     if (!ok)
 	acdBadRetry (thys);
@@ -5552,7 +5555,7 @@ static void acdSetReport (AcdPAcd thys)
 	ok = ajReportOpen (val, reply);
 	if (!ok)
 	    acdBadVal (thys, required,
-		       "Unable to read sequence '%S'", reply);
+		       "Unable to open report file '%S'", reply);
     }
     if (!ok)
 	acdBadRetry (thys);
