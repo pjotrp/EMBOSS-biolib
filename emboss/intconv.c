@@ -23,8 +23,8 @@
 #include "emboss.h"
 #include <string.h>
 
-void modLineInt(AjPStr *line, ajint pos);
-void modLineLong(AjPStr *line, ajint pos);
+static void intconv_modLineInt(AjPStr *line, ajint pos);
+static void intconv_modLineLong(AjPStr *line, ajint pos);
 
 
 /* @prog intconv *******************************************************
@@ -67,14 +67,14 @@ int main(int argc, char **argv)
 	    if((q=strstr(p+pos,"[int]")))
 	    {
 		pos = q-p;
-		modLineInt(&line,pos+1);		
+		intconv_modLineInt(&line,pos+1);		
 		p = ajStrStr(line);
 		pos += 5;
 	    }
 	    else if((q=strstr(p+pos,"(int)")))
 	    {
 		pos = q-p;
-		modLineInt(&line,pos+1);		
+		intconv_modLineInt(&line,pos+1);		
 		p = ajStrStr(line);
 		pos += 5;
 	    }
@@ -84,7 +84,7 @@ int main(int argc, char **argv)
 		c = *(q+3);
 		if(!pos && (c==' ' || c=='\t' || c=='\n' || c=='\r' || c=='*'))
 		{
-		    modLineInt(&line,pos);
+		    intconv_modLineInt(&line,pos);
 		    p = ajStrStr(line);
 		}
 
@@ -94,7 +94,7 @@ int main(int argc, char **argv)
 		if(pos && (d==' ' || d=='\t' || d=='\r' || d=='(') &&
 		   (c==' ' || c=='\t' || c=='\n' || c=='\r' || c=='*'))
 		{
-		    modLineInt(&line,pos);
+		    intconv_modLineInt(&line,pos);
 		    p = ajStrStr(line);
 		}
 
@@ -112,14 +112,14 @@ int main(int argc, char **argv)
 	    if((q=strstr(p+pos,"[long]")))
 	    {
 		pos = q-p;
-		modLineLong(&line,pos+1);		
+		intconv_modLineLong(&line,pos+1);		
 		p = ajStrStr(line);
 		pos += 6;
 	    }
 	    else if((q=strstr(p+pos,"(long)")))
 	    {
 		pos = q-p;
-		modLineLong(&line,pos+1);		
+		intconv_modLineLong(&line,pos+1);		
 		p = ajStrStr(line);
 		pos += 6;
 	    }
@@ -129,7 +129,7 @@ int main(int argc, char **argv)
 		c = *(q+4);
 		if(!pos && (c==' ' || c=='\t' || c=='\n' || c=='\r' || c=='*'))
 		{
-		    modLineLong(&line,pos);
+		    intconv_modLineLong(&line,pos);
 		    p = ajStrStr(line);
 		}
 
@@ -139,7 +139,7 @@ int main(int argc, char **argv)
 		if(pos && (d==' ' || d=='\t' || d=='\r' || d=='(') &&
 		   (c==' ' || c=='\t' || c=='\n' || c=='\r' || c=='*'))
 		{
-		    modLineLong(&line,pos);
+		    intconv_modLineLong(&line,pos);
 		    p = ajStrStr(line);
 		}
 
@@ -156,7 +156,10 @@ int main(int argc, char **argv)
     return 0;
 }
 
-/* @func modLineInt ***********************************************************
+
+
+
+/* @funcstatic intconv_modLineInt ********************************************
 **
 ** Undocumented.
 **
@@ -166,7 +169,7 @@ int main(int argc, char **argv)
 ******************************************************************************/
 
 
-void modLineInt(AjPStr *line, ajint pos)
+static void intconv_modLineInt(AjPStr *line, ajint pos)
 {
     AjPStr t;
     char   *p;
@@ -190,7 +193,10 @@ void modLineInt(AjPStr *line, ajint pos)
     return;
 }
 
-/* @func modLineLong **********************************************************
+
+
+
+/* @funcstatic intconv_modLineLong *******************************************
 **
 ** Undocumented.
 **
@@ -200,7 +206,7 @@ void modLineInt(AjPStr *line, ajint pos)
 ******************************************************************************/
 
 
-void modLineLong(AjPStr *line, ajint pos)
+static void intconv_modLineLong(AjPStr *line, ajint pos)
 {
     AjPStr t;
     char   *p;
