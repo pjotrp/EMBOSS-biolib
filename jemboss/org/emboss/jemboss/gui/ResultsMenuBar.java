@@ -354,14 +354,15 @@ public class ResultsMenuBar extends JMenuBar
     for(int i =0; i<rtb.getTabCount(); i++)
     {
       JTextComponent jtc = getJTextComponentAt(rtb,i);
-      jtc.getDocument().addUndoableEditListener(new UndoableEditListener()
-      {
-        public void undoableEditHappened(UndoableEditEvent e)
+      if(jtc != null)
+        jtc.getDocument().addUndoableEditListener(new UndoableEditListener()
         {
-          undoManager.addEdit(e.getEdit());
-          updateMenu();
-        }
-      });
+          public void undoableEditHappened(UndoableEditEvent e)
+          {
+            undoManager.addEdit(e.getEdit());
+            updateMenu();
+          }
+        });
     }
 
     undo.addActionListener(new ActionListener()
