@@ -51,6 +51,7 @@ typedef struct SeqSListUsa
   ajint End;
   AjBool Rev;
   ajint Format;
+  AjBool Features;
   AjPStr Formatstr;
   AjPStr Usa;
 } SeqOListUsa, *SeqPListUsa;
@@ -582,7 +583,7 @@ AjBool ajSeqallNext (AjPSeqall seqall, AjPSeq* retseq)
 /* @func ajSeqinClear *********************************************************
 **
 ** Clears a Sequence input object back to "as new" condition, except
-** for the USA list which must be preserved.
+** for the USA list and the features setting which must be preserved.
 **
 ** @param [P] thys [AjPSeqin] Sequence input
 ** @return [void]
@@ -645,7 +646,8 @@ void ajSeqinClear (AjPSeqin thys)
 
     thys->Search = ajTrue;
     thys->Single = ajFalse;
-    thys->Features = ajFalse;
+    /* keep thys->Features */
+    /* thys->Features = ajFalse;*/
     thys->Count = 0;
     thys->Filecount = 0;
   
@@ -1035,8 +1037,8 @@ ajint ajSeqsetApp (AjPSeqset thys, AjPSeq seq)
 static ajint seqReadFmt (AjPSeq thys, AjPSeqin seqin, SeqPInFormat inform,
 		       ajint format)
 {
-    ajDebug ("++seqReadFmt format %d (%s) '%S'\n",
-		 format, inform[format].Name, seqin->Usa);
+    ajDebug ("++seqReadFmt format %d (%s) '%S' feat %B\n",
+		 format, inform[format].Name, seqin->Usa, seqin->Features);
 
     /* Calling funclist seqInFormatDef() */
     if (inform[format].Read (thys, seqin))
@@ -5265,10 +5267,12 @@ static AjBool seqUsaProcess (AjPSeq thys, AjPSeqin seqin)
 ******************************************************************************/
 
 static void seqUsaRestore (AjPSeqin seqin, SeqPListUsa node) {
+
   seqin->Begin = node->Begin;
   seqin->End = node->End;
   seqin->Rev = node->Rev;
   seqin->Format = node->Format;
+  seqin->Features = node->Features;
   ajStrAssS(&seqin->Formatstr, node->Formatstr);
 
   return;
@@ -5288,6 +5292,7 @@ static void seqUsaSave (SeqPListUsa node, AjPSeqin seqin) {
   node->End = seqin->End;
   node->Rev = seqin->Rev;
   node->Format = seqin->Format;
+  node->Features = seqin->Features;
   ajStrAssS(&node->Formatstr, seqin->Formatstr);
 
   return;
