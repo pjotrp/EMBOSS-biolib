@@ -6,6 +6,8 @@
 **
 **
 ** @author: Copyright (C) Damian Counsell
+** @version $Revision: 1.16 $
+** @modified $Date: 2004/05/05 14:17:41 $
 ** @@
 **
 ** This program is free software; you can redistribute it and/or
