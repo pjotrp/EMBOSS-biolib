@@ -38,6 +38,10 @@
 #include <sys/time.h>
 #include <strings.h>
 
+#ifndef TOMCAT_UID
+#define TOMCAT_UID 506	  /* Set this to be the UID of the tomcat process */
+#endif
+
 #define UIDLIMIT 100
 #define GIDLIMIT 100
 
@@ -59,7 +63,8 @@ static void jctl_tidy_strings(AjPStr *tstr, AjPStr *home, AjPStr *retlist,
 			      char *buf);
 static void jctl_fork_tidy(AjPStr *cl, AjPStr *prog, AjPStr *enviro,
 			   AjPStr *dir, AjPStr *outstd, AjPStr *errstd);
-
+static AjBool jctl_check_buffer(char *buf, int mlen);
+static AjBool jcntl_check_socket_owner(char *pname);
 
 
 #include <pwd.h>
@@ -139,6 +144,12 @@ int main(int argc, char **argv)
     sockname = ajAcdGetString("sock");
     pname = ajStrStr(sockname);
 
+    if(!jcntl_check_socket_owner(pname))
+    {
+	fprintf(stderr,"jctl Not socket owner error (jembossctl)\n");
+	exit(-1);
+    }
+
 
     home = ajStrNew();
     tstr = ajStrNew();
@@ -147,7 +158,7 @@ int main(int argc, char **argv)
     if(!(buf=(char *)malloc(JBUFFLEN+1)))
     {
 	jctl_tidy_strings(&tstr,&home,&retlist,buf);
-	fprintf(stderr,"jni buf malloc error (jembossctl)\n");
+	fprintf(stderr,"jctl buf malloc error (jembossctl)\n");
 	exit(-1);
     }
     
@@ -159,7 +170,7 @@ int main(int argc, char **argv)
     if((sockdes=socket(AF_UNIX,SOCK_STREAM,0)) == -1)
     {
 	jctl_tidy_strings(&tstr,&home,&retlist,buf);
-	fprintf(stderr,"jni socket error (jembossctl)\n");
+	fprintf(stderr,"jctl socket error (jembossctl)\n");
 	exit(-1);
     }
 
@@ -169,7 +180,7 @@ int main(int argc, char **argv)
     if(connect(sockdes,(struct sockaddr*)&there,nlen)==-1)
     {
 	jctl_tidy_strings(&tstr,&home,&retlist,buf);
-	fprintf(stderr,"jni connect error (jembossctl)\n");
+	fprintf(stderr,"jctl connect error (jembossctl)\n");
 	exit(-1);
     }
     
@@ -180,7 +191,7 @@ int main(int argc, char **argv)
     {
 	jctl_tidy_strings(&tstr,&home,&retlist,buf);
 	ajStrDel(&message);
-	fprintf(stderr,"jni send error (jembossctl)\n");
+	fprintf(stderr,"jctl send error (jembossctl)\n");
 	exit(-1);
     }
     
@@ -191,15 +202,25 @@ int main(int argc, char **argv)
     {
 	jctl_tidy_strings(&tstr,&home,&retlist,buf);
 	ajStrDel(&message);
-	fprintf(stderr,"jni recv error (jembossctl)\n");
+	fprintf(stderr,"jctl recv error (jembossctl)\n");
 	exit(-1);
     }
+
+
+    if(!jctl_check_buffer(buf,mlen))
+    {
+	jctl_tidy_strings(&tstr,&home,&retlist,buf);
+	ajStrDel(&message);
+	fprintf(stderr,"jctl bad buffer error (jembossctl)\n");
+	exit(-1);
+    }
+
 
     if(sscanf(buf,"%d",&command)!=1)
     {
 	jctl_tidy_strings(&tstr,&home,&retlist,buf);
 	ajStrDel(&message);
-	fprintf(stderr,"jni sscanf error (jembossctl)\n");
+	fprintf(stderr,"jctl sscanf error (jembossctl)\n");
 	exit(-1);
     }
 
@@ -217,7 +238,7 @@ int main(int argc, char **argv)
 	{
 	    jctl_tidy_strings(&tstr,&home,&retlist,buf);
 	    ajStrDel(&message);
-	    fprintf(stderr,"jni command send error (auth)\n");
+	    fprintf(stderr,"jctl command send error (auth)\n");
 	    exit(-1);
 	}
 	fprintf(stdout,"%s",ajStrStr(home));
@@ -1070,19 +1091,19 @@ static AjBool jctl_do_deletedir(char *buf, int uid, int gid)
 	++p;
     ++p;
 
-    /* retrieve user file */
+    /* retrieve user directory */
     ajStrAssC(&dir,p);
 
 
     if(setgid(gid)==-1)
     {
-	fprintf(stderr,"setgid error (delete file)\n");
+	fprintf(stderr,"setgid error (delete directory)\n");
 	ajStrDel(&dir);
 	return ajFalse;
     }
     if(setuid(uid)==-1)
     {
-	fprintf(stderr,"setuid error (delete file)\n");
+	fprintf(stderr,"setuid error (delete directory)\n");
 	ajStrDel(&dir);
 	return ajFalse;
     }
@@ -1222,7 +1243,7 @@ static AjBool jctl_do_listdirs(char *buf, int uid, int gid,AjPStr *retlist)
 	++p;
     ++p;
 
-    /* retrieve directory file */
+    /* retrieve directory */
     ajStrAssC(&dir,p);
 
 
@@ -1450,7 +1471,7 @@ static AjBool jctl_do_putfile(char *buf, int uid, int gid, int sockdes)
 
     if(send(sockdes,ajStrStr(message),2,0)==-1)
     {
-	fprintf(stderr,"jni OK1 error (jctl_do_putfile)\n");
+	fprintf(stderr,"jctl OK1 error (jctl_do_putfile)\n");
 	ajStrDel(&file);
 	ajStrDel(&message);
 	return ajFalse;
@@ -1460,7 +1481,7 @@ static AjBool jctl_do_putfile(char *buf, int uid, int gid, int sockdes)
 
     if(recv(sockdes,buf,JBUFFLEN,0) < 0)
     {
-	fprintf(stderr,"jni recv error (jctl_do_putfile)\n");
+	fprintf(stderr,"jctl recv error (jctl_do_putfile)\n");
 	ajStrDel(&file);
 	ajStrDel(&message);
 	return ajFalse;
@@ -1468,7 +1489,7 @@ static AjBool jctl_do_putfile(char *buf, int uid, int gid, int sockdes)
 
     if(sscanf(buf,"%d",&size)!=1)
     {
-	fprintf(stderr,"jni file size read  error (jctl_do_putfile)\n");
+	fprintf(stderr,"jctl file size read  error (jctl_do_putfile)\n");
 	ajStrDel(&file);
 	ajStrDel(&message);
 	return ajFalse;
@@ -1477,7 +1498,7 @@ static AjBool jctl_do_putfile(char *buf, int uid, int gid, int sockdes)
 
     if(send(sockdes,ajStrStr(message),2,0)==-1)
     {
-	fprintf(stderr,"jni OK2 error (jctl_do_putfile)\n");
+	fprintf(stderr,"jctl OK2 error (jctl_do_putfile)\n");
 	ajStrDel(&file);
 	ajStrDel(&message);
 	return ajFalse;
@@ -1489,7 +1510,7 @@ static AjBool jctl_do_putfile(char *buf, int uid, int gid, int sockdes)
     {
 	if(!(fbuf=(unsigned char *)malloc(size)))
 	{
-	    fprintf(stderr,"jni malloc error (jctl_do_putfile)\n");
+	    fprintf(stderr,"jctl malloc error (jctl_do_putfile)\n");
 	    ajStrDel(&message);
 	    ajStrDel(&file);
 	    return ajFalse;
@@ -1503,7 +1524,7 @@ static AjBool jctl_do_putfile(char *buf, int uid, int gid, int sockdes)
 	now = tv.tv_sec;
 	if(now-then>120)
 	{
-	    fprintf(stderr,"jni timeout error (jctl_do_putfile)\n");
+	    fprintf(stderr,"jctl timeout error (jctl_do_putfile)\n");
 	    ajStrDel(&file);
 	    ajStrDel(&message);
 	    return ajFalse;
@@ -1513,7 +1534,7 @@ static AjBool jctl_do_putfile(char *buf, int uid, int gid, int sockdes)
 
 	if((mlen=recv(sockdes,buf,JBUFFLEN,0))<0)
 	{
-	    fprintf(stderr,"jni recv error (jctl_do_putfile)\n");
+	    fprintf(stderr,"jctl recv error (jctl_do_putfile)\n");
 	    ajStrDel(&file);
 	    ajStrDel(&message);
 	    return ajFalse;
@@ -1547,7 +1568,7 @@ static AjBool jctl_do_putfile(char *buf, int uid, int gid, int sockdes)
 
     if((fd=open(ajStrStr(file),O_CREAT|O_WRONLY|O_TRUNC,0600))<0)
     {
-	fprintf(stderr,"jni open error (jctl_do_putfile)\n");
+	fprintf(stderr,"jctl open error (jctl_do_putfile)\n");
 	ajStrDel(&file);
 	ajStrDel(&message);
 	return ajFalse;
@@ -1555,7 +1576,7 @@ static AjBool jctl_do_putfile(char *buf, int uid, int gid, int sockdes)
 
     if(write(fd,(void *)fbuf,size)<0)
     {
-	fprintf(stderr,"jni write error %d %d(jctl_do_putfile)\n",size,fd);
+	fprintf(stderr,"jctl write error %d %d(jctl_do_putfile)\n",size,fd);
 	ajStrDel(&file);
 	ajStrDel(&message);
 	return ajFalse;
@@ -1563,7 +1584,7 @@ static AjBool jctl_do_putfile(char *buf, int uid, int gid, int sockdes)
 
     if(close(fd)<0)
     {
-	fprintf(stderr,"jni close error (jctl_do_putfile)\n");
+	fprintf(stderr,"jctl close error (jctl_do_putfile)\n");
 	ajStrDel(&file);
 	ajStrDel(&message);
 	return ajFalse;
@@ -1605,7 +1626,7 @@ static void jctl_tidy_strings(AjPStr *tstr, AjPStr *home, AjPStr *retlist,
 
 
 
-/* @funcstatic jctl_jctl_fork_tidy *******************************************
+/* @funcstatic jctl_fork_tidy ************************************************
 **
 ** Deallocate fork memory
 **
@@ -1633,3 +1654,108 @@ static void jctl_fork_tidy(AjPStr *cl, AjPStr *prog, AjPStr *enviro,
     return;
 }
 
+
+/* @funcstatic jctl_check_buffer *******************************************
+**
+** Sanity check on socket commands
+**
+** @param [r] buf [char*] socket buffer
+** @param [r] mlen [ajint] buffer length
+**
+** @return [AjBool] true if sane
+******************************************************************************/
+
+static AjBool jctl_check_buffer(char *buf, int mlen)
+{
+    char *p;
+    int str1len;
+    int command;
+    int count;
+    
+    if(mlen==JBUFFLEN)
+	return ajFalse;
+    buf[mlen]='\0';
+    
+    /* get the first string and check for reasonable length */
+    p = buf;
+    while(*p)
+	++p;
+
+    /* Command, username & password shouldn't be >50 characters */
+    str1len = p-buf+1;
+    if(str1len > 50)
+	return ajFalse;
+
+    if(sscanf(buf,"%d",&command)!=1)
+	return ajFalse;
+
+    if(command<COMM_AUTH || command>PUT_FILE)
+	return ajFalse;
+
+    if(command==COMM_AUTH)
+	return ajTrue;
+    
+    count = str1len;
+
+    while(*p && count<JBUFFLEN)
+    {
+	++p;
+	++count;
+    }
+    if(count==JBUFFLEN)
+	return ajFalse;
+
+    /* All commands except the fork have two strings */
+    if(command != EMBOSS_FORK)
+	return ajTrue;
+
+    /* Check for valid third string */
+    ++p;
+    ++count;
+    while(*p && count<JBUFFLEN)
+    {
+	++p;
+	++count;
+    }
+    if(count==JBUFFLEN)
+	return ajFalse;
+
+    /* Check for valid fourth string */
+    ++p;
+    ++count;
+    while(*p && count<JBUFFLEN)
+    {
+	++p;
+	++count;
+    }
+    if(count==JBUFFLEN)
+	return ajFalse;
+
+    return ajTrue;
+}
+
+
+/* @funcstatic jctl_check_socket_owner ***************************************
+**
+** Check socket ownership and if it is a socket
+**
+** @param [r] pname [char*] socket name
+**
+** @return [AjBool] true if sane
+******************************************************************************/
+
+static AjBool jcntl_check_socket_owner(char *pname)
+{
+    struct stat sbuf;
+    
+
+    if(stat(pname,&sbuf)==-1)
+	return ajFalse;
+    if(sbuf.st_uid != TOMCAT_UID)
+	return ajFalse;
+
+    if(!(sbuf.st_mode & S_IFSOCK))
+	return ajFalse;
+    
+    return ajTrue;
+}
