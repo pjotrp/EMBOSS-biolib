@@ -79,7 +79,7 @@ struct buf {
 ******************************************************************************/
 
 static void cvt_s(ajint code, VALIST ap,
-		  ajint put(ajint c, void* cl), void* cl,
+		  int put(int c, void* cl), void* cl,
 		  ajuint* flags, ajint width, ajint precision) {
 
   char *str = va_arg(VA_V(ap), char *);
@@ -110,22 +110,22 @@ static void cvt_s(ajint code, VALIST ap,
 ******************************************************************************/
 
 static void cvt_d(ajint code, VALIST ap,
-		  ajint put(ajint c, void* cl), void* cl,
+		  int put(int c, void* cl), void* cl,
 		  ajuint* flags, ajint width, ajint precision) {
 
-  ajlong val;
-  ajulong m;
+  long val;
+  unsigned long m;
   char buf[43];
   char *p = buf + sizeof buf;
 
   if (flags['l']) {
-    val = (ajlong) va_arg(VA_V(ap), long);
+    val = (long) va_arg(VA_V(ap), long);
   }
   else if (flags['h']) {
-    val = (ajlong) va_arg(VA_V(ap), int); /* ANSI C converts short to ajint */
+    val = (long) va_arg(VA_V(ap), int); /* ANSI C converts short to ajint */
   }
   else {
-    val = (ajlong) va_arg(VA_V(ap), int);
+    val = (long) va_arg(VA_V(ap), int);
   }
 
   if (val == INT_MIN)
@@ -164,20 +164,20 @@ static void cvt_d(ajint code, VALIST ap,
 ******************************************************************************/
 
 static void cvt_u(ajint code, VALIST ap,
-		  ajint put(ajint c, void* cl), void* cl,
+		  int put(int c, void* cl), void* cl,
 		  ajuint* flags, ajint width, ajint precision) {
 
-  ajulong m;
+  unsigned long m;
 
   char buf[43];
   char *p = buf + sizeof buf;
 
   if (flags['l'])
-    m  = va_arg(VA_V(ap), ajulong);
+    m  = va_arg(VA_V(ap), unsigned long);
   else if (flags['h'])
-    m  = va_arg(VA_V(ap), ajuint); /* ANSI C converts short to ajint */
+    m  = va_arg(VA_V(ap), unsigned int); /* ANSI C converts short to ajint */
   else
-    m  = va_arg(VA_V(ap), ajuint);
+    m  = va_arg(VA_V(ap), unsigned int);
 
   do
     *--p = ajSysItoC(m%10 + '0');
@@ -205,19 +205,19 @@ static void cvt_u(ajint code, VALIST ap,
 ******************************************************************************/
 
 static void cvt_o(ajint code, VALIST ap,
-		  ajint put(ajint c, void* cl), void* cl,
+		  int put(int c, void* cl), void* cl,
 		  ajuint* flags, ajint width, ajint precision) {
 
-  ajulong m;
+  unsigned long m;
   char buf[43];
   char *p = buf + sizeof buf;
 
   if (flags['l'])
-    m = va_arg(VA_V(ap), ajulong);
+    m = va_arg(VA_V(ap), unsigned long);
   if (flags['h'])
-    m = va_arg(VA_V(ap), ajuint); /* ANSI C converts short to ajint */
+    m = va_arg(VA_V(ap), unsigned int); /* ANSI C converts short to ajint */
   else
-    m = va_arg(VA_V(ap), ajuint);
+    m = va_arg(VA_V(ap), unsigned int);
 
   do
     *--p = ajSysItoC((m&0x7) + '0');
@@ -248,19 +248,19 @@ static void cvt_o(ajint code, VALIST ap,
 ******************************************************************************/
 
 static void cvt_x(ajint code, VALIST ap,
-		  ajint put(ajint c, void* cl), void* cl,
+		  int put(int c, void* cl), void* cl,
 		  ajuint* flags, ajint width, ajint precision) {
 
-  ajulong m;
+  unsigned long m;
   char buf[43];
   char *p = buf + sizeof buf;
 
   if (flags['l'])
-    m = va_arg(VA_V(ap), ajulong);
+    m = va_arg(VA_V(ap), unsigned long);
   else if (flags['h'])
-    m = va_arg(VA_V(ap), ajuint); /* ANSI C converts short to ajint */
+    m = va_arg(VA_V(ap), unsigned int); /* ANSI C converts short to int */
   else
-    m = va_arg(VA_V(ap), ajuint);
+    m = va_arg(VA_V(ap), unsigned int);
 
   if (code == 'X') {
     do
@@ -303,7 +303,7 @@ static void cvt_x(ajint code, VALIST ap,
 ******************************************************************************/
 
 static void cvt_p(ajint code, VALIST ap,
-	ajint put(ajint c, void* cl), void* cl,
+	int put(int c, void* cl), void* cl,
 	ajuint* flags, ajint width, ajint precision) {
 	unsigned long m = (unsigned long)va_arg(VA_V(ap), void*);
 	char buf[43];
@@ -336,7 +336,7 @@ static void cvt_p(ajint code, VALIST ap,
 ******************************************************************************/
 
 static void cvt_c(ajint code, VALIST ap,
-	ajint put(ajint c, void* cl), void* cl,
+	int put(int c, void* cl), void* cl,
 	ajuint* flags, ajint width, ajint precision) {
 	if (width == INT_MIN)
 		width = 0;
@@ -374,7 +374,7 @@ static void cvt_c(ajint code, VALIST ap,
 ******************************************************************************/
 
 static void cvt_f(ajint code, VALIST ap,
-		  ajint put(ajint c, void* cl), void* cl,
+		  int put(int c, void* cl), void* cl,
 		  ajuint* flags, ajint width, ajint precision) {
   char buf[DBL_MAX_10_EXP+1+1+99+1];
 
@@ -422,7 +422,7 @@ static void cvt_f(ajint code, VALIST ap,
 ******************************************************************************/
 
 static void cvt_S(ajint code, VALIST ap,
-	ajint put(ajint c, void* cl), void* cl,
+	int put(int c, void* cl), void* cl,
 	ajuint* flags, ajint width, ajint precision) {
 	AjPStr str1 = va_arg(VA_V(ap), AjPStr);
 	if (str1) {
@@ -451,7 +451,7 @@ static void cvt_S(ajint code, VALIST ap,
 ******************************************************************************/
 
 static void cvt_b(ajint code, VALIST ap,
-	ajint put(ajint c, void* cl), void* cl,
+	int put(int c, void* cl), void* cl,
 	ajuint* flags, ajint width, ajint precision) {
 	AjBool bl = va_arg(VA_V(ap), AjBool);
 	if (bl)
@@ -479,7 +479,7 @@ static void cvt_b(ajint code, VALIST ap,
 ******************************************************************************/
 
 static void cvt_B(ajint code, VALIST ap,
-	ajint put(ajint c, void* cl), void* cl,
+	int put(int c, void* cl), void* cl,
 	ajuint* flags, ajint width, ajint precision) {
 	AjBool bl = va_arg(VA_V(ap), AjBool);
 	if (bl)
@@ -507,7 +507,7 @@ static void cvt_B(ajint code, VALIST ap,
 ******************************************************************************/
 
 static void cvt_D(ajint code, VALIST ap,
-	ajint put(ajint c, void* cl), void* cl,
+	int put(int c, void* cl), void* cl,
 	ajuint* flags, ajint width, ajint precision) {
         AJTIME *time =  va_arg(VA_V(ap), AJTIME *);
 	struct tm *mytime = time->time;
@@ -547,7 +547,7 @@ static void cvt_D(ajint code, VALIST ap,
 ******************************************************************************/
 
 static void cvt_F(ajint code, VALIST ap,
-	ajint put(ajint c, void* cl), void* cl,
+	int put(int c, void* cl), void* cl,
 	ajuint* flags, ajint width, ajint precision) {
 	AjPFile fil = va_arg(VA_V(ap), AjPFile);
 	if (fil && fil->Name) {
@@ -606,12 +606,12 @@ static Fmt_T cvt[256] = {
 
 static char *Fmt_flags = "-+ 0#"; 
 
-static ajint outc(ajint c, void* cl) {
+static ajint outc(int c, void* cl) {
 	FILE *f = cl;
 	return putc(c, f);
 }
 
-static ajint s_ajinsert(ajint c, void* cl) {
+static ajint s_ajinsert(int c, void* cl) {
 	struct buf *p = cl;
 	if (p->bp >= p->buf + p->size)
 		AJRAISE(Fmt_Overflow);
@@ -651,7 +651,7 @@ static ajint s_ajappend(ajint c, void* cl) {
 **************************************************************************/
 
 void ajFmtPuts (const char* str, ajint len,
-	       ajint put(ajint c, void* cl), void* cl,
+	       int put(int c, void* cl), void* cl,
 	       ajuint* flags, ajint width, ajint precision) {
 
   (void) assert(str);
@@ -1142,7 +1142,7 @@ char* ajFmtVString(const char* fmt, va_list ap) {
 ** @@
 ******************************************************************************/
 
-void ajFmtVfmt (ajint put(ajint c, void* cl), void* cl,
+void ajFmtVfmt (int put(int c, void* cl), void* cl,
 	       const char* fmt, va_list ap) {
 
   (void) assert(put);
@@ -1159,7 +1159,7 @@ void ajFmtVfmt (ajint put(ajint c, void* cl), void* cl,
       if (Fmt_flags) {		/* look for any conversion flags */
 	unsigned char c = *fmt;
 	for ( ; (ajint)c && strchr(Fmt_flags, c); c = *++fmt) {
-	  (void) assert(flags[(ajint)c] < 255);
+	  (void) assert(flags[(int)c] < 255);
 	  flags[(ajint)c]++;
 	}
       }
@@ -1194,12 +1194,12 @@ void ajFmtVfmt (ajint put(ajint c, void* cl), void* cl,
       if (*fmt == 'l' || *fmt == 'L'|| *fmt == 'h') { /* size modifiers */
 	(void) assert(flags[(ajint)*fmt] < 255); /* store as flags - */
 	                                          /* values do not clash */
-	flags[(ajint)*fmt]++;
+	flags[(int)*fmt]++;
 	fmt++;
       }
       c = *fmt++;		/* finally, next character is the code */
-      (void) assert(cvt[(ajint)c]);		/* we need a defined routine */
-      (*cvt[(ajint)c])(c, VA_P(ap), put, cl, (ajuint *)flags, width, precision);
+      (void) assert(cvt[(int)c]);		/* we need a defined routine */
+      (*cvt[(int)c])(c, VA_P(ap), put, cl, (ajuint *)flags, width, precision);
     }
   }
 }
@@ -1241,7 +1241,7 @@ Fmt_T ajFmtRegister(ajint code, Fmt_T newcvt) {
 *****************************************************************************/
 
 void ajFmtPutd(const char* str, ajint len,
-	      ajint put(ajint c, void* cl), void* cl,
+	      int put(int c, void* cl), void* cl,
 	      ajuint* flags, ajint width, ajint precision) {
   ajint sign;
   (void) assert(str);
