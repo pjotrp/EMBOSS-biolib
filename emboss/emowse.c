@@ -123,7 +123,8 @@ int main(int argc, char **argv)
     tol      = ajAcdGetFloat("tolerance");
     partials = ajAcdGetFloat("partials");
     outf     = ajAcdGetOutfile("outfile");
-
+    datafn   = ajAcdGetString("aadata");
+    
 
    ajFileDataNew(datafn, &mfptr);
     if(!mfptr)
