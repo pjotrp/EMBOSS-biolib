@@ -804,8 +804,8 @@ JEMBOSS=$EMBOSS_INSTALL/share/EMBOSS/jemboss
 #
 PATH=$PATH:$EMBOSS_INSTALL/bin
 export PATH
-$EMBOSS_INSTALL/bin/wossname -colon -gui -outf $JEMBOSS/resources/wossname.out -auto
-$JAVA_HOME/bin/jar cvf $JEMBOSS/resources/wossname.jar $JEMBOSS/resources/wossname.out
+$EMBOSS_INSTALL/bin/wossname -colon -gui -outf wossname.out -auto
+$JAVA_HOME/bin/jar cvf $JEMBOSS/resources/wossname.jar wossname.out
 
 #
 #
