@@ -1,4 +1,6 @@
 Version 2.9.0
+	tfm -html now gives full path to image files.
+
 	Remove need for the definition of PLPLOT_LIB.
 
 	Add configuration for cygwin dlls.
