@@ -26,6 +26,7 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import org.emboss.jemboss.gui.sequenceChooser.*;
+import org.emboss.jemboss.gui.AdvancedOptions;
 
 import java.awt.event.*;
 import java.io.*;
@@ -48,7 +49,7 @@ public class FileSaving
 
     SecurityManager sm = System.getSecurityManager();
     System.setSecurityManager(null);
-    JFileChooser fc = new JFileChooser();
+    JFileChooser fc = new JFileChooser(AdvancedOptions.cwd);
     System.setSecurityManager(sm);
 
     fc.addChoosableFileFilter(new SequenceFilter());
