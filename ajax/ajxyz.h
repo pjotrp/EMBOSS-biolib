@@ -42,6 +42,8 @@ typedef struct AjSAtom
   float      X;          /*X coordinate*/
   float      Y;          /*Y coordinate*/
   float      Z;          /*Z coordinate*/
+  float      O;          /*Occupancy */
+  float      B;          /*B value thermal factor*/
 } AjSAtom, *AjPAtom;
 
 
@@ -146,7 +148,8 @@ AjBool   ajScopRead(AjPFile inf, AjPStr entry, AjPScop *thys);
 AjBool   ajScopReadC(AjPFile inf, char *entry, AjPScop *thys);
 void     ajScopWrite(AjPFile outf, AjPScop thys);
 
-AjBool   ajCpdbRead(AjPStr name, AjPPdb *thys);
+/* AjBool   ajCpdbRead(AjPStr name, AjPPdb *thys); */
+AjBool   ajCpdbRead(AjPFile inf, AjPPdb *thys);
 AjBool   ajCpdbWriteAll(AjPFile out, AjPPdb thys);
 AjBool   ajCpdbWriteDomain(AjPFile outf, AjPPdb pdb, AjPScop scop);
 
@@ -159,6 +162,7 @@ AjBool   ajPrintPdbAtomChain(AjPFile outf, AjPPdb pdb, int mod, int chn);
 AjBool   ajPrintPdbAtomDomain(AjPFile outf, AjPPdb pdb, AjPScop scop, int mod);
 AjBool   ajPrintPdbText(AjPFile outf, AjPStr str, char *prefix, int len, char *delim);
 AjBool   ajPrintPdbHeader(AjPFile outf, AjPPdb pdb);
+AjBool   ajPrintPdbHeaderScop(AjPFile outf, AjPScop scop);
 AjBool   ajPrintPdbTitle(AjPFile outf, AjPPdb pdb);
 AjBool   ajPrintPdbCompnd(AjPFile outf, AjPPdb pdb);
 AjBool   ajPrintPdbSource(AjPFile outf, AjPPdb pdb);
@@ -166,6 +170,8 @@ AjBool   ajPrintPdbEmptyRemark(AjPFile outf, AjPPdb pdb);
 AjBool   ajPrintPdbResolution(AjPFile outf, AjPPdb pdb);
 
 AjBool   ajPdbChain(char id, AjPPdb pdb, int *chn);
+void     ajScopToPdb(AjPStr scop, AjPStr *pdb);
+
 
 
 #endif

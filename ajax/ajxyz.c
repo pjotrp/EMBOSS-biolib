@@ -330,17 +330,17 @@ void ajScopDel(AjPScop *thys)
 ** Reads a Cpdb database entry and returns a filled Pdb object.
 ** Needs modifying to return ajFalse in case of bad format etc
 **
-** @param [r] name [AjPStr] Entry name
+** @param [r] inf  [AjPFile] Pointer to cpdb file
 ** @param [w] thys [AjPPdb*] Pdb object pointer
 **
 ** @return [AjBool] True on success
 ** @@
 ******************************************************************************/
 
-AjBool ajCpdbRead(AjPStr name, AjPPdb *thys)
+AjBool ajCpdbRead(AjPFile inf, AjPPdb *thys)
 {
-    AjPFile   inf=NULL;
-    AjPStr    fn=NULL;
+/*    AjPFile   inf=NULL;
+    AjPStr    fn=NULL;  */
     AjPStr    line=NULL;
     AjPStr    token=NULL;
     AjPStr    idstr=NULL;
@@ -362,7 +362,7 @@ AjBool ajCpdbRead(AjPStr name, AjPPdb *thys)
     int   done_first_co_line=0;
     
 
-
+    /*
     fn = ajStrNewC(ajStrStr(name));
     ajFileDataNew(fn,&inf);
     if(!inf)
@@ -376,7 +376,7 @@ AjBool ajCpdbRead(AjPStr name, AjPPdb *thys)
 	    return ajFalse;
 	}
     }
-    
+    */
  
 
     line  = ajStrNew();
@@ -559,15 +559,16 @@ AjBool ajCpdbRead(AjPStr name, AjPPdb *thys)
 	    ajStrToken(&token,&handle,NULL);
 	    ajStrToFloat(token,&atom->Z);
 
+	    ajStrToken(&token,&handle,NULL);
+	    ajStrToFloat(token,&atom->O);
+
+	    ajStrToken(&token,&handle,NULL);
+	    ajStrToFloat(token,&atom->B);
+
 	    ajListPushApp((*thys)->Chains[chn-1]->Atoms,(void *)atom);
 	}
     }
     
-    /*Push an empty node to the end of the linked list ... might change with new linked list code */
-    AJNEW0(atom);
-    ajListPushApp((*thys)->Chains[chn-1]->Atoms,(void *)atom);
-    
-
     ajStrTokenClear(&handle);
 
     ajStrDel(&line);
@@ -577,7 +578,7 @@ AjBool ajCpdbRead(AjPStr name, AjPPdb *thys)
     ajStrDel(&osstr);
     ajStrDel(&xstr);
 
-    ajFileClose(&inf);
+/*    ajFileClose(&inf); */
 
     return ajTrue;
 }
@@ -652,9 +653,9 @@ AjBool ajCpdbWriteDomain(AjPFile outf, AjPPdb pdb, AjPScop scop)
 	z<scop->N;
 	z++,found_start=ajFalse, found_end=ajFalse, 
 	nostart=ajFalse, noend=ajFalse, last_rn=0)
-    {
+    {	
 	if(!ajPdbChain(scop->Chain[z], pdb, &chn))
-	    {
+	{
 		ajStrDel(&seq);
 		ajStrDel(&tmpseq);
 		ajWarn("Chain incompatibility error in ajCpdbWriteDomain");	
@@ -674,7 +675,7 @@ AjBool ajCpdbWriteDomain(AjPFile outf, AjPPdb pdb, AjPScop scop)
 
 	/*If start of domain is unspecified 
 	  then assign start to first residue in chain*/
-	if(!ajStrCmpC(scop->Start[z], "0"))
+	if(!ajStrCmpC(scop->Start[z], "."))
 	{
 	    nostart = ajTrue;
 
@@ -690,7 +691,7 @@ AjBool ajCpdbWriteDomain(AjPFile outf, AjPPdb pdb, AjPScop scop)
 
 	/*If end of domain is unspecified 
 	  then assign end to last residue in chain*/
-	if(!ajStrCmpC(scop->End[z], "0"))
+	if(!ajStrCmpC(scop->End[z], "."))
 	{
 	    noend = ajTrue;
 	    
@@ -825,12 +826,16 @@ AjBool ajCpdbWriteDomain(AjPFile outf, AjPPdb pdb, AjPScop scop)
 	    rn_mod += finalrn;
 
 	/*Check whether start and end of domain are specified*/
-	if(!ajStrCmpC(scop->Start[z], "0"))
+	if(!ajStrCmpC(scop->Start[z], "."))
+	{
 	    nostart = ajTrue;
+	    /*Increment res. counter for the start of this chain*/
+	    rn_mod -= atm->Idx-1;
+	}
 	else
 	    nostart=ajFalse;
 	
-	if(!ajStrCmpC(scop->End[z], "0"))
+	if(!ajStrCmpC(scop->End[z], "."))
 	    noend = ajTrue;
 	else 
 	    noend=ajFalse;
@@ -870,8 +875,8 @@ AjBool ajCpdbWriteDomain(AjPFile outf, AjPPdb pdb, AjPScop scop)
 	    else if(atm->Idx != finalrn && !noend)
 		break;
 	    
-	    ajFmtPrintF(outf, "%-6s%-6d%-6d%-6c%-6d%-6S%-5c%-6S%-6S"
-			"%-9.3f%-9.3f%-9.3f\n", 
+	    ajFmtPrintF(outf, "%-5s%-5d%-5d%-5c%-6d%-6S%-2c%6S    %-4S"
+			"%8.3f%9.3f%9.3f%9.2f%9.2f\n", 
 			"CO", 
 			atm->Mod, 
 			1,	/*chn number is always given as 1*/
@@ -883,7 +888,9 @@ AjBool ajCpdbWriteDomain(AjPFile outf, AjPPdb pdb, AjPScop scop)
 			atm->Atm, 
 			atm->X, 
 			atm->Y, 
-			atm->Z);
+			atm->Z, 
+			atm->O, 
+			atm->B);
 
 	    atm2=atm;
 	}
@@ -970,8 +977,8 @@ AjBool ajCpdbWriteAll(AjPFile outf, AjPPdb thys)
 			continue;
 		else	
 		{
-		    ajFmtPrintF(outf, "%-6s%-6d%-6d%-6c%-6d%-6S%-5c%-6S%-6S"
-				"%-9.3f%-9.3f%-9.3f\n", 
+		    ajFmtPrintF(outf, "%-5s%-5d%-5d%-5c%-6d%-6S%-2c%6S    %-4S"
+				"%8.3f%9.3f%9.3f%9.2f%9.2f\n", 
 				"CO", 
 				tmp->Mod, 
 				tmp->Chn, 
@@ -983,7 +990,9 @@ AjBool ajCpdbWriteAll(AjPFile outf, AjPPdb thys)
 				tmp->Atm, 
 				tmp->X, 
 				tmp->Y, 
-				tmp->Z);
+				tmp->Z,
+				tmp->O,
+				tmp->B);
 		}
 	    }
 	    ajListIterFree(iter);			
@@ -1149,7 +1158,6 @@ AjBool  ajPrintPdbText(AjPFile outf, AjPStr str, char *prefix, int len,
 **
 ** Writes the ATOM records for a domain to an output file in pdb format using 
 ** data from a Pdb structure and a Scop structure
-** NOTE - never returns AjFalse - implement error catching!
 **
 ** @param [w] outf [AjPFile] Output file stream
 ** @param [r] pdb  [AjPPdb] Pdb object
@@ -1167,7 +1175,7 @@ AjBool ajPrintPdbAtomDomain(AjPFile outf, AjPPdb pdb, AjPScop scop, int mod)
     AjIList  iter=NULL;
     AjPAtom  atm=NULL;
     AjPAtom  atm2=NULL;
-    int      acnt;
+    int      acnt=1;
     AjBool   found_start=ajFalse;
     AjBool   found_end=ajFalse;
     AjBool   nostart=ajFalse;
@@ -1201,12 +1209,16 @@ AjBool ajPrintPdbAtomDomain(AjPFile outf, AjPPdb pdb, AjPScop scop, int mod)
 	else	 
 	    rn_mod += finalrn;
 
-	if(!ajStrCmpC(scop->Start[z], "0"))
+	if(!ajStrCmpC(scop->Start[z], "."))
+	{
 	    nostart = ajTrue;
+	    /*Increment res. counter for the start of this chain*/
+	    rn_mod -= atm->Idx-1;
+	}
 	else 
 	    nostart=ajFalse;
-		    
-	if(!ajStrCmpC(scop->End[z], "0"))
+			    
+	if(!ajStrCmpC(scop->End[z], "."))
 	    noend = ajTrue;
 	else
 	    noend=ajFalse;
@@ -1218,21 +1230,21 @@ AjBool ajPrintPdbAtomDomain(AjPFile outf, AjPPdb pdb, AjPScop scop, int mod)
 
 
 	  
-	for(acnt=1; atm; atm=(AjPAtom)ajListIterNext(iter)) 	
+	for(; atm; atm=(AjPAtom)ajListIterNext(iter)) 	
 	{
 	    if(atm->Mod!=mod || atm->Type!='P')
 		break;
 
-		if(!found_start && !nostart)
+	    if(!found_start && !nostart)
+	    {
+		if(!ajStrCmpCase(atm->Pdb, scop->Start[z]))
 		{
-		    if(!ajStrCmpCase(atm->Pdb, scop->Start[z]))
-		    {
-			rn_mod -= atm->Idx-1;
-			found_start=ajTrue;	
-		    }
+		    rn_mod -= atm->Idx-1;
+		    found_start=ajTrue;	
+		}
 		else	
 		    continue;
-		}	
+	    }	
 	    
 	    if(!found_end && !noend)
 	    {
@@ -1256,8 +1268,8 @@ AjBool ajPrintPdbAtomDomain(AjPFile outf, AjPPdb pdb, AjPScop scop, int mod)
 			atm->X, 
 			atm->Y, 
 			atm->Z, 
-			0.0, 
-			0.0, 
+			atm->O, 
+			atm->B, 
 			" ", 
 			*ajStrStr(atm->Atm));
 
@@ -1283,6 +1295,8 @@ AjBool ajPrintPdbAtomDomain(AjPFile outf, AjPPdb pdb, AjPScop scop, int mod)
 	
 	ajListIterFree(iter);	
 
+    }
+
 	ajFmtPrintF(outf, "%-6s%5d      %-4S%c%4d%54s\n", 
 		    "TER", 
 		    acnt++, 
@@ -1290,7 +1304,7 @@ AjBool ajPrintPdbAtomDomain(AjPFile outf, AjPPdb pdb, AjPScop scop, int mod)
 		    id,	
 		    atm2->Idx+rn_mod, 
 		    " ");
-    }
+    
 
     return ajTrue;
 }
@@ -1371,8 +1385,8 @@ AjBool ajPrintPdbAtomChain(AjPFile outf, AjPPdb pdb, int mod, int chn)
 		    atm->X, 
 		    atm->Y, 
 		    atm->Z, 
-		    0.0, 
-		    0.0, 
+		    atm->O,
+		    atm->B,
 		    " ", 
 		    *ajStrStr(atm->Atm));
 
@@ -1425,6 +1439,7 @@ AjBool ajPrintPdbSeqresDomain(AjPFile outf, AjPPdb pdb, AjPScop scop)
     int      x;
     int      y;
     int      z;
+    int      rcnt=0;
     int      len;
     int	     chn=-1;
     char    *p;
@@ -1458,12 +1473,12 @@ AjBool ajPrintPdbSeqresDomain(AjPFile outf, AjPPdb pdb, AjPScop scop)
 	  atm=(AjPAtom)ajListIterNext(iter);
 	  */
 
-	if(!ajStrCmpC(scop->Start[z], "0"))
+	if(!ajStrCmpC(scop->Start[z], "."))
 	    nostart = ajTrue;
 	else
 	    nostart=ajFalse;
 	
-	if(!ajStrCmpC(scop->End[z], "0"))
+	if(!ajStrCmpC(scop->End[z], "."))
 	    noend = ajTrue;
 	else	
 	    noend=ajFalse;
@@ -1477,14 +1492,16 @@ AjBool ajPrintPdbSeqresDomain(AjPFile outf, AjPPdb pdb, AjPScop scop)
 
 	    if(this_rn!=last_rn)
 	    {
-		last_rn=this_rn;
-
 		if(!found_start && !nostart)
 		{
 		    if(!ajStrCmpCase(atm->Pdb, scop->Start[z]))
 			found_start=ajTrue;	
 		    else	
+		    {
+			last_rn=this_rn;
 			continue;
+		    }
+		    
 		}
 	    
 		/*Assign sequence for residues missing from the linked list*/
@@ -1505,10 +1522,16 @@ AjBool ajPrintPdbSeqresDomain(AjPFile outf, AjPPdb pdb, AjPScop scop)
 		    {	
 			ajStrApp(&tmp1, tmp2);
 			ajStrAppC(&tmp1, " ");
+			rcnt++;
 		    }	
 		}
+
+		last_rn=this_rn;
+
 		ajStrApp(&tmp1, atm->Id3);
 		ajStrAppC(&tmp1, " ");
+		rcnt++;
+		
 		
 		if(!found_end && !noend)
 		{
@@ -1539,8 +1562,15 @@ AjBool ajPrintPdbSeqresDomain(AjPFile outf, AjPPdb pdb, AjPScop scop)
 	    ajWarn("Domain end not found in ajPrintPdbSeqresDomain");		
 	    return ajFalse;
 	}
+
+	/*Assign sequence for residues missing from end of linked list*/
 	
-	ajListIterFree(iter);			
+	
+	
+
+
+	
+	ajListIterFree(iter);	 		
     }
         
     if(scop->N > 1)
@@ -1555,7 +1585,7 @@ AjBool ajPrintPdbSeqresDomain(AjPFile outf, AjPPdb pdb, AjPScop scop)
 	ajFmtPrintF(outf, "SEQRES%4d %c%5d  %-61.52s\n", 
 		    y, 
 		    id, 
-		    pdb->Chains[chn-1]->Nres, 
+		    rcnt,
 		    p);
 
     ajListIterFree(iter);			
@@ -1642,6 +1672,7 @@ AjBool ajPrintPdbSeqresChain(AjPFile outf, AjPPdb pdb, int chn)
 	    last_rn=this_rn;
 	}
     }
+    
     /*Assign sequence for residues missing from end of linked list*/
     for(x=last_rn; x<pdb->Chains[chn-1]->Nres; x++)
 	if(!ajAa1ToAa3(ajStrChar(pdb->Chains[chn-1]->Seq, x), &tmp2))
@@ -1839,6 +1870,35 @@ AjBool ajPrintPdbHeader(AjPFile outf, AjPPdb pdb)
 
 
 
+
+
+/* @func ajPrintPdbHeaderScop ************************************************
+**
+** Writes the Entry element of a Scop structure to an output file in pdb 
+** format
+**
+** @param [w] outf [AjPFile] Output file stream
+** @param [r] scop [AjPScop] Scop object
+**
+** @return [AjBool] True on succcess
+** @@
+******************************************************************************/
+AjBool ajPrintPdbHeaderScop(AjPFile outf, AjPScop scop)
+{
+    if(scop && outf)
+    {
+	ajFmtPrintF(outf, "%-11sCLEANED-UP PDB FILE FOR SCOP DOMAIN %-33S\n", 
+		    "HEADER", 
+		    scop->Entry);    
+	return ajTrue;
+    }
+    else
+	return ajFalse;
+}
+
+
+
+
 /* @func ajPdbWriteDomain ****************************************************
 **
 ** Calls functions to write domain-specific contents of a Pdb object to an 
@@ -1853,9 +1913,7 @@ AjBool ajPrintPdbHeader(AjPFile outf, AjPPdb pdb)
 ******************************************************************************/
 AjBool   ajPdbWriteDomain(AjPFile outf, AjPPdb pdb, AjPScop scop)
 {
-    int x;
-    
-    ajPrintPdbHeader(outf, pdb);
+    ajPrintPdbHeaderScop(outf, scop);
     ajPrintPdbTitle(outf, pdb);
     ajPrintPdbCompnd(outf, pdb);
     ajPrintPdbSource(outf, pdb);
@@ -1863,22 +1921,20 @@ AjBool   ajPdbWriteDomain(AjPFile outf, AjPPdb pdb, AjPScop scop)
     ajPrintPdbResolution(outf, pdb);
     ajPrintPdbEmptyRemark(outf, pdb);
     
-    for(x=0;x<pdb->Nchn;x++)
-	if(!ajPrintPdbSeqresDomain(outf, pdb, scop))
-	   {
-		ajWarn("Error writing file in ajPdbWriteDomain");
-		return ajFalse;
-	    } 
+    if(!ajPrintPdbSeqresDomain(outf, pdb, scop))
+    {
+	ajWarn("Error writing file in ajPdbWriteDomain");
+	return ajFalse;
+    } 
 
     if(pdb->Method == ajNMR)
 	ajFmtPrintF(outf, "MODEL%9d%66s\n", 1, " ");
 
-    for(x=0;x<pdb->Nchn;x++)
-	if(!ajPrintPdbAtomDomain(outf, pdb, scop, 1))
-	   {
-		ajWarn("Error writing file in ajPdbWriteDomain");
-		return ajFalse;
-	    }  
+    if(!ajPrintPdbAtomDomain(outf, pdb, scop, 1))
+    {
+	ajWarn("Error writing file in ajPdbWriteDomain");
+	return ajFalse;
+    }  
 
     if(pdb->Method == ajNMR)
 	ajFmtPrintF(outf, "%-80s\n", "ENDMDL");
@@ -2024,7 +2080,7 @@ AjBool ajScopRead(AjPFile inf, AjPStr entry, AjPScop *thys)
 **
 ** Read a Scop object from a file
 **
-** @param [r] inf [AjPFile] Output file stream
+** @param [r] inf [AjPFile] Input file stream
 ** @param [r] entry [char*] id
 ** @param [w] thys [AjPScop*] Scop object
 **
@@ -2071,8 +2127,8 @@ AjBool ajScopReadC(AjPFile inf, char *entry, AjPScop *thys)
 	tentry  = ajStrNew();
 	stmp    = ajStrNew();
 	exp1    = ajRegCompC("^([^ \t\r\n]+)[ \t\n\r]+");
-	exp2    = ajRegCompC("^([A-Za-z0-9.]+)[ ]*[^ \t\r\n]+[ ]*([0-9.]+)[ ]*"
-			     "[^ \t\r\n]+[ ]*([0-9.]+)");
+	exp2    = ajRegCompC("^([A-Za-z0-9.]+)[ ]*[^ \t\r\n]+[ ]*([0-9.-]+)[ ]*"
+			     "[^ \t\r\n]+[ ]*([0-9.-]+)");
     }
 
 
@@ -2185,14 +2241,11 @@ AjBool ajScopReadC(AjPFile inf, char *entry, AjPScop *thys)
 	    ajRegSubI(exp2,1,&stmp);
 	    (*thys)->Chain[idx-1] = *ajStrStr(stmp);
 	    ajRegSubI(exp2,2,&str);
-/*DEBUG AJB  ... was reading them as char *'s*/
-/*	    ajStrAssC(&(*thys)->Start[idx-1],ajStrStr(str)); */
-	    ajStrAss(&(*thys)->Start[idx-1],str);
+	    ajStrAssC(&(*thys)->Start[idx-1],ajStrStr(str)); 
 
 	    ajRegSubI(exp2,3,&str);
-/*DEBUG AJB  ... was reading them as char *'s*/
-/*	    ajStrAssC(&(*thys)->End[idx-1],ajStrStr(str)); */
-	    ajStrAss(&(*thys)->End[idx-1],str);
+	    ajStrAssC(&(*thys)->End[idx-1],ajStrStr(str)); 
+
 	}
 	ok = ajFileReadLine(inf,&line);
     }
@@ -2201,4 +2254,21 @@ AjBool ajScopReadC(AjPFile inf, char *entry, AjPScop *thys)
 	return ajFalse;
     
     return ajTrue;
+}
+
+
+
+/* @func ajScopToPdb *********************************************************
+**
+** Read a scop identifier code and writes the equivalent pdb identifier code
+**
+** @param [r] scop [AjPStr]   Scop identifier code
+** @param [w] pdb  [AjPStr*]  Pdb identifier code
+**
+** @return [void]
+** @@
+******************************************************************************/
+void   ajScopToPdb(AjPStr scop, AjPStr *pdb)
+{
+    ajStrAssSub(pdb, scop, 1, 4);
 }
