@@ -120,11 +120,13 @@ static SeqOInFormat seqInFormatDef[] = { /* AJFALSE = ignore (duplicates) */
   {"em",         AJFALSE, seqReadEmbl},	/* alias for embl */
   {"swiss",      AJTRUE,  seqReadSwiss},
   {"sw",         AJFALSE, seqReadSwiss}, /* alias for swiss */
+  {"swissprot",  AJTRUE,  seqReadSwiss},
   {"ncbi",       AJTRUE,  seqReadNcbi},
   {"fasta",      AJTRUE,  seqReadFasta},
   {"pearson",    AJFALSE, seqReadFasta}, /* alias for fasta */
   {"genbank",    AJTRUE,  seqReadGenbank},
   {"gb",         AJFALSE, seqReadGenbank}, /* alias for genbank */
+  {"ddbj",       AJFALSE, seqReadGenbank}, /* alias for genbank */
   {"nbrf",       AJTRUE,  seqReadNbrf},
   {"pir",        AJFALSE, seqReadNbrf},	/* alias for nbrf */
   {"codata",     AJTRUE,  seqReadCodata},
