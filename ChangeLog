@@ -1,5 +1,9 @@
 Version 2.5.0
 
+	Added the qualifier '-join' to the program extractfeat.
+	If '-join' is set then joined features, such as 'CDS' and 'mRNA'
+	are output as a single concatenated sequence.
+
 	Changed the default output filename from 'stdout' to a file for
 	the following:
 	    infoalign
