@@ -354,7 +354,7 @@ static AjBool seqTypeFix(AjPSeq thys, ajint itype)
 		ret = seqTypeFixReg(thys, itype, 'X');
 	    break;
 	default:
-	    ajErr("Unknown sequence type code for '%c'", seqType[itype].Name);
+	    ajDie("Unknown sequence type code for '%c'", seqType[itype].Name);
 	    return ajFalse;
 	}
     }
@@ -447,7 +447,7 @@ static void seqTypeSet(AjPSeq thys, const AjPStr Type)
     case '\0':
 	break;
     default:
-	ajErr("Unknown sequence type '%c'", *cp);
+	ajDie("Unknown sequence type '%c'", *cp);
     }
 
     return;
@@ -484,7 +484,7 @@ AjBool ajSeqTypeCheckS(AjPStr* pthys, const AjPStr type_name)
 
     if(!seqFindType(type_name, &itype))
     {
-	ajErr("Sequence type '%S' unknown", type_name);
+	ajDie("Sequence type '%S' unknown", type_name);
 	return ajFalse;
     }
 
@@ -585,8 +585,8 @@ AjBool ajSeqTypeCheckIn(AjPSeq thys, const AjPSeqin seqin)
     
     if(!seqFindType(Type, &itype))
     {
-	ajErr("Sequence type '%S' unknown", Type);
 	ajDebug("ajSeqTypeCheckIn: rejected - unknown type\n");
+	ajDie("Sequence type '%S' unknown", Type);
 	return ajFalse;
     }
 
