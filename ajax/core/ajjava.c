@@ -16,6 +16,7 @@
 
 
 #include <pwd.h>
+#define _XOPEN_SOURCE
 #include <crypt.h>
 #include <errno.h>
 
