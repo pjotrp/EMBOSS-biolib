@@ -19,7 +19,7 @@ entrails histogramtest intconv \
 patmattest \
 prima primers \
 seqinfo seqretall seqretallfeat seqretset seqretsingle \
-testplot treetypedisplay wreport
+testplot treetypedisplay
 
 bin_PROGRAMS = aaindexextract abiview acdc acdlog acdpretty acdtable \
 antigenic \
@@ -242,7 +242,6 @@ patmattest_SOURCES = patmattest.c
 seqretsingle_SOURCES = seqretsingle.c
 testplot_SOURCES = testplot.c
 treetypedisplay_SOURCES = treetypedisplay.c
-wreport_SOURCES = wreport.c
 
 LDADD = ../nucleus/libnucleus.la ../ajax/libajaxg.la ../ajax/libajax.la ../plplot/libplplot.la $(XLIB)
 
