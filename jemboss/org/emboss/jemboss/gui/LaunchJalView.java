@@ -89,7 +89,7 @@ public class LaunchJalView extends JFrame
     {
       public void actionPerformed(ActionEvent e)
       {
-        new AlignFrame(null,tfs.getText(),"File","MSF");
+        new AlignFrame(null,tfs.getText(),"File",(String)format.getSelectedItem());
         setVisible(false);
       }
     });
