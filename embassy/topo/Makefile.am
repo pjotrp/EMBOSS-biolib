@@ -2,7 +2,7 @@
 
 SUBDIRS = source emboss_acd
 
-EXTRA_DIST = depcomp ltmain.sh
+EXTRA_DIST = depcomp ltmain.sh install-sh config.sub config.guess
 
 # tar to pick up the other directories
 # then remove any CVS subdirectories
