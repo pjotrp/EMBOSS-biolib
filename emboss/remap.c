@@ -404,10 +404,8 @@ ajDebug("Read in a list of all input enzyme names\n");
 /* get input list of enzymes into ea[] */
     ne = ajArrCommaList(enzymes,&ea);
     if (ajStrMatchCaseC(ea[0],"all")) {
-ajUser("have all");
       isall = ajTrue;
     } else {
-ajUser("do not have all");
       isall = ajFalse;
 
 /* push explicitly input enzymes on nocutlist */
