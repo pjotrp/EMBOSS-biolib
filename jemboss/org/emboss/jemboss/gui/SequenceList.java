@@ -31,7 +31,7 @@ import javax.swing.table.*;
 import javax.swing.border.*;
 import java.awt.event.*;
 
-import org.emboss.jemboss.parser.Ajax;
+import org.emboss.jemboss.parser.AjaxUtil;
 import org.emboss.jemboss.gui.filetree.*;
 import java.awt.datatransfer.*;
 import java.awt.dnd.*;
@@ -135,7 +135,7 @@ public class SequenceList extends JFrame
       {
         int row = table.getSelectedRow();
         String fn = table.getFileName(row);
-        Ajax.getFileOrDatabaseForAjax(fn,BuildProgramMenu.getDatabaseList(),null,withSoap);
+        AjaxUtil.getFileOrDatabaseForAjax(fn,BuildProgramMenu.getDatabaseList(),null,withSoap);
         System.out.println("CALLING AJAX "+fn);
       }
     });
