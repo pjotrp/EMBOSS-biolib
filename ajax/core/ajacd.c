@@ -1076,6 +1076,8 @@ AcdOAttr acdAttrFeat[] =
 {
     {"type", VT_STR, "",
 	 "Feature type (protein, nucleotide, etc.)"},
+    {"nullok", VT_BOOL, "N",
+	 "Can accept a null filename as 'no file'"},
     {NULL, VT_NULL, NULL,
 	 NULL}
 };
@@ -1088,6 +1090,10 @@ AcdOAttr acdAttrFeatout[] =
 	 "Default file extension (use of -offormat preferred)"},
     {"type", VT_STR, "",
 	 "Feature type (protein, nucleotide, etc.)"},
+    {"multiple", VT_BOOL, "N",
+	 "Features for multiple sequences"},
+    {"nullok", VT_BOOL, "N",
+	 "Can accept a null UFO as 'no output'"},
     {NULL, VT_NULL, NULL,
 	 NULL}
 };
@@ -3327,7 +3333,7 @@ static AcdPAcd acdNewQual(const AjPStr name, const AjPStr token,
 	    ajFmtPrintS(&acdVarAcdProtein, "$(%S.protein)", name);
 	    vacd = acdNewVar(protName);
 	    acdSetVarDef(vacd, acdVarAcdProtein);
-	    ajDebug("Set acdprotein value '%S'", acdVarAcdProtein);
+	    ajDebug("Set acdprotein value '%S'\n", acdVarAcdProtein);
 	    ajStrDel(&protName);
 	}
 
@@ -3673,7 +3679,7 @@ static AcdPAcd acdFindAssoc(const AcdPAcd thys, const AjPStr name,
     {
 	ajWarn("Ambiguous name/token '%S' (%S)", name, ambigList);
 	ajStrDelReuse(&ambigList);
-	acdErrorAcd(thys,
+	acdErrorAcd(thys,		/* ambigdefattr.acd */
 		    "Attribute or qualifier '%S' ambiguous\n",
 		    name);
     }
@@ -10186,7 +10192,7 @@ static void* acdGetValueNum(const char *token, const char* type, ajint pnum)
 	    acdLog("Found pa->Token '%S' pa->Type %d itype: %d\n",
 		   pa->Token, pa->Type, itype);
 	    if(pa->Level != ACD_QUAL && pa->Level != ACD_PARAM )
-		ajDie("Unknown qualifier'-%S' ", pa->Token);
+		ajDie("Unknown qualifier '-%S' ", pa->Token);
 
 	    if((itype>=0) && (pa->Type != itype)) /* program source error */
 		ajDie("Value for '-%S' is not of type %s\n", pa->Token, type);
@@ -12109,8 +12115,8 @@ static AjBool acdSet(const AcdPAcd thys, AjPStr* attrib, const AjPStr value)
 			"associated qualifier '%S'",
 			*attrib, attr[iattr].Name, aqual->Name);
 	if(idef >= 0)
-	    acdErrorAcd(thys,		/* ambigdefattr.acd */
-			"'%S' matches attribute '%s' and "
+	    acdErrorAcd(thys,		/* no known case */
+			"'%S' matches default attribute '%s' and "
 			"associated qualifier '%S'",
 			*attrib, acdAttrDef[idef].Name, aqual->Name);
     }
@@ -15152,7 +15158,7 @@ static ajint acdIsQual(const char* arg, const char* arg2,
     
     if(!*acd)				/* test acdc-badqual */
 	ajDie("Unknown qualifier %s", arg);
-    
+
     if((*acd)->AssocQuals)		/* this one is a new master */
     {
 	acdLog("acdMasterQual set to -%S\n", (*acd)->Name);
@@ -15974,12 +15980,17 @@ static void acdQualParse(AjPStr* pqual, AjPStr* pnoqual, AjPStr* pqmaster,
     if(!qualexp)
 	qualexp = ajRegCompC("^([a-z]+)(_([a-z]+))?([0-9]+)?$");
 
-    acdLog("acdQualParse ('%S')\n", *pqual);
     ajStrToLower(pqual);
-    acdLog("lower: '%S'\n", *pqual);
     ajStrAssS(&tmpqual, *pqual);
 
-    ajRegExec(qualexp, tmpqual);
+    if(!ajRegExec(qualexp, tmpqual))
+    {
+	ajStrAssC(pqual, "");
+	ajStrAssC(pnoqual, "");
+	ajStrAssC(pqmaster, "");
+	*number = 0;
+	return;
+    }
     ajRegSubI(qualexp, 1, pqual);
     ajRegSubI(qualexp, 3, pqmaster);
     ajRegSubI(qualexp, 4, &tmpnum);
@@ -15988,11 +15999,9 @@ static void acdQualParse(AjPStr* pqual, AjPStr* pnoqual, AjPStr* pqmaster,
     else
 	ajStrAssC(pnoqual, "");
 
+    *number = 0;
     if(ajStrLen(tmpnum))
 	ajStrToInt(tmpnum, number);
-
-    acdLog("pqual '%S' pnoqual '%S' pqmaster '%S' tmpnum '%S' number %d\n",
-	   *pqual, *pnoqual, *pqmaster, tmpnum, *number);
 
     return;
 }
