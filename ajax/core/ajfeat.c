@@ -854,10 +854,16 @@ void ajFeattabInDel (AjPFeattabIn* pthis) {
 
 void ajFeattabDel(AjPFeattable *pthis)
 {
+  AjPFeattable thys;
   if (!pthis) return ;
   if (!*pthis) return ;
 
-  FeattabClear(*pthis) ;
+  thys = *pthis;
+
+  FeattabClear(thys) ;
+
+  ajStrDel (&thys->Type);
+
   AJFREE (*pthis) ; /* free the object */
   *pthis = NULL ;
 
@@ -915,9 +921,9 @@ static void featClear ( AjPFeature thys ) {
       AJFREE(item);
       ajListRemove(iter) ;
     }
+    ajListIterFree(iter) ;
       
   }
-  ajListIterFree(iter) ;
   ajListFree(&(thys->Tags));
   ajListDel(&(thys->Tags)) ;
   
@@ -1225,8 +1231,9 @@ static void FeattabClear ( AjPFeattable thys )
       ajFeatDel(&feature) ; 
       ajListRemove(iter) ;
     }
+    ajListIterFree(iter) ;
   }
-  ajListIterFree(iter) ;
+
   ajListDel(&(thys->Features)) ;
 }
 
@@ -2214,6 +2221,16 @@ static AjPFeature featEmblProcess  ( AjPFeattable thys, AjPStr feature,
     ajFeatTagSet (ret, tag, val);
   }
 
+  ajStrDel (&tmpstr);
+  ajStrDel (&val);
+  ajStrDel (&tag);
+  ajStrDel (&begstr);
+  ajStrDel (&delstr);
+  ajStrDel (&opnam);
+  ajStrDel (&opval);
+  ajStrDel (&locstr);
+  ajStrDel (&endstr);
+
   return ret;
 }
 
@@ -2485,8 +2502,8 @@ AjBool ajFeattableWriteGff (AjPFeattable Feattab, AjPFile file)
       gf = ajListIterNext (iter) ;
       featDumpGff(gf, Feattab, file) ;
     }
+    ajListIterFree(iter) ;
   }
-  ajListIterFree(iter) ;
    
   return ajTrue ;
 }
@@ -2945,6 +2962,8 @@ static AjBool feattableWriteEmbl (AjPFeattable thys, AjPFile file,
 	gfprev=gf;
     }
 
+    ajListIterFree(iter);
+
     /* Don't forget the last one !!! */
     if(join) {
       ajStrAppC(&location,")");      /* close bracket for join */
@@ -2965,7 +2984,6 @@ static AjBool feattableWriteEmbl (AjPFeattable thys, AjPFile file,
     ajStrDel(&pos);
     ajStrDel(&temp);
   }
-  ajListIterFree(iter) ;
 
   ajDebug ("ajFeattableWriteEmbl Done\n");
 
@@ -3016,8 +3034,8 @@ AjBool ajFeattableWriteSwiss (AjPFeattable thys, AjPFile file) {
       gf = ajListIterNext (iter) ;
       featDumpSwiss(gf, file) ;
     }
+    ajListIterFree(iter) ;
   }
-  ajListIterFree(iter) ;
    
   return ajTrue ;
 }
@@ -3657,11 +3675,15 @@ void ajFeatTest (void) {
 
   ft = ajFeatAddC(table, "testft",  5, 7, 1.23, '+', 0, desc);
   ajStrAssC(&desc, "And again...");
+
   ft = ajFeatAddC(table, "testft",  9, 19, 4.56, '-', 3, desc);
   ajStrAssC(&desc, "...but subject to change");
   ajFeatSetDesc(ft, desc);
 
   ajFeattableTrace(table);
+
+  ajFeattabDel(&table);
+  ajStrDel (&desc);
 
   return;
 }
@@ -3694,7 +3716,7 @@ static void featInit (void) {
 
 /* @funcstatic featVocabRead **************************************************
 **
-** Reads the possible featyure types (keys) and tags (qualifiers)
+** Reads the possible feature types (keys) and tags (qualifiers)
 ** from files.
 **
 ** @param [R] name [char*] Feature format
@@ -3714,12 +3736,12 @@ static AjBool featVocabRead (char* name, AjPTable TypeTable,
   AjPStr tagtype = NULL;
   AjPStr tag = NULL;
   AjPStr req = NULL;
-  AjPStr rest = NULL;
   AjPStr type=NULL;
   AjPStr tmpstr=NULL;
   AjPStr token=NULL;
   AjPStr savetype = NULL;
   AjPStr tagstr = NULL;
+  AjPStr typtagstr = NULL;
   AjPStr defname = NULL;
 
   AjPStr TagsFName=NULL;
@@ -3762,13 +3784,10 @@ static AjBool featVocabRead (char* name, AjPTable TypeTable,
     ajErr("Unable to read data file '%S'\n", TagsFName);
     return ajFalse;
   }
-  else
-    ajDebug("OKAY\n");
     
   tagscount =0;
   linecount=0;
   while(ajFileReadLine(TagsFile,&line)){
-    /*ajDebug ("> %S\n", line);*/
     linecount++;
 
     if(ajStrLen(line) && ajStrNCmpC(line,"#",1)) { /* skip comments */
@@ -3792,17 +3811,25 @@ static AjBool featVocabRead (char* name, AjPTable TypeTable,
 		 tagtype, TagsFile, linecount);
 	  break;
 	}
-	ajStrDel(&type);
+	ajStrDel(&tagtype);
 
 	tagscount++;
-	tagstr = NULL;
-	ajStrAssS(&tagstr, tagname);
-	if (tagscount == 1) {
+	if (tagscount == 1) {	/* save first tag as the default */
+	  tagstr = NULL;
 	  ajStrAssC(&defname, "");
-	  ajTablePut (TagsTable, defname, tagstr);
+	  ajStrAssS(&tagstr, tagname);
+	  if (ajTablePut (TagsTable, defname, tagstr))
+	    ajErr("Etags.%s duplicate tag for '%S'", name, defname);
+	  tagstr = NULL;
+	  defname = NULL;
 	}
 	tagstr = NULL;
 	ajFmtPrintS (&tagstr, "%s;", TagType[numtype]);
+
+	/*
+	** Controlled vocabulary :
+	** read the list of valid values
+	*/
 
 	if(ajStrMatchCaseCC(TagType[numtype], "LIMITED") ||
 	   ajStrMatchCaseCC(TagType[numtype], "QLIMITED")){
@@ -3815,11 +3842,11 @@ static AjBool featVocabRead (char* name, AjPTable TypeTable,
 	  }
 	  ajStrDelReuse(&tmpstr);
 	}
-	ajTablePut (TagsTable, tagname, tagstr);
-	/*
-	ajDebug ("Tag '%S'  ", tagname);
-	ajDebug ("Val '%S'\n", tagstr);
-	*/
+
+	if (ajTablePut (TagsTable, tagname, tagstr))
+	  ajErr("Etags.%s duplicate tag for '%S'", name, tagname);
+	tagstr = NULL;
+	tagname = NULL;
       }
       else {
 	ajDebug ("** line format bad **\n%S", line);
@@ -3848,70 +3875,66 @@ static AjBool featVocabRead (char* name, AjPTable TypeTable,
     ajRegFree(&VocabExp);
     return ajFalse;
   }
-  else{
-    ajDebug("OKAY\n");
-  }
 
   typecount =0;
   while(ajFileReadLine(TypeFile,&line)){
-    /* ajDebug ("> %S\n", line); */
     if(ajStrNCmpC(line,"#",1)){ /* if a comment skip it */
       if(ajRegExec(TagExp,line)){
-	ajRegSubI (TagExp, 1, &rest) ;    /* get the mandatory feature tag */
-	ajRegSubI (TagExp, 2, &req) ;    /* get the mandatory feature tag */
-	ajRegSubI (TagExp, 3, &tag) ;    /* get the tag */
-	ajRegSubI (TagExp, 4, &type) ;    /* get the type */
-	/*
-	  ajDebug ("tag '%S' rest '%S'    type '%S' req '%S'\n",
-		 tag, rest, type, req);
-	*/
+	ajRegSubI (TagExp, 2, &req) ;    /* get the mandatory code */
+	ajRegSubI (TagExp, 3, &tag) ;    /* and get the tag ... */
+	ajRegSubI (TagExp, 4, &type) ;    /* ... or, get the type */
+
 	if (ajStrLen(type)) {	/* new feature type */
 	  typecount++;
-	  tagstr = NULL;
-	  ajStrAssS(&tagstr, type);
-	  if (typecount == 1) {
+	  if (typecount == 1) {	/* first type saved as "" default */
 	    defname = NULL;
+	    typtagstr = NULL;
 	    ajStrAssC(&defname, "");
-	    ajTablePut (TypeTable, ajStrNew(), tagstr);
+	    ajStrAssS(&typtagstr, type);
+	    if (ajTablePut (TypeTable, defname, typtagstr))
+	      ajErr("Efeatures.%s duplicate tag for '%S'", name, defname);
+	    typtagstr = NULL;
 	  }
-	  tagstr = ajStrNewCL(";", 256);
-	  ajTablePut (TypeTable, type, tagstr);
+	  else {		/* save the previous feature type */
+	    if (ajTablePut (TypeTable, savetype, typtagstr))
+	      ajErr("Efeatures.%s duplicate tag for '%S'", name, savetype);
+	    typtagstr = NULL;
+	  }
+
+	  /*
+	  ** set up new feature type and type-tag strings
+	  ** ready to save the details
+	  */
+
+	  typtagstr = ajStrNewCL(";", 256);
 	  savetype = type;
 	  type = NULL;
-	  if (typecount > 1) {
-	    /*
-	    ajDebug ("Type '%S'", savetype);
-	    ajDebug ("   Tags '%S'\n", tagstr);
-	    */
-	  }
 	}
 	else {			/* tag name */
 	  if (!ajTableGet(TagsTable, tag)) {
-	    /*
-	    ajDebug ("%S: tag %S (feature %S) not in Etags file\n",
-		    TypeFName, tag, savetype);
-	    */
 	    ajWarn ("%S: tag %S (feature %S) not in Etags file",
 		    TypeFName, tag, savetype);
 	  }
 	  if (ajStrLen(req))
-	    ajFmtPrintAppS (&tagstr, "*");
-	  ajFmtPrintAppS (&tagstr, "%S;", tag);
+	    ajFmtPrintAppS (&typtagstr, "*");
+	  ajFmtPrintAppS (&typtagstr, "%S;", tag);
 	}
 
       }
     }
   }
-  if (typecount > 0) {
-    /*
-      ajDebug ("Type '%S'", savetype);
-      ajDebug ("   Tags '%S'\n", tagstr);
-    */
+
+  if (typecount > 0) {		/* save the last feature type */
+    if (ajTablePut (TypeTable, savetype, typtagstr))
+      ajErr("Efeatures.%s duplicate tag for '%S'", name, savetype);
+    typtagstr = NULL;
+    savetype = NULL;
   }
 
   ajFileClose(&TypeFile);
 
   ajStrDel(&line);
+  ajStrDel(&token);
 
   line = (AjPStr) ajTableGet (TypeTable, ajStrNew());
   ajDebug ("Default type: '%S'\n", line);
@@ -3925,6 +3948,12 @@ static AjBool featVocabRead (char* name, AjPTable TypeTable,
   ajStrTablePrint (TypeTable);
   ajStrTablePrint (TagsTable);
   */
+
+  ajStrDel (&tmpstr);
+  ajStrDel (&TypeFName);
+  ajStrDel (&TagsFName);
+  ajStrDel (&req);
+  ajStrDel (&tag);
 
   return ajTrue;
 
@@ -4332,12 +4361,14 @@ static FeatPTagval featTagval ( AjPFeature thys, AjPStr tag) {
       break;
     }
   }
+
+  ajListIterFree( iter);
+
   /*
     if (!ret)
       ajDebug ("featTagval '%S' not found\n", tag);
   */
 
-  ajListIterFree( iter);
 
   return ret;
 }
@@ -4406,6 +4437,7 @@ void ajFeatTagTrace (AjPFeature thys) {
     tv = ajListIterNext(iter);
     ajDebug (" %3d  %S : '%S'\n", ++i, tv->Tag, tv->Value);
   }
+  ajListIterFree (iter);
 
   return;
 }
@@ -4477,6 +4509,7 @@ void ajFeattableTrace (AjPFeattable thys) {
     ajDebug("Features[%d]\n", ++i);
     ajFeatTrace (ft);
   }
+  ajListIterFree (iter);
 
   ajDebug ("== ajFeattableTrace Done ==\n");
   return;
@@ -5048,7 +5081,7 @@ static void featTagEmblQuote (AjPStr* pval) {
 static AjPStr featLocEmblWrapC (AjPStr *ploc, ajint margin,
 				char* prefix, char* preftyp) {
 
-  AjPStr ret = NULL;
+  static AjPStr ret = NULL;
   ajint left = 0;
   ajint width = 0;
   ajint len = 0;
@@ -5111,7 +5144,7 @@ static AjPStr featLocEmblWrapC (AjPStr *ploc, ajint margin,
 
 static AjPStr featTagEmblWrapC (AjPStr *pval, ajint margin, char* prefix) {
 
-  AjPStr ret = NULL;
+  static AjPStr ret = NULL;
   ajint left = 0;
   ajint width = 0;
   ajint len = 0;
@@ -5663,7 +5696,12 @@ static void featDumpGff (AjPFeature thys, AjPFeattable owner, AjPFile file) {
     ajStrDelReuse(&outstr);
     ajStrDel(&outval);
   }
+
+  ajListIterFree(iter);
+
   (void) ajFmtPrintF (file, "\n") ;
+
+  ajStrDel (&flagdata);
 
   return;
 }
@@ -5681,7 +5719,7 @@ static void featDumpGff (AjPFeature thys, AjPFeattable owner, AjPFile file) {
 
 static AjPStr featTagFmt (AjPStr name, AjPTable table) {
 
-  AjPStr ret = NULL;
+  static AjPStr ret = NULL;
 
   static AjPStr valtype = NULL;
 
@@ -5716,7 +5754,7 @@ static AjPStr featTagFmt (AjPStr name, AjPTable table) {
 
 static AjPStr featTagLimit (AjPStr name, AjPTable table) {
 
-  AjPStr ret = NULL;
+  static AjPStr ret = NULL;
 
   static AjPStr vallist = NULL;
 
@@ -5760,6 +5798,22 @@ void ajFeatExit (void) {
       }
     }
   }
+
+  ajStrTableFree(&FeatTypeTableAcedb);
+  ajStrTableFree(&FeatTagsTableAcedb);
+
+  ajStrTableFree(&FeatTypeTableEmbl);
+  ajStrTableFree(&FeatTagsTableEmbl);
+
+  ajStrTableFree(&FeatTypeTableGff);
+  ajStrTableFree(&FeatTagsTableGff);
+
+  ajStrTableFree(&FeatTypeTableSwiss);
+  ajStrTableFree(&FeatTagsTableSwiss);
+
+  ajStrTableFree(&FeatTypeTable);
+  ajStrTableFree(&FeatTagsTable);
+
   return;
 }
 
