@@ -29,6 +29,7 @@ import java.util.Vector;
 import javax.swing.*;
 import javax.swing.event.*;
 import java.net.URL;
+import java.util.*;
 
 /**
 *
@@ -47,15 +48,6 @@ public class MemoryComboBox extends JComboBox
     super(v);
     setEditable(true);
 
-    addActionListener(new ActionListener()
-    {
-      public void actionPerformed(ActionEvent e)
-      {
-        MemoryComboBox cb = (MemoryComboBox)e.getSource();
-        cb.add(cb.getSelectedItem());
-      }
-    });
-
     order = new Vector();
     for(int i=0;i<v.size();i++)
       order.add(v.get(i));
@@ -70,7 +62,7 @@ public class MemoryComboBox extends JComboBox
   * @param item		element to add
   *
   */
-  public void add(Object item)
+  public void addURL(Object item)
   {
     removeItem(item);
     insertItemAt(item, 0);
@@ -78,10 +70,25 @@ public class MemoryComboBox extends JComboBox
     if(getItemCount() > MAX_MEM_LEN)
       removeItemAt(getItemCount()-1);
 
-    if(!order.contains(item))
-      order.add(item);
+    order.add(item);
   }
 
+  
+  /**
+  *
+  * Ensure order is changed
+  *
+  */
+  public void setLastIndex(Object anObject)
+  {
+    if(order.contains(anObject))
+    {
+      order.remove(anObject);
+      order.trimToSize();
+      order.add(anObject);
+    }
+  }
+    
   
   /**
   *

@@ -256,9 +256,7 @@ public class Browser extends JFrame
     // url field
     JLabel urlLabel = new JLabel("URL:");
     urlField = new MemoryComboBox(urlCache);
-    
     int urlFieldHeight = (int)urlField.getPreferredSize().getHeight();
-    urlField.addActionListener(this);
 
 // Icon tool bar
     // Back JButton
@@ -406,9 +404,12 @@ public class Browser extends JFrame
           {
             htmlPane.setPage(inURL);
             if(!urlField.isItem(inURL))
-              urlField.add(inURL);
+              urlField.addURL(inURL);
             else
+	    {
               urlField.setSelectedItem(inURL);
+              urlField.setLastIndex(inURL);
+            }
           }
           catch(IOException ioe)
           {
@@ -526,10 +527,11 @@ public class Browser extends JFrame
     {
       htmlPane.setPage(url);
       if(!urlField.isItem(url))
-        urlField.add(url);
+        urlField.addURL(url);
       else
+      {
         urlField.setSelectedItem(url);
-
+      }
       backMenu.setEnabled(urlField.isBackPage());
       backBt.setEnabled(urlField.isBackPage());
 
@@ -559,9 +561,15 @@ public class Browser extends JFrame
       setCursor(cbusy);
       try 
       {
-        htmlPane.setPage(event.getURL());
-        urlField.add(event.getURL());
-//      urlField.add(event.getURL().toExternalForm());
+	URL url = event.getURL();
+        htmlPane.setPage(url);
+        if(!urlField.isItem(url))
+          urlField.addURL(url);
+        else
+	{
+          urlField.setSelectedItem(url);
+          urlField.setLastIndex(url);
+        }
       } 
       catch(IOException ioe) 
       {
