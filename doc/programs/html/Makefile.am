@@ -28,9 +28,9 @@ pkgdata_DATA =  abiview0.gif banana0.gif chaos0.gif cpgplot0.gif \
                efactor.html efitch.html egendist.html einverted.html \
                ekitsch.html embossdata.html embossversion.html emix.html \
                emma.html emowse.html eneighbor.html entret.html \
-               enzyme_kinetics_group.html epenny.html eprotdist.html \
-               eprotpars.html equicktandem.html erestml.html eseqboot.html \
-               est2genome.html etandem.html extractfeat.html \
+               enzyme_kinetics_group.html epenny.html eprimer3.html \
+               eprotdist.html eprotpars.html equicktandem.html erestml.html \
+               eseqboot.html est2genome.html etandem.html extractfeat.html \
                extractseq.html factor.html feature_tables_group.html \
                findkm.html fitch.html freak.html fuzznuc.html fuzzpro.html \
                fuzztran.html garnier.html geecee.html gendist.html \
