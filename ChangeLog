@@ -1,4 +1,7 @@
 Version 2.7.0
+	Standardtype attribute added for filelist in ACD
+	
+	Datafile for mwfilter changed from string to datafile ACD type.
 
 	A new test application acdvalid will check for deprecated ACD
 	syntax and report errors for something that should be fixed, or
