@@ -150,8 +150,8 @@ int main(int argc, char **argv)
 
     idformat   = ajAcdGetListI("idformat",1);
     fields     = ajAcdGetList("fields");
-    directory  = ajAcdGetString("directory");
-    indexdir   = ajAcdGetString("indexdirectory");
+    directory  = ajAcdGetDirectory("directory");
+    indexdir   = ajAcdGetDirectory("indexdirectory");
     filename   = ajAcdGetString("filenames");
     exclude    = ajAcdGetString("exclude");
     dbname     = ajAcdGetString("dbname");
@@ -206,13 +206,13 @@ int main(int argc, char **argv)
     {
 	curfilename =(AjPStr) inputFiles[ifile];
 	embDbiFlatOpenlib(curfilename, &libr);
+	ajFileNameTrim(&curfilename);
 	if(ajStrLen(curfilename) >= maxfilelen)
 	    maxfilelen = ajStrLen(curfilename) + 1;
 
 	ajDebug("processing filename '%S' ...\n", curfilename);
 	ajDebug("processing file '%F' ...\n", libr);
 	ajStrAssS(&divfiles[ifile], curfilename);
-	ajFileNameTrim(&divfiles[ifile]);
 
 	if(systemsort)	 /* elistfile for entries, alist for fields */
 	    elistfile = embDbiSortOpen(alistfile, ifile,

@@ -18,7 +18,7 @@ section: input [
     information: "Database name"
   ]
 
-  string: directory  [
+  directory: directory  [
     standard: "Y"
     default: "."
     information: "Database directory"
@@ -29,6 +29,7 @@ section: input [
     information: "Wildcard database filename"
     default: "$(dbname)"
     expected: "Database name"
+    knowntype: "emboss database"
   ]
 
 endsection: input
@@ -51,6 +52,7 @@ section: required [
     valid: "Date string dd/mm/yy"
     information: "Index date"
     pattern: "^([0-9]+.[0-9]+.[0-9]+)?$"
+    knowntype: "todays date"
   ]
 
   list: seqtype  [
@@ -88,10 +90,10 @@ section: advanced [
   ]
 
   string: exclude  [
-    information: "wildcard filename(s) to exclude"
+    information: "Wildcard filename(s) to exclude"
   ]
 
-  string: indexdirectory  [
+  directory: indexdirectory  [
     default: "."
     information: "Index directory"
   ]
