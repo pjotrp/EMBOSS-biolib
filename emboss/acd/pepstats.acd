@@ -13,6 +13,13 @@ section: input [
     type: "pureprotein"
   ]
 
+  datafile: aadata  [
+    information: "Amino acid data file"
+    help: "Molecular weight data for amino acids"
+    default: "Eamino.dat"
+    knowntype: "amino acid properties"
+  ]
+
 endsection: input
 
 section: advanced [
@@ -23,13 +30,6 @@ section: advanced [
   boolean: termini  [
     default: "Y"
     information: "Include charge at N and C terminus"
-  ]
-
-  datafile: aadata  [
-    information: "Amino acid data file"
-    help: "Molecular weight data for amino acids"
-    default: "Eamino.dat"
-    knowntype: "amino acid properties"
   ]
 
 endsection: advanced
