@@ -1,4 +1,4 @@
-#!/usr/local/bin/perl -w
+#!/usr/bin/perl -w
 
 ##########################
 # DONE
@@ -143,6 +143,8 @@ sub runtest ($) {
 	    else {print STDERR "No HTML docs for $testapp\n";$misshtml++;}
 	    if (-e "../../doc/programs/text/$testapp.txt") {$tfm{$testapp}++}
 	    else {print STDERR "No tfm text docs for $testapp\n";$misstext++;}
+	    if (-e "../../doc/sourceforge/apps/$testapp.html") {$sf{$testapp}++}
+	    else {print STDERR "No SourceForge docs for $testapp\n";$misssf++;}
 	}
     }
     elsif ($line =~ /^DL\s+(success|keep|all)/) {$globaltestdelete = $1}
@@ -165,6 +167,8 @@ sub runtest ($) {
 	    else {print STDERR "No HTML docs for $testapp\n";$misshtml++;}
 	    if (-e "../../doc/programs/text/$testapp.txt") {$tfm{$testapp}++}
 	    else {print STDERR "No tfm text docs for $testapp\n";$misstext++;}
+	    if (-e "../../doc/sourceforge/apps/$testapp.html") {$sf{$testapp}++}
+	    else {print STDERR "No SourceForge docs for $testapp\n";$misssf++;}
 	}
     }
     elsif ($line =~ /^AB\s*(.*)/) {$packa = $1}
@@ -656,9 +660,11 @@ $numtests = 0;
 $testappname=0;
 $misshtml=0;
 $misstext=0;
+$misssf=0;
 %without = ();
 %dotest = ();
 %tfm = ();
+%sf = ();
 
 foreach $test (@ARGV) {
   if ($test =~ /^-(.*)/) {
@@ -887,7 +893,7 @@ print STDERR "Tests total: $totall pass: $tpass fail: $tfail\n";
 print STDERR "Skipped: $totskip check: $skipcheck embassy: $skipembassy requirements: $skipreq\n";
 
 print STDERR "No tests: $tnotest\n";
-print STDERR "Missing documentation html: $misshtml text: $misstext\n";
+print STDERR "Missing documentation html: $misshtml text: $misstext sourceforge: $misssf\n";
 print STDERR "Time: $alltime seconds\n";
 print LOG "Time: $alltime seconds\n";
 
