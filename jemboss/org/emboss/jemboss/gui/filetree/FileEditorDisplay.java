@@ -22,11 +22,9 @@
 
 package org.emboss.jemboss.gui.filetree;
 
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.Color;
 import javax.swing.*;
 import javax.swing.text.*;
-import javax.swing.event.*;
 import java.io.*;
 import java.net.URL;
 
@@ -35,24 +33,19 @@ import java.net.URL;
 * Display for text, sequence editing, html, gif, png, jpeg.
 *
 */
-public class FileEditorDisplay
+public class FileEditorDisplay extends JTextPane
 {
 
-   private JTextPane seqText = new JTextPane();
-   private Document doc = seqText.getDocument();
-   private String filename;
-   private JPopupMenu popup = new JPopupMenu();
-   private String text;
    private byte[] pngContent = null;
-
+   private String filename;
 
    public FileEditorDisplay(JFrame ffile, final String filename)
    {
-
+ 
      this.filename = filename;
-     initStylesForTextPane(seqText);
+     initStylesForTextPane();
 
-     text = "";
+     String text = "";
      try
      {
        BufferedReader in = new BufferedReader(new FileReader(filename));
@@ -66,14 +59,14 @@ public class FileEditorDisplay
      }
 
      if(filename.endsWith(".html"))
-       setText(text,"html",seqText);
+       setText(text,"html");
      else if( filename.toLowerCase().endsWith(".png") || 
               filename.toLowerCase().endsWith(".gif") ||
               filename.toLowerCase().endsWith(".jpeg") ||
               filename.endsWith(".tif") || filename.endsWith(".ps") )
-       setText(text,"png",seqText);
+       setText(text,"png");
      else
-       setText(text,"regular",seqText);
+       setText(text,"regular");
    }
 
 
@@ -82,61 +75,28 @@ public class FileEditorDisplay
    {
      
      this.filename = filename;
-     initStylesForTextPane(seqText);
+     initStylesForTextPane();
 
      if(contents.getClass().equals(String.class))
      {
-       try
-       { 
-         doc.insertString(0, (String)contents, seqText.getStyle("regular"));
-       }
-       catch (BadLocationException ble)
-       {
-         System.err.println("Couldn't insert initial text.");
-       }
+       if(!filename.endsWith(".html"))
+         setText((String)contents,"regular");
+       else
+         setText((String)contents,"html");
      }
      else if( filename.toLowerCase().endsWith(".png") ||
               filename.toLowerCase().endsWith(".gif") ||
               filename.toLowerCase().endsWith(".jpeg") ||
-              filename.endsWith(".tif") || filename.endsWith(".ps") )
+              filename.endsWith(".tif") )
      {
        ImageIcon icon = new ImageIcon((byte [])contents);
-       seqText.insertIcon(icon);
+       insertIcon(icon);
        pngContent = (byte [])contents;
      }
-     else if(filename.endsWith(".html"))
-     {
-       try
-       {
-         seqText.setPage((URL)contents);
-         seqText.setEditable(false);
-       }
-       catch (IOException e)
-       {
-         System.err.println("Attempted to read a bad URL: " + text);
-       }
-       catch (Exception e)
-       {
-         System.err.println("Couldn't create help URL: " + text);
-       }
-     }
+     else
+       setText("Cannot display "+filename,"regular");
 
    }
-
-// public void setUpPopup()
-// {
-//   MouseListener popupListener = new PopupListener();
-//   JMenuItem menuItem = new JMenuItem("Save",KeyEvent.VK_S);
-//   seqText.addMouseListener(popupListener);
-//   menuItem.addActionListener(new ActionListener()
-//   {
-//     public void actionPerformed(ActionEvent e)
-//     {
-//       new FileSaving(seqText,pngContent);
-//     }
-//   });
-//   popup.add(menuItem);
-// }
 
 /**
 *
@@ -146,7 +106,7 @@ public class FileEditorDisplay
 */
    public JTextPane getJTextPane()
    {
-     return seqText; 
+     return this; 
    }  
 
 
@@ -158,80 +118,69 @@ public class FileEditorDisplay
 *  @param JTextPane instance of JTextPane to set the style for.
 *
 */
-   public void setText(String text, String type, JTextPane seqText)
-   {
+  public void setText(String text, String type)
+  {
 
-     if(type.equalsIgnoreCase("regular"))
-     {
-       try
-       {
-         doc.insertString(0, text, seqText.getStyle("regular"));
-       }
-       catch (BadLocationException ble)
-       {
-         System.err.println("Couldn't insert initial text.");
-       }
+    Document doc = getDocument();
+     
+    if(type.equalsIgnoreCase("regular"))
+    {
+      try
+      {
+        doc.insertString(0, text, getStyle("regular"));
+      }
+      catch (BadLocationException ble)
+      {
+        System.err.println("Couldn't insert initial text.");
+      }
+    }
+    else if(type.equalsIgnoreCase("sequence"))
+    {
+      try
+      { 
+        String hdr = findHeader(text);
+        doc.insertString(doc.getLength(), hdr, getStyle("bold"));
+        for (int i=hdr.length(); i < text.length(); i++)
+        {
+          String rescol = new String("darkGray ");
+          if(text.substring(i,i+1).equalsIgnoreCase("A"))
+            rescol = "green";
+          else if(text.substring(i,i+1).equalsIgnoreCase("T"))
+            rescol = "red";
+          else if(text.substring(i,i+1).equalsIgnoreCase("G"))
+            rescol = "black";
+          else if(text.substring(i,i+1).equalsIgnoreCase("C"))
+            rescol = "blue";
+          doc.insertString(doc.getLength(), text.substring(i,i+1),
+                            getStyle(rescol));
+        }
+      }
+      catch (BadLocationException ble)
+      {
+        System.err.println("Couldn't insert initial text.");
+      }
+    } 
+    else if(type.equalsIgnoreCase("png"))
+    {
+      ImageIcon icon = new ImageIcon(filename,filename); 
+      insertIcon(icon);
+      pngContent = loadPNGContent(filename);
+    }
+    else if(type.equalsIgnoreCase("html"))
+    {
+      setContentType("text/html");
+      setText(text);
+      setEditable(false);
+    }
 
-     }
-     else if(type.equalsIgnoreCase("sequence"))
-     {
-
-       try
-       { 
-         String hdr = findHeader(text);
-         doc.insertString(doc.getLength(), hdr, seqText.getStyle("bold"));
-         for (int i=hdr.length(); i < text.length(); i++)
-         {
-           String rescol = new String("darkGray ");
-           if(text.substring(i,i+1).equalsIgnoreCase("A"))
-             rescol = "green";
-           else if(text.substring(i,i+1).equalsIgnoreCase("T"))
-             rescol = "red";
-           else if(text.substring(i,i+1).equalsIgnoreCase("G"))
-             rescol = "black";
-           else if(text.substring(i,i+1).equalsIgnoreCase("C"))
-             rescol = "blue";
-           doc.insertString(doc.getLength(), text.substring(i,i+1),
-                             seqText.getStyle(rescol));
-         }
-       }
-       catch (BadLocationException ble)
-       {
-         System.err.println("Couldn't insert initial text.");
-       }
-     } 
-     else if(type.equalsIgnoreCase("png"))
-     {
-       ImageIcon icon = new ImageIcon(filename,filename); 
-       seqText.insertIcon(icon);
-       pngContent = loadPNGContent();
-     }
-     else if(type.equalsIgnoreCase("html"))
-     {
-       try
-       {
-         URL textURL = new URL("file:"+filename);
-         seqText.setPage(textURL);
-         seqText.setEditable(false);
-       } 
-       catch (IOException e) 
-       {
-         System.err.println("Attempted to read a bad URL: " + text);
-       } 
-       catch (Exception e) 
-       {
-         System.err.println("Couldn't create help URL: " + text);
-       }
-     }
-
-   }
+  }
 
 /**
 *
 *  Need to read png in, in case it is saved out
 *
 */
-  private byte[] loadPNGContent()
+  private byte[] loadPNGContent(String filename)
   {
 
     DataInputStream dis;
@@ -278,10 +227,10 @@ public class FileEditorDisplay
 *  @return byte content of a png file
 *
 */
-   public byte[] getPNGContent()
-   {
-     return pngContent;
-   }
+  public byte[] getPNGContent()
+  {
+    return pngContent;
+  }
 
 
 /**
@@ -290,61 +239,61 @@ public class FileEditorDisplay
 *  @param JTextPane instance of JTextPane to initialise styles for.
 *
 */
-   protected void initStylesForTextPane(JTextPane textPane) 
-   {
+  protected void initStylesForTextPane() 
+  {
      //Initialize some styles.
-     Style def = StyleContext.getDefaultStyleContext().
-                              getStyle(StyleContext.DEFAULT_STYLE);
+    Style def = StyleContext.getDefaultStyleContext().
+                             getStyle(StyleContext.DEFAULT_STYLE);
 
-     Style regular = textPane.addStyle("regular", def);
-     StyleConstants.setFontFamily(def, "monospaced");
+    Style regular = addStyle("regular", def);
+    StyleConstants.setFontFamily(def, "monospaced");
 
-     Style s = textPane.addStyle("italic", regular);
-     StyleConstants.setItalic(s, true);
+    Style s = addStyle("italic", regular);
+    StyleConstants.setItalic(s, true);
 
-     s = textPane.addStyle("bold", regular);
-     StyleConstants.setBold(s, true);
+    s = addStyle("bold", regular);
+    StyleConstants.setBold(s, true);
 
-     s = textPane.addStyle("small", regular);
-     StyleConstants.setFontSize(s, 10);
+    s = addStyle("small", regular);
+    StyleConstants.setFontSize(s, 10);
 
-     s = textPane.addStyle("large", regular);
-     StyleConstants.setFontSize(s, 16);
+    s = addStyle("large", regular);
+    StyleConstants.setFontSize(s, 16);
 
-     s = textPane.addStyle("red", regular);
-     StyleConstants.setForeground(s,Color.red);
-     StyleConstants.setBold(s, true);
-     StyleConstants.setFontFamily(def, "monospaced");
+    s = addStyle("red", regular);
+    StyleConstants.setForeground(s,Color.red);
+    StyleConstants.setBold(s, true);
+    StyleConstants.setFontFamily(def, "monospaced");
 
-     s = textPane.addStyle("green", regular);
-     StyleConstants.setForeground(s,Color.green);
-     StyleConstants.setBold(s, true);
-     StyleConstants.setFontFamily(def, "monospaced");
+    s = addStyle("green", regular);
+    StyleConstants.setForeground(s,Color.green);
+    StyleConstants.setBold(s, true);
+    StyleConstants.setFontFamily(def, "monospaced");
 
-     s = textPane.addStyle("blue", regular);
-     StyleConstants.setForeground(s,Color.blue);
-     StyleConstants.setBold(s, true);
-     StyleConstants.setFontFamily(def, "monospaced");
+    s = addStyle("blue", regular);
+    StyleConstants.setForeground(s,Color.blue);
+    StyleConstants.setBold(s, true);
+    StyleConstants.setFontFamily(def, "monospaced");
 
-     s = textPane.addStyle("orange", regular);
-     StyleConstants.setForeground(s,Color.orange);
-     StyleConstants.setBold(s, true);
-     StyleConstants.setFontFamily(def, "monospaced");
+    s = addStyle("orange", regular);
+    StyleConstants.setForeground(s,Color.orange);
+    StyleConstants.setBold(s, true);
+    StyleConstants.setFontFamily(def, "monospaced");
 
-     s = textPane.addStyle("black", regular);
-     StyleConstants.setForeground(s,Color.black);
-     StyleConstants.setBold(s, true);
-     StyleConstants.setFontFamily(def, "monospaced");
+    s = addStyle("black", regular);
+    StyleConstants.setForeground(s,Color.black);
+    StyleConstants.setBold(s, true);
+    StyleConstants.setFontFamily(def, "monospaced");
 
-     s = textPane.addStyle("darkGray", regular);
-     StyleConstants.setForeground(s,Color.darkGray);
-     StyleConstants.setBold(s, true);
-     StyleConstants.setFontFamily(def, "monospaced");
+    s = addStyle("darkGray", regular);
+    StyleConstants.setForeground(s,Color.darkGray);
+    StyleConstants.setBold(s, true);
+    StyleConstants.setFontFamily(def, "monospaced");
 
-     s = textPane.addStyle("icon", regular);
-     StyleConstants.setAlignment(s, StyleConstants.ALIGN_CENTER);
+    s = addStyle("icon", regular);
+    StyleConstants.setAlignment(s, StyleConstants.ALIGN_CENTER);
 
-   }
+  }
 
 /**
 *
@@ -352,63 +301,41 @@ public class FileEditorDisplay
 *  @param String contents of the file.
 *
 */
-   private String findHeader(String text)
-   {
-     String hdr = "";
-     String tmphdr = "";
-     BufferedReader in = new BufferedReader(new StringReader(text));
-
-     try
-     {
-       String line = in.readLine();
-       if(line.startsWith(">"))                   //fasta
-         hdr = line;
-       else
-       {
-         tmphdr = line;
-         while((line = in.readLine()) != null)
-         {
-           tmphdr = tmphdr.concat("\n" + line );
-          
-           if(line.equals("//") || line.startsWith("SQ ") 
-                                || line.endsWith(".."))   //msf, embl, gcg
-           {
-             hdr = tmphdr;
-             break;
-           }              
-         }
-       }
-     }
-     catch( IOException ioe)
-     {
-       System.out.println("Cannot read " + text);
-     }
- 
-     return hdr;
-   }
-
-
-  class PopupListener extends MouseAdapter 
+  private String findHeader(String text)
   {
-    public void mousePressed(MouseEvent e) 
-    {
-      maybeShowPopup(e);
-    }
+    String hdr = "";
+    String tmphdr = "";
+    BufferedReader in = new BufferedReader(new StringReader(text));
 
-    public void mouseReleased(MouseEvent e)       
-    {      
-      maybeShowPopup(e);
-    }
-
-    private void maybeShowPopup(MouseEvent e) 
+    try
     {
-      if (e.isPopupTrigger()) 
+      String line = in.readLine();
+      if(line.startsWith(">"))                   //fasta
+        hdr = line;
+      else
       {
-        popup.show(e.getComponent(),
-                   e.getX(), e.getY());
+        tmphdr = line;
+        while((line = in.readLine()) != null)
+        {
+          tmphdr = tmphdr.concat("\n" + line );
+         
+          if(line.equals("//") || line.startsWith("SQ ") 
+                               || line.endsWith(".."))   //msf, embl, gcg
+          {
+            hdr = tmphdr;
+            break;
+          }              
+        }
       }
     }
+    catch( IOException ioe)
+    {
+      System.out.println("Cannot read " + text);
+    }
+ 
+    return hdr;
   }
+
 
 }
 
