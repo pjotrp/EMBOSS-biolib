@@ -25,10 +25,15 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include "ajax.h"
+
 #define T Except_T
+
 Except_Frame *Except_stack = NULL;
 
 const Except_T Assert_Failed = { "Assertion failed" };
+
+
+
 
 /* @func ajExceptRaise ********************************************************
 **
@@ -44,24 +49,30 @@ const Except_T Assert_Failed = { "Assertion failed" };
 void ajExceptRaise(const T* e, const char* file,
 		   ajint line)
 {
-    Except_Frame *p = Except_stack;
+    Except_Frame *p;
+
+    p = Except_stack;
+    
     assert(e);
-    if (p == NULL)
+    if(p == NULL)
     {
 	ajMessOut("Uncaught exception: ");
-	if (e->reason)
+	if(e->reason)
 	    ajMessOut(" %s,", e->reason);
 	else
 	    ajMessOut(" at 0x%p,", e);
-	if (file && line > 0)
+	if(file && line > 0)
 	    ajMessOut(" raised at %s:%d\n", file, line);
-	/*ajMessCrash("aborting...\n");*/
-	/*		fflush(stderr);*/
+
 	exit(EXIT_FAILURE);
     }
+
     p->exception = e;
-    p->file = file;
-    p->line = line;
+    p->file      = file;
+    p->line      = line;
     Except_stack = Except_stack->prev;
+
     longjmp(p->env, Except_raised);
+
+    return;
 }
