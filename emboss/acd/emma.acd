@@ -33,23 +33,19 @@ section: advanced [
     boolean: onlydend  [
       additional: "Y"
       default: "N"
-      information: "only produce dendrogram file"
-      prompt: "Do you want to produce only the dendrogram file?"
+      information: "Only produce dendrogram file"
     ]
 
     boolean: dend  [
       additional: "@(!$(onlydend))"
       default: "N"
-      information: "select if you want to do alignment using an
-                    old dendrogram"
-      prompt: "Do you want to use an old dendrogram file?"
+      information: "Do alignment using an old dendrogram"
     ]
 
     string: dendfile  [
       additional: "$(dend)"
       default: "NULL"
-      information: "name of old dendrogram file"
-      prompt: "What is the name of the old dendrogram file"
+      information: "Name of old dendrogram file"
     ]
 
   endsection: dendsection
@@ -326,7 +322,6 @@ section: advanced [
       additional: "@($(usermamatrix)?True:@$(umamatrix))"
       default: "NULL"
       information: "Filename of user multiple alignment matrix"
-      prompt: "Input the filename of your alignment matrix"
     ]
 
   endsection: matrixsection
@@ -341,7 +336,6 @@ section: advanced [
       default: "10.0"
       minimum: "0.0"
       information: "Multiple alignment: Gap opening penalty"
-      prompt: "Enter gap penalty"
       valid: "Positive foating point number"
       help: "The penalty for opening a gap in the alignment.
              Increasing the gap opening penalty will make gaps less
@@ -353,7 +347,6 @@ section: advanced [
       default: "5.0"
       minimum: "0.00"
       information: "Multiple alignment: Gap extension penalty"
-      prompt: "Enter variable gap penalty"
       valid: "Positive foating point number"
       help: "The penalty for extending a gap by 1 residue. Increasing
              the gap extension penalty will make gaps shorter. Terminal gaps

@@ -59,17 +59,13 @@ section: advanced [
   string: aaproperties  [
     additional: "Y"
     default: "Eaa_properties.dat"
-    information: "User defined amino acid properties"
-    prompt: "Enter user defined file of amino acid properties or
-             leave blank"
+    information: "User defined amino acid properties filename"
   ]
 
   string: aahydropathy  [
     additional: "Y"
     default: "Eaa_hydropathy.dat"
-    information: "User defined hydropathy data"
-    prompt: "Enter user defined file of hydropathy data or leave
-             blank"
+    information: "User defined hydropathy data filename"
   ]
 
 endsection: advanced
