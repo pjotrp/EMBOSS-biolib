@@ -1,4 +1,7 @@
 Version 2.9.0
+        trimest now has the option '-toplower' which changes the
+        poly-A tail to lower-case instead of cutting it off. 
+
 	new ACD attribute 'relation' added to all ACD types. This will
 	hold some information about how output data types relate to inputs
 	and parameters. The syntax of the string is not yet clear. Running
