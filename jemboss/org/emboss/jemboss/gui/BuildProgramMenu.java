@@ -26,7 +26,6 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
 import java.util.zip.*;
-
 import java.awt.event.*;
 import java.io.*;
 import java.util.*;
@@ -43,10 +42,7 @@ import org.emboss.jemboss.soap.GetWossname;
 *
 * BuildProgramMenu class construct the program menus.
 *
-* @author T. J. Carver
-*
 */
-
 public class BuildProgramMenu
 {
   /** database names */
@@ -57,29 +53,30 @@ public class BuildProgramMenu
   private static Vector codons = new Vector();
   /** acd files cache */
   private Hashtable acdStore = new Hashtable();   
+  /** login window */
   private AuthPopup splashing;
+  /** thread for progress monitor on the login window */
   private SplashThread splashThread;
 
-/**
-*
-*  @param  JPanel p1 is the menu pane
-*  @param  ScollPanel p2 is the form pane
-*  @param  JScrollPane EMBOSS form scroll pane 
-*  @param  String location of the EMBOSS binaries
-*  @param  String array of environment variables for EMBOSS applications.
-*  @param  JembossParams SOAP parameter settings
-*  @param  boolean true if using SOAP server
-*  @param  String current working directory (local)
-*  @param  String location of the ACD directory
-*  @param  JFrame Jemboss frame
-*  @param  Dimension form pane dimension
-*
-*/
+  /**
+  *
+  *  @param  p1 		menu pane
+  *  @param  p2 		form pane
+  *  @param  pform 		pane containing emboss form and job manager
+  *  @param  scrollProgForm 	EMBOSS form scroll pane 
+  *  @param  envp		array of environment variables for EMBOSS applications
+  *  @param  mysettings		Jemboss settings
+  *  @param  withSoap 		true if using SOAP server
+  *  @param  cwd 		current working directory (local)
+  *  @param  mainMenu		Jemboss main menu bar
+  *  @param  f			Jemboss frame
+  *  @param  jform 		form pane dimension
+  *
+  */
   public BuildProgramMenu(final JPanel p1, final ScrollPanel p2, 
            final JPanel pform, final JScrollPane scrollProgForm,
-           final String embossBin, final String envp[],
-           final JembossParams mysettings, final boolean withSoap,
-           final String cwd, final String acdDirToParse,
+           final String envp[], final JembossParams mysettings,
+           final boolean withSoap, final String cwd,
            final SetUpMenuBar mainMenu, final JFrame f,
            final Dimension jform)
   {
@@ -102,7 +99,6 @@ public class BuildProgramMenu
 
     SwingWorker groupworker = new SwingWorker() 
     {
-
       String woss = "";
 
       public Object construct() 
@@ -224,6 +220,7 @@ public class BuildProgramMenu
         } 
         else 
         {
+          String embossBin = mysettings.getEmbossBin();
           String embossCommand = new String(embossBin + "wossname -colon -auto");
           System.out.println(embossCommand);
           RunEmbossApplication rea = new RunEmbossApplication(
@@ -334,10 +331,10 @@ public class BuildProgramMenu
                 if(p.equalsIgnoreCase(allAcd[k]))
                 {
                   p2.removeAll();
-                  String acdText = getAcdText(allAcd[k],acdDirToParse,
-                                              mysettings,withSoap);
+                  String acdText = getAcdText(allAcd[k],mysettings,
+                                                         withSoap);
                   BuildJembossForm bjf = new BuildJembossForm(allDes[k],
-                                db,allAcd[k],envp,cwd,embossBin,acdText,
+                                db,allAcd[k],envp,cwd,acdText,
                                 withSoap,p2,mysettings,f);
                   scrollProgForm.setViewportView(p2);               
                   JViewport vp = scrollProgForm.getViewport();
@@ -401,10 +398,10 @@ public class BuildProgramMenu
             f.setCursor(cbusy);
             int index = progList.getSelectedIndex();
             p2.removeAll();
-            String acdText = getAcdText(allAcd[index],acdDirToParse,
-                                        mysettings,withSoap);
+            String acdText = getAcdText(allAcd[index],mysettings,
+                                                       withSoap);
             BuildJembossForm bjf = new BuildJembossForm(allDes[index],
-                                  db,allAcd[index],envp,cwd,embossBin,
+                                  db,allAcd[index],envp,cwd,
                                   acdText,withSoap,p2,mysettings,f);
             scrollProgForm.setViewportView(p2);   
             JViewport vp = scrollProgForm.getViewport();
@@ -456,10 +453,10 @@ public class BuildProgramMenu
             source.setSelectionBackground(Color.cyan);
             int index = source.getSelectedIndex();
             p2.removeAll();
-            String acdText = getAcdText(allAcd[index],acdDirToParse,
-                                        mysettings,withSoap);
+            String acdText = getAcdText(allAcd[index],mysettings,
+                                                       withSoap);
             BuildJembossForm bjf = new BuildJembossForm(allDes[index],
-                                  db,allAcd[index],envp,cwd,embossBin,
+                                  db,allAcd[index],envp,cwd,
                                   acdText,withSoap,p2,mysettings,f);
             scrollProgForm.setViewportView(p2);
             JViewport vp = scrollProgForm.getViewport();
@@ -478,40 +475,48 @@ public class BuildProgramMenu
 
   }
 
-/**
-*
-* List of available EMBOSS databases.
-* @return String[] list of databases
-*
-*/
+  /**
+  *
+  * List of available EMBOSS databases
+  * @return 	list of databases
+  *
+  */
   protected static String[] getDatabaseList()
   {
     return db;
   }
 
+  /**
+  *
+  * Contains all scoring matrix files
+  *
+  */
   public static Vector getMatrices()
   {
     return matrices;
   }
 
-
+  /**
+  *
+  * Contains all codon usage tables
+  *
+  */
   public static Vector getCodonUsage()
   {
     return codons;
   }
 
-
-
-
-/**
-*
-* Get the contents of an ACD file in the form of a String.
-* @param String of the ACD file name
-* @param String representation of the ACD
-*
-*/
-  private String getAcdText(String applName, String acdDirToParse,
-                            JembossParams mysettings, boolean withSoap)
+  /**
+  *
+  * Get the contents of an ACD file in the form of a String
+  * @param applName		application name
+  * @param mysettings		jemboss properties
+  * @param withSoap		true if in client-server mode
+  * @return	 		String representation of the ACD
+  *
+  */
+  private String getAcdText(String applName, JembossParams mysettings, 
+                            boolean withSoap)
   {
 
     String acdText = new String("");
@@ -519,6 +524,7 @@ public class BuildProgramMenu
 
     if(!withSoap)
     {
+      String acdDirToParse = mysettings.getAcdDirToParse();
       String acdToParse = acdDirToParse.concat(applName).concat(".acd");
       try
       {

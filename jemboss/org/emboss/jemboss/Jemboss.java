@@ -88,8 +88,6 @@ public class Jemboss implements ActionListener
     fwdArrow = new ImageIcon(cl.getResource("images/Forward_arrow_button.gif"));
     bwdArrow = new ImageIcon(cl.getResource("images/Backward_arrow_button.gif"));
 
-    String embossBin = "";
-    String acdDirToParse = "";
     String[] envp = new String[4];  /* environment vars */
 
     if(!withSoap)
@@ -97,9 +95,8 @@ public class Jemboss implements ActionListener
       String ps = new String(System.getProperty("path.separator"));
       String plplot = mysettings.getPlplot();
       String embossData = mysettings.getEmbossData();
-      embossBin = mysettings.getEmbossBin();
+      String embossBin  = mysettings.getEmbossBin();
       String embossPath = mysettings.getEmbossPath();
-      acdDirToParse = mysettings.getAcdDirToParse();
       embossPath = new String("PATH" + ps +
                       embossPath + ps + embossBin + ps);
       envp[0] = "PATH=" + embossPath;        
@@ -227,9 +224,9 @@ public class Jemboss implements ActionListener
     f.pack();
     f.setLocation(0,((int)d.getHeight()-f.getHeight())/2);
 
-    new BuildProgramMenu(p1,p2,pform,scrollProgForm,embossBin,
+    new BuildProgramMenu(p1,p2,pform,scrollProgForm,
                          envp,mysettings,withSoap,cwd,
-                         acdDirToParse,mainMenu,f,jform);
+                         mainMenu,f,jform);
 
     f.addWindowListener(new winExit());
 

@@ -95,7 +95,7 @@ public class BuildJembossForm implements ActionListener
   private JembossParams mysettings;
   
   public BuildJembossForm(String appDescription, String db[],
-        final String applName, String[] envp, String cwd, String embossBin,
+        final String applName, String[] envp, String cwd, 
         String acdText, final boolean withSoap, ScrollPanel p2, 
         final JembossParams mysettings, final JFrame f)
   {
@@ -106,7 +106,8 @@ public class BuildJembossForm implements ActionListener
     this.cwd = cwd;
     this.mysettings = mysettings;
     this.withSoap = withSoap;
-    this.embossBin = embossBin;
+
+    embossBin  = mysettings.getEmbossBin();
     this.envp = envp;
     this.applName = applName;
 
