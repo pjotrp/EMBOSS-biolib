@@ -87,7 +87,7 @@ int main(int argc, char **argv)
 	--pos;
 	--end;
 	t = pos;
-	while(t+window < end)
+	while(t+window <= end+1)
 	{
 	    ++c;
 	    t += step;
