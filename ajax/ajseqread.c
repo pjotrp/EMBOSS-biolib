@@ -533,6 +533,8 @@ AjBool ajSeqAllRead (AjPSeq thys, AjPSeqin seqin)
 {
     AjBool ret = ajFalse;
     AjPStr tmpformat = NULL;
+    SeqPListUsa node = NULL;
+    AjBool listdata = ajFalse;
 
     if (!seqInFormatSet)
     {					/* we need a copy of the formatlist */
@@ -545,10 +547,12 @@ AjBool ajSeqAllRead (AjPSeq thys, AjPSeqin seqin)
 	seqInFormatSet = ajTrue;
     }
 
-
     if (!seqin->Filebuff) {	/* First call. No file open yet ... */
-      if (!seqUsaProcess (thys, seqin))	/* ... so process the USA */
+      if (!seqUsaProcess (thys, seqin)	/* ... so process the USA */
+	  && ! ajListLength(seqin->List)) /* not list with bad 1st item */
 	return ajFalse;		/* if this fails, we read no sequence at all */
+	if (ajListLength(seqin->List))
+	  listdata = ajTrue;
     }
 
     ret = seqRead (thys, seqin); /* read the sequence */
@@ -560,6 +564,41 @@ AjBool ajSeqAllRead (AjPSeq thys, AjPSeqin seqin)
 
 	if (!ajStrLen(thys->Type)) /* make sure the type is set */
 	    ajSeqType (thys);
+    }
+
+    while (!ret && ajListLength (seqin->List))
+    {
+	/* Failed, but we have a list still - keep trying it */
+
+        ajErr ("Unable to read sequence '%S'", seqin->Usa);
+
+	(void) ajListPop (seqin->List, (void**) &node);
+	ajDebug("++try again: pop from list '%S'\n", node->Usa);
+	ajSeqinUsa (&seqin, node->Usa);
+	ajDebug("++SAVE (AGAIN) SEQIN '%S' %d..%d(%b) '%S' %d\n",
+		seqin->Usa, seqin->Begin, seqin->End, seqin->Rev,
+		seqin->Formatstr, seqin->Format);
+	seqUsaRestore(seqin, node);
+
+	ajStrDel(&node->Usa);
+	ajStrDel(&node->Formatstr);
+	AJFREE (node);
+
+	/* must exit if this fails ... for bad list USAs */
+
+	if (!seqUsaProcess (thys, seqin))
+	    continue;
+
+	/*	seqUsaProcess (thys, seqin);*/
+
+ 	ret = seqRead (thys, seqin);
+    }
+
+    if (!ret)
+    {
+      if (listdata)
+	ajErr ("Unable to read sequence '%S'", seqin->Usa);
+      return ajFalse;
     }
 
     return ret;
@@ -798,7 +837,10 @@ AjBool ajSeqRead (AjPSeq thys, AjPSeqin seqin)
 	/* (a) if file still open, keep reading */
 	ajDebug("ajSeqRead: input file '%F' still there, try again\n",
 		seqin->Filebuff->File);
-    }
+	ret = seqRead (thys, seqin);
+	ajDebug("ajSeqRead: open buffer  usa: '%S' returns: %B\n",
+		seqin->Usa, ret);
+   }
     else
     {
 	/* (b) if we have a list, try the next USA in the list */
@@ -819,19 +861,27 @@ AjBool ajSeqRead (AjPSeq thys, AjPSeqin seqin)
 	    AJFREE (node);
 
 	    ajDebug("ajSeqRead: open list, try '%S'\n", seqin->Usa);
+	    if (!seqUsaProcess (thys, seqin) && !ajListLength (seqin->List))
+	      return ajFalse;
+	    ret = seqRead (thys, seqin);
+	    ajDebug("ajSeqRead: list usa: '%S' returns: %B\n",
+		    seqin->Usa, ret);
 	}
 	else
 	{
 	    ajDebug("ajSeqRead: no file yet - test USA '%S'\n", seqin->Usa);
-	}
 	/* (c) Must be a USA - decode it */
-	if (!seqUsaProcess (thys, seqin))
-	    return ajFalse;
+	    if (!seqUsaProcess (thys, seqin) && !ajListLength (seqin->List))
+	      return ajFalse;
+	    if (ajListLength (seqin->List)) /* could be a new list */
+		listdata = ajTrue;
+	    ret = seqRead (thys, seqin);
+	    ajDebug("ajSeqRead: new usa: '%S' returns: %B\n",
+		    seqin->Usa, ret);
+	}
     }
 
     /* Now read whatever we got */
-
-    ret = seqRead (thys, seqin);
 
     while (!ret && ajListLength (seqin->List))
     {
@@ -852,15 +902,13 @@ AjBool ajSeqRead (AjPSeq thys, AjPSeqin seqin)
 	ajStrDel(&node->Formatstr);
 	AJFREE (node);
 
-	/* must exit if this fails ... for bad list USAs */
-
 	if (!seqUsaProcess (thys, seqin))
 	    continue;
 
-	/*	seqUsaProcess (thys, seqin);*/
-
 	ret = seqRead (thys, seqin);
-    }
+	ajDebug("ajSeqRead: list retry usa: '%S' returns: %B\n",
+		seqin->Usa, ret);
+   }
 
     if (!ret)
     {
@@ -890,7 +938,6 @@ AjBool ajSeqRead (AjPSeq thys, AjPSeqin seqin)
 	     thys->Name);
     if (!ajStrLen(thys->Type))
 	ajSeqType (thys);
-
 
     return ajTrue;
 }
@@ -1244,8 +1291,12 @@ static AjBool seqRead (AjPSeq thys, AjPSeqin seqin)
     ajDebug("seqRead: seqin format %d '%S'\n", seqin->Format,
 	    seqin->Formatstr);
     ajSeqClear (thys);
+    ajDebug("seqRead: cleared\n");
 
     seqin->Count++;
+
+    if (!seqin->Filebuff)
+      return ajFalse;
 
     if (!seqin->Format)
     {	/* no format specified, try all defaults */
@@ -1288,6 +1339,7 @@ static AjBool seqRead (AjPSeq thys, AjPSeqin seqin)
     }
     else
     {	/* one format specified */
+      ajDebug("seqRead: one format specified\n");
 	ajFileBuffNobuff (seqin->Filebuff);
 
 	ajDebug ("++seqRead known format %d\n", seqin->Format);
@@ -5598,7 +5650,7 @@ static AjBool seqUsaProcess (AjPSeq thys, AjPSeqin seqin)
 	      if (accstat)
 		return ajTrue;
 	    }
-	    ajErr ("failed to open filename %S ", qry->Filename);
+	    ajErr ("failed to open filename '%S'", qry->Filename);
 	    return ajFalse;
 	}
 	else			/* dbstat and regstat both failed */
