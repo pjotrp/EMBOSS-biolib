@@ -320,6 +320,8 @@ int main(int argc, char **argv)
     seqtype = ajAcdGetListI ("seqtype",1);
     usesrc = ajAcdGetBool ("sourcefile");
 
+    ajStrCleanWhite(&dbname);	/* used for temp filenames */
+
     if (ajRegExec (datexp, datestr))
 	for (i=1; i<4; i++)
 	{
