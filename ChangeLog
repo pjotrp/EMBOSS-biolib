@@ -1,5 +1,11 @@
 Version 2.5.0
-
+	Calculated ACD attributes now QA tested. Feature attributes will
+	be correctly set, although none are used in the ACD files at present.
+	
+	purify.pl has a new option -block=n where n is a number from 1
+	upwards.  1 runs the first 10 tests, 2 runs the next 10
+	(blocksize=10 is hardcoded for now).
+	
 	Cleaned up string position code. Inspections showed ajStrPos and
 	related functions gave results from 0 to length of a string. This
 	caused confusion in many other functions and applictaions. These
