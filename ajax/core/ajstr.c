@@ -283,6 +283,24 @@ AjPStr ajStrNewS(const AjPStr str)
 
 
 
+/* @func ajStrNull ************************************************************
+**
+** Default constructor for a NULL string when no string can be returned.
+** The null string usage pointer is not incremented.
+**
+** @return [const AjPStr] Copy of a pointer to the null string
+** @category new [AjPStr] Null string pointer
+** @@
+******************************************************************************/
+
+const AjPStr ajStrNull(void)
+{
+    return strPNULL;
+}
+
+
+
+
 /* @func ajStrDup *************************************************************
 **
 ** Constructor making an increased reference count copy of a string object.

@@ -40,6 +40,7 @@ extern "C"
 ** @new ajStrNewL Constructor with reserved size
 ** @new ajStrNewCL Constructor with char* text and reserved size
 ** @new ajStrNewCIL Constructor with char* text, length and reserved size
+** @new ajStrNull Null string pointer
 ** @new ajStrDup Duplicates an existing string (with increased reference count)
 **
 ** @delete ajStrDel Default destructor
@@ -388,6 +389,7 @@ AjPStr     ajStrNewCIL (const char *txt, ajint len, size_t size);
 AjPStr     ajStrNewCL (const char *txt, size_t size);
 AjPStr     ajStrNewL (size_t size);
 AjPStr     ajStrNewS (const AjPStr str);
+const AjPStr ajStrNull(void);
 
 AjBool     ajStrParentheses(const AjPStr s);
 ajint      ajStrPos  (const AjPStr thys, ajint ipos);
