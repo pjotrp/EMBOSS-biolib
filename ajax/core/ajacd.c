@@ -17797,21 +17797,27 @@ static AjBool acdGetAttr(AjPStr* result,
     if(!pa)				/* test ambigvar.acd */
 	acdError("Failed to resolve variable '%S'\n", name);
     
-    if(!acdDoValid && !pa->ValStr)
+    if(!pa->ValStr)
     {
-	if(!acdDoHelp)			/* test undefvar.acd */
-	    acdError("Variable '%S' not yet defined\n", name);
-	ajStrAssC(result, "...");    /* only for help - patch it up */
+	if (!acdDoValid)
+	{
+	    if(!acdDoHelp)			/* test undefvar.acd */
+		acdError("Variable '%S' not yet defined\n", name);
+	    ajStrAssC(result, "...");    /* only for help - patch it up */
+	}
 	return ajTrue;
     }
     
-    if(!acdDoValid && !ajStrLen(attrib))		/* just use valstr */
+    if(!ajStrLen(attrib))		/* just use valstr */
     {
-	ajStrAssS(result, pa->ValStr);
-	ajStrDelReuse(&tempstr);
-	acdLog("no attribute name, use valstr for %S '%S'\n",
-	       pa->Name, *result);
-	pa->Used |= USED_ACD;
+	if (!acdDoValid)
+	{
+	    ajStrAssS(result, pa->ValStr);
+	    ajStrDelReuse(&tempstr);
+	    acdLog("no attribute name, use valstr for %S '%S'\n",
+		   pa->Name, *result);
+	    pa->Used |= USED_ACD;
+	}
 	return ajTrue;
     }
     
@@ -17859,6 +17865,22 @@ static AjBool acdGetAttr(AjPStr* result,
 		   attrib, pa->Name, *result);
 	    return ajTrue;
 	}
+    }
+    
+    if(ajStrMatchCaseC(attrib, "isdefined"))
+    {
+	acdLog("++isdefined++ Testing\n");
+	if (ajStrLen(pa->ValStr))
+	{
+	    ajStrAssC(result, "Y");
+	}
+	else
+	{
+	    ajStrAssC(result, "N");
+	}
+	acdLog("isdefined attribute found for %S '%S'\n",
+	       pa->Name, *result);
+	return ajTrue;
     }
     
     ajStrDelReuse(&tempstr);
