@@ -811,6 +811,10 @@ AcdOQual acdQualAppl[] =	/* careful: index numbers used in*/
   {"acdtable",   "N",      "bool", "write HTML table of options"},
   {"help",       "N",      "bool", "report command line options. More information on associated and general qualifiers can be found with -help -verbose"},
   {"verbose",    "N",      "bool", "report some/full command line options"},
+  {"warning",    "Y",      "bool", "report warnings"},
+  {"error",      "Y",      "bool", "report errors"},
+  {"fatal",      "Y",      "bool", "report fatal errors"},
+  {"die",        "N",      "bool", "report deaths"},
   {NULL, NULL, NULL, NULL} };
 
 AcdOQual acdQualAlign[] =
@@ -2810,14 +2814,21 @@ static void acdBadVal (AcdPAcd thys, AjBool required, char *fmt, ...)
 
     ajStrAssC(&name,ajStrStr(thys->Name));
   
-    (void) ajFmtPrintS(&msg, "option -%S: %s", name, fmt);
+    /*
+     * replaced line below with following 2 to make msg more obvious to
+     * the user
+     */
+/*    (void) ajFmtPrintS(&msg, "option -%S: %s", name, fmt); */
+    ajDebug("Failure for option '%S'",name);
+    (void) ajFmtPrintS(&msg, "%s", fmt);
+
     va_start (args, fmt) ;
     ajVErr (ajStrStr(msg), args);
     va_end (args) ;
 
     if (!required)
-	ajDie ("%S terminated: Bad value for option and no prompt\n",
-	       acdProgram);
+	ajDie ("%S terminated: Bad value for option [%S] and no prompt\n",
+	       acdProgram,name);
 
     if (acdAuto)
 	ajDie ("%S terminated: Bad value with -auto defined.\n",
@@ -12671,6 +12682,10 @@ static AjBool acdSetQualAppl (AcdPAcd thys, AjBool val) {
       case 7: acdTable    = setval; break;
       case 8: acdDoHelp   = setval; break;
       case 9: acdVerbose  = setval; break;
+      case 10: AjErrorLevel.warning = setval; break;
+      case 11: AjErrorLevel.error   = setval; break;
+      case 12: AjErrorLevel.fatal   = setval; break;
+      case 13: AjErrorLevel.die     = setval; break;
       }
       return ajTrue;
     }
@@ -13472,3 +13487,83 @@ AjBool acdVocabCheck (AjPStr str, char** vocab) {
 
   return ajFalse;
 }
+
+
+/*
+ *  In case people want -errorlevel=wraning,noerror,fatal
+ *
+//static void acdParseErrorLevel(AjPStr str)
+//{
+//    AjPStr *args;
+//    ajint  nargs;
+//    ajint  i;
+//    ajint j;
+//    
+//    AjPStr token = NULL;
+//    AjBool tval = ajTrue;
+//    static char **errors = 
+//    {
+//	"warning", "error", "fatal", NULL
+//    };
+//    ajint ecount;
+//    ajint idx = -1;
+//    
+//    token = ajStrNew();
+//
+//    nargs = ajArrCommaList(str,&args);
+//    for(i=0;i<nargs;++i)
+//    {
+//	tval = ajTrue;
+//	ajStrToLower(&args[i]);
+//	if(ajStrPrefixC(args[i],"no"))
+//	{
+//	    tval = ajFalse;
+//	    ajStrAssC(&token,ajStrStr(args[i])+2);
+//	}
+//	else
+//	    ajStrAssS(&token,args[i]);
+//	
+//
+//	for(j=0;errors[j],++j)
+//	{
+//	    if(!strncmp(errors[j],ajStrStr(token),ajStrLen(token)))
+//	    {
+//		++ecount;
+//		idx = j;
+//	    }
+//	}
+//
+//	if(ecount > 1)
+//	    fprintf(stderr,"Ambiguous error level value [%s]\n",
+//		    ajStrStr(args[i]));
+//	if(idx == -1)
+//	    fprintf(stderr,"Unrecognised error level value [%s]\n",
+//		    ajStrStr(args[i]));
+//	   
+//
+//	switch(idx)
+//	{
+//	case 0:
+//	    AjErrorLevel.warning = tval;
+//	    break;
+//	case 1:
+//	    AjErrorLevel.error   = tval;
+//	    break;
+//	case 2:
+//	    AjErrorLevel.fatal   = tval;
+//	    break;
+//	default:
+//	    fprintf(stderr,"acdParseErrorLevel switch error\n");
+//	    exit(0);
+//	}
+//    }
+//
+//
+//    for(i=0;i<nargs;++i)
+//	ajStrDel(&args[i]);
+//    AJFREE(args);
+//    ajStrDel(&token);
+//
+//    return;
+//}
+*/

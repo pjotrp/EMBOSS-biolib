@@ -4663,7 +4663,7 @@ static AjBool seqUsaProcess (AjPSeq thys, AjPSeqin seqin)
 		accstat = qry->Access->Access (seqin);
 		if (!accstat)
 		{
-		    ajErr ("Database '%S' : access method '%s' failed",
+		    ajDebug ("Database '%S' : access method '%s' failed",
 			   qry->DbName, qry->Access->Name);
 		    return ajFalse;
 		}
