@@ -345,6 +345,8 @@ void ajSeqinDel (AjPSeqin* pthis)
 {
     AjPSeqin thys = *pthis;
 
+    ajDebug("ajSeqinDel called usa:'%S'\n", thys->Usa);
+
     ajStrDel(&thys->Name);
     ajStrDel(&thys->Acc);
 
@@ -656,6 +658,7 @@ AjBool ajSeqallNext (AjPSeqall seqall, AjPSeq* retseq)
 
     *retseq = NULL;
     ajDebug("ajSeqallNext failed\n");
+    ajSeqallClear(seqall);
 
     return ajFalse;
 }
@@ -673,7 +676,7 @@ AjBool ajSeqallNext (AjPSeqall seqall, AjPSeq* retseq)
 void ajSeqinClear (AjPSeqin thys)
 {
 
-    ajDebug ("ajSeqInClear called\n");
+    ajDebug ("ajSeqinClear called\n");
 
     (void) ajStrClear(&thys->Name);
     (void) ajStrClear(&thys->Acc);
@@ -6048,6 +6051,8 @@ void ajSeqQueryDel (AjPSeqQuery* pthis)
 {
     AjPSeqQuery thys = *pthis;
 
+    ajDebug("ajSeqQueryDel db:'%S' id:'%S'\n", thys->DbName, thys->Id);
+
     ajStrDel(&thys->DbName);
     ajStrDel(&thys->Id);
     ajStrDel(&thys->Acc);
@@ -6066,7 +6071,11 @@ void ajSeqQueryDel (AjPSeqQuery* pthis)
     ajStrDel(&thys->Field);
 
     if(thys->QryData)
-	AJFREE(thys->QryData);
+    {
+      if (thys->Access->AccessFree)
+	thys->Access->AccessFree(thys->QryData);
+      AJFREE(thys->QryData);
+    }
 
     AJFREE(*pthis);
 
