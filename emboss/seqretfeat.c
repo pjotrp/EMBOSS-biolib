@@ -112,7 +112,7 @@ int main (int argc, char * argv[]) {
   ajSeqTrace (seq);
   ajSeqWriteClose (seqout);
   ajSeqDel (&seq);
-  ajFeatDictDel();
+/*  ajFeatDictDel();*/
 
   ajExit ();
   return 0;
