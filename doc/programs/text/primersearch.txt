@@ -292,7 +292,7 @@ Known bugs
 See also
 
    Program name Description
-   primer3 Picks PCR primers and hybridization oligos
+   eprimer3 Picks PCR primers and hybridization oligos
    stssearch Searches a DNA database for matches with a set of STS
    primers
    

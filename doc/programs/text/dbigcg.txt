@@ -39,11 +39,11 @@ Index date [00/00/00]: 04/02/00
 
 Command line arguments
 
-   Mandatory qualifiers (* if not always prompted):
+   Mandatory qualifiers:
    -idformat           list       Entry format
   [-dbname]            string     Database name
-*  -directory          string     Database directory
-*  -filename           string     Wildcard database filename
+   -directory          string     Database directory
+   -filename           string     Wildcard database filename
    -release            string     Release number
    -date               string     Index date
 

@@ -294,9 +294,11 @@ See also
 
    Program name                         Description
    contacts     Reads coordinate files and writes contact files
+   dichet       Parse dictionary of heterogen groups
    interface    Reads coordinate files and writes inter-chain contact files
    psiblasts    Runs PSI-BLAST given scopalign alignments
    scopalign    Generate alignments for SCOP families
+   seqsort      Removes ambiguities from database search results
    sigscan      Scans a sparse protein signature against swissprot
    
 Author(s)
