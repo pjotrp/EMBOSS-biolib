@@ -102,7 +102,6 @@ public class ShowSavedResults
     try
     {
       final ResultList reslist = new ResultList(mysettings);
-
       JMenu resFileMenu = new JMenu("File");
       resMenu.add(resFileMenu);
 
@@ -154,7 +153,7 @@ public class ShowSavedResults
               StringTokenizer tok = new StringTokenizer(
                          (String)reslist.get("list"), "\n");
               while (tok.hasMoreTokens())
-                datasets.addElement(tok.nextToken());
+                datasets.addElement(convertToPretty(tok.nextToken()));
 
               if(listByProgram.isSelected())
                 listByProgramName();
@@ -214,8 +213,7 @@ public class ShowSavedResults
           else 
           {
             int index = theList.getSelectedIndex();
-            String thisdata = datasets.elementAt(index).toString();
-
+            String thisdata = convertToOriginal(datasets.elementAt(index));
             aboutRes.setText((String)reslist.get(thisdata));
             aboutRes.setCaretPosition(0);
           }
@@ -231,8 +229,9 @@ public class ShowSavedResults
             try
             {
               savedResFrame.setCursor(cbusy);
-              ResultList thisres = new ResultList(mysettings,(String)st.getSelectedValue(),
-                                                      "show_saved_results");
+              ResultList thisres = new ResultList(mysettings,
+                           convertToOriginal(st.getSelectedValue()),
+                                              "show_saved_results");
               new ShowResultSet(thisres.hash());
               savedResFrame.setCursor(cdone);
             } 
@@ -256,13 +255,14 @@ public class ShowSavedResults
       {
         public void actionPerformed(ActionEvent e) 
 	{
-          String sel = (String)st.getSelectedValue();
+          String sel = convertToOriginal(st.getSelectedValue());
   	  if(sel != null)
           {
 	    try 
 	    {
 	      savedResFrame.setCursor(cbusy);
-	      ResultList thisres = new ResultList(mysettings,sel,"show_saved_results"); 
+	      ResultList thisres = new ResultList(mysettings,
+                                   sel,"show_saved_results"); 
               new ShowResultSet(thisres.hash());
 	      savedResFrame.setCursor(cdone);
 	    } 
@@ -307,6 +307,7 @@ public class ShowSavedResults
               try        // ask the server to delete these results
 	      {
 	        savedResFrame.setCursor(cbusy); 
+                selList = convertToOriginal(selList);
 	        ResultList thisres = new ResultList(mysettings,selList,
                                          "delete_saved_results"); 
 	        savedResFrame.setCursor(cdone);
@@ -392,7 +393,7 @@ public class ShowSavedResults
 	Enumeration enum = epr.descriptionHash().keys();
 	while (enum.hasMoreElements()) 
         {
-	  String image = (String)enum.nextElement().toString();
+	  String image = convertToPretty((String)enum.nextElement());
 	  datasets.addElement(image);
 	}
       }
@@ -415,10 +416,7 @@ public class ShowSavedResults
     // set up the results list in the gui
     Enumeration enum = epr.descriptionHash().keys();
     while (enum.hasMoreElements()) 
-    {
-      String image = (String)enum.nextElement().toString();
-      datasets.addElement(image);
-    }
+      datasets.addElement(convertToPretty((String)enum.nextElement()));
 
     final JList st = new JList(datasets);
     st.addListSelectionListener(new ListSelectionListener()
@@ -432,7 +430,7 @@ public class ShowSavedResults
 	if (!theList.isSelectionEmpty()) 
         {
 	  int index = theList.getSelectedIndex();
-	  String thisdata = datasets.elementAt(index).toString();
+	  String thisdata = convertToOriginal(datasets.elementAt(index));
 	  aboutRes.setText((String)epr.descriptionHash().get(thisdata));
       	  aboutRes.setCaretPosition(0);
 	  aboutRes.setEditable(false);
@@ -450,8 +448,9 @@ public class ShowSavedResults
 	  try
           {
 	    savedResFrame.setCursor(cbusy);
-	    ResultList thisres = new ResultList(mysettings, (String)st.getSelectedValue(), 
-                                                     "show_saved_results");
+	    ResultList thisres = new ResultList(mysettings, 
+                  convertToOriginal(st.getSelectedValue()), 
+                                     "show_saved_results");
 	    savedResFrame.setCursor(cdone);
 	    if (thisres.getStatus().equals("0")) 
               new ShowResultSet(thisres.hash());
@@ -486,8 +485,9 @@ public class ShowSavedResults
 	  try
           {
 	    savedResFrame.setCursor(cbusy);
-	    ResultList thisres = new ResultList(mysettings, (String)st.getSelectedValue(), 
-                                                      "show_saved_results");
+	    ResultList thisres = new ResultList(mysettings, 
+                  convertToOriginal(st.getSelectedValue()), 
+                                     "show_saved_results");
 	    savedResFrame.setCursor(cdone);
 	    if (thisres.getStatus().equals("0")) 
               new ShowResultSet(thisres.hash());
@@ -536,6 +536,7 @@ public class ShowSavedResults
 	    try 
             {
 	      savedResFrame.setCursor(cbusy);
+              selList = convertToOriginal(selList);
 	      ResultList thisres = new ResultList(mysettings,selList,
                                              "delete_saved_results");
 	      savedResFrame.setCursor(cdone);
@@ -594,7 +595,7 @@ public class ShowSavedResults
     Vector vdata = new Vector();
     while (tokenizer.hasMoreTokens())
     {
-      String data = tokenizer.nextToken();
+      String data = convertToPretty(tokenizer.nextToken());
       if(datasets.contains(data) || ldisp)
         vdata.add(data);
     }
@@ -619,5 +620,26 @@ public class ShowSavedResults
       datasets.addElement(res[i]);
   }
 
+  public static String convertToPretty(String sorig)
+  {
+    int index = sorig.indexOf('_');
+    if(index > -1)
+      sorig = sorig.substring(0,index) + "\t\t\t" +
+              sorig.substring(index+1);
+    return sorig.replace('_',' ');
+  }
+
+  private String convertToOriginal(Object sorig)
+  {
+    String s = (String)sorig;
+    int index = s.indexOf('\t');
+    if(index > -1)
+      s = s.substring(0,index) + "_" +
+          s.substring(index+3);
+    
+    return s.replace(' ','_');
+  }
+
 }
+
 
