@@ -1,6 +1,8 @@
 
 SUBDIRS = acd data
 
+EXTRA_DIST = emboss.default.template
+
 check_PROGRAMS = ajtest ajtest2 ajtest3 ajtestajnam \
 contacts cluster complex corbatest \
 demofeatures demolist demosequence demostring demotable \
