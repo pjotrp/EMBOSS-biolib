@@ -115,22 +115,21 @@ static AjPRegexp seqtypeRegProtStop = NULL;
 
 
 
-char seqCharProt[]      = "ACDEFGHIKLMNPQRSTVWYacdefghiklmnpqrstvwyBUXZbuxz*";
+char seqCharProt[]      = "ACDEFGHIKLMNPQRSTVWYacdefghiklmnpqrstvwyBUXZbuxz*?";
 char seqCharProtPure[]  = "ACDEFGHIKLMNPQRSTVWYacdefghiklmnpqrstvwy";
-char seqCharProtAmbig[] = "BUXZbuxz";
+char seqCharProtAmbig[] = "BUXZbuxz?";
 char seqCharProtStop[]  = "*";
 char seqCharProtU[]     = "Uu";
 char seqCharProtX[]     = "Xx";
-char seqCharNuc[]       = "ACGTUacgtuBDHKMNRSVWXYbdhkmnrsvwxy";
+char seqCharNuc[]       = "ACGTUacgtuBDHKMNRSVWXYbdhkmnrsvwxy?";
 char seqCharNucPure[]   = "ACGTUacgtu";
-char seqCharNucAmbig[]  = "BDHKMNRSVWXYbdhkmnrsvwxy";
-char seqCharGap[]       = ".~Oo?-";	/* phylip uses O and ? */
+char seqCharNucAmbig[]  = "BDHKMNRSVWXYbdhkmnrsvwxy?";
+char seqCharGap[]       = ".~Oo-";	/* phylip uses O */
 char seqCharNucDNA[]    = "Tt";
 char seqCharNucRNA[]    = "Uu";
-char seqCharGapany[]    = ".~Oo?-";	/* phylip uses O and ? */
+char seqCharGapany[]    = ".~Oo-";	/* phylip uses O */
 char seqCharGapdash[]   = "-";
 char seqCharGapdot[]    = ".";
-char seqCharGapqry[]    = "?";
 char seqGap = '-';		/* the (only) EMBOSS gap character */
 char seqCharGapTest[]   = " .~Oo-";   /* phylip uses O - don't forget space */
 
@@ -147,61 +146,61 @@ static SeqOType seqType[] =
 {
 /*   "name"            Gaps     Ambig    Type    CvtFrom CvtTo
          BadcharsFunction Description */
-    {"any",            AJFALSE, AJTRUE,  ISANY,  NULL,          NULL,
+    {"any",            AJFALSE, AJTRUE,  ISANY,  "?",    "X",
 	 seqTypeCharAny,
 	 "any valid sequence"},		/* reset type */
-    {"gapany",         AJTRUE,  AJTRUE,  ISANY,  NULL,          NULL,
+    {"gapany",         AJTRUE,  AJTRUE,  ISANY,  "?",    "X",
 	 seqTypeCharAnyGap,
 	 "any valid sequence with gaps"}, /* reset type */
-    {"dna",            AJFALSE, AJTRUE,  ISNUC,  "Uu", "Tt",
+    {"dna",            AJFALSE, AJTRUE,  ISNUC,  "?XUu", "NNTt",
 	 seqTypeCharAny,
 	 "DNA sequence"},
     {"puredna",        AJFALSE, AJFALSE, ISNUC,  "Uu", "Tt",
 	 seqTypeCharNucPure,
 	 "DNA sequence, bases ACGT only"},
-    {"gapdna",         AJTRUE,  AJTRUE,  ISNUC,  "Uu",   "Tt",
+    {"gapdna",         AJTRUE,  AJTRUE,  ISNUC,  "?XUu", "NNTt",
 	 seqTypeCharNucGap,
 	 "DNA sequence with gaps"},
-    {"rna",            AJFALSE, AJTRUE,  ISNUC,  "Tt", "Uu",
+    {"rna",            AJFALSE, AJTRUE,  ISNUC,  "?XTt", "NNUu",
 	 seqTypeCharAny,
 	 "RNA sequence"},
     {"purerna",        AJFALSE, AJFALSE, ISNUC,  "Tt", "Uu",
 	 seqTypeCharNucPure,
 	 "RNA sequence, bases ACGU only"},
-    {"gaprna",         AJTRUE,  AJTRUE,  ISNUC,  "Tt", "Uu",
+    {"gaprna",         AJTRUE,  AJTRUE,  ISNUC,  "?XTt", "NNUu",
 	 seqTypeCharNucGap,
 	 "RNA sequence with gaps"},
-    {"nucleotide",     AJFALSE, AJTRUE,  ISNUC,  NULL,          NULL,
+    {"nucleotide",     AJFALSE, AJTRUE,  ISNUC,  "?X",   "NN",
 	 seqTypeCharNuc,
 	 "nucleotide sequence"},
-    {"purenucleotide", AJFALSE, AJFALSE, ISNUC,  NULL,          NULL,
+    {"purenucleotide", AJFALSE, AJFALSE, ISNUC,  NULL,  NULL,
 	 seqTypeCharNucPure,
 	 "nucleotide sequence, bases ACGTU only"},
-    {"gapnucleotide",  AJTRUE,  AJTRUE,  ISNUC,  NULL,          NULL,
+    {"gapnucleotide",  AJTRUE,  AJTRUE,  ISNUC,  "?X",   "NN",
 	 seqTypeCharNucGap,
 	 "nucleotide sequence with gaps"},
-    {"protein",        AJFALSE, AJTRUE,  ISPROT, "*",           "X",
+    {"protein",        AJFALSE, AJTRUE,  ISPROT, "?*",  "XX",
 	 seqTypeCharProt,
 	 "protein sequence"},
-    {"pureprotein",    AJFALSE, AJFALSE, ISPROT, NULL,          NULL,
+    {"pureprotein",    AJFALSE, AJFALSE, ISPROT, NULL,  NULL,
 	 seqTypeCharProtPure,
 	 "protein sequence without BZ U or X"},
-    {"stopprotein",    AJFALSE, AJTRUE,  ISPROT, NULL,          NULL,
+    {"stopprotein",    AJFALSE, AJTRUE,  ISPROT, "?",   "X",
 	 seqTypeCharProtStop,
 	 "protein sequence with a possible stop"},
-    {"gapprotein",     AJTRUE,  AJTRUE,  ISPROT, "*",           "X",
+    {"gapprotein",     AJTRUE,  AJTRUE,  ISPROT, "?*",  "XX",
 	 seqTypeCharProtGap,
 	 "protein sequence with gaps"},
-    {"proteinstandard",AJFALSE, AJTRUE,  ISPROT, "Uu",  "Xx",
+    {"proteinstandard",AJFALSE, AJTRUE,  ISPROT, "?Uu", "XXx",
 	 seqTypeCharProt,
 	 "protein sequence with no selenocysteine"},
-    {"stopproteinstandard",AJFALSE, AJTRUE, ISPROT, "Uu", "Xx",
+    {"stopproteinstandard",AJFALSE, AJTRUE, ISPROT, "?Uu", "XXx",
 	 seqTypeCharProtStop,
 	 "protein sequence with a possible stop but no selenocysteine"},
-    {"gapproteinstandard", AJTRUE,  AJTRUE, ISPROT, "*Uu", "XXx",
+    {"gapproteinstandard", AJTRUE,  AJTRUE, ISPROT, "?*Uu", "XXXx",
 	 seqTypeCharProtGap,
 	 "protein sequence with gaps but no selenocysteine"},
-    {NULL,             AJFALSE, AJTRUE,  ISANY,  NULL,          NULL,
+    {NULL,             AJFALSE, AJTRUE,  ISANY,  NULL,  NULL,
 	 NULL,
 	 NULL}
 };
