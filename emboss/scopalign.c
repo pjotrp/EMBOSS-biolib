@@ -637,7 +637,9 @@ void ProcessStampFile(AjPStr in, AjPStr out, AjPScop scop)
 
 		/* Read the sequence */
 		ajStrAssSub(&temp3, line, 13, 69);
-
+		ajStrConvertCC(&temp3, " ", "-");
+		ajStrToUpper(&temp3);
+		
 
 		/* Write domain id code and sequence out */
 		ajFmtPrintF(outf,"%-13S%S\n",temp2, temp3);

@@ -637,7 +637,7 @@ AjBool   keysearch(AjPFile inf, AjPTerms terms, AjPHitlist *hits)
 
 
 	    /* In swissparse the Type field will always be set to OTHER */
-	    ajStrAssC(&(*hits)->hits[(*hits)->N - 1]->Type, "OTHER");
+	    ajStrAssC(&(*hits)->hits[(*hits)->N - 1]->Typeobj, "OTHER");
 
 		}
 	    }
@@ -663,7 +663,7 @@ AjBool   keysearch(AjPFile inf, AjPTerms terms, AjPHitlist *hits)
 
 
 	    /* In swissparse the Type field will always be set to OTHER */
-	    ajStrAssC(&(*hits)->hits[(*hits)->N - 1]->Type, "OTHER");
+	    ajStrAssC(&(*hits)->hits[(*hits)->N - 1]->Typeobj, "OTHER");
 	    }
 
 
