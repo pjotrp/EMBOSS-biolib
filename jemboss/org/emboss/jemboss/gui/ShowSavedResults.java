@@ -106,6 +106,32 @@ public class ShowSavedResults
       JMenu resFileMenu = new JMenu("File");
       resMenu.add(resFileMenu);
 
+      final JCheckBoxMenuItem listByProgram = 
+                 new JCheckBoxMenuItem("List by program");
+      listByProgram.addActionListener(new ActionListener()
+      {
+        public void actionPerformed(ActionEvent e)
+        {
+          listByProgramName();
+        }
+      });
+      resFileMenu.add(listByProgram);
+
+      JCheckBoxMenuItem listByDate = 
+                 new JCheckBoxMenuItem("List by date",true);
+      listByDate.addActionListener(new ActionListener()
+      {
+        public void actionPerformed(ActionEvent e)
+        {
+          listByDateRun(reslist);
+        }
+      });
+      resFileMenu.add(listByDate);
+
+      ButtonGroup group = new ButtonGroup();
+      group.add(listByProgram);
+      group.add(listByDate);
+
       JButton refresh = new JButton(rfii);
       refresh.setMargin(new Insets(0,1,0,1));
       refresh.setToolTipText("Refresh");
@@ -124,12 +150,16 @@ public class ShowSavedResults
             {
               reslist.updateRes(newlist.hash());
               datasets.removeAllElements();
-              StringTokenizer tok = new StringTokenizer((String)reslist.get("list"), "\n");
-              while (tok.hasMoreTokens()) 
-              {
-                String image = tok.nextToken();
-                datasets.addElement(image);
-              }
+
+              StringTokenizer tok = new StringTokenizer(
+                         (String)reslist.get("list"), "\n");
+              while (tok.hasMoreTokens())
+                datasets.addElement(tok.nextToken());
+
+              if(listByProgram.isSelected())
+                listByProgramName();
+              else
+                listByDateRun(reslist);
             } 
             else 
             {
@@ -145,6 +175,8 @@ public class ShowSavedResults
         }
       });
 
+
+      resFileMenu.addSeparator();
       JMenuItem resFileMenuExit = new JMenuItem("Close");
       resFileMenuExit.addActionListener(new ActionListener()
       {
@@ -157,16 +189,8 @@ public class ShowSavedResults
       savedResFrame.setJMenuBar(resMenu);
         
       // this is the list of saved results
-        
-      StringTokenizer tokenizer =
-                 new StringTokenizer((String)reslist.get("list"), "\n");
-
-      while (tokenizer.hasMoreTokens()) 
-      {
-        String image = tokenizer.nextToken();
-        datasets.addElement(image);
-      }
-
+      listByDateRun(reslist);
+  
       final JList st = new JList(datasets);
       st.addListSelectionListener(new ListSelectionListener()
       {
@@ -215,8 +239,7 @@ public class ShowSavedResults
       });
       sp.add(st);
         
-      // action buttons
-      // display retrieves all the files and shows them in a window
+      // display retrieves all files and shows them in a window
       JPanel resButtonPanel = new JPanel();
       JButton showResButton = new JButton("Display");
       showResButton.addActionListener(new ActionListener()
@@ -240,13 +263,12 @@ public class ShowSavedResults
 	  } 
 	  else 
 	  {
-	    System.out.println("Nothing selected.");
+            statusField.setText("Nothing selected to be displayed.");
 	  }
         }
       });
         
-      // delete removes the file on the server
-      // and edits the list
+      // delete removes the file on the server & edits the list
       JButton delResButton = new JButton("Delete");
       delResButton.addActionListener(new ActionListener()
       {
@@ -278,7 +300,7 @@ public class ShowSavedResults
 	  } 
           else 
           {
-            System.out.println("Nothing selected.");
+            statusField.setText("Nothing selected to be deleted.");
 	  }
 	}
       });
@@ -505,6 +527,29 @@ public class ShowSavedResults
                            datasets, savedResFrame);
     statusField.setText("Window refresh rate " + freq);
 
+  }
+
+
+  private void listByDateRun(ResultList reslist)
+  {
+    StringTokenizer tokenizer =
+         new StringTokenizer((String)reslist.get("list"), "\n");
+    datasets.removeAllElements();
+    while (tokenizer.hasMoreTokens())
+      datasets.addElement(tokenizer.nextToken());
+  }
+
+
+  private void listByProgramName()
+  { 
+    int nresult = datasets.size();
+    String res[] = new String[nresult];
+    for(int i=0;i<nresult;i++)
+      res[i] = (String)datasets.getElementAt(i);
+    Arrays.sort(res);
+    datasets.removeAllElements();
+    for(int i=0;i<nresult;i++)
+      datasets.addElement(res[i]);
   }
 
 }
