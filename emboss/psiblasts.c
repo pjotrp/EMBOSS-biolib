@@ -165,11 +165,13 @@
 
 
 
-AjPHitlist psiblasts_ajXyzHitlistPsiblast(AjPScopalg scopalg, AjPFile psif);
-AjPFile psiblasts_ajXyzScopalgPsiblast(AjPScopalg scopalg, AjPFile alignf, 
-				       AjPStr *psiname, ajint niter, 
-				       ajint maxhits, float evalue, 
-				       AjPStr database);
+static AjPHitlist psiblasts_ajXyzHitlistPsiblast(AjPScopalg scopalg,
+						 AjPFile psif);
+static AjPFile psiblasts_ajXyzScopalgPsiblast(AjPScopalg scopalg,
+					      AjPFile alignf, 
+					      AjPStr *psiname, ajint niter, 
+					      ajint maxhits, float evalue, 
+					      AjPStr database);
 
 
 
