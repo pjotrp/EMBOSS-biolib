@@ -38,7 +38,7 @@ Usage
    Here is a sample session with infoalign
    
 
-% infoalign ../../data/globins.msf
+% infoalign ../../data/globins.msf 
 Information on a multiple sequence alignment
 Output file [globins.infoalign]: 
    
@@ -50,7 +50,7 @@ Output file [globins.infoalign]:
    This example doesn't display the USA of the sequence:
    
 
-% infoalign ../../data/globins.msf -nousa
+% infoalign ../../data/globins.msf -nousa 
 Information on a multiple sequence alignment
 Output file [globins.infoalign]: 
    
@@ -61,7 +61,7 @@ Output file [globins.infoalign]:
    Display only the name and sequence length of a sequence:
    
 
-% infoalign ../../data/globins.msf -only -name -seqlength
+% infoalign ../../data/globins.msf -only -name -seqlength 
 Information on a multiple sequence alignment
 Output file [globins.infoalign]: 
    
@@ -73,7 +73,7 @@ Output file [globins.infoalign]:
    consensus sequence:
    
 
-% infoalign ../../data/globins.msf -only -name -gapcount -diffcount
+% infoalign ../../data/globins.msf -only -name -gapcount -diffcount 
 Information on a multiple sequence alignment
 Output file [globins.infoalign]: 
    
@@ -84,7 +84,7 @@ Output file [globins.infoalign]:
    Display the name and number of gaps within a sequence:
    
 
-% infoalign ../../data/globins.msf -only -name -gaps
+% infoalign ../../data/globins.msf -only -name -gaps 
 Information on a multiple sequence alignment
 Output file [globins.infoalign]: 
    
@@ -95,7 +95,7 @@ Output file [globins.infoalign]:
    Display information formatted with HTML:
    
 
-% infoalign ../../data/globins.msf -html
+% infoalign ../../data/globins.msf -html 
 Information on a multiple sequence alignment
 Output file [globins.infoalign]: 
    
@@ -106,7 +106,7 @@ Output file [globins.infoalign]:
    Use the first sequence as the reference sequence to compare to:
    
 
-% infoalign ../../data/globins.msf -refseq 1
+% infoalign ../../data/globins.msf -refseq 1 
 Information on a multiple sequence alignment
 Output file [globins.infoalign]: 
    

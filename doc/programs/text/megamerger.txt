@@ -52,7 +52,7 @@ Usage
    Here is a sample session with megamerger
    
 
-% megamerger tembl:ap000504 tembl:af129756
+% megamerger tembl:ap000504 tembl:af129756 
 Merge two large overlapping nucleic acid sequences
 Word size [20]: 
 Output sequence [ap000504.merged]: 

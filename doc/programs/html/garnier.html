@@ -209,14 +209,69 @@ values from their paper."</i>
 <p><h3>Database entry: tsw:amic_pseae</h3>
 <table width="90%"><tr><td bgcolor="#FFDDFF">
 <pre>
-&gt;AMIC_PSEAE P27017 ALIPHATIC AMIDASE EXPRESSION-REGULATING PROTEIN.
-GSHQERPLIGLLFSETGVTADIERSHAYGALLAVEQLNREGGVGGRPIETLSQDPGGDPD
-RYRLCAEDFIRNRGVRFLVGCYMSHTRKAVMPVVERADALLCYPTPYEGFEYSPNIVYGG
-PAPNQNSAPLAAYLIRHYGERVVFIGSDYIYPRESNHVMRHLYRQHGGTVLEEIYIPLYP
-SDDDLQRAVERIYQARADVVFSTVVGTGTAELYRAIARRYGDGRRPPIASLTTSEAEVAK
-MESDVAEGQVVVAPYFSSIDTPASRAFVQACHGFFPENATITAWAEAAYWQTLLLGRAAQ
-AAGNWRVEDVQRHLYDIDIDAPQGPVRVERQNNHSRLSSRIAEIDARGVFQVRWQSPEPI
-RPDPYVVVHNLDDWSASMGGGPLP
+ID   AMIC_PSEAE     STANDARD;      PRT;   384 AA.
+AC   P27017;
+DT   01-AUG-1992 (Rel. 23, Created)
+DT   01-DEC-1992 (Rel. 24, Last sequence update)
+DT   15-DEC-1998 (Rel. 37, Last annotation update)
+DE   ALIPHATIC AMIDASE EXPRESSION-REGULATING PROTEIN.
+GN   AMIC.
+OS   Pseudomonas aeruginosa.
+OC   Bacteria; Proteobacteria; gamma subdivision; Pseudomonas group;
+OC   Pseudomonas.
+RN   [1]
+RP   SEQUENCE FROM N.A., AND SEQUENCE OF 1-18.
+RC   STRAIN=PAC;
+RX   MEDLINE; 91317707.
+RA   WILSON S.A., DREW R.E.;
+RT   "Cloning and DNA sequence of amiC, a new gene regulating expression
+RT   of the Pseudomonas aeruginosa aliphatic amidase, and purification of
+RT   the amiC product.";
+RL   J. Bacteriol. 173:4914-4921(1991).
+RN   [2]
+RP   X-RAY CRYSTALLOGRAPHY.
+RX   MEDLINE; 92106343.
+RA   WILSON S.A., CHAYEN N.E., HEMMINGS A.M., DREW R.E., PEARL L.H.;
+RT   "Crystallization of and preliminary X-ray data for the negative
+RT   regulator (AmiC) of the amidase operon of Pseudomonas aeruginosa.";
+RL   J. Mol. Biol. 222:869-871(1991).
+RN   [3]
+RP   X-RAY CRYSTALLOGRAPHY (2.1 ANGSTROMS).
+RX   MEDLINE; 95112789.
+RA   PEARL L.H., O'HARA B., DREW R.E., WILSON S.A.;
+RT   "Crystal structure of AmiC: the controller of transcription
+RT   antitermination in the amidase operon of Pseudomonas aeruginosa.";
+RL   EMBO J. 13:5810-5817(1994).
+CC   -!- FUNCTION: NEGATIVELY REGULATES THE EXPRESSION OF THE ALIPHATIC
+CC       AMIDASE OPERON. AMIC FUNCTIONS BY INHIBITING THE ACTION OF AMIR
+CC       AT THE PROTEIN LEVEL. IT BINDS TO AMIR. IT EXHIBITS PROTEIN KINASE
+CC       ACTIVITY.
+CC   -!- SUBUNIT: HOMODIMER.
+CC   -!- DOMAIN: CONSISTS OF TWO BETA-ALPHA-BETA DOMAINS WITH A CENTRAL
+CC       CLEFT IN WHICH THE AMIDE BINDS.
+CC   --------------------------------------------------------------------------
+CC   This SWISS-PROT entry is copyright. It is produced through a collaboration
+CC   between  the Swiss Institute of Bioinformatics  and the  EMBL outstation -
+CC   the European Bioinformatics Institute.  There are no  restrictions on  its
+CC   use  by  non-profit  institutions as long  as its content  is  in  no  way
+CC   modified and this statement is not removed.  Usage  by  and for commercial
+CC   entities requires a license agreement (See http://www.isb-sib.ch/announce/
+CC   or send an email to license@isb-sib.ch).
+CC   --------------------------------------------------------------------------
+DR   EMBL; X13776; CAA32024.1; -.
+DR   PIR; A40359; A40359.
+DR   PDB; 1PEA; 03-APR-96.
+KW   Transferase; Kinase; Repressor; 3D-structure.
+FT   INIT_MET      0      0
+SQ   SEQUENCE   384 AA;  42704 MW;  68FF861F CRC32;
+     GSHQERPLIG LLFSETGVTA DIERSHAYGA LLAVEQLNRE GGVGGRPIET LSQDPGGDPD
+     RYRLCAEDFI RNRGVRFLVG CYMSHTRKAV MPVVERADAL LCYPTPYEGF EYSPNIVYGG
+     PAPNQNSAPL AAYLIRHYGE RVVFIGSDYI YPRESNHVMR HLYRQHGGTV LEEIYIPLYP
+     SDDDLQRAVE RIYQARADVV FSTVVGTGTA ELYRAIARRY GDGRRPPIAS LTTSEAEVAK
+     MESDVAEGQV VVAPYFSSID TPASRAFVQA CHGFFPENAT ITAWAEAAYW QTLLLGRAAQ
+     AAGNWRVEDV QRHLYDIDID APQGPVRVER QNNHSRLSSR IAEIDARGVF QVRWQSPEPI
+     RPDPYVVVHN LDDWSASMGG GPLP
+//
 </pre>
 </td></tr></table><p>
 
@@ -262,7 +317,7 @@ By default <b>garnier</b> writes a 'tagseq' report file.
 <pre>
 ########################################
 # Program: garnier
-# Rundate: Fri Aug 23 16:03:30 2002
+# Rundate: Thu Nov 07 14:33:25 2002
 # Report_format: tagseq
 # Report_file: amic_pseae.garnier
 ########################################
@@ -295,10 +350,10 @@ turns  TT TT   T          TTTTT    TTT    T T
           .  110    .  120    .  130    .  140    .  150
       LCYPTPYEGFEYSPNIVYGGPAPNQNSAPLAAYLIRHYGERVVFIGSDYI
 helix                              HHH                  
-
-
-<font color=red>  [Part of this file has been deleted for brevity]</font>
-
+sheet EEE    E       EE           E   EEEE    EEEEE     
+turns       T TTT  TT  T     TT           TT T     TTTT 
+ coil    CCC     CC     CCCCC  CCC          C          C
+          .  160    .  170    .  180    .  190    .  200
       YPRESNHVMRHLYRQHGGTVLEEIYIPLYPSDDDLQRAVERIYQARADVV
 helix       HHHH                       HHHHHHHHHHHHH    
 sheet           EEE       EEEEEEE                   EEEE

@@ -45,7 +45,7 @@ Output report [act1_fugru.antigenic]:
    regions can be produced.
    
 
-% antigenic -rformat gff
+% antigenic -rformat gff 
 Finds antigenic sites in proteins
 Input sequence(s): tsw:act1_fugru
 Minimum length [6]: 
@@ -90,14 +90,57 @@ Input file format
    
   Database entry: tsw:act1_fugru
   
->ACT1_FUGRU P53484 ACTIN, CYTOPLASMIC 1 (BETA-ACTIN 1).
-MEDEIAALVVDNGSGMCKAGFAGDDAPRAVFPSIVGRPRHQGVMVGMGQKDSYVGDEAQS
-KRGILTLKYPIEHGIVTNWDDMEKIWHHTFYNELRVAPEEHPVLLTEAPLNPKANREKMT
-QIMFETFNTPAMYVAIQAVLSLYASGRTTGIVMDSGDGVTHTVPIYEGYALPHAILRLDL
-AGRDLTDYLMKILTERGYSFTTTAEREIVRDIKEKLCYVALDFEQEMGTAASSSSLEKSY
-ELPDGQVITIGNERFRCPEALFQPSFLGMESCGIHETTYNSIMKCDVDIRKDLYANTVLS
-GGTTMYPGIADRMQKEITALAPSTMKIKIIAPPERKYSVWIGGSILASLSTFQQMWISKQ
-EYDESGPSIVHRKCF
+ID   ACT1_FUGRU     STANDARD;      PRT;   375 AA.
+AC   P53484;
+DT   01-OCT-1996 (REL. 34, CREATED)
+DT   01-OCT-1996 (REL. 34, LAST SEQUENCE UPDATE)
+DT   01-OCT-1996 (REL. 34, LAST ANNOTATION UPDATE)
+DE   ACTIN, CYTOPLASMIC 1 (BETA-ACTIN 1).
+OS   FUGU RUBRIPES (JAPANESE PUFFERFISH) (TAKIFUGU RUBRIPES).
+OC   EUKARYOTA; METAZOA; CHORDATA; VERTEBRATA; PISCES; GNATHOSTOMATA;
+OC   OSTEICHTHYES; ACTINOPTERYGII; TETRAODONTIFORMES.
+RN   [1]
+RP   SEQUENCE FROM N.A.
+RX   MEDLINE; 96275651.
+RA   VENKATESH B., TAY B.H., ELGAR G., BRENNER S.;
+RL   J. MOL. BIOL. 259:655-665(1996).
+CC   -!- FUNCTION: ACTINS ARE HIGHLY CONSERVED PROTEINS THAT ARE INVOLVED
+CC       IN VARIOUS TYPES OF CELL MOTILITY AND ARE UBIQUITOUSLY EXPRESSED
+CC       IN ALL EUKARYOTIC CELLS.
+CC   -!- SUBUNIT: POLYMERIZATION OF GLOBULAR ACTIN (G-ACTIN) LEADS TO A
+CC       STRUCTURAL FILAMENT (F-ACTIN) IN THE FORM OF A TWO-STRANDED
+CC       HELIX. EACH ACTIN CAN BIND TO 4 OTHERS.
+CC   -!- SUBCELLULAR LOCATION: CYTOPLASMIC.
+CC   -!- TISSUE SPECIFICITY: WIDELY DISTRIBUTED. NOT EXPRESSED IN SKELETAL
+CC       MUSCLE.
+CC   -!- IN VERTEBRATES 3 MAIN GROUPS OF ACTIN ISOFORMS, ALPHA, BETA AND
+CC       GAMMA HAVE BEEN IDENTIFIED. THE ALPHA ACTINS ARE FOUND IN MUSCLE
+CC       TISSUES AND ARE A MAJOR CONSTITUENT OF THE CONTRACTILE APPARATUS.
+CC       THE BETA AND GAMMA ACTINS CO-EXISTS IN MOST CELL TYPES AS
+CC       COMPONENTS OF THE CYTOSKELETON AND AS MEDIATORS OF INTERNAL CELL
+CC       MOTILITY.
+CC   -!- THERE ARE THREE DIFFERENT BETA-CYTOPLASMIC ACTINS IN FUGU
+CC       RUBRIPES.
+DR   EMBL; U37499; G1335821; -.
+DR   PROSITE; PS00406; ACTINS_1; 1.
+DR   PROSITE; PS00432; ACTINS_2; 1.
+DR   PROSITE; PS01132; ACTINS_ACT_LIKE; 1.
+KW   MULTIGENE FAMILY; STRUCTURAL PROTEIN; METHYLATION; ACETYLATION;
+KW   CYTOSKELETON.
+FT   PROPEP        1      1       REMOVED IN MATURE FORM (BY SIMILARITY).
+FT   CHAIN         2    375       ACTIN, CYTOPLASMIC 1.
+FT   MOD_RES       1      1       ACETYLATION (BY SIMILARITY).
+FT   MOD_RES       2      2       ACETYLATION (BY SIMILARITY).
+FT   MOD_RES      73     73       METHYLATION (BY SIMILARITY).
+SQ   SEQUENCE   375 AA;  41766 MW;  3A0543DF CRC32;
+     MEDEIAALVV DNGSGMCKAG FAGDDAPRAV FPSIVGRPRH QGVMVGMGQK DSYVGDEAQS
+     KRGILTLKYP IEHGIVTNWD DMEKIWHHTF YNELRVAPEE HPVLLTEAPL NPKANREKMT
+     QIMFETFNTP AMYVAIQAVL SLYASGRTTG IVMDSGDGVT HTVPIYEGYA LPHAILRLDL
+     AGRDLTDYLM KILTERGYSF TTTAEREIVR DIKEKLCYVA LDFEQEMGTA ASSSSLEKSY
+     ELPDGQVITI GNERFRCPEA LFQPSFLGME SCGIHETTYN SIMKCDVDIR KDLYANTVLS
+     GGTTMYPGIA DRMQKEITAL APSTMKIKII APPERKYSVW IGGSILASLS TFQQMWISKQ
+     EYDESGPSIV HRKCF
+//
    
 Output file format
 
@@ -121,7 +164,7 @@ Output file format
   
 ########################################
 # Program: antigenic
-# Rundate: Fri Aug 23 15:43:20 2002
+# Rundate: Thu Nov 07 14:15:47 2002
 # Report_format: motif
 # Report_file: act1_fugru.antigenic
 ########################################
@@ -154,10 +197,40 @@ Max_score_pos at "*"
 
 (4) Score 1.164 length 12 at residues 27->38
                 *
+ Sequence: PRAVFPSIVGRP
+           |          |
+          27          38
+
+(5) Score 1.136 length 24 at residues 160->183
+                        *
+ Sequence: THTVPIYEGYALPHAILRLDLAGR
+           |                      |
+         160                      183
+
+(6) Score 1.135 length 6 at residues 367->372
+                *
+ Sequence: PSIVHR
+           |    |
+         367    372
 
 
   [Part of this file has been deleted for brevity]
 
+(11) Score 1.102 length 15 at residues 62->76
+                 *
+ Sequence: RGILTLKYPIEHGIV
+           |             |
+          62             76
+
+(12) Score 1.086 length 19 at residues 232->250
+                        *
+ Sequence: SSSSLEKSYELPDGQVITI
+           |                 |
+         232                 250
+
+(13) Score 1.083 length 6 at residues 327->332
+              *
+ Sequence: IKIIAP
            |    |
          327    332
 
@@ -200,7 +273,7 @@ Max_score_pos at "*"
   File: act1_fugru.antigenic
   
 ##gff-version 2.0
-##date 2002-08-28
+##date 2002-11-07
 ##Type Protein ACT1_FUGRU
 ACT1_FUGRU      antigenic       site    214     222     1.207   +       .
 Sequence "ACT1_FUGRU.1" ; note "*pos 218"
@@ -313,7 +386,7 @@ Known bugs
    
 See also
 
-    Program name                        Description
+    Program name                         Description
    digest         Protein proteolytic enzyme or reagent cleavage digest
    fuzzpro        Protein pattern search
    fuzztran       Protein pattern search after translation
@@ -322,6 +395,7 @@ See also
    patmatdb       Search a protein sequence with a motif
    patmatmotifs   Search a PROSITE motif database with a protein sequence
    pepcoil        Predicts coiled coil regions
+   pestfind       Finds PEST motifs as potential proteolytic cleavage sites
    preg           Regular expression search of a protein sequence
    pscan          Scans proteins using PRINTS
    sigcleave      Reports protein signal cleavage sites

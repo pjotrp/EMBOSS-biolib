@@ -29,10 +29,13 @@ Usage
    Here is a sample session with lindna
    
 
-% lindna -graph cps
+% lindna -graph cps 
 Draws linear maps of DNA constructs
 Input file [inputfile]: ../../data/data.linp
-do you want a ruler (Y or N) [Y]: 
+do you want a ruler [Y]: 
+      1 : Open
+      2 : Filled
+      3 : Outline
 type of blocks (enter Open, Filled, or Outline) [Filled]: 
 
 Created lindna.ps
@@ -298,6 +301,7 @@ See also
    showdb Displays information on the currently available databases
    showfeat Show features of a sequence
    showseq Display a sequence with features, translation etc
+   sixpack Display a DNA sequence with 6-frame translation and ORFs
    textsearch Search sequence documentation text. SRS and Entrez are
    faster!
    

@@ -193,8 +193,7 @@ Multiple substitution correction methods for proteins
          2 : Kimura Protein
 Method to use [0]: 2
 Output file [pax.distmat]: 
-Warning: 
-ACD qualifier never used: 
+Warning: ACD qualifier never used: 
 nucmethod = '0' (assoc No)
    
    Go to the input files for this example

@@ -71,7 +71,7 @@ Finds or fetches the data files read in by the EMBOSS programs
    directories:
    
 
-% embossdata -showall
+% embossdata -showall 
 Finds or fetches the data files read in by the EMBOSS programs
 
 
@@ -195,6 +195,7 @@ DIRECTORY: /packages/emboss_dev/gwilliam/emboss/emboss/emboss/data
   Eprior1.plib
   Ememe.dat
   EGC.16
+  jjj
   Eprior30.plib
   Eembl.ior
   tfinsect
@@ -375,6 +376,19 @@ DIRECTORY: /packages/emboss_dev/gwilliam/emboss/emboss/emboss/data/CODONS
   Ezma.cut
   Makefile.am
   Makefile
+  EAedes_atropalpus.cut
+  EDictyostelium_discoideum.cut
+  EAndroctonus_australis.cut
+  EAmblyomma_americanum.cut
+  EAedes_albopictus.cut
+  EAphrodite_aculeata.cut
+  EAsellus_aquaticus.cut
+  EAcanthocheilonema_viteae.cut
+  EAstacus_astacus.cut
+  EAedes_aegypti.cut
+  EAgelenopsis_aperta.cut
+  EAcrolepiopsis_assectella.cut
+  EAnadara_trapezia.cut
 
 
 DIRECTORY: /packages/emboss_dev/gwilliam/emboss/emboss/emboss/data/REBASE
@@ -383,6 +397,9 @@ DIRECTORY: /packages/emboss_dev/gwilliam/emboss/emboss/emboss/data/REBASE
   Makefile.am
   dummyfile
   Makefile
+  embossre.enz
+  embossre.ref
+  embossre.sup
 
 
 DIRECTORY: /packages/emboss_dev/gwilliam/emboss/emboss/emboss/data/AAINDEX
@@ -834,7 +851,7 @@ DIRECTORY: /packages/emboss_dev/gwilliam/emboss/emboss/emboss/data/AAINDEX
    Make a copy of an EMBOSS data file in the current directory:
    
 
-% embossdata -fetch -filename Epepcoil.dat
+% embossdata -fetch -filename Epepcoil.dat 
 Finds or fetches the data files read in by the EMBOSS programs
 
 File '/packages/emboss_dev/gwilliam/emboss/emboss/emboss/data/Epepcoil.dat' has
@@ -847,7 +864,7 @@ File '/packages/emboss_dev/gwilliam/emboss/emboss/emboss/data/Epepcoil.dat' has
    Display the directories which contain a particular EMBOSS data file:
    
 
-% embossdata -filename EPAM60
+% embossdata -filename EPAM60 
 Finds or fetches the data files read in by the EMBOSS programs
 
 # The following directories can contain EMBOSS data files.

@@ -27,20 +27,15 @@ Usage
 hy" 
 Displays protein hydropathy of a set of sequences
 Graph type [x11]: cps
-Error: 
-ERROR only homogenous number of points allowed for multiple graphs
+Error: ERROR only homogenous number of points allowed for multiple graphs
 
-Error: 
-ERROR only homogenous number of points allowed for multiple graphs
+Error: ERROR only homogenous number of points allowed for multiple graphs
 
-Error: 
-ERROR only homogenous number of points allowed for multiple graphs
+Error: ERROR only homogenous number of points allowed for multiple graphs
 
-Error: 
-ERROR only homogenous number of points allowed for multiple graphs
+Error: ERROR only homogenous number of points allowed for multiple graphs
 
-Error: 
-ERROR only homogenous number of points allowed for multiple graphs
+Error: ERROR only homogenous number of points allowed for multiple graphs
 
 
 Created pepwindowall.ps

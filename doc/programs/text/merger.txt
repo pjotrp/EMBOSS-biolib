@@ -472,7 +472,7 @@ agcttccggccagcgccagcccgcccatggtaaccaccggcagagcggtcgac
   
 ########################################
 # Program:  merger
-# Rundate:  Fri Aug 23 16:05:05 2002
+# Rundate:  Thu Nov 07 14:34:54 2002
 # Align_format: simple
 # Report_file: eclacy.out2
 ########################################

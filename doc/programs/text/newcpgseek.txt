@@ -31,15 +31,12 @@ Description
    Finding a CpG island upstream of predicted exons or genes is good
    contributory evidence.
    
-   By default, this program defines a CpG island as a region where, over
-   an average of 10 windows, the calculated % composition is over 50% and
-   the calculated Obs/Exp ratio is over 0.6 and the conditions hold for a
-   minimum of 200 bases. These conditions can be modified by setting the
-   values of the appropriate parameters.
-   
-   The Expected number of CpG patterns in a window is calculated as the
-   number of 'C's in the window multiplied by the number of 'G's in the
-   window, divided by the window length.
+   CpG islands are usually defined as >200bp with %GC > 50% and obs/exp
+   CpG > 0.6". However this program uses a running sum rather than a
+   window to produce a score: if there is not a CpG at position i, then
+   decrement runSum counter, but if CpG then runSum += CPGSCORE. Spans >
+   threshold are searched for recursively. If the score is higher than a
+   threshold (17 at the moment) then a putative island is declared.
    
    This program reads in one or more sequences and finds regions where
    there is a high absolute frequency of CpG dimers as well as a high
@@ -255,6 +252,35 @@ See also
    cpgreport    Reports all CpG rich regions
    geecee       Calculates the fractional GC content of nucleic acid sequences
    newcpgreport Report CpG rich areas
+   
+   As there is no official definition of what is a cpg island is, and
+   worst where they begin and end, we have to live with 2 definitions and
+   thus two methods. These are:
+   
+   1. newcpgseek and cpgreport - both declare a putative island if the
+   score is higher than a threshold (17 at the moment). They now also
+   displaying the actual CpG count, the % CG and the observed/expected
+   ration in the region where the score is above the threshold. This
+   scoring method based on sum/frequencies overpredicts islands but finds
+   the smaller ones around primary exons. newcpgseek uses the same method
+   as cpgreport but the output is different and more readable.
+   
+   2. newcpgreport and cpgplot use a sliding window within which the
+   Obs/Exp ratio of CpG is calculated. The important thing to note in
+   this method is that an island, in order to be reported, is defined as
+   a region that satisfies the following contraints:
+   
+   Obs/Exp ratio > 0.6
+   % C + % G > 50%
+   Length > 200.
+
+   For all practical purposes you should probably use newcpgreport. It is
+   actually used to produce the human cpgisland database you can find on
+   the EBI's ftp server as well as on the EBI's SRS server.
+   
+   geecee measures CG content in the entire input sequence and is not to
+   be used to detect CpG islands. It can be usefull for detecting
+   sequences that MIGHT contain an island.
    
 Author(s)
 

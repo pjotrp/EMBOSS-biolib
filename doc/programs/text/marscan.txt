@@ -120,81 +120,162 @@ Input file format
    
   Database entry: tembl:u01317
   
->HSHBB U01317.1 Human beta globin region on chromosome 11.
-gaattctaatctccctctcaaccctacagtcacccatttggtatattaaagatgtgttgt
-ctactgtctagtatccctcaagtagtgtcaggaattagtcatttaaatagtctgcaagcc
-aggagtggtggctcatgtctgtaattccagcactggagaggtagaagtgggaggactgct
-tgagctcaagagtttgatattatcctggacaacatagcaagacctcgtctctacttaaaa
-aaaaaaaaattagccaggcatgtgatgtacacctgtagtcccagctactcaggaggccga
-aatgggaggatcccttgagctcaggaggtcaaggctgcagtgagacatgatcttgccact
-gcactccagcctggacagcagagtgaaaccttgcctcacgaaacagaatacaaaaacaaa
-caaacaaaaaactgctccgcaatgcgcttccttgatgctctaccacataggtctgggtac
-tttgtacacattatctcattgctgttcgtaattgttagattaattttgtaatattgatat
-tattcctagaaagctgaggcctcaagatgataacttttattttctggacttgtaatagct
-ttctcttgtattcaccatgttgtaactttcttagagtagtaacaatataaagttattgtg
-agtttttgcaaacacagcaaacacaacgacccatatagacattgatgtgaaattgtctat
-tgtcaatttatgggaaaacaagtatgtactttttctactaagccattgaaacaggaataa
-cagaacaagattgaaagaatacattttccgaaattacttgagtattatacaaagacaagc
-acgtggacctgggaggagggttattgtccatgactggtgtgtggagacaaatgcaggttt
-ataatagatgggatggcatctagcgcaatgactttgccatcacttttagagagctcttgg
-ggaccccagtacacaagaggggacgcagggtatatgtagacatctcattctttttcttag
-tgtgagaataagaatagccatgacctgagtttatagacaatgagcccttttctctctccc
-actcagcagctatgagatggcttgccctgcctctctactaggctgactcactccaaggcc
-cagcaatgggcagggctctgtcagggctttgatagcactatctgcagagccagggccgag
-aaggggtggactccagagactctccctcccattcccgagcagggtttgcttatttatgca
-tttaaatgatatatttattttaaaagaaataacaggagactgcccagccctggctgtgac
-atggaaactatgtagaatattttgggttccatttttttttccttctttcagttagaggaa
-aaggggctcactgcacatacactagacagaaagtcaggagctttgaatccaagcctgatc
-atttccatgtcatactgagaaagtccccacccttctctgagcctcagtttctctttttat
-aagtaggagtctggagtaaatgatttccaatggctctcatttcaatacaaaatttccgtt
-tattaaatgcatgagcttctgttactccaagactgagaaggaaattgaacctgagactca
-ttgactggcaagatgtccccagaggctctcattcagcaataaaattctcaccttcaccca
-ggcccactgagtgtcagatttgcatgcactagttcacgtgtgtaaaaaggaggatgcttc
-tttcctttgtattctcacatacctttaggaaagaacttagcacccttcccacacagccat
-cccaataactcatttcagtgactcaacccttgactttataaaagtcttgggcagtataga
-gcagagattaagagtacagatgctggagccagaccacctgagtgattagtgactcagttt
-ctcttagtaattgtatgactcagtttcttcatctgtaaaatggagggttttttaattagt
-ttgtttttgagaaagggtctcactctgtcacccaaatgggagtgtagtggcaaaatctcg
+ID   HSHBB      standard; DNA; HUM; 73308 BP.
+XX
+AC   U01317; J00093; J00094; J00096; J00158; J00159; J00160; J00161; J00162;
+AC   J00163; J00164; J00165; J00166; J00167; J00168; J00169; J00170; J00171;
+AC   J00172; J00173; J00174; J00175; J00177; J00178; J00179; K01239; K01890;
+AC   K02544; M18047; M19067; M24868; M24886;
+XX
+SV   U01317.1
+XX
+DT   19-MAR-1994 (Rel. 39, Created)
+DT   31-MAR-2001 (Rel. 67, Last updated, Version 28)
+XX
+DE   Human beta globin region on chromosome 11.
+XX
+KW   allelic variation; alternate cap site; Alu repeat; beta-1 pseudogene;
+KW   beta-globin; delta-globin; epsilon-globin; gamma-globin; gene duplication;
+KW   globin; HPFH; KpnI repetitive sequence; polymorphism; promoter mutation;
+KW   pseudogene; repetitive sequence; RNA polymerase III; thalassemia.
+XX
+OS   Homo sapiens (human)
+OC   Eukaryota; Metazoa; Chordata; Craniata; Vertebrata; Euteleostomi; Mammalia
+;
+OC   Eutheria; Primates; Catarrhini; Hominidae; Homo.
+XX
+RN   [1]
+RP   62409-62631, 63482-63610
+RX   MEDLINE; 74275150.
+RA   Marotta C.A., Forget B.G., Weissman S.M., Verma I.M., McCaffrey R.P.,
+RA   Baltimore D.;
+RT   "Nucleotide sequences of human globin messenger RNA";
+RL   Proc. Natl. Acad. Sci. U.S.A. 71:2300-2304(1974).
+XX
+RN   [2]
+RP   63602-63646
+RX   MEDLINE; 76053173.
+RA   Forget B.G., Marotta C.A., Weissman S.M., Cohen-Solal M.M.;
+RT   "Nucleotide sequences of the 3'-terminal untranslated region of messenger
+RT   RNA for human beta globin chain";
+RL   Proc. Natl. Acad. Sci. U.S.A. 72:3614-3618(1975).
+XX
+RN   [3]
+RP   63593-63626
+RX   MEDLINE; 77022845.
+RA   Proudfoot N.J., Brownlee G.G.;
+RT   "Nucleotide sequences of globin messenger RNA";
+RL   Br. Med. Bull. 32:251-256(1976).
+XX
+RN   [4]
+RP   63673-63743
+RX   MEDLINE; 77114153.
+RA   Proudfoot N.J., Longley J.I.;
 
 
   [Part of this file has been deleted for brevity]
 
-ccactcctattcaacatagtgttggaagttctggccagggcaatcaggcaggagaaggaa
-ataaagggcattcaattaggaaaagaggaaggtgaaattgtccctgtttgcagatgacat
-gattgtatatctagaaaaccccattgtctcagcccaaaatctccttaagctgataagcaa
-cttcagcaaagtctcaggatataaaatcagtgtgcaaaaatcacaagtattcctatgcac
-caataacagacaaacagagagccaaatcatgagtgaactcccattcacaattgcttcaaa
-gagaataaaatacctaggaatccaacttacaagggatgtgaaggacctcttcaaggagaa
-ctacaaaccactgctcaatgaaataaaagaggatacaaacaaatggaagaacattccatg
-cttatgggtaggaagaatcatatcgtgaaaatggtcatactgcccaaggtaatttataga
-ttcaatgccatccccatcaagctaccaatgactttcttcacagaactggaaaaaactact
-ttaaagttcatatggaatcaaaaaagagcccacatcaccaaggcaatcctaagccaaaag
-aacaaagctggaggcatcacgctacctgacttcaaactatactacaatgctacggtaacc
-aaaacagcatggtactggtaccaaaacagagatctagaccaatggaacagaacagagccc
-tcagaaataatgccgcatatctacaactatccgatctttgacaaacctgagagaaacaag
-caatggggaaaggattccctatttaataaatggtgctgggaaaactggctagccatatgt
-agaaagctgaaactggatccttccttacaccttatacaaaaattaattcaagatggatta
-aagacttaaacattagacctaaaaccataaaaaccctagaaaaaaacctaggcaatacca
-ttcaggacataggcatgggcaaggacttcatgtctaaaacaccaaaacgaatggcaacaa
-aagacaaaatggacaaacgggatctaattaaactaaagagcttctgcacagctaaagaaa
-ctaccatcagagtgaacaggcaacctacaaaatgggagaaaatttttgcaatctactcat
-ctgacaaagggctaatatccagaatctacaatgaactcaaacaaatttacaagaaaaaac
-aaacaaccccatcaaaaagtgggcaaaggatatgaacagacacttctcaaaagaagacat
-ttatgtaatcaaaaaacacatgaaaaaatgctcatcatcactagccatcagagaaatgca
-aatcaaaaccacaatgagataccatctcacaccagttagaatggcgatcattaaaaagtc
-aggaaacaacaggtgctggagaggatgtggagaaacaggaacaacttttacactgttggt
-gggactgtaaactagttcaaccattgcggaagtcagtgtggcaattcctcaggaatctag
-aactagaaataccatttgacccagccatcccattactgggtagatacccaaaggattata
-aatcatgctgctataaagacacatgcacacgtatgtttattgcagcactattcacaatag
-caaagacttggaaccaacccaaatgtccaacaacgatagattggattaagaaaatgtggc
-acatatacaccatggaatactatgcagccataaaaaatgatgagttcatgtcctttgtag
-ggacatggatgaagctggaaactatcattctcagcaaactatcacaaggacaataaacca
-aacaccgcatgttctcactcataggtgggaattgaacaatgagaacacatggacacatga
-agaggaacatcacactctggggactgttatggggtggggggcaggggcagggatagcact
-aggagatatacctaatgctaaatgacgagttaatgggtgcagcacaccaacatggcacat
-gtatacatatataacaaacctgccgttgtgcacatgtaccctaaaacttgaagtataata
-ataaaaaaaagttatcctattaaaactgatctcacacatccgtagagccattatcaagtc
-tttctctttgaaacagacagaaatttagtgttttctcagtcagttaac
+     aaaggggaga agaatcaaat agacgcaata aaaaatgaca cggggtatca ccactgatcc     7038
+0
+     cacagaaata caaactaccg tcagagaata ctataaacac ctctacgcaa ataaactaga     7044
+0
+     aaatctagaa gaaatggata aattcctcga cacatacact ctgccaagac taaaccagga     7050
+0
+     agaagttgta tctctgaata gaccaataac aggctctgaa attgaggcaa taattaatag     7056
+0
+     cttatcaacc aaaaaaagtc cgggaccagt aggattcata gccgaattct accagaggta     7062
+0
+     caaggaggag ctggtaccat tccttctgaa actattccaa tcaatagaaa aagagggaat     7068
+0
+     cctccctaac tcattttatg aggccagcat catcctgata ccaaagcctg acagagacac     7074
+0
+     aacaaaaaaa gagaatgtta caccaatatc cttgatgaac atcgatgcaa aaatcctcaa     7080
+0
+     taaaatactg gcaaactgaa tccagcagca catcaaaaag cttatcctcc atgatcaagt     7086
+0
+     gggcttcatc cctgccatgc aaggctggtt caacatacga aatcaataaa cataatccag     7092
+0
+     catataaaca gaaccaaaga cacaaaccat atgattatct caatagatgc agaaaaggcc     7098
+0
+     tttgacaaaa ttcaacaatg cttcatgcta aaaactctca ataaattagg tattgatggg     7104
+0
+     acatatctca aaataataag agctatctat gacaaaccca cagccaatat catactgagt     7110
+0
+     ggacaaaaac tggaagcatt ccctttgaaa actggcacaa ggcagggatg ccctctctca     7116
+0
+     ccactcctat tcaacatagt gttggaagtt ctggccaggg caatcaggca ggagaaggaa     7122
+0
+     ataaagggca ttcaattagg aaaagaggaa ggtgaaattg tccctgtttg cagatgacat     7128
+0
+     gattgtatat ctagaaaacc ccattgtctc agcccaaaat ctccttaagc tgataagcaa     7134
+0
+     cttcagcaaa gtctcaggat ataaaatcag tgtgcaaaaa tcacaagtat tcctatgcac     7140
+0
+     caataacaga caaacagaga gccaaatcat gagtgaactc ccattcacaa ttgcttcaaa     7146
+0
+     gagaataaaa tacctaggaa tccaacttac aagggatgtg aaggacctct tcaaggagaa     7152
+0
+     ctacaaacca ctgctcaatg aaataaaaga ggatacaaac aaatggaaga acattccatg     7158
+0
+     cttatgggta ggaagaatca tatcgtgaaa atggtcatac tgcccaaggt aatttataga     7164
+0
+     ttcaatgcca tccccatcaa gctaccaatg actttcttca cagaactgga aaaaactact     7170
+0
+     ttaaagttca tatggaatca aaaaagagcc cacatcacca aggcaatcct aagccaaaag     7176
+0
+     aacaaagctg gaggcatcac gctacctgac ttcaaactat actacaatgc tacggtaacc     7182
+0
+     aaaacagcat ggtactggta ccaaaacaga gatctagacc aatggaacag aacagagccc     7188
+0
+     tcagaaataa tgccgcatat ctacaactat ccgatctttg acaaacctga gagaaacaag     7194
+0
+     caatggggaa aggattccct atttaataaa tggtgctggg aaaactggct agccatatgt     7200
+0
+     agaaagctga aactggatcc ttccttacac cttatacaaa aattaattca agatggatta     7206
+0
+     aagacttaaa cattagacct aaaaccataa aaaccctaga aaaaaaccta ggcaatacca     7212
+0
+     ttcaggacat aggcatgggc aaggacttca tgtctaaaac accaaaacga atggcaacaa     7218
+0
+     aagacaaaat ggacaaacgg gatctaatta aactaaagag cttctgcaca gctaaagaaa     7224
+0
+     ctaccatcag agtgaacagg caacctacaa aatgggagaa aatttttgca atctactcat     7230
+0
+     ctgacaaagg gctaatatcc agaatctaca atgaactcaa acaaatttac aagaaaaaac     7236
+0
+     aaacaacccc atcaaaaagt gggcaaagga tatgaacaga cacttctcaa aagaagacat     7242
+0
+     ttatgtaatc aaaaaacaca tgaaaaaatg ctcatcatca ctagccatca gagaaatgca     7248
+0
+     aatcaaaacc acaatgagat accatctcac accagttaga atggcgatca ttaaaaagtc     7254
+0
+     aggaaacaac aggtgctgga gaggatgtgg agaaacagga acaactttta cactgttggt     7260
+0
+     gggactgtaa actagttcaa ccattgcgga agtcagtgtg gcaattcctc aggaatctag     7266
+0
+     aactagaaat accatttgac ccagccatcc cattactggg tagataccca aaggattata     7272
+0
+     aatcatgctg ctataaagac acatgcacac gtatgtttat tgcagcacta ttcacaatag     7278
+0
+     caaagacttg gaaccaaccc aaatgtccaa caacgataga ttggattaag aaaatgtggc     7284
+0
+     acatatacac catggaatac tatgcagcca taaaaaatga tgagttcatg tcctttgtag     7290
+0
+     ggacatggat gaagctggaa actatcattc tcagcaaact atcacaagga caataaacca     7296
+0
+     aacaccgcat gttctcactc ataggtggga attgaacaat gagaacacat ggacacatga     7302
+0
+     agaggaacat cacactctgg ggactgttat ggggtggggg gcaggggcag ggatagcact     7308
+0
+     aggagatata cctaatgcta aatgacgagt taatgggtgc agcacaccaa catggcacat     7314
+0
+     gtatacatat ataacaaacc tgccgttgtg cacatgtacc ctaaaacttg aagtataata     7320
+0
+     ataaaaaaaa gttatcctat taaaactgat ctcacacatc cgtagagcca ttatcaagtc     7326
+0
+     tttctctttg aaacagacag aaatttagtg ttttctcagt cagttaac                  7330
+8
+//
    
 Output file format
 
@@ -217,7 +298,7 @@ Output file format
   File: hshbb.marscan
   
 ##gff-version 2.0
-##date 2002-08-23
+##date 2002-11-07
 ##Type DNA HSHBB
 HSHBB   marscan misc_signal     2242    2458    0.000   +       .       Sequenc
 e "HSHBB.1" ; note "*type MAR/SAR recognition site (MRS)" ; note "*start8bp 245
@@ -287,13 +368,14 @@ Known bugs
    
 See also
 
-   Program name                    Description
+   Program name                       Description
    dreg         regular expression search of a nucleotide sequence
    fuzznuc      Nucleic acid pattern search
    fuzztran     Protein pattern search after translation
    getorf       Finds and extracts open reading frames (ORFs)
    plotorf      Plot potential open reading frames
    showorf      Pretty output of DNA translations
+   sixpack      Display a DNA sequence with 6-frame translation and ORFs
    wobble       Wobble base plot
    
 Author(s)

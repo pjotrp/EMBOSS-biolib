@@ -502,9 +502,9 @@ Multiple alignment program - interface to ClustalW program
 Input sequence(s): ../../data/globins.fasta
 Output sequence [hbb_human.aln]: 
 Output file [hbb_human.dnd]: 
-..clustalw -infile=9666A -outfile=9666B -align -type=protein -output=gcg -pwmat
-rix=blosum -pwgapopen=10.000 -pwgapext=0.100 -newtree=9666C -matrix=blosum -gap
-open=10.000 -gapext=5.000 -gapdist=8 -hgapresidues=GPSNDQEKR -maxdiv=30..
+..clustalw -infile=16255A -outfile=16255B -align -type=protein -output=gcg -pwm
+atrix=blosum -pwgapopen=10.000 -pwgapext=0.100 -newtree=16255C -matrix=blosum -
+gapopen=10.000 -gapext=5.000 -gapdist=8 -hgapresidues=GPSNDQEKR -maxdiv=30..
 
 
 
@@ -546,7 +546,7 @@ Sequences (4:7) Aligned. Score:  12
 Sequences (5:6) Aligned. Score:  21
 Sequences (5:7) Aligned. Score:  7
 Sequences (6:7) Aligned. Score:  11
-Guide tree        file created:   [9666C]
+Guide tree        file created:   [16255C]
 Start of Multiple Alignment
 There are 6 groups
 Aligning...
@@ -560,7 +560,7 @@ Sequence:5     Score:865
 Sequence:6     Score:797
 Sequence:7     Score:1044
 Alignment Score 4164
-GCG-Alignment file created      [9666B]
+GCG-Alignment file created      [16255B]
    
    Go to the input files for this example
    Go to the output files for this example

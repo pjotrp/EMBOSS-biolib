@@ -18,7 +18,7 @@ Usage
    Here is a sample session with findkm
    
 
-% findkm -graph cps
+% findkm -graph cps 
 Find Km and Vmax for an enzyme reaction by a Hanes/Woolf plot
 Enter name of file containing data: ../../data/enztest.dat
 Output file [enztest.findkm]: 

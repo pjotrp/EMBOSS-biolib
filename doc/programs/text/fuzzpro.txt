@@ -175,7 +175,7 @@ Output file format
   
 ########################################
 # Program: fuzzpro
-# Rundate: Fri Aug 23 16:03:20 2002
+# Rundate: Thu Nov 07 14:33:18 2002
 # Report_format: seqtable
 # Report_file: 100k_rat.fuzzpro
 ########################################
@@ -208,10 +208,32 @@ Output file format
   Start     End Mismatch Sequence
      53      63        . YVGDEAQSKRG
 
+#---------------------------------------
+#---------------------------------------
+#=======================================
+#
+# Sequence: ACT3_FUGRU     from: 1   to: 375
+# HitCount: 1
+#
+# Pattern: [FY]-[LIV]-G-[DE]-E-A-Q-x-[RKQ](2)-G
+# Mismatch: 0
+#
+#=======================================
 
+  Start     End Mismatch Sequence
+     53      63        . YVGDEAQSKRG
 
-  [Part of this file has been deleted for brevity]
-
+#---------------------------------------
+#---------------------------------------
+#=======================================
+#
+# Sequence: ACTC_FUGRU     from: 1   to: 377
+# HitCount: 1
+#
+# Pattern: [FY]-[LIV]-G-[DE]-E-A-Q-x-[RKQ](2)-G
+# Mismatch: 0
+#
+#=======================================
 
   Start     End Mismatch Sequence
      55      65        . YVGDEAQSKRG
@@ -279,7 +301,7 @@ Known bugs
    
 See also
 
-    Program name                        Description
+    Program name                         Description
    antigenic      Finds antigenic sites in proteins
    digest         Protein proteolytic enzyme or reagent cleavage digest
    fuzztran       Protein pattern search after translation
@@ -288,6 +310,7 @@ See also
    patmatdb       Search a protein sequence with a motif
    patmatmotifs   Search a PROSITE motif database with a protein sequence
    pepcoil        Predicts coiled coil regions
+   pestfind       Finds PEST motifs as potential proteolytic cleavage sites
    preg           Regular expression search of a protein sequence
    pscan          Scans proteins using PRINTS
    sigcleave      Reports protein signal cleavage sites

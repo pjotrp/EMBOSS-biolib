@@ -41,6 +41,7 @@ Index a flat file database
       EMBL : EMBL
      SWISS : Swiss-Prot, SpTrEMBL, TrEMBLnew
         GB : Genbank, DDBJ
+    REFSEQ : Refseq
 Entry format [SWISS]: EMBL
 Database directory [.]: ../../embl
 Wildcard database filename [*.dat]: rod.dat

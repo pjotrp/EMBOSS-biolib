@@ -93,7 +93,7 @@ order for you to modify them.
 
 <b>Here is a sample session with embossdata</b>
 <p>
-Display the directories searched for EMBOSS data files:
+Display the directories searched for EMBOSS data files: 
 <p>
 
 <p>
@@ -119,13 +119,13 @@ Finds or fetches the data files read in by the EMBOSS programs
 <p>
 <b>Example 2</b>
 <p>
-Display the names of data file in all of the possible data directories:
+Display the names of data file in all of the possible data directories: 
 <p>
 
 <p>
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
-% <b>embossdata -showall</b>
+% <b>embossdata -showall </b>
 Finds or fetches the data files read in by the EMBOSS programs
 
 
@@ -249,6 +249,7 @@ DIRECTORY: /packages/emboss_dev/gwilliam/emboss/emboss/emboss/data
   Eprior1.plib
   Ememe.dat
   EGC.16
+  jjj
   Eprior30.plib
   Eembl.ior
   tfinsect
@@ -429,6 +430,19 @@ DIRECTORY: /packages/emboss_dev/gwilliam/emboss/emboss/emboss/data/CODONS
   Ezma.cut
   Makefile.am
   Makefile
+  EAedes_atropalpus.cut
+  EDictyostelium_discoideum.cut
+  EAndroctonus_australis.cut
+  EAmblyomma_americanum.cut
+  EAedes_albopictus.cut
+  EAphrodite_aculeata.cut
+  EAsellus_aquaticus.cut
+  EAcanthocheilonema_viteae.cut
+  EAstacus_astacus.cut
+  EAedes_aegypti.cut
+  EAgelenopsis_aperta.cut
+  EAcrolepiopsis_assectella.cut
+  EAnadara_trapezia.cut
 
 
 DIRECTORY: /packages/emboss_dev/gwilliam/emboss/emboss/emboss/data/REBASE
@@ -437,6 +451,9 @@ DIRECTORY: /packages/emboss_dev/gwilliam/emboss/emboss/emboss/data/REBASE
   Makefile.am
   dummyfile
   Makefile
+  embossre.enz
+  embossre.ref
+  embossre.sup
 
 
 DIRECTORY: /packages/emboss_dev/gwilliam/emboss/emboss/emboss/data/AAINDEX
@@ -889,13 +906,13 @@ DIRECTORY: /packages/emboss_dev/gwilliam/emboss/emboss/emboss/data/AAINDEX
 <p>
 <b>Example 3</b>
 <p>
-Make a copy of an EMBOSS data file in the current directory:
+Make a copy of an EMBOSS data file in the current directory: 
 <p>
 
 <p>
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
-% <b>embossdata -fetch -filename Epepcoil.dat</b>
+% <b>embossdata -fetch -filename Epepcoil.dat </b>
 Finds or fetches the data files read in by the EMBOSS programs
 
 File '/packages/emboss_dev/gwilliam/emboss/emboss/emboss/data/Epepcoil.dat' has been copied successfully.
@@ -906,13 +923,13 @@ File '/packages/emboss_dev/gwilliam/emboss/emboss/emboss/data/Epepcoil.dat' has 
 <p>
 <b>Example 4</b>
 <p>
-Display the directories which contain a particular EMBOSS data file:
+Display the directories which contain a particular EMBOSS data file: 
 <p>
 
 <p>
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
-% <b>embossdata -filename EPAM60</b>
+% <b>embossdata -filename EPAM60 </b>
 Finds or fetches the data files read in by the EMBOSS programs
 
 # The following directories can contain EMBOSS data files.

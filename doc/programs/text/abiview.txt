@@ -22,7 +22,7 @@ Usage
    Here is a sample session with abiview
    
 
-% abiview -graph cps
+% abiview -graph cps 
 Reads ABI file and display the trace
 Input file: ../../data/abiview.abi
 Output sequence [abiview.fasta]: 
@@ -88,6 +88,11 @@ Input file format
    
   Input files for usage example
   
+  File: ../../data/abiview.abi
+  
+   This file contains non-printing characters and so cannot be displayed
+   here.
+   
   File: ../../data/abiview.abi
   
    This file contains non-printing characters and so cannot be displayed
@@ -171,6 +176,7 @@ See also
    showdb Displays information on the currently available databases
    showfeat Show features of a sequence
    showseq Display a sequence with features, translation etc
+   sixpack Display a DNA sequence with 6-frame translation and ORFs
    textsearch Search sequence documentation text. SRS and Entrez are
    faster!
    

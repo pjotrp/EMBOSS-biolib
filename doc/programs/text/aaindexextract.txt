@@ -130,7 +130,6 @@ See also
    prosextract Builds the PROSITE motif database for patmatmotifs to
    search
    rebaseextract Extract data from REBASE
-   scope Convert raw scop classification file to embl-like format
    tfextract Extract data from TRANSFAC
    
    The programs pepwindow and pepwindowall normally use the standard
