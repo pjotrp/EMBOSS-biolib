@@ -1,4 +1,9 @@
 Version 2.6.0
+	SigCleave sorts results highest score first
+
+	HelixTurnHelix sorts results highest score first and reports the
+	score position as an integer
+
 	Added PESTFIND
 
 	Moved the following programs into the "domainatrix" embassy
