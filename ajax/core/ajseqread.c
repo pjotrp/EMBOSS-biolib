@@ -3574,7 +3574,7 @@ static AjBool seqReadPhylip(AjPSeq thys, AjPSeqin seqin)
 	}
 	ajListstrFree(&phylist);
 
-	if(ilen < maxlen)
+	if(ilen < len)
 	{
 	    jseq=0;
 	    while(ajFileBuffGetStore(buff, &rdline,
