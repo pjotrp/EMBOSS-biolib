@@ -49,12 +49,7 @@ bool: insist  [
   information: "Insist that the sequence type is changed to protein"
 ]
 
-bool: tmpprot  [
-  required: "N"
-  default: "@(!$(inseqs.protein))"
-  expected: "Yes for protein sequences"
-  information: "Temporary holder for input protein sequence type"
-]
+variable: tmpprot "@(!$(inseqs.protein))"
 
 bool: prot  [
   required: "N"
@@ -63,30 +58,23 @@ bool: prot  [
   information: "Protein input sequence"
 ]
 
-select: slowfast  [
+list: slowfast  [
   optional: "Y"
-  default: "slow"
+  default: "s"
   header: "Do you want to carry out slow or fast pairwise alignment"
   minimum: "1"
   maximum: "1"
-  values: "slow, fast"
+  values: "s:slow, f:fast"
   delimiter: ","
+  codedelimiter: ":"
   prompt: "Please select one"
   button: "Y"
   help: "A distance is calculated between every pair of sequences and these are used to construct the dendrogram which guides the final multiple alignment. The scores are calculated from separate pairwise alignments. These can be calculated using 2 methods: dynamic programming (slow but accurate) or by the method of Wilbur and Lipman (extremely fast but approximate). \ The slow-accurate method is fine for short sequences but will be VERY SLOW for many (e.g. >100) long (e.g. >1000 residue) sequences."
 ]
 
-bool: slow  [
-  default: "@($(slowfast)= slow : True fast : False else : True )"
-  expected: "Yes unless -slowfast is 'fast'"
-  information: "Slow and accurate alignment"
-]
+variable: slow "@($(slowfast) != f)"
 
-bool: displayslow  [
-  default: "@($(options)?$(slow):False)"
-  expected: "Yes if -options and -slow are both set"
-  information: "Prompt for slow alignment options"
-]
+variable: displayslow "@($(options)?$(slow):False)"
 
 float: pwgapc  [
   required: "$(displayslow)"
@@ -106,42 +94,34 @@ float: pwgapv  [
   help: "The penalty for extending a gap by 1 residue in the pairwise alignments."
 ]
 
-select: pwmatrix  [
+list: pwmatrix  [
   required: "@($(prot)?$(displayslow):False)"
-  default: "blosum"
+  default: "b"
   minimum: "1"
   maximum: "1"
   header: "Protein pairwise alignment matrix options"
-  values: "blosum, pam, gonnet, id, own"
+  values: "b:blosum, p:pam, g:gonnet, i:id, o:own"
   delimiter: ","
+  codedelimiter: ":"
   prompt: "Select matrix"
   button: "Y"
   help: "The scoring table which describes the similarity of each amino acid to each other. \ There are three 'in-built' series of weight matrices offered. Each consists of several matrices which work differently at different evolutionary distances. To see the exact details, read the documentation. Crudely, we store several matrices in memory, spanning the full range of amino acid distance (from almost identical sequences to highly divergent ones). For very similar sequences, it is best to use a strict weight matrix which only gives a high score to identities and the most favoured conservative substitutions. For more divergent sequences, it is appropriate to use 'softer' matrices which give a high score to many other frequent substitutions. \ 1) BLOSUM (Henikoff). These matrices appear to be the best available for carrying out data base similarity (homology searches). The matrices used are: Blosum80, 62, 45 and 30. \ 2) PAM (Dayhoff). These have been extremely widely used since the late '70s. We use the PAM 120, 160, 250 and 350 matrices. \ 3) GONNET . These matrices were derived using almost the same procedure as the Dayhoff one (above) but are much more up to date and are based on a far larger data set. They appear to be more sensitive than the Dayhoff series. We use the GONNET 40, 80, 120, 160, 250 and 350 matrices. \ We also supply an identity matrix which gives a score of 1.0 to two identical amino acids and a score of zero otherwise. This matrix is not very useful."
 ]
 
-bool: usermatrix  [
-  default: "@($(pwmatrix)= own : True else : False)"
-  expected: "Yes if -pwmatrix is set"
-  information: "User defined matrix required"
-]
+variable: usermatrix "@($(pwmatrix) == o)"
 
-select: pwdnamatrix  [
+list: pwdnamatrix  [
   required: "@($(prot)?False:$(displayslow))"
-  default: "iub"
+  default: "i"
   minimum: "1"
   maximum: "1"
   header: "DNA pairwise alignment matrix options"
-  values: "iub, clustalw, own"
+  values: "i:iub, c:clustalw, o:own"
   delimiter: ","
+  codedelimiter: ":"
   prompt: "Select matrix"
   button: "Y"
   help: "The scoring table which describes the scores assigned to matches and mismatches (including IUB ambiguity codes)."
-]
-
-bool: umatrix  [
-  default: "@($(pwdnamatrix)= own : True else : False)"
-  expected: "Yes if -pwdnamatrix is set"
-  information: "User defined matrix (not used)"
 ]
 
 string: pairwisedata  [
@@ -151,11 +131,7 @@ string: pairwisedata  [
   prompt: "Input the filename of your pairwise matrix"
 ]
 
-bool: displayfast  [
-  default: "@($(slow)?False:$(options))"
-  expected: "Yes if -options is true and -slow is false"
-  information: "Prompt for fast alignment options"
-]
+variable: displayfast "@($(slow)?False:$(options))"
 
 integer: ktup  [
   required: "$(displayfast)"
@@ -204,46 +180,41 @@ bool: nopercent  [
   information: "Fast pairwise alignment: similarity scores: suppresses percentage score"
 ]
 
-select: matrix  [
+list: matrix  [
   optional: "$(prot)"
-  default: "blosum"
+  default: "b"
   minimum: "1"
   maximum: "1"
   header: "Protein multiple alignment matrix options"
-  values: "blosum, pam, gonnet, id, own"
+  values: "b:blosum, p:pam, g:gonnet, i:id, o:own"
   delimiter: ","
   prompt: "Select matrix"
   button: "Y"
   help: "This gives a menu where you are offered a choice of weight matrices. The default for proteins is the PAM series derived by Gonnet and colleagues. Note, a series is used! The actual matrix that is used depends on how similar the sequences to be aligned at this alignment step are. Different matrices work differently at each evolutionary distance. \ There are three 'in-built' series of weight matrices offered. Each consists of several matrices which work differently at different evolutionary distances. To see the exact details, read the documentation. Crudely, we store several matrices in memory, spanning the full range of amino acid distance (from almost identical sequences to highly divergent ones). For very similar sequences, it is best to use a strict weight matrix which only gives a high score to identities and the most favoured conservative substitutions. For more divergent sequences, it is appropriate to use 'softer' matrices which give a high score to many other frequent substitutions. \ 1) BLOSUM (Henikoff). These matrices appear to be the best available for carrying out data base similarity (homology searches). The matrices used are: Blosum80, 62, 45 and 30. \ 2) PAM (Dayhoff). These have been extremely widely used since the late '70s. We use the PAM 120, 160, 250 and 350 matrices. \ 3) GONNET . These matrices were derived using almost the same procedure as the Dayhoff one (above) but are much more up to date and are based on a far larger data set. They appear to be more sensitive than the Dayhoff series. We use the GONNET 40, 80, 120, 160, 250 and 350 matrices. \ We also supply an identity matrix which gives a score of 1.0 to two identical amino acids and a score of zero otherwise. This matrix is not very useful. Alternatively, you can read in your own (just one matrix, not a series)."
 ]
 
-bool: usermamatrix  [
-  default: "@($(matrix)= own : True else : False)"
-  expected: "True if -matrix was set"
-  information: "Prompt for user multiple alignment matrix"
-]
+variable: usermamatrix "@($(matrix) == o)"
 
-select: dnamatrix  [
+list: dnamatrix  [
   optional: "@(!$(prot))"
-  default: "iub"
+  default: "i"
   minimum: "1"
   maximum: "1"
   header: "Nucleotide multiple alignment matrix options"
-  values: "iub, clustalw, own"
+  values: "i:iub, c:clustalw, o:own"
   delimiter: ","
+  codedelimiter: ":"
   prompt: "Select matrix"
   button: "Y"
   help: "This gives a menu where you are offered amenu where a single matrix (not a series) can be selected."
 ]
 
-bool: umamatrix  [
-  default: "@($(dnamatrix)= own : True else : False)"
-  expected: "True if -dnamatrix was set"
-  information: "User defined multiple alignment matrix"
-]
+variable: umamatrix "(@($(dnamatrix) == own) ? True : False)"
+
+
 
 string: mamatrix  [
-  required: "@($(usermamatrix)?True:$(umamatrix))"
+  required: "@($(usermamatrix)?True:@$(umamatrix))"
   default: "NULL"
   information: "Filename of user multiple alignment matrix"
   prompt: "Input the filename of your alignment matrix"
