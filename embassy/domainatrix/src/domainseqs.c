@@ -240,7 +240,7 @@ int main(int argc, char **argv)
 	    continue;
 	}
 	
-	/* Given a pdb code get the accession number an list of pdbtoscop 
+	/* Given a pdb code get the accession number and list of pdbtoscop 
 	   structures. */
 	if(!embPdbidToAcc(ajDomainGetPdb(domain),&acc,list))
 	{

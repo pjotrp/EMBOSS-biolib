@@ -263,16 +263,16 @@ int main(int argc, char **argv)
     {
 	/* A new family. */
 	if(((domain->Type == ajSCOP) &&
-	    (((noden==1) && (last_nodeid !=  domain->Scop->Sunid_Class))       || 
-	     ((noden==2) && (last_nodeid !=  domain->Scop->Sunid_Fold))        || 
-	     ((noden==3) && (last_nodeid !=  domain->Scop->Sunid_Superfamily)) || 
-	     ((noden==4) && (last_nodeid !=  domain->Scop->Sunid_Family))))    ||
+	    (((noden==1) && (last_nodeid != domain->Scop->Sunid_Class))      ||
+	     ((noden==2) && (last_nodeid != domain->Scop->Sunid_Fold))       ||
+	     ((noden==3) && (last_nodeid != domain->Scop->Sunid_Superfamily))||
+	     ((noden==4) && (last_nodeid != domain->Scop->Sunid_Family))))   ||
 	   ((domain->Type == ajCATH) &&
-	    (((noden==5) && (last_nodeid !=  domain->Cath->Class_Id))          || 
-	     ((noden==6) && (last_nodeid !=  domain->Cath->Arch_Id))           || 
-	     ((noden==7) && (last_nodeid !=  domain->Cath->Topology_Id))       || 
-	     ((noden==8) && (last_nodeid !=  domain->Cath->Superfamily_Id))    || 
-	     ((noden==9) && (last_nodeid !=  domain->Cath->Family_Id)))))
+	    (((noden==5) && (last_nodeid != domain->Cath->Class_Id))         ||
+	     ((noden==6) && (last_nodeid != domain->Cath->Arch_Id))          ||
+	     ((noden==7) && (last_nodeid != domain->Cath->Topology_Id))      ||
+	     ((noden==8) && (last_nodeid != domain->Cath->Superfamily_Id))   ||
+	     ((noden==9) && (last_nodeid != domain->Cath->Family_Id)))))
 	{
 	    /* If we have done the first family. */
 	    if(famn)
@@ -280,7 +280,8 @@ int main(int argc, char **argv)
 
 		/* Create the output file for the alignment - the name will
 		   be the same as the Sunid for the DOMAIN family. */
-		domainalign_writeid(prevdomain, noden, daf, super, &align, &alignc);
+		domainalign_writeid(prevdomain, noden, daf, super,
+				    &align, &alignc);
 
 		if(moden == MODE_STAMP)
 		{
@@ -314,7 +315,8 @@ int main(int argc, char **argv)
 		    }
 		    
 		    else if(keepsinglets) /* Singlet family. */	
-			domainalign_keepsinglets(prevdomain, noden, singlets, logf);
+			domainalign_keepsinglets(prevdomain, noden,
+						 singlets, logf);
 			
 
 		    /* Open STAMP domain set file. */
@@ -325,9 +327,11 @@ int main(int argc, char **argv)
 		{
 		    /* Call TCOFEE. */
 		    if(nset > 1)
-			domainalign_tcoffee(prevdomain, out, align, alignc, pdbnames, noden, logf);
+			domainalign_tcoffee(prevdomain, out, align,
+					    alignc, pdbnames, noden, logf);
 		    else if(keepsinglets) /* Singlet family. */	
-			domainalign_keepsinglets(prevdomain, noden, singlets, logf);
+			domainalign_keepsinglets(prevdomain, noden,
+						 singlets, logf);
 		}
 
 		/* Set the number of members of the new family to zero. */
@@ -652,25 +656,31 @@ static void domainalign_ProcessStampFile(AjPStr in,
     {
 	/* Write DOMAIN classification records to file. */
 	if(!(outf=ajFileNewOut(out)))
-	    ajFatal("Could not open output file in domainalign_ProcessStampFile");
+	 ajFatal("Could not open output file in domainalign_ProcessStampFile");
 
 	
 	if((domain->Type == ajSCOP))
 	{
 	    ajFmtPrintF(outf,"# TY   SCOP\n# XX\n");
 	    ajFmtPrintF(outf,"# CL   %S",domain->Scop->Class);
-	    ajFmtPrintSplit(outf,domain->Scop->Fold,"\n# XX\n# FO   ",75," \t\n\r");
-	    ajFmtPrintSplit(outf,domain->Scop->Superfamily,"# XX\n# SF   ",75," \t\n\r");
-	    ajFmtPrintSplit(outf,domain->Scop->Family,"# XX\n# FA   ",75," \t\n\r");
+	    ajFmtPrintSplit(outf,domain->Scop->Fold,"\n# XX\n# FO   ",
+			    75," \t\n\r");
+	    ajFmtPrintSplit(outf,domain->Scop->Superfamily,"# XX\n# SF   ",
+			    75," \t\n\r");
+	    ajFmtPrintSplit(outf,domain->Scop->Family,"# XX\n# FA   ",
+			    75," \t\n\r");
 	    ajFmtPrintF(outf,"# XX\n");
 	}
 	else
 	{
 	    ajFmtPrintF(outf,"# TY   CATH\n# XX\n");
 	    ajFmtPrintF(outf,"# CL   %S",domain->Cath->Class);
-	    ajFmtPrintSplit(outf,domain->Cath->Architecture,"\n# XX\n# AR   ",75," \t\n\r");
-	    ajFmtPrintSplit(outf,domain->Cath->Topology,"# XX\n# TP   ",75," \t\n\r");
-	    ajFmtPrintSplit(outf,domain->Cath->Superfamily,"# XX\n# SF   ",75," \t\n\r");
+	    ajFmtPrintSplit(outf,domain->Cath->Architecture,"\n# XX\n# AR   ",
+			    75," \t\n\r");
+	    ajFmtPrintSplit(outf,domain->Cath->Topology,"# XX\n# TP   ",75,
+			    " \t\n\r");
+	    ajFmtPrintSplit(outf,domain->Cath->Superfamily,"# XX\n# SF   ",75,
+			    " \t\n\r");
 	    ajFmtPrintF(outf,"# XX\n");
 	}
 	if((domain->Type == ajSCOP))
@@ -680,9 +690,11 @@ static void domainalign_ProcessStampFile(AjPStr in,
 	    else if(noden==2)
 		ajFmtPrintF(outf,"# SI   %d\n# XX",domain->Scop->Sunid_Fold);
 	    else if(noden==3)
-		ajFmtPrintF(outf,"# SI   %d\n# XX",domain->Scop->Sunid_Superfamily);
+		ajFmtPrintF(outf,"# SI   %d\n# XX",
+			    domain->Scop->Sunid_Superfamily);
 	    else if(noden==4) 	
-		ajFmtPrintF(outf,"# SI   %d\n# XX", domain->Scop->Sunid_Family);
+		ajFmtPrintF(outf,"# SI   %d\n# XX",
+			    domain->Scop->Sunid_Family);
 	    else
 		ajFatal("Node number error in domainalign_ProcessStampFile");
 	}
@@ -695,7 +707,8 @@ static void domainalign_ProcessStampFile(AjPStr in,
 	    else if(noden==7)
 		ajFmtPrintF(outf,"# SI   %d\n# XX",domain->Cath->Topology_Id);
 	    else if(noden==8)
-		ajFmtPrintF(outf,"# SI   %d\n# XX",domain->Cath->Superfamily_Id);
+		ajFmtPrintF(outf,"# SI   %d\n# XX",
+			    domain->Cath->Superfamily_Id);
 	    else if(noden==9)  
 		ajFmtPrintF(outf,"# SI   %d\n# XX",domain->Cath->Family_Id);
 	    else
@@ -726,7 +739,9 @@ static void domainalign_ProcessStampFile(AjPStr in,
 		    ajFmtPrintF(outf,"\n# %7S %S\n"," ", line);
 		else
 		{
-		    /* Read only the 7 characters of the domain identifier code in. */
+		    /* Read only the 7 characters
+		       of the domain identifier
+		       code in. */
 		    ajFmtScanS(line, "%S", &temp1);
 		    ajStrAssSub(&temp2, temp1, 0, 6);
 
@@ -734,7 +749,8 @@ static void domainalign_ProcessStampFile(AjPStr in,
 		    /* Read the sequence. */
 		    ajStrAssSub(&temp3, line, 13, 69);
 		    ajStrConvertCC(&temp3, " ", "X");
-		    ajFmtPrintF(logf, "Replaced ' ' in STAMP alignment with 'X'\n");
+		    ajFmtPrintF(logf, "Replaced ' ' in STAMP alignment "
+				"with 'X'\n");
 		    ajStrToUpper(&temp3);
 		
 
@@ -757,7 +773,8 @@ static void domainalign_ProcessStampFile(AjPStr in,
 		    ajStrAssSub(&temp3, line, 13, 69);
 
 		    /* Write post similar line out. */
-		    ajFmtPrintF(outf,"%-15s%7s %S\n","# Post_similar", " ", temp3);
+		    ajFmtPrintF(outf,"%-15s%7s %S\n","# Post_similar", " ",
+				temp3);
 		}
 		/* Ignore Very and Less similar lines. */
 		else continue;
@@ -1015,7 +1032,7 @@ static void domainalign_stamp(AjPDomain prevdomain,
 {
     AjPStr    exec      = NULL;	/* The UNIX command line to be executed.   */
     AjPFile   clusterf  = NULL;	/* File pointer for log file.              */
-    ajint     ncluster  = 0;	/* Counter for the number of clusters.     */    
+    ajint     ncluster  = 0;	/* Counter for the number of clusters.     */
     AjPStr    line      = NULL;	/* Holds a line from the log file.         */
     AjPRegexp rexp      = NULL;	/* For parsing no. of clusters in log file */
     AjPStr    temp      = NULL;	/* A temporary string.                     */

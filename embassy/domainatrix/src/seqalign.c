@@ -275,7 +275,7 @@ int main(int argc, char **argv)
 	    
 	    if(!((hit_sing = ajDmxScophitReadFasta(inf))))
 	    {
-		ajWarn("embHitReadFasta call failed in seqsearch_psialigned");
+		ajWarn("embHitReadFasta call failed in seqsearch_psialigned for %F", inf);
 	
 		/* Read sequence set instead. */ 
 		seq_sing    = ajSeqNew();
