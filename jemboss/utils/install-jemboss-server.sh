@@ -18,7 +18,7 @@
 #
 #
 # Install EMBOSS & Jemboss 
-# last changed: 26/11/02
+# last changed: 17/01/03
 #
 #
 
@@ -261,7 +261,7 @@ deploy_axis_services()
 
   echo
   echo "Deploying $SERVICE "
-  echo "$JAVAHOME/bin/java -classpath $CLASSPATH $OPT_PROP1 $OPT_PROP2 "
+  echo "$JAVAHOME/bin/java -classpath $CLASSPATH $OPT_PROP1 $OPT_PROP2 \\ "
   echo "org.apache.axis.client.AdminClient -l$URL/axis/services JembossServer.wsdd"
   echo
 
@@ -398,6 +398,9 @@ case $PLATTMP in
   Darwin)
     PLATTMP="6"
     ;;
+  OSF1)
+    PLATTMP="7"
+    ;;
   *)
     PLATTMP="1"
     ;;
@@ -412,6 +415,7 @@ echo "(3)  irix"
 echo "(4)  hp-ux"
 echo "(5)  solaris"
 echo "(6)  macosX"
+echo "(7)  OSF"
 read PLAT
 
 if [ "$PLAT" = "" ]; then
@@ -436,6 +440,8 @@ elif [ "$PLAT" = "5" ]; then
 elif [ "$PLAT" = "6" ]; then
   PLATFORM="macos"
   MACOSX="y"
+elif [ "$PLAT" = "7" ]; then
+  PLATFORM="osf"
 else
   echo "Platform not selected from 1-6."
   exit 1
@@ -543,6 +549,8 @@ elif [ -d $JAVA_INCLUDE/irix ]; then
   JAVA_INCLUDE_OS=${JAVA_INCLUDE}/irix
 elif [ -d $JAVA_INCLUDE/hp-ux ]; then
   JAVA_INCLUDE_OS=${JAVA_INCLUDE}/hp-ux
+elif [ -d $JAVA_INCLUDE/alpha ]; then
+  JAVA_INCLUDE_OS=${JAVA_INCLUDE}/alpha
 elif [ -d $JAVA_INCLUDE ]; then
   JAVA_INCLUDE_OS=${JAVA_INCLUDE}
 else
