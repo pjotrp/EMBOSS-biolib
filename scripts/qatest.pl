@@ -34,171 +34,11 @@
 # Return codes: see %retcode definition
 #
 #
-# Known problems:
+# Note:
 # timeout fails if the program reaches EOF on stdin
 # apparently because it waits for the user to enter something when there
-# is no piped input
-
-$id = "";
-$lastid = "";
-$testdef = "";
-$tcount=0;
-$tfail=0;
-
-$timeoutdef=60;			# default timeout in seconds
-$defdelete="keep";		# success, all, keep
-$globaltestdelete=$defdelete;
-$globalcomment = "";
-
-$allstarttime = time();
-
-$SIG{ALRM} = sub { print STDERR "+++ timeout handler\n"; die "qatest timeout" };
-
-# predefined return codes for the runtest function
-# '99' is only a placeholder for ease of inserting new codes
-
-%retcode = (
-	    "1" => "Bad definition line ",
-	    "2" => "Failed to run",
-	    "3" => "Unknown file",
-	    "4" => "Failed pattern",
-	    "5" => "Unexpected success",
-	    "6" => "Not empty file",
-	    "7" => "Failed size",
-	    "8" => "Failed linecount",
-	    "9" => "Failed unwanted pattern",
-	    "10" => "Failed counted pattern",
-	    "11" => "Timeout",
-	    "12" => "CORE DUMP",
-	    "13" => "Duplicate test id",
-	    "14" => "Duplicate file linecount",
-	    "15" => "Duplicate test file size",
-	    "16" => "Duplicate filename definition",
-	    "17" => "No patterns to test file contents",
-            "99" => "Testing"
-);
-
-# The relative path ios fixed, as are the paths of files in the qatest.dat
-# file, so best to keep everything running in the test/qa directory
-
-open (IN, "../qatest.dat") || die "Cannot open qatest.dat";
-open (LOG, ">qatest.log") || die "Cannot open qatest.log";
-
-# make qatest.log unbuffered and be sure to reset the current filehandle
-$fh = select LOG; $|=1; select $fh;
-
-while (<IN>) {
-
-# Save a test when we reach an ID line (ignore any comments in between tests)
-
-  if (/^ID\s+(\S+)/) {
-    $lastid = $id;
-    $id = $1;
-    $testdef = "";
-  }
-  $testdef .= $_;
-
-# end of definition - fire up the test
-
-  if (/^\/\//) {
-    $tcount++;
-    $result = runtest ($testdef);
-
-# check the results
-
-# (1) look out for duplicate tests - which overwrite a previous directory
-
-    if (defined($saveresult{$id})) {
-      print STDERR "$id duplicate test name\n";
-      print LOG "$id duplicate test name\n";
-      if (!$result) {$result = 13}
-    }
-
-    $saveresult{$id} = $result;
-
-# (2) $result is 0 for success, or a code in %retcode
-
-    if ($result) {
-
-# test definitions can have CC comments for expected failures (e.g. SRS needed)
-
-      if ($globalcomment ne "") {
-	print STDERR "$globalcomment";
-	print LOG "$globalcomment";
-      }
-
-# Report the error code (to log and to user)
-
-      print STDERR "$id test failed code $result $retcode{$result}\n\n";
-      print LOG "$id test failed code $result $retcode{$result}\n";
-      $tfail++;
-
-# Usually we keep failed tests (unless delete is set to 'all')
-
-      if ($globaltestdelete eq "all") {
-	$sysstat = system( "rm -rf $id");
-	$status = $sysstat >> 8;
-	if ($status) {
-	  $testerr = "failed to delete old directory $id, status $status\n";
-	  print STDERR $testerr;
-	  print LOG $testerr;
-	}
-      }
-
-    }
-
-# (3) successful completion
-
-    else {
-
-# Note to log (silence to user)
-
-      print LOG "test $id success\n";
-
-# usually we delete sucessful results (unless delete is set to 'keep')
-
-      if ($globaltestdelete ne "keep") {
-	$sysstat = system( "rm -rf $id");
-	$status = $sysstat >> 8;
-	if ($status) {
-	  $testerr = "failed to delete old directory $id, status $status\n";
-	  print STDERR $testerr;
-	  print LOG $testerr;
-	}
-      }
-
-    }
-
-# new line in the log file before the next test
-
-    print LOG "\n";
-
-# clear any global hashes befoire defining the next test
-
-    undef %outfile;
-    undef %outfilepatt;
-    undef %pattest;
-    undef %patcount;
-    undef %patcode;
-    undef %outcount;
-    undef %outsize;
-    undef %filezero;
-
-  }
-}
-
-# Final summary
-
-$tpass = $tcount - $tfail;
-$allendtime = time();
-$alltime = $allendtime - $allstarttime;
-
-print STDERR "Tests total: $tcount pass: $tpass fail: $tfail\n";
-
-print STDERR "Time: $alltime seconds\n";
-print LOG "Time: $alltime seconds\n";
-
-exit;
+# is no piped input. Fixed by always providing piped stdin, usually empty.
+# 
 
 ###################################################################
 # runtest
@@ -369,6 +209,7 @@ sub runtest ($) {
     alarm(0);
     $status = $sysstat >> 8;
   };
+
 
   if ($@) {			# error from eval block
     if ($@ =~ /qatest timeout/) {	# timeout signal handler
@@ -648,6 +489,7 @@ sub runtest ($) {
   return $ret;
 }
 
+
 #########################################################################
 # testnum
 #
@@ -672,3 +514,170 @@ sub testnum ($$) {
 
   return 1;
 }
+
+#########################################################################
+# MAIN PROGRAM
+#
+# For each test in qatest.dat, call runtest
+#########################################################################
+
+$id = "";
+$lastid = "";
+$testdef = "";
+$tcount=0;
+$tfail=0;
+
+$timeoutdef=60;			# default timeout in seconds
+$defdelete="success";		# success, all, keep
+$globaltestdelete=$defdelete;
+$globalcomment = "";
+
+$allstarttime = time();
+
+$SIG{ALRM} = sub { print STDERR "+++ timeout handler\n"; die "qatest timeout" };
+
+# predefined return codes for the runtest function
+# '99' is only a placeholder for ease of inserting new codes
+
+%retcode = (
+	    "1" => "Bad definition line ",
+	    "2" => "Failed to run",
+	    "3" => "Unknown file",
+	    "4" => "Failed pattern",
+	    "5" => "Unexpected success",
+	    "6" => "Not empty file",
+	    "7" => "Failed size",
+	    "8" => "Failed linecount",
+	    "9" => "Failed unwanted pattern",
+	    "10" => "Failed counted pattern",
+	    "11" => "Timeout",
+	    "12" => "CORE DUMP",
+	    "13" => "Duplicate test id",
+	    "14" => "Duplicate file linecount",
+	    "15" => "Duplicate test file size",
+	    "16" => "Duplicate filename definition",
+	    "17" => "No patterns to test file contents",
+            "99" => "Testing"
+);
+
+# The relative path ios fixed, as are the paths of files in the qatest.dat
+# file, so best to keep everything running in the test/qa directory
+
+open (IN, "../qatest.dat") || die "Cannot open qatest.dat";
+open (LOG, ">qatest.log") || die "Cannot open qatest.log";
+
+# make qatest.log unbuffered and be sure to reset the current filehandle
+$fh = select LOG; $|=1; select $fh;
+
+while (<IN>) {
+
+# Save a test when we reach an ID line (ignore any comments in between tests)
+
+  if (/^ID\s+(\S+)/) {
+    $lastid = $id;
+    $id = $1;
+    $testdef = "";
+  }
+  $testdef .= $_;
+
+# end of definition - fire up the test
+
+  if (/^\/\//) {
+    $tcount++;
+    $result = runtest ($testdef);
+
+# check the results
+
+# (1) look out for duplicate tests - which overwrite a previous directory
+
+    if (defined($saveresult{$id})) {
+      print STDERR "$id duplicate test name\n";
+      print LOG "$id duplicate test name\n";
+      if (!$result) {$result = 13}
+    }
+
+    $saveresult{$id} = $result;
+
+# (2) $result is 0 for success, or a code in %retcode
+
+    if ($result) {
+
+# test definitions can have CC comments for expected failures (e.g. SRS needed)
+
+      if ($globalcomment ne "") {
+	print STDERR "$globalcomment";
+	print LOG "$globalcomment";
+      }
+
+# Report the error code (to log and to user)
+
+      print STDERR "$id test failed code $result $retcode{$result}\n\n";
+      print LOG "$id test failed code $result $retcode{$result}\n";
+      $tfail++;
+
+# Usually we keep failed tests (unless delete is set to 'all')
+
+      if ($globaltestdelete eq "all") {
+	$sysstat = system( "rm -rf $id");
+	$status = $sysstat >> 8;
+	if ($status) {
+	  $testerr = "failed to delete old directory $id, status $status\n";
+	  print STDERR $testerr;
+	  print LOG $testerr;
+	}
+      }
+
+    }
+
+# (3) successful completion
+
+    else {
+
+# Note to log (silence to user)
+
+      print LOG "test $id success\n";
+
+# usually we delete sucessful results (unless delete is set to 'keep')
+
+      if ($globaltestdelete ne "keep") {
+	$sysstat = system( "rm -rf $id");
+	$status = $sysstat >> 8;
+	if ($status) {
+	  $testerr = "failed to delete old directory $id, status $status\n";
+	  print STDERR $testerr;
+	  print LOG $testerr;
+	}
+      }
+
+    }
+
+# new line in the log file before the next test
+
+    print LOG "\n";
+
+# clear any global hashes befoire defining the next test
+
+    undef %outfile;
+    undef %outfilepatt;
+    undef %pattest;
+    undef %patcount;
+    undef %patcode;
+    undef %outcount;
+    undef %outsize;
+    undef %filezero;
+
+  }
+}
+
+# Final summary
+
+$tpass = $tcount - $tfail;
+$allendtime = time();
+$alltime = $allendtime - $allstarttime;
+
+print STDERR "Tests total: $tcount pass: $tpass fail: $tfail\n";
+
+print STDERR "Time: $alltime seconds\n";
+print LOG "Time: $alltime seconds\n";
+
+exit;

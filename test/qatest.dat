@@ -1,3 +1,14 @@
+#
+# Things to do
+#
+# (1) database extract programs to write to a local directory
+# (2) test local directory as well as local files (see above)
+# (3) make list of missing data files
+# (4) update web page examples to match the tests
+# (5) tests for @list and other odd USA types
+#
+###########################################################################
+
 ID acdc-0001
 AP acdc
 CL qatest tembl:paamir tembl:paamir x.x -auto
@@ -88,8 +99,8 @@ ID antigenic-command
 AP antigenic
 CL tsw:amir_pseae -auto
 FI amir_pseae.out2
-FZ = 550
-FP /^AMIR_PSEAE\tantigenic\tmisc_feature\t4\t60\t1\.222.*; note max score at 53\n/
+FZ = 564
+FP /^AMIR_PSEAE\tantigenic\tmisc_feature\t4\t60\t1\.222.*; note "max score at 53"\n/
 FI amir_pseae.antigenic
 FP /ANTIGENIC/
 FP /246/
@@ -105,8 +116,8 @@ IN tsw:act1_fugru
 IN
 IN
 FI act1_fugru.out2
-FZ = 1837
-FP /^ACT1_FUGRU\tantigenic\tmisc_feature\t214\t222\t1\.207\t\+\t\.\tSequence "ACT1_FUGRU\.1" ; note max score at 217\n/
+FZ = 1877
+FP /^ACT1_FUGRU\tantigenic\tmisc_feature\t214\t222\t1\.207\t\+\t\.\tSequence "ACT1_FUGRU\.1" ; note "max score at 217"\n/
 FI act1_fugru.antigenic
 FP /ANTIGENIC/
 FP /1[.]207/
@@ -206,7 +217,7 @@ FZ = 375
 FP /\A>PAAMIR_1_7\n/
 FP /^PPARRRWRRWRVTWQRGRWWSRLTSPASIRPPAGPSSRPAMVSSRRTRPSPPGPRRPTGR\n/
 FI paamir_1.out3
-FZ = 129
+FZ = 133
 FP /^PAAMIR_1.*278\t634\t0\.000/
 //
 
@@ -332,7 +343,7 @@ IN
 IN
 IN
 FI stderr
-FC = 7
+FC = 4
 FI rnu68037.cpgplot
 FP /RNU68037 from 1 to 1218/
 FP /Observed\/Expected ratio > 0\.60/
@@ -442,7 +453,7 @@ IN
 IN
 IN
 FI stderr
-FC = 3
+FC = 2
 FI dan1.dat
 FZ = 46560
 FP /^11\.000000\s+64\.921204\n/
@@ -477,6 +488,69 @@ FZ = 410
 FP /\A.{300}CO9_FUGRU\000/
 //
 
+ID dbiblast-idfirst
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qapblast-id:CO9_FUGRU test.out -auto
+FI test.out
+FP 1 />CO9_FUGRU /
+//
+
+ID dbiblast-idsecond
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qapblast-id:E2BB_FUGRU test.out -auto
+FI test.out
+FP 1 />E2BB_FUGRU /
+//
+
+ID dbiblast-last
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qapblast-id:TM21_FUGRU test.out -auto
+FI test.out
+FP 1 />TM21_FUGRU /
+//
+
+ID dbiblast-nextlast
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qapblast-id:ODO2_FUGRU test.out -auto
+FI test.out
+FP 1 />ODO2_FUGRU /
+//
+
+ID dbiblast-acfirst
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qapblast-acc:P53450 test.out -auto
+FI test.out
+FP 1 />FOS_FUGRU P53450 /
+//
+
+ID dbiblast-acsecond
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qapblast-acc:P79755 test.out -auto
+FI test.out
+FP 1 />CO9_FUGRU P79755 /
+//
+
+ID dbiblast-aclast
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qapblast-acc:Q90515 test.out -auto
+FI test.out
+FP 1 />TM21_FUGRU Q90515 /
+//
+
 ID dbifasta-ex
 DL keep
 AP dbifasta
@@ -500,6 +574,42 @@ FP /\A.{300}\001\000emrod\000/
 FI entrynam.idx
 FZ = 390
 FP /\A.{300}MMAM\000/
+//
+
+ID dbifasta-idfirst
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qanfasta-id:MMAM test.out -auto
+FI test.out
+FP 1 />MMAM /
+//
+
+ID dbifasta-idsecond
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qanfasta-id:RNOPS test.out -auto
+FI test.out
+FP 1 />RNOPS /
+//
+
+ID dbifasta-last
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qanfasta-id:RNU68037 test.out -auto
+FI test.out
+FP 1 />RNU68037 /
+//
+
+ID dbifasta-nextlast
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qanfasta-id:RNOPS test.out -auto
+FI test.out
+FP 1 />RNOPS /
 //
 
 ID dbifasta-swiss
@@ -527,6 +637,42 @@ FZ = 450
 FP /\A.{300}CO9_FUGRU\000/
 //
 
+ID dbifasta-swissidfirst
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qapfasta-id:CO9_FUGRU test.out -auto
+FI test.out
+FP 1 />CO9_FUGRU /
+//
+
+ID dbifasta-swissidsecond
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qapfasta-id:E2BB_FUGRU test.out -auto
+FI test.out
+FP 1 />E2BB_FUGRU /
+//
+
+ID dbifasta-swisslast
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qapfasta-id:TM21_FUGRU test.out -auto
+FI test.out
+FP 1 />TM21_FUGRU /
+//
+
+ID dbifasta-swissnextlast
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qapfasta-id:ODO2_FUGRU test.out -auto
+FI test.out
+FP 1 />ODO2_FUGRU /
+//
+
 ID dbiflat-ex
 DL keep
 AP dbiflat
@@ -552,6 +698,96 @@ FZ = 366
 FP /\A.{300}MMAM\000/
 //
 
+ID dbiflat-id
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qanflat-id:rnops test.out -auto
+FI test.out
+FP /\A>RNOPS /
+//
+
+ID dbiflat-idfirst
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qanflat-id:MMAM test.out -auto
+FI test.out
+FP 1 />MMAM /
+//
+
+ID dbiflat-idsecond
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qanflat-id:RNOPS test.out -auto
+FI test.out
+FP 1 />RNOPS /
+//
+
+ID dbiflat-last
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qanflat-id:RNU68037 test.out -auto
+FI test.out
+FP 1 />RNU68037 /
+//
+
+ID dbiflat-nextlast
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qanflat-id:RNOPS test.out -auto
+FI test.out
+FP 1 />RNOPS /
+//
+
+ID dbiflat-tembl-idfirst
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL tembl-id:AB000095 test.out -auto
+FI test.out
+FP 1 />AB000095 /
+//
+
+ID dbiflat-tembl-idsecond
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL tembl-id:AB000360 test.out -auto
+FI test.out
+FP 1 />AB000360 /
+//
+
+ID dbiflat-tembl-last
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL tembl-id:XLRHODOP test.out -auto
+FI test.out
+FP 1 />XLRHODOP /
+//
+
+ID dbiflat-tembl-nextlast
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL tembl-id:XL23808 test.out -auto
+FI test.out
+FP 1 />XL23808 /
+//
+
+ID dbiflat-tembl-multiacc
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL tembl-acc:V00451 test.out -auto
+FI test.out
+FP 3 />GM/
+//
+
 ID dbiflat-swiss
 DL keep
 AP dbiflat
@@ -575,6 +811,42 @@ FP /\A.{300}\001\000new_seq\.dat\000/
 FI entrynam.idx
 FZ = 410
 FP /\A.{300}CO9_FUGRU\000/
+//
+
+ID dbiflat-swiss-idfirst
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qapflat-id:CO9_FUGRU test.out -auto
+FI test.out
+FP 1 />CO9_FUGRU /
+//
+
+ID dbiflat-swiss-idsecond
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qapflat-id:E2BB_FUGRU test.out -auto
+FI test.out
+FP 1 />E2BB_FUGRU /
+//
+
+ID dbiflat-swiss-last
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qapflat-id:TM21_FUGRU test.out -auto
+FI test.out
+FP 1 />TM21_FUGRU /
+//
+
+ID dbiflat-swiss-nextlast
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qapflat-id:ODO2_FUGRU test.out -auto
+FI test.out
+FP 1 />ODO2_FUGRU /
 //
 
 ID dbigcg-ex
@@ -604,13 +876,48 @@ FP /\A.{300}AB000095\000/
 //
 
 ID dbigcg-id
-DL keep
 AP seqret
 PP EMBOSSRC=../..
 PP export EMBOSSRC
 CL qangcg-id:hsfau test.out -auto
 FI test.out
-FP /\A>HSFAU /
+FP 1 /\A>HSFAU /
+//
+
+ID dbigcg-idfirst
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qangcg-id:AB000095 test.out -auto
+FI test.out
+FP 1 />AB000095 /
+//
+
+ID dbigcg-idsecond
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qangcg-id:AB009062 test.out -auto
+FI test.out
+FP 1 />AB009062 /
+//
+
+ID dbigcg-last
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qangcg-id:XLRHODOP test.out -auto
+FI test.out
+FP 1 />XLRHODOP /
+//
+
+ID dbigcg-nextlast
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qangcg-id:XL23808 test.out -auto
+FI test.out
+FP 1 />XL23808 /
 //
 
 ID degapseq-ex
@@ -670,11 +977,11 @@ FP /^AP000504 overlap starts at 1\n/
 FP /^AF129756 overlap starts at 6036\n/
 FP /^AP000504 2655-2658 Length: 4\nSequence: tgtg\n/
 FI AF129756.diffgff
-FZ = 11613
-FP /^AF129756\tdiffseq\tconflict\t10945\t10962\t1\.000\t.*; note Insertion of 18 bases in AF129756 ; replace ""\n/
+FZ = 11823
+FP /^AF129756\tdiffseq\tconflict\t10945\t10962\t1\.000\t.*; note "Insertion of 18 bases in AF129756" ; replace ""\n/
 FI AP000504.diffgff
-FZ = 11564
-FP /^AP000504\tdiffseq\tconflict\t847\t847\t1\.000\t.*; note SNP in AF129756 ; replace "t"\n/
+FZ = 11774
+FP /^AP000504\tdiffseq\tconflict\t847\t847\t1\.000\t.*; note "SNP in AF129756" ; replace "t"\n/
 //
 
 ID digest-ex
@@ -1295,8 +1602,8 @@ IN
 FI stderr
 FC = 2
 FI hshbb.marscan 
-FZ = 1167
-FP /\t2242\t2458\t.* 8bp.*=2451\.\.2458.* 16bp.*= 2242\.\.2257\n/
+FZ = 1181
+FP /\t2242\t2458\t.* 8bp.*=2451\.\.2458.* 16bp.*= 2242\.\.2257"\n/
 //
 
 ID maskfeat-ex
@@ -2055,7 +2362,7 @@ FP /^             Start position 39 Length 25\n/
 
 ID rebaseextract-ex
 AP rebaseextract
-IN ../../data/withrefm
+IN /srsdata/flatfiles/rebase/withrefm
 FI stderr
 FC = 2
 //
@@ -2236,6 +2543,50 @@ FP /^60  1 60 ECLACY 3019 3078 ECLACZ\n/
 
 ###########################################################################
 
+# first entry in first file
+ID seqret-dbidfilefirst
+AP seqret
+CL -auto tembl:HS989235 test.out
+FI test.out
+FP 1 /\A>HS989235 /
+//
+
+# last entry in last file
+ID seqret-dbidfilelast
+AP seqret
+CL -auto tembl-id:XL23808 test.out
+FI test.out
+FP 1 /\A>XL23808 /
+//
+
+# last entry in last file
+ID seqret-dbacfilelast
+AP seqret
+CL -auto tembl-acc:U23808 test.out
+FI test.out
+FP 1 /\A>XL23808 U23808 /
+//
+
+ID seqret-dbacfirst
+AP seqret
+CL -auto tembl-acc:AB000095 test.out
+FI test.out
+FP 1 /\A>AB000095 AB000095 /
+//
+
+ID seqret-dbacnextlast
+AP seqret
+CL -auto tembl-acc:Z52466 test.out
+FI test.out
+FP 1 /\A>HSA203YC1 Z52466 /
+//
+
+ID seqret-dbaclast
+AP seqret
+CL -auto tembl-acc:Z69719 test.out
+FI test.out
+FP 1 /\A>HSNFG9 Z69719 /
+//
 
 ID seqret-inauto-acedb
 AP seqret
@@ -3514,7 +3865,7 @@ CL -auto ../../data/dna.m-embl hennig86::test.out
 FI test.out
 FZ = 432
 FP /^xread\n/
-FP /^' Written by EMBOSS [123][0-9]\/[01][0-9]\/[0-9][0-9] '\n/
+FP /^' Written by EMBOSS [0-9][0-9]\/[01][0-9]\/[0-9][0-9] '\n/
 FP /^120 3\n/
 FP 3 /^FASTAM[1-3]\n/
 FP /^FASTAM2\n/
@@ -3528,7 +3879,7 @@ CL -auto ../../data/dna.m-embl test.out -osf hennig86
 FI test.out
 FZ = 432
 FP /^xread\n/
-FP /^' Written by EMBOSS [123][0-9]\/[01][0-9]\/[0-9][0-9] '\n/
+FP /^' Written by EMBOSS [0-9][0-9]\/[01][0-9]\/[0-9][0-9] '\n/
 FP /^120 3\n/
 FP 3 /^FASTAM[1-3]\n/
 FP /^FASTAM2\n/
@@ -3904,6 +4255,36 @@ FP /^120\n/
 FP 3 /^FASTAM[1-3]\n/
 FP /^FASTAM2\n/
 FP /^ACGTACGTACGTACGTACGT----ACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTTGCAACGTACGT\n/
+//
+
+ID seqretset-ex
+AP seqretset
+CL -auto tembl:eclac* test.out -osf fasta
+FI test.out
+FZ = 15608
+FP 5 /^>ECLAC/
+//
+
+ID seqretset-ex1
+AP seqretset
+CL -auto tembl:eclacz test.out -osf fasta
+FI test.out
+FP 1 /^>ECLAC/
+//
+
+ID seqretall-ex
+AP seqretall
+CL -auto tembl:eclac* test.out -osf fasta
+FI test.out
+FZ = 15608
+FP 5 /^>ECLAC/
+//
+
+ID seqretall-ex1
+AP seqretall
+CL -auto tembl:eclacz test.out -osf fasta
+FI test.out
+FP 1 /^>ECLAC/
 //
 
 #############################################################################
@@ -4318,9 +4699,9 @@ CL tembl:paamir amir.pep -frame=-1
 FI stderr
 FC = 1
 FI amir.pep
-FZ = 821
+FZ = 820
 FP /^>PAAMIR_4/
-FP /^LEELVGGHPQIGKSE\*QGQRSGLQRALPGCCGKDQVERDAGAQHADQEVDHRHLPTADLA\n/
+FP /^SNQTALRNSTAPTYSRTSPSMMTIPLLLLFWSARIAQADGSFPSNS\*AIFRIGSRRFIAS\n/
 //
 
 ID transeq-ex4
@@ -4329,7 +4710,7 @@ CL tembl:paamir amir.pep -frame=F
 FI stderr
 FC = 1
 FI amir.pep
-FZ = 2461
+FZ = 2460
 FP /^>PAAMIR_1/
 FP /^>PAAMIR_2/
 FP /^>PAAMIR_3/
@@ -4346,6 +4727,7 @@ FZ = 2461
 FP /^>PAAMIR_4/
 FP /^>PAAMIR_5/
 FP /^SNQTALRNSTAPTYSRTSPSMMTIPLLLLFWSARIAQADGSFPSNS\*AIFRIGSRRFIAS\n/
+FP /^LEELVGGHPQIGKSE\*QGQRSGLQRALPGCCGKDQVERDAGAQHADQEVDHRHLPTADLA\n/
 FP /^>PAAMIR_6/
 //
 
@@ -4355,7 +4737,7 @@ CL tembl:paamir amir.pep -frame=6
 FI stderr
 FC = 1
 FI amir.pep
-FZ = 4922
+FZ = 4921
 FP /^>PAAMIR_1/
 FP /^>PAAMIR_2/
 FP /^>PAAMIR_3/
@@ -4536,10 +4918,10 @@ FP /^        58          63          5\n/
 FP /^        14          15          4\n/
 FP /^       116         121          4\n/
 FI hba_human.out2
-FZ = 326
+FZ = 336
 FP /^HBA_HUMAN\twordmatch\tmisc_feature\t58\t62\t1\.000\t/
 FI hba_human.out3
-FZ = 326
+FZ = 336
 FP /^HBB_HUMAN\twordmatch\tmisc_feature\t63\t67\t1\.000\t/
 //
 
@@ -4550,10 +4932,10 @@ FI eclaci.wordmatch
 FZ = 82
 FP /^         1           1       1113\n/
 FI eclaci.out2
-FZ = 135
+FZ = 137
 FP /^ECLACI\twordmatch\tmisc_feature\t1\t1113\t1\.000\t/
 FI eclaci.out3
-FZ = 135
+FZ = 137
 FP /^ECLACI\twordmatch\tmisc_feature\t1\t1113\t1\.000\t/
 //
 
@@ -4610,7 +4992,7 @@ IN
 FI stderr
 FC = 2
 FI stdout
-FP /^<li><a href="#ALIGNMENT">ALIGNMENT<\/a>\n/
+FP /^<li><a href="#ALIGNMENT">ALIGNMENT<\/a><\/li>\n/
 //
 
 # change the URL :-)
