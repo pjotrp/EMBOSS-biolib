@@ -1461,6 +1461,10 @@ AcdOAttr acdAttrOutscop[] =
 
 AcdOAttr acdAttrOuttree[] =
 {
+    {"name", VT_STR, "",
+	 "Default file name"},
+    {"extension", VT_STR, "",
+	 "Default file extension"},
     {"nulldefault", VT_BOOL, "N",
 	 "Defaults to 'no file'"},
     {"nullok", VT_BOOL, "N",
@@ -8005,7 +8009,9 @@ static AjPOutfile acdSetOutType(AcdPAcd thys, const char* type)
     acdAttrResolve(thys, "extension", &ext);
     acdAttrResolve(thys, "name", &name);
 
-    acdGetValueAssoc(thys, "oformat", &fmt);
+    if (!acdGetValueAssoc(thys, "oformat", &fmt))
+	ajStrAssC(&fmt, acdOuttype[itype].Format);
+
     acdGetValueAssoc(thys, "odirectory", &dir);
 
     acdOutDirectory(&dir);
@@ -8891,7 +8897,7 @@ static void acdSetOuttree(AcdPAcd thys)
 {
     AjPOutfile val = NULL;
 
-    val = acdSetOutType(thys, "tree");
+    val = acdSetOutType(thys, "outtree");
     return;
 }
 
@@ -22436,7 +22442,12 @@ static ajint acdOutFormatTree(const AjPStr name)
     for (i=0; format[i]; i++)
     {
 	if(ajStrMatchCaseC(name, format[i]))
+	{
+	    ajDebug("acdOutFormatTree found %d %S = %s\n",
+		    i, name, format[i]);
 	    return i;
+	}
     }
+    ajDebug("acdOutFormatTree %S not found\n", name);
     return -1;
 }
