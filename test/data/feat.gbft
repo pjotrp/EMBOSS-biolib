@@ -469,7 +469,7 @@ FEATURES             Location/Qualifiers
                      RKMIQFKNFVAGSSLDHIQATQNTFAFCRGEKGFIVFNNSENTITQQYHTCLPQGQYCD
                      IISGEVSQSTCTGTVVNVDANGDAEITLPKNSVVAIYIPSRLS"
      variation       912..1167
-                     /note="ClaI fragment deleted in pSW36, constitutive
+                     /note="ClaI fragment deleted in pSW36,  constitutive
                      phenotype"
                      /replace=""
                      /gene="amiC"
@@ -506,9 +506,9 @@ FEATURES             Location/Qualifiers
                      /note="encodes putative transmembrane helices which enclose
                      a presumably periplasmic domain"
                      /gene="citA"
-     CDS             1289..1879
+     Cds             1289..1879
                      /db_xref="SWISS-PROT:P10932"
-                     /note="aliphatic amidase regulator, positive regulator of
+                     /note="aliphatic amidase regulator, positive  regulator of
                      ""amiE"" gene"
                      /transl_table=11
                      /gene="amiR"
