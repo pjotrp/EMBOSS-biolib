@@ -4,7 +4,7 @@ lib_LTLIBRARIES = libajax.la libajaxg.la
 
 if ISSHARED
 if ISAIXIA64
-AM_CFLAGS = -Wl,-G -L../plplot/.libs -lplplot
+AM_CFLAGS = -Wl,-G -L../plplot/.libs -lplplot -lm
 else
 AM_CFLAGS =
 endif

@@ -4,7 +4,7 @@ lib_LTLIBRARIES = libnucleus.la
 
 if ISSHARED
 if ISAIXIA64
-AM_CFLAGS = -Wl,-G
+AM_CFLAGS = -Wl,-G -lm
 else
 AM_CFLAGS =
 endif
