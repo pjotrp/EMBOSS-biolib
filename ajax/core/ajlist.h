@@ -184,6 +184,9 @@ void        ajListSort3 (AjPList thys,
 			 int (*sort2) (const void*, const void*),
 			 int (*sort3) (const void*, const void*));
 
+void        ajListUnique (AjPList thys,
+			  int (*compar) (const void* x, const void* cl),
+			  void nodedelete (void** x, void* cl));
 #endif
 
 #ifdef __cplusplus
