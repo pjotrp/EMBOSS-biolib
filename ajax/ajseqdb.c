@@ -310,7 +310,11 @@ static AjBool seqAccessEmblcd (AjPSeqin seqin)
 	seqin->Single = ajTrue;
 
 	if (!seqCdQryOpen(qry))
-	    ajFatal ("seqCdQry failed");
+	{
+	    ajWarn("seqCdQry failed");
+	    return ajFalse;
+	}
+	
 
 	qryd = qry->QryData;
 
@@ -1327,7 +1331,11 @@ static AjBool seqCdQryOpen (AjPSeqQuery qry)
     AJNEW0(qryd->trgLine);
     qryd->dfp = seqCdFileOpen(qry->IndexDir, "division.lkp", &qryd->divfile);
     if (!qryd->dfp)
-	ajFatal("Cannot open division file '%S'", qryd->divfile);
+    {
+	ajWarn("Cannot open division file '%S'", qryd->divfile);
+	return ajFalse;
+    }
+    
 
     qryd->nameSize = qryd->dfp->RecSize - 2;
     qryd->maxdiv = qryd->dfp->NRecords;
@@ -2213,7 +2221,11 @@ static AjBool seqBlastOpen (AjPSeqQuery qry)
 	     qryd->div, qryd->nameSize, qryd->name);
 
     if (!ajRegExecC (divexp, qryd->name))
-	ajFatal ("index division file error '%s'", qryd->name);
+    {
+	ajWarn("index division file error '%s'", qryd->name);
+	return ajFalse;
+    }
+    
 
     ajRegSubI (divexp, 1, &qryd->datfile);
     ajRegSubI (divexp, 3, &qryd->seqfile);
