@@ -12,7 +12,7 @@ section: input [
 discretestates: infile  [
   parameter: "Y"
   characters: "01PB?"
-  knowntype: "discrete characters input"
+  knowntype: "discrete states"
 ]
 
 properties: ancfile [
