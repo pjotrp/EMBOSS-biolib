@@ -235,13 +235,17 @@ public class SectionPanel
     }
     String varName = parseAcd.getParamValueStr(nf, 0);
 
+    int numberOfParameters = 0;
+
 // loop over all the fields in the section or the all fields in the ACD
     while( !( att.equals("endsection")  && varName.equals(nameSect)) &&
             nf < numofFields )
     {
+     
       if(!(att.equals("graph") || att.equals("xygraph")
         || att.equals("var")   || att.equals("variable")) )
       {
+        numberOfParameters++;
         final int h = parseAcd.getGuiHandleNumber(nf);
         Box pan = new Box(BoxLayout.X_AXIS);
         section.add(pan);
@@ -529,13 +533,17 @@ public class SectionPanel
     }
 
     nf++;
-    sectionPane.add(section);
-    sectionBox = new Box(BoxLayout.X_AXIS);
 
-    sectionResize(sectionPane);
-    sectionBox.add(Box.createRigidArea(new Dimension(2,0)));
-    sectionBox.add(sectionPane);
-    sectionBox.add(Box.createHorizontalGlue());
+    if(numberOfParameters >0)  // ensure there are parameters 
+    {                          // in this section
+      sectionPane.add(section);
+      sectionBox = new Box(BoxLayout.X_AXIS);
+
+      sectionResize(sectionPane);
+      sectionBox.add(Box.createRigidArea(new Dimension(2,0)));
+      sectionBox.add(sectionPane);
+      sectionBox.add(Box.createHorizontalGlue());
+    }
     
   }
 

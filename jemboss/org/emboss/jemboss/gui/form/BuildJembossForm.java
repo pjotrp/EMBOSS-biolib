@@ -362,7 +362,7 @@ public class BuildJembossForm implements ActionListener
           advSectionBox = sp.getSectionBox();
           advSection = sp.getSectionPanel();
         }
-        else
+        else if(sp.getSectionBox() != null)
         {
           fieldPane.add(sp.getSectionBox());
           if(sp.isInputSection())
