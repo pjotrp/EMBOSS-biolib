@@ -1587,6 +1587,7 @@ static AjBool seqReadSelex(AjPSeq thys, AjPSeqin seqin)
     AjBool      head   = ajTrue;
     ajint       sqcnt  = 0;
     ajint       i;
+    char        c='\0';
     
     line = ajStrNew();
 
@@ -1633,38 +1634,22 @@ static AjBool seqReadSelex(AjPSeq thys, AjPSeqin seqin)
     
 	while(head && ajFileBuffGet(buff,&line))
 	{
+	    if(ajStrPrefixC(line,"#=RF") ||ajStrPrefixC(line,"#=CS"))
+		break;
+	    
 	    if(ajStrPrefixC(line,"#="))
 	    {
 		head=seqSelexHeader(&selex,line,n,&named,&sqcnt);
 		continue;
 	    }
-	    if(!ajStrPrefixC(line,"#"))
+	    c = *ajStrStr(line);
+	    if(c>='0')
 		head = ajFalse;
 	}
 
-	sqcnt = 0;
-	/* Check for SQ lines */
-	if(*ajStrStr(line)<'A')
-	{
-	    head = ajTrue;
-	    while(head && ajFileBuffGet(buff,&line))
-	    {
-		if(ajStrPrefixC(line,"#="))
-		{
-		    head=seqSelexHeader(&selex,line,n,&named,&sqcnt);
-		    continue;
-		}
-		if(ajStrPrefixC(line,"#"))
-		    continue;
-		if(ajStrPrefixC(line,"\n"))
-		    continue;
-	    }
-	}
-
-
 	/* Should now be at start of first block, whether RF or sequence */
 	ajDebug("First Block Line: %S",line);
-
+	
 	ok = ajTrue;
 	while(ok)
 	{
@@ -1717,6 +1702,9 @@ static void seqSelexCopy(AjPSeq *thys, AjPSeqin seqin, ajint n)
     ajStrAssS(&pthis->Seq, selex->str[n]);
     ajStrAssS(&pthis->Name, selex->name[n]);
     pthis->Weight = selex->sq[n]->wt;
+
+    if(!(*thys)->Selexdata)
+	(*thys)->Selexdata = ajSelexdataNew();
     
     sdata = (*thys)->Selexdata;
 

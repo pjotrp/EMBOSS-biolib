@@ -1061,7 +1061,7 @@ AjPSeq ajSeqNewL (size_t size)
     pthis->Offend = 0;
     pthis->Weight = 1.0;
     pthis->Acclist = ajListstrNew();
-    pthis->Selexdata = ajSelexdataNew();
+    pthis->Selexdata = NULL;
   
     return pthis;
 }
@@ -1106,7 +1106,8 @@ AjPSeq ajSeqNewS (AjPSeq seq)
     ajListstrDel(&pthis->Acclist);
     pthis->Acclist = ajListstrNew();
 
-    pthis->Selexdata = seqSelexClone(seq->Selexdata);
+    if(seq->Selexdata)
+	pthis->Selexdata = seqSelexClone(seq->Selexdata);
 
     return pthis;
 }
@@ -1259,7 +1260,8 @@ void ajSeqDel (AjPSeq* pthis)
 	ajStrDel(&ptr);
     ajListDel(&thys->Acclist);
 
-    ajSelexdataDel(&thys->Selexdata);
+    if(thys->Selexdata)
+	ajSelexdataDel(&thys->Selexdata);
   
     /*  ajListstrDel(&thys->Acclist);*/
 

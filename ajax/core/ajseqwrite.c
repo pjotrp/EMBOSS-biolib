@@ -1207,6 +1207,11 @@ static void seqWriteSelex (AjPSeqout outseq)
     AjPStr csstr=NULL;
     AjPStr ssstr=NULL;
     char *p=NULL;
+    AjPStr *names;
+    ajint  extra;
+    ajint  nlen=0;
+    ajint  slen=0;
+    AjPStr *aseqs=NULL;
     
     ajDebug ("seqWriteSelex list size %d\n", ajListLength(outseq->Savelist));
     
@@ -1233,6 +1238,7 @@ static void seqWriteSelex (AjPSeqout outseq)
     sdata = seqs[0]->Selexdata;
     if(sdata)
     {
+
 	if(ajStrLen(sdata->id))
 	{
 	    sep=ajTrue;
@@ -1305,79 +1311,146 @@ static void seqWriteSelex (AjPSeqout outseq)
 	    }
 	}
 	ajFmtPrintF(outseq->File,"\n");
-    }
 
 
-    if(ajStrLen(seqs[0]->Selexdata->rf))
-    {
-	v = namelen - 4;
-	for(k=0;k<v;++k)
-	    ajStrAppK(&rfstr,' ');
-    }
-    if(ajStrLen(seqs[0]->Selexdata->cs))
-    {
-	v = namelen - 4;
-	for(k=0;k<v;++k)
-	    ajStrAppK(&csstr,' ');
-    }
-    if(ajStrLen(seqs[0]->Selexdata->ss))
-    {
-	v = namelen - 4;
-	for(k=0;k<v;++k)
-	    ajStrAppK(&ssstr,' ');
-    }
-    
 
-    
-    for(i=0;i<len;i+=50)
-    {
 	if(ajStrLen(seqs[0]->Selexdata->rf))
 	{
-	    p = ajStrStr(seqs[0]->Selexdata->rf);
-	    if(i+50>=len)
-		ajFmtPrintF(outseq->File,"%S %s\n",rfstr,&p[i]);
-	    else
-		ajFmtPrintF(outseq->File,"%S %-50.50s\n",rfstr,
-			    &p[i]);
+	    v = namelen - 4;
+	    for(k=0;k<v;++k)
+		ajStrAppK(&rfstr,' ');
 	}
-
 	if(ajStrLen(seqs[0]->Selexdata->cs))
 	{
-	    p = ajStrStr(seqs[0]->Selexdata->cs);
-	    if(i+50>=len)
-		ajFmtPrintF(outseq->File,"%S %s\n",csstr,&p[i]);
-	    else
-		ajFmtPrintF(outseq->File,"%S %-50.50s\n",csstr,
-			    &p[i]);
+	    v = namelen - 4;
+	    for(k=0;k<v;++k)
+		ajStrAppK(&csstr,' ');
 	}
-	    
-
-	for(j=0;j<n;++j)
+	if(ajStrLen(seqs[0]->Selexdata->ss))
 	{
-	    sdata = seqs[j]->Selexdata;
+	    v = namelen - 4;
+	    for(k=0;k<v;++k)
+		ajStrAppK(&ssstr,' ');
+	}
+    
 
-	    p = ajStrStr(sdata->str);
-	    if(i+50>=len)
-		ajFmtPrintF(outseq->File,"%S %s\n",sdata->sq->name,&p[i]);
-	    else
-		ajFmtPrintF(outseq->File,"%S %-50.50s\n",sdata->sq->name,
-			    &p[i]);
-	    if(ajStrLen(seqs[0]->Selexdata->ss))
+    
+	for(i=0;i<len;i+=50)
+	{
+	    if(ajStrLen(seqs[0]->Selexdata->rf))
 	    {
-		p = ajStrStr(seqs[0]->Selexdata->ss);
+		p = ajStrStr(seqs[0]->Selexdata->rf);
 		if(i+50>=len)
-		    ajFmtPrintF(outseq->File,"%S %s\n",ssstr,&p[i]);
+		    ajFmtPrintF(outseq->File,"%S %s\n",rfstr,&p[i]);
 		else
-		    ajFmtPrintF(outseq->File,"%S %-50.50s\n",ssstr,
+		    ajFmtPrintF(outseq->File,"%S %-50.50s\n",rfstr,
 				&p[i]);
 	    }
 
-	}
-	if(i+50<len)
-	    ajFmtPrintF(outseq->File,"\n");
+	    if(ajStrLen(seqs[0]->Selexdata->cs))
+	    {
+		p = ajStrStr(seqs[0]->Selexdata->cs);
+		if(i+50>=len)
+		    ajFmtPrintF(outseq->File,"%S %s\n",csstr,&p[i]);
+		else
+		    ajFmtPrintF(outseq->File,"%S %-50.50s\n",csstr,
+				&p[i]);
+	    }
+	    
+
+	    for(j=0;j<n;++j)
+	    {
+		sdata = seqs[j]->Selexdata;
+
+		p = ajStrStr(sdata->str);
+		if(i+50>=len)
+		    ajFmtPrintF(outseq->File,"%S %s\n",sdata->sq->name,&p[i]);
+		else
+		    ajFmtPrintF(outseq->File,"%S %-50.50s\n",sdata->sq->name,
+				&p[i]);
+		if(ajStrLen(seqs[0]->Selexdata->ss))
+		{
+		    p = ajStrStr(seqs[0]->Selexdata->ss);
+		    if(i+50>=len)
+			ajFmtPrintF(outseq->File,"%S %s\n",ssstr,&p[i]);
+		    else
+			ajFmtPrintF(outseq->File,"%S %-50.50s\n",ssstr,
+				    &p[i]);
+		}
+
+	    }
+	    if(i+50<len)
+		ajFmtPrintF(outseq->File,"\n");
 	
+	}
+    }    
+    else	/* Wasn't originally Selex format */
+    {
+	AJCNEW0(aseqs,n);
+	AJCNEW0(names,n);
+	for (i=0; i < n; ++i)
+	{
+	    seq = seqs[i];
+	    aseqs[i] = ajStrNew();
+	    names[i] = ajStrNew();
+	    ajStrAssS(&names[i],seq->Name);
+	    if((len=ajStrLen(names[i])) > nlen)
+		nlen = len;
+	    if((len=ajStrLen(seq->Seq)) > slen)
+		slen = len;
+	    ajStrAssS(&aseqs[i],seq->Seq);
+	}
+	for(i=0;i<n;++i)
+	{
+	    seq = seqs[i];
+	    extra = nlen - ajStrLen(names[i]);
+	    for(j=0;j<extra;++j)
+		ajStrAppK(&names[i],' ');
+	    extra = slen - ajStrLen(seq->Seq);
+	    for(j=0;j<extra;++j)
+		ajStrAppK(&aseqs[i],' ');
+
+	    ajFmtPrintF(outseq->File,"#=SQ %S %.2f - - 0..0:0 ",
+			names[i],seq->Weight);
+	    if(ajStrLen(seq->Desc))
+		ajFmtPrintF(outseq->File,"%S\n",seq->Desc);
+	    else
+		ajFmtPrintF(outseq->File,"-\n");
+	}
+	ajFmtPrintF(outseq->File,"\n");	
+
+
+	for(i=0;i<slen;i+=50)
+	{
+	    for(j=0;j<n;++j)
+	    {
+		p = ajStrStr(aseqs[j]);
+		if(i+50>=len)
+		    ajFmtPrintF(outseq->File,"%S %s\n",names[j],&p[i]);
+		else
+		    ajFmtPrintF(outseq->File,"%S %-50.50s\n",names[j],
+				&p[i]);
+	    }
+	    if(i+50<len)
+		ajFmtPrintF(outseq->File,"\n");
+	
+	}
+	
+	for(i=0;i<n;++i)
+	{
+	    ajStrDel(&names[i]);
+	    ajStrDel(&aseqs[i]);
+	}
+	AJFREE(names);
+	AJFREE(aseqs);
     }
     
+
+
+
+
+
+
 
     AJFREE(seqs);
 
