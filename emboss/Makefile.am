@@ -19,7 +19,7 @@ entrails histogramtest intconv \
 patmattest \
 prima primers \
 seqinfo seqretall seqretallfeat seqretset seqretsingle \
-tcode testplot treetypedisplay
+testplot treetypedisplay
 
 bin_PROGRAMS = aaindexextract abiview acdc acdpretty acdtable \
 antigenic \
@@ -52,7 +52,7 @@ showalign showdb showfeat showorf showseq \
 shuffleseq sigcleave silent sirna sixpack skipseq \
 splitter stretcher \
 stssearch supermatcher syco \
-textsearch tfextract tfm tfscan \
+tcode textsearch tfextract tfm tfscan \
 tmap tranalign transeq trimest trimseq twofeat \
 union vectorstrip \
 water whichdb wobble wordcount wordmatch \
