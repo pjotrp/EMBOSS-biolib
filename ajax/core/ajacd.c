@@ -5955,6 +5955,8 @@ static void acdSetDirlist(AcdPAcd thys)
     
     n = ajListLength(val);
 
+    ajStrInsertC(&ext, 0, ".");
+    
     for(i=0;i<n;++i)
     {
 	ajFmtPrintS(&t,"");
