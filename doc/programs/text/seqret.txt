@@ -1023,14 +1023,35 @@ See also
    
 Author(s)
 
-   This application was written by Peter Rice (pmr@sanger.ac.uk)
-   Informatics Division, The Sanger Centre, Wellcome Trust Genome Campus,
-   Hinxton, Cambridge, CB10 1SA, UK.
+   This application was written by Peter Rice (pmr@ebi.ac.uk) Informatics
+   Division, The EBI, Wellcome Trust Genome Campus, Hinxton, Cambridge,
+   CB10 1SA, UK.
    
 History
 
    1999 - Written by Peter Rice
    Feb 2002 - '-feature' qualifier added by Peter Rice
+   
+   Date Editor Comment
+   2000/09/19 ajb ACD file: First ever bioperl cvs for emboss
+   2000/09/19 ajb ACD file: branches: 1.1.1;
+   2000/09/19 ajb Program: First ever bioperl cvs for emboss
+   2000/09/19 ajb Program: branches: 1.1.1;
+   2000/09/28 ajb Program: Memory leak fixes
+   2001/02/10 ajb Program: ajint mods
+   2001/02/15 ajb Program: main line alterations
+   2001/05/10 gwilliam ACD file: groups changed
+   2001/06/04 rice Program: @prog headers generated from acd files
+   2001/06/23 ajb Program: function renaming
+   2001/10/29 ajb ACD file: acdpretty version
+   2001/12/26 ajb Program: Added gpl
+   2002/02/02 ajb ACD file: seqret family tidy
+   2002/02/13 rice ACD file: ACD section and endsection added by Thomas
+   Laurent
+   2002/02/25 rice ACD file: feature option for seqret with sections
+   (oops, it was lost :-)
+   2002/08/22 rice Program: cleanup spaces, long lines, and header
+   comments
    
 Target users
 
@@ -1053,10 +1074,10 @@ Comments
    "It is not a bug ... it is a feature"
    
    There are many "FASTA formats". EMBOSS uses the format that ACEDB and
-   the Sanger Centre genome projects use. The first field after the ID is
-   the accession number, so that accession numbers can be kept when
-   sequences are converted to FASTA format, without using the NCBI format
-   (with '|' characters in the IDs).
+   the EBI genome projects use. The first field after the ID is the
+   accession number, so that accession numbers can be kept when sequences
+   are converted to FASTA format, without using the NCBI format (with '|'
+   characters in the IDs).
    
    Your EMBL format file has IDs that look like accession numbers, so
    EMBOSS fills in the accession number for each sequence, and reports it

@@ -403,14 +403,46 @@ See also
 Author(s)
 
    This application was written by Ian Longden (il@sanger.ac.uk)
-   Informatics Division, The Sanger Centre, Wellcome Trust Genome Campus,
-   Hinxton, Cambridge, CB10 1SA, UK.
+   Informatics Division, The EBI, Wellcome Trust Genome Campus, Hinxton,
+   Cambridge, CB10 1SA, UK.
    
 History
 
  Completed 1st June 1999.
- Last modified 16th June 1999.
 
+   Date Editor Comment
+   2000/09/19 ajb ACD file: First ever bioperl cvs for emboss
+   2000/09/19 ajb ACD file: branches: 1.1.1;
+   2000/09/19 ajb Program: First ever bioperl cvs for emboss
+   2000/09/19 ajb Program: branches: 1.1.1;
+   2001/02/10 ajb Program: ajint mods
+   2001/02/11 ajb Program: begins and ends added
+   2001/02/15 ajb Program: main line alterations
+   2001/02/19 ajb Program: remove print
+   2001/05/10 gwilliam ACD file: groups changed
+   2001/06/01 rice Program: AJTIME to AjOTime/AjPTime
+   2001/06/04 rice Program: @prog headers generated from acd files
+   2001/06/05 rice Program: missing @func headers
+   2001/07/12 ajb Program: cleanup
+   2001/10/16 ajb ACD file: Change threshold to int
+   2001/10/16 ajb Program: Change threshold to int
+   2001/10/29 ajb ACD file: acdpretty version
+   2002/01/06 ajb Program: SPIN changes
+   2002/01/10 ajb Program: Fixed scale values
+   2002/01/15 ajb ACD file: Added non-proportional plot
+   2002/01/15 ajb Program: Added non-proportional plot
+   2002/02/13 rice ACD file: ACD section and endsection added by Thomas
+   Laurent
+   2002/02/13 rice Program: final documentation additions/corrections
+   2002/03/26 rice Program: use different plots for graph and xygraph
+   2002/04/19 hgmp ACD file: Upped threshold from 17 to 50
+   2002/05/20 rice ACD file: Allow stops in protein sequences
+   2002/06/12 ajb ACD file: Changed threshold to 24
+   2002/07/03 ajb ACD file: threshold change again
+   2002/07/03 gwilliam ACD file: help added for matrix qualifier
+   2002/08/22 rice Program: cleanup spaces, long lines, and header
+   comments
+   
 Target users
 
    This program is intended to be used by everyone and everything, from

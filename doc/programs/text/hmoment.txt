@@ -380,6 +380,24 @@ History
 
    Written (March 2001) - Alan Bleasby.
    
+   Date Editor Comment
+   2001/02/20 ajb ACD file: hmoment addition
+   2001/02/20 ajb Program: hmoment addition
+   2001/04/06 ajb Program: Title fix
+   2001/05/10 gwilliam ACD file: groups changed
+   2001/06/04 rice Program: @prog headers generated from acd files
+   2001/06/05 rice Program: missing @func headers
+   2001/06/24 ajb Program: function rename
+   2001/10/29 ajb ACD file: acdpretty version
+   2002/01/05 ajb Program: Mods for SPIN
+   2002/02/13 rice ACD file: ACD section and endsection added by Thomas
+   Laurent
+   2002/05/10 rice Program: Multiple graphs, and adding the title
+   2002/05/10 rice Program: fix for plotting multiple sequences
+   2002/07/19 rice Program: use all ACD data even if ignored
+   2002/08/22 rice Program: cleanup spaces, long lines, and header
+   comments
+   
 Target users
 
    This program is intended to be used by everyone and everything, from

@@ -505,6 +505,12 @@ History
    
    Written (March 2002).
    
+   Date Editor Comment
+   2002/11/21 hgmp ACD file: Add pestfind
+   2002/11/21 hgmp Program: Add pestfind
+   2002/12/02 gwilliam ACD file: Expanded the help documentation
+   slightly, based on the authors docs
+   
 Target users
 
    This program is intended to be used by everyone and everything, from

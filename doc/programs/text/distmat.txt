@@ -477,6 +477,23 @@ History
 
    Written (March 2001) - Tim Carver
    
+   Date Editor Comment
+   2001/03/28 timc ACD file: Distance Matrix program added
+   2001/03/28 timc Program: Distance Matrix program added
+   2001/04/17 ajb Program: Wall
+   2001/04/27 rice Program: cleanup doc headers for EFUNC
+   2001/05/10 gwilliam ACD file: groups changed
+   2001/06/25 ajb Program: function rename
+   2001/09/06 timc ACD file: correction to ambig opt flag
+   2001/09/07 timc ACD file: acd gapweight
+   2001/10/29 ajb ACD file: acdpretty version
+   2001/12/17 timc ACD file: extra brackets removed
+   2002/02/13 rice ACD file: ACD section and endsection added by Thomas
+   Laurent
+   2002/08/22 rice Program: cleanup spaces, long lines, and header
+   comments
+   2003/01/10 timc Program: stop the warnings about vars not used
+   
 Target users
 
    This program is intended to be used by everyone and everything, from

@@ -175,6 +175,20 @@ History
 
    Written (6 March 2001) - Gary Williams
    
+   Date Editor Comment
+   2001/03/06 gwilliam ACD file: written
+   2001/03/06 gwilliam Program: written
+   2001/03/15 ajb Program: Added GPL
+   2001/03/15 ajb Program: Unused variables
+   2001/05/10 gwilliam ACD file: groups changed
+   2001/06/05 rice Program: missing @func headers
+   2001/06/25 ajb Program: function rename
+   2001/10/29 ajb ACD file: acdpretty version
+   2002/02/13 rice ACD file: ACD section and endsection added by Thomas
+   Laurent
+   2002/08/22 rice Program: cleanup spaces, long lines, and header
+   comments
+   
 Target users
 
    This program is intended to be used by everyone and everything, from

@@ -318,6 +318,13 @@ History
    
    tranalign written (March 2002) - Gary Williams
    
+   Date Editor Comment
+   2002/03/26 gwilliam ACD file: first
+   2002/03/26 gwilliam Program: first
+   2002/04/11 ajb Program: Compiler warning
+   2002/08/22 rice Program: cleanup spaces, long lines, and header
+   comments
+   
 Target users
 
    This program is intended to be used by everyone and everything, from

@@ -325,6 +325,37 @@ History
    Written 1999 - Nicolas Tourasse
    Updated (2002) - Nicolas Tourasse
    
+   Date Editor Comment
+   2000/09/19 ajb ACD file: First ever bioperl cvs for emboss
+   2000/09/19 ajb ACD file: branches: 1.1.1;
+   2000/09/19 ajb Program: First ever bioperl cvs for emboss
+   2000/09/19 ajb Program: branches: 1.1.1;
+   2001/02/10 ajb Program: ajint mods
+   2001/02/15 ajb Program: main line alterations
+   2001/05/10 gwilliam ACD file: groups changed
+   2001/06/04 rice Program: @prog headers generated from acd files
+   2001/06/05 rice Program: missing @func headers
+   2001/06/25 ajb Program: function rename
+   2001/07/12 ajb Program: Memory leak fix
+   2001/10/29 ajb ACD file: acdpretty version
+   2002/02/12 rice Program: documentation additions/corrections
+   2002/02/13 rice ACD file: ACD section and endsection added by Thomas
+   Laurent
+   2002/03/12 ajb ACD file: gapsize of zero hung the program
+   2002/03/25 rice Program: Make sure all ACD values are used, even if
+   reset after
+   2002/05/30 ajb ACD file: cir/lindna author update
+   2002/05/30 ajb Program: cir/lindna author update
+   2002/06/17 ajb Program: Badly split line caused some compiler problems
+   2002/07/30 rice Program: ajStrCut length-1
+   2002/08/06 rice Program: function docs update
+   2002/08/22 rice Program: cleanup spaces, long lines, and header
+   comments
+   2002/09/26 rice ACD file: fix spelling of colour
+   2002/09/26 rice ACD file: string options to boolean
+   2002/09/26 rice Program: fix spelling of colour
+   2002/09/26 rice Program: string options to boolean
+   
 Target users
 
    This program is intended to be used by everyone and everything, from

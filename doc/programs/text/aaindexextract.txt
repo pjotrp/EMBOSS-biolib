@@ -138,12 +138,20 @@ See also
    
 Author(s)
 
-   This application was written by Peter Rice
-   (peter.rice@uk.lionbioscience.com)
+   This application was written by Peter Rice (pmr@ebi.ac.uk)
    
 History
 
    Written (25 June 2002) - Peter Rice
+   
+   Date Editor Comment
+   2002/06/25 rice ACD file: New application aaindexextract
+   2002/06/25 rice Program: New application aaindexextract
+   2002/07/18 rice Program: Removed ajUser calls - oops
+   2002/08/07 ajb Program: I hate to say I told you so but I do keep
+   telling people about this :-)
+   2002/08/22 rice Program: cleanup spaces, long lines, and header
+   comments
    
 Target users
 

@@ -382,12 +382,20 @@ See also
    
 Author(s)
 
-   This application was written by Peter Rice
-   (peter.rice@uk.lionbioscience.com)
+   This application was written by Peter Rice (pmr@ebi.ac.uk)
    
 History
 
    Written (25 June 2002) - Peter Rice
+   
+   Date Editor Comment
+   2002/06/25 rice ACD file: New application skipseq
+   2002/06/25 rice Program: New application skipseq
+   2002/07/12 rice ACD file: program documentation
+   2002/07/12 rice Program: program documentation
+   2002/07/29 rice ACD file: make -skip required
+   2002/08/22 rice Program: cleanup spaces, long lines, and header
+   comments
    
 Target users
 

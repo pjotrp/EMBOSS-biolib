@@ -1057,6 +1057,32 @@ History
 
    Written (23 May 2001) - Gary Williams
    
+   Date Editor Comment
+   2001/05/21 gwilliam ACD file: showalign added
+   2001/05/21 gwilliam Program: showalign added
+   2001/05/21 gwilliam Program: swapped function makedissimilar &
+   makenonidentity
+   2001/05/22 ajb Program: tidy up
+   2001/06/04 rice Program: @prog headers generated from acd files
+   2001/06/05 rice Program: missing @func headers
+   2001/06/05 rice Program: missing @func headers
+   2001/06/07 gwilliam Program: minor buglet tidied up
+   2001/06/23 ajb Program: function rename
+   2001/07/10 ajb Program: Leak fix
+   2001/07/16 gwilliam Program: tidy up comment
+   2001/10/10 gwilliam ACD file: minor typo in doc line
+   2001/10/29 ajb ACD file: acdpretty version
+   2002/02/13 rice ACD file: ACD section and endsection added by Thomas
+   Laurent
+   2002/02/13 rice Program: final documentation additions/corrections
+   2002/05/31 gwilliam ACD file: changed output from stdout to file
+   2002/07/03 gwilliam ACD file: help added for matrix qualifier
+   2002/07/19 rice ACD file: names not used by C code
+   2002/08/06 rice Program: function docs update
+   2002/08/22 rice Program: cleanup spaces, long lines, and header
+   comments
+   2003/01/16 rice Program: compiler warnings tolower and toupper
+   
 Target users
 
    This program is intended to be used by everyone and everything, from

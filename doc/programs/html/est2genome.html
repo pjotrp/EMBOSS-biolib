@@ -337,7 +337,7 @@ finished sequence.
 'tembl:hs989235' is a sequence entry in the example nucleic acid database 'tembl'
 <p>
 <p><h3>Database entry: tembl:hs989235</h3>
-<table width="90%"><tr><td bgcolor="#FFDDFF">
+<table width="90%"><tr><td bgcolor="#FFCCFF">
 <pre>
 ID   HS989235   standard; RNA; EST; 495 BP.
 XX
@@ -429,7 +429,7 @@ SQ   Sequence 495 BP; 73 A; 135 C; 169 G; 104 T; 14 other;
 </pre>
 </td></tr></table><p>
 <p><h3>Database entry: tembl:hsnfg9</h3>
-<table width="90%"><tr><td bgcolor="#FFDDFF">
+<table width="90%"><tr><td bgcolor="#FFCCFF">
 <pre>
 ID   HSNFG9     standard; DNA; HUM; 33760 BP.
 XX
@@ -549,7 +549,7 @@ FT                   /clone_lib="CV007K"
 <a name="output.1"></a>
 <h3>Output files for usage example </h3>
 <p><h3>File: hs989235.est2genome</h3>
-<table width="90%"><tr><td bgcolor="#DDFFDD">
+<table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
 Note Best alignment is between forward est and forward genome, but splice  sites imply REVERSED GENE
 Exon       163  91.8 25685 25874 HSNFG9           1   193 HS989235      yo13c02.s1 Soares adult brain N2b5HB55Y Homo sapiens cDNA clone IMAGE:177794 3', mRNA sequence.
@@ -826,8 +826,8 @@ None.
 
 
 This application was modified for inclusion in EMBOSS by Peter Rice <a
-href="mailto:pmr@sanger.ac.uk">(pmr@sanger.ac.uk)</a> Informatics
-Division, The Sanger Centre, Wellcome Trust Genome Campus, Hinxton,
+href="mailto:pmr@ebi.ac.uk">(pmr@ebi.ac.uk)</a> Informatics
+Division, The EBI, Wellcome Trust Genome Campus, Hinxton,
 Cambridge, CB10 1SA, UK.
 
 <p>
@@ -840,7 +840,34 @@ ftp://ftp.sanger.ac.uk/pub/pmr/est_genome.4.tar.Z</a>
     History
 </H2>
 
-Finished.
+<p>
+<table border cellspacing=0 cellpadding=3 bgcolor="#FFFFCC">
+<tr><th>Date</th><th>Editor</th><th>Comment</th></tr>
+<tr><td>2000/09/19</td><td>ajb</td><td>ACD file: First ever bioperl cvs for emboss</td></tr>
+<tr><td>2000/09/19</td><td>ajb</td><td>ACD file: branches:  1.1.1;</td></tr>
+<tr><td>2000/09/19</td><td>ajb</td><td>Program: First ever bioperl cvs for emboss</td></tr>
+<tr><td>2000/09/19</td><td>ajb</td><td>Program: branches:  1.1.1;</td></tr>
+<tr><td>2000/10/01</td><td>ajb</td><td>Program: Memory leak fixes and friendly warnings</td></tr>
+<tr><td>2001/02/10</td><td>ajb</td><td>Program: ajint mods</td></tr>
+<tr><td>2001/04/27</td><td>rice</td><td>Program: estgenome using AjPSeq, removing redundant functions</td></tr>
+<tr><td>2001/05/10</td><td>gwilliam</td><td>ACD file: groups changed</td></tr>
+<tr><td>2001/06/05</td><td>rice</td><td>Program: missing @func headers</td></tr>
+<tr><td>2001/06/12</td><td>rice</td><td>Program: Bad comment - caused skip of memory resize</td></tr>
+<tr><td>2001/06/12</td><td>rice</td><td>Program: fix to bad comment fix</td></tr>
+<tr><td>2001/06/25</td><td>ajb</td><td>Program: function rename</td></tr>
+<tr><td>2001/10/29</td><td>ajb</td><td>ACD file: acdpretty version</td></tr>
+<tr><td>2002/01/10</td><td>rice</td><td>Program: do not ajSeqDel the ajSeqallNext temp seq</td></tr>
+<tr><td>2002/02/12</td><td>rice</td><td>Program: documentation additions/corrections</td></tr>
+<tr><td>2002/02/13</td><td>rice</td><td>ACD file: ACD section and endsection added by Thomas Laurent</td></tr>
+<tr><td>2002/02/20</td><td>timc</td><td>ACD file: gui/batch/cpu</td></tr>
+<tr><td>2002/03/06</td><td>rice</td><td>ACD file: outfile param not just required</td></tr>
+<tr><td>2002/03/07</td><td>rice</td><td>Program: cleanup comments (program description for example</td></tr>
+<tr><td>2002/03/15</td><td>rice</td><td>ACD file: help text for threshold</td></tr>
+<tr><td>2002/03/25</td><td>rice</td><td>Program: write output for mode=forward and mode=reverse</td></tr>
+<tr><td>2002/05/13</td><td>rice</td><td>Program: removed duplicate ajAcdGetInt call</td></tr>
+<tr><td>2002/08/22</td><td>rice</td><td>Program: cleanup spaces, long lines, and header comments</td></tr>
+</table>
+
 
 <H2>
     Target users

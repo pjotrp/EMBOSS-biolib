@@ -756,6 +756,45 @@ History
    
    Changed 7 Dec 2000 - GWW - to declare isoschizomers that cut
    
+   Date Editor Comment
+   2000/09/19 ajb ACD file: First ever bioperl cvs for emboss
+   2000/09/19 ajb ACD file: branches: 1.1.1;
+   2000/09/19 ajb Program: First ever bioperl cvs for emboss
+   2000/09/19 ajb Program: branches: 1.1.1;
+   2000/10/01 ajb Program: Memory leak fixes and friendly warnings
+   2000/12/07 gwilliam Program: report isoschizomers of hits
+   2001/01/16 gwilliam ACD file: new code tables added
+   2001/01/16 gwilliam ACD file: new codes added
+   2001/02/10 ajb Program: ajint mods
+   2001/02/15 ajb Program: main line alterations
+   2001/02/19 ajb Program: blunt sticky fix
+   2001/05/10 gwilliam ACD file: groups changed
+   2001/05/18 gwilliam Program: caught spurious free of taken when no
+   matching enzymes are found
+   2001/06/01 rice Program: AjPFeat changes
+   2001/06/04 rice Program: @prog headers generated from acd files
+   2001/06/06 gwilliam Program: fixed bug in No Cut List
+   2001/06/06 gwilliam Program: fixed bug in No Cut List
+   2001/06/23 ajb Program: function renaming
+   2001/07/11 ajb Program: Memory leaks fixed
+   2001/07/12 ajb Program: Memory fix for multiple sequences
+   2001/07/16 gwilliam Program: tidy up comment
+   2001/08/25 rice Program: Uses ajSeqCopyFeat not ajSeqGetFeat
+   2001/08/25 rice Program: feature table was not being used
+   2001/09/24 gwilliam Program: added in much more reporting of what cuts
+   and why
+   2001/09/26 gwilliam Program: bug in nocut report fixed
+   2001/10/29 ajb ACD file: acdpretty version
+   2001/11/17 ajb Program: Remove compilation warning
+   2002/02/11 rice Program: final newline for HTML output
+   2002/02/11 rice Program: fixed hanging PRE tag ... with no newline
+   2002/02/13 rice ACD file: ACD section and endsection added by Thomas
+   Laurent
+   2002/08/22 rice Program: cleanup spaces, long lines, and header
+   comments
+   2002/11/04 rice Program: corrected ORF selection to include ends
+   2002/11/05 rice Program: ajDie to ajFatal
+   
 Target users
 
    This program is intended to be used by everyone and everything, from

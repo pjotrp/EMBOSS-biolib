@@ -1137,6 +1137,21 @@ History
    
    Added '-join' parameter (June 2002) - Gary Williams
    
+   Date Editor Comment
+   2001/12/13 gwilliam ACD file: added
+   2001/12/13 gwilliam Program: added
+   2001/12/18 gwilliam Program: reverse sense features now reversed
+   2002/02/13 rice ACD file: ACD section and endsection added by Thomas
+   Laurent
+   2002/02/13 rice Program: final documentation additions/corrections
+   2002/06/07 gwilliam ACD file: added -join
+   2002/06/07 gwilliam Program: added -join
+   2002/07/24 rice Program: comment length cleanup
+   2002/08/22 rice Program: cleanup spaces, long lines, and header
+   comments
+   2002/11/29 gwilliam ACD file: added -featinname
+   2002/11/29 gwilliam Program: added -featinname
+   
 Target users
 
    This program is intended to be used by everyone and everything, from

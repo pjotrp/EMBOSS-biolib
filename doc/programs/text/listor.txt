@@ -283,6 +283,17 @@ History
 
    Written (1 Aug 2001) - Gary Williams
    
+   Date Editor Comment
+   2001/08/02 ajb Program: Compilation warnings
+   2001/08/02 gwilliam ACD file: written
+   2001/08/02 gwilliam Program: written
+   2001/10/29 ajb ACD file: acdpretty version
+   2002/02/13 rice ACD file: ACD section and endsection added by Thomas
+   Laurent
+   2002/08/06 rice Program: function docs update
+   2002/08/22 rice Program: cleanup spaces, long lines, and header
+   comments
+   
 Target users
 
    This program is intended to be used by everyone and everything, from

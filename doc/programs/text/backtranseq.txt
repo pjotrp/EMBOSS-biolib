@@ -438,6 +438,8 @@ History
 
    Completed 6 Oct 1999
    
+   [an error occurred while processing this directive]
+   
 Target users
 
    This program is intended to be used by everyone and everything, from

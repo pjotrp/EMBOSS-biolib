@@ -325,8 +325,8 @@ See also
 Author(s)
 
    This application was written by Ian Longden (il@sanger.ac.uk)
-   Informatics Division, The Sanger Centre, Wellcome Trust Genome Campus,
-   Hinxton, Cambridge, CB10 1SA, UK.
+   Informatics Division, The EBI, Wellcome Trust Genome Campus, Hinxton,
+   Cambridge, CB10 1SA, UK.
    
    Many features were first implemented in the EGCG program "prettyplot"
    by Peter Rice.
@@ -338,6 +338,37 @@ Author(s)
 History
 
    Completed 5th May 1999.
+   
+   Date Editor Comment
+   2000/09/19 ajb ACD file: First ever bioperl cvs for emboss
+   2000/09/19 ajb ACD file: branches: 1.1.1;
+   2000/09/19 ajb Program: First ever bioperl cvs for emboss
+   2000/09/19 ajb Program: branches: 1.1.1;
+   2000/09/21 ajb ACD file: staden gui data option
+   2000/09/21 ajb Program: staden gui data option
+   2000/09/28 ajb Program: Code cleanup
+   2000/10/01 ajb Program: Memory leak fixes and friendly warnings
+   2000/10/05 ajb ACD file: snip mods
+   2001/02/10 ajb Program: ajint mods
+   2001/02/15 ajb Program: main line alterations
+   2001/04/27 rice Program: ajint for int
+   2001/05/10 gwilliam ACD file: groups changed
+   2001/06/01 rice Program: AJTIME to AjOTime/AjPTime
+   2001/06/04 rice Program: @prog headers generated from acd files
+   2001/06/05 rice Program: missing @func headers
+   2001/06/24 ajb Program: function rename
+   2001/10/29 ajb ACD file: acdpretty version
+   2001/11/05 rice Program: Calculate sequence numbers if boxit is false
+   (-nobox on command line)
+   2001/11/05 rice Program: Close box at end of alignment
+   2001/11/22 rice Program: process all colours (1 more at least)
+   2002/02/13 rice ACD file: ACD section and endsection added by Thomas
+   Laurent
+   2002/03/25 rice Program: Make sure all acd values are used
+   2002/04/24 rice ACD file: use type:frame for nested sections
+   2002/07/03 gwilliam ACD file: help added for matrix qualifier
+   2002/08/22 rice Program: cleanup spaces, long lines, and header
+   comments
    
 Target users
 

@@ -551,6 +551,35 @@ History
 
    Written (1999) - Alan Bleasby
    
+   Date Editor Comment
+   2000/09/19 ajb ACD file: First ever bioperl cvs for emboss
+   2000/09/19 ajb ACD file: branches: 1.1.1;
+   2000/09/19 ajb Program: First ever bioperl cvs for emboss
+   2000/09/19 ajb Program: branches: 1.1.1;
+   2001/02/10 ajb Program: ajint mods
+   2001/02/15 ajb Program: main line alterations
+   2001/05/10 gwilliam ACD file: groups changed
+   2001/06/04 rice Program: @prog headers generated from acd files
+   2001/06/05 rice Program: missing @func headers
+   2001/06/11 rice ACD file: bad expect text for shiftincrement
+   2001/06/25 ajb Program: function rename
+   2001/08/01 rice ACD file: Avoid True/False in @() functions
+   2001/10/29 ajb ACD file: acdpretty version
+   2001/11/06 rice ACD file: include sequence in the report
+   2001/11/06 rice Program: do not write the report with -plot (doplot
+   true)
+   2002/01/08 ajb Program: acd lower case change
+   2002/02/13 rice ACD file: ACD section and endsection added by Thomas
+   Laurent
+   2002/02/13 rice Program: final documentation additions/corrections
+   2002/03/25 rice ACD file: spelling of 'calculated'
+   2002/03/25 rice Program: Make sure all ACD values are used, even if
+   reset to zero after
+   2002/04/24 rice ACD file: use type:frame for nested sections
+   2002/08/06 rice Program: function docs update
+   2002/08/22 rice Program: cleanup spaces, long lines, and header
+   comments
+   
 Target users
 
    This program is intended to be used by everyone and everything, from

@@ -662,6 +662,25 @@ History
 
    Written (November 2002) - Thomas Laurent
    
+   Date Editor Comment
+   2002/10/01 rice ACD file: new application sixpack
+   2002/10/01 rice Program: new application sixpack
+   2002/10/04 rice ACD file: cleanup of output format
+   2002/10/04 rice Program: cleanup of output format
+   2002/10/04 timc Program: changed FALSE to ajFalse
+   2002/11/04 rice ACD file: corrected ORF selection to include ends
+   2002/11/04 rice Program: corrected ORF selection to include ends
+   2002/11/05 rice ACD file: remove -translation option
+   2002/11/06 rice ACD file: no translation qualifier
+   2002/11/06 rice ACD file: spelling in short description
+   2002/11/07 rice ACD file: remove translation option - again
+   2002/11/20 tlaurent Program: fix the strange behaviour with mstart
+   option
+   2002/11/22 tlaurent Program: removed numbering for transcripts
+   2002/11/27 tlaurent Program: tidy up the code : remove seqall and
+   ajStrCmpCase which were unused
+   2002/11/28 gwilliam ACD file: shortened documentation line
+   
 Target users
 
    This program is intended to be used by everyone and everything, from

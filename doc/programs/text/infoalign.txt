@@ -613,6 +613,28 @@ History
 
    Written (June 2001) - Gary Williams
    
+   Date Editor Comment
+   2001/06/11 gwilliam ACD file: Makefile.am
+   2001/06/11 gwilliam Program: Makefile.am
+   2001/06/12 rice Program: cleanup unused variables
+   2001/06/24 ajb Program: function rename
+   2001/07/11 ajb Program: Memory leak fix
+   2001/07/16 gwilliam Program: tidy up comment
+   2001/07/27 rice ACD file: cleaned up info for -only to make sense in
+   GUIs
+   2001/10/09 gwilliam Program: corrected html tags
+   2001/10/29 ajb ACD file: acdpretty version
+   2002/02/12 rice Program: documentation additions/corrections
+   2002/02/13 rice ACD file: ACD section and endsection added by Thomas
+   Laurent
+   2002/02/13 rice Program: final documentation additions/corrections
+   2002/03/06 rice Program: fill the input set in case it is not aligned
+   2002/05/31 gwilliam ACD file: changed output from stdout to file
+   2002/07/03 gwilliam ACD file: help added for matrix qualifier
+   2002/08/22 rice Program: cleanup spaces, long lines, and header
+   comments
+   2003/01/16 rice Program: compiler warnings tolower and toupper
+   
 Target users
 
    This program is intended to be used by everyone and everything, from

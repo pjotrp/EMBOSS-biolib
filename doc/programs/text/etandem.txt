@@ -276,16 +276,17 @@ See also
    
 Authors
 
-   This program was originally written by Richard Durbin at the Sanger
-   Centre.
+   This program was originally written by Richard Durbin at the EBI.
    
    This application was modified for inclusion in EMBOSS by Peter Rice
-   (pmr@sanger.ac.uk) Informatics Division, The Sanger Centre, Wellcome
-   Trust Genome Campus, Hinxton, Cambridge, CB10 1SA, UK.
+   (pmr@ebi.ac.uk) Informatics Division, The EBI, Wellcome Trust Genome
+   Campus, Hinxton, Cambridge, CB10 1SA, UK.
    
-Priority
+History
 
    Completed 25 May 1999
+   
+   [an error occurred while processing this directive]
    
 Target
 
