@@ -32,6 +32,7 @@ featout: featout  [
   parameter: "N"
   information: "feature file for output"
   help: "File for output features"
+  type: "nucleotide"
 ]
 endsection: output
 

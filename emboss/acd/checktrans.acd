@@ -28,6 +28,7 @@ appl: checktrans [
         parameter: N
 	info: "Feature file for output"
         help: "File for output features"
+	type: "protein"
   ]
 
   bool: addlast [
