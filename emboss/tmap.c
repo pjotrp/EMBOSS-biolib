@@ -190,7 +190,7 @@ static ajint ali_ok[LENGTH];
 
 static void tmap_profile2(ajint prof, ajint antal, ajint poss, ajint span);
 static float tmap_length1(ajint nr, ajint start, ajint stopp);
-static void tmpa_present3p(ajint antal, ajint *npos, ajint *cpos, ajint poss,
+static void tmap_present3p(ajint antal, ajint *npos, ajint *cpos, ajint poss,
 			   ajint nr, AjPSeqset seqset, AjPFile outfile);
 static ajint tmap_peak1(ajint start, ajint stopp, float *parameter);
 static ajint tmap_vec_to_stst(ajint *vec, ajint *start, ajint *stopp,
@@ -289,7 +289,7 @@ int main(int argc, char **argv)
 
     tm_number=tmap_pred1(m_limit,ml_limit,e_limit,nr);
 
-    tmpa_present3p(tm_number, npos, cpos, poss, nr, seqset, outfile);
+    tmap_present3p(tm_number, npos, cpos, poss, nr, seqset, outfile);
    
     for (j=1; j<=tm_number; j++)
     {
@@ -443,7 +443,7 @@ static float tmap_length1(ajint nr, ajint start, ajint stopp)
 }
 
 
-/* @funcstatic  tmpa_present3p ***********************************************
+/* @funcstatic  tmap_present3p ***********************************************
 **
 ** Presents results from predictions
 **
@@ -457,7 +457,7 @@ static float tmap_length1(ajint nr, ajint start, ajint stopp)
 ** @@
 ******************************************************************************/
 
-static void tmpa_present3p(ajint antal, ajint *npos, ajint *cpos,
+static void tmap_present3p(ajint antal, ajint *npos, ajint *cpos,
 			   ajint poss, ajint nr, AjPSeqset seqset,
 			   AjPFile outfile)
 
