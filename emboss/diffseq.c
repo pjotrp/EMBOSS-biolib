@@ -65,7 +65,8 @@ int main(int argc, char **argv)
     AjPFeattabOut seq1out = NULL;
     AjPFeattabOut seq2out = NULL;
     AjBool columns;		/* format output report files in columns */
-    
+    AjPStr tmpstr=NULL;
+
     embInit("diffseq", argc, argv);
 
     wordlen = ajAcdGetInt ("wordsize");
@@ -122,7 +123,17 @@ int main(int argc, char **argv)
 
     ajFeatWrite(seq1out, Tab1);
     ajFeatWrite(seq2out, Tab2);
+
+    tmpstr=NULL;
+    ajFmtPrintS(&tmpstr, "Feature file for first sequence");
+    ajReportFileAdd (report, ajFeattabOutFile(seq1out), tmpstr);
+
+    tmpstr=NULL;
+    ajFmtPrintS(&tmpstr, "Feature file for second sequence");
+    ajReportFileAdd (report, ajFeattabOutFile(seq2out), tmpstr);
+
     ajReportWrite(report, TabRpt, seq1);
+    (void) ajFeattableDel(&TabRpt);
     (void) ajReportClose(report);
     ajExit();
     return 0;
