@@ -519,7 +519,7 @@ static ajint stretcher_discons(char *seqc0, char *seqc1, ajint nc)
     char *name01;
     char *name0= ajSeqName(seq);
     char *name1= ajSeqName(seq2);
-    char n0 = ajSeqLen(seq);
+    ajint n0 = ajSeqLen(seq);
     ajint smark[4] = {-10000,-10000,-10000,-10000}; /* BIT WEIRD THIS */
 
     if (markx==2)
@@ -591,7 +591,7 @@ static ajint stretcher_discons(char *seqc0, char *seqc1, ajint nc)
 
 	if ((i-1)%50!=49 || seqc0[i-1]==' ')
 	    ajFmtPrintF(outf, "-");
-	ajFmtPrintF (outf,">%s ..\n",name1);
+	ajFmtPrintF (outf,"\n>%s ..\n",name1);
 	ajFmtPrintF (outf,"; sq_len: %d\n",ajSeqLen(seq2));
 	/*    ajFmtPrintF (outf,"; sq_type: %c\n",sqtype[0]);*/
 	ajFmtPrintF (outf,"; al_start: %ld\n", /*loffset+*/(ajlong)min1+1);
