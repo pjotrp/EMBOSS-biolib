@@ -15,9 +15,9 @@ string: extn [
 	help: "File extention of seed alignment files (input)"
 ]
 
-string: scopfamilies [
+infile: scopin [
 	req: Y
-	help: "scop families file containing the set of sequences in EMBL-like format"
+	prompt: "scop families file (input)"
 ]
 
 string: outpath [
@@ -31,4 +31,9 @@ string: outextn [
 	req: Y
 	def: ".extalign"
 	help: "File extention of extended alignment files (output)"
+]
+
+string: scopoutname [
+	req: Y
+	help: "scop families file (output)"
 ]
