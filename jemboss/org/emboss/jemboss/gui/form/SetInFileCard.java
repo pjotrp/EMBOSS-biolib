@@ -40,7 +40,7 @@ public class SetInFileCard
   private boolean isList = false;
   private FileChooser fileChoose;
   private CutNPasteTextArea cutnPaste;
-  private ListFilePanel listPane;
+  private ListFilePanel listPane = null;
 
 /**
 *
@@ -55,9 +55,8 @@ public class SetInFileCard
 *
 */
   public SetInFileCard(final JPanel sectionPane, final int h,
-                 String db[], String name, final String appName,
-                 InputSequenceAttributes inSeqAttr[],
-                 boolean fopt)
+                 final String db[], String name, final String appName,
+                 final InputSequenceAttributes inSeqAttr[], boolean fopt)
   {
 
     boxFile = new Box(BoxLayout.Y_AXIS);
@@ -71,6 +70,7 @@ public class SetInFileCard
     Font labfont = SectionPanel.labfont;
     Color labelColor = SectionPanel.labelColor;
 
+    final Box bdown[] = new Box[3];
     Box bacross = Box.createHorizontalBox();
     JRadioButton rfile  = new JRadioButton("file / database entry");
     rfile.setFont(labfont);
@@ -106,6 +106,14 @@ public class SetInFileCard
     {
       public void actionPerformed(ActionEvent e)
       {
+        if(listPane==null)  // create the list panel here 
+        {
+          listPane = new ListFilePanel(15);
+          Box bxleft = new Box(BoxLayout.X_AXIS);
+          bxleft.add(listPane);
+          bxleft.add(Box.createHorizontalGlue());
+          bdown[2].add(bxleft);
+        }
         fileCard.show(pfile, "List");
         isFile = false;
         isCut  = false;
@@ -140,62 +148,58 @@ public class SetInFileCard
     boxFile.add(bacross);
     boxFile.add(Box.createVerticalStrut(8));
 
-    Box bdown[] = new Box[3];
     for(int k=0; k<3; k++)
       bdown[k] =  Box.createVerticalBox();
 
     fileChoose = new FileChooser(bdown[0],name);
     cutnPaste = new CutNPasteTextArea(bdown[1],"Sequence Cut and Paste");
 
-    Box bxleft;
-    if(fopt)
-    {
-      listPane = new ListFilePanel(20);
-      bxleft = new Box(BoxLayout.X_AXIS);
-      bxleft.add(listPane);
-      bxleft.add(Box.createHorizontalGlue());
-      bdown[2].add(bxleft);
-    }
-
 //sequence attibute options
-    inSeqAttr[h] = new InputSequenceAttributes(db,fileChoose);
-    JButton boption = new JButton("Input Sequence Options");
+    final JButton boption = new JButton("Input Sequence Options");
+    final JButton bopt = new JButton("Input Sequence Options");
     fileChoose.setSize(boption.getPreferredSize());
     fileChoose.setForeground(labelColor);
 
-    bxleft= new Box(BoxLayout.X_AXIS);
+    Box bxleft= new Box(BoxLayout.X_AXIS);
     bxleft.add(boption);
     bxleft.add(Box.createHorizontalGlue());
     bdown[0].add(Box.createVerticalGlue());
     bdown[0].add(bxleft);
 
-    final JScrollPane rscroll = inSeqAttr[h].getJScrollPane();
-    boption.addActionListener(new ActionListener()
+    Runnable constructInSeqAttr = new Runnable()
     {
-      public void actionPerformed(ActionEvent e)
+      public void run () 
       {
-        JOptionPane jop = new JOptionPane();
-        jop.showMessageDialog(sectionPane,rscroll,
+        inSeqAttr[h] = new InputSequenceAttributes(db,fileChoose);
+        final JScrollPane rscroll = inSeqAttr[h].getJScrollPane();
+        boption.addActionListener(new ActionListener()
+        {
+          public void actionPerformed(ActionEvent e)
+          {
+            JOptionPane.showMessageDialog(sectionPane,rscroll,
+                    appName.toLowerCase() + " - Input Sequence",
+                    JOptionPane.PLAIN_MESSAGE);
+          }
+        });
+
+        bopt.addActionListener(new ActionListener()
+        {
+          public void actionPerformed(ActionEvent e)
+          {
+            JOptionPane.showMessageDialog(sectionPane,rscroll,
                 appName.toLowerCase() + " - Input Sequence",
                 JOptionPane.PLAIN_MESSAGE);
+          }
+        });
+
       }
-    });
-    boption = new JButton("Input Sequence Options");
+    };
+    SwingUtilities.invokeLater(constructInSeqAttr);
+
     bxleft= new Box(BoxLayout.X_AXIS);
-    bxleft.add(boption);
+    bxleft.add(bopt);
     bxleft.add(Box.createHorizontalGlue());
     bdown[1].add(bxleft);
-
-    boption.addActionListener(new ActionListener()
-    {
-      public void actionPerformed(ActionEvent e)
-      {
-        JOptionPane jop = new JOptionPane();
-        jop.showMessageDialog(sectionPane,rscroll,
-                appName.toLowerCase() + " - Input Sequence",
-                JOptionPane.PLAIN_MESSAGE);
-      }
-    });
 
     pfile.add(bdown[0], "File");
     pfile.add(bdown[1], "Paste");
