@@ -54,6 +54,9 @@ public class ProgList
    private JMenuItem mItem[];
    /** font used for the menu items */
    private Font menuFont = new Font("SansSerif", Font.BOLD, 11);
+   /** program group */
+   private Hashtable programGroup = new Hashtable();
+
 // private Font menuFont = new Font(null, Font.BOLD, 10);
 
    /**
@@ -226,6 +229,7 @@ public class ProgList
              {
                if(p.equalsIgnoreCase(allProgs[i]))
                {
+                 programGroup.put(allProgs[i],groups);
                  app = i;
                  break;
                }
@@ -278,13 +282,29 @@ public class ProgList
   /**
   *
   * Returns the array of the program descriptions
-  * @param array of the program descriptions
+  * @return array of the program descriptions
   *
   */
    public String[] getProgDescription() 
    {
      return allDescription;
    }
+
+  /**
+  *
+  * Returns the groups for the given application
+  * @param app	program name
+  * @return 	program group
+  *
+  */
+  public String getProgramGroup(String app)
+  {
+    if(programGroup.containsKey(app))
+      return (String)programGroup.get(app);
+    else
+      return null;
+  }
+
 
 
   /**
