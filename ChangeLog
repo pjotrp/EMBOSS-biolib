@@ -1,3 +1,11 @@
+        Getorf reporting of circular genome positions tidied up - it now
+	reports positions starting in the range 1 to the sequence length
+	and indicates if the ORF goes through the breakpoint.  A clear
+	indication of when ORFs are in the reverse sense has been added.
+
+	Pasteseq now behaves correctly when -sask2, -sbegin2 or -send2
+	are used. 
+
 Version 2.5.1
 
 	Whichdb new option -showall to see which databases are being
