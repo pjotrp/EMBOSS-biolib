@@ -3444,9 +3444,9 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_delFile
 }
 
 
-/* @func Ajax.delFile **************************************************
+/* @func Ajax.renameFile **************************************************
 **
-** Delete a file
+** Rename a file
 ** Loads outStd,errStd within java.
 **
 ** @param [rw] env [JNIEnv*] java environment
@@ -3454,7 +3454,8 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_delFile
 ** @param [r] door [jstring] username
 ** @param [r] key [jstring] password
 ** @param [r] environment [jstring] environment
-** @param [r] filename [jstring] file to delete
+** @param [r] filename [jstring] old filename
+** @param [r] filename2 [jstring] new filename
 **
 ** @return [jboolean] true if success
 ** @@
