@@ -217,7 +217,21 @@ penalties.
         Many examples illustrating different behaviours is good.
  -->
 
-[an error occurred while processing this directive]
+<b>Here is a sample session with sirna</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>sirna </b>
+Finds siRNA duplexes in mRNA
+Input sequence(s): <b>tembl:hsfau</b>
+Output report [hsfau.sirna]: <b></b>
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>
+
 
 
 
@@ -330,7 +344,92 @@ IT IS DONE FOR YOU.
 
 <p>
 
-[an error occurred while processing this directive]
+
+<a name="input.1"></a>
+<h3>Input files for usage example </h3>
+
+'tembl:hsfau' is a sequence entry in the example nucleic acid database 'tembl'
+<p>
+<p><h3>Database entry: tembl:hsfau</h3>
+<table width="90%"><tr><td bgcolor="#FFDDFF">
+<pre>
+ID   HSFAU      standard; RNA; HUM; 518 BP.
+XX
+AC   X65923;
+XX
+SV   X65923.1
+XX
+DT   13-MAY-1992 (Rel. 31, Created)
+DT   23-SEP-1993 (Rel. 37, Last updated, Version 10)
+XX
+DE   H.sapiens fau mRNA
+XX
+KW   fau gene.
+XX
+OS   Homo sapiens (human)
+OC   Eukaryota; Metazoa; Chordata; Craniata; Vertebrata; Euteleostomi; Mammalia;
+OC   Eutheria; Primates; Catarrhini; Hominidae; Homo.
+XX
+RN   [1]
+RP   1-518
+RA   Michiels L.M.R.;
+RT   ;
+RL   Submitted (29-APR-1992) to the EMBL/GenBank/DDBJ databases.
+RL   L.M.R. Michiels, University of Antwerp, Dept of Biochemistry,
+RL   Universiteisplein 1, 2610 Wilrijk, BELGIUM
+XX
+RN   [2]
+RP   1-518
+RX   MEDLINE; 93368957.
+RA   Michiels L., Van der Rauwelaert E., Van Hasselt F., Kas K., Merregaert J.;
+RT   " fau cDNA encodes a ubiquitin-like-S30 fusion protein and is expressed as
+RT   an antisense sequences in the Finkel-Biskis-Reilly murine sarcoma virus";
+RL   Oncogene 8:2537-2546(1993).
+XX
+DR   SWISS-PROT; P35544; UBIM_HUMAN.
+DR   SWISS-PROT; Q05472; RS30_HUMAN.
+XX
+FH   Key             Location/Qualifiers
+FH
+FT   source          1..518
+FT                   /chromosome="11q"
+FT                   /db_xref="taxon:9606"
+FT                   /organism="Homo sapiens"
+FT                   /tissue_type="placenta"
+FT                   /clone_lib="cDNA"
+FT                   /clone="pUIA 631"
+FT                   /map="13"
+FT   misc_feature    57..278
+FT                   /note="ubiquitin like part"
+FT   CDS             57..458
+FT                   /db_xref="SWISS-PROT:P35544"
+FT                   /db_xref="SWISS-PROT:Q05472"
+FT                   /gene="fau"
+FT                   /protein_id="CAA46716.1"
+FT                   /translation="MQLFVRAQELHTFEVTGQETVAQIKAHVASLEGIAPEDQVVLLAG
+FT                   APLEDEATLGQCGVEALTTLEVAGRMLGGKVHGSLARAGKVRGQTPKVAKQEKKKKKTG
+FT                   RAKRRMQYNRRFVNVVPTFGKKKGPNANS"
+FT   misc_feature    98..102
+FT                   /note="nucleolar localization signal"
+FT   misc_feature    279..458
+FT                   /note="S30 part"
+FT   polyA_signal    484..489
+FT   polyA_site      509
+XX
+SQ   Sequence 518 BP; 125 A; 139 C; 148 G; 106 T; 0 other;
+     ttcctctttc tcgactccat cttcgcggta gctgggaccg ccgttcagtc gccaatatgc        60
+     agctctttgt ccgcgcccag gagctacaca ccttcgaggt gaccggccag gaaacggtcg       120
+     cccagatcaa ggctcatgta gcctcactgg agggcattgc cccggaagat caagtcgtgc       180
+     tcctggcagg cgcgcccctg gaggatgagg ccactctggg ccagtgcggg gtggaggccc       240
+     tgactaccct ggaagtagca ggccgcatgc ttggaggtaa agttcatggt tccctggccc       300
+     gtgctggaaa agtgagaggt cagactccta aggtggccaa acaggagaag aagaagaaga       360
+     agacaggtcg ggctaagcgg cggatgcagt acaaccggcg ctttgtcaac gttgtgccca       420
+     cctttggcaa gaagaagggc cccaatgcca actcttaagt cttttgtaat tctggctttc       480
+     tctaataaaa aagccactta gttcagtcaa aaaaaaaa                               518
+//
+</pre>
+</td></tr></table><p>
+
 
 
 
@@ -377,7 +476,62 @@ outputs a report format file. The default format is 'table'
 
 <p>
 
-[an error occurred while processing this directive]
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: hsfau.sirna</h3>
+<table width="90%"><tr><td bgcolor="#DDFFDD">
+<pre>
+########################################
+# Program: sirna
+# Rundate: Wed Nov 27 16:45:49 2002
+# Report_format: table
+# Report_file: hsfau.sirna
+########################################
+
+#=======================================
+#
+# Sequence: HSFAU     from: 1   to: 518
+# HitCount: 26
+#
+# Selecting only regions suitable for PolIII expression vectors
+# CDS region found in feature table starting at 57
+#
+#=======================================
+
+  Start     End   Score    GC% Sense_siRNA Antisense_siRNA
+    354     376   8.000   47.8 GAAGAAGACAGGUCGGGCUdTdT AGCCCGACCUGUCUUCUUCdTdT
+    429     451   8.000   52.2 GAAGAAGGGCCCCAAUGCCdTdT GGCAUUGGGGCCCUUCUUCdTdT
+    435     457   8.000   52.2 GGGCCCCAAUGCCAACUCUdTdT AGAGUUGGCAUUGGGGCCCdTdT
+    279     301   7.000   56.5 AGUUCAUGGUUCCCUGGCCdTdT GGCCAGGGAACCAUGAACUdTdT
+    280     302   7.000   56.5 GUUCAUGGUUCCCUGGCCCdTdT GGGCCAGGGAACCAUGAACdTdT
+    308     330   7.000   43.5 AAGUGAGAGGUCAGACUCCdTdT GGAGUCUGACCUCUCACUUdTdT
+    309     331   7.000   43.5 AGUGAGAGGUCAGACUCCUdTdT AGGAGUCUGACCUCUCACUdTdT
+    348     370   7.000   43.5 GAAGAAGAAGAAGACAGGUdTdT ACCUGUCUUCUUCUUCUUCdTdT
+    432     454   7.000   56.5 GAAGGGCCCCAAUGCCAACdTdT GUUGGCAUUGGGGCCCUUCdTdT
+    274     296   5.000   47.8 GGUAAAGUUCAUGGUUCCCdTdT GGGAACCAUGAACUUUACCdTdT
+    278     300   5.000   52.2 AAGUUCAUGGUUCCCUGGCdTdT GCCAGGGAACCAUGAACUUdTdT
+    307     329   5.000   47.8 AAAGUGAGAGGUCAGACUCdTdT GAGUCUGACCUCUCACUUUdTdT
+    353     375   5.000   52.2 AGAAGAAGACAGGUCGGGCdTdT GCCCGACCUGUCUUCUUCUdTdT
+    375     397   5.000   60.9 GCGGCGGAUGCAGUACAACdTdT GUUGUACUGCAUCCGCCGCdTdT
+    387     409   5.000   52.2 GUACAACCGGCGCUUUGUCdTdT GACAAAGCGCCGGUUGUACdTdT
+    434     456   5.000   56.5 AGGGCCCCAAUGCCAACUCdTdT GAGUUGGCAUUGGGGCCCUdTdT
+    314     336   4.000   56.5 GAGGUCAGACUCCUAAGGUdTdT ACCUUAGGAGUCUGACCUCdTdT
+    392     414   4.000   56.5 ACCGGCGCUUUGUCAACGUdTdT ACGUUGACAAAGCGCCGGUdTdT
+    428     450   4.000   56.5 AGAAGAAGGGCCCCAAUGCdTdT GCAUUGGGGCCCUUCUUCUdTdT
+    123     145   3.000   52.2 GAUCAAGGCUCAUGUAGCCdTdT GGCUACAUGAGCCUUGAUCdTdT
+    487     509   3.000   34.8 AAAAGCCACUUAGUUCAGUdTdT ACUGAACUAAGUGGCUUUUdTdT
+    488     510   3.000   34.8 AAAGCCACUUAGUUCAGUCdTdT GACUGAACUAAGUGGCUUUdTdT
+    108     130   2.000   56.5 GGAAACGGUCGCCCAGAUCdTdT GAUCUGGGCGACCGUUUCCdTdT
+    128     150   2.000   56.5 AGGCUCAUGUAGCCUCACUdTdT AGUGAGGCUACAUGAGCCUdTdT
+    252     274   2.000   60.9 AGUAGCAGGCCGCAUGCUUdTdT AAGCAUGCGGCCUGCUACUdTdT
+    443     465   1.000   34.8 AUGCCAACUCUUAAGUCUUdTdT AAGACUUAAGAGUUGGCAUdTdT
+
+#---------------------------------------
+#---------------------------------------
+</pre>
+</td></tr></table><p>
+
 
 <p>
 
