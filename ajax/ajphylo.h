@@ -199,6 +199,7 @@ typedef struct AjSPhyloTree
     AjBool BaseBifurcated;
     AjBool BaseQuartet;
     AjBool HasLengths;
+    ajint Size;
     AjPStr Tree;
 } AjOPhyloTree;
 

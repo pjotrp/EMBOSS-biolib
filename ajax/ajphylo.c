@@ -1520,6 +1520,7 @@ AjPPhyloTree* ajPhyloTreeRead(const AjPStr filename, ajint size)
 	    {
 		ajDebug("ajPhyloTreeRead tree done tree->Tree '%S'\n",
 			tree->Tree);
+		tree->Size = 1 + ajStrCountK(tree->Tree, ',');
 		tree->BaseBifurcated = ajTrue;
 		if(ajRegExec(quartexp, tree->Tree))
 		{
