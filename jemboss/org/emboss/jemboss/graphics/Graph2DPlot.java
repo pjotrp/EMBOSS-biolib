@@ -85,6 +85,7 @@ public class Graph2DPlot extends ScrollPanel
   // draw rectangle around graph
   private boolean rectangle = false;
 
+  private boolean calculate_min_max = true;
   private Image offscreen = null;
 
   private String maintitle = "";
@@ -136,7 +137,8 @@ public class Graph2DPlot extends ScrollPanel
     }
     catch(FileNotFoundException fnne){}
     catch(IOException ioe){}
-    calcMinMax();
+    if(calculate_min_max)
+      calcMinMax();
   }
 
   /**
@@ -152,8 +154,9 @@ public class Graph2DPlot extends ScrollPanel
       emboss_data = readGraph(reader);
     }
     catch(FileNotFoundException fnne){}
-    catch(IOException ioe){}
-    calcMinMax();
+    catch(IOException ioe){}  
+    if(calculate_min_max)
+      calcMinMax();
   }
 
   /**
@@ -1096,6 +1099,20 @@ public class Graph2DPlot extends ScrollPanel
         int ind = line.indexOf(" ");
         npoints = Integer.parseInt(line.substring(ind).trim());
       }
+      else if(line.startsWith("##Screen "))
+      {
+        StringTokenizer tok = new StringTokenizer(line," ");
+        tok.nextToken();
+        tok.nextToken();
+        xmin = Float.parseFloat(tok.nextToken());
+        tok.nextToken();
+        ymin = Float.parseFloat(tok.nextToken());
+        tok.nextToken();
+        xmax = Float.parseFloat(tok.nextToken());
+        tok.nextToken();
+        ymax = Float.parseFloat(tok.nextToken());
+        calculate_min_max = false;
+      }
       else if(line.startsWith("Rectangle"))
         rectangle = true;
       else if(!line.startsWith("#") && !line.equals("") && 
@@ -1220,7 +1237,7 @@ public class Graph2DPlot extends ScrollPanel
   */
   private boolean isTick(float x1,float y1,float x2,float y2)
   {
-    if(x1 == x2 || y1 == y2)
+    if( (x1 == x2 || y1 == y2) )
       return true;
 
     return false;
