@@ -1494,7 +1494,12 @@ void ajSeqMakeUsa (AjPSeq thys, AjPSeqin seqin) {
   else {
     /*ajFmtPrintS (&thys->Usa, "%S::%S (%S)",
       thys->Formatstr, thys->Filename, thys->Entryname);*/
-    ajFmtPrintS (&thys->Usa, "%S::%S", thys->Formatstr, thys->Filename);
+    if (ajStrLen(thys->Entryname))
+      ajFmtPrintS (&thys->Usa, "%S::%S:%S", thys->Formatstr, thys->Filename,
+        thys->Entryname);
+    else 
+      ajFmtPrintS (&thys->Usa, "%S::%S", thys->Formatstr, thys->Filename);
+    
   }
 
   ajDebug ("      result: <%S>\n",
