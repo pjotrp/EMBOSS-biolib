@@ -12833,9 +12833,8 @@ FI stdout
 FZ = 16
 FP /^Created tmap.ps\n/
 FI tmap.res
-FZ = 1068
-FP /^  TM  1:   43 -   69  \(27\.0\)\n/
-FP /^  TM  1:   43 -   69 \(27\)\n/
+FZ = 1432
+FP 2 /^     43      69        1 YMFLLIVLGFPINFLTLYVTVQHKKLR\n/
 FI tmap.ps
 FZ = 39837
 FP /^%%Title: PLplot Graph\n/
@@ -15795,6 +15794,34 @@ FP 0 /Error: /
 FP 0 /Died: /
 //
 
+ID fclique-all
+AB phylipnew
+AA fclique
+CL -ancestral ../../data/evolution/clique.ancestral
+CL -multistate ../../data/evolution/clique.factors
+CL -weights ../../data/evolution/clique.weights
+IN ../../data/evolution/clique.dat
+IN
+IN
+IN
+FI clique.fclique
+FC = 81
+FP /^     11223 4\n/
+FP /^Actual Characters: \(  1  4\)\n/
+FP /^Binary Characters: \(  1  2  6\)\n/
+FP 3 /Tree and binary characters:/
+FI clique.treefile
+FC = 3
+FP /^\(\(\(\(Alpha,Beta\),Gamma\),Epsilon\),Delta\);\n/
+FP /^\(\(Alpha,Beta,Gamma\),Delta,Epsilon\);\n/
+FP /^\(\(Beta,Delta\),Alpha,Gamma,Epsilon\);\n/
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+//
+
 ID fconsense-ex
 AB phylipnew
 AA fconsense
@@ -15821,7 +15848,7 @@ FP 0 /Died: /
 ID fcontml-ex
 AB phylipnew
 AA fcontml
-CL -drawtree -nocontinuous -printdata
+CL -drawtree -printdata
 IN ../../data/evolution/contml.dat
 IN
 IN
@@ -15831,8 +15858,8 @@ IN
 IN
 IN
 FI contml.fcontml
-FC = 52
-FP /^Ln Likelihood =    33.29060\n/
+FC = 68
+FP /^Ln Likelihood =    33.290[56][0-9]\n/
 FP /^  3       Chinese           0.00221   \(    -0.02034,     0.03710\)\n/
 FI contml.treefile
 FC = 2
@@ -15856,13 +15883,35 @@ FC = 2
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
+FI contrast.fcontrast
+FC = 19
+FP /^    4.1991    1.3844\n/
+FP /^    1.0000    0.3297\n/
+FP /^    1.0000    0.8004\n/
 //
 
 ID fdnacomp-ex
 AB phylipnew
 AA fdnacomp
+CL -ancseq -stepbox -drawtree -printdata
+IN ../../data/evolution/dnacomp.dat
+IN
+IN
+IN
+IN
+IN
+FI dnacomp.fdnacomp
+FC = 57
+FP /total number of compatible sites is       11.0\n/
+FP /   4   Epsilon     maybe   GGGATCTCGG CCC\n/
+FP /    0[|]       2   1   3   2   0   2   1   1   1\n/
+FP /   0 [!] YYNYYYYYY\n/
+FP /One most parsimonious tree found:\n/
+FI dnacomp.treefile
+FC = 1
+FP /\(\(\(\(Epsilon,Delta\),Gamma\),Beta\),Alpha\);\n/
 FI stderr
-FC = 0
+FC = 2
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
@@ -15871,8 +15920,21 @@ FP 0 /Died: /
 ID fdnadist-ex
 AB phylipnew
 AA fdnadist
+IN ../../data/evolution/dnadist.dat
+IN
+IN
+IN
+IN
+FI dnadist.fdnadist
+FC = 6
+FP /    5\n/
+FP /^Alpha       0.0000  0.3039  0.8575  1.1589  1.5429\n/
+FI dnadist.distance
+FC = 6
+FP /    5\n/
+FP /^Alpha       0.0000  0.3039  0.8575  1.1589  1.5429\n/
 FI stderr
-FC = 0
+FC = 8
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
@@ -15881,8 +15943,24 @@ FP 0 /Died: /
 ID fdnainvar-ex
 AB phylipnew
 AA fdnainvar
+CL -printdata
+IN ../../data/evolution/dnainvar.dat
+IN
+IN
+IN
+IN
+IN
+FI dnainvar.fdnainvar
+FC = 120
+FP /^     AAAG         2\n/
+FP /^     1113         3\n/
+FP /^  III:  \(\(Alpha,Delta\),\(Beta,Gamma\)\)\n/
+FP /^   III    0    -     0   =     0       1.0000               no\n/
+FP /^   Quadratic invariant =             4.0\n/
+FP 3 /^   Quadratic invariant =/
+FP /  Tree III:             5.0\n/
 FI stderr
-FC = 0
+FC = 2
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
@@ -15891,8 +15969,33 @@ FP 0 /Died: /
 ID fdnaml-ex
 AB phylipnew
 AA fdnaml
+CL -printdata 
+CL -ncategories 2 -categories "1111112222222" -rates "1.0 2.0"
+CL -gamma hmm
+CL -nhmmcategories 5 -hmmrates "0.264 1.413 3.596 7.086 12.641"
+CL -hmmprobabilities "0.522 0.399 0.076 0.0036 0.000023"
+CL -lambda 1.5
+CL -weight "0111111111110"
+IN ../../data/evolution/dnaml.dat
+IN
+IN
+IN
+IN
+IN
+IN
+IN
+IN
+FI dnaml.fdnaml
+FC = 41
+FP /^\n/
+FP /^\n/
+FP /^\n/
+FP /^\n/
+FP /^\n/
+FP /^\n/
+FP /^\n/
 FI stderr
-FC = 0
+FC = 14
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
@@ -15941,11 +16044,24 @@ FP 0 /Died: /
 ID fdollop-ex
 AB phylipnew
 AA fdollop
+IN ../../data/evolution/dollop.dat
+IN
+IN
+IN
+IN
+IN
 FI stderr
-FC = 0
+FC = 5
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
+FI dollop.fdollop
+FC = 565
+FP /^    35 trees in all found\n/
+FP 35 /^requires a total of      0.000\n/
+FI dollop.treefile
+FC = 35
+FP /^\(Beta,\(Gamma,\(\(Epsilon,Delta\),Alpha\)\)\)\[0.0286\];\n/
 //
 
 ID fdolmove-ex
