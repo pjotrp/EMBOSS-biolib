@@ -51,6 +51,7 @@ public class BuildJembossForm implements ActionListener
 {
 
   private ReportFormat rf;
+  private AlignFormat af;
   private TextFieldSink textf[];
   private TextFieldInt textInt[];
   private TextFieldFloat textFloat[];
@@ -339,6 +340,9 @@ public class BuildJembossForm implements ActionListener
 
         if(sp.isReportFormat())
           rf = sp.getReportFormat();
+
+        if(sp.isAlignFormat())
+          af = sp.getAlignFormat();
 
         if(sp.isAdvancedSection())
         {
@@ -672,6 +676,10 @@ public class BuildJembossForm implements ActionListener
       else if ( att.startsWith("report") )
       {
         options = options.concat(rf.getReportFormat());
+      }
+      else if ( att.startsWith("align") )
+      {
+        options = options.concat(af.getAlignFormat());
       }
       else if ( att.startsWith("bool") && checkBox[h].isVisible()
                                        && checkBox[h].isEnabled())
