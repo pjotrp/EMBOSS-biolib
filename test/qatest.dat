@@ -4359,7 +4359,7 @@ FP /^Created isochore.ps\n/
 # remove the extra 2 prompts from the example
 ID lindna-ex
 AP lindna
-CL -graph ps
+CL -graph cps
 IN ../../data/data.linp
 IN
 IN
@@ -4370,13 +4370,14 @@ FI stderr
 FC = 2
 FP 0 /Warning:/
 FI lindna.ps
-FZ = 14048
+FZ = 14370
 FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 1\n/
 //
 
 ## Example should be file1 file2
 ID listor-ex
+UC Write the logical OR of two lists:
 AP listor
 CL ../../data/file1 ../../data/file2
 IN
@@ -4391,6 +4392,7 @@ FP 1 /file2/
 //
 
 ID listor-ex2
+UC Write the logical AND of two lists:
 AP listor
 CL ../../data/file1 ../../data/file2 -operator and
 IN
@@ -4405,6 +4407,7 @@ FP 0 /file2/
 //
 
 ID listor-ex3
+UC Write the logical XOR of two lists:
 AP listor
 CL ../../data/file1 ../../data/file2 -operator xor
 IN
@@ -4419,6 +4422,7 @@ FP 1 /file2/
 //
 
 ID listor-ex4
+UC Write the logical NOT of two lists:
 AP listor
 CL ../../data/file1 ../../data/file2 -operator not
 IN
@@ -4446,6 +4450,7 @@ FP /\t2242\t2458\t.*start8bp 2451".*end8bp 2458".*start16bp 2242".*end16bp 2257"
 //
 
 ID maskfeat-ex
+UC Mask out a feature whose type is "repeat_region" from position 2331 to 2356:
 AP maskfeat
 CL tembl:ab000360
 IN
@@ -4459,6 +4464,7 @@ FP /^NNNNNNNNNNNNNNNNaaagtcacttctttctacccttttcaatgtgctaatgctctttt\n/
 //
 
 ID maskseq-ex
+UC Mask off bases 10 to 12 from a sequence 'prot.fasta' and write to the new sequence file 'prot2.seq':
 AP maskseq
 CL ../../data/prot.fasta prot2.seq -reg=10-12
 FI stderr
@@ -4470,6 +4476,7 @@ FP /^ACDEFGHIKXXXPQRSTVWYACDEFGHIKLMNPQRSTVWYACDEFGHIKLMNPQRSTVWY\n/
 //
 
 ID maskseq-ex2
+UC Mask off bases 20 to 30 from a sequence 'prot.fasta' using the character 'x' and write to the new sequence file 'prot2.seq': 
 AP maskseq
 CL ../../data/prot.fasta prot2.seq -reg=20-30 -mask=x
 FI stderr
@@ -4481,6 +4488,7 @@ FP /^ACDEFGHIKLMNPQRSTVWxxxxxxxxxxxMNPQRSTVWYACDEFGHIKLMNPQRSTVWY\n/
 //
 
 ID maskseq-ex3
+UC Mask off the regions 20 to 23, 34 to 45 and 88 to 90 in 'prot.fasta':
 AP maskseq
 CL ../../data/prot.fasta prot2.seq -reg=20-23,34-45,88-90
 FI stderr
@@ -4504,6 +4512,21 @@ FP /^# Identity: +63\/145 \(43\.4%\)/
 FP /^# Score: +264\n/
 FP /^HBA_HU -----GSAQVKGHGKKVADALTNAVAHVDDMPNALSALSDLHAHKLRVDP\n/
 FC = 45
+//
+
+ID matcher-ex2
+UC To find the 10 best alignments:
+AP matcher
+CL tsw:hba_human tsw:hbb_human -alt 10
+IN
+FI stderr
+FC = 2
+FP 0 /Warning:/
+FI hba_human.matcher
+FP /^# Identity: +63\/145 \(43\.4%\)/
+FP /^# Score: +264\n/
+FP /^HBA_HU -----GSAQVKGHGKKVADALTNAVAHVDDMPNALSALSDLHAHKLRVDP\n/
+FC = 261
 //
 
 ID megamerger-ex
@@ -4625,6 +4648,7 @@ FP /^agcttccggccagcgccagcccgcccatggtaaccaccggcagagcggtcgac\n/
 //
 
 ID msbar-ex
+UC This asks for 5 mutations, with point mutations as changes (substitutions), and the codon and block mutations ignored.
 AP msbar
 IN tembl:eclac
 IN 5
@@ -4725,6 +4749,7 @@ FP /^  1183   1193    26          2  72\.7   2\.00\n/
 
 # example to use SWISS format (for protein)
 ID newseq-ex
+UC Type in a short sequence to the file 'mycc.pep' in SWISSPROT format:
 AP newseq
 IN swiss::mycc.pep
 IN cytoc
@@ -4755,6 +4780,7 @@ FP /carriage return format\nACDEFGHIKLMNPQRSTVWY\n/
 
 # change example to use globins.fasta
 ID notseq-ex
+UC In this case the excluded sequences (myg_phyca and lgb2_luplu) are not saved to any file:
 AP notseq
 IN ../../data/globins.fasta
 IN myg_phyca,lgb2_luplu
@@ -4774,7 +4800,9 @@ FP 0 /^>LGB2_LUPLU/
 //
 
 ID notseq-ex2
+UC Here is an example where the sequences to be excluded are saved to another file:
 AP notseq
+CL -junkout hb.seq
 IN ../../data/globins.fasta
 IN hb*
 IN mydata.seq
@@ -4790,6 +4818,8 @@ FP 0 /^>HBB_HORSE/
 FP /^>GLB5_PETMA/
 FP /^>MYG_PHYCA/
 FP /^>LGB2_LUPLU/
+FI hb.seq
+FP /^>HBB_HUMAN/
 //
 
 ID nthseq-ex
@@ -4822,17 +4852,19 @@ FP /^%%Pages: 1\n/
 //
 
 ID oddcomp-ex
+UC To search for entries in swissprot with at least 1 SR AND at least 2 RS:
 CC test.comp input file missing
 AP oddcomp
 IN tsw:*
-IN ../../data/test.comp
+IN ../../data/oddcomp.comp
 IN
 IN out.odd
 FI stderr
 FC = 2
 FP 0 /Warning:/
 FI out.odd
-FZ = 0
+FP /CB1B_FUGRU/
+FZ = 175
 //
 
 ID palindrome-ex
