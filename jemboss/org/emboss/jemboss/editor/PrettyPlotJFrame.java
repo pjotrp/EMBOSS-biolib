@@ -330,12 +330,24 @@ public class PrettyPlotJFrame extends JFrame
   * @param	draw boxes if true
   *
   */
-  public boolean isPrettyBox()
+  protected boolean isPrettyBox()
   {
     return prettyBox.isSelected();
   }
 
- 
+   
+  /**
+  *
+  * Set the current graphic display
+  * @param gsc	Sequence graphic     
+  *
+  */
+  protected void setGraphicSequenceCollection(GraphicSequenceCollection gsc)
+  {
+    this.gsc = gsc;
+    textInt.setText(Integer.toString(gsc.getNumberSequences()));
+  }
+
   /**
   *
   *  @param ae	the action event generated

@@ -613,7 +613,7 @@ public class SequenceJPanel extends JPanel
     if(drawNumber)
       return;
     this.drawBlackBox = drawBlackBox;
-    paintComponent(getGraphics());
+//  paintComponent(getGraphics());
   }
 
   /**

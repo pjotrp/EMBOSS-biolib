@@ -366,6 +366,8 @@ public class AlignJFrame extends JFrame
       {
         if(ppj == null)
           ppj = new PrettyPlotJFrame(gsc);
+        else
+          ppj.setGraphicSequenceCollection(gsc);
         gsc.setMatrix(mat);
         ppj.setVisible(true);
       }
