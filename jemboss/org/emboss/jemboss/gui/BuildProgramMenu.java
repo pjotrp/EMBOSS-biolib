@@ -294,7 +294,7 @@ public class BuildProgramMenu
 
 // program menu
         JMenuBar menuBar = new JMenuBar();
-        ProgList progs = new ProgList(woss,cwd,menuBar);
+        ProgList progs = new ProgList(woss,menuBar);
 
         if(withSoap)
           splashing.doneSomething("");
