@@ -60,13 +60,15 @@ int main(int argc, char * argv[]) {
   }
 
 /* get the minimal set of overlapping matches */    
-  (void) embWordMatchMin(matchlist, ajSeqLen(seq1), ajSeqLen(seq2));
-
+  if (matchlist) {
+    (void) embWordMatchMin(matchlist, ajSeqLen(seq1), ajSeqLen(seq2));
+  }
+  
   if (matchlist) {
 /* output the gff files */                                
     (void) WordMatchListConvDiffToFeat(matchlist, &Tab1, &Tab2, 
 	  seq1->Name, seq2->Name, seq1, seq2);
-                                  
+
 /* make the output file */
     (void) diff (matchlist, seq1, seq2, outfile, columns);
     
@@ -438,22 +440,26 @@ static void diff (AjPList matchlist, AjPSeq seq1, AjPSeq seq2, AjPFile
   }   	
 
 /* end of overlapping region */
-  (void) ajFmtPrintF(outfile, "\n\n");
-  if (columns) (void) ajFmtPrintF(outfile, "# ");
-  (void) ajFmtPrintF(outfile, "%S overlap ends at %d\n", name1, p->seq1start+p->length);
-  if (columns) (void) ajFmtPrintF(outfile, "# ");
-  (void) ajFmtPrintF(outfile, "%S overlap ends at %d\n\n", name2, p->seq2start+p->length);
+  if (p) {	/* no iterations of the match list done - ie no matches */
+    (void) ajFmtPrintF(outfile, "\n\n");
+    if (columns) (void) ajFmtPrintF(outfile, "# ");
+    (void) ajFmtPrintF(outfile, "%S overlap ends at %d\n", name1, p->seq1start+p->length);
+    if (columns) (void) ajFmtPrintF(outfile, "# ");
+    (void) ajFmtPrintF(outfile, "%S overlap ends at %d\n\n", name2, p->seq2start+p->length);
 
 /* report the counts of SNP types */
-  (void) ajFmtPrintF(outfile, "\n\n");
-  if (columns) (void) ajFmtPrintF(outfile, "# ");
-  (void) ajFmtPrintF(outfile, "No. of SNPs = %d\n", snps);
-  if (columns) (void) ajFmtPrintF(outfile, "# ");
-  (void) ajFmtPrintF(outfile, "No. of transitions = %d\n", transitions);
-  if (columns) (void) ajFmtPrintF(outfile, "# ");
-  (void) ajFmtPrintF(outfile, "No. of transversions = %d\n", transversions);
-  
-
+    (void) ajFmtPrintF(outfile, "\n\n");
+    if (columns) (void) ajFmtPrintF(outfile, "# ");
+    (void) ajFmtPrintF(outfile, "No. of SNPs = %d\n", snps);
+    if (columns) (void) ajFmtPrintF(outfile, "# ");
+    (void) ajFmtPrintF(outfile, "No. of transitions = %d\n", transitions);
+    if (columns) (void) ajFmtPrintF(outfile, "# ");
+    (void) ajFmtPrintF(outfile, "No. of transversions = %d\n", transversions);
+  } else {
+    (void) ajFmtPrintF(outfile, "\n\n");
+    if (columns) (void) ajFmtPrintF(outfile, "# ");
+    (void) ajFmtPrintF(outfile, "No regions of alignment found.\n");
+  }
 
 /* tidy up */
   ajStrDel(&s1);
