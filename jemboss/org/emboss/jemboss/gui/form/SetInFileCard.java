@@ -235,7 +235,7 @@ public class SetInFileCard
         bleft.add(bopt);
         bleft.add(Box.createHorizontalGlue());
         bleft.add(bres);
-        bleft.add(Box.createHorizontalStrut(5));
+        bleft.add(Box.createHorizontalStrut(14));
 
         bdown[1].add(bleft);
 
