@@ -233,7 +233,7 @@ static AcdEStage acdStage (AjPStr token);
 static void acdParse (AjPStr text);
 static void acdArgsScan (ajint argc, char *argv[]);
 static void acdHelp (void);
-static void acdHelpAssoc (AcdPAcd thys, AjPStr *str);
+static void acdHelpAssoc (AcdPAcd thys, AjPStr *str, char *name);
 static void acdHelpAppend (AcdPAcd thys, AjPStr* str, char flag);
 static void acdHelpShow (AjPStr str, char* title);
 static void acdHelpAssocTable (AcdPAcd thys, AjPList tablist, char flag);
@@ -343,8 +343,6 @@ static AjBool acdSetQualDefBool (AcdPAcd thys, char* name, AjBool value);
 static AjBool acdSetQualDefInt (AcdPAcd thys, char* name, ajint value);
 static AjBool acdSetKey (AcdPAcd thys, AjPStr* attrib, AjPStr value);
 static AjBool acdSetVarDef (AcdPAcd thys, AjPStr value);
-static AjBool acdSetSecDef (AcdPAcd thys, AjPStr value);
-static AjBool acdSetEndsecDef (AcdPAcd thys, AjPStr value);
 static void acdPromptCodon (AcdPAcd thys);
 static void acdPromptCpdb (AcdPAcd thys);
 static void acdPromptDirlist (AcdPAcd thys);
@@ -748,17 +746,17 @@ AcdOKey acdKeywords[] =
 AcdOQual acdQualAppl[] =	/* careful: index numbers used in*/
 				/* acdSetQualAppl */
 {
-  {"debug",      "N",      "bool", "write debug output to program.dbg"},
   {"auto",       "N",      "bool", "turn off prompts"},
   {"stdout",     "N",      "bool", "write standard output"},
   {"filter",     "N",      "bool", "read standard input, write standard output"},
                                   /* after auto and stdout so it can replace */
   {"options",    "N",      "bool", "prompt for required and optional values"},
-  {"verbose",    "N",      "bool", "report some/full command line options"},
-  {"help",       "N",      "bool", "report command line options"},
+  {"debug",      "N",      "bool", "write debug output to program.dbg"},
   {"acdlog",     "N",      "bool", "write ACD processing log to program.acdlog"},
   {"acdpretty",  "N",      "bool", "rewrite ACD file as program.acdpretty"},
   {"acdtable",   "N",      "bool", "write HTML table of options"},
+  {"help",       "N",      "bool", "report command line options. More information on associated and general qualifiers can be found with -help -verbose"},
+  {"verbose",    "N",      "bool", "report some/full command line options"},
   {NULL, NULL, NULL, NULL} };
 
 AcdOQual acdQualFeat[] =
@@ -1497,7 +1495,6 @@ static void acdParse (AjPStr text)
 	    acdEndsecCurr = acdNewEndsec (acdEndsec);
 	    /* ajStrAssS(&acdvalue, acdParseValue(&tokenhandle, white));*/
 	    acdPretty ("\nendsection:  %S\n", acdEndsec);
-	    /*(void) acdSetEndsecDef (acdEndsecCurr, acdvalue);*/
 	    break;
 
 	default:
@@ -6982,10 +6979,8 @@ static void acdHelp (void) {
     reqlist = ajListNew();
     optlist = ajListNew();
     advlist = ajListNew();
-    if (acdVerbose) {
-      genlist = ajListNew();
-      asslist = ajListNew();
-    }
+    genlist = ajListNew();
+    if (acdVerbose) asslist = ajListNew();
     ajUser ("<table border cellspacing=0 cellpadding=3 bgcolor=\"#f5f5ff\">");
   }
 
@@ -7058,13 +7053,19 @@ static void acdHelp (void) {
       ajFatal ("unknown qualifier type %d in acdHelp", helpType);
     }
 
-    if (acdVerbose && pa->AssocQuals) {
+    if (pa->AssocQuals) {
       if (helpType == HELP_APP) {
-	acdHelpAssoc (pa, &helpGen);
-	acdHelpAssocTable  (pa, genlist, hlpFlag);
+	if (acdVerbose) {
+	  acdHelpAssoc (pa, &helpGen, NULL);
+	  acdHelpAssocTable  (pa, genlist, hlpFlag);
+	}
+	else {
+	  acdHelpAssoc (pa, &helpGen, "help");
+	  acdHelpAssocTable  (pa, genlist, hlpFlag);
+		}
       }
       else {
-	acdHelpAssoc (pa, &helpAss);
+	acdHelpAssoc (pa, &helpAss, NULL);
 	acdHelpAssocTable  (pa, asslist, hlpFlag);
       }
     }
@@ -7084,8 +7085,7 @@ static void acdHelp (void) {
   acdHelpTableShow (advlist, "Advanced qualifiers");
   if (acdVerbose) acdHelpShow
 		    (helpAss, "Associated qualifiers");
-  if (acdVerbose) acdHelpShow
-		    (helpGen, "General qualifiers");
+  acdHelpShow (helpGen, "General qualifiers");
   if (acdVerbose && acdTable)
     acdHelpTableShow (asslist, "Associated qualifiers");
   if (acdVerbose && acdTable)
@@ -7102,13 +7102,17 @@ static void acdHelp (void) {
 **
 ** Processes all associated qualifiers for a qualifier or for the application.
 **
+** If a qualifier name is given (e.g. "help") then only that qualifier
+** is processed.
+**
 ** @param [r] thys [AcdPAcd]  ACD object
 ** @param [r] str [AjPStr*] Help text being built
+** @param [r] name [char*] Single name to process
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void acdHelpAssoc (AcdPAcd thys, AjPStr *str) {
+static void acdHelpAssoc (AcdPAcd thys, AjPStr *str, char* name) {
 
   static AjPStr line = NULL;
   static AjPStr qname = NULL;
@@ -7133,6 +7137,7 @@ static void acdHelpAssoc (AcdPAcd thys, AjPStr *str) {
   if (quals) {
     for (i=0; quals[i].Name; i++) {
       acdLog ("++ quals[%d].Name %s\n", i, quals[i].Name);
+      if (name && strcmp(name, quals[i].Name)) continue;
       if (thys->PNum)
 	(void) ajFmtPrintS (&qname, "-%s%d", quals[i].Name, thys->PNum);
       else
@@ -8725,50 +8730,6 @@ static AjBool acdSetQualDefInt (AcdPAcd thys, char* name, ajint value) {
 static AjBool acdSetVarDef (AcdPAcd thys, AjPStr value) {
 
   ajDebug ("acdSetVarDef %S '%S' %x\n", thys->Name, value, thys->ValStr);
-
-  (void) ajStrAssS (&thys->ValStr, value);
-
-  return ajTrue;
-}
-
-/* @funcstatic acdSetSecDef ***************************************************
-**
-** Sets the default value for a section ACD item.
-**
-** @param [u] thys [AcdPAcd] ACD item
-** @param [r] value [AjPStr] Default value
-** @return [AjBool] ajTrue always.
-** @@
-**
-** Note: we have to set the ValStr directly as variables have no defstr.
-** Variable references are resolved later by acdSetVar
-******************************************************************************/
-
-static AjBool acdSetSecDef (AcdPAcd thys, AjPStr value) {
-
-  ajDebug ("acdSetSecDef %S '%S' %x\n", thys->Name, value, thys->ValStr);
-
-  (void) ajStrAssS (&thys->ValStr, value);
-
-  return ajTrue;
-}
-
-/* @funcstatic acdSetEndsecDef ***************************************************
-**
-** Sets the default value for an end of section ACD item.
-**
-** @param [u] thys [AcdPAcd] ACD item
-** @param [r] value [AjPStr] Default value
-** @return [AjBool] ajTrue always.
-** @@
-**
-** Note: we have to set the ValStr directly as variables have no defstr.
-** Variable references are resolved later by acdSetVar
-******************************************************************************/
-
-static AjBool acdSetEndsecDef (AcdPAcd thys, AjPStr value) {
-
-  ajDebug ("acdSetEndsecDef %S '%S' %x\n", thys->Name, value, thys->ValStr);
 
   (void) ajStrAssS (&thys->ValStr, value);
 
@@ -12425,25 +12386,25 @@ static AjBool acdSetQualAppl (AcdPAcd thys, AjBool val) {
 	  setval = val;
       }
       switch (i) {		/* see acdQualAppl for the correct order */
-      case 0:
-	acdDebug = setval;
-	/* ajDebug ("acdSetQualAppl acdDebug %B\n", acdDebug); */
-	acdDebugSet = ajTrue;
-	break;
-      case 1: acdAuto     = setval; break;
-      case 2: acdStdout   = setval; break;
-      case 3: acdFilter   = setval;
+      case 0: acdAuto     = setval; break;
+      case 1: acdStdout   = setval; break;
+      case 2: acdFilter   = setval;
 	if (acdFilter) {
 	  acdAuto   = ajTrue;
 	  acdStdout = ajTrue;
 	}
 	break;
-      case 4: acdOptions  = setval; break;
-      case 5: acdVerbose  = setval; break;
-      case 6: acdDoHelp   = setval; break;
-      case 7: acdDoLog    = setval; break;
-      case 8: acdDoPretty = setval; break;
-      case 9: acdTable    = setval; break;
+      case 3: acdOptions  = setval; break;
+      case 4:
+	acdDebug = setval;
+	/* ajDebug ("acdSetQualAppl acdDebug %B\n", acdDebug); */
+	acdDebugSet = ajTrue;
+	break;
+      case 5: acdDoLog    = setval; break;
+      case 6: acdDoPretty = setval; break;
+      case 7: acdTable    = setval; break;
+      case 8: acdDoHelp   = setval; break;
+      case 9: acdVerbose  = setval; break;
       }
       return ajTrue;
     }
@@ -13162,8 +13123,6 @@ void ajAcdDummyFunction(void)
 
     acdSetXxxx(acdpacd);	/* template function for acdSet */
     (void) acdQualToFloat(acdpacd, "", 0.0, 0, &f, &ajpstr);
-    acdSetSecDef(NULL,NULL);
-    acdSetEndsecDef(NULL,NULL);
 }
 
 /* @func ajAcdPrintType *******************************************************
