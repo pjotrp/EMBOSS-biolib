@@ -175,7 +175,7 @@ void ajCodBacktranslate(AjPStr *b, AjPStr a, AjPCod thys)
     p=ajStrStr(a);
     while(*p)
     {
-	if(toupper(*p)==(int)'X')
+	if(toupper(*p)==(int)'X' || toupper(*p)==(int)'-')
 	{
 	    (void) ajStrAppC(b,"NNN");
 	    ++p;
