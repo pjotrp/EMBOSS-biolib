@@ -916,8 +916,8 @@ static AjBool java_pass(AjPStr username,AjPStr password,ajint *uid,
 
     struct passwd *pwd = NULL;
 
-    user_info.username = ajStrStr(username);
-    user_info.password = ajStrStr(password);
+    user_info.username = (char *) ajStrStr(username);
+    user_info.password = (char *) ajStrStr(password);
 
     conv.cv = PAM_conv;
     conv.userinfo = (void *)&user_info;
@@ -931,13 +931,8 @@ static AjBool java_pass(AjPStr username,AjPStr password,ajint *uid,
 
     ajStrAssC(home,pwd->pw_dir);
 
-#if defined(__ppc__)
     retval = pam_start("login",ajStrStr(username),
 		       (struct pam_conv*)&conv,&pamh);
-#else
-    retval = pam_start("emboss_auth",ajStrStr(username),
-		       (struct pam_conv*)&conv,&pamh);
-#endif
 
     if (retval == PAM_SUCCESS)
 	retval= pam_authenticate(pamh,PAM_SILENT);
