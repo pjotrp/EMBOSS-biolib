@@ -3038,15 +3038,15 @@ void ajSeqCompOnly(AjPSeq thys)
 **
 ** Sets Garbage element of a Seq object to True.
 **
-** @param [u] thys [AjPSeq] Sequence
+** @param [u] thys [AjPSeq *] Sequence
 ** @return [void]
 ** @category modify [AjPSeq] Sets Garbage to True.
 ** @@
 ******************************************************************************/
 
-void ajSeqGarbageOn(AjPSeq thys)
+void ajSeqGarbageOn(AjPSeq *thys)
 {
-    thys->Garbage = ajTrue;
+    (*thys)->Garbage = ajTrue;
     
     return;
 }
@@ -3058,15 +3058,15 @@ void ajSeqGarbageOn(AjPSeq thys)
 **
 ** Sets Garbage element of a Seq object to False.
 **
-** @param [u] thys [AjPSeq] Sequence
+** @param [u] thys [AjPSeq *] Sequence
 ** @return [void]
 ** @category modify [AjPSeq] Sets Garbage to False.
 ** @@
 ******************************************************************************/
 
-void ajSeqGarbageOff(AjPSeq thys)
+void ajSeqGarbageOff(AjPSeq *thys)
 {
-    thys->Garbage = ajFalse;
+    (*thys)->Garbage = ajFalse;
     
     return;
 }
