@@ -968,7 +968,7 @@ static void seqGapSL(AjPStr* seq, char gapc, char padc, ajint ilen)
 	for(i=ajStrLen(*seq); i < ilen; i++)
 	    cp[i] = endc;
 	cp[ilen] = '\0';
-	ajStrFix(seq);
+	ajStrFix(*seq);
     }
     
     /*  ajDebug("seqGapSL after  '%S'\n", *seq); */
