@@ -118,7 +118,6 @@ int main(int argc, char **argv)
   AjBool bottom;	/* show the refseq line at the bottom of the alignment as well as the top */
   AjPStr *order;	/* input required order */
   AjOOrder *aorder;	/* the output order array */
-  ajint i;
   AjBool number;	/* display number line */
   AjBool ruler;		/* display ruler line */
 
@@ -226,6 +225,7 @@ static int Getrefseq (AjPStr refseq, AjPSeqset seqset)
     ajFatal("Reference sequence is not a sequence ID or a number: %S", refseq);
   }
 
+  return 0;
 }
  
 /* @funcstatic NiceMargin ********************************************
@@ -538,7 +538,6 @@ static void MakeDissimilar (AjPSeq ref, AjPSeq seq, ajint **sub,
 {
 	
   ajint i;
-  ajint lenseq = ajSeqLen(seq);
   ajint lenref = ajSeqLen(ref);
 
   char *s = ajSeqChar(seq);	/* the original char * of the sequence */
@@ -575,7 +574,6 @@ static void Order(AjPStr *order, AjPSeqset seqset, AjPSeq consensus,
 
   char orderchar = ajStrStr(order[0])[0];	/* first char of 'order' */
   AjPSeq ref;
-  AjPSeq seq;
   ajint i, j, k;
   char *s;
   char *r;
@@ -743,6 +741,7 @@ static int Output (AjPFile outf, AjPSeqset seqset, ajint nrefseq,
     ajFmtPrintF(outf, "</pre>\n");
   }
 
+  return 0;
 }
 
 /* @funcstatic OutputNums ********************************************
@@ -789,6 +788,8 @@ correctly, so ...  */
 /* tidy up */
   ajStrDel(&line);
   ajStrDel(&marginfmt);
+
+  return 0;
 }
 
 /* @funcstatic OutputTicks ********************************************
@@ -828,6 +829,8 @@ static int OutputTicks (AjPFile outf, ajint pos, ajint width, ajint margin)
 
 /* tidy up */
   ajStrDel(&line);
+
+  return 0;
 }
 
 /* @funcstatic OutputSeq ********************************************
@@ -889,6 +892,8 @@ correctly, so ...  */
 /* tidy up */
   ajStrDel(&line);
   ajStrDel(&marginfmt);
+
+  return 0;
 }
 
 /** @funcstatic CompareTwoSeqNames **********************************************
