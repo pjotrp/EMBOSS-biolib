@@ -32,8 +32,8 @@ extern "C"
 ** @use embGotohCellBacktrace find highest scoring path through array of
 ** ajGotohCells
 **
-** @attr ajIntRow [ajint] Row number in backtrace table
-** @attr ajIntColumn [ajint] Column number in backtrace table
+** @attr ajIntRowPointer [ajint] Row number of next cell in backtrace
+** @attr ajIntColumnPointer [ajint] Column number of next cell in backtrace
 ** @attr fSubScore [float] Intermediate cumulative alignment score
 ** @attr cDownResidue [char] Residue in template indexed by row
 ** @attr cAcrossResidue [char] Residue in query indexed by column
@@ -43,8 +43,8 @@ extern "C"
 
 typedef struct AjGotohCell
 {
-    ajint ajIntRow;
-    ajint ajIntColumn;
+    ajint ajIntRowPointer;
+    ajint ajIntColumnPointer;
     float fSubScore;
     char cDownResidue;
     char cAcrossResidue;
@@ -59,10 +59,21 @@ typedef struct AjGotohCell
 /* =================== All functions in alphabetical order ================= */
 /* ========================================================================= */
 
-/* ajgotoh.h() $Date: 2004/02/13 11:08:46 $                        DJC Oct03 */
+/* ajgotoh.h() $Date: 2004/02/18 19:22:04 $                        DJC Oct03 */
 
 AjPGotohCell **embGotohCellGetArray(ajint ajIntDownSeqLen,
 				    ajint ajIntCrossSeqLen);
+    
+
+AjPGotohCell   embGotohCellCreate(ajint ajIntRow, ajint ajIntColumn,
+				  float fSubScore,
+				  char cDownResidue,
+				  char cAcrossResidue,
+				  AjBool ajBoolIsIndel);
+
+void           embGotohCellDel(AjPGotohCell* pthis);
+
+AjPGotohCell   embGotohCellNew(void);
 
 AjPFloat2d     embGotohPairScore(AjPMatrixf ajpMatrixFscoring,
 				 AjPSeq ajpSeqDown,
