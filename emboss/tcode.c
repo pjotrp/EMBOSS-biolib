@@ -644,8 +644,7 @@ static void tcode_report(AjPReport report, AjPInt from, AjPInt to,
     for(i=0;i<npoints;++i)
     {
 	feat = ajFeatNew(ftable,source,type,ajIntGet(from,i),ajIntGet(to,i),
-			 ajFloatGet(testcodes,i),strand,0);
-
+			 (fval=ajFloatGet(testcodes,i)),strand,0);
 	if(fval < 0.74)
 	    ajFmtPrintS(&coding,"*Estimation Non-coding");
 	else if(fval >= 0.95)
