@@ -3450,7 +3450,7 @@ AjBool ajStrWildPrefix (AjPStr* str) {
 ** Tests whether a string contains standard wildcard characters * or ?
 **
 ** @param [r] thys [const AjPStr] String
-** @return [AjBool] ajTrue if string has widlcards.
+** @return [AjBool] ajTrue if string has wildcards.
 ** @@
 ******************************************************************************/
 
