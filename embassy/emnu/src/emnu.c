@@ -3069,7 +3069,7 @@ main (int argc, char * argv[], char **env) {
 /* get the groups and program information - both EMBOSS and EMBASSY */
     glist = ajListNew();
     alpha  = ajListNew();
-    embGrpGetProgGroups (glist, alpha, env, ajTrue, ajTrue, explode);
+    embGrpGetProgGroups (glist, alpha, env, ajTrue, ajTrue, explode, ajFalse);
 
 
 /* we must initialize the curses data structure only once */
