@@ -26,7 +26,8 @@ import java.awt.*;
 import javax.swing.*;
 import org.apache.regexp.*;
 import java.io.*;
-import java.util.*;
+import java.util.Hashtable;
+import java.util.Enumeration;
 
 import org.emboss.jemboss.gui.filetree.FileEditorDisplay;
 
@@ -39,64 +40,40 @@ public class ShowResultSet
 {
 
 /**
-*  
-* @param the data to display
+* 
+* @param the result data to display
 *
 */
   public ShowResultSet(Hashtable reslist)
   {
+    this(reslist,null);
+  }
+
+/**
+*  
+* @param the result data to display
+* @param the input data to display
+*
+*/
+  public ShowResultSet(Hashtable reslist, Hashtable inputFiles)
+  {
     JTabbedPane rtp = new JTabbedPane();
-    Enumeration enum = reslist.keys();
     JFrame resFrame = new JFrame("Saved Results on the Server");
 
     new ResultsMenuBar(resFrame,rtp,reslist);
     resFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-    String stabs[] = new String[reslist.size()];
+
     int ntabs = 0;
 
     JPanel s1;
     JScrollPane r1;
 
-    String cmd = "cmd";
-    while (enum.hasMoreElements()) 
-    {
-      String thiskey = (String)enum.nextElement().toString();
-      if(!thiskey.equals(cmd))
-      {
-        s1 = new JPanel(new BorderLayout());
-        r1 = new JScrollPane(s1);
-        if (thiskey.endsWith("png") || thiskey.endsWith("html")) 
-        {
-          int index = findInt(thiskey);
-          if(index>0)
-          {
-            stabs[index-1] = new String(thiskey);
-            ntabs++;
-          }
-          else
-          {
-            ImageIcon i1 = new ImageIcon((byte [])reslist.get(thiskey));
-            JLabel l1 = new JLabel(i1);
-            s1.add(l1);
-            rtp.add(thiskey,r1);
-          }
-        } 
-        else 
-        {
-          FileEditorDisplay fed = new FileEditorDisplay(null,thiskey,
-                                             reslist.get(thiskey));
-          JTextPane o1 = fed.getJTextPane();
-//	  JTextArea o1 = new JTextArea((String)reslist.get(thiskey));
-          o1.setFont(new Font("monospaced", Font.PLAIN, 12));
-          o1.setCaretPosition(0);
-	  s1.add(o1, BorderLayout.CENTER);
-          rtp.add(thiskey,r1);
-        }
-      }
-    }
+    String stabs[] = addHashContentsToTab(reslist,rtp);
+    if(inputFiles != null)
+      addHashContentsToTab(inputFiles,rtp);
 
 // now load png files into pane
-    for(int i=0; i<ntabs;i++)
+    for(int i=0; i<stabs.length;i++)
     {
       s1 = new JPanel(new BorderLayout());
       r1 = new JScrollPane(s1);
@@ -110,6 +87,7 @@ public class ShowResultSet
       }
     }
 
+    String cmd = "cmd";
     if(reslist.containsKey(cmd))
     {
       s1 = new JPanel(new BorderLayout());
@@ -128,6 +106,60 @@ public class ShowResultSet
     resFrame.setVisible(true);
   }
 
+  private String[] addHashContentsToTab(Hashtable h,JTabbedPane rtp)
+  {
+
+    JPanel s1;
+    JScrollPane r1;
+
+    String cmd = "cmd";
+    Enumeration enum = h.keys();
+    String stabs[] = new String[h.size()];
+    int ntabs = 0;
+
+    while (enum.hasMoreElements())
+    {
+      String thiskey = (String)enum.nextElement().toString();
+      if(!thiskey.equals(cmd))
+      {
+        s1 = new JPanel(new BorderLayout());
+        r1 = new JScrollPane(s1);
+        if (thiskey.endsWith("png") || thiskey.endsWith("html"))
+        {
+          int index = findInt(thiskey);
+          if(index>0)
+          {
+            stabs[index-1] = new String(thiskey);
+            ntabs++;
+          }
+          else
+          {
+            ImageIcon i1 = new ImageIcon((byte [])h.get(thiskey));
+            JLabel l1 = new JLabel(i1);
+            s1.add(l1);
+            rtp.add(thiskey,r1);
+          }
+        }
+        else
+        {
+          FileEditorDisplay fed = new FileEditorDisplay(null,thiskey,
+                                                     h.get(thiskey));
+          JTextPane o1 = fed.getJTextPane();
+//        JTextArea o1 = new JTextArea((String)h.get(thiskey));
+          o1.setFont(new Font("monospaced", Font.PLAIN, 12));
+          o1.setCaretPosition(0);
+          s1.add(o1, BorderLayout.CENTER);
+          rtp.add(thiskey,r1);
+        }
+      }
+    }
+
+    String pngtabs[] = new String[ntabs];
+    for(int i=0;i<ntabs;i++)
+      pngtabs[i] = new String(stabs[i]);
+
+    return pngtabs;
+  }
 
   private int findInt(String exp)
   {

@@ -444,7 +444,7 @@ public class BuildJembossForm implements ActionListener
               }
             }
             else
-              new ShowResultSet(thisrun.hash());
+              new ShowResultSet(thisrun.hash(),filesToMove);
           }
           catch (JembossSoapException eae)
           {
