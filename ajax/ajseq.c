@@ -1401,6 +1401,7 @@ AjPSeq ajSeqNewL(size_t size)
     pthis->Taxlist = ajListstrNew();
 
     pthis->Selexdata = NULL;
+    pthis->Garbage = ajFalse;
 
     return pthis;
 }
