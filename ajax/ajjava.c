@@ -78,7 +78,7 @@
 #define _XOPEN_SOURCE
 #endif
 
-#ifndef __ppc__
+#if !defined(__ppc__) && !defined(__FreeBSD__)
 #include <crypt.h>
 #endif
 
