@@ -46,9 +46,9 @@ struct DNAB
 
 
 
-ajint readNab(AjPInt2d *matrix,AjBool eightyseven);
-void print_hits(AjPList *ajb, ajint n, float minsd, ajint lastcol,
-		AjBool eightyseven, AjPFile outf);
+static ajint hth_readNab(AjPInt2d *matrix,AjBool eightyseven);
+static void hth_print_hits(AjPList *ajb, ajint n, float minsd, ajint lastcol,
+			   AjBool eightyseven, AjPFile outf);
 
 
 
@@ -113,7 +113,7 @@ int main(int argc, char **argv)
     
     eightyseven = ajAcdGetBool("eightyseven");
 
-    cols=readNab(&matrix,eightyseven);
+    cols=hth_readNab(&matrix,eightyseven);
     ajDebug("cols = %d\n",cols);
 
     lastcol = cols-3;
@@ -170,7 +170,7 @@ int main(int argc, char **argv)
     {
         ajFmtPrintF(outf,"\nHELIXTURNHELIX: Nucleic Acid Binding Domain search\n\n");
 	ajFmtPrintF(outf,"\nHits above +%.2f SD (%.2f)\n",minsd,minscore);
-	print_hits(&ajb, n, minsd, lastcol, eightyseven, outf);
+	hth_print_hits(&ajb, n, minsd, lastcol, eightyseven, outf);
     }
     
 
@@ -188,7 +188,7 @@ int main(int argc, char **argv)
 
 
 
-/* @func readNab **************************************************************
+/* @funcstatic hth_readNab ***************************************************
 **
 ** Undocumented.
 **
@@ -199,7 +199,7 @@ int main(int argc, char **argv)
 ******************************************************************************/
 
 
-ajint readNab(AjPInt2d *matrix,AjBool eightyseven)
+static ajint hth_readNab(AjPInt2d *matrix,AjBool eightyseven)
 {
     AjPFile mfptr=NULL;
     AjPStr  line=NULL;
@@ -332,7 +332,7 @@ ajint readNab(AjPInt2d *matrix,AjBool eightyseven)
 
 
 
-/* @func print_hits ***********************************************************
+/* @funcstatic hth_print_hits ************************************************
 **
 ** Undocumented.
 **
@@ -346,8 +346,8 @@ ajint readNab(AjPInt2d *matrix,AjBool eightyseven)
 ******************************************************************************/
 
 
-void print_hits(AjPList *ajb, ajint n, float minsd, ajint lastcol,
-		AjBool eightyseven, AjPFile outf)
+static void hth_print_hits(AjPList *ajb, ajint n, float minsd, ajint lastcol,
+			   AjBool eightyseven, AjPFile outf)
 {
     DNAB     **lp;
 
