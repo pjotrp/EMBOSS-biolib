@@ -491,7 +491,7 @@ static void antigenic_dumptoFeat(ajint nhits, AjPInt hp, AjPInt hpos,
     ajFeatSortByStart(feattable);
     (void) ajFeatWrite (featout, feattable);
 
-    ajFeattabDel(&feattable);
+    ajFeattableDel(&feattable);
 
     ajStrDel(&name);
     ajStrDel(&source);

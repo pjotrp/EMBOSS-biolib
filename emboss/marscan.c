@@ -261,7 +261,7 @@ int main(int argc, char **argv)
 
 	    /* write features and tidy up */
 	    (void) ajFeatWrite(outf, tab);        
-	    ajFeattabDel(&tab);
+	    ajFeattableDel(&tab);
 	}
 	
         while(ajListPop(l16,(void **)&aptr))
