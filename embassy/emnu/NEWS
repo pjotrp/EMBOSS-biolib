@@ -3,3 +3,7 @@
 22 Jan 2001 - version 1.0.1 & 1.0.2 released 
 	    - fixes to problems finding libraries on various machines.
 
+
+24 Jan 2001 - version 1.0.3 
+	Alan tidied up lots of stuff for configure and made the m4 directory
+

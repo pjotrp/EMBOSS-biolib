@@ -9,3 +9,7 @@ v1.0.2
 GWW
 Changed configure.in back and added -lmenu -lform -lX11 to source/Makefile.am
 
+v1.0.3
+24 Jan 2001
+GWW
+Alan tidied up lots of stuff for configure and made the m4 directory

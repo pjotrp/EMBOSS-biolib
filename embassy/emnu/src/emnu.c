@@ -60,7 +60,7 @@ crashing when deleting first character of the field
 #define PROGRAM_NAME "emnu"
 
 /* the version of this program */
-#define PROGRAM_VERSION "1.0.2"
+#define PROGRAM_VERSION "1.0.3"
 
 
 #include "emboss.h"

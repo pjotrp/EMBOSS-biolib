@@ -13,11 +13,11 @@ mkdir embassy
 cd embassy
 
 4) unzip and untar the file
-gunzip EMNU-1.0.1.tar.gz
-tar xvf EMNU-1.0.1.tar
+gunzip EMNU-1.0.3.tar.gz
+tar xvf EMNU-1.0.3.tar
 
 5) go into the emnu directory
-cd EMNU-1.0.1
+cd EMNU-1.0.3
 
 6) configure and compile
 ./configure (use same options as you used to compile emboss)
