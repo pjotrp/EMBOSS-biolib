@@ -689,6 +689,7 @@ Parse:
 /*
 ** ... Keypad "," is EDT "Stationary delete"
 */
+	  case CNTRLD:
 	  case ',' /*SMG$K_TRM_COMMA*/:
 	      if ( Gold )
 	        ShowError("Sorry, no UnDelete Character yet");

@@ -142,6 +142,7 @@ enum keydef {
 #define BACKSPACE '\010'   /* Backspace or Control-H   */
 #define CNTRLL    '\014'   /* Control-L i.e. Form Feed */
 #define CARRET    '\n'   /* Carriage return          */
+#define CNTRLD    '\004'   /* Control-D, delete        */
 #define CNTRLE    '\005'   /* Control-E, go to EOL     */
 #define CNTRLR    '\022'   /* Control-R, repaint       */
 #define CNTRLW    '\027'   /* Control-W, repaint       */
