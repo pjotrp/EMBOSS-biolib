@@ -58,6 +58,75 @@ Description
 
 Usage
 
+   Here is a sample session with remap
+
+   This example uses only a small region of the input sequence to save
+   space. This is run with a small test version of the restriction enzyme
+   database and so you will probably see more enzymes when you run this.
+
+
+% remap -notran -sbeg 1 -send 60 
+Display a sequence with restriction cut sites, translation etc..
+Input sequence(s): tembl:eclac
+Comma separated enzyme list [all]: taqi,bsu6i,acii,bsski
+Minimum recognition site length [4]: 
+Output file [eclac.remap]: 
+
+   Go to the input files for this example
+   Go to the output files for this example
+
+   Example 2
+
+   This is an example where all enzymes in the REBASE database are used,
+   (but only the prototypes of the isoschizomers are reported by
+   default). This is run with a small test version of the restriction
+   enzyme database and so you will probably see more enzymes when you run
+   this.
+
+
+% remap -notran -sbeg 1 -send 60 
+Display a sequence with restriction cut sites, translation etc..
+Input sequence(s): tembl:eclac
+Comma separated enzyme list [all]: 
+Minimum recognition site length [4]: 
+Output file [eclac.remap]: 
+
+   Go to the output files for this example
+
+   Example 3
+
+   This is an example where all enzymes in the REBASE database are used
+   but the -limit qualifier is not set so that all of the enzymes are
+   displayed and not just only the prototypes of the isoschizomers. This
+   is run with a small test version of the restriction enzyme database
+   and so you will probably see more enzymes when you run this.
+
+
+% remap -notran -sbeg 1 -send 60 -nolimit 
+Display a sequence with restriction cut sites, translation etc..
+Input sequence(s): tembl:eclac
+Comma separated enzyme list [all]: 
+Minimum recognition site length [4]: 
+Output file [eclac.remap]: 
+
+   Go to the output files for this example
+
+   Example 4
+
+   This shows the 'flat' format: This is run with a small test version of
+   the restriction enzyme database and so you will probably see more
+   enzymes when you run this.
+
+
+% remap -notran -sbeg 1 -send 60 -flat 
+Display a sequence with restriction cut sites, translation etc..
+Input sequence(s): tembl:eclac
+Comma separated enzyme list [all]: 
+Minimum recognition site length [4]: 
+Output file [eclac.remap]: 
+
+   Go to the output files for this example
+
 Command line arguments
 
    Standard (Mandatory) qualifiers:
@@ -390,6 +459,169 @@ Command line arguments
 
 Input file format
 
+  Input files for usage example
+
+   'tembl:eclac' is a sequence entry in the example nucleic acid database
+   'tembl'
+
+  Database entry: tembl:eclac
+
+ID   ECLAC      standard; DNA; PRO; 7477 BP.
+XX
+AC   J01636; J01637; K01483; K01793;
+XX
+SV   J01636.1
+XX
+DT   30-NOV-1990 (Rel. 26, Created)
+DT   04-MAR-2000 (Rel. 63, Last updated, Version 7)
+XX
+DE   E.coli lactose operon with lacI, lacZ, lacY and lacA genes.
+XX
+KW   acetyltransferase; beta-D-galactosidase; galactosidase; lac operon;
+KW   lac repressor protein; lacA gene; lacI gene; lactose permease; lacY gene;
+KW   lacZ gene; mutagenesis; palindrome; promoter region;
+KW   thiogalactoside acetyltransferase.
+XX
+OS   Escherichia coli
+OC   Bacteria; Proteobacteria; gamma subdivision; Enterobacteriaceae;
+OC   Escherichia.
+XX
+RN   [1]
+RP   1243-1266
+RX   MEDLINE; 74055539.
+RA   Gilbert W., Maxam A.;
+RT   "The nucleotide sequence of the lac operator";
+RL   Proc. Natl. Acad. Sci. U.S.A. 70:3581-3584(1973).
+XX
+RN   [2]
+RP   1246-1308
+RX   MEDLINE; 74055540.
+RA   Maizels N.M.;
+RT   "The nucleotide sequence of the lactose messenger ribonucleic acid
+RT   transcribed from the UV5 promoter mutant of Escherichia coli";
+RL   Proc. Natl. Acad. Sci. U.S.A. 70:3585-3589(1973).
+XX
+RN   [3]
+RX   MEDLINE; 74174501.
+RA   Gilbert W., Maizels N., Maxam A.;
+RT   "Sequences of controlling regions of the lactose operon";
+RL   Cold Spring Harb. Symp. Quant. Biol. 38:845-855(1974).
+XX
+RN   [4]
+RA   Gilbert W., Gralla J., Majors A.J., Maxam A.;
+RT   "Lactose operator sequences and the action of lac repressor";
+RL   (in) Sund H., Blauer G. (eds.);
+RL   PROTEIN-LIGAND INTERACTIONS:193-207;
+RL   Walter de Gruyter, New York (1975)
+XX
+RN   [5]
+RP   1146-1282
+
+
+  [Part of this file has been deleted for brevity]
+
+     cgatttggct acatgacatc aaccatatca gcaaaagtga tacgggtatt atttttgccg      456
+0
+     ctatttctct gttctcgcta ttattccaac cgctgtttgg tctgctttct gacaaactcg      462
+0
+     ggctgcgcaa atacctgctg tggattatta ccggcatgtt agtgatgttt gcgccgttct      468
+0
+     ttatttttat cttcgggcca ctgttacaat acaacatttt agtaggatcg attgttggtg      474
+0
+     gtatttatct aggcttttgt tttaacgccg gtgcgccagc agtagaggca tttattgaga      480
+0
+     aagtcagccg tcgcagtaat ttcgaatttg gtcgcgcgcg gatgtttggc tgtgttggct      486
+0
+     gggcgctgtg tgcctcgatt gtcggcatca tgttcaccat caataatcag tttgttttct      492
+0
+     ggctgggctc tggctgtgca ctcatcctcg ccgttttact ctttttcgcc aaaacggatg      498
+0
+     cgccctcttc tgccacggtt gccaatgcgg taggtgccaa ccattcggca tttagcctta      504
+0
+     agctggcact ggaactgttc agacagccaa aactgtggtt tttgtcactg tatgttattg      510
+0
+     gcgtttcctg cacctacgat gtttttgacc aacagtttgc taatttcttt acttcgttct      516
+0
+     ttgctaccgg tgaacagggt acgcgggtat ttggctacgt aacgacaatg ggcgaattac      522
+0
+     ttaacgcctc gattatgttc tttgcgccac tgatcattaa tcgcatcggt gggaaaaacg      528
+0
+     ccctgctgct ggctggcact attatgtctg tacgtattat tggctcatcg ttcgccacct      534
+0
+     cagcgctgga agtggttatt ctgaaaacgc tgcatatgtt tgaagtaccg ttcctgctgg      540
+0
+     tgggctgctt taaatatatt accagccagt ttgaagtgcg tttttcagcg acgatttatc      546
+0
+     tggtctgttt ctgcttcttt aagcaactgg cgatgatttt tatgtctgta ctggcgggca      552
+0
+     atatgtatga aagcatcggt ttccagggcg cttatctggt gctgggtctg gtggcgctgg      558
+0
+     gcttcacctt aatttccgtg ttcacgctta gcggccccgg cccgctttcc ctgctgcgtc      564
+0
+     gtcaggtgaa tgaagtcgct taagcaatca atgtcggatg cggcgcgacg cttatccgac      570
+0
+     caacatatca taacggagtg atcgcattga acatgccaat gaccgaaaga ataagagcag      576
+0
+     gcaagctatt taccgatatg tgcgaaggct taccggaaaa aagacttcgt gggaaaacgt      582
+0
+     taatgtatga gtttaatcac tcgcatccat cagaagttga aaaaagagaa agcctgatta      588
+0
+     aagaaatgtt tgccacggta ggggaaaacg cctgggtaga accgcctgtc tatttctctt      594
+0
+     acggttccaa catccatata ggccgcaatt tttatgcaaa tttcaattta accattgtcg      600
+0
+     atgactacac ggtaacaatc ggtgataacg tactgattgc acccaacgtt actctttccg      606
+0
+     ttacgggaca ccctgtacac catgaattga gaaaaaacgg cgagatgtac tcttttccga      612
+0
+     taacgattgg caataacgtc tggatcggaa gtcatgtggt tattaatcca ggcgtcacca      618
+0
+     tcggggataa ttctgttatt ggcgcgggta gtatcgtcac aaaagacatt ccaccaaacg      624
+0
+     tcgtggcggc tggcgttcct tgtcgggtta ttcgcgaaat aaacgaccgg gataagcact      630
+0
+     attatttcaa agattataaa gttgaatcgt cagtttaaat tataaaaatt gcctgatacg      636
+0
+     ctgcgcttat caggcctaca agttcagcga tctacattag ccgcatccgg catgaacaaa      642
+0
+     gcgcaggaac aagcgtcgca tcatgcctct ttgacccaca gctgcggaaa acgtactggt      648
+0
+     gcaaaacgca gggttatgat catcagccca acgacgcaca gcgcatgaaa tgcccagtcc      654
+0
+     atcaggtaat tgccgctgat actacgcagc acgccagaaa accacggggc aagcccggcg      660
+0
+     atgataaaac cgattccctg cataaacgcc accagcttgc cagcaatagc cggttgcaca      666
+0
+     gagtgatcga gcgccagcag caaacagagc ggaaacgcgc cgcccagacc taacccacac      672
+0
+     accatcgccc acaataccgg caattgcatc ggcagccaga taaagccgca gaaccccacc      678
+0
+     agttgtaaca ccagcgccag cattaacagt ttgcgccgat cctgatggcg agccatagca      684
+0
+     ggcatcagca aagctcctgc ggcttgccca agcgtcatca atgccagtaa ggaaccgctg      690
+0
+     tactgcgcgc tggcaccaat ctcaatatag aaagcgggta accaggcaat caggctggcg      696
+0
+     taaccgccgt taatcagacc gaagtaaaca cccagcgtcc acgcgcgggg agtgaatacc      702
+0
+     acgcgaaccg gagtggttgt tgtcttgtgg gaagaggcga cctcgcgggc gctttgccac      708
+0
+     caccaggcaa agagcgcaac aacggcaggc agcgccacca ggcgagtgtt tgataccagg      714
+0
+     tttcgctatg ttgaactaac cagggcgtta tggcggcacc aagcccaccg ccgcccatca      720
+0
+     gagccgcgga ccacagcccc atcaccagtg gcgtgcgctg ctgaaaccgc cgtttaatca      726
+0
+     ccgaagcatc accgcctgaa tgatgccgat ccccacccca ccaagcagtg cgctgctaag      732
+0
+     cagcagcgca ctttgcgggt aaagctcacg catcaatgca ccgacggcaa tcagcaacag      738
+0
+     actgatggcg acactgcgac gttcgctgac atgctgatga agccagcttc cggccagcgc      744
+0
+     cagcccgccc atggtaacca ccggcagagc ggtcgac                               747
+7
+//
+
    You can specifiy a file of ranges to display in uppercase by giving
    the '-uppercase' qualifier the value '@' followed by the name of the
    file containing the ranges. (eg: '-upper @myfile').
@@ -440,6 +672,242 @@ Input file format
 
 Output file format
 
+  Output files for usage example
+
+  File: eclac.remap
+
+ECLAC
+E.coli lactose operon with lacI, lacZ, lacY and lacA genes.
+
+                                                        BssKI
+                 TaqI                 AciI              Ksp632I
+                 \                    \                 \
+          gacaccatcgaatggcgcaaaacctttcgcggtatggcatgatagcgcccggaagagagt
+                   10        20        30        40        50        60
+          ----:----|----:----|----:----|----:----|----:----|----:----|
+          ctgtggtagcttaccgcgttttggaaagcgccataccgtactatcgcgggccttctctca
+                   /                    /                  / /
+                   TaqI                 AciI               | BssKI
+                                                           Ksp632I
+
+
+# Enzymes that cut  Frequency   Isoschizomers
+      AciI          1
+     BssKI          1
+   Ksp632I          1   Bsu6I
+      TaqI          1
+
+
+
+# Enzymes which cut less frequently than the MINCUTS criterion
+# Enzymes < MINCUTS Frequency   Isoschizomers
+
+
+
+# Enzymes which cut more frequently than the MAXCUTS criterion
+# Enzymes > MAXCUTS Frequency   Isoschizomers
+
+
+
+# Enzymes that do not cut
+
+
+
+
+# No. of cutting enzymes which do not match the
+# SITELEN, BLUNT, STICKY, COMMERCIAL, AMBIGUOUS citeria
+
+0
+
+  Output files for usage example 2
+
+  File: eclac.remap
+
+ECLAC
+E.coli lactose operon with lacI, lacZ, lacY and lacA genes.
+
+                                                      Hin6I
+                 TaqI                                 | HhaI
+                 |  BsiYI                             | BssKI
+                 |  |   Hin6I                         | Ksp632I
+                 |  |   | HhaI        AciI            | | HpaII
+                 \  \   \ \           \               \ \ \
+          gacaccatcgaatggcgcaaaacctttcgcggtatggcatgatagcgcccggaagagagt
+                   10        20        30        40        50        60
+          ----:----|----:----|----:----|----:----|----:----|----:----|
+          ctgtggtagcttaccgcgttttggaaagcgccataccgtactatcgcgggccttctctca
+                 / /    / /             /             / /  ///
+                 | TaqI | Hin6I         AciI          | |  ||BssKI
+                 BsiYI  HhaI                          | |  |HpaII
+                                                      | |  Ksp632I
+                                                      | Hin6I
+                                                      HhaI
+
+
+# Enzymes that cut  Frequency   Isoschizomers
+      AciI          1
+     BsiYI          1   Bsc4I
+     BssKI          1
+      HhaI          2
+     Hin6I          2   HinP1I,HspAI
+     HpaII          1   BsiSI
+   Ksp632I          1   Bsu6I
+      TaqI          1
+
+
+
+# Enzymes which cut less frequently than the MINCUTS criterion
+# Enzymes < MINCUTS Frequency   Isoschizomers
+
+
+
+# Enzymes which cut more frequently than the MAXCUTS criterion
+# Enzymes > MAXCUTS Frequency   Isoschizomers
+
+
+
+# Enzymes that do not cut
+
+AclI      BamHI     BceAI     BseYI     BsrI      ClaI      EcoRI     EcoRII
+
+HaeIII    Hin4I     HindII    HindIII   KpnI      MaeII     NotI
+
+
+# No. of cutting enzymes which do not match the
+# SITELEN, BLUNT, STICKY, COMMERCIAL, AMBIGUOUS citeria
+
+0
+
+  Output files for usage example 3
+
+  File: eclac.remap
+
+ECLAC
+E.coli lactose operon with lacI, lacZ, lacY and lacA genes.
+
+                                                      Hin6I
+                 TaqI                                 HspAI
+                 |  Bsc4I                             HinP1I
+                 |  |   HspAI                         | HhaI
+                 |  |   Hin6I                         | BssKI
+                 |  |   HinP1I                        | Bsu6I
+                 |  |   | HhaI        AciI            | | BsiSI
+                 \  \   \ \           \               \ \ \
+          gacaccatcgaatggcgcaaaacctttcgcggtatggcatgatagcgcccggaagagagt
+                   10        20        30        40        50        60
+          ----:----|----:----|----:----|----:----|----:----|----:----|
+          ctgtggtagcttaccgcgttttggaaagcgccataccgtactatcgcgggccttctctca
+                 / /    / /             /             / /  ///
+                 | TaqI | HinP1I        AciI          | |  ||BssKI
+                 Bsc4I  | HspAI                       | |  |BsiSI
+                        | Hin6I                       | |  Bsu6I
+                        HhaI                          | HinP1I
+                                                      | Hin6I
+                                                      | HspAI
+                                                      HhaI
+
+
+# Enzymes that cut  Frequency
+      AciI          1
+     Bsc4I          1
+     BsiSI          1
+     BssKI          1
+     Bsu6I          1
+      HhaI          2
+     Hin6I          2
+    HinP1I          2
+     HspAI          2
+      TaqI          1
+
+
+
+# Enzymes which cut less frequently than the MINCUTS criterion
+# Enzymes < MINCUTS Frequency
+
+
+
+# Enzymes which cut more frequently than the MAXCUTS criterion
+# Enzymes > MAXCUTS Frequency
+
+
+
+# Enzymes that do not cut
+
+AclI      BamHI     BceAI     Bse1I     BseYI     BshI      ClaI      EcoRI
+
+EcoRII    Hin4I     HindII    HindIII   HpyCH4IV  KpnI      NotI
+
+
+# No. of cutting enzymes which do not match the
+# SITELEN, BLUNT, STICKY, COMMERCIAL, AMBIGUOUS citeria
+
+0
+
+  Output files for usage example 4
+
+  File: eclac.remap
+
+ECLAC
+E.coli lactose operon with lacI, lacZ, lacY and lacA genes.
+
+                                                                  Ksp632I
+                                                        >.........====
+                                                          HpaII
+                                                          >===
+                        Hin6I                            BssKI
+                        >===                            >=====
+                 TaqI   HhaI                          Hin6I
+                 >===   ==>=                          >===
+              BsiYI                      AciI         HhaI
+              ======>====             >..====         ==>=
+          gacaccatcgaatggcgcaaaacctttcgcggtatggcatgatagcgcccggaagagagt
+                   10        20        30        40        50        60
+          ----:----|----:----|----:----|----:----|----:----|----:----|
+          ctgtggtagcttaccgcgttttggaaagcgccataccgtactatcgcgggccttctctca
+              ====<======                <===         =<==  <.....====
+              BsiYI                      AciI         HhaI        Ksp632I
+                 ===<   =<==                          ===<
+                 TaqI   HhaI                          Hin6I
+                        ===<                             =====<
+                        Hin6I                            BssKI
+                                                          ===<
+                                                          HpaII
+
+
+# Enzymes that cut  Frequency   Isoschizomers
+      AciI          1
+     BsiYI          1   Bsc4I
+     BssKI          1
+      HhaI          2
+     Hin6I          2   HinP1I,HspAI
+     HpaII          1   BsiSI
+   Ksp632I          1   Bsu6I
+      TaqI          1
+
+
+
+# Enzymes which cut less frequently than the MINCUTS criterion
+# Enzymes < MINCUTS Frequency   Isoschizomers
+
+
+
+# Enzymes which cut more frequently than the MAXCUTS criterion
+# Enzymes > MAXCUTS Frequency   Isoschizomers
+
+
+
+# Enzymes that do not cut
+
+AclI      BamHI     BceAI     BseYI     BsrI      ClaI      EcoRI     EcoRII
+
+HaeIII    Hin4I     HindII    HindIII   KpnI      MaeII     NotI
+
+
+# No. of cutting enzymes which do not match the
+# SITELEN, BLUNT, STICKY, COMMERCIAL, AMBIGUOUS citeria
+
+0
+
    The name of the sequence is displayed, followed by the description of
    the sequence.
 
@@ -486,12 +954,6 @@ Output file format
 
 Data files
 
-   This uses the EMBOSS REBASE data files in 'data/REBASE/*' under the
-   EMBOSS installation directory.
-
-   These files must first be set up using the program 'rebaseextract'.
-   Running 'rebaseextract' may be the job of your system manager.
-
    EMBOSS data files are distributed with the application and stored in
    the standard EMBOSS data directory, which is defined by the EMBOSS
    environment variable EMBOSS_DATA.
@@ -517,6 +979,12 @@ Data files
      * ~/ (your home directory)
      * ~/.embossdata
 
+   The EMBOSS REBASE restriction enzyme data files are stored iin
+   directory 'data/REBASE/*' under the EMBOSS installation directory.
+
+   These files must first be set up using the program 'rebaseextract'.
+   Running 'rebaseextract' may be the job of your system manager.
+
    The data files are stored in the REBASE directory of the standard
    EMBOSS data directory. The names are:
      * embossre.enz Cleavage information
@@ -528,14 +996,14 @@ Data files
    The reported enzyme from any one group of isoschizomers (the
    prototype) is specified in the REBASE database and the information is
    held in the data file 'embossre.equ'. You may edit this file to set
-   your own preferred prototype,if you wish.
+   your own preferred prototype, if you wish.
 
    The format of the file "embossre.equ" is
    Enzyme-name Prototype-name
 
    i.e. two columns of enzyme names separated by a space. The first name
    of the pair of enzymes is the name that is not preferred and the
-   second is the preferred, prototype name.
+   second is the preferred (prototype) name.
 
 Notes
 
@@ -608,3 +1076,5 @@ Target users
    naive users to embedded scripts.
 
 Comments
+
+   None

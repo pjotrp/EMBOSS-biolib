@@ -382,28 +382,16 @@ Output file format
    The available pairwise alignment format names are: pair, markx0,
    markx1, markx2, markx3, markx10, srspair, score
 
-   See: http://www.uk.embnet.org/Software/EMBOSS/Themes/AlignFormats.html
-   for further information on alignment formats.
+   See: http://emboss.sf.net/docs/themes/AlignFormats.html for further
+   information on alignment formats.
 
   Output files for usage example
-
-  File: HBA_HUMAN.gff
-
-##gff-version 2.0
-##date 2004-07-21
-##Type Protein HBA_HUMAN
-HBA_HUMAN       wordmatch       misc_feature    58      62      1.000   +
-.       Sequence "HBA_HUMAN.1" ; note "HBB_HUMAN"
-HBA_HUMAN       wordmatch       misc_feature    14      17      1.000   +
-.       Sequence "HBA_HUMAN.2" ; note "HBB_HUMAN"
-HBA_HUMAN       wordmatch       misc_feature    116     119     1.000   +
-.       Sequence "HBA_HUMAN.3" ; note "HBB_HUMAN"
 
   File: hba_human.wordmatch
 
 ########################################
-# Program:  wordmatch
-# Rundate:  Wed Jul 21 12:00:37 2004
+# Program: wordmatch
+# Rundate: Thu Jan 20 2005 17:44:43
 # Align_format: match
 # Report_file: hba_human.wordmatch
 ########################################
@@ -415,17 +403,29 @@ HBA_HUMAN       wordmatch       misc_feature    116     119     1.000   +
 # 2: HBB_HUMAN
 #=======================================
 
-     5 HBA_HUMAN             58..62       HBB_HUMAN             63..67
-     4 HBA_HUMAN             14..17       HBB_HUMAN             15..18
-     4 HBA_HUMAN            116..119      HBB_HUMAN            121..124
+     5 HBA_HUMAN       +       58..62       HBB_HUMAN       +       63..67
+     4 HBA_HUMAN       +       14..17       HBB_HUMAN       +       15..18
+     4 HBA_HUMAN       +      116..119      HBB_HUMAN       +      121..124
 
 #---------------------------------------
 #---------------------------------------
+
+  File: HBA_HUMAN.gff
+
+##gff-version 2.0
+##date 2005-01-20
+##Type Protein HBA_HUMAN
+HBA_HUMAN       wordmatch       misc_feature    58      62      1.000   +
+.       Sequence "HBA_HUMAN.1" ; note "HBB_HUMAN"
+HBA_HUMAN       wordmatch       misc_feature    14      17      1.000   +
+.       Sequence "HBA_HUMAN.2" ; note "HBB_HUMAN"
+HBA_HUMAN       wordmatch       misc_feature    116     119     1.000   +
+.       Sequence "HBA_HUMAN.3" ; note "HBB_HUMAN"
 
   File: HBB_HUMAN.gff
 
 ##gff-version 2.0
-##date 2004-07-21
+##date 2005-01-20
 ##Type Protein HBB_HUMAN
 HBB_HUMAN       wordmatch       misc_feature    63      67      1.000   +
 .       Sequence "HBB_HUMAN.1" ; note "HBA_HUMAN"

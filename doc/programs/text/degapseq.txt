@@ -45,7 +45,7 @@ Usage
    Here is a sample session with degapseq
 
 
-% degapseq ../../data/dnagap.fasta nogaps.seq 
+% degapseq dnagap.fasta nogaps.seq 
 Removes gap characters from sequences
 
    Go to the input files for this example
@@ -126,16 +126,12 @@ Input file format
 
   Input files for usage example
 
-  File: ../../data/dnagap.fasta
+  File: dnagap.fasta
 
 >FASTA F10002 FASTA FORMAT DNA SEQUENCE
 ACGT....ACGTACGTACGTACGTACGTACGTACGTACGT
 ACGTACGTACGTACGTACGTACGTACGTACGTACGTACGT
 ACGTACGTACGTACGTACGT
-
-   hsf1 --------TGACTGATGCTGA~~~~CTG-ACGTGACTGATGCTGATCGTGACTGATCGTGAC
-   >myclone1 ATGCGCAGGTACGTATGCTGACGGTACGTGATCGA-GCTGA-CGAGCGTATGC-----
-   -->
 
 Output file format
 
@@ -222,3 +218,5 @@ Target users
    naive users to embedded scripts.
 
 Comments
+
+   None

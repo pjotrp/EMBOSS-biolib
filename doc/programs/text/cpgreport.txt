@@ -257,7 +257,7 @@ RNU68037               1183   1193    26          2  72.7   2.00
   File: rnu68037.gff
 
 ##gff-version 2.0
-##date 2004-04-06
+##date 2005-01-20
 ##Type DNA RNU68037
 RNU68037        cpgreport       misc_feature    12      13      17.000  +
 .       Sequence "RNU68037.1"
@@ -362,8 +362,8 @@ Author(s)
    Informatics Division, European Bioinformatics Institute, Wellcome
    Trust Genome Campus, Hinxton, Cambridge CB10 1SD, UK
 
-   It was modified for inclusion in EGCG under the name 'CPGSPANS' by
-   Rodrigo Lopez (rls © ebi.ac.uk)
+   The algorithm was modified for inclusion in EGCG under the name
+   'CPGSPANS' by Rodrigo Lopez (rls © ebi.ac.uk)
    European Bioinformatics Institute, Wellcome Trust Genome Campus,
    Hinxton, Cambridge CB10 1SD, UK
 
@@ -382,3 +382,5 @@ Target users
    naive users to embedded scripts.
 
 Comments
+
+   None

@@ -9,8 +9,8 @@ Function
 
 Description
 
-Displays all the words of the specified length with the number of
-times it occurs.
+   Displays all the words of the specified length with the number of
+   times it occurs.
 
 Usage
 
@@ -332,3 +332,5 @@ Target users
    naive users to embedded scripts.
 
 Comments
+
+   None

@@ -5,7 +5,7 @@
 
 Function
 
-   Displays protein hydropathy
+   --> Displays protein hydropathy
 
 Description
 
@@ -351,7 +351,7 @@ Author(s)
 
 History
 
-Completed 27th May 1999.
+   Completed 27th May 1999.
 
 Target users
 
@@ -359,3 +359,5 @@ Target users
    naive users to embedded scripts.
 
 Comments
+
+   None

@@ -33,7 +33,7 @@ Usage
 
 % cirdna -graph cps 
 Draws circular maps of DNA constructs
-Input file containing mapping data [inputfile]: ../../data/data.cirp
+Input file containing mapping data [inputfile]: data.cirp
 Draw a ruler [Y]: 
       Open : Open blocks
     Filled : Filled blocks
@@ -138,7 +138,7 @@ Command line arguments
    -graphout Graph type EMBOSS has a list of known devices, including
    postscript, ps, hpgl, hp7470, hp7580, meta, colourps, cps, xwindows,
    x11, tektronics, tekt, tek4107t, tek, none, null, text, data, xterm,
-   png EMBOSS_GRAPHICS value, or x11
+   png, xml EMBOSS_GRAPHICS value, or x11
    Additional (Optional) qualifiers Allowed values Default
    -maxgroups Maximum number of groups Integer 1 or more 20
    -maxlabels Maximum number of labels Integer 1 or more 10000
@@ -170,48 +170,6 @@ Command line arguments
    (none)
 
 Input file format
-
-  Input files for usage example
-
-  File: ../../data/data.cirp
-
-Start   1001
-End     4270
-
-
-group
-label
-Block    1011   1362    3
-ex1
-endlabel
-label
-Tick     1610   8
-EcoR1
-endlabel
-label
-Block    1647   1815    1
-endlabel
-label
-Tick     2459   8
-BamH1
-endlabel
-label
-Block    4139   4258    3
-ex2
-endlabel
-endgroup
-
-
-group
-label
-Range    2541    2812    [       ]       5
-Alu
-endlabel
-label
-Range    3322    3497    >       <       5
-MER13
-endlabel
-endgroup
 
    Blank lines in the input file are ignored.
 
@@ -279,15 +237,55 @@ endgroup
 
    This format can also be used for the program "lindna".
 
-Output file format
+  Input files for usage example
 
-   Output is to the specified graphics device.
+  File: data.cirp
+
+Start   1001
+End     4270
+
+
+group
+label
+Block    1011   1362    3
+ex1
+endlabel
+label
+Tick     1610   8
+EcoR1
+endlabel
+label
+Block    1647   1815    1
+endlabel
+label
+Tick     2459   8
+BamH1
+endlabel
+label
+Block    4139   4258    3
+ex2
+endlabel
+endgroup
+
+
+group
+label
+Range    2541    2812    [       ]       5
+Alu
+endlabel
+label
+Range    3322    3497    >       <       5
+MER13
+endlabel
+endgroup
+
+Output file format
 
   Output files for usage example
 
   Graphics File: cirdna.ps
 
-   [cirdna results]
+   [cirdna results] Output is to the specified graphics device.
 
 Data files
 
@@ -352,3 +350,5 @@ Target users
    naive users to embedded scripts.
 
 Comments
+
+   None

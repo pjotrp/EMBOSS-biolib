@@ -1284,27 +1284,61 @@ Data files
    The Genetic Code data files are based on the NCBI genetic code tables.
    Their names and descriptions are:
 
+   EGC.0
+          Standard (Differs from GC.1 in that it only has initiation site
+          'AUG')
 
-EGC.0      Standard (Differs from GC.1 in that it only has initiation site 'AUG
-')
-EGC.1      Standard
-EGC.2      Vertebrate Mitochondrial
-EGC.3      Yeast Mitochondrial
-EGC.4      Mold, Protozoan, Coelenterate Mitochondrial and Mycoplasma/Spiroplas
-ma
-EGC.5      Invertebrate Mitochondrial
-EGC.6      Ciliate Macronuclear and Dasycladacean
-EGC.9      Echinoderm Mitochondrial
-EGC.10     Euplotid Nuclear
-EGC.11     Bacterial
-EGC.12     Alternative Yeast Nuclear
-EGC.13     Ascidian Mitochondrial
-EGC.14     Flatworm Mitochondrial
-EGC.15     Blepharisma Macronuclear
-EGC.16     Chlorophycean Mitochondrial
-EGC.21     Trematode Mitochondrial
-EGC.22     Scenedesmus obliquus
-EGC.23     Thraustochytrium Mitochondrial
+   EGC.1
+          Standard
+
+   EGC.2
+          Vertebrate Mitochodrial
+
+   EGC.3
+          Yeast Mitochondrial
+
+   EGC.4
+          Mold, Protozoan, Coelenterate Mitochondrial and
+          Mycoplasma/Spiroplasma
+
+   EGC.5
+          Invertebrate Mitochondrial
+
+   EGC.6
+          Ciliate Macronuclear and Dasycladacean
+
+   EGC.9
+          Echinoderm Mitochondrial
+
+   EGC.10
+          Euplotid Nuclear
+
+   EGC.11
+          Bacterial
+
+   EGC.12
+          Alternative Yeast Nuclear
+
+   EGC.13
+          Ascidian Mitochondrial
+
+   EGC.14
+          Flatworm Mitochondrial
+
+   EGC.15
+          Blepharisma Macronuclear
+
+   EGC.16
+          Chlorophycean Mitochondrial
+
+   EGC.21
+          Trematode Mitochondrial
+
+   EGC.22
+          Scenedesmus obliquus
+
+   EGC.23
+          Thraustochytrium Mitochondrial
 
    The format of these files is very simple.
 
@@ -1321,6 +1355,7 @@ EGC.23     Thraustochytrium Mitochondrial
 
    For example:
 
+------------------------------------------------------------------------------
 # Genetic Code Table
 #
 # Obtained from: http://www.ncbi.nlm.nih.gov/collab/FT/genetic_codes.html
@@ -1337,9 +1372,10 @@ Starts = -----------------------------------M----------------------------
 Base1  = TTTTTTTTTTTTTTTTCCCCCCCCCCCCCCCCAAAAAAAAAAAAAAAAGGGGGGGGGGGGGGGG
 Base2  = TTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGG
 Base3  = TCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAG
+------------------------------------------------------------------------------
 
-   showseq uses the EMBOSS REBASE data files in 'data/REBASE/*' under the
-   EMBOSS installation directory.
+   The EMBOSS REBASE restriction enzyme data files are stored iin
+   directory 'data/REBASE/*' under the EMBOSS installation directory.
 
    These files must first be set up using the program 'rebaseextract'.
    Running 'rebaseextract' may be the job of your system manager.
@@ -1442,3 +1478,5 @@ Target users
    naive users to embedded scripts.
 
 Comments
+
+   None

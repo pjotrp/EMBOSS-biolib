@@ -1,6 +1,4 @@
 
-   S
-
                                   etandem 
 
 
@@ -238,8 +236,8 @@ Output file format
    genbank, gff, pir, swiss, trace, listfile, dbmotif, diffseq, excel,
    feattable, motif, regions, seqtable, simple, srs, table, tagseq
 
-   See: http://emboss.sourceforge.net/docs/themes/ReportFormats.html for
-   further information on report formats.
+   See: http://emboss.sf.net/docs/themes/ReportFormats.html for further
+   information on report formats.
 
    By default etandem writes a 'table' report file.
 
@@ -249,7 +247,7 @@ Output file format
 
 ########################################
 # Program: etandem
-# Rundate: Tue Apr 06 14:29:36 2004
+# Rundate: Thu Jan 20 2005 17:34:46
 # Report_format: table
 # Report_file: hhtetra.tan
 ########################################
@@ -279,6 +277,8 @@ Output file format
 
 Data files
 
+   None
+
 Notes
 
    Running with a wide range of repeat sizes is inefficient. That is why
@@ -299,7 +299,7 @@ Diagnostics
 
 Exit status
 
-   None.
+   It always exits with status 0.
 
 Known bugs
 
@@ -318,10 +318,8 @@ See also
 
 Authors
 
-   This program was originally written by Richard Durbin
-   (rd © sanger.ac.uk)
-   Sanger Institute, Wellcome Trust Genome Campus, Hinxton, Cambridge,
-   CB10 1SA, UK.
+   This program was originally written by [an error occurred while
+   processing this directive]
 
    This application was modified for inclusion in EMBOSS by Peter Rice
    (pmr © ebi.ac.uk)
@@ -332,9 +330,11 @@ History
 
    Completed 25 May 1999
 
-Target
+Target users
 
-   etandem is aimed at automated repeat identification in genomic
-   sequnece but can also be used by general users.
+   This program is intended to be used by everyone and everything, from
+   naive users to embedded scripts.
 
 Comments
+
+   None

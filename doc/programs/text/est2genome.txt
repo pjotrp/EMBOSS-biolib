@@ -28,10 +28,7 @@ Description
    format is easy to parse into other software. The program also
    indicates, based on the splice site information, the gene's predicted
    direction of transcription. Optionally the full sequence alignment is
-   printed as well (see the example).
-
-Algorithm
-
+   printed as well (see the example). H2> Algorithm
    The program uses a linear-space divide-and-conquer strategy (Myers and
    Miller, 1988; Huang, 1994) to limit memory use:
 
@@ -512,8 +509,8 @@ Output file format
 
   File: hs989235.est2genome
 
-Note Best alignment is between forward est and forward genome, but splice  site
-s imply REVERSED GENE
+Note Best alignment is between forward est and forward genome, but splice sites
+ imply REVERSED GENE
 Exon       163  91.8 25685 25874 HSNFG9           1   193 HS989235      yo13c02
 .s1 Soares adult brain N2b5HB55Y Homo sapiens cDNA clone IMAGE:177794 3', mRNA
 sequence.
@@ -598,6 +595,8 @@ sequence.
 
 Data files
 
+   None
+
 Notes
 
    est2genome uses a linear-space dynamic-programming algorithm. It has
@@ -680,17 +679,14 @@ G
 
 References
 
-   1. Mott R. (1997) EST_GENOME: a program to align spliced DNA sequences
-   to unspliced genomic DNA. Comput. Applic. 13:477-478
-
-   2. Huang X (1994) On global sequence alignment. Comput. Applic.
-   Biosci. 10:227-235.
-
-   3. Myers, EW and Miller, W (1988) Optimal alignments in linear space.
-   Comput. Applic. Biosci. 4:11-17
-
-   4. Smith, TE and Waterman, MS (1981) Identification of common
-   molecular subseqeunces. J. Mol. Biol. 147:195-197
+    1. Mott R. (1997) EST_GENOME: a program to align spliced DNA
+       sequences to unspliced genomic DNA. Comput. Applic. 13:477-478
+    2. Huang X (1994) On global sequence alignment. Comput. Applic.
+       Biosci. 10:227-235.
+    3. Myers, EW and Miller, W (1988) Optimal alignments in linear space.
+       Comput. Applic. Biosci. 4:11-17
+    4. Smith, TE and Waterman, MS (1981) Identification of common
+       molecular subseqeunces. J. Mol. Biol. 147:195-197
 
 Warnings
 

@@ -103,7 +103,7 @@ Command line arguments
    -graph Graph type EMBOSS has a list of known devices, including
    postscript, ps, hpgl, hp7470, hp7580, meta, colourps, cps, xwindows,
    x11, tektronics, tekt, tek4107t, tek, none, null, text, data, xterm,
-   png EMBOSS_GRAPHICS value, or x11
+   png, xml EMBOSS_GRAPHICS value, or x11
    Additional (Optional) qualifiers Allowed values Default
    (none)
    Advanced (Unprompted) qualifiers Allowed values Default
@@ -278,13 +278,11 @@ RP   1146-1282
 
 Output file format
 
-   A graphics image is produced.
-
   Output files for usage example
 
   Graphics File: chaos.ps
 
-   [chaos results]
+   [chaos results] A graphics image is produced.
 
 Data files
 
@@ -334,7 +332,7 @@ Author(s)
 
 History
 
- Completed 22nd March 1999.
+   Completed 22nd March 1999.
 
 Target users
 
@@ -342,3 +340,5 @@ Target users
    naive users to embedded scripts.
 
 Comments
+
+   None

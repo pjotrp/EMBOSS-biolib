@@ -20,7 +20,7 @@ Usage
 
 % findkm -graph cps 
 Find Km and Vmax for an enzyme reaction by a Hanes/Woolf plot
-Enter name of file containing data: ../../data/enztest.dat
+Enter name of file containing data: enztest.dat
 Output file [enztest.findkm]: 
 
 Created findkm.ps
@@ -77,7 +77,7 @@ Command line arguments
    -graphlb Graph type EMBOSS has a list of known devices, including
    postscript, ps, hpgl, hp7470, hp7580, meta, colourps, cps, xwindows,
    x11, tektronics, tekt, tek4107t, tek, none, null, text, data, xterm,
-   png EMBOSS_GRAPHICS value, or x11
+   png, xml EMBOSS_GRAPHICS value, or x11
    Additional (Optional) qualifiers Allowed values Default
    (none)
    Advanced (Unprompted) qualifiers Allowed values Default
@@ -90,7 +90,7 @@ Input file format
 
   Input files for usage example
 
-  File: ../../data/enztest.dat
+  File: enztest.dat
 
   0.10   2
   0.20   4
@@ -163,8 +163,7 @@ See also
 
 Author(s)
 
-   This application was written by Sinead O'Leary (current e-mail address
-   unknown)
+   Sinead O'Leary (current e-mail address unknown)
    while she was at:
    HGMP-RC, Genome Campus, Hinxton, Cambridge CB10 1SB, UK
 
@@ -183,3 +182,5 @@ Target users
    naive users to embedded scripts.
 
 Comments
+
+   None

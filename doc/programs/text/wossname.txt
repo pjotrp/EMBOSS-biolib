@@ -34,7 +34,8 @@ Finds programs by keywords in their one-line documentation
 
 SEARCH FOR 'RESTRICT'
 erestml          Restriction site Maximum Likelihood method
-frestdist        compute distance matrix from restriction sites or fragments
+frestboot        Bootstrapped restriction sites algorithm
+frestdist        Computes distance matrix from restriction sites or fragments
 frestml          Restriction site maximum Likelihood method
 recoder          Remove restriction sites but maintain the same translation
 remap            Display a sequence with restriction cut sites, translation etc
@@ -50,6 +51,13 @@ silent           Silent mutation restriction enzyme scan
 
 % wossname -search '' 
 Finds programs by keywords in their one-line documentation
+
+ACD
+acdc             ACD compiler
+acdpretty        ACD pretty printing utility
+acdtable         Creates an HTML table from an ACD file
+acdtrace         ACD compiler on-screen trace
+acdvalid         ACD file validation
 
 ALIGNMENT CONSENSUS
 cons             Creates a consensus from multiple alignments
@@ -263,7 +271,6 @@ ftreedistpair    Distances between two sets of trees
 PHYLOGENY CONTINUOUS CHARACTERS
 econtml          Continuous character Maximum Likelihood method
 econtrast        Continuous character Contrasts
-fcontml          Continuous character Maximum Likelihood method
 fcontrast        Continuous character Contrasts
 
 PHYLOGENY DISCRETE CHARACTERS
@@ -295,6 +302,8 @@ fneighbor        Phylogenies from distance matrix by N-J or UPGMA method
 
 PHYLOGENY GENE FREQUENCIES
 egendist         Genetic Distance Matrix program
+fcontml          Gene frequency and continuous character Maximum Likelihood met
+hod
 fgendist         Compute genetic distances from gene frequencies
 
 PHYLOGENY MOLECULAR SEQUENCE
@@ -311,27 +320,26 @@ eprotdist        Protein distance algorithm
 eprotpars        Protein parsimony algorithm
 erestml          Restriction site Maximum Likelihood method
 eseqboot         Bootstrapped sequences algorithm
+fdiscboot        Bootstrapped discrete sites algorithm
 fdnacomp         DNA compatibility algorithm
 fdnadist         Nucleic acid sequence Distance Matrix program
 fdnainvar        Nucleic acid sequence Invariants method
-fdnaml           Estimates phylogenies from nucleic acid sequence Maximum Likel
-ihood
-fdnamlk          Estimates phylogenies from nucleic acid sequence Maximum Likel
-ihood with molecular clock
+fdnaml           Estimates nucleotide phylogeny by maximum likelihood
+fdnamlk          Estimates nucleotide phylogeny by maximum likelihood
 fdnamove         Interactive DNA parsimony
 fdnapars         DNA parsimony algorithm
 fdnapenny        Penny algorithm for DNA
-fdolmove         Interactive Dollo and Polymorphism Parsimony
-ffactboot        Bootstrapped sequences algorithm
-ffreqboot        Bootstrapped sequences algorithm
-fproml           Protein maximum Likelihood program
-fpromlk          Protein maximum Likelihood program with molecular clock
+fdolmove         Interactive Dollo or Polymorphism Parsimony
+ffreqboot        Bootstrapped genetic frequencies algorithm
+fproml           Protein phylogeny by maximum likelihood
+fpromlk          Protein phylogeny by maximum likelihood
 fprotdist        Protein distance algorithm
-fprotpars        Protein parsimony algorithm
-frestboot        Bootstrapped sequences algorithm
-frestdist        compute distance matrix from restriction sites or fragments
+fprotpars        Protein pasimony algorithm
+frestboot        Bootstrapped restriction sites algorithm
+frestdist        Computes distance matrix from restriction sites or fragments
 frestml          Restriction site maximum Likelihood method
 fseqboot         Bootstrapped sequences algorithm
+fseqbootall      Bootstrapped sequences algorithm
 
 PHYLOGENY TREE DRAWING
 fdrawgram        Plots a cladogram- or phenogram-like rooted tree diagram
@@ -349,39 +357,31 @@ tmap             Displays membrane spanning regions
 topo             Draws an image of a transmembrane protein
 
 PROTEIN 3D STRUCTURE
-contacts         Reads coordinate files and writes files of intra-chain residue
--residue contact data
-fraggle          Removes fragment sequences from files of hits for scop familie
-s
-hmmgen           Generates a hidden Markov model for each alignment in a direct
-ory by using the HMMER package
-interface        Reads coordinate files and writes files of inter-chain residue
--residue contact data
-libscan          Scans a database with a set of models that represents a family
-profgen          Generates various profiles for each alignment in a directory
+domainalign      Generates structure-based sequence alignments for nodes in a D
+CF file (domain classification file)
+domainrep        Reorder DCF file (domain classification file) so that the repr
+esentative structure of each user-specified node is given first
+domainreso       Removes low resolution domains from a DCF file (domain classif
+ication file)
+libgen           Generates various types of discriminating elements for each al
+ignment in a directory
+rocon            Reads a DHF file (domain hits file) of hits (sequences of unkn
+own structural classification) and a DHF file of validation sequences (known cl
+assification) and writes a 'hits file' for the hits, which are classified and r
+ank-ordered on the basis of score
 rocplot          Provides interpretation and graphical display of the performan
 ce of discriminating elements (e.g. profiles for protein families). rocplot rea
 ds file(s) of hits from discriminator-database search(es), performs ROC analysi
 s on the hits, and writes graphs illustrating the diagnostic performance of the
  discriminating elements
-scopalign        Generate alignments for families in a scop classification file
- by using STAMP
-scoprep          Reorder scop classificaiton file so that the representative st
-ructure of each family is given first
-scopreso         Removes low resolution domains from a scop classification file
-seqalign         Generate extended alignments for families in a scop families f
-ile by using CLUSTALW with seed alignments
-seqsearch        Generate files of hits for families in a scop classification f
-ile by using PSI-BLAST with seed alignments
-seqsort          Reads multiple files of hits and writes (i) a scop families fi
-le and (ii) a scop ambiguities file
-seqwords         Generate file of hits for scop families by searching swissprot
- with keywords
-siggen           Generates a sparse protein signature from an alignment and res
-idue contact data
-sigplot          Generates data files of signature performance
-sigscan          Scans a signature against swissprot and writes a signature hit
-s file
+seqalign         Reads a DAF file (domain alignment file) and a DHF (domain hit
+s file) and writes a DAF file extended with the hits
+seqfraggle       Removes fragments from DHF files (domain hits files) or other
+files of sequences
+seqsearch        Generate database hits (sequences) for nodes in a DCF file (do
+main classification file) by using PSI-BLAST
+seqsort          Reads DHF files (domain hits files) of database hits (sequence
+s) and removes hits of ambiguous classification
 
 PROTEIN COMPOSITION
 backtranseq      Back translate a protein sequence
@@ -432,25 +432,22 @@ myseq            Demonstration of sequence reading
 UTILS DATABASE CREATION
 aaindexextract   Extract data from AAINDEX
 cutgextract      Extract data from CUTG
-domainer         Reads protein coordinate files and writes domain coordinate fi
-les
-hetparse         Converts raw dictionary of heterogen groups to a file in embl-
-like format
-pdbparse         Parses pdb files and writes cleaned-up protein coordinate file
-s
-pdbplus          Add records for secondary structure and residue accessibility
-to a coordinate file
-pdbtosp          Convert raw swissprot:pdb equivalence file to embl-like format
+domainer         Reads CCF files (clean coordinate files) for proteins and writ
+es CCF files for domains, taken from a DCF file (domain classification file)
+domainnr         Removes redundant domains from a DCF file (domain classificati
+on file). The file must contain domain sequence information, which can be added
+ by using DOMAINSEQS
+domainseqs       Adds sequence records to a DCF file (domain classification fil
+e)
+pdbparse         Parses PDB files and writes CCF files (clean coordinate files)
+ for proteins
 printsextract    Extract data from PRINTS
 prosextract      Builds the PROSITE motif database for patmatmotifs to search
 rebaseextract    Extract data from REBASE
-scopnr           Removes redundant domains from a scop classification file
-scopparse        Converts raw scop classification files to a file in embl-like
-format
-scopseqs         Adds pdb and swissprot sequence records to a scop classificati
-on file
-seqnr            Reads a scop families file and a scop ambiguities file and wri
-tes (i) a non-redundant scop families file and (ii) a scop validation file
+scopparse        Reads raw SCOP classification files and writes a DCF file (dom
+ain classification file)
+seqnr            Removes redundancy from DHF files (domain hits files) or other
+ files of sequences
 tfextract        Extract data from TRANSFAC
 
 UTILS DATABASE INDEXING
@@ -475,6 +472,11 @@ Finds programs by keywords in their one-line documentation
 ALPHABETIC LIST OF PROGRAMS
 aaindexextract   Extract data from AAINDEX
 abiview          Reads ABI file and display the trace
+acdc             ACD compiler
+acdpretty        ACD pretty printing utility
+acdtable         Creates an HTML table from an ACD file
+acdtrace         ACD compiler on-screen trace
+acdvalid         ACD file validation
 antigenic        Finds antigenic sites in proteins
 backtranseq      Back translate a protein sequence
 banana           Bending and curvature plot in B-DNA
@@ -490,8 +492,6 @@ codcmp           Codon usage table comparison
 coderet          Extract CDS, mRNA and translations from feature tables
 compseq          Counts the composition of dimer/trimer/etc words in a sequence
 cons             Creates a consensus from multiple alignments
-contacts         Reads coordinate files and writes files of intra-chain residue
--residue contact data
 cpgplot          Plot CpG rich areas
 cpgreport        Reports all CpG rich regions
 crystalball      Answers every drug discovery question you have about this sequ
@@ -509,8 +509,19 @@ descseq          Alter the name or description of a sequence
 diffseq          Find differences between nearly identical sequences
 digest           Protein proteolytic enzyme or reagent cleavage digest
 distmat          Creates a distance matrix from multiple alignments
-domainer         Reads protein coordinate files and writes domain coordinate fi
-les
+domainalign      Generates structure-based sequence alignments for nodes in a D
+CF file (domain classification file)
+domainer         Reads CCF files (clean coordinate files) for proteins and writ
+es CCF files for domains, taken from a DCF file (domain classification file)
+domainnr         Removes redundant domains from a DCF file (domain classificati
+on file). The file must contain domain sequence information, which can be added
+ by using DOMAINSEQS
+domainrep        Reorder DCF file (domain classification file) so that the repr
+esentative structure of each user-specified node is given first
+domainreso       Removes low resolution domains from a DCF file (domain classif
+ication file)
+domainseqs       Adds sequence records to a DCF file (domain classification fil
+e)
 dotmatcher       Displays a thresholded dotplot of two sequences
 dotpath          Displays a non-overlapping wordmatch dotplot of two sequences
 dottup           Displays a wordmatch dotplot of two sequences
@@ -569,27 +580,26 @@ extractfeat      Extract features from a sequence
 extractseq       Extract regions from a sequence
 fclique          Largest clique program
 fconsense        Majority-rule and strict consensus tree
-fcontml          Continuous character Maximum Likelihood method
+fcontml          Gene frequency and continuous character Maximum Likelihood met
+hod
 fcontrast        Continuous character Contrasts
+fdiscboot        Bootstrapped discrete sites algorithm
 fdnacomp         DNA compatibility algorithm
 fdnadist         Nucleic acid sequence Distance Matrix program
 fdnainvar        Nucleic acid sequence Invariants method
-fdnaml           Estimates phylogenies from nucleic acid sequence Maximum Likel
-ihood
-fdnamlk          Estimates phylogenies from nucleic acid sequence Maximum Likel
-ihood with molecular clock
+fdnaml           Estimates nucleotide phylogeny by maximum likelihood
+fdnamlk          Estimates nucleotide phylogeny by maximum likelihood
 fdnamove         Interactive DNA parsimony
 fdnapars         DNA parsimony algorithm
 fdnapenny        Penny algorithm for DNA
 fdollop          Dollo and polymorphism parsimony algorithm
-fdolmove         Interactive Dollo and Polymorphism Parsimony
+fdolmove         Interactive Dollo or Polymorphism Parsimony
 fdolpenny        Penny algorithm Dollo or polymorphism
 fdrawgram        Plots a cladogram- or phenogram-like rooted tree diagram
 fdrawtree        Plots an unrooted tree diagram
-ffactboot        Bootstrapped sequences algorithm
 ffactor          Multistate to binary recoding program
 ffitch           Fitch-Margoliash and Least-Squares Distance Methods
-ffreqboot        Bootstrapped sequences algorithm
+ffreqboot        Bootstrapped genetic frequencies algorithm
 fgendist         Compute genetic distances from gene frequencies
 findkm           Find Km and Vmax for an enzyme reaction by a Hanes/Woolf plot
 fkitsch          Fitch-Margoliash method with contemporary tips
@@ -599,18 +609,17 @@ fneighbor        Phylogenies from distance matrix by N-J or UPGMA method
 fpars            Discrete character parsimony
 fpenny           Penny algorithm, branch-and-bound to find all most parsimoniou
 s trees
-fproml           Protein maximum Likelihood program
-fpromlk          Protein maximum Likelihood program with molecular clock
+fproml           Protein phylogeny by maximum likelihood
+fpromlk          Protein phylogeny by maximum likelihood
 fprotdist        Protein distance algorithm
-fprotpars        Protein parsimony algorithm
-fraggle          Removes fragment sequences from files of hits for scop familie
-s
+fprotpars        Protein pasimony algorithm
 freak            Residue/base frequency table or plot
-frestboot        Bootstrapped sequences algorithm
-frestdist        compute distance matrix from restriction sites or fragments
+frestboot        Bootstrapped restriction sites algorithm
+frestdist        Computes distance matrix from restriction sites or fragments
 frestml          Restriction site maximum Likelihood method
 fretree          Interactive tree rearrangement
 fseqboot         Bootstrapped sequences algorithm
+fseqbootall      Bootstrapped sequences algorithm
 ftreedist        Distances between trees
 ftreedistpair    Distances between two sets of trees
 fuzznuc          Nucleic acid pattern search
@@ -620,18 +629,13 @@ garnier          Predicts protein secondary structure
 geecee           Calculates the fractional GC content of nucleic acid sequences
 getorf           Finds and extracts open reading frames (ORFs)
 helixturnhelix   Report nucleic acid binding motifs
-hetparse         Converts raw dictionary of heterogen groups to a file in embl-
-like format
-hmmgen           Generates a hidden Markov model for each alignment in a direct
-ory by using the HMMER package
 hmoment          Hydrophobic moment calculation
 iep              Calculates the isoelectric point of a protein
 infoalign        Information on a multiple sequence alignment
 infoseq          Displays some simple information about sequences
-interface        Reads coordinate files and writes files of inter-chain residue
--residue contact data
 isochore         Plots isochores in large DNA sequences
-libscan          Scans a database with a set of models that represents a family
+libgen           Generates various types of discriminating elements for each al
+ignment in a directory
 lindna           Draws linear maps of DNA constructs
 listor           Writes a list file of the logical OR of two sets of sequences
 marscan          Finds MAR/SAR sites in nucleic sequences
@@ -659,11 +663,8 @@ palindrome       Looks for inverted repeats in a nucleotide sequence
 pasteseq         Insert one sequence into another
 patmatdb         Search a protein sequence with a motif
 patmatmotifs     Search a PROSITE motif database with a protein sequence
-pdbparse         Parses pdb files and writes cleaned-up protein coordinate file
-s
-pdbplus          Add records for secondary structure and residue accessibility
-to a coordinate file
-pdbtosp          Convert raw swissprot:pdb equivalence file to embl-like format
+pdbparse         Parses PDB files and writes CCF files (clean coordinate files)
+ for proteins
 pepcoil          Predicts coiled coil regions
 pepinfo          Plots simple amino acid properties in parallel
 pepnet           Displays proteins as a helical net
@@ -679,7 +680,6 @@ prettyplot       Displays aligned sequences, with colouring and boxing
 prettyseq        Output sequence with translated ranges
 primersearch     Searches DNA sequences for matches with primer pairs
 printsextract    Extract data from PRINTS
-profgen          Generates various profiles for each alignment in a directory
 profit           Scan a sequence or database with a matrix or profile
 prophecy         Creates matrices/profiles from multiple alignments
 prophet          Gapped alignment for profiles
@@ -692,35 +692,31 @@ remap            Display a sequence with restriction cut sites, translation etc
 restover         Finds restriction enzymes that produce a specific overhang
 restrict         Finds restriction enzyme cleavage sites
 revseq           Reverse and complement a sequence
+rocon            Reads a DHF file (domain hits file) of hits (sequences of unkn
+own structural classification) and a DHF file of validation sequences (known cl
+assification) and writes a 'hits file' for the hits, which are classified and r
+ank-ordered on the basis of score
 rocplot          Provides interpretation and graphical display of the performan
 ce of discriminating elements (e.g. profiles for protein families). rocplot rea
 ds file(s) of hits from discriminator-database search(es), performs ROC analysi
 s on the hits, and writes graphs illustrating the diagnostic performance of the
  discriminating elements
-scopalign        Generate alignments for families in a scop classification file
- by using STAMP
-scopnr           Removes redundant domains from a scop classification file
-scopparse        Converts raw scop classification files to a file in embl-like
-format
-scoprep          Reorder scop classificaiton file so that the representative st
-ructure of each family is given first
-scopreso         Removes low resolution domains from a scop classification file
-scopseqs         Adds pdb and swissprot sequence records to a scop classificati
-on file
+scopparse        Reads raw SCOP classification files and writes a DCF file (dom
+ain classification file)
 seealso          Finds programs sharing group names
-seqalign         Generate extended alignments for families in a scop families f
-ile by using CLUSTALW with seed alignments
+seqalign         Reads a DAF file (domain alignment file) and a DHF (domain hit
+s file) and writes a DAF file extended with the hits
+seqfraggle       Removes fragments from DHF files (domain hits files) or other
+files of sequences
 seqmatchall      Does an all-against-all comparison of a set of sequences
-seqnr            Reads a scop families file and a scop ambiguities file and wri
-tes (i) a non-redundant scop families file and (ii) a scop validation file
+seqnr            Removes redundancy from DHF files (domain hits files) or other
+ files of sequences
 seqret           Reads and writes (returns) sequences
 seqretsplit      Reads and writes (returns) sequences in individual files
-seqsearch        Generate files of hits for families in a scop classification f
-ile by using PSI-BLAST with seed alignments
-seqsort          Reads multiple files of hits and writes (i) a scop families fi
-le and (ii) a scop ambiguities file
-seqwords         Generate file of hits for scop families by searching swissprot
- with keywords
+seqsearch        Generate database hits (sequences) for nodes in a DCF file (do
+main classification file) by using PSI-BLAST
+seqsort          Reads DHF files (domain hits files) of database hits (sequence
+s) and removes hits of ambiguous classification
 showalign        Displays a multiple sequence alignment
 showdb           Displays information on the currently available databases
 showfeat         Show features of a sequence
@@ -728,11 +724,6 @@ showorf          Pretty output of DNA translations
 showseq          Display a sequence with features, translation etc
 shuffleseq       Shuffles a set of sequences maintaining composition
 sigcleave        Reports protein signal cleavage sites
-siggen           Generates a sparse protein signature from an alignment and res
-idue contact data
-sigplot          Generates data files of signature performance
-sigscan          Scans a signature against swissprot and writes a signature hit
-s file
 silent           Silent mutation restriction enzyme scan
 sirna            Finds siRNA duplexes in mRNA
 sixpack          Display a DNA sequence with 6-frame translation and ORFs
@@ -774,6 +765,7 @@ yank             Reads a sequence range, appends the full USA to a list file
 % wossname -search '' -groups 
 Finds programs by keywords in their one-line documentation
 
+ACD
 ALIGNMENT CONSENSUS
 ALIGNMENT DIFFERENCES
 ALIGNMENT DOT PLOTS
@@ -827,6 +819,7 @@ UTILS MISC
 Finds programs by keywords in their one-line documentation
 Keyword to search for, or blank to list all programs: 
 
+     * ACD
      * ALIGNMENT CONSENSUS
      * ALIGNMENT DIFFERENCES
      * ALIGNMENT DOT PLOTS
@@ -1026,7 +1019,7 @@ Command line arguments
    Yes/No No
    -outfile Output file name Output file stdout
    -html If you are sending the output to a file, this will format it for
-   displaying as a table in a WWW document. Toggle value Yes/No N
+   displaying as a table in a WWW document. Toggle value Yes/No No
    -prelink If you are outputting to a file in HTML format, you can make
    the program names into hyper-links by setting this to be the first
    half of the URL. For example, if you wish the program name to be a
@@ -1100,6 +1093,15 @@ Output file format
 
   File: wossname.html
 
+ACD
+
+   Program name              Description
+   acdc         ACD compiler
+   acdpretty    ACD pretty printing utility
+   acdtable     Creates an HTML table from an ACD file
+   acdtrace     ACD compiler on-screen trace
+   acdvalid     ACD file validation
+
 ALIGNMENT CONSENSUS
 
    Program name                    Description
@@ -1142,16 +1144,11 @@ ALIGNMENT MULTIPLE
 
    Program name                        Description
    emma         Multiple alignment program - interface to ClustalW program
-   infoalign    Information on a multiple sequence alignment
-   mse          Multiple Sequence Editor
-   plotcon      Plots the quality of conservation of a sequence alignment
-   prettyplot   Displays aligned sequences, with colouring and boxing
-   showalign    Displays a multiple sequence alignment
-   tranalign    Align nucleic coding regions given the aligned proteins
-
-DISPLAY
-
    [Part of this file has been deleted for brevity]
+   sigcleave    Reports protein signal cleavage sites
+
+PROTEIN MUTATION
+
    Program name                     Description
    msbar        Mutate sequence beyond all recognition
    shuffleseq   Shuffles a set of sequences maintaining composition
@@ -1175,27 +1172,24 @@ UTILS DATABASE CREATION
    Program name Description
    aaindexextract Extract data from AAINDEX
    cutgextract Extract data from CUTG
-   domainer Reads protein coordinate files and writes domain coordinate
-   files
-   hetparse Converts raw dictionary of heterogen groups to a file in
-   embl-like format
-   pdbparse Parses pdb files and writes cleaned-up protein coordinate
-   files
-   pdbplus Add records for secondary structure and residue accessibility
-   to a coordinate file
-   pdbtosp Convert raw swissprot:pdb equivalence file to embl-like format
+   domainer Reads CCF files (clean coordinate files) for proteins and
+   writes CCF files for domains, taken from a DCF file (domain
+   classification file)
+   domainnr Removes redundant domains from a DCF file (domain
+   classification file). The file must contain domain sequence
+   information, which can be added by using DOMAINSEQS
+   domainseqs Adds sequence records to a DCF file (domain classification
+   file)
+   pdbparse Parses PDB files and writes CCF files (clean coordinate
+   files) for proteins
    printsextract Extract data from PRINTS
    prosextract Builds the PROSITE motif database for patmatmotifs to
    search
    rebaseextract Extract data from REBASE
-   scopnr Removes redundant domains from a scop classification file
-   scopparse Converts raw scop classification files to a file in
-   embl-like format
-   scopseqs Adds pdb and swissprot sequence records to a scop
-   classification file
-   seqnr Reads a scop families file and a scop ambiguities file and
-   writes (i) a non-redundant scop families file and (ii) a scop
-   validation file
+   scopparse Reads raw SCOP classification files and writes a DCF file
+   (domain classification file)
+   seqnr Removes redundancy from DHF files (domain hits files) or other
+   files of sequences
    tfextract Extract data from TRANSFAC
 
 UTILS DATABASE INDEXING
@@ -1282,3 +1276,5 @@ Target users
    naive users to embedded scripts.
 
 Comments
+
+   None

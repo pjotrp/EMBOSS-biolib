@@ -222,8 +222,8 @@ Output file format
    genbank, gff, pir, swiss, trace, listfile, dbmotif, diffseq, excel,
    feattable, motif, regions, seqtable, simple, srs, table, tagseq
 
-   See: http://emboss.sourceforge.net/docs/themes/ReportFormats.html for
-   further information on report formats.
+   See: http://emboss.sf.net/docs/themes/ReportFormats.html for further
+   information on report formats.
 
    By default garnier writes a 'tagseq' report file.
 
@@ -233,7 +233,7 @@ Output file format
 
 ########################################
 # Program: garnier
-# Rundate: Tue Apr 06 14:29:46 2004
+# Rundate: Thu Jan 20 2005 17:35:20
 # Report_format: tagseq
 # Report_file: amic_pseae.garnier
 ########################################
@@ -358,9 +358,10 @@ Notes
 
 References
 
-   Garnier J, Osguthorpe DJ, Robson B Analysis of the accuracy and
-   implications of simple methods for predicting the secondary structure
-   of globular proteins. J Mol Biol 1978 Mar 25;120(1):97-120
+    1. Garnier J, Osguthorpe DJ, Robson B Analysis of the accuracy and
+       implications of simple methods for predicting the secondary
+       structure of globular proteins. J Mol Biol 1978 Mar
+       25;120(1):97-120
 
 Warnings
 
@@ -377,7 +378,7 @@ Diagnostic Error Messages
 
 Exit status
 
-   It always exist with a status of 0.
+   It always exits with a status of 0.
 
 Known bugs
 
@@ -411,3 +412,5 @@ Target users
    naive users to embedded scripts.
 
 Comments
+
+   None

@@ -30,8 +30,7 @@ Usage
    Here is a sample session with polydot
 
 
-% polydot ../../data/globins.fasta -gtitle="Polydot of globins.fasta" -graph cp
-s 
+% polydot globins.fasta -gtitle="Polydot of globins.fasta" -graph cps 
 Displays all-against-all dotplots of a set of sequences
 Word size [6]: 
 
@@ -121,7 +120,7 @@ Command line arguments
    png, xml EMBOSS_GRAPHICS value, or x11
    Additional (Optional) qualifiers Allowed values Default
    -[no]boxit Draw a box around each dotplot Boolean value Yes/No Yes
-   -dumpfeat Dump all matches as feature files Toggle value Yes/No N
+   -dumpfeat Dump all matches as feature files Toggle value Yes/No No
    Advanced (Unprompted) qualifiers Allowed values Default
    -gap This specifies the size of the gap that is used to separate the
    individual dotplots in the display. The size is measured in residues,
@@ -135,7 +134,7 @@ Input file format
 
   Input files for usage example
 
-  File: ../../data/globins.fasta
+  File: globins.fasta
 
 >HBB_HUMAN Sw:Hbb_Human => HBB_HUMAN
 VHLTPEEKSAVTALWGKVNVDEVGGEALGRLLVVYPWTQRFFESFGDLSTPDAVMGNPKV
@@ -219,7 +218,7 @@ Author(s)
 
 History
 
-Completed 2nd June 1999.
+   Completed 2nd June 1999.
 
 Target users
 
@@ -227,3 +226,5 @@ Target users
    naive users to embedded scripts.
 
 Comments
+
+   None

@@ -475,7 +475,7 @@ Command line arguments
    -twoout If you set this to be true, then the two features themselves
    will be written out. If it is left as false, then a single feature
    will be written out covering the two features you found. Toggle value
-   Yes/No N
+   Yes/No No
    -typeout If you have specified that the pairs of features that are
    found should be reported as one feature in the ouput, then you can
    specify the 'type' name of the new feature here. By default every
@@ -597,9 +597,8 @@ Output file format
    genbank, gff, pir, swiss, trace, listfile, dbmotif, diffseq, excel,
    feattable, motif, regions, seqtable, simple, srs, table, tagseq
 
-   See:
-   http://www.uk.embnet.org/Software/EMBOSS/Themes/ReportFormats.html for
-   further information on report formats.
+   See: http://emboss.sf.net/docs/themes/ReportFormats.html for further
+   information on report formats.
 
    twofeat outputs a report format file. The default format is table
 
@@ -609,7 +608,7 @@ Output file format
 
 ########################################
 # Program: twofeat
-# Rundate: Wed Jul 21 12:00:02 2004
+# Rundate: Thu Jan 20 2005 17:43:58
 # Report_format: table
 # Report_file: hsfau.twofeat
 ########################################
@@ -631,7 +630,7 @@ Output file format
   File: hsfau.twofeat
 
 ##gff-version 2.0
-##date 2004-07-21
+##date 2005-01-20
 ##Type DNA HSFAU
 HSFAU   EMBL    polyA_signal    484     489     0.000   +       .       Sequenc
 e "HSFAU.6"
@@ -691,3 +690,7 @@ Target users
 
    This program is intended to be used by everyone and everything, from
    naive users to embedded scripts.
+
+Comments
+
+   None

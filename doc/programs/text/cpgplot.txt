@@ -195,7 +195,7 @@ Command line arguments
    (Parameter 3) Graph type EMBOSS has a list of known devices, including
    postscript, ps, hpgl, hp7470, hp7580, meta, colourps, cps, xwindows,
    x11, tektronics, tekt, tek4107t, tek, none, null, text, data, xterm,
-   png EMBOSS_GRAPHICS value, or x11
+   png, xml EMBOSS_GRAPHICS value, or x11
    [-outfeat]
    (Parameter 4) File for output features Writeable feature table
    unknown.gff
@@ -333,10 +333,6 @@ Output file format
 
   Output files for usage example
 
-  Graphics File: cpgplot.ps
-
-   [cpgplot results]
-
   File: rnu68037.cpgplot
 
 
@@ -355,16 +351,16 @@ RNU68037 from 1 to 1218
   File: rnu68037.gff
 
 ##gff-version 2.0
-##date 2004-04-06
+##date 2004-07-15
 ##Type DNA RNU68037
 RNU68037        cpgplot misc_feature    104     509     0.000   +       .
 Sequence "RNU68037.1"
 RNU68037        cpgplot misc_feature    596     924     0.000   +       .
 Sequence "RNU68037.2"
 
-Data files
+  Graphics File: cpgplot.ps
 
-   None.
+   [cpgplot results]
 
 Notes
 
@@ -373,9 +369,8 @@ Notes
 References
 
    The original program was described in:
-
-   Larsen F, Gundersen G, Lopez R, Prydz H "CpG islands as gene markers
-   in the human genome." Genomics 1992 Aug;13(4):1095-107
+    1. Larsen F, Gundersen G, Lopez R, Prydz H "CpG islands as gene
+       markers in the human genome." Genomics 1992 Aug;13(4):1095-107
 
 Warnings
 
@@ -438,7 +433,7 @@ Author(s)
 
 History
 
-Completed 23rd March 1999.
+   Completed 23rd March 1999.
 
 Target users
 
@@ -446,3 +441,5 @@ Target users
    naive users to embedded scripts.
 
 Comments
+
+   None

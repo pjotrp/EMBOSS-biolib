@@ -285,8 +285,8 @@ Output file format
    genbank, gff, pir, swiss, trace, listfile, dbmotif, diffseq, excel,
    feattable, motif, regions, seqtable, simple, srs, table, tagseq
 
-   See: http://emboss.sourceforge.net/docs/themes/ReportFormats.html for
-   further information on report formats.
+   See: http://emboss.sf.net/docs/themes/ReportFormats.html for further
+   information on report formats.
 
    By default digest writes a 'seqtable' report file.
 
@@ -296,7 +296,7 @@ Output file format
 
 ########################################
 # Program: digest
-# Rundate: Tue Apr 06 14:25:29 2004
+# Rundate: Thu Jan 20 2005 17:33:22
 # Report_format: seqtable
 # Report_file: opsd_human.digest
 ########################################
@@ -369,7 +369,7 @@ Diagnostic Error Messages
 
 Exit status
 
-   ALways exist with a status of 0.
+   It always exits with a status of 0.
 
 Known bugs
 
@@ -407,3 +407,5 @@ Target users
    naive users to embedded scripts.
 
 Comments
+
+   None

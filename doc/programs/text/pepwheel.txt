@@ -9,8 +9,7 @@ Function
 
 Description
 
-   pepwheel
-   displays peptide sequences in a helical representation.
+   pepwheel displays peptide sequences in a helical representation.
 
    This gives a view of a helix from a protein sequence looking down the
    axis of the helix.
@@ -125,7 +124,7 @@ Command line arguments
    -amphipathic If this is true then the residues ACFGILMVWY are marked
    as squares and all other residues are unmarked. This overrides any
    other markup that you may have specified using the qualifiers
-   '-squares', '-diamonds' and '-octags'. Toggle value Yes/No
+   '-squares', '-diamonds' and '-octags'. Toggle value Yes/No No
 
 Input file format
 
@@ -343,3 +342,5 @@ Target users
    naive users to embedded scripts.
 
 Comments
+
+   None

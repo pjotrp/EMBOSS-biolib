@@ -228,9 +228,9 @@ Notes
 
 References
 
-   Sharp PM., Li W-H. "The codon adaptation index - a measure of
-   directional synonymous codon usage bias, and its potential
-   applications." Nucleic Acids Research 1987 vol 15, pp 1281-1295.
+    1. Sharp PM., Li W-H. "The codon adaptation index - a measure of
+       directional synonymous codon usage bias, and its potential
+       applications." Nucleic Acids Research 1987 vol 15, pp 1281-1295.
 
 Warnings
 
@@ -272,3 +272,5 @@ Target users
    naive users to embedded scripts.
 
 Comments
+
+   None

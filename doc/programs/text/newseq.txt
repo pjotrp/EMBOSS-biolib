@@ -42,8 +42,8 @@ Type of sequence
          N : Nucleic
          P : Protein
 Type of sequence [N]: p
-Output sequence [outfile.fasta]: swiss::mycc.pep
 Enter the sequence: KKKEERADLIAY
+Output sequence [outfile.fasta]: swiss::mycc.pep
 
    Go to the output files for this example
 
@@ -57,7 +57,6 @@ Command line arguments
   [-description]       string     Enter any description of the sequence that
                                   you require.
   [-type]              menu       Type of sequence
-  [-outseq]            seqout     Output sequence USA
   [-sequence]          string     The sequence itself.
                                   Because of the limitation of the operating
                                   system, you will only be able to type in a
@@ -67,22 +66,23 @@ Command line arguments
                                   reached this limit and you will not be able
                                   to press the RETURN/ENTER key until you have
                                   deleted a few characters.
+  [-outseq]            seqout     Output sequence USA
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
 
    "-outseq" associated qualifiers
-   -osformat4           string     Output seq format
-   -osextension4        string     File name extension
-   -osname4             string     Base file name
-   -osdirectory4        string     Output directory
-   -osdbname4           string     Database name to add
-   -ossingle4           boolean    Separate file for each entry
-   -oufo4               string     UFO features
-   -offormat4           string     Features format
-   -ofname4             string     Features file name
-   -ofdirectory4        string     Output directory
+   -osformat5           string     Output seq format
+   -osextension5        string     File name extension
+   -osname5             string     Base file name
+   -osdirectory5        string     Output directory
+   -osdbname5           string     Database name to add
+   -ossingle5           boolean    Separate file for each entry
+   -oufo5               string     UFO features
+   -offormat5           string     Features format
+   -ofname5             string     Features file name
+   -ofdirectory5        string     Output directory
 
    General qualifiers:
    -auto                boolean    Turn off prompts
@@ -114,15 +114,15 @@ Command line arguments
    N (Nucleic)
    P (Protein)
    N
-   [-outseq]
-   (Parameter 4) Output sequence USA Writeable sequence <sequence>.format
    [-sequence]
-   (Parameter 5) The sequence itself. Because of the limitation of the
+   (Parameter 4) The sequence itself. Because of the limitation of the
    operating system, you will only be able to type in a short sequence of
    (typically) 250 characters, or so. The keyboard will beep at you when
    you have reached this limit and you will not be able to press the
    RETURN/ENTER key until you have deleted a few characters. Any string
    is accepted An empty string is accepted
+   [-outseq]
+   (Parameter 5) Output sequence USA Writeable sequence <sequence>.format
    Additional (Optional) qualifiers Allowed values Default
    (none)
    Advanced (Unprompted) qualifiers Allowed values Default
@@ -219,3 +219,5 @@ Target users
    naive users to embedded scripts.
 
 Comments
+
+   None

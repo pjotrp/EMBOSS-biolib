@@ -399,8 +399,8 @@ Output file format
    The available pairwise alignment format names are: pair, markx0,
    markx1, markx2, markx3, markx10, srspair, score
 
-   See: http://www.uk.embnet.org/Software/EMBOSS/Themes/AlignFormats.html
-   for further information on alignment formats.
+   See: http://emboss.sf.net/docs/themes/AlignFormats.html for further
+   information on alignment formats.
 
    The default output format is 'markx0'.
 
@@ -409,8 +409,8 @@ Output file format
   File: hba_human.stretcher
 
 ########################################
-# Program:  stretcher
-# Rundate:  Wed Jul 21 11:58:53 2004
+# Program: stretcher
+# Rundate: Thu Jan 20 2005 17:42:33
 # Align_format: markx0
 # Report_file: hba_human.stretcher
 ########################################
@@ -433,24 +433,24 @@ Output file format
 #
 #=======================================
 
-
                 10        20        30        40
 HBA_HU V-LSPADKTNVKAAWGKVGAHAGEYGAEALERMFLSFPTTKTYFPHF-DL
-       : :.: .:. : : ::::  .. : :.::: :... .: :. .:  : ::
+       : :.: .:. : : ::::  .  : : ::: :. . .: :. .:  : ::
 HBB_HU VHLTPEEKSAVTALWGKV--NVDEVGGEALGRLLVVYPWTQRFFESFGDL
                10          20        30        40
 
        50             60        70        80        90
 HBA_HU SH-----GSAQVKGHGKKVADALTNAVAHVDDMPNALSALSDLHAHKLRV
-       :      :. .::.:::::  :.....::.:.. .....::.::. ::.:
+       :      :. .:: :::::  : .. .::.:..    . ::.::  :: :
 HBB_HU STPDAVMGNPKVKAHGKKVLGAFSDGLAHLDNLKGTFATLSELHCDKLHV
        50        60        70        80        90
 
            100       110       120       130       140
 HBA_HU DPVNFKLLSHCLLVTLAAHLPAEFTPAVHASLDKFLASVSTVLTSKYR
-       :: ::.::.. :. .:: :.  :::: :.:. .: .:.:...:. ::.
+       :: ::.:: . :.  :: :   :::: : :.  : .: :.  :  ::
 HBB_HU DPENFRLLGNVLVCVLAHHFGKEFTPPVQAAYQKVVAGVANALAHKYH
       100       110       120       130       140
+
 
 #---------------------------------------
 #---------------------------------------
@@ -523,7 +523,7 @@ Author(s)
 
 History
 
- Completed 13th May 1999.
+   Completed 13th May 1999.
 
 Target users
 
@@ -531,3 +531,5 @@ Target users
    naive users to embedded scripts.
 
 Comments
+
+   None

@@ -55,6 +55,16 @@ Description
 
 Usage
 
+   Here is a sample session with whichdb
+
+
+% whichdb 
+Search all databases for an entry
+ID or Accession number: hsfau1
+Output file [outfile.whichdb]: 
+
+   Go to the output files for this example
+
 Command line arguments
 
    Standard (Mandatory) qualifiers (* if not always prompted):
@@ -95,7 +105,7 @@ Command line arguments
    Additional (Optional) qualifiers Allowed values Default
    (none)
    Advanced (Unprompted) qualifiers Allowed values Default
-   -get Retrieve sequences Toggle value Yes/No N
+   -get Retrieve sequences Toggle value Yes/No No
    -showall Show failed attempts Boolean value Yes/No No
 
 Input file format
@@ -103,6 +113,16 @@ Input file format
    None.
 
 Output file format
+
+  Output files for usage example
+
+  File: outfile.whichdb
+
+qasrsfasta:hsfau1
+tgenbank:hsfau1
+qasrs:hsfau1
+qasrswww:hsfau1
+tembl:hsfau1
 
    The reported database entries are written out to the specified output
    file.
@@ -121,7 +141,6 @@ Output file format
 
    The names of the files that the sequences are written to is reported
    as they are written, for example:
-     _________________________________________________________________
 
 Writing hsfau.embl
 Writing hsfau.human
@@ -129,7 +148,6 @@ Writing hsfau.tembl
 Writing hsfau.em
 Writing hsfau.genbank
 Writing hsfau.gb
-     _________________________________________________________________
 
 Data files
 
@@ -187,3 +205,5 @@ Target users
    naive users to embedded scripts.
 
 Comments
+
+   None

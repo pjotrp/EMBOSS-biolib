@@ -50,7 +50,7 @@ Usage
 
 % cons 
 Creates a consensus from multiple alignments
-Input sequence set: ../../data/dna.msf
+Input sequence set: dna.msf
 Output sequence [dna.fasta]: aligned.cons
 
    Go to the input files for this example
@@ -169,7 +169,7 @@ Input file format
 
   Input files for usage example
 
-  File: ../../data/dna.msf
+  File: dna.msf
 
 !!NA_MULTIPLE_ALIGNMENT
 
@@ -272,11 +272,11 @@ Author(s)
 
 History
 
-   Written (Oct 2000) - Tim Carver
-
 Target users
 
    This program is intended to be used by everyone and everything, from
    naive users to embedded scripts.
 
 Comments
+
+   None

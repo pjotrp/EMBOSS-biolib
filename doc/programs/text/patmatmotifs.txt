@@ -282,9 +282,8 @@ Output file format
    genbank, gff, pir, swiss, trace, listfile, dbmotif, diffseq, excel,
    feattable, motif, regions, seqtable, simple, srs, table, tagseq
 
-   See:
-   http://www.uk.embnet.org/Software/EMBOSS/Themes/ReportFormats.html for
-   further information on report formats.
+   See: http://emboss.sf.net/docs/themes/ReportFormats.html for further
+   information on report formats.
 
    By default patmatmotifs writes a 'dbmotif' report file.
 
@@ -294,7 +293,7 @@ Output file format
 
 ########################################
 # Program: patmatmotifs
-# Rundate: Mon Jul 26 13:43:12 2004
+# Rundate: Thu Jan 20 2005 17:37:44
 # Report_format: dbmotif
 # Report_file: opsd_human.patmatmotifs
 ########################################
@@ -306,7 +305,7 @@ Output file format
 #
 # Full: Yes
 # Prune: Yes
-# Data_file: /homes/pmr/local/share/EMBOSS/data/PROSITE/prosite.lines
+# Data_file: ../prosextract-keep/PROSITE/prosite.lines
 #
 #=======================================
 
@@ -336,9 +335,9 @@ PIFMTIPAFFAKSAAIYNPVIYIMMNK
 # Motif: G_PROTEIN_RECEP_F1_1
 # Count: 1
 #
-# **************************************************************
-# * G-protein coupled receptors family 1 signature and profile *
-# **************************************************************
+# *****************************************
+# * G-protein coupled receptors signature *
+# *****************************************
 #
 # G-protein coupled receptors [1 to 4,E1,E2] (also called R7G) are  an extensiv
 e
@@ -348,6 +347,26 @@ h
 
   [Part of this file has been deleted for brevity]
 
+# Count: 1
+#
+# *************************************************
+# * Visual pigments (opsins) retinal binding site *
+# *************************************************
+#
+# Visual pigments [1,2] are the light-absorbing  molecules that  mediate vision
+.
+# They consist of  an apoprotein, opsin,  covalently  linked  to the chromophor
+e
+# cis-retinal.  Vision is  effected through  the absorption of a  photon by cis
+-
+# retinal  which is isomerized to  trans-retinal.  This isomerization leads to
+a
+# change  of conformation  of the protein. Opsins are integral membrane protein
+s
+# with  seven transmembrane regions that belong to family 1 of G-protein couple
+d
+# receptors (see <PDOC00210>).
+#
 # In vertebrates four different pigments are generally found.   Rod cells, whic
 h
 # mediate vision in dim light, contain the pigment rhodopsin.  Cone cells, whic
@@ -364,20 +383,13 @@ e
 ,
 # R7 and R8) expresses a specific opsin.
 #
-# Proteins evolutionary related to opsins include:
-#
-#  - Squid  retinochrome,  also  known as retinal photoisomerase, which convert
-s
-#    various isomers of retinal into 11-cis retinal.
-#  - Mammalian  opsin  3  (Encephalopsin)  that  may  play  a role in encephali
-c
-#    photoreception.
-#  - Mammalian  opsin  4  (Melanopsin)  that may mediate regulation of circadia
+# Proteins evolutionary related to opsins include squid retinochrome, also know
 n
-#    rhythms and acute suppression of pineal melatonin.
-#  - Mammalian retinal pigment epithelium (RPE) RGR [3], a protein that may als
-o
-#    act in retinal isomerization.
+# as retinal  photoisomerase, which converts various isomers of retinal into 11
+-
+# cis retinal and mammalian retinal pigment  epithelium (RPE) RGR [3], a protei
+n
+# that may also act in retinal isomerization.
 #
 # The attachment  site  for  retinal in the above proteins is a conserved lysin
 e
@@ -385,12 +397,13 @@ e
 e
 # developed includes this residue.
 #
-# -Consensus pattern: [LIVMFWAC]-[PSGAC]-x(3)-[SAC]-K-[STALIMR]-[GSACPNV]-
-#                     [STACP]-x(2)-[DENF]-[AP]-x(2)-[IY]
+# -Consensus pattern: [LIVMWAC]-[PGAC]-x(3)-[SAC]-K-[STALIMR]-[GSACPNV]-[STACP]
+-
+#                     x(2)-[DENF]-[AP]-x(2)-[IY]
 #                     [K is the retinal binding site]
 # -Sequences known to belong to this class detected by the pattern: ALL.
-# -Other sequence(s) detected in SWISS-PROT: 2.
-# -Last update: December 2001 / Pattern and text revised.
+# -Other sequence(s) detected in SWISS-PROT: NONE.
+# -Last update: July 1998 / Pattern and text revised.
 #
 # [ 1] Applebury M.L., Hargrave P.A.
 #      Vision Res. 26:1881-1895(1986).
@@ -398,21 +411,6 @@ e
 #      J. Mol. Evol. 33:367-378(1991).
 # [ 3] Shen D., Jiang M., Hao W., Tao L., Salazar M., Fong H.K.W.
 #      Biochemistry 33:13117-13125(1994).
-#
-# +----------------------------------------------------------------------------
-+
-# | This PROSITE entry  is copyright  by the Swiss Institute of Bioinformatics
-|
-# | (SIB).  There are no restrictions on its use by non-profit institutions as
-|
-# | long as its  content  is  in  no  way  modified  and this statement is not
-|
-# | removed. Usage by and for commercial entities requires a license agreement
-|
-# | (See http://www.isb-sib.ch/announce/ or email to license@isb-sib.ch).
-|
-# +----------------------------------------------------------------------------
-+
 #
 # ***************
 #
@@ -506,3 +504,5 @@ Target users
    naive users to embedded scripts.
 
 Comments
+
+   None

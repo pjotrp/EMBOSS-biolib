@@ -389,12 +389,13 @@ See also
 
 Author(s)
 
-   This application was written by David Martin
-   (dmartin © rfcgr.mrc.ac.uk)
+   David Martin (dmartin © rfcgr.mrc.ac.uk)
    and Alan Bleasby (ableasby © rfcgr.mrc.ac.uk)
    MRC Rosalind Franklin Centre for Genomics Research Wellcome Trust
    Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
-   during the first Scandinavian EMBOSS Workshop.
+
+   This application was written during the first Scandinavian EMBOSS
+   Workshop.
 
 History
 
@@ -406,3 +407,5 @@ Target users
    naive users to embedded scripts.
 
 Comments
+
+   None

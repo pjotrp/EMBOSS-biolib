@@ -165,9 +165,8 @@ Output file format
    genbank, gff, pir, swiss, trace, listfile, dbmotif, diffseq, excel,
    feattable, motif, regions, seqtable, simple, srs, table, tagseq
 
-   See:
-   http://www.uk.embnet.org/Software/EMBOSS/Themes/ReportFormats.html for
-   further information on report formats.
+   See: http://emboss.sf.net/docs/themes/ReportFormats.html for further
+   information on report formats.
 
    By default patmatdb writes a 'dbmotif' report file.
 
@@ -177,7 +176,7 @@ Output file format
 
 ########################################
 # Program: patmatdb
-# Rundate: Mon Jul 26 13:42:32 2004
+# Rundate: Thu Jan 20 2005 17:37:39
 # Report_format: dbmotif
 # Report_file: 100k_rat.patmatdb
 ########################################
@@ -297,15 +296,6 @@ See also
    pscan          Scans proteins using PRINTS
    sigcleave      Reports protein signal cleavage sites
 
-   fuzzpro - Protein pattern search
-   This does much the same is patmatdb, but has a slightly different
-   style of output and allows mismatches.
-
-   patmatmotifs - Compares a protein sequence to the PROSITE motif
-   database.
-   This does the opposite to patmatdb, comparing a database of motifs to
-   one sequence.
-
 Author(s)
 
    Sinead O'Leary (current e-mail address unknown)
@@ -322,3 +312,5 @@ Target users
    naive users to embedded scripts.
 
 Comments
+
+   None

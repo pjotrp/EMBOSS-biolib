@@ -274,13 +274,6 @@ SQ   Sequence 512 BP; 80 A; 212 C; 152 G; 64 T; 4 other;
 2
 //
 
-   This means that the mRNA sequence is from position 179 to 500 in this
-   sequence.
-   The coding sequence is formed by joining the region from 387 to 500 in
-   this sequence together with regions from two other entries in this
-   database: X03488 and X03488.
-   The translation of the coding sequence is also given.
-
 Output file format
 
    The output is a sequence file containing any CDS, mRNA and protein
@@ -403,3 +396,5 @@ Target users
    naive users to embedded scripts.
 
 Comments
+
+   None

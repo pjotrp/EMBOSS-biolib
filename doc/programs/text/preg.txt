@@ -748,7 +748,7 @@ Output file format
 
 ########################################
 # Program: preg
-# Rundate: Mon Jul 26 13:49:56 2004
+# Rundate: Thu Jan 20 2005 17:38:54
 # Report_format: seqtable
 # Report_file: 100k_rat.preg
 ########################################
@@ -837,3 +837,5 @@ Target users
    naive users to embedded scripts.
 
 Comments
+
+   None

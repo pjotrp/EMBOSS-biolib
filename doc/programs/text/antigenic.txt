@@ -190,8 +190,8 @@ Output file format
    genbank, gff, pir, swiss, trace, listfile, dbmotif, diffseq, excel,
    feattable, motif, regions, seqtable, simple, srs, table, tagseq
 
-   See: http://emboss.sourceforge.net/docs/themes/ReportFormats.html for
-   further information on report formats.
+   See: http://emboss.sf.net/docs/themes/ReportFormats.html for further
+   information on report formats.
 
    By default antigenic writes a 'motif' report file.
 
@@ -201,7 +201,7 @@ Output file format
 
 ########################################
 # Program: antigenic
-# Rundate: Tue Apr 06 14:23:25 2004
+# Rundate: Thu Jan 20 2005 17:31:13
 # Report_format: motif
 # Report_file: act1_fugru.antigenic
 ########################################
@@ -310,7 +310,7 @@ Max_score_pos at "*"
   File: act1_fugru.antigenic
 
 ##gff-version 2.0
-##date 2004-04-06
+##date 2005-01-20
 ##Type Protein ACT1_FUGRU
 ACT1_FUGRU      antigenic       site    214     222     1.207   +       .
 Sequence "ACT1_FUGRU.1" ; note "*pos 218"
@@ -354,8 +354,17 @@ Data files
    Antigenic uses a data file called Eantigenic.dat.
 
    EMBOSS data files are distributed with the application and stored in
-   the standard EMBOSS data directory, which is defined by EMBOSS
+   the standard EMBOSS data directory, which is defined by the EMBOSS
    environment variable EMBOSS_DATA.
+
+   To see the available EMBOSS data files, run:
+
+% embossdata -showall
+
+   To fetch one of the data files (for example 'Exxx.dat') into your
+   current directory for you to inspect or modify, run:
+
+% embossdata -fetch -file Exxx.dat
 
    Users can provide their own data files in their own directories.
    Project specific files can be put in the current directory, or for
@@ -443,7 +452,10 @@ Author(s)
    MRC Rosalind Franklin Centre for Genomics Research Wellcome Trust
    Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
 
-   Original program "ANTIGENIC" by Peter Rice (EGCG 1991)
+   Original program "ANTIGENIC" by Peter Rice (EGCG 1991) Peter Rice
+   (pmr © ebi.ac.uk)
+   Informatics Division, European Bioinformatics Institute, Wellcome
+   Trust Genome Campus, Hinxton, Cambridge CB10 1SD, UK
 
 History
 
@@ -455,3 +467,5 @@ Target users
    naive users to embedded scripts.
 
 Comments
+
+   None

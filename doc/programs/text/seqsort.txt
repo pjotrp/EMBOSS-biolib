@@ -1,80 +1,302 @@
 
-                                  seqsort 
+SEQSORT documentation
 
+CONTENTS
 
+   1.0 SUMMARY 
+   2.0 INPUTS & OUTPUTS 
+   3.0 INPUT FILE FORMAT 
+   4.0 OUTPUT FILE FORMAT 
+   5.0 DATA FILES 
+   6.0 USAGE 
+   7.0 KNOWN BUGS & WARNINGS 
+   8.0 NOTES 
+   9.0 DESCRIPTION 
+   10.0 ALGORITHM 
+   11.0 RELATED APPLICATIONS 
+   12.0 DIAGNOSTIC ERROR MESSAGES 
+   13.0 AUTHORS 
+   14.0 REFERENCES 
 
-Function
+1.0 SUMMARY
 
-   [an error occurred while processing this directive]
+   Reads DHF files (domain hits files) of database hits (sequences) and
+   removes hits of ambiguous classification.
 
-Description
+2.0 INPUTS & OUTPUTS
 
-   **************** EDIT HERE ****************
+   SEQSORT reads a directory of DHF files (domain hits files) where each
+   file contains hits to a single SCOP family, compares, processes and
+   collates the hits and writes a directory of DHF files which contain
+   only those hits that could be uniquely assigned to a SCOP family.
+   Optionally, two further files of hits are written: (i) a domain
+   families file, of ALL hits from the input files that could be uniquely
+   assigned to a SCOP family and (ii) a domain ambiguities file, of hits
+   from ALL the input files that are of ambiguous family assignment and
+   are assigned as relatives to a SCOP superfamily or fold instead.
+   The path for the domain hits files (input and output) and the names of
+   the output files are specified by the user. The file extension of the
+   DHF files are set in the ACD file.
 
-Algorithm
+3.0 INPUT FILE FORMAT
 
-   **************** EDIT HERE ****************
+   The format of the domain hits file is described in SEQSEARCH
+   documentation.
 
-Usage
+4.0 OUTPUT FILE FORMAT
 
-   [an error occurred while processing this directive]
+   The format of the domain hits file is described in SEQSEARCH
+   documentation.
+   The domain families file and domain ambiguities file also use the DHF
+   format. Whereas normally a DHF file contains hits for a single node
+   from SCOP or CATH, the families and ambiguities files may contain
+   domains from multiple different families (domain families file), or
+   superfamilies or folds (ambiguities file). Domains of the same node
+   (e.g. family) will be grouped together in blocks, i.e. all hits for
+   domain A, then all hits for domain B and so on (see Figure 1).
+   Figure 1 Excerpt from a domain families file (output)
 
-Command line arguments
+> P00478^.^8^99^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^Asparta
+te carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate carbamoy
+ltransferase, Regulatory-chain, N-terminal domain^PSIBLAST^191.00^0.000e+00^0.0
+00e+00
+VEAIKRGTVIDHIPAQIGFKLLSLFKLTETDQRITIGLNLPSGEMGRKDLIKIENTFLSEDQVDQLALYAPQATVNRID
+NYEVVGKSRPSLP
+> O58452^.^6^99^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^Asparta
+te carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate carbamoy
+ltransferase, Regulatory-chain, N-terminal domain^PSIBLAST^94.30^0.000e+00^6.00
+0e-20
+VSAIKEGTVIDHIPAGKGLKVIEILGLSKLSNGGSVLLAMNVPSKKLGRKDIVKVEGKFLSEEEVNKIALVAPTATVNI
+IRNYKVVEKFKVEVP
+> O30129^.^6^98^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^Asparta
+te carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate carbamoy
+ltransferase, Regulatory-chain, N-terminal domain^PSIBLAST^79.60^0.000e+00^2.00
+0e-15
+VSKIKEGTVIDHINAGKALLVLKILKIQPGTDLTVSMAMNVPSSKMGKKDIVKVEGMFIRDEELNKIALISPNATINLI
+RDYEIERKFKVSPP
+> O26938^.^11^101^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^Aspar
+tate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate carbam
+oyltransferase, Regulatory-chain, N-terminal domain^PSIBLAST^81.90^0.000e+00^3.
+000e-16
+VKPIKNGTVIDHITANRSLNVLNILGLPDGRSKVTVAMNMDSSQLGSKDIVKIENRELKPSEVDQIALIAPRATINIVR
+DYKIVEKAKVRL
+> Q9WVI4^.^513^667^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^Aden
+ylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase cataly
+tic domain^PSIBLAST^113.00^0.000e+00^2.000e-25
+RKFDDVTMLFSDIVGFTAICAQCTPMQVISMLNELYTRFDHQCGFLDIYKVETIGDAYCVASGLHRKSLCHAKPIALMA
+LKMMELSEEVLTPDGRPIQMRIGIHSGSVLAGVVGVRMPRYCLFGNNVTLASKFESGSHPRRINISPTTYQLLKRE
+> Q9ERL9^.^475^626^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^Aden
+ylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase cataly
+tic domain^PSIBLAST^101.00^0.000e+00^9.000e-22
+KKFSEVTMLFSDIVGFTAICSQCSPLQVITMLNALYTRFDQQCGELDVYKVETIGDAYCVAGGLHRESDTHAVQIALMA
+LKMMELSNEVMSPHGEPIKMRIGLHSGSVFAGVVGVKMPRYCLFGNNVTLANKFESCSVPRKINVSPTTYRLL
 
-   [an error occurred while processing this directive]
-
-   [an error occurred while processing this directive]
-
-Input file format
-
-   seqsort reads any normal sequence USAs.
-
-   [an error occurred while processing this directive]
-
-Output file format
-
-   seqsort outputs a graph to the specified graphics device. outputs a
-   report format file. The default format is ...
-
-   [an error occurred while processing this directive]
-
-Data files
-
-   **************** EDIT HERE ****************
-
-Notes
+5.0 DATA FILES
 
    None.
 
-References
+6.0 USAGE
+
+  6.1 COMMAND LINE ARGUMENTS
+
+   Standard (Mandatory) qualifiers Allowed values Default
+   [-dhfin]
+   (Parameter 1) This option specifies the location of DHF files (domain
+   hits files) (input). A 'domain hits file' contains database hits
+   (sequences) with domain classification information, in the DHF format
+   (FASTA or EMBL-like). The hits are relatives to a SCOP or CATH family
+   and are found from a search of a sequence database. Files containing
+   hits retrieved by PSIBLAST are generated by using SEQSEARCH. Directory
+   ./
+   -overlap This option specifies the number of overlapping residues
+   required for merging of two hits. Each family is also processed so
+   that ovlerapping hits (hits with identical accesssion number that
+   overlap by at least a user-defined number of residues) are replaced by
+   a hit that is produced from merging the two overlapping hits. Any
+   integer value 10
+   -dofamilies This option specifies to write a domain families file. If
+   this option is set a domain families file is written. Toggle value
+   Yes/No N
+   -doambiguities This option specifies whether to write a domain
+   ambiguities file. If this option is set a domain ambiguities file is
+   written. Toggle value Yes/No N
+   [-dhfout]
+   (Parameter 2) This option specifies the location of DHF files (domain
+   hits files) (output). A 'domain hits file' contains database hits
+   (sequences) with domain classification information, in the DHF format
+   (FASTA or EMBL-like). The hits are relatives to a SCOP or CATH family
+   and are found from a search of a sequence database. Files containing
+   hits retrieved by PSIBLAST are generated by using SEQSEARCH. Directory
+   ./
+   -hitsf This option specifies the name of domain families file
+   (output). A 'domain families file' contains sequence relatives (hits)
+   for each of a number of different SCOP or CATH families found from
+   searching a sequence database, e.g. by using SEQSEARCH (psiblast). The
+   file contains the collated search results for the indvidual families;
+   only those hits of unambiguous family assignment are included. Hits of
+   ambiguous family assignment are assigned as relatives to a SCOP or
+   CATH superfamily or fold instead and are collated into a 'domain
+   ambiguities file'. The domain families and ambiguities files are
+   generated by using SEQSORT and use the same format as a DHF file
+   (domain hits file). Output file fam.dhf
+   -ambigf This option specifies the name of domain ambiguities file
+   (output). A 'domain families file' contains sequence relatives (hits)
+   for each of a number of different SCOP or CATH families found from
+   searching a sequence database, e.g. by using SEQSEARCH (psiblast). The
+   file contains the collated search results for the indvidual families;
+   only those hits of unambiguous family assignment are included. Hits of
+   ambiguous family assignment are assigned as relatives to a SCOP or
+   CATH superfamily or fold instead and are collated into a 'domain
+   ambiguities file'. The domain families and ambiguities files are
+   generated by using SEQSORT and use the same format as a DHF file
+   (domain hits file). Output file oth.dhf
+   Additional (Optional) qualifiers Allowed values Default
+   (none)
+   Advanced (Unprompted) qualifiers Allowed values Default
+   (none)
+
+  6.2 EXAMPLE SESSION
+
+   An example of interactive use of SEQSORT is shown below.
+
+Unix % seqsort
+Reads files of database hits (sequences) for nodes in a DCF file (domain
+classification file) and removes hits of ambiguous classification.
+Location of DHF files (domain hits files) for input (DHF format) [./]: /test_da
+ta
+Number of overlapping residues required for merging of two hits [10]:
+Write domain families file [N]: y
+Write domain ambiguities file [N]: y
+Location of DHF files (domain hits files) for output (DHF format) [./]: /test_d
+ata/seqsort
+Name of domain families file (output) [fam.dhf]: /test_data/seqsort/fam.dhf
+Name of domain ambiguities file (output) [oth.dhf]: /test_data/seqsort/oth.dhf
+Warning: Empty list in embDmxScophitsToHitlist
+Warning: Empty list in embDmxScophitsToHitlist
+Warning: Empty list in embDmxScophitsToHitlist
+Unix %
+
+   All DHF files (of the file extension .dhf specicied in ACD) in
+   directory /test_data were processed by SEQSORT. DHF output files were
+   written to /test_data/seqsort/seqsort_hits. A shared segment of 10 or
+   more identical was required to class two sequences as overlapping.
+   Domain families and ambiguities files called fam.dhf and oth.dhf
+   respectively were written to /test_data/seqsort.
+   The following command line would achieve the same result.
+
+
+seqsort /test_data /test_data/seqsort -overlap 10 -dofamilies Y -doambiguities
+Y
+-hitsf /test_data/seqsort/fam.dhf -ambigf /test_data/seqsort/oth.dhf
+
+7.0 KNOWN BUGS & WARNINGS
 
    None.
 
-Warnings
+8.0 NOTES
 
    None.
 
-Diagnostic Error Messages
+  8.1 GLOSSARY OF FILE TYPES
+
+   FILE TYPE FORMAT DESCRIPTION CREATED BY SEE ALSO
+   Domain hits file DHF format (FASTA-like with domain classification
+   information). Database hits (sequences) with domain classification
+   information. The hits are relatives to a SCOP or CATH family and are
+   found from a search of a sequence database. SEQSEARCH (hits retrieved
+   by PSIBLAST) N.A.
+   Domain families & ambiguities file Contains sequence relatives (hits)
+   for each of a number of different SCOP or CATH families found from
+   PSIBLAST searches of a sequence database. The file contains the
+   collated search results for the indvidual families; only those hits of
+   unambiguous family assignment are included. Hits of ambiguous family
+   assignment are assigned as relatives to a SCOP or CATH superfamily or
+   fold instead and are collated into a 'domain ambiguities file'. The
+   domain families and ambiguities files are generated by using SEQSORT
+   and use the same format as a DHF file (domain hits file). N.A.
+   Domain validation file Contains sequence relatives (hits) for each of
+   a number of different SCOP or CATH families, superfamilies and folds.
+   The file contains the collated results from PSIBLAST searches of a
+   sequence database for the indvidual families; hits of unambiguous
+   family assignment are listed under their respective family, otherwise
+   a hit is assigned as relatives to a superfamily or fold instead. The
+   domain validation file is generated by using SEQNR and uses the same
+   format as a DHF file (domain hits file). N.A.
+
+9.0 DESCRIPTION
+
+   The results of multiple searches of a sequence database using an
+   homology search tool such as blast may contain overlapping or
+   identical hits, especially where the query sequences are related, for
+   instance, belong to different families but the same superfamily. For
+   certain analyses it is desirable to assign a hit with confidence to a
+   unique family, or otherwise assign it as a member of a larger
+   superfamily or fold instead. SEQSORT reads a directory of DHF files
+   (domain hits files) where each file containing hits to a different
+   SCOP family, compares, processes and collates the hits and writes a
+   directory of DHF files which contain only those hits that could be
+   uniquely assigned to a SCOP family. Optionally, two further files are
+   written: (i) a domain families file, of hits (from ALL the input
+   files) that could be uniquely assigned to a SCOP family and (ii) a
+   domain ambiguities file, for hits (from ALL the input files) of
+   ambiguous family assignment which are assigned as relatives to a SCOP
+   superfamily or fold instead.
+
+10.0 ALGORITHM
+
+   A rough outline of the algorithm follows; a better description will
+   appear in a publication in preparation. Hits from searches for all
+   domain families are collated into a single list and the list sorted
+   according to family name. The hits hits within each family are sorted
+   by accession number, then hits within a family and with identical
+   accession number are sorted by the start position of the hit relative
+   to the full length sequence in swissprot. In each family identical
+   hits (i.e. those with identical accession number and the same start
+   and end points relative to the full-length sequence in swissprot) were
+   removed leaving only a single copy. Each family is also processed so
+   that ovlerapping hits (hits with identical accesssion number that
+   overlap by at least a user-defined number of residues) are replaced by
+   a hit that is produced from merging the two overlapping hits. If two
+   hits have the same accession number and overlap but are from searches
+   for different families, the hits are merged and the merged hit placed
+   into a new list for hits to superfamilies (if the two families
+   belonged to the same superfamily) or for hits to folds (if the two
+   families were in different superfamilies but the same fold). In this
+   way hits that are unique to a particular family are identified, and
+   hits of ambiguous family assignment are assigned as belonging to a
+   superfamily or fold instead.
+
+11.0 RELATED APPLICATIONS
+
+   APPLICATION DESCRIPTION
+   SEQSEARCH Generate DHF files (domain hits files) of database hits
+   (sequences) from a DAF file (domain alignment file) or other sequences
+   by using PSI-BLAST.
+   SEQWORDS Generates DHF files (domain hits files) of database hits
+   (sequences) for nodes in a DCF file (domain classification file) by
+   keyword search of UniProt.
+   SEQFRAGGLE Removes fragments from DHF files (domain hits files) or
+   other files of sequences.
+   SEQSORT Reads DHF files (domain hits files) of database hits
+   (sequences) and removes hits of ambiguous classification.
+   SEQNR Removes redundancy from files of database hits (sequences).
+
+12.0 DIAGNOSTIC ERROR MESSAGES
 
    None.
 
-Exit status
+13.0 AUTHORS
 
-   It always exits with status 0.
+   Ranjeeva Ranasinghe (rranasin@rfcgr.mrc.ac.uk)
+   Jon Ison (jison@rfcgr.mrc.ac.uk)
+   MRC Rosalind Franklin Centre for Genomics Research, Wellcome Trust
+   Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
 
-Known bugs
+14.0 REFERENCES
 
-   None. [an error occurred while processing this directive]
+   Please cite the authors and EMBOSS.
+   Rice P, Bleasby A.J. 2000. EMBOSS - The European Molecular Biology
+   Open Software Suite. Trends in Genetics, 15:276-278. See also
+   http://www.uk.embnet.org/Software/EMBOSS
 
-Author(s)
-
-   **************** EDIT HERE ****************
-
-History
-
-   Written (date) - author.
-
-Target users
-
-   This program is intended to be used by everyone and everything, from
-   naive users to embedded scripts.
+  14.1 Other useful references

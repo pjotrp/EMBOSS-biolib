@@ -98,13 +98,13 @@ Command line arguments
    -graph Graph type EMBOSS has a list of known devices, including
    postscript, ps, hpgl, hp7470, hp7580, meta, colourps, cps, xwindows,
    x11, tektronics, tekt, tek4107t, tek, none, null, text, data, xterm,
-   png EMBOSS_GRAPHICS value, or x11
+   png, xml EMBOSS_GRAPHICS value, or x11
    -outfile Output file name Output file <sequence>.freak
    Additional (Optional) qualifiers Allowed values Default
    -step Stepping value Any integer value 1
    -window Averaging window Any integer value 30
    Advanced (Unprompted) qualifiers Allowed values Default
-   -plot Produce graphic Toggle value Yes/No N
+   -plot Produce graphic Toggle value Yes/No No
 
 Input file format
 
@@ -388,3 +388,5 @@ Target users
    naive users to embedded scripts.
 
 Comments
+
+   None

@@ -245,15 +245,11 @@ Output file format
 
   Output files for usage example
 
-  Graphics File: tmap.ps
-
-   [tmap results]
-
   File: tmap.res
 
 ########################################
 # Program: tmap
-# Rundate: Wed Jul 21 11:59:36 2004
+# Rundate: Thu Jul 15 2004 12:00:00
 # Report_format: seqtable
 # Report_file: tmap.res
 ########################################
@@ -293,6 +289,10 @@ Output file format
 #---------------------------------------
 #---------------------------------------
 
+  Graphics File: tmap.ps
+
+   [tmap results]
+
    A plot of the propensities to form the middle and the end of
    transmembrane regions is output.
 
@@ -316,9 +316,9 @@ Notes
 
 References
 
-   "Persson, B. & Argos, P. (1994) Prediction of transmembrane segments
-   in proteins utilsing multiple sequence alignments J. Mol. Biol. 237,
-   182-192."
+    1. "Persson, B. & Argos, P. (1994) Prediction of transmembrane
+       segments in proteins utilsing multiple sequence alignments J. Mol.
+       Biol. 237, 182-192."
 
 Warnings
 
@@ -365,3 +365,6 @@ Target users
    naive users to embedded scripts.
 
 Comments
+
+   The graph y axis is not labelled. It is some kind of score, but we aer
+   not sure exactly how to describe it.

@@ -72,7 +72,7 @@ Usage
 % dbiblast 
 Index a BLAST database
 Database name: swnew
-Database directory [.]: ../../data
+Database directory [.]: data
 Wildcard database filename [swnew]: 
 Release number [0.0]: 
 Index date [00/00/00]: 
@@ -131,7 +131,8 @@ Command line arguments
 
    Standard (Mandatory) qualifiers Allowed values Default
    [-dbname]
-   (Parameter 1) Database name A string from 1 to 19 characters Required
+   (Parameter 1) Database name A string from 1 to 19 characters, matching
+   regular expression /[A-z][A-z0-9_]+/ Required
    -directory Database directory Directory .
    -filenames Wildcard database filename Any string is accepted Database
    name
@@ -168,21 +169,11 @@ Command line arguments
 
 Input file format
 
-   AI BLAST1 or BLAST2 database index files.
+   Any BLAST1 or BLAST2 database index files.
 
 Output file format
 
   Output files for usage example
-
-  File: acnum.hit
-
-   This file contains non-printing characters and so cannot be displayed
-   here.
-
-  File: acnum.trg
-
-   This file contains non-printing characters and so cannot be displayed
-   here.
 
   File: division.lkp
 
@@ -190,6 +181,16 @@ Output file format
    here.
 
   File: entrynam.idx
+
+   This file contains non-printing characters and so cannot be displayed
+   here.
+
+  File: acnum.hit
+
+   This file contains non-printing characters and so cannot be displayed
+   here.
+
+  File: acnum.trg
 
    This file contains non-printing characters and so cannot be displayed
    here.
@@ -225,17 +226,15 @@ Data files
 
 Notes
 
-   None.
+   dbiblast can't use the new style of Blast indices. You must create the
+   old style of Blast indices by adding -A F to the formatdb command
+   line.
 
 References
 
    None.
 
 Warnings
-
-   dbiblast can't use the new style of Blast indices. You must create the
-   old style of Blast indices by adding -A F to the formatdb command
-   line.
 
 Diagnostic Error Messages
 
@@ -260,7 +259,7 @@ See also
 
 Author(s)
 
-   This application was written by Peter Rice (pmr © ebi.ac.uk)
+   Peter Rice (pmr © ebi.ac.uk)
    Informatics Division, European Bioinformatics Institute, Wellcome
    Trust Genome Campus, Hinxton, Cambridge CB10 1SD, UK
 
@@ -274,3 +273,5 @@ Target users
    software and database installation and maintenance.
 
 Comments
+
+   None

@@ -31,7 +31,7 @@ Usage
 
 % lindna -graph cps 
 Draws linear maps of DNA constructs
-Input file containing mapping data [inputfile]: ../../data/data.linp
+Input file containing mapping data [inputfile]: data.linp
 Draw a ruler [Y]: 
       Open : Open blocks
     Filled : Filled blocks
@@ -164,7 +164,7 @@ Input file format
 
   Input files for usage example
 
-  File: ../../data/data.linp
+  File: data.linp
 
 Start   1001
 End     4270
@@ -330,8 +330,6 @@ See also
    textsearch Search sequence documentation text. SRS and Entrez are
    faster!
 
-   cirdna plots representations of circular DNA.
-
 Author(s)
 
    Nicolas Tourasse (nicolas.tourasse © biotek.uio.no)
@@ -348,3 +346,5 @@ Target users
    naive users to embedded scripts.
 
 Comments
+
+   None

@@ -115,7 +115,7 @@ Usage
 
 % epestfind -graph cps -invalid 
 Finds PEST motifs as potential proteolytic cleavage sites
-Input sequence: ../../data/exu2_drops.embl
+Input sequence: exu2_drops.embl
 Window length [10]: 
 Sort order of results
       1 : length
@@ -225,7 +225,7 @@ Command line arguments
    -graph Graph type EMBOSS has a list of known devices, including
    postscript, ps, hpgl, hp7470, hp7580, meta, colourps, cps, xwindows,
    x11, tektronics, tekt, tek4107t, tek, none, null, text, data, xterm,
-   png EMBOSS_GRAPHICS value, or x11
+   png, xml EMBOSS_GRAPHICS value, or x11
    Additional (Optional) qualifiers Allowed values Default
    -aadata File of amino acid properties and molecular masses. Data file
    Eamino.dat
@@ -251,7 +251,7 @@ Input file format
 
   Input files for usage example
 
-  File: ../../data/exu2_drops.embl
+  File: exu2_drops.embl
 
 ID   EXU2_DROPS     STANDARD;      PRT;   477 AA.
 AC   Q24617;
@@ -304,21 +304,7 @@ Output file format
 
    epestfind outputs a graph to the specified graphics device.
 
-   The output from epestfind is a simple text one. It reports poor and
-   potential PEST motifs together with their PEST score, mass percent of
-   DEPST and their hydrophobicity index.
-
-   'Valid' PEST motifs below the threshold score (5.0) are considered as
-   'poor', while PEST scores above the threshold score are of real
-   biological interest. The higher the PEST score, the more likely is
-   degradation of proteins mediated via 'potential' PEST motifs in
-   eukaryotic cells.
-
   Output files for usage example
-
-  Graphics File: epestfind.ps
-
-   [epestfind results]
 
   File: exu2_drops.epestfind
 
@@ -412,6 +398,20 @@ Invalid PEST motif with 10 amino acids between position 225 and 236.
        +++++++   potential
        OOOOOOO   poor
        -------   invalid
+
+  Graphics File: epestfind.ps
+
+   [epestfind results]
+
+   The output from epestfind is a simple text one. It reports poor and
+   potential PEST motifs together with their PEST score, mass percent of
+   DEPST and their hydrophobicity index.
+
+   'Valid' PEST motifs below the threshold score (5.0) are considered as
+   'poor', while PEST scores above the threshold score are of real
+   biological interest. The higher the PEST score, the more likely is
+   degradation of proteins mediated via 'potential' PEST motifs in
+   eukaryotic cells.
 
 Data files
 
@@ -547,3 +547,7 @@ Target users
 
    This program is intended to be used by everyone and everything, from
    naive users to embedded scripts.
+
+Comments
+
+   None

@@ -3,8 +3,6 @@
 
 
 
-                             Program primersearch
-
 Function
 
    Searches DNA sequences for matches with primer pairs
@@ -31,7 +29,7 @@ Usage
 
 % primersearch tembl:z52466 
 Searches DNA sequences for matches with primer pairs
-Primer file: ../../data/primers
+Primer file: primers
 Allowed percent mismatch [0]: 
 Output file [hsa203yc1.primersearch]: 
 
@@ -46,7 +44,7 @@ Output file [hsa203yc1.primersearch]:
 
 % primersearch tembl:z52466 
 Searches DNA sequences for matches with primer pairs
-Primer file: ../../data/primers
+Primer file: primers
 Allowed percent mismatch [0]: 20
 Output file [hsa203yc1.primersearch]: 
 
@@ -122,7 +120,7 @@ Input file format
    'tembl:z52466' is a sequence entry in the example nucleic acid
    database 'tembl'
 
-  File: ../../data/primers
+  File: primers
 
 # This is my primer file
 D1S243  cacacaggctcacatgcc      gctccagcgtcatggact
@@ -342,3 +340,5 @@ Target users
    naive users to embedded scripts.
 
 Comments
+
+   None

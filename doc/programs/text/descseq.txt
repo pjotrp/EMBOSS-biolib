@@ -31,7 +31,7 @@ Usage
    Set the name of a sequence to "myclone23"
 
 
-% descseq -seq ../../data/dna.text -out clone23.seq -name "myclone23" 
+% descseq -seq dna.text -out clone23.seq -name "myclone23" 
 Alter the name or description of a sequence.
 
    Go to the input files for this example
@@ -42,8 +42,7 @@ Alter the name or description of a sequence.
    Set the description of a sequence to "This is my clone number 244"
 
 
-% descseq -seq ../../data/dna.text -out xy24.seq -desc "This is my clone number
- 244" 
+% descseq -seq dna.text -out xy24.seq -desc "This is my clone number 244" 
 Alter the name or description of a sequence.
 
    Go to the output files for this example
@@ -53,7 +52,7 @@ Alter the name or description of a sequence.
    Append some text to the description of a sequence
 
 
-% descseq -seq ../../data/dna.text -out est4.seq -desc " (submitted)" -append 
+% descseq -seq dna.text -out est4.seq -desc " (submitted)" -append 
 Alter the name or description of a sequence.
 
    Go to the output files for this example
@@ -141,7 +140,7 @@ Input file format
 
   Input files for usage example
 
-  File: ../../data/dna.text
+  File: dna.text
 
 ACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTAC
 GTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGT
@@ -232,9 +231,7 @@ See also
 
 Author(s)
 
-   Gary Williams (gwilliam © rfcgr.mrc.ac.uk)
-   MRC Rosalind Franklin Centre for Genomics Research Wellcome Trust
-   Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
+   [an error occurred while processing this directive]
 
 History
 
@@ -244,3 +241,5 @@ Target users
    naive users to embedded scripts.
 
 Comments
+
+   None

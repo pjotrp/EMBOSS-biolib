@@ -45,8 +45,8 @@ Usage
 
 % rebaseextract 
 Extract data from REBASE
-Full pathname of WITHREFM file: ../../data/withrefm
-Full pathname of PROTO file: ../../data/proto
+Full pathname of WITHREFM file: withrefm
+Full pathname of PROTO file: proto
 
    Go to the input files for this example
    Go to the output files for this example
@@ -101,7 +101,7 @@ Input file format
 
   Input files for usage example
 
-  File: ../../data/withrefm
+  File: withrefm
 
 
 REBASE version 106                                              withrefm.106
@@ -222,7 +222,7 @@ Sato, S., Hutchison, C.A. III, Harris, J.I., (1977) Proc. Natl. Acad. Sci. U. S
 . A., vol. 74, pp. 542-546.
 Zebala, J.A., (1993) Diss. Abstr., vol. 54, pp. 1394-1398.
 
-  File: ../../data/proto
+  File: proto
 
 
 REBASE version 305                                              proto.305
@@ -285,10 +285,9 @@ BsiSI HpaII
 Bsu6I Ksp632I
 HpyCH4IV MaeII
 
-  File: REBASE
+  Directory: REBASE
 
-   This file contains non-printing characters and so cannot be displayed
-   here.
+   This directory contains output files.
 
    The output files are held in the REBASE subdirectory of the EMBOSS
    data directory. There are three:
@@ -361,3 +360,5 @@ Target users
    software and database installation and maintenance.
 
 Comments
+
+   None

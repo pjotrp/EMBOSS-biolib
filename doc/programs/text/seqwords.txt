@@ -5,7 +5,8 @@
 
 Function
 
-   [an error occurred while processing this directive]
+   Generate file of hits for scop families by searching swissprot with
+   keywords
 
 Description
 
@@ -17,26 +18,55 @@ Algorithm
 
 Usage
 
-   [an error occurred while processing this directive]
-
 Command line arguments
 
-   [an error occurred while processing this directive]
+   Standard (Mandatory) qualifiers:
+  [-keyfile]           infile     Name of keywords file (input)
+   -spfile             infile     Name of swissprot database (input)
+  [-outfile]           outfile    Name of scop hits file (output)
 
-   [an error occurred while processing this directive]
+   Additional (Optional) qualifiers: (none)
+   Advanced (Unprompted) qualifiers: (none)
+   Associated qualifiers:
+
+   "-outfile" associated qualifiers
+   -odirectory2         string     Output directory
+
+   General qualifiers:
+   -auto                boolean    Turn off prompts
+   -stdout              boolean    Write standard output
+   -filter              boolean    Read standard input, write standard output
+   -options             boolean    Prompt for standard and additional values
+   -debug               boolean    Write debug output to program.dbg
+   -verbose             boolean    Report some/full command line options
+   -help                boolean    Report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning             boolean    Report warnings
+   -error               boolean    Report errors
+   -fatal               boolean    Report fatal errors
+   -die                 boolean    Report deaths
+
+
+   Standard (Mandatory) qualifiers Allowed values Default
+   [-keyfile]
+   (Parameter 1) Name of keywords file (input) Input file Required
+   -spfile Name of swissprot database (input) Input file Required
+   [-outfile]
+   (Parameter 2) Name of scop hits file (output) Output file test.hits
+   Additional (Optional) qualifiers Allowed values Default
+   (none)
+   Advanced (Unprompted) qualifiers Allowed values Default
+   (none)
 
 Input file format
 
    seqwords reads any normal sequence USAs.
 
-   [an error occurred while processing this directive]
-
 Output file format
 
    seqwords outputs a graph to the specified graphics device. outputs a
    report format file. The default format is ...
-
-   [an error occurred while processing this directive]
 
 Data files
 
@@ -64,7 +94,57 @@ Exit status
 
 Known bugs
 
-   None. [an error occurred while processing this directive]
+   None.
+
+See also
+
+   Program name Description
+   contacts Reads coordinate files and writes files of intra-chain
+   residue-residue contact data
+   domainalign Generates structure-based sequence alignments for nodes in
+   a DCF file (domain classification file)
+   domainrep Reorder DCF file (domain classification file) so that the
+   representative structure of each user-specified node is given first
+   domainreso Removes low resolution domains from a DCF file (domain
+   classification file)
+   fraggle Removes fragment sequences from files of hits for scop
+   families
+   hmmgen Generates a hidden Markov model for each alignment in a
+   directory by using the HMMER package
+   interface Reads coordinate files and writes files of inter-chain
+   residue-residue contact data
+   libgen Generates various types of discriminating elements for each
+   alignment in a directory
+   libscan Scans a database with a set of models that represents a family
+   profgen Generates various profiles for each alignment in a directory
+   rocon Reads a DHF file (domain hits file) of hits (sequences of
+   unknown structural classification) and a DHF file of validation
+   sequences (known classification) and writes a 'hits file' for the
+   hits, which are classified and rank-ordered on the basis of score
+   rocplot Provides interpretation and graphical display of the
+   performance of discriminating elements (e.g. profiles for protein
+   families). rocplot reads file(s) of hits from discriminator-database
+   search(es), performs ROC analysis on the hits, and writes graphs
+   illustrating the diagnostic performance of the discriminating elements
+   scopalign Generate alignments for families in a scop classification
+   file by using STAMP
+   scoprep Reorder scop classificaiton file so that the representative
+   structure of each family is given first
+   scopreso Removes low resolution domains from a scop classification
+   file
+   seqalign Reads a DAF file (domain alignment file) and a DHF (domain
+   hits file) and writes a DAF file extended with the hits
+   seqfraggle Removes fragments from DHF files (domain hits files) or
+   other files of sequences
+   seqsearch Generate database hits (sequences) for nodes in a DCF file
+   (domain classification file) by using PSI-BLAST
+   seqsort Reads DHF files (domain hits files) of database hits
+   (sequences) and removes hits of ambiguous classification
+   siggen Generates a sparse protein signature from an alignment and
+   residue contact data
+   sigplot Generates data files of signature performance
+   sigscan Scans a signature against swissprot and writes a signature
+   hits file
 
 Author(s)
 

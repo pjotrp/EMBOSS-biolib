@@ -24,7 +24,7 @@ Usage
 
 % printsextract 
 Extract data from PRINTS
-Full pathname of prints.dat: ../../data/prints.test
+Full pathname of prints.dat: prints.test
 
    Go to the input files for this example
    Go to the output files for this example
@@ -65,7 +65,7 @@ Input file format
 
   Input files for usage example
 
-  File: ../../data/prints.test
+  File: prints.test
 
 gc; ACHEFISH
 gx; PR00879
@@ -195,10 +195,9 @@ Output file format
 
   Output files for usage example
 
-  File: PRINTS
+  Directory: PRINTS
 
-   This file contains non-printing characters and so cannot be displayed
-   here.
+   This directory contains output files.
 
    The output files are held in the PRINTS subdirectory of the EMBOSS
    data directory.
@@ -297,3 +296,5 @@ Target users
    software and database installation and maintenance.
 
 Comments
+
+   None

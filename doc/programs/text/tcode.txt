@@ -211,7 +211,7 @@ Command line arguments
    -plot On selection a graph of the sequence (X axis) plotted against
    the coding score (Y axis) will be displayed. Sequence above the green
    line is coding, that below the red line is non-coding. Toggle value
-   Yes/No N
+   Yes/No No
 
 Input file format
 
@@ -379,9 +379,8 @@ Output file format
    genbank, gff, pir, swiss, trace, listfile, dbmotif, diffseq, excel,
    feattable, motif, regions, seqtable, simple, srs, table, tagseq
 
-   See:
-   http://www.uk.embnet.org/Software/EMBOSS/Themes/ReportFormats.html for
-   further information on report formats.
+   See: http://emboss.sf.net/docs/themes/ReportFormats.html for further
+   information on report formats.
 
    tcode outputs a report format file. The default format is 'table'.
 
@@ -405,7 +404,7 @@ Output file format
 
 ########################################
 # Program: tcode
-# Rundate: Wed Jul 21 11:59:11 2004
+# Rundate: Thu Jan 20 2005 17:42:56
 # Report_format: table
 # Report_file: hsfau1.tcode
 ########################################
@@ -511,11 +510,11 @@ Output file format
 
   Output files for usage example 2
 
-  File: hsfau1.tcode
-
   Graphics File: tcode.ps
 
    [tcode results]
+
+  File: hsfau1.tcode
 
 Data files
 
@@ -644,8 +643,8 @@ Notes
 
 References
 
-   1. Fickett, J.W. (1982) Nucleic Acids Research 10(17) pp.5303-5318
-   "Recognition of protein coding regions in DNA sequences"
+    1. Fickett, J.W. (1982) Nucleic Acids Research 10(17) pp.5303-5318
+       "Recognition of protein coding regions in DNA sequences"
 
 Warnings
 
@@ -687,3 +686,12 @@ Author(s)
 History
 
    Date of original completion: 2nd March 2003
+
+Target users
+
+   This program is intended to be used by everyone and everything, from
+   naive users to embedded scripts.
+
+Comments
+
+   None

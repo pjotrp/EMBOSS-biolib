@@ -185,7 +185,7 @@ Usage
    Here is a sample session with distmat
 
 
-% distmat ../../data/pax.align 
+% distmat pax.align 
 Creates a distance matrix from multiple alignments
 Multiple substitution correction methods for proteins
          0 : Uncorrected
@@ -310,7 +310,7 @@ Input file format
 
   Input files for usage example
 
-  File: ../../data/pax.align
+  File: pax.align
 
 PileUp
 
@@ -515,3 +515,5 @@ Target users
    naive users to embedded scripts.
 
 Comments
+
+   None

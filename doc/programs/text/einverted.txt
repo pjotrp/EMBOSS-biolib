@@ -437,7 +437,22 @@ Score 33: 11/11 (100%) matches, 0 gaps
 
 References
 
-   None.
+   Some useful references on inverted repeats:
+
+    1. Pearson CE, Zorbas H, Price GB, Zannis-Hadjopoulos M Inverted
+       repeats, stem-loops, and cruciforms: significance for initiation
+       of DNA replication. J Cell Biochem 1996 Oct;63(1):1-22
+    2. Waldman AS, Tran H, Goldsmith EC, Resnick MA. q Long inverted
+       repeats are an at-risk motif for recombination in mammalian cells.
+       Genetics. 1999 Dec;153(4):1873-83. PMID: 10581292; UI: 20050682
+    3. Jacobsen SE Gene silencing: Maintaining methylation patterns. Curr
+       Biol 1999 Aug 26;9(16):R617-9
+    4. Lewis S, Akgun E, Jasin M. Palindromic DNA and genome stability.
+       Further studies. Ann N Y Acad Sci. 1999 May 18;870:45-57. PMID:
+       10415472; UI: 99343961
+    5. Dai X, Greizerstein MB, Nadas-Chinni K, Rothman-Denes LB
+       Supercoil-induced extrusion of a regulatory DNA hairpin. Proc Natl
+       Acad Sci U S A 1997 Mar 18;94(6):2174-9
 
 Warnings
 
@@ -487,3 +502,5 @@ Target users
    naive users to embedded scripts.
 
 Comments
+
+   None

@@ -35,7 +35,7 @@ Usage
    new sequence file 'prot2.seq':
 
 
-% maskseq ../../data/prot.fasta prot2.seq -reg=10-12 
+% maskseq prot.fasta prot2.seq -reg=10-12 
 Mask off regions of a sequence.
 
    Go to the input files for this example
@@ -47,7 +47,7 @@ Mask off regions of a sequence.
    character 'x' and write to the new sequence file 'prot2.seq':
 
 
-% maskseq ../../data/prot.fasta prot2.seq -reg=20-30 -mask=x 
+% maskseq prot.fasta prot2.seq -reg=20-30 -mask=x 
 Mask off regions of a sequence.
 
    Go to the output files for this example
@@ -57,7 +57,7 @@ Mask off regions of a sequence.
    Mask off the regions 20 to 23, 34 to 45 and 88 to 90 in 'prot.fasta':
 
 
-% maskseq ../../data/prot.fasta prot2.seq -reg=20-23,34-45,88-90 
+% maskseq prot.fasta prot2.seq -reg=20-23,34-45,88-90 
 Mask off regions of a sequence.
 
    Go to the output files for this example
@@ -68,7 +68,7 @@ Mask off regions of a sequence.
    'prot.fasta':
 
 
-% maskseq ../../data/prot.fasta prot2.seq -reg=20-23,34-45,88-90 -tolower 
+% maskseq prot.fasta prot2.seq -reg=20-23,34-45,88-90 -tolower 
 Mask off regions of a sequence.
 
    Go to the output files for this example
@@ -171,7 +171,7 @@ Command line arguments
    interpret this as a masked region. The sequence is unchanged apart
    from the case change. You might like to ensure that the whole sequence
    is in upper-case before masking the specified regions to lower-case by
-   using the '-supper' flag. Toggle value Yes/No N
+   using the '-supper' flag. Toggle value Yes/No No
    -maskchar Character to use when masking. Default is 'X' for protein
    sequences, 'N' for nucleic sequences. If the mask character is set to
    be the SPACE character or a null character, then the sequence is
@@ -186,7 +186,7 @@ Input file format
 
   Input files for usage example
 
-  File: ../../data/prot.fasta
+  File: prot.fasta
 
 >FASTA F00001 FASTA FORMAT PROTEIN SEQUENCE
 ACDEFGHIKLMNPQRSTVWY
@@ -317,9 +317,6 @@ See also
    vectorstrip  Strips out DNA between a pair of vector sequences
    yank         Reads a sequence range, appends the full USA to a list file
 
-   maskfeat masks parts of the input sequence that are annotated features
-   whose feature-names match the user-specified names.
-
 Author(s)
 
    Gary Williams (gwilliam © rfcgr.mrc.ac.uk)
@@ -336,3 +333,5 @@ Target users
    naive users to embedded scripts.
 
 Comments
+
+   None

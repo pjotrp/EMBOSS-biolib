@@ -51,7 +51,7 @@ Usage
    Here is a sample session with plotcon
 
 
-% plotcon -sformat msf ../../data/globins.msf -graph cps 
+% plotcon -sformat msf globins.msf -graph cps 
 Plots the quality of conservation of a sequence alignment
 Window size [4]: 
 
@@ -148,7 +148,7 @@ Input file format
 
   Input files for usage example
 
-  File: ../../data/globins.msf
+  File: globins.msf
 
 !!AA_MULTIPLE_ALIGNMENT 1.0
 
@@ -290,3 +290,5 @@ Target users
    naive users to embedded scripts.
 
 Comments
+
+   None

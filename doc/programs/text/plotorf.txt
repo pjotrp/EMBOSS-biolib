@@ -51,7 +51,7 @@ Created plotorf.ps
 
 % plotorf -start ATT,ATC,ATA,ATG,GTG -stop TAA,TAG,AGA,AGG 
 Plot potential open reading frames
-Input sequence: ../../data/mito.seq
+Input sequence: mito.seq
 Graph type [x11]: cps
 
 Created plotorf.ps
@@ -287,7 +287,7 @@ SQ   Sequence 2167 BP; 363 A; 712 C; 730 G; 362 T; 0 other;
 
   Input files for usage example 2
 
-  File: ../../data/mito.seq
+  File: mito.seq
 
 >gi|5819095|ref|NC_001321.1| Balaenoptera physalus mitochondrion, complete geno
 me
@@ -576,3 +576,5 @@ Target users
    naive users to embedded scripts.
 
 Comments
+
+   None

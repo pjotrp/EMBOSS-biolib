@@ -316,7 +316,7 @@ Diagnostic Error Messages
 
 Exit status
 
-   It always exist with a status of 0, unless a fatal error is given.
+   It always exits with a status of 0, unless a fatal error is given.
 
 Known bugs
 
@@ -332,20 +332,3 @@ See also
    sixpack      Display a DNA sequence with 6-frame translation and ORFs
    syco         Synonymous codon usage Gribskov statistic plot
    tcode        Fickett TESTCODE statistic to identify protein-coding DNA
-
-Author(s)
-
-   Alan Bleasby (ableasby © rfcgr.mrc.ac.uk)
-   MRC Rosalind Franklin Centre for Genomics Research Wellcome Trust
-   Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
-
-History
-
-   Completed Spring 2000.
-
-Target users
-
-   This program is intended to be used by everyone and everything, from
-   naive users to embedded scripts.
-
-Comments

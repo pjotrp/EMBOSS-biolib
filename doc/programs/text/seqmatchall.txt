@@ -120,8 +120,8 @@ Output file format
   File: eclac.seqmatchall
 
 ########################################
-# Program:  seqmatchall
-# Rundate:  Wed Jul 21 11:57:25 2004
+# Program: seqmatchall
+# Rundate: Thu Jan 20 2005 17:40:54
 # Align_format: match
 # Report_file: eclac.seqmatchall
 ########################################
@@ -133,7 +133,7 @@ Output file format
 # 2: ECLACA
 #=======================================
 
-  1832 ECLAC               5646..7477     ECLACA                 1..1832
+  1832 ECLAC           +     5646..7477     ECLACA          +        1..1832
 
 #=======================================
 #
@@ -142,7 +142,7 @@ Output file format
 # 2: ECLACI
 #=======================================
 
-  1113 ECLAC                 49..1161     ECLACI                 1..1113
+  1113 ECLAC           +       49..1161     ECLACI          +        1..1113
 
 #=======================================
 #
@@ -151,7 +151,7 @@ Output file format
 # 2: ECLACY
 #=======================================
 
-  1500 ECLAC               4305..5804     ECLACY                 1..1500
+  1500 ECLAC           +     4305..5804     ECLACY          +        1..1500
 
 #=======================================
 #
@@ -160,7 +160,7 @@ Output file format
 # 2: ECLACZ
 #=======================================
 
-  3078 ECLAC               1287..4364     ECLACZ                 1..3078
+  3078 ECLAC           +     1287..4364     ECLACZ          +        1..3078
 
 #=======================================
 #
@@ -169,7 +169,7 @@ Output file format
 # 2: ECLACY
 #=======================================
 
-   159 ECLACA                 1..159      ECLACY              1342..1500
+   159 ECLACA          +        1..159      ECLACY          +     1342..1500
 
 #=======================================
 #
@@ -178,7 +178,7 @@ Output file format
 # 2: ECLACZ
 #=======================================
 
-    60 ECLACY                 1..60       ECLACZ              3019..3078
+    60 ECLACY          +        1..60       ECLACZ          +     3019..3078
 
 #---------------------------------------
 #---------------------------------------
@@ -249,7 +249,7 @@ Author(s)
 
 History
 
-   1999 - written.
+   1999 - written - Ian Longden
 
 Target users
 
@@ -257,3 +257,5 @@ Target users
    naive users to embedded scripts.
 
 Comments
+
+   None

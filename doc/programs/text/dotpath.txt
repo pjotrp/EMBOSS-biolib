@@ -136,7 +136,7 @@ Command line arguments
    -graph Graph type EMBOSS has a list of known devices, including
    postscript, ps, hpgl, hp7470, hp7580, meta, colourps, cps, xwindows,
    x11, tektronics, tekt, tek4107t, tek, none, null, text, data, xterm,
-   png EMBOSS_GRAPHICS value, or x11
+   png, xml EMBOSS_GRAPHICS value, or x11
    Additional (Optional) qualifiers Allowed values Default
    -overlaps Displays the overlapping matches (in red) as well as the
    minimal set of non-overlapping matches Boolean value Yes/No No
@@ -484,11 +484,13 @@ Output file format
 
    [dotpath results]
 
-Data files
-
 Notes
 
+   None
+
 References
+
+   None
 
 Warnings
 
@@ -497,9 +499,15 @@ Warnings
 
 Diagnostic Error Messages
 
+   None
+
 Exit status
 
+   It always exits with status 0.
+
 Known bugs
+
+   None
 
 See also
 
@@ -532,3 +540,5 @@ Target users
    naive users to embedded scripts.
 
 Comments
+
+   None

@@ -90,6 +90,9 @@ qasrsfasta    N    OK  OK  -   EMBL in local srs installation, fasta format
 qasrswww      N    OK  -   -   Remote SRS web server
 qawfasta      N    OK  OK  OK  FASTA file wormpep entries
 tembl         N    OK  OK  OK  EMBL in native format with EMBL CD-ROM index
+temblall      N    -   -   OK  EMBL in native format with EMBL CD-ROM index
+temblrest     N    -   -   OK  EMBL in native format with EMBL CD-ROM index
+temblvrt      N    -   -   OK  EMBL in native format with EMBL CD-ROM index
 tgb           N    OK  -   -   Genbank IDs
 tgenbank      N    OK  OK  OK  GenBank in native format with EMBL CD-ROM index
 
@@ -190,6 +193,12 @@ index
 
  tembl N OK   OK   OK   EMBL in native format with EMBL CD-ROM index
 
+ temblall N -    -    OK   EMBL in native format with EMBL CD-ROM index
+
+ temblrest N -    -    OK   EMBL in native format with EMBL CD-ROM index
+
+ temblvrt N -    -    OK   EMBL in native format with EMBL CD-ROM index
+
  tgb N OK   -    -    Genbank IDs
 
  tgenbank N OK   OK   OK   GenBank in native format with EMBL CD-ROM index
@@ -264,6 +273,9 @@ qasrsfasta    N    OK  OK  -   EMBL in local srs installation, fasta format
 qasrswww      N    OK  -   -   Remote SRS web server
 qawfasta      N    OK  OK  OK  FASTA file wormpep entries
 tembl         N    OK  OK  OK  EMBL in native format with EMBL CD-ROM index
+temblall      N    -   -   OK  EMBL in native format with EMBL CD-ROM index
+temblrest     N    -   -   OK  EMBL in native format with EMBL CD-ROM index
+temblvrt      N    -   -   OK  EMBL in native format with EMBL CD-ROM index
 tgb           N    OK  -   -   Genbank IDs
 tgenbank      N    OK  OK  OK  GenBank in native format with EMBL CD-ROM index
 
@@ -304,6 +316,9 @@ qasrsfasta
 qasrswww
 qawfasta
 tembl
+temblall
+temblrest
+temblvrt
 tgb
 tgenbank
 
@@ -345,6 +360,9 @@ qasrsfasta    N
 qasrswww      N
 qawfasta      N
 tembl         N
+temblall      N
+temblrest     N
+temblvrt      N
 tgb           N
 tgenbank      N
 
@@ -471,6 +489,9 @@ qasrsfasta    N    OK  OK  -   EMBL in local srs installation, fasta format
 qasrswww      N    OK  -   -   Remote SRS web server
 qawfasta      N    OK  OK  OK  FASTA file wormpep entries
 tembl         N    OK  OK  OK  EMBL in native format with EMBL CD-ROM index
+temblall      N    -   -   OK  EMBL in native format with EMBL CD-ROM index
+temblrest     N    -   -   OK  EMBL in native format with EMBL CD-ROM index
+temblvrt      N    -   -   OK  EMBL in native format with EMBL CD-ROM index
 tgb           N    OK  -   -   Genbank IDs
 tgenbank      N    OK  OK  OK  GenBank in native format with EMBL CD-ROM index
 
@@ -525,14 +546,12 @@ Notes
    are used in the examples shown in the documentation of the programs.
 
    For details of the database definitions, you should first read David's
-   Administration Guide:
-   http://www.uk.embnet.org/Software/EMBOSS/Doc/Admin_guide/adminguide/
+   Administration Guide: http://emboss.sourceforge.net/docs/adminguide/
    especially:
-   http://www.uk.embnet.org/Software/EMBOSS/Doc/Admin_guide/adminguide/no
-   de4.html 
+   http://emboss.sourceforge.net/docs/adminguide/adminguide/node4.html 
 
-   See also: http://www.uk.embnet.org/Software/EMBOSS/Usa/databases.html
-   for a lot of detail of the syntax of database definition.
+   See also: http://emboss.sourceforge.net/docs/themes/Databases.html for
+   a lot of detail of the syntax of database definition.
 
    Just because showdb can display the database definitions, it does NOT
    mean that the databases are set up correctly. You must now test them
@@ -601,3 +620,5 @@ Target users
    naive users to embedded scripts.
 
 Comments
+
+   None

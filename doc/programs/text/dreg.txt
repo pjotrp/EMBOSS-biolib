@@ -895,7 +895,7 @@ Output file format
 
 ########################################
 # Program: dreg
-# Rundate: Tue Apr 06 14:25:41 2004
+# Rundate: Thu Jan 20 2005 17:33:44
 # Report_format: seqtable
 # Report_file: paamir.dreg
 ########################################
@@ -974,3 +974,5 @@ Target users
    naive users to embedded scripts.
 
 Comments
+
+   None

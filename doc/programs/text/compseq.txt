@@ -72,7 +72,7 @@ Counts the composition of dimer/trimer/etc words in a sequence
    frequencies:
 
 
-% compseq tembl:hsfau 3 result3.comp -frame 2 -in ../../data/prev.comp 
+% compseq tembl:hsfau 3 result3.comp -frame 2 -in prev.comp 
 Counts the composition of dimer/trimer/etc words in a sequence
 
    Go to the input files for this example
@@ -335,7 +335,7 @@ SQ   Sequence 518 BP; 125 A; 139 C; 148 G; 106 T; 0 other;
 
   Input files for usage example 3
 
-  File: ../../data/prev.comp
+  File: prev.comp
 
 #
 # Output from 'compseq'
@@ -788,3 +788,5 @@ Target users
    naive users to embedded scripts.
 
 Comments
+
+   None

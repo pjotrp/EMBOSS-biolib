@@ -24,7 +24,7 @@ Usage
 
 % abiview -graph cps 
 Reads ABI file and display the trace
-ABI trace file: ../../data/abiview.abi
+ABI trace file: abiview.abi
 Output sequence [abiview.fasta]: 
 
 Created abiview.ps
@@ -100,7 +100,7 @@ Command line arguments
    -graph Graph type EMBOSS has a list of known devices, including
    postscript, ps, hpgl, hp7470, hp7580, meta, colourps, cps, xwindows,
    x11, tektronics, tekt, tek4107t, tek, none, null, text, data, xterm,
-   png EMBOSS_GRAPHICS value, or x11
+   png, xml EMBOSS_GRAPHICS value, or x11
    Additional (Optional) qualifiers Allowed values Default
    -startbase First base to report or display Integer 0 or more 0
    -endbase Last sequence base to report or display. If the default is
@@ -122,12 +122,12 @@ Input file format
 
   Input files for usage example
 
-  File: ../../data/abiview.abi
+  File: abiview.abi
 
    This file contains non-printing characters and so cannot be displayed
    here.
 
-  File: ../../data/abiview.abi
+  File: abiview.abi
 
    This file contains non-printing characters and so cannot be displayed
    here.
@@ -230,3 +230,5 @@ Target users
    naive users to embedded scripts.
 
 Comments
+
+   None

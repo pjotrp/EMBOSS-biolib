@@ -121,7 +121,7 @@ Command line arguments
    -graph Graph type EMBOSS has a list of known devices, including
    postscript, ps, hpgl, hp7470, hp7580, meta, colourps, cps, xwindows,
    x11, tektronics, tekt, tek4107t, tek, none, null, text, data, xterm,
-   png EMBOSS_GRAPHICS value, or x11
+   png, xml EMBOSS_GRAPHICS value, or x11
    -outfile Output file name Output file <sequence>.hmoment
    Additional (Optional) qualifiers Allowed values Default
    -window Window Any integer value 10
@@ -129,7 +129,7 @@ Command line arguments
    -bangle Beta sheet angle (degrees) Any integer value 160
    Advanced (Unprompted) qualifiers Allowed values Default
    -baseline Graph marker line Any numeric value 0.35
-   -plot Produce graphic Toggle value Yes/No N
+   -plot Produce graphic Toggle value Yes/No No
    -double Plot two graphs Boolean value Yes/No No
 
 Input file format
@@ -382,9 +382,9 @@ Notes
 
 References
 
-   Eisenberg D, Weiss RM, Terwilliger TC "The hydrophobic moment detects
-   periodicity in protein hydrophobicity." Proc Natl Acad Sci U S A 1984
-   Jan;81(1):140-4
+    1. Eisenberg D, Weiss RM, Terwilliger TC "The hydrophobic moment
+       detects periodicity in protein hydrophobicity." Proc Natl Acad Sci
+       U S A 1984 Jan;81(1):140-4
 
 Warnings
 
@@ -428,3 +428,5 @@ Target users
    naive users to embedded scripts.
 
 Comments
+
+   None

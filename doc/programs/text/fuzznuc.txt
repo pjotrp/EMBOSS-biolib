@@ -302,8 +302,8 @@ Output file format
    genbank, gff, pir, swiss, trace, listfile, dbmotif, diffseq, excel,
    feattable, motif, regions, seqtable, simple, srs, table, tagseq
 
-   See: http://emboss.sourceforge.net/docs/themes/ReportFormats.html for
-   further information on report formats.
+   See: http://emboss.sf.net/docs/themes/ReportFormats.html for further
+   information on report formats.
 
    By default fuzznuc writes a 'seqtable' report file.
 
@@ -313,7 +313,7 @@ Output file format
 
 ########################################
 # Program: fuzznuc
-# Rundate: Tue Apr 06 14:29:41 2004
+# Rundate: Thu Jan 20 2005 17:35:08
 # Report_format: seqtable
 # Report_file: hhtetra.fuzznuc
 ########################################
@@ -395,3 +395,5 @@ Target users
    naive users to embedded scripts.
 
 Comments
+
+   None
