@@ -8,3 +8,5 @@ Version 2.3.0
 	Fix for problem reading plain format sequences by primer3.
         Primer3 renamed eprimer3 to avoid conflicts with the Whitehead's
 	primer3 version 3.0.6.
+	transeq's '-frame' can have a list of values, as: '-frame=1,2,3'
+
