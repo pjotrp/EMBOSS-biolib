@@ -799,6 +799,18 @@ make install
 #cd $EMBOSS_INSTALL/share/EMBOSS/jemboss
 JEMBOSS=$EMBOSS_INSTALL/share/EMBOSS/jemboss
 
+#
+# create wossname.jar
+#
+PATH=$EMBOSS_INSTALL/bin:${PATH}
+export $PATH
+$EMBOSS_INSTALL/bin/wossname -colon -gui -outf $JEMBOSS/resources/wossname.out -auto
+$JAVA_HOME/bin/jar cvf $JEMBOSS/resources/wossname.jar $JEMBOSS/resources/wossname.out
+
+#
+#
+#
+
 if [ $AUTH = "y" ]; then
   $JAVA_HOME/bin/javac -classpath $JEMBOSS $JEMBOSS/org/emboss/jemboss/server/JembossAuthServer.java
   $JAVA_HOME/bin/javac -classpath $JEMBOSS $JEMBOSS/org/emboss/jemboss/server/JembossFileAuthServer.java
