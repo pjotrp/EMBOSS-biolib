@@ -278,16 +278,13 @@ public class SectionPanel
         }
         else if(att.endsWith("graph"))
         {
-//        String type[] = {"Jemboss Graphics","PNG"};
-//        graphics = new JComboBox(type);
-
           Dimension d  = graphics.getPreferredSize();
           d = new Dimension(150,(int)d.getHeight());
           graphics.setMaximumSize(d);
           graphics.setPreferredSize(d);
 
           pan.add(graphics);
-          pan.add(new JLabel("Graphic Format"));
+          pan.add(new JLabel(" Graph Format"));
         }
         else if(att.startsWith("int"))
         {
