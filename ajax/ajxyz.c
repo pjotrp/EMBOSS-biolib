@@ -681,8 +681,9 @@ void ajXyzSigposDel(AjPSigpos *pthis)
     AJFREE((*pthis)->gpen);
     AJFREE((*pthis)->subs);
 
-    AJFREE(*pthis);    
-
+    AJFREE(*pthis); 
+    *pthis=NULL;
+    
     return; 
 }
 
@@ -710,6 +711,7 @@ void ajXyzSigdatDel(AjPSigdat *pthis)
     ajChararrDel(&(*pthis)->rids);
     
     AJFREE(*pthis);    
+    *pthis=NULL;
 
     return; 
 }
@@ -758,6 +760,7 @@ void ajXyzSignatureDel(AjPSignature *pthis)
 	AJFREE((*pthis)->pos);
 
     AJFREE(*pthis);    
+    *pthis=NULL;
 
     return;
 }
@@ -778,6 +781,7 @@ void     ajXyzHitidxDel(AjPHitidx *pthis)
     ajStrDel(&(*pthis)->Id);
 
     AJFREE(*pthis);
+    *pthis=NULL;
     
     return;
 }
@@ -805,6 +809,7 @@ void ajXyzScorealgDel(AjPScorealg *pthis)
     ajIntDel(&(*pthis)->combi_score);
 
     AJFREE(*pthis);    
+    *pthis=NULL;
 
     return;
 }	
@@ -833,6 +838,7 @@ void ajXyzVdwresDel(AjPVdwres *pthis)
     AJFREE((*pthis)->Atm);
     AJFREE((*pthis)->Rad);
     AJFREE(*pthis);    
+    *pthis=NULL;
 
     return;
 }	
@@ -857,6 +863,7 @@ void ajXyzVdwallDel(AjPVdwall *pthis)
     
     AJFREE((*pthis)->Res);
     AJFREE(*pthis);    
+    *pthis=NULL;
 
     return;
 }	
@@ -878,6 +885,7 @@ void ajXyzCmapDel(AjPCmap *pthis)
     ajStrDel(&(*pthis)->Id);
     ajInt2dDel(&(*pthis)->Mat);
     AJFREE(*pthis);    
+    *pthis=NULL;
 
     return;
 }	
@@ -913,6 +921,7 @@ void ajXyzScopalgDel(AjPScopalg *pthis)
     AJFREE((*pthis)->Seqs);
     
     AJFREE(*pthis);
+    *pthis=NULL;
     
     return;
 }
@@ -943,6 +952,7 @@ void     ajXyzScophitDel(AjPScophit *pthis)
     ajStrDel(&(*pthis)->Alg);
 
     AJFREE(*pthis);
+    *pthis=NULL;
     
     return;
 }
@@ -968,6 +978,7 @@ void     ajXyzHitDel(AjPHit *pthis)
     ajStrDel(&(*pthis)->Alg);
 
     AJFREE(*pthis);
+    *pthis=NULL;
     
     return;
 }
@@ -998,6 +1009,7 @@ void ajXyzHitlistDel(AjPHitlist *pthis)
     AJFREE((*pthis)->hits);
     
     AJFREE(*pthis);
+    *pthis=NULL;
     
     return;
 }
@@ -1034,6 +1046,7 @@ void ajXyzPdbDel(AjPPdb *thys)
     for(i=0;i<nc;++i)
 	ajXyzChainDel(&pthis->Chains[i]);
     AJFREE(pthis);
+    pthis=NULL;
 
     return;
 }
@@ -1063,6 +1076,7 @@ void ajXyzChainDel(AjPChain *thys)
     ajListDel(&pthis->Atoms);
 
     AJFREE(pthis);
+    pthis=NULL;
 
     return;
 }
@@ -1089,6 +1103,7 @@ void ajXyzAtomDel(AjPAtom *thys)
     ajStrDel(&pthis->Pdb);
 
     AJFREE(pthis);
+    pthis=NULL;
 
     return;
 }
@@ -1135,6 +1150,7 @@ void ajXyzScopDel(AjPScop *thys)
     }
 
     AJFREE(pthis);
+    pthis=NULL;
 
     return;
 }
