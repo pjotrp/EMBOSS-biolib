@@ -18,7 +18,7 @@ section: input [
   dirlist: pdb  [
     parameter: "Y"
     information: "Location of PDB files (input)"
-    help: "This option specifies the location of PDB files (input).  These are PDB format files for protein coordinate data.  A detailed explanation of the PDB file format is available on the PDB web site http://www.rcsb.org/pdb/info.html."
+    help: "This option specifies the location of PDB files (input).  A PDB file contains protein coordinate and other data.  A detailed explanation of the PDB file format is available on the PDB web site http://www.rcsb.org/pdb/info.html."
     default: "./"
     extension: "ent"
     knowntype: "PDB files"
@@ -95,6 +95,13 @@ section: additional [
     information: "Maximum number of permissible mismatches
                   between the ATOM and SEQRES sequences."
     default: "3"
+  ]
+
+  integer: maxtrim  [
+    additional: "Y"
+    information: "Max. no. residues to trim when checking
+	          for missing C-terminal SEQRES sequences."
+    default: "10"
   ]
 
 endsection: additional
