@@ -15,7 +15,6 @@ check_PROGRAMS = ajtest \
 complex corbatest \
 demoalign demofeatures demolist demoreport demosequence demostring demotable \
 entrails histogramtest intconv \
-jembossctl \
 patmattest \
 prima primers \
 seqinfo seqretall seqretallfeat seqretset seqretsingle \
@@ -33,7 +32,7 @@ einverted embossdata embossversion emma emowse entret \
 eprimer3 equicktandem est2genome etandem extractfeat extractseq \
 findkm freak fuzznuc fuzzpro fuzztran \
 garnier geecee getorf helixturnhelix hmoment \
-iep infoalign infoseq interface isochore lindna listor \
+iep infoalign infoseq interface isochore jembossctl lindna listor \
 marscan maskfeat maskseq matcher megamerger merger msbar \
 mwfilter \
 needle newcpgreport newcpgseek newseq \
