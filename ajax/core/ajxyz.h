@@ -296,6 +296,7 @@ typedef struct AjSVdwall
 typedef struct AjSCmap
 {
     AjPStr      Id;     /* Protein id code */
+    AjPStr      Seq;    /* The sequence of the domain or chain */
     AjPInt2d    Mat;    /* Contact map */
     ajint       Dim;    /* Dimension of contact map */
     ajint       Ncon;   /* No. of contacts (1's in contact map) */

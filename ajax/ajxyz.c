@@ -442,7 +442,9 @@ AjPCmap ajXyzCmapNew(ajint dim)
 
     AJNEW0(ret);
 
-    ret->Id = ajStrNew();    
+    ret->Id  = ajStrNew();    	
+    ret->Seq = ajStrNew();
+    
 
     if(dim)
     {
@@ -1398,6 +1400,9 @@ void ajXyzCmapDel(AjPCmap *pthis)
 {
     if((*pthis)->Id)
 	ajStrDel(&(*pthis)->Id);
+
+    if((*pthis)->Seq)
+	ajStrDel(&(*pthis)->Seq);
 
     if((*pthis)->Mat)
 	ajInt2dDel(&(*pthis)->Mat);
@@ -3771,10 +3776,10 @@ AjBool ajXyzCpdbRead(AjPFile inf, AjPPdb *thys)
 	    ajStrToInt(token,&nmod);
 	    ajStrToken(&token,&handle,NULL);
 
-	    ajStrToken(&token,&handle,NULL); /* ncha */
+	    ajStrToken(&token,&handle,NULL); /* nchn */
 	    ajStrToInt(token,&ncha);
 
-	    ajStrToken(&token,&handle,NULL); /* ngrp */
+	    ajStrToken(&token,&handle,NULL); /* nlig */
 	    ajStrToInt(token,&ngrp);
 
 	    *thys = ajXyzPdbNew(ncha);
@@ -4117,7 +4122,7 @@ AjBool ajXyzCpdbReadFirstModel(AjPFile inf, AjPPdb *thys)
 	    ajStrToken(&token,&handle,NULL); /* ncha */
 	    ajStrToInt(token,&ncha);
 
-	    ajStrToken(&token,&handle,NULL); /* ngrp */
+	    ajStrToken(&token,&handle,NULL); /* nlig */
 	    ajStrToInt(token,&ngrp);
 
 	    *thys = ajXyzPdbNew(ncha);
@@ -4348,7 +4353,7 @@ AjBool ajXyzCpdbReadFirstModel(AjPFile inf, AjPPdb *thys)
 ** The following types of lines can be parsed: 
 **
 ** EX   METHOD xray; RESO 2.80; NMOD 1; NCHA 2;
-** IN   ID A; NR 210; NH 12; NW 0;
+** IN   ID A; NRES 10; NH 12; NW 0;
 ** CO   1    1    P    3     2     P    PRO    N     31.631    1.734
 ** 37.188     1.00    47.72
 **
@@ -4478,7 +4483,7 @@ AjBool ajXyzCpdbReadOld(AjPFile inf, AjPPdb *thys)
 	    ajStrToInt(token,&nmod);
 	    ajStrToken(&token,&handle,NULL);
 
-	    ajStrToken(&token,&handle,NULL); /* ncha */
+	    ajStrToken(&token,&handle,NULL); /* nchn */
 	    ajStrToInt(token,&ncha);
 
 	    *thys = ajXyzPdbNew(ncha);
@@ -4703,10 +4708,10 @@ AjBool ajXyzCpdbWriteDomain(AjPFile errf, AjPFile outf, AjPPdb pdb,
 	ajFmtPrintF(outf, "xray; ");	
     else
 	ajFmtPrintF(outf, "nmr_or_model; ");		
-    ajFmtPrintF(outf, "RESO %.2f; NMOD 1; NCHA 1; NGRP 0;\n", 
+    ajFmtPrintF(outf, "RESO %.2f; NMOD 1; NCHN 1; NLIG 0;\n", 
 		pdb->Reso);
     
-    /* JCI The NCHA and NMOD are hard-coded to 1 for domain files */
+    /* JCI The NCHN and NMOD are hard-coded to 1 for domain files */
     
     
     /* Start of main application loop */
@@ -4917,7 +4922,7 @@ AjBool ajXyzCpdbWriteDomain(AjPFile errf, AjPFile outf, AjPPdb pdb,
 		pdb->Chains[chn-1]->numSheets, 
 		pdb->Chains[chn-1]->numTurns);
 		*/
-    ajFmtPrintF(outf, "%-5sID %c; NR %d; NL 0; NH %d; NE %d;\n", 
+    ajFmtPrintF(outf, "%-5sID %c; NRES %d; NL 0; NH %d; NE %d;\n", 
 		"IN", 
 		id,
 		ajStrLen(seq),
@@ -4929,8 +4934,8 @@ AjBool ajXyzCpdbWriteDomain(AjPFile errf, AjPFile outf, AjPPdb pdb,
 
     
     /* Write co-ordinates list to domain coordinate file */        
-    for(nostart=ajFalse, noend=ajFalse, z=0;
-	z<scop->N;
+    for(nostart=ajFalse, noend=ajFalse, 
+	z=0; z<scop->N;
 	z++,found_start=ajFalse, found_end=ajFalse)
     {
 	/*
@@ -5159,7 +5164,7 @@ AjBool ajXyzCpdbWriteAll(AjPFile outf, AjPPdb thys)
 	ajFmtPrintF(outf, "xray; ");	
     else
 	ajFmtPrintF(outf, "nmr_or_model; ");		
-    ajFmtPrintF(outf, "RESO %.2f; NMOD %d; NCHA %d; NGRP %d;\n", thys->Reso,
+    ajFmtPrintF(outf, "RESO %.2f; NMOD %d; NCHN %d; NLIG %d;\n", thys->Reso,
 		thys->Nmod, thys->Nchn, thys->Ngp);
 
 
@@ -5190,7 +5195,7 @@ AjBool ajXyzCpdbWriteAll(AjPFile outf, AjPPdb thys)
 		    thys->Chains[x]->numTurns);
 		    */
 
-	ajFmtPrintF(outf, "NR %d; NL %d; NH %d; NE %d;\n", 
+	ajFmtPrintF(outf, "NRES %d; NL %d; NH %d; NE %d;\n", 
 		    thys->Chains[x]->Nres,
 		    thys->Chains[x]->Nlig,
 		    thys->Chains[x]->numHelices, 
@@ -8696,7 +8701,7 @@ AjBool ajXyzHitlistReadNode(AjPFile scopf, AjPList *list,
     ajWarn("Bad arguments passed to ajXyzHitlistReadNode\n");
     if(donemem)
 	ajListDel(&(*list));
-    
+
     return ajFalse;
 }
 
@@ -9252,7 +9257,14 @@ AjBool ajXyzCmapRead(AjPFile inf, ajint mode, ajint chn, ajint mod,
 		ajStrAssS(&(*thys)->Id, temp_id);
 	    }
 	}
-    
+	/* Read SQ line */
+	else if((ajStrPrefixC(line, "SQ")) && (md==mod) && (idok))
+	{    
+	    while(ajFileReadLine(inf,&line) && !ajStrPrefixC(line,"XX"))
+		ajStrAppC(&(*thys)->Seq,ajStrStr(line));
+	    ajStrCleanWhite(&(*thys)->Seq);
+	}
+	
 	/* Read and parse residue contacts */
 	else if((ajStrPrefixC(line, "SM")) && (md==mod) && (idok))
 	{
