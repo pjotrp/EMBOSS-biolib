@@ -24,6 +24,8 @@
 #include <stdarg.h>
 #include <dirent.h>
 #include <sys/stat.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 #include <pwd.h>
 #include <string.h>
 #include <errno.h>
@@ -117,11 +119,12 @@ AjPFile ajFileNewInPipe (const AjPStr name) {
 
   AjPFile thys;
 
-  ajint pid;
+  int pid;
   ajint pipefds[2];  /* file descriptors for a pipe */
   static AjPStr tmpname = NULL;
   char** arglist = NULL;
   char* pgm;
+  int status;
 
   AJNEW0(thys);
   (void) ajStrAssS (&tmpname, name);
@@ -165,6 +168,9 @@ AjPFile ajFileNewInPipe (const AjPStr name) {
   fileOpenTot++;
   if (fileOpenCnt > fileOpenMax)
     fileOpenMax = fileOpenCnt;
+
+  while (wait (&status) != pid)
+      ;
 
   return thys;
 }
