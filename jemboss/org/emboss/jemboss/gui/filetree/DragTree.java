@@ -321,8 +321,7 @@ public class DragTree extends JTree implements DragGestureListener,
     int index = parentNode.getAnIndex(child);
     FileNode childNode = new FileNode(newleaf,openNodeDir);
     model.insertNodeInto(childNode, parentNode, index);
-    parentNode.add(childNode);
-
+//  parentNode.add(childNode);
 //  System.out.println("CHILD  " + childNode.getFile().getAbsolutePath() +
 //                     "CHILD  " + child +
 //                     "PARENT " + parentNode.getFile().getAbsolutePath());
