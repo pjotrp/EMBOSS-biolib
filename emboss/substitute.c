@@ -5,8 +5,8 @@
 **
 **
 ** @author: Copyright (C) Damian Counsell
-** @version $Revision: 1.6 $
-** @modified $Date: 2004/07/22 15:42:50 $
+** @version $Revision: 1.7 $
+** @modified $Date: 2004/07/23 15:47:31 $
 ** @@
 **
 ** This program is free software; you can redistribute it and/or
@@ -84,8 +84,8 @@ int main(int argc , char **argv)
     ajpDirPairs        = ajAcdGetDirectory("pairsdir");
     ajpStrInFileSuffix = ajDirExt(ajpDirPairs);
 
-    ajpStrOutFileSuffix = ajStrNewC(".substituted");
-    ajpStrSeqoutFormat  = ajStrNewC( "fasta");
+    ajpStrOutFileSuffix = ajStrNewC("substituted");
+    ajpStrSeqoutFormat  = ajStrNewC("fasta");
 
     /* loop over pair files in alignment directory */
     while(ajListPop(ajpListPairFiles, (void **)&ajpStrPairFileName))
@@ -199,8 +199,7 @@ int main(int argc , char **argv)
 
 	/* free current output file */
 	ajFileClose(&ajpFileSingleCurrent);
-    }
-    
+    }    
 
     /* clear up the pair file objects */
     while(ajListPop(ajpListPairFiles, (void **)&ajpStrPairFileName))
