@@ -1794,7 +1794,7 @@ static AjBool seqReadFasta(AjPSeq thys, AjPSeqin seqin)
     ajlong fpos     = 0;
     ajlong fposb    = 0;
     AjBool ok       = ajTrue;
-
+    AjPStr tmpline = NULL;
 
     ajDebug("seqReadFasta\n");
 
@@ -1809,8 +1809,14 @@ static AjBool seqReadFasta(AjPSeq thys, AjPSeqin seqin)
 
     bufflines++;
 
+    ajDebug("First line: %S\n", rdline);
     if(ajStrChar(rdline, 3) == ';') /* then it is really PIR format */
-	return ajFalse;
+    {
+	ajStrAssSub(&tmpline,rdline, 3, -1);
+	ajFmtPrintS(&rdline, ">%S",tmpline);
+	ajDebug("PIR format changed line to %S\n", rdline);
+	ajStrDel(&tmpline);
+    }
 
     cp = ajStrStr(rdline);
     if(*cp != '>')
