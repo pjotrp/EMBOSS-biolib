@@ -34,6 +34,7 @@ extern "C"
 #include "ajseqread.h"
 #include "ajseqwrite.h"
 #include "ajseqdb.h"
+#include "ajreport.h"
 #include "ajfmt.h"
 #include "ajmatrices.h"
 
