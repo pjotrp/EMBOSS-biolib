@@ -3470,6 +3470,13 @@ static void GraphxyGeneral (AjPGraph graphs, AjBool closeit) {
     GraphInit(graphs);
     ajGraphColourFore();
     /*    GraphSubPage(0);         Done in ajGraphplenv*/
+
+    g = (graphs->graphs)[0];    
+    graphs->xstart = g->minX;
+    graphs->xend   = g->maxX;
+    graphs->ystart = g->minY;
+    graphs->yend   = g->maxY;
+
     ajGraphPlenv(graphs->xstart, graphs->xend,
 		 graphs->ystart, graphs->yend, graphs->flags);
     
