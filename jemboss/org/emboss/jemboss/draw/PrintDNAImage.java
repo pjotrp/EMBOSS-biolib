@@ -276,6 +276,9 @@ public class PrintDNAImage extends ScrollPanel
 // file prefix & format options
     fc.setAccessory(bdown);
     int n = fc.showSaveDialog(null);
+    if(n == JFileChooser.CANCEL_OPTION)
+      return null;
+
     type = (String)formatSelect.getSelectedItem();
     return fc.getSelectedFile();
   }
