@@ -400,7 +400,7 @@ static void palindrome_Print( AjPFile outfile, AjPStr seq, Palindrome pal,
 			     ajint maxLen)
 {
 
-    ajint i;
+    ajint i, j;
 
     if(pal->forwardEnd - pal->forwardStart +1 > maxLen)
 	return;
@@ -410,8 +410,15 @@ static void palindrome_Print( AjPFile outfile, AjPStr seq, Palindrome pal,
 	ajFmtPrintF( outfile, "%c", ajStrChar( seq, i));
 
     ajFmtPrintF(outfile, " %5d\n      ", pal->forwardEnd);
-    for (i = pal->forwardStart; i < pal->forwardEnd; i++)
+
+    for (i = pal->forwardStart, 
+         j=pal->revStart; i < pal->forwardEnd; i++)
+    {
+      if (ajStrChar(seq, i) == ajSeqBaseComp(ajStrChar(seq, j--)))
 	ajFmtPrintF( outfile, "|");
+      else
+	ajFmtPrintF( outfile, " ");
+    }
 
     ajFmtPrintF( outfile, "\n%-5d ", (pal->revStart+1));
     for (i = pal->revStart; i > pal->revEnd; i--)
