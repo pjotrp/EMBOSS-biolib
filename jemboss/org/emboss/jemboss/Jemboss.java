@@ -107,7 +107,7 @@ public class Jemboss implements ActionListener
       embossPath = jp.getEmbossPath();
       acdDirToParse = jp.getAcdDirToParse();
       embossPath = new String("PATH" + ps +
-                               embossPath + ps);
+                      embossPath + ps + embossBin + ps);
       envp[0] = "PATH=" + embossPath;        
       envp[1] = "PLPLOT_LIB=" + plplot;
       envp[2] = "EMBOSS_DATA=" + embossData;
