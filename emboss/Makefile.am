@@ -21,7 +21,7 @@ equicktandem est2genome etandem extractseq \
 findkm freak fuzznuc fuzzpro fuzztran \
 garnier geecee getorf helixturnhelix \
 iep infoseq isochore lindna \
-maskfeat maskseq matcher megamerger merger msbar \
+marscan maskfeat maskseq matcher megamerger merger msbar \
 needle newcpgreport newcpgseek newseq \
 noreturn notseq nrscope nthseq \
 octanol oddcomp \
@@ -101,6 +101,7 @@ infoseq_SOURCES = infoseq.c
 intconv_SOURCES = intconv.c
 isochore_SOURCES = isochore.c
 lindna_SOURCE = lindna.c
+marscan_SOURCE = marscan.c
 maskfeat_SOURCES = maskfeat.c
 maskseq_SOURCES = maskseq.c
 matcher_SOURCES = matcher.c
