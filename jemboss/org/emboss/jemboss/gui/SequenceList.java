@@ -31,7 +31,13 @@ import javax.swing.table.*;
 import javax.swing.border.*;
 import java.awt.event.*;
 
-import org.emboss.jemboss.parser.AjaxUtil;
+import org.emboss.jemboss.parser.*;
+import org.emboss.jemboss.soap.CallAjax;
+
+import uk.ac.mrc.hgmp.embreo.EmbreoParams;
+import uk.ac.mrc.hgmp.embreo.EmbreoAuthException;
+
+
 import org.emboss.jemboss.gui.filetree.*;
 import java.awt.datatransfer.*;
 import java.awt.dnd.*;
@@ -42,9 +48,11 @@ public class SequenceList extends JFrame
 
   private DragJTable table;
   private SequenceListTableModel seqModel;
-//private JPopupMenu popMenu = new JPopupMenu();
+  final Cursor cbusy = new Cursor(Cursor.WAIT_CURSOR);
+  final Cursor cdone = new Cursor(Cursor.DEFAULT_CURSOR);
 
-  public SequenceList(final boolean withSoap)
+
+  public SequenceList(final boolean withSoap,final EmbreoParams mysettings)
   {
     super("Sequence List");
     setSize(400,200);
@@ -60,7 +68,6 @@ public class SequenceList extends JFrame
             SequenceListTableModel.modelColumns[i].title);
       column.setPreferredWidth(
              SequenceListTableModel.modelColumns[i].width);
-
     }
 
 //  MouseListener popupListener = new PopupListener(); 
@@ -133,10 +140,66 @@ public class SequenceList extends JFrame
     {
       public void actionPerformed(ActionEvent e)
       {
+        setCursor(cbusy);
         int row = table.getSelectedRow();
         String fn = table.getFileName(row);
-        AjaxUtil.getFileOrDatabaseForAjax(fn,BuildProgramMenu.getDatabaseList(),null,withSoap);
-        System.out.println("CALLING AJAX "+fn);
+        if(table.isListFile(row).booleanValue())
+          fn = "list::"+fn;
+        
+        String fc = AjaxUtil.getFileOrDatabaseForAjax(fn,
+                      BuildProgramMenu.getDatabaseList(),
+                      null,withSoap);
+        
+        boolean ok = false;
+        int ajaxLength=0;
+        float ajaxWeight;
+        boolean ajaxProtein;
+
+        if(!withSoap && fc!=null)    //Ajax without SOAP
+        {
+          Ajax aj = new Ajax();
+          ok = aj.seqType(fc);
+          if(ok)
+          {
+            ajaxLength  = aj.length;
+            ajaxWeight  = aj.weight;
+            ajaxProtein = aj.protein;
+          }
+        }
+        else if(fc!=null)    //Ajax with SOAP
+        {
+          try
+          {  
+            CallAjax ca = new CallAjax(fc,"sequence",mysettings);
+            if(ca.getStatus().equals("0"))
+            {
+              ajaxLength  = ca.getLength();
+              ajaxWeight  = ca.getWeight();
+              ajaxProtein = ca.isProtein();
+              ok = true;
+            }
+          }
+          catch (EmbreoAuthException eae)
+          {
+            System.out.println("Call to Ajax library failed");
+            setCursor(cdone);
+          }
+        }
+
+        if(!ok && fc!=null)                       //Ajax failed
+          JOptionPane.showMessageDialog(null,
+                   "Sequence not found." +
+                   "\nCheck the sequence entered.",
+                   "Error Message", JOptionPane.ERROR_MESSAGE);
+        else
+        {
+          seqModel.setValueAt(new Integer(1),row,
+                      SequenceListTableModel.COL_BEG);
+          seqModel.setValueAt(new Integer(ajaxLength),row,
+                      SequenceListTableModel.COL_END);
+          table.repaint();
+        }
+        setCursor(cdone);
       }
     });
     toolMenu.add(ajaxSeq);
@@ -212,10 +275,18 @@ class DragJTable extends JTable implements DragGestureListener,
   {
     Point p = e.getDragOrigin();
     int ncol = columnAtPoint(p);
+
     if(ncol == convertColumnIndexToView(SequenceListTableModel.COL_NAME))
-      e.startDrag(DragSource.DefaultCopyDrop,                // cursor
-         new StringSelection(getFileName(getSelectedRow())), // transferable data
-                                     this);                  // drag source listener
+    {
+      int nrow = getSelectedRow();
+      String fileName = getFileName(nrow);
+      if(isListFile(nrow).booleanValue())
+        fileName="@".concat(fileName);
+
+      e.startDrag(DragSource.DefaultCopyDrop,  // cursor
+         new StringSelection(fileName),        // transferable data
+                                 this);        // drag source listener
+    }
   }
   public void dragDropEnd(DragSourceDropEvent e) {}
   public void dragEnter(DragSourceDragEvent e) {}
@@ -227,6 +298,12 @@ class DragJTable extends JTable implements DragGestureListener,
   {
     return (String)seqModel.getValueAt(row,
                   SequenceListTableModel.COL_NAME);
+  }
+
+  public Boolean isListFile(int row)
+  {
+    return (Boolean)seqModel.getValueAt(row,
+                  SequenceListTableModel.COL_LIST);
   }
 
 // drop sink
@@ -274,7 +351,7 @@ class DragJTable extends JTable implements DragGestureListener,
   {
     int row = rowAtPoint(ploc);
     seqModel.modelVector.insertElementAt(new SequenceData(fileName,"","",
-                                   new Boolean(false),bremote),row);
+                      new Boolean(false), new Boolean(false),bremote),row);
 
     tableChanged(new TableModelEvent(seqModel, row+1, row+1,
             TableModelEvent.ALL_COLUMNS, TableModelEvent.INSERT));
@@ -321,6 +398,7 @@ class SequenceData
   public String s_end;        //seq end
   public Boolean s_default;   //use as the default
   public Boolean s_remote;    //file on remote file system
+  public Boolean s_listFile;  //sequence list file
 
   public SequenceData()
   {
@@ -329,15 +407,17 @@ class SequenceData
     s_end = new String();
     s_default = new Boolean(false);
     s_remote = new Boolean(false);
+    s_listFile = new Boolean(false);
   }
 
   public SequenceData(String name, String beg, String end,
-                      Boolean def, Boolean remote)
+                      Boolean lis, Boolean def, Boolean remote)
   {
     s_name = name;
     s_beg = beg;
     s_end = end;
     s_default = def;
+    s_listFile = lis;
     s_remote = remote;
   }
 }
@@ -359,6 +439,7 @@ class SequenceListTableModel extends AbstractTableModel
     new ColumnData("File",170,JLabel.LEFT),
     new ColumnData("Start",45,JLabel.LEFT),
     new ColumnData("End",45,JLabel.LEFT),
+    new ColumnData("List File",15,JLabel.LEFT),
     new ColumnData("Default",15,JLabel.LEFT)
   };
 
@@ -377,16 +458,16 @@ class SequenceListTableModel extends AbstractTableModel
   public static final int COL_NAME = 0;
   public static final int COL_BEG  = 1;
   public static final int COL_END  = 2;
-  public static final int COL_DEF  = 3;
+  public static final int COL_LIST = 3;
+  public static final int COL_DEF  = 4;
 
   public void setDefaultData()
   {
     modelVector.removeAllElements();
     Boolean bdef = new Boolean(false);
-    modelVector.addElement(new SequenceData("","","",bdef,bdef)); 
-    modelVector.addElement(new SequenceData("","","",bdef,bdef)); 
-    modelVector.addElement(new SequenceData("","","",bdef,bdef)); 
-    modelVector.addElement(new SequenceData("","","",bdef,bdef)); 
+    for(int i=0;i<getColumnCount();i++)
+      modelVector.addElement(new SequenceData("","","",bdef,bdef,bdef)); 
+    
   }
   
   public int getRowCount()
@@ -421,6 +502,7 @@ class SequenceListTableModel extends AbstractTableModel
       case COL_BEG: return row.s_beg;
       case COL_END: return row.s_end;
       case COL_DEF:  return row.s_default;
+      case COL_LIST:  return row.s_listFile;
     }
     return ""; 
   }
@@ -446,6 +528,9 @@ class SequenceListTableModel extends AbstractTableModel
         break;
       case COL_DEF:  
         row.s_default = (Boolean)value;
+        break;
+      case COL_LIST:
+        row.s_listFile = (Boolean)value;
         break;
     }
   }
