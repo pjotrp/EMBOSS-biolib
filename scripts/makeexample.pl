@@ -377,11 +377,18 @@ foreach $dotest (@dirs) {
 
 # application name and command line (we just use the test results)
 #    print "Doing: \% $application $commandline\n";
-    $USAGE .= qq|% $bold$application $commandline$unbold\n|;
+    $usecommandline = $commandline;
+    $usecommandline =~ s/..\/..\/data\/[^\/]+\///; # ../../data/(embassy)/
+    $usecommandline =~ s/..\/..\/data\///;	   # ../../data/
+    $usecommandline =~ s/..\/..\///;		   # ../../embl (etc.)
+    $USAGE .= qq|% $bold$application $usecommandline$unbold\n|;
 
 # intercalate prompts and answers
     @pr = ();
     foreach $line (@prompts) {
+	$line =~ s/..\/..\/data\/[^\/]+\///; # ../../data/(embassy)/
+	$line =~ s/..\/..\/data\///;	   # ../../data/
+	$line =~ s/..\/..\///;		   # ../../embl (etc.)
 	push @pr, split /([^\s]+: )/, $line;
     }
     foreach $line (@pr) {
@@ -413,6 +420,9 @@ foreach $dotest (@dirs) {
 #		}
 		$ans = "\n";
 	    }
+	    $ans =~ s/..\/..\/data\/[^\/]+\///; # ../../data/(embassy)/
+	    $ans =~ s/..\/..\/data\///;	   # ../../data/
+	    $ans =~ s/..\/..\///;		   # ../../embl (etc.)
 	    $USAGE .= "$bold$ans$unbold\n";
 	}
     }
@@ -452,10 +462,14 @@ test $dotest hasn't used ", $#answers+1, " answers\n";
 # foreach input file
     foreach $file (@infiles) {
 #print "input file=$file\n";
+	$shortfile = $file;
+	$shortfile =~ s/..\/..\/data\/[^\/]+\///; # ../../data/(embassy)/
+	$shortfile =~ s/..\/..\/data\///;	  # ../../data/
+	$shortfile =~ s/..\/..\///;		  # ../../embl (etc.)
 
 # if this some sort of binary file?
 	if (checkBinary("$dir/$file")) {
-	    $I .= $p . "<h3>File: $file</h3>\n";
+	    $I .= $p . "<h3>File: $shortfile</h3>\n";
 	    $I .= $p . "This file contains non-printing characters and so cannot be displayed here.\n";
 
 # normal file that can be displayed
@@ -468,7 +482,7 @@ test $dotest hasn't used ", $#answers+1, " answers\n";
 
 # no - contruct new display of file
 # add example number to the list of examples that use this file
-		$I .= displayFile($file, "$dir/$file", $inputcolour);
+		$I .= displayFile($shortfile, "$dir/$file", $inputcolour);
 	    }
 	}
     }
@@ -682,6 +696,9 @@ sub writeOutput {
 
     my $out = "$incdir/$application.output";
     open (OUT, "> $out") || die "Can't open $out";
+    $output =~ s/Rundate:  ... ... \d\d [0-9:]+ 2[0-9][0-9][0-9]$/Rundate:  Thu Jul 15 12:00:00 2004/go;
+    $output =~ s/seqalign\-[0-9]+[.][0-9+][.]/seqalign-1234567890.1234./go;
+    $output =~ s/seqsearch\-[0-9]+[.][0-9+][.]/seqsearch-1234567890.1234./go;
     print OUT $output;
     close(OUT);
     chmod 0664, $out;	# rw-rw-r--
