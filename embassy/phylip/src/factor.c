@@ -1,5 +1,5 @@
-#include "phylip.h"
 #include "ajax.h"
+#include "phylip.h"
 
 /* version 3.56c. (c) Copyright 1988-1993 by Joseph Felsenstein and
    Christopher Meacham.

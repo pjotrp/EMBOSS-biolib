@@ -1,5 +1,5 @@
-#include "phylip.h"
 #include "ajax.h"
+#include "phylip.h"
 
 /* version 3.52c. (c) Copyright 1993 by Joseph Felsenstein and Mary Kuhner.
    Written by Mary Kuhner, Jon Yamato, Joseph Felsenstein, Akiko Fuseki,

@@ -1,5 +1,5 @@
-#include "phylip.h"
 #include "ajax.h"
+#include "phylip.h"
 
 /* version 3.56c. (c) Copyright 1986-1993 by the University of Washington
   and by Joseph Felsenstein.  Written by Joseph Felsenstein.  Permission is
