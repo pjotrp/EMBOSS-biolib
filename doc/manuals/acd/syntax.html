@@ -17,7 +17,7 @@
   src="http://www.hgmp.mrc.ac.uk/Software/EMBOSS/emboss_icon.gif"></a></p>
   </td>
   <td>
-  <h2 align=center>ACD Syntax 2.8.0</h2>
+  <h2 align=center>ACD Syntax 2.9.0</h2>
   </td>
  </tr>
 </table>
@@ -947,6 +947,7 @@ needed: "y"<br>
 parameter: "N"<br>
 prompt: ""<br>
 qualifier: ""<br>
+relation: ""<br>
 standard: "N"<br>
 style: ""<br>
 template: ""<br>
@@ -1230,7 +1231,7 @@ name: "Ehum.cut"<br>
   <p><b>cpdb</b></p>
   </td>
   <td>
-  <p>Cleaned PDB file in EMBOSS data path</p>
+  <p>Clean PDB file</p>
   </td>
 
   <td>
@@ -1242,14 +1243,14 @@ name: "Ehum.cut"<br>
 
   <td>
   <p>
-name: "1azu"<br>
+nullok: N<br>
 
  </p>
  </td>
 
   <td>
   <p>
-&nbsp;
+format: ""<br>
 
  </p>
  </td>
@@ -1682,7 +1683,7 @@ lower: N<br>
   <p><b>scop</b></p>
   </td>
   <td>
-  <p>Scop entry in EMBOSS data path</p>
+  <p>Clean PDB file</p>
   </td>
 
   <td>
@@ -1694,14 +1695,14 @@ lower: N<br>
 
   <td>
   <p>
-name: "d3sdha"<br>
+nullok: N<br>
 
  </p>
  </td>
 
   <td>
   <p>
-&nbsp;
+format: ""<br>
 
  </p>
  </td>
@@ -2119,6 +2120,98 @@ ofsingle: "N"<br>
 
  <tr>
   <td>
+  <p><b>outcodon</b></p>
+  </td>
+  <td>
+  <p>Codon usage file</p>
+  </td>
+
+  <td>
+  <p>
+&nbsp;
+
+ </p>
+ </td>
+
+  <td>
+  <p>
+nulldefault: N<br>
+nullok: N<br>
+
+ </p>
+ </td>
+
+  <td>
+  <p>
+&nbsp;
+
+ </p>
+ </td>
+
+ <tr>
+  <td>
+  <p><b>outcpdb</b></p>
+  </td>
+  <td>
+  <p>Cleaned PDB file</p>
+  </td>
+
+  <td>
+  <p>
+&nbsp;
+
+ </p>
+ </td>
+
+  <td>
+  <p>
+nulldefault: N<br>
+nullok: N<br>
+
+ </p>
+ </td>
+
+  <td>
+  <p>
+&nbsp;
+
+ </p>
+ </td>
+
+ <tr>
+  <td>
+  <p><b>outdata</b></p>
+  </td>
+  <td>
+  <p>Formatted output file</p>
+  </td>
+
+  <td>
+  <p>
+&nbsp;
+
+ </p>
+ </td>
+
+  <td>
+  <p>
+type: ""<br>
+nulldefault: N<br>
+nullok: N<br>
+
+ </p>
+ </td>
+
+  <td>
+  <p>
+odirectory: ""<br>
+oformat: ""<br>
+
+ </p>
+ </td>
+
+ <tr>
+  <td>
   <p><b>outdir</b></p>
   </td>
   <td>
@@ -2138,6 +2231,67 @@ fullpath: N<br>
 nulldefault: N<br>
 nullok: N<br>
 extension: ""<br>
+
+ </p>
+ </td>
+
+  <td>
+  <p>
+&nbsp;
+
+ </p>
+ </td>
+
+ <tr>
+  <td>
+  <p><b>outdiscrete</b></p>
+  </td>
+  <td>
+  <p>Discrete states file</p>
+  </td>
+
+  <td>
+  <p>
+&nbsp;
+
+ </p>
+ </td>
+
+  <td>
+  <p>
+nulldefault: N<br>
+nullok: N<br>
+
+ </p>
+ </td>
+
+  <td>
+  <p>
+odirectory: ""<br>
+oformat: ""<br>
+
+ </p>
+ </td>
+
+ <tr>
+  <td>
+  <p><b>outdistance</b></p>
+  </td>
+  <td>
+  <p>Distance matrix</p>
+  </td>
+
+  <td>
+  <p>
+&nbsp;
+
+ </p>
+ </td>
+
+  <td>
+  <p>
+nulldefault: N<br>
+nullok: N<br>
 
  </p>
  </td>
@@ -2178,6 +2332,192 @@ nullok: N<br>
   <td>
   <p>
 odirectory: ""<br>
+
+ </p>
+ </td>
+
+ <tr>
+  <td>
+  <p><b>outfreq</b></p>
+  </td>
+  <td>
+  <p>Frequency value(s)</p>
+  </td>
+
+  <td>
+  <p>
+&nbsp;
+
+ </p>
+ </td>
+
+  <td>
+  <p>
+nulldefault: N<br>
+nullok: N<br>
+
+ </p>
+ </td>
+
+  <td>
+  <p>
+odirectory: ""<br>
+oformat: ""<br>
+
+ </p>
+ </td>
+
+ <tr>
+  <td>
+  <p><b>outmatrix</b></p>
+  </td>
+  <td>
+  <p>Comparison matrix file</p>
+  </td>
+
+  <td>
+  <p>
+&nbsp;
+
+ </p>
+ </td>
+
+  <td>
+  <p>
+nulldefault: N<br>
+nullok: N<br>
+
+ </p>
+ </td>
+
+  <td>
+  <p>
+odirectory: ""<br>
+oformat: ""<br>
+
+ </p>
+ </td>
+
+ <tr>
+  <td>
+  <p><b>outmatrixf</b></p>
+  </td>
+  <td>
+  <p>Comparison matrix file</p>
+  </td>
+
+  <td>
+  <p>
+&nbsp;
+
+ </p>
+ </td>
+
+  <td>
+  <p>
+nulldefault: N<br>
+nullok: N<br>
+
+ </p>
+ </td>
+
+  <td>
+  <p>
+odirectory: ""<br>
+oformat: ""<br>
+
+ </p>
+ </td>
+
+ <tr>
+  <td>
+  <p><b>outproperties</b></p>
+  </td>
+  <td>
+  <p>Property value(s)</p>
+  </td>
+
+  <td>
+  <p>
+&nbsp;
+
+ </p>
+ </td>
+
+  <td>
+  <p>
+nulldefault: N<br>
+nullok: N<br>
+
+ </p>
+ </td>
+
+  <td>
+  <p>
+odirectory: ""<br>
+oformat: ""<br>
+
+ </p>
+ </td>
+
+ <tr>
+  <td>
+  <p><b>outscop</b></p>
+  </td>
+  <td>
+  <p>Scop entry</p>
+  </td>
+
+  <td>
+  <p>
+&nbsp;
+
+ </p>
+ </td>
+
+  <td>
+  <p>
+nulldefault: N<br>
+nullok: N<br>
+
+ </p>
+ </td>
+
+  <td>
+  <p>
+odirectory: ""<br>
+oformat: ""<br>
+
+ </p>
+ </td>
+
+ <tr>
+  <td>
+  <p><b>outtree</b></p>
+  </td>
+  <td>
+  <p>Phylogenetic tree</p>
+  </td>
+
+  <td>
+  <p>
+&nbsp;
+
+ </p>
+ </td>
+
+  <td>
+  <p>
+nulldefault: N<br>
+nullok: N<br>
+
+ </p>
+ </td>
+
+  <td>
+  <p>
+odirectory: ""<br>
+oformat: ""<br>
 
  </p>
  </td>
@@ -2772,6 +3112,46 @@ sequence formats.</p>
 Can also be stored with the sequence if the sequence output
 "features" attribute is set.</p>
 
+<h5>Outcodon</h5>
+
+<p>Output file containing codon usage data.
+The default data format can be specified by an "oformat" attribute
+which the <i>-oformat</i> associated qualifier can override.</p>
+
+<h5>Outcpdb</h5>
+
+<p>Output file containing cleaned PDB protein structure data.
+The default data format can be specified by an "oformat" attribute
+which the <i>-oformat</i> associated qualifier can override.</p>
+
+<h5>Outdata</h5>
+
+<p>Output file containing cleaned formatted data as tables or lists.
+The default data format can be specified by an "oformat" attribute
+which the <i>-oformat</i> associated qualifier can override.</p>
+
+<p>Multiple <b>outdata</b> definitions are by default appended to a
+single file. The individual ACD definitions allow the format of each
+file section to be defined.</p>
+
+<h5>Outdir</h5>
+
+<p>Output directory for multiple output files to be written.
+Specifying an <b>outditr</b> allows other properties to be defined,
+including the default file extension with the "extension" attribute.</p>
+
+<h5>Outdiscrete</h5>
+
+<p>Output file containing phylogenetics discrete characteristics data.
+The default data format can be specified by an "oformat" attribute
+which the <i>-oformat</i> associated qualifier can override.</p>
+
+<h5>Outdistance</h5>
+
+<p>Output file containing phylogenetics distance matrix data.
+The default data format can be specified by an "oformat" attribute
+which the <i>-oformat</i> associated qualifier can override.</p>
+
 <h5>Outfile</h5>
 
 <p>Non-sequence-related data file, usually plain
@@ -2779,6 +3159,42 @@ text. This data type refers to files that are to be used in the program and do
 usually not contain sequence data. The type of data can be identified by a
 "knowntype" attribute and matched to an Infile standard type for
 use as input to another program.</p>
+
+<h5>Outfreq</h5>
+
+<p>Output file containing phylogenetics character frequency data.
+The default data format can be specified by an "oformat" attribute
+which the <i>-oformat</i> associated qualifier can override.</p>
+
+<h5>Outmatrix</h5>
+
+<p>Output file containing integer comparison matrix data.
+The default data format can be specified by an "oformat" attribute
+which the <i>-oformat</i> associated qualifier can override.</p>
+
+<h5>Outmatrixf</h5>
+
+<p>Output file containing floating point comparison matrix data.
+The default data format can be specified by an "oformat" attribute
+which the <i>-oformat</i> associated qualifier can override.</p>
+
+<h5>Outproperties</h5>
+
+<p>Output file containing phylogenetics property data.
+The default data format can be specified by an "oformat" attribute
+which the <i>-oformat</i> associated qualifier can override.</p>
+
+<h5>Outscop</h5>
+
+<p>Output file containing SCOP protein domain data.
+The default data format can be specified by an "oformat" attribute
+which the <i>-oformat</i> associated qualifier can override.</p>
+
+<h5>Outtree</h5>
+
+<p>Output file containing phylogenetic tree data.
+The default data format can be specified by an "oformat" attribute
+which the <i>-oformat</i> associated qualifier can override.</p>
 
 <h5>Report</h5>
 
@@ -3901,10 +4317,10 @@ value is calculated, the user may need some extra guidance.</p>
   <p>cpdb</p>
   </td>
   <td>
-  <p>name: <i>string<i></p>
+  <p>nullok: <i>Y/N<i></p>
   </td>
   <td>
-  <p>Default cleaned PDB entry<br>Default: "1azu"</p>
+  <p>Can accept a null filename as 'no file'<br>Default: N</p>
   </td>
  </tr>
 
@@ -4393,10 +4809,10 @@ value is calculated, the user may need some extra guidance.</p>
   <p>scop</p>
   </td>
   <td>
-  <p>name: <i>string<i></p>
+  <p>nullok: <i>Y/N<i></p>
   </td>
   <td>
-  <p>SCOP entry name<br>Default: "d3sdha"</p>
+  <p>Can accept a null filename as 'no file'<br>Default: N</p>
   </td>
  </tr>
 
@@ -4752,6 +5168,10 @@ can run without a data file. The application must be able to accept a
 null value for this qualifier.</p>
 
 <h5>Directory</h5>
+
+<p>The <i>extension:</i> attribute sets the extension for all
+files read from the directory. FIles with other extensions will not be
+read</p>
 
 <p>The <i>fullpath:</i> attribute can be used to require a full rather
 than a relative path specification for a directory.</p>
@@ -5615,6 +6035,90 @@ Select one [blosum] : PAM
 
  <tr>
   <td>
+  <p>outcodon</p>
+  </td>
+  <td>
+  <p>nulldefault: <i>Y/N<i></p>
+  </td>
+  <td>
+  <p>Defaults to 'no file'<br>Default: N</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>&nbsp;</p>
+  </td>
+  <td>
+  <p>nullok: <i>Y/N<i></p>
+  </td>
+  <td>
+  <p>Can accept a null filename as 'no file'<br>Default: N</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>outcpdb</p>
+  </td>
+  <td>
+  <p>nulldefault: <i>Y/N<i></p>
+  </td>
+  <td>
+  <p>Defaults to 'no file'<br>Default: N</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>&nbsp;</p>
+  </td>
+  <td>
+  <p>nullok: <i>Y/N<i></p>
+  </td>
+  <td>
+  <p>Can accept a null filename as 'no file'<br>Default: N</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>outdata</p>
+  </td>
+  <td>
+  <p>type: <i>string<i></p>
+  </td>
+  <td>
+  <p>Data type<br>Default: ""</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>&nbsp;</p>
+  </td>
+  <td>
+  <p>nulldefault: <i>Y/N<i></p>
+  </td>
+  <td>
+  <p>Defaults to 'no file'<br>Default: N</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>&nbsp;</p>
+  </td>
+  <td>
+  <p>nullok: <i>Y/N<i></p>
+  </td>
+  <td>
+  <p>Can accept a null filename as 'no file'<br>Default: N</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
   <p>outdir</p>
   </td>
   <td>
@@ -5663,6 +6167,54 @@ Select one [blosum] : PAM
 
  <tr>
   <td>
+  <p>outdiscrete</p>
+  </td>
+  <td>
+  <p>nulldefault: <i>Y/N<i></p>
+  </td>
+  <td>
+  <p>Defaults to 'no file'<br>Default: N</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>&nbsp;</p>
+  </td>
+  <td>
+  <p>nullok: <i>Y/N<i></p>
+  </td>
+  <td>
+  <p>Can accept a null filename as 'no file'<br>Default: N</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>outdistance</p>
+  </td>
+  <td>
+  <p>nulldefault: <i>Y/N<i></p>
+  </td>
+  <td>
+  <p>Defaults to 'no file'<br>Default: N</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>&nbsp;</p>
+  </td>
+  <td>
+  <p>nullok: <i>Y/N<i></p>
+  </td>
+  <td>
+  <p>Can accept a null filename as 'no file'<br>Default: N</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
   <p>outfile</p>
   </td>
   <td>
@@ -5700,6 +6252,150 @@ Select one [blosum] : PAM
  <tr>
   <td>
   <p>&nbsp;</p>
+  </td>
+  <td>
+  <p>nulldefault: <i>Y/N<i></p>
+  </td>
+  <td>
+  <p>Defaults to 'no file'<br>Default: N</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>&nbsp;</p>
+  </td>
+  <td>
+  <p>nullok: <i>Y/N<i></p>
+  </td>
+  <td>
+  <p>Can accept a null filename as 'no file'<br>Default: N</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>outfreq</p>
+  </td>
+  <td>
+  <p>nulldefault: <i>Y/N<i></p>
+  </td>
+  <td>
+  <p>Defaults to 'no file'<br>Default: N</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>&nbsp;</p>
+  </td>
+  <td>
+  <p>nullok: <i>Y/N<i></p>
+  </td>
+  <td>
+  <p>Can accept a null filename as 'no file'<br>Default: N</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>outmatrix</p>
+  </td>
+  <td>
+  <p>nulldefault: <i>Y/N<i></p>
+  </td>
+  <td>
+  <p>Defaults to 'no file'<br>Default: N</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>&nbsp;</p>
+  </td>
+  <td>
+  <p>nullok: <i>Y/N<i></p>
+  </td>
+  <td>
+  <p>Can accept a null filename as 'no file'<br>Default: N</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>outmatrixf</p>
+  </td>
+  <td>
+  <p>nulldefault: <i>Y/N<i></p>
+  </td>
+  <td>
+  <p>Defaults to 'no file'<br>Default: N</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>&nbsp;</p>
+  </td>
+  <td>
+  <p>nullok: <i>Y/N<i></p>
+  </td>
+  <td>
+  <p>Can accept a null filename as 'no file'<br>Default: N</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>outproperties</p>
+  </td>
+  <td>
+  <p>nulldefault: <i>Y/N<i></p>
+  </td>
+  <td>
+  <p>Defaults to 'no file'<br>Default: N</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>&nbsp;</p>
+  </td>
+  <td>
+  <p>nullok: <i>Y/N<i></p>
+  </td>
+  <td>
+  <p>Can accept a null filename as 'no file'<br>Default: N</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>outscop</p>
+  </td>
+  <td>
+  <p>nulldefault: <i>Y/N<i></p>
+  </td>
+  <td>
+  <p>Defaults to 'no file'<br>Default: N</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>&nbsp;</p>
+  </td>
+  <td>
+  <p>nullok: <i>Y/N<i></p>
+  </td>
+  <td>
+  <p>Can accept a null filename as 'no file'<br>Default: N</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>outtree</p>
   </td>
   <td>
   <p>nulldefault: <i>Y/N<i></p>
@@ -6142,6 +6838,125 @@ feature file extension.</p>
 <p>The <i>ofname:</i> attribute defines the default value for the
 <i>-ofname</i> qualifier, used as the default base file name</p>
 
+<h5>Outcodon</h5>
+
+<p>The <i>extension:</i> attribute will default to the output file
+format.</p>
+
+<p>The <i>nulldefault:</i> attribute overrides the default name
+generation, and uses an empty string (no data output) as the default for
+programs where data output is only occasionally required. If an empty
+string is specified on the command line, the standard default value
+will be generated instead. In combination with the <i>nullok:</i> and
+<i>missing:</i> attributes, this allows qualifiers to be null by
+default, and turned on from the command line.</p>
+
+<p>The <i>oformat:</i> attribute defines the default value for the
+<i>-oformat</i> qualifier, used as the file format and the default
+file extension.</p>
+
+<h5>Outcpdb</h5>
+
+<p>The <i>extension:</i> attribute will default to the output file
+format.</p>
+
+<p>The <i>nulldefault:</i> attribute overrides the default name
+generation, and uses an empty string (no data output) as the default for
+programs where data output is only occasionally required. If an empty
+string is specified on the command line, the standard default value
+will be generated instead. In combination with the <i>nullok:</i> and
+<i>missing:</i> attributes, this allows qualifiers to be null by
+default, and turned on from the command line.</p>
+
+<p>The <i>oformat:</i> attribute defines the default value for the
+<i>-oformat</i> qualifier, used as the file format and the default
+file extension.</p>
+
+<h5>Outdata</h5>
+
+<p>The <i>extension:</i> attribute will default to the output file
+format.</p>
+
+<p>The <i>nulldefault:</i> attribute overrides the default name
+generation, and uses an empty string (no data output) as the default for
+programs where data output is only occasionally required. If an empty
+string is specified on the command line, the standard default value
+will be generated instead. In combination with the <i>nullok:</i> and
+<i>missing:</i> attributes, this allows qualifiers to be null by
+default, and turned on from the command line.</p>
+
+<p>The <i>oformat:</i> attribute defines the default value for the
+<i>-oformat</i> qualifier, used as the file format and the default
+file extension.</p>
+
+<h5>Outdir</h5>
+
+<p>The <i>extension:</i> attribute sets the default extension for all
+files written to the directory.</p>
+
+<p>The <i>nulldefault:</i> attribute overrides the default name
+generation, and uses an empty string (no data output) as the default for
+programs where data output is only occasionally required. If an empty
+string is specified on the command line, the standard default value
+will be generated instead. In combination with the <i>nullok:</i> and
+<i>missing:</i> attributes, this allows qualifiers to be null by
+default, and turned on from the command line.</p>
+
+<p>The <i>fullpath:</i> attribute requires the path to be specified in
+full when passed to the program, although the user may provide a path
+from the current working directory.</p>
+
+<h5>Outdiscrete</h5>
+
+<p>The <i>extension:</i> attribute will default to the output file
+format.</p>
+
+<p>The <i>nulldefault:</i> attribute overrides the default name
+generation, and uses an empty string (no data output) as the default for
+programs where data output is only occasionally required. If an empty
+string is specified on the command line, the standard default value
+will be generated instead. In combination with the <i>nullok:</i> and
+<i>missing:</i> attributes, this allows qualifiers to be null by
+default, and turned on from the command line.</p>
+
+<p>The <i>oformat:</i> attribute defines the default value for the
+<i>-oformat</i> qualifier, used as the file format and the default
+file extension.</p>
+
+<h5>Outdistance</h5>
+
+<p>The <i>extension:</i> attribute will default to the output file
+format.</p>
+
+<p>The <i>nulldefault:</i> attribute overrides the default name
+generation, and uses an empty string (no data output) as the default for
+programs where data output is only occasionally required. If an empty
+string is specified on the command line, the standard default value
+will be generated instead. In combination with the <i>nullok:</i> and
+<i>missing:</i> attributes, this allows qualifiers to be null by
+default, and turned on from the command line.</p>
+
+<p>The <i>oformat:</i> attribute defines the default value for the
+<i>-oformat</i> qualifier, used as the file format and the default
+file extension.</p>
+
+<h5>Outfreq</h5>
+
+<p>The <i>extension:</i> attribute will default to the output file
+format.</p>
+
+<p>The <i>nulldefault:</i> attribute overrides the default name
+generation, and uses an empty string (no data output) as the default for
+programs where data output is only occasionally required. If an empty
+string is specified on the command line, the standard default value
+will be generated instead. In combination with the <i>nullok:</i> and
+<i>missing:</i> attributes, this allows qualifiers to be null by
+default, and turned on from the command line.</p>
+
+<p>The <i>oformat:</i> attribute defines the default value for the
+<i>-oformat</i> qualifier, used as the file format and the default
+file extension.</p>
+
 <h5>Outfile</h5>
 
 <p>The output filename is constructed from the <i>name:</i>
@@ -6175,6 +6990,91 @@ recommended value.</p>
 the end of an existing output file. By default, the output file will
 be overwritten.</p>
 
+
+<h5>Outmatrix</h5>
+
+<p>The <i>extension:</i> attribute will default to the output file
+format.</p>
+
+<p>The <i>nulldefault:</i> attribute overrides the default name
+generation, and uses an empty string (no data output) as the default for
+programs where data output is only occasionally required. If an empty
+string is specified on the command line, the standard default value
+will be generated instead. In combination with the <i>nullok:</i> and
+<i>missing:</i> attributes, this allows qualifiers to be null by
+default, and turned on from the command line.</p>
+
+<p>The <i>oformat:</i> attribute defines the default value for the
+<i>-oformat</i> qualifier, used as the file format and the default
+file extension.</p>
+
+<h5>Outmatrixf</h5>
+
+<p>The <i>extension:</i> attribute will default to the output file
+format.</p>
+
+<p>The <i>nulldefault:</i> attribute overrides the default name
+generation, and uses an empty string (no data output) as the default for
+programs where data output is only occasionally required. If an empty
+string is specified on the command line, the standard default value
+will be generated instead. In combination with the <i>nullok:</i> and
+<i>missing:</i> attributes, this allows qualifiers to be null by
+default, and turned on from the command line.</p>
+
+<p>The <i>oformat:</i> attribute defines the default value for the
+<i>-oformat</i> qualifier, used as the file format and the default
+file extension.</p>
+
+<h5>Outproperties</h5>
+
+<p>The <i>extension:</i> attribute will default to the output file
+format.</p>
+
+<p>The <i>nulldefault:</i> attribute overrides the default name
+generation, and uses an empty string (no data output) as the default for
+programs where data output is only occasionally required. If an empty
+string is specified on the command line, the standard default value
+will be generated instead. In combination with the <i>nullok:</i> and
+<i>missing:</i> attributes, this allows qualifiers to be null by
+default, and turned on from the command line.</p>
+
+<p>The <i>oformat:</i> attribute defines the default value for the
+<i>-oformat</i> qualifier, used as the file format and the default
+file extension.</p>
+
+<h5>Outscop</h5>
+
+<p>The <i>extension:</i> attribute will default to the output file
+format.</p>
+
+<p>The <i>nulldefault:</i> attribute overrides the default name
+generation, and uses an empty string (no data output) as the default for
+programs where data output is only occasionally required. If an empty
+string is specified on the command line, the standard default value
+will be generated instead. In combination with the <i>nullok:</i> and
+<i>missing:</i> attributes, this allows qualifiers to be null by
+default, and turned on from the command line.</p>
+
+<p>The <i>oformat:</i> attribute defines the default value for the
+<i>-oformat</i> qualifier, used as the file format and the default
+file extension.</p>
+
+<h5>Outtree</h5>
+
+<p>The <i>extension:</i> attribute will default to the output file
+format.</p>
+
+<p>The <i>nulldefault:</i> attribute overrides the default name
+generation, and uses an empty string (no data output) as the default for
+programs where data output is only occasionally required. If an empty
+string is specified on the command line, the standard default value
+will be generated instead. In combination with the <i>nullok:</i> and
+<i>missing:</i> attributes, this allows qualifiers to be null by
+default, and turned on from the command line.</p>
+
+<p>The <i>oformat:</i> attribute defines the default value for the
+<i>-oformat</i> qualifier, used as the file format and the default
+file extension.</p>
 
 <h5>Report</h5>
 
@@ -7380,7 +8280,7 @@ table 8.</p>
   <p>&nbsp;</p>
   </td>
   <td>
-  <p>protein sequence without BZ U or X</p>
+  <p>protein sequence without BZ U X or *</p>
   </td>
  </tr>
 
@@ -8286,6 +9186,18 @@ of the prefix ' <i>no</i>' to the qualifier <i>-options</i> (giving
 
  <tr>
   <td>
+  <p>cpdb</p>
+  </td>
+  <td>
+  <p>-format: <i>string<i></p>
+  </td>
+  <td>
+  <p>Data format<br>Default: ""</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
   <p>features</p>
   </td>
   <td>
@@ -8353,6 +9265,18 @@ of the prefix ' <i>no</i>' to the qualifier <i>-options</i> (giving
   </td>
   <td>
   <p>Reverse (if DNA)<br>Default: N</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>scop</p>
+  </td>
+  <td>
+  <p>-format: <i>string<i></p>
+  </td>
+  <td>
+  <p>Data format<br>Default: ""</p>
   </td>
  </tr>
 
@@ -9236,6 +10160,54 @@ of the prefix ' <i>no</i>' to the qualifier <i>-options</i> (giving
 
  <tr>
   <td>
+  <p>outdata</p>
+  </td>
+  <td>
+  <p>-odirectory: <i>string<i></p>
+  </td>
+  <td>
+  <p>Output directory<br>Default: ""</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>&nbsp;</p>
+  </td>
+  <td>
+  <p>-oformat: <i>string<i></p>
+  </td>
+  <td>
+  <p>Output format specific to this output type<br>Default: ""</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>outdiscrete</p>
+  </td>
+  <td>
+  <p>-odirectory: <i>string<i></p>
+  </td>
+  <td>
+  <p>Output directory<br>Default: ""</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>&nbsp;</p>
+  </td>
+  <td>
+  <p>-oformat: <i>string<i></p>
+  </td>
+  <td>
+  <p>Output format specific to this output type<br>Default: ""</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
   <p>outfile</p>
   </td>
   <td>
@@ -9243,6 +10215,150 @@ of the prefix ' <i>no</i>' to the qualifier <i>-options</i> (giving
   </td>
   <td>
   <p>Output directory<br>Default: ""</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>outfreq</p>
+  </td>
+  <td>
+  <p>-odirectory: <i>string<i></p>
+  </td>
+  <td>
+  <p>Output directory<br>Default: ""</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>&nbsp;</p>
+  </td>
+  <td>
+  <p>-oformat: <i>string<i></p>
+  </td>
+  <td>
+  <p>Output format specific to this output type<br>Default: ""</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>outmatrix</p>
+  </td>
+  <td>
+  <p>-odirectory: <i>string<i></p>
+  </td>
+  <td>
+  <p>Output directory<br>Default: ""</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>&nbsp;</p>
+  </td>
+  <td>
+  <p>-oformat: <i>string<i></p>
+  </td>
+  <td>
+  <p>Output format specific to this output type<br>Default: ""</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>outmatrixf</p>
+  </td>
+  <td>
+  <p>-odirectory: <i>string<i></p>
+  </td>
+  <td>
+  <p>Output directory<br>Default: ""</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>&nbsp;</p>
+  </td>
+  <td>
+  <p>-oformat: <i>string<i></p>
+  </td>
+  <td>
+  <p>Output format specific to this output type<br>Default: ""</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>outproperties</p>
+  </td>
+  <td>
+  <p>-odirectory: <i>string<i></p>
+  </td>
+  <td>
+  <p>Output directory<br>Default: ""</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>&nbsp;</p>
+  </td>
+  <td>
+  <p>-oformat: <i>string<i></p>
+  </td>
+  <td>
+  <p>Output format specific to this output type<br>Default: ""</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>outscop</p>
+  </td>
+  <td>
+  <p>-odirectory: <i>string<i></p>
+  </td>
+  <td>
+  <p>Output directory<br>Default: ""</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>&nbsp;</p>
+  </td>
+  <td>
+  <p>-oformat: <i>string<i></p>
+  </td>
+  <td>
+  <p>Output format specific to this output type<br>Default: ""</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>outtree</p>
+  </td>
+  <td>
+  <p>-odirectory: <i>string<i></p>
+  </td>
+  <td>
+  <p>Output directory<br>Default: ""</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>&nbsp;</p>
+  </td>
+  <td>
+  <p>-oformat: <i>string<i></p>
+  </td>
+  <td>
+  <p>Output format specific to this output type<br>Default: ""</p>
   </td>
  </tr>
 

@@ -16,7 +16,7 @@
   src="http://www.hgmp.mrc.ac.uk/Software/EMBOSS/emboss_icon.gif"></a></p>
   </td>
   <td>
-  <h2 align=center>ACD Syntax 2.8.0</h2>
+  <h2 align=center>ACD Syntax 2.9.0</h2>
   </td>
  </tr>
 </table>
@@ -709,6 +709,52 @@ sequence formats.</p>
 Can also be stored with the sequence if the sequence output
 "features" attribute is set.</p>
 
+<!-- #acdtype-outcodon -->
+<h5>Outcodon</h5>
+
+<p>Output file containing codon usage data.
+The default data format can be specified by an "oformat" attribute
+which the <i>-oformat</i> associated qualifier can override.</p>
+
+<!-- #acdtype-outcpdb -->
+<h5>Outcpdb</h5>
+
+<p>Output file containing cleaned PDB protein structure data.
+The default data format can be specified by an "oformat" attribute
+which the <i>-oformat</i> associated qualifier can override.</p>
+
+<!-- #acdtype-outdata -->
+<h5>Outdata</h5>
+
+<p>Output file containing cleaned formatted data as tables or lists.
+The default data format can be specified by an "oformat" attribute
+which the <i>-oformat</i> associated qualifier can override.</p>
+
+<p>Multiple <b>outdata</b> definitions are by default appended to a
+single file. The individual ACD definitions allow the format of each
+file section to be defined.</p>
+
+<!-- #acdtype-outdir -->
+<h5>Outdir</h5>
+
+<p>Output directory for multiple output files to be written.
+Specifying an <b>outditr</b> allows other properties to be defined,
+including the default file extension with the "extension" attribute.</p>
+
+<!-- #acdtype-outdiscrete -->
+<h5>Outdiscrete</h5>
+
+<p>Output file containing phylogenetics discrete characteristics data.
+The default data format can be specified by an "oformat" attribute
+which the <i>-oformat</i> associated qualifier can override.</p>
+
+<!-- #acdtype-outdistance -->
+<h5>Outdistance</h5>
+
+<p>Output file containing phylogenetics distance matrix data.
+The default data format can be specified by an "oformat" attribute
+which the <i>-oformat</i> associated qualifier can override.</p>
+
 <!-- #acdtype-outfile -->
 <h5>Outfile</h5>
 
@@ -717,6 +763,48 @@ text. This data type refers to files that are to be used in the program and do
 usually not contain sequence data. The type of data can be identified by a
 "knowntype" attribute and matched to an Infile standard type for
 use as input to another program.</p>
+
+<!-- #acdtype-outfreq -->
+<h5>Outfreq</h5>
+
+<p>Output file containing phylogenetics character frequency data.
+The default data format can be specified by an "oformat" attribute
+which the <i>-oformat</i> associated qualifier can override.</p>
+
+<!-- #acdtype-outmatrix -->
+<h5>Outmatrix</h5>
+
+<p>Output file containing integer comparison matrix data.
+The default data format can be specified by an "oformat" attribute
+which the <i>-oformat</i> associated qualifier can override.</p>
+
+<!-- #acdtype-outmatrixf -->
+<h5>Outmatrixf</h5>
+
+<p>Output file containing floating point comparison matrix data.
+The default data format can be specified by an "oformat" attribute
+which the <i>-oformat</i> associated qualifier can override.</p>
+
+<!-- #acdtype-outproperties -->
+<h5>Outproperties</h5>
+
+<p>Output file containing phylogenetics property data.
+The default data format can be specified by an "oformat" attribute
+which the <i>-oformat</i> associated qualifier can override.</p>
+
+<!-- #acdtype-outscop -->
+<h5>Outscop</h5>
+
+<p>Output file containing SCOP protein domain data.
+The default data format can be specified by an "oformat" attribute
+which the <i>-oformat</i> associated qualifier can override.</p>
+
+<!-- #acdtype-outtree -->
+<h5>Outtree</h5>
+
+<p>Output file containing phylogenetic tree data.
+The default data format can be specified by an "oformat" attribute
+which the <i>-oformat</i> associated qualifier can override.</p>
 
 <!-- #acdtype-report -->
 <h5>Report</h5>
@@ -1569,6 +1657,10 @@ null value for this qualifier.</p>
 <!-- #acdattr-directory -->
 <h5>Directory</h5>
 
+<p>The <i>extension:</i> attribute sets the extension for all
+files read from the directory. FIles with other extensions will not be
+read</p>
+
 <p>The <i>fullpath:</i> attribute can be used to require a full rather
 than a relative path specification for a directory.</p>
 
@@ -2151,6 +2243,132 @@ feature file extension.</p>
 <p>The <i>ofname:</i> attribute defines the default value for the
 <i>-ofname</i> qualifier, used as the default base file name</p>
 
+<!-- #acdattr-outcodon -->
+<h5>Outcodon</h5>
+
+<p>The <i>extension:</i> attribute will default to the output file
+format.</p>
+
+<p>The <i>nulldefault:</i> attribute overrides the default name
+generation, and uses an empty string (no data output) as the default for
+programs where data output is only occasionally required. If an empty
+string is specified on the command line, the standard default value
+will be generated instead. In combination with the <i>nullok:</i> and
+<i>missing:</i> attributes, this allows qualifiers to be null by
+default, and turned on from the command line.</p>
+
+<p>The <i>oformat:</i> attribute defines the default value for the
+<i>-oformat</i> qualifier, used as the file format and the default
+file extension.</p>
+
+<!-- #acdattr-outcpdb -->
+<h5>Outcpdb</h5>
+
+<p>The <i>extension:</i> attribute will default to the output file
+format.</p>
+
+<p>The <i>nulldefault:</i> attribute overrides the default name
+generation, and uses an empty string (no data output) as the default for
+programs where data output is only occasionally required. If an empty
+string is specified on the command line, the standard default value
+will be generated instead. In combination with the <i>nullok:</i> and
+<i>missing:</i> attributes, this allows qualifiers to be null by
+default, and turned on from the command line.</p>
+
+<p>The <i>oformat:</i> attribute defines the default value for the
+<i>-oformat</i> qualifier, used as the file format and the default
+file extension.</p>
+
+<!-- #acdattr-outdata -->
+<h5>Outdata</h5>
+
+<p>The <i>extension:</i> attribute will default to the output file
+format.</p>
+
+<p>The <i>nulldefault:</i> attribute overrides the default name
+generation, and uses an empty string (no data output) as the default for
+programs where data output is only occasionally required. If an empty
+string is specified on the command line, the standard default value
+will be generated instead. In combination with the <i>nullok:</i> and
+<i>missing:</i> attributes, this allows qualifiers to be null by
+default, and turned on from the command line.</p>
+
+<p>The <i>oformat:</i> attribute defines the default value for the
+<i>-oformat</i> qualifier, used as the file format and the default
+file extension.</p>
+
+<!-- #acdattr-outdir -->
+<h5>Outdir</h5>
+
+<p>The <i>extension:</i> attribute sets the default extension for all
+files written to the directory.</p>
+
+<p>The <i>nulldefault:</i> attribute overrides the default name
+generation, and uses an empty string (no data output) as the default for
+programs where data output is only occasionally required. If an empty
+string is specified on the command line, the standard default value
+will be generated instead. In combination with the <i>nullok:</i> and
+<i>missing:</i> attributes, this allows qualifiers to be null by
+default, and turned on from the command line.</p>
+
+<p>The <i>fullpath:</i> attribute requires the path to be specified in
+full when passed to the program, although the user may provide a path
+from the current working directory.</p>
+
+<!-- #acdattr-outdiscrete -->
+<h5>Outdiscrete</h5>
+
+<p>The <i>extension:</i> attribute will default to the output file
+format.</p>
+
+<p>The <i>nulldefault:</i> attribute overrides the default name
+generation, and uses an empty string (no data output) as the default for
+programs where data output is only occasionally required. If an empty
+string is specified on the command line, the standard default value
+will be generated instead. In combination with the <i>nullok:</i> and
+<i>missing:</i> attributes, this allows qualifiers to be null by
+default, and turned on from the command line.</p>
+
+<p>The <i>oformat:</i> attribute defines the default value for the
+<i>-oformat</i> qualifier, used as the file format and the default
+file extension.</p>
+
+<!-- #acdattr-outdistance -->
+<h5>Outdistance</h5>
+
+<p>The <i>extension:</i> attribute will default to the output file
+format.</p>
+
+<p>The <i>nulldefault:</i> attribute overrides the default name
+generation, and uses an empty string (no data output) as the default for
+programs where data output is only occasionally required. If an empty
+string is specified on the command line, the standard default value
+will be generated instead. In combination with the <i>nullok:</i> and
+<i>missing:</i> attributes, this allows qualifiers to be null by
+default, and turned on from the command line.</p>
+
+<p>The <i>oformat:</i> attribute defines the default value for the
+<i>-oformat</i> qualifier, used as the file format and the default
+file extension.</p>
+
+<!-- #acdattr-outfreq -->
+<h5>Outfreq</h5>
+
+<p>The <i>extension:</i> attribute will default to the output file
+format.</p>
+
+<p>The <i>nulldefault:</i> attribute overrides the default name
+generation, and uses an empty string (no data output) as the default for
+programs where data output is only occasionally required. If an empty
+string is specified on the command line, the standard default value
+will be generated instead. In combination with the <i>nullok:</i> and
+<i>missing:</i> attributes, this allows qualifiers to be null by
+default, and turned on from the command line.</p>
+
+<p>The <i>oformat:</i> attribute defines the default value for the
+<i>-oformat</i> qualifier, used as the file format and the default
+file extension.</p>
+
 <!-- #acdattr-outfile -->
 <h5>Outfile</h5>
 
@@ -2185,6 +2403,96 @@ recommended value.</p>
 the end of an existing output file. By default, the output file will
 be overwritten.</p>
 
+
+<!-- #acdattr-outmatrix -->
+<h5>Outmatrix</h5>
+
+<p>The <i>extension:</i> attribute will default to the output file
+format.</p>
+
+<p>The <i>nulldefault:</i> attribute overrides the default name
+generation, and uses an empty string (no data output) as the default for
+programs where data output is only occasionally required. If an empty
+string is specified on the command line, the standard default value
+will be generated instead. In combination with the <i>nullok:</i> and
+<i>missing:</i> attributes, this allows qualifiers to be null by
+default, and turned on from the command line.</p>
+
+<p>The <i>oformat:</i> attribute defines the default value for the
+<i>-oformat</i> qualifier, used as the file format and the default
+file extension.</p>
+
+<!-- #acdattr-outmatrixf -->
+<h5>Outmatrixf</h5>
+
+<p>The <i>extension:</i> attribute will default to the output file
+format.</p>
+
+<p>The <i>nulldefault:</i> attribute overrides the default name
+generation, and uses an empty string (no data output) as the default for
+programs where data output is only occasionally required. If an empty
+string is specified on the command line, the standard default value
+will be generated instead. In combination with the <i>nullok:</i> and
+<i>missing:</i> attributes, this allows qualifiers to be null by
+default, and turned on from the command line.</p>
+
+<p>The <i>oformat:</i> attribute defines the default value for the
+<i>-oformat</i> qualifier, used as the file format and the default
+file extension.</p>
+
+<!-- #acdattr-outproperties -->
+<h5>Outproperties</h5>
+
+<p>The <i>extension:</i> attribute will default to the output file
+format.</p>
+
+<p>The <i>nulldefault:</i> attribute overrides the default name
+generation, and uses an empty string (no data output) as the default for
+programs where data output is only occasionally required. If an empty
+string is specified on the command line, the standard default value
+will be generated instead. In combination with the <i>nullok:</i> and
+<i>missing:</i> attributes, this allows qualifiers to be null by
+default, and turned on from the command line.</p>
+
+<p>The <i>oformat:</i> attribute defines the default value for the
+<i>-oformat</i> qualifier, used as the file format and the default
+file extension.</p>
+
+<!-- #acdattr-outscop -->
+<h5>Outscop</h5>
+
+<p>The <i>extension:</i> attribute will default to the output file
+format.</p>
+
+<p>The <i>nulldefault:</i> attribute overrides the default name
+generation, and uses an empty string (no data output) as the default for
+programs where data output is only occasionally required. If an empty
+string is specified on the command line, the standard default value
+will be generated instead. In combination with the <i>nullok:</i> and
+<i>missing:</i> attributes, this allows qualifiers to be null by
+default, and turned on from the command line.</p>
+
+<p>The <i>oformat:</i> attribute defines the default value for the
+<i>-oformat</i> qualifier, used as the file format and the default
+file extension.</p>
+
+<!-- #acdattr-outtree -->
+<h5>Outtree</h5>
+
+<p>The <i>extension:</i> attribute will default to the output file
+format.</p>
+
+<p>The <i>nulldefault:</i> attribute overrides the default name
+generation, and uses an empty string (no data output) as the default for
+programs where data output is only occasionally required. If an empty
+string is specified on the command line, the standard default value
+will be generated instead. In combination with the <i>nullok:</i> and
+<i>missing:</i> attributes, this allows qualifiers to be null by
+default, and turned on from the command line.</p>
+
+<p>The <i>oformat:</i> attribute defines the default value for the
+<i>-oformat</i> qualifier, used as the file format and the default
+file extension.</p>
 
 <!-- #acdattr-report -->
 <h5>Report</h5>
