@@ -49,9 +49,13 @@ public class PlotConsensus extends JPanel
   private float[] sumscore;
   /** number of graph bins making up the seq length */
   private int numbins;
+  /** residue width   */
   private int interval;
+  /** minimum y value */
   private float ymin = 0.f;
+  /** maximum y value */
   private float ymax = 0.f;
+  /** associated sequence panel */
   private GraphicSequenceCollection viewPane = null;
 
   /**
@@ -59,7 +63,7 @@ public class PlotConsensus extends JPanel
   * @param matrixFile	scoring matrix file
   * @param seqs		vector of the Sequence objects
   * @param winsize	window size
-  * @param interval 	
+  * @param interval 	residue width
   * @param viewPane	graphical sequence view
   *
   */
@@ -78,7 +82,7 @@ public class PlotConsensus extends JPanel
   * @param matrixFile   scoring matrix file
   * @param seqs         vector of the Sequence objects
   * @param winsize      window size
-  * @param interval     
+  * @param interval     residue width
   * 
   */
   public PlotConsensus(File matrixFile, Vector seqs, int winsize,
@@ -95,7 +99,7 @@ public class PlotConsensus extends JPanel
   * @param matrixFilename     	scoring matrix file
   * @param seqs           	vector of the Sequence objects
   * @param winsize        	window size
-  * @param interval     
+  * @param interval     	residue width
   * 
   */
   public PlotConsensus(String matrixJar, String matrixFileName,
@@ -111,7 +115,7 @@ public class PlotConsensus extends JPanel
   * @param mat     	scoring matrix
   * @param seqs     	vector of the Sequence objects
   * @param winsize   	window size
-  * @param interval     
+  * @param interval     residue width
   * @param viewPane	graphical sequence view
   * 
   */
@@ -129,7 +133,7 @@ public class PlotConsensus extends JPanel
   * @param mat          scoring matrix
   * @param seqs         vector of the Sequence objects
   * @param winsize      window size
-  * @param interval     
+  * @param interval     residue width
   * 
   */
   public PlotConsensus(Matrix mat,
@@ -216,6 +220,12 @@ public class PlotConsensus extends JPanel
     setPlotSize();
  }
 
+  /**
+  * 
+  * Set the consensus plot preferred size using the
+  * graph dimensions
+  *
+  */
   public void setPlotSize()
   {
     setPreferredSize(new Dimension(numbins*interval,
@@ -225,6 +235,10 @@ public class PlotConsensus extends JPanel
   /**
   *
   * Returns the residue of the sequence i at position k
+  * @param seqs		vector of Sequence objects
+  * @param i		sequence index
+  * @param k 		sequence position
+  * @return		residue k from sequence i
   *
   */
   public String getResidue(Vector seqs, int i, int k)
@@ -238,22 +252,27 @@ public class PlotConsensus extends JPanel
     return res;
   }
 
-/**
-*
-* Returns the weight of sequence i
-*
-*/
+  /**
+  *
+  * Returns the weight of sequence i
+  * @param seqs         vector of Sequence objects
+  * @param i            sequence index
+  * @return 		sequence weight
+  *
+  */
   public float getSequenceWeight(Vector seqs, int i)
   {
     return ((Sequence)seqs.get(i)).getWeight();
   }
 
-/**
-*
-* Check all sequences lengths and return length of
-* the longest sequence
-*
-*/
+  /**
+  *
+  * Check all sequences lengths and return length of
+  * the longest sequence
+  * @param seqs		vector of Sequence objects
+  * @return		length of the longest sequence
+  *
+  */
   public int getMaxSequenceLength(Vector seqs)
   {
     int len = 0;
@@ -268,6 +287,12 @@ public class PlotConsensus extends JPanel
     return len;
   }
 
+  /**
+  *
+  * Override paintComponent to draw consensus plot
+  * @param g	graphics
+  *
+  */
   public void paintComponent(Graphics g)
   {
     super.paintComponent(g);
@@ -306,6 +331,12 @@ public class PlotConsensus extends JPanel
     }
   }
 
+  /**
+  *
+  * Set the interval
+  * @param interval	interval
+  *
+  */
   public void setInterval(int interval)
   {
     this.interval = interval;
