@@ -117,7 +117,12 @@ int main(int argc, char **argv)
 	ajStrToLower(&scop_name);
 	if(!(cpdb_inf=ajFileNewDirF(cpdb_dir, scop_name)))
 	{
-	    ajFileNameDir(&cpdb_name, cpdb_dir, scop_name);
+	    ajStrAssS(&cpdb_name, ajDirName(cpdb_dir));
+	    ajStrApp(&cpdb_name, scop_name);
+	    ajStrAppC(&cpdb_name, ".");
+	    ajStrApp(&cpdb_name, ajDirExt(cpdb_dir));
+	    /*	    ajFileNameDir(&cpdb_name, cpdb_dir, scop_name); */
+
 	    ajFmtPrintS(&msg, "Could not open for reading cpdb file %S", 
 			cpdb_name);
 	    ajWarn(ajStrStr(msg));
@@ -152,7 +157,14 @@ int main(int argc, char **argv)
 	ajStrAss(&scop_name, scop->Entry);
 	ajStrToLower(&scop_name);
 
-	ajFileNameDir(&pdbscop_name, pdbscop_dir, scop_name);
+
+	ajStrAssS(&pdbscop_name, ajDirName(pdbscop_dir));
+	ajStrApp(&pdbscop_name, scop_name);
+	ajStrAppC(&pdbscop_name, ".");
+	ajStrApp(&pdbscop_name, ajDirExt(pdbscop_dir));
+
+	/* ajFileNameDir(&pdbscop_name, pdbscop_dir, scop_name); */
+
 	if(!(pdbscop_outf=ajFileNewOutDir(pdbscop_dir,scop_name)))
 	{
 	    ajFmtPrintS(&msg, "Could not open for writing pdbscop file %S", 
@@ -171,7 +183,13 @@ int main(int argc, char **argv)
 	/* Open embl-like format file for writing*/
 	ajStrAssS(&scop_name, scop->Entry);
 	ajStrToLower(&scop_name);
-	ajFileNameDir(&cpdbscop_name, cpdbscop_dir, scop_name);
+
+	ajStrAssS(&cpdbscop_name, ajDirName(cpdbscop_dir));
+	ajStrApp(&cpdbscop_name, scop_name);
+	ajStrAppC(&cpdbscop_name, ".");
+	ajStrApp(&cpdbscop_name, ajDirExt(cpdbscop_dir));
+
+	/* ajFileNameDir(&cpdbscop_name, cpdbscop_dir, scop_name); */
 
 	if(!(cpdbscop_outf=ajFileNewOutDir(cpdbscop_dir, scop_name)))
 	{
@@ -180,8 +198,9 @@ int main(int argc, char **argv)
 	    ajWarn(ajStrStr(msg));
 	    ajFmtPrintF(errf2, "//\n%S\nERROR %S file write error\n", 
 			scop->Entry, cpdbscop_name);
-	    ajFileClose(&cpdb_inf);
 	    ajFileClose(&pdbscop_outf);
+
+	    ajFileClose(&cpdb_inf);
 	    ajScopDel(&scop);
 	    ajPdbDel(&pdb);
 	    continue;
@@ -195,10 +214,9 @@ int main(int argc, char **argv)
 	    ajWarn(ajStrStr(msg));
 
 	    ajFileClose(&pdbscop_outf);
-	    ajFmtPrintS(&temp, "rm %S\n", pdbscop_name);
-	    ajFmtPrint("%S", temp);
+	    ajFmtPrintS(&temp, "rm %S", pdbscop_name);
+	    ajFmtPrint("%S\n", temp);
 	    ajSystem(temp);
-
 	}
 
 
@@ -210,9 +228,8 @@ int main(int argc, char **argv)
 	    ajWarn(ajStrStr(msg));
 
 	    ajFileClose(&cpdbscop_outf);
-	    ajFmtPrintS(&temp, "rm %S\n", cpdbscop_name);
-	    ajFmtPrint("%S", temp);
-	    
+	    ajFmtPrintS(&temp, "rm %S", cpdbscop_name);
+	    ajFmtPrint("%S\n", temp);
 	    ajSystem(temp);
 	}
 
