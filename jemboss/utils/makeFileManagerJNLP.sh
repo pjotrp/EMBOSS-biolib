@@ -74,7 +74,7 @@ jar cf FileManager.jar images/* org/emboss/jemboss/*class resources/client.jar \
 mv FileManager.jar jnlp_fm
 cp lib/*jar jnlp_fm
 cp images/Jemboss_logo_large.gif jnlp_fm
-cp utils/template.html jnlp/index.html
+cp utils/template.html jnlp_fm/index.html
 cd jnlp_fm
 
 echo
@@ -115,9 +115,11 @@ echo
 echo "Each of the jar files will now be signed...."
 echo
 for i in *.jar; do 
-  echo "Signing $i"
-  jarsigner -keystore jembossstore -storepass $STOREPASS -keypass $KEYPASS \
-           -signedjar s$i $i signFiles 
+  if [ $i != "jalview.jar" ]; then
+    echo "Signing $i"
+    jarsigner -keystore jembossstore -storepass $STOREPASS -keypass $KEYPASS \
+              -signedjar s$i $i signFiles 
+  fi
 done;
 
 #
@@ -172,7 +174,7 @@ echo '       </jnlp>'                                   >> $JNLP
 echo
 echo
 echo "*** The signed jar files, index.html and $JNLP have been"
-echo "*** created in the directory $CWPWD/jnlp."
+echo "*** created in the directory $CWPWD/jnlp_fm."
 echo "*** "
 echo "*** Please edit the 'codebase' line in $JNLP."
 echo "*** Also, edit the 'Click here' line in index.html to point"
