@@ -339,7 +339,6 @@ deploy_axis_services()
   OPT_PROP2=$6
 
   echo
-  echo "Deploying $SERVICE "
 # echo "$JAVAHOME/bin/java -classpath $CLASSPATH $OPT_PROP1 $OPT_PROP2 \\ "
 # echo " org.apache.axis.client.AdminClient -l$URL/axis/services JembossServer.wsdd"
   echo
@@ -1112,9 +1111,10 @@ if [ "$SSL" != "y" ]; then
   read DEPLOYSERVICE
 
   if (test "$DEPLOYSERVICE" = "y") || (test "$DEPLOYSERVICE" = ""); then
-    ./tomstart 
     echo
     echo "Please wait, starting tomcat......."
+    ./tomstart
+
     sleep 25
     deploy_axis_services $JEMBOSS/lib JembossServer.wsdd http://localhost:$PORT/ $JAVA_HOME "" ""
   fi
@@ -1151,6 +1151,7 @@ else
     VALID=90
   fi
 
+  echo "Please wait, creating certificates......."
   ssl_create_keystore $LOCALHOST $JEMBOSS/resources "server" "tomcat-sv" $PASSWD $VALID
   ssl_create_keystore "Client" $JEMBOSS/resources "client" "tomcat-cl" $PASSWD $VALID
 
@@ -1178,9 +1179,9 @@ else
       read VAL
     done
 
-    ./tomstart 
     echo
     echo "Please wait, starting tomcat......."
+    ./tomstart
 
     sleep 45
     OPT_PROP1="-Djava.protocol.handler.pkgs=com.sun.net.ssl.internal.www.protocol"
