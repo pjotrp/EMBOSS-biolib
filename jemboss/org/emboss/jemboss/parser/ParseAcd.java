@@ -1066,7 +1066,7 @@ public class ParseAcd
   *
   * Used for a list data type to put the list items in a String array.
   * @param field	field number
-  * @returnfield	String array representation of the list type.
+  * @return		String array representation of the list type.
   *
   */
   public String[] getList(int field) 
