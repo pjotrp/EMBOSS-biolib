@@ -878,7 +878,7 @@ static void namListParse (AjPList listwords, AjPList listcount,
   namUser("namListParse of %F words: %d lines: %d\n", 
 	  file, ajListLength(listwords), ajListLength(listcount));
 
-  while (ajListPop(listwords, (void**) &curword))
+  while (ajListstrPop(listwords, &curword))
   {
     while (ajListLength(listcount) && (lineword < wordcount))
     {
@@ -1332,7 +1332,7 @@ static AjBool namProcessFile (AjPFile file) {
     /* namUser("%S\n",rdline); */
     len = ajStrLen(rdline);
 
-    if(ajStrChar(rdline,0) == '#') /* Ignore if the line is a comment */
+    if(!ajStrUncommentStart(&rdline)) /* Ignore if the line is a comment */
       continue;
 
     /* now create a linked list of the "words" */
@@ -1382,10 +1382,6 @@ static AjBool namProcessFile (AjPFile file) {
   }
 
   namListParseOK = ajTrue;
-
-  /* parse the linked list to */
-  /* obtain ENV, DB and OPT values */
-  /* (void) ajListstrMap(listwords, (void (*)(AjPStr *,void *))namListParse, NULL);*/
 
   namUser("ready to parse\n");
   namListParse (listwords, listcount, file);
