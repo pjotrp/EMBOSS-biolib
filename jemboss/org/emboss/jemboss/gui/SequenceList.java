@@ -41,7 +41,7 @@ public class SequenceList extends JFrame
 
   private DragJTable table;
   private SequenceListTableModel seqModel;
-  private JPopupMenu popMenu = new JPopupMenu();
+//private JPopupMenu popMenu = new JPopupMenu();
 
   public SequenceList()
   {
@@ -62,6 +62,22 @@ public class SequenceList extends JFrame
 
     }
 
+//  MouseListener popupListener = new PopupListener(); 
+//  table.addMouseListener(popupListener);
+
+    JScrollPane scrollpane = new JScrollPane(table);
+    scrollpane.setSize(300,100);
+    getContentPane().add(scrollpane, BorderLayout.CENTER);
+
+    JMenuBar menuPanel = new JMenuBar();
+    new BoxLayout(menuPanel,BoxLayout.X_AXIS);
+    setJMenuBar(menuPanel);
+
+    JMenu fileMenu = new JMenu("File");
+    menuPanel.add(fileMenu);
+    JMenu toolMenu = new JMenu("Tools");
+    menuPanel.add(toolMenu);
+
     JMenuItem openMenuItem = new JMenuItem("Open");
     openMenuItem.addActionListener(new ActionListener()
     {
@@ -78,23 +94,7 @@ public class SequenceList extends JFrame
           RemoteDragTree.showFilePane(fileName);
       }
     });
-    popMenu.add(openMenuItem);
-    
-    MouseListener popupListener = new PopupListener(); 
-    table.addMouseListener(popupListener);
-
-    JScrollPane scrollpane = new JScrollPane(table);
-    scrollpane.setSize(300,100);
-    getContentPane().add(scrollpane, BorderLayout.CENTER);
-
-    JMenuBar menuPanel = new JMenuBar();
-    new BoxLayout(menuPanel,BoxLayout.X_AXIS);
-    setJMenuBar(menuPanel);
-
-    JMenu fileMenu = new JMenu("File");
-    menuPanel.add(fileMenu);
-    JMenu toolMenu = new JMenu("Tools");
-    menuPanel.add(toolMenu);
+    fileMenu.add(openMenuItem);
 
     JMenuItem addSeq = new JMenuItem("Add sequence");
     addSeq.addActionListener(new ActionListener()
@@ -143,6 +143,7 @@ public class SequenceList extends JFrame
       public void actionPerformed(ActionEvent e)
       {
         seqModel.setDefaultData();
+        table.repaint();
       }
     });
     fileMenu.add(reset);
@@ -161,24 +162,24 @@ public class SequenceList extends JFrame
 
   }
 
-  class PopupListener extends MouseAdapter 
-  {
-    public void mousePressed(MouseEvent e) {
-      maybeShowPopup(e);
-    }
+//class PopupListener extends MouseAdapter 
+//{
+//  public void mousePressed(MouseEvent e) {
+//    maybeShowPopup(e);
+//  }
 
-    public void mouseReleased(MouseEvent e) 
-    {
-      maybeShowPopup(e);
-    }
+//  public void mouseReleased(MouseEvent e) 
+//  {
+//    maybeShowPopup(e);
+//  }
 
-    private void maybeShowPopup(MouseEvent e) 
-    {
-      if(e.isPopupTrigger()) 
-        popMenu.show(e.getComponent(),
-              e.getX(), e.getY());
-    }
-  }
+//  private void maybeShowPopup(MouseEvent e) 
+//  {
+//    if(e.isPopupTrigger()) 
+//      popMenu.show(e.getComponent(),
+//            e.getX(), e.getY());
+//  }
+//}
 }
 
 
