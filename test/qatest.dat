@@ -1656,7 +1656,7 @@ FP /^   pax6   1082 ttgaggccctggagaaag...............agtttgagagaacccat   1116\n/
 ID est2genome-align-linear
 TI 200
 AP est2genome
-CL -align -space 1
+CL -align -space 2
 IN ../../data/pax6_cdna.fasta
 IN ../../data/z83307.seq
 IN
