@@ -148,7 +148,9 @@ public class JembossParams
   private String acdDirToParse = "/usr/local/share/EMBOSS/acd/";
   private String acdDirToParseName = "acdDirToParse";
 
-
+  //EMBOSS Application pages
+  private String embURL = "http://www.uk.embnet.org/Software/EMBOSS/Apps/";
+  private String embossURL = "embossURL";
 
 /**
 *
@@ -167,6 +169,7 @@ public class JembossParams
     privateServers = new Vector();
 
     // initialize settings from table above
+    defaults.put(embossURL,embURL);
     defaults.put(plplotName,plplot);
     defaults.put(embossDataName,embossData);
     defaults.put(embossBinName,embossBin);
@@ -281,6 +284,7 @@ public class JembossParams
     {
       String tmp;
 
+      embURL = jembossSettings.getProperty(embossURL);
       plplot = jembossSettings.getProperty(plplotName);
       embossData = jembossSettings.getProperty(embossDataName);
       embossBin = jembossSettings.getProperty(embossBinName);
@@ -545,6 +549,11 @@ public class JembossParams
   public String getPlplot()
   {
     return plplot;
+  }
+
+  public String getembURL()
+  {
+    return embURL;
   }
 
   public String getEmbossData()
