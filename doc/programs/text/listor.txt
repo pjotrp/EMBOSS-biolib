@@ -50,7 +50,7 @@ Usage
    Write the logical OR of two lists:
    
 
-% listor ../../data/file1 ../../data/file2
+% listor ../../data/file1 ../../data/file2 
 Writes a list file of the logical OR of two sets of sequences
 Output file [file1.list]: 
    
@@ -62,7 +62,7 @@ Output file [file1.list]:
    Write the logical AND of two lists:
    
 
-% listor ../../data/file1 ../../data/file2 -operator and
+% listor ../../data/file1 ../../data/file2 -operator and 
 Writes a list file of the logical OR of two sets of sequences
 Output file [file1.list]: 
    
@@ -73,7 +73,7 @@ Output file [file1.list]:
    Write the logical XOR of two lists:
    
 
-% listor ../../data/file1 ../../data/file2 -operator xor
+% listor ../../data/file1 ../../data/file2 -operator xor 
 Writes a list file of the logical OR of two sets of sequences
 Output file [file1.list]: 
    
@@ -84,7 +84,7 @@ Output file [file1.list]:
    Write the logical NOT of two lists:
    
 
-% listor ../../data/file1 ../../data/file2 -operator not
+% listor ../../data/file1 ../../data/file2 -operator not 
 Writes a list file of the logical OR of two sets of sequences
 Output file [file1.list]: 
    
@@ -268,7 +268,6 @@ See also
    seqretsplit  Reads and writes (returns) sequences in individual files
    skipseq      Reads and writes (returns) sequences, skipping the first few
    splitter     Split a sequence into (overlapping) smaller sequences
-   swissparse   Retrieves sequences from swissprot using keyword search
    trimest      Trim poly-A tails off EST sequences
    trimseq      Trim ambiguous bits off the ends of sequences
    union        Reads sequence fragments and builds one sequence

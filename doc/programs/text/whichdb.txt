@@ -62,10 +62,6 @@ Usage
 Search all databases for an entry
 ID or Accession number: hsfau1
 Output file [outfile.whichdb]: 
-Warning: 
-Cannot open division file '' for database 'mmunigene'
-Warning: 
-seqCdQry failed
    
    Go to the output files for this example
    

@@ -45,7 +45,7 @@ Usage
    2356:
    
 
-% maskfeat tembl:ab000360
+% maskfeat tembl:ab000360 
 Mask off features of a sequence.
 Output sequence [ab000360.fasta]: 
    
@@ -374,7 +374,6 @@ See also
    showfeat     Show features of a sequence
    skipseq      Reads and writes (returns) sequences, skipping the first few
    splitter     Split a sequence into (overlapping) smaller sequences
-   swissparse   Retrieves sequences from swissprot using keyword search
    trimest      Trim poly-A tails off EST sequences
    trimseq      Trim ambiguous bits off the ends of sequences
    union        Reads sequence fragments and builds one sequence

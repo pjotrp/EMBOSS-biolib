@@ -34,7 +34,7 @@ Usage
    Here is a sample session with noreturn
    
 
-% noreturn ../../data/abc.dat
+% noreturn ../../data/abc.dat 
 Removes carriage return from ASCII files
 Output file [abc.noreturn]: 
    
@@ -141,7 +141,6 @@ See also
    seqretsplit  Reads and writes (returns) sequences in individual files
    skipseq      Reads and writes (returns) sequences, skipping the first few
    splitter     Split a sequence into (overlapping) smaller sequences
-   swissparse   Retrieves sequences from swissprot using keyword search
    trimest      Trim poly-A tails off EST sequences
    trimseq      Trim ambiguous bits off the ends of sequences
    union        Reads sequence fragments and builds one sequence

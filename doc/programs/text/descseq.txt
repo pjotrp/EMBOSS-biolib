@@ -31,7 +31,7 @@ Usage
    Set the name of a sequence to "myclone23"
    
    
-% descseq -seq ../../data/dna.text -out clone23.seq -name "myclone23"
+% descseq -seq ../../data/dna.text -out clone23.seq -name "myclone23" 
 Alter the name or description of a sequence.
 
    Go to the input files for this example
@@ -43,7 +43,7 @@ Alter the name or description of a sequence.
    
 
 % descseq -seq ../../data/dna.text -out xy24.seq -desc "This is my clone number
- 244"
+ 244" 
 Alter the name or description of a sequence.
    
    Go to the output files for this example
@@ -53,7 +53,7 @@ Alter the name or description of a sequence.
    Append some text to the description of a sequence
    
    
-% descseq -seq ../../data/dna.text -out est4.seq -desc " (submitted)" -append
+% descseq -seq ../../data/dna.text -out est4.seq -desc " (submitted)" -append 
 Alter the name or description of a sequence.
 
    Go to the output files for this example
@@ -184,7 +184,6 @@ See also
    seqretsplit  Reads and writes (returns) sequences in individual files
    skipseq      Reads and writes (returns) sequences, skipping the first few
    splitter     Split a sequence into (overlapping) smaller sequences
-   swissparse   Retrieves sequences from swissprot using keyword search
    trimest      Trim poly-A tails off EST sequences
    trimseq      Trim ambiguous bits off the ends of sequences
    union        Reads sequence fragments and builds one sequence

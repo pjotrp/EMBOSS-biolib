@@ -301,8 +301,6 @@ See also
    Program name Description
    aaindexextract Extract data from AAINDEX
    cutgextract Extract data from CUTG
-   funky Reads clean coordinate files and writes file of
-   protein-heterogen contact data
    printsextract Extract data from PRINTS
    prosextract Builds the PROSITE motif database for patmatmotifs to
    search
