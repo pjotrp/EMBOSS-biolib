@@ -174,6 +174,7 @@ int main(int argc, char **argv)
 	hth_report_hits(&ajb, lastcol, report, TabRpt);
 
 	ajReportWrite(report, TabRpt, seq);
+	ajFeattableDel(&TabRpt);
 	ajStrDel(&strand);
     }
     

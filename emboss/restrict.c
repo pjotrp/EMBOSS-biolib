@@ -191,6 +191,7 @@ int main(int argc, char **argv)
 	}
 
 	ajReportWrite(report, TabRpt, seq);
+	ajFeattableDel(&TabRpt);
 
 	ajListFree(&l);
     }
@@ -465,9 +466,6 @@ static void restrict_reportHits(AjPReport report, AjPSeq seq,
 	fx = AJALLOC(hits*2*sizeof(ajint));
     }
     
-
-    ajFmtPrintAppS(&tmpStr,
-		   "Number of hits: %d\n",hits);
     ajReportSetHeader(report, tmpStr);
    
     /* not needed - column headings from the old report */
