@@ -1270,19 +1270,20 @@ AjBool ajSeqsetallRead(AjPList thys, AjPSeqin seqin)
     ajint iseq = 0;
 
     seq = ajSeqNew();
-    seqset = ajSeqsetNew();
 
     ajDebug("ajSeqsetallRead\n");
 
     if(!seqUsaProcess(seq, seqin))
 	return ajFalse;
 
+    setlist = ajListNew();
+    seqset = ajSeqsetNew();
+
     ajStrAssS(&seqset->Usa, seqin->Usa);
     ajStrAssS(&seqset->Ufo, seqin->Ufo);
     seqset->Begin = seqin->Begin;
     seqset->End = seqin->End;
 
-    setlist = ajListNew();
 
     ajDebug("ready to start reading format '%S' '%S' %d..%d\n",
 	    seqin->Formatstr, seq->Formatstr, seqin->Begin, seqin->End);
@@ -1292,7 +1293,8 @@ AjBool ajSeqsetallRead(AjPList thys, AjPSeqin seqin)
 	ajDebug("read name '%S' length %d format '%S' '%S' "
 		"seqindata: %x multidone: %B\n",
 		seq->Entryname, ajSeqLen(seq),
-		seqin->Formatstr, seq->Formatstr, seqin->Data, seqin->multidone);
+		seqin->Formatstr, seq->Formatstr,
+		seqin->Data, seqin->multidone);
 	ajStrSet(&seq->Db, seqin->Db);
 	if(!ajStrLen(seq->Type))
 	    ajSeqType(seq);
@@ -1318,6 +1320,7 @@ AjBool ajSeqsetallRead(AjPList thys, AjPSeqin seqin)
 	    ajDebug("ajSeqsetallRead multidone save set %d of %d sequences\n",
 		    ajListLength(thys), ajSeqsetSize(seqset));
 	    setlist = ajListNew();
+	    seqset = ajSeqsetNew();
 	}
     }
     ajSeqDel(&seq);
@@ -1332,6 +1335,7 @@ AjBool ajSeqsetallRead(AjPList thys, AjPSeqin seqin)
 	ajSeqsetFromList(seqset, setlist);
 	ajListFree(&setlist);
 	ajListPushApp(thys, seqset);
+	seqset = NULL;
     }
 
     ajDebug("ajSeqsetallRead total %d sets of %d sequences\n",
