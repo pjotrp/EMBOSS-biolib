@@ -112,7 +112,7 @@
 
 
 #include "emboss.h"
-void ProcessStampFile(AjPStr in, AjPStr out, AjPScop scop);
+static void scopalign_ProcessStampFile(AjPStr in, AjPStr out, AjPScop scop);
 
 
 
@@ -300,7 +300,7 @@ int main(int argc, char **argv)
 
 		/* Process STAMP alignment file and generate alignment file 
 		   for output */
-		ProcessStampFile(out, align, prevscop);
+		scopalign_ProcessStampFile(out, align, prevscop);
 		
 
 		/* Remove all temporary files */
@@ -416,7 +416,7 @@ int main(int argc, char **argv)
     
 
     /* Process STAMP alignment file and generate alignment file for output */
-    ProcessStampFile(out, align, scop);
+    scopalign_ProcessStampFile(out, align, scop);
 
 
     /* Remove all temporary files */
@@ -474,7 +474,7 @@ int main(int argc, char **argv)
 
 
 
-/* @func ProcessStampFile ****************************************************
+/* @funcstatic scopalign_ProcessStampFile *************************************
 **
 ** This function is very specific to scopalign, hence it is not library code.
 ** This function reads the output of ver2hor, i.e. a stamp alignment (Figure 
@@ -564,7 +564,7 @@ int main(int argc, char **argv)
 ** @return [void]
 ** @@
 *****************************************************************************/
-void ProcessStampFile(AjPStr in, AjPStr out, AjPScop scop)
+static void scopalign_ProcessStampFile(AjPStr in, AjPStr out, AjPScop scop)
 {
     AjPFile  outf =NULL;  /* Output file pointer */
     AjPFile   inf =NULL;  /* Input file pointer */
@@ -587,9 +587,9 @@ void ProcessStampFile(AjPStr in, AjPStr out, AjPScop scop)
 
     /* Open input and output files */
     if(!(outf=ajFileNewOut(out)))
-	ajFatal("Could not open output file in ProcessStampFile");
+	ajFatal("Could not open output file in scopalign_ProcessStampFile");
     if(!(inf=ajFileNewIn(in)))
-	ajFatal("Could not open input file in ProcessStampFile");
+	ajFatal("Could not open input file in scopalign_ProcessStampFile");
     
 
     /*Write SCOP classification records to file*/
