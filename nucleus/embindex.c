@@ -123,7 +123,7 @@ EmbPBtcache embBtreeCacheNewC(const char *file, const char *mode,
 {
     FILE *fp;
     EmbPBtcache cache = NULL;
-#if defined (HAVE64)
+#if defined (HAVE64) && !defined(_OSF_SOURCE) && !defined(_AIX) && !defined(__hpux)
     struct stat64 buf;
 #else
     struct stat buf;
@@ -141,7 +141,7 @@ EmbPBtcache embBtreeCacheNewC(const char *file, const char *mode,
 	return NULL;
 
 
-#if defined (HAVE64)
+#if defined (HAVE64) && !defined(_OSF_SOURCE) && !defined(_AIX) && !defined(__hpux)
     if(!stat64(file, &buf))
 #else
     if(!stat(file, &buf))
@@ -525,7 +525,8 @@ static EmbPBtpage btreeCacheControl(EmbPBtcache cache, ajlong pageno,
 {
     EmbPBtpage ret = NULL;
     unsigned char *buf = NULL;
-
+    ajlong lendian = 0L;
+    
     /* ajDebug("In btreeCacheControl\n"); */
     
     ret = btreeCacheLocate(cache,pageno);
@@ -547,7 +548,8 @@ static EmbPBtpage btreeCacheControl(EmbPBtcache cache, ajlong pageno,
 	{
 	    ret = btreePageNew(cache);
 	    buf = ret->buf;
-	    SBT_BLOCKNUMBER(buf,pageno);
+	    lendian = pageno;
+	    SBT_BLOCKNUMBER(buf,lendian);
 	    if(isread || pageno!=cache->totsize)
 		btreeCacheFetch(cache,ret,pageno);
 	}
@@ -687,6 +689,7 @@ void embBtreeCreateRootNode(EmbPBtcache cache)
     prev        = 0L;
     overflow    = 0L;
 
+    /* Don't reuse the variables. Endianness may be changed */ 
     SBT_NODETYPE(p,nodetype);
     SBT_BLOCKNUMBER(p,blocknumber);
     SBT_NKEYS(p,nkeys);
@@ -988,8 +991,8 @@ static EmbPBucket btreeReadBucket(EmbPBtcache cache, ajlong pageno)
 	id = bucket->Ids[i];
 
 	/* Fill ID objects */
-	ajStrAssC(&id->id,idptr);
-	idptr += (strlen(idptr) + 1);
+	ajStrAssC(&id->id,(const char *)idptr);
+	idptr += (strlen((const char *)idptr) + 1);
 	BT_GETAJINT(idptr,&id->dbno);
 	idptr += sizeof(ajint);
 	BT_GETAJINT(idptr,&id->dups);
@@ -1049,6 +1052,7 @@ static void btreeWriteBucket(EmbPBtcache cache, EmbPBucket bucket,
 	cache->totsize += cache->pagesize;
 	buf = page->buf;
 	overflow = 0L;
+	lv = overflow;
 	SBT_BUCKOVERFLOW(buf,lv);
     }
     else
@@ -1066,7 +1070,8 @@ static void btreeWriteBucket(EmbPBtcache cache, EmbPBucket bucket,
     lpage = page;
 
     nentries = bucket->Nentries;
-    SBT_BUCKNENTRIES(buf,nentries);
+    v = nentries;
+    SBT_BUCKNENTRIES(buf,v);
 
     /* Write out key lengths */
     keyptr = PBT_BUCKKEYLEN(lbuf);
@@ -1079,7 +1084,8 @@ static void btreeWriteBucket(EmbPBtcache cache, EmbPBucket bucket,
 	id = bucket->Ids[i];
 	/* Need to alter this if bucket ID structure changes */
 	len = BT_BUCKIDLEN(id->id);
-	BT_SETAJINT(keyptr,len);
+        v = len;
+	BT_SETAJINT(keyptr,v);
 	keyptr += sizeof(ajint);
     }
 
@@ -1096,7 +1102,8 @@ static void btreeWriteBucket(EmbPBtcache cache, EmbPBucket bucket,
 	    if(!overflow)		/* No overflow buckets yet */
 	    {
 		pno = cache->totsize;
-		SBT_BUCKOVERFLOW(buf,pno);
+                lv = pno;
+		SBT_BUCKOVERFLOW(buf,lv);
 		page = embBtreeCacheWrite(cache,pno);
 		page->pageno = cache->totsize;
 		cache->totsize += cache->pagesize;
@@ -1121,11 +1128,14 @@ static void btreeWriteBucket(EmbPBtcache cache, EmbPBucket bucket,
 	
 	sprintf((char *)lptr,"%s",ajStrStr(id->id));
 	lptr += (ajStrLen(id->id) + 1);
-	BT_SETAJINT(lptr,id->dbno);
+        v = id->dbno;
+	BT_SETAJINT(lptr,v);
 	lptr += sizeof(ajint);
-	BT_SETAJINT(lptr,id->dups);
+        v = id->dups;
+	BT_SETAJINT(lptr,v);
 	lptr += sizeof(ajint);
-	BT_SETAJLONG(lptr,id->offset);
+        lv = id->offset;
+	BT_SETAJLONG(lptr,lv);
 	lptr += sizeof(ajlong);
 	
 
@@ -1365,6 +1375,8 @@ static AjBool btreeReorderBuckets(EmbPBtcache cache, EmbPBtpage leaf)
     EmbPBtId bid       = NULL;
     EmbPBucket cbucket = NULL;
     EmbPBtId cid       = NULL;
+
+    ajint   v = 0;
     
     /* ajDebug("In btreeReorderBuckets\n"); */
 
@@ -1508,13 +1520,16 @@ static AjBool btreeReorderBuckets(EmbPBtcache cache, EmbPBtpage leaf)
 	ptrs[i] = cache->totsize;
     btreeWriteBucket(cache,cbucket,ptrs[i]);
 
+    cbucket->Nentries = maxnperbucket;
     btreeBucketDel(&cbucket);
 
     /* Now write out a modified leaf with new keys/ptrs */
 
     nkeys = bucketn - 1;
-    SBT_NKEYS(lbuf,nkeys);
-    SBT_TOTLEN(lbuf,totkeylen);
+    v = nkeys;
+    SBT_NKEYS(lbuf,v);
+    v = totkeylen;
+    SBT_TOTLEN(lbuf,v);
 
     btreeWriteNode(cache,leaf,keys,ptrs,nkeys);
 
@@ -1594,6 +1609,10 @@ static void btreeInsertNonFull(EmbPBtcache cache, EmbPBtpage page,
     ajint i;
     ajint count  = 0;
 
+    ajlong lv = 0L;
+    ajint  v  = 0;
+    
+
     EmbPBtpage ppage = NULL;
     ajlong pageno    = 0L;
 
@@ -1645,7 +1664,8 @@ static void btreeInsertNonFull(EmbPBtcache cache, EmbPBtpage page,
     }
 
     ++nkeys;
-    SBT_NKEYS(buf,nkeys);
+    v = nkeys;
+    SBT_NKEYS(buf,v);
 
     btreeWriteNode(cache,page,karray,parray,nkeys);
     if(nodetype == BT_ROOT)
@@ -1653,10 +1673,12 @@ static void btreeInsertNonFull(EmbPBtcache cache, EmbPBtpage page,
 
     pageno = page->pageno;
     ppage = embBtreeCacheRead(cache,less);
-    SBT_PREV(ppage->buf,pageno);
+    lv = pageno;
+    SBT_PREV(ppage->buf,lv);
     ppage->dirty = BT_DIRTY;
     ppage = embBtreeCacheRead(cache,greater);
-    SBT_PREV(ppage->buf,pageno);
+    lv = pageno;
+    SBT_PREV(ppage->buf,lv);
     ppage->dirty = BT_DIRTY;
     
 
@@ -1723,6 +1745,9 @@ static void btreeInsertKey(EmbPBtcache cache, EmbPBtpage page,
     ajlong prev       = 0L;
     ajint  totlen     = 0;
     
+    ajlong lv = 0L;
+    ajint  v  = 0;
+    
     /* ajDebug("In btreeInsertKey\n"); */
 
     if(!btreeNodeIsFull(cache,page))
@@ -1783,11 +1808,13 @@ static void btreeInsertKey(EmbPBtcache cache, EmbPBtpage page,
     rpage->pageno = cache->totsize;
     cache->totsize += cache->pagesize;
     rbuf = rpage->buf;
-    SBT_BLOCKNUMBER(rbuf,rblockno);
+    lv = rblockno;
+    SBT_BLOCKNUMBER(rbuf,lv);
 
     
     GBT_PREV(lbuf,&prev);
-    SBT_PREV(rbuf,prev);
+    lv = prev;
+    SBT_PREV(rbuf,lv);
 
     nkeys = order - 1;
     keypos = nkeys / 2;
@@ -1800,8 +1827,10 @@ static void btreeInsertKey(EmbPBtcache cache, EmbPBtpage page,
 
 
     GBT_NODETYPE(lbuf,&nodetype);
-    SBT_NODETYPE(rbuf,nodetype);
-    SBT_OVERFLOW(rbuf,overflow);
+    v = nodetype;
+    SBT_NODETYPE(rbuf,v);
+    lv = overflow;
+    SBT_OVERFLOW(rbuf,lv);
 
 
     totlen = 0;
@@ -1812,9 +1841,11 @@ static void btreeInsertKey(EmbPBtcache cache, EmbPBtpage page,
 	tparray[i] = parray[i];
     }
     tparray[i] = parray[i];
-    SBT_TOTLEN(lbuf,totlen);
+    v = totlen;
+    SBT_TOTLEN(lbuf,v);
     n = i;
-    SBT_NKEYS(lbuf,n);
+    v = n;
+    SBT_NKEYS(lbuf,v);
     btreeWriteNode(cache,lpage,tkarray,tparray,i);
 
 
@@ -1823,7 +1854,8 @@ static void btreeInsertKey(EmbPBtcache cache, EmbPBtpage page,
     {
 	tpage = embBtreeCacheRead(cache,tparray[i]);
 	tbuf = tpage->buf;
-	SBT_PREV(tbuf,lblockno);
+	lv = lblockno;
+	SBT_PREV(tbuf,lv);
 	tpage->dirty = BT_DIRTY;
     }
 
@@ -1836,9 +1868,11 @@ static void btreeInsertKey(EmbPBtcache cache, EmbPBtpage page,
 	tparray[i-(keypos+1)] = parray[i];
     }
     tparray[i-(keypos+1)] = parray[i];
-    SBT_TOTLEN(rbuf,totlen);
+    v = totlen;
+    SBT_TOTLEN(rbuf,v);
     rkeyno = (nkeys-keypos) - 1;
-    SBT_NKEYS(rbuf,rkeyno);
+    v = rkeyno;
+    SBT_NKEYS(rbuf,v);
     btreeWriteNode(cache,rpage,tkarray,tparray,rkeyno);
 
 
@@ -1846,7 +1880,8 @@ static void btreeInsertKey(EmbPBtcache cache, EmbPBtpage page,
     {
 	tpage = embBtreeCacheRead(cache,tparray[i]);
 	tbuf = tpage->buf;
-	SBT_PREV(tbuf,rblockno);
+	lv = rblockno;
+	SBT_PREV(tbuf,lv);
 	tpage->dirty = BT_DIRTY;
     }
 
@@ -1922,6 +1957,10 @@ static void btreeSplitRoot(EmbPBtcache cache)
     ajint totlen    = 0;
     ajint rkeyno    = 0;
     ajint n         = 0;
+
+    ajlong lv = 0L;
+    ajint  v  = 0;
+    
     
     /* ajDebug("In btreeSplitRoot\n"); */
 
@@ -1959,15 +1998,21 @@ static void btreeSplitRoot(EmbPBtcache cache)
     lpage->pageno = cache->totsize;
     cache->totsize += cache->pagesize;
 
-    SBT_BLOCKNUMBER(rpage->buf,rblockno);
-    SBT_BLOCKNUMBER(lpage->buf,lblockno);
+    lv = rblockno;
+    SBT_BLOCKNUMBER(rpage->buf,lv);
+    lv = lblockno;
+    SBT_BLOCKNUMBER(lpage->buf,lv);
 
     if(!cache->level)
     {
-	SBT_LEFT(lpage->buf,zero);
-	SBT_RIGHT(lpage->buf,rblockno);
-	SBT_LEFT(rpage->buf,lblockno);
-	SBT_RIGHT(rpage->buf,zero);
+	lv = zero;
+	SBT_LEFT(lpage->buf,lv);
+	lv = rblockno;
+	SBT_RIGHT(lpage->buf,lv);
+	lv = lblockno;
+	SBT_LEFT(rpage->buf,lv);
+	lv = zero;
+	SBT_RIGHT(rpage->buf,lv);
     }
 
     btreeGetKeys(cache,rootbuf,&karray,&parray);
@@ -1979,7 +2024,8 @@ static void btreeSplitRoot(EmbPBtcache cache)
     
 
     n = 1;
-    SBT_NKEYS(rootbuf,n);
+    v = n;
+    SBT_NKEYS(rootbuf,v);
     btreeWriteNode(cache,rootpage,tkarray,tparray,1);
     rootpage->dirty = BT_LOCK;
 
@@ -1990,13 +2036,19 @@ static void btreeSplitRoot(EmbPBtcache cache)
 	nodetype = BT_INTERNAL;
     else
 	nodetype = BT_LEAF;
-    
-    SBT_NODETYPE(rbuf,nodetype);
-    SBT_NODETYPE(lbuf,nodetype);
-    SBT_OVERFLOW(rbuf,overflow);
-    SBT_PREV(rbuf,overflow);
-    SBT_OVERFLOW(lbuf,overflow);
-    SBT_PREV(lbuf,overflow);
+
+    v = nodetype;
+    SBT_NODETYPE(rbuf,v);
+    v = nodetype;
+    SBT_NODETYPE(lbuf,v);
+    lv = overflow;
+    SBT_OVERFLOW(rbuf,lv);
+    lv = overflow;
+    SBT_PREV(rbuf,lv);
+    lv = overflow;
+    SBT_OVERFLOW(lbuf,lv);
+    lv = overflow;
+    SBT_PREV(lbuf,lv);
 
     totlen = 0;
     for(i=0;i<keypos;++i)
@@ -2006,16 +2058,19 @@ static void btreeSplitRoot(EmbPBtcache cache)
 	tparray[i] = parray[i];
     }
     tparray[i] = parray[i];
-    SBT_TOTLEN(lbuf,totlen);
+    v = totlen;
+    SBT_TOTLEN(lbuf,v);
     n = i;
-    SBT_NKEYS(lbuf,n);
+    v = n;
+    SBT_NKEYS(lbuf,v);
     btreeWriteNode(cache,lpage,tkarray,tparray,i);
 
     for(i=0;i<n+1;++i)
     {
 	tpage = embBtreeCacheRead(cache,tparray[i]);
 	tbuf = tpage->buf;
-	SBT_PREV(tbuf,lblockno);
+	lv = lblockno;
+	SBT_PREV(tbuf,lv);
 	tpage->dirty = BT_DIRTY;
     }
 
@@ -2027,16 +2082,19 @@ static void btreeSplitRoot(EmbPBtcache cache)
 	tparray[i-(keypos+1)] = parray[i];
     }
     tparray[i-(keypos+1)] = parray[i];
-    SBT_TOTLEN(rbuf,totlen);
+    v = totlen;
+    SBT_TOTLEN(rbuf,v);
     rkeyno = (nkeys-keypos) - 1;
-    SBT_NKEYS(rbuf,rkeyno);
+    v = rkeyno;
+    SBT_NKEYS(rbuf,v);
     btreeWriteNode(cache,rpage,tkarray,tparray,rkeyno);
 
     for(i=0;i<rkeyno+1;++i)
     {
 	tpage = embBtreeCacheRead(cache,tparray[i]);
 	tbuf = tpage->buf;
-	SBT_PREV(tbuf,rblockno);
+	lv = rblockno;
+	SBT_PREV(tbuf,lv);
 	tpage->dirty = BT_DIRTY;
     }
 
@@ -2205,7 +2263,7 @@ static void btreeGetKeys(EmbPBtcache cache, unsigned char *buf,
 	    keyptr = PBT_KEYLEN(tbuf);
 	}
 
-	ajStrAssC(&karray[i],keyptr);
+	ajStrAssC(&karray[i],(const char *)keyptr);
 	keyptr += len;
 
 	BT_GETAJLONG(keyptr,&parray[i]);
@@ -2297,7 +2355,8 @@ static void btreeWriteNode(EmbPBtcache cache, EmbPBtpage spage,
     tbuf = lbuf;
     page = spage;
 
-    SBT_NKEYS(lbuf,nkeys);
+    v = nkeys;
+    SBT_NKEYS(lbuf,v);
     
     lenptr = PBT_KEYLEN(lbuf);
     keyptr = lenptr + nkeys * sizeof(ajint);
@@ -2307,7 +2366,8 @@ static void btreeWriteNode(EmbPBtcache cache, EmbPBtpage spage,
 	if((lenptr-lbuf+1) > cache->pagesize)
 	    ajFatal("WriteNode: Too many key lengths for available pagesize");
 	len = ajStrLen(keys[i]);
-	BT_SETAJINT(lenptr,len);
+	v = len;
+	BT_SETAJINT(lenptr,v);
 	lenptr += sizeof(ajint);
     }
 
@@ -2324,7 +2384,8 @@ static void btreeWriteNode(EmbPBtcache cache, EmbPBtpage spage,
 	    {
 		page->dirty = BT_DIRTY;
 		blockno = cache->totsize;
-		SBT_OVERFLOW(tbuf,blockno);
+		lv = blockno;
+		SBT_OVERFLOW(tbuf,lv);
 		page = embBtreeCacheWrite(cache,blockno);
 		page->pageno = cache->totsize;
 		cache->totsize += cache->pagesize;
@@ -2333,7 +2394,8 @@ static void btreeWriteNode(EmbPBtcache cache, EmbPBtpage spage,
 		SBT_NODETYPE(tbuf,v);
 		lv = 0L;
 		SBT_OVERFLOW(tbuf,lv);
-		SBT_BLOCKNUMBER(tbuf,blockno);
+		lv = blockno;
+		SBT_BLOCKNUMBER(tbuf,lv);
 	    }
 	    else
 	    {
@@ -2348,7 +2410,8 @@ static void btreeWriteNode(EmbPBtcache cache, EmbPBtpage spage,
 
 	sprintf((char *)keyptr,"%s",ajStrStr(keys[i]));
 	keyptr += len;
-	BT_SETAJLONG(keyptr,ptrs[i]);
+	lv = ptrs[i];
+	BT_SETAJLONG(keyptr,lv);
 	keyptr += sizeof(ajlong);
     }
     
@@ -2362,14 +2425,16 @@ static void btreeWriteNode(EmbPBtcache cache, EmbPBtpage spage,
 	if(!overflow)			/* No overflow buckets yet */
 	{
 	    blockno = cache->totsize;
-	    SBT_OVERFLOW(tbuf,blockno);
+	    lv = blockno;
+	    SBT_OVERFLOW(tbuf,lv);
 	    page = embBtreeCacheWrite(cache,blockno);
 	    page->pageno = cache->totsize;
 	    cache->totsize += cache->pagesize;
 	    tbuf = page->buf;
 	    v = BT_OVERFLOW;
 	    SBT_NODETYPE(tbuf,v);
-	    SBT_BLOCKNUMBER(tbuf,blockno);
+	    lv = blockno;
+	    SBT_BLOCKNUMBER(tbuf,lv);
 	}
 	else
 	{
@@ -2384,7 +2449,8 @@ static void btreeWriteNode(EmbPBtcache cache, EmbPBtpage spage,
     overflow = 0L;
     SBT_OVERFLOW(tbuf,overflow);
 
-    BT_SETAJLONG(keyptr,ptrs[i]);
+    lv = ptrs[i];
+    BT_SETAJLONG(keyptr,lv);
 
     return;
 }
@@ -2847,6 +2913,8 @@ static EmbPBtpage btreeSplitLeaf(EmbPBtcache cache, EmbPBtpage spage)
     ajlong zero = 0L;
     ajlong join = 0L;
     
+    ajlong lv = 0L;
+    ajint  v  = 0;
     
     /* ajDebug("In btreeSplitLeaf\n"); */
 
@@ -2873,7 +2941,8 @@ static EmbPBtpage btreeSplitLeaf(EmbPBtcache cache, EmbPBtpage spage)
 	lpage->pageno = cache->totsize;
 	cache->totsize += cache->pagesize;
 	lbuf = lpage->buf;
-	SBT_PREV(lbuf,prev);
+	lv = prev;
+	SBT_PREV(lbuf,lv);
     }
     else
     {
@@ -2891,16 +2960,21 @@ static EmbPBtpage btreeSplitLeaf(EmbPBtcache cache, EmbPBtpage spage)
 
     if(rootnodetype == BT_ROOT)
     {
-	SBT_RIGHT(rbuf,zero);
-	SBT_LEFT(lbuf,zero);
+	lv = zero;
+	SBT_RIGHT(rbuf,lv);
+	lv = zero;
+	SBT_LEFT(lbuf,lv);
     }
     else
     {
 	GBT_RIGHT(lbuf,&join);
-	SBT_RIGHT(rbuf,join);
+	lv = join;
+	SBT_RIGHT(rbuf,lv);
     }
-    SBT_LEFT(rbuf,lblockno);
-    SBT_RIGHT(lbuf,rblockno);
+    lv = lblockno;
+    SBT_LEFT(rbuf,lv);
+    lv = rblockno;
+    SBT_RIGHT(lbuf,lv);
 
 
     btreeGetKeys(cache,buf,&karray,&parray);
@@ -2997,10 +3071,13 @@ static EmbPBtpage btreeSplitLeaf(EmbPBtcache cache, EmbPBtpage spage)
     btreeWriteBucket(cache,cbucket,parray[i]);
 
     nkeys = bucketn - 1;
-    SBT_NKEYS(lbuf,nkeys);
-    SBT_TOTLEN(lbuf,totkeylen);
+    v = nkeys;
+    SBT_NKEYS(lbuf,v);
+    v = totkeylen;
+    SBT_TOTLEN(lbuf,v);
     nodetype = BT_LEAF;
-    SBT_NODETYPE(lbuf,nodetype);
+    v = nodetype;
+    SBT_NODETYPE(lbuf,v);
     lpage->dirty = BT_DIRTY;
     btreeWriteNode(cache,lpage,karray,parray,nkeys);
 
@@ -3059,14 +3136,19 @@ static EmbPBtpage btreeSplitLeaf(EmbPBtcache cache, EmbPBtpage spage)
     btreeWriteBucket(cache,cbucket,parray[i]);
 
     nkeys = bucketn - 1;
-    
-    SBT_NKEYS(rbuf,nkeys);
-    SBT_TOTLEN(rbuf,totkeylen);
+
+    v = nkeys;
+    SBT_NKEYS(rbuf,v);
+    v = totkeylen;
+    SBT_TOTLEN(rbuf,v);
     nodetype = BT_LEAF;
-    SBT_NODETYPE(rbuf,nodetype);
+    v = nodetype;
+    SBT_NODETYPE(rbuf,v);
     GBT_PREV(lbuf,&prev);
-    SBT_PREV(rbuf,prev);
-    SBT_OVERFLOW(rbuf,overflow);
+    lv = prev;
+    SBT_PREV(rbuf,lv);
+    lv = overflow;
+    SBT_OVERFLOW(rbuf,lv);
     
     btreeWriteNode(cache,rpage,karray,parray,nkeys);
     rpage->dirty = BT_DIRTY;
@@ -3544,6 +3626,8 @@ static void btreeAdjustBuckets(EmbPBtcache cache, EmbPBtpage leaf)
     EmbPBtId bid       = NULL;
     EmbPBucket cbucket = NULL;
     EmbPBtId cid       = NULL;
+
+    ajint v = 0;
     
     /* ajDebug("In btreeAdjustBuckets\n"); */
 
@@ -3637,7 +3721,8 @@ static void btreeAdjustBuckets(EmbPBtcache cache, EmbPBtpage leaf)
 
     if(!totalkeys)
     {
-	SBT_NKEYS(lbuf,totalkeys);
+	v = totalkeys;
+	SBT_NKEYS(lbuf,v);
 	for(i=0;i<order;++i)
 	    ajStrDel(&keys[i]);
 	AJFREE(keys);
@@ -3758,8 +3843,10 @@ static void btreeAdjustBuckets(EmbPBtcache cache, EmbPBtpage leaf)
     /* Now write out a modified leaf with new keys/ptrs */
 
     nkeys = bucketn - 1;
-    SBT_NKEYS(lbuf,nkeys);
-    SBT_TOTLEN(lbuf,totkeylen);
+    v = nkeys;
+    SBT_NKEYS(lbuf,v);
+    v = totkeylen;
+    SBT_TOTLEN(lbuf,v);
 
     btreeWriteNode(cache,leaf,keys,ptrs,nkeys);
 
@@ -3812,7 +3899,7 @@ static ajlong btreeCollapseRoot(EmbPBtcache cache, ajlong pageno)
     ajint i;
 
     ajlong prev   = 0L;
-
+    
     /* ajDebug("In btreeCollapseRoot\n"); */
     
     if(!cache->level)
@@ -4056,6 +4143,8 @@ static ajlong btreeShift(EmbPBtcache cache, ajlong thisNode,
     ajint  anchorPos   = 0;
     ajlong prev        = 0L;
     ajint  nodetype    = 0;
+
+    ajlong lv = 0L;
     
     /* ajDebug("In btreeShift\n"); */
 
@@ -4186,7 +4275,8 @@ static ajlong btreeShift(EmbPBtcache cache, ajlong thisNode,
 	GBT_NODETYPE(buf,&nodetype);
 	if(nodetype != BT_BUCKET)
 	{
-	    SBT_PREV(buf,prev);
+	    lv = prev;
+	    SBT_PREV(buf,lv);
 	    page->dirty = BT_DIRTY;
 	}
     }
@@ -4273,6 +4363,9 @@ static ajlong btreeMerge(EmbPBtcache cache, ajlong thisNode,
 
     ajint  anchorPos = 0;
     ajlong prev      = 0L;
+
+    ajlong lv = 0L;
+    
 
     AjBool collapse = ajFalse;
     
@@ -4442,7 +4535,8 @@ static ajlong btreeMerge(EmbPBtcache cache, ajlong thisNode,
 	GBT_NODETYPE(buf,&nodetype);
 	if(nodetype != BT_BUCKET)
 	{
-	    SBT_PREV(buf,prev);
+	    lv = prev;
+	    SBT_PREV(buf,lv);
 	    page->dirty = BT_DIRTY;
 	}
     }
@@ -4914,6 +5008,8 @@ static void btreeKeyShift(EmbPBtcache cache, EmbPBtpage tpage)
     ajint pkeypos = 0;
     ajint minsize = 0;
 
+    ajlong lv = 0L;
+    
     /* ajDebug("In btreeKeyShift\n"); */
     
     tbuf = tpage->buf;
@@ -4993,7 +5089,8 @@ static void btreeKeyShift(EmbPBtcache cache, EmbPBtpage tpage)
 
 	page = embBtreeCacheRead(cache,pSarray[skeys]);
 	buf = page->buf;
-	SBT_PREV(buf,spage->pageno);
+	lv = spage->pageno;
+	SBT_PREV(buf,lv);
 	page->dirty = BT_DIRTY;
 
 
@@ -5050,7 +5147,8 @@ static void btreeKeyShift(EmbPBtcache cache, EmbPBtpage tpage)
 
 	page = embBtreeCacheRead(cache,pSarray[0]);
 	buf = page->buf;
-	SBT_PREV(buf,spage->pageno);
+	lv = spage->pageno;
+	SBT_PREV(buf,lv);
 	page->dirty = BT_DIRTY;
 
 	for(i=0;i<order;++i)
@@ -5212,6 +5310,8 @@ void embBtreeJoinLeaves(EmbPBtcache cache)
 
     ajlong left    = 0L;
     ajlong right   = 0L;
+
+    ajlong lv = 0L;
     
     if(!cache->level)
 	return;
@@ -5236,16 +5336,19 @@ void embBtreeJoinLeaves(EmbPBtcache cache)
 	GBT_NODETYPE(buf,&nodetype);
     }
     
-    SBT_LEFT(buf,left);
+    lv = left;
+    SBT_LEFT(buf,lv);
     
     while((newpage = embBtreeTraverseLeaves(cache,page)))
     {
 	right = newpage->pageno;
-	SBT_RIGHT(buf,right);
+	lv = right;
+	SBT_RIGHT(buf,lv);
 	page->dirty = BT_DIRTY;
 	left = page->pageno;
 	buf = newpage->buf;
-	SBT_LEFT(buf,left);
+	lv = left;
+	SBT_LEFT(buf,lv);
 	page = newpage;
     }
 

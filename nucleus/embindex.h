@@ -109,10 +109,22 @@ typedef struct EmbSBucket
 ** Directory/FileName pairs
 */
 
+#if defined(LENDIAN)
 #define BT_GETAJINT(p,v) (memcpy((void*)v,(void*)p,sizeof(ajint)))
 #define BT_GETAJLONG(p,v) (memcpy((void*)v,(void*)p,sizeof(ajlong)))
 #define BT_SETAJINT(p,v) (memcpy((void*)p,(void*)&v,sizeof(ajint)))
 #define BT_SETAJLONG(p,v) (memcpy((void*)p,(void*)&v,sizeof(ajlong)))
+#else
+#define BT_GETAJINT(p,v) memcpy((void*)v,(void*)p,sizeof(ajint)); \
+                         ajUtilRevInt(v)
+#define BT_GETAJLONG(p,v) memcpy((void*)v,(void*)p,sizeof(ajlong)); \
+                          ajUtilRevLong(v)
+#define BT_SETAJINT(p,v)  ajUtilRevInt(&v); \
+                          memcpy((void*)p,(void*)&v,sizeof(ajint))
+#define BT_SETAJLONG(p,v) ajUtilRevLong(&v); \
+                          memcpy((void*)p,(void*)&v,sizeof(ajlong))
+#endif
+
 
 #define BT_BUCKIDLEN(str) (ajStrLen(str) + 1 + sizeof(ajint) + \
 			   sizeof(ajint) + sizeof(ajlong))
@@ -132,24 +144,48 @@ typedef struct EmbSBucket
 ** Macros to return a page entry value within a bucket
 */
 
+#if defined(LENDIAN)
 #define GBT_BUCKNODETYPE(p,v) (memcpy((void*)v,(void*)PBT_BUCKNODETYPE(p), \
 				      sizeof(ajint)))
 #define GBT_BUCKNENTRIES(p,v) (memcpy((void*)v,(void*)PBT_BUCKNENTRIES(p), \
 				      sizeof(ajint)))
 #define GBT_BUCKOVERFLOW(p,v) (memcpy((void*)v,(void*)PBT_BUCKOVERFLOW(p), \
 				      sizeof(ajlong)))
+#else
+#define GBT_BUCKNODETYPE(p,v) memcpy((void*)v,(void*)PBT_BUCKNODETYPE(p), \
+				      sizeof(ajint)); \
+                              ajUtilRevInt(v)
+#define GBT_BUCKNENTRIES(p,v) memcpy((void*)v,(void*)PBT_BUCKNENTRIES(p), \
+                                      sizeof(ajint)); \
+                              ajUtilRevInt(v)
+#define GBT_BUCKOVERFLOW(p,v) memcpy((void*)v,(void*)PBT_BUCKOVERFLOW(p), \
+				      sizeof(ajlong)); \
+                              ajUtilRevLong(v)
+#endif
 
 
 /*
 ** Macros to set a page entry value within an internal/leaf node
 */
+
+#if defined(LENDIAN)
 #define SBT_BUCKNODETYPE(p,v) (memcpy((void*)PBT_BUCKNODETYPE(p), \
 				      (const void*)&v,sizeof(ajint)))
 #define SBT_BUCKNENTRIES(p,v) (memcpy((void*)PBT_BUCKNENTRIES(p), \
 				      (const void*)&v,sizeof(ajint)))
 #define SBT_BUCKOVERFLOW(p,v) (memcpy((void*)PBT_BUCKOVERFLOW(p), \
 				      (const void*)&v,sizeof(ajlong)))
-
+#else
+#define SBT_BUCKNODETYPE(p,v) ajUtilRevInt(&v); \
+                              memcpy((void*)PBT_BUCKNODETYPE(p), \
+				      (const void*)&v,sizeof(ajint))
+#define SBT_BUCKNENTRIES(p,v) ajUtilRevInt(&v); \
+                              memcpy((void*)PBT_BUCKNENTRIES(p), \
+				     (const void*)&v,sizeof(ajint))
+#define SBT_BUCKOVERFLOW(p,v) ajUtilRevLong(&v); \
+                              memcpy((void*)PBT_BUCKOVERFLOW(p), \
+				     (const void*)&v,sizeof(ajlong))
+#endif
 
 /*
 ** Macros to determine entry positions within an internal/leaf node
@@ -174,6 +210,7 @@ typedef struct EmbSBucket
 /*
 ** Macros to return a page entry value within an internal/leaf node
 */
+#if defined(LENDIAN)
 #define GBT_NODETYPE(p,v) (memcpy((void*)v,(void*)PBT_NODETYPE(p), \
 				  sizeof(ajint)))
 #define GBT_BLOCKNUMBER(p,v) (memcpy((void*)v,(void*)PBT_BLOCKNUMBER(p), \
@@ -190,10 +227,39 @@ typedef struct EmbSBucket
 			      sizeof(ajlong)))
 #define GBT_OVERFLOW(p,v) (memcpy((void*)v,(void*)PBT_OVERFLOW(p), \
 				  sizeof(ajlong)))
+#else
+#define GBT_NODETYPE(p,v) memcpy((void*)v,(void*)PBT_NODETYPE(p), \
+				 sizeof(ajint)); \
+                          ajUtilRevInt(v)
+#define GBT_BLOCKNUMBER(p,v) memcpy((void*)v,(void*)PBT_BLOCKNUMBER(p), \
+				     sizeof(ajlong)); \
+                             ajUtilRevLong(v)
+#define GBT_NKEYS(p,v) memcpy((void*)v,(void*)PBT_NKEYS(p), \
+			       sizeof(ajint)); \
+                       ajUtilRevInt(v)
+#define GBT_TOTLEN(p,v) memcpy((void*)v,(void*)PBT_TOTLEN(p), \
+			       sizeof(ajint)); \
+                        ajUtilRevInt(v)
+#define GBT_LEFT(p,v) memcpy((void*)v,(void*)PBT_LEFT(p), \
+                             sizeof(ajlong)); \
+                      ajUtilRevLong(v)
+
+#define GBT_RIGHT(p,v) memcpy((void*)v,(void*)PBT_RIGHT(p), \
+			      sizeof(ajlong)); \
+                       ajUtilRevLong(v)
+#define GBT_PREV(p,v) memcpy((void*)v,(void*)PBT_PREV(p), \
+			      sizeof(ajlong)); \
+                      ajUtilRevLong(v)
+#define GBT_OVERFLOW(p,v) memcpy((void*)v,(void*)PBT_OVERFLOW(p), \
+				  sizeof(ajlong)); \
+                          ajUtilRevLong(v)
+#endif
+
 
 /*
 ** Macros to set a page entry value within an internal/leaf node
 */
+#if defined(LENDIAN)
 #define SBT_NODETYPE(p,v) (memcpy((void*)PBT_NODETYPE(p),(const void*)&v, \
 				  sizeof(ajint)))
 #define SBT_BLOCKNUMBER(p,v) (memcpy((void*)PBT_BLOCKNUMBER(p), \
@@ -210,6 +276,32 @@ typedef struct EmbSBucket
 			      (const void*)&v,sizeof(ajlong)))
 #define SBT_OVERFLOW(p,v) (memcpy((void*)PBT_OVERFLOW(p), \
 				  (const void*)&v,sizeof(ajlong)))
+#else
+#define SBT_NODETYPE(p,v) ajUtilRevInt(&v); \
+                          memcpy((void*)PBT_NODETYPE(p),(const void*)&v, \
+				  sizeof(ajint))
+#define SBT_BLOCKNUMBER(p,v) ajUtilRevLong(&v); \
+                             memcpy((void*)PBT_BLOCKNUMBER(p), \
+				     (const void*)&v,sizeof(ajlong))
+#define SBT_NKEYS(p,v) ajUtilRevInt(&v); \
+                       memcpy((void*)PBT_NKEYS(p),(const void*)&v, \
+			       sizeof(ajint))
+#define SBT_TOTLEN(p,v) ajUtilRevInt(&v); \
+                        memcpy((void*)PBT_TOTLEN(p),(const void*)&v, \
+				sizeof(ajint))
+#define SBT_LEFT(p,v) ajUtilRevLong(&v); \
+                      memcpy((void*)PBT_LEFT(p), \
+			      (const void*)&v,sizeof(ajlong))
+#define SBT_RIGHT(p,v) ajUtilRevLong(&v); \
+                       memcpy((void*)PBT_RIGHT(p), \
+			       (const void*)&v,sizeof(ajlong))
+#define SBT_PREV(p,v) ajUtilRevLong(&v); \
+                      memcpy((void*)PBT_PREV(p), \
+			      (const void*)&v,sizeof(ajlong))
+#define SBT_OVERFLOW(p,v) ajUtilRevLong(&v); \
+                          memcpy((void*)PBT_OVERFLOW(p), \
+				 (const void*)&v,sizeof(ajlong))
+#endif
 
 
 typedef struct EmbSBtpage
