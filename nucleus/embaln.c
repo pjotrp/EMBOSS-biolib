@@ -2689,3 +2689,77 @@ void embAlignPrintProfile(AjPFile outf, char *a, char *b, AjPStr m, AjPStr n,
     ajStrDel(&ap);
     ajStrDel(&fm);
 }
+
+
+
+
+
+/* @func embAlignCalcSimilarity *******************************************
+**
+** Calculate Similarity of two sequences (same length)
+** Nucleotides or proteins as needed.
+**
+** @param [r] m [AjPStr] Walk alignment for first sequence
+** @param [r] n [AjPStr] Walk alignment for second sequence
+** @param [r] sub [float **] substitution matrix
+** @param [r] cvt [AjPSeqCvt] conversion table for matrix
+** @param [r] lenm [int] length of first sequence
+** @param [r] lenn [int] length of second sequence
+** @param [w] id [float *] % identity
+** @param [w] id [float *] % similarity
+** @param [w] idx [float *] % identity wrt longest sequence
+** @param [w] id [float *] % similarity wrt longest sequence
+** 
+** @return [void]
+******************************************************************************/
+
+void embAlignCalcSimilarity(AjPStr m, AjPStr n, float **sub, AjPSeqCvt cvt,
+			    int lenm, int lenn, float *id, float *sim,
+			    float *idx, float *simx)
+{
+    int   i;
+    int   olen;
+    char  *p=NULL;
+    char  *q=NULL;
+    float match=0.;
+    int   max;
+    int   gaps=0;
+
+
+    p=ajStrStr(m);
+    q=ajStrStr(n);
+    olen=strlen(p);
+
+
+    *id = *sim = 0.;
+    
+
+    for(i=0;i<olen;++i)
+    {
+	if(p[i] =='.' || q[i]=='.')
+	{
+	    ++gaps;
+	    continue;
+	}
+
+	match=sub[ajSeqCvtK(cvt,p[i])][ajSeqCvtK(cvt,q[i])];
+	if(p[i]==q[i])
+	{
+	    ++(*id);
+	    ++(*sim);
+	    continue;
+	}
+	if(match>0.0)
+	    ++(*sim);
+    }
+
+    max = (lenm>lenn) ? lenm : lenn;
+    
+    *idx  = *id / (float)max * 100.;
+    *simx = *sim / (float)max * 100.;
+    *id   *= (100. / (float)(olen-gaps));
+    *sim  *= (100. / (float)(olen-gaps));
+
+    return;
+}
+
