@@ -812,7 +812,6 @@ static void alignWriteMatch (AjPAlign thys) {
   ajint nali;
   ajint iali;
   ajint len0;
-  ajint len1;
   AlignPData* pdata;
   AlignPData data;
   
