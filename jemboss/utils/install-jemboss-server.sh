@@ -927,6 +927,13 @@ if [ $INSTALL_TYPE = "2" ]; then
   mv $RUNFILE $RUNFILE.bak
   mv $RUNFILE.new3 $RUNFILE
   chmod a+x $RUNFILE
+
+  echo
+  echo "To run Jemboss:"
+  echo "cd $JEMBOSS"
+  echo "./runJemboss.csh"
+  echo
+
   exit 0
 fi
 
