@@ -502,7 +502,8 @@ static AjPRegexp
 
 AjBool ajFeattabOutOpen (AjPFeattabOut thys, AjPStr ufo) {
 
-  ajDebug("ajFeattabOutOpen UFO '%S'\n", ufo);
+  ajDebug("ajFeattabOutOpen ufo:'%S' dir:'%S' file:'%S'\n",
+	  ufo, thys->Directory, thys->Filename);
   if (thys->Handle)
     return ajTrue;
 
@@ -511,8 +512,9 @@ AjBool ajFeattabOutOpen (AjPFeattabOut thys, AjPStr ufo) {
       return ajFalse;
   }
 
-  ajDebug("trying to open '%S'\n", thys->Filename);
-  thys->Handle = ajFileNewOut(thys->Filename);
+  ajDebug("trying to open dir:'%S' file:'%S' fmt:'%S'\n",
+	  thys->Directory, thys->Filename, thys->Formatstr);
+  thys->Handle = ajFileNewOutD(thys->Directory, thys->Filename);
   if (!thys->Handle) return ajFalse;
   ajDebug("after opening '%S'\n", thys->Filename);
 
@@ -582,7 +584,8 @@ AjBool ajFeattabOutIsOpen (AjPFeattabOut thys) {
 
 AjBool ajFeattabOutSet (AjPFeattabOut thys, AjPStr ufo) {
 
-  ajDebug("ajFeattabOutSet UFO '%S'\n", ufo);
+  ajDebug("ajFeattabOutSet ufo:'%S' dir:'%S' file:'%S'\n",
+	  ufo, thys->Directory, thys->Filename);
   if (thys->Handle)
     return ajTrue;
 
@@ -684,7 +687,7 @@ AjPFeattabOut ajFeattabOutNew (void) {
   AjPFeattabOut pthis;
   AJNEW0(pthis);
 
-  ajDebug("ajFeatTabOutNew %x\n", pthis);
+  ajDebug("ajFeattabOutNew %x\n", pthis);
 
   return pthis;
 }
@@ -705,6 +708,10 @@ AjPFeattabOut ajFeattabOutNewSSF (AjPStr fmt, AjPStr name, char* type,
 			       AjPFile file) {
   AjPFeattabOut pthis;
   ajint iformat = 0;
+
+
+  ajDebug("ajFeattabOutNewSSF '%S' '%S' '%s' '%F'\n",
+	  fmt, name, type, file);
 
   if (!featFindOutFormat(fmt, &iformat)) return NULL;
 
@@ -1573,6 +1580,7 @@ static AjBool featFormatSet (AjPFeattabIn featin)
 
     return ajFalse;
 }
+
 /* @func ajFeatUfoWrite *******************************************************
 **
 ** Parses a UFO, opens an output file, and writes a feature table to it.
@@ -1603,6 +1611,8 @@ AjBool ajFeatUfoWrite (AjPFeattable thys, AjPFeattabOut featout, AjPStr ufo) {
 
 AjBool ajFeattableWrite (AjPFeattable thys, AjPStr ufo) {
   AjPFeattabOut tabout=NULL;
+
+  ajDebug("ajFeattableWrite ufo:'%S' (new AjPFeattabOut)\n", ufo);
 
   tabout= ajFeattabOutNew();
   featoutUfoProcess (tabout, ufo);
@@ -1795,7 +1805,8 @@ static AjBool featoutUfoProcess (AjPFeattabOut thys, AjPStr ufo) {
       (void) ajFmtPrintS(&ufotest, "unknown.%S", featout->Formatstr);
 
     (void) ajStrSet (&featout->Filename, ufotest);
-    ajDebug ("generate filename  '%S'\n", featout->Filename);
+    ajDebug ("generate featout filename '%S' dir '%S'\n",
+	     featout->Filename, featout->Directory);
   }
 
   ajDebug ("\n");
@@ -1884,6 +1895,40 @@ static AjBool featFindOutFormat (AjPStr format, ajint* iformat) {
   (void) ajStrDelReuse(&tmpformat);
   *iformat = 1;
   return ajFalse;
+}
+
+/* @func ajFeatOutFormatDefault ***********************************************
+**
+** Sets the default output format.
+** Checks the _OUTFEATFORMAT variable,
+** and uses GFF if no other definition is found.
+**
+** @param [wP] pformat [AjPStr*] Default output feature format.
+** @return [AjBool] ajTrue on success.
+** @@
+******************************************************************************/
+
+AjBool ajFeatOutFormatDefault (AjPStr* pformat) {
+
+  if (ajStrLen(*pformat)) {
+    ajDebug ("... output feature format '%S'\n", *pformat);
+  }
+  else {
+    /* ajStrSetC (pformat, seqOutFormat[0].Name);*/
+    if  (ajNamGetValueC("outfeatformat", pformat))
+    {
+	ajDebug ("ajFeatOutFormatDefault '%S' from EMBOSS_OUTFEATFORMAT\n",
+		 *pformat);
+    }
+    else
+    {
+      (void) ajStrSetC (pformat, "gff"); /* use the real name */
+      ajDebug ("... output feature format not set, default to '%S'\n",
+	       *pformat);
+    }
+  }
+
+  return ajTrue;
 }
 
 /* @func ajFeatWrite **********************************************************
@@ -8014,6 +8059,7 @@ void ajFeattabOutDel (AjPFeattabOut *thys)
     ajStrDel(&pthis->Ufo);
     ajStrDel(&pthis->Formatstr);
     ajStrDel(&pthis->Filename);
+    ajStrDel(&pthis->Directory);
     ajStrDel(&pthis->Seqid);
     ajStrDel(&pthis->Type);
     ajStrDel(&pthis->Seqname);
