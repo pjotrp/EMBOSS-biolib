@@ -5,7 +5,11 @@ lib_LTLIBRARIES = libhmmer.la
 bin_PROGRAMS = ehmmcalibrate ehmmconvert ehmmemit ehmmfetch ehmmindex \
 	ehmmbuild ehmmalign ehmmpfam ehmmsearch ealistat
 
+if LOCALLINK
 INCLUDES = -IINCLUDE -I../../../ajax
+else
+INCLUDES = -IINCLUDE -I${embprefix}/include
+endif
 
 if ISSHARED
 if ISAIXIA64
@@ -42,4 +46,8 @@ ehmmpfam_SOURCES      = ehmmpfam.c
 ehmmsearch_SOURCES    = ehmmsearch.c
 ealistat_SOURCES      = ealistat.c
 
+if LOCALLINK
 LDADD = libhmmer.la ../../../nucleus/libnucleus.la ../../../ajax/libajax.la ../../../plplot/libplplot.la $(XLIB)
+else
+LDADD = libhmmer.la -L${embprefix}/lib -lnucleus -lajax -lplplot $(XLIB)
+endif

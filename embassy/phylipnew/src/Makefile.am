@@ -9,7 +9,11 @@ fpenny fproml fpromlk fprotdist fprotpars \
 frestdist frestml fretree fseqboot ffreqboot frestboot ffactboot \
 ftreedist ftreedistpair
 
+if LOCALLINK
 INCLUDES = -I../include -I../../../ajax
+else
+INCLUDES = -I../include -I${embprefix}/include
+endif
 
 
 if ISSHARED
@@ -68,4 +72,8 @@ ftreedist_SOURCES = treedist.c cons.c phylip.c
 ftreedistpair_SOURCES = treedistpair.c cons.c phylip.c
 
 
+if LOCALLINK
 LDADD = ../../../nucleus/libnucleus.la ../../../ajax/libajax.la ../../../plplot/libplplot.la $(XLIB)
+else
+LDADD = -L${embprefix}/lib -lnucleus -lajax -lplplot $(XLIB)
+endif

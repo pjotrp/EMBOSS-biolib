@@ -3,7 +3,11 @@
 
 bin_PROGRAMS = mse
 
+if LOCALLINK
 INCLUDES = -I../h -I../../../ajax
+else
+INCLUDES = -I../h -I${embprefix}/include
+endif
 
 if ISSHARED
 if ISAIXIA64
@@ -15,4 +19,8 @@ endif
 
 mse_SOURCES = mse.c 
 
+if LOCALLINK
 LDADD = ../ckit/libckit.la ../../../nucleus/libnucleus.la ../../../ajax/libajax.la ../../../plplot/libplplot.la $(XLIB)
+else
+LDADD = ../ckit/libckit.la -L${embprefix}/lib -lnucleus -lajax -lplplot $(XLIB)
+endif

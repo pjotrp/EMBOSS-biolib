@@ -2,7 +2,11 @@
 
 bin_PROGRAMS = emnu
 
+if LOCALLINK
 INCLUDES = -I../../../plplot -I../../../nucleus -I../../../ajax
+else
+INCLUDES = -I${embprefix}/include
+endif
 
 if ISSHARED
 if ISAIXIA64
@@ -14,8 +18,8 @@ endif
 
 emnu_SOURCES = emnu.c 
 
+if LOCALLINK
 LDADD = ../../../nucleus/libnucleus.la ../../../ajax/libajax.la ../../../plplot/libplplot.la -lmenu -lform $(XLIB)
-
-
-
-
+else
+LDADD = -L${embprefix}/lib -lnucleus -lajax -lplplot -lmenu -lform $(XLIB)
+endif

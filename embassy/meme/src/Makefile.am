@@ -6,7 +6,11 @@ lib_LTLIBRARIES = libmeme.la
 
 bin_PROGRAMS = meme
 
+if LOCALLINK
 INCLUDES = -IINCLUDE -I../../../ajax
+else
+INCLUDES = -IINCLUDE -I${embprefix}/include
+endif
 
 if ISSHARED
 if ISAIXIA64
@@ -29,4 +33,8 @@ libmeme_la_LDFLAGS = -version-info 2:3:1
 
 meme_SOURCES = meme.c
 
+if LOCALLINK
 LDADD = libmeme.la ../../../nucleus/libnucleus.la ../../../ajax/libajax.la ../../../plplot/libplplot.la $(XLIB)
+else
+LDADD = libmeme.la -L${embprefix}/lib -lnucleus -lajax -lplplot $(XLIB)
+endif
