@@ -789,8 +789,11 @@ int main(int argc, char **argv)
 		newILend = k;
 		while(startseq < numseq)
 		{
-		    if(startseq != 0)
-			ajGraphNewPage(AJFALSE);
+		    /*
+                    **  AJB
+		    ** if(startseq != 0)
+		    **	ajGraphNewPage(AJFALSE);
+		    */
 		    if(endseq>numseq)
 			endseq=numseq;
 		    prettyplot_fillinboxes(ystart,ajSeqsetLen(seqset),numseq,
@@ -800,6 +803,7 @@ int main(int argc, char **argv)
 					   datacol,datacs);
 		    startseq = endseq;
 		    endseq += seqperpage;
+		    ajGraphNewPage(AJFALSE);
 		}
 	    }
 
@@ -964,7 +968,7 @@ int main(int argc, char **argv)
     newILend = k;
     while(startseq < numseq)
     {
-	ajGraphNewPage(AJFALSE);
+	/*	ajGraphNewPage(AJFALSE); AJB */
 	if(endseq>numseq)
 	    endseq = numseq;
 	prettyplot_fillinboxes(ystart,ajSeqsetLen(seqset),numseq,resbreak,cvt,
@@ -973,6 +977,7 @@ int main(int argc, char **argv)
 			       datacol,datacs);
 	startseq = endseq;
 	endseq += seqperpage;
+	ajGraphNewPage(AJFALSE);  /* AJB */
     }
 
 
