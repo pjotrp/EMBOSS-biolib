@@ -13,9 +13,10 @@ Description
    Plot potential open reading frames.
    
    A graphical representation of where the open reading frames are in all
-   6 reading frames is shown. The ORFs are displayed as blue boxes. ORFs
-   in this program are defined as being regions between START and STOP
-   codons. 
+   6 reading frames is shown. The ORFs are displayed as blue boxes.
+   
+   ORFs in this program are defined as being regions between START and
+   STOP codons.
    
    Note that this definition of an ORF would miss those exons in
    eukaryotic genomic sequences which do not contain a START codon.
