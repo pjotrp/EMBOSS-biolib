@@ -39,7 +39,6 @@ int main(int argc, char **argv)
     AjPSeqall all;
     AjPSeq   a;
     AjPStr   substr;
-    AjPStr   temp;
     AjPFile  outf;
     AjBool   termini;
     AjBool   doplot;
@@ -48,7 +47,6 @@ int main(int argc, char **argv)
     AjPGraph graph=NULL;
 #else
     AjPXmlFile graph;
-    AjPStr   nameString;
 #endif
     float step;
     ajint   amino=1;
@@ -111,12 +109,8 @@ int main(int argc, char **argv)
     graph = ajAcdGetGraphxy("graph");
 #else
     graph = ajXmlCreateNewOutputFile();
-    temp = ajStrNewC("showOneXAxis");
-    nameString = ajStrNewC("true");
-    ajXmlAddGroutOption(graph, temp, nameString);
-    ajStrDel(&nameString);
-    temp = ajStrNewC("Graph");
-    ajXmlAddGraphic(graph, temp);
+    ajXmlAddGroutOptionC(graph, "showOneXAxis", "true");
+    ajXmlAddGraphicC(graph, "Graph");
 #endif
 
     while(ajSeqallNext(all,&a))
@@ -211,17 +205,12 @@ int main(int argc, char **argv)
 	    ajGraphxyDisplay(graph,ajFalse);
 #else
 	    ajXmlAddMainTitle(graph, tit);
-	    nameString = ajStrNewC("pH");
-	    ajXmlAddXTitle(graph, nameString);
-	    ajStrDel(&nameString);
-	    nameString = ajStrNewC("Charge");
-	    ajXmlAddYTitle(graph, nameString);
-	    ajStrDel(&nameString);
+	    ajXmlAddXTitleC(graph, "pH");
+	    ajXmlAddYTitleC(graph, "Charge");
 
 	    ajXmlAddJoinedLineSetF(graph, xa, ya, npoints);
 	    
 	    ajXmlWriteStdout(graph);
-	    fflush(stdout);
 #endif
 
 	    ajStrDel(&tmp);
@@ -233,11 +222,7 @@ int main(int argc, char **argv)
 #ifndef GROUT
     ajGraphClose();
 #else
-    /*
-       ajXmlWriteStdout(graph);
-     */
     ajXmlClearFile(graph);
-    ajStrDel(&temp);
 #endif
     AJFREE (K);
     AJFREE (pro);
