@@ -10,7 +10,7 @@ section: input [
 
   seqall: sequence  [
     parameter: "Y"
-    type: "PureProtein"
+    type: "pureprotein"
   ]
 
 endsection: input
@@ -39,7 +39,7 @@ section: output [
 ]
 
   outfile: outfile  [
-    standard: "Y"
+    parameter: "Y"
     knowntype: "pepstats output"
   ]
 
