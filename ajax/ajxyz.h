@@ -13,6 +13,65 @@ extern "C"
 #define ajESCOP "Escop.dat" /* Scop data file */
 
 
+
+
+/* @data AjPHit *******************************************************
+**
+** Ajax hit object.
+**
+** Holds data associated with a protein / domain sequence that is generated 
+** / manipulated by the EMBOSS applications psiblasts, swissparse, seqsort, 
+** seqmerge and groups.
+**
+** AjPHit is implemented as a pointer to a C data structure.
+**
+** @alias AjSHit
+** @alias AjOHit
+**
+** @@
+******************************************************************************/
+
+typedef struct AjSHit
+{
+  AjPStr    Seq;	/* Sequence as string */
+  ajint     Start;      /* Start of sequence relative to full length 
+			    swissprot sequence */
+  ajint     End;        /* End of sequence relative to full length 
+			    swissprot sequence */
+  AjPStr    Id;         /* Identifier */  
+  AjPStr    Type;       /* Bibliographic information */ 
+  ajint     Group;      /* Group no. of sequence */
+} AjOHit, *AjPHit;
+
+
+/* @data AjPHitlist *******************************************************
+**
+** Ajax hitlist object.
+**
+** Holds an array of hit structures and associated SCOP classification 
+** records.
+**
+** AjPHitlist is implemented as a pointer to a C data structure.
+**
+** @alias AjSHitlist
+** @alias AjOHitlist
+**
+** @@
+******************************************************************************/
+
+typedef struct AjSHitlist
+{
+    AjPStr  Class;
+    AjPStr  Fold;
+    AjPStr  Superfamily;
+    AjPStr  Family;
+    ajint   N;            /* No. of hits */
+    AjPHit *hits;        /* Array of hits */
+} AjOHitlist, *AjPHitlist;
+
+
+
+
 /* @data AjPAtom *******************************************************
 **
 ** Ajax atom object.
@@ -44,7 +103,7 @@ typedef struct AjSAtom
   float      Z;          /*Z coordinate*/
   float      O;          /*Occupancy */
   float      B;          /*B value thermal factor*/
-} AjSAtom, *AjPAtom;
+} AjOAtom, *AjPAtom;
 
 
 /* @data AjPChain *******************************************************
@@ -144,6 +203,13 @@ void     ajXyzPdbDel(AjPPdb *thys);
 void     ajXyzScopDel(AjPScop *pthis);
 AjPScop  ajXyzScopNew(ajint n);
 
+void     ajXyzHitDel(AjPHit *pthis);
+AjPHit   ajXyzHitNew(void);
+void     ajXyzHitlistDel(AjPHitlist *pthis);
+AjPHitlist  ajXyzHitlistNew(int n);
+AjBool   ajXyzHitlistRead(AjPFile inf, char *delim, AjPHitlist *thys);
+AjBool   ajXyzHitlistWrite(AjPFile outf, AjPHitlist thys);
+
 AjBool   ajXyzScopRead(AjPFile inf, AjPStr entry, AjPScop *thys);
 AjBool   ajXyzScopReadC(AjPFile inf, char *entry, AjPScop *thys);
 void     ajXyzScopWrite(AjPFile outf, AjPScop thys);
@@ -164,8 +230,7 @@ AjBool   ajXyzPrintPdbSeqresDomain(AjPFile errf, AjPFile outf, AjPPdb pdb,
 AjBool   ajXyzPrintPdbAtomChain(AjPFile outf, AjPPdb pdb, ajint mod, ajint chn);
 AjBool   ajXyzPrintPdbAtomDomain(AjPFile errf, AjPFile outf, AjPPdb pdb,
 				 AjPScop scop, ajint mod);
-AjBool   ajXyzPrintPdbText(AjPFile outf, AjPStr str, char *prefix, ajint len,
-			   char *delim);
+AjBool   ajXyzPrintPdbText(AjPFile outf, AjPStr str, char *prefix);
 AjBool   ajXyzPrintPdbHeader(AjPFile outf, AjPPdb pdb);
 AjBool   ajXyzPrintPdbHeaderScop(AjPFile outf, AjPScop scop);
 AjBool   ajXyzPrintPdbTitle(AjPFile outf, AjPPdb pdb);

@@ -59,13 +59,71 @@
 **
 ******************************************************************************/
 
+/* @func ajXyzHitNew *********************************************************
+**
+** Hit object constructor. This is normally called by the ajXyzHitlistNew
+** function.
+**
+** @return [AjPHit] Pointer to a hit object
+** @@
+******************************************************************************/
+AjPHit  ajXyzHitNew(void)
+{
+    AjPHit ret = NULL;
+
+    AJNEW0(ret);
+
+    ret->Seq       = ajStrNew();
+    ret->Id        = ajStrNew();
+    ret->Type      = ajStrNew();
+    ret->Start     =0;
+    ret->End       =0;
+    ret->Group     =0;
+    
+    return ret;
+}
+
+
+
+
+/* @func ajXyzHitlistNew ***********************************************************
+**
+** Hitlist object constructor. This is normally called by the ajXyzHitlistRead
+** function. Fore-knowledge of the number of hits is required.
+**
+** @param [r] n [int *] Number of hits
+** 
+** @return [AjPHitlist] Pointer to a hitlist object
+** @@
+******************************************************************************/
+AjPHitlist  ajXyzHitlistNew(int n)
+{
+    AjPHitlist ret = NULL;
+    ajint i=0;
+    
+
+    AJNEW0(ret);
+    ret->Class=ajStrNew();
+    ret->Fold=ajStrNew();
+    ret->Superfamily=ajStrNew();
+    ret->Family=ajStrNew();
+    ret->N=n;
+
+    AJCNEW0(ret->hits,n);
+    for(i=0;i<n;++i)
+	ret->hits[i] = ajXyzHitNew();
+    
+    return ret;
+}
+
+
+
 /* @func ajXyzPdbNew ************************************************************
 **
 ** Pdb object constructor. Fore-knowledge of the number of chains 
-** is required. This is normally called by the Cpdb reading
-** routine.
+** is required. This is normally called by the ajXyzCpdbRead function.
 **
-** @param [r] chains [ajint] Number of chains in this pdb entry
+** @param [r] chains [ajint] Number of chains in this pdb file
 **
 ** @return [AjPPdb] Pointer to a pdb object
 ** @@
@@ -113,8 +171,8 @@ AjPChain ajXyzChainNew(void)
 
 /* @func ajXyzAtomNew ***********************************************************
 **
-** Constructor for atom co-ordinates.
-** This is normally called by the ajXyzChainNew function
+** Atom object constructor.
+** This is normally called by the ajXyzChainNew function.
 **
 ** @return [AjPAtom] Pointer to an atom object
 ** @@
@@ -136,7 +194,8 @@ AjPAtom ajXyzAtomNew(void)
 /* @func ajXyzScopNew ***********************************************************
 **
 ** Scop object constructor. Fore-knowledge of the number of chains is 
-** required.
+** required. This is normally called by the ajXyzScopReadC / ajXyzScopRead 
+** functions.
 **
 ** @param [r] chains [ajint] Number of chains
 **
@@ -183,6 +242,56 @@ AjPScop ajXyzScopNew(ajint chains)
 /* ==================================================================== */
 /* ========================= Destructors ============================== */
 /* ==================================================================== */
+
+
+/* @func ajXyzHitDel ***********************************************************
+**
+** Destructor for hit object.
+**
+** @param [w] pthis [AjPHit*] Hit object pointer
+**
+** @return [void]
+** @@
+******************************************************************************/
+void     ajXyzHitDel(AjPHit *pthis)
+{
+    ajStrDel(&(*pthis)->Seq);
+    ajStrDel(&(*pthis)->Id);
+    ajStrDel(&(*pthis)->Type);
+
+    AJFREE(*pthis);
+    
+    return;
+}
+
+
+
+/* @func ajXyzHitlistDel *******************************************************
+**
+** Destructor for hitlist object.
+**
+** @param [w] pthis [AjPHitlist*] Hitlist object pointer
+**
+** @return [void]
+** @@
+******************************************************************************/
+void ajXyzHitlistDel(AjPHitlist *pthis)
+{
+    int x=0;  /* Counter */
+    
+    ajStrDel(&(*pthis)->Class);
+    ajStrDel(&(*pthis)->Fold);
+    ajStrDel(&(*pthis)->Superfamily);
+    ajStrDel(&(*pthis)->Family);
+    
+    for(x=0;x<(*pthis)->N; x++)
+	ajXyzHitDel(&(*pthis)->hits[x]);
+
+    AJFREE(*pthis);
+    
+    return;
+}
+
 
 
 
@@ -250,7 +359,7 @@ void ajXyzChainDel(AjPChain *thys)
 
 /* @func ajXyzAtomDel ***********************************************************
 **
-** Destructor for atom co-ordinates.
+** Destructor for atom object.
 **
 ** @param [w] thys [AjPAtom*] Atom object pointer
 **
@@ -328,7 +437,7 @@ void ajXyzScopDel(AjPScop *thys)
 
 /* @func ajXyzCpdbRead ***********************************************************
 **
-** Reads a Cpdb database entry and returns a filled Pdb object.
+** Reads a Cpdb file and writes a filled Pdb object.
 ** Needs modifying to return ajFalse in case of bad format etc
 **
 ** @param [r] inf  [AjPFile] Pointer to cpdb file
@@ -600,11 +709,10 @@ AjBool ajXyzCpdbRead(AjPFile inf, AjPPdb *thys)
 
 /* @func ajXyzCpdbWriteDomain ***************************************************
 **
-** Write domain-specific contents of a Pdb object to an output file in cpdb 
-** format
-** Hard-coded to write data for model 1.  For these files, the coordinates
-** are presented as belonging to a single chain regardless of how many chains
-** the domain comprised.
+** Writes a Cpdb file for a SCOP domain. Where coordinates for multiple 
+** models (e.g. NMR structures) are given, data for model 1 are written.
+** In the Cpdb file, the coordinates are presented as belonging to a single 
+** chain regardless of how many chains the domain comprised.
 **
 ** @param [w] outf [AjPFile] Output file stream
 ** @param [w] errf [AjPFile] Output file stream for error messages
@@ -973,7 +1081,7 @@ AjBool ajXyzCpdbWriteDomain(AjPFile errf, AjPFile outf, AjPPdb pdb, AjPScop scop
 
 /* @func ajXyzCpdbWriteAll ******************************************************
 **
-** Write contents of a Pdb object to an output file in cpdb format
+** Writes a Cpdb file for a protein.
 **
 ** @param [w] outf [AjPFile] Output file stream
 ** @param [r] thys [AjPPdb] Pdb object
@@ -1083,7 +1191,7 @@ AjBool ajXyzCpdbWriteAll(AjPFile outf, AjPPdb thys)
 
 /* @func ajXyzPdbChain **********************************************************
 **
-** Finds the chain number for a given chain in a pdb structure
+** Finds the chain number for a given chain identifier in a pdb structure
 **
 ** @param [w] chn [int *] Chain number
 ** @param [r] id  [char] Chain identifier
@@ -1120,19 +1228,17 @@ AjBool ajXyzPdbChain(char id, AjPPdb pdb, ajint *chn)
 
 /* @func ajXyzPrintPdbText ******************************************************
 **
-** Writes pdb-formatted text to an output file
-**
+** Writes text to file in the format of pdb records
+** 
 ** @param [w] outf   [AjPFile] Output file stream
 ** @param [r] str    [AjPStr]  Text to print out
-** @param [r] prefix [char *]  Text to print out at start of line
-** @param [r] len    [ajint]     Width of record to print into
-** @param [r] delim  [char *]  String for tokenization of text
+** @param [r] prefix [char *]  pdb record (e.g. "HEADER")
+**
 **
 ** @return [AjBool] True on succcess
 ** @@
 ******************************************************************************/
-AjBool  ajXyzPrintPdbText(AjPFile outf, AjPStr str, char *prefix, ajint len, 
-		       char *delim)
+AjBool  ajXyzPrintPdbText(AjPFile outf, AjPStr str, char *prefix)
 {
     ajint        n      = 0;
     ajint        l      = 0;
@@ -1152,14 +1258,14 @@ AjBool  ajXyzPrintPdbText(AjPFile outf, AjPStr str, char *prefix, ajint len,
     tmp   = ajStrNewC("");
     
 
-    handle = ajStrTokenInit(str,delim);
+    handle = ajStrTokenInit(str,(char *) " \t\r\n");
     
     while(ajStrToken(&token,&handle,NULL))
     {
 	if(!c)
-	    ajFmtPrintF(outf,"%s",prefix);
+	    ajFmtPrintF(outf,"%-11s",prefix);
 	
-	if((l=n+ajStrLen(token)) < len)
+	if((l=n+ajStrLen(token)) < 68)
 	{
 	    if(c++)
 		ajStrAppC(&tmp," ");
@@ -1168,7 +1274,7 @@ AjBool  ajXyzPrintPdbText(AjPFile outf, AjPStr str, char *prefix, ajint len,
 	}
 	else
 	{
-	    ajFmtPrintF(outf,"%-*S\n",len+1, tmp);
+	    ajFmtPrintF(outf,"%-*S\n",69, tmp);
 
 	    ajStrAssS(&tmp,token);
 	    ajStrAppC(&tmp," ");
@@ -1179,7 +1285,7 @@ AjBool  ajXyzPrintPdbText(AjPFile outf, AjPStr str, char *prefix, ajint len,
 
     if(c)
     {
-	ajFmtPrintF(outf,"%-*S\n",len+1, tmp);
+	ajFmtPrintF(outf,"%-*S\n",69, tmp);
     }
     
 
@@ -1197,8 +1303,10 @@ AjBool  ajXyzPrintPdbText(AjPFile outf, AjPStr str, char *prefix, ajint len,
 
 /* @func ajXyzPrintPdbAtomDomain ************************************************
 **
-** Writes the ATOM records for a domain to an output file in pdb format using 
-** data from a Pdb structure and a Scop structure
+** Writes coordinates for a SCOP domain to an output file in pdb format (ATOM 
+** records).  Coordinates are taken from a Pdb structure, domain definition is 
+** taken from a Scop structure. The model number argument should have a value of 
+** 1 for x-ray structures.
 **
 ** @param [w] outf [AjPFile] Output file stream
 ** @param [w] errf [AjPFile] Output file stream for error messages
@@ -1392,8 +1500,9 @@ AjBool ajXyzPrintPdbAtomDomain(AjPFile errf, AjPFile outf, AjPPdb pdb,
 
 /* @func ajXyzPrintPdbAtomChain *************************************************
 **
-** Writes the ATOM records for a chain to an output file in pdb format using 
-** data from a Pdb structure 
+** Writes coordinates for a protein chain to an output file in pdb format (ATOM 
+** records). Coordinates are taken from a Pdb structure. The model number 
+** argument should have a value of 1 for x-ray structures.
 **
 ** @param [w] outf [AjPFile] Output file stream
 ** @param [r] pdb  [AjPPdb] Pdb object
@@ -1498,8 +1607,10 @@ AjBool ajXyzPrintPdbAtomChain(AjPFile outf, AjPPdb pdb, ajint mod, ajint chn)
 
 /* @func ajXyzPrintPdbSeqresDomain **********************************************
 **
-** Writes the SEQRES record for a domain to an output file in pdb format using 
-** data from a Pdb structure and a Scop structure
+** Writes sequence for a SCOP domain to an output file in pdb format (SEQRES 
+** records). Sequence is taken from a Pdb structure, domain definition is taken 
+** from a Scop structure.  Where coordinates for multiple models (e.g. NMR 
+** structures) are given, data for model 1 are written.
 **
 ** @param [w] outf [AjPFile] Output file stream
 ** @param [w] errf [AjPFile] Output file stream for error messages
@@ -1750,8 +1861,9 @@ AjBool ajXyzPrintPdbSeqresDomain(AjPFile errf, AjPFile outf, AjPPdb pdb,
 
 /* @func ajXyzPrintPdbSeqresChain ***********************************************
 **
-** Writes the SEQRES record for a chain to an output file in pdb format using 
-** data from a Pdb structure
+** Writes sequence for a protein chain to an output file in pdb format (SEQRES
+** records).  Sequence is taken from a Pdb structure.  The model number argument 
+** should have a value of 1 for x-ray structures.
 **
 ** @param [w] outf [AjPFile] Output file stream
 ** @param [w] errf [AjPFile] Output file stream for error messages
@@ -1875,7 +1987,8 @@ AjBool ajXyzPrintPdbSeqresChain(AjPFile errf, AjPFile outf, AjPPdb pdb,
 
 /* @func ajXyzPrintPdbResolution ************************************************
 **
-** Writes the Reso element of a Pdb structure to an output file in pdb format
+** Writes the Reso element of a Pdb structure to an output file in pdb 
+** format
 **
 ** @param [w] outf [AjPFile] Output file stream
 ** @param [r] pdb  [AjPPdb] Pdb object
@@ -1940,7 +2053,7 @@ AjBool ajXyzPrintPdbSource(AjPFile outf, AjPPdb pdb)
 {
     if(pdb && outf)
     {
-	ajXyzPrintPdbText(outf,pdb->Source,"SOURCE     ", 68," \t\r\n");
+	ajXyzPrintPdbText(outf,pdb->Source,"SOURCE");
 	return ajTrue;
     }
     else
@@ -1966,8 +2079,7 @@ AjBool ajXyzPrintPdbCompnd(AjPFile outf, AjPPdb pdb)
 {
     if(pdb && outf)
     {
-	ajXyzPrintPdbText(outf,pdb->Compnd,"COMPND     ", 
-		       68," \t\r\n");
+	ajXyzPrintPdbText(outf,pdb->Compnd,"COMPND");
 	return ajTrue;
     }
     else
@@ -2064,8 +2176,12 @@ AjBool ajXyzPrintPdbHeaderScop(AjPFile outf, AjPScop scop)
 
 /* @func ajXyzPdbWriteDomain ****************************************************
 **
-** Calls functions to write domain-specific contents of a Pdb object to an 
-** output file in pdb format
+** Writes a pdb file for a SCOP domain. Where coordinates for multiple 
+** models (e.g. NMR structures) are given, data for model 1 are written. 
+** Coordinates are taken from a Pdb structure, domain definition is taken from 
+** a Scop structure.
+** In the pdb file, the coordinates are presented as belonging to a single 
+** chain regardless of how many chains the domain comprised.
 **
 ** @param [w] outf [AjPFile] Output file stream
 ** @param [w] errf [AjPFile] Output file stream for error messages
@@ -2152,8 +2268,7 @@ AjBool   ajXyzPdbWriteDomain(AjPFile errf, AjPFile outf, AjPPdb pdb, AjPScop sco
 
 /* @func ajXyzPdbWriteAll *******************************************************
 **
-** Calls functions to write contents of a Pdb object to an output file in pdb 
-** format
+** Writes a pdb file for a protein.
 **
 ** @param [w] outf [AjPFile] Output file stream
 ** @param [w] errf [AjPFile] Output file stream for error messages
@@ -2224,7 +2339,7 @@ AjBool   ajXyzPdbWriteAll(AjPFile errf, AjPFile outf, AjPPdb pdb)
 
 /* @func ajXyzScopWrite ******************************************************
 **
-** Write contents of a Scop object to an output file
+** Write contents of a Scop object to an output file in embl-like format.
 **
 ** @param [w] outf [AjPFile] Output file stream
 ** @param [r] thys [AjPScop] Scop object
@@ -2269,13 +2384,13 @@ void ajXyzScopWrite(AjPFile outf, AjPScop thys)
 
 /* @func ajXyzScopRead *********************************************************
 **
-** Read a Scop object from a file
+** Read a Scop object from a file in embl-like format.
 **
-** @param [r] inf [AjPFile] Output file stream
+** @param [r] inf [AjPFile] Input file stream
 ** @param [r] entry [AjPStr] id
 ** @param [w] thys [AjPScop*] Scop object
 **
-** @return [void]
+** @return [AjBool] True on success
 ** @@
 ******************************************************************************/
 
@@ -2291,13 +2406,13 @@ AjBool ajXyzScopRead(AjPFile inf, AjPStr entry, AjPScop *thys)
 
 /* @func ajXyzScopReadC ******************************************************
 **
-** Read a Scop object from a file
+** Read a Scop object from a file in embl-like format.
 **
 ** @param [r] inf [AjPFile] Input file stream
 ** @param [r] entry [char*] id
 ** @param [w] thys [AjPScop*] Scop object
 **
-** @return [void]
+** @return [AjBool] True on success
 ** @@
 ******************************************************************************/
 
@@ -2484,6 +2599,197 @@ void   ajXyzScopToPdb(AjPStr scop, AjPStr *pdb)
 {
     ajStrAssSub(pdb, scop, 1, 4);
 }
+
+
+
+
+
+
+
+/* @func ajXyzHitlistRead ****************************************************
+**
+** Read a hitlist object from a file in embl-like format. 
+** 
+** @param [r] inf      [AjPFile] Input file stream
+** @param [r] delim    [char *]  Delimiter for block of hits
+** @param [w] thys     [AjPHitlist*] Hitlist object
+**
+** @return [AjBool] True on success (a list of hits was read)
+** @@
+******************************************************************************/
+AjBool   ajXyzHitlistRead(AjPFile inf, char *delim, AjPHitlist *thys)
+{
+    static   AjPStr line    =NULL;   /* Line of text */
+    static   AjPStr class   =NULL;
+    static   AjPStr fold    =NULL;
+    static   AjPStr super   =NULL;
+    static   AjPStr family  =NULL;
+    AjBool   ok             =ajFalse;
+    ajint    n              =0;      /* Number of current sequence */
+    ajint    nset           =0;      /* Number in set */
+    
+
+
+
+    /* Allocate strings */
+    /* Only initialise strings if this is called for the first time*/
+    if(!line)
+    {
+	class   = ajStrNew();
+	fold    = ajStrNew();
+	super   = ajStrNew();
+	family  = ajStrNew();
+	line    = ajStrNew();
+    }
+    
+
+    
+    /* Read first line */
+    ok = ajFileReadLine(inf,&line);
+
+    while(ok && !ajStrPrefixC(line,delim))
+    {
+	if(ajStrPrefixC(line,"XX"))
+	{
+	    ok = ajFileReadLine(inf,&line);
+	    continue;
+	}
+	else if(ajStrPrefixC(line,"CL"))
+	    ajStrAssC(&class,ajStrStr(line)+3);
+	else if(ajStrPrefixC(line,"FO"))
+	{
+	    ajStrAssC(&fold,ajStrStr(line)+3);
+	    while((ok = ajFileReadLine(inf,&line)))
+	    {
+		if(ajStrPrefixC(line,"XX"))
+		    break;
+		ajStrAppC(&fold,ajStrStr(line)+3);
+	    }
+	    ajStrClean(&fold);
+	}
+	else if(ajStrPrefixC(line,"SF"))
+	{
+	    ajStrAssC(&super,ajStrStr(line)+3);
+	    while((ok = ajFileReadLine(inf,&line)))
+	    {
+		if(ajStrPrefixC(line,"XX"))
+		    break;
+		ajStrAppC(&super,ajStrStr(line)+3);
+	    }
+	    ajStrClean(&super);
+	}
+	else if(ajStrPrefixC(line,"FA"))
+	{
+	    ajStrAssC(&family,ajStrStr(line)+3);
+	    while((ok = ajFileReadLine(inf,&line)))
+	    {
+		if(ajStrPrefixC(line,"XX"))
+		    break;
+		ajStrAppC(&family,ajStrStr(line)+3);
+	    }
+	    ajStrClean(&family);
+	}
+	else if(ajStrPrefixC(line,"NS"))
+	{
+	    ajFmtScanS(line, "NS[%d", &nset);
+
+
+	    /* Create hitlist structure */
+	    (*thys)=ajXyzHitlistNew(nset);
+	    (*thys)->N=nset;
+	    ajStrAssS(&(*thys)->Class, class);
+	    ajStrAssS(&(*thys)->Fold, fold);
+	    ajStrAssS(&(*thys)->Superfamily, super);
+	    ajStrAssS(&(*thys)->Family, family);
+	}
+	else if(ajStrPrefixC(line,"NN"))
+	{
+	    /* Increment hit counter */
+	    n++;
+
+	    /* Safety check */
+	    if(n>nset)
+		ajFatal("Dangerous error in input file caught in ajXyzHitlistRead.\n Email jison@hgmp.mrc.ac.uk");
+	}
+	else if(ajStrPrefixC(line,"ID"))
+	    ajStrAssC(&(*thys)->hits[n-1]->Id,ajStrStr(line)+3);
+	else if(ajStrPrefixC(line,"TY"))
+	    ajStrAssC(&(*thys)->hits[n-1]->Type,ajStrStr(line)+3);
+	else if(ajStrPrefixC(line,"RA"))
+	    ajFmtScanS(line, "%*s %d %*s %d", &(*thys)->hits[n-1]->Start, &(*thys)->hits[n-1]->End);
+	else if(ajStrPrefixC(line,"GP"))
+	    ajFmtScanS(line, "%*s %d", &(*thys)->hits[n-1]->Group);
+	else if(ajStrPrefixC(line,"SQ"))
+	{
+	    while((ok=ajFileReadLine(inf,&line)) && !ajStrPrefixC(line,"XX"))
+		ajStrAppC(&(*thys)->hits[n-1]->Seq,ajStrStr(line));
+	    ajStrCleanWhite(&(*thys)->hits[n-1]->Seq);
+	    continue;
+	}
+	
+	
+	ok = ajFileReadLine(inf,&line);
+    }
+
+
+    /* Return */
+    if(!ok)
+	return ajFalse;
+    else
+	return ajTrue;
+}
+
+
+
+
+
+/* @func ajXyzHitlistWrite ***************************************************
+**
+** Write contents of a Hitlist object to an output file in embl-like format.
+**
+** @param [w] outf [AjPFile] Output file stream
+** @param [r] thys [AjPHitlist] Hitlist object
+**
+** @return [AjBool] True on success
+** @@
+******************************************************************************/
+AjBool ajXyzHitlistWrite(AjPFile outf, AjPHitlist thys)
+{
+    ajint x=0;  /* Counter */
+    
+    if(!thys)
+	return ajFalse;
+
+    ajFmtPrintF(outf,"CL   %S",thys->Class);
+    ajFmtPrintSplit(outf,thys->Fold,"\nXX\nFO   ",75," \t\n\r");
+    ajFmtPrintSplit(outf,thys->Superfamily,"XX\nSF   ",75," \t\n\r");
+    ajFmtPrintSplit(outf,thys->Family,"XX\nFA   ",75," \t\n\r");
+    ajFmtPrintF(outf,"XX\nNS   %d\nXX\n",thys->N);
+
+    for(x=0;x<thys->N;x++)
+    {
+	ajFmtPrintF(outf, "%-5s[%d]\nXX\n", "NN", x+1);
+	ajFmtPrintF(outf, "%-5s%S\n", "ID", thys->hits[x]->Id);
+	ajFmtPrintF(outf, "XX\n");
+	ajFmtPrintF(outf, "%-5s%S\n", "TY", thys->hits[x]->Type);
+	ajFmtPrintF(outf, "XX\n");
+	if(thys->hits[x]->Group)
+	{
+	    ajFmtPrintF(outf, "%-5s%S\n", "GP", thys->hits[x]->Group);
+	    ajFmtPrintF(outf, "XX\n");
+	}
+	ajFmtPrintF(outf, "%-5s%d START; %d END;\n", "RA", thys->hits[x]->Start, thys->hits[x]->End);
+	ajFmtPrintF(outf, "XX\n");
+	ajSeqWriteCdb(outf, thys->hits[x]->Seq);
+	ajFmtPrintF(outf, "XX\n//\n");
+    }
+    
+
+    /* Return */
+    return ajTrue;
+}
+
+
 
 
 
