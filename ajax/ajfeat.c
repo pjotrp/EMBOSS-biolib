@@ -82,8 +82,8 @@ static AjBool   FeatInitAcedb = AJFALSE;
 static AjPTable FeatTypeTableAcedb = NULL;
 static AjPTable FeatTagsTableAcedb = NULL;
 
-static AjPStr featTagFmt (AjPStr name, AjPTable table);
-static AjPStr featTagLimit (AjPStr name, AjPTable table);
+static void  featTagFmt (AjPStr name, AjPTable table, AjPStr* retstr);
+static void  featTagLimit (AjPStr name, AjPTable table, AjPStr* retstr);
 static void   featDumpGff (AjPFeature thys, AjPFeattable owner,
 			   AjPFile file);
 static void   featDumpEmbl (AjPFeature thys, AjPStr location,
@@ -114,8 +114,9 @@ static void ajFeatSetFlag(ajint *flags, ajint val);
 
 static AjPFeature featSwissFromLine ( AjPFeattable thys, AjPStr line);
 
-static AjPStr featLocEmblWrapC(AjPStr* pval, ajint width,
-			       char* prefix, char* preftyp);
+static void  featLocEmblWrapC(AjPStr* pval, ajint width,
+			       char* prefix, char* preftyp,
+			      AjPStr* retstr);
 static AjBool featTagSpecialAllAnticodon(AjPStr* pval);
 static AjBool featTagSpecialAllCitation(AjPStr* pval);
 static AjBool featTagSpecialAllCodon(AjPStr* pval);
@@ -128,7 +129,8 @@ static AjBool featTagSpecialAllReplace(AjPStr* pval);
 static AjBool featTagSpecialAllTranslation(AjPStr* pval);
 static AjBool featTagAllLimit(AjPStr* pval, AjPStr values);
 static void   featTagEmblQuote(AjPStr* pval);
-static AjPStr featTagEmblWrapC(AjPStr* pval, ajint width, char* prefix);
+static void   featTagEmblWrapC(AjPStr* pval, ajint width, char* prefix,
+			       AjPStr* retstr);
 static void   featTagEmblDefault(AjPStr* pout, AjPStr tag, AjPStr* pval);
 static void   featTagGffDefault(AjPStr* pout, AjPStr tag, AjPStr* pval);
 static AjBool featTagSpecial(AjPStr* pval, AjPStr tag);
@@ -4128,8 +4130,9 @@ AjPStr ajFeatTagSet (AjPFeature thys, AjPStr tag, AjPStr value) {
 
   FeatPTagval tv = NULL;
   static AjPStr oldvalue = NULL;
-  AjPStr tmptag = NULL;		/* these come from AjPTable */
-  AjPStr tmpfmt = NULL;		/* so please, please don't delete */
+  AjPStr tmptag = NULL;		/* this comes from AjPTable */
+				/* so please, please don't delete */
+  static AjPStr tmpfmt = NULL;
   static AjPStr tmpval = NULL;
   static AjPStr outtag = NULL;
   char* cp;
@@ -4139,7 +4142,7 @@ AjPStr ajFeatTagSet (AjPFeature thys, AjPStr tag, AjPStr value) {
   featInit();
 
   tmptag = featTableTag (tag, FeatTagsTable);
-  tmpfmt = featTagFmt (tmptag,  FeatTagsTable);
+  featTagFmt (tmptag,  FeatTagsTable, &tmpfmt);
   ajStrAssS (&tmpval, value);
   ajStrAssS (&outtag, tmptag);
 
@@ -5074,14 +5077,14 @@ static void featTagEmblQuote (AjPStr* pval) {
 ** @param  [r] prefix [char*] Left margin prefix string
 ** @param  [r] preftyp [char*] Left margin prefix string for first line
 **                            (includes the feature key)
-** @return [AjPStr] String with prefix and newlines
+** @param [W] retstr [AjPStr*] string with formatted value.
 ** @@
 ******************************************************************************/
 
-static AjPStr featLocEmblWrapC (AjPStr *ploc, ajint margin,
-				char* prefix, char* preftyp) {
+static void featLocEmblWrapC (AjPStr *ploc, ajint margin,
+				char* prefix, char* preftyp,
+				AjPStr* retstr) {
 
-  static AjPStr ret = NULL;
   ajint left = 0;
   ajint width = 0;
   ajint len = 0;
@@ -5121,12 +5124,12 @@ static AjPStr featLocEmblWrapC (AjPStr *ploc, ajint margin,
     }
     ajDebug ("%d +%d '%.*S'\n", i, j, j, tmpstr);
     if (!i)
-      ajFmtPrintAppS(&ret, "%s%.*S\n", preftyp,j, tmpstr);
+      ajFmtPrintAppS(retstr, "%s%.*S\n", preftyp,j, tmpstr);
     else
-      ajFmtPrintAppS(&ret, "%s%.*S\n", prefix,j, tmpstr);
+      ajFmtPrintAppS(retstr, "%s%.*S\n", prefix,j, tmpstr);
   }
 
-  return ret;
+  return;
 }
 
 /* @funcstatic featTagEmblWrapC ***********************************************
@@ -5138,13 +5141,13 @@ static AjPStr featLocEmblWrapC (AjPStr *ploc, ajint margin,
 ** @param  [r] pval [AjPStr*] parameter value
 ** @param  [r] margin [ajint] Right margin
 ** @param  [r] prefix [char*] Left margin prefix string
-** @return [AjPStr] String with prefix and newlines
+** @param  [W] retstr [AjPStr*] string with formatted value.
 ** @@
 ******************************************************************************/
 
-static AjPStr featTagEmblWrapC (AjPStr *pval, ajint margin, char* prefix) {
+static void featTagEmblWrapC (AjPStr *pval, ajint margin, char* prefix,
+				AjPStr* retstr) {
 
-  static AjPStr ret = NULL;
   ajint left = 0;
   ajint width = 0;
   ajint len = 0;
@@ -5186,10 +5189,10 @@ static AjPStr featTagEmblWrapC (AjPStr *pval, ajint margin, char* prefix) {
       k = j + 1;		/* start after the space */
     }
     ajDebug ("%d +%d '%.*S'\n", i, j, j, tmpstr);
-    ajFmtPrintAppS(&ret, "%s%.*S\n", prefix,j, tmpstr);
+    ajFmtPrintAppS(retstr, "%s%.*S\n", prefix,j, tmpstr);
   }
 
-  return ret;
+  return;
 }
 
 /* @funcstatic featTagAllLimit ***********************************************
@@ -5399,7 +5402,8 @@ static void featDumpEmbl (AjPFeature feat, AjPStr location, AjPFile file,
   FeatPTagval tv = NULL;
   AjPStr tmptyp=NULL;		/* these come from AjPTable */
   AjPStr tmptag=NULL;		/* so please, please */
-  AjPStr tmpfmt=NULL;		/* don't delete them */
+				/* don't delete them */
+  static AjPStr tmpfmt=NULL;
   static AjPStr outstr = NULL;
   static AjPStr tmpval=NULL;
   static AjPStr tmplim = NULL;
@@ -5428,9 +5432,9 @@ static void featDumpEmbl (AjPFeature feat, AjPStr location, AjPFile file,
     ajFmtPrintS (&preftyptag, "%s                   ", "  ");
   }
 
-  wrapstr = featLocEmblWrapC(&tmploc, 72,
-			     ajStrStr(preftyptag),
-			     ajStrStr(preftyploc));
+  featLocEmblWrapC(&tmploc, 72,
+		   ajStrStr(preftyptag),
+		   ajStrStr(preftyploc), &wrapstr);
   ajFmtPrintF (file, "%S", wrapstr);
   ajStrDel (&wrapstr);
 
@@ -5441,7 +5445,7 @@ static void featDumpEmbl (AjPFeature feat, AjPStr location, AjPFile file,
     tv = ajListIterNext(iter);
     ++i;
     tmptag = featTableTag (tv->Tag, FeatTagsTableEmbl);
-    tmpfmt = featTagFmt (tmptag, FeatTagsTableEmbl);
+    featTagFmt (tmptag, FeatTagsTableEmbl, &tmpfmt);
     /* ajDebug (" %3d  %S value: '%S'\n", i, tv->Tag, tv->Value); */
     ajDebug (" %3d  %S format: '%S'\n", i, tmptag, tmpfmt);
     ajFmtPrintS (&outstr, "/%S", tmptag);
@@ -5451,14 +5455,14 @@ static void featDumpEmbl (AjPFeature feat, AjPStr location, AjPFile file,
       switch (CASE2(cp[0], cp[1])) {
       case CASE2('L','I') :
 	ajDebug ("case limited\n"); /* limited */
-	tmplim = featTagLimit (tmptag, FeatTagsTableEmbl);
+	featTagLimit (tmptag, FeatTagsTableEmbl, &tmplim);
 	featTagAllLimit (&tmpval, tmplim);
 	ajFmtPrintAppS (&outstr, "=%S\n", tmpval);
 	ajStrDel(&tmplim);
 	break;
       case CASE2('Q', 'L') :	/* limited, escape quotes */
 	ajDebug ("case qlimited\n");
-	tmplim = featTagLimit (tmptag, FeatTagsTableEmbl);
+	featTagLimit (tmptag, FeatTagsTableEmbl, &tmplim);
 	featTagAllLimit (&tmpval, tmplim);
 	featTagEmblQuote (&tmpval);
 	ajFmtPrintAppS (&outstr, "=%S\n", tmpval);
@@ -5504,7 +5508,7 @@ static void featDumpEmbl (AjPFeature feat, AjPStr location, AjPFile file,
     else {
       ajDebug ("no value, hope it is void: '%S'\n", tmpfmt);
     }
-    wrapstr = featTagEmblWrapC(&outstr, 80, ajStrStr(preftyptag));
+    featTagEmblWrapC(&outstr, 80, ajStrStr(preftyptag), &wrapstr);
     ajFmtPrintF (file, "%S", wrapstr);
     ajStrDel (&wrapstr);
   }
@@ -5548,7 +5552,8 @@ static void featDumpGff (AjPFeature thys, AjPFeattable owner, AjPFile file) {
   AjIList iter = NULL;
   AjPStr outtyp = NULL;		/* these come from AjPTable */
   AjPStr outtag = NULL;		/* so please, please */
-  AjPStr outfmt = NULL;		/* don't delete them */
+				/* don't delete them */
+  static AjPStr outfmt = NULL;
   static AjPStr outstr = NULL;
   static AjPStr tmpval=NULL;
   static AjPStr tmplim = NULL;
@@ -5632,7 +5637,7 @@ static void featDumpGff (AjPFeature thys, AjPFeattable owner, AjPFile file) {
   while (ajListIterMore(iter)) {
     tv = ajListIterNext(iter);
     outtag = featTableTag (tv->Tag, FeatTagsTableGff);
-    outfmt = featTagFmt (outtag, FeatTagsTableGff);
+    featTagFmt (outtag, FeatTagsTableGff, &outfmt);
     ajDebug("Tag '%S' => '%S' %S '%S'\n",
 	    tv->Tag, outtag, outfmt, tv->Value);
     if (i++)
@@ -5646,7 +5651,7 @@ static void featDumpGff (AjPFeature thys, AjPFeattable owner, AjPFile file) {
       case CASE2('L','I') :	/* limited */
       case CASE2('Q', 'L') :	/* limited, escape quotes */
 	ajDebug ("case limited\n");
-	tmplim = featTagLimit (outtag, FeatTagsTableGff);
+	featTagLimit (outtag, FeatTagsTableGff, &tmplim);
 	featTagAllLimit (&tmpval, tmplim);
 	ajFmtPrintAppS (&outstr, " %S", tmpval);
 	ajStrDel(&tmplim);
@@ -5713,13 +5718,11 @@ static void featDumpGff (AjPFeature thys, AjPFeattable owner, AjPFile file) {
 **
 ** @param [R] name  [AjPStr] Tag name
 ** @param [R] table [AjPTable] Tag table
-** @return [AjPStr] string with formatted value.
+** @param [W] retstr [AjPStr*] string with formatted value.
 ** @@
 ******************************************************************************/
 
-static AjPStr featTagFmt (AjPStr name, AjPTable table) {
-
-  static AjPStr ret = NULL;
+static void featTagFmt (AjPStr name, AjPTable table, AjPStr* retstr) {
 
   static AjPStr valtype = NULL;
 
@@ -5737,9 +5740,9 @@ static AjPStr featTagFmt (AjPStr name, AjPTable table) {
   ajDebug ("featTagFmt '%S' type '%S' (%S)\n",
 	   name, valtype, tagstr);
 
-  ajStrAssS (&ret, valtype);
+  ajStrAssS (retstr, valtype);
 
-  return ret;
+  return;
 }
 
 /* @funcstatic featTagLimit ************************************************
@@ -5748,13 +5751,11 @@ static AjPStr featTagFmt (AjPStr name, AjPTable table) {
 **
 ** @param [R] name  [AjPStr] Tag name
 ** @param [R] table [AjPTable] Tag table
-** @return [AjPStr] string with formatted value.
+** @param [W] retstr [AjPStr*] string with formatted value.
 ** @@
 ******************************************************************************/
 
-static AjPStr featTagLimit (AjPStr name, AjPTable table) {
-
-  static AjPStr ret = NULL;
+static void featTagLimit (AjPStr name, AjPTable table, AjPStr* retstr) {
 
   static AjPStr vallist = NULL;
 
@@ -5772,9 +5773,9 @@ static AjPStr featTagLimit (AjPStr name, AjPTable table) {
   ajDebug ("featTagLimit '%S' list '%S' (%S)\n",
 	   name, vallist, tagstr);
 
-  ajStrAssS (&ret, vallist);
+  ajStrAssS (retstr, vallist);
 
-  return ret;
+  return;
 }
 
 /* @func ajFeatExit ***********************************************************
