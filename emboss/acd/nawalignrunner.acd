@@ -1,0 +1,118 @@
+application: nawalignrunner [
+  documentation: "runs nawalign alignment program on all sequence pairs in a directory"
+  groups: "protein: 3D structure"
+]
+
+section: input [
+  information: "input section"
+  type: "page"
+]
+
+  dirlist: seqpairsdir [
+    parameter: "Y"
+    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_degapped_paired_sequences"
+    information: "input directory of files containing sequence pairs for alignment"
+    extension: "deg"
+  ]
+
+  directory: pathtocommand [
+    parameter: "Y"
+    default: "/users/damian/EMBOSS/emboss/emboss/emboss"
+    information: "directory where alignment executable lives"
+  ]
+
+  string: commandname [
+    parameter: "Y"
+    default: "nawalign"
+    information: "name of alignment executable"
+  ]
+
+  directory: scoringmatrixdirname [
+    parameter: "Y"
+    default: "/users/damian/EMBOSS/emboss/emboss/emboss/data"
+    information: "directory where scoring matrix lives"
+  ]
+
+  string: scoringmatrixname [
+    parameter: "Y"
+    default: "EBLOSUM62"
+    information: "name of alignment scoring matrix"
+  ]
+
+endsection: input
+
+section: required [
+  information: "required section"
+  type: "page"
+]
+
+  float: gapopen  [
+    standard: "Y"
+    information: "Gap opening penalty"
+    minimum: "1."
+    maximum: "100."
+    default: "10.0"
+    valid: "Floating point number from 1.0 to 100.0"
+    expected: "10.0 for any sequence"
+    help: "The gap opening penalty is subtracted from the total score 
+           every time a gap is inserted in the alignment. The default 
+           value is chosen for the EBLOSUM62 scoring matrix when you
+           are aligning protein sequences, and the EDNAFULL matrix when 
+           you are aligning nucleotide sequences. If you sequence 
+           contains many small errors you should set a low gap opening 
+           penalty (near zero) to avoid over-penalizing those errors."
+  ]
+
+  float: gapextend  [
+    standard: "Y"
+    information: "Gap extension penalty"
+    minimum: "0.0"
+    maximum: "10."
+    default: "0.5"
+    valid: "Floating point number from 0.0 to 10.0"
+    expected: "0.5 for any sequence"
+    help: "The gap extension penalty is the score substracted when more
+           spaces are added to an existing alignment gap.  Often a single 
+           insertion or deletion affects multiple residues/nucleotides; 
+           separate opening and extension penalties reduce the excessive 
+           penalty such events would otherwise carry; generally the
+           gap extension penalty should be significantly lower than
+           the gap opening penalty."
+  ]
+
+endsection: required
+
+
+section: advanced [
+  information: "advanced section"
+  type: "page"
+]
+
+endsection: advanced
+
+section: output [
+  information: "output Section"
+  type: "page"
+]
+
+  outdir: alignedseqsoutdir
+  [
+    parameter: "Y"
+    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_output_alignments/nawalign"
+    information: "name of directory containing sequences aligned by nawalign"
+    extension: "nawalign"
+  ]
+
+  string: outfilesuffix [
+    parameter: "Y"
+    default: ".nawalign"
+    information: "appended to end of all output alignment file names"
+  ]
+
+  string: outfileformat [
+    parameter: "Y"
+    default: "fasta"
+    information: "format of output alignments"
+  ]
+
+endsection: output
