@@ -588,18 +588,32 @@ AjBool ajSeqTypeCheckIn(AjPSeq thys, const AjPSeqin seqin)
 	ajStrDegap(&thys->Seq);
     }
 
-    if(seqType[itype].Type == ISPROT && !ajSeqIsProt(thys))
+    if(seqType[itype].Type == ISPROT)
     {
-	ajErr("Sequence is not a protein\n");
-	ajDebug("ajSeqTypeCheckIn: rejected - not a protein\n");
-	return ajFalse;
+	if (ajSeqIsProt(thys))
+	{
+	    ajSeqSetProt(thys);
+	}
+	else
+	{
+	    ajErr("Sequence is not a protein\n");
+	    ajDebug("ajSeqTypeCheckIn: rejected - not a protein\n");
+	    return ajFalse;
+	}
     }
 
-    if(seqType[itype].Type == ISNUC && !ajSeqIsNuc(thys))
+    if(seqType[itype].Type == ISNUC)
     {
-	ajErr("Sequence is not nucleic\n");
-	ajDebug("ajSeqTypeCheckIn: rejected - not nucleic\n");
-	return ajFalse;
+	if (ajSeqIsNuc(thys))
+	{
+	    ajSeqSetNuc(thys);
+	}
+	else
+	{
+	    ajErr("Sequence is not nucleic\n");
+	    ajDebug("ajSeqTypeCheckIn: rejected - not nucleic\n");
+	    return ajFalse;
+	}
     }
 
     /* Calling funclist seqType() */
