@@ -117,6 +117,10 @@ int main(int argc, char **argv)
 	ajSeqTrim(b);
 	lenb = ajSeqLen(b);
 	len = lena*lenb;
+
+	if(len < 0)
+	    ajFatal("Sequences too big. Try 'matcher' or 'supermatcher'");
+
 	if(len>maxarr)
 	{
 	    AJCRESIZE(path,len);
