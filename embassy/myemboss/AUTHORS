@@ -1,0 +1,7 @@
+This directory is provided so that local sites can maintain their own
+EMBOSS applications and library code.
+
+The dummy set of applications are provided by the EMBOSS
+developers. You can use them to test your system has the required
+environment to support building your own applications.
+
