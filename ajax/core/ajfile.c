@@ -2449,7 +2449,9 @@ AjPFileBuff ajFileBuffNewDW(const AjPStr dir, const AjPStr wildfile)
     ajint dirsize;
     AjPList list = NULL;
     AjPStr name  = NULL;
-
+#ifdef _POSIX_C_SOURCE
+    char buf[sizeof(struct dirent)+NAME_MAX];
+#endif
     
     if(ajStrLen(dir))
 	ajStrAssS(&dirfix, dir);
@@ -2467,11 +2469,25 @@ AjPFileBuff ajFileBuffNewDW(const AjPStr dir, const AjPStr wildfile)
     list = ajListstrNew();
 
 #if defined(AJ_IRIXLF)
-    while((de = readdir64(dp)))
+#ifdef _POSIX_C_SOURCE
+    while(!readdir64_r(dp,(struct dirent64 *)buf,&de))
     {
+	if(!de)
+	    break;
 #else
-    while((de = readdir(dp)))
+	while((de=readdir64(dp)))
+	{
+#endif
+#else
+#ifdef _POSIX_C_SOURCE
+    while(!readdir_r(dp,(struct dirent *)buf,&de))
     {
+	if(!de)
+	    break;
+#else
+	while((de=readdir(dp)))
+	{
+#endif
 #endif
 	/* skip deleted files with inode zero */
 	if(!de->d_ino)
@@ -2582,7 +2598,9 @@ AjPFile ajFileNewDW(const AjPStr dir, const AjPStr wildfile)
     ajint dirsize;
     AjPList list = NULL;
     AjPStr name  = NULL;
-
+#ifdef _POSIX_C_SOURCE
+    char buf[sizeof(struct dirent)+NAME_MAX];
+#endif
     
     if(ajStrLen(dir))
 	ajStrAssS(&dirfix, dir);
@@ -2600,11 +2618,25 @@ AjPFile ajFileNewDW(const AjPStr dir, const AjPStr wildfile)
     list = ajListstrNew();
     
 #if defined(AJ_IRIXLF)
-    while((de = readdir64(dp)))
+#ifdef _POSIX_C_SOURCE
+    while(!readdir64_r(dp,(struct dirent64 *)buf,&de))
     {
+	if(!de)
+	    break;
 #else
-    while((de = readdir(dp)))
+	while((de=readdir64(dp)))
+	{
+#endif
+#else
+#ifdef _POSIX_C_SOURCE
+    while(!readdir_r(dp,(struct dirent *)buf,&de))
     {
+	if(!de)
+	    break;
+#else
+	while((de=readdir(dp)))
+	{
+#endif
 #endif
 	/* skip deleted files with inode zero */
 	if(!de->d_ino)
@@ -4092,7 +4124,9 @@ ajint ajFileScan(AjPStr path, AjPStr filename, AjPList *result,
     AjPStr t = NULL;
     AjBool flag;
     AjPStr tpath = NULL;
-    
+#ifdef _POSIX_C_SOURCE
+    char buf[sizeof(struct dirent)+NAME_MAX];
+#endif
     
     tpath = ajStrNew();
     ajStrAssC(&tpath,ajStrStr(path));
@@ -4125,11 +4159,27 @@ ajint ajFileScan(AjPStr path, AjPStr filename, AjPList *result,
     dirs = ajListNew();
     
 #if defined(AJ_IRIXLF)
-    while((dp=readdir64(indir)))
-#else
-    while((dp=readdir(indir)))
-#endif
+#ifdef _POSIX_C_SOURCE
+    while(!readdir64_r(indir,(struct dirent64 *)buf,&dp))
     {
+	if(!dp)
+	    break;
+#else
+	while((dp=readdir64(indir)))
+	{
+#endif
+#else
+#ifdef _POSIX_C_SOURCE
+    while(!readdir_r(indir,(struct dirent *)buf,&dp))
+    {
+	if(!dp)
+	    break;
+#else
+	while((dp=readdir(indir)))
+	{
+#endif
+#endif
+
 	if(!dp->d_ino ||
 	   !strcmp(dp->d_name,".") ||
 	   !strcmp(dp->d_name,".."))
