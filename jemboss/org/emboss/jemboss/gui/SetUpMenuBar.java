@@ -54,7 +54,7 @@ public class SetUpMenuBar
 
     JMenuBar menuPanel = new JMenuBar();
     new BoxLayout(menuPanel,BoxLayout.X_AXIS);
-    menuPanel.add(Box.createRigidArea(new Dimension(5,30))); 
+    menuPanel.add(Box.createRigidArea(new Dimension(5,24))); 
 
     JMenu fileMenu = new JMenu("File");
     fileMenu.setMnemonic(KeyEvent.VK_F);
