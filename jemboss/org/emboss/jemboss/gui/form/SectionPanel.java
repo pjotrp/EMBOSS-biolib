@@ -24,10 +24,11 @@ package org.emboss.jemboss.gui.form;
 
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.border.*;
+import javax.swing.border.TitledBorder;
+import javax.swing.border.Border;
 import javax.swing.event.*;
-
-import java.util.*;
+import java.util.Vector;
+import java.util.Enumeration;
 import java.awt.event.*;
 import java.io.*;
 
@@ -57,6 +58,7 @@ public class SectionPanel
   private JTextField rangeField[];
   private JCheckBox  checkBox[];
   private InputSequenceAttributes inSeqAttr[];
+  private ListFilePanel filelist[];
 
   private myComboPopup fieldOption[];
   private JList multiOption[];
@@ -120,7 +122,8 @@ public class SectionPanel
             TextFieldInt textInt[], TextFieldFloat textFloat[],
             JTextField rangeField[], JCheckBox  checkBox[],
             InputSequenceAttributes inSeqAttr[],
-            myComboPopup fieldOption[], JList multiOption[], SetInFileCard inSeq[],
+            myComboPopup fieldOption[], JList multiOption[], 
+            SetInFileCard inSeq[], ListFilePanel filelist[],
             String db[], String des, Box lab[], int numofFields,
             JembossParams mysettings, boolean withSoap)
   {
@@ -374,6 +377,12 @@ public class SectionPanel
 
           pan.add(inSeq[h].getInCard());
 //        pan.add(section.add(Box.createVerticalStrut(5)));
+        }
+        else if(att.startsWith("filelist"))
+        {
+          filelist[h] = new ListFilePanel(15);
+          pan.add(filelist[h]);
+          pan.add(Box.createVerticalStrut(100));
         }
         else if(att.startsWith("range"))
         {
@@ -978,7 +987,7 @@ public class SectionPanel
         {
           setShadingAndVisibility(textf[h], true, field);
         }
-        
+
         if(type.startsWith("def"))
         {
           if(att.startsWith("matrix"))

@@ -59,6 +59,7 @@ public class BuildJembossForm implements ActionListener
   private JTextField rangeField[];
   private JCheckBox  checkBox[];
   private InputSequenceAttributes inSeqAttr[];
+  private ListFilePanel filelist[];
   protected static OutputSequenceAttributes outSeqAttr;
 
   private Box advSectionBox;
@@ -255,12 +256,14 @@ public class BuildJembossForm implements ActionListener
     int nlist  = parseAcd.getNumList();
     int mlist  = parseAcd.getNumMList();
     int nrange = parseAcd.getNumRange();
+    int nflist = parseAcd.getNumFileList();
 
     textf     = new TextFieldSink[ntextf];
     textInt   = new TextFieldInt[nint];
     textFloat = new TextFieldFloat[nfloat];
     checkBox  = new JCheckBox[nbool];
     inSeqAttr = new InputSequenceAttributes[nseqs];
+    filelist  = new ListFilePanel[nflist];
     fieldOption = new myComboPopup[nlist];
     multiOption = new JList[mlist];
     rangeField  = new JTextField[nrange];
@@ -333,8 +336,8 @@ public class BuildJembossForm implements ActionListener
       {
         SectionPanel sp = new SectionPanel(f,p3,fieldPane,parseAcd,
               nfield,textf,textInt,textFloat,rangeField,checkBox,
-              inSeqAttr,fieldOption,multiOption,inSeq,db,appDescription,
-              lab,numofFields,mysettings,withSoap);
+              inSeqAttr,fieldOption,multiOption,inSeq,filelist,
+              db,appDescription,lab,numofFields,mysettings,withSoap);
 
         if(sp.isReportFormat())
           rf = sp.getReportFormat();
@@ -752,6 +755,24 @@ public class BuildJembossForm implements ActionListener
             options = options.concat(" -" + val + " " +  textf[h].getText());
         }
 
+      }
+      else if ( att.startsWith("filelist") )
+      {
+        if(withSoap)
+        {
+          String fns = filelist[h].getListFile();
+          String ls = System.getProperty("line.separator");
+          options = filesForSoap("internalList::internalList"+ls+
+                                 fns,options,val,filesToMove);
+        }
+        else
+        {
+          String fl[] = filelist[h].getArrayListFile();
+          String flist = fl[0];
+          for(int i=1;i<fl.length;i++)
+            flist = flist.concat(","+fl[i]);
+          options = options.concat(" -" + val + " " + flist);
+        }
       }
       else if ( att.startsWith("seqset") || att.startsWith("seqall") ||
                 att.startsWith("sequence") )
