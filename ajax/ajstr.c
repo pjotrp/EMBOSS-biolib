@@ -2588,8 +2588,10 @@ AjBool ajStrMask(AjPStr* pthis, ajint begin, ajint end, char maskchar)
     ibegin = strPos(thys, begin);
     iend = strPosI(thys, ibegin, end);
 
+/*
     ajDebug("ajStrMask %d %d len: %d ibegin: %d iend: %d char '%c'\n",
 	     begin, end, thys->Len, ibegin, iend, maskchar);
+*/
 
     if(iend < ibegin)
 	return ajFalse;
@@ -3363,7 +3365,9 @@ AjBool ajStrBlock(AjPStr* pthis, ajint blksize)
     ajStrModL(pthis, i+1);
     thys = *pthis;
 
+/*
     ajDebug("ajStrBlock len: %d blksize: %d i: %d\n", thys->Len, blksize, i);
+*/
 
     cp = &thys->Ptr[thys->Len];
     cq = &thys->Ptr[i];
@@ -3377,7 +3381,10 @@ AjBool ajStrBlock(AjPStr* pthis, ajint blksize)
     thys->Len = i;
 
     ajStrTrace(thys);
+
+/*
     ajDebug("result '%S'\n", thys);
+*/
 
     return ajTrue;
 }
@@ -3463,8 +3470,8 @@ void ajStrFixI(AjPStr* pthis, ajint ilen)
 
     if(thys->Use > 1)
     {
-	ajDebug("ajStrFixI called for string in use %d times\n'%*S'\n",
-		thys->Use, thys->Res, thys);
+	/* ajDebug("ajStrFixI called for string in use %d times\n'%*S'\n",
+		thys->Use, thys->Res, thys); */
 	ajWarn("ajStrFixI called for string in use %d times\n", thys->Use);
     }
 
@@ -3473,9 +3480,9 @@ void ajStrFixI(AjPStr* pthis, ajint ilen)
 	ajWarn("ajStrFixI called with length %d for string with size %d\n",
 	       ilen, thys->Res);
 	thys->Ptr[thys->Res-1] = '\0';
-	ajDebug("ajStrFixI called with length %d for string with size %d\n"
+	/* ajDebug("ajStrFixI called with length %d for string with size %d\n"
 		"'%S'\n",
-		ilen, thys->Res, thys);
+		ilen, thys->Res, thys); */
 	ilen = strlen(thys->Ptr);
     }
 
@@ -3535,11 +3542,11 @@ void ajStrFixTestI(AjPStr *pthis, ajint ilen)
 	       ilen);
 	ajWarn("... true length %d\n",
 	       strlen(thys->Ptr));
-	ajDebug("ajStrFixTestI called with length %d "
+	/* ajDebug("ajStrFixTestI called with length %d "
 		"but this is not end of string\n",
 		ilen);
 	ajDebug("... true length %d\n",
-		strlen(thys->Ptr));
+		strlen(thys->Ptr)); */
 	thys->Ptr[ilen] = '\0';
 	ajStrTrace(thys);
     }
@@ -4290,8 +4297,10 @@ AjBool ajStrMatchWildCC(const char* str, const char* text)
 
     i = ajStrCmpWildCC(str, text);
 
+/*
     ajDebug("ajStrMatchWildCC '%s' '%s' cmp: %d\n",
 	    str, text, i);
+*/
 
     if(i)
 	return ajFalse;
@@ -4599,7 +4608,7 @@ AjBool ajStrMatchWordCC(const char* str, const char* text)
     const char* cq;
     AjBool word = ajFalse;
 
-    ajDebug("ajStrMatchWordCC('%s', '%s')\n", str, text);
+    /* ajDebug("ajStrMatchWordCC('%s', '%s')\n", str, text); */
 
     cp = text;
     cq = str;
@@ -4610,7 +4619,7 @@ AjBool ajStrMatchWordCC(const char* str, const char* text)
     if(!*cp)
 	return ajFalse;
 
-    ajDebug("something to test, continue...\n");
+    /* ajDebug("something to test, continue...\n"); */
 
     /* unlike ajStrCmpWildCC, we step through the string (str) not the
        query (text) */
@@ -4657,7 +4666,7 @@ static AjBool strMatchWordCC(const char* str, const char* text)
     const char* cq;
     char lastch = '\0';
     
-    ajDebug("strMatchWordCC '%s' '%s'\n", str, text);
+    /* ajDebug("strMatchWordCC '%s' '%s'\n", str, text); */
 
     cp = text;
     cq = str;
@@ -4684,14 +4693,14 @@ static AjBool strMatchWordCC(const char* str, const char* text)
 	    cp++;		 /* recursive call to test the rest */
 	    if(!*cp)
 	    {
-		ajDebug("...matches at end +%d '%s' +%d '%s'\n",
-			 (cq - str), cq, (cp - text), cp);
+		/* ajDebug("...matches at end +%d '%s' +%d '%s'\n",
+			 (cq - str), cq, (cp - text), cp); */
 		return ajTrue;		/* just match the rest */
 	    }
 
 	    if(!*cq)
 	    {
-		ajDebug("...test match to null string just in case\n");
+		/* ajDebug("...test match to null string just in case\n"); */
 		return strMatchWordCC(cq, cp);
 	    }
 
@@ -4699,8 +4708,8 @@ static AjBool strMatchWordCC(const char* str, const char* text)
 	    {		 /* wildcard in mid name, look for the rest */
 		if(strMatchWordCC(cq, cp)) /* recursive + repeats */
 		    return ajTrue;
-		ajDebug("...'*' at +%d '%s' +%d '%s' continuing\n",
-			 (cq - str), cq, (cp - text), cp);
+		/* ajDebug("...'*' at +%d '%s' +%d '%s' continuing\n",
+			 (cq - str), cq, (cp - text), cp); */
 		cq++;
 	    }
 
@@ -4721,18 +4730,18 @@ static AjBool strMatchWordCC(const char* str, const char* text)
 	}
     }
 
-    ajDebug("...done comparing at +%d '%s' +%d '%s' lastch '%c'\n",
-	     (cq - str), cq, (cp - text), cp, lastch);
+    /* ajDebug("...done comparing at +%d '%s' +%d '%s' lastch '%c'\n",
+	     (cq - str), cq, (cp - text), cp, lastch); */
     
     if(!isalnum((int) lastch))
     {
-	ajDebug("not a word boundary at '%c'\n", lastch);
+	/* ajDebug("not a word boundary at '%c'\n", lastch); */
 	return ajFalse;
     }
     
     if(*cp)
     {
-	ajDebug("...incomplete cp, FAILED\n");
+	/* ajDebug("...incomplete cp, FAILED\n"); */
 	return ajFalse ;
     }
     
@@ -4740,14 +4749,14 @@ static AjBool strMatchWordCC(const char* str, const char* text)
     {
 	if(isalnum((int) *cq))
 	{
-	    ajDebug("word continues, failed\n");
+	    /* ajDebug("word continues, failed\n"); */
 	    return ajFalse;
 	}
-	ajDebug("word end ... success\n");
+	/* ajDebug("word end ... success\n"); */
 	return ajTrue;
     }
     
-    ajDebug("...all finished and matched\n");
+    /* ajDebug("...all finished and matched\n"); */
     
     return ajTrue;
 }
@@ -6198,8 +6207,8 @@ static ajint strPosII(ajint ilen, ajint imin, ajint ipos)
     if(jpos >= ilen)
     {
 	ajUtilCatch();
-	ajDebug("strPosII ilen: %d imin: %d ipos: %d jpos: %d\n",
-		ilen, imin, ipos, jpos);
+	/* ajDebug("strPosII ilen: %d imin: %d ipos: %d jpos: %d\n",
+		ilen, imin, ipos, jpos); */
     }
 
     if(jpos >= ilen)
