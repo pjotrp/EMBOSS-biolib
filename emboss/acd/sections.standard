@@ -1,0 +1,21 @@
+#
+# ACD sections
+#
+# top level (page) sections
+# =========================
+advanced page Advanced section
+input page Input section
+output page Output section
+required page Required section
+#
+# 1 afeature
+# 1 bfeature
+# 1 relation
+# 1 selection
+#
+# sub level (frame) sections
+# ==========================
+datasection advanced  Data section
+htmlsection output Html section
+
+
