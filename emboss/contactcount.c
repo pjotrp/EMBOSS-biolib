@@ -39,7 +39,8 @@ static AjPFeature write_count(AjPFeattable ajpFeattableCounts,
 			      ajint ajIntSpecificPairs,
 			      ajint ajIntTotalPairs);
 
-static AjBool write_scoring_matrix(AjPInt2d ajpInt2dCounts, AjPFile ajpFileScoringMatrix);
+static AjBool write_scoring_matrix(AjPInt2d ajpInt2dCounts,
+				   AjPFile ajpFileScoringMatrix);
 
 static ajint char_to_scoring_matrix_index(char cResType);
 
@@ -347,7 +348,7 @@ static AjPFeature write_count(AjPFeattable ajpFeattableCounts,
 **
 ** @param [r] ajpFileScoringMatrix [AjPFile] file to write scoring table to
 ** @param [r] ajpInt2dScoringMatrix [AjPInt2d] 2-D matrix of signed integer scores
-** @return [AjBool] AJTRUE for success
+** @return [AjBool] did it work? ajTrue for success
 ** @@
 ******************************************************************************/
 
