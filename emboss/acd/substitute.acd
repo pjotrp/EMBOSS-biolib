@@ -11,29 +11,14 @@ section: input
   type: "page"
 ]
 
-  dirlist: alignedpairsdirlist
-  [
-    parameter: "Y"
-    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_alignments"
-    information: "directory list of paired traces of alignments"
-    extension: "fasta"
+  seqset: alignedpair [
+    param: "Y"
+    type: "gapprotein"
+    minseqs: 2
+    information: "pair of polypeptide sequences to be substituted"
+    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_output_alignments/needle/3hfmlv_vs_2fb4lv.needle"
   ]
 
-  directory: pairsdir
-  [
-    parameter: "Y"
-    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_alignments"
-    information: "name of directory containing paired traces of alignments"
-    extension: "fasta"
-  ]
-
-  dirlist: substituteddir
-  [
-    parameter: "Y"
-    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/substituted_sequences"
-    information: "directory containing template sequences substituted with matches from query sequences"
-    extension: "sbs"
-  ]
 
 endsection: input
 
@@ -60,11 +45,11 @@ section: output
   type: "page"
 ]
 
-  seqout: substituted
+  seqout: substitutedseq
   [
     param: "Y"
     type: "protein"
-    default: "./contacttest/substituted_sequences/12Jul04.fasta"
+    default: "./contacttest/substituted_sequences/28Sep04.fasta"
   ]
 
 endsection: output
