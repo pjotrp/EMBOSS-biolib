@@ -1150,9 +1150,9 @@ AjStatus ajAcdInitP (char *pgm, ajint argc, char *argv[], char *package)
   
     /* pre-parse the command line for special options */
   
-    (void) ajStrStat ("before acdArgsScan");
+    /*    (void) ajStrStat ("before acdArgsScan");  */
     acdArgsScan (argc, argv);
-    (void) ajStrStat ("after acdArgsScan");
+    /* (void) ajStrStat ("after acdArgsScan"); */
   
     /* open the command definition file */
    
@@ -1227,42 +1227,42 @@ AjStatus ajAcdInitP (char *pgm, ajint argc, char *argv[], char *package)
   
     /* Parse the input to set the initial definitions */
   
-    (void) ajStrStat ("before acdParse");
+    /* (void) ajStrStat ("before acdParse"); */
     acdParse (acdText);
-    (void) ajStrStat ("after acdParse");
+    /* (void) ajStrStat ("after acdParse"); */
     (void) ajStrDelReuse (&acdText);
   
     /* Fill in incomplete information like parameter numbers */
   
     acdProcess ();
-    (void) ajStrStat ("after acdProcess");
+    /* (void) ajStrStat ("after acdProcess"); */
   
     AJCNEW0(acdParamSet, acdNParam+1);
 
     /* report on what we have so far */
   
     acdListReport("Definitions in ACD file");
-    (void) ajStrStat ("after acdListReport");
+    /* (void) ajStrStat ("after acdListReport"); */
   
     /* parse the command line and update the values */
   
     acdArgsParse (argc, argv);
-    (void) ajStrStat ("after acdArgsParse");
+    /* (void) ajStrStat ("after acdArgsParse"); */
   
     /* report on what we have so far */
   
     acdListReport("Results of parsing command line arguments");
-    (void) ajStrStat ("after acdListReport2");
+    /* (void) ajStrStat ("after acdListReport2"); */
   
     /* set the true values and prompt for missing required values */
   
     acdSetAll();
-    (void) ajStrStat ("after acdSetAll");
+    /* (void) ajStrStat ("after acdSetAll"); */
   
     /* report on what we have now */
   
     acdListReport("Final results after setting values and prompting the user");
-    (void) ajStrStat ("after acdListReport3");
+    /* (void) ajStrStat ("after acdListReport3"); */
   
     /* all done */
 
@@ -2821,7 +2821,7 @@ static void acdBadVal (AcdPAcd thys, AjBool required, char *fmt, ...)
      * the user
      */
 /*    (void) ajFmtPrintS(&msg, "option -%S: %s", name, fmt); */
-    ajDebug("Failure for option '%S'",name);
+    ajDebug("Failure for option '%S'\n",name);
     (void) ajFmtPrintS(&msg, "%s", fmt);
 
     va_start (args, fmt) ;
@@ -4069,7 +4069,7 @@ static void acdSetFeatout (AcdPAcd thys)
 	ok = ajFeattabOutOpen (val, reply);
 	if (!ok)
 	    acdBadVal (thys, required,
-		       "Unable to read sequence '%S'", reply);
+		       "Unable to open features output '%S'", reply);
     }
     if (!ok)
 	acdBadRetry (thys);
@@ -5827,13 +5827,13 @@ static void acdSetSeq (AcdPAcd thys) {
     if (seqin->Features)
       ajDebug ("acdSetSeq with features UFO '%S'\n", seqin->Ufo);
 
-    (void) ajStrStat ("before ajSeqRead");
+    /* (void) ajStrStat ("before ajSeqRead"); */
 
     /* (try to) read the sequence */
 
     ok = ajSeqRead(val, seqin);
 
-    (void) ajStrStat ("after ajSeqRead");
+    /* (void) ajStrStat ("after ajSeqRead"); */
 
     if (!ok) {
       acdBadVal (thys, required,
