@@ -1670,7 +1670,7 @@ static AjBool jctl_do_directory(char *buf, int uid, int gid)
     str = ajStrNew();
     ajStrAssC(&str,dbuf);
 
-    if(mkdir(ajStrStr(str),0711)==-1)
+    if(mkdir(ajStrStr(str),0755)==-1)
     {
 	AJFREE(dbuf);
 	ajStrDel(&str);
@@ -2683,7 +2683,7 @@ static AjBool jctl_do_putfile(char *buf, int uid, int gid)
     }
 
 
-    if((fd=open(ajStrStr(file),O_CREAT|O_WRONLY|O_TRUNC,0600))<0)
+    if((fd=open(ajStrStr(file),O_CREAT|O_WRONLY|O_TRUNC,0644))<0)
     {
 	fprintf(stderr,"jctl open error (jctl_do_putfile)\n");
 	if(size)
