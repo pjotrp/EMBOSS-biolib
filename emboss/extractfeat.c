@@ -831,7 +831,8 @@ static void extractfeat_FeatureFilter(AjPFeattable featab,
 		ajListRemove(iter);
 	    }
 	}
-    }
+	ajListIterFree(&iter);
+   }
 
     return;
 }
