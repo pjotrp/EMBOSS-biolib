@@ -45,7 +45,8 @@ public class RemoteFileNode extends DefaultMutableTreeNode
     private transient EmbreoParams mysettings;    // Transferable to work
     private transient EmbreoFileRoots froots;
 
-    private String fs = new String(System.getProperty("file.separator"));
+//  private String fs = new String(System.getProperty("file.separator"));
+    private String fs = "/";
 
     final public static DataFlavor REMOTEFILENODE = 
            new DataFlavor(RemoteFileNode.class, "Remote file");

@@ -178,10 +178,10 @@ class RemoteDragTree extends JTree implements DragGestureListener,
           if(fdropPath.isLeaf()) 
           {
             RemoteFileNode pn = (RemoteFileNode)fdropPath.getParent();
-            dropDest = pn.getFullName() + fs + lfn.getName();
+            dropDest = pn.getFullName() + "/" + lfn.getName(); //assumes unix file sep.!
           } 
           else 
-            dropDest = fdropPath.getFullName() + fs + lfn.getName();
+            dropDest = fdropPath.getFullName() + "/" + lfn.getName();
 
           try 
           {
