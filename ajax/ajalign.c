@@ -1804,9 +1804,29 @@ void ajAlignSetHeader (AjPAlign thys, AjPStr header) {
   return;
 }
 
-/* @func ajAlignSetHeaderApp **************************************************
+/* @func ajAlignSetHeaderC ****************************************************
 **
 ** Defines an alignment header
+**
+** @param [R] thys [AjPAlign] Alignment object
+** @param [R] header [const char*] Align header with embedded newlines
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajAlignSetHeaderC (AjPAlign thys, const char* header) {
+
+  ajStrAssC (&thys->Header, header);
+
+  ajDebug("ajAlignSetHeaderC len %d '%S'\n",
+	  ajStrLen(thys->Header), header);
+
+  return;
+}
+
+/* @func ajAlignSetHeaderApp **************************************************
+**
+** Appends to an alignment header
 **
 ** @param [R] thys [AjPAlign] Alignment object
 ** @param [R] header [AjPStr] Align header with embedded newlines
@@ -1816,6 +1836,9 @@ void ajAlignSetHeader (AjPAlign thys, AjPStr header) {
 
 void ajAlignSetHeaderApp (AjPAlign thys, AjPStr header) {
 
+  if (ajStrLen(thys->Header) && ajStrChar(thys->Header, -1) != '\n')
+    ajStrAppC(&thys->Header, "/n");
+
   ajStrApp (&thys->Header, header);
 
   ajDebug("ajAlignSetHeaderApp len %d '%S'\n",
@@ -1824,9 +1847,49 @@ void ajAlignSetHeaderApp (AjPAlign thys, AjPStr header) {
   return;
 }
 
+/* @func ajAlignSetTail *******************************************************
+**
+** Defines an alignment tail
+**
+** @param [R] thys [AjPAlign] Alignment object
+** @param [R] tail [AjPStr] Align tail with embedded newlines
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajAlignSetTail (AjPAlign thys, AjPStr tail) {
+
+  ajStrAssS (&thys->Tail, tail);
+
+  ajDebug("ajAlignSetTail len %d '%S'\n",
+	  ajStrLen(thys->Tail), tail);
+
+  return;
+}
+
+/* @func ajAlignSetTailC ******************************************************
+**
+** Defines an alignment tail
+**
+** @param [R] thys [AjPAlign] Alignment object
+** @param [R] tail [const char*] Align tail with embedded newlines
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajAlignSetTailC (AjPAlign thys, const char* tail) {
+
+  ajStrAssC (&thys->Tail, tail);
+
+  ajDebug("ajAlignSetTailC len %d '%S'\n",
+	  ajStrLen(thys->Tail), tail);
+
+  return;
+}
+
 /* @func ajAlignSetTailApp ****************************************************
 **
-** Defines an alignment header
+** Apopends to an alignment tail
 **
 ** @param [R] thys [AjPAlign] Alignment object
 ** @param [R] tail [AjPStr] Align tail with embedded newlines
@@ -1835,6 +1898,9 @@ void ajAlignSetHeaderApp (AjPAlign thys, AjPStr header) {
 ******************************************************************************/
 
 void ajAlignSetTailApp (AjPAlign thys, AjPStr tail) {
+
+  if (ajStrLen(thys->Tail) && ajStrChar(thys->Tail, -1) != '\n')
+    ajStrAppC(&thys->Tail, "/n");
 
   ajStrApp (&thys->Tail, tail);
 
@@ -1865,46 +1931,6 @@ void ajAlignSetSubHeader (AjPAlign thys, AjPStr subheader) {
   return;
 }
 
-/* @func ajAlignSetTail *******************************************************
-**
-** Defines an alignment tail
-**
-** @param [R] thys [AjPAlign] Alignment object
-** @param [R] tail [AjPStr] Align tail with embedded newlines
-** @return [void]
-** @@
-******************************************************************************/
-
-void ajAlignSetTail (AjPAlign thys, AjPStr tail) {
-
-  ajStrAssS (&thys->Tail, tail);
-
-  ajDebug("ajAlignSetTail len %d '%S'\n",
-	  ajStrLen(thys->Tail), tail);
-
-  return;
-}
-
-/* @func ajAlignSetHeaderC ****************************************************
-**
-** Defines an alignment header
-**
-** @param [R] thys [AjPAlign] Alignment object
-** @param [R] header [const char*] Align header with embedded newlines
-** @return [void]
-** @@
-******************************************************************************/
-
-void ajAlignSetHeaderC (AjPAlign thys, const char* header) {
-
-  ajStrAssC (&thys->Header, header);
-
-  ajDebug("ajAlignSetHeaderC len %d '%S'\n",
-	  ajStrLen(thys->Header), header);
-
-  return;
-}
-
 /* @func ajAlignSetSubHeaderC *************************************************
 **
 ** Defines an alignment header (cleared after printing so it can
@@ -1926,22 +1952,50 @@ void ajAlignSetSubHeaderC (AjPAlign thys, const char* subheader) {
   return;
 }
 
-/* @func ajAlignSetTailC ******************************************************
+/* @func ajAlignSetSubHeaderApp ***********************************************
 **
-** Defines an alignment tail
+** Appends to an alignment subheader (cleared after printing so it can
+** be set again for the next alignment)
 **
 ** @param [R] thys [AjPAlign] Alignment object
-** @param [R] tail [const char*] Align tail with embedded newlines
+** @param [R] subheader [AjPStr] Align subheader with embedded newlines
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajAlignSetTailC (AjPAlign thys, const char* tail) {
+void ajAlignSetSubHeaderApp (AjPAlign thys, AjPStr subheader) {
 
-  ajStrAssC (&thys->Tail, tail);
+  if (ajStrLen(thys->SubHeader) && ajStrChar(thys->SubHeader, -1) != '\n')
+    ajStrAppC(&thys->SubHeader, "/n");
 
-  ajDebug("ajAlignSetTailC len %d '%S'\n",
-	  ajStrLen(thys->Tail), tail);
+  ajStrApp (&thys->SubHeader, subheader);
+
+  ajDebug("ajAlignSetSubHeaderApp len %d '%S'\n",
+	  ajStrLen(thys->SubHeader), subheader);
+
+  return;
+}
+
+/* @func ajAlignSetSubHeaderPre ***********************************************
+**
+** Prepends to an alignment subheader (cleared after printing so it can
+** be set again for the next alignment)
+**
+** @param [R] thys [AjPAlign] Alignment object
+** @param [R] subheader [AjPStr] Align subheader with embedded newlines
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajAlignSetSubHeaderPre (AjPAlign thys, AjPStr subheader) {
+
+  if (ajStrLen(thys->SubHeader) && ajStrChar(subheader,-1) != '\n')
+    ajStrInsertC(&thys->SubHeader, 0, "/n");
+
+  ajStrInsert (&thys->SubHeader, 0, subheader);
+
+  ajDebug("ajAlignSetSubHeaderPre len %d '%S'\n",
+	  ajStrLen(thys->SubHeader), subheader);
 
   return;
 }
@@ -2259,7 +2313,7 @@ void ajAlignSetSubStandard (AjPAlign thys, ajint iali) {
   if (ajStrLen(data->Score))
     ajFmtPrintAppS (&tmphdr, "Score: %S\n", data->Score);
 
-  ajAlignSetSubHeader (thys, tmphdr);
+  ajAlignSetSubHeaderPre (thys, tmphdr);
 
   ajStrDel (&tmphdr);
   AJFREE (pdata);

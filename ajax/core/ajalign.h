@@ -83,7 +83,9 @@ AjBool       ajAlignSetRange (AjPAlign thys,
 void         ajAlignSetScoreI (AjPAlign thys, ajint score);
 void         ajAlignSetScoreR (AjPAlign thys, float score);
 void         ajAlignSetSubHeader (AjPAlign thys, AjPStr subheader);
+void         ajAlignSetSubHeaderApp (AjPAlign thys, AjPStr subheader);
 void         ajAlignSetSubHeaderC (AjPAlign thys, const char* subheader);
+void         ajAlignSetSubHeaderPre (AjPAlign thys, AjPStr subheader);
 void         ajAlignSetStats (AjPAlign thys, ajint iali, ajint len,
 				    ajint ident, ajint sim, ajint gaps,
 				    AjPStr score);
