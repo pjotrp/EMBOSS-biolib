@@ -27,21 +27,30 @@ import java.io.*;
 
 /**
 *
-* Content of each row in the DragJTable
+* Object to represent the content of each row in the DragJTable
+* of a SequenceList.
 *
 */
 public class SequenceData implements Transferable, Serializable
 {
-  public String s_name;       //seq location
-  public String s_beg;        //seq start
-  public String s_end;        //seq end
-  public Boolean s_default;   //use as the default
-  public Boolean s_remote;    //file on remote file system
-  public Boolean s_listFile;  //sequence list file
+  /** sequence file/database  */
+  public String s_name;       
+  /** sequence start */
+  public String s_beg;  
+  /** sequence end */
+  public String s_end;   
+  /** use as the default */
+  public Boolean s_default;
+  /** file on remote file system */
+  public Boolean s_remote;    
+  /** sequence list file */
+  public Boolean s_listFile;
 
-
+  /** dataflavor for drag and drop transfers */
   public static DataFlavor SEQUENCEDATA =
            new DataFlavor(SequenceData.class, "Sequence data");
+
+  /** available dataflavors */
   static DataFlavor flavors[] = { SEQUENCEDATA };
 
   public SequenceData()
@@ -65,6 +74,12 @@ public class SequenceData implements Transferable, Serializable
     s_remote = remote;
   }
 
+/**
+*
+* Returns the sequence name
+* @return s_name sequence name
+*
+*/
   public String getSequenceName()
   {
     return s_name;
