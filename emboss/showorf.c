@@ -28,23 +28,23 @@
 #define POFF 1000000
 
 
-void ajSixTranslate(AjPStr substr, AjPStr revstr, ajint len,
-		    AjPStr *pseqs, ajint begin, AjPCod codon);
-void ajDoTrans(AjPStr s, AjPStr r, ajint n, ajint len, AjPStr *pseqs,
-	       AjPCod codon, ajint begin);
-void ajMakeRuler(ajint len, ajint begin, char *ruler, ajint *npos);
-void ajCalcProteinPos(ajint **ppos, AjPStr *pseqs, ajint len);
-static void showTrans(ajint **ppos, ajint *npos, AjPStr *pseqs, AjPStr substr,
-		 ajint len, ajint *mark, char *ruler, ajint begin,
-		 AjPFile outf, AjBool isrule, AjBool isp, AjBool isn,
-		 ajint width, char *name);
-static void showTransb(ajint **ppos, ajint *npos, AjPStr *pseqs, AjPStr substr,
-		  ajint len, ajint *mark, char *ruler, ajint begin,
-		  AjPFile outf, AjBool isrule, AjBool isp, AjBool isn,
-		  ajint start, ajint end);
-
-
-
+static void showorf_SixTranslate(AjPStr substr, AjPStr revstr, ajint len,
+				   AjPStr *pseqs, ajint begin, AjPCod codon);
+static void showorf_DoTrans(AjPStr s, AjPStr r, ajint n, ajint len,
+			    AjPStr *pseqs, AjPCod codon, ajint begin);
+static void showorf_MakeRuler(ajint len, ajint begin, char *ruler,
+			      ajint *npos);
+static void showorf_CalcProteinPos(ajint **ppos, AjPStr *pseqs, ajint len);
+static void showorf_showTrans(ajint **ppos, ajint *npos, AjPStr *pseqs,
+			      AjPStr substr, ajint len, ajint *mark,
+			      char *ruler, ajint begin, AjPFile outf,
+			      AjBool isrule, AjBool isp, AjBool isn,
+			      ajint width, char *name);
+static void showorf_showTransb(ajint **ppos, ajint *npos, AjPStr *pseqs,
+			       AjPStr substr, ajint len, ajint *mark,
+			       char *ruler, ajint begin, AjPFile outf,
+			       AjBool isrule, AjBool isp, AjBool isn,
+			       ajint start, ajint end);
 
 
 
@@ -135,11 +135,11 @@ int main(int argc, char **argv)
     AJCNEW (ruler, len);
     AJCNEW (npos, len);
     
-    ajSixTranslate(substr,revstr,len,pseqs,beg,codon);
-    ajMakeRuler(len,beg,ruler,npos);
-    ajCalcProteinPos(ppos,pseqs,len);
-    showTrans(ppos,npos,pseqs,substr,len,mark,ruler,beg,
-		outf,isrule,isp,isn,width,ajSeqName(a));
+    showorf_SixTranslate(substr,revstr,len,pseqs,beg,codon);
+    showorf_MakeRuler(len,beg,ruler,npos);
+    showorf_CalcProteinPos(ppos,pseqs,len);
+    showorf_showTrans(ppos,npos,pseqs,substr,len,mark,ruler,beg,
+		      outf,isrule,isp,isn,width,ajSeqName(a));
     
 
     for(i=0;i<6;++i)
@@ -159,22 +159,22 @@ int main(int argc, char **argv)
 }
 
 
-/* @func ajSixTranslate *******************************************************
+/* @funcstatic showorf_SixTranslate ******************************************
 **
-** Undocumented.
+** Translate in all six frames
 **
-** @param [?] substr [AjPStr] Undocumented
-** @param [?] revstr [AjPStr] Undocumented
-** @param [?] len [ajint] Undocumented
-** @param [?] pseqs [AjPStr*] Undocumented
-** @param [?] begin [ajint] Undocumented
-** @param [?] codon [AjPCod] Undocumented
+** @param [r] substr [AjPStr] sequence
+** @param [r] revstr [AjPStr] reverse sequence
+** @param [?] len [ajint] sequence length
+** @param [w] pseqs [AjPStr*] translated sequences
+** @param [r] begin [ajint] start position
+** @param [r] codon [AjPCod] codon usage
 ** @@
 ******************************************************************************/
 
 
-void ajSixTranslate(AjPStr substr, AjPStr revstr, ajint len,
-		    AjPStr *pseqs, ajint begin, AjPCod codon)
+static void showorf_SixTranslate(AjPStr substr, AjPStr revstr, ajint len,
+				 AjPStr *pseqs, ajint begin, AjPCod codon)
 {
     ajint i;
     
@@ -182,7 +182,7 @@ void ajSixTranslate(AjPStr substr, AjPStr revstr, ajint len,
 
     for(i=0;i<6;++i)
     {
-	ajDoTrans(substr, revstr, i, len, pseqs, codon, begin);
+	showorf_DoTrans(substr, revstr, i, len, pseqs, codon, begin);
 	if(i>2)
 	    ajStrRev(&pseqs[i]);
     }
@@ -191,23 +191,23 @@ void ajSixTranslate(AjPStr substr, AjPStr revstr, ajint len,
 }
 
 
-/* @func ajDoTrans ************************************************************
+/* @funcstatic showorf_DoTrans ************************************************
 **
-** Undocumented.
+** Translate a single frame
 **
-** @param [?] s [AjPStr] Undocumented
-** @param [?] r [AjPStr] Undocumented
-** @param [?] n [ajint] Undocumented
-** @param [?] len [ajint] Undocumented
-** @param [?] pseqs [AjPStr*] Undocumented
-** @param [?] codon [AjPCod] Undocumented
-** @param [?] begin [ajint] Undocumented
+** @param [r] s [AjPStr] sequence
+** @param [r] r [AjPStr] reverse sequence
+** @param [r] n [ajint] frame
+** @param [r] len [ajint] sequence length
+** @param [w] pseqs [AjPStr*] translations
+** @param [r] codon [AjPCod] codon usage
+** @param [r] begin [ajint] start point
 ** @@
 ******************************************************************************/
 
 
-void ajDoTrans(AjPStr s, AjPStr r, ajint n, ajint len, AjPStr *pseqs,
-	       AjPCod codon, ajint begin)
+static void showorf_DoTrans(AjPStr s, AjPStr r, ajint n, ajint len,
+			    AjPStr *pseqs, AjPCod codon, ajint begin)
 {
     char *p;
     char *q;
@@ -262,19 +262,19 @@ void ajDoTrans(AjPStr s, AjPStr r, ajint n, ajint len, AjPStr *pseqs,
 
 
 
-/* @func ajMakeRuler **********************************************************
+/* @funcstatic showorf_MakeRuler *********************************************
 **
-** Undocumented.
+** Create ruler string with a tick every ten bases
 **
-** @param [?] len [ajint] Undocumented
-** @param [?] begin [ajint] Undocumented
-** @param [?] ruler [char*] Undocumented
-** @param [?] npos [ajint*] Undocumented
+** @param [r] len [ajint] ruler length
+** @param [r] begin [ajint] start point
+** @param [w] ruler [char*] ruler string
+** @param [w] npos [ajint*] ruler numbering
 ** @@
 ******************************************************************************/
 
 
-void ajMakeRuler(ajint len, ajint begin, char *ruler, ajint *npos)
+static void showorf_MakeRuler(ajint len, ajint begin, char *ruler, ajint *npos)
 {
     ajint i;
 
@@ -290,18 +290,18 @@ void ajMakeRuler(ajint len, ajint begin, char *ruler, ajint *npos)
 
 
 
-/* @func ajCalcProteinPos *****************************************************
+/* @funcstatic showorf_CalcProteinPos *****************************************
 **
-** Undocumented.
+** Calculate numbering of translated sequences
 **
-** @param [?] ppos [ajint**] Undocumented
-** @param [?] pseqs [AjPStr*] Undocumented
-** @param [?] len [ajint] Undocumented
+** @param [w] ppos [ajint**] protein positions
+** @param [r] pseqs [AjPStr*] protein sequences
+** @param [r] len [ajint] length
 ** @@
 ******************************************************************************/
 
 
-void ajCalcProteinPos(ajint **ppos, AjPStr *pseqs, ajint len)
+static void showorf_CalcProteinPos(ajint **ppos, AjPStr *pseqs, ajint len)
 {
     ajint i;
     ajint j;
@@ -402,32 +402,33 @@ void ajCalcProteinPos(ajint **ppos, AjPStr *pseqs, ajint len)
 
 
 
-/* @funcstatic  showTrans *****************************************************
+/* @funcstatic  showorf showTrans ********************************************
 **
-** Undocumented.
+** Output translations using given width
 **
-** @param [?] ppos [ajint**] Undocumented
-** @param [?] npos [ajint*] Undocumented
-** @param [?] pseqs [AjPStr*] Undocumented
-** @param [?] substr [AjPStr] Undocumented
-** @param [?] len [ajint] Undocumented
-** @param [?] mark [ajint*] Undocumented
-** @param [?] ruler [char*] Undocumented
-** @param [?] begin [ajint] Undocumented
-** @param [?] outf [AjPFile] Undocumented
-** @param [?] isrule [AjBool] Undocumented
-** @param [?] isp [AjBool] Undocumented
-** @param [?] isn [AjBool] Undocumented
-** @param [?] width [ajint] Undocumented
-** @param [?] name [char*] Undocumented
+** @param [r] ppos [ajint**] protein positions
+** @param [r] npos [ajint*] lengths
+** @param [r] pseqs [AjPStr*] protein sequences
+** @param [r] substr [AjPStr] mRNA sequence
+** @param [r] len [ajint] mRNA length
+** @param [r] mark [ajint*] Undocumented
+** @param [r] ruler [char*] ruler
+** @param [r] begin [ajint] start pos in mRNA
+** @param [w] outf [AjPFile] outfile
+** @param [r] isrule [AjBool] show ruler
+** @param [r] isp [AjBool] protein
+** @param [r] isn [AjBool] dna
+** @param [r] width [ajint] print width
+** @param [r] name [char*] seq name
 ** @@
 ******************************************************************************/
 
 
-static void showTrans(ajint **ppos, ajint *npos, AjPStr *pseqs, AjPStr substr,
-		 ajint len, ajint *mark, char *ruler, ajint begin,
-		 AjPFile outf, AjBool isrule, AjBool isp, AjBool isn,
-		 ajint width, char *name)
+static void showorf_showTrans(ajint **ppos, ajint *npos, AjPStr *pseqs,
+			      AjPStr substr, ajint len, ajint *mark,
+			      char *ruler, ajint begin, AjPFile outf,
+			      AjBool isrule, AjBool isp, AjBool isn,
+			      ajint width, char *name)
 {
     ajint pos;
 
@@ -440,13 +441,13 @@ static void showTrans(ajint **ppos, ajint *npos, AjPStr *pseqs, AjPStr substr,
     {
 	if(pos+width<len)
 	{
-	    showTransb(ppos,npos,pseqs,substr,len,mark,ruler,begin,
-			 outf,isrule,isp,isn,pos,pos+width-1);
+	    showorf_showTransb(ppos,npos,pseqs,substr,len,mark,ruler,begin,
+			       outf,isrule,isp,isn,pos,pos+width-1);
 	    pos += width;
 	    continue;
 	}
-	showTransb(ppos,npos,pseqs,substr,len,mark,ruler,begin,
-		     outf,isrule,isp,isn,pos,len-1);
+	showorf_showTransb(ppos,npos,pseqs,substr,len,mark,ruler,begin,
+			   outf,isrule,isp,isn,pos,len-1);
 	break;
     }
 
@@ -455,32 +456,33 @@ static void showTrans(ajint **ppos, ajint *npos, AjPStr *pseqs, AjPStr substr,
 
 
 
-/* @funcstatic  showTransb ****************************************************
+/* @funcstatic  showorf_showTransb *******************************************
 **
-** Undocumented.
+** Low level output
 **
-** @param [?] ppos [ajint**] Undocumented
-** @param [?] npos [ajint*] Undocumented
-** @param [?] pseqs [AjPStr*] Undocumented
-** @param [?] substr [AjPStr] Undocumented
-** @param [?] len [ajint] Undocumented
-** @param [?] mark [ajint*] Undocumented
-** @param [?] ruler [char*] Undocumented
-** @param [?] begin [ajint] Undocumented
-** @param [?] outf [AjPFile] Undocumented
-** @param [?] isrule [AjBool] Undocumented
-** @param [?] isp [AjBool] Undocumented
-** @param [?] isn [AjBool] Undocumented
-** @param [?] start [ajint] Undocumented
-** @param [?] end [ajint] Undocumented
+** @param [r] ppos [ajint**] protein positions
+** @param [r] npos [ajint*] lengths
+** @param [r] pseqs [AjPStr*] protein sequences
+** @param [r] substr [AjPStr] mRNA sequence
+** @param [r] len [ajint] mRNA length
+** @param [r] mark [ajint*] Undocumented
+** @param [r] ruler [char*] ruler
+** @param [r] begin [ajint] start pos in mRNA
+** @param [w] outf [AjPFile] outfile
+** @param [r] isrule [AjBool] show ruler
+** @param [r] isp [AjBool] protein
+** @param [r] isn [AjBool] dna
+** @param [r] width [ajint] print width
+** @param [r] name [char*] seq name
 ** @@
 ******************************************************************************/
 
 
-static void showTransb(ajint **ppos, ajint *npos, AjPStr *pseqs, AjPStr substr,
-		  ajint len, ajint *mark, char *ruler, ajint begin,
-		  AjPFile outf, AjBool isrule, AjBool isp, AjBool isn,
-		  ajint start, ajint end)
+static void showorf_showTransb(ajint **ppos, ajint *npos, AjPStr *pseqs,
+			       AjPStr substr, ajint len, ajint *mark,
+			       char *ruler, ajint begin, AjPFile outf,
+			       AjBool isrule, AjBool isp, AjBool isn,
+			       ajint start, ajint end)
 {
     AjPStr s;
     static char *fr[]=
