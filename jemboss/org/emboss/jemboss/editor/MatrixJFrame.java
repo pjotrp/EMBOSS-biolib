@@ -116,7 +116,7 @@ public class MatrixJFrame extends JFrame
   */
   public void setMatrix(Matrix mat)
   {
-    FileEditorDisplay fed = new FileEditorDisplay(this,"Matrix",
+    FileEditorDisplay fed = new FileEditorDisplay("Matrix",
                                    mat.getMatrixTable().trim());
     fed.setCaretPosition(0);
     mScroll.setViewportView(fed);

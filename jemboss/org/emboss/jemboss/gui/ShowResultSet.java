@@ -120,7 +120,7 @@ public class ShowResultSet extends JFrame
     String cmd = "cmd";
     if(reslist.containsKey(cmd))
     {
-      FileEditorDisplay fed = new FileEditorDisplay(null,cmd,
+      FileEditorDisplay fed = new FileEditorDisplay(cmd,
                                          reslist.get(cmd));
       fed.setCaretPosition(0);
       r1 = new JScrollPane(fed);
@@ -179,7 +179,7 @@ public class ShowResultSet extends JFrame
         }
         else
         {
-          FileEditorDisplay fed = new FileEditorDisplay(null,thiskey,
+          FileEditorDisplay fed = new FileEditorDisplay(thiskey,
                                                      h.get(thiskey));
           fed.setCaretPosition(0);
           r1 = new JScrollPane(fed);

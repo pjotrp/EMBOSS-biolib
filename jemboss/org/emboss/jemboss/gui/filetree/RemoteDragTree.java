@@ -630,7 +630,7 @@ public class RemoteDragTree extends JTree implements DragGestureListener,
       PrivateRequest gReq = new PrivateRequest(mysettings,"EmbreoFile",
                                                     "get_file",params);
        
-      FileEditorDisplay fed = new FileEditorDisplay(ffile,filename,
+      FileEditorDisplay fed = new FileEditorDisplay(filename,
                                    gReq.getHash().get("contents"));
       new ResultsMenuBar(ffile,fed,mysettings);
       JScrollPane rscroll = new JScrollPane(fed);

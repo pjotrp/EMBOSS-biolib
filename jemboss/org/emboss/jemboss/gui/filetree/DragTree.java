@@ -714,7 +714,7 @@ public class DragTree extends JTree implements DragGestureListener,
     JPanel pfile = (JPanel)ffile.getContentPane();
     pfile.setLayout(new BorderLayout());
 
-    FileEditorDisplay fed = new FileEditorDisplay(ffile, filename);
+    FileEditorDisplay fed = new FileEditorDisplay(filename);
     new ResultsMenuBar(ffile,fed,mysettings);
 
     JScrollPane rscroll = new JScrollPane(fed);
