@@ -4720,7 +4720,7 @@ AjPPdb ajAcdGetCpdb (char *token)
 static void acdSetCpdb (AcdPAcd thys)
 {
     AjPPdb val;
-
+    AjPFile inf=NULL;
     AjPStr name=NULL;
     AjBool required = ajFalse;
     AjBool ok = ajFalse;
@@ -4750,12 +4750,18 @@ static void acdSetCpdb (AcdPAcd thys)
 
 	if (ajStrLen(reply))
 	{
-	    if (!ajCpdbRead(reply,&val))
+	    if(inf=ajFileNewIn(reply))
 	    {
-		acdBadVal (thys, required,
-			   "Unable to read clean PDB file '%S'", reply);
-		ok = ajFalse;
+		if (ajCpdbRead(inf,&val))
+		    ajFileClose(&inf);
+		else
+		{
+		    acdBadVal (thys, required,
+			       "Unable to read clean PDB file '%S'", reply);
+		    ok = ajFalse;
+		}
 	    }
+	    
 	}
 	else
 	{
