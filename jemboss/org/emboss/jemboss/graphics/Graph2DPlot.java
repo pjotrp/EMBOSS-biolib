@@ -29,6 +29,7 @@ import java.util.*;
 import java.text.DecimalFormat;
 import java.awt.geom.AffineTransform;
 
+import org.emboss.jemboss.editor.SequenceProperties;
 import org.emboss.jemboss.gui.filetree.FileEditorDisplay;
 import org.emboss.jemboss.gui.form.TextFieldInt;
 import org.emboss.jemboss.gui.form.TextFieldFloat;
@@ -86,6 +87,15 @@ public class Graph2DPlot extends ScrollPanel
   private String xtitle = "";
   private String ytitle = "";
 
+  private Color plplot_colour[] = { 
+                   Color.black, Color.red, 
+                   Color.yellow, Color.green, 
+                   SequenceProperties.AQUAMARINE, Color.pink, 
+                   SequenceProperties.WHEAT, Color.gray, 
+                   SequenceProperties.BROWN, Color.blue, 
+                   SequenceProperties.BLUEVIOLET, Color.cyan, 
+                   SequenceProperties.TURQUOISE, SequenceProperties.MAGENTA, 
+                   SequenceProperties.SALMON, Color.white };
   /**
   *
   * Contructor for graph object.
@@ -213,7 +223,7 @@ public class Graph2DPlot extends ScrollPanel
     menubar.add(fileMenu);
 
     JMenu optionsMenu = new JMenu("Options");
-    JMenuItem axesOptions = new JMenuItem("Axes...");
+    JMenuItem axesOptions = new JMenuItem("Axes, Labels...");
     axesOptions.addActionListener(new ActionListener()
     {
       public void actionPerformed(ActionEvent e)
@@ -290,6 +300,8 @@ public class Graph2DPlot extends ScrollPanel
         bacross.add(Box.createHorizontalGlue());
         xbdown.add(bacross);
         xbdown.add(Box.createVerticalStrut(5));
+        xbdown.add(new JSeparator());
+        xbdown.add(Box.createVerticalStrut(5));
 
 // y-ticks
         bacross = Box.createHorizontalBox();
@@ -306,8 +318,9 @@ public class Graph2DPlot extends ScrollPanel
         bacross.add(Box.createHorizontalGlue());
         ybdown.add(bacross);
         ybdown.add(Box.createVerticalStrut(5));
-
-
+        ybdown.add(new JSeparator());
+        ybdown.add(Box.createVerticalStrut(5));
+      
 // x-label
         bacross = Box.createHorizontalBox();
         if(xtitle_field == null)
@@ -320,6 +333,8 @@ public class Graph2DPlot extends ScrollPanel
         bacross.add(new JLabel(" X Axis Label  "));
         bacross.add(Box.createHorizontalGlue());
         xbdown.add(bacross);
+        xbdown.add(Box.createVerticalStrut(5));
+        xbdown.add(new JSeparator());
         xbdown.add(Box.createVerticalStrut(5));
 
 // y-label
@@ -334,6 +349,8 @@ public class Graph2DPlot extends ScrollPanel
         bacross.add(new JLabel(" Y Axis Label"));
         bacross.add(Box.createHorizontalGlue());
         ybdown.add(bacross);
+        ybdown.add(Box.createVerticalStrut(5));
+        ybdown.add(new JSeparator());
         ybdown.add(Box.createVerticalStrut(5));
 
 // width
@@ -445,7 +462,7 @@ public class Graph2DPlot extends ScrollPanel
 
 
 // zoom
-    String zoom[] = {"50", "100", "150", "200"};
+    String zoom[] = {"50", "75", "100", "150", "200"};
     final JComboBox zoomSize = new JComboBox(zoom);
     zoomSize.setSelectedItem("100");
     menubar.add(zoomSize);
@@ -863,8 +880,8 @@ public class Graph2DPlot extends ScrollPanel
     Graphics2D g2d = (Graphics2D)g;
     int xnum  = emboss_data[0].length;
     
-    float xfactor = (getWidth()-(2*xborder))/(xmax-xmin);
-    float yfactor = (getHeight()-(2*yborder))/(ymax-ymin);
+    float xfactor = (getWidth()-(2*xborder))/(float)(xend.getValue()-xstart.getValue());
+    float yfactor = (getHeight()-(2*yborder))/(float)(yend.getValue()-ystart.getValue());
 
     float x1;
     float y1;
@@ -876,10 +893,14 @@ public class Graph2DPlot extends ScrollPanel
     {
       if(emboss_data[0][i] < 2.f)   // line coordinates
       {
-        x1 =  (emboss_data[1][i] - xmin)*xfactor;
-        y1 = -(emboss_data[2][i] - ymin)*yfactor;
-        x2 =  (emboss_data[3][i] - xmin)*xfactor;
-        y2 = -(emboss_data[4][i] - ymin)*yfactor;
+        x1 =  (emboss_data[1][i] - (float)xstart.getValue())*xfactor;
+        y1 = -(emboss_data[2][i] - (float)ystart.getValue())*yfactor;
+        x2 =  (emboss_data[3][i] - (float)xstart.getValue())*xfactor;
+        y2 = -(emboss_data[4][i] - (float)ystart.getValue())*yfactor;
+
+        int colourID = (int)emboss_data[5][i];
+        if(colourID >= 0 || colourID < 16)
+          g.setColor(plplot_colour[colourID]);
 
         g.drawLine((int)x1,(int)y1,(int)x2,(int)y2);
       }
@@ -896,11 +917,12 @@ public class Graph2DPlot extends ScrollPanel
   {
     Graphics2D g2d = (Graphics2D)g;
     int xnum  = emboss_data[0].length;
-    float xfactor = (getWidth()-(2*xborder))/(xmax-xmin);
-    float yfactor = (getHeight()-(2*yborder))/(ymax-ymin);
 
-    float x1 = (emboss_data[0][0] - xmin)*xfactor;
-    float y1 = -(emboss_data[1][0] - ymin)*yfactor;
+    float xfactor = (getWidth()-(2*xborder))/(float)(xend.getValue()-xstart.getValue());
+    float yfactor = (getHeight()-(2*yborder))/(float)(yend.getValue()-ystart.getValue());
+
+    float x1 =  (emboss_data[0][0] - (float)xstart.getValue())*xfactor;
+    float y1 = -(emboss_data[1][0] - (float)ystart.getValue())*yfactor;
     float x2;
     float y2;
 
@@ -908,8 +930,8 @@ public class Graph2DPlot extends ScrollPanel
 
     for(int i=1; i<xnum; i++)
     {
-      x2 = (emboss_data[0][i] - xmin)*xfactor;
-      y2 = -(emboss_data[1][i] - ymin)*yfactor;
+      x2 =  (emboss_data[0][i] - (float)xstart.getValue())*xfactor;
+      y2 = -(emboss_data[1][i] - (float)ystart.getValue())*yfactor;
 
       g.drawLine((int)x1,(int)y1,(int)x2,(int)y2);   
 
