@@ -550,6 +550,8 @@ static void diffseq_diff (AjPList matchlist, AjPSeq seq1, AjPSeq seq2, AjPFile
     ajStrDel(&s1);
     ajStrDel(&s2);
     ajStrDel(&tmp);
+    ajStrDel(&name1);
+    ajStrDel(&name2);
     (void) ajFeattableDel(&feat1);
     (void) ajFeattableDel(&feat2);
 
