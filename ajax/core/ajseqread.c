@@ -135,7 +135,6 @@ static void       seqUsaSave (SeqPListUsa node, AjPSeqin seqin);
 **
 ** Functions to read each sequence format
 **
-** @return [void]
 ******************************************************************************/
 
 static SeqOInFormat seqInFormatDef[] = { /* AJFALSE = ignore (duplicates) */
@@ -1757,8 +1756,9 @@ static AjBool seqReadNcbi (AjPSeq thys, AjPSeqin seqin)
 **
 ** Read a Selex file. (temporary)
 **
-** @param [r] thys [AjPFileSeq] Sequence object
+** @param [r] thys [AjPSeq] Sequence object
 ** @param [w] seqin [AjPSeqin] Sequence input object
+** @return [AjBool] ajTrue on success
 ** @@
 ******************************************************************************/
 
@@ -5242,6 +5242,7 @@ static void seqUsaRestore (AjPSeqin seqin, SeqPListUsa node) {
 **
 ** @param [r] node [SeqPListUsa] Usa list node
 ** @param [w] seqin [AjPSeqin] Sequence input object
+** @return [void]
 ******************************************************************************/
 
 static void seqUsaSave (SeqPListUsa node, AjPSeqin seqin) {

@@ -159,7 +159,8 @@
 
 #include "emboss.h"
 
-AjBool alignwrap_WriteScopout(AjPFile in, AjPFile out, AjPStr fam, AjPStr sfam, AjPStr fold, AjPStr class);
+static AjBool alignwrap_WriteScopout(AjPFile in, AjPFile out, AjPStr fam,
+				     AjPStr sfam, AjPStr fold, AjPStr class);
 
 
 /* @prog alignwrap ************************************************************
@@ -405,7 +406,7 @@ int main(int argc, char **argv)
 
 
 
-/* @func alignwrap_WriteScopout ***********************************************
+/* @funcstatic alignwrap_WriteScopout *****************************************
 **
 ** Reads a scop families file, classifies those hits with the specified 
 ** classification as SEED proteins (the Typeobj of the hit is written), and 
@@ -413,14 +414,16 @@ int main(int argc, char **argv)
 **
 ** @param [r] in        [AjPFile]       Input scop families file
 ** @param [r] out       [AjPFile]       Output scop families file
-** @param [r] fam       [AjPStr ]       Family
-** @param [r] sfam      [AjPStr ]       Superfamily
-** @param [r] fold      [AjPStr ]       Fold
+** @param [r] fam       [AjPStr]       Family
+** @param [r] sfam      [AjPStr]       Superfamily
+** @param [r] fold      [AjPStr]       Fold
+** @param [r] class     [AjPStr]       Class
 ** 
 ** @return [AjBool] True on success (a file has been written)
 ** @@
 ******************************************************************************/
-AjBool alignwrap_WriteScopout(AjPFile in, AjPFile out, AjPStr fam, AjPStr sfam, AjPStr fold, AjPStr class)
+static AjBool alignwrap_WriteScopout(AjPFile in, AjPFile out, AjPStr fam,
+				     AjPStr sfam, AjPStr fold, AjPStr class)
 {
     AjPHitlist hitlist = NULL; 
     ajint x=0;

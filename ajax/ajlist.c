@@ -1795,7 +1795,7 @@ AjBool ajListstrPopEnd(AjPList thys, AjPStr *x)
 }
 
 
-/* @func ajListDummyFunctions ************************************************
+/* @func ajListDummyFunction ************************************************
 **
 ** Dummy function to catch all unused functions defined in ajlist
 **

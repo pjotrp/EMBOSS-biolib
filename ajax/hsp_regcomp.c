@@ -233,7 +233,8 @@ ajint hsp_regcomp(regex_t *preg, const char *pattern, ajint cflags)
 ** ERE parser top level, concatenation and alternation
 **
 ** @param [?] p [register struct parse*] Undocumented
-** @param [?] stop [ajint] the character this ERE should end a
+** @param [?] stop [ajint] the character this ERE should end at
+** @return [void]
 ** @@
 ******************************************************************************/
 
@@ -288,6 +289,7 @@ static void p_ere(register struct parse *p, ajint stop)
 ** parse one subERE, an atom possibly followed by a repetition op
 **
 ** @param [?] p [register struct parse*] Undocumented
+** @return [void]
 ** @@
 ******************************************************************************/
 
@@ -450,6 +452,7 @@ static void p_ere_exp(register struct parse *p)
 ** string (no metacharacters) "parser"
 **
 ** @param [?] p [register struct parse*] Undocumented
+** @return [void]
 ** @@
 ******************************************************************************/
 
@@ -477,6 +480,7 @@ static void p_str(register struct parse *p)
 ** @param [?] p [register struct parse*] Undocumented
 ** @param [?] end1 [register ajint] first terminating character
 ** @param [?] end2 [register ajint] second terminating character
+** @return [void]
 ** @@
 ******************************************************************************/
 
@@ -688,6 +692,7 @@ static ajint p_count(register struct parse *p)
 ** no set operations are done.
 **
 ** @param [?] p [register struct parse*] Undocumented
+** @return [void]
 ** @@
 ******************************************************************************/
 
@@ -776,6 +781,7 @@ static void p_bracket(register struct parse *p)
 **
 ** @param [?] p [register struct parse*] Undocumented
 ** @param [?] cs [register cset*] Undocumented
+** @return [void]
 ** @@
 ******************************************************************************/
 
@@ -851,6 +857,7 @@ static void p_b_term(register struct parse *p, register cset *cs)
 **
 ** @param [?] p [register struct parse*] Undocumented
 ** @param [?] cs [register cset*] Undocumented
+** @return [void]
 ** @@
 ******************************************************************************/
 
@@ -1006,6 +1013,7 @@ static char othercase(ajint ch)
 **
 ** @param [?] p [register struct parse*] Undocumented
 ** @param [?] ch [ajint] Undocumented
+** @return [void]
 ** @@
 ******************************************************************************/
 
@@ -1037,6 +1045,7 @@ static void bothcases(register struct parse *p, ajint ch)
 **
 ** @param [?] p [register struct parse*] Undocumented
 ** @param [?] ch [register ajint] Undocumented
+** @return [void]
 ** @@
 ******************************************************************************/
 
@@ -1065,6 +1074,7 @@ static void ordinary(register struct parse *p, register ajint ch)
 ** Boy, is this implementation ever a kludge...
 **
 ** @param [?] p [register struct parse*] Undocumented
+** @return [void]
 ** @@
 ******************************************************************************/
 
@@ -1089,14 +1099,6 @@ static void nonnewline(register struct parse *p)
 
 
 
-
-/*
- - repeat - generate code for a bounded repetition, recursively if needed
- == static void repeat(register struct parse *p, sopno start, ajint from, ajint to);
-
-sopno start;			 operand from here to end of strip 
-ajint from;			 repeated from this number 
-ajint to;				 to this number of times (maybe INFINITY) */
 
 /* @funcstatic  repeat ********************************************************
 **
@@ -1210,7 +1212,7 @@ static ajint seterr(register struct parse *p, ajint e)
 ** @@
 ******************************************************************************/
 
-static cset * allocset(register struct parse *p)
+static cset* allocset(register struct parse *p)
 {
     register ajint no = p->g->ncsets++;
     register size_t nc;
@@ -1272,6 +1274,7 @@ static cset * allocset(register struct parse *p)
 **
 ** @param [?] p [register struct parse*] Undocumented
 ** @param [?] cs [register cset*] Undocumented
+** @return [void]
 ** @@
 ******************************************************************************/
 
@@ -1399,6 +1402,7 @@ static ajint nch(register struct parse *p, register cset *cs)
 ** @param [?] p [register struct parse*] Undocumented
 ** @param [?] cs [register cset*] Undocumented
 ** @param [?] cp [register char*] Undocumented
+** @return [void]
 ** @@
 ******************************************************************************/
 
@@ -1432,6 +1436,7 @@ static void mcadd(register struct parse *p,register cset *cs,
 **
 ** @param [?] cs [register cset*] Undocumented
 ** @param [?] cp [register char*] Undocumented
+** @return [void]
 ** @@
 ******************************************************************************/
 
@@ -1514,6 +1519,7 @@ static char * mcfind(register cset *cs,register char *cp)
 **
 ** @param [?] p [register struct parse*] Undocumented
 ** @param [?] cs [register cset*] Undocumented
+** @return [void]
 ** @@
 ******************************************************************************/
 
@@ -1536,6 +1542,7 @@ static void mcinvert(register struct parse *p, register cset *cs)
 * This would have to know the set of possibilities.  Implementation
 ** @param [?] p [register struct parse*] Undocumented
 ** @param [?] cs [register cset*] Undocumented
+** @return [void]
 ** @@
 ******************************************************************************/
 
@@ -1610,6 +1617,7 @@ static ajint samesets(register REGUTSSTRUCT *g, ajint c1, ajint c2)
 **
 ** @param [?] p [struct parse*] Undocumented
 ** @param [?] g [register REGUTSSTRUCT*] Undocumented
+** @return [void]
 ** @@
 ******************************************************************************/
 
@@ -1714,6 +1722,7 @@ static void doemit(register struct parse *p,sop op,size_t opnd)
 ** @param [?] op [sop] Undocumented
 ** @param [?] opnd [size_t] Undocumented
 ** @param [?] pos [sopno] Undocumented
+** @return [void]
 ** @@
 ******************************************************************************/
 
@@ -1761,6 +1770,7 @@ static void doinsert(register struct parse *p,sop op,size_t opnd,sopno pos)
 ** @param [?] p [register struct parse*] Undocumented
 ** @param [?] pos [register sopno] Undocumented
 ** @param [?] value [sop] Undocumented
+** @return [void]
 ** @@
 ******************************************************************************/
 
@@ -1784,6 +1794,7 @@ static void dofwd(register struct parse *p,register sopno pos,sop value)
 **
 ** @param [?] p [register struct parse*] Undocumented
 ** @param [?] size [register sopno] Undocumented
+** @return [void]
 ** @@
 ******************************************************************************/
 
@@ -1807,12 +1818,13 @@ static void enlarge(register struct parse *p, register sopno size)
 
 
 
-/* @funcstatic  stripsnug *****************************************************
+/* @funcstatic stripsnug *****************************************************
 **
 ** compact the strip
 **
 ** @param [?] p [register struct parse*] Undocumented
 ** @param [?] g [register REGUTSSTRUCT*] Undocumented
+** @return [void]
 ** @@
 ******************************************************************************/
 
@@ -1831,7 +1843,7 @@ static void stripsnug(register struct parse *p,register REGUTSSTRUCT *g)
 
 
 
-/* @funcstatic  findmust ******************************************************
+/* @funcstatic findmust ******************************************************
 **
 ** fill in must and mlen with longest mandatory literal string
 **
@@ -1843,6 +1855,7 @@ static void stripsnug(register struct parse *p,register REGUTSSTRUCT *g)
 **
 ** @param [?] p [struct parse*] Undocumented
 ** @param [?] g [register REGUTSSTRUCT*] Undocumented
+** @return [void]
 ** @@
 ******************************************************************************/
 

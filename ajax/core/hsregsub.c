@@ -15,6 +15,7 @@
 ** @param [?] rp [const regexp*] Undocumented
 ** @param [?] source [const char*] Undocumented
 ** @param [?] dest [char*] Undocumented
+** @return [void]
 ** @@
 ******************************************************************************/
 

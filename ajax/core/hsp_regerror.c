@@ -115,7 +115,7 @@ size_t hsp_regerror(ajint errcode,const regex_t *preg,char *errbuf,
     return(len);
 }
 
-/* @func regatoi *******************************************************
+/* @funcstatic regatoi *******************************************************
 **
 ** internal routine to implement REG_ATOI
 **
@@ -124,7 +124,7 @@ size_t hsp_regerror(ajint errcode,const regex_t *preg,char *errbuf,
 ** @return [char*] Undocumented
 ******************************************************************************/
 
-static char * regatoi(const regex_t *preg,char *localbuf)
+static char* regatoi(const regex_t *preg,char *localbuf)
 {
     register struct rerr *r;
 

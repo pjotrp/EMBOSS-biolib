@@ -95,7 +95,6 @@ static void       seqWriteTreecon (AjPSeqout outseq);
 **
 ** Functions to write each sequence format
 **
-** @return [void]
 ******************************************************************************/
 
 static SeqOOutFormat seqOutFormat[] = { /* AJFALSE = write one file */

@@ -18,7 +18,6 @@ enum ProtNuc {ISANY=0, ISNUC=1, ISPROT=2};
 **
 ** Functions to test each sequence type
 **
-** @return [void]
 ******************************************************************************/
 
 static SeqOType seqType[] = {

@@ -108,7 +108,7 @@ void hsp_regprint(regex_t *r, FILE *d)
 **
 ** print the strip for debugging
 **
-** @param [r] g [REGUTSSTRUCT*] Undocumented
+** @param [r] g [register REGUTSSTRUCT*] Undocumented
 ** @param [r] d [FILE*] Undocumented
 ** @return [void]
 ******************************************************************************/

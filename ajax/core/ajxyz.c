@@ -876,7 +876,7 @@ AjPScopdes ajXyzScopdesNew(void)
 **
 ** @param [w] ptr [AjPScopdes *] Scopdes object pointer
 **
-** @return [AjPScopdes] Pointer to a scopdes object
+** @return [void]
 ** @@
 ******************************************************************************/
 
@@ -2570,7 +2570,7 @@ AjBool        ajXyzScophitTarget(AjPScophit *h)
 **
 ** Sets the Target element of a Scophit object to True if its Priority is low.
 **
-** @param [r] h1  [AjPScophit*]     Pointer to Scophit object
+** @param [r] h  [AjPScophit*]     Pointer to Scophit object
 **
 ** @return [AjBool] True on success. False otherwise.
 ** @@
@@ -2598,8 +2598,8 @@ AjBool        ajXyzScophitTargetLowPriority(AjPScophit *h)
 **
 ** Checks for overlap and identical accession numbers between two hits.
 **
-** @param [r] h1  [AjPHit]     Pointer to hit object 1
-** @param [r] h2  [AjPHit]     Pointer to hit object 2
+** @param [r] h1  [AjPScophit]     Pointer to hit object 1
+** @param [r] h2  [AjPScophit]     Pointer to hit object 2
 ** @param [r] n   [ajint]      Threshold number of residues for overlap
 **
 ** @return [AjBool] True if the overlap between the sequences is at least as 
@@ -4624,8 +4624,8 @@ AjBool ajXyzPrintPdbAtomChain(AjPFile outf, AjPPdb pdb, ajint mod, ajint chn)
 ** from a Scop structure.  Where coordinates for multiple models (e.g. NMR 
 ** structures) are given, data for model 1 are written.
 **
-** @param [w] outf [AjPFile] Output file stream
 ** @param [w] errf [AjPFile] Output file stream for error messages
+** @param [w] outf [AjPFile] Output file stream
 ** @param [r] pdb  [AjPPdb] Pdb object
 ** @param [r] scop [AjPScop] Scop object
 **
@@ -6840,26 +6840,28 @@ AjBool ajXyzHitlistReadNode(AjPFile scopf, AjPList *list, AjPStr fam, AjPStr sfa
 
 
 
-/* @func ajXyzHitlistReadFam ********************************************************
+/* @func ajXyzHitlistReadFam *************************************************
 **
-** Reads a scop families file, selects the entries with the specified family, and 
-** create a list of Hitlist structures.
+** Reads a scop families file, selects the entries with the specified
+** family, and create a list of Hitlist structures.
 **
 ** @param [r] scopf     [AjPFile]       The scop families file.
 ** @param [r] fam       [AjPStr]       Family
 ** @param [r] sfam      [AjPStr]       Superfamily
 ** @param [r] fold      [AjPStr]       Fold
+** @param [r] class     [AjPStr]       Class
 ** @param [w] list      [AjPList *]       A list of hitlist structures.
 ** 
 ** @return [AjBool] True on success (a file has been written)
 ** @@
-********************************************************************************/
+******************************************************************************/
 
-AjBool ajXyzHitlistReadFam(AjPFile scopf, AjPStr fam, AjPStr sfam, AjPStr fold, AjPStr class, AjPList* list)
+AjBool ajXyzHitlistReadFam(AjPFile scopf, AjPStr fam, AjPStr sfam,
+			   AjPStr fold, AjPStr class, AjPList* list)
 {
     AjPHitlist hitlist = NULL; 
 
-    /* if family is specified then the other fields also have to be specified. */
+    /* if family is specified then other fields also have to be specified. */
     /* check that the other fields are populated */ 
     if(!fam || !sfam || !fold || !class)
     {
@@ -6881,7 +6883,7 @@ AjBool ajXyzHitlistReadFam(AjPFile scopf, AjPStr fam, AjPStr sfam, AjPStr fold, 
 }
 
 
-/* @func ajXyzHitlistReadSfam ***************************************************
+/* @func ajXyzHitlistReadSfam *************************************************
 **
 ** Reads a scop families file, selects the entries with the specified 
 ** superfamily, and create a list of Hitlist structures.
@@ -6890,17 +6892,19 @@ AjBool ajXyzHitlistReadFam(AjPFile scopf, AjPStr fam, AjPStr sfam, AjPStr fold, 
 ** @param [r] fam       [AjPStr]       Family
 ** @param [r] sfam      [AjPStr]       Superfamily
 ** @param [r] fold      [AjPStr]       Fold
+** @param [r] class     [AjPStr]       Class
 ** @param [w] list      [AjPList *]       A list of hitlist structures.
 ** 
 ** @return [AjBool] True on success (a file has been written)
 ** @@
 ******************************************************************************/
 
-AjBool ajXyzHitlistReadSfam(AjPFile scopf, AjPStr fam, AjPStr sfam, AjPStr fold, AjPStr class, AjPList* list)
+AjBool ajXyzHitlistReadSfam(AjPFile scopf, AjPStr fam, AjPStr sfam,
+			    AjPStr fold, AjPStr class, AjPList* list)
 {
     AjPHitlist hitlist = NULL; 
     
-    /* if family is specified then the other fields also have to be specified. */
+    /* if family is specified then other fields also have to be specified. */
     /* check that the other fields are populated */ 
     if(!sfam || !fold || !class)
     {
@@ -6930,16 +6934,18 @@ AjBool ajXyzHitlistReadSfam(AjPFile scopf, AjPStr fam, AjPStr sfam, AjPStr fold,
 ** @param [r] fam       [AjPStr]       Family
 ** @param [r] sfam      [AjPStr]       Superfamily
 ** @param [r] fold      [AjPStr]       Fold
+** @param [r] class     [AjPStr]       Class
 ** @param [w] list      [AjPList *]       A list of hitlist structures.
 ** @return [AjBool] ajTrue on success
 ** @@
 ******************************************************************************/
 
-AjBool ajXyzHitlistReadFold(AjPFile scopf, AjPStr fam, AjPStr sfam, AjPStr fold, AjPStr class,AjPList* list)
+AjBool ajXyzHitlistReadFold(AjPFile scopf, AjPStr fam, AjPStr sfam,
+			    AjPStr fold, AjPStr class,AjPList* list)
 {
     AjPHitlist hitlist = NULL; 
 
-    /* if family is specified then the other fields also have to be specified. */
+    /* if family is specified then other fields also have to be specified. */
     /* check that the other fields are populated */ 
     if(!fold || !class)
     {
@@ -8695,14 +8701,15 @@ float ajXyzVdwRad(AjPAtom atm, AjPVdwall vdw)
 
 /* @func ajXyzPdbAtomIndexI **************************************************
 **
-** Reads a Pdb object and writes an integer array which gives the index into the 
-** protein sequence for structured residues (residues for which electron density
-** was determined) for a given chain. The array length is of course equal to the 
-** number of structured residues. 
+** Reads a Pdb object and writes an integer array which gives the
+** index into the protein sequence for structured residues (residues
+** for which electron density was determined) for a given chain. The
+** array length is of course equal to the number of structured
+** residues.
 **
 ** @param [r] pdb [AjPPdb] Pdb object
 ** @param [r] chn [ajint] Chain number
-** @param [w] idx [AjPint*] Index array
+** @param [w] idx [AjPInt*] Index array
 **
 ** @return [AjBool] True on succcess
 ** @@

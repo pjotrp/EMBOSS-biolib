@@ -646,6 +646,7 @@ static char * regnode(register struct comp *cp, char op)
 **
 ** @param [?] cp [register struct comp*] Undocumented
 ** @param [?] b [char] Undocumented
+** @return [void]
 ** @@
 ******************************************************************************/
 
@@ -670,6 +671,7 @@ static void regc(register struct comp *cp, char b)
 ** @param [?] cp [register struct comp*] Undocumented
 ** @param [?] op [char] Undocumented
 ** @param [?] opnd [char*] Undocumented
+** @return [void]
 ** @@
 ******************************************************************************/
 
@@ -703,6 +705,7 @@ static void reginsert(register struct comp *cp,char op,char *opnd)
 ** @param [?] cp [register struct comp*] Undocumented
 ** @param [?] p [char*] Undocumented
 ** @param [?] val [char*] Undocumented
+** @return [void]
 ** @@
 ******************************************************************************/
 
@@ -735,6 +738,7 @@ static void regtail(register struct comp *cp,char *p,char *val)
 ** @param [?] cp [register struct comp*] Undocumented
 ** @param [?] p [char*] Undocumented
 ** @param [?] val [char*] Undocumented
+** @return [void]
 ** @@
 ******************************************************************************/
 
@@ -1128,7 +1132,7 @@ static size_t regrepeat(register struct exec *ep,char *node)
 ** @@
 ******************************************************************************/
 
-static char *regnext(register char *p)
+static char* regnext(register char *p)
 {
     register const ajint offset = NEXT(p);
 
@@ -1151,6 +1155,7 @@ static char *regprop();
 ** dump a regexp onto stdout in vaguely comprehensible form
 **
 ** @param [?] r [regexp*] Undocumented
+** @return [void]
 ** @@
 ******************************************************************************/
 
@@ -1208,7 +1213,7 @@ void regdump(regexp *r)
 ** @@
 ******************************************************************************/
 
-static char *regprop(char *op)
+static char* regprop(char *op)
 {
     register char *p;
     static char buf[50];

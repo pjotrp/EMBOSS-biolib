@@ -897,7 +897,7 @@ static ajint fmtAjInsert(int c, void* cl)
 **
 ** Appends a character to a buffer, resizing it if necessary
 **
-** @param [R] c [int] Character to be written
+** @param [R] c [ajint] Character to be written
 ** @param [R] cl [void*] Output file
 ** @return [ajint] 0 on success
 ******************************************************************************/

@@ -245,15 +245,15 @@ static ajint matcher(register REGUTSSTRUCT *g, char *string, size_t nmatch,
 **
 ** figure out what matched what, no back references
 **
-** [r] m [register struct match*] Undocumented
-** [r] start [char*] Undocumented
-** [r] stop [char*] Undocumented
-** [r] startst [spono] Undocumented
-** [r] stopst [sopno] Undocumented
-** @return [void]
+** @param [r] m [register struct match*] Undocumented
+** @param [r] start [char*] Undocumented
+** @param [r] stop [char*] Undocumented
+** @param [r] startst [sopno] Undocumented
+** @param [r] stopst [sopno] Undocumented
+** @return [char*] Undocumented
 ******************************************************************************/
 
-static char *dissect(register struct match *m, char *start, char *stop,
+static char* dissect(register struct match *m, char *start, char *stop,
 		     sopno startst, sopno stopst)
 {
     register ajint i;
@@ -446,16 +446,16 @@ static char *dissect(register struct match *m, char *start, char *stop,
 **
 ** figure out what matched what, figuring in back references
 **
-** [r] m [register struct match*] Undocumented
-** [r] start [char*] Undocumented
-** [r] stop [char*] Undocumented
-** [r] startst [spono] Undocumented
-** [r] stopst [sopno] Undocumented
-** [r] lev [sopno] Undocumented
-** @return [void]
+** @param [r] m [register struct match*] Undocumented
+** @param [r] start [char*] Undocumented
+** @param [r] stop [char*] Undocumented
+** @param [r] startst [sopno] Undocumented
+** @param [r] stopst [sopno] Undocumented
+** @param [r] lev [sopno] Undocumented
+** @return [char*] Undocumented
 ******************************************************************************/
 
-static char *backref(register struct match *m, char *start, char *stop,
+static char* backref(register struct match *m, char *start, char *stop,
 		     sopno startst, sopno stopst, sopno lev)
 {
     register ajint i;
@@ -657,15 +657,15 @@ static char *backref(register struct match *m, char *start, char *stop,
 **
 ** step through the string at top speed
 **
-** [r] m [register struct match*] Undocumented
-** [r] start [char*] Undocumented
-** [r] stop [char*] Undocumented
-** [r] startst [spono] Undocumented
-** [r] stopst [sopno] Undocumented
+** @param [r] m [register struct match*] Undocumented
+** @param [r] start [char*] Undocumented
+** @param [r] stop [char*] Undocumented
+** @param [r] startst [sopno] Undocumented
+** @param [r] stopst [sopno] Undocumented
 ** @return [char*]  where tentative match ended, or NULL
 ******************************************************************************/
 
-static char *fast(register struct match *m, char *start, char *stop,
+static char* fast(register struct match *m, char *start, char *stop,
 		  sopno startst, sopno stopst)
 {
     register states st = m->st;
@@ -757,15 +757,15 @@ static char *fast(register struct match *m, char *start, char *stop,
 **
 ** step through the string more deliberately
 **
-** [r] m [register struct match*] Undocumented
-** [r] start [char*] Undocumented
-** [r] stop [char*] Undocumented
-** [r] startst [spono] Undocumented
-** [r] stopst [sopno] Undocumented
+** @param [r] m [register struct match*] Undocumented
+** @param [r] start [char*] Undocumented
+** @param [r] stop [char*] Undocumented
+** @param [r] startst [sopno] Undocumented
+** @param [r] stopst [sopno] Undocumented
 ** @return [char*]  where it ended
 ******************************************************************************/
 
-static char *slow(register struct match *m, char *start, char *stop,
+static char* slow(register struct match *m, char *start, char *stop,
 		  sopno startst, sopno stopst)
 {
     register states st = m->st;
@@ -853,12 +853,12 @@ static char *slow(register struct match *m, char *start, char *stop,
 **
 ** map set of states reachable before char to set reachable after
 **
-** [r] g [REGUTSSTRUCT*] Undocumented
-** [r] start [sopno] Undocumented
-** [r] stop [sopno] Undocumented
-** [r] bef [register states] Undocumented
-** [r] ch [ajint] Undocumented
-** [r] aft [register states] Undocumented
+** @param [r] g [register REGUTSSTRUCT*] Undocumented
+** @param [r] start [sopno] Undocumented
+** @param [r] stop [sopno] Undocumented
+** @param [r] bef [register states] Undocumented
+** @param [r] ch [ajint] Undocumented
+** @param [r] aft [register states] Undocumented
 ** @return [states] Undocumented
 ******************************************************************************/
 
@@ -982,11 +982,11 @@ static states step(register REGUTSSTRUCT *g, sopno start, sopno stop,
 **
 ** print a set of states
 **
-** [r] m [struct match] Undocumented
-** [r] caption [char*] Undocumented
-** [r] st [states] Undocumented
-** [r] ch [ajint] Undocumented
-** [r] d [FILE*] Undocumented
+** @param [r] m [struct match] Undocumented
+** @param [r] caption [char*] Undocumented
+** @param [r] st [states] Undocumented
+** @param [r] ch [ajint] Undocumented
+** @param [r] d [FILE*] Undocumented
 ** @return [void]
 ******************************************************************************/
 
@@ -1005,7 +1005,7 @@ static void print(struct match m, char *caption, states st, ajint ch, FILE *d)
     for (i = 0; i < g->nstates; i++)
 	if (ISSET(st, i))
 	{
-	    (void) fprintf(d, "%s%d", (first) ? "\t" : ", ", i);
+	  (void) fprintf(d, "%s%d", (first) ? "\t" : ", ", i);
 	    first = 0;
 	}
     (void) fprintf(d, "\n");
@@ -1015,12 +1015,12 @@ static void print(struct match m, char *caption, states st, ajint ch, FILE *d)
 **
 ** print current situation
 **
-** [r] m [struct match] Undocumented
-** [r] title[char*] Undocumented
-** [r] start [char*] Undocumented
-** [r] stop [char*] Undocumented
-** [r] startst [sopno] Undocumented
-** [r] stopst [sopno] Undocumented
+** @param [r] m [struct match*] Undocumented
+** @param [r] title[char*] Undocumented
+** @param [r] start [char*] Undocumented
+** @param [r] stop [char*] Undocumented
+** @param [r] startst [sopno] Undocumented
+** @param [r] stopst [sopno] Undocumented
 ** @return [void]
 ******************************************************************************/
 
@@ -1047,11 +1047,11 @@ static void at(struct match *m, char *title, char *start, char *stop,
 ** a matching debug.o, and this is convenient.  It all disappears in
 ** the non-debug compilation anyway, so it doesn't matter much.
 **
-** [r] ch [ajint] Undocumented
+** @param [r] ch [ajint] Undocumented
 ** @return [char*] Undocumented
 ******************************************************************************/
 
-static char *pchar(ajint ch)
+static char* pchar(ajint ch)
 {
     static char pbuf[10];
 

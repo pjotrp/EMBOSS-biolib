@@ -91,7 +91,6 @@ static char* reportCharname (AjPReport thys);
 **
 ** Functions to write feature reports
 **
-** @return [void]
 ******************************************************************************/
 
 static ReportOFormat reportFormat[] = { 

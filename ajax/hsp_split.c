@@ -11,14 +11,14 @@ char *fields[];			 list is not NULL-terminated
 ajint nfields;			 number of entries available in fields[] 
 char *sep;			 "" white, "c" single char, "ab" [ab]+ */
 
-/* @func dosplit **************************************************************
+/* @func split **************************************************************
 **
 ** Undocumented.
 **
 ** @param [?] string [char*] Undocumented
-** @param [?] fields [char**] Undocumented
+** @param [?] fields [char* []] Undocumented
 ** @param [?] nfields [ajint] Undocumented
-** @param [?] seps [char*] Undocumented
+** @param [?] sep [char*] Undocumented
 ** @return [ajint] Undocumented
 ** @@
 ******************************************************************************/
@@ -180,11 +180,10 @@ ajint split(char *string, char *fields[], ajint nfields, char *sep)
 **
 ** @param [?] argc [ajint] Undocumented
 ** @param [?] argv [char**] Undocumented
-** @return [ajint] Undocumented
 ** @@
 ******************************************************************************/
 
-ajint main(ajint argc, char **argv)
+int main(ajint argc, char **argv)
 {
     char buf[512];
     register ajint n;
@@ -248,9 +247,9 @@ ajint dosplit(char *string, char *seps)
 **
 ** Undocumented
 ** 
-** [r] nf [nf] Undocumented
-** [r] nfp [ajint] Undocumented
-** [r] fields [char**] Undocumented
+** @param [r] nf [ajint] Undocumented
+** @param [r] nfp [ajint] Undocumented
+** @param [r] fields [char* []] Undocumented
 ** @return [ajint] Undocumented
 ******************************************************************************/
 

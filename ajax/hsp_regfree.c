@@ -10,7 +10,7 @@
 **
 ** free everything
 **
-** @param [r] preg [regex_t] Undocumented
+** @param [r] preg [regex_t*] Undocumented
 ** @return [void]
 ******************************************************************************/
 
