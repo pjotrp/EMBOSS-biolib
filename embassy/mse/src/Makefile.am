@@ -17,6 +17,6 @@ endif
 
 mse_SOURCES = mse.c 
 
-LDADD = ../ckit/libckit.la ../../../ajax/libajax.la 
+LDADD = ../ckit/libckit.la ../../../plplot/libplplot.la ../../../ajax/libajax.la 
 
 

@@ -19,7 +19,7 @@ endif
 
 crystalball_SOURCES = crystalball.c 
 
-LDADD = ../../../ajax/libajax.la ../../../nucleus/libnucleus.la  $(XLIB)
+LDADD = ../../../plplot/libplplot.la ../../../ajax/libajax.la ../../../nucleus/libnucleus.la  $(XLIB)
 
 
 

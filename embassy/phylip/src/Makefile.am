@@ -43,6 +43,6 @@ eseqboot_SOURCES = seqboot.c
 eneighbor_SOURCES = neighbor.c
 
 
-LDADD = ../../../ajax/libajax.la 
+LDADD = ../../../plplot/libplplot.la ../../../ajax/libajax.la 
 
 

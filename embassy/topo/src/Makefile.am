@@ -21,6 +21,6 @@ topo_SOURCES = topo.c
 
 noinst_HEADERS = common.h
 
-LDADD = ../../../ajax/libajax.la ../../../plplot/libplplot.la $(XLIB)
+LDADD = ../../../plplot/libplplot.la ../../../ajax/libajax.la $(XLIB)
 
 

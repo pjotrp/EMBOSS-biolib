@@ -42,4 +42,4 @@ ehmmpfam_SOURCES      = ehmmpfam.c
 ehmmsearch_SOURCES    = ehmmsearch.c
 ealistat_SOURCES      = ealistat.c
 
-LDADD = libhmmer.la ../../../ajax/libajax.la
+LDADD = libhmmer.la ../../../plplot/libplplot.la ../../../ajax/libajax.la
