@@ -360,6 +360,31 @@ A) It is inside the binaries ...
     (Peter Rice 22 Nov 2000)
 
 
+Q) I have downloaded the Emboss source and installed it for use at XYZ
+   University without any difficulty.  The administration guide has advice
+   on configuring the software using emboss.default, and has examples for
+   allowing access to SRS indices.  That appears to be done via the program
+   getz, which is not part of the Emboss package. 
+
+A) If you have SRS installed (so you have local SRS index files) you will
+   have a local copy of the getz program, which is part of SRS.
+
+   If you do not have SRS, you can build your own index files using dbiflat,
+   dbigcg (if you have GCG), dbiblast (if you have blast) and dbifasta. This is
+   the usual solution for sites that have no other database indexing in use.
+
+   You can also use SRS servers remotely, to get single entries, using their
+   URLs. No extra software is needed (EMBOSS just uses the HTTP protocol).
+
+   Of course, if you really need to build your own SRS indices you
+   could install it. SRS is a commercial product, but academic licences are
+   available.  But as I now work for the developers of SRS, and this is
+   the EMBOSS bug mailing list, I shall say no more :-)
+
+   (Peter Rice 9 Jan 2001)
+
+
+
 
 SECTION C - Graphics
 ====================
