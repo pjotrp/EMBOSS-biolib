@@ -98,6 +98,7 @@ public class PrettyPlotJFrame extends JFrame
     textInt.setText(Integer.toString(gsc.getNumberSequences()));
     Dimension d = new Dimension(50, 30);
     textInt.setPreferredSize(d);
+    textInt.setMaximumSize(d);
     bacross.add(textInt);
     LabelTextBox idLabel = new LabelTextBox(
                 "Identity Number",
@@ -115,10 +116,12 @@ public class PrettyPlotJFrame extends JFrame
     textFloat.setValue(AlignJFrame.getTotalWeight(
                        gsc.getSequenceCollection())/2);
     textFloat.setPreferredSize(d);
+    textFloat.setMinimumSize(d);
     bacross.add(textFloat);
     LabelTextBox floatLabel = new LabelTextBox(
-                "Theshold for positive matches",
-                "Minimum match score");
+                "Threshold for positive matches",
+                "Minimum number of positive matches. The default\n"+
+                "is half the total weight of all the sequences.");
 
     bacross.add(floatLabel);
     bacross.add(Box.createHorizontalGlue());
