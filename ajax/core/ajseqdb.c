@@ -4199,6 +4199,9 @@ static AjBool seqAccessApp(AjPSeqin seqin)
 	else if(ajStrLen(qry->Acc))
 	    ajFmtPrintS(&pipename, ajStrStr(qry->Application),
 			ajStrStr(qry->Acc));
+	else
+	    ajFmtPrintS(&pipename, ajStrStr(qry->Application),
+			"*");
 	ajStrAppC(&pipename, " |");
     }
     else
@@ -4209,6 +4212,9 @@ static AjBool seqAccessApp(AjPSeqin seqin)
 	else if(ajStrLen(qry->Acc))
 	    ajFmtPrintS(&pipename, "%S %S:%S|",
 			qry->Application, qry->DbName, qry->Acc);
+ 	else
+	    ajFmtPrintS(&pipename, "%S %S:*|",
+			qry->Application, qry->DbName);
     }
 
     if(!ajStrLen(pipename))
