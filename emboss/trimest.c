@@ -148,7 +148,7 @@ static ajint trimest_get_tail(const AjPSeq seq, ajint direction,
 			      ajint minlength, ajint mismatches)
 {
     char t;
-    char *s;
+    const char *s;
     char c;
     ajint inc;
     ajint start;

@@ -67,7 +67,7 @@ void ajMeltInit(const AjPStr type, ajint savesize)
     ajint k;
     
     char *p;
-    char *q;
+    const char *q;
     float enthalpy;
     float entropy;
     float energy;
@@ -107,7 +107,7 @@ void ajMeltInit(const AjPStr type, ajint savesize)
 
     ajStrAssC(&pair,"AA");
     ajStrAssC(&acgt,"ACGT");
-    p = ajStrStr(pair);
+    p = ajStrStrMod(&pair);
     q = ajStrStr(acgt);
 
     for(i=0,k=0;i<4;++i)
@@ -123,7 +123,7 @@ void ajMeltInit(const AjPStr type, ajint savesize)
 
     while(ajFileGets(mfptr, &line))
     {
-	p = ajStrStr(line);
+	p = ajStrStrMod(&line);
 	if(*p=='#' || *p=='!' || !*p)
 	    continue;
 

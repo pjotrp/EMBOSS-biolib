@@ -13,7 +13,7 @@
  * 
  * Create a GSI index file for an HMM database.
  * 
- * RCS $Id: ehmmindex.c,v 1.1 2001/07/29 14:13:49 ajb Exp $
+ * RCS $Id: ehmmindex.c,v 1.2 2004/06/14 14:43:30 rice Exp $
  *
  * Modified for EMBOSS by Alan Bleasby (ISMB 2001)
  */
@@ -62,7 +62,7 @@ static int gsikey_compare(const void *el1, const void *el2)
 
 int main(int argc, char **argv)
 {
-    char    *hmmfile;			/* HMM file to open                */
+    const char    *hmmfile;		/* HMM file to open                */
     char    *hmmtail;			/* HMMfile without directory path  */
     char    *gsifile;			/* GSI file to write               */
     HMMFILE *hmmfp;			/* opened hmm file pointer         */

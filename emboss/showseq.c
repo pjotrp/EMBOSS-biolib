@@ -470,7 +470,7 @@ static void showseq_read_equiv(AjPFile *equfile, AjPTable *table)
     AjPStr key;
     AjPStr value;
 
-    char *p;
+    const char *p;
 
     line = ajStrNew();
 
@@ -481,9 +481,9 @@ static void showseq_read_equiv(AjPFile *equfile, AjPTable *table)
         if(!*p || *p=='#' || *p=='!')
             continue;
 
-        p = strtok(p," \t\n");
+        p = ajSysStrtok(p," \t\n");
         key = ajStrNewC(p);
-        p = strtok(NULL," \t\n");
+        p = ajSysStrtok(NULL," \t\n");
         value = ajStrNewC(p);
         ajTablePut(*table,(const void *)key, (void *)value);
     }
@@ -511,7 +511,7 @@ static void showseq_read_file_of_enzyme_names(AjPStr *enzymes)
 {
     AjPFile file = NULL;
     AjPStr line;
-    char *p = NULL;
+    const char *p = NULL;
 
     if(ajStrFindC(*enzymes, "@") == 0)
     {

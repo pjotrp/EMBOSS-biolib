@@ -89,11 +89,11 @@ double zoops_e_step(
       double log_pXijtheta1 = log_lambda;	
       int k, ii;
       int last = j+w;
-      for (k=0; k<j; k++) { log_pXijtheta1 += logtheta0(0, res[k]);}
-      for (k=last; k<lseq; k++) { log_pXijtheta1 += logtheta0(0, res[k]);}
+      for (k=0; k<j; k++) { log_pXijtheta1 += logtheta0(0, (int)res[k]);}
+      for (k=last; k<lseq; k++) { log_pXijtheta1 += logtheta0(0, (int)res[k]);}
       for (k=j, ii=0; k < last; k++, ii++) {	/* position in sequence */
         /* Pr(x_i | z_ij = 1, theta1) */
-        log_pXijtheta1 += logtheta1(ii, res[k]);
+        log_pXijtheta1 += logtheta1(ii, (int)res[k]);
       }
       z1i[j] = log_pXijtheta1;
       log_pXitheta = LOG_SUM(log_pXitheta, z1i[j]);
@@ -117,4 +117,4 @@ double zoops_e_step(
 
   return logpX/log(2.0);
 }
-/* $Header: /home/repository/emboss/emboss/emboss/embassy/meme/src/zoops.c,v 1.1 2000/11/05 21:47:55 ajb Exp $ */
+/* $Header: /home/repository/emboss/emboss/emboss/embassy/meme/src/zoops.c,v 1.2 2004/06/14 14:43:30 rice Exp $ */

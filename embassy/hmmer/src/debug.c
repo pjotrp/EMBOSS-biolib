@@ -14,7 +14,7 @@
  * Printing out or naming various useful things from HMMER
  * innards.
  * 
- * RCS $Id: debug.c,v 1.1 2001/07/29 14:13:48 ajb Exp $
+ * RCS $Id: debug.c,v 1.2 2004/06/14 14:43:30 rice Exp $
  */
 
 #include <stdio.h>
@@ -114,14 +114,14 @@ P7PrintTrace(FILE *fp, struct p7trace_s *tr, struct plan7_s *hmm, char *dsq)
 	else if (tr->statetype[tpos] == STI) 
 	  {
 	    fprintf(fp, " %8d %c", hmm->isc[sym][tr->nodeidx[tpos]], 
-		    tolower(Alphabet[sym]));
+		    (char)tolower((int)Alphabet[sym]));
 	    sc += hmm->isc[sym][tr->nodeidx[tpos]];
 	  }
 	else if ((tr->statetype[tpos] == STN && tr->statetype[tpos-1] == STN) ||
 		 (tr->statetype[tpos] == STC && tr->statetype[tpos-1] == STC) ||
 		 (tr->statetype[tpos] == STJ && tr->statetype[tpos-1] == STJ))
 	  {
-	    fprintf(fp, " %8d %c", 0, tolower(Alphabet[sym]));
+	    fprintf(fp, " %8d %c", 0, (char)tolower((int)Alphabet[sym]));
 	  }
       } else {
 	fprintf(fp, " %8s %c", "-", '-');

@@ -10,7 +10,7 @@
 
 /* trace.c
  * SRE, Sat Nov 16 12:34:57 1996
- * RCS $Id: trace.c,v 1.1 2001/07/29 14:13:49 ajb Exp $
+ * RCS $Id: trace.c,v 1.2 2004/06/14 14:43:30 rice Exp $
  * 
  * Support for Plan 7 traceback data structure, p7trace_s.
  */
@@ -482,7 +482,7 @@ P7Traces2Alignment(char **dsq, SQINFO *sqinfo, float *wgt, int nseq, int mlen,
 	if (matchonly) 
 	  aseqs[idx][apos] = '*'; /* insert compression option */
 	else {
-	  aseqs[idx][apos] = tolower(Alphabet[(int) dsq[idx][rpos]]);
+	  aseqs[idx][apos] = (char)tolower((int)Alphabet[(int) dsq[idx][rpos]]);
 	  apos++;
 	}
       }
@@ -490,7 +490,7 @@ P7Traces2Alignment(char **dsq, SQINFO *sqinfo, float *wgt, int nseq, int mlen,
 	if (matchonly)
 	  aseqs[idx][apos] = '*'; /* insert compression option */
 	else {
-	  aseqs[idx][apos] = tolower(Alphabet[(int) dsq[idx][rpos]]);
+	  aseqs[idx][apos] = (char)tolower((int)Alphabet[(int) dsq[idx][rpos]]);
 	  apos++;
 	}
       }
@@ -711,7 +711,7 @@ CreateFancyAli(struct p7trace_s *tr, struct plan7_s *hmm,
     case STC:
       ali->model[tpos] = '-';
       if (tr->pos[tpos] > 0) { 
-	ali->aseq[tpos] = tolower(Alphabet[(int) dsq[tr->pos[tpos]]]);
+	ali->aseq[tpos] = (char)tolower((int)Alphabet[(int) dsq[tr->pos[tpos]]]);
       }
       break;
 
@@ -729,12 +729,12 @@ CreateFancyAli(struct p7trace_s *tr, struct plan7_s *hmm,
       bestsym = FMax(hmm->mat[tr->nodeidx[tpos]], Alphabet_size);
       ali->model[tpos] = Alphabet[bestsym];
       if (hmm->mat[tr->nodeidx[tpos]][bestsym] < mthresh)
-	ali->model[tpos] = tolower(ali->model[tpos]);
+	ali->model[tpos] = (char)tolower((int)ali->model[tpos]);
       if (dsq[tr->pos[tpos]] == bestsym)
 	{
 	  ali->mline[tpos] = Alphabet[(int) dsq[tr->pos[tpos]]];
 	  if (hmm->mat[tr->nodeidx[tpos]][bestsym] < mthresh)
-	    ali->mline[tpos] = tolower(ali->mline[tpos]);
+	    ali->mline[tpos] = (char)tolower((int)ali->mline[tpos]);
 	}
       else if (hmm->msc[(int) dsq[tr->pos[tpos]]] [tr->nodeidx[tpos]] > 0)
 	ali->mline[tpos] = '+';
@@ -747,7 +747,7 @@ CreateFancyAli(struct p7trace_s *tr, struct plan7_s *hmm,
       bestsym = FMax(hmm->mat[tr->nodeidx[tpos]], Alphabet_size);
       ali->model[tpos] = Alphabet[bestsym];
       if (hmm->mat[tr->nodeidx[tpos]][bestsym] < mthresh)
-	ali->model[tpos] = tolower(ali->model[tpos]);
+	ali->model[tpos] = (char)tolower((int)ali->model[tpos]);
       ali->aseq[tpos]  = '-';
       break;
 
@@ -755,7 +755,7 @@ CreateFancyAli(struct p7trace_s *tr, struct plan7_s *hmm,
       ali->model[tpos] = '.';
       if (hmm->isc[(int) dsq[tr->pos[tpos]]] [tr->nodeidx[tpos]] > 0)
 	ali->mline[tpos] = '+';
-      ali->aseq[tpos]  = tolower(Alphabet[(int) dsq[tr->pos[tpos]]]);
+      ali->aseq[tpos]  = (char)tolower((int)Alphabet[(int) dsq[tr->pos[tpos]]]);
       break;
 
     default:

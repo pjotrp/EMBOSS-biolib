@@ -51,7 +51,7 @@ int main(int argc, char **argv)
     ajint        begin;
     ajint        end;
 
-    char *p = NULL;
+    const char *p = NULL;
 
     embInit("biosed", argc, argv);
 
@@ -118,9 +118,9 @@ static void biosed_replace(AjPStr *substr,
     ajint  tlen;
     ajint  end = 0;
 
-    char   *p = NULL;
-    char   *q  = NULL;
-    char   *v;
+    const char   *p = NULL;
+    const char   *q  = NULL;
+    const char   *v;
 
     str = ajStrNew();
     tmp = ajStrNew();
@@ -170,13 +170,13 @@ static void biosed_delete(AjPStr *substr, const AjPStr target)
     AjPStr str = NULL;
     char   *p  = NULL;
     char   *q  = NULL;
-    char   *v  = NULL;
+    const char   *v  = NULL;
     char   *t  = NULL;
     ajint  tlen = 0;
 
     str = ajStrNew();
     ajStrAssS(&str,*substr);
-    p = ajStrStr(str);
+    p = ajStrStrMod(&str);
     v = ajStrStr(target);
     tlen = ajStrLen(target);
 

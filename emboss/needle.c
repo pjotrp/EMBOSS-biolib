@@ -47,8 +47,8 @@ int main(int argc, char **argv)
     ajint    lenb;
     ajint    i;
 
-    char   *p;
-    char   *q;
+    const char   *p;
+    const char   *q;
 
     ajint start1 = 0;
     ajint start2 = 0;

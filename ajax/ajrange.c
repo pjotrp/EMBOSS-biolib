@@ -168,6 +168,7 @@ void ajRangeDel(AjPRange *thys)
     static AjPStr c2 = NULL;
     static AjPStr c3 = NULL;
     static AjPStr s   =NULL;
+    const char *cp;
     char *p;
     ajint n;
     ajint e;
@@ -199,8 +200,8 @@ void ajRangeDel(AjPRange *thys)
 	ajStrAssS(&c2, s);
 	ajStrAssS(&c3, s);
 
-	p = ajStrStr(c1);
-	p = ajSysStrtok(p, nondigit);
+	cp = ajStrStr(c1);
+	p = ajSysStrtok(cp, nondigit);
 
 	n = 0;
 
@@ -222,8 +223,8 @@ void ajRangeDel(AjPRange *thys)
 	    ret=ajRangeNewI((e=n>>1));
 
 	    /* get the pairs of numbers and put them in the AjPRange object */
-	    p = ajStrStr(c2);
-	    p = ajSysStrtok(p, nondigit);
+	    cp = ajStrStr(c2);
+	    p = ajSysStrtok(cp, nondigit);
 	    if(!sscanf(p,"%d",&f))
 	    {
 		ajWarn("Bad range value [%s]",p);
@@ -277,11 +278,11 @@ void ajRangeDel(AjPRange *thys)
 	    }
 
 	    /* now get any strings after the pairs of ranges */
-	    p = ajStrStr(c3);
-	    if(!isdigit((ajint)*p))
+	    cp = ajStrStr(c3);
+	    if(!isdigit((ajint)*cp))
 	    {
 		doneone = ajTrue;
-		p = ajSysStrtok(p, digit);
+		p = ajSysStrtok(cp, digit);
 	    }
 
 	    for(i=0; i<e; ++i)
@@ -289,7 +290,7 @@ void ajRangeDel(AjPRange *thys)
 		/* ignore anything between the two numbers */
 		if(!doneone)
 		{
-		    p = ajSysStrtok(p, digit);
+		    p = ajSysStrtok(cp, digit);
 		    doneone = ajTrue;
 		}
 		else

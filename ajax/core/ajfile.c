@@ -1881,7 +1881,7 @@ AjBool ajFileGets(AjPFile thys, AjPStr* pdest)
 
 AjBool ajFileGetsL(AjPFile thys, AjPStr* pdest, ajlong* fpos)
 {
-    char *cp;
+    const char *cp;
     char *buff;
     ajint isize;
     ajint ilen;
@@ -1889,7 +1889,7 @@ AjBool ajFileGetsL(AjPFile thys, AjPStr* pdest, ajlong* fpos)
     ajint ipos;
     
     ajStrModL(&thys->Buff, fileBuffSize);
-    buff  = ajStrStr(thys->Buff);
+    buff  = ajStrStrMod(&thys->Buff);
     isize = ajStrSize(thys->Buff);
     ilen  = 0;
     ipos  = 0;
@@ -1933,10 +1933,10 @@ AjBool ajFileGetsL(AjPFile thys, AjPStr* pdest, ajlong* fpos)
 	    ajDebug("more to do: jlen: %d ipos: %d isize: %d ilen: %d "
 		    "Size: %d\n",
 		    jlen, ipos, isize, ilen, ajStrSize(thys->Buff));
-	    ajStrFixI(thys->Buff, ilen);
+	    ajStrFixI(&thys->Buff, ilen);
 	    ajStrModL(&thys->Buff, ajStrSize(thys->Buff)+fileBuffSize);
 	    ipos += jlen;
-	    buff = ajStrStr(thys->Buff);
+	    buff = ajStrStrMod(&thys->Buff);
 	    isize = ajStrSize(thys->Buff) - ipos;
 	    ajDebug("expand to: ipos: %d isize: %d Size: %d\n",
 		    ipos, isize, ajStrSize(thys->Buff));
@@ -1945,7 +1945,7 @@ AjBool ajFileGetsL(AjPFile thys, AjPStr* pdest, ajlong* fpos)
 	    buff = NULL;
     }
     
-    ajStrFixI(thys->Buff, ilen);
+    ajStrFixI(&thys->Buff, ilen);
     ajStrAssS(pdest, thys->Buff);
     
     return ajTrue;
@@ -4806,7 +4806,7 @@ AjBool ajFileNameExtC(AjPStr* filename, const char* extension)
 {
     static AjPStr tmpstr = NULL;
     AjBool doext;
-    char   *p = NULL;
+    char *p = NULL;
 
     doext = ajTrue;
     if(!extension || !*extension)
@@ -4817,9 +4817,9 @@ AjBool ajFileNameExtC(AjPStr* filename, const char* extension)
     ajStrAssC(&tmpstr,ajStrStr(*filename));
 
     /* Skip any directory path */
-    p = strrchr(ajStrStr(tmpstr),'/');
+    p = strrchr(ajStrStrMod(&tmpstr),'/');
     if (!p)
-	p = ajStrStr(tmpstr);
+	p = ajStrStrMod(&tmpstr);
 
     p = strrchr(p,'.');
     if(p)
@@ -5189,11 +5189,11 @@ AjBool ajFileDirExtnTrim(AjPStr* name)
 **
 ** @param [r] dir [const char*] Directory for filename
 **                              or NULL for current dir (.)
-** @return [char*] available filename or NULL if error.
+** @return [const char*] available filename or NULL if error.
 ** @@
 ******************************************************************************/
 
-char* ajFileTempName(const char *dir)
+const char* ajFileTempName(const char *dir)
 {
 #if defined(AJ_IRIXLF)
     struct  stat64 buf;

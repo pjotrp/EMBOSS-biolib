@@ -486,7 +486,7 @@ static AjPScopcla domainScopclaReadC(AjPFile inf, const char *entry)
     AjBool ok         = ajFalse;    
 
     char c   = ' ';
-    char *p  = NULL;
+    const char *p  = NULL;
     ajint n  = 0;
     ajint i  = 0;
     ajint from;
@@ -2004,7 +2004,7 @@ AjPScop ajScopReadCNew(AjPFile inf, const char *entry)
 
     AjBool ok             = ajFalse;
     
-    char *p;
+    const char *p;
     ajint idx = 0;
     ajint n   = 0;
     ajint  Startd;      /* Start of sequence relative to full length 

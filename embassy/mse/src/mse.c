@@ -20,6 +20,12 @@
 #include <ctype.h>
 #include <math.h>
 #include <string.h>
+
+/* for curses etc. */
+#include <curses.h>
+#include <menu.h>
+#include <form.h>
+
 #include "mse.h"         /* MSE global variables and definitions  */
 
 extern long DeGap(char * strand);
@@ -33,9 +39,9 @@ char **envptr;
 
 
 void LoadSeqWithseqset(AjPSeqset seqset){
-  char *seq;
+  const char *seq;
   int i;
-  AjPStr tempname;
+  const AjPStr tempname;
 
   DEFAULTFORMAT = seqset->Format;
 
@@ -924,7 +930,7 @@ Boolean ReDoSeqs, Scroll;
 	         addch(' ');
 	      } else {
 	        if ( DoPlurality ) {
-	          Temp = toupper(Seq[i].Strand[ii-Seq[i].Offset]);
+	          Temp = (char)toupper((int)Seq[i].Strand[ii-Seq[i].Offset]);
 	          if ( Temp == Consensus[ii-ScrEdge+4] ) 
      	             setattr(MatchAttr);
 	          else
@@ -1484,7 +1490,7 @@ int i,j;
 	j = LIMIT(1,AJMAX(s,f),Seq[Strand].Length);
 
 	while( i<=j ) {
-	  Seq[Strand].Strand[i] = tolower(Seq[Strand].Strand[i]);
+	  Seq[Strand].Strand[i] = (char)tolower((int)Seq[Strand].Strand[i]);
 	  i++;
 	}
 
@@ -1523,7 +1529,7 @@ int i,j;
 	j = LIMIT(1,AJMAX(s,f),Seq[Strand].Length);
 
 	while( i<=j ) {
-	  Seq[Strand].Strand[i] = toupper(Seq[Strand].Strand[i]);
+	  Seq[Strand].Strand[i] = (char)toupper((int)Seq[Strand].Strand[i]);
 	  i++;
 	}
 
@@ -1705,7 +1711,7 @@ void DoMatches(char *ArgStr)
 
 {
 
-	switch ( toupper(*ArgStr) ) {
+	switch ( toupper((int)*ArgStr) ) {
 	  case 'B': MatchAttr = _BLINK; break;
 	  case 'R': MatchAttr = _REVERSE; break;
 	  case 'U': MatchAttr = _UNDERLINE; break;
@@ -1728,7 +1734,7 @@ void DoMatches(char *ArgStr)
 void DoDifferences(char *ArgStr)
 
 {
-	switch ( toupper(*ArgStr) ) {
+	switch ( toupper((int)*ArgStr) ) {
 	  case 'B': DiffAttr = _BLINK; break;
 	  case 'R': DiffAttr = _REVERSE; break;
 	  case 'U': DiffAttr = _UNDERLINE; break;
@@ -1753,7 +1759,7 @@ void DoUnique(char *ArgStr)
 {
 	DoNeither();
 
-	switch ( toupper(*ArgStr) ) {
+	switch ( toupper((int)*ArgStr) ) {
 	  case 'B': DiffAttr = _BLINK; break;
 	  case 'R': DiffAttr = _REVERSE; break;
 	  case 'U': DiffAttr = _UNDERLINE; break;
@@ -2654,7 +2660,7 @@ int pos;
 	if ( strlen(string) > strlen(cmdstr) ) return(0);
 
 	pos = 0;
-	while ( (toupper(cmdstr[pos]) == toupper(string[pos]) ) && string[pos] )
+	while ( (toupper((int)cmdstr[pos]) == toupper((int)string[pos]) ) && string[pos] )
   	     pos++;
 
 	if ( string[pos] ) return(0);
@@ -3580,7 +3586,7 @@ FILE *OutFile;
 	getstr(OutLine);
         if ( StrIsBlank(OutLine) == 0 )
         {
-	  if ( toupper(OutLine[0]) == 'N' ) Diff = 0;
+	  if ( toupper((int)OutLine[0]) == 'N' ) Diff = 0;
 	else
 	 Diff = 1;
         }
@@ -3831,7 +3837,7 @@ int Pos, i, t, ii;
 	        if ( OkToEdit[ii] ) {
 	          if ( Pos  > Seq[ii].Offset &&
 	               Pos <= Seq[ii].Length+Seq[ii].Offset ) {
-	            Temp = toupper(Seq[ii].Strand[Pos-Seq[ii].Offset]);
+	            Temp = toupper((int)Seq[ii].Strand[Pos-Seq[ii].Offset]);
 	            Count[Temp]++;
 	            NumOfSeqs++;
 	          }
@@ -4358,7 +4364,7 @@ void DoHelp(int Start)
      ajDebug("scr_restore 0kay \n");
  
    ajStrInsertC(&whereto,0,"rm ");
-   ajSystemEnv(&whereto, envptr);
+   ajSystemEnv(whereto, envptr);
  }
  ajStrDel(&whereto);
 
@@ -4506,7 +4512,7 @@ char OneNum[20];
 
 /*** Get_SeqSpec  **************************************************************
 **
-**  Special version of "Get_SeqSpec" from the general library for use wiht
+**  Special version of "Get_SeqSpec" from the general library for use with
 **  the Curses package.
 **
 **  Returns a pointer to the String SeqSpec

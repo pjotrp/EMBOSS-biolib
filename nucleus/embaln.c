@@ -605,8 +605,8 @@ float embAlignScoreNWMatrix(float *path, const AjPSeq a, const AjPSeq b,
 
     ajint xpos = 0;
     ajint ypos = 0;
-    char *p;
-    char *q;
+    const char *p;
+    const char *q;
 
     ajDebug("embAlignScoreNWMatrix\n");
 
@@ -770,8 +770,8 @@ float embAlignScoreSWMatrix(float *path, ajint *compass, float gapopen,
 
     ajint xpos = 0;
     ajint ypos = 0;
-    char *p;
-    char *q;
+    const char *p;
+    const char *q;
     float errbounds;
 
     ajDebug("embAlignScoreSWMatrix\n");
@@ -954,10 +954,8 @@ void embAlignWalkSWMatrix(float *path, ajint *compass, float gapopen,
 
     ajint xpos = 0;
     ajint ypos = 0;
-    char *p;
-    char *q;
-    char r[2]   = "?";
-    char dot[2] = ".";
+    const char *p;
+    const char *q;
 
     float ic;
     float errbounds;
@@ -980,11 +978,8 @@ void embAlignWalkSWMatrix(float *path, ajint *compass, float gapopen,
     p = ajSeqChar(a);
     q = ajSeqChar(b);
 
-    *r = p[ypos];
-    ajStrAssC(m,r);
-    *r = q[xpos];
-    ajStrAssC(n,r);
-
+    ajStrAssK(m,p[ypos]);
+    ajStrAssK(n,q[xpos]);
 
     while(xpos && ypos)
     {
@@ -992,10 +987,8 @@ void embAlignWalkSWMatrix(float *path, ajint *compass, float gapopen,
 	{
 	    if(path[(ypos-1)*lenb+xpos-1]<=0.)
 		break;
-	    *r = p[--ypos];
-	    ajStrInsertC(m,0,r);
-	    *r = q[--xpos];
-	    ajStrInsertC(n,0,r);
+	    ajStrInsertK(m,0,p[--ypos]);
+	    ajStrInsertK(n,0,q[--xpos]);
 	    continue;
 	}
 	else if(compass[ypos*lenb+xpos]==1) /* Left, gap(s) in vertical */
@@ -1025,14 +1018,11 @@ void embAlignWalkSWMatrix(float *path, ajint *compass, float gapopen,
 
 	    for(ic=-1;ic<gapcnt;++ic)
 	    {
-		ajStrInsertC(m,0,dot);
-		*r=q[t--];
-		ajStrInsertC(n,0,r);
+		ajStrInsertK(m,0,'.');
+		ajStrInsertK(n,0,q[t--]);
 	    }
-	    *r = q[t];
-	    ajStrInsertC(n,0,r);
-	    *r = p[ypos];
-	    ajStrInsertC(m,0,r);
+	    ajStrInsertK(n,0,q[t]);
+	    ajStrInsertK(m,0,p[ypos]);
 
 	    xpos = ix;
 	    continue;
@@ -1064,14 +1054,11 @@ void embAlignWalkSWMatrix(float *path, ajint *compass, float gapopen,
 
 	    for(ic=-1;ic<gapcnt;++ic)
 	    {
-		ajStrInsertC(n,0,dot);
-		*r = p[t--];
-		ajStrInsertC(m,0,r);
+		ajStrInsertK(n,0,'.');
+		ajStrInsertK(m,0,p[t--]);
 	    }
-	    *r = p[t];
-	    ajStrInsertC(m,0,r);
-	    *r = q[xpos];
-	    ajStrInsertC(n,0,r);
+	    ajStrInsertK(m,0,p[t]);
+	    ajStrInsertK(n,0,q[xpos]);
 	    ypos = iy;
 	    continue;
 	}
@@ -1081,7 +1068,7 @@ void embAlignWalkSWMatrix(float *path, ajint *compass, float gapopen,
 
     *start1 = ypos;
     *start2 = xpos;
-
+    ajDebug("embAlignWalkSWMatrix done\n");
     return;
 }
 
@@ -1132,10 +1119,8 @@ void embAlignWalkNWMatrix(float *path, const AjPSeq a, const AjPSeq b,
 
     ajint xpos = 0;
     ajint ypos = 0;
-    char *p;
-    char *q;
-    char r[2]   = "?";
-    char dot[2] = ".";
+    const char *p;
+    const char *q;
 
     float ic;
     float errbounds=gapextend;
@@ -1163,19 +1148,14 @@ void embAlignWalkNWMatrix(float *path, const AjPSeq a, const AjPSeq b,
     p = ajSeqChar(a);
     q = ajSeqChar(b);
 
-
-    *r = p[ypos];
-    ajStrInsertC(m,0,r);
-    *r = q[xpos];
-    ajStrInsertC(n,0,r);
+    ajStrInsertK(m,0,p[ypos]);
+    ajStrInsertK(n,0,q[xpos]);
     while(xpos && ypos)
     {
 	if(!compass[ypos*lenb+xpos])	/* diagonal */
 	{
-	    *r = p[--ypos];
-	    ajStrInsertC(m,0,r);
-	    *r = q[--xpos];
-	    ajStrInsertC(n,0,r);
+	    ajStrInsertK(m,0,p[--ypos]);
+	    ajStrInsertK(n,0,q[--xpos]);
 	    continue;
 	}
 	else if(compass[ypos*lenb+xpos]==1) /* Left, gap(s) in vertical */
@@ -1199,14 +1179,11 @@ void embAlignWalkNWMatrix(float *path, const AjPSeq a, const AjPSeq b,
 
 	    for(ic=-1;ic<gapcnt;++ic)
 	    {
-		ajStrInsertC(m,0,dot);
-		*r = q[t--];
-		ajStrInsertC(n,0,r);
+		ajStrInsertK(m,0,'.');
+		ajStrInsertK(n,0,q[t--]);
 	    }
-	    *r = q[t];
-	    ajStrInsertC(n,0,r);
-	    *r = p[ypos];
-	    ajStrInsertC(m,0,r);
+	    ajStrInsertK(n,0,q[t]);
+	    ajStrInsertK(m,0,p[ypos]);
 
 	    xpos = ix;
 	    continue;
@@ -1233,14 +1210,11 @@ void embAlignWalkNWMatrix(float *path, const AjPSeq a, const AjPSeq b,
 
 	    for(ic=-1;ic<gapcnt;++ic)
 	    {
-		ajStrInsertC(n,0,dot);
-		*r=p[t--];
-		ajStrInsertC(m,0,r);
+		ajStrInsertK(n,0,'.');
+		ajStrInsertK(m,0,p[t--]);
 	    }
-	    *r = p[t];
-	    ajStrInsertC(m,0,r);
-	    *r = q[xpos];
-	    ajStrInsertC(n,0,r);
+	    ajStrInsertK(m,0,p[t]);
+	    ajStrInsertK(n,0,q[xpos]);
 	    ypos = iy;
 	    continue;
 	}
@@ -1299,9 +1273,9 @@ void embAlignPrintGlobal(AjPFile outf, const char *a, const char *b,
     ajint i;
     ajint nc;
     ajint olen;
-    char *p;
-    char *q;
-    char *r = NULL;
+    const char *p;
+    const char *q;
+    const char *r = NULL;
 
     float match = 0.0;
 
@@ -1486,7 +1460,7 @@ void embAlignPrintGlobal(AjPFile outf, const char *a, const char *b,
 		ajFmtPrintF(outf,"%-8d ",acnt);
 	    else
 		ajFmtPrintF(outf,"         ");
-	    ajFmtPrintF(outf,"%-45s ",ajStrStr(ap));
+	    ajFmtPrintF(outf,"%-45S ",ap);
 	    if(aend!=acnt)
 		ajFmtPrintF(outf,"%-8d\n",aend-1);
 	    else
@@ -1494,14 +1468,14 @@ void embAlignPrintGlobal(AjPFile outf, const char *a, const char *b,
 	    acnt = aend;
 
 	    if(mark)
-		ajFmtPrintF(outf,"                         %s\n",ajStrStr(mp));
+		ajFmtPrintF(outf,"                         %S\n",mp);
 
 	    ajFmtPrintF(outf,"%-15.15s ",nameb);
 	    if(bend!=bcnt)
 		ajFmtPrintF(outf,"%-8d ",bcnt);
 	    else
 		ajFmtPrintF(outf,"         ");
-	    ajFmtPrintF(outf,"%-45s ",ajStrStr(bp));
+	    ajFmtPrintF(outf,"%-45S ",bp);
 	    if(bend!=bcnt)
 		ajFmtPrintF(outf,"%-8d\n",bend-1);
 	    else
@@ -1531,7 +1505,7 @@ void embAlignPrintGlobal(AjPFile outf, const char *a, const char *b,
 	    ajFmtPrintF(outf,"%-8d ",acnt);
 	else
 	    ajFmtPrintF(outf,"         ");
-	ajFmtPrintF(outf,"%-45s ",ajStrStr(ap));
+	ajFmtPrintF(outf,"%-45S ",ap);
 	if(aend!=acnt)
 	    ajFmtPrintF(outf,"%-8d\n",aend-1);
 	else
@@ -1539,14 +1513,14 @@ void embAlignPrintGlobal(AjPFile outf, const char *a, const char *b,
 	acnt = aend;
 
 	if(mark)
-	    ajFmtPrintF(outf,"                         %s\n",ajStrStr(mp));
+	    ajFmtPrintF(outf,"                         %S\n",mp);
 
 	ajFmtPrintF(outf,"%-15.15s ",nameb);
 	if(bend!=bcnt)
 	    ajFmtPrintF(outf,"%-8d ",bcnt);
 	else
 	    ajFmtPrintF(outf,"         ");
-	ajFmtPrintF(outf,"%-45s ",ajStrStr(bp));
+	ajFmtPrintF(outf,"%-45S ",bp);
 	if(bend!=bcnt)
 	    ajFmtPrintF(outf,"%-8d\n",bend-1);
 	else
@@ -1609,9 +1583,9 @@ void embAlignPrintLocal(AjPFile outf, const char *a, const char *b,
 
     ajint i;
     ajint olen;
-    char *p;
-    char *q;
-    char *r = NULL;
+    const char *p;
+    const char *q;
+    const char *r = NULL;
 
     float match = 0.0;
 
@@ -1696,7 +1670,7 @@ void embAlignPrintLocal(AjPFile outf, const char *a, const char *b,
 		ajFmtPrintF(outf,"%-8d ",acnt);
 	    else
 		ajFmtPrintF(outf,"         ");
-	    ajFmtPrintF(outf,"%-45s ",ajStrStr(ap));
+	    ajFmtPrintF(outf,"%-45S ",ap);
 	    if(aend!=acnt)
 		ajFmtPrintF(outf,"%-8d\n",aend-1);
 	    else
@@ -1704,14 +1678,14 @@ void embAlignPrintLocal(AjPFile outf, const char *a, const char *b,
 	    acnt = aend;
 
 	    if(mark)
-		ajFmtPrintF(outf,"                         %s\n",ajStrStr(mp));
+		ajFmtPrintF(outf,"                         %S\n",mp);
 
 	    ajFmtPrintF(outf,"%-15.15s ",nameb);
 	    if(bend!=bcnt)
 		ajFmtPrintF(outf,"%-8d ",bcnt);
 	    else
 		ajFmtPrintF(outf,"         ");
-	    ajFmtPrintF(outf,"%-45s ",ajStrStr(bp));
+	    ajFmtPrintF(outf,"%-45S ",bp);
 	    if(bend!=bcnt)
 		ajFmtPrintF(outf,"%-8d\n",bend-1);
 	    else
@@ -1742,7 +1716,7 @@ void embAlignPrintLocal(AjPFile outf, const char *a, const char *b,
 	    ajFmtPrintF(outf,"%-8d ",acnt);
 	else
 	    ajFmtPrintF(outf,"         ");
-	ajFmtPrintF(outf,"%-45s ",ajStrStr(ap));
+	ajFmtPrintF(outf,"%-45S ",ap);
 	if(aend!=acnt)
 	    ajFmtPrintF(outf,"%-8d\n",aend-1);
 	else
@@ -1750,14 +1724,14 @@ void embAlignPrintLocal(AjPFile outf, const char *a, const char *b,
 	acnt = aend;
 
 	if(mark)
-	    ajFmtPrintF(outf,"                         %s\n",ajStrStr(mp));
+	    ajFmtPrintF(outf,"                         %S\n",mp);
 
 	ajFmtPrintF(outf,"%-15.15s ",nameb);
 	if(bend!=bcnt)
 	    ajFmtPrintF(outf,"%-8d ",bcnt);
 	else
 	    ajFmtPrintF(outf,"         ");
-	ajFmtPrintF(outf,"%-45s ",ajStrStr(bp));
+	ajFmtPrintF(outf,"%-45S ",bp);
 	if(bend!=bcnt)
 	    ajFmtPrintF(outf,"%-8d\n",bend-1);
 	else
@@ -2061,8 +2035,8 @@ float embAlignScoreSWMatrixFast(float *path, ajint *compass, float gapopen,
     ajint xpos  = 0;
     ajint xpos2 = 0;
     ajint ypos  = 0;
-    char *p;
-    char *q;
+    const char *p;
+    const char *q;
     ajint width;
 
     ajDebug("embAlignScoreSWMatrixFast\n");
@@ -2274,10 +2248,8 @@ void embAlignWalkSWMatrixFast(float *path, ajint *compass, float gapopen,
     ajint xpos  = 0;
     ajint xpos2 = 0;
     ajint ypos  = 0;
-    char *p;
-    char *q;
-    char r[2]   = "?";
-    char dot[2] = ".";
+    const char *p;
+    const char *q;
 
     float ic;
 
@@ -2301,10 +2273,8 @@ void embAlignWalkSWMatrixFast(float *path, ajint *compass, float gapopen,
 
     xpos2 = xpos+ypos;
 
-    *r = p[ypos];
-    ajStrAssC(m,r);
-    *r = q[xpos2];
-    ajStrAssC(n,r);
+    ajStrAssK(m,p[ypos]);
+    ajStrAssK(n,q[xpos2]);
 
 
     while(xpos>=0 && ypos && path[ypos*width+xpos] >0.)
@@ -2348,7 +2318,7 @@ void embAlignWalkSWMatrixFast(float *path, ajint *compass, float gapopen,
 
 	    for(ic=-1;ic<gapcnt;++ic)
 	    {
-		ajStrAppK(m,dot[0]);
+		ajStrAppK(m,'.');
 		ajStrAppK(n,q[t--]);
 	    }
 	    ajStrAppK(n,q[t]);
@@ -2384,7 +2354,7 @@ void embAlignWalkSWMatrixFast(float *path, ajint *compass, float gapopen,
 		break;
 	    for(ic=-1;ic<gapcnt;++ic)
 	    {
-		ajStrAppK(n,dot[0]);
+		ajStrAppK(n,'.');
 		ajStrAppK(m,p[t--]);
 	    }
 	    ajStrAppK(m,p[t]);
@@ -2605,10 +2575,8 @@ void embAlignWalkProfileMatrix(float *path, ajint *compass, float gapopen,
     ajint xpos = 0;
     ajint ypos = 0;
 
-    char *p;
-    char *q;
-    char r[2]   = "?";
-    char dot[2] = ".";
+    const char *p;
+    const char *q;
 
     float errbounds = 0.01;
 
@@ -2632,10 +2600,8 @@ void embAlignWalkProfileMatrix(float *path, ajint *compass, float gapopen,
     p = ajStrStr(cons);
     q = ajStrStr(seq);
 
-    *r = p[row];
-    ajStrAssC(m,r);
-    *r = q[column];
-    ajStrAssC(n,r);
+    ajStrAssK(m,p[row]);
+    ajStrAssK(n,q[column]);
 
     while(row && column)
     {
@@ -2644,10 +2610,8 @@ void embAlignWalkProfileMatrix(float *path, ajint *compass, float gapopen,
 	{
 	    if(path[(row-1)*seqlen+(column-1)]<0.)
 		break;
-	    *r = p[--row];
-	    ajStrInsertC(m,0,r);
-	    *r = q[--column];
-	    ajStrInsertC(n,0,r);
+	    ajStrInsertK(m,0,p[--row]);
+	    ajStrInsertK(n,0,q[--column]);
 	    continue;
 	}
 	else if(direction == LEFT)
@@ -2675,15 +2639,12 @@ void embAlignWalkProfileMatrix(float *path, ajint *compass, float gapopen,
 
 	    for(i=0;i<gapcnt;++i)
 	    {
-		ajStrInsertC(m,0,dot);
-		*r = q[--column];
-		ajStrInsertC(n,0,r);
+		ajStrInsertK(m,0,'.');
+		ajStrInsertK(n,0,q[--column]);
 	    }
 
-	    *r = q[--column];
-	    ajStrInsertC(n,0,r);
-	    *r = p[--row];
-	    ajStrInsertC(m,0,r);
+	    ajStrInsertK(n,0,q[--column]);
+	    ajStrInsertK(m,0,p[--row]);
 
 	    continue;
 	}
@@ -2714,15 +2675,12 @@ void embAlignWalkProfileMatrix(float *path, ajint *compass, float gapopen,
 
 	    for(i=0;i<gapcnt;++i)
 	    {
-		ajStrInsertC(n,0,dot);
-		*r = p[--row];
-		ajStrInsertC(m,0,r);
+		ajStrInsertK(n,0,'.');
+		ajStrInsertK(m,0,p[--row]);
 	    }
 
-	    *r = p[--row];
-	    ajStrInsertC(m,0,r);
-	    *r = q[column];
-	    ajStrInsertC(n,0,r);
+	    ajStrInsertK(m,0,p[--row]);
+	    ajStrInsertK(n,0,q[column]);
 
 	    continue;
 	}
@@ -2777,9 +2735,9 @@ void embAlignPrintProfile(AjPFile outf, const char *a, const char *b,
 
     ajint i;
     ajint olen;
-    char *p;
-    char *q;
-    char *r = NULL;
+    const char *p;
+    const char *q;
+    const char *r = NULL;
 
     float match = 0.0;
 
@@ -2874,7 +2832,7 @@ void embAlignPrintProfile(AjPFile outf, const char *a, const char *b,
 		ajFmtPrintF(outf,"%-8d ",acnt);
 	    else
 		ajFmtPrintF(outf,"         ");
-	    ajFmtPrintF(outf,"%-45s ",ajStrStr(ap));
+	    ajFmtPrintF(outf,"%-45S ",ap);
 	    if(aend!=acnt)
 		ajFmtPrintF(outf,"%-8d\n",aend-1);
 	    else
@@ -2882,14 +2840,14 @@ void embAlignPrintProfile(AjPFile outf, const char *a, const char *b,
 	    acnt = aend;
 
 	    if(mark)
-		ajFmtPrintF(outf,"                         %s\n",ajStrStr(mp));
+		ajFmtPrintF(outf,"                         %S\n",mp);
 
 	    ajFmtPrintF(outf,"%-15.15s ",nameb);
 	    if(bend!=bcnt)
 		ajFmtPrintF(outf,"%-8d ",bcnt);
 	    else
 		ajFmtPrintF(outf,"         ");
-	    ajFmtPrintF(outf,"%-45s ",ajStrStr(bp));
+	    ajFmtPrintF(outf,"%-45S ",bp);
 	    if(bend!=bcnt)
 		ajFmtPrintF(outf,"%-8d\n",bend-1);
 	    else
@@ -2920,7 +2878,7 @@ void embAlignPrintProfile(AjPFile outf, const char *a, const char *b,
 	    ajFmtPrintF(outf,"%-8d ",acnt);
 	else
 	    ajFmtPrintF(outf,"         ");
-	ajFmtPrintF(outf,"%-45s ",ajStrStr(ap));
+	ajFmtPrintF(outf,"%-45S ",ap);
 	if(aend!=acnt)
 	    ajFmtPrintF(outf,"%-8d\n",aend-1);
 	else
@@ -2928,14 +2886,14 @@ void embAlignPrintProfile(AjPFile outf, const char *a, const char *b,
 	acnt = aend;
 
 	if(mark)
-	    ajFmtPrintF(outf,"                         %s\n",ajStrStr(mp));
+	    ajFmtPrintF(outf,"                         %S\n",mp);
 
 	ajFmtPrintF(outf,"%-15.15s ",nameb);
 	if(bend!=bcnt)
 	    ajFmtPrintF(outf,"%-8d ",bcnt);
 	else
 	    ajFmtPrintF(outf,"         ");
-	ajFmtPrintF(outf,"%-45s ",ajStrStr(bp));
+	ajFmtPrintF(outf,"%-45S ",bp);
 	if(bend!=bcnt)
 	    ajFmtPrintF(outf,"%-8d\n",bend-1);
 	else
@@ -2982,8 +2940,8 @@ void embAlignCalcSimilarity(const AjPStr m, const AjPStr n,
 {
     ajint i;
     ajint olen;
-    char  *p    = NULL;
-    char  *q    = NULL;
+    const char  *p    = NULL;
+    const char  *q    = NULL;
     float match = 0.;
     ajint max;
     ajint gaps  = 0;
@@ -3085,7 +3043,7 @@ float embAlignScoreProfileMatrix(float *path, ajint *compass, float gapopen,
     ajint xpos = 0;
     ajint ypos = 0;
 
-    char *q;
+    const char *q;
 
     float errbounds=0.01;
 
@@ -3240,8 +3198,8 @@ void embAlignReportGlobal(AjPAlign align,
     ajint apos;
     ajint bpos;
     ajint nc;
-    char* a;
-    char* b;
+    const char* a;
+    const char* b;
 
     ajDebug("embAlignReportGlobal %d %d\n", start1, start2);
     ajDebug("  seqa: '%S' \n", ajSeqStr(seqa));
@@ -3472,9 +3430,9 @@ void embAlignReportProfile(AjPAlign thys, const AjPSeqset seqset,
 
     ajint i;
     ajint olen;
-    char *p;
-    char *q;
-    char *r = NULL;
+    const char *p;
+    const char *q;
+    const char *r = NULL;
 
     float match = 0.0;
 

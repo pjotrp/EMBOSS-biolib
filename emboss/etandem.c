@@ -331,7 +331,7 @@ int main(int argc, char **argv)
 
     ajint ibase;
     ajint base;
-    char *cp;
+    const char *cp;
     AjPSeq sequence = NULL;
     ajint i;
     ajint j;

@@ -53,8 +53,8 @@ int main(int argc, char **argv)
     ajint i;
     ajint j;
     ajint k;
-    char *p;
-    char *q;
+    const char *p;
+    const char *q;
     float f;
 
     float *x = NULL;
@@ -88,7 +88,7 @@ int main(int argc, char **argv)
 	pos = ajSeqallBegin(seqall);
 	end = ajSeqallEnd(seqall);
 
-	str = ajSeqStr(seq);
+	str = ajSeqStrCopy(seq);
 	ajStrToUpper(&str);
 	p = ajStrStr(str);
 
@@ -159,6 +159,7 @@ int main(int argc, char **argv)
 
 	AJFREE(x);
 	AJFREE(y);
+	ajStrDel(&str);
     }
 
     if(plot)

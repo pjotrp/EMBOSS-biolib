@@ -27,7 +27,7 @@
  * 
  * SELEX format is documented in Docs/formats.tex.
  ****************************************************************************
- * RCS $Id: selex.c,v 1.1 2001/07/29 14:13:49 ajb Exp $
+ * RCS $Id: selex.c,v 1.2 2004/06/14 14:43:30 rice Exp $
  */
 
 #include <stdio.h>
@@ -62,7 +62,7 @@ static char commentsyms[] = "%#";
  * squid_errno to indicate the cause of the failure.
  */
 int
-ReadSELEX(char *seqfile, char ***ret_aseqs, AINFO *ainfo)
+ReadSELEX(const char *seqfile, char ***ret_aseqs, AINFO *ainfo)
 {
   FILE    *fp;                  /* ptr to opened seqfile        */
   char   **aseqs;               /* aligned seqs                 */
@@ -749,7 +749,7 @@ DealignAseqs(char **aseqs, int num, char ***ret_rseqs)
  * Returns TRUE or FALSE.
  */
 int
-IsSELEXFormat(char *filename)
+IsSELEXFormat(const char *filename)
 {
   FILE *fp;                     /* ptr to open sequence file */
   char  buffer[LINEBUFLEN];

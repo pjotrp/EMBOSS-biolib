@@ -514,28 +514,29 @@ static void showfeat_WriteFeat(AjPStr line, char strand, ajint fstart,
     for(i=pos1; i<pos2; i++)
 	if(i >= 0 && i < width)
 	    /* don't overwrite any characters except space */
-	    if(*(ajStrStr(line)+i) == ' ')
-		*(ajStrStr(line)+i) = '-';
+	    if(ajStrChar(line,i) == ' ')
+		ajStrReplaceK(&line, i, '-', 1);
 
     /* write the end characters */
     if(pos1 >= 0 && pos1 < width)
     {
 	if(strand == '+')
-	    *(ajStrStr(line)+pos1) = '|';
+	    ajStrReplaceK(&line, pos1, '|', 1);
 	else if(strand == '-')
-	    *(ajStrStr(line)+pos1) = '<';
+	    ajStrReplaceK(&line, pos1, '<', 1);
 	else
-	    *(ajStrStr(line)+pos1) = '|';
+	    ajStrReplaceK(&line, pos1, '|', 1);
     }
 
     if(pos2 >= 0 && pos2 < width)
     {
 	if(strand == '+')
-	    *(ajStrStr(line)+pos2) = '>';
+	    ajStrReplaceK(&line, pos2, '>', 1);
 	else if(strand == '-')
-	    *(ajStrStr(line)+pos2) = '|';
+	    ajStrReplaceK(&line, pos2, '|', 1);
 	else
-	    *(ajStrStr(line)+pos2) = '|';
+	    ajStrReplaceK(&line, pos2, '|', 1);
+
     }
 
     return;

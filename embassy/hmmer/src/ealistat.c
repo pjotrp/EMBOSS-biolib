@@ -10,7 +10,7 @@
 
 /* alistat_main.c
  * Fri Jan 27 10:41:41 1995
- * RCS $Id: ealistat.c,v 1.1 2001/07/29 14:13:49 ajb Exp $
+ * RCS $Id: ealistat.c,v 1.2 2004/06/14 14:43:30 rice Exp $
  * 
  * Look at an alignment file, determine some simple statistics.
  * Modified for EMBOSS by Alan Bleasby (ISMB 2001)
@@ -31,7 +31,7 @@
 
 int main(int argc, char **argv)
 {
-    char     *seqfile;			/* name of aligned sequence file */
+    const char *seqfile;		/* name of aligned sequence file */
     int       fmt;			/* format of seqfile             */
     char    **aseq;			/* aligned sequences             */
     AINFO     ainfo;			/* info about sequences          */

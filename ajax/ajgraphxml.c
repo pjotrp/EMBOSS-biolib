@@ -33,21 +33,21 @@
 #define SQUARESIZE 0.03
 
 
-static AjPXmlNode	xml_MakeNewNode(AjPGraphXml file,AjPStr name,
+static AjPXmlNode	xml_MakeNewNode(AjPGraphXml file,const AjPStr name,
 					AjPXmlNode parent);
-static AjPXmlNode	xml_MakeNewNodeC(AjPGraphXml file, char *name, 
+static AjPXmlNode	xml_MakeNewNodeC(AjPGraphXml file, const char *name, 
 					 AjPXmlNode parent);
 
 static AjPXmlNode 	xml_MakeNewShapeNode(AjPGraphXml file,
 					     AjPXmlNode parentNode,
-					     AjPStr nameReqd);
+					     const AjPStr nameReqd);
 static AjPXmlNode 	xml_MakeNewShapeNodeC(AjPGraphXml file,
 					      AjPXmlNode parentNode,
-					      char *nameReqd);
+					      const char *nameReqd);
 static AjPXmlNode 	xml_GetNodeTypeMakeIfNot(AjPGraphXml file,
-						 AjPStr nameReqd);
+						 const AjPStr nameReqd);
 static AjPXmlNode 	xml_GetNodeTypeMakeIfNotC(AjPGraphXml file,
-						  char *nameReqd);
+						  const char *nameReqd);
 static AjPGraphXml 	xml_CreateNewOutputFile();
 static AjPXmlNode 	xml_GetCurrentGraphic(AjPGraphXml file);
 static AjPXmlNode 	xml_GetCurrentScene(AjPGraphXml file);
@@ -62,22 +62,24 @@ static void 	xml_AddCylinder(AjPGraphXml file, double xCentre,
 static AjPStr 	xml_StrFromBool(AjBool boole);
 static AjBool 	xml_StrFromDouble(AjPStr *result, double val);
 static AjBool 	xml_AngleIsInSecondHalfOfCircle(double angle);
-static AjBool 	xml_PresentGraphicTypeIs(AjPGraphXml file, AjPStr name);
-static AjBool 	xml_PresentGraphicTypeIsC(AjPGraphXml file, char *name);
-static AjPStr 	xml_GetAttribute(AjPXmlNode node, AjPStr atName);
-static AjPStr 	xml_GetAttributeC(AjPXmlNode node, char *atName);
-static void 	xml_SetAttribute(AjPXmlNode node, AjPStr atName,
-				 AjPStr atValue);
-static void 	xml_SetAttributeC(AjPXmlNode node, char *atName,
-				  char *atValue);
+static AjBool 	xml_PresentGraphicTypeIs(AjPGraphXml file, const AjPStr name);
+static AjBool 	xml_PresentGraphicTypeIsC(AjPGraphXml file, const char *name);
+static AjPStr 	xml_GetAttribute(AjPXmlNode node, const AjPStr atName);
+static AjPStr 	xml_GetAttributeC(AjPXmlNode node, const char *atName);
+static void 	xml_SetAttribute(AjPXmlNode node, const AjPStr atName,
+				 const AjPStr atValue);
+static void 	xml_SetAttributeC(AjPXmlNode node, const char *atName,
+				  const char *atValue);
 static AjPStr 	xml_GetIndex(AjPXmlNode node);
-static void 	xml_SetIndex(AjPXmlNode node, AjPStr index);
+static void 	xml_SetIndex(AjPXmlNode node, const AjPStr index);
 static AjPStr 	xml_GetPoints(AjPXmlNode node);
-static AjBool 	xml_SetPoints(AjPXmlNode node, AjPStr points);
+static AjBool 	xml_SetPoints(AjPXmlNode node, const AjPStr points);
 
 static AjPStr 	xml_PresentColourAsString(AjPGraphXml file);
-static AjBool 	xml_FileNeedsProtoDeclare(AjPGraphXml file, AjPStr protoName);
-static AjBool 	xml_FileNeedsProtoDeclareC(AjPGraphXml file, char *protoName);
+static AjBool 	xml_FileNeedsProtoDeclare(AjPGraphXml file,
+					  const AjPStr protoName);
+static AjBool 	xml_FileNeedsProtoDeclareC(AjPGraphXml file,
+					   const char *protoName);
 static AjBool 	xml_IsShapeThisColour(AjPGraphXml file, AjPXmlNode shape);
 
 static void 	xml_AddArc(AjPGraphXml file, double xCentre, double yCentre,
@@ -85,14 +87,14 @@ static void 	xml_AddArc(AjPGraphXml file, double xCentre, double yCentre,
 
 static void 	xml_AddACoord(double x, double y, AjBool joined, AjPStr* coord,
 			      AjPStr* index);
-static int 	xml_GetLastInt(AjPStr str);
-static double 	xml_GetLastDouble(AjPStr str);
-static double 	xml_GetDoubleNo(AjPStr str, int index);
+static int 	xml_GetLastInt(const AjPStr str);
+static double 	xml_GetLastDouble(const AjPStr str);
+static double 	xml_GetDoubleNo(const AjPStr str, int index);
 
 static void 	xml_AddGraphProto(AjPGraphXml file);
 static void 	xml_AddDNAPlotProto(AjPGraphXml file);
 static void 	xml_AddCommonBit(AjPGraphXml file);
-static AjBool 	xml_WriteFile(AjPGraphXml file, AjPStr filename);
+static AjBool 	xml_WriteFile(AjPGraphXml file, const AjPStr filename);
 static AjBool 	xml_WriteStdout(AjPGraphXml file);
 
 static void 	xml_SetCurrentGraphic(AjPGraphXml file, AjPXmlNode node);
@@ -239,22 +241,22 @@ AjBool ajXmlSetMaxMin (AjPGraphXml file, double xMin, double yMin,
 				 xml_GetCurrentGraphic(file));
 
     xml_StrFromDouble(&doub, xMin);
-    ajStrAppC(&value, ajStrStr(doub));  
+    ajStrApp(&value, doub);  
     ajStrAppC(&value, ", ");  
 
 
     xml_StrFromDouble(&doub, yMin);
-    ajStrAppC(&value, ajStrStr(doub));  
+    ajStrApp(&value, doub);  
     ajStrAppC(&value, ", ");  
 
 
     xml_StrFromDouble(&doub, xMax);
-    ajStrAppC(&value, ajStrStr(doub));  
+    ajStrApp(&value, doub);  
     ajStrAppC(&value, ", ");  
 
 
     xml_StrFromDouble(&doub, yMax);
-    ajStrAppC(&value, ajStrStr(doub));  
+    ajStrApp(&value, doub);  
     ajStrAppC(&value, "]");  
 
 
@@ -278,13 +280,13 @@ AjBool ajXmlSetMaxMin (AjPGraphXml file, double xMin, double yMin,
 ** writes the file 
 **
 ** @param [w] file [AjPGraphXml] the file to write
-** @param [r] filename [AjPStr] the filename to write
+** @param [r] filename [const AjPStr] the filename to write
 **
 ** @return [AjBool] ajTrue if file correctly written
 ** @@
 *********************************************************************/
 
-AjBool ajXmlWriteFile(AjPGraphXml file, AjPStr filename)
+AjBool ajXmlWriteFile(AjPGraphXml file, const AjPStr filename)
 {
     return xml_WriteFile(file, filename);
 }
@@ -335,14 +337,14 @@ void ajXmlClearFile(AjPGraphXml file)
 ** Adds the source to a graph object
 **
 ** @param [w] file [AjPGraphXml] the file to add the title to
-** @param [r] title [AjPStr] the title
+** @param [r] title [const AjPStr] the title
 **
 ** @return [AjBool] ajTrue if the current Graphics object is valid to 
 ** add Source, eg. a graph
 ** @@
 *********************************************************************/
 
-AjBool ajXmlSetSource(AjPGraphXml file, AjPStr title)
+AjBool ajXmlSetSource(AjPGraphXml file, const AjPStr title)
 {
     AjPXmlNode titleNode;
 
@@ -367,14 +369,14 @@ AjBool ajXmlSetSource(AjPGraphXml file, AjPStr title)
 ** Adds a title to a graph object
 **
 ** @param [w] file [AjPGraphXml] the file to add the title to
-** @param [r] title [char *] the title
+** @param [r] title [const char *] the title
 **
 ** @return [AjBool] ajTrue if the current Graphics object is valid to 
 ** add Source, eg. a graph
 ** @@
 *********************************************************************/
 
-AjBool ajXmlAddMainTitleC(AjPGraphXml file, char *title)
+AjBool ajXmlAddMainTitleC(AjPGraphXml file, const char *title)
 {
     AjPXmlNode graphNode;
     AjPStr titleAltered = NULL;
@@ -404,14 +406,14 @@ AjBool ajXmlAddMainTitleC(AjPGraphXml file, char *title)
 ** Adds a title to a graph object
 **
 ** @param [w] file [AjPGraphXml] the file to add the title to
-** @param [r] title [char *] the title
+** @param [r] title [const char *] the title
 **
 ** @return [AjBool] ajTrue if the current Graphics object is valid to 
 ** add XTitle, eg. a graph
 ** @@
 *********************************************************************/
 
-AjBool ajXmlAddXTitleC (AjPGraphXml file, char *title)
+AjBool ajXmlAddXTitleC (AjPGraphXml file, const char *title)
 {
     AjPXmlNode titleNode;
     AjPStr titleAltered = NULL;
@@ -443,14 +445,14 @@ AjBool ajXmlAddXTitleC (AjPGraphXml file, char *title)
 ** Adds a title to a graph object
 **
 ** @param [w] file [AjPGraphXml] the file to add the title to
-** @param [r] title [char *] the title
+** @param [r] title [const char *] the title
 **
 ** @return [AjBool] ajTrue if the current Graphics object is valid to
 ** add YTitle, eg. a graph
 ** @@
 *********************************************************************/
 
-AjBool ajXmlAddYTitleC(AjPGraphXml file, char *title)
+AjBool ajXmlAddYTitleC(AjPGraphXml file, const char *title)
 {
     AjPXmlNode titleNode;
     AjPStr titleAltered = NULL;
@@ -481,14 +483,14 @@ AjBool ajXmlAddYTitleC(AjPGraphXml file, char *title)
 ** Adds a title to a graph object
 **
 ** @param [w] file [AjPGraphXml] the file to add the title to
-** @param [r] title [AjPStr] the title
+** @param [r] title [const AjPStr] the title
 **
 ** @return [AjBool] ajTrue if the current Graphics object is valid to 
 ** add Source, eg. a graph
 ** @@
 *********************************************************************/
 
-AjBool ajXmlAddMainTitle(AjPGraphXml file, AjPStr title)
+AjBool ajXmlAddMainTitle(AjPGraphXml file, const AjPStr title)
 {
     return ajXmlAddMainTitleC(file, ajStrStr(title));
 }
@@ -501,14 +503,14 @@ AjBool ajXmlAddMainTitle(AjPGraphXml file, AjPStr title)
 ** Adds a title to a graph object
 **
 ** @param [w] file [AjPGraphXml] the file to add the title to
-** @param [r] title [AjPStr] the title
+** @param [r] title [const AjPStr] the title
 **
 ** @return [AjBool] ajTrue if the current Graphics object is valid to 
 ** add XTitle, eg. a graph
 ** @@
 *********************************************************************/
 
-AjBool ajXmlAddXTitle (AjPGraphXml file, AjPStr title)
+AjBool ajXmlAddXTitle (AjPGraphXml file, const AjPStr title)
 {
     return ajXmlAddXTitleC(file, ajStrStr(title));
 }
@@ -521,14 +523,14 @@ AjBool ajXmlAddXTitle (AjPGraphXml file, AjPStr title)
 ** Adds a title to a graph object
 **
 ** @param [w] file [AjPGraphXml] the file to add the title to
-** @param [r] title [AjPStr] the title
+** @param [r] title [const AjPStr] the title
 **
 ** @return [AjBool] ajTrue if the current Graphics object is valid to
 ** add YTitle, eg. a graph
 ** @@
 *********************************************************************/
 
-AjBool ajXmlAddYTitle(AjPGraphXml file, AjPStr title)
+AjBool ajXmlAddYTitle(AjPGraphXml file, const AjPStr title)
 {
     return ajXmlAddYTitleC(file, ajStrStr(title));
 }
@@ -545,17 +547,17 @@ AjBool ajXmlAddYTitle(AjPGraphXml file, AjPStr title)
 ** @param [r] y [double] the y coordinate
 ** @param [r] size [double] font size
 ** @param [r] angle [double] font angle
-** @param [r] fontFamily [AjPStr] the name of the font family
-** @param [r] fontStyle [AjPStr] the style or the font
-** @param [r] text [AjPStr] the text to be written
+** @param [r] fontFamily [const AjPStr] the name of the font family
+** @param [r] fontStyle [const AjPStr] the style or the font
+** @param [r] text [const AjPStr] the text to be written
 **
 ** @return [void]
 ** @@
 *********************************************************************/
 
 void ajXmlAddTextCentred(AjPGraphXml file, double x, double y, 
-			 double size, double angle, AjPStr fontFamily,
-			 AjPStr fontStyle, AjPStr text)
+			 double size, double angle, const AjPStr fontFamily,
+			 const AjPStr fontStyle, const AjPStr text)
 {
     float stringLength;
 
@@ -578,17 +580,17 @@ void ajXmlAddTextCentred(AjPGraphXml file, double x, double y,
 ** @param [r] y [double] the y coordinate
 ** @param [r] size [double] font size
 ** @param [r] angle [double] font angle
-** @param [r] fontFamily [char *] the name of the font family
-** @param [r] fontStyle [char *] the style or the font
-** @param [r] text [char *] the text to be written
+** @param [r] fontFamily [const char *] the name of the font family
+** @param [r] fontStyle [const char *] the style or the font
+** @param [r] text [const char *] the text to be written
 **
 ** @return [void]
 ** @@
 *********************************************************************/
 
 void ajXmlAddTextC(AjPGraphXml file, double x, double y, double size, 
-		  double angle, char *fontFamily, char *fontStyle, 
-		  char *text)
+		  double angle, const char *fontFamily, const char *fontStyle, 
+		  const char *text)
 {
     AjPXmlNode transformNode  = NULL;
     AjPXmlNode elText         = NULL;
@@ -704,17 +706,18 @@ void ajXmlAddTextC(AjPGraphXml file, double x, double y, double size,
 ** @param [r] y [double] the y coordinate
 ** @param [r] size [double] font size
 ** @param [r] angle [double] font angle
-** @param [r] fontFamily [AjPStr] the name of the font family
-** @param [r] fontStyle [AjPStr] the style or the font
-** @param [r] text [AjPStr] the text to be written
+** @param [r] fontFamily [const AjPStr] the name of the font family
+** @param [r] fontStyle [const AjPStr] the style or the font
+** @param [r] text [const AjPStr] the text to be written
 **
 ** @return [void]
 ** @@
 *********************************************************************/
 
 void ajXmlAddText(AjPGraphXml file, double x, double y, double size, 
-		  double angle, AjPStr fontFamily, AjPStr fontStyle, 
-		  AjPStr text)
+		  double angle, const AjPStr fontFamily, 
+		  const AjPStr fontStyle, 
+		  const AjPStr text)
 {
     ajXmlAddTextC(file,x,y,size,angle,
                   (fontFamily) ? ajStrStr(fontFamily) : NULL,
@@ -735,9 +738,9 @@ void ajXmlAddText(AjPGraphXml file, double x, double y, double size,
 ** @param [r] y [double] the y coordinate
 ** @param [r] size [double] font size
 ** @param [r] angle [double] font angle
-** @param [r] fontFamily [AjPStr] the name of the font family
-** @param [r] fontStyle [AjPStr] the style or the font
-** @param [r] text [AjPStr] the text to be written
+** @param [r] fontFamily [const AjPStr] the name of the font family
+** @param [r] fontStyle [const AjPStr] the style or the font
+** @param [r] text [const AjPStr] the text to be written
 ** @param [r] horizontal [AjBool] whether the text advances 
 ** horizontally in its major direction (horizontal = ajTrue) or 
 ** vertically in its major direction (horizontal = ajFalse).
@@ -745,9 +748,9 @@ void ajXmlAddText(AjPGraphXml file, double x, double y, double size,
 ** major or minor direction
 ** @param [r] topToBottom [AjBool] direction of text advance in the 
 ** major or minor direction
-** @param [r] justifyMajor [char *] alignment of the text in the 
+** @param [r] justifyMajor [const char *] alignment of the text in the 
 ** Major direction
-** @param [r] justifyMinor [char *] alignment of the text in the 
+** @param [r] justifyMinor [const char *] alignment of the text in the 
 ** Minor direction
 **
 ** @return [void]
@@ -756,10 +759,11 @@ void ajXmlAddText(AjPGraphXml file, double x, double y, double size,
 
 void ajXmlAddTextWithCJustify(AjPGraphXml file, double x, double y, 
 			      double size, double angle, 
-			      AjPStr fontFamily, AjPStr fontStyle, 
-			      AjPStr text, AjBool horizontal, 
+			      const AjPStr fontFamily, const AjPStr fontStyle, 
+			      const AjPStr text, AjBool horizontal, 
 			      AjBool leftToRight, AjBool topToBottom, 
-			      char *justifyMajor, char *justifyMinor)
+			      const char *justifyMajor,
+			      const char *justifyMinor)
 {
     AjPXmlNode transformNode;
     AjPXmlNode elText;
@@ -836,9 +840,9 @@ void ajXmlAddTextWithCJustify(AjPGraphXml file, double x, double y,
 ** @param [r] y [double] the y coordinate
 ** @param [r] size [double] font size
 ** @param [r] angle [double] font angle
-** @param [r] fontFamily [AjPStr] the name of the font family
-** @param [r] fontStyle [AjPStr] the style or the font
-** @param [r] text [AjPStr] the text to be written
+** @param [r] fontFamily [const AjPStr] the name of the font family
+** @param [r] fontStyle [const AjPStr] the style or the font
+** @param [r] text [const AjPStr] the text to be written
 ** @param [r] horizontal [AjBool] whether the text advances 
 ** horizontally in its major direction (horizontal = ajTrue) or 
 ** vertically in its major direction (horizontal = ajFalse).
@@ -856,10 +860,11 @@ void ajXmlAddTextWithCJustify(AjPGraphXml file, double x, double y,
 *********************************************************************/
 void ajXmlAddTextWithJustify(AjPGraphXml file, double x, double y, 
 			     double size, double angle, 
-			     AjPStr fontFamily, AjPStr fontStyle, 
-			     AjPStr text, AjBool horizontal, 
+			     const AjPStr fontFamily, const AjPStr fontStyle, 
+			     const AjPStr text, AjBool horizontal, 
 			     AjBool leftToRight, AjBool topToBottom, 
-			     AjPStr justifyMajor, AjPStr justifyMinor)
+			     const AjPStr justifyMajor,
+			     const AjPStr justifyMinor)
 {
     ajXmlAddTextWithCJustify(file,x,y,size,angle,fontFamily,fontStyle, 
 			     text,horizontal,leftToRight,topToBottom, 
@@ -886,9 +891,9 @@ void ajXmlAddTextWithJustify(AjPGraphXml file, double x, double y,
 ** @param [r] endAngle [double] the angle of the end of the arc
 ** @param [r] radius [double] the radius of the circle
 ** @param [r] size [double] the font size
-** @param [r] fontFamily [AjPStr] the font Family 
-** @param [r] fontStyle [AjPStr] the  font Style
-** @param [r] text [AjPStr] the text
+** @param [r] fontFamily [const AjPStr] the font Family 
+** @param [r] fontStyle [const AjPStr] the  font Style
+** @param [r] text [const AjPStr] the text
 **
 ** @return [void]
 ** @@
@@ -896,8 +901,8 @@ void ajXmlAddTextWithJustify(AjPGraphXml file, double x, double y,
 
 void ajXmlAddTextOnArc(AjPGraphXml file, double xCentre, double yCentre,
 		       double startAngle, double endAngle, 
-		       double radius, double size, AjPStr fontFamily, 
-		       AjPStr fontStyle, AjPStr text)
+		       double radius, double size, const AjPStr fontFamily, 
+		       const AjPStr fontStyle, const AjPStr text)
 {
     double anglularExtentPerLetter;
     double letterAngle;
@@ -1494,9 +1499,9 @@ void ajXmlAddCylinder(AjPGraphXml file, double x1, double y1,
 ** @param [r] radius [double] the radius of the circle
 ** @param [r] length [double] the length of the line of the label
 ** @param [r] size [double] the font size
-** @param [r] fontFamily [AjPStr] the font Family 
-** @param [r] fontStyle [AjPStr] the  font Style
-** @param [r] text [AjPStr] the text of label to add
+** @param [r] fontFamily [const AjPStr] the font Family 
+** @param [r] fontStyle [const AjPStr] the  font Style
+** @param [r] text [const AjPStr] the text of label to add
 **
 ** @return [AjBool] ajTrue if correctly added
 ** @@
@@ -1505,8 +1510,8 @@ void ajXmlAddCylinder(AjPGraphXml file, double x1, double y1,
 AjBool ajXmlAddPointLabelCircle(AjPGraphXml file, double angle, 
 				double xCentre, double yCentre, 
 				double radius, double length, 
-				double size, AjPStr fontFamily, 
-				AjPStr fontStyle, AjPStr text)
+				double size, const AjPStr fontFamily, 
+				const AjPStr fontStyle,const  AjPStr text)
 {
     double xStart;
     double yStart;
@@ -1563,13 +1568,13 @@ AjBool ajXmlAddPointLabelCircle(AjPGraphXml file, double angle,
 ** @param [r] width [double] the width of the label
 ** @param [r] labelArmAngle [double] the angle subtended by the label
 ** arms (ignored if labelStyle = Block
-** @param [r] labelStyle [AjPStr] the label style
+** @param [r] labelStyle [const AjPStr] the label style
 ** @param [r] textPosition [double] the text Position relative to the
 ** circle
 ** @param [r] size [double] the font size
-** @param [r] fontFamily [AjPStr] the font Family 
-** @param [r] fontStyle [AjPStr] the  font Style
-** @param [r] text [AjPStr] the text of label to add
+** @param [r] fontFamily [const AjPStr] the font Family 
+** @param [r] fontStyle [const AjPStr] the  font Style
+** @param [r] text [const AjPStr] the text of label to add
 **
 ** @return [AjBool] ajTrue if correctly added
 ** @@
@@ -1579,10 +1584,11 @@ AjBool ajXmlAddSectionLabelCircle(AjPGraphXml file, double startAngle,
 				  double endAngle, double xCentre, 
 				  double yCentre, double radius, 
 				  double width, double labelArmAngle, 
-				  AjPStr labelStyle, 
+				  const AjPStr labelStyle, 
 				  double textPosition, double size, 
-				  AjPStr fontFamily, AjPStr fontStyle,
-				  AjPStr text)
+				  const AjPStr fontFamily,
+				  const AjPStr fontStyle,
+				  const AjPStr text)
 {
     double xStartInner;
     double yStartInner;
@@ -1761,9 +1767,9 @@ AjBool ajXmlAddSectionLabelCircle(AjPGraphXml file, double startAngle,
 ** Parrallel to the line, ajFalse if the line is at right angles to the 
 ** line
 ** @param [r] size [double] the font size
-** @param [r] fontFamily [AjPStr] the font Family 
-** @param [r] fontStyle [AjPStr] the  font Style
-** @param [r] text [AjPStr] the text of label to add
+** @param [r] fontFamily [const AjPStr] the font Family 
+** @param [r] fontStyle [const AjPStr] the  font Style
+** @param [r] text [const AjPStr] the text of label to add
 **
 ** @return [AjBool] ajTrue if correctly added
 ** @@
@@ -1773,8 +1779,8 @@ AjBool ajXmlAddPointLabelLinear(AjPGraphXml file, double angle,
 				double xPoint, double yPoint, 
 				double length, 
 				AjBool textParallelToLine, 
-				double size, AjPStr fontFamily, 
-				AjPStr fontStyle, AjPStr text)
+				double size, const AjPStr fontFamily, 
+				const AjPStr fontStyle,const  AjPStr text)
 {
     double xEnd;
     double yEnd;
@@ -1834,13 +1840,13 @@ AjBool ajXmlAddPointLabelLinear(AjPGraphXml file, double angle,
 ** @param [r] width [double] the width of the label
 ** @param [r] labelArmLength [double] the distance the arms go back 
 ** (ignored if labelStyle = Block
-** @param [r] labelStyle [AjPStr] the label style
+** @param [r] labelStyle [const AjPStr] the label style
 ** @param [r] textPosition [double] the text Position relative to the
 ** circle
 ** @param [r] size [double] the font size
-** @param [r] fontFamily [AjPStr] the font Family 
-** @param [r] fontStyle [AjPStr] the  font Style
-** @param [r] text [AjPStr] the text of label to add
+** @param [r] fontFamily [const AjPStr] the font Family 
+** @param [r] fontStyle [const AjPStr] the  font Style
+** @param [r] text [const AjPStr] the text of label to add
 **
 ** @return [AjBool] ajTrue if correctly added
 ** @@
@@ -1850,10 +1856,11 @@ AjBool ajXmlAddSectionLabelLinear(AjPGraphXml file, double xStart,
 				  double yStart, double xEnd, 
 				  double yEnd, double width, 
 				  double labelArmLength, 
-				  AjPStr labelStyle, 
+				  const AjPStr labelStyle, 
 				  double textPosition, double size, 
-				  AjPStr fontFamily, AjPStr fontStyle,
-				  AjPStr text)
+				  const AjPStr fontFamily,
+				  const AjPStr fontStyle,
+				  const AjPStr text)
 {
     double xStartInner;
     double yStartInner;
@@ -2389,14 +2396,14 @@ AjBool ajXmlAddNakedResidue(AjPGraphXml file, char residue,
 ** @param [r] y1 [float] y1 coor.
 ** @param [r] x2 [float] x2 coor.
 ** @param [r] y2 [float] y2 coor.
-** @param [r] text [AjPStr] The text to be displayed.
+** @param [r] text [const AjPStr] The text to be displayed.
 ** @return [float] The character size (in mm) that fits the specified
 **                 height and length.
 ** @@
 *********************************************************************/
 
 float ajXmlFitTextOnLine(float x1, float y1, float x2, float y2, 
-			 AjPStr text)
+			 const AjPStr text)
 {
     float lineLength;
     ajint textLength;
@@ -2575,13 +2582,13 @@ AjPGraphXml ajXmlCreateNewOutputFile()
 ** adds a general graphics group
 **
 ** @param [w] file [AjPGraphXml] the file to add the object to
-** @param [r] type [AjPStr] the type of graphic to add
+** @param [r] type [const AjPStr] the type of graphic to add
 **
 ** @return [void]
 ** @@
 *********************************************************************/
 
-void ajXmlAddGraphic(AjPGraphXml file, AjPStr type)
+void ajXmlAddGraphic(AjPGraphXml file, const AjPStr type)
 {
     ajXmlAddGraphicC(file, ajStrStr(type));
 
@@ -2596,13 +2603,13 @@ void ajXmlAddGraphic(AjPGraphXml file, AjPStr type)
 ** adds a general graphics group
 **
 ** @param [w] file [AjPGraphXml] the file to add the object to
-** @param [r] type [char *] the type of graphic to add
+** @param [r] type [const char *] the type of graphic to add
 **
 ** @return [void]
 ** @@
 *********************************************************************/
 
-void ajXmlAddGraphicC(AjPGraphXml file, char *type)
+void ajXmlAddGraphicC(AjPGraphXml file, const char *type)
 {
     AjPXmlNode el = NULL;
 
@@ -2800,14 +2807,15 @@ void ajXmlAddCircle(AjPGraphXml file, double xCentre, double yCentre,
 ** adds an option value pair for the Grout display
 **
 ** @param [w] file [AjPGraphXml] the file to add the max min values to
-** @param [r] name [AjPStr] name of option
-** @param [r] value [AjPStr] value of option
+** @param [r] name [const AjPStr] name of option
+** @param [r] value [const AjPStr] value of option
 **
 ** @return [void]
 ** @@
 *********************************************************************/
 
-void ajXmlAddGroutOption(AjPGraphXml file, AjPStr name, AjPStr value)
+void ajXmlAddGroutOption(AjPGraphXml file,
+			 const AjPStr name, const AjPStr value)
 {
     ajXmlAddGroutOptionC(file, ajStrStr(name), ajStrStr(value));
 
@@ -2822,14 +2830,15 @@ void ajXmlAddGroutOption(AjPGraphXml file, AjPStr name, AjPStr value)
 ** adds an option value pair for the Grout display
 **
 ** @param [w] file [AjPGraphXml] the file to add the max min values to
-** @param [r] name [char *] name of option
-** @param [r] value [char *] value of option
+** @param [r] name [const char *] name of option
+** @param [r] value [const char *] value of option
 **
 ** @return [void]
 ** @@
 *********************************************************************/
 
-void ajXmlAddGroutOptionC(AjPGraphXml file, char *name, char *value)
+void ajXmlAddGroutOptionC(AjPGraphXml file,
+			  const char *name, const char *value)
 {
     AjPXmlNode headNode  = NULL;
     AjPXmlNode otherNode = NULL;
@@ -3061,13 +3070,13 @@ static AjBool xml_AngleIsInSecondHalfOfCircle(double angle)
 ** 
 **
 ** @param [w] file [AjPGraphXml] the file to add the node to
-** @param [r] name [AjPStr] name graphic should be
+** @param [r] name [const AjPStr] name graphic should be
 **
 ** @return [AjBool] True if graphic type is name
 ** @@
 *********************************************************************/
 
-static AjBool xml_PresentGraphicTypeIs(AjPGraphXml file, AjPStr name)
+static AjBool xml_PresentGraphicTypeIs(AjPGraphXml file, const AjPStr name)
 {
     AjBool returnValue    = ajFalse;
     AjPStr attributeValue = NULL;
@@ -3094,13 +3103,13 @@ static AjBool xml_PresentGraphicTypeIs(AjPGraphXml file, AjPStr name)
 ** 
 **
 ** @param [w] file [AjPGraphXml] the file to add the node to
-** @param [r] name [char *] name graphic should be
+** @param [r] name [const char *] name graphic should be
 **
 ** @return [AjBool] True if graphic type is name
 ** @@
 *********************************************************************/
 
-static AjBool xml_PresentGraphicTypeIsC(AjPGraphXml file, char *name)
+static AjBool xml_PresentGraphicTypeIsC(AjPGraphXml file, const char *name)
 {
     AjBool returnValue    = ajFalse;
     AjPStr attributeValue = NULL;
@@ -3127,13 +3136,13 @@ static AjBool xml_PresentGraphicTypeIsC(AjPGraphXml file, char *name)
 ** Gets an attribute
 **
 ** @param [w] node [AjPXmlNode] node to set attribute of
-** @param [r] atName [char *] name of attribute
+** @param [r] atName [const char *] name of attribute
 **
 ** @return [AjPStr] value of attribute
 ** @@
 *********************************************************************/
 
-static AjPStr xml_GetAttributeC(AjPXmlNode node, char *atName)
+static AjPStr xml_GetAttributeC(AjPXmlNode node, const char *atName)
 {
     GdomeDOMString *attributeValue;
     GdomeException exc;
@@ -3162,13 +3171,13 @@ static AjPStr xml_GetAttributeC(AjPXmlNode node, char *atName)
 ** Gets an attribute
 **
 ** @param [w] node [AjPXmlNode] node to set attribute of
-** @param [r] atName [AjPStr] name of attribute
+** @param [r] atName [const AjPStr] name of attribute
 **
 ** @return [AjPStr] value of attribute
 ** @@
 *********************************************************************/
 
-static AjPStr xml_GetAttribute(AjPXmlNode node, AjPStr atName)
+static AjPStr xml_GetAttribute(AjPXmlNode node, const AjPStr atName)
 {
 
     return xml_GetAttributeC(node,ajStrStr(atName));
@@ -3183,13 +3192,14 @@ static AjPStr xml_GetAttribute(AjPXmlNode node, AjPStr atName)
 ** Sets an attribute from a char*
 **
 ** @param [w] node [AjPXmlNode] node to set attribute of
-** @param [r] atName [char*] name of attribute
-** @param [r] atValue [char*] value of attribute
+** @param [r] atName [const char*] name of attribute
+** @param [r] atValue [const char*] value of attribute
 **
 ** @@
 *********************************************************************/
 
-static void xml_SetAttributeC(AjPXmlNode node, char *atName, char *atValue)
+static void xml_SetAttributeC(AjPXmlNode node,
+			      const char *atName, const char *atValue)
 {
     GdomeException exc;
     GdomeDOMString *nodeName  = NULL;
@@ -3214,13 +3224,14 @@ static void xml_SetAttributeC(AjPXmlNode node, char *atName, char *atValue)
 ** Sets an attribute
 **
 ** @param [w] node [AjPXmlNode] node to set attribute of
-** @param [r] atName [AjPStr] name of attribute
-** @param [r] atValue [AjPStr] value of attribute
+** @param [r] atName [const AjPStr] name of attribute
+** @param [r] atValue [const AjPStr] value of attribute
 **
 ** @@
 *********************************************************************/
 
-static void xml_SetAttribute(AjPXmlNode node, AjPStr atName, AjPStr atValue)
+static void xml_SetAttribute(AjPXmlNode node,
+			     const AjPStr atName, const AjPStr atValue)
 {
     xml_SetAttributeC(node, ajStrStr(atName), ajStrStr(atValue));
     
@@ -3363,13 +3374,13 @@ static AjPStr xml_GetIndex(AjPXmlNode passedNode)
 ** Sets the list of coord index's for an Indexed Line Set
 **
 ** @param [r] passedNode [AjPXmlNode] node to get the index's of
-** @param [r] index [AjPStr] value of index's
+** @param [r] index [const AjPStr] value of index's
 **
 ** @return [void]
 ** @@
 *********************************************************************/
 
-static void xml_SetIndex(AjPXmlNode passedNode, AjPStr index)
+static void xml_SetIndex(AjPXmlNode passedNode, const AjPStr index)
 {
     GdomeException exc;
     GdomeDOMString *nodeName  = NULL;
@@ -3625,12 +3636,12 @@ static AjPStr xml_GetPoints(AjPXmlNode passedNode)
 ** Sets the list of points for an Indexed Line Set
 **
 ** @param [w] passedNode [AjPXmlNode] node to set the points of
-** @param [r] points [AjPStr] value of points
+** @param [r] points [const AjPStr] value of points
 **
 ** @return [AjBool] ajTrue if points set correctly
 ** @@
 *********************************************************************/
-static AjBool xml_SetPoints(AjPXmlNode passedNode, AjPStr points)
+static AjBool xml_SetPoints(AjPXmlNode passedNode, const AjPStr points)
 {
     GdomeException exc;
     GdomeNodeList *listCoordinate = NULL;
@@ -3764,14 +3775,14 @@ static AjBool xml_SetPoints(AjPXmlNode passedNode, AjPStr points)
 ** Makes a new DOM node and appends it to the parent node
 **
 ** @param [w] file [AjPGraphXml] the file to add the node to
-** @param [r] name [AjPStr] name of node
+** @param [r] name [const AjPStr] name of node
 ** @param [r] parent [AjPXmlNode] parent node to add to
 **
 ** @return [AjPXmlNode] new node
 ** @@
 *********************************************************************/
 
-static AjPXmlNode xml_MakeNewNode(AjPGraphXml file, AjPStr name, 
+static AjPXmlNode xml_MakeNewNode(AjPGraphXml file, const AjPStr name, 
 				  AjPXmlNode parent)
 {
     return xml_MakeNewNodeC(file, ajStrStr(name), parent);
@@ -3786,14 +3797,14 @@ static AjPXmlNode xml_MakeNewNode(AjPGraphXml file, AjPStr name,
 ** Makes a new DOM node and appends it to the parent node, from char*
 **
 ** @param [w] file [AjPGraphXml] the file to add the node to
-** @param [r] name [char*] name of node
+** @param [r] name [const char*] name of node
 ** @param [r] parent [AjPXmlNode] parent node to add to
 **
 ** @return [AjPXmlNode] new node
 ** @@
 *********************************************************************/
 
-static AjPXmlNode xml_MakeNewNodeC(AjPGraphXml file, char *name, 
+static AjPXmlNode xml_MakeNewNodeC(AjPGraphXml file, const char *name, 
 				  AjPXmlNode parent)
 {
     GdomeException exc;
@@ -3863,13 +3874,14 @@ static  AjPStr xml_PresentColourAsString(AjPGraphXml file)
 ** returns whether this file needs this type of proto Declaration
 **
 ** @param [r] file [AjPGraphXml] the file to check
-** @param [r] protoName [char *] the proto name
+** @param [r] protoName [const char *] the proto name
 **
 ** @return [AjBool] true if this file needs this type of proto Declaration
 ** @@
 *********************************************************************/
 
-static AjBool xml_FileNeedsProtoDeclareC(AjPGraphXml file, char *protoName)
+static AjBool xml_FileNeedsProtoDeclareC(AjPGraphXml file,
+					 const char *protoName)
 {
     GdomeException exc;
     AjPXmlNode presentNode;
@@ -3926,13 +3938,14 @@ static AjBool xml_FileNeedsProtoDeclareC(AjPGraphXml file, char *protoName)
 ** returns whether this file needs this type of proto Declaration
 **
 ** @param [r] file [AjPGraphXml] the file to check
-** @param [r] protoName [AjPStr] the proto name
+** @param [r] protoName [const AjPStr] the proto name
 **
 ** @return [AjBool] true if this file needs this type of proto Declaration
 ** @@
 *********************************************************************/
 
-static AjBool xml_FileNeedsProtoDeclare(AjPGraphXml file, AjPStr protoName)
+static AjBool xml_FileNeedsProtoDeclare(AjPGraphXml file,
+					const AjPStr protoName)
 {
 
     return xml_FileNeedsProtoDeclareC(file,ajStrStr(protoName));
@@ -4060,7 +4073,7 @@ static AjBool xml_IsShapeThisColour(AjPGraphXml file, AjPXmlNode shape)
 **
 ** @param [r] file [AjPGraphXml] the file to find the node in
 ** @param [r] parentNode [AjPXmlNode] parent node to add to
-** @param [r] nameReqd [char *] name of node
+** @param [r] nameReqd [const char *] name of node
 **
 ** @return [AjPXmlNode] new node
 ** @@
@@ -4068,7 +4081,7 @@ static AjBool xml_IsShapeThisColour(AjPGraphXml file, AjPXmlNode shape)
 
 static AjPXmlNode xml_MakeNewShapeNodeC(AjPGraphXml file, 
 					AjPXmlNode parentNode, 
-					char *nameReqd)
+					const char *nameReqd)
 {
     AjPXmlNode returnNode;
     AjPXmlNode shape;
@@ -4104,7 +4117,7 @@ static AjPXmlNode xml_MakeNewShapeNodeC(AjPGraphXml file,
 **
 ** @param [r] file [AjPGraphXml] the file to find the node in
 ** @param [r] parentNode [AjPXmlNode] parent node to add to
-** @param [r] nameReqd [AjPStr] name of node
+** @param [r] nameReqd [const AjPStr] name of node
 **
 ** @return [AjPXmlNode] new node
 ** @@
@@ -4112,7 +4125,7 @@ static AjPXmlNode xml_MakeNewShapeNodeC(AjPGraphXml file,
 
 static AjPXmlNode xml_MakeNewShapeNode(AjPGraphXml file, 
 				       AjPXmlNode parentNode, 
-				       AjPStr nameReqd)
+				       const AjPStr nameReqd)
 {
 
     return xml_MakeNewShapeNodeC(file,parentNode,ajStrStr(nameReqd));
@@ -4221,12 +4234,13 @@ static void xml_AddArc(AjPGraphXml file, double xCentre, double yCentre,
 ** returns first? node of this type, Makes a new one If Not
 **
 ** @param [r] file [AjPGraphXml] the file to find the node in
-** @param [r] nameReqd [AjPStr] name of node
+** @param [r] nameReqd [const AjPStr] name of node
 **
 ** @return [AjPXmlNode] found or new node
 ** @@
 *********************************************************************/
-static AjPXmlNode xml_GetNodeTypeMakeIfNot(AjPGraphXml file, AjPStr nameReqd)
+static AjPXmlNode xml_GetNodeTypeMakeIfNot(AjPGraphXml file,
+					   const AjPStr nameReqd)
 {
     GdomeException exc;
     AjPXmlNode returnNode  = NULL;
@@ -4496,13 +4510,14 @@ static AjPXmlNode xml_GetNodeTypeMakeIfNot(AjPGraphXml file, AjPStr nameReqd)
 ** returns first? node of this type, Makes a new one If Not
 **
 ** @param [r] file [AjPGraphXml] the file to find the node in
-** @param [r] nameReqd [char *] name of node
+** @param [r] nameReqd [const char *] name of node
 **
 ** @return [AjPXmlNode] found or new node
 ** @@
 *********************************************************************/
 
-static AjPXmlNode xml_GetNodeTypeMakeIfNotC(AjPGraphXml file, char *nameReqd)
+static AjPXmlNode xml_GetNodeTypeMakeIfNotC(AjPGraphXml file,
+					    const char *nameReqd)
 {
     AjPStr str     = NULL;
     AjPXmlNode ret = NULL;
@@ -4580,14 +4595,14 @@ static void xml_AddACoord(double x, double y, AjBool joined, AjPStr* coord,
 **
 ** gets Last Int of a string
 **
-** @param [r] str [AjPStr] string to find int in
+** @param [r] str [const AjPStr] string to find int in
 **
 ** @return [int] the last interger of a string, 0 and an ecxeption if 
 ** not an int
 ** @@
 *********************************************************************/
 
-static int xml_GetLastInt(AjPStr str)
+static int xml_GetLastInt(const AjPStr str)
 {
     int count;
     int i;
@@ -4622,13 +4637,13 @@ static int xml_GetLastInt(AjPStr str)
 **
 ** gets Last Double of a string
 **
-** @param [r] str [AjPStr] string to find double in
+** @param [r] str [const AjPStr] string to find double in
 **
 ** @return [double] the last double of a string, 0 and an exception if 
 ** not a double
 ** @@
 *********************************************************************/
-static double xml_GetLastDouble(AjPStr str)
+static double xml_GetLastDouble(const AjPStr str)
 {
     int count;
     int i;
@@ -4660,14 +4675,14 @@ static double xml_GetLastDouble(AjPStr str)
 **
 ** returns the double at position index
 **
-** @param [r] str [AjPStr] string to find double in
+** @param [r] str [const AjPStr] string to find double in
 ** @param [r] index [int] position of required double
 **
 ** @return [double] the index number double of a string, 
 ** @@
 *********************************************************************/
 
-static double xml_GetDoubleNo(AjPStr str, int index)
+static double xml_GetDoubleNo(const AjPStr str, int index)
 {
     int count;
     int i;
@@ -5033,13 +5048,13 @@ static void xml_AddCommonBit(AjPGraphXml file)
 ** writes the file 
 **
 ** @param [r] file [AjPGraphXml] the file to write
-** @param [r] filename [AjPStr] the file name
+** @param [r] filename [const AjPStr] the file name
 **
 ** @return [AjBool] ajTrue if file written correctly
 ** @@
 *********************************************************************/
 
-static AjBool xml_WriteFile(AjPGraphXml file, AjPStr filename)
+static AjBool xml_WriteFile(AjPGraphXml file, const AjPStr filename)
 {
     GdomeException exc;
 

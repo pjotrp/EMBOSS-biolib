@@ -42,7 +42,7 @@ int main(int argc, char **argv)
 {
     AjPFile datafile;
     AjPStr aa0str = 0;
-    char *s1;
+    const char *s1;
     AjPSeq seq;
     ajint llen;
     float matrix[AZ];
@@ -139,7 +139,7 @@ static AjBool pepwindow_getnakaidata(AjPFile file, float matrix[])
     AjPStr description = NULL;
     AjPStrTok token;
     ajint line = 0;
-    char *ptr;
+    const char *ptr;
 
 
     if(!file)

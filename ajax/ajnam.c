@@ -1615,7 +1615,7 @@ static AjBool namProcessFile(AjPFile file)
 {
     AjPStr rdline = NULL;
     AjPStr word   = NULL;
-    char *ptr;
+    const char *ptr;
     ajint i = 0;
     ajint len;
     char quote = '\0';
@@ -1748,7 +1748,7 @@ static AjBool namProcessFile(AjPFile file)
 
 void ajNamInit(const char* prefix)
 {
-    char *prefixRoot;
+    const char *prefixRoot;
     AjPFile prefixRootFile;
     AjPStr prefixRootStr = NULL;
     AjPStr prefixStr     = NULL;

@@ -10,7 +10,7 @@
 
 /* alphabet.c
  * Configuration of the global symbol alphabet information.
- * RCS $Id: alphabet.c,v 1.1 2001/07/29 14:13:48 ajb Exp $
+ * RCS $Id: alphabet.c,v 1.2 2004/06/14 14:43:30 rice Exp $
  */
 
 #include <stdlib.h>
@@ -159,7 +159,7 @@ int
 SymbolIndex(char sym)
 {
   char *s;
-  return ((s = strchr(Alphabet, toupper(sym))) == NULL) ?
+  return ((s = strchr(Alphabet, (char)toupper((int)sym))) == NULL) ?
 	  Alphabet_iupac-1 : s - Alphabet;
 } 
 

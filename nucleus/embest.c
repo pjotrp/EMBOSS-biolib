@@ -117,7 +117,6 @@ static ajint lsimmat[256][256];
 static AjBool verbose;
 static AjBool debug;
 static float estRand3(ajint *idum);
-static char* estShuffleSeq(char *s, ajint *seed);
 static ajint estPairRemember(ajint col, ajint row);
 static ajint estSavePairCmp(const void *a, const void *b);
 static void  estPairInit(ajint max_bytes);
@@ -287,7 +286,7 @@ AjPSeq embEstFindSpliceSites(AjPSeq genome, ajint forward )
     AjPSeq sites;
     ajint pos;
     ajint genomelen;
-    char *s;
+    const char *s;
     char *sitestr;
 
     sites     = ajSeqNew();
@@ -350,7 +349,7 @@ AjPSeq embEstFindSpliceSites(AjPSeq genome, ajint forward )
 **
 ** Shuffle the sequence.
 **
-** @param [r] seq [AjPSeq] Original sequence
+** @param [u] seq [AjPSeq] Original sequence
 ** @param [r] in_place [ajint] Boolean 1=shuffle in place
 ** @param [r] seed [ajint*] Random number seed.
 **
@@ -361,14 +360,18 @@ AjPSeq embEstFindSpliceSites(AjPSeq genome, ajint forward )
 AjPSeq embEstShuffleSeq( AjPSeq seq, ajint in_place, ajint *seed )
 {
     AjPSeq shuffled;
+    AjPStr shufflestr;
 
     if(!in_place)
 	shuffled = ajSeqNewS(seq);
     else
 	shuffled = seq;
 
-    estShuffleSeq(ajSeqChar(shuffled), seed);
+    shufflestr = ajSeqStrCopy(shuffled);
 
+    estShuffleSeq(ajStrStrMod(&shufflestr), seed);
+
+    ajSeqReplace(shuffled, shufflestr);
     return shuffled;
 }
 
@@ -379,10 +382,10 @@ AjPSeq embEstShuffleSeq( AjPSeq seq, ajint in_place, ajint *seed )
 **
 ** in-place shuffle of a string
 **
-** @param [r] s [char*] String
+** @param [u] s [char*] String
 ** @param [r] seed [ajint*] Seed
 **
-** @return [char*] shuffled string.
+** @return [const char*] shuffled string.
 ** @@
 ******************************************************************************/
 
@@ -547,8 +550,8 @@ void embEstPrintAlign(AjPFile ofile, AjPSeq genome, AjPSeq est,
     char *gbuf;
     char *ebuf;
     char *sbuf;
-    char *genomeseq;
-    char *estseq;
+    const char *genomeseq;
+    const char *estseq;
 
     ajint *gcoord;
     ajint *ecoord;
@@ -789,7 +792,7 @@ EmbPEstAlign embEstAlignNonRecursive(AjPSeq est, AjPSeq genome,
 {
     AjPSeq gdup = NULL;
     AjPSeq edup = NULL;
-    char* splice_sites_str;
+    const char* splice_sites_str;
     unsigned char **ppath = NULL;
     unsigned char *path   = NULL;
     ajint *score1;
@@ -809,8 +812,8 @@ EmbPEstAlign embEstAlignNonRecursive(AjPSeq est, AjPSeq genome,
     ajint delete_genome;
     ajint delete_est;
     ajint intron;
-    char *gseq;
-    char *eseq;
+    const char *gseq;
+    const char *eseq;
     char g;
     ajint max;
     ajint total = 0;
@@ -1715,8 +1718,8 @@ static ajint estAlignMidpt( AjPSeq est, AjPSeq genome, ajint match,
     ajint delete_genome;
     ajint delete_est;
     ajint intron;
-    char *gseq;
-    char *eseq;
+    const char *gseq;
+    const char *eseq;
     char g;
     ajint max;
     ajint is_acceptor;
@@ -1726,7 +1729,7 @@ static ajint estAlignMidpt( AjPSeq est, AjPSeq genome, ajint match,
     EstPCoord midpt1;
     EstPCoord midpt2;
     EstPCoord best_intron_midpt;
-    char *splice_sites_str;
+    const char *splice_sites_str;
 
     splice_sites_str = ajSeqChar(splice_sites);
 
@@ -2176,8 +2179,8 @@ void embEstOutBlastStyle(AjPFile blast, AjPSeq genome, AjPSeq est,
     ajint total_matches = 0;
     ajint total_len     = 0;
     float percent;
-    char *genomestr;
-    char *eststr;
+    const char *genomestr;
+    const char *eststr;
     ajint goff;
     ajint eoff;
 

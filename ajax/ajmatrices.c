@@ -448,7 +448,7 @@ AjBool ajMatrixRead(AjPMatrix* pthis, const AjPStr filename)
     AjPFile file    = NULL;
     AjBool first    = ajTrue;
     AjPMatrix  thys = NULL;
-    char *ptr       = NULL;
+    const char *ptr = NULL;
     ajint **matrix  = NULL;
 
     ajint minval = -1;
@@ -565,7 +565,7 @@ AjBool ajMatrixfRead(AjPMatrixf* pthis, const AjPStr filename)
     ajint k    = 0;
     ajint cols = 0;
 
-    char *ptr = NULL;
+    const char *ptr = NULL;
 
     AjPMatrixf thys = NULL;
     AjPFile file    = NULL;

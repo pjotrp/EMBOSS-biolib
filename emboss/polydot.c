@@ -47,10 +47,10 @@ int main(int argc, char **argv)
 {
 
     AjPSeqset seqset;
-    AjPSeq seq1;
-    AjPSeq seq2;
+    const AjPSeq seq1;
+    const AjPSeq seq2;
     ajint wordlen;
-    AjPTable seq1MatchTable =0 ;
+    AjPTable seq1MatchTable = NULL;
     AjPList matchlist ;
     AjPGraph graph = 0;
     ajint i;
@@ -182,7 +182,7 @@ int main(int argc, char **argv)
 		ystart += (float)ajSeqLen(seq2)+(float)gap;
 	    }
 	}
-	embWordFreeTable(seq1MatchTable);
+	embWordFreeTable(&seq1MatchTable);
 	seq1MatchTable = NULL;
 	xstart += (float)ajSeqLen(seq1)+(float)gap;
 	ystart = 0.0;

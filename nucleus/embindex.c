@@ -25,8 +25,8 @@
 
 
 
-static AjPFile    btreeCreateFile(AjPStr idirectory, AjPStr dbname,
-				  char *add);
+static AjPFile    btreeCreateFile(const AjPStr idirectory, const AjPStr dbname,
+				  const char *add);
 static EmbPBtpage btreeCacheLocate(EmbPBtcache cache, ajlong page);
 static EmbPBtpage btreeCacheLruUnlink(EmbPBtcache cache);
 static void       btreeCacheUnlink(EmbPBtcache cache, EmbPBtpage cpage);
@@ -38,11 +38,11 @@ static void       btreeCacheMruAdd(EmbPBtcache cache, EmbPBtpage cpage);
 static EmbPBtpage btreeCacheControl(EmbPBtcache cache, ajlong pageno,
 				    AjBool isread);
 static EmbPBtpage btreeFindINode(EmbPBtcache cache, EmbPBtpage page,
-				 char *item);
+				 const char *item);
 
 
 static EmbPBtpage btreePageFromKey(EmbPBtcache cache, unsigned char *buf,
-				   char *item);
+				   const char *item);
 static ajint      btreeNumInBucket(EmbPBtcache cache, ajlong pageno);
 static EmbPBucket btreeReadBucket(EmbPBtcache cache, ajlong pageno);
 static void       btreeWriteBucket(EmbPBtcache cache, EmbPBucket bucket,
@@ -59,11 +59,12 @@ static void       btreeWriteNode(EmbPBtcache cache, EmbPBtpage page,
 				 AjPStr *keys, ajlong *ptrs, ajint nkeys);
 static AjBool     btreeNodeIsFull(EmbPBtcache cache, EmbPBtpage page);
 static void       btreeInsertNonFull(EmbPBtcache cache, EmbPBtpage page,
-				     AjPStr key, ajlong less,
+				     const AjPStr key, ajlong less,
 				     ajlong greater);
 static void       btreeSplitRoot(EmbPBtcache cache);
 static void       btreeInsertKey(EmbPBtcache cache, EmbPBtpage page,
-				 AjPStr key, ajlong less, ajlong greater);
+				 const AjPStr key, ajlong less,
+				 ajlong greater);
 static EmbPBtpage btreeSplitLeaf(EmbPBtcache cache, EmbPBtpage spage);
 
 
@@ -83,18 +84,19 @@ static ajlong     btreeShift(EmbPBtcache cache, ajlong thisNode,
 static ajlong     btreeMerge(EmbPBtcache cache, ajlong thisNode,
 			     ajlong mergeNode, ajlong anchorNode);
 
-static void       btreeFindMin(EmbPBtcache cache, ajlong pageno, char *key);
+static void       btreeFindMin(EmbPBtcache cache, ajlong pageno,
+			       const char *key);
 static ajlong     btreeInsertShift(EmbPBtcache cache, EmbPBtpage *retpage,
-				   char *key);
+				   const char *key);
 static void       btreeKeyShift(EmbPBtcache cache, EmbPBtpage tpage);
 
 
 static EmbPBtpage embBtreeTraverseLeaves(EmbPBtcache cache, EmbPBtpage thys);
 
 static EmbPBtpage btreeFindINodeW(EmbPBtcache cache, EmbPBtpage page,
-				  char *item);
+				  const char *item);
 static EmbPBtpage btreePageFromKeyW(EmbPBtcache cache, unsigned char *buf,
-				    char *key);
+				    const char *key);
 static void       btreeReadLeaf(EmbPBtcache cache, EmbPBtpage page,
 				AjPList list);
 
@@ -714,13 +716,13 @@ void embBtreeCreateRootNode(EmbPBtcache cache)
 ** Find the node that should contain a new key for insertion
 **
 ** @param [u] cache [EmbPBtcache] cache
-** @param [r] key [char*] key to search for 
+** @param [r] key [const char*] key to search for 
 **
 ** @return [EmbPBtpage] leaf node where item should be inserted
 ** @@
 ******************************************************************************/
 
-EmbPBtpage embBtreeFindInsert(EmbPBtcache cache, char *key)
+EmbPBtpage embBtreeFindInsert(EmbPBtcache cache, const char *key)
 {
     EmbPBtpage root = NULL;
     EmbPBtpage ret  = NULL;
@@ -747,14 +749,14 @@ EmbPBtpage embBtreeFindInsert(EmbPBtcache cache, char *key)
 **
 ** @param [u] cache [EmbPBtcache] cache
 ** @param [u] page [EmbPBtpage] page
-** @param [r] item [char*] key to search for 
+** @param [r] item [const char*] key to search for 
 **
 ** @return [EmbPBtpage] leaf node where item should be inserted
 ** @@
 ******************************************************************************/
 
 static EmbPBtpage btreeFindINode(EmbPBtcache cache, EmbPBtpage page,
-				 char *item)
+				 const char *item)
 {
     EmbPBtpage     ret = NULL;
     EmbPBtpage     pg  = NULL;
@@ -789,14 +791,14 @@ static EmbPBtpage btreeFindINode(EmbPBtcache cache, EmbPBtpage page,
 **
 ** @param [u] cache [EmbPBtcache] cache
 ** @param [r] buf [unsigned char *] page buffer
-** @param [r] key [char *] key to search for 
+** @param [r] key [const char *] key to search for 
 **
 ** @return [EmbPBtpage] pointer to a page
 ** @@
 ******************************************************************************/
 
 static EmbPBtpage btreePageFromKey(EmbPBtcache cache, unsigned char *buf,
-				   char *key)
+				   const char *key)
 {
     unsigned char *rootbuf = NULL;
     ajint nkeys    = 0;
@@ -1287,16 +1289,17 @@ static ajint btreeNumInBucket(EmbPBtcache cache, ajlong pageno)
 ** Read files to index
 **
 ** @param [w] filelist [AjPStr**] list of files to read
-** @param [r] fdirectory [AjPStr] Directory to scan
-** @param [r] files [AjPStr] Filename to search for (or NULL)
-** @param [r] exclude [AjPStr] list of files to exclude
+** @param [r] fdirectory [const AjPStr] Directory to scan
+** @param [r] files [const AjPStr] Filename to search for (or NULL)
+** @param [r] exclude [const AjPStr] list of files to exclude
 **
 ** @return [ajint] number of matching files
 ** @@
 ******************************************************************************/
 
-ajint embBtreeReadDir(AjPStr **filelist, AjPStr fdirectory, AjPStr files,
-		      AjPStr exclude)
+ajint embBtreeReadDir(AjPStr **filelist,
+		      const AjPStr fdirectory, const AjPStr files,
+		      const AjPStr exclude)
 {
     AjPList lfiles = NULL;
     ajint nfiles;
@@ -1590,7 +1593,7 @@ static AjBool btreeNodeIsFull(EmbPBtcache cache, EmbPBtpage page)
 **
 ** @param [u] cache [EmbPBtcache] cache
 ** @param [r] page [EmbPBtpage] original page
-** @param [r] key [AjPStr] key to insert
+** @param [r] key [const AjPStr] key to insert
 ** @param [r] less [ajlong] less-than pointer
 ** @param [r] greater [ajlong] greater-than pointer
 **
@@ -1599,7 +1602,7 @@ static AjBool btreeNodeIsFull(EmbPBtcache cache, EmbPBtpage page)
 ******************************************************************************/
 
 static void btreeInsertNonFull(EmbPBtcache cache, EmbPBtpage page,
-			       AjPStr key, ajlong less, ajlong greater)
+			       const AjPStr key, ajlong less, ajlong greater)
 {
     unsigned char *buf = NULL;
     AjPStr *karray     = NULL;
@@ -1704,7 +1707,7 @@ static void btreeInsertNonFull(EmbPBtcache cache, EmbPBtpage page,
 **
 ** @param [u] cache [EmbPBtcache] cache
 ** @param [r] page [EmbPBtpage] original page
-** @param [r] key [AjPStr] key to insert
+** @param [r] key [const AjPStr] key to insert
 ** @param [r] less [ajlong] less-than pointer
 ** @param [r] greater [ajlong] greater-than pointer
 **
@@ -1713,7 +1716,7 @@ static void btreeInsertNonFull(EmbPBtcache cache, EmbPBtpage page,
 ******************************************************************************/
 
 static void btreeInsertKey(EmbPBtcache cache, EmbPBtpage page,
-			   AjPStr key, ajlong less, ajlong greater)
+			   const AjPStr key, ajlong less, ajlong greater)
 {
     unsigned char *lbuf = NULL;
     unsigned char *rbuf = NULL;
@@ -2124,16 +2127,16 @@ static void btreeSplitRoot(EmbPBtcache cache)
 **
 ** Open B+tree file for writing
 **
-** @param [r] idirectory [AjPStr] Directory for index files
-** @param [r] dbname [AjPStr] name of database
-** @param [r] add [char *] type of file
+** @param [r] idirectory [const AjPStr] Directory for index files
+** @param [r] dbname [const AjPStr] name of database
+** @param [r] add [const char *] type of file
 **
 ** @return [AjPFile] opened file
 ** @@
 ******************************************************************************/
 
-static AjPFile btreeCreateFile(AjPStr idirectory, AjPStr dbname,
-			       char *add)
+static AjPFile btreeCreateFile(const AjPStr idirectory, const AjPStr dbname,
+			       const char *add)
 {
     AjPStr filename = NULL;
     AjPFile fp      = NULL;
@@ -2159,17 +2162,17 @@ static AjPFile btreeCreateFile(AjPStr idirectory, AjPStr dbname,
 **
 ** @param [r] filelist [AjPStr*] list of files
 ** @param [r] nfiles [ajint] number of files
-** @param [r] fdirectory [AjPStr] flatfile directory
-** @param [r] idirectory [AjPStr] index directory
-** @param [r] dbname [AjPStr] name of database
+** @param [r] fdirectory [const AjPStr] flatfile directory
+** @param [r] idirectory [const AjPStr] index directory
+** @param [r] dbname [const AjPStr] name of database
 **
 ** @return [AjBool] true if success
 ** @@
 ******************************************************************************/
 
 AjBool embBtreeWriteFileList(AjPStr *filelist, ajint nfiles,
-			     AjPStr fdirectory, AjPStr idirectory,
-			     AjPStr dbname)
+			     const AjPStr fdirectory, const AjPStr idirectory,
+			     const AjPStr dbname)
 {
     AjPFile entfile = NULL;
     ajint i;
@@ -2475,7 +2478,7 @@ void embBtreeInsertId(EmbPBtcache cache, EmbPBtId id)
     EmbPBtpage spage   = NULL;
     EmbPBtpage parent  = NULL;
     AjPStr key         = NULL;
-    char *ckey         = NULL;
+    const char *ckey         = NULL;
     EmbPBucket lbucket = NULL;
     EmbPBucket rbucket = NULL;
     ajlong lblockno = 0L;
@@ -2662,13 +2665,13 @@ void embBtreeInsertId(EmbPBtcache cache, EmbPBtId id)
 ** Get an ID structure from a leaf node given a key
 **
 ** @param [u] cache [EmbPBtcache] cache
-** @param [r] key [char *] key
+** @param [r] key [const char *] key
 **
 ** @return [EmbPBtId] pointer to an ID structure or NULL if not found
 ** @@
 ******************************************************************************/
 
-EmbPBtId embBtreeIdFromKey(EmbPBtcache cache, char *key)
+EmbPBtId embBtreeIdFromKey(EmbPBtcache cache, const char *key)
 {
     EmbPBtpage page   = NULL;
     EmbPBucket bucket = NULL;
@@ -2762,13 +2765,13 @@ EmbPBtId embBtreeIdFromKey(EmbPBtcache cache, char *key)
 ** Write B+ tree parameters to file
 **
 ** @param [r] cache [EmbPBtcache] cache
-** @param [r] fn [char *] file
+** @param [r] fn [const char *] file
 **
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void embBtreeWriteParams(EmbPBtcache cache, char *fn)
+void embBtreeWriteParams(EmbPBtcache cache, const char *fn)
 {
     AjPStr  fname = NULL;
     AjPFile outf  = NULL;
@@ -2798,7 +2801,7 @@ void embBtreeWriteParams(EmbPBtcache cache, char *fn)
 **
 ** Read B+ tree parameters from file
 **
-** @param [r] fn [char *] file
+** @param [r] fn [const char *] file
 ** @param [w] order [ajint*] tree order
 ** @param [w] nperbucket [ajint*] bucket fill
 ** @param [w] pagesize [ajint*] size of pages
@@ -2809,7 +2812,7 @@ void embBtreeWriteParams(EmbPBtcache cache, char *fn)
 ** @@
 ******************************************************************************/
 
-void embBtreeReadParams(char *fn, ajint *order, ajint *nperbucket,
+void embBtreeReadParams(const char *fn, ajint *order, ajint *nperbucket,
 			ajint *pagesize, ajint *level, ajint *cachesize)
 {
     AjPStr fname = NULL;
@@ -4583,13 +4586,13 @@ static ajlong btreeMerge(EmbPBtcache cache, ajlong thisNode,
 **
 ** @param [u] cache [EmbPBtcache] cache
 ** @param [r] pageno [ajlong] page
-** @param [r] key [char *] key
+** @param [r] key [const char *] key
 **
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void btreeFindMin(EmbPBtcache cache, ajlong pageno, char *key)
+static void btreeFindMin(EmbPBtcache cache, ajlong pageno, const char *key)
 {
     unsigned char *buf = NULL;
     EmbPBtpage page    = NULL;
@@ -4664,14 +4667,14 @@ static void btreeFindMin(EmbPBtcache cache, ajlong pageno, char *key)
 **
 ** @param [u] cache [EmbPBtcache] cache
 ** @param [r] retpage [EmbPBtpage*] page
-** @param [r] key [char *] key
+** @param [r] key [const char *] key
 **
 ** @return [ajlong] bucket block or 0L if shift not posible 
 ** @@
 ******************************************************************************/
 
 static ajlong btreeInsertShift(EmbPBtcache cache, EmbPBtpage *retpage,
-			       char *key)
+			       const char *key)
 {
     unsigned char *tbuf = NULL;
     unsigned char *pbuf = NULL;
@@ -5378,13 +5381,13 @@ void embBtreeJoinLeaves(EmbPBtcache cache)
 ** Construct a wildcard search object
 **
 ** @param [u] cache [EmbPBtcache] cache
-** @param [r] wild [AjPStr] wildcard id prefix (without asterisk)
+** @param [r] wild [const AjPStr] wildcard id prefix (without asterisk)
 **
 ** @return [EmbPBtWild] b+ tree wildcard object
 ** @@
 ******************************************************************************/
 
-EmbPBtWild embBtreeWildNew(EmbPBtcache cache, AjPStr wild)
+EmbPBtWild embBtreeWildNew(EmbPBtcache cache, const AjPStr wild)
 {
     EmbPBtWild thys = NULL;
     
@@ -5441,13 +5444,13 @@ void embBtreeWildDel(EmbPBtWild *thys)
 ** Find the node that should contain a key (wild)
 **
 ** @param [u] cache [EmbPBtcache] cache
-** @param [r] key [char*] key to search for 
+** @param [r] key [const char*] key to search for 
 **
 ** @return [EmbPBtpage] leaf node where item should be inserted
 ** @@
 ******************************************************************************/
 
-EmbPBtpage embBtreeFindInsertW(EmbPBtcache cache, char *key)
+EmbPBtpage embBtreeFindInsertW(EmbPBtcache cache, const char *key)
 {
     EmbPBtpage root = NULL;
     EmbPBtpage ret  = NULL;
@@ -5474,14 +5477,14 @@ EmbPBtpage embBtreeFindInsertW(EmbPBtcache cache, char *key)
 **
 ** @param [u] cache [EmbPBtcache] cache
 ** @param [u] page [EmbPBtpage] page
-** @param [r] item [char*] key to search for 
+** @param [r] item [const char*] key to search for 
 **
 ** @return [EmbPBtpage] leaf node where item should be inserted
 ** @@
 ******************************************************************************/
 
 static EmbPBtpage btreeFindINodeW(EmbPBtcache cache, EmbPBtpage page,
-				  char *item)
+				  const char *item)
 {
     EmbPBtpage     ret = NULL;
     EmbPBtpage     pg  = NULL;
@@ -5516,14 +5519,14 @@ static EmbPBtpage btreeFindINodeW(EmbPBtcache cache, EmbPBtpage page,
 **
 ** @param [u] cache [EmbPBtcache] cache
 ** @param [r] buf [unsigned char *] page buffer
-** @param [r] key [char *] key to search for 
+** @param [r] key [const char *] key to search for 
 **
 ** @return [EmbPBtpage] pointer to a page
 ** @@
 ******************************************************************************/
 
 static EmbPBtpage btreePageFromKeyW(EmbPBtcache cache, unsigned char *buf,
-				    char *key)
+				    const char *key)
 {
     unsigned char *rootbuf = NULL;
     ajint nkeys    = 0;
@@ -5888,13 +5891,13 @@ AjBool embBtreeReplaceId(EmbPBtcache cache, EmbPBtId rid)
 **
 ** Read B+ tree entries from file
 **
-** @param [r] filename [char*] file name
+** @param [r] filename [const char*] file name
 **
 ** @return [AjPStr*] array of database filenames
 ** @@
 ******************************************************************************/
 
-AjPStr* embBtreeReadEntries(char *filename)
+AjPStr* embBtreeReadEntries(const char *filename)
 {
     AjPStr line = NULL;
     AjPStr fn   = NULL;
@@ -6052,13 +6055,13 @@ void embBtreeInsertDupId(EmbPBtcache cache, EmbPBtId id)
 ** Write B+ tree parameters to file
 **
 ** @param [r] cache [EmbPBtcache] cache
-** @param [r] key [char *] key
+** @param [r] key [const char *] key
 **
 ** @return [AjPList] list of matching EmbPBtIds or NULL
 ** @@
 ******************************************************************************/
 
-AjPList embBtreeDupFromKey(EmbPBtcache cache, char *key)
+AjPList embBtreeDupFromKey(EmbPBtcache cache, const char *key)
 {
     AjPList list = NULL;
     EmbPBtId id  = NULL;

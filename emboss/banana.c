@@ -64,7 +64,7 @@ int main(int argc, char **argv)
     float *yave;
     float *curve;
     float *bend;
-    char *ptr;
+    const char *ptr;
     ajint i;
     ajint k;
     ajint j;

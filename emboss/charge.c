@@ -77,8 +77,8 @@ int main(int argc, char **argv)
     float sum = 0.;
 
 
-    char *p;
-    char *sname;
+    const char *p;
+    const char *sname;
 
 
     ajGraphInit("charge", argc, argv);

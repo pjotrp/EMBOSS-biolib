@@ -373,7 +373,7 @@ static void extractfeat_FeatSeqExtract(AjPSeq seq, AjPSeqout seqout,
 static void extractfeat_GetFeatseq(AjPSeq seq, AjPFeature gf, AjPStr
 				   *gfstr, AjBool sense)
 {
-    AjPStr str = NULL;		/* sequence string */
+    const AjPStr str = NULL;		/* sequence string */
     AjPStr tmp = NULL;
 
     str = ajSeqStr(seq);
@@ -548,7 +548,7 @@ static void extractfeat_BeforeAfter(AjPSeq seq, AjPStr * featstr,
 				    AjBool sense)
 
 {
-    AjPStr str = NULL;			/* sequence string */
+    const AjPStr str = NULL;			/* sequence string */
     ajint start;
     ajint end;
     ajint featlen;

@@ -108,7 +108,7 @@ static AjPList recoder_checkTrans(const AjPStr seq,EmbPMatMatch match,
 				  AjPRinfo rlp, ajint begin, ajint radj,
 				  AjBool rev, ajint end, ajint pos,
 				  AjBool* empty);
-static AjBool recoder_checkPat(const AjPStr seq,EmbPMatMatch match,
+static AjBool recoder_checkPat(EmbPMatMatch match,
 			       AjPRinfo rlp, ajint radj, AjBool rev,
 			       ajint begin, ajint end);
 static ajint recoder_changebase(char pbase, char* tbase);
@@ -135,7 +135,7 @@ int main(int argc, char **argv)
     AjPFeattable feat=NULL;
 
     AjPStr sstr  = NULL;
-    AjPStr sname = NULL;	     /* seq name */
+    const AjPStr sname = NULL;	     /* seq name */
     AjPStr revcomp = NULL;	     /* rev complement of seq */
     AjPStr enzymes = NULL;           /* string for RE selection */
 
@@ -354,7 +354,7 @@ static AjPList recoder_rematch(const AjPStr sstr, AjPList relist,
             {
               patlen = match->len;
 
-              if(recoder_checkPat(sstr,match,rlp,radj,
+              if(recoder_checkPat(match,rlp,radj,
 				  rev,begin,end))
               {
                   for(pos=0;pos<patlen;pos++)
@@ -435,7 +435,7 @@ static ajint recoder_readRE(AjPList *relist,AjPStr enzymes)
 
     /* read RE data into AjPRestrict obj */
 
-    while(embPatRestrictReadEntry(&rptr,&fin))
+    while(embPatRestrictReadEntry(rptr,fin))
     {
      	if(!isall)           /* only select enzymes on command line */
 	{
@@ -475,7 +475,6 @@ static ajint recoder_readRE(AjPList *relist,AjPStr enzymes)
 **
 ** Checks whether the RS pattern falls within the sequence string
 **
-** @param [r] seq [const AjPStr] Sequence as a string
 ** @param [r] match [EmbPMatMatch] Match data
 ** @param [r] rlp [AjPRinfo] Restriction site info
 ** @param [r] radj [ajint] Adjustment for reversed sequence
@@ -485,7 +484,7 @@ static ajint recoder_readRE(AjPList *relist,AjPStr enzymes)
 ** @return [AjBool] ajTrue if the pattern is found
 **
 ******************************************************************************/
-static AjBool recoder_checkPat(const AjPStr seq,EmbPMatMatch match,
+static AjBool recoder_checkPat(EmbPMatMatch match,
 			       AjPRinfo rlp, ajint radj, AjBool rev,
 			       ajint begin, ajint end)
 {
@@ -537,7 +536,7 @@ static AjBool recoder_checkPat(const AjPStr seq,EmbPMatMatch match,
 ** Identify mutations at a site in the RS pattern that result in the
 ** same translation.
 **
-** @param [r] seq [const AjPStr] Sequence as a string
+** @param [r] dna [const AjPStr] Sequence as a string
 ** @param [r] match [EmbPMatMatch] Match data
 ** @param [r] rlp [AjPRinfo] Restriction site info
 ** @param [r] begin [ajint] Start position
@@ -551,14 +550,14 @@ static AjBool recoder_checkPat(const AjPStr seq,EmbPMatMatch match,
 **
 ******************************************************************************/
 
-static AjPList recoder_checkTrans(const AjPStr seq,EmbPMatMatch match,
+static AjPList recoder_checkTrans(const AjPStr dna, EmbPMatMatch match,
 				  AjPRinfo rlp, ajint begin, ajint radj,
 				  AjBool rev, ajint end, ajint pos,
 				  AjBool* empty)
 {
     char *pseq;
     char *pseqm;
-    char *prs;
+    const char *prs;
     char *s;
 
     Mutant  tresult;
@@ -578,13 +577,15 @@ static AjPList recoder_checkTrans(const AjPStr seq,EmbPMatMatch match,
     ajint  x;
     ajint  nb;
 
+    AjPStr seq = NULL;
 
+    seq = ajStrNewS(dna);
 
     *empty = ajTrue;
     mpos  = match->start;         /* start posn of match in seq */
     rmpos = radj-mpos-match->len; /* start posn of match in rev seq */
 
-    pseq  = ajStrStr(seq);        /* pointer to start of seq */
+    pseq  = ajStrStrMod(&seq);        /* pointer to start of seq */
     pseqm = pseq+mpos-(begin+1);  /* pointer to start of match in seq */
     prs   = ajStrStr(rlp->site);  /* pointer to start of RS pattern */
 
@@ -743,7 +744,7 @@ static ajint recoder_changebase(char pbase, char* tbase)
 static void recoder_fmt_seq(char* title, AjPStr seq, AjPStr* tailstr,
 			    ajint start, AjBool num)
 {
-    char *p;
+    const char *p;
     ajint m;
     ajint i;
     ajint tlen;

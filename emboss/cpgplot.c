@@ -27,32 +27,38 @@
 
 
 
-static void cpgplot_findbases(AjPStr *substr, ajint begin, ajint len,
+static void cpgplot_findbases(const AjPStr substr, ajint begin, ajint len,
 			      ajint window, ajint shift, float *obsexp,
-			      float *xypc, AjPStr *bases, float *obsexpmax,
+			      float *xypc, const AjPStr bases,
+			      float *obsexpmax,
 			      ajint *plstart, ajint *plend);
 
-static void cpgplot_countbases(char *seq, char *bases, ajint window,
+static void cpgplot_countbases(const char *seq, const char *bases,
+			       ajint window,
 			       float *cx, float *cy, float *cxpy);
 
-static void cpgplot_identify(AjPFile outf, float *obsexp, float *xypc,
+static void cpgplot_identify(AjPFile outf,
+			     const float *obsexp, const float *xypc,
 			     AjBool *thresh, ajint begin, ajint len,
-			     ajint shift, char *bases, char *name,
+			     ajint shift, const char *bases, const char *name,
 			     ajint minlen, float minobsexp, float minpc,
 			     AjPFeattabOut featout);
 
-static void cpgplot_reportislands(AjPFile outf, AjBool *thresh, char *bases,
-				  char *name, float minobsexp, float minpc,
+static void cpgplot_reportislands(AjPFile outf, const AjBool *thresh,
+				  const char *bases, const char *name,
+				  float minobsexp, float minpc,
 				  ajint minlen, ajint begin, ajint len);
 
-static void cpgplot_plotit(char *seq, ajint begin, ajint len, ajint shift,
-			   float *obsexp, float *xypc, AjBool *thresh,
-			   char *bases, float obsexpmax, ajint plstart,
+static void cpgplot_plotit(const char *seq,
+			   ajint begin, ajint len, ajint shift,
+			   const float *obsexp, const float *xypc,
+			   const AjBool *thresh,
+			   const char *bases, float obsexpmax, ajint plstart,
 			   ajint plend, AjBool doobsexp,
 			   AjBool docg, AjBool dopc, AjPGraph mult);
 
-static void cpgplot_dumpfeatout(AjPFeattabOut featout, AjBool *thresh,
-				char *seqname, ajint begin, ajint len);
+static void cpgplot_dumpfeatout(AjPFeattabOut featout, const AjBool *thresh,
+				const char *seqname, ajint begin, ajint len);
 
 
 
@@ -147,8 +153,8 @@ int main(int argc, char **argv)
 
 
 
-	cpgplot_findbases(&substr, begin, len, window, shift, obsexp, xypc,
-			  &bases, &obsexpmax, &plstart, &plend);
+	cpgplot_findbases(substr, begin, len, window, shift, obsexp, xypc,
+			  bases, &obsexpmax, &plstart, &plend);
 
 
 	cpgplot_identify(outf, obsexp, xypc, thresh, 0, len, shift,
@@ -185,23 +191,24 @@ int main(int argc, char **argv)
 **
 ** Undocumented.
 **
-** @param [r] substr [AjPStr*] Undocumented
+** @param [r] substr [const AjPStr] Undocumented
 ** @param [r] begin [ajint] Undocumented
 ** @param [r] len [ajint] Undocumented
 ** @param [r] window [ajint] Undocumented
 ** @param [r] shift [ajint] Undocumented
 ** @param [r] obsexp [float*] Undocumented
 ** @param [r] xypc [float*] Undocumented
-** @param [r] bases [AjPStr*] Undocumented
+** @param [r] bases [const AjPStr] Undocumented
 ** @param [r] obsexpmax [float*] Undocumented
 ** @param [r] plstart [ajint*] Undocumented
 ** @param [r] plend [ajint*] Undocumented
 ** @@
 ******************************************************************************/
 
-static void cpgplot_findbases(AjPStr *substr, ajint begin, ajint len,
+static void cpgplot_findbases(const AjPStr substr, ajint begin, ajint len,
 			      ajint window, ajint shift, float *obsexp,
-			      float *xypc, AjPStr *bases, float *obsexpmax,
+			      float *xypc, const AjPStr bases,
+			      float *obsexpmax,
 			      ajint *plstart, ajint *plend)
 {
     float cxpy;
@@ -216,19 +223,19 @@ static void cpgplot_findbases(AjPStr *substr, ajint begin, ajint len,
     ajint j = 0;
     ajint offset;
 
-    char *p;
-    char *q;
+    const char *p;
+    const char *q;
 
     windowf    = (float)window;
     *obsexpmax = 0.0;
     offset     = window/2;
     *plstart   = offset;
-    q          = ajStrStr(*bases);
+    q          = ajStrStr(bases);
 
     for(i=0; i<(len-window+1);i+=shift)
     {
 	j = i+offset;
-	p = ajStrStr(*substr) + i;
+	p = ajStrStr(substr) + i;
 	cpgplot_countbases(p, q, window, &cxf, &cyf, &cxpy);
 
 	obs = cxpy;
@@ -255,8 +262,8 @@ static void cpgplot_findbases(AjPStr *substr, ajint begin, ajint len,
 **
 ** Undocumented.
 **
-** @param [r] seq [char*] Undocumented
-** @param [r] bases [char*] Undocumented
+** @param [r] seq [const char*] Undocumented
+** @param [r] bases [const char*] Undocumented
 ** @param [r] window [ajint] Undocumented
 ** @param [r] cx [float*] Undocumented
 ** @param [r] cy [float*] Undocumented
@@ -266,7 +273,8 @@ static void cpgplot_findbases(AjPStr *substr, ajint begin, ajint len,
 
 
 
-static void cpgplot_countbases(char *seq, char *bases, ajint window,
+static void cpgplot_countbases(const char *seq, const char *bases,
+			       ajint window,
 			       float *cx, float *cy, float *cxpy)
 {
     ajint i;
@@ -322,14 +330,14 @@ static void cpgplot_countbases(char *seq, char *bases, ajint window,
 **    and the conditions hold for a minimum of 200 bases.
 **
 ** @param [u] outf [AjPFile] Undocumented
-** @param [r] obsexp [float*] Undocumented
-** @param [r] xypc [float*] Undocumented
+** @param [r] obsexp [const float*] Undocumented
+** @param [r] xypc [const float*] Undocumented
 ** @param [r] thresh [AjBool*] Undocumented
 ** @param [r] begin [ajint] Undocumented
 ** @param [r] len [ajint] Undocumented
 ** @param [r] shift [ajint] Undocumented
-** @param [r] bases [char*] Undocumented
-** @param [r] name [char*] Undocumented
+** @param [r] bases [const char*] Undocumented
+** @param [r] name [const char*] Undocumented
 ** @param [r] minlen [ajint] Undocumented
 ** @param [r] minobsexp [float] Undocumented
 ** @param [r] minpc [float] Undocumented
@@ -337,9 +345,10 @@ static void cpgplot_countbases(char *seq, char *bases, ajint window,
 ** @@
 ******************************************************************************/
 
-static void cpgplot_identify(AjPFile outf, float *obsexp, float *xypc,
+static void cpgplot_identify(AjPFile outf,
+			     const float *obsexp, const float *xypc,
 			     AjBool *thresh, ajint begin, ajint len,
-			     ajint shift, char *bases, char *name,
+			     ajint shift, const char *bases, const char *name,
 			     ajint minlen, float minobsexp, float minpc,
 			     AjPFeattabOut featout)
 {
@@ -412,9 +421,9 @@ static void cpgplot_identify(AjPFile outf, float *obsexp, float *xypc,
 ** Undocumented.
 **
 ** @param [u] outf [AjPFile] Undocumented
-** @param [r] thresh [AjBool*] Undocumented
-** @param [r] bases [char*] Undocumented
-** @param [r] name [char*] Undocumented
+** @param [r] thresh [const AjBool*] Undocumented
+** @param [r] bases [const char*] Undocumented
+** @param [r] name [const char*] Undocumented
 ** @param [r] minobsexp [float] Undocumented
 ** @param [r] minpc [float] Undocumented
 ** @param [r] minlen [ajint] Undocumented
@@ -423,8 +432,9 @@ static void cpgplot_identify(AjPFile outf, float *obsexp, float *xypc,
 ** @@
 ******************************************************************************/
 
-static void cpgplot_reportislands(AjPFile outf, AjBool *thresh, char *bases,
-				  char *name, float minobsexp, float minpc,
+static void cpgplot_reportislands(AjPFile outf, const AjBool *thresh,
+				  const char *bases, const char *name,
+				  float minobsexp, float minpc,
 				  ajint minlen, ajint begin, ajint len)
 {
     AjBool island;
@@ -482,14 +492,14 @@ static void cpgplot_reportislands(AjPFile outf, AjBool *thresh, char *bases,
 **
 ** Undocumented.
 **
-** @param [r] seq [char*] Undocumented
+** @param [r] seq [const char*] Undocumented
 ** @param [r] begin [ajint] Undocumented
 ** @param [r] len [ajint] Undocumented
 ** @param [r] shift [ajint] Undocumented
-** @param [r] obsexp [float*] Undocumented
-** @param [r] xypc [float*] Undocumented
+** @param [r] obsexp [const float*] Undocumented
+** @param [r] xypc [const float*] Undocumented
 ** @param [r] thresh [AjBool*] Undocumented
-** @param [r] bases [char*] Undocumented
+** @param [r] bases [const char*] Undocumented
 ** @param [r] obsexpmax [float] Undocumented
 ** @param [r] plstart [ajint] Undocumented
 ** @param [r] plend [ajint] Undocumented
@@ -500,9 +510,11 @@ static void cpgplot_reportislands(AjPFile outf, AjBool *thresh, char *bases,
 ** @@
 ******************************************************************************/
 
-static void cpgplot_plotit(char *seq, ajint begin, ajint len, ajint shift,
-			   float *obsexp, float *xypc, AjBool *thresh,
-			   char *bases, float obsexpmax, ajint plstart,
+static void cpgplot_plotit(const char *seq,
+			   ajint begin, ajint len, ajint shift,
+			   const float *obsexp, const float *xypc,
+			   const AjBool *thresh,
+			   const char *bases, float obsexpmax, ajint plstart,
 			   ajint plend, AjBool doobsexp, AjBool docg,
 			   AjBool dopc, AjPGraph graphs)
 
@@ -642,15 +654,15 @@ static void cpgplot_plotit(char *seq, ajint begin, ajint len, ajint shift,
 ** Undocumented.
 **
 ** @param [r] featout [AjPFeattabOut] Undocumented
-** @param [r] thresh [AjBool*] Undocumented
-** @param [r] seqname [char*] Undocumented
+** @param [r] thresh [const AjBool*] Undocumented
+** @param [r] seqname [const char*] Undocumented
 ** @param [r] begin [ajint] Undocumented
 ** @param [r] len [ajint] Undocumented
 ** @@
 ******************************************************************************/
 
-static void cpgplot_dumpfeatout(AjPFeattabOut featout, AjBool *thresh,
-				char *seqname, ajint begin, ajint len)
+static void cpgplot_dumpfeatout(AjPFeattabOut featout, const AjBool *thresh,
+				const char *seqname, ajint begin, ajint len)
 {
     AjBool island;
     ajint startpos = 0;

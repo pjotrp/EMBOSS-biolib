@@ -70,21 +70,21 @@ static void     GraphFill(ajint numofpoints, float *x, float *y);
 static void     GraphFillPat(ajint pat);
 static void     GraphInit(AjPGraph thys);
 static void     GraphLineStyle(ajint style);
-static void     GraphListDevicesarg(char* name, va_list args);
+static void     GraphListDevicesarg(const char* name, va_list args);
 static void     GraphNewGrout(AjPGraph graph);
 static void     GraphNewPlplot(AjPGraph graph);
 static void     GraphDraw(AjPGraph thys);
 static void     GraphPrint(AjPGraph thys);
-static void     GraphOpenData(AjPGraph thys, char *ext);
-static void     GraphOpenFile(AjPGraph thys, char *ext);
-static void     GraphOpenNull(AjPGraph thys, char *ext);
-static void     GraphOpenXml(AjPGraph thys, char *ext);
-static void     GraphOpenXwin(AjPGraph thys, char *ext);
+static void     GraphOpenData(AjPGraph thys, const char *ext);
+static void     GraphOpenFile(AjPGraph thys, const char *ext);
+static void     GraphOpenNull(AjPGraph thys, const char *ext);
+static void     GraphOpenXml(AjPGraph thys, const char *ext);
+static void     GraphOpenXwin(AjPGraph thys, const char *ext);
 static void     GraphPen(ajint pen, ajint red, ajint green, ajint blue);
 static void     GraphRegister(void);
-static AjBool   GraphSet2(AjPGraph thys, AjPStr type,AjBool *res);
-static AjBool   GraphSetarg(char *name, va_list args);
-static void     GraphSetName(AjPGraph thys, AjPStr txt, char *ext);
+static AjBool   GraphSet2(AjPGraph thys, const AjPStr type,AjBool *res);
+static AjBool   GraphSetarg(const char *name, va_list args);
+static void     GraphSetName(AjPGraph thys, const AjPStr txt, const char *ext);
 static void     GraphSetNumSubPage(ajint numofsubpages);
 static void     GraphSetPen(ajint colour);
 static void     GraphSetWin(float xmin, float xmax, float ymin, float ymax);
@@ -93,28 +93,28 @@ static void     GraphSubPage(ajint page);
 static void     GraphSymbols(float *x1, float *y1, ajint numofdots,
 			     ajint symbol);
 static void     GraphText(float x1, float y1, float x2, float y2,
-			  float just,char *text);
-static AjBool   GraphTracearg(char *name, va_list args);
+			  float just, const char *text);
+static AjBool   GraphTracearg(const char *name, va_list args);
 static void     GraphWind(float xmin, float xmax, float ymin, float ymax);
 static void     GraphxyDisplayToData(AjPGraph thys, AjBool closeit,
-				     char *ext);
+				     const char *ext);
 static void     GraphxyDisplayToFile(AjPGraph thys, AjBool closeit,
-				     char *ext);
+				     const char *ext);
 static void     GraphxyDisplayXwin(AjPGraph thys, AjBool closeit,
-				   char *ext);
+				   const char *ext);
 static void     GraphxyGeneral(AjPGraph thys, AjBool closeit);
 static void     GraphPlpDataInit(AjPGraphPlpData graphdata);
 static void     GraphxyNewGrout(AjPGraph thys);
-static AjPGraph GraphxyNewIarg(char *name, va_list args);
+static AjPGraph GraphxyNewIarg(const char *name, va_list args);
 static void     GraphxyNewPlplot(AjPGraph thys);
-static AjBool   GraphxySet2(AjPGraph thys, AjPStr type,AjBool *res);
-static AjBool   GraphxySetarg(char *name, va_list args);
-static AjBool   GraphSetDirarg(char *name, va_list args);
-static AjBool   GraphSetOutarg(char *name, va_list args);
-static AjBool   GraphSubTitlearg(char *name, va_list args);
-static AjBool   GraphTitlearg(char *name, va_list args);
-static AjBool   GraphXTitlearg(char *name, va_list args);
-static AjBool   GraphYTitlearg(char *name, va_list args);
+static AjBool   GraphxySet2(AjPGraph thys, const AjPStr type,AjBool *res);
+static AjBool   GraphxySetarg(const char *name, va_list args);
+static AjBool   GraphSetDirarg(const char *name, va_list args);
+static AjBool   GraphSetOutarg(const char *name, va_list args);
+static AjBool   GraphSubTitlearg(const char *name, va_list args);
+static AjBool   GraphTitlearg(const char *name, va_list args);
+static AjBool   GraphXTitlearg(const char *name, va_list args);
+static AjBool   GraphYTitlearg(const char *name, va_list args);
 
 
 
@@ -141,8 +141,8 @@ typedef struct GraphSType
     char* Device;
     char* ext;
     AjBool plplot;
-    void (*XYDisplay) (AjPGraph thys, AjBool closeit, char *ext);
-    void (*GOpen) (AjPGraph thys, char *ext);
+    void (*XYDisplay) (AjPGraph thys, AjBool closeit, const char *ext);
+    void (*GOpen) (AjPGraph thys, const char *ext);
 } GraphOType, *GraphPType;
 
 
@@ -273,14 +273,14 @@ static void GraphDefCharSize(float size)
 ** @param [r] y1 [float] Start of text box on y axis
 ** @param [r] x2 [float] End of text box on x axis
 ** @param [r] y2 [float] End of text box on y axis
-** @param [r] text [char*] Text
+** @param [r] text [const char*] Text
 **
 ** @return [float] The length of the string in user coordinates
 ** @@
 ******************************************************************************/
 
 static float GraphTextLength(float x1, float y1, float x2, float y2,
-			     char *text)
+			     const char *text)
 {
     return plstrlW(x1, y1, x2-x1, y2-y1, text);
 }
@@ -363,13 +363,13 @@ void ajGraphSetName(AjPGraph thys)
 ** set BaseName and extension.
 **
 ** @param [r] thys [AjPGraph] Graph object.
-** @param [r] txt [AjPStr] base name for files
-** @param [r] ext [char*] extension for files
+** @param [r] txt [const AjPStr] base name for files
+** @param [r] ext [const char*] extension for files
 **
 ** @return [void]
 ** @@
 ******************************************************************************/
-static void GraphSetName(AjPGraph thys, AjPStr txt,char *ext)
+static void GraphSetName(AjPGraph thys, const AjPStr txt, const char *ext)
 {
     if (thys->plplot)
     {
@@ -836,14 +836,14 @@ static void GraphClose(void)
 ** @param [r] x2 [float] End of text box on x axis
 ** @param [r] y2 [float] End of text box on y axis
 ** @param [r] just [float] Justification (see PLPLOT)
-** @param [r] text [char*] Text
+** @param [r] text [const char*] Text
 **
 ** @return [void]
 ** @@
 ******************************************************************************/
 
 static void GraphText(float x1, float y1, float x2, float y2,
-		      float just,char *text)
+		      float just,const char *text)
 {
     ajDebug("=g= plptex(%.2f, %.2f, %.2f, %.2f, %.2f, '%s') "
 	     "[xy xy just text]\n",
@@ -923,15 +923,16 @@ static void GraphCharSize(float size)
 **
 ** Label current Plot.
 **
-** @param [r] x [char*]        text for x axis labelling.
-** @param [r] y [char*]        text for y axis labelling.
-** @param [r] title [char*]    text for title of plot.
-** @param [r] subtitle [char*] text for subtitle of plot.
+** @param [r] x [const char*]        text for x axis labelling.
+** @param [r] y [const char*]        text for y axis labelling.
+** @param [r] title [const char*]    text for title of plot.
+** @param [r] subtitle [const char*] text for subtitle of plot.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajGraphLabel(char *x, char *y, char *title, char *subtitle)
+void ajGraphLabel(const char *x, const char *y,
+		  const char *title, const char *subtitle)
 {
     float fold;
 
@@ -1190,11 +1191,11 @@ void ajGraphOpen(AjPGraph thys, PLFLT xmin, PLFLT xmax,
 **
 ** Label the right hand y axis.
 **
-** @param [r] text [char*] text for label of right y axis.
+** @param [r] text [const char*] text for label of right y axis.
 ** @return [void]
 ** @@
 ******************************************************************************/
-void ajGraphLabelYRight(char *text)
+void ajGraphLabelYRight(const char *text)
 {
     ajDebug("=g= plmtex('r', 2.0, 0.5, 0.5, '%s') [LabelYRight]\n", text);
     plmtex("r",2.0,0.5,0.5,text);
@@ -1229,12 +1230,12 @@ void ajGraphClose(void)
 ** Initialize options for a graph object
 **
 ** @param [u] thys [AjPGraph] Graph object
-** @param [r] type [AjPStr] Graph type
+** @param [r] type [const AjPStr] Graph type
 ** @return [AjBool] ajTrue on success
 ** @@
 ******************************************************************************/
 
-AjBool ajGraphSet(AjPGraph thys, AjPStr type)
+AjBool ajGraphSet(AjPGraph thys, const AjPStr type)
 {
     ajint i;
 
@@ -1282,12 +1283,12 @@ AjBool ajGraphSet(AjPGraph thys, AjPStr type)
 ** Initialize options for a graphxy object
 **
 ** @param [u] thys [AjPGraph] Graph object
-** @param [r] type [AjPStr] Graph type
+** @param [r] type [const AjPStr] Graph type
 ** @return [AjBool] ajTrue on success
 ** @@
 ******************************************************************************/
 
-AjBool ajGraphxySet(AjPGraph thys, AjPStr type)
+AjBool ajGraphxySet(AjPGraph thys, const AjPStr type)
 {
     ajint i;
 
@@ -1358,14 +1359,15 @@ void ajGraphDumpDevices(void)
 **
 ** Store device names for a graph object in a list
 **
-** @param [r] name [char*] Function name (always needed for these callbacks)
+** @param [r] name [const char*] Function name (always needed for
+**                               these callbacks)
 ** @param [u] args [va_list] Arguments, in actual user this must
 **                           be an AjPList object
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void GraphListDevicesarg(char* name, va_list args)
+static void GraphListDevicesarg (const char* name, va_list args)
 {
     AjPList list;
     ajint i;
@@ -2078,19 +2080,17 @@ ajint ajGraphSetFore(ajint colour)
 **
 ** Find if the colour is on the list
 **
-** @param [r] colour [AjPStr]  colour to set drawing to.
+** @param [r] colour [const AjPStr]  colour to set drawing to.
 ** @return [ajint] the colour number if found else -1.
 ** @@
 ******************************************************************************/
 
-ajint ajGraphCheckColour(AjPStr colour)
+ajint ajGraphCheckColour(const AjPStr colour)
 {
     ajint i;
-
-    ajStrToUpper(&colour);
     for(i=0;i<NCOLS;i++)
     {
-	if(!strcmp(ajStrStr(colour),colournum[i]))
+	if(ajStrMatchCaseC(colour,colournum[i]))
 	    return i;
     }
 
@@ -2397,11 +2397,11 @@ ajint ajGraphGetColour(void)
 ** Return plot subtitle
 **
 ** @param [r] thys [AjPGraph] Graph object.
-** @return [AjPStr] Subtitle
+** @return [const AjPStr] Subtitle
 ** @@
 ******************************************************************************/
 
-AjPStr ajGraphGetSubTitle(AjPGraph thys)
+const AjPStr ajGraphGetSubTitle(AjPGraph thys)
 {
     if (thys->plplot)
 	return thys->plplot->subtitle;
@@ -2417,11 +2417,11 @@ AjPStr ajGraphGetSubTitle(AjPGraph thys)
 ** Return plot subtitle
 **
 ** @param [r] thys [AjPGraph] Graph object.
-** @return [char*] Subtitle
+** @return [const char*] Subtitle
 ** @@
 ******************************************************************************/
 
-char* ajGraphGetSubTitleC(AjPGraph thys)
+const char* ajGraphGetSubTitleC(AjPGraph thys)
 {
     if (thys->plplot)
     {
@@ -2440,11 +2440,11 @@ char* ajGraphGetSubTitleC(AjPGraph thys)
 ** Return plot title
 **
 ** @param [r] thys [AjPGraph] Graph object.
-** @return [AjPStr] Title
+** @return [const AjPStr] Title
 ** @@
 ******************************************************************************/
 
-AjPStr ajGraphGetTitle(AjPGraph thys)
+const AjPStr ajGraphGetTitle(AjPGraph thys)
 {
     if (thys->plplot)
 	return thys->plplot->title;
@@ -2460,11 +2460,11 @@ AjPStr ajGraphGetTitle(AjPGraph thys)
 ** Return plot title
 **
 ** @param [r] thys [AjPGraph] Graph object.
-** @return [char*] Title
+** @return [const char*] Title
 ** @@
 ******************************************************************************/
 
-char* ajGraphGetTitleC(AjPGraph thys)
+const char* ajGraphGetTitleC(AjPGraph thys)
 {
     if (thys->plplot)
     {
@@ -2483,11 +2483,11 @@ char* ajGraphGetTitleC(AjPGraph thys)
 ** Return plot x-axis title
 **
 ** @param [r] thys [AjPGraph] Graph object.
-** @return [AjPStr] Title of x-axis
+** @return [const AjPStr] Title of x-axis
 ** @@
 ******************************************************************************/
 
-AjPStr ajGraphGetXTitle(AjPGraph thys)
+const AjPStr ajGraphGetXTitle(AjPGraph thys)
 {
     if (thys->plplot)
 	return thys->plplot->xaxis;
@@ -2503,11 +2503,11 @@ AjPStr ajGraphGetXTitle(AjPGraph thys)
 ** Return plot x-axis title
 **
 ** @param [r] thys [AjPGraph] Graph object.
-** @return [char*] Title of x-axis
+** @return [const char*] Title of x-axis
 ** @@
 ******************************************************************************/
 
-char* ajGraphGetXTitleC(AjPGraph thys)
+const char* ajGraphGetXTitleC(AjPGraph thys)
 {
     if (thys->plplot)
     {
@@ -2526,11 +2526,11 @@ char* ajGraphGetXTitleC(AjPGraph thys)
 ** Return plot y-axis title
 **
 ** @param [r] thys [AjPGraph] Graph object.
-** @return [AjPStr] Title of y-axis
+** @return [const AjPStr] Title of y-axis
 ** @@
 ******************************************************************************/
 
-AjPStr ajGraphGetYTitle(AjPGraph thys)
+const AjPStr ajGraphGetYTitle(AjPGraph thys)
 {
     if (thys->plplot)
 	return thys->plplot->yaxis;
@@ -2546,11 +2546,11 @@ AjPStr ajGraphGetYTitle(AjPGraph thys)
 ** Return plot y-axis title
 **
 ** @param [r] thys [AjPGraph] Graph object.
-** @return [char*] Title of y-axis
+** @return [const char*] Title of y-axis
 ** @@
 ******************************************************************************/
 
-char* ajGraphGetYTitleC(AjPGraph thys)
+const char* ajGraphGetYTitleC(AjPGraph thys)
 {
     if (thys->plplot)
     {
@@ -2818,7 +2818,7 @@ void ajGraphSymbols( ajint numofdots, PLFLT *x1,PLFLT *y1, ajint symbol)
 ** @param [r] y1 [PLFLT] y1 coor.
 ** @param [r] x2 [PLFLT] x2 coor.
 ** @param [r] y2 [PLFLT] y2 coor.
-** @param [r] text [char*] The text to be displayed.
+** @param [r] text [const char*] The text to be displayed.
 ** @param [r] just [PLFLT] justification of the string.
 **                         (0=left,1=right,0.5=middle etc)
 ** @return [void]
@@ -2827,7 +2827,7 @@ void ajGraphSymbols( ajint numofdots, PLFLT *x1,PLFLT *y1, ajint symbol)
 ******************************************************************************/
 
 void ajGraphTextLine(PLFLT x1, PLFLT y1, PLFLT x2, PLFLT y2,
-		     char *text, PLFLT just)
+		     const char *text, PLFLT just)
 {
     if(graphData)
     {
@@ -2852,7 +2852,7 @@ void ajGraphTextLine(PLFLT x1, PLFLT y1, PLFLT x2, PLFLT y2,
 **
 ** @param [r] x1 [PLFLT] x1 coor.
 ** @param [r] y1 [PLFLT] y1 coor.
-** @param [r] text [char*] The text to be displayed.
+** @param [r] text [const char*] The text to be displayed.
 ** @param [r] just [PLFLT] justification of the string.
 **                         (0=left,1=right,0.5=middle etc)
 ** @return [void]
@@ -2860,7 +2860,7 @@ void ajGraphTextLine(PLFLT x1, PLFLT y1, PLFLT x2, PLFLT y2,
 ** @@
 ******************************************************************************/
 
-void ajGraphText(PLFLT x1, PLFLT y1, char *text, PLFLT just)
+void ajGraphText(PLFLT x1, PLFLT y1, const char *text, PLFLT just)
 {
     if(graphData)
     {
@@ -2884,13 +2884,13 @@ void ajGraphText(PLFLT x1, PLFLT y1, char *text, PLFLT just)
 **
 ** @param [r] x1 [PLFLT] x1 coor.
 ** @param [r] y1 [PLFLT] y1 coor.
-** @param [r] text [char*] The text to be displayed.
+** @param [r] text [const char*] The text to be displayed.
 ** @return [void]
 **
 ** @@
 ******************************************************************************/
 
-void ajGraphTextStart(PLFLT x1, PLFLT y1, char *text)
+void ajGraphTextStart(PLFLT x1, PLFLT y1, const char *text)
 {
     if(graphData)
     {
@@ -2915,13 +2915,13 @@ void ajGraphTextStart(PLFLT x1, PLFLT y1, char *text)
 **
 ** @param [r] x1 [PLFLT] x1 coor.
 ** @param [r] y1 [PLFLT] y1 coor.
-** @param [r] text [char*] The text to be displayed.
+** @param [r] text [const char*] The text to be displayed.
 ** @return [void]
 **
 ** @@
 ******************************************************************************/
 
-void ajGraphTextEnd(PLFLT x1, PLFLT y1, char *text)
+void ajGraphTextEnd(PLFLT x1, PLFLT y1, const char *text)
 {
     if(graphData)
     {
@@ -2948,13 +2948,13 @@ void ajGraphTextEnd(PLFLT x1, PLFLT y1, char *text)
 **
 ** @param [r] x1 [PLFLT] x1 coor.
 ** @param [r] y1 [PLFLT] y1 coor.
-** @param [r] text [char*] The text to be displayed.
+** @param [r] text [const char*] The text to be displayed.
 ** @return [void]
 **
 ** @@
 ******************************************************************************/
 
-void ajGraphTextMid(PLFLT x1, PLFLT y1, char *text)
+void ajGraphTextMid(PLFLT x1, PLFLT y1, const char *text)
 {
     if(graphData)
     {
@@ -3041,12 +3041,12 @@ void ajGraphHoriBars(ajint numofpoints, PLFLT *y, PLFLT *xmin, PLFLT *xmax)
 ** Existing titles and other data are unchanged
 **
 ** @param [r] thys [AjPGraph] Graph
-** @param [r] seq [AjPSeq] Sequence
+** @param [r] seq [const AjPSeq] Sequence
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajGraphInitSeq(AjPGraph thys, AjPSeq seq)
+void ajGraphInitSeq(AjPGraph thys, const AjPSeq seq)
 {
     if (thys->plplot)
     {
@@ -3067,12 +3067,12 @@ void ajGraphInitSeq(AjPGraph thys, AjPSeq seq)
 ** A general routine for setting BaseName and extension in plplot.
 **
 ** @param [r] thys [AjPGraph] Multiple graph pointer.
-** @param [r] ext [char*] file extension
+** @param [r] ext [const char*] file extension
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void GraphOpenFile(AjPGraph thys, char *ext)
+static void GraphOpenFile(AjPGraph thys, const char *ext)
 {
     if (thys->plplot)
     {
@@ -3092,12 +3092,12 @@ static void GraphOpenFile(AjPGraph thys, char *ext)
 ** for -graph data output.
 **
 ** @param [r] thys [AjPGraph] Multiple graph pointer.
-** @param [r] ext [char*] file extension
+** @param [r] ext [const char*] file extension
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void GraphOpenData(AjPGraph thys, char *ext)
+static void GraphOpenData(AjPGraph thys, const char *ext)
 {
     if (thys->plplot)
     {
@@ -3128,12 +3128,12 @@ static void GraphOpenData(AjPGraph thys, char *ext)
 ** A dummy routine for writing graphs to a data file. Does nothing.
 **
 ** @param [r] thys [AjPGraph] Multiple graph pointer.
-** @param [r] ext [char*] file extension
+** @param [r] ext [const char*] file extension
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void GraphOpenNull(AjPGraph thys, char *ext)
+static void GraphOpenNull(AjPGraph thys, const char *ext)
 {
     return;
 }
@@ -3146,12 +3146,12 @@ static void GraphOpenNull(AjPGraph thys, char *ext)
 ** A general routine for drawing graphs to an xwin. Does nothing.
 **
 ** @param [r] thys [AjPGraph] Multiple graph pointer.
-** @param [r] ext [char*] file extension
+** @param [r] ext [const char*] file extension
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void GraphOpenXwin(AjPGraph thys, char *ext )
+static void GraphOpenXwin(AjPGraph thys, const char *ext )
 {
     return;
 }
@@ -3164,12 +3164,12 @@ static void GraphOpenXwin(AjPGraph thys, char *ext )
 ** A general routine for drawing graphs to xml.
 **
 ** @param [r] thys [AjPGraph] Multiple graph pointer.
-** @param [r] ext [char*] file extension
+** @param [r] ext [const char*] file extension
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void GraphOpenXml(AjPGraph thys, char *ext )
+static void GraphOpenXml(AjPGraph thys, const char *ext )
 {
 #ifdef GROUT
     thys->xml = ajXmlFileNew();
@@ -3186,12 +3186,13 @@ static void GraphOpenXml(AjPGraph thys, char *ext )
 **
 ** @param [r] thys [AjPGraph] Multiple graph pointer.
 ** @param [r] closeit [AjBool] Close file if true
-** @param [r] ext [char*] file extension
+** @param [r] ext [const char*] file extension
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void GraphxyDisplayToFile(AjPGraph thys, AjBool closeit, char *ext)
+static void GraphxyDisplayToFile(AjPGraph thys, AjBool closeit,
+				 const char *ext)
 {
     if (thys->plplot)
     {
@@ -3213,12 +3214,13 @@ static void GraphxyDisplayToFile(AjPGraph thys, AjBool closeit, char *ext)
 **
 ** @param [r] thys [AjPGraph] Multiple graph pointer.
 ** @param [r] closeit [AjBool] Close file if true
-** @param [r] ext [char*] file extension
+** @param [r] ext [const char*] file extension
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void GraphxyDisplayToData(AjPGraph thys, AjBool closeit, char *ext)
+static void GraphxyDisplayToData(AjPGraph thys, AjBool closeit,
+				 const char *ext)
 {
     AjPFile outf    = NULL;
     AjPGraphPlpData graphdata  = NULL;
@@ -3388,12 +3390,12 @@ static void GraphxyDisplayToData(AjPGraph thys, AjBool closeit, char *ext)
 **
 ** @param [r] thys [AjPGraph] Multiple graph pointer.
 ** @param [r] closeit [AjBool] Close file if true
-** @param [r] ext [char*] file extension
+** @param [r] ext [const char*] file extension
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void GraphxyDisplayXwin(AjPGraph thys, AjBool closeit, char *ext )
+static void GraphxyDisplayXwin(AjPGraph thys, AjBool closeit, const char *ext )
 {
     ajGraphxyCheckMaxMin(thys);
     GraphxyGeneral(thys, closeit);
@@ -3410,12 +3412,12 @@ static void GraphxyDisplayXwin(AjPGraph thys, AjBool closeit, char *ext )
 ** plotter is capable of postscript output. ps and cps.
 **
 ** @param [w] thys [AjPGraph] Graph structure to write file name too.
-** @param [r] txt [AjPStr] Name of the file.
+** @param [r] txt [const AjPStr] Name of the file.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajGraphSetOut(AjPGraph thys, AjPStr txt)
+void ajGraphSetOut(AjPGraph thys, const AjPStr txt)
 {
     if(!ajStrLen(txt))
 	return;
@@ -3436,12 +3438,12 @@ void ajGraphSetOut(AjPGraph thys, AjPStr txt)
 ** plotter is capable of postscript output. ps and cps.
 **
 ** @param [w] thys [AjPGraph] Graph structure to write file name too.
-** @param [r] txt [char*] Name of the file.
+** @param [r] txt [const char*] Name of the file.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajGraphSetOutC(AjPGraph thys, char* txt)
+void ajGraphSetOutC(AjPGraph thys, const char* txt)
 {
     if(!strlen(txt))
 	return;
@@ -3462,12 +3464,12 @@ void ajGraphSetOutC(AjPGraph thys, char* txt)
 ** plotter is capable of postscript output. ps and cps.
 **
 ** @param [w] thys [AjPGraph] Graph structure to write file name too.
-** @param [r] txt [AjPStr] Name of the file.
+** @param [r] txt [const AjPStr] Name of the file.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajGraphSetDir(AjPGraph thys, AjPStr txt)
+void ajGraphSetDir(AjPGraph thys, const AjPStr txt)
 {
     if(!ajStrLen(txt))
 	return;
@@ -3617,12 +3619,12 @@ void ajGraphPlpDataSetColour(AjPGraphPlpData graphdata, ajint colour)
 ** Set the title for the Y axis for multiple plots on one graph.
 **
 ** @param [w] thys  [AjPGraph] Graph structure to store info in.
-** @param [r] title [AjPStr] title for the y axis.
+** @param [r] title [const AjPStr] title for the y axis.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajGraphSetYTitle(AjPGraph thys, AjPStr title)
+void ajGraphSetYTitle(AjPGraph thys, const AjPStr title)
 {
     if (thys->plplot)
 	ajStrAssS(&thys->plplot->yaxis, title);
@@ -3638,12 +3640,12 @@ void ajGraphSetYTitle(AjPGraph thys, AjPStr title)
 ** Set the title for the Y axis for multiple plots on one graph.
 **
 ** @param [w] thys  [AjPGraph] Graph structure to store info in.
-** @param [r] title [char*] title for the y axis.
+** @param [r] title [const char*] title for the y axis.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajGraphSetYTitleC(AjPGraph thys, char* title)
+void ajGraphSetYTitleC(AjPGraph thys, const char* title)
 {
     if (thys->plplot)
 	ajStrAssC(&thys->plplot->yaxis, title);
@@ -3659,12 +3661,12 @@ void ajGraphSetYTitleC(AjPGraph thys, char* title)
 ** Set the title for the X axis for multiple plots on one graph.
 **
 ** @param [w] thys [AjPGraph] Graph structure to store info in.
-** @param [r] title [AjPStr] title for the x axis.
+** @param [r] title [const AjPStr] title for the x axis.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajGraphSetXTitle(AjPGraph thys, AjPStr title)
+void ajGraphSetXTitle(AjPGraph thys, const AjPStr title)
 {
     if (thys->plplot)
 	ajStrAssS(&thys->plplot->xaxis,title);
@@ -3680,12 +3682,12 @@ void ajGraphSetXTitle(AjPGraph thys, AjPStr title)
 ** Set the title for the X axis for multiple plot on one graph.
 **
 ** @param [w] thys [AjPGraph] Graph structure to store info in.
-** @param [r] title [char*] title for the x axis.
+** @param [r] title [const char*] title for the x axis.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajGraphSetXTitleC(AjPGraph thys, char* title)
+void ajGraphSetXTitleC(AjPGraph thys, const char* title)
 {
     if (thys->plplot)
 	ajStrAssC(&thys->plplot->xaxis,title);
@@ -3701,12 +3703,12 @@ void ajGraphSetXTitleC(AjPGraph thys, char* title)
 ** Set the graph title.
 **
 ** @param [w] thys [AjPGraph] Graph structure to store info in.
-** @param [r] title [AjPStr]  Title.
+** @param [r] title [const AjPStr]  Title.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajGraphSetTitle(AjPGraph thys, AjPStr title)
+void ajGraphSetTitle(AjPGraph thys, const AjPStr title)
 {
     ajDebug("ajGraphSetTitle '%S'\n", title);
     if (thys->plplot)
@@ -3723,12 +3725,12 @@ void ajGraphSetTitle(AjPGraph thys, AjPStr title)
 ** Set the graph Title.
 **
 ** @param [w] thys [AjPGraph] Graph structure to store info in.
-** @param [r] title [char*]  title.
+** @param [r] title [const char*]  title.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajGraphSetTitleC(AjPGraph thys, char* title)
+void ajGraphSetTitleC(AjPGraph thys, const char* title)
 {
     ajDebug("ajGraphSetTitleC '%s'\n", title);
     if (thys->plplot)
@@ -3745,12 +3747,12 @@ void ajGraphSetTitleC(AjPGraph thys, char* title)
 **  Set the title for the Y axis.
 **
 ** @param [w] thys [AjPGraph] Graph structure to store info in.
-** @param [r] title [AjPStr] Subtitle
+** @param [r] title [const AjPStr] Subtitle
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajGraphSetSubTitle(AjPGraph thys, AjPStr title)
+void ajGraphSetSubTitle(AjPGraph thys, const AjPStr title)
 {
     if (thys->plplot)
 	ajStrAssS(&thys->plplot->subtitle,title);
@@ -3766,12 +3768,12 @@ void ajGraphSetSubTitle(AjPGraph thys, AjPStr title)
 ** Set the graph subtitle.
 **
 ** @param [w] thys [AjPGraph] Graph structure to store info in.
-** @param [r] title [char*]  subtitle.
+** @param [r] title [const char*]  subtitle.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajGraphSetSubTitleC(AjPGraph thys, char* title)
+void ajGraphSetSubTitleC(AjPGraph thys, const char* title)
 {
     if (thys->plplot)
 	ajStrAssC(&thys->plplot->subtitle,title);
@@ -3787,12 +3789,12 @@ void ajGraphSetSubTitleC(AjPGraph thys, char* title)
 ** Set the title for the Y axis.
 **
 ** @param [w] graphdata  [AjPGraphPlpData] Graph structure to store info in.
-** @param [r] title [AjPStr] title for the Y axis.
+** @param [r] title [const AjPStr] title for the Y axis.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajGraphPlpDataSetYTitle(AjPGraphPlpData graphdata, AjPStr title)
+void ajGraphPlpDataSetYTitle(AjPGraphPlpData graphdata, const AjPStr title)
 {
     ajStrSet(&graphdata->yaxis,title);
 
@@ -3807,12 +3809,12 @@ void ajGraphPlpDataSetYTitle(AjPGraphPlpData graphdata, AjPStr title)
 ** Set the title for the Y axis.
 **
 ** @param [w] graphdata  [AjPGraphPlpData] Graph structure to store info in.
-** @param [r] title [char*] title for the Y axis.
+** @param [r] title [const char*] title for the Y axis.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajGraphPlpDataSetYTitleC(AjPGraphPlpData graphdata, char* title)
+void ajGraphPlpDataSetYTitleC(AjPGraphPlpData graphdata, const char* title)
 {
     ajStrSetC(&graphdata->yaxis,title);
 
@@ -3827,12 +3829,12 @@ void ajGraphPlpDataSetYTitleC(AjPGraphPlpData graphdata, char* title)
 ** Set the title for the X axis.
 **
 ** @param [w] graphdata  [AjPGraphPlpData] Graph structure to store info in.
-** @param [r] title [AjPStr] title for the X axis.
+** @param [r] title [const AjPStr] title for the X axis.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajGraphPlpDataSetXTitle(AjPGraphPlpData graphdata, AjPStr title)
+void ajGraphPlpDataSetXTitle(AjPGraphPlpData graphdata, const AjPStr title)
 {
     ajStrSet(&graphdata->xaxis,title);
 
@@ -3842,17 +3844,17 @@ void ajGraphPlpDataSetXTitle(AjPGraphPlpData graphdata, AjPStr title)
 
 
 
-/* @func ajGraphPlpDataSetXTitleC **********************************************
+/* @func ajGraphPlpDataSetXTitleC *********************************************
 **
 ** Set the title for the X axis.
 **
 ** @param [w] graphdata  [AjPGraphPlpData] Graph structure to store info in.
-** @param [r] title [char*] title for the X axis.
+** @param [r] title [const char*] title for the X axis.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajGraphPlpDataSetXTitleC(AjPGraphPlpData graphdata, char* title)
+void ajGraphPlpDataSetXTitleC(AjPGraphPlpData graphdata, const char* title)
 {
     ajStrSetC(&graphdata->xaxis,title);
 
@@ -4013,13 +4015,13 @@ void ajGraphPlpDataSetXY(AjPGraphPlpData graphdata, float *x,float *y)
 ** @param [r] numofpoints [ajint] Number of points in array
 ** @param [r] start [float] Start position
 ** @param [r] incr [float] Increment
-** @param [r] y [float*] Y coordinates
+** @param [r] y [const float*] Y coordinates
 ** @return [void]
 ** @@
 ******************************************************************************/
 
 void ajGraphPlpDataCalcXY(AjPGraphPlpData graphdata, ajint numofpoints,
-			      float start, float incr, float* y)
+			      float start, float incr, const float* y)
 {
     ajint i;
     PLFLT x = 0.0;
@@ -4400,18 +4402,18 @@ void ajGraphSetMulti(AjPGraph thys, ajint numsets)
 
 
 
-/* @func ajGraphPlpDataSetTitle ************************************************
+/* @func ajGraphPlpDataSetTitle ***********************************************
 **
 **  Set the title.
 **
 **
 ** @param [w] graphdata  [AjPGraphPlpData] Graph structure to store info in.
-** @param [r] title [AjPStr] Title
+** @param [r] title [const AjPStr] Title
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajGraphPlpDataSetTitle(AjPGraphPlpData graphdata, AjPStr title)
+void ajGraphPlpDataSetTitle(AjPGraphPlpData graphdata, const AjPStr title)
 {
     ajStrSet(&graphdata->title,title);
 
@@ -4421,18 +4423,18 @@ void ajGraphPlpDataSetTitle(AjPGraphPlpData graphdata, AjPStr title)
 
 
 
-/* @func ajGraphPlpDataSetTitleC ***********************************************
+/* @func ajGraphPlpDataSetTitleC **********************************************
 **
 **  Set the title.
 **
 **
 ** @param [w] graphdata  [AjPGraphPlpData] Graph structure to store info in.
-** @param [r] title [char*] Title
+** @param [r] title [const char*] Title
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajGraphPlpDataSetTitleC(AjPGraphPlpData graphdata, char *title)
+void ajGraphPlpDataSetTitleC(AjPGraphPlpData graphdata, const char *title)
 {
     ajStrSetC(&graphdata->title,title);
 
@@ -4442,18 +4444,18 @@ void ajGraphPlpDataSetTitleC(AjPGraphPlpData graphdata, char *title)
 
 
 
-/* @func ajGraphPlpDataSetSubTitle *********************************************
+/* @func ajGraphPlpDataSetSubTitle ********************************************
 **
 **  Set the Subtitle.
 **
 **
 ** @param [w] graphdata  [AjPGraphPlpData] Graph structure to store info in.
-** @param [r] title [AjPStr] Sub Title
+** @param [r] title [const AjPStr] Sub Title
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajGraphPlpDataSetSubTitle(AjPGraphPlpData graphdata, AjPStr title)
+void ajGraphPlpDataSetSubTitle(AjPGraphPlpData graphdata, const AjPStr title)
 {
     ajStrSet(&graphdata->subtitle,title);
 
@@ -4463,18 +4465,18 @@ void ajGraphPlpDataSetSubTitle(AjPGraphPlpData graphdata, AjPStr title)
 
 
 
-/* @func ajGraphPlpDataSetSubTitleC ********************************************
+/* @func ajGraphPlpDataSetSubTitleC *******************************************
 **
 **  Set the subtitle.
 **
 **
 ** @param [w] graphdata  [AjPGraphPlpData] Graph structure to store info in.
-** @param [r] title [char*] Sub Title
+** @param [r] title [const char*] Sub Title
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajGraphPlpDataSetSubTitleC(AjPGraphPlpData graphdata, char *title)
+void ajGraphPlpDataSetSubTitleC(AjPGraphPlpData graphdata, const char *title)
 {
     ajStrSetC(&graphdata->subtitle,title);
 
@@ -5009,7 +5011,7 @@ void ajGraphPlpDataSetMaxMin(AjPGraphPlpData graphdata, float xmin, float xmax,
 **
 ** Get the max and min of the data points you wish to display.
 **
-** @param [r] array [float*] array
+** @param [r] array [const float*] array
 ** @param [r] npoints [ajint] Number of data points
 ** @param [w] min [float*]  min.
 ** @param [w] max [float*]  max.
@@ -5017,7 +5019,8 @@ void ajGraphPlpDataSetMaxMin(AjPGraphPlpData graphdata, float xmin, float xmax,
 ** @@
 ******************************************************************************/
 
-void ajGraphArrayMaxMin(float *array, ajint npoints, float *min, float *max)
+void ajGraphArrayMaxMin(const float *array,
+			ajint npoints, float *min, float *max)
 {
     ajint i;
 
@@ -5067,12 +5070,12 @@ void ajGraphPlpDataSetMaxima(AjPGraphPlpData graphdata, float xmin, float xmax,
 ** Set the type of the graph for data output.
 **
 ** @param [u] graphdata [AjPGraphPlpData] multiple graph structure.
-** @param [r] type [char*]  Type e.g. "2D Plot", "Histogram".
+** @param [r] type [const char*]  Type e.g. "2D Plot", "Histogram".
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajGraphPlpDataSetTypeC(AjPGraphPlpData graphdata, char* type)
+void ajGraphPlpDataSetTypeC(AjPGraphPlpData graphdata,const  char* type)
 {
     ajStrAssC(&graphdata->gtype,type);
 
@@ -5381,14 +5384,14 @@ void ajGraphAddRect(AjPGraph thys, float x1, float y1,
 ** @param [r] x1 [float] Start x position
 ** @param [r] y1 [float] Start y position
 ** @param [r] colour [ajint] Colour code (see PLPLOT)
-** @param [r] text [char*] Text
+** @param [r] text [const char*] Text
 **
 ** @return [void]
 ** @@
 ******************************************************************************/
 
 void ajGraphAddText(AjPGraph thys, float x1, float y1,
-		       ajint colour, char *text)
+		       ajint colour, const char *text)
 {
     AjPGraphPlpObj Obj;
 
@@ -5793,14 +5796,14 @@ void ajGraphPlpDataAddRect(AjPGraphPlpData graphdata,
 ** @param [r] x1 [float] Start x position
 ** @param [r] y1 [float] Start y position
 ** @param [r] colour [ajint] Colour code (see PLPLOT)
-** @param [r] text [char*] Text to add
+** @param [r] text [const char*] Text to add
 **
 ** @return [void]
 ** @@
 ******************************************************************************/
 
 void ajGraphPlpDataAddText(AjPGraphPlpData graphdata, float x1, float y1,
-			   ajint colour, char *text)
+			   ajint colour, const char *text)
 {
     AjPGraphPlpObj Obj;
 
@@ -6015,13 +6018,13 @@ Functions needed for callRegister routines.
 ** callRegister loses return values
 **
 ** @param [r] thys [AjPGraph] Graph object
-** @param [r] type [AjPStr] Graph type
+** @param [r] type [const AjPStr] Graph type
 ** @param [w] res [AjBool*] Result of ajGraphSet
 ** @return [AjBool] always returns ajTrue
 ** @@
 ******************************************************************************/
 
-static AjBool GraphSet2(AjPGraph thys, AjPStr type, AjBool *res)
+static AjBool GraphSet2(AjPGraph thys, const AjPStr type, AjBool *res)
 {
     AjBool retval=AJTRUE;
 
@@ -6039,13 +6042,13 @@ static AjBool GraphSet2(AjPGraph thys, AjPStr type, AjBool *res)
 ** callRegister loses return values
 **
 ** @param [r] thys [AjPGraph] Graph object
-** @param [r] type [AjPStr] Graph type
+** @param [r] type [const AjPStr] Graph type
 ** @param [w] res [AjBool*] Result of ajGraphxySet
 ** @return [AjBool] always returns ajTrue
 ** @@
 ******************************************************************************/
 
-static AjBool GraphxySet2(AjPGraph thys, AjPStr type,AjBool *res)
+static AjBool GraphxySet2(AjPGraph thys, const AjPStr type,AjBool *res)
 {
     AjBool retval = AJTRUE;
 
@@ -6063,14 +6066,15 @@ static AjBool GraphxySet2(AjPGraph thys, AjPStr type,AjBool *res)
 ** Passes argument list to GraphSet2. Note that the callRegister
 ** method prevents any prototype checking on the call.
 **
-** @param [r] name [char*] Function name, required by callRegister but ignored.
+** @param [r] name [const char*] Function name, required by callRegister
+**                               but ignored.
 ** @param [r] args [va_list] Argument list, really must be (AjPGraph,
 **                           AjPStr, AjBool*)
 ** @return [AjBool] return value from GraphSet2
 ** @@
 ******************************************************************************/
 
-static AjBool GraphSetarg(char *name, va_list args)
+static AjBool GraphSetarg(const char *name, va_list args)
 {
     AjPGraph temp = NULL;
     AjPStr temp2  = NULL;
@@ -6094,14 +6098,15 @@ static AjBool GraphSetarg(char *name, va_list args)
 ** Passes argument list to GraphxySet2. Note that the callRegister
 ** method prevents any prototype checking on the call.
 **
-** @param [r] name [char*] Function name, required by callRegister but ignored.
+** @param [r] name [const char*] Function name, required by callRegister
+**                               but ignored.
 ** @param [r] args [va_list] Argument list, really must be (AjPGraph,
 **                           AjPStr, AjBool*)
 ** @return [AjBool] return value from ajGraphxySet2
 ** @@
 ******************************************************************************/
 
-static AjBool GraphxySetarg(char *name, va_list args)
+static AjBool GraphxySetarg(const char *name, va_list args)
 {
     AjPGraph temp = NULL;
     AjPStr temp2  = NULL;
@@ -6126,13 +6131,14 @@ static AjBool GraphxySetarg(char *name, va_list args)
 ** Passes argument list to GraphTitle. Note that the callRegister
 ** method prevents any prototype checking on the call.
 **
-** @param [r] name [char*] Function name, required by callRegister but ignored.
+** @param [r] name [const char*] Function name, required by callRegister
+**                               but ignored.
 ** @param [r] args [va_list] Argument list, really must be (AjPGraph, AjPStr)
 ** @return [AjBool] always ajTrue.
 ** @@
 ******************************************************************************/
 
-static AjBool GraphTitlearg(char *name, va_list args)
+static AjBool GraphTitlearg(const char *name, va_list args)
 {
     AjPGraph temp = NULL;
     AjPStr temp2  = NULL;
@@ -6154,13 +6160,14 @@ static AjBool GraphTitlearg(char *name, va_list args)
 ** Passes argument list to ajGraphSubTitle. Note that the callRegister
 ** method prevents any prototype checking on the call.
 **
-** @param [r] name [char*] Function name, required by callRegister but ignored.
+** @param [r] name [const char*] Function name, required by callRegister
+**                               but ignored.
 ** @param [r] args [va_list] Argument list, really must be (AjPGraph, AjPStr)
 ** @return [AjBool] always ajTrue.
 ** @@
 ******************************************************************************/
 
-static AjBool GraphSubTitlearg(char *name, va_list args)
+static AjBool GraphSubTitlearg(const char *name, va_list args)
 {
     AjPGraph temp = NULL;
     AjPStr temp2  = NULL;
@@ -6182,13 +6189,14 @@ static AjBool GraphSubTitlearg(char *name, va_list args)
 ** Passes argument list to GraphXTitle. Note that the callRegister
 ** method prevents any prototype checking on the call.
 **
-** @param [r] name [char*] Function name, required by callRegister but ignored.
+** @param [r] name [const char*] Function name, required by callRegister
+**                               but ignored.
 ** @param [r] args [va_list] Argument list, really must be (AjPGraph, AjPStr)
 ** @return [AjBool] always ajTrue.
 ** @@
 ******************************************************************************/
 
-static AjBool GraphXTitlearg(char *name, va_list args)
+static AjBool GraphXTitlearg(const char *name, va_list args)
 {
     AjPGraph temp = NULL;
     AjPStr temp2  = NULL;
@@ -6210,13 +6218,14 @@ static AjBool GraphXTitlearg(char *name, va_list args)
 ** Passes argument list to ajGraphxyYTitle. Note that the callRegister
 ** method prevents any prototype checking on the call.
 **
-** @param [r] name [char*] Function name, required by callRegister but ignored.
+** @param [r] name [const char*] Function name, required by callRegister
+**                               but ignored.
 ** @param [r] args [va_list] Argument list, really must be (AjPGraph, AjPStr)
 ** @return [AjBool] always ajTrue.
 ** @@
 ******************************************************************************/
 
-static AjBool GraphYTitlearg(char *name, va_list args)
+static AjBool GraphYTitlearg(const char *name, va_list args)
 {
     AjPGraph temp = NULL;
     AjPStr temp2  = NULL;
@@ -6238,13 +6247,14 @@ static AjBool GraphYTitlearg(char *name, va_list args)
 ** Passes argument list to ajGraphxySetDir. Note that the callRegister
 ** method prevents any prototype checking on the call.
 **
-** @param [r] name [char*] Function name, required by callRegister but ignored.
+** @param [r] name [const char*] Function name, required by callRegister
+**                               but ignored.
 ** @param [r] args [va_list] Argument list, really must be (AjPGraph, AjPStr)
 ** @return [AjBool] always ajTrue.
 ** @@
 ******************************************************************************/
 
-static AjBool GraphSetDirarg(char *name, va_list args)
+static AjBool GraphSetDirarg(const char *name, va_list args)
 {
     AjPGraph temp = NULL;
     AjPStr temp2  = NULL;
@@ -6266,13 +6276,14 @@ static AjBool GraphSetDirarg(char *name, va_list args)
 ** Passes argument list to ajGraphxySetOut. Note that the callRegister
 ** method prevents any prototype checking on the call.
 **
-** @param [r] name [char*] Function name, required by callRegister but ignored.
+** @param [r] name [const char*] Function name, required by callRegister
+**                               but ignored.
 ** @param [r] args [va_list] Argument list, really must be (AjPGraph, AjPStr)
 ** @return [AjBool] always ajTrue.
 ** @@
 ******************************************************************************/
 
-static AjBool GraphSetOutarg(char *name, va_list args)
+static AjBool GraphSetOutarg(const char *name, va_list args)
 {
     AjPGraph temp = NULL;
     AjPStr temp2  = NULL;
@@ -6294,13 +6305,14 @@ static AjBool GraphSetOutarg(char *name, va_list args)
 ** Passes argument list to ajGraphxyNewI. Note that the callRegister
 ** method prevents any prototype checking on the call.
 **
-** @param [r] name [char*] Function name, required by callRegister but ignored.
+** @param [r] name [const char*] Function name, required by callRegister
+**                               but ignored.
 ** @param [r] args [va_list] Argument list, really must be (ajint)
 ** @return [AjPGraph] New graph object
 ** @@
 ******************************************************************************/
 
-static AjPGraph GraphxyNewIarg(char *name, va_list args)
+static AjPGraph GraphxyNewIarg(const char *name, va_list args)
 {
     ajint temp = 0;
     AjPGraph retval;
@@ -6319,13 +6331,14 @@ static AjPGraph GraphxyNewIarg(char *name, va_list args)
 ** Passes argument list to ajGraphTrace. Note that the callRegister
 ** method prevents any prototype checking on the call.
 **
-** @param [r] name [char*] Function name, required by callRegister but ignored.
+** @param [r] name [const char*] Function name, required by callRegister
+**                               but ignored.
 ** @param [r] args [va_list] Argument list, really must be (AjPGraph)
 ** @return [AjBool] always ajTrue.
 ** @@
 ******************************************************************************/
 
-static AjBool GraphTracearg(char *name, va_list args)
+static AjBool GraphTracearg(const char *name, va_list args)
 {
     AjPGraph temp = NULL;
     AjBool retval = AJTRUE;
@@ -6348,7 +6361,8 @@ static AjBool GraphTracearg(char *name, va_list args)
 ** and other input into local structures which applications can request.
 ** Must be called in each EMBOSS program first.
 **
-** @param [r] pgm [char*] Application name, used as the name of the ACD file
+** @param [r] pgm [const char*] Application name, used as the name of the
+**                              ACD file
 ** @param [r] argc [ajint] Number of arguments provided on the command line,
 **        usually passsed as-is by the calling application.
 ** @param [r] argv [char* const[]] Actual arguments as an array of text.
@@ -6356,7 +6370,7 @@ static AjBool GraphTracearg(char *name, va_list args)
 ** @@
 ******************************************************************************/
 
-AjStatus ajGraphInit(char *pgm, ajint argc, char * const argv[])
+AjStatus ajGraphInit(const char *pgm, ajint argc, char * const argv[])
 {
     ajNamInit("emboss");
 
@@ -6379,16 +6393,18 @@ AjStatus ajGraphInit(char *pgm, ajint argc, char * const argv[])
 ** and other input into local structures which applications can request.
 ** Must be called in each EMBOSS program first.
 **
-** @param [r] pgm [char*] Application name, used as the name of the ACD file
+** @param [r] pgm [const char*] Application name, used as the name of
+**                              the ACD file
 ** @param [r] argc [ajint] Number of arguments provided on the command line,
 **        usually passsed as-is by the calling application.
 ** @param [r] argv [char* const[]] Actual arguments as an array of text.
-** @param [r] package [char*] Package name, used to find the ACD file
+** @param [r] package [const char*] Package name, used to find the ACD file
 ** @return [AjStatus] Always returns ajStatusOK or aborts.
 ** @@
 ******************************************************************************/
 
-AjStatus ajGraphInitP(char *pgm, ajint argc, char *const argv[], char *package)
+AjStatus ajGraphInitP(const char *pgm, ajint argc, char *const argv[],
+		      const char *package)
 {
     ajNamInit("emboss");
 
@@ -6502,13 +6518,14 @@ static float GraphDistPts(float x1, float y1, float x2, float y2)
 ** @param [r] y1 [PLFLT] Start of text box on y axis
 ** @param [r] x2 [PLFLT] End of text box on x axis
 ** @param [r] y2 [PLFLT] End of text box on y axis
-** @param [r] text [char*] Text
+** @param [r] text [const char*] Text
 **
 ** @return [PLFLT] The length of the string in user coordinates.
 ** @@
 ******************************************************************************/
 
-PLFLT ajGraphTextLength(PLFLT x1, PLFLT y1, PLFLT x2, PLFLT y2, char *text)
+PLFLT ajGraphTextLength(PLFLT x1, PLFLT y1, PLFLT x2, PLFLT y2,
+			const char *text)
 {
     return GraphTextLength(x1, y1, x2, y2, text);
 }
@@ -6591,14 +6608,15 @@ float ajGraphSetDefCharSize(float size)
 ** @param [r] y1 [PLFLT] y1 coor.
 ** @param [r] x2 [PLFLT] x2 coor.
 ** @param [r] y2 [PLFLT] y2 coor.
-** @param [r] text [char*] The text to be displayed.
+** @param [r] text [const char*] The text to be displayed.
 ** @param [r] TextHeight [PLFLT] The height of the text (in user coord).
 ** @return [PLFLT] The character size (in mm) that fits the specified
 **                 height and length.
 **
 ** @@
 ******************************************************************************/
-PLFLT ajGraphFitTextOnLine(PLFLT x1, PLFLT y1, PLFLT x2, PLFLT y2, char *text,
+PLFLT ajGraphFitTextOnLine(PLFLT x1, PLFLT y1, PLFLT x2, PLFLT y2,
+			   const char *text,
 			   PLFLT TextHeight)
 {
     PLFLT i;
@@ -6809,7 +6827,7 @@ PLFLT* ajComputeCoord(PLFLT xcentre, PLFLT ycentre, PLFLT Radius, PLFLT Angle)
 **                           will be written (in deg).
 ** @param  [r] pos [PLFLT] index for incrementing the angle for the
 **                         next character in the text.
-** @param  [r] Text [char*] The text to be displayed.
+** @param  [r] Text [const char*] The text to be displayed.
 ** @param  [r] just [PLFLT] justification of the string.
 **                          (0=left,1=right,0.5=middle etc)
 ** @return [void]
@@ -6818,7 +6836,7 @@ PLFLT* ajComputeCoord(PLFLT xcentre, PLFLT ycentre, PLFLT Radius, PLFLT Angle)
 
 static void GraphDrawTextOnCurve(PLFLT xcentre, PLFLT ycentre,
 				 PLFLT Radius, PLFLT Angle, PLFLT pos,
-				 char *Text, PLFLT just)
+				 const char *Text, PLFLT just)
 {
     ajint i;
     ajint numchar;
@@ -6858,7 +6876,7 @@ static void GraphDrawTextOnCurve(PLFLT xcentre, PLFLT ycentre,
 ** @param  [r] Radius  [PLFLT] radius of the circle.
 ** @param  [r] StartAngle [PLFLT] angle of the start of the arc (in deg).
 ** @param  [r] EndAngle [PLFLT] angle of the end of the arc (in deg).
-** @param  [r] Text [char*] The text to be displayed.
+** @param  [r] Text [const char*] The text to be displayed.
 ** @param  [r] just [PLFLT] justification of the string.
 **                          (0=left,1=right,0.5=middle etc)
 ** @return [void]
@@ -6867,7 +6885,7 @@ static void GraphDrawTextOnCurve(PLFLT xcentre, PLFLT ycentre,
 
 void ajGraphDrawTextOnCurve(PLFLT xcentre, PLFLT ycentre, PLFLT Radius,
 			    PLFLT StartAngle,
-			    PLFLT EndAngle, char *Text, PLFLT just)
+			    PLFLT EndAngle, const char *Text, PLFLT just)
 {
     ajint numchar;
     PLFLT pos;

@@ -95,7 +95,7 @@ int main(int argc, char **argv)
     AjOTime ajtime;
     time_t tim;
 
-    char **seqcharptr;
+    const char **seqcharptr;
 
     float *x;
     float *y;

@@ -42,9 +42,9 @@ AjPStr *ajprior=NULL;
 
 static char *datafile = NULL;	/* positive examples */
 static char *negfile = NULL;	/* negative examples */
-static char *ntype = "pair";	/* output two matrices per motif if negatives */
+static const char *ntype = "pair"; /* output two matrices per motif if negatives */
 static char *plib_name = NULL;	/* use default library */
-static char *mod = "zoops";	/* model type input string; default ZOOPS */
+static const char *mod = "zoops"; /* model type input string; default ZOOPS */
 static char *adj = "root";	/* LRT adjustment type input string */
 static char *alph = "PROTEIN";	/* default alphabet IUPAC protein 1-letter */
 static BOOLEAN strands[] = {TRUE, FALSE, FALSE, FALSE};	/* strands to use */
@@ -54,7 +54,7 @@ static int pal = 0;		/* = 0, no palindromes
 				*/
 static BOOLEAN shortn = TRUE;	/* shorten motif if possible */
 static double distance = 1e-3;	/* squared euclidean distance for convergence */
-static char *prior = NULL;	/* prior type input string */
+static const char *prior = NULL;	/* prior type input string */
 static double beta = -1;	/* scale factor for prior; defaults differ */
 static double prob = 1.0;	/* try enough subsequences so P=prob */
 static int nmotifs = 1;		/* number of motifs to find */
@@ -67,14 +67,14 @@ static int w = 0;		/* width of motifs */
 static int min_w = MIN_W;	/* minimum W0 to try */
 static int max_w = MAX_W;	/* maximum W0 to try */
 static MAP_TYPE map_type; 	/* type of sequence to theta mapping */
-static char *MAP = NULL;	/* map type input string */
+static const char *MAP = NULL;	/* map type input string */
 static double map_scale=-1; 	/* scale of sequence to theta mapping:
 					Uni - size of add-n prior (n)
 					Pam - PAM distance (120) 
 				   Default set in init_em.
 				*/
 int n_spcons = 1;		/* number of specified start points */
-static char *spcons[MAXG];	/* starting point consensus strings */
+static const char *spcons[MAXG];	/* starting point consensus strings */
 static double chi_alpha = 1.0;	/* minimum significance level */
 static int maxsize= 100000; 	/* dataset size limit */
 static int seed = 0;		/* random number seed */
@@ -114,7 +114,7 @@ extern void init_meme(
   int i, j, cc=0, pcol;
   char *DNA = DNA0;
   char *PROTEIN = PROTEIN0;
-  char *meme_directory; 
+  /*char *meme_directory; */
   MTYPE mtype;
   PTYPE ptype;
 
@@ -461,8 +461,8 @@ extern void init_meme(
 
   /* get the alphabet from the mixture prior library file if using */ 
   if (ptype == Dmix || ptype == Mega || ptype == MegaP) {
-    int s1, s2;
-    char *tmp;
+    /*int s1, s2;
+    char *tmp;*/
     /* make the name of the prior library */
     if (!plib_name) plib_name = PLIB;		/* default mixture prior */
 /*    s1 = strlen(meme_directory);
@@ -884,4 +884,4 @@ extern void init_meme(
   *debug_file_p = debug_file;
 }
 
-/* $Header: /home/repository/emboss/emboss/emboss/embassy/meme/src/init.c,v 1.2 2003/10/06 09:03:21 rice Exp $ */
+/* $Header: /home/repository/emboss/emboss/emboss/embassy/meme/src/init.c,v 1.3 2004/06/14 14:43:30 rice Exp $ */

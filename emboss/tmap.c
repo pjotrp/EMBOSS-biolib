@@ -263,7 +263,7 @@ int main(int argc, char **argv)
 
     for(i=0;i<=nr;i++)
     {
-	char *temp;
+	const char *temp;
 
 	ajSeqsetToUpper(seqset);
 	temp = ajSeqsetSeq(seqset, i);
@@ -475,6 +475,7 @@ static void tmap_present3p(ajint antal, ajint *npos, ajint *cpos,
     AjPStr tmp = NULL;
     AjPStr hdr = NULL;
     AjPSeq seq;
+    const AjPSeq cseq;
     AjPStr cons = NULL;
     ajint calcid;
     ajint calcsim;
@@ -506,8 +507,8 @@ static void tmap_present3p(ajint antal, ajint *npos, ajint *cpos,
 
     for(j=0; j<=nr; j++)
     {
-	seq = ajSeqsetGetSeq(seqset, j);
-	feat = ajFeattableNewSeq(seq);
+	cseq = ajSeqsetGetSeq(seqset, j);
+	feat = ajFeattableNewSeq(cseq);
 	tmap_refpos2(j, poss);
 	ajStrAssC(&hdr, "");
 	ajReportSetHeader(report, hdr);
@@ -517,7 +518,7 @@ static void tmap_present3p(ajint antal, ajint *npos, ajint *cpos,
 	    ajFmtPrintS(&tmp,"*TM %2d",i);
 	    ajFeatTagAdd(seqf,NULL,tmp);
 	}
-	ajReportWrite(report, feat, seq);
+	ajReportWrite(report, feat, cseq);
 	ajFeattableDel(&feat);
     }
 

@@ -1370,7 +1370,7 @@ populate_menu(int type, WINDOW *w, ITEM *item)
         *ip++ = new_item("NEW FILES", "");
         *ip = new_item("ALPHABETIC LISTING OF ALL PROGRAMS", "");
 /* set item usrptr to the programs list for this group */	
-        ajListFirst(alpha, (void **)&gl);	/* get list of all programs */
+        ajListFirst(alpha, (void**) &gl);	/* get list of all programs */
         set_item_userptr(*ip, (void *)gl->progs);
 	ip++;
 
@@ -1428,7 +1428,7 @@ we should delete the old list */
 	free(name);
 
 /* get list of found programs */
-        ajListFirst(searchlist, (void **)&gl);
+        ajListFirst(searchlist, (void**)&gl);
         plist = gl->progs;
 
 /* add on space for 3 extra options plus null at end */

@@ -112,7 +112,7 @@ static void notseq_readfile(const AjPStr exclude, AjPStr *pattern)
     AjPFile file = NULL;
     AjPStr line;
     AjPStr filename = NULL;
-    char *p = NULL;
+    const char *p = NULL;
 
     if(ajStrFindC(exclude, "@") != 0)
     {

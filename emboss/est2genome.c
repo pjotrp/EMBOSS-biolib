@@ -112,7 +112,6 @@ int main(int argc, char **argv)
     ajint seed;
     ajint best=1;
     ajint search_mode;
-    char *mode;
     AjPStr modestr   = NULL;
     AjPFile outfile  = NULL;
     AjPSeqall estset = NULL;
@@ -164,18 +163,17 @@ int main(int argc, char **argv)
     */
 
     modestr = ajAcdGetListI("mode",1);
-    mode    = ajStrStr(modestr);
 
-    if(!strcmp(mode,"both"))
+    if(ajStrMatchC(modestr,"both"))
 	search_mode = BOTH;
-    else if(!strcmp(mode,"forward"))
+    else if(ajStrMatchC(modestr,"forward"))
 	search_mode = FORWARD_ONLY;
-    else if(!strcmp(mode,"reverse"))
+    else if(ajStrMatchC(modestr,"reverse"))
 	search_mode = REVERSE_ONLY;
     else
     {
-	ajErr("search mode  %s must be one of: "
-	      "both, forward, reverse\n", mode);
+	ajErr("search mode %S must be one of: "
+	      "both, forward, reverse\n", modestr);
 	exit(1);
     }
 

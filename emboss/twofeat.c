@@ -493,7 +493,7 @@ static void twofeat_find_features(AjPSeq seq, AjPFeattable tab,
 {
 
     /* get feature table of sequence */
-    AjPFeattable seqtab = ajSeqGetFeat(seq);
+    const AjPFeattable seqtab = ajSeqGetFeat(seq);
 
     AjIList    iter = NULL;
     AjPFeature gf   = NULL;

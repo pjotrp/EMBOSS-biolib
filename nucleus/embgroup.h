@@ -59,7 +59,8 @@ typedef struct gnode {
   AjPStr name;
   AjPStr doc;
   AjPList progs;
-} Gnode, *GPnode;
+} Gnode;
+#define GPnode Gnode*
 
 
 ajint    embGrpCompareTwoGnodes(const void * a, const void * b);

@@ -88,7 +88,7 @@ int main(int argc, char **argv)
     
     AjBool isproto = ajFalse;
     char c;
-    char *sptr = NULL;
+    const char *sptr = NULL;
     
     embInit("rebaseextract",argc,argv);
 
@@ -368,7 +368,7 @@ int main(int argc, char **argv)
 **
 ** @param [r] pattern [const AjPStr] rebase recognition sequence
 ** @param [r] code [const AjPStr] re name
-** @param [wu outf [AjPFile] outfile
+** @param [u] outf [AjPFile] outfile
 ** @param [r] hassup [AjBool] has a supplier
 ** @@
 ******************************************************************************/
@@ -382,10 +382,10 @@ static void rebex_process_pattern(const AjPStr pattern, const AjPStr code,
     AjPStrTok tokens = NULL;
     AjPStr tmppattern = NULL;
 
-    char *p;
-    char *q;
+    const char *p;
+    const char *q;
     char *r;
-    char *t;
+    const char *t;
 
     AjBool hascarat;
 
@@ -410,7 +410,7 @@ static void rebex_process_pattern(const AjPStr pattern, const AjPStr code,
     {
 	ajFmtPrintF(outf,"%S\t",code);
 
-	ajStrAssC(&temp,ajStrStr(ppat));
+	ajStrAssS(&temp,ppat);
 
 	hascarat = ajFalse;
 	p = ajStrStr(ppat);
@@ -439,7 +439,7 @@ static void rebex_process_pattern(const AjPStr pattern, const AjPStr code,
 		ajFatal("%S mismatched parentheses",code);
 
 	    p = ajStrStr(ppat);
-	    r = ajStrStr(temp);
+	    r = ajStrStrMod(&temp);
 	    while(*p)
 	    {
 		if(*p>='A' && *p<='Z')
@@ -473,7 +473,7 @@ static void rebex_process_pattern(const AjPStr pattern, const AjPStr code,
 		    blunt = ajFalse;
 
 		p = ajStrStr(ppat);
-		r = ajStrStr(temp);
+		r = ajStrStrMod(&temp);
 		while(*p)
 		{
 		    if(*p>='A' && *p<='Z')
@@ -494,7 +494,7 @@ static void rebex_process_pattern(const AjPStr pattern, const AjPStr code,
 	    else			/* probably a carat */
 	    {
 		p = ajStrStr(ppat);
-		r = ajStrStr(temp);
+		r = ajStrStrMod(&temp);
 		cut1 = 0;
 		hascarat = ajFalse;
 

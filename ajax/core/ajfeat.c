@@ -4758,7 +4758,8 @@ AjBool ajFeatLocToSeq(const AjPStr seq, const AjPStr line,
 {
     static AjPStr str = NULL;
     char *p;
-    char *q;
+    const char *cp;
+    const char *cq;
     
     ajint len;
     ajint i;
@@ -4794,7 +4795,7 @@ AjBool ajFeatLocToSeq(const AjPStr seq, const AjPStr line,
     
     
     /* Remove chevrons */
-    p   = ajStrStr(str);
+    p   = ajStrStrMod(&str);
     len = ajStrLen(str);
     for(i=0;i<len;++i)
     {
@@ -4806,7 +4807,7 @@ AjBool ajFeatLocToSeq(const AjPStr seq, const AjPStr line,
     ajStrCleanWhite(&str);
     
     /* Replace sites by a single location */
-    p   = ajStrStr(str);
+    p   = ajStrStrMod(&str);
     len = ajStrLen(str);
     while(*p)
     {
@@ -4824,7 +4825,7 @@ AjBool ajFeatLocToSeq(const AjPStr seq, const AjPStr line,
     
     /* Replace any x.y with x */
     exp_ndotn = ajRegCompC("([0-9]+)[.]([0-9]+)");
-    p = ajStrStr(str);
+    p = ajStrStrMod(&str);
     while(ajRegExec(exp_ndotn,str))
     {
 	off = ajRegOffset(exp_ndotn);
@@ -4839,7 +4840,7 @@ AjBool ajFeatLocToSeq(const AjPStr seq, const AjPStr line,
     
     /* Replace any (n) with n */
     exp_brnbr = ajRegCompC("[(]([0-9]+)[)]");
-    p = ajStrStr(str);
+    p = ajStrStrMod(&str);
     while(ajRegExec(exp_brnbr,str))
     {
 	off = ajRegOffset(exp_brnbr);
@@ -4854,14 +4855,13 @@ AjBool ajFeatLocToSeq(const AjPStr seq, const AjPStr line,
     /* See if its a global complement and remove complement enclosure */
     if(ajStrPrefixC(str,"complement("))
     {
-	p   = ajStrStr(str);
 	len = ajStrLen(str);
 	ajStrAssSub(&str,str,11,len-2);
 	isglobcomp = ajTrue;
     }
     
     /* Replace .. with - */
-    p = ajStrStr(str);
+    p = ajStrStrMod(&str);
     while(*p)
     {
 	if(*p=='.' && *(p+1)=='.')
@@ -4879,7 +4879,7 @@ AjBool ajFeatLocToSeq(const AjPStr seq, const AjPStr line,
     exp_compbrndashnbr = ajRegCompC("complement[(]([A-Za-z0-9:.]+)"
 				    "[-]([0-9]+)[)]");
     
-    p = ajStrStr(str);
+    p = ajStrStrMod(&str);
     while(ajRegExec(exp_compbrndashnbr,str))
     {
 	off = ajRegOffset(exp_compbrndashnbr);
@@ -4895,7 +4895,6 @@ AjBool ajFeatLocToSeq(const AjPStr seq, const AjPStr line,
     
     
     /* Check for only one "join" */
-    p = ajStrStr(str);
     exp_joinbr = ajRegCompC("join[(]");
     i=0;
     while(ajRegExec(exp_joinbr,str))
@@ -4907,7 +4906,6 @@ AjBool ajFeatLocToSeq(const AjPStr seq, const AjPStr line,
 	    ajWarn("Too many joins");
 	    return ajFalse;
 	}
-	p   = ajStrStr(str);
 	len = ajStrLen(str);
 	ajStrAssSub(&str,str,5,len-2);
     }
@@ -4919,19 +4917,19 @@ AjBool ajFeatLocToSeq(const AjPStr seq, const AjPStr line,
     handle = ajStrTokenInit(str,",");
     while(ajStrToken(&token,&handle,NULL))
     {
-	p = ajStrStr(token);
-	if(*p=='^')
+	cp = ajStrStr(token);
+	if(*cp=='^')
 	{
-	    ++p;
+	    ++cp;
 	    docomp = ajTrue;
 	}
 	else
 	    docomp = ajFalse;
 	
-	q=p;
+	cq=cp;
 	dbentry = ajFalse;
-	while(*q)
-	    if(*(q++)==':')
+	while(*cq)
+	    if(*(cq++)==':')
 	    {
 		dbentry = ajTrue;
 		break;
@@ -4955,11 +4953,11 @@ AjBool ajFeatLocToSeq(const AjPStr seq, const AjPStr line,
 	}
 	else
 	{
-	    if(sscanf(p,"%d-%d",&begin,&end)!=2)
+	    if(sscanf(cp,"%d-%d",&begin,&end)!=2)
 	    {
-		if(*p>='0' && *p<='9')
+		if(*cp>='0' && *cp<='9')
 		{
-		    if(sscanf(p,"%d",&begin)==1)
+		    if(sscanf(cp,"%d",&begin)==1)
 			end = begin;
 		    else
 		    {
@@ -5005,7 +5003,8 @@ ajint ajFeatGetLocs(const AjPStr str, AjPStr **cds, const char *type)
     ajint i       = 0;
     ajint ncds    = 0;
     ajint nc      = 0;
-    char *p       = NULL;
+    const char *cp = NULL;
+    char *p = NULL;
     AjPStr test   = NULL;
     
     test = ajStrNew();
@@ -5017,7 +5016,7 @@ ajint ajFeatGetLocs(const AjPStr str, AjPStr **cds, const char *type)
     {
 	if(ajStrPrefixC(entry[i],"FT "))
 	{
-	    p = ajStrStr(entry[i]);
+	    p = ajStrStrMod(&entry[i]);
 	    *p = *(p+1) = ' ';
 	}
 
@@ -5038,7 +5037,7 @@ ajint ajFeatGetLocs(const AjPStr str, AjPStr **cds, const char *type)
     {
 	if(ajStrPrefixC(entry[i],"FT "))
 	{
-	    p = ajStrStr(entry[i]);
+	    p = ajStrStrMod(&entry[i]);
 	    *p = *(p+1) = ' ';
 	}
 
@@ -5046,11 +5045,11 @@ ajint ajFeatGetLocs(const AjPStr str, AjPStr **cds, const char *type)
 	    ++i;
 
 	ajStrAssC(&(*cds)[nc],ajStrStr(entry[i++])+21);
-	while(*(p=ajStrStr(entry[i]))==' ')
+	while(*(cp=ajStrStr(entry[i]))==' ')
 	{
-	    if(*(p+21)=='/' || *(p+5)!=' ')
+	    if(*(cp+21)=='/' || *(cp+5)!=' ')
 		break;
-	    ajStrAppC(&(*cds)[nc],p+21);
+	    ajStrAppC(&(*cds)[nc],cp+21);
 	    ++i;
 	}
 	ajStrCleanWhite(&(*cds)[nc]);
@@ -5314,7 +5313,7 @@ ajint ajFeatGetTrans(const AjPStr str, AjPStr **cds)
     ajint i       = 0;
     ajint ncds    = 0;
     ajint nc      = 0;
-    char *p       = NULL;
+    char *p = NULL;
     static AjPRegexp exp_tr = NULL;
     
     
@@ -5326,7 +5325,7 @@ ajint ajFeatGetTrans(const AjPStr str, AjPStr **cds)
     {
 	if(ajStrPrefixC(entry[i],"FT "))
 	{
-	    p = ajStrStr(entry[i]);
+	    p = ajStrStrMod(&entry[i]);
 	    *p = *(p+1) = ' ';
 	}
 
@@ -5347,7 +5346,7 @@ ajint ajFeatGetTrans(const AjPStr str, AjPStr **cds)
     {
 	if(ajStrPrefixC(entry[i],"FT "))
 	{
-	    p = ajStrStr(entry[i]);
+	    p = ajStrStrMod(&entry[i]);
 	    *p = *(p+1) = ' ';
 	}
 
@@ -5355,14 +5354,14 @@ ajint ajFeatGetTrans(const AjPStr str, AjPStr **cds)
 	    ++i;
 
 	ajStrAssC(&(*cds)[nc],ajStrStr(entry[i++])+35);
-	while(*(p=ajStrStr(entry[i]))==' ')
+	while(*(p=ajStrStrMod(&entry[i]))==' ')
 	{
 	    if(*(p+21)=='/' || *(p+5)!=' ')
 		break;
 	    ajStrAppC(&(*cds)[nc],p+21);
 	    ++i;
 	}
-	p = ajStrStr((*cds)[nc]);
+	p = ajStrStrMod(&(*cds)[nc]);
 	p[ajStrLen((*cds)[nc])-2] = ' ';
 	ajStrCleanWhite(&(*cds)[nc]);
     }
@@ -5401,7 +5400,7 @@ static AjPSeq featLocToSeq(const AjPStr location, const AjPStr dbname,
     AjPStr entry   = NULL;
     AjPStr entry2  = NULL;
     AjPStr numbers = NULL;
-    char   *p      = NULL;
+    const char *p  = NULL;
     AjPSeq ret     = NULL;
     AjPStr db      = NULL;
 
@@ -6093,7 +6092,7 @@ AjBool ajFeatTagSet(AjPFeature thys, const AjPStr tag,const  AjPStr value)
     static AjPStr tmpfmt = NULL;
     static AjPStr tmpval = NULL;
     static AjPStr outtag = NULL;
-    char* cp;
+    const char* cp;
     
     /* ajDebug ("ajFeatTagSet '%S' '%S' Prot: %B\n",
        tag, value, thys->Protein); */
@@ -6247,7 +6246,7 @@ AjBool ajFeatTagAdd(AjPFeature thys, const AjPStr tag, const AjPStr value)
     static AjPStr tmpfmt = NULL;
     static AjPStr tmpval = NULL;
     static AjPStr outtag = NULL;
-    char* cp;
+    const char* cp;
     
     /* ajDebug("ajFeatTagAdd '%S' '%S' Prot: %B\n",
        tag, value, thys->Protein); */
@@ -8556,7 +8555,7 @@ static void featDumpEmbl(const AjPFeature feat, const AjPStr location,
     static AjPStr tmpval = NULL;
     static AjPStr tmplim = NULL;
     static AjPStr deftag = NULL;
-    char* cp;
+    const char* cp;
     AjPStr wrapstr           = NULL;
     static AjPStr preftyploc = NULL;
     static AjPStr preftyptag = NULL;
@@ -8706,7 +8705,7 @@ static void featDumpPir(const AjPFeature thys, const AjPStr location,
     static AjPStr tmpval  = NULL;
     AjPStr outval         = NULL;
     FeatPTagval tv        = NULL;
-    char* cp;
+    const char* cp;
     AjBool typmod;
     AjPFeature copy = NULL;
 
@@ -8797,7 +8796,7 @@ static void featDumpSwiss(const AjPFeature thys, AjPFile file,
     AjPStr outval        = NULL;
     FeatPTagval tv       = NULL;
     ajint i =0;
-    char* cp;
+    const char* cp;
     AjPStr wrapstr        = NULL;
     static AjPStr fromstr = NULL;
     static AjPStr tostr   = NULL;
@@ -8933,7 +8932,7 @@ static void featDumpGff(const AjPFeature thys, const AjPFeattable owner,
     AjPStr outval        = NULL;
     FeatPTagval tv       = NULL;
     ajint i = 0;
-    char* cp;
+    const char* cp;
     AjPStr flagdata      = NULL;
     
     /* header done by calling routine */

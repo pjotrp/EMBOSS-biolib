@@ -292,7 +292,7 @@ static void dbiblast_memfclosefile(PMemFile* pfd);
 static size_t dbiblast_memfseek(PMemFile mf, ajlong offset, ajint whence);
 static size_t dbiblast_memfread(void* dest, size_t size, size_t num_items,
 				PMemFile mf);
-static size_t dbiblast_memfreadS(AjPStr dest, size_t size, size_t num_items,
+static size_t dbiblast_memfreadS(AjPStr* dest, size_t size, size_t num_items,
 				 PMemFile mf);
 
 static ajint dbiblast_loadtable(ajuint* table, ajint isize, PBlastDb db,
@@ -864,12 +864,12 @@ static AjBool dbiblast_blastopenlib(AjPStr name, AjBool usesrc,
     ajDebug("IsBlast2: %B title_len: %d rdtmp: %d title_str: '%S'\n",
 	    ret->IsBlast2, ret->TitleLen, rdtmp, ret->Title);
     ajStrTrace(ret->Title);
-    dbiblast_memfreadS(ret->Title,(size_t)1,(size_t)rdtmp,ret->TFile);
+    dbiblast_memfreadS(&ret->Title,(size_t)1,(size_t)rdtmp,ret->TFile);
 
     if(ret->IsBlast2)
-	ajStrFixI(ret->Title, ret->TitleLen);
+	ajStrFixI(&ret->Title, ret->TitleLen);
     else
-	ajStrFixI(ret->Title, ret->TitleLen-1);
+	ajStrFixI(&ret->Title, ret->TitleLen-1);
 
     ajDebug("title_len: %d rdtmp: %d title_str: '%S'\n",
 	    ret->TitleLen, rdtmp, ret->Title);
@@ -882,7 +882,7 @@ static AjBool dbiblast_blastopenlib(AjPStr name, AjBool usesrc,
 	dbiblast_memreadUInt4(ret->TFile,(ajuint*)&ret->DateLen);
 	rdtmp2 = ret->DateLen;
 	ajStrAssCL(&ret->Date, "", rdtmp2+1);
-	dbiblast_memfreadS(ret->Date,(size_t)1,(size_t)rdtmp2,ret->TFile);
+	dbiblast_memfreadS(&ret->Date,(size_t)1,(size_t)rdtmp2,ret->TFile);
 	ajDebug("datelen: %d rdtmp: %d date_str: '%S'\n",
 		ret->DateLen, rdtmp2, ret->Date);
 	ret->HeaderLen += 4 + rdtmp2;
@@ -1468,7 +1468,7 @@ static void dbiblast_memreadUInt4(PMemFile fd, ajuint *val)
 ** Reads a string from a (possibly memory mapped)
 ** binary file, with the correct byte orientation
 **
-** @param [w] dest [AjPStr] Output string, must be already the right size
+** @param [w] dest [AjPStr*] Output string, must be already the right size
 ** @param [r] size [size_t] Size of string (1)
 ** @param [r] num_items [size_t] Number of bytes
 ** @param [r] mf [PMemFile] Input file
@@ -1476,11 +1476,11 @@ static void dbiblast_memreadUInt4(PMemFile fd, ajuint *val)
 ** @@
 ******************************************************************************/
 
-static size_t dbiblast_memfreadS(AjPStr dest, size_t size, size_t num_items,
+static size_t dbiblast_memfreadS(AjPStr* dest, size_t size, size_t num_items,
 				 PMemFile mf)
 {
 
-    return dbiblast_memfread(ajStrStr(dest), size, num_items, mf);
+    return dbiblast_memfread(ajStrStrMod(dest), size, num_items, mf);
 }
 
 
@@ -1810,15 +1810,15 @@ static ajint dbiblast_ncblreadhdr(AjPStr* hline, PBlastDb db, ajint start,
     if(db->IsBlast2)
     {
 	dbiblast_memfseek(hfp,start,0);
-	dbiblast_memfreadS(*hline,(size_t)1,(size_t)(llen-1),hfp);
+	dbiblast_memfreadS(hline,(size_t)1,(size_t)(llen-1),hfp);
     }
     else
     {
 	dbiblast_memfseek(hfp,start+1,0); /* skip the '>' character */
-	dbiblast_memfreadS(*hline,(size_t)1,(size_t)(llen-1),hfp);
+	dbiblast_memfreadS(hline,(size_t)1,(size_t)(llen-1),hfp);
     }
 
-    ajStrFixI(*hline, (llen-1));
+    ajStrFixI(hline, (llen-1));
 
     return llen;
 }

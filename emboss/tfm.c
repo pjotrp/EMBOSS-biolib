@@ -240,8 +240,8 @@ static void tfm_FixImages(AjPStr *line, AjPStr path)
     AjPStr pre  = NULL;
     AjPStr post = NULL;
     
-    char *p    = NULL;
-    char *q    = NULL;
+    const char *p    = NULL;
+    const char *q    = NULL;
 
 #ifdef __CYGWIN__
     char *root = NULL;
@@ -249,7 +249,7 @@ static void tfm_FixImages(AjPStr *line, AjPStr path)
     
     q = ajStrStr(*line);
 
-    if(!(p=strstr(q,"<img")))
+    if(!(p = strstr(q,"<img")))
 	return;
 
     if(!(p=strstr(p,"src=")))

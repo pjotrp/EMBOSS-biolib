@@ -14,7 +14,7 @@
  * Recover a specific HMM file from an HMM database, using
  * a GSI index (created with hmmindex).
  * 
- * RCS $Id: ehmmfetch.c,v 1.1 2001/07/29 14:13:49 ajb Exp $
+ * RCS $Id: ehmmfetch.c,v 1.2 2004/06/14 14:43:30 rice Exp $
  *
  * Modified for EMBOSS by Alan Bleasby (ISMB 2001)
  */
@@ -39,8 +39,8 @@
 
 int main(int argc, char **argv)
 {
-    char    *hmmfile;			/* HMM file to open                */
-    char    *key;			/* HMM name to retrieve            */
+    const char *hmmfile;		/* HMM file to open                */
+    const char *key;			/* HMM name to retrieve            */
     HMMFILE *hmmfp;			/* opened hmm file pointer         */
     struct plan7_s *hmm;		/* a hidden Markov model           */
 

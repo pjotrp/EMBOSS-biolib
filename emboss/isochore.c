@@ -118,7 +118,7 @@ int main(int argc, char **argv)
     ajint k;
     ajint ipos;
     ajint isize;
-    char *sq;
+    const char *sq;
     ajint igc;
     ajint imax;
     ajint ibeg;

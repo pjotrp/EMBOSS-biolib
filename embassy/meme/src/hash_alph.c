@@ -90,11 +90,11 @@ extern int setup_hash_alph(
     set up the hashing and unhashing indices
   */
   for (i = 0; (c = alphabet[i]); i++) {
-    c = islower(c) ? toupper(c) : c; 		/* convert to uppercase */
+    c = islower((int)c) ? (char)toupper((int)c) : c; /* convert to uppercase */
     hash(c) = i;
     unhash(i) = c;
   }
-  unhash(alength) = 'X';			/* special character for meme */
+  unhash(alength) = 'X';	      /* special character for meme */
 
   /* 
     MEME: convert ambiguous characters to a single character in the alphabet 
@@ -176,7 +176,7 @@ extern char *get_alphabet(
 
   /* convert alphabet to uppercase */
   for (i=0; i<old_alen; i++) 
-    if (islower(old_alph[i])) old_alph[i] = toupper(old_alph[i]);
+    if (islower((int)old_alph[i])) old_alph[i] = toupper((int)old_alph[i]);
 
   /* 
     determine what type of alphabet we have 
@@ -381,4 +381,4 @@ extern int *dhash_it(
   return hash_seq;
 } /* dhash_it */
 
-/* $Header: /home/repository/emboss/emboss/emboss/embassy/meme/src/hash_alph.c,v 1.1 2000/11/05 21:47:55 ajb Exp $ */
+/* $Header: /home/repository/emboss/emboss/emboss/embassy/meme/src/hash_alph.c,v 1.2 2004/06/14 14:43:30 rice Exp $ */

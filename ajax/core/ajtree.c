@@ -57,12 +57,8 @@ static ajint treeIterDelCnt = 0;
 
 
 static AjPTree treeNew(AjEnum type);
-static void treeInsertNode(AjPTreeNode * pnode, void* x);
-static void treeNodesTrace(const AjPTreeNode node);
-static AjBool treeNodeDel(AjPTreeNode * pnode);
 static void* treeNodeItem(const AjPTreeNode node);
-
-
+static AjBool treeNodeDel(AjPTreeNode * pnode);
 
 
 /* @func ajTreeNew ************************************************************
@@ -163,13 +159,13 @@ AjPTree ajTreeCopy(const AjPTree thys)
 {
     AjPTree newtree;
 
-    AjPTreeNode node;
-
     if(!thys)
 	return NULL;
 
     newtree = ajTreeNew();
     newtree->Type = thys->Type;
+
+    treeNodeItem(NULL);			/* just so it gets used */
 
     return newtree;
 }
@@ -193,9 +189,7 @@ AjPTree ajTreeCopy(const AjPTree thys)
 
 ajint ajTreestrClone(const AjPTree thys, AjPTree newtree)
 {
-    AjPTreeNode node;
     ajint ret = 0;
-    AjPStr newstr;
 
     if(!thys)
 	return 0;
@@ -246,7 +240,6 @@ AjBool ajTreeFirst(const AjPTree thys, void** x)
 
 AjBool ajTreeLast(const AjPTree thys, void** x)
 {
-    AjPTreeNode rest;
 
     if(!thys)
 	return ajFalse;
@@ -272,9 +265,7 @@ AjBool ajTreeLast(const AjPTree thys, void** x)
 
 AjBool ajTreeNth(const AjPTree thys, ajint n, void** x)
 {
-    AjPTreeNode rest;
     ajint len;
-    ajint i;
 
     if(!thys || n<1)
 	return ajFalse;
@@ -300,9 +291,6 @@ AjBool ajTreeNth(const AjPTree thys, ajint n, void** x)
 
 static AjBool treeNodeDel(AjPTreeNode * pnode)
 {
-    AjPTreeNode node;
-    AjPTreeNode tmp;
-
     return ajTrue;
 }
 
@@ -386,8 +374,6 @@ ajint ajTreestrLength(const AjPTree thys)
 
 void ajTreeFree(AjPTree* pthis)
 {
-    AjPTreeNode next;
-    AjPTreeNode *rest;
     AjPTree thys;
 
     if(!pthis)
@@ -421,8 +407,6 @@ void ajTreeFree(AjPTree* pthis)
 
 void ajTreestrFree(AjPTree* pthis)
 {
-    AjPTreeNode next;
-    AjPTreeNode *rest;
     AjPTree thys;
 
     if(!pthis)
@@ -459,8 +443,6 @@ void ajTreestrFree(AjPTree* pthis)
 void ajTreeDel(AjPTree* pthis)
 {
     AjPTree tree;
-    AjPTreeNode *rest = NULL;
-    AjPTreeNode next  = NULL;
 
     if(!pthis)
 	return;
@@ -469,6 +451,7 @@ void ajTreeDel(AjPTree* pthis)
 
     treeDelCnt++;
 
+    treeNodeDel(NULL);
     tree = *pthis;
 
     AJFREE(*pthis);
@@ -518,7 +501,6 @@ void ajTreestrDel(AjPTree* pthis)
 
 void ajTreeMap(AjPTree thys, void apply(void** x, void* cl), void* cl)
 {
-    AjPTreeNode rest;
 
     assert(apply);
 
@@ -543,7 +525,6 @@ void ajTreeMap(AjPTree thys, void apply(void** x, void* cl), void* cl)
 
 void ajTreestrMap(AjPTree thys, void apply(AjPStr* x, void* cl), void* cl)
 {
-    AjPTreeNode rest;
 
     assert(apply);
 
@@ -569,8 +550,8 @@ ajint ajTreeToArray(const AjPTree thys, void*** array)
 {
     ajint i;
     ajint n;
-    AjPTreeNode rest;
-
+    AjPTreeNode rest = NULL;
+ 
     n = ajListLength(thys->Nodes);
 
     if(!n)
@@ -612,7 +593,7 @@ ajint ajTreestrToArray(const AjPTree thys, AjPStr** array)
 {
     ajint i;
     ajint n;
-    AjPTreeNode rest;
+    AjPTreeNode rest = NULL;
 
     n = ajListLength(thys->Nodes);
 
@@ -654,7 +635,7 @@ ajint ajTreestrToArrayApp(const AjPTree thys, AjPStr** array)
     ajint i;
     ajint n;
     ajint j;
-    AjPTreeNode rest;
+    AjPTreeNode rest = NULL;
 
     if (*array)
     {

@@ -32,7 +32,7 @@
  * 
  * SELEX format is documented in Docs/formats.tex.
  ****************************************************************************
- * RCS $Id: interleaved.c,v 1.1 2001/07/29 14:13:49 ajb Exp $
+ * RCS $Id: interleaved.c,v 1.2 2004/06/14 14:43:30 rice Exp $
  */
 
 #include "ajax.h"
@@ -268,7 +268,7 @@ dataline_MSF(char *buf, char *expected_name)
  *           squid_errno to indicate the cause of the failure.
  */
 int
-ReadInterleaved(char *seqfile, 
+ReadInterleaved(const char *seqfile, 
 		int (*skip_header)(FILE *),
 		int (*parse_header)(FILE *, AINFO *),
 		int (*is_dataline)(char *, char *),
@@ -450,7 +450,7 @@ ReadInterleaved(char *seqfile,
  *           Returned data should be freed by caller with FreeAlignment()
  */
 int
-ReadAlignment(char             *seqfile, 
+ReadAlignment(const char       *seqfile, 
 	      int               format,
 	      char           ***ret_aseqs,
 	      struct aliinfo_s *ret_ainfo)
@@ -489,16 +489,16 @@ void emboss_copy(AjPSeqset seqset, char ***retseqs, AINFO *info)
     ajint maxlen;
     ajint len;
     char **seqs;
-    AjPSeq seq = NULL;
+    const AjPSeq seq = NULL;
     ajint i=0;
-    AjPStr fmt=NULL;
+    const AjPStr fmt=NULL;
     AjPSelexdata sdata=NULL;
     AjPSelexSQ   sqdata=NULL;
-    char *p=NULL;
+    const char *p=NULL;
     char *q=NULL;
     char  c='\0';
     ajint cnt=0;
-    AjPStr setname=NULL;
+    const AjPStr setname=NULL;
     
     info->name = NULL;
     info->rf=NULL;

@@ -34,9 +34,9 @@
 
 
 
-static void newcpgreport_findbases(AjPStr *substr, ajint begin, ajint len,
+static void newcpgreport_findbases(const AjPStr substr, ajint begin, ajint len,
 				   ajint window, ajint shift, float *obsexp,
-				   float *xypc, AjPStr *bases,
+				   float *xypc, const AjPStr bases,
 				   float *obsexpmax, ajint *plstart,
 				   ajint *plend);
 static void newcpgreport_countbases(const char *seq, const char *bases,
@@ -132,8 +132,8 @@ int main(int argc, char **argv)
 	    obsexp[i]=xypc[i]=0.0;
 
 
-	newcpgreport_findbases(&substr, begin, len, window, shift, obsexp,
-			       xypc, &bases, &obsexpmax, &plstart, &plend);
+	newcpgreport_findbases(substr, begin, len, window, shift, obsexp,
+			       xypc, bases, &obsexpmax, &plstart, &plend);
 
 	newcpgreport_identify(outf, obsexp, xypc, thresh, 0, len, shift,
 			      ajStrStr(bases), ajSeqName(seq), minlen,
@@ -159,14 +159,14 @@ int main(int argc, char **argv)
 **
 ** Undocumented.
 **
-** @param [r] substr [AjPStr*] sequence
+** @param [r] substr [const AjPStr] sequence
 ** @param [r] begin [ajint] start in sequence
 ** @param [r] len [ajint] length
 ** @param [r] window [ajint] window
 ** @param [r] shift [ajint] shift
 ** @param [w] obsexp [float*] observed/expected
 ** @param [w] xypc [float*] CG content
-** @param [w] bases [AjPStr*] bases to look for
+** @param [r] bases [const AjPStr] bases to look for
 ** @param [w] obsexpmax [float*] maximum obsexp
 ** @param [w] plstart [ajint*] start
 ** @param [w] plend [ajint*] end
@@ -174,9 +174,9 @@ int main(int argc, char **argv)
 ******************************************************************************/
 
 
-static void newcpgreport_findbases(AjPStr *substr, ajint begin, ajint len,
+static void newcpgreport_findbases(const AjPStr substr, ajint begin, ajint len,
 				   ajint window, ajint shift, float *obsexp,
-				   float *xypc, AjPStr *bases,
+				   float *xypc, const AjPStr bases,
 				   float *obsexpmax, ajint *plstart,
 				   ajint *plend)
 {
@@ -194,19 +194,19 @@ static void newcpgreport_findbases(AjPStr *substr, ajint begin, ajint len,
     ajint j = 0;
     ajint offset;
 
-    char *p;
-    char *q;
+    const char *p;
+    const char *q;
 
     windowf = (float)window;
     *obsexpmax = 0.0;
     offset     = window/2;
     *plstart   = offset;
-    q = ajStrStr(*bases);
+    q = ajStrStr(bases);
 
     for(i=0; i<(len-window+1);i+=shift)
     {
 	j = i+offset;
-	p = ajStrStr(*substr) + i;
+	p = ajStrStr(substr) + i;
 	newcpgreport_countbases(p, q, window, &cx, &cy, &cxpy);
 	obs = (float) cxpy;
 	exp = (float)(cx*cy)/windowf;

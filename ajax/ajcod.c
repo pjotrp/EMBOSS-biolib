@@ -637,7 +637,7 @@ AjBool ajCodRead(AjPCod thys, const AjPStr fn)
     AjPStr  fname;
     AjPStr  line;
     AjPStr  t;
-    char    *p;
+    const char    *p;
     ajint     idx;
     ajint     c;
     ajint     num;
@@ -1022,7 +1022,7 @@ double ajCodCai(const AjPCod thys, const AjPStr str)
     double *wk;
     ajint  i;
     ajint  len;
-    char   *p;
+    const char   *p;
     ajint  limit;
     ajint  idx;
     double total;

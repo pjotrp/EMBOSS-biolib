@@ -61,7 +61,7 @@ int main(int argc, char **argv)
     AjPStr ajb=NULL;
 
     ajint pos;
-    char *s;
+    const char *s;
     ajulong result;
     ajulong *bigarray;
     ajulong *calcfreq_array;
@@ -179,11 +179,13 @@ int main(int argc, char **argv)
 
             if(calcfreq) 
             {
-                if(!embNmerGetNoElements(&no_calcfreq_elements, word, seqisnuc, 
+                if(!embNmerGetNoElements(&no_calcfreq_elements, word,
+					 seqisnuc, 
                                          ignorebz))
                     ajFatal("The word size is too large for the data "
                             "structure available.");
-                    compseq_makebigarray(no_calcfreq_elements, &calcfreq_array);
+                    compseq_makebigarray(no_calcfreq_elements,
+					 &calcfreq_array);
             }
           
 	}
@@ -618,7 +620,7 @@ static double compseq_getexpfreqprot(const AjPStr dispseq, ajint word,
     double result;
     ajint i;
     ajint offset = 0;
-    char *s;
+    const char *s;
     AjBool otherflag;
     
     result = 1.0;

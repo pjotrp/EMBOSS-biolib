@@ -155,7 +155,7 @@ static struct plan9_s *read_plan9_aschmm(FILE *fp, int version);
  *           line (for text files) or the magic number (for binaries).
  */
 HMMFILE * 
-HMMFileOpen(char *hmmfile, char *env)
+HMMFileOpen(const char *hmmfile, char *env)
 {
   HMMFILE     *hmmfp;
   unsigned int magic;
@@ -330,7 +330,7 @@ HMMFilePositionByOffset(HMMFILE *hmmfp, long offset)
   if (fseek(hmmfp->f, offset, SEEK_SET) != 0) PANIC;
 }
 int
-HMMFilePositionByName(HMMFILE *hmmfp, char *name)
+HMMFilePositionByName(HMMFILE *hmmfp, const char *name)
 {				/* limitation: name < 32 char  */
   char       hmmfile[32];	/* ignored.                    */
   long       offset;		/* offset in hmmfile, from GSI */

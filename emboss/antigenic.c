@@ -145,7 +145,7 @@ int main(int argc, char **argv)
 	ajStrAssSubC(&sstr,ajStrStr(strand),start,stop);
 	len  = ajStrLen(substr);
 
-	q = p = ajStrStr(substr);
+	q = p = ajStrStrMod(&substr);
 	for(i=0;i<len;++i,++p)
 	    *p = (char) ajAZToInt(*p);
 
@@ -376,7 +376,7 @@ static void antigenic_readAnti(AjPFloat *agp)
 
     while(ajFileGets(mfptr, &line))
     {
-	p = ajStrStr(line);
+	p = ajStrStrMod(&line);
 	if(*p=='#' || *p=='!' || *p=='\n')
 	    continue;
 

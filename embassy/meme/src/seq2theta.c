@@ -84,16 +84,16 @@ extern THETA init_map(
 
   switch (type) {
     case Uni: {
-      double main;		/* probability of main letter */
+      double mainp;		/* probability of main letter */
       double other;		/* probability of each other letter */
 
-      main = (1.0 + scale)/(1.0 + alength * scale);
+      mainp = (1.0 + scale)/(1.0 + alength * scale);
       other = scale/(1.0 + alength * scale);
-      if (VERBOSE) ajFmtPrintF(outf,"main= %g\n\n", main);
+      if (VERBOSE) ajFmtPrintF(outf,"main= %g\n\n", mainp);
       /* create a matrix of columns; each column gives mapping for a letter */
       for (i=0; i<alength; i++) 
 	for (j=0; j<alength; j++)  
-	  map[i][j] = (i == j) ? main : other;
+	  map[i][j] = (i == j) ? mainp : other;
     } break;
     case Pam: {
       double mul[20][20]; 
@@ -179,9 +179,9 @@ extern void init_theta(
       if (start == 0 || start[i] >= alength) {
         theta(i, j) = res_freq[j];
       } else {
-        theta(i, j) = map[start[i]][j];
+        theta(i, j) = map[(int)start[i]][j];
       }
     }
   }
 }
-/* $Header: /home/repository/emboss/emboss/emboss/embassy/meme/src/seq2theta.c,v 1.1 2000/11/05 21:47:55 ajb Exp $ */
+/* $Header: /home/repository/emboss/emboss/emboss/embassy/meme/src/seq2theta.c,v 1.2 2004/06/14 14:43:30 rice Exp $ */

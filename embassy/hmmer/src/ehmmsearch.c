@@ -15,7 +15,7 @@
  * Conditionally includes PVM parallelization when HMMER_PVM is defined
  *    at compile time; hmmsearch --pvm runs the PVM version.
  *
- * RCS $Id: ehmmsearch.c,v 1.3 2004/03/11 17:57:30 rice Exp $
+ * RCS $Id: ehmmsearch.c,v 1.4 2004/06/14 14:43:30 rice Exp $
  * Modified for EMBOSS by Alan Bleasby (ISMB 2001)
  */
 
@@ -184,6 +184,8 @@ int main(int argc, char **argv)
     ajhmmfile = ajAcdGetInfile("hmmfile");
     if(ajhmmfile)
 	hmmfile = ajCharNew(ajFileGetName(ajhmmfile));
+    else
+	hmmfile = NULL;
     ajFileClose(&ajhmmfile);
 
     seqall = ajAcdGetSeqall("seqall");

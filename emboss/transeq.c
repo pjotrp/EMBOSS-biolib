@@ -172,7 +172,6 @@ static void transeq_GetRegions(AjPRange regions, AjPSeq seq)
 **
 ** Removes X, and/or * characters from the end of the translation
 **
-**
 ** @param [u] seq [AjPSeq] sequence to trim
 ** @return [void]
 ** @@
@@ -186,8 +185,8 @@ static void transeq_Trim(AjPSeq seq)
     ajint i;
     ajint len;
 
-    s = ajSeqStr(seq);
-    p = ajStrStr(s);
+    s = ajSeqStrCopy(seq);
+    p = ajStrStrMod(&s);
     
     len = ajStrLen(s)-1;
 
@@ -201,6 +200,7 @@ static void transeq_Trim(AjPSeq seq)
 
     if(i < len)
 	ajStrTruncate(&s, i+1);
+    ajSeqReplace(seq, s);
 
     return;
 }

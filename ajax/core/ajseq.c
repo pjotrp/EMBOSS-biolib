@@ -451,11 +451,11 @@ ajint ajSeqallGetRange(const AjPSeqall thys, ajint* begin, ajint* end)
 ** Returns the sequence format for a sequence set
 **
 ** @param [r] thys [const AjPSeqset] Sequence set object.
-** @return [AjPStr] Sequence format
+** @return [const AjPStr] Sequence format
 ** @@
 ******************************************************************************/
 
-AjPStr ajSeqsetGetFormat(const AjPSeqset thys)
+const AjPStr ajSeqsetGetFormat(const AjPSeqset thys)
 {
     return thys->Formatstr;
 }
@@ -527,11 +527,11 @@ ajint ajSeqGetRange(const AjPSeq thys, ajint* begin, ajint* end)
 ** be copied.
 **
 ** @param [r] thys [const AjPSeqall] Sequence stream object.
-** @return [AjPStr] Name as a string.
+** @return [const AjPStr] Name as a string.
 ** @@
 ******************************************************************************/
 
-AjPStr ajSeqallGetName(const AjPSeqall thys)
+const AjPStr ajSeqallGetName(const AjPSeqall thys)
 {
     ajDebug("ajSeqallGetName '%S'\n", thys->Seqin->Name);
 
@@ -550,11 +550,11 @@ AjPStr ajSeqallGetName(const AjPSeqall thys)
 ** be copied.
 **
 ** @param [r] thys [const AjPSeqall] Sequence stream object.
-** @return [AjPStr] Name as a string.
+** @return [const AjPStr] Name as a string.
 ** @@
 ******************************************************************************/
 
-AjPStr ajSeqallGetNameSeq(const AjPSeqall thys)
+const AjPStr ajSeqallGetNameSeq(const AjPSeqall thys)
 {
     ajDebug("ajSeqallGetNameSeq '%S'\n", thys->Seq->Name);
 
@@ -884,6 +884,30 @@ ajint ajSeqsetFill(AjPSeqset seq)
 
 
 
+/* @func ajSeqsetTrim ******************************************************
+**
+** Trims a sequence set to start and end positions
+**
+** @param [u] seqset [AjPSeqset] Sequence set object
+** @return [void]
+** @category modify [AjPSeqset] Converts a sequence set to lower
+**                case
+** @@
+******************************************************************************/
+
+void ajSeqsetTrim(AjPSeqset seqset)
+{
+    ajint i;
+
+    for(i=0; i < seqset->Size; i++)
+	ajSeqTrim(seqset->Seq[i]);
+
+    return;
+}
+
+
+
+
 /* ==================================================================== */
 /* ============================ Casts ==================================*/
 /* ==================================================================== */
@@ -967,13 +991,13 @@ ajint ajSeqsetEnd(const AjPSeqset seq)
 **
 ** @param [r] seq [const AjPSeqset] Sequence set object
 ** @param [r] i [ajint] Sequence index
-** @return [char*] Sequence as a NULL terminated string.
+** @return [const char*] Sequence as a NULL terminated string.
 ** @category cast [AjPSeqset] Returns the char* pointer to a
 **                sequence in a set
 ** @@
 ******************************************************************************/
 
-char* ajSeqsetSeq(const AjPSeqset seq, ajint i)
+const char* ajSeqsetSeq(const AjPSeqset seq, ajint i)
 {
     if(i >= seq->Size)
 	return NULL;
@@ -1009,13 +1033,13 @@ ajint ajSeqsetSize(const AjPSeqset seq)
 **
 ** @param [r] seq [const AjPSeqset] Sequence set object
 ** @param [r] i [ajint] Sequence index
-** @return [AjPStr] sequence name as a string.
+** @return [const AjPStr] sequence name as a string.
 ** @category cast [AjPSeqset] Returns the name of a sequence in a
 **                set
 ** @@
 ******************************************************************************/
 
-AjPStr ajSeqsetName(const AjPSeqset seq, ajint i)
+const AjPStr ajSeqsetName(const AjPSeqset seq, ajint i)
 {
     if(i >= seq->Size)
 	return NULL;
@@ -1081,11 +1105,11 @@ float ajSeqsetTotweight(const AjPSeqset seq)
 ** be copied.
 **
 ** @param [r] thys [const AjPSeqset] Sequence set object.
-** @return [AjPStr] Name as a string.
+** @return [const AjPStr] Name as a string.
 ** @@
 ******************************************************************************/
 
-AjPStr ajSeqsetGetName(const AjPSeqset thys)
+const AjPStr ajSeqsetGetName(const AjPSeqset thys)
 {
     ajDebug("ajSeqsetGetName '%S' usa: '%S'\n", thys->Name, thys->Usa);
 
@@ -1108,17 +1132,49 @@ AjPStr ajSeqsetGetName(const AjPSeqset thys)
 **
 ** @param [r] thys [const AjPSeqset] Sequence set object.
 ** @param [r] i [ajint] Sequence index number in set
-** @return [AjPSeq] Sequence object.
+** @return [const AjPSeq] Sequence object.
 ** @@
 ******************************************************************************/
 
-AjPSeq ajSeqsetGetSeq(const AjPSeqset thys, ajint i)
+const AjPSeq ajSeqsetGetSeq(const AjPSeqset thys, ajint i)
 {
     ajDebug("ajSeqsetGetSeq '%S' %d/%d\n", thys->Name,i, thys->Size);
     if(i >= thys->Size)
 	return NULL;
 
     return thys->Seq[i];
+}
+
+
+
+
+/* @func ajSeqsetGetSeqArray **************************************************
+**
+** Returns an array of sequences.
+** Because this is a pointer to the real internal sequence
+** the caller must take care not to change the data in any way.
+** If the sequence is to be changed (case for example) then it must first
+** be copied.
+**
+** The array is 1 larger than the sequence set,
+** with the last element set to NULL.
+** @param [r] thys [const AjPSeqset] Sequence set object.
+** @return [const AjPSeq] Sequence object.
+** @@
+******************************************************************************/
+
+AjPSeq* ajSeqsetGetSeqArray(const AjPSeqset thys)
+{
+    AjPSeq* ret;
+    ajint i;
+
+    ajDebug("ajSeqsetGetSeqArray '%S' %d\n", thys->Name, thys->Size);
+    AJCNEW0(ret, (thys->Size+1));
+    for (i=0; i<thys->Size;i++)
+    {
+	ret[i] = ajSeqNewS(thys->Seq[i]);
+    }
+    return ret;
 }
 
 
@@ -2771,7 +2827,7 @@ void ajSeqMakeUsaS(const AjPSeq thys, const AjPSeqin seqin, AjPStr* usa)
 
     ajStrDel(&tmpstr);
     ajDebug("      result: <%S>\n",
-	    usa);
+	    *usa);
 
     return;
 }
@@ -2915,9 +2971,7 @@ void ajSeqReverseStr(AjPStr* pthis)
     char *cq;
     char tmp;
 
-    ajStrMod(pthis);
-
-    cp = ajStrStr(*pthis);
+    cp = ajStrStrMod(pthis);
     cq = cp + ajStrLen(*pthis) - 1;
 
     while(cp < cq)
@@ -3009,9 +3063,7 @@ void ajSeqCompOnlyStr(AjPStr* pthis)
 {
     char *cp;
 
-    ajStrMod(pthis);
-
-    cp = ajStrStr(*pthis);
+    cp = ajStrStrMod(pthis);
 
     while(*cp)
     {
@@ -3148,7 +3200,7 @@ AjBool ajSeqIsProt(const AjPSeq thys)
 AjBool ajIsAccession(const AjPStr accnum)
 {
     ajint i;
-    char *cp;
+    const char *cp;
 
     if(!accnum)
 	return ajFalse;
@@ -3225,7 +3277,7 @@ AjBool ajIsAccession(const AjPStr accnum)
 AjPStr ajIsSeqversion(const AjPStr sv)
 {
     ajint i;
-    char *cp;
+    const char *cp;
     AjBool dot = ajFalse;		/* have we found the '.' */
     AjBool v = 0;	   /* number of digits of version after '.' */
     static AjPStr accnum = NULL;
@@ -3651,12 +3703,12 @@ ajint ajSeqEnd(const AjPSeq seq)
 ** structures.
 **
 ** @param [r] seq [const AjPSeq] Sequence object
-** @return [char*] Sequence name as a null terminated character string.
+** @return [const char*] Sequence name as a null terminated character string.
 ** @category cast [AjPSeq] Returns the sequence name as char
 ** @@
 ******************************************************************************/
 
-char* ajSeqName(const AjPSeq seq)
+const char* ajSeqName(const AjPSeq seq)
 {
     return ajStrStr(seq->Name);
 }
@@ -3831,13 +3883,13 @@ AjBool ajSeqNum(const AjPSeq thys, const AjPSeqCvt cvt, AjPStr* numseq)
 
 AjBool ajSeqNumS(const AjPStr thys, const AjPSeqCvt cvt, AjPStr* numseq)
 {
-    char *cp;
+    const char *cp;
     char *ncp;
 
     cp = ajStrStr(thys);
 
     ajStrAssS(numseq, thys);
-    ncp = ajStrStr(*numseq);
+    ncp = ajStrStrMod(numseq);
 
     while(*cp)
     {
@@ -4187,11 +4239,11 @@ ajint ajSeqCvtKS (const AjPSeqCvt thys, const AjPStr ch)
 ** be copied.
 **
 ** @param [r] thys [const AjPSeq] Sequence.
-** @return [AjPStr] Sequence as a string.
+** @return [const AjPStr] Sequence as a string.
 ** @@
 ******************************************************************************/
 
-AjPStr ajSeqStr(const AjPSeq thys)
+const AjPStr ajSeqStr(const AjPSeq thys)
 {
     if(!thys)
 	return NULL;
@@ -4236,12 +4288,12 @@ AjPStr ajSeqStrCopy(const AjPSeq thys)
 ** be copied.
 **
 ** @param [r] thys [const AjPSeq] Sequence.
-** @return [char*] Sequence as a null terminated character string.
+** @return [const char*] Sequence as a null terminated character string.
 ** @category cast [AjPSeq] Returns the actual char* holding the sequence.
 ** @@
 ******************************************************************************/
 
-char* ajSeqChar(const AjPSeq thys)
+const char* ajSeqChar(const AjPSeq thys)
 {
     if(!thys)
 	return "";
@@ -4261,11 +4313,11 @@ char* ajSeqChar(const AjPSeq thys)
 ** be copied.
 **
 ** @param [r] thys [const AjPSeq] Sequence object.
-** @return [AjPStr] Accession number as a string.
+** @return [const AjPStr] Accession number as a string.
 ** @@
 ******************************************************************************/
 
-AjPStr ajSeqGetAcc(const AjPSeq thys)
+const AjPStr ajSeqGetAcc(const AjPSeq thys)
 {
     return thys->Acc;
 }
@@ -4282,11 +4334,11 @@ AjPStr ajSeqGetAcc(const AjPSeq thys)
 ** be copied.
 **
 ** @param [r] thys [const AjPSeq] Sequence object.
-** @return [AjPStr] SeqVersion number as a string.
+** @return [const AjPStr] SeqVersion number as a string.
 ** @@
 ******************************************************************************/
 
-AjPStr ajSeqGetSv(const AjPSeq thys)
+const AjPStr ajSeqGetSv(const AjPSeq thys)
 {
     return thys->Sv;
 }
@@ -4303,11 +4355,11 @@ AjPStr ajSeqGetSv(const AjPSeq thys)
 ** be copied.
 **
 ** @param [r] thys [const AjPSeq] Sequence object.
-** @return [AjPStr] SeqVersion number as a string.
+** @return [const AjPStr] SeqVersion number as a string.
 ** @@
 ******************************************************************************/
 
-AjPStr ajSeqGetGi(const AjPSeq thys)
+const AjPStr ajSeqGetGi(const AjPSeq thys)
 {
     return thys->Gi;
 }
@@ -4324,11 +4376,11 @@ AjPStr ajSeqGetGi(const AjPSeq thys)
 ** be copied.
 **
 ** @param [r] thys [const AjPSeq] Sequence object.
-** @return [AjPStr] Description as a string.
+** @return [const AjPStr] Description as a string.
 ** @@
 ******************************************************************************/
 
-AjPStr ajSeqGetTax(const AjPSeq thys)
+const AjPStr ajSeqGetTax(const AjPSeq thys)
 {
     return thys->Tax;
 }
@@ -4345,11 +4397,11 @@ AjPStr ajSeqGetTax(const AjPSeq thys)
 ** be copied.
 **
 ** @param [r] thys [const AjPSeq] Sequence object.
-** @return [AjPStr] Description as a string.
+** @return [const AjPStr] Description as a string.
 ** @@
 ******************************************************************************/
 
-AjPStr ajSeqGetDesc(const AjPSeq thys)
+const AjPStr ajSeqGetDesc(const AjPSeq thys)
 {
     return thys->Desc;
 }
@@ -4368,11 +4420,11 @@ AjPStr ajSeqGetDesc(const AjPSeq thys)
 ** be copied with ajSeqCopyFeat
 **
 ** @param [r] thys [const AjPSeq] Sequence object.
-** @return [AjPFeattable] feature table (if any)
+** @return [const AjPFeattable] feature table (if any)
 ** @@
 ******************************************************************************/
 
-AjPFeattable ajSeqGetFeat(const AjPSeq thys)
+const AjPFeattable ajSeqGetFeat(const AjPSeq thys)
 {
     return thys->Fttable;
 }
@@ -4411,11 +4463,11 @@ AjPFeattable ajSeqCopyFeat(const AjPSeq thys)
 ** be copied.
 **
 ** @param [r] thys [const AjPSeq] Sequence object.
-** @return [AjPStr] Name as a string.
+** @return [const AjPStr] Name as a string.
 ** @@
 ******************************************************************************/
 
-AjPStr ajSeqGetName(const AjPSeq thys)
+const AjPStr ajSeqGetName(const AjPSeq thys)
 {
     return thys->Name;
 }
@@ -4432,11 +4484,11 @@ AjPStr ajSeqGetName(const AjPSeq thys)
 ** be copied.
 **
 ** @param [r] thys [const AjPSeq] Sequence object.
-** @return [AjPStr] Entry as a string.
+** @return [const AjPStr] Entry as a string.
 ** @@
 ******************************************************************************/
 
-AjPStr ajSeqGetEntry(const AjPSeq thys)
+const AjPStr ajSeqGetEntry(const AjPSeq thys)
 {
     return thys->TextPtr;
 }
@@ -4646,7 +4698,7 @@ float ajSeqMW(const AjPStr seq)
 				181.19, 146.64};
     float mw;
     ajint i;
-    char* cp;
+    const char* cp;
 
     cp = ajStrStr(seq);
     mw = 18.015;
@@ -4685,7 +4737,7 @@ ajuint ajSeqCrc(const AjPStr seq)
 {
     register ajulong crc;
     ajint c;
-    char* cp;
+    const char* cp;
     static ajint calls = 0;
 
     if(!calls)
@@ -4757,7 +4809,7 @@ static void seqCrcGen(void)
 
 void ajSeqCount(const AjPStr thys, ajint* b)
 {
-    char* cp;
+    const char* cp;
 
     ajDebug("ajSeqCount %d bases\n", ajStrLen(thys));
 
@@ -4818,7 +4870,7 @@ ajint ajSeqCheckGcg(const AjPSeq thys)
     register ajlong  i;
     register ajlong  check = 0;
     register ajlong  count = 0;
-    char *cp;
+    const char *cp;
     ajint ilen;
 
     cp   = ajStrStr(thys->Seq);

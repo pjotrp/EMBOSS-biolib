@@ -656,7 +656,7 @@ static void remap_NoCutList(AjPFile outfile, AjPTable hittable,
     AjPStrTok tok;
     char tokens[] = " ,";
     AjPStr code = NULL;
-    char *p;
+    const char *p;
 
     /* for reading in enzymes names */
     AjPFile enzfile = NULL;
@@ -746,7 +746,7 @@ static void remap_NoCutList(AjPFile outfile, AjPTable hittable,
     /* push all enzyme names without the required criteria onto nocutlist */
 
     enz = embPatRestrictNew();
-    while(embPatRestrictReadEntry(&enz, &enzfile))
+    while(embPatRestrictReadEntry(enz, enzfile))
     {
          /* 
 	 ** If user entered explicit enzyme list, then check to see if
@@ -1001,7 +1001,7 @@ static void remap_read_equiv(AjPFile *equfile, AjPTable *table)
     AjPStr key;
     AjPStr value;
 
-    char *p;
+    const char *p;
 
     line = ajStrNew();
 
@@ -1011,9 +1011,9 @@ static void remap_read_equiv(AjPFile *equfile, AjPTable *table)
 
         if(!*p || *p=='#' || *p=='!')
             continue;
-        p = strtok(p," \t\n");
+        p = ajSysStrtok(p," \t\n");
         key = ajStrNewC(p);
-        p = strtok(NULL," \t\n");
+        p = ajSysStrtok(NULL," \t\n");
         value = ajStrNewC(p);
         ajTablePut(*table,(const void *)key, (void *)value);
     }
@@ -1042,7 +1042,7 @@ static void remap_read_file_of_enzyme_names(AjPStr *enzymes)
 {
     AjPFile file = NULL;
     AjPStr line;
-    char *p = NULL;
+    const char *p = NULL;
 
     if(ajStrFindC(*enzymes, "@") == 0)
     {

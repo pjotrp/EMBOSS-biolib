@@ -34,12 +34,13 @@
 
 
 
-static void cpgreport_cpgsearch(AjPFile outf, ajint s, ajint len, char *seq,
-				char *name, ajint begin, ajint *score,
+static void cpgreport_cpgsearch(AjPFile outf, ajint s, ajint len,
+				const char *seq, const char *name,
+				ajint begin, ajint *score,
 				AjPFeattabOut featout,
 				AjPFeattable feattable);
-static void cpgreport_calcgc(ajint from, ajint to, char *p, ajint *dcg,
-			     ajint *dgc, ajint *gc);
+static void cpgreport_calcgc(ajint from, ajint to, const char *p,
+			     ajint *dcg, ajint *dgc, ajint *gc);
 
 
 
@@ -124,8 +125,8 @@ int main(int argc, char **argv)
 ** @param [u] outf [AjPFile] Undocumented
 ** @param [r] from [ajint] Undocumented
 ** @param [r] to [ajint] Undocumented
-** @param [r] p [char*] Undocumented
-** @param [r] name [char*] Undocumented
+** @param [r] p [const char*] Undocumented
+** @param [r] name [const char*] Undocumented
 ** @param [r] begin [ajint] Undocumented
 ** @param [r] score [ajint*] Undocumented
 ** @param [r] featout [AjPFeattabOut] Undocumented
@@ -133,8 +134,9 @@ int main(int argc, char **argv)
 ** @@
 ******************************************************************************/
 
-static void cpgreport_cpgsearch(AjPFile outf, ajint from, ajint to, char *p,
-				char *name, ajint begin, ajint *score,
+static void cpgreport_cpgsearch(AjPFile outf, ajint from, ajint to,
+				const char *p,
+				const char *name, ajint begin, ajint *score,
 				AjPFeattabOut featout,
 				AjPFeattable feattable)
 {
@@ -262,14 +264,14 @@ static void cpgreport_cpgsearch(AjPFile outf, ajint from, ajint to, char *p,
 **
 ** @param [r] from [ajint] Undocumented
 ** @param [r] to [ajint] Undocumented
-** @param [r] p [char*] Undocumented
+** @param [r] p [const char*] Undocumented
 ** @param [r] dcg [ajint*] Undocumented
 ** @param [r] dgc [ajint*] Undocumented
 ** @param [r] gc [ajint*] Undocumented
 ** @@
 ******************************************************************************/
 
-static void cpgreport_calcgc(ajint from, ajint to, char *p, ajint *dcg,
+static void cpgreport_calcgc(ajint from, ajint to, const char *p, ajint *dcg,
 			     ajint *dgc, ajint *gc)
 {
 

@@ -28,9 +28,11 @@
 
 
 static void wobble_checkstring(AjPStr *str);
-static void wobble_calcpc(char *seq, char *rev, ajint n, float **x, float **y,
-			  ajint *count, ajint beg, char *gc, ajint window);
-static float wobble_get_mean(char *bases, char *s);
+static void wobble_calcpc(const char *seq, const char *rev,
+			  ajint n, float **x, float **y,
+			  ajint *count, ajint beg,
+			  const char *gc, ajint window);
+static float wobble_get_mean(const char *bases, const char *s);
 
 
 
@@ -190,20 +192,22 @@ int main(int argc, char **argv)
 **
 ** Calculate percentages
 **
-** @param [r] seq [char*] sequence
-** @param [r] rev [char*] reverse sequence
+** @param [r] seq [const char*] sequence
+** @param [r] rev [const char*] reverse sequence
 ** @param [r] n [ajint] frame
 ** @param [w] x [float**] x-axis
 ** @param [w] y [float**] y-axis
 ** @param [w] count [ajint*] Number of codons
 ** @param [r] beg [ajint] sequence start position
-** @param [r] gc [char*] bases to match
+** @param [r] gc [const char*] bases to match
 ** @param [r] window [ajint] window size
 ** @@
 ******************************************************************************/
 
-static void wobble_calcpc(char *seq, char *rev, ajint n, float **x, float **y,
-			  ajint *count, ajint beg, char *gc, ajint window)
+static void wobble_calcpc(const char *seq, const char *rev,
+			  ajint n, float **x, float **y,
+			  ajint *count, ajint beg, const char *gc,
+			  ajint window)
 {
     ajint len;
     ajint limit;
@@ -212,7 +216,7 @@ static void wobble_calcpc(char *seq, char *rev, ajint n, float **x, float **y,
     ajint j;
 
     ajint po;
-    char *p;
+    const char *p;
     float sum;
 
     ajint nb;
@@ -310,13 +314,13 @@ static void wobble_checkstring(AjPStr *str)
 **
 ** Get pc of -bases specified
 **
-** @param [r] bases [char*] bases to use
-** @param [r] s [char*] sequence
+** @param [r] bases [const char*] bases to use
+** @param [r] s [const char*] sequence
 ** @return [float] base percentage
 ** @@
 ******************************************************************************/
 
-static float wobble_get_mean(char *bases, char *s)
+static float wobble_get_mean(const char *bases, const char *s)
 {
     ajint na;
     ajint nc;
@@ -324,7 +328,7 @@ static float wobble_get_mean(char *bases, char *s)
     ajint nt;
     float tot;
     float sum;
-    char  *p;
+    const char  *p;
     ajint c;
 
     na = nc = ng = nt = 0;

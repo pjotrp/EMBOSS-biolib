@@ -180,7 +180,7 @@ char *StrToLower(char *String )
 {
 char *ptr = String;
 
-	while ( (*String = tolower(*String)) ) 
+	while ( (*String = (char) tolower((int)*String)) ) 
 	  String++;
 
 	return(ptr);
@@ -201,7 +201,7 @@ char *StrToUpper(char *string )
 {
 char *ptr=string;
 
-	while ( (*string = toupper(*string)) ) 
+	while ( (*string = (char)toupper((int)*string)) ) 
 	  string++;
 
 	return(ptr);

@@ -143,7 +143,7 @@ static void sirna_report(AjPReport report, AjPSeq seq, AjBool poliii,
     ajint shift = 1;	       /* want to evaluate at each position */
     ajint count_gc;	     /* number of G + C bases in the window */
     char c;
-    char *cseq;
+    const char *cseq;
     ajint aaaa_count;
     ajint cccc_count;
     ajint gggg_count;

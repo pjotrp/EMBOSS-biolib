@@ -385,7 +385,7 @@ static ajint      seqCdTrgSearch(SeqPCdTrg trgLine, const AjPStr name,
 				SeqPCdFile fp);
 
 static AjBool     seqGcgAll(AjPSeqin seqin);
-static void       seqGcgBinDecode(AjPStr thys, ajint rdlen);
+static void       seqGcgBinDecode(AjPStr *pthis, ajint rdlen);
 static void       seqGcgLoadBuff(AjPSeqin seqin);
 static AjBool     seqGcgReadRef(AjPSeqin seqin);
 static AjBool     seqGcgReadSeq(AjPSeqin seqin);
@@ -2727,10 +2727,10 @@ static AjBool seqGcgReadRef(AjPSeqin seqin)
 	if(ajStrSuffixC(id,"_0") || ajStrSuffixC(id,"_00"))
 	{
 	    continued = ajTrue;
-	    p = ajStrStr(id);
+	    p = ajStrStrMod(&id);
 	    p = strrchr(p,(ajint)'_');
 	    *(++p)='\0';
-	    ajStrFix(id);
+	    ajStrFix(&id);
 	}
     }
     else
@@ -2848,10 +2848,10 @@ static AjBool seqGcgReadSeq(AjPSeqin seqin)
 	if(ajStrSuffixC(id,"_0") || ajStrSuffixC(id,"_00"))
 	{
 	    continued = ajTrue;
-	    p = ajStrStr(id);
+	    p = ajStrStrMod(&id);
 	    p = strrchr(p,(ajint)'_');
 	    *(++p)='\0';
-	    ajStrFix(id);
+	    ajStrFix(&id);
 	    if(!contseq)
 		contseq = ajStrNew();
 	    if(!dstr)
@@ -2903,16 +2903,16 @@ static AjBool seqGcgReadSeq(AjPSeqin seqin)
 	if(ajStrChar(gcgtype, 0) == '2')
 	    rblock = (rblock+3)/4;
 
-	if(!ajFileRead(ajStrStr(seqin->Inseq), 1, rblock, qryd->libs))
+	if(!ajFileRead(ajStrStrMod(&seqin->Inseq), 1, rblock, qryd->libs))
 	    ajFatal("error reading file %F", qryd->libs);
 
 	/* convert 2bit to ascii */
 	if(ajStrChar(gcgtype, 0) == '2')
-	    seqGcgBinDecode(seqin->Inseq, gcglen);
+	    seqGcgBinDecode(&seqin->Inseq, gcglen);
 	else if(ajStrChar(gcgtype, 0) == 'A')
 	{
 	    /* are seq chars OK? */
-	    ajStrFixI(seqin->Inseq, gcglen);
+	    ajStrFixI(&seqin->Inseq, gcglen);
 	}
 	else
 	{
@@ -2949,16 +2949,16 @@ static AjBool seqGcgReadSeq(AjPSeqin seqin)
 		if(ajStrChar(gcgtype, 0) == '2')
 		    rblock = (rblock+3)/4;
 
-		if(!ajFileRead(ajStrStr(contseq), 1, rblock, qryd->libs))
+		if(!ajFileRead(ajStrStrMod(&contseq), 1, rblock, qryd->libs))
 		    ajFatal("error reading file %F", qryd->libs);
 
 		/* convert 2bit to ascii */
 		if(ajStrChar(gcgtype, 0) == '2')
-		    seqGcgBinDecode(contseq, gcglen);
+		    seqGcgBinDecode(&contseq, gcglen);
 		else if(ajStrChar(gcgtype, 0) == 'A')
 		{
 		    /* are seq chars OK? */
-		    ajStrFixI(contseq, gcglen);
+		    ajStrFixI(&contseq, gcglen);
 		}
 		else
 		{
@@ -2996,13 +2996,13 @@ static AjBool seqGcgReadSeq(AjPSeqin seqin)
 **
 ** Convert GCG binary to ASCII sequence.
 **
-** @param [u] thys [AjPStr] Binary string
+** @param [u] pthis [AjPStr*] Binary string
 ** @param [r] sqlen [ajint] Expected sequence length
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void seqGcgBinDecode(AjPStr thys, ajint sqlen)
+static void seqGcgBinDecode(AjPStr *pthis, ajint sqlen)
 {
     char* seqp;
     char* cp;
@@ -3011,7 +3011,7 @@ static void seqGcgBinDecode(AjPStr thys, ajint sqlen)
     char stmp;
     ajint rdlen;
 
-    start = ajStrStr(thys);
+    start = ajStrStrMod(pthis);
     rdlen = (sqlen+3)/4;
 
     seqp = start + rdlen;
@@ -3019,7 +3019,7 @@ static void seqGcgBinDecode(AjPStr thys, ajint sqlen)
 
     ajDebug("seqp:%x start:%x cp:%x sqlen:%d len:%d size:%d (seqp-start):%d\n",
 	    seqp, start, cp, sqlen,
-	    ajStrLen(thys), ajStrSize(thys),
+	    ajStrLen(*pthis), ajStrSize(*pthis),
 	    (seqp - start));
 
     while(seqp > start)
@@ -3032,7 +3032,7 @@ static void seqGcgBinDecode(AjPStr thys, ajint sqlen)
     }
 
     start[sqlen] = '\0';
-    ajStrFixI(thys, sqlen);
+    ajStrFixI(pthis, sqlen);
 
     return;
 }
@@ -3356,16 +3356,17 @@ static AjBool seqBlastOpen(AjPSeqQuery qry, AjBool next)
 
     if(rdtmp)
     {
-	if(!ajFileRead(ajStrStr(Title), (size_t)1, (size_t)rdtmp, qryd->libt))
+	if(!ajFileRead(ajStrStrMod(&Title),
+		       (size_t)1, (size_t)rdtmp, qryd->libt))
 	    ajFatal("error reading file %F", qryd->libt);
     }
     else
 	ajStrAssC(&Title, "");
 
     if(isblast2)
-	ajStrFixI(Title, TitleLen);
+	ajStrFixI(&Title, TitleLen);
     else
-	ajStrFixI(Title, TitleLen-1);
+	ajStrFixI(&Title, TitleLen-1);
 
     ajDebug("title_len: %d rdtmp: %d title_str: '%S'\n",
 	    TitleLen, rdtmp, Title);
@@ -3379,9 +3380,10 @@ static AjBool seqBlastOpen(AjPSeqQuery qry, AjBool next)
 	DateLen = ajFileReadUint(qryd->libt, bigend);
 	rdtmp2 = DateLen;
 	ajStrAssCL(&Date, "", rdtmp2+1);
-	if(!ajFileRead(ajStrStr(Date),(size_t)1,(size_t)rdtmp2,qryd->libt))
+	if(!ajFileRead(ajStrStrMod(&Date),
+		       (size_t)1,(size_t)rdtmp2,qryd->libt))
 	    ajFatal("error reading file %F", qryd->libt);
-	ajStrFixI(Date, DateLen);
+	ajStrFixI(&Date, DateLen);
 	ajDebug("datelen: %d rdtmp: %d date_str: '%S'\n",
 		DateLen, rdtmp2, Date);
 	HeaderLen += 4 + rdtmp2;
@@ -4540,9 +4542,9 @@ static AjBool seqBlastReadTable(AjPSeqin seqin, AjPStr* hline,
 	    qryd->type, hsize, start, end, qryd->Size);
 
     ajFileSeek(qryd->libr, start, 0);
-    if(!ajFileRead(ajStrStr(*hline), 1, hsize, qryd->libr))
+    if(!ajFileRead(ajStrStrMod(hline), 1, hsize, qryd->libr))
 	ajFatal("error reading file %F", qryd->libr);
-    ajStrFixI(*hline, hsize);
+    ajStrFixI(hline, hsize);
 
 
     if(qryd->type >= 2)
@@ -4604,7 +4606,7 @@ static AjBool seqBlastReadTable(AjPSeqin seqin, AjPStr* hline,
 	if(tmpbyte)
 	    ajErr(" phase error: %d:%d found\n",qryd->idnum,(ajint)tmpbyte);
 
-	if((tmp=ajFileRead(ajStrStr(*sline),(size_t)1,(size_t)seq_len,
+	if((tmp=ajFileRead(ajStrStrMod(sline),(size_t)1,(size_t)seq_len,
 			   qryd->libs)) != (size_t)seq_len)
 	{
 	    ajErr(" could not read sequence record (a): %d %d != %d\n",
@@ -4620,13 +4622,13 @@ static AjBool seqBlastReadTable(AjPSeqin seqin, AjPStr* hline,
 	}
 	else seqcnt=seq_len;
 
-	seq = ajStrStr(*sline);
+	seq = ajStrStrMod(sline);
 	sptr = seq+seqcnt;
 
 	while(--sptr >= seq)
 	    *sptr = btoa[(ajint)*sptr];
 
-	ajStrFixI(*sline, seqcnt);
+	ajStrFixI(sline, seqcnt);
 	ajDebug("Read sequence %d %d\n'%S'\n", seqcnt, ajStrLen(*sline),
 		*sline);
 	ajStrAssS(&seqin->Inseq, *sline);
@@ -4645,12 +4647,12 @@ static AjBool seqBlastReadTable(AjPSeqin seqin, AjPStr* hline,
 
 	ajStrAssCL(sline, "", seq_len+1);
 
-	seq = ajStrStr(*sline);
+	seq = ajStrStrMod(sline);
 
 	/* read the sequence here */
 
 	seqcnt = c_len;
-	if((tmp=ajFileRead(ajStrStr(*sline),(size_t)1,(size_t)seqcnt,
+	if((tmp=ajFileRead(ajStrStrMod(sline),(size_t)1,(size_t)seqcnt,
 			   qryd->libs)) != (size_t)seqcnt)
 	{
 	    ajErr(" could not read sequence record (c): %d %d != %d: %d\n",
@@ -4766,7 +4768,7 @@ static AjBool seqBlastReadTable(AjPSeqin seqin, AjPStr* hline,
 	else
 	    a_len = 0;
 
-	ajStrFixI(*sline, seq_len);
+	ajStrFixI(sline, seq_len);
 	ajStrAssS(&seqin->Inseq, *sline);
 	return ajTrue;
 
@@ -4831,7 +4833,7 @@ static AjBool seqBlastReadTable(AjPSeqin seqin, AjPStr* hline,
 	    seqcnt=(seq_len+3)/4;
 	    if(seqcnt==0)
 		seqcnt++;
-	    if((tmp=ajFileRead(ajStrStr(*sline),(size_t)1,(size_t)seqcnt,
+	    if((tmp=ajFileRead(ajStrStrMod(sline),(size_t)1,(size_t)seqcnt,
 			       qryd->libs)) != (size_t)seqcnt)
 	    {
 		ajDebug(
@@ -4871,7 +4873,7 @@ static AjBool seqBlastReadTable(AjPSeqin seqin, AjPStr* hline,
 	     ** read 4 cycles before it is written
 	     */
 
-	    seq = ajStrStr(*sline);
+	    seq = ajStrStrMod(sline);
 
 	    sptr = seq + seqcnt;
 	    tptr = seq + 4*seqcnt;
@@ -4897,7 +4899,7 @@ static AjBool seqBlastReadTable(AjPSeqin seqin, AjPStr* hline,
 			seqcnt, seq_len);
 	    }
 
-	    ajStrFixI(*sline, seq_len);
+	    ajStrFixI(sline, seq_len);
 	    ajStrAssS(&seqin->Inseq, *sline);
 	    return ajTrue;
 	}

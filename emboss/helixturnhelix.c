@@ -90,7 +90,7 @@ int main(int argc, char **argv)
     ajint end;
     ajint len;
 
-    char *p;
+    const char *p;
     char *q;
 
     ajint i;
@@ -151,10 +151,11 @@ int main(int argc, char **argv)
 
 	TabRpt = ajFeattableNewSeq(seq);
 
-	q = p = ajStrStr(substr);
-	for(i=0;i<len;++i,++p)
-	    *p = (char) ajAZToInt(*p);
-	p = q;
+	q = ajStrStrMod(&substr);
+	for(i=0;i<len;++i,++q)
+	    *q = (char) ajAZToInt(*q);
+
+	p = ajStrStr(substr);
 
 	se = (len-lastcol)+1;
 	for(i=0;i<se;++i)
@@ -237,8 +238,8 @@ static ajint hth_readNab(AjPInt2d *matrix,AjBool eightyseven)
     AjPStr  delim = NULL;
     AjBool  pass;
 
-    char *p;
-    char *q;
+    const char *p;
+    const char *q;
 
     ajint xcols = 0;
     ajint cols  = 0;

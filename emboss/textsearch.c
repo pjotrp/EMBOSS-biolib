@@ -48,13 +48,13 @@ int main(int argc, char **argv)
     AjPFile outfile;
 
     const AjPStr usa;
-    AjPStr name;
-    AjPStr acc;
+    const AjPStr name;
+    const AjPStr acc;
     AjPStr altusa;
     AjPStr altname;
     AjPStr altacc;
 
-    AjPStr desc = NULL;
+    const AjPStr desc = NULL;
 
     AjPRegexp exp = NULL;
 
@@ -104,7 +104,7 @@ int main(int argc, char **argv)
     {
 	ajSeqTrace(seq);
 	name = ajSeqGetName(seq);
-	ajStrAssS(&desc, ajSeqGetDesc(seq));
+	desc = ajSeqGetDesc(seq);
 
 	if(ajStrLen(desc) && ajRegExec(exp, desc))
 	{
@@ -213,8 +213,6 @@ int main(int argc, char **argv)
 		ajFmtPrintF(outfile, "\n");
 	}
 
-
-	ajStrClear(&desc);
     }
 
 

@@ -772,7 +772,7 @@ static void vectorstrip_write_sequence(AjPSeq sequence, AjPSeqout seqout,
     AjPStr outs      = NULL;
 
     seqcp = ajSeqNewS(sequence);
-    name  = ajStrDup(ajSeqGetName(seqcp));
+    name  = ajStrNewS(ajSeqGetName(seqcp));
     num   = ajStrNew();
 
     if(start <= end)

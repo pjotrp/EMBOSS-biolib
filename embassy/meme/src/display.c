@@ -893,8 +893,8 @@ void print_env(FILE *debug_file)
 /**********************************************************************/
 void print_meme_doc()
 {
-  char *meme_directory, *name = NULL;
-  int s1;
+  /*char *meme_directory, *name = NULL;
+  int s1;*/
   FILE *doc;
   AjPFile inf=NULL;
   
@@ -963,8 +963,8 @@ static double score_sequence(
   for (i=0; i <= length - w; i++) {	/* site start */
     /* calculate score of subsequence */
     for (j=0, sc1=0, sc2=0; j<w; j++) {	/* position in sequence */
-      sc1 += logodds1(j, eseq[i+j]);
-      if (logodds2) sc2 += logodds2(j, eseq[i+j]);
+      sc1 += logodds1(j, (int)eseq[i+j]);
+      if (logodds2) sc2 += logodds2(j, (int)eseq[i+j]);
     } /* subsequence */
     score = logodds2 ? -LOG_SUM(-sc1*loge2, -sc2*loge2)/loge2 : sc1;
     best = MAX(score, best);
@@ -1358,4 +1358,4 @@ ajFmtPrintF(outf,"%c",(d==1) ? unhash(eseq[j]) : unhash(dna_comp(eseq[j])));
   free(sites);
 } /* print_sites */
 
-/* $Header: /home/repository/emboss/emboss/emboss/embassy/meme/src/display.c,v 1.1 2000/11/05 21:47:55 ajb Exp $ */
+/* $Header: /home/repository/emboss/emboss/emboss/embassy/meme/src/display.c,v 1.2 2004/06/14 14:43:30 rice Exp $ */

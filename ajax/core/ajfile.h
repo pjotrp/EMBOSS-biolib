@@ -358,7 +358,7 @@ AjBool      ajFileStderr (const AjPFile file);
 AjBool      ajFileStdin (const AjPFile file);
 AjBool      ajFileStdout (const AjPFile file);
 ajlong      ajFileTell (const AjPFile thys);
-char*       ajFileTempName (const char *dir);
+const char* ajFileTempName (const char *dir);
 AjBool      ajFileTestSkip (const AjPStr fullname,
 			    const AjPStr exc, const AjPStr inc,
 			    AjBool keep, AjBool ignoredirectory);

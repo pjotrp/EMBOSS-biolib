@@ -19,7 +19,7 @@
  * currently are UNIX-specific: i.e. this file is currently POSIX compliant
  * but it is NOT ANSI C compliant. (The sole offender is getenv().)
  *
- * RCS $Id: file.c,v 1.1 2001/07/29 14:13:49 ajb Exp $
+ * RCS $Id: file.c,v 1.2 2004/06/14 14:43:30 rice Exp $
  */
 
 #include <stdio.h>
@@ -93,7 +93,7 @@ FileDirname(char *file)
  * Return:   ptr to malloc'ed string "baz.1"          
  */      
 char * 
-FileTail(char *file, int noextension)
+FileTail(const char *file, int noextension)
 {
   char *tail;
   char *lastslash;
@@ -120,7 +120,7 @@ FileTail(char *file, int noextension)
  *           full filename.
  */
 char *
-FileConcat(char *dir, char *file)
+FileConcat(const char *dir, const char *file)
 {
   char *full;
 
@@ -166,7 +166,7 @@ FileConcat(char *dir, char *file)
  *           Caller must free ret_dir if it passed a non-NULL address.
  */
 FILE *
-EnvFileOpen(char *fname, char *env, char **ret_dir)
+EnvFileOpen(const char *fname, char *env, char **ret_dir)
 {
   FILE *fp=NULL;
   char *path;
@@ -202,7 +202,7 @@ EnvFileOpen(char *fname, char *env, char **ret_dir)
  *           I'm aware of.  
  */
 int
-FileExists(char *filename)
+FileExists(const char *filename)
 {
   FILE *fp;
   if ((fp = fopen(filename, "r"))) { fclose(fp); return TRUE; }

@@ -118,8 +118,8 @@ static void megamerger_Merge(const AjPList matchlist,
     EmbPWordMatch p = NULL;  		/* match structure */
     ajint count = 0;			/* count of matches */
     AjPStr seqstr;			/* merged sequence string */
-    AjPStr s1;				/* string of seq1 */
-    AjPStr s2;				/* string of seq2 */
+    AjPStr s1;			/* string of seq1 */
+    AjPStr s2;			/* string of seq2 */
     ajint prev1end = 0;
     ajint prev2end = 0;		/* end positions (+1) of previous match */
     ajint mid1;
@@ -129,10 +129,10 @@ static void megamerger_Merge(const AjPList matchlist,
 
     tmp    = ajStrNew();
     seqstr = ajStrNew();
-    s1     = ajSeqStr(seq1);
-    s2     = ajSeqStr(seq2);
+    s1     = ajSeqStrCopy(seq1);
+    s2     = ajSeqStrCopy(seq2);
 
-    /* change the sequences to lowercase to  highlight problem areas */
+    /* change the sequences to lowercase to highlight problem areas */
     ajStrToLower(&s1);
     ajStrToLower(&s2);
 

@@ -34,8 +34,8 @@
 
 int main(int argc, char **argv)
 {
-    char    *infile;		/* name of input HMM file                   */
-    char    *outfile;		/* name of output HMM file                  */
+    const char *infile;		/* name of input HMM file                   */
+    const char *outfile;	/* name of output HMM file                  */
     HMMFILE *infp;		/* input HMM file ptr                       */
     FILE    *outfp;		/* output HMM file ptr                      */
     char    *mode=NULL;		/* mode to open file in                     */

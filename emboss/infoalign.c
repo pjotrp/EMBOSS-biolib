@@ -27,14 +27,14 @@
 
 
 
-static int infoalign_Getrefseq(AjPStr refseq, AjPSeqset seqset);
+static int infoalign_Getrefseq(const AjPStr refseq, const AjPSeqset seqset);
 static void infoalign_OutputFloat(AjPFile outfile, float num, AjBool html,
 				   AjBool after);
 static void infoalign_OutputInt(AjPFile outfile, ajint num, AjBool html,
 				 AjBool after);
 static void infoalign_OutputStr(AjPFile outfile, const AjPStr str, AjBool html,
 				 AjBool after, ajint minlength);
-static void infoalign_Compare(AjPSeq ref, AjPSeq seq, ajint **sub,
+static void infoalign_Compare(const AjPSeq ref, const AjPSeq seq, ajint **sub,
 			      AjPSeqCvt cvt, ajint *seqlength,
 			      ajint *alignlength, ajint *gaps,
 			      ajint *gapcount, ajint *idcount,
@@ -65,8 +65,8 @@ int main(int argc, char **argv)
     AjPStr cons;
     AjPSeq consensus;
 
-    AjPSeq ref;
-    AjPSeq seq;
+    const AjPSeq ref;
+    const AjPSeq seq;
     ajint i;
 
     AjBool html;
@@ -96,7 +96,7 @@ int main(int argc, char **argv)
     AjPFile outfile;
 
     const AjPStr usa;
-    AjPStr name;
+    const AjPStr name;
     AjPStr altusa;			/* default name when the real name
 					   is not known */
     AjPStr altname;
@@ -539,16 +539,16 @@ static void infoalign_OutputStr(AjPFile outfile, const AjPStr str, AjBool html,
 ** The first sequence in the set is returned as 0.
 ** -1 is returned as the consensus sequence.
 **
-** @param [r] refseq [AjPStr] input name/number of reference sequence
-** @param [r] seqset [AjPSeqset] the sequences
+** @param [r] refseq [const AjPStr] input name/number of reference sequence
+** @param [r] seqset [const AjPSeqset] the sequences
 ** @return [int] the number of the reference sequence
 ** @@
 ******************************************************************************/
 
-static int infoalign_Getrefseq(AjPStr refseq, AjPSeqset seqset)
+static int infoalign_Getrefseq(const AjPStr refseq, const AjPSeqset seqset)
 {
     ajint i;
-    AjPSeq seq;
+    const AjPSeq seq;
 
     for(i=0; i<ajSeqsetSize(seqset); i++)
     {
@@ -577,8 +577,8 @@ static int infoalign_Getrefseq(AjPStr refseq, AjPSeqset seqset)
 ** Returns lots of trivial measures of comparison between a sequence and a
 ** reference sequence
 **
-** @param [r] ref [AjPSeq] the reference sequence
-** @param [r] seq [AjPSeq] the sequence to be compared to 'ref'
+** @param [r] ref [const AjPSeq] the reference sequence
+** @param [r] seq [const AjPSeq] the sequence to be compared to 'ref'
 ** @param [r] sub [ajint **] scoring matrix
 ** @param [r] cvt [AjPSeqCvt] conversion table for scoring matrix
 ** @param [r] seqlength [ajint *] sequence length
@@ -593,7 +593,7 @@ static int infoalign_Getrefseq(AjPStr refseq, AjPSeqset seqset)
 ** @@
 ******************************************************************************/
 
-static void infoalign_Compare(AjPSeq ref, AjPSeq seq, ajint **sub,
+static void infoalign_Compare(const AjPSeq ref, const AjPSeq seq, ajint **sub,
 			      AjPSeqCvt cvt, ajint *seqlength,
 			      ajint *alignlength, ajint *gaps,
 			      ajint *gapcount, ajint *idcount,
@@ -603,8 +603,8 @@ static void infoalign_Compare(AjPSeq ref, AjPSeq seq, ajint **sub,
     ajint i;
     ajint lenseq;
     ajint lenref;
-    char *s;
-    char *r;
+    const char *s;
+    const char *r;
 
     AjBool inGap = ajFalse;	/* true if in a gap in 'seq' */
     ajint begin;

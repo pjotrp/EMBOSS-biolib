@@ -232,7 +232,7 @@ static char* cutgextract_next(AjPFile inf, AjPInt *array)
     ajStrInsertC(&org,0,"E");
 
     len = ajStrLen(org);
-    p   = ajStrStr(org);
+    p   = ajStrStrMod(&org);
     for(i=0;i<len;++i)
     {
 	c = p[i];

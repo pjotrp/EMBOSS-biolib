@@ -44,8 +44,8 @@
 
 void ajSysBasename(AjPStr *s)
 {
-    char *p;
-    char *t;
+    const char *p;
+    const char *t;
     ajint  len;
 
     len = ajStrLen(*s);
@@ -190,12 +190,13 @@ AjBool ajSysWhich(AjPStr *s)
 AjBool ajSysWhichEnv(AjPStr *s, char * const env[])
 {
     ajint count;
-    char *p;
+    char *p = NULL;
+    const char *cp;
     AjPStr tname = NULL;
     AjPStr fname = NULL;
     AjPStr path  = NULL;
     char   *save = NULL;
-    AjPStr buf;
+    AjPStr buf   = NULL;
     AjPStr tmp   = NULL;
     
     
@@ -208,13 +209,16 @@ AjBool ajSysWhichEnv(AjPStr *s, char * const env[])
     path  = ajStrNew();
     
     ajSysBasename(&tname);
-    
-    
+ 
+    ajDebug("ajSysWhichEnv '%S' => %S\n", *s, tname);
+
     count = 0;
     while(env[count]!=NULL)
     {
 	if(!(*env[count]))
 	    break;
+
+	ajDebug("  env[%d] '%s'\n", count, env[count]);
 
 	if(!strncmp("PATH=",env[count],5))
 	    break;
@@ -222,6 +226,8 @@ AjBool ajSysWhichEnv(AjPStr *s, char * const env[])
 	++count;
     }
     
+    ajDebug("PATH  env[%d] '%s'\n", count, env[count]);
+
     if(env[count]==NULL || !(*env[count]))
     {
 	ajStrDel(&fname);
@@ -232,21 +238,13 @@ AjBool ajSysWhichEnv(AjPStr *s, char * const env[])
 	return ajFalse;
     }
     
-    if(!(*env[count]))
-    {
-	ajStrDel(&fname);
-	ajStrDel(&tname);
-	ajStrDel(&path);
-	ajStrDel(&buf);
-	ajStrDel(&tmp);
-	return ajFalse;
-    }
-    
     ajStrAssC(&path, env[count]);
-    p = ajStrStr(path);
-    p += 5;
-    ajStrAssC(&tmp,p);
-    
+    cp = ajStrStr(path);
+    cp += 5;
+    ajStrAssC(&tmp,cp);
+
+    ajDebug("tmp '%S' save '%S' buf '%S'\n", tmp, save, buf);
+ 
     p = ajSysStrtokR(ajStrStr(tmp),":",&save,&buf);
     
     if(p==NULL)
@@ -277,7 +275,8 @@ AjBool ajSysWhichEnv(AjPStr *s, char * const env[])
     
     
     ajStrAssS(s,fname);
-    
+    ajDebug("ajSysWhichEnv returns '%S'\n", *s);
+
     ajStrDel(&fname);
     ajStrDel(&tname);
     ajStrDel(&path);
@@ -379,8 +378,8 @@ void ajSystemEnv(const AjPStr cl, char * const env[])
     pid_t pid;
     pid_t retval;
     ajint status;
-    char *pgm;
-    char **argptr;
+    char *pgm = NULL;
+    char **argptr = NULL;
     ajint i;
 
     AjPStr pname = NULL;
@@ -390,9 +389,16 @@ void ajSystemEnv(const AjPStr cl, char * const env[])
 
     pname = ajStrNew();
 
+    ajDebug("ajSystemEnv '%s' %S \n", pgm, cl);
     ajStrAssC(&pname, pgm);
     if(!ajSysWhichEnv(&pname, env))
 	ajFatal("cannot find program '%S'", pname);
+
+    ajDebug("ajSystemEnv %S = %S\n", pname, cl);
+    for (i=0;argptr[i]; i++)
+    {
+	ajDebug("%4d '%s'\n", i, argptr[i]);
+    }
 
     pid = fork();
     if(pid==-1)
@@ -498,7 +504,7 @@ AjBool ajSysArglist(const AjPStr cmdline, char** pgm, char*** arglist)
 {    
     static AjPRegexp argexp = NULL;
     AjPStr tmpline          = NULL;
-    char* cp;
+    const char* cp;
     ajint ipos = 0;
     ajint iarg = 0;
     ajint ilen = 0;
@@ -534,16 +540,16 @@ AjBool ajSysArglist(const AjPStr cmdline, char** pgm, char*** arglist)
 	    if(ajRegLenI(argexp, i))
 	    {
 		ajRegSubI(argexp, i, &argstr);
-		/* ajDebug("parsed [%d] '%S'\n", i, argstr);*/
+		ajDebug("parsed [%d] '%S'\n", i, argstr);
 		break;
 	    }
 	}
 	ipos += ilen;
 
 	if(!iarg)
-	    *pgm = ajCharNewC(ajStrLen(argstr), ajStrStr(argstr));
+	    *pgm = ajCharNew(argstr);
 
-	al[iarg] = ajCharNewC(ajStrLen(argstr), ajStrStr(argstr));
+	al[iarg] = ajCharNew(argstr);
 	iarg++;
     }
 
@@ -554,6 +560,7 @@ AjBool ajSysArglist(const AjPStr cmdline, char** pgm, char*** arglist)
     ajStrDel(&tmpline);
     ajStrDel(&argstr);
     
+    ajDebug("ajSysArgList %d args for '%s'\n", iarg, *pgm);
     return ajTrue;
 }
 
@@ -706,7 +713,7 @@ AjBool ajSysIsDirectory(const char *s)
 ** @param [r] s [const char *] source string
 ** @param [r] t [const char *] delimiter string
 **
-** @return [char*] pointer or NULL
+** @return [const char*] pointer or NULL
 ** @@
 ******************************************************************************/
 
@@ -714,7 +721,7 @@ char* ajSysStrtok(const char *s, const char *t)
 {
     static AjPStr rets = NULL;
     static AjPStr sou  = NULL;
-    static char *p;
+    static const char *p = NULL;
     ajint len;
 
     if(s)
@@ -739,7 +746,7 @@ char* ajSysStrtok(const char *s, const char *t)
     len = strspn(p,t);
     p += len;
 
-    return ajStrStr(rets);
+    return ajStrStrMod(&rets);
 }
 
 
@@ -760,14 +767,14 @@ char* ajSysStrtok(const char *s, const char *t)
 
 char* ajSysStrtokR(const char *s, const char *t, char **ptrptr, AjPStr *buf)
 {
-    char *p;
+    const char *p;
     ajint len;
 
     if(!*buf)
 	*buf = ajStrNew();
 
     if(s!=NULL)
-	p = (char *)s;
+	p = s;
     else
 	p = *ptrptr;
 
@@ -782,9 +789,9 @@ char* ajSysStrtokR(const char *s, const char *t, char **ptrptr, AjPStr *buf)
     len = strspn(p,t);
     p += len;
 
-    *ptrptr = p;
+    *ptrptr = (char *) p;
 
-    return ajStrStr(*buf);
+    return ajStrStrMod(buf);
 }
 
 

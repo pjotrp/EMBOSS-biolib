@@ -452,8 +452,8 @@ static void erase(
       /* update the probability that position not in a site */
       weights[j] *= 1.0 - max_z;
       /* update the letter frequencies */
-      res_freq[res[j]] += weights[j]; 		/* freq of letter */
-      if (use_comp) res_freq[resc[j]] += weights[j];/* freq of letter */
+      res_freq[(int)res[j]] += weights[j]; 		/* freq of letter */
+      if (use_comp) res_freq[(int)resc[j]] += weights[j];/* freq of letter */
     }
   }
 
@@ -633,4 +633,4 @@ extern PRIORS *create_priors(
   return priors;
 }
 
-/* $Header: /home/repository/emboss/emboss/emboss/embassy/meme/src/meme.c,v 1.1 2000/11/05 21:47:55 ajb Exp $ */
+/* $Header: /home/repository/emboss/emboss/emboss/embassy/meme/src/meme.c,v 1.2 2004/06/14 14:43:30 rice Exp $ */

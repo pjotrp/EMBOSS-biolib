@@ -1,7 +1,7 @@
 #ifndef SIM4_H
 #define SIM4_H
 
-/* $Id: sim4.h,v 1.2 2002/05/10 16:10:17 rice Exp $ */
+/* $Id: sim4.h,v 1.3 2004/06/14 14:43:30 rice Exp $ */
 
 
 /* 
@@ -155,7 +155,7 @@ typedef struct sim4_args {
    int ali_flag, poly_flag, acc_flag, reverse, DRANGE, weight, cutoff; 
    int set_K, set_C, set_H;
    int W, K, C, X, B, CDS_from, CDS_to;
-   char *S;
+   const char *S;
 } sim4_args_t;
 
 #endif

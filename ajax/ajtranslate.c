@@ -369,11 +369,11 @@ void ajTrnReadFile(AjPTrn trnObj, AjPFile trnFile)
 
     AjPStrTok tokenhandle;
 
-    char *aa;
-    char *starts;
-    char *base1;
-    char *base2;
-    char *base3;
+    const char *aa;
+    const char *starts;
+    const char *base1;
+    const char *base2;
+    const char *base3;
     ajint dlen;
     ajint i, j;
 
@@ -594,12 +594,12 @@ static void trnNoComment(AjPStr* text)
     if(!i)
 	return;
 
-    cp = strchr(ajStrStr(*text), '#');
+    cp = strchr(ajStrStrMod(text), '#');
     if(cp)
     {
 	/* comment found */
 	*cp = '\0';
-	ajStrFix(*text);
+	ajStrFix(text);
     }
 
     return;
@@ -967,7 +967,7 @@ AjPSeq ajTrnNewPep(const AjPSeq nucleicSeq, ajint frame)
 const AjPStr ajTrnCodon(const AjPTrn trnObj, const AjPStr codon)
 {
     static AjPStr trnResidue = NULL;
-    char * res;
+    const char * res;
     char store[2];
 
     store[1] = '\0';			/* end the char * of store */
@@ -1000,7 +1000,7 @@ const AjPStr ajTrnCodon(const AjPTrn trnObj, const AjPStr codon)
 const AjPStr ajTrnRevCodon(const AjPTrn trnObj, const AjPStr codon)
 {
     static AjPStr trnResidue = NULL;
-    char * res;
+    const char * res;
     char store[2];
 
     store[1] = '\0';			/* end the char * of store */
@@ -1900,7 +1900,7 @@ AjPStr ajTrnGetFileName(const AjPTrn thys)
 ** something else
 **
 ** @param [r] trnObj [const AjPTrn] Translation tables
-** @param [r] codon [const AjPStr] codon to checks
+** @param [r] codon [const AjPStr] codon to check
 ** @param [w] aa [char *] returned translated amino acid
 **                        (not a NULL-terminated array of char)
 ** @return [ajint] 1 if it is a start codon, -1 if it is a stop codon, else 0
@@ -1911,7 +1911,7 @@ AjPStr ajTrnGetFileName(const AjPTrn thys)
 
 ajint ajTrnStartStop(const AjPTrn trnObj, const AjPStr codon, char *aa)
 {
-    char *res;
+    const char *res;
 
     ajint tc1;
     ajint tc2;

@@ -152,7 +152,7 @@ static AjBool printsextract_prints_entry(AjPStr *s, AjPFile *fp)
 
 static void printsextract_write_code(AjPFile *fp, AjPStr *s, AjPStr *c)
 {
-    char *p;
+    const char *p;
 
     p = ajStrStr(*s)+4;
     ajStrAssC(c,p);
@@ -178,6 +178,7 @@ static void printsextract_write_accession(AjPFile *inf, AjPFile *outf,
 					  AjPStr *s, AjPStr *a)
 {
     char *p;
+    AjPStr tmpstr = NULL;
 
     if(!ajFileReadLine(*inf,s))
 	ajFatal("Premature EOF");
@@ -185,13 +186,16 @@ static void printsextract_write_accession(AjPFile *inf, AjPFile *outf,
     if(!ajStrPrefixC(*s,"gx;"))
 	ajFatal("No accnum (%s)",ajStrStr(*s));
 
-    ajStrChomp(s);
-    p = ajStrStr(*s)+4;
+    tmpstr = ajStrNewS(*s);
+    ajStrChomp(&tmpstr);
+    p = ajStrStrMod(&tmpstr)+4;
     p = strchr(p,';');
     if(p)
 	*p = '\0';
-    ajStrAssC(a,ajStrStr(*s)+4);
-    ajFmtPrintF(*outf,"%s\n",ajStrStr(*s)+4);
+    ajStrAssC(a,ajStrStr(tmpstr)+4);
+    ajFmtPrintF(*outf,"%s\n",ajStrStr(tmpstr)+4);
+
+    ajStrDel(&tmpstr);
 
     return;
 }
@@ -212,7 +216,7 @@ static void printsextract_write_accession(AjPFile *inf, AjPFile *outf,
 
 static ajint printsextract_write_sets(AjPFile *inf, AjPFile *outf, AjPStr *s)
 {
-    char *p;
+    const char *p;
     ajint n;
 
     if(!ajFileReadLine(*inf,s))
@@ -449,7 +453,7 @@ static void printsextract_calcMatrices(AjPFile *inf, AjPFile *outf,
     ajint k;
     ajint c;
     static ajint *mat[AZ];
-    char *p;
+    const char *p;
     ajint sum;
     ajint max;
     ajint min;

@@ -340,35 +340,36 @@ EmbPBtcache embBtreeCacheNewC(const char *file, const char *mode,
 EmbPBtpage  embBtreeCacheRead(EmbPBtcache cache, ajlong pageno);
 EmbPBtpage  embBtreeCacheWrite(EmbPBtcache cache, ajlong pageno);
 void        embBtreeCreateRootNode(EmbPBtcache cache);
-EmbPBtpage  embBtreeFindInsert(EmbPBtcache cache, char *key);
+EmbPBtpage  embBtreeFindInsert(EmbPBtcache cache, const char *key);
 
-ajint embBtreeReadDir(AjPStr **filelist, AjPStr fdirectory, AjPStr files,
-		      AjPStr exclude);
+ajint embBtreeReadDir(AjPStr **filelist, const AjPStr fdirectory,
+		      const AjPStr files,
+		      const AjPStr exclude);
 AjBool embBtreeWriteFileList(AjPStr *filelist, ajint nfiles,
-			     AjPStr fdirectory, AjPStr idirectory,
-			     AjPStr dbname);
+			     const AjPStr fdirectory, const AjPStr idirectory,
+			     const AjPStr dbname);
 void     embBtreeCacheDel(EmbPBtcache *thys);
 void     embBtreeInsertId(EmbPBtcache cache, EmbPBtId id);
 void     embBtreeIdDel(EmbPBtId *thys);
 EmbPBtId embBtreeIdNew(void);
-EmbPBtId embBtreeIdFromKey(EmbPBtcache cache, char *key);
-void     embBtreeWriteParams(EmbPBtcache cache, char *fn);
-void     embBtreeReadParams(char *fn, ajint *order, ajint *nperbucket,
+EmbPBtId embBtreeIdFromKey(EmbPBtcache cache, const char *key);
+void     embBtreeWriteParams(EmbPBtcache cache, const char *fn);
+void     embBtreeReadParams(const char *fn, ajint *order, ajint *nperbucket,
 			    ajint *pagesize, ajint *level, ajint *cachesize);
 void     embBtreeCacheSync(EmbPBtcache cache);
 
 AjBool   embBtreeDeleteId(EmbPBtcache cache, EmbPBtId id);
 void     embBtreeJoinLeaves(EmbPBtcache cache);
 
-EmbPBtWild embBtreeWildNew(EmbPBtcache cache, AjPStr wild);
+EmbPBtWild embBtreeWildNew(EmbPBtcache cache, const AjPStr wild);
 void       embBtreeWildDel(EmbPBtWild *thys);
-EmbPBtpage embBtreeFindInsertW(EmbPBtcache cache, char *key);
-EmbPBtId   embBtreeIdFromKeyW(EmbPBtcache cache, EmbPBtWild wild);
+EmbPBtpage embBtreeFindInsertW(EmbPBtcache cache, const char *key);
+EmbPBtId   embBtreeIdFromKeyW(EmbPBtcache cache, const EmbPBtWild wild);
 AjBool     embBtreeReplaceId(EmbPBtcache cache, EmbPBtId rid);
 
-AjPStr*    embBtreeReadEntries(char *filename);
+AjPStr*    embBtreeReadEntries(const char *filename);
 void       embBtreeInsertDupId(EmbPBtcache cache, EmbPBtId id);
-AjPList    embBtreeDupFromKey(EmbPBtcache cache, char *key);
+AjPList    embBtreeDupFromKey(EmbPBtcache cache, const char *key);
 
 
 #endif

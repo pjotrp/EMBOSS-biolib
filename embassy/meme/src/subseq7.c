@@ -335,7 +335,7 @@ static void get_pY(
       char *r = res + j;
       int p = log_not_o[j];
       for (k=0; k < w; k++) {		/* position in site */
-	p += theta_1[k][*r++];
+	p += theta_1[k][(int)*r++];
       }
       pY[j] = p;
     }
@@ -378,7 +378,7 @@ static void next_pY(
     /* calculate p(Y_ij | theta_1) */
     for (j=lseq-w; j > 0; j--) {
       int new = *log_not_o;
-      pY[j] = pY[j-1] + theta_last[*r--] - theta_0[*r0--] 
+      pY[j] = pY[j-1] + theta_last[(int)*r--] - theta_0[(int)*r0--] 
         + new - *(--log_not_o);
     }
 
@@ -386,7 +386,7 @@ static void next_pY(
     p = log_not_o[0];
     r = res;
     for (k=0; k < w; k++) {     	/* position in site */
-      p += theta_1[k][*r++];
+      p += theta_1[k][(int)*r++];
     }
     pY[0] = p;
   }
@@ -578,7 +578,7 @@ static void init_theta_1(
 {
   int m;
   for (m=0; m < w; m++) {
-    theta_1[m] = lmap[res[m]];
+    theta_1[m] = lmap[(int)res[m]];
   }
 /*
   printf("%d \n", res[0]);

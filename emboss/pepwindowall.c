@@ -47,8 +47,8 @@ int main(int argc, char **argv)
     AjPSeqset seqset;
     AjPGraphPlpData graphdata;
     AjPGraph mult;
-    char *seq;
-    char *s1;
+    const char *seq;
+    const char *s1;
     ajint *position;
     ajint i;
     ajint j;
@@ -192,7 +192,7 @@ static AjBool pepwindowall_getnakaidata(AjPFile file, float matrix[])
     AjBool description = ajFalse;
     AjPStrTok token;
     ajint line = 0;
-    char *ptr;
+    const char *ptr;
     ajint cols;
 
 

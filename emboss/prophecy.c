@@ -61,7 +61,7 @@ int main(int argc, char **argv)
     AjPStr cons  = NULL;
 
     ajint thresh;
-    char *p;
+    const char *p;
     AjPStr *type;
 
     float **sub = NULL;
@@ -127,7 +127,7 @@ int main(int argc, char **argv)
 static void prophecy_simple_matrix(AjPSeqset seqset, AjPFile outf, AjPStr name,
 		   ajint thresh)
 {
-    char *p;
+    const char *p;
     ajint nseqs;
     ajint mlen;
     ajint len;
@@ -254,8 +254,8 @@ static void prophecy_gribskov_profile(AjPSeqset seqset, float **sub,
     ajint i;
     ajint j;
     static char *valid="ACDEFGHIKLMNPQRSTVWY";
-    char *p;
-    char *q;
+    const char *p;
+    const char *q;
     float score;
     float sum;
     ajint gsum;
@@ -481,8 +481,8 @@ static void prophecy_henikoff_profile(AjPSeqset seqset, AjPMatrixf imtx,
     ajint i;
     ajint j;
     static char *valid="ACDEFGHIKLMNPQRSTVWY";
-    char *p;
-    char *q;
+    const char *p;
+    const char *q;
     float score;
     float sum;
     float psum;

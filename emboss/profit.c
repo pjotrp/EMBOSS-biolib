@@ -93,7 +93,7 @@ int main(int argc, char **argv)
     float gapopen;
     float gapextend;
 
-    char *p;
+    const char *p;
 
 
     embInit("profit", argc, argv);
@@ -123,11 +123,11 @@ int main(int argc, char **argv)
 	    if(!ajFileReadLine(inf,&line))
 		ajFatal("Missing matrix line");
 	    p = ajStrStr(line);
-	    p = strtok(p," \t");
+	    p = ajSysStrtok(p," \t");
 	    for(j=0;j<AZ;++j)
 	    {
 		sscanf(p,"%d",&matrix[i][j]);
-		p = strtok(NULL," \t");
+		p = ajSysStrtok(NULL," \t");
 	    }
 	}
 	ajFmtPrintF(outf,"# PROF scan using simple frequency matrix %s\n",
@@ -146,11 +146,11 @@ int main(int argc, char **argv)
 	    if(!ajFileReadLine(inf,&line))
 		ajFatal("Missing matrix line");
 	    p = ajStrStr(line);
-	    p = strtok(p," \t");
+	    p = ajSysStrtok(p," \t");
 	    for(j=0;j<AZ;++j)
 	    {
 		sscanf(p,"%f",&fmatrix[i][j]);
-		p = strtok(NULL," \t");
+		p = ajSysStrtok(NULL," \t");
 	    }
 	}
 	ajFmtPrintF(outf,"# PROF scan using Gribskov profile %s\n",
@@ -169,11 +169,11 @@ int main(int argc, char **argv)
 	    if(!ajFileReadLine(inf,&line))
 		ajFatal("Missing matrix line");
 	    p = ajStrStr(line);
-	    p = strtok(p," \t");
+	    p = ajSysStrtok(p," \t");
 	    for(j=0;j<AZ;++j)
 	    {
 		sscanf(p,"%f",&fmatrix[i][j]);
-		p = strtok(NULL," \t");
+		p = ajSysStrtok(NULL," \t");
 	    }
 	}
 	ajFmtPrintF(outf,"# PROF scan using Henikoff profile %s\n",
@@ -250,7 +250,7 @@ int main(int argc, char **argv)
 static ajint profit_getType(AjPFile inf)
 {
     AjPStr line = NULL;
-    char *p = NULL;
+    const char *p = NULL;
     ajint ret = 0;
 
     line=ajStrNew();
@@ -296,7 +296,7 @@ static ajint profit_getType(AjPFile inf)
 static void profit_read_simple(AjPFile inf, AjPStr *name, ajint *mlen,
 			       ajint *maxs, ajint *thresh, AjPStr *cons)
 {
-    char *p;
+    const char *p;
 
     AjPStr line = NULL;
 
@@ -308,8 +308,8 @@ static void profit_read_simple(AjPFile inf, AjPStr *name, ajint *mlen,
 
     if(strncmp(p,"Name",4))
 	ajFatal("Incorrect profile/matrix file format");
-    p = strtok(p," \t");
-    p = strtok(NULL," \t");
+    p = ajSysStrtok(p," \t");
+    p = ajSysStrtok(NULL," \t");
     ajStrAssC(name,p);
 
     if(!ajFileReadLine(inf,&line))
@@ -342,8 +342,8 @@ static void profit_read_simple(AjPFile inf, AjPStr *name, ajint *mlen,
 
     if(strncmp(p,"Consensus",9))
 	ajFatal("Incorrect profile/matrix file format");
-    p = strtok(p," \t\n");
-    p = strtok(NULL," \t\n");
+    p = ajSysStrtok(p," \t\n");
+    p = ajSysStrtok(NULL," \t\n");
     ajStrAssC(cons,p);
 
     ajStrDel(&line);
@@ -374,7 +374,7 @@ static void profit_read_profile(AjPFile inf, AjPStr *name, AjPStr *mname,
 				ajint *mlen, float *gapopen, float *gapextend,
 				ajint *thresh, float *maxs, AjPStr *cons)
 {
-    char *p;
+    const char *p;
     AjPStr line = NULL;
 
     line = ajStrNew();
@@ -385,8 +385,8 @@ static void profit_read_profile(AjPFile inf, AjPStr *name, AjPStr *mname,
 
     if(strncmp(p,"Name",4))
 	ajFatal("Incorrect profile/matrix file format");
-    p = strtok(p," \t");
-    p = strtok(NULL," \t");
+    p = ajSysStrtok(p," \t");
+    p = ajSysStrtok(NULL," \t");
     ajStrAssC(name,p);
 
     if(!ajFileReadLine(inf,&line))
@@ -395,8 +395,8 @@ static void profit_read_profile(AjPFile inf, AjPStr *name, AjPStr *mname,
 
     if(strncmp(p,"Matrix",6))
 	ajFatal("Incorrect profile/matrix file format");
-    p = strtok(p," \t");
-    p = strtok(NULL," \t");
+    p = ajSysStrtok(p," \t");
+    p = ajSysStrtok(NULL," \t");
     ajStrAssC(mname,p);
 
 
@@ -447,8 +447,8 @@ static void profit_read_profile(AjPFile inf, AjPStr *name, AjPStr *mname,
 
     if(strncmp(p,"Consensus",9))
 	ajFatal("Incorrect profile/matrix file format");
-    p = strtok(p," \t\n");
-    p = strtok(NULL," \t\n");
+    p = ajSysStrtok(p," \t\n");
+    p = ajSysStrtok(NULL," \t\n");
     ajStrAssC(cons,p);
 
     ajStrDel(&line);
@@ -483,7 +483,7 @@ static void profit_scan_simple(AjPStr substr, AjPStr pname, AjPStr name,
     ajint i;
     ajint j;
     ajint lim;
-    char *p;
+    const char *p;
 
     ajint score;
     ajint sum;
@@ -568,7 +568,7 @@ static void profit_scan_profile(AjPStr substr, AjPStr pname, AjPStr name,
     ajint i;
     ajint j;
     ajint lim;
-    char *p;
+    const char *p;
 
     float score;
     float sum;

@@ -23,7 +23,7 @@
  *
  * Matches up with my Perl scripts that create GSI files.
  * 
- * RCS $Id: gsi.c,v 1.1 2001/07/29 14:13:49 ajb Exp $
+ * RCS $Id: gsi.c,v 1.2 2004/06/14 14:43:30 rice Exp $
  */
 
 #include <stdio.h>
@@ -121,7 +121,7 @@ GSIGetRecord(GSIFILE *gsi, char *f1, sqd_uint16 *f2, sqd_uint32 *f3)
  *           ret_offset  - return: disk offset in seqfile.         
  */
 int
-GSIGetOffset(GSIFILE *gsi, char *key, char *ret_seqfile, 
+GSIGetOffset(GSIFILE *gsi, const char *key, char *ret_seqfile, 
 	     int *ret_format, long *ret_offset)
 {
   sqd_uint32  left, right, mid;

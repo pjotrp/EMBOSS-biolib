@@ -1152,7 +1152,7 @@ void embShowUpperRange(AjPStr * line, AjPRange upperrange, ajint pos)
 	    if(start < pos)
 		start = pos;
 
-	    p = ajStrStr(*line)+start-pos;
+	    p = ajStrStrMod(line)+start-pos;
 	    for(j=start; *p && j<=end; j++, p++)
 		if(pos-j < ajStrLen(*line))
 		    *p = toupper((ajint) *p);
@@ -1320,8 +1320,8 @@ static void showFillSeq(EmbPShow thys, AjPList lines, EmbPShowSeq info,
     AjPStr line1;	     /* used to make the three-letter codes */
     AjPStr line2;
     AjPStr line3;
-    char *p;
-    char *p3;
+    const char *p;
+    const char *p3;
     ajint count;
 
     ajDebug("showFillSeq\n");
@@ -1642,6 +1642,7 @@ static void showFillTran(EmbPShow thys, AjPList lines, EmbPShowTran info,
     AjPSeq seq    = NULL; /* local copy of sequence for translating ranges */
     AjPStr temp = NULL;
     AjPStr sajb =NULL;	  /* peptide expanded to 3-let code or by 2 spaces */
+    AjPStr transeq =NULL; /* sequence copy for editing */
     ajint frame;
     ajint framepad = 0;	  /* no. of spaces to pad to the correct frame pos */
     ajint linepos;
@@ -1752,53 +1753,49 @@ static void showFillTran(EmbPShow thys, AjPList lines, EmbPShowTran info,
 	    /* Thomas version */
 	    if(frame < 4)
 	    {
-		for(i=0; i<ajSeqLen(tran); i++)
-		    if(ajStrStr(ajSeqStr(tran))[i] == '*')
+		transeq = ajSeqStrCopy(tran);
+		for(i=0; i<ajStrLen(transeq); i++)
+		    if(ajStrChar(transeq,i) == '*')
 		    {
 			if(i-last < info->orfminsize+1) 
 			    if(!(info->firstorf && last == -1))
 			    {
+				j = last+1;
 				if(info->lcinterorf)
-				    for(j=last+1; j<i; j++)
-					ajStrStr(ajSeqStr(tran))[j] =
-					    tolower((ajint)
-						ajStrStr(ajSeqStr(tran))[j]);
+				    ajStrToLowerII(&transeq,j,i-1);
 				else
-				    for(j=last+1; j<i; j++)
-					ajStrStr(ajSeqStr(tran))[j] = '-';
+				    ajStrReplaceK(&transeq,j,i-j,'-');
 			    }
 			last = i;
 		    }
 
 		/* put the last ORF in lower case or convert it to -'s */
-		if(i == ajSeqLen(tran) && !(info->lastorf)  
+		if(i == ajStrLen(transeq) && !(info->lastorf)  
 		   && i-last < info->orfminsize+1)
 		{
+		    j = last+1;
 		    if(info->lcinterorf)
-			for(j=last+1; j<i; j++)
-			    ajStrStr(ajSeqStr(tran))[j] =
-				tolower((ajint) ajStrStr(ajSeqStr(tran))[j]);
+			ajStrToLowerII(&transeq,j,i-1);
 		    else
-			for(j=last+1; j<i; j++)
-			    ajStrStr(ajSeqStr(tran))[j] = '-';
+			ajStrReplaceK(&transeq,j,i-j,'-');
 		}
+		ajSeqReplace(tran, transeq);
+		ajStrDel(&transeq);
 	    }
 	    else /* frame 4,5,6 */
 	    {
-		for(i=0; i<ajSeqLen(tran); i++)
-		    if(ajStrStr(ajSeqStr(tran))[i] == '*')
+		transeq = ajSeqStrCopy(tran);
+		for(i=0; i<ajStrLen(transeq); i++)
+		    if(ajStrChar(transeq,i) == '*')
 		    {
 			if(i-last < info->orfminsize+1) 
 			    if(!(info->lastorf && last == -1))
 			    {
+				j = last+1;
 				if(info->lcinterorf)
-				    for(j=last+1; j<i; j++)
-					ajStrStr(ajSeqStr(tran))[j] =
-					    tolower((ajint)
-						 ajStrStr(ajSeqStr(tran))[j]);
+				    ajStrToLowerII(&transeq,j,i-1);
 				else
-				    for(j=last+1; j<i; j++)
-					ajStrStr(ajSeqStr(tran))[j] = '-';
+				    ajStrReplaceK(&transeq,j,i-j,'-');
 			    }
 			last = i;
 		    } 
@@ -1807,14 +1804,14 @@ static void showFillTran(EmbPShow thys, AjPList lines, EmbPShowTran info,
 		if(i == ajSeqLen(tran) && !(info->firstorf) 
 		   && i-last < info->orfminsize+1)
 		{
+		    j = last+1;
 		    if(info->lcinterorf)
-			for(j=last+1; j<i; j++)
-			    ajStrStr(ajSeqStr(tran))[j] =
-				tolower((ajint) ajStrStr(ajSeqStr(tran))[j]);
+			ajStrToLowerII(&transeq,j,i-1);
 		    else
-			for(j=last+1; j<i; j++)
-			    ajStrStr(ajSeqStr(tran))[j] = '-';
+			ajStrReplaceK(&transeq,j,i-j,'-');
 		}
+		ajSeqReplace(tran, transeq);
+		ajStrDel(&transeq);
 	    }
 	    
 	    /* expand to fill line or change to three-letter code */
@@ -2174,7 +2171,7 @@ static void showFillREflat(EmbPShow thys, AjPList lines, EmbPShowRE info,
     AjIList liter;			/* iterator for linelist */
     AjPStr namestr = NULL;		/* name of RE to insert into line */
     AjPStr sitestr = NULL;		/* binding and cut site to insert */
-    ajint i, j;
+    ajint i;
     char *claimchar = "*";		/* char used to stake a claim to */
     /* that position in the string */
     AjBool freespace;			/* flag for found a free space to
@@ -2263,7 +2260,7 @@ static void showFillREflat(EmbPShow thys, AjPList lines, EmbPShowRE info,
 
 	    /* cover binding site with '='s */
 	    for(i=base-start; i<base-start+ajStrLen(m->pat); i++)
-		*(ajStrStr(sitestr)+i) = '=';
+		ajStrReplaceK(&sitestr, i, 1, '=');
 
 	    /*
 	    **  I tried showing the pattern instead of '='s, but it looks
@@ -2276,15 +2273,15 @@ static void showFillREflat(EmbPShow thys, AjPList lines, EmbPShowRE info,
 	    /* put in cut sites */
 	    if(info->sense == 1)
 	    {				/* forward sense */
-		*(ajStrStr(sitestr)+cut1-start-1) = '>';
+		ajStrReplaceK(&sitestr, (cut1-start-1), 1, '>');
 		if(cut3)
-		    *(ajStrStr(sitestr)+cut3-start-1) = '>';
+		    ajStrReplaceK(&sitestr, (cut3-start-1), 1, '>');
 	    }
 	    else
 	    {				/* reverse sense */
-		*(ajStrStr(sitestr)+cut2-start-1) = '<';
+		ajStrReplaceK(&sitestr, (cut2-start-1), 1, '<');
 		if(cut4)
-		    *(ajStrStr(sitestr)+cut4-start-1) = '<';
+		    ajStrReplaceK(&sitestr, (cut4-start-1), 1, '<');
 	    }
 
 
@@ -2296,9 +2293,7 @@ static void showFillREflat(EmbPShow thys, AjPList lines, EmbPShowRE info,
 		ajStrAppKI(&namestr, *claimchar, nameend-end);
 
 	    /* insert the name in the namestr */
-	    for(j=0, i=base-start; i<base-start+ajStrLen(m->cod); j++, i++)
-		*(ajStrStr(namestr)+i) = *(ajStrStr(m->cod)+j);
-
+	    ajStrReplaceS(&namestr, (base-start), m->cod);
 
 	    /* now chop up the name and site strings to fit in the line */
 
@@ -2704,9 +2699,9 @@ static void showFillFT(EmbPShow thys, AjPList lines, EmbPShowFT info,
 
 	    /* put in end position characters */
 	    if(gf->Start-1>=pos)
-		*(ajStrStr(linestr)) = '|';
+		ajStrReplaceK(&linestr,0, '|', 1);
 	    if(gf->End-1<=pos+thys->width-1)
-		*(ajStrStr(linestr)+end-start) = '|';
+		ajStrReplaceK(&linestr, (end-start), '|', 1);
 
 
 	    /* work up list of lines */
@@ -2934,9 +2929,9 @@ static void showFillNote(EmbPShow thys, AjPList lines, EmbPShowNote info,
 
 	    /* put in end position characters */
 	    if(rstart-1>=pos)
-		*(ajStrStr(linestr)) = '|';
+		ajStrReplaceK(&linestr, 0, '|', 1);
 	    if(rend-1<=pos+thys->width-1)
-		*(ajStrStr(linestr)+end-start) = '|';
+		ajStrReplaceK(&linestr, (end-start), '|', 1);
 
 	    /* work up list of lines */
 	    freespace = ajFalse;
@@ -3060,8 +3055,6 @@ static void showFillNote(EmbPShow thys, AjPList lines, EmbPShowNote info,
 
 static void showOverPrint(AjPStr *target, ajint start, AjPStr insert)
 {
-    ajint i;
-
     /*
     ** if start position of insert is less than length of target, pad it out
     ** with space characters to get the required length
@@ -3072,9 +3065,7 @@ static void showOverPrint(AjPStr *target, ajint start, AjPStr insert)
 		   start+ajStrLen(insert) - ajStrLen(*target));
 
     /* overwrite the remaining characters */
-    for(i=0; i<ajStrLen(insert); i++)
-	*(ajStrStr(*target)+i+start) = *(ajStrStr(insert)+i);
-
+    ajStrReplaceS(target, start, insert);
     return;
 }
 
@@ -3103,7 +3094,7 @@ static AjBool showLineIsClear(AjPStr *line, ajint start, ajint end)
 	ajStrAppKI(line, ' ', end-len);
 
     for(i=start; i<=end; i++)
-	if(*(ajStrStr(*line)+i) != ' ')
+	if(ajStrChar(*line,i) != ' ')
 	    return ajFalse;
 
     return ajTrue;

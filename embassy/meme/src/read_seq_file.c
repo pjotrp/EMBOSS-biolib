@@ -94,7 +94,7 @@ static int read_sequence_data(
   char *name			/* name of sequence */
 );
 static int read_sequence_de(
-  char *desc,			/* data file of sequences */
+  const char *desc,			/* data file of sequences */
   char **descriptor		/* sequence descriptor */
 );
 
@@ -125,7 +125,7 @@ extern DATASET *read_seq_file(
 )
 {
   int i, j, pcol;
-  FILE *data_file;		/* file with samples to read */
+  /*FILE *data_file;*/		/* file with samples to read */
   char *sample_name;		/* name of sample read */
   char *sample_de;		/* descriptor text for sample */
   char *sequence;		/* sequence read */
@@ -250,7 +250,7 @@ extern DATASET *read_seq_file(
     for (j=0; j<dataset->alength; j++) {
       if (use_comp) { 	/* using complementary strand as well */
         dataset->res_freq[j] += sw * dataset->samples[i]->counts[j]/2.0;
-        dataset->res_freq[dna_comp(j)] += sw*dataset->samples[i]->counts[j]/2.0;
+        dataset->res_freq[(int)dna_comp(j)] += sw*dataset->samples[i]->counts[j]/2.0;
       } else {		/* not using complementary strands */
         dataset->res_freq[j] += sw * dataset->samples[i]->counts[j];
       }
@@ -328,7 +328,7 @@ static SAMPLE *create_sample(
   new1->counts = (int *) calloc(strlen(alpha), (int) sizeof(int));
 
   /* get character counts */
-  for (i=0; i<length; i++) (new1->counts[new1->res[i]])++;
+  for (i=0; i<length; i++) (new1->counts[(int)new1->res[i]])++;
 
   /* record length of sequence */
   new1->length = length;
@@ -357,12 +357,12 @@ extern BOOLEAN read_sequence(
   int *length			/* length of sequence */
 )
 {
-  int i, c;
+  /*int i, c;*/
   int msn = 2 * MSN;			/* define maximum internal name size */
-  FORMAT_TYPE format = FASTA;		/* assume FASTA format */
+  /*FORMAT_TYPE format = FASTA;*/		/* assume FASTA format */
   char *name = NULL;
   AjPSeq eseq=NULL;
-  char *p=NULL;
+  const char *p=NULL;
 
   if(!ajSeqallNext(seqa,&eseq))
       return FALSE;
@@ -421,7 +421,7 @@ static int read_sequence_data(
   char *name			/* name of sequence */
 )
 {
-  int length, c;
+  int length;
   char *seq = NULL;
 
   /* 
@@ -447,12 +447,12 @@ static int read_sequence_data(
 */
 /**********************************************************************/
 static int read_sequence_de(
-  char *desc,			/* data file of sequences */
+  const char *desc,			/* data file of sequences */
   char **descriptor		/* sequence descriptor; if not NULL,
 				   string will be appended */
 )
 {
-  int length, c;
+  int length;
   char *de = *descriptor;
 
 
@@ -466,4 +466,4 @@ static int read_sequence_de(
 
   return length;
 }
-/* $Header: /home/repository/emboss/emboss/emboss/embassy/meme/src/read_seq_file.c,v 1.1 2000/11/05 21:47:55 ajb Exp $ */
+/* $Header: /home/repository/emboss/emboss/emboss/embassy/meme/src/read_seq_file.c,v 1.2 2004/06/14 14:43:30 rice Exp $ */

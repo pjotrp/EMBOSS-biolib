@@ -53,7 +53,7 @@ int main(int argc, char **argv)
     AjPFile compdata;
     ajint window;
     ajint pos;
-    char *s;
+    const char *s;
     ajlong result;
     ajlong *bigarray;
     ajlong *windowbuffer;		/* ring buffer for sliding window */

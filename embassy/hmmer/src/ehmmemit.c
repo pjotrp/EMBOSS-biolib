@@ -12,7 +12,7 @@
  * SRE, Sun Mar  8 14:11:24 1998 [St. Louis]
  * 
  * main() for generating sequences from an HMM
- * RCS $Id: ehmmemit.c,v 1.1 2001/07/29 14:13:49 ajb Exp $
+ * RCS $Id: ehmmemit.c,v 1.2 2004/06/14 14:43:30 rice Exp $
  *
  * Modified for EMBOSS by Alan Bleasby (ISMB 2001)
  */
@@ -35,7 +35,7 @@
 
 int main(int argc, char **argv) 
 {
-    char            *hmmfile;	/* file to read HMMs from                  */
+    const char      *hmmfile;	/* file to read HMMs from                  */
     FILE            *fp;	/* output file handle                      */
     HMMFILE         *hmmfp;	/* opened hmmfile for reading              */
     struct plan7_s  *hmm;	/* HMM to generate from                    */

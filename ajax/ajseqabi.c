@@ -139,8 +139,8 @@ AjBool ajSeqABIMachineName(AjPFile fp,AjPStr *machine)
 	{
 	    ajFileRead(&l,sizeof(char),1,fp);
 	    *machine = ajStrNewL(l+1);
-	    ajFileRead((void*)ajStrStr(*machine),l,1,fp);
-	    *(ajStrStr(*machine)+l)='\0';
+	    ajFileRead((void*)ajStrStrMod(machine),l,1,fp);
+	    *(ajStrStrMod(machine)+l)='\0';
 	}
 	else
 	    return ajFalse;
@@ -833,8 +833,8 @@ AjBool ajSeqABISampleName(AjPFile fp, AjPStr *sample)
     {
 	ajFileRead(&l,sizeof(char),1,fp);
 	*sample = ajStrNewL(l+1);
-	ajFileRead((void*)ajStrStr(*sample),l,1,fp);
-	*(ajStrStr(*sample)+l)='\0';
+	ajFileRead((void*)ajStrStrMod(sample),l,1,fp);
+	*(ajStrStrMod(sample)+l)='\0';
     }
 
     return ajTrue;

@@ -802,7 +802,7 @@ static ajint dbigcg_gcgappent(AjPFile libr, AjPFile libs,
     static AjPStr sline  = NULL;
 
     AjBool isend;
-    char *p;
+    const char *p;
     char *q;
     ajint rpos;
     ajint spos;

@@ -81,7 +81,7 @@ int main(int argc, char **argv)
     if(matchlist && outf)
 	ajFmtPrintF(outf, "FINALLY length = %d\n",ajListLength(matchlist));
 
-    embWordFreeTable(seq1MatchTable);	/* free table of words */
+    embWordFreeTable(&seq1MatchTable);	/* free table of words */
 
     if(outf)
 	ajFmtPrintF(outf, "%10s %10s Length\n", ajSeqName(seq1),

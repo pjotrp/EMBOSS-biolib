@@ -77,7 +77,7 @@ int main(int argc, char **argv)
 
     while(ajSeqallNext(seqall, &seq))
     {
-	str = ajSeqStr(seq);
+	str = ajSeqStrCopy(seq);
 	ajStrToUpper(&str);
 
 	/* comparing the reg exps to sequence for matches. */
@@ -130,6 +130,7 @@ int main(int argc, char **argv)
 	    ajFeattableDel(&tab);
 	}
 	embPatMatchDel(&match);
+	ajStrDel(&str);
     }
 
     ajStrDel(&regexp);

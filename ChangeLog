@@ -1,4 +1,12 @@
 Version 2.9.0
+	ajStrStr function now returns const, as do various Get functions.
+	The few cases where a true char* is needed must now call
+	ajStrStrMod with the AjPStr passed by reference so that we can
+	check it is being modified. All calls to ajStrStr in EMBOSS and
+	most EMBASSY packages have been resolved to compiler remove
+	warning messages. ajStrFix also needs the AjPStr passed by
+	reference.
+
 	tfm -html now gives full path to image files.
 
 	Remove need for the definition of PLPLOT_LIB.

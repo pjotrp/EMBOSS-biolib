@@ -70,8 +70,8 @@ int main(int argc, char **argv)
     AjPSeq seq2;
     AjPStr aa0str = 0;
     AjPStr aa1str = 0;
-    char *s1;
-    char *s2;
+    const char *s1;
+    const char *s2;
     char *strret = NULL;
     ajint i;
     ajint j;

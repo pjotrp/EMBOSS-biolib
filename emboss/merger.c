@@ -64,8 +64,8 @@ int main(int argc, char **argv)
     ajint lena;
     ajint lenb;
 
-    char   *p;
-    char   *q;
+    const char   *p;
+    const char   *q;
 
     ajint start1 = 0;
     ajint start2 = 0;
@@ -222,6 +222,8 @@ static void merger_Merge(AjPAlign align, AjPStr *ms,
     ajint apos;
     ajint bpos;
     ajint i;
+    AjPStr mm = NULL;
+    AjPStr nn = NULL;
 
     char *p;
     char *q;
@@ -233,9 +235,12 @@ static void merger_Merge(AjPAlign align, AjPStr *ms,
     ajint blen;
     static AjPStr tmpstr;
 
-    p    = ajStrStr(m);
-    q    = ajStrStr(n);
-    olen = ajStrLen(m);
+    mm = ajStrNewS(m);
+    nn = ajStrNewS(n);
+
+    p    = ajStrStrMod(&mm);
+    q    = ajStrStrMod(&nn);
+    olen = ajStrLen(mm);
 
     /* output the left hand side */
     if(start1 > start2)

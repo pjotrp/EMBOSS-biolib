@@ -269,20 +269,20 @@ double e_step(
 
         /* calculate probability of positions before the site */
         for (p=0; p<first_p; p++) {
-          log_pXijktheta += logtheta0(0, eseq[p]);
+          log_pXijktheta += logtheta0(0, (int)eseq[p]);
         }
         /* calculate probability of positions after the site */
         for (p=last_p; p<lseq; p++) {
-          log_pXijktheta += logtheta0(0, eseq[p]);
+          log_pXijktheta += logtheta0(0, (int)eseq[p]);
         }
 	/* calculate the probability of positions in the site */
         if (k==0 || k==3) {			/* left to right strands */
 	  for (p=j, ii=0; p<last_p; p++, ii++) {
-            log_pXijktheta += logtheta1(ii, eseq[p]);
+            log_pXijktheta += logtheta1(ii, (int)eseq[p]);
           }
         } else {				/* right to left strands */
 	  for (p=j, ii=w-1; p<last_p; p++, ii--) {
-            log_pXijktheta += logtheta1(ii, eseq[p]);
+            log_pXijktheta += logtheta1(ii, (int)eseq[p]);
           }
         }
 
@@ -385,4 +385,4 @@ extern void convert_theta_to_log(
   }
   print_once("Using LOGL in convert_theta_to_log\n");
 }
-/* $Header: /home/repository/emboss/emboss/emboss/embassy/meme/src/oops.c,v 1.1 2000/11/05 21:47:55 ajb Exp $ */
+/* $Header: /home/repository/emboss/emboss/emboss/embassy/meme/src/oops.c,v 1.2 2004/06/14 14:43:30 rice Exp $ */

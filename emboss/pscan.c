@@ -84,13 +84,16 @@ int main(int argc, char **argv)
 	ajStrAssSubC(&substr,ajStrStr(strand),begin-1,end-1);
 
 	nmotifs = 0;
+	ajDebug("pscan sequence '%S'\n", ajSeqGetName(seq));
 	embMatPrintsInit(&mfile);
+	ajDebug("pscan prints file '%F'\n", mfile);
 	l = ajListNew();
-	while(embMatProtReadInt(&mfile,&s))
+	while((s = embMatProtReadInt(mfile)))
 	{
+	    ajDebug("pscan file '%F' read\n", mfile);
 	    if(s->n >= emin && s->n <= emax)
 	    {
-		hits=embMatProtScanInt(&substr,&name,&s,&l,&all,&ordered,
+		hits=embMatProtScanInt(substr,name,s,&l,&all,&ordered,
 					    1);
 		if(hits)
 		    ++nmotifs;

@@ -24,7 +24,7 @@
  *      Packaged for squid, Thu Oct  1 10:07:11 1992
  *      ANSI conversion in full swing, Mon Jul 12 12:22:21 1993
  *
- * RCS $Id: sqio.c,v 1.1 2001/07/29 14:13:49 ajb Exp $
+ * RCS $Id: sqio.c,v 1.2 2004/06/14 14:43:30 rice Exp $
  */
 
 #include "ajax.h"
@@ -758,7 +758,7 @@ readSquid(struct ReadSeqVars *V)
  *           Returns opened SQFILE ptr, or NULL on failure.
  */
 SQFILE *
-SeqfileOpen(char *filename, int format, char *env)
+SeqfileOpen(const char *filename, int format, char *env)
 {
   SQFILE *dbfp;
 
@@ -994,7 +994,7 @@ int ReadSeq(SQFILE *V, int format, char **ret_seq, SQINFO *sqinfo)
  * Return:   1 on success, 0 on failure.
  */          
 int
-SeqfileFormat(char *filename, int  *ret_format, char *env)
+SeqfileFormat(const char *filename, int  *ret_format, char *env)
 {
   int   foundIG      = 0;
   int   foundStrider = 0;

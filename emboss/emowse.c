@@ -92,22 +92,23 @@ static ajint emowse_read_data(AjPFile inf, EmbPMdata** data);
 static ajint emowse_sort_data(const void *a, const void *b);
 static ajint emowse_hit_sort(const void *a, const void *b);
 static void emowse_match(EmbPMdata* data, ajint dno, AjPList flist,
-			 ajint nfrags, double tol, AjPSeq seq, AjPList* hlist,
+			 ajint nfrags, double tol,
+			 const AjPSeq seq, AjPList* hlist,
 			 double partials, double cmw, ajint enz,
 			 AjPDouble freqs);
 
-static ajint emowse_seq_comp(ajint bidx, ajint thys, AjPSeq seq,
+static ajint emowse_seq_comp(ajint bidx, ajint thys, const AjPSeq seq,
 			     EmbPMdata *data, EmbPMolFrag *frags);
 static ajint emowse_get_index(double actmw, double maxmw, double minmw,
 			      EmbPMolFrag *frags, ajint fno, double *bestmw,
-			      ajint *index, ajint thys, AjPSeq seq,
+			      ajint *index, ajint thys, const AjPSeq seq,
 			      EmbPMdata *data);
 
-static ajint emowse_seq_search(AjPStr substr, char *s);
-static AjBool emowse_msearch(char *seq, char *pat, AjBool term);
+static ajint emowse_seq_search(const AjPStr substr, AjPStr* s);
+static AjBool emowse_msearch(const char *seq, const char *pat, AjBool term);
 static void emowse_mreverse(char *s);
-static ajint emowse_get_orc(AjPStr *orc, char *s, ajint pos);
-static AjBool emowse_comp_search(AjPStr substr, char *s);
+static ajint emowse_get_orc(AjPStr *orc, const char *s, ajint pos);
+static AjBool emowse_comp_search(const AjPStr substr, const char *s);
 static void emowse_print_hits(AjPFile outf, AjPList hlist, ajint dno,
 			      EmbPMdata* data);
 
@@ -379,7 +380,7 @@ static ajint emowse_hit_sort(const void *a, const void *b)
 ** @param [r] flist [AjPList] Undocumented
 ** @param [r] nfrags [ajint] Undocumented
 ** @param [r] tol [double] Undocumented
-** @param [r] seq [AjPSeq] Undocumented
+** @param [r] seq [const AjPSeq] Undocumented
 ** @param [r] hlist [AjPList*] Undocumented
 ** @param [r] partials [double] Undocumented
 ** @param [r] cmw [double] Undocumented
@@ -389,7 +390,8 @@ static ajint emowse_hit_sort(const void *a, const void *b)
 ******************************************************************************/
 
 static void emowse_match(EmbPMdata* data, ajint dno, AjPList flist,
-			 ajint nfrags, double tol, AjPSeq seq, AjPList* hlist,
+			 ajint nfrags, double tol,
+			 const AjPSeq seq, AjPList* hlist,
 			 double partials, double cmw, ajint rno,
 			 AjPDouble freqs)
 {
@@ -574,7 +576,7 @@ static void emowse_match(EmbPMdata* data, ajint dno, AjPList flist,
 ** @param [r] bestmw [double*] Undocumented
 ** @param [r] index [ajint*] Undocumented
 ** @param [r] thys [ajint] Undocumented
-** @param [r] seq [AjPSeq] Undocumented
+** @param [r] seq [const AjPSeq] Undocumented
 ** @param [r] data [EmbPMdata*] Undocumented
 ** @return [ajint] Undocumented
 ** @@
@@ -582,7 +584,7 @@ static void emowse_match(EmbPMdata* data, ajint dno, AjPList flist,
 
 static ajint emowse_get_index(double actmw, double maxmw, double minmw,
 			      EmbPMolFrag *frags, ajint fno, double *bestmw,
-			      ajint *index, ajint thys, AjPSeq seq,
+			      ajint *index, ajint thys, const AjPSeq seq,
 			      EmbPMdata *data)
 {
     double mw1;
@@ -723,24 +725,24 @@ static ajint emowse_get_index(double actmw, double maxmw, double minmw,
 **
 ** @param [r] bidx [ajint] Undocumented
 ** @param [r] thys [ajint] Undocumented
-** @param [r] seq [AjPSeq] Undocumented
+** @param [r] seq [const AjPSeq] Undocumented
 ** @param [r] data [EmbPMdata*] Undocumented
 ** @param [r] frags [EmbPMolFrag*] Undocumented
 ** @return [ajint] Undocumented
 ** @@
 ******************************************************************************/
 
-static ajint emowse_seq_comp(ajint bidx, ajint thys, AjPSeq seq,
+static ajint emowse_seq_comp(ajint bidx, ajint thys, const AjPSeq seq,
 			     EmbPMdata *data, EmbPMolFrag *frags)
 {
     ajint beg;
     ajint end;
     ajint len;
     AjPStr result   = NULL;
-    AjPStr str      = NULL;
+    const AjPStr str      = NULL;
     AjPStr substr   = NULL;
     AjPStrTok token = NULL;
-    char *p;
+    const char *p;
 
 
     if(!ajStrLen(data[thys]->sdata))
@@ -770,14 +772,14 @@ static ajint emowse_seq_comp(ajint bidx, ajint thys, AjPSeq seq,
 	if(ajStrPrefixC(result,"SEQ("))
 	{
 	    ajStrAssC(&result,p+4);
-	    *(ajStrStr(result)+5)='\0';
-	    if(!emowse_seq_search(substr,ajStrStr(result)))
+	    ajStrReplaceK(&result,5,'\0',1);
+	    if(!emowse_seq_search(substr,&result))
 		return 0;
 	}
 	else if(ajStrPrefixC(result,"COMP("))
 	{
 	    ajStrAssC(&result,p+5);
-	    *(ajStrStr(result)+5)='\0';
+	    ajStrReplaceK(&result, 5, '\0', 1);
 	    if(!emowse_comp_search(substr,ajStrStr(result)))
 		return 0;
 	}
@@ -801,7 +803,7 @@ static ajint emowse_seq_comp(ajint bidx, ajint thys, AjPSeq seq,
 **
 ** Undocumented.
 **
-** @param [r] s [char*] Undocumented
+** @param [u] s [char*] Undocumented
 ** @@
 ******************************************************************************/
 
@@ -814,7 +816,7 @@ static void emowse_mreverse(char *s)
 
     rev = ajStrNewC(s);
     ajStrRev(&rev);
-    p = ajStrStr(rev);
+    p = ajStrStrMod(&rev);
 
     len = strlen(s);
     for(i=0;i<len;++i)
@@ -843,16 +845,17 @@ static void emowse_mreverse(char *s)
 **
 ** Undocumented.
 **
-** @param [r] substr [AjPStr] Undocumented
-** @param [r] s [char*] Undocumented
+** @param [r] substr [const AjPStr] Undocumented
+** @param [r] str [AjPStr*] Undocumented
 ** @return [AjBool] Undocumented
 ** @@
 ******************************************************************************/
 
-static AjBool emowse_seq_search(AjPStr substr, char *s)
+static AjBool emowse_seq_search(const AjPStr substr, AjPStr *str)
 {
-    char *p;
+    const char *p;
     char *q;
+    char* s;
     static AjPStr t = NULL;
 
     if(!t)
@@ -860,7 +863,8 @@ static AjBool emowse_seq_search(AjPStr substr, char *s)
 
     p = ajStrStr(substr);
     ajStrAssC(&t,p);
-    q = ajStrStr(t);
+    q = ajStrStrMod(&t);
+    s = ajStrStrMod(str);
 
     if(!strncmp(s,"B-",2))
     {
@@ -900,14 +904,14 @@ static AjBool emowse_seq_search(AjPStr substr, char *s)
 **
 ** Undocumented.
 **
-** @param [r] seq [char*] Undocumented
-** @param [r] pat [char*] Undocumented
+** @param [r] seq [const char*] Undocumented
+** @param [r] pat [const char*] Undocumented
 ** @param [r] term [AjBool] Undocumented
 ** @return [AjBool] Undocumented
 ** @@
 ******************************************************************************/
 
-static AjBool emowse_msearch(char *seq, char *pat, AjBool term)
+static AjBool emowse_msearch(const char *seq, const char *pat, AjBool term)
 {
     AjPStr orc = NULL;
 
@@ -918,7 +922,7 @@ static AjBool emowse_msearch(char *seq, char *pat, AjBool term)
     ajint i;
     ajint t;
     ajint ofpos;
-    char *p;
+    const char *p;
 
     qpos = ofpos = fpos = 0;
     fl = ajFalse;
@@ -1001,13 +1005,13 @@ static AjBool emowse_msearch(char *seq, char *pat, AjBool term)
 **
 ** Undocumented.
 **
-** @param [r] substr [AjPStr] Undocumented
-** @param [r] s [char*] Undocumented
+** @param [r] substr [const AjPStr] Undocumented
+** @param [r] s [const char*] Undocumented
 ** @return [AjBool] Undocumented
 ** @@
 ******************************************************************************/
 
-static AjBool emowse_comp_search(AjPStr substr, char *s)
+static AjBool emowse_comp_search(const AjPStr substr, const char *s)
 {
     AjPInt arr;
     ajint i;
@@ -1019,10 +1023,10 @@ static AjBool emowse_comp_search(AjPStr substr, char *s)
     ajint qpos;
     char c;
     AjPStr orc;
-    char *r;
+    const char *r;
 
 
-    char *p;
+    const char *p;
     AjPStr t;
 
     p   = ajStrStr(substr);
@@ -1114,13 +1118,13 @@ static AjBool emowse_comp_search(AjPStr substr, char *s)
 ** Undocumented.
 **
 ** @param [r] orc [AjPStr*] Undocumented
-** @param [r] s [char*] Undocumented
+** @param [r] s [const char*] Undocumented
 ** @param [r] pos [ajint] Undocumented
 ** @return [ajint] Undocumented
 ** @@
 ******************************************************************************/
 
-static ajint emowse_get_orc(AjPStr *orc, char *s, ajint pos)
+static ajint emowse_get_orc(AjPStr *orc, const char *s, ajint pos)
 {
     ajint i;
 

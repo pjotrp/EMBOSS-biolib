@@ -484,7 +484,7 @@ unsigned long long ajSp64Crc(const AjPStr thys)
     unsigned long long crc;
     ajint i;
     ajint len;
-    char *p = NULL;
+    const char *p = NULL;
     
 
     if(!initialised)

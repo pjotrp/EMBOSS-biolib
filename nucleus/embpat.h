@@ -182,11 +182,12 @@ ajint           embPatRestrictMatch (const AjPSeq seq, ajint begin, ajint end,
 				     AjBool blunt, AjBool sticky,
 				     AjBool commercial, AjPList *l);
 void            embPatRestrictPreferred(AjPList l, AjPTable t);
-AjBool          embPatRestrictReadEntry (EmbPPatRestrict *re, AjPFile *inf);
+AjBool          embPatRestrictReadEntry (EmbPPatRestrict re, AjPFile inf);
 
 ajint           embPatRestrictRestrict (AjPList *l, ajint hits, AjBool isos,
 					AjBool alpha);
-ajint           embPatRestrictScan (EmbPPatRestrict *enz, const AjPStr substr,
+ajint           embPatRestrictScan (const EmbPPatRestrict enz,
+				    const AjPStr substr,
 				    const AjPStr binstr, const AjPStr revstr,
 				    const AjPStr binrev, ajint len,
 				    AjBool ambiguity,

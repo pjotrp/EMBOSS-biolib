@@ -13,6 +13,7 @@
 #include "macros.h"
 #include "ckit.h"
 #include <curses.h>
+
 /*---------------------------------------*/
 /* Match "Curses" attributes
 */

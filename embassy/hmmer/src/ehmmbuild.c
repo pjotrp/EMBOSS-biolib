@@ -12,7 +12,7 @@
  * SRE, Mon Nov 18 12:41:29 1996
  *
  * main() for HMM construction from an alignment.
- * RCS $Id: ehmmbuild.c,v 1.3 2004/04/05 15:01:37 rice Exp $
+ * RCS $Id: ehmmbuild.c,v 1.4 2004/06/14 14:43:30 rice Exp $
  * Modified for EMBOSS by Alan Bleasby (ISMB 2001)
  */
 
@@ -118,7 +118,7 @@ struct opt_s OPTIONS[] = {
 
 #define NOPTIONS (sizeof(OPTIONS) / sizeof(struct opt_s))
 
-static void save_model(struct plan7_s *hmm, char *hmmfile, int do_append,
+static void save_model(struct plan7_s *hmm, const char *hmmfile, int do_append,
 		       int do_binary);
 static void print_all_scores(FILE *fp, struct plan7_s *hmm, 
 			     AINFO *ainfo, char **dsq, int nseq, 
@@ -149,7 +149,7 @@ int main(int argc, char **argv)
     struct plan7_s  *hmm;	/* constructed HMM; written to hmmfile     */
     struct p7prior_s *pri;	/* Dirichlet priors to use                 */
     struct p7trace_s **tr;	/* fake tracebacks for aseq's              */ 
-    char            *hmmfile;	/* file to write HMM to                    */
+    const char      *hmmfile;	/* file to write HMM to                    */
     FILE            *fp;	/* OUTPUT file handle (misc.)              */
     char            *name;	/* name of the HMM                         */
     int              idx;	/* counter for sequences                   */
@@ -728,7 +728,7 @@ int main(int argc, char **argv)
  *           
  * Return:   (void)
  */          
-static void save_model(struct plan7_s *hmm, char *hmmfile, int do_append,
+static void save_model(struct plan7_s *hmm, const char *hmmfile, int do_append,
 		       int do_binary)
 {
     FILE    *fp;

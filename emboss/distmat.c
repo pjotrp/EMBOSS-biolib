@@ -94,7 +94,7 @@ int main (int argc, char * argv[])
     float gapwt;
     float var_a;
 
-    char  *p;
+    const char  *p;
     char **seqcharptr;
 
     AjPSeqset seqset = NULL;
@@ -1365,7 +1365,7 @@ static char** distmat_getSeq(AjPSeqset seqset, ajint nseqs, ajint mlen,
     ajint count;
 
     AjBool onetwo = ajFalse;
-    char*  pseqset;
+    const char*  pseqset;
     char** pseq;
 
 

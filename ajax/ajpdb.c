@@ -3158,13 +3158,13 @@ AjPList       ajPdbtospReadAllRawNew(AjPFile inf)
 ** for DOMAINATRIX "pdbtosp" application).
 **
 ** @param [r] inf [AjPFile] Input file stream
-** @param [r] entry [AjPStr] Pdb id
+** @param [r] entry [const AjPStr] Pdb id
 **
 ** @return [AjPPdbtosp] True on success
 ** @@
 ****************************************************************************/
 
-AjPPdbtosp  ajPdbtospReadNew(AjPFile inf, AjPStr entry) 
+AjPPdbtosp  ajPdbtospReadNew(AjPFile inf, const AjPStr entry) 
 {
     AjPPdbtosp ret = NULL;
     
@@ -3183,13 +3183,13 @@ AjPPdbtosp  ajPdbtospReadNew(AjPFile inf, AjPStr entry)
 ** object is allocated.
 **
 ** @param [r] inf   [AjPFile] Input file stream
-** @param [r] entry [char*]   Pdb id
+** @param [r] entry [const char*]   Pdb id
 **
 ** @return [AjPPdbtosp] True on success
 ** @@
 ****************************************************************************/
 
-AjPPdbtosp ajPdbtospReadCNew(AjPFile inf, char *entry)
+AjPPdbtosp ajPdbtospReadCNew(AjPFile inf, const char *entry)
 {
     AjPPdbtosp ret = NULL;
 

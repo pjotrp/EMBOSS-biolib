@@ -50,7 +50,7 @@ int main(int argc, char **argv)
     AjPStr   nucs   = NULL;
     AjPStr   valstr = NULL;
 
-    char * dinuc = NULL;
+    const char * dinuc = NULL;
     ajint    len;
     ajint    begin;
     ajint    end;

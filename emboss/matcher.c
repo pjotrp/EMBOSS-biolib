@@ -263,17 +263,22 @@ AjPSeqCvt cvt = NULL;
 
 
 static ajint matcher_Sim(AjPAlign align,
-			char A[], char B[], ajint M, ajint N, ajint K,
+			const char A[], const char B[],
+			 ajint M, ajint N, ajint K,
 			ajint Q, ajint R, ajint beg, ajint beg2, ajint nseq);
-static ajint matcher_BigPass(char A[], char B[], ajint M, ajint N, ajint K,
+static ajint matcher_BigPass(const char A[], const char B[],
+			     ajint M, ajint N, ajint K,
 			    ajint nseq);
-static ajint matcher_Locate(char A[], char B[], ajint nseq);
-static ajint matcher_SmallPass(char A[], char B[], ajint count, ajint nseq);
-static ajint matcher_Diff(char A[], char B[], ajint M, ajint N, ajint tb,
+static ajint matcher_Locate(const char A[], const char B[], ajint nseq);
+static ajint matcher_SmallPass(const char A[], const char B[],
+			       ajint count, ajint nseq);
+static ajint matcher_Diff(const char A[], const char B[],
+			  ajint M, ajint N, ajint tb,
 			  ajint te);
-static ajint matcher_Calcons(char *aa0, ajint n0, char *aa1, ajint n1,
+static ajint matcher_Calcons(const char *aa0, ajint n0,
+			     const char *aa1, ajint n1,
 			     ajint *res, ajint *nc, ajint *nident);
-static ajint matcher_Discons(char *seqc0, char *seqc1, ajint nc);
+static ajint matcher_Discons(const char *seqc0, const char *seqc1, ajint nc);
 static ajint matcher_Addnode(ajint c, ajint ci, ajint cj, ajint i, ajint j,
 			     ajint K, ajint cost);
 static ajint matcher_NoCross(void);
@@ -292,8 +297,8 @@ int main(int argc, char **argv)
 {
     AjPStr aa0str = 0;
     AjPStr aa1str = 0;
-    char *s1;
-    char *s2;
+    const char *s1;
+    const char *s2;
     ajint gdelval;
     ajint ggapval;
     ajint i;
@@ -371,8 +376,8 @@ int main(int argc, char **argv)
 ** Undocumented
 **
 ** @param [r] align [AjPAlign] Alignment object
-** @param [r] A [char*] Undocumented
-** @param [r] B [char*] Undocumented
+** @param [r] A [const char*] Undocumented
+** @param [r] B [const char*] Undocumented
 ** @param [r] M [ajint] Undocumented
 ** @param [r] N [ajint] Undocumented
 ** @param [r] K [ajint] Undocumented
@@ -385,7 +390,8 @@ int main(int argc, char **argv)
 ******************************************************************************/
 
 static ajint matcher_Sim(AjPAlign align,
-			 char *A,char *B,ajint M,ajint N,ajint K,ajint Q,
+			 const char *A,const char *B,
+			 ajint M,ajint N,ajint K,ajint Q,
 			 ajint R, ajint beg0, ajint beg1, ajint nseq)
 {
     ajint endi;
@@ -629,8 +635,8 @@ static ajint matcher_NoCross(void)
 **
 ** Undocumented
 **
-** @param [r] A [char*] Undocumented
-** @param [r] B [char*] Undocumented
+** @param [r] A [const char*] Undocumented
+** @param [r] B [const char*] Undocumented
 ** @param [r] M [ajint] Undocumented
 ** @param [r] N [ajint] Undocumented
 ** @param [r] K [ajint] Undocumented
@@ -638,7 +644,8 @@ static ajint matcher_NoCross(void)
 ** @return [ajint] Undocumented
 ******************************************************************************/
 
-static ajint matcher_BigPass(char *A,char *B,ajint M,ajint N,ajint K,
+static ajint matcher_BigPass(const char *A,const char *B,
+			     ajint M,ajint N,ajint K,
 			      ajint nseq)
 {
     register ajint  i;
@@ -747,13 +754,13 @@ static ajint matcher_BigPass(char *A,char *B,ajint M,ajint N,ajint K,
 **
 ** Undocumented
 **
-** @param [r] A [char*] Undocumented
-** @param [r] B [char*] Undocumented
+** @param [r] A [const char*] Undocumented
+** @param [r] B [const char*] Undocumented
 ** @param [r] nseq [ajint] Number of sequences
 ** @return [ajint] Undocumented
 ******************************************************************************/
 
-static ajint matcher_Locate(char *A,char *B,ajint nseq)
+static ajint matcher_Locate(const char *A,const char *B,ajint nseq)
 {
     register ajint i;
     register ajint j;			/* row and column indices */
@@ -1041,14 +1048,15 @@ static ajint matcher_Locate(char *A,char *B,ajint nseq)
 **
 ** Undocumented
 **
-** @param [r] A [char*] Undocumented
-** @param [r] B [char*] Undocumented
+** @param [r] A [const char*] Undocumented
+** @param [r] B [const char*] Undocumented
 ** @param [r] count [ajint] Undocumented
 ** @param [r] nseq [ajint] Number of sequences
 ** @return [ajint] Undocumented
 ******************************************************************************/
 
-static ajint matcher_SmallPass(char *A,char *B,ajint count,ajint nseq)
+static ajint matcher_SmallPass(const char *A,const char *B,
+			       ajint count,ajint nseq)
 {
     register ajint i;
     register ajint j;			/* row and column indices */
@@ -1274,8 +1282,8 @@ static vertexptr matcher_Findmax(void)
 **
 ** Undocumented
 **
-** @param [r] A [char*] Undocumented
-** @param [r] B [char*] Undocumented
+** @param [r] A [const char*] Undocumented
+** @param [r] B [const char*] Undocumented
 ** @param [r] M [ajint] Undocumented
 ** @param [r] N [ajint] Undocumented
 ** @param [r] tb [ajint] Undocumented
@@ -1284,7 +1292,8 @@ static vertexptr matcher_Findmax(void)
 ******************************************************************************/
 
 
-static ajint matcher_Diff(char *A,char *B,ajint M,ajint N,ajint tb,ajint te)
+static ajint matcher_Diff(const char *A,const char *B,
+			  ajint M,ajint N,ajint tb,ajint te)
 {
     ajint midi;
     ajint midj;
@@ -1495,9 +1504,9 @@ static ajint matcher_Diff(char *A,char *B,ajint M,ajint N,ajint tb,ajint te)
 **
 ** Undocumented
 **
-** @param [r] aa0 [char*] Undocumented
+** @param [r] aa0 [const char*] Undocumented
 ** @param [r] n0 [ajint] Undocumented
-** @param [r] aa1 [char*] Undocumented
+** @param [r] aa1 [const char*] Undocumented
 ** @param [r] n1 [ajint] Undocumented
 ** @param [r] res [ajint*] Undocumented
 ** @param [r] nc [ajint*] Undocumented
@@ -1505,7 +1514,8 @@ static ajint matcher_Diff(char *A,char *B,ajint M,ajint N,ajint tb,ajint te)
 ** @return [ajint] Undocumented
 ******************************************************************************/
 
-static ajint matcher_Calcons(char *aa0,ajint n0,char *aa1,ajint n1,ajint *res,
+static ajint matcher_Calcons(const char *aa0,ajint n0,
+			     const char *aa1,ajint n1,ajint *res,
 			     ajint *nc,ajint *nident)
 {
     ajint i0;
@@ -1518,8 +1528,8 @@ static ajint matcher_Calcons(char *aa0,ajint n0,char *aa1,ajint n1,ajint *res,
     char *sp1;
     ajint *rp;
 
-    char *sq1;
-    char *sq2;
+    const char *sq1;
+    const char *sq2;
 
     /* first fill in the ends */
     min0--;
@@ -1591,13 +1601,13 @@ static ajint matcher_Calcons(char *aa0,ajint n0,char *aa1,ajint n1,ajint *res,
 **
 ** Undocumented
 **
-** @param [r] seqc0 [char*] Undocumented
-** @param [r] seqc1 [char*] Undocumented
+** @param [r] seqc0 [const char*] Undocumented
+** @param [r] seqc1 [const char*] Undocumented
 ** @param [r] nc [ajint] Undocumented
 ** @return [ajint] Undocumented
 ******************************************************************************/
 
-static ajint matcher_Discons(char *seqc0, char *seqc1, ajint nc)
+static ajint matcher_Discons(const char *seqc0, const char *seqc1, ajint nc)
 {
 
 #define MAXOUT 201
@@ -1628,9 +1638,9 @@ static ajint matcher_Discons(char *seqc0, char *seqc1, ajint nc)
     ajlong qqoff;
     ajlong lloff;
     ajint have_res;
-    char *name01;
-    char *name0;
-    char *name1;
+    const char *name01;
+    const char *name0;
+    const char *name1;
     char n0;
     ajint smark[4] =
     {

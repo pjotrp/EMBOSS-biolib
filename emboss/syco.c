@@ -71,8 +71,8 @@ int main(int argc, char **argv)
 
     float sum;
 
-    char *p;
-    char *q;
+    const char *p;
+    const char *q;
 
     ajint base;
     ajint limit;

@@ -1783,7 +1783,7 @@ static AjBool seqReadFasta(AjPSeq thys, AjPSeqin seqin)
     static AjPStr sv   = NULL;
     static AjPStr desc = NULL;
 
-    char *cp;
+    const char *cp;
     ajint bufflines = 0;
     ajlong fpos     = 0;
     ajlong fposb    = 0;
@@ -1887,7 +1887,7 @@ static AjBool seqReadDbId(AjPSeq thys, AjPSeqin seqin)
     static AjPStr rdline    = NULL;
     AjPFileBuff buff;
 
-    char *cp;
+    const char *cp;
     AjPStr vacc     = NULL;
     ajint bufflines = 0;
     ajlong fpos     = 0;
@@ -2180,9 +2180,9 @@ static AjBool seqReadGcg(AjPSeq thys, AjPSeqin seqin)
     ajint bufflines      = 0;
     AjBool ok;
 
-    ajint len    = 0;
-    AjBool seqed = ajFalse;
-    char *p      = NULL;
+    ajint len     = 0;
+    AjBool seqed  = ajFalse;
+    const char *p = NULL;
 
     AjPFileBuff buff;
 
@@ -2366,7 +2366,7 @@ static AjBool seqReadSelex(AjPSeq thys, AjPSeqin seqin)
     AjPStr      line  = NULL;
     AjPSelex    selex;
     ajint       n      = 0;
-    char        *p     = NULL;
+    const char  *p     = NULL;
     AjBool      ok     = ajFalse;
     AjBool      isseq  = ajFalse;
     AjBool      named  = ajFalse;
@@ -2859,7 +2859,7 @@ static void seqStockholmCopy(AjPSeq *thys, AjPSeqin seqin, ajint n)
 static void seqSelexAppend(const AjPStr src, AjPStr *dest,
 			   ajint beg, ajint end)
 {
-    char *p = NULL;
+    const char *p = NULL;
     char c;
     ajint len;
     ajint i;
@@ -3011,7 +3011,7 @@ static void seqSelexPos(const AjPStr line, ajint *begin, ajint *end)
     ajint pos = 0;
     ajint len = 0;
 
-    char  *p;
+    const char  *p;
 
     /*
     **  Selex sequence info can start any number of spaces
@@ -3991,7 +3991,7 @@ static AjBool seqReadHennig86(AjPSeq thys, AjPSeqin seqin)
 	    while(ok && ajRegExec(seqexp, rdline))
 	    {
 		ajRegPost(seqexp, &seqstr);
-		for(cp = ajStrStr(seqstr); cp; cp++)
+		for(cp = ajStrStrMod(&seqstr); cp; cp++)
 		    switch(*cp)
 		    {
 		    case 0: *cp = 'A';break;
@@ -7423,7 +7423,7 @@ static void seqListNoComment(AjPStr* text)
     if(cp)
     {					/* comment found */
 	*cp = '\0';
-	ajStrFix(*text);
+	ajStrFix(text);
     }
 
     return;

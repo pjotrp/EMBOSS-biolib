@@ -10,7 +10,7 @@
 
 /* emit.c
  * SRE, Sun Mar  8 12:26:58 1998
- * RCS $Id: emit.c,v 1.1 2001/07/29 14:13:49 ajb Exp $
+ * RCS $Id: emit.c,v 1.2 2004/06/14 14:43:30 rice Exp $
  * 
  * Generation of sequences/traces from an HMM.
  */
@@ -344,7 +344,7 @@ EmitConsensusSequence(struct plan7_s *hmm, char **ret_seq, char **ret_dsq, int *
 	  seq[i]   = Alphabet[x];
 	  dsq[i+1] = x;
 	  if (hmm->mat[k][x] < mthresh)
-	    seq[i] = tolower(seq[i]);
+	    seq[i] = (char)tolower((int)seq[i]);
 	  i++;
 	  tpos++;
 	}

@@ -9,7 +9,7 @@
  ************************************************************/
 
 /* funcs.h 
- * RCS $Id: funcs.h,v 1.1 2001/07/29 14:13:49 ajb Exp $
+ * RCS $Id: funcs.h,v 1.2 2004/06/14 14:43:30 rice Exp $
  *
  * Declarations of external functions in HMMER.
  */            
@@ -124,13 +124,13 @@ extern void   Lawless422(float *x, int *y, int n, int z, float c,
 /* from hmmio.c
  * Input/output (saving/reading) of models
  */
-extern HMMFILE *HMMFileOpen(char *hmmfile, char *env);
+extern HMMFILE *HMMFileOpen(const char *hmmfile, char *env);
 extern int      HMMFileRead(HMMFILE *hmmfp, struct plan7_s **ret_hmm);
 extern void     HMMFileClose(HMMFILE *hmmfp);
 extern int      HMMFileFormat(HMMFILE *hmmfp);
 extern void     HMMFileRewind(HMMFILE *hmmfp);
 extern void     HMMFilePositionByOffset(HMMFILE *hmmfp, long offset);
-extern int      HMMFilePositionByName(HMMFILE *hmmfp, char *name);
+extern int      HMMFilePositionByName(HMMFILE *hmmfp, const char *name);
 extern int      HMMFilePositionByIndex(HMMFILE *hmmfp, int idx);
 extern void     WriteAscHMM(FILE *fp, struct plan7_s *hmm);
 extern void     WriteBinHMM(FILE *fp, struct plan7_s *hmm);

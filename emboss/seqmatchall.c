@@ -31,8 +31,8 @@ static void seqmatchall_listPrint(AjPAlign align, AjPList list);
 
 
 
-static AjPSeq seq2;
-static AjPSeq seq1;
+static const AjPSeq seq2;
+static const AjPSeq seq1;
 
 ajint statwordlen;
 
@@ -91,7 +91,7 @@ int main(int argc, char **argv)
 		    }
 		}
 	    }
-	    embWordFreeTable(seq1MatchTable); /* free table of words */
+	    embWordFreeTable(&seq1MatchTable); /* free table of words */
 	}
     }
 

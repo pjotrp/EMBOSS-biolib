@@ -69,7 +69,7 @@ ajint embMolGetFrags(const AjPStr thys, ajint rno, AjPList *l)
 
     ajint len;
     ajint pos;
-    char *p;
+    const char *p;
 
     static AjPInt defcut =NULL;
     ajint defcnt;

@@ -68,7 +68,7 @@ static ajint rogue = 1000000;
 
 static char base[] = "acgt-" ;
 
-static char *sq ;
+static const char *sq ;
 static ajint *revmatch[5] ;
 static ajint length ;
 static AjPInt2d matrix=NULL;
@@ -97,7 +97,7 @@ int main(int argc, char **argv)
     ajint *ip;
     ajint *t1Base;
     ajint lastReported = -1;
-    char *cp;
+    const char *cp;
     ajint a;
     ajint c;
     ajint d;

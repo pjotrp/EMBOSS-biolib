@@ -10,7 +10,7 @@
 
 /* alignio.c
  * SRE, Mon Jul 12 11:57:37 1993
- * RCS $Id: alignio.c,v 1.1 2001/07/29 14:13:48 ajb Exp $
+ * RCS $Id: alignio.c,v 1.2 2004/06/14 14:43:30 rice Exp $
  * 
  * Input/output of sequence alignments.
  */
@@ -126,7 +126,7 @@ FreeAlignment(char **aseqs, AINFO *ainfo)
  * Returns:  1 on success.
  */
 void
-ReadAlignedFASTA(char *filename, char *env, char ***ret_aseq, AINFO *ainfo)
+ReadAlignedFASTA(const char *filename, char *env, char ***ret_aseq, AINFO *ainfo)
 {
   SQFILE *sqfp;                 /* open file for reading */
   char  **aseq=NULL;            /* aligned sequences     */
@@ -287,13 +287,13 @@ SAMizeAlignmentByGapFrac(char **aseq, int nseq, int alen, float maxgap)
 	{			/* insert column */
 	  for (idx = 0; idx < nseq; idx++)
 	    if (isgap(aseq[idx][apos])) aseq[idx][apos] = '.';
-	    else aseq[idx][apos] = tolower(aseq[idx][apos]);
+	    else aseq[idx][apos] = (char)tolower((int)aseq[idx][apos]);
 	}
       else			
 	{			/* match column */
 	  for (idx = 0; idx < nseq; idx++)
 	    if (isgap(aseq[idx][apos])) aseq[idx][apos] = '-';
-	    else aseq[idx][apos] = toupper(aseq[idx][apos]);
+	    else aseq[idx][apos] = (char)toupper((int)aseq[idx][apos]);
 	}
     }
 }

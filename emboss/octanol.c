@@ -59,7 +59,7 @@ int main(int argc, char **argv)
     float max = -555.5;
     float total  = 0;
     float total2 = 0;
-    char *s1;
+    const char *s1;
     float midpoint;
     AjBool interface;
     AjBool octanol;
@@ -210,7 +210,7 @@ static ajint octanol_getwhitewimbleydata(AjPFile file, float matrix[],
     AjPStr buf2   = NULL;
     AjPStr delim  = NULL;
     AjPStrTok token;
-    char *s1;
+    const char *s1;
     ajint cols;
     ajint matpos;
 

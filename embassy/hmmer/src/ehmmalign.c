@@ -12,7 +12,7 @@
  * SRE, Thu Dec 18 16:05:29 1997 [St. Louis]
  * 
  * main() for aligning a set of sequences to an HMM.
- * RCS $Id: ehmmalign.c,v 1.2 2004/03/11 17:57:30 rice Exp $
+ * RCS $Id: ehmmalign.c,v 1.3 2004/06/14 14:43:30 rice Exp $
  * Modified for EMBOSS by Alan Bleasby (ISMB 2001)
  */ 
 
@@ -42,9 +42,9 @@ static void include_alignment(char *seqfile, struct plan7_s *hmm, int do_mapped,
 
 int main(int argc, char **argv) 
 {
-  char            *hmmfile;	/* file to read HMMs from                  */
+  const char      *hmmfile;	/* file to read HMMs from                  */
   HMMFILE         *hmmfp;       /* opened hmmfile for reading              */
-  char            *seqfile;     /* file to read target sequence from       */ 
+  const char      *seqfile;     /* file to read target sequence from       */ 
   char           **rseq;        /* raw, unaligned sequences                */ 
   SQINFO          *sqinfo;      /* info associated with sequences          */
   char           **dsq;         /* digitized raw sequences                 */
@@ -58,7 +58,7 @@ int main(int argc, char **argv)
 
   int   be_quiet;		/* TRUE to suppress verbose banner          */
   int   matchonly;		/* TRUE to show only match state syms       */
-  char *outfile;                /* optional alignment output file           */
+  const char *outfile;          /* optional alignment output file           */
   FILE *ofp;                    /* handle on alignment output file          */
   AjPFile ajwithali;          /* name of additional alignment file to align */
   AjPFile ajmapali;           /* name of additional alignment file to map   */

@@ -34,22 +34,25 @@ static AjPList wordLengthList = NULL;
 
 static ajint    wordCmpStr(const void *x, const void *y);
 static ajint    wordCompare(const void *x, const void *y);
-static void     wordCurIterTrace(AjIList curiter);
-static void     wordCurListTrace(AjPList curlist);
+static void     wordCurIterTrace(const AjIList curiter);
+static void     wordCurListTrace(const AjPList curlist);
 static ajint    wordDeadZone(EmbPWordMatch match, ajint deadx1, ajint deady1,
 			     int deadx2, ajint deady2, ajint minlength);
+static ajint    wordFindWordAtPos(const char *word,
+				  const AjPTable seq1MatchTable,
+				  ajint nextpos);
+static ajint    wordGetWholeMatch(const EmbPWordMatch match,
+				  AjPTable seq1MatchTable);
 static void     wordListInsertNodeOld(AjPListNode* pnode, void* x);
 static void     wordListInsertOld(AjIList iter, void* x);
 static ajint    wordMatchCmp(const void* v1, const void* v2);
 static ajint    wordMatchCmpPos(const void* v1, const void* v2);
-static void     wordNewListTrace(ajint i, AjPList newlist);
+static void     wordNewListTrace(ajint i, const AjPList newlist);
 static void     wordOrderPosMatchTable(AjPList unorderedList);
 
 static unsigned wordStrHash(const void *key, unsigned hashsize);
 
 static void     wordVFree(const void *key, void **count, void *cl);
-
-
 
 
 /* @funcstatic wordCmpStr *****************************************************
@@ -198,12 +201,12 @@ void embWordClear(void)
 **
 ** Print the words found with their frequencies.
 **
-** @param [u] table [AjPTable] table to be created or updated.
+** @param [r] table [const AjPTable] table to be printed
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void embWordPrintTable(AjPTable table)
+void embWordPrintTable(const AjPTable table)
 {
     void **array;
     EmbPWord ajnew;
@@ -230,13 +233,13 @@ void embWordPrintTable(AjPTable table)
 **
 ** Print the words found with their frequencies.
 **
-** @param [u] table [AjPTable] table to be created or updated.
-** @param [r] outf [AjPFile] Output file.
+** @param [r] table [const AjPTable] table to be printed
+** @param [u] outf [AjPFile] Output file.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void embWordPrintTableF(AjPTable table, AjPFile outf)
+void embWordPrintTableF(const AjPTable table, AjPFile outf)
 {
     void **array;
     EmbPWord ajnew;
@@ -316,15 +319,15 @@ static void wordVFree(const void *key, void **count, void *cl)
 **
 ** delete the word table and free the memory.
 **
-** @param [u] table [AjPTable] table to be created or updated.
+** @param [d] table [AjPTable*] table to be deleted
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void embWordFreeTable(AjPTable table)
+void embWordFreeTable(AjPTable *table)
 {
-    ajTableMap(table, wordVFree, NULL);
-    ajTableFree(&table);
+    ajTableMap(*table, wordVFree, NULL);
+    ajTableFree(table);
     table = 0;
 
     return;
@@ -413,15 +416,15 @@ static void wordMatchListPrint(void **x,void *cl)
 **
 ** print the word table.
 **
-** @param [r] file [AjPFile] Output file
-** @param [r] list [AjPList] list to be printed.
+** @param [u] file [AjPFile] Output file
+** @param [r] list [const AjPList] list to be printed.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void embWordMatchListPrint(AjPFile file, AjPList list)
+void embWordMatchListPrint(AjPFile file, const AjPList list)
 {
-    ajListMap(list,wordMatchListPrint, file);
+    ajListMapRead(list,wordMatchListPrint, file);
 
     return;
 }
@@ -433,18 +436,18 @@ void embWordMatchListPrint(AjPFile file, AjPList list)
 **
 ** convert the word table to feature tables.
 **
-** @param [r] list [AjPList] list to be printed.
+** @param [r] list [const AjPList] list to be printed.
 ** @param [u] tab1 [AjPFeattable*] feature table for sequence 1
 ** @param [u] tab2 [AjPFeattable*] feature table for sequence 2
-** @param [r] seq1 [AjPSeq] sequence
-** @param [r] seq2 [AjPSeq] second sequence
+** @param [r] seq1 [const AjPSeq] sequence
+** @param [r] seq2 [const AjPSeq] second sequence
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void embWordMatchListConvToFeat(AjPList list,
+void embWordMatchListConvToFeat(const AjPList list,
 				AjPFeattable *tab1, AjPFeattable *tab2,
-				AjPSeq seq1, AjPSeq seq2)
+				const AjPSeq seq1, const AjPSeq seq2)
 {
     char strand = '+';
     ajint frame = 0;
@@ -501,14 +504,14 @@ void embWordMatchListConvToFeat(AjPList list,
 ** The word length must be defined by a call to embWordLength.
 **
 ** @param [u] table [AjPTable*] table to be created or updated.
-** @param [r] seq [AjPSeq] Sequence to be "worded"
+** @param [r] seq [const AjPSeq] Sequence to be "worded"
 ** @return [ajint] 1 if successful 0 if not.
 ** @@
 ******************************************************************************/
 
-ajint embWordGetTable(AjPTable *table, AjPSeq seq)
+ajint embWordGetTable(AjPTable *table, const AjPSeq seq)
 {
-    char * startptr;
+    const char * startptr;
     ajint i;
     ajint ilast;
     ajint *k;
@@ -592,14 +595,14 @@ ajint embWordGetTable(AjPTable *table, AjPSeq seq)
 **
 ** Looks for a word at a given position
 **
-** @param [r] word [char*] Word to find
-** @param [r] seq1MatchTable [AjPTable] Match table
+** @param [r] word [const char*] Word to find
+** @param [r] seq1MatchTable [const AjPTable] Match table
 ** @param [r] nextpos [ajint] Not used
 ** @return [ajint] Position found (1 is the start) or 0 if none.
 ** @@
 ******************************************************************************/
 
-static ajint wordFindWordAtPos(char *word, AjPTable seq1MatchTable,
+static ajint wordFindWordAtPos(const char *word, const AjPTable seq1MatchTable,
 			       ajint nextpos)
 {
     EmbPWord wordmatch;
@@ -634,16 +637,17 @@ static ajint wordFindWordAtPos(char *word, AjPTable seq1MatchTable,
 **
 ** Looks for a word length match.
 **
-** @param [r] match [EmbPWordMatch] match structure
+** @param [r] match [const EmbPWordMatch] match structure
 ** @param [r] seq1MatchTable [AjPTable] match table
 ** @return [ajint] Match position
 ** @@
 ******************************************************************************/
 
-static ajint wordGetWholeMatch(EmbPWordMatch match, AjPTable seq1MatchTable)
+static ajint wordGetWholeMatch(const EmbPWordMatch match,
+			       AjPTable seq1MatchTable)
 {
-    AjPSeq seq2;
-    char *startptr;
+    const AjPSeq seq2;
+    const char *startptr;
     ajint i = 0;
     ajint ilast;
     ajint nextpos = 0;
@@ -852,14 +856,14 @@ static ajint wordMatchCmpPos(const void* v1, const void* v2)
 **   (c) new hits, found in the word table from the other sequence.
 **
 ** @param [u] seq1MatchTable [AjPTable*] Match table
-** @param [r] seq2 [AjPSeq] Second sequence
+** @param [r] seq2 [const AjPSeq] Second sequence
 ** @param [r] orderit [ajint] 1 to sort results at end, else 0.
 ** @return [AjPList] List of matches.
 ** @error NULL table was not built due to an error.
 ** @@
 ******************************************************************************/
 
-AjPList embWordBuildMatchTable(AjPTable *seq1MatchTable,  AjPSeq seq2,
+AjPList embWordBuildMatchTable(AjPTable *seq1MatchTable,  const AjPSeq seq2,
 				ajint orderit)
 {
     ajint i = 0;
@@ -867,7 +871,7 @@ AjPList embWordBuildMatchTable(AjPTable *seq1MatchTable,  AjPSeq seq2,
     AjPList hitlist = NULL;
     static AjPList curlist = NULL;
     const AjPList newlist = NULL;
-    char *startptr;
+    const char *startptr;
     EmbPWord wordmatch;
     EmbPWordMatch match;
     EmbPWordMatch match2;
@@ -1064,12 +1068,12 @@ AjPList embWordBuildMatchTable(AjPTable *seq1MatchTable,  AjPSeq seq2,
 ** Reports contents of a word list.
 **
 ** @param [r] i [ajint] Offset
-** @param [r] newlist [AjPList] word list.
+** @param [r] newlist [const AjPList] word list.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void wordNewListTrace(ajint i, AjPList newlist)
+static void wordNewListTrace(ajint i, const AjPList newlist)
 {
     ajint *k;
     AjIList iter;
@@ -1096,12 +1100,12 @@ static void wordNewListTrace(ajint i, AjPList newlist)
 **
 ** Reports contents of a word list.
 **
-** @param [r] curlist [AjPList] word list.
+** @param [r] curlist [const AjPList] word list.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void wordCurListTrace(AjPList curlist)
+static void wordCurListTrace(const AjPList curlist)
 {
 /*
     EmbPWordMatch match;
@@ -1136,12 +1140,12 @@ static void wordCurListTrace(AjPList curlist)
 **
 ** Reports contents of a current word list iterator
 **
-** @param [r] curiter [AjIList] List iterator for the current word list
+** @param [r] curiter [const AjIList] List iterator for the current word list
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void wordCurIterTrace(AjIList curiter)
+static void wordCurIterTrace(const AjIList curiter)
 {
     /*AjPListNode node;*/
     /*EmbPWordMatch match;*/

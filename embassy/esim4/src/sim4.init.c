@@ -62,13 +62,13 @@
 #ifndef __lint     
 /*@unused@*/       
 static const char rcsid[] =
-"$Id: sim4.init.c,v 1.5 2004/03/11 17:58:19 rice Exp $";
+"$Id: sim4.init.c,v 1.6 2004/06/14 14:43:30 rice Exp $";
 #endif         
            
 
 static void init_stats(sim4_stats_t *);
 static void sim4_argvals(sim4_args_t *);
-static void cds_range(char *,int *,int *);
+static void cds_range(const char *,int *,int *);
 static char *extract_tok(char *);
 
 static void add_offset_exons(Exon *,int);
@@ -143,8 +143,11 @@ int main(int argc, char *argv[])
         int    len1, len2, count, dist, match_ori, in_K, in_C, in_H;
         int pA, pT, xpT, xpA, rev_xpT, rev_xpA;
         int cds_from, cds_to;
-        uchar *seq1, *seq2;
-        char  *h2, *h1, *cds_gene=NULL, *line;
+        uchar *seq1;
+	uchar *seq2;
+        char  *cds_gene=NULL, *line;
+	char* h1;
+	char* h2;
 #ifndef EMBASSY
         SEQ   *sf1, *sf2, *rf1=NULL;
 #endif
@@ -184,7 +187,7 @@ int main(int argc, char *argv[])
 	len1 = strlen(ajSeqChar(esim4_sequence));
         seq1 = malloc(sizeof(uchar) * (1 + len1 ));
         (void) strcpy((char *) seq1,ajSeqChar(esim4_sequence));
-	h1= ajSeqName(esim4_sequence);
+	h1= ajCharNewC(ajSeqName(esim4_sequence));
 	if (!is_DNA(seq1, len1))
                 fatal("The mRNA sequence is not a DNA sequence.");
         seq_toupper(seq1, len1, h1);
@@ -198,7 +201,7 @@ int main(int argc, char *argv[])
 	len2 = strlen(ajSeqChar(esim4_genome));
         seq2 = malloc(sizeof(uchar) * (2 + len2 ));
         (void) strcpy((char *) seq2,ajSeqChar(esim4_genome));
-	h2= ajSeqName(esim4_genome);
+	h2= ajCharNewC(ajSeqName(esim4_genome));
 	if (!is_DNA(seq2, len2))
                 fatal("The mRNA sequence is not a DNA sequence.");
         seq_toupper(seq2, len2, h2);
@@ -330,7 +333,8 @@ else {
 #else
         while (!count || (seq_read(sf2)>0)) {
 #endif
-           sim4_stats_t st, rev_st; char *tok;
+           sim4_stats_t st, rev_st;
+	   char *tok;
         
            if (count) { /* skip the first seq2, already in memory */
 #ifdef EMBASSY
@@ -341,7 +345,7 @@ else {
               if(seq2 != NULL)free(seq2);
               seq2 = malloc(sizeof(uchar) * (2 + len2 ));
               (void) strcpy((char *) seq2,ajSeqChar(esim4_genome));
-	      tok = h2= ajSeqName(esim4_genome);
+	      tok = h2= ajCharNewC(ajSeqName(esim4_genome));
 	      if (!is_DNA(seq2, len2))
                       fatal("The mRNA sequence is not a DNA sequence.");
               seq_toupper(seq2, len2, h2);
@@ -360,8 +364,7 @@ else {
            } else {  /* first sequence in the file, seq2 is already in memory */
                tok = extract_tok(h2);
                if (tok==NULL) { 
-                   tok = ckalloc(strlen("(no header)")+1); 
-                   strcpy(tok, "(no header)"); 
+                   tok = ajCharNewC("(no header)"); 
                } 
            }
 
@@ -934,9 +937,9 @@ static void sim4_argvals(sim4_args_t *args)
 
 
 /* extract the CDS endpoints from the command line specification <n1>..<n2> */
-static void cds_range(char *line, int *from, int *to)
+static void cds_range(const char *line, int *from, int *to)
 {
-     char *s = line;
+     const char *s = line;
 
      if (line == NULL) fatal ("NULL CDS specification.");
 

@@ -59,7 +59,7 @@ int main(int argc, char **argv)
     AjPSeqall seqall;
     AjPSeq    seq    = NULL;
     AjPFile   outf   = NULL;
-    AjPStr    strand = NULL;
+    const AjPStr    strand = NULL;
     AjPStr    substr = NULL;
     AjPSeqout outseq = NULL;
 

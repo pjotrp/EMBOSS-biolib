@@ -718,8 +718,8 @@ AjPCmap      ajCmapReadNew(AjPFile inf, ajint mode, ajint chn, ajint mod);
 /* ======================== Pdbtosp object =============================== */
 /* ======================================================================= */
 AjPList      ajPdbtospReadAllRawNew(AjPFile inf);
-AjPPdbtosp   ajPdbtospReadNew(AjPFile inf, AjPStr entry);
-AjPPdbtosp   ajPdbtospReadCNew(AjPFile inf, char *entry);
+AjPPdbtosp   ajPdbtospReadNew(AjPFile inf, const AjPStr entry);
+AjPPdbtosp   ajPdbtospReadCNew(AjPFile inf, const char *entry);
 AjPList      ajPdbtospReadAllNew(AjPFile inf);
 AjBool       ajPdbtospWrite(AjPFile outf, AjPList list);
 

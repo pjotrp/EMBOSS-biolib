@@ -13,7 +13,7 @@
  * my library of extra string functions. Some for portability
  * across UNIXes
  *
- * RCS $Id: sre_string.c,v 1.1 2001/07/29 14:13:49 ajb Exp $
+ * RCS $Id: sre_string.c,v 1.2 2004/06/14 14:43:30 rice Exp $
  */
 
 #include <stdio.h>
@@ -174,7 +174,7 @@ sre_realloc(char *file, int line, void *p, size_t size)
  * Return:   1 on match, 0 if no match
  */
 int
-Strparse(char *rexp, char *s, int ntok)
+Strparse(char *rexp, const char *s, int ntok)
 {
   sqd_regexp *pat;
   int         code;

@@ -21,7 +21,7 @@
  * Some functions are both obsolete and wrong but still necessary
  * to get legacy code to compile.
  *
- * RCS $Id: sqfuncs.h,v 1.1 2001/07/29 14:13:49 ajb Exp $
+ * RCS $Id: sqfuncs.h,v 1.2 2004/06/14 14:43:30 rice Exp $
  */
 
 /* 
@@ -39,7 +39,7 @@ extern float AlignmentIdentityBySampling(char **aseq, int L, int N, int nsample)
  */
 extern void AllocAlignment(int nseq, int alen, char ***ret_aseq, AINFO *ainfo);
 extern void FreeAlignment(char **aseqs, AINFO *ainfo);
-extern void ReadAlignedFASTA(char *filename, char *env, 
+extern void ReadAlignedFASTA(const char *filename, char *env, 
 			     char ***ret_aseq, AINFO *ainfo);
 extern void WriteAlignedFASTA(FILE *fp, char **aseqs, AINFO *ainfo);
 extern void SAMizeAlignment(char **aseq, int nseq, int alen);
@@ -74,10 +74,10 @@ extern void ScalePAM(int **pam, int scale);
 /* from file.c
  */
 extern char *FileDirname(char *filename);
-extern char *FileTail(char *file, int noextension);
-extern char *FileConcat(char *dir, char *file);
-extern FILE *EnvFileOpen(char *fname, char *env, char **ret_dir);
-extern int   FileExists(char *filename);
+extern char *FileTail(const char *file, int noextension);
+extern char *FileConcat(const char *dir, const char *file);
+extern FILE *EnvFileOpen(const char *fname, char *env, char **ret_dir);
+extern int   FileExists(const char *filename);
 
 
 /* from getopt.c
@@ -92,7 +92,7 @@ extern int  Getopt(int argc, char **argv,
  */
 extern GSIFILE *GSIOpen(char *gsifile);
 extern int      GSIGetRecord(GSIFILE *gsi, char *f1, sqd_uint16 *f2, sqd_uint32 *f3);
-extern int      GSIGetOffset(GSIFILE *gsi, char *key, char *sqfile, 
+extern int      GSIGetOffset(GSIFILE *gsi, const char *key, char *sqfile, 
 			  int *fmt, long *ret_offset);
 extern void     GSIClose(GSIFILE *gsi);
 extern void     GSIWriteHeader(FILE *fp, int nfiles, long nkeys);
@@ -111,12 +111,12 @@ extern void sqd_regerror(char *message);
 /* from interleaved.c
  */
 extern int IsInterleavedFormat(int format);
-extern int ReadInterleaved(char *seqfile, 
+extern int ReadInterleaved(const char *seqfile, 
 			   int (*skip_header)(FILE *),
 			   int (*parse_header)(FILE *, AINFO *),
 			   int (*is_dataline)(char *, char *), 
 			   char ***ret_aseqs, AINFO *ainfo);
-extern int ReadAlignment(char *seqfile, int format, char ***ret_aseqs, AINFO *ainfo);
+extern int ReadAlignment(const char *seqfile, int format, char ***ret_aseqs, AINFO *ainfo);
 
 /* 
  * from msf.c
@@ -130,10 +130,10 @@ extern char *revcomp(char *comp, char *seq);
 /* 
  * from selex.c
  */
-extern int  ReadSELEX(char *seqfile, char ***ret_aseqs, AINFO *ret_aliinfo);
+extern int  ReadSELEX(const char *seqfile, char ***ret_aseqs, AINFO *ret_aliinfo);
 extern void WriteSELEX(FILE *fp, char **aseqs, AINFO *ainfo, int cpl);
 extern int  DealignAseqs(char **aseqs, int num, char ***ret_rseqs);
-extern int  IsSELEXFormat(char *filename);
+extern int  IsSELEXFormat(const char *filename);
 extern int  TruncateNames(char **names, int N); /* OBSOLETE? */
 
 /* 
@@ -164,7 +164,7 @@ extern void  ToDNA(char *seq);
 extern void  ToRNA(char *seq);
 extern int   ReadMultipleRseqs(char *seqfile, int fformat, char ***ret_rseqs, 
 			       SQINFO **ret_sqinfo, int *ret_num);
-extern SQFILE *SeqfileOpen(char *filename, int format, char *env);
+extern SQFILE *SeqfileOpen(const char *filename, int format, char *env);
 extern void    SeqfilePosition(SQFILE *sqfp, long offset);
 extern void    SeqfileRewind(SQFILE *sqfp);
 extern void    SeqfileClose(SQFILE *sqfp);
@@ -172,7 +172,7 @@ extern int   ReadSeq(SQFILE *fp, int format, char **ret_seq, SQINFO *sqinfo);
 extern int   GCGBinaryToSequence(char *seq, int len);
 extern int   GCGchecksum(char *seq, int seqlen);
 extern int   GCGMultchecksum(char **seqs, int nseq);
-extern int   SeqfileFormat(char *filename, int  *ret_format, char *env);
+extern int   SeqfileFormat(const char *filename, int  *ret_format, char *env);
 extern int   WriteSeq(FILE *outf, int outfmt, char *seq, SQINFO *sqinfo);
 extern int   Seqtype(char *seq);
 extern char *SeqFormatString(int code);
@@ -233,7 +233,7 @@ extern void  s2lower(char *s);
 extern void  s2upper(char *s);
 extern void *sre_malloc(char *file, int line, size_t size);
 extern void *sre_realloc(char *file, int line, void *p, size_t size);
-extern int   Strparse(char *rexp, char *s, int ntok);
+extern int   Strparse(char *rexp, const char *s, int ntok);
 extern void  SqdClean(void);
 extern void  StrShuffle(char *s1, char *s2);
 extern void  StrReverse(char *s1, char *s2);

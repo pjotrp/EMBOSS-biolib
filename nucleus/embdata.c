@@ -33,7 +33,7 @@
 
 
 
-static AjBool dataListNextLine(AjPFile pfile, char *commentLine,
+static AjBool dataListNextLine(AjPFile pfile, const char *commentLine,
 				 AjPStr * line);
 
 
@@ -44,25 +44,25 @@ static AjBool dataListNextLine(AjPFile pfile, char *commentLine,
 ** Deletes the tables of data list. Calls ajTableFree for each table in the
 ** list, and then calls ajListFree to free the actual list.
 **
-** @param [w] data [AjPList] is the list of data tables to delete
+** @param [w] data [AjPList*] is the list of data tables to delete
 ** @return [void]
 **
 ** @@
 ******************************************************************************/
 
-void embDataListDel(AjPList data)
+void embDataListDel(AjPList* data)
 {
    AjIList iter;
    AjPTable table;
 
-   iter = ajListIterRead(data);
+   iter = ajListIterRead(*data);
    while(ajListIterMore(iter))
    {
       table = ajListIterNext(iter);
       ajTableFree(&table);
    }
    ajListIterFree(&iter);
-   ajListFree(&data);
+   ajListFree(data);
 
    return;
 }
@@ -75,8 +75,8 @@ void embDataListDel(AjPList data)
 ** private function to read in the next line of data from the file. It is
 ** called from embDataListRead.
 **
-** @param [r] pfile [AjPFile] file poiter to the data file
-** @param [r] commentLine [char *] the character used as the to describe the
+** @param [u] pfile [AjPFile] file pointer to the data file
+** @param [r] commentLine [const char *] the character(s) used to describe the
 **        start of a comment line in the data file
 ** @param [w] line [AjPStr *] Buffer to hold the current line
 ** @return [AjBool] returns AjTrue if found another line of input otherwise
@@ -85,7 +85,7 @@ void embDataListDel(AjPList data)
 ** @@
 ******************************************************************************/
 
-static AjBool dataListNextLine(AjPFile pfile, char *commentLine,
+static AjBool dataListNextLine(AjPFile pfile, const char *commentLine,
 			       AjPStr * line)
 {
    ajint i;
@@ -115,7 +115,7 @@ static AjBool dataListNextLine(AjPFile pfile, char *commentLine,
 ** each table are stored as AjPStr.
 **
 ** @param [w] data [AjPList] is the list of data tables.
-** @param [r] pfile [AjPFile] pointer to the data file
+** @param [u] pfile [AjPFile] pointer to the data file
 ** @return [void]
 **
 ** @@
@@ -214,7 +214,8 @@ void embDataListRead(AjPList data, AjPFile pfile)
 ** order. Only returns a list of pointers to the data. It does not copy the
 ** tables.
 **
-** @param [r] fullList [AjPList] The list containing all the tables of data
+** @param [r] fullList [const AjPList] The list containing all the tables
+**                                     of data
 ** @param [w] returnList [AjPList] The new list containing just the tables
 **        requested
 ** @param [r] required [ajuint] used to request tables. A value of 1
@@ -226,7 +227,7 @@ void embDataListRead(AjPList data, AjPFile pfile)
 ** @@
 ******************************************************************************/
 
-void embDataListGetTables(AjPList fullList, AjPList returnList,
+void embDataListGetTables(const AjPList fullList, AjPList returnList,
 			   ajuint required)
 {
    AjIList iter;
@@ -259,7 +260,8 @@ void embDataListGetTables(AjPList fullList, AjPList returnList,
 ** the lowest set bit in the value determines which table is returned i.e.
 ** a value of 66 would request the second table (not the seventh)
 **
-** @param [r] fullList [AjPList] The list containing all the tables of data
+** @param [r] fullList [const AjPList] The list containing all the tables
+**                                     of data
 ** @param [r] required [ajuint] used to request a table. A value of 1
 **        requests the first table, a value of 16 requests the fifth table,
 **        a value of 14 returns the second table in the original list.
@@ -268,7 +270,7 @@ void embDataListGetTables(AjPList fullList, AjPList returnList,
 ** @@
 ******************************************************************************/
 
-AjPTable embDataListGetTable(AjPList fullList, ajuint required)
+AjPTable embDataListGetTable(const AjPList fullList, ajuint required)
 {
    AjIList iter;
    AjPTable returnTable = NULL;

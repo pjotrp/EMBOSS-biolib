@@ -9,8 +9,8 @@
 **  Journal of Molecular Biology 162:705-708
 **
 ** @author Copyright (C) 2003--2004 Damian Counsell
-** @version $Revision: 1.8 $
-** @modified $Date: 2004/05/06 15:09:43 $
+** @version $Revision: 1.9 $
+** @modified $Date: 2004/06/14 14:39:20 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -270,8 +270,8 @@ void embGotohCellCalculateSumScore(AjPFloat2d ajpFloat2dPairScores,
 {
   ajint ajIntRowMax;
   ajint ajIntColumnMax;
-  AjPStr ajpStrDownSeq = NULL;
-  AjPStr ajpStrAcrossSeq = NULL;
+  const AjPStr ajpStrDownSeq = NULL;
+  const AjPStr ajpStrAcrossSeq = NULL;
   ajint ajIntRow;
   ajint ajIntColumn;
   ajint ajIntMaxRowPosition;

@@ -1,6 +1,6 @@
 #ifndef SIM4B1_H
 #define SIM4B1_H
-/* $Id: sim4b1.h,v 1.1 2002/02/25 09:33:50 hgmp Exp $ */
+/* $Id: sim4b1.h,v 1.2 2004/06/14 14:43:30 rice Exp $ */
 
 extern uchar *seq1, *seq2;
 extern int M, N, encoding[NACHARS];
@@ -17,7 +17,7 @@ void flip_list(Exon **,Exon **);
 void free_list(Exon *);
 void free_table(void);
 void free_align(edit_script_list *);
-void seq_toupper(uchar *, int, char *); 
+void seq_toupper(uchar *, int, const char *); 
 void complement_exons(Exon **,int,int);
 void print_exons(Exon *);
 void print_pipmaker_exons(Exon *,edit_script_list *,char *,int,int,int,int,uchar *,uchar*,int);

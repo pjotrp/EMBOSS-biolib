@@ -66,7 +66,7 @@ void embConsCalc(const AjPSeqset seqset,const AjPMatrix cmpmatrix,
 
     AjPSeqCvt cvt  = 0;
     AjPFloat score = NULL;
-    char **seqcharptr;
+    const char **seqcharptr;
     char res;
     char nocon;
 

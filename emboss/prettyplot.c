@@ -72,7 +72,7 @@
 #define BOXRIG      0x0008
 #define BOXCOLOURED 0x0010
 
-char **seqcharptr;
+const char **seqcharptr;
 ajint **seqcolptr;
 ajint **seqboxptr;
 ajint *seqcount = 0;
@@ -182,7 +182,7 @@ int main(int argc, char **argv)
     float simthresh = 1.0;
     float relthresh = 0.5;
     float part = 0.0;
-    char *cptr;
+    const char *cptr;
     ajint resbreak;
     float fplural;
     float ystart;

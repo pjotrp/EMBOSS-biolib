@@ -94,7 +94,7 @@ static void maskfeat_FeatSeqMask(AjPSeq seq, AjPStr type,
     AjIList    iter = NULL ;
     AjPFeature gf   = NULL ;
     AjPStr str = NULL;
-    AjPFeattable feat;
+    const AjPFeattable feat;
     char whiteSpace[] = " \t\n\r,;|";	/* skip whitespace and , ; | */
     AjPStrTok tokens;
     AjPStr key = NULL;

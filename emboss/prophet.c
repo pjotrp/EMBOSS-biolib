@@ -88,7 +88,7 @@ int main(int argc, char **argv)
     float opencoeff;
     float extendcoeff;
 
-    char *p;
+    const char *p;
 
     ajint maxarr = 1000;
     ajint alen;
@@ -129,11 +129,11 @@ int main(int argc, char **argv)
 	if(!ajFileReadLine(inf,&line))
 	    ajFatal("Missing matrix line");
 	p = ajStrStr(line);
-	p = strtok(p," \t");
+	p = ajSysStrtok(p," \t");
 	for(j=0;j<AZ;++j)
 	{
 	    sscanf(p,"%f",&fmatrix[i][j]);
-	    p = strtok(NULL," \t");
+	    p = ajSysStrtok(NULL," \t");
 	}
     }
 
@@ -200,7 +200,7 @@ int main(int argc, char **argv)
 static ajint prophet_getType(AjPFile inf, AjPStr *tname)
 {
     AjPStr line = NULL;
-    char *p = NULL;
+    const char *p = NULL;
     ajint ret = 0;
 
     line = ajStrNew();
@@ -250,7 +250,7 @@ static void prophet_read_profile(AjPFile inf, AjPStr *name, AjPStr *mname,
 				 float *gapextend, ajint *thresh,
 				 float *maxs, AjPStr *cons)
 {
-    char *p;
+    const char *p;
     AjPStr line = NULL;
 
     line = ajStrNew();
@@ -262,8 +262,8 @@ static void prophet_read_profile(AjPFile inf, AjPStr *name, AjPStr *mname,
     if(strncmp(p,"Name",4))
 	ajFatal("Incorrect profile/matrix file format");
 
-    p = strtok(p," \t");
-    p = strtok(NULL," \t");
+    p = ajSysStrtok(p," \t");
+    p = ajSysStrtok(NULL," \t");
     ajStrAssC(name,p);
 
     if(!ajFileReadLine(inf,&line))
@@ -272,8 +272,8 @@ static void prophet_read_profile(AjPFile inf, AjPStr *name, AjPStr *mname,
     p = ajStrStr(line);
     if(strncmp(p,"Matrix",6))
 	ajFatal("Incorrect profile/matrix file format");
-    p = strtok(p," \t");
-    p = strtok(NULL," \t");
+    p = ajSysStrtok(p," \t");
+    p = ajSysStrtok(NULL," \t");
     ajStrAssC(mname,p);
 
 
@@ -324,8 +324,8 @@ static void prophet_read_profile(AjPFile inf, AjPStr *name, AjPStr *mname,
 
     if(strncmp(p,"Consensus",9))
 	ajFatal("Incorrect profile/matrix file format");
-    p = strtok(p," \t\n");
-    p = strtok(NULL," \t\n");
+    p = ajSysStrtok(p," \t\n");
+    p = ajSysStrtok(NULL," \t\n");
     ajStrAssC(cons,p);
 
     ajStrDel(&line);

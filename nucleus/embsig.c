@@ -2560,7 +2560,7 @@ AjBool embSignatureCompile(AjPSignature *S, float gapo, float gape,
 AjBool embSignatureAlignSeq(AjPSignature S, AjPSeq seq, AjPHit *hit, 
 			      ajint nterm)
 {
-    AjPStr  P     = NULL; 
+    const AjPStr  P     = NULL; 
     ajint  gidx   = 0;	  /*Index into gap array */
     ajint  glast  = 0;	  /*Index of last gap to try */
     ajint  nres   = 0;	  /*No. of residues in protein */

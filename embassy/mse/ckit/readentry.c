@@ -296,7 +296,7 @@ Done:
 	  a = c = g = t = u = n = 0;
 	  for (cPos = seq->mem; *cPos; cPos++) {
 	    n++;
-	    switch (toupper(*cPos)) {
+	    switch (toupper((int)*cPos)) {
 	      case 'A': a++; break;
 	      case 'C': c++; break;
 	      case 'G': g++; break;

@@ -63,47 +63,49 @@ void 	ajXmlFileDel(AjPGraphXml *thys);
 
 AjBool 	ajXmlSetMaxMin(AjPGraphXml file, double xMin, double yMin,
 			       double xMax, double yMax);
-AjBool 	ajXmlWriteFile(AjPGraphXml file, AjPStr filename);
+AjBool 	ajXmlWriteFile(AjPGraphXml file, const AjPStr filename);
 AjBool 	ajXmlWriteStdout(AjPGraphXml file);
 void 	ajXmlClearFile(AjPGraphXml file);
-AjBool 	ajXmlSetSource(AjPGraphXml file, AjPStr title);
-AjBool 	ajXmlAddMainTitleC(AjPGraphXml file, char *title);
-AjBool 	ajXmlAddXTitleC (AjPGraphXml file, char *title);
-AjBool 	ajXmlAddYTitleC (AjPGraphXml file, char *title);
-AjBool 	ajXmlAddMainTitle(AjPGraphXml file, AjPStr title);
-AjBool 	ajXmlAddXTitle(AjPGraphXml file, AjPStr title);
-AjBool 	ajXmlAddYTitle(AjPGraphXml file, AjPStr title);
+AjBool 	ajXmlSetSource(AjPGraphXml file, const AjPStr title);
+AjBool 	ajXmlAddMainTitleC(AjPGraphXml file, const char *title);
+AjBool 	ajXmlAddXTitleC (AjPGraphXml file, const char *title);
+AjBool 	ajXmlAddYTitleC (AjPGraphXml file, const char *title);
+AjBool 	ajXmlAddMainTitle(AjPGraphXml file, const AjPStr title);
+AjBool 	ajXmlAddXTitle(AjPGraphXml file, const AjPStr title);
+AjBool 	ajXmlAddYTitle(AjPGraphXml file, const AjPStr title);
 void 	ajXmlAddText(AjPGraphXml file, double x, double y,
-		     double size, double angle, AjPStr fontFamily,
-		     AjPStr fontStyle, AjPStr text);
+		     double size, double angle, const AjPStr fontFamily,
+		     const AjPStr fontStyle,const  AjPStr text);
 void 	ajXmlAddTextC(AjPGraphXml file, double x, double y,
-		      double size, double angle, char *fontFamily,
-		      char *fontStyle, char *text);
+		      double size, double angle, const char *fontFamily,
+		      const char *fontStyle, const char *text);
 void 	ajXmlAddTextCentred(AjPGraphXml file, double x, double y,
 			    double size, double angle,
-			    AjPStr fontFamily, AjPStr fontStyle,
-			    AjPStr text);
+			    const AjPStr fontFamily, const AjPStr fontStyle,
+			    const AjPStr text);
 void 	ajXmlAddTextWithJustify(AjPGraphXml file, double x, double y,
 				double size, double angle,
-				AjPStr fontFamily, AjPStr fontStyle,
-				AjPStr text, AjBool horizontal,
+				const AjPStr fontFamily,
+				const AjPStr fontStyle,
+				const AjPStr text, AjBool horizontal,
 				AjBool leftToRight,
 				AjBool topToBottom,
-				AjPStr justifyMajor,
-				AjPStr justifyMinor);
+				const AjPStr justifyMajor,
+				const AjPStr justifyMinor);
 void 	ajXmlAddTextWithCJustify(AjPGraphXml file, double x, double y,
 				 double size, double angle,
-				 AjPStr fontFamily, AjPStr fontStyle,
-				 AjPStr text, AjBool horizontal,
+				 const AjPStr fontFamily,
+				 const AjPStr fontStyle,
+				 const AjPStr text, AjBool horizontal,
 				 AjBool leftToRight,
 				 AjBool topToBottom,
-				 char *justifyMajor,
-				 char *justifyMinor);
+				 const char *justifyMajor,
+				 const char *justifyMinor);
 void 	ajXmlAddTextOnArc(AjPGraphXml file, double xCentre,
 			  double yCentre, double startAngle,
 			  double endAngle, double radius,
-			  double size, AjPStr fontFamily,
-			  AjPStr fontStyle, AjPStr text);
+			  double size, const AjPStr fontFamily,
+			  const AjPStr fontStyle, const AjPStr text);
 void 	ajXmlAddJoinedLineSetEqualGapsF(AjPGraphXml file, float *y,
 					int numberOfPoints,
 					float startX, float increment);
@@ -128,26 +130,30 @@ void 	ajXmlAddCylinder(AjPGraphXml file, double x1, double y1, double x2,
 AjBool 	ajXmlAddPointLabelCircle(AjPGraphXml file, double angle,
 				 double xCentre, double yCentre,
 				 double radius, double length, double size,
-				 AjPStr fontFamily, AjPStr fontStyle,
-				 AjPStr text);
+				 const AjPStr fontFamily,
+				 const AjPStr fontStyle,
+				 const AjPStr text);
 AjBool 	ajXmlAddSectionLabelCircle(AjPGraphXml file, double startAngle,
 				   double endAngle, double xCentre,
 				   double yCentre, double radius,
 				   double width, double labelArmAngle,
-				   AjPStr labelStyle, double textPosition,
-				   double size, AjPStr fontFamily,
-				   AjPStr fontStyle, AjPStr text);
+				   const AjPStr labelStyle,
+				   double textPosition,
+				   double size, const AjPStr fontFamily,
+				   const AjPStr fontStyle, const AjPStr text);
 AjBool 	ajXmlAddPointLabelLinear(AjPGraphXml file, double angle, double xPoint,
 				 double yPoint, double length,
 				 AjBool textParallelToLine, double size,
-				 AjPStr fontFamily, AjPStr fontStyle,
-				 AjPStr text);
+				 const AjPStr fontFamily,
+				 const AjPStr fontStyle,
+				 const AjPStr text);
 AjBool 	ajXmlAddSectionLabelLinear(AjPGraphXml file, double xStart,
 				   double yStart, double xEnd, double yEnd,
 				   double width, double labelArmLength,
-				   AjPStr labelStyle, double textPosition,
-				   double size, AjPStr fontFamily,
-				   AjPStr fontStyle, AjPStr text);
+				   const AjPStr labelStyle,
+				   double textPosition,
+				   double size, const AjPStr fontFamily,
+				   const AjPStr fontStyle, const AjPStr text);
 AjBool 	ajXmlAddSquareResidueLinear(AjPGraphXml file, char residue, float x,
 				    float y);
 AjBool 	ajXmlAddOctagonalResidueLinear(AjPGraphXml file, char residue, float x,
@@ -165,12 +171,12 @@ AjBool 	ajXmlAddDiamondResidue(AjPGraphXml file, char residue, double radius,
 AjBool 	ajXmlAddNakedResidue(AjPGraphXml file, char residue, double radius,
 			     double angle);
 float 	ajXmlFitTextOnLine(float x1, float y1, float x2, float y2,
-			   AjPStr text);
+			   const AjPStr text);
 void 	ajXmlGetColour(AjPGraphXml file, double r, double g, double b);
 void 	ajXmlSetColour(AjPGraphXml file, double r, double g, double b);
 void 	ajXmlSetColourFromCode(AjPGraphXml file, ajint colour);
-void 	ajXmlAddGraphic(AjPGraphXml file, AjPStr type);
-void 	ajXmlAddGraphicC(AjPGraphXml file, char *type);
+void 	ajXmlAddGraphic(AjPGraphXml file, const AjPStr type);
+void 	ajXmlAddGraphicC(AjPGraphXml file, const char *type);
 
 void 	ajXmlAddCircle(AjPGraphXml file, double xCentre, double yCentre,
 		       double radius);
@@ -178,8 +184,10 @@ void 	ajXmlAddCircleF(AjPGraphXml file, float xCentre, float yCentre,
 			float radius);
 void 	ajXmlAddArc(AjPGraphXml file, double xCentre, double yCentre,
 		    double startAngle, double endAngle, double radius);
-void 	ajXmlAddGroutOption(AjPGraphXml file, AjPStr name, AjPStr value);
-void 	ajXmlAddGroutOptionC(AjPGraphXml file, char *name, char *value);
+void 	ajXmlAddGroutOption(AjPGraphXml file,
+			    const AjPStr name, const AjPStr value);
+void 	ajXmlAddGroutOptionC(AjPGraphXml file,
+			     const char *name, const char *value);
 
 
 #else

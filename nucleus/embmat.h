@@ -101,9 +101,10 @@ typedef struct EmbSMatMatch
 void   embMatMatchDel (EmbPMatMatch *s);
 void   embMatPrintsInit (AjPFile *fp);
 void   embMatProtDelInt (EmbPMatPrints *s);
-AjBool embMatProtReadInt (AjPFile *fp, EmbPMatPrints *s);
-ajint    embMatProtScanInt (AjPStr *s, AjPStr *n, EmbPMatPrints *m, AjPList *l,
-			  AjBool *all, AjBool *ordered, AjBool overlap);
+EmbPMatPrints embMatProtReadInt (AjPFile fp);
+ajint    embMatProtScanInt (const AjPStr s, const AjPStr n,
+			    const EmbPMatPrints m, AjPList *l,
+			    AjBool *all, AjBool *ordered, AjBool overlap);
 
 #endif
 

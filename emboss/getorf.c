@@ -27,10 +27,11 @@
 
 static void getorf_WriteORF(AjPSeq seq, ajint len, ajint seqlen,
 			    AjBool sense, ajint find, ajint *orf_no,
-			    ajint start, ajint pos, AjPStr str,
+			    ajint start, ajint pos, const AjPStr str,
 			    AjPSeqout seqout, ajint around);
 
-static void getorf_AppORF(ajint find, AjPStr *str, char *chrseq, ajint pos,
+static void getorf_AppORF(ajint find, AjPStr *str,
+			  const char *chrseq, ajint pos,
 			  char aa);
 
 static void getorf_FindORFs(AjPSeq seq, ajint len, AjPTrn trnTable,
@@ -212,7 +213,7 @@ static void getorf_FindORFs(AjPSeq seq, ajint len, AjPTrn trnTable,
     ajint i;
 
     ajint seqlen;
-    char *chrseq;
+    const char *chrseq;
 
     seqlen = ajSeqLen(seq);
     chrseq = ajSeqChar(seq);
@@ -480,7 +481,7 @@ static void getorf_FindORFs(AjPSeq seq, ajint len, AjPTrn trnTable,
 ** @param [r] orf_no [ajint*] Undocumented
 ** @param [r] start [ajint] Undocumented
 ** @param [r] pos [ajint] Undocumented
-** @param [r] str [AjPStr] Undocumented
+** @param [r] str [const AjPStr] Undocumented
 ** @param [r] seqout [AjPSeqout] Undocumented
 ** @param [r] around [ajint] Undocumented
 ** @@
@@ -488,7 +489,7 @@ static void getorf_FindORFs(AjPSeq seq, ajint len, AjPTrn trnTable,
 
 static void getorf_WriteORF(AjPSeq seq, ajint len, ajint seqlen, AjBool sense,
 			    ajint find, ajint *orf_no, ajint start, ajint pos,
-			    AjPStr str, AjPSeqout seqout, ajint around)
+			    const AjPStr str, AjPSeqout seqout, ajint around)
 {
     AjPSeq new;
     AjPStr name  = NULL;       		/* name of the ORF */
@@ -670,13 +671,14 @@ static void getorf_WriteORF(AjPSeq seq, ajint len, ajint seqlen, AjBool sense,
 **
 ** @param [r] find [ajint] Undocumented
 ** @param [r] str [AjPStr*] Undocumented
-** @param [r] chrseq [char*] Undocumented
+** @param [r] chrseq [const char*] Undocumented
 ** @param [r] pos [ajint] Undocumented
 ** @param [r] aa [char] Undocumented
 ** @@
 ******************************************************************************/
 
-static void getorf_AppORF(ajint find, AjPStr *str, char *chrseq, ajint pos,
+static void getorf_AppORF(ajint find, AjPStr *str,
+			  const char *chrseq, ajint pos,
 			  char aa)
 {
 

@@ -75,7 +75,7 @@ typedef struct AjSTestcode
 static AjBool tcode_readdata(AjPTestcode *table1, AjPFile datafile);
 static AjPTestcode tcode_new(void);
 static void tcode_del(AjPTestcode *thys);
-static float tcode_slide(AjPStr substr, ajint window, AjPTestcode tables,
+static float tcode_slide(const AjPStr substr, ajint window, AjPTestcode tables,
 			 ajint pos);
 static ajint tcode_index(AjPFloat array, float value);
 static void tcode_report(AjPReport report, AjPInt from, AjPInt to,
@@ -100,7 +100,7 @@ int main(int argc, char **argv)
     AjPFeattable ftable = NULL;
     AjPFile datafile    = NULL;
     AjPTestcode table1  = NULL;
-    AjPStr seqstr       = NULL;
+    const AjPStr seqstr       = NULL;
     AjPStr substr	= NULL;
     AjBool plot         = ajFalse;
     
@@ -458,7 +458,7 @@ static void tcode_del(AjPTestcode *thys)
 **
 ** Return a single TESTCODE value
 **
-** @param [r] substr [AjPStr] sequence
+** @param [r] substr [const AjPStr] sequence
 ** @param [r] window [ajint] size of sliding window
 ** @param [r] table [AjPTestcode] testcode data object
 ** @param [r] pos [ajint] start position within sequence
@@ -467,7 +467,7 @@ static void tcode_del(AjPTestcode *thys)
 ** @@
 ******************************************************************************/
 
-static float tcode_slide(AjPStr substr, ajint window, AjPTestcode table,
+static float tcode_slide(const AjPStr substr, ajint window, AjPTestcode table,
 			 ajint pos)
 {
     ajint asum = 0;
@@ -498,7 +498,7 @@ static float tcode_slide(AjPStr substr, ajint window, AjPTestcode table,
     float p8 = 0.;
     
     
-    char  *p = NULL;
+    const char  *p = NULL;
     char  c;
     
     ajint scores[3][4];

@@ -518,13 +518,13 @@ static void alignWriteMark(AjPAlign thys, ajint iali, ajint markx)
     ajlong qqoff;
     ajint lloff;
     ajint have_res;
-    char *name01;
-    char *name0= NULL;
-    char *name1= NULL;
+    const char *name01;
+    const char *name0= NULL;
+    const char *name1= NULL;
     ajint n0;
     ajint smark[4] = {-10000,-10000,-10000,-10000}; /* BIT WEIRD THIS */
-    char *seqc0 = NULL;
-    char *seqc1 = NULL;
+    const char *seqc0 = NULL;
+    const char *seqc1 = NULL;
     AlignPData data;
     
     AjPFile outf;
@@ -960,7 +960,7 @@ static void alignWriteSimple(AjPAlign thys)
     int nseq;
     int nali;
 
-    AjPStr seq = NULL;
+    const AjPStr seq = NULL;
 
     AlignPData* pdata = NULL;
     AlignPData data = NULL;
@@ -1203,7 +1203,7 @@ static void alignWriteSrsAny(AjPAlign thys, ajint imax, AjBool mark)
     int nseq;
     int nali;
 
-    AjPStr seq = NULL;
+    const AjPStr seq = NULL;
 
     AlignPData* pdata = NULL;
     AlignPData data = NULL;
@@ -1379,8 +1379,8 @@ static void alignWriteTCoffee (AjPAlign thys)
     ajint n1,n2;
     ajint ilen;
     AjPStr sseq= NULL;
-    AjPStr sseq1= NULL;
-    AjPStr sseq2= NULL;
+    const AjPStr sseq1= NULL;
+    const AjPStr sseq2= NULL;
     ajint pidentity=0;
 
     ajDebug("alignWriteTCoffee\n");
@@ -1495,7 +1495,7 @@ AjBool ajAlignDefine(AjPAlign thys, AjPSeqset seqset)
 	data->Offset[i] = 0;
 	data->Rev[i]    = ajFalse;
 	if(thys->SeqExternal)
-	    data->Seq[i] = ajSeqsetGetSeq(seqset, i);
+	    data->Seq[i] = (AjPSeq) ajSeqsetGetSeq(seqset, i);
 	else
 	{
 	    data->Seq[i] = ajSeqNewS(ajSeqsetGetSeq(seqset, i));
@@ -3198,7 +3198,7 @@ static void alignConsStats(AjPAlign thys, ajint iali, AjPStr *cons,
     
     float himatch = 0.0;	/* highest match score (often used) */
     
-    char **seqcharptr;
+    const char **seqcharptr;
     char res;
     char nocon;
     char gapch;
@@ -3790,7 +3790,7 @@ AjBool ajAlignConsStats(AjPSeqset thys, AjPMatrix mymatrix, AjPStr *cons,
     
     float himatch = 0.0;	/* highest match score (often used) */
     
-    char **seqcharptr;
+    const char **seqcharptr;
     char res;
     char nocon;
     char gapch;
@@ -3801,7 +3801,7 @@ AjBool ajAlignConsStats(AjPSeqset thys, AjPMatrix mymatrix, AjPStr *cons,
     AjBool isident;
     AjBool issim;
     AjBool isgap;
-    AjPSeq* seqs;
+    const AjPSeq* seqs;
     ajint numres;		 /* number of residues (not spaces) */
     AjPStr debugstr1=NULL;
     AjPStr debugstr2=NULL;

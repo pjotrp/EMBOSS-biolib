@@ -467,7 +467,7 @@ static void grpNoComment(AjPStr* text)
     if(cp)
     {					/* comment found */
 	*cp = '\0';
-	ajStrFix(*text);
+	ajStrFix(text);
     }
 
     return;

@@ -766,7 +766,7 @@ ajuint ajStrTableHashCaseC(const void* key, ajuint hashsize)
 ajuint ajStrTableHashCase(const void* key, ajuint hashsize)
 {
     AjPStr str;
-    char* s;
+    const char* s;
     ajuint hash;
 
     str = (AjPStr) key;
@@ -794,9 +794,9 @@ ajuint ajStrTableHashCase(const void* key, ajuint hashsize)
 ajuint ajStrTableHashC(const void* key, ajuint hashsize)
 {
     ajuint hash;
-    char* s;
+    const char* s;
 
-    s = (char*) key;
+    s = (const char*) key;
 
     for(hash = 0; *s; s++)
 	hash = (hash * 127 + *s) % hashsize;
@@ -820,7 +820,7 @@ ajuint ajStrTableHashC(const void* key, ajuint hashsize)
 ajuint ajStrTableHash(const void* key, ajuint hashsize)
 {
     AjPStr str;
-    char* s;
+    const char* s;
     ajuint hash;
 
     str = (AjPStr) key;
@@ -849,11 +849,11 @@ ajuint ajStrTableHash(const void* key, ajuint hashsize)
 
 ajint ajStrTableCmpCaseC(const void* x, const void* y)
 {
-    char* sx;
-    char* sy;
+    const char* sx;
+    const char* sy;
 
-    sx = (char*) x;
-    sy = (char*) y;
+    sx = (const char*) x;
+    sy = (const char*) y;
 
     return (ajint)ajStrCmpCaseCC(sx, sy);
 }

@@ -545,8 +545,8 @@ static void diffseq_diff(AjPList matchlist, AjPSeq seq1, AjPSeq seq2, AjPFile
     AjIList iter = NULL;       		/* match list iterator */
     EmbPWordMatch p = NULL;		/* match structure */
     ajint count = 0;			/* count of matches */
-    AjPStr s1;				/* string of seq1 */
-    AjPStr s2;				/* string of seq2 */
+    const AjPStr s1;				/* string of seq1 */
+    const AjPStr s2;				/* string of seq2 */
     ajint prev1end = 0;
     ajint prev2end = 0;		/* end positions (+1) of previous match */
     AjPStr tmp;
@@ -785,8 +785,8 @@ static void diffseq_diffrpt(AjPList matchlist, AjPSeq seq1, AjPSeq seq2,
     AjIList iter = NULL;		/* match list iterator */
     EmbPWordMatch p = NULL;		/* match structure */
     ajint count = 0;			/* count of matches */
-    AjPStr s1;				/* string of seq1 */
-    AjPStr s2;				/* string of seq2 */
+    const AjPStr s1;			/* string of seq1 */
+    const AjPStr s2;			/* string of seq2 */
     ajint prev1end = 0;
     ajint prev2end = 0;		/* end positions (+1) of previous match */
     AjPStr tmp;				/* temporary string */

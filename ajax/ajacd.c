@@ -11846,7 +11846,7 @@ static void* acdGetValue(const char *token, const char* type)
     void *ret;
     ajint pnum = 0;		   /* need to get from end of token */
 
-    char *cp = ajCharNewC(strlen(token), token);
+    char *cp = ajCharNewC(token);
 
     acdLog("acdGetValue '%s' (%s)\n", token, type);
 
@@ -11882,7 +11882,7 @@ static AjPStr acdGetValStr(const char *token)
 
     static AjPStr tokstr = NULL;
 
-    char *cp = ajCharNewC(strlen(token), token);
+    char *cp = ajCharNewC(token);
 
     acdLog("acdGetValStr '%s' (%s)\n", token);
 
@@ -11919,7 +11919,7 @@ static AjBool acdGetValueAssoc(const AcdPAcd thys, const char *token,
     AcdPAcd pa;
     char   *cp;
 
-    cp = ajCharNewC(strlen(token), token);
+    cp = ajCharNewC(token);
     acdLog("acdGetValueAssoc '%s' (%S)\n", token, thys->Name);
 
     acdTokenToLower(cp, &pnum);
@@ -14310,7 +14310,7 @@ static void acdSetAll(void)
     char* addstring = "opt";
     char* advstring = "   ";
     char* nostring = "   ";
-    char* level;
+    char* level = NULL;
     ajint iendsec = 0;
 
     if (acdDoTrace)
@@ -17765,8 +17765,8 @@ static AcdPAcd acdFindParam(ajint PNum)
 static AjBool acdGetAttr(AjPStr* result,
 			 const AjPStr name, const AjPStr attrib)
 {
-    char *cp;
-    char *cq;
+    const char *cp;
+    const char *cq;
     ajint ilen;
     ajint number = 0;
 
@@ -18137,11 +18137,11 @@ void ajAcdProgramS(AjPStr* pgm)
 **
 ** Returns the application (program) name from the ACD definition.
 **
-** @return [char*] Program name
+** @return [const char*] Program name
 ** @@
 ******************************************************************************/
 
-char* ajAcdProgram(void)
+const char* ajAcdProgram(void)
 {
     return ajStrStr(acdProgram);
 }

@@ -159,6 +159,7 @@ int main(int argc, char **argv)
 	begin = ajSeqallBegin(seqall);
 	end   = ajSeqallEnd(seqall);
 	ajFileSeek(enzfile,0L,0);
+	ajSeqToUpper(seq);
 
 	hits = embPatRestrictMatch(seq,begin,end,enzfile,enzymes,sitelen,
 				   plasmid,ambiguity,min,max,blunt,sticky,
@@ -296,6 +297,9 @@ static void restover_printHits(AjPSeq seq, AjPStr seqcmp, AjPFile *outf,
     for(i=0;i<hits;++i)
     {
 	ajListPop(*l,(void **)&m);
+	ajDebug("hit %d start:%d cut1:%d cut2:%d\n",
+		i, m->start, m->cut1, m->cut2);
+
 
 	if(!plasmid && (m->cut1-m->start>100 || m->cut2-m->start>100))
 	{
@@ -318,8 +322,10 @@ static void restover_printHits(AjPSeq seq, AjPStr seqcmp, AjPFile *outf,
 	    ajStrRev(&overhead);
 	}
 
+	ajDebug("overhead:%S seqcmp:%S\n", overhead, seqcmp);
+
 	/* Print out only those who have the same overhang. */
-	if(!ajStrCmpO(seqcmp, overhead))
+	if(ajStrMatchCase(overhead, seqcmp))
 	{
 	    if(html)
 	    {
@@ -348,7 +354,7 @@ static void restover_printHits(AjPSeq seq, AjPStr seqcmp, AjPFile *outf,
 		ajStrRev(&overhead);
 	    }
 
-	    if(!ajStrCmpO(seqcmp, overhead))
+	    if(ajStrMatchCase(overhead, seqcmp))
 	    {
 		if(html)
 		    ajFmtPrintF(*outf,
@@ -443,7 +449,7 @@ static void restover_read_equiv(AjPFile *equfile, AjPTable *table)
     AjPStr key;
     AjPStr value;
 
-    char *p;
+    const char *p;
 
     line = ajStrNew();
 
@@ -452,9 +458,9 @@ static void restover_read_equiv(AjPFile *equfile, AjPTable *table)
 	p=ajStrStr(line);
 	if(!*p || *p=='#' || *p=='!')
 	    continue;
-	p=strtok(p," \t\n");
+	p=ajSysStrtok(p," \t\n");
 	key=ajStrNewC(p);
-	p=strtok(NULL," \t\n");
+	p=ajSysStrtok(NULL," \t\n");
 	value=ajStrNewC(p);
 	ajTablePut(*table,(const void *)key, (void *)value);
     }
@@ -482,7 +488,7 @@ static void restover_read_file_of_enzyme_names(AjPStr *enzymes)
 {
     AjPFile file = NULL;
     AjPStr line;
-    char *p = NULL;
+    const char *p = NULL;
 
     if (ajStrFindC(*enzymes, "@") == 0)
     {

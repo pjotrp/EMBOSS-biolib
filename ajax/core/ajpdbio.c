@@ -462,7 +462,7 @@ static AjBool WriteSeqresChain(AjPFile errf, AjPFile outf, AjPPdb pdb,
     ajint x;
     ajint y;
     ajint len;
-    char  *p;
+    const char  *p;
 
     AjPStr   tmp1 = NULL;
     AjPStr   tmp2 = NULL;
@@ -595,7 +595,7 @@ static AjBool WriteSeqresDomain(AjPFile errf, AjPFile outf, AjPPdb pdb,
     ajint rcnt = 0;
     ajint len;
     ajint chn  = -1;
-    char  *p;
+    const char  *p;
     char  id;
 
     AjPStr   tmp1        = NULL;
@@ -4747,9 +4747,9 @@ static AjBool AlignNumbering(AjPPdbfile *pdbfile, AjPFile logf, ajint lim)
 				   sequence */
     ajint siz_substr=0;		/* Size of substring for alignment of ATOM and 
 				   SEQRES sequences */
-    char *atm_ptr=NULL; 	/* Pointer to ATOM sequence */
-    char *seqres_ptr=NULL;	/* Pointer to SEQRES sequence */
-    char *loc_ptr=NULL;		/* Pointer for location of match of substring to 
+    const char *atm_ptr=NULL; 	/* Pointer to ATOM sequence */
+    const char *seqres_ptr=NULL;      /* Pointer to SEQRES sequence */
+    const char *loc_ptr=NULL;		/* Pointer for location of match of substring to 
 				   SEQRES sequence*/
     AjPStr substr=NULL;		/* Substring of ATOM sequence */
     AjPStr substr2=NULL;	/* Substring of ATOM sequence */

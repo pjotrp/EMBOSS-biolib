@@ -177,13 +177,15 @@ float circle2=0.0;
 AjPGraph graph; /* change to ajPGraph later*/
 
 int getValFromStr(AjPStr str){
-  char *colstr;
+  static AjPStr tmpstr = NULL;
+  const char *colstr;
   int symval;
   int shape = 0;
   int col = 0;
 
-  ajStrToUpper(&str);
-  colstr = ajStrStr(str);
+  tmpstr = ajStrNewS(str);
+  ajStrToUpper(&tmpstr);
+  colstr = ajStrStr(tmpstr);
 
 
   if(strstr(colstr,"N")!=NULL)          /* NONE overrides everything else */

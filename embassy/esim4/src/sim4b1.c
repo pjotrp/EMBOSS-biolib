@@ -6,7 +6,7 @@
 #ifndef __lint
 /*@unused@*/
 static const char rcsid[] = 
-"$Id: sim4b1.c,v 1.2 2002/05/10 16:10:17 rice Exp $";
+"$Id: sim4b1.c,v 1.3 2004/06/14 14:43:30 rice Exp $";
 #endif
 
 #include <stdio.h>
@@ -2682,7 +2682,7 @@ static void debug_print_exons (Exon *lblock, char *label)
 
 /* -------------------- to be added to psublast ---------------------- */
 
-void seq_toupper(uchar *seq, int len, char *filename)
+void seq_toupper(uchar *seq, int len, const char *filename)
 {
      int i=0, flag = 0;
      uchar *s=seq;

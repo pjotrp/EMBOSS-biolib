@@ -74,7 +74,7 @@ int main(int argc, char **argv)
     ajint sum;
     ajint v;
 
-    char *p;
+    const char *p;
 
 
     embInit("tfscan", argc, argv);

@@ -951,7 +951,7 @@ static void seqWriteHennig86(AjPSeqout outseq)
 	seq = seqarr[i];
 	ajStrAssS(&sseq, seq->Seq);
 	
-	cp = ajStrStr(sseq);
+	cp = ajStrStrMod(&sseq);
 	while(*cp)
 	{
 	    switch(*cp)
@@ -1606,7 +1606,7 @@ static void seqWriteSelex(AjPSeqout outseq)
     AjPStr rfstr  = NULL;
     AjPStr csstr  = NULL;
     AjPStr ssstr  = NULL;
-    char *p       = NULL;
+    const char *p       = NULL;
     AjPStr *names;
     ajint  extra;
     ajint  nlen   = 0;
@@ -2834,7 +2834,7 @@ static void seqWritePhylip(AjPSeqout outseq)
 	    seq = seqarr[i];
 
 	    ajStrAssC(&tstr,ajStrStr(seq->Seq));
-	    p = ajStrStr(tstr);
+	    p = ajStrStrMod(&tstr);
 	    for(j=ajStrLen(tstr);j<ilen;++j)
 		*(p+j)='-';
 	    *(p+j)='\0';
@@ -2879,7 +2879,7 @@ static void seqWritePhylip3(AjPSeqout outseq)
     ajint i    = 0;
     ajint j    = 0;
     ajint n    = 0;
-    char *p    = NULL;
+    char *p = NULL;
     void** seqs = NULL;
     AjPSeq seq;
     AjPSeq* seqarr;
@@ -2912,7 +2912,7 @@ static void seqWritePhylip3(AjPSeqout outseq)
     {
 	seq = seqarr[n];
 	ajStrAssC(&tstr,ajStrStr(seq->Seq));
-	p = ajStrStr(tstr);
+	p = ajStrStrMod(&tstr);
 	for(j=ajStrLen(tstr);j<ilen;++j)
 	    *(p+j)='-';
 	*(p+j)='\0';
@@ -3803,8 +3803,8 @@ static void seqWriteSeq(AjPSeqout outseq, const SeqPSeqFormat sf)
     ajint ibase    = 0;
     ajint linesout = 0;
     ajint seqlen;
-    char *seq;
-    char *idword;
+    const char *seq;
+    const char *idword;
     char *cp;
     char s[1024];			/* the output line */
     
@@ -4020,7 +4020,7 @@ ajint ajSeqoutCheckGcg(const AjPSeqout outseq)
     ajlong  i;
     ajlong check = 0;
     ajlong count = 0;
-    char *cp;
+    const char *cp;
     ajint ilen;
 
     cp   = ajStrStr(outseq->Seq);

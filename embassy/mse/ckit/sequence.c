@@ -45,7 +45,7 @@ int CheckSum(char *strand)
 int checkSum, count;
 
 	for (count=0, checkSum=0; *strand; strand++) {
-	  checkSum += ++count * toupper(*strand);
+	  checkSum += ++count * toupper((int)*strand);
 	  if ( count == 57 ) count = 0;
 	}
 
@@ -370,7 +370,7 @@ int i, lenght;
 	w = ( protein ) ? pW : nW ;             /* point to correct table  */
 
 	for(pSeq=strand; *pSeq; pSeq++) {
-          test = toupper(*pSeq);
+          test = (char) toupper((int)*pSeq);
 	  for(i=0; names[i]; i++)
 	    if ( test == names[i] ) break;
 

@@ -1176,8 +1176,8 @@ AjBool embDmxSeqNR(AjPList input, AjPInt *keep, ajint *nset,
     ajint nin;		  /* Number of sequences in input list */
     ajint *compass;
 
-    char  *p;
-    char  *q;
+    const char  *p;
+    const char  *q;
 
     AjFloatArray *sub;
     float id   = 0.;	  /* Passed as arg but not used here */
@@ -1409,8 +1409,8 @@ AjBool embDmxSeqNRRange(AjPList input, AjPInt *keep, ajint *nset,
     ajint nin;		/* Number of sequences in input list */
     ajint *compass;
 
-    char  *p;
-    char  *q;
+    const char  *p;
+    const char  *q;
 
     float **sub;
     float id   = 0.;	/* Passed as arg but not used here */
