@@ -2737,7 +2737,7 @@ int ajStrCmp (const void* str1, const void* str2) {
 **
 ** @param [r] thys [const AjPStr] First string
 ** @param [r] anoth [const AjPStr] Second string
-** @return [int] -1 if first string should sort before second, +1 if the
+** @return [int] -ve if first string should sort before second, +ve if the
 **         second string should sort first. 0 if they are identical
 **         in length and content.
 ** @@
