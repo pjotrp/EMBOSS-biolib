@@ -67,10 +67,10 @@ static AjPSeq* alignSeqs (AjPAlign thys, ajint iali);
 static void    alignSim (AjPStr* pmark, const char idch, const char simch,
 			 const char misch, const char gapch);
 static float   alignTotweight (AjPAlign thys, ajint iali);
+static void    alignTraceData (AjPAlign thys);
 static void    alignWriteFasta (AjPAlign thys);
 static void    alignWriteMsf (AjPAlign thys);
 
-static void    alignWriteEmboss (AjPAlign thys);
 static void    alignWriteMark (AjPAlign thys, ajint iali, ajint markx);
 static void    alignWriteMarkX0 (AjPAlign thys);
 static void    alignWriteMarkX1 (AjPAlign thys);
@@ -101,7 +101,6 @@ static AlignOFormat alignFormat[] = {
   /* trace  for debug */
   {"trace",     AJTRUE,  AJTRUE,  0, 0, alignWriteTrace},
   /* alignment formats */
-  {"emboss",    AJTRUE,  AJTRUE,  2, 2, alignWriteEmboss},
   {"markx0",    AJTRUE,  AJTRUE,  2, 2, alignWriteMarkX0},
   {"markx1",    AJTRUE,  AJTRUE,  2, 2, alignWriteMarkX1},
   {"markx2",    AJTRUE,  AJTRUE,  2, 2, alignWriteMarkX2},
@@ -222,241 +221,6 @@ static void alignWriteFasta (AjPAlign thys) {
 
   return;
 }
-
-/* @funcstatic alignWriteEmboss ***********************************************
-**
-** Writes an alignment in Emboss formatm as used originally by water, needle
-** and othe rprograms calling the embAln functions in NUCLEUS.
-**
-** @param [R] thys [AjPAlign] Alignment object
-** @return [void]
-** @@
-******************************************************************************/
-
-static void alignWriteEmboss (AjPAlign thys) {
-
-
-  /*
-  namea == seqa->Name
-  nameb == seqb->Name
-  a == seqa->Seq
-  b == seqb->seq
-  begina == seqa->Begin
-  beginb == seqb->Begin
-  cvt == matrix
-  */
-    AjPSeqCvt  cvt=0;
-
-    AjPStr fa;
-    AjPStr fb;
-    AjPStr fm;
-    AjPStr ap;
-    AjPStr bp;
-    AjPStr mp;
-    
-    ajint i;
-    ajint olen;
-    char *p;
-    char *q;
-    char *r=NULL;
-    
-    float match=0.0;
-
-    ajint acnt;
-    ajint bcnt;
-    ajint aend;
-    ajint bend;
-    
-    ajint len;
-    ajint pos;
-    ajint begina;
-    ajint beginb;
-
-    AjPSeq seqa=NULL;
-    AjPSeq seqb=NULL;
-    ajint start1=0;
-    ajint start2=0;
-    float score=0.0;
-    AjBool mark=ajTrue;
-    AjPMatrixf matrix = thys->FMatrix;
-    float ** sub = NULL;
-    AjPStr m=NULL;
-    AjPStr n=NULL;
-
-    begina = ajSeqBegin(seqa);
-    beginb = ajSeqBegin(seqb);
-
-    fm = ajStrNewC("");
-    ap = ajStrNewC("");
-    bp = ajStrNewC("");
-    mp = ajStrNewC("");
-
-    ajDebug("embAlignReportLocal start1:%d start2:%d score:%.3f mark:%b\n",
-	    start1, start2, score, mark);
-
-    ajDebug ("seqa: '%S'\n%S\n", ajSeqGetName(seqa), ajSeqStr(seqa));
-    ajDebug ("seqb: '%S'\n%S\n", ajSeqGetName(seqb), ajSeqStr(seqb));
-    ajDebug("m '%S'\n", m);
-    ajDebug("n '%S'\n", n);
-
-    cvt = ajMatrixfCvt(matrix);
-
-    /* Now deal with the alignment overlap */
-    p=ajStrStr(m);
-    q=ajStrStr(n);
-    olen=strlen(p);
-    fa=m;
-    fb=n;
-
-    if(mark)
-    {
-	for(i=0;i<olen;++i)
-	{
-	    if(p[i]=='.' || q[i]=='.')
-	    {
-		(void) ajStrAppC(&fm," ");
-		continue;
-	    }
-	    match=sub[ajSeqCvtK(cvt,p[i])][ajSeqCvtK(cvt,q[i])];
-	    if(p[i]==q[i])
-	    {
-		(void) ajStrAppC(&fm,"|");
-		continue;
-	    }
-	    if(match>0.0)
-		(void) ajStrAppC(&fm,":");
-	    else
-		(void) ajStrAppC(&fm," ");
-	}
-    }
-
-    /* Get start residues */
-    p=ajStrStr(fa);
-    q=ajStrStr(fb);
-    acnt=begina+start1;
-    bcnt=beginb+start2;
-    
-    len=ajStrLen(fa);
-    pos=0;
-    if(mark) r=ajStrStr(fm);
-
-
-    /* Add header stuff here */
-
-    /*
-//    ajFmtPrintF(outf,"Local: %s vs %s\n",namea,nameb);
-//    ajFmtPrintF(outf,"Score: %S\n\n",score);
-    */
-    
-    while(pos<len)
-    {
-	if(pos+45 < len)
-	{
-	    (void) ajStrAssSubC(&ap,p,pos,pos+45-1);
-	    (void) ajStrAssSubC(&bp,q,pos,pos+45-1);
-	    if(mark)
-		(void) ajStrAssSubC(&mp,r,pos,pos+45-1);
-	    for(i=0,aend=acnt,bend=bcnt;i<45;++i)
-	    {
-		if(p[pos+i]!=' ' && p[pos+i]!='.') ++aend;
-		if(q[pos+i]!=' ' && q[pos+i]!='.') ++bend;
-	    }
-
-	    /*
-//	    ajFmtPrintF(outf,"%-13.13s ",namea);
-//	    if(aend!=acnt)
-//		ajFmtPrintF(outf,"%-8d ",acnt);
-//	    else
-//		ajFmtPrintF(outf,"         ");
-//	    ajFmtPrintF(outf,"%-45s ",ajStrStr(ap));
-//	    if(aend!=acnt)
-//		ajFmtPrintF(outf,"%-8d\n",aend-1);
-//	    else
-//		ajFmtPrintF(outf,"\n");
-	    */
-
-	    acnt=aend;
-
-	    /*
-//	    if(mark)
-//		ajFmtPrintF(outf,"                         %s\n",ajStrStr(mp));
-//		
-//	    ajFmtPrintF(outf,"%-13.13s ",nameb);
-//	    if(bend!=bcnt)
-//		ajFmtPrintF(outf,"%-8d ",bcnt);
-//	    else
-//		ajFmtPrintF(outf,"         ");
-//	    ajFmtPrintF(outf,"%-45s ",ajStrStr(bp));
-//	    if(bend!=bcnt)
-//		ajFmtPrintF(outf,"%-8d\n",bend-1);
-//	    else
-//		ajFmtPrintF(outf,"\n");
-	    */
-
-	    bcnt=bend;
-
-	    /*
-//	    ajFmtPrintF(outf,"\n");
-	    */
-
-	    pos += 45;
-	    continue;
-	}
-	
-	(void) ajStrAssC(&ap,&p[pos]);
-	(void) ajStrAssC(&bp,&q[pos]);
-	if(mark)
-	    (void) ajStrAssC(&mp,&r[pos]);
-	for(i=0,aend=acnt,bend=bcnt;i<45 && p[pos+i];++i)
-	{
-	    if(p[pos+i]!=' ' && p[pos+i]!='.') ++aend;
-	    if(q[pos+i]!=' ' && q[pos+i]!='.') ++bend;
-	}
-	
-	/*
-//	ajFmtPrintF(outf,"%-13.13s ",namea);
-//	if(aend!=acnt)
-//	    ajFmtPrintF(outf,"%-8d ",acnt);
-//	else
-//	    ajFmtPrintF(outf,"         ");
-//	ajFmtPrintF(outf,"%-45s ",ajStrStr(ap));
-//	if(aend!=acnt)
-//	    ajFmtPrintF(outf,"%-8d\n",aend-1);
-//	else
-//	    ajFmtPrintF(outf,"\n");
-	*/
-
-	acnt=aend;
-	
-	/*
-//	if(mark)
-//	    ajFmtPrintF(outf,"                         %s\n",ajStrStr(mp));
-//	
-//	ajFmtPrintF(outf,"%-13.13s ",nameb);
-//	if(bend!=bcnt)
-//	    ajFmtPrintF(outf,"%-8d ",bcnt);
-//	else
-//	    ajFmtPrintF(outf,"         ");
-//	ajFmtPrintF(outf,"%-45s ",ajStrStr(bp));
-//	if(bend!=bcnt)
-//	    ajFmtPrintF(outf,"%-8d\n",bend-1);
-//	else
-//	    ajFmtPrintF(outf,"\n");
-	*/
-
-	bcnt=bend;
-	
-	pos=len;
-    }
-
-    ajStrDel(&mp);
-    ajStrDel(&bp);
-    ajStrDel(&ap);
-    ajStrDel(&fm);
-
-  return;
-}
-
 /* @funcstatic alignWriteMarkX0 ***********************************************
 **
 ** Writes an alignment in Fasta MarkX 0 format.
@@ -1056,7 +820,7 @@ static void alignWriteSimple (AjPAlign thys) {
 
     ajDebug ("# AliData [%d] len %d \n", iali, ilen);
     for (iseq=0; iseq < nseq; iseq++) {
-      ipos[iseq]=data->Start[iseq]-1;
+      ipos[iseq]=data->Offset[iseq];
       ajDebug ("#   Seq[%d]'%S'\n",
 	       iseq, ajSeqStr(data->Seq[iseq]));
     }
@@ -1252,7 +1016,7 @@ static void alignWriteSrsAny (AjPAlign thys, ajint imax, AjBool mark) {
     ajDebug ("# AliData [%d] len %d \n", iali, ilen);
 
     for (iseq=0; iseq < nseq; iseq++) {
-      ipos[iseq]=data->Start[iseq]-1;
+      ipos[iseq]=data->Offset[iseq];
       ajDebug ("#   Seq[%d] '%S'\n",
 	       iseq, ajSeqStr(data->Seq[iseq]));
     }
@@ -1272,7 +1036,8 @@ static void alignWriteSrsAny (AjPAlign thys, ajint imax, AjBool mark) {
 	ajStrAssSub(&mrkcons, cons, istart, iend);
 
 	ajStrSubstituteCC (&tmpstr, ".", "-");
-	icnt = ajStrLen(tmpstr) - ajStrCountK(tmpstr, '-');
+	icnt = ajStrLen(tmpstr) - ajStrCountK(tmpstr, '-')
+	  - ajStrCountK(tmpstr, ' ');
 
 	if (!iseq)
 	  ajStrAssS(&mrkstr, tmpstr);
@@ -1624,6 +1389,8 @@ void ajAlignWrite (AjPAlign thys) {
 
   ajDebug ("ajAlignWrite\n");
 
+  ajAlignTrace (thys);
+
   if (!thys->Format) {
     if (!ajAlignFindFormat(thys->Formatstr, &thys->Format)) {
       ajErr ("unknown align format '%S'", thys->Formatstr);
@@ -1683,9 +1450,9 @@ void ajAlignWriteHeader (AjPAlign thys) {
     ajFmtPrintF (outf, "########################################\n");
     ajFmtPrintF (outf, "# Program:  %s\n", ajAcdProgram());
     ajFmtPrintF (outf, "# Rundate:  %D\n", ajTimeTodayF("log"));
-    ajFmtPrintF (outf, "# Report file: %F\n", outf);
+    ajFmtPrintF (outf, "# Report_file: %F\n", outf);
     if (!doSingle || thys->Multi) {
-      ajFmtPrintF (outf, "########################################\n\n");
+      ajFmtPrintF (outf, "########################################\n");
     }
     else {
       ajFmtPrintF (outf, "#\n");
@@ -1696,9 +1463,9 @@ void ajAlignWriteHeader (AjPAlign thys) {
     ajFmtPrintF (outf, "#=======================================\n#\n");
   }
 
-  ajFmtPrintF (outf, "# Alignment: %d sequences\n", thys->Nseqs);
+  ajFmtPrintF (outf, "# Aligned_sequences: %d\n", thys->Nseqs);
   for (i=0; i < thys->Nseqs; i++) {
-    ajFmtPrintF (outf, "# Sequence (%d): %S\n",
+    ajFmtPrintF (outf, "# %d: %S\n",
 	       i+1, alignSeqName(thys, i));
   }
 
@@ -1706,10 +1473,10 @@ void ajAlignWriteHeader (AjPAlign thys) {
     ajFmtPrintF (outf, "# Matrix: %S\n", thys->Matrix);
 
   if (ajStrLen(thys->GapPen))
-    ajFmtPrintF (outf, "# Gap penalty: %S\n", thys->GapPen);
+    ajFmtPrintF (outf, "# Gap_penalty: %S\n", thys->GapPen);
 
   if (ajStrLen(thys->ExtPen))
-    ajFmtPrintF (outf, "# Extend penalty: %S\n", thys->ExtPen);
+    ajFmtPrintF (outf, "# Extend_penalty: %S\n", thys->ExtPen);
 
   if (ajStrLen(thys->Header)) {
     ajStrAssS (&tmpstr, thys->Header);
@@ -1758,6 +1525,8 @@ void ajAlignWriteTail (AjPAlign thys) {
   AjPFile outf = thys->File;
   AjPStr tmpstr=NULL;
   AjBool doSingle=ajFalse;	/* turned off for now - always multi format */
+
+  ajFmtPrintF (outf, "\n");
 
   if (!doSingle || thys->Multi) {
     ajFmtPrintF (outf, "#---------------------------------------\n");
@@ -2556,7 +2325,8 @@ static void alignConsStats(AjPAlign thys, ajint iali, AjPStr *cons,
   ajint   imat;		      /* iterate over identical and matching arrays */
   ajint   iseq;			/* iterate over sequences (outer loop) */
   ajint   jseq;			/* iterate over sequences (inner loop) */
-  ajint   kpos;
+
+
   ajint   **matrix = NULL;
   float   **fmatrix = NULL;
   ajint   m1=0;
@@ -2578,6 +2348,9 @@ static void alignConsStats(AjPAlign thys, ajint iali, AjPStr *cons,
   float   *identical;		/* cum. weight for each valid character */
   float   *matching;		/* cum. weight for matching this character */
   ajint   highindex;		/* position of highest score in posScore */
+  ajint   kpos;			/* alignment position (step through in loop) */
+
+  float himatch = 0.0;		/* highest match score (often used) */
 
   char **seqcharptr;
   char res;
@@ -2591,6 +2364,7 @@ static void alignConsStats(AjPAlign thys, ajint iali, AjPStr *cons,
   AjBool issim;
   AjBool isgap;
   AjPSeq* seqs;
+  ajint numres;			/* number of residues (not spaces) */
 
   if (!thys->IMatrix && !thys->FMatrix)
   {
@@ -2708,14 +2482,21 @@ static void alignConsStats(AjPAlign thys, ajint iali, AjPStr *cons,
 
     highindex = -1;
     max = -FLT_MAX;
+    numres=0;
     for(iseq=0;iseq<nseqs;iseq++)
     {
+      if (seqcharptr[iseq][kpos] != ' ' &&
+	  seqcharptr[iseq][kpos] != '-')
+	numres++;
+
       if(ajFloatGet(posScore,iseq) > max) 
       {
 	highindex = iseq;
 	max       = ajFloatGet(posScore,iseq);
       }
     }
+
+    /* highindex is now set */
 
     /*
     ** find +ve matches in the column
@@ -2789,7 +2570,8 @@ static void alignConsStats(AjPAlign thys, ajint iali, AjPStr *cons,
 	  matchingmaxindex= m1;
 	}
       }
-      if (seqcharptr[iseq][kpos] == '-')
+      if (seqcharptr[iseq][kpos] == '-' ||
+	  seqcharptr[iseq][kpos] == ' ')
       {
 	isgap=ajTrue;
       }
@@ -2800,6 +2582,7 @@ static void alignConsStats(AjPAlign thys, ajint iali, AjPStr *cons,
 //	    identicalmaxindex, 
 //	    matchingmaxindex, highindex);
 */
+    himatch = matching[ajSeqCvtK(cvt,seqcharptr[highindex][kpos])];
 
     if (thys->IMatrix)
     {
@@ -2811,7 +2594,7 @@ static void alignConsStats(AjPAlign thys, ajint iali, AjPStr *cons,
 	      matchingmaxindex,
 	      ajMatrixChar(thys->IMatrix, matchingmaxindex-1),
 	      matching[matchingmaxindex],
-	      matching[ajSeqCvtK(cvt,seqcharptr[highindex][kpos])],
+	      himatch,
 	      highindex, seqcharptr[highindex][kpos],
 	      seqs[highindex]->Weight);
     }
@@ -2825,7 +2608,7 @@ static void alignConsStats(AjPAlign thys, ajint iali, AjPStr *cons,
 	      matchingmaxindex,
 	      ajMatrixfChar(thys->FMatrix, matchingmaxindex-1),
 	      matching[matchingmaxindex],
-	      matching[ajSeqCvtK(cvt,seqcharptr[highindex][kpos])],
+	      himatch,
 	      highindex, seqcharptr[highindex][kpos],
 	      seqs[highindex]->Weight);
     }
@@ -2834,7 +2617,7 @@ static void alignConsStats(AjPAlign thys, ajint iali, AjPStr *cons,
     if (matching[matchingmaxindex] >= fplural) issim=ajTrue;
 
     /* plurality check */
-    if(matching[ajSeqCvtK(cvt,seqcharptr[highindex][kpos])] >= fplural) {
+    if(himatch >= fplural) {
       if (seqcharptr[highindex][kpos] != '-')
       {
 	res = toupper(seqcharptr[highindex][kpos]);
@@ -2842,15 +2625,18 @@ static void alignConsStats(AjPAlign thys, ajint iali, AjPStr *cons,
     }
 
     /*
-    if(matching[ajSeqCvtK(cvt,seqcharptr[highindex][kpos])] < setcase)
+    if(himatch < setcase)
     {
       res = tolower(res);
     }
     */
 
-    if(matching[ajSeqCvtK(cvt,seqcharptr[highindex][kpos])] == seqs[highindex]->Weight)
-      {
-      res = nocon;
+    if(himatch == seqs[highindex]->Weight)
+    {
+      if (numres > 1)
+	res = nocon;
+      else
+	res = gapch;
     }
 
     if (issim && ! isident)
@@ -2904,4 +2690,117 @@ static float alignTotweight (AjPAlign thys, ajint iali) {
   }
 
   return ret;
+}
+
+/* @func ajAlignTrace *********************************************************
+**
+** Reports an AjPAlign object to debug output
+**
+** @param [r] thys [AjPAlin] alignment object
+** @return [void]
+******************************************************************************/
+
+void ajAlignTrace (AjPAlign thys) {
+
+  ajDebug("AjAlignTrace\n");
+  ajDebug("============\n");
+  ajDebug("Name: '%S'\n", thys->Name);
+  ajDebug("Usa: '%S'\n", thys->Usa);
+  ajDebug("Type: '%S'\n", thys->Type);
+  ajDebug("Formatstr: '%S'\n", thys->Formatstr);
+  ajDebug("Format: %d\n", thys->Format);
+  ajDebug("Filename: '%S'\n", thys->Filename);
+  ajDebug("Extension: '%S'\n", thys->Extension);
+  ajDebug("File: '%F'\n", thys->File);
+  ajDebug("Header: '%S'\n", thys->Header);
+  ajDebug("SubHeader: '%S'\n", thys->SubHeader);
+  ajDebug("Tail: '%S'\n", thys->Tail);
+  ajDebug("Showusa: %B\n", thys->Showusa);
+  ajDebug("Multi: %B\n", thys->Multi);
+  ajDebug("Global: %B\n", thys->Global);
+
+  alignTraceData (thys);
+
+  ajDebug("Nseqs: %d\n", thys->Nseqs);
+  ajDebug("WidthNmin: %d\n", thys->Nmin);
+  ajDebug("Nmax: %d\n", thys->Nmax);
+  ajDebug("Width: %d\n", thys->Width);
+  ajDebug("Count: %d\n", thys->Count);
+
+  ajDebug("IMatrix: %x\n", thys->IMatrix);
+  ajDebug("FMatrix: %x\n", thys->FMatrix);
+  ajDebug("Matrix: '%S'\n", thys->Matrix);
+  ajDebug("GapPen: '%S'\n", thys->GapPen);
+  ajDebug("ExtPen: '%S'\n", thys->ExtPen);
+  ajDebug("SeqOnly: %B\n", thys->SeqOnly);
+
+  return;
+}
+
+/* @funcstatic alignTraceData *************************************************
+**
+** Report alignment internal list data to debug output
+**
+** @param [r] thys [AjPAlign] Alignment object
+** @return [void]
+******************************************************************************/
+
+static void alignTraceData (AjPAlign thys) {
+  AlignPData* pdata;
+  AlignPData data;
+  ajint nali;
+  ajint iali;
+  ajint i;
+  ajint nseq;
+
+  nseq = thys->Nseqs;
+
+  nali = ajListToArray (thys->Data, (void***) &pdata);
+  ajDebug("Data list length: %d\n", nali);
+  if (!nali) return;
+
+  for (iali=0; iali<nali; iali++) {
+
+    data = pdata[iali];
+
+    ajDebug ("%d Len: %d\n", iali, data->Len);
+    ajDebug ("%d NumId: %d\n", iali, data->NumId);
+    ajDebug ("%d NumSim: %d\n", iali, data->NumSim);
+    ajDebug ("%d NumGap: %d\n", iali, data->NumGap);
+    ajDebug ("%d Score: '%S'\n", iali, data->Score);
+
+    ajDebug ("%d Start: {", iali);
+    for (i=0; i < nseq; i++) {
+      ajDebug (" %d", data->Start[i]);
+    }
+    ajDebug (" }\n");
+
+    ajDebug ("%d End: {", iali);
+    for (i=0; i < nseq; i++) {
+      ajDebug (" %d", data->End[i]);
+    }
+    ajDebug (" }\n");
+
+    ajDebug ("%d Offset: {", iali);
+    for (i=0; i < nseq; i++) {
+      ajDebug (" %d", data->Offset[i]);
+    }
+    ajDebug (" }\n");
+
+    ajDebug ("%d Rev: {", iali);
+    for (i=0; i < nseq; i++) {
+      ajDebug (" %b", data->Rev[i]);
+    }
+    ajDebug (" }\n");
+
+    ajDebug ("%d Seq: {\n", iali);
+    for (i=0; i < nseq; i++) {
+      ajDebug ("  %d '%S'\n", i, ajSeqStr(data->Seq[i]));
+    }
+    ajDebug ("  }\n");
+
+  }
+  AJFREE (pdata);
+
+  return;
 }
