@@ -6083,5 +6083,30 @@ static void ajFeatSetFlag(int *flags, int val){
   return;
 }
 
+/* @func ajFeatTabInClear ****************************************************
+**
+** Clears a Tabin input object back to "as new" condition, except
+** for the USA list which must be preserved.
+**
+** @param [P] thys [AjPFeatTabIn] Sequence input
+** @return [void]
+** @@
+******************************************************************************/
 
+void ajFeatTabInClear (AjPFeatTabIn thys)
+{
 
+  ajDebug ("ajFeatTabInClear called\n");
+
+  (void) ajStrClear(&thys->Ufo);
+  (void) ajStrClear(&thys->Seqname);
+  (void) ajStrClear(&thys->Formatstr);
+  (void) ajStrClear(&thys->Filename);
+  (void) ajStrClear(&thys->Entryname);
+  if (thys->Handle)
+    ajFileBuffDel(&thys->Handle);
+  if (thys->Handle)
+    ajFatal("ajFeatTabInClear did not delete Handle");
+
+  return;
+}

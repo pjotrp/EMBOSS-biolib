@@ -1233,6 +1233,8 @@ AjBool ajFileDir (AjPStr* dir) {
   if (!odir)
     return ajFalse;
 
+  (void) closedir(odir);
+  
   return ajTrue;
 }
 

@@ -101,7 +101,6 @@ int main(int argc, char **argv)
     ajSeqTrim(seq1);
     ajSeqTrim(seq2);
 
-    matchlist = ajListNew();
 
     embWordLength (wordlen);
     if(embWordGetTable(&seq1MatchTable, seq1))
@@ -247,6 +246,7 @@ int main(int argc, char **argv)
   
     if(matchlist) 
 	embWordMatchListDelete(matchlist); /* free the match structures */
+
  
     ajExit();
     return 0;

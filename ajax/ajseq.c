@@ -957,7 +957,8 @@ AjPSeq ajSeqNewS (AjPSeq seq) {
 void ajSeqDel (AjPSeq* pthis) {
 
   AjPSeq thys = pthis ? *pthis : 0;
-
+  AjPStr ptr=NULL;
+  
   if (!pthis) return;
   if (!*pthis) return;
 
@@ -976,7 +977,12 @@ void ajSeqDel (AjPSeq* pthis) {
   ajStrDel (&thys->Entryname);
   ajStrDel (&thys->Seq);
   ajFeatTabDel(&thys->Fttable);
-  ajListstrDel(&thys->Acclist);
+
+  while(ajListstrPop(thys->Acclist,&ptr))
+      ajStrDel(&ptr);
+  ajListDel(&thys->Acclist);
+  
+/*  ajListstrDel(&thys->Acclist);*/
 
   AJFREE (*pthis);
   return;
@@ -1009,7 +1015,7 @@ void ajSeqClear (AjPSeq thys) {
   (void) ajStrClear (&thys->Filename);
   (void) ajStrClear (&thys->Entryname);
   (void) ajStrClear (&thys->Seq);
-
+  
   return;
 }
 

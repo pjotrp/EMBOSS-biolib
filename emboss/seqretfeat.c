@@ -1,5 +1,3 @@
-/*  Last edited: Jun 24 17:52 1999 (pmr) */
-
 #include "emboss.h"
 
 

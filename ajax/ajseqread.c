@@ -464,7 +464,8 @@ void ajSeqinClear (AjPSeqin thys) {
   thys->Filecount = 0;
   ajSeqQueryClear(thys->Query);
   thys->Data = NULL;
-
+  ajFeatTabInClear(thys->Ftquery);
+  
   return;
 }
 
@@ -739,7 +740,10 @@ static int seqReadFmt (AjPSeq thys, AjPSeqin seqin,
 		(void) ajStrSet (&seqin->Ftquery->Seqname, thys->Name);
 		if (!ajFeatRead (&seqin->Fttable, seqin->Ftquery, seqin->Ufo))
 		{
-		    /* GWW 21 Aug 2000 - don't warn about missing feature tables. Caveat emptor! */
+		    /*
+		     *  GWW 21 Aug 2000 - don't warn about missing feature
+		     *  tables. Caveat emptor!
+		     */
 		    /* ajWarn ("seqReadFmt features input failed UFO: '%S'",
 		       seqin->Ufo); */
 		    /*	   return ajFalse;*/

@@ -4704,7 +4704,8 @@ static void acdSetSeq (AcdPAcd thys) {
 
   val = ajSeqNew();		/* set the default value */
   seqin = ajSeqinNew();		/* set the default value */
-
+  seqin->multi = ajFalse;
+  
   (void) acdQualToBool (thys, "snucleotide", ajFalse, &snuc, &defreply);
   (void) acdQualToBool (thys, "sprotein", ajFalse, &sprot, &defreply);
 
@@ -4937,7 +4938,8 @@ static void acdSetSeqset (AcdPAcd thys) {
 
   val = ajSeqsetNew();		/* set the default value */
   seqin = ajSeqinNew();		/* set the default value */
-
+  seqin->multi = ajTrue;
+  
   (void) acdQualToBool (thys, "snucleotide", ajFalse, &snuc, &defreply);
   (void) acdQualToBool (thys, "sprotein", ajFalse, &sprot, &defreply);
 
@@ -5159,6 +5161,7 @@ static void acdSetSeqall (AcdPAcd thys) {
 
   val = ajSeqallNew();		/* set the default value */
   seqin = val->Seqin;
+  seqin->multi = ajTrue;
   seq = val->Seq;
 
   (void) acdQualToBool (thys, "snucleotide", ajFalse, &snuc, &defreply);
@@ -5207,6 +5210,8 @@ static void acdSetSeqall (AcdPAcd thys) {
   }
   if (!ok)
     acdBadRetry (thys);
+
+/*  ajSeqinDel (&seqin);*/
 
   (void) acdInFileSave(ajSeqallGetName(val)); /* save the sequence name */
 
@@ -5932,7 +5937,8 @@ static AjPStr acdGetValStr (char *token) {
 
   acdTokenToLower (cp, &pnum);
   ajStrAssC (&tokstr, cp);
-
+  /* AJB addition of free */
+  AJFREE(cp);
   acd = acdFindAcd (tokstr, tokstr, pnum);
   if (!acd) return NULL;
 
