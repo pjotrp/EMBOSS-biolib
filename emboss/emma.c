@@ -25,7 +25,7 @@
 
 
 
-AjPStr getUniqueFileName();
+static AjPStr emma_getUniqueFileName();
 
 
 
@@ -138,7 +138,7 @@ int main(int argc, char **argv, char **env)
 
 
     fil_file = ajSeqoutNew();
-    tmpFilename = ajStrDup( getUniqueFileName());
+    tmpFilename = ajStrDup( emma_getUniqueFileName());
     if (!ajSeqFileNewOut( fil_file, tmpFilename)) ajExit();
     /* Set output format to fasta */
     ajSeqOutSetFormat( fil_file, tmp);
@@ -169,7 +169,7 @@ int main(int argc, char **argv, char **env)
     ajStrAppC( &cmd, ajStrStr( tmpFilename));
 
     /* add out file name */
-    tmp_aln_outfile = ajStrDup( getUniqueFileName());
+    tmp_aln_outfile = ajStrDup( emma_getUniqueFileName());
     ajStrAppC( &cmd, " -outfile=");
     ajStrApp( &cmd, tmp_aln_outfile);
 
@@ -260,7 +260,7 @@ int main(int argc, char **argv, char **env)
     else
     {
 	/* will use tmp file to hold dend file, will read back in later */
-	tmp_dendfilename = ajStrDup( getUniqueFileName());
+	tmp_dendfilename = ajStrDup( emma_getUniqueFileName());
         ajStrAppC( &cmd, " -newtree=");
         ajStrApp( &cmd, tmp_dendfilename);
     }
@@ -363,7 +363,7 @@ int main(int argc, char **argv, char **env)
     return 0;
 }
 
-/* @func getUniqueFileName ****************************************************
+/* @funcstatic emma_getUniqueFileName ****************************************
 **
 ** routine to return a name of a unique file; the  unique file name is the
 ** process id
@@ -372,7 +372,7 @@ int main(int argc, char **argv, char **env)
 ** @@
 ******************************************************************************/
 
-AjPStr getUniqueFileName()
+static AjPStr emma_getUniqueFileName()
 {
     static char ext[2] = "A";
   
