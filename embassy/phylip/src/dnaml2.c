@@ -664,7 +664,7 @@ double scale;
   node *p, *q;
   short n, j;
   boolean extra;
-  node *r, *first, *last;
+  node *r, *first=NULL, *last=NULL;
   boolean done;
 
   p = curtree.start->back;
@@ -811,7 +811,7 @@ node *p;
   /* print out information for one branch */
   short i;
   node *q;
-  double s, sumlr, sigma1, sigma2;
+  double sumlr, sigma1, sigma2;
 
   q = p->back;
   fprintf(outfile, "%4hd          ", q->number - numsp);

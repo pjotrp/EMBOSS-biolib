@@ -915,7 +915,7 @@ void maketree()
     for (i = 0; i < chars; i++)             /**/
       zeros[i] = 0;                         /**/
     while (which <= numtrees) {
-      treestr = ajStrStr(phylotrees[which-1]->Tree);
+      treestr = ajStrStrMod(&phylotrees[which-1]->Tree);
       treeread(&treestr, &root, treenode, &goteof, &firsttree,
                 nodep, &nextnode, &haslengths,
                 &grbg, initdollopnode); /*debug*/

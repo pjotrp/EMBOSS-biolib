@@ -73,7 +73,7 @@ AjPFile inf;
 
 /************ END EMBOSS GET OPTIONS ROUTINES **************************/
 
-openfile(fp,filename,mode,application,perm)
+void openfile(fp,filename,mode,application,perm)
 FILE **fp;
 char *filename;
 char *mode;
@@ -115,14 +115,14 @@ char *perm;
 void uppercase(ch)
 Char *ch;
 {  /* convert a character to upper case -- either ASCII or EBCDIC */
-   *ch = (islower(*ch) ?  toupper(*ch) : (*ch));
+   *ch = (islower((int)*ch) ?  toupper((int)*ch) : ((int)*ch));
 }  /* uppercase */
 
 void getoptions()
 {
   /* interactively set options */
   Char ch;
-  boolean done;
+  /*boolean done;*/
 
   ibmpc = ibmpc0;
   vt52 = vt520;
@@ -593,11 +593,11 @@ void dodatamatrix()
 }  /* dodatamatrix */
 
 
-main(argc, argv)
+int main(argc, argv)
 int argc;
 Char *argv[];
 {
-char infilename[100],outfilename[100];
+/*char infilename[100],outfilename[100];*/
 #ifdef MAC
   macsetup("Factor","");
   argv[0] = "Factor";
@@ -666,7 +666,6 @@ MALLOCRETURN *mem;
 mem = (MALLOCRETURN *)malloc(x);
 if (!mem)
   memerror();
-else
+
   return (MALLOCRETURN *)mem;
 }
-

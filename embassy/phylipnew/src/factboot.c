@@ -453,7 +453,7 @@ void seqboot_inputdataseq(AjPSeqset seqset)
   /*double x;*/
   Char charstate;
   boolean allread, done;
-  AjPStr str;
+  const AjPStr str;
 
   nodep = (Char **)Malloc(spp*sizeof(Char *));
   for (i = 0; i < (spp); i++)

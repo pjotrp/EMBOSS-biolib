@@ -97,6 +97,7 @@ void setuptree(tree *a);
 void makeweights();
 void makevalues();
 Local Void empiricalfreqs();
+void maketree(void);
 
 AjPSeqset seqset;
 
@@ -263,7 +264,7 @@ int scanned;
   putchar('\n');
 }
 void emboss_inputdata(){
-  int i,j,k;
+  int i,j;
 
  for (i = 0; i < sites; i++)
    weight[i] = 1;
@@ -336,7 +337,7 @@ void emboss_getnums(){
 
 /************ END EMBOSS GET OPTIONS ROUTINES **************************/
 
-openfile(fp,filename,mode,application,perm)
+void openfile(fp,filename,mode,application,perm)
 FILE **fp;
 char *filename;
 char *mode;
@@ -419,18 +420,18 @@ Char ch;
 void uppercase(ch)
 Char *ch;
 {
-  (*ch) = isupper(*ch) ? (*ch) : toupper(*ch);
+  (*ch) = isupper((int)*ch) ? ((int)*ch) : toupper((int)*ch);
 }  /* uppercase */
 
 
 void getoptions()
 {
   /* interactively set options */
-  short i, j, inseed0,scanned;
+  short i, inseed0=0,scanned;
   Char ch;
   char line[128];
    char rest[128];
-  boolean done, done1, done2;
+  boolean done, done1;
   double probsum;
 
   fprintf(outfile, "\nNucleic acid sequence\n");
@@ -979,7 +980,7 @@ void getbasefreqs()
 
 void getdata()
 {
-  short i, j, k, l, basesread, basesnew;
+  short i, j, k, l, basesread, basesnew=0;
   Char ch;
   boolean allread, done;
 
@@ -1212,7 +1213,7 @@ void makeweights()
 {
   /* make up weights vector to avoid duplicate computations */
   short i,j,k;
-  node *p1,*p2,*p3;
+  node *p1,*p2=NULL,*p3=NULL;
 
    for (i = 1; i <= sites; i++) {
     alias[i - 1] = i;
@@ -1458,11 +1459,11 @@ void getinput()
 }  /* getinput */
 
 
-main(argc, argv)
+int main(argc, argv)
 int argc;
 Char *argv[];
 {  /* DNA Maximum Likelihood with molecular clock */
-char infilename[100],outfilename[100],trfilename[100];
+/*char infilename[100],outfilename[100],trfilename[100];*/
 int i;
 #ifdef MAC
   macsetup("Dnamlk","");
@@ -1561,7 +1562,7 @@ MALLOCRETURN *mem;
 mem = (MALLOCRETURN *)calloc((size_t)1,x);
 if (!mem)
   memerror();
-else
+
   return (MALLOCRETURN *)mem;
 }
 

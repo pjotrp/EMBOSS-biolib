@@ -48,14 +48,14 @@ typedef struct gbases {
 Static node *root, *p;
 Static FILE *infile, *outfile, *treefile;
 Static short spp, nonodes, chars, endsite, outgrno, col, datasets, ith,
-            i, j, l, jumb, njumble, inseed;
+            i, j, jumb, njumble, inseed;
 /* spp = number of species
    nonodes = number of nodes in tree
    chars = number of sites in actual sequences
    outgrno indicates outgroup */
 Static boolean jumble, usertree, weights, thresh, trout, outgropt,
                printdata, progress, treeprint, stepbox, ancseq, mulsets,
-               interleaved, ibmpc, vt52, ansi, firstset;
+               ibmpc, vt52, ansi, firstset;
 Static steptr weight, oldweight, alias, ally, location;
 Static pointptr treenode;            /* pointers to all nodes in tree */
 Static Char **nayme;                 /* names of species              */
@@ -221,7 +221,7 @@ int j;
 
 /************ END EMBOSS GET OPTIONS ROUTINES **************************/
  
-openfile(fp,filename,mode,application,perm)
+void openfile(fp,filename,mode,application,perm)
 FILE **fp;
 char *filename;
 char *mode;
@@ -323,19 +323,20 @@ short *seed;
 }  /* randum */
 
 
-
+#ifdef OLDOPTIONS
 Static Void uppercase(ch)
 Char *ch;
 {
   /* convert ch to upper case -- either ASCII or EBCDIC */
-  *ch = (islower (*ch) ? toupper(*ch) : (*ch));
+  *ch = (islower ((int)*ch) ? toupper((int)*ch) : ((int)*ch));
 }  /* uppercase */
+#endif
 
-
+#ifdef OLDOPTIONS
 Local Void getoptions()
 {
   /* interactively set options */
-  short i, inseed0;
+  short i, inseed0=0;
   Char ch;
   boolean done1;
 
@@ -534,7 +535,9 @@ Local Void getoptions()
       printf("Not a possible option!\n");
   }
 }  /* getoptions */
+#endif
 
+#ifdef OLDOPTIONS
 Local Void inputnumbers()
 {
   /* input the numbers of species and of characters */
@@ -545,7 +548,8 @@ Local Void inputnumbers()
     putc('\n', outfile);
   nonodes = spp * 2 - 1;
 }  /* inputnumbers */
-
+endif
+#endif
 
 Static void doinit(int argc, char *argv[])
      /*Static Void doinit()*/
@@ -576,6 +580,7 @@ Static void doinit(int argc, char *argv[])
   }
 }  /* doinit*/
 
+#ifdef OLDOPTIONS
 Local Void inputweights()
 {
   /* input the character weights, 0-9 and A-Z for weights 0 - 35 */
@@ -598,9 +603,9 @@ Local Void inputweights()
         ch = ' ';
     } while (ch == ' ');
     weight[i] = 1;
-    if (isdigit(ch))
+    if (isdigit((int)ch))
       weight[i] = ch - '0';
-    else if (isalpha(ch)) {
+    else if (isalpha((int)ch)) {
       uppercase(&ch);
       if (ch >= 'A' && ch <= 'I')
         weight[i] = ch - 55;
@@ -617,7 +622,9 @@ Local Void inputweights()
   getc(infile);
   weights = true;
 }  /* inputweights */
+#endif
 
+#ifdef OLDOPTIONS
 Local Void printweights()
 {
   /* print out the weights of sites */
@@ -641,7 +648,9 @@ Local Void printweights()
   }
   putc('\n', outfile);
 }  /* printweights */
+#endif
 
+#ifdef OLDOPTIONS
 Local Void inputoptions()
 {
   /* input the information on the options */
@@ -693,11 +702,13 @@ Local Void inputoptions()
   if (weights)
     printweights();
 }  /* inputoptions */
+#endif
 
+#ifdef OLDOPTIONS
 Local Void inputdata()
 {
   /* input the names and sequences for each species */
-  short i, j, k, l, basesread, basesnew;
+  short i, j, k, l, basesread, basesnew=0;
   Char charstate;
   boolean allread, done;
 
@@ -810,6 +821,7 @@ Local Void inputdata()
   }
   putc('\n', outfile);
 }  /* inputdata */
+#endif
 
 Local Void sitesort()
 {
@@ -946,7 +958,7 @@ Local Void makevalues()
 {
   /* set up fractional likelihoods at tips */
   short i, j;
-  short ns;
+  short ns=0;
   node *p;
 
   for (i = 1; i <= nonodes; i++) {
@@ -1088,7 +1100,7 @@ node *p, *left, *rt;
      at that point and counts the changes.  The program
      spends much of its time in this PROCEDURE */
   short i;
-  short ns, rs, ls;
+  short ns, rs=0, ls=0;
 
   for (i = 0; i < endsite; i++) {
     if (left) ls = left->base[i];
@@ -2250,14 +2262,14 @@ Static Void maketree()
 }  /* maketree */
 
 
-main(argc, argv)
+int main(argc, argv)
 int argc;
 Char *argv[];
 {  /* DNA parsimony by uphill search */
 
   /* reads in spp, chars, and the data. Then calls maketree to
      construct the tree */
-char infilename[100],outfilename[100],trfilename[100];
+/*char infilename[100],outfilename[100],trfilename[100];*/
 #ifdef MAC
   macsetup("Dnapars","");
   argv[0] = "Danpars";
@@ -2377,7 +2389,7 @@ MALLOCRETURN *mem;
 mem = (MALLOCRETURN *)malloc(x);
 if (!mem)
   memerror();
-else
+
   return (MALLOCRETURN *)mem;
 }
 

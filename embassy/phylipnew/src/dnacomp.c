@@ -1133,7 +1133,7 @@ void maketree()
       firsttree = true;
       nextnode = 0;
       haslengths = true;
-      treestr = ajStrStr(phylotrees[which-1]->Tree);
+      treestr = ajStrStrMod(&phylotrees[which-1]->Tree);
       treeread(&treestr, &root, treenode, &goteof, &firsttree,
                  nodep, &nextnode, &haslengths, &grbg, initdnacompnode);
       for (j = 0; j < spp; j++)

@@ -70,6 +70,8 @@ steptr numsteps, numsone, numszero;
 gbit *garbage;
 long bits =  (8*sizeof(long) - 1);
 
+void maketree(void);
+
 /************ EMBOSS GET OPTIONS ROUTINES ******************************/
 void emboss_getoptions(char *pgm, int argc, char *argv[]){
 AjStatus retval;
@@ -266,7 +268,7 @@ long *seed;
 void uppercase(ch)
 Char *ch;
 {  /* convert a character to upper case -- either ASCII or EBCDIC */
-     *ch = (islower (*ch) ? toupper(*ch) : (*ch));
+     *ch = (islower ((int)*ch) ? toupper((int)*ch) : ((int)*ch));
 }  /* uppercase */
 
 void newline(i, j, k)
@@ -286,7 +288,7 @@ long i, j, k;
 void getoptions()
 {
   /* interactively set options */
-  long i, inseed0;
+  long i, inseed0=0;
   Char ch;
   boolean  done1;
 
@@ -662,9 +664,9 @@ void inputweights()
         ch = ' ';
     } while (ch == ' ');
     weight[i] = 1;
-    if (isdigit(ch))
+    if (isdigit((int)ch))
       weight[i] = ch - '0';
-    else if (isalpha(ch)) {
+    else if (isalpha((int)ch)) {
       uppercase(&ch);
       if (ch >= 'A' && ch <= 'I')
         weight[i] = ch - 55;
@@ -1031,7 +1033,7 @@ int main(argc, argv)
 int argc;
 Char *argv[];
 {  /* Mixed parsimony by uphill search */
-char infilename[100],outfilename[100],trfilename[100];
+/*char infilename[100],outfilename[100],trfilename[100];*/
 #ifdef MAC
   macsetup("Mix","");
   argv[0] = "Mix";
@@ -1141,6 +1143,6 @@ MALLOCRETURN *mem;
 mem = (MALLOCRETURN *)malloc((size_t)x);
 if (!mem)
   memerror();
-else
+
   return (MALLOCRETURN *)mem;
 }

@@ -74,6 +74,7 @@ double  expon1i[maxcategories], expon1v[maxcategories],
 node    *there;
 double  **l0gf;
 Char ch;
+void setuptree(tree *a);
 
 double randum(seed)
 short *seed;
@@ -999,7 +1000,7 @@ short i;
 double scale;
 {
   /* draws one row of the tree diagram by moving up tree */
-  node *p, *q, *r, *first, *last;
+  node *p, *q, *r, *first=NULL, *last=NULL;
   short n, j;
   boolean extra, done;
 
@@ -1359,7 +1360,7 @@ void maketree()
 
   short i, j, numtrees, num;
   double bestlike, gotlike, sum, sum2, sd;
-  node *item, *nufork, *dummy, *p1, *p2, *p3;
+  node *item, *nufork, *dummy, *p1, *p2=NULL, *p3=NULL;
   double TEMP;
 
   if (!usertree) {

@@ -115,7 +115,7 @@ AjPFile inf;
 }
 /************ END EMBOSS GET OPTIONS ROUTINES **************************/
 
-openfile(fp,filename,mode,application,perm)
+void openfile(fp,filename,mode,application,perm)
 FILE **fp;
 char *filename;
 char *mode;
@@ -204,7 +204,7 @@ long i, j;
 void uppercase(ch)
 Char *ch;
 {  /* convert a character to upper case -- either ASCII or EBCDIC */
-   *ch = (islower(*ch) ?  toupper(*ch) : (*ch));
+   *ch = (islower((int)*ch) ?  toupper((int)*ch) : ((int)*ch));
 }  /* uppercase */
 
 void inputnumbers()
@@ -518,9 +518,9 @@ Local Void inputweights()
       ch = getc(infile);
     } while (ch == ' ');
     oldweight[i] = 1;
-    if (isdigit(ch))
+    if (isdigit((int)ch))
       oldweight[i] = ch - '0';
-    else if (isalpha(ch)) {
+    else if (isalpha((int)ch)) {
       uppercase(&ch);
       if (ch >= 'A' && ch <= 'I')
 	oldweight[i] = ch - 55;
@@ -908,7 +908,7 @@ long i;
 Local Void makeset()
 {
   /* make up set of species for given set of characters */
-  long i, j, k, l, m;
+  long i, j, k, m;
   boolean instate;
   long *st;
 
@@ -1278,7 +1278,7 @@ long i;
   long n, m, j, k, l, sumlocpos, size, locpos, branchpos;
   long *poslist;
   boolean extra, done, plus, found, same;
-  node *r, *first, *last;
+  node *r, *first=NULL, *last=NULL;
 
   poslist = (long *)Malloc(((long)NumSpp + MaxChars)*sizeof(long));
   branchpos = 0;
@@ -1669,7 +1669,7 @@ int main(argc, argv)
 int argc;
 Char *argv[];
 {  /* Main Program */
-char infilename[100],outfilename[100],trfilename[100];
+/*char infilename[100],outfilename[100],trfilename[100];*/
 #ifdef MAC
    macsetup("Clique","");
    argv[0] = "Clique";
@@ -1764,7 +1764,7 @@ MALLOCRETURN *mem;
 mem = (MALLOCRETURN *)malloc((size_t)x);
 if (!mem)
   memerror();
-else
+
   return (MALLOCRETURN *)mem;
 }
 

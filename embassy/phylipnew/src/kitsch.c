@@ -916,7 +916,7 @@ void maketree()
     names = (boolean *)Malloc(spp*sizeof(boolean));
     which = 1;
     while (which <= numtrees ) {
-      treestr = ajStrStr(phylotrees[which-1]->Tree);
+      treestr = ajStrStrMod(&phylotrees[which-1]->Tree);
       treeread2 (&treestr, &curtree.root, curtree.nodep,
         lengths, &trweight, &goteof, &haslengths, &spp);
       evaluate(curtree.root);

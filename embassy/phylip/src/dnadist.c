@@ -116,7 +116,7 @@ AjPFile outf;
 }
 
 void emboss_getnums(){
-  short begin,end;
+  /*short begin,end;*/
   int begin2,end2;
 
   ajSeqsetToUpper(seqset);
@@ -125,7 +125,7 @@ void emboss_getnums(){
 }
 
 void emboss_inputoptions(){
-  Char ch;
+  /*Char ch;*/
   boolean ctg;
   int i;
 
@@ -161,7 +161,7 @@ void emboss_inputoptions(){
 }
 
 void emboss_inputdata(){
-  int i,j,k;
+  int i,j;
 
   if (printdata)
     putc('\n', outfile);
@@ -198,7 +198,7 @@ void emboss_inputdata(){
 
 /************ END EMBOSS GET OPTIONS ROUTINES **************************/
 
-openfile(fp,filename,mode,application,perm)
+void openfile(fp,filename,mode,application,perm)
 FILE **fp;
 char *filename;
 char *mode;
@@ -240,7 +240,7 @@ char *perm;
 void uppercase(ch)
 Char *ch;
 {  /* convert ch to upper case -- either ASCII or EBCDIC */
-   *ch = (islower(*ch) ?  toupper(*ch) : (*ch));
+   *ch = (islower((int)*ch) ?  toupper((int)*ch) : ((int)*ch));
 }  /* uppercase */
 
 
@@ -253,7 +253,7 @@ void getnums()
 void getoptions()
 {
   /* interactively set options */
-  short j,i;
+  short i;
   Char ch;
   boolean  done1, ttr;
   char line[256];
@@ -730,7 +730,7 @@ void getbasefreqs()
 void inputdata()
 {
   /* Input the names and sequences for each species */
-  short i, j, k, l, basesread, basesnew;
+  short i, j, k, l, basesread, basesnew=0;
   Char charstate;
   boolean allread, done;
 
@@ -1166,8 +1166,9 @@ short m, n;
 double *v;
 {
   /* compute one distance */
-  short i, it, numerator, denominator, num1, num2, idx;
-  double sum, sum1, sum2, sumyr, lz, aa, bb, cc, vv, p1, p2, p3, q1, q2, q3,
+  short i, it, numerator=0, denominator=0, num1, num2, idx;
+  double sum, sum1, sum2, sumyr, lz, aa, bb, cc, vv=0.0,
+         p1, p2, p3, q1, q2, q3,
 	 tt, delta, slope, xx1freqa, xx1freqc, xx1freqg, xx1freqt;
   double *prod, *prod2, *prod3;
   boolean quick, jukesquick, kimquick, jinneiquick;
@@ -1419,7 +1420,7 @@ int main(argc, argv)
 int argc;
 Char *argv[];
 {  /* DNA Distances by Maximum Likelihood */
-char infilename[100],outfilename[100];
+/*char infilename[100],outfilename[100];*/
 #ifdef MAC
   macsetup("Dnadist","");
   argv[0] = "Dnadist";
@@ -1505,7 +1506,7 @@ MALLOCRETURN *mem;
 mem = (MALLOCRETURN *)malloc(x);
 if (!mem)
   memerror();
-else
+
   return (MALLOCRETURN *)mem;
 }
 

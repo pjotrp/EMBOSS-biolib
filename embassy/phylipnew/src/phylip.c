@@ -199,7 +199,7 @@ double normrand(longer seed)
 
 void uppercase(Char *ch)
 { /* convert ch to upper case */
-  *ch = (islower (*ch) ? toupper(*ch) : (*ch));
+  *ch = (islower ((int)*ch) ? toupper((int)*ch) : ((int)*ch));
 }  /* uppercase */
 
 
@@ -1080,7 +1080,7 @@ void initnameseq(AjPSeqset set, long i)
 {
   /* read in species name */
   long j;
-  AjPStr names = ajSeqGetName(ajSeqsetGetSeq(set, i));
+  AjPStr names = ajStrNewS(ajSeqGetName(ajSeqsetGetSeq(set, i)));
 
   for (j = 0; j < nmlngth; j++) {
     if (j < ajStrLen(names))
@@ -1097,6 +1097,7 @@ void initnameseq(AjPSeqset set, long i)
       exxit(-1);
     }
   }
+  ajStrDel(&names);
 } /* initnameseq */
 
 void initnamefreq(AjPPhyloFreq freq, long i)

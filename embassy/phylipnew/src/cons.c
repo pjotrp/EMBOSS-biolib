@@ -1337,7 +1337,7 @@ void read_groups (pattern_elm ****pattern_array,double *timesseen_changes,
     goteof = false;
     nextnode = 0;
     haslengths = true;
-    treestr = ajStrStr(treesource[itree++]->Tree);
+    treestr = ajStrStrMod(&treesource[itree++]->Tree);
     allocate_nodep(&nodep, treestr, &spp);
     if (firsttree)
       nayme = (naym *)Malloc(spp*sizeof(naym));

@@ -166,17 +166,17 @@ void readtree()
   /* Reads a single character-state tree; puts adjacent symbol
      pairs into array 'pairs' */
 
-  char* cp;
+  const char* cp;
   cp = ajStrStr(rdline);
-  while (*cp && isspace(*cp))
+  while (*cp && isspace((int)*cp))
       cp++;
-  while (*cp && isdigit(*cp))
+  while (*cp && isdigit((int)*cp))
       cp++;
 
   npairs = 0;
   while (*cp) {
     
-      while (*cp && isspace(*cp))
+      while (*cp && isspace((int)*cp))
 	  cp++;
       ch = *cp++;
     npairs++;
@@ -184,13 +184,13 @@ void readtree()
     ch = *cp++;
     if (!*cp || (ch != factchar)) {
       printf("\n\nERROR: Character %d:  bad character state tree format\n\n",
-             cp - ajStrStr(rdline));
+             (int)(cp - ajStrStr(rdline)));
       exxit(-1);}
 
     pair[npairs - 1][1] = *cp++;
     if (pair[npairs - 1][1] == ' '){
       printf("\n\nERROR: Character %d:  bad character state tree format\n\n",
-             cp - ajStrStr(rdline));
+             (int)(cp - ajStrStr(rdline)));
       exxit(-1);}
   }
 }  /* readtree */
@@ -476,7 +476,7 @@ void doeu(long *chposition, long eu)
   /* Writes factored data for a single species  */
   long i, charindex, place;
   Char *multichar;
-  char* cp;
+  const char* cp;
 
   cp = ajStrStr(rdline);
   
@@ -504,7 +504,7 @@ void doeu(long *chposition, long eu)
 	  cp = ajStrStr(rdline);
 	  ch = *cp++;
       }
-    } while (isspace(ch));
+    } while (isspace((int)ch));
     multichar[i] = ch;
   }
   for (charindex = 0; charindex < (lastindex); charindex++) {

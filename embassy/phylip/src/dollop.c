@@ -40,8 +40,8 @@ typedef struct gbit {
 
 Static node *root;
 Static FILE *infile, *outfile, *treefile;
-Static long spp, nonodes, chars, wrds, words, inseed, col, datasets, ith, j,
-  l, jumb, njumble;
+Static long spp, nonodes, chars, words, inseed, col, datasets, ith, j,
+  jumb, njumble;
 /* spp = number of species
    nonodes = number of nodes in tree
    chars = number of binary characters
@@ -173,7 +173,7 @@ long inseed0;
 /************ END EMBOSS GET OPTIONS ROUTINES **************************/
 
 
-openfile(fp,filename,mode,application,perm)
+void openfile(fp,filename,mode,application,perm)
 FILE **fp;
 char *filename;
 char *mode;
@@ -279,7 +279,7 @@ long *seed;
 void uppercase(ch)
 Char *ch;
 {  /* convert a character to upper case -- either ASCII or EBCDIC */
-  *ch = (islower (*ch) ? toupper(*ch) : (*ch));
+  *ch = (islower ((int)*ch) ? toupper((int)*ch) : ((int)*ch));
 }  /* uppercase */
 
 void newline(i, j, k)
@@ -299,7 +299,7 @@ long i, j, k;
 void getoptions()
 {
   /* interactively set options */
-  long i, inseed0;
+  long i, inseed0=0;
   Char ch;
   boolean  done1;
 
@@ -551,9 +551,9 @@ void inputweights()
       ch = getc(infile);
     } while (ch == ' ');
     weight[i] = 1;
-    if (isdigit(ch))
+    if (isdigit((int)ch))
       weight[i] = ch - '0';
-    else if (isalpha(ch)) {
+    else if (isalpha((int)ch)) {
       uppercase(&ch);
       if (ch >= 'A' && ch <= 'I')
         weight[i] = ch - 'A' + 10;
@@ -1437,7 +1437,7 @@ boolean *naymes;
 void treeread()
 {
   /* read in user-defined tree and set it up */
-  Char ch;
+ /* Char ch;*/
   long nextnode    = spp;
   long lparens     =0;
   long i;
@@ -1491,7 +1491,7 @@ long i;
 double scale;
 {
   /* draws one row of the tree diagram by moving up tree */
-  node *p, *q, *r, *first, *last;
+  node *p, *q, *r, *first=NULL, *last=NULL;
   long n, j;
   boolean extra, done;
 
@@ -2030,11 +2030,11 @@ void maketree()
 }  /* maketree */
 
 
-main(argc, argv)
+int main(argc, argv)
 int argc;
 Char *argv[];
 {  /* Dollo or polymorphism parsimony by uphill search */
-char infilename[100],outfilename[100],trfilename[100];
+/*char infilename[100],outfilename[100],trfilename[100];*/
 #ifdef MAC
   macsetup("Dollop","");
   argv[0] = "Dollop";
@@ -2147,7 +2147,7 @@ MALLOCRETURN *mem;
 mem = (MALLOCRETURN *)malloc((size_t)x);
 if (!mem)
   memerror();
-else
+
   return (MALLOCRETURN *)mem;
 }
 

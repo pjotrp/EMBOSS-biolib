@@ -2722,7 +2722,7 @@ void maketree()
       dummy_first      = true;
       goteof           = false;
 
-      treestr = ajStrStr(phylotrees[0]->Tree);
+      treestr = ajStrStrMod(&phylotrees[0]->Tree);
       treeread(&treestr, &root, dummy_treenode, &goteof, &dummy_first,
                curtree.nodep, &nextnode,
                &dummy_haslengths, &grbg, initpromlnode);

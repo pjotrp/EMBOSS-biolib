@@ -222,7 +222,7 @@ AjPFile outf;
 
 }
 void emboss_getnums(){
-  short begin,end;
+/*  short begin,end;*/
   int begin2,end2;
   int i;
   
@@ -250,9 +250,9 @@ void emboss_getnums(){
 
 void emboss_inputdata(){
   int i,j,l,k;
-  char *temp;
-  Char charstate;
-  aas aa;   /* temporary amino acid for input */
+  const char *temp;
+  Char charstate='\0';
+  aas aa=quest;   /* temporary amino acid for input */
 
   if (progress)
     putchar('\n');
@@ -521,7 +521,7 @@ void emboss_inputdata(){
 
 /************ END EMBOSS GET OPTIONS ROUTINES **************************/
 
-openfile(fp,filename,mode,application,perm)
+void openfile(fp,filename,mode,application,perm)
 FILE **fp;
 char *filename;
 char *mode;
@@ -564,7 +564,7 @@ char *perm;
 void uppercase(ch)
 Char *ch;
 {
- (*ch) = (isupper(*ch) ? (*ch) : toupper(*ch));
+ (*ch) = (isupper((int)*ch) ? ((int)*ch) : toupper((int)*ch));
 }  /* uppercase */
 
 
@@ -897,9 +897,9 @@ void inputweights()
 	ch = ' ';
     } while (ch == ' ');
     weight[i] = 1;
-    if (isdigit(ch))
+    if (isdigit((int)ch))
       weight[i] = ch - '0';
-    else if (isalpha(ch)) {
+    else if (isalpha((int)ch)) {
       uppercase(&ch);
       if (ch >= 'A' && ch <= 'I')
 	weight[i] = ch - 55;
@@ -996,10 +996,10 @@ void inputoptions()
 void inputdata()
 {
   /* input the names and sequences for each species */
-  long i, j, k, l, aasread, aasnew;
+  long i, j, k, l, aasread, aasnew=0;
   Char charstate;
   boolean allread, done;
-  aas aa;   /* temporary amino acid for input */
+  aas aa=quest;   /* temporary amino acid for input */
 
   if (progress)
     putchar('\n');
@@ -1054,7 +1054,7 @@ void inputdata()
           if (charstate == ' ' || (charstate >= '0' && charstate <= '9'))
             continue;
 	  uppercase(&charstate);
-	  if ((!isalpha(charstate) && charstate != '.' && charstate != '?' &&
+	  if ((!isalpha((int)charstate) && charstate != '.' && charstate != '?' &&
 	       charstate != '-' && charstate != '*') || charstate == 'J' ||
 	      charstate == 'O' || charstate == 'U') {
 	    printf("WARNING -- BAD AMINO ACID:%c AT POSITION%5ld OF SPECIES %3ld\n",
@@ -1898,11 +1898,11 @@ void makedists()
 }  /* makedists */
 
 
-main(argc, argv)
+int main(argc, argv)
 int argc;
 Char *argv[];
 {  /* ML Protein distances by PAM or categories model */
-  char infilename[100],outfilename[100];
+/*  char infilename[100],outfilename[100];*/
 #ifdef MAC
    macsetup("Protdist","");
    argv[0] = "Protdist";
@@ -1986,7 +1986,6 @@ MALLOCRETURN *mem;
 mem = (MALLOCRETURN *)malloc(x);
 if (!mem)
   memerror();
-else
+
   return (MALLOCRETURN *)mem;
 }
-

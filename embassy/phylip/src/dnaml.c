@@ -95,6 +95,7 @@ void setuptree(tree *a);
 void makeweights();
 void makevalues();
 Local Void empiricalfreqs();
+void maketree(void);
 
 AjPSeqset seqset;
 
@@ -263,7 +264,7 @@ int scanned;
 }
 
 void emboss_inputdata(){
-  int i,j,k;
+  int i,j;
 
  if(!ctgry){ 
   for (i = 0; i < sites; i++)
@@ -341,7 +342,7 @@ void emboss_getnums(){
 
 /************ END EMBOSS GET OPTIONS ROUTINES **************************/
 
-openfile(fp,filename,mode,application,perm)
+void openfile(fp,filename,mode,application,perm)
 FILE **fp;
 char *filename;
 char *mode;
@@ -388,9 +389,10 @@ void uppercase(ch)
 Char *ch;
 {
   /* convert ch to upper case -- either ASCII or EBCDIC */
-   *ch = isupper(*ch) ? *ch : toupper(*ch);
+   *ch = isupper((int)*ch) ? (int)*ch : toupper((int)*ch);
 }  /* uppercase */
 
+#ifdef OLDOPTIONS
 Local Void getnums()
 {
   /* input number of species, number of sites */
@@ -401,16 +403,16 @@ Local Void getnums()
   numsp1 = numsp + 1;
   numsp2 = numsp * 2 - 2;
 }  /* getnums */
-
+#endif
 void getoptions()
 {
   /* interactively set options */
-  short i, j, inseed0;
+  short i, inseed0=0;
   Char ch;
   char line[256];
   char rest[256];
   int scanned;
-  boolean done1, done2, didchangecat;
+  boolean done1, didchangecat;
   double probsum;
 
   fprintf(outfile, "\nNucleic acid sequence Maximum Likelihood");
@@ -963,7 +965,7 @@ tree *a;
 void getdata()
 {
   /* read sequences */
-  short i, j, k, l, basesread, basesnew;
+  short i, j, k, l, basesread, basesnew=0;
   Char ch;
   boolean allread, done;
 
@@ -1193,7 +1195,6 @@ void makeweights()
   /* make up weights vector to avoid duplicate computations */
   int i,j,k;
   node *p;
-  double temp;
 
   for (i = 1; i <= sites; i++) {
     alias[i - 1] = i;
@@ -1442,11 +1443,11 @@ void getinput()
 }  /* getinput */
 
 
-main(argc, argv)
+int main(argc, argv)
 int argc;
 Char *argv[];
 {  /* DNA Maximum Likelihood */
-char infilename[100],outfilename[100],trfilename[100];
+/*char infilename[100],outfilename[100],trfilename[100];*/
 #ifdef MAC
   macsetup("Dnaml","");
   argv[0] = "Dnaml";
@@ -1536,7 +1537,7 @@ MALLOCRETURN *mem;
 mem = (MALLOCRETURN *)calloc(1,x);
 if (!mem)
   memerror();
-else
+
   return (MALLOCRETURN *)mem;
 }
 

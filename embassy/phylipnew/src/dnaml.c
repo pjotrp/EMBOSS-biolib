@@ -2255,7 +2255,7 @@ void maketree()
 
   if (usertree) {
     /*openfile(&intree,INTREE,"input tree file", "r",progname,intreename);*/
-    treestr = ajStrStr(phylotrees[0]->Tree);
+    treestr = ajStrStrMod(&phylotrees[0]->Tree);
     inittable_for_usertree (treestr);
     if (numtrees > 2)
       emboss_initseed(inseed, &inseed0, seed);
@@ -2284,7 +2284,7 @@ void maketree()
       dummy_first      = true;
       goteof           = false;
 
-      treestr = ajStrStr(phylotrees[which-1]->Tree);
+      treestr = ajStrStrMod(&phylotrees[which-1]->Tree);
       treeread(&treestr, &root, dummy_treenode, &goteof, &dummy_first,
                curtree.nodep, &nextnode,
                &haslengths, &grbg, initdnamlnode);

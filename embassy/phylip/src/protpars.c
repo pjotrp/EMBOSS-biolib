@@ -50,7 +50,7 @@ typedef struct gseq {
 Static node *root;
 Static FILE *infile, *outfile, *treefile;
 Static long spp, nonodes, chars, inseed, outgrno, col, datasets, ith,
-       i, j, l, jumb, njumble;
+       i, j, jumb, njumble;
 /* spp = number of species
    nonodes = number of nodes in tree
    chars = number of sites in actual sequences
@@ -192,10 +192,10 @@ void emboss_getnums(){
 }
 
 void emboss_inputdata(){
-  long i, j, k, l, aasread, aasnew;
-  aas aa;   /* temporary amino acid for input */
-  char *temp1;
-  Char charstate;
+  long i, j, k, l;
+  aas aa=quest;   /* temporary amino acid for input */
+  const char *temp1;
+  Char charstate='\0';
 
   if (progress)
     putchar('\n');
@@ -397,7 +397,7 @@ void emboss_inputdata(){
 /************ END EMBOSS GET OPTIONS ROUTINES **************************/
 
 
-openfile(fp,filename,mode,application,perm)
+void openfile(fp,filename,mode,application,perm)
 FILE **fp;
 char *filename;
 char *mode;
@@ -644,7 +644,7 @@ void uppercase(ch)
 Char *ch;
 {
   /* convert ch to upper case -- either ASCII or EBCDIC */
-    *ch = (islower (*ch) ? toupper(*ch) : (*ch));
+    *ch = (islower ((int)*ch) ? toupper((int)*ch) : ((int)*ch));
 }  /* uppercase */
 
 
@@ -662,9 +662,9 @@ void inputnumbers()
 void getoptions()
 {
   /* interactively set options */
-  long i, inseed0;
+  long i, inseed0=0;
   Char ch;
-  boolean done, done1;
+  boolean done1;
 
   fprintf(outfile, "\nProtein parsimony algorithm, version %s\n\n",VERSION);
   putchar('\n');
@@ -910,9 +910,9 @@ void inputweights()
       ch = getc(infile);
     } while (ch == ' ');
     weight[i] = 1;
-    if (isdigit(ch))
+    if (isdigit((int)ch))
       weight[i] = ch - '0';
-    else if (isalpha(ch)) {
+    else if (isalpha((int)ch)) {
       uppercase(&ch);
       if (ch >= 'A' && ch <= 'I')
         weight[i] = ch - 55;
@@ -958,7 +958,7 @@ void inputoptions()
 {
   /* input the information on the options */
   Char ch;
-  long extranum, i, cursp, curchs, FORLIM;
+  long extranum, i, cursp, curchs;
 
   if (!firstset) {
     if (eoln(infile)) {
@@ -1011,11 +1011,11 @@ void inputoptions()
 void inputdata()
 {
   /* input the names and sequences for each species */
-  long i, j, k, l, aasread, aasnew;
+  long i, j, k, l, aasread, aasnew=0;
   Char charstate;
   boolean allread, done;
-  aas aa;   /* temporary amino acid for input */
-  long FORLIM, FORLIM1;
+  aas aa=quest;   /* temporary amino acid for input */
+/*  long FORLIM, FORLIM1;*/
 
   if (progress)
     putchar('\n');
@@ -1064,7 +1064,7 @@ void inputdata()
           if (charstate == ' ' || (charstate >= '0' && charstate <= '9'))
             continue;
           uppercase(&charstate);
-          if ((!isalpha(charstate) && charstate != '.' && charstate != '?' &&
+          if ((!isalpha((int)charstate) && charstate != '.' && charstate != '?' &&
                charstate != '-' && charstate != '*') || charstate == 'J' ||
               charstate == 'O' || charstate == 'U') {
             printf("WARNING -- BAD AMINO ACID:%c",charstate);
@@ -1234,7 +1234,7 @@ node *p, *left, *rt;
      spends much of its time in this PROCEDURE */
   boolean counted;
   aas aa;
-  long s;
+  long s=0;
   sitearray ls, rs, qs;
   long i, j, k, m, n;
 
@@ -1542,7 +1542,7 @@ boolean *found;
 {
   /* puts tree from ARRAY place in its proper position
      in ARRAY bestrees */
-  long i, FORLIM;
+  long i;
 
   for (i = nextree - 1; i >= (*pos); i--)
     memcpy(bestrees[i], bestrees[i - 1], spp*sizeof(long));
@@ -1877,7 +1877,7 @@ long i;
 double scale;
 {
   /* draws one row of the tree diagram by moving up tree */
-  node *p, *q, *r, *first, *last;
+  node *p, *q, *r, *first=NULL, *last=NULL;
   long n, j;
   boolean extra, done;
 
@@ -2041,7 +2041,7 @@ sitearray nothing;
   /* print out states in sites b1 through b2 at node */
   long i;
   boolean dot;
-  Char ch;
+  Char ch='\0';
   aas aa;
 
   if (*bottom) {
@@ -2210,7 +2210,7 @@ sitearray nothing;
   boolean maybe, nonzero;
   long i;
   aas aa;
-  long anc, hset;
+  long anc=0, hset;
   gseq *ancset, *temparray;
 
   gnu(&ancset);
@@ -2565,11 +2565,11 @@ void maketree()
 }  /* maketree */
 
 
-main(argc, argv)
+int main(argc, argv)
 int argc;
 Char *argv[];
 {  /* Protein parsimony by uphill search */
-char infilename[100],outfilename[100],trfilename[100];
+/*char infilename[100],outfilename[100],trfilename[100];*/
 #ifdef MAC
   macsetup("Protpars","");
   argv[0] = "Protpars";
@@ -2678,6 +2678,6 @@ MALLOCRETURN *mem;
 mem = (MALLOCRETURN *)malloc(x);
 if (!mem)
   memerror();
-else
+
   return (MALLOCRETURN *)mem;
 }

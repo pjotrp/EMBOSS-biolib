@@ -2946,7 +2946,7 @@ int  i;
 
   strcpy(fontnam,fontname);
   for (i=0;i<strlen(fontnam);++i)
-    fontnam[i] = toupper(fontnam[i]);
+    fontnam[i] = toupper((int)fontnam[i]);
   if (strcmp(fontnam,"NEW YORK") == 0)
     return 2;
   else if (strcmp(fontnam,"GENEVA") == 0)

@@ -67,7 +67,7 @@ int i;
     weight[i] = 1;
 }
 void emboss_inputdata(){
-  int i,j,k;
+  int i,j;
 
   if (progress)
     putchar('\n');
@@ -114,7 +114,7 @@ void emboss_getnums(){
 
 /************ END EMBOSS GET OPTIONS ROUTINES **************************/
 
-openfile(fp,filename,mode,application,perm)
+void openfile(fp,filename,mode,application,perm)
 FILE **fp;
 char *filename;
 char *mode;
@@ -157,7 +157,7 @@ char *perm;
 void uppercase(ch)
 Char *ch;
 {
-   *ch = (islower(*ch) ?  toupper(*ch) : (*ch));
+   *ch = (islower((int)*ch) ?  toupper((int)*ch) : ((int)*ch));
 }  /* uppercase */
 
 
@@ -426,7 +426,7 @@ void inputoptions()
 void inputdata()
 {
   /* Input the names and sequences for each species */
-  long i, j, k, l, basesread, basesnew;
+  long i, j, k, l, basesread, basesnew=0;
   Char charstate;
   boolean allread, done;
 
@@ -1126,11 +1126,11 @@ void makeinv()
 }  /* makeinv */
 
 
-main(argc, argv)
+int main(argc, argv)
 int argc;
 Char *argv[];
 {  /* DNA Invariants */
-char infilename[100],outfilename[100];
+/*char infilename[100],outfilename[100];*/
 #ifdef MAC
   macsetup("Dnainvar","");
   argv[0] = "Dnainvar";
@@ -1219,7 +1219,7 @@ MALLOCRETURN *mem;
 mem = (MALLOCRETURN *)malloc(x);
 if (!mem)
   memerror();
-else
+
   return (MALLOCRETURN *)mem;
 }
 

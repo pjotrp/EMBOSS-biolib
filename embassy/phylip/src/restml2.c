@@ -192,7 +192,7 @@ double evaluate(tr)
 tree *tr;
 {
   /* evaluates the likelihood, using info. at one branch */
-  double sum, sum2, y, liketerm, like0, lnlike0, term;
+  double sum, sum2, y, liketerm, like0, lnlike0=0, term;
   short i, j, k;
   node *p, *q;
   sitelike x1, x2;
@@ -294,8 +294,8 @@ node *p;
 {
   /* EM algorithm improvement of a branch length */
   short i, j, k, lowlim, it, ite;
-  double sum, sumlike, sumprod, liketerm, liket, y, yold, yorig, like0,
-         prod0, like, oldlike, olderlike, extrap;
+  double sum, sumlike, sumprod, liketerm, liket, y, yold, yorig, like0=0,
+         prod0=0, like, oldlike, olderlike, extrap;
   boolean done;
   node *q;
   sitelike xx1, xx2;
@@ -557,7 +557,7 @@ void addtraverse(p, q, contin)
 node *p, *q;
 boolean contin;
 {
-int i;
+/*int i;*/
 double like;
   /* try adding p at q, proceed recursively through tree */
   insert_(p, q);
@@ -668,7 +668,7 @@ double scale;
   node *p, *q;
   short n, j;
   boolean extra;
-  node *r, *first, *last;
+  node *r, *first=NULL, *last=NULL;
   boolean done;
 
   p = curtree.start->back;
@@ -1138,7 +1138,7 @@ boolean *names, *nolengths;
 
 {
   /* add one node to user-defined tree */
-  node *q;
+  node *q=NULL;
   short i, j, n;
   boolean found;
   Char str[nmlngth];

@@ -1072,7 +1072,7 @@ void buildtree()
     zeros = (long *)Malloc(chars*sizeof(long));         /**/
     for (i = 0; i < chars; i++)             /**/
       zeros[i] = 0;                         /**/
-    treestr = ajStrStr(phylotrees[0]->Tree);
+    treestr = ajStrStrMod(&phylotrees[0]->Tree);
     treeread(&treestr, &root, treenode, &goteof, &firsttree,
                 nodep, &nextnode, &haslengths,
                 &grbg, initdolmovenode); /*debug*/

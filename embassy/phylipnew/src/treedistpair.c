@@ -757,7 +757,7 @@ void read_second_file(pattern_elm ***pattern_array,
   initial = true;
   *trees_in_2 = 0;
   while (phylomoretrees[*trees_in_2]) {
-    treestr = ajStrStr(phylomoretrees[*trees_in_2]->Tree);
+    treestr = ajStrStrMod(&phylomoretrees[*trees_in_2]->Tree);
     goteof = false;
     nextnode = 0;
     haslengths = false;

@@ -2455,7 +2455,7 @@ void maketree()
       dummy_first      = true;
       goteof           = false;
 
-      treestr = ajStrStr(phylotrees[which-1]->Tree);
+      treestr = ajStrStrMod(&phylotrees[which-1]->Tree);
       treeread(&treestr, &root, dummy_treenode, &goteof, &dummy_first,
                curtree.nodep, &nextnode,
                &dummy_haslengths, &grbg, initpromlnode);

@@ -69,6 +69,9 @@ extern long     chars,words,spp,nonodes,jumb,njumble,outgrno;
 extern long      bits;
 
 double randum();
+void newline(long i, long j, long k);
+void gnu(gbit **p);
+void chuck(gbit *p);
 
 void add(below, newtip, newfork)
 node *below, *newtip, *newfork;
@@ -156,7 +159,7 @@ node *p;
     state "P".  If in neither, it is "?". */
   long i;
   long l0, l1, r0, r1, st, wa, za;
-  long FORLIM;
+/*  long FORLIM;*/
 
   for (i = 0; i < words; i++) {
     if (full) {
@@ -741,7 +744,7 @@ long i;
 double scale;
 {
   /* draws one row of the tree diagram by moving up tree */
-  node *p, *q, *r, *first, *last;
+  node *p, *q, *r, *first=NULL, *last=NULL;
   long n, j;
   boolean extra, done;
 

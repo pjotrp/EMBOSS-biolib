@@ -737,7 +737,7 @@ void getparms(char numtochange)
       phyFillScreenColor();
 #endif
       getstryng(input);
-      input[0] = toupper(input[0]);
+      input[0] = toupper((int)input[0]);
       countup(&loopcount, 10);
     } while (input[0] != 'Y' && input[0] != 'N');
     pictitalic = (input[0] == 'Y');
@@ -748,7 +748,7 @@ void getparms(char numtochange)
     phyFillScreenColor();
 #endif
       getstryng(input);
-      input[0] = toupper(input[0]);
+      input[0] = toupper((int)input[0]);
       countup(&loopcount, 10);
     } while (input[0] != 'Y' && input[0] != 'N');
     pictbold = (input[0] == 'Y');
@@ -759,7 +759,7 @@ void getparms(char numtochange)
       phyFillScreenColor();
 #endif
       getstryng(input);
-      input[0] = toupper(input[0]);
+      input[0] = toupper((int)input[0]);
       countup(&loopcount, 10);
     } while (input[0] != 'Y' && input[0] != 'N');
     pictshadow = (input[0] == 'Y');
@@ -770,7 +770,7 @@ void getparms(char numtochange)
       phyFillScreenColor();
 #endif
       getstryng(input);
-      input[0] = toupper(input[0]);
+      input[0] = toupper((int)input[0]);
       countup(&loopcount, 10);
     } while (input[0] != 'Y' && input[0] != 'N');
     pictoutline = (input[0] == 'Y');break;
@@ -1448,7 +1448,7 @@ void setup_environment(Char *argv[], boolean *canbeplotted)
   printf("DRAWGRAM from PHYLIP version %s\n",VERSION);
   printf("Reading tree ... \n");
   firsttree = true;
-  treestr = ajStrStr(phylotrees[0]->Tree);
+  treestr = ajStrStrMod(&phylotrees[0]->Tree);
   allocate_nodep(&nodep, treestr, &spp);
   treeread (&treestr, &root, treenode, &goteof, &firsttree,
             nodep, &nextnode, &haslengths,

@@ -281,7 +281,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
 {
     AjStatus retval;
     AjPSeqset s;
-    AjPSeq q;
+    const AjPSeq q;
     ajint i;
     ajint j;
 
@@ -692,7 +692,7 @@ void protinputdata(AjPSeqset seqset)
   Char charstate;
   boolean allread, done;
   aas aa = unk;   /* temporary amino acid for input */
-  AjPStr str;
+  const AjPStr str;
 
   if (printdata)
     headings(chars, "Sequences", "---------");
@@ -710,7 +710,7 @@ void protinputdata(AjPSeqset seqset)
         while (j < chars) {
           charstate = ajStrChar(str, j);
           uppercase(&charstate);
-          if ((!isalpha(charstate) && charstate != '?' &&
+          if ((!isalpha((int)charstate) && charstate != '?' &&
                charstate != '-' && charstate != '*') || charstate == 'J' ||
               charstate == 'O' || charstate == 'U') {
             printf("WARNING -- BAD AMINO ACID:%c",charstate);
@@ -1870,7 +1870,7 @@ void maketree()
     }
     which = 1;
     while (which <= numtrees) {
-      treestr = ajStrStr(phylotrees[which-1]->Tree);
+      treestr = ajStrStrMod(&phylotrees[which-1]->Tree);
       prottreeread(&treestr);
       if (outgropt)
         protreroot(treenode[outgrno - 1]);

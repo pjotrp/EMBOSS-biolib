@@ -1399,7 +1399,7 @@ treeconstruct.  Memory leak if user reads multiple trees. */
       /* This isn't the first time through here ... */
       firsttree = false;
     }
-    treestr = ajStrStr(phylotrees[treesread]->Tree);
+    treestr = ajStrStrMod(&phylotrees[treesread]->Tree);
     allocate_nodep(&nodep, treestr, &spp);
     /*xx*/treesets[whichtree].nodep = nodep;
     

@@ -41,7 +41,7 @@ typedef struct node {             /* describes a tip species or an ancestor */
 typedef node **pointptr;
 Static node *root;
 Static FILE *infile, *outfile, *treefile;
-Static short spp, nonodes, chars, words, rno, howmany, howoften, col,
+Static short spp, nonodes, chars, words, howmany, howoften, col,
 	     datasets, ith, j, outgrno;
 
 /* spp = number of species                                                   *
@@ -67,7 +67,7 @@ Static steptr numsteps;
 Static short **bestorders, **bestrees;
 Static steptr numsone, numszero;
 Static gbit *garbage;
-Static bits = sizeof(long)*8 - 1;
+Static int bits = sizeof(long)*8 - 1;
 
 struct hyptrav_vars {
   node *r;
@@ -153,7 +153,7 @@ AjPStr *methodlist;
 
 /************ END EMBOSS GET OPTIONS ROUTINES **************************/
 
-openfile(fp,filename,mode,application,perm)
+void openfile(fp,filename,mode,application,perm)
 FILE **fp;
 char *filename;
 char *mode;
@@ -219,7 +219,7 @@ gbit *p;
 void uppercase(ch)
 Char *ch;
 {  /* convert a character to upper case -- either ASCII or EBCDIC */
-     *ch = (islower(*ch) ? toupper(*ch) : (*ch));
+     *ch = (islower((int)*ch) ? toupper((int)*ch) : ((int)*ch));
 }  /* uppercase */
 
 void newline(i, j, k)
@@ -255,7 +255,7 @@ void getoptions()
 {
   /* interactively set options */
   Char ch;
-  boolean done, done1;
+  boolean done1;
 
   fprintf(outfile, "\nPenny algorithm, version %s\n",VERSION);
   fprintf(outfile, " branch-and-bound to find all");
@@ -589,9 +589,9 @@ void inputweights()
       ch = getc(infile);
     } while (ch == ' ');
     weight[i] = 1;
-    if (isdigit(ch))
+    if (isdigit((int)ch))
       weight[i] = ch - '0';
-    else if (isalpha(ch)) {
+    else if (isalpha((int)ch)) {
       uppercase(&ch);
       if (ch >= 'A' && ch <= 'I')
 	weight[i] = ch - 55;
@@ -1277,7 +1277,7 @@ short m;
   valptr valyew;
   placeptr place;
   /* adds the species one by one, recursively */
-  short i, j, n1, besttoadd;
+  short i, j, n1, besttoadd=0;
   valptr bestval;
   placeptr bestplace;
   double oldfrac, oldfdone, sum, bestsum;
@@ -1426,7 +1426,7 @@ short i;
 double scale;
 {
   /* draws one row of the tree diagram by moving up tree */
-  node *p, *q, *r, *first, *last;
+  node *p, *q, *r, *first=NULL, *last=NULL;
   short n, j;
   boolean extra, done;
 
@@ -1881,7 +1881,7 @@ Char *argv[];
 {  /* Penny's branch-and-bound method */
    /* Reads in the number of species, number of characters,
      options and data.  Then finds all most parsimonious trees */
-char infilename[100],outfilename[100],trfilename[100];
+/*char infilename[100],outfilename[100],trfilename[100];*/
 #ifdef MAC
   macsetup("Penny","");
   argv[0] = "Penny";
@@ -1991,7 +1991,6 @@ MALLOCRETURN *mem;
 mem = (MALLOCRETURN *)malloc(x);
 if (!mem)
   memerror();
-else
+
   return (MALLOCRETURN *)mem;
 }
-

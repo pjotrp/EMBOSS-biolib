@@ -876,7 +876,7 @@ void maketree()
       fprintf(outfile, "==== ====== ====\n\n");
     }
     nextnode = 0;
-    treestr = ajStrStr(phylotrees[which-1]->Tree);
+    treestr = ajStrStrMod(&phylotrees[which-1]->Tree);
     treeread (&treestr, &curtree.start, curtree.nodep, &goteof, &first,
             curtree.nodep, &nextnode, &haslengths, &grbg, initcontrastnode);
     q = curtree.start;

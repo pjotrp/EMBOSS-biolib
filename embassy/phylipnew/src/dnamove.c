@@ -319,7 +319,7 @@ void dnamove_inputdata(AjPSeqset seqset)
   boolean allread;
   /*boolean done;*/
   long ns = 0;   /* temporary base set for input */
-  char* myseq;
+  const char* myseq;
   long jlast;
 
   basesread = 0;
@@ -1240,7 +1240,7 @@ void buildtree()
     for (i = 0; i < endsite; i++)                        /**/
       zeros[i] = 0;
                                        /**/
-    treestr = ajStrStr(phylotrees[0]->Tree);
+    treestr = ajStrStrMod(&phylotrees[0]->Tree);
     treeread(&treestr, &root, treenode, &goteof, &firsttree,
                 nodep, &nextnode, &haslengths,
                 &grbg, initdnamovenode); /*debug*/

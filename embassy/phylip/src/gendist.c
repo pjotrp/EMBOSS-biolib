@@ -69,7 +69,7 @@ AjPStr *methodlist;
 
 /************ END EMBOSS GET OPTIONS ROUTINES **************************/
 
-openfile(fp,filename,mode,application,perm)
+void openfile(fp,filename,mode,application,perm)
 FILE **fp;
 char *filename;
 char *mode;
@@ -111,14 +111,14 @@ char *perm;
 Static Void uppercase(ch)
 Char *ch;
 {  /* convert a character to upper case -- either ASCII or EBCDIC */
-   *ch = (islower(*ch) ?  toupper(*ch) : (*ch));
+   *ch = (islower((int)*ch) ?  toupper((int)*ch) : ((int)*ch));
 }  /* uppercase */
 
 
 void getnums()
 {
   /* read number of species and loci for first data set */
-  short i;
+  /*short i;*/
   fscanf(infile, "%hd%hd", &numsp, &loci);
 }  /* getnums */
 
@@ -426,7 +426,7 @@ int main(argc, argv)
 int argc;
 Char *argv[];
 {  /* main program */
-char infilename[100],outfilename[100];
+/*char infilename[100],outfilename[100];*/
 #ifdef MAC
   macsetup("Gendist","");
   argv[0] = "Gendist";
@@ -502,7 +502,6 @@ MALLOCRETURN *mem;
 mem = (MALLOCRETURN *)malloc(x);
 if (!mem)
   memerror();
-else
+
   return (MALLOCRETURN *)mem;
 }
-

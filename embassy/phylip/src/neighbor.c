@@ -127,7 +127,7 @@ int i;
 
 
 
-openfile(fp,filename,mode,application,perm)
+void openfile(fp,filename,mode,application,perm)
 FILE **fp;
 char *filename;
 char *mode;
@@ -211,7 +211,7 @@ long *seed;
 void uppercase(ch)
 Char *ch;
 {
-    *ch = isupper(*ch) ? (*ch) : toupper(*ch);
+    *ch = isupper((int)*ch) ? ((int)*ch) : toupper((int)*ch);
 }  /* uppercase */
 
 
@@ -227,7 +227,7 @@ void getnums()
 void getoptions()
 {
   /* interactively set options */
-  long i, inseed0;
+  long i, inseed0=0;
   Char ch;
   boolean done1;
 
@@ -634,7 +634,7 @@ double scale;
   node *p, *q;
   long n, j;
   boolean extra, trif;
-  node *r, *first, *last;
+  node *r, *first=NULL, *last=NULL;
   boolean done;
 
   p = curtree.start;
@@ -845,8 +845,8 @@ boolean isnode;
 Local Void jointree()
 {
   /* calculate the tree */
-  long nc, nextnode, mini, minj, i, j, ia, ja, ii, jj, nude, iter;
-  double diq, djq, dij, fotu2, total, tmin, dio, djo, bi, bj, bk, dmin, da;
+  long nc, nextnode, mini=0, minj=0, i, j, ia, ja, ii, jj, nude, iter;
+  double diq, djq, dij, fotu2, total, tmin, dio, djo, bi, bj, bk, dmin=0.0, da;
   long el[3];
   vector av;
   intvector oc;
@@ -1060,11 +1060,11 @@ void maketree()
 }  /* maketree */
 
 
-main(argc, argv)
+int main(argc, argv)
 int argc;
 Char *argv[];
 {  /* main program */
-char infilename[100],outfilename[100],trfilename[100];
+/*char infilename[100],outfilename[100],trfilename[100];*/
 #ifdef MAC
   macsetup("Neighbor","");
   argv[0] = "Neighbor";
@@ -1155,7 +1155,6 @@ MALLOCRETURN *mem;
 mem = (MALLOCRETURN *)malloc(x);
 if (!mem)
   memerror();
-else
+
   return (MALLOCRETURN *)mem;
 }
-

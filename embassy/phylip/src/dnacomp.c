@@ -57,7 +57,7 @@ struct LOC_hyptrav {
 Static node *root, *p;
 Static FILE *infile, *outfile, *treefile;
 Static short spp, nonodes, chars, endsite, inseed, outgrno, col, datasets,
-             ith, i, j, l, jumb, njumble;
+             ith, i, j, jumb, njumble;
 /*                                                                    *
  * spp    = number of species                                         *
  * nonodes = number of nodes in tree                                  *
@@ -185,7 +185,7 @@ int i;
     weight[i] = 1;
 }
 void emboss_inputdata(){
-  int i,j,k;
+  int i,j;
 
   if (progress)
     putchar('\n');
@@ -216,7 +216,7 @@ void emboss_inputdata(){
  
 /************ END EMBOSS GET OPTIONS ROUTINES **************************/
 
-openfile(fp,filename,mode,application,perm)
+void openfile(fp,filename,mode,application,perm)
 FILE **fp;
 char *filename;
 char *mode;
@@ -322,14 +322,14 @@ void uppercase(ch)
 Char *ch;
 {
   /* convert ch to upper case -- either ASCII or EBCDIC */
-    *ch = (islower (*ch) ? toupper(*ch) : (*ch));
+    *ch = (islower ((int)*ch) ? toupper((int)*ch) : ((int)*ch));
 }  /* uppercase */
 
 
 void getoptions()
 {
   /* interactively set options */
-  short i, inseed0;
+  short i, inseed0=0;
   Char ch;
   boolean  done1;
 
@@ -569,9 +569,9 @@ void inputweights()
       ch = getc(infile);
     } while (ch == ' ');
     weight[i] = 1;
-    if (isdigit(ch))
+    if (isdigit((int)ch))
       weight[i] = ch - '0';
-    else if (isalpha(ch)) {
+    else if (isalpha((int)ch)) {
       uppercase(&ch);
       if (ch >= 'A' && ch <= 'I')
         weight[i] = ch - 55;
@@ -663,7 +663,7 @@ void inputoptions()
 void inputdata()
 {
   /* input the names and sequences for each species */
-  short i, j, k, l, basesread, basesnew;
+  short i, j, k, l, basesread, basesnew=0;
   Char charstate;
   boolean allread, done;
 
@@ -881,7 +881,6 @@ void makeweights()
 {
   /* make up weights vector to avoid duplicate computations */
   short i;
-  node *p;
 
   for (i = 1; i <= chars; i++) {
     alias[i - 1] = i;
@@ -904,7 +903,7 @@ void makevalues()
 {
   /* set up fractional likelihoods at tips */
   short i, j;
-  short ns;
+  short ns=0;
   node *p;
 
   for (i = 1; i <= nonodes; i++) {
@@ -1105,7 +1104,7 @@ node *p, *left, *rt;
      at that point and counts the changes.  The program
      spends much of its time in this PROCEDURE */
   short i;
-  short ns, rs, ls;
+  short ns, rs=0, ls=0;
 
   for (i = 0; i < endsite; i++) {
     if (left != NULL)
@@ -1705,7 +1704,7 @@ short i;
 double scale;
 {
   /* draws one row of the tree diagram by moving up tree */
-  node *p, *q, *r, *first, *last;
+  node *p, *q, *r, *first=NULL, *last=NULL;
   short n, j;
   boolean extra, done;
 
@@ -2307,11 +2306,11 @@ void maketree()
 }  /* maketree */
 
 
-main(argc, argv)
+int main(argc, argv)
 int argc;
 Char *argv[];
 {  /* DNA compatibility by uphill search */
-char infilename[100],outfilename[100],trfilename[100];
+/*char infilename[100],outfilename[100],trfilename[100];*/
   /* reads in spp, chars, and the data. Then calls maketree to
     construct the tree */
 #ifdef MAC
@@ -2423,7 +2422,7 @@ MALLOCRETURN *mem;
 mem = (MALLOCRETURN *)malloc(x);
 if (!mem)
   memerror();
-else
+
   return (MALLOCRETURN *)mem;
 }
 

@@ -37,7 +37,7 @@ typedef long longer[6];
 Static node *root, *best;
 Static FILE *infile, *outfile, *treefile;
 Static long numsp, numsp2, inseed, numtrees, col, datasets, ith,
-            i, j, l, jumb, njumble;
+            jumb, njumble;
 /* numsp = number of species
    numtrees is used by usertree option part of maketree */
 Static pointptr treenode, bestree;   /* pointers to all nodes in tree */
@@ -146,7 +146,7 @@ int i;
 /************ END EMBOSS GET OPTIONS ROUTINES **************************/
 
 
-openfile(fp,filename,mode,application,perm)
+void openfile(fp,filename,mode,application,perm)
 FILE **fp;
 char *filename;
 char *mode;
@@ -224,7 +224,7 @@ long *seed;
 void uppercase(ch)
 Char *ch;
 {/* convert a character to upper case -- either ASCII or EBCDIC */
-    *ch = islower(*ch) ? toupper(*ch) :(*ch);
+    *ch = islower((int)*ch) ? toupper((int)*ch) :((int)*ch);
 }  /* uppercase */
 
 
@@ -239,9 +239,9 @@ void getnums()
 void getoptions()
 {
   /* interactively set options */
-  long i, inseed0;
+  long i, inseed0=0;
   Char ch;
-  boolean done, done1;
+  boolean done1;
 
   fprintf(outfile, "\nFitch-Margoliash method ");
   fprintf(outfile, "with contemporary tips, version %s\n\n",VERSION);
@@ -1157,7 +1157,7 @@ long i;
 double scale;
 {
   /* draws one row of the tree diagram by moving up tree */
-  node *p, *q, *r, *first, *last;
+  node *p, *q, *r, *first=NULL, *last=NULL;
   long n, j;
   boolean extra, done;
 
@@ -1433,7 +1433,7 @@ void maketree()
      adds each node at location which yields highest "likelihood"
      then rearranges the tree for greatest "likelihood" */
   long i, j, k;
-  double bestlike, bstlike2, gotlike;
+  double bestlike, bstlike2=0.0, gotlike;
   boolean lastrearr;
   node *item, *nufork;
 
@@ -1555,11 +1555,11 @@ void maketree()
 }  /* maketree */
 
 
-main(argc, argv)
+int main(argc, argv)
 int argc;
 Char *argv[];
 {  /* Fitch-Margoliash criterion with contemporary tips */
-char infilename[100],outfilename[100],trfilename[100];
+/*char infilename[100],outfilename[100],trfilename[100];*/
 #ifdef MAC
   macsetup("Kitsch","");
   argv[0] = "Kitsch"; 
@@ -1648,7 +1648,6 @@ MALLOCRETURN *mem;
 mem = (MALLOCRETURN *)malloc(x);
 if (!mem)
   memerror();
-else
+
   return (MALLOCRETURN *)mem;
 }
-

@@ -150,7 +150,7 @@ int i;
 /************ END EMBOSS GET OPTIONS ROUTINES **************************/
 
 
-openfile(fp,filename,mode,application,perm)
+void openfile(fp,filename,mode,application,perm)
 FILE **fp;
 char *filename;
 char *mode;
@@ -230,7 +230,7 @@ void uppercase(ch)
 Char *ch;
 {
   /* convert a character to upper case -- either ASCII or EBCDIC */
-   *ch = (islower(*ch) ?  toupper(*ch) : (*ch));
+   *ch = (islower((int)*ch) ?  toupper((int)*ch) : ((int)*ch));
 }  /* uppercase */
 
 
@@ -1279,7 +1279,7 @@ double scale;
   node *p, *q;
   short n=0, j=0;
   boolean extra=false, trif=false;
-  node *r, *first, *last;
+  node *r, *first=NULL, *last=NULL;
   boolean done=false;
 
   p = curtree.start->back;
@@ -1892,12 +1892,12 @@ void  maketree()
 }  /* maketree */
 
 
-main(argc, argv)
+int main(argc, argv)
 int argc;
 Char *argv[];
 {
   int i;
-  char infilename[100],outfilename[100],trfilename[100];
+  /*char infilename[100],outfilename[100],trfilename[100];*/
 #ifdef MAC
   macsetup("Fitch","");
   argv[0] = "Fitch";
@@ -1988,7 +1988,7 @@ MALLOCRETURN *mem;
 mem = (MALLOCRETURN *)calloc(1,x);
 if (!mem)
   memerror();
-else
+
   return (MALLOCRETURN *)mem;
 }
 

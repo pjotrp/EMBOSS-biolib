@@ -45,7 +45,7 @@ Static long **sppord;
 void emboss_getoptions(char *pgm, int argc, char *argv[]){
   AjStatus retval;
   AjPFile outf;
-  AjPFile treef;
+/*  AjPFile treef;*/
   AjPFile inf;
   AjPStr *methodlist;
   AjPStr *testlist;
@@ -158,7 +158,7 @@ char *perm;
 void uppercase(ch)
 Char *ch;
 {  /* convert ch to upper case -- either ASCII or EBCDIC */
-   *ch = (islower(*ch) ?  toupper(*ch) : (*ch));
+   *ch = (islower((int)*ch) ?  toupper((int)*ch) : ((int)*ch));
 }  /* uppercase */
 
 double randum(seed)
@@ -585,7 +585,7 @@ Local Void inputoptions()
 Local Void inputdata()
 {
   /* input the names and sequences for each species */
-  long i, j, k, l, m, n, basesread, basesnew;
+  long i, j, k, l, m, n, basesread, basesnew=0;
   double x;
   Char charstate;
   boolean allread, done;
@@ -959,7 +959,7 @@ int main(argc, argv)
 int argc;
 Char *argv[];
 {  /* Read in sequences or frequencies and bootstrap or jackknife them */
-char infilename[100],outfilename[100];
+/*char infilename[100],outfilename[100];*/
 #ifdef MAC
   macsetup("Seqboot","");
   argv[0] = "Seqboot";

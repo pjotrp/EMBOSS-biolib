@@ -74,7 +74,7 @@ AjPFile trf;
 
 /************ END EMBOSS GET OPTIONS ROUTINES **************************/
 
-openfile(fp,filename,mode,application,perm)
+void openfile(fp,filename,mode,application,perm)
 FILE **fp;
 char *filename;
 char *mode;
@@ -114,7 +114,7 @@ void uppercase(ch)
 Char *ch;
 {
   /* convert a character to upper case -- either ASCII or EBCDIC */
-    *ch = isupper(*ch) ? (*ch) :toupper(*ch);
+    *ch = isupper((int)*ch) ? ((int)*ch) :toupper((int)*ch);
 }  /* uppercase */
 
 
@@ -732,11 +732,11 @@ void maketree()
 }  /* maketree */
 
 
-main(argc, argv)
+int main(argc, argv)
 int argc;
 Char *argv[];
 {  /* main program */
-char infilename[100],outfilename[100],trfilename[100];
+/*char infilename[100],outfilename[100],trfilename[100];*/
 #ifdef MAC
   macsetup("Contrast","");
   argv[0] = "Contrast";
@@ -809,7 +809,7 @@ MALLOCRETURN *mem;
 mem = (MALLOCRETURN *)calloc(1,(size_t)x);
 if (!mem)
   memerror();
-else
+
   return (MALLOCRETURN *)mem;
 
 }

@@ -317,7 +317,7 @@ static double jttprobs[20][20] =
 
 void protdist_uppercase(Char *ch)
 {
- (*ch) = (isupper(*ch) ? (*ch) : toupper(*ch));
+ (*ch) = (isupper((int)*ch) ? ((int)*ch) : toupper((int)*ch));
 }  /* protdist_uppercase */
 
 
@@ -828,7 +828,7 @@ void protdist_inputdata(AjPSeqset seqset)
   Char charstate;
   aas aa=0;   /* temporary amino acid for input */
   boolean allread, done;
-  AjPStr str;
+  const AjPStr str;
 
   if (progress)
     putchar('\n');
@@ -860,7 +860,7 @@ void protdist_inputdata(AjPSeqset seqset)
 	while (j < chars) {
           charstate = ajStrChar(str, j);;
           protdist_uppercase(&charstate);
-          if ((!isalpha(charstate) && charstate != '.' && charstate != '?' &&
+          if ((!isalpha((int)charstate) && charstate != '.' && charstate != '?' &&
                charstate != '-' && charstate != '*') || charstate == 'J' ||
               charstate == 'O' || charstate == 'U' || charstate == '.') {
         printf("ERROR -- bad amino acid: %c at position %ld of species %3ld\n",

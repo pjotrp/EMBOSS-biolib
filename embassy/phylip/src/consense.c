@@ -33,7 +33,7 @@ typedef node **pointarray;
 Static node *root;
 Static double trweight, ntrees;
 Static FILE *infile, *outfile, *treefile;
-Static short spp, numopts, outgrno, i, j, col, setsz;
+Static short spp, outgrno, i, j, col, setsz;
 Static long maxgrp;                /* max. no. of groups in all trees found  */
 Static boolean anerror, trout, first, noroot, outgropt, didreroot, prntsets,
 	       progress, treeprint, ibmpc, vt52, ansi, goteof;
@@ -45,7 +45,6 @@ Static double **timesseen, **tmseen2, **times2; /* how often they're seen */
 Static long *fullset;
 Static node *garbage;
 
-Static short tipy;
 /************ EMBOSS GET OPTIONS ROUTINES ******************************/
 void emboss_getoptions(char *pgm, int argc, char *argv[]){
 AjStatus retval;
@@ -89,7 +88,7 @@ AjPFile inf;
 }
 /************ END EMBOSS GET OPTIONS ROUTINES **************************/
 
-openfile(fp, filename, mode, application, perm)
+void openfile(fp, filename, mode, application, perm)
 FILE **fp;
 char *filename;
 char *mode;
@@ -167,12 +166,7 @@ node *p;
 }  /*  gdispose */
 
 
-Static Void uppercase(ch)
-Char *ch;
-{  /* convert ch to upper case -- either ASCII or EBCDIC */
-    *ch = (islower(*ch) ?  toupper(*ch) : (*ch));
-}  /* uppercase */
-
+#ifdef OLDOPTIONS
 
 Static Void getoptions()
 {
@@ -308,6 +302,7 @@ Static Void getoptions()
     }
   } while (!done);
 }  /* getoptions */
+#endif
 
 void getch(c, parens)
 Char *c;
@@ -911,7 +906,7 @@ long *st;
 short n;
 {
   /* find a maximal subset of st among the groupings */
-  short i, j, k;
+  short i, j;
   long *su;
   boolean max, same;
 
@@ -957,8 +952,8 @@ short n;
 short *nextnode;
 {
   /* traverse to add next node of consensus tree */
-  short i, j, k, l;
-  boolean found, same, zero, zero2;
+  short i, j=0, k, l;
+  boolean found, same=0, zero, zero2;
   long *tempset, *st2;
   node *q;
 
@@ -1045,7 +1040,7 @@ void reconstruct(n)
 short n;
 {
   /* reconstruct tree from the subsets */
-  short nextnode, i;
+  short nextnode;
   long *s;
 
   nextnode = spp + 1;
@@ -1101,7 +1096,7 @@ short i;
   node *p, *q;
   short n, j;
   boolean extra, done, trif;
-  node *r, *first, *last;
+  node *r, *first=NULL, *last=NULL;
   boolean found;
 
   p = root;
@@ -1211,7 +1206,7 @@ void treeout(p)
 node *p;
 {
   /* write out file with representation of final tree */
-  short i, n;
+  short i, n=0;
   double x;
   Char c;
   node *q;
@@ -1316,11 +1311,11 @@ short tipy;
 }  /* consensus */
 
 
-main(argc, argv)
+int main(argc, argv)
 int argc;
 Char *argv[];
 {  
-char infilename[100], outfilename[100], trfilename[100];
+/*char infilename[100], outfilename[100], trfilename[100];*/
 #ifdef MAC
   macsetup("Consense", "");
   argv[0] = "Consense";
@@ -1437,7 +1432,7 @@ MALLOCRETURN *mem;
 mem = (MALLOCRETURN *)calloc(1, x);
 if (!mem)
   memerror();
-else
+
   return (MALLOCRETURN *)mem;
 }
 

@@ -62,6 +62,9 @@ sequence y;
 longer seed;
 short *enterorder;
 short *weight, *alias, *aliasweight;
+
+void maketree(void);
+
 /************ EMBOSS GET OPTIONS ROUTINES ******************************/
 
 void emboss_getoptions(char *pgm, int argc, char *argv[]){
@@ -159,7 +162,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[]){
 
 
 /*
-openfile(fp,filename,mode,application,perm)
+void openfile(fp,filename,mode,application,perm)
 FILE **fp;
 char *filename;
 char *mode;
@@ -203,7 +206,7 @@ void uppercase(ch)
 Char *ch;
 {
   /* convert ch to upper case -- either ASCII or EBCDIC */
-    *ch = (isupper (*ch) ? (*ch) : toupper(*ch));
+    *ch = (isupper ((int)*ch) ? ((int)*ch) : toupper((int)*ch));
 }  /* uppercase */
 
 
@@ -221,9 +224,9 @@ void getnums()
 void getoptions()
 {
   /* interactively set options */
-  short i, inseed0;
+  short i, inseed0=0;
   Char ch;
-  boolean done, done1;
+  boolean done1;
 
   fprintf(outfile, "\nRestriction site Maximum Likelihood");
   fprintf(outfile, " method, version %s\n\n",VERSION);
@@ -707,7 +710,7 @@ tree *a;
 void getdata()
 {
   /* read the species and sites data */
-  short i, j, k, l, sitesread, sitesnew;
+  short i, j, k, l, sitesread, sitesnew=0;
   Char ch;
   boolean allread, done;
 
@@ -1059,11 +1062,11 @@ void getinput()
 }  /* getinput */
 
 
-main(argc, argv)
+int main(argc, argv)
 int argc;
 Char *argv[];
 {  /* maximum likelihood phylogenies from restriction sites */
-char infilename[100],outfilename[100],trfilename[100];
+/*char infilename[100],outfilename[100],trfilename[100];*/
 #ifdef MAC
   macsetup("Restml","");
   argv[0] = "Restml";
@@ -1152,7 +1155,6 @@ MALLOCRETURN *mem;
 mem = (MALLOCRETURN *)calloc(1,x);
 if (!mem)
   memerror();
-else
+
   return (MALLOCRETURN *)mem;
 }
-

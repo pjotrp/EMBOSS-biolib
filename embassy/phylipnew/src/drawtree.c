@@ -2453,7 +2453,7 @@ void setup_environment(int argc, Char *argv[])
   /*openfile(&intree,INTREE,"input tree file", "r",argv[0],NULL);*/
   printf("Reading tree ... \n");
   firsttree = true;
-  treestr = ajStrStr(phylotrees[0]->Tree);
+  treestr = ajStrStrMod(&phylotrees[0]->Tree);
   allocate_nodep(&nodep, treestr, &spp);
   treeread (&treestr, &root, treenode, &goteof, &firsttree,
             nodep, &nextnode, &haslengths,
