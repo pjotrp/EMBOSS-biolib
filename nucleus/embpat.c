@@ -1960,6 +1960,7 @@ AjBool embPatClassify(const AjPStr pat, AjPStr *cleanpat,
 	ajDebug("repeats expanded pat '%S'\n", *cleanpat);
     }
 
+    ajStrDel(&tmppat);
     return ajTrue;
 }
 
