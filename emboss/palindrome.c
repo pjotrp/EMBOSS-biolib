@@ -158,7 +158,7 @@ int main(int argc, char **argv)
 	    count -=mismatchAtEnd;
 	    gap = rev - current - count - count + 1;
 
-	    /* Find out if we have found reverse repeat ajlong enough*/
+	    /* Find out if we have found reverse repeat long enough*/
 	    if (count >= minLen && gap <= maxGap)
 	    {
 		/*create new palindrome struct to hold new palindrome data*/ 
@@ -230,8 +230,9 @@ int main(int argc, char **argv)
     ppal = pfirstpal;
     while (ppal != NULL)
     {
-	ppal = ppal->next;
+	pnext = ppal->next;
 	AJFREE (ppal);
+	ppal = pnext;
     }
 
     ajExit();
