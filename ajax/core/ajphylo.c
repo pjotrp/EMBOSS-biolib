@@ -338,7 +338,7 @@ AjPPhyloDist ajPhyloDistRead(const AjPStr filename, ajint size, AjBool missing)
     done = ajFalse;
     while(!done && ajFileGets(distfile, &rdline))
     {
-	ajDebug("DistRead line: %S", rdline);
+	/*ajDebug("DistRead line: %S", rdline); */
 	if(!i || !ajRegExec(floatexp, rdline))
 	{
 	    if(ajStrLen(rdline) < 11)	/* skip this line? */
@@ -373,8 +373,8 @@ AjPPhyloDist ajPhyloDistRead(const AjPStr filename, ajint size, AjBool missing)
 	    {
 		if(lowertri)
 		{
-		    ajDebug("DistRead Lower irow: %d i: %d\n",
-			    irow, i);
+		    /*ajDebug("DistRead Lower irow: %d i: %d\n",
+			    irow, i);*/
 		    if(icol != irow)
 			ajErr("Distance file %S: Row '%S' has %d values"
 			      " in lower-triangular format",
@@ -382,8 +382,8 @@ AjPPhyloDist ajPhyloDistRead(const AjPStr filename, ajint size, AjBool missing)
 		}
 		else if(uppertri)
 		{
-		    ajDebug("DistRead Upper irow: %d i: %d\n",
-			    irow, i);
+		    /*ajDebug("DistRead Upper irow: %d i: %d\n",
+			    irow, i);*/
 		    if(i)
 			ajErr("Distance file %S: Row '%S' has %d values"
 			      " in upper-triangular format",
@@ -391,11 +391,11 @@ AjPPhyloDist ajPhyloDistRead(const AjPStr filename, ajint size, AjBool missing)
 		}
 		else
 		{
-		    ajDebug("DistRead Square irow: %d i: %d\n",
-			    irow, i);
-		    if(icol)
+		    /*ajDebug("DistRead Square irow: %d i: %d\n",
+			    irow, i);*/
+		    if(icol != count)
 			ajErr("Distance file %S: Row '%S' has %d values"
-			      " in upper-triangular format",
+			      " in square format",
 			      filename, ret->Names[irow], icol);
 		}
 	    }
@@ -444,14 +444,14 @@ AjPPhyloDist ajPhyloDistRead(const AjPStr filename, ajint size, AjBool missing)
 		    }
 		    ret->HasMissing = ajTrue;
 		}
-		ajDebug("DistRead row %2d [%d] %.3f %d\n",
-			irow, i, dval, ival);
+		/*ajDebug("DistRead row %2d [%d] %.3f %d\n",
+			irow, i, dval, ival);*/
 	    }
 	    else
 	    {
 		ival = 1;
-		ajDebug("DistRead row %2d [%d] %.3f .\n",
-			irow, i, dval);
+		/*ajDebug("DistRead row %2d [%d] %.3f .\n",
+			irow, i, dval);*/
 	    }
 	    ipos = irow*count + i;
 	    ret->Data[ipos] = dval;
@@ -462,6 +462,7 @@ AjPPhyloDist ajPhyloDistRead(const AjPStr filename, ajint size, AjBool missing)
 		i = 0;
 	    ajRegPost(floatexp, &tmpstr);
 	    ajStrAssS(&rdline, tmpstr);
+	    /*ajDebug("irow: %d icol: %d\n", irow, icol);*/
 	}
     }
 
@@ -819,7 +820,7 @@ AjPPhyloFreq ajPhyloFreqRead(const AjPStr filename,
 
     while(!done)
     {
-	ajDebug("FreqRead line: %S", rdline);
+	/*ajDebug("FreqRead line: %S", rdline);*/
 	if(!ajRegExec(floatexp, rdline))
 	{
 	    irow++;
@@ -1493,7 +1494,7 @@ AjPPhyloTree* ajPhyloTreeRead(const AjPStr filename, ajint size)
 		    }
 		}
 		cp = ajStrStr(rdline);
-		ajDebug("ajPhyloTreeRead rdline '%S'\n", rdline);
+		/*ajDebug("ajPhyloTreeRead rdline '%S'\n", rdline);*/
 		while(cp && ajRegExecC(treeexp, cp))
 		{
 		    if(!size && !headcount && !ajStrLen(tree->Tree))
@@ -1581,8 +1582,8 @@ AjPPhyloTree* ajPhyloTreeRead(const AjPStr filename, ajint size)
 		" required %d\n",
 		  filename, i, ajListLength(treelist), size);
         ajFileClose(&treefile);
-	ajListToArray(treelist, (void***) &trees);
-	ret = (AjPPhyloTree*) trees;
+	ajListToArray(treelist, (void***) &ret);
+	/*ret = (AjPPhyloTree*) trees;*/
     }
     
     return ret;
@@ -1601,7 +1602,7 @@ void ajPhyloTreeTrace(const AjPPhyloTree thys)
     ajDebug("ajPhyloTreeTrace\n");
     ajDebug("================\n");
 
-    ajDebug("  Multifurcated: %B BaseTrifurcated; %B BaseBifurcated: %B"
+    ajDebug("  Multifurcated: %B BaseTrifurcated: %B BaseBifurcated: %B"
 	    " BaseQuartet: %B Tree: '%S'\n",
 	    thys->Multifurcated, thys->BaseTrifurcated,
 	    thys->BaseBifurcated, thys->BaseQuartet,
