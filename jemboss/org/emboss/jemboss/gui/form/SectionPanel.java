@@ -34,6 +34,7 @@ import org.apache.regexp.*;
 
 import org.emboss.jemboss.gui.AdvancedOptions;
 import org.emboss.jemboss.parser.*;
+import org.emboss.jemboss.programs.ListFile;
 import org.emboss.jemboss.gui.sequenceChooser.*;
 import org.emboss.jemboss.soap.CallAjax;
 import uk.ac.mrc.hgmp.embreo.EmbreoParams;
@@ -635,7 +636,7 @@ public class SectionPanel
           {
             f.setCursor(cbusy);
             findatt:
-            if(!withSoap)
+            if(!withSoap)    //Ajax without SOAP
             {
               String fc = new String("");
               if(sifc.isFileName())             // Sequence file/database
@@ -684,7 +685,7 @@ public class SectionPanel
                           "Error Message", JOptionPane.ERROR_MESSAGE);
               }
             }
-            else
+            else    //Ajax with SOAP
             {
               String fc = new String("");
               try
@@ -698,10 +699,29 @@ public class SectionPanel
                   else
                     fname = sifc.getFileChosen();
 
-                  if(fname.startsWith("@"))
-                    fname = fname.substring(1);
-                  else if (fname.startsWith("list::"))
-                    fname = fname.substring(6);
+                  //get the first seqs we meet in a list file
+                  if(fname.startsWith("@") || fname.startsWith("list::"))
+                  {
+                    Hashtable filesInList = new Hashtable();
+                    ListFile.parse(fname,filesInList);
+                    Enumeration en = filesInList.keys();
+                    if(en.hasMoreElements())
+                    {
+                      Object obj = en.nextElement();
+                      fname = (String)filesInList.get(obj);
+                      int col = fname.indexOf(":");
+                      if(col>-1)
+                      {
+                        String possDB = fname.substring(0,col);
+                        for(int i=0;i<db.length;i++)
+                          if(db[i].equalsIgnoreCase(possDB))
+                          {
+                            fname = fname.substring(0,fname.indexOf("\n"));  
+                            break;
+                          }
+                      }
+                    }
+                  }
 
                   if( (new File(fname)).exists() )       // Sequence file
                   {
