@@ -25,6 +25,7 @@
 #ifndef __VMS
 #include <termios.h>
 #endif
+#include <sys/types.h>
 #include <sys/wait.h>
 #include <errno.h>
 #include <unistd.h>
@@ -303,6 +304,7 @@ AjBool ajSysWhichEnv(AjPStr *s, char **env)
 void ajSystem(AjPStr *cl)
 {
     pid_t pid;
+    pid_t retval;
     ajint status;
     char *pgm;
     char **argptr;
@@ -326,7 +328,14 @@ void ajSystem(AjPStr *cl)
 	ajFatal("System fork failed");
 
     if(pid)
-	while(wait(&status)!=pid);
+    {
+	while((retval=waitpid(pid,&status,WNOHANG))!=pid)
+	{
+	    if(retval == -1)
+		if(errno != EINTR)
+		    break;
+	}
+    }
     else
 	execv(ajStrStr(pname), argptr);
 
@@ -368,6 +377,7 @@ void ajSystem(AjPStr *cl)
 void ajSystemEnv(AjPStr *cl, char **env)
 {
     pid_t pid;
+    pid_t retval;
     ajint status;
     char *pgm;
     char **argptr;
@@ -389,7 +399,14 @@ void ajSystemEnv(AjPStr *cl, char **env)
 	ajFatal("System fork failed");
 
     if(pid)
-	while(wait(&status)!=pid);
+    {
+	while((retval=waitpid(pid,&status,WNOHANG))!=pid)
+	{
+	    if(retval == -1)
+		if(errno != EINTR)
+		    break;
+	}
+    }
     else
 	execve(ajStrStr(pname), argptr, env);
 
