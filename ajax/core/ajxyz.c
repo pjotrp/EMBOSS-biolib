@@ -171,7 +171,10 @@ AjPScop ajScopNew(int chains)
 	AJCNEW0(ret->Start,chains);
 	AJCNEW0(ret->End,chains);
 	for(i=0; i<chains; i++)
-	    ret->Chain[i]=ajStrNew();
+	{
+	    ret->Start[i]=ajStrNew();
+	    ret->End[i]=ajStrNew();
+	}
     }
 
     ret->N = chains;
@@ -310,10 +313,15 @@ void ajScopDel(AjPScop *thys)
 	AJFREE(pthis->Start);
 	AJFREE(pthis->End);
 	for(i=0; i<pthis->N; i++)
-	    ajStrDel(&pthis->Chain[i]);
-	AJFREE(pthis->Chain);
+	{
+	    ajStrDel(&pthis->Start[i]);
+	    ajStrDel(&pthis->End[i]);
+	}
+	AJFREE(pthis->Start);
+	AJFREE(pthis->End);
     }
-    
+
+    AJFREE(pthis->Chain);    
     AJFREE(pthis);
 
     return;
@@ -736,7 +744,7 @@ void ajScopWrite(AjPFile outf, AjPScop thys)
     for(i=0;i<thys->N;++i)
     {
 	ajFmtPrintF(outf,"XX\nCN   [%d]\n",i+1);
-	ajFmtPrintF(outf,"XX\nCH   %S CHAIN; %d START; %d END;\n",
+	ajFmtPrintF(outf,"XX\nCH   %c CHAIN; %S START; %S END;\n",
 		    thys->Chain[i],thys->Start[i],thys->End[i]);
     }
     ajFmtPrintF(outf,"//\n");
@@ -929,11 +937,11 @@ AjBool ajScopReadC(AjPFile inf, char *entry, AjPScop *thys)
 	    if(!ajRegExec(exp2,str))
 		return ajFalse;
 	    ajRegSubI(exp2,1,&stmp);
-	    ajStrAss(&(*thys)->Chain[idx-1],stmp);
+	    (*thys)->Chain[idx-1] = *ajStrStr(stmp);
 	    ajRegSubI(exp2,2,&str);
-	    ajStrToInt(str,&(*thys)->Start[idx-1]);
+	    ajStrAssC(&(*thys)->Start[idx-1],ajStrStr(str));
 	    ajRegSubI(exp2,3,&str);
-	    ajStrToInt(str,&(*thys)->End[idx-1]);
+	    ajStrAssC(&(*thys)->End[idx-1],ajStrStr(str));
 	}
 	ok = ajFileReadLine(inf,&line);
     }

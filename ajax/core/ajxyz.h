@@ -128,9 +128,9 @@ typedef struct AjSScop
     AjPStr Domain;
     AjPStr Source;
     int    N;
-    AjPStr *Chain;
-    int    *Start;
-    int    *End;
+    char   *Chain;
+    AjPStr *Start;
+    AjPStr *End;
     AjPFile Fp;
 } AjOScop,*AjPScop;
 
