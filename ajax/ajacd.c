@@ -574,10 +574,11 @@ AcdOAttr acdAttrAppl[] = { {"documentation", VT_STR},
 			   {NULL, VT_NULL} };
 
 AcdOAttr acdAttrAlign[] = { {"name", VT_STR},
-			    {"extension", VT_STR},
+			    {"aextension", VT_STR},
 			    {"type", VT_STR},
 			    {"taglist", VT_STR}, /* extra tags to report */
 			    {"mintags", VT_INT}, /* min number extra tags */
+			    {"multiple", VT_BOOL},
 			    {NULL, VT_NULL} };
 
 AcdOAttr acdAttrArray[] = { {"minimum", VT_FLOAT},
@@ -702,10 +703,11 @@ AcdOAttr acdAttrRegexp[] = { {"minlength", VT_INT},
 			     {NULL, VT_NULL} };
 
 AcdOAttr acdAttrReport[] = { {"name", VT_STR},
-			     {"extension", VT_STR},
+			     {"rextension", VT_STR},
 			     {"type", VT_STR},
 			     {"taglist", VT_STR}, /* extra tags to report */
 			     {"mintags", VT_INT}, /* min number extra tags */
+			     {"multiple", VT_BOOL},
 			     {NULL, VT_NULL} };
 
 AcdOAttr acdAttrSec[] = { {"info", VT_STR},
@@ -3098,6 +3100,7 @@ static void acdSetAlign (AcdPAcd thys)
     (void) acdGetValueAssoc (thys, "aformat", &val->Formatstr);
     (void) acdGetValueAssoc (thys, "aextension", &ext);
     (void) acdQualToInt (thys, "awidth", 0, &val->Width, &defreply);
+    (void) acdAttrToBool (thys, "multiple", ajFalse, &val->Multi);
     (void) acdQualToBool (thys, "ausashow", ajFalse, &val->Showusa, &defreply);
 
     (void) acdOutFilename (&outfname, name, val->Formatstr);
@@ -5502,13 +5505,13 @@ static void acdSetReport (AcdPAcd thys)
     val = ajReportNew();
 
     (void) acdAttrResolve (thys, "name", &name);
-    (void) acdAttrResolve (thys, "extension", &ext);
+    (void) acdAttrResolve (thys, "rextension", &ext);
     (void) acdAttrToStr (thys, "taglist", "", &taglist);
     (void) acdAttrToInt (thys, "mintags", 0, &val->Mintags);
     (void) acdAttrToStr (thys, "type", "", &val->Type);
+    (void) acdAttrToBool (thys, "multiple", ajFalse, &val->Multi);
     (void) acdGetValueAssoc (thys, "rformat", &val->Formatstr);
-    (void) acdGetValueAssoc (thys, "rextension", &ext);
-    (void) acdQualToBool (thys, "rusashow", ajFalse, &val->Showusa, &defreply);
+   (void) acdQualToBool (thys, "rusashow", ajFalse, &val->Showusa, &defreply);
 
     if (!ajReportSetTags (val, taglist, mintags)) {
       ajErr("Bad tag list for report");
@@ -13195,6 +13198,7 @@ static AjBool acdOutFilename (AjPStr* outfname, AjPStr name, AjPStr ext) {
   (void) ajStrSet(&myext, ext);	/* use extension if given */
   if (!acdOutFile)
     (void) ajStrSet(&myext, acdProgram);
+
   /* else try program name for first file */
   if (!ajStrLen(myext))		/* if all else fails, use out2 etc. */
     (void) ajFmtPrintS (&myext, "out%d", acdOutFile+1);
