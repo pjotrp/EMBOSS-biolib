@@ -651,8 +651,11 @@ public class SectionPanel
                 ajaxLength  = aj.length;
                 ajaxWeight  = aj.weight;
                 ajaxProtein = aj.protein;
-                inSeqAttr[h].setBegSeq(0);
-                inSeqAttr[h].setEndSeq(aj.length);
+                if(updateBeginEnd(inSeqAttr[h].getBegSeq(),inSeqAttr[h].getEndSeq()))
+                {
+                  inSeqAttr[h].setBegSeq(0);
+                  inSeqAttr[h].setEndSeq(aj.length);
+                }
                 resolveDependents(nod,dep,sifc.getFileChosen(),varName);
               }
               else
@@ -720,8 +723,11 @@ public class SectionPanel
                   ajaxWeight  = ca.getWeight();
                   ajaxProtein = ca.isProtein();
                   int seqLen  = ca.getLength();
-                  inSeqAttr[h].setBegSeq(0);     
-                  inSeqAttr[h].setEndSeq(seqLen);
+                  if(updateBeginEnd(inSeqAttr[h].getBegSeq(),inSeqAttr[h].getEndSeq()))
+                  {
+                    inSeqAttr[h].setBegSeq(0);     
+                    inSeqAttr[h].setEndSeq(seqLen);
+                  }
                   resolveDependents(nod,dep,sifc.getFileChosen(),varName);
                 }
                 else
@@ -783,6 +789,28 @@ public class SectionPanel
       }
     }
 
+  }
+
+
+  private boolean updateBeginEnd(String s, String e)
+  {
+   
+    String ls = System.getProperty("line.separator");
+
+    if( ((s!=null) && (!s.equals(""))) ||
+        ((e!=null) && (!e.equals(""))) )
+    {
+      int n = JOptionPane.showConfirmDialog(f,
+            "Do you want to overwrite the input sequence " + ls +
+            "start " + s + " and end " + e + " , values already set?",
+            "Confirm",
+            JOptionPane.YES_NO_OPTION);
+
+      if(n == JOptionPane.NO_OPTION)
+        return false;
+    }
+
+    return true;
   }
 
 
