@@ -926,6 +926,9 @@ if [ -d "$TOMCAT_ROOT/shared/classes" ]; then
   ln -s $TOMCAT_ROOT/webapps/axis/WEB-INF/classes/resources $JEMBOSS/resources
   
   cp -R $EMBOSS_DOWNLOAD/jemboss/lib/axis $JEMBOSS/lib
+  
+# logging jar need moving
+  mv $TOMCAT_ROOT/webapps/axis/WEB-INF/lib/log4j-1.2.4.jar $TOMCAT_ROOT/server/lib
 else
   echo "WARNING: no $TOMCAT_ROOT/shared/classes "
   echo "Jemboss classpath not added to Tomcat"
