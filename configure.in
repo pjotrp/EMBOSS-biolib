@@ -206,13 +206,13 @@ AM_CONDITIONAL(ISAIXIA64, test "`uname`" = "AIX")
 AM_CONDITIONAL(ISSHARED, test "${enable_shared}" = "yes")
 
 
-if test $ISAIXIA64_FALSE = "#" ; then
-if test -d ajax/.libs ; then
-	echo AIX ajax/.libs exists
-else
-	mkdir ajax/.libs
-fi
-fi
+#if test $ISAIXIA64_FALSE = "#" ; then
+#if test -d ajax/.libs ; then
+#	echo AIX ajax/.libs exists
+#else
+#	mkdir ajax/.libs
+#fi
+#fi
 
 AC_OUTPUT(plplot/Makefile plplot/lib/Makefile nucleus/Makefile ajax/Makefile
 emboss/Makefile emboss/acd/Makefile test/Makefile test/data/Makefile
