@@ -5,9 +5,10 @@ pkgdata_DATA = abiview0.gif banana0.gif chaos0.gif cpgplot0.gif \
                pepwheel0.gif pepwindow0.gif pepwindowall0.gif \
                plotorf0.gif polydot0.gif prettyplot3.gif prettyplot4.gif \
                syco0.gif syco1.gif tmap0.gif topo.gif wobble0.gif \
-               SITE-DIRECTED.html alignment_global_group.html \
+               SITE-DIRECTED.html abiview.html alignment_global_group.html \
                alignment_group.html alignment_local_group.html \
-               alignment_multiple_group.html abiview.html antigenic.html \
+               alignment_multiple_group.html antigenic.html \
+               assorted_group.html \
                backtranseq.html banana.html btwisted.html chaos.html \
                checktrans.html chips.html cirdna.html clique.html \
                codcmp.html coderet.html coding_regions_group.html \
@@ -42,7 +43,8 @@ pkgdata_DATA = abiview0.gif banana0.gif chaos0.gif cpgplot0.gif \
                helixturnhelix.html hydropathy_group.html iep.html \
                index.html infoseq.html isochore.html kitsch.html \
                lindna.html maskfeat.html maskseq.html matcher.html \
-               megamerger.html merger.html mix.html motifs_group.html \
+               megamerger.html menus_group.html merger.html mix.html \
+               motifs_group.html \
                msbar.html mse.html mutation_group.html needle.html \
                neighbor.html new_group_group.html newcpgreport.html \
                newcpgseek.html newseq.html noreturn.html notseq.html \
