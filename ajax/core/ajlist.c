@@ -508,6 +508,44 @@ AjPList ajListCopy(AjPList thys)
     return newlist;
 }
 
+/* @func ajListstrClone ************************************************
+**
+** Copy a string list. The destination list should be empty.
+** If it is not, new entries are appended.
+**
+** WARNING: Makes new copies of the strings. No good general solution
+**          so this is a strings-only function.
+**
+** @param [r] thys [AjPList] list to be copied
+** @param [r] newlist [AjPList] (empty) target list
+** @return [AjPList] new copied list.
+** @@
+*******************************************************************/
+
+ajint ajListstrClone(AjPList thys, AjPList newlist)
+{
+    AjPListNode node;
+    ajint ret=0;
+    AjPStr newstr;
+
+    if(!thys)
+	return 0;
+
+    if(!newlist)
+	return 0;
+
+    for ( node=thys->First; node->Next; node=node->Next)
+    {
+        newstr = NULL;
+	ajStrAssS(&newstr, node->Item);
+	ajListPushApp (newlist, newstr);
+	ret++;
+    }
+
+
+    return ret;
+}
+
 /* @func ajListFirst **********************************************
 **
 ** Set pointer to first node's data. Does NOT remove the first node.
