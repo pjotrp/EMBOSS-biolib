@@ -12,7 +12,7 @@ void     embDataListDel( AjPList data);
 AjPTable embDataListGetTable( AjPList fullList, ajuint required);
 void     embDataListGetTables( AjPList fullList, AjPList returnList,
 			       ajuint required);
-void     embDataListInit( AjPList data, AjPStr file_name);
+void     embDataListRead( AjPList data, AjPFile file);
 
 #endif
 

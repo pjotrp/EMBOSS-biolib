@@ -35,7 +35,6 @@
 
 static AjBool dataListNextLine(AjPFile pfile, char *commentLine,
 				 AjPStr * line);
-static void dataListRead(AjPList data, AjPFile pfile);
 
 
 
@@ -74,7 +73,7 @@ void embDataListDel(AjPList data)
 /* @funcstatic dataListNextLine ***********************************************
 **
 ** private function to read in the next line of data from the file. It is
-** called from dataListRead.
+** called from embDataListRead.
 **
 ** @param [r] pfile [AjPFile] file poiter to the data file
 ** @param [r] commentLine [char *] the character used as the to describe the
@@ -110,11 +109,10 @@ static AjBool dataListNextLine(AjPFile pfile, char *commentLine,
 
 
 
-/* @funcstatic dataListRead ***************************************************
+/* @func embDataListRead ******************************************************
 **
 ** General routine for reading in data from a file. The keys and values of
-** each table are stored as AjPStr. This is a private routine, It is called
-** from embDataListInit.
+** each table are stored as AjPStr.
 **
 ** @param [w] data [AjPList] is the list of data tables.
 ** @param [r] pfile [AjPFile] pointer to the data file
@@ -123,7 +121,7 @@ static AjBool dataListNextLine(AjPFile pfile, char *commentLine,
 ** @@
 ******************************************************************************/
 
-static void dataListRead(AjPList data, AjPFile pfile)
+void embDataListRead(AjPList data, AjPFile pfile)
 {
    AjPStr line = NULL;
    AjPStrTok tokens;
@@ -199,37 +197,6 @@ static void dataListRead(AjPList data, AjPFile pfile)
    ajStrDel(&line);
    ajStrTokenClear(&tokens);
    ajListIterFree(iter);
-
-   return;
-}
-
-
-
-
-/* @func embDataListInit ******************************************************
-**
-** Reads in the data file and puts the data into the list of tables. The
-** keys and values of each table are stored as AjPStr.
-**
-** @param [w] data [AjPList] llist of data tables
-** @param [r] file_name [AjPStr] the data filename
-**
-** @return [void]
-** @@
-******************************************************************************/
-
-void embDataListInit(AjPList data, AjPStr file_name)
-{
-   AjPFile pfile = NULL;
-
-
-   /* open the data table file */
-   ajFileDataNew(file_name, &pfile);
-   if(pfile==NULL)
-       ajFatal("Unable to find the data file %S", file_name);
-
-   dataListRead(data, pfile);
-   ajFileClose(&pfile);
 
    return;
 }
