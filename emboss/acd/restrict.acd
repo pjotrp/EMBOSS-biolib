@@ -50,6 +50,7 @@ bool: individual  [
   optional: "N"
   default: "N"
   information: "List individual enzymes with their fragments"
+  help: "This gives the fragment lengths produced by restriction assuming only each named RE of the set that can cut the sequence is used. Results are added to the tail section of the report."
 ]
 
 bool: single  [
