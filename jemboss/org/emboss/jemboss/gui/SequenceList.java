@@ -43,6 +43,16 @@ import java.awt.datatransfer.*;
 import java.awt.dnd.*;
 
 
+/**
+*
+* SequenceList extends JFrame to display a set of sequences
+* that the user is working on in a session. The sequence list
+* can be stored and read back in by the application. This allows
+* the user to usefully maintain a list of sequence that are
+* being worked on and easily drag and drop them into sequence
+* fields of applications.
+*
+*/
 public class SequenceList extends JFrame
 {
 
@@ -76,6 +86,7 @@ public class SequenceList extends JFrame
     scrollpane.setSize(300,100);
     getContentPane().add(scrollpane, BorderLayout.CENTER);
 
+//setup menu bar 
     JMenuBar menuPanel = new JMenuBar();
     new BoxLayout(menuPanel,BoxLayout.X_AXIS);
     setJMenuBar(menuPanel);
@@ -236,40 +247,19 @@ public class SequenceList extends JFrame
     {
       public void actionPerformed(ActionEvent e)
       {
-        //create Sequence List file
-        
-//      File fseq = new File(System.getProperty("user.home")  
-//                           + System.getProperty("file.separator")
-//                           + ".jembossSeqList");
-//      try
-//      {
-//        PrintWriter fout = new PrintWriter(new FileWriter(fseq));
-
-//        for(int i=0;i<seqModel.getRowCount();i++)
-//        {
-//          SequenceData seqData = seqModel.getSequenceData(i);
-//           
-//          if(!seqData.s_name.equals(""))
-//            fout.println(seqData.s_name + " " +
-//                         seqData.s_beg + " " +
-//                         seqData.s_end + " " +
-//                         seqData.s_default.toString() + " " +
-//                         seqData.s_remote.toString() + " " +
-//                         seqData.s_listFile.toString() );
-//        }
-//        fout.close();
-//      }
-//      catch (IOException ioe){}
-
         setVisible(false);
-
       }
     });
     fileMenu.add(closeFrame);
 
   }
 
-
+/**
+*
+* Look for first set to default in the table.
+* @return index to row
+*
+*/
   private int getDefaultRow()
   {
     int nrow = seqModel.getRowCount();
@@ -283,6 +273,12 @@ public class SequenceList extends JFrame
     return -1;
   }
 
+/**
+*
+* Get the default Sequence name
+* @return default sequence name or null if no default 
+*
+*/
   public String getDefaultSequenceName()
   {
     int ndef = getDefaultRow();
@@ -293,39 +289,42 @@ public class SequenceList extends JFrame
              SequenceListTableModel.COL_NAME);
   }
 
+/**
+*
+* Return the number of rows in the table
+* @return number of rows in the table
+*
+*/
   public int getRowCount()
   {
     return seqModel.getRowCount();
   }
 
+/**
+*
+* The <code>SequenceData</code> for a given row
+* number.
+* @param row number
+* @return <code>SequenceData</code> for the row
+*
+*/
   public SequenceData getSequenceData(int nrow)
   {
     return seqModel.getSequenceData(nrow);
   }
 
+/**
+*
+* Determines if a sequence list has been stored
+* ("~/.jembossSeqList")
+* @return true if a sequence list has been stored
+*
+*/
   public boolean isStoreSequenceList()
   {
     return storeSeqList.isSelected();
   }
 
-//class PopupListener extends MouseAdapter 
-//{
-//  public void mousePressed(MouseEvent e) {
-//    maybeShowPopup(e);
-//  }
-
-//  public void mouseReleased(MouseEvent e) 
-//  {
-//    maybeShowPopup(e);
-//  }
-
-//  private void maybeShowPopup(MouseEvent e) 
-//  {
-//    if(e.isPopupTrigger()) 
-//      popMenu.show(e.getComponent(),
-//            e.getX(), e.getY());
-//  }
-//}
 }
 
 
@@ -335,9 +334,6 @@ class DragJTable extends JTable implements DragGestureListener,
 {
 
   private SequenceListTableModel seqModel;
-  public static DataFlavor DRAGJTABLE =
-           new DataFlavor(DragJTable.class, "Sequence JTable");
-  static DataFlavor flavors[] = { DRAGJTABLE , DataFlavor.stringFlavor };
 
   public DragJTable(SequenceListTableModel seqModel)
   {
@@ -523,11 +519,15 @@ class SequenceListTableModel extends AbstractTableModel
     new ColumnData("Default",15,JLabel.LEFT)
   };
 
-/*
+/**
+*
 * DragJTable uses this method to determine the default renderer/
 * editor for each cell.  If we didn't implement this method,
 * then the last column would contain text ("true"/"false"),
 * rather than a check box.
+* @param column index
+* @param class represented in that column
+*
 */
   public Class getColumnClass(int c) 
   {
@@ -590,6 +590,11 @@ class SequenceListTableModel extends AbstractTableModel
 
   }
 
+/**
+*
+* Setup a blank square table 
+*
+*/
   protected void setDefaultData()
   {
     modelVector.removeAllElements();
@@ -600,31 +605,72 @@ class SequenceListTableModel extends AbstractTableModel
   }
   
 
+/**
+*
+* The <code>SequenceData</code> for a given row
+* number.
+* @param row number
+* @return <code>SequenceData</code> for the row
+*
+*/
   protected SequenceData getSequenceData(int nrow)
   {
     return (SequenceData)modelVector.get(nrow);
   }
 
+/**
+*
+* Return the number of rows in the table
+* @return number of rows in the table
+*
+*/
   public int getRowCount()
   {
     return modelVector==null ? 0 : modelVector.size();
   }
 
+/**
+*
+* Return the number of columns in the table
+* @return number of columns in the table
+*
+*/
   public int getColumnCount()
   {
     return modelColumns.length;
   }
 
+/**
+*
+* Return the name columns in the table
+* @return name columns in the table
+*
+*/
   public String getColumnName(int c)
   {
     return modelColumns[c].title;
   }
 
+/**
+*
+* Define if a cell is editable by the user
+* @return true if editable
+*
+*/
   public boolean isCellEditable(int nRow, int nCol)
   {
     return true;
   }
 
+
+/**
+*
+* Get the Object in a cell in the table
+* @param row number
+* @param column number
+* @return value of a cell in the table
+*
+*/
   public Object getValueAt(int nRow, int nCol)
   {
     if(nRow < 0 || nCol>=getRowCount())
@@ -642,6 +688,14 @@ class SequenceListTableModel extends AbstractTableModel
     return ""; 
   }
 
+/**
+*
+* Set the Object in a cell in the table
+* @param value to set
+* @param row number
+* @param column number
+*
+*/
   public void setValueAt(Object value, int nRow, int nCol)
   {
     if(nRow < 0 || nCol>=getRowCount())
@@ -670,6 +724,12 @@ class SequenceListTableModel extends AbstractTableModel
     }
   }
 
+/**
+*
+* Insert a blank row
+* @param row number to insert at
+*
+*/
   public void insertRow(int row)
   {
     if(row < 0)
@@ -679,11 +739,28 @@ class SequenceListTableModel extends AbstractTableModel
     modelVector.insertElementAt(new SequenceData(), row);
   }
   
+
+/**
+*
+* Delete a row from the table
+* @param row number to delete
+* @return true if deleted
+*
+*/
   public boolean deleteRow(int row)
   {
     if(row < 0 || row>=modelVector.size())
       return false;
     modelVector.remove(row);
+
+//add in blank row so there is always at least
+//same number of rows as there is columns
+    if(getRowCount() < getColumnCount())
+    {
+      Boolean bdef = new Boolean(false);
+      modelVector.addElement(new SequenceData("","","",bdef,bdef,bdef));
+    }
+
     return true;
   }
 
