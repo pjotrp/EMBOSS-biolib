@@ -454,11 +454,15 @@ public class JembossAuthServer
     RunEmbossApplication rea = new RunEmbossApplication(embossCommand,
                                                            envp,null);
     showdbOut.add("status");
-    showdbOut.add("0");
-    rea.isProcessStdout();
-    showdbOut.add("showdb");
-    showdbOut.add(rea.getProcessStdout());
-     
+    showdbOut.add(rea.getStatus());
+                              
+    if(rea.getStatus().equals("0"))
+    {
+      rea.isProcessStdout();
+      showdbOut.add("showdb");
+      showdbOut.add(rea.getProcessStdout());
+    }
+
     // find available matrices
     String dataFile[] = (new File(embossData)).list(new FilenameFilter()
     {
