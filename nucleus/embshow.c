@@ -135,6 +135,8 @@ static void    showFillTran(EmbPShow thys, AjPList lines, EmbPShowTran info,
 			    ajint pos);
 static void    showFillFT(EmbPShow thys, AjPList lines, EmbPShowFT info,
 			  ajint pos);
+static void    showFillNote(EmbPShow thys, AjPList lines, EmbPShowNote info,
+			  ajint pos);
 
 static void showDelSeq (EmbPShowSeq info);
 static void showDelBlank (EmbPShowBlank info);
@@ -144,6 +146,7 @@ static void showDelComp (EmbPShowComp info);
 static void showDelTran (EmbPShowTran info);
 static void showDelRE (EmbPShowRE info);
 static void showDelFT (EmbPShowFT info);
+static void showDelNote (EmbPShowNote info);
 static void showAddTags(AjPStr *tagsout, AjPFeature feat, AjBool values);
 	
 
@@ -266,7 +269,7 @@ void embShowDel (EmbPShow* pthis)
      ****** MOST EMPHATICALLY DO NOT:
      ****** <free the sequence>
      ****** 
-     ****** It took me a ajlong time to work out why showseq was crashing after
+     ****** It took me a long time to work out why showseq was crashing after
      ****** the first sequence.
      ****** 
      ****** It was because I was dutifully freeing up all the data held in
@@ -317,6 +320,10 @@ void embShowDel (EmbPShow* pthis)
 
 	case SH_FT:
 	    (void) showDelFT(info);
+	    break;
+
+	case SH_NOTE:
+	    (void) showDelNote(info);
 	    break;
 
 	default:
@@ -464,6 +471,22 @@ static void showDelRE (EmbPShowRE info) {
 static void showDelFT (EmbPShowFT info) {
 
   (void) ajFeattableDel(&(info->feat)); /* cloned pointer in showseq etc.*/
+  AJFREE(info);
+
+}
+
+
+/* @funcstatic showDelNote ***********************************************************
+**
+** Deletes a show annotation region descriptor object.
+**
+** @param [P] info [EmbPShowNote] Show annotation region descriptor object
+** @return [void]
+** @@
+******************************************************************************/
+
+static void showDelNote (EmbPShowNote info) {
+
   AJFREE(info);
 
 }
@@ -695,6 +718,30 @@ void embShowAddFT (EmbPShow thys, AjPFeattable feat) {
   return;
 }
 
+/* @func embShowAddNote *******************************************************
+**
+** Adds the annotations to be displayed to the list of things to show
+**
+** @param [r] thys [EmbPShow] Show sequence object
+** @param [r] regions [AjPRange] Sequence range(s)
+** @return [void]
+** @@
+******************************************************************************/
+
+void embShowAddNote (EmbPShow thys, AjPRange regions) {
+
+  EmbPShowNote info;
+(void) ajDebug("embShowAddNote\n");
+  
+  AJNEW0(info);
+
+  info->regions = regions;	/* regions to note */
+
+  (void) ajListPushApp(thys->list, showInfoNew(info, SH_NOTE));
+
+  return;
+}
+
 /* ==================================================================== */
 /* =========================== Modifiers ============================== */
 /* ==================================================================== */
@@ -886,6 +933,10 @@ static void showFillLines(AjPList lines, EmbPShow thys, ajint pos)
 
 	case SH_FT:
 	    (void) showFillFT(thys, lines, info, pos);
+	    break;
+
+	case SH_NOTE:
+	    (void) showFillNote(thys, lines, info, pos);
 	    break;
 
 	default:
@@ -2224,7 +2275,7 @@ static void showFillREflat(EmbPShow thys, AjPList lines, EmbPShowRE info,
 	ajStrConvertCC (&line, claimchar, " ");
 
 	/*
-	 *  remove trailing spaces - these can be very ajlong in namestr when
+	 *  remove trailing spaces - these can be very long in namestr when
 	 *  the cut and recognition sites are widely separated and so many
 	 *  claimchars have been appended
 	 */
@@ -2369,7 +2420,7 @@ static void showFillFT(EmbPShow thys, AjPList lines, EmbPShowFT info, ajint pos)
 	    namestart = start;
 	    nameend =  start + ajStrLen(namestr)-1;
 
-	    /* shift ajlong namestr back if longer than the line when printed */
+	    /* shift long namestr back if longer than the line when printed */
 	    if (nameend > pos+thys->width-1+thys->margin)
 	    {
 		/*ajDebug("name is longer than margin");*/
@@ -2519,7 +2570,7 @@ static void showFillFT(EmbPShow thys, AjPList lines, EmbPShowFT info, ajint pos)
 	 */
 	ajStrConvertCC (&line, claimchar, " ");
 
-	/* remove trailing spaces - these can be very ajlong */
+	/* remove trailing spaces - these can be very long */
 	for (i=ajStrLen(line)-1; i>=0; i--)
 	    if (*(ajStrStr(line)+i) != ' ')
 		break;
@@ -2544,6 +2595,250 @@ static void showFillFT(EmbPShow thys, AjPList lines, EmbPShowFT info, ajint pos)
 
     return;
 }
+
+
+/* @funcstatic showFillNote ***************************************************
+**
+** Add this line's worth of user annotation to the lines list
+**
+** @param [P] thys [EmbPShow] Show sequence object
+** @param [u] lines [AjPList] list of lines to add to
+** @param [r] info [EmbPShowNote] data on how to display the annotation
+** @param [r] pos [ajint] current printing position in the sequence
+** @return [void]
+** @@
+******************************************************************************/
+static void showFillNote(EmbPShow thys, AjPList lines, EmbPShowNote info,
+			  ajint pos)
+{
+
+    AjPStr line=NULL;
+    AjPStr line2=NULL;
+    AjPList linelist=NULL;	/* list of lines to fill */
+    ajint start, end;		/* start and end position of linestr */
+    ajint namestart, nameend;	/* start and end position of namestr */
+    AjIList liter;		/* iterator for linelist */
+    AjPStr namestr=NULL;	/* name of feature to insert into line */
+    AjPStr linestr=NULL;	/* line graphics to insert */
+    ajint i;
+    char *claimchar = "*";	/* char used to stake a claim to */
+                                /* that position in the string */
+    AjBool freespace;		/* flag for found a free space to */
+    /* print in */ 
+    ajint ln;
+    AjPStr sajb=NULL;
+    
+    ajint count;		/* count of annotation region */
+    ajint rstart, rend;		/* region start and end */
+
+    (void) ajDebug("showFillFT\n");
+    linelist = ajListstrNew();
+    
+    /* count through the annotation regions */
+    if (info->regions && ajRangeNumber(info->regions))
+    {
+	for (count = 0; count < ajRangeNumber(info->regions); count++)
+	{
+            ajRangeValues(info->regions, count, &rstart, &rend);
+
+	    /*
+	     * check that the region is within the line to display
+	     */
+	    if (pos+1 > rend || pos+thys->width < rstart)
+		continue;
+
+	    /*
+	       ajDebug("pos = %d annotation = %d-%d", pos, rstart, rend);
+	    */
+
+	    /* get annotation string */
+            ajRangeText (info->regions, count, &namestr);
+      
+	    /*
+	     *  note the start and end positions of the name and line
+	     *  graphics
+	     */
+	    start = (rstart-1<pos) ? pos : rstart-1;
+	    end = (rend-1>pos+thys->width-1) ? pos+thys->width-1 :
+		rend-1;
+	    /* print the name starting with the line */
+	    namestart = start;
+	    nameend =  start + ajStrLen(namestr)-1;
+
+	    /* shift long namestr back if longer than the line when printed */
+	    if (nameend > pos+thys->width-1+thys->margin)
+	    {
+		/*ajDebug("name is longer than margin");*/
+		if (ajStrLen(namestr) > end-pos+1)
+		{
+		    /* ajDebug("name is longer than the line - shifting to "
+		       "start of line"); */
+		    namestart = pos;
+		    nameend = pos + ajStrLen(namestr) -1;
+		    /*
+		     *  it is shifted back to the start of the display line
+		     *  is it still longer than the line? truncate it
+		     */
+		    if (nameend > thys->width-1+thys->margin)
+		    {
+			/* ajDebug("...still longer than the line, truncate "
+			   "it to %d chars", thys->width-1+thys->margin); */
+			ajStrTruncate(&namestr, thys->width-1+thys->margin);
+			nameend = pos+thys->width-1+thys->margin;
+		    }
+		}
+		else
+		{
+		    /*ajDebug("Not longer than the line now");*/
+		    namestart = end - ajStrLen(namestr)+1;
+		    nameend = namestart + ajStrLen(namestr)-1;
+		}
+	    }
+
+	    /*
+	     *  add on any claim characters required to stake a claim to
+	     *  positions used by the line graphics
+	     */
+	    if (end > nameend)
+	    {
+		(void) ajStrAppKI(&namestr, *claimchar, end-nameend);
+		nameend = end;
+	    }
+
+	    /*
+	     *  add on a couple more claim characters to space out the
+	     *  features
+	     */
+	    ajStrAppKI(&namestr, *claimchar, 2);
+	    nameend += 2;
+
+	    /* prepare line string */
+	    /* initial string of '-'s */
+	    linestr = ajStrNew();
+	    (void) ajStrAppKI(&linestr, '-', end-start+1 );
+
+	    /* put in end position characters */
+	    if (rstart-1>=pos)
+		*(ajStrStr(linestr)) = '|';
+	    if (rend-1<=pos+thys->width-1)
+		*(ajStrStr(linestr)+end-start) = '|';
+
+
+	    /*
+	       ajDebug("pos=%d, start=%d, end=%d, namestart=%d, nameend=%d,"
+	       " end-pos=%d", pos, start, end, namestart, nameend, end-pos);
+	       ajDebug("namestr=  %S", namestr);
+	       ajDebug("linestr=  %S", linestr);
+	       */
+
+
+	    /* work up list of lines */
+	    freespace = ajFalse;
+
+	    /*
+	     *  iterate through list of existing lines to find no overlap
+	     *  with existing lines we will be potentially updating the
+	     *  nodes of linelist, so don't just iterate, use ajListstrPop
+	     *  and ajListstrPushApp to pop off the bottom and then push
+	     *  the altered node back on the top of the list
+	     */
+	    for (ln = ajListstrLength(linelist); ln>0; ln--)
+	    {
+		/* get the linestr line */
+		(void) ajListstrPop(linelist, &line);
+		/* get the namestr line */
+		(void) ajListstrPop(linelist, &line2);
+		/*
+		 *  if we have not yet written the name in this set of
+		 *  iterations, see if we can do so now
+		 */
+		if (!freespace)
+		{
+		    /* if name space is clear, write namestr and sitestr */
+		    /* ajDebug("Calling showLineIsClear for region %d to"
+		       " %d", start-pos, end-pos); */
+		    if (showLineIsClear(&line2, start-pos, end-pos) &&
+			showLineIsClear(&line2, namestart-pos, nameend-pos))
+		    {
+			/* ajDebug("over printing clear region start=%d-pos"
+			   "=%d", start-pos, end-pos); */
+			showOverPrint(&line, start-pos, linestr);
+			/* ajDebug("over printing clear region namestart=%d"
+			   "-nameend=%d", namestart-pos, nameend-pos); */
+			showOverPrint(&line2, namestart-pos, namestr);
+			/* flag to show we have written name */
+			freespace = ajTrue;
+		    }
+		}
+
+		(void) ajListstrPushApp(linelist, line);
+		(void) ajListstrPushApp(linelist, line2);
+		/* end 'iteration' through lines */
+	    }
+
+	    /*
+	     *  if we didn't find a clear region to print in, append two new
+	     *  strings and print in them
+	     */
+	    if (!freespace)
+	    {
+		/* ajDebug("Create a new list line. No=%d+2",
+		   ajListstrLength(linelist));*/
+		line=ajStrNew();
+		/* fill with spaces */
+		(void) ajStrAppKI(&line, ' ', thys->width);
+		line2=ajStrNew();
+		/* fill with spaces */
+		(void) ajStrAppKI(&line2, ' ', thys->width);
+		/*ajDebug("start=%d, pos=%d", start-pos, end-pos);*/
+		showOverPrint(&line, start-pos, linestr);
+		/*ajDebug("start=%d, pos=%d", start-start, end-pos);*/
+		showOverPrint(&line2, namestart-pos, namestr);
+		(void) ajListstrPushApp(linelist, line);
+		(void) ajListstrPushApp(linelist, line2);
+	    }
+
+	    /* tidy up */
+	    ajStrDel(&namestr);
+	    ajStrDel(&linestr);
+	}
+    }
+
+    /* iterate through the lines and print them */
+    liter = ajListIter(linelist);
+    while ((line = ajListIterNext(liter)) != NULL)
+    {
+	/*  convert claim characters in the line to spaces as these were
+	 *  used to stake a claim to the space
+	 */
+	ajStrConvertCC (&line, claimchar, " ");
+
+	/* remove trailing spaces - these can be very long */
+	for (i=ajStrLen(line)-1; i>=0; i--)
+	    if (*(ajStrStr(line)+i) != ' ')
+		break;
+
+	ajStrTruncate(&line, i+1);
+
+	/* output to the lines list */
+	/* variable width margin at left */
+	(void) showMargin(thys, lines);
+	/* with optional number in it */
+	/* put the translation line on the output list */
+	(void) ajListstrPushApp(lines, line);
+	/* end output line */
+	(void) ajListstrPushApp(lines, ajFmtStr("\n"));
+    }
+    (void) ajListIterFree(liter);
+
+    /* tidy up */
+    /* do not use ajListstrFree here! */
+    while(ajListstrPop(linelist,&sajb));
+    (void) ajListstrDel(&linelist);
+
+    return;
+}
+
 
 
 /* @funcstatic showOverPrint ************************************************
