@@ -1,9 +1,233 @@
-<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<html>
+<head>
+<title>psiphi</title>
+</head>
+<body>
+<!-- START OF HEADER -->
 <HTML><HEAD>
-<TITLE>404 Not Found</TITLE>
-</HEAD><BODY>
-<H1>Not Found</H1>
-The requested URL /apps/psiphi.html was not found on this server.<P>
-<HR>
-<ADDRESS>Apache/1.3.33 Server at emboss.sourceforge.net Port 80</ADDRESS>
-</BODY></HTML>
+<TITLE>EMBOSS: psiphi documentation</TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" text="#000000">
+<!-- #include file="header1.inc" -->
+<H2>PSIPHI documentation </H2>
+<!-- #include file="header2.inc" -->
+<!-- END OF HEADER -->
+<!-- CONTENTS
+     This always includes the sections below.
+     Other subsections can be added for individual applications.
+-->
+<H2>CONTENTS </H2>
+<b> <a href="#1.0">1.0     SUMMARY                   </a></b><br>
+<b> <a href="#2.0">2.0     INPUTS & OUTPUTS          </a></b><br>
+<b> <a href="#3.0">3.0     INPUT FILE FORMAT         </a></b><br>
+<b> <a href="#4.0">4.0     OUTPUT FILE FORMAT        </a></b><br>
+<b> <a href="#5.0">5.0     DATA FILES                </a></b><br>
+<b> <a href="#6.0">6.0     USAGE                     </a></b><br>    
+<b> <a href="#7.0">7.0     KNOWN BUGS & WARNINGS     </a></b><br>    
+<b> <a href="#8.0">8.0     NOTES                     </a></b><br>
+<b> <a href="#9.0">9.0     DESCRIPTION               </a></b><br>
+<b> <a href="#10.0">10.0   ALGORITHM                 </a></b><br>
+<b> <a href="#11.0">11.0   RELATED APPLICATIONS      </a></b><br>
+<b> <a href="#12.0">12.0   DIAGNOSTIC ERROR MESSAGES </a></b><br>
+<b> <a href="#13.0">13.0   AUTHORS                   </a></b><br>
+<b> <a href="#14.0">14.0   REFERENCES                </a></b><br>
+
+
+
+<!-- SUMMARY
+     Succint description of the application, particularly its inputs, outputs
+     and what it does.  The same text is given at the top of the source (.c)
+     file and in the <documentation> attribute of the <application definition>
+     of the ACD file.
+-->
+<a name="1.0"></a>
+<h2>1.0   SUMMARY</h2>
+<p>
+  Calculates the psi and phi torsion angles around the alpha carbons
+  (CA) in (a specified stretch of) a specified chain of a protein
+  structure from co-ordinates of the mainchain atoms in the two planes
+  around it
+</p>
+
+
+
+<!-- INPUTS & OUTPUTS
+     Short summary of the application inputs and outputs in its different 
+     modes of usage (if appropriate). More detail than the summary.
+-->
+<a name="2.0"></a>
+<h2>2.0   INPUTS & OUTPUTS</h2>
+<p>
+  PSIPHI reads in a protein CCF file (clean coordinate file---not PDB
+  format) containing the chain for which torsion angles are to be
+  calculated. The user can specify the chain and the stretch of
+  residues for which psi and phi angles are to be calculated.
+</p>
+
+
+
+
+<!-- INPUT FILE FORMAT 
+     Description and example(s) of input file formats.  Should provide enough
+     information to write and parse the file.  Should describe the format in 
+     unusual cases - null input, etc.
+     Use "<b>PDBPARSE</b> reads any normal sequence USAs." if
+     appropriate.
+-->
+<a name="3.0"></a>
+<h2> 3.0   INPUT FILE FORMAT</h2>
+
+<p>
+  An excerpt of a CCF file is shown below (Figure 1).
+</p>
+<h3>Figure 1   Excerpt from a CCF file</h3>
+<table><td bgcolor="#CFCCFF">
+<pre>
+ ID   1bd0
+XX
+DE   MOL_ID: 1; MOLECULE: ALANINE RACEMASE; CHAIN: A, B; EC: 5.1.1.1;
+DE   BIOLOGICAL_UNIT: DIMER
+XX
+OS   MOL_ID: 1; ORGANISM_SCIENTIFIC: BACILLUS STEAROTHERMOPHILUS; STRAIN: XL-1
+OS   BLUE; PLASMID: PMDALR3; GENE: ALR
+XX
+EX   METHOD xray; RESO 1.60; NMOD 1; NCHN 2; NGRP 0;
+XX
+CN   [1]
+XX
+IN   ID A; NR 388; NL 1; NH 0; NE 0;
+XX
+SQ   SEQUENCE   388 AA;  43509 MW;  D90812AA CRC32;
+     MNDFHRDTWA EVDLDAIYDN VENLRRLLPD DTHIMAVVKA NAYGHGDVQV ARTALEAGAS
+     RLAVAFLDEA LALREKGIEA PILVLGASRP ADAALAAQQR IALTVFRSDW LEEASALYSG
+     PFPIHFHLKM DTGMGRLGVK DEEETKRIVA LIERHPHFVL EGLYTHFATA DEVNTDYFSY
+     QYTRFLHMLE WLPSRPPLVH CANSAASLRF PDRTFNMVRF GIAMYGLAPS PGIKPLLPYP
+     LKEAFSLHSR LVHVKKLQPG EKVSYGATYT AQTEEWIGTI PIGYADGWLR RLQHFHVLVD
+     GQKAPIVGRI CMDQCMIRLP GPLPVGTKVT LIGRQGDEVI SIDDVARHLE TINYEVPCTI
+     SYRVPRIFFR HKRIMEVRNA IGAGESSA
+XX
+CN   [2]
+XX
+IN   ID B; NR 388; NL 1; NH 0; NE 0;
+XX
+SQ   SEQUENCE   388 AA;  43509 MW;  D90812AA CRC32;
+     MNDFHRDTWA EVDLDAIYDN VENLRRLLPD DTHIMAVVKA NAYGHGDVQV ARTALEAGAS
+     RLAVAFLDEA LALREKGIEA PILVLGASRP ADAALAAQQR IALTVFRSDW LEEASALYSG
+     PFPIHFHLKM DTGMGRLGVK DEEETKRIVA LIERHPHFVL EGLYTHFATA DEVNTDYFSY
+     QYTRFLHMLE WLPSRPPLVH CANSAASLRF PDRTFNMVRF GIAMYGLAPS PGIKPLLPYP
+     LKEAFSLHSR LVHVKKLQPG EKVSYGATYT AQTEEWIGTI PIGYADGWLR RLQHFHVLVD
+     GQKAPIVGRI CMDQCMIRLP GPLPVGTKVT LIGRQGDEVI SIDDVARHLE TINYEVPCTI
+     SYRVPRIFFR HKRIMEVRNA IGAGESSA
+XX
+CO   1    1    .    P    2     2     .    .    .    .    .    .    N    ASN    N      6.525   28.048   89.421    1.00   44.31    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    1    .    P    2     2     .    .    .    .    .    .    N    ASN    CA     7.635   29.043   89.338    1.00   43.45    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    1    .    P    2     2     .    .    .    .    .    .    N    ASN    C      7.156   30.390   88.818    1.00   41.34    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    1    .    P    2     2     .    .    .    .    .    .    N    ASN    O      6.196   30.471   88.052    1.00   42.20    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    1    .    P    2     2     .    .    .    .    .    .    N    ASN    CB     8.745   28.523   88.428    1.00   47.07    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    1    .    P    2     2     .    .    .    .    .    .    N    ASN    CG    10.119   28.670   89.044    1.00   49.09    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    1    .    P    2     2     .    .    .    .    .    .    N    ASN    OD1   10.368   29.596   89.821    1.00   49.61    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    1    .    P    2     2     .    .    .    .    .    .    N    ASN    ND2   11.023   27.753   88.703    1.00   48.25    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    1    .    P    3     3     .    .    .    .    .    .    D    ASP    N      7.846   31.447   89.232    1.00   38.22    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    1    .    P    3     3     .    .    .    .    .    .    D    ASP    CA     7.496   32.803   88.827    1.00   36.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    1    .    P    3     3     .    .    .    .    .    .    D    ASP    C      8.663   33.473   88.110    1.00   31.32    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    1    .    P    3     3     .    .    .    .    .    .    D    ASP    O      9.821   33.095   88.294    1.00   31.47    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    1    .    P    3     3     .    .    .    .    .    .    D    ASP    CB     7.124   33.635   90.065    1.00   42.39    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    1    .    P    3     3     .    .    .    .    .    .    D    ASP    CG     5.857   34.462   89.868    1.00   48.47    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    1    .    P    3     3     .    .    .    .    .    .    D    ASP    OD1    5.801   35.261   88.905    1.00   52.40    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    1    .    P    3     3     .    .    .    .    .    .    D    ASP    OD2    4.916   34.318   90.681    1.00   50.34    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    1    .    P    4     4     .    .    .    .    .    .    F    PHE    N      8.346   34.454   87.276    1.00   25.41    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    1    .    P    4     4     .    .    .    .    .    .    F    PHE    CA     9.358   35.224   86.572    1.00   20.90    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    1    .    P    4     4     .    .    .    .    .    .    F    PHE    C      8.843   36.652   86.525    1.00   19.10    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    1    .    P    4     4     .    .    .    .    .    .    F    PHE    O      7.630   36.881   86.495    1.00   20.76    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    1    .    P    4     4     .    .    .    .    .    .    F    PHE    CB     9.660   34.652   85.171    1.00   21.04    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    1    .    P    4     4     .    .    .    .    .    .    F    PHE    CG     8.480   34.581   84.242    1.00   19.25    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    1    .    P    4     4     .    .    .    .    .    .    F    PHE    CD1    7.690   33.438   84.185    1.00   20.75    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    1    .    P    4     4     .    .    .    .    .    .    F    PHE    CD2    8.215   35.618   83.354    1.00   19.78    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+CO   1    1    .    P    4     4     .    .    .    .    .    .    F    PHE    CE1    6.658   33.329   83.248    1.00   19.35    0.00    0.00    0.00    0.00    0.00    0.00     
+</pre>      
+</table>
+
+
+<!-- OUTPUT FILE FORMAT 
+     Description and example(s) of output file formats.  Should provide enough
+     information to write and parse the file.  Should describe the format in 
+     unusual cases - null input, etc.  
+     If the standard description of the avalable report formats is required, 
+     use:   #include file="inc/reportformats.ihtml"
+     Use "Outputs a graph to the specified graphics device."
+     or  "outputs a report format file. The default format is ..."
+     if appropriate.
+-->
+<a name="4.0"></a>
+<h2> 4.0   OUTPUT FILE FORMAT         </h2>
+
+<p>
+  PSIPHI writes to a standard report table format listing residue
+  positions according to CCF numbering and angles in degrees. Where an
+  angle cannot be calculated a value of 360 is written
+</p>
+
+#include file="inc/reportformats.ihtml
+  
+<h3>Figure 2   Excerpt from a psiphi torsion angle output file</h3>
+<table>
+<pre>
+########################################
+# Program: psiphi
+# Rundate: Fri Feb 04 2005 10:33:23
+# Report_format: table
+# Report_file: 1bd0.psiphi
+########################################
+
+#=======================================
+#
+# Sequence:      from: 1   to: 388
+# HitCount: 381
+#
+# Chain: 1
+#
+#=======================================
+
+  Start     End   Score    phi    psi
+      2       2     0.0   360.00   151.85
+      3       3     0.0  -121.34   155.49
+      4       4     0.0  -142.83   148.58
+      5       5     0.0  -121.90    31.91
+      6       6     0.0  -136.22   141.28
+      7       7     0.0   -82.00    57.10
+      8       8     0.0  -145.83   129.01
+      9       9     0.0  -160.44   162.42
+     10      10     0.0  -115.40   151.60
+     11      11     0.0  -122.92   138.12
+     12      12     0.0  -118.22   116.03
+     13      13     0.0   -86.34   100.14
+     14      14     0.0   -68.14   -18.59
+     15      15     0.0   -71.34   -37.47
+     16      16     0.0   -63.89   -46.18
+     17      17     0.0   -59.28   -46.02
+     18      18     0.0   -56.07   -50.88
+     19      19     0.0   -60.32   -47.35
+     20      20     0.0   -56.29   -39.46
+     21      21     0.0   -78.50   -36.27
+     22      22     0.0   -69.07   -36.67
+<td bgcolor="#CFCCFF">
+</pre>  
+</table>
+
+
+<!-- #include file="inc/pdbparse.output" -->
+
+<!-- DATA FILES         
+     Any data files used (e.g. translation table file, substitution matrix 
+     etc.  This includes example data file formats if they are not obvious.
+     For a standard description of what data files are and how embossdata can
+     be used to inspect and retrieve them, use:
+     #include file="inc/localfiles.ihtml" 
+-->
+
+<a name="5.0"></a>
+<h3> 5.0   DATA FILES                </h3>
+PSIPHI does not use a data file.
+
+</body>
+</html>
