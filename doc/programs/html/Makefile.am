@@ -49,7 +49,7 @@ pkgdata_DATA = abiview0.gif banana0.gif chaos0.gif cpgplot0.gif \
                msbar.html mse.html mutation_group.html needle.html \
                neighbor.html new_group_group.html newcpgreport.html \
                newcpgseek.html newseq.html noreturn.html notseq.html \
-               nrscope.html \  
+               nrscope.html \
                nthseq.html octanol.html oddcomp.html palindrome.html \
                pasteseq.html patmatdb.html patmatmotifs.html \
                pattern_matching_group.html penny.html pepcoil.html \
