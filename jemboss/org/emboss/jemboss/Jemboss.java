@@ -87,11 +87,16 @@ public class Jemboss implements ActionListener
   public static Dimension jdim;
   public static Dimension jdimExtend;
 
-  private ImageIcon fwdArrow = new ImageIcon("images/Forward_arrow_button.gif");
-  private ImageIcon bwdArrow = new ImageIcon("images/Backward_arrow_button.gif");
+  private ImageIcon fwdArrow;
+  private ImageIcon bwdArrow;
 
   public Jemboss ()
   {
+
+
+    ClassLoader cl = this.getClass().getClassLoader();
+    fwdArrow = new ImageIcon(cl.getResource("images/Forward_arrow_button.gif"));
+    bwdArrow = new ImageIcon(cl.getResource("images/Backward_arrow_button.gif"));
 
     Splash splashing=null;
     if(!withSoap)
@@ -177,7 +182,7 @@ public class Jemboss implements ActionListener
 
 //  JembossLogo jlogo = new JembossLogo(120,145,55);
     JLabel jlablogo = new JLabel(new ImageIcon
-                          ("images/Jemboss_logo_large.gif"));
+                          (cl.getResource("images/Jemboss_logo_large.gif")));
     JPanel pFront = new JPanel(new BorderLayout());
     p2.add(pFront);
     pFront.setBackground(Color.white);

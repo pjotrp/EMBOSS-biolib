@@ -152,7 +152,9 @@ public class BuildJembossForm implements ActionListener
     }
 
 // Help button
-    JButton bhelp = new JButton(new ImageIcon("images/Information_button.gif"));
+    ClassLoader cl = this.getClass().getClassLoader();
+    JButton bhelp = new JButton(new ImageIcon(
+           cl.getResource("images/Information_button.gif")));
     bhelp.addActionListener(this);
     bhelp.setBorder(BorderFactory.createRaisedBevelBorder());
 
@@ -199,7 +201,7 @@ public class BuildJembossForm implements ActionListener
 // Go button
     
     JButton bgo = new JButton("GO");
-    ImageIcon rfii = new ImageIcon("images/Go_button.gif");
+    ImageIcon rfii = new ImageIcon(cl.getResource("images/Go_button.gif"));
     bgo.setIcon(rfii);
     bgo.setBorder(BorderFactory.createRaisedBevelBorder());
     bgo.addActionListener(this);

@@ -83,7 +83,8 @@ public class ShowSavedResults
       JMenu resFileMenu = new JMenu("File");
       resMenu.add(resFileMenu);
 
-      ImageIcon rfii = new ImageIcon("images/Refresh_button.gif");
+      ClassLoader cl = this.getClass().getClassLoader();
+      ImageIcon rfii = new ImageIcon(cl.getResource("images/Refresh_button.gif"));
       JButton refresh = new JButton(rfii);
       refresh.setMargin(new Insets(0,1,0,1));
       refresh.setToolTipText("Refresh");
@@ -324,7 +325,8 @@ public class ShowSavedResults
     JMenu resFileMenu = new JMenu("File");
     resMenu.add(resFileMenu);
 
-    ImageIcon rfii = new ImageIcon("images/Refresh_button.gif");
+    ClassLoader cl = this.getClass().getClassLoader();
+    ImageIcon rfii = new ImageIcon(cl.getResource("images/Refresh_button.gif"));
     JButton refresh = new JButton(rfii);
     refresh.setMargin(new Insets(0,1,0,1));
     refresh.setToolTipText("Refresh");
