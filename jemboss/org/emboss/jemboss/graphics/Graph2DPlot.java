@@ -494,7 +494,7 @@ public class Graph2DPlot extends ScrollPanel
 
 
 // zoom
-    String zoom[] = {"50", "75", "100", "150", "200"};
+    String zoom[] = {"50", "80", "90", "100", "150", "200"};
     final JComboBox zoomSize = new JComboBox(zoom);
     zoomSize.setSelectedItem("100");
     menubar.add(zoomSize);
@@ -523,7 +523,7 @@ public class Graph2DPlot extends ScrollPanel
         setCursor(cdone);
       }
     });
- 
+    menubar.add(new JLabel("%"));
     return menubar;
   }
   
@@ -920,6 +920,9 @@ public class Graph2DPlot extends ScrollPanel
     float x2;
     float y2;
 
+    float xendPoint = (float)(xend.getValue()-xstart.getValue())*xfactor;
+    float yendPoint = (float)(yend.getValue()-ystart.getValue())*yfactor;
+
     g2d.translate(xborder, getHeight()-yborder);
     for(int i=0; i<xnum; i++)
     {
@@ -930,11 +933,17 @@ public class Graph2DPlot extends ScrollPanel
         x2 =  (emboss_data[3][i] - (float)xstart.getValue())*xfactor;
         y2 = -(emboss_data[4][i] - (float)ystart.getValue())*yfactor;
 
-        int colourID = (int)emboss_data[5][i];
-        if(colourID >= 0 || colourID < 16)
-          g.setColor(plplot_colour[colourID]);
+        if( x1 >= 0 && x2 >= 0 &&
+            x1 <= xendPoint && x2 <= xendPoint &&
+            y1 <= 0 && y2 <= 0 &&
+            y1 >= -yendPoint && y2 >= -yendPoint )
+        {
+          int colourID = (int)emboss_data[5][i];
+          if(colourID >= 0 || colourID < 16)
+            g.setColor(plplot_colour[colourID]);
 
-        g.drawLine((int)x1,(int)y1,(int)x2,(int)y2);
+          g.drawLine((int)x1,(int)y1,(int)x2,(int)y2);
+        }
       }
     }
     g2d.translate(-xborder, -getHeight()+yborder);
