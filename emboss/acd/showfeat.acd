@@ -147,7 +147,8 @@ endsection: advanced
 section: output [ info: "output Section" type: page ]
 outfile: outfile  [
   parameter: "Y"
-  default: "stdout"
+  extension: "showfeat"
+#  default: "stdout"
   information: "Output feature details to a file"
   help: "If you enter the name of a file here then this program will write the feature details into that file."
 ]
