@@ -216,6 +216,8 @@ int main(int argc, char **argv)
 	ajFileClose(&outf);
     }
 
+    ajStrDel(&str);
+
     ajExit();
     return 0;
 }
