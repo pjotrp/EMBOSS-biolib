@@ -96,6 +96,7 @@ int main(int argc, char **argv)
     AjPStr altname=ajStrNewC("-");
     /*    ajint length; */
     AjPStr desc;
+    AjPStr xxx=NULL;
     
     (void) embInit ("infoalign", argc, argv);
     
@@ -142,7 +143,8 @@ int main(int argc, char **argv)
     embConsCalc (seqset, matrix, ajSeqsetSize(seqset), ajSeqsetLen(seqset),
 		 fplural, 0.0, ident, &cons);
     ajSeqAssSeq(consensus, cons);	/* set the sequence string */
-    ajSeqAssName(consensus, ajStrNewC("Consensus")); /* name the sequence */
+    /* name the sequence */
+    ajSeqAssName(consensus, (xxx=ajStrNewC("Consensus")));
 
     /* get the reference sequence */
     if (nrefseq == -1)
@@ -364,6 +366,7 @@ int main(int argc, char **argv)
     /* tidy up */
     ajStrDel(&altusa);
     ajStrDel(&altname);
+    ajStrDel(&xxx);
     ajSeqDel(&consensus);
 
     ajExit();
