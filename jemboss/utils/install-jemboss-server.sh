@@ -441,6 +441,7 @@ else
   exit 1
 fi
 
+SSL="y"
 if [ $INSTALL_TYPE = "1" ]; then
 #
 # localhost name
@@ -696,24 +697,23 @@ if [ "$AUTH" = "y" ]; then
   fi
 fi
  
+if [ $INSTALL_TYPE = "1" ]; then
 #
 #
 # SOAP data directory store
 #
 
-echo "Define the directory you want to store the results in"
-echo "[/tmp/SOAP/emboss]"
-read DATADIR
-echo "$DATADIR" >> $RECORD
+  echo "Define the directory you want to store the results in"
+  echo "[/tmp/SOAP/emboss]"
+  read DATADIR
+  echo "$DATADIR" >> $RECORD
 
-if [ "$DATADIR" != "" ]; then
-  setDataDirectory $EMBOSS_DOWNLOAD/jemboss $AUTH $DATADIR
-else
-  setDataDirectory $EMBOSS_DOWNLOAD/jemboss $AUTH /tmp/SOAP/emboss
-fi
+  if [ "$DATADIR" != "" ]; then
+    setDataDirectory $EMBOSS_DOWNLOAD/jemboss $AUTH $DATADIR
+  else
+    setDataDirectory $EMBOSS_DOWNLOAD/jemboss $AUTH /tmp/SOAP/emboss
+  fi
 
-
-if [ $INSTALL_TYPE = "1" ]; then
 #
 #
 # Tomcat
@@ -838,6 +838,13 @@ fi
 
 make_jemboss_properties $EMBOSS_INSTALL $LOCALHOST $AUTH $SSL $PORT $EMBOSS_URL
 if [ $INSTALL_TYPE = "2" ]; then
+  RUNFILE=$JEMBOSS/runJemboss.csh
+  sed "s|^#java org|java org|" $RUNFILE > $RUNFILE.new
+  sed "s|^java org.emboss.jemboss.Jemboss &|#java org.emboss.jemboss.Jemboss &|" $RUNFILE.new > $RUNFILE.new1
+  rm -f $RUNFILE.new 
+  mv $RUNFILE $RUNFILE.bak
+  mv $RUNFILE.new1 $RUNFILE
+  chmod a+x $RUNFILE
   exit 0
 fi
 
