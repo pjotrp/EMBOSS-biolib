@@ -252,9 +252,8 @@ EmbPBtpage  embBtreeFindInsert(EmbPBtcache cache, char *key);
 ajint embBtreeReadDir(AjPStr **filelist, AjPStr fdirectory, AjPStr files,
 		      AjPStr exclude);
 AjBool embBtreeWriteFileList(AjPStr *filelist, ajint nfiles,
-			     AjPStr fdirectory, AjPStr idirectory, ajint order,
-			     ajint fill, AjPStr dbname, AjPStr ddate,
-			     AjPStr release);
+			     AjPStr fdirectory, AjPStr idirectory,
+			     AjPStr dbname);
 void     embBtreeCacheDel(EmbPBtcache *thys);
 void     embBtreeInsertId(EmbPBtcache cache, EmbPBtId id);
 void     embBtreeIdDel(EmbPBtId *thys);
