@@ -35,19 +35,6 @@ import java.net.InetAddress;
 public class JembossParams
 {
 
-// for SOAP requests via http  
-//static public final int PROTOCOL_SOAP = 1;
-// for requests using CORBA  
-//static public final int PROTOCOL_CORBA = 2;
-// for requests using Java RMI 
-//static public final int PROTOCOL_RMI = 3;
-// for requests using RMI over IIOP 
-//static public final int PROTOCOL_RMI_IIOP = 4;
-// for requests using Jini 
-//static public final int PROTOCOL_JINI = 5;
-// for requests using Jxta 
-//static public final int PROTOCOL_JXTA = 6;
-
 /** denotes a server is OK             */
   static public final int SERVER_OK = 0;
 /** denotes a server is giving errors  */ 
@@ -56,6 +43,9 @@ public class JembossParams
   static public final int SERVER_DOWN = 2;
 
   // these are the things that could be set
+  private boolean useHTTPSProxy = false;
+  private String useHTTPSProxyName = "useHTTPSProxy";
+
   private boolean useProxy = false;
   private String useProxyName = "proxy.use";
 
@@ -104,13 +94,13 @@ public class JembossParams
 
   /** public services URL                    */
   private String publicSoapURL = 
-             "https://jemboss.hgmp.mrc.ac.uk:8443/soap/servlet/rpcrouter";
+             "https://jemboss.hgmp.mrc.ac.uk:8443/axis/services";
   /** property name for public services URL  */
   private String publicSoapURLName = "server.public";
 
   /** private services URL                   */
   private String privateSoapURL = 
-             "https://jemboss.hgmp.mrc.ac.uk:8443/soap/servlet/rpcrouter";
+             "https://jemboss.hgmp.mrc.ac.uk:8443/axis/services";
   /** property name for private services URL */
   private String privateSoapURLName = "server.private";
 
@@ -254,6 +244,7 @@ public class JembossParams
     defaults.put(useTFMName,new Boolean(useTFM).toString());
 
     defaults.put(useProxyName, new Boolean(useProxy).toString());
+    defaults.put(useHTTPSProxyName, new Boolean(useHTTPSProxy).toString());
     defaults.put(proxyHostName,proxyHost);
     defaults.put(proxyPortNumName, new Integer(proxyPortNum).toString());
     defaults.put(useProxyAuthName, new Boolean(useProxyAuth).toString());
@@ -296,6 +287,10 @@ public class JembossParams
     // update our settings
     updateSettingsFromProperties();
 
+    if(System.getProperty("useHTTPSProxy") != null)
+      if(System.getProperty("useHTTPSProxy").equalsIgnoreCase("true"))
+        useHTTPSProxy=true;
+    
     // set up for overrides
     javaNoProxyEntries = new Vector();
     if(System.getProperty("proxyPort") != null) 
@@ -392,6 +387,8 @@ public class JembossParams
       jembossServer = new Boolean(tmp).booleanValue();
  
       
+      tmp = jembossSettings.getProperty(useHTTPSProxyName);
+      useHTTPSProxy = new Boolean(tmp).booleanValue();
       tmp = jembossSettings.getProperty(useProxyName);
       useProxy = new Boolean(tmp).booleanValue();
       proxyHost = jembossSettings.getProperty(proxyHostName);
@@ -492,6 +489,18 @@ public class JembossParams
   {
     return useProxy;
   }
+
+
+/**
+*
+* If using an https proxy server
+*
+*/
+  public boolean getUseHTTPSProxy()
+  {
+    return useHTTPSProxy;
+  }
+
 
 /**
 *

@@ -118,7 +118,8 @@ public class BuildProgramMenu
       {
         if(withSoap) 
         {
-          if(mysettings.getPublicSoapURL().startsWith("https"))
+          if(mysettings.getPublicSoapURL().startsWith("https") &&
+             !mysettings.getUseHTTPSProxy())
           {
             System.setProperty("https.proxyHost", "");
             System.setProperty("http.proxyHost", "");
