@@ -54,12 +54,12 @@
 ** PROTOTYPES  
 **
 ******************************************************************************/
-ajint StrBinSearchDomain(AjPStr id, 
-			 AjPStr *arr, 
-			 ajint siz);
+static ajint domainreso_StrBinSearchDomain(AjPStr id, 
+					   AjPStr *arr, 
+					   ajint siz);
 
-ajint StrComp(const void *str1, 
-	      const void *str2);
+static ajint domainreso_StrComp(const void *str1, 
+				const void *str2);
 
 
 
@@ -181,7 +181,7 @@ int main(ajint argc, char **argv)
     
 
     /* Sort the list of pdb codes & convert to an array. */
-    ajListSort(entry, StrComp);
+    ajListSort(entry, domainreso_StrComp);
     ajListToArray(entry, (void ***)&entryarr);
     
     
@@ -191,7 +191,8 @@ int main(ajint argc, char **argv)
     {
 	/* DOMAIN id not found in the list of domains with resolution 
 	   above the threshold, so include it in the output file. */
-	if((StrBinSearchDomain(ajDomainGetId(domain), entryarr, num))==-1)
+	if((domainreso_StrBinSearchDomain(ajDomainGetId(domain), 
+					  entryarr, num))==-1)
 	    ajDomainWrite(dcfout, domain);
 
         /* Delete domain structure. */
@@ -216,11 +217,11 @@ int main(ajint argc, char **argv)
 
 
 
-/* @funcstatic StrBinSearchDomain *********************************************
+/* @funcstatic domainreso_StrBinSearchDomain ********************************
 **
 ** Performs a binary search for a DOMAIN domain code over an array of AjPStr
-** (which of course must first have been sorted, e.g. by StrComp). This is a 
-** case-insensitive search.
+** (which of course must first have been sorted, e.g. by domainreso_StrComp). 
+** This is a case-insensitive search.
 **
 ** @param [r] id  [AjPStr]      Search term
 ** @param [r] arr [AjPStr*]     Array of AjPStr objects
@@ -230,9 +231,9 @@ int main(ajint argc, char **argv)
 ** matching id, or -1 if id is not found.
 ** @@
 ******************************************************************************/
-static ajint StrBinSearchDomain(AjPStr id, 
-				AjPStr *arr,
-				ajint siz)
+static ajint domainreso_StrBinSearchDomain(AjPStr id, 
+					   AjPStr *arr,
+					   ajint siz)	
 {
     int l;
     int m;
@@ -260,7 +261,7 @@ static ajint StrBinSearchDomain(AjPStr id,
 
 
 
-/* @funcstatic StrComp ********************************************************
+/* @funcstatic domainreso_StrComp *********************************************
 **
 ** Function to sort strings.
 **
@@ -272,8 +273,8 @@ static ajint StrBinSearchDomain(AjPStr id,
 ** @@
 ******************************************************************************/
 
-static ajint StrComp(const void *str1,
-		     const void *str2)
+static ajint domainreso_StrComp(const void *str1,
+				const void *str2)
 {
     AjPStr p = NULL;
     AjPStr q = NULL;
