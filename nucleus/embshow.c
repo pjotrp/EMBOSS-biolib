@@ -1404,13 +1404,12 @@ static void showFillTran(EmbPShow thys, AjPList lines, EmbPShowTran info,
     AjPStr seqstr=NULL;	/* local copy of seq string for translating ranges */
     AjPSeq seq=NULL;	/* local copy of sequence for translating ranges */
     AjPStr temp=NULL;
-    AjPStr sajb=NULL;
+    AjPStr sajb=NULL;	/* peptide expanded to 3-letter code or by 2 spaces */
     ajint frame;
     ajint framepad=0;	/* number of spaces to pad to the correct frame pos */
     ajint linepos;
     ajint startpos;	/* number at start of line */
     ajint endpos;		/* number at end of line */
-    ajint shift=0;	/* length of sequence mod 3 */
     ajint i, j;
     ajint last;
 
@@ -1468,44 +1467,30 @@ static void showFillTran(EmbPShow thys, AjPList lines, EmbPShowTran info,
 	    /* ... or just translate in the required frame */
 
 	    /*
-	     *  change frames -1 to -3 to frames 6 to 4 for translation
-	     *  of complement
+	     *  change frames -1 to -3 to frames 4 to 6 for translation
+	     *  of complement (NB that really should say just 'complement', not
+	     *  'reverse-complement' as we will be putting the resulting 
+	     *  reversed peptide under the forward nucleic sequence.)
 	     */
 	    frame = info->frame;
-	    if (frame < 0)
-		frame = 7 + frame; 
+	    if (frame < 0) {
+		frame = 3-frame;
+            }
 
-
-	    /* if we are doing the reverse complement then the frame is */
-	    /* dependent on the length of the sequence%3 */
-	    if (info->frame < 0)
-	    { 
-		/* get the length mod 3 - used for adjusting the frame of */
-		/* reverse sense translations */
-		shift = ajSeqLen(thys->seq)%3;
-		frame += shift;
-		if (frame > 6) frame -= 3;
-	    }
-      
-     
 	    /* do the translation */    
 	    tran = ajTrnSeqOrig (info->trnTable, thys->seq, frame);
 
 	    /*
-	     *  shift the translation to the correct frame if it is not
-	     *  in frame 1 or 4
+	     *  shift the translation to the correct frame
 	     */
-	    if (frame == 1 || frame == 6)
-		framepad = 0+shift;
-	    else if (frame == 2 || frame == 5)
-		framepad = 1+shift;
+	    if (frame == 1 || frame == 5)
+		framepad = 0;
+	    else if (frame == 2 || frame == 6)
+		framepad = 1;
 	    else if (frame == 3 || frame == 4)
-		framepad = 2+shift;
+		framepad = 2;
 
-	    if (framepad > 2)
-		framepad -= 3;
-
-	    /* convert inter-ORF regions to '.'s */
+	    /* convert inter-ORF regions to '-'s */
 	    last = -1;
 	    for (i=0; i<ajSeqLen(tran); i++)
 		if (ajStrStr(ajSeqStr(tran))[i] == '*')
