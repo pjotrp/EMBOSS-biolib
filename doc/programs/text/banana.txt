@@ -86,10 +86,12 @@ Input file format
 Output file format
 
    The output is to both a graphical display and to a text file with the
-   default name 'banana.profile'. The graphical display shows the
-   sequence together with the local local bending (solid line) and
-   macroscopic curvature (dotted line). The output data file from the
-   above example is as follows:
+   default name 'banana.profile'.
+   
+   The graphical display shows the sequence together with the local local
+   bending (solid line) and macroscopic curvature (dotted line).
+   
+   The output data file from the above example is as follows:
      _________________________________________________________________
    
 t    0.0      0.0
