@@ -635,30 +635,23 @@ public class SectionPanel
           public void actionPerformed(ActionEvent e)
           {
             f.setCursor(cbusy);
-            findatt:
-            if(!withSoap)    //Ajax without SOAP
+            String fc = null;
+            String fname;
+            if(sifc.isFileName() || sifc.isListFile())
             {
-              String fc = new String("");
-              if(sifc.isFileName())             // Sequence file/database
-                fc = sifc.getFileChosen();
-              else if(sifc.isListFile())        // List file
-                fc = sifc.getSequence(1);
-              else                              // Cut-n-Paste
-                fc = sifc.getCutNPasteText();
+              if(sifc.isListFile())
+                fname = sifc.getSequence(1);
+              else
+                fname = sifc.getFileChosen();
+              fc = Ajax.getFileOrDatabaseForAjax(fname,db,f,withSoap);
+            }
+            else                                     // Cut-n-Paste
+            {
+              fc = sifc.getCutNPasteText();
+            }    
 
-              if(fc.endsWith(":") || fc.endsWith(":*"))
-              {
-                 int n = JOptionPane.showConfirmDialog(f,
-                       "Do you really want to extract\n"+
-                       "the whole of " + fc + " databese?",
-                       "Confirm the sequence entry",
-                       JOptionPane.YES_NO_OPTION);
-                 if(n == JOptionPane.NO_OPTION)
-                 {
-                   break findatt;
-                 }
-              }
-
+            if(!withSoap && fc!=null)    //Ajax without SOAP
+            {
               Ajax aj = new Ajax();
               boolean ok;
               if(att.startsWith("seqset"))
@@ -685,77 +678,8 @@ public class SectionPanel
                           "Error Message", JOptionPane.ERROR_MESSAGE);
               }
             }
-            else    //Ajax with SOAP
+            else if(fc!=null)    //Ajax with SOAP
             {
-              String fc = new String("");
-              try
-              {
-                String line = new String("");
-                if(sifc.isFileName() || sifc.isListFile())
-                {
-                  String fname;
-                  if(sifc.isListFile())
-                    fname = sifc.getSequence(1);
-                  else
-                    fname = sifc.getFileChosen();
-
-                  //get the first seqs we meet in a list file
-                  if(fname.startsWith("@") || fname.startsWith("list::"))
-                  {
-                    Hashtable filesInList = new Hashtable();
-                    ListFile.parse(fname,filesInList);
-                    Enumeration en = filesInList.keys();
-                    if(en.hasMoreElements())
-                    {
-                      Object obj = en.nextElement();
-                      fname = (String)filesInList.get(obj);
-                      int col = fname.indexOf(":");
-                      if(col>-1)
-                      {
-                        String possDB = fname.substring(0,col);
-                        for(int i=0;i<db.length;i++)
-                          if(db[i].equalsIgnoreCase(possDB))
-                          {
-                            fname = fname.substring(0,fname.indexOf("\n"));  
-                            break;
-                          }
-                      }
-                    }
-                  }
-
-                  if( (new File(fname)).exists() )       // Sequence file
-                  {
-                    BufferedReader in = new BufferedReader(new FileReader(fname));
-                    while((line = in.readLine()) != null)
-                      fc = fc.concat(line + "\n");
-                  }
-                  else                                   // Database
-                  {
-                    fc = fname;
-                    if(fc.endsWith(":") || fc.endsWith(":*"))
-                    {
-                       int n = JOptionPane.showConfirmDialog(f,
-                             "Do you really want to extract\n"+
-                             "the whole of " + fc + " databese?",
-                             "Confirm the sequence entry",
-                             JOptionPane.YES_NO_OPTION);
-                       if(n == JOptionPane.NO_OPTION)
-                       {
-                         break findatt;
-                       }
-                    }
-
-                  }
-                }
-                else                                     // Cut-n-Paste
-                {
-                  fc = sifc.getCutNPasteText(); 
-                }
-              }
-              catch (IOException ioe)
-              {
-                System.out.println("Error in reading the sequence for Ajax");
-              }
 
               try
               {
