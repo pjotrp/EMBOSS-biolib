@@ -14,7 +14,7 @@
 
 <table align=center border=0 cellspacing=0 cellpadding=0>
 <tr><td valign=top>
-<A HREF="index.html" ONMOUSEOVER="self.status='Go to the EMBOSS home page';return true"><img border=0 src="emboss_icon.jpg" alt="" width=150 height=48></a>
+<A HREF="/" ONMOUSEOVER="self.status='Go to the EMBOSS home page';return true"><img border=0 src="emboss_icon.jpg" alt="" width=150 height=48></a>
 </td>
 <td align=left valign=middle>
 <b><font size="+6">
@@ -102,21 +102,6 @@ input sequence.
  -->
 
 
-<b>Here is a sample session with restover</b>
-<p>
-
-<p>
-<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
-
-% <b>restover </b>
-Finds restriction enzymes that produce a specific overhang
-Input sequence(s): <b>tembl:hsfau</b>
-Overlap sequence: <b>cg</b>
-Output file [hsfau.restover]: <b></b>
-
-</pre></td></tr></table><p>
-<p>
-<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>
 
 
 
@@ -134,6 +119,7 @@ Output file [hsfau.restover]: <b></b>
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
+   -datafile           datafile   Alternative RE data file
    -min                integer    Minimum cuts per RE
    -max                integer    Maximum cuts per RE
    -single             boolean    Force single site only cuts
@@ -144,7 +130,6 @@ Output file [hsfau.restover]: <b></b>
    -[no]ambiguity      boolean    Allow ambiguous matches
    -plasmid            boolean    Allow circular DNA
    -[no]commercial     boolean    Only enzymes with suppliers
-   -datafile           datafile   Alternative RE data file
    -html               boolean    Create HTML output
    -[no]limit          boolean    Limits reports to one isoschizomer
    -alphabetic         boolean    Sort output alphabetically
@@ -236,6 +221,13 @@ Output file [hsfau.restover]: <b></b>
 </tr>
 
 <tr>
+<td>-datafile</td>
+<td>Alternative RE data file</td>
+<td>Data file</td>
+<td><i>File in the data file path</i></td>
+</tr>
+
+<tr>
 <td>-min</td>
 <td>Minimum cuts per RE</td>
 <td>Integer from 1 to 1000</td>
@@ -296,13 +288,6 @@ Output file [hsfau.restover]: <b></b>
 <td>Only enzymes with suppliers</td>
 <td>Boolean value Yes/No</td>
 <td>Yes</td>
-</tr>
-
-<tr>
-<td>-datafile</td>
-<td>Alternative RE data file</td>
-<td>Data file</td>
-<td><i>File in the data file path</i></td>
 </tr>
 
 <tr>
@@ -372,91 +357,6 @@ IT IS DONE FOR YOU.
 <p>
 
 
-<a name="input.1"></a>
-<h3>Input files for usage example </h3>
-
-'tembl:hsfau' is a sequence entry in the example nucleic acid database 'tembl'
-<p>
-<p><h3>Database entry: tembl:hsfau</h3>
-<table width="90%"><tr><td bgcolor="#FFCCFF">
-<pre>
-ID   HSFAU      standard; RNA; HUM; 518 BP.
-XX
-AC   X65923;
-XX
-SV   X65923.1
-XX
-DT   13-MAY-1992 (Rel. 31, Created)
-DT   23-SEP-1993 (Rel. 37, Last updated, Version 10)
-XX
-DE   H.sapiens fau mRNA
-XX
-KW   fau gene.
-XX
-OS   Homo sapiens (human)
-OC   Eukaryota; Metazoa; Chordata; Craniata; Vertebrata; Euteleostomi; Mammalia;
-OC   Eutheria; Primates; Catarrhini; Hominidae; Homo.
-XX
-RN   [1]
-RP   1-518
-RA   Michiels L.M.R.;
-RT   ;
-RL   Submitted (29-APR-1992) to the EMBL/GenBank/DDBJ databases.
-RL   L.M.R. Michiels, University of Antwerp, Dept of Biochemistry,
-RL   Universiteisplein 1, 2610 Wilrijk, BELGIUM
-XX
-RN   [2]
-RP   1-518
-RX   MEDLINE; 93368957.
-RA   Michiels L., Van der Rauwelaert E., Van Hasselt F., Kas K., Merregaert J.;
-RT   " fau cDNA encodes a ubiquitin-like-S30 fusion protein and is expressed as
-RT   an antisense sequences in the Finkel-Biskis-Reilly murine sarcoma virus";
-RL   Oncogene 8:2537-2546(1993).
-XX
-DR   SWISS-PROT; P35544; UBIM_HUMAN.
-DR   SWISS-PROT; Q05472; RS30_HUMAN.
-XX
-FH   Key             Location/Qualifiers
-FH
-FT   source          1..518
-FT                   /chromosome="11q"
-FT                   /db_xref="taxon:9606"
-FT                   /organism="Homo sapiens"
-FT                   /tissue_type="placenta"
-FT                   /clone_lib="cDNA"
-FT                   /clone="pUIA 631"
-FT                   /map="13"
-FT   misc_feature    57..278
-FT                   /note="ubiquitin like part"
-FT   CDS             57..458
-FT                   /db_xref="SWISS-PROT:P35544"
-FT                   /db_xref="SWISS-PROT:Q05472"
-FT                   /gene="fau"
-FT                   /protein_id="CAA46716.1"
-FT                   /translation="MQLFVRAQELHTFEVTGQETVAQIKAHVASLEGIAPEDQVVLLAG
-FT                   APLEDEATLGQCGVEALTTLEVAGRMLGGKVHGSLARAGKVRGQTPKVAKQEKKKKKTG
-FT                   RAKRRMQYNRRFVNVVPTFGKKKGPNANS"
-FT   misc_feature    98..102
-FT                   /note="nucleolar localization signal"
-FT   misc_feature    279..458
-FT                   /note="S30 part"
-FT   polyA_signal    484..489
-FT   polyA_site      509
-XX
-SQ   Sequence 518 BP; 125 A; 139 C; 148 G; 106 T; 0 other;
-     ttcctctttc tcgactccat cttcgcggta gctgggaccg ccgttcagtc gccaatatgc        60
-     agctctttgt ccgcgcccag gagctacaca ccttcgaggt gaccggccag gaaacggtcg       120
-     cccagatcaa ggctcatgta gcctcactgg agggcattgc cccggaagat caagtcgtgc       180
-     tcctggcagg cgcgcccctg gaggatgagg ccactctggg ccagtgcggg gtggaggccc       240
-     tgactaccct ggaagtagca ggccgcatgc ttggaggtaa agttcatggt tccctggccc       300
-     gtgctggaaa agtgagaggt cagactccta aggtggccaa acaggagaag aagaagaaga       360
-     agacaggtcg ggctaagcgg cggatgcagt acaaccggcg ctttgtcaac gttgtgccca       420
-     cctttggcaa gaagaagggc cccaatgcca actcttaagt cttttgtaat tctggctttc       480
-     tctaataaaa aagccactta gttcagtcaa aaaaaaaa                               518
-//
-</pre>
-</td></tr></table><p>
-
 
 
 <H2>
@@ -470,41 +370,6 @@ SQ   Sequence 518 BP; 125 A; 139 C; 148 G; 106 T; 0 other;
         happens in unusual cases - null output, errors etc. 
    -->
 
-
-<a name="output.1"></a>
-<h3>Output files for usage example </h3>
-<p><h3>File: hsfau.restover</h3>
-<table width="90%"><tr><td bgcolor="#CCFFCC">
-<pre>
-# Restrict of HSFAU from 1 to 518
-#
-# Minimum cuts per enzyme: 1
-# Maximum cuts per enzyme: 2000000000
-# Minimum length of recognition site: 2
-# Number of hits with any overlap: 53
-# Base Number	Enzyme		Site		5'	3'	[5'	3']
-	11	TaqI            TCGA            11	13	
-	28	AciI            CCGC            25	27	
-	38	AciI            CCGC            38	40	
-	44	BceAI           ACGGC           25	27	
-	71	AciI            CCGC            71	73	
-	73	Hin6I           GCGC            73	75	
-	94	TaqI            TCGA            94	96	
-	103	HpaII           CCGG            103	105	
-	162	HpaII           CCGG            162	164	
-	190	Hin6I           GCGC            190	192	
-	192	Hin6I           GCGC            192	194	
-	225	BsrI            ACTGG           221	219	
-	229	AciI            CCGC            226	228	
-	263	AciI            CCGC            263	265	
-	380	AciI            CCGC            377	379	
-	383	AciI            CCGC            380	382	
-	395	HpaII           CCGG            395	397	
-	398	Hin6I           GCGC            398	400	
-	408	AclI            AACGTT          409	411	
-	409	MaeII           ACGT            409	411	
-</pre>
-</td></tr></table><p>
 
 
 <p>
@@ -708,13 +573,12 @@ None.
 <h2><a name="See also">See also</a></h2>
 <table border cellpadding=4 bgcolor="#FFFFF0">
 <tr><th>Program name</th><th>Description</th></tr>
-<tr><td><a href="recite.html">recite</a></td><td>Find changes to an enzyme site that introduce new enzyme sites</td></tr>
-<tr><td><a href="recoder.html">recoder</a></td><td>Remove restriction sites but maintain the same translation</td></tr>
-<tr><td><a href="redata.html">redata</a></td><td>Search REBASE for enzyme name, references, suppliers etc</td></tr>
-<tr><td><a href="remap.html">remap</a></td><td>Display a sequence with restriction cut sites, translation etc</td></tr>
-<tr><td><a href="restrict.html">restrict</a></td><td>Finds restriction enzyme cleavage sites</td></tr>
-<tr><td><a href="showseq.html">showseq</a></td><td>Display a sequence with features, translation etc</td></tr>
-<tr><td><a href="silent.html">silent</a></td><td>Silent mutation restriction enzyme scan</td></tr>
+<tr><td><a href="recoder.shtml">recoder</a></td><td>Remove restriction sites but maintain the same translation</td></tr>
+<tr><td><a href="redata.shtml">redata</a></td><td>Search REBASE for enzyme name, references, suppliers etc</td></tr>
+<tr><td><a href="remap.shtml">remap</a></td><td>Display a sequence with restriction cut sites, translation etc</td></tr>
+<tr><td><a href="restrict.shtml">restrict</a></td><td>Finds restriction enzyme cleavage sites</td></tr>
+<tr><td><a href="showseq.shtml">showseq</a></td><td>Display a sequence with features, translation etc</td></tr>
+<tr><td><a href="silent.shtml">silent</a></td><td>Silent mutation restriction enzyme scan</td></tr>
 </table>
 
 <!-- 

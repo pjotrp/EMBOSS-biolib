@@ -14,7 +14,7 @@
 
 <table align=center border=0 cellspacing=0 cellpadding=0>
 <tr><td valign=top>
-<A HREF="index.html" ONMOUSEOVER="self.status='Go to the EMBOSS home page';return true"><img border=0 src="emboss_icon.jpg" alt="" width=150 height=48></a>
+<A HREF="/" ONMOUSEOVER="self.status='Go to the EMBOSS home page';return true"><img border=0 src="emboss_icon.jpg" alt="" width=150 height=48></a>
 </td>
 <td align=left valign=middle>
 <b><font size="+6">
@@ -98,22 +98,6 @@ The home web page of the PRINTS database is:
 </H2>
 
 
-<b>Here is a sample session with pscan</b>
-<p>
-
-<p>
-<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
-
-% <b>pscan </b>
-Scans proteins using PRINTS
-Input sequence(s): <b>tsw:opsd_human</b>
-Minimum number of elements per fingerprint [2]: <b></b>
-Maximum number of elements per fingerprint [20]: <b></b>
-Output file [opsd_human.pscan]: <b></b>
-
-</pre></td></tr></table><p>
-<p>
-<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>
 
 
 
@@ -248,173 +232,12 @@ IT IS DONE FOR YOU.
 <p>
 
 
-<a name="input.1"></a>
-<h3>Input files for usage example </h3>
-
-'tsw:opsd_human' is a sequence entry in the example protein database 'tsw'
-<p>
-<p><h3>Database entry: tsw:opsd_human</h3>
-<table width="90%"><tr><td bgcolor="#FFCCFF">
-<pre>
-ID   OPSD_HUMAN     STANDARD;      PRT;   348 AA.
-AC   P08100; Q16414;
-DT   01-AUG-1988 (Rel. 08, Created)
-DT   01-AUG-1988 (Rel. 08, Last sequence update)
-DT   15-JUL-1999 (Rel. 38, Last annotation update)
-DE   RHODOPSIN.
-GN   RHO.
-OS   Homo sapiens (Human).
-OC   Eukaryota; Metazoa; Chordata; Craniata; Vertebrata; Mammalia;
-OC   Eutheria; Primates; Catarrhini; Hominidae; Homo.
-RN   [1]
-RP   SEQUENCE FROM N.A.
-RX   MEDLINE; 84272729.
-RA   NATHANS J., HOGNESS D.S.;
-RT   "Isolation and nucleotide sequence of the gene encoding human
-RT   rhodopsin.";
-RL   Proc. Natl. Acad. Sci. U.S.A. 81:4851-4855(1984).
-RN   [2]
-RP   SEQUENCE OF 1-120 FROM N.A.
-RA   BENNETT J., BELLER B., SUN D., KARIKO K.;
-RL   Submitted (NOV-1994) to the EMBL/GenBank/DDBJ databases.
-RN   [3]
-RP   REVIEW ON ADRP VARIANTS.
-RX   MEDLINE; 94004905.
-RA   AL-MAGHTHEH M., GREGORY C., INGLEHEARN C., HARDCASTLE A.,
-RA   BHATTACHARYA S.;
-RT   "Rhodopsin mutations in autosomal dominant retinitis pigmentosa.";
-RL   Hum. Mutat. 2:249-255(1993).
-RN   [4]
-RP   VARIANT ADRP HIS-23.
-RX   MEDLINE; 90136922.
-RA   DRYJA T.P., MCGEE T.L., REICHEI E., HAHN L.B., COWLEY G.S.,
-RA   YANDELL D.W., SANDBERG M.A., BERSON E.L.;
-RT   "A point mutation of the rhodopsin gene in one form of retinitis
-RT   pigmentosa.";
-RL   Nature 343:364-366(1990).
-RN   [5]
-RP   VARIANTS ADRP.
-RX   MEDLINE; 91051574.
-RA   FARRAR G.J., KENNA P., REDMOND R., MCWILLIAM P., BRADLEY D.G.,
-RA   HUMPHRIES M.M., SHARP E.M., INGLEHEARN C.F., BASHIR R., JAY M.,
-RA   WATTY A., LUDWIG M., SCHINZEL A., SAMANNS C., GAL A.,
-RA   BHATTACHARYA S.S., HUMPHRIES P.;
-RT   "Autosomal dominant retinitis pigmentosa: absence of the rhodopsin
-RT   proline--&gt;histidine substitution (codon 23) in pedigrees from
-RT   Europe.";
-RL   Am. J. Hum. Genet. 47:941-945(1990).
-RN   [6]
-RP   VARIANTS ADRP HIS-23; ARG-58; LEU-347 AND SER-347.
-RX   MEDLINE; 91015273.
-
-
-<font color=red>  [Part of this file has been deleted for brevity]</font>
-
-FT                                /FTId=VAR_004816.
-FT   VARIANT     209    209       V -&gt; M (EFFECT NOT KNOWN).
-FT                                /FTId=VAR_004817.
-FT   VARIANT     211    211       H -&gt; P (IN ADRP).
-FT                                /FTId=VAR_004818.
-FT   VARIANT     211    211       H -&gt; R (IN ADRP).
-FT                                /FTId=VAR_004819.
-FT   VARIANT     216    216       M -&gt; K (IN ADRP).
-FT                                /FTId=VAR_004820.
-FT   VARIANT     220    220       F -&gt; C (IN ADRP).
-FT                                /FTId=VAR_004821.
-FT   VARIANT     222    222       C -&gt; R (IN ADRP).
-FT                                /FTId=VAR_004822.
-FT   VARIANT     255    255       MISSING (IN ADRP).
-FT                                /FTId=VAR_004823.
-FT   VARIANT     264    264       MISSING (IN ADRP).
-FT                                /FTId=VAR_004824.
-FT   VARIANT     267    267       P -&gt; L (IN ADRP).
-FT                                /FTId=VAR_004825.
-FT   VARIANT     267    267       P -&gt; R (IN ADRP).
-FT                                /FTId=VAR_004826.
-FT   VARIANT     292    292       A -&gt; E (IN CSNB4).
-FT                                /FTId=VAR_004827.
-FT   VARIANT     296    296       K -&gt; E (IN ADRP).
-FT                                /FTId=VAR_004828.
-FT   VARIANT     297    297       S -&gt; R (IN ADRP).
-FT                                /FTId=VAR_004829.
-FT   VARIANT     342    342       T -&gt; M (IN ADRP).
-FT                                /FTId=VAR_004830.
-FT   VARIANT     345    345       V -&gt; L (IN ADRP).
-FT                                /FTId=VAR_004831.
-FT   VARIANT     345    345       V -&gt; M (IN ADRP).
-FT                                /FTId=VAR_004832.
-FT   VARIANT     347    347       P -&gt; A (IN ADRP).
-FT                                /FTId=VAR_004833.
-FT   VARIANT     347    347       P -&gt; L (IN ADRP; COMMON VARIANT).
-FT                                /FTId=VAR_004834.
-FT   VARIANT     347    347       P -&gt; Q (IN ADRP).
-FT                                /FTId=VAR_004835.
-FT   VARIANT     347    347       P -&gt; R (IN ADRP).
-FT                                /FTId=VAR_004836.
-FT   VARIANT     347    347       P -&gt; S (IN ADRP).
-FT                                /FTId=VAR_004837.
-SQ   SEQUENCE   348 AA;  38892 MW;  07443BEA CRC32;
-     MNGTEGPNFY VPFSNATGVV RSPFEYPQYY LAEPWQFSML AAYMFLLIVL GFPINFLTLY
-     VTVQHKKLRT PLNYILLNLA VADLFMVLGG FTSTLYTSLH GYFVFGPTGC NLEGFFATLG
-     GEIALWSLVV LAIERYVVVC KPMSNFRFGE NHAIMGVAFT WVMALACAAP PLAGWSRYIP
-     EGLQCSCGID YYTLKPEVNN ESFVIYMFVV HFTIPMIIIF FCYGQLVFTV KEAAAQQQES
-     ATTQKAEKEV TRMVIIMVIA FLICWVPYAS VAFYIFTHQG SNFGPIFMTI PAFFAKSAAI
-     YNPVIYIMMN KQFRNCMLTT ICCGKNPLGD DEASATVSKT ETSQVAPA
-//
-</pre>
-</td></tr></table><p>
-
 
 <H2>
     Output file format
 </H2>
 
 
-
-<a name="output.1"></a>
-<h3>Output files for usage example </h3>
-<p><h3>File: opsd_human.pscan</h3>
-<table width="90%"><tr><td bgcolor="#CCFFCC">
-<pre>
-
-
-CLASS 1
-Fingerprints with all elements in order
-
-Fingerprint GPCRRHODOPSN Elements 7
-    Accession number PR00237
-    Rhodopsin-like GPCR superfamily signature
-  Element 1 Threshold 54% Score 64%
-             Start position 39 Length 25
-  Element 2 Threshold 49% Score 75%
-             Start position 72 Length 22
-  Element 3 Threshold 48% Score 56%
-             Start position 117 Length 23
-  Element 4 Threshold 50% Score 69%
-             Start position 152 Length 22
-  Element 5 Threshold 51% Score 74%
-             Start position 204 Length 24
-  Element 6 Threshold 42% Score 75%
-             Start position 250 Length 25
-  Element 7 Threshold 46% Score 67%
-             Start position 288 Length 27
-
-
-CLASS 2
-All elements match but not all in the correct order
-
-
-
-CLASS 3
-Not all elements match but those that do are in order
-
-
-
-CLASS 4
-Remaining partial matches
-
-</pre>
-</td></tr></table><p>
 
 
 <p>
@@ -572,18 +395,18 @@ It exits with status 0 unless an error is reported.
 <h2><a name="See also">See also</a></h2>
 <table border cellpadding=4 bgcolor="#FFFFF0">
 <tr><th>Program name</th><th>Description</th></tr>
-<tr><td><a href="antigenic.html">antigenic</a></td><td>Finds antigenic sites in proteins</td></tr>
-<tr><td><a href="digest.html">digest</a></td><td>Protein proteolytic enzyme or reagent cleavage digest</td></tr>
-<tr><td><a href="epestfind.html">epestfind</a></td><td>Finds PEST motifs as potential proteolytic cleavage sites</td></tr>
-<tr><td><a href="fuzzpro.html">fuzzpro</a></td><td>Protein pattern search</td></tr>
-<tr><td><a href="fuzztran.html">fuzztran</a></td><td>Protein pattern search after translation</td></tr>
-<tr><td><a href="helixturnhelix.html">helixturnhelix</a></td><td>Report nucleic acid binding motifs</td></tr>
-<tr><td><a href="oddcomp.html">oddcomp</a></td><td>Finds protein sequence regions with a biased composition</td></tr>
-<tr><td><a href="patmatdb.html">patmatdb</a></td><td>Search a protein sequence with a motif</td></tr>
-<tr><td><a href="patmatmotifs.html">patmatmotifs</a></td><td>Search a PROSITE motif database with a protein sequence</td></tr>
-<tr><td><a href="pepcoil.html">pepcoil</a></td><td>Predicts coiled coil regions</td></tr>
-<tr><td><a href="preg.html">preg</a></td><td>Regular expression search of a protein sequence</td></tr>
-<tr><td><a href="sigcleave.html">sigcleave</a></td><td>Reports protein signal cleavage sites</td></tr>
+<tr><td><a href="antigenic.shtml">antigenic</a></td><td>Finds antigenic sites in proteins</td></tr>
+<tr><td><a href="digest.shtml">digest</a></td><td>Protein proteolytic enzyme or reagent cleavage digest</td></tr>
+<tr><td><a href="epestfind.shtml">epestfind</a></td><td>Finds PEST motifs as potential proteolytic cleavage sites</td></tr>
+<tr><td><a href="fuzzpro.shtml">fuzzpro</a></td><td>Protein pattern search</td></tr>
+<tr><td><a href="fuzztran.shtml">fuzztran</a></td><td>Protein pattern search after translation</td></tr>
+<tr><td><a href="helixturnhelix.shtml">helixturnhelix</a></td><td>Report nucleic acid binding motifs</td></tr>
+<tr><td><a href="oddcomp.shtml">oddcomp</a></td><td>Finds protein sequence regions with a biased composition</td></tr>
+<tr><td><a href="patmatdb.shtml">patmatdb</a></td><td>Search a protein sequence with a motif</td></tr>
+<tr><td><a href="patmatmotifs.shtml">patmatmotifs</a></td><td>Search a PROSITE motif database with a protein sequence</td></tr>
+<tr><td><a href="pepcoil.shtml">pepcoil</a></td><td>Predicts coiled coil regions</td></tr>
+<tr><td><a href="preg.shtml">preg</a></td><td>Regular expression search of a protein sequence</td></tr>
+<tr><td><a href="sigcleave.shtml">sigcleave</a></td><td>Reports protein signal cleavage sites</td></tr>
 </table>
 
 <!--

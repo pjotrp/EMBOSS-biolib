@@ -1,37 +1,37 @@
 
                                   silent 
-                                      
-   
-   
+
+
+
 Function
 
    Silent mutation restriction enzyme scan
-   
+
 Description
 
    silent does a scan of a nucleic acid sequence for silent mutation
    restriction enzyme sites.
-   
+
    silent finds positions in a sequence where a point mutation could be
    made to introduce a specified restriction enzyme recognition site
    without changing the translation.
-   
+
    Several restriction enzyme can be specified.
-   
+
 Usage
 
    Here is a sample session with silent
-   
+
 
 % silent 
 Silent mutation restriction enzyme scan
 Input sequence: tembl:hsfau
 Comma separated enzyme list [all]: ecori,hindiii
 Output report [hsfau.silent]: 
-   
+
    Go to the input files for this example
    Go to the output files for this example
-   
+
 Command line arguments
 
    Standard (Mandatory) qualifiers:
@@ -87,7 +87,7 @@ Command line arguments
    -error               boolean    Report errors
    -fatal               boolean    Report fatal errors
    -die                 boolean    Report deaths
-   
+
 
    Standard (Mandatory) qualifiers Allowed values Default
    [-sequence]
@@ -101,18 +101,18 @@ Command line arguments
    -sshow Display untranslated sequence Boolean value Yes/No No
    -tshow Display translated sequence Boolean value Yes/No No
    -allmut Display all mutations Boolean value Yes/No No
-   
+
 Input file format
 
    silent reads a nucleic acid sequence USA.
-   
+
   Input files for usage example
-  
+
    'tembl:hsfau' is a sequence entry in the example nucleic acid database
    'tembl'
-   
+
   Database entry: tembl:hsfau
-  
+
 ID   HSFAU      standard; RNA; HUM; 518 BP.
 XX
 AC   X65923;
@@ -199,16 +199,16 @@ SQ   Sequence 518 BP; 125 A; 139 C; 148 G; 106 T; 0 other;
      tctaataaaa aagccactta gttcagtcaa aaaaaaaa                               51
 8
 //
-   
+
 Output file format
 
   Output files for usage example
-  
+
   File: hsfau.silent
-  
+
 ########################################
 # Program: silent
-# Rundate: Tue Apr 06 14:34:19 2004
+# Rundate: Wed Jul 21 11:58:26 2004
 # Report_format: table
 # Report_file: hsfau.silent
 ########################################
@@ -235,65 +235,64 @@ Output file format
 
 #---------------------------------------
 #---------------------------------------
-   
+
 Data files
 
    None.
-   
+
 Notes
 
    None.
-   
+
 References
 
    None.
-   
+
 Warnings
 
    None.
-   
+
 Diagnostic Error Messages
 
    None.
-   
+
 Exit status
 
    It always exits with status 0.
-   
+
 Known bugs
 
    None.
-   
+
 See also
 
    Program name                          Description
-   recite       Find changes to an enzyme site that introduce new enzyme sites
    recoder      Remove restriction sites but maintain the same translation
    redata       Search REBASE for enzyme name, references, suppliers etc
    remap        Display a sequence with restriction cut sites, translation etc
    restover     Finds restriction enzymes that produce a specific overhang
    restrict     Finds restriction enzyme cleavage sites
    showseq      Display a sequence with features, translation etc
-   
+
    silent does the opposite to recode. silent finds sites where a
    restriction enzyme site can be introduced without changing the
    translation in frame 1 of the sequence. recode finds sites where a
    restriction enzyme site can be removed without changing the
    translation in frame 1 of the sequence.
-   
+
 Author(s)
 
    Alan Bleasby (ableasby © rfcgr.mrc.ac.uk)
    MRC Rosalind Franklin Centre for Genomics Research Wellcome Trust
    Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
-   
+
 History
 
    Written (Aug 2000) - Alan Bleasby.
-   
+
 Target users
 
    This program is intended to be used by everyone and everything, from
    naive users to embedded scripts.
-   
+
 Comments

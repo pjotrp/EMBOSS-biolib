@@ -1,12 +1,12 @@
 
                                   redata 
-                                      
-   
-   
+
+
+
 Function
 
    Search REBASE for enzyme name, references, suppliers etc
-   
+
 Description
 
    The Restriction Enzyme database (REBASE) is a collection of
@@ -18,27 +18,27 @@ Description
    proteins are also included. Most recently, putative DNA
    methyltransferases and restriction enzymes, as predicted from analysis
    of genomic sequences, are also listed.
-   
+
    The home page of REBASE is: http://rebase.neb.com/
-   
+
    This program searches the REBASE database for information on a
    specified restriction enzyme.
-   
+
    It outputs a report including the cut site, isoschizomers, references
    and commercial suppliers of the enzyme.
-   
+
 Usage
 
    Here is a sample session with redata
-   
+
 
 % redata 
 Search REBASE for enzyme name, references, suppliers etc.
 Restriction enzyme name [BamHI]: BamHI
 Output file [outfile.redata]: 
-   
+
    Go to the output files for this example
-   
+
 Command line arguments
 
    Standard (Mandatory) qualifiers:
@@ -76,7 +76,7 @@ Command line arguments
    -error               boolean    Report errors
    -fatal               boolean    Report fatal errors
    -die                 boolean    Report deaths
-   
+
 
    Standard (Mandatory) qualifiers Allowed values Default
    [-enzyme]
@@ -93,15 +93,15 @@ Command line arguments
    (Isoschizomers) Boolean value Yes/No Yes
    -[no]references Show references Boolean value Yes/No Yes
    -[no]suppliers Show suppliers Boolean value Yes/No Yes
-   
+
 Input file format
 
 Output file format
 
   Output files for usage example
-  
+
   File: outfile.redata
-  
+
 BamHI
 
 Recognition site is GGATCC leaving sticky ends
@@ -118,116 +118,102 @@ Isoschizomers:
    Bsp130I     Bsp131I     Bsp144I     Bsp4009I    BspAAIII    BstI
    Bst1126I    Bst2464I    Bst2902I    BstQI       Bsu90I      Bsu8565I
    Bsu8646I    BsuB519I    BsuB763I    CelI        DdsI        GdoI
-   GinI        GoxI        GseIII      MleI        Mlu23I      NasBI
-   Nsp29132II  NspSAIV     OkrAI       Pac1110I    Pae177I     Pfl8I
-   Psp56I      RhsI        Rlu4I       RspLKII     SolI        SpvI
-   SurI        Uba19I      Uba31I      Uba38I      Uba51I      Uba88I
-   Uba1098I    Uba1163I    Uba1167I    Uba1172I    Uba1173I    Uba1205I
-   Uba1224I    Uba1242I    Uba1250I    Uba1258I    Uba1297I    Uba1302I
-   Uba1324I    Uba1325I    Uba1334I    Uba1339I    Uba1346I    Uba1383I
-   Uba1398I    Uba1402I    Uba1414I
+   GinI        GoxI        GseIII      GstI        MleI        Mlu23I
+   NasBI       Nsp29132II  NspSAIV     OkrAI       Pac1110I    Pae177I
+   Pfl8I       Psp56I      RhsI        Rlu4I       RspLKII     SolI
+   SpvI        SurI        Uba19I      Uba31I      Uba38I      Uba51I
+   Uba88I      Uba1098I    Uba1163I    Uba1167I    Uba1172I    Uba1173I
+   Uba1205I    Uba1224I    Uba1242I    Uba1250I    Uba1258I    Uba1297I
+   Uba1302I    Uba1324I    Uba1325I    Uba1334I    Uba1339I    Uba1346I
+   Uba1383I    Uba1398I    Uba1402I    Uba1414I    Uba4009I
 
 Suppliers:
-Amersham Pharmacia Biotech (1/01)
-Life Technologies Inc. (1/98)
-Minotech, Molecular Biology Products (12/00)
-HYBAID GmbH (12/00)
-Stratagene (11/00)
-Fermentas AB (5/01)
-Q-BIOgene (1/01)
+Amersham Pharmacia Biotech (1/03)
+Minotech Biotechnology (6/01)
+Stratagene (1/03)
+Fermentas AB (1/03)
+Qbiogene (1/03)
 American Allied Biochemical, Inc. (10/98)
-SibEnzyme Ltd. (1/01)
+SibEnzyme Ltd. (1/03)
 Nippon Gene Co., Ltd. (6/00)
-Takara Shuzo Co. Ltd. (2/01)
-Transgenomic Ltd. (1/01)
-Roche Molecular Biochemicals (1/01)
-New England BioLabs (12/00)
+Takara Shuzo Co. Ltd. (1/03)
+Roche Applied Science (1/03)
+New England Biolabs (1/03)
 Toyobo Biochemicals (11/98)
-CHIMERx (10/97)
-Promega Corporation (6/99)
-Sigma Chemical Corporation (11/98)
-Advanced Biotechnologies Ltd. (3/98)
-Bangalore Genei (2/01)
-MRC-Holland (3/01)
+CHIMERx (1/03)
+Promega Corporation (1/03)
+Sigma Chemical Corporation (1/03)
+Bangalore Genei (1/03)
+MRC-Holland (1/03)
+EURx Ltd. (1/03)
 
 References:
-Brooks, J.E., Howard, K.A., US Patent Office, 1994.
 Brooks, J.E., Nathan, P.D., Landry, D., Sznyter, L.A., Waite-Rees, P., Ives, C.
 L., Moran, L.S., Slatko, B.E., Benner, J.S., (1991) Nucleic Acids Res., vol. 19
 , pp. 841-850.
 Hattman, S., Keister, T., Gottehrer, A., (1978) J. Mol. Biol., vol. 124, pp. 70
 1-711.
-Lee, S.P., Porter, D., Chirikjian, J.G., Knutson, J.R., Han, M.K., (1994) Anal.
- Biochem., vol. 220, pp. 377-383.
-Newman, M., Strzelecka, T., Dorner, L.F., Schildkraut, I., Aggarwal, A.K., (199
-4) Structure, vol. 2, pp. 439-452.
 Roberts, R.J., Wilson, G.A., Young, F.E., (1977) Nature, vol. 265, pp. 82-84.
-Roy, K.B., Vrushank, D., Jayaram, B., (1994) Anal. Biochem., vol. 220, pp. 160-
-164.
-Strzelecka, T., Newman, M., Dorner, L.F., Knott, R., Schildkraut, I., Aggarwal,
- A.K., (1994) J. Mol. Biol., vol. 239, pp. 430-432.
 Wilson, G.A., Young, F.E., (1975) J. Mol. Biol., vol. 97, pp. 123-125.
-Xu, S.-Y., Fomenkov, A., (1994) Biotechniques, vol. 17, pp. 57.
-   
+
    This includes the full list of isoschizomers (enzymes with the same
    target sequence), suppliers and references from the REBASE database.
-   
+
 Data files
 
    This uses the EMBOSS REBASE data files in 'data/REBASE/*' under the
    EMBOSS installation directory.
-   
+
    These files must first be set up using the program 'rebaseextract'.
    Running 'rebaseextract' may be the job of your system manager.
-   
+
 Notes
 
    None.
-   
+
 References
 
    None.
-   
+
 Warnings
 
    None.
-   
+
 Diagnostic Error Messages
 
    None.
-   
+
 Exit status
 
    It always exits with a status of 0.
-   
+
 Known bugs
 
    None.
-   
+
 See also
 
    Program name                          Description
-   recite       Find changes to an enzyme site that introduce new enzyme sites
    recoder      Remove restriction sites but maintain the same translation
    remap        Display a sequence with restriction cut sites, translation etc
    restover     Finds restriction enzymes that produce a specific overhang
    restrict     Finds restriction enzyme cleavage sites
    showseq      Display a sequence with features, translation etc
    silent       Silent mutation restriction enzyme scan
-   
+
 Author(s)
 
    Alan Bleasby (ableasby © rfcgr.mrc.ac.uk)
    MRC Rosalind Franklin Centre for Genomics Research Wellcome Trust
    Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
-   
+
 History
 
    Written 1999.
-   
+
 Target users
 
    This program is intended to be used by everyone and everything, from
    naive users to embedded scripts.
-   
+
 Comments

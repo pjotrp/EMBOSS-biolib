@@ -1,12 +1,12 @@
 
                                    remap 
-                                      
-   
-   
+
+
+
 Function
 
    Display a sequence with restriction cut sites, translation etc
-   
+
 Description
 
    The Restriction Enzyme database (REBASE) is a collection of
@@ -18,22 +18,22 @@ Description
    proteins are also included. Most recently, putative DNA
    methyltransferases and restriction enzymes, as predicted from analysis
    of genomic sequences, are also listed.
-   
+
    The home page of REBASE is: http://rebase.neb.com/
-   
+
    This program uses REBASE data to find the recognition sites and/or cut
    sites of restriction enzymes in a nucleic acid sequence.
-   
+
    This program displays the cut sites on both strands by default. It
    will optionally also display the translation of the sequence.
-   
+
    There are many options to change the style of display to aid in making
    clear presentations.
-   
+
    One potentially very useful option is '-flatreformat' that displays
    not only the cut sites which many other restriction cut-site programs
    will show, but also shows the recognition site.
-   
+
    By default, only one of any group of isoschizomers (enzymes that have
    the same recognition site and cut positions) is reported (this
    behaviour can be turned off by setting the qualifier '-limit' to be
@@ -41,10 +41,10 @@ Description
    prototype) is specified in the REBASE database and the information is
    held in the data file 'embossre.equ'. You may edit this file to set
    your own preferred prototype,if you wish.
-   
+
    As well as the display of where enzymes cut in the sequence, remap
    displays:
-   
+
      * The list of enzymes that cut the sequence and match the required
        criteria.
      * The list of enzymes that cut the sequence and fail the MINCUTS
@@ -55,78 +55,9 @@ Description
        all the required criteria.
      * The number of enzymes that cut the sequence and fail the SITELEN,
        BLUNT, STICKY, COMMERCIAL, AMBIGUOUS criteria.
-       
+
 Usage
 
-   Here is a sample session with remap
-   
-   This example uses only a small region of the input sequence to save
-   space. This is run with a small test version of the restriction enzyme
-   database and so you will probably see more enzymes when you run this.
-   
-
-% remap -notran -sbeg 1 -send 60 
-Display a sequence with restriction cut sites, translation etc..
-Input sequence(s): tembl:eclac
-Comma separated enzyme list [all]: taqi,bsu6i,acii,bsski
-Minimum recognition site length [4]: 
-Output file [eclac.remap]: 
-   
-   Go to the input files for this example
-   Go to the output files for this example
-   
-   Example 2
-   
-   This is an example where all enzymes in the REBASE database are used,
-   (but only the prototypes of the isoschizomers are reported by
-   default). This is run with a small test version of the restriction
-   enzyme database and so you will probably see more enzymes when you run
-   this.
-   
-
-% remap -notran -sbeg 1 -send 60 
-Display a sequence with restriction cut sites, translation etc..
-Input sequence(s): tembl:eclac
-Comma separated enzyme list [all]: 
-Minimum recognition site length [4]: 
-Output file [eclac.remap]: 
-   
-   Go to the output files for this example
-   
-   Example 3
-   
-   This is an example where all enzymes in the REBASE database are used
-   but the -limit qualifier is not set so that all of the enzymes are
-   displayed and not just only the prototypes of the isoschizomers. This
-   is run with a small test version of the restriction enzyme database
-   and so you will probably see more enzymes when you run this.
-   
-
-% remap -notran -sbeg 1 -send 60 -nolimit 
-Display a sequence with restriction cut sites, translation etc..
-Input sequence(s): tembl:eclac
-Comma separated enzyme list [all]: 
-Minimum recognition site length [4]: 
-Output file [eclac.remap]: 
-   
-   Go to the output files for this example
-   
-   Example 4
-   
-   This shows the 'flat' format: This is run with a small test version of
-   the restriction enzyme database and so you will probably see more
-   enzymes when you run this.
-   
-
-% remap -notran -sbeg 1 -send 60 -flat 
-Display a sequence with restriction cut sites, translation etc..
-Input sequence(s): tembl:eclac
-Comma separated enzyme list [all]: 
-Minimum recognition site length [4]: 
-Output file [eclac.remap]: 
-   
-   Go to the output files for this example
-   
 Command line arguments
 
    Standard (Mandatory) qualifiers:
@@ -316,7 +247,7 @@ Command line arguments
    -error               boolean    Report errors
    -fatal               boolean    Report fatal errors
    -die                 boolean    Report deaths
-   
+
 
    Standard (Mandatory) qualifiers Allowed values Default
    [-sequence]
@@ -456,178 +387,15 @@ Command line arguments
    -offset Offset to start numbering the sequence from Any integer value
    1
    -html Use HTML formatting Boolean value Yes/No No
-   
+
 Input file format
 
-  Input files for usage example
-  
-   'tembl:eclac' is a sequence entry in the example nucleic acid database
-   'tembl'
-   
-  Database entry: tembl:eclac
-  
-ID   ECLAC      standard; DNA; PRO; 7477 BP.
-XX
-AC   J01636; J01637; K01483; K01793;
-XX
-SV   J01636.1
-XX
-DT   30-NOV-1990 (Rel. 26, Created)
-DT   04-MAR-2000 (Rel. 63, Last updated, Version 7)
-XX
-DE   E.coli lactose operon with lacI, lacZ, lacY and lacA genes.
-XX
-KW   acetyltransferase; beta-D-galactosidase; galactosidase; lac operon;
-KW   lac repressor protein; lacA gene; lacI gene; lactose permease; lacY gene;
-KW   lacZ gene; mutagenesis; palindrome; promoter region;
-KW   thiogalactoside acetyltransferase.
-XX
-OS   Escherichia coli
-OC   Bacteria; Proteobacteria; gamma subdivision; Enterobacteriaceae;
-OC   Escherichia.
-XX
-RN   [1]
-RP   1243-1266
-RX   MEDLINE; 74055539.
-RA   Gilbert W., Maxam A.;
-RT   "The nucleotide sequence of the lac operator";
-RL   Proc. Natl. Acad. Sci. U.S.A. 70:3581-3584(1973).
-XX
-RN   [2]
-RP   1246-1308
-RX   MEDLINE; 74055540.
-RA   Maizels N.M.;
-RT   "The nucleotide sequence of the lactose messenger ribonucleic acid
-RT   transcribed from the UV5 promoter mutant of Escherichia coli";
-RL   Proc. Natl. Acad. Sci. U.S.A. 70:3585-3589(1973).
-XX
-RN   [3]
-RX   MEDLINE; 74174501.
-RA   Gilbert W., Maizels N., Maxam A.;
-RT   "Sequences of controlling regions of the lactose operon";
-RL   Cold Spring Harb. Symp. Quant. Biol. 38:845-855(1974).
-XX
-RN   [4]
-RA   Gilbert W., Gralla J., Majors A.J., Maxam A.;
-RT   "Lactose operator sequences and the action of lac repressor";
-RL   (in) Sund H., Blauer G. (eds.);
-RL   PROTEIN-LIGAND INTERACTIONS:193-207;
-RL   Walter de Gruyter, New York (1975)
-XX
-RN   [5]
-RP   1146-1282
-
-
-  [Part of this file has been deleted for brevity]
-
-     cgatttggct acatgacatc aaccatatca gcaaaagtga tacgggtatt atttttgccg      456
-0
-     ctatttctct gttctcgcta ttattccaac cgctgtttgg tctgctttct gacaaactcg      462
-0
-     ggctgcgcaa atacctgctg tggattatta ccggcatgtt agtgatgttt gcgccgttct      468
-0
-     ttatttttat cttcgggcca ctgttacaat acaacatttt agtaggatcg attgttggtg      474
-0
-     gtatttatct aggcttttgt tttaacgccg gtgcgccagc agtagaggca tttattgaga      480
-0
-     aagtcagccg tcgcagtaat ttcgaatttg gtcgcgcgcg gatgtttggc tgtgttggct      486
-0
-     gggcgctgtg tgcctcgatt gtcggcatca tgttcaccat caataatcag tttgttttct      492
-0
-     ggctgggctc tggctgtgca ctcatcctcg ccgttttact ctttttcgcc aaaacggatg      498
-0
-     cgccctcttc tgccacggtt gccaatgcgg taggtgccaa ccattcggca tttagcctta      504
-0
-     agctggcact ggaactgttc agacagccaa aactgtggtt tttgtcactg tatgttattg      510
-0
-     gcgtttcctg cacctacgat gtttttgacc aacagtttgc taatttcttt acttcgttct      516
-0
-     ttgctaccgg tgaacagggt acgcgggtat ttggctacgt aacgacaatg ggcgaattac      522
-0
-     ttaacgcctc gattatgttc tttgcgccac tgatcattaa tcgcatcggt gggaaaaacg      528
-0
-     ccctgctgct ggctggcact attatgtctg tacgtattat tggctcatcg ttcgccacct      534
-0
-     cagcgctgga agtggttatt ctgaaaacgc tgcatatgtt tgaagtaccg ttcctgctgg      540
-0
-     tgggctgctt taaatatatt accagccagt ttgaagtgcg tttttcagcg acgatttatc      546
-0
-     tggtctgttt ctgcttcttt aagcaactgg cgatgatttt tatgtctgta ctggcgggca      552
-0
-     atatgtatga aagcatcggt ttccagggcg cttatctggt gctgggtctg gtggcgctgg      558
-0
-     gcttcacctt aatttccgtg ttcacgctta gcggccccgg cccgctttcc ctgctgcgtc      564
-0
-     gtcaggtgaa tgaagtcgct taagcaatca atgtcggatg cggcgcgacg cttatccgac      570
-0
-     caacatatca taacggagtg atcgcattga acatgccaat gaccgaaaga ataagagcag      576
-0
-     gcaagctatt taccgatatg tgcgaaggct taccggaaaa aagacttcgt gggaaaacgt      582
-0
-     taatgtatga gtttaatcac tcgcatccat cagaagttga aaaaagagaa agcctgatta      588
-0
-     aagaaatgtt tgccacggta ggggaaaacg cctgggtaga accgcctgtc tatttctctt      594
-0
-     acggttccaa catccatata ggccgcaatt tttatgcaaa tttcaattta accattgtcg      600
-0
-     atgactacac ggtaacaatc ggtgataacg tactgattgc acccaacgtt actctttccg      606
-0
-     ttacgggaca ccctgtacac catgaattga gaaaaaacgg cgagatgtac tcttttccga      612
-0
-     taacgattgg caataacgtc tggatcggaa gtcatgtggt tattaatcca ggcgtcacca      618
-0
-     tcggggataa ttctgttatt ggcgcgggta gtatcgtcac aaaagacatt ccaccaaacg      624
-0
-     tcgtggcggc tggcgttcct tgtcgggtta ttcgcgaaat aaacgaccgg gataagcact      630
-0
-     attatttcaa agattataaa gttgaatcgt cagtttaaat tataaaaatt gcctgatacg      636
-0
-     ctgcgcttat caggcctaca agttcagcga tctacattag ccgcatccgg catgaacaaa      642
-0
-     gcgcaggaac aagcgtcgca tcatgcctct ttgacccaca gctgcggaaa acgtactggt      648
-0
-     gcaaaacgca gggttatgat catcagccca acgacgcaca gcgcatgaaa tgcccagtcc      654
-0
-     atcaggtaat tgccgctgat actacgcagc acgccagaaa accacggggc aagcccggcg      660
-0
-     atgataaaac cgattccctg cataaacgcc accagcttgc cagcaatagc cggttgcaca      666
-0
-     gagtgatcga gcgccagcag caaacagagc ggaaacgcgc cgcccagacc taacccacac      672
-0
-     accatcgccc acaataccgg caattgcatc ggcagccaga taaagccgca gaaccccacc      678
-0
-     agttgtaaca ccagcgccag cattaacagt ttgcgccgat cctgatggcg agccatagca      684
-0
-     ggcatcagca aagctcctgc ggcttgccca agcgtcatca atgccagtaa ggaaccgctg      690
-0
-     tactgcgcgc tggcaccaat ctcaatatag aaagcgggta accaggcaat caggctggcg      696
-0
-     taaccgccgt taatcagacc gaagtaaaca cccagcgtcc acgcgcgggg agtgaatacc      702
-0
-     acgcgaaccg gagtggttgt tgtcttgtgg gaagaggcga cctcgcgggc gctttgccac      708
-0
-     caccaggcaa agagcgcaac aacggcaggc agcgccacca ggcgagtgtt tgataccagg      714
-0
-     tttcgctatg ttgaactaac cagggcgtta tggcggcacc aagcccaccg ccgcccatca      720
-0
-     gagccgcgga ccacagcccc atcaccagtg gcgtgcgctg ctgaaaccgc cgtttaatca      726
-0
-     ccgaagcatc accgcctgaa tgatgccgat ccccacccca ccaagcagtg cgctgctaag      732
-0
-     cagcagcgca ctttgcgggt aaagctcacg catcaatgca ccgacggcaa tcagcaacag      738
-0
-     actgatggcg acactgcgac gttcgctgac atgctgatga agccagcttc cggccagcgc      744
-0
-     cagcccgccc atggtaacca ccggcagagc ggtcgac                               747
-7
-//
-   
    You can specifiy a file of ranges to display in uppercase by giving
    the '-uppercase' qualifier the value '@' followed by the name of the
    file containing the ranges. (eg: '-upper @myfile').
-   
+
    The format of the range file is:
-   
+
      * Comment lines start with '#' in the first column.
      * Comment lines and blank lines are ignored.
      * The line may start with white-space.
@@ -637,7 +405,7 @@ RP   1146-1282
      * There can be optional text after the two numbers to annotate the
        line.
      * White-space before or after the text is removed.
-       
+
    An example range file is:
 
 # this is my set of ranges
@@ -649,319 +417,87 @@ RP   1146-1282
    when outputting in HTML format (using the '-html' qualifier) by giving
    the '-highlight' qualifier the value '@' followed by the name of the
    file containing the ranges. (eg: '-highlight @myfile').
-   
+
    The format of this file is very similar to the format of the above
    uppercase range file, except that the text after the start and end
    positions is used as the HTML colour name. This colour name is used
    'as is' when specifying the colour in HTML in a '<FONT COLOR=xxx>'
    construct, (where 'xxx' is the name of the colour).
-   
+
    The standard names of HTML font colours are given in:
    http://http://www.w3.org/TR/REC-html40/types.html and
    http://www.ausmall.com.au/freegraf/ncolour2.htm and
    http://mindprod.com/htmlcolours.html (amongst other places).
-   
+
    An example highlight range file is:
      _________________________________________________________________
-   
+
 # this is my set of ranges
 12   23         red
  4   5          darkturquoise
 67   10348      #FFE4E1
      _________________________________________________________________
-   
+
 Output file format
 
-  Output files for usage example
-  
-  File: eclac.remap
-  
-ECLAC
-E.coli lactose operon with lacI, lacZ, lacY and lacA genes.
-
-                                                        BssKI
-                 TaqI                 AciI              Ksp632I
-                 \                    \                 \
-          GACACCATCGAATGGCGCAAAACCTTTCGCGGTATGGCATGATAGCGCCCGGAAGAGAGT
-                   10        20        30        40        50        60
-          ----:----|----:----|----:----|----:----|----:----|----:----|
-          CTGTGGTAGCTTACCGCGTTTTGGAAAGCGCCATACCGTACTATCGCGGGCCTTCTCTCA
-                   /                    /                  / /
-                   TaqI                 AciI               | BssKI
-                                                           Ksp632I
-
-
-# Enzymes that cut  Frequency   Isoschizomers
-      AciI          1
-     BssKI          1
-   Ksp632I          1   Bsu6I
-      TaqI          1
-
-
-
-# Enzymes which cut less frequently than the MINCUTS criterion
-# Enzymes < MINCUTS Frequency   Isoschizomers
-
-
-
-# Enzymes which cut more frequently than the MAXCUTS criterion
-# Enzymes > MAXCUTS Frequency   Isoschizomers
-
-
-
-# Enzymes that do not cut
-
-
-
-
-# No. of cutting enzymes which do not match the
-# SITELEN, BLUNT, STICKY, COMMERCIAL, AMBIGUOUS citeria
-
-0
-   
-  Output files for usage example 2
-  
-  File: eclac.remap
-  
-ECLAC
-E.coli lactose operon with lacI, lacZ, lacY and lacA genes.
-
-                                                      Hin6I
-                 TaqI                                 | HhaI
-                 |  BsiYI                             | BssKI
-                 |  |   Hin6I                         | Ksp632I
-                 |  |   | HhaI        AciI            | | HpaII
-                 \  \   \ \           \               \ \ \
-          GACACCATCGAATGGCGCAAAACCTTTCGCGGTATGGCATGATAGCGCCCGGAAGAGAGT
-                   10        20        30        40        50        60
-          ----:----|----:----|----:----|----:----|----:----|----:----|
-          CTGTGGTAGCTTACCGCGTTTTGGAAAGCGCCATACCGTACTATCGCGGGCCTTCTCTCA
-                 / /    / /             /             / /  ///
-                 | TaqI | Hin6I         AciI          | |  ||BssKI
-                 BsiYI  HhaI                          | |  |HpaII
-                                                      | |  Ksp632I
-                                                      | Hin6I
-                                                      HhaI
-
-
-# Enzymes that cut  Frequency   Isoschizomers
-      AciI          1
-     BsiYI          1   Bsc4I
-     BssKI          1
-      HhaI          2
-     Hin6I          2   HinP1I,HspAI
-     HpaII          1   BsiSI
-   Ksp632I          1   Bsu6I
-      TaqI          1
-
-
-
-# Enzymes which cut less frequently than the MINCUTS criterion
-# Enzymes < MINCUTS Frequency   Isoschizomers
-
-
-
-# Enzymes which cut more frequently than the MAXCUTS criterion
-# Enzymes > MAXCUTS Frequency   Isoschizomers
-
-
-
-# Enzymes that do not cut
-
-AclI      BamHI     BceAI     BsrI      ClaI      EcoRI     EcoRII    HaeIII
-
-Hin4I     HindII    HindIII   KpnI      MaeII     NotI
-
-
-# No. of cutting enzymes which do not match the
-# SITELEN, BLUNT, STICKY, COMMERCIAL, AMBIGUOUS citeria
-
-0
-   
-  Output files for usage example 3
-  
-  File: eclac.remap
-  
-ECLAC
-E.coli lactose operon with lacI, lacZ, lacY and lacA genes.
-
-                                                      HspAI
-                 TaqI                                 Hin6I
-                 |  Bsc4I                             HinP1I
-                 |  |   HspAI                         | HhaI
-                 |  |   Hin6I                         | BssKI
-                 |  |   HinP1I                        | Bsu6I
-                 |  |   | HhaI        AciI            | | BsiSI
-                 \  \   \ \           \               \ \ \
-          GACACCATCGAATGGCGCAAAACCTTTCGCGGTATGGCATGATAGCGCCCGGAAGAGAGT
-                   10        20        30        40        50        60
-          ----:----|----:----|----:----|----:----|----:----|----:----|
-          CTGTGGTAGCTTACCGCGTTTTGGAAAGCGCCATACCGTACTATCGCGGGCCTTCTCTCA
-                 / /    / /             /             / /  ///
-                 | TaqI | HinP1I        AciI          | |  ||BssKI
-                 Bsc4I  | Hin6I                       | |  |BsiSI
-                        | HspAI                       | |  Bsu6I
-                        HhaI                          | HinP1I
-                                                      | HspAI
-                                                      | Hin6I
-                                                      HhaI
-
-
-# Enzymes that cut  Frequency
-      AciI          1
-     Bsc4I          1
-     BsiSI          1
-     BssKI          1
-     Bsu6I          1
-      HhaI          2
-     Hin6I          2
-    HinP1I          2
-     HspAI          2
-      TaqI          1
-
-
-
-# Enzymes which cut less frequently than the MINCUTS criterion
-# Enzymes < MINCUTS Frequency
-
-
-
-# Enzymes which cut more frequently than the MAXCUTS criterion
-# Enzymes > MAXCUTS Frequency
-
-
-
-# Enzymes that do not cut
-
-AclI      BamHI     BceAI     Bse1I     BshI      ClaI      EcoRI     EcoRII
-
-Hin4I     HindII    HindIII   HpyCH4IV  KpnI      NotI
-
-
-# No. of cutting enzymes which do not match the
-# SITELEN, BLUNT, STICKY, COMMERCIAL, AMBIGUOUS citeria
-
-0
-   
-  Output files for usage example 4
-  
-  File: eclac.remap
-  
-ECLAC
-E.coli lactose operon with lacI, lacZ, lacY and lacA genes.
-
-                                                                  Ksp632I
-
-                                                         BHpaII
-                                                          >===
-                        HhaI                          HhaI
-                                                      ==>=
-              BsiTaqI   Hin6I            AciI         Hin6I
-                 >===   >===          >..====         >===
-          GACACCATCGAATGGCGCAAAACCTTTCGCGGTATGGCATGATAGCGCCCGGAAGAGAGT
-                   10        20        30        40        50        60
-          ----:----|----:----|----:----|----:----|----:----|----:----|
-          CTGTGGTAGCTTACCGCGTTTTGGAAAGCGCCATACCGTACTATCGCGGGCCTTCTCTCA
-                 ===<   ===<             <===         ===<
-              BsiTaqI   Hin6I            AciI         Hin6I
-                                                      =<==  <.....====
-                        HhaI                          HhaI        Ksp632I
-                                                          ===<
-                                                         BHpaII
-
-
-# Enzymes that cut  Frequency   Isoschizomers
-      AciI          1
-     BsiYI          1   Bsc4I
-     BssKI          1
-      HhaI          2
-     Hin6I          2   HinP1I,HspAI
-     HpaII          1   BsiSI
-   Ksp632I          1   Bsu6I
-      TaqI          1
-
-
-
-# Enzymes which cut less frequently than the MINCUTS criterion
-# Enzymes < MINCUTS Frequency   Isoschizomers
-
-
-
-# Enzymes which cut more frequently than the MAXCUTS criterion
-# Enzymes > MAXCUTS Frequency   Isoschizomers
-
-
-
-# Enzymes that do not cut
-
-AclI      BamHI     BceAI     BsrI      ClaI      EcoRI     EcoRII    HaeIII
-
-Hin4I     HindII    HindIII   KpnI      MaeII     NotI
-
-
-# No. of cutting enzymes which do not match the
-# SITELEN, BLUNT, STICKY, COMMERCIAL, AMBIGUOUS citeria
-
-0
-   
    The name of the sequence is displayed, followed by the description of
    the sequence.
-   
+
    The formatted display of cut sites on the sequence follows, with the
    six-frame translation below it. The cut sites are indicated by a slash
    character '\' that points to the poition between the nucleotides where
    the cuts occur. Cuts by many enzymes at the same position are
    indicated by stacking the enzyme names on top of each other.
-   
+
    At the end the section header 'Enzymes that cut' is displayed followed
    by a list of the enzymes that cut the specified sequence and the
    number of times that they cut. For each enzyme that cuts, a list of
    isoschizomers of that enzyme (sharing the same recognition site
    pattern and cut sites) is given.
-   
+
    This is followed by lists of the enzymes that do cut, but which cut
    less often than the '-mincut' qualifier or more often than the
    '-maxcut' qualifier.
-   
+
    Any of the isoschizomers that are excluded from cutting, (either
    through restrictions such as the permitted number of cuts, blunt
    cutters only, single cutters only etc. or because their name has not
    been given in the input list of enzymes), will not be listed.
-   
+
    Then a list is displayed of the enzymes whose names were input and
    which match the other criteria ('-sitelen', '-blunt', '-sticky',
    '-ambiguity' or '-commercial') but which do not cut.
-   
+
    Finally the number of enzymes that were rejected from consideration
    because they do not match the '-sitelen', '-blunt', '-sticky',
    '-ambiguity' or '-commercial' criteria is displayed.
-   
+
    The '-flatreformat' qualifier changes the display to emphasise the
    recognition site of the restriction enzyme, which is indicated by a
    row of '=' characters. The cut site if pointed to by a '>' or '<'
    character and if the cut site is not within or imemdiately adjacent to
    the recognition site, they are linked by a row of '.' characters.
-   
+
    The name of the enzyme is displayed above (or below when the reverse
    sense site if displayed) the recognition site. The name of the enzyme
    is also displayed above the cut site if this occurs on a different
    display line to the recognition site (i.e. if it wraps onto the next
    line of sequence).
-   
+
 Data files
 
    This uses the EMBOSS REBASE data files in 'data/REBASE/*' under the
    EMBOSS installation directory.
-   
+
    These files must first be set up using the program 'rebaseextract'.
    Running 'rebaseextract' may be the job of your system manager.
-   
+
    EMBOSS data files are distributed with the application and stored in
    the standard EMBOSS data directory, which is defined by the EMBOSS
    environment variable EMBOSS_DATA.
-   
+
    To see the available EMBOSS data files, run:
-   
+
 % embossdata -showall
 
    To fetch one of the data files (for example 'Exxx.dat') into your
@@ -974,57 +510,57 @@ Data files
    tidier directory listings in a subdirectory called ".embossdata".
    Files for all EMBOSS runs can be put in the user's home directory, or
    again in a subdirectory called ".embossdata".
-   
+
    The directories are searched in the following order:
      * . (your current directory)
      * .embossdata (under your current directory)
      * ~/ (your home directory)
      * ~/.embossdata
-       
+
    The data files are stored in the REBASE directory of the standard
    EMBOSS data directory. The names are:
      * embossre.enz Cleavage information
      * embossre.ref Reference/methylation information
      * embossre.sup Supplier information
-       
+
    The column information is described at the top of the data files
-   
+
    The reported enzyme from any one group of isoschizomers (the
    prototype) is specified in the REBASE database and the information is
    held in the data file 'embossre.equ'. You may edit this file to set
    your own preferred prototype,if you wish.
-   
+
    The format of the file "embossre.equ" is
    Enzyme-name Prototype-name
-   
+
    i.e. two columns of enzyme names separated by a space. The first name
    of the pair of enzymes is the name that is not preferred and the
    second is the preferred, prototype name.
-   
+
 Notes
 
    None.
-   
+
 References
 
    None.
-   
+
 Warnings
 
    None.
-   
+
 Diagnostic Error Messages
 
    None.
-   
+
 Exit status
 
    It always exits with status 0.
-   
+
 Known bugs
 
    None.
-   
+
 See also
 
    Program name Description
@@ -1038,7 +574,6 @@ See also
    plotorf Plot potential open reading frames
    prettyplot Displays aligned sequences, with colouring and boxing
    prettyseq Output sequence with translated ranges
-   recite Find changes to an enzyme site that introduce new enzyme sites
    recoder Remove restriction sites but maintain the same translation
    redata Search REBASE for enzyme name, references, suppliers etc
    restover Finds restriction enzymes that produce a specific overhang
@@ -1054,22 +589,22 @@ See also
    textsearch Search sequence documentation text. SRS and Entrez are
    faster!
    transeq Translate nucleic acid sequences
-   
+
 Author(s)
 
    Gary Williams (gwilliam © rfcgr.mrc.ac.uk)
    MRC Rosalind Franklin Centre for Genomics Research Wellcome Trust
    Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
-   
+
 History
 
    Written Spring 2000
-   
+
    Changed 7 Dec 2000 - GWW - to declare isoschizomers that cut
-   
+
 Target users
 
    This program is intended to be used by everyone and everything, from
    naive users to embedded scripts.
-   
+
 Comments

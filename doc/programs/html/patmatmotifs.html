@@ -12,7 +12,7 @@
 
 <table align=center border=0 cellspacing=0 cellpadding=0>
 <tr><td valign=top>
-<A HREF="index.html" ONMOUSEOVER="self.status='Go to the EMBOSS home page';return true"><img border=0 src="emboss_icon.jpg" alt="" width=150 height=48></a>
+<A HREF="/" ONMOUSEOVER="self.status='Go to the EMBOSS home page';return true"><img border=0 src="emboss_icon.jpg" alt="" width=150 height=48></a>
 </td>
 <td align=left valign=middle>
 <b><font size="+6">
@@ -440,7 +440,7 @@ By default <b>patmatmotifs</b> writes a 'dbmotif' report file.
 <pre>
 ########################################
 # Program: patmatmotifs
-# Rundate: Tue Apr 06 14:30:23 2004
+# Rundate: Mon Jul 26 13:43:12 2004
 # Report_format: dbmotif
 # Report_file: opsd_human.patmatmotifs
 ########################################
@@ -452,7 +452,7 @@ By default <b>patmatmotifs</b> writes a 'dbmotif' report file.
 #
 # Full: Yes
 # Prune: Yes
-# Data_file: ../prosextract-keep/PROSITE/prosite.lines
+# Data_file: /homes/pmr/local/share/EMBOSS/data/PROSITE/prosite.lines
 #
 #=======================================
 
@@ -482,9 +482,9 @@ PIFMTIPAFFAKSAAIYNPVIYIMMNK
 # Motif: G_PROTEIN_RECEP_F1_1
 # Count: 1
 # 
-# *****************************************
-# * G-protein coupled receptors signature *
-# *****************************************
+# **************************************************************
+# * G-protein coupled receptors family 1 signature and profile *
+# **************************************************************
 # 
 # G-protein coupled receptors [1 to 4,E1,E2] (also called R7G) are  an extensive
 # group of  hormones,  neurotransmitters,  odorants  and  light  receptors which
@@ -492,20 +492,6 @@ PIFMTIPAFFAKSAAIYNPVIYIMMNK
 
 <font color=red>  [Part of this file has been deleted for brevity]</font>
 
-# Count: 1
-# 
-# *************************************************
-# * Visual pigments (opsins) retinal binding site *
-# *************************************************
-# 
-# Visual pigments [1,2] are the light-absorbing  molecules that  mediate vision.
-# They consist of  an apoprotein, opsin,  covalently  linked  to the chromophore
-# cis-retinal.  Vision is  effected through  the absorption of a  photon by cis-
-# retinal  which is isomerized to  trans-retinal.  This isomerization leads to a
-# change  of conformation  of the protein. Opsins are integral membrane proteins
-# with  seven transmembrane regions that belong to family 1 of G-protein coupled
-# receptors (see &lt;PDOC00210&gt;).
-# 
 # In vertebrates four different pigments are generally found.   Rod cells, which
 # mediate vision in dim light, contain the pigment rhodopsin.  Cone cells, which
 # function in bright light, are responsible  for  color vision and contain three
@@ -516,21 +502,27 @@ PIFMTIPAFFAKSAAIYNPVIYIMMNK
 # outer cells,  R7  and R8 inner cells. Each of the three types of cells (R1-R6,
 # R7 and R8) expresses a specific opsin.
 # 
-# Proteins evolutionary related to opsins include squid retinochrome, also known
-# as retinal  photoisomerase, which converts various isomers of retinal into 11-
-# cis retinal and mammalian retinal pigment  epithelium (RPE) RGR [3], a protein
-# that may also act in retinal isomerization.
+# Proteins evolutionary related to opsins include:
+# 
+#  - Squid  retinochrome,  also  known as retinal photoisomerase, which converts
+#    various isomers of retinal into 11-cis retinal.
+#  - Mammalian  opsin  3  (Encephalopsin)  that  may  play  a role in encephalic
+#    photoreception.
+#  - Mammalian  opsin  4  (Melanopsin)  that may mediate regulation of circadian
+#    rhythms and acute suppression of pineal melatonin.
+#  - Mammalian retinal pigment epithelium (RPE) RGR [3], a protein that may also
+#    act in retinal isomerization.
 # 
 # The attachment  site  for  retinal in the above proteins is a conserved lysine
 # residue in  the  middle  of  the  seventh  transmembrane helix. The pattern we
 # developed includes this residue.
 # 
-# -Consensus pattern: [LIVMWAC]-[PGAC]-x(3)-[SAC]-K-[STALIMR]-[GSACPNV]-[STACP]-
-#                     x(2)-[DENF]-[AP]-x(2)-[IY]
+# -Consensus pattern: [LIVMFWAC]-[PSGAC]-x(3)-[SAC]-K-[STALIMR]-[GSACPNV]-
+#                     [STACP]-x(2)-[DENF]-[AP]-x(2)-[IY]
 #                     [K is the retinal binding site]
 # -Sequences known to belong to this class detected by the pattern: ALL.
-# -Other sequence(s) detected in SWISS-PROT: NONE.
-# -Last update: July 1998 / Pattern and text revised.
+# -Other sequence(s) detected in SWISS-PROT: 2.
+# -Last update: December 2001 / Pattern and text revised.
 # 
 # [ 1] Applebury M.L., Hargrave P.A.
 #      Vision Res. 26:1881-1895(1986).
@@ -538,6 +530,14 @@ PIFMTIPAFFAKSAAIYNPVIYIMMNK
 #      J. Mol. Evol. 33:367-378(1991).
 # [ 3] Shen D., Jiang M., Hao W., Tao L., Salazar M., Fong H.K.W.
 #      Biochemistry 33:13117-13125(1994).
+# 
+# +----------------------------------------------------------------------------+
+# | This PROSITE entry  is copyright  by the Swiss Institute of Bioinformatics |
+# | (SIB).  There are no restrictions on its use by non-profit institutions as |
+# | long as its  content  is  in  no  way  modified  and this statement is not |
+# | removed. Usage by and for commercial entities requires a license agreement |
+# | (See http://www.isb-sib.ch/announce/ or email to license@isb-sib.ch).      |
+# +----------------------------------------------------------------------------+
 # 
 # ***************
 # 

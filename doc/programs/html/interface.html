@@ -12,7 +12,7 @@
 
 <table align=center border=0 cellspacing=0 cellpadding=0>
 <tr><td valign=top>
-<A HREF="index.html" ONMOUSEOVER="self.status='Go to the EMBOSS home page';return true"><img border=0 src="emboss_icon.jpg" alt="" width=150 height=48></a>
+<A HREF="/" ONMOUSEOVER="self.status='Go to the EMBOSS home page';return true"><img border=0 src="emboss_icon.jpg" alt="" width=150 height=48></a>
 </td>
 <td align=left valign=middle>
 <b><font size="+6">
@@ -26,14 +26,17 @@ interface
 
 
 
-
-
 <!--END OF HEADER-->
+
+
+
+
+
 
 <H2>
     Function
 </H2>
-Reads coordinate files and writes files of inter-chain residue-residue contact data
+[an error occurred while processing this directive]
 
 <!--
 DON'T WRITE ANYTHING HERE.
@@ -53,26 +56,58 @@ IT IS DONE FOR YOU.
         Long description.
         Why it is useful.
         When it should/shouldn't be used.
-        Algorithms
   -->
 
-
-
-
-This is part of Jon Ison's protein structure analysis package.
-
-<p>
-
-This package is still being developed.
-
-<p>
-
-Please ignore this program until further details can be documented.
+This program is part of a suite of EMBOSS applications that directly or
+indirectly make use of the protein structure databases pdb and scop.
+This program is part of an experimental analysis pipeline described in an
+accompanying document.  We provide the software in the hope that it will
+be useful.  The applications were designed for specific research purposes
+and may not be useful or reliable in contexts other than the described
+pipeline.  The development of the suite was coordinated by Jon Ison to
+whom enquiries and bug reports should be sent (email jison@hgmp.mrc.ac.uk).
 
 <p>
 
-All further queries should go to Jon Ison.  (<A
-HREF="mailto:jison@hgmp.mrc.ac.uk">Jon Ison</A>)
+Knowledge of the physical contacts that amino acid residues in two
+different polypeptide chains of a protein make with one another is
+required for several different analyses.  interface calculates inter-chain
+residue-residue contact data from clean protein coordinate files.
+
+<p>
+
+interface reads a protein coordinate file and writes a file of inter-chain
+residue-residue contact data in embl-like format.  The file contains
+residue contact data for all pairs of chains in each model in the
+coordinate file.  The input and output files are specified by the user.  A
+log file is also written.     
+
+
+
+
+
+
+
+
+
+
+
+
+<H2>
+    Algorithm
+</H2>
+
+<!-- 
+        Algorithms
+	  Pseudocode/Vague description/Handwaving/web links to useful pages
+  -->
+
+Contact between two residues is defined as when the van der Waals surface
+of any atom of the first residue comes within the threshold contact
+distance of the van der Waals surface of any atom of the second residue.
+The threshold contact distance is a user-defined distance with a default
+value of 1 Angstrom. 
+
 
 
 
@@ -94,23 +129,6 @@ HREF="mailto:jison@hgmp.mrc.ac.uk">Jon Ison</A>)
  -->
 
 
-Here is a sample session with interface:
-
-<pre>
-
-% interface
-
-</pre>
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -120,19 +138,11 @@ Here is a sample session with interface:
 
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
-
-   EMBOSS An error in ajacd.c at line 1531:
-acdfile '/packages/emboss_dev/gwilliam/emboss/emboss/emboss/acd/interface.acd' not opened
-
-
+[an error occurred while processing this directive]
 </pre>
 </td></tr></table>
 <P>
-
-   EMBOSS An error in ajacd.c at line 1531:
-acdfile '/packages/emboss_dev/gwilliam/emboss/emboss/emboss/acd/interface.acd' not opened
-
-
+[an error occurred while processing this directive]
 
 <!--
 DON'T WRITE ANYTHING HERE.
@@ -157,16 +167,15 @@ IT IS DONE FOR YOU.
         happens in unusual cases - null input, etc. 
    -->
 
+<b>interface</b> reads any normal sequence USAs.
+
+<p>
 
 
 
+<p>
 
-
-
-
-
-
-
+The format of the clean protein coordinate file is described in pdbparse
 
 
 
@@ -206,19 +215,132 @@ for further information on report formats.
    -->
 
 
+<p>
 
 
 
+<p>
 
+The embl-like format used for the contact files (below) uses the following
+records:
 
+<p>
 
+(1)  ID - the 4-character PDB identifier code.
 
+<p>
 
+(2)  DE - bibliographic information.  The text "Residue-residue contact
+data" is always given.
 
+<p>
 
+(3)  EX - experimental information. The value of the threshold contact
+distance is given as a floating point number after 'THRESH'. The number of
+models and number of polypeptide chains are given after 'NMOD' and 'NCHA'
+respectively. domain coordinate files a 1 is always given. Following the EX
+record, the file will have a section containing a PA, IN and SM records
+(see below) for each chain pair. The sections for each chain pair of a model
+are given after the MO record.
 
+<p>
 
+(4) MO - model number. The number given in brackets after this record
+indicates the start of a section of model-specific data.
 
+<p>
+
+(5) PA - chain pair number.  The numbers given either side of the ':' after
+this record indicate the start of a section of chain pair-specific data.
+
+<p>
+
+(6) IN - chain specific data. The characters
+given after ID1 and ID2 are the PDB chain identifiers for the pair taken
+from the input file, (a '.`
+given in cases where a chain identifier was not specified in the original
+pdb file). The number of amino acid residues comprising each chain is given
+after NR1 and NR2 respectively. The number of residue-residue contacts is
+given after NSMCON.
+
+<p>
+
+(7) SM - Line of residue contact data. Pairs of amino acid identifiers and
+residue numbers are delimited by a ';'. Residue numbers are taken from the
+clean coordinate file and give a correct index into the sequence (i.e. they
+are not necessarily the same as the original pdb file).  The first residue
+belongs to the first partner of the chain-pair, the second residue belongs
+to the second partner.
+
+<p>
+
+(8) XX - used for spacing.
+
+<p>
+
+(9) // - given on the last line of the file only.
+
+<p>
+
+Note - SM records are used for contacts between either either side-chain
+or main-chain atoms as defined above.  In a future implementation, SS will
+be used for side-chain only contacts, MM will be used for main-chain only
+contacts, and there will probably be several other forms of contact too.
+
+<p>
+
+Excerpt from interface output file
+
+<p>
+
+<pre>
+ID   2hhb
+XX
+DE   Residue-residue side-chain contact data
+XX
+EX   THRESH 1.0; IGNORE 20.0; NMOD 1; NCHA 4;
+XX
+MO   [1]
+XX
+PA   1:2
+XX
+IN   ID1 A; ID2 B; NR1 141; NR2 146; NSMCON 48;
+XX
+SM   GLU 30 ; PRO 124
+SM   ARG 31 ; PHE 122
+SM   ARG 31 ; THR 123
+SM   ARG 31 ; PRO 124
+SM   ARG 31 ; GLN 127
+SM   LEU 34 ; PRO 124
+SM   LEU 34 ; PRO 125
+**
+< data ommitted for clarity >
+**
+SM   ALA 123 ; VAL 34
+SM   ASP 126 ; VAL 34
+SM   ASP 126 ; TYR 35
+XX
+PA   1:3
+XX
+IN   ID1 A; ID2 C; NR1 141; NR2 141; NSMCON 3;
+XX
+SM   ASP 126 ; ARG 141
+SM   LYS 127 ; ARG 141
+SM   ALA 130 ; ARG 141
+XX        
+PA   1:4
+XX
+IN   ID1 A; ID2 D; NR1 141; NR2 146; NSMCON 25;
+XX
+SM   PRO 37 ; HIS 146
+**
+< data ommitted for clarity >
+**
+SM   ASP 126 ; VAL 34
+SM   ASP 126 ; TYR 35
+XX
+//    
+</pre>
 
 
 <H2>
@@ -233,6 +355,9 @@ for further information on report formats.
 	If you wish to include the standard description of what data
 	files are and how to use embossdata to inspect and retrieve
 	them, use:
+   -->
+
+
 <p>
 EMBOSS data files are distributed with the application and stored
 in the standard EMBOSS data directory, which is defined
@@ -273,8 +398,12 @@ The directories are searched in the following order:
 </ul>
 <p>
 
-   -->
 
+<p>
+
+contacts uses a data file containing van der Waals radii for atoms in
+proteins.  The file Evdw.dat is such a data file and is part
+of the emboss distribution.   
 
 
 
@@ -349,8 +478,27 @@ None.
         "FATAL xxx" - means you have not set up the xxx data using program <b>prog</b>.<p>
    -->
 
-None.
+interface generates a log file an excerpt of which is shown below. If
+there is a problem in processing a coordinate file, three lines containing
+the record '//', the pdb identifier code and an error message respectively
+are written. The text 'WARN  file open error filename',
+'ERROR file read error filename' or 'ERROR file write error filename ' will
+be reported when an error was encountered during a file open, read or write
+respectively.  Various other error messages may also be given (in case of
+difficulty email Jon Ison, jison@hgmp.mrc.ac.uk).
 
+<p>
+
+Excerpt of log file
+
+<p>
+
+<pre>
+//
+DS002__
+WARN  Could not open for reading cpdb file s002.pxyz
+//       
+</pre>
 
 
 
@@ -397,32 +545,18 @@ None.
     See also
 </H2>
 -->
-<h2><a name="See also">See also</a></h2>
-<table border cellpadding=4 bgcolor="#FFFFF0">
-<tr><th>Program name</th><th>Description</th></tr>
-<tr><td><a href="contacts.html">contacts</a></td><td>Reads coordinate files and writes files of intra-chain residue-residue contact data</td></tr>
-<tr><td><a href="dichet.html">dichet</a></td><td>Parse dictionary of heterogen groups</td></tr>
-<tr><td><a href="fraggle.html">fraggle</a></td><td>Removes fragment sequences from files of hits for scop families</td></tr>
-<tr><td><a href="hmmgen.html">hmmgen</a></td><td>Generates a hidden Markov model for each alignment in a directory by using the HMMER package</td></tr>
-<tr><td><a href="profgen.html">profgen</a></td><td>Generates various profiles for each alignment in a directory</td></tr>
-<tr><td><a href="psiblasts.html">psiblasts</a></td><td>Runs PSI-BLAST given scopalign alignments</td></tr>
-<tr><td><a href="scopalign.html">scopalign</a></td><td>Generate alignments for families in a scop classification file by using STAMP</td></tr>
-<tr><td><a href="scoprep.html">scoprep</a></td><td>Reorder scop classificaiton file so that the representative structure of each family is given first</td></tr>
-<tr><td><a href="scopreso.html">scopreso</a></td><td>Removes low resolution domains from a scop classification file</td></tr>
-<tr><td><a href="seqalign.html">seqalign</a></td><td>Generate extended alignments for families in a scop families file by using CLUSTALW with seed alignments</td></tr>
-<tr><td><a href="seqsearch.html">seqsearch</a></td><td>Generate files of hits for families in a scop classification file by using PSI-BLAST with seed alignments</td></tr>
-<tr><td><a href="seqsort.html">seqsort</a></td><td>Reads multiple files of hits and writes (i) a scop families file and (ii) a scop ambiguities file</td></tr>
-<tr><td><a href="seqwords.html">seqwords</a></td><td>Generate file of hits for scop families by searching swissprot with keywords</td></tr>
-<tr><td><a href="siggen.html">siggen</a></td><td>Generates a sparse protein signature from an alignment and residue contact data</td></tr>
-<tr><td><a href="sigscan.html">sigscan</a></td><td>Scans a signature against swissprot and writes a signature hits file</td></tr>
-</table>
-
+[an error occurred while processing this directive]
 <!-- 
         Add any comments about other associated programs (to prepare
         data files?) that seealso doesn't find. 
    -->
 
+<p>
 
+A 'protein coordinate file' contains protein coordinate and other data
+extracted from a single pdb file.  The files, generated by pdbparse, are in
+embl-like format and contain 'cleaned-up' data that is self-consistent and
+error-corrected.  
 
 
 
@@ -436,15 +570,110 @@ None.
 </H2>
 <!--
         Who has worked on the program in the past.
+e.g. one of:
+Alan Bleasby (ableasby&nbsp;&copy;&nbsp;rfcgr.mrc.ac.uk)
+<br>
+MRC Rosalind Franklin Centre for Genomics Research
+Wellcome Trust Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
+
+
+Bernd Jagla (bernd&nbsp;&copy;&nbsp;golgi.ski.mskcc.org)
+<br>
+Cellular Biochemistry and Biophysics Program, Rockefeller
+Research Laboratories, Memorial Sloan-Kettering Cancer Center, 1275 York
+Avenue, Box 251,New York, NY 10021.
+
+David Martin (dmartin&nbsp;&copy;&nbsp;rfcgr.mrc.ac.uk)
+<br>
+
+Gos Micklem (gos&nbsp;&copy;&nbsp;ebi.ac.uk)
+<br>
+Informatics Division, European Bioinformatics Institute, Wellcome Trust Genome Campus, Hinxton, Cambridge CB10 1SD, UK
+
+Gary Williams (gwilliam&nbsp;&copy;&nbsp;rfcgr.mrc.ac.uk)
+<br>
+MRC Rosalind Franklin Centre for Genomics Research
+Wellcome Trust Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
+
+
+Ian Longden (il&nbsp;&copy;&nbsp;sanger.ac.uk)
+<br>
+Sanger Institute, Wellcome Trust Genome Campus, Hinxton,
+Cambridge, CB10 1SA, UK.                      
+
+Mark Faller (current e-mail address unknown)
+<br>
+while he was with:
+<br>
+HGMP-RC, Genome Campus, Hinxton, Cambridge CB10 1SB, UK
+
+Michael K. Schuster and Martin Grabner (martin.grabner&nbsp;&copy;&nbsp;univie.ac.at)
+<br>
+from the Austrian National EMBnet node.
+
+
+Michael Schmitz (mschmitz&nbsp;&copy;&nbsp;lbl.gov)
+<br>
+Lawrence Berkeley Labs, USA
+
+Nicolas Tourasse (nicolas.tourasse&nbsp;&copy;&nbsp;biotek.uio.no)
+<br>
+Biotechnology Center of Oslo
+
+Peter Rice (pmr&nbsp;&copy;&nbsp;ebi.ac.uk)
+<br>
+Informatics Division, European Bioinformatics Institute, Wellcome Trust Genome Campus, Hinxton, Cambridge CB10 1SD, UK
+
+Richard Durbin (rd&nbsp;&copy;&nbsp;sanger.ac.uk)
+<br>
+Sanger Institute, Wellcome Trust Genome Campus, Hinxton,
+Cambridge, CB10 1SA, UK.                      
+
+Richard Bruskiewich (current e-mail address unknown)
+<br>
+while he was at:
+<br>
+Sanger Institute, Wellcome Trust Genome Campus, Hinxton,
+Cambridge, CB10 1SA, UK.                      
+
+Rodrigo Lopez (rls&nbsp;&copy;&nbsp;ebi.ac.uk)
+<br>
+European Bioinformatics Institute, Wellcome Trust Genome Campus, Hinxton, Cambridge CB10 1SD, UK
+
+Sinead O'Leary (current e-mail address unknown)
+<br>
+while she was at:
+<br>
+HGMP-RC, Genome Campus, Hinxton, Cambridge CB10 1SB, UK
+
+
+Tim Carver (tcarver&nbsp;&copy;&nbsp;rfcgr.mrc.ac.uk)
+<br>
+MRC Rosalind Franklin Centre for Genomics Research
+Wellcome Trust Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
+
+Thomas Laurent (thomas.laurent&nbsp;&copy;&nbsp;uk.lionbioscience.com)
+<br>
+Lion Bioscience Ltd,
+     Compass House,
+     80-82 Newmarket Road,
+     Cambridge,
+     CB5 8DZ,
+     UK
+
+Val Curwen (vac&nbsp;&copy;&nbsp;sanger.ac.uk)
+<br>
+Sanger Institute, Wellcome Trust Genome Campus, Hinxton,
+Cambridge, CB10 1SA, UK. 
+
+
    -->
 
-This application was written by Jon Ison <a
-href="mailto:jison@hgmp.mrc.ac.uk">(jison@hgmp.mrc.ac.uk)</a>
 
-
-
-
-
+Jon Ison (jison&nbsp;&copy;&nbsp;rfcgr.mrc.ac.uk)
+<br>
+MRC Rosalind Franklin Centre for Genomics Research
+Wellcome Trust Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
 
 
 
@@ -465,9 +694,12 @@ href="mailto:jison@hgmp.mrc.ac.uk">(jison@hgmp.mrc.ac.uk)</a>
         What changes have been made.
    -->
 
-Written (date) - author.
+Written (2003) - Jon Ison
 
-
+<!--
+<p>
+[an error occurred while processing this directive]
+-->
 
 
 
@@ -498,21 +730,6 @@ This program is intended to be used by everyone and everything, from naive users
 
 
 
-
-
-
-
-
-
-
-
-<H2>
-    Comments
-</H2>
-
-<!--
-	Any comments, requests etc. that people have about the program
-   -->
 
 
 

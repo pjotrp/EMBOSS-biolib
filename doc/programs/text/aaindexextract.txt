@@ -1,28 +1,28 @@
 
                               aaindexextract 
-                                      
-   
-   
+
+
+
 Function
 
    Extract data from AAINDEX
-   
+
 Description
 
    aaextractindex extracts information from the AAINDEX database for use
    by pepwindow and pepwindowall
-   
+
    AAINDEX is a database of properties of amino acids. See references [1]
    [2] [3].
-   
+
    The programs pepwindow and pepwindowall normally use the standard
    EMBOSS data file 'Enakai.dat' by default, but you can set their
    '-data' qualifier to use any of the files produced by aaextractindex
    from the AAINDEX database.
-   
+
    The AAINDEX database file 'aaindex1' can be downloaded from the
    AAINDEX site: ftp://ftp.genome.ad.jp/pub/db/genomenet/aaindex/aaindex1
-   
+
 Usage
 
    Here is a sample session with aaindexextract:
@@ -53,7 +53,7 @@ Command line arguments
    -error               boolean    Report errors
    -fatal               boolean    Report fatal errors
    -die                 boolean    Report deaths
-   
+
 
    Standard (Mandatory) qualifiers Allowed values Default
    [-infile]
@@ -62,18 +62,18 @@ Command line arguments
    (none)
    Advanced (Unprompted) qualifiers Allowed values Default
    (none)
-   
+
 Input file format
 
    The AAINDEX database file 'aaindex1' can be downloaded from the
    AAINDEX site: ftp://ftp.genome.ad.jp/pub/db/genomenet/aaindex/
-   
+
 Output file format
 
    One file for every entry in the AAINDEX database is created in the
    EMBOSS standard 'data/AAINDEX' directory. For example, the file
    'cham830102':
-   
+
 H CHAM830102
 D A parameter defined from the residuals obtained from the best correlation
   of the Chou-Fasman parameter of beta-sheet (Charton-Charton, 1983)
@@ -92,19 +92,19 @@ I   A/L    R/K    N/M    D/F    C/P    Q/S    E/T    G/W    H/Y    I/V
 Data files
 
    None.
-   
+
 Notes
 
    If aaindexextract tries to write the data to an unexpected location
    you can explicitly set the location of the EMBOSS data directory by
    putting the line:
-   
+
    ENV EMBOSS_DATA /path/to/the/EMBOSS/data/directory
    in the EMBOSS emboss.default file.
-   
+
    (Where '/path/to/the/EMBOSS/data/directory' is the location of your
    EMBOSS data as unpacked from the distribution file.)
-   
+
 References
 
     1. Nakai, K., Kidera, A., and Kanehisa, M.; Cluster analysis of amino
@@ -116,23 +116,23 @@ References
     3. Kawashima, S., Ogata, H., and Kanehisa, M.; AAindex: amino acid
        index database. Nucleic Acids Res. 27, 368-369 (1999).
        [UI:99063742]
-       
+
 Warnings
 
    None.
-   
+
 Diagnostic Error Messages
 
    None.
-   
+
 Exit status
 
    It always exits with status 0.
-   
+
 Known bugs
 
    None.
-   
+
 See also
 
    Program name Description
@@ -142,24 +142,24 @@ See also
    search
    rebaseextract Extract data from REBASE
    tfextract Extract data from TRANSFAC
-   
+
    The programs pepwindow and pepwindowall normally use the standard
    EMBOSS data file 'Enakai.dat' by default, but you can set their
    '-data' qualifier to use any of the files produced by aaextractindex.
-   
+
 Author(s)
 
    Peter Rice (pmr © ebi.ac.uk)
    Informatics Division, European Bioinformatics Institute, Wellcome
    Trust Genome Campus, Hinxton, Cambridge CB10 1SD, UK
-   
+
 History
 
    Written (25 June 2002) - Peter Rice
-   
+
 Target users
 
    This program is intended to be used by administrators responsible for
    software and database installation and maintenance.
-   
+
 Comments

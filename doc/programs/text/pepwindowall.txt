@@ -1,27 +1,27 @@
 
                                pepwindowall 
-                                      
-   
-   
+
+
+
 Function
 
    Displays protein hydropathy of a set of sequences
-   
+
 Description
 
    pepwindowall produces a set of superimposed Kyte & Doolittle
    hydropathy plots from an aligned set of protein sequences.
-   
+
    The result is the same as running pepwindow on a set of proteins with
    aligning gaps and superimposing the plots.
-   
+
    It is useful for visualising the average hydropathy and its
    variability along the alignment.
-   
+
 Usage
 
    Here is a sample session with pepwindowall
-   
+
 
 % pepwindowall ../../data/globins.msf -gxtitle="Base Number" -gytitle="hydropat
 hy" 
@@ -29,10 +29,10 @@ Displays protein hydropathy of a set of sequences
 Graph type [x11]: cps
 
 Created pepwindowall.ps
-   
+
    Go to the input files for this example
    Go to the output files for this example
-   
+
 Command line arguments
 
    Standard (Mandatory) qualifiers:
@@ -85,7 +85,7 @@ Command line arguments
    -error               boolean    Report errors
    -fatal               boolean    Report fatal errors
    -die                 boolean    Report deaths
-   
+
 
    Standard (Mandatory) qualifiers Allowed values Default
    [-sequences]
@@ -95,22 +95,22 @@ Command line arguments
    (Parameter 2) Graph type EMBOSS has a list of known devices, including
    postscript, ps, hpgl, hp7470, hp7580, meta, colourps, cps, xwindows,
    x11, tektronics, tekt, tek4107t, tek, none, null, text, data, xterm,
-   png EMBOSS_GRAPHICS value, or x11
+   png, xml EMBOSS_GRAPHICS value, or x11
    Additional (Optional) qualifiers Allowed values Default
    -datafile Aaindex database file Data file Enakai.dat
    -length Window size Integer from 1 to 200 7
    Advanced (Unprompted) qualifiers Allowed values Default
    (none)
-   
+
 Input file format
 
    pepwindowall reads any protein sequence USA for one or more aligned
    sequences.
-   
+
   Input files for usage example
-  
+
   File: ../../data/globins.msf
-  
+
 !!AA_MULTIPLE_ALIGNMENT 1.0
 
   ../data/globins.msf MSF:  164 Type: P 25/06/01 CompCheck: 4278 ..
@@ -160,24 +160,24 @@ HBA_HORSE  TVLTSKYR~~~~~~
 MYG_PHYCA  KDIAAKYKELGYQG
 GLB5_PETMA Y~~~~~~~~~~~~~
 LGB2_LUPLU IVIKKEMNDAA~~~
-   
+
 Output file format
 
    An image is displayed on the specified graphics device.
-   
+
   Output files for usage example
-  
+
   Graphics File: pepwindowall.ps
-  
+
    [pepwindowall results]
-   
+
 Data files
 
    pepwindow reads the Kyte-Doolittle hydropathy data from the file
    'Enakai.dat'
-   
+
    The EMBOSS data file 'Enakai.dat' contains :-
-   
+
 D Hydropathy index (Kyte-Doolittle, 1982)
 R 0807099
 A Kyte, J. and Doolittle, R.F.
@@ -207,7 +207,7 @@ I   A/L    R/K    N/M    D/F    C/P    Q/S    E/T    G/W    H/Y    I/V
 Notes
 
    None.
-   
+
 References
 
 Kyte, J. and Doolittle, R.F.
@@ -217,19 +217,19 @@ J. Mol. Biol. 157, 105-132 (1982)
 Warnings
 
    None.
-   
+
 Diagnostic Error Messages
 
    None.
-   
+
 Exit status
 
    0 upon successful completion.
-   
+
 Known bugs
 
    None.
-   
+
 See also
 
    Program name                          Description
@@ -246,13 +246,13 @@ See also
    pepinfo      Plots simple amino acid properties in parallel
    pepstats     Protein statistics
    pepwindow    Displays protein hydropathy
-   
+
 Author(s)
 
    Ian Longden (il © sanger.ac.uk)
    Sanger Institute, Wellcome Trust Genome Campus, Hinxton, Cambridge,
    CB10 1SA, UK.
-   
+
 History
 
 Completed 4th June 1999.
@@ -261,5 +261,5 @@ Target users
 
    This program is intended to be used by everyone and everything, from
    naive users to embedded scripts.
-   
+
 Comments

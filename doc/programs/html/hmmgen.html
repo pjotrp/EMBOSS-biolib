@@ -9,9 +9,10 @@
 <BODY BGCOLOR="#FFFFFF" text="#000000">
 
 
+
 <table align=center border=0 cellspacing=0 cellpadding=0>
 <tr><td valign=top>
-<A HREF="index.html" ONMOUSEOVER="self.status='Go to the EMBOSS home page';return true"><img border=0 src="emboss_icon.jpg" alt="" width=150 height=48></a>
+<A HREF="/" ONMOUSEOVER="self.status='Go to the EMBOSS home page';return true"><img border=0 src="emboss_icon.jpg" alt="" width=150 height=48></a>
 </td>
 <td align=left valign=middle>
 <b><font size="+6">
@@ -25,16 +26,17 @@ hmmgen
 
 
 
-
-
-
 <!--END OF HEADER-->
+
+
+
+
 
 
 <H2>
     Function
 </H2>
-Generates a hidden Markov model for each alignment in a directory by using the HMMER package
+[an error occurred while processing this directive]
 
 <!--
 DON'T WRITE ANYTHING HERE.
@@ -54,26 +56,55 @@ IT IS DONE FOR YOU.
         Long description.
         Why it is useful.
         When it should/shouldn't be used.
-        Algorithms
   -->
 
-
-
-
-This is part of Jon Ison's protein structure analysis package.
-
-<p>
-
-This package is still being developed.
-
-<p>
-
-Please ignore this program until further details can be documented.
+This program is part of a suite of EMBOSS applications that directly or
+indirectly make use of the protein structure databases pdb and scop.
+This program is part of an experimental analysis pipeline described in an
+accompanying document.  We provide the software in the hope that it will
+be useful.  The applications were designed for specific research purposes
+and may not be useful or reliable in contexts other than the described
+pipeline.  The development of the suite was coordinated by Jon Ison to
+whom enquiries and bug reports should be sent (email jison@hgmp.mrc.ac.uk).
 
 <p>
 
-All further queries should go to Jon Ison.  (<A
-HREF="mailto:jison@hgmp.mrc.ac.uk">Jon Ison</A>)
+hmmgen provides a convenient means to generate hidden Markov models
+for scop families.  The HMMs are descriptive of the family and can be
+used to identify sequence relatives of the family.    
+
+<p>
+
+hmmgen reads a directory of scop family alignments file and generates a
+hidden Markov model for each alignment by using the HMMER package.
+The scop Sunid (an integer) of a family will be used as the base name for
+its hmm file. The paths and extensions for the alignment (input) and
+hmm (output) files are provided by the user.   
+
+
+
+
+
+
+
+
+
+
+
+
+
+<H2>
+    Algorithm
+</H2>
+
+<!-- 
+        Algorithms
+	  Pseudocode/Vague description/Handwaving/web links to useful pages
+  -->
+
+Contact the author
+
+
 
 
 
@@ -95,24 +126,6 @@ HREF="mailto:jison@hgmp.mrc.ac.uk">Jon Ison</A>)
  -->
 
 
-Here is a sample session with hmmgen:
-
-<pre>
-
-% hmmgen
-
-</pre>
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -122,19 +135,11 @@ Here is a sample session with hmmgen:
 
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
-
-   EMBOSS An error in ajacd.c at line 1531:
-acdfile '/packages/emboss_dev/gwilliam/emboss/emboss/emboss/acd/hmmgen.acd' not opened
-
-
+[an error occurred while processing this directive]
 </pre>
 </td></tr></table>
 <P>
-
-   EMBOSS An error in ajacd.c at line 1531:
-acdfile '/packages/emboss_dev/gwilliam/emboss/emboss/emboss/acd/hmmgen.acd' not opened
-
-
+[an error occurred while processing this directive]
 
 <!--
 DON'T WRITE ANYTHING HERE.
@@ -159,14 +164,15 @@ IT IS DONE FOR YOU.
         happens in unusual cases - null input, etc. 
    -->
 
+<b>hmmgen</b> reads any normal sequence USAs.
+
+<p>
 
 
 
+<p>
 
-
-
-
-
+The format of the scop alignment file is described in scopalign
 
 
 
@@ -207,19 +213,13 @@ for further information on report formats.
    -->
 
 
+<p>
 
 
 
+<p>
 
-
-
-
-
-
-
-
-
-
+The format of the hmm file is described in the HMMER documentation.
 
 
 
@@ -277,7 +277,7 @@ The directories are searched in the following order:
 
    -->
 
-
+None.
 
 
 
@@ -399,26 +399,7 @@ None.
     See also
 </H2>
 -->
-<h2><a name="See also">See also</a></h2>
-<table border cellpadding=4 bgcolor="#FFFFF0">
-<tr><th>Program name</th><th>Description</th></tr>
-<tr><td><a href="contacts.html">contacts</a></td><td>Reads coordinate files and writes files of intra-chain residue-residue contact data</td></tr>
-<tr><td><a href="dichet.html">dichet</a></td><td>Parse dictionary of heterogen groups</td></tr>
-<tr><td><a href="fraggle.html">fraggle</a></td><td>Removes fragment sequences from files of hits for scop families</td></tr>
-<tr><td><a href="interface.html">interface</a></td><td>Reads coordinate files and writes files of inter-chain residue-residue contact data</td></tr>
-<tr><td><a href="profgen.html">profgen</a></td><td>Generates various profiles for each alignment in a directory</td></tr>
-<tr><td><a href="psiblasts.html">psiblasts</a></td><td>Runs PSI-BLAST given scopalign alignments</td></tr>
-<tr><td><a href="scopalign.html">scopalign</a></td><td>Generate alignments for families in a scop classification file by using STAMP</td></tr>
-<tr><td><a href="scoprep.html">scoprep</a></td><td>Reorder scop classificaiton file so that the representative structure of each family is given first</td></tr>
-<tr><td><a href="scopreso.html">scopreso</a></td><td>Removes low resolution domains from a scop classification file</td></tr>
-<tr><td><a href="seqalign.html">seqalign</a></td><td>Generate extended alignments for families in a scop families file by using CLUSTALW with seed alignments</td></tr>
-<tr><td><a href="seqsearch.html">seqsearch</a></td><td>Generate files of hits for families in a scop classification file by using PSI-BLAST with seed alignments</td></tr>
-<tr><td><a href="seqsort.html">seqsort</a></td><td>Reads multiple files of hits and writes (i) a scop families file and (ii) a scop ambiguities file</td></tr>
-<tr><td><a href="seqwords.html">seqwords</a></td><td>Generate file of hits for scop families by searching swissprot with keywords</td></tr>
-<tr><td><a href="siggen.html">siggen</a></td><td>Generates a sparse protein signature from an alignment and residue contact data</td></tr>
-<tr><td><a href="sigscan.html">sigscan</a></td><td>Scans a signature against swissprot and writes a signature hits file</td></tr>
-</table>
-
+[an error occurred while processing this directive]
 <!-- 
         Add any comments about other associated programs (to prepare
         data files?) that seealso doesn't find. 
@@ -426,7 +407,17 @@ None.
 
 
 
+A 'scop family alignment file' contains a sequence alignment of domains
+belonging to the same scop family.  The file is in embl-like format and is
+annotated with records describing the SCOP classification of the family.  A
+scop family alignment file generatd by scopalign will contain a structure-
+based sequence alignment of domains of known structure only.  Such
+alignments can be extended with sequence relatives (of unknown structure)
+to the family in question by using seqalign.
 
+<p>
+
+The HMM output file is used by modelscan. 
 
 
 
@@ -438,17 +429,116 @@ None.
 </H2>
 <!--
         Who has worked on the program in the past.
+e.g. one of:
+Alan Bleasby (ableasby&nbsp;&copy;&nbsp;rfcgr.mrc.ac.uk)
+<br>
+MRC Rosalind Franklin Centre for Genomics Research
+Wellcome Trust Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
+
+
+Bernd Jagla (bernd&nbsp;&copy;&nbsp;golgi.ski.mskcc.org)
+<br>
+Cellular Biochemistry and Biophysics Program, Rockefeller
+Research Laboratories, Memorial Sloan-Kettering Cancer Center, 1275 York
+Avenue, Box 251,New York, NY 10021.
+
+David Martin (dmartin&nbsp;&copy;&nbsp;rfcgr.mrc.ac.uk)
+<br>
+
+Gos Micklem (gos&nbsp;&copy;&nbsp;ebi.ac.uk)
+<br>
+Informatics Division, European Bioinformatics Institute, Wellcome Trust Genome Campus, Hinxton, Cambridge CB10 1SD, UK
+
+Gary Williams (gwilliam&nbsp;&copy;&nbsp;rfcgr.mrc.ac.uk)
+<br>
+MRC Rosalind Franklin Centre for Genomics Research
+Wellcome Trust Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
+
+
+Ian Longden (il&nbsp;&copy;&nbsp;sanger.ac.uk)
+<br>
+Sanger Institute, Wellcome Trust Genome Campus, Hinxton,
+Cambridge, CB10 1SA, UK.                      
+
+Mark Faller (current e-mail address unknown)
+<br>
+while he was with:
+<br>
+HGMP-RC, Genome Campus, Hinxton, Cambridge CB10 1SB, UK
+
+Michael K. Schuster and Martin Grabner (martin.grabner&nbsp;&copy;&nbsp;univie.ac.at)
+<br>
+from the Austrian National EMBnet node.
+
+
+Michael Schmitz (mschmitz&nbsp;&copy;&nbsp;lbl.gov)
+<br>
+Lawrence Berkeley Labs, USA
+
+Nicolas Tourasse (nicolas.tourasse&nbsp;&copy;&nbsp;biotek.uio.no)
+<br>
+Biotechnology Center of Oslo
+
+Peter Rice (pmr&nbsp;&copy;&nbsp;ebi.ac.uk)
+<br>
+Informatics Division, European Bioinformatics Institute, Wellcome Trust Genome Campus, Hinxton, Cambridge CB10 1SD, UK
+
+Richard Durbin (rd&nbsp;&copy;&nbsp;sanger.ac.uk)
+<br>
+Sanger Institute, Wellcome Trust Genome Campus, Hinxton,
+Cambridge, CB10 1SA, UK.                      
+
+Richard Bruskiewich (current e-mail address unknown)
+<br>
+while he was at:
+<br>
+Sanger Institute, Wellcome Trust Genome Campus, Hinxton,
+Cambridge, CB10 1SA, UK.                      
+
+Rodrigo Lopez (rls&nbsp;&copy;&nbsp;ebi.ac.uk)
+<br>
+European Bioinformatics Institute, Wellcome Trust Genome Campus, Hinxton, Cambridge CB10 1SD, UK
+
+Sinead O'Leary (current e-mail address unknown)
+<br>
+while she was at:
+<br>
+HGMP-RC, Genome Campus, Hinxton, Cambridge CB10 1SB, UK
+
+
+Tim Carver (tcarver&nbsp;&copy;&nbsp;rfcgr.mrc.ac.uk)
+<br>
+MRC Rosalind Franklin Centre for Genomics Research
+Wellcome Trust Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
+
+Thomas Laurent (thomas.laurent&nbsp;&copy;&nbsp;uk.lionbioscience.com)
+<br>
+Lion Bioscience Ltd,
+     Compass House,
+     80-82 Newmarket Road,
+     Cambridge,
+     CB5 8DZ,
+     UK
+
+Val Curwen (vac&nbsp;&copy;&nbsp;sanger.ac.uk)
+<br>
+Sanger Institute, Wellcome Trust Genome Campus, Hinxton,
+Cambridge, CB10 1SA, UK. 
+
+
    -->
 
-This application was written by Jon Ison <a
-href="mailto:jison@hgmp.mrc.ac.uk">(jison@hgmp.mrc.ac.uk)</a>
+
+Jon Ison (jison&nbsp;&copy;&nbsp;rfcgr.mrc.ac.uk)
+<br>
+MRC Rosalind Franklin Centre for Genomics Research
+Wellcome Trust Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
 
 
 
+<p>
 
-
-
-
+[an error occurred while processing this directive]
 
 
 
@@ -467,9 +557,12 @@ href="mailto:jison@hgmp.mrc.ac.uk">(jison@hgmp.mrc.ac.uk)</a>
         What changes have been made.
    -->
 
-Written (date) - author.
+Written (2003) - Jon Ison & Ranjeeva Ranasinghe
 
-
+<!--
+<p>
+[an error occurred while processing this directive]
+-->
 
 
 
@@ -500,21 +593,6 @@ This program is intended to be used by everyone and everything, from naive users
 
 
 
-
-
-
-
-
-
-
-
-<H2>
-    Comments
-</H2>
-
-<!--
-	Any comments, requests etc. that people have about the program
-   -->
 
 
 

@@ -1,40 +1,40 @@
 
                                     iep 
-                                      
-   
-   
+
+
+
 Function
 
    Calculates the isoelectric point of a protein
-   
+
 Description
 
    This calculates the isoelectric point of a protein from its amino acid
    composition assuming that no electrostatic interactions change the
    propensity for ionization.
-   
+
    Adjusting the pH of an aqueous protein solution to the point where the
    numbers of positive and negative charges on the protein are equal
    brings the protein to its isoelectric point. This is often the point
    of lowest solubility, presumably because it is the point at which
    there are fewest intermolecular repulsions, so that the molecules tend
    to form aggregates.
-   
+
    The application can make a plot of the ionization curve with respect
    to pH and can write an output file of the data.
-   
+
 Usage
 
    Here is a sample session with iep
-   
+
 
 % iep tsw:laci_ecoli 
 Calculates the isoelectric point of a protein
 Output file [laci_ecoli.iep]: 
-   
+
    Go to the input files for this example
    Go to the output files for this example
-   
+
 Command line arguments
 
    Standard (Mandatory) qualifiers (* if not always prompted):
@@ -94,7 +94,7 @@ Command line arguments
    -error               boolean    Report errors
    -fatal               boolean    Report fatal errors
    -die                 boolean    Report deaths
-   
+
 
    Standard (Mandatory) qualifiers Allowed values Default
    [-sequence]
@@ -113,19 +113,19 @@ Command line arguments
    Yes
    -plot Plot charge vs pH Toggle value Yes/No N
    -report Write results to a file Toggle value Yes/No Y
-   
+
 Input file format
 
    iep
    reads in any protein sequence USA.
-   
+
   Input files for usage example
-  
+
    'tsw:laci_ecoli' is a sequence entry in the example protein database
    'tsw'
-   
+
   Database entry: tsw:laci_ecoli
-  
+
 ID   LACI_ECOLI     STANDARD;      PRT;   360 AA.
 AC   P03023; P71309; Q47338; O09196;
 DT   21-JUL-1986 (Rel. 01, Created)
@@ -231,13 +231,13 @@ SQ   SEQUENCE   360 AA;  38564 MW;  4CA5A1D6 CRC32;
      AMLVANDQMA LGAMRAITES GLRVGADISV VGYDDTEDSS CYIPPSTTIK QDFRLLGQTS
      VDRLLQLSQG QAVKGNQLLP VSLVKRKTTL APNTQTASPR ALADSLMQLA RQVSRLESGQ
 //
-   
+
 Output file format
 
   Output files for usage example
-  
+
   File: laci_ecoli.iep
-  
+
 IEP of LACI_ECOLI from 1 to 360
 Isoelectric Point = 6.8820
 
@@ -269,38 +269,38 @@ Isoelectric Point = 6.8820
  13.00     4.64   -39.36
  13.50     1.75   -42.25
  14.00     0.59   -43.41
-   
+
    For each pH point it gives the number of bound electrons and the
    charge.
-   
+
 Data files
 
    None.
-   
+
 Notes
 
    None.
-   
+
 References
 
    None.
-   
+
 Warnings
 
    None.
-   
+
 Diagnostic Error Messages
 
    None.
-   
+
 Exit status
 
    0 if successful.
-   
+
 Known bugs
 
    None.
-   
+
 See also
 
    Program name                          Description
@@ -317,20 +317,20 @@ See also
    pepstats     Protein statistics
    pepwindow    Displays protein hydropathy
    pepwindowall Displays protein hydropathy of a set of sequences
-   
+
 Author(s)
 
    Alan Bleasby (ableasby © rfcgr.mrc.ac.uk)
    MRC Rosalind Franklin Centre for Genomics Research Wellcome Trust
    Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
-   
+
 History
 
    Completed 1st August 1999.
-   
+
 Target users
 
    This program is intended to be used by everyone and everything, from
    naive users to embedded scripts.
-   
+
 Comments

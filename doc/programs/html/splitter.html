@@ -15,7 +15,7 @@
 
 <table align=center border=0 cellspacing=0 cellpadding=0>
 <tr><td valign=top>
-<A HREF="index.html" ONMOUSEOVER="self.status='Go to the EMBOSS home page';return true"><img border=0 src="emboss_icon.jpg" alt="" width=150 height=48></a>
+<A HREF="/" ONMOUSEOVER="self.status='Go to the EMBOSS home page';return true"><img border=0 src="emboss_icon.jpg" alt="" width=150 height=48></a>
 </td>
 <td align=left valign=middle>
 <b><font size="+6">
@@ -95,21 +95,6 @@ Split a sequence into (overlapping) smaller sequences
 </pre></td></tr></table><p>
 <p>
 <a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>
-<p>
-<b>Example 2</b>
-<p>
-Split a sequence into sub-sequences of 50,000 bases with an overlap of 3,000 bases on each sub-sequence: 
-<p>
-
-<p>
-<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
-
-% <b>splitter tembl:AP000504 ap000504.split -size=50000 -over=3000 </b>
-Split a sequence into (overlapping) smaller sequences
-
-</pre></td></tr></table><p>
-<p>
-<a href="#output.2">Go to the output files for this example</a><p><p>
 
 
 
@@ -133,8 +118,12 @@ IT IS DONE FOR YOU.
    Additional (Optional) qualifiers:
    -size               integer    Size to split at
    -overlap            integer    Overlap between split sequences
+   -source             boolean    Split using source features with /oridif
+                                  qualifiers
+   -multifile          boolean    Split sequence into multiple files
 
    Advanced (Unprompted) qualifiers:
+   -feature            boolean    Use feature information
    -addoverlap         boolean    Add overlap to size
 
    Associated qualifiers:
@@ -228,10 +217,31 @@ IT IS DONE FOR YOU.
 <td>0</td>
 </tr>
 
+<tr>
+<td>-source</td>
+<td>Split using source features with /oridif qualifiers</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-multifile</td>
+<td>Split sequence into multiple files</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
 <tr bgcolor="#FFFFCC">
 <th align="left" colspan=2>Advanced (Unprompted) qualifiers</th>
 <th align="left">Allowed values</th>
 <th align="left">Default</th>
+</tr>
+
+<tr>
+<td>-feature</td>
+<td>Use feature information</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
 </tr>
 
 <tr>
@@ -490,119 +500,6 @@ tgagcaagggtcggggagttctagtgcgtaacagtctagg
 </pre>
 </td></tr></table><p>
 
-<a name="output.2"></a>
-<h3>Output files for usage example 2</h3>
-<p><h3>File: ap000504.split</h3>
-<table width="90%"><tr><td bgcolor="#CCFFCC">
-<pre>
-&gt;AP000504_1-50000 Homo sapiens genomic DNA, chromosome 6p21.3, HLA Class I region, section 3/20.
-gaccaatctcactgtgaggaggcagtcaaagggaataatggaagagaggaagaggatttt
-ctcagtggcagtcatggcgtctgggatgaaggagtagtttccagaaaggaggcgttgttt
-gcttatctccagacctatttgagggaggcaagcaaagggaacggtcttgtagctcaattt
-tttcaccccattttaagaatgagacaatagaagcaagagagattatttgacttgcccaag
-ctcacacaggcagttaatggaaagctagagcaagaaccaaattttcagactcttagtcta
-attctctttttattctacatataatataaagatacttgtctgaaagcacagcctgagaaa
-gataaatggctgaggaaagtagacatctgtctggaattgaggattttggtcaaaataatg
-gtattaatagaactagtaacactaatgccttaatatctaattaggatagtacactcctgt
-tcttattgtaaacctaggaaagttatagaagtgccttatggatcataataagggtcactg
-aggcagtgccttttggtttggtgataaaaggctttaacttaatggggagaattccaacaa
-taaaaccctgtccaaaaagtgtcaccactcctcaggggaggccctcatccctagacatga
-cttaagcagaggcttcccaataagctgcaggttattaaagggtagggagcaggagagatc
-ttggggggacaggtcatagggcatgaggagcacaaaggtttaggatgacataaggcagag
-gggagatctgtgatgatgaaggtagagttgggggaaagaatgggacaccggaacagggag
-ttaggcaaagcaaaaggaaggagataccaaaatccacacttggcaaaaatatgatttcag
-gtcttttaggctctctgtgctcctgggaggctgtgggggaggaaagaaaaggctatcatt
-ctttacatctcagtccttctacctctgtctgacactccctctcacccaattctagccccc
-tggaatattccatatattagtccttccccattttccctctatcctttaccaagtccttac
-caagctttcccagaaatcgagtcatattctcatcctgtttggcactcgtaacaacagact
-ggggattgatctcatccagaacttggaaggagaacagagatcaaatgagttaaaggatct
-ttgtctttgactaagagaaaacccatagccctcctcttcctacccctctccttctcaaaa
-acatttcctccctaggagtagggagtgctctgcacagtgggaacacaggtagaagttgag
-atttagaaaagtagttaagagtggtgggatggtgagagggaagtgggatgttctggatgt
-tgtcactaggctgtaaacccctggagaacagacatgactgatttgcccagggctgaatct
-gaagcacctgaaacattgtaaatacgtcatatatatttgtggccaggcacagtggctcat
-gcctataatccctgccctttgggaggccaaggcaggcagatcactggaggccaggagctc
-aagacaagcctagccaacgtggtgaaaccctgcctctactaaaaatataaaaattagcca
-ggcgtgatggcagattcttgtaatcccagctactcgggagactgaggcaggagaattgct
-tgaatccgggagacggaggttgcagtgagccaagatggcaccactacacttccagcctga
-gtgacggagcaagacactgtctcaaaaaagaacaaccaaacaaaccaaaaaacagcctca
-caaatatttgttaaataatgaaatgaattcataaaaacaaaagagggagcctctgtgaag
-caactgtaaaatatattgagtcagtgctatagtttggatgtgatttgtccctgccaaata
-tcgtgttgaaatttaatccccagtgtgatagtgttgtgaggtagggcctagcaggaggtg
-tgtgggtgatgggagtggatcgctcatgaacagattaatgcccttcctggagtgtgttgg
-tgggtatgagtgagaggttctcactctattagttcctgagagagctggttgtcaaaaaga
-gcctggcatctccctcccccttgcttcttctctgccatgtgacctctacacaccctgcct
-tcccttcttccatgagttgaagcagtctgaggctctcaccagtgaagatgcccaattttg
-agctttccaaccatccagaaccataagccaaataaaactttttttttttttttaacaaat
-tactcagagtcaggtatttccttacagcaacacaaaatatgctagacagtgaggtgagtt
-aatgtaagtaaaacatggctgggcgtggtgactcacacctgtagtcccagcactttagga
-ggccaaggtgggcggatcacaaggtcaggagtttgagaccaccctggccaacatggtgaa
-acaccgtctgtgctaaaaacacacacaaaaaactagctgggtgtggtggcacacgcctgt
-agtcccagctactcgggaggttgagtcaggagaattgcttgaacccaggaggtggaggct
-gcagtgagccaagattgcgccactgcacttgagcctgggtaacagagcaagactctgtct
-agaaaaaaaaaatatgtgtgtgtgtgtgtgtgtgtgtgtgtgtgtgtgtgtgtgtgtgtg
-taacacatctgcaatcccagagagcagaggaattcatggttccatccccacctctctgga
-gaagcttgaggctctcgtggtctggggcatctggcatgaagtggatagtggagtcactag
-tatcatagtaggcaatgcccaagtatcctgaattccacagcacacacagatggatctgtc
-cagcaaggaagaaaggaaatcactattagaatcactcataagtgtagggtttaccatgtc
-
-
-<font color=red>  [Part of this file has been deleted for brevity]</font>
-
-gaaaccctgtctctactaaaaaatacaggccgggcacagtggctcacgcctgtaatccca
-gcactttgggaggccgaggcgggtggatcatgaggtcaagagatcgagactatcctggct
-aacatgatgaaaccccgtctctactaaaaatacaaaaaattagctgggcatggtggcggg
-cacctgtagtcccagctactcgggaggctgagtcaggagaatggtgtgaacccaggagac
-ggagcttgcagtgagctgaggtcgcaccactgcactccagcctgggtgatagagcgagac
-tctgtctcaaaaaaaaaaaaaaaaaaaaaaaaaacaaaaattagccgggtgtggtggcag
-gcaacttaatcccagctacttgggaggcagaggcaggagaatcgtttgaacctgggaggc
-ggaggttgaagagaatagaagctctgctggtccagagaaggattgggccagggctctggg
-agaccagggagaaagagggcacatgtggtccctgttgactgtgagggtgggaatctgagg
-aaggctttggctcattgccccttgggtttgtccacagccatccttcccctgcggagtatg
-tcgaggtgctccaggagctacagcggctggagagtcgcctccagcccttcttgcagcgct
-actacgaggttctgggtgctgctgccaccacggactacaataacaatgtgagccctttga
-tggccctgccctttctcctcagccccagtactcccaaaacagaacaggctgaaatacaga
-taactctttccctccctggaaaaacattgcaacagggccaggtgcagtggctcacgcctg
-taatcccagcactttgggaggccaaggtgggcggatcatctgagatcgggagtttgagac
-cagcctggccaacatggtgcaaccccatctctactgaaaatataaacattagctggatgt
-agtggtgcacacctgtaatcccagctactcaggaggctgaggcaggagaatcgctagaac
-tcgggaggagggggttgcagtgagccgagattgcactactgcactctagcctgggtgaca
-gagcgagactgtctcaaaaaacaaaacaaaacaaaaaaacacacattgcaacaaaacaat
-ttctctctaaacctgtaagtgattttgtcctcccttacagagaaggtgataatctttgct
-gtaagcactgtcctcgtatcgtaccccttgtgcccctgaatgaatttagaaaatgtaaag
-tacaggagatcagtatatgatgacttactgattcatagtagtgttttaataggatgttcc
-ttatgtgaataagatataatttatttgcaaagatttggtctacatgtaaacttccaagga
-tataactgaaagttttggaggacatggtattctcagtaggcattattgcttttattagtg
-agatggactccagcttgatattttctgcctttttgtgtttggctggttgtgcgcagcacg
-agggccgggaggaggatcagcggttgatcaacttggtaggggagagcctgcgactgctgg
-gcaacacctttgttgcactgtctgacctgcgctgcaatctggcctgcacgcccccacgac
-acctgcatgtggtccggcctatgtctcactacaccacccccatggtgctccagcaggcag
-ccattcccatacaggtgggttagggggagtctggcctgagggagagtgaggggtgttgat
-agagtgacccagggtagctactgggcctgaaggaggttaggaaaggaggagactggaaac
-atggtgatgaaggctggagatactttagaggtttatcatgaggttttcttggttaggctc
-ttgtatttttctcacatctgcctgtccatctgtctttttcagatcaatgtgggaaccact
-gtgaccatgacaggaaatgggactcggccccccccaactcccaatgcagaggcacctccc
-cctggtcctgggcaggcctcatccgtggctccgtcttctaccaatgtcgagtcctcagct
-gagggggctcccccgccaggtccagctcccccgccagccaccagccacccgagggtcatc
-cggatttcccaccagagtgtggaacccgtggtcatgatgcacatgaacattcaaggtgag
-aatagttgctggcgagaagagcaggatcagcatgatgagggaggttcatgctgaggtgtg
-agggaacagggtggggaagggagaggcacatgctggtggtggtagcctggggaccagagc
-agaagcttaagtagacagatgtggggggtgtgggggttggtttgtctttggaggtgtgtt
-tgtgtggtgaagggagtacctctccctgtttagatggagggaaaggcaggctttctgatt
-gggggattatgggcctgaagtatgcctgatctcagaaggatatagttaggccttggccct
-acctacctcagggccactgtctctgtctccctgcccagattctggcacacagcctggtgg
-tgttccgagtgctcccactggccccctgggaccccctggtcatggccaaaccctgggtaa
-gagtgagggcatcagggcaggctgagctctgggtagagaaagggaagggctgagtgggtg
-ggttgaaggggtccaggttcaaggttacatcagacccgccccccaggctccaccctcatc
-cagctgccctccctgccccctgagttcatgcacgccgtcgcccaccagatcactcatcag
-gccatggtggcagctgttgcctccgcggccgcaggtaatgacctggaaggggaggcttgg
-gaggtagggcacagtccatggtggcagctggctggcaagggcctggccctcagccctctt
-cggtctgtctcttctgccacccacaggacagcaggtgccaggcttcccaacagctccaac
-ccgggtggtgattgcccggcccactcctccacaggctcggccttcccatcctggagggcc
-cccagtctctgggacactggtgagcaagggtcggggagttctagtgcgtaacagtctagg
-</pre>
-</td></tr></table><p>
-
 
 
 <p>
@@ -674,30 +571,30 @@ cccagtctctgggacactggtgagcaagggtcggggagttctagtgcgtaacagtctagg
 <h2><a name="See also">See also</a></h2>
 <table border cellpadding=4 bgcolor="#FFFFF0">
 <tr><th>Program name</th><th>Description</th></tr>
-<tr><td><a href="biosed.html">biosed</a></td><td>Replace or delete sequence sections</td></tr>
-<tr><td><a href="cutseq.html">cutseq</a></td><td>Removes a specified section from a sequence</td></tr>
-<tr><td><a href="degapseq.html">degapseq</a></td><td>Removes gap characters from sequences</td></tr>
-<tr><td><a href="descseq.html">descseq</a></td><td>Alter the name or description of a sequence</td></tr>
-<tr><td><a href="entret.html">entret</a></td><td>Reads and writes (returns) flatfile entries</td></tr>
-<tr><td><a href="extractfeat.html">extractfeat</a></td><td>Extract features from a sequence</td></tr>
-<tr><td><a href="extractseq.html">extractseq</a></td><td>Extract regions from a sequence</td></tr>
-<tr><td><a href="listor.html">listor</a></td><td>Writes a list file of the logical OR of two sets of sequences</td></tr>
-<tr><td><a href="maskfeat.html">maskfeat</a></td><td>Mask off features of a sequence</td></tr>
-<tr><td><a href="maskseq.html">maskseq</a></td><td>Mask off regions of a sequence</td></tr>
-<tr><td><a href="newseq.html">newseq</a></td><td>Type in a short new sequence</td></tr>
-<tr><td><a href="noreturn.html">noreturn</a></td><td>Removes carriage return from ASCII files</td></tr>
-<tr><td><a href="notseq.html">notseq</a></td><td>Excludes a set of sequences and writes out the remaining ones</td></tr>
-<tr><td><a href="nthseq.html">nthseq</a></td><td>Writes one sequence from a multiple set of sequences</td></tr>
-<tr><td><a href="pasteseq.html">pasteseq</a></td><td>Insert one sequence into another</td></tr>
-<tr><td><a href="revseq.html">revseq</a></td><td>Reverse and complement a sequence</td></tr>
-<tr><td><a href="seqret.html">seqret</a></td><td>Reads and writes (returns) sequences</td></tr>
-<tr><td><a href="seqretsplit.html">seqretsplit</a></td><td>Reads and writes (returns) sequences in individual files</td></tr>
-<tr><td><a href="skipseq.html">skipseq</a></td><td>Reads and writes (returns) sequences, skipping the first few</td></tr>
-<tr><td><a href="trimest.html">trimest</a></td><td>Trim poly-A tails off EST sequences</td></tr>
-<tr><td><a href="trimseq.html">trimseq</a></td><td>Trim ambiguous bits off the ends of sequences</td></tr>
-<tr><td><a href="union.html">union</a></td><td>Reads sequence fragments and builds one sequence</td></tr>
-<tr><td><a href="vectorstrip.html">vectorstrip</a></td><td>Strips out DNA between a pair of vector sequences</td></tr>
-<tr><td><a href="yank.html">yank</a></td><td>Reads a sequence range, appends the full USA to a list file</td></tr>
+<tr><td><a href="biosed.shtml">biosed</a></td><td>Replace or delete sequence sections</td></tr>
+<tr><td><a href="cutseq.shtml">cutseq</a></td><td>Removes a specified section from a sequence</td></tr>
+<tr><td><a href="degapseq.shtml">degapseq</a></td><td>Removes gap characters from sequences</td></tr>
+<tr><td><a href="descseq.shtml">descseq</a></td><td>Alter the name or description of a sequence</td></tr>
+<tr><td><a href="entret.shtml">entret</a></td><td>Reads and writes (returns) flatfile entries</td></tr>
+<tr><td><a href="extractfeat.shtml">extractfeat</a></td><td>Extract features from a sequence</td></tr>
+<tr><td><a href="extractseq.shtml">extractseq</a></td><td>Extract regions from a sequence</td></tr>
+<tr><td><a href="listor.shtml">listor</a></td><td>Writes a list file of the logical OR of two sets of sequences</td></tr>
+<tr><td><a href="maskfeat.shtml">maskfeat</a></td><td>Mask off features of a sequence</td></tr>
+<tr><td><a href="maskseq.shtml">maskseq</a></td><td>Mask off regions of a sequence</td></tr>
+<tr><td><a href="newseq.shtml">newseq</a></td><td>Type in a short new sequence</td></tr>
+<tr><td><a href="noreturn.shtml">noreturn</a></td><td>Removes carriage return from ASCII files</td></tr>
+<tr><td><a href="notseq.shtml">notseq</a></td><td>Excludes a set of sequences and writes out the remaining ones</td></tr>
+<tr><td><a href="nthseq.shtml">nthseq</a></td><td>Writes one sequence from a multiple set of sequences</td></tr>
+<tr><td><a href="pasteseq.shtml">pasteseq</a></td><td>Insert one sequence into another</td></tr>
+<tr><td><a href="revseq.shtml">revseq</a></td><td>Reverse and complement a sequence</td></tr>
+<tr><td><a href="seqret.shtml">seqret</a></td><td>Reads and writes (returns) sequences</td></tr>
+<tr><td><a href="seqretsplit.shtml">seqretsplit</a></td><td>Reads and writes (returns) sequences in individual files</td></tr>
+<tr><td><a href="skipseq.shtml">skipseq</a></td><td>Reads and writes (returns) sequences, skipping the first few</td></tr>
+<tr><td><a href="trimest.shtml">trimest</a></td><td>Trim poly-A tails off EST sequences</td></tr>
+<tr><td><a href="trimseq.shtml">trimseq</a></td><td>Trim ambiguous bits off the ends of sequences</td></tr>
+<tr><td><a href="union.shtml">union</a></td><td>Reads sequence fragments and builds one sequence</td></tr>
+<tr><td><a href="vectorstrip.shtml">vectorstrip</a></td><td>Strips out DNA between a pair of vector sequences</td></tr>
+<tr><td><a href="yank.shtml">yank</a></td><td>Reads a sequence range, appends the full USA to a list file</td></tr>
 </table>
 
 <!--

@@ -1,27 +1,27 @@
 
                                patmatmotifs 
-                                      
-   
-   
+
+
+
 Function
 
    Search a PROSITE motif database with a protein sequence
-   
+
 Description
 
    patmatmotifs takes a protein sequence and compares it to the PROSITE
    database of motifs.
-   
+
    For a description of PROSITE, we can do no better than to quote the
    PROSITE user's documentation: 
-   
+
    PROSITE is a method of determining what is the function of
    uncharacterized proteins translated from genomic or cDNA sequences. It
    consists of a database of biologically significant sites and patterns
    formulated in such a way that with appropriate computational tools it
    can rapidly and reliably identify to which known family of protein (if
    any) the new sequence belongs.
-   
+
    In some cases the sequence of an unknown protein is too distantly
    related to any protein of known structure to detect its resemblance by
    overall sequence alignment, but it can be identified by the occurrence
@@ -34,7 +34,7 @@ Description
    limited (in size) but important portion(s) of a protein sequence. To
    paraphrase Orwell, in Animal Farm, we can say that "some regions of a
    protein sequence are more equal than others" !
-   
+
    The use of protein sequence patterns (or motifs) to determine the
    function(s) of proteins is becoming very rapidly one of the essential
    tools of sequence analysis. This reality has been recognized by many
@@ -54,7 +54,7 @@ Description
       constraint on the evolution of portions of a protein sequence (2)."
 
    The home web page of PROSITE is: http://www.expasy.ch/prosite/
-   
+
    It is common to find that a search of the PROSITE database against a
    protein sequence will report many matches to the short motifs that are
    indicative of the post-translational modification sites, such as
@@ -62,23 +62,23 @@ Description
    are often unwanted and are not normally reported. You can turn
    reporting of these short motifs on by giving the '-noprune' option on
    the command-line.
-   
+
    Your EMBOSS administrator must have set up the local EMBOSS PROSITE
    database using the utility 'prosextract' before this program will run.
-   
+
 Usage
 
    Here is a sample session with patmatmotifs
-   
+
 
 % patmatmotifs -full 
 Search a PROSITE motif database with a protein sequence
 Input sequence: tsw:opsd_human
 Output report [opsd_human.patmatmotifs]: 
-   
+
    Go to the input files for this example
    Go to the output files for this example
-   
+
 Command line arguments
 
    Standard (Mandatory) qualifiers:
@@ -138,7 +138,7 @@ Command line arguments
    -error               boolean    Report errors
    -fatal               boolean    Report fatal errors
    -die                 boolean    Report deaths
-   
+
 
    Standard (Mandatory) qualifiers Allowed values Default
    [-sequence]
@@ -154,18 +154,18 @@ Command line arguments
    ck2_phospho_site, and tyr_phospho_site. Boolean value Yes/No Yes
    Advanced (Unprompted) qualifiers Allowed values Default
    (none)
-   
+
 Input file format
 
    patmatmotifs reads a protein sequence USA.
-   
+
   Input files for usage example
-  
+
    'tsw:opsd_human' is a sequence entry in the example protein database
    'tsw'
-   
+
   Database entry: tsw:opsd_human
-  
+
 ID   OPSD_HUMAN     STANDARD;      PRT;   348 AA.
 AC   P08100; Q16414;
 DT   01-AUG-1988 (Rel. 08, Created)
@@ -271,30 +271,30 @@ SQ   SEQUENCE   348 AA;  38892 MW;  07443BEA CRC32;
      ATTQKAEKEV TRMVIIMVIA FLICWVPYAS VAFYIFTHQG SNFGPIFMTI PAFFAKSAAI
      YNPVIYIMMN KQFRNCMLTT ICCGKNPLGD DEASATVSKT ETSQVAPA
 //
-   
+
 Output file format
 
    The output is a standard EMBOSS report file.
-   
+
    The results can be output in one of several styles by using the
    command-line qualifier -rformat xxx, where 'xxx' is replaced by the
    name of the required format. The available format names are: embl,
    genbank, gff, pir, swiss, trace, listfile, dbmotif, diffseq, excel,
    feattable, motif, regions, seqtable, simple, srs, table, tagseq
-   
+
    See:
    http://www.uk.embnet.org/Software/EMBOSS/Themes/ReportFormats.html for
    further information on report formats.
-   
+
    By default patmatmotifs writes a 'dbmotif' report file.
-   
+
   Output files for usage example
-  
+
   File: opsd_human.patmatmotifs
-  
+
 ########################################
 # Program: patmatmotifs
-# Rundate: Tue Apr 06 14:30:23 2004
+# Rundate: Mon Jul 26 13:43:12 2004
 # Report_format: dbmotif
 # Report_file: opsd_human.patmatmotifs
 ########################################
@@ -306,7 +306,7 @@ Output file format
 #
 # Full: Yes
 # Prune: Yes
-# Data_file: ../prosextract-keep/PROSITE/prosite.lines
+# Data_file: /homes/pmr/local/share/EMBOSS/data/PROSITE/prosite.lines
 #
 #=======================================
 
@@ -336,9 +336,9 @@ PIFMTIPAFFAKSAAIYNPVIYIMMNK
 # Motif: G_PROTEIN_RECEP_F1_1
 # Count: 1
 #
-# *****************************************
-# * G-protein coupled receptors signature *
-# *****************************************
+# **************************************************************
+# * G-protein coupled receptors family 1 signature and profile *
+# **************************************************************
 #
 # G-protein coupled receptors [1 to 4,E1,E2] (also called R7G) are  an extensiv
 e
@@ -348,26 +348,6 @@ h
 
   [Part of this file has been deleted for brevity]
 
-# Count: 1
-#
-# *************************************************
-# * Visual pigments (opsins) retinal binding site *
-# *************************************************
-#
-# Visual pigments [1,2] are the light-absorbing  molecules that  mediate vision
-.
-# They consist of  an apoprotein, opsin,  covalently  linked  to the chromophor
-e
-# cis-retinal.  Vision is  effected through  the absorption of a  photon by cis
--
-# retinal  which is isomerized to  trans-retinal.  This isomerization leads to
-a
-# change  of conformation  of the protein. Opsins are integral membrane protein
-s
-# with  seven transmembrane regions that belong to family 1 of G-protein couple
-d
-# receptors (see <PDOC00210>).
-#
 # In vertebrates four different pigments are generally found.   Rod cells, whic
 h
 # mediate vision in dim light, contain the pigment rhodopsin.  Cone cells, whic
@@ -384,13 +364,20 @@ e
 ,
 # R7 and R8) expresses a specific opsin.
 #
-# Proteins evolutionary related to opsins include squid retinochrome, also know
+# Proteins evolutionary related to opsins include:
+#
+#  - Squid  retinochrome,  also  known as retinal photoisomerase, which convert
+s
+#    various isomers of retinal into 11-cis retinal.
+#  - Mammalian  opsin  3  (Encephalopsin)  that  may  play  a role in encephali
+c
+#    photoreception.
+#  - Mammalian  opsin  4  (Melanopsin)  that may mediate regulation of circadia
 n
-# as retinal  photoisomerase, which converts various isomers of retinal into 11
--
-# cis retinal and mammalian retinal pigment  epithelium (RPE) RGR [3], a protei
-n
-# that may also act in retinal isomerization.
+#    rhythms and acute suppression of pineal melatonin.
+#  - Mammalian retinal pigment epithelium (RPE) RGR [3], a protein that may als
+o
+#    act in retinal isomerization.
 #
 # The attachment  site  for  retinal in the above proteins is a conserved lysin
 e
@@ -398,13 +385,12 @@ e
 e
 # developed includes this residue.
 #
-# -Consensus pattern: [LIVMWAC]-[PGAC]-x(3)-[SAC]-K-[STALIMR]-[GSACPNV]-[STACP]
--
-#                     x(2)-[DENF]-[AP]-x(2)-[IY]
+# -Consensus pattern: [LIVMFWAC]-[PSGAC]-x(3)-[SAC]-K-[STALIMR]-[GSACPNV]-
+#                     [STACP]-x(2)-[DENF]-[AP]-x(2)-[IY]
 #                     [K is the retinal binding site]
 # -Sequences known to belong to this class detected by the pattern: ALL.
-# -Other sequence(s) detected in SWISS-PROT: NONE.
-# -Last update: July 1998 / Pattern and text revised.
+# -Other sequence(s) detected in SWISS-PROT: 2.
+# -Last update: December 2001 / Pattern and text revised.
 #
 # [ 1] Applebury M.L., Hargrave P.A.
 #      Vision Res. 26:1881-1895(1986).
@@ -413,31 +399,46 @@ e
 # [ 3] Shen D., Jiang M., Hao W., Tao L., Salazar M., Fong H.K.W.
 #      Biochemistry 33:13117-13125(1994).
 #
+# +----------------------------------------------------------------------------
++
+# | This PROSITE entry  is copyright  by the Swiss Institute of Bioinformatics
+|
+# | (SIB).  There are no restrictions on its use by non-profit institutions as
+|
+# | long as its  content  is  in  no  way  modified  and this statement is not
+|
+# | removed. Usage by and for commercial entities requires a license agreement
+|
+# | (See http://www.isb-sib.ch/announce/ or email to license@isb-sib.ch).
+|
+# +----------------------------------------------------------------------------
++
+#
 # ***************
 #
 #
 #---------------------------------------
-   
+
 Data files
 
    Data and documentation from PROSITE files is automatically read. This
    has been generated and formatted by running prosextract before running
    patmatmotifs.
-   
+
 Notes
 
    Program is only useful when prosextract is used beforehand.
-   
+
 References
 
    If you want to refer to PROSITE in a publication you can do so by
    citing:
-   
+
    Bairoch A., Bucher P., Hofmann K. The PROSITE datatase, its status in
    1997. Nucleic Acids Res. 24:217-221(1997).
-   
+
    Other references:
-   
+
     1. Bairoch, A., Bucher P. (1994) PROSITE: recent developments.
        Nucleic Acids Research, Vol 22, No.17 3583-3589.
     2. Bairoch, A., (1992) PROSITE: a dictionary of sites and patterns in
@@ -449,30 +450,30 @@ References
        Valley, California, (1986).
     5. Lesk A.M. (In) Computational Molecular Biology, Lesk A.M., Ed.,
        pp17-26, Oxford University Press, Oxford (1988).
-       
+
 Warnings
 
    Your EMBOSS administrator must have set up the local EMBOSS PROSITE
    database using the utility 'prosextract' before this program will run.
-   
+
 Diagnostic Error Messages
 
    The error message:
-   
+
 "Either EMBOSS_DATA undefined or PROSEXTRACT needs running"
 
    indicates that your local EMBOSS administrator has not yet correctly
    set up the local EMBOSS PROSITE database using the utility
    'prosextract'.
-   
+
 Exit status
 
    It always exits with status 0
-   
+
 Known bugs
 
    None.
-   
+
 See also
 
     Program name                         Description
@@ -488,20 +489,20 @@ See also
    preg           Regular expression search of a protein sequence
    pscan          Scans proteins using PRINTS
    sigcleave      Reports protein signal cleavage sites
-   
+
 Author(s)
 
    Sinead O'Leary (current e-mail address unknown)
    while she was at:
    HGMP-RC, Genome Campus, Hinxton, Cambridge CB10 1SB, UK
-   
+
 History
 
    Completed May 13 1999.
-   
+
 Target users
 
    This program is intended to be used by everyone and everything, from
    naive users to embedded scripts.
-   
+
 Comments
