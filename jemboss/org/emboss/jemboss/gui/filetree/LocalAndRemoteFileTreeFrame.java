@@ -34,12 +34,15 @@ public class LocalAndRemoteFileTreeFrame extends JFrame
 {
 
   private static DragTree ltree;
-  private JSplitPane treePane;
   private JMenuItem prefClose;
 
 /**
 *
+* Displays the remote and local file managers in the
+* same frame.
+*
 * @param mysettings JembossParams with settings information
+*
 */
   public LocalAndRemoteFileTreeFrame(final JembossParams mysettings) 
                                 throws JembossSoapException
@@ -47,42 +50,43 @@ public class LocalAndRemoteFileTreeFrame extends JFrame
     super("File Manager");
     try
     {  
+      final JPanel remotePanel = new JPanel(new BorderLayout());
       final RemoteFileTreePanel rtree =
                            new RemoteFileTreePanel(mysettings,false);
       ltree = new DragTree(new File(System.getProperty("user.home")), 
                                                    this, mysettings);
-      final JScrollPane scrollTree = new JScrollPane(ltree);   
 
-      Dimension d = rtree.getPreferredSize();
-      scrollTree.setPreferredSize(d);
-      JPanel jp = new JPanel(new BorderLayout());
+      final JPanel localPanel = new JPanel(new BorderLayout());
+      JScrollPane localTree = new JScrollPane(ltree);   
+
+      final JSplitPane treePane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
+                                                   localPanel,remotePanel);
 
       JMenuBar menuBar = new JMenuBar();
       JMenu prefMenu = new JMenu("File");
       prefMenu.setMnemonic(KeyEvent.VK_F);
-      final JFrame f = this;
 
-      ButtonGroup group = new ButtonGroup();
+      final Dimension panelSize = new Dimension(210, 270);
+
       JRadioButtonMenuItem prefV = new JRadioButtonMenuItem("Vertical Split");
       prefMenu.add(prefV);
       prefV.addActionListener(new ActionListener()
       {
         public void actionPerformed(ActionEvent e)
         {
-          treePane.remove(rtree);
-          treePane.remove(scrollTree);
+          treePane.remove(remotePanel);
+          treePane.remove(localPanel);
           treePane.setOrientation(JSplitPane.VERTICAL_SPLIT);
-          treePane.setTopComponent(rtree);
-          treePane.setBottomComponent(scrollTree);
+          treePane.setTopComponent(localPanel);
+          treePane.setBottomComponent(remotePanel);
+          rtree.setPreferredSize(panelSize);
+          ltree.setPreferredSize(panelSize);
           treePane.setDividerLocation(0.5);
-          Dimension pSize = new Dimension(210, 250);
-          rtree.setPreferredSize(pSize);
-          scrollTree.setPreferredSize(pSize);
-          f.pack();
-          treePane.setDividerLocation(0.5);
+          pack();
         }
       });
       prefV.setSelected(true);
+      ButtonGroup group = new ButtonGroup();
       group.add(prefV);
      
       JRadioButtonMenuItem prefH = new JRadioButtonMenuItem("Horizontal Split");
@@ -91,20 +95,21 @@ public class LocalAndRemoteFileTreeFrame extends JFrame
       {
         public void actionPerformed(ActionEvent e)
         {
-          treePane.remove(rtree);
-          treePane.remove(scrollTree);
+          treePane.remove(remotePanel);
+          treePane.remove(localPanel);
           treePane.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
-          treePane.setRightComponent(rtree);
-          treePane.setLeftComponent(scrollTree);
-          Dimension pSize = new Dimension(210, 250);
-          rtree.setPreferredSize(pSize);
-          scrollTree.setPreferredSize(pSize);
-          f.pack();
+          treePane.setLeftComponent(localPanel);
+          treePane.setRightComponent(remotePanel);
+  
+          rtree.setPreferredSize(panelSize);
+          ltree.setPreferredSize(panelSize);
           treePane.setDividerLocation(0.5);
+          pack();
         }
       });
       group.add(prefH);
 
+// close / exit
       prefClose = new JMenuItem("Close");
       prefClose.setAccelerator(KeyStroke.getKeyStroke(
                     KeyEvent.VK_C, ActionEvent.CTRL_MASK));
@@ -113,26 +118,38 @@ public class LocalAndRemoteFileTreeFrame extends JFrame
       {
         public void actionPerformed(ActionEvent e)
         {
-          f.setVisible(false);
+          setVisible(false);
         }
       });
       prefMenu.addSeparator();
       prefMenu.add(prefClose);
       menuBar.add(prefMenu);
 
-      JComboBox rootSelect = rtree.getRootSelect();
-      rootSelect.setMaximumSize(d);
-
-      menuBar.add(Box.createHorizontalGlue());
-      menuBar.add(rootSelect);
       setJMenuBar(menuBar);
       
-      Dimension pSize = new Dimension(210, 250);
-      rtree.setPreferredSize(pSize);
-      scrollTree.setPreferredSize(pSize);
-      treePane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
-                                        rtree,scrollTree);
-      treePane.setOneTouchExpandable(true);
+      rtree.setPreferredSize(panelSize);
+      localTree.setPreferredSize(panelSize);
+      localPanel.add(localTree,BorderLayout.CENTER);
+      remotePanel.add(rtree,BorderLayout.CENTER);
+
+// local panel menu
+      JComboBox rootSelect = rtree.getRootSelect();
+      JPanel lbar = new JPanel(new BorderLayout());
+      Dimension d = new Dimension((int)lbar.getPreferredSize().getWidth(),
+                            (int)rootSelect.getMinimumSize().getHeight());
+      
+      lbar.add(new JLabel(" LOCAL"),BorderLayout.WEST);
+      lbar.setPreferredSize(d);
+      localPanel.add(lbar,BorderLayout.SOUTH);
+
+// remote panel menu
+      JPanel rbar = new JPanel(new BorderLayout());
+      rbar.add(new JLabel(" REMOTE "),BorderLayout.WEST);
+      rbar.add(rootSelect,BorderLayout.EAST);
+      rbar.setPreferredSize(d);
+      remotePanel.add(rbar,BorderLayout.SOUTH);
+
+//    treePane.setOneTouchExpandable(true);
       getContentPane().add(treePane);
       pack();
       setVisible(true);
@@ -146,6 +163,8 @@ public class LocalAndRemoteFileTreeFrame extends JFrame
   public void setExit()
   {
     prefClose.setText("Exit");
+    prefClose.setAccelerator(KeyStroke.getKeyStroke(
+                    KeyEvent.VK_E, ActionEvent.CTRL_MASK));
     prefClose.addActionListener(new ActionListener()
     {
       public void actionPerformed(ActionEvent e)
