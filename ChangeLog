@@ -1,3 +1,9 @@
+Version 2.5.1
+	sigcleave options pval and nval hardcoded. They depend on the
+	weight matrix size - which is hardcoded as 15 in the ACD file and
+	is not checked in the program. They were introduced in EGCG in
+	1988 but never used because no other weight matrix length was
+	tried.
 Version 2.5.0
 	"fasta" format now uses the "ncbi" parser, so both formats report
 	"fasta" as the format. "pearson" is the old "fasta" format for a few
