@@ -53,6 +53,7 @@ static void rebex_write_equ(AjPTable ptable, AjPFile oute);
 int main(int argc, char **argv)
 {
     AjPFile inf   = NULL;
+    AjPFile infp  = NULL;
     AjPFile outf  = NULL;
     AjPFile outf2 = NULL;
     AjPFile outf3 = NULL;
@@ -81,10 +82,15 @@ int main(int argc, char **argv)
     AjPStr    key       = NULL;
     AjPStr    value     = NULL;
     AjPStrTok handle    = NULL;
-
+    AjPStr    token     = NULL;
+    
+    AjBool    isproto   = ajFalse;
+    char      c;
+    
     embInit("rebaseextract",argc,argv);
 
     inf   = ajAcdGetInfile("inf");
+    infp  = ajAcdGetInfile("proto");
     doequ = ajAcdGetBool("equivalences");
     
 
@@ -117,8 +123,7 @@ int main(int argc, char **argv)
     tit      = ajStrNew();
     sou      = ajStrNew();
     comm     = ajStrNew();
-
-
+    token    = ajStrNew();
 
     /*
      *  Extract Supplier information
@@ -134,6 +139,17 @@ int main(int argc, char **argv)
 	    break;
     }
 
+
+    while(ajFileReadLine(infp,&line))
+    {
+	if(ajStrFindC(line,"proto.")>=0)
+	    isproto = ajTrue;
+
+	
+	if(strstr(ajStrStr(line),"Rich Roberts"))
+	    break;
+    }
+
     if(!isrefm)
     {
 	if(isref)
@@ -143,6 +159,26 @@ int main(int argc, char **argv)
     }
 
 
+    if(!isproto)
+	ajFatal("Invalid PROTO file specified");
+
+
+
+    while(doequ && ajFileReadLine(infp,&line))
+    {
+	if(!ajStrLen(line))
+	    continue;
+	c = *ajStrStr(line);
+	if(c>='A' && c<='Z')
+	{
+	    key   = ajStrNew();
+	    value = ajStrNew();
+
+	    if(ajFmtScanS(line,"%S%S",&key,&value)==2)
+	        ajTablePut(ptable,(const void *)key, (void *)value);
+	}
+    }
+    
     if(!ajFileReadLine(inf,&line))
 	ajFatal("No Supplier Information Found");
     if(!ajFileReadLine(inf,&line))
@@ -174,22 +210,16 @@ int main(int argc, char **argv)
 	    ajStrAssC(&isoschiz,ajStrStr(line)+3);
 	    if(doequ)
 	    {
-		key   = ajStrNew();
-		value = ajStrNew();
-		ajStrAssS(&key, code);
 		ajStrAssS(&isostr,isoschiz);
 		handle = ajStrTokenInit(isostr,"\t\n>,");
-	        ajStrToken (&value, &handle, NULL);
-	        ajTablePut(ptable,(const void *)key, (void *)value);
+	        ajStrToken (&token, &handle, NULL);
+		if(ajTableGet(ptable,(const void *)token))
+		    ajFmtPrintF(oute,"%S %S\n",code,token);
 		ajStrTokenClear(&handle);
 	    }
 	}
 	else
 	    ajStrAssC(&isoschiz,"");
-
-
-
-
 
 
 	/* Get recognition sequence */
@@ -284,18 +314,19 @@ int main(int argc, char **argv)
 
     if(doequ)
     {
-	rebex_write_equ(ptable,oute);
 	ajStrDel(&isostr);
 	ajFileClose(&oute);
 	ajStrTableFree(&ptable);
     }
 
     ajFileClose(&inf);
+    ajFileClose(&infp);
     ajFileClose(&outf);
     ajFileClose(&outf2);
 
 
     ajStrDel(&line);
+    ajStrDel(&token);
     ajStrDel(&isoschiz);
     ajStrDel(&tit);
     ajStrDel(&meth);
@@ -600,49 +631,6 @@ static void rebex_printSuppHeader(AjPFile outf)
     ajFmtPrintF(outf,"# Format:\n");
     ajFmtPrintF(outf,"# Code of Supplier<ws>Supplier name\n");
     ajFmtPrintF(outf,"#\n");
-
-    return;
-}
-
-
-/* @funcstatic rebex_write_equ ******************************************
-**
-** Work out prototypes and write from codes and first isoschizomer entry
-**
-** @param [r] ptable [AjPFile] table of code/isoschizomer pairs
-** @param [w] oute [AjPFile] emboss.equ output file
-** @@
-******************************************************************************/
-
-static void rebex_write_equ(AjPTable ptable, AjPFile oute)
-{
-    AjPStr *array  = NULL;
-    ajint  i;
-    AjPStr tmpstr  = NULL;
-    AjPTable proto = NULL;
-    
-    array = (AjPStr *) ajTableToarray(ptable,NULL);
-
-    i=0;
-    proto = ajStrTableNew(EQUGUESS);
-    while(array[i])
-    {
-	ajTablePut(proto,(const void *)array[i+1],(void *)array[i]);
-	i+=2;
-    }
-
-    i = 0;
-    while(array[i])
-    {
-	tmpstr = ajTableGet(proto,(const void *)array[i]);
-	if(!tmpstr)
-	    ajFmtPrintF(oute,"%S %S\n",array[i],array[i+1]);
-	i+=2;
-    }
-
-    ajStrTableFree(&proto);
-    AJFREE(array);
-
 
     return;
 }

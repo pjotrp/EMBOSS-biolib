@@ -9,7 +9,12 @@ appl: rebaseextract [
 section: input [ info: "input Section" type: page ]
 infile: inf  [
   parameter: "Y"
-  prompt: "Full pathname of WITHREFM"
+  prompt: "Full pathname of WITHREFM file"
+]
+
+infile: proto  [
+  parameter: "Y"
+  prompt: "Full pathname of PROTO file"
 ]
 
 boolean: equivalences [
