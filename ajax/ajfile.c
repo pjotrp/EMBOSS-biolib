@@ -3776,7 +3776,7 @@ AjBool ajFileBuffIsbuff(AjPFileBuff thys)
     AjBool ret;
 
     if(!thys)
-	return;
+	return ajFalse;
 
     ret = thys->Nobuff;
     ajDebug("ajFileBuffIsbuff %F buffsize: %d\n", thys->File, thys->Size);
