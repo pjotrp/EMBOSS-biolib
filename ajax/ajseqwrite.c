@@ -136,7 +136,7 @@ static void       seqAllClone(AjPSeqout outseq, const AjPSeq seq);
 static void       seqClone(AjPSeqout outseq, const AjPSeq seq);
 static void       seqDbName(AjPStr* name, const AjPStr db);
 static void       seqDeclone(AjPSeqout outseq);
-static void       seqDefName(AjPStr* name, AjBool multi);
+static void       seqDefName(AjPStr* name, AjPStr setname, AjBool multi);
 static AjBool     seqFileReopen(AjPSeqout outseq);
 static AjBool     seqoutUfoLocal(const AjPSeqout thys);
 static AjBool     seqoutUsaProcess(AjPSeqout thys);
@@ -288,7 +288,7 @@ void ajSeqAllWrite(AjPSeqout outseq, AjPSeq seq)
     
     seqAllClone(outseq, seq);
     
-    seqDefName(&outseq->Name, !outseq->Single);
+    seqDefName(&outseq->Name, outseq->Entryname, !outseq->Single);
     
     if(outseq->Single)
 	seqFileReopen(outseq);
@@ -388,7 +388,7 @@ void ajSeqsetWrite(AjPSeqout outseq, const AjPSeqset seq)
 	}
 
 	seqsetClone(outseq, seq, i);
-	seqDefName(&outseq->Name, !outseq->Single);
+	seqDefName(&outseq->Name, outseq->Entryname, !outseq->Single);
 
 	if(outseq->Single)
 	    seqFileReopen(outseq);
@@ -468,14 +468,14 @@ static void seqWriteListAppend(AjPSeqout outseq, const AjPSeq seq)
     /* if(listseq->Rev)
        ajSeqReverse(listseq); */ /* already done */
 
-    seqDefName(&listseq->Name, !outseq->Single);
+    seqDefName(&listseq->Name, outseq->Entryname, !outseq->Single);
 
     ajListPushApp(outseq->Savelist, listseq);
 
     if(outseq->Single)
     {
 	ajDebug("single sequence mode: write immediately\n");
-	seqDefName(&outseq->Name, !outseq->Single);
+	seqDefName(&outseq->Name, outseq->Entryname, !outseq->Single);
 	/* Calling funclist seqOutFormat() */
 	seqOutFormat[outseq->Format].Write(outseq);
     }
@@ -584,7 +584,7 @@ void ajSeqWrite(AjPSeqout outseq, const AjPSeq seq)
     
     seqClone(outseq, seq);
     
-    seqDefName(&outseq->Name, !outseq->Single);
+    seqDefName(&outseq->Name, outseq->Entryname, !outseq->Single);
     
     if(outseq->Single)
 	seqFileReopen(outseq);
@@ -704,10 +704,10 @@ static void seqWriteNcbi(AjPSeqout outseq)
     else
 	ajFmtPrintF(outseq->File, ">gnl|");
 
-    if(ajStrLen(outseq->Db))
-	ajFmtPrintF(outseq->File, "%S|", outseq->Db);
-    else if(ajStrLen(outseq->Setdb))
+    if(ajStrLen(outseq->Setdb))
 	ajFmtPrintF(outseq->File, "%S|", outseq->Setdb);
+    else if(ajStrLen(outseq->Db))
+	ajFmtPrintF(outseq->File, "%S|", outseq->Db);
     else
 	ajFmtPrintF(outseq->File, "unk|");
 
@@ -4187,12 +4187,13 @@ static void seqDbName(AjPStr* name, const AjPStr db)
 ** Provides a unique (for this program run) name for a sequence.
 **
 ** @param [w] name [AjPStr*] Derived name.
+** @param [w] setname [AjPStr] Name set by caller
 ** @param [r] multi [AjBool] If true, appends a number to the name.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void seqDefName(AjPStr* name, AjBool multi)
+static void seqDefName(AjPStr* name, AjPStr setname, AjBool multi)
 {
     static ajint count = 0;
 
@@ -4202,10 +4203,26 @@ static void seqDefName(AjPStr* name, AjBool multi)
 	return;
     }
 
-    if(multi)
-	ajFmtPrintS(name, "EMBOSS_%3.3d", ++count);
+    if (ajStrLen(setname))
+    {
+	if(multi && count)
+	    ajFmtPrintS(name, "%S_%3.3d", setname, ++count);
+	else
+	{
+	    ajStrAssS(name, setname);
+	    ++count;
+	}
+    }
     else
-	ajStrAssC(name, "EMBOSS");
+    {
+	if(multi)
+	    ajFmtPrintS(name, "EMBOSS_%3.3d", ++count);
+	else
+	{
+	    ajStrAssC(name, "EMBOSS");
+	    ++count;
+	}
+    }
 
     ajDebug("seqDefName set to  '%S'\n", *name);
 
