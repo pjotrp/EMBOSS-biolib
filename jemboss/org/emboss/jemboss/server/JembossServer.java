@@ -138,6 +138,7 @@ public class JembossServer
     String line;
     String acdToParse = new String(acdDirToParse + appName + ".acd");
 
+
     try
     {
       BufferedReader in = new BufferedReader(new FileReader(acdToParse));
@@ -156,15 +157,15 @@ public class JembossServer
       System.out.println("Cannot open EMBOSS acd file " + acdToParse);
     }
 
-    acd.addElement(new Parameter("status",String.class,"status",null));
-    acd.addElement(new Parameter("status",String.class,"0",null));
-    acd.addElement(new Parameter("acd",String.class,"acd",null));
-    acd.addElement(new Parameter("acd",String.class,acdText,null));
+//  acd.addElement(new Parameter("status",String.class,"status",null));
+//  acd.addElement(new Parameter("status",String.class,"0",null));
+//  acd.addElement(new Parameter("acd",String.class,"acd",null));
+//  acd.addElement(new Parameter("acd",String.class,acdText,null));
 
-//  acd.add("status");
-//  acd.add("0");
-//  acd.add("acd");
-//  acd.add(acdText);
+    acd.add("status");
+    acd.add("0");
+    acd.add("acd");
+    acd.add(acdText);
 
     return acd;
   }
