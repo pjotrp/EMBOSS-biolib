@@ -87,7 +87,8 @@ public class PrivateRequest
      try
      {
        String  endpoint = mysettings.getPublicSoapURL()+"/"+service;
-       Service serv     = new Service();
+       org.apache.axis.client.Service serv =
+                               new org.apache.axis.client.Service();
        Call    call     = (Call) serv.createCall();
        QName   qn       = new QName(service, method);
        call.setTargetEndpointAddress( new java.net.URL(endpoint) );
