@@ -1400,8 +1400,17 @@ AjBool embDmxSeqNR(const AjPList input, AjPInt *keep, ajint *nset,
     /* Keep first sequence in case all have been processed out */
     if(*nset == 0)
     {
-	ajIntPut(keep,0,1);
-	*nset = 1;
+	for(x=0; x<nin; x++)
+	{
+	    if((!inseqs[x]->Garbage))
+	    {	
+		ajIntPut(keep,x,1);
+		*nset = 1;
+		break;
+	    }
+	}
+	if(*nset == 0)
+	    ajWarn("nset == 0 after processing");
     }
     
 
@@ -1688,10 +1697,19 @@ AjBool embDmxSeqNRRange(const AjPList input, AjPInt *keep, ajint *nset,
     /* Keep first sequence in case all have been processed out */
     if(*nset == 0)
     {
-	ajIntPut(keep,0,1);
-	*nset = 1;
+	for(x=0; x<nin; x++)
+	{
+	    if((!inseqs[x]->Garbage))
+	    {	
+		ajIntPut(keep,x,1);
+		*nset = 1;
+		break;
+	    }
+	}
+	if(*nset == 0)
+	    ajWarn("nset == 0 after processing");
     }
-
+    
     /* Tidy up */
     AJFREE(compass);
     AJFREE(path);
