@@ -410,7 +410,8 @@ public class JembossAuthServer
         appendToLogFile("Created directory "+tmproot,errorLog);
       else
       {
-        String warnmsg = new String("Failed to create dir "+tmproot);
+        String warnmsg = new String("Failed to create dir "+tmproot+
+                                    "\nSTDERR :"+ aj.getErrStd());
         appendToLogFile(warnmsg,errorLog);
         result.add("msg");
         result.add(warnmsg);
@@ -439,7 +440,7 @@ public class JembossAuthServer
     if(!ok || !aj.getErrStd().equals("")) 
     {
       String warnmsg = new String("run_prog failed to create dir "+
-                                   project);
+                                project+"\nSTDERR :"+aj.getErrStd());
       appendToLogFile(warnmsg,errorLog);
       result.add("msg");
       result.add(warnmsg);
