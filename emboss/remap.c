@@ -51,7 +51,7 @@ static void remap_ajStrDel(void** str, void* cl);
 static void rebase_RenamePreferred(AjPList list, AjPTable table, 
 				   AjPList newlist);
 static void remap_RestrictPreferred(AjPList l, AjPTable t);
-
+static AjBool remap_Ambiguous(AjPStr str);
 
 
 
@@ -527,7 +527,8 @@ static void remap_CutList(AjPFile outfile, AjPTable hittable, AjBool isos,
     /* print title */
     if(html)
         ajFmtPrintF(outfile, "<H2>");
-    ajFmtPrintF(outfile, "\n\n# Enzymes < MINCUTS Frequency");
+    ajFmtPrintF(outfile, "\n\n# Enzymes which cut less frequently than the ");
+    ajFmtPrintF(outfile, "MINCUTS criterion\n# Enzymes < MINCUTS Frequency");
 
     if(isos)
         ajFmtPrintF(outfile, "\tIsoschizomers\n");
@@ -562,7 +563,8 @@ static void remap_CutList(AjPFile outfile, AjPTable hittable, AjBool isos,
     /* print title */
     if(html)
 	ajFmtPrintF(outfile, "<H2>");
-    ajFmtPrintF(outfile, "\n\n# Enzymes > MAXCUTS Frequency");
+    ajFmtPrintF(outfile, "\n\n# Enzymes which cut more frequently than the ");
+    ajFmtPrintF(outfile, "MAXCUTS criterion\n# Enzymes > MAXCUTS Frequency");
 
     if(isos)
 	ajFmtPrintF(outfile, "\tIsoschizomers\n");
@@ -804,8 +806,7 @@ static void remap_NoCutList(AjPFile outfile, AjPTable hittable,
 	    continue;
         }
 
-	if(!ambiguity && ajStrFindCaseC(enz->pat, "N") != -1)
-	{
+	if(!ambiguity && remap_Ambiguous(enz->pat)) {
 	    ajDebug("RE %S is ambiguous\n", enz->cod);
 	    rejected_count++;
 	    continue;	
@@ -955,8 +956,8 @@ static void remap_NoCutList(AjPFile outfile, AjPTable hittable,
     if(html)
         ajFmtPrintF(outfile, "<H2>");
     ajFmtPrintF(outfile,
-		"\n\n# No. of cutting REs not matching "
-		"SITELEN, BLUNT, STICKY, COMMERCIAL criteria\n\n");
+		"\n\n# No. of cutting enzymes which do not match the\n"
+		"# SITELEN, BLUNT, STICKY, COMMERCIAL, AMBIGUOUS citeria\n\n");
     if(html)
 	ajFmtPrintF(outfile, "</H2>\n");
     ajFmtPrintF(outfile, "%d\n", rejected_count);
@@ -1254,4 +1255,33 @@ static void remap_RestrictPreferred(AjPList l, AjPTable t)
     ajListIterFree(iter);     
     
     return; 
+}
+
+/* @funcstatic remap_Ambiguous  ***************************************
+**
+** Tests whether there are ambiguity base codes in a string
+**
+** @param [r] str [AjPStr] String to test
+**
+** @return [ajBool] True is ambiguous bases found
+** @@
+******************************************************************************/
+
+static AjBool remap_Ambiguous(AjPStr str)
+{
+    ajint ipos;
+    char chr;
+    
+    for (ipos=0; ipos<ajStrLen(str); ipos++) 
+    {
+    	chr = ajStrChar(str, ipos);
+    	if (tolower(chr) != 'a' &&
+    	    tolower(chr) != 'c' &&
+    	    tolower(chr) != 'g' &&
+    	    tolower(chr) != 't'
+    	    )
+            return ajTrue;
+    }
+
+    return ajFalse;
 }
