@@ -826,6 +826,7 @@ AcdOQual acdQualAlign[] =
   {"aname",      "",       "string", "base file name"},
   {"awidth",     "",       "int",    "alignment width"},
   {"ausashow",   "",       "bool",   "show the full USA in the alignment"},
+  {"aglobal",    "",       "bool",   "show the full sequence in alignment"},
   {NULL, NULL, NULL, NULL} };
 
 AcdOQual acdQualFeat[] =
@@ -3118,6 +3119,7 @@ static void acdSetAlign (AcdPAcd thys)
     (void) acdAttrToInt (thys, "maxseqs", 0, &val->Nmax);
     (void) acdQualToInt (thys, "awidth", 50, &val->Width, &defreply);
     (void) acdAttrToBool (thys, "multiple", ajFalse, &val->Multi);
+    (void) acdQualToBool (thys, "aglobal", ajFalse, &val->Global, &defreply);
     (void) acdQualToBool (thys, "ausashow", ajFalse, &val->Showusa, &defreply);
 
     (void) acdOutFilename (&outfname, name, ext);
