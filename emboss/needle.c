@@ -119,16 +119,16 @@ int main(int argc, char **argv)
 	len = lena*lenb;
 
 	if(len < 0)
-	    ajFatal("Sequences too big. Try 'matcher' or 'supermatcher'");
+	    ajFatal("Sequences too big. Try 'stretcher' or 'supermatcher'");
 
 	if(len>maxarr)
 	{
-	    AJCRESIZE(path,len);
+	    AJCRESIZETRY(path,len);
 	    if(!path)
-		ajFatal("Sequences too big. Try 'stretcher'");
-	    AJCRESIZE(compass,len);
+		ajDie("Sequences too big. Try 'stretcher'");
+	    AJCRESIZETRY(compass,len);
 	    if(!compass)
-		ajFatal("Sequences too big. Try 'stretcher'");
+		ajDie("Sequences too big. Try 'stretcher'");
 	    maxarr=len;
 	}
 
