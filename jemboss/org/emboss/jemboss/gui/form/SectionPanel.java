@@ -540,17 +540,16 @@ public class SectionPanel
     appName = parseAcd.getParamValueStr(nf,0).toUpperCase();
     Box bylabP = new Box(BoxLayout.Y_AXIS);
     Box bxlabP = new Box(BoxLayout.X_AXIS);
-    
-    JLabel labP = new JLabel("<html><font size=+1><FONT COLOR=RED>"  +
-                                  appName + "</FONT>");
-    bxlabP.add(Box.createHorizontalStrut(10));
-    bxlabP.add(labP);
+
+    final ApplicationNamePanel namePanel = new ApplicationNamePanel(
+                                              appName,10,18,19);
+    bxlabP.add(namePanel);
     bxlabP.add(Box.createHorizontalGlue());
     bylabP.add(bxlabP);
-    labP = new JLabel(des);
+
+    JLabel labP = new JLabel(des);
     labP.setForeground(Color.black);
     labP.setFont(labfont);
-
     bxlabP = new Box(BoxLayout.X_AXIS);
     bxlabP.add(Box.createHorizontalStrut(10));
     bxlabP.add(labP);
@@ -558,12 +557,27 @@ public class SectionPanel
     bylabP.add(bxlabP);
     p3.add(bylabP, BorderLayout.NORTH);
 
-//  JembossLogo jl = new JembossLogo(appName,10,15,14);
+//  appName = parseAcd.getParamValueStr(nf,0).toUpperCase();
+//  Box bylabP = new Box(BoxLayout.Y_AXIS);
 //  Box bxlabP = new Box(BoxLayout.X_AXIS);
-//  bxlabP.add(jl);
-//  bxlabP.add(Box.createVerticalStrut(40));
+
+//  JLabel labP = new JLabel("<html><font size=+1><FONT COLOR=RED>"  +
+//                                appName + "</FONT>");
+//  bxlabP.add(Box.createHorizontalStrut(10));
+//  bxlabP.add(labP);
 //  bxlabP.add(Box.createHorizontalGlue());
-//  p3.add(bxlabP, BorderLayout.NORTH);
+//  bylabP.add(bxlabP);
+//  labP = new JLabel(des);
+//  labP.setForeground(Color.black);
+//  labP.setFont(labfont);
+
+//  bxlabP = new Box(BoxLayout.X_AXIS);
+//  bxlabP.add(Box.createHorizontalStrut(10));
+//  bxlabP.add(labP);
+//  bxlabP.add(Box.createHorizontalGlue());
+//  bylabP.add(bxlabP);
+//  p3.add(bylabP, BorderLayout.NORTH);
+
   }
 
 
