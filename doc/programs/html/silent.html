@@ -96,7 +96,7 @@ Several restriction enzyme can be specified.
 Silent mutation restriction enzyme scan
 Input sequence: <b>tembl:hsfau</b>
 Comma separated enzyme list [all]: <b>ecori,hindiii</b>
-Output file [hsfau.silent]: <b></b>
+Output report [hsfau.silent]: <b></b>
 
 </pre></td></tr></table><p>
 <p>
@@ -114,7 +114,7 @@ Output file [hsfau.silent]: <b></b>
    Standard (Mandatory) qualifiers:
   [-sequence]          sequence   Sequence USA
    -enzymes            string     Comma separated enzyme list
-  [-outfile]           outfile    Output file name
+  [-outfile]           report     Output report file name
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
@@ -134,7 +134,6 @@ Output file [hsfau.silent]: <b></b>
    -slower1             boolean    Make lower case
    -supper1             boolean    Make upper case
    -sformat1            string     Input sequence format
-   -sopenfile1          string     Input filename
    -sdbname1            string     Database name
    -sid1                string     Entryname
    -ufo1                string     UFO features
@@ -142,7 +141,14 @@ Output file [hsfau.silent]: <b></b>
    -fopenfile1          string     Features file name
 
    "-outfile" associated qualifiers
-   -odirectory2         string     Output directory
+   -rformat2            string     Report format
+   -rname2              string     Base file name
+   -rextension2         string     File name extension
+   -rdirectory2         string     Output directory
+   -raccshow2           boolean    Show accession number in the report
+   -rdesshow2           boolean    Show description in the report
+   -rscoreshow2         boolean    Show the score in the report
+   -rusashow2           boolean    Show the full USA in the report
 
    General qualifiers:
    -auto                boolean    Turn off prompts
@@ -186,9 +192,9 @@ Output file [hsfau.silent]: <b></b>
 
 <tr>
 <td>[-outfile]<br>(Parameter 2)</td>
-<td>Output file name</td>
-<td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.silent</td>
+<td>Output report file name</td>
+<td>Report output file</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -372,30 +378,35 @@ SQ   Sequence 518 BP; 125 A; 139 C; 148 G; 106 T; 0 other;
 <p><h3>File: hsfau.silent</h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
-Results for HSFAU:
+########################################
+# Program: silent
+# Rundate: Thu Nov 27 15:25:41 2003
+# Report_format: table
+# Report_file: hsfau.silent
+########################################
 
-KEY:
-	Enzyme		Enzyme name
-	RS-Pattern	Restriction enzyme recognition site pattern
-	Match-Posn	Position of the first base of RS pattern in sequence
-	AA		Amino acid. Original sequence(.)After mutation
-	Base-Posn	Position of base to be mutated in sequence
-	Mutation	The base mutation to perform
+#=======================================
+#
+# Sequence: HSFAU     from: 1   to: 518
+# HitCount: 1
+#
+# KEY:
+# EnzymeName: Enzyme name
+# RS-Pattern: Restriction enzyme recognition site pattern
+# Base-Posn: Position of base to be mutated
+# AAs: Amino acid. Original sequence(.)After mutation
+# Silent: Yes for unchanged amino acid
+# Mutation: The base mutation to perform
+# 
+# Creating silent and non-silent mutations
+#
+#=======================================
 
-Silent mutations
+  Start     End Dir    EnzymeName RS-Pattern Base-Posn    AAs Silent Mutation
+    272     267 Rev    HindIII    AAGCTT           268    A.A    Yes     A-&gt;T
 
-Enzyme      RS-Pattern  Match-Posn   AA  Base-Posn Mutation
-
-
-
-Results for reverse of HSFAU:
-
-Silent mutations
-
-Enzyme      RS-Pattern  Match-Posn   AA  Base-Posn Mutation
-HindIII     AAGCTT         267       A.A    268      A-&gt;T  
-
-
+#---------------------------------------
+#---------------------------------------
 </pre>
 </td></tr></table><p>
 

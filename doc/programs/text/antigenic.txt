@@ -74,7 +74,6 @@ Command line arguments
    -slower1             boolean    Make lower case
    -supper1             boolean    Make upper case
    -sformat1            string     Input sequence format
-   -sopenfile1          string     Input filename
    -sdbname1            string     Database name
    -sid1                string     Entryname
    -ufo1                string     UFO features
@@ -203,7 +202,7 @@ Output file format
   
 ########################################
 # Program: antigenic
-# Rundate: Wed Oct 29 13:42:06 2003
+# Rundate: Thu Nov 27 15:17:51 2003
 # Report_format: motif
 # Report_file: act1_fugru.antigenic
 ########################################
@@ -312,7 +311,7 @@ Max_score_pos at "*"
   File: act1_fugru.antigenic
   
 ##gff-version 2.0
-##date 2003-10-29
+##date 2003-11-27
 ##Type Protein ACT1_FUGRU
 ACT1_FUGRU      antigenic       site    214     222     1.207   +       .
 Sequence "ACT1_FUGRU.1" ; note "*pos 218"
@@ -427,6 +426,7 @@ See also
 
     Program name                         Description
    digest         Protein proteolytic enzyme or reagent cleavage digest
+   epestfind      Finds PEST motifs as potential proteolytic cleavage sites
    fuzzpro        Protein pattern search
    fuzztran       Protein pattern search after translation
    helixturnhelix Report nucleic acid binding motifs
@@ -434,7 +434,6 @@ See also
    patmatdb       Search a protein sequence with a motif
    patmatmotifs   Search a PROSITE motif database with a protein sequence
    pepcoil        Predicts coiled coil regions
-   pestfind       Finds PEST motifs as potential proteolytic cleavage sites
    preg           Regular expression search of a protein sequence
    pscan          Scans proteins using PRINTS
    sigcleave      Reports protein signal cleavage sites

@@ -62,6 +62,13 @@ Usage
 Search all databases for an entry
 ID or Accession number: hsfau1
 Output file [outfile.whichdb]: 
+Warning: Cannot open division file '' for database 'ensdnamasked'
+Warning: seqCdQry failed
+Warning: Cannot open division file '' for database 'ensdnam'
+Warning: seqCdQry failed
+Error: socket connect failed for database 'tgb'
+socket connect failed for database 'tgb': 
+Connection timed out
    
    Go to the output files for this example
    

@@ -265,6 +265,7 @@ pepwindowall     Displays protein hydropathy of a set of sequences
 PROTEIN MOTIFS
 antigenic        Finds antigenic sites in proteins
 digest           Protein proteolytic enzyme or reagent cleavage digest
+epestfind        Finds PEST motifs as potential proteolytic cleavage sites
 fuzzpro          Protein pattern search
 fuzztran         Protein pattern search after translation
 helixturnhelix   Report nucleic acid binding motifs
@@ -272,7 +273,6 @@ oddcomp          Finds protein sequence regions with a biased composition
 patmatdb         Search a protein sequence with a motif
 patmatmotifs     Search a PROSITE motif database with a protein sequence
 pepcoil          Predicts coiled coil regions
-pestfind         Finds PEST motifs as potential proteolytic cleavage sites
 preg             Regular expression search of a protein sequence
 pscan            Scans proteins using PRINTS
 sigcleave        Reports protein signal cleavage sites
@@ -356,6 +356,7 @@ embossversion    Writes the current EMBOSS version number
 emma             Multiple alignment program - interface to ClustalW program
 emowse           Protein identification by mass spectrometry
 entret           Reads and writes (returns) flatfile entries
+epestfind        Finds PEST motifs as potential proteolytic cleavage sites
 eprimer3         Picks PCR primers and hybridization oligos
 equicktandem     Finds tandem repeats
 est2genome       Align EST and genomic DNA sequences
@@ -408,7 +409,6 @@ pepstats         Protein statistics
 pepwheel         Shows protein sequences as helices
 pepwindow        Displays protein hydropathy
 pepwindowall     Displays protein hydropathy of a set of sequences
-pestfind         Finds PEST motifs as potential proteolytic cleavage sites
 plotcon          Plots the quality of conservation of a sequence alignment
 plotorf          Plot potential open reading frames
 polydot          Displays all-against-all dotplots of a set of sequences
@@ -831,6 +831,7 @@ DISPLAY
    [Part of this file has been deleted for brevity]
    antigenic      Finds antigenic sites in proteins
    digest         Protein proteolytic enzyme or reagent cleavage digest
+   epestfind      Finds PEST motifs as potential proteolytic cleavage sites
    fuzzpro        Protein pattern search
    fuzztran       Protein pattern search after translation
    helixturnhelix Report nucleic acid binding motifs
@@ -838,7 +839,6 @@ DISPLAY
    patmatdb       Search a protein sequence with a motif
    patmatmotifs   Search a PROSITE motif database with a protein sequence
    pepcoil        Predicts coiled coil regions
-   pestfind       Finds PEST motifs as potential proteolytic cleavage sites
    preg           Regular expression search of a protein sequence
    pscan          Scans proteins using PRINTS
    sigcleave      Reports protein signal cleavage sites

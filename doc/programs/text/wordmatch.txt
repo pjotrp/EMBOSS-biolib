@@ -58,7 +58,6 @@ Command line arguments
    -slower1             boolean    Make lower case
    -supper1             boolean    Make upper case
    -sformat1            string     Input sequence format
-   -sopenfile1          string     Input filename
    -sdbname1            string     Database name
    -sid1                string     Entryname
    -ufo1                string     UFO features
@@ -75,7 +74,6 @@ Command line arguments
    -slower2             boolean    Make lower case
    -supper2             boolean    Make upper case
    -sformat2            string     Input sequence format
-   -sopenfile2          string     Input filename
    -sdbname2            string     Database name
    -sid2                string     Entryname
    -ufo2                string     UFO features
@@ -84,7 +82,6 @@ Command line arguments
 
    "-outfile" associated qualifiers
    -aformat3            string     Alignment format
-   -aopenfile3          string     Alignment file name
    -aextension3         string     File name extension
    -adirectory3         string     Output directory
    -aname3              string     Base file name
@@ -393,7 +390,7 @@ Output file format
   File: HBA_HUMAN.gff
   
 ##gff-version 2.0
-##date 2003-10-29
+##date 2003-11-27
 ##Type Protein HBA_HUMAN
 HBA_HUMAN       wordmatch       misc_feature    58      62      1.000   +
 .       Sequence "HBA_HUMAN.1" ; note "HBB_HUMAN"
@@ -405,7 +402,7 @@ HBA_HUMAN       wordmatch       misc_feature    116     119     1.000   +
   File: HBB_HUMAN.gff
   
 ##gff-version 2.0
-##date 2003-10-29
+##date 2003-11-27
 ##Type Protein HBB_HUMAN
 HBB_HUMAN       wordmatch       misc_feature    63      67      1.000   +
 .       Sequence "HBB_HUMAN.1" ; note "HBA_HUMAN"
@@ -418,7 +415,7 @@ HBB_HUMAN       wordmatch       misc_feature    121     124     1.000   +
   
 ########################################
 # Program:  wordmatch
-# Rundate:  Wed Oct 29 13:52:29 2003
+# Rundate:  Thu Nov 27 15:29:52 2003
 # Align_format: match
 # Report_file: hba_human.wordmatch
 ########################################

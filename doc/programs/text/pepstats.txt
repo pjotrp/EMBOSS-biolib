@@ -12,15 +12,17 @@ Description
    pepstats outputs a report of simple protein sequence information
    including:
    
-     * molecular weight
-     * number of residues
-     * average residue weight
-     * charge
-     * isoelectric point
-     * for each type of amino acid: number, molar percent, DayhoffStat
-     * for each physico-chemical class of amino acid: number, molar
+     * Molecular weight
+     * Number of residues
+     * Average residue weight
+     * Charge
+     * Isoelectric point
+     * For each type of amino acid: number, molar percent, DayhoffStat
+     * For each physico-chemical class of amino acid: number, molar
        percent
-     * probability of protein expression in E. coli inclusion bodies
+     * Probability of protein expression in E. coli inclusion bodies
+     * Molar extinction coefficient (A280)
+     * Extinction coefficient at 1 mg/ml (A280)
        
    DayhoffStat is the amino acid's Dayhoff statistic divided by the molar
    percent. The Dayhoff statistic is the amino acid's relative occurence
@@ -79,7 +81,6 @@ Command line arguments
    -slower1             boolean    Make lower case
    -supper1             boolean    Make upper case
    -sformat1            string     Input sequence format
-   -sopenfile1          string     Input filename
    -sdbname1            string     Database name
    -sid1                string     Entryname
    -ufo1                string     UFO features
@@ -245,6 +246,8 @@ PEPSTATS of LACI_ECOLI from 1 to 360
 Molecular weight = 38563.97             Residues = 360
 Average Residue Weight  = 107.122       Charge   = 1.5
 Isoelectric Point = 6.8820
+A280 Molar Extinction Coefficient  = 21620
+A280 Extinction Coefficient 1mg/ml = 0.56
 Improbability of expression in inclusion bodies = 0.670
 
 Residue         Number          Mole%           DayhoffStat

@@ -1007,7 +1007,7 @@ does two things:
 Regular expression search of a protein sequence
 Input sequence(s): <b>tsw:*_rat</b>
 Regular expression pattern: <b>IA[QWF]A</b>
-Output file [100k_rat.preg]: <b></b>
+Output report [100k_rat.preg]: <b></b>
 
 </pre></td></tr></table><p>
 <p>
@@ -1031,7 +1031,7 @@ IT IS DONE FOR YOU.
    Standard (Mandatory) qualifiers:
   [-sequence]          seqall     Sequence database USA
   [-pattern]           regexp     Regular expression pattern
-  [-outfile]           outfile    Output file name
+  [-outfile]           report     Output report file name
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers: (none)
@@ -1047,7 +1047,6 @@ IT IS DONE FOR YOU.
    -slower1             boolean    Make lower case
    -supper1             boolean    Make upper case
    -sformat1            string     Input sequence format
-   -sopenfile1          string     Input filename
    -sdbname1            string     Database name
    -sid1                string     Entryname
    -ufo1                string     UFO features
@@ -1055,7 +1054,14 @@ IT IS DONE FOR YOU.
    -fopenfile1          string     Features file name
 
    "-outfile" associated qualifiers
-   -odirectory3         string     Output directory
+   -rformat3            string     Report format
+   -rname3              string     Base file name
+   -rextension3         string     File name extension
+   -rdirectory3         string     Output directory
+   -raccshow3           boolean    Show accession number in the report
+   -rdesshow3           boolean    Show description in the report
+   -rscoreshow3         boolean    Show the score in the report
+   -rusashow3           boolean    Show the full USA in the report
 
    General qualifiers:
    -auto                boolean    Turn off prompts
@@ -1100,9 +1106,9 @@ IT IS DONE FOR YOU.
 
 <tr>
 <td>[-outfile]<br>(Parameter 3)</td>
-<td>Output file name</td>
-<td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.preg</td>
+<td>Output report file name</td>
+<td>Report output file</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -1158,9 +1164,27 @@ IT IS DONE FOR YOU.
 <p><h3>File: 100k_rat.preg</h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
-preg search of tsw:*_rat with pattern IA[QWF]A
-Matches in 100K_RAT
-       100K_RAT   390 IAQA
+########################################
+# Program: preg
+# Rundate: Thu Nov 27 15:22:51 2003
+# Report_format: seqtable
+# Report_file: 100k_rat.preg
+########################################
+
+#=======================================
+#
+# Sequence: 100K_RAT     from: 1   to: 889
+# HitCount: 1
+#
+# Pattern: IA[QWF]A
+#
+#=======================================
+
+  Start     End Sequence
+    390     393 IAQA
+
+#---------------------------------------
+#---------------------------------------
 </pre>
 </td></tr></table><p>
 
@@ -1224,6 +1248,7 @@ None.
 <tr><th>Program name</th><th>Description</th></tr>
 <tr><td><a href="antigenic.html">antigenic</a></td><td>Finds antigenic sites in proteins</td></tr>
 <tr><td><a href="digest.html">digest</a></td><td>Protein proteolytic enzyme or reagent cleavage digest</td></tr>
+<tr><td><a href="epestfind.html">epestfind</a></td><td>Finds PEST motifs as potential proteolytic cleavage sites</td></tr>
 <tr><td><a href="fuzzpro.html">fuzzpro</a></td><td>Protein pattern search</td></tr>
 <tr><td><a href="fuzztran.html">fuzztran</a></td><td>Protein pattern search after translation</td></tr>
 <tr><td><a href="helixturnhelix.html">helixturnhelix</a></td><td>Report nucleic acid binding motifs</td></tr>
@@ -1231,7 +1256,6 @@ None.
 <tr><td><a href="patmatdb.html">patmatdb</a></td><td>Search a protein sequence with a motif</td></tr>
 <tr><td><a href="patmatmotifs.html">patmatmotifs</a></td><td>Search a PROSITE motif database with a protein sequence</td></tr>
 <tr><td><a href="pepcoil.html">pepcoil</a></td><td>Predicts coiled coil regions</td></tr>
-<tr><td><a href="pestfind.html">pestfind</a></td><td>Finds PEST motifs as potential proteolytic cleavage sites</td></tr>
 <tr><td><a href="pscan.html">pscan</a></td><td>Scans proteins using PRINTS</td></tr>
 <tr><td><a href="sigcleave.html">sigcleave</a></td><td>Reports protein signal cleavage sites</td></tr>
 </table>

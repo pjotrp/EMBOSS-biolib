@@ -23,6 +23,49 @@ Description
    the differences squared is reported in the output file, together with
    the number of unused codons.
    
+  Statistical significance
+  
+   Question:
+   
+   How do you interpret the statistical significance of any difference
+   between the tables?
+   
+   Answer:
+   
+   This is a very interesting question. I don't think that there is any
+   way to say if it is statistically significant just from looking at it,
+   as it is essentially a descriptive statistic about the difference
+   between two 64-mer vectors. If you have a whole lot of sequences and
+   codcmp results for all the possible pairwise comparisons, then the
+   resulting distance matrix can be used to build a phylogenetic tree
+   based on codon usage.
+   
+   However, if you generate a series of random sequences, measure their
+   codon usage and then do codcmp between each of your test sequences and
+   all the random sequences, you could then use a z-test to see if the
+   result between the two test sequences was outside of the top or bottom
+   5%.
+   
+   This would assume that the codcmp results were normally distributed,
+   but you could test that too. The simplest way is just to plot them and
+   look for a bell-curve. For more rigour, find the mean and standard
+   deviation of your results from the random sequences, use the normal
+   distribution equation to generate a theoretical distribution for that
+   mean and standard deviation, and then perform a chi square between the
+   random data and the theoretically generated normal distribution. If
+   you generate two sets of random data, each based on your two test
+   sequences, an F-test should be used to establish that they have equal
+   variances. Then you can safely go ahead and perform the z-test.
+   
+   You could use shuffle to base your random sequences on the test
+   sequences - so that would ensure the randomised background had the
+   same nucleotide content.
+   
+   F-tests, z-tests and chi-tests can all be done in Excel, as well as
+   being standard in most statistical analysis packages.
+   
+   Answered by Derek Gatherer <d.gatherer © vir.gla.ac.uk> 21 Nov 2003
+   
 Usage
 
    Here is a sample session with codcmp

@@ -169,11 +169,11 @@ Output file [outfile.cons]: aligned.cons
                                   Therefore, if this is set to the number of
                                   sequences in the alignment only columns of
                                   identities contribute to the consensus.
-   -name               string     Name of the consensus sequence
    -setcase            float      Sets the threshold for the positive matches
                                   above which the consensus is is upper-case
                                   and below which the consensus is in
                                   lower-case.
+   -name               string     Name of the consensus sequence
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
@@ -188,7 +188,6 @@ Output file [outfile.cons]: aligned.cons
    -slower1             boolean    Make lower case
    -supper1             boolean    Make upper case
    -sformat1            string     Input sequence format
-   -sopenfile1          string     Input filename
    -sdbname1            string     Database name
    -sid1                string     Entryname
    -ufo1                string     UFO features
@@ -275,17 +274,17 @@ Output file [outfile.cons]: aligned.cons
 </tr>
 
 <tr>
-<td>-name</td>
-<td>Name of the consensus sequence</td>
-<td>Any string is accepted</td>
-<td><i>An empty string is accepted</i></td>
-</tr>
-
-<tr>
 <td>-setcase</td>
 <td>Sets the threshold for the positive matches above which the consensus is is upper-case and below which the consensus is in lower-case.</td>
 <td>Any numeric value</td>
 <td>@( $(sequence.totweight) / 2)</td>
+</tr>
+
+<tr>
+<td>-name</td>
+<td>Name of the consensus sequence</td>
+<td>Any string is accepted</td>
+<td><i>An empty string is accepted</i></td>
 </tr>
 
 <tr bgcolor="#FFFFCC">

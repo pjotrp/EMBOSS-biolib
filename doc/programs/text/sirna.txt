@@ -322,7 +322,6 @@ Command line arguments
    -slower1             boolean    Make lower case
    -supper1             boolean    Make upper case
    -sformat1            string     Input sequence format
-   -sopenfile1          string     Input filename
    -sdbname1            string     Database name
    -sid1                string     Entryname
    -ufo1                string     UFO features
@@ -646,7 +645,7 @@ taaaaaagccacttagttcagtc
   
 ########################################
 # Program: sirna
-# Rundate: Wed Oct 29 13:48:25 2003
+# Rundate: Thu Nov 27 15:25:43 2003
 # Report_format: table
 # Report_file: hsfau.sirna
 ########################################
@@ -756,7 +755,7 @@ taaaaaagccacttagttcagtc
   
 ########################################
 # Program: sirna
-# Rundate: Wed Oct 29 13:48:25 2003
+# Rundate: Thu Nov 27 15:25:43 2003
 # Report_format: table
 # Report_file: hsfau.sirna
 ########################################

@@ -59,7 +59,6 @@ Displays information on the currently available databases
 
 # Name        Type ID  Qry All Comment
 # ====        ==== ==  === === =======
-Nrl3dGetz     P    OK  OK  OK  NRL 3D using SRS
 enspep        P    OK  OK  OK  ENSEMBL pep
 enspepp       P    OK  OK  OK  ENSEMBL pep predicted
 enspeppredicted P    OK  OK  OK  ENSEMBL pep predicted
@@ -83,7 +82,6 @@ ensdnamasked  N    OK  OK  OK  ENSEMBL dna masked
 ensembl       N    OK  OK  OK  ENSEMBL
 est           N    OK  OK  OK  EMBL EST sequences
 fungal        N    OK  OK  OK  EMBL fungal sequences
-garyseq.seq   N    OK  OK  OK  s. mansoni sequences for Karl Hoffman oligos
 gb            N    OK  OK  OK  Genbank updates
 genbank       N    OK  OK  OK  Genbank
 gss           N    OK  OK  OK  EMBL GSS sequences
@@ -93,8 +91,6 @@ human         N    OK  OK  OK  EMBL human sequences
 humanest      N    OK  OK  OK  EMBL human EST sequences
 invertebrate  N    OK  OK  OK  EMBL invertebrate sequences
 mammalian     N    OK  OK  OK  EMBL mammalian sequences
-maskutrdb     N    OK  OK  OK  Masked 3' UTR database for Chris Sanderson proje
-ct
 mouseest      N    OK  OK  OK  EMBL mouse EST sequences
 newgb         N    OK  OK  OK  Genbank updates
 newgenbank    N    OK  OK  OK  Genbank updates
@@ -106,16 +102,15 @@ phage         N    OK  OK  OK  EMBL phage sequences
 plant         N    OK  OK  OK  EMBL plant sequences
 prokaryotic   N    OK  OK  OK  EMBL prokaryotic sequences
 refseq        N    OK  OK  OK  REFSEQ sequences
-rnunigene     N    -   -   OK  Rat Unigene
 rodent        N    OK  OK  OK  EMBL rodent sequences
 sts           N    OK  OK  OK  EMBL STS sequences
 synthetic     N    OK  OK  OK  EMBL synthetic sequences
 tembl         N    OK  OK  OK  EMBL in native format with EMBL CD-ROM index
+tgb           N    OK  -   -   Genbank IDs
 tgenbank      N    OK  OK  OK  GenBank in native format with EMBL CD-ROM index
 tigregad      N    OK  OK  OK  TIGR EGAD sequences
 tigrmgi       N    OK  OK  OK  TIGR MGI sequences
 unclassified  N    OK  OK  OK  EMBL unclassified sequences
-utrdb         N    OK  OK  OK  3' UTR database for Chris Sanderson project
 vertebrate    N    OK  OK  OK  EMBL vertebrate sequences
 viral         N    OK  OK  OK  EMBL viral sequences
    
@@ -153,8 +148,6 @@ Displays information on the currently available databases
 
 
  Name Type ID Qry All Comment
-
- Nrl3dGetz P OK   OK   OK   NRL 3D using SRS
 
  enspep P OK   OK   OK   ENSEMBL pep
 
@@ -201,8 +194,6 @@ index
 
  fungal N OK   OK   OK   EMBL fungal sequences
 
- garyseq.seq N OK   OK   OK   s. mansoni sequences for Karl Hoffman oligos
-
  gb N OK   OK   OK   Genbank updates
 
  genbank N OK   OK   OK   Genbank
@@ -220,8 +211,6 @@ index
  invertebrate N OK   OK   OK   EMBL invertebrate sequences
 
  mammalian N OK   OK   OK   EMBL mammalian sequences
-
- maskutrdb N OK   OK   OK   Masked 3' UTR database for Chris Sanderson project
 
  mouseest N OK   OK   OK   EMBL mouse EST sequences
 
@@ -245,8 +234,6 @@ index
 
  refseq N OK   OK   OK   REFSEQ sequences
 
- rnunigene N -    -    OK   Rat Unigene
-
  rodent N OK   OK   OK   EMBL rodent sequences
 
  sts N OK   OK   OK   EMBL STS sequences
@@ -255,6 +242,8 @@ index
 
  tembl N OK   OK   OK   EMBL in native format with EMBL CD-ROM index
 
+ tgb N OK   -    -    Genbank IDs
+
  tgenbank N OK   OK   OK   GenBank in native format with EMBL CD-ROM index
 
  tigregad N OK   OK   OK   TIGR EGAD sequences
@@ -262,8 +251,6 @@ index
  tigrmgi N OK   OK   OK   TIGR MGI sequences
 
  unclassified N OK   OK   OK   EMBL unclassified sequences
-
- utrdb N OK   OK   OK   3' UTR database for Chris Sanderson project
 
  vertebrate N OK   OK   OK   EMBL vertebrate sequences
 
@@ -281,7 +268,6 @@ Displays information on the currently available databases
 
 # Name        Type ID  Qry All Comment
 # ====        ==== ==  === === =======
-Nrl3dGetz     P    OK  OK  OK  NRL 3D using SRS
 enspep        P    OK  OK  OK  ENSEMBL pep
 enspepp       P    OK  OK  OK  ENSEMBL pep predicted
 enspeppredicted P    OK  OK  OK  ENSEMBL pep predicted
@@ -304,7 +290,6 @@ twp           P    OK  OK  OK  EMBL new in native format with EMBL CD-ROM index
 % showdb -noheading 
 Displays information on the currently available databases
 
-Nrl3dGetz     P    OK  OK  OK  NRL 3D using SRS
 enspep        P    OK  OK  OK  ENSEMBL pep
 enspepp       P    OK  OK  OK  ENSEMBL pep predicted
 enspeppredicted P    OK  OK  OK  ENSEMBL pep predicted
@@ -328,7 +313,6 @@ ensdnamasked  N    OK  OK  OK  ENSEMBL dna masked
 ensembl       N    OK  OK  OK  ENSEMBL
 est           N    OK  OK  OK  EMBL EST sequences
 fungal        N    OK  OK  OK  EMBL fungal sequences
-garyseq.seq   N    OK  OK  OK  s. mansoni sequences for Karl Hoffman oligos
 gb            N    OK  OK  OK  Genbank updates
 genbank       N    OK  OK  OK  Genbank
 gss           N    OK  OK  OK  EMBL GSS sequences
@@ -338,8 +322,6 @@ human         N    OK  OK  OK  EMBL human sequences
 humanest      N    OK  OK  OK  EMBL human EST sequences
 invertebrate  N    OK  OK  OK  EMBL invertebrate sequences
 mammalian     N    OK  OK  OK  EMBL mammalian sequences
-maskutrdb     N    OK  OK  OK  Masked 3' UTR database for Chris Sanderson proje
-ct
 mouseest      N    OK  OK  OK  EMBL mouse EST sequences
 newgb         N    OK  OK  OK  Genbank updates
 newgenbank    N    OK  OK  OK  Genbank updates
@@ -351,16 +333,15 @@ phage         N    OK  OK  OK  EMBL phage sequences
 plant         N    OK  OK  OK  EMBL plant sequences
 prokaryotic   N    OK  OK  OK  EMBL prokaryotic sequences
 refseq        N    OK  OK  OK  REFSEQ sequences
-rnunigene     N    -   -   OK  Rat Unigene
 rodent        N    OK  OK  OK  EMBL rodent sequences
 sts           N    OK  OK  OK  EMBL STS sequences
 synthetic     N    OK  OK  OK  EMBL synthetic sequences
 tembl         N    OK  OK  OK  EMBL in native format with EMBL CD-ROM index
+tgb           N    OK  -   -   Genbank IDs
 tgenbank      N    OK  OK  OK  GenBank in native format with EMBL CD-ROM index
 tigregad      N    OK  OK  OK  TIGR EGAD sequences
 tigrmgi       N    OK  OK  OK  TIGR MGI sequences
 unclassified  N    OK  OK  OK  EMBL unclassified sequences
-utrdb         N    OK  OK  OK  3' UTR database for Chris Sanderson project
 vertebrate    N    OK  OK  OK  EMBL vertebrate sequences
 viral         N    OK  OK  OK  EMBL viral sequences
    
@@ -371,7 +352,6 @@ viral         N    OK  OK  OK  EMBL viral sequences
 
 % showdb -noheading -notype -noid -noquery -noall -nocomment -auto 
 
-Nrl3dGetz
 enspep
 enspepp
 enspeppredicted
@@ -394,7 +374,6 @@ ensdnamasked
 ensembl
 est
 fungal
-garyseq.seq
 gb
 genbank
 gss
@@ -404,7 +383,6 @@ human
 humanest
 invertebrate
 mammalian
-maskutrdb
 mouseest
 newgb
 newgenbank
@@ -416,16 +394,15 @@ phage
 plant
 prokaryotic
 refseq
-rnunigene
 rodent
 sts
 synthetic
 tembl
+tgb
 tgenbank
 tigregad
 tigrmgi
 unclassified
-utrdb
 vertebrate
 viral
    
@@ -437,7 +414,6 @@ viral
 % showdb -only -type 
 Displays information on the currently available databases
 
-Nrl3dGetz     P
 enspep        P
 enspepp       P
 enspeppredicted P
@@ -460,7 +436,6 @@ ensdnamasked  N
 ensembl       N
 est           N
 fungal        N
-garyseq.seq   N
 gb            N
 genbank       N
 gss           N
@@ -470,7 +445,6 @@ human         N
 humanest      N
 invertebrate  N
 mammalian     N
-maskutrdb     N
 mouseest      N
 newgb         N
 newgenbank    N
@@ -482,16 +456,15 @@ phage         N
 plant         N
 prokaryotic   N
 refseq        N
-rnunigene     N
 rodent        N
 sts           N
 synthetic     N
 tembl         N
+tgb           N
 tgenbank      N
 tigregad      N
 tigrmgi       N
 unclassified  N
-utrdb         N
 vertebrate    N
 viral         N
    
@@ -587,7 +560,6 @@ Output file format
   
 # Name        Type ID  Qry All Comment
 # ====        ==== ==  === === =======
-Nrl3dGetz     P    OK  OK  OK  NRL 3D using SRS
 enspep        P    OK  OK  OK  ENSEMBL pep
 enspepp       P    OK  OK  OK  ENSEMBL pep predicted
 enspeppredicted P    OK  OK  OK  ENSEMBL pep predicted
@@ -611,7 +583,6 @@ ensdnamasked  N    OK  OK  OK  ENSEMBL dna masked
 ensembl       N    OK  OK  OK  ENSEMBL
 est           N    OK  OK  OK  EMBL EST sequences
 fungal        N    OK  OK  OK  EMBL fungal sequences
-garyseq.seq   N    OK  OK  OK  s. mansoni sequences for Karl Hoffman oligos
 gb            N    OK  OK  OK  Genbank updates
 genbank       N    OK  OK  OK  Genbank
 gss           N    OK  OK  OK  EMBL GSS sequences
@@ -621,8 +592,6 @@ human         N    OK  OK  OK  EMBL human sequences
 humanest      N    OK  OK  OK  EMBL human EST sequences
 invertebrate  N    OK  OK  OK  EMBL invertebrate sequences
 mammalian     N    OK  OK  OK  EMBL mammalian sequences
-maskutrdb     N    OK  OK  OK  Masked 3' UTR database for Chris Sanderson proje
-ct
 mouseest      N    OK  OK  OK  EMBL mouse EST sequences
 newgb         N    OK  OK  OK  Genbank updates
 newgenbank    N    OK  OK  OK  Genbank updates
@@ -634,16 +603,15 @@ phage         N    OK  OK  OK  EMBL phage sequences
 plant         N    OK  OK  OK  EMBL plant sequences
 prokaryotic   N    OK  OK  OK  EMBL prokaryotic sequences
 refseq        N    OK  OK  OK  REFSEQ sequences
-rnunigene     N    -   -   OK  Rat Unigene
 rodent        N    OK  OK  OK  EMBL rodent sequences
 sts           N    OK  OK  OK  EMBL STS sequences
 synthetic     N    OK  OK  OK  EMBL synthetic sequences
 tembl         N    OK  OK  OK  EMBL in native format with EMBL CD-ROM index
+tgb           N    OK  -   -   Genbank IDs
 tgenbank      N    OK  OK  OK  GenBank in native format with EMBL CD-ROM index
 tigregad      N    OK  OK  OK  TIGR EGAD sequences
 tigrmgi       N    OK  OK  OK  TIGR MGI sequences
 unclassified  N    OK  OK  OK  EMBL unclassified sequences
-utrdb         N    OK  OK  OK  3' UTR database for Chris Sanderson project
 vertebrate    N    OK  OK  OK  EMBL vertebrate sequences
 viral         N    OK  OK  OK  EMBL viral sequences
    

@@ -229,8 +229,9 @@ Output file format
   
   File: tffungi
   
-   Y$ADH1_02            ACAATATGGACTTCCTCTTTTCTGG R04140
-
+Y$ADH1_02            ACAATATGGACTTCCTCTTTTCTGG R04140 T00322; GCR1;Quality: 2;
+Species: yeast, Saccharomyces cerevisiae.
+   
   File: tfinsect
   
   File: tfother
@@ -239,13 +240,20 @@ Output file format
   
   File: tfvertebrate
   
-HS$ALBU_01           tGGTTAGtaattactaa R00077
-HS$ALBU_02           TTGGCA R00078
-HS$ALBU_03           TGGCA R00079
-HS$ALBU_04           TTAATAAT R00080
-HS$ALBU_05           TCTAGTTAATAATCTACAAT R00081
-MOUSE$FCGR3A_01      GTCTGCTGACC R04412
-MOUSE$FCGR3A_02      TTCCTC R04413
+HS$ALBU_01           tGGTTAGtaattactaa R00077 T01951; HNF-1C;Quality: 1; Specie
+s: human, Homo sapiens.
+HS$ALBU_02           TTGGCA R00078 T00599; NF-1/L;Quality: 6; Species: rat, Rat
+tus norvegicus.
+HS$ALBU_03           TGGCA R00079 T00599; NF-1/L;Quality: 6; Species: rat, Ratt
+us norvegicus.
+HS$ALBU_04           TTAATAAT R00080 T00015; AFP1;Quality: 6; Species: human, H
+omo sapiens.
+HS$ALBU_05           TCTAGTTAATAATCTACAAT R00081 T00369; HNF-1;Quality: 4; Spec
+ies: rat, Rattus norvegicus.
+MOUSE$FCGR3A_01      GTCTGCTGACC R04412 T00874; USF;Quality: 2; Species: human,
+ Homo sapiens.
+MOUSE$FCGR3A_02      TTCCTC R04413 T00702; PU.1;Quality: 3; Species: mouse, Mus
+ musculus.
    
    The output from tfextract is a set of files in the emboss/data
    directory containing reformatted sites from the transfac database.

@@ -38,6 +38,16 @@ Description
    Typically, the cost of extending a gap is set to be 5-10 times lower
    than the cost for opening a gap.
    
+   In a Needleman-Wunsch global alignment, the entire length of each
+   sequence is aligned. This can be thought of as an overlap between the
+   two sequences (one can be completely within the otehr, or their ends
+   can overlap).
+   
+   This leaves no penalty for the hanging ends of the overlap. In
+   bioinformatics, it is usually reasonable to assume that the sequences
+   are incomplete and there should be no penalty for failing to align the
+   missing bases.
+   
 Usage
 
    Here is a sample session with needle
@@ -103,7 +113,6 @@ Command line arguments
    -slower1             boolean    Make lower case
    -supper1             boolean    Make upper case
    -sformat1            string     Input sequence format
-   -sopenfile1          string     Input filename
    -sdbname1            string     Database name
    -sid1                string     Entryname
    -ufo1                string     UFO features
@@ -120,7 +129,6 @@ Command line arguments
    -slower2             boolean    Make lower case
    -supper2             boolean    Make upper case
    -sformat2            string     Input sequence format
-   -sopenfile2          string     Input filename
    -sdbname2            string     Database name
    -sid2                string     Entryname
    -ufo2                string     UFO features
@@ -129,7 +137,6 @@ Command line arguments
 
    "-outfile" associated qualifiers
    -aformat3            string     Alignment format
-   -aopenfile3          string     Alignment file name
    -aextension3         string     File name extension
    -adirectory3         string     Output directory
    -aname3              string     Base file name
@@ -437,7 +444,7 @@ Output file format
   
 ########################################
 # Program:  needle
-# Rundate:  Wed Oct 29 13:46:04 2003
+# Rundate:  Thu Nov 27 15:22:34 2003
 # Align_format: srspair
 # Report_file: hba_human.needle
 ########################################

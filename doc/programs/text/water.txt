@@ -115,7 +115,6 @@ Command line arguments
    -slower1             boolean    Make lower case
    -supper1             boolean    Make upper case
    -sformat1            string     Input sequence format
-   -sopenfile1          string     Input filename
    -sdbname1            string     Database name
    -sid1                string     Entryname
    -ufo1                string     UFO features
@@ -132,7 +131,6 @@ Command line arguments
    -slower2             boolean    Make lower case
    -supper2             boolean    Make upper case
    -sformat2            string     Input sequence format
-   -sopenfile2          string     Input filename
    -sdbname2            string     Database name
    -sid2                string     Entryname
    -ufo2                string     UFO features
@@ -141,7 +139,6 @@ Command line arguments
 
    "-outfile" associated qualifiers
    -aformat3            string     Alignment format
-   -aopenfile3          string     Alignment file name
    -aextension3         string     File name extension
    -adirectory3         string     Output directory
    -aname3              string     Base file name
@@ -448,7 +445,7 @@ Output file format
   
 ########################################
 # Program:  water
-# Rundate:  Wed Oct 29 13:48:38 2003
+# Rundate:  Thu Nov 27 15:26:01 2003
 # Align_format: srspair
 # Report_file: hba_human.water
 ########################################

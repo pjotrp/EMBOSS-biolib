@@ -54,7 +54,6 @@ Command line arguments
    -slower1             boolean    Make lower case
    -supper1             boolean    Make upper case
    -sformat1            string     Input sequence format
-   -sopenfile1          string     Input filename
    -sdbname1            string     Database name
    -sid1                string     Entryname
    -ufo1                string     UFO features
@@ -239,7 +238,7 @@ Output file format
   
 ########################################
 # Program: helixturnhelix
-# Rundate: Wed Oct 29 13:45:46 2003
+# Rundate: Thu Nov 27 15:22:12 2003
 # Report_format: motif
 # Report_file: laci_ecoli.hth
 ########################################
@@ -350,6 +349,7 @@ See also
    Program name                        Description
    antigenic    Finds antigenic sites in proteins
    digest       Protein proteolytic enzyme or reagent cleavage digest
+   epestfind    Finds PEST motifs as potential proteolytic cleavage sites
    fuzzpro      Protein pattern search
    fuzztran     Protein pattern search after translation
    garnier      Predicts protein secondary structure
@@ -360,7 +360,6 @@ See also
    pepcoil      Predicts coiled coil regions
    pepnet       Displays proteins as a helical net
    pepwheel     Shows protein sequences as helices
-   pestfind     Finds PEST motifs as potential proteolytic cleavage sites
    preg         Regular expression search of a protein sequence
    pscan        Scans proteins using PRINTS
    sigcleave    Reports protein signal cleavage sites

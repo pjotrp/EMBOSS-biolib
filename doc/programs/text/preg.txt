@@ -661,7 +661,7 @@ Usage
 Regular expression search of a protein sequence
 Input sequence(s): tsw:*_rat
 Regular expression pattern: IA[QWF]A
-Output file [100k_rat.preg]: 
+Output report [100k_rat.preg]: 
    
    Go to the input files for this example
    Go to the output files for this example
@@ -671,7 +671,7 @@ Command line arguments
    Standard (Mandatory) qualifiers:
   [-sequence]          seqall     Sequence database USA
   [-pattern]           regexp     Regular expression pattern
-  [-outfile]           outfile    Output file name
+  [-outfile]           report     Output report file name
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers: (none)
@@ -687,7 +687,6 @@ Command line arguments
    -slower1             boolean    Make lower case
    -supper1             boolean    Make upper case
    -sformat1            string     Input sequence format
-   -sopenfile1          string     Input filename
    -sdbname1            string     Database name
    -sid1                string     Entryname
    -ufo1                string     UFO features
@@ -695,7 +694,14 @@ Command line arguments
    -fopenfile1          string     Features file name
 
    "-outfile" associated qualifiers
-   -odirectory3         string     Output directory
+   -rformat3            string     Report format
+   -rname3              string     Base file name
+   -rextension3         string     File name extension
+   -rdirectory3         string     Output directory
+   -raccshow3           boolean    Show accession number in the report
+   -rdesshow3           boolean    Show description in the report
+   -rscoreshow3         boolean    Show the score in the report
+   -rusashow3           boolean    Show the full USA in the report
 
    General qualifiers:
    -auto                boolean    Turn off prompts
@@ -720,7 +726,7 @@ Command line arguments
    (Parameter 2) Regular expression pattern Any regular epression pattern
    is accepted Required
    [-outfile]
-   (Parameter 3) Output file name Output file <sequence>.preg
+   (Parameter 3) Output report file name Report output file
    Additional (Optional) qualifiers Allowed values Default
    (none)
    Advanced (Unprompted) qualifiers Allowed values Default
@@ -740,9 +746,27 @@ Output file format
   
   File: 100k_rat.preg
   
-preg search of tsw:*_rat with pattern IA[QWF]A
-Matches in 100K_RAT
-       100K_RAT   390 IAQA
+########################################
+# Program: preg
+# Rundate: Thu Nov 27 15:22:51 2003
+# Report_format: seqtable
+# Report_file: 100k_rat.preg
+########################################
+
+#=======================================
+#
+# Sequence: 100K_RAT     from: 1   to: 889
+# HitCount: 1
+#
+# Pattern: IA[QWF]A
+#
+#=======================================
+
+  Start     End Sequence
+    390     393 IAQA
+
+#---------------------------------------
+#---------------------------------------
    
 Data files
 
@@ -779,6 +803,7 @@ See also
     Program name                         Description
    antigenic      Finds antigenic sites in proteins
    digest         Protein proteolytic enzyme or reagent cleavage digest
+   epestfind      Finds PEST motifs as potential proteolytic cleavage sites
    fuzzpro        Protein pattern search
    fuzztran       Protein pattern search after translation
    helixturnhelix Report nucleic acid binding motifs
@@ -786,7 +811,6 @@ See also
    patmatdb       Search a protein sequence with a motif
    patmatmotifs   Search a PROSITE motif database with a protein sequence
    pepcoil        Predicts coiled coil regions
-   pestfind       Finds PEST motifs as potential proteolytic cleavage sites
    pscan          Scans proteins using PRINTS
    sigcleave      Reports protein signal cleavage sites
    

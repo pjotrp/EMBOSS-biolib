@@ -86,7 +86,6 @@ Command line arguments
    -slower1             boolean    Make lower case
    -supper1             boolean    Make upper case
    -sformat1            string     Input sequence format
-   -sopenfile1          string     Input filename
    -sdbname1            string     Database name
    -sid1                string     Entryname
    -ufo1                string     UFO features
@@ -314,7 +313,7 @@ Output file format
   
 ########################################
 # Program: fuzznuc
-# Rundate: Wed Oct 29 13:45:40 2003
+# Rundate: Thu Nov 27 15:22:04 2003
 # Report_format: seqtable
 # Report_file: hhtetra.fuzznuc
 ########################################

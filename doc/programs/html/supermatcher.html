@@ -127,7 +127,6 @@ IT IS DONE FOR YOU.
    -slower1             boolean    Make lower case
    -supper1             boolean    Make upper case
    -sformat1            string     Input sequence format
-   -sopenfile1          string     Input filename
    -sdbname1            string     Database name
    -sid1                string     Entryname
    -ufo1                string     UFO features
@@ -144,7 +143,6 @@ IT IS DONE FOR YOU.
    -slower2             boolean    Make lower case
    -supper2             boolean    Make upper case
    -sformat2            string     Input sequence format
-   -sopenfile2          string     Input filename
    -sdbname2            string     Database name
    -sid2                string     Entryname
    -ufo2                string     UFO features
@@ -153,7 +151,6 @@ IT IS DONE FOR YOU.
 
    "-outfile" associated qualifiers
    -aformat             string     Alignment format
-   -aopenfile           string     Alignment file name
    -aextension          string     File name extension
    -adirectory          string     Output directory
    -aname               string     Base file name
@@ -244,7 +241,7 @@ IT IS DONE FOR YOU.
 <tr>
 <td>-width</td>
 <td>Alignment width</td>
-<td>Any integer value</td>
+<td>Integer 1 or more</td>
 <td>16</td>
 </tr>
 
@@ -453,7 +450,7 @@ The output alignment is in <b>simple</b> format by default.
 <pre>
 ########################################
 # Program:  supermatcher
-# Rundate:  Wed Oct 29 13:48:28 2003
+# Rundate:  Thu Nov 27 15:25:47 2003
 # Align_format: simple
 # Report_file: eclac.supermatcher
 ########################################
@@ -466,92 +463,92 @@ The output alignment is in <b>simple</b> format by default.
 # Gap_penalty: 10.0
 # Extend_penalty: 3.0
 #
-# Length: 1
-# Identity:       0/1 ( 0.0%)
-# Similarity:     0/1 ( 0.0%)
-# Gaps:           0/1 ( 0.0%)
-# Score: -4.0
+# Length: 7477
+# Identity:    7477/7477 (100.0%)
+# Similarity:  7477/7477 (100.0%)
+# Gaps:           0/7477 ( 0.0%)
+# Score: 37385.0
 # 
 #
 #=======================================
 
-ECLAC              1 g      1
-                     .
-ECLAC              3 c      3
+ECLAC              1 gacaccatcgaatggcgcaaaacctttcgcggtatggcatgatagcgccc     50
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+ECLAC              1 gacaccatcgaatggcgcaaaacctttcgcggtatggcatgatagcgccc     50
 
-#=======================================
-#
-# Aligned_sequences: 2
-# 1: ECLACA
-# 2: ECLAC
-# Matrix: EDNAFULL
-# Gap_penalty: 10.0
-# Extend_penalty: 3.0
-#
-# Length: 1
-# Identity:       1/1 (100.0%)
-# Similarity:     1/1 (100.0%)
-# Gaps:           0/1 ( 0.0%)
-# Score: 5.0
-# 
-#
-#=======================================
+ECLAC             51 ggaagagagtcaattcagggtggtgaatgtgaaaccagtaacgttatacg    100
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+ECLAC             51 ggaagagagtcaattcagggtggtgaatgtgaaaccagtaacgttatacg    100
 
-ECLACA             1 g      1
-                     |
-ECLAC           5648 g   5648
+ECLAC            101 atgtcgcagagtatgccggtgtctcttatcagaccgtttcccgcgtggtg    150
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+ECLAC            101 atgtcgcagagtatgccggtgtctcttatcagaccgtttcccgcgtggtg    150
 
+ECLAC            151 aaccaggccagccacgtttctgcgaaaacgcgggaaaaagtggaagcggc    200
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+ECLAC            151 aaccaggccagccacgtttctgcgaaaacgcgggaaaaagtggaagcggc    200
+
+ECLAC            201 gatggcggagctgaattacattcccaaccgcgtggcacaacaactggcgg    250
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+ECLAC            201 gatggcggagctgaattacattcccaaccgcgtggcacaacaactggcgg    250
+
+ECLAC            251 gcaaacagtcgttgctgattggcgttgccacctccagtctggccctgcac    300
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+ECLAC            251 gcaaacagtcgttgctgattggcgttgccacctccagtctggccctgcac    300
+
+ECLAC            301 gcgccgtcgcaaattgtcgcggcgattaaatctcgcgccgatcaactggg    350
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
 
 
 <font color=red>  [Part of this file has been deleted for brevity]</font>
 
-ECLACI             1 c      1
-                     .
-ECLAC             51 g     51
+ECLACZ          2501 tgctgattacgaccgctcacgcgtggcagcatcaggggaaaaccttattt   2550
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+ECLAC           3787 tgctgattacgaccgctcacgcgtggcagcatcaggggaaaaccttattt   3836
 
-#=======================================
-#
-# Aligned_sequences: 2
-# 1: ECLACY
-# 2: ECLAC
-# Matrix: EDNAFULL
-# Gap_penalty: 10.0
-# Extend_penalty: 3.0
-#
-# Length: 1
-# Identity:       0/1 ( 0.0%)
-# Similarity:     0/1 ( 0.0%)
-# Gaps:           0/1 ( 0.0%)
-# Score: -4.0
-# 
-#
-#=======================================
+ECLACZ          2551 atcagccggaaaacctaccggattgatggtagtggtcaaatggcgattac   2600
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+ECLAC           3837 atcagccggaaaacctaccggattgatggtagtggtcaaatggcgattac   3886
 
-ECLACY             1 t      1
-                     .
-ECLAC           4307 c   4307
+ECLACZ          2601 cgttgatgttgaagtggcgagcgatacaccgcatccggcgcggattggcc   2650
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+ECLAC           3887 cgttgatgttgaagtggcgagcgatacaccgcatccggcgcggattggcc   3936
 
-#=======================================
-#
-# Aligned_sequences: 2
-# 1: ECLACZ
-# 2: ECLAC
-# Matrix: EDNAFULL
-# Gap_penalty: 10.0
-# Extend_penalty: 3.0
-#
-# Length: 1
-# Identity:       0/1 ( 0.0%)
-# Similarity:     0/1 ( 0.0%)
-# Gaps:           0/1 ( 0.0%)
-# Score: -4.0
-# 
-#
-#=======================================
+ECLACZ          2651 tgaactgccagctggcgcaggtagcagagcgggtaaactggctcggatta   2700
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+ECLAC           3937 tgaactgccagctggcgcaggtagcagagcgggtaaactggctcggatta   3986
 
-ECLACZ             1 a      1
-                     .
-ECLAC           1289 c   1289
+ECLACZ          2701 gggccgcaagaaaactatcccgaccgccttactgccgcctgttttgaccg   2750
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+ECLAC           3987 gggccgcaagaaaactatcccgaccgccttactgccgcctgttttgaccg   4036
+
+ECLACZ          2751 ctgggatctgccattgtcagacatgtataccccgtacgtcttcccgagcg   2800
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+ECLAC           4037 ctgggatctgccattgtcagacatgtataccccgtacgtcttcccgagcg   4086
+
+ECLACZ          2801 aaaacggtctgcgctgcgggacgcgcgaattgaattatggcccacaccag   2850
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+ECLAC           4087 aaaacggtctgcgctgcgggacgcgcgaattgaattatggcccacaccag   4136
+
+ECLACZ          2851 tggcgcggcgacttccagttcaacatcagccgctacagtcaacagcaact   2900
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+ECLAC           4137 tggcgcggcgacttccagttcaacatcagccgctacagtcaacagcaact   4186
+
+ECLACZ          2901 gatggaaaccagccatcgccatctgctgcacgcggaagaaggcacatggc   2950
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+ECLAC           4187 gatggaaaccagccatcgccatctgctgcacgcggaagaaggcacatggc   4236
+
+ECLACZ          2951 tgaatatcgacggtttccatatggggattggtggcgacgactcctggagc   3000
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+ECLAC           4237 tgaatatcgacggtttccatatggggattggtggcgacgactcctggagc   4286
+
+ECLACZ          3001 ccgtcagtatcggcggaattccagctgagcgccggtcgctaccattacca   3050
+                     ||||||||||||||||||||||||||||||||||||||||||||||||||
+ECLAC           4287 ccgtcagtatcggcggaattccagctgagcgccggtcgctaccattacca   4336
+
+ECLACZ          3051 gttggtctggtgtcaaaaataataataa   3078
+                     ||||||||||||||||||||||||||||
+ECLAC           4337 gttggtctggtgtcaaaaataataataa   4364
 
 
 #---------------------------------------
