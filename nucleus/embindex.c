@@ -80,7 +80,7 @@ static ajlong     embBtreeMerge(EmbPBtcache cache, ajlong thisNode,
 				ajlong mergeNode, ajlong anchorNode);
 
 static void       embBtreeFindMin(EmbPBtcache cache, ajlong pageno, char *key);
-static ajlong     embBtreeInsertShift(EmbPBtcache cache, EmbPBtpage tpage,
+static ajlong     embBtreeInsertShift(EmbPBtcache cache, EmbPBtpage *retpage,
 				      char *key);
 static void       embBtreeKeyShift(EmbPBtcache cache, EmbPBtpage tpage);
 
@@ -93,6 +93,9 @@ static EmbPBtpage embBtreePageFromKeyW(EmbPBtcache cache, unsigned char *buf,
 				       char *key);
 static void       embBtreeReadLeaf(EmbPBtcache cache, EmbPBtpage page,
 				   AjPList list);
+
+
+char zkey[500];
 
 
 /* @func embBtreeCacheNewC **************************************************
@@ -694,7 +697,7 @@ EmbPBtpage embBtreeFindInsert(EmbPBtcache cache, char *key)
     EmbPBtpage root = NULL;
     EmbPBtpage ret  = NULL;
 
-/*    ajDebug("In embBtreeFindInsert\n"); */
+    ajDebug("In embBtreeFindInsert\n");
 
     /* The root node should always be in the cache (BT_LOCKed) */
     root = embBtreeCacheLocate(cache,0L);
@@ -731,7 +734,7 @@ static EmbPBtpage embBtreeFindINode(EmbPBtcache cache, EmbPBtpage page,
     ajint status       = 0;
     ajint ival         = 0;
 
-/*    ajDebug("In embBtreeFindINode\n"); */
+    ajDebug("In embBtreeFindINode\n"); 
     
     ret = page;
     buf = page->buf;
@@ -775,7 +778,7 @@ static EmbPBtpage embBtreePageFromKey(EmbPBtcache cache, unsigned char *buf,
     ajlong *parray  = NULL;
     EmbPBtpage page = NULL;
     
-/*    ajDebug("In embBtreePageFromKey\n"); */
+    ajDebug("In embBtreePageFromKey\n"); 
     
     rootbuf = buf;
 
@@ -904,7 +907,7 @@ static EmbPBucket embBtreeReadBucket(EmbPBtcache cache, ajlong pageno)
     ajint  i;
     ajint  len  = 0;
     
-/*    ajDebug("In embBtreeReadBucket\n");*/
+    ajDebug("In embBtreeReadBucket\n");
     
     if(!pageno)
 	ajFatal("BucketRead: cannot read bucket from root page");
@@ -1013,7 +1016,7 @@ static void embBtreeWriteBucket(EmbPBtcache cache, EmbPBucket bucket,
     unsigned char *lptr   = NULL;
     ajlong   pno = 0L;
     
-/*    ajDebug("In embBtreeWriteBucket\n");*/
+    ajDebug("In embBtreeWriteBucket\n");
 
     if(pageno == cache->totsize)	/* Create a new page? */
     {
@@ -1179,10 +1182,11 @@ static void embBtreeAddToBucket(EmbPBtcache cache, ajlong pageno,
     
     ajint nentries;
     
-/*    ajDebug("In embBtreeAddToBucket\n");*/
+    ajDebug("In embBtreeAddToBucket\n");
 
     bucket   = embBtreeReadBucket(cache,pageno);
     nentries = bucket->Nentries;
+
 
     /* Reading a bucket always gives one extra ID position */
     bucket->Ids[nentries] = embBtreeIdNew();
@@ -1228,7 +1232,7 @@ static ajint embBtreeNumInBucket(EmbPBtcache cache, ajlong pageno)
     ajint  nodetype     = 0;
     ajint  nentries     = 0;
     
-/*    ajDebug("In embBtreeNumInBucket\n"); */
+    ajDebug("In embBtreeNumInBucket\n");
     
     if(!pageno)
 	ajFatal("NumInBucket: Attempt to read bucket from root page\n");
@@ -1344,7 +1348,7 @@ static AjBool embBtreeReorderBuckets(EmbPBtcache cache, EmbPBtpage leaf)
     EmbPBucket cbucket = NULL;
     EmbPBtId cid       = NULL;
     
-/*    ajDebug("In embBtreeReorderBuckets\n");*/
+    ajDebug("In embBtreeReorderBuckets\n");
 
     dirtysave = leaf->dirty;
 
@@ -1368,16 +1372,17 @@ static AjBool embBtreeReorderBuckets(EmbPBtcache cache, EmbPBtpage leaf)
 
     GBT_NKEYS(lbuf,&nkeys);
 
+
     if(!nkeys)
 	ajFatal("BucketReorder: Attempt to reorder empty leaf");
 
     for(i=0;i<nkeys;++i)
 	totalkeys += embBtreeNumInBucket(cache,ptrs[i]);
     totalkeys += embBtreeNumInBucket(cache,ptrs[i]);
-    
 
     /* Set the number of entries per bucket to approximately half full */
     maxnperbucket = nperbucket >> 1;
+
     if(!maxnperbucket)
 	++maxnperbucket;
 
@@ -1416,6 +1421,7 @@ static AjBool embBtreeReorderBuckets(EmbPBtcache cache, EmbPBtpage leaf)
 	bentries = buckets[i]->Nentries;
 	for(j=0;j<bentries;++j)
 	    ajListPush(idlist,(void *)buckets[i]->Ids[j]);
+	
 	AJFREE(buckets[i]->keylen);
 	AJFREE(buckets[i]->Ids);
 	AJFREE(buckets[i]);
@@ -1465,8 +1471,6 @@ static AjBool embBtreeReorderBuckets(EmbPBtcache cache, EmbPBtpage leaf)
     cbucket->Overflow = overflows[i];
     cbucket->Nentries = 0;
 
-
-    
     count = 0;
     while(ajListPop(idlist,(void **)&bid))
     {
@@ -1496,7 +1500,7 @@ static AjBool embBtreeReorderBuckets(EmbPBtcache cache, EmbPBtpage leaf)
 
     embBtreeWriteNode(cache,leaf,keys,ptrs,nkeys);
 
-    leaf->dirty = dirtysave;
+    leaf->dirty = BT_DIRTY;
     if(nodetype == BT_ROOT)
 	leaf->dirty = BT_LOCK;
     
@@ -1532,7 +1536,7 @@ static AjBool embBtreeNodeIsFull(EmbPBtcache cache, EmbPBtpage page)
     unsigned char *buf = NULL;
     ajint nkeys = 0;
 
-/*    ajDebug("In embBtreeNodeIsFull\n"); */
+    ajDebug("In embBtreeNodeIsFull\n");
 
     buf = page->buf;
     GBT_NKEYS(buf,&nkeys);
@@ -1577,7 +1581,7 @@ static void embBtreeInsertNonFull(EmbPBtcache cache, EmbPBtpage page,
 
     ajint nodetype = 0;
     
-/*    ajDebug("In embBtreeInsertNonFull\n");*/
+    ajDebug("In embBtreeInsertNonFull\n");
 
     order = cache->order;
     AJCNEW0(karray,order);
@@ -1701,7 +1705,7 @@ static void embBtreeInsertKey(EmbPBtcache cache, EmbPBtpage page,
     ajlong prev       = 0L;
     ajint  totlen     = 0;
     
-/*    ajDebug("In embBtreeInsertKey\n");*/
+    ajDebug("In embBtreeInsertKey\n");
 
     if(!embBtreeNodeIsFull(cache,page))
     {
@@ -1900,7 +1904,7 @@ static void embBtreeSplitRoot(EmbPBtcache cache)
     ajint rkeyno    = 0;
     ajint n         = 0;
     
-/*    ajDebug("In embBtreeSplitRoot\n"); */
+    ajDebug("In embBtreeSplitRoot\n");
 
     order = cache->order;
     AJCNEW0(karray,order);
@@ -2049,11 +2053,11 @@ static AjPFile btreeCreateFile(AjPStr idirectory, AjPStr dbname,
     AjPStr filename = NULL;
     AjPFile fp      = NULL;
     
-/*    ajDebug("In embBtreeCreateFile\n"); */
+    ajDebug("In embBtreeCreateFile\n");
 
     filename = ajStrNew();
 
-    ajFmtPrintS(&filename,"%S%S%s",idirectory,dbname,add);
+    ajFmtPrintS(&filename,"%S/%S%s",idirectory,dbname,add);
     
     fp =  ajFileNewOut(filename);
 
@@ -2069,18 +2073,18 @@ static AjPFile btreeCreateFile(AjPStr idirectory, AjPStr dbname,
 ** Read files to index
 **
 ** @param [r] filelist [AjPStr*] list of files
-** @param [r] fdirectory [AjPStr] Directory to scan
-** @param [r] files [AjPStr] Filename to search for (or NULL)
-** @param [r] exclude [AjPStr] list of files to exclude
+** @param [r] nfiles [ajint] number of files
+** @param [r] fdirectory [AjPStr] flatfile directory
+** @param [r] idirectory [AjPStr] index directory
+** @param [r] dbname [AjPStr] name of database
 **
 ** @return [AjBool] true if success
 ** @@
 ******************************************************************************/
 
 AjBool embBtreeWriteFileList(AjPStr *filelist, ajint nfiles,
-			     AjPStr fdirectory, AjPStr idirectory, ajint order,
-			     ajint fill, AjPStr dbname, AjPStr ddate,
-			     AjPStr release)
+			     AjPStr fdirectory, AjPStr idirectory,
+			     AjPStr dbname)
 {
     AjPFile entfile = NULL;
     ajint i;
@@ -2091,9 +2095,6 @@ AjBool embBtreeWriteFileList(AjPStr *filelist, ajint nfiles,
     if(!entfile)
 	return ajFalse;
     
-    ajFmtPrintF(entfile,"%d\t# order\n%d\t# fill\n",order,fill);
-    ajFmtPrintF(entfile,"%S\t# dbname\n%S\t# release\n%S\t# date\n",dbname,
-		release,ddate);
     ajFmtPrintF(entfile,"%d\t#Number of files\n",nfiles);
     for(i=0;i<nfiles;++i)
 	ajFmtPrintF(entfile,"%S%S\n",fdirectory,filelist[i]);
@@ -2139,7 +2140,7 @@ static void embBtreeGetKeys(EmbPBtcache cache, unsigned char *buf,
 
     EmbPBtpage page = NULL;
 
-/*    ajDebug("In embBtreeGetKeys\n"); */
+    ajDebug("In embBtreeGetKeys\n");
 
     karray = *keys;
     parray = *ptrs;
@@ -2269,7 +2270,7 @@ static void embBtreeWriteNode(EmbPBtcache cache, EmbPBtpage spage,
     ajint    v  = 0;
     ajlong   lv = 0L;
 
-/*    ajDebug("In embBtreeWriteNode\n"); */
+    ajDebug("In embBtreeWriteNode\n"); 
 
     lbuf = spage->buf;
     tbuf = lbuf;
@@ -2407,7 +2408,8 @@ void embBtreeInsertId(EmbPBtcache cache, EmbPBtId id)
     ajint i;
     ajint n;
     
-/*    ajDebug("In embBtreeInsertId\n"); */
+
+    ajDebug("In embBtreeInsertId\n");
     
     key = ajStrNew();
     
@@ -2419,6 +2421,8 @@ void embBtreeInsertId(EmbPBtcache cache, EmbPBtId id)
 	return;
     }
 
+    strcpy(zkey,key->Ptr);
+    
 
     ckey = ajStrStr(key);
     spage = embBtreeFindInsert(cache,ckey);
@@ -2479,19 +2483,24 @@ void embBtreeInsertId(EmbPBtcache cache, EmbPBtId id)
 	blockno = parray[i];
 
     if(nodetype != BT_ROOT)
-	if((shift = embBtreeInsertShift(cache,spage,key->Ptr)))
+	if((shift = embBtreeInsertShift(cache,&spage,key->Ptr)))
 	    blockno = shift;
 
+    buf = spage->buf;
+
     n = embBtreeNumInBucket(cache,blockno);
+
     if(n == cache->nperbucket)
     {
 	if(embBtreeReorderBuckets(cache,spage))
 	{
 	    GBT_NKEYS(buf,&nkeys);	    
 	    embBtreeGetKeys(cache,buf,&karray,&parray);
+
 	    i=0;
 	    while(i!=nkeys && strcmp(key->Ptr,karray[i]->Ptr)>=0)
 		++i;
+
 	    if(i==nkeys)
 	    {
 		if(strcmp(key->Ptr,karray[i-1]->Ptr)<0)
@@ -2514,6 +2523,7 @@ void embBtreeInsertId(EmbPBtcache cache, EmbPBtId id)
 	    i=0;
 	    while(i!=nkeys && strcmp(key->Ptr,karray[i]->Ptr)>=0)
 		++i;
+
 	    if(i==nkeys)
 	    {
 		if(strcmp(key->Ptr,karray[i-1]->Ptr)<0)
@@ -2544,6 +2554,7 @@ void embBtreeInsertId(EmbPBtcache cache, EmbPBtId id)
 */
 	}
     }
+
 
     embBtreeAddToBucket(cache,blockno,id);
     for(i=0;i<order;++i)
@@ -2820,7 +2831,7 @@ static EmbPBtpage embBtreeSplitLeaf(EmbPBtcache cache, EmbPBtpage spage)
     ajlong prev     = 0L;
     ajlong overflow = 0L;
     
-/*    ajDebug("In embBtreeSplitLeaf\n"); */
+    ajDebug("In embBtreeSplitLeaf\n");
 
     order = cache->order;
     nperbucket = cache->nperbucket;
@@ -3507,7 +3518,7 @@ static void embBtreeAdjustBuckets(EmbPBtcache cache, EmbPBtpage leaf)
     EmbPBucket cbucket = NULL;
     EmbPBtId cid       = NULL;
     
-/*    ajDebug("In embBtreeAdjustBuckets\n"); */
+    ajDebug("In embBtreeAdjustBuckets\n");
 
     dirtysave = leaf->dirty;
 
@@ -4021,7 +4032,7 @@ static ajlong embBtreeShift(EmbPBtcache cache, ajlong thisNode,
     ajlong prev        = 0L;
     ajint  nodetype    = 0;
     
-/*    ajDebug("In embBtreeShift\n"); */
+    ajDebug("In embBtreeShift\n");
 
     order = cache->order;
     AJCNEW0(kTarray,order);
@@ -4239,7 +4250,7 @@ static ajlong embBtreeMerge(EmbPBtcache cache, ajlong thisNode,
 
     AjBool collapse = ajFalse;
     
-/*    ajDebug("In embBtreeMerge\n"); */
+    ajDebug("In embBtreeMerge\n");
 
     order = cache->order;
 
@@ -4525,13 +4536,13 @@ static void embBtreeFindMin(EmbPBtcache cache, ajlong pageno, char *key)
 ** Rebalance buckets on insertion
 **
 ** @param [rw] cache [EmbPBtcache] cache
-** @param [r] tpage [EmbPBtpage] page
+** @param [r] retpage [EmbPBtpage*] page
 ** @param [r] key [char *] key
 **
 ** @return [ajlong] bucket block or 0L if shift not posible 
 ** @@
 ******************************************************************************/
-static ajlong embBtreeInsertShift(EmbPBtcache cache, EmbPBtpage tpage,
+static ajlong embBtreeInsertShift(EmbPBtcache cache, EmbPBtpage *retpage,
 				  char *key)
 {
     unsigned char *tbuf = NULL;
@@ -4539,6 +4550,7 @@ static ajlong embBtreeInsertShift(EmbPBtcache cache, EmbPBtpage tpage,
     unsigned char *sbuf = NULL;
     EmbPBtpage ppage    = NULL;
     EmbPBtpage spage    = NULL;
+    EmbPBtpage tpage    = NULL;
     ajint tkeys         = 0;
     ajint pkeys         = 0;
     ajint skeys         = 0;
@@ -4564,7 +4576,10 @@ static ajlong embBtreeInsertShift(EmbPBtcache cache, EmbPBtpage tpage,
     ajint pkeypos = 0;
     ajint minsize = 0;
     
-/*    ajDebug("In embBtreeInsertShift\n"); */
+    ajDebug("In embBtreeInsertShift\n");
+
+
+    tpage = *retpage;
 
     tbuf = tpage->buf;
 
@@ -4602,6 +4617,7 @@ static ajlong embBtreeInsertShift(EmbPBtcache cache, EmbPBtpage tpage,
     }
 
     embBtreeGetKeys(cache,pbuf,&kParray,&pParray);
+
     i=0;
     while(i!=pkeys && strcmp(key,kParray[i]->Ptr)>=0)
 	++i;
@@ -4627,14 +4643,15 @@ static ajlong embBtreeInsertShift(EmbPBtcache cache, EmbPBtpage tpage,
 
     if(i && skeys != order-1) /* There is space in the left leaf */
     {
+	/* ajDebug("Left shift\n"); */
 	embBtreeGetKeys(cache,tbuf,&kTarray,&pTarray);
 	if(skeys)
 	    embBtreeGetKeys(cache,sbuf,&kSarray,&pSarray);
 
-	while(i!=pkeys && strcmp(kParray[i]->Ptr,kTarray[0]->Ptr)<0)
-	++i;
-	if(i==pkeys)
-	    --i;
+	i = 0;
+	while(pParray[i] != tpage->pageno)
+	    ++i;
+	--i;
 
 	pkeypos = i;
 
@@ -4672,6 +4689,7 @@ static ajlong embBtreeInsertShift(EmbPBtcache cache, EmbPBtpage tpage,
 
 	if(blockno == spage->pageno)
 	{
+	    *retpage = spage;
 	    karray = kSarray;
 	    parray = pSarray;
 	    n = skeys;
@@ -4722,16 +4740,18 @@ static ajlong embBtreeInsertShift(EmbPBtcache cache, EmbPBtpage tpage,
     }
 
 
-    if(ppos != pkeys && skeys != order-1) /* Space in the right leaf */
+    /* Space in the right leaf */
+    if(ppos != pkeys && skeys != order-1)
     {
+	/* ajDebug("Right shift\n");*/
 	embBtreeGetKeys(cache,tbuf,&kTarray,&pTarray);
 	embBtreeGetKeys(cache,sbuf,&kSarray,&pSarray);
 
-	while(i!=pkeys && strcmp(kTarray[tkeys-1]->Ptr,kParray[i]->Ptr)>=0)
-	++i;
+	i = 0;
+	while(pParray[i] != tpage->pageno)
+	    ++i;
 	pkeypos = i;
-
-
+	
 	pSarray[skeys+1] = pSarray[skeys];
 	for(i=skeys-1;i>-1;--i)
 	{
@@ -4766,6 +4786,7 @@ static ajlong embBtreeInsertShift(EmbPBtcache cache, EmbPBtpage tpage,
 
 	if(blockno == spage->pageno)
 	{
+	    *retpage = spage;
 	    karray = kSarray;
 	    parray = pSarray;
 	    n = skeys;
@@ -4864,7 +4885,7 @@ static void embBtreeKeyShift(EmbPBtcache cache, EmbPBtpage tpage)
     ajint pkeypos = 0;
     ajint minsize = 0;
 
-/*    ajDebug("In embBtreeKeyShift\n"); */
+    ajDebug("In embBtreeKeyShift\n");
     
     tbuf = tpage->buf;
 
@@ -4907,19 +4928,19 @@ static void embBtreeKeyShift(EmbPBtcache cache, EmbPBtpage tpage)
 
     embBtreeGetKeys(cache,pbuf,&kParray,&pParray);
     i=0;
-    while(i!=pkeys && strcmp(kParray[i]->Ptr,kTarray[0]->Ptr)<0)
+    while(pParray[i] != tpage->pageno)
 	++i;
-    if(i)
-	pkeypos = i-1;
-    
-    if(pkeypos) /* There is another leaf to the left */
+
+    if(i) /* There is another leaf to the left */
     {
+	pkeypos = i-1;
 	spage = embBtreeCacheRead(cache,pParray[pkeypos]);
 	sbuf = spage->buf;
 	GBT_NKEYS(sbuf,&skeys);
+	
     }
 
-    if(pkeypos && skeys != order-1) /* There is space in the left leaf */
+    if(i && skeys != order-1) /* There is space in the left leaf */
     {
 	if(skeys)
 	    embBtreeGetKeys(cache,sbuf,&kSarray,&pSarray);
@@ -4965,15 +4986,18 @@ static void embBtreeKeyShift(EmbPBtcache cache, EmbPBtpage tpage)
 	return;
     }
 
-    if(pkeypos != pkeys-1)	/* There is a right node */
+
+
+    if(i != pkeys)	/* There is a right node */
     {
+	pkeypos = i;
 	spage = embBtreeCacheRead(cache,pParray[pkeypos+1]);
 	sbuf = spage->buf;
 	GBT_NKEYS(sbuf,&skeys);
     }
 
 
-    if(pkeypos != pkeys-1 && skeys != order-1) /* Space in the right node */
+    if(i != pkeys && skeys != order-1) /* Space in the right node */
     {
 	if(skeys)
 	    embBtreeGetKeys(cache,sbuf,&kSarray,&pSarray);
@@ -5441,6 +5465,8 @@ static void embBtreeReadLeaf(EmbPBtcache cache, EmbPBtpage page,
     ajint j;
     
     EmbPBucket *buckets = NULL;
+
+    ajDebug("In ReadLeaf\n");
     
     buf = page->buf;
     order = cache->order;
