@@ -1400,6 +1400,7 @@ static AjBool seqAccessSrswww (AjPSeqin seqin)
     ajint proxyPort=0;		/* port for proxy axxess */
     AjPStr proxyStr=NULL;
     AjPStr proxy=NULL;		/* proxy from variable or query */
+    AjPStr httpver=NULL;	/* HTTP version for GET */
 
     AjPSeqQuery qry = seqin->Query;
 
@@ -1409,6 +1410,18 @@ static AjBool seqAccessSrswww (AjPSeqin seqin)
 
     if (ajStrMatchC(proxy, ":"))
       ajStrAssC (&proxy, "");
+
+    ajNamGetValueC ("httpversion", &httpver);
+    ajDebug ("httpver getValueC '%S'\n", httpver);
+
+    if (ajStrLen(qry->DbHttpVer))
+      ajStrAssS (&httpver, qry->DbHttpVer);
+    ajDebug("httpver after qry '%S'\n", httpver);
+
+    if (!ajStrIsFloat(httpver))
+      ajStrAssC (&httpver, "1.0");
+
+    ajDebug ("httpver final '%S'\n", httpver);
 
     proxexp = ajRegCompC("^([a-z0-9.-]+):([0-9]+)$");
     if (ajRegExec (proxexp, proxy))
@@ -1482,7 +1495,7 @@ static AjBool seqAccessSrswww (AjPSeqin seqin)
 
     ajDebug ("searching with SRS url '%S'\n", get);
 
-    (void) ajFmtPrintAppS(&get, " HTTP/1.1\n");
+    (void) ajFmtPrintAppS(&get, " HTTP/%S\n", httpver);
 
     (void) ajStrAssS (&seqin->Db, qry->DbName);
 
@@ -3328,6 +3341,7 @@ static AjBool seqAccessUrl (AjPSeqin seqin)
     ajint proxyPort=0;		/* port for proxy axxess */
     AjPStr proxyStr=NULL;
     AjPStr proxy=NULL;		/* proxy from variable or query */
+    AjPStr httpver=NULL;	/* HTTP version 1.0, 1.1, ... */
 
     AjPSeqQuery qry = seqin->Query;
 
@@ -3349,6 +3363,18 @@ static AjBool seqAccessUrl (AjPSeqin seqin)
 
     if (ajStrMatchC(proxy, ":"))
       ajStrAssC (&proxy, "");
+
+    ajNamGetValueC ("httpversion", &httpver);
+    ajDebug ("httpver getValueC '%S'\n", httpver);
+
+    if (ajStrLen(qry->DbHttpVer))
+      ajStrAssS (&httpver, qry->DbHttpVer);
+    ajDebug("httpver after qry '%S'\n", httpver);
+
+    if (!ajStrIsFloat(httpver))
+      ajStrAssC(&httpver, "1.0");
+
+    ajDebug("httpver final: '%S'\n", httpver);
 
     proxexp = ajRegCompC("^([a-z0-9.-]+):([0-9]+)$");
     if (ajRegExec (proxexp, proxy))
@@ -3382,10 +3408,10 @@ static AjBool seqAccessUrl (AjPSeqin seqin)
     ajRegSubI(urlexp, 3, &urlget);
 
     if (ajStrLen(proxyName))
-      (void) ajFmtPrintS(&get, "GET http://%S:%d%S HTTP/1.1\n",
-			 host, iport, urlget);
+      (void) ajFmtPrintS(&get, "GET http://%S:%d%S HTTP/%S\n",
+			 host, iport, urlget, httpver);
     else
-      (void) ajFmtPrintS(&get, "GET %S HTTP/1.1\n", urlget);
+      (void) ajFmtPrintS(&get, "GET %S HTTP/%S\n", urlget, httpver);
 
     ipos = ajStrFindC(get, "%s");
     while (ipos >= 0)
