@@ -300,6 +300,67 @@ A)  a) You can read any sequence type that emboss can handle.
     
 
 
+
+Q) I have Emboss installed on our development server and I'm preparing a
+    dispatch which will send it out to about 20 remote sites. 
+
+    I ran the configure with the --prefix option to install to a private
+    directory.  I also collected all the data files (rebase, transfac etc.) to
+    another directory and extracted the information from them with the relevant
+    programs.
+
+    My intention was to simply transfer the Emboss install directory and the
+    Data directory to all sites, using symlinks where necessary so that the
+    directory paths corresponded.
+
+    However, when testing this I have found a couple of problems;
+
+    1) Although the Emboss programs work, I can't see any of the extracted data.
+    For instance remap gives the error;
+
+               EMBOSS An error in remap.c at line 167:
+            Cannot locate enzyme file. Run REBASEEXTRACT
+
+    This is despite the fact that I have both the Emboss install and the Data
+    directories in the same place as on the development machine (which works).
+
+    2) The other major problem is that I can no longer see my databases defined
+    in emboss.default.  Again, the file exists, and is in the same place as on
+    the development machine, but the box it is transferred to gives an empty
+    list from showdb.
+
+    Does anyone know where Emboss stores the information about the location of
+    these files?  It can't have installed anything outside the original
+    installation directory (wasn't installed as root), so I'm guessing that the
+    problem stems from the program resolving symlinks at some point.
+
+A) It is inside the binaries ...
+
+    EMBOSS 'knows' the location of the files because it is picked up during the
+    configure, when you build your copy, and included in the binaries.
+
+    You can see it during compilation, especially of ajnam.c (where it is used):
+
+    -DAJAX_FIXED_ROOT=\"/full/source/path\" -DPREFIX=\"/install/prefix/path\" 
+
+    To copy binaries, you need to define environment variable(s) to
+    override the compile-time definitions, unless you can make the path
+    (e.g.  /usr/local) the same for the installations at each site. 
+
+    emboss.default can set environment variables too, but you need to tell
+    EMBOSS where to find that file. 
+         setenv EMBOSS_ROOT /dir/for/default/file
+
+    and then, in the emboss.default file you can set:
+         SET EMBOSS_ACDROOT /install/dir/share/EMBOSS/acd
+
+    or (this overrides it) you can use another environment variable:
+         SET EMBOSS_ACDROOT /install/dir/share/EMBOSS/acd
+
+    (Peter Rice 22 Nov 2000)
+
+
+
 SECTION C - Graphics
 ====================
 
