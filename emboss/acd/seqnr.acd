@@ -1,4 +1,4 @@
-appl: groups [
+appl: seqnr [
   documentation: "Converts redundant database results to a non-redundant set of hits"
   groups: "Utils:Database creation"
 ]
