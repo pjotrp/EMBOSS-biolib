@@ -1,5 +1,7 @@
 Version 2.5.0
 
+	notseq can now read in a file of sequence names.
+
 	Added '-alternative' qualifier to transeq to allow reverse frame
 	translations to be done using the codons counted from the start
 	of the reversed sequence, rather than, by default, using the
