@@ -257,10 +257,7 @@ int main(int argc, char **argv)
 		    ajGraphDataDel(&gd5);
 		}
 		else
-		{
-		    printf("I'm here\n");
 		    ajGraphObjDel(&graphs); /* free seq text mem */
-		}
 	    }
 
 
