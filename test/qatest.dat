@@ -2158,7 +2158,7 @@ FP 0 /Warning:/
 //
 
 #############################################
-# The qangcg database(s)
+# The qangcgall database(s)
 #############################################
 
 ID dbigcg-allsys-keep
@@ -2582,6 +2582,459 @@ FP /\A.{300}\047/
 FI taxon.trg
 FZ = 3765
 FP /\A.{308}AFRICAN CLAWED FROG\000/
+//
+
+
+#############################################
+# The qapir database(s)
+#############################################
+
+ID dbigcg-pir-keep
+DL keep
+TI 120
+AP dbigcg
+IN PIR
+IN ../../pir
+IN
+IN PIR
+IN
+IN
+FI stderr
+FC = 6
+FP 0 /Warning:/
+FI division.lkp
+FZ = 388
+FP /\A.{300}\001\000pir1\.ref pir1\.seq\000/
+FI entrynam.idx
+FZ = 1260
+FP /\A.{300}A31558/
+FI acnum.hit
+FZ = 672
+FP /\A.{300}\033/
+FI acnum.trg
+FZ = 1392
+FP /\A.{308}A00001/
+//
+
+ID dbigcg-pir-id
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qapir-id:cchu test.out -auto
+FI test.out
+FZ = 141
+FP 1 /\A>CCHU /
+FP 1 />/
+//
+
+ID dbigcg-pir-idfirst
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qapir-id:A31558 test.out -auto
+FI test.out
+FZ = 156
+FP 1 />A31558 /
+FP 1 />/
+//
+
+ID dbigcg-pir-idsecond
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qapir-id:A32902 test.out -auto
+FI test.out
+FZ = 123
+FP 1 />A32902 /
+FP 1 />/
+//
+
+ID dbigcg-pir-last
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qapir-id:S29350 test.out -auto
+FI test.out
+FZ = 186
+FP 1 />S29350 /
+FP 1 />/
+//
+
+ID dbigcg-pir-acc
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qapir:A00001 test.out -auto
+FI test.out
+FZ = 141
+FP 1 />CCHU /
+FP 1 />/
+//
+
+ID dbigcg-pir-nextlast
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qapir-id:S11172 test.out -auto
+FI test.out
+FZ = 178
+FP 1 />S11172 /
+FP 1 />/
+//
+
+ID dbigcg-pir-all
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qapir:* test.out -auto
+FI test.out
+FZ = 10175
+FP 1 />S11172 /
+FP 60 />/
+//
+
+ID dbigcg-pir-wild
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qapir:c* test.out -auto
+FI test.out
+FZ = 7660
+FP 49 />C/
+FP 49 />/
+//
+
+ID dbigcg-pir-exc
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qapirexc-id:S11172 test.out -auto
+FI test.out
+FZ = 178
+FP 1 /\A>S11172 /
+FP 1 />/
+//
+
+ID dbigcg-pir-excfail
+ER 1
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qapirexc-id:cchu test.out -auto
+FI stderr
+FZ = 50
+FP 1 /Error: /
+FP /Error: Unable to read sequence 'qapirexc-id:cchu'/
+FP 0 /Warning:/
+//
+
+ID dbigcg-pir-inc
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qapirinc-id:cchu test.out -auto
+FI test.out
+FZ = 141
+FP 1 /\A>CCHU /
+FP 1 />/
+//
+
+ID dbigcg-pir-incfail
+ER 1
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qangcginc-id:cchu test.out -auto
+FI stderr
+FZ = 51
+FP 1 /Error: /
+FP /Error: Unable to read sequence 'qapirinc-id:cchu'/
+FP 0 /Warning:/
+//
+
+
+#############################################
+# The qapirall database(s)
+#############################################
+
+# fields seqvn not supported by PIR format data
+ID dbigcg-pirall-keep
+DL keep
+TI 120
+AP dbigcg
+CL -fields "acnum,des,keyword,taxon"
+IN PIR
+IN ../../pir
+IN
+IN PIR
+IN
+IN
+FI stderr
+FC = 6
+FP 0 /Warning:/
+FI division.lkp
+FZ = 388
+FP /\A.{300}\001\000pir1\.ref pir1\.seq\000/
+FI entrynam.idx
+FZ = 1260
+FP /\A.{300}A31558/
+FI acnum.hit
+FZ = 672
+FP /\A.{300}\033/
+FI acnum.trg
+FZ = 1392
+FP /\A.{308}A00001/
+FI des.hit
+FZ = 1476
+FP /\A.{300}\066/
+FI des.trg
+FZ = 3314
+FP /\A.{308}0/
+FI keyword.hit
+FZ = 1972
+FP /\A.{300}\005/
+FI keyword.trg
+FZ = 828
+FP /\A.{308}ACETYLATED AMINO END/
+FI taxon.hit
+FZ = 572
+FP /\A.{300}\016/
+FI taxon.trg
+FZ = 4332
+FP /\A.{308}ANAS PLATYRHYNCHOS \(DOMESTIC DUCK\)/
+//
+
+ID dbigcg-pirall-id
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qapirall-id:cchu test.out -auto
+FI test.out
+FZ = 141
+FP 1 /\A>CCHU /
+FP 1 />/
+//
+
+ID dbigcg-pirall-idfirst
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qapirall-id:A31558 test.out -auto
+FI test.out
+FZ = 156
+FP 1 />A31558 /
+FP 1 />/
+//
+
+ID dbigcg-pirall-idsecond
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qapirall-id:A32902 test.out -auto
+FI test.out
+FZ = 123
+FP 1 />A32902 /
+FP 1 />/
+//
+
+ID dbigcg-pirall-last
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qapirall-id:S29350 test.out -auto
+FI test.out
+FZ = 186
+FP 1 />S29350 /
+FP 1 />/
+//
+
+ID dbigcg-pirall-acc
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qapirall:A00001 test.out -auto
+FI test.out
+FZ = 141
+FP 1 />CCHU /
+FP 1 />/
+//
+
+ID dbigcg-pirall-nextlast
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qapirall-id:S11172 test.out -auto
+FI test.out
+FZ = 178
+FP 1 />S11172 /
+FP 1 />/
+//
+
+ID dbigcg-pirall-all
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qapirall:* test.out -auto
+FI test.out
+FZ = 10175
+FP 1 />S11172 /
+FP 60 />/
+//
+
+ID dbigcg-pirall-wild
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qapirall:c* test.out -auto
+FI test.out
+FZ = 7660
+FP 49 />C/
+FP 49 />/
+//
+
+ID dbigcg-pirall-acnum
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qapirall-acc:A04605 test.out -auto
+FI test.out
+FZ = 139
+FP 1 /\A>CCRT /
+FP 1 />/
+//
+
+ID dbigcg-pirall-acnumall
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qapirall-acc:* test.out -auto
+FI test.out
+FZ = 10175
+FP 1 />CCRT /
+FP 60 />/
+//
+
+ID dbigcg-pirall-acnumwild
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qapirall-acc:s* test.out -auto
+FI test.out
+FZ = 829
+## CCHO has an S* secondary accession number, rest are primary
+FP 4 />[A-Z0-9]+ S/
+FP 5 />/
+//
+
+ID dbigcg-pirall-des
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qapirall-des:cytochrome test.out -auto
+FI test.out
+FZ = 8516
+FP 1 /\A>CCHU /
+FP 54 />/
+//
+
+ID dbigcg-pirall-desall
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qapirall-des:* test.out -auto
+FI test.out
+FZ = 10175
+FP 1 />CCHU /
+FP 60 />/
+//
+
+ID dbigcg-pirall-deswild
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qapirall-des:p* test.out -auto
+FI test.out
+FZ = 2380
+FP 11 />.*[ -][Pp]/
+FP 11 />/
+//
+
+ID dbigcg-pirall-key
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qapirall-key:polymorphism test.out -auto
+FI test.out
+FZ = 141
+FP 1 />CCHU /
+FP 1 />/
+//
+
+ID dbigcg-pirall-keyall
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qapirall-key:* test.out -auto
+FI test.out
+FZ = 10175
+FP 1 />CCHU /
+FP 60 />/
+//
+
+# only entries with keywords
+ID dbigcg-pirall-keyall2
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qapirall-key:?* test.out -auto
+FI test.out
+FZ = 8800
+FP 1 />CCHU /
+FP 56 />/
+//
+
+ID dbigcg-pirall-keywild
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qapirall-key:m* test.out -auto
+FI test.out
+FZ = 8180
+FP 1 />CCHU /
+FP 52 />/
+//
+
+ID dbigcg-pirall-org
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qapirall-org:'drosophila melanogaster' test.out -auto
+FI test.out
+FZ = 180
+FP 1 />CCFFDM /
+FP 1 />/
+//
+
+ID dbigcg-pirall-orgall
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qapirall-org:* test.out -auto
+FI test.out
+FZ = 10175
+FP 1 />CCHU /
+FP 60 />/
+//
+
+ID dbigcg-pirall-orgwild
+AP seqret
+PP EMBOSSRC=../..
+PP export EMBOSSRC
+CL qapirall-org:s* test.out -auto
+FI test.out
+FZ = 1103
+FP 1 />CCPG /
+FP 7 />/
 //
 
 ##################################################################
