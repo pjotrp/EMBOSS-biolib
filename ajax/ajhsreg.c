@@ -408,7 +408,7 @@ void ajHsRegSub(AjPHsRegexp rp, AjPStr source, AjPStr* dest)
 
 void ajHsRegSubC(AjPHsRegexp rp, const char* source, AjPStr* dest)
 {
-    register regexp * const prog;
+    register regexp *prog;
     register char *src;
     register char *dst;
     register char c;
