@@ -2987,7 +2987,7 @@ ajint ajSeqBegin (AjPSeq seq)
 ** has been set.
 **
 ** @param [P] seq [AjPSeq] Sequence object
-** @return [ajint] Start position.
+** @return [ajint] End position.
 ** @@
 ******************************************************************************/
 
