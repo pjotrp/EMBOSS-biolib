@@ -228,7 +228,7 @@ public class RemoteDragTree extends JTree implements DragGestureListener,
           {
             PrivateRequest gReq = new PrivateRequest(mysettings,
                                    "EmbreoFile","delFile",params);
-          
+
             Runnable deleteFileFromTree = new Runnable()
             {
               public void run () { deleteObject(node,fn); };
@@ -265,7 +265,7 @@ public class RemoteDragTree extends JTree implements DragGestureListener,
           {
             PrivateRequest gReq = new PrivateRequest(mysettings,
                                    "EmbreoFile","rename",params);
-         
+
             Runnable deleteFileFromTree = new Runnable()
             {
               public void run () 
@@ -416,7 +416,9 @@ public class RemoteDragTree extends JTree implements DragGestureListener,
          
         }
       }
-      catch (Exception ex) {}
+      catch (Exception ex) 
+      {
+      }
     } 
     else
     {
@@ -557,6 +559,9 @@ public class RemoteDragTree extends JTree implements DragGestureListener,
     if(childIndex != -1)
       model.insertNodeInto(childNode,parentNode,childIndex);
 
+    // Make sure the user can see the new node.
+    this.scrollPathToVisible(new TreePath(childNode.getPath()));
+
     return; 
   }
 
@@ -585,6 +590,7 @@ public class RemoteDragTree extends JTree implements DragGestureListener,
                                        filename, null));
       PrivateRequest gReq = new PrivateRequest(mysettings,"EmbreoFile",
                                                     "get_file",params);
+
       FileEditorDisplay fed = new FileEditorDisplay(ffile,filename,
                                    gReq.getHash().get("contents"));
       new ResultsMenuBar(ffile,fed);
