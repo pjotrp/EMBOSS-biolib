@@ -106,7 +106,6 @@ int main(int argc, char **argv)
     opencoeff = ajRoundF(opencoeff, 8);
     extendcoeff = ajRoundF(extendcoeff, 8);
 
-    seq=ajSeqNew();
     substr=ajStrNew();
     name=ajStrNew();
     mname=ajStrNew();

@@ -106,7 +106,6 @@ int main(int argc, char **argv)
     inf       = ajAcdGetInfile("infile");
     outf      = ajAcdGetOutfile("outfile");
     
-    seq=ajSeqNew();
     substr=ajStrNew();
     name=ajStrNew();
     mname=ajStrNew();
