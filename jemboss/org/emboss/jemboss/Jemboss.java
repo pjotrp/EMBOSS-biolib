@@ -178,7 +178,8 @@ public class Jemboss implements ActionListener
     if(withSoap)
     {
       splashing = new AuthPopup(mysettings,3);
-      splashing.setBottomPanel();
+      if(mysettings.getUseAuth())
+        splashing.setBottomPanel();
       splashing.setSize(380,200);
       splashing.pack();
       splashing.setVisible(true);
