@@ -1,4 +1,6 @@
 Version 3.0.0
+	Colours for abiview set to the ABI standard colours.
+
 	Sequence types explicitly set in source code for cons, sixpack and
 	backtranseq. GCG format output was showing nucleotide instead of
 	protein sequence type.
