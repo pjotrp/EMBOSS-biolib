@@ -118,6 +118,9 @@ int main(int argc, char **argv)
     baseO = ajSeqABIGetBaseOffset(fp); /* find BASE tag & get offset */
     nseq = ajStrNew();                 /* read in sequence */
 
+    if(graphs->displaytype == 17)
+            window = numBases+1;
+
     trace = ajInt2dNew();
     basePositions = ajShortNew();
 
