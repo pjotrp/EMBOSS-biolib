@@ -6866,6 +6866,7 @@ FP 0 /Error: /
 FP 0 /Died: /
 FI amic_pseae.garnier
 FP /^#  Residue totals: H:111   E: 98   T: 81   C: 94\n/
+FP /RADAL\nhelix               HHHHHH            HHHH H     HHHHHH \n/
 //
 
 ID garnier-range
@@ -6881,6 +6882,23 @@ FC = 2
 FI amic_pseae.garnier
 FZ = 1144
 FP /^#  Residue totals: H: 17   E: 21   T: 22   C: 10\n/
+FP /RADAL\nhelix               HHHHHH            HHHH H     HHHHHH \n/
+FP /^turns       T TTT  TT   TT\n/
+//
+
+ID garnier-short
+AP garnier
+IN asis::GSHQERPL
+IN 
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI asis.garnier
+FP /^#  Residue totals: H:  0   E:  0   T:  2   C:  6\n/
+FP /^turns       TT\n/
+FP /^ coil CCCCCC  \n/
 //
 
 ID geecee-ex
@@ -7708,7 +7726,35 @@ FP 0 /Error: /
 FP 0 /Died: /
 FI abc.noreturn
 FZ = 71
-FP /carriage return format\nACDEFGHIKLMNPQRSTVWY\n/
+FP /carriage return format\nACDEFGHIKLMNPQRSTVWY\n$/
+//
+
+ID noreturn-topc
+AP noreturn
+CL ../../data/abc.dat -system pc
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI abc.noreturn
+FZ = 73
+FP /carriage return format\r\nACDEFGHIKLMNPQRSTVWY\r\n$/
+//
+
+ID noreturn-tomac
+AP noreturn
+CL ../../data/abc.dat -system mac
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI abc.noreturn
+FZ = 71
+FP /carriage return format\rACDEFGHIKLMNPQRSTVWY\r$/
 //
 
 # change example to use globins.fasta
