@@ -1,3 +1,28 @@
+Version 2.7.0
+	emboss.default and ~/.embossrc configuration files now have
+	extensive error messages reporting filename and line number.
+	showdb has additional validation for all database definitions.
+	Environment variable EMBOSS_NAMVALID (boolean) turns this on for
+	all programs.
+
+	ajnam.c has debugging turned on by environment variable
+	EMBOSS_NAMDEBUG (boolean). This processing happens before
+	command line option -debug has taken effect. The output goes to
+	standard error.
+
+	Function ajFmtVPrintS is a missing complement to ajFmtPrintS
+
+	EMBL/Genbank feature tables updated to FTv5.0
+
+	SwissProt feature table '<' '>' and '?' location modifiers are
+	now handled correctly.
+
+	Added new applications acdlog, acdpretty and acdtable. Run like
+	acdc they provide the same functions as the command line options
+	-acdlog -acdpretty and "-acdtable -help" These -acd options are
+	now obsolete and will be removed in a future release to clean up
+	the ACD interface.
+
 	Transeq now has the option '-clean' that converts all '*'
 	characters to 'X's.  This may be useful because not all programs
 	accept protein sequences containing '*' characters. 
