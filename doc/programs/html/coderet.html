@@ -63,7 +63,7 @@ The feature table of sequence database entries often have sections like this:
 <p>
 
 This specifies that the coding sequence for the gene is constructed by
-joing several sections of code, many of which are in other entries in
+joining several sections of code, many of which are in other entries in
 this database. 
 
 <p>
@@ -80,7 +80,7 @@ or:
 <p>
 
 This specifies that the messenger RNA sequence for the gene is constructed by 
-joing several sections of code, many of which are in other entries in
+joining several sections of code, many of which are in other entries in
 this database.
 
 
@@ -125,7 +125,7 @@ FT                   THEIIGFLDQTLYRWNRLGIESPRSEKLARELLKELRTQV"
 <p>
 
 It is often a tedious and error-prone job to extract the several
-sections of these sequences from the databases and to join them together
+sections of these sequences from the database entries and to join them together
 to construct the indicated finished sequence. 
 <p>
 
@@ -133,11 +133,15 @@ to construct the indicated finished sequence.
 <p>
 
 You specify the sequence containing the feature table and it extracts
-the required CDS, mRNA and/or protein sequences from this feature table. 
-If any sequences are in other entries of that database, they are
-automatically fetched and incorporated correctly into the final
+the required CDS, mRNA and/or protein sequences specified by this
+feature table.  If any sequences are in other entries of that database,
+they are automatically fetched and incorporated correctly into the final
 sequence. 
 
+<p>
+
+The translations are not made from the coding sequence, they are extracted
+directly from the translation sequence held in the feature table. 
 
 
 
@@ -189,8 +193,14 @@ FT                   /note="intron I"
 <hr>
 <p>
 
+This means that the mRNA sequence is from position 179 to 500 in this sequence.
+<br>
+The coding sequence is formed by joining the region from 387 to 500 in this sequence together with regions from two other entries in this database: X03488 and X03488.
+<br>
+The translation of the coding sequence is also given.
+<p>
 
-To extract all of CDS, mRNA and the protein translations, type:
+To extract all of the CDS, mRNA and the protein translations, type:
 <p>
 <pre>
 % coderet
@@ -356,8 +366,8 @@ IT IS DONE FOR YOU.
         happens in unusual cases - null input, etc. 
    -->
 
-USA of a nucleic sequence having CDS, mRNA or translation headings in its
-feature table.
+USA of one or more nucleic sequences having CDS, mRNA or translation
+headings in their feature tables. 
 
 
 
@@ -398,7 +408,7 @@ of separated by underscore characters.  Thus the second CDS feature in
 the sequence 'HSXYZ' would be named 'HSXYZ_cds_2'. 
 <p>
 
-The translations are not done from the sequence, they are extracted
+The translations are not made from the coding sequence, they are extracted
 directly from the translation sequence held in the feature table. 
 
 
@@ -484,7 +494,9 @@ None.
         Useful things you can do with this program.
    -->
 
-None.
+The translations are not made from the coding sequence, they are extracted
+directly from the translation sequence held in the feature table. 
+
 
 
 

@@ -14,8 +14,8 @@ Description
    like this:
    
    This specifies that the coding sequence for the gene is constructed by
-   joing several sections of code, many of which are in other entries in
-   this database.
+   joining several sections of code, many of which are in other entries
+   in this database.
      _________________________________________________________________
    
 FT   CDS             join(U21925.1:818..987,U21926.1:258..420,
@@ -26,7 +26,7 @@ FT                   U21930.1:895..1014,516..708)
    or:
    
    This specifies that the messenger RNA sequence for the gene is
-   constructed by joing several sections of code, many of which are in
+   constructed by joining several sections of code, many of which are in
    other entries in this database.
      _________________________________________________________________
    
@@ -70,16 +70,20 @@ FT                   THEIIGFLDQTLYRWNRLGIESPRSEKLARELLKELRTQV"
      _________________________________________________________________
    
    It is often a tedious and error-prone job to extract the several
-   sections of these sequences from the databases and to join them
+   sections of these sequences from the database entries and to join them
    together to construct the indicated finished sequence.
    
    coderet does this job for you.
    
    You specify the sequence containing the feature table and it extracts
-   the required CDS, mRNA and/or protein sequences from this feature
-   table. If any sequences are in other entries of that database, they
-   are automatically fetched and incorporated correctly into the final
-   sequence.
+   the required CDS, mRNA and/or protein sequences specified by this
+   feature table. If any sequences are in other entries of that database,
+   they are automatically fetched and incorporated correctly into the
+   final sequence.
+   
+   The translations are not made from the coding sequence, they are
+   extracted directly from the translation sequence held in the feature
+   table.
    
 Usage
 
@@ -120,7 +124,14 @@ FT   intron          501..>512
 FT                   /note="intron I"
      _________________________________________________________________
    
-   To extract all of CDS, mRNA and the protein translations, type:
+   This means that the mRNA sequence is from position 179 to 500 in this
+   sequence.
+   The coding sequence is formed by joining the region from 387 to 500 in
+   this sequence together with regions from two other entries in this
+   database: X03488 and X03488.
+   The translation of the coding sequence is also given.
+   
+   To extract all of the CDS, mRNA and the protein translations, type:
    
 % coderet
 Extract CDS, mRNA and translations from feature tables
@@ -192,8 +203,8 @@ Command line arguments
    
 Input file format
 
-   USA of a nucleic sequence having CDS, mRNA or translation headings in
-   its feature table.
+   USA of one or more nucleic sequences having CDS, mRNA or translation
+   headings in their feature tables.
    
 Output file format
 
@@ -211,8 +222,9 @@ Output file format
    underscore characters. Thus the second CDS feature in the sequence
    'HSXYZ' would be named 'HSXYZ_cds_2'.
    
-   The translations are not done from the sequence, they are extracted
-   directly from the translation sequence held in the feature table.
+   The translations are not made from the coding sequence, they are
+   extracted directly from the translation sequence held in the feature
+   table.
    
 Data files
 
@@ -220,7 +232,9 @@ Data files
    
 Notes
 
-   None.
+   The translations are not made from the coding sequence, they are
+   extracted directly from the translation sequence held in the feature
+   table.
    
 References
 
