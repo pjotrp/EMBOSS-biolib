@@ -25,7 +25,8 @@
 # The results of the QA tests willl be stored in the file
 # test/qa/qatest.log
 # 
-# Typical example entry:
+# Typical example entry for an EMBOSS package program (AP line)
+# See below for AA/AB (EMBASSY) and AQ (make check) entries
 # 
 # ID programname-ex (the ID name of this test)
 # UC text (not used in the QA test - used in the HTML documentation)
@@ -52,58 +53,119 @@
 #	Typical tags are:
 #	-ex	= example used to create the HTML documentation
 #	-ex2, -ex3	= further examples used in the documentation
-# 	-keep, -fail, -0001, -nofile	= used in various tests of failure
-# UC text
-#	(Optional)
-# 	This information is not used in the QA testing.
-# 	It is used by scripts/makeexample.pl when creating the HTML
-#	documentation files to annotate the examples of usage.
-# AP Application name
-#	This is used for the command line and for reporting statistics
+#               In general, all documentation examples should have tests
+#               to check the documentation is correct.
+# 	-keep If the test has a "DL keep" line the resulting files are kept.
+#             Used for database indexing - later tests will use the results!
+#       -fail Testing a failure condition (ER line)
+# AA Application name for an EMBASSY package application.
+#	This is used for the command line and for reporting statistics.
+#       The application must be built by "make" for the EMBASSY package
+#       defined in the AB line for this test definition.
+#       If the application is not found, qatest can assume this
+#       EMBASSY package was not installed.
+# AB EMBASSY package name
+#       Used to inform the qatest script that a test depends on
+#        installation of an EMBASSY package and may fail to find the binary.
+# AP Application name for EMBOSS application
+#	This is used for the command line and for reporting statistics.
+#       The application must be a standard EMBOSS application, built by make.
+#       The test must succeed.
+# AQ Application name for "make check" application
+#	This is used for the command line and for reporting statistics.
+#       The application must be built by "make check".
+#       The qatest script will look in the build directory as this
+#       application will not be installed.
+#       If the application is not found, qatest can assume "make
+#       check" was not run.
+# CC Comment
+#	Used in commenting on failed tests, e.g. "Requires SRS"
+#       This comment will appear in the test output on failure as a guide
+#       to an acceptable failure condition (check the error message too!)
+#       See ## lines for general comments within the definition
 # CL Command line
 #	(Optional)
 #	This is the rest of the command line.
-# ER error return code
-#	(Optional)
-# 	Error code to return.
-# ## Comment 
-#	(Optional)
-#	This is a comment.
-#	Double # is required.
-# CC Comment
-#	Used in commenting on failed tests, e.g. "Requires SRS"
+#       Multiple CL lines are appended with a space in between.
+# DI Directory
+#       Name of a directory created in the results directory
+#       No tests currently for the contents, but a QQ postprocessing
+#       command could be used to list the contents to another file.
 # DL 'success' or 'all' or 'keep'
 #	(Optional)
 #	'success' = delete the test directory on success (the default)
 # 	'all' = delete the test directory always
 #	'keep' = keep the test results directory always
-# IN Line input
-#	(Required for each prompted input)
-#	If there is nothing on the line, then an empty line is input to the
-#	application. (Obvious really, but needs to be said)
+#                (used if another test reuses the results,
+#                 e.g. database indexing)
+# ER error return code
+#	(Optional)
+# 	Error code expecte.
+#       Used for tests that are test failure conditions.
+#       The test reports an error if the error code is not found
+# FC [<=>] number
+#	= nn Number of lines
+#       > nn More than nn lines
+#       < nn Less than nn lines
 # FI File name 
 #	(Required for all output files created)
 #	stdout and stderr are assumed to exist and be empty unless stated.
 # FP File pattern
 #	(Required for all non stdout and stderr files)
 #	perl /regexp/ to be found in the preceeding 'FI' file.
-#	The /regexp/ may be preceeded by an optional count to check exact
+#	The /regexp/ may be preceded by an optional count to check exact
 #	number. 
-# FZ [<=>]number 
+#       As an extra check, stderr (which often contains the user prompts)
+#       should be checked for absence of warning, error and died messages.
+# FZ [<=>] number 
 #	(Required for all non stdout and stderr files)
 #	File size test on the preceeding 'FI' file.
 #	The file size may be qualified with an optional relation '=', '>' etc.
 #	Implicit test for zero size stdout/stderr unless stated.
-# FC [<=>]number File 
-#	Linecount test on the preceeding 'FI' file.
-#	The line count may be qualified with an optional relation '=', '>' etc.
-# PP environment_variable=value
-# PP export environment_variable
+# IC text
 #	(Optional)
-#	Set an environment variable required by the application.
-#	The variable should always be exported, for example:
+# 	This information is not used in the QA testing.
+# 	It is used by scripts/makeexample.pl when creating the HTML
+#	documentation files to annotate the input.
+# IN Line input
+#	(Required for each prompted input)
+#	If there is nothing on the line, then an empty line is input to the
+#	application. (Obvious really, but needs to be said)
+#       Care is needed if standard options are added/removed from the program.
+# OC text
+#	(Optional)
+# 	This information is not used in the QA testing.
+# 	It is used by scripts/makeexample.pl when creating the HTML
+#	documentation files to annotate the output.
+# PP Preprocessor command
+#	(Optional)
+#       Command executed (by /bin/sh) before the test.
+#       Each PP line is a separate command. Long lines are not concatenated.
+#	e.g. Set an environment variable required by the application.
+#	The variable should always be exported (this is /bin/sh), for example:
 #	PP EMBOSS_ACDROOT=../../acd
 #	PP export EMBOSS_ACDROOT
+# QQ Postprocessor command
+#	(Optional)
+#       Command executed (by /bin/sh) after the test.
+#       Each QQ line is a separate command. Long lines are not concatenated.
+#	Not used at present. Most likely application is to list the
+#       contents of a directory to anotehr file, which canthe be
+#       tested for size and patterns.
+# TI seconds
+#       Timeout for test. The default is 60 seconds. Some examples
+#       can take longer on a heavily loaded system.
+# UC text
+#	(Optional)
+# 	This information is not used in the QA testing.
+# 	It is used by scripts/makeexample.pl when creating the HTML
+#	documentation files to annotate the examples of usage.
+# ## Comment 
+#	(Optional)
+#	This is a comment.
+#	Double # is required.
+#       This is only a comment ni the entry and is not reported
+#       (use CC lines for comments that appear on failure)
 
 
 ####################
