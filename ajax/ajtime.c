@@ -2,6 +2,7 @@
 ** @source AJAX time functions
 **
 ** @author Copyright (C) 1998 Ian Longden
+** @author Copyright (C) 2003 Jon Ison    
 ** @version 1.0
 ** @@
 **

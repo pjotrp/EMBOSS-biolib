@@ -26,8 +26,10 @@ AjBool  ajTimeLocal(const time_t timer, AjPTime thys);
 AjPTime ajTimeToday (void);
 AjPTime ajTimeTodayF (const char* timefmt);
 void    ajTimeTrace (const AjPTime thys);
-
 AjPTime ajTimeSet( const char *timefmt, ajint mday, ajint mon, ajint year) ;
+AjPTime ajTimeNew(void);
+void    ajTimeDel(AjPTime *thys);
+
 
 #endif
 
