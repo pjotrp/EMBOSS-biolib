@@ -1,4 +1,7 @@
 Version 2.9.0
+        remap now has has the option '-frame' which allows you to specify
+        a list of the frames to be translated and displayed.
+
 	Major cleanup of @data documentation. Added @datatype for typedef
 	data types (e.g. AjBool). Checking all have attributes, and all
 	attribute names and types match. Comments in the code are moved to
