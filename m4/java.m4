@@ -122,7 +122,9 @@ AC_ARG_WITH(auth,
 	  if test "$withval" = "hpuxshadow" ; then
 		ALT_AUTHTYPE="-DHPUX_SHADOW"
 	  fi
+if test "`uname`" != "IRIX64" && test "`uname`" != "IRIX" ; then
 	  AC_CHECK_LIB(crypt, main, LDFLAGS="$LDFLAGS -lcrypt",LDFLAGS="$LDFLAGS")
+fi
 	  AC_CHECK_LIB(pam, main, LDFLAGS="$LDFLAGS -lpam",LDFLAGS="$LDFLAGS")
 else
   AC_MSG_RESULT(no)
