@@ -456,5 +456,6 @@ jemboss/org/emboss/jemboss/programs/Makefile
 jemboss/org/emboss/jemboss/server/Makefile
 jemboss/org/emboss/jemboss/soap/Makefile
 jemboss/org/emboss/jemboss/editor/Makefile
+jemboss/org/emboss/jemboss/draw/Makefile
 jemboss/resources/Makefile jemboss/utils/Makefile
 Makefile)
