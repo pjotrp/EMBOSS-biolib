@@ -34,10 +34,6 @@ static void dotpath_plotMatches(AjPList list);
 
 
 
-ajint begin1;
-ajint begin2;
-
-
 /* @prog dotpath **************************************************************
 **
 ** Displays a non-overlapping wordmatch dotplot of two sequences
@@ -46,6 +42,8 @@ ajint begin2;
 
 int main(int argc, char **argv)
 {
+    EmbPWordMatch wmp=NULL;
+    ajint  wplen=0;
     AjPSeq seq1,seq2;
     ajint wordlen;
     AjPTable seq1MatchTable =0 ;
@@ -69,6 +67,8 @@ int main(int argc, char **argv)
     ajint oldcolour=-1;
     ajint np=0;
     ajint npp=0;
+    ajint begin1;
+    ajint begin2;
     
     ajGraphInit("dotpath", argc, argv);
 
@@ -218,6 +218,21 @@ int main(int argc, char **argv)
 	ajFmtPrintF(outfile,"##Xtitle %s\n##Ytitle %s\n",ajSeqName(seq1),
 		    ajSeqName(seq2));
 
+
+
+	if(matchlist)
+	{
+	    wplen = ajListLength(matchlist);
+	    for(i=0;i<wplen;++i)
+	    {
+		ajListPop(matchlist,(void **)&wmp);
+		wmp->seq1start += begin1;
+		wmp->seq2start += begin2;
+		ajListPushApp(matchlist,(void *)wmp);
+	    }
+	}
+
+
 	if(overlaps && np)
 	    ajListMap(matchlist,dotpath_objtofile1, outfile);	
 
@@ -263,8 +278,8 @@ static void dotpath_objtofile1(void **x,void *cl)
     ajint y1;
     ajint y2;
 
-    x1 = (*p).seq1start+begin1;
-    y1 = (*p).seq2start+begin2;
+    x1 = (*p).seq1start;
+    y1 = (*p).seq2start;
     x2 = x1 + (*p).length;
     y2 = y1 + (*p).length;
   
@@ -293,8 +308,8 @@ static void dotpath_objtofile2(void **x,void *cl)
     ajint y1;
     ajint y2;
 
-    x1 = (*p).seq1start+begin1;
-    y1 = (*p).seq2start+begin2;
+    x1 = (*p).seq1start;
+    y1 = (*p).seq2start;
     x2 = x1 + (*p).length;
     y2 = y1 + (*p).length;
   
