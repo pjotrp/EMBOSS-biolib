@@ -1,4 +1,6 @@
 Version 2.8.0
+	Water S-W alignment program no longer truncates some matches
+
 	Vector arithmetic added to ajax library.
 
 	Compilation now uses large file handling by default. To disable use

@@ -138,8 +138,8 @@ int main(int argc, char **argv)
 	ajStrAssC(&m,"");
 	ajStrAssC(&n,"");
 
-	embAlignPathCalc(p,q,lena,lenb,gapopen,gapextend,path,sub,cvt,
-			 compass,show);
+	embAlignPathCalcSW(p,q,lena,lenb,gapopen,gapextend,path,sub,cvt,
+			   compass,show);
 
 	score=embAlignScoreSWMatrix(path,compass,gapopen,gapextend,a,b,lena,
 				    lenb,sub,cvt,&start1,&start2);
