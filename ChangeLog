@@ -1,4 +1,7 @@
 Version 2.7.0
+	tfm looks for documentation in EMBOSS_DOCROOT (an environment
+	variable, or defined in emboss.defaault), then in the install
+	directory, and finally the original build directory.
 
 	In some cases, EMBOSS programs could terminate with an exit status
 	of 255 (-1). Terminating with "Die:" message exists with status 1.
