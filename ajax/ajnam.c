@@ -252,7 +252,7 @@ static void namPrintDatabase (AjPStr* dbattr){
 void ajNamPrintDbAttr (AjPFile outf, AjBool full) {
   ajint i;
   for (i=0; namAttr[i].Name; i++) {
-    ajFmtPrintF (outf, "%12S %10S %S\n",
+    ajFmtPrintF (outf, "%12s %10s %s\n",
 		 namAttr[i].Name, namAttr[i].Defval, namAttr[i].Comment);
   }
   return;
