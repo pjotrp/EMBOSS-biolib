@@ -5221,6 +5221,9 @@ AjBool ajStrDelim (AjPStr* pthis, AjPStrTok* ptoken, const char* delim) {
 
 AjBool ajStrPrefix (const AjPStr thys, const AjPStr pref) {
 
+  if (!pref)
+    return ajFalse;
+
   if (!pref->Len)		/* no prefix */
     return ajFalse;
 
