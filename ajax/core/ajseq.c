@@ -5355,16 +5355,29 @@ void ajSeqCount(const AjPStr thys, ajint* b)
 
     while(*cp)
     {
-	if(toupper((ajint) *cp) == 'A')
+	switch (*cp)
+	{
+	case 'A':
+	case 'a':
 	    b[0]++;
-	if(toupper((ajint) *cp) == 'C')
+	    break;
+	case 'C':
+	case 'c':
 	    b[1]++;
-	if(toupper((ajint) *cp) == 'G')
+	    break;
+	case 'G':
+	case 'g':
 	    b[2]++;
-	if(toupper((ajint) *cp) == 'T')
+	    break;
+	case 'T':
+	case 't':
+	case 'U':
+	case 'u':
 	    b[3]++;
-	if(toupper((ajint) *cp) == 'U')
-	    b[3]++;
+	    break;
+	default:
+	    break;
+	}
 	cp++;
     }
 
