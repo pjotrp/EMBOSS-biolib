@@ -238,6 +238,8 @@ void ajSeqAllWrite (AjPSeqout outseq, AjPSeq seq) {
 
   seqAllClone (outseq, seq);
 
+  seqDefName (&outseq->Name, !outseq->Single);
+
   if (outseq->Single)
     (void) seqFileReopen(outseq);
 
@@ -317,6 +319,8 @@ void ajSeqsetWrite (AjPSeqout outseq, AjPSeqset seq) {
     }
 
     seqsetClone (outseq, seq, i);
+    seqDefName (&outseq->Name, !outseq->Single);
+
     if (outseq->Single)
       (void) seqFileReopen(outseq);
 
@@ -3717,7 +3721,7 @@ static void seqDefName (AjPStr* name, AjBool multi) {
   static ajint count=0;
 
   if (ajStrLen(*name)) {
-    ajDebug("seqDefName already have '%S'\n", *name);
+    ajDebug("seqDefName already has a name '%S'\n", *name);
     return;
   }
 
