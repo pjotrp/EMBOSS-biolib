@@ -41,6 +41,10 @@
 #include <sys/ioctl.h>
 #include <limits.h>
 
+#ifdef __hpux
+#include <stropts.h>
+#endif
+
 #ifdef HAVE_POLL
 #include <poll.h>
 #endif
@@ -136,6 +140,7 @@ static int jctl_pipe_write(char *buf, int n, int seconds);
 static int jctl_snd(char *buf,int len);
 static int jctl_rcv(char *buf);
 
+static int java_block(int chan, unsigned long flag);
 
 
 #if defined (__SVR4) && defined (__sun)
@@ -974,15 +979,15 @@ static AjBool jctl_do_batch(char *buf, int uid, int gid)
     jctl_snd((char *)&c,1);
 
     block = 1;
-    if(ioctl(outpipe[0],FIONBIO,&block)==-1)
+    if(java_block(outpipe[0],block)==-1)
     {
-	fprintf(stderr,"Cannot unblock\n");
+	fprintf(stderr,"Cannot unblock 1. %d\n",errno);
 	jctl_fork_tidy(&cl,&prog,&enviro,&dir,&outstd,&errstd);
 	return ajFalse;
     }
-    if(ioctl(errpipe[0],FIONBIO,&block)==-1)
+    if(java_block(errpipe[0],block)==-1)
     {
-	fprintf(stderr,"Cannot unblock\n");
+	fprintf(stderr,"Cannot unblock 2. %d\n",errno);
 	jctl_fork_tidy(&cl,&prog,&enviro,&dir,&outstd,&errstd);
 	return ajFalse;
     }
@@ -1117,15 +1122,15 @@ static AjBool jctl_do_batch(char *buf, int uid, int gid)
 
 
     block = 0;
-    if(ioctl(outpipe[0],FIONBIO,&block)==-1)
+    if(java_block(outpipe[0],block)==-1)
     {
-	fprintf(stderr,"Cannot block\n");
+	fprintf(stderr,"Cannot block 3. %d\n",errno);
 	jctl_fork_tidy(&cl,&prog,&enviro,&dir,&outstd,&errstd);
 	return ajFalse;
     }
-    if(ioctl(errpipe[0],FIONBIO,&block)==-1)
+    if(java_block(errpipe[0],block)==-1)
     {
-	fprintf(stderr,"Cannot block\n");
+	fprintf(stderr,"Cannot block 4. %d\n",errno);
 	jctl_fork_tidy(&cl,&prog,&enviro,&dir,&outstd,&errstd);
 	return ajFalse;
     }
@@ -1356,15 +1361,15 @@ static AjBool jctl_do_fork(char *buf, int uid, int gid)
 
 
     block = 1;
-    if(ioctl(outpipe[0],FIONBIO,&block)==-1)
+    if(java_block(outpipe[0],block)==-1)
     {
-	fprintf(stderr,"Cannot unblock\n");
+	fprintf(stderr,"Cannot unblock 5. %d\n",errno);
 	jctl_fork_tidy(&cl,&prog,&enviro,&dir,&outstd,&errstd);
 	return ajFalse;
     }
-    if(ioctl(errpipe[0],FIONBIO,&block)==-1)
+    if(java_block(errpipe[0],block)==-1)
     {
-	fprintf(stderr,"Cannot unblock\n");
+	fprintf(stderr,"Cannot unblock 6. %d\n",errno);
 	jctl_fork_tidy(&cl,&prog,&enviro,&dir,&outstd,&errstd);
 	return ajFalse;
     }
@@ -1500,15 +1505,15 @@ static AjBool jctl_do_fork(char *buf, int uid, int gid)
 
 
     block = 0;
-    if(ioctl(outpipe[0],FIONBIO,&block)==-1)
+    if(java_block(outpipe[0],block)==-1)
     {
-	fprintf(stderr,"Cannot block\n");
+	fprintf(stderr,"Cannot block 7. %d\n",errno);
 	jctl_fork_tidy(&cl,&prog,&enviro,&dir,&outstd,&errstd);
 	return ajFalse;
     }
-    if(ioctl(errpipe[0],FIONBIO,&block)==-1)
+    if(java_block(errpipe[0],block)==-1)
     {
-	fprintf(stderr,"Cannot block\n");
+	fprintf(stderr,"Cannot block 8. %d\n",errno);
 	jctl_fork_tidy(&cl,&prog,&enviro,&dir,&outstd,&errstd);
 	return ajFalse;
     }
@@ -2287,9 +2292,9 @@ static AjBool jctl_do_getfile(char *buf, int uid, int gid,
 
 
     block = 1;
-    if(ioctl(fd,FIONBIO,&block)==-1)
+    if(java_block(fd,block)==-1)
     {
-	fprintf(stderr,"Cannot unblock\n");
+	fprintf(stderr,"Cannot unblock 9. %d\n",errno);
 	ajStrDel(&file);
 	ajStrDel(&message);
 	return ajFalse;
@@ -2324,9 +2329,9 @@ static AjBool jctl_do_getfile(char *buf, int uid, int gid,
 
 
     block = 0;
-    if(ioctl(fd,FIONBIO,&block)==-1)
+    if(java_block(fd,block)==-1)
     {
-	fprintf(stderr,"Cannot block\n");
+	fprintf(stderr,"Cannot block 10. %d\n",errno);
 	ajStrDel(&file);
 	ajStrDel(&message);
 	return ajFalse;
@@ -2583,9 +2588,9 @@ static AjBool jctl_do_putfile(char *buf, int uid, int gid)
 
 
     block = 1;
-    if(ioctl(fd,FIONBIO,&block)==-1)
+    if(java_block(fd,block)==-1)
     {
-	fprintf(stderr,"Cannot unblock\n");
+	fprintf(stderr,"Cannot unblock 11. %d\n",errno);
 	if(size)
 	    AJFREE(fbuf);
 	ajStrDel(&file);
@@ -2618,9 +2623,9 @@ static AjBool jctl_do_putfile(char *buf, int uid, int gid)
     }
 
     block = 0;
-    if(ioctl(fd,FIONBIO,&block)==-1)
+    if(java_block(fd,block)==-1)
     {
-	fprintf(stderr,"Cannot unblock\n");
+	fprintf(stderr,"Cannot unblock 12. %d\n",errno);
 	if(size)
 	    AJFREE(fbuf);
 	ajStrDel(&file);
@@ -2916,9 +2921,9 @@ static int jctl_pipe_read(char *buf, int n, int seconds)
     
 
     block = 1;
-    if(ioctl(rchan,FIONBIO,&block)==-1)
+    if(java_block(rchan,block)==-1)
     {
-	fprintf(stderr,"Cannot unblock\n");
+	fprintf(stderr,"Cannot unblock 13. %d\n",errno);
 	return -1;
     }
 
@@ -2999,9 +3004,9 @@ static int jctl_pipe_read(char *buf, int n, int seconds)
 #endif
 
     block = 0;
-    if(ioctl(rchan,FIONBIO,&block)==-1)
+    if(java_block(rchan,block)==-1)
     {
-	fprintf(stderr,"Cannot block\n");
+	fprintf(stderr,"Cannot block 14. %d\n",errno);
 	return -1;
     }
 
@@ -3050,9 +3055,9 @@ static int jctl_pipe_write(char *buf, int n, int seconds)
     
 
     block = 1;
-    if(ioctl(tchan,FIONBIO,&block)==-1)
+    if(java_block(tchan,block)==-1)
     {
-	fprintf(stderr,"Cannot unblock\n");
+	fprintf(stderr,"Cannot unblock 15. %d\n",errno);
 	return -1;
     }
 
@@ -3128,9 +3133,9 @@ static int jctl_pipe_write(char *buf, int n, int seconds)
 #endif
 
     block = 0;
-    if(ioctl(tchan,FIONBIO,&block)==-1)
+    if(java_block(tchan,block)==-1)
     {
-	fprintf(stderr,"Cannot block\n");
+	fprintf(stderr,"Cannot block 16. %d\n",errno);
 	return -1;
     }
 
@@ -3197,6 +3202,37 @@ static int jctl_rcv(char *buf)
     return len;
 }
 
+
+
+/* @funcstatic java_block ************************************************
+**
+** File descriptor block/unblock
+**
+** @param [r] chan [int] file descriptor
+** @param [r] flag [unsigned long] block=1 unblock=0
+**
+** @return [int] 0=success  -1=failure
+** @@
+******************************************************************************/
+
+static int java_block(int chan, unsigned long flag)
+{
+    
+    if(ioctl(chan,FIONBIO,&flag)==-1)
+    {
+#ifdef __sgi
+	if(errno==ENOSYS)
+	    return 0;
+#endif
+#ifdef __hpux
+	if(errno==ENOTTY)
+	    return 0;
+#endif
+	return -1;
+    }
+
+    return 0;
+}
 
 
 

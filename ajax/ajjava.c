@@ -47,6 +47,9 @@
 #include <ctype.h>
 #include <sys/ioctl.h>
 
+#ifdef __hpux
+#include <stropts.h>
+#endif
 
 #ifdef HAVE_POLL		/* Only for OSs without FD macros */
 #include <poll.h>
@@ -185,7 +188,7 @@ static int java_snd(int tchan,char *buf,int len,AjPStr *errstd);
 static int java_rcv(int rchan, char *buf, AjPStr *errstd);
 
 
-
+static int java_block(int chan, unsigned long flag);
 
 
 
@@ -1926,11 +1929,17 @@ static void java_wait_for_term(int pid,AjPStr *outstd, AjPStr *errstd,
     
 
     block = 1;
-    if(ioctl(outpipe[0],FIONBIO,&block)==-1)
+    if(java_block(outpipe[0],block)==-1)
+    {
+	ajFmtPrintAppS(errstd,"Cannot unblock 1a. %d\n",errno);
 	return;
+    }
 
-    if(ioctl(errpipe[0],FIONBIO,&block)==-1)
+    if(java_block(errpipe[0],block)==-1)
+    {
+	ajFmtPrintAppS(errstd,"Cannot unblock 2a. %d\n",errno);
 	return;
+    }
 
     *buf = '\0';
 
@@ -2062,11 +2071,17 @@ static void java_wait_for_term(int pid,AjPStr *outstd, AjPStr *errstd,
 #endif
 
     block = 0;
-    if(ioctl(outpipe[0],FIONBIO,&block)==-1)
+    if(java_block(outpipe[0],block)==-1)
+    {
+	ajFmtPrintAppS(errstd,"Cannot unblock 3a. %d\n",errno);
 	return;
+    }
 
-    if(ioctl(errpipe[0],FIONBIO,&block)==-1)
+    if(java_block(errpipe[0],block)==-1)
+    {
+	ajFmtPrintAppS(errstd,"Cannot unblock 4a. %d\n",errno);
 	return;
+    }
 
 
     return;
@@ -2109,11 +2124,17 @@ static void java_wait_for_file(int pid,AjPStr *outstd, AjPStr *errstd,
     
 
     block = 1;
-    if(ioctl(outpipe[0],FIONBIO,&block)==-1)
+    if(java_block(outpipe[0],block)==-1)
+    {
+	ajFmtPrintAppS(errstd,"Cannot unblock 5a. %d\n",errno);
 	return;
+    }
 
-    if(ioctl(errpipe[0],FIONBIO,&block)==-1)
+    if(java_block(errpipe[0],block)==-1)
+    {
+	ajFmtPrintAppS(errstd,"Cannot unblock 6a. %d\n",errno);
 	return;
+    }
 
     *buf = '\0';
     
@@ -2276,11 +2297,17 @@ static void java_wait_for_file(int pid,AjPStr *outstd, AjPStr *errstd,
 	    ajStrAppC(errstd,"\nIncomplete file read\n");
 
     block = 0;
-    if(ioctl(outpipe[0],FIONBIO,&block)==-1)
+    if(java_block(outpipe[0],block)==-1)
+    {
+	ajFmtPrintAppS(errstd,"Cannot unblock 7a. %d\n",errno);
 	return;
+    }
 
-    if(ioctl(errpipe[0],FIONBIO,&block)==-1)
+    if(java_block(errpipe[0],block)==-1)
+    {
+	ajFmtPrintAppS(errstd,"Cannot unblock 8a. %d\n",errno);
 	return;
+    }
 
     return;
 }
@@ -4140,9 +4167,9 @@ static int java_pipe_write(int tchan, char *buf, int n, int seconds,
     
 
     block = 1;
-    if(ioctl(tchan,FIONBIO,&block)==-1)
+    if(java_block(tchan,block)==-1)
     {
-	ajStrAppC(errstd,"Cannot unblock\n");
+	ajFmtPrintAppS(errstd,"Cannot unblock 9a. %d\n",errno);
 	return -1;
     }
     
@@ -4219,9 +4246,9 @@ static int java_pipe_write(int tchan, char *buf, int n, int seconds,
 #endif
 
     block = 0;
-    if(ioctl(tchan,FIONBIO,&block)==-1)
+    if(java_block(tchan,block)==-1)
     {
-	ajStrAppC(errstd,"Cannot block\n");
+	ajFmtPrintAppS(errstd,"Cannot block 10a. %d\n",errno);
 	return -1;
     }
 
@@ -4270,9 +4297,9 @@ static int java_pipe_read(int rchan, char *buf, int n, int seconds,
 
 
     block = 1;
-    if(ioctl(rchan,FIONBIO,&block)==-1)
+    if(java_block(rchan,block)==-1)
     {
-	ajStrAppC(errstd,"Cannot unblock\n");
+	ajFmtPrintAppS(errstd,"Cannot unblock 11a. %d\n",errno);
 	return -1;
     }
 
@@ -4352,9 +4379,9 @@ static int java_pipe_read(int rchan, char *buf, int n, int seconds,
 #endif
 
     block = 0;
-    if(ioctl(rchan,FIONBIO,&block)==-1)
+    if(java_block(rchan,block)==-1)
     {
-	ajStrAppC(errstd,"Cannot unblock\n");
+	ajFmtPrintAppS(errstd,"Cannot unblock 12a. %d\n",errno);
 	return -1;
     }
 
@@ -4421,6 +4448,38 @@ static int java_rcv(int rchan, char *buf, AjPStr *errstd)
     }
 
     return len;
+}
+
+
+
+/* @funcstatic java_block ************************************************
+**
+** File descriptor block/unblock
+**
+** @param [r] chan [int] file descriptor
+** @param [r] flag [unsigned long] block=1 unblock=0
+**
+** @return [int] 0=success  -1=failure
+** @@
+******************************************************************************/
+
+static int java_block(int chan, unsigned long flag)
+{
+    
+    if(ioctl(chan,FIONBIO,&flag)==-1)
+    {
+#ifdef __sgi
+	if(errno==ENOSYS)
+	    return 0;
+#endif
+#ifdef __hpux
+	if(errno==ENOTTY)
+	    return 0;
+#endif
+	return -1;
+    }
+
+    return 0;
 }
 
 
