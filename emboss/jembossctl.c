@@ -2221,13 +2221,13 @@ static AjBool jctl_do_listfiles(char *buf, int uid, int gid,AjPStr *retlist)
 
     char *p = NULL;
     DIR  *dirp;
-#if defined (HAVE64) && !defined(AJ_MACOSXLF) && !defined(AJ_HPUXLF)
+#if defined (HAVE64) && !defined(AJ_MACOSXLF) && !defined(AJ_HPUXLF) && !defined(AJ_FreeBSDLF)
     struct dirent64 *dp;
 #else
     struct dirent *dp;
 #endif
 
-#if defined (HAVE64) && !defined(AJ_MACOSXLF) && !defined(AJ_HPUXLF)
+#if defined (HAVE64) && !defined(AJ_MACOSXLF) && !defined(AJ_HPUXLF) && !defined(AJ_FreeBSDLF)
     struct stat64 sbuf;
 #else
     struct stat sbuf;
@@ -2320,7 +2320,7 @@ static AjBool jctl_do_listfiles(char *buf, int uid, int gid,AjPStr *retlist)
     for(dp=readdir_r(dirp,(struct dirent *)dbuf);dp;
 	dp=readdir_r(dirp,(struct dirent *)dbuf))
 #else
-#if defined (HAVE64) && !defined(AJ_MACOSXLF) && !defined(AJ_HPUXLF)
+#if defined (HAVE64) && !defined(AJ_MACOSXLF) && !defined(AJ_HPUXLF) && !defined(AJ_FreeBSDLF)
     for(dp=readdir64(dirp);dp;dp=readdir64(dirp))
 #else
     for(dp=readdir(dirp);dp;dp=readdir(dirp))
@@ -2340,7 +2340,7 @@ static AjBool jctl_do_listfiles(char *buf, int uid, int gid,AjPStr *retlist)
 	ajFmtPrintS(&full,"%S%s",dir,dp->d_name);
 
 
-#if defined (HAVE64) && !defined(AJ_MACOSXLF) && !defined(AJ_HPUXLF)
+#if defined (HAVE64) && !defined(AJ_MACOSXLF) && !defined(AJ_HPUXLF) && !defined(AJ_FreeBSDLF)
 	if(stat64(ajStrStr(full),&sbuf)==-1)
 	    continue;
 #else
@@ -2403,13 +2403,13 @@ static AjBool jctl_do_listdirs(char *buf, int uid, int gid,AjPStr *retlist)
     DIR  *dirp;
     time_t t;
 
-#if defined (HAVE64) && !defined(AJ_MACOSXLF) && !defined(AJ_HPUXLF)
+#if defined (HAVE64) && !defined(AJ_MACOSXLF) && !defined(AJ_HPUXLF) && !defined(AJ_FreeBSDLF)
     struct dirent64 *dp;
 #else
     struct dirent *dp;
 #endif
 
-#if defined (HAVE64) && !defined(AJ_MACOSXLF) && !defined(AJ_HPUXLF)
+#if defined (HAVE64) && !defined(AJ_MACOSXLF) && !defined(AJ_HPUXLF) && !defined(AJ_FreeBSDLF)
     struct stat64 sbuf;
 #else
     struct stat sbuf;
@@ -2513,7 +2513,7 @@ static AjBool jctl_do_listdirs(char *buf, int uid, int gid,AjPStr *retlist)
     for(dp=readdir_r(dirp,(struct dirent *)dbuf);dp;
 	dp=readdir_r(dirp,(struct dirent *)dbuf))
 #else
-#if defined (HAVE64) && !defined(AJ_MACOSXLF) && !defined(AJ_HPUXLF)
+#if defined (HAVE64) && !defined(AJ_MACOSXLF) && !defined(AJ_HPUXLF) && !defined(AJ_FreeBSDLF)
     for(dp=readdir64(dirp);dp;dp=readdir64(dirp))
 #else
     for(dp=readdir(dirp);dp;dp=readdir(dirp))
@@ -2533,7 +2533,7 @@ static AjBool jctl_do_listdirs(char *buf, int uid, int gid,AjPStr *retlist)
 
 	ajFmtPrintS(&full,"%S%s",dir,dp->d_name);
 
-#if defined (HAVE64) && !defined(AJ_MACOSXLF) && !defined(AJ_HPUXLF)
+#if defined (HAVE64) && !defined(AJ_MACOSXLF) && !defined(AJ_HPUXLF) && !defined(AJ_FreeBSDLF)
 	if(stat64(ajStrStr(full),&sbuf)==-1)
 	    continue;
 #else
@@ -2605,7 +2605,7 @@ static AjBool jctl_do_getfile(char *buf, int uid, int gid,
 
     char *p = NULL;
     char *q = NULL;
-#if defined (HAVE64) && !defined(AJ_MACOSXLF) && !defined(AJ_HPUXLF)
+#if defined (HAVE64) && !defined(AJ_MACOSXLF) && !defined(AJ_HPUXLF) && !defined(AJ_FreeBSDLF)
     struct stat64 sbuf;
 #else
     struct stat sbuf;
@@ -2708,7 +2708,7 @@ static AjBool jctl_do_getfile(char *buf, int uid, int gid,
     }
 
 
-#if defined (HAVE64) && !defined(AJ_MACOSXLF) && !defined(AJ_HPUXLF)
+#if defined (HAVE64) && !defined(AJ_MACOSXLF) && !defined(AJ_HPUXLF) && !defined(AJ_FreeBSDLF)
     if(stat64(ajStrStr(file),&sbuf)==-1)
     {
 	fprintf(stderr,"stat error (get file)\n");
