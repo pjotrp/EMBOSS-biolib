@@ -68,6 +68,26 @@ Create a chaos game representation plot for a sequence
 <P>
   Finally display the number and percentage values of AGCT bases.
 
+<p>
+
+The result is an image of a square sprinkled with dots.  Areas which are
+devoid of dots (or heavily covered with dots) indicate short sequence
+motifs that are unusually infrequent (or frequent).  The sequence of
+such motifs can be deduced by looking to see which quarter of teh square
+the region is in - the letter that this quarter belongs to is the first
+base of the motif.  The quarter is then quartered again and the
+appropriate base letters are assigned to the corners of the quarter -
+the eigth part that the region is in gives the second base of the motif. 
+
+<p>
+
+The process continues until you have identified the 1/16th or 1/32nd,
+etc.  of the original square containing the unusual region and you now
+have the sequence of the motif. 
+
+<p>
+
+
 <H2>
     Usage
 </H2>
@@ -75,11 +95,16 @@ Create a chaos game representation plot for a sequence
 
  Here is a sample session with chaos.
 
+<p>
+
 <pre>
-
- chaos embl:eclac
-
+% chaos embl:eclac
+Create a chaos game representation plot for a sequence
+Graph type [x11]: 
 </pre>
+
+<p>
+
  <a href="chaos0.gif">click here for result</a>
 
 
@@ -175,31 +200,40 @@ Any DNA sequence USA.
     Output file format
 </H2>
 
-.ps file if postscipt output requested.
+A graphics image is produced.
 
 <H2>
     Data files
 </H2>
 
+None.
 
 <H2>
     Notes
 </H2>
+
+None.
 
 
 <H2>
     References
 </H2>
 
+None.
+
 
 <H2>
     Warnings
 </H2>
 
+None.
+
 
 <H2>
     Diagnostic Error Messages
 </H2>
+
+None.
 
 
 <H2>
@@ -207,9 +241,12 @@ Any DNA sequence USA.
 </H2>
 
 0 upon successful completion.
+
 <H2>
     Known bugs
 </H2>
+
+None.
 
 
 <!--
