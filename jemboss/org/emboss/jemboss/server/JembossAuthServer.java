@@ -47,14 +47,15 @@ public class JembossAuthServer
   private String ls = new String(System.getProperty("line.separator"));
 
 //get paths to EMBOSS
-  JembossParams jp = new JembossParams();
-  String plplot = jp.getPlplot();
+  JembossParams jp  = new JembossParams();
+  String plplot     = jp.getPlplot();
   String embossData = jp.getEmbossData();
-  String embossBin = jp.getEmbossBin();
+  String embossBin  = jp.getEmbossBin();
   String embossPath = jp.getEmbossPath();
-  String acdDirToParse = jp.getAcdDirToParse();
+  String acdDirToParse     = jp.getAcdDirToParse();
+  String embossEnvironment = jp.getEmbossEnvironment();
 
-  private String[] envp = 
+  private String[] env = 
   {
     "PATH=" + embossPath + ps + embossBin,
     "PLPLOT_LIB=" + plplot,
@@ -62,10 +63,12 @@ public class JembossAuthServer
 //  ,"LD_LIBRARY_PATH=/usr/local/lib"
 // FIX FOR SOME SUNOS
   };
+  private String[] envp = jp.getEmbossEnvironmentArray(env);
   
   private String environ = "PATH=" + embossBin+ ps + embossPath +" "+
                            "PLPLOT_LIB=" + plplot +" "+
-                           "EMBOSS_DATA=" + embossData +" ";
+                           "EMBOSS_DATA=" + embossData +" "+
+                           jp.getEmbossEnvironment();
 // "LD_LIBRARY_PATH=/usr/local/lib"+" ";
 // FIX FOR SOME SUNOS
 
@@ -180,6 +183,7 @@ public class JembossAuthServer
     Vector wossOut = new Vector();
     String embossCommand = new String(embossBin + 
                    "wossname -colon -gui -auto");
+ 
     RunEmbossApplication rea = new RunEmbossApplication(embossCommand,
                                                            envp,null);
     wossOut.add("status");
