@@ -67,6 +67,7 @@ extern "C"
 #include "ajcall.h"
 #include "ajjava.h"
 #include "ajgraphxml.h"
+#include "ajvector.h"
 
 #endif
 
