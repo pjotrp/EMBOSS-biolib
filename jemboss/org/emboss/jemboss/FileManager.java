@@ -76,6 +76,16 @@ public class FileManager
       catch(Exception exp){}
     }
 
+    if(mysettings.getPublicSoapURL().startsWith("https"))
+    {
+      System.setProperty("https.proxyHost", "");
+      System.setProperty("http.proxyHost", "");
+      System.setProperty("proxyHost", "");
+      String settings[] = new String[1];
+      settings[0] = new String("proxy.override=true");
+      mysettings.updateJembossPropStrings(settings);
+    }
+
     AuthPopup fap = new AuthPopup(mysettings,0);
     fap.addBottomPanel();
     fap.setSize(380,170);
