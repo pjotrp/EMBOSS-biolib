@@ -124,7 +124,7 @@ int main(int argc, char **argv)
 }
 
 
-/* @funcstatic extractfeat_FeatSeqExtract *****************************************
+/* @funcstatic extractfeat_FeatSeqExtract *************************************
 **
 ** Extract features from a sequence
 ** Build up the complete sequence of a feature, concatenating child features
@@ -692,7 +692,7 @@ static void extractfeat_FeatureFilter(AjPFeattable featab, AjPStr
   }
 }
 
-/* @funcstatic extractfeat_MatchFeature *****************************************
+/* @funcstatic extractfeat_MatchFeature ***************************************
 **
 ** Test if a feature matches a set of criteria
 **
@@ -748,7 +748,7 @@ AjBool scoreok = (minscore < maxscore);
   return ajTrue;                        
 }
         
-/* @funcstatic extractfeat_MatchPatternTags **************************************
+/* @funcstatic extractfeat_MatchPatternTags ***********************************
 **
 ** Checks for a match of the tagpattern and valuepattern to at least one
 ** tag=value pair
