@@ -150,7 +150,7 @@ public class BuildJembossForm implements ActionListener
     }
 
 // Help button
-    JButton bhelp = new JButton("");
+    JButton bhelp = new JButton("Help");
     ImageIcon rfii = new ImageIcon("images/Information_button.gif");
     bhelp.setIcon(rfii);
     bhelp.addActionListener(this);
@@ -342,7 +342,7 @@ public class BuildJembossForm implements ActionListener
     String line;
     String text = "";
 
-    if( ae.getActionCommand().startsWith(""))  // Help option
+    if( ae.getActionCommand().startsWith("Help"))  // Help option
     {
       f.setCursor(cbusy);
       JFrame fhelp = new JFrame(applName + " Help");
