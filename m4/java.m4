@@ -185,7 +185,7 @@ AC_ARG_WITH(thread,
 	  fi
 
 	  if test "$withval" = "solaris" ; then
-	        CFLAGS="$CFLAGS -D_POSIX_C_SOURCE=199506L -D__EXTENSIONS__" 
+	        CFLAGS="$CFLAGS -D_POSIX_C_SOURCE=199506L" 
 		LDFLAGS="$LDFLAGS -lpthread"
 		LIBS="$LIBS -lpthread"
 	  fi

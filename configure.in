@@ -130,8 +130,10 @@ dnl End of Optimisation tests
 
 
 
-
-
+dnl Add extensions to Solaris for some reentrant functions
+if test "`uname`" = "SunOS"; then
+CFLAGS="$CFLAGS -D__EXTENSIONS__"
+fi
 
 
 dnl Use libtool to make a shared library.
