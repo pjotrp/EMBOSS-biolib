@@ -384,7 +384,7 @@ static AjBool seqAccessEmblcd (AjPSeqin seqin)
 	{
 /*	    if(seqin->Ftquery->Handle)
 		ajFileBuffClear(seqin->Ftquery->Handle,0); */
-	    AJFREE(qryd);
+	    AJFREE(qry->QryData);
 	}
 
     }
@@ -1598,6 +1598,7 @@ static AjBool seqCdQryReuse (AjPSeqQuery qry)
     {
 	ajDebug ("query data all finished\n");
 	AJFREE (qry->QryData);
+	qry->QryData = NULL;
 	return ajFalse;
     }
     else

@@ -5982,7 +5982,9 @@ void ajSeqQueryDel (AjPSeqQuery* pthis)
     ajStrDel(&thys->QryString);
 
     ajStrDel(&thys->Field);
-    AJFREE(thys->QryData);
+
+    if(thys->QryData)
+	AJFREE(thys->QryData);
 
     AJFREE(*pthis);
 
@@ -6029,7 +6031,8 @@ void ajSeqQueryClear (AjPSeqQuery thys)
 
     thys->Type = QRY_UNKNOWN;
     thys->Access = NULL;
-    thys->QryData = NULL;
+    if(thys->QryData)
+	AJFREE(thys->QryData);
     thys->QryDone = ajFalse;
 
     return;
