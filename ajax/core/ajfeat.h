@@ -37,8 +37,10 @@ AjPFeature    ajFeatAdd (AjPFeattable thys, AjPStr type,
 AjPFeature    ajFeatAddC (AjPFeattable thys, char* type,
 			  ajint start, ajint end, float score,
 			  char strand, ajint frame, AjPStr desc);
+AjBool        ajFeatIsChild (AjPFeature gf);
 void *        ajFeatClearTag(AjPFeature thys, AjPFeattable table,
 			     AjPStr tag) ;
+AjBool        ajFeatIsCompMult (AjPFeature gf);
 void          ajFeatCopy (AjPFeature* pthys, AjPFeature orig);
 void          ajFeatDel(AjPFeature *pthis) ;
 void          ajFeatExit (void);
@@ -55,6 +57,7 @@ AjBool        ajFeatGetTag (AjPFeature thys, AjPStr name, ajint num,
 AjPStr        ajFeatGetType (AjPFeature thys);
 ajint         ajFeatGetTrans(AjPStr str, AjPStr **cds);
 AjBool        ajFeatIsLocal (AjPFeature gf);
+AjBool        ajFeatIsMultiple (AjPFeature gf);
 AjBool        ajFeatIsLocalRange (AjPFeature gf, ajint start, ajint end);
 AjBool        ajFeatIsProt (AjPFeattable thys);
 ajint         ajFeatLen (AjPFeattable thys);
