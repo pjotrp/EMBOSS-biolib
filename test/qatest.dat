@@ -135,11 +135,11 @@ FC = 2
 
 ID banana-ex
 AP banana
-CL -graph ps
+CL -graph data
 IN tembl:rnu68037
 FI banana.profile
 FZ = 21906
-FI banana.ps
+FI banana.dat1
 FZ = 308957
 FI stderr
 FC = 2
@@ -210,12 +210,14 @@ FP /Nc = 32[.]951/
 
 ID cirdna-ex
 AP cirdna
-CL -graph data
+CL -graph ps
 IN ../../data/data.cirp
 IN
 IN
 FI stderr
 FC = 2
+FI cirdna.ps
+FZ = 20181
 //
 
 ID codcmp-ex
@@ -309,7 +311,7 @@ FP /Observed\/Expected ratio > 0\.60/
 FP /Length 406 \(104\.\.509\)/
 FP /Length 329 \(596\.\.924\)/
 FI rnu68037.out2
-FZ = 232
+FZ = 196
 FI cpgplot1.dat
 FZ = 24885
 FI cpgplot2.dat
@@ -330,7 +332,7 @@ FP /CPGREPORT of RNU68037 from 1 to 1218/
 FP /RNU68037                 12     13    17          1 100\.0    -/
 FP /RNU68037               1183   1193    26          2  72\.7   2\.00/
 FI rnu68037.out2
-FZ = 605
+FZ = 497
 //
 
 ID cusp-ex
@@ -560,9 +562,9 @@ FC = 2
 FI ap000504.diffseq
 FZ = 13953
 FI AF129756.diffgff
-FZ = 13503
+FZ = 11613
 FI AP000504.diffgff
-FZ = 13454
+FZ = 11564
 //
 
 ID digest-ex
@@ -573,7 +575,7 @@ IN
 FI stderr
 FC = 11
 FI opsd_human.digest
-FP /^246     248     346[.]383    \(K\) AEK \(E\)\n/
+FP /^246\s+248\s+346[.]383\s+\(K\) AEK \(E\)\n/
 FP /yields 14 fragments/
 FC = 18
 //
@@ -618,23 +620,30 @@ FI stderr
 FC = 2
 ## why is this output file created?
 FI hba_human.dotmatcher
+FI dotmatcher.ps
+FZ = 15469
 //
 
 ID dotpath-ex
 AP dotpath
 CL tembl:AF129756 tembl:AP000504 -word 20 -data -out af.path
 FI af.path
-FP /^##Number 118$/
+FP /^##Number 118\n/
 FC = 133
 FI stderr
 FC = 1
 //
 
+# we do not really want the eclac.dottup file by default
 ID dottup-ex
 AP dottup
 CL tembl:eclac tembl:eclaci -wordsize=6 -gtitle="eclaci vs eclac" -graph ps
 FI dottup.ps
 FZ = 9999
+FI stderr
+FC = 2
+FI eclac.dottup
+FZ = 0
 //
 
 ID dreg-ex
