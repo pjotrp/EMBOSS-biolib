@@ -1688,6 +1688,12 @@ AjPList   ajCathReadAllRawNew(AjPFile cathf, AjPFile domf, AjPFile namesf,
     ajStrDel(&tmpNumString);
     ajStrDel(&tmpNumString1);
     ajStrDel(&tmpNumString2);
+    AJFREE(CathDomArray);
+    AJFREE(CathNameArray);
+    ajStrDel(&Search_DomainIDPtr);
+    ajStrDel(&NDomAsString);
+    
+
 
     return ret;
 }
@@ -2301,6 +2307,8 @@ AjPScop ajScopNew(ajint chains)
     ret->Spr         = ajStrNew();
     ret->SeqPdb      = ajStrNew();
     ret->SeqSpr      = ajStrNew();
+    ret->Sse         = ajStrNew();
+    ret->Sss         = ajStrNew();
 
     if(chains)
     {
@@ -2473,6 +2481,8 @@ AjPScop ajScopReadCNew(AjPFile inf, const char *entry)
     static AjPStr Spr     = NULL;          
     static AjPStr SeqPdb  = NULL;	
     static AjPStr SeqSpr  = NULL;	
+    static AjPStr sse     =NULL;
+    static AjPStr sss     =NULL;
 
     AjBool ok             = ajFalse;
     
@@ -2510,6 +2520,7 @@ AjPScop ajScopReadCNew(AjPFile inf, const char *entry)
 	stmp    = ajStrNew();
 	Acc    = ajStrNew();
 	Spr     = ajStrNew();
+	sse     = ajStrNew();
 	exp1    = ajRegCompC("^([^ \t\r\n]+)[ \t\n\r]+");
 	exp2    = ajRegCompC("^([A-Za-z0-9.]+)[ ]*[^ \t\r\n]+[ ]*"
 			     "([0-9.-]+)[ ]*"
@@ -2518,6 +2529,7 @@ AjPScop ajScopReadCNew(AjPFile inf, const char *entry)
     
     SeqSpr  = ajStrNew();
     SeqPdb  = ajStrNew();
+    sss     = ajStrNew();
 
 
     
@@ -2617,6 +2629,8 @@ AjPScop ajScopReadCNew(AjPFile inf, const char *entry)
 	    ajStrAssS(&(ret)->Family,family);
 	    ajStrAssS(&(ret)->Acc,Acc);
 	    ajStrAssS(&(ret)->Spr,Spr);
+	    ajStrAssS(&(ret)->Sse,sse);
+            ajStrAssS(&(ret)->Sss,sss);
 	    ajStrAssS(&(ret)->SeqPdb,SeqPdb);
 	    ajStrAssS(&(ret)->SeqSpr,SeqSpr);
 	    (ret)->Sunid_Class = Sunid_Class;
@@ -2667,9 +2681,24 @@ AjPScop ajScopReadCNew(AjPFile inf, const char *entry)
 	/* Accession number */
 	else if(ajStrPrefixC(line,"AC"))
 	    ajFmtScanS(line, "%*s %S", &Acc);
+
 	/* Swissprot code */
 	else if(ajStrPrefixC(line,"SF"))
 	    ajFmtScanS(line, "%*s %S", &Spr);
+
+	/* SSE string */
+	else if(ajStrPrefixC(line,"SE"))
+	    ajFmtScanS(line, "%*s %S", &sse);
+
+        /* SSS string */
+	else if(ajStrPrefixC(line,"SS"))
+	{
+	    while((ok=ajFileReadLine(inf,&line)) && !ajStrPrefixC(line,"XX"))
+		ajStrAppC(&sss,ajStrStr(line));
+	    ajStrCleanWhite(&sss);
+	    continue;
+	}
+
 	/* Start and end relative to swissprot sequence */
 	else if(ajStrPrefixC(line,"RA"))
 	    ajFmtScanS(line, "%*s %d %*s %d", &Startd, &Endd);
@@ -2686,6 +2715,7 @@ AjPScop ajScopReadCNew(AjPFile inf, const char *entry)
  
     ajStrDel(&SeqSpr);
     ajStrDel(&SeqPdb);
+    ajStrDel(&sss);
     
     return ret;
 }
@@ -2779,7 +2809,8 @@ void ajScopDel(AjPScop *ptr)
     ajStrDel(&pthis->Spr);
     ajStrDel(&pthis->SeqPdb);
     ajStrDel(&pthis->SeqSpr);
-
+    ajStrDel(&pthis->Sse);
+    ajStrDel(&pthis->Sss);
 
     if(pthis->N)
     {
@@ -3010,6 +3041,8 @@ AjBool ajScopCopy(AjPScop *to, const AjPScop from)
     ajStrAssS(&(*to)->Family, from->Family);
     ajStrAssS(&(*to)->Domain, from->Domain);
     ajStrAssS(&(*to)->Source, from->Source);
+    ajStrAssS(&(*to)->Sse, from->Sse);
+    ajStrAssS(&(*to)->Sss, from->Sss);
 
     for(x=0; x<from->N; x++)
     {
@@ -3032,6 +3065,8 @@ AjBool ajScopCopy(AjPScop *to, const AjPScop from)
     (*to)->Sunid_Domain = from->Sunid_Domain;
     (*to)->Sunid_Source = from->Sunid_Source;
     (*to)->Sunid_Domdat = from->Sunid_Domdat;
+
+    (*to)->Score = from->Score;
 
     return ajTrue;
 }
@@ -4166,6 +4201,11 @@ AjBool ajCathWrite(AjPFile outf, const AjPCath obj)
     ajStrToUpper(&tmp);
     ajFmtPrintF(outf,"EN   %S\nXX\n",tmp);
     ajFmtPrintF(outf,"TY   CATH\nXX\n");    
+    ajFmtPrintF(outf,"CI   %d CL; %d AR; %d TP; %d SF; %d FA; %d NI;"
+		"%d IF;\nXX\n",
+		obj->Class_Id, obj->Arch_Id, obj->Topology_Id,
+		obj->Superfamily_Id, obj->Family_Id, obj->NIFamily_Id,
+		obj->IFamily_Id);
 
     ajFmtPrintF(outf,"CL   %S\n",obj->Class);
     ajFmtPrintF(outf, "XX\n");
@@ -4175,6 +4215,21 @@ AjBool ajCathWrite(AjPFile outf, const AjPCath obj)
     ajFmtPrintF(outf, "XX\n");
     ajFmtPrintSplit(outf,obj->Superfamily,"SF   ",75," \t\n\r");
     ajFmtPrintF(outf, "XX\n");
+
+    if(ajStrLen(obj->SeqPdb))
+    {
+	ajFmtPrintF(outf,"XX\n");
+	ajSeqWriteXyz(outf, obj->SeqPdb, "DS");		
+    }	
+
+
+
+
+
+
+
+
+
     ajFmtPrintF(outf,"NR   %d\n",obj->Length);
 
     /*
@@ -4185,11 +4240,6 @@ AjBool ajCathWrite(AjPFile outf, const AjPCath obj)
     ajFmtPrintF(outf,"XX\nNR   %d\n",obj->Length);
     */
 
-    if(ajStrLen(obj->SeqPdb))
-    {
-	ajFmtPrintF(outf,"XX\n");
-	ajSeqWriteXyz(outf, obj->SeqPdb, "DS");		
-    }	
 
     if(ajStrLen(obj->Acc))
 	ajFmtPrintF(outf,"XX\nAC   %S\n",obj->Acc);    
@@ -4221,6 +4271,9 @@ AjBool ajCathWrite(AjPFile outf, const AjPCath obj)
 
     ajFmtPrintF(outf,"//\n");
 
+
+    ajStrDel(&tmp);
+    
     return ajTrue;
 }    
 
@@ -4326,6 +4379,17 @@ AjBool ajScopWrite(AjPFile outf, const AjPScop obj)
 	ajSeqWriteXyz(outf, obj->SeqSpr, "SQ");
     }
     
+    
+    if(ajStrLen(obj->Sse))
+        ajFmtPrintF(outf,"XX\nSE   %S\n",obj->Sse); 
+
+    if(ajStrLen(obj->Sss))
+	ajFmtPrintF(outf,"XX\n");
+    
+    if(ajStrLen(obj->Sss))
+	ajSeqWriteXyz(outf, obj->Sss, "SS");
+
+
     ajFmtPrintF(outf,"XX\nNC   %d\n",obj->N);
 
     for(i=0;i<obj->N;++i)

@@ -489,23 +489,34 @@ typedef struct AjSVdwall
 **
 ** Ajax Cmap object.
 **
-** Holds a contact map and associated data for a protein domain / chain.
+** Holds a contact map and associated data for a protein domain / chain 
+** (intra or inter-chain contacts) or between a protein / domain and a 
+** ligand.  For ligand contacts, the first row / column only of the contact
+** map is used. 
 **
 ** AjPCmap is implemented as a pointer to a C data structure.
-**
 **
 **
 ** @alias AjSCmap
 ** @alias AjOCmap
 **
 **
-**
+** @attr  Type  [ajint]    Type of contact, either ajINTRA, ajINTER or ajLIGAND
+** for intra-chain, inter-chain and chain-ligand contacts respectively.
 ** @attr  Id    [AjPStr]   Protein id code. 
-** @attr  Seq   [AjPStr]   The sequence of the domain or chain. 
+** @attr  Domid [AjPStr]   Domain id code. 
+** @attr  Ligid [AjPStr]   Ligand id code. 
+** @attr  Chn1  [ajint]    Chain number 1 (first chain)
+** @attr  Chn2  [ajint]    Chain number 2 (second chain if available)
+** @attr  Chid1 [char]     Chain identifier 1 (first chain)
+** @attr  Chid2 [char]     Chain identifier 2 (second chain if available)
+** @attr  Nres1 [ajint]    Number of residues in chain/domain 1 
+** @attr  Nres2 [ajint]    Number of residues in chain/domain 2 
+** @attr  Seq1  [AjPStr]   The sequence of the first domain or chain.
+** @attr  Seq2  [AjPStr]   The sequence of the second domain or chain. 
 ** @attr  Mat   [AjPInt2d] Contact map. 
 ** @attr  Dim   [ajint]    Dimension of contact map. 
 ** @attr  Ncon  [ajint]    No. of contacts (1's in contact map). 
-** 
 ** 
 ** 
 ** @new     ajCmapNew Default Cmap constructor.
@@ -521,8 +532,20 @@ typedef struct AjSVdwall
 ****************************************************************************/
 typedef struct AjSCmap
 {
+    ajint     Type;
     AjPStr    Id;     
-    AjPStr    Seq;    
+    AjPStr    Domid;     
+    AjPStr    Ligid;     
+
+    ajint     Chn1;
+    ajint     Chn2;
+    char      Chid1;
+    char      Chid2;
+    ajint     Nres1;
+    ajint     Nres2;
+    AjPStr    Seq1;    
+    AjPStr    Seq2;    
+
     AjPInt2d  Mat;    
     ajint     Dim;    
     ajint     Ncon;   

@@ -120,7 +120,9 @@ extern "C"
 **        domain given a Sunid for the domain. The sequence is taken from one
 **        of a list of Scop objects that is provided.  
 ** @output ajDmxScophitsWrite Write contents of a list of Scophits to an output
-**        file.
+**         file.
+** @output ajDmxScophitsWriteFasta Write contents of a list of Scophits to an 
+**         output file in extended FASTA format.
 ** @input ajDmxScophitReadFasta  Read a Scophit object from a file in 
 **        extended FASTA format. 
 ** @assign   ajDmxScophitCopy Copies the contents from one Scophit object to 
@@ -265,6 +267,7 @@ ajint         ajDmxScophitCompPval(const void *hit1, const void *hit2);
 
 AjBool        ajDmxScopSeqFromSunid(ajint id, AjPStr *seq, const AjPList list);
 AjBool        ajDmxScophitsWrite(AjPFile outf, const AjPList list);
+AjBool        ajDmxScophitsWriteFasta(AjPFile outf, const AjPList list);
 AjPScophit    ajDmxScophitReadFasta(AjPFile inf);
 AjBool        ajDmxScophitCopy(AjPScophit *to, const AjPScophit from);
 

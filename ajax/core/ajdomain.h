@@ -67,6 +67,8 @@ extern "C"
 **                                    domain.
 ** @attr End                [AjPStr*] PDB residue number of last residue in 
 **                                    domain.
+** @attr Sse                [AjPStr]  Secondary structure element map
+** @attr Sss                [AjPStr]  Secondary structure element string
 ** @attr Sunid_Class        [ajint]   SCOP sunid for class.
 ** @attr Sunid_Fold         [ajint]   SCOP sunid for fold.
 ** @attr Sunid_Superfamily  [ajint]   SCOP sunid for superfamily.
@@ -83,6 +85,7 @@ extern "C"
 **                                    length swissprot sequence.
 ** @attr Endd               [ajint]   End of sequence relative to full length 
 **                                    swissprot sequence.
+** @attr Score              [float]   Used by misc. algorithms for scoring the domain.
 **
 **
 **
@@ -134,6 +137,9 @@ typedef struct AjSScop
     AjPStr *Start;        
     AjPStr *End;          
 
+    AjPStr Sse;
+    AjPStr Sss; 
+
     ajint  Sunid_Class;       
     ajint  Sunid_Fold;        
     ajint  Sunid_Superfamily; 
@@ -148,6 +154,8 @@ typedef struct AjSScop
     AjPStr SeqSpr;	
     ajint  Startd;      
     ajint  Endd;        
+
+    float  Score;
 } AjOScop;
 #define AjPScop AjOScop*
 

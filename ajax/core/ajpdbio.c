@@ -192,7 +192,9 @@ AjOElements, *AjPElements;
 **                            was used to derive resni, i.e. gave correct
 **                            alignment t seqres sequence.
 **                            If False then resn2 was used. 
-** @attr nligands [ajint*]    Number of ligands for each chain 
+** @attr nligands [ajint*]    Number of ligands for each chain.  A ligand is a
+**                            non-protein group that is associated with a chain 
+**                            in the SEQRES section.
 ** @attr numHelices [ajint*]  No. of helices in each chain 
 ** @attr numStrands [ajint*]  No. of strands in each chain 
 ** @attr numSheets [ajint*]   No. of sheets in each chain 
@@ -3590,9 +3592,12 @@ static AjBool NumberChains(AjPPdbfile *pdbfile, AjPFile logf)
 				ajIntPut(&gpns, j, (gpn=j+1+offset));
 				(*pdbfile)->gpn[i]=gpn;
 
+				/* NO - this code would be used only if the
+				   group could not be associated with a chain.
 				ajChararrPut(&((*pdbfile)->gpid), 
 					     (*pdbfile)->ngroups, id);
 				(*pdbfile)->ngroups++;
+				*/
 
 				/* Increment number of ligands and reset last 
 				   ligand type read in */
@@ -7825,14 +7830,9 @@ AjBool  BaseAa3ToAa1(char *aa1, const AjPStr aa3)
     {
 	*aa1 = 'X';
 
-	ajFmtPrint("ATTEMPT TO CONVERT %S\n", aa3);
-	
-
 	return ajTrue;
     }	
     
-    ajFmtPrint("ATTEMPT TO CONVERT %S\n", aa3);
-
     *aa1='X';
     return ajFalse;
 }

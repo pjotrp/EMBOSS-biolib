@@ -1392,6 +1392,115 @@ AjBool ajDmxScophitsWrite(AjPFile outf, const AjPList list)
 }
 
 
+/* @func ajDmxScophitsWriteFasta ********************************************
+**
+** Write contents of a list of Scophits to an output file in embl-like format
+** (see scopalign.c documentation).
+** Text for Class, Archhitecture, Topology, Fold, Superfamily and Family 
+** is only written if the text is available.
+** 
+** @param [w] outf [AjPFile] Output file stream
+** @param [r] list [const AjPList] List object
+**
+** @return [AjBool] True on success
+** @@
+****************************************************************************/
+
+AjBool ajDmxScophitsWriteFasta(AjPFile outf, const AjPList list)
+{
+
+    AjIList iter = NULL;
+    
+    AjPScophit thys = NULL;
+    
+    iter = ajListIterRead(list);
+    
+
+    while((thys = (AjPScophit)ajListIterNext(iter)))
+    {
+        
+        if(!thys)
+            return ajFalse;
+
+	ajFmtPrintF(outf, "> ");
+	
+	if(MAJSTRLEN(thys->Acc))
+	    ajFmtPrintF(outf, "%S^", thys->Acc);
+	else
+	    ajFmtPrintF(outf, ".^");
+
+	if(MAJSTRLEN(thys->Spr))
+	    ajFmtPrintF(outf, "%S^", thys->Spr);
+	else
+	    ajFmtPrintF(outf, ".^");
+
+	ajFmtPrintF(outf, "%d^%d^", thys->Start, thys->End);
+
+	if((thys->Type == ajSCOP))  
+	    ajFmtPrintF(outf, "SCOP^");
+	else if ((thys->Type == ajCATH))
+	    ajFmtPrintF(outf, "CATH^");
+	else
+	    ajFmtPrintF(outf, ".^");
+	
+	if(MAJSTRLEN(thys->Dom))
+	    ajFmtPrintF(outf, "%S^", thys->Dom);
+	else
+	    ajFmtPrintF(outf, ".^");
+
+	ajFmtPrintF(outf,"%d^", thys->Sunid_Family);
+
+	if(MAJSTRLEN(thys->Class))
+	    ajFmtPrintF(outf,"%S^",thys->Class);
+	else
+	    ajFmtPrintF(outf, ".^");
+
+	if(MAJSTRLEN(thys->Architecture))
+	    ajFmtPrintF(outf,"%S^",thys->Architecture);
+	else
+	    ajFmtPrintF(outf, ".^");
+
+	if(MAJSTRLEN(thys->Topology))
+	    ajFmtPrintF(outf,"%S^",thys->Topology);
+	else
+	    ajFmtPrintF(outf, ".^");
+
+	if(MAJSTRLEN(thys->Fold))
+	    ajFmtPrintF(outf,"%S^",thys->Fold);
+	else
+	    ajFmtPrintF(outf, ".^");
+
+	if(MAJSTRLEN(thys->Superfamily))
+	    ajFmtPrintF(outf,"%S^",thys->Superfamily);
+	else
+	    ajFmtPrintF(outf, ".^");
+
+	if(MAJSTRLEN(thys->Family))
+	    ajFmtPrintF(outf,"%S^",thys->Family);
+	else
+	    ajFmtPrintF(outf, ".^");
+
+	if(MAJSTRLEN(thys->Model))
+	    ajFmtPrintF(outf, "%S^", thys->Model);
+	else
+	    ajFmtPrintF(outf, ".^");
+
+	ajFmtPrintF(outf, "%.2f^", thys->Score);
+
+	ajFmtPrintF(outf, "%.3e^", thys->Pval);
+
+	ajFmtPrintF(outf, "%.3e", thys->Eval);
+
+	ajFmtPrintF(outf, "\n");
+	ajFmtPrintF(outf, "%S\n", thys->Seq);
+	
+    }
+
+    ajListIterFree(&iter);
+    
+
+    return ajTrue;
+}
 
 
 /* @func ajDmxScophitReadFasta **********************************************
@@ -1563,6 +1672,7 @@ AjPScophit ajDmxScophitReadFasta(AjPFile inf)
     ajStrDel(&line);
     ajStrDel(&subline);
     ajStrDel(&type);
+    ajDmxScophitDel(&hit);
     return NULL;
 }
 

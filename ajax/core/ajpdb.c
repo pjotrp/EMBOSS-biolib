@@ -212,6 +212,7 @@ AjPList       ajPdbtospReadAllRawNew(AjPFile inf)
 	acc  = ajStrNew();
 	ajFmtScanS(token, "%S (%S", &spr, &acc);
 	
+
 	if(ajStrSuffixC(acc, "),"))
 	{
 	    ajStrChop(&acc);
@@ -219,7 +220,6 @@ AjPList       ajPdbtospReadAllRawNew(AjPFile inf)
 	}
 	else
        	    ajStrChop(&acc);
-	
 	
 	ajListstrPushApp(acclist, acc);
 	ajListstrPushApp(sprlist, spr);
@@ -252,6 +252,8 @@ AjPList       ajPdbtospReadAllRawNew(AjPFile inf)
     tmp = ajPdbtospNew(0);
     ajStrAssS(&tmp->Pdb, pdb);
     tmp->n = n;
+
+
     ajListToArray(acclist, (void ***) &tmp->Acc);
     ajListToArray(sprlist, (void ***) &tmp->Spr);	  
     ajListPushApp(ret, (void *)tmp);
@@ -498,16 +500,27 @@ AjPCmap ajCmapReadNew(AjPFile inf, ajint mode, ajint chn, ajint mod)
 	       
 {	
     AjPCmap  ret = NULL;
-    static   AjPStr line    = NULL;   /* Line of text */
-    static   AjPStr temp_id = NULL;   /* Temp location for protein id */
-    
-    ajint    num_res   = 0;       /* No. of residues in domain */	
-    ajint    num_con   = 0;       /* Total no. of contacts in domain */	
-    ajint    x         = 0;       /* No. of first residue making contact */
-    ajint    y         = 0;       /* No. of second residue making contact */
-    ajint    md        = -1;      /* Model number */
-    ajint    cn        = -1;      /* Chain number */
-    char     chnid     = '.';     /* Temp. chain identifier */
+    static   AjPStr line       = NULL;   /* Line of text     */
+    static   AjPStr temp_id    = NULL;   /* Temp. protein id */
+    static   AjPStr temp_domid = NULL;   /* Temp. domain id  */
+    static   AjPStr temp_ligid = NULL;   /* Temp. ligand id  */
+    static   AjPStr type       = NULL;   /* Type of contact  */
+    AjPStr   token             = NULL;   /* For parsing      */
+        
+    ajint    smcon     = 0;      /* No. of SM contacts       */	
+    ajint    licon     = 0;      /* No. of LI contacts       */	
+    ajint    x         = 0;      /* No. of first residue making contact */
+    ajint    y         = 0;      /* No. of second residue making contact */
+    ajint    md        = -1;     /* Model number   */
+    ajint    cn1       = -1;     /* Chain number 1 */
+    ajint    cn2       = -1;     /* Chain number 2 */
+    char     id1       = -1;     /* Chain id 1     */
+    char     id2       = -1;     /* Chain id 2     */
+    ajint    nres1     = 0;      /* No. of residues in domain / chain 1 */	
+    ajint    nres2     = 0;      /* No. of residues in domain / chain 2 */	
+    AjPStr   seq1      = NULL;   /* Sequence 1 */
+    AjPStr   seq2      = NULL;   /* Sequence 2 */
+           
     AjBool   idok      = ajFalse; /* If the required chain has been found */
     AjBool   valid_id  = ajFalse; /* If an ID line has been read */
 
@@ -527,70 +540,159 @@ AjPCmap ajCmapReadNew(AjPFile inf, ajint mode, ajint chn, ajint mod)
     /* Initialise strings */
     if(!line)
     {
-	line     = ajStrNew();
-	temp_id  = ajStrNew();
+	line       = ajStrNew();
+	temp_id    = ajStrNew();
+	temp_domid = ajStrNew();
+	temp_ligid = ajStrNew();
     }
     
 
     /* Start of main loop */
     while((ajFileReadLine(inf, &line)))
     {
-	/* Parse ID line */
-	if(ajStrPrefixC(line, "ID"))
+	/* TY */
+	if(ajStrPrefixC(line, "TY"))
+	{
+	    ajFmtScanS(line, "%*s %S", &type);
+	    ajStrClear(&seq1);
+	    ajStrClear(&seq2);
+	    id1 = '.';
+	    id2 = '.';
+	    cn1=0;
+	    cn2=0;
+	    nres1=0;
+	    nres2=0;
+	}
+
+	/* EX, NE and EN records are not parsed */
+
+	/* ID */
+	else if(ajStrPrefixC(line, "ID"))
 	{
 	    valid_id = ajTrue;
-	    ajFmtScanS(line, "%*s %S", &temp_id);
+
+	    token = ajStrTokC(line, ";");
+	    ajFmtScanS(line, "%*s %*s %S", &temp_id);
+	    token = ajStrTokC(NULL, ";");
+	    ajFmtScanS(line, "%*s %S", &temp_domid);
+	    token = ajStrTokC(NULL, ";");
+	    ajFmtScanS(line, "%*s %S", &temp_ligid);
 	}
-	/* Parse model number */
-	else if(ajStrPrefixC(line, "MO"))
-	    ajFmtScanS(line, "%*s[%d]", &md);
-	/* Parse chain number */
+
+	/* DE records are not parsed (SITES output) */
+
+	/* CN */
 	else if(ajStrPrefixC(line, "CN"))
-	    ajFmtScanS(line, "%*s[%d]", &cn);
-	/* Read IN line */	    
-	/* Parse number of residues and total number of contacts */
-	else if((ajStrPrefixC(line, "IN")) && (md==mod))
 	{
-	    ajFmtScanS(line, "%*s %*s %c; %*s %d; %*s %d;", 
-		       &chnid, &num_res, &num_con);
+	    token = ajStrTokC(line, ";");
+	    ajFmtScanS(line, "%*s %*s %d", &md);
+	    if(md == '.')
+		md = 0;	    
+
+	    token = ajStrTokC(NULL, ";");
+	    ajFmtScanS(line, "%*s %d", &cn1);
+
+	    token = ajStrTokC(NULL, ";");
+	    ajFmtScanS(line, "%*s %d", &cn2);
+
+	    token = ajStrTokC(NULL, ";");
+	    ajFmtScanS(line, "%*s %c", &id1);
+
+	    token = ajStrTokC(NULL, ";");
+	    ajFmtScanS(line, "%*s %c", &id2);
+
+	    token = ajStrTokC(NULL, ";");
+	    ajFmtScanS(line, "%*s %d", &nres1);
+	    if(nres1 == '.')
+		nres1 = 0;
+	    
+	    token = ajStrTokC(NULL, ";");
+	    ajFmtScanS(line, "%*s %d", &nres2);
+	    if(nres2 == '.')
+		nres2 = 0;
+	}
+
+	/* S1 */
+	else if(ajStrPrefixC(line, "S1"))
+	{    
+	    while(ajFileReadLine(inf,&line) && !ajStrPrefixC(line,"XX"))
+		ajStrAppC(&seq1,ajStrStr(line));
+	    ajStrCleanWhite(&seq1);
+	}
+
+	/* S2 */
+	else if(ajStrPrefixC(line, "S2"))
+	{    
+	    while(ajFileReadLine(inf,&line) && !ajStrPrefixC(line,"XX"))
+		ajStrAppC(&seq2,ajStrStr(line));
+	    ajStrCleanWhite(&seq2);
+	}
+	/* NC */	    
+	else if((ajStrPrefixC(line, "NC")) && (md==mod))
+	{
+	    token = ajStrTokC(line, ";");
+	    ajFmtScanS(line, "%*s %*s %d", &smcon);
+
+	    token = ajStrTokC(NULL, ";");
+	    ajFmtScanS(line, "%*s %d", &licon);
 	    
 
 	    /*
-	    ** The third conditional is to capture those few
-	    ** domains which are made
-	    ** up from more than one chain.  For these, the
-	    ** chain character passed 
-	    ** in might be an A or a B (e.g. the character
-	    ** extracted from the scop 
-	    ** domain code) whereas the chain id given in the
-	    ** contact map file will
-	    ** be a '.' - because of how scopparse copes with these cases. 
-	    ** (A '.' is also in the contact maps for where a chain id was not 
-	    ** specified in the original pdb file)
+	    ** The third conditional is to capture those few domains which are 
+	    ** made up from more than one chain.  For these, the chain 
+	    ** character passed in might be an A or a B (e.g. the character
+	    ** extracted from the scop domain code) whereas the chain id given
+	    ** in the contact map file will be a '.' - because of how scopparse 
+	    ** copes with these cases. (A '.' is also in the contact maps for
+	    ** where a chain id was not specified in the original pdb file).
 	    */
 
-	    if(((cn==chn)&&(mode==CMAP_MODE_I)) ||
-	       ((toupper((int)chnid)==toupper(chn))&&(mode==CMAP_MODE_C))||
-	       ((toupper((int)chnid)=='.') && (toupper(chn)!='.') &&
+	    if(((cn1==chn)&&(mode==CMAP_MODE_I)) ||
+	       ((toupper((int)id1)==toupper(chn))&&(mode==CMAP_MODE_C))||
+	       ((toupper((int)id1)=='.') && (toupper(chn)!='.') &&
 		(mode==CMAP_MODE_C)))
 	    {
 		idok=ajTrue;
 		
 		/* Allocate contact map and write values */
-		(ret) = ajCmapNew(num_res);
-		(ret)->Ncon = num_con;
+		if(ajStrMatchC(type, "LIGAND"))
+		    (ret) = ajCmapNew(licon);
+		else
+		    (ret) = ajCmapNew(smcon);
+		
 		ajStrAssS(&(ret)->Id, temp_id);
+		
+		if(ajStrMatchC(type, "INTRA"))
+		{
+		    ret->Type = ajINTRA;
+		    (ret)->Ncon = smcon;
+		}
+		else if(ajStrMatchC(type, "INTER"))
+		{
+		    ret->Type = ajINTER;
+		    (ret)->Ncon = smcon;
+		}
+		else if(ajStrMatchC(type, "LIGAND"))
+		{
+		    ret->Type = ajLIGAND;
+		    (ret)->Ncon = licon;
+		}
+		else
+		    ajFatal("Unrecognised contact type");
+
+		ret->Chn1  = cn1;
+		ret->Chn2  = cn2;
+		ret->Chid1 = id1;
+		ret->Chid2 = id2;
+		ret->Nres1 = nres1;
+		ret->Nres2 = nres2;
+		
+		ajStrAssS(&ret->Seq1, seq1);
+		ajStrAssS(&ret->Seq2, seq2);		
 	    }
 	}
-	/* Read SQ line */
-	else if((ajStrPrefixC(line, "SQ")) && (md==mod) && (idok))
-	{    
-	    while(ajFileReadLine(inf,&line) && !ajStrPrefixC(line,"XX"))
-		ajStrAppC(&(ret)->Seq,ajStrStr(line));
-	    ajStrCleanWhite(&(ret)->Seq);
-	}
-	
-	/* Read and parse residue contacts */
+
+	/* SM */
 	else if((ajStrPrefixC(line, "SM")) && (md==mod) && (idok))
 	{
 	    ajFmtScanS(line, "%*s %*s %d %*c %*s %d", &x, &y);
@@ -605,14 +707,35 @@ AjPCmap ajCmapReadNew(AjPFile inf, ajint mode, ajint chn, ajint mod)
 	    ajInt2dPut(&(ret)->Mat, x-1, y-1, 1);
 	    ajInt2dPut(&(ret)->Mat, y-1, x-1, 1);
 	}
+
+	/* LI */
+	else if((ajStrPrefixC(line, "LI")) && (md==mod) && (idok))
+	{
+	    ajFmtScanS(line, "%*s %*s %d", &x);
+
+	    /* Check residue number is in range */
+	    if((x>(ret)->Dim) || (y>(ret)->Dim))
+		ajFatal("Fatal attempt to write bad data in "
+			"ajCmapReadNew\nEmail culprit: "
+			"jison@hgmp.mrc.ac.uk\n");
+	    
+	    /* Enter '1' in matrix to indicate contact.  For ligand contacts, 
+	       the first row / column only is used. */
+	    ajInt2dPut(&(ret)->Mat, x-1, 0, 1);
+	    ajInt2dPut(&(ret)->Mat, 0, x-1, 1);
+	}
     }
 
     if(!valid_id)
     {
 	ajWarn("No valid ID in contact map file");	
+	ajStrDel(&seq1);
+	ajStrDel(&seq2);
 	return NULL;
     }
     
+    ajStrDel(&seq1);
+    ajStrDel(&seq2);
     return ret;	
 }	
 
@@ -1842,9 +1965,14 @@ AjPCmap ajCmapNew(ajint n)
 
     AJNEW0(ret);
 
-    ret->Id  = ajStrNew();    	
-    ret->Seq = ajStrNew();
-    
+    ret->Id    = ajStrNew();    	
+    ret->Domid = ajStrNew();    	
+    ret->Ligid = ajStrNew();    	
+    ret->Seq1  = ajStrNew();
+    ret->Seq2  = ajStrNew();
+    ret->Chid1 = '.';
+    ret->Chid2 = '.';
+       
 
     if(n)
     {
@@ -2199,8 +2327,17 @@ void ajCmapDel(AjPCmap *ptr)
     if((*ptr)->Id)
 	ajStrDel(&(*ptr)->Id);
 
-    if((*ptr)->Seq)
-	ajStrDel(&(*ptr)->Seq);
+    if((*ptr)->Domid)
+	ajStrDel(&(*ptr)->Domid);
+
+    if((*ptr)->Ligid)
+	ajStrDel(&(*ptr)->Ligid);
+
+    if((*ptr)->Seq1)
+	ajStrDel(&(*ptr)->Seq1);
+
+    if((*ptr)->Seq2)
+	ajStrDel(&(*ptr)->Seq2);
 
     if((*ptr)->Mat)
 	ajInt2dDel(&(*ptr)->Mat);
@@ -3337,7 +3474,7 @@ AjBool       ajPdbtospWrite(AjPFile outf, const AjPList list)
 
 	for(x=0; x<tmp->n; x++)
 	    ajFmtPrintF(outf, "%-5s%S ID; %S ACC;\n", 
-			"IN", tmp->Spr, tmp->Acc);
+			"IN", tmp->Spr[x], tmp->Acc[x]);
 	ajFmtPrintF(outf, "XX\n//\n");
     }
 
