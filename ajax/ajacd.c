@@ -10875,7 +10875,6 @@ static ajint acdIsQual (char* arg, char* arg2, ajint *iparam, AjPStr *pqual,
   AjBool ismissing = ajFalse;
   AjBool qstart = ajFalse;
   static AjPStr qmaster = NULL;
-  static AjPStr tmpstr = NULL;
 
   *number = 0;
 
@@ -13163,6 +13162,8 @@ void ajAcdDummyFunction(void)
 
     acdSetXxxx(acdpacd);	/* template function for acdSet */
     (void) acdQualToFloat(acdpacd, "", 0.0, 0, &f, &ajpstr);
+    acdSetSecDef(NULL,NULL);
+    acdSetEndsecDef(NULL,NULL);
 }
 
 /* @func ajAcdPrintType *******************************************************
