@@ -88,8 +88,15 @@ that match one of the sequence names or acession numbers to the file of
 excluded sequences, and those that don't match are output to the file of
 sequences to be kept. 
 
+<p>
 
-
+Note that the names of the sequences to be excluded are not standard
+EMBOSS USAs.  Only the name or accession number shoudl be specified, not
+the database or file that these entries may occur in.  These excluded
+sequence names will be matched against the names of the input sequences
+to see if there is a match.  Wildcarded names may be specified by using
+'*'s.  Any specified names of sequences to be excluded that are not
+found are simply ignored. 
 
 
 
@@ -112,21 +119,25 @@ saved to any file.
 
 <pre>
 % notseq
-Input sequence(s): mydata.seq
-Output sequence [clone001.fasta]: mydata2.seq
-Sequence names to exclude: clone186, clone876
+Excludes a set of sequences and writes out the remaining ones
+Input sequence(s): globins.fasta
+Sequence names to exclude: myg_phyca,lgb2_luplu
+Output sequence [hbb_human.fasta]: mydata.seq
 </pre>
 
+<p>
 
 Here is an example where the sequences to be excluded are saved to
 another file:
+
 <p>
 
 <pre>
 % notseq -junkout excluded.seq
-Input sequence(s): mydata.seq
-Output sequence [clone001.fasta]: mydata2.seq
-Sequence names to exclude: clone99*
+Excludes a set of sequences and writes out the remaining ones
+Input sequence(s): globins.fasta
+Sequence names to exclude: hb*
+Output sequence [hbb_human.fasta]: mydata.seq
 </pre>
 
 
@@ -157,6 +168,9 @@ Sequence names to exclude: clone99*
                                   An example of a list of sequences to be
                                   excluded is:
                                   myseq, hs*, one two three
+                                  a file containing a list of sequence names
+                                  can be specified by giving the file name
+                                  preceeded by a '@', eg: '@names.dat'
   [-outseq]            seqoutall  Output sequence(s) USA
 
    Optional qualifiers:
@@ -195,7 +209,8 @@ The list of sequence names can be separated by either spaces or commas.
 The sequence names can be wildcarded.
 The sequence names are case independent.
 An example of a list of sequences to be excluded is:
-myseq, hs*, one two three</td>
+myseq, hs*, one two three
+a file containing a list of sequence names can be specified by giving the file name preceeded by a '@', eg: '@names.dat'</td>
 <td>Any string is accepted</td>
 <td><i>An empty string is accepted</i></td>
 </tr>
@@ -256,8 +271,22 @@ IT IS DONE FOR YOU.
         happens in unusual cases - null input, etc. 
    -->
 
-Normal sequence USA.
+The input sequences are a normal sequence USA.
 
+<p>
+
+
+The names (or accession numbers) of the sequences to be excluded can be
+entered as a file of such names by specifying an '@' followed by the
+name of the file containing the sequence names.  For example:
+'@names.dat'. 
+
+<p>
+
+The names or accession numbers of the sequences to be
+excluded are not standard EMBOSS USAs.  Only the ID name or accession
+number can be specified, you cannot specify the sequences as
+'database:ID', 'file:accession', 'format::file', etc. 
 
 
 
@@ -359,7 +388,10 @@ None.
         Useful things you can do with this program.
    -->
 
-None.
+Note that the names or accession numbers of the sequences to be
+excluded are not standard EMBOSS USAs.  Only the ID name or accession
+number can be specified, you cannot specify the sequences as
+'database:ID', 'file:accession', 'format::file', etc. 
 
 
 
@@ -534,8 +566,10 @@ href="mailto:gwilliam@hgmp.mrc.ac.uk">(gwilliam@hgmp.mrc.ac.uk)</a>
 
 Written (9 Jan 2001) - Gary Williams
 
+<p>
 
-
+Added ability to specify names to exclude as a list file (June 2002) -
+Gary Williams
 
 
 
