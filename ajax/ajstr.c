@@ -2354,10 +2354,16 @@ AjBool ajStrClean(AjPStr *s) {
   (void) strcpy(p,&p[i]);
 
   len=strlen(p);
+  if(!len)
+      return ajFalse;
+
   if(p[len-1]=='\n') {
     p[len-1]='\0';
     --len;
   }
+
+  if(!len)
+      return ajFalse;
     
   for(i=len-1;i>-1;--i)
     if(p[i]!=' ') break;
