@@ -2641,7 +2641,7 @@ ajDebug("target=>%S<", *line);
 
 }
 
-/** @funcstatic showAddTags ***********************************************
+/* @funcstatic showAddTags ***********************************************
 **
 ** writes feature tags to the tagsout string
 **
