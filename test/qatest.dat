@@ -185,7 +185,7 @@ PP EMBOSS_ACDROOT=../../acd
 PP export EMBOSS_ACDROOT
 CL qatest -help -verbose
 FI stderr
-FZ = 3895
+FZ = 3929
 FP 26 /   boolean /
 FP  6 /   integer /
 FP 26 /   string /
@@ -13448,6 +13448,22 @@ FP 1 /^>/
 //
 
 
+ID union-feat
+AP union
+CL -feature -source -osf embl
+IN ../../data/union.embl
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI entry1.embl
+FZ = 447
+FP 1 /^>/
+//
+
+
 ID vectorstrip-ex
 AP vectorstrip
 CL @../../data/vecseqs.list
@@ -14679,6 +14695,9 @@ ID ajtest-check
 AQ ajtest
 IN tembl:paamir
 IN ../../data/globins.msf
+IN stdout
+IN abc.seq
+IN abc.gff
 FI stderr
 FC = 4
 FP 0 /Warning: /
@@ -14687,6 +14706,10 @@ FP 0 /Died: /
 FI kim1.out
 FZ = 3390
 FP /^ID   PAAMIR     standard; DNA; UNC; 2167 BP.\n/
+FI abc.seq
+FC = 0
+FI abc.gff
+FC = 0
 //
 
 ID ajtest-all-check
@@ -14695,6 +14718,7 @@ CL -nostdout -outfile
 CL -outseq outseq
 IN tembl:paamir
 IN ../../data/globins.msf
+IN abc.gff
 FI stderr
 FC = 4
 FP 0 /Warning: /
@@ -14703,6 +14727,12 @@ FP 0 /Died: /
 FI kim1.out
 FZ = 3390
 FP /^ID   PAAMIR     standard; DNA; UNC; 2167 BP.\n/
+FI outseq
+FC = 0
+FI abc.gff
+FC = 0
+FI paamir.nulloutfile
+FC = 0
 //
 
 ID complex-check
@@ -15207,13 +15237,13 @@ FI stdout
 FC = 3
 FP /^1cs4\n/
 FI 1cs4.con
-FZ = 3542
+FZ = 3660
 FP /^SM   ASP 2 ; ASP 46\n/
 FI 1ii7.con
-FZ = 3332
+FZ = 3469
 FP /^SM   ILE 9 ; LEU 50\n/
 FI 2hhb.con
-FZ = 10475
+FZ = 10932
 FP /^SM   LEU 2 ; ALA 12\n/
 FI contacts.log
 FC = 3
@@ -15225,9 +15255,6 @@ AB domainatrix
 AA domainer
 IN ../../data/structure/all.scop
 IN ../../data/structure
-IN
-IN
-IN
 IN
 IN
 IN log.1
@@ -15249,14 +15276,14 @@ FI d1cs4a_.ent
 FZ = 29889
 FP /^ATOM\s+31\s+CA\s+PHE\s+A   6\s+60.914 -11.143  59.200  1.00 58.07\s+C\s+\n/
 FI d1cs4a_.pxyz
-FZ = 82217
+FZ = 82219
 FP /SQ   SEQUENCE    52 AA;   5817 MW;  47362A43 CRC32;\n/
 FP /CO +1 +1 +[.] +P +3 +397( +[.])+ +I +ILE +CD1( +[-]?[0-9]+[.][0-9]+)+/
 FI d1ii7a_.ent
 FZ = 29727
 FP /ATOM      1  N   ASP A   8       7.977  32.254  19.055  1.00 26.65           N  /
 FI d1ii7a_.pxyz
-FZ = 81546
+FZ = 81548
 FP /SQ   SEQUENCE    65 AA;   7396 MW;  0CFB92A3 CRC32;/
 FP /CO   1    1    .    P    8     8( +[.])+ +D    ASP    OD2( +[-]?[0-9]+[.][0-9]+)+/
 //
