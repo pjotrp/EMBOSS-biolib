@@ -19,8 +19,8 @@ section: input [
     information: "Name of signature file (input)"
     help: "This option specifies the name of the signature file
            (input). A 'signature file' contains a sparse sequence signature
-           suitable for use with the SIGSCAN program. The files are generated
-           by using SIGGEN."
+           suitable for use with the SIGSCAN and SIGSCANLIG programs. The files are generated
+           by using SIGGEN and SIGGENLIG."
     knowntype: "signature file"
   ]
 

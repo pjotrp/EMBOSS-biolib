@@ -205,8 +205,8 @@ section: output [
     information: "Location of signature files (output)"
     help: "This option specifies the location of signature files
            (output). A 'signature file' contains a sparse sequence signature
-           suitable for use with the SIGSCAN program. The files are generated
-           by using SIGGEN."
+           suitable for use with the SIGSCAN and SIGGEN programs. The files are generated
+           by using SIGGEN & SIGGENLIG."
     default: "./"
     extension: "sig"
     knowntype: "signature file"
