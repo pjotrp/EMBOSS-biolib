@@ -120,6 +120,7 @@ NamOAttr namAttr[] = {
   {"appall", ""},
   {"exclude", ""},
   {"fields", ""},
+  {"proxy", ""},
   {NULL, NULL}
 };
 
@@ -1406,6 +1407,7 @@ AjBool ajNamDbData (AjPSeqQuery qry) {
   (void) namDbSetAttr(dbattr, "exclude", &qry->Exclude);
   (void) namDbSetAttr(dbattr, "filename", &qry->Filename);
   (void) namDbSetAttr(dbattr, "fields", &qry->DbFields);
+  (void) namDbSetAttr(dbattr, "proxy", &qry->DbProxy);
 
   /*
   ajDebug ("ajNamDbQuery DbName '%S'\n", qry->DbName);
