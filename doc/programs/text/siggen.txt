@@ -18,9 +18,10 @@ Description
    Each position in the alignment is scored on the basis of a single or
    any combination of up to 3 scoring schemes. A signature of, for
    example, 10% sparsity would include data from the top 10% highest
-   scoring alignment positions. The resulting protein signature file is
-   used by the application sigscan to find examples of the signature in
-   other proteins. 
+   scoring alignment positions.
+   
+   The resulting protein signature file is used by the application
+   sigscan to find examples of the signature in other proteins.
    
 Usage
 
@@ -273,8 +274,7 @@ Author(s)
    
 History
 
-   Written (June 2001) - Jon Ison. ************** EDIT HERE
-   **************
+   Written (June 2001) - Jon Ison.
    
 Target users
 

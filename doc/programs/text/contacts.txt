@@ -222,72 +222,40 @@ SM   VAL 1 ; LYS 8
 SM   VAL 1 ; VAL 11
 SM   VAL 1 ; PHE 71
 //
-  __________________________________________________________________________
-
-
-
-
-domainer generates a log file an excerpt of which is shown
-below.  If there is a problem in processing a coordinate file,
-three lines containing the record '//', the scop domain or pdb
-identifier code and an error message respectively are written.  The text
-'WARN file open error filename', 'ERROR file read error filename' or
-'ERROR file write error filename ' will be reported when an error was
-encountered during a file open, read or write respectively.  Various
-other error messages may also be given (in case of difficulty email Jon
-Ison, jison@hgmp.mrc.ac.uk).
-
-
-
-Example log file
-
-  __________________________________________________________________________
-
+     _________________________________________________________________
+   
+   contacts generates a log file an excerpt of which is shown below. If
+   there is a problem in processing a coordinate file, three lines
+   containing the record '//', the scop domain or pdb identifier code and
+   an error message respectively are written. The text 'WARN file open
+   error filename', 'ERROR file read error filename' or 'ERROR file write
+   error filename ' will be reported when an error was encountered during
+   a file open, read or write respectively. Various other error messages
+   may also be given (in case of difficulty email Jon Ison,
+   jison@hgmp.mrc.ac.uk).
+   
+   Example log file
+     _________________________________________________________________
+   
 //
 DS002__
 WARN  Could not open for reading cpdb file s002.pxyz
 //
 DS003__
 WARN  Could not open for reading cpdb file s003.pxyz
-  __________________________________________________________________________
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+     _________________________________________________________________
+   
 Data files
 
-
-
-
-
-contacts reads in data on van der Waals radii for atoms in
-proteins from the data file Evdw.dat (by default).
-
-
-
-
-EMBOSS data files are distributed with the application and stored
-in the standard EMBOSS data directory, which is defined
-by the EMBOSS environment variable EMBOSS_DATA.
-
-
-
-To see the available EMBOSS data files, run:
-
+   contacts reads in data on van der Waals radii for atoms in proteins
+   from the data file Evdw.dat (by default).
+   
+   EMBOSS data files are distributed with the application and stored in
+   the standard EMBOSS data directory, which is defined by the EMBOSS
+   environment variable EMBOSS_DATA.
+   
+   To see the available EMBOSS data files, run:
+   
 % embossdata -showall
 
    To fetch one of the data files (for example 'Exxx.dat') into your
