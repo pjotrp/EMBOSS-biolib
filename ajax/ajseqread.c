@@ -1676,7 +1676,7 @@ static AjBool seqRead(AjPSeq thys, AjPSeqin seqin)
 	    break;
 	case FMT_EOF:
 	    ajDebug("seqRead: (d3) seqReadFmt stat == EOF *failed*\n");
-	    break;			/* we already tried again */
+	    return ajFalse;			/* we already tried again */
 	default:
 	    ajDebug("unknown code %d from seqReadFmt\n", stat);
 	}
