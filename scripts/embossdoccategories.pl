@@ -36,8 +36,9 @@ while (<DATA>) {
 	$edatadoc{"$cdata\_$cfunc"} = $cdesc;
 ###	print "edata $cdata\_$cfunc '$ctype'\n";
 	if (!defined($efunc{"$cdata\_$cfunc"})) {
+	    print "\n";
 	    print "$clib/$cmod $cdata bad category $ctype $cfunc (undefined)\n";
-	    $outstr = "Expected: ** \@category $ctype [$cdata] $cdesc\n";
+	    $outstr = "Expected:\n** \@category $ctype [$cdata] $cdesc\n";
 	    $outstr =~ s/^([^\n]{65,75}) ([^ \n]{3})/$1\n**                $2/om;
 	    $outstr =~ s/[\n]([^\n]{65,75}) ([^ \n]{3})/\n$1\n**                $2/om;
 	    $outstr =~ s/[\n]([^\n]{65,75}) ([^ \n]{3})/\n$1\n**                $2/om;
@@ -49,16 +50,18 @@ while (<DATA>) {
 	elsif ($efunc{"$cdata\_$cfunc"} ne $ctype) {
 	    $etype = $efunc{"$cdata\_$cfunc"};
 	    $esrc = $efuncsrc{"$cdata\_$cfunc"};
+	    print "\n";
 	    print "$clib/$cmod $cdata $cfunc bad category type $ctype defined as $etype in $esrc\n"
 	}
 	elsif ($efuncdoc{"$cdata\_$cfunc"} ne $cdesc) {
 	    $edesc = $efuncdoc{"$cdata\_$cfunc"};
 	    $esrc = $efuncsrc{"$cdata\_$cfunc"};
+	    print "\n";
 	    print "$clib/$cmod $cdata $cfunc bad category type $ctype described as '$cdesc' not '$edesc' in $esrc\n"
 	}
     }
 }
 
-print "Tested $dtot data and $ftot functions\n"
+print "\nTested $dtot data and $ftot functions\n"
 
 
