@@ -1991,7 +1991,7 @@ static AjBool seqGcgReadSeq (const AjPSeqin seqin)
 	}
     
 
-	ajFileGets (qryd->libs, &line);
+/*	ajFileGets (qryd->libs, &line); */
     }
   
 
