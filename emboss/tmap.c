@@ -1298,7 +1298,7 @@ static void tmap_plot2(AjPGraph mult)
     ajGraphObjAddRect(mult,(float)tm_segment[i][0],max,(float)tm_segment[i][1],
 		      max+((max-min)*0.01),BLACK,1);
 
-  ajGraphxyDisplay(mult,AJFALSE);
+  ajGraphxyDisplay(mult,AJTRUE);
   ajGraphCloseWin();
 
   ajExit();
