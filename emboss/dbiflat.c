@@ -66,15 +66,27 @@ static AjBool dbiflat_ParseRefseq (AjPFile libr, AjPFile* alistfile,
 				   ajint* maxFieldLen,
 				   ajint *dpos, AjPStr* id, AjPList* acl);
 
-typedef struct SParser
+/* @datastatic DbiflatPParser *************************************************
+**
+** Parser definition structure
+**
+** @alias DbiflatSParser
+** @alias DbiflatOParser
+**
+** @attr Name [char*] Parser name
+** @attr Parser [(AjBool*)] Parser function
+** @@
+******************************************************************************/
+
+typedef struct DbiflatSParser
 {
   char* Name;
   AjBool (*Parser) (AjPFile libr, AjPFile* alistfile,
 		    AjBool systemsort, AjPStr* fields, ajint* maxFieldLen,
 		    ajint *dpos, AjPStr* id, AjPList* acl);
-} OParser;
+} DbiflatOParser, *DbiflatPParser;
 
-static OParser parser[] = {
+static DbiflatOParser parser[] = {
   {"EMBL", dbiflat_ParseEmbl},
   {"SWISS", dbiflat_ParseEmbl},
   {"GB", dbiflat_ParseGenbank},

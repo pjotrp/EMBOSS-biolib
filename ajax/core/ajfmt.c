@@ -53,9 +53,23 @@
 #include "ajstr.h"
 #include "ajfile.h"
 
+/* @datastatic FmtPBuf ********************************************************
+**
+** Format definitions
+**
+** @alias FmtSVuf
+** @alias FmtOBuf
+**
+** attr buf [char*] buffer to write
+** attr bp [char*] next position in buffer
+** attr size [ajint] size of buffer from malloc
+** attr fixed [AjBool] if ajTrue, cannot reallocate
+** @@
+******************************************************************************/
+
 typedef struct FmtSBuf {
-  char *buf;			/* buffer to write */
-  char *bp;			/* next position in buffer */
+  char* buf;			/* buffer to write */
+  char* bp;			/* next position in buffer */
   ajint size;			/* size of buffer from malloc */
   AjBool fixed;			/* if ajTrue, cannot reallocate */
 } FmtOBuf, *FmtPBuf;

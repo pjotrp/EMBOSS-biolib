@@ -33,18 +33,55 @@
 #include <string.h>
 #include <stdio.h>
 
+/* @datastatic EstPKeyValue ***************************************************
+**
+** Key value data structure
+**
+** @alias EstSKeyValue
+** @alias EstOKeyValue
+**
+** @attr key [float] key score
+** @attr value [ajint] value
+** @@
+******************************************************************************/
+
 typedef struct EstSKeyValue {
   float key;
   ajint value;
 } EstOKeyValue, *EstPKeyValue;
 
-typedef struct EstSCoord{
-  ajint left, right;
+/* @datastatic EstPCoord ******************************************************
+**
+** Coordinates data structure
+**
+** @alias EstSCoord
+** @alias EstOCoord
+**
+** @attr left [ajint] left end
+** @attr right [ajint] right end 
+** @@
+******************************************************************************/
+
+typedef struct EstSCoord {
+  ajint left;
+  ajint right;
 } EstOCoord, *EstPCoord;
 
-typedef struct EstSSavePair
-{
-  ajint col, row;
+/* @datastatic EstPSavePair ***************************************************
+**
+** Save pairwise matches
+**
+** @alias EstSSavePair
+** @alias EstOSavePair
+**
+** @attr col [ajint] Column number
+** @attr row [ajint] Row number
+** @@
+******************************************************************************/
+
+typedef struct EstSSavePair {
+  ajint col;
+  ajint row;
 } EstOSavePair, *EstPSavePair;
 
 #define LIMIT_RPAIR_SIZE 10000

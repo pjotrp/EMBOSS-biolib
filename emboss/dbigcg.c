@@ -94,6 +94,19 @@ static AjBool dbigcg_ParseGenbank (AjPFile libr,
 				   ajint* maxFieldLen,
 				   AjPStr *id, AjPList* fdl);
 
+/* @datastatic DbigcgPParser **************************************************
+**
+** Parser definition structure
+**
+** @alias DbigcgSParser
+** @alias DbigcgOParser
+**
+** @attr Name [char*] Parser name
+** @attr GcgFormat [AjBool] If true, use GCG format, if false, use NBRF
+** @attr Parser [(AjBool*)] Parser function
+** @@
+******************************************************************************/
+
 typedef struct SParser
 {
   char* Name;

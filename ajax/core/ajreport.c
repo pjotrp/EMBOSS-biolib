@@ -33,6 +33,18 @@
 
 #include "ajax.h"
 
+/* @datastatic ReportPFormat **************************************************
+**
+** Ajax feature report formats 
+**
+** @attr Name [] format name
+** @attr Mintags [] Minimum number of special tags needed
+** @attr Showseq [] ajTrue if sequence is to be included
+** @attr Nuc [] ajTrue if format can work with nucleotide sequences
+** @attr Prot [] ajTrue if format can work with protein sequences
+** @attr Write [(void*)] Function to write report
+******************************************************************************/
+
 typedef struct ReportSFormat {
   char *Name;
   ajint Mintags;

@@ -30,22 +30,43 @@
 
 #include "emboss.h"
 
-typedef struct cons
+/* @datastatic EtandemPCons ***************************************************
+**
+** Consensus pattern structure
+**
+** @alias EtandemSCons
+** @alias EtandemOCons
+**
+** @attr phase [ajint] Undocumented
+** @attr tab [ajint*] Undocumented
+** @attr max [ajint*] Undocumented
+** @attr start [ajint] Undocumented
+** @attr score [ajint] Undocumented
+** @attr bestScore [ajint] Undocumented
+** @attr ibest [ajint] Undocumented
+** @attr bestMax [ajint*] Undocumented
+** @attr repeat [ajint] Undocumented
+** @attr next [struct EtandemSCons*] Next node in linked list
+** @@
+******************************************************************************/
+
+
+typedef struct EtandemSCons
 {
   ajint phase ;
-  ajint *tab ;
-  ajint *max ;
+  ajint* tab ;
+  ajint* max ;
   ajint start ;
   ajint score ;
   ajint bestScore ;
   ajint ibest ;
-  ajint *bestMax ;
+  ajint* bestMax ;
   ajint repeat ;
-  struct cons *next ;
-} *Cons ;
+  struct EtandemSCons* next ;
+} EtandemOCons, *EtandemPCons ;
 
-static struct cons rootStruct ;
-static Cons root = &rootStruct ;
+static EtandemOCons rootStruct ;
+static EtandemPCons root = &rootStruct ;
 static ajint *ring ;
 static char letter[5] = "acgtn" ;
 static AjBool mismatch = AJFALSE ;
@@ -55,10 +76,11 @@ static ajint nbase;
 static ajint nmin, nmax;
 static AjPSeqCvt cvt;
 
-static Cons etandem_consCreate (void);
-static void etandem_consDestroy (Cons cons);
-static void etandem_basicReport (AjPFeattable tab, AjPFile outfile, Cons a);
-static void etandem_report (Cons a);
+static EtandemPCons etandem_consCreate (void);
+static void etandem_consDestroy (EtandemPCons cons);
+static void etandem_basicReport (AjPFeattable tab, AjPFile outfile,
+				 EtandemPCons a);
+static void etandem_report (EtandemPCons a);
 static void etandem_finalReport (AjPFeattable tab, AjPFile outfile);
 
 #define ATAB(x,y) (a->tab[x+5*y])
@@ -73,13 +95,13 @@ static ajint nCons = 0 ;
 **
 ** Undocumented.
 **
-** @return [Cons] Undocumented
+** @return [EtandemPCons] Undocumented
 ** @@
 ******************************************************************************/
 
-static Cons etandem_consCreate (void)
+static EtandemPCons etandem_consCreate (void)
 {
-    static Cons res;
+    static EtandemPCons res;
 
     AJNEW0(res);
     AJCNEW0(res->max, nmax+1);
@@ -94,11 +116,11 @@ static Cons etandem_consCreate (void)
 **
 ** Undocumented.
 **
-** @param [?] cons [Cons] Undocumented
+** @param [?] cons [EtandemPCons] Undocumented
 ** @@
 ******************************************************************************/
 
-static void etandem_consDestroy (Cons cons)
+static void etandem_consDestroy (EtandemPCons cons)
 {
 
     if (!cons)
@@ -114,8 +136,8 @@ static void etandem_consDestroy (Cons cons)
 
 /***************** reporting code *****************/
 
-static struct cons reportRootStruct ;
-static Cons reportRoot = &reportRootStruct ;
+static EtandemOCons reportRootStruct ;
+static EtandemPCons reportRoot = &reportRootStruct ;
 
 /* @funcstatic etandem_basicReport ********************************************
 **
@@ -124,11 +146,12 @@ static Cons reportRoot = &reportRootStruct ;
 ** @param [r] tab [AjPFeattable] Feature table
 ** @param [r] outfile [AjPFile] Output file (null unless original output
 **                              is needed)
-** @param [?] a [Cons] Undocumented
+** @param [?] a [EtandemPCons] Undocumented
 ** @@
 ******************************************************************************/
 
-static void etandem_basicReport (AjPFeattable tab, AjPFile outfile, Cons a)
+static void etandem_basicReport (AjPFeattable tab, AjPFile outfile,
+				 EtandemPCons a)
 {
     ajint j;
     ajint copies;
@@ -195,11 +218,11 @@ static void etandem_basicReport (AjPFeattable tab, AjPFile outfile, Cons a)
 **
 ** Undocumented.
 **
-** @param [?] a [Cons] Undocumented
+** @param [?] a [EtandemPCons] Undocumented
 ** @@
 ******************************************************************************/
 
-static void etandem_report (Cons a)
+static void etandem_report (EtandemPCons a)
 {
     ajint j ;
     ajint firstchar ;
@@ -243,9 +266,9 @@ static void etandem_finalReport (AjPFeattable tab, AjPFile outfile)
 {
     ajint start;
     ajint end ;
-    Cons a;
-    Cons top;
-    Cons olda;
+    EtandemPCons a;
+    EtandemPCons top;
+    EtandemPCons olda;
 
     ajDebug ("finalReport\n");
     while (reportRoot->next)
@@ -299,11 +322,11 @@ int main(int argc, char **argv)
     ajint x;
     ajint phase;
     ajint n;
-    Cons new;
-    Cons a;
-    Cons b;
-    Cons olda;
-    Cons oldb;
+    EtandemPCons new;
+    EtandemPCons a;
+    EtandemPCons b;
+    EtandemPCons olda;
+    EtandemPCons oldb;
     AjPStr nseq = NULL;
     AjPFeattable tab=NULL;
     AjPReport report=NULL;

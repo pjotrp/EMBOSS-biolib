@@ -1,5 +1,21 @@
 #include "ajax.h"
 
+/* @datastatic SeqPType *******************************************************
+**
+** Sequence types data structure, used to test input sequence against
+** a defined sequence type
+**
+** @alias SeqSType
+** @alias SeqOType
+**
+** @attr Name [char*] sequence type name
+** @attr Gaps [AjBool] allow gap characters
+** @attr Type [ajint] enumerated ISANY=0 ISNUC=1 ISPROT=2 
+** @attr Test [(char*)] Test function
+** @attr Desc [char*] Description for documentation purposes
+** @@
+******************************************************************************/
+
 typedef struct SeqSType {
   char *Name;
   AjBool Gaps;

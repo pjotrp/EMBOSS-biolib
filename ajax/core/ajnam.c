@@ -89,6 +89,19 @@ static AjPStr namFileOrig = NULL;
 static AjPTable standardNames = NULL;
 static ajint namParseType = 0;
 
+/* @datastatic NamPAttr *******************************************************
+**
+** Resource attribute definition structure
+**
+** @alias NamSAttr
+** @alias NamOAttr
+**
+** @attr Name [char*] Attribute name
+** @attr Defval [char*] Default value, usually an empty string
+** @attr Comment [char*] Comment for documentation purposes
+** @@
+******************************************************************************/
+
 typedef struct NamSAttr {
   char* Name;
   char* Defval;
@@ -127,12 +140,28 @@ NamOAttr namAttr[] = {
   {NULL, NULL, NULL}
 };
 
+/* @datastatic AjPNamStandards ************************************************
+**
+** Internal database standard structure
+**
+** @alias AjSNamStandards
+** @alias AjONamStandards
+**
+** @attr name [AjPStr] token name
+** @attr value [AjPStr] token value
+** @attr type [ajint] token type enumerated TYPE_START TYPE_ENV
+**                    TYPE_DB TYPE_OPT TYPE_IFILE
+** @attr scope [ajint] token scope always zero
+** @attr data [void*] Attribute names and values for databases
+** @@
+******************************************************************************/
+
 typedef struct AjSNamStandards {
   AjPStr name;
   AjPStr value;
   ajint type;
   ajint scope;
-  void* data ;	     /* Attribute values for database*/
+  void* data ;	     /* Attribute values for databases */
 } AjONamStandards, *AjPNamStandards;
 
 static void namListStandardsDelete(void);

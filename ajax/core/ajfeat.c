@@ -42,6 +42,18 @@
 
 #include "ajax.h"
 
+/* @datastatic FeatPTagval ****************************************************
+**
+** Feature tag values data structure
+**
+** @alias FeatSTagval
+** @alias FeatOTagval
+**
+** @attr Tag [AjPStr] Tag name usually from a controlled internal vocabulary
+** @attr Value [AjPStr] Tag value
+** @@
+******************************************************************************/
+
 typedef struct FeatSTagval {
   AjPStr Tag;
   AjPStr Value;
@@ -210,8 +222,25 @@ static AjPStr       featTypeProt (AjPStr type);
 static AjBool       featVocabRead (char *name, ajint typsize, ajint tagsize,
 				  AjPTable* pTypeTable, AjPTable* pTagsTable);
 
+/* @datastatic FeatPInFormat **************************************************
+**
+** Featue input format definition
+**
+** @alias FeatSInFormat
+** @alias FeatOInFormat
+**
+** @attr Name [char*] INput format name
+** @attr Dna [AjBool] True if suitable for nucleotide data
+** @attr Prot [AjBool] True if suitable for protein data
+** @attr Used [AjBool] True if already used (initialised)
+** @attr Read [(AjBool*)] Function to read feature data
+** @attr InitReg [(AjBool*)] Function to initialise regular expressions
+** @attr DelReg [(AjBool*)] Function to clean up regular expressions
+** @@
+******************************************************************************/
+
 typedef struct FeatSInFormat {
-  char *Name;
+  char* Name;
   AjBool Dna;
   AjBool Prot;
   AjBool Used;
@@ -261,6 +290,20 @@ static FeatOInFormat featInFormatDef[] = {
 };
 
 static FeatPInFormat featInFormat = featInFormatDef;
+
+/* @datastatic FeatPTypePir ***************************************************
+**
+** PIR feature types related to internal protein features used to
+** support internal (swissprot) interconversion with PIR, used where
+** the names in Swissprot (internal) and PIR are equivalent but different.
+**
+** @alias FeatSTypePir
+** @alias FeatOTypePir
+**
+** @attr Pir [char*] PIR database feature name
+** @attr Internal [char*] Internal (swissprot) feature name
+** @@
+******************************************************************************/
 
 typedef struct FeatSTypePir {
   char* Pir;
@@ -333,9 +376,21 @@ static AjPFeature  featGffFromLine ( AjPFeattable thys, AjPStr line,
 static void        featGffProcessTagval (AjPFeature gf, AjPFeattable table,
 					 AjPStr groupfield, float version);
 
+/* @datastatic FeatPOutFormat *************************************************
+**
+** Feature output formats
+**
+** @alias FeatSOutFormat
+** @alias FeatOOutFormat
+**
+** @attr Name [char*] Format name
+** @attr VocInit [(AjBool*)] Function to initialise vocabulary
+** @attr Write [(AjBool*)] Function to write data
+** @@
+******************************************************************************/
+
 typedef struct FeatSOutFormat {
-  char *Name;
-  AjBool Used;
+  char* Name;
   AjBool (*VocInit) ();
   AjBool (*Write) (AjPFeattable thys, AjPFile file);
 } FeatOOutFormat, *FeatPOutFormat;
@@ -351,17 +406,17 @@ typedef struct FeatSOutFormat {
 ******************************************************************************/
 
 static FeatOOutFormat featOutFormatDef[] = {
-  {"unknown",   AJFALSE, NULL,               ajFeattableWriteUnknown},
-  {"embl",      AJFALSE, featVocabInitEmbl,  ajFeattableWriteEmbl},
-  {"genbank",   AJFALSE, featVocabInitEmbl,  ajFeattableWriteGenbank},
-  {"gb",        AJFALSE, featVocabInitEmbl,  ajFeattableWriteGenbank},
-  {"ddbj",      AJFALSE, featVocabInitEmbl,  ajFeattableWriteDdbj},
-  {"gff",       AJFALSE, featVocabInitGff,   ajFeattableWriteGff},
-  {"pir",       AJFALSE, featVocabInitPir,   ajFeattableWritePir},
-  {"swissprot", AJFALSE, featVocabInitSwiss, ajFeattableWriteSwiss},
-  {"swiss",     AJFALSE, featVocabInitSwiss, ajFeattableWriteSwiss},
-  {"sw",        AJFALSE, featVocabInitSwiss, ajFeattableWriteSwiss},
-  {NULL, AJFALSE, NULL, NULL}
+  {"unknown",   NULL,               ajFeattableWriteUnknown},
+  {"embl",      featVocabInitEmbl,  ajFeattableWriteEmbl},
+  {"genbank",   featVocabInitEmbl,  ajFeattableWriteGenbank},
+  {"gb",        featVocabInitEmbl,  ajFeattableWriteGenbank},
+  {"ddbj",      featVocabInitEmbl,  ajFeattableWriteDdbj},
+  {"gff",       featVocabInitGff,   ajFeattableWriteGff},
+  {"pir",       featVocabInitPir,   ajFeattableWritePir},
+  {"swissprot", featVocabInitSwiss, ajFeattableWriteSwiss},
+  {"swiss",     featVocabInitSwiss, ajFeattableWriteSwiss},
+  {"sw",        featVocabInitSwiss, ajFeattableWriteSwiss},
+  {NULL, NULL, NULL}
 };
 
 static FeatPOutFormat featOutFormat = featOutFormatDef;

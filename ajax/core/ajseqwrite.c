@@ -1,11 +1,56 @@
 #include "ajax.h"
 
+/* @datastatic SeqPOutFormat **************************************************
+**
+** Sequence output formats
+**
+** @attr Name [char*] format name
+** @attr Single [AjBool] Write each sequence to a new file if true (e.g. GCG)
+** @attr Save [AjBool] Save in memory and write at end (e.g. MSF alignments)
+** @attr Write [(void*)] Function to write the format
+** @@
+******************************************************************************/
+
 typedef struct SeqSOutFormat {
   char *Name;
   AjBool Single;
   AjBool Save;
   void (*Write) (AjPSeqout outseq);
 } SeqOOutFormat, *SeqPOutFormat;
+
+/* @datastatic SeqPSeqFormat **************************************************
+**
+** Data structure to hold definitions when writing sequence data.
+**
+** Most output functions generate the sequence header, then build
+** this data structure for the actual output using function seqWriteSeq
+**
+** @attr linepos [ajint] Undocumented
+** @attr namewidth [ajint] Name format width
+** @attr numline [ajint] Undocumented
+** @attr numwidth [ajint] Number format width
+** @attr spacer [ajint] Undocumented
+** @attr tab [ajint] Undocumented
+** @attr width [ajint] Number of bases per line
+** @attr baseonlynum [AjBool] Undocumented
+** @attr degap [AjBool] Remove gap characters
+** @attr domatch [AjBool] Show matching line
+** @attr isactive [AjBool] Undocumented
+** @attr nameright [AjBool] Sequence name in right margin
+** @attr nameleft [AjBool] Sequence name in left margin
+** @attr noleaves [AjBool] Undocumented
+** @attr numjust [AjBool] Justify numbers
+** @attr numleft [AjBool] Base number on left
+** @attr numright [AjBool] Base number on right
+** @attr pretty [AjBool] Undocumented
+** @attr skipafter [AjBool] Undocumented
+** @attr skipbefore [AjBool] Undocumented
+** @attr gapchar [char] gap character
+** @attr matchchar [char] matching character
+** @attr endstr [char[20]] Last line(s)
+** @attr leftstr [char[20]] string in left margin
+** @@
+******************************************************************************/
 
 typedef struct SeqSSeqFormat {
   ajint linepos;

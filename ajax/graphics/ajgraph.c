@@ -94,6 +94,20 @@ static AjBool   GraphxyTitlearg (char *name, va_list args);
 static AjBool   GraphxyXtitlearg (char *name, va_list args);
 static AjBool   GraphxyYtitlearg (char *name, va_list args);
 
+/* @datastatic GraphPType *****************************************************
+**
+** Graph type definition structure
+**
+** @alias GraphSType
+** @alias GraphOType
+**
+** @attr Name [char*] Name used by Ajax
+** @attr Device [char*] Name used by plplot library
+** @attr ext [char*] fiel extension for output file if any
+** @attr XYDisplay [(void*)] Function to display an XY graph
+** @attr GOpen [(void*)] Function to display a general graph
+** @@
+******************************************************************************/
 
 typedef struct GraphSType {
   char* Name;			/* Name recognized by AJAX calls */

@@ -154,6 +154,18 @@ static AjBool dbiblast_parseUnknown (AjPStr line, AjPFile* alistfile,
 				     PBlastDb db, ajint* maxFieldLen,
 				     AjPStr* id, AjPList* fdl);
 
+/* @datastatic DbiblastPParser ************************************************
+**
+** Parser definition structure
+**
+** @alias DbiblastSParser
+** @alias DbiblastOParser
+**
+** @attr Name [char*] Parser name
+** @attr Parser [(AjBool*)] Parser function
+** @@
+******************************************************************************/
+
 typedef struct SParser
 {
   char* Name;

@@ -22,12 +22,41 @@ static AjPRegexp qrywildexp = 0;
 
 static AjBool seqInFormatSet = AJFALSE;
 
+/* @datastatic SeqPInFormat ***************************************************
+**
+** Sequence input formats data structure
+**
+** @alias SeqSInFormat
+** @alias SeqOInFormat
+**
+** @attr Name [char*] Format name
+** @attr Try [AjBool] If true, try for an unknown input. Duplicate names
+**                    and read-anything formats are set false
+** @attr Read [(AjBool*)] Input function, returns ajTrue on success
+** @@
+******************************************************************************/
+
 typedef struct SeqSInFormat
 {
   char *Name;
   AjBool Try;
   AjBool (*Read) (AjPSeq thys, AjPSeqin seqin);
 } SeqOInFormat, *SeqPInFormat;
+
+/* @datastatic SeqPMsfData ****************************************************
+**
+** MSF format alignment data, stored until written when output file is closed
+**
+** @alias SeqSMsfData
+** @alias SeqOMsfData
+**
+** @attr Table [AjPTable] Ajax table of AjPMsfItem objects
+** @attr Names [AjPStr*] Sequence names
+** @attr Count ajint[] Undocumented
+** @attr Nseq [ajint] Number of sequences
+** @attr Bufflines [ajint] Undocumented
+** @@
+******************************************************************************/
 
 typedef struct SeqSMsfData
 {
@@ -38,6 +67,21 @@ typedef struct SeqSMsfData
   ajint Bufflines;
 } SeqOMsfData, *SeqPMsfData;
 
+/* @datastatic SeqPMsfItem ****************************************************
+**
+** MSF alignment output individual sequence data
+**
+** @alias SeqSMsfItem
+** @alias SeqOMsfItem
+**
+** @attr Name [AjPStr] Sequence name
+** @attr Len [ajint] Sequence length
+** @attr Check [ajint] Sequence GCG checksum
+** @attr Weight [float] Weight (default 1.0)
+** @attr Seq [AjPStr] Sequence
+** @@
+******************************************************************************/
+
 typedef struct SeqSMsfItem
 {
   AjPStr Name;
@@ -46,6 +90,25 @@ typedef struct SeqSMsfItem
   float Weight;
   AjPStr Seq;
 } SeqOMsfItem, *SeqPMsfItem;
+
+/* @datastatic SeqPListUsa ****************************************************
+**
+** Usa processing list of USAs from a list file.
+**
+** Includes data from the original USA (@listfile)
+**
+** @alias SeqSListUsa
+** @alias SeqOListUsa
+**
+** @attr Begin [ajint] Begin if defined in original USA
+** @attr End [ajint] End if defined in original USA
+** @attr Rev [AjBool] Reverse if defined in original USA
+** @attr Format [ajint] Format number from original USA
+** @attr Features [AjBool] if true, process features
+** @attr Formatstr [AjPStr] Format name from original USA
+** @attr Usa [AjPStr] Current USA
+** @@
+******************************************************************************/
 
 typedef struct SeqSListUsa
 {

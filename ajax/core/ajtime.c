@@ -2,6 +2,18 @@
 #include "ajtime.h"
 #include <time.h>
 
+/* @datastatic TimePFormat ****************************************************
+**
+** Internal structure for known Ajax time formats
+**
+** @alias TimeSFormat
+** @alias TimeOFormat
+**
+** @attr Name [char*] format name
+** @attr Format [char*] C run time library time format string
+** @@
+******************************************************************************/
+
 typedef struct TimeSFormat {
   char* Name;
   char* Format;
