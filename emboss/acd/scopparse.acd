@@ -6,11 +6,13 @@ appl: scopparse [
 infile: infilea  [
   prompt: "Name of scop classification file for input (raw format dir.cla.scop.txt_X.XX file)"
   default: "dir.cla.scop.txt_1.57"
+  parameter: "Y"
 ]
 
 infile: infileb  [
   prompt: "Name of description file for input (raw format dir.des.scop.txt_X.XX file)"
   default: "dir.des.scop.txt_1.57"
+  parameter: "Y"
 ]
 
 outfile: outfile  [
