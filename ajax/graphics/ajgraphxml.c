@@ -105,6 +105,7 @@ static void     xml_deltablenode(const void *key, void **value, void *cl);
 
 
 
+
 /* @func ajXmlNodeNew ***********************************************
 **
 ** Create a new node and allocate the memory
@@ -112,6 +113,7 @@ static void     xml_deltablenode(const void *key, void **value, void *cl);
 ** @return [AjPXmlNode] the new node
 ** @@
 *********************************************************************/
+
 AjPXmlNode ajXmlNodeNew()
 {
     AjPXmlNode thys;
@@ -130,6 +132,7 @@ AjPXmlNode ajXmlNodeNew()
 ** @return [AjPXmlFile] the new file
 ** @@
 *********************************************************************/
+
 AjPXmlFile ajXmlFileNew()
 {
     AjPXmlFile thys;
@@ -151,6 +154,7 @@ AjPXmlFile ajXmlFileNew()
 ** @return [void] 
 ** @@
 *********************************************************************/
+
 void ajXmlNodeDel(AjPXmlNode *thys)
 {
     if(!thys || !*thys)
@@ -162,6 +166,9 @@ void ajXmlNodeDel(AjPXmlNode *thys)
     return;
 }
 
+
+
+
 /* @func ajXmlFileDel ***********************************************
 **
 ** Delete the file
@@ -171,6 +178,7 @@ void ajXmlNodeDel(AjPXmlNode *thys)
 ** @return [void] 
 ** @@
 *********************************************************************/
+
 void ajXmlFileDel(AjPXmlFile *thys)
 {
     if(!thys || !*thys)
@@ -192,6 +200,7 @@ void ajXmlFileDel(AjPXmlFile *thys)
 
 
 
+
 /* @func ajXmlSetMaxMin *********************************************
 **
 ** sets the max min values of a graph
@@ -206,12 +215,13 @@ void ajXmlFileDel(AjPXmlFile *thys)
 ** add MaxMin, eg. a graph
 ** @@
 *********************************************************************/
+
 AjBool ajXmlSetMaxMin (AjPXmlFile file, double xMin, double yMin, 
 		       double xMax, double yMax)
 {
     AjPXmlNode minMaxNode;
-    AjPStr doub=NULL;
-    AjPStr value=NULL;
+    AjPStr doub  = NULL;
+    AjPStr value = NULL;
     
     value = ajStrNewC("[");
     doub  = ajStrNew();
@@ -260,6 +270,9 @@ AjBool ajXmlSetMaxMin (AjPXmlFile file, double xMin, double yMin,
     return ajTrue;
 }
 
+
+
+
 /* @func ajXmlWriteFile **********************************************
 **
 ** writes the file 
@@ -270,6 +283,7 @@ AjBool ajXmlSetMaxMin (AjPXmlFile file, double xMin, double yMin,
 ** @return [AjBool] ajTrue if file correctly written
 ** @@
 *********************************************************************/
+
 AjBool ajXmlWriteFile(AjPXmlFile file, AjPStr filename)
 {
     return xml_WriteFile(file, filename);
@@ -287,6 +301,7 @@ AjBool ajXmlWriteFile(AjPXmlFile file, AjPStr filename)
 ** @return [AjBool] ajTrue if file correctly written
 ** @@
 *********************************************************************/
+
 AjBool ajXmlWriteStdout(AjPXmlFile file)
 {
     return xml_WriteStdout(file);
@@ -304,6 +319,7 @@ AjBool ajXmlWriteStdout(AjPXmlFile file)
 ** @return [void]
 ** @@
 *********************************************************************/
+
 void ajXmlClearFile(AjPXmlFile file)
 {
     xml_ClearFile(file);
@@ -325,6 +341,7 @@ void ajXmlClearFile(AjPXmlFile file)
 ** add Source, eg. a graph
 ** @@
 *********************************************************************/
+
 AjBool ajXmlSetSource(AjPXmlFile file, AjPStr title)
 {
     AjPXmlNode titleNode;
@@ -356,10 +373,11 @@ AjBool ajXmlSetSource(AjPXmlFile file, AjPStr title)
 ** add Source, eg. a graph
 ** @@
 *********************************************************************/
+
 AjBool ajXmlAddMainTitleC(AjPXmlFile file, char *title)
 {
     AjPXmlNode graphNode;
-    AjPStr titleAltered=NULL;
+    AjPStr titleAltered = NULL;
 
     /* Not sure about this hugh */
     titleAltered = ajStrNew();
@@ -392,10 +410,11 @@ AjBool ajXmlAddMainTitleC(AjPXmlFile file, char *title)
 ** add XTitle, eg. a graph
 ** @@
 *********************************************************************/
+
 AjBool ajXmlAddXTitleC (AjPXmlFile file, char *title)
 {
     AjPXmlNode titleNode;
-    AjPStr titleAltered=NULL;
+    AjPStr titleAltered = NULL;
 
 
     /* Not sure about this hugh */
@@ -430,10 +449,11 @@ AjBool ajXmlAddXTitleC (AjPXmlFile file, char *title)
 ** add YTitle, eg. a graph
 ** @@
 *********************************************************************/
+
 AjBool ajXmlAddYTitleC(AjPXmlFile file, char *title)
 {
     AjPXmlNode titleNode;
-    AjPStr titleAltered=NULL;
+    AjPStr titleAltered = NULL;
 
     /* Not sure about this hugh */
     titleAltered = ajStrNew();
@@ -467,6 +487,7 @@ AjBool ajXmlAddYTitleC(AjPXmlFile file, char *title)
 ** add Source, eg. a graph
 ** @@
 *********************************************************************/
+
 AjBool ajXmlAddMainTitle(AjPXmlFile file, AjPStr title)
 {
     return ajXmlAddMainTitleC(file, ajStrStr(title));
@@ -486,9 +507,9 @@ AjBool ajXmlAddMainTitle(AjPXmlFile file, AjPStr title)
 ** add XTitle, eg. a graph
 ** @@
 *********************************************************************/
+
 AjBool ajXmlAddXTitle (AjPXmlFile file, AjPStr title)
 {
-
     return ajXmlAddXTitleC(file, ajStrStr(title));
 }
 
@@ -506,9 +527,9 @@ AjBool ajXmlAddXTitle (AjPXmlFile file, AjPStr title)
 ** add YTitle, eg. a graph
 ** @@
 *********************************************************************/
+
 AjBool ajXmlAddYTitle(AjPXmlFile file, AjPStr title)
 {
-
     return ajXmlAddYTitleC(file, ajStrStr(title));
 }
 
@@ -531,6 +552,7 @@ AjBool ajXmlAddYTitle(AjPXmlFile file, AjPStr title)
 ** @return [void]
 ** @@
 *********************************************************************/
+
 void ajXmlAddTextCentred(AjPXmlFile file, double x, double y, 
 			 double size, double angle, AjPStr fontFamily,
 			 AjPStr fontStyle, AjPStr text)
@@ -563,19 +585,20 @@ void ajXmlAddTextCentred(AjPXmlFile file, double x, double y,
 ** @return [void]
 ** @@
 *********************************************************************/
+
 void ajXmlAddTextC(AjPXmlFile file, double x, double y, double size, 
 		  double angle, char *fontFamily, char *fontStyle, 
 		  char *text)
 {
-    AjPXmlNode transformNode = NULL;
-    AjPXmlNode elText = NULL;
-    AjPXmlNode elFont = NULL;
+    AjPXmlNode transformNode  = NULL;
+    AjPXmlNode elText         = NULL;
+    AjPXmlNode elFont         = NULL;
     AjPXmlNode tranformParent = NULL;
-    AjPXmlNode tempNode = NULL;
-    AjPStr attributeValue=NULL;
-    AjPStr temp=NULL;
-    AjPStr name=NULL;
-    AjPStr attributeVal=NULL;
+    AjPXmlNode tempNode       = NULL;
+    AjPStr attributeValue     =NULL;
+    AjPStr temp = NULL;
+    AjPStr name = NULL;
+    AjPStr attributeVal = NULL;
     ajint i;
     ajint limit = 0;
     
@@ -688,6 +711,7 @@ void ajXmlAddTextC(AjPXmlFile file, double x, double y, double size,
 ** @return [void]
 ** @@
 *********************************************************************/
+
 void ajXmlAddText(AjPXmlFile file, double x, double y, double size, 
 		  double angle, AjPStr fontFamily, AjPStr fontStyle, 
 		  AjPStr text)
@@ -698,7 +722,6 @@ void ajXmlAddText(AjPXmlFile file, double x, double y, double size,
 		  (text) ? ajStrStr(text) : NULL);
     return;
 }
-
 
 
 
@@ -730,6 +753,7 @@ void ajXmlAddText(AjPXmlFile file, double x, double y, double size,
 ** @return [void]
 ** @@
 *********************************************************************/
+
 void ajXmlAddTextWithCJustify(AjPXmlFile file, double x, double y, 
 			      double size, double angle, 
 			      AjPStr fontFamily, AjPStr fontStyle, 
@@ -740,8 +764,8 @@ void ajXmlAddTextWithCJustify(AjPXmlFile file, double x, double y,
     AjPXmlNode transformNode;
     AjPXmlNode elText;
     AjPXmlNode elFont;
-    AjPStr attributeVal=NULL;
-    AjPStr temp=NULL;
+    AjPStr attributeVal = NULL;
+    AjPStr temp = NULL;
 
     temp         = ajStrNew();
     attributeVal = ajStrNew();
@@ -869,6 +893,7 @@ void ajXmlAddTextWithJustify(AjPXmlFile file, double x, double y,
 ** @return [void]
 ** @@
 *********************************************************************/
+
 void ajXmlAddTextOnArc(AjPXmlFile file, double xCentre, double yCentre,
 		       double startAngle, double endAngle, 
 		       double radius, double size, AjPStr fontFamily, 
@@ -951,6 +976,7 @@ void ajXmlAddTextOnArc(AjPXmlFile file, double xCentre, double yCentre,
 ** @return [void]
 ** @@
 *********************************************************************/
+
 void ajXmlAddJoinedLineSetEqualGapsF(AjPXmlFile file, float *y, 
 				     int numberOfPoints, float startX,
 				     float increment)
@@ -991,6 +1017,7 @@ void ajXmlAddJoinedLineSetEqualGapsF(AjPXmlFile file, float *y,
 ** @return [void]
 ** @@
 *********************************************************************/
+
 void ajXmlAddJoinedLineSetF(AjPXmlFile file, float *x, float *y, 
 			    int numberOfPoints)
 {
@@ -1030,13 +1057,14 @@ void ajXmlAddJoinedLineSetF(AjPXmlFile file, float *x, float *y,
 ** @return [void]
 ** @@
 *********************************************************************/
+
 void ajXmlAddJoinedLineSet(AjPXmlFile file, double *x, double *y, 
 			   int numberOfPoints)
 {
     AjPXmlNode el;
     int count;
-    AjPStr index=NULL;
-    AjPStr coord=NULL;
+    AjPStr index = NULL;
+    AjPStr coord = NULL;
 
     /* I try and find preexisting IndexedLineSet's  */
     el = xml_GetNodeTypeMakeIfNotC(file, "IndexedLineSet"); 
@@ -1076,12 +1104,13 @@ void ajXmlAddJoinedLineSet(AjPXmlFile file, double *x, double *y,
 ** @return [void]
 ** @@
 *********************************************************************/
+
 void ajXmlAddLine(AjPXmlFile file, double x1, double y1, double x2, 
 		  double y2)
 {
     AjPXmlNode el;
-    AjPStr coord=NULL;
-    AjPStr index=NULL;
+    AjPStr coord = NULL;
+    AjPStr index = NULL;
 
     el = xml_GetNodeTypeMakeIfNotC(file, "IndexedLineSet");
 
@@ -1121,6 +1150,7 @@ void ajXmlAddLine(AjPXmlFile file, double x1, double y1, double x2,
 ** @return [void]
 ** @@
 *********************************************************************/
+
 void ajXmlAddLineF(AjPXmlFile file, float x1, float y1, float x2, 
 		   float y2)
 {
@@ -1144,11 +1174,12 @@ void ajXmlAddLineF(AjPXmlFile file, float x1, float y1, float x2,
 ** @return [void]
 ** @@
 *********************************************************************/
+
 void ajXmlAddPoint(AjPXmlFile file, double x1, double y1)
 {
     AjPXmlNode el;
-    AjPStr coord=NULL;
-    AjPStr index=NULL;
+    AjPStr coord = NULL;
+    AjPStr index = NULL;
 
     el = xml_GetNodeTypeMakeIfNotC(file, "IndexedLineSet");
   
@@ -1188,58 +1219,59 @@ void ajXmlAddPoint(AjPXmlFile file, double x1, double y1)
 ** @return [void]
 ** @@
 *********************************************************************/
+
 void ajXmlAddHistogramEqualGapsF(AjPXmlFile file, float *y, 
 				 int numPoints, float startX, 
 				 float xGap)
 {
-	int point;
+    int point;
 
-	AjPXmlNode el;
-	AjPStr coord=NULL;
-	AjPStr index=NULL;
+    AjPXmlNode el;
+    AjPStr coord = NULL;
+    AjPStr index = NULL;
 
 		
-	el = xml_GetNodeTypeMakeIfNotC(file, "IndexedFaceSet");
+    el = xml_GetNodeTypeMakeIfNotC(file, "IndexedFaceSet");
 
-	/* setting up the coords to add */
-	coord = xml_GetPoints(el);
-	index = xml_GetIndex(el);
+    /* setting up the coords to add */
+    coord = xml_GetPoints(el);
+    index = xml_GetIndex(el);
 
-	for(point = 0; point < numPoints; ++point)
+    for(point = 0; point < numPoints; ++point)
 	if(y[point] != 0.0)
 	{
-		if(!y[point] > 0)
-		{
-			xml_AddACoord(((double) (startX + (point * xGap))),
-										((double) 0), ajFalse, &coord, &index);
-			xml_AddACoord(((double) (startX + (point * xGap))),
-										((double) y[point]), ajTrue, &coord, &index);
-			xml_AddACoord(((double) (startX + ((point+ 1) * xGap))),
-										((double) y[point]), ajTrue, &coord, &index);
-			xml_AddACoord(((double) (startX + ((point+ 1) * xGap))),
-										((double)  0), ajTrue, &coord, &index);
-		}
-		else
-		{
-			xml_AddACoord(((double) (startX + ((point+ 1) * xGap))),
-										((double)  0), ajFalse, &coord, &index);
-			xml_AddACoord(((double) (startX + ((point+ 1) * xGap))),
-										((double) y[point]), ajTrue, &coord, &index);
-			xml_AddACoord(((double) (startX + (point * xGap))),
-										((double) y[point]), ajTrue, &coord, &index);
-			xml_AddACoord(((double) (startX + (point * xGap))),
-										((double)  0), ajTrue, &coord, &index);
-		}
+	    if(!y[point] > 0)
+	    {
+		xml_AddACoord(((double) (startX + (point * xGap))),
+			      ((double) 0), ajFalse, &coord, &index);
+		xml_AddACoord(((double) (startX + (point * xGap))),
+			      ((double) y[point]), ajTrue, &coord, &index);
+		xml_AddACoord(((double) (startX + ((point+ 1) * xGap))),
+			      ((double) y[point]), ajTrue, &coord, &index);
+		xml_AddACoord(((double) (startX + ((point+ 1) * xGap))),
+			      ((double)  0), ajTrue, &coord, &index);
+	    }
+	    else
+	    {
+		xml_AddACoord(((double) (startX + ((point+ 1) * xGap))),
+			      ((double)  0), ajFalse, &coord, &index);
+		xml_AddACoord(((double) (startX + ((point+ 1) * xGap))),
+			      ((double) y[point]), ajTrue, &coord, &index);
+		xml_AddACoord(((double) (startX + (point * xGap))),
+			      ((double) y[point]), ajTrue, &coord, &index);
+		xml_AddACoord(((double) (startX + (point * xGap))),
+			      ((double)  0), ajTrue, &coord, &index);
+	    }
 	}	    
-	xml_SetPoints(el, coord);
-	xml_SetIndex(el, index);
+    xml_SetPoints(el, coord);
+    xml_SetIndex(el, index);
 
-	/* tidy up */
-	xml_UnrefNode(el);
-	ajStrDel(&coord);
-	ajStrDel(&index);
+    /* tidy up */
+    xml_UnrefNode(el);
+    ajStrDel(&coord);
+    ajStrDel(&index);
 
-	return;
+    return;
 }
 
 
@@ -1260,55 +1292,54 @@ void ajXmlAddHistogramEqualGapsF(AjPXmlFile file, float *y,
 ** @return [void]
 ** @@
 *********************************************************************/
+
 void ajXmlAddRectangleSet(AjPXmlFile file, double *x1, double *y1, 
 			  double *x2, double *y2, int numPoints, 
 			  AjBool fill)
 {
     int point;
     AjPXmlNode el;
-    AjPStr coord=NULL;
-    AjPStr index=NULL;
+    AjPStr coord = NULL;
+    AjPStr index = NULL;
     
-		if(fill)
-		{
-			el = xml_GetNodeTypeMakeIfNotC(file, "IndexedFaceSet");
+    if(fill)
+    {
+	el = xml_GetNodeTypeMakeIfNotC(file, "IndexedFaceSet");
 
-			/* setting up the coords to add */
-			coord = xml_GetPoints(el);
-			index = xml_GetIndex(el);
+	/* setting up the coords to add */
+	coord = xml_GetPoints(el);
+	index = xml_GetIndex(el);
 
-			for(point = 0; point < numPoints; ++point)
-			{
-				if(!(((x1[point] > x2[point]) && (y1[point] > y2[point]))
-						 || ((x1[point] < x2[point]) && (y1[point] < y2[point]))) )
-				{
-					xml_AddACoord(x1[point], y1[point], ajFalse, &coord, &index);
-					xml_AddACoord(x1[point], y2[point], ajTrue, &coord, &index);
-					xml_AddACoord(x2[point], y2[point], ajTrue, &coord, &index);
-					xml_AddACoord(x2[point], y1[point], ajTrue, &coord, &index);
-				}
-				else
-				{
-					xml_AddACoord(x2[point], y1[point], ajFalse, &coord, &index);
-					xml_AddACoord(x2[point], y2[point], ajTrue, &coord, &index);
-					xml_AddACoord(x1[point], y2[point], ajTrue, &coord, &index);
-					xml_AddACoord(x1[point], y1[point], ajTrue, &coord, &index);
-				}
-			}	    
-				xml_SetPoints(el, coord);
-				xml_SetIndex(el, index);
+	for(point = 0; point < numPoints; ++point)
+	{
+	    if(!(((x1[point] > x2[point]) && (y1[point] > y2[point]))
+		 || ((x1[point] < x2[point]) && (y1[point] < y2[point]))) )
+	    {
+		xml_AddACoord(x1[point], y1[point], ajFalse, &coord, &index);
+		xml_AddACoord(x1[point], y2[point], ajTrue, &coord, &index);
+		xml_AddACoord(x2[point], y2[point], ajTrue, &coord, &index);
+		xml_AddACoord(x2[point], y1[point], ajTrue, &coord, &index);
+	    }
+	    else
+	    {
+		xml_AddACoord(x2[point], y1[point], ajFalse, &coord, &index);
+		xml_AddACoord(x2[point], y2[point], ajTrue, &coord, &index);
+		xml_AddACoord(x1[point], y2[point], ajTrue, &coord, &index);
+		xml_AddACoord(x1[point], y1[point], ajTrue, &coord, &index);
+	    }
+	}	    
+	xml_SetPoints(el, coord);
+	xml_SetIndex(el, index);
 
-				/* tidy up */
-				xml_UnrefNode(el);
-				ajStrDel(&coord);
-				ajStrDel(&index);
-		}
-		else
-		{
-			for(point = 0; point < numPoints; ++point)
-			  ajXmlAddRectangle(file, x1[point], y1[point], x2[point], 
-			  									y2[point], fill);
-		}
+	/* tidy up */
+	xml_UnrefNode(el);
+	ajStrDel(&coord);
+	ajStrDel(&index);
+    }
+    else
+	for(point = 0; point < numPoints; ++point)
+	    ajXmlAddRectangle(file, x1[point], y1[point], x2[point], 
+			      y2[point], fill);
 
     return;
 }
@@ -1330,12 +1361,13 @@ void ajXmlAddRectangleSet(AjPXmlFile file, double *x1, double *y1,
 ** @return [void]
 ** @@
 *********************************************************************/
+
 void ajXmlAddRectangle(AjPXmlFile file, double x1, double y1, 
 		       double x2, double y2, AjBool fill)
 {
     AjPXmlNode el;
-    AjPStr coord=NULL;
-    AjPStr index=NULL;
+    AjPStr coord = NULL;
+    AjPStr index = NULL;
 
     if(fill)
     {  
@@ -1425,6 +1457,7 @@ void ajXmlAddRectangle(AjPXmlFile file, double x1, double y1,
 ** @return [void]
 ** @@
 *********************************************************************/
+
 void ajXmlAddCylinder(AjPXmlFile file, double x1, double y1, 
 		      double x2, double y2, double width)
 {
@@ -1468,6 +1501,7 @@ void ajXmlAddCylinder(AjPXmlFile file, double x1, double y1,
 ** @return [AjBool] ajTrue if correctly added
 ** @@
 *********************************************************************/
+
 AjBool ajXmlAddPointLabelCircle(AjPXmlFile file, double angle, 
 				double xCentre, double yCentre, 
 				double radius, double length, 
@@ -1540,6 +1574,7 @@ AjBool ajXmlAddPointLabelCircle(AjPXmlFile file, double angle,
 ** @return [AjBool] ajTrue if correctly added
 ** @@
 *********************************************************************/
+
 AjBool ajXmlAddSectionLabelCircle(AjPXmlFile file, double startAngle, 
 				  double endAngle, double xCentre, 
 				  double yCentre, double radius, 
@@ -1733,6 +1768,7 @@ AjBool ajXmlAddSectionLabelCircle(AjPXmlFile file, double startAngle,
 ** @return [AjBool] ajTrue if correctly added
 ** @@
 *********************************************************************/
+
 AjBool ajXmlAddPointLabelLinear(AjPXmlFile file, double angle, 
 				double xPoint, double yPoint, 
 				double length, 
@@ -1809,6 +1845,7 @@ AjBool ajXmlAddPointLabelLinear(AjPXmlFile file, double angle,
 ** @return [AjBool] ajTrue if correctly added
 ** @@
 *********************************************************************/
+
 AjBool ajXmlAddSectionLabelLinear(AjPXmlFile file, double xStart, 
 				  double yStart, double xEnd, 
 				  double yEnd, double width, 
@@ -1965,6 +2002,7 @@ AjBool ajXmlAddSectionLabelLinear(AjPXmlFile file, double xStart,
 ** @return [AjBool] ajTrue if correctly added
 ** @@
 *********************************************************************/
+
 AjBool ajXmlAddSquareResidueLinear(AjPXmlFile file, char residue, 
 				   float x, float y)
 { 
@@ -2011,6 +2049,7 @@ AjBool ajXmlAddSquareResidueLinear(AjPXmlFile file, char residue,
 ** @return [AjBool] ajTrue if correctly added
 ** @@
 *********************************************************************/
+
 AjBool ajXmlAddOctagonalResidueLinear(AjPXmlFile file, char residue, 
 				      float x, float y)
 {
@@ -2065,6 +2104,7 @@ AjBool ajXmlAddOctagonalResidueLinear(AjPXmlFile file, char residue,
 ** @return [AjBool] ajTrue if correctly added
 ** @@
 *********************************************************************/
+
 AjBool ajXmlAddDiamondResidueLinear(AjPXmlFile file, char residue, 
 				    float x, float y)
 {    
@@ -2111,6 +2151,7 @@ AjBool ajXmlAddDiamondResidueLinear(AjPXmlFile file, char residue,
 ** @return [AjBool] ajTrue if correctly added
 ** @@
 *********************************************************************/
+
 AjBool ajXmlAddNakedResidueLinear(AjPXmlFile file, char residue, 
 				  float x, float y)
 {    
@@ -2140,6 +2181,7 @@ AjBool ajXmlAddNakedResidueLinear(AjPXmlFile file, char residue,
 ** @return [AjBool] ajTrue if correctly added
 ** @@
 *********************************************************************/
+
 AjBool ajXmlAddSquareResidue(AjPXmlFile file, char residue, 
 			     double radius, double angle)
 { 
@@ -2195,6 +2237,7 @@ AjBool ajXmlAddSquareResidue(AjPXmlFile file, char residue,
 ** @return [AjBool] ajTrue if correctly added
 ** @@
 *********************************************************************/
+
 AjBool ajXmlAddOctagonalResidue(AjPXmlFile file, char residue, 
 				double radius, double angle)
 {
@@ -2258,6 +2301,7 @@ AjBool ajXmlAddOctagonalResidue(AjPXmlFile file, char residue,
 ** @return [AjBool] ajTrue if correctly added
 ** @@
 *********************************************************************/
+
 AjBool ajXmlAddDiamondResidue(AjPXmlFile file, char residue, 
 			      double radius, double angle)
 {    
@@ -2313,6 +2357,7 @@ AjBool ajXmlAddDiamondResidue(AjPXmlFile file, char residue,
 ** @return [AjBool] ajTrue if correctly added
 ** @@
 *********************************************************************/
+
 AjBool ajXmlAddNakedResidue(AjPXmlFile file, char residue, 
 			    double radius, double angle)
 {    
@@ -2349,6 +2394,7 @@ AjBool ajXmlAddNakedResidue(AjPXmlFile file, char residue,
 **                 height and length.
 ** @@
 *********************************************************************/
+
 float ajXmlFitTextOnLine(float x1, float y1, float x2, float y2, 
 			 AjPStr text)
 {
@@ -2361,6 +2407,8 @@ float ajXmlFitTextOnLine(float x1, float y1, float x2, float y2,
     
     return (lineLength / textLength) * ONE_METER_FONT;
 }
+
+
 
 
 /* AJB  Hugh, this function doesn't return anything anywhere! */
@@ -2377,6 +2425,7 @@ float ajXmlFitTextOnLine(float x1, float y1, float x2, float y2,
 ** @return [void]
 ** @@
 *********************************************************************/
+
 void ajXmlGetColour(AjPXmlFile file, double r, double g, double b)
 {
     r = file->colour[0];
@@ -2401,6 +2450,7 @@ void ajXmlGetColour(AjPXmlFile file, double r, double g, double b)
 ** @return [void]
 ** @@
 *********************************************************************/
+
 void ajXmlSetColour(AjPXmlFile file, double r, double g, double b)
 {
     /* should I make a private function do this? Hardly worth it,*/
@@ -2441,6 +2491,7 @@ void ajXmlSetColour(AjPXmlFile file, double r, double g, double b)
 ** @return [void]
 ** @@
 *********************************************************************/
+
 void ajXmlSetColourFromCode(AjPXmlFile file, ajint colour)
 {
     switch (colour)
@@ -2510,6 +2561,7 @@ void ajXmlSetColourFromCode(AjPXmlFile file, ajint colour)
 ** @return [AjPXmlFile] a colection of pointers to the file created
 ** @@
 *********************************************************************/
+
 AjPXmlFile ajXmlCreateNewOutputFile()
 {
     return xml_CreateNewOutputFile();
@@ -2528,6 +2580,7 @@ AjPXmlFile ajXmlCreateNewOutputFile()
 ** @return [void]
 ** @@
 *********************************************************************/
+
 void ajXmlAddGraphic(AjPXmlFile file, AjPStr type)
 {
     ajXmlAddGraphicC(file, ajStrStr(type));
@@ -2548,6 +2601,7 @@ void ajXmlAddGraphic(AjPXmlFile file, AjPStr type)
 ** @return [void]
 ** @@
 *********************************************************************/
+
 void ajXmlAddGraphicC(AjPXmlFile file, char *type)
 {
     AjPXmlNode el = NULL;
@@ -2619,6 +2673,7 @@ void ajXmlAddGraphicC(AjPXmlFile file, char *type)
 ** @return [void]
 ** @@
 *********************************************************************/
+
 void ajXmlAddArc(AjPXmlFile file, double xCentre, double yCentre, 
 		 double startAngle, double endAngle, double radius)
 {
@@ -2661,6 +2716,7 @@ void ajXmlAddArc(AjPXmlFile file, double xCentre, double yCentre,
 ** @return [void]
 ** @@
 ******************************************************************************/
+
 void ajXmlAddCircleF(AjPXmlFile file, float xCentre, float yCentre, 
 		     float radius)
 {
@@ -2687,6 +2743,7 @@ void ajXmlAddCircleF(AjPXmlFile file, float xCentre, float yCentre,
 ** @return [void]
 ** @@
 *********************************************************************/
+
 void ajXmlAddCircle(AjPXmlFile file, double xCentre, double yCentre, 
 		    double radius)
 {
@@ -2749,9 +2806,11 @@ void ajXmlAddCircle(AjPXmlFile file, double xCentre, double yCentre,
 ** @return [void]
 ** @@
 *********************************************************************/
+
 void ajXmlAddGroutOption(AjPXmlFile file, AjPStr name, AjPStr value)
 {
     ajXmlAddGroutOptionC(file, ajStrStr(name), ajStrStr(value));
+
     return;
 }
 
@@ -2769,9 +2828,10 @@ void ajXmlAddGroutOption(AjPXmlFile file, AjPStr name, AjPStr value)
 ** @return [void]
 ** @@
 *********************************************************************/
+
 void ajXmlAddGroutOptionC(AjPXmlFile file, char *name, char *value)
 {
-    AjPXmlNode headNode = NULL;
+    AjPXmlNode headNode  = NULL;
     AjPXmlNode otherNode = NULL;
     GdomeException exc;
     int i;
@@ -2824,6 +2884,7 @@ void ajXmlAddGroutOptionC(AjPXmlFile file, char *name, char *value)
 ** @return [void]
 ** @@
 *********************************************************************/
+
 static void xml_AddCylinder(AjPXmlFile file, double xCentre, double yCentre, 
 			    double angle, double height, double width)
 {
@@ -2886,6 +2947,7 @@ static void xml_AddCylinder(AjPXmlFile file, double xCentre, double yCentre,
 ** @return [AjPStr] "TRUE" or "FALSE" depending on the AjBool
 ** @@
 *********************************************************************/
+
 static AjPStr xml_StrFromBool(AjBool boole)
 {
     AjPStr text = NULL;
@@ -2912,12 +2974,13 @@ static AjPStr xml_StrFromBool(AjBool boole)
 ** @return [AjBool] ajTrue if the string was correctly assigned
 ** @@
 *********************************************************************/
+
 static AjBool xml_StrFromDouble(AjPStr *result, double val)
 {
-    AjPStr whole=NULL;
-    AjPStr signStr=NULL;
-    AjPStr mantisa=NULL;
-    AjPStr exponent=NULL;
+    AjPStr whole    = NULL;
+    AjPStr signStr  = NULL;
+    AjPStr mantisa  = NULL;
+    AjPStr exponent = NULL;
     int sign;
     int i;
     int exponentInt;
@@ -2969,6 +3032,7 @@ static AjBool xml_StrFromDouble(AjPStr *result, double val)
 ** circle
 ** @@
 *********************************************************************/
+
 static AjBool xml_AngleIsInSecondHalfOfCircle(double angle)
 {
     int halfCount;
@@ -3002,6 +3066,7 @@ static AjBool xml_AngleIsInSecondHalfOfCircle(double angle)
 ** @return [AjBool] True if graphic type is name
 ** @@
 *********************************************************************/
+
 static AjBool xml_PresentGraphicTypeIs(AjPXmlFile file, AjPStr name)
 {
     AjBool returnValue    = ajFalse;
@@ -3022,6 +3087,7 @@ static AjBool xml_PresentGraphicTypeIs(AjPXmlFile file, AjPStr name)
 
 
 
+
 /* @funcstatic xml_PresentGraphicTypeIsC ****************************
 **
 ** Local Method
@@ -3033,6 +3099,7 @@ static AjBool xml_PresentGraphicTypeIs(AjPXmlFile file, AjPStr name)
 ** @return [AjBool] True if graphic type is name
 ** @@
 *********************************************************************/
+
 static AjBool xml_PresentGraphicTypeIsC(AjPXmlFile file, char *name)
 {
     AjBool returnValue    = ajFalse;
@@ -3065,11 +3132,14 @@ static AjBool xml_PresentGraphicTypeIsC(AjPXmlFile file, char *name)
 ** @return [AjPStr] value of attribute
 ** @@
 *********************************************************************/
+
 static AjPStr xml_GetAttributeC(AjPXmlNode node, char *atName)
 {
     GdomeDOMString *attributeValue;
     GdomeException exc;
+
     AjPStr temp = NULL;
+
     GdomeDOMString *nodeName = NULL;
     
     nodeName = gdome_str_mkref_dup(atName);
@@ -3097,6 +3167,7 @@ static AjPStr xml_GetAttributeC(AjPXmlNode node, char *atName)
 ** @return [AjPStr] value of attribute
 ** @@
 *********************************************************************/
+
 static AjPStr xml_GetAttribute(AjPXmlNode node, AjPStr atName)
 {
 
@@ -3117,10 +3188,11 @@ static AjPStr xml_GetAttribute(AjPXmlNode node, AjPStr atName)
 **
 ** @@
 *********************************************************************/
+
 static void xml_SetAttributeC(AjPXmlNode node, char *atName, char *atValue)
 {
     GdomeException exc;
-    GdomeDOMString *nodeName = NULL;
+    GdomeDOMString *nodeName  = NULL;
     GdomeDOMString *nodeName2 = NULL;
     
     nodeName = gdome_str_mkref_dup(atName);
@@ -3147,6 +3219,7 @@ static void xml_SetAttributeC(AjPXmlNode node, char *atName, char *atValue)
 **
 ** @@
 *********************************************************************/
+
 static void xml_SetAttribute(AjPXmlNode node, AjPStr atName, AjPStr atValue)
 {
     xml_SetAttributeC(node, ajStrStr(atName), ajStrStr(atValue));
@@ -3167,16 +3240,18 @@ static void xml_SetAttribute(AjPXmlNode node, AjPStr atName, AjPStr atValue)
 ** @return [AjPStr] value of index's
 ** @@
 *********************************************************************/
+
 static AjPStr xml_GetIndex(AjPXmlNode passedNode)
 {
     GdomeException exc;
     GdomeDOMString *nodeName = NULL;
     AjBool proto;
-    AjPStr ajAttributeValue = NULL;
-    AjPXmlNode tempNode = NULL;
-    AjPXmlNode returnNode = NULL;
-    AjPXmlNode node = NULL;
-    AjPStr temp = NULL;
+    AjPStr ajAttributeValue  = NULL;
+    AjPXmlNode tempNode      = NULL;
+    AjPXmlNode returnNode    = NULL;
+    AjPXmlNode node          = NULL;
+    AjPStr temp              = NULL;
+
     GdomeNodeList *listShapes = NULL;
     int i;
     ajint limit;
@@ -3293,15 +3368,16 @@ static AjPStr xml_GetIndex(AjPXmlNode passedNode)
 ** @return [void]
 ** @@
 *********************************************************************/
+
 static void xml_SetIndex(AjPXmlNode passedNode, AjPStr index)
 {
     GdomeException exc;
-    GdomeDOMString *nodeName = NULL;
+    GdomeDOMString *nodeName  = NULL;
     AjBool proto;
-    AjPStr ajAttributeValue = NULL;
-    AjPXmlNode tempNode = NULL;
-    AjPXmlNode returnNode = NULL;
-    AjPXmlNode node = NULL;
+    AjPStr ajAttributeValue   = NULL;
+    AjPXmlNode tempNode       = NULL;
+    AjPXmlNode returnNode     = NULL;
+    AjPXmlNode node           = NULL;
     GdomeNodeList *listShapes = NULL;
     int i;
     ajint limit;
@@ -3417,14 +3493,14 @@ static AjPStr xml_GetPoints(AjPXmlNode passedNode)
     GdomeException exc;
     AjPStr temp = NULL;
     GdomeNodeList *listCoordinate = NULL;
-    GdomeNodeList *listShapes = NULL;
-    AjPXmlNode coordinateNode = NULL;
+    GdomeNodeList *listShapes     = NULL;
+    AjPXmlNode coordinateNode     = NULL;
     int i;
     GdomeDOMString *nodeName = NULL;
     AjBool proto;
-    AjPStr ajAttributeValue = NULL;
-    AjPXmlNode tempNode = NULL;
-    AjPXmlNode node = NULL;
+    AjPStr ajAttributeValue  = NULL;
+    AjPXmlNode tempNode      = NULL;
+    AjPXmlNode node          = NULL;
     ajint limit;
     
     proto = ajFalse;
@@ -3558,17 +3634,17 @@ static AjBool xml_SetPoints(AjPXmlNode passedNode, AjPStr points)
 {
     GdomeException exc;
     GdomeNodeList *listCoordinate = NULL;
-    AjPXmlNode coordinateNode = NULL;
+    AjPXmlNode coordinateNode     = NULL;
     int i;
-    GdomeDOMString *nodeName2 = NULL;
-    GdomeDOMString *nodeName = NULL;
+    GdomeDOMString *nodeName2     = NULL;
+    GdomeDOMString *nodeName      = NULL;
     
-    GdomeNodeList *listShapes = NULL;
+    GdomeNodeList *listShapes     = NULL;
     AjBool proto;
     AjPStr ajAttributeValue = NULL;
-    AjPXmlNode tempNode = NULL;
-    AjPXmlNode returnNode = NULL;
-    AjPXmlNode node = NULL;
+    AjPXmlNode tempNode     = NULL;
+    AjPXmlNode returnNode   = NULL;
+    AjPXmlNode node         = NULL;
     ajint limit;
     
     proto = ajFalse;
@@ -3694,6 +3770,7 @@ static AjBool xml_SetPoints(AjPXmlNode passedNode, AjPStr points)
 ** @return [AjPXmlNode] new node
 ** @@
 *********************************************************************/
+
 static AjPXmlNode xml_MakeNewNode(AjPXmlFile file, AjPStr name, 
 				  AjPXmlNode parent)
 {
@@ -3715,13 +3792,14 @@ static AjPXmlNode xml_MakeNewNode(AjPXmlFile file, AjPStr name,
 ** @return [AjPXmlNode] new node
 ** @@
 *********************************************************************/
+
 static AjPXmlNode xml_MakeNewNodeC(AjPXmlFile file, char *name, 
 				  AjPXmlNode parent)
 {
     GdomeException exc;
-    GdomeNode *parentNode ; 
-    GdomeNode *elNode ; 
-    GdomeNode *anotherElNode ; 
+    GdomeNode *parentNode; 
+    GdomeNode *elNode; 
+    GdomeNode *anotherElNode; 
     AjPXmlNode el;
 
     GdomeDOMString *nodeName = NULL;
@@ -3755,8 +3833,8 @@ static AjPXmlNode xml_MakeNewNodeC(AjPXmlFile file, char *name,
 *********************************************************************/
 static  AjPStr xml_PresentColourAsString(AjPXmlFile file)
 {
-    AjPStr colour=NULL;
-    AjPStr temp=NULL;
+    AjPStr colour = NULL;
+    AjPStr temp   = NULL;
     int i;
 
     colour = ajStrNew();
@@ -3790,6 +3868,7 @@ static  AjPStr xml_PresentColourAsString(AjPXmlFile file)
 ** @return [AjBool] true if this file needs this type of proto Declaration
 ** @@
 *********************************************************************/
+
 static AjBool xml_FileNeedsProtoDeclareC(AjPXmlFile file, char *protoName)
 {
     GdomeException exc;
@@ -3852,6 +3931,7 @@ static AjBool xml_FileNeedsProtoDeclareC(AjPXmlFile file, char *protoName)
 ** @return [AjBool] true if this file needs this type of proto Declaration
 ** @@
 *********************************************************************/
+
 static AjBool xml_FileNeedsProtoDeclare(AjPXmlFile file, AjPStr protoName)
 {
 
@@ -3872,18 +3952,20 @@ static AjBool xml_FileNeedsProtoDeclare(AjPXmlFile file, AjPStr protoName)
 ** @return [AjBool] true if this shape is current colour
 ** @@
 *********************************************************************/
+
 static AjBool xml_IsShapeThisColour(AjPXmlFile file, AjPXmlNode shape)
 {
     GdomeException exc;
     GdomeNodeList *listAppearance = NULL;
-    GdomeNodeList *listMaterial = NULL;
+    GdomeNodeList *listMaterial   = NULL;
+    GdomeDOMString *nodeName      = NULL;
     AjPXmlNode elMaterial = NULL;
-    AjPXmlNode tempNode = NULL;
-    AjPStr colour = NULL;
-    AjPStr presentColour = NULL;
+    AjPXmlNode tempNode   = NULL;
+    AjPStr colour         = NULL;
+    AjPStr presentColour  = NULL;
     AjPStr attributeValue = NULL;
     AjBool returnValue = ajFalse;
-    GdomeDOMString *nodeName = NULL;
+
     ajint i;
     ajint limit;
  
@@ -3983,6 +4065,7 @@ static AjBool xml_IsShapeThisColour(AjPXmlFile file, AjPXmlNode shape)
 ** @return [AjPXmlNode] new node
 ** @@
 *********************************************************************/
+
 static AjPXmlNode xml_MakeNewShapeNodeC(AjPXmlFile file, 
 					AjPXmlNode parentNode, 
 					char *nameReqd)
@@ -3991,7 +4074,7 @@ static AjPXmlNode xml_MakeNewShapeNodeC(AjPXmlFile file,
     AjPXmlNode shape;
     AjPXmlNode Appearance;
     AjPXmlNode Material;
-    AjPStr     colour=NULL;
+    AjPStr     colour = NULL;
 
     shape = xml_MakeNewNodeC(file, "Shape", parentNode); 
 
@@ -4026,6 +4109,7 @@ static AjPXmlNode xml_MakeNewShapeNodeC(AjPXmlFile file,
 ** @return [AjPXmlNode] new node
 ** @@
 *********************************************************************/
+
 static AjPXmlNode xml_MakeNewShapeNode(AjPXmlFile file, 
 				       AjPXmlNode parentNode, 
 				       AjPStr nameReqd)
@@ -4051,6 +4135,7 @@ static AjPXmlNode xml_MakeNewShapeNode(AjPXmlFile file,
 ** @return [void]
 ** @@
 *********************************************************************/
+
 static void xml_AddArc(AjPXmlFile file, double xCentre, double yCentre, 
 		       double startAngle, double endAngle, double radius)
 {
@@ -4072,9 +4157,9 @@ static void xml_AddArc(AjPXmlFile file, double xCentre, double yCentre,
     double centreToChordCentre;
     double chordCentreToMiddle;
 
-    AjPStr temp = NULL;
+    AjPStr temp          = NULL;
     AjPStr controlPoints = NULL;
-    AjPStr weights = NULL;
+    AjPStr weights       = NULL;
     AjPXmlNode nurbsNode;
 
     temp = ajStrNew();
@@ -4144,17 +4229,17 @@ static void xml_AddArc(AjPXmlFile file, double xCentre, double yCentre,
 static AjPXmlNode xml_GetNodeTypeMakeIfNot(AjPXmlFile file, AjPStr nameReqd)
 {
     GdomeException exc;
-    AjPXmlNode returnNode = NULL;
+    AjPXmlNode returnNode  = NULL;
     AjPXmlNode returnNode2 = NULL;
     AjPXmlNode coordinateNode;
     AjPXmlNode tempNode;
-    AjPXmlNode shapeNodeParent = NULL;
-    GdomeNodeList *listShapes = NULL;
-    GdomeNodeList *listGeometrys = NULL;
+    AjPXmlNode shapeNodeParent       = NULL;
+    GdomeNodeList *listShapes        = NULL;
+    GdomeNodeList *listGeometrys     = NULL;
     GdomeNodeList *listIndexLineSets = NULL;
     int i;
     int j;
-    AjPStr attributeValue = NULL;
+    AjPStr attributeValue    = NULL;
     GdomeDOMString *nodeName = NULL;
     AjBool hasCoord;
     AjBool hasCoordIndex;
@@ -4403,6 +4488,8 @@ static AjPXmlNode xml_GetNodeTypeMakeIfNot(AjPXmlFile file, AjPStr nameReqd)
 }
 
 
+
+
 /* @funcstatic xml_GetNodeTypeMakeIfNotC *****************************
 **
 ** Local Method
@@ -4414,6 +4501,7 @@ static AjPXmlNode xml_GetNodeTypeMakeIfNot(AjPXmlFile file, AjPStr nameReqd)
 ** @return [AjPXmlNode] found or new node
 ** @@
 *********************************************************************/
+
 static AjPXmlNode xml_GetNodeTypeMakeIfNotC(AjPXmlFile file, char *nameReqd)
 {
     AjPStr str     = NULL;
@@ -4441,6 +4529,7 @@ static AjPXmlNode xml_GetNodeTypeMakeIfNotC(AjPXmlFile file, char *nameReqd)
 ** @param [r] index [AjPStr*] string to add index to
 **
 *********************************************************************/
+
 static void xml_AddACoord(double x, double y, AjBool joined, AjPStr* coord, 
 			  AjPStr* index)
 {
@@ -4497,12 +4586,13 @@ static void xml_AddACoord(double x, double y, AjBool joined, AjPStr* coord,
 ** not an int
 ** @@
 *********************************************************************/
+
 static int xml_GetLastInt(AjPStr str)
 {
     int count;
     int i;
     int value;
-    AjPStr token=NULL;
+    AjPStr token = NULL;
 
     count = ajStrTokenCount(&str, " ");
     token = ajStrTok(str);
@@ -4543,7 +4633,7 @@ static double xml_GetLastDouble(AjPStr str)
     int count;
     int i;
     double value;
-    AjPStr token=NULL;
+    AjPStr token = NULL;
 
     count = ajStrTokenCount(&str, " ");
     token = ajStrTok(str);
@@ -4576,12 +4666,13 @@ static double xml_GetLastDouble(AjPStr str)
 ** @return [double] the index number double of a string, 
 ** @@
 *********************************************************************/
+
 static double xml_GetDoubleNo(AjPStr str, int index)
 {
     int count;
     int i;
     double value;
-    AjPStr token=NULL;
+    AjPStr token = NULL;
 
     count = ajStrTokenCount(&str, " ");
     token = ajStrTok(str);
@@ -4617,6 +4708,7 @@ static double xml_GetDoubleNo(AjPStr str, int index)
 ** @return [AjPXmlFile] a colection of pointers to the file created
 ** @@
 *********************************************************************/
+
 static AjPXmlFile xml_CreateNewOutputFile()
 {
     GdomeException exc;
@@ -4683,6 +4775,7 @@ static AjPXmlFile xml_CreateNewOutputFile()
 ** @return [void]
 ** @@
 *********************************************************************/
+
 static void xml_AddGraphProto(AjPXmlFile file)
 {
     AjPXmlNode protoNode;
@@ -4828,6 +4921,7 @@ static void xml_AddGraphProto(AjPXmlFile file)
 ** @return [void]
 ** @@
 *********************************************************************/
+
 static void xml_AddDNAPlotProto(AjPXmlFile file)
 {
     AjPXmlNode protoNode;
@@ -4882,6 +4976,7 @@ static void xml_AddDNAPlotProto(AjPXmlFile file)
 ** @return [void]
 ** @@
 *********************************************************************/
+
 static void xml_AddCommonBit(AjPXmlFile file)
 {
     /* remove this */
@@ -4943,6 +5038,7 @@ static void xml_AddCommonBit(AjPXmlFile file)
 ** @return [AjBool] ajTrue if file written correctly
 ** @@
 *********************************************************************/
+
 static AjBool xml_WriteFile(AjPXmlFile file, AjPStr filename)
 {
     GdomeException exc;
@@ -4971,6 +5067,7 @@ static AjBool xml_WriteFile(AjPXmlFile file, AjPStr filename)
 ** @return [AjBool] ajTrue if file writen correctly
 ** @@
 *********************************************************************/
+
 static AjBool xml_WriteStdout(AjPXmlFile file)
 {
     GdomeException exc;
@@ -5007,6 +5104,7 @@ static AjBool xml_WriteStdout(AjPXmlFile file)
 ** @return [AjPXmlNode] current Graphic
 ** @@
 *********************************************************************/
+
 static AjPXmlNode xml_GetCurrentGraphic(AjPXmlFile file)
 {
     return file->currentGraphic;
@@ -5025,6 +5123,7 @@ static AjPXmlNode xml_GetCurrentGraphic(AjPXmlFile file)
 ** @return [AjPXmlNode] current scene
 ** @@
 *********************************************************************/
+
 static AjPXmlNode xml_GetCurrentScene(AjPXmlFile file)
 {
     return file->currentScene;
@@ -5044,6 +5143,7 @@ static AjPXmlNode xml_GetCurrentScene(AjPXmlFile file)
 ** @return [void]
 ** @@
 *********************************************************************/
+
 static void xml_SetCurrentGraphic(AjPXmlFile file, AjPXmlNode node)
 {
 
@@ -5071,6 +5171,7 @@ static void xml_SetCurrentGraphic(AjPXmlFile file, AjPXmlNode node)
 ** @return [void]
 ** @@
 *********************************************************************/
+
 static void xml_SetCurrentScene(AjPXmlFile file, AjPXmlNode node)
 {
     /* why does this cause proplems, but above does not? */
@@ -5101,6 +5202,7 @@ static void xml_SetCurrentScene(AjPXmlFile file, AjPXmlNode node)
 ** @return [AjPXmlNode] new node
 ** @@
 *********************************************************************/
+
 static AjPXmlNode xml_SetNode(GdomeNode *node)
 {
     AjPXmlNode retNode = ajXmlNodeNew();
@@ -5123,6 +5225,7 @@ static AjPXmlNode xml_SetNode(GdomeNode *node)
 ** @return [GdomeNode*] new node
 ** @@
 ********************************************************************/
+
 static GdomeNode* xml_GetNode(AjPXmlNode node)
 {
     return node->theNode;
@@ -5141,6 +5244,7 @@ static GdomeNode* xml_GetNode(AjPXmlNode node)
 ** @return [GdomeElement*] the node
 ** @@
 *********************************************************************/
+
 static GdomeElement* xml_GetNodeElement(AjPXmlNode node)
 {
     return (GdomeElement *) node->theNode;
@@ -5159,6 +5263,7 @@ static GdomeElement* xml_GetNodeElement(AjPXmlNode node)
 ** @return [AjPXmlNode] the node
 ** @@
 *********************************************************************/
+
 static AjPXmlNode xml_GetParent(AjPXmlNode node)
 {
     GdomeException exc; 
@@ -5182,6 +5287,7 @@ static AjPXmlNode xml_GetParent(AjPXmlNode node)
 ** @return [void]
 ** @@
 *********************************************************************/
+
 static void xml_ClearFile(AjPXmlFile file)
 {
     GdomeException exc;
@@ -5217,6 +5323,7 @@ static void xml_ClearFile(AjPXmlFile file)
 ** @return [void]
 ** @@
 *********************************************************************/
+
 static void xml_UnrefNode(AjPXmlNode node)
 {
     GdomeException exc;
@@ -5228,6 +5335,8 @@ static void xml_UnrefNode(AjPXmlNode node)
 }
 
 
+
+
 /* @func  xml_Unused ***********************************************
 **
 ** Catch functions that are defined but never used to stop compile warnings
@@ -5235,9 +5344,10 @@ static void xml_UnrefNode(AjPXmlNode node)
 ** @return [void]
 ** @@
 *********************************************************************/
+
 void xml_Unused()
 {
-    AjPStr str = NULL;
+    AjPStr str      = NULL;
     double ret;
     AjPXmlFile file = NULL;
     AjPXmlNode node = NULL;
@@ -5256,6 +5366,7 @@ void xml_Unused()
 
 
 
+
 /* @funcstatic  xml_clear_nodeTypes ************************************
 **
 ** Clear primary table allocation for colourtable
@@ -5267,6 +5378,7 @@ void xml_Unused()
 ** @return [void]
 ** @@
 *********************************************************************/
+
 static void xml_clear_nodeTypes(const void *key, void **value, void *cl)
 {
     AjPTable table = (AjPTable) *value;
@@ -5294,17 +5406,19 @@ static void xml_clear_nodeTypes(const void *key, void **value, void *cl)
 ** @return [void]
 ** @@
 *********************************************************************/
+
 static void xml_deltablenode(const void *key, void **value, void *cl)
 {
-    AjPXmlNode node =(AjPXmlNode) *value;
-    AjPStr skey = (AjPStr) key;
+    AjPXmlNode node;
+    AjPStr skey;
+
+    node = (AjPXmlNode) *value;
+    skey = (AjPStr) key;
 
     ajStrDel(&skey);
     ajXmlNodeDel(&node);
 
     return;
 }
-
-
 
 #endif
