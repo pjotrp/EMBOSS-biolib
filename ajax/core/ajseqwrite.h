@@ -34,6 +34,7 @@ typedef struct AjSSeqout {
   AjPStr Desc;
   AjPStr Type;
   AjEnum EType;
+  AjPStr Outputtype;
   AjPStr Db;
   AjPStr Setdb;
   AjPStr Full;
@@ -68,7 +69,7 @@ typedef struct AjSSeqout {
 
 void         ajSeqAllWrite (AjPSeqout outseq, AjPSeq seq);
 AjBool       ajSeqFileNewOut (AjPSeqout seqout, AjPStr name);
-ajint          ajSeqoutCheckGcg (AjPSeqout outseq);
+ajint        ajSeqoutCheckGcg (AjPSeqout outseq);
 void         ajSeqoutClear (AjPSeqout thys);
 void         ajSeqoutDel (AjPSeqout* thys);
 AjBool       ajSeqOutFormatDefault (AjPStr* pformat);

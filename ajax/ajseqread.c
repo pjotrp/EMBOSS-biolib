@@ -1158,7 +1158,7 @@ static ajint seqReadFmt (AjPSeq thys, AjPSeqin seqin,
 		}
 	    }
 
-	    if (ajSeqTypeCheck(thys, seqin))
+	    if (ajSeqTypeCheckIn(thys, seqin))
 	    {
 		ajSeqinTrace (seqin);
 		if(seqin->Upper)

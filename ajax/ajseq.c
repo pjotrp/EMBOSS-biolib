@@ -780,7 +780,7 @@ AjBool ajSeqsetIsNuc (AjPSeqset thys)
 	return ajTrue;
 
     seq = thys->Seq[0];
-    if (!ajSeqTypeGapnuc(seq))
+    if (!ajSeqTypeGapnucS(&seq->Seq))
 	return ajTrue;
 
     return ajFalse;
@@ -800,7 +800,7 @@ AjBool ajSeqsetIsRna (AjPSeqset thys)
     AjPSeq seq;
 
     seq = thys->Seq[0];
-    if (!ajSeqTypeGaprna(seq))
+    if (!ajSeqTypeGaprnaS(&seq->Seq))
 	return ajTrue;
 
     return ajFalse;
@@ -821,7 +821,7 @@ AjBool ajSeqsetIsDna (AjPSeqset thys)
     AjPSeq seq;
 
     seq = thys->Seq[0];
-    if (!ajSeqTypeGapdna(seq))
+    if (!ajSeqTypeGapdnaS(&seq->Seq))
 	return ajTrue;
 
     return ajFalse;
@@ -848,7 +848,7 @@ AjBool ajSeqsetIsProt (AjPSeqset thys)
 	return ajFalse;
 
     seq = thys->Seq[0];
-    if (!ajSeqTypeAnyprot(seq))
+    if (!ajSeqTypeAnyprotS(&seq->Seq))
 	return ajTrue;
 
     return ajFalse;
@@ -2510,7 +2510,7 @@ AjBool ajSeqIsNuc (AjPSeq thys)
     if (ajStrMatchC(thys->Type, "P"))
 	return ajFalse;
 
-    if (!ajSeqTypeGapnuc(thys))		/* returns char 0 on success */
+    if (!ajSeqTypeGapnucS(&thys->Seq)) /* returns char 0 on success */
 	return ajTrue;
 
     ajDebug ("ajSeqIsNuc failed\n", thys->Type);
@@ -2537,7 +2537,7 @@ AjBool ajSeqIsProt (AjPSeq thys)
     if (ajStrMatchC(thys->Type, "N"))
 	return ajFalse;
 
-    if (!ajSeqTypeAnyprot(thys))	/* returns char 0 on success */
+    if (!ajSeqTypeAnyprotS(&thys->Seq))	/* returns char 0 on success */
 	return ajTrue;
 
     ajDebug ("ajSeqIsProt failed\n", thys->Type);
@@ -3615,6 +3615,7 @@ AjPSeqout ajSeqoutNew (void)
     pthis->Desc = ajStrNew();
     pthis->Type = ajStrNew();
     pthis->EType = 0;
+    pthis->Outputtype = ajStrNew();
     pthis->Db = ajStrNew();
     pthis->Setdb = ajStrNew();
     pthis->Full = ajStrNew();
@@ -3689,6 +3690,7 @@ void ajSeqoutDel (AjPSeqout* pthis)
     ajStrDel (&thys->Tax);
     ajStrDel (&thys->Desc);
     ajStrDel (&thys->Type);
+    ajStrDel (&thys->Outputtype);
     ajStrDel (&thys->Db);
     ajStrDel (&thys->Setdb);
     ajStrDel (&thys->Full);

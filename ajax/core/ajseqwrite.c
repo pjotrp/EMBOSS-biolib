@@ -3441,6 +3441,8 @@ static void seqClone (AjPSeqout outseq, AjPSeq seq) {
   ajDebug ("  Db: '%S' Name: '%S' Entryname: '%S'\n",
 	   outseq->Db, outseq->Name, outseq->Entryname);
 
+  ajSeqTypeCheckS(&outseq->Seq, outseq->Outputtype);
+
   return;
 }
 
@@ -3498,6 +3500,8 @@ static void seqAllClone (AjPSeqout outseq, AjPSeq seq) {
 	   ajStrLen(outseq->Seq), outseq->Type);
   ajDebug ("  Db: '%S' Name: '%S' Entryname: '%S'\n",
 	   outseq->Db, outseq->Name, outseq->Entryname);
+
+  ajSeqTypeCheckS(&outseq->Seq, outseq->Outputtype);
 
    return;
 }
@@ -3640,6 +3644,7 @@ void ajSeqoutClear (AjPSeqout thys) {
   (void) ajStrClear(&thys->Tax);
   (void) ajStrClear(&thys->Desc);
   (void) ajStrClear(&thys->Type);
+  (void) ajStrClear(&thys->Outputtype);
   (void) ajStrClear(&thys->Full);
   (void) ajStrClear(&thys->Date);
   (void) ajStrClear(&thys->Doc);
@@ -3788,6 +3793,8 @@ void ajSeqoutTrace (AjPSeqout seq) {
   }
   if (ajStrLen(seq->Type))
     ajDebug ( "  Type: '%S'\n", seq->Type);
+  if (ajStrLen(seq->Outputtype))
+    ajDebug ( "  Output type: '%S'\n", seq->Outputtype);
   if (ajStrLen(seq->Db))
     ajDebug ( "  Database: '%S'\n", seq->Db);
   if (ajStrLen(seq->Full))
@@ -3870,8 +3877,7 @@ void ajSeqWriteXyz(AjPFile outf, AjPStr seq, char *prefix)
 
 
 
-/* @func ajSssWriteXyz
-********************************************************
+/* @func ajSssWriteXyz ********************************************************
 **
 ** Writes a sequence in SWISSPROT format w/o checksum or molecular weight -
 ** used for printing secondary structure strings.
