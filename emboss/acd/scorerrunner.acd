@@ -21,6 +21,7 @@ section: input
   [
     parameter: "Y"
     default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_substituted_sequences/gold/55_60"
+#    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_substituted_sequences/gold/60_65"
     information: "first directory containing paired traces"
     extension: "sbs"
   ]
@@ -28,8 +29,10 @@ section: input
   dirlist: testseqsdirlist
   [
     parameter: "Y"
-    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_substituted_sequences/needle/55_60"
-#    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_substituted_sequences/nawalign"
+#    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_substituted_sequences/needle/55_60"
+#    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_substituted_sequences/needle/60_65"
+    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_substituted_sequences/nawalign/55_60"
+#    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_substituted_sequences/nawalign/60_65"
     information: "second directory containing paired traces"
     extension: "sbs"
   ]
@@ -62,7 +65,7 @@ section: output
   outdir: scoresoutdir
   [
     parameter: "Y"
-    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_scoring_files/"
+    default: "/users/damian/EMBOSS/emboss/emboss/emboss/contacttest/test_scoring_files/22Nov04"
     information: "name of directory containing output scores"
     extension: "needle"
   ]
