@@ -1696,13 +1696,13 @@ static AjBool seqAccessGcg (AjPSeqin seqin)
 	{
 	    ajDebug ("entry id: '%S' acc: '%S'\n", qry->Id, qry->Acc);
 	    if (!seqCdQryEntry (qry))
-		ajErr ("GCG Entry failed");
+		ajDebug ("GCG Entry failed");
 	}
 	if (qry->Type == QRY_QUERY)
 	{
 	    ajDebug ("query id: '%S' acc: '%S'\n", qry->Id, qry->Acc);
 	    if (!seqCdQryQuery (qry))
-		ajErr ("GCG Query failed");
+		ajDebug ("GCG Query failed");
 	}
 	AJFREE(qryd->trgLine);
     }
