@@ -1855,7 +1855,7 @@ ID feat-genbank-toembl
 AP seqret
 CL -feat ../../data/feat.fasta -ufo ../../data/feat.gbft em::test.out -auto
 FI test.out
-FZ = 75351
+FZ = 78140
 ## Internal quotes
 FP /^FT                   ""amiE"" gene"\n/
 ## Bad features type (CODS) to misc_feature
@@ -3502,6 +3502,63 @@ CL -auto ../../data/dna.text -sf text test.out -osf embl
 FI test.out
 FP /^ID   .* 100 BP\.\n/
 FP /^SQ   Sequence 100 BP; 25 A; 25 C; 25 G; 25 T; 0 other;/
+//
+
+ID seqret-inauto-abi
+AP seqret
+CL -auto ../../data/abiview.abi test.out -osf embl
+FI test.out
+FZ = 1241
+FP /^ID   .* 838 BP\.\n/
+FP /^SQ   Sequence 838 BP; 274 A; 140 C; 182 G; 211 T; 31 other;/
+//
+
+ID seqret-inusa-abi
+AP seqret
+CL -auto abi::../../data/abiview.abi test.out -osf embl
+FI test.out
+FZ = 1241
+FP /^ID   .* 838 BP\.\n/
+FP /^SQ   Sequence 838 BP; 274 A; 140 C; 182 G; 211 T; 31 other;/
+//
+
+ID seqret-in-abi
+AP seqret
+CL -auto ../../data/abiview.abi -sf abi test.out -osf embl
+FI test.out
+FZ = 1241
+FP /^ID   .* 838 BP\.\n/
+FP /^SQ   Sequence 838 BP; 274 A; 140 C; 182 G; 211 T; 31 other;/
+//
+
+ID seqret-inauto-selex
+AP seqret
+CL -auto ../../data/test.selex test.out -osf embl
+FI test.out
+FZ = 532
+FP 3 /^ID/
+FP /^ID   lig28.* 31 BP\.\n/
+FP /^SQ   Sequence 31 BP; 7 A; 7 C; 8 G; 7 T; 2 other;/
+//
+
+ID seqret-inusa-selex
+AP seqret
+CL -auto selex::../../data/test.selex test.out -osf embl
+FI test.out
+FZ = 532
+FP 3 /^ID/
+FP /^ID   lig28.* 31 BP\.\n/
+FP /^SQ   Sequence 31 BP; 7 A; 7 C; 8 G; 7 T; 2 other;/
+//
+
+ID seqret-in-selex
+AP seqret
+CL -auto ../../data/test.selex -sf selex test.out -osf embl
+FI test.out
+FZ = 532
+FP 3 /^ID/
+FP /^ID   lig28.* 31 BP\.\n/
+FP /^SQ   Sequence 31 BP; 7 A; 7 C; 8 G; 7 T; 2 other;/
 //
 
 ID seqret-inmultiauto-acedb
