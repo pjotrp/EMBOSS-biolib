@@ -152,7 +152,14 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_seqsetType
 
 
 
-
+/* @funcstatic ajJavaGetSeqFromUsa ********************************************
+**
+** Undocumented
+**
+** @param [r] thys [AjPStr] Undocumented
+** @param [r] seq [AjPSeq*] Undocumented
+** @return [AjBool] ajTrue on success
+******************************************************************************/
 
 static AjBool ajJavaGetSeqFromUsa(AjPStr thys, AjPSeq *seq)
 {
@@ -176,6 +183,15 @@ static AjBool ajJavaGetSeqFromUsa(AjPStr thys, AjPSeq *seq)
 }
 
 
+
+/* @funcstatic ajJavaGetSeqsetFromUsa *****************************************
+**
+** Undocumented
+**
+** @param [r] thys [AjPStr] Undocumented
+** @param [r] seq [AjPSeqset*] Undocumented
+** @return [AjBool] ajTrue on success
+******************************************************************************/
 
 static AjBool ajJavaGetSeqsetFromUsa(AjPStr thys, AjPSeqset *seq)
 {
