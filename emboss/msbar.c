@@ -92,15 +92,15 @@ int main(int argc, char **argv)
 
     str = ajStrNew();
 
+    /* seed the random number generator */
+    (void) ajRandomSeed();
+
     while (ajSeqallNext(seqall, &seq))
     {
         ajSeqTrim(seq);
         
 	/* is this a protein or nucleic sequence? */
 	isnuc = ajSeqIsNuc(seq);
-
-	/* seed the random number generator */
-	(void) ajRandomSeed();
 
         /* try mutating until we have a result that is not the same as
 	   the 'other' sequences */
