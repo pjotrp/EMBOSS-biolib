@@ -749,6 +749,43 @@ AjPScop ajXyzScopNew(ajint chains)
 }
 
 
+/* @func ajXyzPdbtospNew ***********************************************************
+**
+** Pdbtosp object constructor. Fore-knowledge of the number of entries is 
+** required. This is normally called by the ajXyzPdbtospReadC / ajXyzPdbtospRead 
+** functions.
+**
+** @param [r] n [ajint] Number of entries
+**
+** @return [AjPPdbtosp] Pointer to a Pdbtosp object
+** @@
+******************************************************************************/
+AjPPdbtosp ajXyzPdbtospNew(ajint n)
+{
+
+    AjPPdbtosp ret = NULL;
+    ajint i;
+
+    AJNEW0(ret);
+
+    ret->Pdb         = ajStrNew();
+
+    if(n)
+    {
+	AJCNEW0(ret->Acc,n);
+	AJCNEW0(ret->Spr,n);
+	for(i=0; i<n; i++)
+	{
+	    ret->Acc[i]=ajStrNew();
+	    ret->Spr[i]=ajStrNew();
+	}
+    }
+
+    ret->n = n;
+
+    return ret;
+}
+
 
 
 /* @func ajXyzScopclaNew ***********************************************************
@@ -1521,6 +1558,47 @@ void ajXyzScopDel(AjPScop *thys)
 	AJFREE(pthis->Start);
 	AJFREE(pthis->End);
 	AJFREE(pthis->Chain);
+    }
+
+    AJFREE(pthis);
+    pthis=NULL;
+
+    return;
+}
+
+
+
+
+/* @func ajXyzPdbtospDel ***********************************************************
+**
+** Destructor for Pdbtosp object.
+**
+** @param [w] thys [AjPPdbtosp*] Pdbtosp object pointer
+**
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajXyzPdbtospDel(AjPPdbtosp *thys)
+{
+    AjPPdbtosp pthis = *thys;
+    
+    ajint i;
+
+    if(!pthis || !thys)
+	return;
+
+    ajStrDel(&pthis->Pdb);
+
+    if(pthis->n)
+    {
+	for(i=0; i<pthis->n; i++)
+	{
+	    ajStrDel(&pthis->Acc[i]);
+	    ajStrDel(&pthis->Spr[i]);
+	}
+	AJFREE(pthis->Acc);
+	AJFREE(pthis->Spr);
     }
 
     AJFREE(pthis);
@@ -5308,6 +5386,22 @@ void ajXyzScopWrite(AjPFile outf, AjPScop thys)
 }
 
 
+/* @func ajXyzPdbtospRead *********************************************************
+**
+** Read a Pdbtosp object from a file in embl-like format.
+**
+** @param [r] inf [AjPFile] Input file stream
+** @param [r] entry [AjPStr] Pdb id
+** @param [w] thys [AjPPdbtosp*] Pdbtosp object
+**
+** @return [AjBool] True on success
+** @@
+*****************************************************************************/
+
+AjBool ajXyzPdbtospRead(AjPFile inf, AjPStr entry, AjPPdbtosp *thys)
+{
+    return ajXyzPdbtospReadC(inf,ajStrStr(entry),thys);
+}
 
 
 
@@ -5612,6 +5706,74 @@ AjBool ajXyzScopclaReadC(AjPFile inf, char *entry, AjPScopcla *thys)
 }	
 
 
+/* @func ajXyzPdbtospReadC ******************************************************
+**
+** Read a Pdbtosp object from a file in embl-like format.
+**
+** @param [r] inf [AjPFile] Input file stream
+** @param [r] entry [char*] Pdb id
+** @param [w] thys [AjPPdbtosp*] Pdbtosp object
+**
+** @return [AjBool] True on success
+** @@
+******************************************************************************/
+AjBool ajXyzPdbtospReadC(AjPFile inf, char *entry, AjPPdbtosp *thys)
+{
+    static AjPStr line    =NULL;
+    static AjPStr tentry  =NULL;	
+    static AjPStr pdb     =NULL;	
+    AjBool ok             =ajFalse;
+    ajint  n              =0;
+    ajint  i              =0;
+    
+
+    /* Only initialise strings if this is called for the first time*/
+    if(!line)
+    {
+	line    = ajStrNew();
+	tentry  = ajStrNew();
+	pdb     = ajStrNew();
+    }
+
+
+    ajStrAssC(&tentry,entry);
+    ajStrToUpper(&tentry);
+    
+    while((ok=ajFileReadLine(inf,&line)))
+    {
+	if(!ajStrPrefixC(line,"EN   "))
+	    continue;
+	ajFmtScanS(line, "%*S %S", &pdb);
+	if(ajStrMatchWild(pdb,tentry))
+	    break;
+    }
+    if(!ok)
+	return ajFalse;
+
+    while(ok && !ajStrPrefixC(line,"//"))
+    {
+	if(ajStrPrefixC(line,"XX"))
+	{
+	    ok = ajFileReadLine(inf,&line);
+	    continue;
+	}
+	else if(ajStrPrefixC(line,"NE"))
+	{
+	    ajFmtScanS(line, "%*S %d", &n);
+	    (*thys) = ajXyzPdbtospNew(n);
+	    ajStrAssS(&(*thys)->Pdb, pdb);
+	}
+	else if(ajStrPrefixC(line,"IN"))
+	{
+	    ajFmtScanS(line, "%*S %S %*S %S", &(*thys)->Spr[i], &(*thys)->Acc[i]);
+	    i++;
+	}
+	
+	ok = ajFileReadLine(inf,&line);
+    }
+    
+    return ajTrue;
+}
 
 
 

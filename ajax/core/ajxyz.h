@@ -15,6 +15,31 @@ extern "C"
 
 
 
+/* @data AjPPdbtosp *******************************************************
+**
+** Ajax Pdbtosp object.
+**
+** Holds swissprot codes and accession numbers for a PDB code.
+**
+** AjPPdbtosp is implemented as a pointer to a C data structure.
+**
+** @alias AjSPdbtosp
+** @alias AjOPdbtosp
+**
+** @@
+******************************************************************************/
+typedef struct AjSPdbtosp
+{   	
+    AjPStr     Pdb;    /* PDB code*/
+    ajint      n;      /* No. entries for this pdb code */
+    AjPStr    *Acc;    /* Accession numbers */
+    AjPStr    *Spr;    /* Swissprot codes */
+} AjOPdbtosp, *AjPPdbtosp;
+
+
+
+
+
 /* @data AjPScorealg *******************************************************
 **
 ** Ajax Scorealg object.
@@ -725,6 +750,10 @@ typedef struct AjSDichet
 
 
 
+AjPPdbtosp ajXyzPdbtospNew(ajint n);
+void ajXyzPdbtospDel(AjPPdbtosp *thys);
+AjBool ajXyzPdbtospRead(AjPFile inf, AjPStr entry, AjPPdbtosp *thys);
+AjBool ajXyzPdbtospReadC(AjPFile inf, char *entry, AjPPdbtosp *thys);
 
 
 AjPAtom       ajXyzAtomNew(void);
