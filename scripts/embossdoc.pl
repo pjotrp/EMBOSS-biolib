@@ -90,7 +90,7 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
       $isprog = 0;
       if ($token eq "prog") {$isprog = 1}
       $OFILE = HTML;
-      if ($sect NE $lastfsect) {
+      if ($sect ne $lastfsect) {
         print $OFILE "<hr><h2><a name=\"$sect\">\n";
         print $OFILE "$sect</a></h2>\n";
         print $OFILE "$srest\n";
@@ -157,7 +157,7 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
       $ismacro = 0;
       $isprog = 0;
       $OFILE = HTMLB;
-      if ($sect NE $laststatfsect) {
+      if ($sect ne $laststatfsect) {
         print $OFILE "<hr><h2><a name=\"$sect\">\n";
         print $OFILE "$sect</a></h2>\n";
         print $OFILE "$srest\n";
@@ -222,7 +222,7 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
     if ($token eq "macro")  {
       $ismacro = 1;
       $OFILE = HTML;
-      if ($sect NE $lastfsect) {
+      if ($sect ne $lastfsect) {
         print $OFILE "<hr><h2><a name=\"$sect\">\n";
         print $OFILE "$sect</a></h2>\n";
         print $OFILE "$srest\n";
@@ -269,7 +269,7 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
       $isprog = 0;
       $islist = 1;
       $OFILE = HTMLB;
-      if ($sect NE $laststatfsect) {
+      if ($sect ne $laststatfsect) {
         print $OFILE "<hr><h2><a name=\"$sect\">\n";
         print $OFILE "$sect</a></h2>\n";
         print $OFILE "$srest\n";
