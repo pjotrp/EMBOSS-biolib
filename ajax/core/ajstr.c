@@ -3327,7 +3327,6 @@ AjBool ajStrUncommentStart(AjPStr* text)
 
 AjBool ajStrParentheses(const AjPStr s)
 {
-    AjBool ret      = ajFalse;
     ajint left = 0;
     char *p;
     
@@ -5187,6 +5186,40 @@ AjBool ajStrIsDouble(const AjPStr thys)
 
     if(*ptr || errno == ERANGE)
 	return ajFalse;
+
+    return ajTrue;
+}
+
+
+
+
+/* @func ajStrIsWhite ********************************************************
+**
+** Simple test for a string having only whitespace,
+** using the strtod call in the C RTL.
+**
+** @param [rE] thys [const AjPStr] String
+** @return [AjBool] ajTrue if the string is only white space (or empty).
+** @@
+******************************************************************************/
+
+AjBool ajStrIsWhite(const AjPStr thys)
+{
+    char* cp;
+
+    cp = ajStrStr(thys);
+
+    if(!thys)
+	return ajFalse;
+
+    if(!thys->Len)
+	return ajTrue;
+
+    while (*cp)
+    {
+	if (!isspace(*cp)) return ajFalse;
+	cp++;
+    }
 
     return ajTrue;
 }

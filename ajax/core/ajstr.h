@@ -361,6 +361,7 @@ AjBool     ajStrIsLower (const AjPStr thys);
 AjBool     ajStrIsSpace (const AjPStr thys);
 AjBool     ajStrIsUpper (const AjPStr thys);
 AjBool     ajStrIsWild (const AjPStr thys);
+AjBool     ajStrIsWhite (const AjPStr thys);
 AjBool     ajStrIsWord (const AjPStr thys);
 AjIStr     ajStrIter (const AjPStr thys);
 AjIStr     ajStrIterBack (const AjPStr thys);
