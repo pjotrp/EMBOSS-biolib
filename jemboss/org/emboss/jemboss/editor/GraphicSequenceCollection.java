@@ -43,41 +43,41 @@ public class GraphicSequenceCollection extends JPanel
   private Vector removedSeqs = 
                      new Vector(); 
   /** Vector containing Sequence objects     */
-  private Vector seqs;             
+  protected Vector seqs;             
   /** Vector containing graphical sequences  */
-  private Vector graphicSequence;  
+  protected Vector graphicSequence;  
   /** Vector containing graphical names of sequences */
-  private Vector graphicName;      
+  protected Vector graphicName;      
   /** Colour scheme to use                   */
-  private Hashtable colorScheme;   
+  protected Hashtable colorScheme;   
   /** Consensus plot  */
   private PlotConsensus pc = null; 
   private int hgt;
   private int len;
   /** longest sequence length */ 
-  private int MAXSEQLENGTH = 0;
+  protected int MAXSEQLENGTH = 0;
   /** number of residues on each line for print */
   private int numResiduePerLine = 0;   
   /** panel for sequence numbers */
-  private SequenceJPanel numberDraw;
+  protected SequenceJPanel numberDraw;
   /** sequence scrollpane */
-  private JScrollPane jspSequence; 
+  protected JScrollPane jspSequence; 
   /** sequence name panel */ 
   private JPanel seqNamePanel;
   /** container for sequences */
-  private Box seqBox;
+  protected Box seqBox;
   /** container for sequence names */
-  private Box seqNameBox;
+  protected Box seqNameBox;
   /** container for consensus plot */
   private Box plotconsSeqBox = null;
   /** draw the sequence */
-  private boolean drawSequence;
+  protected boolean drawSequence;
   /** draw black square around residues */
-  private boolean drawBlackBox;
+  protected boolean drawBlackBox;
   /** colour residues   */
-  private boolean drawColorBox;
+  protected boolean drawColorBox;
   /** draw sequence position number */
-  private boolean drawNumber;
+  protected boolean drawNumber;
   /** draw as per prettplot */
   private boolean prettPlot = false;
   /** gap between sequences and consensus plot */
@@ -134,18 +134,7 @@ public class GraphicSequenceCollection extends JPanel
 // draw residue/base numbering
     if(drawNumber)
     {
-      numberDraw = new SequenceJPanel(10,MAXSEQLENGTH);
-      graphicSequence.add(numberDraw);
-      Box XBox = new Box(BoxLayout.X_AXIS);
-      XBox.add(numberDraw);
-      XBox.add(Box.createHorizontalGlue());
-      seqBox.add(XBox);
-
-      setNumberSize();
-      SequenceNameJButton snjBlank = 
-                 new SequenceNameJButton(new Sequence(" "),0);
-      graphicName.add(snjBlank);
-      seqNameBox.add(snjBlank);
+      drawNumber();
     }
 
 // draw names and sequences 
@@ -351,7 +340,7 @@ public class GraphicSequenceCollection extends JPanel
   * Set the size of the sequence number panel
   *
   */
-  private void setNumberSize()
+  protected void setNumberSize()
   {
     Dimension actual = numberDraw.getMaximumSize();
     int slen = numberDraw.getResidueWidth()*(int)(MAXSEQLENGTH*1.5);
@@ -1186,6 +1175,22 @@ public class GraphicSequenceCollection extends JPanel
     f.pack();
     f.setVisible(true);
 
+  }
+
+  protected void drawNumber()
+  {
+    numberDraw = new SequenceJPanel(10,MAXSEQLENGTH);
+    graphicSequence.add(numberDraw);
+    Box XBox = new Box(BoxLayout.X_AXIS);
+    XBox.add(numberDraw);
+    XBox.add(Box.createHorizontalGlue());
+    seqBox.add(XBox);
+
+    setNumberSize();
+    SequenceNameJButton snjBlank =
+               new SequenceNameJButton(new Sequence(" "),0);
+    graphicName.add(snjBlank);
+    seqNameBox.add(snjBlank);
   }
 
 }

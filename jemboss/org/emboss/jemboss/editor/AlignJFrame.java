@@ -41,19 +41,19 @@ import org.emboss.jemboss.gui.ScrollPanel;
 public class AlignJFrame extends JFrame
 {
 
-  private Vector seqs;             // Vector containing Sequence objects
-  private Vector graphicSequence;  // Vector containing graphical seqs
-  private JScrollPane jspSequence; // Sequence scrollpane
-  private GraphicSequenceCollection gsc;
+  private Vector seqs;               // Vector containing Sequence objects
+  private Vector graphicSequence;    // Vector containing graphical seqs
+  protected JScrollPane jspSequence; // Sequence scrollpane
+  protected GraphicSequenceCollection gsc;
   private Matrix mat;
-  private JTextField statusField = new JTextField();
+  protected JTextField statusField = new JTextField();
   private File sequenceFile = null;
   private Cursor cbusy = new Cursor(Cursor.WAIT_CURSOR);
   private Cursor cdone = new Cursor(Cursor.DEFAULT_CURSOR);
-  private JCheckBoxMenuItem residueColor;
-  private Hashtable currentColour;
-  private boolean useExitMenu = false;  // whether to use 'Exit' or 'Close'
-
+  protected JCheckBoxMenuItem residueColor;
+  protected Hashtable currentColour;
+  protected boolean useExitMenu = false;  // whether to use 'Exit' or 'Close'
+  protected JMenuBar menuBar;
  
   /**
   *
@@ -140,7 +140,7 @@ public class AlignJFrame extends JFrame
     final JPanel mainPane = (JPanel)getContentPane();
 
 // set up a menu bar
-    JMenuBar menuBar = new JMenuBar();
+    menuBar = new JMenuBar();
 
 // File menu
     JMenu fileMenu = new JMenu("File");

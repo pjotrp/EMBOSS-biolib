@@ -39,7 +39,7 @@ public class SequenceJPanel extends JPanel
 
   private Color col;
   /** sequence to display */
-  private Sequence seq;
+  protected Sequence seq;
   /** font size */
   private int fontSize = 12;
   /** font */
@@ -48,15 +48,15 @@ public class SequenceJPanel extends JPanel
   /** boundary width around each residue */
   private int boundWidth;
   /** half boundary width (boundWidth/2) */
-  private int boundWidth2;
+  protected int boundWidth2;
   /** residue width */
-  private int resWidth;
+  protected int resWidth;
   /** sequence height */
-  private int seqHeight; 
+  protected int seqHeight; 
   /** residue number when pressed by mouse */
   private int pressedResidue;
   /** sequence numbering interval */
-  private int interval;
+  protected int interval;
   /** sequence length     */
   private int seqLength;
   /** sequence height pad */
@@ -74,13 +74,13 @@ public class SequenceJPanel extends JPanel
   /** colour the residues              */
   private boolean drawColorBox = false;
   /** draw the sequence numbers        */
-  private boolean drawNumber   = false;
+  protected boolean drawNumber   = false;
   /** colour as per prettyplot  */
   private boolean prettyPlot   = false;
   /** high light search pattern */
   private boolean highlightPattern = false;
   /** sequence alignment panel  */
-  private JComponent viewPane;
+  protected JComponent viewPane;
   /** pop up menu */
   private JPopupMenu popup;
 

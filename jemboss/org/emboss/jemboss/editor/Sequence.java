@@ -31,9 +31,9 @@ public class Sequence
   /** sequence name        */
   private String name; 
   /** sequence as a string */  
-  private String seq;
+  protected String seq;
   /** sequence length      */
-  private int length;
+  protected int length;
   /** sequence weight      */
   private float wt;
   /** sequence id 	   */
