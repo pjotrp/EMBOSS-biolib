@@ -2,6 +2,8 @@
 
 SET emboss_qadata /homes/pmr/hgmp/test
 
+SET emboss_timetoday "2004-07-15 12:00:00"
+
 #######################################
 # Standard test databases
 #######################################
