@@ -52,5 +52,5 @@ pkgdata2_DATA = kitsch.txt libscan.txt lindna.txt listor.txt marscan.txt \
                vectorstrip.txt water.txt whichdb.txt wobble.txt \
                wordcount.txt wordmatch.txt wossname.txt yank.txt
 
-pkgdatadir=$(prefix)/share/$(PACKAGE)/doc/programs/html
-pkgdata2dir=$(prefix)/share/$(PACKAGE)/doc/programs/html
+pkgdatadir=$(prefix)/share/$(PACKAGE)/doc/programs/text
+pkgdata2dir=$(prefix)/share/$(PACKAGE)/doc/programs/text
