@@ -83,6 +83,11 @@ then
 #
 	if test $CHECK = "1" ; then
 	  LIBS="$LIBS -lgd -lpng -lz -lm"
+
+	  if test "`uname`" = "SunOS"; then
+	    LDFLAGS="$LDFLAGS -R$ALT_HOME/lib"
+          fi
+
 	  AC_DEFINE(PLD_png)
 	  AM_CONDITIONAL(AMPNG, true)
 	  echo PNG libraries found
