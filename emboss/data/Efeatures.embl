@@ -971,8 +971,7 @@ source
 	#        /mitochondrion
 	# New in FTv5.0
 	# mandatory from 01-July-2003
-	# Removed (to ID line) in FT 6.2
-	# /mol_type
+	/mol_type
         /note
         /organelle
         /plasmid
