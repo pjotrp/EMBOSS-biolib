@@ -79,11 +79,20 @@ public class ShowSavedResults
       ss.setMaximumSize(d);  
       // MenuBar with exit; reload (latter not yet implemented)
       JMenuBar resMenu = new JMenuBar();
-      resMenu.setLayout(new FlowLayout(FlowLayout.LEFT,10,5));
+      resMenu.setLayout(new FlowLayout(FlowLayout.LEFT,10,1));
       JMenu resFileMenu = new JMenu("File");
+      resMenu.add(resFileMenu);
 
-      JMenuItem resFileMenuUpdate = new JMenuItem("Refresh List",KeyEvent.VK_U);
-      resFileMenuUpdate.addActionListener(new ActionListener()
+      ImageIcon rfii = new ImageIcon("images/Refresh_button.gif");
+      JButton refresh = new JButton(rfii);
+      refresh.setMargin(new Insets(0,1,0,1));
+      refresh.setToolTipText("Refresh");
+      resMenu.add(refresh);
+      
+
+//    JMenuItem resFileMenuUpdate = new JMenuItem("Refresh List",KeyEvent.VK_U);
+//    resFileMenuUpdate.addActionListener(new ActionListener()
+      refresh.addActionListener(new ActionListener()
       {
         public void actionPerformed(ActionEvent e) 
         {
@@ -115,8 +124,8 @@ public class ShowSavedResults
           }
         }
       });
-      resFileMenu.add(resFileMenuUpdate);
-      resFileMenu.addSeparator();
+//    resFileMenu.add(resFileMenuUpdate);
+//    resFileMenu.addSeparator();
 
       JMenuItem resFileMenuExit = new JMenuItem("Close");
       resFileMenuExit.addActionListener(new ActionListener()
@@ -127,15 +136,9 @@ public class ShowSavedResults
         }
       });
       resFileMenu.add(resFileMenuExit);
-      resMenu.add(resFileMenu);
+//    resMenu.add(resFileMenu);
       savedResFrame.setJMenuBar(resMenu);
         
-      ImageIcon rfii = new ImageIcon("images/toolbarButtonGraphics/general/Refresh16.gif");
-      JButton refresh = new JButton(rfii);
-      resMenu.add(refresh);
-
-
-
       // this is the list of saved results
         
       StringTokenizer tokenizer = new StringTokenizer((String)reslist.get("list"), "\n");
@@ -316,11 +319,19 @@ public class ShowSavedResults
     //JMenuBar resMenu = new JMenuBar();
 
     JMenuBar resMenu = new JMenuBar();
-    resMenu.setLayout(new FlowLayout(FlowLayout.LEFT,10,5));
+    resMenu.setLayout(new FlowLayout(FlowLayout.LEFT,10,1));
 
     JMenu resFileMenu = new JMenu("File");
-    JMenuItem resFileMenuUpdate = new JMenuItem("Refresh List",KeyEvent.VK_U);
-    resFileMenuUpdate.addActionListener(new ActionListener()
+    resMenu.add(resFileMenu);
+
+    ImageIcon rfii = new ImageIcon("images/Refresh_button.gif");
+    JButton refresh = new JButton(rfii);
+    refresh.setMargin(new Insets(0,1,0,1));
+    refresh.setToolTipText("Refresh");
+    resMenu.add(refresh);
+//  JMenuItem resFileMenuUpdate = new JMenuItem("Refresh List",KeyEvent.VK_U);
+//  resFileMenuUpdate.addActionListener(new ActionListener()
+    refresh.addActionListener(new ActionListener()
     {
       public void actionPerformed(ActionEvent e) 
       {
@@ -336,8 +347,9 @@ public class ShowSavedResults
 	}
       }
     });
-    resFileMenu.add(resFileMenuUpdate);
-    resFileMenu.addSeparator();
+//  resFileMenu.add(resFileMenuUpdate);
+//  resFileMenu.addSeparator();
+
     JMenuItem resFileMenuExit = new JMenuItem("Close",KeyEvent.VK_C);
     resFileMenuExit.addActionListener(new ActionListener()
     {
@@ -347,7 +359,6 @@ public class ShowSavedResults
       }
     });
     resFileMenu.add(resFileMenuExit);
-    resMenu.add(resFileMenu);
     savedResFrame.setJMenuBar(resMenu);
     //
     // set up the results list in the gui
