@@ -885,10 +885,12 @@ AjBool ajSeqsetIsNuc(AjPSeqset thys)
 	return ajTrue;
 
     seq = thys->Seq[0];
-    if(!ajSeqTypeGapnucS(&seq->Seq))
-	return ajTrue;
+    if(ajSeqTypeGapnucS(&seq->Seq))
+    	return ajFalse;
 
-    return ajFalse;
+    ajSeqsetSetNuc(thys);
+
+    return ajTrue;
 }
 
 
@@ -908,10 +910,12 @@ AjBool ajSeqsetIsRna(AjPSeqset thys)
     AjPSeq seq;
 
     seq = thys->Seq[0];
-    if(!ajSeqTypeGaprnaS(&seq->Seq))
-	return ajTrue;
+    if(ajSeqTypeGaprnaS(&seq->Seq))
+	return ajFalse;
 
-    return ajFalse;
+    ajSeqsetSetNuc(thys);
+
+    return ajTrue;
 }
 
 
@@ -931,10 +935,12 @@ AjBool ajSeqsetIsDna(AjPSeqset thys)
     AjPSeq seq;
 
     seq = thys->Seq[0];
-    if(!ajSeqTypeGapdnaS(&seq->Seq))
-	return ajTrue;
+    if(ajSeqTypeGapdnaS(&seq->Seq))
+	return ajFalse;
 
-    return ajFalse;
+    ajSeqsetSetNuc(thys);
+
+    return ajTrue;
 }
 
 
@@ -960,10 +966,12 @@ AjBool ajSeqsetIsProt(AjPSeqset thys)
 	return ajFalse;
 
     seq = thys->Seq[0];
-    if(!ajSeqTypeAnyprotS(&seq->Seq))
-	return ajTrue;
+    if(ajSeqTypeAnyprotS(&seq->Seq))
+	return ajFalse;
 
-    return ajFalse;
+    ajSeqsetSetProt(thys);
+
+    return ajTrue;
 }
 
 
@@ -2948,12 +2956,15 @@ AjBool ajSeqIsNuc(AjPSeq thys)
     if(ajStrMatchC(thys->Type, "P"))
 	return ajFalse;
 
-    if(!ajSeqTypeGapnucS(&thys->Seq)) /* returns char 0 on success */
-	return ajTrue;
+    if(ajSeqTypeGapnucS(&thys->Seq)) /* returns char 0 on success */
+    {
+	ajDebug ("ajSeqIsNuc failed\n", thys->Type);
+	return ajFalse;
+    }
 
-    ajDebug("ajSeqIsNuc failed\n", thys->Type);
+    ajSeqSetNuc(thys);
 
-    return ajFalse;
+    return ajTrue;
 }
 
 
@@ -2978,12 +2989,15 @@ AjBool ajSeqIsProt(AjPSeq thys)
     if(ajStrMatchC(thys->Type, "N"))
 	return ajFalse;
 
-    if(!ajSeqTypeAnyprotS(&thys->Seq))	/* returns char 0 on success */
-	return ajTrue;
+    if(ajSeqTypeAnyprotS(&thys->Seq))	/* returns char 0 on success */
+    {
+	ajDebug ("ajSeqIsProt failed\n", thys->Type);
+	return ajFalse;
+    }
 
-    ajDebug("ajSeqIsProt failed\n", thys->Type);
+    ajSeqSetProt(thys);
 
-    return ajFalse;
+    return ajTrue;
 }
 
 

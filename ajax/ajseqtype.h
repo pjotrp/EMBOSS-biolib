@@ -12,6 +12,8 @@ void         ajSeqGapS (AjPStr* seq, char gapc);
 void         ajSeqPrintType (const AjPFile outf, AjBool full);
 void         ajSeqSetNuc (AjPSeq thys);
 void         ajSeqSetProt (AjPSeq thys);
+void         ajSeqSetsetNuc (AjPSeqset thys);
+void         ajSeqSetsetProt (AjPSeqset thys);
 char         ajSeqTypeAnyS (AjPStr* pthys);
 char         ajSeqTypeDnaS (AjPStr* pthys);
 char         ajSeqTypeGapanyS (AjPStr* pthys);

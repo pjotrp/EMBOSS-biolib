@@ -1213,6 +1213,44 @@ void ajSeqSetProt(AjPSeq thys)
 
 
 
+/* @func ajSeqsetSetNuc *******************************************************
+**
+** Sets a sequence set type to "nucleotide"
+**
+** @param [u] thys [AjPSeqset] Sequence set object
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajSeqsetSetNuc(AjPSeqset thys)
+{
+    ajStrAssC(&thys->Type, "N");
+
+    return;
+}
+
+
+
+
+/* @func ajSeqsetSetProt ******************************************************
+**
+** Sets a sequence set type to "protein"
+**
+** @param [u] thys [AjPSeqset] Sequence set object
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajSeqsetSetProt(AjPSeqset thys)
+{
+    ajStrAssC(&thys->Type, "P");
+
+    return;
+}
+
+
+
+
 /* @func ajSeqType ************************************************************
 **
 ** Sets the type of a sequence if it has not yet been defined.
