@@ -28,10 +28,13 @@
 #include <errno.h>
 
 /* next three moved from acd for library splitting */
-AjBool acdDebugSet = 0;
+
+AjBool acdDebugSet    = 0;
 AjBool acdDebugBuffer = 0;
-AjBool acdDebug = 0;
-AjPStr acdProgram = NULL;
+AjBool acdDebug       = 0;
+AjPStr acdProgram     = NULL;
+
+
 AjOError AjErrorLevel =
 {
     AJTRUE, AJTRUE, AJTRUE, AJTRUE
@@ -43,22 +46,28 @@ AjOError AjErrorLevel =
 
 AjPTable errorTable = 0;
 
-static jmp_buf *errorJmpBuf = 0 ;
-static jmp_buf *crashJmpBuf = 0 ;
+static jmp_buf *errorJmpBuf = 0;
+static jmp_buf *crashJmpBuf = 0;
 
-static ajint errorCount = 0 ;
+static ajint errorCount = 0;
 
 static char *messErrorFile;
 
-static AjBool fileDebug = 0;
+static AjBool fileDebug      = 0;
 static AjPFile fileDebugFile = NULL;
-static AjPStr fileDebugName = NULL;
+static AjPStr fileDebugName  = NULL;
 
 static char* messGetFilename(const char *path);
+
+
+
 
 /*============================================================================
 **======================== Macros ============================================
 =============================================================================*/
+
+
+
 
 /* @macro ajFatal *************************************************************
 **
@@ -118,6 +127,8 @@ static char* messGetFilename(const char *path);
 ******************************************************************************/
 
 
+
+
 /* @func ajMessInvokeDebugger *************************************************
 **
 ** Used to trace in a debugger as a breakpoint
@@ -126,16 +137,21 @@ static char* messGetFilename(const char *path);
 ** @@
 ******************************************************************************/
 
-void ajMessInvokeDebugger (void)
+void ajMessInvokeDebugger(void)
 {
-    static AjBool reentrant = AJFALSE ;
+    static AjBool reentrant = AJFALSE;
 
-    if (!reentrant)
+    if(!reentrant)
     {
-	reentrant = AJTRUE ;
-	reentrant = AJFALSE ;
+	reentrant = AJTRUE;
+	reentrant = AJFALSE;
     }
+
+    return;
 }
+
+
+
 
 /******************************************************************************
 ** Constraints on message buffer size.
@@ -150,7 +166,7 @@ void ajMessInvokeDebugger (void)
 
 enum {BUFSIZE = 32768,
       PREFIXSIZE = 1024,
-      MAINTEXTSIZE = BUFSIZE - PREFIXSIZE - 1} ;
+      MAINTEXTSIZE = BUFSIZE - PREFIXSIZE - 1};
 
 /******************************************************************************
 ** This buffer is used by just about all of the below routines and has the
@@ -158,7 +174,7 @@ enum {BUFSIZE = 32768,
 ** detect this after the event with vsprintf.
 ******************************************************************************/
 
-static char messbuf[BUFSIZE] ;
+static char messbuf[BUFSIZE];
 
 /******************************************************************************
 ** Format strings using va_xx calls.
@@ -171,16 +187,16 @@ static char messbuf[BUFSIZE] ;
 **                          of the string, or NULL.
 ******************************************************************************/
 
-#define AJAXFORMATSTRING(FORMAT_ARGS, FORMAT, TARGET_PTR, PREFIX)       \
-va_start(FORMAT_ARGS, FORMAT) ;                                        \
-TARGET_PTR = messFormat(FORMAT_ARGS, FORMAT, PREFIX) ;                \
-va_end(FORMAT_ARGS) ;
+#define AJAXFORMATSTRING(FORMAT_ARGS, FORMAT, TARGET_PTR, PREFIX)    \
+va_start(FORMAT_ARGS, FORMAT);                                       \
+TARGET_PTR = messFormat(FORMAT_ARGS, FORMAT, PREFIX);                \
+va_end(FORMAT_ARGS);
 
-#define AJAXVFORMATSTRING(FORMAT_ARGS, FORMAT, TARGET_PTR, PREFIX)       \
-TARGET_PTR = messFormat(FORMAT_ARGS, FORMAT, PREFIX) ;
+#define AJAXVFORMATSTRING(FORMAT_ARGS, FORMAT, TARGET_PTR, PREFIX)   \
+TARGET_PTR = messFormat(FORMAT_ARGS, FORMAT, PREFIX);
 
-static char *messFormat(va_list args, const char *format, const char *prefix) ;
-static void messDump (const char *message);
+static char *messFormat(va_list args, const char *format, const char *prefix);
+static void messDump(const char *message);
 
 /* Some standard defines for titles/text for messages:                       */
 /*                                                                           */
@@ -218,30 +234,33 @@ static void messDump (const char *message);
 
 typedef struct MessSErrorInfo
 {
-    char* progname ;	     /* Name of executable reporting error. */
-    char* filename ;		   /* Filename where error reported */
-    ajint line_num ;		    /* line number of file where error
+    char* progname;	     /* Name of executable reporting error. */
+    char* filename;		   /* Filename where error reported */
+    ajint line_num;		    /* line number of file where error
 				       reported. */
 } MessOErrorInfo;
 
 #define MessPErrorInfo MessOErrorInfo*
 
-static MessOErrorInfo messageG = {NULL, NULL, 0} ;
+static MessOErrorInfo messageG = {NULL, NULL, 0};
 
-static ajint messGetErrorLine(void) ;
-static char *messGetErrorFile(void) ;
-static char *messGetErrorProgram(void) ;
+static ajint messGetErrorLine(void);
+static char *messGetErrorFile(void);
+static char *messGetErrorProgram(void);
 
 /***************************************************************/
 /********* call backs and functions to register them ***********/
 
-static AjMessVoidRoutine beepRoutine = 0 ;
-static AjMessOutRoutine	 outRoutine = 0 ;
-static AjMessOutRoutine	 dumpRoutine = 0 ;
-static AjMessOutRoutine	 errorRoutine = 0 ;
-static AjMessOutRoutine	 exitRoutine = 0 ;
-static AjMessOutRoutine	 crashRoutine = 0 ;
-static AjMessOutRoutine	 warningRoutine = 0 ;
+static AjMessVoidRoutine beepRoutine    = 0;
+static AjMessOutRoutine	 outRoutine     = 0;
+static AjMessOutRoutine	 dumpRoutine    = 0;
+static AjMessOutRoutine	 errorRoutine   = 0;
+static AjMessOutRoutine	 exitRoutine    = 0;
+static AjMessOutRoutine	 crashRoutine   = 0;
+static AjMessOutRoutine	 warningRoutine = 0;
+
+
+
 
 /* @func ajMessBeepReg ********************************************************
 **
@@ -252,12 +271,18 @@ static AjMessOutRoutine	 warningRoutine = 0 ;
 ** @@
 ******************************************************************************/
 
-AjMessVoidRoutine ajMessBeepReg (AjMessVoidRoutine func)
+AjMessVoidRoutine ajMessBeepReg(AjMessVoidRoutine func)
 {
-    AjMessVoidRoutine old = beepRoutine ;
-    beepRoutine = func ;
+    AjMessVoidRoutine old;
+
+    old = beepRoutine;
+    beepRoutine = func;
+
     return old;
 }
+
+
+
 
 /* @func ajMessOutReg *********************************************************
 **
@@ -268,12 +293,18 @@ AjMessVoidRoutine ajMessBeepReg (AjMessVoidRoutine func)
 ** @@
 ******************************************************************************/
 
-AjMessOutRoutine ajMessOutReg (AjMessOutRoutine func)
+AjMessOutRoutine ajMessOutReg(AjMessOutRoutine func)
 {
-    AjMessOutRoutine old = outRoutine ;
-    outRoutine = func ;
-    return old ;
+    AjMessOutRoutine old;
+
+    old = outRoutine;
+    outRoutine = func;
+
+    return old;
 }
+
+
+
 
 /* @func ajMessDumpReg ********************************************************
 **
@@ -284,12 +315,18 @@ AjMessOutRoutine ajMessOutReg (AjMessOutRoutine func)
 ** @@
 ******************************************************************************/
 
-AjMessOutRoutine ajMessDumpReg (AjMessOutRoutine func)
+AjMessOutRoutine ajMessDumpReg(AjMessOutRoutine func)
 {
-    AjMessOutRoutine old = dumpRoutine ;
-    dumpRoutine = func ;
-    return old ;
+    AjMessOutRoutine old;
+
+    old = dumpRoutine;
+    dumpRoutine = func;
+
+    return old;
 }
+
+
+
 
 /* @func ajMessErrorReg *******************************************************
 **
@@ -300,12 +337,18 @@ AjMessOutRoutine ajMessDumpReg (AjMessOutRoutine func)
 ** @@
 ******************************************************************************/
 
-AjMessOutRoutine ajMessErrorReg (AjMessOutRoutine func)
+AjMessOutRoutine ajMessErrorReg(AjMessOutRoutine func)
 {
-    AjMessOutRoutine old = errorRoutine ;
-    errorRoutine = func ;
-    return old ;
+    AjMessOutRoutine old;
+
+    old = errorRoutine;
+    errorRoutine = func;
+
+    return old;
 }
+
+
+
 
 /* @func ajMessExitReg ********************************************************
 **
@@ -316,12 +359,17 @@ AjMessOutRoutine ajMessErrorReg (AjMessOutRoutine func)
 ** @@
 ******************************************************************************/
 
-AjMessOutRoutine ajMessExitReg (AjMessOutRoutine func)
+AjMessOutRoutine ajMessExitReg(AjMessOutRoutine func)
 {
-    AjMessOutRoutine old = exitRoutine ;
-    exitRoutine = func ;
-    return old ;
+    AjMessOutRoutine old;
+
+    old = exitRoutine;
+    exitRoutine = func;
+    return old;
 }
+
+
+
 
 /* @func ajMessCrashReg *******************************************************
 **
@@ -332,12 +380,18 @@ AjMessOutRoutine ajMessExitReg (AjMessOutRoutine func)
 ** @@
 ******************************************************************************/
 
-AjMessOutRoutine ajMessCrashReg (AjMessOutRoutine func)
+AjMessOutRoutine ajMessCrashReg(AjMessOutRoutine func)
 {
-    AjMessOutRoutine old = crashRoutine ;
-    crashRoutine = func ;
-    return old ;
+    AjMessOutRoutine old;
+
+    old = crashRoutine;
+    crashRoutine = func;
+
+    return old;
 }
+
+
+
 
 /* @func ajMessWarningReg *****************************************************
 **
@@ -348,12 +402,18 @@ AjMessOutRoutine ajMessCrashReg (AjMessOutRoutine func)
 ** @@
 ******************************************************************************/
 
-AjMessOutRoutine ajMessWarningReg (AjMessOutRoutine func)
+AjMessOutRoutine ajMessWarningReg(AjMessOutRoutine func)
 {
-    AjMessOutRoutine old = warningRoutine ;
-    warningRoutine = func ;
-    return old ;
+    AjMessOutRoutine old;
+
+    old = warningRoutine;
+    warningRoutine = func;
+
+    return old;
 }
+
+
+
 
 /* @func ajMessBeep ***********************************************************
 **
@@ -364,18 +424,21 @@ AjMessOutRoutine ajMessWarningReg (AjMessOutRoutine func)
 ** @@
 ******************************************************************************/
 
-void ajMessBeep (void)
+void ajMessBeep(void)
 {
-    if (beepRoutine)
-	(*beepRoutine)() ;
+    if(beepRoutine)
+	(*beepRoutine)();
     else
     {
-	(void) printf ("%c",0x07) ;
-	(void) fflush (stdout) ;
+	printf("%c",0x07);
+	fflush(stdout);
     }
 
     return;
 }
+
+
+
 
 /* @func ajMessOutLine ********************************************************
 **
@@ -388,22 +451,23 @@ void ajMessBeep (void)
 ** @@
 ******************************************************************************/
 
-void ajMessOutLine (const char *format,...)
+void ajMessOutLine(const char *format,...)
 {
-    va_list args ;
+    va_list args;
     const char *mesg_buf;
-
-    /* Format the message string. */
 
     AJAXFORMATSTRING(args, format, mesg_buf, NULL);
 
-    if (outRoutine)
-	(*outRoutine)(mesg_buf) ;
+    if(outRoutine)
+	(*outRoutine)(mesg_buf);
     else
-	(void) fprintf (stderr, "%s\n", mesg_buf) ;
+	fprintf(stderr, "%s\n", mesg_buf);
 
     return;
 }
+
+
+
 
 /* @func ajMessOut ************************************************************
 **
@@ -416,22 +480,23 @@ void ajMessOutLine (const char *format,...)
 ** @@
 ******************************************************************************/
 
-void ajMessOut (const char *format,...)
+void ajMessOut(const char *format,...)
 {
-    va_list args ;
+    va_list args;
     char *mesg_buf;
-
-    /* Format the message string. */
 
     AJAXFORMATSTRING(args, format, mesg_buf, NULL);
 
-    if (outRoutine)
-	(*outRoutine)(mesg_buf) ;
+    if(outRoutine)
+	(*outRoutine)(mesg_buf);
     else
-	(void) fprintf (stderr, "%s", mesg_buf) ;
+	fprintf(stderr, "%s", mesg_buf);
 
     return;
 }
+
+
+
 
 /* @func ajMessVOut ***********************************************************
 **
@@ -444,21 +509,22 @@ void ajMessOut (const char *format,...)
 ** @@
 ******************************************************************************/
 
-void ajMessVOut (const char *format, va_list args)
+void ajMessVOut(const char *format, va_list args)
 {
     char *mesg_buf;
 
-    /* Format the message string. */
-
     AJAXVFORMATSTRING(args, format, mesg_buf, NULL);
 
-    if (outRoutine)
-	(*outRoutine)(mesg_buf) ;
+    if(outRoutine)
+	(*outRoutine)(mesg_buf);
     else
-	(void) fprintf (stderr, "%s\n", mesg_buf) ;
+	fprintf(stderr, "%s\n", mesg_buf);
 
     return;
 }
+
+
+
 
 /* @func ajMessDump ***********************************************************
 **
@@ -471,23 +537,26 @@ void ajMessVOut (const char *format, va_list args)
 ** @@
 ******************************************************************************/
 
-void ajMessDump (const char *format,...)
+void ajMessDump(const char *format,...)
 {
-    static char dumpbuf[BUFSIZE] ;   /* BEWARE limited buffer size. */
-    char *mesg_buf = &dumpbuf[0] ;
-    va_list args ;
+    static char dumpbuf[BUFSIZE];   /* BEWARE limited buffer size. */
+    char *mesg_buf;
+    va_list args;
 
-    /* Format the message string. */
+    mesg_buf = &dumpbuf[0];
 
     AJAXFORMATSTRING(args, format, mesg_buf, NULL);
 
-    (void) strcat (mesg_buf, "\n") ; /* assume we are writing to a file */
+    strcat(mesg_buf, "\n"); /* assume we are writing to a file */
 
-    if (dumpRoutine)
-	(*dumpRoutine)(mesg_buf) ;
+    if(dumpRoutine)
+	(*dumpRoutine)(mesg_buf);
 
     return;
 }
+
+
+
 
 /* @funcstatic messDump *******************************************************
 **
@@ -498,16 +567,19 @@ void ajMessDump (const char *format,...)
 ** @@
 ******************************************************************************/
 
-static void messDump (const char *message)
+static void messDump(const char *message)
 {
-    if (dumpRoutine)
+    if(dumpRoutine)
     {
-	(*dumpRoutine)(message) ;
-	(*dumpRoutine)("\n") ;
+	(*dumpRoutine)(message);
+	(*dumpRoutine)("\n");
     }
 
     return;
 }
+
+
+
 
 /* @func ajMessErrorCount *****************************************************
 **
@@ -517,10 +589,13 @@ static void messDump (const char *message)
 ** @@
 ******************************************************************************/
 
-ajint ajMessErrorCount (void)
+ajint ajMessErrorCount(void)
 {
-    return errorCount ;
+    return errorCount;
 }
+
+
+
 
 /* @func ajMessError **********************************************************
 **
@@ -535,35 +610,36 @@ ajint ajMessErrorCount (void)
 ** @@
 ******************************************************************************/
 
-void ajMessError (const char *format, ...)
+void ajMessError(const char *format, ...)
 {
-    char *prefix = ERROR_PREFIX ;
-    char *mesg_buf = NULL ;
-    va_list args ;
+    char *prefix   = ERROR_PREFIX;
+    char *mesg_buf = NULL;
+    va_list args;
 
-    ++errorCount ;
+    ++errorCount;
 
     if(AjErrorLevel.error)
     {
-	/* Format the message string. */
+	AJAXFORMATSTRING(args, format, mesg_buf, prefix);
 
-	AJAXFORMATSTRING(args, format, mesg_buf, prefix) ;
+	if(errorJmpBuf) /* throw back up to the function that registered it */
+	    longjmp(*errorJmpBuf, 1);
 
-	if (errorJmpBuf) /* throw back up to the function that registered it */
-	    longjmp (*errorJmpBuf, 1) ;
+	messDump(mesg_buf);
 
-	messDump(mesg_buf) ;
-
-	if (errorRoutine)
-	    (*errorRoutine)(mesg_buf) ;
+	if(errorRoutine)
+	    (*errorRoutine)(mesg_buf);
 	else
-	    (void) fprintf (stderr, "%s\n", mesg_buf) ;
+	    fprintf(stderr, "%s\n", mesg_buf);
 
-	ajMessInvokeDebugger () ;
+	ajMessInvokeDebugger();
     }
 
     return;
 }
+
+
+
 
 /* @func ajMessVError *********************************************************
 **
@@ -578,32 +654,33 @@ void ajMessError (const char *format, ...)
 ** @@
 ******************************************************************************/
 
-void ajMessVError (const char *format, va_list args)
+void ajMessVError(const char *format, va_list args)
 {
-    char *prefix = ERROR_PREFIX ;
-    char *mesg_buf = NULL ;
+    char *prefix   = ERROR_PREFIX;
+    char *mesg_buf = NULL;
 
-    ++errorCount ;
+    ++errorCount;
 
-    /* Format the message string. */
+    AJAXVFORMATSTRING(args, format, mesg_buf, prefix);
 
-    AJAXVFORMATSTRING(args, format, mesg_buf, prefix) ;
+    if(errorJmpBuf) /* throw back up to the function that registered it */
+	longjmp(*errorJmpBuf, 1);
 
-    if (errorJmpBuf) /* throw back up to the function that registered it */
-	longjmp (*errorJmpBuf, 1) ;
+    messDump(mesg_buf);
 
-    messDump(mesg_buf) ;
-
-    if (errorRoutine)
-	(*errorRoutine)(mesg_buf) ;
+    if(errorRoutine)
+	(*errorRoutine)(mesg_buf);
     else
     {
 	if(AjErrorLevel.error)
-	    (void) fprintf (stderr, "%s\n", mesg_buf) ;
+	    fprintf(stderr, "%s\n", mesg_buf);
     }
-    ajMessInvokeDebugger () ;
+    ajMessInvokeDebugger();
     return;
 }
+
+
+
 
 /* @func ajMessDie ************************************************************
 **
@@ -619,38 +696,39 @@ void ajMessVError (const char *format, va_list args)
 ** @@
 ******************************************************************************/
 
-void ajMessDie (const char *format, ...)
+void ajMessDie(const char *format, ...)
 {
-    const char *prefix = DIE_PREFIX ;
-    const char *mesg_buf = NULL ;
-    va_list args ;
+    const char *prefix   = DIE_PREFIX;
+    const char *mesg_buf = NULL;
+    va_list args;
 
-    ++errorCount ;
+    ++errorCount;
 
     if(AjErrorLevel.die)
     {
-	/* Format the message string. */
+	AJAXFORMATSTRING(args, format, mesg_buf, prefix);
 
-	AJAXFORMATSTRING(args, format, mesg_buf, prefix) ;
+	if(errorJmpBuf) /* throw back up to the function that registered it */
+	    longjmp(*errorJmpBuf, 1);
 
-	if (errorJmpBuf) /* throw back up to the function that registered it */
-	    longjmp (*errorJmpBuf, 1) ;
+	messDump(mesg_buf);
 
-	messDump(mesg_buf) ;
-
-	if (errorRoutine)
-	    (*errorRoutine)(mesg_buf) ;
+	if(errorRoutine)
+	    (*errorRoutine)(mesg_buf);
 	else
-	    (void) fprintf (stderr, "%s\n", mesg_buf) ;
+	    fprintf(stderr, "%s\n", mesg_buf);
 
-	ajMessInvokeDebugger () ;
+	ajMessInvokeDebugger();
     }
 
 
-    exit(EXIT_FAILURE) ;
+    exit(EXIT_FAILURE);
 
-    return;				/* Should never get here. */
+    return;
 }
+
+
+
 
 /* @func ajMessVDie ***********************************************************
 **
@@ -666,30 +744,32 @@ void ajMessDie (const char *format, ...)
 ** @@
 ******************************************************************************/
 
-void ajMessVDie (const char *format, va_list args)
+void ajMessVDie(const char *format, va_list args)
 {
-    char *prefix = DIE_PREFIX ;
-    char *mesg_buf = NULL ;
+    char *prefix   = DIE_PREFIX;
+    char *mesg_buf = NULL;
 
-    ++errorCount ;
+    ++errorCount;
 
-    /* Format the message string. */
+    AJAXVFORMATSTRING(args, format, mesg_buf, prefix);
 
-    AJAXVFORMATSTRING(args, format, mesg_buf, prefix) ;
+    if(errorJmpBuf) /* throw back up to the function that registered it */
+	longjmp(*errorJmpBuf, 1);
 
-    if (errorJmpBuf) /* throw back up to the function that registered it */
-	longjmp (*errorJmpBuf, 1) ;
+    messDump(mesg_buf);
 
-    messDump(mesg_buf) ;
-
-    if (errorRoutine)
-	(*errorRoutine)(mesg_buf) ;
+    if(errorRoutine)
+	(*errorRoutine)(mesg_buf);
     else
 	ajMessCrash(mesg_buf);
 
-    ajMessInvokeDebugger () ;
+    ajMessInvokeDebugger();
+
     return;
 }
+
+
+
 
 /* @func ajMessWarning ********************************************************
 **
@@ -702,33 +782,34 @@ void ajMessVDie (const char *format, va_list args)
 ** @@
 ******************************************************************************/
 
-void ajMessWarning (const char *format, ...)
+void ajMessWarning(const char *format, ...)
 {
-    char *prefix = WARNING_PREFIX ;
-    char *mesg_buf = NULL ;
-    va_list args ;
-
-    /* Format the message string. */
+    char *prefix   = WARNING_PREFIX;
+    char *mesg_buf = NULL;
+    va_list args;
 
     if(AjErrorLevel.warning)
     {
-	AJAXFORMATSTRING(args, format, mesg_buf, prefix) ;
+	AJAXFORMATSTRING(args, format, mesg_buf, prefix);
 
-	if (errorJmpBuf) /* throw back up to the function that registered it */
-	    longjmp (*errorJmpBuf, 1) ;
+	if(errorJmpBuf) /* throw back up to the function that registered it */
+	    longjmp(*errorJmpBuf, 1);
 
-	messDump(mesg_buf) ;
+	messDump(mesg_buf);
 
-	if (warningRoutine)
-	    (*warningRoutine)(mesg_buf) ;
+	if(warningRoutine)
+	    (*warningRoutine)(mesg_buf);
 	else
-	    (void) fprintf (stderr, "%s\n", mesg_buf) ;
+	    fprintf(stderr, "%s\n", mesg_buf);
 
-	ajMessInvokeDebugger () ;
+	ajMessInvokeDebugger();
     }
 
     return;
 }
+
+
+
 
 /* @func ajMessVWarning *******************************************************
 **
@@ -741,29 +822,30 @@ void ajMessWarning (const char *format, ...)
 ** @@
 ******************************************************************************/
 
-void ajMessVWarning (const char *format, va_list args)
+void ajMessVWarning(const char *format, va_list args)
 {
-    char *prefix = WARNING_PREFIX ;
-    char *mesg_buf = NULL ;
+    char *prefix   = WARNING_PREFIX;
+    char *mesg_buf = NULL;
 
-    /* Format the message string. */
+    AJAXVFORMATSTRING(args, format, mesg_buf, prefix);
 
-    AJAXVFORMATSTRING(args, format, mesg_buf, prefix) ;
+    if(errorJmpBuf) /* throw back up to the function that registered it */
+	longjmp(*errorJmpBuf, 1);
 
-    if (errorJmpBuf) /* throw back up to the function that registered it */
-	longjmp (*errorJmpBuf, 1) ;
+    messDump(mesg_buf);
 
-    messDump(mesg_buf) ;
-
-    if (warningRoutine)
-	(*warningRoutine)(mesg_buf) ;
+    if(warningRoutine)
+	(*warningRoutine)(mesg_buf);
     else
-	(void) fprintf (stderr, "%s\n", mesg_buf) ;
+	fprintf(stderr, "%s\n", mesg_buf);
 
-    ajMessInvokeDebugger () ;
+    ajMessInvokeDebugger();
 
     return;
 }
+
+
+
 
 /* @func ajMessExitmsg ********************************************************
 **
@@ -786,25 +868,26 @@ void ajMessVWarning (const char *format, va_list args)
 
 void ajMessExitmsg(const char *format, ...)
 {
-    char *prefix = EXIT_PREFIX ;
-    char *mesg_buf = NULL ;
-    va_list args ;
+    char *prefix   = EXIT_PREFIX;
+    char *mesg_buf = NULL;
+    va_list args;
 
-    /* Format the message string. */
+    AJAXFORMATSTRING(args, format, mesg_buf, prefix);
 
-    AJAXFORMATSTRING(args, format, mesg_buf, prefix) ;
+    messDump(mesg_buf);
 
-    messDump(mesg_buf) ;
-
-    if (exitRoutine)
-	(*exitRoutine)(mesg_buf) ;
+    if(exitRoutine)
+	(*exitRoutine)(mesg_buf);
     else
-	(void) fprintf (stderr, "%s\n", mesg_buf) ;
+	fprintf(stderr, "%s\n", mesg_buf);
 
-    exit(EXIT_FAILURE) ;
+    exit(EXIT_FAILURE);
 
-    return ;				/* Should never get here. */
+    return;
 }
+
+
+
 
 /* @func ajMessCrashFL ********************************************************
 **
@@ -820,60 +903,60 @@ void ajMessExitmsg(const char *format, ...)
 ** @@
 ******************************************************************************/
 
-void ajMessCrashFL (const char *format, ...)
+void ajMessCrashFL(const char *format, ...)
 {
-    enum {MAXERRORS = 1} ;
-    static ajint internalErrors = 0 ;
-    static char prefix[1024] ;
-    ajint rc ;
-    char *mesg_buf = NULL ;
-    va_list args ;
+    enum {MAXERRORS = 1};
+    static ajint internalErrors = 0;
+    static char prefix[1024];
+    ajint rc;
+    char *mesg_buf = NULL;
+    va_list args;
 
-    /* Check for recursive calls and abort if necessary. */
 
-    if (internalErrors > MAXERRORS)
-	abort() ;
+    if(internalErrors > MAXERRORS)
+	abort();
     else
-	internalErrors++ ;
+	internalErrors++;
 
     /* Construct the message prefix, adding the program name if possible. */
 
-    if (messGetErrorProgram() == NULL)
+    if(messGetErrorProgram() == NULL)
 	rc = sprintf(prefix, CRASH_PREFIX_FORMAT, MESG_TITLE,
-		     messGetErrorFile(), messGetErrorLine()) ;
+		     messGetErrorFile(), messGetErrorLine());
     else
 	rc = sprintf(prefix, FULL_CRASH_PREFIX_FORMAT, MESG_TITLE,
 		     messGetErrorProgram(), messGetErrorFile(),
-		     messGetErrorLine()) ;
-    if (rc < 0)
-	ajMessCrash("sprintf failed") ;
+		     messGetErrorLine());
+    if(rc < 0)
+	ajMessCrash("sprintf failed");
 
     if(AjErrorLevel.fatal)
     {
-	/* Format the message string. */
-
-	AJAXFORMATSTRING(args, format, mesg_buf, prefix) ;
+	AJAXFORMATSTRING(args, format, mesg_buf, prefix);
 
 
-	if (crashJmpBuf) /* throw back up to the function that registered it */
-	    longjmp(*crashJmpBuf, 1) ;
+	if(crashJmpBuf) /* throw back up to the function that registered it */
+	    longjmp(*crashJmpBuf, 1);
 
 
-	messDump(mesg_buf) ;
+	messDump(mesg_buf);
 
-	if (crashRoutine)
-	    (*crashRoutine)(mesg_buf) ;
+	if(crashRoutine)
+	    (*crashRoutine)(mesg_buf);
 	else
-	    (void) fprintf(stderr, "%s\n", mesg_buf) ;
+	    fprintf(stderr, "%s\n", mesg_buf);
 
-	ajMessInvokeDebugger() ;
+	ajMessInvokeDebugger();
     }
 
 
-    exit(EXIT_FAILURE) ;
+    exit(EXIT_FAILURE);
 
-    return ;				/* Should never get here. */
+    return;
 }
+
+
+
 
 /* @func ajMessVCrashFL *******************************************************
 **
@@ -889,54 +972,51 @@ void ajMessCrashFL (const char *format, ...)
 ** @@
 ******************************************************************************/
 
-void ajMessVCrashFL (const char *format, va_list args)
+void ajMessVCrashFL(const char *format, va_list args)
 {
-    enum {MAXERRORS = 1} ;
-    static ajint internalErrors = 0 ;
-    static char prefix[1024] ;
-    ajint rc ;
-    char *mesg_buf = NULL ;
+    enum {MAXERRORS = 1};
+    static ajint internalErrors = 0;
+    static char prefix[1024];
+    ajint rc;
+    char *mesg_buf = NULL;
     
-    /* Check for recursive calls and abort if necessary. */
-    
-    if (internalErrors > MAXERRORS)
-	abort() ;
+    if(internalErrors > MAXERRORS)
+	abort();
     else
-	internalErrors++ ;
+	internalErrors++;
     
     /* Construct the message prefix, adding the program name if possible. */
     
-    if (messGetErrorProgram() == NULL)
+    if(messGetErrorProgram() == NULL)
 	rc = sprintf(prefix, CRASH_PREFIX_FORMAT, MESG_TITLE,
-		     messGetErrorFile(), messGetErrorLine()) ;
+		     messGetErrorFile(), messGetErrorLine());
     else
 	rc = sprintf(prefix, FULL_CRASH_PREFIX_FORMAT, MESG_TITLE,
 		     messGetErrorProgram(), messGetErrorFile(),
-		     messGetErrorLine()) ;
-    if (rc < 0)
-	ajMessCrash("sprintf failed") ;
-    
-    /* Format the message string. */
-    
-    AJAXVFORMATSTRING(args, format, mesg_buf, prefix) ;
+		     messGetErrorLine());
+    if(rc < 0)
+	ajMessCrash("sprintf failed");
     
     
-    if (crashJmpBuf)	/* throw back up to the function that registered it */
-	longjmp(*crashJmpBuf, 1) ;
+    AJAXVFORMATSTRING(args, format, mesg_buf, prefix);
     
     
-    messDump(mesg_buf) ;
+    if(crashJmpBuf)	/* throw back up to the function that registered it */
+	longjmp(*crashJmpBuf, 1);
     
-    if (crashRoutine)
-	(*crashRoutine)(mesg_buf) ;
+    
+    messDump(mesg_buf);
+    
+    if(crashRoutine)
+	(*crashRoutine)(mesg_buf);
     else
-	(void) fprintf(stderr, "%s\n", mesg_buf) ;
+	fprintf(stderr, "%s\n", mesg_buf);
     
-    ajMessInvokeDebugger() ;
+    ajMessInvokeDebugger();
     
-    exit(EXIT_FAILURE) ;
+    exit(EXIT_FAILURE);
 
-    return ;			/* Should never get here. */
+    return;
 }
 
 
@@ -953,13 +1033,18 @@ void ajMessVCrashFL (const char *format, va_list args)
 ** @@
 ******************************************************************************/
 
-jmp_buf* ajMessCatchError (jmp_buf* fnew)
+jmp_buf* ajMessCatchError(jmp_buf* fnew)
 {
-    jmp_buf* old = errorJmpBuf ;
-    errorJmpBuf = fnew ;
+    jmp_buf* old;
 
-    return old ;
+    old = errorJmpBuf;
+    errorJmpBuf = fnew;
+
+    return old;
 }
+
+
+
 
 /* @func ajMessCatchCrash *****************************************************
 **
@@ -974,13 +1059,18 @@ jmp_buf* ajMessCatchError (jmp_buf* fnew)
 ** @@
 ******************************************************************************/
 
-jmp_buf* ajMessCatchCrash (jmp_buf* fnew)
+jmp_buf* ajMessCatchCrash(jmp_buf* fnew)
 {
-    jmp_buf* old = crashJmpBuf ;
-    crashJmpBuf = fnew ;
+    jmp_buf* old;
 
-    return old ;
+    old = crashJmpBuf;
+    crashJmpBuf = fnew;
+
+    return old;
 }
+
+
+
 
 /* @func ajMessCaughtMessage **************************************************
 **
@@ -990,10 +1080,13 @@ jmp_buf* ajMessCatchCrash (jmp_buf* fnew)
 ** @@
 ******************************************************************************/
 
-char* ajMessCaughtMessage (void)
+char* ajMessCaughtMessage(void)
 {
-    return messbuf ;
+    return messbuf;
 }
+
+
+
 
 /* @func ajMessSysErrorText ***************************************************
 **
@@ -1004,23 +1097,26 @@ char* ajMessCaughtMessage (void)
 ** @@
 ******************************************************************************/
 
-char* ajMessSysErrorText (void)
+char* ajMessSysErrorText(void)
 {
-    static char* errmess = 0 ;
-    char *mess ;
+    static char* errmess = 0;
+    char *mess;
 
-    if (errno)
-	mess = ajFmtString (SYSERR_FORMAT, errno, strerror(errno)) ;
+    if(errno)
+	mess = ajFmtString(SYSERR_FORMAT, errno, strerror(errno));
     else
-	mess = ajFmtString (SYSERR_OK, errno, strerror(errno)) ;
+	mess = ajFmtString(SYSERR_OK, errno, strerror(errno));
       
     /* must make copy - will be used when mess* calls itself */
-    if (errmess)
-	AJFREE(errmess) ;
-    errmess = ajSysStrdup (mess) ;
+    if(errmess)
+	AJFREE(errmess);
+    errmess = ajSysStrdup(mess);
 
-    return errmess ;
+    return errmess;
 }
+
+
+
 
 /************************* message formatting ********************************/
 /* This routine does the formatting of the message string using vsprintf,    */
@@ -1036,6 +1132,9 @@ char* ajMessSysErrorText (void)
 /*                                 (vsprintf returns number of bytes written */
 /*                                  _minus_ terminating NULL)                */
 /*                                                                           */
+
+
+
 
 /* @funcstatic messFormat *****************************************************
 **
@@ -1063,62 +1162,65 @@ char* ajMessSysErrorText (void)
 
 static char* messFormat(va_list args, const char *format, const char *prefix)
 {
-    static char *new_buf = NULL ;
-    char *buf_ptr ;
-    ajint num_bytes, prefix_len ;
+    static char *new_buf = NULL;
+    char *buf_ptr;
+    ajint num_bytes;
+    ajint prefix_len;
 
-    /* Check arguments. */
 
-    if (format == NULL)
-	ajMessCrash("invalid call, no format string.") ;
+    if(format == NULL)
+	ajMessCrash("invalid call, no format string.");
 
-    if (prefix == NULL)
-	prefix_len = 0 ;
+    if(prefix == NULL)
+	prefix_len = 0;
     else
     {
-	prefix_len = strlen(prefix) ;
-	if ((prefix_len + 1) > PREFIXSIZE)
-	    ajMessCrash("prefix string is too long.") ;
+	prefix_len = strlen(prefix);
+	if((prefix_len + 1) > PREFIXSIZE)
+	    ajMessCrash("prefix string is too long.");
     }
 
     /* If they supply our internal buffer as an argument, e.g. because they */
     /* used ajFmtString as an arg, then make a copy, otherwise use internal */
     /* buffer.                                                              */
 
-    if (format == messbuf)
+    if(format == messbuf)
     {
-	if (new_buf != NULL) AJFREE(new_buf) ;
-	buf_ptr = new_buf = ajSysStrdup(format) ;
+	if(new_buf != NULL)
+	    AJFREE(new_buf);
+	buf_ptr = new_buf = ajSysStrdup(format);
     }
     else
-	buf_ptr = messbuf ;
+	buf_ptr = messbuf;
 
     /* Add the prefix if there is one. */
-    if (prefix != NULL)
+    if(prefix != NULL)
     {
-	if (!strcpy (buf_ptr, prefix))
-	    ajMessCrash("strcpy failed") ;
+	if(!strcpy(buf_ptr, prefix))
+	    ajMessCrash("strcpy failed");
     }
 
-    /* Do the format.                                                        */
-    /* num_bytes = vsprintf((buf_ptr + prefix_len),
-       format, args)+prefix_len+1;*/
 
-    num_bytes = prefix_len + 1 ;
+    num_bytes = prefix_len + 1;
     num_bytes += ajFmtVPrintCL((buf_ptr + prefix_len),BUFSIZE, format, args);
 
-    /* Check the result. This should never happen using the
-       ajFmtVPrintCL routine instead of the vsprintf routine */
+    /*
+    **  Check the result. This should never happen using the
+    **  ajFmtVPrintCL routine instead of the vsprintf routine
+    */
 
-    if (num_bytes < 0)
-	ajMessCrash("vsprintf failed: %s", ajMessSysErrorText()) ;
-    else if (num_bytes > BUFSIZE)
+    if(num_bytes < 0)
+	ajMessCrash("vsprintf failed: %s", ajMessSysErrorText());
+    else if(num_bytes > BUFSIZE)
 	ajMessCrash("messubs internal buffer size (%d) exceeded, "
 		    "a total of %d bytes were written",
-		    BUFSIZE, num_bytes) ;
+		    BUFSIZE, num_bytes);
 
-    return(buf_ptr) ;
+    return(buf_ptr);
 }
+
+
+
 
 /* @funcstatic messGetFilename ************************************************
 **
@@ -1133,31 +1235,35 @@ static char* messFormat(va_list args, const char *format, const char *prefix)
 
 static char* messGetFilename(const char *path)
 {
-    static char *path_copy = NULL ;
-    const char *path_delim = SUBDIR_DELIMITER_STR ;
-    char *result = NULL, *tmp ;
+    static char *path_copy = NULL;
+    const char *path_delim = SUBDIR_DELIMITER_STR;
+    char *result = NULL;
+    char *tmp;
 
-    if (path != NULL)
+    if(path != NULL)
     {
-	if (strcmp((path + strlen(path) - 1), path_delim) != 0)
+	if(strcmp((path + strlen(path) - 1), path_delim) != 0)
 	{				/* Last char = "/" ?? */
-	    if (path_copy != NULL)
-		AJFREE (path_copy) ;
-	    path_copy = ajSysStrdup(path) ;
+	    if(path_copy != NULL)
+		AJFREE(path_copy);
+	    path_copy = ajSysStrdup(path);
 
-	    tmp = ajSysStrtok(path_copy, path_delim) ;
+	    tmp = ajSysStrtok(path_copy, path_delim);
 
-	    while (tmp != NULL)
+	    while(tmp != NULL)
 	    {
-		result = tmp ;	 /* Keep results of previous strtok */
+		result = tmp;	 /* Keep results of previous strtok */
 
-		tmp = ajSysStrtok(NULL, path_delim) ;
+		tmp = ajSysStrtok(NULL, path_delim);
 	    }
 	}
     }
 
-    return(result) ;
+    return(result);
 }
+
+
+
 
 /*
 ** When AJAX needs to crash because there has been an unrecoverable
@@ -1170,6 +1276,9 @@ static char* messGetFilename(const char *path)
 ** from the main.
 ** */
 
+
+
+
 /* @func ajMessErrorInit ******************************************************
 **
 ** Initialises the stored program name.
@@ -1179,13 +1288,16 @@ static char* messGetFilename(const char *path)
 ** @@
 ******************************************************************************/
 
-void ajMessErrorInit (const char *progname)
+void ajMessErrorInit(const char *progname)
 {
-    if (progname != NULL)
-	messageG.progname = ajSysStrdup(messGetFilename(progname)) ;
+    if(progname != NULL)
+	messageG.progname = ajSysStrdup(messGetFilename(progname));
 
-    return ;
+    return;
 }
+
+
+
 
 /* @func ajMessSetErr *********************************************************
 **
@@ -1201,19 +1313,23 @@ void ajMessErrorInit (const char *progname)
 ** @@
 ******************************************************************************/
 
-void ajMessSetErr (const char *filename, ajint line_num)
+void ajMessSetErr(const char *filename, ajint line_num)
 {
-    assert(filename != NULL && line_num != 0) ;
+    assert(filename != NULL && line_num != 0);
 
-    /* We take the basename here because __FILE__ can be a path rather
-       than just a filename, depending on how a module was compiled.  */
+    /*
+    ** We take the basename here because __FILE__ can be a path rather
+    ** than just a filename, depending on how a module was compiled.
+    */
 
-    messageG.filename = ajSysStrdup(messGetFilename(filename)) ;
+    messageG.filename = ajSysStrdup(messGetFilename(filename));
 
-    messageG.line_num = line_num ;
+    messageG.line_num = line_num;
 
-    return ;
+    return;
 }
+
+
 
 
 /* Access functions for message error data.                                  */
@@ -1227,8 +1343,11 @@ void ajMessSetErr (const char *filename, ajint line_num)
 
 static char* messGetErrorProgram(void)
 {
-    return(messageG.progname) ;
+    return(messageG.progname);
 }
+
+
+
 
 /* @funcstatic messGetErrorFile ***********************************************
 **
@@ -1240,8 +1359,11 @@ static char* messGetErrorProgram(void)
 
 static char* messGetErrorFile(void)
 {
-    return(messageG.filename) ;
+    return(messageG.filename);
 }
+
+
+
 
 /* @funcstatic messGetErrorLine ***********************************************
 **
@@ -1253,8 +1375,11 @@ static char* messGetErrorFile(void)
 
 static ajint messGetErrorLine(void)
 {
-    return(messageG.line_num) ;
+    return(messageG.line_num);
 }
+
+
+
 
 /* set a file to read for all the messages. NB if this is not set
 Then a default one will be read */
@@ -1270,20 +1395,23 @@ Then a default one will be read */
 
 AjBool ajMessErrorSetFile(const char *errfile)
 {
-    FILE *fp=0;
+    FILE *fp = 0;
 
     if(errfile)
     {
-	if ((fp = fopen(errfile,"r")))
+	if((fp = fopen(errfile,"r")))
 	{
 	    messErrorFile = ajSysStrdup(errfile);
-	    (void) fclose(fp);
+	    fclose(fp);
 	    return ajTrue;
 	}
     }
 
     return ajFalse;
 }
+
+
+
 
 /* @funcstatic ajMessReadErrorFile ********************************************
 **
@@ -1301,19 +1429,21 @@ static AjBool ajMessReadErrorFile(void)
     char name[12];
     char message[200];
     FILE *fp=0;
-    char *mess,*cp;
-    char *namestore,*messstore;
+    char *mess;
+    char *cp;
+    char *namestore;
+    char *messstore;
 
     if(messErrorFile)
-    {
 	fp = fopen(messErrorFile,"r");
-    }
+
     if(!fp)
     {
 	messErrorFile = ajFmtString("%s/messages/messages.english",
 				    getenv("EMBOSS_ROOT"));
 	fp = fopen(messErrorFile,"r");
     }
+
     if(!fp)
 	return ajFalse;
 
@@ -1333,6 +1463,7 @@ static AjBool ajMessReadErrorFile(void)
 	    /*      *mess++; Looks wrong to me. Replaced by below. AJB */
 	    mess++;
 	}
+
 	*mess = '\0';
 	namestore = ajFmtString("%s",name);
 	messstore = ajFmtString("%s",message);
@@ -1341,10 +1472,14 @@ static AjBool ajMessReadErrorFile(void)
 	    ajMessError("%s is listed more than once in file %s",
 			name,messErrorFile);
 	else
-	    (void) ajTablePut(errorTable, namestore, messstore);
+	    ajTablePut(errorTable, namestore, messstore);
     }
+
     return ajTrue;
 }
+
+
+
 
 /* @func ajMessOutCode ********************************************************
 **
@@ -1369,10 +1504,10 @@ void ajMessOutCode(const char *code)
     }
     else
     {
-	if (ajMessReadErrorFile())
+	if(ajMessReadErrorFile())
 	{
 	    mess = ajTableGet(errorTable, code);
-	    if (mess)
+	    if(mess)
 		ajMessOut(mess);
 	    else
 		ajMessOut("could not find error code %s",code);
@@ -1381,8 +1516,12 @@ void ajMessOutCode(const char *code)
 	    ajMessOut("Could not read the error file hence no reference to %s",
 		      code);
     }
+
     return;
 }
+
+
+
 
 /* @func ajMessErrorCode ******************************************************
 **
@@ -1395,7 +1534,7 @@ void ajMessOutCode(const char *code)
 
 void ajMessErrorCode(const char *code)
 {
-    char *mess=0;
+    char *mess = 0;
 
     if(errorTable)
     {
@@ -1410,7 +1549,7 @@ void ajMessErrorCode(const char *code)
 	if(ajMessReadErrorFile())
 	{
 	    mess = ajTableGet(errorTable, code);
-	    if (mess)
+	    if(mess)
 		ajMessError(mess);
 	    else
 		ajMessError("could not find error code %s",code);
@@ -1420,8 +1559,12 @@ void ajMessErrorCode(const char *code)
 			"hence no reference to %s",
 			code);
     }
+
     return;
 }
+
+
+
 
 /* @func ajMessCrashCodeFL ****************************************************
 **
@@ -1432,24 +1575,24 @@ void ajMessErrorCode(const char *code)
 ** @@
 ******************************************************************************/
 
-void ajMessCrashCodeFL (const char *code)
+void ajMessCrashCodeFL(const char *code)
 {
-    char *mess=0;
+    char *mess = 0;
 
     if(errorTable)
     {
 	mess = ajTableGet(errorTable, code);
-	if (mess)
+	if(mess)
 	    ajMessCrashFL(mess);
 	else
 	    ajMessCrashFL("could not find error code %s",code);
     }
     else
     {
-	if (ajMessReadErrorFile())
+	if(ajMessReadErrorFile())
 	{
 	    mess = ajTableGet(errorTable, code);
-	    if (mess)
+	    if(mess)
 		ajMessCrashFL(mess);
 	    else
 		ajMessCrashFL("could not find error code %s",code);
@@ -1459,8 +1602,12 @@ void ajMessCrashCodeFL (const char *code)
 			  "hence no reference to %s",
 			  code);
     }
+
     return;
 }
+
+
+
 
 /* @func ajMessCodesDelete ****************************************************
 **
@@ -1470,7 +1617,7 @@ void ajMessCrashCodeFL (const char *code)
 ** @@
 ******************************************************************************/
 
-void ajMessCodesDelete (void)
+void ajMessCodesDelete(void)
 {
     void **array;
     ajint i;
@@ -1480,16 +1627,21 @@ void ajMessCodesDelete (void)
 
     array =  ajTableToarray(errorTable, NULL);
 
-    for (i = 0; array[i]; i += 2)
+    for(i = 0; array[i]; i += 2)
     {
-	AJFREE (array[i+1]);
-	AJFREE (array[i]);
+	AJFREE(array[i+1]);
+	AJFREE(array[i]);
     }
-    AJFREE (array);
-    ajTableFree (&errorTable);
+    AJFREE(array);
+
+    ajTableFree(&errorTable);
     errorTable = 0;
+
     return;
 }
+
+
+
 
 /* @func ajDebug **************************************************************
 **
@@ -1507,57 +1659,61 @@ void ajMessCodesDelete (void)
 ** @@
 ******************************************************************************/
 
-void ajDebug (const char* fmt, ...)
+void ajDebug(const char* fmt, ...)
 {
-    va_list args ;
+    va_list args;
     static ajint debugset = 0;
-    static ajint depth = 0;
-    AjPStr bufstr=NULL;
+    static ajint depth    = 0;
+    AjPStr bufstr         = NULL;
     
-    if (depth)
+    if(depth)
     {				   /* recursive call, get out quick */
-	if (fileDebugFile)
+	if(fileDebugFile)
 	{
-	    va_start (args, fmt) ;
-	    ajFmtVPrintF(fileDebugFile, fmt, args) ;
-	    va_end (args) ;
+	    va_start(args, fmt);
+	    ajFmtVPrintF(fileDebugFile, fmt, args);
+	    va_end(args);
 	}
 	return;
     }
 
     depth++;
-    if (!debugset && acdDebugSet)
+    if(!debugset && acdDebugSet)
     {
 	fileDebug = acdDebug;
-	if (fileDebug)
+	if(fileDebug)
 	{
-	    (void) ajFmtPrintS(&fileDebugName, "%s.dbg", ajStrStr(acdProgram));
-	    fileDebugFile = ajFileNewOut (fileDebugName);
+	    ajFmtPrintS(&fileDebugName, "%s.dbg", ajStrStr(acdProgram));
+	    fileDebugFile = ajFileNewOut(fileDebugName);
 	    if(!fileDebugFile)
 		ajFatal("Cannot open debug file %S",fileDebugName);
-	    if (ajNamGetValueC("debugbuffer", &bufstr))
+	    if(ajNamGetValueC("debugbuffer", &bufstr))
 	    {
-		ajStrToBool (bufstr, &acdDebugBuffer);
+		ajStrToBool(bufstr, &acdDebugBuffer);
 	    }
-	    if (!acdDebugBuffer)
-		ajFileUnbuffer (fileDebugFile);
-	    ajFmtPrintF (fileDebugFile, "Debug file %F buffered:%B\n",
+	    if(!acdDebugBuffer)
+		ajFileUnbuffer(fileDebugFile);
+	    ajFmtPrintF(fileDebugFile, "Debug file %F buffered:%B\n",
 			 fileDebugFile, acdDebugBuffer);
 	    ajStrDel(&bufstr);
 	}
 	debugset = 1;
     }
 
-    if (fileDebug)
+    if(fileDebug)
     {
-	va_start (args, fmt) ;
-	ajFmtVPrintF(fileDebugFile, fmt, args) ;
-	va_end (args) ;
+	va_start(args, fmt);
+	ajFmtVPrintF(fileDebugFile, fmt, args);
+	va_end(args);
     }
 
     depth--;
+
     return;
 }
+
+
+
 
 /* @func ajDebugFile **********************************************************
 **
@@ -1567,12 +1723,16 @@ void ajDebug (const char* fmt, ...)
 ** @@
 ******************************************************************************/
 
-FILE* ajDebugFile (void)
+FILE* ajDebugFile(void)
 {
-    if (!fileDebugFile)
+    if(!fileDebugFile)
 	return NULL;
+
     return ajFileFp(fileDebugFile);
 }
+
+
+
 
 /* @func ajUserGet ************************************************************
 **
@@ -1585,43 +1745,46 @@ FILE* ajDebugFile (void)
 ** @@
 ******************************************************************************/
 
-ajint ajUserGet (AjPStr* pthis, const char* fmt, ...)
+ajint ajUserGet(AjPStr* pthis, const char* fmt, ...)
 {
     AjPStr thys;
     char *cp;
-    va_list args ;
+    va_list args;
 
-    va_start (args, fmt) ;
-    ajFmtVError(fmt, args) ;
-    va_end (args) ;
+    va_start(args, fmt);
+    ajFmtVError(fmt, args);
+    va_end(args);
 
     /* Must be > 1, reserved for fgets!! */
-    (void) ajStrModL (pthis,ajFileBuffSize());
+    ajStrModL(pthis,ajFileBuffSize());
     thys = pthis ? *pthis : 0;
 
-    ajDebug ("ajUserGet buffer len: %d res: %d ptr: %x\n",
+    ajDebug("ajUserGet buffer len: %d res: %d ptr: %x\n",
 	     ajStrLen(thys), ajStrSize(thys), thys->Ptr);
 
-    cp = fgets (thys->Ptr, thys->Res, stdin);
+    cp = fgets(thys->Ptr, thys->Res, stdin);
 
-    if (!cp)
+    if(!cp)
     {				/* EOF or error */
-	if (feof(stdin))
-	    ajFatal ("END-OF-FILE reading from user\n");
+	if(feof(stdin))
+	    ajFatal("END-OF-FILE reading from user\n");
 	else
-	    ajFatal ("Error reading from user\n");
+	    ajFatal("Error reading from user\n");
     }
 
     thys->Len = strlen(thys->Ptr);
-    if (thys->Ptr[thys->Len-1] == '\n')
+    if(thys->Ptr[thys->Len-1] == '\n')
     {
 	thys->Ptr[--thys->Len] = '\0';
     }
     else
-	ajErr ("ajUserGet no newline seen\n");
+	ajErr("ajUserGet no newline seen\n");
 
     return thys->Len;
 }
+
+
+
 
 /* @func ajMessExit ***********************************************************
 **
@@ -1631,7 +1794,7 @@ ajint ajUserGet (AjPStr* pthis, const char* fmt, ...)
 ** @@
 ******************************************************************************/
 
-void ajMessExit (void)
+void ajMessExit(void)
 {
     ajFileClose(&fileDebugFile);
     ajStrDel(&fileDebugName);
