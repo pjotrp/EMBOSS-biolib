@@ -15,7 +15,7 @@ pkgdata_DATA =  abiview.1.abiview.gif chaos.1.chaos.gif cirdna.1.cirdna.gif \
                alignment_differences_group.html \
                alignment_dot_plots_group.html alignment_global_group.html \
                alignment_local_group.html alignment_multiple_group.html \
-               alignwrap.html antigenic.html backtranseq.html banana.html \
+               antigenic.html backtranseq.html banana.html \
                biosed.html btwisted.html cai.html chaos.html charge.html \
                checktrans.html chips.html cirdna.html clique.html \
                codcmp.html coderet.html compseq.html cons.html \
@@ -50,7 +50,7 @@ pkgdata2_DATA = kitsch.html lindna.html listor.html marscan.html \
                menus_group.html merger.html mix.html msbar.html mse.html \
                mwcontam.html mwfilter.html needle.html neighbor.html \
                newcpgreport.html newcpgseek.html newseq.html noreturn.html \
-               notseq.html nrscope.html nthseq.html \
+               notseq.html nthseq.html \
                nucleic_2d_structure_group.html \
                nucleic_codon_usage_group.html \
                nucleic_composition_group.html \
@@ -73,7 +73,7 @@ pkgdata2_DATA = kitsch.html lindna.html listor.html marscan.html \
                protein_3d_structure_group.html \
                protein_composition_group.html protein_motifs_group.html \
                protein_mutation_group.html protein_profiles_group.html \
-               protein_structure_group.html pscan.html psiblasts.html \
+               protein_structure_group.html pscan.html \
                rebaseextract.html recode.html recoder.html redata.html \
                remap.html restml.html restover.html restrict.html \
                revseq.html scopalign.html scope.html scopnr.html \
