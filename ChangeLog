@@ -1,4 +1,8 @@
 Version 2.5.0
+	"fasta" format now uses the "ncbi" parser, so both formats report
+	"fasta" as the format. "pearson" is the old "fasta" format for a few
+	cases (empty IDs for example) there ncbi parsing fails completely.
+
 	SPLITTER changed to match documentation. Old behaviour is
 	now selectable by using the -addoverlap command line
 	option.
@@ -28,7 +32,7 @@ Version 2.5.0
 	
 	Cleaned up string position code. Inspections showed ajStrPos and
 	related functions gave results from 0 to length of a string. This
-	caused confusion in many other functions and applictaions. These
+	caused confusion in many other functions and applications. These
 	functions are now static strPos functions because only ajstr.c had
 	calls to them (though the ajStrPos versions are still available).
 	All calls were checked for positions out of range. As a result,
