@@ -1,4 +1,4 @@
-/* 
+#/* 
 ** This is free software; you can redistribute it and/or
 ** modify it under the terms of the GNU Library General Public License
 ** as published by the Free Software Foundation; either version 2
@@ -4950,7 +4950,7 @@ static AjBool seqGcgDots (AjPSeq thys, AjPSeqin seqin, AjPStr* pline,
 	chkexp = ajRegCompC("[Cc][Hh][Ee][Cc][Kk]:[ \t]*([0-9]+)");
 	lenexp = ajRegCompC("[Ll][Ee][Nn][Gg][Tt][Hh]:[ \t]*([0-9]+)");
 	typexp = ajRegCompC("[Tt][Yy][Pp][Ee]:[ \t]*([NP])");
-	namexp = ajRegCompC("[^ \t]+");
+	namexp = ajRegCompC("[^ \t>]+");
 	msfexp = ajRegCompC("[Mm][Ss][Ff]:[ \t]*([0-9]+)");
     }
 
