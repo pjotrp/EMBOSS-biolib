@@ -97,6 +97,7 @@ embassy_install()
   USER_CONFIG=$5
 
   echo
+  echo 
   echo "Install EMBASSY packages (y,n) [y]?"
   read EMBASSY
 
@@ -112,10 +113,11 @@ embassy_install()
       mkdir $EMBOSS_DOWNLOAD/embassy
     fi
     echo
-    echo "Download these from ftp://ftp.uk.embnet.org/pub/EMBOSS/"
-    echo "and unpack (gunzip and untar) them in: "
+    echo "To install EMBASSY Packages:"
+    echo "(1) Download these from ftp://ftp.uk.embnet.org/pub/EMBOSS/"
+    echo "(2) And unpack (gunzip and untar) them in: "
     echo "$EMBOSS_DOWNLOAD/embassy"
-    echo "*before* pressing return to continue!"
+    echo "(3) *before* pressing return to continue!"
     read BLANK
 
     cd $EMBOSS_DOWNLOAD/embassy
@@ -173,20 +175,26 @@ ssl_print_notes()
  KEYSTOREFILE=$1
  TOMCAT_ROOT=$2
  PORT=$3
- 
- echo 
+ NUM=2
+
  echo
  if [ -f $JAVA_HOME/jre/lib/security/java.security ]; then
-   echo "A) EDIT "$JAVA_HOME/jre/lib/security/java.security
+   if grep 'security.provider.2=com.sun.net.ssl.internal.ssl.Provider' $JAVA_HOME/jre/lib/security/java.security >/dev/null 2>&1; then 
+     NUM=1 
+   else
+     echo "1) EDIT "$JAVA_HOME/jre/lib/security/java.security
+     echo "   adding/changing the provider line (usually provider 2 or 3):"
+     echo "   security.provider.2=com.sun.net.ssl.internal.ssl.Provider"
+   fi
  else
-   echo "A) EDIT the java.security file "
+   echo "1) EDIT the java.security file "
+   echo "   adding/changing the provider line (usually provider 2 or 3):"
+   echo "   security.provider.2=com.sun.net.ssl.internal.ssl.Provider"
+
  fi
 
- echo "   adding/changing the provider line (usually provider 2 or 3):"
- echo "   security.provider.2=com.sun.net.ssl.internal.ssl.Provider"
- echo
-
- echo "B) COPY & PASTE THE FOLLOWING INTO (changing port number if required) "$TOMCAT_ROOT/conf/server.xml
+ echo "$NUM) COPY & PASTE THE FOLLOWING INTO "$TOMCAT_ROOT/conf/server.xml
+ echo 
  echo
 
  if [ -d "$TOMCAT_ROOT/shared/classes" ]; then
@@ -225,10 +233,11 @@ ssl_create_keystore()
   KEYSTORE=$3
   ALIAS=$4
   PASSWD=$5
+  VALID=$6
 
   keytool -genkey -alias $ALIAS -dname "CN=$HOST, \
       OU=Jemboss, O=HGMP-RC, L=CAMBRIDGE, S=CAMBRIDGE, C=UK" -keyalg RSA \
-      -keypass $PASSWD -storepass $PASSWD -keystore $JEMBOSS_RES/$KEYSTORE.keystore  
+      -keypass $PASSWD -storepass $PASSWD -keystore $JEMBOSS_RES/$KEYSTORE.keystore -validity $VALID
 
   keytool -export -alias $ALIAS -storepass $PASSWD -file $JEMBOSS_RES/$KEYSTORE.cer \
       -keystore $JEMBOSS_RES/$KEYSTORE.keystore
@@ -324,7 +333,7 @@ deploy_axis_services()
   echo
   echo "Deploying $SERVICE "
   echo "$JAVAHOME/bin/java -classpath $CLASSPATH $OPT_PROP1 $OPT_PROP2 \\ "
-  echo "org.apache.axis.client.AdminClient -l$URL/axis/services JembossServer.wsdd"
+  echo " org.apache.axis.client.AdminClient -l$URL/axis/services JembossServer.wsdd"
   echo
 
   $JAVAHOME/bin/java -classpath $CLASSPATH $OPT_PROP1 $OPT_PROP2 \
@@ -1092,12 +1101,25 @@ else
     read PASSWD
   done
 
-  ssl_create_keystore $LOCALHOST $JEMBOSS/resources "server" "tomcat-sv" $PASSWD
-  ssl_create_keystore "Client" $JEMBOSS/resources "client" "tomcat-cl" $PASSWD
+  echo
+  echo
+  echo "Provide the validity period for these certificates,"
+  echo "(see http://www.rfcgr.mrc.ac.uk/Software/EMBOSS/Jemboss/install/ssl.html for details)"
+  echo "i.e. the number of days before they expire and new ones regenerated [90]:"
+  read VALID
+  echo
+
+  if [ "$VALID" = "" ]; then
+    VALID=90
+  fi
+
+  ssl_create_keystore $LOCALHOST $JEMBOSS/resources "server" "tomcat-sv" $PASSWD $VALID
+  ssl_create_keystore "Client" $JEMBOSS/resources "client" "tomcat-cl" $PASSWD $VALID
 
   ssl_import $JEMBOSS/resources/server.cer $JEMBOSS/resources/client.keystore $PASSWD
   ssl_import $JEMBOSS/resources/client.cer $JEMBOSS/resources/server.keystore $PASSWD
 
+  echo
   echo "Tomcat XML deployment descriptors have been created for the Jemboss Server."
   echo "Would you like an automatic deployment of these to be tried (y/n) [y]?"
   read DEPLOYSERVICE
