@@ -471,7 +471,8 @@ public class ResultsMenuBar extends JMenuBar
           Vector params = new Vector();
           params.addElement(project);
           params.addElement(tabTitle);
-          params.addElement(jtc.getText());
+          // remove return characters for Win machines
+          params.addElement(jtc.getText().replace('\r',' '));
 
           try
           {
