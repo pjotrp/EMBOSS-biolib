@@ -42,12 +42,13 @@ public class GetACD
     acdStore = new Hashtable();
   }
 
+  /** acd text */
   private String helpText;
 
   /**
   *
-  * @param acdProg    The name of the application described by the ACD
-  * @param mysettings JembossParams defining server parameters
+  * @param acdProg    name of the application described by the ACD
+  * @param mysettings jemboss properties
   *
   */
    public GetACD(String acdProg, JembossParams mysettings)
@@ -81,11 +82,12 @@ public class GetACD
 
    }
 
-/**
-*
-* Return the text of the ACD file
-*
-*/
+  /**
+  *
+  * Return the text of the ACD file
+  * @return 	acd text
+  *
+  */
    public String getAcd() 
    {
      return helpText;

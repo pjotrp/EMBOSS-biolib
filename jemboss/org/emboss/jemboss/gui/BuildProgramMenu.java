@@ -197,7 +197,7 @@ public class BuildProgramMenu
             if(woss.equals(""))
             {
               GetWossname ewoss = new GetWossname(mysettings);
-              woss = ewoss.getDBText(); 
+              woss = ewoss.getWossnameText(); 
               mainMenu.setEnableFileManagers(true);
               mainMenu.setEnableShowResults(true);
             }
