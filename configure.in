@@ -12,7 +12,29 @@ AM_INIT_AUTOMAKE(EMBOSS, 2.8.0)
 dnl Use libtool to make a shared library.
 AM_PROG_LIBTOOL
 
+dnl PCRE library definitions - see the MAJOR and MINOR values
+dnl to see which version's configure.in these lines come from
 
+dnl Provide the current PCRE version information. Do not use numbers
+dnl with leading zeros for the minor version, as they end up in a C
+dnl macro, and may be treated as octal constants. Stick to single
+dnl digits for minor numbers less than 10. There are unlikely to be
+dnl that many releases anyway.
+
+PCRE_MAJOR=4
+PCRE_MINOR=3
+PCRE_DATE=21-May-2003
+PCRE_VERSION=${PCRE_MAJOR}.${PCRE_MINOR}
+
+dnl Default values for miscellaneous macros
+
+POSIX_MALLOC_THRESHOLD=-DPOSIX_MALLOC_THRESHOLD=10
+
+dnl Provide versioning information for libtool shared libraries that
+dnl are built by default on Unix systems.
+
+PCRE_LIB_VERSION=0:1:0
+PCRE_POSIXLIB_VERSION=0:0:0
 
 
 dnl Define where the EMBOSS package is located
@@ -68,6 +90,18 @@ CHECK_JAVAOS
 CHECK_PNGDRIVER
 CHECK_AUTH
 CHECK_GROUT
+
+dnl "Export" these variables for PCRE
+
+AC_SUBST(HAVE_MEMMOVE)
+AC_SUBST(HAVE_STRERROR)
+AC_SUBST(PCRE_MAJOR)
+AC_SUBST(PCRE_MINOR)
+AC_SUBST(PCRE_DATE)
+AC_SUBST(PCRE_VERSION)
+AC_SUBST(PCRE_LIB_VERSION)
+AC_SUBST(PCRE_POSIXLIB_VERSION)
+AC_SUBST(POSIX_MALLOC_THRESHOLD)
 
 #dnl Test if --enable-corba is given
 #AC_ARG_ENABLE(corba,
