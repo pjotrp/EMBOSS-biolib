@@ -19,21 +19,27 @@
 *
 ********************************************************************/
 
-
 package org.emboss.jemboss.gui.form;
 
 import org.emboss.jemboss.parser.ParseAcd;
 import java.awt.Dimension;
 import javax.swing.JCheckBox;
 
+/**
+*
+* Handles emboss alignment formats
+* http://www.hgmp.mrc.ac.uk/Software/EMBOSS/Themes/AlignFormats.html
+*
+*/
 public class AlignFormat
 {
 
-  /** EMBOSS align formats */
+  /** EMBOSS alignment formats */
   private static String align_msf[] = 
             {"unknown", "multiple", "simple", 
              "fasta", "msf", "srs"};
 
+  /** EMBOSS pairwise alignment formats */
   private static String align_pairwise[] =
             {"unknown", "multiple", "simple",
              "fasta", "msf", "srs",
@@ -41,10 +47,19 @@ public class AlignFormat
              "markx2", "markx3", "markx10",
              "srspair", "score"};
 
+  /** component to display formats */
   private myComboPopup cp;
+  /** default format */
   private String def;
+  /** true if pairwise alignment format */
   private boolean lpair;
 
+  /**
+  *
+  * @param parseAcd	ACD parser for the application
+  * @param nf		field number in ACD
+  *
+  */
   public AlignFormat(ParseAcd parseAcd, int nf) 
   {
     lpair = isPairWise(parseAcd,nf);
@@ -66,37 +81,63 @@ public class AlignFormat
     cp.setPreferredSize(d);
   }
 
+  /**
+  *
+  * Get the combo-popup component for alignment formats
+  * @return 	combo-popup component for alignment formats
+  *
+  */
   public myComboPopup getComboPopup()
   {
     return cp;
   }
 
+  /**
+  *
+  * @return def		default alignment format
+  *
+  */
   public String getDefaultFormat()
   {
     return def;
   }
 
+  /**
+  *
+  * Get the alignment formats as a string array
+  * @param lpair	true if pairwise alignment
+  * @return 		alignment formats as a string array
+  *
+  */
   private String[] getAlignFormats(boolean lpair)
   {
     if(lpair)
       return align_pairwise;
-
     return align_msf;
   }
 
+  /**
+  *
+  * Get the alignment format to add to the EMBOSS
+  * command line
+  * @return 	alignment format for EMBOSS command line
+  * 
+  */
   public String getAlignFormat()
   {
     String report = " -aformat " + cp.getSelectedItem();
     return report;
   }
 
-/**
-*
-* Method to determine whether this is a pairwise (returning
-* true) or multiple sequence alignment format.
-* @return true if a pairwise alignment
-*
-*/
+  /**
+  *
+  * Method to determine whether this is a pairwise (returning
+  * true) or multiple sequence alignment format.
+  * @param parseAcd     ACD parser for the application
+  * @param nf           field number in ACD
+  * @return true if a pairwise alignment
+  *
+  */
   private boolean isPairWise(ParseAcd parseAcd, int nf)
   {
     for(int i=0; i<nf;i++)
@@ -106,11 +147,11 @@ public class AlignFormat
     return true;
   }
 
-/**
-*
-* @return String report of the available report formats
-*
-*/
+  /**
+  *
+  * @return String report of the available report formats
+  *
+  */
   public String getToolTip()
   {
     String commonFormat =
