@@ -81,39 +81,6 @@ static char* messGetFilename(const char *path);
 ** @@
 ******************************************************************************/
 
-/* @macro ajErr ***************************************************************
-**
-** Error message to standard error.
-** Newline is added automatically at the end of the format string.
-**
-** @param [r] format [char*] Format
-** @param [v] [...] Variable length argument list
-** @return [void]
-** @@
-******************************************************************************/
-
-/* @macro ajWarn **************************************************************
-**
-** Warning message to standard error.
-** Newline is added automatically at the end of the format string.
-**
-** @param [r] format [char*] Format
-** @param [v] [...] Variable length argument list
-** @return [void]
-** @@
-******************************************************************************/
-
-/* @macro ajUser **************************************************************
-**
-** User information message to standard error.
-** Newline is added automatically at the end of the format string.
-**
-** @param [r] format [char*] Format
-** @param [v] [...] Variable length argument list
-** @return [void]
-** @@
-******************************************************************************/
-
 /* @macro ajMessCrash *********************************************************
 **
 ** Crash error message to standard error.
@@ -262,7 +229,7 @@ static AjMessOutRoutine	 warningRoutine = 0;
 
 
 
-/* @func ajMessBeepReg ********************************************************
+/* @func ajMessRegBeep ********************************************************
 **
 ** Sets a function to process beeps
 **
@@ -271,7 +238,7 @@ static AjMessOutRoutine	 warningRoutine = 0;
 ** @@
 ******************************************************************************/
 
-AjMessVoidRoutine ajMessBeepReg(AjMessVoidRoutine func)
+AjMessVoidRoutine ajMessRegBeep(AjMessVoidRoutine func)
 {
     AjMessVoidRoutine old;
 
@@ -284,7 +251,7 @@ AjMessVoidRoutine ajMessBeepReg(AjMessVoidRoutine func)
 
 
 
-/* @func ajMessOutReg *********************************************************
+/* @func ajMessRegOut *********************************************************
 **
 ** Sets a function to write messages
 **
@@ -293,7 +260,7 @@ AjMessVoidRoutine ajMessBeepReg(AjMessVoidRoutine func)
 ** @@
 ******************************************************************************/
 
-AjMessOutRoutine ajMessOutReg(AjMessOutRoutine func)
+AjMessOutRoutine ajMessRegOut(AjMessOutRoutine func)
 {
     AjMessOutRoutine old;
 
@@ -306,7 +273,7 @@ AjMessOutRoutine ajMessOutReg(AjMessOutRoutine func)
 
 
 
-/* @func ajMessDumpReg ********************************************************
+/* @func ajMessRegDump ********************************************************
 **
 ** Sets a function to dump data
 **
@@ -315,7 +282,7 @@ AjMessOutRoutine ajMessOutReg(AjMessOutRoutine func)
 ** @@
 ******************************************************************************/
 
-AjMessOutRoutine ajMessDumpReg(AjMessOutRoutine func)
+AjMessOutRoutine ajMessRegDump(AjMessOutRoutine func)
 {
     AjMessOutRoutine old;
 
@@ -328,7 +295,7 @@ AjMessOutRoutine ajMessDumpReg(AjMessOutRoutine func)
 
 
 
-/* @func ajMessErrorReg *******************************************************
+/* @func ajMessRegErr *********************************************************
 **
 ** Sets a function to report errors
 **
@@ -337,7 +304,7 @@ AjMessOutRoutine ajMessDumpReg(AjMessOutRoutine func)
 ** @@
 ******************************************************************************/
 
-AjMessOutRoutine ajMessErrorReg(AjMessOutRoutine func)
+AjMessOutRoutine ajMessRegErr(AjMessOutRoutine func)
 {
     AjMessOutRoutine old;
 
@@ -350,7 +317,7 @@ AjMessOutRoutine ajMessErrorReg(AjMessOutRoutine func)
 
 
 
-/* @func ajMessExitReg ********************************************************
+/* @func ajMessRegExit ********************************************************
 **
 ** Sets a function to exit
 **
@@ -359,7 +326,7 @@ AjMessOutRoutine ajMessErrorReg(AjMessOutRoutine func)
 ** @@
 ******************************************************************************/
 
-AjMessOutRoutine ajMessExitReg(AjMessOutRoutine func)
+AjMessOutRoutine ajMessRegExit(AjMessOutRoutine func)
 {
     AjMessOutRoutine old;
 
@@ -371,7 +338,7 @@ AjMessOutRoutine ajMessExitReg(AjMessOutRoutine func)
 
 
 
-/* @func ajMessCrashReg *******************************************************
+/* @func ajMessRegCrash *******************************************************
 **
 ** Sets a function to crash
 **
@@ -380,7 +347,7 @@ AjMessOutRoutine ajMessExitReg(AjMessOutRoutine func)
 ** @@
 ******************************************************************************/
 
-AjMessOutRoutine ajMessCrashReg(AjMessOutRoutine func)
+AjMessOutRoutine ajMessRegCrash(AjMessOutRoutine func)
 {
     AjMessOutRoutine old;
 
@@ -393,7 +360,7 @@ AjMessOutRoutine ajMessCrashReg(AjMessOutRoutine func)
 
 
 
-/* @func ajMessWarningReg *****************************************************
+/* @func ajMessRegWarn ********************************************************
 **
 ** Sets a function to print warnings
 **
@@ -402,7 +369,7 @@ AjMessOutRoutine ajMessCrashReg(AjMessOutRoutine func)
 ** @@
 ******************************************************************************/
 
-AjMessOutRoutine ajMessWarningReg(AjMessOutRoutine func)
+AjMessOutRoutine ajMessRegWarn(AjMessOutRoutine func)
 {
     AjMessOutRoutine old;
 
@@ -440,7 +407,7 @@ void ajMessBeep(void)
 
 
 
-/* @func ajMessOutLine ********************************************************
+/* @func ajUser ***************************************************************
 **
 ** Formats a message. Calls the defined output function (if any).
 ** Otherwise prints the message to standard error with an extra newline.
@@ -451,7 +418,7 @@ void ajMessBeep(void)
 ** @@
 ******************************************************************************/
 
-void ajMessOutLine(const char *format,...)
+void ajUser(const char *format,...)
 {
     va_list args;
     const char *mesg_buf;
@@ -498,7 +465,7 @@ void ajMessOut(const char *format,...)
 
 
 
-/* @func ajMessVOut ***********************************************************
+/* @func ajVUser **************************************************************
 **
 ** Formats a message. Calls the defined output function (if any).
 ** Otherwise prints the message to standard error.
@@ -509,7 +476,7 @@ void ajMessOut(const char *format,...)
 ** @@
 ******************************************************************************/
 
-void ajMessVOut(const char *format, va_list args)
+void ajVUser(const char *format, va_list args)
 {
     char *mesg_buf;
 
@@ -597,7 +564,7 @@ ajint ajMessErrorCount(void)
 
 
 
-/* @func ajMessError **********************************************************
+/* @func ajErr ****************************************************************
 **
 ** Formats an error message. Calls the error function (if any).
 ** Otherwise prints the message to standard error with a trailing newline.
@@ -610,7 +577,7 @@ ajint ajMessErrorCount(void)
 ** @@
 ******************************************************************************/
 
-void ajMessError(const char *format, ...)
+void ajErr(const char *format, ...)
 {
     char *prefix   = ERROR_PREFIX;
     char *mesg_buf = NULL;
@@ -641,7 +608,7 @@ void ajMessError(const char *format, ...)
 
 
 
-/* @func ajMessVError *********************************************************
+/* @func ajVErr ***************************************************************
 **
 ** Formats an error message. Calls the error function (if any).
 ** Otherwise prints the message to standard error with a trailing newline.
@@ -654,7 +621,7 @@ void ajMessError(const char *format, ...)
 ** @@
 ******************************************************************************/
 
-void ajMessVError(const char *format, va_list args)
+void ajVErr(const char *format, va_list args)
 {
     char *prefix   = ERROR_PREFIX;
     char *mesg_buf = NULL;
@@ -682,7 +649,7 @@ void ajMessVError(const char *format, va_list args)
 
 
 
-/* @func ajMessDie ************************************************************
+/* @func ajDie ****************************************************************
 **
 ** Formats an error message. Calls the error function (if any).
 ** Otherwise prints the message to standard error with a trailing newline.
@@ -696,7 +663,7 @@ void ajMessVError(const char *format, va_list args)
 ** @@
 ******************************************************************************/
 
-void ajMessDie(const char *format, ...)
+void ajDie(const char *format, ...)
 {
     const char *prefix   = DIE_PREFIX;
     const char *mesg_buf = NULL;
@@ -730,7 +697,7 @@ void ajMessDie(const char *format, ...)
 
 
 
-/* @func ajMessVDie ***********************************************************
+/* @func ajVDie ***********************************************************
 **
 ** Formats an error message. Calls the error function (if any).
 ** Otherwise prints the message to standard error with a trailing newline.
@@ -744,7 +711,7 @@ void ajMessDie(const char *format, ...)
 ** @@
 ******************************************************************************/
 
-void ajMessVDie(const char *format, va_list args)
+void ajVDie(const char *format, va_list args)
 {
     char *prefix   = DIE_PREFIX;
     char *mesg_buf = NULL;
@@ -771,7 +738,7 @@ void ajMessVDie(const char *format, va_list args)
 
 
 
-/* @func ajMessWarning ********************************************************
+/* @func ajWarn ***************************************************************
 **
 ** Formats a warning message. Calls the warning function (if any).
 ** Otherwise prints the message to standard error with a trailing newline.
@@ -782,7 +749,7 @@ void ajMessVDie(const char *format, va_list args)
 ** @@
 ******************************************************************************/
 
-void ajMessWarning(const char *format, ...)
+void ajWarn(const char *format, ...)
 {
     char *prefix   = WARNING_PREFIX;
     char *mesg_buf = NULL;
@@ -811,7 +778,7 @@ void ajMessWarning(const char *format, ...)
 
 
 
-/* @func ajMessVWarning *******************************************************
+/* @func ajVWarn **************************************************************
 **
 ** Formats a warning message. Calls the warning function (if any).
 ** Otherwise prints the message to standard error with a trailing newline.
@@ -822,7 +789,7 @@ void ajMessWarning(const char *format, ...)
 ** @@
 ******************************************************************************/
 
-void ajMessVWarning(const char *format, va_list args)
+void ajVWarn(const char *format, va_list args)
 {
     char *prefix   = WARNING_PREFIX;
     char *mesg_buf = NULL;
@@ -1025,7 +992,7 @@ void ajMessVCrashFL(const char *format, va_list args)
 ** Redirects error call
 **
 ** If a setjmp() stack context is set using ajMessCatchError() then rather
-** than exiting or giving an error message, ajMessError() will
+** than exiting or giving an error message, ajErr() will
 ** longjmp() back to the context.
 **
 ** @param [r] fnew [jmp_buf*] Jump buffer new
@@ -1469,7 +1436,7 @@ static AjBool ajMessReadErrorFile(void)
 	messstore = ajFmtString("%s",message);
 	mess = (char *) ajTableGet(errorTable, namestore);
 	if(mess)
-	    ajMessError("%s is listed more than once in file %s",
+	    ajErr("%s is listed more than once in file %s",
 			name,messErrorFile);
 	else
 	    ajTablePut(errorTable, namestore, messstore);
@@ -1540,9 +1507,9 @@ void ajMessErrorCode(const char *code)
     {
 	mess = ajTableGet(errorTable, code);
 	if(mess)
-	    ajMessError(mess);
+	    ajErr(mess);
 	else
-	    ajMessError("could not find error code %s",code);
+	    ajErr("could not find error code %s",code);
     }
     else
     {
@@ -1550,14 +1517,14 @@ void ajMessErrorCode(const char *code)
 	{
 	    mess = ajTableGet(errorTable, code);
 	    if(mess)
-		ajMessError(mess);
+		ajErr(mess);
 	    else
-		ajMessError("could not find error code %s",code);
+		ajErr("could not find error code %s",code);
 	}
 	else
-	    ajMessError("Could not read the error file, "
-			"hence no reference to %s",
-			code);
+	    ajErr("Could not read the error file, "
+		  "hence no reference to %s",
+		  code);
     }
 
     return;
