@@ -1,4 +1,8 @@
 Version 2.7.0
+	Extractfeat now has the -describe qualifier to allow it to add
+	the value of selected tags to the Description line of the output
+	sequence. 
+
 	Revseq can now read in gapped nucleic acid sequences.
 
 	Removed old corba code in preparation for adding corba server as
