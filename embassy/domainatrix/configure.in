@@ -401,6 +401,15 @@ if test "$CC" = "cc"; then
 fi
 AM_CONDITIONAL(PURIFY, test "${enable_purify}" = "yes")
 
+dnl test for cygwin to set AM_LDFLAGS in library & apps Makefile.ams
+AJOSNAME=`uname`
+iscyg=no
+if test `expr substr $AJOSNAME 1 6` = "CYGWIN"; then
+   iscyg=yes
+fi
+AM_CONDITIONAL(ISCYGWIN, test "$iscyg" = "yes")
+AC_SUBST(ISCYGWIN)
+
 dnl Tests for AIX
 dnl If shared needs -Wl,-G in plplot,ajax,nucleus, -lX11 in plplot,
 dnl and -Wl,brtl -Wl,-bdynamic in emboss

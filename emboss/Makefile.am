@@ -252,9 +252,11 @@ testplot_SOURCES = testplot.c
 treetypedisplay_SOURCES = treetypedisplay.c
 
 # Uncomment to use dual libraries
-#LDADD = ../nucleus/libnucleus.la ../ajax/libajaxg.la ../ajax/libajax.la ../plplot/libplplot.la $(XLIB)
-# Uncomment to use single library
+if ISCYGWIN
 LDADD = ../nucleus/libnucleus.la ../ajax/libajax.la ../plplot/libplplot.la $(XLIB)
+else
+LDADD = ../nucleus/libnucleus.la ../ajax/libajaxg.la ../ajax/libajax.la ../plplot/libplplot.la $(XLIB)
+endif
 
 pkgdata_DATA = emboss.default.template
 pkgdatadir=$(prefix)/share/$(PACKAGE)

@@ -24,7 +24,18 @@ topo_SOURCES = topo.c
 noinst_HEADERS = common.h
 
 if LOCALLINK
-LDADD = ../../../nucleus/libnucleus.la ../../../ajax/libajax.la ../../../plplot/libplplot.la $(XLIB)
+
+if ISCYGWIN
+LDADD = ../../../nucleus/libnucleus.la  ../../../ajax/libajax.la ../../../plplot/libplplot.la $(XLIB)
 else
+LDADD = ../../../nucleus/libnucleus.la ../../../ajax/libajaxg.la ../../../ajax/libajax.la ../../../plplot/libplplot.la $(XLIB)
+endif
+
+else
+if ISCYGWIN
 LDADD = -L${embprefix}/lib -lnucleus -lajax -lplplot $(XLIB)
+else
+LDADD = -L${embprefix}/lib -lnucleus -lajaxg -lajax -lplplot $(XLIB)
+endif
+
 endif
