@@ -81,7 +81,7 @@ public class ParseAcd
   private int nrange;
                       
                       /** default for list or select data type */
-  private int listdefault;
+  private Vector listdefault;
 
 // Groups the program belongs to
                       /** true if primary group is defined */
@@ -100,7 +100,6 @@ public class ParseAcd
 * @param groups  Boolean determing whether just to retieve the groups 
 *
 */
-
   public ParseAcd(String acdText, boolean groups) 
   {
 
@@ -1084,6 +1083,7 @@ public class ParseAcd
         delim = aF.getParamValueStr(i);
       if (getParameterAttribute(field,i).startsWith("codedelim"))
         codedelim = aF.getParamValueStr(i);
+
     }
 
     if(delim == null || listAll == null)
@@ -1102,19 +1102,42 @@ public class ParseAcd
     
     st = new StringTokenizer(listAll);
     n = 0;
-    listdefault = 0;
 
+    boolean ldef = false;
+    Vector def = new Vector();
+
+    //put the default values into a vector
+    if(isDefaultParamValueStr(field))
+    {
+      ldef = true;
+      String sdef = getDefaultParamValueStr(field);
+      StringTokenizer stdef = new StringTokenizer(sdef);
+      while(stdef.hasMoreTokens())
+        def.add(stdef.nextToken(delim));
+    }
+     
+    listdefault = new Vector();  
     while (st.hasMoreTokens()) 
     {
       String key = st.nextToken(codedelim);
       item = st.nextToken(delim);
-      if(isDefaultParamValueStr(field))
+
+      if(ldef)
       {
         int newline = key.indexOf("\n");
         if(newline > -1)
           key = key.substring(newline+1,key.length());
-        if (key.equals(getDefaultParamValueStr(field)))
-          listdefault = n;
+        newline = key.indexOf(delim);
+        if(newline > -1)
+          key = key.substring(newline+1,key.length());
+
+        key = key.trim();
+
+        // check if it is a default value
+        for(int i=0;i<def.size();i++)
+          if (key.equals((String)def.get(i)))
+            listdefault.add(new Integer(n));
+        
       }
       item = item.substring(1,item.length()).trim();
       list[n] = new String(item); 
@@ -1219,7 +1242,7 @@ public class ParseAcd
    
     st = new StringTokenizer(listAll);
     n = 0;
-    listdefault = 0;
+    listdefault = new Vector();
 
     while (st.hasMoreTokens()) 
     {
@@ -1227,7 +1250,7 @@ public class ParseAcd
       if(isDefaultParamValueStr(field))
       {
         if (item.endsWith(getDefaultParamValueStr(field)))
-          listdefault = n;
+          listdefault.add(new Integer(n));
       }
 
       item = item.substring(0,item.length()).trim();
@@ -1245,7 +1268,7 @@ public class ParseAcd
 * @return int default for list or select data type
 *
 */
-  public int getListOrSelectDefault()
+  public Vector getListOrSelectDefault()
   {
     return listdefault;
   }

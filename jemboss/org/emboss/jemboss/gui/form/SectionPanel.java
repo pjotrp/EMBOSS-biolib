@@ -339,11 +339,22 @@ public class SectionPanel
           if(parseAcd.isMaxParamValue(nf))
             max = Double.parseDouble(parseAcd.getMaxParam(nf));
 
+//        System.out.println("MAX "+max);
+//        System.out.println("getListOrSelectDefault "+parseAcd.getListOrSelectDefault());
           if(max > 1.0)
           {
             multiOption[h] = new JList(list);
             multiOption[h].setSelectionMode
                (ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+    
+            Vector def = parseAcd.getListOrSelectDefault();
+
+            int selectedIndeces[] = new int[def.size()];
+            for(int i=0;i<def.size();i++)
+              selectedIndeces[i] = ((Integer)def.get(i)).intValue();
+
+            multiOption[h].setSelectedIndices(selectedIndeces);
+
             JScrollPane scrollPane = new JScrollPane(multiOption[h]);
             Dimension d = new Dimension(150,100);
             scrollPane.setMinimumSize(d);
@@ -354,8 +365,12 @@ public class SectionPanel
           else
           {
             fieldOption[h] = new myComboPopup(list);
-            fieldOption[h].setSelectedIndex(
-                    parseAcd.getListOrSelectDefault());
+
+            Vector def = parseAcd.getListOrSelectDefault();
+
+            for(int i=0;i<def.size();i++)
+              fieldOption[h].setSelectedIndex( ((Integer)def.get(i)).intValue() );
+
             Dimension d = fieldOption[h].getPreferredSize();
             d = new Dimension(150,(int)d.getHeight());
             
