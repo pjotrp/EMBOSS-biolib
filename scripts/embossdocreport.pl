@@ -8,38 +8,47 @@ $totfile = 0;
 $filelib = "unknown";
 $filename = "unknown";
 
+open (LOG, ">embossdocreport.log") || die "Cannot open embossdocreport.log";
+
 %badfiles = ();
 
 while (<>) {
     $newfunc = 0;
     $newfile = 0;
     if (/^Function (\S+)/) {
+	$funcline = $_;
 	$funcname = $1;
 	$newfunc = 1;
     }
     elsif (/^Static function (\S+)/) {
+	$funcline = $_;
 	$funcname = $1;
 	$newfunc = 1;
     }
     elsif (/^Macro (\S+)/) {
+	$funcline = $_;
 	$funcname = $1;
 	$newfunc = 1;
     }
     elsif (/^Data type (\S+)/) {
+	$funcline = $_;
 	$funcname = $1;
 	$newfunc = 1;
     }
     elsif (/^Static data type (\S+)/) {
+	$funcline = $_;
 	$funcname = $1;
 	$newfunc = 1;
     }
 
     elsif (/^Typedef data type (\S+)/) {
+	$funcline = $_;
 	$funcname = $1;
 	$newfunc = 1;
     }
 
     if (/^set pubout \'([^\']+)\' lib \'([^\']+)\'/) {
+	$newfileline = $_;
 	$newfilename = $1;
 	$newfilelib = $2;
 	$newfile = 1;
@@ -76,7 +85,15 @@ while (<>) {
     }
 
     if (/^bad/) {
+	if (!$errcount) {
+	    if (!$errfile) {
+		print LOG "=============================\n";
+		print LOG $newfileline;
+	    }
+	    print LOG "  ".$funcline;
+	}
 	$errcount++;
+	print LOG "    ".$_;
     }
 }
 
@@ -96,3 +113,4 @@ foreach $x (sort (keys (%badfiles))) {
 }
 
 print STDERR "$totcount errors in $errfunc functions in $totfile files\n";
+close LOG;
