@@ -137,7 +137,9 @@ int main(int argc, char **argv)
 	ajGraphSetCharSize(0.3);
     }
     else
-	ajFmtPrintF(outf,"##Graphic\n");
+	ajFmtPrintF(outf,"##Graphic\n##Screen x1 %f y1 %f x2 %f y2 %f\n",
+		    0.0-xmargin,(total+xmargin)*1.35,0.0-ymargin,
+		    total+ymargin);
     
     
 
