@@ -60,7 +60,7 @@ endsection: required
 
 
 section: additional [
-  information: "Additional section"
+  information: "Required section"
   type: "page"
 ]
 

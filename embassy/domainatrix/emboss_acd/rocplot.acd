@@ -154,6 +154,21 @@ endsection: required
 
 
 
+section: advanced 
+[
+  information: "Advanced section"
+  type: "page"
+]
+
+boolean: norange
+[
+  information: "Disregard range data when determining unique hits."
+  help: "This option specifies whether to disregard range data when identifying unique hits.  If set, the range data specified in the hits files are disregarded, two hits are classed as unique if they have different accession numbers (no requirement for overlapping ranges)."
+  default: "N"
+]
+
+endsection: advanced
+
 
 
 section: output 

@@ -1,5 +1,5 @@
 application: seqalign [
-  documentation: "Reads a DAF file (domain alignment file) and a DHF (domain hits file) and 
+  documentation: "Reads a DAF file (domain alignment file) and a DHF file (domain hits file) and 
 	 writes a DAF file extended with the hits."
   groups: "Protein:3D Structure"
   gui: "yes"
@@ -73,15 +73,25 @@ section: required [
     information: "Select number."
   ]
 
+endsection: required
+
+
+
+
+
+section: advanced [
+  information: "Advanced section"
+  type: "page"
+]
+
   boolean: forcetype  [
-    standard: "Y"
+    additional: "Y"
     information: "Force output of minimal domain classification data."
     help: "This option specifies whether to force minimal domain classification data to be written to the output file in cases where singlet sequences were given as input file and no classification data was available"
     default: "N"
   ]
 
-endsection: required
-
+endsection: advanced
 
 
 

@@ -130,8 +130,8 @@ section: required [
 endsection: required
 
 
-section: additional [
-  information: "Additional section"
+section: advanced [
+  information: "Advanced section"
   type: "page"
 ]
 
@@ -176,7 +176,7 @@ section: additional [
            gap extension penalty to control gap scoring."
   ]
 
-endsection: additional
+endsection: advanced
 
 
 
@@ -197,7 +197,7 @@ directory: dhfout  [
 toggle: dored  [
   standard:  "Y"
   information: "Retain redundant sequences."
-  help: "This option specifies whether to retain redundant sequences. If this option is set a DHF (domain hits file) of redundant sequences is written."
+  help: "This option specifies whether to retain redundant sequences. If this option is set a DHF file (domain hits file) of redundant sequences is written."
   default: "N"
 ]
 

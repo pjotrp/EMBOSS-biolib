@@ -1,6 +1,6 @@
 application: hetparse [
   documentation: "Converts raw dictionary of heterogen groups
-                  to a file in embl-like format."
+                  to a file in EMBL-like format."
   groups: "Utils:Database creation"
   gui: "yes"
   batch: "yes"
@@ -17,9 +17,10 @@ section: input [
     parameter: "Y"
     information: "Name of input file (raw dictionary of
                   heterogen groups)"
-    help: "Parse the dictionary of heterogen groups available
-           at http://pdb.rutgers.edu/het_dictionary.txt"
-	   knowntype: "raw dictionary of heterogen groups"
+    help: "This option specifies the name of input file (raw dictionary of
+           heterogen groups) to parse, which should be of the format specified at
+           http://pdb.rutgers.edu/het_dictionary.txt"
+	   knowntype: "Raw dictionary of heterogen groups"
   ]
 
 endsection: input
@@ -32,27 +33,21 @@ section: required [
 
   toggle: dogrep  [
     standard: "Y"
-    information: "Search a directory of files with keywords?"
-    help: "Optionally, hetparse will search a directory of pdb files
+    information: "Search a directory of PDB files with keywords?"
+    help: "This option specifies whether to search a directory of files (typically PDB files) with keywords. If set, HETPARSE will search the directory
            and will count the number of files that each heterogen appears
            in."
     default: "N"
   ]
 
 
-
-  string: path  [
+  dirlist: dirlist
+  [
     standard: "$(dogrep)"
     information: "Directory to search with keywords"
+    help: "This option specifies the directory to search with keywords."
     default: "./"
-  ]
-
-
-  string: extn  [
-    standard: "$(dogrep)"
-    information: "Extension of files to search in above
-                  directory"
-    default: ".ent"
+    extension: "ent"
   ]
 
 endsection: required
@@ -65,7 +60,9 @@ section: output [
   outfile: outfile  [
     parameter: "Y"
     default: "Ehet.dat"
-    knowntype: "embl format dictionary of heterogen groups"
+    information: "Name of EMBL-like format dictionary of heterogen groups."
+    help: "This option specifies the name of EMBL-like format dictionary of heterogen groups."
+    knowntype: "Dictionary of heterogen groups"
   ]
 
 endsection: output
