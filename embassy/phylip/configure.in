@@ -88,6 +88,15 @@ fi
 
 AM_CONDITIONAL(PURIFY, test "${enable_purify}" = "yes")
 
+
+dnl Tests for AIX
+dnl If shared needs -Wl,-G in plplot,ajax,nucleus, -lX11 in plplot,
+dnl and -Wl,brtl -Wl,-bdynamic in emboss
+dnl We therefore need a static test as well
+AM_CONDITIONAL(ISAIXIA64, test "`uname`" = "AIX")
+AM_CONDITIONAL(ISSHARED, test "${enable_shared}" = "yes")
+
+
 AC_OUTPUT(src/Makefile emboss_acd/Makefile Makefile)
 
 

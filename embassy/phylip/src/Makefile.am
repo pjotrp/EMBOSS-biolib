@@ -7,6 +7,16 @@ ekitsch emix epenny eprotdist eprotpars erestml eseqboot eneighbor
 
 INCLUDES = -I../include -I../../../ajax
 
+
+if ISSHARED
+if ISAIXIA64
+AM_CFLAGS = -Wl,-bdynamic -Wl,-brtl -L../../../ajax/.libs -lajax
+else
+AM_CFLAGS =
+endif
+endif
+
+
 eclique_SOURCES = clique.c
 econsense_SOURCES = consense.c
 econtml_SOURCES = contml.c
