@@ -77,6 +77,7 @@ void          ajFeatSortByEnd(AjPFeattable Feattab);
 void          ajFeatSortByStart(AjPFeattable Feattab);
 void          ajFeatSortByType(AjPFeattable Feattab);
 void          ajFeattableAdd (AjPFeattable thys, AjPFeature feature) ;
+void          ajFeattableClear ( AjPFeattable thys );
 void          ajFeattableCopy (AjPFeattable* pthys, AjPFeattable orig);
 void          ajFeattableDel (AjPFeattable *pthis) ;
 AjPStr        ajFeattableGetName (AjPFeattable thys);

@@ -166,7 +166,6 @@ static AjPFeature   featSwissProcess  ( AjPFeattable thys, AjPStr feature,
 					AjPStr fromstr, AjPStr tostr,
 					AjPStr source,
 					AjPStr tags);
-static void         featTableClear  ( AjPFeattable thys ) ;
 static void         featTableInit ( AjPFeattable thys, 
 				  AjPStr name);
 static AjPFeattable featTableNew (void);
@@ -1255,9 +1254,10 @@ void ajFeattableDel(AjPFeattable *pthis)
 
   if (!thys) return ;
 
-  featTableClear(thys) ;
+  ajFeattableClear(thys) ;
 
   ajStrDel (&thys->Type);
+  ajListDel(&thys->Features) ;
 
   AJFREE (*pthis) ; /* free the object */
   *pthis = NULL ;
@@ -1657,7 +1657,7 @@ static void featTableInit ( AjPFeattable thys,
   return;
 }
 
-/* @funcstatic featTableClear *************************************************
+/* @func ajFeattableClear *************************************************
 **
 ** Clears a feature table of all features
 **
@@ -1666,7 +1666,7 @@ static void featTableInit ( AjPFeattable thys,
 ** @@
 ******************************************************************************/
 
-static void featTableClear ( AjPFeattable thys )
+void ajFeattableClear ( AjPFeattable thys )
 {
   AjIList iter       = NULL ;
   AjPFeature feature = NULL ;
@@ -1689,7 +1689,8 @@ static void featTableClear ( AjPFeattable thys )
     ajListIterFree(iter) ;
   }
 
-  ajListDel(&thys->Features) ;
+  /* No - we need the list to exist by to be empty */
+  /* ajListDel(&thys->Features) ; */
 
   return;
 }
