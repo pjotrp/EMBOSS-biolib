@@ -9,12 +9,16 @@ s###########################################################################
 #
 ###########################################################################
 
-# This is the qatest.dat file that is used by the scripts/qatest.pl script
+# This is the qatest.dat file that is used by the scripts/qatest.pl script.
+#
 # The script should be run from the directory test/qa
+#
 # Additional input data is expected to be found in the directory test/data
+#
 # If no argument is given to the script it will run through all of the
 # entries in this file. If an argument is supplied it will search for
 # the entry whose ID name matches the argument an drun that one.
+#
 # To run the script and retain the files craeted during the test, use
 # ../../scripts/qatest.pl -kk
 # 
@@ -26,7 +30,7 @@ s###########################################################################
 # AP programname (the name of the application to test)
 # CL (the command-line arguments to use after the application name)
 # IN (a response to a prompt for input using the default)
-# IN (a response to a prompt using a non-default input)
+# IN text (a response to a prompt using a non-default input)
 # FI filename (an expected output filename)
 # FZ integer (the expected size in bytes of the above filename)
 # FC integer (the expected number of lines in the above file)
@@ -38,7 +42,6 @@ s###########################################################################
 # FP 0 /Error: /
 # FP 0 /Died: /
 # // (marks the end of the entry)
-# 
 
 
 ####################
