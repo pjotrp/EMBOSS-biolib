@@ -26,6 +26,8 @@
 ********************************************************************/
 
 #include "ajax.h"
+#include "ajmem.h"
+#include "ajfile.h"
 #include "limits.h"
 #include <stdarg.h>
 #include <sys/types.h>
@@ -383,6 +385,8 @@ static AjBool seqCdAll (AjPSeqin seqin) {
 
     if (ajFileTestSkip (fullName, qry->Exclude, qry->Filename, ajTrue))
       ajListstrPushApp (list, fullName);
+    else
+	ajStrDel(&fullName);
   }
   seqin->Filebuff = ajFileBuffNewInList(list);
   fullName = NULL;
@@ -431,15 +435,24 @@ static AjPFile seqBlastFileOpen (AjPStr dir, AjPStr name) {
 
 static SeqPCdFile seqCdFileOpen (AjPStr dir, char* name, AjPStr* fullname) {
 
-  SeqPCdFile thys;
+  SeqPCdFile thys=NULL;
+  AjPFile fred;
+  
+  
 
   AJNEW0(thys);
 
   thys->File = ajFileNewDC(dir, name);
+
   if (!thys->File)
-    return NULL;
+  {
+      AJFREE(thys);
+      return NULL;
+  }
+  
 
   AJNEW0(thys->Header);
+
   (void) seqCdReadHeader (thys);
   thys->NRecords = thys->Header->NRecords;
   thys->RecSize = thys->Header->RecSize;
@@ -448,6 +461,8 @@ static SeqPCdFile seqCdFileOpen (AjPStr dir, char* name, AjPStr* fullname) {
 
   ajDebug ("seqCdFileOpen '%F' NRecords: %d RecSize: %d\n",
 	   thys->File, thys->NRecords, thys->RecSize);
+
+  
   return thys;
 }
 
@@ -3300,8 +3315,7 @@ static AjBool seqCdTrgQuery (AjPSeqQuery qry)
     SeqPCdEntry entry;
 
 
-    if(!seqCdTrgOpen (qry->IndexDir, "acnum",
-		  &trgfp, &hitfp))
+    if(!seqCdTrgOpen (qry->IndexDir,"acnum",&trgfp, &hitfp))
 	return ajFalse;
     
 
@@ -3326,6 +3340,7 @@ static AjBool seqCdTrgQuery (AjPSeqQuery qry)
 	    name = seqCdTrgName(pos,trgfp);
 	    name[len]='\0';
 	    cmp = ajStrCmpC(actmp,name);
+/*	    cmp = ajStrMatchWildC(acstr,name);*/
 	    ajDebug(" trg test %d '%s' %2d (+/- %d)\n",pos,name,cmp,t-b);
 	    if(!cmp)
 	    {
@@ -3361,6 +3376,7 @@ static AjBool seqCdTrgQuery (AjPSeqQuery qry)
 	    name = seqCdTrgName(pos,trgfp);
 	    name[len]='\0';
 	    cmp = ajStrCmpC(actmp,name);
+/*	    cmp = ajStrMatchWildC(acstr,name);*/
 	    ajDebug(" trg test %d '%s' %2d (+/- %d)\n",pos,name,cmp,t-b);
 	    if(!cmp)
 	    {
@@ -3409,7 +3425,7 @@ static AjBool seqCdTrgQuery (AjPSeqQuery qry)
 		else
 		{
 		    ajDebug("SKIP: accnum '%S' [file %d]\n",
-			    qry->Id,idxline->DivCode);
+			    qry->Acc,idxline->DivCode);
 		}
 	    }
 	
