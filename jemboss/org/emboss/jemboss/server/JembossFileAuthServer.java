@@ -40,7 +40,6 @@ public class JembossFileAuthServer
 
   public Vector embreo_roots(String userName, byte[] passwd)
   {
-
     Ajax aj = new Ajax();
     Vector vans = new Vector();
     if(!verifyUser(aj,userName,passwd,vans))
@@ -60,7 +59,7 @@ public class JembossFileAuthServer
     vans.add(userHomeDir);
 
     vans.add("EMBOSS results");
-    vans.add("/tmp/SOAP/emboss/"+userName);
+    vans.add("/tmp/soap/"+userName);
  
 //ADD IN OTHER USER ROOT DIRECTORIES HERE
 

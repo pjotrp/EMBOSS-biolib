@@ -245,6 +245,10 @@ public class JembossServer
     return vans;
   }
 
+  public Vector call_ajax(String fileContent, String seqtype, String userName)
+  {
+    return call_ajax(fileContent,seqtype);
+  }
 
 /**
 *
@@ -422,6 +426,15 @@ public class JembossServer
     return result;
   }
 
+  public Vector run_prog(String embossCommand, String options,
+                         Vector inFiles, String userName)
+  {
+    Hashtable hashInFiles = getHashtable(inFiles);
+    tmproot = tmproot.concat(userName+fs);
+    return run_prog(embossCommand,options,hashInFiles);
+/*   return run_prog(embossCommand,options,hashInFiles,userName); */
+  }
+
 /**
 *
 * Run an EMBOSS application
@@ -431,8 +444,9 @@ public class JembossServer
 * @return output files from application run
 *
 */
-  public Vector run_prog(String embossCommand, String options, Hashtable inFiles,
-                         String userName)
+/*
+  public Vector run_prog(String embossCommand, String options,
+                         Hashtable inFiles, String userName)
   {
     tmproot = tmproot.concat(userName+fs);
     Vector result = new Vector();
@@ -440,7 +454,7 @@ public class JembossServer
 
     return result;
   }
-
+*/
 
 /**
 *
@@ -987,6 +1001,13 @@ public class JembossServer
 *
 */
   public Vector update_result_status(String prog, String opt,
+                        Vector resToQuery,String userName)
+  {
+    return update_result_status(prog,opt,getHashtable(resToQuery),
+                                userName);
+  }
+
+  public Vector update_result_status(String prog, String opt,
                         Hashtable resToQuery,String userName)
   {
     tmproot = tmproot.concat(userName+fs);
@@ -1039,6 +1060,17 @@ public class JembossServer
     }
 
     return vans;
+  }
+
+  private Hashtable getHashtable(Vector v)
+  {
+    Hashtable h = new Hashtable();
+    for(Enumeration e = v.elements() ; e.hasMoreElements() ;)
+    {
+      String s = (String)e.nextElement();
+      h.put(s,e.nextElement());
+    }
+    return h;
   }
 
 

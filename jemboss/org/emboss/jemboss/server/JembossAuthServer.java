@@ -36,7 +36,7 @@ public class JembossAuthServer
 {
 
 //SOAP results directory
-  private String tmproot = new String("/tmp/SOAP/emboss/");
+  private String tmproot = new String("/tmp/soap/");
   private String logFile = new String(tmproot+"/jemboss.log");
   private String errorLog = new String(tmproot+"/jemboss_error.log");
 
@@ -487,6 +487,23 @@ public class JembossAuthServer
     return showdbOut;
   }
 
+  public synchronized Vector run_prog(String embossCommand, String options,
+                             Vector inFiles,String userName, byte[] passwd)
+  {
+    Hashtable hashInFiles = getHashtable(inFiles);
+    return run_prog(embossCommand,options,hashInFiles,userName,passwd);
+  }
+
+  private Hashtable getHashtable(Vector v)
+  {
+    Hashtable h = new Hashtable();
+    for(Enumeration e = v.elements() ; e.hasMoreElements() ;)
+    {
+      String s = (String)e.nextElement();
+      h.put(s,e.nextElement());
+    }
+    return h;
+  }
 
 /**
 *
@@ -1072,6 +1089,15 @@ public class JembossAuthServer
 * processes.
 *
 */
+
+  public Vector update_result_status(String prog, String opt,
+                        Vector resToQuery,String userName,
+                        byte[] passwd)
+  {
+    return update_result_status(prog,opt,getHashtable(resToQuery),
+                                userName,passwd);
+  }
+
   public Vector update_result_status(String prog, String opt,
                         Hashtable resToQuery,String userName,
                         byte[] passwd)

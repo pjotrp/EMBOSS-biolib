@@ -1,9 +1,92 @@
 #!/bin/sh
-# 
-# install-jemboss-server.sh
-# last changed: 16/09/02
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#
+#  @author: Copyright (C) Tim Carver
+#
+#
+# Install EMBOSS & Jemboss 
+# last changed: 15/10/02
+#
+#
+
+######################## Functions ########################
 
 
+getJavaHomePath()
+{
+  JAVA_HOME_TMP=${JAVA_HOME_TMP-`which java 2>/dev/null`} 
+#  JAVA_HOME_TMP=`which java`
+
+  if [ ! -f "$JAVA_HOME_TMP" ]; then
+     if [ -d /usr/java/j2sdk1.4.1 ]; then
+       JAVA_HOME_TMP=/usr/java/j2sdk1.4.1
+     elif [ -d /usr/local/java/j2sdk1.4.1 ]; then
+       JAVA_HOME_TMP=/usr/local/java/j2sdk1.4.1
+     else
+       JAVA_HOME_TMP=0
+     fi
+  else
+    JAVA_HOME_TMP=`dirname $JAVA_HOME_TMP`
+    JAVA_HOME_TMP=`dirname $JAVA_HOME_TMP`
+  fi
+}
+
+
+setDataDirectory()
+{
+
+  JEMBOSS_CLASS=$1/org/emboss/jemboss/server/
+  AUTH=$2
+  DATADIR=$3
+
+  OLDPATH="/tmp/SOAP/emboss"
+
+  if [ $AUTH = "y" ]; then
+    JEM_CLASS="$JEMBOSS_CLASS/JembossAuthServer.java"
+    if test -f "$JEM_CLASS.orig" && (test ! -z "$JEM_CLASS.orig");then
+      mv $JEM_CLASS.orig $JEM_CLASS
+    fi
+    mv $JEM_CLASS $JEM_CLASS.orig
+    sed "s|$OLDPATH|$DATADIR|" $JEM_CLASS.orig > $JEM_CLASS
+    
+    JEM_CLASS="$JEMBOSS_CLASS/JembossFileAuthServer.java"
+    if test -f "$JEM_CLASS.orig" && test ! -z "$JEM_CLASS.orig";then
+      mv $JEM_CLASS.orig $JEM_CLASS
+    fi
+    mv $JEM_CLASS $JEM_CLASS.orig
+    sed "s|$OLDPATH|$DATADIR|" $JEM_CLASS.orig > $JEM_CLASS
+#   echo "sed 's|$OLDPATH|$DATADIR|' $JEM_CLASS.old > $JEM_CLASS"
+  else
+    JEM_CLASS="$JEMBOSS_CLASS/JembossServer.java"
+    if test -f "$JEM_CLASS.orig" && test ! -z "$JEM_CLASS.orig";then
+      mv $JEM_CLASS.orig $JEM_CLASS
+    fi
+    mv $JEM_CLASS $JEM_CLASS.orig
+    sed "s|$OLDPATH|$DATADIR|" $JEM_CLASS.orig > $JEM_CLASS
+
+    JEM_CLASS="$JEMBOSS_CLASS/JembossFileServer.java"
+    if test -f "$JEM_CLASS.orig" && test ! -z "$JEM_CLASS.orig";then
+      mv $JEM_CLASS.orig $JEM_CLASS
+    fi
+    mv $JEM_CLASS $JEM_CLASS.orig
+    sed "s|$OLDPATH|$DATADIR|" $JEM_CLASS.orig > $JEM_CLASS
+  fi
+ 
+
+}
 
 tomcat_classpath_notes()
 {
@@ -32,7 +115,7 @@ ssl_print_notes()
  if [ -f $JAVA_HOME/jre/lib/security/java.security ]; then
    echo "A) EDIT "$JAVA_HOME/jre/lib/security/java.security
  else
-   echo "A) EDIT the java.security file"
+   echo "A) EDIT the java.security file "
  fi
 
  echo "   adding/changing the provider line (usually provider 2 or 3):"
@@ -129,10 +212,10 @@ make_jemboss_properties()
     echo "user.auth=false" > $JEMBOSS_PROPERTIES
   fi
   echo "jemboss.server=true" >> $JEMBOSS_PROPERTIES
-  echo "server.public=$URL/soap/servlet/rpcrouter" \
+  echo "server.public=$URL/axis/services" \
                                       >> $JEMBOSS_PROPERTIES
 
-  echo "server.private=$URL/soap/servlet/rpcrouter" \
+  echo "server.private=$URL/axis/services" \
                                        >> $JEMBOSS_PROPERTIES
 
   if [ $AUTH = "y" ]; then
@@ -159,6 +242,34 @@ make_jemboss_properties()
 
 }
 
+
+deploy_axis_services()
+{
+
+  JEMBOSS_LIB=$1
+  AXIS=$1/axis
+  CLASSPATH=$AXIS/axis.jar::$AXIS/jaxrpc.jar:$AXIS/saaj.jar:$AXIS/commons-logging.jar:
+  CLASSPATH=${CLASSPATH}:$AXIS/commons-discovery.jar:$AXIS/wsdl4j.jar:$AXIS/servlet.jar
+  CLASSPATH=${CLASSPATH}:$JEMBOSS_LIB/jnet.jar:$JEMBOSS_LIB/jsse.jar:$JEMBOSS_LIB/jcert.jar
+  CLASSPATH=${CLASSPATH}:$JEMBOSS_LIB/xerces.jar
+
+  SERVICE=$2
+  URL=$3
+  JAVAHOME=$4
+  OPT_PROP1=$5
+  OPT_PROP2=$6
+
+  echo
+  echo "Deploying $SERVICE "
+  echo "$JAVAHOME/bin/java -classpath $CLASSPATH $OPT_PROP1 $OPT_PROP2 "
+  echo "org.apache.axis.client.AdminClient -l$URL/axis/services JembossServer.wsdd"
+  echo
+
+  $JAVAHOME/bin/java -classpath $CLASSPATH $OPT_PROP1 $OPT_PROP2 \
+        org.apache.axis.client.AdminClient \
+        -l$URL/axis/services JembossServer.wsdd
+
+}
 
 deploy_auth_services()
 {
@@ -187,7 +298,7 @@ deploy_auth_services()
 
 output_auth_xml()
 {
-  AUTH=$3
+  AUTH=$2
   if [ $AUTH = "y" ]; then
     JEM_CLASS="org.emboss.jemboss.server.JembossAuthServer"
     FIL_CLASS="org.emboss.jemboss.server.JembossFileAuthServer"
@@ -199,37 +310,18 @@ output_auth_xml()
   fi
 
   XML_FILE=$1
-  echo '<isd:service xmlns:isd="http://xml.apache.org/xml-soap/deployment"' > $XML_FILE
-  echo " id=\"$ID\">" >> $XML_FILE
-  echo ' <isd:provider type="java"' >> $XML_FILE
-  echo '  scope="Request"' >> $XML_FILE
-  echo '  methods="name version abouturl show_acd getWossname' >> $XML_FILE
-  echo '  show_help show_db run_prog show_saved_results' >> $XML_FILE
-  echo '  delete_saved_results list_saved_results call_ajax' >> $XML_FILE
-  echo '  update_result_status save_project_file">' >> $XML_FILE
-  echo '  <isd:java class="'$JEM_CLASS'"' >> $XML_FILE
-  echo '  static="false"/>' >> $XML_FILE
-  echo ' </isd:provider>' >>$XML_FILE
-  echo ' <isd:faultListener>' >>$XML_FILE
-  echo '   org.apache.soap.server.DOMFaultListener' >> $XML_FILE
-  echo ' </isd:faultListener>' >> $XML_FILE
-  echo '</isd:service>' >> $XML_FILE
+  echo '<deployment xmlns="http://xml.apache.org/axis/wsdd/"' > $XML_FILE
+  echo '            xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">' >> $XML_FILE
+  echo "  <service name=\"$ID\" provider=\"java:RPC\">" >> $XML_FILE
+  echo "    <parameter name=\"className\" value=\"$JEM_CLASS\"/>" >> $XML_FILE
+  echo '    <parameter name="allowedMethods" value="*"/>' >> $XML_FILE
+  echo '  </service>' >> $XML_FILE
+  echo '  <service name="EmbreoFile" provider="java:RPC">' >> $XML_FILE
+  echo "    <parameter name=\"className\" value=\"$FIL_CLASS\"/>" >> $XML_FILE
+  echo '    <parameter name="allowedMethods" value="*"/>' >> $XML_FILE
+  echo '  </service>' >> $XML_FILE
+  echo '</deployment>' >> $XML_FILE
 
-  XML_FILE1=$2
-  echo '<isd:service xmlns:isd="http://xml.apache.org/xml-soap/deployment"' > $XML_FILE1
-  echo ' id="EmbreoFile">' >> $XML_FILE1
-  echo ' <isd:provider type="java"' >> $XML_FILE1
-  echo '  scope="Request"' >> $XML_FILE1
-  echo '  methods="directory_shortls embreo_roots get_file put_file' >> $XML_FILE1
-  echo '  delFile mkdir rename">' >> $XML_FILE1
-  echo '  <isd:java class="'$FIL_CLASS'"' >> $XML_FILE1
-  echo '  static="false"/>' >> $XML_FILE1
-  echo ' </isd:provider>' >>$XML_FILE1
-  echo ' <isd:faultListener>' >>$XML_FILE1
-  echo '   org.apache.soap.server.DOMFaultListener' >> $XML_FILE1
-  echo ' </isd:faultListener>' >> $XML_FILE1
-  echo '</isd:service>' >> $XML_FILE1
-  
 }
 
 echo
@@ -264,7 +356,7 @@ echo "(1) EMBOSS release (contains Jemboss) ftp://ftp.hgmp.mrc.ac.uk/pub/EMBOSS/
 
 if [ $INSTALL_TYPE = "1" ]; then
   echo "(2) Tomcat release http://jakarta.apache.org/site/binindex.html"
-  echo "(3) SOAP release   http://xml.apache.org/dist/soap/"
+  echo "(3) Apache AXIS (SOAP) release   http://xml.apache.org/axis/"
 fi
   
 echo
@@ -302,6 +394,9 @@ case $PLATTMP in
     ;;
   SunOS)
     PLATTMP="5"
+    ;;
+  Darwin)
+    PLATTMP="6"
     ;;
   *)
     PLATTMP="1"
@@ -406,8 +501,16 @@ fi
 #
 # JAVA_HOME
 #
+getJavaHomePath
+JAVA_HOME=$JAVA_HOME_TMP
+if [ "$JAVA_HOME" != "0" ]; then
+  echo "Enter java (1.3 or above) location [$JAVA_HOME_TMP]: "
+  read JAVA_HOME
 
-JAVA_HOME=0
+  if [ "$JAVA_HOME" = "" ]; then 
+    JAVA_HOME=$JAVA_HOME_TMP
+  fi
+fi
 
 while [ ! -f "$JAVA_HOME/bin/javac" ]
 do
@@ -464,7 +567,17 @@ fi
 #
 # EMBOSS_DOWNLOAD
 #
-EMBOSS_DOWNLOAD=0
+EMBOSS_DOWNLOAD_TMP=$PWD
+EMBOSS_DOWNLOAD_TMP=`dirname $EMBOSS_DOWNLOAD_TMP`
+EMBOSS_DOWNLOAD_TMP=`dirname $EMBOSS_DOWNLOAD_TMP`
+
+echo "Enter EMBOSS download directory"
+echo "[$EMBOSS_DOWNLOAD_TMP]: "
+read EMBOSS_DOWNLOAD
+
+if [ "$EMBOSS_DOWNLOAD" = "" ]; then
+  EMBOSS_DOWNLOAD=$EMBOSS_DOWNLOAD_TMP
+fi
 
 while [ ! -d "$EMBOSS_DOWNLOAD/ajax" ]
 do
@@ -583,6 +696,22 @@ if [ "$AUTH" = "y" ]; then
   fi
 fi
  
+#
+#
+# SOAP data directory store
+#
+
+echo "Define the directory you want to store the results in"
+echo "[/tmp/SOAP/emboss]"
+read DATADIR
+echo "$DATADIR" >> $RECORD
+
+if [ "$DATADIR" != "" ]; then
+  setDataDirectory $EMBOSS_DOWNLOAD/jemboss $AUTH $DATADIR
+else
+  setDataDirectory $EMBOSS_DOWNLOAD/jemboss $AUTH /tmp/SOAP/emboss
+fi
+
 
 if [ $INSTALL_TYPE = "1" ]; then
 #
@@ -599,20 +728,19 @@ if [ $INSTALL_TYPE = "1" ]; then
   echo "$TOMCAT_ROOT" >> $RECORD
 
 #
-# SOAP
+# Apache AXIS (SOAP)
 #
   SOAP_ROOT=0
 
-  while [ ! -f "$SOAP_ROOT/webapps/soap.war" ]
+  while [ ! -d "$SOAP_ROOT/webapps/axis" ]
   do
-    echo "Enter SOAP root directory (e.g. /usr/local/soap-2_x)"
+    echo "Enter Apache AXIS (SOAP) root directory (e.g. /usr/local/xml-axis-xx)"
     read SOAP_ROOT
   done
 
   echo "$SOAP_ROOT" >> $RECORD
 
-  cp $SOAP_ROOT/webapps/soap.war $TOMCAT_ROOT/webapps
-
+  cp -R $SOAP_ROOT/webapps/axis $TOMCAT_ROOT/webapps
 fi
 #
 #
@@ -672,11 +800,11 @@ make install
 JEMBOSS=$EMBOSS_INSTALL/share/EMBOSS/jemboss
 
 if [ $AUTH = "y" ]; then
-  $JAVA_HOME/bin/javac -classpath $JEMBOSS:$JEMBOSS/lib/soap.jar $JEMBOSS/org/emboss/jemboss/server/JembossAuthServer.java
-  $JAVA_HOME/bin/javac -classpath $JEMBOSS:$JEMBOSS/lib/soap.jar $JEMBOSS/org/emboss/jemboss/server/JembossFileAuthServer.java
+  $JAVA_HOME/bin/javac -classpath $JEMBOSS $JEMBOSS/org/emboss/jemboss/server/JembossAuthServer.java
+  $JAVA_HOME/bin/javac -classpath $JEMBOSS $JEMBOSS/org/emboss/jemboss/server/JembossFileAuthServer.java
 else
-  $JAVA_HOME/bin/javac -classpath $JEMBOSS:$JEMBOSS/lib/soap.jar $JEMBOSS/org/emboss/jemboss/server/JembossServer.java
-  $JAVA_HOME/bin/javac -classpath $JEMBOSS:$JEMBOSS/lib/soap.jar $JEMBOSS/org/emboss/jemboss/server/JembossFileServer.java
+  $JAVA_HOME/bin/javac -classpath $JEMBOSS $JEMBOSS/org/emboss/jemboss/server/JembossServer.java
+  $JAVA_HOME/bin/javac -classpath $JEMBOSS $JEMBOSS/org/emboss/jemboss/server/JembossFileServer.java
 fi
 
 if [ "$MACOSX" = "y" ]; then
@@ -775,9 +903,20 @@ chmod u+x tomstop
 #
 
 if [ -d "$TOMCAT_ROOT/shared/classes" ]; then
-#tomcat 10.1.x
-  cp $JEMBOSS/lib/mail.jar $TOMCAT_ROOT/shared/lib
-  cp $JEMBOSS/lib/activation.jar $TOMCAT_ROOT/shared/lib
+#tomcat 4.1.x
+  cp $JEMBOSS/lib/mail.jar $TOMCAT_ROOT/webapps/axis/WEB-INF/lib
+  cp $JEMBOSS/lib/activation.jar $TOMCAT_ROOT/webapps/axis/WEB-INF/lib
+
+  mv $JEMBOSS/org $TOMCAT_ROOT/webapps/axis/WEB-INF/classes/org
+  mv $JEMBOSS/resources $TOMCAT_ROOT/webapps/axis/WEB-INF/classes/resources
+
+  ln -s $TOMCAT_ROOT/webapps/axis/WEB-INF/classes/org $JEMBOSS/org
+  ln -s $TOMCAT_ROOT/webapps/axis/WEB-INF/classes/resources $JEMBOSS/resources
+  
+  cp -R $EMBOSS_DOWNLOAD/jemboss/lib/axis $JEMBOSS/lib
+else
+  echo "WARNING: no $TOMCAT_ROOT/shared/classes "
+  echo "Jemboss classpath not added to Tomcat"
 fi
 
 
@@ -787,7 +926,7 @@ fi
 #
 
 #JEMBOSS=$EMBOSS_INSTALL/share/EMBOSS/jemboss
-output_auth_xml JembossAuthServer.xml JembossFileAuthServer.xml $AUTH
+output_auth_xml JembossServer.wsdd $AUTH
 
 if [ "$SSL" != "y" ]; then
 
@@ -801,8 +940,7 @@ if [ "$SSL" != "y" ]; then
     echo
     echo "Please wait, starting tomcat......."
     sleep 25
-    deploy_auth_services $JEMBOSS/lib JembossAuthServer.xml http://$LOCALHOST:$PORT/ $JAVA_HOME "" ""
-    deploy_auth_services $JEMBOSS/lib JembossFileAuthServer.xml http://$LOCALHOST:$PORT/ $JAVA_HOME "" ""
+    deploy_axis_services $JEMBOSS/lib JembossServer.wsdd http://$LOCALHOST:$PORT/ $JAVA_HOME "" ""
   fi
 
 else
@@ -849,8 +987,7 @@ else
     OPT_PROP1="-Djava.protocol.handler.pkgs=com.sun.net.ssl.internal.www.protocol"
     OPT_PROP2="-Djavax.net.ssl.trustStore=$JEMBOSS/resources/client.keystore"
 
-    deploy_auth_services $JEMBOSS/lib JembossAuthServer.xml https://$LOCALHOST:$PORT/ $JAVA_HOME $OPT_PROP1 $OPT_PROP2
-    deploy_auth_services $JEMBOSS/lib JembossFileAuthServer.xml https://$LOCALHOST:$PORT/ $JAVA_HOME $OPT_PROP1 $OPT_PROP2
+    deploy_axis_services $JEMBOSS/lib JembossServer.wsdd https://$LOCALHOST:$PORT/ $JAVA_HOME $OPT_PROP1 $OPT_PROP2
   else
     echo
     echo
@@ -866,32 +1003,6 @@ else
     echo "http://www.uk.embnet.org/Software/EMBOSS/Jemboss/download/setup.html"
   fi
 fi
-
-#
-# Add classes to Tomcat path
-#
-
-if [ -d "$TOMCAT_ROOT/classes" ]; then
-
-#tomcat 4.0.x
-  ln -s $JEMBOSS/org $TOMCAT_ROOT/classes
-  ln -s $JEMBOSS/resources $TOMCAT_ROOT/classes
-elif [ -d "$TOMCAT_ROOT/shared/classes" ]; then
-
-#tomcat 4.1.x
-  ln -s $JEMBOSS/org $TOMCAT_ROOT/shared/classes/org
-  ln -s $JEMBOSS/resources $TOMCAT_ROOT/shared/classes/resources
-# cp -R $JEMBOSS/org/emboss $TOMCAT_ROOT/webapps/soap/WEB-INF/classes/org/emboss
-# cp -R $JEMBOSS/resources $TOMCAT_ROOT/webapps/soap/WEB-INF/classes/resources
-
-# mv $TOMCAT_ROOT/shared/lib $TOMCAT_ROOT/webapps/soap/WEB-INF/lib
-# mv $TOMCAT_ROOT/shared/lib $TOMCAT_ROOT/webapps/soap/WEB-INF/lib
-else
-  echo "WARNING: no $TOMCAT_ROOT/classes "
-  echo "         or $TOMCAT_ROOT/shared/classes "
-  echo "Jemboss classpath not added to Tomcat"
-fi
-
 
 #
 # Change jemboss.properties to reflect server location
