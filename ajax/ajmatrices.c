@@ -49,29 +49,30 @@ AjPMatrix ajMatrixNew(AjPStr* codes, ajint n, AjPStr filename)
 {
     ajint     i   = 0;
     AjPMatrix ret = NULL;
-
+    ajint nsize;
 
     if((!n) || (!codes) || (!filename))
 	return NULL;
-    
+
+    nsize = n + 1;
 
     AJNEW0(ret);
 
     ajStrAssS(&ret->Name, filename);
 
-    AJCNEW0(ret->Codes, n);
-    for(i=0; i<n; i++)
+    AJCNEW0(ret->Codes, nsize);
+    for(i=0; i<nsize; i++)
 	ret->Codes[i] = ajStrNew();
     
-    for(i=0; i<n; i++)
+    for(i=0; i<nsize; i++)
 	ajStrAssS(&ret->Codes[i], codes[i]);
 
-    ret->Size = n;
+    ret->Size = nsize;
 
-    AJCNEW0(ret->Matrix, n);
-    for(i=0; i<n; i++)
-	AJCNEW0(ret->Matrix[i], n);
-    ret->Cvt = ajSeqCvtNewZeroS(codes, n);
+    AJCNEW0(ret->Matrix, nsize);
+    for(i=0; i<nsize; i++)
+	AJCNEW0(ret->Matrix[i], nsize);
+    ret->Cvt = ajSeqCvtNewZeroS(codes, nsize);
 
     return ret;
 }
@@ -99,28 +100,30 @@ AjPMatrixf ajMatrixfNew(AjPStr* codes, ajint n, AjPStr filename)
 {
     ajint i = 0;
     AjPMatrixf ret = 0;
-
-
+    ajint nsize;
+ 
     if((!n) || (!codes) || (!filename))
 	return NULL;
+
+    nsize = n + 1;
 
     AJNEW0(ret);
 
     ajStrAssS(&ret->Name, filename);
 
-    AJCNEW0(ret->Codes, n);
-    for(i=0; i<n; i++)
+    AJCNEW0(ret->Codes, nsize);
+    for(i=0; i<nsize; i++)
 	ret->Codes[i] = ajStrNew();
 
-    for(i=0; i<n; i++)
+    for(i=0; i<nsize; i++)
 	ajStrAssS(&ret->Codes[i], codes[i]);
 
-    ret->Size = n;
+    ret->Size = nsize;
 
-    AJCNEW0(ret->Matrixf, n);
-    for(i=0; i<n; i++)
-	AJCNEW0(ret->Matrixf[i], n);
-    ret->Cvt = ajSeqCvtNewZeroS(codes, n);
+    AJCNEW0(ret->Matrixf, nsize);
+    for(i=0; i<nsize; i++)
+	AJCNEW0(ret->Matrixf[i], nsize);
+    ret->Cvt = ajSeqCvtNewZeroS(codes, nsize);
 
     return ret;
 }
@@ -490,7 +493,7 @@ AjBool ajMatrixRead(AjPMatrix* pthis, AjPStr filename)
 	    {
 		ajFmtScanC(ptr, "%S", &firststring);
 		
-		k = ajSeqCvtKS(thys->Cvt, firststring);
+		k = ajSeqCvtK(thys->Cvt, ajStrChar(firststring,0));
 		/* 
 		 ** cols+1 is used below because 2nd and subsequent lines have 
 		 ** one more string in them (the residue label) 
@@ -502,8 +505,9 @@ AjBool ajMatrixRead(AjPMatrix* pthis, AjPStr filename)
 		{
 		    if(templine[i] < minval) 
 			minval = templine[i];
-		    matrix[k][ajSeqCvtKS(thys->Cvt,orderstring[i])] 
-			= templine[i];
+		    matrix[k][ajSeqCvtK(thys->Cvt,
+					ajStrChar(orderstring[i],0))] 
+					    = templine[i];
 		}
 		AJFREE(templine);
 	    }
@@ -606,7 +610,7 @@ AjBool ajMatrixfRead(AjPMatrixf* pthis, AjPStr filename)
 	    else
 	    {
 		ajFmtScanC(ptr, "%S", &firststring);
-		k = ajSeqCvtKS(thys->Cvt, firststring);
+		k = ajSeqCvtK(thys->Cvt, ajStrChar(firststring,0));
 		len = MAJSTRLEN(firststring);
 		ajStrAssSubC(&reststring, ptr, len, -1);
 
@@ -627,8 +631,9 @@ AjBool ajMatrixfRead(AjPMatrixf* pthis, AjPStr filename)
 		{
 		    if(templine[i] < minval) 
 			minval = templine[i];
-		    matrix[k][ajSeqCvtKS(thys->Cvt,orderstring[i])] 
-			= templine[i];
+		    matrix[k][ajSeqCvtK(thys->Cvt,
+					ajStrChar(orderstring[i],0))] 
+					    = templine[i];
 		}
 		AJFREE(templine);
 	    }
