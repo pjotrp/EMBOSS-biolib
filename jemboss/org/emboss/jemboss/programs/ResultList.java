@@ -152,7 +152,7 @@ public class ResultList
 /**
 *
 * @param Object key of the element to return
-* @returns the element in the result Hashtable defined by the key
+* @return the element in the result Hashtable defined by the key
 *
 */
   public Object get(Object key) 
