@@ -152,6 +152,11 @@ public class BuildProgramMenu
       public void finished() 
       {
 
+// sets the delay for dismissing tooltips
+        MultiLineToolTipUI.initialize();
+        ToolTipManager toolTipManager = ToolTipManager.sharedInstance();
+        toolTipManager.setDismissDelay(80000);
+
 // program menu
         JMenuBar menuBar = new JMenuBar();
         ProgList progs = new ProgList(woss,cwd,menuBar);

@@ -126,10 +126,6 @@ public class SectionPanel
             EmbreoParams mysettings, boolean withSoap)
   {
 
-    // sets the delay for dismissing tooltips
-    MultiLineToolTipUI.initialize();
-    ToolTipManager toolTipManager = ToolTipManager.sharedInstance();
-    toolTipManager.setDismissDelay(80000);  
     Border etched = BorderFactory.createEtchedBorder();
 
     isShadedGUI = AdvancedOptions.prefShadeGUI.isSelected();
