@@ -516,7 +516,7 @@ static void est2genome_make_output(AjPFile ofile, AjPSeq genome, AjPSeq est,
 				   ajint reverse)
 {
 
-    if( ge->score >= minscore )
+    if(ge->score >= minscore)
     {
 	embEstOutBlastStyle(ofile, genome, est, ge,
 			    match, mismatch, gap_penalty,
