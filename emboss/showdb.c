@@ -63,6 +63,8 @@ int main(int argc, char **argv)
     AjPList dbnames = ajListstrNew();
     AjIList iter = NULL;
 
+    (void) ajNamSetControl("namvalid");	/* validate database/resource defs */
+
     (void) embInit ("showdb", argc, argv);
 
     dbname  = ajAcdGetString("database");
