@@ -85,7 +85,7 @@ newcpgreport = newcpgreport tembl:xl23808 -auto
 newcpgseek = newcpgseek tembl:xl23808 -auto
 newseq = newseq -name fred -desc test -type p -seq acdefg -auto
 noreturn = noreturn ../data/oddcomp.comp -auto
-notseq = notseq 'tsw:*' -exclude 'ops*' -auto
+notseq = notseq 'tsw:*' -exclude='ops*' -auto
 nthseq = nthseq ../swiss/seq.dat -num 5 -auto
 octanol = octanol tsw:opsd_human -graph ps -auto
 oddcomp = oddcomp 'tsw:*' -comp ../data/oddcomp.comp -auto
@@ -125,7 +125,7 @@ seqmatchall = seqmatchall 'tembl:hsfau*' -auto
 seqret = seqret tsw:opsd_human -auto
 seqretall =test= seqretall 'tembl:hsfau*' -auto
 seqretallfeat =test= seqretallfeat 'tembl:hsfau*' -auto
-seqretfeat =test= seqret -feat tembl:hsfau -auto
+seqretfeat = seqret -feat tembl:hsfau -auto
 seqretset =test= seqretset ../data/globins.msf -auto
 seqretsplit = seqretsplit 'tembl:hsfau*' -auto
 set1 =test= seqretset -auto tsw:opsd_human
