@@ -3951,7 +3951,8 @@ void embPatFuzzSearch(ajint type, ajint begin, const AjPStr pattern,
     ajint i;
     ajint start;
     ajint end;
-
+    ajint count = 0;
+    
     ajDebug("embPatFuzzSearch type %d\n", type);
 
     switch(type)
@@ -3993,14 +3994,16 @@ void embPatFuzzSearch(ajint type, ajint begin, const AjPStr pattern,
     case 5:
 	ppm = embPatMatchFind(regexp,text);
 	n   = embPatMatchGetNumber(ppm);
+	count = n;
+	
 	for(i=0;i<n;++i)
 	{
 	    start = embPatMatchGetStart(ppm,i);
 	    end   = embPatMatchGetEnd(ppm,i);
 	    if(left && start)
 	    {
-		n = 0;
-		break;
+		--count;
+		continue;
 	    }
 	    if(!right || (right && start==ajStrLen(text)-
 			     (end-start+1)))
@@ -4009,7 +4012,7 @@ void embPatFuzzSearch(ajint type, ajint begin, const AjPStr pattern,
 
 	}
 	embPatMatchDel(&ppm);
-	*hits = n;
+	*hits = count;
 	break;
 
     case 6:
