@@ -599,6 +599,11 @@ void ajDmxScophitDelWrap(const void  **ptr)
 void ajDmxScopalgDel(AjPScopalg *pthis)
 {
     int x = 0;  /* Counter */
+
+    if(!pthis)
+	return;
+    if(!(*pthis))
+	return;
     
     ajStrDel(&(*pthis)->Class);
     ajStrDel(&(*pthis)->Architecture);
