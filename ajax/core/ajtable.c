@@ -280,7 +280,7 @@ void ajTableTrace(const AjPTable table)
     struct binding *p;
 
     if(!table)
-	return NULL;
+	return;
 
     ajDebug("table trace: ");
     ajDebug(" length: %d", table->length);
