@@ -153,7 +153,7 @@ embassy_install()
   echo
   echo "EMBASSY packages can optionally be installed along with"
   echo "the EMBOSS applications, see:"
-  echo "http://www.hgmp.mrc.ac.uk/Software/EMBOSS/EMBASSY/index.html"
+  echo "http://www.uk.embnet.org/Software/EMBOSS/EMBASSY/"
   echo
   echo "--------------------------------------------------------------"
   echo
@@ -554,7 +554,7 @@ $DIR/lib64"
     echo "      http://libpng.sourceforge.net/"
     echo
     echo "For details see the EMBOSS admin guide:"
-    echo "http://www.hgmp.mrc.ac.uk/Software/EMBOSS/Doc/Admin_guide/adminguide/"
+    echo "http://www.uk.embnet.org/Software/EMBOSS/Doc/Admin_guide/adminguide/"
     echo
     echo "To exit use Control C or press return to continue."
     echo
@@ -593,7 +593,7 @@ $DIR/lib64"
     echo "       http://www.boutell.com/gd/"
     echo
     echo "For details see the EMBOSS admin guide:"
-    echo "http://www.hgmp.mrc.ac.uk/Software/EMBOSS/Doc/Admin_guide/adminguide/"
+    echo "http://www.uk.embnet.org/Software/EMBOSS/Doc/Admin_guide/adminguide/"
     echo
     echo "To exit use Control C or press return to continue."
     echo
@@ -634,7 +634,7 @@ $DIR/lib64
     echo "       http://www.info-zip.org/pub/infozip/zlib/"
     echo
     echo "For details see the EMBOSS admin guide:"
-    echo "http://www.hgmp.mrc.ac.uk/Software/EMBOSS/Doc/Admin_guide/adminguide/"
+    echo "http://www.uk.embnet.org/Software/EMBOSS/Doc/Admin_guide/adminguide/"
     echo
     echo "To exit use Control C or press return to continue."
     echo
@@ -676,7 +676,7 @@ echo "*** be best done as root or as a tomcat user."
 echo
 echo "Before running this script you should download the latest:"
 echo
-echo "(1) EMBOSS release (contains Jemboss) ftp://ftp.hgmp.mrc.ac.uk/pub/EMBOSS/"
+echo "(1) EMBOSS release (contains Jemboss) ftp://ftp.uk.embnet.org/pub/EMBOSS/"
 
 
 if [ $INSTALL_TYPE = "1" ]; then
@@ -1112,7 +1112,7 @@ if [ "$USER_CONFIG" = "" ]; then
   echo "flag --with-pngdriver to specify their location"
   echo
   echo "For details see the EMBOSS admin guide:"
-  echo "http://www.hgmp.mrc.ac.uk/Software/EMBOSS/Doc/Admin_guide/adminguide/"
+  echo "http://www.uk.embnet.org/Software/EMBOSS/Doc/Admin_guide/adminguide/"
   echo
   echo "Enter any other EMBOSS configuration options (e.g. --with-pngdriver=pathname)"
   echo "or press return to leave blank:"
@@ -1479,13 +1479,20 @@ fi
 #
 
 echo
-echo
 echo "--------------------------------------------------------------"
 echo "--------------------------------------------------------------"
 
 if [ "$AUTH" = "y" ]; then
+
+  if [ $SSL = "y" ]; then
+     URL=https://$LOCALHOST:$PORT
+  else
+     URL=http://$LOCALHOST:$PORT
+  fi
+
   echo 
   echo "Tomcat should be running and the Jemboss web services deployed!"
+  echo "(see $URL/axis/)"
   echo
   echo "It is *very* important to now:"
   echo "1. As root:"
@@ -1510,8 +1517,10 @@ if [ ! -d "$DATADIR" ]; then
   echo
 fi
 echo "Try running Jemboss with the script:"
-echo "   cd $JEMBOSS"
-echo "   ./runJemboss.csh"
+echo "   $JEMBOSS/runJemboss.csh"
+echo
+echo "To create a web launch page see:"
+echo "http://www.uk.embnet.org/Software/EMBOSS/Jemboss/install/deploy.html"
 echo
 
 chmod a+x $JEMBOSS/runJemboss.csh
