@@ -4840,7 +4840,7 @@ static AjBool featVocabRead (char* name, ajint typsize, ajint tagsize,
   */
 
   ajFmtPrintS (&TypeFName, "Efeatures.%s", name);
-  ajDebug("Trying to open %S...",TypeFName);
+  ajDebug("Trying to open %S...\n",TypeFName);
   ajFileDataNew(TypeFName,&TypeFile);
   if(!TypeFile){
     ajErr("Unable to read data file '%S'\n", TagsFName);
