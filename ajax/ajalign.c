@@ -832,7 +832,8 @@ static void alignWriteSimple (AjPAlign thys) {
 
     ajDebug ("# AliData [%d] len %d \n", iali, ilen);
     for (iseq=0; iseq < nseq; iseq++) {
-      ipos[iseq]=data->Offset[iseq] + data->Start[iseq];
+      /*      ipos[iseq]=data->Offset[iseq] + data->Start[iseq]; */
+      ipos[iseq]=data->Offset[iseq];
       ajDebug ("#   Seq[%d]'%S'\n",
 	       iseq, ajSeqStr(data->Seq[iseq]));
     }
