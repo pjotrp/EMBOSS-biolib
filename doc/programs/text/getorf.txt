@@ -171,14 +171,24 @@ VHHAGNGLIRDTGILCDIV
    All output ORF sequences are written to the specified outut file.
    
    The name of the ORF sequences is constructed from the name of the
-   input sequence with an underscore character ('_') and the number of
-   the ORF found appended. The description of the output ORF sequence is
-   constructed from the description of the input sequence with the start
-   and end positions of the ORF prepended.
+   input sequence with an underscore character ('_') and a unique ordinal
+   number of the ORF found appended. The description of the output ORF
+   sequence is constructed from the description of the input sequence
+   with the start and end positions of the ORF prepended.
+   
+   The unique number appended to the name is simply used to create new
+   unique sequence names, it does not imply any further information
+   indicating any order, positioning or sense-strand of the ORFs.
+   
+   If the ORF has been found in the reverse sense, then the start
+   position will be smaller than the end position. The numbering uses the
+   forward-sense positions, but read in the reverse sense. For example,
+   ;gt&ECLACI_3 [465 - 49] in the output above is a reverse-sense ORF
+   running from position 465 to 49.
    
 Data files
 
-   None.
+   None. 
    
 Notes
 
