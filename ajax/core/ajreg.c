@@ -143,7 +143,7 @@ AjBool ajRegExec (AjPRegexp prog, AjPStr str)
     }
     if (status < -1)
     {
-	pcre_regerror(status, prog->pcre, msgbuf, 1024);
+	pcre_regerror(status, (const regex_t *)prog->pcre, msgbuf, 1024);
 	ajWarn("ajRegExec problem status %d '%s'", status, msgbuf);
     }
 
@@ -184,7 +184,7 @@ AjBool ajRegExecC (AjPRegexp prog, const char* str)
     }
     if (status < -1)
     {
-	pcre_regerror(status, prog->pcre, msgbuf, 1024);
+	pcre_regerror(status, (const regex_t *)prog->pcre, msgbuf, 1024);
 	ajWarn("ajRegExecC problem status %d '%s'", status, msgbuf);
     }
 
