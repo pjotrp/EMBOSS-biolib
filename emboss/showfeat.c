@@ -662,8 +662,8 @@ static AjBool showfeat_MatchPatternTags (AjPFeature feat, AjPStr tpattern,
 					 AjPStr vpattern)
 {
     AjIList titer;			/* iterator for feat */
-    AjPStr tagnam;			/* tag structure */
-    AjPStr tagval;			/* tag structure */
+    static AjPStr tagnam=NULL;			/* tag structure */
+    static AjPStr tagval=NULL;			/* tag structure */
     AjBool val = ajFalse;		/* returned value */
     AjBool tval;			/* tags result */
     AjBool vval;			/* value result */
