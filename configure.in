@@ -210,6 +210,11 @@ AC_CHECK_LIB(c, gethostbyname, LIBS="$LIBS", LIBS="$LIBS -lnsl")
 AC_CHECK_LIB(c, socket, LIBS="$LIBS" , LIBS="$LIBS -lsocket")
 AC_CHECK_LIB(m, main)
 
+dnl GD for FreeBSD requires libiconv
+if test "`uname`" = "FreeBSD"; then
+AC_CHECK_LIB(iconv, main, LIBS="$LIBS", LIBS="-liconv $LIBS")
+fi
+
 AM_CONDITIONAL(AMPNG, false)
 
 CHECK_GENERAL
