@@ -64,10 +64,10 @@ public class GetWossname
    * @return	true if succeded
    *
    */
-   public boolean getStatus()
-   {
-     return epr.succeeded();
-   }
+// public boolean getStatus()
+// {
+//   return epr.succeeded();
+// }
 
    /**
    *
