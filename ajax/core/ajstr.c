@@ -37,9 +37,9 @@
 
 #ifndef HAVE_MEMMOVE
 #include <sys/types.h>
-static void* memmove (void *dst, const void* src, size_t len)
+static void* memmove(void *dst, const void* src, size_t len)
 {
-    return (void *)bcopy (src, dst, len);
+    return (void *)bcopy(src, dst, len);
 }
 #endif
 
@@ -53,36 +53,48 @@ static void* memmove (void *dst, const void* src, size_t len)
 #include <float.h>
 #include <string.h>
 
+
+
+
 /* ==================================================================== */
 /* ========================== private data ============================ */
 /* ==================================================================== */
 
-#define STRSIZE 32
-#define LONGSTR 512
+
+
+
+#define STRSIZE  32
+#define LONGSTR  512
 #define NULL_USE 5
 char charNULL[1] = "";
 
 AjOStr strONULL = { 1, 0, NULL_USE, charNULL}; /* use set to avoid changes */
 AjPStr strPNULL = &strONULL;
 
+
+
+
 /* ==================================================================== */
 /* ======================== private functions ========================= */
 /* ==================================================================== */
 
 
-static AjPStr strNewNew (size_t size);
-static void   strClone (AjPStr* pthis);
-static void   strCloneL (AjPStr* pthis, size_t size);
-static AjBool strMatchWordCC (const char* str, const char* text);
-static ajint  strPos (const AjPStr thys, ajint ipos);
-static ajint  strPosI (const AjPStr thys, ajint imin, ajint ipos);
-static ajint  strPosII (ajint ilen, ajint imin, ajint ipos);
+static AjPStr strNewNew(size_t size);
+static void   strClone(AjPStr* pthis);
+static void   strCloneL(AjPStr* pthis, size_t size);
+static AjBool strMatchWordCC(const char* str, const char* text);
+static ajint  strPos(const AjPStr thys, ajint ipos);
+static ajint  strPosI(const AjPStr thys, ajint imin, ajint ipos);
+static ajint  strPosII(ajint ilen, ajint imin, ajint ipos);
 
-static ajlong strAlloc = 0;
-static ajlong strFree = 0;
+static ajlong strAlloc     = 0;
+static ajlong strFree      = 0;
 static ajlong strFreeCount = 0;
-static ajlong strCount = 0;
-static ajlong strTotal = 0;
+static ajlong strCount     = 0;
+static ajlong strTotal     = 0;
+
+
+
 
 /* ==================================================================== */
 /* ========================= constructors ============================= */
@@ -106,6 +118,9 @@ static ajlong strTotal = 0;
 **
 ******************************************************************************/
 
+
+
+
 /* @func ajStrNew *************************************************************
 **
 ** Default constructor for empty AJAX strings.
@@ -115,10 +130,13 @@ static ajlong strTotal = 0;
 ** @@
 ******************************************************************************/
 
-AjPStr ajStrNew (void)
+AjPStr ajStrNew(void)
 {
-    return ajStrDup (strPNULL);
+    return ajStrDup(strPNULL);
 }
+
+
+
 
 /* @func ajStrNewC ************************************************************
 **
@@ -131,18 +149,22 @@ AjPStr ajStrNew (void)
 ** @@
 ******************************************************************************/
 
-AjPStr ajStrNewC (const char* txt)
+AjPStr ajStrNewC(const char* txt)
 {
-    ajint i, j;
+    ajint i;
+    ajint j;
     AjPStr thys;
 
     i = strlen(txt);
-    j = ajRound (i + 1, STRSIZE);
+    j = ajRound(i + 1, STRSIZE);
 
-    thys = ajStrNewCIL (txt, i, j);
+    thys = ajStrNewCIL(txt, i, j);
 
     return thys;
 }
+
+
+
 
 /* @func ajStrNewL ************************************************************
 **
@@ -153,13 +175,17 @@ AjPStr ajStrNewC (const char* txt)
 ** @@
 ******************************************************************************/
 
-AjPStr ajStrNewL (size_t size)
+AjPStr ajStrNewL(size_t size)
 {
     AjPStr thys;
 
-    thys = ajStrNewCIL ("", 0, size);
+    thys = ajStrNewCIL("", 0, size);
+
     return thys;
 }
+
+
+
 
 /* @func ajStrNewCL ***********************************************************
 **
@@ -174,16 +200,20 @@ AjPStr ajStrNewL (size_t size)
 ** @@
 ******************************************************************************/
 
-AjPStr ajStrNewCL (const char* txt, size_t size)
+AjPStr ajStrNewCL(const char* txt, size_t size)
 {
     ajint i;
     AjPStr thys;
 
     i = strlen(txt);
 
-    thys = ajStrNewCIL (txt, i, size);
+    thys = ajStrNewCIL(txt, i, size);
+
     return thys;
 }
+
+
+
 
 /* @func ajStrNewCIL **********************************************************
 **
@@ -202,23 +232,27 @@ AjPStr ajStrNewCL (const char* txt, size_t size)
 ** @@
 ******************************************************************************/
 
-AjPStr ajStrNewCIL (const char* txt, ajint len, size_t size)
+AjPStr ajStrNewCIL(const char* txt, ajint len, size_t size)
 {
     AjPStr thys;
+    ajint minlen;
 
-    ajint minlen = size;
+    minlen = (ajint) size;
 
-    if ((size <= len) || (size == NPOS))
+    if((size <= len) || (size == NPOS))
 	minlen = len+1;
 
     thys = strNewNew(minlen);
     thys->Len = len;
-    if (txt)
-	(void) strncpy (thys->Ptr, txt, len+1);
+    if(txt)
+	strncpy(thys->Ptr, txt, len+1);
     thys->Ptr[len] = '\0';
 
     return thys;
 }
+
+
+
 
 /* @func ajStrNewS ************************************************************
 **
@@ -234,10 +268,13 @@ AjPStr ajStrNewCIL (const char* txt, ajint len, size_t size)
 ** @@
 ******************************************************************************/
 
-AjPStr ajStrNewS (const AjPStr str)
+AjPStr ajStrNewS(const AjPStr str)
 {
-    return ajStrNewCIL (str->Ptr, str->Len, str->Res);
+    return ajStrNewCIL(str->Ptr, str->Len, str->Res);
 }
+
+
+
 
 /* @func ajStrDup *************************************************************
 **
@@ -250,15 +287,18 @@ AjPStr ajStrNewS (const AjPStr str)
 ** Modified: pmr 21-jan-00 return empty string if there is no original string
 ******************************************************************************/
 
-AjPStr ajStrDup (AjPStr thys)
+AjPStr ajStrDup(AjPStr thys)
 {
-    if (!thys)
+    if(!thys)
 	return ajStrNew();
 
     thys->Use++;
 
     return thys;
 }
+
+
+
 
 /* @func ajCharNew ************************************************************
 **
@@ -272,15 +312,18 @@ AjPStr ajStrDup (AjPStr thys)
 ** @@
 ******************************************************************************/
 
-char* ajCharNew (const AjPStr thys)
+char* ajCharNew(const AjPStr thys)
 {
     static char* cp;
 
     cp = (char*) AJALLOC(thys->Len+1);
-    (void) strncpy (cp, thys->Ptr, thys->Len+1);
+    strncpy(cp, thys->Ptr, thys->Len+1);
 
     return cp;
 }
+
+
+
 
 /* @func ajCharNewC ***********************************************************
 **
@@ -295,15 +338,18 @@ char* ajCharNew (const AjPStr thys)
 ** @@
 ******************************************************************************/
 
-char* ajCharNewC (ajint len, const char* txt)
+char* ajCharNewC(ajint len, const char* txt)
 {
     static char* cp;
 
     cp = (char*) AJALLOC(len+1);
-    (void) strncpy (cp, txt, len+1);
+    strncpy(cp, txt, len+1);
 
     return cp;
 }
+
+
+
 
 /* @func ajCharNewL ***********************************************************
 **
@@ -315,7 +361,7 @@ char* ajCharNewC (ajint len, const char* txt)
 ** @@
 ******************************************************************************/
 
-char* ajCharNewL (ajint len)
+char* ajCharNewL(ajint len)
 {
     static char* cp;
 
@@ -324,6 +370,9 @@ char* ajCharNewL (ajint len)
 
     return cp;
 }
+
+
+
 
 /* @func ajCharNewLS **********************************************************
 **
@@ -338,18 +387,23 @@ char* ajCharNewL (ajint len)
 ** @@
 ******************************************************************************/
 
-char* ajCharNewLS (size_t size, const AjPStr thys)
+char* ajCharNewLS(size_t size, const AjPStr thys)
 {
     static char* cp;
+    size_t isize;
 
-    size_t isize = size;
-    if (thys->Len >= isize) isize = thys->Len + 1;
+    isize = size;
+    if(thys->Len >= isize)
+	isize = thys->Len + 1;
 
     cp = (char*) AJALLOC(isize);
-    (void) strncpy (cp, thys->Ptr, thys->Len+1);
+    strncpy(cp, thys->Ptr, thys->Len+1);
 
     return cp;
 }
+
+
+
 
 /* @funcstatic strNewNew ******************************************************
 **
@@ -363,12 +417,14 @@ char* ajCharNewLS (size_t size, const AjPStr thys)
 ** @@
 ******************************************************************************/
 
-static AjPStr strNewNew (size_t size)
+static AjPStr strNewNew(size_t size)
 {
     AjPStr ret;
-    if (!size) size = STRSIZE;
 
-    AJNEW0 (ret);
+    if(!size)
+	size = STRSIZE;
+
+    AJNEW0(ret);
     ret->Res = size;
     ret->Ptr = AJALLOC(size);
     ret->Len = 0;
@@ -382,6 +438,9 @@ static AjPStr strNewNew (size_t size)
     return ret;
 }
 
+
+
+
 /* @funcstatic strClone *******************************************************
 **
 ** Makes a new clone of a string with a usage count of one.
@@ -390,17 +449,22 @@ static AjPStr strNewNew (size_t size)
 ** @@
 ******************************************************************************/
 
-static void strClone (AjPStr* pthis)
+static void strClone(AjPStr* pthis)
 {
-    AjPStr thys = pthis ? *pthis : 0;
+    AjPStr thys;
     AjPStr ret;
 
-    ret = ajStrNewCIL (thys->Ptr, thys->Len, thys->Res);
-    ajStrDel (pthis);
+    thys = pthis ? *pthis : 0;
+
+    ret = ajStrNewCIL(thys->Ptr, thys->Len, thys->Res);
+    ajStrDel(pthis);
     *pthis = ret;
 
     return;
 }
+
+
+
 
 /* @funcstatic strCloneL ******************************************************
 **
@@ -413,17 +477,22 @@ static void strClone (AjPStr* pthis)
 ** @@
 ******************************************************************************/
 
-static void strCloneL (AjPStr* pthis, size_t size)
+static void strCloneL(AjPStr* pthis, size_t size)
 {
-    AjPStr thys = pthis ? *pthis : 0;
+    AjPStr thys;
     AjPStr ret;
 
-    ret = ajStrNewCIL (thys->Ptr, thys->Len, size);
-    ajStrDel (pthis);
+    thys = pthis ? *pthis : 0;
+
+    ret = ajStrNewCIL(thys->Ptr, thys->Len, size);
+    ajStrDel(pthis);
     *pthis = ret;
 
     return;
 }
+
+
+
 
 /* ==================================================================== */
 /* =========================== destructor ============================= */
@@ -444,6 +513,9 @@ static void strCloneL (AjPStr* pthis, size_t size)
 **
 ******************************************************************************/
 
+
+
+
 /* @func ajStrDel *************************************************************
 **
 ** Default destructor for AJAX strings.
@@ -461,24 +533,29 @@ static void strCloneL (AjPStr* pthis, size_t size)
 ** @@
 ******************************************************************************/
 
-void ajStrDel (AjPStr* pthis)
+void ajStrDel(AjPStr* pthis)
 {
-    AjPStr thys = pthis ? *pthis : 0;
+    AjPStr thys;
 
-    if (!pthis) return;
-    if (!*pthis) return;
+    thys = pthis ? *pthis : 0;
+
+    if(!pthis)
+	return;
+
+    if(!*pthis)
+	return;
 
     --thys->Use;
-    if (!thys->Use)
+    if(!thys->Use)
     {					/* any other references? */
-	if (thys == strPNULL)
+	if(thys == strPNULL)
 	{
-	    ajErr ("Error - trying to delete the null string constant\n");
+	    ajErr("Error - trying to delete the null string constant\n");
 	    thys->Use = NULL_USE;     /* restore the original value */
 	}
 	else
 	{
-	    AJFREE (thys->Ptr);		/* free the string */
+	    AJFREE(thys->Ptr);		/* free the string */
 
 	    strFree += thys->Res;
 	    strFreeCount++;
@@ -487,13 +564,17 @@ void ajStrDel (AjPStr* pthis)
 	    thys->Res = 0;	      /* in case of copied pointers */
 	    thys->Len = 0;
 
-	    AJFREE (*pthis);		/* free the object */
+	    AJFREE(*pthis);		/* free the object */
 	}
     }
 
     *pthis = NULL;
+
     return;
 }
+
+
+
 
 /* @func ajStrDelReuse ********************************************************
 **
@@ -516,17 +597,22 @@ void ajStrDel (AjPStr* pthis)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrDelReuse (AjPStr* pthis)
+AjBool ajStrDelReuse(AjPStr* pthis)
 {
-    AjPStr thys = pthis ? *pthis : 0;
+    AjPStr thys;
 
-    if (!pthis) return ajFalse;
-    if (!*pthis) return ajFalse;
+    thys = pthis ? *pthis : 0;
 
-    if (thys->Use == 1)
+    if(!pthis)
+	return ajFalse;
+
+    if(!*pthis)
+	return ajFalse;
+
+    if(thys->Use == 1)
     {			       /* last reference - clear the string */
 	*thys->Ptr = '\0';
-	thys->Len = 0;
+	thys->Len  = 0;
 	return ajTrue;
     }
     else
@@ -537,6 +623,9 @@ AjBool ajStrDelReuse (AjPStr* pthis)
 
     return ajFalse;
 }
+
+
+
 
 /* @func ajCharFree ***********************************************************
 **
@@ -549,11 +638,15 @@ AjBool ajStrDelReuse (AjPStr* pthis)
 ** @@
 ******************************************************************************/
 
-char* ajCharFree (char* txt)
+char* ajCharFree(char* txt)
 {
-    AJFREE (txt);
+    AJFREE(txt);
+
     return NULL;
 }
+
+
+
 
 /* ==================================================================== */
 /* ========================== Assignments ============================= */
@@ -567,6 +660,9 @@ char* ajCharFree (char* txt)
 ** create new strings by assignment.
 **
 ******************************************************************************/
+
+
+
 
 /* @func ajStrClear ***********************************************************
 **
@@ -583,18 +679,23 @@ char* ajCharFree (char* txt)
 **
 ******************************************************************************/
 
-AjBool ajStrClear (AjPStr* pthis)
+AjBool ajStrClear(AjPStr* pthis)
 {
     AjBool ret = ajFalse;
+    AjPStr thys;
 
-    AjPStr thys = pthis ? *pthis : 0;
+    thys = pthis ? *pthis : 0;
 
-    if (!pthis) return ret;
-    if (!*pthis) return ret;
+    if(!pthis)
+	return ret;
 
-    if (!thys->Len) return ret;
+    if(!*pthis)
+	return ret;
 
-    ret = ajStrMod(pthis);
+    if(!thys->Len)
+	return ret;
+
+    ret  = ajStrMod(pthis);
     thys = *pthis;
 
     thys->Ptr[0] = '\0';
@@ -602,6 +703,9 @@ AjBool ajStrClear (AjPStr* pthis)
 
     return ret;
 }
+
+
+
 
 /* @func ajStrSet *************************************************************
 **
@@ -616,19 +720,20 @@ AjBool ajStrClear (AjPStr* pthis)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrSet (AjPStr* pthis, const AjPStr str)
+AjBool ajStrSet(AjPStr* pthis, const AjPStr str)
 {
     AjBool ret = ajTrue;		/* true if ajStrDup is used */
 
-    if (!*pthis)
+    if(!*pthis)
 	ajStrAssS(pthis, str);
-    else if (!(*pthis)->Len)
-    {
-	ret = ajStrAssS (pthis, str);
-    }
+    else if(!(*pthis)->Len)
+	ret = ajStrAssS(pthis, str);
 
     return ret;
 }
+
+
+
 
 /* @func ajStrSetC ************************************************************
 **
@@ -643,19 +748,22 @@ AjBool ajStrSet (AjPStr* pthis, const AjPStr str)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrSetC (AjPStr* pthis, const char* str)
+AjBool ajStrSetC(AjPStr* pthis, const char* str)
 {
     AjBool ret = ajFalse;
 
-    if (!pthis)
-	ret = ajStrAssC (pthis, str);
-    else if (!*pthis)
-	ret = ajStrAssC (pthis, str);
-    else if (!(*pthis)->Len)
-	ret = ajStrAssC (pthis, str);
+    if(!pthis)
+	ret = ajStrAssC(pthis, str);
+    else if(!*pthis)
+	ret = ajStrAssC(pthis, str);
+    else if(!(*pthis)->Len)
+	ret = ajStrAssC(pthis, str);
 
     return ret;
 }
+
+
+
 
 /* @func ajStrAss *************************************************************
 **
@@ -668,18 +776,22 @@ AjBool ajStrSetC (AjPStr* pthis, const char* str)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrAss (AjPStr* pthis, AjPStr str)
+AjBool ajStrAss(AjPStr* pthis, AjPStr str)
 {
     AjBool ret = ajTrue;		/* always true for now */
 
     ajStrDel(pthis);		/* we just use the ref count of str */
-    if (str)
+
+    if(str)
 	*pthis = ajStrDup(str);
     else
 	*pthis = ajStrNew();
 
     return ret;
 }
+
+
+
 
 /* @func ajStrAssC ************************************************************
 **
@@ -691,20 +803,25 @@ AjBool ajStrAss (AjPStr* pthis, AjPStr str)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrAssC (AjPStr* pthis, const char* text)
+AjBool ajStrAssC(AjPStr* pthis, const char* text)
 {
     AjBool ret = ajFalse;
-    AjPStr thys = *pthis;
+    AjPStr thys;
+    ajint i;
 
-    ajint i = strlen(text);
+    thys = *pthis;
+    i    = strlen(text);
 
-    ret = ajStrModL (pthis, i+1);
+    ret  = ajStrModL(pthis, i+1);
     thys = *pthis;
     thys->Len = i;
-    (void) strncpy (thys->Ptr, text, i+1);
+    strncpy(thys->Ptr, text, i+1);
 
     return ret;
 }
+
+
+
 
 /* @func ajStrAssS ************************************************************
 **
@@ -719,13 +836,14 @@ AjBool ajStrAssC (AjPStr* pthis, const char* text)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrAssS (AjPStr* pthis, const AjPStr str)
+AjBool ajStrAssS(AjPStr* pthis, const AjPStr str)
 {
     AjBool ret = ajFalse;
+    AjPStr thys;
 
-    AjPStr thys = *pthis;
+    thys = *pthis;
 
-    if (!str)
+    if(!str)
     {					/* no source string */
 	if(!pthis)
 	{
@@ -739,14 +857,17 @@ AjBool ajStrAssS (AjPStr* pthis, const AjPStr str)
 	}
     }
 
-    ret = ajStrModL (pthis, str->Len+1); /* minimum reserved size, OR more */
+    ret = ajStrModL(pthis, str->Len+1); /* minimum reserved size, OR more */
 
     thys = *pthis;
     thys->Len = str->Len;
-    (void) strncpy (thys->Ptr, str->Ptr, str->Len+1);
+    strncpy(thys->Ptr, str->Ptr, str->Len+1);
 
     return ret;
 }
+
+
+
 
 /* @func ajStrAssI ************************************************************
 **
@@ -759,23 +880,27 @@ AjBool ajStrAssS (AjPStr* pthis, const AjPStr str)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrAssI (AjPStr* pthis, const AjPStr str, size_t i)
+AjBool ajStrAssI(AjPStr* pthis, const AjPStr str, size_t i)
 {
     AjBool ret = ajFalse;
+    AjPStr thys;
 
-    AjPStr thys = *pthis;
+    thys = *pthis;
 
-    if (i > str->Len)
+    if(i > str->Len)
 	i = str->Len;
 
-    ret = ajStrModL (pthis, i+1);
+    ret = ajStrModL(pthis, i+1);
     thys = *pthis;
     thys->Len = i;
-    (void) strncpy (thys->Ptr, str->Ptr, i);
+    strncpy(thys->Ptr, str->Ptr, i);
     thys->Ptr[i] = '\0';
 
     return ret;
 }
+
+
+
 
 /* @func ajStrAssL ************************************************************
 **
@@ -788,25 +913,30 @@ AjBool ajStrAssI (AjPStr* pthis, const AjPStr str, size_t i)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrAssL (AjPStr* pthis, const AjPStr str, size_t i)
+AjBool ajStrAssL(AjPStr* pthis, const AjPStr str, size_t i)
 {
     AjBool ret = ajFalse;
+    AjPStr thys;
+    ajint isize;
 
-    AjPStr thys = *pthis;
-    ajint isize = i;
+    thys = *pthis;
+    isize = (ajint) i;
 
-    if (isize <= str->Len)
+    if(isize <= str->Len)
 	isize = str->Len+1;
 
-    ret = ajStrModL (pthis, isize);
+    ret = ajStrModL(pthis, isize);
 
     thys = *pthis;
     thys->Len = str->Len;
-    (void) strncpy (thys->Ptr, str->Ptr, str->Len);
+    strncpy(thys->Ptr, str->Ptr, str->Len);
     thys->Ptr[str->Len] = '\0';
 
     return ret;
 }
+
+
+
 
 /* @func ajStrAssCI ***********************************************************
 **
@@ -819,20 +949,24 @@ AjBool ajStrAssL (AjPStr* pthis, const AjPStr str, size_t i)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrAssCI (AjPStr* pthis, const char* txt, size_t ilen)
+AjBool ajStrAssCI(AjPStr* pthis, const char* txt, size_t ilen)
 {
     AjBool ret = ajFalse;
+    AjPStr thys;
 
-    AjPStr thys = *pthis;
+    thys = *pthis;
 
-    ret = ajStrModL (pthis, ilen+1);
+    ret = ajStrModL(pthis, ilen+1);
     thys = *pthis;
     thys->Len = ilen;
-    (void) strncpy (thys->Ptr, txt, ilen);
+    strncpy(thys->Ptr, txt, ilen);
     thys->Ptr[ilen] = '\0';
 
     return ret;
 }
+
+
+
 
 /* @func ajStrAssCL ***********************************************************
 **
@@ -845,26 +979,34 @@ AjBool ajStrAssCI (AjPStr* pthis, const char* txt, size_t ilen)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrAssCL (AjPStr* pthis, const char* txt, size_t i)
+AjBool ajStrAssCL(AjPStr* pthis, const char* txt, size_t i)
 {
     AjBool ret = ajFalse;
+    AjPStr thys;
+    ajint ilen;
+    ajint isize;
 
-    AjPStr thys = *pthis;
-    ajint ilen = strlen(txt);
-    ajint isize = i;
+    thys = *pthis;
+    ilen = strlen(txt);
+    isize = (ajint) i;
 
-    if (ilen >= isize)
+    if(ilen >= isize)
 	isize = ilen + 1;
 
-    ret = ajStrModL (pthis, isize);
+    ret = ajStrModL(pthis, isize);
     thys = *pthis;
     thys->Len = ilen;
-    if (ilen)
-	(void) strncpy (thys->Ptr, txt, ilen);
+
+    if(ilen)
+	strncpy(thys->Ptr, txt, ilen);
+
     thys->Ptr[ilen] = '\0';
 
     return ret;
 }
+
+
+
 
 /* @func ajStrCopy ************************************************************
 **
@@ -881,19 +1023,22 @@ AjBool ajStrAssCL (AjPStr* pthis, const char* txt, size_t i)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrCopy (AjPStr* pthis, AjPStr str)
+AjBool ajStrCopy(AjPStr* pthis, AjPStr str)
 {
     AjBool ret = ajTrue;		/* true if ajStrDup is used */
 
     ajStrDel(pthis);
 
-    if (!str)
+    if(!str)
 	return ret;
     else
-	*pthis = ajStrDup (str);
+	*pthis = ajStrDup(str);
 
     return ret;
 }
+
+
+
 
 /* @func ajStrCopyC ***********************************************************
 **
@@ -909,17 +1054,20 @@ AjBool ajStrCopy (AjPStr* pthis, AjPStr str)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrCopyC (AjPStr* pthis, const char* str)
+AjBool ajStrCopyC(AjPStr* pthis, const char* str)
 {
     AjBool ret = ajTrue;		/* true if ajStrDup is used */
 
-    if (!str)
-	ajStrDel (pthis);
+    if(!str)
+	ajStrDel(pthis);
     else
-	ajStrAssC (pthis, str);
+	ajStrAssC(pthis, str);
 
     return ret;
 }
+
+
+
 
 /* @func ajStrAssSub **********************************************************
 **
@@ -933,21 +1081,24 @@ AjBool ajStrCopyC (AjPStr* pthis, const char* str)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrAssSub (AjPStr* pthis, const AjPStr str, ajint begin, ajint end)
+AjBool ajStrAssSub(AjPStr* pthis, const AjPStr str, ajint begin, ajint end)
 {
     ajint ilen;
     ajint ibegin;
     ajint iend;
 
-    ibegin = strPos (str, begin);
-    iend = strPosI (str, ibegin, end);
+    ibegin = strPos(str, begin);
+    iend = strPosI(str, ibegin, end);
     if(iend == str->Len)
 	iend--;
 
     ilen = iend - ibegin + 1;
 
-    return ajStrAssCI (pthis, &str->Ptr[ibegin], ilen);
+    return ajStrAssCI(pthis, &str->Ptr[ibegin], ilen);
 }
+
+
+
 
 /* @func ajStrAssSubC *********************************************************
 **
@@ -961,21 +1112,27 @@ AjBool ajStrAssSub (AjPStr* pthis, const AjPStr str, ajint begin, ajint end)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrAssSubC (AjPStr* pthis, const char* txt, ajint begin, ajint end)
+AjBool ajStrAssSubC(AjPStr* pthis, const char* txt, ajint begin, ajint end)
 {
     ajint ilen;
-    ajint ibegin=begin;
-    ajint iend=end;
+    ajint ibegin;
+    ajint iend;
 
-    if (begin < 0)
+    ibegin = begin;
+    iend   = end;
+
+    if(begin < 0)
 	ibegin = strlen(txt) + begin;
-    if (end < 0)
+    if(end < 0)
 	iend = strlen(txt) + end;
 
     ilen = iend - ibegin + 1;
 
-    return ajStrAssCI (pthis, &txt[begin], ilen);
+    return ajStrAssCI(pthis, &txt[begin], ilen);
 }
+
+
+
 
 /* @func ajStrFromBool ********************************************************
 **
@@ -994,12 +1151,16 @@ AjBool ajStrFromBool(AjPStr* pthis, AjBool boule)
     static char bool_y[] = "Y";
     static char bool_n[] = "N";
 
-    if (boule)
+    if(boule)
 	ret = ajStrAssC(pthis,  bool_y);
     else
 	ret = ajStrAssC(pthis, bool_n);
+
     return ret;
 }
+
+
+
 
 /* @func ajStrFromInt *********************************************************
 **
@@ -1012,26 +1173,30 @@ AjBool ajStrFromBool(AjPStr* pthis, AjBool boule)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrFromInt (AjPStr* pthis, ajint val)
+AjBool ajStrFromInt(AjPStr* pthis, ajint val)
 {
     AjBool ret = ajFalse;
-
     ajint i;
     AjPStr thys;
 
-    if (val)
+    if(val)
 	i = (ajint) log10((double)abs(val)) + 2;
     else
 	i = 2;
-    if (val < 0) i++;
+
+    if(val < 0)
+	i++;
 
     ret = ajStrModL(pthis, i);
     thys = *pthis;
 
-    thys->Len = sprintf (thys->Ptr, "%d", val);
+    thys->Len = sprintf(thys->Ptr, "%d", val);
 
     return ret ;
 }
+
+
+
 
 /* @func ajStrFromLong ********************************************************
 **
@@ -1044,26 +1209,30 @@ AjBool ajStrFromInt (AjPStr* pthis, ajint val)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrFromLong (AjPStr* pthis, ajlong val)
+AjBool ajStrFromLong(AjPStr* pthis, ajlong val)
 {
     AjBool ret = ajFalse;
-
     ajlong i;
     AjPStr thys;
 
-    if (val)
+    if(val)
 	i = (ajlong) log10((double)abs(val)) + 2;
     else
 	i = 2;
-    if (val < 0) i++;
+
+    if(val < 0)
+	i++;
 
     ret = ajStrModL(pthis, i);
     thys = *pthis;
 
-    thys->Len = sprintf (thys->Ptr, "%ld", (long)val);
+    thys->Len = sprintf(thys->Ptr, "%ld", (long)val);
 
     return ret;
 }
+
+
+
 
 /* @func ajStrFromFloat *******************************************************
 **
@@ -1077,17 +1246,17 @@ AjBool ajStrFromLong (AjPStr* pthis, ajlong val)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrFromFloat (AjPStr* pthis, float val, ajint precision)
+AjBool ajStrFromFloat(AjPStr* pthis, float val, ajint precision)
 {
     AjBool ret = ajFalse;
-
     ajint i;
     char fmt[12];
     AjPStr thys;
+    ajint ival;
 
-    ajint ival = abs((ajint) val);
+    ival = abs((ajint) val);
 
-    if (ival)
+    if(ival)
 	i = precision + (ajint) log10((double)ival) + 4;
     else
 	i = precision + 4;
@@ -1095,11 +1264,14 @@ AjBool ajStrFromFloat (AjPStr* pthis, float val, ajint precision)
     ret = ajStrModL(pthis, i);
     thys = *pthis;
 
-    (void) sprintf (fmt, "%%.%df", precision);
-    thys->Len = sprintf (thys->Ptr, fmt, val);
+    sprintf(fmt, "%%.%df", precision);
+    thys->Len = sprintf(thys->Ptr, fmt, val);
 
     return ret;
 }
+
+
+
 
 /* @func ajStrFromDouble ******************************************************
 **
@@ -1113,16 +1285,17 @@ AjBool ajStrFromFloat (AjPStr* pthis, float val, ajint precision)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrFromDouble (AjPStr* pthis, double val, ajint precision)
+AjBool ajStrFromDouble(AjPStr* pthis, double val, ajint precision)
 {
     AjBool ret = ajFalse;
     long long i;
     char fmt[12];
     AjPStr thys;
+    long long ival;
 
-    long long ival = (long long) fabs(val);
+    ival = (long long) fabs(val);
 
-    if (ival)
+    if(ival)
 	i = precision + (ajint) log10((double)ival) + 4;
     else
 	i = precision + 4;
@@ -1130,11 +1303,14 @@ AjBool ajStrFromDouble (AjPStr* pthis, double val, ajint precision)
     ret = ajStrModL(pthis, i);
     thys = *pthis;
 
-    (void) sprintf (fmt, "%%.%df", precision);
-    thys->Len = sprintf (thys->Ptr, fmt, val);
+    sprintf(fmt, "%%.%df", precision);
+    thys->Len = sprintf(thys->Ptr, fmt, val);
 
     return ret ;
 }
+
+
+
 
 /* @func ajStrFromDoubleE *****************************************************
 **
@@ -1148,16 +1324,17 @@ AjBool ajStrFromDouble (AjPStr* pthis, double val, ajint precision)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrFromDoubleE (AjPStr* pthis, double val, ajint precision)
+AjBool ajStrFromDoubleE(AjPStr* pthis, double val, ajint precision)
 {
     AjBool ret = ajFalse;
     long long i;
     char fmt[12];
     AjPStr thys;
+    long long ival;
 
-    long long ival = (long long) fabs(val);
+    ival = (long long) fabs(val);
 
-    if (ival)
+    if(ival)
 	i = precision + (ajint) log10((double)ival) + 8;
     else
 	i = precision + 8;
@@ -1165,11 +1342,14 @@ AjBool ajStrFromDoubleE (AjPStr* pthis, double val, ajint precision)
     ret = ajStrModL(pthis, i);
     thys = *pthis;
 
-    (void) sprintf (fmt, "%%.%de", precision);
-    thys->Len = sprintf (thys->Ptr, fmt, val);
+    sprintf(fmt, "%%.%de", precision);
+    thys->Len = sprintf(thys->Ptr, fmt, val);
 
     return ret ;
 }
+
+
+
 
 /* ==================================================================== */
 /* =========================== Modifiers ============================== */
@@ -1187,6 +1367,9 @@ AjBool ajStrFromDoubleE (AjPStr* pthis, double val, ajint precision)
 **
 ******************************************************************************/
 
+
+
+
 /* @func ajStrApp *************************************************************
 **
 ** Appends a string object to the end of another string object.
@@ -1198,37 +1381,42 @@ AjBool ajStrFromDoubleE (AjPStr* pthis, double val, ajint precision)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrApp (AjPStr* pthis, const AjPStr src)
+AjBool ajStrApp(AjPStr* pthis, const AjPStr src)
 {
     AjBool ret = ajFalse;
     AjPStr t;
 
-    AjPStr thys = pthis ? *pthis : 0;
+    AjPStr thys;
     ajint j;
 
-    if (!src)
+    thys = pthis ? *pthis : 0;
+
+    if(!src)
 	return ajStrAppC(pthis, "");
 
     t = ajStrNewC(src->Ptr);
 
-    if (pthis && *pthis)
+    if(pthis && *pthis)
     {
-	j = AJMAX (thys->Res, thys->Len+src->Len+1);
-	if (j > thys->Res && thys->Res > LONGSTR)
+	j = AJMAX(thys->Res, thys->Len+src->Len+1);
+	if(j > thys->Res && thys->Res > LONGSTR)
 	    j = j + j/2;
     }
     else
 	j = src->Len+1;
 
-    ret = ajStrModL (pthis, ajRound (j, STRSIZE));
+    ret = ajStrModL(pthis, ajRound(j, STRSIZE));
     thys = *pthis;			/* possible new location */
 
-    (void) strncpy (thys->Ptr+thys->Len, t->Ptr, src->Len+1);
+    strncpy(thys->Ptr+thys->Len, t->Ptr, src->Len+1);
     thys->Len += src->Len;
 
     ajStrDel(&t);
     return ret;
 }
+
+
+
 
 /* @func ajStrAppC ************************************************************
 **
@@ -1241,34 +1429,40 @@ AjBool ajStrApp (AjPStr* pthis, const AjPStr src)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrAppC (AjPStr* pthis, const char* txt)
+AjBool ajStrAppC(AjPStr* pthis, const char* txt)
 {
     AjBool ret = ajFalse;
     AjPStr t;
 
-    AjPStr thys = pthis ? *pthis : 0;
-    ajint i, j;
+    AjPStr thys;
+    ajint i;
+    ajint j;
 
-    if (!txt)
+    thys = pthis ? *pthis : 0;
+
+    if(!txt)
 	return ajStrAppC(pthis, "");
 
     t = ajStrNewC(txt);
     i = strlen(txt);
-    if (pthis && *pthis)
-	j = AJMAX (thys->Res, thys->Len+i+1);
+    if(pthis && *pthis)
+	j = AJMAX(thys->Res, thys->Len+i+1);
     else
 	j = i+1;
 
-    ret = ajStrModL (pthis, ajRound (j, STRSIZE));
+    ret = ajStrModL(pthis, ajRound(j, STRSIZE));
     thys = *pthis;			/* possible new location */
 
-    (void) strncpy (thys->Ptr+thys->Len, t->Ptr, i+1);
+    strncpy(thys->Ptr+thys->Len, t->Ptr, i+1);
     thys->Len += i;
 
     ajStrDel(&t);
 
     return ret;
 }
+
+
+
 
 /* @func ajStrAppK ************************************************************
 **
@@ -1281,19 +1475,20 @@ AjBool ajStrAppC (AjPStr* pthis, const char* txt)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrAppK (AjPStr* pthis, const char chr)
+AjBool ajStrAppK(AjPStr* pthis, const char chr)
 {
     AjBool ret = ajFalse;
-
-    AjPStr thys = pthis ? *pthis : 0;
+    AjPStr thys;
     ajint j;
 
-    if (pthis && *pthis)
-	j = AJMAX (thys->Res, thys->Len+2);
+    thys = pthis ? *pthis : 0;
+
+    if(pthis && *pthis)
+	j = AJMAX(thys->Res, thys->Len+2);
     else
 	j = 2;
 
-    ret = ajStrModL (pthis, ajRound (j, STRSIZE));
+    ret = ajStrModL(pthis, ajRound(j, STRSIZE));
     thys = *pthis;			/* possible new location */
 
     *(thys->Ptr+thys->Len) = chr;
@@ -1302,6 +1497,9 @@ AjBool ajStrAppK (AjPStr* pthis, const char chr)
 
     return ret;
 }
+
+
+
 
 /* @func ajStrAppKI ***********************************************************
 **
@@ -1317,25 +1515,26 @@ AjBool ajStrAppK (AjPStr* pthis, const char chr)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrAppKI (AjPStr* pthis, const char chr, ajint number)
+AjBool ajStrAppKI(AjPStr* pthis, const char chr, ajint number)
 {
     AjBool ret = ajFalse;
-
-    AjPStr thys = pthis ? *pthis : 0;
+    AjPStr thys;
     ajint i;
     ajint j;
     char* cp;
 
-    if (pthis && *pthis)
-	j = AJMAX (thys->Res, thys->Len+number+1);
+    thys = pthis ? *pthis : 0;
+
+    if(pthis && *pthis)
+	j = AJMAX(thys->Res, thys->Len+number+1);
     else
 	j = number+1;
 
-    ret = ajStrModL (pthis, ajRound (j, STRSIZE));
+    ret = ajStrModL(pthis, ajRound(j, STRSIZE));
     thys = *pthis;			/* possible new location */
 
     cp = &thys->Ptr[thys->Len];
-    for (i=0; i<number; i++)
+    for(i=0; i<number; i++)
     {
 	*cp = chr;
 	cp++;
@@ -1346,6 +1545,9 @@ AjBool ajStrAppKI (AjPStr* pthis, const char chr, ajint number)
 
     return ret;
 }
+
+
+
 
 /* @func ajStrAppSub **********************************************************
 **
@@ -1360,7 +1562,7 @@ AjBool ajStrAppKI (AjPStr* pthis, const char chr, ajint number)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrAppSub (AjPStr* pthis, const AjPStr src, ajint begin, ajint end)
+AjBool ajStrAppSub(AjPStr* pthis, const AjPStr src, ajint begin, ajint end)
 {
     ajint ilen;
     ajint ibegin;
@@ -1368,36 +1570,42 @@ AjBool ajStrAppSub (AjPStr* pthis, const AjPStr src, ajint begin, ajint end)
     AjBool ret = ajFalse;
     AjPStr t;
 
-    AjPStr thys = pthis ? *pthis : 0;
+    AjPStr thys;
     ajint j;
 
-    ibegin = strPos (src, begin);
-    iend = strPosI (src, ibegin, end);
+    thys = pthis ? *pthis : 0;
+
+    ibegin = strPos(src, begin);
+    iend   = strPosI(src, ibegin, end);
 
     ilen = iend - ibegin + 1;
 
     t = ajStrNewC(src->Ptr);
 
-    if (pthis && *pthis)
+    if(pthis && *pthis)
     {
-	j = AJMAX (thys->Res, thys->Len+ilen+1);
-	if (j > thys->Res && thys->Res > LONGSTR)
+	j = AJMAX(thys->Res, thys->Len+ilen+1);
+	if(j > thys->Res && thys->Res > LONGSTR)
 	    j = j + j/2;
     }
     else
 	j = ilen+1;
 
-    ret = ajStrModL (pthis, ajRound (j, STRSIZE));
+    ret = ajStrModL(pthis, ajRound(j, STRSIZE));
     thys = *pthis;			/* possible new location */
 
-    (void) strncpy (thys->Ptr+thys->Len, &t->Ptr[ibegin], ilen);
+    strncpy(thys->Ptr+thys->Len, &t->Ptr[ibegin], ilen);
     thys->Len += ilen;
 
     thys->Ptr[thys->Len] = '\0';
 
     ajStrDel(&t);
+
     return ret;
 }
+
+
+
 
 /* @func ajStrInsert **********************************************************
 **
@@ -1416,6 +1624,9 @@ AjBool ajStrInsert(AjPStr* pthis, ajint begin, const AjPStr insert )
 {
     return ajStrInsertC(pthis, begin, insert->Ptr);
 }
+
+
+
 
 /* @func ajStrInsertC *********************************************************
 **
@@ -1437,16 +1648,19 @@ AjBool ajStrInsertC(AjPStr* pthis, ajint begin, const char* insert )
     ajint ibegin;
     char* ptr1;
     const char* ptr2;
-    ajint len = strlen(insert);
+    ajint len;
+
+    len = strlen(insert);
 
     thys = *pthis;
-    if (!thys)
+    if(!thys)
     {
-	(void) ajStrAssCL(pthis, "", len+1);
+	ajStrAssCL(pthis, "", len+1);
 	thys = *pthis;
     }
 
-    ibegin = strPosII (thys->Len+1, 0, begin); /* can be at start or after end */
+    /* can be at start or after end */
+    ibegin = strPosII(thys->Len+1, 0, begin);
 
     j = thys->Len+len+1;
 
@@ -1460,7 +1674,7 @@ AjBool ajStrInsertC(AjPStr* pthis, ajint begin, const char* insert )
 	      (*pthis)->Res, (*pthis)->Len);*/
     }
     else
-	ret = ajStrMod (pthis);
+	ret = ajStrMod(pthis);
 
     thys = *pthis;			/* possible new location */
 
@@ -1494,6 +1708,8 @@ AjBool ajStrInsertC(AjPStr* pthis, ajint begin, const char* insert )
 }
 
 
+
+
 /* @func ajStrTruncate ********************************************************
 **
 ** Cut down string to N characters
@@ -1505,25 +1721,28 @@ AjBool ajStrInsertC(AjPStr* pthis, ajint begin, const char* insert )
 ** @@
 ******************************************************************************/
 
-AjBool ajStrTruncate (AjPStr* pthis, ajint begin)
+AjBool ajStrTruncate(AjPStr* pthis, ajint begin)
 {
     AjBool ret = ajFalse;
     AjPStr thys;
     ajint ibegin;
 
-    ret = ajStrMod (pthis);
+    ret = ajStrMod(pthis);
     thys = *pthis;
 
-    if (begin >= thys->Len)
+    if(begin >= thys->Len)
 	return ret;
 
-    ibegin = strPos (thys, begin);
+    ibegin = strPos(thys, begin);
 
     thys->Ptr[ibegin] = '\0';
     thys->Len = ibegin;
 
     return ret;
 }
+
+
+
 
 /* @func ajStrReplace *********************************************************
 **
@@ -1544,6 +1763,9 @@ AjBool ajStrReplace( AjPStr* pthis, ajint begin, const AjPStr overwrite,
     return ajStrReplaceC(pthis, begin, overwrite->Ptr, ilen);
 }
 
+
+
+
 /* @func ajStrReplaceC ********************************************************
 **
 ** Replace string at pos1 and add len characters from string overwrite.
@@ -1557,20 +1779,22 @@ AjBool ajStrReplace( AjPStr* pthis, ajint begin, const AjPStr overwrite,
 ** @@
 ******************************************************************************/
 
-AjBool ajStrReplaceC ( AjPStr* pthis, ajint begin, const char* overwrite,
+AjBool ajStrReplaceC( AjPStr* pthis, ajint begin, const char* overwrite,
 		      ajint ilen)
 {
     AjPStr thys;
     ajint ibegin;
     ajint iend;
-    char* ptr1 = 0;
+    char* ptr1       = 0;
     const char* ptr2 = 0;
-    ajint len = strlen(overwrite);
+    ajint len;
 
-    (void) ajStrMod (pthis);
+    len = strlen(overwrite);
+
+    ajStrMod(pthis);
     thys = *pthis;
 
-    ibegin = strPos (thys, begin);
+    ibegin = strPos(thys, begin);
     iend = ibegin + ilen;
 
     if((iend  > thys->Len) || (ilen > len) ) /* can't fit */
@@ -1585,6 +1809,9 @@ AjBool ajStrReplaceC ( AjPStr* pthis, ajint begin, const char* overwrite,
     return ajTrue;
 }
 
+
+
+
 /* @func ajStrReplaceK ********************************************************
 **
 ** Replace string at pos1 and add len copies of character overwrite.
@@ -1598,7 +1825,7 @@ AjBool ajStrReplaceC ( AjPStr* pthis, ajint begin, const char* overwrite,
 ** @@
 ******************************************************************************/
 
-AjBool ajStrReplaceK ( AjPStr* pthis, ajint begin, const char overwrite,
+AjBool ajStrReplaceK( AjPStr* pthis, ajint begin, const char overwrite,
 		      ajint ilen)
 {
     AjPStr thys;
@@ -1606,11 +1833,11 @@ AjBool ajStrReplaceK ( AjPStr* pthis, ajint begin, const char overwrite,
     ajint iend;
     char* ptr1 = 0;
 
-    (void) ajStrMod (pthis);
+    ajStrMod(pthis);
     thys = *pthis;
 
-    ibegin = strPos (thys, begin);
-    iend = ibegin + ilen;
+    ibegin = strPos(thys, begin);
+    iend   = ibegin + ilen;
 
     if(iend  > thys->Len)		/* can't fit */
 	return ajFalse;
@@ -1618,11 +1845,13 @@ AjBool ajStrReplaceK ( AjPStr* pthis, ajint begin, const char overwrite,
     ptr1 = &thys->Ptr[ibegin];
 
     for(;ilen>0;ilen--)
-    {
 	*ptr1++ = overwrite;
-    }
+
     return ajTrue;
 }
+
+
+
 
 /* @func ajStrJoin ************************************************************
 **
@@ -1636,15 +1865,18 @@ AjBool ajStrReplaceK ( AjPStr* pthis, ajint begin, const char overwrite,
 ** @@
 ******************************************************************************/
 
-AjBool ajStrJoin (AjPStr* pthis, ajint begin, const AjPStr addbit,
+AjBool ajStrJoin(AjPStr* pthis, ajint begin, const AjPStr addbit,
 		  ajint begin2)
 {
     ajint ibegin2;
 
-    ibegin2 = strPosI (addbit, 0, begin2);
+    ibegin2 = strPosI(addbit, 0, begin2);
 
     return ajStrJoinC(pthis, begin, addbit->Ptr, ibegin2);
 }
+
+
+
 
 /* @func ajStrJoinC ***********************************************************
 **
@@ -1658,20 +1890,22 @@ AjBool ajStrJoin (AjPStr* pthis, ajint begin, const AjPStr addbit,
 ** @@
 ******************************************************************************/
 
-AjBool ajStrJoinC (AjPStr* pthis, ajint begin, const char* addbit,
+AjBool ajStrJoinC(AjPStr* pthis, ajint begin, const char* addbit,
 		   ajint ibegin2)
 {
     AjPStr thys;
-    ajint len = strlen(addbit);
+    ajint len;
     ajint ibegin;
     ajint i = 0;
     ajint j = 0;
     ajint newlen = 0;
 
-    (void) ajStrMod (pthis);
+    len = strlen(addbit);
+
+    ajStrMod(pthis);
     thys = *pthis;
 
-    ibegin = strPos (thys, begin);
+    ibegin = strPos(thys, begin);
 
     if(thys->Len < ibegin || len < ibegin2)
 	return ajFalse;
@@ -1680,7 +1914,7 @@ AjBool ajStrJoinC (AjPStr* pthis, ajint begin, const char* addbit,
 
     if(newlen > thys->Res)
     {
-	(void) ajStrModL(pthis, ajRound(j, STRSIZE));
+	ajStrModL(pthis, ajRound(j, STRSIZE));
 	thys = *pthis;
     }
 
@@ -1691,6 +1925,9 @@ AjBool ajStrJoinC (AjPStr* pthis, ajint begin, const char* addbit,
 
     return ajTrue;
 }
+
+
+
 
 /* @func ajStrSubstitute ******************************************************
 **
@@ -1703,15 +1940,14 @@ AjBool ajStrJoinC (AjPStr* pthis, ajint begin, const char* addbit,
 ** @@
 ******************************************************************************/
 
-AjBool ajStrSubstitute (AjPStr* pthis,
-			const AjPStr replace, const AjPStr putin)
+AjBool ajStrSubstitute(AjPStr* pthis, const AjPStr replace, const AjPStr putin)
 {    
-    AjBool ret = ajFalse;
+    AjBool ret   = ajFalse;
     AjPStr thys;
     AjBool cycle = ajTrue;
-    ajint pos = 0;
+    ajint pos    = 0;
     
-    ret = ajStrMod (pthis);
+    ret = ajStrMod(pthis);
     thys = *pthis;
     
     if(replace->Len !=0)
@@ -1721,17 +1957,21 @@ AjBool ajStrSubstitute (AjPStr* pthis,
 	    pos = ajStrFindC(thys, replace->Ptr);
 	    if(pos >= 0)
 	    {
-		(void) ajStrCut(&thys,pos,pos+replace->Len-1);
-		(void) ajStrInsert(&thys,pos,putin);
+		ajStrCut(&thys,pos,pos+replace->Len-1);
+		ajStrInsert(&thys,pos,putin);
 	    }
 	    else
 		cycle = ajFalse;
 	}
     }
+
     *pthis = thys;
     
     return ret;
 }
+
+
+
 
 /* @func ajStrSubstituteCC ****************************************************
 **
@@ -1747,12 +1987,12 @@ AjBool ajStrSubstitute (AjPStr* pthis,
 AjBool ajStrSubstituteCC(AjPStr* pthis, const char* replace,
 			 const char* putin)
 {    
-    AjBool ret = ajFalse;
+    AjBool ret   = ajFalse;
     AjPStr thys;
     AjBool cycle = ajTrue;
-    ajint pos = 0;
+    ajint pos    = 0;
     
-    ret = ajStrMod (pthis);
+    ret = ajStrMod(pthis);
     thys = *pthis;
     
     if(strlen(replace) !=0)
@@ -1762,17 +2002,21 @@ AjBool ajStrSubstituteCC(AjPStr* pthis, const char* replace,
 	    pos = ajStrFindC(thys, replace);
 	    if(pos >= 0)
 	    {
-		(void) ajStrCut(&thys,pos,pos+strlen(replace)-1);
-		(void) ajStrInsertC(&thys,pos,putin);
+		ajStrCut(&thys,pos,pos+strlen(replace)-1);
+		ajStrInsertC(&thys,pos,putin);
 	    }
 	    else
 		cycle = ajFalse;
 	}
     }
+
     *pthis = thys;
     
     return ret;
 }
+
+
+
 
 /* @func ajStrSubstituteKK ****************************************************
 **
@@ -1785,20 +2029,20 @@ AjBool ajStrSubstituteCC(AjPStr* pthis, const char* replace,
 ** @@
 ******************************************************************************/
 
-AjBool ajStrSubstituteKK(AjPStr* pthis, char replace,
-			 char putin)
+AjBool ajStrSubstituteKK(AjPStr* pthis, char replace, char putin)
 {    
     AjBool ret = ajFalse;
     AjPStr thys;
     char* cp;
     
-    ret = ajStrMod (pthis);
+    ret  = ajStrMod(pthis);
     thys = *pthis;
-    cp = thys->Ptr;
+    cp   = thys->Ptr;
     
-    while (*cp)
+    while(*cp)
     {
-	if (*cp == replace) *cp = putin;
+	if(*cp == replace)
+	    *cp = putin;
 	cp++;
     }
     
@@ -1806,6 +2050,9 @@ AjBool ajStrSubstituteKK(AjPStr* pthis, char replace,
     
     return ret;
 }
+
+
+
 
 /* @func ajStrChompEnd ********************************************************
 **
@@ -1816,19 +2063,22 @@ AjBool ajStrSubstituteKK(AjPStr* pthis, char replace,
 ** @@
 ******************************************************************************/
 
-AjBool ajStrChompEnd (AjPStr* pthis)
+AjBool ajStrChompEnd(AjPStr* pthis)
 {
-    AjBool ret = ajFalse;
+    AjBool ret           = ajFalse;
     static AjPStr spaces = NULL;
 
-    if (!spaces)
-	(void) ajStrAssC(&spaces,"\t \n\r");
+    if(!spaces)
+	ajStrAssC(&spaces,"\t \n\r");
 
-    ret = ajStrMod (pthis);
-    (void) ajStrTrimEndC(pthis, spaces->Ptr);
+    ret = ajStrMod(pthis);
+    ajStrTrimEndC(pthis, spaces->Ptr);
 
     return ret;
 }
+
+
+
 
 /* @func ajStrChomp ***********************************************************
 **
@@ -1839,19 +2089,23 @@ AjBool ajStrChompEnd (AjPStr* pthis)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrChomp (AjPStr* pthis)
+AjBool ajStrChomp(AjPStr* pthis)
 {
     AjBool ret = ajFalse;
+
     static AjPStr spaces = NULL;
 
-    if (!spaces)
-	(void) ajStrAssC(&spaces,"\t \n\r");
+    if(!spaces)
+	ajStrAssC(&spaces,"\t \n\r");
 
-    ret = ajStrMod (pthis);
-    (void) ajStrTrimC(pthis, spaces->Ptr);
+    ret = ajStrMod(pthis);
+    ajStrTrimC(pthis, spaces->Ptr);
 
     return ret;
 }
+
+
+
 
 /* @func ajStrChompC **********************************************************
 **
@@ -1863,15 +2117,18 @@ AjBool ajStrChomp (AjPStr* pthis)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrChompC (AjPStr* pthis, const char* delim)
+AjBool ajStrChompC(AjPStr* pthis, const char* delim)
 {
     AjBool ret = ajFalse;
 
-    ret = ajStrMod (pthis);
-    (void) ajStrTrimC(pthis, delim);
+    ret = ajStrMod(pthis);
+    ajStrTrimC(pthis, delim);
 
     return ret;
 }
+
+
+
 
 /* @func ajStrChop ************************************************************
 **
@@ -1882,21 +2139,22 @@ AjBool ajStrChompC (AjPStr* pthis, const char* delim)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrChop (AjPStr* pthis)
+AjBool ajStrChop(AjPStr* pthis)
 {
     AjBool ret = ajFalse;
     AjPStr thys;
 
-    ret = ajStrMod (pthis);
+    ret = ajStrMod(pthis);
     thys = *pthis;
 
-    if (thys->Len)
-    {
+    if(thys->Len)
 	thys->Ptr[--thys->Len] = '\0';
-    }
 
     return ret;
 }
+
+
+
 
 /* @func ajStrTrim ************************************************************
 **
@@ -1909,23 +2167,23 @@ AjBool ajStrChop (AjPStr* pthis)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrTrim (AjPStr* pthis, ajint num)
+AjBool ajStrTrim(AjPStr* pthis, ajint num)
 {
     AjBool ret = ajFalse;
     AjPStr thys;
 
-    ret = ajStrMod (pthis);
+    ret = ajStrMod(pthis);
     thys = *pthis;
 
-    if (num > 0)
+    if(num > 0)
     {
 	if(num > thys->Len)
 	    return ajFalse;
-	(void) memmove (thys->Ptr, &thys->Ptr[num], thys->Len - num);
+	memmove(thys->Ptr, &thys->Ptr[num], thys->Len - num);
 	thys->Len -= num;
 	thys->Ptr[thys->Len] = '\0';
     }
-    else if (num < 0)
+    else if(num < 0)
     {
 	if((-num) > thys->Len)
 	    return ajFalse;
@@ -1935,6 +2193,9 @@ AjBool ajStrTrim (AjPStr* pthis, ajint num)
 
     return ret;
 }
+
+
+
 
 /* @func ajStrTrimC ***********************************************************
 **
@@ -1946,48 +2207,57 @@ AjBool ajStrTrim (AjPStr* pthis, ajint num)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrTrimC (AjPStr* pthis, const char* chars)
+AjBool ajStrTrimC(AjPStr* pthis, const char* chars)
 {
     AjBool ret = ajFalse;
     AjPStr thys;
     const char* cp;
     ajint i;
 
-    if (!pthis) return ret;
-    if (!*pthis) return ret;
+    if(!pthis)
+	return ret;
 
-    ret = ajStrMod (pthis);
+    if(!*pthis)
+	return ret;
+
+    ret  = ajStrMod(pthis);
     thys = *pthis;
 
     cp = thys->Ptr;
     i = strspn(cp, chars);
-    if (i)
+    if(i)
     {
 	thys->Len -= i;
-	if (thys->Len)
-	    (void) memmove (thys->Ptr, &thys->Ptr[i], thys->Len);
+	if(thys->Len)
+	    memmove(thys->Ptr, &thys->Ptr[i], thys->Len);
 	else
 	    *thys->Ptr = '\0';
     }
-    if (i)
+
+    if(i)
 	thys->Ptr[thys->Len] = '\0';
 
-    if (!thys->Len) return ret;	       /* changed to ! (il) 10/2/98 */
-    /* if there is still something there, then */
-    /* see if the end needs trimming */
+    if(!thys->Len)
+	return ret;
+
 
     cp = &thys->Ptr[thys->Len-1];
     i = 0;
-    while (strchr(chars, *cp) && thys->Len)
+    while(strchr(chars, *cp) && thys->Len)
     {
 	thys->Len--;
 	cp--;
 	i++;
     }
-    if (i) thys->Ptr[thys->Len] = '\0';
+
+    if(i)
+	thys->Ptr[thys->Len] = '\0';
 
     return ret;
 }
+
+
+
 
 /* @func ajStrTrimEndC ********************************************************
 **
@@ -1999,32 +2269,41 @@ AjBool ajStrTrimC (AjPStr* pthis, const char* chars)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrTrimEndC (AjPStr* pthis, const char* chars)
+AjBool ajStrTrimEndC(AjPStr* pthis, const char* chars)
 {
     AjBool ret = ajFalse;
     AjPStr thys;
     const char* cp;
     ajint i;
 
-    if (!pthis) return ret;
-    if (!*pthis) return ret;
+    if(!pthis)
+	return ret;
 
-    ret = ajStrMod (pthis);
+    if(!*pthis)
+	return ret;
+
+    ret = ajStrMod(pthis);
     thys = *pthis;
-    if (!thys->Len) return ret;
+    if(!thys->Len)
+	return ret;
 
     cp = &thys->Ptr[thys->Len-1];
     i = 0;
-    while (strchr(chars, *cp) && thys->Len)
+    while(strchr(chars, *cp) && thys->Len)
     {
 	thys->Len--;
 	cp--;
 	i++;
     }
-    if (i) thys->Ptr[thys->Len] = '\0';
+
+    if(i)
+	thys->Ptr[thys->Len] = '\0';
 
     return ret;
 }
+
+
+
 
 /* @func ajStrCut *************************************************************
 **
@@ -2037,31 +2316,35 @@ AjBool ajStrTrimEndC (AjPStr* pthis, const char* chars)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrCut (AjPStr* pthis, ajint begin, ajint end)
+AjBool ajStrCut(AjPStr* pthis, ajint begin, ajint end)
 {
     AjPStr thys;
     ajint ilen;
     ajint ibegin;
     ajint iend;
     ajint irest;
-    (void) ajStrMod (pthis);
+
+    ajStrMod(pthis);
     thys = *pthis;
 
-    ibegin = strPos (thys, begin);
-    iend = strPosI (thys, ibegin, end) + 1;
+    ibegin = strPos(thys, begin);
+    iend = strPosI(thys, ibegin, end) + 1;
     ilen = iend - ibegin;
 
-    ajDebug ("ajStrCut %d %d len: %d ibegin: %d iend: %d\n",
+    ajDebug("ajStrCut %d %d len: %d ibegin: %d iend: %d\n",
 	     begin, end, thys->Len, ibegin, iend);
 
     irest = thys->Len - iend + 1;
-    if (irest > 0)
-	(void) memmove (&thys->Ptr[ibegin], &thys->Ptr[iend], irest);
+    if(irest > 0)
+	memmove(&thys->Ptr[ibegin], &thys->Ptr[iend], irest);
     thys->Len -= ilen;
     thys->Ptr[thys->Len] = '\0';
 
     return ajTrue;
 }
+
+
+
 
 /* @func ajStrMask ************************************************************
 **
@@ -2075,29 +2358,33 @@ AjBool ajStrCut (AjPStr* pthis, ajint begin, ajint end)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrMask (AjPStr* pthis, ajint begin, ajint end, char maskchar)
+AjBool ajStrMask(AjPStr* pthis, ajint begin, ajint end, char maskchar)
 {
     AjPStr thys;
     ajint ibegin;
     ajint iend;
     ajint i;
 
-    (void) ajStrMod (pthis);
+    ajStrMod(pthis);
     thys = *pthis;
 
-    ibegin = strPos (thys, begin);
-    iend = strPosI (thys, ibegin, end);
+    ibegin = strPos(thys, begin);
+    iend = strPosI(thys, ibegin, end);
 
-    ajDebug ("ajStrMask %d %d len: %d ibegin: %d iend: %d char '%c'\n",
+    ajDebug("ajStrMask %d %d len: %d ibegin: %d iend: %d char '%c'\n",
 	     begin, end, thys->Len, ibegin, iend, maskchar);
 
-    if (iend < ibegin) return ajFalse;
+    if(iend < ibegin)
+	return ajFalse;
 
-    for (i=ibegin; i<=iend; i++)
+    for(i=ibegin; i<=iend; i++)
 	thys->Ptr[i] = maskchar;
 
     return ajTrue;
 }
+
+
+
 
 /* @func ajStrRev *************************************************************
 **
@@ -2108,19 +2395,19 @@ AjBool ajStrMask (AjPStr* pthis, ajint begin, ajint end, char maskchar)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrRev (AjPStr* pthis)
+AjBool ajStrRev(AjPStr* pthis)
 {
     AjBool ret = ajFalse;
     char *cp;
     char *cq;
     char tmp;
 
-    ret = ajStrMod (pthis);
+    ret = ajStrMod(pthis);
 
     cp = ajStrStr(*pthis);
     cq = cp + ajStrLen(*pthis) - 1;
 
-    while (cp < cq)
+    while(cp < cq)
     {
 	tmp = *cp;
 	*cp = *cq;
@@ -2131,6 +2418,8 @@ AjBool ajStrRev (AjPStr* pthis)
 
     return ret;
 }
+
+
 
 
 /* @func ajStrQuote ***********************************************************
@@ -2144,19 +2433,20 @@ AjBool ajStrRev (AjPStr* pthis)
 ******************************************************************************/
 void ajStrQuote(AjPStr* s)
 {
-    if (ajStrChar(*s, 0) != '"')
-    {
-	ajStrInsertC (s, 0, "\"");
-    }
+    if(ajStrChar(*s, 0) != '"')
+	ajStrInsertC(s, 0, "\"");
 
     /* careful: could be an empty string that is now '"' */
     /* this is the only way to have a length of 1 */
 
-    if ((*s)->Len == 1 || ajStrChar(*s, -1) != '"')
-    {
+    if((*s)->Len == 1 || ajStrChar(*s, -1) != '"')
 	ajStrAppK(s, '"');
-    }
+
+    return;
 }
+
+
+
 
 /* @func ajStrQuoteStrip ******************************************************
 **
@@ -2170,20 +2460,20 @@ void ajStrQuote(AjPStr* s)
 ******************************************************************************/
 void ajStrQuoteStrip(AjPStr* s)
 {
-    if (ajStrChar(*s, -1) == '"')
-    {
-	ajStrTrim (s, -1);
-    }
-    if (ajStrChar(*s, 0) == '"')
-    {
-	ajStrTrim (s, 1);
-    }
+    if(ajStrChar(*s, -1) == '"')
+	ajStrTrim(s, -1);
 
-    ajStrSubstituteCC (s, "\"\"", "\""); /* doubled quotes to single */
-    ajStrSubstituteCC (s, "\\\"", "\""); /* escaped quotes to single */
+    if(ajStrChar(*s, 0) == '"')
+	ajStrTrim(s, 1);
+
+    ajStrSubstituteCC(s, "\"\"", "\""); /* doubled quotes to single */
+    ajStrSubstituteCC(s, "\\\"", "\""); /* escaped quotes to single */
 
     return;
 }
+
+
+
 
 /* @func ajStrRandom **********************************************************
 **
@@ -2197,41 +2487,43 @@ void ajStrQuoteStrip(AjPStr* s)
 ******************************************************************************/
 void ajStrRandom(AjPStr* s)
 {
-    AjPStr copy=NULL;
+    AjPStr copy = NULL;
     char *p;
     char *q;
 
-    ajint *rn=NULL;
-    ajint *na=NULL;
+    ajint *rn = NULL;
+    ajint *na = NULL;
 
     ajint len;
     ajint i;
 
-    ajStrAssS (&copy, *s);
+    ajStrAssS(&copy, *s);
     p=ajStrStr(copy);
     q=ajStrStr(*s);
 
     len = ajStrLen(*s);
-    AJCNEW (na, len);
-    AJCNEW (rn, len);
+    AJCNEW(na, len);
+    AJCNEW(rn, len);
 
     for(i=0;i<len;++i)
     {
-	na[i]=i;
-	rn[i]=ajRandomNumber();
+	na[i] = i;
+	rn[i] = ajRandomNumber();
     }
     ajSortIntIncI(rn,na,len);
 
     for(i=0;i<len;++i)
-	q[i]=p[na[i]];
+	q[i] = p[na[i]];
 
-    AJFREE (na);
-    AJFREE (rn);
+    AJFREE(na);
+    AJFREE(rn);
     ajStrDel(&copy);
 
-    (void) ajStrMod(s);
+    ajStrMod(s);
     return;
 }
+
+
 
 
 /* @func ajStrSub *************************************************************
@@ -2248,29 +2540,32 @@ void ajStrRandom(AjPStr* s)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrSub (AjPStr* pthis, ajint begin, ajint end)
+AjBool ajStrSub(AjPStr* pthis, ajint begin, ajint end)
 {
     AjBool ret = ajFalse;
     AjPStr thys;
-    ajint ibegin, ilen, iend;
+    ajint ibegin;
+    ajint ilen;
+    ajint iend;
 
-    ret = ajStrMod (pthis);
+    ret  = ajStrMod(pthis);
     thys = *pthis;
 
-    ibegin = strPos (thys, begin);
-    iend = strPos (thys, end);
+    ibegin = strPos(thys, begin);
+    iend = strPos(thys, end);
 
     if(iend == thys->Len)
 	iend--;
-    if (iend < ibegin) ilen = 0;
-    else ilen = iend - ibegin + 1;
 
-    if (ilen)
+    if(iend < ibegin)
+	ilen = 0;
+    else
+	ilen = iend - ibegin + 1;
+
+    if(ilen)
     {
-	if (ibegin)
-	{
-	    (void) ajMemMove (thys->Ptr, &thys->Ptr[ibegin], ilen);
-	}
+	if(ibegin)
+	    ajMemMove(thys->Ptr, &thys->Ptr[ibegin], ilen);
 	thys->Len = ilen;
 	thys->Ptr[ilen] = '\0';
     }
@@ -2282,6 +2577,9 @@ AjBool ajStrSub (AjPStr* pthis, ajint begin, ajint end)
 
     return ret;
 }
+
+
+
 
 /* @func ajStrMod *************************************************************
 **
@@ -2297,25 +2595,30 @@ AjBool ajStrSub (AjPStr* pthis, ajint begin, ajint end)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrMod (AjPStr* pthis)
+AjBool ajStrMod(AjPStr* pthis)
 {
     AjBool ret = ajFalse;
+    AjPStr thys;
 
-    AjPStr thys = pthis ? *pthis : 0;
-    if (!*pthis)
+    thys = pthis ? *pthis : 0;
+
+    if(!*pthis)
     {
 	thys = *pthis = ajStrNew();
 	ret = ajTrue;
     }
 
-    if (thys->Use > 1)
+    if(thys->Use > 1)
     {
-	strClone (pthis);
+	strClone(pthis);
 	ret = ajTrue;
     }
 
     return ret;
 }
+
+
+
 
 /* @func ajStrModL ************************************************************
 **
@@ -2331,27 +2634,32 @@ AjBool ajStrMod (AjPStr* pthis)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrModL (AjPStr* pthis, size_t size)
+AjBool ajStrModL(AjPStr* pthis, size_t size)
 {
     AjBool ret = ajFalse;
+    AjPStr thys;
+    size_t savesize;
 
-    AjPStr thys = pthis ? *pthis : 0;
-    size_t savesize = size; /* often part of *pthis, about to vanish */
+    thys = pthis ? *pthis : 0;
+    savesize = size; /* often part of *pthis, about to vanish */
 
-    if (!thys)
+    if(!thys)
     {
 	thys = *pthis = ajStrNewL(savesize);
 	ret = ajTrue;
     }
 
-    if ((thys->Use > 1 || thys->Res < savesize))
+    if((thys->Use > 1 || thys->Res < savesize))
     {
-	strCloneL (pthis, savesize);
+	strCloneL(pthis, savesize);
 	ret = ajTrue;
     }
 
     return ret;
 }
+
+
+
 
 /* @func ajStrConvert *********************************************************
 **
@@ -2364,11 +2672,13 @@ AjBool ajStrModL (AjPStr* pthis, size_t size)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrConvert (AjPStr* pthis,
-		     const AjPStr oldc, const AjPStr newc)
+AjBool ajStrConvert(AjPStr* pthis, const AjPStr oldc, const AjPStr newc)
 {
-    return ajStrConvertCC (pthis, oldc->Ptr, newc->Ptr);
+    return ajStrConvertCC(pthis, oldc->Ptr, newc->Ptr);
 }
+
+
+
 
 /* @func ajStrConvertCC *******************************************************
 **
@@ -2381,31 +2691,34 @@ AjBool ajStrConvert (AjPStr* pthis,
 ** @@
 ******************************************************************************/
 
-AjBool ajStrConvertCC (AjPStr* pthis, const char* oldc, const char* newc)
+AjBool ajStrConvertCC(AjPStr* pthis, const char* oldc, const char* newc)
 {
-    AjBool ret = ajFalse;
+    AjBool ret       = ajFalse;
     char filter[256] = {'\0'};		/* should make all zero */
     ajint i;
 
-    const char *co = oldc;
-    const char *cn = newc;
+    const char *co;
+    const char *cn;
     char* cp;
+
+    co = oldc;
+    cn = newc;
 
     ret = ajStrMod(pthis);
 
     i = strlen(newc);
     if(strlen(oldc) > i)
     {
-	ajErr ("ajStrConvertCC new character set '%s' shorter than old '%s'",
+	ajErr("ajStrConvertCC new character set '%s' shorter than old '%s'",
 	       oldc, newc);
-	ajErr ("Will only convert the first %d chars",i);
+	ajErr("Will only convert the first %d chars",i);
     }
 
-    while (i)
+    while(i)
     {
-	if (!*cn)
+	if(!*cn)
 	{
-	    ajErr (" SHOULD NEVER SEE THIS "
+	    ajErr(" SHOULD NEVER SEE THIS "
 		   "StrConvertCC new character set '%s' shorter than old '%s'",
 		   oldc, newc);
 	}
@@ -2414,13 +2727,15 @@ AjBool ajStrConvertCC (AjPStr* pthis, const char* oldc, const char* newc)
 	i--;
     }
 
-    for (cp = (*pthis)->Ptr; *cp; cp++)
-    {
-	if (filter[(ajint)*cp])
+    for(cp = (*pthis)->Ptr; *cp; cp++)
+	if(filter[(ajint)*cp])
 	    *cp = filter[(ajint)*cp];
-    }
+
     return ret;
 }
+
+
+
 
 /* @func ajStrToLower *********************************************************
 **
@@ -2432,17 +2747,20 @@ AjBool ajStrConvertCC (AjPStr* pthis, const char* oldc, const char* newc)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrToLower (AjPStr* pthis)
+AjBool ajStrToLower(AjPStr* pthis)
 {
     AjBool ret = ajFalse;
     AjPStr thys;
 
-    ret = ajStrMod (pthis);
+    ret  = ajStrMod(pthis);
     thys = *pthis;
     ajCharToLower(thys->Ptr);
 
     return ret;
 }
+
+
+
 
 /* @func ajCharToLower ********************************************************
 **
@@ -2453,10 +2771,13 @@ AjBool ajStrToLower (AjPStr* pthis)
 ** @@
 ******************************************************************************/
 
-void ajCharToLower (char* txt)
+void ajCharToLower(char* txt)
 {
-    char* cp = txt;
-    while (*cp)
+    char* cp;
+
+    cp = txt;
+
+    while(*cp)
     {
 	/*
 	 *  AJB: function ajSysItoC was there as some really fussy compilers
@@ -2472,6 +2793,9 @@ void ajCharToLower (char* txt)
     return;
 }
 
+
+
+
 /* @func ajStrToUpper *********************************************************
 **
 ** Converts a string to upper case. If the string has multiple references,
@@ -2482,17 +2806,20 @@ void ajCharToLower (char* txt)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrToUpper (AjPStr* pthis)
+AjBool ajStrToUpper(AjPStr* pthis)
 {
     AjBool ret = ajFalse;
     AjPStr thys;
 
-    ret = ajStrMod (pthis);
+    ret  = ajStrMod(pthis);
     thys = *pthis;
     ajCharToUpper(thys->Ptr);
 
     return ret;
 }
+
+
+
 
 /* @func ajCharToUpper ********************************************************
 **
@@ -2503,10 +2830,13 @@ AjBool ajStrToUpper (AjPStr* pthis)
 ** @@
 ******************************************************************************/
 
-void ajCharToUpper (char* txt)
+void ajCharToUpper(char* txt)
 {
-    char* cp = txt;
-    while (*cp)
+    char* cp;
+
+    cp = txt;
+
+    while(*cp)
     {
 	/*
 	 *  AJB: function ajSysItoC was there as some really fussy compilers
@@ -2522,6 +2852,9 @@ void ajCharToUpper (char* txt)
     return;
 }
 
+
+
+
 /* @func ajStrClean ***********************************************************
 **
 ** Remove excess whitespace from a string
@@ -2536,17 +2869,18 @@ void ajCharToUpper (char* txt)
 
 AjBool ajStrClean(AjPStr* s)
 {
-    AjBool ret = ajFalse;
+    AjBool ret      = ajFalse;
     static AjPStr t = NULL;
-    ajint i=0;
-    ajint j=0;
+
+    ajint i = 0;
+    ajint j = 0;
     ajint len;
     char *p;
     
-    (void) ajStrAssS (&t,*s);		/* make a buffer in t */
+    ajStrAssS(&t,*s);		/* make a buffer in t */
     
-    p=ajStrStr(t);
-    len=strlen(p);
+    p   = ajStrStr(t);
+    len = strlen(p);
     
     /* if string was already empty, no need to do anything */
     
@@ -2555,20 +2889,23 @@ AjBool ajStrClean(AjPStr* s)
     
     /* tabs converted to spaces */
     
-    for(i=0;i<len;++i) if(p[i]=='\t') p[i]=' ';
+    for(i=0;i<len;++i)
+	if(p[i]=='\t')
+	    p[i]=' ';
     
     /* remove leading spaces */
     
-    i=0;
+    i = 0;
     while(p[i])
     {
-	if(p[i]!=' ') break;
+	if(p[i]!=' ')
+	    break;
 	++i;
     }
     
-    if (i)
+    if(i)
     {
-	(void) strcpy(p,&p[i]);
+	strcpy(p,&p[i]);
 	len=strlen(p);
 	if(!len)
 	{			    /* if that emptied it, so be it */
@@ -2594,7 +2931,9 @@ AjBool ajStrClean(AjPStr* s)
     /* clean up any space at the end */
     
     for(i=len-1;i>-1;--i)
-	if(p[i]!=' ') break;
+	if(p[i]!=' ')
+	    break;
+
     p[i+1]='\0';
     
     len=strlen(p);
@@ -2623,6 +2962,9 @@ AjBool ajStrClean(AjPStr* s)
     return ret;
 }
 
+
+
+
 /* @func ajStrCleanWhite ******************************************************
 **
 ** Removes all whitespace from a string
@@ -2634,36 +2976,37 @@ AjBool ajStrClean(AjPStr* s)
 
 AjBool ajStrCleanWhite(AjPStr* s)
 {
-    AjBool ret = ajFalse;
+    AjBool ret      = ajFalse;
     static AjPStr t = NULL;
-    ajint i=0;
-    ajint j=0;
+    ajint i = 0;
+    ajint j = 0;
     ajint len;
     char *p;
 
-    (void) ajStrAssS (&t,*s);		/* make a buffer in t */
+    ajStrAssS(&t,*s);		/* make a buffer in t */
 
-    p=ajStrStr(t);
-    len=ajStrLen(t);
+    p   = ajStrStr(t);
+    len = ajStrLen(t);
 
     for(i=0;i<len;++i)
 	if(p[i]=='\t' || p[i]=='\n' || p[i]=='\r')
 	    p[i]=' ';
+
     for(i=0;i<len;++i)
-    {
 	if(p[i]!=' ')
-	{
 	    p[j++]=p[i];
-	}
 	else
 	    --t->Len;
-    }
+
     p[j]='\0';
 
     ret = ajStrAssC(s,p);
 
     return ret;
 }
+
+
+
 
 /* @func ajStrBlock ***********************************************************
 **
@@ -2677,7 +3020,7 @@ AjBool ajStrCleanWhite(AjPStr* s)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrBlock (AjPStr* pthis, ajint blksize)
+AjBool ajStrBlock(AjPStr* pthis, ajint blksize)
 {
     ajint i;
     char* cp;
@@ -2686,26 +3029,30 @@ AjBool ajStrBlock (AjPStr* pthis, ajint blksize)
     ajint j;
 
     i = (*pthis)->Len + ((*pthis)->Len-1)/blksize;
-    (void) ajStrModL (pthis, i+1);
+    ajStrModL(pthis, i+1);
     thys = *pthis;
 
-    ajDebug ("ajStrBlock len: %d blksize: %d i: %d\n", thys->Len, blksize, i);
+    ajDebug("ajStrBlock len: %d blksize: %d i: %d\n", thys->Len, blksize, i);
 
     cp = &thys->Ptr[thys->Len];
     cq = &thys->Ptr[i];
-    for (j=thys->Len-1; j; j--)
+    for(j=thys->Len-1; j; j--)
     {
 	*(--cq) = *(--cp);
-	if (!(j%blksize)) *(--cq) = ' ';
+	if(!(j%blksize))
+	    *(--cq) = ' ';
     }
     thys->Ptr[i]='\0';
     thys->Len = i;
 
-    ajStrTrace (thys);
-    ajDebug ("result '%S'\n", thys);
+    ajStrTrace(thys);
+    ajDebug("result '%S'\n", thys);
 
     return ajTrue;
 }
+
+
+
 
 /* @func ajStrFill ************************************************************
 **
@@ -2717,18 +3064,20 @@ AjBool ajStrBlock (AjPStr* pthis, ajint blksize)
 ** @return [void]
 ** @@
 ******************************************************************************/
-void ajStrFill (AjPStr* pthys, ajint len, char fill)
+
+void ajStrFill(AjPStr* pthys, ajint len, char fill)
 {
     ajint i;
     AjPStr thys;
 
-    ajStrModL (pthys, len+1);
+    ajStrModL(pthys, len+1);
 
     thys = *pthys;
 
-    if (thys->Len >= len) return;
+    if(thys->Len >= len)
+	return;
 
-    for (i=thys->Len; i < len; i++)
+    for(i=thys->Len; i < len; i++)
 	thys->Ptr[i] = fill;
 
     thys->Ptr[len] = '\0';
@@ -2736,6 +3085,9 @@ void ajStrFill (AjPStr* pthys, ajint len, char fill)
 
     return;
 }
+
+
+
 
 /* @func ajStrFix *************************************************************
 **
@@ -2746,14 +3098,17 @@ void ajStrFill (AjPStr* pthys, ajint len, char fill)
 ** @@
 ******************************************************************************/
 
-void ajStrFix (AjPStr thys)
+void ajStrFix(AjPStr thys)
 {
-    if (thys->Use > 1)
-	ajWarn ("ajStrFix called for string in use %d times\n", thys->Use);
+    if(thys->Use > 1)
+	ajWarn("ajStrFix called for string in use %d times\n", thys->Use);
     thys->Len = strlen(thys->Ptr);
 
     return;
 }
+
+
+
 
 /* @func ajStrFixI ************************************************************
 **
@@ -2765,16 +3120,16 @@ void ajStrFix (AjPStr thys)
 ** @@
 ******************************************************************************/
 
-void ajStrFixI (AjPStr thys, ajint ilen)
+void ajStrFixI(AjPStr thys, ajint ilen)
 {
-    if (thys->Use > 1)
+    if(thys->Use > 1)
     {
-	ajDebug ("ajStrFixI called for string in use %d times\n'%*S'\n",
-		 thys->Use, thys->Res, thys);
-	ajWarn ("ajStrFixI called for string in use %d times\n", thys->Use);
+	ajDebug("ajStrFixI called for string in use %d times\n'%*S'\n",
+		thys->Use, thys->Res, thys);
+	ajWarn("ajStrFixI called for string in use %d times\n", thys->Use);
     }
 
-    if (ilen >= thys->Res)
+    if(ilen >= thys->Res)
     {
 	ajWarn("ajStrFixI called with length %d for string with size %d\n",
 	       ilen, thys->Res);
@@ -2784,7 +3139,8 @@ void ajStrFixI (AjPStr thys, ajint ilen)
 		ilen, thys->Res, thys);
 	ilen = strlen(thys->Ptr);
     }
-    if (ilen < 0)
+
+    if(ilen < 0)
     {
 	ajWarn("ajStrFixI called with negative length %d\n", ilen);
 	thys->Ptr[thys->Res-1] = '\0';
@@ -2799,6 +3155,8 @@ void ajStrFixI (AjPStr thys, ajint ilen)
 }
 
 
+
+
 /* @func ajStrFixTestI ********************************************************
 **
 ** Reset string length when some nasty caller may have edited it
@@ -2810,25 +3168,26 @@ void ajStrFixI (AjPStr thys, ajint ilen)
 ** @@
 ******************************************************************************/
 
-void ajStrFixTestI (AjPStr thys, ajint ilen)
+void ajStrFixTestI(AjPStr thys, ajint ilen)
 {
-    if (thys->Use > 1)
-	ajWarn ("ajStrFixTestI called for string in use %d times\n",
-		thys->Use);
+    if(thys->Use > 1)
+	ajWarn("ajStrFixTestI called for string in use %d times\n",
+	       thys->Use);
 
-    if (ilen > thys->Res)
+    if(ilen > thys->Res)
     {
 	ajWarn("ajStrFixTestI called with length %d for string with size %d\n",
 	       ilen, thys->Res);
 	ilen = strlen(thys->Ptr);
     }
-    if (ilen < 0)
+
+    if(ilen < 0)
     {
 	ajWarn("ajStrFixTestI called with negative length %d\n", ilen);
 	ilen = strlen(thys->Ptr);
     }
 
-    if (thys->Ptr[ilen])
+    if(thys->Ptr[ilen])
     {
 	ajWarn("ajStrFixTestI called with length %d "
 	       "but this is not end of string\n",
@@ -2850,6 +3209,8 @@ void ajStrFixTestI (AjPStr thys, ajint ilen)
 }
 
 
+
+
 /* @func ajStrUncomment *******************************************************
 **
 ** Strips comments from a character string (a line from an ACD file
@@ -2863,25 +3224,28 @@ void ajStrFixTestI (AjPStr thys, ajint ilen)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrUncomment (AjPStr* text)
+AjBool ajStrUncomment(AjPStr* text)
 {
     char *cp;
 
-    if (!ajStrLen (*text))		/* empty string */
+    if(!ajStrLen(*text))		/* empty string */
 	return ajFalse;
 
     cp = strchr(ajStrStr(*text), '#');
-    if (cp)
+    if(cp)
     {					/* comment found */
 	*cp = '\0';
-	(void) ajStrFix (*text);
+	ajStrFix(*text);
     }
 
-    if (!ajStrLen(*text))	      /* no text before the comment */
+    if(!ajStrLen(*text))	      /* no text before the comment */
 	return ajFalse;
 
     return ajTrue;
 }
+
+
+
 
 /* @func ajStrUncommentStart **************************************************
 **
@@ -2894,12 +3258,12 @@ AjBool ajStrUncomment (AjPStr* text)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrUncommentStart (AjPStr* text)
+AjBool ajStrUncommentStart(AjPStr* text)
 {
-    if (!ajStrLen (*text))		/* empty string */
+    if(!ajStrLen(*text))		/* empty string */
 	return ajFalse;
 
-    if (ajStrChar(*text, 0) == '#')
+    if(ajStrChar(*text, 0) == '#')
     {					/* comment found */
 	ajStrAssC(text, "");
 	return ajFalse;
@@ -2907,6 +3271,9 @@ AjBool ajStrUncommentStart (AjPStr* text)
 
     return ajTrue;
 }
+
+
+
 
 /* ==================================================================== */
 /* ======================== Operators ==================================*/
@@ -2920,6 +3287,9 @@ AjBool ajStrUncommentStart (AjPStr* text)
 **
 ******************************************************************************/
 
+
+
+
 /* @func ajStrFindC ***********************************************************
 **
 ** Locates the first occurrence in the string of the second string.
@@ -2931,13 +3301,19 @@ AjBool ajStrUncommentStart (AjPStr* text)
 ** @@
 ******************************************************************************/
 
-ajint ajStrFindC (const AjPStr thys, const char* text)
+ajint ajStrFindC(const AjPStr thys, const char* text)
 {
     const char* cp;
-    cp = strstr (thys->Ptr, text);
-    if (!cp) return -1;
-    return (cp - thys->Ptr);
+
+    cp = strstr(thys->Ptr, text);
+    if(!cp)
+	return -1;
+
+    return(cp - thys->Ptr);
 }
+
+
+
 
 /* @func ajStrFind ************************************************************
 **
@@ -2950,13 +3326,19 @@ ajint ajStrFindC (const AjPStr thys, const char* text)
 ** @@
 ******************************************************************************/
 
-ajint ajStrFind (const AjPStr thys, const AjPStr text)
+ajint ajStrFind(const AjPStr thys, const AjPStr text)
 {
     const char* cp;
-    cp = strstr (thys->Ptr, text->Ptr);
-    if (!cp) return -1;
+
+    cp = strstr(thys->Ptr, text->Ptr);
+    if(!cp)
+	return -1;
+
     return (cp - thys->Ptr);
 }
+
+
+
 
 /* @func ajStrFindCaseC *******************************************************
 **
@@ -2970,7 +3352,7 @@ ajint ajStrFind (const AjPStr thys, const AjPStr text)
 ** @@
 ******************************************************************************/
 
-ajint ajStrFindCaseC (const AjPStr thys, const char *text)
+ajint ajStrFindCaseC(const AjPStr thys, const char *text)
 {
     AjPStr t1;
     AjPStr t2;
@@ -2988,6 +3370,9 @@ ajint ajStrFindCaseC (const AjPStr thys, const char *text)
     return v;
 }
 
+
+
+
 /* @func ajStrFindCase ********************************************************
 **
 ** Locates the first occurrence in the string of the second string.
@@ -3000,10 +3385,13 @@ ajint ajStrFindCaseC (const AjPStr thys, const char *text)
 ** @@
 ******************************************************************************/
 
-ajint ajStrFindCase (const AjPStr thys, const AjPStr text)
+ajint ajStrFindCase(const AjPStr thys, const AjPStr text)
 {
     return ajStrFindCaseC(thys,text->Ptr);
 }
+
+
+
 
 /* @func ajStrRFindC **********************************************************
 **
@@ -3016,7 +3404,7 @@ ajint ajStrFindCase (const AjPStr thys, const AjPStr text)
 ** @@
 ******************************************************************************/
 
-ajint ajStrRFindC (const AjPStr thys, const char* text)
+ajint ajStrRFindC(const AjPStr thys, const char* text)
 {
     ajint i = 0;
     ajint j = 0;
@@ -3042,11 +3430,16 @@ ajint ajStrRFindC (const AjPStr thys, const char* text)
 	    ptr2++;
 	    ptr1++;
 	}
+
 	if(found)
 	    return i;
     }
+
     return -1;
 }
+
+
+
 
 /* @func ajStrCmp *************************************************************
 **
@@ -3060,10 +3453,12 @@ ajint ajStrRFindC (const AjPStr thys, const char* text)
 ** @@
 ******************************************************************************/
 
-int ajStrCmp (const void* str1, const void* str2)
+int ajStrCmp(const void* str1, const void* str2)
 {
     return strcmp((*(AjPStr*)str1)->Ptr, (*(AjPStr*)str2)->Ptr);
 }
+
+
 
 
 /* @func ajStrCmpO ************************************************************
@@ -3078,10 +3473,12 @@ int ajStrCmp (const void* str1, const void* str2)
 ** @@
 ******************************************************************************/
 
-int ajStrCmpO (const AjPStr thys, const AjPStr anoth)
+int ajStrCmpO(const AjPStr thys, const AjPStr anoth)
 {
     return strcmp(thys->Ptr, anoth->Ptr);
 }
+
+
 
 /* @func ajStrCmpC ************************************************************
 **
@@ -3095,10 +3492,12 @@ int ajStrCmpO (const AjPStr thys, const AjPStr anoth)
 ** @@
 ******************************************************************************/
 
-int ajStrCmpC (const AjPStr thys, const char* text)
+int ajStrCmpC(const AjPStr thys, const char* text)
 {
     return strcmp(thys->Ptr, text);
 }
+
+
 
 /* @func ajStrNCmpO ***********************************************************
 **
@@ -3113,10 +3512,13 @@ int ajStrCmpC (const AjPStr thys, const char* text)
 ** @@
 ******************************************************************************/
 
-int ajStrNCmpO (const AjPStr thys, const AjPStr anoth, ajint n)
+int ajStrNCmpO(const AjPStr thys, const AjPStr anoth, ajint n)
 {
     return strncmp(thys->Ptr, anoth->Ptr, n);
 }
+
+
+
 
 /* @func ajStrNCmpC ***********************************************************
 **
@@ -3131,10 +3533,12 @@ int ajStrNCmpO (const AjPStr thys, const AjPStr anoth, ajint n)
 ** @@
 ******************************************************************************/
 
-int ajStrNCmpC (const AjPStr thys, const char* text, ajint n)
+int ajStrNCmpC(const AjPStr thys, const char* text, ajint n)
 {
     return strncmp(thys->Ptr, text, n);
 }
+
+
 
 
 /* @func ajStrNCmpCaseCC ******************************************************
@@ -3150,25 +3554,31 @@ int ajStrNCmpC (const AjPStr thys, const char* text, ajint n)
 ** @@
 ******************************************************************************/
 
-int ajStrNCmpCaseCC (const char* str1, const char* str2, ajint len)
+int ajStrNCmpCaseCC(const char* str1, const char* str2, ajint len)
 {
     const char* cp;
     const char* cq;
     ajint i;
 
     for(cp=str1,cq=str2,i=0;*cp && *cq && i<len;++i,++cp,++cq)
-    {
-	if (toupper((ajint) *cp) != toupper((ajint) *cq))
+	if(toupper((ajint) *cp) != toupper((ajint) *cq))
 	{
-	    if (toupper((ajint) *cp) > toupper((ajint) *cq)) return 1;
-	    else return -1;
+	    if(toupper((ajint) *cp) > toupper((ajint) *cq))
+		return 1;
+	    else
+		return -1;
 	}
-    }
-    if(i==len) return 0;
-    if (*cp) return 1;
+
+    if(i==len)
+	return 0;
+
+    if(*cp)
+	return 1;
 
     return -1;
 }
+
+
 
 
 /* @func ajStrCmpCase *********************************************************
@@ -3183,24 +3593,31 @@ int ajStrNCmpCaseCC (const char* str1, const char* str2, ajint len)
 ** @@
 ******************************************************************************/
 
-int ajStrCmpCase (const AjPStr str1, const AjPStr str2)
+int ajStrCmpCase(const AjPStr str1, const AjPStr str2)
 {
     const char* cp;
     const char* cq;
 
-    for (cp = str1->Ptr, cq = str2->Ptr; *cp && *cq; cp++, cq++)
-    {
-	if (toupper((ajint) *cp) != toupper((ajint) *cq))
+    for(cp = str1->Ptr, cq = str2->Ptr; *cp && *cq; cp++, cq++)
+	if(toupper((ajint) *cp) != toupper((ajint) *cq))
 	{
-	    if (toupper((ajint) *cp) > toupper((ajint) *cq)) return 1;
-	    else return -1;
+	    if(toupper((ajint) *cp) > toupper((ajint) *cq))
+		return 1;
+	    else
+		return -1;
 	}
-    }
 
-    if (*cp) return 1;
-    if (*cq) return -1;
+    if(*cp)
+	return 1;
+
+    if(*cq)
+	return -1;
+
     return 0;
 }
+
+
+
 
 /* @func ajStrCmpCaseCC *******************************************************
 **
@@ -3214,24 +3631,33 @@ int ajStrCmpCase (const AjPStr str1, const AjPStr str2)
 ** @@
 ******************************************************************************/
 
-int ajStrCmpCaseCC (const char* str1, const char* str2)
+int ajStrCmpCaseCC(const char* str1, const char* str2)
 {
     const char* cp;
     const char* cq;
 
-    for (cp = str1, cq = str2; *cp && *cq; cp++, cq++)
+    for(cp = str1, cq = str2; *cp && *cq; cp++, cq++)
     {
-	if (toupper((ajint) *cp) != toupper((ajint) *cq))
+	if(toupper((ajint) *cp) != toupper((ajint) *cq))
 	{
-	    if (toupper((ajint) *cp) > toupper((ajint) *cq)) return 1;
-	    else return -1;
+	    if(toupper((ajint) *cp) > toupper((ajint) *cq))
+		return 1;
+	    else
+		return -1;
 	}
     }
 
-    if (*cp) return 1;
-    if (*cq) return -1;
+    if(*cp)
+	return 1;
+
+    if(*cq)
+	return -1;
+
     return 0;
 }
+
+
+
 
 /* @func ajStrMatch ***********************************************************
 **
@@ -3243,16 +3669,19 @@ int ajStrCmpCaseCC (const char* str1, const char* str2)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrMatch (const AjPStr thys, const AjPStr str)
+AjBool ajStrMatch(const AjPStr thys, const AjPStr str)
 {
-    if (!thys || !str)
+    if(!thys || !str)
 	return ajFalse;
 
-    if (!strcmp (thys->Ptr, str->Ptr))
+    if(!strcmp(thys->Ptr, str->Ptr))
 	return ajTrue;
 
     return ajFalse;
 }
+
+
+
 
 /* @func ajStrMatchC **********************************************************
 **
@@ -3264,16 +3693,19 @@ AjBool ajStrMatch (const AjPStr thys, const AjPStr str)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrMatchC (const AjPStr thys, const char* text)
+AjBool ajStrMatchC(const AjPStr thys, const char* text)
 {
-    if (!thys || !text)
+    if(!thys || !text)
 	return ajFalse;
 
-    if (!strcmp (thys->Ptr, text))
+    if(!strcmp(thys->Ptr, text))
 	return ajTrue;
 
     return ajFalse;
 }
+
+
+
 
 /* @func ajStrMatchCC *********************************************************
 **
@@ -3285,16 +3717,19 @@ AjBool ajStrMatchC (const AjPStr thys, const char* text)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrMatchCC (const char* thys, const char* text)
+AjBool ajStrMatchCC(const char* thys, const char* text)
 {
-    if (!thys || !text)
+    if(!thys || !text)
 	return ajFalse;
 
-    if (!strcmp (thys, text))
+    if(!strcmp(thys, text))
 	return ajTrue;
 
     return ajFalse;
 }
+
+
+
 
 /* @func ajStrMatchCase *******************************************************
 **
@@ -3306,13 +3741,16 @@ AjBool ajStrMatchCC (const char* thys, const char* text)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrMatchCase (const AjPStr thys, const AjPStr str)
+AjBool ajStrMatchCase(const AjPStr thys, const AjPStr str)
 {
-    if (!thys || !str)
+    if(!thys || !str)
 	return ajFalse;
 
-    return ajStrMatchCaseCC (thys->Ptr, str->Ptr);
+    return ajStrMatchCaseCC(thys->Ptr, str->Ptr);
 }
+
+
+
 
 /* @func ajStrMatchCaseC ******************************************************
 **
@@ -3324,13 +3762,16 @@ AjBool ajStrMatchCase (const AjPStr thys, const AjPStr str)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrMatchCaseC (const AjPStr thys, const char* text)
+AjBool ajStrMatchCaseC(const AjPStr thys, const char* text)
 {
-    if (!thys || !text)
+    if(!thys || !text)
 	return ajFalse;
 
-    return ajStrMatchCaseCC (thys->Ptr, text);
+    return ajStrMatchCaseCC(thys->Ptr, text);
 }
+
+
+
 
 /* @func ajStrMatchCaseCC *****************************************************
 **
@@ -3342,23 +3783,29 @@ AjBool ajStrMatchCaseC (const AjPStr thys, const char* text)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrMatchCaseCC (const char* thys, const char* text)
+AjBool ajStrMatchCaseCC(const char* thys, const char* text)
 {
-    const char* cp = thys;
-    const char* cq = text;
+    const char* cp;
+    const char* cq;
 
-    if (!*cp || !*cq)
+    cp = thys;
+    cq = text;
+
+    if(!*cp || !*cq)
 	return ajFalse;
 
-    while (*cp && *cq)
-    {
-	if (tolower((ajint) *cp++) != tolower((ajint) *cq++)) return ajFalse;
-    }
-    if (*cp || *cq)
+    while(*cp && *cq)
+	if(tolower((ajint) *cp++) != tolower((ajint) *cq++))
+	    return ajFalse;
+
+    if(*cp || *cq)
 	return ajFalse;
 
     return ajTrue;
 }
+
+
+
 
 /* @func ajStrMatchWild *******************************************************
 **
@@ -3370,10 +3817,13 @@ AjBool ajStrMatchCaseCC (const char* thys, const char* text)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrMatchWild (const AjPStr thys, const AjPStr wild)
+AjBool ajStrMatchWild(const AjPStr thys, const AjPStr wild)
 {
-    return ajStrMatchWildCC (thys->Ptr, wild->Ptr);
+    return ajStrMatchWildCC(thys->Ptr, wild->Ptr);
 }
+
+
+
 
 /* @func ajStrMatchWildC ******************************************************
 **
@@ -3385,10 +3835,13 @@ AjBool ajStrMatchWild (const AjPStr thys, const AjPStr wild)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrMatchWildC (const AjPStr thys, const char* text)
+AjBool ajStrMatchWildC(const AjPStr thys, const char* text)
 {
-    return ajStrMatchWildCC (thys->Ptr, text);
+    return ajStrMatchWildCC(thys->Ptr, text);
 }
+
+
+
 
 /* @func ajStrMatchWildCC *****************************************************
 **
@@ -3400,7 +3853,7 @@ AjBool ajStrMatchWildC (const AjPStr thys, const char* text)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrMatchWildCC (const char* str, const char* text)
+AjBool ajStrMatchWildCC(const char* str, const char* text)
 {
     ajint i;
 
@@ -3409,11 +3862,14 @@ AjBool ajStrMatchWildCC (const char* str, const char* text)
     ajDebug("ajStrMatchWildCC '%s' '%s' cmp: %d\n",
 	    str, text, i);
 
-    if (i)
+    if(i)
 	return ajFalse;
 
     return ajTrue;
 }
+
+
+
 
 /* @func ajStrCmpWild *********************************************************
 **
@@ -3427,10 +3883,13 @@ AjBool ajStrMatchWildCC (const char* str, const char* text)
 ** @@
 ******************************************************************************/
 
-ajint ajStrCmpWild (const AjPStr thys, const AjPStr wild)
+ajint ajStrCmpWild(const AjPStr thys, const AjPStr wild)
 {
-    return ajStrCmpWildCC (thys->Ptr, wild->Ptr);
+    return ajStrCmpWildCC(thys->Ptr, wild->Ptr);
 }
+
+
+
 
 /* @func ajStrCmpWildC ********************************************************
 **
@@ -3444,10 +3903,13 @@ ajint ajStrCmpWild (const AjPStr thys, const AjPStr wild)
 ** @@
 ******************************************************************************/
 
-ajint ajStrCmpWildC (const AjPStr thys, const char* text)
+ajint ajStrCmpWildC(const AjPStr thys, const char* text)
 {
-    return ajStrCmpWildCC (thys->Ptr, text);
+    return ajStrCmpWildCC(thys->Ptr, text);
 }
+
+
+
 
 /* @func ajStrCmpWildCC *******************************************************
 **
@@ -3461,24 +3923,30 @@ ajint ajStrCmpWildC (const AjPStr thys, const char* text)
 ** @@
 ******************************************************************************/
 
-ajint ajStrCmpWildCC (const char* str, const char* text)
+ajint ajStrCmpWildCC(const char* str, const char* text)
 {
-    const char* cp = text;
-    const char* cq = str;
+    const char* cp;
+    const char* cq;
     
     /*ajDebug("ajStrCmpWildCC('%s', '%s')\n", str, text);*/
+
+    cp = text;
+    cq = str;
     
-    if (!*cp && !*cq) return 0;
-    if (!*cp) return -1;
+    if(!*cp && !*cq)
+	return 0;
+
+    if(!*cp)
+	return -1;
     
     /*ajDebug("something to test, continue...\n");*/
     
-    while (*cp)
+    while(*cp)
     {
-	if (!*cq && *cp != '*')
+	if(!*cq && *cp != '*')
 	    return 1;
 
-	switch (*cp)
+	switch(*cp)
 	{
 	case '?':		/* skip next character and continue */
 	    cp++;
@@ -3486,57 +3954,65 @@ ajint ajStrCmpWildCC (const char* str, const char* text)
 	    break;
 	case '*':
 	    cp++;
-	    if (!*cp)
+	    if(!*cp)
 	    {
-		/* ajDebug ("...matches at end +%d '%s' +%d '%s'\n",
+		/* ajDebug("...matches at end +%d '%s' +%d '%s'\n",
 		   (cq - str), cq, (cp - text), cp);*/
 		return 0;		/* just match the rest */
 	    }
-	    if (!*cq)
+
+	    if(!*cq)
 	    {
-		/*ajDebug ("...test match to null string just in case\n");*/
-		return ajStrCmpWildCC (cq, cp);
+		/*ajDebug("...test match to null string just in case\n");*/
+		return ajStrCmpWildCC(cq, cp);
 	    }
-	    while (*cq)
+
+	    while(*cq)
 	    {		 /* wildcard in mid name, look for the rest */
-		if (ajStrMatchWildCC (cq, cp)) return 0; /* recursive + repeats */
-		/* ajDebug ("...'*' at +%d '%s' +%d '%s' continuing\n",
+		if(ajStrMatchWildCC(cq, cp))
+		    return 0; /* recursive + repeats */
+		/* ajDebug("...'*' at +%d '%s' +%d '%s' continuing\n",
 		   (cq - str), cq, (cp - text), cp);*/
 		cq++;
 	    }
+
 	    return 1;
 
 	    /* always returns once '*' is found */
 
 	default:	 /* for all other characters, keep checking */
-	    if (tolower((ajint) *cp) != tolower((ajint) *cq))
+	    if(tolower((ajint) *cp) != tolower((ajint) *cq))
 	    {
-		if (tolower((ajint) *cp) > tolower((ajint) *cq))
+		if(tolower((ajint) *cp) > tolower((ajint) *cq))
 		    return -1;
 		else
 		    return 1;
 	    }
 	    cp++;
-	    if (*cq)
+	    if(*cq)
 		cq++;
 	}
     }
-    /*ajDebug ("...done comparing at +%d '%s' +%d '%s'\n",
+
+    /*ajDebug("...done comparing at +%d '%s' +%d '%s'\n",
       (cq - str), cq, (cp - text), cp);*/
-    if (*cp)
+    if(*cp)
     {
-	/*ajDebug ("...incomplete cp, FAILED\n");*/
+	/*ajDebug("...incomplete cp, FAILED\n");*/
 	return -1 ;
     }
-    if (*cq)
+
+    if(*cq)
     {
-	/*ajDebug ("...incomplete cq, FAILED\n");*/
+	/*ajDebug("...incomplete cq, FAILED\n");*/
 	return 1;
     }
-    /*ajDebug ("...all finished and matched\n");*/
+    /*ajDebug("...all finished and matched\n");*/
     
     return 0;
 }
+
+
 
 
 /* @func ajStrMatchWildCO *****************************************************
@@ -3549,10 +4025,13 @@ ajint ajStrCmpWildCC (const char* str, const char* text)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrMatchWildCO (const char* str, const AjPStr wild)
+AjBool ajStrMatchWildCO(const char* str, const AjPStr wild)
 {
-    return ajStrMatchWildCC (str, wild->Ptr);
+    return ajStrMatchWildCC(str, wild->Ptr);
 }
+
+
+
 
 /* @func ajStrWildPrefix ******************************************************
 **
@@ -3565,16 +4044,16 @@ AjBool ajStrMatchWildCO (const char* str, const AjPStr wild)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrWildPrefix (AjPStr* str)
+AjBool ajStrWildPrefix(AjPStr* str)
 {
     char* cp;
 
-    (void) ajStrMod(str);
+    ajStrMod(str);
     cp = ajStrStr(*str);
 
-    while (*cp)
+    while(*cp)
     {
-	switch (*cp)
+	switch(*cp)
 	{
 	case '?':
 	case '*':
@@ -3589,6 +4068,9 @@ AjBool ajStrWildPrefix (AjPStr* str)
     return ajFalse;
 }
 
+
+
+
 /* @func ajStrIsWild **********************************************************
 **
 ** Tests whether a string contains standard wildcard characters * or ?
@@ -3598,13 +4080,18 @@ AjBool ajStrWildPrefix (AjPStr* str)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrIsWild (const AjPStr thys)
+AjBool ajStrIsWild(const AjPStr thys)
 {
     static AjPRegexp wildexp = NULL;
-    if (!wildexp)
-	wildexp = ajRegCompC ("([*?])");
+
+    if(!wildexp)
+	wildexp = ajRegCompC("([*?])");
+
     return ajRegExec(wildexp, thys);
 }
+
+
+
 
 /* @func ajStrMatchWord *******************************************************
 **
@@ -3622,10 +4109,13 @@ AjBool ajStrIsWild (const AjPStr thys)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrMatchWord (const AjPStr str, const AjPStr text)
+AjBool ajStrMatchWord(const AjPStr str, const AjPStr text)
 {
-    return ajStrMatchWordCC (str->Ptr, text->Ptr);
+    return ajStrMatchWordCC(str->Ptr, text->Ptr);
 }
+
+
+
 
 /* @func ajStrMatchWordC ******************************************************
 **
@@ -3643,10 +4133,13 @@ AjBool ajStrMatchWord (const AjPStr str, const AjPStr text)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrMatchWordC (const AjPStr str, const char* text)
+AjBool ajStrMatchWordC(const AjPStr str, const char* text)
 {
     return ajStrMatchWordCC(str->Ptr, text);
 }
+
+
+
 
 /* @func ajStrMatchWordCC *****************************************************
 **
@@ -3664,40 +4157,43 @@ AjBool ajStrMatchWordC (const AjPStr str, const char* text)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrMatchWordCC (const char* str, const char* text)
+AjBool ajStrMatchWordCC(const char* str, const char* text)
 {
-    const char* cp = text;
-    const char* cq = str;
-
-    AjBool word=ajFalse;
+    const char* cp;
+    const char* cq;
+    AjBool word = ajFalse;
 
     ajDebug("ajStrMatchWordCC('%s', '%s')\n", str, text);
 
-    if (!*cp && !*cq) return ajTrue;
-    if (!*cp) return ajFalse;
+    cp = text;
+    cq = str;
+
+    if(!*cp && !*cq)
+	return ajTrue;
+
+    if(!*cp)
+	return ajFalse;
 
     ajDebug("something to test, continue...\n");
 
     /* unlike ajStrCmpWildCC, we step through the string (str) not the
        query (text) */
 
-    while (*cq)
+    while(*cq)
     {
-	if (!word)
+	if(!word)
 	{
-	    if (isalnum((int) *cq))
+	    if(isalnum((int) *cq))
 	    {				/* start of word */
 		word = ajTrue;
-		if (strMatchWordCC(cq, text))
+		if(strMatchWordCC(cq, text))
 		    return ajTrue;;
 	    }
 	}
 	else
 	{
-	    if (!isalnum((int) *cq))
-	    {				/* end of word */
+	    if(!isalnum((int) *cq))
 		word = ajFalse;
-	    }
 	}
 
 	cq++;
@@ -3705,6 +4201,9 @@ AjBool ajStrMatchWordCC (const char* str, const char* text)
 
     return ajFalse;
 }
+
+
+
 
 /* @funcstatic strMatchWordCC *************************************************
 **
@@ -3716,23 +4215,29 @@ AjBool ajStrMatchWordCC (const char* str, const char* text)
 ** @@
 ******************************************************************************/
 
-static AjBool strMatchWordCC (const char* str, const char* text)
+static AjBool strMatchWordCC(const char* str, const char* text)
 {
-    const char* cp = text;
-    const char* cq = str;
+    const char* cp;
+    const char* cq;
     char lastch = '\0';
     
-    ajDebug ("strMatchWordCC '%s' '%s'\n", str, text);
+    ajDebug("strMatchWordCC '%s' '%s'\n", str, text);
+
+    cp = text;
+    cq = str;
     
-    if (!*cp && !*cq) return ajTrue; /* both empty */
-    if (!*cp) return ajFalse;	/* no query text */
+    if(!*cp && !*cq)
+	return ajTrue; /* both empty */
+
+    if(!*cp)
+	return ajFalse;	/* no query text */
     
-    while (*cp && !isspace((int) *cp))
+    while(*cp && !isspace((int) *cp))
     {
-	if (!*cq && *cp != '*')
+	if(!*cq && *cp != '*')
 	    return ajFalse;
 
-	switch (*cp)
+	switch(*cp)
 	{
 	case '?':		/* skip next character and continue */
 	    lastch = *cq;
@@ -3741,36 +4246,38 @@ static AjBool strMatchWordCC (const char* str, const char* text)
 	    break;
 	case '*':
 	    cp++;		 /* recursive call to test the rest */
-	    if (!*cp)
+	    if(!*cp)
 	    {
-		ajDebug ("...matches at end +%d '%s' +%d '%s'\n",
+		ajDebug("...matches at end +%d '%s' +%d '%s'\n",
 			 (cq - str), cq, (cp - text), cp);
 		return ajTrue;		/* just match the rest */
 	    }
-	    if (!*cq)
+
+	    if(!*cq)
 	    {
-		ajDebug ("...test match to null string just in case\n");
-		return strMatchWordCC (cq, cp);
+		ajDebug("...test match to null string just in case\n");
+		return strMatchWordCC(cq, cp);
 	    }
-	    while (*cq)
+
+	    while(*cq)
 	    {		 /* wildcard in mid name, look for the rest */
-		if (strMatchWordCC (cq, cp)) /* recursive + repeats */
+		if(strMatchWordCC(cq, cp)) /* recursive + repeats */
 		    return ajTrue;
-		ajDebug ("...'*' at +%d '%s' +%d '%s' continuing\n",
+		ajDebug("...'*' at +%d '%s' +%d '%s' continuing\n",
 			 (cq - str), cq, (cp - text), cp);
 		cq++;
 	    }
+
 	    return ajFalse;	  /* if we're still here, it failed */
 
 	    /* always returns once '*' is found */
 
 	default:	 /* for all other characters, keep checking */
-	    if (tolower((ajint) *cp) != tolower((ajint) *cq))
-	    {
+	    if(tolower((ajint) *cp) != tolower((ajint) *cq))
 		return ajFalse;
-	    }
+
 	    cp++;
-	    if (*cq)
+	    if(*cq)
 	    {
 		lastch = *cq;
 		cq++;
@@ -3778,36 +4285,38 @@ static AjBool strMatchWordCC (const char* str, const char* text)
 	}
     }
 
-    ajDebug ("...done comparing at +%d '%s' +%d '%s' lastch '%c'\n",
+    ajDebug("...done comparing at +%d '%s' +%d '%s' lastch '%c'\n",
 	     (cq - str), cq, (cp - text), cp, lastch);
     
-    if (!isalnum((int) lastch))
+    if(!isalnum((int) lastch))
     {
 	ajDebug("not a word boundary at '%c'\n", lastch);
 	return ajFalse;
     }
     
-    if (*cp)
+    if(*cp)
     {
-	ajDebug ("...incomplete cp, FAILED\n");
+	ajDebug("...incomplete cp, FAILED\n");
 	return ajFalse ;
     }
     
-    if (*cq)
+    if(*cq)
     {
-	if (isalnum((int) *cq))
+	if(isalnum((int) *cq))
 	{
-	    ajDebug ("word continues, failed\n");
+	    ajDebug("word continues, failed\n");
 	    return ajFalse;
 	}
-	ajDebug ("word end ... success\n");
+	ajDebug("word end ... success\n");
 	return ajTrue;
     }
     
-    ajDebug ("...all finished and matched\n");
+    ajDebug("...all finished and matched\n");
     
     return ajTrue;
 }
+
+
 
 
 /* @func ajStrCheck ***********************************************************
@@ -3820,59 +4329,61 @@ static AjBool strMatchWordCC (const char* str, const char* text)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrCheck (const AjPStr thys)
+AjBool ajStrCheck(const AjPStr thys)
 {
-    AjBool ret=ajTrue;
+    AjBool ret = ajTrue;
 
-    if (!thys)
+    if(!thys)
     {
-	ajErr ("ajStrCheck: NULL string pointer");
+	ajErr("ajStrCheck: NULL string pointer");
 	ret = ajFalse;
     }
 
-    if (thys->Use < 0)
+    if(thys->Use < 0)
     {
-	ajErr ("ajStrCheck: Bad use value %d", thys->Use);
+	ajErr("ajStrCheck: Bad use value %d", thys->Use);
 	ret = ajFalse;
     }
 
-    if (thys->Res < 1)
+    if(thys->Res < 1)
     {
-	ajErr ("ajStrCheck: Bad size value %d", thys->Res);
+	ajErr("ajStrCheck: Bad size value %d", thys->Res);
 	ret = ajFalse;
     }
 
-    if (thys->Len < 0)
+    if(thys->Len < 0)
     {
-	ajErr ("ajStrCheck: Bad length value %d\n", thys->Len);
+	ajErr("ajStrCheck: Bad length value %d\n", thys->Len);
 	ret = ajFalse;
     }
 
-    if (thys->Len >= thys->Res)
+    if(thys->Len >= thys->Res)
     {
-	ajErr ("ajStrCheck: Size %d too small for length %d\n",
+	ajErr("ajStrCheck: Size %d too small for length %d\n",
 	       thys->Res, thys->Len);
 	ret = ajFalse;
     }
 
-    if (!thys->Ptr)
+    if(!thys->Ptr)
     {
-	ajErr ("ajStrCheck: NULL pointer\n");
+	ajErr("ajStrCheck: NULL pointer\n");
 	ret = ajFalse;
     }
     else
     {
-	if (thys->Len != strlen(thys->Ptr))
+	if(thys->Len != strlen(thys->Ptr))
 	{
-	    ajErr ("ajStrCheck: Len %d differs from strlen %d\n",
+	    ajErr("ajStrCheck: Len %d differs from strlen %d\n",
 		   thys->Len, strlen(thys->Ptr));
 	    ret = ajFalse;
 	}
     }
 
-
     return ret;
 }
+
+
+
 
 /* @func ajStrTraceT **********************************************************
 **
@@ -3884,13 +4395,16 @@ AjBool ajStrCheck (const AjPStr thys)
 ** @@
 ******************************************************************************/
 
-void ajStrTraceT (const AjPStr thys, char* title)
+void ajStrTraceT(const AjPStr thys, char* title)
 {
     ajDebug("%s\n",title);
     ajStrTrace(thys);
 
     return;
 }
+
+
+
 
 /* @func ajStrTrace ***********************************************************
 **
@@ -3901,22 +4415,22 @@ void ajStrTraceT (const AjPStr thys, char* title)
 ** @@
 ******************************************************************************/
 
-void ajStrTrace (const AjPStr thys)
+void ajStrTrace(const AjPStr thys)
 {
-    if (!thys)
+    if(!thys)
     {
 	ajDebug("String trace NULL\n");
 	return;
     }
 
-    (void) ajStrCheck (thys);
+    ajStrCheck(thys);
 
     ajDebug("String trace use: %d size: %d len: %d string: ",
 	    thys->Use, thys->Res, thys->Len);
 
-    if (thys->Ptr)
+    if(thys->Ptr)
     {
-	if (thys->Len <= 20)
+	if(thys->Len <= 20)
 	    ajDebug("<%s>\n", thys->Ptr);
 	else
 	    ajDebug("<%10.10s>..<%s>\n",
@@ -3931,6 +4445,9 @@ void ajStrTrace (const AjPStr thys)
     return;
 }
 
+
+
+
 /* @func ajStrTraceChars ******************************************************
 **
 ** Checks a string object and reports its contents character by character.
@@ -3940,29 +4457,27 @@ void ajStrTrace (const AjPStr thys)
 ** @@
 ******************************************************************************/
 
-void ajStrTraceChars (const AjPStr thys)
+void ajStrTraceChars(const AjPStr thys)
 {
     int i;
 
-    if (!thys)
+    if(!thys)
     {
 	ajDebug("String tracechars NULL\n");
 	return;
     }
 
-    (void) ajStrCheck (thys);
+    ajStrCheck(thys);
 
     ajDebug("String tracechars use: %d size: %d len: %d string: ",
 	    thys->Use, thys->Res, thys->Len);
 
-    if (thys->Len)
+    if(thys->Len)
     {
-        ajDebug ("\n");
-        for (i=0; i < thys->Len; i++)
-	{
-	    ajDebug (" '%c' %20x [%d]\n",
+        ajDebug("\n");
+        for(i=0; i < thys->Len; i++)
+	    ajDebug(" '%c' %20x [%d]\n",
 		     thys->Ptr[i], (ajint) thys->Ptr[i], i);
-	}
     }
     else
 	ajDebug("<NULL>\n");
@@ -3973,6 +4488,9 @@ void ajStrTraceChars (const AjPStr thys)
     return;
 }
 
+
+
+
 /* @func ajStrStat ************************************************************
 **
 ** Prints a summary of string usage with debug calls
@@ -3982,29 +4500,31 @@ void ajStrTraceChars (const AjPStr thys)
 ** @@
 ******************************************************************************/
 
-void ajStrStat (char* title)
+void ajStrStat(char* title)
 {
-    static ajlong statAlloc = 0;
-    static ajlong statCount = 0;
-    static ajlong statFree = 0;
+    static ajlong statAlloc     = 0;
+    static ajlong statCount     = 0;
+    static ajlong statFree      = 0;
     static ajlong statFreeCount = 0;
-    static ajlong statTotal= 0;
+    static ajlong statTotal     = 0;
 
-    ajDebug ("String usage statistics since last call %s:\n", title);
-    ajDebug ("String usage (bytes): %ld allocated, %ld freed\n",
-	     strAlloc - statAlloc, strFree - statFree);
-    ajDebug ("String usage (number): %ld allocated, %ld freed, %ld in use\n",
-	     strTotal - statTotal, strFreeCount - statFreeCount,
-	     strCount - statCount);
+    ajDebug("String usage statistics since last call %s:\n", title);
+    ajDebug("String usage (bytes): %ld allocated, %ld freed\n",
+	    strAlloc - statAlloc, strFree - statFree);
+    ajDebug("String usage (number): %ld allocated, %ld freed, %ld in use\n",
+	    strTotal - statTotal, strFreeCount - statFreeCount,
+	    strCount - statCount);
 
-    statAlloc = strAlloc;
-    statCount = strCount;
-    statFree = strFree;
+    statAlloc     = strAlloc;
+    statCount     = strCount;
+    statFree      = strFree;
     statFreeCount = strFreeCount;
-    statTotal = strTotal;
+    statTotal     = strTotal;
 
     return;
 }
+
+
 
 
 /* @func ajStrExit ************************************************************
@@ -4015,15 +4535,17 @@ void ajStrStat (char* title)
 ** @@
 ******************************************************************************/
 
-void ajStrExit (void)
+void ajStrExit(void)
 {
-    ajDebug ("String usage (bytes): %ld allocated, %ld freed, %ld in use\n",
-	     strAlloc, strFree, strAlloc - strFree);
-    ajDebug ("String usage (number): %ld allocated, %ld freed %ld in use\n",
-	     strTotal, strFreeCount, strCount);
+    ajDebug("String usage (bytes): %ld allocated, %ld freed, %ld in use\n",
+	    strAlloc, strFree, strAlloc - strFree);
+    ajDebug("String usage (number): %ld allocated, %ld freed %ld in use\n",
+	    strTotal, strFreeCount, strCount);
 
     return;
 }
+
+
 
 
 /* ==================================================================== */
@@ -4049,6 +4571,9 @@ void ajStrExit (void)
 ** @@
 ******************************************************************************/
 
+
+
+
 /* @func ajStrStr *************************************************************
 **
 ** Returns the current Cstring pointer. This will remain valid unless
@@ -4059,13 +4584,16 @@ void ajStrExit (void)
 ** @@
 ******************************************************************************/
 
-char* ajStrStr (const AjPStr thys)
+char* ajStrStr(const AjPStr thys)
 {
-    if (!thys)
+    if(!thys)
 	return charNULL;
 
     return thys->Ptr;
 }
+
+
+
 
 /* @macro MAJSTRLEN ***********************************************************
 **
@@ -4075,6 +4603,9 @@ char* ajStrStr (const AjPStr thys)
 ** @return [ajint] Current string length
 ** @@
 ******************************************************************************/
+
+
+
 
 /* @func ajStrLen *************************************************************
 **
@@ -4086,13 +4617,16 @@ char* ajStrStr (const AjPStr thys)
 ** @@
 ******************************************************************************/
 
-ajint ajStrLen (const AjPStr thys)
+ajint ajStrLen(const AjPStr thys)
 {
-    if (!thys)
+    if(!thys)
 	return 0;
 
     return thys->Len;
 }
+
+
+
 
 /* @macro MAJSTRSIZE **********************************************************
 **
@@ -4102,6 +4636,9 @@ ajint ajStrLen (const AjPStr thys)
 ** @return [ajint] Current string reserved size
 ** @@
 ******************************************************************************/
+
+
+
 
 /* @func ajStrSize ************************************************************
 **
@@ -4113,13 +4650,16 @@ ajint ajStrLen (const AjPStr thys)
 ** @@
 ******************************************************************************/
 
-ajint ajStrSize (const AjPStr thys)
+ajint ajStrSize(const AjPStr thys)
 {
-    if (!thys)
+    if(!thys)
 	return 0;
 
     return thys->Res;
 }
+
+
+
 
 /* @macro MAJSTRREF ***********************************************************
 **
@@ -4129,6 +4669,9 @@ ajint ajStrSize (const AjPStr thys)
 ** @return [ajint] Current string usage count
 ** @@
 ******************************************************************************/
+
+
+
 
 /* @func ajStrRef *************************************************************
 **
@@ -4140,13 +4683,16 @@ ajint ajStrSize (const AjPStr thys)
 ** @@
 ******************************************************************************/
 
-ajint ajStrRef (const AjPStr thys)
+ajint ajStrRef(const AjPStr thys)
 {
-    if (!thys)
+    if(!thys)
 	return 0;
 
     return thys->Use;
 }
+
+
+
 
 /* @func ajStrBool ************************************************************
 **
@@ -4158,16 +4704,19 @@ ajint ajStrRef (const AjPStr thys)
 ** @@
 ******************************************************************************/
 
-char* ajStrBool (AjBool boule)
+char* ajStrBool(AjBool boule)
 {
     static char bool_true[] = "True";
     static char bool_false[] = "False";
 
-    if (boule)
+    if(boule)
 	return bool_true;
 
     return bool_false;
 }
+
+
+
 
 /* @func ajStrYN **************************************************************
 **
@@ -4179,16 +4728,19 @@ char* ajStrBool (AjBool boule)
 ** @@
 ******************************************************************************/
 
-char* ajStrYN (AjBool boule)
+char* ajStrYN(AjBool boule)
 {
     static char bool_y[] = "Y";
     static char bool_n[] = "N";
 
-    if (boule)
+    if(boule)
 	return bool_y;
 
     return bool_n;
 }
+
+
+
 
 /* @func ajStrTok *************************************************************
 **
@@ -4202,10 +4754,13 @@ char* ajStrYN (AjBool boule)
 ** @@
 ******************************************************************************/
 
-AjPStr ajStrTok (const AjPStr thys)
+AjPStr ajStrTok(const AjPStr thys)
 {
-    return ajStrTokC (thys, " \t\n\r");
+    return ajStrTokC(thys, " \t\n\r");
 }
+
+
+
 
 /* @func ajStrTokC ************************************************************
 **
@@ -4220,14 +4775,14 @@ AjPStr ajStrTok (const AjPStr thys)
 ** @@
 ******************************************************************************/
 
-AjPStr ajStrTokC (const AjPStr thys, const char* delim)
+AjPStr ajStrTokC(const AjPStr thys, const char* delim)
 {
-    static AjPStr strp=0; /* internal AjPStr - do not try to destroy */
+    static AjPStr strp = 0; /* internal AjPStr - do not try to destroy */
     static char* cp = NULL;
 
-    if (!strp)
+    if(!strp)
     {
-	if (!thys)
+	if(!thys)
 	{
 	    ajWarn("Error in ajStrTokC: NULL argument and not initialised");
 	    return NULL;
@@ -4236,30 +4791,29 @@ AjPStr ajStrTokC (const AjPStr thys, const char* delim)
 	AJFREE(strp->Ptr);
     }
 
-    if (thys)
+    if(thys)
     {
-	if (cp) (void) ajCharFree(cp);
+	if(cp) ajCharFree(cp);
 	cp = ajCharNewC(thys->Len, thys->Ptr);
-	strp->Ptr = ajSysStrtok (cp, delim);
+	strp->Ptr = ajSysStrtok(cp, delim);
     }
     else
-    {
-	strp->Ptr = ajSysStrtok (NULL, delim);
-    }
+	strp->Ptr = ajSysStrtok(NULL, delim);
 
-    if (strp->Ptr)
+    if(strp->Ptr)
     {
 	strp->Len = strlen(strp->Ptr);
 	strp->Res = strp->Len + 1;
 	return strp;
     }
     else
-    {
 	strp->Len=0;
-    }
 
     return NULL;
 }
+
+
+
 
 /* @func ajStrIsBool **********************************************************
 **
@@ -4275,22 +4829,41 @@ AjPStr ajStrTokC (const AjPStr thys, const char* delim)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrIsBool (const AjPStr thys)
+AjBool ajStrIsBool(const AjPStr thys)
 {
-    char* cp = ajStrStr(thys);
+    char* cp;
 
-    if (!thys) return ajFalse;
-    if (!thys->Len) return ajFalse;
+    cp = ajStrStr(thys);
 
-    if (!strchr("YyTt1NnFf0", *cp)) return ajFalse;
-    if (!ajStrChar(thys, 1)) return ajTrue;
-    if (ajStrMatchCaseC(thys, "yes")) return ajTrue;
-    if (ajStrMatchCaseC(thys, "no")) return ajTrue;
-    if (ajStrMatchCaseC(thys, "true")) return ajTrue;
-    if (ajStrMatchCaseC(thys, "false")) return ajTrue;
+    if(!thys)
+	return ajFalse;
+
+    if(!thys->Len)
+	return ajFalse;
+
+    if(!strchr("YyTt1NnFf0", *cp))
+	return ajFalse;
+
+    if(!ajStrChar(thys, 1))
+	return ajTrue;
+
+    if(ajStrMatchCaseC(thys, "yes"))
+	return ajTrue;
+
+    if(ajStrMatchCaseC(thys, "no"))
+	return ajTrue;
+
+    if(ajStrMatchCaseC(thys, "true"))
+	return ajTrue;
+
+    if(ajStrMatchCaseC(thys, "false"))
+	return ajTrue;
 
     return ajTrue;
 }
+
+
+
 
 /* @func ajStrIsHex ***********************************************************
 **
@@ -4303,21 +4876,29 @@ AjBool ajStrIsBool (const AjPStr thys)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrIsHex (const AjPStr thys)
+AjBool ajStrIsHex(const AjPStr thys)
 {
-    char* cp = ajStrStr(thys);
+    char* cp;
     char* ptr = NULL;
 
-    if (!thys) return ajFalse;
-    if (!thys->Len) return ajFalse;
+    cp = ajStrStr(thys);
+
+    if(!thys)
+	return ajFalse;
+
+    if(!thys->Len)
+	return ajFalse;
 
     errno = 0;
-    (void) strtol (cp, &ptr, 16);
-    if (*ptr || errno == ERANGE)
+    strtol(cp, &ptr, 16);
+    if(*ptr || errno == ERANGE)
 	return ajFalse;
 
     return ajTrue;
 }
+
+
+
 
 /* @func ajStrIsInt ***********************************************************
 **
@@ -4331,21 +4912,29 @@ AjBool ajStrIsHex (const AjPStr thys)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrIsInt (const AjPStr thys)
+AjBool ajStrIsInt(const AjPStr thys)
 {
-    char* cp = ajStrStr(thys);
+    char* cp;
     char* ptr = NULL;
 
-    if (!thys) return ajFalse;
-    if (!thys->Len) return ajFalse;
+    cp = ajStrStr(thys);
+
+    if(!thys)
+	return ajFalse;
+
+    if(!thys->Len)
+	return ajFalse;
 
     errno = 0;
-    (void) strtol (cp, &ptr, 10);
-    if (*ptr || errno == ERANGE)
+    strtol(cp, &ptr, 10);
+    if(*ptr || errno == ERANGE)
 	return ajFalse;
 
     return ajTrue;
 }
+
+
+
 
 /* @func ajStrIsLong **********************************************************
 **
@@ -4359,21 +4948,30 @@ AjBool ajStrIsInt (const AjPStr thys)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrIsLong (const AjPStr thys)
+AjBool ajStrIsLong(const AjPStr thys)
 {
-    char* cp = ajStrStr(thys);
+    char* cp;
     char* ptr = NULL;
 
-    if (!thys) return ajFalse;
-    if (!thys->Len) return ajFalse;
+    cp = ajStrStr(thys);
+
+    if(!thys)
+	return ajFalse;
+
+    if(!thys->Len)
+	return ajFalse;
 
     errno = 0;
-    (void) strtol (cp, &ptr, 10);
-    if (*ptr || errno == ERANGE)
+    strtol(cp, &ptr, 10);
+
+    if(*ptr || errno == ERANGE)
 	return ajFalse;
 
     return ajTrue;
 }
+
+
+
 
 /* @func ajStrIsFloat *********************************************************
 **
@@ -4388,24 +4986,37 @@ AjBool ajStrIsLong (const AjPStr thys)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrIsFloat (const AjPStr thys)
+AjBool ajStrIsFloat(const AjPStr thys)
 {
-    char* cp = ajStrStr(thys);
+    char* cp;
     char* ptr = NULL;
     double d;
 
-    if (!thys) return ajFalse;
-    if (!thys->Len) return ajFalse;
+    cp = ajStrStr(thys);
+
+    if(!thys)
+	return ajFalse;
+
+    if(!thys->Len)
+	return ajFalse;
 
     errno = 0;
-    d = strtod (cp, &ptr);
-    if (*ptr || errno == ERANGE)
+    d = strtod(cp, &ptr);
+
+    if(*ptr || errno == ERANGE)
 	return ajFalse;
-    if (d > FLT_MAX) return ajFalse;
-    if (d < -FLT_MAX) return ajFalse;
+
+    if(d > FLT_MAX)
+	return ajFalse;
+
+    if(d < -FLT_MAX)
+	return ajFalse;
 
     return ajTrue;
 }
+
+
+
 
 /* @func ajStrIsDouble ********************************************************
 **
@@ -4420,21 +5031,30 @@ AjBool ajStrIsFloat (const AjPStr thys)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrIsDouble (const AjPStr thys)
+AjBool ajStrIsDouble(const AjPStr thys)
 {
-    char* cp = ajStrStr(thys);
+    char* cp;
     char* ptr = NULL;
 
-    if (!thys) return ajFalse;
-    if (!thys->Len) return ajFalse;
+    cp = ajStrStr(thys);
+
+    if(!thys)
+	return ajFalse;
+
+    if(!thys->Len)
+	return ajFalse;
 
     errno = 0;
-    (void) strtod (cp, &ptr);
-    if (*ptr || errno == ERANGE)
+    strtod(cp, &ptr);
+
+    if(*ptr || errno == ERANGE)
 	return ajFalse;
 
     return ajTrue;
 }
+
+
+
 
 /* @func ajStrToBool **********************************************************
 **
@@ -4448,51 +5068,74 @@ AjBool ajStrIsDouble (const AjPStr thys)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrToBool (const AjPStr thys, AjBool* result)
+AjBool ajStrToBool(const AjPStr thys, AjBool* result)
 {
-    char* cp = ajStrStr(thys);
+    char* cp;
     ajint i;
 
+    cp = ajStrStr(thys);
     *result = ajFalse;
 
-    if (!thys) return ajFalse;
-    if (thys->Len < 1) return ajFalse;
+    if(!thys)
+	return ajFalse;
 
-    if (strchr("YyTt1", *cp))
+    if(thys->Len < 1)
+	return ajFalse;
+
+    if(strchr("YyTt1", *cp))
     {
 	*result = ajTrue;
-	if (!ajStrChar(thys, 1)) return ajTrue;
-	if (ajStrMatchCaseC(thys, "yes")) return ajTrue;
-	if (ajStrMatchCaseC(thys, "true")) return ajTrue;
+	if(!ajStrChar(thys, 1))
+	    return ajTrue;
+
+	if(ajStrMatchCaseC(thys, "yes"))
+	    return ajTrue;
+
+	if(ajStrMatchCaseC(thys, "true"))
+	    return ajTrue;
+
 	return ajFalse;
     }
-    else if (strchr("NnFf", *cp))
+    else if(strchr("NnFf", *cp))
     {
 	*result = ajFalse;
-	if (!ajStrChar(thys, 1)) return ajTrue;
-	if (ajStrMatchCaseC(thys, "no")) return ajTrue;
-	if (ajStrMatchCaseC(thys, "false")) return ajTrue;
+	if(!ajStrChar(thys, 1))
+	    return ajTrue;
+
+	if(ajStrMatchCaseC(thys, "no"))
+	    return ajTrue;
+
+	if(ajStrMatchCaseC(thys, "false"))
+	    return ajTrue;
+
 	return ajFalse;
     }
-    else if (strchr("123456789", *cp))
+    else if(strchr("123456789", *cp))
     {
 	*result = ajTrue;
-	if (ajStrIsFloat(thys)) return ajTrue;
+	if(ajStrIsFloat(thys))
+	    return ajTrue;
+
 	return ajFalse;
     }
-    else if (strchr("0+-", *cp))
+    else if(strchr("0+-", *cp))
     {
 	i = strcspn(cp, "123456789");	/* e.g. 0.1, 0007 */
-	if (cp[i])
+	if(cp[i])
 	    *result = ajTrue;
 	else
 	    *result = ajFalse;
-	if (ajStrIsFloat(thys)) return ajTrue;
+	if(ajStrIsFloat(thys))
+	    return ajTrue;
+
 	return ajFalse;
     }
 
     return ajFalse;
 }
+
+
+
 
 /* @func ajStrToHex ***********************************************************
 **
@@ -4507,30 +5150,37 @@ AjBool ajStrToBool (const AjPStr thys, AjBool* result)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrToHex (const AjPStr thys, ajint* result)
+AjBool ajStrToHex(const AjPStr thys, ajint* result)
 {
-    AjBool ret=ajFalse;
-    char* cp = ajStrStr(thys);
+    AjBool ret = ajFalse;
+    char* cp;
     ajlong l;
     char* ptr;
 
+    cp = ajStrStr(thys);
     *result = 0;
 
-    if (!thys) return ret;
-    if (!thys->Len) return ret;
+    if(!thys)
+	return ret;
+
+    if(!thys->Len)
+	return ret;
 
     errno = 0;
-    l = strtol (cp, &ptr, 16);
-    if (!*ptr && errno != ERANGE)
+    l = strtol(cp, &ptr, 16);
+    if(!*ptr && errno != ERANGE)
     {
 	l = AJMAX(INT_MIN, l);
 	l = AJMIN(INT_MAX, l);
-	*result = (ajint) l;
+	*result =(ajint) l;
 	ret = ajTrue;
     }
 
     return ret;
 }
+
+
+
 
 /* @func ajStrToInt ***********************************************************
 **
@@ -4545,30 +5195,37 @@ AjBool ajStrToHex (const AjPStr thys, ajint* result)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrToInt (const AjPStr thys, ajint* result)
+AjBool ajStrToInt(const AjPStr thys, ajint* result)
 {
-    AjBool ret=ajFalse;
-    char* cp = ajStrStr(thys);
+    AjBool ret = ajFalse;
+    char* cp;
     ajlong l;
     char* ptr;
 
+    cp = ajStrStr(thys);
     *result = 0;
 
-    if (!thys) return ret;
-    if (!thys->Len) return ret;
+    if(!thys)
+	return ret;
+
+    if(!thys->Len)
+	return ret;
 
     errno = 0;
-    l = strtol (cp, &ptr, 10);
-    if (!*ptr && errno != ERANGE)
+    l = strtol(cp, &ptr, 10);
+    if(!*ptr && errno != ERANGE)
     {
 	l = AJMAX(INT_MIN, l);
 	l = AJMIN(INT_MAX, l);
-	*result = (ajint) l;
+	*result =(ajint) l;
 	ret = ajTrue;
     }
 
     return ret;
 }
+
+
+
 
 /* @func ajStrToLong **********************************************************
 **
@@ -4583,21 +5240,26 @@ AjBool ajStrToInt (const AjPStr thys, ajint* result)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrToLong (const AjPStr thys, ajlong* result)
+AjBool ajStrToLong(const AjPStr thys, ajlong* result)
 {
-    AjBool ret=ajFalse;
-    char* cp = ajStrStr(thys);
+    AjBool ret = ajFalse;
+    char* cp;
     ajlong l;
     char* ptr;
 
+    cp = ajStrStr(thys);
     *result = 0;
 
-    if (!thys) return ret;
-    if (!thys->Len) return ret;
+    if(!thys)
+	return ret;
+
+    if(!thys->Len)
+	return ret;
 
     errno = 0;
-    l = strtol (cp, &ptr, 10);
-    if (!*ptr && errno != ERANGE)
+    l = strtol(cp, &ptr, 10);
+
+    if(!*ptr && errno != ERANGE)
     {
 	*result = l;
 	ret = ajTrue;
@@ -4605,6 +5267,9 @@ AjBool ajStrToLong (const AjPStr thys, ajlong* result)
 
     return ret;
 }
+
+
+
 
 /* @func ajStrToFloat *********************************************************
 **
@@ -4619,30 +5284,42 @@ AjBool ajStrToLong (const AjPStr thys, ajlong* result)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrToFloat (const AjPStr thys, float* result)
+AjBool ajStrToFloat(const AjPStr thys, float* result)
 {
-    AjBool ret=ajFalse;
-    char* cp = ajStrStr(thys);
+    AjBool ret = ajFalse;
+    char* cp;
     double d;
     char* ptr = NULL;
 
+    cp = ajStrStr(thys);
     *result = 0.0;
 
-    if (!thys) return ret;
-    if (!thys->Len) return ret;
+    if(!thys)
+	return ret;
+
+    if(!thys->Len)
+	return ret;
 
     errno = 0;
-    d = strtod (cp, &ptr);
-    if (!*ptr  && errno != ERANGE)
+    d = strtod(cp, &ptr);
+
+    if(!*ptr  && errno != ERANGE)
     {
-	if (d > FLT_MAX) return ajFalse;
-	if (d < -FLT_MAX) return ajFalse;
+	if(d > FLT_MAX)
+	    return ajFalse;
+
+	if(d < -FLT_MAX)
+	    return ajFalse;
+
 	*result = (float) d;
 	ret = ajTrue;
     }
 
     return ret;
 }
+
+
+
 
 /* @func ajStrToDouble ********************************************************
 **
@@ -4657,21 +5334,26 @@ AjBool ajStrToFloat (const AjPStr thys, float* result)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrToDouble (const AjPStr thys, double* result)
+AjBool ajStrToDouble(const AjPStr thys, double* result)
 {
-    AjBool ret=ajFalse;
-    char* cp = ajStrStr(thys);
+    AjBool ret = ajFalse;
+    char* cp;
     double d;
     char* ptr = NULL;
 
+    cp = ajStrStr(thys);
     *result = 0.0;
 
-    if (!thys) return ret;
-    if (!thys->Len) return ret;
+    if(!thys)
+	return ret;
+
+    if(!thys->Len)
+	return ret;
 
     errno = 0;
-    d = strtod (cp, &ptr);
-    if (!*ptr  && errno != ERANGE)
+    d = strtod(cp, &ptr);
+
+    if(!*ptr  && errno != ERANGE)
     {
 	*result = d;
 	ret = ajTrue;
@@ -4679,6 +5361,9 @@ AjBool ajStrToDouble (const AjPStr thys, double* result)
 
     return ret;
 }
+
+
+
 
 /* @func ajStrTokenCount ******************************************************
 **
@@ -4693,17 +5378,20 @@ AjBool ajStrToDouble (const AjPStr thys, double* result)
 ajint ajStrTokenCount(AjPStr* line, const char *delim)
 {
     static AjPStrTok t = NULL;
-    static AjPStr tmp = NULL;
+    static AjPStr tmp  = NULL;
 
     ajint count;
 
-    count=0;
-    (void) ajStrTokenAss (&t, *line, delim);
+    count = 0;
+    ajStrTokenAss(&t, *line, delim);
 
-    while(ajStrToken(&tmp, &t, delim)) ++count;
+    while(ajStrToken(&tmp, &t, delim))
+	++count;
 
     return count;
 }
+
+
 
 
 /* @func ajStrTokenCountR *****************************************************
@@ -4718,10 +5406,10 @@ ajint ajStrTokenCount(AjPStr* line, const char *delim)
 
 ajint ajStrTokenCountR(AjPStr* line, const char *delim)
 {
-    AjPStr buf=NULL;
+    AjPStr buf  = NULL;
     ajint count;
     char  *p;
-    char  *save=NULL;
+    char  *save = NULL;
 
     if(!*line)
 	return 0;
@@ -4735,12 +5423,17 @@ ajint ajStrTokenCountR(AjPStr* line, const char *delim)
 	return 0;
     }
 
-    count=1;
-    while(ajSysStrtokR(NULL,delim,&save,&buf)) ++count;
+    count = 1;
+    while(ajSysStrtokR(NULL,delim,&save,&buf))
+	++count;
 
     ajStrDel(&buf);
+
     return count;
 }
+
+
+
 
 /* @func ajStrRoom ************************************************************
 **
@@ -4751,10 +5444,13 @@ ajint ajStrTokenCountR(AjPStr* line, const char *delim)
 ** @@
 ******************************************************************************/
 
-ajint ajStrRoom (const AjPStr thys)
+ajint ajStrRoom(const AjPStr thys)
 {
     return (thys->Res - thys->Len - 1);
 }
+
+
+
 
 /* @func ajStrPos *************************************************************
 **
@@ -4767,10 +5463,13 @@ ajint ajStrRoom (const AjPStr thys)
 ** @@
 ******************************************************************************/
 
-ajint ajStrPos (const AjPStr thys, ajint ipos)
+ajint ajStrPos(const AjPStr thys, ajint ipos)
 {
-    return strPosII (thys->Len, 0, ipos);
+    return strPosII(thys->Len, 0, ipos);
 }
+
+
+
 
 /* @func ajStrPosI ************************************************************
 **
@@ -4788,10 +5487,13 @@ ajint ajStrPos (const AjPStr thys, ajint ipos)
 ** @@
 ******************************************************************************/
 
-ajint ajStrPosI (const AjPStr thys, ajint imin, ajint ipos)
+ajint ajStrPosI(const AjPStr thys, ajint imin, ajint ipos)
 {
-    return strPosII (thys->Len, imin, ipos);
+    return strPosII(thys->Len, imin, ipos);
 }
+
+
+
 
 /* @func ajStrPosII ***********************************************************
 **
@@ -4809,10 +5511,13 @@ ajint ajStrPosI (const AjPStr thys, ajint imin, ajint ipos)
 ** @@
 ******************************************************************************/
 
-ajint ajStrPosII (ajint ilen, ajint imin, ajint ipos)
+ajint ajStrPosII(ajint ilen, ajint imin, ajint ipos)
 {
-    return strPosII (ilen, imin, ipos);
+    return strPosII(ilen, imin, ipos);
 }
+
+
+
 
 /* @func ajCharPos ************************************************************
 **
@@ -4829,24 +5534,29 @@ ajint ajStrPosII (ajint ilen, ajint imin, ajint ipos)
 ** @@
 ******************************************************************************/
 
-ajint ajCharPos (const char* thys, ajint ipos)
+ajint ajCharPos(const char* thys, ajint ipos)
 {
     ajint jpos;
-    ajint len = strlen(thys);
+    ajint len;
 
-    if (ipos < 0)
+    len = strlen(thys);
+
+    if(ipos < 0)
 	jpos = len + ipos;
     else
 	jpos = ipos;
 
-    if (jpos >= len)
+    if(jpos >= len)
 	jpos = len-1;
 
-    if (jpos < 0)
+    if(jpos < 0)
 	jpos = 0;
 
     return jpos;
 }
+
+
+
 
 /* @funcstatic strPos *********************************************************
 **
@@ -4859,10 +5569,13 @@ ajint ajCharPos (const char* thys, ajint ipos)
 ** @@
 ******************************************************************************/
 
-static ajint strPos (const AjPStr thys, ajint ipos)
+static ajint strPos(const AjPStr thys, ajint ipos)
 {
-    return strPosI (thys, 0, ipos);
+    return strPosI(thys, 0, ipos);
 }
+
+
+
 
 /* @funcstatic strPosI ********************************************************
 **
@@ -4880,10 +5593,13 @@ static ajint strPos (const AjPStr thys, ajint ipos)
 ** @@
 ******************************************************************************/
 
-static ajint strPosI (const AjPStr thys, ajint imin, ajint ipos)
+static ajint strPosI(const AjPStr thys, ajint imin, ajint ipos)
 {
-    return strPosII (thys->Len, imin, ipos);
+    return strPosII(thys->Len, imin, ipos);
 }
+
+
+
 
 /* @funcstatic strPosII *******************************************************
 **
@@ -4900,30 +5616,33 @@ static ajint strPosI (const AjPStr thys, ajint imin, ajint ipos)
 ** @@
 ******************************************************************************/
 
-static ajint strPosII (ajint ilen, ajint imin, ajint ipos)
+static ajint strPosII(ajint ilen, ajint imin, ajint ipos)
 {
     ajint jpos;
 
-    if (ipos < 0)
+    if(ipos < 0)
 	jpos = ilen + ipos;
     else
 	jpos = ipos;
 
-    if (jpos >= ilen)
+    if(jpos >= ilen)
     {
 	ajUtilCatch();
 	ajDebug("strPosII ilen: %d imin: %d ipos: %d jpos: %d\n",
 		ilen, imin, ipos, jpos);
     }
 
-    if (jpos >= ilen)
+    if(jpos >= ilen)
 	jpos = ilen - 1;
 
-    if (jpos < imin)
+    if(jpos < imin)
 	jpos = imin;
 
     return jpos;
 }
+
+
+
 
 /* ==================================================================== */
 /* ======================== Iterators ==================================*/
@@ -4939,6 +5658,9 @@ static ajint strPosII (ajint ilen, ajint imin, ajint ipos)
 **
 ******************************************************************************/
 
+
+
+
 /* @func ajStrIter ************************************************************
 **
 ** Creates an iterator over the characters in a string.
@@ -4948,7 +5670,7 @@ static ajint strPosII (ajint ilen, ajint imin, ajint ipos)
 ** @@
 ******************************************************************************/
 
-AjIStr ajStrIter (const AjPStr thys)
+AjIStr ajStrIter(const AjPStr thys)
 {
     AjIStr iter;
 
@@ -4959,6 +5681,9 @@ AjIStr ajStrIter (const AjPStr thys)
     return iter;
 }
 
+
+
+
 /* @func ajStrIterBack ********************************************************
 **
 ** Creates an iterator over the characters in a string set to end of string.
@@ -4968,7 +5693,7 @@ AjIStr ajStrIter (const AjPStr thys)
 ** @@
 ******************************************************************************/
 
-AjIStr ajStrIterBack (const AjPStr thys)
+AjIStr ajStrIterBack(const AjPStr thys)
 {
     AjIStr iter;
 
@@ -4979,6 +5704,9 @@ AjIStr ajStrIterBack (const AjPStr thys)
     return iter;
 }
 
+
+
+
 /* @macro ajStrIterBegin ******************************************************
 **
 ** Start condition for a string iterator.
@@ -4987,6 +5715,9 @@ AjIStr ajStrIterBack (const AjPStr thys)
 ** @return [AjIStr] Begin
 ** @@
 ******************************************************************************/
+
+
+
 
 /* @func ajStrIterNext ********************************************************
 **
@@ -4997,7 +5728,7 @@ AjIStr ajStrIterBack (const AjPStr thys)
 ** @@
 ******************************************************************************/
 
-AjIStr ajStrIterNext (AjIStr iter)
+AjIStr ajStrIterNext(AjIStr iter)
 {
     iter->Ptr++;
     if(iter->Ptr > iter->End)
@@ -5005,6 +5736,9 @@ AjIStr ajStrIterNext (AjIStr iter)
 
     return iter;
 }
+
+
+
 
 /* @func ajStrIterBackNext ****************************************************
 **
@@ -5015,7 +5749,7 @@ AjIStr ajStrIterNext (AjIStr iter)
 ** @@
 ******************************************************************************/
 
-AjIStr ajStrIterBackNext (AjIStr iter)
+AjIStr ajStrIterBackNext(AjIStr iter)
 {
     iter->Ptr--;
 
@@ -5024,6 +5758,9 @@ AjIStr ajStrIterBackNext (AjIStr iter)
 
     return iter;
 }
+
+
+
 
 /* @macro ajStrIterEnd ********************************************************
 **
@@ -5043,6 +5780,9 @@ AjIStr ajStrIterBackNext (AjIStr iter)
 ** @@
 ******************************************************************************/
 
+
+
+
 /* @macro ajStrIterGetK *******************************************************
 **
 ** Current value for a string iterator.
@@ -5051,6 +5791,9 @@ AjIStr ajStrIterBackNext (AjIStr iter)
 ** @return [char] Current character within iterator
 ** @@
 ******************************************************************************/
+
+
+
 
 /* @func ajStrIterFree*********************************************************
 **
@@ -5061,12 +5804,15 @@ AjIStr ajStrIterBackNext (AjIStr iter)
 ** @@
 ******************************************************************************/
 
-void ajStrIterFree (AjIStr* iter)
+void ajStrIterFree(AjIStr* iter)
 {
     AJFREE(*iter);
 
     return;
 }
+
+
+
 
 /* ==================================================================== */
 /* ======================== AjPStrTok ==================================*/
@@ -5085,6 +5831,8 @@ void ajStrIterFree (AjIStr* iter)
 ******************************************************************************/
 
 
+
+
 /* @func ajStrTokenInit *******************************************************
 **
 ** Generates a string token parser object from a string and an optional
@@ -5097,27 +5845,31 @@ void ajStrIterFree (AjIStr* iter)
 ** @@
 ******************************************************************************/
 
-AjPStrTok ajStrTokenInit (const AjPStr thys, const char* delim)
+AjPStrTok ajStrTokenInit(const AjPStr thys, const char* delim)
 {
     static AjPStrTok ret;
 
     AJNEW0(ret);
 
     ajStrAssS(&ret->String, thys);
-    if (delim)
+
+    if(delim)
     {
-	ret->Delim = ajStrNewC (delim);
+	ret->Delim = ajStrNewC(delim);
 	/*ret->Pos = strspn(ret->String->Ptr, ret->Delim->Ptr);*/
-	ret->Pos = 0;		  /* GFF parsing needed this change */
+	ret->Pos   = 0;		  /* GFF parsing needed this change */
     }
     else
     {
 	ret->Delim = ajStrNew();
-	ret->Pos = 0;
+	ret->Pos   = 0;
     }
 
     return ret;
 }
+
+
+
 
 /* ==================================================================== */
 /* ========================= Destructors ============================== */
@@ -5129,6 +5881,9 @@ AjPStrTok ajStrTokenInit (const AjPStr thys, const char* delim)
 **
 ******************************************************************************/
 
+
+
+
 /* @func ajStrTokenClear ******************************************************
 **
 ** Destructor for a string token parser.
@@ -5138,16 +5893,20 @@ AjPStrTok ajStrTokenInit (const AjPStr thys, const char* delim)
 ** @@
 ******************************************************************************/
 
-void ajStrTokenClear (AjPStrTok* token)
+void ajStrTokenClear(AjPStrTok* token)
 {
-    if (!*token) return;
+    if(!*token)
+	return;
 
-    ajStrDel (&(*token)->String);
-    ajStrDel (&(*token)->Delim);
-    AJFREE (*token);
+    ajStrDel(&(*token)->String);
+    ajStrDel(&(*token)->Delim);
+    AJFREE(*token);
 
     return;
 }
+
+
+
 
 /* ==================================================================== */
 /* =========================== Assignment ============================== */
@@ -5159,6 +5918,9 @@ void ajStrTokenClear (AjPStrTok* token)
 ** parsing of a string.
 **
 ******************************************************************************/
+
+
+
 
 /* @func ajStrTokenAss ********************************************************
 **
@@ -5176,11 +5938,11 @@ void ajStrTokenClear (AjPStrTok* token)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrTokenAss (AjPStrTok* ptok, const AjPStr thys, const char* delim)
+AjBool ajStrTokenAss(AjPStrTok* ptok, const AjPStr thys, const char* delim)
 {
     AjPStrTok tok;
     
-    if (*ptok)
+    if(*ptok)
 	tok = *ptok;
     else
     {
@@ -5188,20 +5950,23 @@ AjBool ajStrTokenAss (AjPStrTok* ptok, const AjPStr thys, const char* delim)
 	*ptok = tok;
     }
     
-    (void) ajStrAssS (&tok->String, thys);
-    if (delim)
+    ajStrAssS(&tok->String, thys);
+    if(delim)
     {
-	(void) ajStrAssC (&tok->Delim, delim);
+	ajStrAssC(&tok->Delim, delim);
 	tok->Pos = strspn(tok->String->Ptr, tok->Delim->Ptr);
     }
     else
     {
-	(void) ajStrAssC(&tok->Delim, "");
+	ajStrAssC(&tok->Delim, "");
 	tok->Pos = 0;
     }
 
     return ajTrue;
 }
+
+
+
 
 /* @func ajStrTokenReset ******************************************************
 **
@@ -5216,22 +5981,26 @@ AjBool ajStrTokenAss (AjPStrTok* ptok, const AjPStr thys, const char* delim)
 ** @@
 ******************************************************************************/
 
-void ajStrTokenReset (AjPStrTok* ptok)
+void ajStrTokenReset(AjPStrTok* ptok)
 {
     AjPStrTok tok;
 
-    if (!ptok)
+    if(!ptok)
 	return;
-    if (!*ptok)
+
+    if(!*ptok)
 	return;
 
     tok = *ptok;
 
-    (void) ajStrDelReuse(&tok->String);
-    (void) ajStrDelReuse(&tok->Delim);
+    ajStrDelReuse(&tok->String);
+    ajStrDelReuse(&tok->Delim);
 
     return;
 }
+
+
+
 
 /* @func ajStrTokenTrace ******************************************************
 **
@@ -5242,20 +6011,23 @@ void ajStrTokenReset (AjPStrTok* ptok)
 ** @@
 ******************************************************************************/
 
-void ajStrTokenTrace (AjPStrTok tok)
+void ajStrTokenTrace(AjPStrTok tok)
 {
-    ajDebug ("ajStrTokenTrace %x\n", tok);
+    ajDebug("ajStrTokenTrace %x\n", tok);
 
-    if (!tok)
+    if(!tok)
 	return;
 
-    ajDebug ("... String:\n");
+    ajDebug("... String:\n");
     ajStrTrace(tok->String);
-    ajDebug ("... Delim:\n");
+    ajDebug("... Delim:\n");
     ajStrTrace(tok->Delim);
 
     return;
 }
+
+
+
 
 /* ==================================================================== */
 /* =========================== Operators ============================== */
@@ -5267,6 +6039,9 @@ void ajStrTokenTrace (AjPStrTok tok)
 ** parsing of a string.
 **
 ******************************************************************************/
+
+
+
 
 /* @func ajStrToken ***********************************************************
 **
@@ -5282,42 +6057,47 @@ void ajStrTokenTrace (AjPStrTok tok)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrToken (AjPStr* pthis, AjPStrTok* ptoken, const char* delim)
+AjBool ajStrToken(AjPStr* pthis, AjPStrTok* ptoken, const char* delim)
 {
     ajint ilen;
-    AjPStrTok token = *ptoken;
+    AjPStrTok token;
     char* cp;
 
-    if (!*ptoken)
+    token = *ptoken;
+
+    if(!*ptoken)
     {					/* token already cleared */
-	(void) ajStrAssC (pthis, "");
+	ajStrAssC(pthis, "");
 	return ajFalse;
     }
 
-    if (token->Pos >= token->String->Len)
+    if(token->Pos >= token->String->Len)
     {					/* all done */
-	(void) ajStrAssC (pthis, "");
+	ajStrAssC(pthis, "");
 	ajStrTokenClear(ptoken);
 	return ajFalse;
     }
 
-    if (delim)
-	(void) ajStrAssC (&token->Delim, delim);
+    if(delim)
+	ajStrAssC(&token->Delim, delim);
 
     cp = &token->String->Ptr[token->Pos];
     ilen = strcspn(cp, token->Delim->Ptr);
 
-    if (ilen)
-	(void) ajStrAssSub (pthis, token->String,
+    if(ilen)
+	ajStrAssSub(pthis, token->String,
 			    token->Pos, token->Pos + ilen - 1);
     else
-	(void) ajStrAssC (pthis, "");
+	ajStrAssC(pthis, "");
 
     token->Pos += ilen;
     token->Pos += strspn(&token->String->Ptr[token->Pos], token->Delim->Ptr);
 
     return ajTrue;
 }
+
+
+
 
 /* @func ajStrTokenRest *******************************************************
 **
@@ -5334,33 +6114,38 @@ AjBool ajStrToken (AjPStr* pthis, AjPStrTok* ptoken, const char* delim)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrTokenRest (AjPStr* pthis, AjPStrTok* ptoken)
+AjBool ajStrTokenRest(AjPStr* pthis, AjPStrTok* ptoken)
 {
-    AjPStrTok token = *ptoken;
+    AjPStrTok token;
 
-    if (!*ptoken)
+    token = *ptoken;
+
+    if(!*ptoken)
     {					/* token already cleared */
-	(void) ajStrAssC (pthis, "");
+	ajStrAssC(pthis, "");
 	return ajFalse;
     }
 
-    if (token->Pos >= token->String->Len)
+    if(token->Pos >= token->String->Len)
     {					/* all done */
-	(void) ajStrAssC (pthis, "");
+	ajStrAssC(pthis, "");
 	ajStrTokenClear(ptoken);
 	return ajFalse;
     }
 
-    if (token->Pos < token->String->Len)
-	(void) ajStrAssSub (pthis, token->String,
+    if(token->Pos < token->String->Len)
+	ajStrAssSub(pthis, token->String,
 			    token->Pos, token->String->Len);
     else
-	(void) ajStrAssC (pthis, "");
+	ajStrAssC(pthis, "");
 
     token->Pos = token->String->Len;
 
     return ajTrue;
 }
+
+
+
 
 /* @func ajStrDelim ***********************************************************
 **
@@ -5380,36 +6165,38 @@ AjBool ajStrTokenRest (AjPStr* pthis, AjPStrTok* ptoken)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrDelim (AjPStr* pthis, AjPStrTok* ptoken, const char* delim)
+AjBool ajStrDelim(AjPStr* pthis, AjPStrTok* ptoken, const char* delim)
 {
     ajint ilen;
-    AjPStrTok token = *ptoken;
+    AjPStrTok token;
     char* cp;
     char* cq;
 
-    if (!*ptoken)
+    token = *ptoken;
+
+    if(!*ptoken)
     {					/* token already cleared */
-	(void) ajStrAssC (pthis, "");
+	ajStrAssC(pthis, "");
 	return ajFalse;
     }
 
-    if (token->Pos >= token->String->Len)
+    if(token->Pos >= token->String->Len)
     {					/* all done */
-	(void) ajStrAssC (pthis, "");
+	ajStrAssC(pthis, "");
 	ajStrTokenClear(ptoken);
 	return ajFalse;
     }
 
-    if (delim)
-	(void) ajStrAssC (&token->Delim, delim);
+    if(delim)
+	ajStrAssC(&token->Delim, delim);
 
     cp = &token->String->Ptr[token->Pos];
     cq = strstr(cp, token->Delim->Ptr);
-    if (cq)
+    if(cq)
     {
 	ilen = cq - cp;
-	(void) ajStrAssSub (pthis, token->String, token->Pos,
-			    token->Pos + ilen - 1);
+	ajStrAssSub(pthis, token->String, token->Pos,
+		    token->Pos + ilen - 1);
 	token->Pos += ilen;
 	token->Pos += token->Delim->Len;
 	return ajTrue;
@@ -5418,16 +6205,21 @@ AjBool ajStrDelim (AjPStr* pthis, AjPStrTok* ptoken, const char* delim)
     /* delimiter not found - return rest of string */
 
     ilen = token->String->Len - token->Pos;
-    (void) ajStrAssCI (pthis, cp, ilen);
+    ajStrAssCI(pthis, cp, ilen);
     token->Pos += ilen;
 
     return ajTrue;
 }
 
 
+
+
 /* ==================================================================== */
 /* ========================= Reporters =================================*/
 /* ==================================================================== */
+
+
+
 
 /* @func ajStrPrefix **********************************************************
 **
@@ -5439,23 +6231,26 @@ AjBool ajStrDelim (AjPStr* pthis, AjPStrTok* ptoken, const char* delim)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrPrefix (const AjPStr thys, const AjPStr pref)
+AjBool ajStrPrefix(const AjPStr thys, const AjPStr pref)
 {
-    if (!pref)
+    if(!pref)
 	return ajFalse;
 
-    if (!pref->Len)			/* no prefix */
+    if(!pref->Len)			/* no prefix */
 	return ajFalse;
 
-    if (pref->Len > ajStrLen(thys))	/* pref longer */
+    if(pref->Len > ajStrLen(thys))	/* pref longer */
 	return ajFalse;
 
-    if (strncmp(thys->Ptr, pref->Ptr, pref->Len)) /* +1 or -1 for a
+    if(strncmp(thys->Ptr, pref->Ptr, pref->Len)) /* +1 or -1 for a
 						     failed match */
 	return ajFalse;
 
     return ajTrue;
 }
+
+
+
 
 /* @func ajStrPrefixC *********************************************************
 **
@@ -5467,20 +6262,25 @@ AjBool ajStrPrefix (const AjPStr thys, const AjPStr pref)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrPrefixC (const AjPStr thys, const char* pref)
+AjBool ajStrPrefixC(const AjPStr thys, const char* pref)
 {
-    ajint ilen = strlen(pref);
+    ajint ilen;
 
-    if (!ilen)				/* no prefix */
+    ilen = strlen(pref);
+
+    if(!ilen)				/* no prefix */
 	return ajFalse;
 
-    if (ilen > ajStrLen(thys))		/* pref longer */
+    if(ilen > ajStrLen(thys))		/* pref longer */
 	return ajFalse;
-    if (strncmp(thys->Ptr, pref, ilen))	/* +1 or -1 for a failed match */
+
+    if(strncmp(thys->Ptr, pref, ilen))	/* +1 or -1 for a failed match */
 	return ajFalse;
 
     return ajTrue;
 }
+
+
 
 
 /* @func ajStrPrefixCC ********************************************************
@@ -5493,20 +6293,25 @@ AjBool ajStrPrefixC (const AjPStr thys, const char* pref)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrPrefixCC (const char* str, const char* pref)
+AjBool ajStrPrefixCC(const char* str, const char* pref)
 {
-    ajint ilen = strlen(pref);
+    ajint ilen;
 
-    if (!ilen)				/* no prefix */
+    ilen = strlen(pref);
+
+    if(!ilen)				/* no prefix */
 	return ajFalse;
 
-    if (ilen > strlen(str))		/* pref longer */
+    if(ilen > strlen(str))		/* pref longer */
 	return ajFalse;
-    if (strncmp(str, pref, ilen))    /* +1 or -1 for a failed match */
+
+    if(strncmp(str, pref, ilen))    /* +1 or -1 for a failed match */
 	return ajFalse;
 
     return ajTrue;
 }
+
+
 
 
 /* @func ajStrPrefixCO ********************************************************
@@ -5519,15 +6324,19 @@ AjBool ajStrPrefixCC (const char* str, const char* pref)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrPrefixCO (const char* str, const AjPStr thys)
+AjBool ajStrPrefixCO(const char* str, const AjPStr thys)
 {
-    if (thys->Len > strlen(str))	/* pref longer */
+    if(thys->Len > strlen(str))	/* pref longer */
 	return ajFalse;
-    if (strncmp(str, thys->Ptr, thys->Len)) /* +1 or -1 for a failed match */
+
+    if(strncmp(str, thys->Ptr, thys->Len)) /* +1 or -1 for a failed match */
 	return ajFalse;
 
     return ajTrue;
 }
+
+
+
 
 /* @func ajStrPrefixCase ******************************************************
 **
@@ -5540,10 +6349,13 @@ AjBool ajStrPrefixCO (const char* str, const AjPStr thys)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrPrefixCase (const AjPStr thys, const AjPStr pref)
+AjBool ajStrPrefixCase(const AjPStr thys, const AjPStr pref)
 {
     return ajStrPrefixCaseCC(thys->Ptr, pref->Ptr);
 }
+
+
+
 
 /* @func ajStrPrefixCaseC *****************************************************
 **
@@ -5556,10 +6368,13 @@ AjBool ajStrPrefixCase (const AjPStr thys, const AjPStr pref)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrPrefixCaseC (const AjPStr thys, const char* pref)
+AjBool ajStrPrefixCaseC(const AjPStr thys, const char* pref)
 {
     return ajStrPrefixCaseCC(thys->Ptr, pref);
 }
+
+
+
 
 /* @func ajStrPrefixCaseCO ****************************************************
 **
@@ -5572,10 +6387,13 @@ AjBool ajStrPrefixCaseC (const AjPStr thys, const char* pref)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrPrefixCaseCO (const char* thys, const AjPStr pref)
+AjBool ajStrPrefixCaseCO(const char* thys, const AjPStr pref)
 {
     return ajStrPrefixCaseCC(thys, pref->Ptr);
 }
+
+
+
 
 /* @func ajStrPrefixCaseCC ****************************************************
 **
@@ -5588,28 +6406,34 @@ AjBool ajStrPrefixCaseCO (const char* thys, const AjPStr pref)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrPrefixCaseCC (const char* thys, const char* pref)
+AjBool ajStrPrefixCaseCC(const char* thys, const char* pref)
 {
-    const char* cp = thys;
-    const char* cq = pref;
+    const char* cp;
+    const char* cq;
 
-    /* ajDebug ("ajStrPrefixCaseCC '%s' '%s'\n", thys, pref); */
+    cp = thys;
+    cq = pref;
 
-    if (!*cq)
+    /* ajDebug("ajStrPrefixCaseCC '%s' '%s'\n", thys, pref); */
+
+    if(!*cq)
 	return ajFalse;
 
-    while (*cp && *cq)
+    while(*cp && *cq)
     {
-	if (tolower((ajint) *cp) != tolower((ajint) *cq)) return ajFalse;
+	if(tolower((ajint) *cp) != tolower((ajint) *cq)) return ajFalse;
 	cp++;cq++;
     }
 
-    if (*cq)
+    if(*cq)
 	return ajFalse;
 
-    /* ajDebug ("ajStrPrefixCaseCC ..TRUE..\n"); */
+    /* ajDebug("ajStrPrefixCaseCC ..TRUE..\n"); */
     return ajTrue;
 }
+
+
+
 
 /* @func ajStrSuffix **********************************************************
 **
@@ -5621,19 +6445,26 @@ AjBool ajStrPrefixCaseCC (const char* thys, const char* pref)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrSuffix (const AjPStr thys, const AjPStr suff)
+AjBool ajStrSuffix(const AjPStr thys, const AjPStr suff)
 {
-    ajint ilen = ajStrLen(suff);
-    ajint istart = thys->Len - ilen;
+    ajint ilen;
+    ajint istart;
 
-    if (ilen > ajStrLen(thys))		/* suffix longer */
+    ilen   = ajStrLen(suff);
+    istart = thys->Len - ilen;
+
+    if(ilen > ajStrLen(thys))		/* suffix longer */
 	return ajFalse;
-    if (strncmp(&thys->Ptr[istart], suff->Ptr, ilen)) /* +1 or -1 for a
+
+    if(strncmp(&thys->Ptr[istart], suff->Ptr, ilen)) /* +1 or -1 for a
 							 failed match */
 	return ajFalse;
 
     return ajTrue;
 }
+
+
+
 
 /* @func ajStrSuffixC *********************************************************
 **
@@ -5645,19 +6476,26 @@ AjBool ajStrSuffix (const AjPStr thys, const AjPStr suff)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrSuffixC (const AjPStr thys, const char* suff)
+AjBool ajStrSuffixC(const AjPStr thys, const char* suff)
 {
-    ajint ilen = strlen(suff);
-    ajint istart = thys->Len - ilen;
+    ajint ilen;
+    ajint istart;
 
-    if (ilen > ajStrLen(thys))		/* suff longer */
+    ilen   = strlen(suff);
+    istart = thys->Len - ilen;
+
+    if(ilen > ajStrLen(thys))		/* suff longer */
 	return ajFalse;
-    if (strncmp(&thys->Ptr[istart], suff, ilen)) /* +1 or -1 for a
+
+    if(strncmp(&thys->Ptr[istart], suff, ilen)) /* +1 or -1 for a
 						    failed match */
 	return ajFalse;
 
     return ajTrue;
 }
+
+
+
 
 /* @func ajStrSuffixCC ********************************************************
 **
@@ -5669,20 +6507,28 @@ AjBool ajStrSuffixC (const AjPStr thys, const char* suff)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrSuffixCC (const char* str, const char* suff)
+AjBool ajStrSuffixCC(const char* str, const char* suff)
 {
-    ajint ilen = strlen(suff);
-    ajint jlen = strlen(str);
-    ajint jstart = jlen - ilen;
+    ajint ilen;
+    ajint jlen;
+    ajint jstart;
 
-    if (ilen > jlen)			/* suff longer */
+    ilen   = strlen(suff);
+    jlen   = strlen(str);
+    jstart = jlen - ilen;
+
+    if(ilen > jlen)			/* suff longer */
 	return ajFalse;
-    if (strncmp(&str[jstart], suff, ilen)) /* +1 or -1 for a
+
+    if(strncmp(&str[jstart], suff, ilen)) /* +1 or -1 for a
 					      failed match */
 	return ajFalse;
 
     return ajTrue;
 }
+
+
+
 
 /* @func ajStrSuffixCO ********************************************************
 **
@@ -5694,19 +6540,26 @@ AjBool ajStrSuffixCC (const char* str, const char* suff)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrSuffixCO (const char* str, const AjPStr suff)
+AjBool ajStrSuffixCO(const char* str, const AjPStr suff)
 {
-    ajint jlen = strlen(str);
-    ajint jstart = jlen - suff->Len;
+    ajint jlen;
+    ajint jstart;
 
-    if (suff->Len > jlen)		/* suff longer */
+    jlen   = strlen(str);
+    jstart = jlen - suff->Len;
+
+    if(suff->Len > jlen)		/* suff longer */
 	return ajFalse;
-    if (strncmp(&str[jstart], suff->Ptr, suff->Len)) /* +1 or -1 for a
+
+    if(strncmp(&str[jstart], suff->Ptr, suff->Len)) /* +1 or -1 for a
 							failed match */
 	return ajFalse;
 
     return ajTrue;
 }
+
+
+
 
 /* @func ajStrIsAlpha *********************************************************
 **
@@ -5719,19 +6572,24 @@ AjBool ajStrSuffixCO (const char* str, const AjPStr suff)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrIsAlpha (const AjPStr thys)
+AjBool ajStrIsAlpha(const AjPStr thys)
 {
-    char* cp = ajStrStr(thys);
+    char* cp;
 
-    if (!thys->Len) return ajFalse;
+    cp = ajStrStr(thys);
 
-    while (*cp)
-    {
-	if (!isalpha((ajint)*cp++)) return ajFalse;
-    }
+    if(!thys->Len)
+	return ajFalse;
+
+    while(*cp)
+	if(!isalpha((ajint)*cp++))
+	    return ajFalse;
 
     return ajTrue;
 }
+
+
+
 
 /* @func ajStrIsAlnum *********************************************************
 **
@@ -5744,19 +6602,22 @@ AjBool ajStrIsAlpha (const AjPStr thys)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrIsAlnum (const AjPStr thys)
+AjBool ajStrIsAlnum(const AjPStr thys)
 {
     char* cp;
 
-    if (!thys->Len) return ajFalse;
+    if(!thys->Len)
+	return ajFalse;
 
-    for (cp = ajStrStr(thys);*cp;cp++)
-    {
-	if (*cp != '_' && !isalnum((ajint)*cp)) return ajFalse;
-    }
+    for(cp = ajStrStr(thys);*cp;cp++)
+	if(*cp != '_' && !isalnum((ajint)*cp))
+	    return ajFalse;
 
     return ajTrue;
 }
+
+
+
 
 /* @func ajStrIsWord **********************************************************
 **
@@ -5769,18 +6630,24 @@ AjBool ajStrIsAlnum (const AjPStr thys)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrIsWord (const AjPStr thys)
+AjBool ajStrIsWord(const AjPStr thys)
 {
-    char* cp = ajStrStr(thys);
+    char* cp;
 
-    if (!thys->Len) return ajFalse;
+    cp = ajStrStr(thys);
 
-    while (*cp)
-    {
-	if (isspace((ajint)*cp++)) return ajFalse;
-    }
+    if(!thys->Len)
+	return ajFalse;
+
+    while(*cp)
+	if(isspace((ajint)*cp++))
+	    return ajFalse;
+
     return ajTrue;
 }
+
+
+
 
 /* @func ajStrIsSpace *********************************************************
 **
@@ -5793,19 +6660,24 @@ AjBool ajStrIsWord (const AjPStr thys)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrIsSpace (const AjPStr thys)
+AjBool ajStrIsSpace(const AjPStr thys)
 {
-    char* cp = ajStrStr(thys);
+    char* cp;
 
-    if (!thys->Len) return ajTrue;
+    cp = ajStrStr(thys);
 
-    while (*cp)
-    {
-	if (!isspace((ajint)*cp++)) return ajFalse;
-    }
+    if(!thys->Len)
+	return ajTrue;
+
+    while(*cp)
+	if(!isspace((ajint)*cp++))
+	    return ajFalse;
 
     return ajTrue;
 }
+
+
+
 
 /* @func ajStrIsLower *********************************************************
 **
@@ -5818,19 +6690,24 @@ AjBool ajStrIsSpace (const AjPStr thys)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrIsLower (const AjPStr thys)
+AjBool ajStrIsLower(const AjPStr thys)
 {
-    char* cp = ajStrStr(thys);
+    char* cp;
 
-    if (!thys->Len) return ajTrue;
+    cp = ajStrStr(thys);
 
-    while (*cp)
-    {
-	if (isupper((ajint)*cp++)) return ajFalse;
-    }
+    if(!thys->Len)
+	return ajTrue;
+
+    while(*cp)
+	if(isupper((ajint)*cp++))
+	    return ajFalse;
 
     return ajTrue;
 }
+
+
+
 
 /* @func ajStrIsUpper *********************************************************
 **
@@ -5843,19 +6720,24 @@ AjBool ajStrIsLower (const AjPStr thys)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrIsUpper (const AjPStr thys)
+AjBool ajStrIsUpper(const AjPStr thys)
 {
-    char* cp = ajStrStr(thys);
+    char* cp;
 
-    if (!thys->Len) return ajFalse;
+    cp = ajStrStr(thys);
 
-    while (*cp)
-    {
-	if (islower((ajint)*cp++)) return ajFalse;
-    }
+    if(!thys->Len)
+	return ajFalse;
+
+    while(*cp)
+	if(islower((ajint)*cp++))
+	    return ajFalse;
 
     return ajTrue;
 }
+
+
+
 
 /* @func ajStrWrap ************************************************************
 **
@@ -5874,21 +6756,23 @@ AjBool ajStrWrap(AjPStr* pthis, ajint width )
     char* cp;
     char* cq;
     ajint i;
-    if (width > (*pthis)->Len)		/* already fits on one line */
+
+    if(width > (*pthis)->Len)		/* already fits on one line */
 	return ajTrue;
 
-    (void) ajStrMod (pthis);
+    ajStrMod(pthis);
     thys = *pthis;
 
     cq = thys->Ptr;
-    for (i=width; i < thys->Len; i+=width)
+    for(i=width; i < thys->Len; i+=width)
     {
 	cp = &thys->Ptr[i];
-	while (cp > cq && !isspace((ajint)*cp))
+	while(cp > cq && !isspace((ajint)*cp))
 	    cp--;
-	if (cp == cq)
+
+	if(cp == cq)
 	{
-	    (void) ajStrInsertC(pthis, i, "\n");
+	    ajStrInsertC(pthis, i, "\n");
 	    cp = &thys->Ptr[i+1];
 	}
 	else
@@ -5898,6 +6782,9 @@ AjBool ajStrWrap(AjPStr* pthis, ajint width )
 
     return ajTrue;
 }
+
+
+
 
 /* @func ajStrWrapLeft ********************************************************
 **
@@ -5916,73 +6803,77 @@ AjBool ajStrWrap(AjPStr* pthis, ajint width )
 ** @@
 ******************************************************************************/
 
-AjBool ajStrWrapLeft (AjPStr* pthis, ajint width, ajint left)
+AjBool ajStrWrapLeft(AjPStr* pthis, ajint width, ajint left)
 {
     static AjPStr newstr = NULL;
     char* cp;
     ajint len;
-    ajint i=0;
+    ajint i   = 0;
     ajint j;
     ajint isp = 0;
     
-    /* ajDebug ("ajStrWrapLeft %d %d\n'%S'\n", width, left, *pthis); */
+    /* ajDebug("ajStrWrapLeft %d %d\n'%S'\n", width, left, *pthis); */
     
     len = 1 + (*pthis)->Len + (left + 1) * (*pthis)->Len / width;
-    (void) ajStrAssS (&newstr, *pthis);
-    (void) ajStrAssCL (pthis, "", len);
+    ajStrAssS(&newstr, *pthis);
+    ajStrAssCL(pthis, "", len);
     
-    for (cp = ajStrStr(newstr); *cp; cp++)
+    for(cp = ajStrStr(newstr); *cp; cp++)
     {
-	switch (*cp)
+	switch(*cp)
 	{
 	case '\n':
-	    (void) ajStrAppK (pthis, '\n');
-	    for (j=0; j<left; j++)
-		(void) ajStrAppK (pthis, ' ');
+	    ajStrAppK(pthis, '\n');
+	    for(j=0; j<left; j++)
+		ajStrAppK(pthis, ' ');
 	    i = 0;
 	    isp = 0;
 	    break;
 	case ' ':
 	case '\t':
 	    isp = (*pthis)->Len;
-	    /* ajDebug ("can split at %d\n", isp); */
+	    /* ajDebug("can split at %d\n", isp); */
 	default:
-	    if (++i >= width)
+	    if(++i >= width)
 	    {	/* too wide, time to split */
 		/* ajDebug("split at i: %d isp: %d\n'%S'\n",
 		   i, isp, *pthis); */
-		if (isp)
+		if(isp)
 		{
-		    if (isp == (*pthis)->Len)
-			(void) ajStrAppK (pthis, '\n');
+		    if(isp == (*pthis)->Len)
+			ajStrAppK(pthis, '\n');
 		    else
 			(*pthis)->Ptr[isp] = '\n';
 		}
 		else
 		{
-		    (void) ajStrAppK (pthis, *cp); /* keep going */
+		    ajStrAppK(pthis, *cp); /* keep going */
 		    break;
 		}
-		for (j=0; j<left; j++)
+
+		for(j=0; j<left; j++)
 		{	  /* follow newline with left margin spaces */
 		    isp++;
-		    (void) ajStrInsertC (pthis, isp, " ");
+		    ajStrInsertC(pthis, isp, " ");
 		}
 		i = (*pthis)->Len - isp;
 		isp = 0;
-		if (!isspace((ajint)*cp))
-		    (void) ajStrAppK (pthis, *cp);
+
+		if(!isspace((ajint)*cp))
+		    ajStrAppK(pthis, *cp);
 	    }
 	    else
-	    {
-		(void) ajStrAppK (pthis, *cp);
-	    }
+		ajStrAppK(pthis, *cp);
+
 	    break;
 	}
     }
     
     return ajTrue;
 }
+
+
+
 
 /* @func ajStrChar ************************************************************
 **
@@ -5995,23 +6886,26 @@ AjBool ajStrWrapLeft (AjPStr* pthis, ajint width, ajint left)
 ** @@
 ******************************************************************************/
 
-char ajStrChar (const AjPStr thys, ajint pos)
+char ajStrChar(const AjPStr thys, ajint pos)
 {
     ajint ipos;
 
-    if (!thys)
+    if(!thys)
 	return '\0';
 
-    if (pos < 0)
+    if(pos < 0)
 	ipos = thys->Len + pos;
     else
 	ipos = pos;
 
-    if ((ipos < 0) || (ipos > thys->Len))
+    if((ipos < 0) || (ipos > thys->Len))
 	return '\0';
 
     return thys->Ptr[ipos];
 }
+
+
+
 
 /* ==================================================================== */
 /* ====================== Miscellaneous ================================*/
@@ -6023,6 +6917,8 @@ char ajStrChar (const AjPStr thys, ajint pos)
 ** String functions for now.
 **
 */
+
+
 
 
 /* @func ajStrListToArray *****************************************************
@@ -6042,8 +6938,8 @@ ajint ajStrListToArray(const AjPStr thys, AjPStr **array)
     ajint len;
     ajint i;
     ajint n;
-    char *p=NULL;
-    char *q=NULL;
+    char *p = NULL;
+    char *q = NULL;
 
     if(!thys->Len)
 	return 0;
@@ -6071,6 +6967,8 @@ ajint ajStrListToArray(const AjPStr thys, AjPStr **array)
 
     return c;
 }
+
+
 
 
 /* @func ajStrDegap ***********************************************************
@@ -6104,6 +7002,7 @@ void ajStrDegap(AjPStr* thys)
 	else
 	    --(*thys)->Len;
     }
+
     (*thys)->Ptr[(*thys)->Len] = '\0';
 
     return;
@@ -6151,6 +7050,7 @@ void ajStrRemoveCharsC(AjPStr* thys, const char *string)
 
 
 
+
 /* @func ajStrRemoveHtml ******************************************************
 **
 ** Removes all strings between and including angle brackets
@@ -6173,6 +7073,7 @@ void ajStrRemoveHtml(AjPStr* thys)
 	    *q++=*p++;
 	    continue;
 	}
+
 	while(*p)
 	{
 	    --(*thys)->Len;
@@ -6190,6 +7091,8 @@ void ajStrRemoveHtml(AjPStr* thys)
 }
 
 
+
+
 /* @func ajStrRemoveNewline ***************************************************
 **
 ** Removes any trailing newline
@@ -6202,7 +7105,9 @@ void ajStrRemoveHtml(AjPStr* thys)
 void ajStrRemoveNewline(AjPStr* thys)
 {
     char *p;
-    AjPStr pthis=*thys;
+    AjPStr pthis;
+
+    pthis = *thys;
 
     p = pthis->Ptr;
 
@@ -6216,6 +7121,9 @@ void ajStrRemoveNewline(AjPStr* thys)
     return;
 }
 
+
+
+
 /* @func ajStrCountK **********************************************************
 **
 ** Counts occurrences of a character in a string
@@ -6225,17 +7133,24 @@ void ajStrRemoveNewline(AjPStr* thys)
 ** @return [ajint] Number of times character was found in string
 ******************************************************************************/
 
-ajint ajStrCountK (const AjPStr thys, char ch)
+ajint ajStrCountK(const AjPStr thys, char ch)
 {
     ajint ret = 0;
-    char* cp = thys->Ptr;
-    while (*cp)
+    char* cp;
+
+    cp = thys->Ptr;
+
+    while(*cp)
     {
-	if (*cp == ch) ret++;
+	if(*cp == ch) ret++;
 	cp++;
     }
+
     return ret;
 }
+
+
+
 
 /* @func ajStrCountC **********************************************************
 **
@@ -6246,12 +7161,14 @@ ajint ajStrCountK (const AjPStr thys, char ch)
 ** @return [ajint] Number of times character was found in string
 ******************************************************************************/
 
-ajint ajStrCountC (const AjPStr thys, const char* str)
+ajint ajStrCountC(const AjPStr thys, const char* str)
 {
     ajint ret = 0;
-    const char* cp = str;
+    const char* cp;
 
-    while (*cp)
+    cp = str;
+
+    while(*cp)
     {
 	ret += ajStrCountK(thys, *cp);
 	cp++;
@@ -6259,6 +7176,9 @@ ajint ajStrCountC (const AjPStr thys, const char* str)
 
     return ret;
 }
+
+
+
 
 /* @func ajStrWhole ***********************************************************
 **
@@ -6270,17 +7190,17 @@ ajint ajStrCountC (const AjPStr thys, const char* str)
 ** @return [AjBool] ajTrue is range covers the whole string
 ******************************************************************************/
 
-AjBool ajStrWhole (const AjPStr thys, ajint begin, ajint end)
+AjBool ajStrWhole(const AjPStr thys, ajint begin, ajint end)
 {
     ajint ibeg;
     ajint iend;
 
-    ibeg = strPos (thys, begin);
-    if (!ibeg)
+    ibeg = strPos(thys, begin);
+    if(!ibeg)
 	return ajFalse;
 
-    iend = strPosI (thys, ibeg, end);
-    if (iend != (thys->Len - 1))
+    iend = strPosI(thys, ibeg, end);
+    if(iend != (thys->Len - 1))
 	return ajFalse;
 
     return ajTrue;
