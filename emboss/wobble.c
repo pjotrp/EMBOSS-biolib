@@ -25,10 +25,10 @@
 #include <stdlib.h>
 
 
-void checkstring(AjPStr *str);
-void calcpc(char *seq, char *rev, ajint n, float **x, float **y, ajint *count,
-	    ajint beg, char *gc, ajint window);
-float get_mean(char *bases, char *s);
+static void wobble_checkstring(AjPStr *str);
+static void wobble_calcpc(char *seq, char *rev, ajint n, float **x, float **y,
+			  ajint *count, ajint beg, char *gc, ajint window);
+static float wobble_get_mean(char *bases, char *s);
 
 
 
@@ -99,14 +99,14 @@ int main(int argc, char **argv)
     ajSeqReverseStr(&rev);
 
 
-    checkstring(&gc);
-    mean = get_mean(ajStrStr(gc),ajStrStr(fwd));
+    wobble_checkstring(&gc);
+    mean = wobble_get_mean(ajStrStr(gc),ajStrStr(fwd));
     ajFmtPrintF(outf,"Expected %s content in third position = %.2f\n",
 		ajStrStr(gc),mean);
     
     for(i=0;i<6;++i)
     {
-	calcpc(ajStrStr(fwd),ajStrStr(rev),i,x,y,count,beg,ajStrStr(gc),
+	wobble_calcpc(ajStrStr(fwd),ajStrStr(rev),i,x,y,count,beg,ajStrStr(gc),
 	       window);
 
 	data = ajGraphxyDataNewI(count[i]);
@@ -160,25 +160,24 @@ int main(int argc, char **argv)
 }
 
 
-/* @func calcpc ***************************************************************
+/* @funcstatic wobble_calcpc **************************************************
 **
-** Undocumented.
+** Calculate percentages
 **
-** @param [?] seq [char*] Undocumented
-** @param [?] rev [char*] Undocumented
-** @param [?] n [ajint] Undocumented
-** @param [?] x [float**] Undocumented
-** @param [?] y [float**] Undocumented
-** @param [?] count [ajint*] Undocumented
-** @param [?] beg [ajint] Undocumented
-** @param [?] gc [char*] Undocumented
-** @param [?] window [ajint] Undocumented
+** @param [r] seq [char*] sequence
+** @param [r] rev [char*] reverse sequence
+** @param [r] n [ajint] frame
+** @param [w] x [float**] x-axis
+** @param [w] y [float**] y-axis
+** @param [w] count [ajint*] Number of codons
+** @param [r] beg [ajint] sequence start position
+** @param [r] gc [char*] bases to match
+** @param [r] window [ajint] window size
 ** @@
 ******************************************************************************/
 
-
-void calcpc(char *seq, char *rev, ajint n, float **x, float **y, ajint *count,
-	    ajint beg, char *gc, ajint window)
+static void wobble_calcpc(char *seq, char *rev, ajint n, float **x, float **y,
+			  ajint *count, ajint beg, char *gc, ajint window)
 {
 
     ajint len;
@@ -245,17 +244,15 @@ void calcpc(char *seq, char *rev, ajint n, float **x, float **y, ajint *count,
 }
 
 	    
-/* @func checkstring **********************************************************
+/* @funcstatic wobble_checkstring ********************************************
 **
-** Undocumented.
+** Check that a sensible -bases option has been given. Modify if necessary
 **
-** @param [?] str [AjPStr*] Undocumented
+** @param [w] str [AjPStr*] Undocumented
 ** @@
 ******************************************************************************/
 
-
-
-void checkstring(AjPStr *str)
+static void wobble_checkstring(AjPStr *str)
 {
     AjPStr tmp;
     static char *bases="GCAT";
@@ -277,18 +274,17 @@ void checkstring(AjPStr *str)
     return;
 }
 
-/* @func get_mean *************************************************************
+/* @funcstatic wobble_get_mean ***********************************************
 **
-** Undocumented.
+** Get pc of -bases specified
 **
-** @param [?] bases [char*] Undocumented
-** @param [?] s [char*] Undocumented
-** @return [float] Undocumented
+** @param [r] bases [char*] bases to use
+** @param [r] s [char*] sequence
+** @return [float] base percentage
 ** @@
 ******************************************************************************/
 
-
-float get_mean(char *bases, char *s)
+static float wobble_get_mean(char *bases, char *s)
 {
     ajint na;
     ajint nc;
