@@ -38,42 +38,21 @@ import java.net.URL;
 public class FileEditorDisplay
 {
 
-   private JTextPane seqText;
-   private Document doc;
+   private JTextPane seqText = new JTextPane();
+   private Document doc = seqText.getDocument();
    private String filename;
-   private JPopupMenu popup;
+   private JPopupMenu popup = new JPopupMenu();
    private String text;
    private byte[] pngContent = null;
-
-
-   public FileEditorDisplay(final String filename)
-   {
-     this.filename = filename;
-     seqText = new JTextPane();
-     doc = seqText.getDocument();
-     initStylesForTextPane(seqText);
-
-     popup = new JPopupMenu();
-     MouseListener popupListener = new PopupListener();
-
-     JMenuItem menuItem = new JMenuItem("Save",KeyEvent.VK_S);
-     seqText.addMouseListener(popupListener);
-     menuItem.addActionListener(new ActionListener()
-     {
-       public void actionPerformed(ActionEvent e)
-       {
-         new FileSaving(seqText,pngContent);
-       }
-     });
-     popup.add(menuItem);
-   }
 
 
    public FileEditorDisplay(JFrame ffile, final String filename)
    {
 
-     this(filename);
- 
+     this.filename = filename;
+     initStylesForTextPane(seqText);
+     setUpPopup();
+
      text = "";
      try
      {
@@ -103,8 +82,11 @@ public class FileEditorDisplay
    public FileEditorDisplay(JFrame ffile, final String filename,
                             Object contents)
    {
-     this(filename);
-    
+     
+     this.filename = filename;
+     initStylesForTextPane(seqText);
+     setUpPopup();
+
      if(contents.getClass().equals(String.class))
      {
        try
@@ -142,6 +124,22 @@ public class FileEditorDisplay
        }
      }
 
+   }
+
+   public void setUpPopup()
+   {
+     MouseListener popupListener = new PopupListener();
+
+     JMenuItem menuItem = new JMenuItem("Save",KeyEvent.VK_S);
+     seqText.addMouseListener(popupListener);
+     menuItem.addActionListener(new ActionListener()
+     {
+       public void actionPerformed(ActionEvent e)
+       {
+         new FileSaving(seqText,pngContent);
+       }
+     });
+     popup.add(menuItem);
    }
 
 /**
@@ -304,7 +302,7 @@ public class FileEditorDisplay
                               getStyle(StyleContext.DEFAULT_STYLE);
 
      Style regular = textPane.addStyle("regular", def);
-     StyleConstants.setFontFamily(def, "SansSerif");
+     StyleConstants.setFontFamily(def, "monospaced");
 
      Style s = textPane.addStyle("italic", regular);
      StyleConstants.setItalic(s, true);
