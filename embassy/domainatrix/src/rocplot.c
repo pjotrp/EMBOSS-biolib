@@ -344,8 +344,8 @@ int main(int argc, char **argv)
     float     binstart   = 0.0;     /* Start value of first bin            */
     float     binsize    = 0.0;     /* Bin size                            */
 
-    /* DIAGNOSTICS */
-    AjIList    iter      = NULL;
+    /* DIAGNOSTICS 
+    AjIList    iter      = NULL; */
     
 
 
@@ -474,6 +474,8 @@ int main(int argc, char **argv)
     for(x=0; x<numfiles; x++)
 	ajFmtPrintF(errf, "hitsnames[%d]: %S\n", x, hitsnames[x]);
     ajFmtPrintF(errf, "\n\n\n");    
+
+    /* DIAGNOSTICS 
     ajFmtPrintF(errf, "LISTS OF HITS IN EACH FILE\n");
     for(x=0; x<numfiles; x++)    
     {
@@ -489,6 +491,7 @@ int main(int argc, char **argv)
 	ajFmtPrintF(errf, "nrelatives[%d]: %d\n", x, 
 		    ajIntGet(nrelatives, x));
     ajFmtPrintF(errf, "\n\n\n");    	    
+    */
     
     /*********************************************************************/
     /* CALCULATE x/y DATA FOR ROC AND CLASSIFICATION PLOTS AND ROC VALUE */
@@ -1342,8 +1345,9 @@ static AjBool rocplot_calcdata(int mode, int multimode, int datamode,
 			   ROC curve and value. */
 			if(!ajStrMatchC(tmphit->Class, "TRUE"))
 			    ntrue_sum += (float) ntrue;
+			/* DIAGNOSTICS 
 			ajFmtPrintF(errf, "For hit %5d ntrue=%5d ntrue_sum=%5.3f\n", 
-				    ajIntGet(*hitcnt, x),ntrue, ntrue_sum);
+				    ajIntGet(*hitcnt, x),ntrue, ntrue_sum); */
 
 			/* Single list of known true relatives */	
 			if(datamode==1) 
@@ -1438,17 +1442,19 @@ static AjBool rocplot_calcdata(int mode, int multimode, int datamode,
 		 value. */
 		if(!ajStrMatchC(tmphit->Class, "TRUE"))
 		    ntrue_sum += (float) ntrue;
+
+		/* DIAGNOSTICS 
 		ajFmtPrintF(errf, "For hit %5d ntrue=%5d ntrue_sum=%5.3f\n", 
-			    ajIntGet(*hitcnt, x),ntrue, ntrue_sum);
+			    ajIntGet(*hitcnt, x),ntrue, ntrue_sum); */
 		
 
-		/* DIAGNOSTICS */
+		/* DIAGNOSTICS 
 		ajFmtPrintF(errf, "[%d]   sens = %d / %d      spec = %d / %d", 
 			    ajIntGet(*hitcnt, x)-1, 
 			    ntrue, 
 			    ajIntGet(nrelatives, x), 
 			    ntrue, 
-			    ajIntGet(*hitcnt, x));
+			    ajIntGet(*hitcnt, x)); */
 		
 
 		sens = (float) ((float)ntrue / 
@@ -1457,7 +1463,7 @@ static AjBool rocplot_calcdata(int mode, int multimode, int datamode,
 				(float)ajIntGet(*hitcnt, x));
 				
 
-		ajFmtPrintF(errf, "   (sens = %f  spec = %f\n",sens, spec); 
+		/* ajFmtPrintF(errf, "   (sens = %f  spec = %f\n",sens, spec);  */
 
 		/* Create data point and populate list */
 		xyptr = rocplot_XYdataNew();
@@ -1481,9 +1487,9 @@ static AjBool rocplot_calcdata(int mode, int multimode, int datamode,
 			ajFloat2dPut(rocy, x, y, xyptr->Y);		 
 			
 
-			/* DIAGNOSTICS */
+			/* DIAGNOSTICS 
 			ajFmtPrintF(errf, "sens[%d]: %f   1-spec[%d]: %f\n", 
-				    y, xyptr->Y, y, xyptr->X);	
+				    y, xyptr->Y, y, xyptr->X);	 */
 			
 
 			rocplot_XYdataDel(&xyptr);
@@ -1498,10 +1504,11 @@ static AjBool rocplot_calcdata(int mode, int multimode, int datamode,
 	    }
 
 	    /* Calculate ROCn value */
+	    /* DIAGNOSTICS 
 	    ajFmtPrintF(errf, "roc: %d\n"
 		       "nrelativess: %d\n"
 		       "ntrue_sum: %f\n",
-		       roc, ajIntGet(nrelatives, x), ntrue_sum);
+		       roc, ajIntGet(nrelatives, x), ntrue_sum); */
 
 
 	    rocn_tmp = (1 / (float)((float)roc * 
