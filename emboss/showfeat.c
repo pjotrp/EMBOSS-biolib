@@ -665,14 +665,14 @@ static ajint showfeat_CompareFeatPos (const void * a, const void * b)
 ******************************************************************************/
 
 static AjBool showfeat_MatchPatternTags (AjPFeature feat, AjPStr tpattern,
-					 AjPStr vpattern)
+                                         AjPStr vpattern)
 {
-    AjIList titer;			/* iterator for feat */
-    static AjPStr tagnam=NULL;			/* tag structure */
-    static AjPStr tagval=NULL;			/* tag structure */
-    AjBool val = ajFalse;		/* returned value */
-    AjBool tval;			/* tags result */
-    AjBool vval;			/* value result */
+    AjIList titer;                      /* iterator for feat */
+    static AjPStr tagnam=NULL;          /* tag structure */
+    static AjPStr tagval=NULL;          /* tag structure */
+    AjBool val = ajFalse;               /* returned value */
+    AjBool tval;                        /* tags result */
+    AjBool vval;                        /* value result */
 
 
     /*
@@ -680,27 +680,36 @@ static AjBool showfeat_MatchPatternTags (AjPFeature feat, AjPStr tpattern,
      *  both '*', then allow this as a match
      */
     if (!ajStrCmpC(tpattern, "*") &&
-	!ajStrCmpC(vpattern, "*")) 
-	return ajTrue;
+        !ajStrCmpC(vpattern, "*"))
+        return ajTrue;
 
     /* iterate through the tags and test for match to patterns */
     titer = ajFeatTagIter(feat);
-    while (ajFeatTagval(titer, &tagnam, &tagval))
-    {
-	tval = embMiscMatchPattern(tagnam, tpattern);
-	if(!ajStrLen(tagval))		/* if tag has no value */ 
-	    return val;
-	vval = embMiscMatchPattern(tagval, vpattern);
-	if (tval && vval)
-	{
-	    val = ajTrue;
-	    break;
-	}
+    while (ajFeatTagval(titer, &tagnam, &tagval)) {
+        tval = embMiscMatchPattern(tagnam, tpattern);
+/*
+** If tag has no value then
+**   If vpattern is '*' the value pattern is a match
+** Else check vpattern
+*/
+        if (!ajStrLen(tagval)) {
+            if (!ajStrCmpC(vpattern, "*"))
+            	vval = ajTrue;
+            else
+		vval = ajFalse;
+        } else
+            vval = embMiscMatchPattern(tagval, vpattern);
+
+        if (tval && vval) {
+            val = ajTrue;
+            break;
+        }
     }
     (void) ajListIterFree(titer);
 
     return val;
 }
+
 
 
 
