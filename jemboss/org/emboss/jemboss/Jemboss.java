@@ -58,7 +58,7 @@ public class Jemboss implements ActionListener
 /** Scroll pane for local filemanager */
   private JScrollPane scrollTree;
 /** true if in client-server mode (using SOAP) */
-  static boolean withSoap;
+  public static boolean withSoap;
 /** to manage the pending results */
   public static PendingResults resultsManager;
 /** Jemboss window dimension */
@@ -172,16 +172,9 @@ public class Jemboss implements ActionListener
     extend.setToolTipText("Open and close file manager.");
 
     Dimension d = f.getToolkit().getScreenSize();
-    if(withSoap)
-    {
-      resultsManager = new PendingResults(mysettings);
-      btmMenu.add(resultsManager.statusPanel(f));
-    }
-    else
-    {
-      btmMenu.add(Box.createHorizontalGlue());
-      btmMenu.add(Box.createHorizontalStrut(5));
-    }
+
+    resultsManager = new PendingResults(mysettings);
+    btmMenu.add(resultsManager.statusPanel(f));
     btmMenu.add(extend);
     pform.add(btmMenu,BorderLayout.SOUTH);
 
@@ -223,7 +216,6 @@ public class Jemboss implements ActionListener
                          mainMenu,f,jform);
 
     f.addWindowListener(new winExit());
-
   }
 
 

@@ -73,7 +73,6 @@ public class BuildJembossForm implements ActionListener
   private JembossComboPopup fieldOption[];
   private JList multiOption[];
   private SetInFileCard inSeq[];
-  private JButton bresults;
   private JButton balign;
   private String applName;
   private String db[];
@@ -87,7 +86,6 @@ public class BuildJembossForm implements ActionListener
 // result files
   private String seqoutResult;
   private String outfileResult;
-  private String stdout;
   private String helptext = "";
   private boolean withSoap;
   private JFrame f;
@@ -201,10 +199,6 @@ public class BuildJembossForm implements ActionListener
     });
 
 
-// Display results button
-    bresults = new JButton("Show Results");
-    bresults.addActionListener(this);
- 
     balign = new JButton("Show Alignment");
     balign.addActionListener(this);
 
@@ -232,10 +226,6 @@ public class BuildJembossForm implements ActionListener
       tools.add(Box.createRigidArea(new Dimension(4,0)));
       tools.add(badvanced);
     }
-
-    tools.add(Box.createRigidArea(new Dimension(4,0)));
-    tools.add(bresults);
-    bresults.setVisible(false);
 
     tools.add(Box.createRigidArea(new Dimension(4,0)));
     tools.add(balign);
@@ -350,14 +340,14 @@ public class BuildJembossForm implements ActionListener
     outSection = null;
     inpSection = null;
 
-    if(withSoap)
-    {
+//  if(withSoap)
+//  {
       if(parseAcd.isBatchable() && 
          !parseAcd.getExpectedCPU().equalsIgnoreCase("low"))
         Jemboss.resultsManager.updateMode("batch");
       else
         Jemboss.resultsManager.updateMode("interactive");
-    }
+//  }
 
     for(int j=0;j<nsection;j++)
     {
@@ -434,19 +424,28 @@ public class BuildJembossForm implements ActionListener
         {
           RunEmbossApplication2 rea = new RunEmbossApplication2(
                                            embossCommand,envp,null);
-          rea.waitFor();
-          stdout = rea.getProcessStdout();
 
-          String msg = rea.getProcessStderr().trim();
-          if(msg != null && !msg.equals(""))
-            JOptionPane.showMessageDialog(null, msg, "alert",
+          if(mysettings.getCurrentMode().equals("batch"))
+          {
+            BatchProcess bp = new BatchProcess(rea);
+            bp.start();
+            Jemboss.resultsManager.addRunningJob();
+          }
+          else
+          {
+            rea.waitFor();
+
+            String msg = rea.getProcessStderr().trim();
+            if(msg != null && !msg.equals(""))
+              JOptionPane.showMessageDialog(null, msg, "alert",
                                    JOptionPane.ERROR_MESSAGE);
 
-          f.setCursor(cdone);
-          bresults.setVisible(true);
+            f.setCursor(cdone);
+            showStandaloneResults(rea.getProcessStdout());
 
-          if(applName.equals("emma"))
-            balign.setVisible(true);
+            if(applName.equals("emma"))
+              balign.setVisible(true);
+          }
         }
       }
       else
@@ -462,24 +461,17 @@ public class BuildJembossForm implements ActionListener
 
           try
           {
-            JembossRun thisrun = new JembossRun(embossCommand,"",
-                                          filesToMove,mysettings);
-            if (mysettings.getCurrentMode().equals("batch"))
+            if(mysettings.getCurrentMode().equals("batch"))
             {
-              JembossProcess er = new JembossProcess((String)thisrun.get("jobid"));
-              Jemboss.resultsManager.addResult(er);
-              Jemboss.resultsManager.updateStatus();
-              if(!Jemboss.resultsManager.isAutoUpdate())
-              {
-//              System.out.println("Start new batch update thread");
-                Jemboss.resultsManager.setAutoUpdate(true);
-                String freq = (String)AdvancedOptions.jobMgr.getSelectedItem();
-                int ind = freq.indexOf(" ");
-                new BatchUpdateTimer(Integer.parseInt(freq.substring(0,ind)));
-              }
+              BatchSoapProcess bsp = new BatchSoapProcess(embossCommand,filesToMove,mysettings);
+              bsp.start();
             }
             else
+            {
+              JembossRun thisrun = new JembossRun(embossCommand,"",
+                                           filesToMove,mysettings);
               new ShowResultSet(thisrun.hash(),filesToMove,mysettings);
+            }
           }
           catch (JembossSoapException eae)
           {
@@ -502,115 +494,227 @@ public class BuildJembossForm implements ActionListener
     }
     else if( ae.getActionCommand().startsWith("Show Results"))
     {
-      JFrame res = new JFrame(applName + " Results  : " + seqoutResult);
-      res.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-      JTabbedPane fresults = new JTabbedPane();
-      res.getContentPane().add(fresults,BorderLayout.CENTER);
-      Hashtable hashRes = new Hashtable();
+//    showStandaloneResults();
+//    JFrame res = new JFrame(applName + " Results  : " + seqoutResult);
+//    res.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+//    JTabbedPane fresults = new JTabbedPane();
+//    res.getContentPane().add(fresults,BorderLayout.CENTER);
+//    Hashtable hashRes = new Hashtable();
 
-      Dimension d = res.getToolkit().getScreenSize();
-      res.setSize((int)d.getWidth()/2,(int)d.getHeight()/2);
+//    Dimension d = res.getToolkit().getScreenSize();
+//    res.setSize((int)d.getWidth()/2,(int)d.getHeight()/2);
 
-      JPanel presults;
-      ScrollPanel pscroll;
-      JScrollPane rscroll;
+//    JPanel presults;
+//    ScrollPanel pscroll;
+//    JScrollPane rscroll;
 
-      if(!stdout.equals("") &&
-         !(stdout.startsWith("Created") && stdout.endsWith(".png")))
-      {
-        presults = new JPanel(new BorderLayout());
-        pscroll = new ScrollPanel(new BorderLayout());
-        rscroll = new JScrollPane(pscroll);
-        rscroll.getViewport().setBackground(Color.white);
-        presults.add(rscroll, BorderLayout.CENTER);
-        JTextPane atext = new JTextPane();
-        atext.setText(stdout);
-        atext.setFont(new Font("monospaced", Font.PLAIN, 12));
-        pscroll.add(atext, BorderLayout.CENTER);
-        atext.setCaretPosition(0);
-        fresults.add(applName+" output",presults);
-        hashRes.put(applName+" output",stdout);
-      }
+//    if(!stdout.equals("") &&
+//       !(stdout.startsWith("Created") && stdout.endsWith(".png")))
+//    {
+//      presults = new JPanel(new BorderLayout());
+//      pscroll = new ScrollPanel(new BorderLayout());
+//      rscroll = new JScrollPane(pscroll);
+//      rscroll.getViewport().setBackground(Color.white);
+//      presults.add(rscroll, BorderLayout.CENTER);
+//      JTextPane atext = new JTextPane();
+//      atext.setText(stdout);
+//      atext.setFont(new Font("monospaced", Font.PLAIN, 12));
+//      pscroll.add(atext, BorderLayout.CENTER);
+//      atext.setCaretPosition(0);
+//      fresults.add(applName+" output",presults);
+//      hashRes.put(applName+" output",stdout);
+//    }
 
-      boolean seenGraphs = false;
-      for(int j=0;j<numofFields;j++) 
-      {
-        presults = new JPanel(new BorderLayout());
-        pscroll = new ScrollPanel(new BorderLayout());
-        rscroll = new JScrollPane(pscroll);
-        rscroll.getViewport().setBackground(Color.white);
-        presults.add(rscroll, BorderLayout.CENTER);
+//    boolean seenGraphs = false;
+//    for(int j=0;j<numofFields;j++) 
+//    {
+//      presults = new JPanel(new BorderLayout());
+//      pscroll = new ScrollPanel(new BorderLayout());
+//      rscroll = new JScrollPane(pscroll);
+//      rscroll.getViewport().setBackground(Color.white);
+//      presults.add(rscroll, BorderLayout.CENTER);
 
-        if(parseAcd.isOutputSequence(j) || parseAcd.isOutputFile(j))
-        {
-          try
-          {
-            String name = null;
-            if(parseAcd.isOutputSequence(j))
-              name = seqoutResult;
-            else
-              name = outfileResult;
+//      if(parseAcd.isOutputSequence(j) || parseAcd.isOutputFile(j))
+//      {
+//        try
+//        {
+//          String name = null;
+//          if(parseAcd.isOutputSequence(j))
+//            name = seqoutResult;
+//          else
+//            name = outfileResult;
 
-            StringBuffer text = new StringBuffer();
-            BufferedReader in = new BufferedReader(new FileReader(name));
+//          StringBuffer text = new StringBuffer();
+//          BufferedReader in = new BufferedReader(new FileReader(name));
 
-            while((line = in.readLine()) != null)
-              text = text.append(line + "\n");
+//          while((line = in.readLine()) != null)
+//            text = text.append(line + "\n");
 
-            in.close();
+//          in.close();
  
-            String txt = text.toString();
-            JTextPane seqText = new JTextPane();
-            seqText.setText(txt);
-            seqText.setFont(new Font("monospaced", Font.PLAIN, 12));
-            pscroll.add(seqText, BorderLayout.CENTER);
-            seqText.setCaretPosition(0);
-            fresults.add(name,presults);
-            hashRes.put(name,txt);
-          }
-          catch (IOException ioe)
-          {
-            if(mysettings.getDebug())
-              System.out.println("Failed to open sequence file " + seqoutResult);
-          }
-        }
-        else if(parseAcd.isOutputGraph(j) && !seenGraphs)
-        {
-          seenGraphs = true;
-          File cwdFile = new File(cwd);
-          String pngFiles[] = cwdFile.list(new FilenameFilter()
-          {
-            public boolean accept(File cwd, String name)
-            {
-              if(name.endsWith(".png"))
-                return name.startsWith(applName);
-              else
-                return false;
-            };
-          });
+//          String txt = text.toString();
+//          JTextPane seqText = new JTextPane();
+//          seqText.setText(txt);
+//          seqText.setFont(new Font("monospaced", Font.PLAIN, 12));
+//          pscroll.add(seqText, BorderLayout.CENTER);
+//          seqText.setCaretPosition(0);
+//          fresults.add(name,presults);
+//          hashRes.put(name,txt);
+//        }
+//        catch (IOException ioe)
+//        {
+//          if(mysettings.getDebug())
+//            System.out.println("Failed to open sequence file " + seqoutResult);
+//        }
+//      }
+//      else if(parseAcd.isOutputGraph(j) && !seenGraphs)
+//      {
+//        seenGraphs = true;
+//        File cwdFile = new File(cwd);
+//        String pngFiles[] = cwdFile.list(new FilenameFilter()
+//        {
+//          public boolean accept(File cwd, String name)
+//          {
+//            if(name.endsWith(".png"))
+//              return name.startsWith(applName);
+//            else
+//              return false;
+//          };
+//        });
 
-          for(int i=0;i<pngFiles.length;i++)
-          {
-            presults = new JPanel(new BorderLayout());
-            pscroll  = new ScrollPanel(new BorderLayout());
-            rscroll  = new JScrollPane(pscroll);
-            rscroll.getViewport().setBackground(Color.white);
-            presults.add(rscroll, BorderLayout.CENTER);
-            byte pngContents[] = getLocalFile(new File(pngFiles[i]));
-            ImageIcon icon = new ImageIcon(pngContents);
-            JLabel picture = new JLabel(icon);
-            pscroll.add(picture);
-            fresults.add(pngFiles[i],presults);
-            hashRes.put(pngFiles[i],pngContents);
-          }
-        }
-      }
+//        for(int i=0;i<pngFiles.length;i++)
+//        {
+//          presults = new JPanel(new BorderLayout());
+//          pscroll  = new ScrollPanel(new BorderLayout());
+//          rscroll  = new JScrollPane(pscroll);
+//          rscroll.getViewport().setBackground(Color.white);
+//          presults.add(rscroll, BorderLayout.CENTER);
+//          byte pngContents[] = getLocalFile(new File(pngFiles[i]));
+//          ImageIcon icon = new ImageIcon(pngContents);
+//          JLabel picture = new JLabel(icon);
+//          pscroll.add(picture);
+//          fresults.add(pngFiles[i],presults);
+//          hashRes.put(pngFiles[i],pngContents);
+//        }
+//      }
+//    }
  
-      new ResultsMenuBar(res,fresults,hashRes,mysettings);
-      res.setVisible(true);
+//    new ResultsMenuBar(res,fresults,hashRes,mysettings);
+//    res.setVisible(true);
     }
   }
 
+
+  private void showStandaloneResults(String stdout)
+  {
+    JFrame res = new JFrame(applName + " Results  : " + seqoutResult);
+    res.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+    JTabbedPane fresults = new JTabbedPane();
+    res.getContentPane().add(fresults,BorderLayout.CENTER);
+    Hashtable hashRes = new Hashtable();
+
+    Dimension d = res.getToolkit().getScreenSize();
+    res.setSize((int)d.getWidth()/2,(int)d.getHeight()/2);
+
+    JPanel presults;
+    ScrollPanel pscroll;
+    JScrollPane rscroll;
+
+    if(!stdout.equals("") &&
+       !(stdout.startsWith("Created") && stdout.endsWith(".png")))
+    {
+      presults = new JPanel(new BorderLayout());
+      pscroll = new ScrollPanel(new BorderLayout());
+      rscroll = new JScrollPane(pscroll);
+      rscroll.getViewport().setBackground(Color.white);
+      presults.add(rscroll, BorderLayout.CENTER);
+      JTextPane atext = new JTextPane();
+      atext.setText(stdout);
+      atext.setFont(new Font("monospaced", Font.PLAIN, 12));
+      pscroll.add(atext, BorderLayout.CENTER);
+      atext.setCaretPosition(0);
+      fresults.add(applName+" output",presults);
+      hashRes.put(applName+" output",stdout);
+    }
+
+    boolean seenGraphs = false;
+    for(int j=0;j<numofFields;j++)
+    {
+      presults = new JPanel(new BorderLayout());
+      pscroll = new ScrollPanel(new BorderLayout());
+      rscroll = new JScrollPane(pscroll);
+      rscroll.getViewport().setBackground(Color.white);
+      presults.add(rscroll, BorderLayout.CENTER);
+
+      if(parseAcd.isOutputSequence(j) || parseAcd.isOutputFile(j))
+      {
+        try
+        {
+          String name = null;
+          if(parseAcd.isOutputSequence(j))
+            name = seqoutResult;
+          else
+            name = outfileResult;
+
+          StringBuffer text = new StringBuffer();
+          BufferedReader in = new BufferedReader(new FileReader(name));
+
+          String line = null;
+          while((line = in.readLine()) != null)
+            text = text.append(line + "\n");
+
+          in.close();
+
+          String txt = text.toString();
+          JTextPane seqText = new JTextPane();
+          seqText.setText(txt);
+          seqText.setFont(new Font("monospaced", Font.PLAIN, 12));
+          pscroll.add(seqText, BorderLayout.CENTER);
+          seqText.setCaretPosition(0);
+          fresults.add(name,presults);
+          hashRes.put(name,txt);
+        }
+        catch (IOException ioe)
+        {
+          if(mysettings.getDebug())
+            System.out.println("Failed to open sequence file " + seqoutResult);
+        }
+      }
+      else if(parseAcd.isOutputGraph(j) && !seenGraphs)
+      {
+        seenGraphs = true;
+        File cwdFile = new File(cwd);
+        String pngFiles[] = cwdFile.list(new FilenameFilter()
+        {
+          public boolean accept(File cwd, String name)
+          {
+            if(name.endsWith(".png"))
+              return name.startsWith(applName);
+            else
+              return false;
+          };
+        });
+
+        for(int i=0;i<pngFiles.length;i++)
+        {
+          presults = new JPanel(new BorderLayout());
+          pscroll  = new ScrollPanel(new BorderLayout());
+          rscroll  = new JScrollPane(pscroll);
+          rscroll.getViewport().setBackground(Color.white);
+          presults.add(rscroll, BorderLayout.CENTER);
+          byte pngContents[] = getLocalFile(new File(pngFiles[i]));
+          ImageIcon icon = new ImageIcon(pngContents);
+          JLabel picture = new JLabel(icon);
+          pscroll.add(picture);
+          fresults.add(pngFiles[i],presults);
+          hashRes.put(pngFiles[i],pngContents);
+        }
+      }
+    }
+
+    new ResultsMenuBar(res,fresults,hashRes,mysettings);
+    res.setVisible(true);
+  }
 
   private String checkParameters(ParseAcd parseAcd, int numofFields, 
                                 Hashtable filesToMove)
@@ -1023,6 +1127,76 @@ public class BuildJembossForm implements ActionListener
   public void finalize() throws Throwable
   {
     super.finalize();
+  }
+
+
+  public class BatchProcess extends Thread
+  {
+    private RunEmbossApplication2 rea;
+    public BatchProcess(RunEmbossApplication2 rea)
+    {
+      this.rea = rea;
+    }
+ 
+    public void run()
+    {
+      rea.waitFor();
+
+      String msg = rea.getProcessStderr().trim();
+      if(msg != null && !msg.equals(""))
+        JOptionPane.showMessageDialog(null, msg, "alert",
+                              JOptionPane.ERROR_MESSAGE);
+
+      showStandaloneResults(rea.getProcessStdout());
+
+      if(applName.equals("emma"))
+        balign.setVisible(true);
+      Jemboss.resultsManager.deleteRunningJob();
+    }
+  }
+
+  public class BatchSoapProcess extends Thread
+  {
+    private String embossCommand;
+    private Hashtable filesToMove;
+    private JembossParams mysettings;
+
+    public BatchSoapProcess(String embossCommand, Hashtable filesToMove,
+                            JembossParams mysettings)
+    {
+      this.embossCommand = embossCommand;
+      this.filesToMove   = filesToMove;
+      this.mysettings    = mysettings;
+    }
+
+    public void run()
+    {
+      try
+      {
+        JembossRun thisrun = new JembossRun(embossCommand,"",
+                                   filesToMove,mysettings);
+        JembossProcess er = new JembossProcess((String)thisrun.get("jobid"));
+        Jemboss.resultsManager.addResult(er);
+        Jemboss.resultsManager.updateStatus();
+        if(!Jemboss.resultsManager.isAutoUpdate())
+        {
+          Jemboss.resultsManager.setAutoUpdate(true);
+          String freq = (String)AdvancedOptions.jobMgr.getSelectedItem();
+          int ind = freq.indexOf(" ");
+          new BatchUpdateTimer(Integer.parseInt(freq.substring(0,ind)));
+        }
+      }
+      catch (JembossSoapException eae)
+      {
+        AuthPopup ap = new AuthPopup(mysettings,f);
+        ap.setBottomPanel();
+        ap.setSize(380,170);
+        ap.pack();
+        ap.setVisible(true);
+        f.setCursor(cdone);
+      }
+
+    }
   }
 
 }
