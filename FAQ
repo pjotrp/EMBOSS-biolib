@@ -158,7 +158,8 @@ A) Yes. Here is the information you will need:-
 
    (this is a read only server). 
 
-   cvs -d :pserver:cvsuser@cvs.hgmp.mrc.ac.uk:/cvsroot/packages/emboss/COPY login
+   For example:
+   cvs -d :pserver:cvsuser@cvs.hgmp.mrc.ac.uk:/packages/emboss/COPY login
    password: CVSUSER
 
    Now to check out the EMBOSS source code tree, place yourself in a
