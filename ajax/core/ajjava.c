@@ -769,14 +769,14 @@ static AjBool java_pass(AjPStr username, AjPStr password, ajint *uid,
     char *p = NULL;
     struct passwd result;
     char *buf = NULL;
-#if defined(_OSF_SOURCE)
+#if defined(_OSF_SOURCE) || defined(__FreeBSD__)
     int ret=0;
 #endif
 
     if(!(buf=(char *)malloc(R_BUFFER)))
 	return ajFalse;
 
-#if defined(_OSF_SOURCE)
+#if defined(_OSF_SOURCE) || defined(__FreeBSD__)
     ret = getpwnam_r(ajStrStr(username),&result,buf,R_BUFFER,&pwd);
     if(ret!=0)		 /* No such username */
     {
