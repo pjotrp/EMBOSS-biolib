@@ -248,7 +248,11 @@ void ajSeqAllWrite (AjPSeqout outseq, AjPSeq seq) {
   if (outseq->Features && !ajFeattabOutIsOpen(outseq->Ftquery)) {
       /* ajWarn ("ajSeqAllWrite features cloned from ajSeqWrite\n"); */
 
-    (void) ajFeattabOutOpen (outseq->Ftquery, outseq->Ufo);
+    if (!ajFeattabOutOpen (outseq->Ftquery, outseq->Ufo)) {
+      ajWarn ("seqAllWrite features output failed to open file: '%S%S'",
+	      outseq->Ftquery->Directory, outseq->Ftquery->Filename);
+      return;
+    }
     (void) ajStrSet (&outseq->Ftquery->Seqname, seq->Name);
     (void) ajStrSet (&outseq->Ftquery->Type, seq->Type);
     ajFeattableTrace(outseq->Fttable);
@@ -440,7 +444,12 @@ void ajSeqWrite (AjPSeqout outseq, AjPSeq seq) {
   outseq->Count++;
 
   if (outseq->Features && !ajFeattabOutIsOpen(outseq->Ftquery)) {
-    (void) ajFeattabOutOpen (outseq->Ftquery, outseq->Ufo);
+    ajDebug("seqWrite features output needed\n");
+    if (!ajFeattabOutOpen (outseq->Ftquery, outseq->Ufo)) {
+      ajWarn ("seqWrite features output failed to open UFO: '%S'",
+	      outseq->Ufo);
+      return;
+    }
     (void) ajStrSet (&outseq->Ftquery->Seqname, seq->Name);
     (void) ajStrSet (&outseq->Ftquery->Type, seq->Type);
     ajFeattableTrace(outseq->Fttable);
@@ -2706,6 +2715,7 @@ static void seqWriteDebug (AjPSeqout outseq) {
   (void) ajFmtPrintF (outseq->File, "  Output format: '%S'\n",
 		      outseq->Formatstr);
   (void) ajFmtPrintF (outseq->File, "  Filename: '%S'\n", outseq->Filename);
+  (void) ajFmtPrintF (outseq->File, "  Directory: '%S'\n", outseq->Directory);
   (void) ajFmtPrintF (outseq->File, "  Entryname: '%S'\n", outseq->Entryname);
   (void) ajFmtPrintF (outseq->File, "  File name: '%S'\n", outseq->File->Name);
   (void) ajFmtPrintF (outseq->File, "  Extension: '%S'\n", outseq->Extension);
@@ -2841,8 +2851,8 @@ static AjBool seqoutUsaProcess (AjPSeqout thys) {
 
   if (regstat) {
     ajRegSubI (idexp, 1, &thys->Filename);
-    ajDebug ("found filename %S single: %B\n",
-	     thys->Filename, thys->Single);
+    ajDebug ("found filename %S single: %B dir: '%S'\n",
+	     thys->Filename, thys->Single, thys->Directory);
     if (thys->Single) {
       ajDebug ("single output file per sequence, open later\n");
     }
@@ -2850,9 +2860,13 @@ static AjBool seqoutUsaProcess (AjPSeqout thys) {
       if (thys->Knownfile)
 	thys->File = thys->Knownfile;
       else
-	thys->File = ajFileNewOut (thys->Filename);
+	thys->File = ajFileNewOutD (thys->Directory, thys->Filename);
       if (!thys->File) {
-	ajErr ("failed to open filename %S", thys->Filename);
+	if (ajStrLen(thys->Directory))
+	  ajErr ("failed to open filename %S in directory %S",
+		 thys->Filename, thys->Directory);
+	else
+	  ajErr ("failed to open filename %S", thys->Filename);
 	return ajFalse;
       }
     }
@@ -2892,6 +2906,12 @@ AjBool ajSeqoutOpen (AjPSeqout thys) {
 
   AjBool ret = ajFalse;
 
+  if (thys->Ftquery)
+    ajDebug("ajSeqoutOpen dir '%S' qrydir '%S'\n",
+	    thys->Directory, thys->Ftquery->Directory);
+  else
+    ajDebug("ajSeqoutOpen dir '%S' (no ftquery)\n",
+	    thys->Directory);
   ret = seqoutUsaProcess (thys);
 
   if (!ret) return ajFalse;
@@ -3560,7 +3580,7 @@ static AjBool seqFileReopen (AjPSeqout outseq) {
 
   (void) ajFmtPrintS(&name, "%S.%S", outseq->Name, outseq->Extension);
   (void) ajStrToLower (&name);
-  outseq->File = ajFileNewOut(name);
+  outseq->File = ajFileNewOutD(outseq->Directory, name);
   ajDebug("seqFileReopen single: %B file '%S'\n", outseq->Single, name);
   ajStrDel(&name);
 
@@ -3628,6 +3648,7 @@ void ajSeqoutClear (AjPSeqout thys) {
   (void) ajStrClear(&thys->Informatstr);
   (void) ajStrClear(&thys->Formatstr);
   (void) ajStrClear(&thys->Filename);
+  (void) ajStrClear(&thys->Directory);
   (void) ajStrClear(&thys->Entryname);
   (void) ajStrClear(&thys->Extension);
   (void) ajStrClear(&thys->Seq);
@@ -3781,6 +3802,8 @@ void ajSeqoutTrace (AjPSeqout seq) {
     ajDebug ( "  Output format: '%S'\n", seq->Formatstr);
   if (ajStrLen(seq->Filename))
     ajDebug ( "  Filename: '%S'\n", seq->Filename);
+  if (ajStrLen(seq->Directory))
+    ajDebug ( "  Directory: '%S'\n", seq->Directory);
   if (ajStrLen(seq->Entryname))
     ajDebug ( "  Entryname: '%S'\n", seq->Entryname);
   if (ajStrLen(seq->Doc))
