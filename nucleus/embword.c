@@ -791,7 +791,9 @@ AjPList embWordBuildMatchTable (AjPTable *seq1MatchTable,  AjPSeq seq2,
 	    if(!ajListLength(newlist))
 		ajErr("ERROR: newlist is empty??????\n");
 
+	    /*
 	    wordNewListTrace(i, newlist);
+	    */
 
 	    ajDebug ("\nIterate at %d list size %d %.*s\n",
 		     i, ajListLength(newlist), wordLength, startptr);
@@ -841,7 +843,8 @@ AjPList embWordBuildMatchTable (AjPTable *seq1MatchTable,  AjPSeq seq2,
 		    }
 		}
 
-		if (kcur == knew)
+		ajDebug("kcur: %d knew: %d\n", kcur, knew);
+		if (kcur && kcur == knew)
 		{			/* check continued matches */
 		    while (curiter && (kcur == knew))
 		    {
@@ -947,18 +950,17 @@ AjPList embWordBuildMatchTable (AjPTable *seq1MatchTable,  AjPSeq seq2,
 
 static void wordNewListTrace (ajint i, AjPList newlist)
 {
-    /* ajint *k;*/
+    ajint *k;
 
     AjIList iter = ajListIter(newlist);
-    /*
-       ajDebug ("\nnewlist...\n");
+       ajDebug ("\n++newlist... %d \n", i);
+       ajDebug ("++  k+len  i+len    k+1    i+1    len\n");
        while (ajListIterMore(iter))
        {
        k = (ajint*) ajListIterNext(iter);
-       ajDebug("%6d %6d %6d %6d %6d\n",
+       ajDebug("++ %6d %6d %6d %6d %6d\n",
        (*k)+wordLength, i+wordLength, (*k)+1, i+1, wordLength);
        }
-    */
     ajListIterFree(iter);
 
     return;
