@@ -21,10 +21,11 @@ AC_ARG_WITH(java,
   echo "Error: Either JAVA not installed or 'javac' not in your PATH"
   exit 1
   fi
-  AC_SUBST(DOING_JAVA)
-  DOING_JAVA=yes
+  JAVA_OK=yes
+  AC_SUBST(JAVA_OK)
 else
-  DOING_JAVA=no
+  JAVA_OK=no
+  AC_SUBST(JAVA_OK)
   AC_MSG_RESULT(no)
 
 fi], [
