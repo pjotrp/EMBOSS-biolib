@@ -124,6 +124,7 @@ int main(int argc, char **argv)
 
     fname = ajStrNewC(ajFileName(fp));
 
+    ajStrToUpper(&baseN);
     nbases  = ajStrLen(baseN);
     overlay = !separate;
 
