@@ -101,35 +101,6 @@ void help(const char *letters)
 }  /* help */
 
 
-void treeoptions(boolean waswritten, Char *ch, FILE **outtree,
-                        const char *outtreename, Char *progname)
-{ /* interactively get options for writing a tree */
-  char input[100];
-
-  if (waswritten) {
-    printf("\nTree file already was open.\n");
-    printf("   A   Add to this tree to tree file\n");
-    printf("   R   Replace tree file contents by this tree\n");
-    printf("   F   Write out tree to a different tree file\n");
-    printf("   N   Do Not write out this tree\n");
-    do {
-      printf("Which should we do? ");
-#ifdef WIN32
-      phyFillScreenColor();
-#endif
-      getstryng(input);
-      *ch  = input[0];
-      uppercase(ch);
-    } while (*ch != 'A' && *ch != 'R' && *ch != 'N' && *ch != 'F');
-  }
-  if (*ch == 'R' || *ch == 'A' || *ch == 'F' || !waswritten){
-    openfile(outtree,outtreename,"output tree file",
-                       (*ch == 'A' && waswritten) ? "a" : "w",
-             progname,&outtreename);
-  }
-}  /* treeoptions */
-
-
 void window(adjwindow action, long *leftedge, long *topedge, long hscroll,
                         long vscroll, long treelines, long screenlines,
                         long screenwidth, long farthest, boolean subtree)

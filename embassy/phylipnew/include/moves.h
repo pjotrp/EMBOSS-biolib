@@ -16,7 +16,6 @@ void   chwrite(Char, long, long *, long, long);
 void   nnwrite(long, long, long *, long, long);
 void   stwrite(const char *,long,long *,long,long);
 void   help(const char *);
-void   treeoptions(boolean, Char *, FILE **, const char *, Char *);
 void   window(adjwindow, long *, long *, long, long, long, long, long,
                 long, boolean);
 void   pregraph(boolean);
