@@ -1,5 +1,8 @@
 Version 2.9.0
-	New output types ni ACD for all input data types, including those
+        infoalign now also displays the weight of the sequences in the
+        alignment.  This can be turned off using '-noweight'. 
+
+	New output types in ACD for all input data types, including those
 	for phylogenetics and protein structure data. Initially these rae
 	a new AjPOutfile type with a defined format (fixed until any of
 	them has a choice).
