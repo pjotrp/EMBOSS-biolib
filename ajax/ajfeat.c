@@ -7615,3 +7615,44 @@ static AjPFeattable featTableNewS (AjPStr name) {
 
   return ret;
 }
+
+/* @func ajFeatIsLocal ****************************************************
+**
+** Tests whether the feature is local to the sequence.
+** Returns AJTRUE if it is local, AJFALSE if remote.
+**
+** @param [r] gf       [AjPFeature]  Feature
+** @return [AjBool]
+** @@
+******************************************************************************/
+AjBool ajFeatIsLocal (AjPFeature gf) 
+{
+    return !(gf->Flags & FEATFLAG_REMOTEID);
+}
+
+
+/* @func ajFeatIsLocalRange ****************************************************
+** 
+** Tests whether the feature is local and in the specified range of the
+** sequence.
+** Returns AJTRUE if it is local and within the range.
+** (Any label location is assumed to be outside the range.)
+**
+** @param [r] gf       [AjPFeature]  Feature
+** @param [r] start    [ajint]  start of range
+** @param [r] end      [ajint]  end of range
+** @return [AjBool]
+** @@
+******************************************************************************/
+AjBool ajFeatIsLocalRange (AjPFeature gf, ajint start, ajint end) 
+{
+
+    if (gf->Flags & FEATFLAG_REMOTEID) 
+	return AJFALSE;
+    if (gf->Flags & FEATFLAG_LABEL)
+	return AJFALSE;
+    if (gf->End < start || gf->Start > end) 
+	return AJFALSE;
+
+    return AJTRUE;
+}

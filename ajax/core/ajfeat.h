@@ -54,6 +54,8 @@ AjBool        ajFeatGetTag (AjPFeature thys, AjPStr name, ajint num,
 			    AjPStr* val);
 AjPStr        ajFeatGetType (AjPFeature thys);
 ajint         ajFeatGetTrans(AjPStr str, AjPStr **cds);
+AjBool        ajFeatIsLocal (AjPFeature gf);
+AjBool        ajFeatIsLocalRange (AjPFeature gf, ajint start, ajint end);
 AjBool        ajFeatIsProt (AjPFeattable thys);
 ajint         ajFeatLen (AjPFeattable thys);
 AjBool        ajFeatLocToSeq(AjPStr seq, AjPStr line, AjPStr *res,
@@ -126,7 +128,6 @@ AjBool        ajFeatUfoRead (AjPFeattable* pthis,
 AjBool        ajFeatUfoWrite (AjPFeattable thys,
 			      AjPFeattabOut tabout, AjPStr Ufo);
 AjBool        ajFeatWrite ( AjPFeattabOut ftout, AjPFeattable ft) ; 
-
 
 
 
