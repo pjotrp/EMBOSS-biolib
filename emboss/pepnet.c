@@ -20,16 +20,18 @@
 ** Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******************************************************************************/
 
-
 #include "emboss.h"
 #include <math.h>
 #include <string.h>
 
 
 
+
 static void pepnet_plotresidue(char c, float x, float y, char *squares,
 			       char *circles, char *diamonds);
 static void pepnet_drawocta(float x, float y, float size);
+
+
 
 
 /* @prog pepnet ***************************************************************
@@ -40,15 +42,15 @@ static void pepnet_drawocta(float x, float y, float size);
 
 int main(int argc, char **argv)
 {
-    AjPSeq    seq=NULL;
-    AjPStr    strand=NULL;
-    AjPStr    substr=NULL;
-    AjPStr    squares=NULL;
-    AjPStr    diamonds=NULL;
-    AjPStr    octags=NULL;
+    AjPSeq    seq = NULL;
+    AjPStr    strand   = NULL;
+    AjPStr    substr   = NULL;
+    AjPStr    squares  = NULL;
+    AjPStr    diamonds = NULL;
+    AjPStr    octags   = NULL;
     AjBool    amphipathic;
-    AjPStr    txt=NULL;
-    AjPGraph  graph=NULL;
+    AjPStr    txt   = NULL;
+    AjPGraph  graph = NULL;
 
     ajint begin;
     ajint end;
@@ -63,26 +65,24 @@ int main(int argc, char **argv)
     ajint pstart;
     ajint pstop;
 
-    float xmin=   0.0;
-    float xmax= 150.0;
-    float ymin=   0.0;
-    float ymax= 112.5;
+    float xmin =   0.0;
+    float xmax = 150.0;
+    float ymin =   0.0;
+    float ymax = 112.5;
 
     float xstart;
     float ystart;
-    float ch     =   1.8;
+    float ch = 1.8;
     float xinc;
     float yinc;
     ajint fno;
-    AjPStr fstr=NULL;
-
-
+    AjPStr fstr = NULL;
 
     float x;
     float y;
 
 
-    (void) ajGraphInit("pepnet", argc, argv);
+    ajGraphInit("pepnet", argc, argv);
 
 
     seq         = ajAcdGetSeq("sequence");
@@ -112,8 +112,8 @@ int main(int argc, char **argv)
 
 
 
-    begin=ajSeqBegin(seq);
-    end=ajSeqEnd(seq);
+    begin = ajSeqBegin(seq);
+    end   = ajSeqEnd(seq);
 
     strand = ajSeqStrCopy(seq);
 
@@ -175,6 +175,7 @@ int main(int argc, char **argv)
 		++lc;
 	    }
 	    y=ystart+yinc/2.0;
+
 	    for(j=4;j<7;++j)
 	    {
 		x -= xinc;
@@ -198,8 +199,10 @@ int main(int argc, char **argv)
     ajStrDel(&substr);
 
     ajExit();
+
     return 0;
 }
+
 
 
 
@@ -227,10 +230,8 @@ static void pepnet_drawocta(float x, float y, float size)
     ajint i;
 
     for(i=0;i<8;++i)
-    {
 	ajGraphLine(x+polyx[i]*size,y+polyy[i]*size,x+polyx[i+1]*size,
 			y+polyy[i+1]*size);
-    }
 
     return;
 }
@@ -256,7 +257,7 @@ static void pepnet_plotresidue(char c, float x, float y, char *squares,
 {
     static char cs[2];
 
-    cs[1]='\0';
+    cs[1] = '\0';
     *cs=c;
 
 
@@ -267,11 +268,13 @@ static void pepnet_plotresidue(char c, float x, float y, char *squares,
 	ajGraphSetFore(BLUE);
 	ajGraphBox(x-1.5,y-1.32,3.0);
     }
+
     if(strstr(octags,cs))
     {
 	ajGraphSetFore(BLUEVIOLET);
 	pepnet_drawocta(x,y+0.225,20.0);
     }
+
     if(strstr(diamonds,cs))
     {
 	ajGraphSetFore(RED);

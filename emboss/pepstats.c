@@ -32,6 +32,9 @@
 #define LAM2 (double)-29.56
 #define CVDISC (double)1.71
 
+
+
+
 /* @prog pepstats *************************************************************
 **
 ** Protein statistics
@@ -49,12 +52,12 @@ int main(int argc, char **argv)
 	"Basic\t\t(H+K+R)\t\t\t","Acidic\t\t(B+D+E+Z)\t\t"
     };
 
-    AjPSeq   a;
-    AjPStr   substr;
-    ajint      be;
-    ajint      en;
-    AjPFile  outf;
-    AjBool   termini;
+    AjPSeq a;
+    AjPStr substr;
+    ajint be;
+    ajint en;
+    AjPFile outf;
+    AjBool termini;
 
     double molwt;
     double charge;
@@ -71,25 +74,25 @@ int main(int argc, char **argv)
     double cv;
     double psolu;
 
-    float   *dhstat=NULL;
-    AjPStr  datafn=NULL;
-    AjPFile mfptr=NULL;
+    float *dhstat = NULL;
+    AjPStr datafn = NULL;
+    AjPFile mfptr = NULL;
 
     embInit("pepstats", argc, argv);
 
-    a         = ajAcdGetSeq("sequence");
-    termini   = ajAcdGetBool("termini");
-    outf      = ajAcdGetOutfile("outfile");
-    datafn    = ajAcdGetString("aadata");
+    a       = ajAcdGetSeq("sequence");
+    termini = ajAcdGetBool("termini");
+    outf    = ajAcdGetOutfile("outfile");
+    datafn  = ajAcdGetString("aadata");
 
-    substr=ajStrNew();
-    be=ajSeqBegin(a);
-    en=ajSeqEnd(a);
+    substr = ajStrNew();
+    be = ajSeqBegin(a);
+    en = ajSeqEnd(a);
     ajStrAssSubC(&substr,ajSeqChar(a),be-1,en-1);
     len = en-be+1;
 
 
-   ajFileDataNew(datafn, &mfptr);
+    ajFileDataNew(datafn, &mfptr);
     if(!mfptr)
 	ajFatal("%S  not found\n",datafn);
 
@@ -149,6 +152,7 @@ int main(int argc, char **argv)
     {
 	if(!EmbPropTable[i][EMBPROPMOLWT])
 	    continue;
+
 	molpc=(100.0 * (double)c[i]/(double)len);
 	ajFmtPrintF(outf,"%c = %s\t\t%d\t\t%-7.3f\t\t%-7.3f\t\n",i+'A',
 		    embPropIntToThree(i),c[i],molpc,molpc/dhstat[i]);
@@ -175,5 +179,6 @@ int main(int argc, char **argv)
     ajFileClose(&mfptr);
 
     ajExit();
+
     return 0;
 }
