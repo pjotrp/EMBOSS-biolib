@@ -855,19 +855,23 @@ static void seqCdFileClose (SeqPCdFile* pthis)
 static ajint seqCdIdxSearch (SeqPCdIdx idxLine, AjPStr entry, SeqPCdFile fil)
 {
     AjPStr entrystr = NULL;
-    ajuint ihi;
-    ajuint ilo;
-    ajuint ipos=0;
+    ajint ihi;
+    ajint ilo;
+    ajint ipos=0;
     ajint icmp=0;
     char *name;
 
     (void) ajStrAssS (&entrystr, entry);
     (void) ajStrToUpper (&entrystr);
 
-    ajDebug("seqCdIdxSearch (entry '%S')\n", entry);
+    ajDebug("seqCdIdxSearch (entry '%S') records: %d\n",
+	    entry, fil->NRecords);
+
+    if (fil->NRecords < 1)
+      return -1;
 
     ilo = 0;
-    ihi = fil->NRecords-1;
+    ihi = fil->NRecords - 1;
     while (ilo <= ihi)
     {
 	ipos = (ilo + ihi)/2;
@@ -912,9 +916,9 @@ static AjBool seqCdIdxQuery (AjPSeqQuery qry)
 
     AjPStr idstr = NULL;
     AjPStr idpref = NULL;
-    ajuint ihi;
-    ajuint ilo;
-    ajuint ipos=0;
+    ajint ihi;
+    ajint ilo;
+    ajint ipos=0;
     ajint icmp;
     char *name;
     ajint i;
@@ -1083,9 +1087,9 @@ static AjBool seqCdIdxQuery (AjPSeqQuery qry)
 static ajint seqCdTrgSearch (SeqPCdTrg trgLine, AjPStr entry, SeqPCdFile fp)
 {
     AjPStr entrystr = NULL;
-    ajuint ihi;
-    ajuint ilo;
-    ajuint ipos;
+    ajint ihi;
+    ajint ilo;
+    ajint ipos;
     ajint icmp;
     ajint itry;
     char *name;
