@@ -48,8 +48,7 @@
 #include "ajtime.h"
 
 
-static void pushpoint(AjPList *l, float x1, float y1, float x2, float y2,
-                      AjBool text);
+static void pushpoint(AjPList *l, float x1, float y1, float x2, float y2);
 static void datapoints(AjPList *l, AjPFile outf);
 
 typedef struct SPoint
@@ -231,7 +230,7 @@ int main(int argc, char **argv)
 		if(ymax < sumscore[bin-1]) ymax=sumscore[bin-1];
 	    }
 	    pushpoint(&list,(float)(bin+1),sumscore[bin],
-		      (float)(bin),sumscore[bin-1],text);
+		      (float)(bin),sumscore[bin-1]);
 	}
     else
 	for(bin=0;bin<numbins;bin++)
@@ -298,21 +297,19 @@ int main(int argc, char **argv)
 
 /* @funcstatic  pushpoint *****************************************************
 **
-** Undocumented.
+** Adds data points to the list.
 **
-** @param [?] l [AjPList*] Undocumented
-** @param [?] x1 [float] Undocumented
-** @param [?] y1 [float] Undocumented
-** @param [?] x2 [float] Undocumented
-** @param [?] y2 [float] Undocumented
-** @param [?] text [AjBool] Undocumented
+** @param [?] l [AjPList*] List to push data point to.
+** @param [?] x1 [float]   x value at bin+1
+** @param [?] y1 [float]   y value at bin+1
+** @param [?] x2 [float]   x value at bin
+** @param [?] y2 [float]   y value at bin
 ** @@
 ******************************************************************************/
 
 
 
-static void pushpoint(AjPList *l, float x1, float y1, float x2, float y2,
-                      AjBool text)
+static void pushpoint(AjPList *l, float x1, float y1, float x2, float y2)
 {
     PPoint p;
     AJNEW0(p);
@@ -331,10 +328,10 @@ static void pushpoint(AjPList *l, float x1, float y1, float x2, float y2,
 
 /* @funcstatic  datapoints ****************************************************
 **
-** Undocumented.
+** Output a list of data points to a text file
 **
-** @param [?] l [AjPList*] Undocumented
-** @param [?] outf [AjPFile] Undocumented
+** @param [?] l [AjPList*]   List of data points
+** @param [?] outf [AjPFile] File to write to
 ** @@
 ******************************************************************************/
 
