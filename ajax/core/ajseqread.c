@@ -780,6 +780,7 @@ AjBool ajSeqRead (AjPSeq thys, AjPSeqin seqin)
     AjPStr tmpformat = NULL;
     AjBool ret = ajFalse;
     SeqPListUsa node = NULL;
+    AjBool listdata = ajFalse;
 
     if (!seqInFormatSet)
     {					/* we need a copy of the formatlist */
@@ -803,6 +804,7 @@ AjBool ajSeqRead (AjPSeq thys, AjPSeqin seqin)
 	/* (b) if we have a list, try the next USA in the list */
 	if (ajListLength (seqin->List))
 	{
+	    listdata = ajTrue;
 	    (void) ajListPop (seqin->List, (void**) &node);
 
 	    ajDebug("++pop from list '%S'\n", node->Usa);
@@ -834,6 +836,10 @@ AjBool ajSeqRead (AjPSeq thys, AjPSeqin seqin)
     while (!ret && ajListLength (seqin->List))
     {
 	/* Failed, but we have a list still - keep trying it */
+        if (listdata)
+	  ajErr ("Unable to read sequence '%S'", seqin->Usa);
+
+	listdata = ajTrue;
 	(void) ajListPop (seqin->List, (void**) &node);
 	ajDebug("++try again: pop from list '%S'\n", node->Usa);
 	ajSeqinUsa (&seqin, node->Usa);
@@ -857,8 +863,12 @@ AjBool ajSeqRead (AjPSeq thys, AjPSeqin seqin)
     }
 
     if (!ret)
-	return ajFalse;
+    {
+      if (listdata)
+	ajErr ("Unable to read sequence '%S'", seqin->Usa);
 
+      return ajFalse;
+    }
 
 
     /* if values are missing in the sequence object, we can use defaults
