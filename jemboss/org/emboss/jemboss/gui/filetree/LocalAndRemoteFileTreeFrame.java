@@ -40,7 +40,7 @@ public class LocalAndRemoteFileTreeFrame extends JFrame
 */
   public LocalAndRemoteFileTreeFrame(final JembossParams mysettings) 
   {
-    super();
+    super("File Manager");
     try
     {  
       RemoteFileTreePanel rtree = new RemoteFileTreePanel(mysettings,false);
