@@ -13090,9 +13090,14 @@ static void acdPretty (char *fmt, ...) {
     return;
 
   if (!acdPrettyFName) {
-    (void) ajFmtPrintS (&acdPrettyFName, "%S.acdpretty", acdProgram);
-    acdPrettyFile = ajFileNewOut (acdPrettyFName);
-    ajFileUnbuffer(acdPrettyFile);
+    if (acdStdout) {
+      acdPrettyFile = ajFileNewF (stdout);
+    }
+    else {
+      (void) ajFmtPrintS (&acdPrettyFName, "%S.acdpretty", acdProgram);
+      acdPrettyFile = ajFileNewOut (acdPrettyFName);
+      ajFileUnbuffer(acdPrettyFile);
+    }
   }
   
   va_start (args, fmt) ;
