@@ -143,7 +143,7 @@ sub runtest ($) {
 	  "domainer" => "domainer -scop $ENV{EPURE}/../test/data/test.scopembl -cpdb $ENV{EPURE}/../test/data/ -cpdbscop $ENV{EPURE}/../test/data/ -cpdbextn .pxyz -pdbscop $ENV{EPURE}/../test/data/ -pdbextn .ent -cpdberrf domainer.log1 -pdberrf domainer.log2",
 	  "distmat" => "distmat $ENV{EPURE}/../test/data/globins.msf -auto",
 	  "digest" => "digest tsw:opsd_human -auto",
-	  "diffseq" => "diffseq tembl:hsfa tembl:hsfau1 -auto",
+	  "diffseq" => "diffseq tembl:hsfau tembl:hsfau1 -auto",
 	  "descseq" => "descseq -desc 'Test' tsw:opsd_human -auto",
 	  "degapseq" => "degapseq $ENV{EPURE}/../test/data/globins.msf -auto",
 	  "dbigcg" => "dbigcg -dir $ENV{EPURE}/../test/embl -file '*.seq' -index . -id embl -db embl -auto",
