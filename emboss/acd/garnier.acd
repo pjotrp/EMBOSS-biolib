@@ -7,6 +7,14 @@ seqall: sequencea  [
   parameter: "Y"
   type: "PureProtein"
 ]
+  report: outfile [ param: Y
+            rformat: tagseq
+	    taglist: "str:helix str:sheet str:turns str:coil"
+  ]
+
+# Obsolete - replaced by report file
+# Source code will use this to write the original output format if enabled
+#  outfile: outfile [ param: Y ]
 
 integer: idc  [
   required: "N"
@@ -14,8 +22,4 @@ integer: idc  [
   minimum: "0"
   maximum: "6"
   information: "idc param"
-]
-
-outfile: outfile  [
-  parameter: "Y"
 ]
