@@ -17,7 +17,6 @@ demoalign demofeatures demolist demoreport demosequence demostring demotable \
 entrails histogramtest intconv \
 patmattest \
 plotfeat \
-primers \
 prima primers \
 seqinfo seqretall seqretallfeat seqretset seqretsingle \
 sigplot \
@@ -28,7 +27,7 @@ backtranseq banana biosed btwisted \
 cai chaos charge checktrans chips cirdna codcmp coderet \
 contacts compseq cons cpgplot cpgreport cusp cutgextract cutseq \
 dan dbiblast dbifasta dbiflat dbigcg \
-degapseq descseq  diffseq digest distmat domainer \
+degapseq descseq dichet diffseq digest distmat domainer \
 dotmatcher dotpath dottup dreg \
 einverted embossdata embossversion emma emowse entret \
 eprimer3 equicktandem est2genome etandem extractfeat extractseq \
