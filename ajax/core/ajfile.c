@@ -3768,6 +3768,23 @@ ajint ajFileWriteInt4 (AjPFile thys, ajint i) {
   return fwrite (&j, 4, 1, ajFileFp(thys));
 }
 
+/* @func ajFileWriteInt8 ********************************************
+**
+** Writes an 8 byte long to a binary file, with the correct byte orientation
+**
+** @param [r] thys [AjPFile] Output file
+** @param [r] l [ajlong] Integer
+** @return [ajint] Return value from fwrite
+** @@
+******************************************************************************/
+
+ajint ajFileWriteInt8 (AjPFile thys, ajlong l) {
+  ajlong j=l;
+
+  if (ajUtilBigendian())ajUtilRev8(&j);
+  return fwrite (&j, 8, 1, ajFileFp(thys));
+}
+
 /* @func ajFileWriteStr ********************************************
 **
 ** Writes a string to a binary file

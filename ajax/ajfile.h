@@ -134,20 +134,20 @@ void        ajFileBuffNobuff (const AjPFileBuff thys);
 void        ajFileBuffReset (const AjPFileBuff thys);
 void        ajFileBuffResetPos (const AjPFileBuff thys);
 AjBool      ajFileBuffSetFile (AjPFileBuff* pthys, AjPFile file);
-ajint         ajFileBuffSize (void);
+ajint       ajFileBuffSize (void);
 void        ajFileBuffStripHtml (const AjPFileBuff thys);
-ajint       ajFileBuffStripSrs(AjPFileBuff thys);
+ajint       ajFileBuffStripSrs (AjPFileBuff thys);
 void        ajFileBuffTrace (const AjPFileBuff thys);
 void        ajFileBuffTraceFull (const AjPFileBuff thys, size_t nlines,
 				 size_t nfree);
 void        ajFileClose (AjPFile *pthis);
-void        ajFileDataDirNew (const AjPStr tfile, const AjPStr dir,
-			      AjPFile *fnew);
-void        ajFileDataDirNewC(const char *s, const char* d,
-			      AjPFile *f);
-void        ajFileDataNew (const AjPStr filename, AjPFile *newfileptr);
-void        ajFileDataNewC(const char *s, AjPFile *f);
-void        ajFileDataNewWrite(const AjPStr tfile, AjPFile *fnew);
+void        ajFileDataDirNew  (const AjPStr tfile, const AjPStr dir,
+			       AjPFile *fnew);
+void        ajFileDataDirNewC (const char *s, const char* d,
+			       AjPFile *f);
+void        ajFileDataNew  (const AjPStr filename, AjPFile *newfileptr);
+void        ajFileDataNewC (const char *s, AjPFile *f);
+void        ajFileDataNewWrite (const AjPStr tfile, AjPFile *fnew);
 AjBool      ajFileDir (AjPStr* dir);
 void        ajFileDirFix (AjPStr* dir);
 AjBool      ajFileDirUp (AjPStr* dir);
@@ -162,10 +162,10 @@ AjBool      ajFileGets (const AjPFile thys, AjPStr *pdest);
 AjBool      ajFileGetsL (const AjPFile thys, AjPStr *pdest, ajlong* fpos);
 AjBool      ajFileGetsTrim  (const AjPFile thys, AjPStr *pdest);
 AjBool      ajFileGetsTrimL (const AjPFile thys, AjPStr *pdest, ajlong* fpos);
-ajlong      ajFileLength(AjPStr fname);
+ajlong      ajFileLength (AjPStr fname);
 const char* ajFileName (const AjPFile thys);
+AjBool      ajFileNameDirSet  (AjPStr* filename, const AjPStr dir);
 AjBool      ajFileNameDirSetC (AjPStr* filename, const char* dir);
-AjBool      ajFileNameDirSet (AjPStr* filename, const AjPStr dir);
 AjBool      ajFileNameExt  (AjPStr* filename, const AjPStr extension);
 AjBool      ajFileNameExtC (AjPStr* filename, const char* extension);
 AjBool      ajFileNameShorten(AjPStr *fname);
@@ -190,16 +190,16 @@ size_t      ajFileRead (void* ptr, size_t element_size, size_t count,
 FILE*       ajFileReopen (const AjPFile thys, AjPStr name);
 AjBool      ajFileReadLine (const AjPFile thys, AjPStr *pdest);
 ajuint      ajFileReadUint (const AjPFile thys, AjBool Bigendian);
-ajint 	    ajFileScan(AjPStr path, AjPStr filename, AjPList *result,
-		       AjBool show, AjBool dolist, AjPList *list,
-		       AjPList rlist, AjBool recurs, const AjPFile outf);
+ajint 	    ajFileScan (AjPStr path, AjPStr filename, AjPList *result,
+			AjBool show, AjBool dolist, AjPList *list,
+			AjPList rlist, AjBool recurs, const AjPFile outf);
 ajint       ajFileSeek (const AjPFile thys, ajlong offset, ajint wherefrom);
 AjBool      ajFileStat (AjPStr *filename, ajint mode);
 AjBool      ajFileStderr (const AjPFile file);
 AjBool      ajFileStdin (const AjPFile file);
 AjBool      ajFileStdout (const AjPFile file);
-ajlong        ajFileTell (const AjPFile thys);
-char*       ajFileTempName(const char *dir);
+ajlong      ajFileTell (const AjPFile thys);
+char*       ajFileTempName (const char *dir);
 AjBool      ajFileTestSkip (AjPStr fullname, AjPStr exc, AjPStr inc,
 			    AjBool keep, AjBool ignoredirectory);
 void        ajFileTrace (const AjPFile thys);
@@ -211,6 +211,7 @@ ajint       ajFileWriteByte (const AjPFile thys, char ch);
 ajint       ajFileWriteChar (const AjPFile thys, char* str, ajint len);
 ajint       ajFileWriteInt2 (const AjPFile thys, short i);
 ajint       ajFileWriteInt4 (const AjPFile thys, ajint i);
+ajint       ajFileWriteInt8 (const AjPFile thys, ajlong i);
 ajint       ajFileWriteStr  (const AjPFile thys, AjPStr str, ajint len);
 
 /* ============= definitions =========================*/
