@@ -29,6 +29,8 @@ import javax.swing.event.*;
 import java.awt.event.*;
 import java.io.*;
 import javax.swing.border.*;
+import javax.swing.undo.*;
+import javax.swing.text.JTextComponent;
 
 import org.emboss.jemboss.gui.sequenceChooser.*;
 import org.emboss.jemboss.gui.filetree.*;
@@ -46,6 +48,9 @@ public class ResultsMenuBar extends JMenuBar
   private JMenuItem fileMenuShowres;
   private JFrame frame;
   private JToolBar toolBar = new JToolBar();
+  private JMenuItem undo = new JMenuItem("Undo");
+  private JMenuItem redo = new JMenuItem("Redo");
+  private UndoManager undoManager = new UndoManager();
 
 /**
 *
@@ -62,7 +67,20 @@ public class ResultsMenuBar extends JMenuBar
     fileMenu.setMnemonic(KeyEvent.VK_F);
     fileMenuShowres = new JMenuItem("Save...");
     fileMenu.add(fileMenuShowres);
+    fileMenu.addSeparator();
 
+    // undo - redo
+    fileMenu.add(undo);
+    undo.setEnabled(false);
+    undo.setAccelerator(KeyStroke.getKeyStroke(
+                KeyEvent.VK_U, ActionEvent.CTRL_MASK));
+    fileMenu.add(redo);
+    redo.setEnabled(false);
+    redo.setAccelerator(KeyStroke.getKeyStroke(
+                KeyEvent.VK_R, ActionEvent.CTRL_MASK));
+    fileMenu.addSeparator();
+
+    // close
     JMenuItem resFileMenuExit = new JMenuItem("Close");
     resFileMenuExit.setAccelerator(KeyStroke.getKeyStroke(
                     KeyEvent.VK_C, ActionEvent.CTRL_MASK));
@@ -76,7 +94,7 @@ public class ResultsMenuBar extends JMenuBar
     });
     fileMenu.add(resFileMenuExit);
     add(fileMenu);
-
+    
     frame.setJMenuBar(this);
     frame.getContentPane().add(toolBar, BorderLayout.NORTH);
   }
@@ -93,6 +111,7 @@ public class ResultsMenuBar extends JMenuBar
   public ResultsMenuBar(final JFrame frame, final FileEditorDisplay fed)
   {
     this(frame);
+
 
     fileMenuShowres.addActionListener(new ActionListener()
     {
@@ -114,6 +133,37 @@ public class ResultsMenuBar extends JMenuBar
             ltree.addObject(fileSelected,pathSelected,null);
 
         }
+      }
+    });
+
+
+    // undo - redo
+    fed.getDocument().addUndoableEditListener(new UndoableEditListener() 
+    {
+      public void undoableEditHappened(UndoableEditEvent e) 
+      {
+        undoManager.addEdit(e.getEdit());
+        updateMenu();
+      }
+    });
+
+    undo.addActionListener(new ActionListener() 
+    {
+      public void actionPerformed(ActionEvent e) 
+      {
+        try { undoManager.undo(); }
+        catch (CannotRedoException cre) { cre.printStackTrace(); }
+        updateMenu();
+      }
+    });
+
+    redo.addActionListener(new ActionListener() 
+    {
+      public void actionPerformed(ActionEvent e) 
+      {
+        try { undoManager.redo(); }
+        catch (CannotRedoException cre) { cre.printStackTrace(); }
+        updateMenu();
       }
     });
 
@@ -299,6 +349,42 @@ public class ResultsMenuBar extends JMenuBar
       }
     });
 
+
+// undo - redo
+    for(int i =0; i<rtb.getTabCount(); i++)
+    {
+      JTextComponent jtc = getJTextComponentAt(rtb,i);
+      jtc.getDocument().addUndoableEditListener(new UndoableEditListener()
+      {
+        public void undoableEditHappened(UndoableEditEvent e)
+        {
+          undoManager.addEdit(e.getEdit());
+          updateMenu();
+        }
+      });
+    }
+
+    undo.addActionListener(new ActionListener()
+    {
+      public void actionPerformed(ActionEvent e)
+      {
+        try { undoManager.undo(); }
+        catch (CannotRedoException cre) { cre.printStackTrace(); }
+        updateMenu();
+      }
+    });
+
+    redo.addActionListener(new ActionListener()
+    {
+      public void actionPerformed(ActionEvent e)
+      {
+        try { undoManager.redo(); }
+        catch (CannotRedoException cre) { cre.printStackTrace(); }
+        updateMenu();
+      }
+    });
+
+
     //Colour selection
     JMenu colourMenu   = new JMenu("Colour");
     colourMenu.setMnemonic(KeyEvent.VK_L);
@@ -393,6 +479,21 @@ public class ResultsMenuBar extends JMenuBar
 
   }
 
+
+/**
+*
+* Update the undo and redo menus and enable or disable
+* dependent on the editing event that proceeded.
+*
+*/
+  private void updateMenu()
+  {
+    undo.setText(undoManager.getUndoPresentationName());
+    redo.setText(undoManager.getRedoPresentationName());
+    undo.setEnabled(undoManager.canUndo());
+    redo.setEnabled(undoManager.canRedo());
+  }
+
   private void fileSave(String cwd, String fileSelected, 
                         String tabTitle, Hashtable h)
   {
@@ -421,6 +522,18 @@ public class ResultsMenuBar extends JMenuBar
     try
     {
       return (JTextPane)jp.getComponent(0);
+    }
+    catch(ClassCastException cce){}
+    return null;
+  }
+
+  private JTextComponent getJTextComponentAt(JTabbedPane rtb, int index)
+  {
+    JScrollPane jsp = (JScrollPane)(rtb.getComponentAt(index));
+    JPanel jp = (JPanel)(jsp.getViewport().getView());
+    try
+    {
+      return (JTextComponent)jp.getComponent(0);
     }
     catch(ClassCastException cce){}
     return null;
