@@ -202,7 +202,9 @@ public class ParseAcd
         vappF.add(appF);
         appF.setNumberOfParam(numofParams);
         numofParams = 0;
-        appF.setParam(numofParams, dataType, param);
+
+        //set param name to lowercase as ACD is case insensitive
+        appF.setParam(numofParams, dataType, param.toLowerCase());
  
         in.reset();
         do 
@@ -214,6 +216,10 @@ public class ParseAcd
           {
              if(nvars>0)
                svalue = resolveVariables(variables,nvars,svalue);
+
+             //set variables to lower case as ACD is case insensitive
+             if(svalue.indexOf("$") > -1 || svalue.indexOf("@") > -1)
+               svalue = svalue.toLowerCase();
 
              appF.setParam(numofParams, attr, svalue);
 //           System.out.println(" ATTR " + attr + " SVALUE " + 
