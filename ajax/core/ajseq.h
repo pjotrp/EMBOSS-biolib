@@ -19,6 +19,16 @@ extern "C"
 ** @new ajSeqCvtNewZeroS Creates from an array of strings of valid bases.
 ** @use ajSeqNum Convert sequence to numbers
 ** @use ajSeqCvtTrace Reports on contents for debugging
+*
+** @alias AjSSeqCvt
+** @alias AjOSeqCvt
+**
+** @attr size [ajint] 
+** @attr len [ajint] 
+** @attr missing [ajint] 
+** @attr bases [AjPStr] 
+** @attr labels [AjPStr*] 
+** @attr table [char*] 
 ** @@
 ******************************************************************************/
 
