@@ -742,7 +742,10 @@ echo
 
 if [ "$AUTH" = "y" ]; then
   echo 
-  echo "You will need to (as root): chmod u+s $EMBOSS_INSTALL/bin/jembossctl"
+  echo "You will need to (as root):"
+  echo "   chmod u+s $EMBOSS_INSTALL/bin/jembossctl"
+  echo "   chown root $EMBOSS_INSTALL/bin/jembossctl"                        
+  echo
   echo "Tomcat may still be running! Ensure it is running as the non-priveleged"
   echo "tomcat user. Use the tomstop & tomstart scripts to stop & start tomcat."
   echo 
