@@ -23,7 +23,7 @@ sigplot sigscan \
 testplot treetypedisplay
 
 bin_PROGRAMS = abiview acdc antigenic \
-backtranseq banana btwisted \
+backtranseq banana biosed btwisted \
 cai chaos charge checktrans chips cirdna codcmp coderet \
 contacts compseq cons cpgplot cpgreport cusp cutgextract cutseq \
 dan dbiblast dbifasta dbiflat dbigcg \
@@ -64,6 +64,7 @@ acdc_SOURCES = acdc.c
 antigenic_SOURCES = antigenic.c
 backtranseq_SOURCES = backtranseq.c
 banana_SOURCES = banana.c
+biosed_SOURCES = biosed.c
 btwisted_SOURCES = btwisted.c
 chaos_SOURCES = chaos.c
 cai_SOURCES = cai.c

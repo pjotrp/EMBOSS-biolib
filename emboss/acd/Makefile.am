@@ -1,7 +1,7 @@
 
 pkgdata_DATA = codes.english \
 	abiview.acd ajbad.acd ajfeatest.acd ajtest.acd \
-	antigenic.acd backtranseq.acd banana.acd \
+	antigenic.acd backtranseq.acd banana.acd biosed.acd \
 	btwisted.acd cai.acd chaos.acd charge.acd checktrans.acd chips.acd \
 	cirdna.acd codcmp.acd coderet.acd \
 	complex.acd compseq.acd cons.acd corbatest.acd \
