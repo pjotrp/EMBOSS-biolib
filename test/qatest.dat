@@ -9,6 +9,18 @@
 #
 ###########################################################################
 
+ID acdc-ex
+AP acdc
+CL antigenic
+IN tsw:act1_fugru
+IN
+IN
+FI act1_fugru.antigenic
+FZ = 0
+FI stderr
+FC = 2
+//
+
 ID acdc-0001
 AP acdc
 CL qatest tembl:paamir tembl:paamir x.x -auto
@@ -155,6 +167,23 @@ FP 0 /Warning:/
 
 ID abiview-ex
 AP abiview
+CL -graph cps
+IN ../../data/abiview.abi
+IN
+FI stderr
+FC = 2
+FI stdout
+FZ = 19
+FP /^Created abiview.ps\n/
+FI abiview.fasta
+FP /^GNNNNNNNNNG/
+FZ = 876
+FI abiview.ps
+FP /^%%Title: PLplot Graph\n/
+//
+
+ID abiview-old
+AP abiview
 CC Example file missing test/data/ba16d2.s1
 CL -graph ps
 IN ../../data/ba16d2.s1
@@ -197,8 +226,40 @@ FC = 2
 FP 0 /Warning:/
 //
 
+ID antigenic-ex2
+UC By using the '-rformat gff' qualifier, a GFF file of the predicted regions can be produced.
+AP antigenic
+CL -rformat gff
+IN tsw:act1_fugru
+IN
+IN
+FI act1_fugru.antigenic
+FP /^##Type Protein ACT1_FUGRU\n/
+FZ > 100
+FC > 5
+FI stderr
+FC = 2
+FP 0 /Warning:/
+//
+
 ID backtranseq-ex
+UC Note that this is a human protein and so the default human codon frequency file is used ie. is not specified
 AP backtranseq
+IN tsw:opsd_human
+IN
+FI opsd_human.fasta
+FP /^>OPSD_HUMAN/
+FP /CGCCACCGGCGTGGTG\n/
+FZ = 1092
+FI stderr
+FC = 2
+FP 0 /Warning:/
+//
+
+ID backtranseq-ex2
+UC This uses a drosophila sequence and codon table.
+AP backtranseq
+CL -cfile Edrosophila.cut
 IN tsw:ach2_drome
 IN
 FI ach2_drome.fasta
@@ -227,6 +288,7 @@ FP /^Created banana.dat\n/
 //
 
 ID biosed-ex
+UC Replace all 'T's with 'U's to create a RNA sequence
 AP biosed
 CL tembl:hsfau hsfau.rna -target T -replace U
 FI stderr
@@ -237,6 +299,7 @@ FP /^UCUAAUAAAAAAGCCACUUAGUUCAGUCAAAAAAAAAA\n/
 //
 
 ID biosed-ex2
+UC Replace all 'PPP' protein motifs with 'XXPPPXX' 
 AP biosed
 CL tsw:AMIR_PSEAE AMIR_PSEAE.pep -target PPP -replace XXPPPXX
 FI stderr
@@ -272,7 +335,7 @@ FP /0[.]188/
 
 ID chaos-ex
 AP chaos
-CL tembl:eclac -graph ps
+CL tembl:eclac -graph cps
 FI stderr
 FC = 1
 FP 0 /Warning:/
@@ -333,7 +396,7 @@ FP /Nc = 32[.]951/
 
 ID cirdna-ex
 AP cirdna
-CL -graph ps
+CL -graph cps
 IN ../../data/data.cirp
 IN
 IN
@@ -343,7 +406,7 @@ FI stderr
 FC = 2
 FP 0 /Warning:/
 FI cirdna.ps
-FZ = 22787
+FZ = 23067
 FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 1\n/
 FI stdout
@@ -352,6 +415,7 @@ FP /^Created cirdna.ps\n/
 //
 
 ID codcmp-ex
+UC This compares the codon usage tables for Escherichia coli and Haemophilus influenzae.
 AP codcmp
 IN Eeco.cut
 IN Ehin.cut
@@ -369,6 +433,7 @@ FP /^Codons not appearing   = 0\n/
 //
 
 ID coderet-ex
+UC To extract all of the CDS, mRNA and the protein translations:
 AP coderet
 IN tembl:X03487
 IN
@@ -382,6 +447,7 @@ FP /ctcctacgtttacctgtccatg\n>x03487_pro_1\nMTTASTSQVRQNY/
 //
 
 ID coderet-ex2
+UC To only extract the mRNA sequence:
 AP coderet
 CL -nocds -notranslation
 IN tembl:X03487
@@ -396,6 +462,7 @@ FP 0 />x03487_pro_1/
 //
 
 ID compseq-ex
+UC To count the frequencies of dinucleotides in a file:
 AP compseq
 CL tembl:hsfau 2 result3.comp
 FI stderr
@@ -408,6 +475,7 @@ FP /^AA\s+45\s+0\.0870406\s+0\.0625000\s+1\.3926499\n/
 //
 
 ID compseq-ex2
+UC To count the frequencies of hexanucleotides, without outputting the results of hexanucleotides that do not occur in the sequence:
 AP compseq
 CL tembl:hsfau 6 result6.comp -nozero
 FI stderr
@@ -420,6 +488,7 @@ FP /^AAAAAA\s+6\s+0\.0116959\s+0\.0002441\s+47\.9064327\n/
 //
 
 ID compseq-ex3
+UC To count the frequencies of trinucleotides in frame 2 of a sequence and use a previously prepared compseq output to show the expected frequencies:
 AP compseq
 CL tembl:hsfau 3 result3.comp -frame 2 -in ../../data/prev.comp
 FI stderr
@@ -4964,7 +5033,7 @@ FP /^%%Pages: 1\n/
 ID plotorf-ex
 AP plotorf
 IN tembl:paamir
-IN ps
+IN cps
 FI stderr
 FC = 2
 FP 0 /Warning:/
@@ -4972,16 +5041,17 @@ FI stdout
 FZ = 19
 FP /^Created plotorf.ps\n/
 FI plotorf.ps
-FZ = 40719
+FZ = 41629
 FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 1\n/
 //
 
 ID plotorf-ex2
+UC An example of specifying your own START and STOP codons with a mitochondrial sequence would be:
 AP plotorf
 CL -start ATT,ATC,ATA,ATG,GTG -stop TAA,TAG,AGA,AGG
 IN ../../data/mito.seq
-IN ps
+IN cps
 FI stderr
 FC = 2
 FP 0 /Warning:/
@@ -4989,7 +5059,7 @@ FI stdout
 FZ = 19
 FP /^Created plotorf.ps\n/
 FI plotorf.ps
-FZ = 140763
+FZ = 177905
 FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 1\n/
 //
