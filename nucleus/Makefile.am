@@ -4,7 +4,7 @@ lib_LTLIBRARIES = libnucleus.la
 
 if ISSHARED
 if ISAIXIA64
-AM_CFLAGS = -Wl,-G -lm
+AM_CFLAGS = -Wl,-G -lm -L../ajax/.libs -lajax
 else
 AM_CFLAGS =
 endif
