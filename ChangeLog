@@ -1,4 +1,7 @@
 Version 2.8.0
+	Pepstats: added molar extinction coefficient and extinction
+	coefficient at 1mg/ml for A280.
+
 	Nexus format sequence input added, with new functions to parse all
 	standard nexus files. Later releases will accept nexus format for
 	other input data.
