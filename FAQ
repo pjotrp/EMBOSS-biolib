@@ -659,6 +659,58 @@ A) The "filename" is really the sequence.
 
 
 
+Q) I have some very short protein sequences that EMBOSS thinks are
+   nucleic sequences.  How do I force EMBOSS to treat them as nucleic acid
+   sequences? 
+
+   For example:
+   > cat seq1
+   A
+   > cat seq2
+   I
+
+   % water seq1 seq2 -stdout -auto
+   Smith-Waterman local alignment.
+   An error has been found: Sequence is not nucleic
+
+   Here, 'water' automatically (and wrongly) thinks that A is adenosine
+   instead of alanine and fails when it reads in seq2 and expects to
+   find another nucleic acid sequence - but 'I' is not a valid base and
+   so it fails. 
+
+A) For many sequence formats there is no way to specify the sequence
+   type in the file, so EMBOSS has to guess.
+
+   There is a flag that can force EMBOSS programs to treat sequences as
+   nucleic or protein. 
+
+   'water -help -verbose'
+   shows the full list of sequence qualifiers.
+
+   If you follow the sequence USA with '-sprotein' EMBOSS will check
+   that it is a valid protein sequence. 
+
+   If you need to force a sequence to be DNA, the qualifier is
+   '-snucleotide'
+
+   The qualifier must follow the sequence to apply to one sequence, or
+   can go at the start of the command line to refer to all sequences, for
+   example:
+
+   'water -sprotein seq4 seq3 -stdout -auto'
+
+   You can also use '-sprotein1' anywhere on the command line to refer
+   to the first sequence and '-sprotein2' to refer to the second sequence. 
+
+   Of course, like all EMBOSS qualifiers, you can shorten them so long
+   as they are still unique.  In this case, '-sp' and '-sn' will work
+   (or '-sp1' and '-sp2' if you need the numbers). 
+
+
+
+
+
+
 
 SECTION F - Limits and contraints
 =================================
