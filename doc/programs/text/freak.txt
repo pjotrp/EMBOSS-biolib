@@ -16,7 +16,7 @@ Description
    frequency is output to a data file or (optionally) plotted.
    
    The default set of bases is 'cg' which will calculate the frequency of
-   'G' + 'C' residues within the default moving window of 30 bases.
+   'G' + 'C' bases within the default moving window of 30 bases.
    
 Usage
 
