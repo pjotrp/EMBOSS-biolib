@@ -188,16 +188,21 @@ public class AdvancedOptions extends JPanel
     String fs = System.getProperty("file.separator");
     String jemProp = uhome+fs+"jemboss.properties";
     File fjemProp = new File(jemProp);
+ 
+    String uHome = "user.home="+getHomeDirectory();
+    uHome = addEscapeChars(uHome);
+
     if(fjemProp.exists())       // re-write jemboss.properties
-      rewriteProperties(jemProp);
+      rewriteProperties(jemProp,uHome);
     else                        // write new jemboss.properties
     {
       FileSave fsave = new FileSave(fjemProp);
-      fsave.fileSaving("user.home="+getHomeDirectory());
+      fsave.fileSaving(uHome);
     }
   }
 
-  public void rewriteProperties(String jemProp)
+
+  public void rewriteProperties(String jemProp, String uHome)
   {
      File file_txt = new File(jemProp);
      File file_tmp = new File(jemProp + ".tmp");
@@ -209,14 +214,14 @@ public class AdvancedOptions extends JPanel
        while ((line = bufferedreader.readLine()) != null) 
        {
          if(line.startsWith("user.home"))
-           line = "user.home="+getHomeDirectory();
+           line = uHome;
+
          bufferedwriter.write(line);
          bufferedwriter.newLine();
        }
        bufferedreader.close();
        bufferedwriter.close();
        file_tmp.renameTo(file_txt);
-       
      } 
      catch (FileNotFoundException filenotfoundexception)
      {
@@ -227,6 +232,23 @@ public class AdvancedOptions extends JPanel
        System.err.println("jemboss.properties i/o error");
      }
 
+  }
+
+/**
+*
+* Add in escape chars for windows
+*
+*/
+  private String addEscapeChars(String l)
+  {
+    int n = l.indexOf("\\");
+
+    while( n > -1) 
+    {
+      l = l.substring(0,n)+"\\"+l.substring(n,l.length());
+      n = l.indexOf("\\",n+2);
+    }
+    return l;
   }
 
 }
