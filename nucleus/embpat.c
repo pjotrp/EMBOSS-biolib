@@ -69,7 +69,7 @@ AjPStr embPatSeqCreateRegExp(AjPStr thys, AjBool protein) {
   return embPatSeqCreateRegExpC(ajStrStr(thys), protein);
 }
 
-/* @func embPatSeqCreateRegExpC ************************************************
+/* @func embPatSeqCreateRegExpC ***********************************************
 **
 ** Create a regular expression for a string and substitute the chars for
 ** Nucleotides or proteins as needed.
