@@ -18,9 +18,10 @@
 ** Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******************************************************************************/
 
-/* Read in a gff file and output sorting by user option before outputting */
-
 #include "emboss.h"
+
+
+
 
 /* @datastatic gffptr *********************************************************
 **
@@ -39,17 +40,18 @@
 
 typedef struct sgff
 {
-  AjPStr clone;
-  AjPStr source;
-  AjPStr type;
-  ajint    start;
-  ajint    end;
-  ajint    score;
-  /*not complete but okay for a demo purposes */
+    AjPStr clone;
+    AjPStr source;
+    AjPStr type;
+    ajint  start;
+    ajint  end;
+    ajint  score;
 } gff,*gffptr;
 
+
+
+
 static gffptr demolist_creategff(AjPStr line);
-/*static ajint demolist_sourcecomp(const void *a, const void *b);*/
 static ajint demolist_typecomp(const void *a, const void *b);
 static ajint demolist_startcomp(const void *a, const void *b);
 static void  demolist_dumpOut(void **x, void *cl);
@@ -59,19 +61,20 @@ static void  demolist_freegff (void **x, void *cl);
 
 /* @prog demolist *************************************************************
 **
-** Testing
+** Read in a gff file and output sorting by user option before outputting
 **
 ******************************************************************************/
 
 int main(int argc, char **argv)
 {
-    AjPList list=NULL;
+    AjPList list = NULL;
     AjPFile gfffile;
-    AjPStr  line=NULL;
+    AjPStr  line = NULL;
     gffptr  gffnew;
-    AjIList iter=NULL;
+    AjIList iter = NULL;
     void **array = NULL;
-    ajint i,ia;
+    ajint i;
+    ajint ia;
 
     embInit ("demolist", argc, argv);
 
@@ -81,7 +84,7 @@ int main(int argc, char **argv)
     /* create a new list */
     list = ajListNew();
 
-    while( ajFileReadLine(gfffile, &line) )
+    while(ajFileReadLine(gfffile, &line))
     {
 	/* create new gff */
 	gffnew = demolist_creategff(line);
@@ -90,7 +93,6 @@ int main(int argc, char **argv)
 	if(gffnew)
 	    ajListPush(list,(void *)gffnew);
     }
-
 
 
     ajUser("\nOutput via the ajListIter method \nSorted by source");
@@ -103,7 +105,7 @@ int main(int argc, char **argv)
 	ajUser("%S\t%S\t%S\t%d\t%d\t%d",gffnew->clone,gffnew->source,
 	       gffnew->type,gffnew->start,gffnew->end,gffnew->score);
     }
-    /* delete the iterator */
+
     ajListIterFree(iter);
 
 
@@ -127,12 +129,10 @@ int main(int argc, char **argv)
     /* free the objects in the list */
     ajListMap(list,demolist_freegff,NULL);
 
-
     ajExit();
+
     return 0;
 }
-
-
 
 
 
@@ -149,8 +149,11 @@ int main(int argc, char **argv)
 
 static ajint demolist_typecomp(const void *a, const void *b)
 {
-    gffptr *gfa = (gffptr *) a;
-    gffptr *gfb = (gffptr *) b;
+    gffptr *gfa;
+    gffptr *gfb;
+
+    gfa = (gffptr *) a;
+    gfb = (gffptr *) b;
 
     return ajStrCmp(&(*gfa)->type,&(*gfb)->type);
 }
@@ -170,8 +173,11 @@ static ajint demolist_typecomp(const void *a, const void *b)
 
 static ajint demolist_startcomp(const void *a, const void *b)
 {
-    gffptr *gfa = (gffptr *) a;
-    gffptr *gfb = (gffptr *) b;
+    gffptr *gfa;
+    gffptr *gfb;
+
+    gfa = (gffptr *) a;
+    gfb = (gffptr *) b;
 
     if((*gfa)->start > (*gfb)->start)
 	return 1;
@@ -183,19 +189,22 @@ static ajint demolist_startcomp(const void *a, const void *b)
 
 
 
+
 /* @funcstatic demolist_dumpOut ***********************************************
-**
-** Undocumented.
-**
-** @param [r] x [void**] Undocumented
-** @param [r] cl [void*] Undocumented
-** @return [void]
-** @@
-******************************************************************************/
+ **
+ ** Undocumented.
+ **
+ ** @param [r] x [void**] Undocumented
+ ** @param [r] cl [void*] Undocumented
+ ** @return [void]
+ ** @@
+ ******************************************************************************/
 
 static void  demolist_dumpOut(void **x, void *cl)
 {
-    gffptr gffnew = (gffptr)*x;
+    gffptr gffnew;
+
+    gffnew = (gffptr)*x;
 
     ajUser("%S\t%S\t%S\t%d\t%d\t%d",gffnew->clone,gffnew->source,gffnew->type,
 	   gffnew->start,gffnew->end,gffnew->score);
@@ -218,7 +227,9 @@ static void  demolist_dumpOut(void **x, void *cl)
 
 static void  demolist_freegff (void **x, void *cl)
 {
-    gffptr gffnew = (gffptr)*x;
+    gffptr gffnew;
+
+    gffnew = (gffptr)*x;
 
     ajStrDel(&gffnew->clone);
     ajStrDel(&gffnew->type);
@@ -227,6 +238,7 @@ static void  demolist_freegff (void **x, void *cl)
 
     return;
 }
+
 
 
 
@@ -242,18 +254,19 @@ static void  demolist_freegff (void **x, void *cl)
 
 static gffptr demolist_creategff(AjPStr line)
 {
-    static AjPRegexp gffexp=NULL;
-    gffptr gffnew=NULL;
-    AjPStr temp=NULL;
+    static AjPRegexp gffexp = NULL;
+    gffptr gffnew = NULL;
+    AjPStr temp   = NULL;
 
     if(!gffexp)
 	gffexp =
-     ajRegCompC("([^\t]+)\t([^\t]+)\t([^\t]+)\t([^\t]+)\t([^\t]+)\t([^\t]+)");
+	    ajRegCompC(
+	       "([^\t]+)\t([^\t]+)\t([^\t]+)\t([^\t]+)\t([^\t]+)\t([^\t]+)");
 
     if(ajRegExec(gffexp,line))
     {
 	AJNEW(gffnew);
-	gffnew->clone=gffnew->source=gffnew->type=NULL;
+	gffnew->clone=gffnew->source=gffnew->type = NULL;
 	ajRegSubI(gffexp,1,&gffnew->clone);
 	ajRegSubI(gffexp,2,&gffnew->source);
 	ajRegSubI(gffexp,3,&gffnew->type);
@@ -264,9 +277,6 @@ static gffptr demolist_creategff(AjPStr line)
 	ajRegSubI(gffexp,6,&temp);
 	ajStrToInt(temp,&gffnew->score);
 	ajStrDel(&temp);
-	/*    ajUser("CHECK %S\t%S\t%S\t%d\t%d\t%d\n",
-	      gffnew->clone,gffnew->source,gffnew->type,
-	      gffnew->start,gffnew->end,gffnew->score);*/
     }
 
     return gffnew;
