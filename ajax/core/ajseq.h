@@ -128,6 +128,7 @@ void         ajSeqReverse (AjPSeq thys);
 void         ajSeqReverseStr (AjPStr* thys);
 void         ajSeqRevOnly (AjPSeq thys);
 ajint        ajSeqsetBegin (AjPSeqset seq);
+void         ajSeqsetDel(AjPSeqset *thys);
 ajint        ajSeqsetEnd (AjPSeqset seq);
 ajint        ajSeqsetFill (AjPSeqset seq);
 AjPStr       ajSeqsetGetFormat (AjPSeqset thys);

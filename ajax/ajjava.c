@@ -34,7 +34,6 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_seqType
     if(ok)
     {
 	len = ajSeqLen(seq);
-	ajSeqType(seq);	
 	nuc = ajSeqIsNuc(seq);
 	weight = seq->Weight;
 	
@@ -94,8 +93,8 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_seqsetType
     }
     
     ajStrDel(&name);
-    /* Needs an ajSeqsetDel here, but unwritten so far. Will do. AJB */
-
+    ajSeqsetDel(&seq);
+    
     return (unsigned char) ok;
 }
 

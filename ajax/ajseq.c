@@ -150,6 +150,47 @@ void ajSeqallDel(AjPSeqall *thys)
     return;
 }
 
+
+/* @func ajSeqsetDel **********************************************************
+**
+** Destructor for sequence set objects
+**
+** @param [d] thys [AjPSeqset*] Sequence set object reference
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajSeqsetDel(AjPSeqset *thys)
+{
+    ajint n;
+    ajint i;
+    AjPSeqset pthis=NULL;
+
+    if(!thys || !*thys)
+	return;
+
+    pthis = *thys;
+    if(!(n = pthis->Size))
+	return;
+
+    ajStrDel(&pthis->Type);
+    ajStrDel(&pthis->Formatstr);
+    ajStrDel(&pthis->Filename);
+    ajStrDel(&pthis->Full);
+    ajStrDel(&pthis->Name);
+    ajStrDel(&pthis->Usa);
+    ajStrDel(&pthis->Ufo);
+
+    for(i=0; i<n; ++i)
+	ajSeqDel(&pthis->Seq[i]);
+
+    AJFREE(pthis->Seq);
+    AJFREE(pthis->Seqweight);
+
+    return;
+}
+
+
 /* ==================================================================== */
 /* ========================== Assignments ============================= */
 /* ==================================================================== */
