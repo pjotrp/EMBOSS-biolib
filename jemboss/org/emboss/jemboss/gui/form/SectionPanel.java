@@ -27,9 +27,11 @@ import javax.swing.border.TitledBorder;
 import javax.swing.border.Border;
 import java.util.Vector;
 import java.util.Enumeration;
+import java.util.StringTokenizer;
 import java.awt.event.*;
 import java.io.*;
 
+import org.emboss.jemboss.programs.RunEmbossApplication2;
 import org.emboss.jemboss.gui.AdvancedOptions;
 import org.emboss.jemboss.gui.BuildProgramMenu;
 import org.emboss.jemboss.parser.*;
@@ -161,7 +163,7 @@ public class SectionPanel
             JembossComboPopup fieldOption[], JList multiOption[], 
             SetInFileCard inSeq[], ListFilePanel filelist[],
             String db[], String des, Box lab[], int numofFields,
-            JembossParams mysettings, boolean withSoap)
+            JembossParams mysettings, boolean withSoap, String[] envp)
   {
 
     Border etched = BorderFactory.createEtchedBorder();
@@ -516,7 +518,7 @@ public class SectionPanel
 
 //using jni?
       if(AdvancedOptions.prefjni.isSelected())
-        checkDependents(section);
+        checkDependents(section,envp);
 
       if((att.startsWith("seqset") || att.startsWith("seqall")||
           att.startsWith("sequence")) && !isInp )
@@ -719,7 +721,7 @@ public class SectionPanel
   * @param section	form container for parameters
   *
   */
-  private void checkDependents(Box section)
+  private void checkDependents(Box section, final String[] envp)
   {
     final Cursor cbusy = new Cursor(Cursor.WAIT_CURSOR);
     final Cursor cdone = new Cursor(Cursor.DEFAULT_CURSOR);
@@ -775,24 +777,50 @@ public class SectionPanel
 
             if(!withSoap && fc!=null)    //Ajax without SOAP
             {
-              Ajax aj = new Ajax();
-              boolean ok;
-              if(att.startsWith("seqset"))
-                ok = aj.seqsetType(fc);
+              boolean ok = true;
+              Ajax aj = null;
+              if(mysettings.isCygwin())
+              {
+                String command = mysettings.getEmbossBin().concat("cygwin "+fc);
+                RunEmbossApplication2 rea = new RunEmbossApplication2(command,envp,null);
+                rea.waitFor();
+            
+                StringTokenizer stok = new StringTokenizer(rea.getProcessStdout(),"\n:");
+                stok.nextToken();
+                ajaxLength  = Integer.parseInt(stok.nextToken());
+                stok.nextToken();
+                if(stok.nextToken().equalsIgnoreCase("P"))
+                  ajaxProtein = true;
+                else
+                  ajaxProtein = false;
+                stok.nextToken();
+                ajaxWeight  = Float.parseFloat(stok.nextToken());
+              }
               else
-                ok = aj.seqType(fc);
+              {
+                aj = new Ajax();
+                if(att.startsWith("seqset"))
+                  ok = aj.seqsetType(fc);
+                else
+                  ok = aj.seqType(fc);
+              }
+
               if(ok)
               {
-                ajaxLength  = aj.length;
-                ajaxWeight  = aj.weight;
-                ajaxProtein = aj.protein;
+                if(!mysettings.isCygwin())
+                {
+                  ajaxLength  = aj.length;
+                  ajaxWeight  = aj.weight;
+                  ajaxProtein = aj.protein;
+                }
+ 
                 if( (updateBeginEnd(inSeqAttr[h].getBegSeq(),
                                     inSeqAttr[h].getEndSeq())) &&
                     (!att.startsWith("seqset")) &&
                     (!att.startsWith("seqall"))  )
                 {
                   inSeqAttr[h].setBegSeq(1);
-                  inSeqAttr[h].setEndSeq(aj.length);
+                  inSeqAttr[h].setEndSeq(ajaxLength);
                 }
                 resolveDependents(nod,dep,sifc.getFileChosen(),varName);
               }
@@ -801,6 +829,7 @@ public class SectionPanel
                           "Sequence not found." +
                           "Check the sequence entered.",
                           "Error Message", JOptionPane.ERROR_MESSAGE);
+
             }
             else if(fc!=null)    //Ajax with SOAP
             {

@@ -346,7 +346,7 @@ public class BuildJembossForm implements ActionListener
         SectionPanel sp = new SectionPanel(f,p3,fieldPane,parseAcd,
               nfield,textf,textInt,textFloat,rangeField,checkBox,
               inSeqAttr,fieldOption,multiOption,inSeq,filelist,
-              db,appDescription,lab,numofFields,mysettings,withSoap);
+              db,appDescription,lab,numofFields,mysettings,withSoap,envp);
 
         if(sp.isReportFormat())
           rf = sp.getReportFormat();
@@ -417,6 +417,7 @@ public class BuildJembossForm implements ActionListener
                                            embossCommand,envp,null);
           rea.waitFor();
           stdout = rea.getProcessStdout();
+          System.out.println( rea.getProcessStderr());
           f.setCursor(cdone);
           bresults.setVisible(true);
         }
