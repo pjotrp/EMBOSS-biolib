@@ -226,9 +226,9 @@ section: output [ info: "output Section" type: page ]
 # or a single feature that covers them from start to end
 bool: twoout [
   optional: "Y"
-  default: "Y"
+  default: "N"
   information: "Do you want the two features written out individually"
-  help: "If you set this to be true, then the two features themselves will be written out. If it is false, then a single feature will be written out covering the two features you found."
+  help: "If you set this to be true, then the two features themselves will be written out. If it is left as false, then a single feature will be written out covering the two features you found."
 ]
 
 # specify the name of the output 'type'
