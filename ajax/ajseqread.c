@@ -369,7 +369,7 @@ static SeqOInFormat seqInFormatDef[] = {
   {"ig",          "Intelligenetics sequence format",
        AJFALSE, AJTRUE,  AJTRUE,
        AJFALSE, AJTRUE,  AJFALSE, seqReadIg}, /* can read almost anything */
-  {"staden",      "Old staden package sequenec format",
+  {"staden",      "Old staden package sequence format",
        AJFALSE, AJTRUE,  AJTRUE,
        AJFALSE, AJTRUE,  AJFALSE, seqReadStaden}, /* original staden format */
   {"text",        "Plain text",
@@ -7120,9 +7120,17 @@ static ajint seqAppendCommented(AjPStr* pseq, AjBool* incomment,
     while(ajStrLen(tmpstr))
     {
 	/* if we are in a comment, look for the end of it */
+	/* Staden comments are <comment> */
+	/* GCG comments are <comment< or >comment> */
+
+	/* there should be no case of >comment< 
+	   but in a broken file we can't tell */
+
+	/* so we test for both kinds of angle brackets at both ends */
+
 	if(*incomment)
 	{
-	    i = ajStrFindC(tmpstr, ">");
+	    i = ajStrFindAnyC(tmpstr, "<>");
 	    if(i >= 0)			/* comment ends in this line */
 	    {
 		ajStrTrim(&tmpstr, i+1);
@@ -7135,7 +7143,7 @@ static ajint seqAppendCommented(AjPStr* pseq, AjBool* incomment,
 	}
 	else
 	{
-	    i = ajStrFindC(tmpstr, "<");
+	    i = ajStrFindAnyC(tmpstr, "<>");
 	    if(i >= 0)			/* comment starts in this line */
 	    {
 		if(i)
