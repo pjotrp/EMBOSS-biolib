@@ -9,7 +9,7 @@
 **  Z directions in a conventional right-handed Cartesian system
 **
 ** Alternatively they can be thought of as the coefficients of the 
-**  i, j, and k unit vectors in the X Y and Z directions respectively
+**  i, j, and k unit vectors in the x y and z directions respectively
 **
 ** @author Copyright (C) 2003 Damian Counsell
 ** @version 1.0
@@ -51,8 +51,6 @@
 /* ======================== private functions ========================= */
 /* ==================================================================== */
 
-/* NONE SO FAR */
-
 /* ==================================================================== */
 /* ========================= constructors ============================= */
 /* ==================================================================== */
@@ -89,9 +87,9 @@ AjP3dVector aj3dVectorNew(void)
 /* @func aj3dVectorCreate ****************************************************
 **
 ** Constructor for initialized AJAX 3D vectors.
-** @param [r] fX [float] X component of 3D vector
-** @param [r] fY [float] Y component of 3D vector
-** @param [r] fZ [float] Z component of 3D vector
+** @param [r] fX [float] x component of 3D vector
+** @param [r] fY [float] y component of 3D vector
+** @param [r] fZ [float] z component of 3D vector
 **
 ** @return [AjP3dVector] Pointer to an initialized 3D vector
 ** @@
@@ -102,9 +100,9 @@ AjP3dVector aj3dVectorCreate(float fX, float fY, float fZ)
     AjP3dVector ajp3dVectorReturnedVector;
 
     AJNEW0(ajp3dVectorReturnedVector);
-    ajp3dVectorReturnedVector->X = fX;
-    ajp3dVectorReturnedVector->Y = fY;
-    ajp3dVectorReturnedVector->Z = fZ;
+    ajp3dVectorReturnedVector->x = fX;
+    ajp3dVectorReturnedVector->y = fY;
+    ajp3dVectorReturnedVector->z = fZ;
 
     return ajp3dVectorReturnedVector;  
 }
@@ -133,9 +131,6 @@ AjP3dVector aj3dVectorCreate(float fX, float fY, float fZ)
 ** @param  [w] pthis [AjP3dVector*] Pointer to the 3-D vector to be deleted.
 **         The pointer is always deleted.
 ** @return [void]
-** @cre    The default null string must not be deleted. Calling this
-**         routine for copied pointers could cause this. An error message
-**         is issued and the null string use count is restored.
 ** @@
 ******************************************************************************/
 
@@ -151,9 +146,9 @@ void aj3dVectorDel(AjP3dVector* pthis)
     if(!*pthis)
 	return;
 
-    thys->X = 0.0;
-    thys->Y = 0.0;
-    thys->Z = 0.0;
+    thys->x = 0.0;
+    thys->y = 0.0;
+    thys->z = 0.0;
     AJFREE(thys);
     *pthis = NULL;
 
@@ -169,7 +164,7 @@ void aj3dVectorDel(AjP3dVector* pthis)
 **
 ** @param [r] ajp3dVectorFirst [AjP3dVector] first 3D vector
 ** @param [r] ajp3dVectorSecond [AjP3dVector] second 3D vector
-** @param [r] ajp3dVectorCrossProduct [AjP3dVector] 3D vector to contain
+** @param [w] ajp3dVectorCrossProduct [AjP3dVector] 3D vector to contain
               cross product
 ** @@
 ******************************************************************************/
@@ -178,25 +173,25 @@ void aj3dVectorCrossProduct(AjP3dVector ajp3dVectorFirst,
 			    AjP3dVector ajp3dVectorSecond,
 			    AjP3dVector ajp3dVectorCrossProduct)
 {
-    float floatXComponentCrossProduct;
-    float floatYComponentCrossProduct;
-    float floatZComponentCrossProduct;
+    float floatXOfCrossProduct;
+    float floatYOfCrossProduct;
+    float floatZOfCrossProduct;
 
     /* compute cross product */
-    floatXComponentCrossProduct  = ajp3dVectorFirst->Y * ajp3dVectorSecond->Z;
-    floatXComponentCrossProduct -= ajp3dVectorFirst->Z * ajp3dVectorSecond->Y;
+    floatXOfCrossProduct  = ajp3dVectorFirst->y * ajp3dVectorSecond->z;
+    floatXOfCrossProduct -= ajp3dVectorFirst->z * ajp3dVectorSecond->y;
 
-    ajp3dVectorCrossProduct->X   = floatXComponentCrossProduct;
+    ajp3dVectorCrossProduct->x   = floatXOfCrossProduct;
 
-    floatYComponentCrossProduct  = ajp3dVectorFirst->Z * ajp3dVectorSecond->X;
-    floatYComponentCrossProduct -= ajp3dVectorFirst->X * ajp3dVectorSecond->Z;
+    floatYOfCrossProduct  = ajp3dVectorFirst->z * ajp3dVectorSecond->x;
+    floatYOfCrossProduct -= ajp3dVectorFirst->x * ajp3dVectorSecond->z;
 
-    ajp3dVectorCrossProduct->Y   = floatYComponentCrossProduct;
+    ajp3dVectorCrossProduct->y   = floatYOfCrossProduct;
 
-    floatZComponentCrossProduct  = ajp3dVectorFirst->X * ajp3dVectorSecond->Y;
-    floatZComponentCrossProduct -= ajp3dVectorFirst->Y * ajp3dVectorSecond->X;
+    floatZOfCrossProduct  = ajp3dVectorFirst->x * ajp3dVectorSecond->y;
+    floatZOfCrossProduct -= ajp3dVectorFirst->y * ajp3dVectorSecond->x;
 
-    ajp3dVectorCrossProduct->Z   = floatZComponentCrossProduct;
+    ajp3dVectorCrossProduct->z   = floatZOfCrossProduct;
 
     return;
 }
@@ -212,7 +207,7 @@ void aj3dVectorCrossProduct(AjP3dVector ajp3dVectorFirst,
 ** @param [r] ajpFloatEndPoint co-ordinates [AjPFloat] of target of vector
 ** @param [r] ajpFloatVectorBetweenPoints [AjPFloat] vector from start to end
 **
-** @return [float] angle between vectors in XXXX
+** @return [float] angle between vectors in degrees
 ** @@
 ******************************************************************************/
 
@@ -221,9 +216,9 @@ void aj3dVectorBetweenPoints(float startX, float startY, float startZ,
 			     AjP3dVector ajp3dVectorBetweenPoints)
 {
     /* compute vector between points */
-    ajp3dVectorBetweenPoints->X = endX - startX;
-    ajp3dVectorBetweenPoints->Y = endY - startY;
-    ajp3dVectorBetweenPoints->Z = endZ - startZ;
+    ajp3dVectorBetweenPoints->x = endX - startX;
+    ajp3dVectorBetweenPoints->y = endY - startY;
+    ajp3dVectorBetweenPoints->z = endZ - startZ;
 
     return;
 }
@@ -235,28 +230,28 @@ void aj3dVectorBetweenPoints(float startX, float startY, float startZ,
 **
 ** calculates the magnitude of a vector
 **
-** @param [r] ajp3dVectorToBeMeasured [AjP3dVector] vector to be sized
+** @param [r] ajp3dVectorToBeSized [AjP3dVector] vector to be sized
 **
 ** @return floatVectorLength [float] length of vector to be sized
 ** @@
 ******************************************************************************/
 
-float aj3dVectorLength(AjP3dVector ajp3dVectorToBeMeasured)
+float aj3dVectorLength(AjP3dVector ajp3dVectorToBeSized)
 {
     float floatSquareOfVectorLength;
     float floatVectorLength;
 
     /* compute vector length */
-    floatSquareOfVectorLength = ajp3dVectorToBeMeasured->X *
-	ajp3dVectorToBeMeasured->X;
+    floatSquareOfVectorLength = ajp3dVectorToBeSized->x *
+	ajp3dVectorToBeSized->x;
 
-    floatSquareOfVectorLength += ajp3dVectorToBeMeasured->Y *
-	ajp3dVectorToBeMeasured->Y;
+    floatSquareOfVectorLength += ajp3dVectorToBeSized->y *
+	ajp3dVectorToBeSized->y;
 
-    floatSquareOfVectorLength += ajp3dVectorToBeMeasured->Z *
-	ajp3dVectorToBeMeasured->Z;
+    floatSquareOfVectorLength += ajp3dVectorToBeSized->z *
+	ajp3dVectorToBeSized->z;
 
-    floatVectorLength = sqrt(floatSquareOfVectorLength);
+    floatVectorLength = (float)sqrt((double)floatSquareOfVectorLength);
 
     return floatVectorLength;
 }
@@ -271,7 +266,7 @@ float aj3dVectorLength(AjP3dVector ajp3dVectorToBeMeasured)
 ** @param [r] ajpFloatFirstVector [AjP3dVector] first vector
 ** @param [r] ajpFloatSecondVector [AjP3dVector] second vector
 **
-** @return [float] angle between vectors in XXXX
+** @return [float] angle between vectors in degrees
 ** @@
 ******************************************************************************/
 
@@ -284,24 +279,13 @@ float aj3dVectorAngle(AjP3dVector ajp3dVectorFirst,
 
     /* XXXX STILL NEED TO INSERT A TRAP FOR VERY SMALL VALUES OF ANGLE */
 
-    ajFmtPrint("\n\nlength of first vector:\t%f\n",
-	       aj3dVectorLength( ajp3dVectorFirst));
-    ajFmtPrint("length of second vector:\t%f\n",
-	       aj3dVectorLength(ajp3dVectorSecond));
-    ajFmtPrint("value of pi:\t%f\n", AJM_PI);
-
     /* compute vector angle */
     floatCosineOfVectorAngle = aj3dVectorDotProduct(ajp3dVectorFirst,
 						    ajp3dVectorSecond);
     floatCosineOfVectorAngle /= aj3dVectorLength(ajp3dVectorFirst);
     floatCosineOfVectorAngle /= aj3dVectorLength(ajp3dVectorSecond);
 
-    ajFmtPrint("cosine of vector angle:\t%f\n", floatCosineOfVectorAngle);
-
     floatVectorAngle = acos((double) floatCosineOfVectorAngle);
-
-    ajFmtPrint("vector angle WHILE IN FUNCTION:\t%f\n\n",
-	       (float) floatVectorAngle);
 
     floatVectorAngleInDegrees = ajRadToDeg(floatVectorAngle);
 
@@ -350,7 +334,7 @@ float aj3dVectorDihedralAngle(AjP3dVector ajp3dVectorA,
 			   ajp3dVectorTorqueThird);
 
     if(aj3dVectorDotProduct(ajp3dVectorB, ajp3dVectorTorqueThird) < 0.0)
-	floatDihedralAngle = - floatDihedralAngle;
+	floatDihedralAngle = -1.0 * floatDihedralAngle;
 
     return floatDihedralAngle;
 }
@@ -361,7 +345,7 @@ float aj3dVectorDihedralAngle(AjP3dVector ajp3dVectorA,
 /* @func aj3dVectorDotProduct ***********************************************
 **
 ** calculates the dot product of two 3D vectors, that is their summed common
-**  scalar magnitude"
+**  scalar magnitude
 **
 ** @param [r] ajp3dVectorFirst [AjP3dVector] first vector
 ** @param [r] ajp3dVectorSecond [AjP3dVector] second vector
@@ -376,9 +360,9 @@ float aj3dVectorDotProduct(AjP3dVector ajp3dVectorFirst,
     float floatDotProduct;
 
     /* compute dot product */
-    floatDotProduct  = ajp3dVectorFirst->X * ajp3dVectorSecond->X;
-    floatDotProduct += ajp3dVectorFirst->Y * ajp3dVectorSecond->Y;
-    floatDotProduct += ajp3dVectorFirst->Z * ajp3dVectorSecond->Z;
+    floatDotProduct  = ajp3dVectorFirst->x * ajp3dVectorSecond->x;
+    floatDotProduct += ajp3dVectorFirst->y * ajp3dVectorSecond->y;
+    floatDotProduct += ajp3dVectorFirst->z * ajp3dVectorSecond->z;
 
     return(floatDotProduct);
 }
@@ -393,7 +377,7 @@ float aj3dVectorDotProduct(AjP3dVector ajp3dVectorFirst,
 **
 ** @param [r] ajp3dVectorFirst [AjP3dVector] first vector
 ** @param [r] ajp3dVectorSecond [AjP3dVector] second vector
-** @param [r] ajp3dVectorSum [AjP3dVector] sum of first and second vectors
+** @param [w] ajp3dVectorSum [AjP3dVector] sum of first and second vectors
 **
 ** @@
 ******************************************************************************/
@@ -403,9 +387,9 @@ void aj3dVectorSum(AjP3dVector ajp3dVectorFirst,
 		   AjP3dVector ajp3dVectorSum)
 {
   /* compute sum of vectors by adding individual components */
-  ajp3dVectorSum->X = ajp3dVectorFirst->X + ajp3dVectorSecond->X;
-  ajp3dVectorSum->Y = ajp3dVectorFirst->Y + ajp3dVectorSecond->Y;
-  ajp3dVectorSum->Z = ajp3dVectorFirst->Z + ajp3dVectorSecond->Z;
+  ajp3dVectorSum->x = ajp3dVectorFirst->x + ajp3dVectorSecond->x;
+  ajp3dVectorSum->y = ajp3dVectorFirst->y + ajp3dVectorSecond->y;
+  ajp3dVectorSum->z = ajp3dVectorFirst->z + ajp3dVectorSecond->z;
 
   return;
 }
