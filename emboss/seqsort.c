@@ -461,7 +461,7 @@ static AjBool seqsort_PsiblastHitSort(AjPList* famlist, AjPList* supfamlist,
     /* The end of the list been reached */
     /* Delete hits in the list that are targetted for removal */
     ajListGarbageCollect(*famlist, ajXyzScophitDelWrap,
-			 (const void *) ajXyzScophitCheckTarget);
+			 (int(*)(const void *)) ajXyzScophitCheckTarget);
 
 
 
@@ -520,7 +520,7 @@ static AjBool seqsort_PsiblastHitSort(AjPList* famlist, AjPList* supfamlist,
     /* The end of the list been reached */
     /* Delete hits in the list that are targetted for removal */
     ajListGarbageCollect(*famlist, ajXyzScophitDelWrap,
-			 (const void *) ajXyzScophitCheckTarget);
+			 (int(*)(const void *)) ajXyzScophitCheckTarget);
 
 
 
@@ -573,7 +573,7 @@ static AjBool seqsort_PsiblastHitSort(AjPList* famlist, AjPList* supfamlist,
     /* The end of the list been reached */
     /* Delete hits in the list that are targetted for removal */
     ajListGarbageCollect(*supfamlist, ajXyzScophitDelWrap,
-			 (const void *) ajXyzScophitCheckTarget);
+			 (int(*)(const void *)) ajXyzScophitCheckTarget);
 
     /* sort list , first by accession number,then by start and finally
        by family */
@@ -622,7 +622,7 @@ static AjBool seqsort_PsiblastHitSort(AjPList* famlist, AjPList* supfamlist,
     /* The end of the list has been reached */
     /* Delete hits in the list that are targeted for removal */
     ajListGarbageCollect(*supfamlist, ajXyzScophitDelWrap,
-			 (const void *) ajXyzScophitCheckTarget);
+			 (int(*)(const void *)) ajXyzScophitCheckTarget);
 
     /* sort list, first by Family, then by accession number, and
        finally by Start */
@@ -675,7 +675,7 @@ static AjBool seqsort_PsiblastHitSort(AjPList* famlist, AjPList* supfamlist,
     /* The end of the list has been reached */
     /* Delete hits in the list that are targeted for removal */
     ajListGarbageCollect(*foldlist, ajXyzScophitDelWrap,
-			 (const void *) ajXyzScophitCheckTarget);
+			 (int(*)(const void *)) ajXyzScophitCheckTarget);
 
     ajListSort3(*foldlist, ajXyzScophitCompSfam, ajXyzScophitCompAcc,
 		ajXyzScophitCompStart);
@@ -806,7 +806,7 @@ static AjBool seqsort_SwissparseHitSort(AjPList* famlist, AjPList* supfamlist,
     /* the end of the list has been reached */
     /* delete hits in the list that are targeted for removal */
     ajListGarbageCollect(*famlist, ajXyzScophitDelWrap,
-			 (const void *) ajXyzScophitCheckTarget);
+			 (int(*)(const void *)) ajXyzScophitCheckTarget);
 
     /* Sort list again */
     ajListSort3(*famlist, ajXyzScophitCompFam, ajXyzScophitCompAcc,
@@ -867,7 +867,7 @@ static AjBool seqsort_SwissparseHitSort(AjPList* famlist, AjPList* supfamlist,
     /* the end of the list has been reached */
     /* delete hits in the list that are targeted for removal */
     ajListGarbageCollect(*supfamlist, ajXyzScophitDelWrap,
-			 (const void *) ajXyzScophitCheckTarget);
+			 (int(*)(const void *)) ajXyzScophitCheckTarget);
 
     /* Sort list again */
     ajListSort3(*supfamlist, ajXyzScophitCompSfam, ajXyzScophitCompAcc,
@@ -917,7 +917,7 @@ static AjBool seqsort_SwissparseHitSort(AjPList* famlist, AjPList* supfamlist,
     /* the end of the list has been reached */
     /* delete hits in the list that are targeted for removal */
     ajListGarbageCollect(*foldlist, ajXyzScophitDelWrap,
-			 (const void *) ajXyzScophitCheckTarget);
+			 (int(*)(const void *)) ajXyzScophitCheckTarget);
 
     /* Sort list again */
     ajListSort3(*foldlist, ajXyzScophitCompFold, ajXyzScophitCompAcc,
@@ -977,7 +977,7 @@ static AjBool seqsort_SwissparseHitSort(AjPList* famlist, AjPList* supfamlist,
     /* the end of the list has been reached */
     /* delete hits in the list that are targeted for removal. */
     ajListGarbageCollect(*supfamlist, ajXyzScophitDelWrap,
-			 (const void *) ajXyzScophitCheckTarget);
+			 (int(*)(const void *)) ajXyzScophitCheckTarget);
 
     /* Sort list again */
     ajListSort3(*supfamlist, ajXyzScophitCompSfam, ajXyzScophitCompAcc,
@@ -1052,7 +1052,7 @@ static AjBool seqsort_SwissparseHitSort(AjPList* famlist, AjPList* supfamlist,
     /* the end of the list has been reached */
     /* delete hits in the list that are targeted for removal. */
     ajListGarbageCollect(*foldlist, ajXyzScophitDelWrap,
-			 (const void *) ajXyzScophitCheckTarget);
+			 (int(*)(const void *)) ajXyzScophitCheckTarget);
 
     /* Sort list again */
     ajListSort3(*foldlist, ajXyzScophitCompFold, ajXyzScophitCompAcc,
@@ -1151,7 +1151,7 @@ static AjBool seqsort_IdentifyMembers(AjPList* list, ajint node,
 
     /* Remove hits that are targetted for removal */
     ajListGarbageCollect(*list, ajXyzScophitDelWrap,
-			 (const void *) ajXyzScophitCheckTarget);
+			 (int(*)(const void *)) ajXyzScophitCheckTarget);
 
 
     /* the end of the list has been reached */
@@ -1311,7 +1311,7 @@ static AjBool  seqsort_MergeHitSort(AjPList* famlist,AjPList* supfamlist,
     /* the end of the list has been reached */
     /* delete hits in the list that are targeted for removal. */
     ajListGarbageCollect(*supfamlist, ajXyzScophitDelWrap,
-			 (const void *) ajXyzScophitCheckTarget);
+			 (int(*)(const void *)) ajXyzScophitCheckTarget);
 
 
     /* Sort list again */
@@ -1384,7 +1384,7 @@ static AjBool  seqsort_MergeHitSort(AjPList* famlist,AjPList* supfamlist,
     /* the end of the list has been reached */
     /* delete hits in the list that are targeted for removal. */
     ajListGarbageCollect(*foldlist, ajXyzScophitDelWrap,
-			 (const void *) ajXyzScophitCheckTarget);
+			 (int(*)(const void *)) ajXyzScophitCheckTarget);
 
 
     ajListSort3(*foldlist, ajXyzScophitCompFold,
