@@ -64,7 +64,7 @@ public class ProgList
 
 // get alphabetic program listing
      String line;
-     Vector wossLine = new Vector();
+     Vector allProgLines = new Vector();
 
 //parse the output of wossname 
      try 
@@ -78,9 +78,15 @@ public class ProgList
            while((line = in.readLine()) != null) 
            {
              line = line.trim();
-             wossLine.add(line);
              if(!line.equals(""))
-               numProgs++;
+             {
+               String progN = line.substring(0,line.indexOf(" ")+1);
+               if(!allProgLines.contains(progN))
+               {
+                 allProgLines.add(line);
+                 numProgs++;
+               }
+             }
              else
                break;
             }
@@ -93,25 +99,6 @@ public class ProgList
        System.out.println("Cannot read wossname string");
      }
 
-//find unique program names 
-     Vector allProgLines = new Vector();
-     numProgs = 0;
-     Enumeration enumWoss = wossLine.elements();
-     while(enumWoss.hasMoreElements())
-     {
-       line = (String)enumWoss.nextElement();
-       if(!line.equals(""))
-       {
-         line = line.trim();
-         boolean news =true;
-         String progN = new String(line.substring(0,line.indexOf(" ")+1));
-         if(!allProgLines.contains(progN))
-         {
-           allProgLines.add(line);
-           numProgs++;
-         }
-       }
-     }
 
 //sort alphabetically
      allProgs = new String[numProgs];
@@ -128,7 +115,7 @@ public class ProgList
        line = allProgs[i].trim();
        int split = line.indexOf(" ");
        int len   = line.length();
-       allProgs[i] = new String(line.substring(0,split));
+       allProgs[i] = line.substring(0,split);
        line = line.substring(split+1,len).trim();
        allDescription[i] = new String(line);
      }
