@@ -1,4 +1,16 @@
 Version 2.8.0
+	PCRE is now the library of choice for regular expressions. This
+	allows the full Perl regular expression syntax, and was very easy
+	to integrate. Regular expressions are used internally for parsing
+	and for manipulating strings such as fiel ane directory names, and
+	also for macthing by programs such as dreg and preg.
+
+	The previous Henry Spencer library functions are renamed from
+	ajReg to ajHsReg. The Posix version of the Henry Spencer library
+	remains available as ajPosReg but may be removed as it was not
+	used by the EMBOSS distribution, and PCRE can provide the same or
+	higher functionality.
+
 	acdpretty now writes the name of the output file to standard
 	output. For example "Created seqret.acdpretty".
 
