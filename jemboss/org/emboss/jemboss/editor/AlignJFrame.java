@@ -62,6 +62,27 @@ public class AlignJFrame extends JFrame
       openMethod(vseqs);
   }
 
+  public AlignJFrame(File seqFile)
+  {
+    this();
+
+    SequenceReader sr = new SequenceReader(seqFile);
+    sequenceFile = sr.getSequenceFile();
+    openMethod(sr.getSequenceVector());
+    setTitle("Jemboss Alignment Viewer    :: "+
+              sequenceFile.getName());
+  }
+
+  public AlignJFrame(String seqString, String name)
+  {
+    this();
+
+    SequenceReader sr = new SequenceReader(seqString);
+    sequenceFile = null;
+    openMethod(sr.getSequenceVector());
+    setTitle("Jemboss Alignment Viewer    :: "+name);
+  }
+
   public AlignJFrame()
   {
     this(false);
