@@ -324,13 +324,25 @@ static AjBool seqAccessEmblcd (AjPSeqin seqin)
 	{
 	    ajDebug ("entry id: '%S' acc: '%S'\n", qry->Id, qry->Acc);
 	    if (!seqCdQryEntry (qry))
-		ajDebug ("EMBLCD Entry failed");
+	    {
+	      ajDebug ("EMBLCD Entry failed\n");
+	      if (ajStrLen(qry->Id))
+		  ajErr ("Database Entry '%S' not found", qry->Id);
+	      else
+		  ajErr ("Database Entry '%S' not found", qry->Acc);
+	    }
 	}
 	if (qry->Type == QRY_QUERY)
 	{
 	    ajDebug ("query id: '%S' acc: '%S'\n", qry->Id, qry->Acc);
 	    if (!seqCdQryQuery (qry))
-		ajDebug ("EMBLCD Query failed");
+	    {
+	      ajDebug ("EMBLCD Query failed\n");
+	      if (ajStrLen(qry->Id))
+		  ajErr ("Database Query '%S' not found", qry->Id);
+	      else
+		  ajErr ("Database Query '%S' not found", qry->Acc);
+	    }
 	}
     }
 
@@ -922,7 +934,7 @@ static ajint seqCdTrgSearch (SeqPCdTrg trgLine, AjPStr entry, SeqPCdFile fp)
 	itry = (ilo + ihi)/2;
 	if (itry == ipos)
 	{
-	    ajDebug("'%S' not found found in .trg\n", entrystr);
+	    ajDebug("'%S' not found in .trg\n", entrystr);
 	    ajStrDel (&entrystr);
 	    return -1;
 	}
