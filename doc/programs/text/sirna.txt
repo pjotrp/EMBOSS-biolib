@@ -1,0 +1,249 @@
+
+                                   sirna 
+                                      
+   
+   
+Function
+
+   Finds siRNA duplexes in mRNA
+   
+Description
+
+   RNA interference, or RNAi, is a phenomenon in which double stranded
+   RNA (dsRNA) effects silencing of the expression of genes that are
+   highly homologous to either of the RNA strands in the duplex. Gene
+   silencing in RNAi results from the degradation of mRNA sequences, and
+   the effect has been used to determine the function of many genes in
+   Drosophilia, C. elegans, and many plant species.
+   
+   The duration of knockdown by siRNA can typically last for 7-10 days,
+   and has been shown to transfer to daughter cells. Of further note,
+   siRNAs are effective at quantities much lower than alternative gene
+   silencing methodologies, including antisense and ribozyme based
+   strategies.
+   
+   Due to various mechanisms of antiviral response to long dsRNA, RNAi at
+   first proved more difficult to establish in mammalian species. Then,
+   Tuschl, Elbashir, and others discovered that RNAi can be elicited very
+   effectively by well-defined 21-base duplex RNAs. When these small
+   interfering RNA, or siRNA, are added in duplex form with a
+   transfection agent to mammalian cell cultures, the 21-base-pair RNA
+   acts in concert with cellular components to silence the gene with
+   sequence homology to one of the siRNA sequences. Strategies for the
+   design of effective siRNA sequences have been recently documented,
+   most notably by Sayda Elbashir, Thomas Tuschl, et al.
+   
+   Their studies of mammalian RNAi suggest that the most efficient
+   gene-silencing effect is achieved using double-stranded siRNA having a
+   19-nucleotide complementary region and a 2-nucleotide 3' overhang at
+   each end. Current models of the RNAi mechanism suggest that the
+   antisense siRNA strand recognizes the specific gene target.
+   
+   In gene-specific RNAi, the coding region (CDS) of the mRNA is usually
+   targeted. The search for an appropriate target sequence should begin
+   50-100 nucleotides downstream of the start codon. UTR-binding proteins
+   and/or translation initiation complexes may interfere with the binding
+   of the siRNP endonuclease complex. Tuschl, Elbashir et al. say that
+   they have successfully used siRNAs targetting the 3' UTR. To avoid
+   interference from mRNA regulatory proteins, sequences in the 5'
+   untranslated region or near the start codon should not be targeted.
+   
+   A set of rules for the design of siRNA has been suggested
+   http://www.mpibpc.gwdg.de/abteilungen/100/105/sirna.html based on the
+   work of Tuschl, Elbashir et al.
+   
+   They suggest searching for 23-nt sequence motif AA(N19)TT (N, any
+   nucleotide) and select hits with approx. 50% G/C-content (30% to 70%
+   has also worked in for them). If no suitable sequences are found, the
+   search is extended using the motif NA(N21). The sequence of the sense
+   siRNA corresponds to (N19)TT or N21 (position 3 to 23 of the 23-nt
+   motif), respectively. In the latter case, they convert the 3' end of
+   the sense siRNA to TT.
+   
+   The rationale for this sequence conversion is to generate a symmetric
+   duplex with respect to the sequence composition of the sense and
+   antisense 3' overhangs. The antisense siRNA is synthesized as the
+   complement to position 1 to 21 of the 23-nt motif. Because position 1
+   of the 23-nt motif is not recognized sequence-specifically by the
+   antisense siRNA, the 3'-most nucleotide residue of the antisense
+   siRNA, can be chosen deliberately. However, the penultimate nucleotide
+   of the antisense siRNA (complementary to position 2 of the 23-nt
+   motif) should always be complementary to the targeted sequence. For
+   simplifying chemical synthesis, they always use TT.
+   
+   More recently, they preferentially select siRNAs corresponding to the
+   target motif NAR(N17)YNN, where R is purine (A, G) and Y is pyrimidine
+   (C, U). The respective 21-nt sense and antisense siRNAs therefore
+   begin with a purine nucleotide and can also be expressed from pol III
+   expression vectors without a change in targeting site; expression of
+   RNAs from pol III promoters is only efficient when the first
+   transcribed nucleotide is a purine.
+   
+   They always design siRNAs with symmetric 3' TT overhangs, believing
+   that symmetric 3' overhangs help to ensure that the siRNPs are formed
+   with approximately equal ratios of sense and antisense target
+   RNA-cleaving siRNPs Please note that the modification of the overhang
+   of the sense sequence of the siRNA duplex is not expected to affect
+   targeted mRNA recognition, as the antisense siRNA strand guides target
+   recognition. In summary, no matter what you do to your overhangs,
+   siRNAs should still function to a reasonable extent. However, using TT
+   in the 3' overhang will always help your RNA synthesis company to let
+   you know when you accidentally order a siRNA sequences 3' to 5' rather
+   than in the recommended format of 5' to 3'.
+   
+   sirna reports both the sense and antisense siRNAs as 5' to 3'.
+   
+   Xeragon.com also suggest that choosing a 21 nt region of the mRNA with
+   a GC content as close as possible to 50% is a more important
+   consideration than choosing a target sequence that begins with AA.
+   They also suggest that a key consideration in target selection is to
+   avoid having more than three guanosines in a row, since poly G
+   sequences can hyperstack and form agglomerates that potentially
+   interfere with the siRNA silencing mechanism.
+   
+   siRNAs appear to effectively silence genes in more than 80% of cases.
+   Current data indicate that there are regions of some mRNAs where gene
+   silencing does not work. To help ensure that a given target gene is
+   silenced, it is advised that at least two target sequences as far
+   apart on the gene as possible be chosen.
+   
+   mRNA secondary structure does not appear to have a significant effect
+   on gene silencing.
+   
+   sirna looks at the feature table of the input mRNA sequence to find
+   the coding regions (CDS). It will ignore the 5' UTR and the first 50
+   bases of the CDS. It will assign a penalty of 2 points to any siRNA in
+   positions 51 to 100 in the CDS. If there is no CDS in the feature
+   table, you can specify the CDS by using the command-line qualifier
+   '-sbegin' to indicate where the CDS should start. If there is no CDS
+   in the feature table and you do not use the command-line qualifier
+   '-sbegin', then sirna will assume that the CDS region is not known and
+   will look for siRNAs in the whole of the sequence with no penalties.
+   
+Usage
+
+   [an error occurred while processing this directive]
+   
+Command line arguments
+
+   Mandatory qualifiers:
+  [-sequence]          seqall     Sequence database USA
+  [-outfile]           report     Output data file
+
+   Optional qualifiers:
+   -[no]poliii         boolean    This option allows you to select the 21 base
+                                  probes that start with a purine and so can
+                                  be expressed from Pol III expression
+                                  vectors.
+   -aa                 boolean    This option allows you to select the 23 base
+                                  regions that start with AA.
+
+   Advanced qualifiers: (none)
+   General qualifiers:
+  -help                boolean    Report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   
+
+   Mandatory qualifiers Allowed values Default
+   [-sequence]
+   (Parameter 1) Sequence database USA Readable sequence(s) Required
+   [-outfile]
+   (Parameter 2) Output data file Report output file
+   Optional qualifiers Allowed values Default
+   -[no]poliii This option allows you to select the 21 base probes that
+   start with a purine and so can be expressed from Pol III expression
+   vectors. Boolean value Yes/No Yes
+   -aa This option allows you to select the 23 base regions that start
+   with AA. Boolean value Yes/No No
+   Advanced qualifiers Allowed values Default
+   (none)
+   
+Input file format
+
+   sirna reads any normal sequence USAs.
+   
+   [an error occurred while processing this directive]
+   
+Output file format
+
+   The output is a standard EMBOSS report file.
+   
+   The results can be output in one of several styles by using the
+   command-line qualifier -rformat xxx, where 'xxx' is replaced by the
+   name of the required format. The available format names are: embl,
+   genbank, gff, pir, swiss, trace, listfile, dbmotif, diffseq, excel,
+   feattable, motif, regions, seqtable, simple, srs, table, tagseq
+   
+   See:
+   http://www.uk.embnet.org/Software/EMBOSS/Themes/ReportFormats.html for
+   further information on report formats.
+   
+   sirna outputs a report format file. The default format is 'table'
+   
+   [an error occurred while processing this directive]
+   
+   The siRNAs are reported in order of best score first.
+   
+   sirna reports both the sense and antisense siRNAs as 5' to 3'.
+   
+Data files
+
+   None.
+   
+Notes
+
+   None.
+   
+References
+
+    1. Elbashir, S. M., et al. (2001a). Duplexes of 21-nucleotide RNAs
+       mediate RNA interference in mammalian cell culture. Nature 411:
+       494-498.
+    2. Elbashir, S. M., W. Lendeckel and T. Tuschl (2001b). RNA
+       interference is mediated by 21 and 22 nt RNAs. Genes & Dev. 15:
+       188-200.
+       
+Warnings
+
+   It is assumed that the input sequence is mRNA.
+   
+Diagnostic Error Messages
+
+   None.
+   
+Exit status
+
+   It always exits with status 0.
+   
+Known bugs
+
+   None.
+   
+See also
+
+   Program name                          Description
+   banana       Bending and curvature plot in B-DNA
+   btwisted     Calculates the twisting in a B-DNA sequence
+   chaos        Create a chaos game representation plot for a sequence
+   compseq      Counts the composition of dimer/trimer/etc words in a sequence
+   dan          Calculates DNA RNA/DNA melting temperature
+   freak        Residue/base frequency table or plot
+   isochore     Plots isochores in large DNA sequences
+   wordcount    Counts words of a specified size in a DNA sequence
+   
+Author(s)
+
+   This application was written by Gary Williams
+   (gwilliam@hgmp.mrc.ac.uk)
+   
+History
+
+   Written (November 2002) - Gary Williams.
+   
+Target users
+
+   This program is intended to be used by everyone and everything, from
+   naive users to embedded scripts.
+   
+Comments
