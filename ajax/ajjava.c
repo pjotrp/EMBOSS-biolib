@@ -4249,7 +4249,7 @@ static int java_pipe_read(int rchan, char *buf, int n, int seconds,
 {
 #ifdef HAVE_POLL
     struct pollfd ufds;
-    unsigned int  nfds
+    unsigned int  nfds;
 #else
     fd_set fdr;
     fd_set fdw;
