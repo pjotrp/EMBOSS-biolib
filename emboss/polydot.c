@@ -19,16 +19,17 @@
 ** Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******************************************************************************/
 
-
 #include "emboss.h"
-
 #include "ajgraph.h"
 
-static float xstart=0;
-static float ystart=0;
+static float xstart = 0;
+static float ystart = 0;
 static ajint *lines;
 static ajint *pts;
 static ajint which;
+
+
+
 
 static void polydot_drawPlotlines(void **x, void *cl);
 static void polydot_plotMatches(AjPList list);
@@ -52,39 +53,45 @@ int main(int argc, char **argv)
     AjPTable seq1MatchTable =0 ;
     AjPList matchlist ;
     AjPGraph graph = 0;
-    ajint i,j;
+    ajint i;
+    ajint j;
     float total=0;
-    ajint acceptableticks[]={1,10,50,100,200,500,1000,1500,10000,50000,
-			       100000,500000,1000000,5000000};
+    ajint acceptableticks[]=
+    {
+	1,10,50,100,200,500,1000,1500,10000,50000,
+	100000,500000,1000000,5000000
+    };
     ajint numbofticks = 10;
     ajint gap,tickgap;
-    AjBool boxit = AJTRUE, dumpfeat = AJFALSE;
-    float xmargin,ymargin;
+    AjBool boxit    = AJTRUE;
+    AjBool dumpfeat = AJFALSE;
+    float xmargin;
+    float ymargin;
     float k;
     char ptr[10];
     float ticklen;
     float onefifth;
-    AjPFeattable *tabptr=NULL;
-    AjPStr ufo=NULL;
-    AjPStr format=NULL;
-    AjPStr ext=NULL;
+    AjPFeattable *tabptr = NULL;
+    AjPStr ufo    = NULL;
+    AjPStr format = NULL;
+    AjPStr ext    = NULL;
     AjPFeattabOut seq1out = NULL;
-    AjPStr sajb=NULL;
+    AjPStr sajb = NULL;
 
-    (void) ajGraphInit("polydot", argc, argv);
+    ajGraphInit("polydot", argc, argv);
 
-    wordlen = ajAcdGetInt ("wordsize");
-    seqset = ajAcdGetSeqset ("sequences");
-    graph = ajAcdGetGraph ("graph");
-    gap = ajAcdGetInt ("gap");
-    boxit = ajAcdGetBool("boxit");
+    wordlen  = ajAcdGetInt("wordsize");
+    seqset   = ajAcdGetSeqset("sequences");
+    graph    = ajAcdGetGraph("graph");
+    gap      = ajAcdGetInt("gap");
+    boxit    = ajAcdGetBool("boxit");
     dumpfeat = ajAcdGetBool("dumpfeat");
-    format = ajAcdGetString("format");
+    format   = ajAcdGetString("format");
 
     ext = ajAcdGetString("ext");
 
     sajb = ajStrNew();
-    embWordLength (wordlen);
+    embWordLength(wordlen);
 
     AJCNEW(lines,ajSeqsetSize(seqset));
     AJCNEW(pts,ajSeqsetSize(seqset));
@@ -92,43 +99,43 @@ int main(int argc, char **argv)
 
     for(i=0;i<ajSeqsetSize(seqset);i++)
     {
-	seq1 = ajSeqsetGetSeq (seqset, i);
+	seq1 = ajSeqsetGetSeq(seqset, i);
 	total += (float)ajSeqLen(seq1);
 
     }
-
+    
     total +=(float)(gap*(ajSeqsetSize(seqset)-1));
-
+    
     xmargin = total*0.15;
     ymargin = total*0.15;
-
+    
     ticklen = xmargin*0.1;
     onefifth  = xmargin*0.2;
-
-    i=0;
+    
+    i = 0;
     while(acceptableticks[i]*numbofticks < ajSeqsetLen(seqset))
 	i++;
-
+    
     if(i<=13)
 	tickgap = acceptableticks[i];
     else
 	tickgap = acceptableticks[13];
-
+    
     ajGraphOpenWin(graph, 0.0-xmargin,(total+xmargin)*1.35,0.0-ymargin,
 		   total+ymargin);
-    ajGraphTextMid ((total+xmargin)*0.5,(total+ymargin)*0.9,
-		    ajStrStr(graph->title));
+    ajGraphTextMid((total+xmargin)*0.5,(total+ymargin)*0.9,
+		   ajStrStr(graph->title));
     ajGraphSetCharSize(0.3);
-
-
+    
+    
     for(i=0;i<ajSeqsetSize(seqset);i++)
     {
 	which = i;
-	seq1 = ajSeqsetGetSeq (seqset, i);
+	seq1 = ajSeqsetGetSeq(seqset, i);
 	if(embWordGetTable(&seq1MatchTable, seq1)){ /* get table of words */
 	    for(j=0;j<ajSeqsetSize(seqset);j++)
 	    {
-		seq2 = ajSeqsetGetSeq (seqset, j);
+		seq2 = ajSeqsetGetSeq(seqset, j);
 		if(boxit)
 		    ajGraphRect(xstart,ystart,
 				xstart+(float)ajSeqLen(seq1),
@@ -138,12 +145,13 @@ int main(int argc, char **argv)
 						   ajTrue);
 		if(matchlist)
 		    polydot_plotMatches(matchlist);
+
 		if(i<j && dumpfeat)
 		    embWordMatchListConvToFeat(matchlist,&tabptr[i],
 					       &tabptr[j],seq1,
 					       seq2);
 
-		if(matchlist)  /* free the match structures */
+		if(matchlist)	       /* free the match structures */
 		    embWordMatchListDelete(&matchlist);
 
 		if(j==0)
@@ -154,21 +162,22 @@ int main(int argc, char **argv)
 				    ystart-ticklen);
 
 			sprintf(ptr,"%d",(ajint)k);
-			ajGraphTextMid (xstart+k,ystart-(onefifth),ptr);
+			ajGraphTextMid(xstart+k,ystart-(onefifth),ptr);
 		    }
-		    ajGraphTextMid (xstart+((float)ajSeqLen(seq1)/2.0),
-				    ystart-(3*onefifth),
-				    ajStrStr(ajSeqsetName(seqset, i)));
+		    ajGraphTextMid(xstart+((float)ajSeqLen(seq1)/2.0),
+				   ystart-(3*onefifth),
+				   ajStrStr(ajSeqsetName(seqset, i)));
 		}
+
 		if(i==0)
 		{
 		    for(k=0.0;k<ajSeqLen(seq2);k+=tickgap)
 		    {
 			ajGraphLine(xstart,ystart+k,xstart-ticklen,
-					ystart+k);
+				    ystart+k);
 
 			sprintf(ptr,"%d",(ajint)k);
-			ajGraphTextEnd (xstart-(onefifth),ystart+k,ptr);
+			ajGraphTextEnd(xstart-(onefifth),ystart+k,ptr);
 		    }
 		    ajGraphTextLine(xstart-(3*onefifth),
 				    ystart+((float)ajSeqLen(seq2)/2.0),
@@ -183,29 +192,27 @@ int main(int argc, char **argv)
 	xstart += (float)ajSeqLen(seq1)+(float)gap;
 	ystart = 0.0;
     }
-
-    ajGraphTextStart (total+onefifth,total-(onefifth),
-		      "No. Length  Lines  Points Sequence");
-
+    
+    ajGraphTextStart(total+onefifth,total-(onefifth),
+		     "No. Length  Lines  Points Sequence");
+    
     for(i=0;i<ajSeqsetSize(seqset);i++)
     {
-	seq1 = ajSeqsetGetSeq (seqset, i);
-	/*    ajUser("%d %d %d %d %s",i+1,ajSeqLen(seq1),lines[i],pts[i],
-	      ajSeqName(seq1));*/
+	seq1 = ajSeqsetGetSeq(seqset, i);
 	ajFmtPrintS(&sajb,"%3d %6d %5d %6d %s",i+1,
 		    ajSeqLen(seq1),lines[i],
 		    pts[i],ajSeqName(seq1));
 
-	ajGraphTextStart (total+onefifth,total-(onefifth*(i+2)),
-			      ajStrStr(sajb));
+	ajGraphTextStart(total+onefifth,total-(onefifth*(i+2)),
+			 ajStrStr(sajb));
     }
-
+    
     if(dumpfeat)
     {
 	seq1out = ajFeattabOutNew();
 	for(i=0;i<ajSeqsetSize(seqset);i++)
 	{
-	    seq1 = ajSeqsetGetSeq (seqset, i);
+	    seq1 = ajSeqsetGetSeq(seqset, i);
 	    ajStrAss(&ufo,format);
 	    ajStrAppC(&ufo,":");
 	    ajStrAppC(&ufo,ajSeqName(seq1));
@@ -215,14 +222,15 @@ int main(int argc, char **argv)
 	    ajFeatWrite(seq1out, tabptr[i]);
 	}
     }
-
+    
     ajGraphClose();
-
+    
     ajStrDel(&sajb);
     AJFREE(lines);
     AJFREE(pts);
-
+    
     ajExit();
+
     return 0;
 }
 
@@ -241,8 +249,13 @@ int main(int argc, char **argv)
 
 static void polydot_drawPlotlines(void **x, void *cl)
 {
-    EmbPWordMatch p  = (EmbPWordMatch)*x;
-    PLFLT x1,y1,x2,y2;
+    EmbPWordMatch p;
+    PLFLT x1;
+    PLFLT y1;
+    PLFLT x2;
+    PLFLT y2;
+
+    p = (EmbPWordMatch)*x;
 
     lines[which]++;
     pts[which]+= (*p).length;
@@ -252,7 +265,11 @@ static void polydot_drawPlotlines(void **x, void *cl)
     y2 += (PLFLT)(*p).length;
 
     ajGraphLine(x1, y1, x2, y2);
+
+    return;
 }
+
+
 
 
 /* @funcstatic polydot_plotMatches ********************************************
