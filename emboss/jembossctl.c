@@ -144,10 +144,11 @@ int main(int argc, char **argv)
     unsigned char *fbuf=NULL;
     int size;
     
-    embInit("jembossctl",argc,argv);
 
-
-    sockname = ajAcdGetString("sock");
+    if(argc<2)
+	return -1;
+    
+    sockname = ajStrNewC(argv[1]);
     pname = ajStrStr(sockname);
 
     if(!jcntl_check_socket_owner(pname))
@@ -325,8 +326,6 @@ int main(int argc, char **argv)
     ajStrDel(&message);
     jctl_tidy_strings(&tstr,&home,&retlist,buf);
     
-
-    ajExit();
     return 0;
 }
 
