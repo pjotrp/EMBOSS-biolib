@@ -1974,6 +1974,7 @@ static AjBool seqReadNbrf(AjPSeq thys, AjPSeqin seqin)
 	    else if(ajStrChar(rdline,0) == 'F')
 	    {				/* feature lines */
 		if(seqinUfoLocal(seqin))
+		{
 		    if(!dofeat)
 		    {
 			dofeat = ajTrue;
@@ -1983,8 +1984,9 @@ static AjBool seqReadNbrf(AjPSeq thys, AjPSeqin seqin)
 			ajDebug("seqin->Ftquery Handle %x\n",
 				seqin->Ftquery->Handle);
 		    }
-		ajFileBuffLoadS(seqin->Ftquery->Handle, rdline);
-		/* ajDebug("NBRF FEAT saved line:\n%S", rdline); */
+		    ajFileBuffLoadS(seqin->Ftquery->Handle, rdline);
+		    /* ajDebug("NBRF FEAT saved line:\n%S", rdline); */
+		}
 	    }
 	}
 	if(ok)
