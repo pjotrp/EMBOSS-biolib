@@ -6,7 +6,7 @@ appl: printsextract [
   cpu: medium
 ]
 
-section: input [ input: "required Section" type: page ]
+section: input [ info: "required Section" type: page ]
 infile: inf  [
   parameter: "Y"
   required: "Y"
