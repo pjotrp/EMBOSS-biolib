@@ -1191,7 +1191,7 @@ static AjBool seqReadGcg (AjPSeq thys, AjPSeqin seqin) {
   /* test GCG 9.x file types if available */
   /* any type on the .. line will override this */
 
-  if (ajStrPrefixC(rdline, "!!NA_SEQUENCE"))
+  if (ajStrPrefixC(rdline, "!!NA_EQUENCE"))
     ajSeqSetNuc(thys);
   else if (ajStrPrefixC(rdline, "!!AA_SEQUENCE"))
     ajSeqSetProt(thys);
@@ -2726,6 +2726,7 @@ static AjBool seqReadGenbank (AjPSeq thys, AjPSeqin seqin) {
   AjPFileBuff ftfile = NULL;
   static AjPStr ftfmt = NULL;
   AjBool dofeat = ajFalse;
+  AjPSeqQuery qry = seqin->Query;
 
   ajDebug("seqReadGenbank\n");
 
@@ -2836,9 +2837,13 @@ static AjBool seqReadGenbank (AjPSeq thys, AjPSeqin seqin) {
     }
   }
 
-  while(!ajStrPrefixC(rdline,"ORIGIN"))
-      ajFileBuffGet(buff,&rdline);
-  
+  if(!ajStrMatchC(qry->Method,"gcg"))
+      while(!ajStrPrefixC(rdline,"//"))
+	  ajFileBuffGet(buff,&rdline);
+  else
+      while(!ajStrPrefixC(rdline,"ORIGIN"))
+	  ajFileBuffGet(buff,&rdline);
+
 
   ajFileBuffClear (buff, 0);
 
