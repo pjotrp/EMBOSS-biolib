@@ -158,15 +158,18 @@ int main(int argc, char **argv)
 		ajGraphSetMulti(graph,1);
 
 	    ajGraphxySetOverLap(graph,ajFalse);
-	    ajFmtPrintS(&st,"HMOMENT of %s. Window:%d",sname,window);
 
 	    hmoment_addgraph(graph,limit,x,ya,ymax,BLACK,aangle,window,
 			     baseline);
 	    if(twin)
 		hmoment_addgraph(graph,limit,x,yb,ymax,RED,bangle,window,
 				 baseline);
+
+	    ajFmtPrintS(&st,"HMOMENT of %s. Window:%d",sname,window);
+	    ajGraphxyTitleC(graph,ajStrStr(st));
+
 	    if(limit>0)
-		ajGraphxyDisplay(graph,ajTrue);
+		ajGraphxyDisplay(graph,ajFalse);
 	}
 	
 	if(limit>0)
@@ -177,7 +180,9 @@ int main(int argc, char **argv)
 	}
     }
     
-    if(!plot)
+    if(plot)
+        ajGraphClose();
+    else
 	ajFileClose(&outf);
     ajStrDel(&str);
     ajStrDel(&st);

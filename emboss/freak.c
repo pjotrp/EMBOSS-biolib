@@ -151,7 +151,7 @@ int main(int argc, char **argv)
 	    
 	    ajGraphxyAddDataPtrPtr(fgraph,x,y);
 	    ajGraphxyAddGraph(graph,fgraph);
-	    ajGraphxyDisplay(graph,ajTrue);
+	    ajGraphxyDisplay(graph,ajFalse);
 	}
 	
 
@@ -159,7 +159,9 @@ int main(int argc, char **argv)
 	AJFREE(y);
     }
 
-    if(!plot)
+    if(plot)
+        ajGraphClose();
+    else
 	ajFileClose(&outf);
     ajStrDel(&str);
     ajStrDel(&bases);
