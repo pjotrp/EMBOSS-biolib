@@ -1,4 +1,4 @@
-Application: seqalign [
+application: seqalign [
   documentation: "Reads a DAF file (domain alignment file) and a DHF (domain hits file) and 
 	 writes a DAF file extended with the hits."
   groups: "Protein:3D Structure"
