@@ -6527,8 +6527,11 @@ static AjBool featGetUsaSection(AjPStr* thys, AjPStr token, int* begin,
 				int* end, AjPStr usa)
 {
     AjPStrTok handle=NULL;
+    AjPStrTok hand2=NULL;
+    
     AjPStr db=NULL;
     AjPStr entry=NULL;
+    AjPStr entry2=NULL;
     AjPStr numbers=NULL;
     AjBool ok=ajTrue;
     char   *p=NULL;
@@ -6536,6 +6539,7 @@ static AjBool featGetUsaSection(AjPStr* thys, AjPStr token, int* begin,
     
     db      = ajStrNew();
     entry   = ajStrNew();
+    entry2  = ajStrNew();
     numbers = ajStrNew();
     seq     = ajSeqNew();
     
@@ -6546,14 +6550,19 @@ static AjBool featGetUsaSection(AjPStr* thys, AjPStr token, int* begin,
     
     handle = ajStrTokenInit(token,":");
     ajStrToken(&entry,&handle,NULL);
+
+    hand2 = ajStrTokenInit(entry,".");
+    ajStrToken(&entry2,&hand2,NULL);
+    ajStrTokenClear(&hand2);
+
     ajStrToken(&numbers,&handle,NULL);
     ajStrTokenClear(&handle);
 
     p = ajStrStr(numbers);
-    if(sscanf(p,"(%d-%d)",begin,end)!=2)
+    if(sscanf(p,"%d-%d",begin,end)!=2)
 	ok = ajFalse;
 
-    ajStrApp(&db,entry);
+    ajStrApp(&db,entry2);
 
     if(!ajSeqGetFromUsa(db,0,&seq))
 	ok = ajFalse;
@@ -6562,6 +6571,7 @@ static AjBool featGetUsaSection(AjPStr* thys, AjPStr token, int* begin,
 
     ajStrDel(&db);
     ajStrDel(&entry);
+    ajStrDel(&entry2);
     ajStrDel(&numbers);
     ajSeqDel(&seq);
 
