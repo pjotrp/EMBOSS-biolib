@@ -1266,6 +1266,35 @@ FI outfile.testalignok
 FZ = 0
 //
 
+ID acdc-funconeof
+AP acdc
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+CL oneof
+IN thr
+IN 2
+FI stderr
+FZ > 0
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FP / Pick a number /
+//
+
+ID acdc-funconeoffalse
+AP acdc
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+CL oneof
+IN two
+FI stderr
+FZ > 0
+FP 1 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FP /Warning: integer value out of range 0 less than \(reset to\) 1\n/
+//
+
 ID acdc-nodatafile
 AP acdc
 ER 1
@@ -16913,7 +16942,7 @@ IN
 IN
 IN
 FI dnacomp.fdnacomp
-FC = 57
+FC = 59
 FP /total number of compatible sites is       11.0\n/
 FP /   4   Epsilon     maybe   GGGATCTCGG CCC\n/
 FP /    0[|]       2   1   3   2   0   2   1   1   1\n/
