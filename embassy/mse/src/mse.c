@@ -168,11 +168,9 @@ AjPSeqset seqset;
 
 	seqset = ajAcdGetSeqset("sequence");
 
-	tmpdir = ajAcdGetString("tmpdir");
+	tmpdir = ajAcdGetDirectory("tmpdir");
 
-	
-	envptr = env;
-	ajStrAppC(&tmpdir,"/"); /* does not matter if // at end */
+        envptr = env;
 
 	(void) Initscr();
 
