@@ -11,6 +11,22 @@ while (<EMBOSSVERSION>) {
 
 close EMBOSSVERSION;
 
+open (ACDSTATS, "acdsyntax.acdstats") ||
+    die "Cannot open acdsyntax.acdstats";
+
+while (<ACDSTATS>) {
+    if (/^(\S+)\s+(\d+)/) {
+	$t=$1;
+	$acdstats{$t} = $2;
+	$acdstatsdefa{$t} = {};
+	$acdstatsattr{$t} = {};
+    }
+    elsif (/^\s+[*][*]\s+(\S+)\s+(\d+)/) { $acdstatsdefa{$t}{$1} = $2 }
+    elsif (/^\s+(\S+)\s+(\d+)/) { $acdstatsattr{$t}{$1} = $2 }
+}
+
+close ACDSTATS;
+
 open (TABLE, ">test.html");
 
 print TABLE "<HTML><HEAD></HEAD><BODY>\n";
@@ -992,6 +1008,9 @@ sub dotableothervars($) {
 ";
 }
 
+sub attrnumerically { $acdstatsattr{$t}{$b} <=> $acdstatsattr{$t}{$a} }
+sub defanumerically { $acdstatsdefa{$t}{$b} <=> $acdstatsdefa{$t}{$a} }
+
 ##############################################
 # Main body
 ##############################################
@@ -1262,6 +1281,18 @@ foreach $t (sort (keys ( %acdtypes))) {
 	if ($test !~ /$tapat/gs) {
 	    print STDERR "++ failed to find attribute documentation for acd type $t ($acdtypes{$t})\n";
 ###	    print STDERR $testacdattr{$t};
+	}
+	foreach $at ( sort attrnumerically  keys ( %{$acdstatsattr{$t}}) ) {
+	    $tattr = qr/<i>$at:<.i>/;
+	    if ($test !~ /$tattr/s) {
+		print STDERR "++ failed to find attribute '$at' documented for acd type $t ($acdtypes{$t}) used $acdstatsattr{$t}{$at} / $acdstats{$t} times\n";
+	    }
+	}
+	foreach $dt ( sort defanumerically  keys ( %{$acdstatsdefa{$t}}) ) {
+	    $tattr = qr/<i>$dt:<.i>/;
+	    if ($test !~ /$tattr/s) {
+		print STDERR "++ failed to find default attribute '$dt' documented for acd type $t ($acdtypes{$t}) used $acdstatsdefa{$t}{$dt} / $acdstats{$t} times\n";
+	    }
 	}
     }
 }
