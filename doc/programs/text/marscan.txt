@@ -73,10 +73,7 @@ Usage
 % marscan 
 Finds MAR/SAR sites in nucleic sequences
 Input sequence(s): tembl:u01317
-File for output of MAR/SAR recognition signature (MRS) regions. This contains d
-etails of the MRS in normal GFF format. The MRS consists of two recognition sit
-es, one of 8 bp and one of 16 bp on either sense strand of the genomic DNA, wit
-hin 200 bp of each other. [hshbb.marscan]: 
+Output report [hshbb.marscan]: 
    
    Go to the input files for this example
    Go to the output files for this example
@@ -343,7 +340,7 @@ Output file format
   File: hshbb.marscan
   
 ##gff-version 2.0
-##date 2003-07-15
+##date 2003-10-29
 ##Type DNA HSHBB
 HSHBB   marscan misc_signal     2242    2458    0.000   +       .       Sequenc
 e "HSHBB.1" ; note "*type MAR/SAR recognition site (MRS)" ; note "*start8bp 245

@@ -21,7 +21,7 @@ Usage
 
 % prosextract 
 Builds the PROSITE motif database for patmatmotifs to search
-Enter name of prosite directory: ../../data/
+Name of prosite directory: ../../data/
    
    Go to the output files for this example
    

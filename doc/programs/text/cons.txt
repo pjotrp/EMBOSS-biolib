@@ -50,7 +50,7 @@ Usage
 
 % cons 
 Creates a consensus from multiple alignments
-File containing a sequence alignment.: ../../data/dna.msf
+Input sequence set: ../../data/dna.msf
 Output sequence [dna.fasta]: aligned.cons
    
    Go to the input files for this example
@@ -203,8 +203,8 @@ Output file format
   File: aligned.cons
   
 >EMBOSS_001
-acgtacgtacgtacgtacgtnnnnacgtacgtacgtacgtnnnnnnnnnnnnnnnnnnnn
-nnnnnnnnnnnnnnnnnnnnacgtacgtacgtacgtacgtacgtacgtnnnnacgtacgt
+ACGTACGTACGTACGTACGTnnnnACGTACGTACGTACGTnnnnnnnnnnnnnnnnnnnn
+nnnnnnnnnnnnnnnnnnnnACGTACGTACGTACGTACGTACGTACGTnnnnACGTACGT
    
 Data files
 

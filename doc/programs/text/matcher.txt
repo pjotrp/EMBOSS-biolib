@@ -451,7 +451,7 @@ Output file format
   
 ########################################
 # Program:  matcher
-# Rundate:  Tue Jul 15 10:46:38 2003
+# Rundate:  Wed Oct 29 13:45:55 2003
 # Align_format: markx0
 # Report_file: hba_human.matcher
 ########################################
@@ -501,7 +501,7 @@ HBB_HU ENFRLLGNVLVCVLAHHFGKEFTPPVQAAYQKVVAGVANALAHKY
   
 ########################################
 # Program:  matcher
-# Rundate:  Tue Jul 15 10:46:38 2003
+# Rundate:  Wed Oct 29 13:45:55 2003
 # Align_format: markx0
 # Report_file: hba_human.matcher
 ########################################

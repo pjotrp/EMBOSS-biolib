@@ -52,7 +52,7 @@ Usage
 
 % listor ../../data/file1 ../../data/file2 
 Writes a list file of the logical OR of two sets of sequences
-The list of sequence names will be written to this list file [file1.list]: 
+Output file [file1.list]: 
    
    Go to the input files for this example
    Go to the output files for this example
@@ -64,7 +64,7 @@ The list of sequence names will be written to this list file [file1.list]:
 
 % listor ../../data/file1 ../../data/file2 -operator and 
 Writes a list file of the logical OR of two sets of sequences
-The list of sequence names will be written to this list file [file1.list]: 
+Output file [file1.list]: 
    
    Go to the output files for this example
    
@@ -75,7 +75,7 @@ The list of sequence names will be written to this list file [file1.list]:
 
 % listor ../../data/file1 ../../data/file2 -operator xor 
 Writes a list file of the logical OR of two sets of sequences
-The list of sequence names will be written to this list file [file1.list]: 
+Output file [file1.list]: 
    
    Go to the output files for this example
    
@@ -86,7 +86,7 @@ The list of sequence names will be written to this list file [file1.list]:
 
 % listor ../../data/file1 ../../data/file2 -operator not 
 Writes a list file of the logical OR of two sets of sequences
-The list of sequence names will be written to this list file [file1.list]: 
+Output file [file1.list]: 
    
    Go to the output files for this example
    

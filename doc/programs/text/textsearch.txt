@@ -23,7 +23,7 @@ Usage
 
 % textsearch tsw:* 'lactose' 
 Search sequence documentation text. SRS and Entrez are faster!
-Output sequence details to a file [100k_rat.textsearch]: 
+Output file [100k_rat.textsearch]: 
    
    Go to the input files for this example
    Go to the output files for this example
@@ -35,7 +35,7 @@ Output sequence details to a file [100k_rat.textsearch]:
 
 % textsearch tsw:*_ecoli 'lactose | permease' 
 Search sequence documentation text. SRS and Entrez are faster!
-Output sequence details to a file [laci_ecoli.textsearch]: 
+Output file [laci_ecoli.textsearch]: 
    
    Go to the output files for this example
    

@@ -103,8 +103,8 @@ Usage
 
 % showalign 
 Displays a multiple sequence alignment
-The sequence alignment to be displayed.: ../../data/globins.msf
-Output sequence details to a file [globins.showalign]: 
+Input sequence set: ../../data/globins.msf
+Output file [globins.showalign]: 
    
    Go to the input files for this example
    Go to the output files for this example
@@ -116,8 +116,8 @@ Output sequence details to a file [globins.showalign]:
 
 % showalign -order=s 
 Displays a multiple sequence alignment
-The sequence alignment to be displayed.: ../../data/globins.msf
-Output sequence details to a file [globins.showalign]: 
+Input sequence set: ../../data/globins.msf
+Output file [globins.showalign]: 
    
    Go to the output files for this example
    
@@ -129,8 +129,8 @@ Output sequence details to a file [globins.showalign]:
 
 % showalign -html -high '4-13 green 43-43 red 51-56 blue' 
 Displays a multiple sequence alignment
-The sequence alignment to be displayed.: ../../data/globins.msf
-Output sequence details to a file [globins.showalign]: 
+Input sequence set: ../../data/globins.msf
+Output file [globins.showalign]: 
    
    Go to the output files for this example
    
@@ -144,8 +144,8 @@ Output sequence details to a file [globins.showalign]:
 
 % showalign -nocon -norule -nonum -nobot -ref=1 -sb=10 -send=30 
 Displays a multiple sequence alignment
-The sequence alignment to be displayed.: ../../data/globins.msf
-Output sequence details to a file [globins.showalign]: 
+Input sequence set: ../../data/globins.msf
+Output file [globins.showalign]: 
    
    Go to the output files for this example
    
@@ -156,8 +156,8 @@ Output sequence details to a file [globins.showalign]:
 
 % showalign -show=n 
 Displays a multiple sequence alignment
-The sequence alignment to be displayed.: ../../data/globins.msf
-Output sequence details to a file [globins.showalign]: 
+Input sequence set: ../../data/globins.msf
+Output file [globins.showalign]: 
    
    Example 6
    
@@ -166,8 +166,8 @@ Output sequence details to a file [globins.showalign]:
 
 % showalign -show=a 
 Displays a multiple sequence alignment
-The sequence alignment to be displayed.: ../../data/globins.msf
-Output sequence details to a file [globins.showalign]: 
+Input sequence set: ../../data/globins.msf
+Output file [globins.showalign]: 
    
    Go to the output files for this example
    
@@ -178,8 +178,8 @@ Output sequence details to a file [globins.showalign]:
 
 % showalign -show=i 
 Displays a multiple sequence alignment
-The sequence alignment to be displayed.: ../../data/globins.msf
-Output sequence details to a file [globins.showalign]: 
+Input sequence set: ../../data/globins.msf
+Output file [globins.showalign]: 
    
    Go to the output files for this example
    
@@ -190,8 +190,8 @@ Output sequence details to a file [globins.showalign]:
 
 % showalign -show=s 
 Displays a multiple sequence alignment
-The sequence alignment to be displayed.: ../../data/globins.msf
-Output sequence details to a file [globins.showalign]: 
+Input sequence set: ../../data/globins.msf
+Output file [globins.showalign]: 
    
    Go to the output files for this example
    
@@ -202,8 +202,8 @@ Output sequence details to a file [globins.showalign]:
 
 % showalign -show=d 
 Displays a multiple sequence alignment
-The sequence alignment to be displayed.: ../../data/globins.msf
-Output sequence details to a file [globins.showalign]: 
+Input sequence set: ../../data/globins.msf
+Output file [globins.showalign]: 
    
    Go to the output files for this example
    
@@ -214,8 +214,8 @@ Output sequence details to a file [globins.showalign]:
 
 % showalign -ref=1 
 Displays a multiple sequence alignment
-The sequence alignment to be displayed.: ../../data/globins.msf
-Output sequence details to a file [globins.showalign]: 
+Input sequence set: ../../data/globins.msf
+Output file [globins.showalign]: 
    
    Go to the output files for this example
    
@@ -226,8 +226,8 @@ Output sequence details to a file [globins.showalign]:
 
 % showalign -nocon -ref=1 -sl -upper 9-15 -nosimilarcase 
 Displays a multiple sequence alignment
-The sequence alignment to be displayed.: ../../data/globins.msf
-Output sequence details to a file [globins.showalign]: 
+Input sequence set: ../../data/globins.msf
+Output file [globins.showalign]: 
    
    Go to the output files for this example
    
@@ -238,8 +238,8 @@ Output sequence details to a file [globins.showalign]:
 
 % showalign -order=a 
 Displays a multiple sequence alignment
-The sequence alignment to be displayed.: ../../data/globins.msf
-Output sequence details to a file [globins.showalign]: 
+Input sequence set: ../../data/globins.msf
+Output file [globins.showalign]: 
    
    Go to the output files for this example
    

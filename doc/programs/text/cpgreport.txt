@@ -40,6 +40,7 @@ Usage
 Reports all CpG rich regions
 CpG score [17]: 
 Output file [rnu68037.cpgreport]: 
+Output features [rnu68037.gff]: 
    
    Go to the input files for this example
    Go to the output files for this example
@@ -257,7 +258,7 @@ RNU68037               1183   1193    26          2  72.7   2.00
   File: rnu68037.gff
   
 ##gff-version 2.0
-##date 2003-07-15
+##date 2003-10-29
 ##Type DNA RNU68037
 RNU68037        cpgreport       misc_feature    12      13      17.000  +
 .       Sequence "RNU68037.1"

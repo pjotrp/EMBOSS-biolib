@@ -62,12 +62,6 @@ Usage
 Search all databases for an entry
 ID or Accession number: hsfau1
 Output file [outfile.whichdb]: 
-Error: failed to open filename 'garyseq.seq'
-Warning: Cannot open division file '' for database 'maskutrdb'
-Warning: seqCdQry failed
-Error: socket connect failed for database 'tgb'
-socket connect failed for database 'tgb': 
-Connection timed out
    
    Go to the output files for this example
    

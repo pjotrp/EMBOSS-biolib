@@ -224,8 +224,8 @@ Usage
 % sirna 
 Finds siRNA duplexes in mRNA
 Input sequence(s): tembl:hsfau
-Output data file [hsfau.sirna]: 
-Output sequence file [hsfau.fasta]: 
+Output report [hsfau.sirna]: 
+Output sequence [hsfau.fasta]: 
    
    Go to the input files for this example
    Go to the output files for this example
@@ -240,8 +240,8 @@ Output sequence file [hsfau.fasta]:
 % sirna -context 
 Finds siRNA duplexes in mRNA
 Input sequence(s): tembl:hsfau
-Output data file [hsfau.sirna]: 
-Output sequence file [hsfau.fasta]: 
+Output report [hsfau.sirna]: 
+Output sequence [hsfau.fasta]: 
    
    Go to the output files for this example
    
@@ -646,7 +646,7 @@ taaaaaagccacttagttcagtc
   
 ########################################
 # Program: sirna
-# Rundate: Tue Jul 15 10:51:34 2003
+# Rundate: Wed Oct 29 13:48:25 2003
 # Report_format: table
 # Report_file: hsfau.sirna
 ########################################
@@ -756,7 +756,7 @@ taaaaaagccacttagttcagtc
   
 ########################################
 # Program: sirna
-# Rundate: Tue Jul 15 10:51:35 2003
+# Rundate: Wed Oct 29 13:48:25 2003
 # Report_format: table
 # Report_file: hsfau.sirna
 ########################################

@@ -295,7 +295,7 @@ Output file format
   
 ########################################
 # Program: patmatmotifs
-# Rundate: Tue Jul 15 10:47:06 2003
+# Rundate: Wed Oct 29 13:46:09 2003
 # Report_format: dbmotif
 # Report_file: opsd_human.patmatmotifs
 ########################################
@@ -307,7 +307,8 @@ Output file format
 #
 # Full: Yes
 # Prune: Yes
-# Data_file: ../prosextract-keep/PROSITE/prosite.lines
+# Data_file: /packages/emboss_dev/gwilliam/emboss/emboss/emboss/data/PROSITE/pr
+osite.lines
 #
 #=======================================
 

@@ -28,6 +28,8 @@ Usage
 Finds all exact matches of a given size between 2 sequences
 Word size [4]: 
 Output alignment [hba_human.wordmatch]: 
+Output features [HBA_HUMAN.gff]: 
+Second output features [HBB_HUMAN.gff]: 
    
    Go to the input files for this example
    Go to the output files for this example
@@ -391,7 +393,7 @@ Output file format
   File: HBA_HUMAN.gff
   
 ##gff-version 2.0
-##date 2003-07-15
+##date 2003-10-29
 ##Type Protein HBA_HUMAN
 HBA_HUMAN       wordmatch       misc_feature    58      62      1.000   +
 .       Sequence "HBA_HUMAN.1" ; note "HBB_HUMAN"
@@ -403,7 +405,7 @@ HBA_HUMAN       wordmatch       misc_feature    116     119     1.000   +
   File: HBB_HUMAN.gff
   
 ##gff-version 2.0
-##date 2003-07-15
+##date 2003-10-29
 ##Type Protein HBB_HUMAN
 HBB_HUMAN       wordmatch       misc_feature    63      67      1.000   +
 .       Sequence "HBB_HUMAN.1" ; note "HBA_HUMAN"
@@ -416,7 +418,7 @@ HBB_HUMAN       wordmatch       misc_feature    121     124     1.000   +
   
 ########################################
 # Program:  wordmatch
-# Rundate:  Tue Jul 15 10:55:47 2003
+# Rundate:  Wed Oct 29 13:52:29 2003
 # Align_format: match
 # Report_file: hba_human.wordmatch
 ########################################

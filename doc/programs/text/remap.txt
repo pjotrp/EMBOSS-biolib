@@ -764,8 +764,8 @@ Hin4I     HindII    HindIII   KpnI      MaeII     NotI
 ECLAC
 E.coli lactose operon with lacI, lacZ, lacY and lacA genes.
 
-                                                      Hin6I
-                 TaqI                                 HspAI
+                                                      HspAI
+                 TaqI                                 Hin6I
                  |  Bsc4I                             HinP1I
                  |  |   HspAI                         | HhaI
                  |  |   Hin6I                         | BssKI

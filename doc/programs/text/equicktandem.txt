@@ -30,7 +30,7 @@ Usage
    The input sequence is the human herpesvirus tandem repeat.
    
 
-% equicktandem 
+% equicktandem -noorigfile 
 Finds tandem repeats
 Input sequence: tembl:hhtetra
 Maximum repeat size [600]: 
@@ -233,7 +233,7 @@ Output file format
   
 ########################################
 # Program: equicktandem
-# Rundate: Tue Jul 15 10:43:15 2003
+# Rundate: Wed Oct 29 13:44:23 2003
 # Report_format: table
 # Report_file: hhtetra.qtan
 ########################################

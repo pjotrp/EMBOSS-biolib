@@ -20,7 +20,7 @@ Usage
 % showfeat 
 Show features of a sequence.
 Input sequence(s): tembl:hsfau1
-Output feature details to a file [hsfau1.showfeat]: 
+Output file [hsfau1.showfeat]: 
    
    Go to the input files for this example
    Go to the output files for this example
@@ -33,7 +33,7 @@ Output feature details to a file [hsfau1.showfeat]:
 % showfeat -sort join -pos 
 Show features of a sequence.
 Input sequence(s): tembl:hsfau1
-Output feature details to a file [hsfau1.showfeat]: 
+Output file [hsfau1.showfeat]: 
    
    Go to the output files for this example
    
@@ -46,7 +46,7 @@ Output feature details to a file [hsfau1.showfeat]:
 % showfeat -matchtype CDS -width 0 -noid -nodesc -noscale -pos  
 Show features of a sequence.
 Input sequence(s): tembl:hsfau1
-Output feature details to a file [hsfau1.showfeat]: 
+Output file [hsfau1.showfeat]: 
    
    Go to the output files for this example
    

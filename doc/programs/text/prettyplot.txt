@@ -20,7 +20,7 @@ Usage
 
 % prettyplot -resbreak=10 -boxcol -consensus -plurality=3 
 Displays aligned sequences, with colouring and boxing
-Sequences file to be read in: ../../data/globins.msf
+Input sequence set: ../../data/globins.msf
 Graph type [x11]: cps
 
 Created prettyplot.ps

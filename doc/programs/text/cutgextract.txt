@@ -47,7 +47,7 @@ Command line arguments
 
    Error: File
    /packages/emboss_dev/gwilliam/emboss/emboss/emboss/acd/cutgextract.acd
-   line 11: (directory) Unknown attribute 'name'
+   line 0: (directory) Unknown attribute 'name'
    
 Input file format
 

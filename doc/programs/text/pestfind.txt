@@ -117,14 +117,14 @@ Usage
 
 % pestfind -graph cps -invalid 
 Finds PEST motifs as potential proteolytic cleavage sites
-Enter input sequence: ../../data/exu2_drops.embl
-Enter window length [10]: 
+Input sequence: ../../data/exu2_drops.embl
+Window length [10]: 
 Sort order of results
       1 : length
       2 : position
       3 : score
-Select sort order of results [score]: 
-Enter output filename [exu2_drops.pestfind]: 
+Sort order of results [score]: 
+Output file [exu2_drops.pestfind]: 
 
 Created pestfind.ps
    

@@ -31,7 +31,8 @@ Reports STOP codons and ORF statistics of a protein
 Input sequence(s): ../../data/paamir.pep
 Minimum ORF Length to report [100]: 
 Output file [paamir_1.checktrans]: 
-Sequence file to hold output ORF sequences [paamir_1.fasta]: 
+Output sequence [paamir_1.fasta]: 
+Output features [paamir_1.gff]: 
    
    Go to the input files for this example
    Go to the output files for this example
@@ -196,7 +197,7 @@ DQPGQGVADAAPWLGRARGAPAPVAGSDEAARADPEDRSGVAGKRAVRLSDPGRPEQ
   File: paamir_1.gff
   
 ##gff-version 2.0
-##date 2003-07-15
+##date 2003-10-29
 ##Type Protein PAAMIR_1
 PAAMIR_1        checktrans      misc_feature    278     634     0.000   +
 .       Sequence "PAAMIR_1.1"

@@ -448,7 +448,7 @@ Output file format
   
 ########################################
 # Program:  water
-# Rundate:  Tue Jul 15 10:51:55 2003
+# Rundate:  Wed Oct 29 13:48:38 2003
 # Align_format: srspair
 # Report_file: hba_human.water
 ########################################
